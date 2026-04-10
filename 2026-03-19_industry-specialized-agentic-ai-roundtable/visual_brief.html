@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slides + Infographic | Industry-Specialized Agentic AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4efe4;
+      --paper: rgba(255, 251, 246, 0.84);
+      --ink: #0f221d;
+      --muted: #5b6863;
+      --line: rgba(15, 34, 29, 0.12);
+      --teal: #0d8d7c;
+      --teal-deep: #0a5f53;
+      --orange: #f38f42;
+      --sand: #efe4d2;
+      --shadow: 0 20px 50px rgba(15, 34, 29, 0.12);
+      --radius: 28px;
+      --max: 1320px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(243, 143, 66, 0.24), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(13, 141, 124, 0.18), transparent 26%),
+        linear-gradient(180deg, #fbf7f0 0%, #efe8dd 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(15, 34, 29, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 34, 29, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: "Space Grotesk", "Noto Sans KR", sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    p { margin: 0; }
+    a { color: inherit; }
+
+    .page {
+      position: relative;
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 72px;
+    }
+
+    .bar,
+    .panel,
+    .slide,
+    .info-card,
+    .timeline-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      margin-bottom: 22px;
+      border-radius: 999px;
+    }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--teal), #90f1df);
+      box-shadow: 0 0 0 8px rgba(13, 141, 124, 0.12);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .links a {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.72);
+      font-size: 0.9rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero-main {
+      padding: 34px;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(13, 141, 124, 0.12);
+      color: var(--teal-deep);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin-top: 18px;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 0.92;
+      max-width: 10ch;
+    }
+
+    .lead {
+      margin-top: 18px;
+      max-width: 58ch;
+      line-height: 1.82;
+      font-size: 1.06rem;
+      color: var(--muted);
+    }
+
+    .meta-grid,
+    .metric-grid,
+    .timeline-grid,
+    .info-grid,
+    .footer-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .meta-grid {
+      margin-top: 22px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .meta,
+    .metric,
+    .timeline-card,
+    .info-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(15, 34, 29, 0.08);
+    }
+
+    .meta strong,
+    .metric strong {
+      display: block;
+      color: var(--teal-deep);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .meta span,
+    .metric span {
+      line-height: 1.55;
+    }
+
+    .big-panel {
+      padding: 28px;
+      background: linear-gradient(180deg, rgba(13, 141, 124, 0.92), rgba(10, 95, 83, 0.96));
+      color: #f2fffc;
+    }
+
+    .big-panel h2 {
+      font-size: 0.94rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      opacity: 0.84;
+    }
+
+    .big-number {
+      margin-top: 16px;
+      font-size: clamp(2.7rem, 5vw, 4.3rem);
+      line-height: 0.96;
+      font-weight: 700;
+    }
+
+    .big-panel p {
+      margin-top: 16px;
+      line-height: 1.78;
+      color: rgba(242, 255, 252, 0.9);
+    }
+
+    .bullet-panel {
+      padding: 28px;
+    }
+
+    .bullet-panel ol {
+      margin: 14px 0 0;
+      padding-left: 1.1rem;
+      line-height: 1.82;
+      color: var(--muted);
+    }
+
+    .section {
+      padding: 28px;
+      margin-top: 20px;
+    }
+
+    .section > p {
+      margin-top: 10px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .slides {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(300px, 1fr);
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      padding-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    .slides::-webkit-scrollbar { height: 10px; }
+    .slides::-webkit-scrollbar-thumb {
+      background: rgba(15, 34, 29, 0.18);
+      border-radius: 999px;
+    }
+
+    .slide {
+      scroll-snap-align: start;
+      aspect-ratio: 16 / 9;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 360px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: auto -30% -18% auto;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(243, 143, 66, 0.25), transparent 62%);
+    }
+
+    .slide:nth-child(2n)::before {
+      inset: -18% auto auto -18%;
+      background: radial-gradient(circle, rgba(13, 141, 124, 0.18), transparent 62%);
+    }
+
+    .slide-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(13, 141, 124, 0.11);
+      color: var(--teal-deep);
+      font-size: 0.82rem;
+      font-weight: 700;
+      z-index: 1;
+    }
+
+    .slide h3 {
+      font-size: clamp(1.8rem, 2vw, 2.35rem);
+      line-height: 0.95;
+      max-width: 12ch;
+      z-index: 1;
+    }
+
+    .slide p,
+    .slide li {
+      z-index: 1;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .slide ul,
+    .slide ol {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 8px;
+    }
+
+    .slide-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .accent {
+      color: var(--teal-deep);
+      font-weight: 700;
+    }
+
+    .info-grid {
+      margin-top: 20px;
+      grid-template-columns: 1.05fr 0.95fr;
+    }
+
+    .info-card {
+      padding: 24px;
+    }
+
+    .info-card h3 {
+      font-size: 1.45rem;
+      margin-bottom: 14px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(13, 141, 124, 0.11);
+      border: 1px solid rgba(13, 141, 124, 0.14);
+      font-size: 0.9rem;
+    }
+
+    .roadmap {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .roadmap-step {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(15, 34, 29, 0.08);
+    }
+
+    .roadmap-step strong {
+      color: var(--teal-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.82rem;
+    }
+
+    .timeline-grid {
+      margin-top: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .timeline-card h4 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .timeline-card ul {
+      margin: 0;
+      padding-left: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .metric-grid {
+      margin-top: 18px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-grid {
+      margin-top: 18px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(15, 34, 29, 0.94), rgba(10, 95, 83, 0.92));
+      color: rgba(245, 255, 251, 0.94);
+      line-height: 1.78;
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .info-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-grid,
+      .timeline-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { width: min(var(--max), calc(100% - 20px)); }
+      .bar { border-radius: 24px; align-items: flex-start; }
+      .meta-grid,
+      .metric-grid,
+      .timeline-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 { font-size: clamp(2.2rem, 12vw, 3.4rem); }
+      .hero-main,
+      .big-panel,
+      .bullet-panel,
+      .section {
+        padding: 22px;
+      }
+
+      .slide {
+        min-height: 320px;
+        padding: 20px;
+      }
+
+      .slides {
+        grid-auto-columns: minmax(280px, 88vw);
+      }
+
+      .roadmap-step {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="bar">
+      <div class="stamp">
+        <span class="dot"></span>
+        <span>Visual Brief · Slides + Infographic · Updated 2026-03-22</span>
+      </div>
+      <nav class="links">
+        <a href="./index.html">Main Review</a>
+        <a href="./reports/2026-03-19_industry-specialized-agentic-ai-roundtable_deepresearch.md">Deep Research</a>
+        <a href="./notes/2026-03-19_industry-specialized-agentic-ai-roundtable_notebooklm_qna.md">NotebookLM Q&amp;A</a>
+      </nav>
+    </div>
+
+    <section class="hero">
+      <article class="panel hero-main">
+        <div>
+          <span class="eyebrow">Slides + Infographic View</span>
+          <h1>Win The Workflow Layer, Not The Hype Cycle.</h1>
+          <p class="lead">
+            이 페이지는 2026년 3월 19일 공개된 산업 특화 Agentic AI 간담회, 외부 공식 자료,
+            그리고 NotebookLM cross-check를 묶어 <strong>슬라이드 형식 요약</strong>과
+            <strong>한 장 인포그래픽</strong>으로 압축한 시각 브리프다.
+          </p>
+        </div>
+        <div class="meta-grid">
+          <div class="meta">
+            <strong>Core Thesis</strong>
+            <span>한국의 승부처는 foundation model 자체보다 workflow operating layer다.</span>
+          </div>
+          <div class="meta">
+            <strong>Best Entry</strong>
+            <span>문서 많고 승인 절차가 긴 공공·제조·금융 업무부터 시작한다.</span>
+          </div>
+          <div class="meta">
+            <strong>Hard Truth</strong>
+            <span>버티컬은 UI가 아니라 process data, trust layer, human escalation의 문제다.</span>
+          </div>
+        </div>
+      </article>
+
+      <div class="hero-side">
+        <article class="panel big-panel">
+          <h2>Most Defensible Insight</h2>
+          <div class="big-number">Workflow Asset &gt; Model Race</div>
+          <p>
+            산업 특화 Agentic AI에서 가치가 쌓이는 곳은 모델 파라미터보다 문서 구조, 승인 흐름,
+            예외 규칙, 권한 모델, 감사 로그, human handoff 설계다.
+          </p>
+        </article>
+        <article class="panel bullet-panel">
+          <h2>What To Remember</h2>
+          <ol>
+            <li>처음부터 거대한 multi-agent OS를 만들지 말 것</li>
+            <li>공공 reference workflow를 수출형 자산으로 볼 것</li>
+            <li>trust layer를 제품 후순위가 아니라 판매 조건으로 설계할 것</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>Executive Slide Deck</h2>
+      <p>아래는 같은 결론을 6장의 슬라이드 흐름으로 압축한 요약이다.</p>
+      <div class="slides">
+        <article class="slide">
+          <span class="slide-label">Slide 01</span>
+          <h3>Korea Should Compete In The Workflow Race</h3>
+          <p>
+            간담회의 요지는 “한국이 모델 국력 경쟁을 이겨야 한다”가 아니라,
+            <span class="accent">산업별 workflow operating layer</span>를 누가 먼저 자산화하느냐가 중요하다는 점이다.
+          </p>
+          <div class="slide-foot">
+            <span>Model race is expensive.</span>
+            <span class="accent">Workflow capture compounds.</span>
+          </div>
+        </article>
+
+        <article class="slide">
+          <span class="slide-label">Slide 02</span>
+          <h3>What The Roundtable Actually Said</h3>
+          <ul>
+            <li>조코딩: MCP, Skills, A2A, coding agent, desktop agent 같은 운영층 표준이 중요하다.</li>
+            <li>김성훈: 산업 적용의 실제 병목은 문서, 근거 제시, process data, 현업 협업이다.</li>
+            <li>정책 논의: 공공 실증, 보안, 국내 공급망, 수출 전략이 함께 다뤄져야 한다.</li>
+          </ul>
+          <div class="slide-foot">
+            <span>Ecosystem + deployment + policy</span>
+            <span class="accent">all three matter</span>
+          </div>
+        </article>
+
+        <article class="slide">
+          <span class="slide-label">Slide 03</span>
+          <h3>Start Where Documents And Approval Friction Already Exist</h3>
+          <ol>
+            <li>공공 인허가 사전 검토</li>
+            <li>제조 품질·기술 문서 검토</li>
+            <li>금융·보험 심사와 근거 추출</li>
+            <li>수출·컴플라이언스 운영</li>
+          </ol>
+          <div class="slide-foot">
+            <span>High friction + clear ROI</span>
+            <span class="accent">beats generic demos</span>
+          </div>
+        </article>
+
+        <article class="slide">
+          <span class="slide-label">Slide 04</span>
+          <h3>The Product Is A Five-Layer Stack</h3>
+          <ul>
+            <li>Domain knowledge</li>
+            <li>Workflow graph</li>
+            <li>Trusted tools</li>
+            <li>Trust layer</li>
+            <li>Evaluation layer</li>
+          </ul>
+          <div class="slide-foot">
+            <span>Vertical AI is not just prompt tuning.</span>
+            <span class="accent">It is operating design.</span>
+          </div>
+        </article>
+
+        <article class="slide">
+          <span class="slide-label">Slide 05</span>
+          <h3>Three Principles, Three No's</h3>
+          <ul>
+            <li>Principles: workflow layer, public reference, trust layer</li>
+            <li>No giant platform-first spend</li>
+            <li>No UI-only fake verticals</li>
+            <li>No automation without human escalation</li>
+          </ul>
+          <div class="slide-foot">
+            <span>NotebookLM cross-check agreed.</span>
+            <span class="accent">Same source, same answer.</span>
+          </div>
+        </article>
+
+        <article class="slide">
+          <span class="slide-label">Slide 06</span>
+          <h3>How To Move From Pilot To Exportable Product</h3>
+          <ul>
+            <li>90일: 좁은 workflow 2~3개 선정, pilot, KPI baseline 측정</li>
+            <li>12개월: 스킬 카탈로그, action log, approval checkpoint 축적</li>
+            <li>36개월: reference workflow를 산업 패키지와 해외 수출 자산으로 전환</li>
+          </ul>
+          <div class="slide-foot">
+            <span>Small pilots, durable assets.</span>
+            <span class="accent">That is the strategy.</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>Single-Page Infographic</h2>
+      <p>이 인포그래픽은 산업 특화 Agentic AI 전략을 한 장 구조로 읽히게 만든 요약본이다.</p>
+
+      <div class="info-grid">
+        <article class="info-card">
+          <h3>1. Strategic Core</h3>
+          <p>
+            산업 특화 Agentic AI는 모델 선택 경쟁보다 <strong>업무 흐름의 캡처와 제품화</strong> 경쟁이다.
+            문서 구조, 승인 단계, 예외 규칙, 권한 경계, 근거 추적이 제품 핵심이다.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Workflow Operating Layer</span>
+            <span class="pill">Document-First</span>
+            <span class="pill">Human Escalation</span>
+            <span class="pill">Auditability</span>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h3>2. Where Korea Can Be Strong</h3>
+          <p>
+            공공 인허가와 규제 산업은 느린 시장이 아니라 한국형 reference workflow를 만들 수 있는
+            실증장이다. 이 레퍼런스는 이후 민간 확산과 해외 수출의 기준점이 될 수 있다.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Public Permit</span>
+            <span class="pill">Manufacturing QA</span>
+            <span class="pill">Finance Review</span>
+            <span class="pill">Export Compliance</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="timeline-grid">
+        <article class="timeline-card">
+          <h4>3 Principles</h4>
+          <ul>
+            <li>workflow layer를 표준화하고 재사용하라</li>
+            <li>public reference workflow를 실증하고 수출하라</li>
+            <li>trust layer를 기본 판매 조건으로 설계하라</li>
+          </ul>
+        </article>
+        <article class="timeline-card">
+          <h4>3 No's</h4>
+          <ul>
+            <li>platform-first 대규모 선행 투자 금지</li>
+            <li>UI-only 가짜 버티컬 금지</li>
+            <li>human escalation 없는 자동화 금지</li>
+          </ul>
+        </article>
+        <article class="timeline-card">
+          <h4>Success KPI</h4>
+          <ul>
+            <li>처리시간 단축</li>
+            <li>재작업률 감소</li>
+            <li>승인 대기시간 감소</li>
+            <li>보안 사고 없음</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="roadmap">
+        <div class="roadmap-step">
+          <strong>90 Days</strong>
+          <span>문서 중심 workflow 2~3개를 선정하고 baseline KPI, 근거 표시 방식, human escalation 규칙까지 포함한 pilot를 설계한다.</span>
+        </div>
+        <div class="roadmap-step">
+          <strong>12 Months</strong>
+          <span>도메인 스킬 카탈로그, action log, approval checkpoint, failure taxonomy를 표준 운영 패턴으로 정착시킨다.</span>
+        </div>
+        <div class="roadmap-step">
+          <strong>36 Months</strong>
+          <span>공공과 민간에서 검증된 reference workflow를 수출 가능한 산업 패키지로 전환하고, 국내 배치형 trust layer를 경쟁력으로 만든다.</span>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric">
+          <strong>Input</strong>
+          <span>문서, 규정, process data, 예외 사유, 승인 로그</span>
+        </div>
+        <div class="metric">
+          <strong>Engine</strong>
+          <span>LLM + tools + memory + skills + workflow graph</span>
+        </div>
+        <div class="metric">
+          <strong>Guardrail</strong>
+          <span>source trace, permission boundary, rollback, human handoff</span>
+        </div>
+        <div class="metric">
+          <strong>Output</strong>
+          <span>더 빠른 처리, 더 낮은 재작업, 더 높은 신뢰, 더 강한 수출 가능성</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section">
+      <h2>Evidence Base</h2>
+      <p>이 비주얼 브리프는 영상, 외부 공식 자료, NotebookLM cross-check를 함께 묶은 결과다.</p>
+      <div class="footer-grid">
+        <article class="info-card">
+          <h3>Video</h3>
+          <p>2026년 3월 19일 공개된 `산업 특화 에이전틱 AI 간담회 개최` 영상 transcript를 기반으로 시작했다.</p>
+        </article>
+        <article class="info-card">
+          <h3>External Validation</h3>
+          <p>Anthropic, MCP, Google A2A, UiPath, Salesforce, 한국 정책 자료로 주장 강도를 검증했다.</p>
+        </article>
+        <article class="info-card">
+          <h3>NotebookLM</h3>
+          <p>동일 소스를 NotebookLM에 업로드해 3원칙과 3금지사항을 다시 압축하고 cross-check에 활용했다.</p>
+        </article>
+      </div>
+      <div class="footer-note">
+        Bottom line: 한국형 산업 특화 Agentic AI 전략은 “최신 모델을 얼마나 빨리 도입하느냐”보다
+        “어떤 workflow를 자산화하고, 어떤 trust layer로 실무 신뢰를 만들며, 어떤 reference market에서
+        반복 검증하느냐”에 달려 있다.
+      </div>
+    </section>
+  </main>
+</body>
+</html>
