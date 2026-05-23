@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 REVIEWS_DIR = SITE_DIR / "reviews"
 ASSETS_DIR = SITE_DIR / "assets"
+ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "federlicht-icon" / "generated"
 
 
 @dataclass(frozen=True)
@@ -121,6 +122,10 @@ PUBLIC_METRICS_SCRIPT_RE = re.compile(
     r"\s*<!-- AI Tech Review Public Metrics -->.*?<!-- End AI Tech Review Public Metrics -->\s*",
     re.IGNORECASE | re.DOTALL,
 )
+PUBLIC_ICON_RE = re.compile(
+    r"\s*<!-- AI Tech Review Icons -->.*?<!-- End AI Tech Review Icons -->\s*",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 class FirstImageParser(HTMLParser):
@@ -184,6 +189,17 @@ def public_metrics_endpoint() -> str:
     return os.environ.get(PUBLIC_METRICS_ENDPOINT_ENV, DEFAULT_PUBLIC_METRICS_ENDPOINT).strip().rstrip("/")
 
 
+def public_icon_links(asset_prefix: str = "", indent: int = 4) -> str:
+    pad = " " * indent
+    return (
+        f"\n{pad}<!-- AI Tech Review Icons -->"
+        f"\n{pad}<link rel=\"icon\" href=\"{html.escape(asset_prefix, quote=True)}favicon.ico\" sizes=\"any\">"
+        f"\n{pad}<link rel=\"icon\" href=\"{html.escape(asset_prefix, quote=True)}assets/federlicht-favicon.svg\" type=\"image/svg+xml\">"
+        f"\n{pad}<link rel=\"apple-touch-icon\" href=\"{html.escape(asset_prefix, quote=True)}assets/apple-touch-icon.png\">"
+        f"\n{pad}<!-- End AI Tech Review Icons -->"
+    )
+
+
 def public_metrics_head(asset_prefix: str = "", indent: int = 4) -> str:
     pad = " " * indent
     href = f"{asset_prefix}assets/public-metrics.css"
@@ -222,6 +238,14 @@ def inject_public_metrics(html_text: str, asset_prefix: str = "") -> str:
         html_text = re.sub(r"\n[ \t]*</head>", head + "\n  </head>", html_text, count=1)
     if scripts and "</body>" in html_text:
         html_text = re.sub(r"\n[ \t]*</body>", scripts + "\n  </body>", html_text, count=1)
+    return html_text
+
+
+def inject_public_icons(html_text: str, asset_prefix: str = "") -> str:
+    html_text = PUBLIC_ICON_RE.sub("\n", html_text)
+    icons = public_icon_links(asset_prefix)
+    if icons and "</head>" in html_text:
+        return re.sub(r"\n[ \t]*</head>", icons + "\n  </head>", html_text, count=1)
     return html_text
 
 
@@ -318,6 +342,7 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
             "</section>\n"
         )
         sanitized = sanitized.replace("</body>", public_note + "</body>")
+    sanitized = inject_public_icons(sanitized, "../../")
     sanitized = inject_public_metrics(sanitized, "../../")
     return inject_cloudflare_web_analytics(sanitized), copied
 
@@ -525,6 +550,22 @@ def render_index(manifest: list[dict[str, object]]) -> str:
   </body>
 </html>
 """
+
+
+def copy_icon_assets() -> None:
+    required = {
+        "favicon.ico": SITE_DIR / "favicon.ico",
+        "federlicht-favicon.svg": ASSETS_DIR / "federlicht-favicon.svg",
+        "apple-touch-icon.png": ASSETS_DIR / "apple-touch-icon.png",
+        "favicon-16x16.png": ASSETS_DIR / "favicon-16x16.png",
+        "favicon-32x32.png": ASSETS_DIR / "favicon-32x32.png",
+        "favicon-64x64.png": ASSETS_DIR / "favicon-64x64.png",
+    }
+    missing = [name for name in required if not (ICON_SOURCE_DIR / name).exists()]
+    if missing:
+        raise FileNotFoundError(f"Missing generated icon assets: {', '.join(missing)}")
+    for name, dest in required.items():
+        shutil.copy2(ICON_SOURCE_DIR / name, dest)
 
 
 SITE_CSS = """
@@ -1370,7 +1411,11 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         for match in LOCAL_HREF_RE.finditer(text):
             raw_url = match.group("url")
             if not is_external_or_anchor(raw_url):
-                if raw_url.startswith("../../assets/") and (review_index.parent / split_local_url(raw_url)[0]).resolve().exists():
+                local_path = split_local_url(raw_url)[0]
+                if (
+                    (raw_url.startswith("../../assets/") or local_path == "../../favicon.ico")
+                    and (review_index.parent / local_path).resolve().exists()
+                ):
                     continue
                 errors.append(f"local href left in {review_index}: {raw_url}")
         if INTERNAL_PATH_RE.search(text):
@@ -1386,11 +1431,13 @@ def main() -> int:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
+    copy_icon_assets()
 
     manifest = [publish_review(review) for review in REVIEWS]
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
-    index_html = inject_public_metrics(render_index(manifest))
+    index_html = inject_public_icons(render_index(manifest))
+    index_html = inject_public_metrics(index_html)
     (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
