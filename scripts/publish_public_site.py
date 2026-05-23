@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import html
 import json
+import os
 import re
 import shutil
 import stat
@@ -104,6 +105,11 @@ LOCAL_REF_RE = re.compile(
 )
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
 INTERNAL_PATH_RE = re.compile(r"(?:file:///[A-Za-z]:[\\/][^<>'\"\s]+|(?<![A-Za-z0-9])[A-Za-z]:[\\/][^<>'\"\s]+)")
+CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
+CLOUDFLARE_WEB_ANALYTICS_RE = re.compile(
+    r"\s*<!-- Cloudflare Web Analytics -->.*?<!-- End Cloudflare Web Analytics -->\s*",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 class FirstImageParser(HTMLParser):
@@ -140,6 +146,37 @@ def rebuild_local_url(filename: str, query: str, fragment: str) -> str:
     if fragment:
         rebuilt += f"#{fragment}"
     return rebuilt
+
+
+def cloudflare_web_analytics_snippet(indent: int = 4) -> str:
+    token = os.environ.get(CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV, "").strip()
+    if not token:
+        return ""
+
+    beacon_config = json.dumps({"token": token}, separators=(",", ":"))
+    beacon_config = (
+        beacon_config.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace("'", "&#39;")
+    )
+    pad = " " * indent
+    return (
+        f"\n{pad}<!-- Cloudflare Web Analytics -->"
+        f"\n{pad}<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" "
+        f"data-cf-beacon='{beacon_config}'></script>"
+        f"\n{pad}<!-- End Cloudflare Web Analytics -->"
+    )
+
+
+def inject_cloudflare_web_analytics(html_text: str) -> str:
+    snippet = cloudflare_web_analytics_snippet()
+    if not snippet:
+        return html_text
+    html_text = CLOUDFLARE_WEB_ANALYTICS_RE.sub("\n", html_text)
+    if "</body>" not in html_text:
+        return html_text + snippet + "\n"
+    return re.sub(r"\n[ \t]*</body>", snippet + "\n  </body>", html_text, count=1)
 
 
 def unique_dest_name(source_path: Path, used_names: set[str]) -> str:
@@ -218,7 +255,7 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
             "</section>\n"
         )
         sanitized = sanitized.replace("</body>", public_note + "</body>")
-    return sanitized, copied
+    return inject_cloudflare_web_analytics(sanitized), copied
 
 
 def publish_review(review: PublicReview) -> dict[str, object]:
@@ -734,7 +771,7 @@ def main() -> int:
     manifest = [publish_review(review) for review in REVIEWS]
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
-    (SITE_DIR / "index.html").write_text(render_index(manifest), encoding="utf-8")
+    (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(render_index(manifest)), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     (ASSETS_DIR / "site.css").write_text(SITE_CSS.strip() + "\n", encoding="utf-8")
