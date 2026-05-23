@@ -1,4 +1,4 @@
-name: Deploy public report hub
+name: Publish public report hub
 
 on:
   push:
@@ -10,61 +10,36 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: gh-pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Enable Pages if needed
+      - name: Publish site to gh-pages branch
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          status="$(curl -L -sS -o /tmp/pages.json -w "%{http_code}" \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${REPO}/pages")"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if [ "${status}" = "404" ]; then
-            create_status="$(curl -L -sS -o /tmp/pages-create.json -w "%{http_code}" \
-              -X POST \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              "https://api.github.com/repos/${REPO}/pages" \
-              -d '{"build_type":"workflow"}')"
-            if [ "${create_status}" != "201" ] && [ "${create_status}" != "204" ] && [ "${create_status}" != "409" ]; then
-              cat /tmp/pages-create.json
-              exit 1
-            fi
-          elif [ "${status}" != "200" ]; then
-            cat /tmp/pages.json
-            exit 1
-          fi
+          rm -rf /tmp/ai-tech-review-site
+          mkdir -p /tmp/ai-tech-review-site
+          cp -R site/. /tmp/ai-tech-review-site/
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          cd /tmp/ai-tech-review-site
+          git init
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Publish public report hub"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+          git push --force origin gh-pages
