@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">안전한 AI 위임 매트릭스</title>
+  <desc id="desc">업무 위험과 되돌리기 가능성에 따라 AI 위임 방식을 나누는 매트릭스</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf6}
+      .axis{stroke:#24313f;stroke-width:3}
+      .low{fill:#e5f0ee}
+      .mid{fill:#f1e8d7}
+      .high{fill:#f3e1df}
+      .hold{fill:#ebe6f3}
+      .cell{stroke:#fff;stroke-width:5}
+      .text{font-family:Arial,'Noto Sans KR',sans-serif;fill:#24313f}
+      .title{font-size:25px;font-weight:700}
+      .label{font-size:21px;font-weight:700}
+      .body{font-size:16px}
+      .note{font-size:15px;fill:#5d6670}
+    </style>
+  </defs>
+  <rect class="bg" width="960" height="540" rx="22"/>
+  <text x="54" y="54" class="text title">신뢰 가능한 활용은 위임 범위에서 시작합니다</text>
+  <text x="54" y="84" class="text note">위험과 되돌리기 가능성을 먼저 나누면 필요한 통제도 자연스럽게 달라집니다.</text>
+  <g transform="translate(170 130)">
+    <rect x="0" y="0" width="300" height="150" class="cell low"/>
+    <rect x="300" y="0" width="300" height="150" class="cell mid"/>
+    <rect x="0" y="150" width="300" height="150" class="cell mid"/>
+    <rect x="300" y="150" width="300" height="150" class="cell high"/>
+    <line x1="0" y1="300" x2="600" y2="300" class="axis"/>
+    <line x1="0" y1="0" x2="0" y2="300" class="axis"/>
+    <text x="150" y="58" class="text label" text-anchor="middle">빠른 자동화</text>
+    <text x="150" y="90" class="text body" text-anchor="middle">초안, 요약, 분류</text>
+    <text x="150" y="118" class="text body" text-anchor="middle">샘플 검수</text>
+    <text x="450" y="58" class="text label" text-anchor="middle">근거 검증</text>
+    <text x="450" y="90" class="text body" text-anchor="middle">리서치, 규정 해석</text>
+    <text x="450" y="118" class="text body" text-anchor="middle">인용과 사람 검토</text>
+    <text x="150" y="208" class="text label" text-anchor="middle">승인 후 실행</text>
+    <text x="150" y="240" class="text body" text-anchor="middle">코드 변경, 배치 처리</text>
+    <text x="150" y="268" class="text body" text-anchor="middle">테스트와 롤백</text>
+    <text x="450" y="208" class="text label" text-anchor="middle">자동 실행 보류</text>
+    <text x="450" y="240" class="text body" text-anchor="middle">삭제, 결제, 배포</text>
+    <text x="450" y="268" class="text body" text-anchor="middle">명시 승인 필수</text>
+  </g>
+  <text x="470" y="468" class="text label" text-anchor="middle">업무 위험 높음</text>
+  <text x="470" y="510" class="text note" text-anchor="middle">오른쪽으로 갈수록 결과 비용이 크고, 위로 갈수록 되돌리기 쉽습니다.</text>
+  <text x="94" y="292" class="text label" transform="rotate(-90 94 292)" text-anchor="middle">되돌리기 쉬움</text>
+</svg>
