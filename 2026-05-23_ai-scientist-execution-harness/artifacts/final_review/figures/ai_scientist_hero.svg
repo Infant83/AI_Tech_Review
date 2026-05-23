@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">AI 과학자와 사람이 함께 일하는 연구실</title>
+  <desc id="desc">수학 칠판, 실험 노트, 코드 실행 창, 검증 게이트가 함께 놓인 연구 작업대 위에서 사람이 AI 과학자와 협력하는 모습을 표현한 기사형 일러스트레이션</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/>
+      <stop offset="1" stop-color="#eef5f4"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d2430"/>
+      <stop offset="1" stop-color="#1d4b5c"/>
+    </linearGradient>
+    <style>
+      .bg { fill: #f7f6ef; }
+      .grid { stroke: #d9ddd4; stroke-width: 1; opacity: .55; }
+      .desk { fill: #ffffff; stroke: #c9cfc4; stroke-width: 2; rx: 28; }
+      .shadow { fill: #d7ded6; opacity: .45; }
+      .paper { fill: url(#paper); stroke: #c7c4b7; stroke-width: 2; rx: 18; }
+      .screen { fill: url(#screen); stroke: #12313d; stroke-width: 2; rx: 20; }
+      .ink { stroke: #263238; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .soft { stroke: #7f8b86; stroke-width: 2; fill: none; stroke-linecap: round; stroke-dasharray: 8 7; }
+      .red { stroke: #b31942; fill: none; stroke-width: 3; stroke-linecap: round; }
+      .redfill { fill: #b31942; }
+      .bluefill { fill: #dcecf6; }
+      .greenfill { fill: #e6f2ea; }
+      .cream { fill: #fff5dc; }
+      .label { font: 700 26px "Segoe UI", "Malgun Gothic", sans-serif; fill: #171717; }
+      .small { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #394145; }
+      .code { font: 400 18px "Consolas", "D2Coding", monospace; fill: #e8f6f7; }
+      .math { font: 400 30px "Cambria Math", serif; fill: #24333a; }
+    </style>
+  </defs>
+  <rect class="bg" width="1600" height="900"/>
+  <g opacity=".7">
+    <path class="grid" d="M120 110 H1480"/>
+    <path class="grid" d="M120 190 H1480"/>
+    <path class="grid" d="M120 270 H1480"/>
+    <path class="grid" d="M120 350 H1480"/>
+    <path class="grid" d="M120 430 H1480"/>
+    <path class="grid" d="M120 510 H1480"/>
+    <path class="grid" d="M120 590 H1480"/>
+    <path class="grid" d="M120 670 H1480"/>
+    <path class="grid" d="M220 80 V760"/>
+    <path class="grid" d="M420 80 V760"/>
+    <path class="grid" d="M620 80 V760"/>
+    <path class="grid" d="M820 80 V760"/>
+    <path class="grid" d="M1020 80 V760"/>
+    <path class="grid" d="M1220 80 V760"/>
+    <path class="grid" d="M1420 80 V760"/>
+  </g>
+
+  <ellipse class="shadow" cx="800" cy="760" rx="650" ry="70"/>
+  <rect class="desk" x="135" y="150" width="1330" height="610"/>
+
+  <rect class="paper" x="205" y="215" width="355" height="235"/>
+  <text x="240" y="270" class="label">문제 카드</text>
+  <text x="240" y="316" class="small">풀고 싶은 문제</text>
+  <text x="240" y="352" class="small">성공 기준</text>
+  <text x="240" y="388" class="small">자료 경계</text>
+  <path class="red" d="M448 250 h62"/>
+  <path class="red" d="M448 288 h62"/>
+  <path class="red" d="M448 326 h62"/>
+
+  <rect class="paper" x="650" y="195" width="310" height="220"/>
+  <text x="682" y="250" class="label">증명과 가설</text>
+  <text x="695" y="318" class="math">H₁ → 실험 후보</text>
+  <text x="695" y="365" class="math">H₂ ↔ 반박 근거</text>
+  <circle cx="910" cy="248" r="24" class="greenfill" stroke="#43845b" stroke-width="2"/>
+  <path class="ink" d="M902 248 l7 7 l14 -18"/>
+
+  <rect class="screen" x="1040" y="205" width="335" height="245"/>
+  <text x="1078" y="260" class="code">runs/exp_001</text>
+  <text x="1078" y="306" class="code">├─ outputs.json</text>
+  <text x="1078" y="350" class="code">├─ evaluation.json</text>
+  <text x="1078" y="394" class="code">└─ decision_log.md</text>
+
+  <rect x="255" y="535" width="240" height="92" rx="18" class="bluefill" stroke="#4f77b8" stroke-width="2"/>
+  <text x="286" y="574" class="label">서비스형 에이전트</text>
+  <text x="302" y="606" class="small">Codex · Gemini · Claude</text>
+  <rect x="670" y="535" width="240" height="92" rx="18" class="greenfill" stroke="#2e8d63" stroke-width="2"/>
+  <text x="703" y="574" class="label">온프레미스</text>
+  <text x="715" y="606" class="small">Cline · Qwen · MCP</text>
+  <rect x="1080" y="535" width="240" height="92" rx="18" class="cream" stroke="#c9832b" stroke-width="2"/>
+  <text x="1112" y="574" class="label">사람의 검토</text>
+  <text x="1118" y="606" class="small">채택 · 보류 · 기각</text>
+
+  <path class="soft" d="M560 325 C615 270 640 270 650 292"/>
+  <path class="soft" d="M960 305 C1000 280 1018 280 1040 300"/>
+  <path class="soft" d="M495 580 C570 515 610 512 670 580"/>
+  <path class="soft" d="M910 580 C990 515 1025 515 1080 580"/>
+
+  <circle cx="800" cy="470" r="46" fill="#ffffff" stroke="#b31942" stroke-width="4"/>
+  <path class="red" d="M777 470 h46"/>
+  <path class="red" d="M800 447 v46"/>
+  <text x="745" y="720" class="label">답변보다 중요한 것은 검증 가능한 작업 구조입니다.</text>
+</svg>
