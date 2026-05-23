@@ -275,11 +275,35 @@ def render_review_card(item: dict[str, object]) -> str:
     """
 
 
+def render_latest_update(item: dict[str, object]) -> str:
+    tags = "".join(f"<span>{html.escape(tag)}</span>" for tag in item["tags"][:4])
+    thumbnail = item.get("thumbnail") or ""
+    image_html = (
+        f'<img src="{html.escape(str(thumbnail), quote=True)}" alt="{html.escape(str(item["title"]), quote=True)} 대표 이미지" loading="eager">'
+        if thumbnail
+        else '<div class="thumb-placeholder" aria-hidden="true"></div>'
+    )
+    return f"""
+      <section class="latest-update" aria-labelledby="latest-heading">
+        <div class="latest-copy">
+          <p class="section-kicker">Latest update</p>
+          <h2 id="latest-heading">{html.escape(str(item["title"]))}</h2>
+          <p class="latest-subtitle">{html.escape(str(item["subtitle"]))}</p>
+          <p>{html.escape(str(item["summary"]))}</p>
+          <div class="tags">{tags}</div>
+          <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>
+        </div>
+        <a class="latest-media" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
+      </section>
+    """
+
+
 def render_index(manifest: list[dict[str, object]]) -> str:
     updated = date.today().isoformat()
     categories = sorted({str(item["category"]) for item in manifest})
     category_options = "\n".join(f'<option value="{html.escape(category)}">{html.escape(category)}</option>' for category in categories)
     cards = "\n".join(render_review_card(item) for item in manifest)
+    latest = render_latest_update(manifest[0]) if manifest else ""
 
     return f"""<!doctype html>
 <html lang="ko">
@@ -294,21 +318,27 @@ def render_index(manifest: list[dict[str, object]]) -> str:
     <header class="site-header">
       <nav class="topbar" aria-label="주요 링크">
         <a class="brand" href="index.html">AI Tech Review Letters</a>
-        <a href="manifest.json">Manifest</a>
+        <span class="topbar-links">
+          <a href="https://infant83.github.io/">Operator</a>
+          <a href="manifest.json">Manifest</a>
+        </span>
       </nav>
       <section class="hero">
         <p class="eyebrow">Public report hub · {updated}</p>
-        <h1>기술 발표와 연구 신호를 함께 읽는 공개 리뷰 아카이브</h1>
-        <p class="lead">모델 발표, 논문, 공식 문서, 적용 사례를 다시 확인해 팀 토론용 글로 엮었습니다.</p>
+        <h1>Enlighten your AI Technology Insight.</h1>
+        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽는 공개 리뷰 허브입니다.</p>
         <div class="stats" aria-label="허브 요약">
           <span><strong>{len(manifest)}</strong> 공개 리뷰</span>
           <span><strong>{len(categories)}</strong> 주제 묶음</span>
+          <span><strong>김현중</strong> 운영</span>
           <span><strong>HTML</strong> 정적 배포</span>
         </div>
       </section>
     </header>
 
     <main>
+      {latest}
+
       <section class="toolbar" aria-label="리뷰 찾기">
         <label>
           <span>검색</span>
@@ -327,9 +357,18 @@ def render_index(manifest: list[dict[str, object]]) -> str:
         {cards}
       </section>
 
-      <section class="publish-note">
-        <h2>공개본 구성 원칙</h2>
-        <p>공개본에는 최종 리뷰 HTML과 본문 시각 자료를 우선 둡니다. 메일 원본, 브라우저 프로필, 작업 로그, 자동화 코드, 로컬 경로는 제외하거나 비활성화합니다.</p>
+      <section class="transparency-notice" aria-labelledby="transparency-heading">
+        <div>
+          <p class="section-kicker">AI Transparency and Source Notice</p>
+          <h2 id="transparency-heading">투명성 및 출처 고지</h2>
+          <p class="operator">사이트 운영자: <a href="https://infant83.github.io/">김현중</a></p>
+        </div>
+        <ul>
+          <li>이 허브의 게시물은 Federlicht 기반 AI 보조 생성물이며, 최종 책임은 사용자/조직에 있습니다.</li>
+          <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
+          <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
+          <li>EU AI Act 투명성 취지에 따라 AI 생성/보조 작성 콘텐츠임을 명시합니다.</li>
+        </ul>
       </section>
     </main>
 
@@ -349,6 +388,7 @@ SITE_CSS = """
   --green: #0d7c66;
   --blue: #2357a5;
   --red: #a23645;
+  --deep: #0d141b;
   --shadow: 0 18px 48px rgba(27, 36, 45, 0.10);
 }
 * { box-sizing: border-box; }
@@ -359,7 +399,7 @@ body {
   font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   line-height: 1.6;
 }
-h1, h2, h3, .lead, .subtitle, .review-card p, .publish-note p {
+h1, h2, h3, .lead, .subtitle, .review-card p, .latest-update p, .transparency-notice li {
   word-break: keep-all;
   overflow-wrap: break-word;
 }
@@ -375,6 +415,11 @@ a { color: inherit; }
   padding: 24px 0 18px;
   font-size: 14px;
   color: var(--muted);
+}
+.topbar-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
 }
 .brand {
   color: var(--ink);
@@ -407,6 +452,14 @@ h1 {
   color: var(--muted);
   font-size: 18px;
 }
+.section-kicker {
+  margin: 0 0 8px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .stats {
   display: flex;
   flex-wrap: wrap;
@@ -418,6 +471,55 @@ h1 {
   background: rgba(255, 255, 255, 0.65);
   padding: 10px 13px;
   font-size: 14px;
+}
+.latest-update {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+  gap: 24px;
+  align-items: stretch;
+  margin: 30px 0 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.latest-copy {
+  padding: clamp(24px, 4vw, 38px);
+}
+.latest-copy h2 {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.08;
+}
+.latest-copy p {
+  color: var(--muted);
+}
+.latest-subtitle {
+  color: var(--ink) !important;
+  font-weight: 800;
+}
+.latest-media {
+  display: grid;
+  min-height: 100%;
+  background: #eef1ed;
+}
+.latest-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  object-fit: contain;
+}
+.text-link {
+  display: inline-flex;
+  margin-top: 22px;
+  color: var(--green);
+  font-weight: 900;
+  text-decoration: none;
+}
+.text-link:hover {
+  color: var(--blue);
 }
 .toolbar {
   display: grid;
@@ -447,13 +549,13 @@ input:focus, select:focus {
 }
 .review-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 .review-card {
   display: grid;
-  grid-template-columns: minmax(160px, 42%) 1fr;
-  min-height: 260px;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -462,19 +564,18 @@ input:focus, select:focus {
 }
 .thumb {
   display: block;
-  min-height: 100%;
+  aspect-ratio: 16 / 10;
   background: #e8ece8;
 }
 .thumb img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 .thumb-placeholder {
   width: 100%;
-  height: 100%;
-  min-height: 220px;
+  aspect-ratio: 16 / 10;
   background: linear-gradient(135deg, rgba(13,124,102,0.24), rgba(35,87,165,0.18));
 }
 .review-card-body {
@@ -490,7 +591,7 @@ input:focus, select:focus {
 }
 h3 {
   margin: 0 0 10px;
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1.25;
 }
 h3 a {
@@ -516,18 +617,36 @@ h3 a:hover {
   padding: 4px 9px;
   font-size: 12px;
 }
-.publish-note {
-  margin: 44px 0 70px;
-  padding: 26px 0 0;
-  border-top: 1px solid var(--line);
-  max-width: 780px;
+.transparency-notice {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.4fr);
+  gap: 24px;
+  margin: 46px 0 76px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: var(--deep);
+  color: #eaf0f3;
 }
-.publish-note h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
+.transparency-notice h2 {
+  margin: 0 0 14px;
+  font-size: 24px;
 }
-.publish-note p {
-  color: var(--muted);
+.transparency-notice .operator {
+  margin: 0;
+  color: rgba(234, 240, 243, 0.72);
+}
+.transparency-notice a {
+  color: #8bd8c6;
+  font-weight: 800;
+}
+.transparency-notice ul {
+  margin: 0;
+  padding-left: 20px;
+  color: rgba(234, 240, 243, 0.82);
+}
+.transparency-notice li + li {
+  margin-top: 8px;
 }
 .public-note {
   max-width: 980px;
@@ -544,13 +663,18 @@ a:not([href]) {
 }
 .hidden { display: none !important; }
 @media (max-width: 900px) {
-  .review-grid { grid-template-columns: 1fr; }
+  .latest-update,
+  .transparency-notice {
+    grid-template-columns: 1fr;
+  }
+  .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 680px) {
   .site-header, main { width: min(100% - 24px, 1180px); }
   .toolbar { grid-template-columns: 1fr; }
-  .review-card { grid-template-columns: 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
   .thumb { aspect-ratio: 16 / 9; }
+  .latest-media img { min-height: 220px; }
   .hero { padding-top: 36px; }
 }
 """
