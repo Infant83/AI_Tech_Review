@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Hallucination 평가 질문 구분</title>
+  <desc id="desc">OpenAI Instant의 오류 감소 수치와 Artificial Analysis의 높은 hallucination rate가 서로 다른 질문을 평가한다는 점을 보여주는 세 패널 도식.</desc>
+  <rect width="1280" height="640" fill="#faf6ef"/>
+  <circle cx="1120" cy="118" r="150" fill="#f0dfcf" opacity=".65"/>
+  <circle cx="120" cy="520" r="165" fill="#e3ece5" opacity=".65"/>
+  <text x="70" y="72" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#17211c">Hallucination 숫자는 같은 실패를 재는 값이 아닙니다</text>
+  <text x="72" y="110" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="17" fill="#5c665f">오류가 줄었다는 수치와 모를 때 멈추지 않는다는 수치는 서로 충돌하기보다 다른 질문에 답합니다.</text>
+
+  <g transform="translate(70 165)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <rect x="0" y="0" width="350" height="330" rx="24" fill="#fffdf8" stroke="#d8d0c3"/>
+    <text x="30" y="52" font-size="20" font-weight="760" fill="#17211c">OpenAI Instant</text>
+    <text x="30" y="95" font-size="42" font-weight="850" fill="#107b63">-52.5%</text>
+    <text x="30" y="128" font-size="16" fill="#4e5a52">고위험 질문 묶음에서</text>
+    <text x="30" y="153" font-size="16" fill="#4e5a52">허위 주장 감소</text>
+    <line x1="30" y1="185" x2="320" y2="185" stroke="#e5ded2"/>
+    <text x="30" y="222" font-size="16" font-weight="720" fill="#17211c">이 수치가 답하는 질문</text>
+    <text x="30" y="252" font-size="15" fill="#5c665f">의학, 법률, 금융처럼 결과 비용이 큰</text>
+    <text x="30" y="276" font-size="15" fill="#5c665f">선별 질문에서 이전 Instant보다</text>
+    <text x="30" y="300" font-size="15" fill="#5c665f">주장 오류가 줄었는가?</text>
+  </g>
+
+  <g transform="translate(465 165)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <rect x="0" y="0" width="350" height="330" rx="24" fill="#fffdf8" stroke="#d8d0c3"/>
+    <text x="30" y="52" font-size="20" font-weight="760" fill="#17211c">OpenAI Instant</text>
+    <text x="30" y="95" font-size="42" font-weight="850" fill="#107b63">-37.3%</text>
+    <text x="30" y="128" font-size="16" fill="#4e5a52">사용자 신고 이력이 있는</text>
+    <text x="30" y="153" font-size="16" fill="#4e5a52">오류 대화에서 부정확 주장 감소</text>
+    <line x1="30" y1="185" x2="320" y2="185" stroke="#e5ded2"/>
+    <text x="30" y="222" font-size="16" font-weight="720" fill="#17211c">이 수치가 답하는 질문</text>
+    <text x="30" y="252" font-size="15" fill="#5c665f">과거에 오류가 잘 났던 대화 유형에서</text>
+    <text x="30" y="276" font-size="15" fill="#5c665f">사용자 경험이 개선됐는가?</text>
+  </g>
+
+  <g transform="translate(860 165)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <rect x="0" y="0" width="350" height="330" rx="24" fill="#fffdf8" stroke="#d8d0c3"/>
+    <text x="30" y="52" font-size="20" font-weight="760" fill="#17211c">Artificial Analysis</text>
+    <text x="30" y="95" font-size="42" font-weight="850" fill="#b85b32">86%</text>
+    <text x="30" y="128" font-size="16" fill="#4e5a52">AA-Omniscience에서 보고된</text>
+    <text x="30" y="153" font-size="16" fill="#4e5a52">Hallucination 비율</text>
+    <line x1="30" y1="185" x2="320" y2="185" stroke="#e5ded2"/>
+    <text x="30" y="222" font-size="16" font-weight="720" fill="#17211c">이 수치가 답하는 질문</text>
+    <text x="30" y="252" font-size="15" fill="#5c665f">모르는 영역을 만났을 때</text>
+    <text x="30" y="276" font-size="15" fill="#5c665f">답을 보류하는가, 아니면</text>
+    <text x="30" y="300" font-size="15" fill="#5c665f">그럴듯하게 추측하는가?</text>
+  </g>
+
+  <text x="72" y="565" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="15" fill="#5c665f">따라서 내부 평가는 사실을 맞히는 능력, 인용 근거, 답변 보류,</text>
+  <text x="72" y="590" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="15" fill="#5c665f">사람 검토 필요성을 따로 기록해야 합니다.</text>
+</svg>

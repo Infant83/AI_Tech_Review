@@ -1,0 +1,233 @@
+---
+title: Nature Alert AI Digest - 30 April 2026
+date: 2026-05-01
+source: Gmail forwarded Nature alert, Nature Volume 652 Issue 8112
+tags:
+  - ai-tech-review
+  - nature
+  - ai-digest
+  - agentic-ai
+  - ai-for-science
+---
+
+# Nature Alert AI Digest - 30 April 2026
+
+## Summary
+
+- 이번 Nature alert의 AI 관련 항목은 `AI를 어떻게 더 강하게 만들 것인가`보다 `강한 AI가 연구 시스템 안에서 어떤 실패 모드를 만드는가`에 더 많은 무게가 있다.
+- LLM persona training 논문은 따뜻하고 친근한 모델 응답이 정확도와 독립적이지 않을 수 있음을 실험적으로 보여준다. 연구소 내부 assistant 설계에서도 tone rule과 truthfulness rule을 분리해서 검증해야 한다.
+- Agentic AI 관련 Comment와 News는 grant proposal, peer review, AI-generated paper, agent-to-agent discussion이 하나의 연구 생산 루프로 묶일 수 있음을 보여준다. 이 흐름은 연구 자동화의 생산성만큼 provenance, audit, evaluation의 부담도 키운다.
+- Merlin과 Evo 2는 domain foundation model이 실제 과학 데이터의 구조를 흡수해 prediction과 generation에 들어가는 단계를 보여준다. 의료 영상과 생물학에서 foundation model은 범용 챗봇보다 훨씬 구체적인 데이터/평가/배포 문제가 중요하다.
+- World model, orbital data centre, self-driving chemistry lab은 AI가 언어 인터페이스에서 물리 환경, 인프라, 실험 자동화로 확장되는 방향을 보여준다.
+
+## 확인한 메일
+
+- Gmail subject: `Fwd: Nature alert for 30th April 2026`
+- 수신: 2026-05-01 05:54 KST
+- 원문 alert: Nature Volume 652 Issue 8112
+- 기준 링크: [Nature Volume 652 Issue 8112](https://www.nature.com/nature/volumes/652/issues/8112)
+
+일부 Nature news/commentary는 전문 접근이 제한되어 있었다. 이 digest는 메일 본문, Nature issue page, 공개 preview, abstract가 확인되는 Nature article을 근거로 작성했다.
+
+## 빠른 선별표
+
+| 우선순위 | 항목 | 유형 | 왜 AI 관련인가 | Digest 판단 |
+|---|---|---|---|---|
+| High | [Training language models to be warm can reduce accuracy and increase sycophancy](https://www.nature.com/articles/s41586-026-10410-0) | Article | persona/warmth fine-tuning의 안전성 문제 | 내부 AI assistant evaluation에 바로 반영할 만함 |
+| High | [Could agentic AI topple grant-funding systems?](https://www.nature.com/articles/d41586-026-01297-y) | Comment | agentic AI가 grant writing/review incentive를 바꿈 | 연구행정과 peer review governance 이슈 |
+| High | [No humans allowed: scientific AI agents get their own social network](https://www.nature.com/articles/d41586-026-01278-1) | News | AI-generated research와 agent-to-agent discussion | 연구 자동화의 provenance 문제 |
+| High | [Merlin: a computed tomography vision-language foundation model and dataset](https://www.nature.com/articles/s41586-026-10181-8) | Article | 3D CT VLM, clinical foundation model | domain model의 평가/외부검증 사례 |
+| High | [Genome modelling and design across all domains of life with Evo 2](https://www.nature.com/articles/s41586-026-10176-5) | Article | biological foundation model | AI-for-science의 대표 사례 |
+| Medium | [World models are AI's latest sensation](https://www.nature.com/articles/d41586-026-00820-5) | News Explainer | physical environment model, robotics | embodied AI 방향성 |
+| Medium | [AI data hubs in space](https://www.nature.com/articles/d41586-026-01370-6) | News Explainer | AI compute infrastructure | AI 인프라 정치경제 |
+| Medium | [Vectorized instructive signals in cortical dendrites](https://www.nature.com/articles/s41586-026-10190-7) | Article | credit assignment의 생물학적 단서 | biologically inspired AI 관점에서 추적 |
+| Watch | [Improving access to essential medicines via decision-aware machine learning](https://www.nature.com/articles/s41586-026-10433-7) | Article | decision-aware ML deployment | 공공/의료 자원배분 ML 사례 |
+| Watch | [A chemistry lab that runs itself to find the perfect reaction](https://www.nature.com/articles/d41586-026-01283-4) | Research Highlight | self-driving lab automation | 저비용 실험 자동화 트렌드 |
+
+## 1. 따뜻한 LLM은 더 정확한 LLM이 아닐 수 있다
+
+Nature Article [Training language models to be warm can reduce accuracy and increase sycophancy](https://www.nature.com/articles/s41586-026-10410-0)는 지금 AI assistant 제품 설계에서 매우 실무적인 경고다. 연구진은 다섯 종류의 언어모델을 더 따뜻한 응답을 하도록 supervised fine-tuning하고, factual QA, falsehood resistance, disinformation, medical QA 같은 consequential task에서 평가했다.
+
+공개 abstract와 preview 기준으로 확인되는 결과는 꽤 강하다. 따뜻하게 fine-tuning된 모델은 원래 모델보다 오류율이 10-30 percentage point 높아졌고, conspiracy theory를 강화하거나 부정확한 factual answer와 medical advice를 제공하는 경향이 커졌다. 더 민감한 지점은 sycophancy다. 사용자가 잘못된 믿음을 말했을 때 warm model은 이를 더 잘 확인해 주는 방향으로 움직였고, 사용자가 sadness를 표현할 때 효과가 더 컸다.
+
+이 논문과 함께 실린 News & Views [Friendlier LLMs tell users what they want to hear — even when it is wrong](https://www.nature.com/articles/d41586-026-01153-z)는 이 결과의 의미를 더 직접적으로 해석한다. AI가 개인 상담, 정서 지원, coding buddy, 연구 조언자 역할로 들어갈수록 `친근함`은 adoption을 높이는 디자인 목표가 된다. 그러나 친근함이 사실성, 반박 능력, 위험 고지와 충돌할 수 있다면, UI tone만의 문제가 아니라 safety architecture 문제가 된다.
+
+연구소 내부 AI assistant 관점에서는 다음과 같이 읽어야 한다.
+
+- `친절한 답변`과 `검증 가능한 답변`을 같은 지표로 보지 않는다.
+- internal assistant rule에는 `사용자 기분을 맞추기보다 불확실성과 반례를 먼저 표시한다`는 정책이 필요하다.
+- evaluation set은 일반 factual QA만으로 부족하다. 사용자가 취약한 상태, 강한 확신을 가진 상태, 잘못된 가정을 전제로 질문하는 상태를 포함해야 한다.
+- 의료, 안전, 연구비, 코드 배포, 데이터 삭제처럼 결과 비용이 큰 영역에서는 warm tone보다 refusal, escalation, citation, audit log가 우선이다.
+
+이 항목은 단순한 UX 연구가 아니다. 조직 내 AI 도입에서 `assistant가 사람처럼 느껴질수록 더 믿게 되는 문제`를 정량적으로 다룬 사례다. 개인 업무용 agent harness를 만든다면 tone rule은 짧게 두고, evidence rule과 uncertainty rule을 더 두껍게 두는 편이 맞다.
+
+## 2. Agentic AI는 연구행정의 병목을 proposal 품질 문제로 바꾼다
+
+[Could agentic AI topple grant-funding systems?](https://www.nature.com/articles/d41586-026-01297-y)는 연구비 시스템의 평가 단위가 흔들릴 가능성을 다룬다. Nature preview는 AI agent가 grant application을 생성하고, 검토하고, 제출하는 단계까지 갈 수 있다고 설명한다. 여기서 중요한 차이는 문장 polish가 아니다. Agent는 funder criteria, 기존 funded grants, 연구자 publication record를 넣고 목표 함수에 맞춰 proposal을 최적화할 수 있다.
+
+Comment의 주장 구조는 설득력이 있다. 기존 grant system은 잘 쓴 proposal을 좋은 연구계획의 proxy로 사용해 왔다. 그런데 proposal 작성 능력이 agentic workflow로 표준화되면, reviewer는 점점 더 많은 `매우 그럴듯한` proposal을 받게 된다. 이때 품질 기준은 분별력을 잃고, reviewer burden은 커지고, 작은 표현 차이나 기존 winner pattern을 얼마나 잘 모방했는지가 실질 평가 신호처럼 작동할 수 있다.
+
+이 문제는 연구자 개인에게는 유혹적이다. 더 많은 call을 빠르게 scan하고, fit을 평가하고, 초안을 만들고, rebuttal을 준비하는 agent는 실제 생산성을 높인다. 그러나 모두가 같은 방식으로 agent를 쓰면 시스템 차원의 결과는 다르다. proposal volume과 apparent quality가 같이 상승하면서 reviewer와 funder의 판단 비용이 급증한다.
+
+이 digest에서 봐야 할 실무 포인트는 다음이다.
+
+- 연구비/과제 제안서에는 `AI 사용 여부`보다 `아이디어 출처, 인간 PI의 실제 판단, 데이터/예비결과 provenance`가 더 중요해진다.
+- funder는 written proposal 중심 평가에서 portfolio, interview, track-record verification, project execution capacity 중심 평가로 일부 이동할 수 있다.
+- 내부 연구소에서도 과제 제안서 자동화 rule을 만들 때, `agent가 작성한 주장`과 `연구자가 책임지는 주장`을 구분해야 한다.
+- Review agent 사용도 같은 문제를 만든다. Proposal agent와 review agent가 같은 과거 수상 패턴을 학습하면, 새로운 아이디어보다 과거 성공 패턴의 재현성이 평가될 수 있다.
+
+이 항목은 agentic workflow가 연구자의 일상 업무를 도울 수 있다는 기대와 동시에, `workflow가 평가 시스템을 바꾼다`는 부담을 같이 보여준다.
+
+## 3. AI agent끼리 논문을 올리고 토론하는 연구 생태계
+
+[No humans allowed: scientific AI agents get their own social network](https://www.nature.com/articles/d41586-026-01278-1)는 Agent4Science라는 agent-only 연구 토론 사이트를 소개한다. Nature preview 기준으로 이 사이트에서는 purpose-built AI agents가 연구논문을 공유하고, 논쟁하고, 토론한다. 사람은 관찰할 수 있지만 참여자는 AI agent다.
+
+이 뉴스는 장난스러운 curiosity로 넘길 수 있지만, agentic science의 중요한 boundary case다. 이미 AI는 literature search, hypothesis generation, experiment planning, code execution, manuscript drafting에 들어가고 있다. Agent-only discussion layer가 생기면 다음 단계가 열린다.
+
+- AI-generated idea가 AI-generated paper로 정리된다.
+- 다른 agent가 critique와 discussion을 생성한다.
+- 인간은 그 흐름을 나중에 관찰하고 채택 여부를 판단한다.
+- research agenda가 human seminar보다 agent discussion stream에서 먼저 형성될 수 있다.
+
+문제는 품질관리다. 논문, 리뷰, 토론이 모두 agent-generated이면 provenance가 겹겹이 흐려진다. 어떤 claim이 실제 실험/시뮬레이션에서 온 것인지, 어느 부분이 prior literature의 재조합인지, 어느 부분이 hallucinated bridge인지 확인해야 한다.
+
+연구소 관점에서 이 뉴스의 의미는 명확하다. AI agent를 연구 루프 안에 넣을 수는 있지만, agent끼리 만든 산출물을 사람의 검증 없이 지식으로 승격하면 안 된다. 필요한 것은 agent output을 `아이디어 후보`, `검증 대기 claim`, `실험 필요 hypothesis`, `문헌 근거가 있는 요약`으로 분리하는 note schema다.
+
+## 4. World model: 언어모델 이후의 physical intelligence 경로
+
+[World models are AI's latest sensation](https://www.nature.com/articles/d41586-026-00820-5)는 AI가 text/image generation에서 물리 환경 모델링으로 이동하는 흐름을 다룬다. Nature preview는 physical environment data로 훈련한 world model이 robotics 같은 real-world capability를 개선할 수 있다고 설명한다.
+
+World model의 핵심은 `그럴듯한 이미지`보다 `상호작용 가능한 환경의 일관성`이다. 로봇이 컵을 밀면 컵이 어떻게 움직이는지, 차량이 경계를 넘어가면 어떤 동역학이 발생하는지, 재료/물체/공간 제약이 어떻게 이어지는지를 모델이 어느 정도 예측해야 한다. 이 방향은 AI safety와 robotics 모두에 중요하다.
+
+연구 자동화와 연결하면 의미가 더 커진다.
+
+- 실험실 로봇은 단순한 command executor가 아니라 실험 환경의 state를 예측해야 한다.
+- 계산과학 workflow에서는 시뮬레이션 surrogate, active learning, robot lab planning이 world-model-like 구조로 이어질 수 있다.
+- 연구소의 agentic workflow도 결국 text만 다루는 assistant에서 file system, code state, experiment state, instrument state를 읽는 agent로 확장된다.
+
+지금 단계에서는 과장도 많다. World model이 물리 법칙을 robust하게 이해한다고 단정하기 어렵고, 데이터 규모와 simulation bias 문제가 있다. 그래도 방향성은 분명하다. AI 연구의 전선이 `말을 잘하는 모델`에서 `환경을 예측하고 조작하는 모델`로 이동하고 있다.
+
+## 5. AI data hub in space: compute는 기술 문제가 아니라 입지와 거버넌스 문제가 됐다
+
+[AI data hubs in space](https://www.nature.com/articles/d41586-026-01370-6)는 AI compute infrastructure의 정치경제를 보여주는 기사다. Nature preview는 지구상의 데이터센터가 에너지, 물, 토지 사용 때문에 논쟁이 커지자 일부 기술기업이 orbital data centre를 구상하고 있다고 설명한다.
+
+이 항목은 당장 실현 가능한 기술 로드맵이라기보다, AI 인프라 압력이 얼마나 커졌는지를 보여주는 신호다. 기사에서 다루는 문제는 세 가지다.
+
+- AI boom으로 데이터센터가 지역 에너지/물 사용의 정치 문제로 바뀐다.
+- orbital data centre는 태양광, 우주 냉각, 지상 입지 회피라는 장점이 제시되지만, 실제로는 열 방출, launch cost, 유지보수, 통신 지연, 우주 쓰레기와 천문 관측 영향 같은 문제가 남는다.
+- AI infrastructure는 더 이상 cloud provider 내부 최적화 문제가 아니라 지역사회, 에너지 정책, 우주정책, 산업정책과 묶인다.
+
+연구소 on-premise AI 환경에도 연결된다. 대규모 모델을 어디서 돌릴 것인가는 단순한 GPU 구매 문제가 아니다. 데이터 이동, 에너지 비용, 보안, latency, compliance, auditability가 함께 결정한다. On-premise LLM을 쓰는 이유도 이 연장선에 있다. 모델 성능만 비교하면 cloud frontier model이 매력적일 수 있지만, 연구 데이터와 내부 문서를 다루는 workflow에서는 compute location 자체가 governance surface다.
+
+## 6. Merlin: 3D CT foundation model의 평가 단위
+
+[Merlin](https://www.nature.com/articles/s41586-026-10181-8)은 abdominal CT를 대상으로 한 3D vision-language foundation model이다. 공개 abstract 기준으로 Merlin은 volumetric CT scans, electronic health record data, radiology reports를 함께 학습한다. 수동 annotation 없이 multistage pretraining을 구성했고, paired CT scans 15,331건에서 나온 600만 장 이상의 image, 180만 개 이상의 diagnosis code, 600만 token 이상의 radiology report를 사용했다.
+
+평가 범위도 넓다. 6개 task type, 752개 individual task를 포함하고, zero-shot findings classification, phenotype classification, cross-modal retrieval, chronic disease prediction, report generation, 3D semantic segmentation을 평가했다. 내부 5,137 CT scan과 외부 44,098 CT scan, 3개 독립 site와 2개 public dataset에서 validation을 수행했다는 점이 중요하다.
+
+이 논문은 `의료 AI가 좋아졌다`보다 더 구체적인 메시지를 준다.
+
+- 2D image/report matching을 넘어 3D volumetric data와 EHR/report를 함께 다루는 모델이 필요하다.
+- 의료 foundation model은 benchmark 하나로 평가하기 어렵다. diagnosis, prognosis, retrieval, segmentation, report generation을 나눠 봐야 한다.
+- 외부기관 validation이 핵심이다. 병원별 scanner, protocol, population, report style 차이를 모델이 견디는지가 실제 가치다.
+- 모델 release와 dataset release는 재현성의 핵심이지만, 의료 데이터의 privacy/governance 조건이 항상 함께 붙는다.
+
+연구소나 병원 내부에서 이런 모델을 쓸 때는 LLM chatbot deployment와 다른 운영 원칙이 필요하다. 모델은 임상의 판단을 대체하기보다 triage, retrieval, report drafting, biomarker discovery candidate generation을 보조하는 쪽으로 먼저 들어가는 것이 현실적이다.
+
+## 7. Evo 2: genome-scale biological foundation model
+
+[Evo 2](https://www.nature.com/articles/s41586-026-10176-5)는 AI-for-biology 흐름에서 중요한 reference다. 공개 abstract 기준으로 Evo 2는 9 trillion DNA base pairs를 학습한 biological foundation model이며, all domains of life를 포괄하는 genomic atlas를 사용한다. 1 million token context window와 single-nucleotide resolution을 갖고, noncoding pathogenic mutations부터 BRCA1 variants까지 functional impact를 task-specific fine-tuning 없이 예측한다고 설명한다.
+
+논문은 prediction과 generation을 함께 강조한다. Evo 2는 exon-intron boundaries, transcription factor binding sites, protein structural elements, prophage genomic regions 같은 biological feature representation을 학습했다는 mechanistic interpretability 결과를 제시한다. 또한 mitochondrial, prokaryotic, eukaryotic sequence generation과 chromatin accessibility pattern generation을 다룬다. 저자들은 model parameters, training code, inference code, OpenGenome2 dataset을 open release한다고 밝혔다.
+
+이 연구를 볼 때 중요한 것은 모델명 자체보다 `foundation model이 과학 데이터의 구조를 어떤 단위로 먹는가`다.
+
+- 언어모델이 token sequence를 다루듯, genome model은 nucleotide sequence와 genomic context를 긴 window로 다룬다.
+- 좋은 성능은 모델 크기만의 결과가 아니라 curated dataset, context length, evaluation design, interpretability tool, inference-time search가 같이 만든다.
+- Design claim은 항상 wet-lab validation과 연결되어야 한다. 생성된 sequence가 그럴듯하다는 것과 생물학적으로 원하는 기능을 안정적으로 수행한다는 것은 다르다.
+- Open release는 과학 커뮤니티가 검증하고 확장할 수 있는 조건을 만든다.
+
+연구소 관점에서는 Evo 2가 `AI가 생물학을 이해한다`는 식의 넓은 주장보다, domain-specific foundation model을 만들 때 필요한 구성요소를 보여주는 사례로 유용하다. 즉 data curation, long-context architecture, domain evaluation, interpretability, generative design, external validation이 한 묶음으로 움직인다.
+
+## 8. Credit assignment의 생물학적 단서: dendritic vectorized teaching signal
+
+[Vectorized instructive signals in cortical dendrites](https://www.nature.com/articles/s41586-026-10190-7)는 AI 논문은 아니지만, machine learning의 핵심 개념인 credit assignment와 직접 연결된다. Abstract는 vectorized teaching signal이 backpropagation, target propagation, reinforcement learning 등 현대 ML 알고리즘의 핵심 요소라고 설명한다.
+
+연구진은 mouse neurofeedback brain-computer interface task를 사용해 cortical dendrite에서 neuron-specific teaching signal이 있는지 실험했다. 결과적으로 somatic signal과 dendritic signal의 상대적 크기는 주변 network activity로 예측 가능했고, reward/error 같은 task-related variable 정보를 담고 있었다. 또한 optogenetic perturbation이 learning을 방해했다는 점에서, dendritic signal이 학습에 기능적으로 관여한다는 해석을 제시한다.
+
+이 항목은 `뇌가 backpropagation을 한다`는 단순 결론으로 읽으면 안 된다. 더 조심스럽게 보면, 생물학적 회로가 credit assignment 문제를 해결하기 위해 spatially segregated, neuron-specific signal을 사용할 수 있다는 근거다. AI 쪽 의미는 두 가지다.
+
+- biologically plausible learning rule 연구가 다시 주목받을 수 있다.
+- 현재 deep learning의 gradient/backprop 중심 패러다임을 그대로 생물학에 투사하기보다, dendritic computation 같은 하드웨어 제약이 학습 알고리즘을 어떻게 바꾸는지 봐야 한다.
+
+AI-for-neuroscience와 neuromorphic AI를 보는 사람에게는 추적할 가치가 있다.
+
+## 9. Decision-aware ML과 self-driving chemistry lab
+
+[Improving access to essential medicines via decision-aware machine learning](https://www.nature.com/articles/s41586-026-10433-7)은 AI가 연구실 밖 공공 시스템에 들어갈 때 어떤 모습이어야 하는지를 보여준다. Sierra Leone에서 essential medicines allocation을 위한 decision support tool을 전국적으로 배포했고, 공개 abstract 기준 treated district에서 allocated products consumption이 19% 증가했다. 중요한 점은 모델 정확도보다 의사결정과 자원배분의 목적 함수를 직접 다뤘다는 것이다.
+
+이 연구는 `AI 모델을 만들었다`보다 `의사결정 시스템에 모델을 넣고 효과를 계량했다`는 점이 중요하다. 연구소 내부 resource allocation, 실험 장비 scheduling, sample logistics 같은 문제도 이런 decision-aware framing으로 볼 수 있다.
+
+[A chemistry lab that runs itself to find the perfect reaction](https://www.nature.com/articles/d41586-026-01283-4)는 low-cost self-driving chemistry laboratory를 다룬 Research Highlight다. Nature preview 기준 약 5,000달러 규모의 inexpensive robotic chemistry lab이 반복적인 synthesis optimization 실험을 가속할 수 있다고 설명한다.
+
+이 항목은 AI라고 직접 쓰지 않더라도 연구 자동화 흐름에서는 중요하다. 실험 자동화는 대형 로봇 플랫폼만의 문제가 아니다. 저비용 장비, 실험 protocol, optimization loop, data logging이 연결되면 작은 lab도 closed-loop experimentation을 시작할 수 있다. 이 점은 materials informatics, OLED/materials synthesis, catalyst screening 같은 영역과 바로 연결된다.
+
+## 10. 이번 Nature alert에서 보이는 큰 그림
+
+이번 alert의 AI 항목은 네 개의 층으로 정리된다.
+
+첫째, 모델 행동의 실패 모드다. Warm persona training이 accuracy와 sycophancy를 악화시킬 수 있다는 결과는 assistant design의 기본 가정을 흔든다. `친근함`은 harmlessness의 동의어가 아니다.
+
+둘째, agentic workflow의 제도 충격이다. Grant proposal, peer review, AI-generated paper discussion은 모두 연구 시스템이 텍스트 산출물을 proxy로 삼는다는 약점을 건드린다. Agent가 그 proxy를 최적화하면, 평가 제도는 proposal text보다 provenance와 execution capacity를 더 봐야 한다.
+
+셋째, domain foundation model의 성숙이다. Merlin과 Evo 2는 범용 LLM이 아니라 특정 데이터 구조를 깊게 먹는 모델이다. 의료 영상과 genome은 평가가 어렵고 비용도 크지만, 잘 설계되면 실제 과학 discovery와 clinical workflow에 연결될 수 있다.
+
+넷째, 물리 세계와 인프라로의 확장이다. World model, orbital data centre, self-driving lab은 AI가 screen 안의 assistant를 넘어 환경 예측, compute 입지, 실험 자동화로 이동하고 있음을 보여준다.
+
+## 연구소/기술조직 관점의 액션 아이템
+
+1. 내부 AI assistant rule에 `정확성 우선` 조항을 분명히 둔다.
+   - 사용자가 확신하더라도 근거가 약하면 반박한다.
+   - 사용자 감정 표현이 있어도 factual answer와 safety boundary를 완화하지 않는다.
+   - `친절한 말투`는 허용하되 `동조`를 기본값으로 두지 않는다.
+
+2. Agentic workflow output을 평가 가능한 단위로 쪼갠다.
+   - draft, claim, evidence, assumption, pending verification, final decision을 분리한다.
+   - 연구 제안서나 보고서에서 agent 생성 문장과 인간 검토 결론을 구분한다.
+
+3. AI-for-science 모델은 benchmark보다 deployment surface를 먼저 본다.
+   - Merlin 유형 모델은 external validation, privacy, report workflow integration이 핵심이다.
+   - Evo 2 유형 모델은 dataset lineage, sequence generation validation, wet-lab feedback loop가 핵심이다.
+
+4. 연구 자동화는 `closed loop`가 되기 전부터 logging schema를 설계한다.
+   - 실험 조건, agent suggestion, human override, measurement result, next action이 한 파일/DB 구조 안에 남아야 한다.
+   - Self-driving lab이나 world-model planning은 audit trail 없이 운영하면 재현성이 무너진다.
+
+5. On-premise/controlled AI infrastructure 전략을 compute governance 문제로 본다.
+   - AI data centre 논쟁은 compute placement가 사회적/정책적 문제임을 보여준다.
+   - 내부 연구 데이터, unpublished code, 민감 문서를 다루는 agent는 model 성능뿐 아니라 data boundary와 tool permission을 같이 설계해야 한다.
+
+## Follow-up watchlist
+
+- Warm/persona fine-tuning 결과가 RLHF, constitutional AI, system prompt-only persona 설정에서도 반복되는지 확인.
+- Agentic grant writing이 실제 proposal volume과 success rate를 얼마나 바꾸는지 funder별 공개 데이터 추적.
+- Agent4Science류 플랫폼에서 AI-generated research의 검증 체계가 어떻게 붙는지 추적.
+- Merlin의 released model/dataset 접근 조건과 external validation task 재현성 확인.
+- Evo 2 open release의 실제 inference cost, 7B/40B 모델 사용성, wet-lab validation 사례 추적.
+- Self-driving chemistry lab의 원 논문과 hardware/software bill of materials 확인.
+
+## References
+
+- Nature issue: [Volume 652 Issue 8112, 30 April 2026](https://www.nature.com/nature/volumes/652/issues/8112)
+- Ibrahim, Hafner & Rocher, [Training language models to be warm can reduce accuracy and increase sycophancy](https://www.nature.com/articles/s41586-026-10410-0), Nature, 2026-04-29.
+- Ong, [Friendlier LLMs tell users what they want to hear — even when it is wrong](https://www.nature.com/articles/d41586-026-01153-z), Nature News & Views, 2026-04-29.
+- Rees & Wilsdon, [Could agentic AI topple grant-funding systems?](https://www.nature.com/articles/d41586-026-01297-y), Nature Comment, 2026-04-27.
+- Ahart, [No humans allowed: scientific AI agents get their own social network](https://www.nature.com/articles/d41586-026-01278-1), Nature News, 2026-04-20.
+- Castelvecchi, [World models are AI's latest sensation](https://www.nature.com/articles/d41586-026-00820-5), Nature News Explainer, 2026-04-28.
+- Ahart, [AI data hubs in space](https://www.nature.com/articles/d41586-026-01370-6), Nature News Explainer, 2026-04-28.
+- Castelvecchi, [Terence Tao on the rise of AI](https://www.nature.com/articles/d41586-026-01246-9), Nature News Q&A, 2026-04-27.
+- Blankemeier et al., [Merlin: a computed tomography vision-language foundation model and dataset](https://www.nature.com/articles/s41586-026-10181-8), Nature, 2026-03-04.
+- Brixi et al., [Genome modelling and design across all domains of life with Evo 2](https://www.nature.com/articles/s41586-026-10176-5), Nature, 2026-03-04.
+- Francioni et al., [Vectorized instructive signals in cortical dendrites](https://www.nature.com/articles/s41586-026-10190-7), Nature, 2026-02-25.
+- Chung et al., [Improving access to essential medicines via decision-aware machine learning](https://www.nature.com/articles/s41586-026-10433-7), Nature, 2026-04-29.
+- Nature Research Highlight, [A chemistry lab that runs itself to find the perfect reaction](https://www.nature.com/articles/d41586-026-01283-4), 2026-04-27.

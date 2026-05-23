@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-5.5 도입 판단 매트릭스</title>
+  <desc id="desc">GPT-5.5 Instant, Thinking, Pro를 업무 유형과 필요한 통제 수준에 맞춰 배치하는 의사결정 매트릭스.</desc>
+  <rect width="1280" height="720" fill="#fbf7ef"/>
+  <text x="70" y="72" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#17211c">도입 판단은 모델명이 아니라 업무 단위에서 시작합니다</text>
+  <text x="72" y="110" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="17" fill="#5c665f">좋은 기본값은 전사 일괄 교체보다 작업군별 후보 모델,</text>
+  <text x="72" y="135" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="17" fill="#5c665f">추론 강도, 검증 절차를 함께 적는 방식입니다.</text>
+
+  <g transform="translate(70 155)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <rect width="1140" height="470" rx="24" fill="#fffdf8" stroke="#d8d0c3"/>
+    <line x1="285" y1="0" x2="285" y2="470" stroke="#e2d9cc"/>
+    <line x1="570" y1="0" x2="570" y2="470" stroke="#e2d9cc"/>
+    <line x1="855" y1="0" x2="855" y2="470" stroke="#e2d9cc"/>
+    <line x1="0" y1="94" x2="1140" y2="94" stroke="#e2d9cc"/>
+    <line x1="0" y1="188" x2="1140" y2="188" stroke="#e2d9cc"/>
+    <line x1="0" y1="282" x2="1140" y2="282" stroke="#e2d9cc"/>
+    <line x1="0" y1="376" x2="1140" y2="376" stroke="#e2d9cc"/>
+
+    <text x="28" y="56" font-size="18" font-weight="800" fill="#17211c">업무 유형</text>
+    <text x="312" y="56" font-size="18" font-weight="800" fill="#0f7b65">우선 후보</text>
+    <text x="597" y="56" font-size="18" font-weight="800" fill="#a44a32">필요한 통제</text>
+    <text x="882" y="56" font-size="18" font-weight="800" fill="#70623a">피해야 할 경우</text>
+
+    <text x="28" y="134" font-size="16" font-weight="760" fill="#17211c">일상 지식 업무</text>
+    <text x="312" y="126" font-size="15" fill="#4e5a52">Instant 또는 Thinking low</text>
+    <text x="312" y="150" font-size="14" fill="#6b746d">속도와 간결성이 중요할 때</text>
+    <text x="597" y="126" font-size="15" fill="#4e5a52">출처 요구, 민감정보 제한</text>
+    <text x="597" y="150" font-size="14" fill="#6b746d">사실 오류 신고 경로</text>
+    <text x="882" y="126" font-size="15" fill="#4e5a52">법률·의료·금융 판단을</text>
+    <text x="882" y="150" font-size="14" fill="#6b746d">바로 맡기는 경우</text>
+
+    <text x="28" y="228" font-size="16" font-weight="760" fill="#17211c">코드 수정·테스트</text>
+    <text x="312" y="220" font-size="15" fill="#4e5a52">Thinking medium/high</text>
+    <text x="312" y="244" font-size="14" fill="#6b746d">장기 작업·도구 호출에 적합</text>
+    <text x="597" y="220" font-size="15" fill="#4e5a52">테스트, diff 검토, 되돌리기</text>
+    <text x="597" y="244" font-size="14" fill="#6b746d">권한 범위와 승인 단계</text>
+    <text x="882" y="220" font-size="15" fill="#4e5a52">테스트 없이 자동 병합하거나</text>
+    <text x="882" y="244" font-size="14" fill="#6b746d">삭제 권한이 넓은 경우</text>
+
+    <text x="28" y="322" font-size="16" font-weight="760" fill="#17211c">고난도 검토·보고</text>
+    <text x="312" y="314" font-size="15" fill="#4e5a52">Pro 또는 Thinking xhigh</text>
+    <text x="312" y="338" font-size="14" fill="#6b746d">비동기 고가치 작업</text>
+    <text x="597" y="314" font-size="15" fill="#4e5a52">근거 링크, 반대 근거,</text>
+    <text x="597" y="338" font-size="14" fill="#6b746d">전문가 최종 검토</text>
+    <text x="882" y="314" font-size="15" fill="#4e5a52">마감이 짧거나 비용·지연을</text>
+    <text x="882" y="338" font-size="14" fill="#6b746d">감당하기 어려운 경우</text>
+
+    <text x="28" y="416" font-size="16" font-weight="760" fill="#17211c">사이버·운영 자동화</text>
+    <text x="312" y="408" font-size="15" fill="#4e5a52">제한된 Thinking</text>
+    <text x="312" y="432" font-size="14" fill="#6b746d">격리 환경에서만 시작</text>
+    <text x="597" y="408" font-size="15" fill="#4e5a52">샌드박스, 감사 로그, 승인,</text>
+    <text x="597" y="432" font-size="14" fill="#6b746d">명령 allowlist</text>
+    <text x="882" y="408" font-size="15" fill="#4e5a52">운영계 직접 접근, 광범위한</text>
+    <text x="882" y="432" font-size="14" fill="#6b746d">네트워크·파일 권한</text>
+  </g>
+
+  <text x="72" y="670" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="15" fill="#5c665f">모델 전환 실험은 성공한 작업당 총비용, 재시도율, 사람 검토 시간,</text>
+  <text x="72" y="694" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="15" fill="#5c665f">오류 복구 가능성을 함께 기록해야 합니다.</text>
+</svg>

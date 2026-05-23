@@ -27,7 +27,26 @@ try {
   const page = context.pages()[0] || await context.newPage();
   await page.goto('https://notebooklm.google.com/', { waitUntil: 'domcontentloaded', timeout: 120000 });
   await page.waitForTimeout(8000);
-  await page.getByText('새 노트 만들기', { exact: false }).first().click({ timeout: 15000 });
+
+  const createCandidates = [
+    page.getByText('새 노트 만들기', { exact: false }).first(),
+    page.getByText('새로 만들기', { exact: false }).first(),
+    page.getByText(/새\s*(노트|노트북|notebook).*만들기/i).first(),
+    page.locator('button, [role="button"]').filter({ hasText: /새로 만들기|새 노트|새 노트북|New notebook/i }).first(),
+  ];
+  let clickedCreate = false;
+  for (const candidate of createCandidates) {
+    if (await candidate.isVisible({ timeout: 3000 }).catch(() => false)) {
+      await candidate.click({ timeout: 15000 });
+      clickedCreate = true;
+      break;
+    }
+  }
+  if (!clickedCreate) {
+    const screenshotPath = path.join(outDir, 'notebooklm-create-button-not-found.png');
+    await page.screenshot({ path: screenshotPath, fullPage: true });
+    throw new Error(`Notebook create button not found. screenshot=${screenshotPath}`);
+  }
   await page.waitForTimeout(8000);
 
   const fileInputCount = await page.locator('input[type="file"]').count();

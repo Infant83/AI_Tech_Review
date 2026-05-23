@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Obsidian + Claude + Codex Workflow Memo</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>Obsidian + Claude + Codex Workflow Memo</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-25 04:20:24</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>14</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-25_obsidian-claude-codex-workflow_memo.md">2026-04-25_obsidian-claude-codex-workflow_memo.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>Date: 2026-04-25</p>
+<h2 id="one-line-thesis">One-line thesis</h2>
+<p>이 영상의 본질은 <code>Obsidian + Claude</code> 조합 자체가 아니라, <code>장기 기억 저장소 + 실행 에이전트 + 계층형 지침 파일</code>을 한 흐름으로 묶는 운영 모델에 있다. 당신의 현재 환경에서는 이것이 이미 <code>Obsidian + Codex + AGENTS.md + AI_Tech_Review 패키지</code> 형태로 거의 구현돼 있다.</p>
+<h2 id="bottom-line">Bottom line</h2>
+<ul>
+<li>당신은 이 영상을 처음부터 새로 도입할 단계가 아니라, 이미 갖고 있는 구조를 <code>agent-readable</code>하게 더 다듬는 단계에 있다.</li>
+<li>영상의 <code>Claude.md</code> 개념은 현재 환경에서는 <code>AGENTS.md</code>와 주제별 운영 노트로 치환하는 편이 맞다.</li>
+<li>Obsidian은 장기 기억과 판단 기록에 집중시키고, 실제 파일 생성/리서치 패키징/자동화는 repo workspace에서 계속 수행하는 편이 더 안정적이다.</li>
+<li>따라서 최적 해법은 <code>단일 툴 통합</code>이 아니라 <code>Obsidian memory + repo execution + Codex orchestration</code>의 역할 분리를 유지하면서 링크를 촘촘히 만드는 것이다.</li>
+</ul>
+<h2 id="why-this-matters">Why this matters</h2>
+<ul>
+<li>영상은 AI의 <code>대화 단위 기억 단절</code> 문제를 정확히 짚는다.</li>
+<li>현재 워크플로우도 주제 폴더, source note, run log, memo/report, Obsidian mirror를 이미 갖고 있기 때문에 구조적 기반은 충분하다.</li>
+<li>부족한 것은 도구가 아니라:</li>
+<li>entity 단위 기억</li>
+<li>폴더별 지침의 일관성</li>
+<li>주제 간 연결 링크</li>
+<li>에이전트가 바로 쓸 수 있는 briefing note</li>
+</ul>
+<h2 id="practical-interpretation-for-your-setup">Practical interpretation for your setup</h2>
+<h3 id="1-claudemd-agentsmd">1. 영상의 <code>Claude.md</code>는 현재의 <code>AGENTS.md</code>다</h3>
+<ul>
+<li>글로벌 지침: <code>C:\Users\angpa\AGENTS.md</code></li>
+<li>vault 지침: <code>C:\Users\angpa\Obsidian_Vault\AGENTS.md</code></li>
+<li>workspace 지침: <code>C:\Users\angpa\myProjects\Daily_Work\AI_Tech_Review\AGENTS.md</code></li>
+</ul>
+<p>즉, 계층형 지침 구조는 이미 있다. 여기서 더 필요한 것은 폴더/주제 단위의 운영 메모를 꾸준히 남기는 것이다.</p>
+<h3 id="2-single-workspace">2. 영상의 <code>single workspace</code>는 당신에게 그대로 맞지 않는다</h3>
+<p>영상은 Obsidian 안에 기억과 실행을 함께 두는 쪽에 가깝다. 반면 현재 환경은:</p>
+<ul>
+<li>Obsidian = 장기 기억, 회의/규칙/요약</li>
+<li><code>AI_Tech_Review</code> repo = 실행 패키지, 산출물, 자동화</li>
+</ul>
+<p>이 분리가 오히려 더 좋다. vault를 실행 산출물 저장소로 오염시키지 않으면서도, 최종 memo/report만 durable note로 남길 수 있기 때문이다.</p>
+<h3 id="3-entity">3. 사람 노트보다 더 중요한 것은 entity 노트다</h3>
+<p>영상은 <code>people network</code>를 강조하지만, 당신에게는 다음 entity가 더 중요하다.</p>
+<ul>
+<li>사람</li>
+<li>조직</li>
+<li>프로젝트</li>
+<li>work package</li>
+<li>반복 주제</li>
+<li>규칙/운영 모드</li>
+</ul>
+<p>즉, <code>people network</code>를 더 넓은 <code>entity network</code>로 확장해서 보는 편이 실무적으로 맞다.</p>
+<h2 id="recommended-next-moves">Recommended next moves</h2>
+<ol>
+<li><code>AI_Tech_Review</code> 주제 패키지마다 <code>briefing</code> 성격의 운영 노트를 명시적으로 남긴다.</li>
+<li>Obsidian에는 사람/조직/프로젝트/entity 노트를 축적하되, raw artifact는 repo에 남긴다.</li>
+<li><code>daily_research_review</code>에서 promoted topic package로 넘어갈 때, 원인-결과 링크를 더 명시한다.</li>
+<li>반복적으로 참고되는 판단 규칙은 <code>81. System_Agent_Rules</code> 쪽 note로 승격한다.</li>
+<li>Codex가 바로 활용할 수 있는 <code>single source of truth</code> note를 늘린다.</li>
+</ol>
+<h2 id="immediate">Immediate 활용안</h2>
+<h3 id="a-obsidian">A. Obsidian을 <code>판단 기억</code>으로 강화</h3>
+<ul>
+<li>왜 이 주제를 골랐는지</li>
+<li>어떤 가설을 세웠는지</li>
+<li>어떤 기준으로 deep research 범위를 잘랐는지</li>
+<li>무엇을 보류했는지</li>
+</ul>
+<p>이런 판단 메모를 Obsidian에 남기면, 다음 주제에서 Codex가 재사용할 수 있는 맥락이 커진다.</p>
+<h3 id="b-repo">B. repo는 계속 <code>실행 공간</code>으로 유지</h3>
+<ul>
+<li>raw source</li>
+<li>transcript</li>
+<li>notes</li>
+<li>reports</li>
+<li>exports</li>
+</ul>
+<p>이것은 지금 구조가 이미 맞다. 바꿀 필요가 없다.</p>
+<h3 id="c-topic-package-agent-handoff">C. topic package에 <code>agent handoff</code> 성격을 더한다</h3>
+<p>현재의 source note와 run log에 다음 항목이 조금 더 명시되면 좋다.</p>
+<ul>
+<li>이 주제의 핵심 질문</li>
+<li>이번 턴에서 확정한 판단</li>
+<li>다음 턴에서 이어서 할 일</li>
+<li>재사용할 링크/엔티티</li>
+</ul>
+<h2 id="final-judgment">Final judgment</h2>
+<p>이 영상은 당신에게 새로운 툴 추천이라기보다, 이미 잘 만들어 둔 <code>Obsidian + Codex</code> 운영 모델을 더 날카롭게 다듬으라는 신호에 가깝다. 핵심은 Claude를 Codex로 바꿔 읽고, <code>Claude.md</code>를 <code>AGENTS.md</code>와 주제별 운영 노트로 번역하는 것이다.</p>
+<h2 id="source">Source</h2>
+<ul>
+<li>YouTube: https://www.youtube.com/watch?v=rJo7_HZridY</li>
+<li>Source note: <a href="../notes/2026-04-25_obsidian-claude-codex-workflow_sources.md">2026-04-25_obsidian-claude-codex-workflow_sources.md</a></li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-25 04:20:07
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#one-line-thesis">One-line thesis</a></li>
+<li><a href="#bottom-line">Bottom line</a></li>
+<li><a href="#why-this-matters">Why this matters</a></li>
+<li><a href="#practical-interpretation-for-your-setup">Practical interpretation for your setup</a><ul>
+<li><a href="#1-claudemd-agentsmd">1. 영상의 Claude.md는 현재의 AGENTS.md다</a></li>
+<li><a href="#2-single-workspace">2. 영상의 single workspace는 당신에게 그대로 맞지 않는다</a></li>
+<li><a href="#3-entity">3. 사람 노트보다 더 중요한 것은 entity 노트다</a></li>
+</ul>
+</li>
+<li><a href="#recommended-next-moves">Recommended next moves</a></li>
+<li><a href="#immediate">Immediate 활용안</a><ul>
+<li><a href="#a-obsidian">A. Obsidian을 판단 기억으로 강화</a></li>
+<li><a href="#b-repo">B. repo는 계속 실행 공간으로 유지</a></li>
+<li><a href="#c-topic-package-agent-handoff">C. topic package에 agent handoff 성격을 더한다</a></li>
+</ul>
+</li>
+<li><a href="#final-judgment">Final judgment</a></li>
+<li><a href="#source">Source</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="../notes/2026-04-25_obsidian-claude-codex-workflow_sources.md">2026-04-25_obsidian-claude-codex-workflow_sources.md</a></li>
+<li><a href="https://www.youtube.com/watch?v=rJo7_HZridY" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

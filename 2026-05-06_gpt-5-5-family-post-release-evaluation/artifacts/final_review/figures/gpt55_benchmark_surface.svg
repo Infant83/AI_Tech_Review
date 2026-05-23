@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="700" viewBox="0 0 1280 700" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-5.5 벤치마크 개선과 조건</title>
+  <desc id="desc">GPT-5.5가 GPT-5.4보다 개선된 주요 벤치마크와 외부 비교에서 남는 주의점을 함께 보여주는 막대 도식.</desc>
+  <rect width="1280" height="700" fill="#fbf7ef"/>
+  <path d="M0 610 C220 545 410 695 650 620 C900 540 1020 650 1280 570 L1280 700 L0 700 Z" fill="#eadfd1" opacity=".55"/>
+  <text x="70" y="72" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#17211c">개선 폭은 넓지만, 모든 표에서 선두는 아닙니다</text>
+  <text x="72" y="110" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="17" fill="#5c665f">아래 막대는 GPT-5.4 대비 차이를 표시합니다.</text>
+  <text x="72" y="135" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif" font-size="17" fill="#5c665f">오른쪽 주석은 비교 조건을 함께 읽어야 하는 지점입니다.</text>
+
+  <g transform="translate(80 160)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <line x1="285" y1="0" x2="285" y2="410" stroke="#d9d0c2" stroke-width="2"/>
+    <line x1="285" y1="410" x2="1100" y2="410" stroke="#d9d0c2" stroke-width="2"/>
+    <text x="282" y="440" font-size="13" fill="#6b746d">0</text>
+    <text x="475" y="440" font-size="13" fill="#6b746d">+10</text>
+    <text x="675" y="440" font-size="13" fill="#6b746d">+20</text>
+    <text x="875" y="440" font-size="13" fill="#6b746d">+30</text>
+    <text x="1070" y="440" font-size="13" fill="#6b746d">+40</text>
+
+    <g transform="translate(0 16)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">Graphwalks BFS 1M</text>
+      <rect x="285" y="6" width="720" height="30" rx="8" fill="#0f7b65"/>
+      <text x="1020" y="28" font-size="15" fill="#17211c">+36.0pt</text>
+    </g>
+    <g transform="translate(0 86)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">MRCR 512K-1M</text>
+      <rect x="285" y="6" width="748" height="30" rx="8" fill="#0f7b65"/>
+      <text x="1048" y="28" font-size="15" fill="#17211c">+37.4pt</text>
+    </g>
+    <g transform="translate(0 156)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">Terminal-Bench 2.0</text>
+      <rect x="285" y="6" width="152" height="30" rx="8" fill="#2f9077"/>
+      <text x="454" y="28" font-size="15" fill="#17211c">+7.6pt</text>
+      <text x="610" y="28" font-size="14" fill="#5c665f">터미널 기반 장기 작업에서 강한 공식 신호</text>
+    </g>
+    <g transform="translate(0 226)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">MCP Atlas</text>
+      <rect x="285" y="6" width="94" height="30" rx="8" fill="#78a98b"/>
+      <text x="397" y="28" font-size="15" fill="#17211c">+4.7pt</text>
+      <text x="610" y="28" font-size="14" fill="#8a4b00">2026-05-09 접근 기준 GPT-5.5보다 높은 항목이 여럿 존재</text>
+    </g>
+    <g transform="translate(0 296)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">BrowseComp</text>
+      <rect x="285" y="6" width="34" height="30" rx="8" fill="#b6a45c"/>
+      <text x="337" y="28" font-size="15" fill="#17211c">+1.7pt</text>
+      <text x="610" y="28" font-size="14" fill="#5c665f">GPT-5.5 Pro 항목은 90.1%로 더 높음</text>
+    </g>
+    <g transform="translate(0 366)">
+      <text x="0" y="26" font-size="18" font-weight="760" fill="#17211c">SWE-Bench Pro</text>
+      <rect x="285" y="6" width="18" height="30" rx="8" fill="#c46a43"/>
+      <text x="322" y="28" font-size="15" fill="#17211c">+0.9pt</text>
+      <text x="610" y="28" font-size="14" fill="#8a4b00">OpenAI 표 안에서도 Claude Opus 4.7이 더 높음</text>
+    </g>
+  </g>
+
+  <g transform="translate(80 625)" font-family="Noto Sans KR, Pretendard, Segoe UI, Arial, sans-serif">
+    <rect x="0" y="-30" width="1120" height="1" fill="#d9d0c2"/>
+    <text x="0" y="-2" font-size="14" fill="#6b746d">출처: OpenAI 발표 표, Scale MCP Atlas.</text>
+    <text x="0" y="22" font-size="14" fill="#6b746d">벤치마크별 도구 조건, 추론 강도, judge 방식이 달라 일대일 순위표로 읽지 않습니다.</text>
+  </g>
+</svg>

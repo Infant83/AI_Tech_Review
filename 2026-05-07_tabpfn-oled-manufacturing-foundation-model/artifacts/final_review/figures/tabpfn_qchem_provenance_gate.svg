@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">OLED quantum chemistry provenance gate before TabPFN screening</title>
+  <desc id="desc">OLED quantum chemistry calculation protocols, expert review status, provenance columns, and TabPFN candidate screening outputs arranged as a three-stage flow.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#22313a" flood-opacity="0.13"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#315e66"/>
+    </marker>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .grid { stroke: #e8e0d1; stroke-width: 1; opacity: .55; }
+      .card { fill: #ffffff; stroke: #d9d2c2; stroke-width: 1.3; filter: url(#shadow); }
+      .head { fill: #21343c; }
+      .head2 { fill: #8b2f24; }
+      .head3 { fill: #315e66; }
+      .ink { fill: #1f2a30; font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .muted { fill: #65747b; font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .white { fill: #ffffff; font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif; }
+      .small { font-size: 18px; }
+      .body { font-size: 20px; }
+      .label { font-size: 22px; font-weight: 700; }
+      .title { font-size: 30px; font-weight: 800; }
+      .chip { fill: #eef4f2; stroke: #b8ccc6; stroke-width: 1.2; }
+      .chip2 { fill: #fff3ed; stroke: #dfb2a1; stroke-width: 1.2; }
+      .rail { fill: #f7eee7; stroke: #d6b9aa; stroke-width: 1.2; }
+      .line { stroke: #315e66; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #8b2f24; stroke-width: 2.4; fill: none; stroke-dasharray: 8 7; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="760"/>
+  <g>
+    <line class="grid" x1="40" y1="120" x2="1160" y2="120"/>
+    <line class="grid" x1="40" y1="220" x2="1160" y2="220"/>
+    <line class="grid" x1="40" y1="320" x2="1160" y2="320"/>
+    <line class="grid" x1="40" y1="420" x2="1160" y2="420"/>
+    <line class="grid" x1="40" y1="520" x2="1160" y2="520"/>
+    <line class="grid" x1="40" y1="620" x2="1160" y2="620"/>
+  </g>
+
+  <text class="ink title" x="60" y="64">OLED 계산 데이터는 TabPFN 앞에서 한 번 더 정리해야 합니다</text>
+  <text class="muted body" x="60" y="98">값 자체보다 protocol, 환경, state 해석, 전문가 검토 상태가 예측의 의미를 결정합니다.</text>
+
+  <path class="line" d="M 380 382 C 410 382, 418 382, 444 382"/>
+  <path class="line" d="M 758 382 C 790 382, 800 382, 826 382"/>
+
+  <g transform="translate(54 140)">
+    <rect class="card" width="326" height="420" rx="10"/>
+    <rect class="head" width="326" height="58" rx="10"/>
+    <text class="white label" x="22" y="37">1. 계산/실험 입력</text>
+
+    <rect x="22" y="84" width="282" height="76" rx="8" fill="#f4f7f7" stroke="#cdd9d8"/>
+    <text class="ink label" x="40" y="115">질문 정의</text>
+    <text class="muted small" x="40" y="143">emitter · host · dopant · stack</text>
+
+    <rect x="22" y="178" width="282" height="106" rx="8" fill="#fffaf1" stroke="#dfd2b5"/>
+    <text class="ink label" x="40" y="210">계산 protocol</text>
+    <text class="muted small" x="40" y="238">Schrödinger / SCM AMS·ADF</text>
+    <text class="muted small" x="40" y="264">TD-DFT · SOC-TDDFT · GW/BSE</text>
+
+    <rect x="22" y="302" width="282" height="90" rx="8" fill="#fff4ef" stroke="#dfb2a1"/>
+    <text class="ink label" x="40" y="334">전문가 해석</text>
+    <text class="muted small" x="40" y="362">CT state · exciplex · TADF</text>
+    <text class="muted small" x="40" y="386">conformer · spin · environment</text>
+  </g>
+
+  <g transform="translate(444 140)">
+    <rect class="card" width="326" height="420" rx="10"/>
+    <rect class="head2" width="326" height="58" rx="10"/>
+    <text class="white label" x="22" y="37">2. Provenance gate</text>
+
+    <text class="ink label" x="24" y="96">Data contract columns</text>
+    <g transform="translate(22 118)">
+      <rect class="chip" x="0" y="0" width="132" height="42" rx="8"/>
+      <text class="ink small" x="16" y="27">method_family</text>
+      <rect class="chip" x="152" y="0" width="130" height="42" rx="8"/>
+      <text class="ink small" x="171" y="27">protocol_id</text>
+      <rect class="chip" x="0" y="58" width="132" height="42" rx="8"/>
+      <text class="ink small" x="17" y="85">software_ver</text>
+      <rect class="chip" x="152" y="58" width="130" height="42" rx="8"/>
+      <text class="ink small" x="171" y="85">basis_set</text>
+      <rect class="chip" x="0" y="116" width="132" height="42" rx="8"/>
+      <text class="ink small" x="16" y="143">environment</text>
+      <rect class="chip" x="152" y="116" width="130" height="42" rx="8"/>
+      <text class="ink small" x="166" y="143">state_char.</text>
+      <rect class="chip" x="0" y="174" width="132" height="42" rx="8"/>
+      <text class="ink small" x="16" y="201">review_level</text>
+      <rect class="chip" x="152" y="174" width="130" height="42" rx="8"/>
+      <text class="ink small" x="166" y="201">label_fidelity</text>
+    </g>
+
+    <rect class="rail" x="22" y="364" width="282" height="38" rx="8"/>
+    <text class="ink small" x="42" y="389">preset만 기록하지 말고 한계까지 기록</text>
+    <path class="dash" d="M 26 342 L 300 342"/>
+    <text class="muted small" x="46" y="330">expert review flag</text>
+  </g>
+
+  <g transform="translate(826 140)">
+    <rect class="card" width="326" height="420" rx="10"/>
+    <rect class="head3" width="326" height="58" rx="10"/>
+    <text class="white label" x="22" y="37">3. TabPFN 후보 선별</text>
+
+    <rect x="22" y="84" width="282" height="72" rx="8" fill="#f4f7f7" stroke="#cdd9d8"/>
+    <text class="ink label" x="40" y="116">역설계 screening</text>
+    <text class="muted small" x="40" y="142">다음 계산·합성 후보 압축</text>
+
+    <rect x="22" y="174" width="282" height="72" rx="8" fill="#fffaf1" stroke="#dfd2b5"/>
+    <text class="ink label" x="40" y="206">소자·공정 실험</text>
+    <text class="muted small" x="40" y="232">batch · recipe · stack 순위화</text>
+
+    <rect x="22" y="264" width="282" height="72" rx="8" fill="#f4f7f7" stroke="#cdd9d8"/>
+    <text class="ink label" x="40" y="296">검사·SCM 위험</text>
+    <text class="muted small" x="40" y="322">quality risk와 원재료 영향</text>
+
+    <rect x="22" y="362" width="282" height="40" rx="8" fill="#fff3ed" stroke="#dfb2a1"/>
+    <text class="ink small" x="44" y="388">ranking · uncertainty · next action</text>
+  </g>
+
+  <rect x="60" y="610" width="1080" height="76" rx="12" fill="#21343c"/>
+  <text class="white label" x="86" y="642">운영 원칙</text>
+  <text class="white body" x="86" y="668">TabPFN은 전문가 gate를 통과한 표에서 후보를 줄입니다.</text>
+  <text class="white body" x="575" y="668">계산화학 판단과 실험 검증은 별도로 남겨야 합니다.</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">OLED 역설계에서 TabPFN 후보 압축 흐름</title>
+  <desc id="desc">생성 후보가 descriptor와 저비용 계산값을 거쳐 TabPFN ranking으로 압축되고 DFT와 실험으로 이어지는 흐름</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .box{fill:#fff;stroke:#d8d5cb;stroke-width:2}
+      .box2{fill:#e9eef5;stroke:#25456f;stroke-width:2}
+      .box3{fill:#e9f3ef;stroke:#0f766e;stroke-width:2.5}
+      .box4{fill:#f5eaea;stroke:#8b3a3a;stroke-width:2}
+      .title{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .subtitle{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .h{font:700 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .body{font:400 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#31433c}
+      .small{font:400 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .line{stroke:#6c7772;stroke-width:3;fill:none}
+      .feedback{stroke:#a35a16;stroke-width:3;stroke-dasharray:8 8;fill:none}
+      .pill{fill:#f2f0ea;stroke:#d8d5cb;stroke-width:1.4}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6c7772"/>
+    </marker>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a35a16"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="680"/>
+  <text class="title" x="70" y="72">역설계에서 TabPFN의 자리는 후보 생성 뒤의 압축 단계입니다</text>
+  <text class="subtitle" x="70" y="104">분자 후보를 직접 발명하기보다,</text>
+  <text class="subtitle" x="70" y="130">비싼 계산과 실험으로 넘길 후보를 고르는 쪽에 강점이 있습니다.</text>
+
+  <rect class="box" x="70" y="185" rx="15" width="180" height="150"/>
+  <text class="h" x="100" y="230">후보 생성</text>
+  <text class="body" x="100" y="264">fragment enumeration</text>
+  <text class="body" x="100" y="291">생성 모델</text>
+  <text class="body" x="100" y="318">문헌 기반 scaffold</text>
+
+  <rect class="box2" x="310" y="185" rx="15" width="205" height="150"/>
+  <text class="h" x="340" y="230">표 특징량 구성</text>
+  <text class="body" x="340" y="264">fingerprint</text>
+  <text class="body" x="340" y="291">low-cost calculation</text>
+  <text class="body" x="340" y="318">합성 가능성 tag</text>
+
+  <rect class="box3" x="575" y="170" rx="18" width="230" height="180"/>
+  <text class="h" x="610" y="222">TabPFN ranking</text>
+  <text class="body" x="610" y="258">T1 margin</text>
+  <text class="body" x="610" y="285">HOMO/LUMO offset</text>
+  <text class="body" x="610" y="312">stability proxy</text>
+  <text class="small" x="610" y="339">survival probability</text>
+
+  <rect class="box" x="865" y="185" rx="15" width="180" height="150"/>
+  <text class="h" x="895" y="230">다음 단계</text>
+  <text class="body" x="895" y="264">DFT 재계산</text>
+  <text class="body" x="895" y="291">소자 조건 실험</text>
+  <text class="body" x="895" y="318">pilot check</text>
+
+  <path class="line" d="M250 260 L310 260" marker-end="url(#arrow)"/>
+  <path class="line" d="M515 260 L575 260" marker-end="url(#arrow)"/>
+  <path class="line" d="M805 260 L865 260" marker-end="url(#arrow)"/>
+
+  <rect class="box4" x="250" y="465" rx="16" width="700" height="98"/>
+  <text class="h" x="300" y="506">검증 결과는 다시 label contract로 돌아갑니다</text>
+  <text class="body" x="300" y="532">측정 조건, 계산법, 실패 사유를 함께 기록해야</text>
+  <text class="body" x="300" y="560">다음 ranking이 실험실의 편향을 그대로 배우지 않습니다.</text>
+  <path class="feedback" d="M955 335 C995 425 910 505 950 515" marker-end="url(#arrow2)"/>
+  <path class="feedback" d="M250 515 C150 500 145 370 170 335" marker-end="url(#arrow2)"/>
+
+  <rect class="pill" x="70" y="390" rx="16" width="300" height="42"/>
+  <text class="small" x="95" y="416">목표: 후보 수를 줄이되 물리 제약을 잃지 않기</text>
+  <rect class="pill" x="820" y="390" rx="16" width="300" height="42"/>
+  <text class="small" x="845" y="416">주의: 높은 ranking은 합성·수명 보증이 아님</text>
+</svg>

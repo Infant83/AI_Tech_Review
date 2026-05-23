@@ -1,0 +1,1229 @@
+nature synthesis
+
+Article                                                                                                 https://doi.org/10.1038/s44160-026-01053-0
+
+
+A flexible and affordable self-driving
+laboratory for automated reaction
+optimization
+
+Received: 7 August 2025                                  Simone Pilon 1,8, Elia Savino 1,8, Oliver M. Bayley 1,2,8, Michael Vanzella               1
+                                                                                                                                                    ,
+                                                         Miguel Claros 1, Petros Siasiaridis1, Junsong Liu 1, Florian Lukas 1,
+Accepted: 13 March 2026
+                                                         Matteo Damian3, Vasilis Tseliou 3, Niccolò Intini 1,4, Aidan Slattery1,
+Published online: xx xx xxxx                             Jesus SanJosé-Orduna 1, Tim den Hartog 1,5,6, Ron A. H. Peters 2,7,
+                                                         Andrea F. G. Gargano 2, Francesco G. Mutti 3 & Timothy Noël 1
+    Check for updates
+
+                                                         Self-driving laboratories have the potential to revolutionize chemical
+                                                         discovery and optimization, yet their widespread adoption remains limited
+                                                         by high costs, complex infrastructure and limited accessibility. Here we
+                                                         introduce RoboChem-Flex, a low-cost, modular self-driving laboratory
+                                                         platform designed to democratize autonomous chemical experimentation.
+                                                         The system combines customizable, in-house-built hardware with a flexible
+                                                         Python-based software framework that integrates real-time device control
+                                                         and advanced Bayesian optimization strategies, including multi-objective
+                                                         and transfer learning workflows. RoboChem-Flex supports both fully
+                                                         autonomous closed-loop operation and human-in-the-loop configurations,
+                                                         enabling seamless integration with shared analytical equipment and
+                                                         minimizing entry barriers. We validate the versatility of the platform across
+                                                         six diverse case studies, including photocatalysis, biocatalysis, thermal
+                                                         cross-couplings and enantioselective catalysis, spanning both single- and
+                                                         multi-objective optimizations. Through these case studies, we demonstrate
+                                                         RoboChem-Flex’s ability to navigate large, complex chemical spaces,
+                                                         autonomously identify scalable high-performance reaction conditions, and
+                                                         flexibly adapt to a variety of analytical set-ups. By providing an affordable,
+                                                         scalable and open platform, RoboChem-Flex offers a tangible step towards
+                                                         making self-driving laboratories accessible to resource-limited laboratories,
+                                                         fostering broader participation in automated chemical research.
+
+The rapid rise of automation, artificial intelligence (AI) and self-driving            Despite their promise, the widespread adoption of SDLs faces
+laboratories (SDLs) has the potential to revolutionize synthetic organic          substantial barriers. Primarily, designing, constructing and operating
+chemistry. SDLs streamline essential tasks such as reagent handling,              these platforms requires multidisciplinary expertise in hardware (for
+synthesis and data analysis, generating high-quality, reproducible                example, liquid handlers and robotic arms), software (for example,
+results at unprecedented speeds1,2. By automating repetitive pro-                 optimization algorithms), chemistry, analytical and data science.
+cedures, SDLs allow researchers to focus on higher-level scientific               Furthermore, existing SDLs remain prohibitively expensive. High-end
+objectives, including ideation, data interpretation and hypothesis                systems incorporating robotic arms, liquid handlers and pumps often
+formulation. Moreover, SDLs hold transformative potential for tackling            exceed US$100,000, excluding analytical components. The first
+global challenges in energy, pharmaceuticals and materials science3.              ‘RoboChem’ platform developed by our group cost approximately
+
+A full list of affiliations appears at the end of the paper.   e-mail: t.noel@uva.nl
+
+
+Nature Synthesis
+Article                                                                                            https://doi.org/10.1038/s44160-026-01053-0
+
+US$50,000 for essential components alone, not including the most            fabricated via 3D printing in polyethylene terephthalate glycol plastic.
+expensive component, a benchtop nuclear magnetic resonance (NMR)            In addition, custom printed circuit boards have been implemented in
+spectrometer4. More sophisticated set-ups can far exceed these figures,     several devices to improve electrical safety, minimize loose cabling
+restricting SDL accessibility to a select group of well-funded institu-     and streamline assembly. These printed circuit boards can be readily
+tions. As a result, these advancements risk amplifying the Matthew          manufactured at low cost using commercially available services based
+effect in science, where well-resourced research groups gain dispropor-     on the design files provided.
+tionate advantages through a feedback loop of resource accumulation5.            Two sampler modules are responsible for manipulating reagents
+This further widens the disparities in research capabilities, innovation    and solvents within the system. They are built upon an affordable,
+opportunities and scientific influence (Fig. 1a,b).                         commercially available three-axis Cartesian robot, which has been
+      We took up the challenge to develop a low-cost SDL capable of         modified to enable liquid sampling, mixing and transferring opera-
+performing experiments with minimal human supervision, making it            tions. The samplers can be flexibly configured with vials of various
+accessible to researchers worldwide. Affordable automated systems           sizes via 3D-printed vial holders, as well as multiple injection ports
+do exist; however, these platforms sacrifice research potential by          to direct slugs through different flow paths within the experimental
+focusing on narrowly defined problems6,7. Moreover, synthetic organic       set-up. Vials are sealed with readily available septum caps, and pres-
+chemistry lags behind other fields in digitalization, largely due to a      sure compensation is achieved with a dedicated inert gas line. This
+lack of reliable, high-quality datasets that comprehensively cover          limits sample degradation without requiring a costly glovebox setup.
+diverse chemical substrates and reactions8–10. SDLs offer a solution by     Two custom-built syringe pumps manage reagent sampling and slug
+generating reproducible, well-documented datasets. However, digital-        movement through the system. These pumps offer fine-grained control
+izing chemistry must not remain an exclusive privilege of well-funded       and real-time feedback not typically available in commercial models.
+laboratories. To democratize access, it is essential to develop scalable,   Integrated encoders and end-of-travel sensors prevent blockages and
+cost-effective tools that empower researchers across all resource levels.   plunger misalignment, while electronic flow-switch valves are fully
+      In this work, we present ‘RoboChem-Flex’, a low-cost yet powerful     integrated within the device controller. Additional modules, designed
+robotic platform designed to democratize automation in synthetic            using similar principles, allow automated control of light sources, gas
+organic chemistry. Affordability and flexibility are achieved using         valves, cooling and heating.
+three-dimensionally (3D)-printed or readily available subcomponents,
+which reduces costs considerably while allowing rapid customiza-            The software and machine learning framework
+tion and iterative development11. Communication between hardware            The RoboChem-Flex platform control software is developed entirely in
+components is orchestrated by our open-source OmniPlatypus pack-            Python, providing a robust, user-friendly environment that minimizes
+age, which ensures seamless modularity and enables a plug-and-play          the specialized skillset required to fully operate and understand the
+architecture with minimal coding effort required from the user. At the      system. Its operation is governed by a hierarchical, modular archi-
+software level, RoboChem-Flex integrates a highly modular Bayesian          tecture. At the top level, a web-based graphical user interface offers
+optimization agent, allowing users to customize AI-driven optimiza-         an intuitive entry point for users without programming expertise.
+tion workflows to meet specific experimental goals. The platform also       Through this interface, users can select experimental workflows,
+supports integration with a range of inline analytical instruments,         define reagents and conditions, and specify the chemical space to
+including NMR spectroscopy, ultrahigh-performance liquid chro-              explore. These parameters are passed on to ‘RoBrains’, a custom
+matography (UHPLC)–mass spectrometry and Raman spectroscopy,                Bayesian optimization engine based on BoTorch and developed for
+enabling fully closed-loop reaction optimization. Recognizing, how-         flexible, data-driven experimentation14. RoBrains enables autonomous
+ever, that inline analytics may represent a sizeable investment, we have    platform operation while minimizing the number of required experi-
+also developed a cost-effective, 3D-printed liquid sampling unit. This      ments by making informed, probabilistic decisions. The optimization
+module enables the robot to collect reaction samples, which can then        engine supports a wide range of features, offering multiple surro-
+be analysed using existing, often departmentally shared, analytical         gate models, transfer learning workflows, weighted multi-objective
+equipment. This human-in-the-loop approach provides a practical and         optimization and batching strategies which improve efficiency. In
+affordable entry point for laboratories, reducing the overall system        all campaigns presented in this study, RoBrains generated initial sets
+cost to approximately US$5,000. Thus, by equipping resource-limited         of reaction conditions using Latin Hypercube Sampling (LHS) across
+research groups with tools on par with those in well-funded institutions,   the defined parameter space. Then, as experimental results became
+RoboChem-Flex aims to level the playing field and foster innovation         available, RoBrains iteratively selected new conditions based on the
+at all scales (Fig. 1c).                                                    specified acquisition function and optimization parameters. This
+                                                                            iterative cycle continued until a satisfactory solution was identified,
+Results and discussion                                                      as indicated by hypervolume plateauing.
+The hardware                                                                      A second Python package, ‘OmniPlatypus’, manages real-time
+The RoboChem-Flex self-driving platform uses a slug-flow regime,            device control, orchestrating the execution of experiments and the
+enabling the sequential investigation of reaction conditions with           acquisition of analytical data. It implements software objects for each
+5–50 µmol of material per run. Leveraging the inherent scalability of       physical device of the platform, which handle all low-level communica-
+flow reactors, results obtained at the microscale can be reliably trans-    tion. Platforms are described within an accessible configuration file,
+lated to the millimole scale12. The platform architecture is built around   listing devices, their physical interconnections and operational details.
+a minimal, highly modular set of hardware and software components           This design allows multiple hardware implementations to seamlessly
+that prioritize accessibility, versatility and full customizability. Each   coexist within the same codebase. Experimental workflows are com-
+hardware module is self-assembled using standardized, low-cost              posed of Unit Tasks, which describe mid-level atomic actions such
+and widely available materials, such as slotted aluminium profiles,         as filling a syringe or transferring a reagent from a vial. This modular
+linear ball bearings and trapezoidal lead screws. Arduino Uno micro-        design enables rapid reconfiguration and high software reusability, as
+controllers manage low-level hardware control. Their widespread             new experiments can be formulated by combining existing Unit Tasks.
+use in education makes them particularly accessible to multidisci-                In this work, we present six case studies that demonstrate the
+plinary researchers without specialized engineering backgrounds13.          versatility of RoboChem-Flex across diverse chemical optimization
+All non-standard components, which are typically expensive or dif-          challenges, including photocatalytic transformations, biocatalysis,
+ficult to source, have been designed using open-source software and         thermal cross-couplings and enantioselective catalysis. An additional
+
+
+Nature Synthesis
+Article                                                                                                                                         https://doi.org/10.1038/s44160-026-01053-0
+
+
+  a                                                         The growing divide in                                                      b     Current landscape: high cost and complexity
+                                                                 SDL access                                                                           hinder broad SDL adoption
+
+                                                                                                                                               Financial barrier – expensive components
+                                                                        Well-funded labs
+     (funding, publications, innovations)
+
+
+
+
+                                                                                                                                                                 NMR
+            Research capabilities
+
+
+
+
+                                                                                                                                             Expensive        Dedicated            HTE
+                                                                                       Matthew effect             Caused by                   robotics        Analytics
+                                                                                      increases the gap
+                                                                                                              large entry barrier          Educational barrier – multidisciplinary challenges
+
+
+
+
+                                                                                    Resource-limited labs
+
+                                                                                                                                              Software         Hardware             ML
+                                                                    Time
+
+
+
+ c                                                                           Robochem-Flex: a modular, low-cost platform designed to expand access to
+                                                                                        SDLs by lowering financial and technical barriers
+
+
+
+
+                                            Low-cost and scalable SDL                  Customizable and modular                 FAIR data and open source       Broad synthetic chemistry range
+                                            Modular Bayesian optimization agent        Reproducible and fast optimization       Plug-and-play automation architecture
+
+Fig. 1 | RoboChem-Flex: a low-cost SDL for closed-loop or human-in-the-loop,                                         divide in access to SDLs (a), the current high-cost/high-complexity boundary
+multi-objective optimization in synthetic organic chemistry. a–c, Shown                                              (b) and a picture of the RoboChem-Flex platform (c). FAIR, findable, accessible,
+are the challenges associated with the adoption of current SDLs: the growing                                         interoperable, reusable.
+
+
+
+benchmark case study is presented in Supplementary Section 3.1. Each                                                 to manage the trade-off between exploration and exploitation. This
+case study demonstrates how algorithmic workflows and hardware                                                       function was enhanced with an adaptive variance-driven mechanism:
+modules can be specifically tailored to the problem at hand. In all cases,                                           When three consecutive experiments produced similar yields, the
+the real-world applicability of the optimized solutions was validated                                                optimizer switched from an exploitative to a more explorative regime
+at preparative scale.                                                                                                by increasing the acquisition function β. Conversely, when yields were
+                                                                                                                     sparse, it favoured exploitation by decreasing β (Supplementary
+Optimization of pyrrole trifluoromethylation using                                                                   Section 2.1.3.2). This broadened its search across the chemical space,
+adaptive weighted exploration and NMR spectroscopy                                                                   helping to better identify global maxima. While metrics such as
+analysis (case study 1)                                                                                              product­ivity (yield/residence time) are conceptually similar, the
+Assessing closed-loop optimization using RoboChem-Flex, we config-                                                   weighted dual target approach allows prioritization of one factor,
+ured the platform with a cost-effective, in-house-built Uflow photore-                                               reflecting realistic priorities within a typical research environment.
+actor and an inline benchtop 19F NMR spectrometer15. As a model                                                      The optimization problem was defined over a high-dimensional
+reaction, we selected a photochemical trifluoromethylation, previously                                               mixed-variable space comprising five continuous features (reaction
+described by Stephenson et al.16. and used by MacMillan et al.17 to bench-                                           concentration, reagent stoichiometries and residence time), one dis-
+mark the Penn batch reactor. A weighted multi-objective Bayesian                                                     crete variable (light intensity), and two categorical variables (photo-
+optimizer was used targeting high yield and low residence time with a                                                catalyst and oxidant). Following an initialization with 15 experiments
+9:1 preference, implementing an upper confidence bound (UCB) acqui-                                                  via LHS, the optimization continued for 35 closed-loop iterations. After
+sition function. UCB balances predicted mean and model uncertainty                                                   13 optimization runs, the system converged on conditions delivering
+
+
+Nature Synthesis
+Article                                                                                                                                         https://doi.org/10.1038/s44160-026-01053-0
+
+                                                                                                                         100
+                                                                 PC                                                                  Initialization
+                                     O        O
+
+
+
+
+                                                                                                                                                                   Explore
+
+
+
+
+                                                                                                                                                                                                                               Explore
+                                                                                                                                     Optimization
+
+
+
+
+                                                                                                                                                         Exploit
+
+
+
+                                                                                                                                                                                 Exploit
+                                                                Py-Ox
+                 N                                                                         N   CF3                                   Optimum
+                              F3C         O         CF3
+        O                                                   CH3CN, RT              O
+                 Boc                                                                       Boc
+                                                           Uflow reactor
+                                                                                                                         80
+        1, 1.0 mmol                       2                456-nm Kessil               3, 70 %
+
+
+
+          Hardware                              Optimizer                           Results
+                                                                                                                         60
+
+
+
+
+                                                                                                            Yield (%)
+       Photo         F-NMR                ST-GP           A-UCB              Yield     9:1        tR
+
+                                                                                                                         40
+
+                                  ML-optimized conditions
+
+
+    [1] (mM)                      100                                                             200
+                                                                                                                         20
+    2 (equiv.)                      0.9                                                           3.5
+
+    PC (mol%)                       0.1                     0.2                                   0.4
+
+    PC type                                   PC1         PC2     PC3       PC4        PC5
+                                                                                                                          0
+    Py-Ox (equiv.)                  0.9                                      2.4                  3                              0              10          20                             30              40                  50
+
+    Py-Ox type                                        Py-Ox1               Py-Ox2                                                                        Experiment number
+
+    Light (%)                        0                                                            100
+                                                                                                                                            N    O                                               N     O
+    tR (min)                         2                                                            30
+                                                                                                                                         Py-Ox1                              Py-Ox2
+
+
+                                                                                                                                                                                                 CF3                     PF6
+                        N                                                  (Cl)2                                        (PF6)2                                           F
+
+                                                            N                                 N                                           N                                                N                    t
+                 N            N                                                                                                                                                                                     Bu
+                                                      N           N                    N                N                                                  F                                     N
+                                                            Ru                               Ru                                           Ir                                               Ir
+                 N            N                                    N                                    N                                            N                                           N
+                                                      N                                                                              N                       F
+                        N                                                              N                                                                                                                        t
+                                                            N                                                                                                                                                       Bu
+                                                                                              N                                                                                            N
+
+                                                                                                                                                                             F                   CF3
+                        PC1                                PC2                             PC3                                           PC4                                               PC5
+
+Fig. 2 | Optimization of photocatalytic trifluoromethylation of pyrrole 1 with                          ML configuration, together with the conditions identified by the optimization
+trifluoroacetic anhydride 2 using an adaptive weighted optimization and 19F                             algorithm, are shown. Bottom left and right: The categorical variables explored
+NMR spectroscopy analysis. Top left: the figure presents the reaction scheme                            during the campaign are depicted as their corresponding chemical structures.
+for the photocatalytic trifluoromethylation of pyrrole, including the isolated                          PC, photocatalyst; Py-Ox, pyridine N-oxide, Boc, tert-butyloxycarbonyl; RT, room
+yield obtained under the optimized and scaled-up conditions. Top right: the                             temperature; tR, residence time; ST-GP, single-task Gaussian process; A-UCB,
+optimization campaign is summarized (top right), highlighting the evolution                             adaptive UCB.
+of reaction performance across iterations. Middle left: the robotic platform and
+
+
+
+
+a 71% yield with a residence time of 2 min. This triggered the adaptive                                 Deoxygenative C–H functionalization via hypervolume
+behaviour of the optimizer, switching from an exploitation- to an                                       optimization using HPLC analysis (case study 2)
+exploration-focused bias, to validate global optimality. Over the next                                  To demonstrate the configurability of RoboChem-Flex, an inline
+21 runs, diverse regions of the space were sampled, confirming that                                     high-performance liquid chromatography with ultraviolet-visible
+deviations from the identified optimum consistently underperformed.                                     and mass spectrometry detection (HPLC)–UV/MS analysis module
+This adaptive exploration strategy ensures robustness and prevents                                      was introduced. This enabled us to tackle a more complex test case,
+premature convergence to local maxima (Fig. 2).                                                         for which we selected the photochemical C–H alkylation of pyridines
+     To validate these results, a 1-mmol continuous-flow reaction was                                   via alcohol deoxygenation, originally developed by MacMillan et al.19.
+performed under the AI-refined conditions, yielding 70% isolated                                        This transformation forms C(sp³)–C(sp²) bonds from alcohol precur-
+yield for 3. This is in excellent agreement with the 71% inline NMR yield                               sors and poses a common synthetic challenge: overfunctionalization.
+obtained on microscale (60–120 µmol) optimization. Compared with                                        The substrate used in this study contains two reactive C–H positions,
+prior reports (Stephenson et al.: 71% in 5 h (ref. 18); MacMillan et al.:                               yielding both mono- and di-alkylated products. The optimization goal
+64% in 3 min (ref. 17)), RoboChem-Flex identified conditions that gave                                  was to maximize the yield for mono-substituted product 5a while mini-
+comparable or improved yield while achieving reaction times of just                                     mizing di-substitution. This requires a genuine trade-off, which is an
+2 min. This highlights the ability of the platform to autonomously                                      ideal benchmark for a hypervolume-based optimization approach.
+identify high-performing and scalable conditions for photocatalytic                                     Therefore, we selected a different Bayesian optimization agent. This
+transformations (Extended Data Fig. 1).                                                                 agent uses a qEHVI (expected hypervolume improvement) acquisition
+
+
+Nature Synthesis
+Article                                                                                                                                                     https://doi.org/10.1038/s44160-026-01053-0
+
+
+                                                     pTsOH
+                                                       PC
+                                                      Thiol                                                                     60
+                                                                                                                                               Initialization
+  N                           HO                                                  N                                                            Optimization
+                                                   DMSO, RT
+                                                  Uflow reactor                                                                                Optimum
+                                                  456-nm Kessil                     R                                           50
+       4, 0.05 mmol                                                           5a, R = H; 42 %
+                                                                             5b, R = CH 3CH2; -
+
+                                                                                                                                40
+             Hardware                         Optimizer                                Results
+
+
+
+
+                                                                                                                 Yield 5a (%)
+                                                                                                                                30
+         Photo         HPLC                 RF        qEHVI                      5a               5b
+
+
+                                                                                                                                20
+                                   ML-optimized conditions
+
+
+      EtOH (equiv.)                0.5                 22                                          60
+                                                                                                                                10
+      pTsOH (equiv.)               1.0                    2.5                                      4.0
+
+      PC (mol%)                    0.2                                                  1.7        2
+
+      PC type                              PC3          PC4            PC5                PC6                                   0
+
+
+      Thiol (mol%)                 2.0                                           8.7               10                                      0                           1              2                          3
+
+      Thiol type                                            T1         T2                                                                                                   Yield 5b (%)
+
+      Light (%)                     0                                       75                     100                                                     O                                   O
+
+      tR (min)                      5                                                   84         90                                                                  SH
+                                                                                                                                                  O                                   O
+                                                                                                                                                            T1                            T2       SH
+
+                                                                                                                                     CF3                         PF6
+                                         (PF6)2                                                        F                                                                                                         PF6
+
+                       N                                         N                                                   N                            t
+                                                                                                                                                      Bu                        N                       t
+                                                                                                                                                                                                            Bu
+                  N
+                              N                                                                                                      N
+                       Ru                                                                     F                                                                                           N
+                                                                  Ir                                                 Ir
+                                                                                                                                                                                Ir
+                              N                                         N                     F                                       N
+                  N                                         N                                                                                                                              N
+                                                                                                                                                   t
+                       N                                                                                                                               Bu                                               t
+                                                                                                                     N                                                                                      Bu
+                                                                                                                                                                                N
+
+                                                                                                        F                            CF3
+
+                      PC3                                       PC4                                                       PC5                                                     PC6
+
+Fig. 3 | Optimization of deoxygenative C–H functionalization of 4 with                                      and identify Pareto-optimal conditions. Middle left: the robotic platform and
+ethanol via hypervolume optimization with HPLC analysis. Top left: the figure                               ML configuration, together with the conditions identified by the optimization
+presents the reaction scheme for the deoxygenative C–H functionalization                                    algorithm, are shown. Bottom left and right: the categorical variables explored
+of substrate 4 with ethanol, including the isolated yields obtained under                                   during the optimization are depicted as their corresponding chemical
+optimized conditions at scale-up. Top right: the results of the multi-objective                             structures. pTs, para-toluenesulfonyl; PC, photocatalyst; RT, room temperature;
+optimization campaign are shown as a two-dimensional objective space, where                                 PC, photocatalyst; tBu, tert-butyl (1,1-dimethylethyl); tR, residence time; RF,
+the two reaction yields are plotted against each other to visualize trade-offs                              random forest.
+
+
+
+
+function paired with a random forest surrogate model. While the UCB                                         58% yield with 94% selectivity (mono:di) (Fig. 3). The reaction was
+function used in the first case study offers strong control over the explo-                                 then scaled up 40-fold (1 mmol), affording 42% isolated yield with 94%
+ration–exploitation balance, the qEHVI acquisition function, enables                                        selectivity. Although this specific substrate–alcohol combination was
+more efficient multi-objective optimization in the presence of outcome                                      not studied in the original report, methanol alkylation under literature
+trade-offs. The use of a random forest surrogate also allows more robust                                    conditions gave a 65% yield and 84% selectivity. RoboChem-Flex deliv-
+handling of categorical variables, demonstrating the modularity of                                          ered comparable selectivity and strong performance on an unreported
+the RoboChem-Flex Bayesian framework and its compatibility with                                             substrate, demonstrating its capacity to tackle analytically demanding,
+non-Gaussian process-based strategies20.                                                                    multi-objective optimizations in new experimental configurations
+      The chemical search space composed of five continuous features                                        (Extended Data Fig. 2).
+(reagent stoichiometries and residence time), one discrete (light inten-
+sity) and two categorical variables (photocatalyst and thiol co-catalyst).                                  Noisy hypervolume optimization of photocatalytic isotope
+The optimizer was initialized with 19 LHS experiments, followed by 38                                       labelling using Raman spectroscopy (case study 3)
+closed-loop iterations. After 31 runs, the qEHVI acquisition function                                       In-line analytical instruments typically represent the largest cost com-
+converged on conditions delivering the mono-alkylated product in                                            ponent of SDLs, yet they are essential for closed-loop automation.
+
+
+Nature Synthesis
+Article                                                                                                                          https://doi.org/10.1038/s44160-026-01053-0
+
+
+                          O                                                      O
+                                              D2O
+                                              Thiol
+                              H                PC                                       D
+
+      Br                                 CH3CN, RT              Br
+                                        Uflow reactor                                                              35
+                                        390-nm Kessil
+               6, 1.0 mmol                                            7, 52 %
+
+
+           Hardware                          Optimizer                        Results                              30
+
+
+
+
+                                                                                                   Integral of 7
+      Photo         Raman               ST-GP         qLNHVI          Yield    Conversion                          30
+
+
+
+
+                                  ML-optimized conditions
+                                                                                                                   30
+
+    D2O (equiv.)                  9.2                                                   49
+
+    Thiol (mol%)                  5.0                                                   20
+
+                                         T2              T3      T4             T5                                 15
+    Thiol type                                                                                                                                                         Initialization
+    PC (mol%)                     5.0                                                   20                                                                             Optimization
+                                                                                                                                                                       Optimum
+    PC type                                               BP1   BP2
+
+    Light (%)                     25                                                    100                             0           10                   20            30
+
+    tR (min)                       5                                                    90                                                   Experiment number
+
+
+
+
+                                                                                                                                         O                       O
+                 O
+                                                O                               SH                                          SH
+           O                                             SH
+                                         O                                                                                                           F                          F
+                     SH
+
+               T2                             T3                       T4                                  T5                        BP1                         BP2
+
+
+Fig. 4 | Noisy hypervolume optimization of photocatalytic isotope labelling                   (2,900–2,970 cm−1). The y-axis is unitless. Error bars indicate uncertainty arising
+of 6 using Raman spectroscopy. Top left: the figure presents the reaction                     from the out-of-sample prediction error of the calibration curve estimated as
+scheme for the photocatalytic isotope labelling of 6, including isolated yield                described in Supplementary Section 3.4.3. Middle left: the robotic platform and
+obtained under optimized conditions at scale-up. Top right: the optimization                  ML configuration, together with the conditions identified by the optimization
+campaign is summarized, highlighting the evolution of the reaction performance                algorithm, are shown. Bottom left and right: the categorical variables explored
+across iteration. In this plot, each data point corresponds to a single independent           during the optimization are depicted as their corresponding chemical
+experiment (n = 1). Central values represent the measured Raman integral                      structures. PC, photocatalyst; RT, room temperature; BP, benzophenone;
+over the range (1,675–1,681 cm−1) normalized to the integral in the range                     tR, residence time; ST-GP, single-task Gaussian process.
+
+
+
+Addressing this cost barrier while adhering to the ethos of RoboChem-                         HPLC detection, while Raman analysis is a viable option. Rather than
+Flex, we developed a low-cost Raman spectroscopy setup using com-                             relying on established high-yielding decatungstate-based protocols,
+modity components (Supplementary Section 1.3.6), reducing costs to                            our goal was to identify optimal, metal-free conditions, which are far
+a fraction of commercial alternatives. Naturally, these savings come                          less explored23.
+with performance trade-offs, including lower spectral resolution and                               A feature space consisting of five continuous parameters (rea-
+reduced signal-to-noise ratios. We explicitly modelled uncertainty                            gent stoichiometries and residence time), one discrete variable
+measurements in the optimization process following the approach                               (light intensity) and two categorical variables (photocatalyst and
+of Lapkin et al. to compensate for these limitations21. Calibration                           thiol co-catalyst) was defined. The optimization engine was initial-
+curves were used to quantify the concentration-dependent error for                            ized with 7 LHS experiments, followed by 30 optimization iterations.
+both starting material and product signals (Supplementary Section                             The noise-aware workflow converged on conditions giving 70% ± 10%
+3.4.3). These error estimates were subsequently incorporated into the                         yield with 71% deuterium incorporation (Fig. 4). These conditions
+surrogate model as heteroskedastic noise (noise that varies across                            were used in an 8-fold scale-up experiment (1 mmol), which allowed
+experimental conditions). In this study, the Bayesian agent used the                          isolation of the deuterated product in 52% yield with 64% deuterium
+qLogNEHVI (logarithmic noisy expected hypervolume improvement)                                incorporation (82% recovery). This outcome surpasses prior reports
+acquisition function, which, unlike standard EHVI, combines multi-                            of 0–38% deuterium incorporation for comparable organocatalytic
+ple surrogate predictions based on the model variance. This makes                             systems24. Although implementation of a stronger light source or
+it more robust to measurement error, prioritizing points that are                             longer reaction times may lead to further improvements, as suggested
+genuinely informative rather than those that appear optimal due to                            by the identified optimum being on the upper limit of the explor-
+noise22. As a benchmark for this configuration, we targeted a photo-                          able space, such efforts are, however, outside the scope of this study
+catalytic hydrogen-deuterium exchange on 4-bromo-benzaldehyde.                                (Extended Data Fig. 3). We rather aim to highlight how custom low-cost
+This transformation is poorly suited to low-field NMR spectroscopy or                         analytics, combined with noise-enabled Bayesian optimization, can
+
+
+Nature Synthesis
+Article                                                                                                                             https://doi.org/10.1038/s44160-026-01053-0
+
+
+             O                  ADH                              O                       OH
+                                NAD+
+                             FDH, HCO 2Na
+                 O                                                     OH                     O
+                             KPi buffer, ∆
+                            Thermal reactor                                                                                                                    Initialization
+    8, 0.5 mmol                                           9a, 70 %               9b, 16%
+                                                                                                                           14                                  9a. Optimization
+                                                                                                                                                               9a. Optimum
+                                                                                                                                                               9b. Optimization
+             Hardware                         Optimizer                         Results
+                                                                                                                           12
+                                                                                                                                                               9b. Optimum
+
+         ∆
+                                                                                                                           10
+      Thermal        HITL                ST-GP       UCB                         Yield
+
+
+
+
+                                                                                                      Integral of 9a [-]
+                                                                                                                           8
+                               ML Optimized Conditions (9a/9b)
+
+                                                                                                                           6
+     HCO2Na (equiv.)               2.5        4.0                                         10
+
+     FDH (mol%)                   .025                    .06                             .1
+                                                                                                                           4
+         +
+     NAD (equiv.)                  .25         0.4         0.6                            1
+
+     ADH (mol%)                    .05                          0.12                      .2                               2
+
+     ADH type                            Aa               Pf               Pp      Cm
+
+     Temperature (°C)               25        28                 33                       40                               0
+
+     tR (min)                        5                                55         83       90
+                                                                                                                                0       10            20          30
+                                                                                                                                              Integral of 9b
+
+Fig. 5 | Selective enzymatic reduction of diketone 8 using a                                      and identify Pareto-optimal conditions. The x and y-axes are unitless. Bottom
+human-in-the-loop and dual acquisition function batching approach. Top                            left: the robotic platform and ML configuration, together with the conditions
+left: the figure presents the reaction scheme for the enzymatic reduction of                      identified by the optimization algorithm, are shown. ADH, NAD-dependent ADH;
+8, including the isolated yield obtained under the optimized and scaled-up                        KPi, potassium phosphate buffer; tR, residence time; HITL, human-in-the-loop;
+conditions. Top right: the results of the multi-objective optimization campaign                   ST-GP, single-task Gaussian process. ADHs tested originated from Aromatoleum
+are shown as a two-dimensional objective space, where the integrals of                            aromaticum (Aa)41, Paracoccus pantotrophus (Pp)42, Pichia finlandica (Pf)27 and
+compounds 9a and 9b are plotted against each other to visualize trade-offs                        Candida maris (Cm)26.
+
+
+
+autonomously deliver competitive results in the optimization of a                                 back into the Bayesian optimization agent, tasked with maximizing the
+meaningful chemical transformation.                                                               formation of 9a. This approach further demonstrates RoboChem-Flex’s
+                                                                                                  ability to operate effectively without authentic standards, making it
+Selective enzymatic reduction of a diketone using                                                 suitable for workflows involving unknown or novel impurities.
+human-in-the-loop and dual acquisition batching (case study 4)                                         The optimization campaign began with eight initial experiments
+Having demonstrated analytical flexibility in photochemical reaction                              using LHS, followed by iterative batch optimization in sets of four
+optimizations using in-line NMR spectroscopy, UHPLC and Raman                                     experiments. The optimization space consisted of six continuous
+analysis, we next sought to validate the reaction versatility of the plat-                        parameters (reagent stoichiometries, temperature and residence
+form in a biocatalytic transformation. Biocatalysis plays an increasingly                         time) and one categorical (ADH enzyme). Standard Bayesian acquisi-
+important role in pharmaceutical synthesis, particularly for producing                            tion functions, such as UCB, typically yield a single optimal point per
+enantiopure compounds from achiral or prochiral substrates25. In this                             iteration, and batch selection is often performed using quasi-Monte
+case study, we targeted the biocatalytic reduction of diketone 8 to                               Carlo strategies. However, the marginal information gain of additional
+chiral secondary alcohol 9a using nicotinamide adenine dinucleotide                               batch points diminishes due to overlap in sampled regions22,27. To miti-
+(NAD)-dependent alcohol dehydrogenases (ADHs)26. This reaction                                    gate this, we implemented a hybrid batching strategy in which half of
+presents an added challenge as substrate 8 contains two similar car-                              each batch was selected using the qUCB acquisition function, while
+bonyl groups, leading to the formation of both 9a and regioisomeric                               the other half was selected using Monte Carlo integrated negative pos-
+side product 9b, as an inseparable mixture. In addition, the reaction                             terior variance (qINPV)28. The latter prioritizes regions of high model
+protocol uses in situ recycling of the NAD⁺ coenzyme via a formate                                uncertainty to improve exploration without sacrificing optimization
+dehydrogenase enzyme (FDH), which reduces coenzyme loading but                                    efficiency (Fig. 5).
+increases the dimensionality of the optimization space.                                                After two batches of optimization, conditions yielding the largest
+     We also used RoboChem-Flex’s human-in-the-loop workflow.                                     peak integral of product 9a and the lowest peak integral of side-product
+Utilizing the fraction collector of the platform, each reaction slug was                          9b were identified. Using these optimal conditions, a 200-fold scale-up
+quenched and stored for deferred analysis. Quenching was performed                                experiment (1 mmol) was carried out, affording 58% yield of 9a with
+by preloading the receiver vials with sodium dodecyl sulfate, a sur-                              >99% enantiomeric excess (e.e.) and only trace amounts of 9b.
+factant that denatures the ADH enzymes, halting the reaction without                              Although impurity tracking is often overlooked in academic settings
+affecting the analytes. During early experiments, partial clogging of                             owing to time constraints, it is critically important in pharmaceutical
+the tubing was occasionally observed due to protein precipitation; the                            and agrochemical development. Automated monitoring of impurities
+issue and its resolution are discussed in Supplementary Section 3.5.3.                            not only aids in suppressing their formation but also provides valuable
+The stored samples were subsequently analysed by UHPLC, and the raw                               mechanistic insight. We showcased this capability by performing a
+integrals corresponding to the desired product 9a were directly fed                               second optimization campaign, taking advantage of the data obtained
+
+
+Nature Synthesis
+Article                                                                                                                                                                                 https://doi.org/10.1038/s44160-026-01053-0
+
+
+                                                                   Base                                                 H
+                     Br                      N                                                                          N                                     100
+                                                                  catalyst
+                                                                                                                                       N                                          12. Initialization
+                                                                                                                                                                                  12. Optimzation
+ F3C                            H2N                                DMF, ∆                                                                                                         12. Optimum
+                                                                                                  F 3C
+                                                               Thermal reactor
+                                                                                                                                                              80
+                                                                                                                                                                                  15. Initialization
+      10, 1.0 mmol                     11                                                                      12, 84 %                                                           15. Optimization
+                                                                                                                                                                                  15. Optimum
+                                                                                                                                      OH
+                                                                   Base
+                   CF3
+                                                     NH           catalyst                                                                                    60
+                                                                                                             N          N
+
+
+
+
+                                                                                                                                                  Yield (%)
+ Br       N                     HO                                 DMF, ∆
+                                                               Thermal reactor                F3C
+                                       14                                                                      15, 90 %                                       40
+      13, 1.0 mmol
+
+
+              Hardware                                          Optimizer                                        Results
+                                                                                                                                                              20
+             ∆              F
+                           19
+
+
+        Thermal            F-NMR                          MT-GP           UCB                                      Yield
+
+                                                                                                                                                               0
+                                      ML-optimized conditions 12 and 15                                                                                                  0                              10               20                30             40
+                                                                                                                                                                                                                  Experiment number
+       11 or 14 (equiv.)                     1.0                   1.17                                                        1.5
+
+       Base (equiv.)                         1.0                                                               2.86            3.0                                                                          Pd7
+                                                                                                                                                              1.0        Pd5
+       Base type                                                 DBU                    TMG               BTMG
+                                                                                                                                                                                 Pd2
+       Catalyst (mol%)                       1.0                          2.81                                                 5.0
+
+                                                          Pd1             Pd2                      Pd3                 Pd4                                    0.8
+                                                                                                                                                                             Pd1
+       Catalyst type
+                                                                  Pd5                   Pd6                  Pd7
+
+       Temperature (°C)                      110                            129           131                                  150
+       tR (min)                              10                                           59                                   90                             0.6                                                                                              Pd4
+                                                                                                                                             UMAP-2
+
+
+
+
+       F3C                                                                                                                                                                         Pd3
+
+                                                                                                               H                                              0.4
+                                                                                                               N
+                                             N                                                                                 N
+                            N
+
+                                                                                    F3C
+                                                                                                                                                              0.2
+
+
+                            N                                                                                                  CF3
+
+                                                                                                                                                                                                                                                          Pd6
+                       N                                                                                                                                       0
+                                                                                                         N         N
+                                                                                                                                                                             0                        0.2          0.4              0.6         0.8        1.0
+                                                                                HO                                                                                                                                       UMAP-1
+                            CF3
+
+
+                                                                           MeO                                                                                                           OiPr
+                                   MsO Cy Cy                                                                                                                                     MsO Cy Cy                                                MsO Ad Ad
+                                                                     MsO Cy Cy                               MsO Cy Cy
+                                                 P                                                                                                                                                                                              P
+                                      Pd                                            P                                      P               MsO Bu
+                                                                                                                                                      t             t
+                                                                                                                                                                        Bu                        P                  MsO Cy Cy             Pd
+                           Pd                    i                        Pd                                     Pd                                                                    Pd
+         Pd =                                    Pr                                                                                                                                               i
+                           NH                              i
+                                                                                    i
+                                                                                    Pr                                 MeO                                    P t                                 Pr                            P                     N
+                                                           Pr                                            OMe                                  Pd                    Bu                                       i           Pd          Cy
+                                                                                              i
+                                                                                                  Pr                               OMe                                                                       Pr
+                           Me
+                                         i                                                                                                                                                                                                        O
+                                           Pr                                                                                                                                            i
+                                                                            i
+                                                                               Pr                                                                                                            Pr
+                                                 Pd1                                    Pd2                                Pd3                        Pd4                                         Pd5                         Pd6                Pd7
+
+Fig. 6 | Optimization of Buchwald–Hartwig amination couplings via                                                                    left: the robotic platform and ML configuration, together with the conditions
+transfer learning and ligand featurization. Top left: the figure presents the                                                        identified by the optimization algorithm, are shown. Bottom left: compounds
+reaction schemes for the Buchwald–Hartwig amination of substrates 10 and                                                             12 and 15 are precursors to the pharmaceutically relevant molecule shown.
+13, including their yields under optimized conditions at scale-up. Top right:                                                        Bottom: the ligands explored during the optimization are depicted as their
+the results of the optimization campaign showing reaction yield as a function                                                        corresponding chemical structures. DBU, 1,8-diazabicyclo[5,4,0]undec-7-ene;
+of experiment number; dashed grey lines in the plot and reaction scheme                                                              TMG, tetramethylguanidine; BTMG, 2-tert-butyl-1,1,3,3-tetramethylguanidine;
+represent two distinct chemical system and their corresponding optimization                                                          Cy, cyclohexyl; Ms, mesylate; Ad, adamantane; iPr, iso-propyl (propan-2-yl);
+                                                                                                                                     t
+campaigns. Bottom left: two-dimensional UMAP projection (bottom left) of the                                                          Bu, tert-butyl (1,1-dimethylethyl); tR, residence time; MT-GP, multi-task
+ligand feature space, colourized by the nearest ligand as a Vornoi plot. Middle                                                      Gaussian process.
+
+
+
+
+Nature Synthesis
+Article                                                                                                                                                  https://doi.org/10.1038/s44160-026-01053-0
+
+        OH          O                                                                 PC                            OH            O
+                                                                                    Sc(OTf)2
+                                Ph                                                  Ligand
+                                                                                                                                                                                                     Initialization
+                                                                          AcOiPr:CH 3CN, RT                                                          Ph
+                                                                                                                                  Ph                                                                 Optimization
+                                                                             Uflow reactor
+                                                                            456-nm Kessil                                  18, 80%                                                                   Optimum
+            16, 1.0 mmol                               17
+                                                                                                                   d.r.= 1:1.5; e.e. = 97 %
+
+
+            Hardware                            Optimizer                                Results                                                                                                                                             100
+
+
+
+                                                                                                                                                                                                                                             80
+
+       Photo            HITL                  ST-GP        ParEGO              Yield          e.e.      d.r.
+                                                                                                                                                                                                                                             60
+
+
+
+
+                                                                                                                                                                                                                                                   e.e. (%)
+                                        ML-optimized conditions
+                                                                                                                                                                                                                                            40
+   17 (equiv.)                          2.5                               7.7                          10
+
+   PC (mol%)                            1.5                                                            6.0                                                                                                                                  20
+
+   PC type                                            PC3           PC6                 PC7
+                                                                                                                                                                                                                                            0
+   Sc(OTf)3 (mol%)                      5.0                                                            20
+                                                                                                                                                                                                                                        1
+   Ligand (mol%)                         10                                                            30                                                                                                                           2
+   Ligand type                                 L1             L2               L3                 L4                                                                                                                                3
+
+
+
+
+                                                                                                                                                                                                                                    d.r.
+   AcOiPr:MeCN (x:1)                      2            2.36                                            3                                                                                                                        4
+
+                                                                                                                                                                                                                            5
+   Light (%)                             0                                                             100          0
+                                                                                                                                       20                 40
+                                                                                                                                                                           60                    80                     6
+   tR (min)                               5                                     73.5                   90                                                     Yield (%)                                           100
+
+
+
+
+                               (PF6)2                                     PF6             F                              PF6                         O                 O
+                                                                                                                                                                                                 O                              O
+               N                                      N               t                                N                                                  N        N
+                                                                      Bu                                                 t
+                                                                                                                             Bu
+                                                                                                                                                                                                      N                 N
+       N                N                                     N                                                                             t
+                                                                                                                                                Bu                         t
+                                                                                                                                                                               Bu
+                                                                                    F                          N                                              L1                        t                    L2                         t
+               Ru                                     Ir                                               Ir                                                                                   Bu                                              Bu
+                        N                                     N                     F                          N
+        N                                                             t
+                                                                          Bu                                             t
+                                                                                                                             Bu
+               N                                      N                                                N
+                                                                                                                                                O                              O                 O                              O
+
+                                                                                              F                                                      N                 N                              N                 N
+                                                                                                                                                                                        i                                               i
+                                                                                                                                        Bn                    L3                   Bn       Pr               L4                             Pr
+            PC3                                       PC6                                            PC7
+
+Fig. 7 | Multi-objective optimization of the enantioselective photocatalytic                                   conditions. Middle left: the robotic platform and ML configuration, together
+cycloaddition of 16 and 17 with chiral HPLC analysis. Top left: the figure presents                            with the conditions identified by the optimization algorithm, are shown. Bottom:
+the reaction scheme for the enantioselective photocatalytic cycloaddition of 16                                the categorical variables explored during the optimization are depicted as their
+and 17, including the isolated yield obtained under the optimized and scaled-up                                corresponding chemical structures. PC, photocatalyst; Tf, triflyl; AcOiPr, isopropyl
+conditions. Top right: the results of the multi-objective optimization campaign                                acetate; RT, room temperature; Ph, phenyl; tBu, tert-butyl (1,1-dimethylethyl); iPr,
+are shown as a two-dimensional objective space, where the e.e., d.r. and yield are                             iso-propyl (propan-2-yl); Bn, benzyl; tR, residence time; HITL, human-in-the-loop;
+plotted against each other to visualize trade-offs and identify Pareto-optimal                                 ST-GP, single-task Gaussian process; ParEGO, Pareto efficient global optimization.
+
+
+
+
+during optimization of 9a, this time targeting the maximization of the                                              In this case study, we developed a hybrid strategy that combines
+side product 9b. Within three iterations, new conditions were identi-                                          automated experimentation with ligand featurization to efficiently
+fied that increased the formation of 9b (in 98% e.e.) considerably, to an                                      screen catalysts while minimizing the experimental workload.
+extent which enabled its characterization and biological evaluation.                                           Based on the library of monodentate organophosphorus ligands com-
+                                                                                                               piled by Aspuru-Guzik et al., we selected seven commercially available
+Optimization of Buchwald–Hartwig aminations via transfer                                                       Buchwald precatalysts32. Each ligand in the library was characterized
+learning and ligand featurization (case study 5)                                                               by a set of density functional theory-derived descriptors, which we
+Buchwald–Hartwig amination is a cornerstone of modern synthetic                                                condensed into a two-dimensional chemical space using the Uniform
+chemistry, providing a versatile coupling strategy for C–N bond                                                Manifold Approximation and Projection (UMAP) algorithm33,34. This
+formation29. Numerous catalyst systems have been developed to                                                  allowed the AI agent to learn which ligand features most effectively
+accommodate specific substrate classes and conditions, leading to                                              differentiate catalyst performance within the chemical space. To fur-
+high-throughput experimentation (HTE) becoming the preferred                                                   ther showcase the capabilities of the RoboChem-Flex ML engine, we
+approach for catalyst screening and reaction optimization30. The                                               pursued the sequential optimization of two coupling reactions (leading
+high costs associated with HTE have driven efforts to apply machine                                            to products 12 and 15) using a transfer learning framework. Notably,
+learning (ML) models to study this reaction and reduce the number of                                           both products feature as key building blocks of a pharmaceutically
+experiments required for optimization31.                                                                       relevant molecule35.
+
+
+Nature Synthesis
+Article                                                                                               https://doi.org/10.1038/s44160-026-01053-0
+
+     An extensive optimization campaign was first conducted for the           literature, without compromising reaction performance. This case
+synthesis of product 12 within a parameter space of seven continu-            study demonstrates RoboChem-Flex’s ability to efficiently navigate
+ous (reagent stoichiometries, temperature, residence time and two             large chemical spaces, optimize multiple objectives and successfully
+UMAP dimensions for catalyst selection) and one categorical (base)            translate complex reaction conditions from batch to flow.
+variable. The identified optimum led to 84% isolated yield at 1-mmol
+scale (14-fold increase), in excellent agreement with the ML-refined          Conclusion
+optimization outcome. The resulting dataset was then transferred to a         RoboChem-Flex provides an affordable and modular platform that
+multi-task Gaussian process model36,37 (Supplementary Section 2.1.3.6),       lowers the barriers to autonomous chemical experimentation. By deliv-
+which was initialized with just four new experiments using substrate          ering high-performance capabilities at a fraction of the cost of tradi-
+13 for the synthesis of product 15. The extensive experimental data           tional SDLs, it empowers resource-limited research groups to access
+collected during the optimization of 12 provided the multi-task model         automation previously restricted to well-funded institutions. Through
+with a rich understanding of the accessible chemical space, while avoid-      its scalable, plug-and-play design and demonstrated versatility across
+ing overfitting to the initial reaction system. As a result, the second       diverse chemical challenges, RoboChem-Flex aims to foster broader
+optimization did not begin from scratch; instead, the model leveraged         innovation and ensure that scientific progress is driven by creativity and
+cross-task relationships to rapidly identify conditions likely to succeed     ambition, not financial constraints. Further extension of this platform
+for the new substrate (Fig. 6). Consequently, the model converged on          aims to promote greater collaboration and adapt RoboChem-Flex to
+optimal conditions after only four additional closed-loop iterations,         targeted needs of other groups. By fostering an open, interoperable
+affording product 15 in 90% isolated yield at 1-mmol scale. This is par-      network of SDLs, we aim to accelerate collective scientific discovery.
+ticularly noteworthy given that the two products were derived from
+either primary or secondary amines, and the algorithm successfully            Methods
+identified the most suitable ligand for each transformation38.                General procedure for the pyrrole trifluoro-methylation
+     This case study demonstrates how transfer learning and ligand            Under an atmosphere of nitrogen, pyrrole 2 (1.00 mmol), Ru(bpy)3(PF6)2
+featurization can be seamlessly integrated into the RoboChem-Flex             (bpy = 2,2′-bipyridine) (0.0184 mmol, 0.184 mol%) and pyridine
+ecosystem to accelerate catalyst selection and reduce experimental            N-oxide (2.41 mmol, 2.41 equiv.) were dissolved in CH3CN (10.0 ml) to
+burden in complex cross-coupling optimizations.                               which trifluoroacetic anhydride (3.50 mmol, 3.50 equiv.) was added.
+                                                                              The solution was loaded in a syringe and pumped through a UFlow
+Multi-objective optimization of an enantioselective                           reactor (3.95 ml) at 1.98 ml min−1 (residence time 2.00 min) while irra-
+photocatalytic [2 + 2] cycloaddition using chiral HPLC                        diating with a 456-nm Kessil lamp at 75% intensity. Upon completion,
+(case study 6)                                                                the solvent and volatiles were removed under reduced pressure. The
+As a final demonstration of RoboChem-Flex’s capabilities, we con-             resulting product was then purified via column chromatography (75:25
+ducted an experimental campaign targeting a large feature space               n-pentane:CH2Cl2) to give pyrrole 3 as an off-white oil (0.702 mmol,
+with three simultaneous objectives. We selected the enantioselective          70% yield).
+[2 + 2] photocycloaddition protocol developed by Yoon et al. as an
+ideal test case, where yield, diastereomeric ratio (d.r.) and e.e. must all   General procedure for the deoxygenative C–H
+be maximized39,40. This case study also highlighted RoboChem-Flex’s           functionalization of pyridine
+flexibility in integrating with shared analytical infrastructure: using       Under an atmosphere of nitrogen, 4-phenylpyridine 4 (0.50 mmol),
+a human-in-the-loop workflow, we performed chiral HPLC analysis               p-TsOH (1.23 mmol, 2.45 equiv.) and [Ir(dtbbpy)(ppy) 2]PF 6]
+offline, avoiding the need for a costly dedicated inline set-up.              (dtbbpy =4,4′-di-tert-butyl-2,2′-dipyridyl; ppy = 2-phenylpyridine)
+      The reaction was optimized by training three parallel surrogate         (0.0086 mmol, 1.71 mol%) were dissolved in anhydrous dimethyl
+models, each exposed to the full set of conditions but trained to predict     sulfoxide (DMSO) (4.36 ml), to which ethanol (0.64 ml, 11 mmol,
+a single objective. One candidate experiment per model was generated          22 equiv.) was added giving a total volume of 5.0 ml. In a separate vial,
+using a UCB acquisition function, focusing exclusively on maximising          ethyl 2-mercaptopropanoate (0.044 mmol, 8.7 mol%) was dissolved in
+that specific model’s objective. These models where then combined             anhydrous DMSO (5.0 ml). Each solution was transferred to a
+using the logarithmic noisy Pareto efficient global optimization (qLog-       foil-wrapped syringe and co-pumped through a T-junction into a UFlow
+NParEGO) strategy to generate three additional points that capture            reactor (3.95 ml) at 0.047 ml min−1 (residence time 84.3 min) while
+trade-offs across objectives, enabling efficient exploration of the           irradiating with a 456-nm Kessil lamp at 75% intensity. Upon comple-
+multi-objective Pareto front (Supplementary Section 2.1.3.7). Because         tion, the solvent and volatiles were removed under reduced pressure.
+the models operated independently, similar or identical conditions            The resulting product was then purified via column chromatography
+could occasionally be proposed within the same batch. To mitigate             (100:0 to 80:20 n-pentane: EtOAc) to give functionalized pyridine 5a
+this redundancy, a Euclidean distance filter was applied to eliminate         as an off-white oil (0.210 mmol, 42% yield).
+closely related candidates.
+      This campaign explored the largest feature space in our study,          General procedure for photocatalytic isotope labelling
+consisting of six continuous parameters (reagent stoichiometries,             Under an atmosphere of nitrogen, 4-bromobenzaldehyde (1.00 mmol),
+solvent ratio and residence time), one discrete variable (light intensity)    benzophenone (0.200 mmol, 20 mol%) and ethyl thioglycolate
+and two categorical variables (chiral ligand and photocatalyst), forming      (0.200 mmol, 20 mol%) were dissolved in anhydrous CH3CN (3 ml),
+a combinatorially complex search space. The optimization began with           to which D2O (1 ml, 50 mmol, 50 equiv.) was added. The solution was
+eight LHS experiments, followed by four batches of iterative optimiza-        loaded into a syringe and pumped through a UFlow reactor (3.95 ml)
+tion. RoboChem-Flex identified conditions that delivered >99% yield,          at 0.044 ml min−1 (residence time 90.0 min) while irradiating with a
+a 1:1.4 d.r. and >99% e.e. (Fig. 7). These conditions were successfully       390-nm Kessil lamp at 100% intensity. Upon completion, the solvent
+scaled up 34-fold (0.50 mmol), affording the crude product in 80%             and volatiles were removed under reduced pressure. The resulting
+yield, a 1:1.5 d.r. and 97% e.e. These results compare favourably with        product was then purified via column chromatography (100:0 to
+literature benchmarks, which report 88% yield, a 1:2 d.r. and >99% e.e.       95:5 n-pentane:diethyl ether) to give the benzaldehyde 7 as a white
+achieved in 20 h under batch conditions40 (Extended Data Fig. 4). Nota-       solid composed of the deuterated and non-deuterated products
+bly, the RoboChem-Flex campaign identified conditions with reduced            (0.152 g, 82% mass recovery, 64% deuterium incorperation by 1H
+loadings of photocatalyst, chiral ligand and styrene compared with the        NMR spectroscopy).
+
+
+Nature Synthesis
+Article                                                                                              https://doi.org/10.1038/s44160-026-01053-0
+
+General procedure for enzymatic reduction of distal carbonyls               General procedure for the enantioselective [2 + 2]
+1-Phenylpropane-1,2-dione (1.00 mmol) was dissolved in anhydrous            photocycloaddition
+DMSO (10 ml) and loaded in a 10-ml syringe. Separately sodium               Under an atmosphere of nitrogen, (E)-1-(2-hydroxyphenyl)-
+formate (4.03 mmol, 4.03 equiv.) enzyme Pp-ADH (0.50 µmol,                  3-phenylprop-2-en-1-one (0.50 mmol), styrene (3.84 mmol, 7.69 equiv.)
+0.050 mol%), NADH (0.589 mmol, 0.589 equiv.) and FDH enzyme                 and 2,6-bis((S)-4-(tert-butyl)-4,5-dihydrooxazol-2-yl)pyridine
+(0.63 µmol, 0.063 mol%) were dissolved in 50 mM phosphate buffer            (0.05 mmol, 10 mol%) were dissolved in a 7:3 mixture of iPrOAc and
+solution (90 ml; pH 8). The latter solution was loaded into two 50-ml       MeCN (11.21 ml) and loaded into a syringe. Separately, [Ir(dtbbpy)
+syringes (45 ml each). The solutions were co-pumped through a               (ppy)2]PF6 (0.007 mmol, 1.5 mol%) was dissolved in a 7:3 mixture of
+T-junction a thermal reactor (3.55 ml) at 0.065 ml min−1 (residence         iPrOAc and MeCN (2.5 ml) and loaded in a 5-ml syringe. Finally, Sc(OTf)3
+time 54.6 min) while heating to 33 °C. The output stream was col-           (0.012 g, 0.025 mmol, 5 mol%) was dissolved in a 7:3 mixture iPrOAc
+lected in a round-bottom flask containing 5% (m/V) sodium dode-             and MeCN (2.5 ml) and loaded in a third syringe. The solutions were
+cyl sulfate aqueous solution (10 ml). Upon completion, the mixture          co-pumped through a T-junction to a photochemical reactor (3.95 ml)
+was extracted twice with 80 ml EtOAc. The organic phases were then          at 0.054 ml min−1 (residence time 73.5 min) while irradiating with a
+combined, washed with brine and dried over MgSO4. The solvent and           456-nm Kessil lamp at 100% intensity. Upon completion, the crude mix-
+volatiles were removed under reduced pressure, and the resulting            ture was analysed directly by HPLC to identify a yield of 80% and a d.r.
+product was purified via column chromatography (100:0 to 80:20              of 1:1.5. The major diastereomer was then isolated via HPLC, reduced
+n-pentane:EtOAc) to give the reduced product 9a as a yellow oil             and redissolved in 1:1 heptane:methyl tert-butyl ether and subsequently
+(0.57 mmol 57%).                                                            analysed by chiral HPLC to identify an e.e of 96%.
+
+General procedure for enzymatic reduction of                                Data availability
+benzylic carbonyls                                                          All data supporting the findings of this study are available within the Arti-
+1-Phenylpropane-1,2-dione (0.50 mmol) was dissolved in anhydrous            cle and its Supplementary Information. Benchmarking simulation results,
+DMSO (5 ml) and loaded in a 10-ml syringe. Separately sodium formate        further statistical analysis, spectral data and optimization datasets are
+(1.25 mmol, 2.50 equiv.) enzyme Pf-ADH (0.61 µmol, 0.122 mol%),             provided in the Supplementary Information. Additional datasets, includ-
+NADH (0.143 g, 0.22 mmol, 0.44 equiv.) and enzyme FDH (0.16 µmol,           ing raw simulation outputs and raw optimization data, are available via
+0.032 mol%) were dissolved in 50 mM phosphate buffer solution               GitHub at https://github.com/Noel-Research-Group/Robochem_Flex.
+(45 ml; pH 8) and loaded into a 50-ml syringe. The solutions were
+co-pumped through a T-junction a thermal reactor (3.55 ml) at               Code availability
+0.043 ml min−1 (residence time 83.0 min) while heating to 29 °C. The        All code used in this study is openly available via GitHub at https://
+output stream was collected in a round-bottom flask containing 5%           github.com/Noel-Research-Group/Robochem_Flex. This includes,
+(m/V) sodium dodecyl sulfate aqueous solution (5 ml). Upon com-             but is not limited to, ML and optimization code, graphical user inter-
+pletion, the mixture was extracted twice with 40 ml EtOAc, and the          face software, device firmware and operational control code, 3D
+organic phases were then combined, washed with brine and dried              printing design files, schematics for hardware, and scripts used to
+over MgSO4. The solvent and volatiles were removed under reduced            analyse and generate all data figures presented in the Article and its
+pressure, and the resulting product was purified via column chroma-         Supplementary Information.
+tography (100:0 to 80:20 n-pentane:EtOAc) to give a 49:51 mixture
+(calculated by 1H NMR spectroscopy) of regioisomers 9a:9b as a yellow       References
+oil (combined 34%; 9b 17%).                                                 1.  Abolhasani, M. & Kumacheva, E. The rise of self-driving labs in
+                                                                                chemical and materials sciences. Nat. Synth. 2, 483–492 (2023).
+General procedure for the Buchwald–Hartwig amination of                     2. Bayley, O., Savino, E., Slattery, A. & Noël, T. Autonomous
+primary amines                                                                  chemistry: navigating self-driving labs in chemical and material
+Under an atmosphere of nitrogen, 1-bromo-4-(trifluoromethyl)                    sciences. Matter 7, 2382–2398 (2024).
+benzene (1.00 mmol), pyridin-3-amine (1.17 mmol, 1.17 equiv.),              3. Tom, G. et al. Self-driving laboratories for chemistry and materials
+2-(tert-butyl)-1,1,3,3-tetramethylguanidine (2.86 mmol, 2.86 equiv.)            science. Chem. Rev. 124, 9633–9732 (2024).
+and EPhos-Pd-G4 (0.05 mmol, 0.05 equiv.) were dissolved in degassed         4. Slattery, A. et al. Automated self-optimization, intensification, and
+dimethylformamide (DMF) (10.0 ml). The solution was loaded                      scale-up of photocatalysis in flow. Science https://doi.org/10.1126/
+into a syringe and pumped through a thermal reactor (3.05 ml) at                science.adj1817 (2024).
+0.269 ml min−1 (residence time 11.4 min) while heating to 129 °C. Upon      5. Bol, T., de Vaan, M. & van de Rijt, A. The Matthew effect in science
+completion, the solvent and volatiles were removed under reduced                funding. Proc. Natl Acad. Sci. USA 115, 4887–4890 (2018).
+pressure. The resulting product was then purified via column chro-          6. Lo, S. et al. Review of low-cost self-driving laboratories in
+matography (100:0 to 80:20 n-pentane:EtOAc) to give pyridine 12 as              chemistry and materials science: the ‘frugal twin’ concept. Digit.
+a white solid (0.84 mmol, 84% yield).                                           Discov. 3, 842–868 (2024).
+                                                                            7. Baird, S. G. & Sparks, T. D. What Is a minimal working example for a
+General procedure for the Buchwald–Hartwig amination of                         self-driving laboratory?. Matter 5, 4170–4178 (2022).
+secondary amines                                                            8. Beker, W. et al. Machine learning may sometimes simply capture
+Under an atmosphere of nitrogen, 2-bromo-5-(trifluoromethyl)                    literature popularity trends: a case study of heterocyclic Suzuki–
+pyridine (1.00 mmol), piperidin-4-ol (1.06 mmol, 1.06 equiv.),                  Miyaura coupling. J. Am. Chem. Soc. 144, 4819–4827 (2022).
+1,1,3,3-tetramethylguanidine (1.00 mmol, 1.00 equiv.) and XPhos-Pd-G4       9. Maloney, M. P. et al. Negative data in data sets for machine
+(0.028 mmol, 0.028 equiv.) were dissolved in degassed DMF (10.0 ml).            learning training. Org- Lett- 25, 2945–2947 (2023).
+The solution was loaded into a syringe and pumped through a thermal         10. Strieth-Kalthoff, F. et al. Machine learning for chemical reactivity:
+reactor (3.05 ml) at 0.052 ml min−1 (residence time 58.8 min) while heat-       the importance of failed experiments. Angew. Chem. Int. Ed.
+ing to 131 °C. Upon completion, the solvent and volatiles were removed          https://doi.org/10.1002/anie.202204647 (2022).
+under reduced pressure. The resulting product was then purified via         11. Capel, A. J., Rimington, R. P., Lewis, M. P. & Christie, S. D. R.
+column chromatography (100:0 to 80:20 n-pentane:EtOAc) to give                  3D printing for chemical, pharmaceutical and biological
+pyridine 15 as a white solid (0.90 mmol, 90% yield).                            applications. Nat. Rev. Chem. 2, 422–436 (2018).
+
+
+Nature Synthesis
+Article                                                                                            https://doi.org/10.1038/s44160-026-01053-0
+
+12. Capaldo, L., Wen, Z. & Noël, T. A field guide to flow chemistry for    31. Ahneman, D. T., Estrada, J. G., Lin, S., Dreher, S. D. & Doyle, A. G.
+    synthetic organic chemists. Chem. Sci. 14, 4230–4247 (2023).               Predicting reaction performance in C–N cross-coupling using
+13. Prabhu, G. R. D. & Urban, P. L. Elevating chemistry research               machine learning. Science 360, 186–190 (2018).
+    with a modern electronics toolkit. Chem. Rev. 120, 9482–9553           32. Gensch, T. et al. A comprehensive discovery platform for
+    (2020).                                                                    organophosphorus ligands for catalysis. J. Am. Chem. Soc. 144,
+14. Balandat, M. et al. BoTorch: a framework for efficient Monte-Carlo         1205–1217 (2022).
+    Bayesian optimization. In 34th Conference on Neural Information        33. McInnes, L., Healy, J., Saul, N. & Großberger, L. UMAP: uniform
+    Processing Systems (NeurIPS 2020) https://proceedings.neurips.             manifold approximation and projection. J. Open Source Softw. 3,
+    cc/paper/2020/file/f5b1b89d98b7286673128a5fb112cb9a-Paper.                 861 (2018).
+    pdf (2020).                                                            34. Kariofillis, S. K. et al. Using data science to guide aryl bromide
+15. Masson, T. M., Zondag, S. D. A., Schuurmans, J. H. A. & Noël,              substrate scope analysis in a ni/photoredox-catalyzed
+    T. Open-source 3D printed reactors for reproducible batch                  cross-coupling with acetals as alcohol-derived radical sources.
+    and continuous-flow photon-induced chemistry: design and                   J. Am. Chem. Soc. 144, 1045–1055 (2022).
+    characterization. React. Chem. Eng. 9, 2218–2225 (2024).               35. Keenan, M. et al. Two analogues of fenarimol show curative
+16. Beatty, J. W., Douglas, J. J., Cole, K. P. & Stephenson, C. R. J. A        activity in an experimental model of chagas disease. J. Med.
+    scalable and operationally simple radical trifluoromethylation.            Chem. 56, 10158–10170 (2013).
+    Nat. Commun. 6, 1–6 (2015).                                            36. Bonilla, E. V., Chai, M. A. & Williams, C. K. I. Multi-task Gaussian
+17. Le, C. C. et al. A general small-scale reactor to enable                   process prediction. In Proc. 21st International Conference on Neural
+    standardization and acceleration of photocatalytic reactions. ACS          Information Processing Systems (NIPS'07) 153–160 (Curran, 2007).
+    Cent. Sci. 3, 647–653 (2017).                                          37. Swersky, K., Snoek, J. & Adams, R. P. Multi-task Bayesian optimization.
+18. Beatty, J. W. et al. Photochemical perfluoroalkylation with pyridine       In Proc. 26th International Conference on Neural Information Processing
+    N-oxides: mechanistic insights and performance on a kilogram               Systems (NIPS'13) https://papers.nips.cc/paper_files/paper/2013/file/
+    scale. Chem 1, 456–472 (2016).                                             f33ba15effa5c10e873bf3842afb46a6-Paper.pdf (2013).
+19. Jin, J. & MacMillan, D. W. C. Alcohols as alkylating agents in         38. Maiti, D., Fors, B. P., Henderson, J. L., Nakamura, Y. & Buchwald,
+    heteroarene C–H functionalization. Nature 525, 87–90 (2015).               S. L. Palladium-catalyzed coupling of functionalized primary and
+20. Ru, B., Alvi, A. S., Nguyen, V., Osborne, M. A. & Roberts, S. J.           secondary amines with aryl and heteroaryl halides: two ligands
+    Bayesian optimisation over multiple continuous and categorical             suffice in most cases. Chem. Sci. 2, 57–68 (2010).
+    inputs. In Proc. 37th International Conference on Machine Learning     39. Daub, M. E. et al. Enantioselective [2+2] cycloadditions of
+    (ICML'20) 8276–8285 (2020).                                                cinnamate esters: generalizing Lewis acid catalysis of triplet
+21. Zhang, J., Sugisawa, N., Felton, K. C., Fuse, S. & Lapkin, A. A.           energy transfer. J. Am. Chem. Soc. 141, 9543–9547 (2019).
+    Multi-objective Bayesian optimisation using q-noisy expected           40. Miller, Z. D., Lee, B. J. & Yoon, T. P. Enantioselective crossed
+    hypervolume improvement (qNEHVI) for the Schotten–Baumann                  photocycloadditions of styrenic olefins by Lewis acid catalyzed
+    reaction. React. Chem. Eng. 9, 706–712 (2024).                             triplet sensitization. Angew. Chem. Int. Ed. 56, 11891–11895 (2017).
+22. Daulton, S., Balandat, M. & Bakshy, E. Parallel Bayesian               41. Mutti, F. G., Knaus, T., Scrutton, N. S., Breuer, M. & Turner, N. J.
+    optimization of multiple noisy objectives with expected                    Conversion of alcohols to enantiopure amines through
+    hypervolume improvement. In Proc. 35th International Conference            dual-enzyme hydrogen-borrowing cascades. Science 349,
+    on Neural Information Processing Systems (NIPS '21) 2187–2200              1525–1529 (2015).
+    (Curran, 2021).                                                        42. Corrado, M. L., Knaus, T. & Mutti, F. G. Regio- and stereoselective
+23. Dong, J. et al. Formyl-selective deuteration of aldehydes with D2O         multi-enzymatic aminohydroxylation of β-methylstyrene using
+    via synergistic organic and photoredox catalysis. Chem. Sci. 11,           dioxygen, ammonia and formate. Green Chem. 21, 6246–6251 (2019).
+    1026–1031 (2020).
+24. Kuang, Y. et al. Visible light driven deuteration of formyl C–H        Acknowledgements
+    and hydridic C(sp3)–H bonds in feedstock chemicals and                 We acknowledge the generous funding provided by the Dutch
+    pharmaceutical molecules. Chem. Sci. 11, 8912–8918 (2020).             Research Council (NWO) under the Open Technology Program
+25. Bayer, T., Wu, S., Snajdrova, R., Baldenius, K. & Bornscheuer, U.      (Multi-Modal Photochemistry, grant number 18433, A.S. and T.N)
+    T. An update: enzymatic synthesis for industrial applications.         and the Talent Program VICI (SynthBot, grant number 20453, T.N).
+    Angew. Chem. Int. Ed. 64, e202505976 (2025).                           T.d.H. and T.N. also acknowledge funding from Taskforce for Applied
+26. Damian, M. & Mutti, F. G. Two anti-prelog NAD-dependent alcohol        Research SIA, part of NWO (Light-Up project). Furthermore, we extend
+    dehydrogenases with broad substrate scope and excellent                our gratitude for the generous funding received from the European
+    enantioselectivity. Eur. J. Org. Chem. https://doi.org/10.1002/        Union H2020 research and innovation programme under the European
+    ejoc.202300734 (2023).                                                 Research Council program (FlowHAT, grant number 101044355, F.L.,
+27. Srinivas, N., Krause, A., Kakade, S. M. & Seeger, M. W.                M.C. and T.N.), the European Innovation Council project (reaCtor,
+    Information-theoretic regret bounds for gaussian process               grant number 101099405, E.S. and T.N.), HORIZON-CL5-2021-D2-01
+    optimization in the bandit setting. IEEE Trans. Inf. Theory 58,        (Photo2Fuel, grant number 101069357, M.C. and T.N.), HORIZON-HLTH-
+    3250–3265 (2012).                                                      2021-IND-07 (SusPharma, grant number 101057430, T.N.), MSCA
+28. Gonzalez, J., Dai, Z., Hennig, P. & Lawrence, N. Batch Bayesian        Doctoral Networks (GreenDigiPharma, grant number 101073089, T.N.)
+    optimization via local penalization. In Proc. 19th International       and MSCA Individual Fellowship program (SELECTFLOW, grant number
+    Conference on Artificial Intelligence and Statistics (AISTATS) 2016    101061835, J.S.-O.). N.I. thanks the PON REACT-EU programme, Olon
+    648–657 (2016).                                                        S.p.A. and the Erasmus+ Traineeship programme for the financial
+29. Ruiz-Castillo, P. & Buchwald, S. L. Applications of                    support. This research received funding from the Molecular and
+    palladium-catalyzed C–N cross-coupling reactions. Chem. Rev.           Material Design Technology Hub of the Faculty of Science of the
+    116, 12564–12649 (2016).                                               University of Amsterdam (A.F.G.G. and T.N.). F.G.M. thanks the Dutch
+30. Isbrandt, E. S., Sullivan, R. J. & Newman, S. G. High throughput       Research Council (NWO) for an XS grant (grant number OCENW.
+    strategies for the discovery and optimization of catalytic             XS24.3.183), and the EU Horizon Europe MSCA for YcascadE (grant
+    reactions. Angew. Chem. Int. Ed. 58, 7180–7191 (2019).                 number 101153173) and SuBStrAte (grant number 101208425) grants.
+
+
+Nature Synthesis
+Article                                                                                                https://doi.org/10.1038/s44160-026-01053-0
+
+Author contributions                                                          Correspondence and requests for materials should be addressed to
+S.P., E.S., O.M.B. and T.N. jointly conceived the project. S.P. led the       Timothy Noël.
+development of the experimental hardware, firmware and control
+software; E.S. led the development of the ML framework, software              Peer review information Nature Synthesis thanks Adrian Amador
+infrastructure and benchmarking methodologies; O.M.B. led analytical          and the other, anonymous, reviewer(s) for their contribution to the
+method development and analytical software. S.P., E.S. and O.M.B.             peer review of this work. Primary Handling Editor: Peter Seavill, in
+all contributed to the software and hardware development and to               collaboration with the Nature Synthesis team.
+the design and execution of the optimization campaigns; M.V., M.C.,
+P.S., J.L. and F.L. designed and executed the preparatory chemical            Reprints and permissions information is available at
+reaction studies, as well as the scale-up and validation experiments;         www.nature.com/reprints.
+M.D. and V.T. designed and supported the biocatalytic aspects of the
+study, including enzyme selection and production; N.I. contributed            Publisher’s note Springer Nature remains neutral with regard to
+to early stage hardware testing; S.P., O.M.B., M.V., M.C., F.L., A.S.,        jurisdictional claims in published maps and institutional affiliations.
+J.S.-O., T.d.H. and T.N. jointly selected chemical systems to be tested
+on the platform; T.d.H., R.A.H.P., A.F.G.G., F.G.M. and T.N. provided         Open Access This article is licensed under a Creative Commons
+supervision and scientific guidance; S.P., E.S., O.M.B. and T.N. drafted      Attribution 4.0 International License, which permits use, sharing,
+the manuscript with input from all authors; T.N. secured funding; all         adaptation, distribution and reproduction in any medium or format,
+authors reviewed and approved the final manuscript.                           as long as you give appropriate credit to the original author(s) and the
+                                                                              source, provide a link to the Creative Commons licence, and indicate
+Competing interests                                                           if changes were made. The images or other third party material in this
+The authors declare no competing interests.                                   article are included in the article’s Creative Commons licence, unless
+                                                                              indicated otherwise in a credit line to the material. If material is not
+Additional information                                                        included in the article’s Creative Commons licence and your intended
+Extended data is available for this paper at https://doi.org/10.1038/         use is not permitted by statutory regulation or exceeds the permitted
+s44160-026-01053-0.                                                           use, you will need to obtain permission directly from the copyright
+                                                                              holder. To view a copy of this licence, visit http://creativecommons.
+Supplementary information The online version contains                         org/licenses/by/4.0/.
+supplementary material available at https://doi.org/10.1038/s44160-
+026-01053-0.                                                                  © The Author(s) 2026
+
+
+1
+ Flow Chemistry Group, Van’t Hoff Institute for Molecular Sciences, University of Amsterdam, Amsterdam, the Netherlands. 2Analytical Chemistry Group,
+Van’t Hoff Institute for Molecular Sciences, University of Amsterdam, Amsterdam, the Netherlands. 3Biocatalysis Group, Van’t Hoff Institute for Molecular
+Sciences, University of Amsterdam, Amsterdam, the Netherlands. 4Dipartimento di Chimica, Università degli Studi di Milano, Milan, Italy. 5Zuyd University
+of Applied Sciences, Heerlen, the Netherlands. 6Netherlands Organisation for Applied Scientific Research (TNO), Eindhoven, the Netherlands. 7Group
+Innovation and Sustainability, Testing, Analytics and Physics Group, Covestro B.V, Waalwijk, the Netherlands. 8These authors contributed equally:
+Simone Pilon, Elia Savino, Oliver M. Bayley.    e-mail: t.noel@uva.nl
+
+
+
+
+Nature Synthesis
+Article                                                                                                                            https://doi.org/10.1038/s44160-026-01053-0
+
+                                                                          O       O              PC
+                                                                                                Py-Ox
+                                                                                                                                       CF3
+                                                           N        F3C       O       CF3                                    N
+                                                 O                                            CH3CN, RT                O
+                                                           Boc                                   light                       Boc
+                                                       4                      5
+
+
+                                                                      This Work / Chem (2016), 1, 456
+
+                                                     [4] (mM)                 100                                                400
+                                                     5. (equiv.)              0.9                          2.1                   3.5
+                                                     PC (mol%)                0.1                    0.2                         0.4
+                                                     PC Type                          PC1    PC2     PC3         PC4       PC5
+                                                     Py-Ox (equiv.)           0.1                            2.1       2.4       0.4
+                                                     Py-Ox Type                             Py-Ox1          Py-Ox2
+                                                     Light (%)                    0                                              100
+                                                     tR (min.)                    2                                              300
+                                                     Light Source                           456 nm          Blue LED
+
+                                                     Yield (%)                    0                                    70 / 71 100
+
+
+Extended Data Fig. 1 | Comparison of the conditions for the                                    PC1: 4CzIPN, PC2: Ru(bpy)3Cl, PC3: Ru(bpy)3PF6, PC4: Ir(bpy)3, PC5: [Ir[dF(CF3)
+trifluoroalkylation presented in Case Study 1. Comparison of the conditions                    ppy]2(dtbpy)]PF6; Py-Ox1: pyridine N-oxide, Py-Ox2: 4-phenylpyridine N-oxide.
+for the trifluoroalkylation of pyrroles presented in Case Study 1 compared                     Bpy, 2,2’-bipiridine; ppy, 2-phenylpyridine; dtbpy, 4,4-di-tert-butyl-2,2-dipyridyl.
+to the orginial report by Stevenson and co-workers in Chem (2016), 1, 456;
+
+
+
+
+Nature Synthesis
+Article                                                                                                               https://doi.org/10.1038/s44160-026-01053-0
+
+
+                                                                                       pTsOH
+                                                                                         PC
+                                                                                        Thiol
+                                                                  R                                          R
+                                                                      OH
+                                                                                  DMSO, RT
+                                    N                                             Blue Light                     N
+
+                                                                                                                        R= CH2CH3
+                                                                                                                         R= CH3
+
+
+                                                     This Work / Nature (2015) 525, 87-90
+
+                                        EtOH/MeOH (equiv.) 0.5                   10     22                                    60
+                                        pTsOH (equiv.)                1.0         2.0      2.5                                4.0
+                                        PC (mol%)                     0.2                         1.0                   1.7   2
+                                        PC Type                                 PC3        PC4          PC5            PC6
+                                        Thiol (mol%)                  2.0                                         8.7         10
+                                        Thiol Type                                           T1         T2
+                                        Light (%)                       0                                    75               100
+
+                                        Light Source                                  456 nm             Blue LED
+
+                                        tR (h)                          0 1.5                                                 48
+
+
+                                        Yield (%)                       0                    42      65                       100
+                                        Selectivity (%)                 0                                        84     94    100
+
+                                   PC3: Ru(ppy)3(PF6)2                            T1: methyl 2-mercaptoacetate
+                                   PC4: Ir(ppy)3                                  T2: ethyl 2-mercaptopropionate
+                                   PC5: Ir[dF(CF3)ppy]2(dtbbpy)PF6
+                                   PC6: Ir(ppy)2(dtbbpy)PF6
+Extended Data Fig. 2 | Comparison of the conditions for the pyridine                  PC4: Ir(bpy)3, PC5: [Ir[dF(CF3)ppy]2(dtbpy])]PF6, PC6:[Ir(dtbpy)(ppy)2]PF6; T1:
+alkylation presented in Case Study 2. Comparison of the conditions for the            methyl thioglycolate, T2: ethyl 2-mercaptopropanoate. Bpy, 2,2’-bipiridine; ppy,
+pyridine alkylation presented in Case Study 2 compared to the orginial report         2-phenylpyridine; dtbpy, 4,4-di-tert-butyl-2,2-dipyridyl.
+by MacMillan and co-workers in Nature (2015), 525, 87; PC3: Ru(bpy)3PF6,
+
+
+
+
+Nature Synthesis
+Article                                                                                                   https://doi.org/10.1038/s44160-026-01053-0
+
+
+                                                      O                                                         O
+                                                                          D 2O
+                                                                          Thiol
+                                                          H                PC                                       D
+
+                                      Br                               CH3CN, RT                Br
+                                                                      390 nm Kessil
+
+
+                                            This Work / Chem. Sci. (2020), 11, 8912-8918
+
+                                     D2O (equiv.)               9.2                                                  49
+                                     Thiol (mol%)               5.0               10                                 20
+                                     Thiol Type                         T2             T3          T4          T5
+                                     PC (mol%)                  5.0                                                  20
+                                     PC Type                                           BP1      BP2
+                                     Light (%)                   25                                                  100
+                                     tR (min.)                    0          1.5                                     4
+
+                                     Yield (%)                     0                   38         64                 100
+
+
+                                 T2: ethyl 2-mercaptopropionate     BP1: Benzophenone
+                                 T3: Ethyl Thioglycolate            BP2: 4,4’-Difluorobenzophenone
+                                 T4: Thiophenol
+                                 T5: 2,4,6-triisopropylbenzenethiol
+Extended Data Fig. 3 | Comparison of the conditions for the photocatalytic        T2: ethyl 2-mercaptopropanoate, T3: ethyl thioglycolate,
+deuteration presented in Case Study 3. Comparison of the conditions               T4: thiophenol, T5: 2,4,6-triisopropylbenzenethiol. BP1: benzophenone,
+for the photocatalytic deuteration presented in Case Study 3 compared             BP2: 4,4-difluorobenzophenone.
+to the original report by Wu and co-workers in Chem Sci (2020), 11, 8912;
+
+
+
+
+Nature Synthesis
+Article                                                                                                                         https://doi.org/10.1038/s44160-026-01053-0
+
+                                                                                  PC
+                                                                               Sc(OTf)2                     OH     O
+                                                  OH    O                       Ligand
+                                                                               Styrene
+                                                                    Ph
+                                                                          AcOiPr:CH3CN, RT
+                                                                                 light                                            Ph
+                                                                                                                   Ph
+
+                                                                 This Work / ACIE (2017), 56, 11891
+
+                                                 Styrene (equiv.)        2.5                           7.7                  10
+                                                 PC (mol%)               1.5                    2.5                         6.0
+                                                 PC Type                            PC3         PC6          PC7
+                                                 Sc(OTf)2 (mol%)         5.0                          10                    20
+                                                 Ligand (mol%)           10                     15                          30
+                                                 Ligand Type                   L1          L2          L3              L4
+                                                 AcOiPr:MeCN (X:1)        2           2.36                                  3
+                                                 Light (%)                0                                                 100
+                                                 tR (min.)                5          73.5                                   1200
+                                                 Light Source                       456 nm             23W CFL
+
+
+                                                 Yield (%)                 0                                 80 90          100
+                                                 d.r (1:X)                 1                          1.5                   2
+                                                 e.e (%)                   0                                     96 99 100
+
+
+Extended Data Fig. 4 | Comparison of the conditions for the enantioselective              L1: tBu-BOX, L2: tBu-Py-BOX, L3: Bn-Py-BOX, L4: iPr-Py-BOX. Bpy, 2,2’-bipiridine;
+photoaddition presented in Case Study 6. Comparison of the conditions for                 ppy, 2-phenylpyridine; dtbpy, 4,4-di-tert-butyl-2,2-dipyridyl; tBu, tert-butyl;
+the enantioselective photoaddition presented in Case Study 6 compared                     Py, pyridyl; Bn, benzyl; iPr, iso-propyl; BOX, bis(oxazoline); Ac, acetate;
+to the original report by Yoon and co-workers in ACIE (2017), 56, 11891;                  CFL, compact fluorescent lamp.
+PC3: Ru(bpy)3PF6, PC6:[Ir(dtbpy)(ppy)2]PF6, PC7: [Ir(dFFppy)2(dtbpy)]PF6;
+
+
+
+
+Nature Synthesis
+

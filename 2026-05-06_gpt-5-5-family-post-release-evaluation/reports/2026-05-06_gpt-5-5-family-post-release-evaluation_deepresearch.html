@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executive Summary</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>Executive Summary</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-05-07 03:18:35</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>43</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-05-06_gpt-5-5-family-post-release-evaluation_deepresearch.md">2026-05-06_gpt-5-5-family-post-release-evaluation_deepresearch.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <h2 id="10-conclusions">10 conclusions</h2>
+<ol>
+<li><strong>Fact</strong>: OpenAI는 2026-04-23 <code>GPT-5.5</code>를 발표했고, 2026-04-24 업데이트에서 <code>GPT-5.5</code>와 <code>GPT-5.5 Pro</code>의 API 제공 계획과 가격을 명시했습니다. 공식 포지셔닝은 coding, online research, data analysis, document/spreadsheet creation, software operation, tool use를 하나의 real-work model narrative로 묶고 있습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI, 2026-04-23</a></li>
+<li><strong>Fact</strong>: <code>GPT-5.5 Pro</code>는 공개 자료 기준 별도 architecture로 설명되지 않습니다. System card는 Pro를 같은 underlying model에 parallel test-time compute 설정을 더한 variant로 설명합니다. <a href="https://deploymentsafety.openai.com/gpt-5-5">OpenAI System Card, 2026-04-23</a></li>
+<li><strong>Fact</strong>: <code>GPT-5.5 Instant</code>는 2026-05-05 ChatGPT 기본 모델로 배포되기 시작했고, 공식 기준 baseline은 <code>GPT-5.3 Instant</code>입니다. OpenAI는 <code>GPT-5.4 Instant</code>라는 모델이 없다고 명시했습니다. <a href="https://deploymentsafety.openai.com/gpt-5-5-instant">OpenAI Instant System Card, 2026-05-05</a></li>
+<li><strong>Fact</strong>: OpenAI의 발표 표에서 GPT-5.5는 Terminal-Bench 2.0 82.7%, SWE-Bench Pro 58.6%, OSWorld-Verified 78.7%, BrowseComp 84.4%, FrontierMath Tier 4 35.4%를 기록했습니다. 같은 표에서 Claude Opus 4.7은 SWE-Bench Pro 64.3%, OSWorld-Verified 78.0%, BrowseComp 79.3%, FrontierMath Tier 4 22.9%로 제시됩니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI, 2026-04-23</a></li>
+<li><strong>Fact</strong>: OpenAI는 GPT-5.5 평가가 <code>reasoning effort = xhigh</code>와 research environment에서 수행됐고, production ChatGPT 출력과 약간 다를 수 있다고 명시했습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI, 2026-04-23</a></li>
+<li><strong>Fact</strong>: Artificial Analysis는 2026-04-23 GPT-5.5 xhigh가 Intelligence Index 1위라고 평가하면서도 AA-Omniscience에서 accuracy 57%, hallucination rate 86%를 보고했습니다. 같은 글은 Opus 4.7 max hallucination 36%, Gemini 3.1 Pro Preview 50%를 비교값으로 제시했습니다. <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis, 2026-04-23</a></li>
+<li><strong>Fact</strong>: Scale MCP Atlas는 1,000개 task, 36개 MCP server, 220개 tool을 쓰는 real-world tool-use benchmark입니다. 2026-04 업데이트 기준 GPT-5.5 xhigh는 75.3%, GPT-5.4 xhigh는 70.6%, Claude Opus 4.7 max는 79.1%로 제시됩니다. <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs MCP Atlas</a></li>
+<li><strong>Fact</strong>: UK AISI는 2026-04-30 GPT-5.5가 장기 사이버 task에서 강한 성능을 보인다고 평가했고, end-to-end cyber range와 reverse engineering 사례를 공개했습니다. AISI는 이러한 능력이 long-horizon autonomy, reasoning, coding 개선의 부산물일 가능성을 언급했습니다. <a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities">UK AISI, 2026-04-30</a></li>
+<li><strong>Inference</strong>: GPT-5.5의 가장 믿을 만한 강점은 단일 정답 지식보다 긴 작업을 계속 밀고 가는 능력에 있습니다. Terminal-Bench, OSWorld, MCP Atlas, cyber range, Codex token-efficiency 주장은 모두 planning, tool selection, error recovery, sustained execution 쪽으로 수렴합니다.</li>
+<li><strong>Inference</strong>: hallucination 개선은 부분적으로 사실이지만 decision-relevant factuality 개선으로 바로 환산하면 위험합니다. OpenAI Instant 평가는 선택된 high-stakes, user-flagged, factuality-heavy prompt set이고, Artificial Analysis는 모를 때 멈추지 않는 answer-when-uncertain 성향이 여전히 크다고 봅니다.</li>
+</ol>
+<h2 id="model-advances">Model advances</h2>
+<p>GPT-5.5 family의 변화는 세 층으로 나누어 읽어야 합니다. <code>GPT-5.5 Thinking</code>은 complex real-world work를 위한 reasoning/tool-use model입니다. <code>GPT-5.5 Pro</code>는 같은 model family 위에서 parallel test-time compute를 더 쓰는 고정확도 설정입니다. <code>GPT-5.5 Instant</code>는 ChatGPT 기본 경험을 더 짧고 개인화되고 factuality가 높은 방향으로 조정한 daily-driver model입니다. OpenAI API 문서는 GPT-5.5의 default reasoning effort가 <code>medium</code>이라고 설명하고, <code>low</code>, <code>high</code>, <code>xhigh</code>를 task risk와 latency/cost에 맞추어 조정하라고 안내합니다. <a href="https://developers.openai.com/api/docs/guides/latest-model">OpenAI API docs</a></p>
+<h2 id="performance">Performance</h2>
+<p>성능 향상은 broad하지만 균일하지 않습니다. OpenAI 표에서는 Terminal-Bench 2.0, OSWorld-Verified, BrowseComp, FrontierMath, Graphwalks 1M context에서 GPT-5.4 대비 의미 있는 개선이 보입니다. 그러나 SWE-Bench Pro에서는 GPT-5.5 58.6%가 Claude Opus 4.7 64.3%보다 낮고, MCP Atlas에서도 GPT-5.5 xhigh 75.3%는 Claude Opus 4.7 max 79.1%보다 낮습니다. 이 차이는 GPT-5.5가 약하다는 뜻보다 benchmark별 task surface, harness, tool budget, reasoning effort, possible memorization caveat를 함께 봐야 한다는 뜻에 가깝습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI</a> <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs</a></p>
+<h2 id="hallucinations">Hallucinations</h2>
+<p>OpenAI는 GPT-5.5 Instant가 GPT-5.3 Instant 대비 high-stakes prompts에서 hallucinated claims를 52.5% 줄였고, user-flagged factual-error conversations에서 inaccurate claims를 37.3% 줄였다고 발표했습니다. 다만 Instant system card는 이 factuality eval들이 production prevalence를 측정하지 않는다고 선을 긋습니다. Artificial Analysis는 별도 private benchmark에서 GPT-5.5 xhigh가 가장 높은 factual accuracy를 보였지만 hallucination rate가 86%라고 보고했습니다. 따라서 지금의 결론은 “factual knowledge와 일부 내부 factuality set은 개선됐지만, uncertainty calibration과 answer-when-uncertain control은 독립적으로 검증해야 한다”입니다. <a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant</a> <a href="https://deploymentsafety.openai.com/gpt-5-5-instant">OpenAI Instant System Card</a> <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a></p>
+<h1 id="background">Background</h1>
+<h2 id="scope">Scope</h2>
+<p>이 보고서는 2026-05-06 기준 공개 자료를 바탕으로 GPT-5.5 family를 평가합니다. 분석 단위는 세 개입니다.</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Public role</th>
+<th>Baseline</th>
+<th>Primary comparison risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-5.5 / GPT-5.5 Thinking</td>
+<td>complex work, coding, research, tool use, long-context reasoning</td>
+<td>GPT-5.4 Thinking</td>
+<td>xhigh research eval과 production setting이 다를 수 있음</td>
+</tr>
+<tr>
+<td>GPT-5.5 Pro</td>
+<td>hardest tasks, higher-accuracy work, long-running workflows</td>
+<td>GPT-5.4 Pro</td>
+<td>같은 underlying model의 parallel test-time compute setting이므로 architecture claim 금지</td>
+</tr>
+<tr>
+<td>GPT-5.5 Instant</td>
+<td>ChatGPT default, everyday Q&amp;A, concise/personalized response</td>
+<td>GPT-5.3 Instant</td>
+<td>product-layer personalization과 model factuality를 분리해야 함</td>
+</tr>
+</tbody>
+</table>
+<h2 id="release-timeline">Release timeline</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Date</th>
+<th>Event</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">2026-04-23</td>
+<td>OpenAI publishes <code>Introducing GPT-5.5</code>; GPT-5.5 rolls out to Plus, Pro, Business, Enterprise in ChatGPT and Codex; GPT-5.5 Pro rolls out to Pro, Business, Enterprise in ChatGPT.</td>
+<td><a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-04-23</td>
+<td>GPT-5.5 System Card published. It defines GPT-5.5 Pro as same underlying model with parallel test-time compute setting.</td>
+<td><a href="https://deploymentsafety.openai.com/gpt-5-5">System card</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-04-24</td>
+<td>OpenAI updates release/system card with API deployment and safeguard details.</td>
+<td><a href="https://deploymentsafety.openai.com/gpt-5-5">System card</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-04-30</td>
+<td>UK AISI publishes cyber capability evaluation of OpenAI GPT-5.5.</td>
+<td><a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities">UK AISI</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-05-05</td>
+<td>OpenAI releases GPT-5.5 Instant as ChatGPT default, replacing GPT-5.3 Instant.</td>
+<td><a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-05-05</td>
+<td>GPT-5.5 Instant System Card published.</td>
+<td><a href="https://deploymentsafety.openai.com/gpt-5-5-instant">Instant system card</a></td>
+</tr>
+<tr>
+<td style="text-align: right;">2026-05-06</td>
+<td>OpenAI Help Center article states GPT-5.5 Instant is the default for logged-in ChatGPT users and documents context windows/tool support.</td>
+<td><a href="https://help.openai.com/en/articles/11909943-gpt-53-and-gpt-55-in-chatgpt">Help Center</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="why-it-matters-now">Why it matters now</h2>
+<p>GPT-5.5가 중요한 이유는 benchmark crown 자체보다 deployment boundary가 바뀌고 있기 때문입니다. 이 family는 ChatGPT 기본 모델, Codex 작업 모델, API agent model, Pro 고정확도 model, cyber trusted-access narrative를 동시에 건드립니다. 한 모델 release가 product default, developer cost curve, enterprise governance, safety capability threshold를 함께 흔드는 상황입니다.</p>
+<h1 id="state-of-the-art">State of the Art</h1>
+<h2 id="official-claims">Official claims</h2>
+<p>OpenAI의 공식 주장은 여섯 가지로 정리됩니다.</p>
+<ul>
+<li><strong>Agentic execution</strong>: GPT-5.5가 messy multi-part task를 plan, tool use, self-check, ambiguity navigation, continuation으로 처리한다고 설명합니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Coding and terminal work</strong>: Terminal-Bench 2.0 82.7%, SWE-Bench Pro 58.6%, Expert-SWE internal 73.1%를 제시합니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Knowledge work</strong>: GDPval 84.9%, OfficeQA Pro 54.1%, FinanceAgent 60.0%를 제시합니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Tool use and browsing</strong>: BrowseComp 84.4%, GPT-5.5 Pro 90.1%, Tau2-bench Telecom 98.0%를 제시합니다. Tau2-bench는 original prompts, no prompt adjustment 조건이라고 명시합니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Long context</strong>: Graphwalks 1M과 MRCR 512K-1M에서 GPT-5.4보다 큰 개선을 제시합니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Instant factuality</strong>: GPT-5.5 Instant가 GPT-5.3 Instant 대비 high-stakes hallucinated claims 52.5% 감소, flagged conversations inaccurate claims 37.3% 감소를 보였다고 발표합니다. <a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant</a></li>
+</ul>
+<h2 id="independent-and-external-validation">Independent and external validation</h2>
+<p>독립 검증은 official narrative를 부분적으로 지지하면서도 다르게 읽어야 할 지점을 남깁니다.</p>
+<ul>
+<li><strong>Artificial Analysis</strong>는 GPT-5.5 xhigh를 Intelligence Index 1위로 평가했습니다. 동시에 AA-Omniscience hallucination rate 86%라는 강한 경고 신호를 제시했습니다. 이는 knowledge recall이 좋아져도 uncertainty calibration이 별도 문제로 남을 수 있다는 뜻입니다. <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a></li>
+<li><strong>Scale MCP Atlas</strong>는 GPT-5.5 xhigh가 GPT-5.4 xhigh보다 개선됐다고 보고하지만, Claude Opus 4.7 max와 Gemini 3.1 Pro Preview high보다 낮게 배치합니다. 이 benchmark는 real MCP server, noisy tool menu, claim-level LLM judging을 쓰기 때문에 enterprise agent 평가에 직접적인 의미가 있습니다. <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs</a></li>
+<li><strong>UK AISI</strong>는 GPT-5.5의 cyber capability가 장기 autonomy, reasoning, coding 개선과 함께 상승하고 있다고 봅니다. 이는 safety risk와 defender utility가 동시에 커진다는 신호입니다. <a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities">UK AISI</a></li>
+<li><strong>SWE-Bench Pro paper and Scale public page</strong>는 long-horizon software engineering benchmark의 contamination-resistance, public/private/held-out split, strict resolve-rate definition을 설명합니다. OpenAI release의 58.6% row와 Scale public leaderboard의 current entries는 같은 harness인지 바로 단정할 수 없으므로 report-level 비교에서는 caution으로 남깁니다. <a href="https://arxiv.org/abs/2509.16941">arXiv</a> <a href="https://labs.scale.com/leaderboard/swe_bench_pro_public">Scale SWE-Bench Pro</a></li>
+</ul>
+<h1 id="technical-deep-dive">Technical Deep Dive</h1>
+<h2 id="reasoning-behavior">Reasoning behavior</h2>
+<p><strong>Fact</strong>: OpenAI API 문서는 GPT-5.5가 <code>medium</code> reasoning effort를 default로 사용한다고 설명합니다. <code>low</code>는 efficient reasoning, <code>medium</code>은 latency/performance 균형, <code>high</code>는 complex agentic tasks, <code>xhigh</code>는 hardest asynchronous agentic tasks나 intelligence-bound evals에 쓰라고 안내합니다. <a href="https://developers.openai.com/api/docs/guides/latest-model">OpenAI API docs</a></p>
+<p><strong>Inference</strong>: GPT-5.5의 benchmark superiority를 읽을 때 effort setting을 반드시 함께 봐야 합니다. OpenAI release의 benchmark table은 xhigh research environment를 기본으로 둡니다. production에서 medium이나 low를 쓰는 팀은 official headline 점수보다 낮은 ceiling을 보게 될 가능성이 있습니다.</p>
+<p><strong>Deployment implication</strong>: migration은 model slug만 바꾸는 방식보다 workload별 effort sweep으로 시작해야 합니다. 특히 tool-heavy workflow에서는 <code>low -&gt; medium -&gt; high</code>를 순차로 재평가하고, <code>xhigh</code>는 async, high-value, reviewable work에만 제한하는 편이 낫습니다.</p>
+<h2 id="tool-use">Tool use</h2>
+<p>GPT-5.5의 tool-use story는 두 방향으로 강합니다. OpenAI는 BrowseComp, MCP Atlas, Toolathlon, Tau2-bench Telecom을 공식 표에 넣었습니다. Scale MCP Atlas는 real MCP servers, 10-25 exposed tools, 3-7 required tools, plausible distractors, 100 max tool calls 조건에서 pass rate를 평가합니다. GPT-5.5 xhigh는 75.3%로 GPT-5.4 xhigh 70.6%보다 높지만 Claude Opus 4.7 max 79.1%보다는 낮습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a> <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs</a></p>
+<p><strong>Inference</strong>: GPT-5.5의 개선은 “tool을 부를 수 있다”보다 “큰 tool surface에서 적절한 tool을 고르고 중간 실패를 회복한다” 쪽으로 해석하는 편이 맞습니다. Scale의 failure analysis도 wrong tool selection, incorrect parameters, sequencing mistakes가 주요 failure category라고 설명합니다.</p>
+<h2 id="agentic-execution">Agentic execution</h2>
+<p>Terminal-Bench 2.0 82.7%, OSWorld-Verified 78.7%, CyberGym 81.8%, cyber range pass cases는 GPT-5.5가 장기 작업에서 더 강해졌다는 official narrative를 뒷받침합니다. UK AISI는 GPT-5.5가 reverse engineering과 end-to-end cyber range에서 구체적인 chain을 수행하는 사례를 공개했습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a> <a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities">UK AISI</a></p>
+<p><strong>Caution</strong>: agentic execution은 capability와 risk가 함께 증가하는 축입니다. 더 긴 rollout이 가능하면 defensive patching과 codebase migration이 좋아지지만, cyber misuse와 accidental destructive action도 같이 커집니다. OpenAI system card가 accidental data-destructive actions, user confirmations, cyber safeguards를 별도 항목으로 다루는 이유도 여기에 있습니다. <a href="https://deploymentsafety.openai.com/gpt-5-5">OpenAI System Card</a></p>
+<h2 id="long-context-handling">Long-context handling</h2>
+<p>OpenAI release는 Graphwalks BFS 1M에서 GPT-5.5 45.4%, GPT-5.4 9.4%, Claude Opus 4.6 41.2%를 제시합니다. Graphwalks parents 1M에서는 GPT-5.5 58.5%, GPT-5.4 44.4%, Claude Opus 4.6 72.0%입니다. MRCR 512K-1M에서는 GPT-5.5 74.0%, GPT-5.4 36.6%, Claude Opus 4.7 32.2%입니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></p>
+<p><strong>Inference</strong>: long-context behavior는 명확히 좋아졌지만 uniformly dominant하지 않습니다. Graphwalks parents 1M처럼 peer가 앞서는 row도 있습니다. 따라서 enterprise RAG나 long-document analysis에서는 context size보다 retrieval strategy, chunk provenance, citation verification, answer compaction이 여전히 더 큰 설계 변수입니다.</p>
+<h2 id="cost-latency-and-token-efficiency">Cost, latency, and token efficiency</h2>
+<p><strong>Fact</strong>: OpenAI API pricing page는 standard short-context 기준 <code>gpt-5.5</code>를 input $5.00, cached input $0.50, output $30.00 per 1M tokens로 제시합니다. <code>gpt-5.5-pro</code>는 input $30.00, output $180.00입니다. <code>gpt-5.4</code>는 input $2.50, output $15.00입니다. <a href="https://developers.openai.com/api/docs/pricing">OpenAI pricing</a></p>
+<p><strong>Fact</strong>: OpenAI release는 GPT-5.5가 GPT-5.4보다 per-token latency를 유지하면서 더 높은 intelligence를 보이고 Codex tasks에서 fewer tokens를 사용한다고 주장합니다. Artificial Analysis도 GPT-5.5 xhigh가 자사 Index run에서 GPT-5.4 xhigh 대비 output tokens를 약 40% 적게 사용해, doubled per-token pricing의 상당 부분을 흡수했다고 평가했습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a> <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a></p>
+<p><strong>Inference</strong>: unit token price만 보면 GPT-5.5는 GPT-5.4의 2배입니다. 그러나 agentic workflow에서는 retries, failed trajectories, review cycles, output verbosity가 총비용을 좌우합니다. GPT-5.5가 fewer attempts와 fewer tokens로 같은 outcome을 만들면 effective cost는 headline price보다 덜 나빠질 수 있습니다. 이 효과는 내부 eval 없이는 알 수 없습니다.</p>
+<h2 id="safety-and-deployment-changes">Safety and deployment changes</h2>
+<p>OpenAI system card는 GPT-5.5를 Biological/Chemical과 Cybersecurity에서 High capability로 취급하고, API deployment safeguard update를 2026-04-24에 추가했습니다. Instant system card도 GPT-5.5 Instant를 첫 Instant 모델 중 High capability로 취급한다고 설명합니다. GPT-5.5 Instant는 deployed low reasoning effort이지만, xhigh reasoning effort에서는 preparedness eval performance가 High treatment를 정당화한다고 설명합니다. <a href="https://deploymentsafety.openai.com/gpt-5-5">GPT-5.5 System Card</a> <a href="https://deploymentsafety.openai.com/gpt-5-5-instant">GPT-5.5 Instant System Card</a></p>
+<p><strong>Caution</strong>: capability category는 production user가 같은 capability를 그대로 얻는다는 뜻이 아닙니다. OpenAI는 safeguards, trust-based access, actor-level enforcement, confirmation policy, system-level mitigations를 별도 계층으로 둡니다. 모델 성능과 제품 접근권한을 분리해서 읽어야 합니다.</p>
+<h2 id="benchmark-scorecard">Benchmark scorecard</h2>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th>Task Type</th>
+<th>Setup</th>
+<th>GPT-5.5 Variant</th>
+<th>Baseline</th>
+<th>Peer Comparison</th>
+<th>Caveat</th>
+<th>Takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Terminal-Bench 2.0</td>
+<td>Agentic coding / terminal workflows</td>
+<td>OpenAI release table, xhigh research environment</td>
+<td>GPT-5.5 82.7%</td>
+<td>GPT-5.4 75.1%</td>
+<td>Claude Opus 4.7 69.4%, Gemini 3.1 Pro 68.5%</td>
+<td>Production ChatGPT may differ from research environment</td>
+<td>Strong official signal for terminal-based execution</td>
+</tr>
+<tr>
+<td>SWE-Bench Pro</td>
+<td>Real GitHub issue resolution</td>
+<td>OpenAI release table</td>
+<td>GPT-5.5 58.6%</td>
+<td>GPT-5.4 57.7%</td>
+<td>Claude Opus 4.7 64.3%, Gemini 3.1 Pro 54.2%</td>
+<td>OpenAI footnote references memorization evidence; Scale public page has different current harness context</td>
+<td>GPT-5.5 improves slightly over GPT-5.4, but peer lead remains on this row</td>
+</tr>
+<tr>
+<td>Expert-SWE</td>
+<td>Internal long-horizon coding</td>
+<td>OpenAI internal eval</td>
+<td>GPT-5.5 73.1%</td>
+<td>GPT-5.4 68.5%</td>
+<td>Not provided</td>
+<td>Internal only</td>
+<td>Useful as direction, weak for external model selection</td>
+</tr>
+<tr>
+<td>GDPval</td>
+<td>Professional knowledge work</td>
+<td>wins/ties metric</td>
+<td>GPT-5.5 84.9%; GPT-5.5 Pro 82.3%</td>
+<td>GPT-5.4 83.0%; GPT-5.4 Pro 82.0%</td>
+<td>Claude Opus 4.7 80.3%, Gemini 3.1 Pro 67.3%</td>
+<td>Task mix and judging matter</td>
+<td>Broad knowledge-work improvement, but not a factuality guarantee</td>
+</tr>
+<tr>
+<td>OSWorld-Verified</td>
+<td>Computer use</td>
+<td>Real computer environment tasks</td>
+<td>GPT-5.5 78.7%</td>
+<td>GPT-5.4 75.0%</td>
+<td>Claude Opus 4.7 78.0%</td>
+<td>Tool/UI environment details matter</td>
+<td>GPT-5.5 is competitive at computer-use execution</td>
+</tr>
+<tr>
+<td>BrowseComp</td>
+<td>Browsing/search</td>
+<td>Hard-to-find short-answer web search benchmark</td>
+<td>GPT-5.5 84.4%; GPT-5.5 Pro 90.1%</td>
+<td>GPT-5.4 82.7%; GPT-5.4 Pro 89.3%</td>
+<td>Claude Opus 4.7 79.3%, Gemini 3.1 Pro 85.9%</td>
+<td>BrowseComp authors note short-answer focus may not map to open-ended user distributions</td>
+<td>Strong search-agent signal, especially Pro</td>
+</tr>
+<tr>
+<td>MCP Atlas</td>
+<td>Tool-use / MCP orchestration</td>
+<td>1,000 tasks, 36 MCP servers, 220 tools, 100 max tool calls</td>
+<td>GPT-5.5 xhigh 75.3%</td>
+<td>GPT-5.4 xhigh 70.6%</td>
+<td>Claude Opus 4.7 max 79.1%, Gemini 3.1 Pro Preview high 78.2%</td>
+<td>LLM-as-judge with claim scoring; public/private split</td>
+<td>GPT-5.5 improves over GPT-5.4 but is not top on this external leaderboard</td>
+</tr>
+<tr>
+<td>Tau2-bench Telecom</td>
+<td>Customer-service agent workflow</td>
+<td>Original prompts, no prompt adjustment; GPT-4.1 as user model</td>
+<td>GPT-5.5 98.0%</td>
+<td>GPT-5.4 92.8%</td>
+<td>Not provided in OpenAI row</td>
+<td>No prompt tuning is useful caveat, but peer comparison absent</td>
+<td>Strong official signal for structured customer workflows</td>
+</tr>
+<tr>
+<td>FrontierMath Tier 4</td>
+<td>Advanced math</td>
+<td>OpenAI release table</td>
+<td>GPT-5.5 35.4%; GPT-5.5 Pro 39.6%</td>
+<td>GPT-5.4 27.1%; GPT-5.4 Pro 38.0%</td>
+<td>Claude Opus 4.7 22.9%, Gemini 3.1 Pro 16.7%</td>
+<td>Eval contamination/methodology unknown from table alone</td>
+<td>Strong official high-difficulty reasoning signal</td>
+</tr>
+<tr>
+<td>Graphwalks BFS 1M</td>
+<td>Long-context graph reasoning</td>
+<td>1M context row</td>
+<td>GPT-5.5 45.4%</td>
+<td>GPT-5.4 9.4%</td>
+<td>Claude Opus 4.6 41.2%</td>
+<td>Different peer version row</td>
+<td>Large long-context improvement over GPT-5.4</td>
+</tr>
+<tr>
+<td>Graphwalks parents 1M</td>
+<td>Long-context graph reasoning</td>
+<td>1M context row</td>
+<td>GPT-5.5 58.5%</td>
+<td>GPT-5.4 44.4%</td>
+<td>Claude Opus 4.6 72.0%</td>
+<td>Different peer version row</td>
+<td>Improved but not dominant across all long-context tasks</td>
+</tr>
+<tr>
+<td>HealthBench Professional</td>
+<td>Health capability and safety</td>
+<td>Instant system card, length-adjusted</td>
+<td>GPT-5.5 Instant 38.4</td>
+<td>GPT-5.3 Instant 32.9</td>
+<td>No peer row</td>
+<td>Answer-length adjustment still benchmark-specific</td>
+<td>Health-facing performance improves, but high-stakes deployment still needs controls</td>
+</tr>
+<tr>
+<td>User-flagged factuality</td>
+<td>Hallucination-prone historical conversations</td>
+<td>OpenAI Instant internal eval with LLM grader and web access</td>
+<td>GPT-5.5 Instant: inaccurate claims down 37.3% vs GPT-5.3 Instant</td>
+<td>GPT-5.3 Instant</td>
+<td>No peer row</td>
+<td>Not representative production traffic</td>
+<td>Good signal for known failure modes, not prevalence</td>
+</tr>
+<tr>
+<td>High-stakes hallucinated claims</td>
+<td>Medical/legal/finance prompts</td>
+<td>OpenAI Instant internal eval</td>
+<td>GPT-5.5 Instant: 52.5% fewer hallucinated claims vs GPT-5.3 Instant</td>
+<td>GPT-5.3 Instant</td>
+<td>No peer row</td>
+<td>Targeted high-stakes prompt set</td>
+<td>Directionally important, needs in-house replication</td>
+</tr>
+<tr>
+<td>AA-Omniscience</td>
+<td>Knowledge and hallucination</td>
+<td>Artificial Analysis private benchmark</td>
+<td>GPT-5.5 xhigh accuracy 57%, hallucination rate 86%</td>
+<td>GPT-5.4 xhigh gain +14 pts mostly knowledge-driven</td>
+<td>Opus 4.7 max hallucination 36%, Gemini 3.1 Pro Preview 50%</td>
+<td>Private benchmark; not same as OpenAI Instant eval</td>
+<td>Strong warning on answer-when-uncertain behavior</td>
+</tr>
+<tr>
+<td>Cyber range / cyber tasks</td>
+<td>Offensive/defensive cyber autonomy</td>
+<td>OpenAI system card, UK AISI external evaluation</td>
+<td>GPT-5.5</td>
+<td>GPT-5.4 Thinking, GPT-5.3 Codex in selected rows</td>
+<td>AISI compares to frontier cyber models qualitatively</td>
+<td>Safety safeguards and access policy alter real availability</td>
+<td>Cyber capability has increased and needs governance</td>
+</tr>
+</tbody>
+</table>
+<h1 id="industry-landscape">Industry Landscape</h1>
+<h2 id="consensus">Consensus</h2>
+<ul>
+<li>GPT-5.5 is stronger than GPT-5.4 on many agentic, coding, tool-use, long-context, and professional-work benchmarks. This is supported by OpenAI tables, Artificial Analysis, Scale MCP Atlas, and AISI cyber work. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI</a> <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a> <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs</a> <a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities">UK AISI</a></li>
+<li>GPT-5.5 Pro should be interpreted as higher test-time compute rather than a separately disclosed architecture. <a href="https://deploymentsafety.openai.com/gpt-5-5">OpenAI System Card</a></li>
+<li>GPT-5.5 Instant is a product-default update with factuality and personalization claims, not the same evaluation object as GPT-5.5 Thinking/Pro. <a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant</a> <a href="https://help.openai.com/en/articles/11909943-gpt-53-and-gpt-55-in-chatgpt">Help Center</a></li>
+</ul>
+<h2 id="disagreement">Disagreement</h2>
+<ul>
+<li><strong>Coding leadership</strong>: OpenAI leads on Terminal-Bench 2.0 in its release table, while Claude Opus 4.7 leads on SWE-Bench Pro in the same table. This means “best coding model” depends on whether the team values terminal workflow, repo issue resolution, long-horizon execution, or specific scaffold compatibility.</li>
+<li><strong>Tool-use leadership</strong>: OpenAI includes MCP Atlas and reports GPT-5.5 above GPT-5.4. Scale&rsquo;s external leaderboard still places Claude Opus 4.7 and Gemini 3.1 Pro Preview above GPT-5.5 xhigh. <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale Labs</a></li>
+<li><strong>Factuality narrative</strong>: OpenAI Instant claims large reductions in selected hallucination-heavy evals. Artificial Analysis reports very high hallucination rate when the model should avoid unsupported answers. Both can be true because they test different behavior surfaces.</li>
+</ul>
+<h2 id="recurring-critiques">Recurring critiques</h2>
+<ul>
+<li>Benchmark rows often mix internal evals, external evals, public/private splits, tool access, prompt settings, and reasoning effort.</li>
+<li>LLM-as-judge metrics are useful but should not be treated as human adjudication.</li>
+<li>Longer answers can inflate open-ended benchmark scores; both GPT-5.5 and GPT-5.5 Instant system cards discuss answer-length adjustment in HealthBench. <a href="https://deploymentsafety.openai.com/gpt-5-5">GPT-5.5 System Card</a> <a href="https://deploymentsafety.openai.com/gpt-5-5-instant">Instant System Card</a></li>
+<li>Production behavior differs from offline evals because product routing, safeguards, system prompts, tool availability, usage limits, and UI affordances change the model surface.</li>
+</ul>
+<h1 id="applications">Applications</h1>
+<h2 id="gpt-55">GPT-5.5</h2>
+<p>Best fit:</p>
+<ul>
+<li>coding agents that need codebase navigation, terminal use, tests, and validation</li>
+<li>research assistants with browsing, file analysis, citation checking, and long-context synthesis</li>
+<li>enterprise knowledge work where workflow completion matters more than one-shot answer brevity</li>
+<li>data analysis and document/spreadsheet generation with explicit acceptance criteria</li>
+<li>tool-heavy agents where medium/high effort can be evaluated against known task sets</li>
+</ul>
+<p>Avoid or constrain:</p>
+<ul>
+<li>cheap high-volume short Q&amp;A where GPT-5.4-mini or Instant-class models may be enough</li>
+<li>high-stakes factual answers without retrieval, uncertainty prompts, and human review</li>
+<li>uncontrolled long-running agents with write/delete permissions</li>
+</ul>
+<h2 id="gpt-55-pro">GPT-5.5 Pro</h2>
+<p>Best fit:</p>
+<ul>
+<li>hardest research questions, legal/technical review, executive-critical analysis</li>
+<li>asynchronous tasks where latency and cost are acceptable</li>
+<li>final-pass critique, model-comparison arbitration, complex codebase refactors</li>
+<li>search/browse tasks where additional test-time compute has shown a gain, such as BrowseComp Pro row</li>
+</ul>
+<p>Avoid or constrain:</p>
+<ul>
+<li>routine customer support</li>
+<li>cost-sensitive batch extraction</li>
+<li>workflows where higher effort causes over-searching or verbose answers</li>
+<li>tasks lacking clear stop rules</li>
+</ul>
+<h2 id="gpt-55-instant">GPT-5.5 Instant</h2>
+<p>Best fit:</p>
+<ul>
+<li>ChatGPT default consumer and workplace assistance</li>
+<li>concise explanations, translation, technical writing, everyday research triage</li>
+<li>image/photo upload analysis in low-to-medium risk settings</li>
+<li>customer-facing chat where warmer tone and shorter answers matter</li>
+</ul>
+<p>Avoid or constrain:</p>
+<ul>
+<li>medical, legal, financial, or compliance decisions without domain guardrails</li>
+<li>workflows where personalization sources could create privacy or provenance questions</li>
+<li>cases requiring deterministic source-grounded answers unless retrieval and citation policy are explicit</li>
+</ul>
+<h1 id="limitations">Limitations</h1>
+<ul>
+<li><strong>Undisclosed architecture</strong>: Public sources do not disclose architecture details. Do not infer training mixture, parameter count, MoE routing, or hidden architecture changes.</li>
+<li><strong>Internal-eval bias</strong>: Expert-SWE, investment banking tasks, some safety and factuality evaluations are internal or not fully reproducible.</li>
+<li><strong>Answer-length effects</strong>: HealthBench scores require length adjustment because longer answers can score higher without being more useful. <a href="https://deploymentsafety.openai.com/gpt-5-5">OpenAI System Card</a></li>
+<li><strong>Offline-vs-production gaps</strong>: OpenAI states release evals can differ from production ChatGPT. Product routing, safeguards, and system prompts matter.</li>
+<li><strong>Hallucination metric ambiguity</strong>: Claim-level factual error, response-level factual error, unsupported citation, failure to admit uncertainty, and answer-when-uncertain are different metrics.</li>
+<li><strong>Benchmark contamination and memorization</strong>: OpenAI footnotes SWE-Bench Pro with memorization evidence; SWE-Bench Pro authors also frame contamination resistance as a design goal. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI</a> <a href="https://arxiv.org/abs/2509.16941">arXiv</a></li>
+<li><strong>Missing independent replication</strong>: GPT-5.5 Instant factuality claims currently rely on OpenAI internal eval descriptions.</li>
+<li><strong>Vendor framing</strong>: OpenAI&rsquo;s release emphasizes real-work model narrative; external sources show a more mixed picture on tool-use leadership and hallucination behavior.</li>
+</ul>
+<h1 id="future-outlook">Future Outlook</h1>
+<h2 id="model-advances_1">Model advances</h2>
+<p>The next frontier is less about raw benchmark score and more about sustained execution under constraints. Expect improvements in memory over long rollouts, tool argument reliability, self-verification, sandboxed computer use, and lower-token reasoning. GPT-5.5&rsquo;s pricing and effort ladder already pushes teams to think in outcome cost rather than token price alone.</p>
+<h2 id="evaluation-methodology">Evaluation methodology</h2>
+<p>Future benchmark design will likely move toward private task sets, tool-state reproducibility, held-out enterprise codebases, long-horizon traces, provenance-aware judging, and production-like eval harnesses. SWE-Bench Pro and MCP Atlas both point in this direction, even though each has its own limits.</p>
+<h2 id="hallucination-control">Hallucination control</h2>
+<p>The field still has no single hallucination number that matters across workloads. Claim-level factuality, response-level error prevalence, citation support, calibration, refusal behavior, and retrieval-grounding all need separate measurement. GPT-5.5 makes this more visible because high capability and high answer-when-uncertain risk can coexist.</p>
+<h1 id="actionable-insights">Actionable Insights</h1>
+<h2 id="recommendations-for-researchers">Recommendations for researchers</h2>
+<ul>
+<li>Treat GPT-5.5 as a useful test case for separating reasoning power from calibration.</li>
+<li>Report effort settings, tool access, prompt scaffold, answer length, judge model, and production/offline status in every comparison.</li>
+<li>Do not use single benchmark leadership as a model-level conclusion.</li>
+</ul>
+<h2 id="recommendations-for-builders">Recommendations for builders</h2>
+<ul>
+<li>Start GPT-5.5 migration with representative workload evals, not global replacement.</li>
+<li>For agentic apps, define allowed side effects, stop rules, confirmation policy, tool provenance, retry budget, and audit logging.</li>
+<li>Use <code>medium</code> as the API baseline, evaluate <code>low</code> for latency-sensitive workflows, reserve <code>high/xhigh</code> for tasks with measurable incremental value.</li>
+</ul>
+<h2 id="recommendations-for-evaluators">Recommendations for evaluators</h2>
+<ul>
+<li>Build separate eval sets for claim-level errors, unsupported citations, uncertainty admission, refusal quality, and answer-when-uncertain behavior.</li>
+<li>Evaluate with and without tools. The difference matters.</li>
+<li>Score end-to-end workflow success, not only final answer fluency.</li>
+</ul>
+<h2 id="recommendations-for-executives">Recommendations for executives</h2>
+<ul>
+<li>Do not buy the model only for headline intelligence. Buy it where failed work is expensive and retry reduction matters.</li>
+<li>Use GPT-5.5 Pro for high-value asynchronous work, not as a blanket default.</li>
+<li>Treat GPT-5.5 Instant as a default user-experience improvement, not as proof that high-stakes factual risk is solved.</li>
+</ul>
+<h2 id="model-selection-matrix">Model-selection matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Use case</th>
+<th>Recommended variant</th>
+<th>Reasoning effort</th>
+<th>Controls</th>
+<th>Decision note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codebase refactor with tests</td>
+<td>GPT-5.5</td>
+<td>medium -&gt; high</td>
+<td>sandbox, tests, diff review, revert-own-work policy</td>
+<td>Strong default if acceptance tests exist</td>
+</tr>
+<tr>
+<td>Complex bug investigation</td>
+<td>GPT-5.5 Pro or GPT-5.5 high</td>
+<td>high/xhigh for async</td>
+<td>trace logs, tool budget, human checkpoint</td>
+<td>Use Pro when the cost of missed root cause is high</td>
+</tr>
+<tr>
+<td>Enterprise document Q&amp;A</td>
+<td>GPT-5.5</td>
+<td>medium</td>
+<td>retrieval citations, source filters, unsupported-claim checks</td>
+<td>Long context helps, but RAG design still matters</td>
+</tr>
+<tr>
+<td>Daily assistant chat</td>
+<td>GPT-5.5 Instant</td>
+<td>product default</td>
+<td>personalization controls, memory-source visibility</td>
+<td>Good default for low-to-medium risk interactions</td>
+</tr>
+<tr>
+<td>Customer support workflow</td>
+<td>GPT-5.5 or Instant after eval</td>
+<td>low/medium</td>
+<td>policy tool, escalation, transcript audit</td>
+<td>Tau2-bench signal is promising but domain eval required</td>
+</tr>
+<tr>
+<td>Medical/legal/finance advice</td>
+<td>GPT-5.5 with retrieval or domain model</td>
+<td>medium/high</td>
+<td>professional review, calibrated uncertainty, refusal/escalation</td>
+<td>Instant factuality gains do not remove high-stakes controls</td>
+</tr>
+<tr>
+<td>Cyber defense</td>
+<td>GPT-5.5 under trusted access/enterprise controls</td>
+<td>high/xhigh if authorized</td>
+<td>identity, logging, scope, safe tooling, actor-level enforcement</td>
+<td>Capability is valuable and risk-bearing</td>
+</tr>
+<tr>
+<td>High-volume extraction/classification</td>
+<td>GPT-5.4-mini/nano or Instant class first</td>
+<td>none/low</td>
+<td>schema validation, sampling QA</td>
+<td>GPT-5.5 may be overkill</td>
+</tr>
+</tbody>
+</table>
+<h2 id="hallucination-mitigation-checklist">Hallucination-mitigation checklist</h2>
+<ul>
+<li>Define factuality subtype: claim error, response error, unsupported citation, uncertainty failure, answer-when-uncertain.</li>
+<li>Separate closed-book, retrieval-grounded, web-browsing, and tool-use conditions.</li>
+<li>Require source citations for factual claims that affect decisions.</li>
+<li>Add “insufficient evidence” and “cannot determine from sources” as acceptable outputs in evals.</li>
+<li>Penalize unsupported specificity more than cautious incompleteness.</li>
+<li>Use adversarial prompts from prior internal failures, but label them as non-representative.</li>
+<li>Track response length because longer answers create more opportunities for both correct and false claims.</li>
+<li>Run calibration evals where the correct action is to abstain.</li>
+<li>Sample production traffic after deployment and compare to offline evals.</li>
+<li>Keep human review for medical, legal, financial, security, and irreversible operational actions.</li>
+</ul>
+<h1 id="references">References</h1>
+<h2 id="primary-sources">Primary sources</h2>
+<ul>
+<li>OpenAI. <code>Introducing GPT-5.5</code>. Published 2026-04-23, updated 2026-04-24. https://openai.com/index/introducing-gpt-5-5/</li>
+<li>OpenAI Deployment Safety Hub. <code>GPT-5.5 System Card</code>. Published 2026-04-23, updated 2026-04-24. https://deploymentsafety.openai.com/gpt-5-5</li>
+<li>OpenAI. <code>GPT-5.5 Instant: smarter, clearer, and more personalized</code>. Published 2026-05-05. https://openai.com/index/gpt-5-5-instant/</li>
+<li>OpenAI Deployment Safety Hub. <code>GPT-5.5 Instant System Card</code>. Published 2026-05-05. https://deploymentsafety.openai.com/gpt-5-5-instant</li>
+<li>OpenAI Help Center. <code>GPT-5.5 in ChatGPT</code>. Updated 2026-05-06. https://help.openai.com/en/articles/11909943-gpt-53-and-gpt-55-in-chatgpt</li>
+<li>OpenAI API docs. <code>Using GPT-5.5</code>. Accessed 2026-05-06. https://developers.openai.com/api/docs/guides/latest-model</li>
+<li>OpenAI API docs. <code>Pricing</code>. Accessed 2026-05-06. https://developers.openai.com/api/docs/pricing</li>
+</ul>
+<h2 id="benchmark-sources">Benchmark sources</h2>
+<ul>
+<li>Artificial Analysis. <code>OpenAI's GPT-5.5 is the new leading AI model</code>. Published 2026-04-23. https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/</li>
+<li>Scale Labs. <code>MCP Atlas</code>. Updated April 2026. https://labs.scale.com/leaderboard/mcp_atlas</li>
+<li>Scale Labs. <code>SWE-Bench Pro (Public Dataset)</code>. Accessed 2026-05-06. https://labs.scale.com/leaderboard/swe_bench_pro_public</li>
+<li>Xiang Deng et al. <code>SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?</code> arXiv:2509.16941. Submitted 2025-09-21, revised 2025-11-14. https://arxiv.org/abs/2509.16941</li>
+<li>OpenAI. <code>BrowseComp: a benchmark for browsing agents</code>. Published 2025-04-10. https://openai.com/index/browsecomp/</li>
+<li>UK AI Security Institute. <code>Our evaluation of OpenAI's GPT-5.5 cyber capabilities</code>. Published 2026-04-30. https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities</li>
+</ul>
+<h2 id="secondary-commentary">Secondary commentary</h2>
+<ul>
+<li>Axios. <code>OpenAI makes default ChatGPT more personal</code>. Published 2026-05-05. https://www.axios.com/2026/05/05/openai-chatgpt-update-default-model</li>
+<li>TechCrunch. <code>OpenAI releases GPT-5.5 Instant, a new default model for ChatGPT</code>. Published 2026-05-05. https://techcrunch.com/2026/05/05/openai-releases-gpt-5-5-instant-a-new-default-model-for-chatgpt/</li>
+<li>TechCrunch. <code>OpenAI releases GPT-5.5, bringing company one step closer to an AI super app</code>. Published 2026-04-23. https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/</li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-05-07 03:18:13
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#10-conclusions">10 conclusions</a></li>
+<li><a href="#model-advances">Model advances</a></li>
+<li><a href="#performance">Performance</a></li>
+<li><a href="#hallucinations">Hallucinations</a></li>
+<li><a href="#background">Background</a><ul>
+<li><a href="#scope">Scope</a></li>
+<li><a href="#release-timeline">Release timeline</a></li>
+<li><a href="#why-it-matters-now">Why it matters now</a></li>
+</ul>
+</li>
+<li><a href="#state-of-the-art">State of the Art</a><ul>
+<li><a href="#official-claims">Official claims</a></li>
+<li><a href="#independent-and-external-validation">Independent and external validation</a></li>
+</ul>
+</li>
+<li><a href="#technical-deep-dive">Technical Deep Dive</a><ul>
+<li><a href="#reasoning-behavior">Reasoning behavior</a></li>
+<li><a href="#tool-use">Tool use</a></li>
+<li><a href="#agentic-execution">Agentic execution</a></li>
+<li><a href="#long-context-handling">Long-context handling</a></li>
+<li><a href="#cost-latency-and-token-efficiency">Cost, latency, and token efficiency</a></li>
+<li><a href="#safety-and-deployment-changes">Safety and deployment changes</a></li>
+<li><a href="#benchmark-scorecard">Benchmark scorecard</a></li>
+</ul>
+</li>
+<li><a href="#industry-landscape">Industry Landscape</a><ul>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#disagreement">Disagreement</a></li>
+<li><a href="#recurring-critiques">Recurring critiques</a></li>
+</ul>
+</li>
+<li><a href="#applications">Applications</a><ul>
+<li><a href="#gpt-55">GPT-5.5</a></li>
+<li><a href="#gpt-55-pro">GPT-5.5 Pro</a></li>
+<li><a href="#gpt-55-instant">GPT-5.5 Instant</a></li>
+</ul>
+</li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#future-outlook">Future Outlook</a><ul>
+<li><a href="#model-advances_1">Model advances</a></li>
+<li><a href="#evaluation-methodology">Evaluation methodology</a></li>
+<li><a href="#hallucination-control">Hallucination control</a></li>
+</ul>
+</li>
+<li><a href="#actionable-insights">Actionable Insights</a><ul>
+<li><a href="#recommendations-for-researchers">Recommendations for researchers</a></li>
+<li><a href="#recommendations-for-builders">Recommendations for builders</a></li>
+<li><a href="#recommendations-for-evaluators">Recommendations for evaluators</a></li>
+<li><a href="#recommendations-for-executives">Recommendations for executives</a></li>
+<li><a href="#model-selection-matrix">Model-selection matrix</a></li>
+<li><a href="#hallucination-mitigation-checklist">Hallucination-mitigation checklist</a></li>
+</ul>
+</li>
+<li><a href="#references">References</a><ul>
+<li><a href="#primary-sources">Primary sources</a></li>
+<li><a href="#benchmark-sources">Benchmark sources</a></li>
+<li><a href="#secondary-commentary">Secondary commentary</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank" rel="noreferrer">OpenAI, 2026-04-23</a></li>
+<li><a href="https://deploymentsafety.openai.com/gpt-5-5" target="_blank" rel="noreferrer">OpenAI System Card, 2026-04-23</a></li>
+<li><a href="https://deploymentsafety.openai.com/gpt-5-5-instant" target="_blank" rel="noreferrer">OpenAI Instant System Card, 2026-05-05</a></li>
+<li><a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/" target="_blank" rel="noreferrer">Artificial Analysis, 2026-04-23</a></li>
+<li><a href="https://labs.scale.com/leaderboard/mcp_atlas" target="_blank" rel="noreferrer">Scale Labs MCP Atlas</a></li>
+<li><a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities" target="_blank" rel="noreferrer">UK AISI, 2026-04-30</a></li>
+<li><a href="https://developers.openai.com/api/docs/guides/latest-model" target="_blank" rel="noreferrer">OpenAI API docs</a></li>
+<li><a href="https://openai.com/index/gpt-5-5-instant/" target="_blank" rel="noreferrer">OpenAI Instant</a></li>
+<li><a href="https://help.openai.com/en/articles/11909943-gpt-53-and-gpt-55-in-chatgpt" target="_blank" rel="noreferrer">Help Center</a></li>
+<li><a href="https://arxiv.org/abs/2509.16941" target="_blank" rel="noreferrer">arXiv</a></li>
+<li><a href="https://labs.scale.com/leaderboard/swe_bench_pro_public" target="_blank" rel="noreferrer">Scale SWE-Bench Pro</a></li>
+<li><a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI pricing</a></li>
+<li><a href="https://openai.com/index/browsecomp/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://www.axios.com/2026/05/05/openai-chatgpt-update-default-model" target="_blank" rel="noreferrer">www.axios.com</a></li>
+<li><a href="https://techcrunch.com/2026/05/05/openai-releases-gpt-5-5-instant-a-new-default-model-for-chatgpt/" target="_blank" rel="noreferrer">techcrunch.com</a></li>
+<li><a href="https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/" target="_blank" rel="noreferrer">techcrunch.com</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

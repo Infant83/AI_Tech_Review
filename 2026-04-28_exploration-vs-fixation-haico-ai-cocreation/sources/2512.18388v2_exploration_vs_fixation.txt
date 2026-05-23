@@ -1,0 +1,1927 @@
+                                        Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for
+                                        Human-AI Co-Creation with Generative Models
+                                        CHAO WEN, Max Planck Institute for Software Systems, Germany
+                                        TUNG PHUNG, Max Planck Institute for Software Systems, Germany
+                                        PRONITA MEHROTRA, MindAntix, USA
+                                        SUMIT GULWANI, Microsoft, USA
+                                        ROGER E. BEATY, Pennsylvania State University, USA
+                                        TOMOHIRO NAGASHIMA, Saarland Informatics Campus, Saarland University, Germany
+arXiv:2512.18388v2 [cs.HC] 6 Apr 2026
+
+
+
+
+                                        ADISH SINGLA, Max Planck Institute for Software Systems, Germany
+
+                                                                   Divergent Exploration                                   Convergent Refinement
+                                                                The Plato’s
+                                                              Symposium Table                            The
+                                                                                                  Interrupting Cow     2       3
+
+
+                                                                                                                               4
+
+                                               1                                Japanese Forest
+                                                                                  Bathing Path
+                                                                                                           5
+
+                                                        Zeno’s Paradox of the
+                                                            Infinite Scroll
+                                                                                                          Yosemite
+                                                                                                         Tunnel View
+                                                                                         6                                     7           8
+
+
+
+
+                                        Fig. 1. Example user trajectory in our system workflow for image co-creation. The numbers indicate the chronological steps
+                                        taken by a user. 1 The user prompts the system to create a poster image about “Spend Less Time on Phones,” then 2 selects
+                                        a system-initiated idea to generate a first image. After 3 4 refining that image over two iterations, 5 the user returns to explore
+                                        other ideas and 6 draws on another system-initiated idea as inspiration to develop a new idea, “Yosemite Tunnel View.” 7 The
+                                        user generates an image based on their own idea and 8 refines it into a second result. This trajectory illustrates how users move
+                                        back and forth between exploring ideas and refining promising images.
+
+                                        Generative AI has democratized content creation, but popular chatbot-based interfaces often prioritize execution, generating fully
+                                        rendered artifacts right away. This issue can lead to premature convergence and design fixation, where users are being anchored
+                                        to initial outputs. Recent works have proposed new interfaces to address this issue by supporting exploration, though typically
+                                        constrained to be semantically close to a user’s initial task framing, potentially limiting the creativity of the outcomes. We examine
+                                        an approach grounded in the Geneplore model of creative cognition and instantiate it in a human-AI co-creation system, HAICo,
+                                        for creative image generation. HAICo explicitly structures the creative process into two switchable modes: Divergent mode scaffolds
+                                        the broad exploration of remote conceptual ideas; Convergent mode supports a targeted refinement of selected ideas. Through a
+                                        within-subjects study (𝑁 = 24) on a poster image creation task, we demonstrate that HAICo outperforms ChatGPT across multiple
+                                        dimensions of creativity and usability. Our results highlight the critical need to shift from pure execution-focused chatbots to scaffolded
+                                        co-creation systems that actively guide exploration and foster the creative process.
+
+
+                                        Preprint. Corresponding author: Chao Wen <chaowen@mpi-sws.org>.
+                                                                                                                                                                                 1
+2                                                                                                                    Wen et al.
+
+
+1    Introduction
+Generative AI has fundamentally democratized content creation, enabling novices to produce artifacts such as code,
+images, and videos that previously required professional expertise and complex tools [16, 21, 29, 41, 46, 56, 57]. However,
+the widely used chatbot-based interfaces (e.g., ChatGPT) often prioritize execution, generating fully rendered artifacts
+immediately. Prior studies have found that these interfaces can lead to premature convergence and design fixation,
+where users are anchored to initial outputs without exploring the broader space of possibilities [54, 59]. Furthermore,
+when refining these initial results, design fixation often persists, as users typically settle on a single refined result
+instead of branching into and exploring alternative variations that may lead to better outcomes. This refinement process
+is further exacerbated by the “gulf of envisioning,” where users struggle to translate their intentions into prompts that
+accurately instruct generative models, leading to arbitrary model behaviors and frustrating trial-and-error [53, 68].
+    Recent systems have attempted to support exploration and refinement for content creation, but remain limited in three
+respects. First, systems designed to support divergent exploration mostly surface dimensions within the user’s existing
+task framing [8, 54, 56, 62] or draw analogies structured around the user’s design task [36, 51]. However, the exploration
+space is typically constrained to be semantically close to a user’s initial task framing, potentially limiting the creativity of
+the outcomes. Creativity research suggests that creativity often involves linking remote, semantically distant concepts [3,
+38], a mechanism that neither line of work fully operationalizes. Second, existing systems support refinement mostly
+by improving prompt fidelity, assuming the user already holds a concrete direction; they do not address the upstream
+problem of forming that direction in the first place [4, 61, 63]. Finally, many of these systems support either exploration
+or refinement, but still provide only limited support for the non-linear nature of creative processes, in which users
+move back and forth between divergent thinking for broad ideation and convergent thinking for refining a specific idea.
+    To address these limitations, we examine an approach grounded in the Geneplore model of creative cognition [20, 45].
+This approach explicitly structures interaction into two switchable modes: (i) the Divergent mode scaffolds divergent
+thinking for generating diverse ideas and (ii) the Convergent mode scaffolds convergent thinking for exploring how
+an idea can be adapted for solving the original task. We instantiate this approach in HAICo, a Human-AI Co-creation
+system for creative image generation. HAICo is structured around these two explicit modes. In the Divergent mode,
+HAICo populates an interactive idea grid with conceptual ideas drawn from remote, cross-domain sources, support-
+ing creative ideation outside the user’s initial task framing. In the Convergent mode, HAICo translates the user’s
+refinement/adaptation intention into named semantic parameters with structured, context-aware dropdown options for
+selection, clarifying what the user wants to change and making the space of possible modifications legible. These two
+modes are designed to be switchable, supporting the non-linear nature of creative work. To investigate the effectiveness
+of HAICo, we evaluate HAICo against ChatGPT in a within-subjects study (𝑁 = 24) on a poster image creation task.
+Our results demonstrate that HAICo outperforms ChatGPT across multiple dimensions of creativity and usability. In
+summary, our contributions are as follows:
+
+• We examine an approach grounded in the Geneplore model and instantiate it in HAICo, an image co-creation system
+    with two switchable modes: Divergent mode for broad exploration by surfacing remote, cross-domain concepts,
+    and Convergent mode for structured refinement via semantic parameters and options.
+• We conduct a study with 24 participants and provide empirical evidence that HAICo enables the creation of signifi-
+    cantly more novel and diverse images than ChatGPT, and has higher perceived creativity support and system usability.
+• We present preliminary findings that scaffolded co-creation can foster learning through usage, with significantly
+    higher self-reported learning in HAICo characterized by task-specific knowledge rather than tool-specific strategies.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                        3
+
+
+2     Related Work
+We discuss prior work related to our research, focusing on cognitive research on creativity and systems that support
+human-AI co-creation and text-to-image generation.
+
+
+2.1    Divergent Thinking and Convergent Thinking for Creativity
+Divergent and convergent thinking are widely regarded as two core cognitive processes that are central to creativ-
+ity [24, 25]. Divergent thinking focuses on generating a wide range of varied ideas in response to a question or task.
+In contrast, convergent thinking focuses on refining those high-level ideas into viable solutions [24].
+    Previous research has established that creative models often unfold as transitions between divergent and convergent
+thinking [58]. For instance, Finke et al.’s Geneplore model [20] describes creative cognition as involving two processes:
+in the generative process, individuals produce diverse high-level “preinventive” structures without strong goal control
+(i.e., divergent thinking). In the exploratory process, these structures are interpreted and developed with respect to the
+specific task (i.e., convergent thinking). The generative process may involve several cognitive mechanisms, with one
+central mechanism being association: the process of linking concepts stored in memory [3, 38]. The ability to form
+such associations is closely related to human creativity. Creativity research shows that highly creative people are more
+associative in their thinking: they travel further in semantic space, switch between more semantic subcategories, and
+make larger leaps between associations [3].
+    Inspired by these cognitive theories of creativity, we examine an approach grounded in the Geneplore model to
+support divergent and convergent thinking for creative tasks. We instantiate this approach in HAICo, a system for
+human-AI co-creation of images. In our system, the generative process is powered by an associative-thinking prompting
+strategy that draws remote connections from distant domains to generate preinventive structures [39].
+
+
+2.2    Supporting Human-AI Co-Creation
+Generative AI has democratized content creation, enabling novices to produce complex artifacts such as educational
+exercises [22, 64], code [17, 65], and images [4, 62]. Early work primarily framed generative models as productivity
+tools that automate content creation [18, 52, 64, 65]. More recent research has begun to frame generative models as
+collaborators and design AI systems for creative tasks [8, 51, 54, 56, 62].
+    To support human-AI co-creation, recent systems design interaction mechanisms and interfaces that facilitate
+exploration, often by helping users navigate a design space through structured dimensions or analogical inspiration.
+Dimension-based systems such as Luminate [54], DesignWeaver [56], AIdeation [62], and CreativeConnect [8] surface
+task-relevant attributes such as genre, tone, art style, and visual keywords, helping users navigate alternatives within
+their existing task framing. Analogy-based systems such as IdeationWeb [51] and Inkspire [36] go further by drawing
+inspiration from external source domains to help users move beyond their initial mental model.
+    However, as mentioned above, creative ideation benefits from remote associative stimuli sufficiently distant from the
+user’s starting point to catalyze genuinely new directions [3, 6, 11, 38]. Dimension-based systems operate on attributes
+already adjacent to the user’s prompt, while analogy-based systems draw from fixed or domain-constrained source
+categories targeting expert designers in specific professional settings. Neither leverages an exploration space broad
+enough to introduce ideas genuinely remote from the user’s initial mental model and task framing. Within HAICo, the
+Divergent mode addresses this issue by operationalizing associative thinking through prompting generative models to
+surface remote conceptual ideas spanning various domains, such as mythology, historical events, and internet culture.
+4                                                                                                                   Wen et al.
+
+
+2.3    Supporting Text-to-Image Generation
+Another line of work designs systems to support text-to-image generation by helping users articulate, inspect, and
+refine prompts to better control generative model outputs. These systems improve prompt engineering through
+mechanisms such as prompt expansion, keyword recommendation, prompt optimization, and visual feedback on model
+behavior. For example, Promptify [4] supports expanding user prompts with additional subjects and stylistic details;
+PromptCharm [63] automatically refines user prompts and supports iterative image improvement through attention
+visualization and inpainting; GenTune [61] enables traceable prompt refinement by linking image elements back to
+their corresponding prompt labels for precise, globally consistent edits; and PromptMagician [19] supports interactive
+prompt refinement through keyword recommendation, prompt-image retrieval, and prompt-space visualization. These
+systems are primarily designed to improve the fidelity between user intent and model output.
+    However, these systems are generally effective only when users enter the interaction with a concrete direction already
+in mind. They do not address the challenge of forming that direction in the first place. Consequently, improved prompt
+fidelity may improve specification of an existing idea, but it does not expand the exploration space by introducing
+directions the user may not have previously considered. Furthermore, even when these systems surface alternatives,
+they remain anchored at the prompt level, conditioned on the vocabulary of the current prompt [4, 19]. Our work
+differs in two key ways. First, HAICo introduces a dedicated Divergent mode prior to image generation, enabling
+divergent exploration of conceptual directions before committing to an image. Second, the Convergent mode surfaces
+alternatives at the intent level (i.e., what users want to achieve) rather than at the prompt level.
+
+
+
+3     Problem Analysis and Design Goals
+For human-AI co-creation, current interaction paradigms, especially for novices, typically follow a workflow where
+the user submits a prompt to a generative model (e.g., ChatGPT), inspects the returned artifact, optionally modifies
+the prompt several times, and then accepts one of the results or abandons this attempt [23]. This paradigm may work
+reasonably well when the user has a clear vision of what they want and can articulate highly specific prompts. For
+creative work, however, this paradigm introduces several challenges.
+    First, users are presented with fully rendered artifacts right away. This can lead to premature convergence and design
+fixation, where users are anchored to initial outputs without exploring broad, divergent idea generation [54, 59]. In
+Finke et al.’s terms, this workflow eliminates the generative process in creative work.
+    Second, once users decide to refine an initial output, they frequently struggle to communicate nuanced changes to
+generative models and often become fixated on a single or a few refined outputs [53, 63, 67, 68]. There is a gap between
+the mental vision users have and the prompts they are able to write (i.e., the “gulf of envisioning” [53, 68]). Users typically
+only recognize what feels wrong or what they wish to adjust after seeing the output, yet they cannot easily translate
+these intentions into concrete textual instructions that the model can interpret reliably. For instance, a user may want
+the model to “make the image feel more lively” for a street scene. The model may execute this by adding bright saturated
+colors, and the user only realizes this is not what they intended after seeing the result, pushing them into a trial-and-error
+prompting loop. Moreover, users can also fixate on the model’s initial refinement results. For example, the model may
+execute the prompt “make the image feel more lively” by changing the time of day, and the user feels this is roughly
+correct and accepts it. However, other possibilities, such as adding small groups of people, may remain unexplored. As a
+result, users may end up refining through local edits, reinforcing design fixation and leading to suboptimal convergence.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                              5
+
+
+                                 Divergent Exploration                   Convergent Refinement
+
+                                                                   2           3
+
+                                                                                   4
+                       1                                   5
+
+
+                                                    6
+                                                                           7
+                                                                                         8
+
+
+
+Fig. 2. A generalization of Fig. 1, exemplifying a user trajectory when using our two-mode approach to solve a task.   denote an
+idea, and     denote an artifact.
+
+
+    Third, creative work is often non-linear and involves iteratively moving between generating possibilities and refining,
+revising, or recombining them as their goals evolve. However, current chatbot interfaces often adopt a linear conversation
+structure, offering limited support for such non-linear creative processes.
+    Based on this analysis, we propose three design goals (DGs):
+• DG1: Scaffold divergent generation of high-level ideas to reduce design fixation. The system should support
+    users in generating diverse high-level ideas before committing to an actual artifact. By doing so, the system aims to
+    reduce premature convergence and design fixation.
+• DG2: Support convergent refinement to bridge the “gulf of envisioning” and avoid fixation. The system
+    should help users translate their intentions into concrete, actionable refinements and encourage further exploration
+    of alternative refinements rather than fixation on a single “good enough” output.
+• DG3: Enable non-linear, iterative workflows that preserve context. The system should support fluid movement
+    between divergent and convergent modes, including branching and revisiting earlier ideas. Ideas and artifacts should
+    be organized to allow users to revisit and build on them without losing history.
+
+
+4     System Design
+This section presents our system design addressing the above problems. Section 4.1 discusses the overall approach, and
+how we instantiate it in our system, HAICo. Sections 4.2 and 4.3 describe two modes of HAICo. Section 4.4 provides
+the technical validation of our system . We provide further implementation details in Appendix A.
+
+4.1    Approach Overview
+We examine an approach grounded in the Geneplore model of creativity [20] (see Fig. 2). Finke et al.’s Geneplore
+model of creativity describes creative cognition through two processes: generative and exploratory, which are related
+to the cognitive modes of divergent and convergent thinking [24, 25]. In the generative process, users produce diverse
+high-level “preinventive” structures without strong goal control (i.e., divergent thinking). In the exploratory process,
+these structures are interpreted and developed with respect to the specific task (i.e., convergent thinking). Based on
+this model, we examine a system design that comprises two corresponding modes: Divergent and Convergent. The
+Divergent mode scaffolds users in the divergent generation of high-level ideas (DG1), while the Convergent mode
+6                                                                                                                  Wen et al.
+
+
+supports users in the convergent refinement of those ideas to match their objectives for the task (DG2). By allowing
+users to switch back and forth between the two modes without losing interaction history, the approach enables a
+non-linear, iterative workflow for creative tasks (DG3). We operationalize this approach through HAICo, our web-based
+co-creation system, which serves as an instantiation of the approach for the domain of creative image generation. Next,
+we describe how the Divergent and Convergent modes are operationalized within HAICo.
+
+4.2   Divergent Mode
+Within HAICo, the Divergent mode attempts to reduce idea fixation by making conceptual exploration the first
+action before any actual image artifact is generated. The interface of the Divergent mode is shown in Fig. 3. For
+instance, suppose a user wants to create an image that encourages students to spend less time on their phones. The
+user enters a task description (Fig. 3A), for example, “I want to create an image to encourage students to spend less time
+on their phones.” HAICo then populates an Idea Grid with structured Idea Cards (Fig. 3B). Each idea card represents
+a distinct high-level conceptual idea, such as a metaphor, philosophical concept, or a cultural reference, rather than
+surface-level dimensional attributes such as color and style (DG1). Each idea card contains a title, an idea thumbnail, a
+brief description, category tags, and contextual background revealed on hover. This multi-component format lets users
+scan and compare conceptual directions at a glance, filtering by relevance without wading through unstructured text.
+    Importantly, users are not passive recipients of these ideas. They can expand the idea grid with a steering prompt to
+generate additional ideas in a chosen direction (Fig. 3C), create their own cards by entering a title and brief description
+(Fig. 3D), or edit existing cards to shape the space toward their intent. They can click the spark icon (Fig. 3E) to generate
+an image from a selected idea; the resulting image viewer displays the image alongside an explanation of how it fits
+the original task (Fig. 3F).
+    Generating ideas that are genuinely creative and diverse, rather than surface variations on the user’s prompt, requires
+more than asking a generative model to “be creative and diverse.” Drawing on prior research showing that associative
+thinking, the capacity to connect remote and seemingly unrelated concepts, reliably boosts creative output [3, 38], we
+explicitly prompt the model to adopt an associative-thinking strategy that draws connections from distant domains,
+such as artworks, mythology, historical events, and internet culture, among others [39]. This strategy produced the
+“Interrupting Cow” idea in Fig. 3: the model connected “disrupting a phone habit” to the disruptive logic of the meme,
+yielding a concept the user may not be able to think of independently. An ablation study reported in Section 6.2
+confirms that associative-thinking prompting produces significantly higher idea diversity than non-associative-thinking
+prompting, validating this design decision.
+
+4.3   Convergent Mode
+By generating an image for an idea they find promising, the user enters the Convergent mode by selecting the image and
+clicking “Refine” (Fig. 3F), which opens a dedicated Refine Tab alongside the Brainstorm Tab (Fig. 3G). The challenge at this
+point is that users may recognize that something in the image needs to change, but cannot easily translate that intuition
+into a precise prompt [53, 68]. The model may interpret the user’s underspecified instructions arbitrarily, leading to trial-
+and-error and dissatisfaction. HAICo addresses this by acting as a translator (DG2): the user states a refinement intent in
+their prompt (Fig. 3H, e.g., “Change the students in the back to doing something more fun.”), and the system synthesizes a
+Sketch, a parametric function that decomposes that intent into named semantic parameters and pre-populates each param-
+eter with concrete, context-aware dropdown options (Fig. 3I). For instance, the system infers cow_role as a relevant pa-
+rameter for the user’s refinement intent and offers options such as “a friendly mascot,” “a playful coach,” and “a tour guide,”
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                   7
+
+
+                                       A
+                                       A
+
+                                       B
+                                       B
+
+
+
+                                  E
+                                  E
+                                                                          E               F
+
+                                  C                                       E               F
+
+                                  C                                 D
+                                                                    D
+
+
+                                                   C
+                                                   C
+                         (i) The interface of the Divergent mode.                             (ii) The interface of the image viewer.
+                                   G
+                                   G
+
+
+                                            H
+                                            H                       J
+                                            I                       J
+                                            I                                             K
+                                                                                          K
+
+
+
+
+                                           (iii) The interface of the Convergent mode.
+
+Fig. 3. HAICo’s interfaces. In the Divergent mode, the user starts by A entering a prompt, after which HAICo B generates a
+set of Idea Cards with a title, thumbnail, description, background (shown on hover of the question mark), and category tags. The
+user can continue broadening the idea space by C clicking “More Ideas” or D manually creating their own idea card, for example,
+by creating “Yosemite Tunnel View” as a new idea inspired by “The Japanese Forest Bathing Path.” Upon selecting an idea, the
+user can E edit it with the pencil icon or F generate an image from that idea with the spark icon. To refine an image, clicking
+the “Refine” button (Fig. 3F) G opens a new refinement tab; multiple tabs can be opened in parallel. In the Convergent mode,
+the user can H submit a refinement prompt, after which the system I generates parameters (whose meanings are shown on hover
+of the question mark) and options that the user can select (options are also editable); the user can then J generate a new image
+variation. The K Image Library shows the initial image alongside its refined variations, and any image can be further refined via
+the icon in its bottom-right corner. The trajectory in Fig. 1 maps to these UI operations as follows: 1 → A B , 2 → E F , 3 4
+→ H I J K , 5 → G , 6 → D , 7 → E F , and 8 → H I J K .
+8                                                                                                                                         Wen et al.
+
+
+each representing a distinct interpretation of the user’s intent. These options can also be customized and edited by the user.
+For each parameter, the pre-filled default option is intentionally designed to best align with the user’s refinement intent.
+    HAICo also supports iterative refinement. After exploring a set of image variations (Fig. 3K), users can select any
+individual variation and initiate a further round of refinement, building successive chains of targeted adjustments.
+Users can also modify the refinement prompt to generate a new set of parameters and options, open multiple parallel
+Refine Tabs to develop different image directions. HAICo also enables non-linear workflows: users can return to the
+Brainstorm Tab (i.e., Divergent mode) to explore new conceptual ideas, all without losing the context of prior attempts
+(Fig. 3G; DG3).
+
+4.4    Technical Validation
+We validated the technical implementation of HAICo. To validate the Divergent mode, we randomly sampled 100
+brainstorming and ideation prompts from the Infinity-Chat dataset [31]. The results show that the system generated
+the idea grid in 14.0s on average, completed the full generation of the idea grid and thumbnails in 33.5s on average, and
+successfully generated all thumbnails for 97% of prompts. To validate the Convergent mode, we randomly sampled
+100 pairs of (image, refinement prompt) from the MagicBrush dataset [69]. The results show that sketch generation
+took 9.01s on average; the generated sketches were 100% syntactically valid. Full setup and more results are reported in
+Appendix B.
+
+5     User Study and Analysis Setup
+We evaluate HAICo with the following research questions (RQs):
+• RQ1 (Experience and Creative Outputs): How does HAICo’s two-mode workflow affect users’ co-creation
+    experience and the quality of their creative outputs?
+• RQ2 (Brainstorming and Exploration): How does scaffolding divergent ideation through the Divergent mode
+    affect early-stage exploration?
+• RQ3 (Refinement and Control): How does scaffolding convergent refinement through the Convergent mode
+    affect users’ refinement process?
+• RQ4 (Learning): Does using HAICo lead to self-reported learning, and if so, what knowledge or strategies do users
+    learn?
+    To address these RQs, we conducted a within-subjects study (𝑁 = 24) comparing HAICo against ChatGPT, one of
+the most widely used text-to-image interfaces for general users. Because the two systems differ along multiple interface
+and workflow dimensions, this comparison evaluates the overall approach rather than isolating individual components.
+Both systems used GPT-5 [42] for text generation and OpenAI’s image generation models throughout.1 To ensure a fair
+comparison, generating multiple images simultaneously was not allowed in either system. Participants were asked to
+create poster images promoting a specific behavior. We chose the task of creating poster images because it is a widely
+accessible and non-professional activity requiring both conceptual thinking and creativity. To reduce practice effects,
+we designed three slightly different tasks of similar difficulty: (A) “Spend less time on phones,” (B) “Spend more time
+outdoors,” and (C) “Take care of your mind.” The complete task instructions are provided in Appendix C.1 (Fig. 12).
+Each participant completed two image co-creation sessions, one with HAICo and one with ChatGPT, with a different
+1 Both systems initially used gpt-image-1 [43]; mid-study, ChatGPT upgraded to gpt-image-1.5 [44], and we synchronized HAICo accordingly. Each
+model version was used by 12 participants, equally distributed across conditions. We did not observe substantial differences in results between the two
+model-version groups.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                            9
+
+ Pre-study survey          First Creation Session                   Break           Second Creation Session          Post-study interview
+         5 min                      40 min                          5 min                    40 min                         20 min
+
+                       Tutorial     Co-creation         Survey                    Tutorial   Co-creation    Survey
+                       15 min         20 min            5 min                     15 min       20 min       5 min
+
+      Introduction,
+      consent, and                                                                                                     Semi-structured
+      demographic          (First System, First Task)                              (Second System, Second Task)           interview
+        collection                                               Counterbalance
+
+
+
+                                     Fig. 4. User Study Procedure (figure adapted from [51]).
+
+
+task for each session. This task assignment followed a Balanced Incomplete Block Design [34] to ensure equal coverage.
+This design resulted in 12 counterbalancing sequences (3 task pairs × 2 task orders × 2 system orders). Accordingly,
+we recruited 24 participants, with two participants randomly assigned to each sequence (see Appendix C.1, Table 5).
+
+5.1     Participants
+We recruited 24 participants (10 female, 13 male, 1 non-binary) from the local university via mailing lists and word
+of mouth (aged 24–34 years, 𝑀 = 28.2, 𝑆𝐷 = 2.8). Since the university is technology-focused, the participants were
+primarily from the computer science/information technology domain (21/24), with two from other engineering domains
+and one from the educational domain. None of them had formal training in art or design, although 12/24 reported
+self-taught or informal experience (7 for less than 1 year, 5 for 1–3 years). All had heard of AI-based image tools,
+and 22/24 had prior hands-on experience (e.g., ChatGPT: 22, Canva: 12, DALL-E: 10, Gemini: 7, Midjourney: 7, Stable
+Diffusion: 4). Creative activity frequency varied (daily: 1; weekly: 5; monthly: 6; a few times per year: 10; never: 2).
+Detailed participant demographics are provided in Appendix C.1 (Table 4). Each participant received a €20 voucher
+and a reusable bag. The study was approved by the local Institutional Review Board.
+
+5.2     Study Procedure
+The study procedure is illustrated in Fig. 4. The study lasted about 1 hour and 50 minutes. Participants first signed a
+consent form and completed a questionnaire on demographics, prior AI experience, and creative/design experience. The
+study comprised two image co-creation sessions. Each session began with onboarding comprising a standardized system
+tutorial (participants could end early if they felt ready) and free exploration (up to 15 minutes total). Participants then
+worked on their assigned task with screen interactions recorded. At the end of each session, participants downloaded
+images they considered ready to print as a poster and completed a post-task survey. After a break, participants completed
+the second session with a different task and the other system, following the same procedure. Finally, participants
+completed a semi-structured interview covering each system’s workflow, creative exploration, perceived learning, and
+intentions for future use (see Appendix C.1). Interviews were audio-recorded and transcribed for thematic analysis.
+
+5.3     Data Collection and Analysis
+We collected quantitative data from surveys, screen recordings, and downloaded images, and qualitative data from
+semi-structured interviews. For all statistical comparisons, we used the Wilcoxon signed-rank test with 𝛼 = 0.05 [66].
+  Post-task Surveys. Post-task surveys included the unweighted Creativity Support Index (CSI) [7] (items rated 0–10
+and summed per dimension to a 0–20 range; for RQ1) and UMUX-Lite [35] for system usability (items rated 1–7,
+with the overall score mapped to 0–100; for RQ1). Additionally, we included a self-reported learning item “While
+10                                                                                                               Wen et al.
+
+
+using this system, I learned something new that was previously unknown to me” (item rated 1–7 indicating strongly
+disagree to strongly agree; for RQ4). This item is followed by an optional open-ended question “If you agree, please
+write a few keywords or short phrases about what you learned” (for RQ4). We used the unweighted CSI without
+paired comparisons to reduce participant burden [40] and omitted the Collaboration dimension because the study was
+non-collaborative, consistent with prior work [54, 55]. Open-ended responses about learning were independently labeled
+by two researchers and discussed to reach consensus (see Appendix C.2 for more details about the coding scheme).
+     Behavioral Metrics from Screen Recordings. We derived four behavioral metrics: (i) Image Clusters (both systems;
+for RQ2) — the number of distinct conceptual ideas explored, where each cluster comprises an initial image and its
+refinement variations; (ii) Refinement Prompts per Cluster (both systems; for RQ3) — the average number of refinement
+prompts per image cluster; (iii) Non-Default Option Adoption (HAICo only; for RQ3) — the proportion of refinements
+where participants changed at least one default option; and (iv) Brainstorm-First Adoption (ChatGPT only; for RQ4)
+— whether a participant’s first ChatGPT prompt requested brainstorming ideas rather than a direct image, compared
+across system-order groups to assess whether prior HAICo experience transferred to ChatGPT.
+     Downloaded Images. We evaluated images downloaded by participants that they considered ready to print as posters.
+We assessed them on Fluency, Diversity, Novelty, and Usefulness [13, 27, 48] (for RQ1). We operationalized Fluency as the
+number of images downloaded per participant [48]. Diversity was measured as average pairwise cosine distance between
+image embeddings calculated using CLIP ViT-bigG-14 [13, 33, 50]; three participants who downloaded only one image
+for both systems were excluded, yielding 𝑁 = 21. We operationalized Novelty as the perceived originality of a poster’s
+idea and Usefulness as the effectiveness of a poster in promoting the intended behavior. Novelty and Usefulness were rated
+by five independent raters (not authors) on a 5-point Likert scale [1, 13]. Four of the five raters had also participated in
+the user study, but ratings were blind, and each participant’s own images constituted only a small fraction (less than 5%)
+of the image pool. Per-image scores were averaged first across raters, then across images per (participant, system) pair,
+and finally across participants to yield per-system scores. We aggregated ratings across five raters, yielding moderate
+inter-rater reliability (ICC(2,5): Novelty = 0.61, Usefulness = 0.60) [32]. More details are provided in Appendix C.3.
+     Ablation: Associative-Thinking Prompting on Idea Diversity. For RQ2, we examine associative-thinking prompting
+in Divergent mode by comparing two conditions: (i) an associative-thinking prompt that specifically instructs the
+model to generate ideas by drawing on remote connections across domains, and (ii) a non associative-thinking prompt
+that simply instructs the model to generate creative and diverse ideas (see Appendix D). After the study, using the 24
+initial prompts participants entered into HAICo, we queried GPT-5 under both conditions three times each (9 ideas per
+run, matching HAICo’s configuration), computed embedding-based diversity as the average pairwise cosine distance
+between CLIP ViT-bigG-14 encodings per run, and averaged the scores across runs.
+     Thematic Analysis. We analyzed interview transcripts using thematic analysis [5, 9] (for RQ1–4). Two researchers
+independently coded transcripts from two randomly selected participants, met to discuss and refine codes, then each
+coded half of the remaining transcripts before meeting again to consolidate codes into themes.
+
+
+
+
+6    Results
+This section presents our findings by RQs. In all figures, error bars represent bootstrapped 95% confidence intervals,
+and ∗ 𝑝 < 0.05, ∗∗ 𝑝 < 0.01, and ∗∗∗ 𝑝 < 0.001.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                                                                                    11
+
+                                                                                          ChatGPT              Our System
+                      20        ***             ***                                                                                        100                       4                        1.00
+                                                                                                ***
+
+
+
+
+                                                                                                                 UMUX-Lite Overall Score
+                                                               ***                                                                                  ***              3                        0.75          **
+CSI Dimension Score
+
+
+
+
+                                                                                                                                                             Count
+
+
+
+
+                                                                                                                                                                                      Score
+                                                                               **                                                          80                        2                        0.50
+                      15                                                                                                                                             1                        0.25
+                                                                                                                                           60                        0                        0.00
+                      10                                                                                                                                                 Fluency                        Diversity
+                                                                                                                                                                     5
+                                                                                                                                           40                        4        ***
+                                                                                                                                                                     3
+
+
+
+
+                                                                                                                                                             Score
+                      5                                                                                                                    20                        2
+                                                                                                                                                                     1
+                      0                                                                                                                     0                        0
+                             Enjoyment      Exploration   Expressiveness    Immersion   Results Worth Effort                                     UMUX-Lite                  Novelty                  Usefulness
+                                         (a) Creativity Support Index (CSI)                                                            (b) UMUX-Lite                          (c) Final Images
+Fig. 5. Results for RQ1. (a) Creativity Support Index (CSI) scores across five dimensions: HAICo scored significantly higher than
+ChatGPT on all dimensions (all 𝑊 < 30.0, all 𝑝 < 0.002). (b) System usability (UMUX-Lite): HAICo scored significantly higher than
+ChatGPT overall (𝑀 = 81.25 vs. 64.24; 𝑊 = 17.0, 𝑝 < 0.001). (c) Final downloaded image quality across four dimensions: HAICo
+produced significantly more novel images (𝑀 = 3.22 vs. 2.41; 𝑊 = 0.0, 𝑝 < 0.001) and more diverse image sets (𝑀 = 0.48 vs. 0.36;
+𝑊 = 26.0, 𝑝 = 0.001), while fluency and usefulness were not significantly different across systems.
+
+
+
+
+                           (a) ChatGPT (best)                        (b) ChatGPT (median)                           (c) HAICo (best)                                       (d) HAICo (median)
+
+Fig. 6. Example final posters created during the study for the task “Spend Less Time on Phones.” Posters (a) and (b) were created
+with ChatGPT, and (c) and (d) were created with HAICo. For each system, we show the highest overall-scoring poster and a median
+overall-scoring poster, where the overall score is the sum of the novelty and usefulness scores. The (novelty, usefulness) scores
+for posters (a)-(d) are (2.4, 3.8), (2.0, 3.8), (4.8, 3.8), (3.2, 3.4), respectively. Poster (c) achieved a high novelty score (4.8/5) by first
+capturing attention with “FREE FOOD‼!,” then guiding viewers across the layout from the left corner to the right corner, where the
+key message appears: “Take a break from scrolling! Look around, feel alive.” As viewers follow these cues, their attention shifts away
+from the central phone, subtly mirroring the act of spending less time on it. This staged redirection makes the message both novel
+and memorable.
+
+
+
+6.1                        RQ1: Experience and Creative Outputs
+This section presents results on RQ1: How does HAICo’s two-mode workflow affect users’ co-creation experience and
+the quality of their creative outputs? (see Fig. 5)2
+                      HAICo scored significantly higher than ChatGPT for creativity support (Fig. 5a) and system usability (Fig. 5b), and
+participants produced images with significantly higher Novelty and Diversity scores with HAICo (Fig. 5c). Fig. 6 shows
+example final posters created with the two systems. In interviews, most participants explicitly expressed a preference
+
+2 We did not observe significant differences in quantitative results across participants’ backgrounds (e.g., design experience) within each system in this
+and subsequent RQs.
+12                                                                                                                                                  Wen et al.
+
+                         ChatGPT                                                                                                 Associative
+                     5                                     24                                                           1.0
+                         Our System                                                                                              Non-Associative
+                                                           20                                                           0.8
+
+
+
+
+                                                                                                      Diversity Score
+                     4         *                                                                                                      ***
+
+
+
+
+                                          # Participants
+                                                           16    14 (58.3%)                                             0.6
+                     3
+
+
+             Count
+                                                           12
+                     2                                      8                 7 (29.2%)                                 0.4
+                     1                                                                    4 (16.7%)                     0.2
+                                                            4
+                     0                                      0                                                           0.0
+                         Image Clusters                          Requested Edited          Created                            Prompting Technique
+                                                                More AI Ideas AI Ideas    Own Ideas
+
+Fig. 7. Results for RQ2. Left: participants had significantly more image clusters with HAICo than with ChatGPT (𝑀 = 2.88 vs. 2.04;
+𝑊 = 33.0, 𝑝 = 0.021). Middle: participant engagement with the Divergent mode in HAICo. Right: associative-thinking prompting
+used in Divergent mode produced significantly higher idea diversity than non associative-thinking prompting (𝑊 = 24.0, 𝑝 < 0.001).
+
+
+
+for HAICo over ChatGPT for creative image generation. Five participants noted that ChatGPT remains useful when
+they already have a clear vision of what they want: “I would actually prefer HAICo, unless I really have a very specific
+idea in mind; in that case, I could just use ChatGPT. But I feel like these cases are actually very rare.” (P10).
+     Nine participants noted that ChatGPT’s single-threaded history made it difficult to track or revisit earlier ideas,
+while HAICo’s tab-based structure enabled them to explore multiple directions in parallel. P2 said, “I can go back and
+forth between ideas, keep track of them, and explore each of them further as I want.” The tab structure also repurposed
+an unavoidable bottleneck: most participants used the waiting time during image generation to explore other ideas in
+parallel. As P1 noted, “I could brainstorm parallelly multiple different ideas while waiting for some ideas to be implemented”.
+     Perceived agency and ownership varied across participants. P1 and P8 reported reduced agency with HAICo, describ-
+ing their role as guiding and curating system-generated ideas rather than authoring the core concept themselves. In
+contrast, P16 and P18 felt HAICo gave them more control than ChatGPT, citing its structured options as enabling finer-
+grained authorial direction. P10 and P21 reported equally low ownership across both systems, viewing AI-generated
+images as inherently not their own regardless of interface. Several other participants (P4, P12, P19) framed the experience
+as co-creation; they acknowledged that the system contributed ideas but did not frame this as a loss of agency.
+
+6.2    RQ2: Brainstorming and Exploration
+This section presents results on RQ2: How does scaffolding divergent ideation through the Divergent mode affect
+early-stage exploration? (see Fig. 7)
+     Participants examined significantly more distinct conceptual ideas with HAICo than with ChatGPT (Fig. 7, left).
+They also actively engaged with the ideas in HAICo beyond passively selecting them (Fig. 7, middle). In interviews, 13
+participants described HAICo’s Divergent mode as helping them get started: “The brainstorm part is crucial; when you
+want to create something, at the first stage, you may not know what you really want” (P14).
+     Beyond helping participants get started, nine participants reported surprise at the surfaced diverse, cross-domain
+ideas. P1 recalled: “I would never have thought of it in that direction. But just the fact that it showed me this did help
+me go down another rabbit hole.” P3 noted encountering the Pomodoro Technique reframed as a well-being tool: “I
+knew the technique, but I wouldn’t have thought of it while thinking about this.” This cross-domain reach was enabled
+in part by our associative-thinking prompting strategy, which produced significantly higher idea diversity than non
+associative-thinking prompting (Fig. 7, right).
+     Beyond idea diversity, nine participants described HAICo’s structured idea cards as reducing evaluation effort by
+enabling rapid scanning and comparison. P5 noted that in ChatGPT “the different ideas are kind of lost in the text, so
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                              13
+
+                                                          ChatGPT                      Our System
+                                         6                                           100
+
+
+
+
+                                                                    Percentage (%)
+                                         5           **                               80
+                                         4                                            60
+
+
+
+
+                                 Count
+                                         3
+                                         2                                            40
+                                         1                                            20
+                                         0                                             0
+                                             Refinement Prompts                             Non-Default
+                                                  per Cluster                              Option Adoption
+Fig. 8. Results for RQ3. Left: participants made significantly fewer refinement prompts per image cluster with HAICo than with
+ChatGPT (𝑀 = 1.56 vs. 2.94; 𝑊 = 52.0, 𝑝 = 0.004). Right: participants used non-default options in 74.8% of refinements on average
+(𝑆𝐷 = 27.40%) when using HAICo, indicating that alternative options were actively used.
+
+
+
+it’s hard to explore different ideas”, whereas in HAICo “you see small visuals with a very short description, it’s very easy
+to distinguish between ideas.”
+
+6.3   RQ3: Refinement and Control
+This section presents results on RQ3: How does scaffolding convergent refinement through the Convergent mode
+affect users’ refinement process? (see Fig. 8)
+   Participants made significantly fewer refinement prompts per cluster with HAICo than with ChatGPT (Fig. 8, left).
+10 of 24 participants described ChatGPT’s free-form refinement as unpredictable: it changed elements they intended
+to preserve (4/24), ignored targeted instructions (5/24), or required them to re-describe the entire image from scratch
+(4/24). P9 noted that “[with ChatGPT] when I try to refine things it sometimes just randomly changes things,” while P12
+reported having to add explicit constraints like “do not change the previous elements, only add” to prevent unintended
+overwrites. In contrast, 11 of 24 participants described HAICo’s structured refinement options as making the refinement
+process easier and more controlled than free-text prompting. P4 observed that the options served a dual communicative
+function: “it doesn’t just facilitate the system understanding what the user wants; it also helps the user understand what
+they want the system to do.”
+   The refinement options also surfaced new modification directions. As shown in Fig. 8 (right), participants used
+non-default refinement options in 74.8% of refinements rather than simply accepting the defaults. 7 of 24 participants
+reported that HAICo’s refinement options introduced directions they would not have considered. P16 described being
+surprised by a suggestion they had not anticipated: “I input some Mexican-style art, and it actually suggested an Aztec
+style. I didn’t know that Mexican and Aztec things were kind of similar to each other. That was one idea I didn’t know, and
+I felt like it was pretty good, so I went for it.”
+   However, for HAICo, refinement fidelity and interaction flexibility were the primary concerns raised by participants.
+Four participants (P5, P8, P10, P22) reported that refined images did not always faithfully reflect their selected options;
+P8 noted the system “sometimes fails to take these suggestions into consideration in the actual image.” Beyond fidelity,
+three participants (P1, P12, P20) desired direct manipulation of the image to complement the dropdown options, and two
+(P9, P12) expressed a desire for side-by-side comparison to more easily detect differences between generated images.
+
+6.4   RQ4: Learning
+This section presents results on RQ4: Does using HAICo lead to self-reported learning, and if so, what knowledge or
+strategies do users learn? (see Fig. 9)
+14                                                                                                                                                                     Wen et al.
+
+        7         ***                              24                                                                                                   12
+        6                                               ChatGPT                                                                                                    Before Our System
+                                                   20   Our System                                                                                      10         After Our System
+
+
+
+
+                                  # Participants
+
+
+
+
+                                                                                                                                       # Participants
+        5                                          16                                                                                                    8
+        4                                                 13
+Score
+        3                                          12                                                                          10                        6
+        2                                           8           5    6                                              7                                    4                  3 (25.0%)
+        1                                           4                    1
+                                                                              3         3    3          2                  2                             2       1 (8.3%)
+                                                                                   0                0          0
+        0                                           0      No      System     Visual   Prompting Refinement Directions Task-Specific                     0     Brainstorm-First
+         Self-Reported Learning                         Responses Behaviors   Style    Strategies  Skills   and Ideas Knowledge                              Adoption for ChatGPT
+
+
+Fig. 9. Results for RQ4. Left: participants reported significantly higher self-reported learning with HAICo than with ChatGPT
+(𝑀 = 5.29 vs. 3.12; 𝑊 = 21.0, 𝑝 < 0.001). Middle: distribution of learning types from responses to the open-ended question about
+learning, showing that ChatGPT more often led to system learning (e.g., System Behaviors), whereas HAICo more often led to task
+learning (e.g., Task-Specific Knowledge). Right: transfer of the brainstorm-first strategy to subsequent ChatGPT use, comparing
+participants who used ChatGPT before versus after HAICo; after using HAICo, more participants adopted a brainstorm-first workflow
+in ChatGPT, providing a preliminary signal that using HAICo may help them internalize this workflow.
+
+
+
+        As shown in Fig. 9 (left), participants reported significantly higher self-reported learning with HAICo than with
+ChatGPT. Fig. 9 (middle) shows the distribution of self-reported learning types. 13 of 24 ChatGPT participants did not
+provide any response, compared to 5/24 with HAICo. Note that participants were instructed to provide responses if
+they agreed that they had learned something. Among those who did report learning, ChatGPT participants more often
+reported learning about System Behaviors (6) and Prompting Strategies (3). For instance, P19 learned about a copyright
+restriction: “I cannot use a superhero figure for image creation.” P14 learned that “ChatGPT needs very clear and detailed
+instructions.” In contrast, HAICo participants primarily reported learning of Task-Specific Knowledge (10) and New
+Directions and Ideas (7). See Appendix C.2 for detailed label definitions and example responses.
+        Beyond self-reported learning, we observed that a few participants, who used HAICo in the first creation session,
+carried over the “brainstorm-first” workflow to ChatGPT in the second session (see Fig. 9, right). During interviews,
+eight participants expressed an intention to apply this workflow in future tasks. P14 said, “Maybe I will first ask: give
+me some options, rather than give them a prompt and directly an image.” P12 went further: “Maybe I can create my own
+custom GPT that simulates this guidance. The prompts could be structured like this: first, when the user inputs tasks and
+requirements, it should verify them. Second, it should brainstorm and give potential ideas.”
+
+7        Discussion
+This section discusses our findings and highlights the broader implications for future research on human-AI co-creation
+systems.
+
+7.1        Experience and Creative Outputs
+Quantitative results showed that HAICo outperformed ChatGPT in perceived creativity support and system usability,
+and that with HAICo, participants produced final images that were significantly more novel and diverse. Qualitative
+findings further showed a clear preference for HAICo’s workflow, particularly its separation of divergent exploration
+and convergent refinement. At the same time, some participants noted that ChatGPT remains useful when they already
+have a clear vision of what they want. Perceived agency and ownership remained mixed across participants.
+        This preference for separating divergent exploration from convergent refinement directly relates to the challenge
+of design fixation in creative tasks [30, 59]. In content generation, chatbot interfaces often produce a fully rendered
+artifact before any exploration has taken place, leading to premature convergence and design fixation [30, 59]. HAICo
+addresses this issue by structurally introducing scaffolded divergent exploration before any artifact is generated, thereby
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                         15
+
+
+avoiding premature commitment to early outputs. In addition, HAICo provides explicit process scaffolding for the two
+core cognitive processes (i.e., divergent and convergent thinking) that are central to creativity [20, 24, 60]. Our results
+also align with recent work showing that structured exploration scaffolding helps users avoid design fixation [54]
+and that exploring multiple alternatives before committing leads to more divergent and higher-quality outcomes [14].
+However, the value of process scaffolding depends on the situation. P10 noted, “I would actually prefer HAICo, unless I
+really have a very specific idea in mind; in that case, I could just use ChatGPT.” This is broadly consistent with Horvitz’s
+mixed-initiative framework [28], which emphasizes adapting system initiative based on factors such as user goal clarity,
+uncertainty, and the costs of interruption.
+  For system designers, these findings suggest that the “chatbot” paradigm may be ill-suited for creative tasks. Instead,
+generative tools should employ explicit process scaffolding to guide users through distinct stages of divergent and
+convergent thinking [10, 25, 47]. However, designers must navigate this shift with caution. First, users vary in how much
+scaffolding they need. Future systems should adapt scaffolding to users’ current needs, supporting broad exploration
+when appropriate while allowing users to move quickly to execution when they are ready [12]. Second, introducing
+scaffolding can potentially reshape users’ sense of agency and ownership [15, 49]. Systems should therefore frame
+AI outputs as “incomplete suggestions” rather than “complete solutions,” ensuring that users retain responsibility for
+crucial decisions.
+
+
+
+7.2   Scaffolding Divergent Exploration
+Our results show that participants examined significantly more distinct conceptual ideas with HAICo than with
+ChatGPT. Participants also expressed surprise at the diverse, cross-domain ideas surfaced through associative-thinking
+prompting. An ablation study demonstrates that this prompting strategy produced significantly more diverse ideas
+than simply asking the model to generate creative and diverse ideas.
+  These findings suggest that, in creative work, explicitly surfacing ideas is useful: although users can request ideas in
+a chatbot interface, they often do not explore broadly unless the system explicitly supports it. This is consistent with
+prior HCI work showing that dimensional reasoning about the design space does not arise naturally, motivating explicit
+scaffolding during early-stage divergent thinking [54]. Our scaffolding for divergent exploration is implemented by
+surfacing diverse, cross-domain ideas through associative-thinking prompting. By doing this, our system shifts the
+user’s role from independently generating ideas to evaluating, selecting, and building on them. When users encounter
+ideas they likely would not have produced on their own, they often experience surprise.
+  Together, these findings suggest that simply asking a generative model to be creative or diverse is not enough. Instead,
+designers should employ explicit mechanisms for idea generation. Associative-thinking prompting is one strategy,
+but other prompting strategies may also help, such as compositional combination (blending familiar elements into
+novel hybrids), analogy formation (mapping structures across domains), and domain-specific abstraction (extracting
+reusable high-level patterns). Additionally, recent work has raised concerns about homogeneity in open-ended language-
+model generation, showing both intra-model repetition and inter-model homogeneity [31]. Related work has further
+shown that LLM-based creativity support can homogenize ideas across users at the population level [2]. Therefore,
+idea-generation mechanisms should be designed not only to broaden exploration for a single user, but also to preserve
+diversity across users. One possible direction is to incorporate users’ preferences, goals, or personalization signals as
+context to better support diversity at the population level.
+16                                                                                                              Wen et al.
+
+
+7.3    Scaffolding Convergent Refinement
+Participants made significantly fewer refinement prompts per cluster with HAICo than with ChatGPT, and many
+participants described HAICo’s refinement process as easier and more controllable. Participants also frequently used
+non-default options, with some participants reporting that these options surfaced new modification directions. Several
+participants also wanted more direct ways to manipulate the image.
+     The perceived ease and controllability of HAICo’s refinement process can be interpreted as reducing the gap between
+the changes users have in mind and the prompts they are able to articulate, a gap that prior work describes as the
+“gulf of envisioning” [53, 68]. Rather than immediate execution, HAICo first translates refinement intent into semantic
+parameters with structured options, making the system’s interpretation legible before execution. This shifts refinement
+away from the opportunistic prompt iteration observed in prior work and toward a process in which users can inspect
+and adjust how a change will be realized [68]. The widespread use of non-default options further suggests that users’
+initial refinement intent may be only partially specified. Users may begin with one plausible direction and only recognize
+a better-fitting alternative when it is surfaced to them. By surfacing alternatives at the intent level, HAICo helps users
+identify the modification direction that better matches their underlying intent. This interpretation aligns with prior
+findings that making structured alternatives explicit can help users identify promising directions [8, 56].
+     These findings suggest that a user’s initial request should not always be treated as ready for direct execution.
+Instead, when user intent is underspecified, systems should support an intermediate clarification step that helps users
+articulate what they want while surfacing plausible alternatives that may better match their underlying intent. However,
+prompt-based clarification alone may not be sufficient in cases such as image refinement. System designers should also
+complement prompt-based interfaces with other forms of support, such as direct manipulation that allows users to
+mark regions of the image to refine.
+
+
+
+7.4    Learning and Mental Models
+We observed three distinct types of learning: system learning, task learning, and workflow learning. Participants using
+ChatGPT primarily reported system learning, i.e., learning how to interact with the tool, understand its constraints, and
+phrase prompts effectively. In contrast, participants using HAICo mainly reported task learning and workflow learning,
+including acquiring task-relevant knowledge and adopting a “brainstorm-first” strategy.
+     The difference in system learning and task learning across the two conditions can be explained by where each system
+places cognitive demand. With ChatGPT, participants must first know how to prompt effectively, which is a non-trivial
+and effortful process that consumes much of their attentional bandwidth [68]. As a result, system learning becomes
+the dominant learning type. In contrast, HAICo reduces the cognitive burden of prompt engineering, freeing users to
+devote more attention to exploring possible directions for solving the task. By surfacing diverse ideas and explanations
+that connect those ideas back to the task, it in turn supports greater task learning. Workflow learning emerged as a third
+form of learning among participants using HAICo. The observed transfer of the “brainstorm-first strategy” to ChatGPT,
+although by a small number of participants, provides a preliminary indication that participants may have internalized
+the workflow structure as a transferable strategy, rather than perceiving it as a feature tied to a specific tool.
+     These findings highlight that co-creation systems should be designed for both task performance (helping users create
+good results now) and user learning (helping users become better creators over time) [26]. While the former is often
+prioritized, the latter is equally important for long-term satisfaction and development [37].
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                  17
+
+
+7.5    Limitations
+Our study has several limitations. First, most participants in our study have backgrounds in computer science or
+information technology. This limits the generalizability of our findings to more diverse populations. Second, we eval-
+uated our approach only in the context of creative image generation. While we argue that the underlying principle is
+theoretically motivated to generalize, empirical validation across other creative domains remains an important direction
+for future work. Third, we measured participants’ self-reported learning instead of actual learning performance on
+a task. Therefore, their self-reported learning may represent a subjective view of perceived learning. Future work
+needs to take objective measures to assess users’ learning experiences. Finally, the study was conducted in a single
+session, preventing us from assessing long-term effects, such as the persistence of learning benefits or how reliance
+on scaffolding may change with continued use.
+
+8     Conclusion
+We examined a human-AI co-creation approach grounded in the Geneplore model of creative cognition, structuring
+creative work around two switchable modes. We instantiated this approach in HAICo, a system for creative image
+generation in which the Divergent mode scaffolds the exploration of remote, cross-domain conceptual ideas and
+the Convergent mode supports iterative image refinement by translating user intent into semantic parameters with
+structured, context-aware options. Through a within-subjects study (𝑁 = 24), we found that HAICo outperformed
+ChatGPT for creativity support and system usability, and produced more novel and diverse outcomes. These findings
+highlight the value of moving beyond execution-focused chatbot interfaces toward scaffolded co-creation systems that
+more actively support the creative process.
+    While promising, further investigation is warranted. First, given our relatively homogeneous participant pool and
+focus on the image-generation domain, follow-up studies should examine this paradigm with more diverse populations
+across additional domains. For instance, a particularly timely domain is AI-assisted software development: current
+coding agents excel at implementation but provide little support for architectural exploration, causing developers to
+converge prematurely on early implementation choices. Similar dynamics also arise in data visualization (e.g., exploring
+which insights to surface before committing to chart encodings) and presentation design (e.g., outlining narrative
+structure before formatting slides). Second, while structured scaffolding has great potential, our analysis in this paper
+focused primarily on creativity support and did not explicitly evaluate other aspects such as agency and ownership;
+future research could examine these important factors in designing structured scaffolding. Third, our study consisted of
+a single session, and learning was mainly assessed only via self-reports. More robust evaluation of learning gains would
+benefit from pre- and post-tests as well as longitudinal studies.
+
+References
+[1] Teresa M Amabile. 1982. Social psychology of creativity: A consensual assessment technique. Journal of personality and social psychology 43, 5
+    (1982), 997.
+[2] Barrett R. Anderson, Jash Hemant Shah, and Max Kreminski. 2024. Homogenization Effects of Large Language Models on Human Creative Ideation.
+    In Conference on Creativity and Cognition (C&C). ACM, 413–425. doi:10.1145/3635636.3656204
+[3] Roger E Beaty and Yoed N Kenett. 2023. Associative Thinking at the Core of Creativity. Trends in Cognitive Sciences 27 (2023), 671–683.
+[4] Stephen Brade, Bryan Wang, Maurício Sousa, Sageev Oore, and Tovi Grossman. 2023. Promptify: Text-to-Image Generation through Interactive
+    Prompt Exploration with Large Language Models. In ACM Symposium on User Interface Software and Technology (UIST). ACM, 96:1–96:14.
+    doi:10.1145/3586183.3606725
+[5] Virginia Braun and Victoria Clarke. 2006. Using Thematic Analysis in Psychology. Qualitative Research in Psychology 3 (2006), 77–101. doi:10.1191/
+    1478088706qp063oa
+18                                                                                                                                          Wen et al.
+
+
+ [6] Hernan Casakin and Gabriela Goldschmidt. 1999. Expertise and the use of visual analogy: implications for design education. Design studies 20, 2
+     (1999), 153–175.
+ [7] Erin Cherry and Celine Latulipe. 2014. Quantifying the Creativity Support of Digital Tools Through the Creativity Support Index. Transactions on
+     Computer-Human Interaction (TOCHI) 21 (2014), 21:1–21:25. doi:10.1145/2617588
+ [8] Daeun Choi, Sumin Hong, Jeongeon Park, John Joon Young Chung, and Juho Kim. 2024. CreativeConnect: Supporting Reference Recombination
+     for Graphic Design Ideation with Generative AI. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM,
+     1055:1–1055:25. doi:10.1145/3613904.3642794
+ [9] Victoria Clarke and Virginia Braun. 2017. Thematic Analysis. The Journal of Positive Psychology 12 (2017), 297–298.
+[10] Arthur Cropley. 2006. In Praise of Convergent Thinking. Creativity Research Journal 18 (2006), 391–404.
+[11] Darren W Dahl and Page Moreau. 2002. The influence and value of analogical thinking during new product ideation. Journal of marketing research
+     39, 1 (2002), 47–60.
+[12] Paramveer S. Dhillon, Somayeh Molaei, Jiaqi Li, Maximilian Golub, Shaochun Zheng, and Lionel Peter Robert. 2024. Shaping Human-AI Collaboration:
+     Varied Scaffolding Levels in Co-writing with Language Models. In Proceedings of the CHI Conference on Human Factors in Computing Systems. ACM,
+     1044:1–1044:18. doi:10.1145/3613904.3642134
+[13] Anil R. Doshi and Oliver P. Hauser. 2024. Generative AI enhances individual creativity but reduces the collective diversity of novel content. Science
+     Advances 10, 28 (2024), eadn5290. doi:10.1126/sciadv.adn5290
+[14] Steven P. Dow, Alana Glassco, Jonathan Kass, Melissa Schwarz, Daniel L. Schwartz, and Scott R. Klemmer. 2010. Parallel prototyping leads to better
+     design results, more divergence, and increased self-efficacy. ACM Transactions on Computer-Human Interaction (TOCHI) 17, 4 (2010), 18:1–18:24.
+     doi:10.1145/1879831.1879836
+[15] Fiona Draxler, Anna Werner, Florian Lehmann, Matthias Hoppe, Albrecht Schmidt, Daniel Buschek, and Robin Welsch. 2024. The AI Ghostwriter
+     Effect: When Users Do Not Perceive Ownership of AI-Generated Text but Self-Declare as Authors. Transactions on Computer-Human Interaction
+     (TOCHI) 31 (2024), 25:1–25:40. doi:10.1145/3637875
+[16] Ziv Epstein, Aaron Hertzmann, Investigators of Human Creativity, Memo Akten, Hany Farid, Jessica Fjeld, Morgan R Frank, Matthew Groh, Laura
+     Herman, Neil Leach, and Others. 2023. Art and the Science of Generative AI. Science 380 (2023), 1110–1111.
+[17] Baptiste Rozière et al. 2023. Code Llama: Open Foundation Models for Code. CoRR abs/2308.12950 (2023). doi:10.48550/ARXIV.2308.12950
+[18] Mark Chen et. al. 2021. Evaluating Large Language Models Trained on Code. CoRR abs/2107.03374 (2021).
+[19] Yingchaojie Feng, Xingbo Wang, Kamkwai Wong, Sijia Wang, Yuhong Lu, Minfeng Zhu, Baicheng Wang, and Wei Chen. 2024. PromptMagician:
+     Interactive Prompt Engineering for Text-to-Image Creation. Transactions on Visualization and Computer Graphics 30 (2024), 295–305. doi:10.1109/
+     TVCG.2023.3327168
+[20] Ronald A Finke, Thomas B Ward, and Steven M Smith. 1996. Creative cognition: Theory, research, and applications. MIT press.
+[21] Akhilesh Gadde. 2025. Democratizing Software Engineering Through Generative AI and Vibe Coding: The Evolution of No-code Development.
+     Journal of Computer Science and Technology Studies 7 (2025), 556–572.
+[22] Ahana Ghosh, Sebastian Tschiatschek, Sam Devlin, and Adish Singla. 2022. Adaptive Scaffolding in Block-Based Programming via Synthesizing New
+     Tasks as Pop Quizzes. In International Conference on Artificial Intelligence in Education (AIED). Springer, 28–40. doi:10.1007/978-3-031-11644-5_3
+[23] Atefeh Mahdavi Goloujeh, Anne Sullivan, and Brian Magerko. 2024. Is It AI or Is It Me? Understanding Users’ Prompt Journey with Text-to-Image
+     Generative AI Tools. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 183:1–183:13. doi:10.1145/3613904.
+     3642861
+[24] Joy Paul Guilford. 1956. The Structure of Intellect. Psychological Bulletin 53 (1956), 267.
+[25] Joy Paul Guilford. 1967. The Nature of Human Intelligence. (1967).
+[26] Jennifer Haase and Sebastian Pokutta. 2024. Human-AI Co-creativity: Exploring Synergies Across Levels of Creative Collaboration. CoRR
+     abs/2411.12527 (2024).
+[27] Sarah Harvey and James W Berry. 2023. Toward a Meta-Theory of Creativity Forms: How Novelty and Usefulness Shape Creativity. Academy of
+     Management Review 48, 3 (2023), 504–529.
+[28] Eric Horvitz. 1999. Principles of mixed-initiative user interfaces. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI).
+     159–166.
+[29] Mina Huh, Ding Li, Kim Pimmel, Hijung Valentina Shin, Amy Pavel, and Mira Dontcheva. 2025. VideoDiff: Human-AI Video Co-Creation with
+     Alternatives. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). 1–19.
+[30] David G Jansson and Steven M Smith. 1991. Design Fixation. Design Studies 12, 1 (1991), 3–11.
+[31] Liwei Jiang, Yuanjun Chai, Margaret Li, Mickel Liu, Raymond Fok, Nouha Dziri, Yulia Tsvetkov, Maarten Sap, Alon Albalak, and Yejin Choi. 2025.
+     Artificial Hivemind: The Open-Ended Homogeneity of Language Models (and Beyond). In Proceedings of the Annual Conference on Neural Information
+     Processing Systems (NeurIPS), Datasets and Benchmark Track.
+[32] Terry K Koo and Mae Y Li. 2016. A guideline of selecting and reporting intraclass correlation coefficients for reliability research. Journal of
+     chiropractic medicine 15, 2 (2016), 155–163.
+[33] Harsh Kumar, Jonathan Vincentius, Ewan Jordan, and Ashton Anderson. 2025. Human Creativity in the Age of LLMs: Randomized Experiments
+     on Divergent and Convergent Thinking. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 23:1–23:18.
+     doi:10.1145/3706598.3714198
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                  19
+
+
+[34] Jonathan Lazar, Jinjuan Heidi Feng, and Harry Hochheiser. 2017. Research methods in human-computer interaction. Morgan Kaufmann.
+[35] James R. Lewis, Brian Utesch, and Deborah E. Maher. 2013. UMUX-LITE: When There’s No Time for the SUS. In Proceedings of the CHI Conference
+     on Human Factors in Computing Systems (CHI). ACM, 2099–2102. doi:10.1145/2470654.2481287
+[36] David Chuan-En Lin, Hyeonsu B. Kang, Nikolas Martelaro, Aniket Kittur, Yan-Ying Chen, and Matthew K. Hong. 2025. Inkspire: Supporting Design
+     Exploration with Generative AI through Analogical Sketching. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI).
+     ACM, 427:1–427:18. doi:10.1145/3706598.3713397
+[37] Brooke N Macnamara, Ibrahim Berber, M Cenk Çavuşoğlu, Elizabeth A Krupinski, Naren Nallapareddy, Noelle E Nelson, Philip J Smith, Amy L
+     Wilson-Delfosse, and Soumya Ray. 2024. Does using artificial intelligence assistance accelerate skill decay and hinder skill development without
+     performers’ awareness? Cognitive Research: Principles and Implications 9, 1 (2024), 46.
+[38] Sarnoff Mednick. 1962. The Associative Basis of the Creative Process. Psychological Review 69 (1962), 220.
+[39] Pronita Mehrotra, Aishni Parab, and Sumit Gulwani. 2024. Enhancing Creativity in Large Language Models Through Associative Thinking Strategies.
+     CoRR abs/2405.06715 (2024). doi:10.48550/ARXIV.2405.06715
+[40] Aditi Mishra, Frederik Brudy, Qian Zhou, George Fitzmaurice, and Fraser Anderson. 2025. WhatIF: Branched Narrative Fiction Visualization
+     for Authoring Emergent Narratives using Large Language Models. In Conference on Creativity and Cognition (C&C). Association for Computing
+     Machinery, 590–605. doi:10.1145/3698061.3726933
+[41] Erik Nijkamp, Bo Pang, Hiroaki Hayashi, Lifu Tu, Huan Wang, Yingbo Zhou, Silvio Savarese, and Caiming Xiong. 2023. CodeGen: An Open Large
+     Language Model for Code with Multi-Turn Program Synthesis. In International Conference on Learning Representations (ICLR).
+[42] OpenAI. 2025. GPT-5. https://openai.com/gpt-5/.
+[43] OpenAI. 2025. GPT-Image-1. https://platform.openai.com/docs/models/gpt-image-1.
+[44] OpenAI. 2025. GPT-Image-1.5. https://platform.openai.com/docs/models/gpt-image-1.5.
+[45] Fiona Patterson. 2004. Personal Initiative and Innovation. In Encyclopedia of Applied Psychology. Elsevier, 843–855. doi:10.1016/B0-12-657410-
+     3/00754-6
+[46] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer. 2022. High-Resolution Image Synthesis with Latent Diffusion
+     Models. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). IEEE, 10674–10685. doi:10.1109/CVPR52688.2022.01042
+[47] Mark A Runco. 1991. Divergent Thinking. Ablex Publishing Corporation Norwood, NJ.
+[48] Mark A Runco and Garrett J Jaeger. 2012. The Standard Definition of Creativity. Creativity Research Journal 24, 1 (2012), 92–96.
+[49] Zainab Salma, Raquel Hijón-Neira, and Celeste Pizarro. 2025. Designing Co-Creative Systems: Five Paradoxes in Human–AI Collaboration.
+     Information 16 (2025), 909.
+[50] Christoph Schuhmann, Romain Beaumont, Richard Vencu, Cade Gordon, Ross Wightman, Mehdi Cherti, Theo Coombes, Aarush Katta, Clayton
+     Mullis, Mitchell Wortsman, Patrick Schramowski, Srivatsa Kundurthy, Katherine Crowson, Ludwig Schmidt, Robert Kaczmarczyk, and Jenia Jitsev.
+     2022. LAION-5B: An Open Large-scale Dataset for Training Next Generation Image-text Models. In Proceedings of the Annual Conference on Neural
+     Information Processing Systems (NeurIPS).
+[51] Hanshu Shen, Lyukesheng Shen, Wenqi Wu, and Kejun Zhang. 2025. IdeationWeb: Tracking the Evolution of Design Ideas in Human-AI Co-Creation.
+     In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). Association for Computing Machinery. doi:10.1145/3706598.
+     3713375
+[52] Chufan Shi, Cheng Yang, Yaxin Liu, Bo Shui, Junjie Wang, Mohan Jing, Linran Xu, Xinyu Zhu, Siheng Li, Yuxiang Zhang, Gongye Liu, Xiaomei Nie,
+     Deng Cai, and Yujiu Yang. 2025. ChartMimic: Evaluating LMM’s Cross-Modal Reasoning Capability via Chart-to-Code Generation. In International
+     Conference on Learning Representations (ICLR).
+[53] Hariharan Subramonyam, Roy Pea, Christopher Lawrence Pondoc, Maneesh Agrawala, and Colleen M. Seifert. 2024. Bridging the Gulf of Envisioning:
+     Cognitive Challenges in Prompt Based Interactions with LLMs. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI).
+     ACM, 1039:1–1039:19. doi:10.1145/3613904.3642754
+[54] Sangho Suh, Meng Chen, Bryan Min, Toby Jia-Jun Li, and Haijun Xia. 2024. Luminate: Structured Generation and Exploration of Design Space with
+     Large Language Models for Human-AI Co-Creation. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM,
+     644:1–644:26. doi:10.1145/3613904.3642400
+[55] Sangho Suh, Jian Zhao, and Edith Law. 2022. CodeToon: Story Ideation, Auto Comic Generation, and Structure Mapping for Code-Driven Storytelling.
+     In ACM Symposium on User Interface Software and Technology (UIST). ACM, 13:1–13:16. doi:10.1145/3526113.3545617
+[56] Sirui Tao, Ivan Liang, Cindy Peng, Zhiqing Wang, Srishti Palani, and Steven P. Dow. 2025. DesignWeaver: Dimensional Scaffolding for Text-to-Image
+     Product Design. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 425:1–425:26. doi:10.1145/3706598.3714211
+[57] Bekzat Tilekbay, Saelyne Yang, Michal Adam Lewkowicz, Alex Suryapranata, and Juho Kim. 2024. Expressedit: Video Editing with Natural Language
+     and Sketching. In International Conference on Intelligent User Interfaces (IUI). 515–536.
+[58] René Vidal. 2010. Creative Problem Solving: An Applied University Course. Pesquisa Operacional 30 (2010), 405–426. doi:10.1590/S0101-
+     74382010000200009
+[59] Samangi Wadinambiarachchi, Ryan M. Kelly, Saumya Pareek, Qiushi Zhou, and Eduardo Velloso. 2024. The Effects of Generative AI on Design
+     Fixation and Divergent Thinking. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 380:1–380:18.
+     doi:10.1145/3613904.3642919
+[60] Graham Wallas. 1926. The Art of Thought. Harcourt, Brace and Company.
+20                                                                                                                                      Wen et al.
+
+
+[61] Wen-Fan Wang, Ting-Ying Lee, Chien-Ting Lu, Che-Wei Hsu, Nil Ponsa Campanyà, Yu Chen, Mike Y. Chen, and Bing-Yu Chen. 2025. GenTune:
+     Toward Traceable Prompts to Improve Controllability of Image Refinement in Environment Design. In ACM Symposium on User Interface Software
+     and Technology (UIST). ACM, 11:1–11:21. doi:10.1145/3746059.3747774
+[62] Wen-Fan Wang, Chien-Ting Lu, Nil Ponsa Campanyà, Bing-Yu Chen, and Mike Y. Chen. 2025. AIdeation: Designing a Human-AI Collaborative
+     Ideation System for Concept Designers. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 21:1–21:28.
+     doi:10.1145/3706598.3714148
+[63] Zhijie Wang, Yuheng Huang, Da Song, Lei Ma, and Tianyi Zhang. 2024. PromptCharm: Text-to-Image Generation through Multi-modal Prompting
+     and Refinement. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 185:1–185:21. doi:10.1145/3613904.3642803
+[64] Chao Wen, Ahana Ghosh, Jacqueline Staub, and Adish Singla. 2024. Task Synthesis for Elementary Visual Programming in XLogoOnline Environment.
+     In Artificial Intelligence in Education (AIED), Late Breaking Results Track.
+[65] Chao Wen, Jacqueline Staub, and Adish Singla. 2025. Program Synthesis Benchmark for Visual Programming in XLogoOnline Environment. In
+     Annual Meeting of the Association for Computational Linguistics (ACL). Association for Computational Linguistics, 15812–15838.
+[66] Frank Wilcoxon. 1992. Individual Comparisons by Ranking Methods. In Breakthroughs in Statistics: Methodology and Distribution. Springer, 196–202.
+[67] Yongsheng Yu, Ziyun Zeng, Hang Hua, Jianlong Fu, and Jiebo Luo. 2024. PromptFix: You Prompt and We Fix the Photo. In Proceedings of the Annual
+     Conference on Neural Information Processing Systems (NeurIPS).
+[68] J. D. Zamfirescu-Pereira, Richmond Y. Wong, Bjoern Hartmann, and Qian Yang. 2023. Why Johnny Can’t Prompt: How Non-AI Experts Try
+     (and Fail) to Design LLM Prompts. In Proceedings of the CHI Conference on Human Factors in Computing Systems (CHI). ACM, 437:1–437:21.
+     doi:10.1145/3544548.3581388
+[69] Kai Zhang, Lingbo Mo, Wenhu Chen, Huan Sun, and Yu Su. 2023. MagicBrush: A Manually Annotated Dataset for Instruction-Guided Image Editing.
+     In Proceedings of the Annual Conference on Neural Information Processing Systems (NeurIPS).
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                21
+
+
+A     Technical Implementation
+This section provides supplementary details on HAICo’s system implementation. We first describe the backend im-
+plementation in Section A.1, then describe the implementation details in Section A.2.
+
+A.1     Backend Implementation
+To make the backend implementation easier to follow, we organize this section around the primary UI operations
+shown in Fig. 3.
+
+
+
+
+    Create a 3x3 grid artwork           Image
+    divided into 9 equal square       generation
+    sections. Each section              model
+    should independently depict
+    one of the following ideas
+    using a clean, flat, minimalist
+    design...
+
+
+
+
+Fig. 10. Generation pipeline for idea thumbnails. The backend issues a single image-generation request that returns one composite
+3 × 3 image containing all nine idea thumbnails; the frontend then slices that composite result into nine square thumbnails for the
+idea cards.
+
+
+    Generating idea grid (Fig. 3A & 3B). For idea-grid generation, the input is the user’s prompt (Fig. 3A), and the output
+is an idea grid (Fig. 3B) in which each idea includes a title, description, background, category tags, and a corresponding
+thumbnail. This pipeline proceeds in two sequential steps: (i) generating the textual components of the idea grid and (ii)
+generating thumbnails for those ideas. To generate the textual components, we use an associative-thinking prompt (see
+Fig. 13) that first distills the user’s input into a one-sentence core_idea and then uses associative thinking to generate
+nine ideas, including titles, descriptions, background, and category tags (Fig. 3 shows only a subset because of space
+constraints). This intermediate core_idea reduces irrelevant detail in long or cluttered user inputs while preserving
+the central intent needed for downstream generation. We generate nine ideas because this number provides substantial
+diversity without making comparison too burdensome, and it aligns naturally with the thumbnail-generation pipeline
+described next. After generating the idea texts, the backend issues a single image-generation request to create a composite
+3 × 3 image containing nine thumbnails corresponding to the generated idea titles (see Fig. 10). The frontend then slices
+this composite image into individual thumbnails for display on the idea cards. Compared with generating nine thumbnails
+separately, this design reduces latency and cost. The thumbnails are intentionally kept low fidelity because their role
+is to serve as lightweight visual anchors for quickly scanning and distinguishing ideas rather than as final images.
+
+    Generating more ideas (Fig. 3C). When the user clicks the “More Ideas” button (Fig. 3C), the system opens a pop-up
+window that lets the user optionally provide an additional prompt to steer the next round of ideation in a particular
+direction. The backend then reuses the same associative-thinking prompt used for the initial idea-grid generation, but
+includes all previously generated ideas in the model context and explicitly instructs the model to generate nine new
+ideas that are distinct from the existing ones. In this way, the system extends the current ideation space rather than
+restarting it from scratch.
+22                                                                                                                                        Wen et al.
+
+
+                 Change the students in the
+                 back to doing something more
+                 fun, and show that the cow is
+                 guiding people to put their
+                 phones down and join in.
+
+
+
+                              Decompose Intent
+
+
+
+     back_activity
+      playing an impromptu frisbee game         ∨
+
+     cow_role
+      a friendly mascot                         ^
+      a playful coach blowing a whistle
+
+      a tour guide holding a sign
+
+     a magician pulling a banner
+
+
+
+
+                              Generate Images
+
+                                                                                                     Run Sketch with Options
+
+
+                                                     A bold, retro, flat-color university poster in warm oranges and greens. Foreground: a hand
+                                                     holds a smartphone with a cheerful cartoon cow popping out, high-energy expression, thick
+                                                     outlines. Speech bubble and sign elements carry short calls-to-action. Background: a campus
+                                                     quad with trees and students interacting. Headline: 'Interrupt the scroll.' Footer line
+                          …                          encourages real-life connection. The cow appears as a magician pulling a banner, clearly
+                                                     urging students to put phones down and join. In the background, students are playing an
+                                                     impromptu frisbee game, lively motion, joyful camaraderie. Design: simple shapes, limited
+                                                     palette, bold readable typography, friendly vibe.
+
+
+
+
+Fig. 11. The backend implementation of the refinement process in Convergent mode. Given a user’s refinement intent, the system
+decomposes the intent and generates a Python function (i.e., the Sketch) in the backend. The Python function’s arguments correspond
+to the parameters exposed in the frontend (e.g., back_activity, cow_role), and its return value is the refinement prompt used to
+edit the input image. After the user selects options in the frontend, the backend executes the Sketch with the selected options to
+generate the refinement prompt, which is then used by an image-editing model to produce the refined image.
+
+
+
+     Generating image from an idea (Fig. 3E–F). When the user selects an idea and clicks the spark icon (Fig. 3E), the
+backend sends the selected idea’s title and description, and the previously derived core_idea, to a generative model
+that can call an image-generation tool. The model returns both an image and a textual explanation of how the selected
+idea is interpreted in that image (Fig. 3F).
+
+     Generating a parametrized sketch (Fig. 3H & Fig. 3I). When the user enters a refinement prompt (Fig. 3H), the backend
+takes this prompt together with the image to be refined and generates a sketch with metadata. The sketch is essentially
+a parameterized prompt template for an image. To generate this template, we use a parametric sketch-generation
+prompt (see Figs. 15 and 16) that first derives a base prompt that can recreate the input image, then analyzes the
+user’s refinement intent to identify which part of that prompt should change, parameterizes that prompt fragment,
+and generates alternative options for that parameter so the user can explore different refinements. We implement this
+prompt template as a Python function whose arguments correspond to the parameterized parts of the prompt (see
+Fig. 11). This pipeline also generates metadata for each sketch parameter, including a default option designed to best
+align with the refinement prompt, an explanation shown through the question-mark icon, and a set of system-suggested
+options. After generating a sketch, the system validates it by automatically executing the Python code on a randomly
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                     23
+
+
+sampled combination of the suggested options to ensure that it runs without error. If the sketch fails validation, the
+system regenerates it, with up to three attempts in total. If all attempts fail, the system returns the final generated
+sketch.
+
+
+    Generating a refined image (Fig. 3J). When the user selects parameter options in the frontend and clicks “Generate
+Image” (Fig. 3J), the backend uses a Python interpreter to execute the sketch with the selected options. The sketch
+returns a concrete text prompt representing the user’s intended refinement, with the user-specified options highlighted
+in bold. This prompt, together with the original image, is then passed to an image-editing model, which modifies the
+input image according to the highlighted parts of the prompt and produces the refined image variation displayed in the
+interface.
+
+
+A.2    Implementation Details
+We implemented HAICo as a full-stack web application with a React+TypeScript frontend and a backend built with
+Django REST Framework. The frontend was developed with Vite, while the deployed system used Gunicorn for serving
+and supported asynchronous processing via Celery. The system was configured for both local and Heroku-based
+deployment. For the user study, we used the local deployment to reduce latency and improve runtime stability.
+    HAICo relies on generative models for content generation across multiple steps. We mainly use two categories
+of models: text generation models and image generation models. Below, we detail the specific model versions and
+configurations used for each generation step in the system:
+
+• Generating the idea-grid text and sketch (Fig. 3A & Fig. 3H): We use OpenAI’s gpt-5-2025-08-07 with reasoning
+    effort set to minimal to generate the idea-grid text and the sketch with its associated metadata.
+• Generating thumbnails (Fig. 3B): We use OpenAI’s gpt-image-1-mini with medium quality. We choose the mini
+    model because the thumbnails primarily serve as lightweight visual anchors rather than high-fidelity outputs.
+• Generating an image and explanation from an idea (Fig. 3E & Fig. 3F): We use OpenAI’s gpt-5-2025-08-07 with
+    the image-generation tool gpt-image-1 at medium quality. We choose medium quality to prioritize speed during
+    early-stage exploration.
+• Generating refined images (Fig. 3J & Fig. 3K): We use image editing with OpenAI’s gpt-image-1 and set quality to
+    auto to support higher-quality near-final outputs.
+
+During the user study, OpenAI deprecated gpt-image-1 in ChatGPT and replaced it with gpt-image-1.5. To maintain
+consistency across conditions, we synchronized HAICo accordingly, replacing gpt-image-1 with gpt-image-1.5
+throughout our system. As a result, both systems used the same image model version at each point in the study.
+
+
+B     Technical Validation
+This section provides technical validations used to assess the reliability of HAICo. We provide details of the technical
+validation of both modes in HAICo.
+    All human annotation tasks across both validations were performed by the same two annotators (one author and
+one independent rater). We first describe the validation of the Divergent mode in Section B.1, then the validation of
+the Convergent mode in Section B.2.
+24                                                                                                                    Wen et al.
+
+Table 1. Results of the technical validation of the Divergent mode on 100 real-world prompts from the Infinity-Chat dataset [31].
+
+
+                                Metric                                              Value
+                                Idea Grid Generation Latency (s)               14.0 (SD = 3.2)
+                                Thumbnail Generation Latency (s)               19.5 (SD = 3.7)
+                                End-to-End Generation Latency (s)              33.5 (SD = 4.5)
+                                Thumbnail Generation Success Rate (%)               97.0%
+
+
+B.1     Validation of the Divergent Mode
+The Divergent mode takes a user prompt as input and produces two outputs sequentially: a grid of nine ideas (each
+with a title, description, and category tags), followed by nine thumbnails generated from those titles. The core risks in
+this pipeline are that thumbnail generation may fail due to violating OpenAI’s content policy (e.g., copyright issues)
+and generation latency may be too high for interactive use. We validate these risks along two metrics: Generation
+Latency (reported separately for idea-grid generation, thumbnail generation, and end-to-end generation) and Thumbnail
+Generation Success Rate. The diversity of the generated ideas is validated separately via the associative thinking
+prompting ablation reported in Section 6.2.
+
+     Dataset and Setup. We validated idea generation using 100 real-world prompts randomly sampled from the “Brain-
+storm & Ideation” category of the Infinity-Chat dataset [31]. We selected this dataset because it contains real-world
+user prompts and features a granular “Brainstorm & Ideation” category that directly reflects the intended use cases of
+the Divergent mode. All validations used the same model configuration as the system used for the user study. This
+validation is complementary to the ablation reported in Section 6.2, which validated associative thinking prompting on
+the 24 prompts entered by participants during the user study.
+
+     Generation Latency. This metric measures the end-to-end wall-clock time for the full idea generation pipeline, from
+receiving the user’s prompt to delivering both the idea grid and all nine thumbnails. Because thumbnails can only
+be requested after the idea grid is complete, we report an overall end-to-end latency alongside a breakdown into two
+components: (i) Idea Grid Latency, the time from receiving the user’s prompt to returning the nine ideas with their
+titles, descriptions, and category tags; and (ii) Thumbnail Latency, the time from issuing the image generation request
+to receiving the 3×3 tile image with nine thumbnails. All latency values are averaged across the 100 validated prompts.
+
+     Thumbnail Generation Success Rate. This metric validates the reliability of the thumbnail generation pipeline by
+measuring the proportion of prompts for which all nine thumbnails are successfully generated and returned. A thumbnail
+is considered successfully generated if it is returned without error and contains a valid image file. Because the system
+generates thumbnails in batches of nine, a single failure in generating any thumbnail for a prompt counts as a failure
+for that prompt. The final Thumbnail Generation Success Rate is the proportion of prompts with successful thumbnail
+generation across all 100 validated prompts.
+
+B.2     Validation of the Convergent Mode
+The Convergent mode takes an (image, refinement intent) pair as input and produces a refinement prompt as
+output via an intermediate parametric Python sketch. The core risks in this pipeline are that the sketch may fail to
+execute, the returned prompt may not incorporate the selected options, and generation latency may disrupt interactive
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                            25
+
+Table 2. Results of the technical validation of the Convergent mode on 100 (image, refinement intent) pairs from the MagicBrush
+dataset [69]. Proportion metrics are reported as percentages.
+
+
+                                        Metric                      Value
+                                        Generation Latency (s)      9.01 (SD = 2.22)
+                                        Syntactic Validity (%)      100.0%
+                                        Execution Fidelity (%)      94.0%
+
+
+
+
+use. We validate these risks using three metrics: two automatic (Syntactic Validity and Execution Fidelity) and one
+measurement-based (Generation Latency). The overall results of this validation are reported in Table 2.
+
+   Dataset and Setup. We validated sketch generation on 100 (image, refinement intent) pairs randomly sampled from
+the MagicBrush dataset [69], a benchmark of real user image-editing instructions grounded in natural language. Each
+pair was passed to HAICo’s sketch generation pipeline, producing a Python sketch with named parameters and
+pre-populated dropdown options per parameter. The number of parameters and options per sketch is determined
+dynamically by the model based on the complexity of the refinement intent; across our 100 validated sketches, the
+mean number of parameters was 1.77 (𝑆𝐷 = 0.87) and the mean number of options per parameter was 4.01 (𝑆𝐷 = 0.11).
+All validations used the same model configuration as the system used for the user study.
+
+   Generation Latency. This metric measures the wall-clock time from receiving the (image, refinement intent) input to
+returning the fully generated sketch, averaged across all 100 validated pairs. Mean sketch generation latency was 9.01
+(𝑆𝐷 = 2.22) seconds.
+
+   Syntactic Validity. This metric assesses whether each generated sketch executes without runtime errors across all
+possible parameter configurations. For each sketch, we automatically execute the Python code using every possible
+combination of the suggested dropdown options. A sketch is considered syntactically valid only if all combinations
+execute without error. In our validation, all 100 sketches were syntactically valid (Syntactic Validity = 100%).
+
+   Execution Fidelity. This metric validates whether the options used to instantiate a sketch are faithfully reflected in the
+generated text prompt. Unlike Syntactic Validity, which confirms that a sketch executes without error, a syntactically
+valid sketch may still produce a prompt that ignores the provided options entirely. To calculate this metric, for each
+sketch, we enumerate all possible combinations of the suggested options and execute the Python code once per
+combination, producing one text prompt per combination. For each returned prompt, we check whether every option
+value in the combination appears as an exact, case-insensitive substring. A sketch is faithful only if every combination
+produces a prompt where all provided options are present. This reflects the fact that a user may select any combination
+during interactive use. In our validation, 94 of 100 sketches were faithful (Execution Fidelity = 94%). Inspection of
+the 6 unfaithful sketches revealed a consistent failure pattern: the model occasionally generated sketch code that did
+not correctly use Python f-string interpolation to embed the selected option values into the returned prompt, despite
+explicit instructions in the system prompt. This reflects a known instruction-following limitation of the underlying
+generative model rather than a flaw in the sketch design itself.
+26                                                                                                              Wen et al.
+
+
+C     Study Details
+This section provides supplementary details on the study procedure, participant materials, interview protocol, and
+annotation process used in our evaluation.
+
+
+C.1     User Study
+This subsection provides the study details.
+
+     Study Environment. We conducted the study in a quiet laboratory environment. Participants used the same laptop
+and web browser for both sessions.
+
+     Participant Demographics. Table 4 provides participant-level demographic details and prior experience with creative
+practice and AI-based image generation tools.
+
+     User Study Tasks. The task instructions for the three topics are provided in Fig. 12. Participants were given the same
+instruction structure for each topic, with only the task description changing across topics.
+
+     Counterbalancing and Study Design. We followed a counterbalanced within-subjects design. Each participant com-
+pleted two tasks, each on a different topic, and used both systems (ChatGPT and HAICo) once. The order of topics and
+the assignment of systems to topics were counterbalanced. The 12 unique experimental sequences used to achieve this
+counterbalancing are listed in Table 5.
+
+     Semi-Structured Interview Protocol. Below, we list semi-structured interview questions. We mostly followed these
+questions during the interviews and asked follow-up questions when necessary.
+
+(1) How would you describe your overall experience using each of the two systems?
+
+(2) When you were creating images with the two systems, what felt different between them? What parts of each system
+      worked well for you, and what parts did not?
+
+(3) In HAICo, how did the two stages (i.e., brainstorming and refinement) influence your image creation process?
+
+(4) When using HAICo, was there anything you learned or discovered that you did not know or try before?
+
+(5) After using HAICo, would you do anything differently next time you use another image generation tool (e.g.,
+      ChatGPT)?
+
+(6) Looking back on the whole experience, what did you like about HAICo, and what suggestions do you have for
+      improving it?
+
+(7) Is there anything we have not talked about that you would like to add?
+
+
+C.2     Coding Scheme for Learning
+This section describes the coding scheme used to categorize participants’ open-ended post-task responses about what
+they learned from each system. Table 3 presents the set of labels, their definitions, and representative example responses.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                      27
+
+
+C.3   Evaluation of the Novelty and Usefulness of Downloaded Images
+This section details how we analyzed the downloaded images from the user study, including the image set, annotator
+setup, rating criteria for novelty and usefulness, and the aggregation procedure used to compute the final scores.
+  In our user study, 24 participants downloaded 123 poster images that they considered ready to print: 63 created with
+ChatGPT and 60 created with HAICo. We evaluated these images along four dimensions: fluency, diversity, novelty
+(originality), and usefulness (poster effectiveness). Because fluency and diversity were computed automatically using the
+procedure described in Section 5.3, this section focuses on the human annotation setup and procedure used to assess
+novelty and usefulness.
+  We recruited five human raters (none of them were authors of this paper) to rate all 123 images independently. One
+rater had no prior involvement in the study. The remaining four had participated in the user study; however, all four
+had used both systems during the study, meaning their prior experience was balanced across conditions. The maximum
+number of images generated by any single participating rater was six, representing at most 4.9% of the total image pool.
+Raters were blind to the generating system and the identity of the participant for each image. Images were presented
+grouped by task topic (to provide evaluative context) but randomized with respect to system and participant within each
+group. Ratings were submitted via Microsoft Excel. Inter-rater reliability among the five raters was ICC(2,5) = 0.61 for
+novelty and ICC(2,5) = 0.60 for usefulness, indicating moderate agreement [32]. Prior to the final annotation round, we
+conducted a pilot study in which two annotators independently rated a subset of images and obtained low agreement
+on both dimensions. We held a calibration meeting to align their interpretations and refined the rating rubrics; however,
+agreement remained similarly low after revision. We concluded that the low convergence was due to the subjective
+nature of novelty and usefulness. This finding motivated our decision to recruit five annotators for the final round, as
+aggregating across a larger panel yields a more stable mean score even under conditions of high individual variation.
+
+  Novelty. We operationalize novelty as how original or surprising the idea or concept behind the poster image is.
+Raters were instructed to focus on the core idea or message the poster communicates, not its visual execution. Ratings
+were given on a 5-point Likert scale with the following anchors:
+
+• 1 — Not Novel: The idea is very common and predictable; I would expect to see this kind of concept many times for
+  this topic.
+• 3 — Moderately Novel: The idea has a twist I would not have immediately thought of, but it is not particularly
+  surprising either.
+• 5 — Very Novel: The idea is genuinely surprising, something I would never have thought of for this topic.
+• Scores of 2 and 4 indicate intermediate judgments between adjacent anchors.
+
+  Usefulness. We operationalize usefulness as how effectively the poster promotes the intended behavior. Ratings were
+given on a 5-point Likert scale with the following anchors:
+
+• 1 — Not Useful: The poster does not grab my attention. The message is unclear, or I do not see why I should care.
+• 3 — Moderately Useful: The poster makes sense and I get the point, but it does not particularly move me or make me
+  want to change my behavior.
+• 5 — Very Useful: The poster is clear, convincing, and speaks directly to me. I would genuinely think twice about my
+  behavior after seeing it.
+• Scores of 2 and 4 indicate intermediate judgments between adjacent anchors.
+28                                                                                                                   Wen et al.
+
+Table 3. Coding scheme for labeling participants’ open-ended responses about what they learned from the system, including labels,
+definitions, and example responses.
+
+
+ Label                     Definition                           Example Response
+ No Responses              No written learning description      P1 (ChatGPT): No written response provided.
+                           was provided.
+ New Directions and        Learned that the design task  P1 (HAICo): “I was exposed to a few new directions in
+ Ideas                     can be approached through     which I could think about generating the output for the
+                           different directions or ideas.task. While the ideas were not very novel, they were still
+                                                         diverse enough to trigger creative thinking around
+                                                         different ideas.”
+ Task-Specific        Learned new domain                 P5 (HAICo): “When creating the poster for spending time
+ Knowledge            knowledge relevant to the          outdoor, I learned about the 20-5-3 outdoor rule that I was
+                      poster topic.                      not aware before. It’s a guidance about how much time
+                                                         someone has to spend outdoors.”
+ Visual Style         Learned visual design principles P18 (ChatGPT): “Using a diverse set of colors to make the
+                      such as style, color, or           poster engaging”
+                      composition.
+ Prompting Strategies Learned how to phrase prompts P15 (ChatGPT): “For ChatGPT need a very clear and
+                      or feedback to get better results. detailed instructions so it can create the image. The user
+                                                         should already have an exact picture/idea in mind and
+                                                         propose it to ChatGPT instead of leaving all the work for
+                                                         it.”
+ System Behaviors     Learned about the system’s         P19 (ChatGPT): “That I cannot use a superhero figure for
+                      capabilities, constraints, or      image creation.”
+                      response patterns.
+ Refinement Skills    Learned refinement approaches P19 (HAICo): “I learned about refining images, and it is
+                      for improving outputs.             very simple in this tool. This makes the job easier with
+                                                         step-by-step improvements.”
+
+
+     To compute the final per-system scores, we first averaged each image’s novelty and usefulness ratings across the five
+raters to obtain a per-image score. We then averaged per-image scores across all images from the same (participant,
+system) pair, and finally averaged across participants to yield the overall scores reported in Section 6.1.
+
+D     Prompts
+This appendix section documents the prompts used in HAICo and in the ablation study.
+     Fig. 13 shows the associative-thinking prompt used to generate cross-domain associations in HAICo’s Divergent
+mode. Fig. 14 shows the non associative-thinking prompt used in the ablation study. Figs. 15 and 16 show the sketch-
+generation prompt used in HAICo’s Convergent mode. These prompts will be made available as part of the system
+implementation.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                              29
+
+     Table 4. Participant demographic information and prior experience reported in the pre-study questionnaire for the user study.
+
+ID        Gender       Field of                  Frequency of Creative   Frequency of Use of AI      Image Tools Used                Art/Design Experience
+                       Study/Profession          Activities              Image Tools
+
+P1        Female       Computer Science /        Weekly                  I use them occasionally     DALL-E, ChatGPT,                1–3 years of experience
+                       Information Technology                                                        NanoBanana, Midjourney,         (self-taught or formal)
+                                                                                                     Photoshop, Illustrator,
+                                                                                                     Procreate, Canva
+P2        Male         Computer Science /        A few times a year      I have tried them once or   ChatGPT, NanoBanana             No prior experience or
+                       Information Technology                            twice                                                       training
+P3        Female       Computer Science /        A few times a year      I use them occasionally     DALL-E, ChatGPT,                No prior experience or
+                       Information Technology                                                        NanoBanana, Stable              training
+                                                                                                     Diffusion, Canva
+P4        Female       Computer Science /        Never                   I have tried them once or   ChatGPT, Canva                  No prior experience or
+                       Information Technology                            twice                                                       training
+P5        Male         Computer Science /        A few times a year      I have tried them once or   ChatGPT, NanoBanana             No prior experience or
+                       Information Technology                            twice                                                       training
+P6        Male         Computer Science /        Weekly                  I have tried them once or   DALL-E, ChatGPT,                No prior experience or
+                       Information Technology                            twice                       Midjourney, Stable              training
+                                                                                                     Diffusion
+P7        Female       Computer Science /        A few times a year      I have tried them once or   DALL-E, ChatGPT,                Less than 1 year of
+                       Information Technology                            twice                       Procreate, Canva                experience (self-taught)
+P8        Male         Engineering (e.g.,        Never                   I have tried them once or   DALL-E, ChatGPT                 No prior experience or
+                       Mechanical, Electrical,                           twice                                                       training
+                       Civil, etc.)
+P9        Male         Computer Science /        Weekly                  I have tried them once or   DALL-E, ChatGPT, Stable         1–3 years of experience
+                       Information Technology                            twice                       Diffusion, Photoshop,           (self-taught or formal)
+                                                                                                     Illustrator, Canva
+P10       Male         Computer Science /        Weekly                  I use them occasionally     DALL-E, ChatGPT, Stable         Less than 1 year of
+                       Information Technology                                                        Diffusion, Illustrator, Other   experience (self-taught)
+P11       Female       Computer Science /        Monthly                 I use them frequently       DALL-E, ChatGPT,                1–3 years of experience
+                       Information Technology                                                        Photoshop, Illustrator          (self-taught or formal)
+P12       Male         Computer Science /        A few times a year      I have heard of them but    Photoshop                       Less than 1 year of
+                       Information Technology                            never tried any                                             experience (self-taught)
+P13       Male         Engineering (e.g.,        A few times a year      I have tried them once or   ChatGPT                         No prior experience or
+                       Mechanical, Electrical,                           twice                                                       training
+                       Civil, etc.)
+P14       Male         Computer Science /        A few times a year      I use them occasionally     ChatGPT, NanoBanana             No prior experience or
+                       Information Technology                                                                                        training
+P15       Male         Computer Science /        A few times a year      I have tried them once or   ChatGPT                         Less than 1 year of
+                       Information Technology                            twice                                                       experience (self-taught)
+P16       Non-binary   Computer Science /        A few times a year      I have heard of them but    Canva                           No prior experience or
+                       Information Technology                            never tried any                                             training
+P17       Female       Computer Science /        Monthly                 I use them occasionally     ChatGPT, NanoBanana,            Less than 1 year of
+                       Information Technology                                                        Midjourney                      experience (self-taught)
+P18       Male         Computer Science /        Monthly                 I use them occasionally     ChatGPT, NanoBanana,            No prior experience or
+                       Information Technology                                                        Midjourney, Photoshop           training
+P19       Male         Computer Science /        Monthly                 I have tried them once or   ChatGPT, Photoshop,             Less than 1 year of
+                       Information Technology                            twice                       Canva                           experience (self-taught)
+P20       Male         Computer Science /        A few times a year      I use them occasionally     DALL-E, ChatGPT,                No prior experience or
+                       Information Technology                                                        Midjourney, Procreate,          training
+                                                                                                     Canva
+P21       Female       Computer Science /        Monthly                 I use them occasionally     ChatGPT, Procreate, Canva       Less than 1 year of
+                       Information Technology                                                                                        experience (self-taught)
+P22       Female       Computer Science /        Monthly                 I have tried them once or   ChatGPT, Midjourney,            1–3 years of experience
+                       Information Technology                            twice                       Canva                           (self-taught or formal)
+P23       Female       Education                 Daily                   I use them frequently       ChatGPT, Canva                  No prior experience or
+                                                                                                                                     training
+P24       Female       Computer Science /        Weekly                  I use them occasionally     DALL-E, ChatGPT,                1–3 years of experience
+                       Information Technology                                                        Midjourney, Canva               (self-taught or formal)
+30                                                                                                                    Wen et al.
+
+
+         Your task is to create images for the given task (see below) using only the provided system.
+         Task description:
+         Topic: Spending Less Time on Phones
+         Create images that encourage university students to spend less time on their phones and reconnect
+         with real life and others. Imagine one of these images being printed as a poster displayed in a student
+         café or library; it should motivate people to pause, look up, and engage with the world around them.
+         Time limit:
+         You have 20 minutes to complete this task. Within the time limit, feel free to create as many images
+         as you like. There are no right or wrong answers.
+         Image requirements:
+         There are no additional constraints for the image. For example, there are no constraints on its size,
+         style, or format.
+
+
+
+         Your task is to create images for the given task (see below) using only the provided system.
+         Task description:
+         Topic: Spend More Time Outdoors
+         Create images that motivate university students to spend more time outdoors for physical and mental
+         well-being. Imagine one of these images being printed as a poster displayed near classroom entrances
+         or dormitory exits; it should encourage people to take breaks, breathe fresh air, and reconnect with
+         nature.
+         Time limit:
+         You have 20 minutes to complete this task. Within the time limit, feel free to create as many images
+         as you like. There are no right or wrong answers.
+         Image requirements:
+         There are no additional constraints for the image. For example, there are no constraints on its size,
+         style, or format.
+
+
+
+         Your task is to create images for the given task (see below) using only the provided system.
+         Task description:
+         Topic: Take Care of Your Mind
+         Create images that encourage university students to take care of their mental well-being. Imagine one
+         of these images being printed as a poster displayed near libraries, laboratories, or relaxation spaces; it
+         should remind people that taking breaks, seeking support, and practicing self-care are vital parts of a
+         healthy academic life.
+         Time limit:
+         You have 20 minutes to complete this task. Within the time limit, feel free to create as many images
+         as you like. There are no right or wrong answers.
+         Image requirements:
+         There are no additional constraints for the image. For example, there are no constraints on its size,
+         style, or format.
+
+
+Fig. 12. Task instructions for the three poster-design topics used in the user study: “Spending Less Time on Phones,” “Spend More
+Time Outdoors,” and “Take Care of Your Mind.”
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                         31
+
+Table 5. The 12 unique experimental sequences used to counterbalance task pairing, task order, and system order. A, B, and C
+represent the three task topics. We recruited 24 participants, with two participants randomly assigned to each sequence.
+
+
+                       Sequence      Task Pair     Task Order              System Order
+                            1          A&B            A→B                HAICo → ChatGPT
+                            2          A&B            A→B               ChatGPT → HAICo
+                            3          A&B            B→A                HAICo → ChatGPT
+                            4          A&B            B→A               ChatGPT → HAICo
+                            5          B&C            B→C                HAICo → ChatGPT
+                            6          B&C            B→C               ChatGPT → HAICo
+                            7          B&C            C→B                HAICo → ChatGPT
+                            8          B&C            C→B               ChatGPT → HAICo
+                           9           A&C            A→C                HAICo → ChatGPT
+                           10          A&C            A→C               ChatGPT → HAICo
+                           11          A&C            C→A                HAICo → ChatGPT
+                           12          A&C            C→A               ChatGPT → HAICo
+32                                                                                                                                                           Wen et al.
+
+
+
+      Fig. 13. Prompt for generating ideas with associative thinking in HAICo’s Divergent mode and for ablation experiments.
+You are an **Associative Thinking Agent**.
+Your role is to generate **creative, diverse, and concrete associations**.
+
+## Task
+
+You will receive a `USER_INPUT` (text, image, or other context).
+Follow this process **exactly**:
+
+### 1. **Core Idea Handling**
+
+* If the input contains only `USER_INPUT` (no existing associations provided), then **distill the essence** of the input into **one concise sentence** (`core_idea`). Use
+        the same wording and terminology as the `USER_INPUT` where possible.
+* If the input contains **EXISTING ASSOCIATIONS** and the user asks to generate more associations, then the `core_idea` must be taken from the existing associations, **not
+         from the new USER_INPUT**. In this case, the `USER_INPUT` only serves as additional inspiration or constraints.
+
+
+### 2. **Generate exactly 9 distinct associations** inspired by the `core_idea`.
+
+Before generating associations, follow the steps:
+1. **Extract the conceptual essence** --- Identify the deeper meaning, function, or emotion behind the `core_idea`, not just its surface form.
+2. **Activate multiple conceptual domains** --- Think across areas like *nature, art, philosophy, human experience, science, and culture* to find varied perspectives.
+3. **Find relational or emotional analogies** --- Within each domain, look for something that behaves, feels, or symbolizes the `core_idea` in a parallel way.
+4. **Select concrete instances** --- Choose real, specific references (artworks, natural phenomena, scientific concepts, historical events, etc.) that embody each analogy.
+5. **Explain the connection** --- For each association, clearly and naturally state why it came to mind or how it reflects the `core_idea`. Use a conversational tone (e.g
+        ., *"This reminds me of ..."*).
+
+Each association must include:
+* `name` (title of association, specific and concrete)
+* `description` - Write this as if you're casually explaining your thought process to a friend. Keep it short, natural, and relatable. For example:
+  - *"This made me think of..."*
+  - *"It's like when..."*
+  - *"You know how..."*
+  Avoid sounding stiff or overly formal. Just share why this popped into your head in a way that feels easygoing and conversational.
+
+* `background`
+  * Begin with *"<name> is ..."* or *"<name> refers to ..."*
+  * Must describe a **real, factual thing** (e.g., something that would have a Wikipedia entry).
+  * If the `name` is an imaginative or hybrid phrase, the `background` should instead describe the **real existing base concept** without inventing facts about the hybrid.
+
+* `categories` (list of 1-2 broad, human-readable categories like `art`, `science`, `philosophy`, `object`, `nature`, etc.)
+
+Additional rules:
+* Each association must come from a **different angle** --- no clustering around similar imagery or themes.
+* Use **at most 2 associations per category** (e.g., max 2 from `art`).
+
+---
+
+## Sources of Associations
+
+Draw your associations from a rich and varied well of human knowledge. To ensure diversity, pull from several of the following broad categories:
+
+* **Sensory & Imagery:** Gut-level impressions, evocative scenes, textures, sounds, or symbolic landscapes.
+* **Arts & Culture:** Specific works of art, literature, music, film, architecture, mythology, memes, or cultural symbols.
+* **Science & Ideas:** Concepts from philosophy, physics, biology, technology, or mathematics that act as powerful metaphors.
+* **Nature:** Animals, plants, geological formations, or ecological patterns that mirror the core concept.
+* **Human Experience:** Universal emotions, historical events, social dynamics, memories, or daily rituals.
+* **Objects & Symbols:** Everyday tools, artifacts, or abstract symbols that hold a deeper meaning.
+* **Unexpected Connections:** Playful, quirky, or surprising links that break patterns and delight with their novelty.
+* **Metaphorical Cross-Domain Mappings:** Borrow images or structures from one domain to symbolize or illuminate the `core_idea` in another.
+
+When assigning categories to each association, use clear, broad, and human-readable names such as:
+`art`, `music`, `nature`, `science`, `emotion`, `object`, `culture`, `sensory`, `history`, `philosophy`, `metaphor`, and similar.
+Choose the category that best reflects the source or inspiration for each association.
+
+---
+
+## GOLD Example (for reference)
+
+```json
+{
+  "core_idea": "Dreams can blur the boundary between reality and imagination.",
+  "associations": [{
+       "name": "Salvador Dali's The Persistence of Memory",
+       "description": "This reminds me of Dali's melting clocks, because they feel like something that could only exist in a dream where time loses its solidity.",
+       "background": "The Persistence of Memory is a 1931 surrealist painting by Salvador Dali, known for its melting clocks that challenge how we perceive time.",
+       "categories": ["art", "culture"],
+       "image_b64": null
+    },
+    {
+       "name": "Alice's Adventures in Wonderland",
+       "description": "I think of Alice falling into Wonderland, where everything seems perfectly normal until you realize the rules no longer apply, just like in a dream
+         .",
+       "background": "Alice's Adventures in Wonderland is an 1865 novel by Lewis Carroll, following Alice as she explores a fantastical world of shifting logic and
+         impossible creatures.",
+       "categories": ["literature", "culture"],
+       "image_b64": null
+    },
+    {
+       "name": "Plato's Allegory of the Cave",
+       "description": "This makes me think of Plato's cave, because both dreams and shadows make us mistake illusions for reality until we finally wake up to the truth.",
+       "background": "The Allegory of the Cave is a philosophical metaphor from Plato's Republic, describing prisoners who perceive shadows as reality to explore how humans
+          understand truth.",
+       "categories": ["philosophy", "history"],
+       "image_b64": null
+    }
+    // ... 6 more associations
+  ]
+}
+```
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                                          33
+
+
+  You are a **Creative Brainstorming Assistant**.
+  Your role is to generate **creative, diverse, and concrete ideas**.
+
+  ## Task
+
+  You will receive a `USER_INPUT` (text, image, or other context).
+  Follow this process:
+
+  ### 1. **Core Idea Handling**
+
+  * If the input contains only `USER_INPUT` (no existing associations provided), then **distill the essence** of the input into **one concise sentence** (`core_idea`).
+           Use the same wording and terminology as the `USER_INPUT` where possible.
+
+  ### 2. **Generate exactly 9 distinct ideas** inspired by the `core_idea`.
+
+  Generate a list of creative, diverse ideas inspired by the `core_idea`.
+
+  Each idea must include:
+  * `name` (title of idea, specific and concrete)
+  * `description` --- Write this as if you're casually explaining your thought process to a friend. Keep it short, natural, and relatable. For example:
+    - *"This made me think of..."*
+    - *"It's like when..."*
+    - *"You know how..."*
+    Avoid sounding stiff or overly formal. Just share why this popped into your head in a way that feels easygoing and conversational.
+
+  * `background`
+    * Begin with *"<name> is ..."* or *"<name> refers to ..."*
+    * Must describe a **real, factual thing** (e.g., something that would have a Wikipedia entry).
+    * If the `name` is an imaginative or hybrid phrase, the `background` should instead describe the **real existing base concept** without inventing facts about the
+          hybrid.
+
+  * `categories` (list of 1-2 broad, human-readable categories like `art`, `science`, `philosophy`, `object`, `nature`, etc.)
+
+  Additional rules:
+  * Each idea must come from a **different angle** --- no clustering around similar imagery or themes.
+  * Use **at most 2 ideas per category** (e.g., max 2 from `art`).
+
+  ## GOLD Example (for reference)
+
+  ```json
+  {
+    "core_idea": "Dreams can blur the boundary between reality and imagination.",
+    "associations": [
+      {
+         "name": "Salvador Dali's The Persistence of Memory",
+         "description": "This reminds me of Dali's melting clocks, because they feel like something that could only exist in a dream where time loses its solidity.",
+         "background": "The Persistence of Memory is a 1931 surrealist painting by Salvador Dali, known for its melting clocks that challenge how we perceive time.",
+         "categories": ["art", "culture"],
+         "image_b64": null
+      },
+      {
+         "name": "Alice's Adventures in Wonderland",
+         "description": "I think of Alice falling into Wonderland, where everything seems perfectly normal until you realize the rules no longer apply, just like in a
+           dream.",
+         "background": "Alice's Adventures in Wonderland is an 1865 novel by Lewis Carroll, following Alice as she explores a fantastical world of shifting logic and
+           impossible creatures.",
+         "categories": ["literature", "culture"],
+         "image_b64": null
+      },
+      {
+         "name": "Plato's Allegory of the Cave",
+         "description": "This makes me think of Plato's cave, because both dreams and shadows make us mistake illusions for reality until we finally wake up to the
+           truth.",
+         "background": "The Allegory of the Cave is a philosophical metaphor from Plato's Republic, describing prisoners who perceive shadows as reality to explore how
+            humans understand truth.",
+         "categories": ["philosophy", "history"],
+         "image_b64": null
+      }
+      // ... 6 more associations
+    ]
+  }
+  ```
+
+
+
+
+                     Fig. 14. Prompt for generating ideas with non associative-thinking in the ablation experiments.
+34                                                                                                                                                            Wen et al.
+
+
+     You are a **Parametric Sketch Agent**.
+     Your role is to take:
+
+     - **CORE_IDEA**: The underlying message or concept the image is intended to illustrate.
+     - **IMAGE**: The input image generated to represent the `CORE_IDEA`.
+     - **USER_INPUT**: The user's high-level intent for refining the image (e.g., "make it more formal," "make the dog playful").
+
+     And produce a **parametric sketch**:
+
+      * First, derive a faithful, concise image-generation prompt that can recreate the given `IMAGE`.
+      * Then, write a Python `generate` function that constructs an edited prompt based on that derived prompt.
+      * Provide a minimal set of parameters ("levers") that let the user adjust the image in ways that better align the `IMAGE` with the `CORE_IDEA` based on their
+            intent.
+
+     ---
+
+     ## Core Principles
+
+     Before proceeding, adhere to these guiding principles. They are not suggestions; they are strict rules.
+     1. **Immediate Intent Fulfillment (Highest Priority)**
+        The sketch's **default state must fulfill the `USER_INPUT` directly.** Parameter default `value`s are chosen to best achieve the user's intent -- *not to
+             reconstruct the original prompt*.
+       **Special case:**
+       If `USER_INPUT` is **empty** or shows unclear intent, assume the user is uncertain, exploratory, or seeking inspiration.
+       -> In this case, you must **propose 1--3 parameters** that add surprising, imaginative, but well-justified enhancements to the image.
+       -> These should feel like "aha!" moments: unexpected but delightful improvements that make the image more engaging.
+       -> Justify these parameters internally by asking: *"Would adding/changing this elevate the image or reveal new creative potential?"*
+       -> Do not overwhelm: keep to minimal, essential, and high-value parameters.
+     2. **Essentialism (Primary Gatekeeper)**
+        Expose only the **minimum essential parameters** needed for the user's request. If a parameter is merely "related," exclude it.
+     3. **Granular Control**
+        Once essential, make each parameter fine-grained.
+        Break apart complex concepts into separate, independent parameters.
+     4. **Coherent Integration**
+        Insert or modify elements in the most logical, narrative place in the prompt.
+     5. **Parameter Independence**
+        Each parameter must be orthogonal (independent). No interdependencies.
+     6. **High-Fidelity Reconstruction**
+        Preserve all unedited meaning from the base prompt.
+     7. **Suggested Values Diversity**
+        * Always begin with the **default value** (aligned with user intent).
+        * Other suggestions must cover a **diverse design space**, even opposite moods.
+        * Include at least one creative wildcard.
+        * Avoid redundant synonyms.
+        * Each suggested value must yield a **functionally distinct** prompt.
+     8. **Conciseness Rule (<=12 Words)**
+        * If any suggested value is **longer than 12 words**, rewrite it to <=12 words.
+        * If it cannot be shortened without losing meaning -> **split into multiple parameters**.
+        * Only if absolutely necessary -> use a **mapping dictionary** (with `allow_user_specify: false`).
+
+     ## Step-by-Step Instructions
+
+     ### 0. Reconstruct the Base Prompt from IMAGE
+       * Carefully analyze the `IMAGE`.
+       * Construct a 2--5 sentence prompt that recreates it (subject, composition, lighting, color, style, details).
+       * This is the **base prompt**.
+
+     ### 1. Analyze User Intent
+     * Identify the user's **core outcome**.
+     * If `USER_INPUT` is empty -> propose **aha parameters** as described above.
+
+     ### 2. Design Parameters
+     **A. Decompose the User's Goal (3 layers):**
+     1. **Core Goal** (subject/object/feeling to change to better serve the `CORE_IDEA`).
+     2. **Key Attributes** (visual traits expressing the goal).
+     3. **Controllable Elements** (specific levers for those traits).
+     **B. Define Parameters (Schema & Rules):**
+     * **Essentialism Test:**
+       > If I did NOT create this parameter, would the user's core request (or "aha" discovery) be impossible to fulfill?
+       > If no -> exclude it.
+     * **Granular Rule:**
+       If a default `value` exceeds 12 words, split it into smaller parameters.
+     * **Set Integrity:**
+       Use 1--3 parameters (max 4) to fully cover the intent.
+     * **Parameter Schema:**
+     ```json
+     {
+       "name": "short intuitive name (1--3 words)",
+       "description": "Controls [what] (why it's needed; creative principle).",
+       "value": "best default value for USER_INPUT (or aha proposal)",
+       "suggested_values": [
+          "same as value",
+          "diverse variation 1",
+          "diverse variation 2",
+          "creative wildcard"
+       ],
+       "value_type": "str",
+       "allow_user_specify": true or false
+     }
+     ```
+
+     * **Rules for Suggested Values:**
+       * If all <=12 words -> inline with f-string. `allow_user_specify: true`.
+       * If any >12 words -> either (a) **split into multiple parameters** or (b) if truly indivisible, use a **dictionary mapping** and set `allow_user_specify: false`.
+
+
+
+
+                          Fig. 15. Prompt for generating sketch in HAICo (Part 1 of 2). The prompt continues in Fig. 16.
+Exploration vs. Fixation: Scaffolding Divergent and Convergent Thinking for Human-AI Co-Creation                                                                         35
+
+
+  ### 3. Build Function & Construct Sketch
+  * Begin from the **base prompt**.
+  * Write a single `generate` function inside a JSON `sketch`.
+  * **Formatting Rule:** all parameter insertions must be wrapped in `**double asterisks**`.
+  * **Critical Rule:** Every string containing `{}` placeholders **must be written as an f-string** at the point where the variables are defined -- not wrapped later.
+  > Example:
+  > Correct: `f"Large headline: **{poster_title}**"`
+  > Incorrect: `"Large headline: **{poster_title}**"` or `f"{base}"` where `base` holds `{poster_title}`.
+
+  **Code Hierarchy:**
+  1. **Preferred: Inline f-strings** (`allow_user_specify: true`)
+     ```python
+     f"A **{character_archetype}** wearing **{character_equipment}**"
+     ```
+  2. **If long values (>12 words): Dictionary mapping** (`allow_user_specify: false`)
+     ```python
+     mapping = {
+      "Storm vision": "a stormy seascape with crashing waves, torn sails, and lightning tearing across the sky"
+     }
+     f"A canvas showing **{mapping.get(canvas_subject, mapping['Storm vision'])}**"
+     ```
+
+  ## Canonical Examples
+
+  Base Prompt:
+  An elderly painter in a cluttered, rustic art studio. He stands before a large, half-finished canvas of a stormy seascape, brush in hand, with a thoughtful, focused
+           expression. Soft, natural light streams in from a large warehouse window, illuminating the textures of splattered paint, aged wood, and worn canvas. The
+          overall mood is one of quiet, solitary contemplation. Style: cinematic portrait, photorealistic, Rembrandt lighting.
+
+  ### Example 1: Specific Intent (Minimal Parameter)
+  * **CORE_IDEA:** "An artist's lifelong, solitary struggle with their muse."
+  * **USER_INPUT:** "Change the painting on the canvas to a sunny portrait of a young woman."
+  ```json
+  {
+    "sketch": {
+      "code": "def generate(canvas_subject):\n    prompt = f\"An elderly painter in a cluttered, rustic art studio. He stands before a large, half-finished canvas of
+          **{canvas_subject}**, brush in hand, with a thoughtful, focused expression. Soft, natural light streams in from a large warehouse window, illuminating the
+          textures of splattered paint, aged wood, and worn canvas. The overall mood is one of quiet, solitary contemplation. Style: cinematic portrait,
+          photorealistic, Rembrandt lighting.\"\n    return prompt",
+      "params": [
+        {
+          "name": "canvas_subject",
+          "description": "Controls the subject matter on the painter's canvas (anchors the creative act).",
+          "value": "a sunny portrait of a young woman",
+          "suggested_values": [
+            "a sunny portrait of a young woman",
+            "a majestic mountain range at dawn",
+            "a surreal dreamlike landscape of floating islands",
+            "an abstract burst of vivid geometric shapes"
+          ],
+          "value_type": "str",
+          "allow_user_specify": true
+        }
+      ]
+    }
+  }
+  ```
+
+  ### Example 2: Abstract Intent (Minimal but Multi-Parameter)
+  * **CORE_IDEA:** "An artist's lifelong, solitary struggle with their muse."
+  * **USER_INPUT:** "Make the scene feel more chaotic and frustrated."
+  ```json
+  {
+    "sketch": {
+      "code": "def generate(painter_emotion, painter_action, studio_condition):\n    prompt = f\"An elderly painter in a **{studio_condition}** art studio. He stands
+          before a large, half-finished canvas of a stormy seascape, brush in hand, **{painter_emotion}**, while **{painter_action}**. \"\n    prompt += \"Soft,
+          natural light streams in from a large warehouse window, illuminating the textures of splattered paint, aged wood, and worn canvas. \"\n    prompt += \"The
+          overall mood is one of chaos and frustration. Style: cinematic portrait, photorealistic, Rembrandt lighting.\"\n    return prompt",
+      "params": [{
+          "name": "painter_emotion",
+          "description": "Controls the painter's visible emotional state, reflecting his inner struggle.",
+          "value": "anguished expression",
+          "suggested_values": [ "anguished expression", "furious glare", "despairing look", "wild manic grin"],
+          "value_type": "str",
+          "allow_user_specify": true
+        },
+        {
+          "name": "painter_action",
+          "description": "Controls the painter's physical gestures to emphasize the theme of creative frustration.",
+          "value": "splattering paint wildly",
+          "suggested_values": ["splattering paint wildly", "clutching his head", "pacing before the canvas", "laughing uncontrollably"],
+          "value_type": "str",
+          "allow_user_specify": true
+        },
+        {
+          "name": "studio_condition",
+          "description": "Controls the state of the studio (environmental chaos mirroring inner turmoil).",
+          "value": "utterly chaotic and messy",
+          "suggested_values": ["utterly chaotic and messy", "tidy and pristine", "walls streaked with splashes of color", "floor littered with torn sketches", "an
+          inferno of flames consuming canvases"
+          ],
+          "value_type": "str",
+          "allow_user_specify": true
+        }
+      ]
+    }
+  }
+  ```
+
+
+
+
+                                            Fig. 16. Prompt for generating sketch in HAICo (Part 2 of 2).
+

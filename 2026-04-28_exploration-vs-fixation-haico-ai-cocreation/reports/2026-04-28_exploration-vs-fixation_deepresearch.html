@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 협업은 첫 산출물을 늦출수록 넓어진다</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>AI 협업은 첫 산출물을 늦출수록 넓어진다</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-28 23:35:57</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>16</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-28_exploration-vs-fixation_deepresearch.md">2026-04-28_exploration-vs-fixation_deepresearch.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>date: 2026-04-28
+topic: Exploration vs. Fixation, HAICo, AI co-creation workflow
+primary source: <a href="https://arxiv.org/abs/2512.18388">arXiv:2512.18388v2</a></p>
+<h2 id="_1">요약</h2>
+<ul>
+<li>Wen et al.의 HAICo 논문은 ChatGPT형 즉시 실행 인터페이스가 창의 작업에서 조기 수렴과 설계 고착을 만들 수 있다고 실험으로 다룬다.</li>
+<li>HAICo는 두 모드를 분리한다. Divergent mode는 이미지 생성 전 원격 개념 아이디어를 펼치고, Convergent mode는 선택한 방향을 semantic parameter로 다듬는다.</li>
+<li><code>N = 24</code> within-subjects 실험에서 HAICo는 ChatGPT보다 CSI 전 차원, UMUX-Lite, novelty, diversity에서 높았다. Fluency와 usefulness는 유의미한 차이가 없었다.</li>
+<li>이 결과는 AI 활용 교육의 초점을 바꾼다. 프롬프트 문장 기술보다 &ldquo;탐색을 먼저 구조화하고 실행을 늦추는 작업 설계&rdquo;가 중요하다.</li>
+<li>GenAI가 개인 결과물 품질을 올리더라도, 조직 전체 결과물은 비슷해질 수 있다. 같은 모델을 같은 방식으로 쓰면 다양성은 관리 대상이 된다.</li>
+</ul>
+<h2 id="1">1. 논문이 다룬 문제</h2>
+<p>ChatGPT 같은 챗봇 인터페이스는 사용자의 요청을 바로 결과물로 바꾼다. 이 방식은 실행 속도에 강하다. 문제는 창의 작업에서 발생한다. 사용자가 충분히 방향을 탐색하기 전에 완성된 형태를 먼저 보면, 그 산출물이 이후 판단의 기준점이 된다.</p>
+<p>논문은 이를 두 개념으로 설명한다.</p>
+<ul>
+<li><code>Premature convergence</code>: 충분한 탐색 전에 하나의 방향으로 빨리 수렴하는 상태.</li>
+<li><code>Design fixation</code>: 처음 본 예시나 결과물의 특징에 묶여 더 넓은 대안을 보지 못하는 상태.</li>
+</ul>
+<p>논문은 여기에 <code>gulf of envisioning</code>도 붙인다. 사용자는 원하는 느낌을 어렴풋이 알지만, 모델이 해석할 수 있는 구체 지시로 바꾸기 어렵다. 그래서 &ldquo;더 생동감 있게&rdquo; 같은 요청을 넣고, 모델이 임의로 색감이나 배경을 바꾸면 다시 고치는 루프에 들어간다.</p>
+<h2 id="2-haico">2. HAICo의 설계</h2>
+<p>HAICo는 창작 과정을 두 단계로 나눈다.</p>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th>기능</th>
+<th>사용자가 얻는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Divergent mode</td>
+<td>이미지 생성 전에 idea grid를 만든다. 각 카드는 제목, 설명, thumbnail, 배경, 태그를 갖는다.</td>
+<td>서로 다른 개념 방향을 비교할 수 있다.</td>
+</tr>
+<tr>
+<td>Convergent mode</td>
+<td>선택한 아이디어를 이미지로 만들고, 수정 의도를 semantic parameter와 option으로 바꾼다.</td>
+<td>모델이 수정 요청을 어떻게 해석하는지 실행 전에 볼 수 있다.</td>
+</tr>
+</tbody>
+</table>
+<p>Divergent mode의 특징은 원격 개념을 끌어오는 것이다. 논문은 신화, 역사적 사건, 인터넷 문화, 예술작품 같은 멀리 떨어진 영역에서 연상을 만들도록 프롬프트를 설계했다. &ldquo;창의적으로 여러 개 만들어줘&rdquo;라는 일반 요청보다 idea diversity가 높았다.</p>
+<p>Convergent mode는 prompt refinement가 아니다. 사용자의 수정 의도를 매개변수로 분해한다. 예를 들어 &ldquo;뒤쪽 학생들이 더 재미있는 일을 하게 해줘&rdquo;라는 요청을 받으면, 시스템은 어떤 대상이 어떤 역할로 바뀔 수 있는지 옵션을 보여준다. 사용자는 실행 전에 해석을 바꿀 수 있다.</p>
+<h2 id="3">3. 실험 결과</h2>
+<p>논문은 24명의 참가자를 대상으로 ChatGPT와 HAICo를 같은 포스터 이미지 생성 과제에서 비교했다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>결과</th>
+<th>해석</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Creativity Support Index</td>
+<td>HAICo가 5개 차원 모두 높음, <code>all p &lt; 0.002</code></td>
+<td>사용자는 HAICo를 창작 지원 도구로 더 강하게 평가했다.</td>
+</tr>
+<tr>
+<td>UMUX-Lite</td>
+<td>HAICo <code>81.25</code>, ChatGPT <code>64.24</code>, <code>p &lt; 0.001</code></td>
+<td>사용성 차이가 컸다.</td>
+</tr>
+<tr>
+<td>Novelty</td>
+<td>HAICo <code>3.22</code>, ChatGPT <code>2.41</code>, <code>p &lt; 0.001</code></td>
+<td>결과물 아이디어가 더 독창적이라는 평가를 받았다.</td>
+</tr>
+<tr>
+<td>Diversity</td>
+<td>HAICo <code>0.48</code>, ChatGPT <code>0.36</code>, <code>p = 0.001</code></td>
+<td>참가자별 결과물 묶음이 더 다양했다.</td>
+</tr>
+<tr>
+<td>Fluency / Usefulness</td>
+<td>유의미한 차이 없음</td>
+<td>HAICo가 더 많이 만들거나 더 유용한 결과를 냈다고 보기는 어렵다.</td>
+</tr>
+<tr>
+<td>Refinement prompts</td>
+<td>HAICo <code>1.56</code>, ChatGPT <code>2.94</code>, <code>p = 0.004</code></td>
+<td>구조화된 수정 옵션이 시행착오를 줄였다.</td>
+</tr>
+<tr>
+<td>Self-reported learning</td>
+<td>HAICo <code>5.29</code>, ChatGPT <code>3.12</code>, <code>p &lt; 0.001</code></td>
+<td>참가자는 HAICo에서 더 많이 배웠다고 보고했다.</td>
+</tr>
+</tbody>
+</table>
+<p>학습 결과가 특히 중요하다. ChatGPT를 쓴 참가자는 도구의 행동과 프롬프트 작성법을 배웠다고 답하는 경우가 많았다. HAICo를 쓴 참가자는 과제 지식, 새로운 방향, 작업 순서를 배웠다고 답했다. 도구 사용법을 익히는 시간과 문제 자체를 이해하는 시간이 갈라진다.</p>
+<h2 id="4">4. 보강 근거</h2>
+<p>이 논문은 단독으로 보면 작은 실험이다. 다만 주변 연구와 맞물리면 메시지가 선명해진다.</p>
+<ul>
+<li><a href="https://arxiv.org/abs/2403.11164">Wadinambiarachchi et al. 2024</a>는 AI-generated image에 노출된 참가자가 초기 예시에 더 고착되고, 아이디어 수와 다양성, 독창성이 낮아졌다고 보고했다.</li>
+<li><a href="https://arxiv.org/abs/2312.00506">Doshi and Hauser 2024</a>는 GenAI가 개인의 글쓰기 창의성 평가를 높일 수 있지만, GenAI 도움을 받은 이야기들이 서로 더 비슷해지는 경향을 보였다고 보고했다.</li>
+<li><a href="https://arxiv.org/abs/2402.01536">Anderson, Shah, Kreminski 2024</a>는 ChatGPT 사용자가 더 많은 상세 아이디어를 만들었지만, 사용자 간 아이디어가 덜 구별되고 책임감도 낮았다고 분석했다.</li>
+<li><a href="https://dlibrary.stanford.edu/questions/why-does-building-and-testing-prototypes-help-you-get-to-a-good-solution">Stanford d.school의 parallel prototyping 정리</a>는 병렬 프로토타입이 serial prototype보다 더 다양하고 좋은 결과를 냈다는 Dow et al. 연구를 소개한다.</li>
+<li><a href="https://arxiv.org/abs/2108.06451">Parsons et al. 2021</a>은 데이터 시각화 설계에서도 fixation을 창의적 결과를 제한하는 조기 고착으로 다룬다.</li>
+</ul>
+<p>보강 근거는 한 방향을 가리킨다. AI 사용자는 혼자서는 더 빠르고 그럴듯한 결과를 얻을 수 있다. 팀이나 조직 전체로 보면 결과물이 같은 방향으로 몰릴 수 있다. 탐색 폭을 의도적으로 설계하지 않으면 생산성 향상이 다양성 저하와 같이 온다.</p>
+<h2 id="5-ai">5. 실무자가 바꿔야 할 AI 사용법</h2>
+<h3 id="51">5.1 아이디어 요청을 카드화한다</h3>
+<p>처음부터 최종안을 만들지 않는다. 먼저 아이디어 카드를 만든다.</p>
+<pre><code class="language-text">아래 주제로 서로 멀리 떨어진 아이디어 카드 9개를 만들어줘.
+각 카드는 title, source domain, concept, why it fits, execution hint, risk로 구성해줘.
+source domain은 신화, 역사, 과학, 제품 디자인, 인터넷 문화, 업무 프로세스 등 서로 겹치지 않게 해줘.
+아직 최종 문안이나 이미지는 만들지 마.
+</code></pre>
+<p>이 요청은 모델에게 결과를 만들지 말라는 제약을 준다. 사용자는 먼저 방향을 본다.</p>
+<h3 id="52">5.2 선택 기준을 먼저 쓴다</h3>
+<p>아이디어가 나온 뒤에는 기준을 만든다.</p>
+<pre><code class="language-text">위 9개 아이디어를 novelty, usefulness, feasibility, audience fit, risk 기준으로 평가해줘.
+점수만 주지 말고 왜 높은지와 왜 위험한지를 한 줄씩 적어줘.
+</code></pre>
+<p>선택 기준 없이 바로 고르면 첫눈에 보기 좋은 방향에 끌린다. 선택 기준은 고착을 늦추는 장치다.</p>
+<h3 id="53">5.3 수정 요청을 매개변수로 바꾼다</h3>
+<p>수정 단계에서 &ldquo;더 세련되게&rdquo;, &ldquo;더 강하게&rdquo;, &ldquo;덜 밋밋하게&rdquo;라고 바로 실행시키지 않는다.</p>
+<pre><code class="language-text">내 수정 의도를 바로 실행하지 말고, 먼저 변경 가능한 semantic parameter 표로 분해해줘.
+각 parameter는 name, current interpretation, 4 options, expected effect, possible side effect를 포함해줘.
+내가 옵션을 고른 뒤에만 수정안을 만들어줘.
+</code></pre>
+<p>이렇게 하면 사용자는 모델의 해석을 실행 전에 볼 수 있다.</p>
+<h3 id="54">5.4 병렬 분기를 남긴다</h3>
+<p>ChatGPT 대화 하나에서 계속 고치면 이전 갈래가 묻힌다. 실무에서는 최소 3개 분기를 남기는 편이 낫다.</p>
+<ul>
+<li>conservative branch: 기존 요구를 안전하게 만족.</li>
+<li>remote branch: 멀리 떨어진 유추를 반영.</li>
+<li>contrarian branch: 일반적인 답을 일부러 피함.</li>
+</ul>
+<p>각 분기는 별도 파일, 별도 채팅, 별도 슬라이드 섹션으로 보관한다.</p>
+<h3 id="55">5.5 팀에서는 다양성을 배정한다</h3>
+<p>여러 사람이 같은 모델에 같은 질문을 넣으면 결과가 비슷해질 수 있다. 팀에서는 source domain이나 persona를 나눠야 한다.</p>
+<ul>
+<li>A: 고객/사용자 관점</li>
+<li>B: 기술 리스크 관점</li>
+<li>C: 비용/운영 관점</li>
+<li>D: 반대 가설 관점</li>
+<li>E: 전혀 다른 산업 유추</li>
+</ul>
+<p>결과를 합칠 때는 중복 아이디어를 버리고, 서로 충돌하는 가정을 따로 표시한다.</p>
+<h2 id="6">6. 업무별 적용</h2>
+<table>
+<thead>
+<tr>
+<th>업무</th>
+<th>기존 사용 패턴</th>
+<th>바꿀 패턴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>리서치</td>
+<td>&ldquo;이 논문 요약해줘&rdquo;</td>
+<td>claim map, 반례, 후속 연구, 적용 가능성으로 분해</td>
+</tr>
+<tr>
+<td>슬라이드</td>
+<td>&ldquo;10장 PPT 만들어줘&rdquo;</td>
+<td>narrative 후보 3개, audience별 메시지, evidence map 먼저 생성</td>
+</tr>
+<tr>
+<td>제품 기획</td>
+<td>&ldquo;기능 아이디어 줘&rdquo;</td>
+<td>사용자 문제, 원격 유추, 실패 시나리오를 카드화</td>
+</tr>
+<tr>
+<td>코딩</td>
+<td>&ldquo;이 기능 구현해줘&rdquo;</td>
+<td>아키텍처 대안, tradeoff, rollback path를 먼저 비교</td>
+</tr>
+<tr>
+<td>이미지/디자인</td>
+<td>&ldquo;포스터 만들어줘&rdquo;</td>
+<td>concept card를 먼저 만들고 선택 후 생성</td>
+</tr>
+<tr>
+<td>회의</td>
+<td>&ldquo;회의록 정리해줘&rdquo;</td>
+<td>결정, 미결정, 가정, 후속 질문을 분리</td>
+</tr>
+</tbody>
+</table>
+<h2 id="7">7. 도구 설계 관점</h2>
+<p>이 논문은 UI 설계자에게도 직접적인 요구를 남긴다.</p>
+<ul>
+<li>결과물을 바로 보여주기 전에 exploration surface를 제공한다.</li>
+<li>사용자의 첫 요청을 실행 준비 완료 상태로 보지 않는다.</li>
+<li>수정 의도를 옵션과 매개변수로 드러낸다.</li>
+<li>대화형 history만 두지 말고 branch, tab, library, comparison view를 둔다.</li>
+<li>AI 제안은 complete solution보다 incomplete suggestion으로 제시한다.</li>
+<li>사용자가 도구 조작법에 시간을 빼앗기지 않고 과제 자체를 배우도록 설계한다.</li>
+</ul>
+<h2 id="8">8. 제한과 남은 질문</h2>
+<p>이 연구를 과장하면 안 된다.</p>
+<ul>
+<li>표본은 24명이다.</li>
+<li>참가자 배경은 CS/IT 쪽에 치우쳤다.</li>
+<li>과제는 포스터 이미지 생성이다.</li>
+<li>학습 효과는 자기보고 중심이다.</li>
+<li>세션은 단회성이다.</li>
+<li>agency와 ownership 문제는 혼재된 결과로 남았다.</li>
+</ul>
+<p>남은 질문은 실무에 가깝다.</p>
+<ul>
+<li>스캐폴딩이 늘어날 때 속도 손실을 어디까지 감수할 수 있는가.</li>
+<li>숙련 사용자는 언제 스캐폴딩을 끄고 직접 실행해야 하는가.</li>
+<li>조직이 같은 AI 도구를 쓸 때 결과물 다양성을 어떻게 측정할 것인가.</li>
+<li>coding agent, slide generator, data analysis agent에서도 같은 방식의 mode separation이 효과가 있는가.</li>
+</ul>
+<h2 id="9">9. 권장 워크플로</h2>
+<pre><code class="language-text">1. Problem frame
+   - 목표, 독자, 제약, 금지할 방향을 적는다.
+
+2. Divergent pass
+   - 서로 멀리 떨어진 아이디어 카드 7-9개를 만든다.
+   - 아직 최종 산출물을 만들지 않는다.
+
+3. Selection pass
+   - novelty, usefulness, feasibility, audience fit, risk로 평가한다.
+
+4. Convergent pass
+   - 고른 방향을 구조화한다.
+   - 수정 요청은 semantic parameter로 분해한다.
+
+5. Artifact pass
+   - 선택한 방향만 산출물로 만든다.
+
+6. Audit pass
+   - 중복, 고착, 과확신, 근거 부족, 말투를 점검한다.
+
+7. Branch archive
+   - 버린 대안과 이유를 남긴다.
+</code></pre>
+<h2 id="10">10. 외부 참고 링크</h2>
+<ul>
+<li><a href="https://aimatters.co.kr/news-report/ai-report/40718/">AI Matters article</a></li>
+<li><a href="https://arxiv.org/abs/2512.18388">Wen et al., Exploration vs. Fixation, arXiv:2512.18388</a></li>
+<li><a href="https://arxiv.org/abs/2403.11164">Wadinambiarachchi et al., The Effects of Generative AI on Design Fixation and Divergent Thinking</a></li>
+<li><a href="https://arxiv.org/abs/2312.00506">Doshi and Hauser, Generative AI enhances creativity but reduces the diversity of novel content</a></li>
+<li><a href="https://arxiv.org/abs/2402.01536">Anderson, Shah, Kreminski, Homogenization Effects of Large Language Models on Human Creative Ideation</a></li>
+<li><a href="https://dlibrary.stanford.edu/questions/why-does-building-and-testing-prototypes-help-you-get-to-a-good-solution">Stanford d.school, prototyping and parallel prototype summary</a></li>
+<li><a href="https://arxiv.org/abs/2108.06451">Parsons et al., Fixation and Creativity in Data Visualization Design</a></li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-28 23:35:37
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#_1">요약</a></li>
+<li><a href="#1">1. 논문이 다룬 문제</a></li>
+<li><a href="#2-haico">2. HAICo의 설계</a></li>
+<li><a href="#3">3. 실험 결과</a></li>
+<li><a href="#4">4. 보강 근거</a></li>
+<li><a href="#5-ai">5. 실무자가 바꿔야 할 AI 사용법</a><ul>
+<li><a href="#51">5.1 아이디어 요청을 카드화한다</a></li>
+<li><a href="#52">5.2 선택 기준을 먼저 쓴다</a></li>
+<li><a href="#53">5.3 수정 요청을 매개변수로 바꾼다</a></li>
+<li><a href="#54">5.4 병렬 분기를 남긴다</a></li>
+<li><a href="#55">5.5 팀에서는 다양성을 배정한다</a></li>
+</ul>
+</li>
+<li><a href="#6">6. 업무별 적용</a></li>
+<li><a href="#7">7. 도구 설계 관점</a></li>
+<li><a href="#8">8. 제한과 남은 질문</a></li>
+<li><a href="#9">9. 권장 워크플로</a></li>
+<li><a href="#10">10. 외부 참고 링크</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://arxiv.org/abs/2512.18388" target="_blank" rel="noreferrer">arXiv:2512.18388v2</a></li>
+<li><a href="https://arxiv.org/abs/2403.11164" target="_blank" rel="noreferrer">Wadinambiarachchi et al. 2024</a></li>
+<li><a href="https://arxiv.org/abs/2312.00506" target="_blank" rel="noreferrer">Doshi and Hauser 2024</a></li>
+<li><a href="https://arxiv.org/abs/2402.01536" target="_blank" rel="noreferrer">Anderson, Shah, Kreminski 2024</a></li>
+<li><a href="https://dlibrary.stanford.edu/questions/why-does-building-and-testing-prototypes-help-you-get-to-a-good-solution" target="_blank" rel="noreferrer">Stanford d.school의 parallel prototyping 정리</a></li>
+<li><a href="https://arxiv.org/abs/2108.06451" target="_blank" rel="noreferrer">Parsons et al. 2021</a></li>
+<li><a href="https://aimatters.co.kr/news-report/ai-report/40718/" target="_blank" rel="noreferrer">AI Matters article</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

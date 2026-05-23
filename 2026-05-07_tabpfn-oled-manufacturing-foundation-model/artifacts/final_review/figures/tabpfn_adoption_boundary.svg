@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">TabPFN 활용 전략의 경계</title>
+  <desc id="desc">TabPFN 검토를 바로 해볼 영역, 보조 모델로 둘 영역, 신중해야 할 영역으로 나눈 전략 표</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .head{fill:#17211d}
+      .good{fill:#e9f3ef;stroke:#0f766e;stroke-width:2}
+      .mid{fill:#f6eee2;stroke:#a35a16;stroke-width:2}
+      .risk{fill:#f5eaea;stroke:#8b3a3a;stroke-width:2}
+      .title{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .subtitle{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .h{font:700 23px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .body{font:400 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#31433c}
+      .small{font:400 15px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .tag{font:700 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#fff}
+      .line{stroke:#d8d5cb;stroke-width:2}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="640"/>
+  <text class="title" x="70" y="72">TabPFN은 “어디에나 쓰는 모델”보다 경계가 분명한 후보 압축기로 다루는 편이 낫습니다</text>
+  <text class="subtitle" x="70" y="108">활용 전략은 데이터 크기보다 label 정의, split 방식, 다음 의사결정 비용을 먼저 봅니다.</text>
+
+  <rect class="good" x="70" y="170" rx="18" width="330" height="340"/>
+  <rect class="head" x="100" y="205" rx="14" width="110" height="34"/>
+  <text class="tag" x="127" y="228">먼저 검토</text>
+  <text class="h" x="100" y="280">소표본 후보 압축</text>
+  <text class="body" x="100" y="318">DFT나 실험으로 넘길 후보가</text>
+  <text class="body" x="100" y="346">너무 많고 라벨이 비싼 경우</text>
+  <line class="line" x1="100" y1="376" x2="370" y2="376"/>
+  <text class="small" x="100" y="410">예: blue host 후보 ranking</text>
+  <text class="small" x="100" y="438">예: 소자 실험 조건 우선순위</text>
+  <text class="small" x="100" y="466">예: 새 recipe 변경 직후 위험 점수</text>
+
+  <rect class="mid" x="435" y="170" rx="18" width="330" height="340"/>
+  <rect class="head" x="465" y="205" rx="14" width="112" height="34"/>
+  <text class="tag" x="492" y="228">보조 계층</text>
+  <text class="h" x="465" y="280">다중 라벨·다중 모달</text>
+  <text class="body" x="465" y="318">이미지, 센서, recipe, 분자 그래프가</text>
+  <text class="body" x="465" y="346">표 특징량으로 만나는 경우</text>
+  <line class="line" x1="465" y1="376" x2="735" y2="376"/>
+  <text class="small" x="465" y="410">vision 모델의 defect feature 후단</text>
+  <text class="small" x="465" y="438">cheap label과 expensive label의 bridge</text>
+  <text class="small" x="465" y="466">EQE·수명·전압 trade-off 보조 판단</text>
+
+  <rect class="risk" x="800" y="170" rx="18" width="330" height="340"/>
+  <rect class="head" x="830" y="205" rx="14" width="105" height="34"/>
+  <text class="tag" x="856" y="228">신중 적용</text>
+  <text class="h" x="830" y="280">양산 의사결정·외삽</text>
+  <text class="body" x="830" y="318">새 소재군, 새 장비, 새 고객 spec으로</text>
+  <text class="body" x="830" y="346">분포가 달라지는 경우</text>
+  <line class="line" x1="830" y1="376" x2="1100" y2="376"/>
+  <text class="small" x="830" y="410">scaffold split / time split 필요</text>
+  <text class="small" x="830" y="438">라이선스와 데이터 반출 검토</text>
+  <text class="small" x="830" y="466">원인 추론은 별도 실험 설계 필요</text>
+
+  <text class="small" x="70" y="575">전략 요지: 모델 이름보다 먼저 “이 표가 다음 실험·공정 판단을 바꿀 만큼 안정적인가”를 확인합니다.</text>
+</svg>

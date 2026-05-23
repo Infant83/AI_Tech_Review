@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT-5.5 Family Post-release Evaluation Memo</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>GPT-5.5 Family Post-release Evaluation Memo</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-05-07 03:18:35</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>6</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-05-06_gpt-5-5-family-post-release-evaluation_memo.md">2026-05-06_gpt-5-5-family-post-release-evaluation_memo.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+        <section class="summary-band" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">주요 신호</h2>
+          <ul class="summary-list">
+            <li>**Fact**: OpenAI는 2026-04-23 `GPT-5.5`를 발표했고, 2026-04-24 업데이트에서 `GPT-5.5`와 `GPT-5.5 Pro`의 API availability를 명시했습니다. 공식 설명은 coding, online research, data analysis, document/spreadsheet creation, software operation, tool use를 하나의 real-work model narrative로 묶고 있습니다. [OpenAI release](https://openai.com/index/introducing-gpt-5-5/)</li>
+<li>**Fact**: `GPT-5.5 Instant`는 2026-05-05 별도 발표됐고, ChatGPT 기본 모델로 `GPT-5.3 Instant`를 대체합니다. OpenAI는 Instant의 factuality 개선, 더 짧고 명확한 답변, personalization/memory source 개선을 강조합니다. [OpenAI Instant release](https://openai.com/index/gpt-5-5-instant/)</li>
+<li>**Fact**: OpenAI Help Center 기준으로 GPT-5.5 Instant와 Thinking은 ChatGPT의 web search, data analysis, image/file analysis, canvas, image generation, memory, custom instructions를 지원합니다. Thinking context window는 paid tier 256K, Pro tier 400K로 안내됩니다. [Help Center](https://help.openai.com/en/articles/11909943-gpt-55-in-chatgpt)</li>
+<li>**Inference**: 이번 리뷰의 중심 질문은 “GPT-5.5가 좋아졌는가”가 아니라, 어떤 개선이 실제 model-level 개선이고 어떤 개선이 inference-time compute, product integration, tool access, prompt/eval design에서 나온 것인지 분리하는 데 있습니다.</li>
+          </ul>
+        </section>
+        
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <h2 id="summary">Summary</h2>
+<ul>
+<li><strong>Fact</strong>: OpenAI는 2026-04-23 <code>GPT-5.5</code>를 발표했고, 2026-04-24 업데이트에서 <code>GPT-5.5</code>와 <code>GPT-5.5 Pro</code>의 API availability를 명시했습니다. 공식 설명은 coding, online research, data analysis, document/spreadsheet creation, software operation, tool use를 하나의 real-work model narrative로 묶고 있습니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI release</a></li>
+<li><strong>Fact</strong>: <code>GPT-5.5 Instant</code>는 2026-05-05 별도 발표됐고, ChatGPT 기본 모델로 <code>GPT-5.3 Instant</code>를 대체합니다. OpenAI는 Instant의 factuality 개선, 더 짧고 명확한 답변, personalization/memory source 개선을 강조합니다. <a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant release</a></li>
+<li><strong>Fact</strong>: OpenAI Help Center 기준으로 GPT-5.5 Instant와 Thinking은 ChatGPT의 web search, data analysis, image/file analysis, canvas, image generation, memory, custom instructions를 지원합니다. Thinking context window는 paid tier 256K, Pro tier 400K로 안내됩니다. <a href="https://help.openai.com/en/articles/11909943-gpt-55-in-chatgpt">Help Center</a></li>
+<li><strong>Inference</strong>: 이번 리뷰의 중심 질문은 “GPT-5.5가 좋아졌는가”가 아니라, 어떤 개선이 실제 model-level 개선이고 어떤 개선이 inference-time compute, product integration, tool access, prompt/eval design에서 나온 것인지 분리하는 데 있습니다.</li>
+<li><strong>Caution</strong>: hallucination 개선 주장은 그대로 production factuality 개선으로 읽으면 안 됩니다. OpenAI system card의 user-flagged factuality eval은 hallucination-prone case를 일부러 모은 평가이고, Artificial Analysis는 GPT-5.5 xhigh가 높은 knowledge accuracy를 보이지만 AA-Omniscience hallucination rate에서는 frontier peers보다 불리하다고 보고했습니다.</li>
+</ul>
+<h2 id="_1">착수 판단</h2>
+<p>이 주제는 단일 release note 요약으로 처리하면 중요한 차이가 사라집니다. GPT-5.5 Thinking/Pro는 agentic execution과 long-horizon work 쪽의 frontier model 평가이고, GPT-5.5 Instant는 ChatGPT default behavior와 personalization/factuality 개선에 가까운 제품 계층 평가입니다. 두 층을 같은 표에 넣을 수는 있지만, 같은 증거로 결론을 내면 안 됩니다.</p>
+<p>따라서 보고서는 세 가지 축으로 나누겠습니다.</p>
+<ol>
+<li><code>모델 계층</code>: GPT-5.5, GPT-5.5 Pro, reasoning effort, parallel test-time compute, long-context behavior.</li>
+<li><code>제품 계층</code>: GPT-5.5 Instant, ChatGPT default rollout, memory sources, tool availability, legacy model migration.</li>
+<li><code>평가 계층</code>: official benchmark, external benchmark-provider results, safety/system-card eval, field commentary.</li>
+</ol>
+<h2 id="1-evidence-map">1차 evidence map</h2>
+<table>
+<thead>
+<tr>
+<th>Claim cluster</th>
+<th>Primary source</th>
+<th>External support</th>
+<th>Caveat</th>
+<th>Report use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agentic coding and terminal work improved</td>
+<td>OpenAI release, system card</td>
+<td>Artificial Analysis, Scale MCP Atlas, UK AISI cyber evaluation</td>
+<td>Some benchmark rows are internal or research-environment only</td>
+<td>Technical Deep Dive, Applications</td>
+</tr>
+<tr>
+<td>Token efficiency improved</td>
+<td>OpenAI release, Artificial Analysis</td>
+<td>Artificial Analysis reports roughly 40% fewer output tokens in its Index run</td>
+<td>Task mix and harness-specific; not direct enterprise cost guarantee</td>
+<td>Cost/latency/quality section</td>
+</tr>
+<tr>
+<td>GPT-5.5 Pro is not a separate disclosed architecture</td>
+<td>GPT-5.5 system card</td>
+<td>none needed</td>
+<td>It is described as same underlying model with parallel test-time compute setting</td>
+<td>Variant matrix</td>
+</tr>
+<tr>
+<td>Instant hallucination improved vs GPT-5.3 Instant</td>
+<td>OpenAI Instant release</td>
+<td>secondary press repeats OpenAI claim</td>
+<td>Internal eval; high-stakes prompt set; not direct production prevalence</td>
+<td>Hallucination methodology table</td>
+</tr>
+<tr>
+<td>GPT-5.5 still has answer-when-uncertain risk</td>
+<td>Artificial Analysis AA-Omniscience</td>
+<td>practitioner discussion queued</td>
+<td>AA methodology must be inspected before strong conclusion</td>
+<td>Hallucination audit appendix</td>
+</tr>
+<tr>
+<td>Cyber capability increased</td>
+<td>OpenAI system card, UK AISI</td>
+<td>UK AISI external evaluation</td>
+<td>Public deployment has safeguards and access controls; not ordinary-user capability</td>
+<td>Safety / deployment implications</td>
+</tr>
+</tbody>
+</table>
+<h2 id="immediate-source-queue">Immediate source queue</h2>
+<p>Primary and benchmark-provider sources are already enough to start the structured artifacts. 남은 확인은 아래 순서로 진행합니다.</p>
+<ul>
+<li>BrowseComp methodology and whether GPT-5.5 results are tool/search comparable.</li>
+<li>SWE-Bench Pro paper, leaderboard context, and contamination/memorization papers.</li>
+<li>Vellum or equivalent practitioner analysis that compares GPT-5.5 with Claude Opus 4.7 on SWE-Bench Pro.</li>
+<li>The Verge, TechCrunch, Axios, Reuters coverage as secondary commentary, only after primary-source findings are stable.</li>
+</ul>
+<h2 id="planned-report-products">Planned report products</h2>
+<ul>
+<li><code>deepresearch.md</code>: 사용자가 준 exact structure에 맞춘 evidence-heavy report.</li>
+<li><code>final_review.md</code>: 같은 근거를 바탕으로 독자가 처음부터 끝까지 읽을 수 있는 완결형 기술 리뷰.</li>
+<li><code>final_review.html</code>: section map, evidence rail, callout, visual explainer, model-selection matrix를 포함하는 rich article.</li>
+<li><code>skywork_inputs/</code>: 추후 Skywork deck 생성용 prompt packet.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>OpenAI, <code>Introducing GPT-5.5</code>, 2026-04-23, updated 2026-04-24. https://openai.com/index/introducing-gpt-5-5/</li>
+<li>OpenAI, <code>GPT-5.5 Instant: smarter, clearer, and more personalized</code>, 2026-05-05. https://openai.com/index/gpt-5-5-instant/</li>
+<li>OpenAI Deployment Safety, <code>GPT-5.5 System Card</code>, 2026-04-23, updated 2026-04-24. https://deploymentsafety.openai.com/gpt-5-5/gpt-5-5.pdf</li>
+<li>OpenAI Help Center, <code>GPT-5.5 in ChatGPT</code>, updated 2026-05-06. https://help.openai.com/en/articles/11909943-gpt-55-in-chatgpt</li>
+<li>Artificial Analysis, <code>OpenAI's GPT-5.5 is the new leading AI model</code>, 2026-04-23. https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/</li>
+<li>Scale Labs, <code>MCP Atlas</code>, updated 2026-04-08. https://labs.scale.com/leaderboard/mcp_atlas</li>
+<li>UK AISI, <code>Our evaluation of OpenAI's GPT-5.5 cyber capabilities</code>, 2026-04-30. https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities</li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-05-07 03:18:13
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#_1">착수 판단</a></li>
+<li><a href="#1-evidence-map">1차 evidence map</a></li>
+<li><a href="#immediate-source-queue">Immediate source queue</a></li>
+<li><a href="#planned-report-products">Planned report products</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank" rel="noreferrer">OpenAI release</a></li>
+<li><a href="https://openai.com/index/gpt-5-5-instant/" target="_blank" rel="noreferrer">OpenAI Instant release</a></li>
+<li><a href="https://help.openai.com/en/articles/11909943-gpt-55-in-chatgpt" target="_blank" rel="noreferrer">Help Center</a></li>
+<li><a href="https://deploymentsafety.openai.com/gpt-5-5/gpt-5-5.pdf" target="_blank" rel="noreferrer">deploymentsafety.openai.com</a></li>
+<li><a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/" target="_blank" rel="noreferrer">artificialanalysis.ai</a></li>
+<li><a href="https://labs.scale.com/leaderboard/mcp_atlas" target="_blank" rel="noreferrer">labs.scale.com</a></li>
+<li><a href="https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities" target="_blank" rel="noreferrer">www.aisi.gov.uk</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

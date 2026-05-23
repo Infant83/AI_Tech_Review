@@ -107,7 +107,24 @@ export function cloneNotebooklmChromeProfile() {
   }
 
   const tempProfile = fs.mkdtempSync(path.join(os.tmpdir(), 'notebooklm-playwright-'));
-  fs.cpSync(notebooklmChromeProfile, tempProfile, { recursive: true });
+  const skipNames = new Set([
+    'lockfile',
+    'SingletonLock',
+    'SingletonCookie',
+    'SingletonSocket',
+    'Network',
+    'Safe Browsing Network',
+    'Cache',
+    'Code Cache',
+    'GPUCache',
+    'GrShaderCache',
+    'ShaderCache',
+    'Sessions',
+  ]);
+  fs.cpSync(notebooklmChromeProfile, tempProfile, {
+    recursive: true,
+    filter: (sourcePath) => !skipNames.has(path.basename(sourcePath)),
+  });
 
   for (const name of ['lockfile', 'SingletonLock', 'SingletonCookie', 'SingletonSocket']) {
     const targetPath = path.join(tempProfile, name);

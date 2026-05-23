@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026-04-25 AI Updates Weekly Memo</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>2026-04-25 AI Updates Weekly Memo</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-25 05:10:54</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>7</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-25_ai-updates-weekly_memo.md">2026-04-25_ai-updates-weekly_memo.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+        <section class="summary-band" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">핵심 신호</h2>
+          <ul class="summary-list">
+            <li>`2026-04-24 AI Updates Weekly`는 단순히 뉴스가 많아서 2부작이 된 것이 아니라, AI 변화가 이제 `모델`만이 아니라 `에이전트 실행면`, `작업 인터페이스`, `오픈소스 운영층`, `도메인 특화 모델`까지 동시에 움직이고 있다는 신호다.</li>
+<li>파트 1은 `개발 인터페이스와 사용자 작업방식의 변화`에 집중하고, 파트 2는 `에이전트 인프라와 운영경제`에 더 무게가 있다.</li>
+<li>확인 가능한 강한 신호는 `GPT-5.5`, `DeepSeek V4 Preview`, `Cursor 3`, `ChatGPT Images 2.0`, `Deep Research Max`, `GPT-Rosalind`, `GPT-5.4-Cyber`, Apple CEO 교체, `Qwen3.6-Max-Preview` 같은 공식 발표들이다.</li>
+<li>반면 `SpaceX-Cursor 조건`, `Anthropic quota manipulation`, `AI-attributed layoffs x9`, 일부 오픈소스 프로젝트의 의미 과장은 약한 출처 또는 해설성 주장으로 낮춰 읽어야 한다.</li>
+          </ul>
+        </section>
+        
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <h2 id="summary">Summary</h2>
+<ul>
+<li><code>2026-04-24 AI Updates Weekly</code>는 단순히 뉴스가 많아서 2부작이 된 것이 아니라, AI 변화가 이제 <code>모델</code>만이 아니라 <code>에이전트 실행면</code>, <code>작업 인터페이스</code>, <code>오픈소스 운영층</code>, <code>도메인 특화 모델</code>까지 동시에 움직이고 있다는 신호다.</li>
+<li>파트 1은 <code>개발 인터페이스와 사용자 작업방식의 변화</code>에 집중하고, 파트 2는 <code>에이전트 인프라와 운영경제</code>에 더 무게가 있다.</li>
+<li>확인 가능한 강한 신호는 <code>GPT-5.5</code>, <code>DeepSeek V4 Preview</code>, <code>Cursor 3</code>, <code>ChatGPT Images 2.0</code>, <code>Deep Research Max</code>, <code>GPT-Rosalind</code>, <code>GPT-5.4-Cyber</code>, Apple CEO 교체, <code>Qwen3.6-Max-Preview</code> 같은 공식 발표들이다.</li>
+<li>반면 <code>SpaceX-Cursor 조건</code>, <code>Anthropic quota manipulation</code>, <code>AI-attributed layoffs x9</code>, 일부 오픈소스 프로젝트의 의미 과장은 약한 출처 또는 해설성 주장으로 낮춰 읽어야 한다.</li>
+</ul>
+<h2 id="_1">핵심 판단</h2>
+<p>이번 주의 핵심은 <code>누가 가장 똑똑한 모델이냐</code>보다 <code>누가 실제로 일을 맡길 수 있는 에이전트 작업면을 만들고 있느냐</code>다.</p>
+<p>Part 1에서 보이는 흐름은:</p>
+<ol>
+<li><code>Cursor 3</code>처럼 코드 에디터보다 에이전트 워크스페이스가 앞에 오는 변화</li>
+<li>SaaS UI를 사람이 직접 클릭하는 대신 개인 에이전트가 대신 작업하는 클라이언트 측 에이전트 모델</li>
+<li><code>ChatGPT Images 2.0</code>, <code>Claude Design</code> 같은 멀티모달 산출물 도구의 상향</li>
+<li><code>DeepMind</code>가 다시 상기시키는 agent prompt-injection / indirect prompt injection 보안 리스크</li>
+</ol>
+<p>Part 2에서 보이는 흐름은:</p>
+<ol>
+<li><code>OpenClaw</code>, <code>Hermes Agent</code> 같은 오픈소스 agent runtime의 빠른 진화</li>
+<li><code>Deep Research Max</code>, <code>Agents SDK</code>, <code>GPT-Rosalind</code>, <code>GPT-5.4-Cyber</code> 같은 전문 작업용 에이전트/모델 확대</li>
+<li><code>Anthropic compute</code> 이슈처럼 수요와 인프라가 제품 UX를 제한하는 현실</li>
+<li>MLOps, synthetic data, model registry, research search 같은 운영 보조층의 중요성 상승</li>
+</ol>
+<h2 id="confirmed-signals">Confirmed Signals</h2>
+<ul>
+<li>OpenAI <code>GPT-5.5</code>는 <code>2026-04-23</code> 공식 발표됐다.</li>
+<li>DeepSeek <code>V4 Preview</code>는 <code>2026-04-24</code> 공식 공개됐다.</li>
+<li>Cursor는 <code>2026-04-02</code>에 <code>Cursor 3</code>를 <code>agents</code> 중심의 unified workspace로 소개했다.</li>
+<li>OpenAI는 <code>2026-04-21</code> <code>ChatGPT Images 2.0</code>을 발표했다.</li>
+<li>Apple은 <code>2026-04-20</code> Tim Cook이 executive chairman으로, John Ternus가 <code>2026-09-01</code>부터 CEO가 된다고 발표했다.</li>
+<li>Google DeepMind는 <code>2026-04-21</code> <code>Deep Research Max</code>를 Gemini 3.1 Pro 기반 autonomous research agent로 발표했다.</li>
+<li>OpenAI는 <code>2026-04-15</code> Agents SDK에 model-native harness와 sandbox 실행층을 추가했다.</li>
+<li>OpenAI는 <code>2026-04-16</code> <code>GPT-Rosalind</code>를 life sciences 모델로 발표했고, <code>2026-04-14</code> <code>GPT-5.4-Cyber</code>를 defensive security용 variant로 공개했다.</li>
+<li>Anthropic은 <code>2026-04-06</code> 수요 증가와 compute 확대를 공식적으로 언급했다.</li>
+<li>Alibaba Cloud는 <code>2026-04-22</code> <code>Qwen3.6-Max-Preview</code>를 agentic coding / world knowledge 향상 모델로 소개했다.</li>
+<li>Moonshot AI 사이트는 <code>Kimi K2.6</code>를 현재 주력 모델 중 하나로 전면 노출하고 있다.</li>
+</ul>
+<h2 id="signals-that-need-caution">Signals That Need Caution</h2>
+<ul>
+<li><code>SpaceX partnered with Cursor</code>, <code>$60B option</code>:</li>
+<li>이번 메모 기준 직접 확인한 1차 공식 소스는 확보하지 않았다.</li>
+<li><code>Anthropic is using quota manipulation as a stealth price hike</code>:</li>
+<li>해설에 가깝다. 공식 확인은 compute 수요 증가 수준까지만 가능했다.</li>
+<li><code>AI-attributed layoffs x9 in 2026</code>:</li>
+<li>노동시장 변화 자체는 plausible하지만, 이번 패키지에서는 숫자 주장까지 1차 출처로 확인하지 않았다.</li>
+<li><code>OpenMythos</code>, <code>LeWorldModel</code>, Sabrina/Blotato 사례:</li>
+<li>흥미로운 커뮤니티/연구 신호지만, 이번 주 전체를 대표하는 최상위 구조 변화로 과대해석할 필요는 없다.</li>
+</ul>
+<h2 id="_2">실무 함의</h2>
+<ol>
+<li>개발 툴 평가는 이제 <code>모델 품질</code>만으로 끝나지 않는다. <code>agent workspace</code>, <code>parallel agents</code>, <code>artifacts</code>, <code>logs</code>, <code>handoff</code>, <code>review surface</code>를 같이 봐야 한다.</li>
+<li>멀티모달 산출물 생성은 더 이상 주변 기능이 아니다. <code>images</code>, <code>design</code>, <code>docs</code>, <code>slides</code>, <code>research reports</code>가 한 에이전트 흐름 안으로 들어오고 있다.</li>
+<li>agent security는 부가 이슈가 아니라 필수 기본기다. 외부 문서, 웹, 이미지, PDF를 읽는 agent는 간접 prompt injection에 노출된다.</li>
+<li>frontier vendor 경쟁과 오픈소스 agent runtime 생태계가 동시에 커지고 있다. 한쪽만 보면 현실을 놓친다.</li>
+</ol>
+<h2 id="bottom-line">Bottom Line</h2>
+<p>이번 2부작의 한 문장 결론은 이렇다.</p>
+<p><code>AI 시장의 중심이 모델 비교에서, 에이전트를 실제 업무 맥락에서 돌리는 작업면과 운영층 경쟁으로 빠르게 옮겨가고 있다.</code></p>
+<h2 id="external-references">External References</h2>
+<ul>
+<li>Part 1 video: https://www.youtube.com/watch?v=XDASSrE4348</li>
+<li>Part 2 video: https://www.youtube.com/watch?v=oVDfoWer_M4</li>
+<li>Source note: <a href="../notes/2026-04-25_ai-updates-weekly_sources.md">2026-04-25_ai-updates-weekly_sources.md</a></li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-25 05:10:35
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#_1">핵심 판단</a></li>
+<li><a href="#confirmed-signals">Confirmed Signals</a></li>
+<li><a href="#signals-that-need-caution">Signals That Need Caution</a></li>
+<li><a href="#_2">실무 함의</a></li>
+<li><a href="#bottom-line">Bottom Line</a></li>
+<li><a href="#external-references">External References</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="../notes/2026-04-25_ai-updates-weekly_sources.md">2026-04-25_ai-updates-weekly_sources.md</a></li>
+<li><a href="https://www.youtube.com/watch?v=XDASSrE4348" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+<li><a href="https://www.youtube.com/watch?v=oVDfoWer_M4" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

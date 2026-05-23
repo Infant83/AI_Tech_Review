@@ -1,0 +1,81 @@
+# Skywork clean rebuild v4
+
+Create a new clean PowerPoint artifact in this project. Treat previous variants V1, V2, and V3 as rejected drafts. Preserve the LGD template style, but rebuild the deck from the exact slide plan below.
+
+## Output rules
+
+- Korean-only visible slide text, except the paper title, arXiv ID, tool names, metric names, and cited author names.
+- Use exactly 10 slides.
+- Use the slide titles and bullet text below without paraphrasing.
+- Do not add bilingual page titles such as `Page title`.
+- Do not add decorative stock phrases or meta commentary.
+- Do not invent numbers beyond the numbers listed below.
+- Keep text short and legible. Prefer fewer bullets over dense paragraphs.
+- Before finalizing, check for Korean typos, broken syllables, garbled words, and leftover text from V1/V2/V3.
+
+## Slide plan
+
+### 1. AI 협업은 첫 산출물을 늦출수록 넓어진다
+- Exploration vs. Fixation 논문 기반 실무 리뷰
+- arXiv:2512.18388v2
+- Wen et al., 2026-04-28 내부 기술 리뷰
+
+### 2. 논문이 던지는 실무 질문
+- 첫 결과물이 너무 빨리 나오면 이후 판단이 그 결과물에 묶인다.
+- 좋은 프롬프트보다 먼저 필요한 것은 작업 순서 설계다.
+- AI 사용자는 산출물 생성 전에 대안 탐색 폭을 확보해야 한다.
+- 이 논문은 도구 성능보다 협업 흐름을 다룬다.
+
+### 3. 고착이 생기는 과정
+- 즉시 산출물 생성
+- 첫 결과물이 기준점으로 작동
+- 사용자는 로컬 수정에 집중
+- 대안 탐색 기회 감소
+- 결과물은 빨리 나오지만 탐색 범위는 좁아진다.
+
+### 4. HAICo가 바꾼 인터페이스
+- 발산 모드: 아이디어 카드와 원격 연상 제안
+- 수렴 모드: semantic parameter와 선택지 조정
+- 기록 구조: 버린 분기와 선택 이유 보존
+- 목적: 생성 전에 탐색을 구조화한다.
+
+### 5. 실험 결과
+- N=24, within-subjects poster task
+- UMUX-Lite: 81.25 vs 64.24
+- Novelty: 3.22 vs 2.41
+- Diversity: 0.48 vs 0.36
+- 수정 횟수: 1.56 vs 2.94
+- Fluency와 Usefulness는 유의한 차이가 없었다.
+
+### 6. 사용자가 배우는 것이 달라진다
+- ChatGPT 조건: 시스템 사용법과 프롬프트 요령 학습
+- HAICo 조건: 과제 지식, 새로운 방향, 작업 흐름 학습
+- 전이 결과: brainstorming-first 전략 사용 증가
+- 판단: 도구 조작 학습에서 문제 탐색 학습으로 이동한다.
+
+### 7. 보강 근거가 말하는 공통 패턴
+- Wadinambiarachchi et al. 2024: AI 이미지 노출은 아이디어 다양성과 독창성을 낮출 수 있다.
+- Doshi and Hauser 2024: 개인 창의성은 오르지만 집단 다양성은 낮아질 수 있다.
+- Anderson et al. 2024: ChatGPT 아이디어는 사용자 간 동질화를 만들 수 있다.
+- Dow et al.: 병렬 대안 탐색은 직렬 수정보다 넓은 결과를 만든다.
+
+### 8. 실무용 AI 사용 순서
+- 1단계: 문제와 제약을 먼저 적는다.
+- 2단계: 서로 다른 후보를 여러 개 요청한다.
+- 3단계: 선택 기준을 정한다.
+- 4단계: 그 기준으로 산출물을 만든다.
+- 5단계: 수정 이유와 버린 분기를 남긴다.
+
+### 9. 업무별 적용 방식
+- 리서치: 요약 전에 claim, 반례, 적용 조건을 분해한다.
+- 코딩: 구현 전에 아키텍처 대안과 rollback path를 비교한다.
+- 디자인: 이미지 생성 전에 concept card를 탐색한다.
+- 슬라이드: 서식 작성 전에 narrative 후보를 비교한다.
+- 회의록: 요약 전에 결정, 미결정, 후속 질문을 분리한다.
+
+### 10. 도입 시 확인할 지점
+- 연구 표본은 N=24이며 CS/IT 배경 비중이 높다.
+- 포스터 생성 과제 밖의 일반화는 추가 검증이 필요하다.
+- 탐색 구조를 늘리면 속도 손실이 생길 수 있다.
+- 팀 적용 시 ownership과 승인 기준을 정해야 한다.
+- 권장 방향: AI 도구 선택보다 워크플로 파일럿으로 검증한다.

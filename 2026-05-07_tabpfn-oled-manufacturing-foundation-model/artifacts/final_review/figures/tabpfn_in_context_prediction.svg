@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">TabPFN의 in-context 예측 방식</title>
+  <desc id="desc">라벨이 있는 학습 행과 라벨이 비어 있는 예측 행을 같은 표 문맥으로 넣으면 TabPFN prior가 예측값과 순위를 내는 구조</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .panel{fill:#fff;stroke:#d8d5cb;stroke-width:2}
+      .soft{fill:#f2f0ea;stroke:#d8d5cb;stroke-width:1.5}
+      .model{fill:#e9f3ef;stroke:#0f766e;stroke-width:2.5}
+      .out{fill:#e9eef5;stroke:#25456f;stroke-width:2}
+      .warn{fill:#f6eee2;stroke:#a35a16;stroke-width:1.8}
+      .title{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .subtitle{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .h{font:700 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#17211d}
+      .body{font:400 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#31433c}
+      .small{font:400 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5f6b65}
+      .mono{font:600 15px Consolas,'Segoe UI','Noto Sans KR',monospace;fill:#31433c}
+      .head{fill:#17211d}
+      .headtext{font:700 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#fff}
+      .cell{fill:#fff;stroke:#d8d5cb;stroke-width:1}
+      .query{fill:#f5eaea;stroke:#8b3a3a;stroke-width:1.2}
+      .known{fill:#e9f3ef;stroke:#0f766e;stroke-width:1}
+      .line{stroke:#6c7772;stroke-width:3;fill:none}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6c7772"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="680"/>
+  <text class="title" x="64" y="70">TabPFN은 새 표를 다시 학습하기보다, 표 안의 예시를 문맥으로 읽습니다</text>
+  <text class="subtitle" x="64" y="106">라벨이 있는 행과 라벨이 비어 있는 후보 행을 함께 넣습니다.</text>
+  <text class="subtitle" x="64" y="132">사전학습된 prior가 표 안의 관계를 읽고 예측값과 후보 순위를 냅니다.</text>
+
+  <rect class="panel" x="64" y="158" rx="16" width="455" height="360"/>
+  <text class="h" x="92" y="202">입력 표: 학습 행 + 예측 행</text>
+  <text class="small" x="92" y="230">OLED 예: descriptor, DFT 값, 소자 조건, 측정 조건</text>
+  <rect class="head" x="92" y="260" width="390" height="34" rx="7"/>
+  <text class="headtext" x="112" y="282">후보</text>
+  <text class="headtext" x="198" y="282">특징량</text>
+  <text class="headtext" x="315" y="282">라벨</text>
+  <text class="headtext" x="400" y="282">상태</text>
+
+  <rect class="cell" x="92" y="302" width="85" height="38"/><text class="mono" x="112" y="326">A-017</text>
+  <rect class="cell" x="177" y="302" width="125" height="38"/><text class="small" x="192" y="326">T1, ΔE_ST</text>
+  <rect class="known" x="302" y="302" width="80" height="38"/><text class="small" x="323" y="326">η_EQE</text>
+  <rect class="cell" x="382" y="302" width="100" height="38"/><text class="small" x="407" y="326">known</text>
+
+  <rect class="cell" x="92" y="348" width="85" height="38"/><text class="mono" x="112" y="372">B-044</text>
+  <rect class="cell" x="177" y="348" width="125" height="38"/><text class="small" x="192" y="372">offset, BDE</text>
+  <rect class="known" x="302" y="348" width="80" height="38"/><text class="small" x="321" y="372">LT_95</text>
+  <rect class="cell" x="382" y="348" width="100" height="38"/><text class="small" x="407" y="372">known</text>
+
+  <rect class="cell" x="92" y="394" width="85" height="38"/><text class="mono" x="112" y="418">C-118</text>
+  <rect class="cell" x="177" y="394" width="125" height="38"/><text class="small" x="192" y="418">recipe, lot</text>
+  <rect class="known" x="302" y="394" width="80" height="38"/><text class="small" x="320" y="418">yield</text>
+  <rect class="cell" x="382" y="394" width="100" height="38"/><text class="small" x="407" y="418">known</text>
+
+  <rect class="query" x="92" y="448" width="85" height="42"/><text class="mono" x="112" y="474">D-231</text>
+  <rect class="query" x="177" y="448" width="125" height="42"/><text class="small" x="192" y="474">new candidate</text>
+  <rect class="query" x="302" y="448" width="80" height="42"/><text class="small" x="333" y="474">?</text>
+  <rect class="query" x="382" y="448" width="100" height="42"/><text class="small" x="407" y="474">query</text>
+
+  <path class="line" d="M 520 338 C 560 338 575 338 615 338" marker-end="url(#arrow)"/>
+
+  <rect class="model" x="620" y="218" rx="20" width="250" height="240"/>
+  <text class="h" x="662" y="270">TabPFN prior</text>
+  <text class="body" x="662" y="306">합성 표 데이터로</text>
+  <text class="body" x="662" y="334">미리 학습한</text>
+  <text class="body" x="662" y="362">Transformer 예측기</text>
+  <rect class="soft" x="657" y="392" rx="14" width="175" height="38"/>
+  <text class="small" x="682" y="416">가중치 재학습 없음</text>
+
+  <path class="line" d="M 870 338 C 910 338 925 338 965 338" marker-end="url(#arrow)"/>
+
+  <rect class="out" x="970" y="210" rx="18" width="165" height="255"/>
+  <text class="h" x="1004" y="258">출력</text>
+  <rect class="soft" x="996" y="292" rx="12" width="112" height="38"/>
+  <text class="small" x="1017" y="316">예측값</text>
+  <rect class="soft" x="996" y="345" rx="12" width="112" height="38"/>
+  <text class="small" x="1012" y="369">후보 순위</text>
+  <rect class="soft" x="996" y="398" rx="12" width="112" height="38"/>
+  <text class="small" x="1014" y="422">불확실성</text>
+
+  <rect class="warn" x="178" y="555" rx="16" width="845" height="62"/>
+  <text class="body" x="216" y="590">OLED 적용에서는 표의 라벨 정의, 측정 조건, train/test 분할이 예측 성능만큼 중요합니다.</text>
+</svg>

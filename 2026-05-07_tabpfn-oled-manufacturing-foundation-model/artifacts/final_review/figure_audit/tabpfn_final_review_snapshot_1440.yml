@@ -1,0 +1,667 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: "AI Tech Review Letters: Week 20 (2026-05-11)"
+    - link "2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md" [ref=e6] [cursor=pointer]:
+      - /url: 2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md
+  - banner [ref=e7]:
+    - generic [ref=e9]:
+      - paragraph [ref=e10]: AI Tech Review Letters
+      - 'heading "TabPFN과 OLED 후보 선별: 작은 표 데이터가 실험 순서를 바꿀 때" [level=1] [ref=e11]'
+      - paragraph [ref=e12]: "\"표 데이터 파운데이션 모델이 튜닝 부담을 줄이는 이유와 OLED 소재 역설계, 소자 실험, 공정 품질 예측에 적용할 때 확인해야 할 조건\""
+  - main [ref=e13]:
+    - article [ref=e14]:
+      - figure "그림 1. OLED 소재 후보, DFT 라벨, 실험 queue, 공정 장비, 검증 체크리스트가 한 작업대 위에서 만나는 장면입니다. TabPFN은 후보를 직접 발명하는 모델보다, 비싼 다음 단계로 넘길 후보를 고르는 표 데이터 예측기로 이해하는 편이 자연스럽습니다." [ref=e15]:
+        - img "OLED 연구 책상 위에서 후보 카드와 표 데이터가 실험 queue로 정렬되는 기사형 일러스트레이션" [ref=e16]
+        - generic [ref=e17]:
+          - strong [ref=e18]: 그림 1.
+          - text: OLED 소재 후보, DFT 라벨, 실험 queue, 공정 장비, 검증 체크리스트가 한 작업대 위에서 만나는 장면입니다. TabPFN은 후보를 직접 발명하는 모델보다, 비싼 다음 단계로 넘길 후보를 고르는 표 데이터 예측기로 이해하는 편이 자연스럽습니다.
+      - paragraph [ref=e19]:
+        - text: 새로운 OLED 소재를 찾는 일은 대개 넓은 후보 공간에서 시작합니다. 분자 구조를 조금만 바꾸어도 전선 궤도 에너지인 HOMO/LUMO, 삼중항 에너지(T
+        - subscript [ref=e20]: "1"
+        - text: ), 단일항-삼중항 에너지 차이(ΔE
+        - subscript [ref=e21]: ST
+        - text: ), 결합 해리 에너지(BDE), 재배열 에너지(λ)가 달라집니다. 계산으로 후보를 줄일 수는 있지만 DFT도 공짜가 아니고, 소자 제작과 수명시험은 훨씬 더 비쌉니다. 공정 쪽으로 내려가면 recipe, 장비 상태, 검사 특징량, lot 이력이 더해집니다. OLED 데이터는 표처럼 보이지만, 그 안에는 계산 조건, 실험 조건, 장비 조건이 같이 들어 있습니다.
+      - paragraph [ref=e22]: TabPFN은 이런 상황에서 검토할 만한 표 데이터 파운데이션 모델입니다. 새 데이터셋마다 XGBoost나 CatBoost를 오래 튜닝하는 방식과 달리, 미리 학습된 transformer가 주어진 표의 학습 행과 예측 행을 한 번에 읽고 바로 예측을 냅니다. 데이터가 작고 라벨이 비싼 영역에서는 이 차이가 큽니다. OLED 연구에서는 DFT와 합성 사이, 소자 실험과 수명시험 사이, 파일럿 공정과 품질 판정 사이에서 “다음 후보를 어디로 보낼 것인가”라는 판단이 반복되기 때문입니다.
+      - complementary [ref=e23]:
+        - paragraph [ref=e24]: Highlight
+        - paragraph [ref=e25]:
+          - text: TabPFN의 장점은 OLED 물리를 대신 이해한다는 데 있지 않습니다. 장점은
+          - strong [ref=e26]: 작고 비싼 표 데이터에서 빠르게 강한 기준 모델을 세우고, 다음 계산·실험·공정 검증으로 넘길 후보를 줄이는 데
+          - text: 있습니다.
+      - heading "TabPFN은 표 데이터에서 튜닝 시간을 줄이는 모델입니다" [level=2] [ref=e27]
+      - paragraph [ref=e28]: 표 데이터는 기업과 연구소에서 가장 흔한 데이터 형식입니다. 그런데 딥러닝이 이미지와 언어에서 보인 압도적인 성과가 표 데이터에서는 그대로 반복되지 않았습니다. 행과 열은 단순해 보이지만, 열 하나의 의미가 데이터셋마다 다르고 결측, 범주형 변수, 측정 조건, 선택 편향이 자주 섞이기 때문입니다. 그래서 실제 현장에서는 XGBoost, LightGBM, CatBoost 같은 gradient boosting 계열이 오래 강했습니다.
+      - paragraph [ref=e29]:
+        - link "Nature 2025 TabPFN 논문" [ref=e30] [cursor=pointer]:
+          - /url: https://www.nature.com/articles/s41586-024-08328-6
+        - text: 은 이 구도에서 다른 선택지를 제시했습니다. TabPFN v2는 여러 합성 표 데이터 과제로 미리 학습한 transformer를 사용합니다. 새 데이터셋이 들어오면 별도의 긴 학습 과정 없이, 학습 행과 예측 행을 하나의 문맥처럼 넣어 예측합니다. 논문은 10,000개 샘플, 500개 특징 이하의 소·중규모 데이터셋에서 분류는 평균 2.8초, 회귀는 평균 4.8초에 실행됐고, 4시간 튜닝한 강한 기준 앙상블보다 나은 성능을 냈다고 보고했습니다.
+      - paragraph [ref=e31]:
+        - text: 2026년 5월 11일 확인한
+        - link "Prior Labs 모델 문서" [ref=e32] [cursor=pointer]:
+          - /url: https://docs.priorlabs.ai/models
+        - text: 는 TabPFN-2.6을 오픈소스 패키지의 기본 모델로 설명하고, TabPFN-2.5-Plus를 API 전용 모델로 구분합니다. 문서상 TabPFN-2.5와 2.6의 권장 범위는 100,000개 행, 2,000개 특징입니다.
+        - link "TabPFN-2.5 technical report" [ref=e33] [cursor=pointer]:
+          - /url: https://arxiv.org/abs/2511.08667
+        - text: 는 50,000개 데이터 포인트, 2,000개 특징, TabArena 성능, distillation engine을 주요 발전점으로 설명합니다. 제품 페이지도 TabPFN-2.5가 TabArena에서 튜닝된 tree-based model을 앞서고 AutoGluon 1.4와 비슷한 정확도를 보였다고 주장합니다.
+      - complementary [ref=e34]:
+        - paragraph [ref=e35]: Evidence note
+        - paragraph [ref=e36]: TabPFN을 “튜닝이 필요 없는 만능 모델”로 취급해서는 안 됩니다. 공식 문서와 논문은 권장 데이터 크기, 라이선스, 지연시간, 큰 데이터와 비매끄러운 회귀 문제에서의 한계를 나란히 제시합니다. OLED 적용에서도 평균 정확도보다 데이터 분할 방식, 라벨 정의, 다음 실험 비용 절감 여부를 같이 봐야 합니다.
+      - figure "그림 2. TabPFN은 표 안의 학습 행과 예측 행을 동시에 읽습니다. OLED에서는 후보 분자, DFT 계산값, 소자 조건, 공정 recipe를 같은 표로 정리한 뒤 라벨이 비어 있는 후보의 예측값이나 순위를 얻는 방식으로 이해하면 쉽습니다." [ref=e37]:
+        - img "라벨이 있는 학습 행과 라벨이 비어 있는 예측 행을 같은 표 문맥으로 넣어 TabPFN이 예측값과 후보 순위를 내는 구조" [ref=e38]
+        - generic [ref=e39]:
+          - strong [ref=e40]: 그림 2.
+          - text: TabPFN은 표 안의 학습 행과 예측 행을 동시에 읽습니다. OLED에서는 후보 분자, DFT 계산값, 소자 조건, 공정 recipe를 같은 표로 정리한 뒤 라벨이 비어 있는 후보의 예측값이나 순위를 얻는 방식으로 이해하면 쉽습니다.
+      - heading "TabPFN을 OLED 데이터에 적용할 때 필요한 말" [level=2] [ref=e41]
+      - paragraph [ref=e42]: TabPFN과 OLED 응용을 읽을 때 헷갈리기 쉬운 말들이 있습니다. 아래 용어는 뒤에서 소재 역설계와 제조 AX를 설명할 때 계속 나옵니다. 용어를 과도하게 단순화하면 실제 검토에서 놓치는 부분이 생기므로, 쉬운 설명과 전문적인 의미를 나란히 적었습니다.
+      - table [ref=e43]:
+        - rowgroup [ref=e44]:
+          - row "용어·기호 쉽게 말하면 OLED 데이터에서의 의미와 참고자료" [ref=e45]:
+            - columnheader "용어·기호" [ref=e46]
+            - columnheader "쉽게 말하면" [ref=e47]
+            - columnheader "OLED 데이터에서의 의미와 참고자료" [ref=e48]
+        - rowgroup [ref=e49]:
+          - row "표 데이터 파운데이션 모델 Stanford HAI가 설명하는 foundation model은 넓고 다양한 데이터로 학습한 뒤 여러 하위 과제에 적응하는 기반 모델입니다. TabPFN은 이 아이디어를 행과 열로 된 표 데이터에 맞춘 사례로 볼 수 있습니다. 분자 descriptor, 소자 실험표, 공정 recipe 기록처럼 행과 열로 정리된 데이터에 먼저 적용됩니다." [ref=e50]:
+            - cell "표 데이터 파운데이션 모델" [ref=e51]
+            - cell "Stanford HAI가 설명하는 foundation model은 넓고 다양한 데이터로 학습한 뒤 여러 하위 과제에 적응하는 기반 모델입니다. TabPFN은 이 아이디어를 행과 열로 된 표 데이터에 맞춘 사례로 볼 수 있습니다." [ref=e52]:
+              - link "Stanford HAI" [ref=e53] [cursor=pointer]:
+                - /url: https://hai.stanford.edu/ai-definitions/what-are-foundation-models
+              - text: 가 설명하는 foundation model은 넓고 다양한 데이터로 학습한 뒤 여러 하위 과제에 적응하는 기반 모델입니다. TabPFN은 이 아이디어를 행과 열로 된 표 데이터에 맞춘 사례로 볼 수 있습니다.
+            - cell "분자 descriptor, 소자 실험표, 공정 recipe 기록처럼 행과 열로 정리된 데이터에 먼저 적용됩니다." [ref=e54]
+          - row "in-context learning IBM의 설명처럼, 모델 가중치를 다시 학습시키지 않고 입력 안의 예시를 보고 새 입력에 같은 관계를 적용하는 방식입니다. 후보 몇백 개와 라벨 일부가 있을 때 빠른 순위화 모델을 세우는 데 유리합니다. TabPFN에서는 라벨이 있는 행과 라벨이 비어 있는 행이 같은 입력 문맥이 됩니다." [ref=e55]:
+            - cell "in-context learning" [ref=e56]
+            - cell "IBM의 설명처럼, 모델 가중치를 다시 학습시키지 않고 입력 안의 예시를 보고 새 입력에 같은 관계를 적용하는 방식입니다." [ref=e57]:
+              - link "IBM의 설명" [ref=e58] [cursor=pointer]:
+                - /url: https://www.ibm.com/think/topics/in-context-learning
+              - text: 처럼, 모델 가중치를 다시 학습시키지 않고 입력 안의 예시를 보고 새 입력에 같은 관계를 적용하는 방식입니다.
+            - cell "후보 몇백 개와 라벨 일부가 있을 때 빠른 순위화 모델을 세우는 데 유리합니다. TabPFN에서는 라벨이 있는 행과 라벨이 비어 있는 행이 같은 입력 문맥이 됩니다." [ref=e59]
+          - row "surrogate model Springer Nature의 engineering design survey는 surrogate modeling을 실험 설계로 얻은 샘플에서 회귀 모델을 만들어 관심 지점의 값을 예측하고, 반복적인 고비용 시뮬레이션 호출을 줄이는 방법으로 설명합니다. DFT, 합성, 소자 제작, 수명시험 전에 후보를 압축하는 대체 예측기입니다. surrogate가 실제 실험을 대체했다는 뜻은 아니고 다음 고비용 단계를 줄이는 수단입니다." [ref=e60]:
+            - cell "surrogate model" [ref=e61]
+            - cell "Springer Nature의 engineering design survey는 surrogate modeling을 실험 설계로 얻은 샘플에서 회귀 모델을 만들어 관심 지점의 값을 예측하고, 반복적인 고비용 시뮬레이션 호출을 줄이는 방법으로 설명합니다." [ref=e62]:
+              - link "Springer Nature의 engineering design survey" [ref=e63] [cursor=pointer]:
+                - /url: https://link.springer.com/article/10.1186/s40323-022-00214-y
+              - text: 는 surrogate modeling을 실험 설계로 얻은 샘플에서 회귀 모델을 만들어 관심 지점의 값을 예측하고, 반복적인 고비용 시뮬레이션 호출을 줄이는 방법으로 설명합니다.
+            - cell "DFT, 합성, 소자 제작, 수명시험 전에 후보를 압축하는 대체 예측기입니다. surrogate가 실제 실험을 대체했다는 뜻은 아니고 다음 고비용 단계를 줄이는 수단입니다." [ref=e64]
+          - row "distillation IBM의 knowledge distillation 설명에 따르면 큰 teacher model의 예측 동작을 작은 student model로 옮겨 더 가볍게 쓰는 기술입니다. 정확도를 크게 잃지 않으면서 후보 선별 UI나 공정 dashboard에서 필요한 예측 지연시간을 줄이는 방법이 됩니다." [ref=e65]:
+            - cell "distillation" [ref=e66]
+            - cell "IBM의 knowledge distillation 설명에 따르면 큰 teacher model의 예측 동작을 작은 student model로 옮겨 더 가볍게 쓰는 기술입니다." [ref=e67]:
+              - link "IBM의 knowledge distillation 설명" [ref=e68] [cursor=pointer]:
+                - /url: https://www.ibm.com/think/topics/knowledge-distillation
+              - text: 에 따르면 큰 teacher model의 예측 동작을 작은 student model로 옮겨 더 가볍게 쓰는 기술입니다.
+            - cell "정확도를 크게 잃지 않으면서 후보 선별 UI나 공정 dashboard에서 필요한 예측 지연시간을 줄이는 방법이 됩니다." [ref=e69]
+          - row "DFT NIST는 DFT를 분자와 주기 구조의 양자역학 계산에서 널리 쓰이는 방법으로 설명합니다. OLED 후보의 HOMO/LUMO, T1, 전하 관련 proxy를 만들 때 자주 쓰는 계산 계층입니다. 계산 조건과 functional이 바뀌면 값도 달라질 수 있습니다." [ref=e70]:
+            - cell "DFT" [ref=e71]
+            - cell "NIST는 DFT를 분자와 주기 구조의 양자역학 계산에서 널리 쓰이는 방법으로 설명합니다." [ref=e72]:
+              - link "NIST" [ref=e73] [cursor=pointer]:
+                - /url: https://www.nist.gov/programs-projects/validation-density-functional-theory-materials
+              - text: 는 DFT를 분자와 주기 구조의 양자역학 계산에서 널리 쓰이는 방법으로 설명합니다.
+            - cell "OLED 후보의 HOMO/LUMO, T1, 전하 관련 proxy를 만들 때 자주 쓰는 계산 계층입니다. 계산 조건과 functional이 바뀌면 값도 달라질 수 있습니다." [ref=e74]:
+              - text: OLED 후보의 HOMO/LUMO, T
+              - subscript [ref=e75]: "1"
+              - text: ", 전하 관련 proxy를 만들 때 자주 쓰는 계산 계층입니다. 계산 조건과 functional이 바뀌면 값도 달라질 수 있습니다."
+          - row "HOMO/LUMO IUPAC Gold Book은 HOMO와 LUMO를 각각 가장 높은 에너지의 점유 분자 궤도와 가장 낮은 에너지의 비점유 분자 궤도로 설명합니다. OLED에서는 host, dopant, transport layer 사이의 에너지 정렬을 볼 때 쓰입니다. 보통 eV 단위의 에너지 준위로 다루며, 계산값과 전기화학 실험값의 기준을 혼동하면 안 됩니다." [ref=e76]:
+            - cell "HOMO/LUMO" [ref=e77]
+            - cell "IUPAC Gold Book은 HOMO와 LUMO를 각각 가장 높은 에너지의 점유 분자 궤도와 가장 낮은 에너지의 비점유 분자 궤도로 설명합니다." [ref=e78]:
+              - link "IUPAC Gold Book" [ref=e79] [cursor=pointer]:
+                - /url: https://goldbook.iupac.org/terms/view/F02533
+              - text: 은 HOMO와 LUMO를 각각 가장 높은 에너지의 점유 분자 궤도와 가장 낮은 에너지의 비점유 분자 궤도로 설명합니다.
+            - cell "OLED에서는 host, dopant, transport layer 사이의 에너지 정렬을 볼 때 쓰입니다. 보통 eV 단위의 에너지 준위로 다루며, 계산값과 전기화학 실험값의 기준을 혼동하면 안 됩니다." [ref=e80]
+          - row "T1 / ΔEST IUPAC Gold Book은 triplet state를 총 전자 spin quantum number가 1인 상태로 정의합니다. T1은 가장 낮은 삼중항 에너지, ΔEST는 보통 E(S1) - E(T1)로 쓰는 단일항-삼중항 에너지 차이입니다. Blue phosphorescent OLED host나 TADF 재료에서는 T1 margin, exciton confinement, quenching 위험을 볼 때 중요합니다. 에너지 단위는 보통 eV입니다." [ref=e81]:
+            - cell "T1 / ΔEST" [ref=e82]:
+              - text: T
+              - subscript [ref=e83]: "1"
+              - text: / ΔE
+              - subscript [ref=e84]: ST
+            - cell "IUPAC Gold Book은 triplet state를 총 전자 spin quantum number가 1인 상태로 정의합니다. T1은 가장 낮은 삼중항 에너지, ΔEST는 보통 E(S1) - E(T1)로 쓰는 단일항-삼중항 에너지 차이입니다." [ref=e85]:
+              - link "IUPAC Gold Book" [ref=e86] [cursor=pointer]:
+                - /url: https://www.old.goldbook.iupac.org/html/T/T06503.html
+              - text: 은 triplet state를 총 전자 spin quantum number가 1인 상태로 정의합니다. T
+              - subscript [ref=e87]: "1"
+              - text: 은 가장 낮은 삼중항 에너지, ΔE
+              - subscript [ref=e88]: ST
+              - text: 는 보통 E(S
+              - subscript [ref=e89]: "1"
+              - text: ) - E(T
+              - subscript [ref=e90]: "1"
+              - text: )로 쓰는 단일항-삼중항 에너지 차이입니다.
+            - cell "Blue phosphorescent OLED host나 TADF 재료에서는 T1 margin, exciton confinement, quenching 위험을 볼 때 중요합니다. 에너지 단위는 보통 eV입니다." [ref=e91]:
+              - text: Blue phosphorescent OLED host나 TADF 재료에서는 T
+              - subscript [ref=e92]: "1"
+              - text: margin, exciton confinement, quenching 위험을 볼 때 중요합니다. 에너지 단위는 보통 eV입니다.
+          - row "BDE / 재배열 에너지 λ IUPAC Gold Book은 bond-dissociation energy를 특정 결합을 homolysis로 끊는 데 필요한 몰당 엔탈피로 설명합니다. 재배열 에너지 λ는 전하 이동 전후 분자 구조가 얼마나 바뀌는지를 나타내는 계산 물성입니다. BDE는 결합 안정성 proxy, λ는 전하 이동과 transport proxy로 쓰입니다. OLED 후보 표에는 보통 eV 단위의 계산값으로 들어가며, 계산 방법과 기준 상태를 같이 기록해야 합니다." [ref=e93]:
+            - cell "BDE / 재배열 에너지 λ" [ref=e94]
+            - cell "IUPAC Gold Book은 bond-dissociation energy를 특정 결합을 homolysis로 끊는 데 필요한 몰당 엔탈피로 설명합니다. 재배열 에너지 λ는 전하 이동 전후 분자 구조가 얼마나 바뀌는지를 나타내는 계산 물성입니다." [ref=e95]:
+              - link "IUPAC Gold Book" [ref=e96] [cursor=pointer]:
+                - /url: https://goldbook.iupac.org/terms/view/B00699/html
+              - text: 은 bond-dissociation energy를 특정 결합을 homolysis로 끊는 데 필요한 몰당 엔탈피로 설명합니다. 재배열 에너지 λ는 전하 이동 전후 분자 구조가 얼마나 바뀌는지를 나타내는 계산 물성입니다.
+            - cell "BDE는 결합 안정성 proxy, λ는 전하 이동과 transport proxy로 쓰입니다. OLED 후보 표에는 보통 eV 단위의 계산값으로 들어가며, 계산 방법과 기준 상태를 같이 기록해야 합니다." [ref=e97]
+          - 'row "ηEQE / LT95 OLED 문헌에서 외부양자효율 ηEQE는 실제로 장치 밖으로 나온 광자 수와 주입 전하 수의 비로 설명됩니다. RSC OLED review는 ηEQE = γ · ηS/T · ΦPL · ηout으로 정리합니다. 여기서 γ는 전하 균형, ηS/T는 방사성 exciton 비율, ΦPL은 발광 양자수율, ηout은 광추출 효율입니다. LT95는 초기 휘도 L0가 95%로 낮아지는 데 걸리는 시간입니다. ηEQE는 %, LT95는 h로 적고, 수명은 반드시 초기 휘도 조건을 붙여야 합니다. 예: LT95 = 134.4 h at 5000 cd m-2." [ref=e98]':
+            - cell "ηEQE / LT95" [ref=e99]:
+              - text: η
+              - subscript [ref=e100]: EQE
+              - text: / LT
+              - subscript [ref=e101]: "95"
+            - cell "OLED 문헌에서 외부양자효율 ηEQE는 실제로 장치 밖으로 나온 광자 수와 주입 전하 수의 비로 설명됩니다. RSC OLED review는 ηEQE = γ · ηS/T · ΦPL · ηout으로 정리합니다. 여기서 γ는 전하 균형, ηS/T는 방사성 exciton 비율, ΦPL은 발광 양자수율, ηout은 광추출 효율입니다. LT95는 초기 휘도 L0가 95%로 낮아지는 데 걸리는 시간입니다." [ref=e102]:
+              - text: OLED 문헌에서 외부양자효율 η
+              - subscript [ref=e103]: EQE
+              - text: 는 실제로 장치 밖으로 나온 광자 수와 주입 전하 수의 비로 설명됩니다.
+              - link "RSC OLED review" [ref=e104] [cursor=pointer]:
+                - /url: https://pubs.rsc.org/en/content/articlehtml/2017/qm/c6qm00365f
+              - text: 는 η
+              - subscript [ref=e105]: EQE
+              - text: = γ · η
+              - subscript [ref=e106]: S/T
+              - text: · Φ
+              - subscript [ref=e107]: PL
+              - text: · η
+              - subscript [ref=e108]: out
+              - text: 으로 정리합니다. 여기서 γ는 전하 균형, η
+              - subscript [ref=e109]: S/T
+              - text: 는 방사성 exciton 비율, Φ
+              - subscript [ref=e110]: PL
+              - text: 은 발광 양자수율, η
+              - subscript [ref=e111]: out
+              - text: 은 광추출 효율입니다. LT
+              - subscript [ref=e112]: "95"
+              - text: 는 초기 휘도 L
+              - subscript [ref=e113]: "0"
+              - text: 가 95%로 낮아지는 데 걸리는 시간입니다.
+            - 'cell "ηEQE는 %, LT95는 h로 적고, 수명은 반드시 초기 휘도 조건을 붙여야 합니다. 예: LT95 = 134.4 h at 5000 cd m-2." [ref=e114]':
+              - text: η
+              - subscript [ref=e115]: EQE
+              - text: 는 %, LT
+              - subscript [ref=e116]: "95"
+              - text: "는 h로 적고, 수명은 반드시 초기 휘도 조건을 붙여야 합니다. 예: LT"
+              - subscript [ref=e117]: "95"
+              - text: = 134.4 h at 5000 cd m
+              - superscript [ref=e118]: "-2"
+              - text: .
+          - row "data leakage와 split scikit-learn common pitfalls은 예측 시점에 사용할 수 없는 정보가 모델 구축에 들어가면 data leakage가 생긴다고 설명합니다. DeepChem ScaffoldSplitter 문서는 작은 분자를 scaffold 기준으로 나누는 split을 제공합니다. OLED에서는 같은 scaffold, 같은 프로젝트, 같은 lot가 train/test에 섞이면 성능이 과대평가될 수 있습니다. 역설계는 scaffold split, 제조는 time split과 lot split을 나란히 검토해야 합니다." [ref=e119]:
+            - cell "data leakage와 split" [ref=e120]
+            - cell "scikit-learn common pitfalls은 예측 시점에 사용할 수 없는 정보가 모델 구축에 들어가면 data leakage가 생긴다고 설명합니다. DeepChem ScaffoldSplitter 문서는 작은 분자를 scaffold 기준으로 나누는 split을 제공합니다." [ref=e121]:
+              - link "scikit-learn common pitfalls" [ref=e122] [cursor=pointer]:
+                - /url: https://scikit-learn.org/stable/common_pitfalls.html?highlight=linearregression
+              - text: 은 예측 시점에 사용할 수 없는 정보가 모델 구축에 들어가면 data leakage가 생긴다고 설명합니다.
+              - link "DeepChem ScaffoldSplitter 문서" [ref=e123] [cursor=pointer]:
+                - /url: https://deepchem.readthedocs.io/en/2.8.0/api_reference/splitters.html
+              - text: 는 작은 분자를 scaffold 기준으로 나누는 split을 제공합니다.
+            - cell "OLED에서는 같은 scaffold, 같은 프로젝트, 같은 lot가 train/test에 섞이면 성능이 과대평가될 수 있습니다. 역설계는 scaffold split, 제조는 time split과 lot split을 나란히 검토해야 합니다." [ref=e124]
+      - heading "제조 데이터는 TabPFN이 겨냥한 조건을 많이 갖고 있습니다" [level=2] [ref=e125]
+      - paragraph [ref=e126]: 제조 데이터는 전형적인 표 데이터입니다. 장비 센서, recipe, 검사 특징량, lot 이력, 작업 조건, 품질 판정이 데이터베이스와 CSV 안에 남습니다. 동시에 제조 데이터는 모델이 다루기 까다로운 데이터이기도 합니다. 결측이 많고, 공정 조건이 바뀌며, 라벨이 늦게 나오고, 새 제품이나 새 장비에서는 과거 데이터가 충분하지 않습니다.
+      - paragraph [ref=e127]:
+        - link "Prior Labs industrial page" [ref=e128] [cursor=pointer]:
+          - /url: https://priorlabs.ai/industries/industrials
+        - text: 는 predictive maintenance, quality control, defect detection, production line optimization을 TabPFN의 산업 적용 예로 제시합니다. 같은 페이지는 messy data, mixed data types, limited data availability를 처리한다는 메시지를 강조합니다. 이 내용은 공급사 claim이므로 성능 결론의 중심 근거로 쓰기보다는, TabPFN이 겨냥하는 문제 영역을 보여주는 자료로 보는 편이 좋습니다.
+      - paragraph [ref=e129]:
+        - text: OLED에서는 세 데이터 층이 뚜렷하게 갈립니다. 분자와 재료 층에는 SMILES, fragment, molecular fingerprint, DFT 계산값, excited-state 계산값, 열 안정성 proxy가 들어갑니다. 소자와 stack 층에는 host, dopant, layer thickness, doping concentration, η
+        - subscript [ref=e130]: EQE
+        - text: ", 구동 전압(V), CIE 색좌표, efficiency roll-off, LT"
+        - subscript [ref=e131]: "95"
+        - text: 가 붙습니다. 제조와 품질 층에는 증착 rate, chamber 상태, substrate lot, encapsulation 조건, inline inspection feature, defect class, yield가 들어갑니다.
+      - paragraph [ref=e132]: TabPFN이 강해질 수 있는 자리는 이 세 층이 표로 만나는 접점입니다. 예를 들어 후보 분자의 계산 특징량과 실험 라벨을 묶어 DFT 우선순위를 정하거나, 소자 stack 조건과 측정 결과를 묶어 다음 실험 조건을 고르거나, recipe 변경 직후의 inline measurement와 품질 판정을 묶어 위험 점수를 만들 수 있습니다. 이때 모델은 OLED 전체를 이해하는 것이 아니라, 잘 정의된 표 안에서 다음 행동을 바꾸는 예측을 합니다.
+      - heading "OLED 소재 역설계에서는 생성 뒤의 선별이 중요합니다" [level=2] [ref=e133]
+      - paragraph [ref=e134]:
+        - text: OLED 분자 역설계는 원하는 성질을 먼저 정하고 거기에 맞는 구조를 찾는 문제입니다. Blue phosphorescent OLED host라면 높은 T
+        - subscript [ref=e135]: "1"
+        - text: ", 적절한 HOMO/LUMO alignment, 안정성, 합성 가능성을 같이 봐야 합니다. 생성 모델이나 fragment enumeration은 후보를 많이 만들 수 있습니다. 그러나 후보가 많아졌다고 문제가 끝나지는 않습니다. 합성 가능한지, DFT에서 살아남는지, host/dopant 조합에서 물리적으로 맞는지 다시 걸러야 합니다."
+      - paragraph [ref=e136]:
+        - link "2018년 npj Computational Materials 논문" [ref=e137] [cursor=pointer]:
+          - /url: https://www.nature.com/articles/s41524-018-0128-1
+        - text: 은 이 흐름을 잘 보여주는 OLED host 역설계 사례입니다. 저자들은 blue phosphorescent OLED host를 대상으로 DFT-labeled library와 SMILES 기반 생성 모델을 연결했습니다. T
+        - subscript [ref=e138]: "1"
+        - text: ≥ 3.00 eV 조건을 만족한 후보 비율은 training library의 36.2%에서 targeted inverse design의 58.7%로 높아졌고, 일부 후보는 합성과 실험 characterization까지 진행되었습니다.
+      - figure "그림 3. OLED 역설계에서 TabPFN은 generated molecule을 직접 만드는 위치보다, descriptor와 저비용 계산값을 읽고 DFT·소자 실험으로 넘길 후보를 줄이는 위치에 놓기 쉽습니다." [ref=e139]:
+        - img "OLED 역설계에서 TabPFN 후보 압축 흐름" [ref=e140]
+        - generic [ref=e141]:
+          - strong [ref=e142]: 그림 3.
+          - text: OLED 역설계에서 TabPFN은 generated molecule을 직접 만드는 위치보다, descriptor와 저비용 계산값을 읽고 DFT·소자 실험으로 넘길 후보를 줄이는 위치에 놓기 쉽습니다.
+      - paragraph [ref=e143]:
+        - text: TabPFN은 이 흐름에서 생성기 뒤의 선별기로 들어갈 수 있습니다. 분자 fingerprint, graph embedding, 저비용 계산값, known fragment tag, synthetic route tag, host/dopant compatibility feature를 표로 정리하면 후보가 다음 계산과 실험에서 살아남을 가능성을 빠르게 추정할 수 있습니다. 여기서 “살아남는다”는 말은 단일 물성 하나를 통과한다는 뜻이 아닙니다. T
+        - subscript [ref=e144]: "1"
+        - text: margin, HOMO/LUMO offset, stability proxy, rigidity, packing risk처럼 다음 단계의 탈락 요인을 동시에 본다는 뜻입니다.
+      - heading "OLED 논문에서 확인되는 물성과 소자 성능의 간격" [level=2] [ref=e145]
+      - paragraph [ref=e146]: TabPFN을 OLED에 적용할 때 가장 조심해야 할 부분은 분자 물성과 소자 성능 사이의 거리입니다. 분자 계산값이 좋아도 실제 소자에서 좋은 결과가 나오지 않을 수 있습니다. Host와 dopant의 에너지 정렬, charge balance, morphology, exciton confinement, degradation pathway가 같이 움직이기 때문입니다.
+      - paragraph [ref=e147]:
+        - link "Rapid Multiscale Computational Screening for OLED Host Materials" [ref=e148] [cursor=pointer]:
+          - /url: https://www.osti.gov/servlets/purl/1735840
+        - text: 는 이 간격을 잘 다룬 연구입니다. 연구진은 높은 T
+        - subscript [ref=e149]: "1"
+        - text: ", HOMO/LUMO alignment, balanced carrier transport, robust molecular structure를 blue OLED host의 설계 기준으로 두고 tiered screening을 수행했습니다. 논문은 single-molecule quantum mechanical data만으로 성공적인 OLED host를 확정하기는 어렵지만, 낮은 S"
+        - subscript [ref=e150]: "1"
+        - text: /T
+        - subscript [ref=e151]: "1"
+        - text: 에너지나 부적절한 frontier orbital energy 때문에 실패할 후보를 걸러내는 데는 유용하다고 결론냅니다.
+      - paragraph [ref=e152]:
+        - text: 2026년
+        - link "JACS exciplex host 연구" [ref=e153] [cursor=pointer]:
+          - /url: https://snu.elsevierpure.com/en/publications/machine-learning-guided-discovery-of-sterically-protected-high-tr/
+        - text: 는 한 단계 더 나아갑니다. 이 연구는 OLED material ML이 device-level performance로 이어지기 어렵다는 문제에서 출발해, 높은 T
+        - subscript [ref=e154]: "1"
+        - text: ", LUMO alignment, BDE, reorganization energy를 exciton dynamics와 device stability에 연결했습니다. 그 결과 green PSF OLED에서 외부양자효율(η"
+        - subscript [ref=e155]: EQE
+        - text: )이 최대 39.4%, L
+        - subscript [ref=e156]: "90"
+        - text: "> 100,000 cd m"
+        - superscript [ref=e157]: "-2"
+        - text: ", LT"
+        - subscript [ref=e158]: "95"
+        - text: = 134.4 h at 5000 cd m
+        - superscript [ref=e159]: "-2"
+        - text: 로 보고되었습니다.
+      - paragraph [ref=e160]: 이 두 사례는 TabPFN 활용 전략에도 직접적인 힌트를 줍니다. 입력 표를 단순한 분자 descriptor 묶음으로 만들면 모델은 분자 수준의 상관관계만 배웁니다. OLED 응용에서 더 유용한 표는 물리적으로 의미 있는 margin feature, pair feature, host/dopant compatibility feature, 측정 조건, 실패 사유를 넣어야 합니다. TabPFN은 그런 표에서 후보를 줄이는 일을 도울 수 있습니다.
+      - figure "그림 4. 분자 계산값, 소자 실험 라벨, recipe와 검사 특징량은 서로 다른 형식에서 출발하지만, 후보 순위화나 품질 검증 위험 점수처럼 다음 행동을 정하는 지점에서는 표와 체크리스트로 만납니다." [ref=e161]:
+        - img "분자, 소자, 제조 기록이 하나의 분석 표로 모이는 editorial infographic" [ref=e162]
+        - generic [ref=e163]:
+          - strong [ref=e164]: 그림 4.
+          - text: 분자 계산값, 소자 실험 라벨, recipe와 검사 특징량은 서로 다른 형식에서 출발하지만, 후보 순위화나 품질 검증 위험 점수처럼 다음 행동을 정하는 지점에서는 표와 체크리스트로 만납니다.
+      - heading "소자 실험과 공정 품질 예측으로 확장하는 방식" [level=2] [ref=e165]
+      - paragraph [ref=e166]:
+        - text: 소자 실험에서는 분자 하나보다 조합과 조건이 중요합니다. Host, dopant, sensitizer, transport layer, layer thickness, doping concentration, measurement condition을 같이 읽어야 η
+        - subscript [ref=e167]: EQE
+        - text: ", 구동 전압(V), CIE 색좌표, efficiency roll-off, LT"
+        - subscript [ref=e168]: "95"
+        - text: 를 설명할 수 있습니다. TabPFN은 이 표에서 빠른 기준 모델을 만들고, 어떤 조건 조합을 다음 실험으로 보낼지 가르는 데 쓸 수 있습니다.
+      - paragraph [ref=e169]: 파일럿 라인에서는 recipe condition과 inline measurement가 더 직접적인 입력이 됩니다. 증착 rate, chamber pressure, mask 상태, substrate lot, encapsulation condition, spectral measurement, particle count, image-derived defect feature가 품질 target과 연결됩니다. 검사 이미지는 vision model이 먼저 처리하고, 그 결과로 나온 defect count, morphology descriptor, location feature, intensity statistic을 TabPFN이 읽는 식의 역할 분담도 가능합니다.
+      - paragraph [ref=e170]:
+        - text: 제조 foundation model이라는 표현은 여기서 좁게 쓰는 편이 좋습니다. TabPFN 하나가 OLED 제조 전체를 대표하는 모델이 된다는 뜻이 아닙니다. 대신 분자 graph, 계산 결과, 소자 실험표, recipe, 검사 특징량이 만나는 표 데이터 접점마다 재사용 가능한 predictor를 세울 수 있습니다.
+        - link "steel property prediction 논문" [ref=e171] [cursor=pointer]:
+          - /url: https://arxiv.org/abs/2603.22738
+        - text: 은 이런 방향을 제조 데이터에서 보여주는 참고 사례입니다. 이 연구는 TabPFN의 single-target 구조를 hot rolling 공정의 multitask property prediction으로 확장해, chemical composition, process parameter, microstructure, mechanical property 사이의 관계를 다루었습니다.
+      - paragraph [ref=e172]:
+        - text: OLED에서도 같은 질문을 던질 수 있습니다. η
+        - subscript [ref=e173]: EQE
+        - text: ", 구동 전압, roll-off, CIE 색좌표, lifetime은 서로 독립된 target이 아닙니다. TabPFN을 그대로 하나의 target 예측기로만 쓰면 trade-off를 놓치기 쉽습니다. 여러 target의 긴장을 보존하려면 label 설계, multi-target 확장, 후처리 순위화, 불확실성 보고가 필요합니다."
+      - heading "활용 전에 확인할 조건" [level=2] [ref=e174]
+      - paragraph [ref=e175]: TabPFN을 실제 OLED 데이터에 적용하기 전에 먼저 확인할 조건이 있습니다.
+      - paragraph [ref=e176]:
+        - text: 첫째, 라벨 정의입니다. 같은 LT
+        - subscript [ref=e177]: "95"
+        - text: 라도 초기 휘도 L
+        - subscript [ref=e178]: "0"
+        - text: (cd m
+        - superscript [ref=e179]: "-2"
+        - text: ), 온도, device area, encapsulation, measurement protocol이 다르면 같은 라벨로 묶기 어렵습니다. η
+        - subscript [ref=e180]: EQE
+        - text: 나 roll-off도 측정 조건과 stack 구성이 빠지면 모델이 잘못된 상관관계를 배울 수 있습니다.
+      - paragraph [ref=e181]: 둘째, 검증 분할입니다. Random split은 같은 scaffold, 같은 project family, 같은 batch가 train/test에 섞이기 쉽습니다. 역설계에서는 scaffold split이 필요하고, 제조에서는 time split과 lot split이 필요합니다. 새 분자군, 새 장비, 새 lot에서 성능이 유지되는지를 보지 않으면 실험실 안의 반복 패턴만 잘 맞힌 모델이 될 수 있습니다.
+      - paragraph [ref=e182]: 셋째, 속도와 배포 조건입니다. 평균 정확도가 좋아도 예측 지연시간이 길면 interactive screening UI나 공정 dashboard에는 맞지 않을 수 있습니다. 이 때문에 TabPFN-2.5 계열에서 distillation engine이 강조됩니다. 큰 모델로 후보를 잘 고른 뒤, 운영 환경에서는 더 빠른 모델로 옮기는 전략이 필요할 수 있습니다.
+      - paragraph [ref=e183]:
+        - text: 넷째, 라이선스입니다.
+        - link "Prior Labs 모델 문서" [ref=e184] [cursor=pointer]:
+          - /url: https://docs.priorlabs.ai/models
+        - text: 는 기업 내부의 preliminary assessment와 비즈니스 의사결정에 영향을 주는 사용을 구분합니다. Production workflow, vendor evaluation, product integration, commercial decision에 연결되는 사용에는 commercial license나 API agreement가 필요합니다.
+      - complementary [ref=e185]:
+        - paragraph [ref=e186]: Operator note
+        - paragraph [ref=e187]: OLED 팀에서 TabPFN PoC를 시작한다면 모델부터 고르기보다 표 하나를 먼저 고르는 편이 좋습니다. 예를 들어 “DFT 후보 500개 중 다음 계산으로 넘길 50개를 고르는 표”, “소자 실험 조건 200개 중 다음 batch 후보를 고르는 표”, “recipe 변경 직후 품질 위험을 빠르게 보는 표”처럼 다음 행동이 분명한 표가 좋습니다.
+      - figure "그림 5. TabPFN은 소표본 후보 압축에서는 먼저 검토할 만하지만, 다중 모달 제조 판단과 양산 의사결정에서는 보조 계층과 검증 장치가 필요합니다." [ref=e188]:
+        - img "TabPFN 활용 전략의 경계" [ref=e189]
+        - generic [ref=e190]:
+          - strong [ref=e191]: 그림 5.
+          - text: TabPFN은 소표본 후보 압축에서는 먼저 검토할 만하지만, 다중 모달 제조 판단과 양산 의사결정에서는 보조 계층과 검증 장치가 필요합니다.
+      - heading "OLED 분야에서 기대할 수 있는 응용" [level=2] [ref=e192]
+      - paragraph [ref=e193]: TabPFN을 OLED 분야에 적용한다면 가장 먼저 떠올릴 수 있는 용도는 세 가지입니다.
+      - paragraph [ref=e194]:
+        - text: 첫째는 소재 후보 screening입니다. 생성 모델이나 fragment enumeration이 만든 후보를 곧장 고비용 계산이나 합성으로 넘기지 않고, descriptor와 저비용 계산값으로 먼저 줄입니다. 이때 TabPFN은 T
+        - subscript [ref=e195]: "1"
+        - text: margin, HOMO/LUMO offset, ΔE
+        - subscript [ref=e196]: ST
+        - text: ", BDE, 재배열 에너지 λ, synthetic feasibility tag를 같이 읽는 선별기가 됩니다."
+      - paragraph [ref=e197]:
+        - text: 둘째는 소자 실험 조건 순위화입니다. Host/dopant 조합, layer thickness, doping concentration, measurement condition을 함께 넣어 η
+        - subscript [ref=e198]: EQE
+        - text: ", 구동 전압, roll-off, CIE 색좌표, LT"
+        - subscript [ref=e199]: "95"
+        - text: 를 예측합니다. 이 결과를 단일 최고점으로만 쓰기보다, trade-off를 보면서 다음 실험 후보를 고르는 데 쓰는 편이 안전합니다.
+      - paragraph [ref=e200]: 셋째는 제조 AX의 빠른 baseline입니다. Recipe 변경, 장비 상태 변화, 신규 material batch, line transfer 직후처럼 라벨이 많지 않은 구간에서 빠른 품질 예측 후보를 세울 수 있습니다. 이때 검사 이미지는 vision model이 처리하고, image-derived feature와 공정 기록을 TabPFN이 읽는 방식이 현실적입니다.
+      - paragraph [ref=e201]: TabPFN은 OLED 연구자나 공정 엔지니어의 판단을 대신하지 않습니다. 잘 정리된 표에서 반복 튜닝 부담을 줄이고, 비싼 다음 단계를 어디에 쓸지 빠르게 좁혀주는 모델입니다. OLED처럼 신뢰할 수 있는 라벨이 늦고 비싼 분야에서는 그 정도의 역할만으로도 충분히 의미가 있습니다.
+      - heading "작성정보" [level=2] [ref=e202]
+      - list [ref=e203]:
+        - listitem [ref=e204]: "작성자: 김현중, AI Governance 팀"
+        - listitem [ref=e205]: "작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스"
+        - listitem [ref=e206]: "최초 작성일: 2026-05-07"
+        - listitem [ref=e207]: "웹진형 재작성 및 최종 수정: 2026-05-11"
+        - listitem [ref=e208]:
+          - text: "작성 형식:"
+          - code [ref=e209]: AI Tech Review Letters
+        - listitem [ref=e210]:
+          - text: "주제 탐색 참고자료: ChatGPT 공유 대화의 공개 화면에 보인"
+          - code [ref=e211]: TabPFN2.5 vs XGBoost
+          - text: seed summary와 기존
+          - code [ref=e212]: TabPFN OLED Manufacturing Foundation Model Review
+          - text: 패키지를 참고했습니다. 공유 대화 안의 두 deep research 본문은 공개 렌더링에서 확인되지 않아, 본문 결론에는 공식 문서, 논문, 공개 저장소, OLED 문헌을 우선 적용했습니다.
+        - listitem [ref=e213]: "주요 검증 참고자료: Prior Labs 공식 모델 문서와 제품 페이지, Nature 2025 TabPFN 논문, TabPFN-2.5 technical report, TabPFN GitHub/Hugging Face 자료, OLED inverse design 및 host screening 논문, JACS 2026 OLED exciplex host 논문, industrial steel property prediction 논문, IUPAC/NIST/RSC/scikit-learn/DeepChem 용어 자료."
+        - listitem [ref=e214]: "작성 및 검토 방식: 도입부, 제목, 섹션 제목, callout, caption에 대해 AI식 관용 표현, 과한 대비 구조, “글의 정리법”을 설명하는 meta layer를 줄이고, TabPFN의 기술 성격과 OLED 적용 가능성이 직접 드러나도록 다시 썼습니다."
+        - listitem [ref=e215]:
+          - text: "시각 자료 작성 방식: 본문 figure는"
+          - code [ref=e216]: figure_manifest.md
+          - text: 에 기록했습니다. Imagegen은 hero와 data-junction illustration에만 사용했고, 정확한 한국어 라벨과 흐름이 필요한 그림은 SVG로 제작했습니다. 2026-05-11에는 그림 2와 그림 3의 구조가 비슷하다는 피드백을 반영해, 그림 2를 TabPFN의 in-context 예측 방식 도식으로 교체했습니다. Skywork Image용 후보 프롬프트는
+          - code [ref=e217]: skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md
+          - text: 에 별도 보관했습니다.
+        - listitem [ref=e218]:
+          - text: "문체 기준:"
+          - link "writing-style-audit-harness" [ref=e219] [cursor=pointer]:
+            - /url: ../../.automation/writing-style-audit-harness.md
+          - text: ","
+          - link "writing-harness" [ref=e220] [cursor=pointer]:
+            - /url: ../../.codex/rules/writing-harness.md
+          - text: ","
+          - link "editorial-graphics-audit-harness" [ref=e221] [cursor=pointer]:
+            - /url: ../../.automation/editorial-graphics-audit-harness.md
+          - text: ","
+          - link "visuals-and-image-generation" [ref=e222] [cursor=pointer]:
+            - /url: ../../.codex/rules/visuals-and-image-generation.md
+          - text: 을 참고했습니다.
+      - heading "References" [level=2] [ref=e223]
+      - heading "직접 검증 참고자료" [level=3] [ref=e224]
+      - list [ref=e225]:
+        - listitem [ref=e226]:
+          - link "Prior Labs Models documentation" [ref=e227] [cursor=pointer]:
+            - /url: https://docs.priorlabs.ai/models
+          - text: "- 2026년 5월 11일 확인 기준 TabPFN-2.6, TabPFN-2.5, TabPFN-2.5-Plus, 권장 데이터 크기와 라이선스 경계."
+        - listitem [ref=e228]:
+          - link "Prior Labs TabPFN product page" [ref=e229] [cursor=pointer]:
+            - /url: https://priorlabs.ai/tabpfn
+          - text: "- TabPFN-2.5 제품 설명, TabArena claim, distillation engine, structured data workflow."
+        - listitem [ref=e230]:
+          - link "Prior Labs Industrials page" [ref=e231] [cursor=pointer]:
+            - /url: https://priorlabs.ai/industries/industrials
+          - text: "- 산업 적용 taxonomy, predictive maintenance, quality control, defect detection, production-line optimization, steel energy forecasting claim."
+        - listitem [ref=e232]:
+          - 'link "Stanford HAI: What are Foundation Models?" [ref=e233] [cursor=pointer]':
+            - /url: https://hai.stanford.edu/ai-definitions/what-are-foundation-models
+          - text: "- foundation model 용어 설명."
+        - listitem [ref=e234]:
+          - 'link "IBM: What is In-Context Learning?" [ref=e235] [cursor=pointer]':
+            - /url: https://www.ibm.com/think/topics/in-context-learning
+          - text: "- in-context learning의 쉬운 설명과 작동 방식."
+        - listitem [ref=e236]:
+          - 'link "IBM: What is Knowledge Distillation?" [ref=e237] [cursor=pointer]':
+            - /url: https://www.ibm.com/think/topics/knowledge-distillation
+          - text: "- teacher/student model 기반 distillation 설명."
+        - listitem [ref=e238]:
+          - 'link "Metamodeling techniques for CPU-intensive simulation-based design optimization: a survey" [ref=e239] [cursor=pointer]':
+            - /url: https://link.springer.com/article/10.1186/s40323-022-00214-y
+          - text: "- engineering design에서 surrogate model이 쓰이는 이유."
+        - listitem [ref=e240]:
+          - link "scikit-learn Common pitfalls" [ref=e241] [cursor=pointer]:
+            - /url: https://scikit-learn.org/stable/common_pitfalls.html?highlight=linearregression
+          - text: "- data leakage와 train/test 분리."
+        - listitem [ref=e242]:
+          - link "DeepChem Splitters documentation" [ref=e243] [cursor=pointer]:
+            - /url: https://deepchem.readthedocs.io/en/2.8.0/api_reference/splitters.html
+          - text: "- ScaffoldSplitter와 Bemis-Murcko scaffold 기반 분할."
+        - listitem [ref=e244]:
+          - 'link "NIST: Validation of Density Functional Theory for Materials" [ref=e245] [cursor=pointer]':
+            - /url: https://www.nist.gov/programs-projects/validation-density-functional-theory-materials
+          - text: "- DFT의 재료 계산 활용 맥락."
+        - listitem [ref=e246]:
+          - 'link "IUPAC Gold Book: frontier orbitals" [ref=e247] [cursor=pointer]':
+            - /url: https://goldbook.iupac.org/terms/view/F02533
+          - text: "- HOMO/LUMO 정의."
+        - listitem [ref=e248]:
+          - 'link "IUPAC Gold Book: triplet state" [ref=e249] [cursor=pointer]':
+            - /url: https://www.old.goldbook.iupac.org/html/T/T06503.html
+          - text: "- triplet state 정의."
+        - listitem [ref=e250]:
+          - 'link "IUPAC Gold Book: bond-dissociation energy" [ref=e251] [cursor=pointer]':
+            - /url: https://goldbook.iupac.org/terms/view/B00699/html
+          - text: "- BDE 정의."
+        - listitem [ref=e252]:
+          - 'link "RSC Materials Chemistry Frontiers: Approaches to high performance white OLEDs" [ref=e253] [cursor=pointer]':
+            - /url: https://pubs.rsc.org/en/content/articlehtml/2017/qm/c6qm00365f
+          - text: "- OLED η"
+          - subscript [ref=e254]: EQE
+          - text: 정의와 구성 요소.
+        - listitem [ref=e255]:
+          - 'link "Nature Communications: Highly stable and efficient copper(I) sensitizer for narrowband red OLEDs" [ref=e256] [cursor=pointer]':
+            - /url: https://www.nature.com/articles/s41467-025-62867-8
+          - text: "- LT"
+          - subscript [ref=e257]: "95"
+          - text: 와 cd m
+          - superscript [ref=e258]: "-2"
+          - text: 단위 표기 확인.
+        - listitem [ref=e259]:
+          - link "Accurate predictions on small data with a tabular foundation model, Nature 2025" [ref=e260] [cursor=pointer]:
+            - /url: https://www.nature.com/articles/s41586-024-08328-6
+          - text: "- TabPFN v2 성능과 한계."
+        - listitem [ref=e261]:
+          - 'link "TabPFN-2.5: Advancing the State of the Art in Tabular Foundation Models" [ref=e262] [cursor=pointer]':
+            - /url: https://arxiv.org/abs/2511.08667
+          - text: "- TabPFN-2.5 technical report."
+        - listitem [ref=e263]:
+          - link "Prior-Labs/tabpfn_2_5 model card" [ref=e264] [cursor=pointer]:
+            - /url: https://huggingface.co/Prior-Labs/tabpfn_2_5
+          - text: "- 모델 카드와 라이선스 참고."
+        - listitem [ref=e265]:
+          - link "PriorLabs/TabPFN GitHub" [ref=e266] [cursor=pointer]:
+            - /url: https://github.com/PriorLabs/TabPFN
+          - text: "- OSS package, extensions, large data mode, distillation 관련 개발 문서."
+        - listitem [ref=e267]:
+          - link "TabICL documentation" [ref=e268] [cursor=pointer]:
+            - /url: https://tabicl.readthedocs.io/en/latest/
+          - text: 및
+          - link "TabICL paper" [ref=e269] [cursor=pointer]:
+            - /url: https://arxiv.org/abs/2502.05564
+          - text: "- tabular foundation model 경쟁 구도."
+        - listitem [ref=e270]:
+          - link "Deep-learning-based inverse design model for intelligent discovery of organic molecules" [ref=e271] [cursor=pointer]:
+            - /url: https://www.nature.com/articles/s41524-018-0128-1
+          - text: "- OLED host inverse design과 T"
+          - subscript [ref=e272]: "1"
+          - text: target 후보 비율.
+        - listitem [ref=e273]:
+          - link "Rapid Multiscale Computational Screening for OLED Host Materials" [ref=e274] [cursor=pointer]:
+            - /url: https://www.osti.gov/servlets/purl/1735840
+          - text: "- OLED host screening에서 단일 분자 계산값의 역할과 한계."
+        - listitem [ref=e275]:
+          - link "Machine Learning-Guided Discovery of Sterically Protected High Triplet Exciplex Hosts for Ultra-Bright Green OLEDs" [ref=e276] [cursor=pointer]:
+            - /url: https://snu.elsevierpure.com/en/publications/machine-learning-guided-discovery-of-sterically-protected-high-tr/
+          - text: "- device-level OLED 성능까지 연결한 ML-guided material discovery 사례."
+        - listitem [ref=e277]:
+          - link "Molecular excited states through a machine learning lens" [ref=e278] [cursor=pointer]:
+            - /url: https://www.nature.com/articles/s41570-021-00278-1
+          - text: "- excited-state property prediction과 optoelectronic material search의 ML 활용 배경."
+        - listitem [ref=e279]:
+          - 'link "Multitask-Informed Prior for In-Context Learning on Tabular Data: Application to Steel Property Prediction" [ref=e280] [cursor=pointer]':
+            - /url: https://arxiv.org/abs/2603.22738
+          - text: "- industrial process/material property prediction에서 TabPFN prior를 확장한 사례."
+      - heading "처음 참고한 자료" [level=3] [ref=e281]
+      - list [ref=e282]:
+        - listitem [ref=e283]:
+          - link "처음 참고한 자료 - ChatGPT share capture" [ref=e284] [cursor=pointer]:
+            - /url: ../sources/2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md
+          - text: "- 공개 화면에서 확인된"
+          - code [ref=e285]: TabPFN2.5 vs XGBoost
+          - text: seed summary.
+        - listitem [ref=e286]:
+          - link "처음 참고한 자료 - Source note" [ref=e287] [cursor=pointer]:
+            - /url: ../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md
+          - text: "- 기존 패키지의 source note와 caveat."
+        - listitem [ref=e288]:
+          - link "처음 참고한 자료 - Research runlog" [ref=e289] [cursor=pointer]:
+            - /url: ../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md
+          - text: "- 공유 링크 접근, 검증 자료, 산출물 기록."
+      - heading "문체와 시각자료 참고" [level=3] [ref=e290]
+      - list [ref=e291]:
+        - listitem [ref=e292]:
+          - link "문체 참고 - 고등과학원 HORIZON" [ref=e293] [cursor=pointer]:
+            - /url: https://horizon.kias.re.kr/
+          - text: "- 한국어 과학 설명의 도입부와 개념 전개 참고."
+        - listitem [ref=e294]:
+          - link "문체 참고 - 최종현학술원 Science Note 과학노트" [ref=e295] [cursor=pointer]:
+            - /url: https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx
+          - text: "- 기술 뉴스레터형 프레이밍 참고."
+        - listitem [ref=e296]:
+          - link "시각자료 참고 - Quanta Magazine" [ref=e297] [cursor=pointer]:
+            - /url: https://www.quantamagazine.org/
+          - text: "- 과학 기사형 hero illustration, figure, caption 리듬 참고."
+        - listitem [ref=e298]:
+          - link "시각자료 제작 기록 - figure manifest" [ref=e299] [cursor=pointer]:
+            - /url: ../artifacts/final_review/figure_manifest.md
+          - text: "- 본문 figure와 생성·검토 기록."
+        - listitem [ref=e300]:
+          - link "시각자료 후보 - Skywork Image prompt pack" [ref=e301] [cursor=pointer]:
+            - /url: ../skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md
+          - text: "- Skywork Image 생성용 후보 prompt."
+      - generic [ref=e302]:
+        - text: "생성 시각: 2026-05-11 07:04:50"
+        - text: "원본 파일 최종 수정 시각: 2026-05-11 07:04:27"
+    - complementary [ref=e303]:
+      - region "섹션 맵" [ref=e304]:
+        - heading "섹션 맵" [level=2] [ref=e305]
+        - list [ref=e307]:
+          - listitem [ref=e308]:
+            - link "TabPFN은 표 데이터에서 튜닝 시간을 줄이는 모델입니다" [ref=e309] [cursor=pointer]:
+              - /url: "#tabpfn"
+          - listitem [ref=e310]:
+            - link "TabPFN을 OLED 데이터에 적용할 때 필요한 말" [ref=e311] [cursor=pointer]:
+              - /url: "#tabpfn-oled"
+          - listitem [ref=e312]:
+            - link "제조 데이터는 TabPFN이 겨냥한 조건을 많이 갖고 있습니다" [ref=e313] [cursor=pointer]:
+              - /url: "#tabpfn_1"
+          - listitem [ref=e314]:
+            - link "OLED 소재 역설계에서는 생성 뒤의 선별이 중요합니다" [ref=e315] [cursor=pointer]:
+              - /url: "#oled"
+          - listitem [ref=e316]:
+            - link "OLED 논문에서 확인되는 물성과 소자 성능의 간격" [ref=e317] [cursor=pointer]:
+              - /url: "#oled_1"
+          - listitem [ref=e318]:
+            - link "소자 실험과 공정 품질 예측으로 확장하는 방식" [ref=e319] [cursor=pointer]:
+              - /url: "#_1"
+          - listitem [ref=e320]:
+            - link "활용 전에 확인할 조건" [ref=e321] [cursor=pointer]:
+              - /url: "#_2"
+          - listitem [ref=e322]:
+            - link "OLED 분야에서 기대할 수 있는 응용" [ref=e323] [cursor=pointer]:
+              - /url: "#oled_2"
+          - listitem [ref=e324]:
+            - link "작성정보" [ref=e325] [cursor=pointer]:
+              - /url: "#_3"
+          - listitem [ref=e326]:
+            - link "References" [ref=e327] [cursor=pointer]:
+              - /url: "#references"
+            - list [ref=e328]:
+              - listitem [ref=e329]:
+                - link "직접 검증 참고자료" [ref=e330] [cursor=pointer]:
+                  - /url: "#_4"
+              - listitem [ref=e331]:
+                - link "처음 참고한 자료" [ref=e332] [cursor=pointer]:
+                  - /url: "#_5"
+              - listitem [ref=e333]:
+                - link "문체와 시각자료 참고" [ref=e334] [cursor=pointer]:
+                  - /url: "#_6"
+      - region "근거 링크" [ref=e335]:
+        - heading "근거 링크" [level=2] [ref=e336]
+        - list [ref=e337]:
+          - listitem [ref=e338]:
+            - link "Nature 2025 TabPFN 논문" [ref=e339] [cursor=pointer]:
+              - /url: https://www.nature.com/articles/s41586-024-08328-6
+          - listitem [ref=e340]:
+            - link "Prior Labs 모델 문서" [ref=e341] [cursor=pointer]:
+              - /url: https://docs.priorlabs.ai/models
+          - listitem [ref=e342]:
+            - link "TabPFN-2.5 technical report" [ref=e343] [cursor=pointer]:
+              - /url: https://arxiv.org/abs/2511.08667
+          - listitem [ref=e344]:
+            - link "Stanford HAI" [ref=e345] [cursor=pointer]:
+              - /url: https://hai.stanford.edu/ai-definitions/what-are-foundation-models
+          - listitem [ref=e346]:
+            - link "IBM의 설명" [ref=e347] [cursor=pointer]:
+              - /url: https://www.ibm.com/think/topics/in-context-learning
+          - listitem [ref=e348]:
+            - link "Springer Nature의 engineering design survey" [ref=e349] [cursor=pointer]:
+              - /url: https://link.springer.com/article/10.1186/s40323-022-00214-y
+          - listitem [ref=e350]:
+            - link "IBM의 knowledge distillation 설명" [ref=e351] [cursor=pointer]:
+              - /url: https://www.ibm.com/think/topics/knowledge-distillation
+          - listitem [ref=e352]:
+            - link "NIST" [ref=e353] [cursor=pointer]:
+              - /url: https://www.nist.gov/programs-projects/validation-density-functional-theory-materials
+          - listitem [ref=e354]:
+            - link "IUPAC Gold Book" [ref=e355] [cursor=pointer]:
+              - /url: https://goldbook.iupac.org/terms/view/F02533
+          - listitem [ref=e356]:
+            - link "IUPAC Gold Book" [ref=e357] [cursor=pointer]:
+              - /url: https://www.old.goldbook.iupac.org/html/T/T06503.html
+          - listitem [ref=e358]:
+            - link "IUPAC Gold Book" [ref=e359] [cursor=pointer]:
+              - /url: https://goldbook.iupac.org/terms/view/B00699/html
+          - listitem [ref=e360]:
+            - link "RSC OLED review" [ref=e361] [cursor=pointer]:
+              - /url: https://pubs.rsc.org/en/content/articlehtml/2017/qm/c6qm00365f
+          - listitem [ref=e362]:
+            - link "scikit-learn common pitfalls" [ref=e363] [cursor=pointer]:
+              - /url: https://scikit-learn.org/stable/common_pitfalls.html?highlight=linearregression
+          - listitem [ref=e364]:
+            - link "DeepChem ScaffoldSplitter 문서" [ref=e365] [cursor=pointer]:
+              - /url: https://deepchem.readthedocs.io/en/2.8.0/api_reference/splitters.html
+          - listitem [ref=e366]:
+            - link "Prior Labs industrial page" [ref=e367] [cursor=pointer]:
+              - /url: https://priorlabs.ai/industries/industrials
+          - listitem [ref=e368]:
+            - link "2018년 npj Computational Materials 논문" [ref=e369] [cursor=pointer]:
+              - /url: https://www.nature.com/articles/s41524-018-0128-1
+          - listitem [ref=e370]:
+            - link "Rapid Multiscale Computational Screening for OLED Host Materials" [ref=e371] [cursor=pointer]:
+              - /url: https://www.osti.gov/servlets/purl/1735840
+          - listitem [ref=e372]:
+            - link "JACS exciplex host 연구" [ref=e373] [cursor=pointer]:
+              - /url: https://snu.elsevierpure.com/en/publications/machine-learning-guided-discovery-of-sterically-protected-high-tr/
+          - listitem [ref=e374]:
+            - link "steel property prediction 논문" [ref=e375] [cursor=pointer]:
+              - /url: https://arxiv.org/abs/2603.22738
+          - listitem [ref=e376]:
+            - link "writing-style-audit-harness" [ref=e377] [cursor=pointer]:
+              - /url: ../../.automation/writing-style-audit-harness.md
+          - listitem [ref=e378]:
+            - link "writing-harness" [ref=e379] [cursor=pointer]:
+              - /url: ../../.codex/rules/writing-harness.md
+          - listitem [ref=e380]:
+            - link "editorial-graphics-audit-harness" [ref=e381] [cursor=pointer]:
+              - /url: ../../.automation/editorial-graphics-audit-harness.md
+          - listitem [ref=e382]:
+            - link "visuals-and-image-generation" [ref=e383] [cursor=pointer]:
+              - /url: ../../.codex/rules/visuals-and-image-generation.md
+          - listitem [ref=e384]:
+            - link "Prior Labs TabPFN product page" [ref=e385] [cursor=pointer]:
+              - /url: https://priorlabs.ai/tabpfn
+          - listitem [ref=e386]:
+            - 'link "Nature Communications: Highly stable and efficient copper(I) sensitizer for narrowband red OLEDs" [ref=e387] [cursor=pointer]':
+              - /url: https://www.nature.com/articles/s41467-025-62867-8
+          - listitem [ref=e388]:
+            - link "Prior-Labs/tabpfn_2_5 model card" [ref=e389] [cursor=pointer]:
+              - /url: https://huggingface.co/Prior-Labs/tabpfn_2_5
+          - listitem [ref=e390]:
+            - link "PriorLabs/TabPFN GitHub" [ref=e391] [cursor=pointer]:
+              - /url: https://github.com/PriorLabs/TabPFN
+          - listitem [ref=e392]:
+            - link "TabICL documentation" [ref=e393] [cursor=pointer]:
+              - /url: https://tabicl.readthedocs.io/en/latest/
+          - listitem [ref=e394]:
+            - link "TabICL paper" [ref=e395] [cursor=pointer]:
+              - /url: https://arxiv.org/abs/2502.05564
+          - listitem [ref=e396]:
+            - link "Molecular excited states through a machine learning lens" [ref=e397] [cursor=pointer]:
+              - /url: https://www.nature.com/articles/s41570-021-00278-1
+          - listitem [ref=e398]:
+            - link "처음 참고한 자료 - ChatGPT share capture" [ref=e399] [cursor=pointer]:
+              - /url: ../sources/2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md
+          - listitem [ref=e400]:
+            - link "처음 참고한 자료 - Source note" [ref=e401] [cursor=pointer]:
+              - /url: ../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md
+          - listitem [ref=e402]:
+            - link "처음 참고한 자료 - Research runlog" [ref=e403] [cursor=pointer]:
+              - /url: ../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md
+          - listitem [ref=e404]:
+            - link "문체 참고 - 고등과학원 HORIZON" [ref=e405] [cursor=pointer]:
+              - /url: https://horizon.kias.re.kr/
+          - listitem [ref=e406]:
+            - link "문체 참고 - 최종현학술원 Science Note 과학노트" [ref=e407] [cursor=pointer]:
+              - /url: https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx
+          - listitem [ref=e408]:
+            - link "시각자료 참고 - Quanta Magazine" [ref=e409] [cursor=pointer]:
+              - /url: https://www.quantamagazine.org/
+          - listitem [ref=e410]:
+            - link "시각자료 제작 기록 - figure manifest" [ref=e411] [cursor=pointer]:
+              - /url: ../artifacts/final_review/figure_manifest.md
+          - listitem [ref=e412]:
+            - link "시각자료 후보 - Skywork Image prompt pack" [ref=e413] [cursor=pointer]:
+              - /url: ../skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LGD OLED 투자와 Display Week 2026 OLED 신호 - Memo</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>LGD OLED 투자와 Display Week 2026 OLED 신호 - Memo</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-24 00:16:57</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>7</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-24_lgd-oled-investment-display-week-signals_memo.md">2026-04-24_lgd-oled-investment-display-week-signals_memo.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <h2 id="one-line-take">One-Line Take</h2>
+<p><code>2026-04-24</code> 기준 가장 방어 가능한 해석은 <code>LGD가 blue OLED 양산을 확정했다</code>가 아니라, <code>LGD의 OLED 인프라 투자, OLED 중심 재무 전환, UDC 소재계약 연장, blue OLED 소자 연구, Display Week 2026의 XR/AI/자동차/OLED 신호가 2026-2028 OLED 기술 인프라 경쟁으로 수렴하고 있다</code>는 것이다.</p>
+<h2 id="executive-summary">Executive Summary</h2>
+<ul>
+<li>LG Display는 <code>2026-04-22</code> 이사회에서 <code>KRW 1.106 trillion</code> 규모의 OLED technology infrastructure 투자를 결의했다. 기간은 <code>2026-04-22 ~ 2028-06-30</code>이다.</li>
+<li>LGD의 1Q26 실적은 이 투자의 배경을 설명한다. OLED 매출 비중은 <code>60%</code>, 면적당 ASP는 YoY <code>55%</code> 상승했고, TV/IT/mobile-auto가 아니라 OLED 중심의 포트폴리오 전환이 실적 논리의 핵심이다.</li>
+<li>그러나 1Q26 순손실은 <code>KRW 576B</code>로 남아 있다. 따라서 이번 투자는 성장 신호이면서 동시에 cash return/yield/customer timing 리스크를 동반한다.</li>
+<li>2025년 LGD의 blue phosphorescent OLED 발표는 중요한 기술 신호다. 하지만 공개 구조는 <code>blue fluorescence + blue phosphorescence</code>의 hybrid two-stack Tandem이며, direct pure-blue PHOLED commercial stack 완료라고 읽으면 과장이다.</li>
+<li>UDC-LGD 장기계약 연장은 OLED material/license supply chain의 안정성 신호다. 특정 blue emitter qualification 완료를 뜻한다고 단정할 근거는 공개되어 있지 않다.</li>
+<li>Fraunhofer IPMS의 Display Week 2026 2K OLED microdisplay는 microdisplay/backplane readiness 신호다. <code>2048 x 2048</code>, <code>1.07 inch</code>, <code>9.3 um RGB stripe</code>, stacked OLED control, LVDS, up to <code>120 Hz</code> 같은 구체 지표가 있어 XR/near-eye 축에서 의미가 크다.</li>
+<li>Display Week 2026은 <code>AI for OLED</code>, emissive materials, XR, automotive, test/measure가 만나는 due diligence checkpoint다. 관전 포인트는 발표 여부가 아니라 lifetime, luminance condition, roll-off, panel size, yield/processability, customer use-case boundary다.</li>
+</ul>
+<h2 id="signal-taxonomy">Signal Taxonomy</h2>
+<table>
+<thead>
+<tr>
+<th>신호</th>
+<th>근거</th>
+<th>읽을 수 있는 것</th>
+<th>읽으면 안 되는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LGD 1.106조 원 투자</td>
+<td>SEC 6-K</td>
+<td>2026-2028 OLED technology infrastructure 강화</td>
+<td>blue PHOLED 양산 라인 확정</td>
+</tr>
+<tr>
+<td>LGD 1Q26 OLED 60%</td>
+<td>LGD 공식 실적</td>
+<td>OLED 중심 포트폴리오 전환의 재무적 배경</td>
+<td>수익성 리스크 해소</td>
+</tr>
+<tr>
+<td>2025 blue phosphorescent OLED</td>
+<td>LGD PR</td>
+<td>hybrid two-stack line-level verification</td>
+<td>all-blue direct PHOLED 상용화 완료</td>
+</tr>
+<tr>
+<td>UDC-LGD 계약 연장</td>
+<td>UDC 공식 발표</td>
+<td>PHOLED 소재/라이선스 공급망 안정성</td>
+<td>blue material qualification complete</td>
+</tr>
+<tr>
+<td>Fraunhofer 2K OLED microdisplay</td>
+<td>Fraunhofer IPMS</td>
+<td>XR/near-eye microdisplay prototype/evaluation readiness</td>
+<td>LGD 투자와 직접 연결된 blue emitter 증거</td>
+</tr>
+<tr>
+<td>Display Week 2026</td>
+<td>SID 공식 사이트</td>
+<td>OLED/XR/AI/automotive/test-measure 교차 검증 무대</td>
+<td>전시 자체만으로 상용화 확정</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trend-read">Trend Read</h2>
+<p>OLED 동향은 <code>패널 성능 개선</code> 하나로 보기 어렵다. 2026년 신호는 네 개 층으로 갈라진다.</p>
+<ol>
+<li><strong>제조 인프라:</strong> LGD는 LCD 축소 이후 OLED 비중을 높였고, 2026-2028 인프라 투자를 결의했다.</li>
+<li><strong>스택/소자:</strong> hybrid two-stack blue PHOLED, PSF, PEP, Eu(II) emitter 등 blue 효율/수명 병목을 줄이는 여러 접근이 동시에 움직인다.</li>
+<li><strong>응용 시장:</strong> TV만이 아니라 IT, monitor, mobile, automotive, XR/near-eye로 제품군이 확장된다.</li>
+<li><strong>제조 지능화:</strong> Display Week 2026은 <code>AI for OLED</code>, module design, imaging/computer vision, test/measure를 전면에 둔다. 이는 소재 탐색뿐 아니라 수율, 검사, calibration, defect detection과 연결된다.</li>
+</ol>
+<h2 id="practical-implications">Practical Implications</h2>
+<ul>
+<li>R&amp;D는 <code>blue emitter material</code>만 따로 보면 부족하다. stack architecture, optical cavity, backplane drive, encapsulation, thermal, test/measure까지 한 묶음으로 봐야 한다.</li>
+<li>LGD 투자 분석은 capex 규모보다 <code>무엇을 병목으로 보는가</code>가 중요하다. 공개 공시만으로는 라인 세대나 고객사를 알 수 없으므로, Display Week/실적콜/공급망 보도에서 추가 근거를 추적해야 한다.</li>
+<li>Display Week 현장 체크리스트는 기술 수치 중심이어야 한다. <code>LT95/LT90 조건</code>, <code>initial luminance</code>, <code>panel size</code>, <code>roll-off</code>, <code>burn-in</code>, <code>uniformity</code>, <code>processability</code>, <code>evaluation kit availability</code>가 핵심이다.</li>
+<li>보고서/슬라이드에서는 <code>strong signal, weak attribution</code> 원칙을 유지해야 한다. 즉, OLED 인프라와 blue OLED 연구가 같은 방향으로 수렴한다는 점은 강하지만, 특정 투자와 특정 blue stack을 직접 연결하는 귀속은 약하다.</li>
+</ul>
+<h2 id="next-watchlist">Next Watchlist</h2>
+<ul>
+<li><code>2026-05-03 ~ 2026-05-08</code> Display Week 2026에서 LGD/UDC/Fraunhofer/소재업체가 공개하는 lifetime, luminance, panel-size, use-case 조건.</li>
+<li>LGD의 2026년 CAPEX 집행 세부 보도: small/mid IT OLED, automotive, monitor, Paju/Gumi 라인 여부.</li>
+<li>UDC의 2026년 실적콜에서 blue PHOLED commercialization timeline 관련 표현 변화.</li>
+<li>Fraunhofer IPMS P.266 poster 이후 evaluation kit/partner/customer-specific adaptation 언급.</li>
+<li><code>AI for OLED</code>가 소재 탐색인지 공정/검사/수율 optimization인지 세부 분류.</li>
+</ul>
+<h2 id="external-references">External References</h2>
+<ul>
+<li><a href="https://www.sec.gov/Archives/edgar/data/1290109/000119312526168519/new_facility_investment_.htm">LG Display SEC 6-K, New Facility Investment</a></li>
+<li><a href="https://www.lgdisplay.com/eng/company/media-center/latest-news?contentId=5526">LG Display Q1 2026 Results</a></li>
+<li><a href="https://www.lgcorp.com/media/release/29813">LG Display 2025 Earnings Results</a></li>
+<li><a href="https://www.prnewswire.com/news-releases/lg-display-becomes-worlds-first-to-verify-commercialization-of-blue-phosphorescent-oled-panels-302442671.html">LG Display blue phosphorescent OLED PR</a></li>
+<li><a href="https://ir.oled.com/newsroom/press-releases/press-release-details/2026/LG-Display-and-Universal-Display-Corporation-Strengthen-Two-Decade-OLED-Partnership-with-Extended-Long-Term-Agreements/default.aspx">UDC-LG Display agreement extension</a></li>
+<li><a href="https://www.displayweek.org/">Display Week 2026</a></li>
+<li><a href="https://www.displayweek.org/wp-content/uploads/2026/02/DSWK26_Press_Release_1.pdf">Display Week 2026 press release PDF</a></li>
+<li><a href="https://www.ipms.fraunhofer.de/en/press-media/press/2026/2K-OLED-microdisplay.html">Fraunhofer IPMS 2K OLED microdisplay</a></li>
+<li><a href="https://pubs.rsc.org/en/content/articlelanding/2026/tc/d5tc04353k/unauth">RSC J. Mater. Chem. C 2026 PSF OLED paper</a></li>
+<li><a href="https://www.nature.com/articles/s41566-025-01679-0">Nature Photonics 2025 tandem PHOLED PEP paper</a></li>
+<li><a href="https://arxiv.org/abs/2604.06476">arXiv 2604.06476 Eu(II) blue OLED preprint</a></li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-24 00:16:21
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#one-line-take">One-Line Take</a></li>
+<li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#signal-taxonomy">Signal Taxonomy</a></li>
+<li><a href="#trend-read">Trend Read</a></li>
+<li><a href="#practical-implications">Practical Implications</a></li>
+<li><a href="#next-watchlist">Next Watchlist</a></li>
+<li><a href="#external-references">External References</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://www.sec.gov/Archives/edgar/data/1290109/000119312526168519/new_facility_investment_.htm" target="_blank" rel="noreferrer">LG Display SEC 6-K, New Facility Investment</a></li>
+<li><a href="https://www.lgdisplay.com/eng/company/media-center/latest-news?contentId=5526" target="_blank" rel="noreferrer">LG Display Q1 2026 Results</a></li>
+<li><a href="https://www.lgcorp.com/media/release/29813" target="_blank" rel="noreferrer">LG Display 2025 Earnings Results</a></li>
+<li><a href="https://www.prnewswire.com/news-releases/lg-display-becomes-worlds-first-to-verify-commercialization-of-blue-phosphorescent-oled-panels-302442671.html" target="_blank" rel="noreferrer">LG Display blue phosphorescent OLED PR</a></li>
+<li><a href="https://ir.oled.com/newsroom/press-releases/press-release-details/2026/LG-Display-and-Universal-Display-Corporation-Strengthen-Two-Decade-OLED-Partnership-with-Extended-Long-Term-Agreements/default.aspx" target="_blank" rel="noreferrer">UDC-LG Display agreement extension</a></li>
+<li><a href="https://www.displayweek.org/" target="_blank" rel="noreferrer">Display Week 2026</a></li>
+<li><a href="https://www.displayweek.org/wp-content/uploads/2026/02/DSWK26_Press_Release_1.pdf" target="_blank" rel="noreferrer">Display Week 2026 press release PDF</a></li>
+<li><a href="https://www.ipms.fraunhofer.de/en/press-media/press/2026/2K-OLED-microdisplay.html" target="_blank" rel="noreferrer">Fraunhofer IPMS 2K OLED microdisplay</a></li>
+<li><a href="https://pubs.rsc.org/en/content/articlelanding/2026/tc/d5tc04353k/unauth" target="_blank" rel="noreferrer">RSC J. Mater. Chem. C 2026 PSF OLED paper</a></li>
+<li><a href="https://www.nature.com/articles/s41566-025-01679-0" target="_blank" rel="noreferrer">Nature Photonics 2025 tandem PHOLED PEP paper</a></li>
+<li><a href="https://arxiv.org/abs/2604.06476" target="_blank" rel="noreferrer">arXiv 2604.06476 Eu(II) blue OLED preprint</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

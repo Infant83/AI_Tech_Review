@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026-04-25 AI Updates Weekly Deep Research</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>2026-04-25 AI Updates Weekly Deep Research</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-25 05:10:54</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>33</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-25_ai-updates-weekly_deepresearch.md">2026-04-25_ai-updates-weekly_deepresearch.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+        <section class="summary-band" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">핵심 신호</h2>
+          <ul class="summary-list">
+            <li>이번 `AI Updates Weekly` 2부작의 가장 중요한 신호는 `AI 제품의 무게중심이 모델 성능 비교에서 agent operating layer로 이동 중`이라는 점이다.</li>
+<li>Part 1은 사용자가 직접 보게 되는 `작업 인터페이스`와 `산출물 표면`의 변화를 강조하고, Part 2는 그 뒤를 받치는 `에이전트 런타임`, `도메인 특화 모델`, `MLOps`, `compute economics`를 강조한다.</li>
+<li>공식 확인이 가능한 핵심 변화는 다음과 같다:</li>
+<li>반대로, valuation, quota motive, layoff multiplier, 개별 인플루언서의 성공 사례는 `보조 신호`로 다뤄야지 주 결론을 구성하면 안 된다.</li>
+          </ul>
+        </section>
+        
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>Date: 2026-04-25</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>이번 <code>AI Updates Weekly</code> 2부작의 가장 중요한 신호는 <code>AI 제품의 무게중심이 모델 성능 비교에서 agent operating layer로 이동 중</code>이라는 점이다.</li>
+<li>Part 1은 사용자가 직접 보게 되는 <code>작업 인터페이스</code>와 <code>산출물 표면</code>의 변화를 강조하고, Part 2는 그 뒤를 받치는 <code>에이전트 런타임</code>, <code>도메인 특화 모델</code>, <code>MLOps</code>, <code>compute economics</code>를 강조한다.</li>
+<li>공식 확인이 가능한 핵심 변화는 다음과 같다:</li>
+<li><code>GPT-5.5</code></li>
+<li><code>DeepSeek V4 Preview</code></li>
+<li><code>Cursor 3</code></li>
+<li><code>ChatGPT Images 2.0</code></li>
+<li><code>Deep Research Max</code></li>
+<li><code>Agents SDK</code> 실행 하네스 확장</li>
+<li><code>GPT-Rosalind</code></li>
+<li><code>GPT-5.4-Cyber</code></li>
+<li>Apple CEO transition</li>
+<li><code>Qwen3.6-Max-Preview</code></li>
+<li>반대로, valuation, quota motive, layoff multiplier, 개별 인플루언서의 성공 사례는 <code>보조 신호</code>로 다뤄야지 주 결론을 구성하면 안 된다.</li>
+</ul>
+<h2 id="2">이번 회차를 왜 2부작으로 봐야 하나</h2>
+<p>이번 주 업데이트를 한 편의 긴 뉴스 영상으로 볼 수도 있다. 하지만 실제로는 두 개의 층이 섞여 있다.</p>
+<h3 id="part-1">Part 1이 보여준 것</h3>
+<ul>
+<li>최신 모델 출시와 leaderboard 경쟁</li>
+<li>AI-first IDE에서 <code>agent-first workspace</code>로의 전환</li>
+<li>브라우저 기반 SaaS 위에 <code>client-side agent</code>가 얹히는 구조</li>
+<li>이미지/디자인/슬라이드 생성처럼 멀티모달 work product의 부상</li>
+<li>에이전트 보안 리스크의 현실화</li>
+</ul>
+<h3 id="part-2">Part 2가 보여준 것</h3>
+<ul>
+<li>오픈소스 agent runtime과 생태계 확장</li>
+<li>research agent, cyber agent, life sciences model 같은 특화형 agent/model</li>
+<li>compute 공급과 수요의 제약</li>
+<li>model registry, experiment tracking, synthetic data 같은 운영 보조층</li>
+</ul>
+<p>즉, 이 2부작은 <code>제품 표면</code>과 <code>운영 기반</code>을 나눠 보여준 셈이다.</p>
+<h2 id="confirmed-signals">Confirmed signals</h2>
+<h2 id="1-gpt-55-agentic-work">1. GPT-5.5는 단순 모델 업데이트가 아니라 agentic work 강화를 전면에 내세운 릴리스다</h2>
+<p>OpenAI는 <code>2026-04-23</code> <code>GPT-5.5</code>를 공개했고, 제품 설명에서 agentic coding, computer use, knowledge work, early scientific research를 핵심 개선점으로 전면에 뒀다. 또한 <code>2026-04-24</code> API 제공까지 업데이트했다. 이건 이번 영상의 톤과 정확히 맞물린다. 중요한 것은 단순히 더 똑똑하다는 표현이 아니라, <code>messy, multi-part task</code>를 스스로 계획하고 도구를 쓰며 끝까지 진행할 수 있다는 framing이다.</p>
+<p>이건 weekly noise가 아니라 구조 변화다. 모델이 좋은지 아닌지보다, 이제 공급자가 <code>컴퓨터에서 일을 끝내는 능력</code>을 앞세운다는 점이 더 중요하다.</p>
+<h2 id="2-cursor-3-ide-agent-workspace">2. Cursor 3는 IDE를 agent workspace로 재정의한다</h2>
+<p>Cursor는 <code>2026-04-02</code> <code>Cursor 3</code>를 <code>a unified workspace for building software with agents</code>라고 소개했다. 또한 병렬 agent 실행, local/cloud handoff, artifacts 기반 검토 surface를 내세운다.</p>
+<p>이건 영상의 과장이 아니다. <code>코드 창</code>보다 <code>agent 창</code>이 앞에 오는 인터페이스 재배치가 실제 제품 메시지로 굳어지고 있다.</p>
+<p>실무적으로 이건 큰 의미가 있다.</p>
+<ul>
+<li>개발자는 line-by-line 편집자에서</li>
+<li>작업 정의자, 검토자, 병렬 agent 조정자</li>
+</ul>
+<p>로 역할이 이동한다.</p>
+<h2 id="3-deepseek-v4-preview-open-weight-agent">3. DeepSeek V4 Preview는 open-weight 진영도 장문맥 agent 경쟁에 직접 뛰어들었음을 보여준다</h2>
+<p>DeepSeek는 <code>2026-04-24</code> <code>V4 Preview</code>를 공식 공개했고:</p>
+<ul>
+<li><code>V4-Pro: 1.6T total / 49B active</code></li>
+<li><code>V4-Flash: 284B total / 13B active</code></li>
+<li>default <code>1M</code> context</li>
+<li>official agent integration messaging</li>
+</ul>
+<p>를 전면에 둔다.</p>
+<p>이 포인트는 중요하다. 이제 frontier closed model만 agent-long-context narrative를 가져가는 구도가 아니다. open-weight 진영도 <code>장문맥 + agent coding + cost efficiency</code> 묶음을 전면에 내세우고 있다.</p>
+<h2 id="4-chatgpt-images-20">4. ChatGPT Images 2.0은 멀티모달 산출물 생성이 메인 제품면으로 올라왔다는 신호다</h2>
+<p>OpenAI는 <code>2026-04-21</code> <code>ChatGPT Images 2.0</code>을 공식 발표했다. Part 1이 이를 이미지 생성 업그레이드 정도로 다뤘지만, 실제 의미는 더 크다.</p>
+<p>이미지 생성이 이제:</p>
+<ul>
+<li>제품 mockup</li>
+<li>slide-like output</li>
+<li>infographic</li>
+<li>map</li>
+<li>social content</li>
+</ul>
+<p>로 업무 흐름 안에 들어간다는 뜻이다.</p>
+<p>즉, 에이전트가 생성하는 결과물은 더 이상 텍스트와 코드에 한정되지 않는다.</p>
+<h2 id="5-apple-ceo-transition-ai">5. Apple CEO transition은 AI 경쟁이 제품면을 넘어 리더십/전략 레벨로 올라왔음을 보여준다</h2>
+<p>Apple은 <code>2026-04-20</code> Tim Cook이 executive chairman으로, John Ternus가 <code>2026-09-01</code>부터 CEO가 된다고 발표했다.</p>
+<p>이건 weekly AI rumor가 아니라 공식 확정 이벤트다. 영상은 이를 <code>Apple의 AI 지연 압박</code>과 연결해 해석했는데, 그 해석 자체는 commentary다. 다만 사실 관계 차원에서는 <code>John Ternus transition</code>은 confirmed signal이다.</p>
+<p>의미는 이렇다. 이제 AI는 제품 기능 하나가 아니라, 기업 리더십 평가축 자체가 되었다.</p>
+<h2 id="6-google-deepmind-research-agent">6. Google DeepMind는 research agent를 별도 제품군으로 밀고 있다</h2>
+<p>Google은 <code>2026-04-21</code> <code>Deep Research</code>와 <code>Deep Research Max</code>를 발표했고, <code>Gemini 3.1 Pro</code>, <code>MCP support</code>, native visualizations, long-horizon research workflows를 공식 메시지로 썼다.</p>
+<p>이건 Part 2가 보여준 핵심 변화다. research는 더 이상 검색+요약의 조합이 아니라, 독립된 agent workflow category가 되고 있다.</p>
+<h2 id="7-openai-agents-sdk">7. OpenAI는 Agents SDK를 하네스/샌드박스/지시문 계층까지 명시적으로 확장했다</h2>
+<p>OpenAI는 <code>2026-04-15</code> Agents SDK에:</p>
+<ul>
+<li>model-native harness</li>
+<li>sandbox execution</li>
+<li>MCP</li>
+<li>skills</li>
+<li><code>AGENTS.md</code></li>
+<li>shell / apply patch style file-work primitives</li>
+</ul>
+<p>를 묶는 방향을 발표했다.</p>
+<p>이건 이번 영상 전체를 관통하는 중요한 확인 포인트다. agent ecosystem의 경쟁은 단순 모델 API가 아니라:</p>
+<ul>
+<li>하네스</li>
+<li>툴 프로토콜</li>
+<li>memory</li>
+<li>filesystem</li>
+<li>sandbox</li>
+<li>instruction layer</li>
+</ul>
+<p>를 누가 더 자연스럽게 제공하느냐로 가고 있다.</p>
+<h2 id="8-gpt-rosalind-gpt-54-cyber-domain-specific-frontier-models">8. GPT-Rosalind와 GPT-5.4-Cyber는 domain-specific frontier models 확대를 보여준다</h2>
+<p>OpenAI는 <code>2026-04-16</code> <code>GPT-Rosalind</code>를 biology, drug discovery, translational medicine용으로, <code>2026-04-14</code> <code>GPT-5.4-Cyber</code>를 verified defenders 대상 cyber-permissive variant로 공개했다.</p>
+<p>즉, frontier vendor는 이제 범용 모델 하나로 모든 문제를 덮기보다, 높은 가치의 vertical workflow에 맞춘 특화 모델을 점점 전면에 내세우고 있다.</p>
+<p>이건 이번 Part 2의 가장 중요한 장기 신호 중 하나다.</p>
+<h2 id="9-anthropic-compute-signal">9. Anthropic compute signal은 단순 루머 수준을 넘어선다</h2>
+<p>Anthropic은 <code>2026-04-06</code> Google/Broadcom compute partnership과 함께 <code>run-rate revenue has now surpassed $30 billion</code>을 공식 언급했다.</p>
+<p>영상이 말한 <code>demand-rich, compute-starved</code> 해설을 그대로 사실로 받아들일 수는 없다. 하지만 최소한:</p>
+<ul>
+<li>수요 증가가 매우 빠르며</li>
+<li>compute capacity가 전략 핵심이라는 점</li>
+</ul>
+<p>은 공식 자료로도 뒷받침된다.</p>
+<h2 id="10-qwen36-max-preview-kimi-k26-agentcoding">10. Qwen3.6-Max-Preview와 Kimi K2.6은 중국 모델 진영이 agent/coding 면에서 더 공격적으로 전진 중임을 보여준다</h2>
+<p>Alibaba Cloud는 <code>2026-04-22</code> <code>Qwen3.6-Max-Preview</code>를 공개했고, agentic coding, world knowledge, instruction following improvements를 강조한다. Moonshot AI의 공식 사이트도 <code>Kimi K2.6</code>를 coding/agent 성격이 강한 주력 모델로 전면 배치한다.</p>
+<p>즉, open-weight / regional players는 더 이상 대체재가 아니라, frontier stack의 실질적 경쟁자다.</p>
+<h2 id="signals-that-need-caution">Signals that need caution</h2>
+<h2 id="1-spacex-cursor-deal-specifics">1. SpaceX-Cursor deal specifics</h2>
+<p>영상과 슬라이드에는 SpaceX와 Cursor의 파트너십 및 <code>later acquisition option</code> 구조가 제시되지만, 이번 패키지 작성 기준 직접 확인한 1차 공식 출처는 확보하지 않았다. 따라서 전략 해석의 재료로는 쓸 수 있어도 확정 사실처럼 쓰면 안 된다.</p>
+<h2 id="2-anthropic-quota-motive">2. Anthropic quota motive</h2>
+<p><code>subscription quotas</code>나 <code>stealth price hike</code>는 plausible한 해석일 수는 있으나, 공식 문서가 그렇게 표현하지는 않는다. 이번 리뷰에서는 <code>compute and demand constraints are real</code>까지만 확정적으로 읽는 것이 맞다.</p>
+<h2 id="3-ai-layoffs-x9">3. AI layoffs x9</h2>
+<p>노동시장 재편 자체는 강한 추세지만, <code>x9</code>, <code>340%</code> 같은 수치는 출처 검증 없이 결론 문장으로 쓰기엔 위험하다. weekly video signal로는 남기되, formal report conclusion에는 직접 넣지 않는 편이 안전하다.</p>
+<h2 id="4-influencer-workflow-case-studies">4. Influencer workflow case studies</h2>
+<p>Sabrina Ramanov / Blotato / <code>update the skill</code> 같은 사례는 실무 팁으로는 흥미롭다. 하지만 공식 플랫폼 capability와 같은 등급의 신호는 아니다.</p>
+<h2 id="5-openmythos-leworldmodel">5. OpenMythos / LeWorldModel</h2>
+<p>흥미로운 실험 및 연구 포인트이지만, 이번 주 핵심 구조 변화의 중심축으로 놓기엔 아직 약하다. <code>interesting frontier exploration</code> 정도로 두는 편이 맞다.</p>
+<h2 id="what-the-two-part-split-really-means">What the two-part split really means</h2>
+<p>이번 2부작은 다음 두 층의 동시 진화를 보여준다.</p>
+<h2 id="layer-1-user-facing-work-surface">Layer 1. User-facing work surface</h2>
+<ul>
+<li>Cursor 3</li>
+<li>ChatGPT Images 2.0</li>
+<li>Claude Design</li>
+<li>client-side agents</li>
+<li>multimodal artifacts</li>
+</ul>
+<p>여기서는 사용자가 직접 체감하는 변화가 발생한다. 작업 방식 자체가 바뀐다.</p>
+<h2 id="layer-2-agent-operating-layer">Layer 2. Agent operating layer</h2>
+<ul>
+<li>Agents SDK</li>
+<li>Deep Research Max</li>
+<li>GPT-5.4-Cyber</li>
+<li>GPT-Rosalind</li>
+<li>OpenClaw / Hermes</li>
+<li>DeepSeek V4</li>
+<li>Qwen / Kimi</li>
+<li>MLOps</li>
+<li>compute constraints</li>
+</ul>
+<p>여기서는 agent가 실제로 지속적으로 일을 하기 위한 기반이 깔린다.</p>
+<p>이 둘이 동시에 움직이기 때문에 weekly update가 2부작으로 갈라진 것이다. 양이 많아서가 아니라, 변화의 성격이 달라졌다.</p>
+<h2 id="operational-implications-for-engineering-teams">Operational implications for engineering teams</h2>
+<h2 id="1-editor-centric-agent-centric">1. 개발 환경을 <code>editor-centric</code>에서 <code>agent-centric</code>로 재설계해야 한다</h2>
+<p>중요해지는 것은:</p>
+<ul>
+<li>task decomposition</li>
+<li>logs</li>
+<li>artifacts</li>
+<li>review checkpoints</li>
+<li>cost visibility</li>
+<li>permission boundaries</li>
+</ul>
+<p>이다. 단순히 좋은 모델을 붙이는 것만으로는 부족하다.</p>
+<h2 id="2-output-workflow">2. 멀티모달 output을 기본 workflow로 봐야 한다</h2>
+<p>문서, 시각물, 슬라이드, 리포트, 코드가 한 흐름 안에서 오간다. text-only workflow 가정은 점점 현실과 어긋난다.</p>
+<h2 id="3-agent-security">3. agent security는 초기에 넣어야 한다</h2>
+<p>DeepMind의 간접 prompt injection 경고는 weekly curiosity가 아니다. 외부 문서, 웹, 메일, 이미지, PDF를 읽는 agent는 본질적으로 오염된 입력에 노출된다.</p>
+<p>실무에서는 다음을 기본으로 둬야 한다.</p>
+<ul>
+<li>untrusted content 분리</li>
+<li>tool permission 최소화</li>
+<li>filesystem / credential 분리</li>
+<li>high-risk action confirmation</li>
+<li>logs and replayability</li>
+</ul>
+<h2 id="4-domain-specific-model-evaluation">4. domain-specific model evaluation이 필요하다</h2>
+<p>범용 모델 leaderboard만 보면 실제 value creation을 놓친다. 생명과학, 보안, research 같은 vertical 영역은 별도 모델이 더 중요해질 수 있다.</p>
+<h2 id="5-compute-economics-quota">5. compute economics와 quota는 제품 전략의 일부다</h2>
+<p>사용자는 capability만 보는 게 아니라:</p>
+<ul>
+<li>latency</li>
+<li>availability</li>
+<li>quota</li>
+<li>deployment surface</li>
+<li>safety access tier</li>
+</ul>
+<p>를 함께 경험한다. 이번 주는 이 현실이 더 노골적으로 드러난 회차다.</p>
+<h2 id="recommended-reading-of-this-weekly-update">Recommended reading of this weekly update</h2>
+<p>이번 2부작을 한 문장으로 정리하면:</p>
+<p><code>2026년 4월의 AI 경쟁은 더 좋은 모델 경쟁을 넘어서, 에이전트를 실제 업무 환경에서 안전하게 돌리고 검토할 수 있는 운영면 경쟁으로 이동했다.</code></p>
+<p>그리고 더 실무적으로는 이렇게 읽는 편이 좋다.</p>
+<p><code>Part 1은 사용자의 작업면이 바뀌는 장면이고, Part 2는 그 작업면을 가능하게 하는 런타임과 경제 조건이 바뀌는 장면이다.</code></p>
+<h2 id="promotion-candidates-for-separate-follow-up-research">Promotion candidates for separate follow-up research</h2>
+<ol>
+<li><code>Cursor 3 / agent-first IDE / cloud agent workflow</code></li>
+<li><code>DeepSeek V4 vs GPT-5.5 vs Qwen3.6 vs Kimi K2.6</code></li>
+<li><code>Deep Research Max / research agents / MCP data access</code></li>
+<li><code>GPT-Rosalind / GPT-5.4-Cyber / domain-specific frontier models</code></li>
+<li><code>Indirect prompt injection and agent security</code></li>
+</ol>
+<h2 id="external-references">External References</h2>
+<ul>
+<li>Part 1 video: https://www.youtube.com/watch?v=XDASSrE4348</li>
+<li>Part 2 video: https://www.youtube.com/watch?v=oVDfoWer_M4</li>
+<li>DeepSeek V4 Preview: https://api-docs.deepseek.com/news/news260424</li>
+<li>GPT-5.5: https://openai.com/index/introducing-gpt-5-5/</li>
+<li>Cursor 3: https://cursor.com/blog/cursor-3</li>
+<li>Cursor third-era essay: https://cursor.com/blog/third-era</li>
+<li>ChatGPT Images 2.0: https://openai.com/index/introducing-chatgpt-images-2-0/</li>
+<li>Apple CEO transition: https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/</li>
+<li>Deep Research Max: https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/</li>
+<li>Agents SDK update: https://openai.com/index/the-next-evolution-of-the-agents-sdk/</li>
+<li>GPT-Rosalind: https://openai.com/index/introducing-gpt-rosalind/</li>
+<li>GPT-5.4-Cyber: https://openai.com/index/scaling-trusted-access-for-cyber-defense/</li>
+<li>Anthropic compute partnership: https://www.anthropic.com/news/google-broadcom-partnership-compute</li>
+<li>DeepMind indirect prompt injection safeguards: https://deepmind.google/blog/advancing-geminis-security-safeguards/</li>
+<li>OpenClaw: https://github.com/openclaw/openclaw</li>
+<li>Hermes Agent: https://github.com/NousResearch/hermes-agent</li>
+<li>Qwen3.6-Max-Preview: https://www.alibabacloud.com/blog/603055</li>
+<li>Moonshot AI: https://www.moonshot.ai/</li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-25 05:10:35
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#2">이번 회차를 왜 2부작으로 봐야 하나</a><ul>
+<li><a href="#part-1">Part 1이 보여준 것</a></li>
+<li><a href="#part-2">Part 2가 보여준 것</a></li>
+</ul>
+</li>
+<li><a href="#confirmed-signals">Confirmed signals</a></li>
+<li><a href="#1-gpt-55-agentic-work">1. GPT-5.5는 단순 모델 업데이트가 아니라 agentic work 강화를 전면에 내세운 릴리스다</a></li>
+<li><a href="#2-cursor-3-ide-agent-workspace">2. Cursor 3는 IDE를 agent workspace로 재정의한다</a></li>
+<li><a href="#3-deepseek-v4-preview-open-weight-agent">3. DeepSeek V4 Preview는 open-weight 진영도 장문맥 agent 경쟁에 직접 뛰어들었음을 보여준다</a></li>
+<li><a href="#4-chatgpt-images-20">4. ChatGPT Images 2.0은 멀티모달 산출물 생성이 메인 제품면으로 올라왔다는 신호다</a></li>
+<li><a href="#5-apple-ceo-transition-ai">5. Apple CEO transition은 AI 경쟁이 제품면을 넘어 리더십/전략 레벨로 올라왔음을 보여준다</a></li>
+<li><a href="#6-google-deepmind-research-agent">6. Google DeepMind는 research agent를 별도 제품군으로 밀고 있다</a></li>
+<li><a href="#7-openai-agents-sdk">7. OpenAI는 Agents SDK를 하네스/샌드박스/지시문 계층까지 명시적으로 확장했다</a></li>
+<li><a href="#8-gpt-rosalind-gpt-54-cyber-domain-specific-frontier-models">8. GPT-Rosalind와 GPT-5.4-Cyber는 domain-specific frontier models 확대를 보여준다</a></li>
+<li><a href="#9-anthropic-compute-signal">9. Anthropic compute signal은 단순 루머 수준을 넘어선다</a></li>
+<li><a href="#10-qwen36-max-preview-kimi-k26-agentcoding">10. Qwen3.6-Max-Preview와 Kimi K2.6은 중국 모델 진영이 agent/coding 면에서 더 공격적으로 전진 중임을 보여준다</a></li>
+<li><a href="#signals-that-need-caution">Signals that need caution</a></li>
+<li><a href="#1-spacex-cursor-deal-specifics">1. SpaceX-Cursor deal specifics</a></li>
+<li><a href="#2-anthropic-quota-motive">2. Anthropic quota motive</a></li>
+<li><a href="#3-ai-layoffs-x9">3. AI layoffs x9</a></li>
+<li><a href="#4-influencer-workflow-case-studies">4. Influencer workflow case studies</a></li>
+<li><a href="#5-openmythos-leworldmodel">5. OpenMythos / LeWorldModel</a></li>
+<li><a href="#what-the-two-part-split-really-means">What the two-part split really means</a></li>
+<li><a href="#layer-1-user-facing-work-surface">Layer 1. User-facing work surface</a></li>
+<li><a href="#layer-2-agent-operating-layer">Layer 2. Agent operating layer</a></li>
+<li><a href="#operational-implications-for-engineering-teams">Operational implications for engineering teams</a></li>
+<li><a href="#1-editor-centric-agent-centric">1. 개발 환경을 editor-centric에서 agent-centric로 재설계해야 한다</a></li>
+<li><a href="#2-output-workflow">2. 멀티모달 output을 기본 workflow로 봐야 한다</a></li>
+<li><a href="#3-agent-security">3. agent security는 초기에 넣어야 한다</a></li>
+<li><a href="#4-domain-specific-model-evaluation">4. domain-specific model evaluation이 필요하다</a></li>
+<li><a href="#5-compute-economics-quota">5. compute economics와 quota는 제품 전략의 일부다</a></li>
+<li><a href="#recommended-reading-of-this-weekly-update">Recommended reading of this weekly update</a></li>
+<li><a href="#promotion-candidates-for-separate-follow-up-research">Promotion candidates for separate follow-up research</a></li>
+<li><a href="#external-references">External References</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://www.youtube.com/watch?v=XDASSrE4348" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+<li><a href="https://www.youtube.com/watch?v=oVDfoWer_M4" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+<li><a href="https://api-docs.deepseek.com/news/news260424" target="_blank" rel="noreferrer">api-docs.deepseek.com</a></li>
+<li><a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://cursor.com/blog/cursor-3" target="_blank" rel="noreferrer">cursor.com</a></li>
+<li><a href="https://cursor.com/blog/third-era" target="_blank" rel="noreferrer">cursor.com</a></li>
+<li><a href="https://openai.com/index/introducing-chatgpt-images-2-0/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://www.apple.com/newsroom/2026/04/tim-cook-to-become-apple-executive-chairman-john-ternus-to-become-apple-ceo/" target="_blank" rel="noreferrer">www.apple.com</a></li>
+<li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/next-generation-gemini-deep-research/" target="_blank" rel="noreferrer">blog.google</a></li>
+<li><a href="https://openai.com/index/the-next-evolution-of-the-agents-sdk/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://openai.com/index/introducing-gpt-rosalind/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://openai.com/index/scaling-trusted-access-for-cyber-defense/" target="_blank" rel="noreferrer">openai.com</a></li>
+<li><a href="https://www.anthropic.com/news/google-broadcom-partnership-compute" target="_blank" rel="noreferrer">www.anthropic.com</a></li>
+<li><a href="https://deepmind.google/blog/advancing-geminis-security-safeguards/" target="_blank" rel="noreferrer">deepmind.google</a></li>
+<li><a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">github.com</a></li>
+<li><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">github.com</a></li>
+<li><a href="https://www.alibabacloud.com/blog/603055" target="_blank" rel="noreferrer">www.alibabacloud.com</a></li>
+<li><a href="https://www.moonshot.ai/" target="_blank" rel="noreferrer">www.moonshot.ai</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">AI 과학자 검증 루프</title>
+  <desc id="desc">회사 문제를 문제 카드, 데이터 패키지, 에이전트 워크벤치, 평가 함수, 실험 실행, 의사결정 로그로 연결하는 AI 과학자 활용 흐름도</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8f4; }
+      .title { font: 700 34px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .subtitle { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #424242; }
+      .label { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .body { font: 400 15px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 400 13px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .box { stroke-width: 2; rx: 10; }
+      .arrow { stroke: #333; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+      .lane { fill: #ffffff; stroke: #d7d9d2; stroke-width: 1.5; rx: 12; }
+      .guard { fill: #fff5e8; stroke: #d68b2d; stroke-width: 2; rx: 10; }
+      .onprem { fill: #e9f5ef; stroke: #2f8f65; }
+      .service { fill: #eaf0fb; stroke: #4c75b8; }
+      .eval { fill: #f4eefa; stroke: #7b52a3; }
+      .human { fill: #f9eeee; stroke: #b55353; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text x="70" y="70" class="title">AI 과학자를 우리 문제의 실행 파트너로 쓰는 검증 루프</text>
+  <text x="70" y="104" class="subtitle">질문을 잘 던지는 데서 멈추지 않고, 문제 정의·근거 수집·코드/실험·평가·의사결정을 한 루프로 묶는다.</text>
+
+  <rect x="62" y="145" width="1156" height="410" class="lane"/>
+
+  <rect x="92" y="200" width="160" height="120" class="box human"/>
+  <text x="112" y="232" class="label">문제 카드</text>
+  <text x="112" y="262" class="body">해결하고 싶은 문제</text>
+  <text x="112" y="286" class="body">성공 기준</text>
+  <text x="112" y="310" class="body">사용 가능한 자원</text>
+
+  <rect x="292" y="200" width="170" height="120" class="box onprem"/>
+  <text x="314" y="232" class="label">데이터 패키지</text>
+  <text x="314" y="262" class="body">논문·특허·사내 문서</text>
+  <text x="314" y="286" class="body">실험 로그·코드</text>
+  <text x="314" y="310" class="body">보안 등급 분리</text>
+
+  <rect x="502" y="200" width="180" height="120" class="box service"/>
+  <text x="524" y="232" class="label">에이전트 워크벤치</text>
+  <text x="524" y="262" class="body">Codex / Gemini / Claude</text>
+  <text x="524" y="286" class="body">Cline + Qwen 로컬</text>
+  <text x="524" y="310" class="body">MCP / 스킬 / 규칙</text>
+
+  <rect x="722" y="200" width="175" height="120" class="box eval"/>
+  <text x="744" y="232" class="label">평가 함수</text>
+  <text x="744" y="262" class="body">재현성·정확도</text>
+  <text x="744" y="286" class="body">비용·시간·품질</text>
+  <text x="744" y="310" class="body">안전·IP·책임</text>
+
+  <rect x="937" y="200" width="160" height="120" class="box onprem"/>
+  <text x="959" y="232" class="label">실험 실행</text>
+  <text x="959" y="262" class="body">코드 생성·수정</text>
+  <text x="959" y="286" class="body">시뮬레이션</text>
+  <text x="959" y="310" class="body">작은 실험 설계</text>
+
+  <rect x="470" y="390" width="340" height="100" class="guard"/>
+  <text x="500" y="426" class="label">인간 연구자 검토 게이트</text>
+  <text x="500" y="456" class="body">AI 제안은 후보이고, 실험·투자·공유 결정은 사람이 책임진다.</text>
+  <text x="500" y="480" class="body">가설, 코드, 데이터 출처, 실패 로그를 함께 남긴다.</text>
+
+  <line x1="252" y1="260" x2="292" y2="260" class="arrow"/>
+  <line x1="462" y1="260" x2="502" y2="260" class="arrow"/>
+  <line x1="682" y1="260" x2="722" y2="260" class="arrow"/>
+  <line x1="897" y1="260" x2="937" y2="260" class="arrow"/>
+  <path d="M1017 320 C1017 390 842 440 812 440" class="arrow"/>
+  <path d="M470 440 C360 440 250 386 172 320" class="arrow"/>
+
+  <text x="96" y="588" class="label">권장 검증 단위</text>
+  <text x="96" y="620" class="body">공개 자료 기반 가설 탐색  |  비식별 데이터 분석  |  반복 실행 가능한 코드·시뮬레이션  |  전문가 검토 로그</text>
+  <text x="96" y="654" class="small">핵심 판단: AI가 정답을 말했는지가 아니라, 사람이 검증 가능한 후보·코드·실험 계획을 더 빨리 얻었는지 본다.</text>
+</svg>

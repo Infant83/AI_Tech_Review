@@ -1,0 +1,643 @@
+                                         ML4H Extended Abstract Collection                                Machine Learning for Health (ML4H) 2022
+
+
+
+
+                                                                   Decision-Aware Learning
+                                                             for Optimizing Health Supply Chains
+
+                                         Tsai-Hsuan Chung                                                  angelchg@wharton.upenn.edu
+                                         University of Pennsylvania
+                                         Vahid Rostami                                                              vahid@macro-eyes.com
+                                         Macro-Eyes
+arXiv:2211.08507v1 [cs.LG] 15 Nov 2022
+
+
+
+
+                                         Hamsa Bastani                                                        hamsab@wharton.upenn.edu
+                                         University of Pennsylvania
+                                         Osbert Bastani                                                           obastani@seas.upenn.edu
+                                         University of Pennsylvania
+
+
+
+
+                                                            Abstract                               approach can significantly reduce un-
+                                                                                                   met demand across 1040 health facilities
+                                             We study the problem of allocating lim-               throughout Sierra Leone.
+                                             ited supply of medical resources in de-
+                                             veloping countries, in particular, Sierra
+                                             Leone. We address this problem by                 1. Introduction
+                                             combining machine learning (to predict
+                                             demand) with optimization (to optimize            A major challenge for healthcare administra-
+                                             allocations). A key challenge is the              tion in developing nations is the ability to
+                                             need to align the loss function used              effectively allocate limited resources across
+                                             to train the machine learning model               health facilities. We study an instance of
+                                             with the decision loss associated with
+                                                                                               this problem for Sierra Leone, where ev-
+                                             the downstream optimization problem.
+                                             Traditional solutions have limited flex-          ery three months, the national government
+                                             ibility in the model architecture and             must allocate limited supplies of many dif-
+                                             scale poorly to large datasets. We                ferent essential medicines to over a thousand
+                                             propose a decision-aware learning al-             health facilities based on the expected de-
+                                             gorithm that uses a novel Taylor ex-              mand at those facilities. Failure to allocate
+                                             pansion of the optimal decision loss to           sufficient quantities to facilities—known as
+                                             derive the machine learning loss. Im-
+                                                                                               unmet demand —can have significant health
+                                             portantly, our approach only requires
+                                             a simple re-weighting of the training             consequences.
+                                             data, ensuring it is both flexible and               Combining machine learning and opti-
+                                             scalable, e.g., we incorporate it into            mization is a powerful approach to address-
+                                             a random forest trained using a mul-              ing such decision-making problems. Machine
+                                             titask learning framework. We apply               learning is critical for making accurate pre-
+                                             our framework to optimize the distri-             dictions of the future demand for medicines;
+                                             bution of essential medicines in col-
+                                                                                               these forecasts can then be incorporated into
+                                             laboration with policymakers in Sierra
+                                             Leone; highly uncertain demand and                downstream optimization algorithms to op-
+                                             limited budgets currently result in ex-           timize allocations. The most naı̈ve instanti-
+                                             cessive unmet demand. Out-of-sample               ation of this strategy is called predict-then-
+                                             results demonstrate that our end-to-end           optimize, where the machine learning model
+
+                                         © T.-H. Chung, V. Rostami, H. Bastani & O. Bastani.
+                                                    Chung Rostami Bastani Bastani
+
+
+
+
+           60
+                                                                             making their prior inventory less correlated
+                                                                             with their demand.
+                                                                                Suppose that we use a linear model with
+           40
+                                                           type              prior inventory as a feature to predict de-
+  Demand
+
+
+
+
+                                                                  High       mand. Because the problem is misspecified,
+                                                                  Low
+           20                                                                the linear model will interpolate between the
+                                                                             two kinds of facilities. Thus, even in the
+            0
+                                                                             limit of infinite data, the model will make
+                                                                             errors, thereby reducing the quality of the
+                0       25         50          75    100
+                             Prior Inventory
+                                                                             downstream optimization algorithm.
+                                                                                As a consequence, there has been signifi-
+                    Figure 1: Intuitive example                              cant interest in algorithms that incorporate
+                                                                             the decision loss into the prediction algo-
+                                                                             rithm (Kotary et al., 2021; Bertsimas and
+                                                                             Kallus, 2020). In other words, one might
+is trained to predict demand using a typical
+                                                                             want to directly optimize the decision loss
+objective such as mean-square error (MSE),
+                                                                             when training the machine learning model.
+completely independently of the downstream
+                                                                             One approach is to incorporate the decision
+optimization problem.
+                                                                             loss into the learning algorithm—e.g., modi-
+   However, this strategy can result in poor                                 fying the rule for splitting nodes in a decision
+performance since it may not focus the ca-                                   tree to account for the decision loss (Kallus
+pacity of the machine learning model on pre-                                 and Mao, 2022). However, this strategy re-
+dictions that are actually relevant to mak-                                  quires a custom strategy for incorporating
+ing decisions—e.g., it may “spend” a lot of                                  the decision loss into every new model fam-
+capacity on predicting demand for facilities                                 ily. A more general approach is to directly
+that are unlikely to run out of supplies. For                                optimize the true decision loss when training
+intuition, consider a stylized scenario where                                the model—i.e.,
+there are two kinds of facilities: well-stocked
+facilities, which do not require additional in-   θ̂ = arg max Ep(x,ξ∗ ) [`(π ∗ (fθ (x)); ξ ∗ )] , (1)
+                                                           θ
+ventory, and poorly-stocked facilities, which
+require additional inventory.                    where
+   For an intuitive example illustrating the is-
+sue with predict-then-optimize, consider the                 π ∗ (ξ) = arg max `(a; ξ)
+                                                                           a
+(synthetic) data in Figure 1. In this exam-
+ple, there are two kinds of facilities: wealth- where x ∈ X are the features for predicting
+ier ones with high prior inventory (red) demand (e.g., historical demand for the last
+and poorer ones with low prior inventory few months), ξ ∗ is the true demand, fθ (x)
+(blue). The high-inventory facilities do not is the demand predicted by model fθ with
+need additional inventory, so they can be ig- parameters θ, π ∗ (ξ) is the optimal policy as-
+nored by the optimization algorithm. They suming the true demand is ξ, and `(a; ξ ∗ )
+also exhibit different demand patterns: for is the decision loss of allocation a when the
+high-inventory facilities, demand scales more true demand is ξ ∗ . Algorithms for solving
+slowly with prior inventory compared to low- this optimization problem have been pro-
+inventory facilities—intuitively, wealthier lo- posed in the linear setting (Elmachtoub and
+cations can keep arbitrary excess inventory, Grigas, 2022) as well as the more general set-
+
+                                                                         2
+            Decision-Aware Learning for Optimizing Health Supply Chains
+
+
+
+
+ting of differentiable model families by tak-          model would converge to the true model for
+ing gradients through the optimization prob-           the low-inventory facilities, enabling the op-
+lem (Wilder et al., 2019; Wang et al., 2020).          timization problem to make optimal alloca-
+   However, two critical shortcomings re-              tions.
+main. First, several of these techniques are              To this end, our strategy is to Taylor ex-
+very specialized not only to specific model            pand the optimal decision loss (1), and show
+families, but also to a specific way of set-           how this expansion can be interpreted as a
+ting up the prediction problem. In partic-             reweighting of samples in the dataset; thus,
+ular, most existing approaches assume that             our algorithm is ultimately implemented as
+there is a single prediction per optimization          training the underlying model with weights
+problem—e.g., we train a separate model                associated with each example. Importantly,
+  (n)
+fθ to predict each component ξn∗ of the de-            our approach can be straightforwardly inte-
+mand vector ξ ∗ ∈ RN (where N is the num-              grated into complex data science since most
+ber of facilities). However, this strategy can-        machine learning models can use weighted
+not adapt to more complex, modern data sci-            training data. Furthermore, in our approach,
+ence pipelines. For example, in our alloca-            the optimization problem only needs to be
+tion problem in Sierra Leone, training a sep-          run once to compute the weights, ensuring it
+arate predictive model for each health facility        is computationally efficient.
+performs very poorly since there is very little           We evaluate our approach on historical
+historical data available for any given facil-         demand data for essential medicines from
+ity. Instead, we can substantially improve             Sierra Leone.      Our experiments demon-
+predictive performance by using multi-task             strate that our approach outperforms the
+learning—i.e., train a single model across             commonly-used predict-then-optimize ap-
+all facilities and health products in order            proach; none of the existing decision-aware
+to learn cross-facility, cross-product correla-        learning algorithms (Wilder et al., 2019;
+tions.                                                 Wang et al., 2020; Kallus and Mao, 2022)
+   Second, many of these techniques become             were able to scale to our dataset. We are cur-
+computationally intractable as the problem             rently working towards deploying our algo-
+becomes large, especially the more general             rithm as a decision support tool for the Sierra
+approach based on taking gradients through             Leone National Medical Supplies Agency.
+the optimization problem (Wilder et al.,
+2019; Wang et al., 2020), since they require
+                                                       2. Decision Aware Inventory
+re-solving the optimization problem on every
+                                                          Allocation
+gradient step.
+   We propose a novel technique that is si-            Problem formulation. In the inventory al-
+multaneously significantly more computa-               location problem, the goal is to allocate a
+tional tractable and flexible enough to handle         limited quantity of a single resource (e.g., a
+a broad class of model families.                       medicine) to facilities (e.g., hospitals, clin-
+   For instance, in our example in Figure 1,           ics, etc.) in a way that minimizes the ex-
+we can significantly improve performance               pected shortfall (or unmet demand )—i.e., the
+simply by downweighting data from high-                amount of demand from customers (e.g., pa-
+inventory facilities; since these facilities are       tients) across facilities for which supply is
+ignored by the optimization algorithm, hav-            unavailable. For simplicity, we assume that
+ing high prediction accuracy does not help             each customer only visits a single facility, and
+make better decisions. Then, the linear                their request is either fulfilled or unfulfilled.
+
+                                                   3
+                                  Chung Rostami Bastani Bastani
+
+
+
+
+   We assume that the amount to be allo-                  given a dataset M = {(x(m) , ξ ∗(m) )}m∈[M ] ,
+cated in any given quarter is a constant                  where x(m) ∈ Rd is a feature vector (e.g.,
+amax ∈ R, and our goal is to allocate this                demand during the last few periods) and
+resource across N ∈ N facilities. Each facil-             ξ ∗(m) ∈ RN is the demand vector we are try-
+ity n ∈ [N ] = has demand Ξn , where Ξ ∈ RN               ing to predict.
+is a real-valued random vector with distribu-                Now, a naı̈ve stratey is to train fθ to mini-
+tion PΞ . We denote our allocation decision               mize a loss such as theP mean-squared error—
+by a ∈ RN , where an is the allocation in-                i.e., θ̂ = arg minθ M   m=1 kfθ (x) − ξ
+                                                                                                   ∗(m) k2 .
+tended for facility n. Our objective is the               However, this naı̈ve strategy does not ac-
+expected shortfall                                        count for how predictions account for the
+                                                        downstream optimization problem. We pro-
+              X                                           pose an approach that builds on the optimal
+         EΞ       max{Ξn − an , 0} ,
+                                                          decision loss in (1). Rather than directly try
+            n∈[N ]
+                                                          to optimize the decision loss optimal deci-
+which measures the unmet demand on aver-                  sion loss in (1), which limits generality and
+age across facilities and over Ξ.                         can be computationally intractable, our ap-
+   Optimization strategy. First, when                     proach focuses on upweighting data more rel-
+Ξ = ξ is constant, the optimal policy can                 evant to the downstream optimization prob-
+be straightforwardly expressed as a linear                lem. To this end, we first approximate the
+program. To account for the randomness                    decision loss by Taylor expanding it around
+in Ξ, we use sample average approximation                 ξˆ− ξ0 (where ξ0 is the current prediction and
+(SAA), which takes K samples ξ (k) ∼ PΞ                   ξˆ = fθ (x)), yielding
+(for k ∈ [K]), and then optimizes the ob-
+jective on average across these samples. The                      ˆ ξ∗)
+                                                           `(π ∗ (ξ);
+resulting optimization problem is                           ≈ `(π ∗ (ξ0 ); ξ ∗ )
+                     K    N                                 + ∇a `(π ∗ (ξ0 ); ξ ∗ )> ∇ξ π ∗ (ξ0 )> (ξˆ − ξ0 ). (4)
+  ∗          1 X X (k)
+ a = arg min      cn                            (2)
+      a∈RN K         k=1 n=1                        Since the first term is a constant, we can ig-
+      subj. to c     (k)
+                         ≥ξ (k)
+                                  − a,   c ≥ 0, (3) nore it; then, we consider the loss
+                N
+                X                                            ˆ ξ∗)
+                                                          ˜ ξ;
+                                                          `(
+                       an ≤ amax ,
+                n=1                                       = ∇a `(π ∗ (ξ0 ); ξ ∗ )> ∇ξ π ∗ (ξ0 )> (ξˆ − ξ0 )
+where vector inequalities are elementwise.                = ∇a `(π ∗ (ξ0 ); ξ ∗ )> ∇ξ π ∗ (ξ0 )> (ξˆ − ξ ∗ ) + const.
+                                       (k)
+The first two constraints ensure cn        =
+      (k)
+max{ξn −an , 0} (one of the constraints must              Here, we have replaced ξ0 with ξ ∗ ; since both
+bind to minimize the objective), and the last             of these are constants, it does not affect the
+ensures the allocation budget.                            optimal solution, and we drop the constant
+   Decision-aware loss. So far, we have                   term. With this replacement, we can upper
+assumed that the distribution of demand Ξ                 bound the term by its absolute value to avoid
+is known, so we can draw samples from it                  “overshooting” ξ ∗ , resulting in a weighted
+to construct our objective. However, in our               absolute error loss:
+problem setting, the demand distribution is                            N                           N
+unknown, and we need to learn a model to
+                                                                       X                           X
+                                                             ˆ ξ∗) =
+                                                          ˜ ξ;
+                                                          `(                 wn · (ξˆn − ξn∗ ) ≤         |wn ||ξˆn − ξn∗ |,
+predict it from data. To this end, we assume                           n=1                         n=1
+
+
+                                                      4
+            Decision-Aware Learning for Optimizing Health Supply Chains
+
+
+
+
+where                                                                                Procedure    Decision−Aware         Decision−Blind
+
+                                                                                80
+     wn = (∇ξ π ∗ (ξ ∗ )∇a `(π ∗ (ξ ∗ ); ξ ∗ ))n
+
+
+
+
+                                                               % Unmet Demand
+                                                                                60
+
+Our algorithm is to use this upper bound                                        40
+
+as the loss, which works with any standard                                      20
+machine learning algorithm that can take
+                                                                                 0
+weighted examples. As a heuristic, we can                                        lin vera           lle         te   30    S     in
+                                                                                                                                      Zin
+                                                                                                                                         c
+                                                                            icil       o       de Sulfa non             OR xytoc
+                                                                          ox        Pr      Ja
+replace the absolute error with the squared                             Am po−
+                                                                           De                   s i u m
+                                                                                                            c rog
+                                                                                                                   y        O
+                                                                                           gn
+                                                                                              e          Mi
+error. Finally, we train our random forest to                                            Ma
+                                                                                                        Essential Medicine
+minimize this loss on the training data:
+               M X
+               X N                                         Figure 2: Comparison between the decision-
+θ̂ = arg min             |wm,n ||fθ (x(m) )n − ξn∗(m) |.             blind        predict-then-optimize
+        θ      m=1 n=1                                               approach and our decision-aware
+   Predict a demand distribution. Re-                                end-to-end approach.         Both
+call that we need a distribution over demand                         leverage a random forest model
+rather than a point estimate. We use a nat-                          (trained with a MSE loss vs.
+ural strategy—namely, we consider each tree                          approximate decision loss respec-
+in the random forest to be an i.i.d. sam-                            tively) with the same downstream
+ple from this distribution. In more detail,                          stochastic optimization problem.
+assuming the random forest fθ consists of
+            (1)     (K)
+K trees fθ , ..., fθ , we use samples ξk =
+fθ(k) (x) for k ∈ [K] in SAA.
+                                                           January 2022); we use 70 of these months for
+   Multitask learning. Rather than train a
+                                                           training and the final month for evaluation.
+separate random forest to predict each com-
+                                                           See the Appendix for further details on our
+ponent ξn of the demand ξ, we use multi-
+                                                           predictive model.
+task learning to train a single model that can
+predict demand across all facilities and prod-                We focus on the predictions and alloca-
+ucts. Specifically, we construct a feature vec-            tions for 8 medicines that were deemed most
+tor xn ∈ Rd for each facility, so the full set             critical by policymakers in Sierra Leone—
+of features forms a matrix x ∈ RN ×d . Then,               specifically, Amoxicillin, Magnesium Sul-
+we train a model to predict ξn∗ from xn —i.e.,             phate, Oxytocin, Zinc Sulphate, Oral Re-
+fθ (xn ) ≈ ξn∗ . We use this same strategy for             hydration Salts, Depot Medroxyprogestrone
+both the initial random forest trained using               Acetate, Ethinylestradiol & Levonorgestrel
+the MSE loss as well as the final random for-              (Microgynon 30), and Jadelle).
+est trained using the decision aware loss.                    Baselines. We compare to the popu-
+                                                           lar decision-blind predict-then-optimize ap-
+                                                           proach, which uses the MSE loss to train
+3. Experiments
+                                                           the random forest.        We also tried ex-
+Dataset. We use historical data sourced                    isting decision-aware approaches on our
+from District Health Information Software                  dataset: decision-focused learning (Wang
+(DHIS2) provided by the Ministry of Health                 et al., 2020) and stochastic optimization ran-
+and Sanitation (MoHS) of Sierra Leone. This                dom forests (Kallus and Mao, 2022). How-
+data includes the recorded demand of differ-               ever, none of these scaled to our dataset. In
+ent essential medicines at 1040 medical facil-             particular, (Kallus and Mao, 2022) failed to
+ities over the past 71 months (March 2019 to               terminate after running for two days on 5
+
+                                                       5
+                             Chung Rostami Bastani Bastani
+
+
+
+
+threads running on 2× AMD EPYC 7402                   large datasets. We have evaluated our ap-
+Processor 24-core 2.80GHz CPUs. Similarly,            proach on allocating essential medicines in
+the performance of (Wang et al., 2020) was            Sierra Leone, demonstrating that our ap-
+very poor after running for several hours,            proach can produce as much as an order
+likely because it only completed three epochs         of magnitude improvement in performance
+of training (recall that this approach requires       compared to a naı̈ve predict-then-optimize
+solving the optimization problem at every             strategy; furthermore, we have shown that
+gradient step).                                       existing decision-aware algorithms do not
+   Results. We show results using both our            scale to this dataset.     We believe that
+approach and our baseline in Figure 2. We             our work opens the door to leveraging
+report the decision loss (i.e., the unmet de-         decision-aware learning in a variety of realis-
+mand) achieved for each of the 8 essential            tic decision-making problems, including crit-
+medicines as a percentage of total demand.            ical allocation and optimization problems in
+As can be seen, our approach significantly            healthcare.
+outperforms the baseline on all products, by
+an order of magnitude in several cases. In            References
+addition, we also evaluated the robustness by
+looking at 10 facilities that have high alloca-       Dimitris Bertsimas and Nathan Kallus. From
+                                                        predictive to prescriptive analytics. Manage-
+tion across products and another 10 facilities
+                                                        ment Science, 66(3):1025–1044, 2020.
+with low allocation across products. The re-
+sults show that for higher allocation units,          Adam N Elmachtoub and Paul Grigas. Smart
+average unmet demand % of our approach is               “predict, then optimize”. Management Sci-
+13% compared with 18% for decision-blind;               ence, 68(1):9–26, 2022.
+for low allocation units, average unmet de-           Nathan Kallus and Xiaojie Mao. Stochastic opti-
+mand % of our approach is 11% compared                  mization forests. Management Science, 2022.
+with 17% for decision-blind. Our results
+demonstrate how our approach can bring the            James Kotary, Ferdinando Fioretto, Pascal
+                                                        Van Hentenryck, and Bryan Wilder. End-to-
+benefits of decision aware learning to real-
+                                                        end constrained optimization learning: A sur-
+istic datasets and optimization problems by             vey. arXiv preprint arXiv:2103.16378, 2021.
+significantly improving downstream decision-
+making performance. In the Appendix, we               Kai Wang, Bryan Wilder, Andrew Perrault, and
+also compare with the current practice in               Milind Tambe. Automatically learning com-
+Sierra Leone and show a significant improve-            pact quality-aware surrogates for optimization
+                                                        problems. Advances in Neural Information
+ment.
+                                                        Processing Systems, 33:9586–9596, 2020.
+
+                                                      Bryan Wilder, Bistra Dilkina, and Milind Tambe.
+4. Conclusion                                           Melding the data-decisions pipeline: Decision-
+                                                        focused learning for combinatorial optimiza-
+We have proposed a novel strategy for                   tion. In Proceedings of the AAAI Conference
+decision-aware learning that uses a Taylor              on Artificial Intelligence, volume 33, pages
+expansion around the optimal solution to                1658–1665, 2019.
+derive sample weights for training an arbi-
+trary predictive model. Compared to prior
+approaches, our approach can straightfor-
+wardly be incorporated into many model ar-
+chitectures, and furthermore scales easily to
+
+                                                  6
+            Decision-Aware Learning for Optimizing Health Supply Chains
+
+
+
+
+Appendix                                                        50000
+                                                                                                                                                         Amoxicillin 250mg
+
+                                                                40000
+                                                                30000
+                                                                20000
+Observations. We treat the demand for a                         10000                                                                                             al              al                         ital            spit
+                                                                                                                                                                                                                                  al
+                                                                                                                                                                                                                                           spit
+                                                                                                                                                                                                                                                al
+                                                                                                                  al             l                           spit            spit                        osp              Ho             Ho
+                                                                    0                                       spit            pita                          Ho             Ho                                           ent            ent
+(product, facility, month) tuple as a single                            onth
+                                                                             e                    Go
+                                                                                                    vt.
+                                                                                                          Ho
+
+                                                                                                          Go
+                                                                                                             ve r nm
+                                                                                                                     ent
+                                                                                                                         Hs
+                                                                                                                            J a ia ma
+                                                                                                                                      CH
+                                                                                                                                          C
+
+                                                                                                                                         kw
+                                                                                                                                            ie We
+                                                                                                                                                  sle
+                                                                                                                                                     yan
+
+                                                                                                                                                       ia G over
+                                                                                                                                                                 nm
+                                                                                                                                                                     ent
+                                                                                                                                                                         K ayim
+                                                                                                                                                                                 aC
+                                                                                                                                                                                       HC
+                                                                                                                                                                                         G overn
+                                                                                                                                                                                                 me
+                                                                                                                                                                                                    nt H
+
+                                                                                                                                                                                                    rak
+                                                                                                                                                                                                        a G ove
+                                                                                                                                                                                                                 rnm
+                                                                                                                                                                                                                       G over v
+                                                                                                                                                                                                                               enm
+                                                                                                                                                                                                                                          Ro
+                                                                                                                                                                                                                                             kim
+                                                                                                                                                                                                                                                 bi
+
+                                                                                                                                      ma            mb                               idu                            un
+
+
+
+
+                                                       Demand
+                                                                    B
+                                                                                                                                   Ka           Ka                              Ko              gbu             jeh
+observation in our data.                                                                                                                                                                     Ma            Pu
+
+
+
+
+   Data Cleaning. Health data, partic-                            800
+                                                                                                                                                            Depo−Provera
+
+ularly from developing countries, can be                          600
+                                                                  400
+messy with many missing or unreliable val-                        200
+                                                                                                                                                                   al              al                              al            ital
+                                                                                                                 al                                           spit            spit                            spit           osp
+                                                                                                                                l                                                                          Ho
+ues. Therefore, we took several steps to                            0
+                                                                                 e                 Go
+                                                                                                     vt.
+                                                                                                         Ho
+                                                                                                            spit
+
+                                                                                                               e rnm
+                                                                                                                     ent
+                                                                                                                         Hs
+                                                                                                                           pita
+
+                                                                                                                             J a  iam
+                                                                                                                                      a C
+                                                                                                                                         HC
+                                                                                                                                             ie We
+                                                                                                                                                   sle
+                                                                                                                                                      yan
+                                                                                                                                                           Ho
+
+                                                                                                                                                             G ove
+                                                                                                                                                                   rnm
+                                                                                                                                                                       ent
+                                                                                                                                                                           Ho
+
+                                                                                                                                                                            K ayim
+                                                                                                                                                                                    aC
+                                                                                                                                                                                        HC
+                                                                                                                                                                                            a Go
+                                                                                                                                                                                                ver
+                                                                                                                                                                                                    nm
+                                                                                                                                                                                                       ent
+                                                                                                                                                                                                            over
+                                                                                                                                                                                                                 ven
+                                                                                                                                                                                                                      me
+                                                                                                                                                                                                                        nt H
+                                                                                                                                                                                                                              Ro
+                                                                                                                                                                                                                                 kim
+                                                                                                                                                                                                                                      bi
+
+                                                                            onth                          Go
+                                                                                                              v
+                                                                                                                                        ma
+                                                                                                                                           kw
+                                                                                                                                                       mb
+                                                                                                                                                          ia                             rak           un
+                                                                                                                                                                                                          G
+                                                                    B                                                                                                                 gbu          jeh
+ensure that our model was trained on re-                                                                                              Ka           Ka                            Ma             Pu
+
+
+
+liable data. First, we excluded any ob-                                                                                                                            Facility
+
+servations where the Opening Balance +
+Quantity Received - Quantity Dispensed +
+Adjustment/Loss did not equal the Clos-                Figure 3: Demand distribution of selected
+ing Balance. Second, we excluded obser-                          facility-product pairs from 2021-
+vations where all the quantities on record                       2022
+were zero, since this suggests they used a de-
+fault value. Finally, we excluded large out-
+liers (e.g., likely reporting doses rather than
+vials). This results in 136,765 reliable train-        40 features for each facility (i.e., xn ∈ R40 ,
+ing and 4920 reliable test observations.               and x ∈ R1040×40 ).
+   Distribution Pattern. One of the chal-                Prediction. The resulting median ab-
+lenges to make optimal prediction and allo-            solute percentage error (MdAPE) for the
+cation is highly uncertain demand in Sierra            (decision-blind) random forest is shown in
+Leone. Fig. 3 shows that the demand of each            Fig. 4. We observe that despite the noisy
+facility-product pair fluctuates greatly over          data, we are able to predict demand reason-
+time, and the degree of fluctuations also dif-         ably well. Note that our decision-aware ap-
+fer greatly across facilities and products.            proach retrains this random forest based on
+                                                       sample weights given by the decision loss.
+   Features. Applying time series predic-
+tion methods fared poorly in our setting be-
+cause we have too many time series (one for                                                       60
+                                                                        Median Absolute % Error
+
+
+
+
+each 1040 × 8 facility-product pair, for es-
+sential medicines) and each time series has                                                       40
+
+too few observations (at most 34, but on av-
+                                                                                                  20
+erage, 40% of the observations per facility
+were missing/unreliable). Thus, we face a                                                          0
+very high-dimensional, small data problem.                                                 icil
+                                                                                                lin vera
+                                                                                                      o
+                                                                                                                  lle
+                                                                                                              de Sulfa non
+                                                                                                                              te  30     S
+                                                                                                                                      OR xytoc
+                                                                                                                                               in
+                                                                                                                                                                                                                    Zin
+                                                                                                                                                                                                                       c
+                                                                                         ox        Pr      Ja                  gy         O
+Therefore, as described earlier, we use a mul-                                         Am po−                   i u m       ro
+                                                                                          De                 es        Mi
+                                                                                                                          c
+                                                                                                          gn
+                                                                                                        Ma
+titask learning approach, learning simulta-                                                                           Essential Medicine
+neously across facilities and products. We
+also performed extensive feature engineering           Figure 4: Median Absolute Percentage Error
+based on domain knowledge: we constructed                        (%) of decision-blind random for-
+features including historical demand for the                     est model.
+past 10 months, the current month and year,
+the region of the facility, etc., for a total of
+
+                                                   7
+                                                                Chung Rostami Bastani Bastani
+
+
+
+
+   Comparison with Existing Practice.
+We compared our approach to the existing
+strategy used by Sierra Leone. They cur-
+rently use a complex Excel tool to decide
+the allocation mainly based on a three month
+rolling average of demand. We find that our
+approach has only average 1.3% of unmet de-
+mand across eight products while the current
+tool is 15% as shown in Fig. 5. Thus, our ap-
+proach reduces unmet demand by an order of
+magnitude.
+
+                                Procedure   Decision−Aware       Present Excel tool
+                                                                             28
+  Average % Unmet Demand
+
+
+
+
+                           20                                                        19
+
+
+
+
+                                                12
+                                                         11
+
+                           10
+                                       6
+                                                                       5
+                                                     4
+                                            3
+                                                                   2
+                                 1
+
+                           0
+                            lin vera            lle hate n 30         S     in       c
+                       icil        o         de                    OR xytoc       Zin
+                  m ox        − Pr        Ja      Sulp gyno            O
+                A           o                          o
+                     De
+                         p                   ium Micr
+                                          es
+                                       gn
+                                    Ma
+                                                   Essential Medicine
+
+
+
+Figure 5: Unmet demand comparison be-
+          tween existing practice and our
+          decision-aware approach
+
+
+
+
+                                                                                          8
+

@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cline 온프레미스 Qwen Agentic Workflow 강연 Blueprint</title>
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>Cline 온프레미스 Qwen Agentic Workflow 강연 Blueprint</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-04-29 02:54:43</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>39</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-04-29_cline-onprem-qwen-agentic-workflow-lecture_blueprint.md">2026-04-29_cline-onprem-qwen-agentic-workflow-lecture_blueprint.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+        <section class="summary-band" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">핵심 신호</h2>
+          <ul class="summary-list">
+            <li>Cline은 VS Code 안에서 개인 업무 절차를 실행 가능한 agentic workflow로 묶는 harness로 설명한다.</li>
+<li>강연의 중심은 모델 성능 비교가 아니라 `rules + skills + workflows + working notes + human review`의 운영 구조다.</li>
+<li>On-premise LLM은 민감 정보 보호에 유리한 선택지일 수 있으나, governance와 tool boundary가 함께 설계되어야 한다.</li>
+<li>Introduction은 대통령-하사비스 대화의 `specific enough` 문제 제기에서 시작해 Claude Code 98.4% infrastructure 분석과 Erdős #1196 AI-assisted discovery 사례로 연결한다.</li>
+          </ul>
+        </section>
+        
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>작성일: 2026-04-29<br />
+목표: 90분 기술 강의용 Skywork deck 설계<br />
+권장 슬라이드 수: 31 main slides + 4 appendix slides = 총 35장</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Cline은 VS Code 안에서 개인 업무 절차를 실행 가능한 agentic workflow로 묶는 harness로 설명한다.</li>
+<li>강연의 중심은 모델 성능 비교가 아니라 <code>rules + skills + workflows + working notes + human review</code>의 운영 구조다.</li>
+<li>On-premise LLM은 민감 정보 보호에 유리한 선택지일 수 있으나, governance와 tool boundary가 함께 설계되어야 한다.</li>
+<li>Introduction은 대통령-하사비스 대화의 <code>specific enough</code> 문제 제기에서 시작해 Claude Code 98.4% infrastructure 분석과 Erdős #1196 AI-assisted discovery 사례로 연결한다.</li>
+<li>시각 스타일은 기술 세미나용 corporate deck에 친근한 spot illustration과 workflow diagram을 섞는다.</li>
+</ul>
+<h2 id="section-plan">Section Plan</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th style="text-align: right;">시간</th>
+<th style="text-align: right;">슬라이드</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Opening &amp; Motivation</td>
+<td style="text-align: right;">10분</td>
+<td style="text-align: right;">1-4</td>
+<td>왜 지금 Agentic Workflow인가</td>
+</tr>
+<tr>
+<td>2. System Overview</td>
+<td style="text-align: right;">15분</td>
+<td style="text-align: right;">5-10</td>
+<td>VS Code, Cline, On-premise LLM 구조</td>
+</tr>
+<tr>
+<td>3. From Prompting to Workflow Engineering</td>
+<td style="text-align: right;">15분</td>
+<td style="text-align: right;">11-15</td>
+<td>prompt에서 workflow 설계로 이동</td>
+</tr>
+<tr>
+<td>4. Global and Local Markdown Rules</td>
+<td style="text-align: right;">20분</td>
+<td style="text-align: right;">16-22</td>
+<td>Rules, Skills, Workflows, AGENTS.md 의미</td>
+</tr>
+<tr>
+<td>5. Demonstration Scenarios</td>
+<td style="text-align: right;">20분</td>
+<td style="text-align: right;">23-26</td>
+<td>Email, daily report, Git/DevOps 데모</td>
+</tr>
+<tr>
+<td>6. Interactive Feedback Loop</td>
+<td style="text-align: right;">10분</td>
+<td style="text-align: right;">27-29</td>
+<td>output이 다음 input이 되는 구조</td>
+</tr>
+<tr>
+<td>7. Governance and Boundaries</td>
+<td style="text-align: right;">5분</td>
+<td style="text-align: right;">30</td>
+<td>보안, 권한, 책임 경계</td>
+</tr>
+<tr>
+<td>8. Conclusion &amp; Q&amp;A</td>
+<td style="text-align: right;">5분</td>
+<td style="text-align: right;">31</td>
+<td>요약 및 Q&amp;A</td>
+</tr>
+<tr>
+<td>Appendix</td>
+<td style="text-align: right;">필요 시</td>
+<td style="text-align: right;">32-35</td>
+<td>예시 rule, workflow, template</td>
+</tr>
+</tbody>
+</table>
+<h2 id="slide-by-slide-blueprint">Slide-by-slide Blueprint</h2>
+<h3 id="1-title-agentic-workflow">1. Title - 개인화 Agentic Workflow 강연</h3>
+<p>Bullets:</p>
+<ul>
+<li>VS Code + Cline + On-premise LLM</li>
+<li>Markdown Rules와 Skillset으로 구성하는 업무 자동화</li>
+<li>daily office workflow를 agentic loop로 바꾸는 방법</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>오늘 강연은 Cline 사용법 소개가 아니다. 개인의 반복 업무를 Cline이 참조하고 실행할 수 있는 구조로 만드는 방법을 다룬다.</li>
+<li>업무를 AI에게 넘기는 것이 아니라, AI와 사람이 같이 운영할 수 있는 절차로 재구성하는 관점이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Asset 1 <code>Agentic Workflow Desk</code>를 title 보조 이미지로 사용.</li>
+</ul>
+<h3 id="2">2. 오늘의 결론을 먼저 말하면</h3>
+<p>Bullets:</p>
+<ul>
+<li>AI는 이미 충분히 강력하다.</li>
+<li>문제는 instruction과 control이 <code>specific enough</code>한가다.</li>
+<li>좋은 prompt보다 오래 남는 것은 좋은 workflow다.</li>
+<li>자동화보다 중요한 것은 검토 가능한 자동화다.</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>대통령과 Google DeepMind CEO Demis Hassabis의 짧은 대화를 opening hook으로 사용한다. AlphaGo와 Gemini의 높은 성능을 인정하면서도, Gemini가 때때로 지시하지 않은 일을 하는 문제를 묻는 장면이다.</li>
+<li>자동 자막이 완벽하지 않으므로 장문 인용으로 처리하지 않는다. 이 장면에서 가져올 질문은 단순하다. AI가 강력할수록 instruction, control, audit이 얼마나 구체적이어야 하는가.</li>
+<li>오늘의 중심 문장은 &ldquo;AI가 참조할 수 있는 업무 운영체계를 만든다&rdquo;이다. Cline의 rules, skills, workflows, <code>AGENTS.md</code>는 그 운영체계의 구체적인 파일 표면이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>대통령-과학자 대화를 직접 재현하지 말고, <code>question bubble -&gt; control surface -&gt; workflow harness</code>로 이어지는 친근한 editorial illustration.</li>
+</ul>
+<h3 id="3-specific-enough">3. Specific enough란 얼마나 구체적인가</h3>
+<p>Bullets:</p>
+<ul>
+<li>Claude Code 분석: <code>1.6% AI / 98.4% infrastructure</code></li>
+<li>permission, context, compaction, tools, recovery가 agent를 움직임</li>
+<li>core loop는 단순하지만 주변 harness가 복잡함</li>
+<li>Cline에서도 rules와 workflow가 부가 기능이 아니라 운영층</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li><code>specific enough</code>를 감으로 말하면 추상적이다. 최근 Claude Code source-level 분석은 이 질문에 꽤 강한 힌트를 준다.</li>
+<li>연구진은 Claude Code의 공개 TypeScript source code를 분석했고, GitHub README는 98.4%가 deterministic infrastructure, 1.6%가 AI decision logic이라는 framing을 제시한다. 이 수치를 모든 agent에 일반화하면 안 되지만, agent 제품의 실체가 model call 주변의 permission, context, tool routing, recovery logic에 있다는 점은 강한 시사점이다.</li>
+<li>Cline 강연에서도 같은 구조를 개인 업무 규모로 낮춰 설명한다. Global Rules, Local Rules, Skillset, Workflow, <code>AGENTS.md</code>, working notes가 바로 작은 규모의 harness다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Iceberg 또는 layered stack: visible model response 1.6%, beneath surface harness 98.4%. 하단에 <code>Claude Code case, not universal law</code> 작은 annotation.</li>
+</ul>
+<h3 id="4-ai-assisted-discovery">4. 가능성의 반대편: AI-assisted discovery</h3>
+<p>Bullets:</p>
+<ul>
+<li>Erdős #1196: AI-assisted mathematical discovery 사례</li>
+<li>prompt, model exploration, expert verification, formalization이 결합</li>
+<li>강력한 AI일수록 provenance와 audit이 중요</li>
+<li>오늘의 질문: 이 힘을 daily office workflow에 안전하게 연결하는 법</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>인트로는 공포나 통제만으로 끝내면 안 된다. AI는 실제로 새로운 경로를 제안할 수 있다.</li>
+<li>Erdős Problem #1196 사례는 Liam Price, GPT-5.4 Pro, Terence Tao와 Jared Duker Lichtman의 논의, formalization/refinement가 결합된 사례로 설명한다. <code>AI가 혼자 난제를 풀었다</code>고 과장하지 않는다.</li>
+<li>이 사례가 보여주는 것은 가능성이다. 동시에 그 가능성은 human review, proof audit, provenance가 붙을 때 신뢰 가능한 결과가 된다.</li>
+<li>이제 이 질문을 연구소의 일상 업무로 가져온다. 이메일, 보고서, Git, Obsidian, OpenProject도 작지만 같은 구조를 가진다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Math discovery path: problem -&gt; AI exploration -&gt; expert review -&gt; formalization -&gt; new method. 오른쪽 하단에 <code>power requires audit</code> annotation.</li>
+</ul>
+<h3 id="5-system-overview">5. System Overview</h3>
+<p>Bullets:</p>
+<ul>
+<li>User -&gt; VS Code -&gt; Cline -&gt; On-premise LLM</li>
+<li>Tools: files, terminal, Git, browser, MCP</li>
+<li>Notes: Markdown, Obsidian, project docs</li>
+<li>Review: 사람이 승인하고 수정하는 checkpoint</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Cline은 VS Code 안에서 작업 공간과 연결된다. 모델은 reasoning을 담당하지만, 실제 업무성은 files, terminal, Git, notes 같은 주변 시스템과 연결될 때 생긴다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 아키텍처 다이어그램: User -&gt; VS Code -&gt; Cline -&gt; On-premise LLM -&gt; Tools / Files / Git / Notes.</li>
+</ul>
+<h3 id="6-cline">6. Cline의 역할을 다시 정의하기</h3>
+<p>Bullets:</p>
+<ul>
+<li>coding assistant</li>
+<li>tool-using agent</li>
+<li>workflow assistant</li>
+<li>personal workflow harness</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Cline은 코드를 작성하는 도구로 시작하지만, rule과 workflow를 구성하면 daily work assistant가 된다.</li>
+<li>중요한 것은 Cline이 내 업무 스타일을 추측하게 두는 것이 아니라, 읽을 수 있는 지침으로 제공하는 것이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>같은 Cline이 네 역할로 확장되는 radial diagram.</li>
+</ul>
+<h3 id="7-cline">7. Cline이 실제로 다루는 작업 표면</h3>
+<p>Bullets:</p>
+<ul>
+<li>file structure와 source code context</li>
+<li>terminal command 결과</li>
+<li>browser 및 web tool</li>
+<li>MCP 기반 custom tool</li>
+<li>diff 기반 file edit와 human review</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>공식 repository 설명 기준 Cline은 파일, terminal, browser, MCP와 연결된다. 이것은 강력하지만 통제가 필요하다는 뜻이기도 하다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Workspace map: files, terminal, browser, tools.</li>
+</ul>
+<h3 id="8-on-premise-llm">8. 왜 On-premise LLM인가</h3>
+<p>Bullets:</p>
+<ul>
+<li>내부 자료와 연구 데이터 보호</li>
+<li>governance와 audit 요구</li>
+<li>재현 가능한 운영 환경</li>
+<li>외부 SaaS 의존도 조절</li>
+<li>단, on-premise만으로 안전이 완성되지는 않음</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>온프레미스 환경은 내부 데이터 처리 관점에서 유리한 선택지다. 그러나 모델이 내부에 있다고 해서 자동으로 안전한 workflow가 되는 것은 아니다.</li>
+<li>어떤 파일을 읽을 수 있는지, 어떤 명령을 실행할 수 있는지, 무엇을 저장하는지까지 설계해야 한다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Asset 3 <code>On-premise Governance Bridge</code>.</li>
+</ul>
+<h3 id="9-qwen">9. Qwen 계열 모델을 말할 때의 주의점</h3>
+<p>Bullets:</p>
+<ul>
+<li>내부 모델명과 파라미터 수는 확인된 자료 기준으로만 표현</li>
+<li>Qwen3-Coder-Next 외부 자료는 agentic coding trend anchor로 사용</li>
+<li>local development와 coding agent 최적화 흐름은 발표 맥락과 연결 가능</li>
+<li>내부 endpoint와 운영 정보는 placeholder 처리</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Qwen 관련 설명은 정확성이 중요하다. 외부 자료에서 확인한 수치가 내부 모델을 의미하지 않는다.</li>
+<li>내부 심층 리서치 원문이 확보되면 모델명을 확정하고, 지금 단계에서는 Qwen 계열 온프레미스 LLM이라고 표현한다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li><code>confirmed / caution / placeholder</code> 세 칸으로 나누는 fact status table.</li>
+</ul>
+<h3 id="10-cloud-llm-vs-on-premise-llm-governance">10. Cloud LLM vs On-premise LLM Governance 비교</h3>
+<p>Bullets:</p>
+<ul>
+<li>데이터 이동 경로</li>
+<li>접근 제어와 audit</li>
+<li>모델/인프라 운영 책임</li>
+<li>latency와 availability</li>
+<li>비용과 확장성 trade-off</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>어느 쪽이 절대적으로 좋다고 말하기보다, governance surface가 어디에 있는지 비교한다.</li>
+<li>온프레미스는 데이터 통제에 강점이 있지만, 운영 책임이 내부로 들어온다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 governance comparison table.</li>
+</ul>
+<h3 id="11-prompt-engineering-workflow-engineering">11. Prompt Engineering에서 Workflow Engineering으로</h3>
+<p>Bullets:</p>
+<ul>
+<li>Prompt: 한 번의 요청을 잘 쓰는 기술</li>
+<li>Workflow: 반복 가능한 작업 절차를 설계하는 기술</li>
+<li>Harness: model, tools, rules, memory를 묶는 실행 구조</li>
+<li>좋은 workflow는 다음 작업에 재사용됨</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>prompt만 잘 써서는 매번 새로 시작한다. workflow는 작업 절차 자체를 asset으로 만든다.</li>
+<li>최근 agent trend도 이 방향으로 이동하고 있다. 모델 표면보다 harness interface가 중요해진다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 Prompting vs Workflow Engineering 비교표.</li>
+</ul>
+<h3 id="12-human-readable-ai-readable-markdown">12. Human-readable + AI-readable Markdown</h3>
+<p>Bullets:</p>
+<ul>
+<li>사람은 읽고 고칠 수 있어야 함</li>
+<li>Cline은 그대로 context로 읽을 수 있어야 함</li>
+<li>rule, workflow, note, template이 같은 문법을 공유</li>
+<li>Markdown은 업무 절차를 지식 자산으로 남김</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Markdown은 단순 문서 형식이 아니다. 사람과 agent가 같이 읽는 업무 interface가 된다.</li>
+<li>문서가 사람이 읽기 어려우면 유지되지 않고, agent가 읽기 어려우면 실행되지 않는다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Asset 2 <code>Rules, Skillset, Workflow Hierarchy</code>.</li>
+</ul>
+<h3 id="13-working-notes">13. Working Notes가 중요한 이유</h3>
+<p>Bullets:</p>
+<ul>
+<li>agent output을 작업 이력으로 남김</li>
+<li>다음 보고서와 회의 준비의 source가 됨</li>
+<li>context switching 비용 감소</li>
+<li>개인 업무 기억을 project memory로 전환</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Cline이 잘 동작하려면 과거 작업 맥락이 필요하다. 그 맥락은 chat history에만 있으면 약하다.</li>
+<li>Markdown working note로 남겨야 다음 작업에서 다시 참조할 수 있다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Notes -&gt; Memory -&gt; Next Task loop.</li>
+</ul>
+<h3 id="14-agentic-workflow">14. Agentic Workflow의 기본 구성요소</h3>
+<p>Bullets:</p>
+<ul>
+<li>Instruction: 무엇을 우선할 것인가</li>
+<li>Context: 어떤 자료를 볼 것인가</li>
+<li>Tool: 어떤 행동을 할 수 있는가</li>
+<li>Boundary: 어디서 멈출 것인가</li>
+<li>Memory: 무엇을 남길 것인가</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>이 다섯 가지가 없으면 agent는 좋은 답변은 할 수 있어도 안정적인 업무 수행자는 되기 어렵다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Five-part harness diagram.</li>
+</ul>
+<h3 id="15-harness-engineering">15. Harness Engineering 트렌드</h3>
+<p>Bullets:</p>
+<ul>
+<li>model selection을 넘어 agent operating layer로 이동</li>
+<li>MCP, Skills, <code>AGENTS.md</code>, sandbox, tool permission</li>
+<li>업무별 domain logic이 경쟁력이 됨</li>
+<li>조직에서는 governance와 실행성을 동시에 봐야 함</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>최근 흐름은 &ldquo;더 똑똑한 모델&rdquo;만의 문제가 아니다. agent가 어떤 환경에서 어떤 권한으로 움직이는지가 중요해진다.</li>
+<li>개인 업무에서도 같은 원리가 적용된다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Asset 7 <code>Harness Engineering Trend</code>.</li>
+</ul>
+<h3 id="16-global-rules">16. Global Rules란 무엇인가</h3>
+<p>Bullets:</p>
+<ul>
+<li>모든 project에 적용되는 개인 기본 원칙</li>
+<li>말투, 보고 형식, 보안 기본선</li>
+<li>승인 없이 하지 말아야 할 작업</li>
+<li>반복 업무의 기본 처리 방식</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Global Rules는 내 일하는 방식의 기본값이다. 예를 들어 &ldquo;민감 정보는 generic placeholder로 바꿔라&rdquo;, &ldquo;destructive command 전에는 반드시 확인하라&rdquo; 같은 원칙이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Personal baseline layer diagram.</li>
+</ul>
+<h3 id="17-local-rules">17. Local Rules란 무엇인가</h3>
+<p>Bullets:</p>
+<ul>
+<li>특정 repository 또는 project에 붙는 규칙</li>
+<li>build/test/deploy 절차</li>
+<li>commit convention과 branch 전략</li>
+<li>연구노트, 보고서, data path 규칙</li>
+<li>Global Rules와 충돌하면 local context를 우선</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Local Rules는 project-specific context다. 같은 Git workflow라도 프로젝트마다 test command, report format, 금지 경로가 다르다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 Global vs Local hierarchy diagram.</li>
+</ul>
+<h3 id="18-agentsmd">18. <code>AGENTS.md</code>의 의미</h3>
+<p>Bullets:</p>
+<ul>
+<li>repository에 함께 남는 agent instruction surface</li>
+<li>cross-tool compatibility를 고려한 지침 파일</li>
+<li>사람이 리뷰할 수 있는 업무 계약서</li>
+<li>project onboarding 문서로도 활용 가능</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li><code>AGENTS.md</code>는 agent에게만 주는 비밀 prompt가 아니다. 프로젝트에서 agent가 어떻게 행동해야 하는지를 사람이 함께 검토할 수 있는 문서다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Repository root with AGENTS.md, .clinerules, workflows.</li>
+</ul>
+<h3 id="19-skillset">19. Skillset은 언제 필요한가</h3>
+<p>Bullets:</p>
+<ul>
+<li>항상 로드하기에는 긴 전문 절차</li>
+<li>특정 업무에서만 필요한 domain knowledge</li>
+<li>분석, 문서화, 배포, 보안 검토 같은 역할별 절차</li>
+<li>재사용 가능한 업무 능력 단위</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Skillset은 모든 상황에 넣는 지침이 아니다. 필요할 때 로드되는 전문 절차다.</li>
+<li>예를 들어 &ldquo;OpenProject 업데이트&rdquo;, &ldquo;Obsidian 회의록 정리&rdquo;, &ldquo;Git release note 작성&rdquo;은 skill로 분리하기 좋다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Skill cards activated on demand.</li>
+</ul>
+<h3 id="20-workflow">20. Workflow는 언제 필요한가</h3>
+<p>Bullets:</p>
+<ul>
+<li>반복되는 multi-step process</li>
+<li>순서와 중단 조건이 중요한 업무</li>
+<li>tool call과 human checkpoint가 섞인 작업</li>
+<li>slash command로 호출 가능한 절차</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>workflow는 &ldquo;매번 설명하기 싫은 절차&rdquo;를 파일로 만든 것이다.</li>
+<li>daily report, release prep, issue sync, paper review intake 같은 업무가 여기에 맞다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Workflow checklist with stop gates.</li>
+</ul>
+<h3 id="21-rule-skill-workflow">21. Rule, Skill, Workflow를 나누는 기준</h3>
+<p>Bullets:</p>
+<ul>
+<li>Rule: 항상 지켜야 하는 방식</li>
+<li>Skill: 필요할 때 꺼내 쓰는 전문성</li>
+<li>Workflow: 순서대로 실행할 절차</li>
+<li>Note: 결과와 맥락을 남기는 기록</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>이 구분이 흐려지면 모든 지침이 한 파일에 쌓인다. 그러면 사람이 유지하기도 어렵고 agent도 필요한 맥락을 놓친다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>2x2 decision table.</li>
+</ul>
+<h3 id="22-cline-harness">22. 예시: 내 업무용 Cline harness 구성</h3>
+<p>Bullets:</p>
+<ul>
+<li>Global Rules: 보안, 말투, 보고 기본값</li>
+<li>Local Rules: project별 build/test/report 규칙</li>
+<li>Workflows: daily checkup, daily report, Git update</li>
+<li>Skills: Obsidian, OpenProject, research memo</li>
+<li>Notes: 작업 결과와 다음 action 저장</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>여기서부터는 개념이 아니라 운영 구조를 본다. Cline을 매번 설득하는 대신, Cline이 읽을 수 있는 업무 환경을 만든다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Personal harness stack diagram.</li>
+</ul>
+<h3 id="23-demo-1-email-summarization-daily-checkup">23. Demo 1 - Email summarization / daily checkup</h3>
+<p>Bullets:</p>
+<ul>
+<li>오늘 확인할 email과 일정 확인</li>
+<li>action item, deadline, reply-needed 분류</li>
+<li>민감한 reply는 사람이 검토</li>
+<li>결과를 daily note로 저장</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>이메일 요약은 단순 요약으로 끝나면 가치가 작다. action item과 다음 작업으로 연결되어야 한다.</li>
+<li>Cline이 할 일은 요약 초안과 분류이고, 사람이 할 일은 외부 발송과 민감 판단이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Email -&gt; Summary -&gt; Daily Note mini flow.</li>
+</ul>
+<h3 id="24-demo-2-daily-report-preparation">24. Demo 2 - Daily report preparation</h3>
+<p>Bullets:</p>
+<ul>
+<li>오늘 한 일</li>
+<li>진행 중인 일</li>
+<li>blocker</li>
+<li>tomorrow plan</li>
+<li>Obsidian 또는 Markdown report 저장</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>daily report는 하루가 끝날 때 새로 쓰는 문서가 아니라, 하루 동안 쌓인 working note를 재구성하는 결과물이어야 한다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Daily Note -&gt; Report template transformation.</li>
+</ul>
+<h3 id="25-demo-3-git-devops-workflow">25. Demo 3 - Git / DevOps workflow</h3>
+<p>Bullets:</p>
+<ul>
+<li>repository status 확인</li>
+<li>diff summary 생성</li>
+<li>commit message 초안 작성</li>
+<li>issue 또는 OpenProject update 연결</li>
+<li>push/merge는 human approval</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>Git workflow는 Cline이 강력하게 도와줄 수 있지만 위험도도 있다. 그래서 command boundary와 approval rule이 필요하다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Git status -&gt; diff -&gt; commit message -&gt; project update flow.</li>
+</ul>
+<h3 id="26-daily-office-workflow-loop">26. Daily office workflow loop</h3>
+<p>Bullets:</p>
+<ul>
+<li>Email -&gt; Summary</li>
+<li>Summary -&gt; Daily Note</li>
+<li>Daily Note -&gt; Report</li>
+<li>Report -&gt; Git/Project Update</li>
+<li>Update -&gt; Next Task</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>세 데모를 따로 보면 작은 자동화처럼 보인다. 묶어서 보면 업무 루프가 된다.</li>
+<li>이 루프가 반복될수록 agent가 참조할 context가 늘어난다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 Daily office workflow loop diagram 또는 Asset 6.</li>
+</ul>
+<h3 id="27-agent-output-input">27. Agent output은 끝이 아니라 input이다</h3>
+<p>Bullets:</p>
+<ul>
+<li>요약은 다음 회의 준비의 source</li>
+<li>report는 project tracking의 source</li>
+<li>Git summary는 release note의 source</li>
+<li>working note는 다음 Cline task의 context</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>AI output을 복사해서 버리면 축적이 없다. Markdown으로 저장하고 다음 workflow가 읽게 해야 한다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Output -&gt; Note -&gt; Memory -&gt; Next action loop.</li>
+</ul>
+<h3 id="28-human-in-the-loop-feedback-cycle">28. Human-in-the-loop feedback cycle</h3>
+<p>Bullets:</p>
+<ul>
+<li>Request</li>
+<li>Agent action</li>
+<li>Human review</li>
+<li>Refined instruction</li>
+<li>Saved workflow</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>사람이 매번 agent를 통제한다는 뜻이 아니다. 사람이 경계를 정하고, 잘못된 결과를 rule이나 workflow 개선으로 되돌린다는 뜻이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>필수 Human-in-the-loop feedback cycle 또는 Asset 4.</li>
+</ul>
+<h3 id="29-output">29. 실패한 output을 어떻게 자산으로 바꾸는가</h3>
+<p>Bullets:</p>
+<ul>
+<li>왜 실패했는지 기록</li>
+<li>rule로 바꿀지 workflow로 바꿀지 결정</li>
+<li>예외와 중단 조건을 추가</li>
+<li>다음 실행에서 재검증</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>실패한 agent output은 낭비가 아니다. 반복되는 실패는 지침이 부족하다는 신호다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Failure -&gt; Diagnosis -&gt; Rule update -&gt; Re-run.</li>
+</ul>
+<h3 id="30-governance-boundaries-risk-management">30. Governance, Boundaries, Risk Management</h3>
+<p>Bullets:</p>
+<ul>
+<li>On-premise LLM도 무제한 접근을 의미하지 않음</li>
+<li>민감 파일과 개인정보는 접근 제외</li>
+<li>destructive command와 외부 전송은 승인 필요</li>
+<li>사람은 최종 책임자</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>내부 모델을 쓴다고 보안 문제가 사라지지 않는다. agent에게 어떤 권한을 줄지, 어디서 멈출지를 문서와 도구 수준에서 설계해야 한다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Permission gate diagram.</li>
+</ul>
+<h3 id="31-conclusion-qa">31. Conclusion &amp; Q&amp;A</h3>
+<p>Bullets:</p>
+<ul>
+<li>Cline은 personal workflow harness로 확장 가능</li>
+<li>Markdown Rules와 Skillset은 사람과 AI가 공유하는 업무 운영체계</li>
+<li>좋은 자동화는 검토 가능하고 반복 가능해야 함</li>
+<li>질문: 내 업무에서 가장 먼저 workflow로 만들 수 있는 것은 무엇인가</li>
+</ul>
+<p>Speaker note:</p>
+<ul>
+<li>마지막으로 도구보다 구조를 강조한다. 오늘 이후 바로 할 수 있는 일은 거창한 agent를 만드는 것이 아니라, 내 업무의 첫 workflow와 첫 rule을 쓰는 것이다.</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Asset 8 closing operating system metaphor.</li>
+</ul>
+<h2 id="appendix-slides">Appendix Slides</h2>
+<h3 id="32-appendix-example-global-rule">32. Appendix - Example Global Rule</h3>
+<p>Content:</p>
+<ul>
+<li>보안 기본 원칙</li>
+<li>대외 발송 금지</li>
+<li>민감 정보 placeholder 처리</li>
+<li>destructive command approval</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Markdown snippet style.</li>
+</ul>
+<h3 id="33-appendix-example-local-rule">33. Appendix - Example Local Rule</h3>
+<p>Content:</p>
+<ul>
+<li>project 목적</li>
+<li>build/test command</li>
+<li>report format</li>
+<li>forbidden paths</li>
+<li>commit convention</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Repository-specific rule file example.</li>
+</ul>
+<h3 id="34-appendix-example-daily-report-template">34. Appendix - Example Daily Report Template</h3>
+<p>Content:</p>
+<ul>
+<li>Done</li>
+<li>In progress</li>
+<li>Blockers</li>
+<li>Tomorrow</li>
+<li>Links / Evidence</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Obsidian note template.</li>
+</ul>
+<h3 id="35-appendix-example-git-workflow-instruction">35. Appendix - Example Git Workflow Instruction</h3>
+<p>Content:</p>
+<ul>
+<li>Check status</li>
+<li>Summarize diff</li>
+<li>Propose commit message</li>
+<li>Ask before commit</li>
+<li>Link issue or OpenProject item</li>
+</ul>
+<p>Visual:</p>
+<ul>
+<li>Workflow Markdown file with approval gate.</li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-04-29 02:54:25
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#section-plan">Section Plan</a></li>
+<li><a href="#slide-by-slide-blueprint">Slide-by-slide Blueprint</a><ul>
+<li><a href="#1-title-agentic-workflow">1. Title - 개인화 Agentic Workflow 강연</a></li>
+<li><a href="#2">2. 오늘의 결론을 먼저 말하면</a></li>
+<li><a href="#3-specific-enough">3. Specific enough란 얼마나 구체적인가</a></li>
+<li><a href="#4-ai-assisted-discovery">4. 가능성의 반대편: AI-assisted discovery</a></li>
+<li><a href="#5-system-overview">5. System Overview</a></li>
+<li><a href="#6-cline">6. Cline의 역할을 다시 정의하기</a></li>
+<li><a href="#7-cline">7. Cline이 실제로 다루는 작업 표면</a></li>
+<li><a href="#8-on-premise-llm">8. 왜 On-premise LLM인가</a></li>
+<li><a href="#9-qwen">9. Qwen 계열 모델을 말할 때의 주의점</a></li>
+<li><a href="#10-cloud-llm-vs-on-premise-llm-governance">10. Cloud LLM vs On-premise LLM Governance 비교</a></li>
+<li><a href="#11-prompt-engineering-workflow-engineering">11. Prompt Engineering에서 Workflow Engineering으로</a></li>
+<li><a href="#12-human-readable-ai-readable-markdown">12. Human-readable + AI-readable Markdown</a></li>
+<li><a href="#13-working-notes">13. Working Notes가 중요한 이유</a></li>
+<li><a href="#14-agentic-workflow">14. Agentic Workflow의 기본 구성요소</a></li>
+<li><a href="#15-harness-engineering">15. Harness Engineering 트렌드</a></li>
+<li><a href="#16-global-rules">16. Global Rules란 무엇인가</a></li>
+<li><a href="#17-local-rules">17. Local Rules란 무엇인가</a></li>
+<li><a href="#18-agentsmd">18. AGENTS.md의 의미</a></li>
+<li><a href="#19-skillset">19. Skillset은 언제 필요한가</a></li>
+<li><a href="#20-workflow">20. Workflow는 언제 필요한가</a></li>
+<li><a href="#21-rule-skill-workflow">21. Rule, Skill, Workflow를 나누는 기준</a></li>
+<li><a href="#22-cline-harness">22. 예시: 내 업무용 Cline harness 구성</a></li>
+<li><a href="#23-demo-1-email-summarization-daily-checkup">23. Demo 1 - Email summarization / daily checkup</a></li>
+<li><a href="#24-demo-2-daily-report-preparation">24. Demo 2 - Daily report preparation</a></li>
+<li><a href="#25-demo-3-git-devops-workflow">25. Demo 3 - Git / DevOps workflow</a></li>
+<li><a href="#26-daily-office-workflow-loop">26. Daily office workflow loop</a></li>
+<li><a href="#27-agent-output-input">27. Agent output은 끝이 아니라 input이다</a></li>
+<li><a href="#28-human-in-the-loop-feedback-cycle">28. Human-in-the-loop feedback cycle</a></li>
+<li><a href="#29-output">29. 실패한 output을 어떻게 자산으로 바꾸는가</a></li>
+<li><a href="#30-governance-boundaries-risk-management">30. Governance, Boundaries, Risk Management</a></li>
+<li><a href="#31-conclusion-qa">31. Conclusion &amp; Q&amp;A</a></li>
+</ul>
+</li>
+<li><a href="#appendix-slides">Appendix Slides</a><ul>
+<li><a href="#32-appendix-example-global-rule">32. Appendix - Example Global Rule</a></li>
+<li><a href="#33-appendix-example-local-rule">33. Appendix - Example Local Rule</a></li>
+<li><a href="#34-appendix-example-daily-report-template">34. Appendix - Example Daily Report Template</a></li>
+<li><a href="#35-appendix-example-git-workflow-instruction">35. Appendix - Example Git Workflow Instruction</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li class="empty-state">이 리포트에서 명시적 링크가 감지되지 않았습니다.</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

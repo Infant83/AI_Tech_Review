@@ -1,0 +1,3232 @@
+  Improving Access to Essential Medicines via Decision-
+               Aware Machine Learning
+ Angel Tsai-Hsuan Chung (鍾采璇)1†, Jatu Abdulai3, Patrick Bayoh3, Lawrence Sandi3, Francis
+                        Smart4, Hamsa Bastani1†*, Osbert Bastani2†*
+     1Department of Operations, Information, and Decisions, University of Pennsylvania,
+
+            Jon M. Huntsman Hall, 3730 Walnut St, Philadelphia, PA 19104, USA
+       2Department of Computer and Information Science, University of Pennsylvania,
+
+                       3330 Walnut St, Philadelphia, PA 19104, USA
+                     3National Medical Supplies Agency, Sierra Leone
+
+                      31 Murray Town Road, Freetown, Sierra Leone
+                      4Ministry of Health and Sanitation, Sierra Leone
+
+                          Youyi Building, Freetown, Sierra Leone
+    †To whom correspondence should be addressed; E-mail: angelchg@wharton.upenn.edu;
+
+                     hamsab@wharton.upenn.edu; obastani@seas.upenn.edu
+                                     *Denote equal last author
+
+
+
+
+A critical challenge in healthcare systems in low- and middle-income countries (LMICs) is
+the efficient and equitable allocation of scarce resources, particularly essential medicines 1.
+This problem is complicated by limited high-quality data, which restricts the applicability of
+traditional data-driven techniques2,3,4,5. We propose a novel decision-aware machine
+learning framework for essential medicines allocation, which additionally leverages multi-
+task learning to ensure sample efficiency and catalytic priors to ensure equitable allocation.
+In collaboration with the Sierra Leone national government, we performed a staggered,
+nationwide deployment of our system as a decision support tool. Our econometric evaluation
+finds an estimated 19% increase in consumption of allocated products in treated districts,
+demonstrating its efficacy at improving access to essential medicines. Our tool was
+subsequently scaled nationwide, covering an estimated 2 million women and children under
+five. Our work demonstrates how machine learning methods can improve efficiency at very
+low cost in resource-constrained global health settings.
+
+Introduction
+Machine learning has demonstrated enormous potential for improving healthcare, with
+applications ranging from screening and diagnosis6,7,8, targeted testing9, and automating medical
+record generation10. Success stories have largely occurred in developed nations, which have high-
+quality data available to train predictive models. Yet, machine learning has unique potential to
+help alleviate challenges caused by infrastructure limitations in developing nations, such as poor
+stock management systems11 and insufficient staff training in logistics and inventory
+management1,3. These limitations can introduce operational challenges that make it difficult to
+match supply to demand, leading to shortages of common medicines and medical supplies that are
+taken for granted in developed nations. An assessment by the World Health Organization (WHO)
+found that on average across a representative sample of health facilities in several African countries
+
+
+                                                  1
+(including Sierra Leone), less than 40% of maternal essential medicines were readily available 12,13.
+This scarcity can force vulnerable patients to pay inflated private-sector prices or forgo treatment5.
+While there have been efforts to address these challenges through traditional methodologies for
+improving operations14,15,16,17, recent work demonstrates that the impact of these efforts is limited
+by issues such as misalignment between digital systems and supply chain operations 18 or due to
+insufficient technical expertise and infrastructure to manage complex supply chains 19.
+We focus on Sierra Leone, which launched the Free Health Care Initiative (FHCI) in 2010, one of
+the largest healthcare initiatives and a top priority in its post-civil war recovery20. This program
+provides free medical care and products to pregnant women and children under five. However,
+these essential medicines are only distributed to healthcare facilities once a quarter, which can lead
+to significant shortages in one location even if there is adequate supply in other locations. Efforts
+to design more adaptive supply chains have failed due to logistical challenges. For example,
+inspired by The Coca-Cola Company’s highly effective supply chain, Project Last Mile (PLM) has
+operated since 2018 with funding from the United States Agency for International Development
+(USAID) to build software to digitize supply chain data, with the goal of supporting more frequent
+and targeted restocking. However, despite operating for half a decade, their systems have been
+implemented in only about 8% of facilities (15 government hospitals and 103 health facilities) as
+of 2023 due to logistical challenges21,22,23.
+In this context, a low-cost and promising avenue to scalably reduce shortages is to better match
+limited supply with patient demand using a combination of prediction and optimization 24,25,26. In
+particular, given accurate facility-level demand forecasts for a product, existing supply chain
+optimization techniques27,28,29 optimize facility-level allocations to minimize unmet patient
+demand.
+However, accurately forecasting demand is difficult because of its high variability, both due to
+demand shocks caused by natural disasters or disease outbreaks 1,5 and periodic trends caused by
+seasonal diseases such as malaria. Existing strategies employed in global health contexts include
+relying on historical consumption data, morbidity-based forecasting, or proxy estimates30,31;
+however, these approaches tend to have limited accuracy due to demand variability. Furthermore,
+due to the lack of modern computing infrastructure, decision-makers in practice rely primarily on
+ad hoc manual forecasting or on Excel spreadsheets with very high forecasting errors 4,32.
+Modern machine learning tools provide a promising path to improve the accuracy of demand
+forecasting33. By leveraging high-dimensional covariates, they can predict complex trends in
+demand that are beyond the reach of simpler methodologies. The key obstacle to realizing the
+promise of these approaches is the lack of training data. What little data is available has significant
+rates of missing or unreliable entries due to the same infrastructure limitations that cause
+operational challenges. For instance, in Sierra Leone, the only digitized data that can be used to
+train facility-level demand forecasting models is monthly consumption data recorded in the
+District Health Information Software 2 (DHIS2) system (53 of the 54 countries in Africa use the
+DHIS2 system34). This data has only been collected systematically across all health facilities since
+2020; furthermore, it has a high rate of missing or unreliable entries. These limitations make it
+difficult to train accurate predictive models based on high-dimensional covariates.
+In this paper, we introduce a novel machine learning framework for constrained resource allocation
+that satisfies two key criteria: (1) it makes effective use of limited and noisy historical data, and
+
+
+                                                  2
+(2) it is scalable and can be deployed in limited-compute environments. At a high level, our system
+leverages machine learning to predict demand based on features constructed from historical data,
+and then applies stochastic optimization to compute the best allocation based on this model’s
+predictions. To tackle data scarcity and quality challenges, our system uses a multi-task learning
+strategy to share data across different healthcare facilities 35 along with a novel decision-aware
+learning algorithm36,37,38,39,40,41 that aligns the prediction loss with the downstream allocation
+objective. Furthermore, it uses catalytic priors 42 with auxiliary data sources to mitigate data
+inequity (i.e., where poorer facilities have lower-quality data and therefore noisier forecasts).
+In close collaboration with the Sierra Leone national government, we deployed our system
+nationwide as a decision support tool to improve allocation decisions for Sierra Leone’s FHCI
+policy. Our system was first piloted in 5 randomly selected districts, enabling us to econometrically
+evaluate our deployment. A Synthetic Difference-in-Differences analysis43 found that
+consumption increased by 19% in the 5 treated districts, suggesting that our system significantly
+improved patient access to essential medicines that it helped allocate. Following the pilot, our
+system has been scaled nationwide, covering an estimated 2 million women and children under
+five44,45. Importantly, these gains were extremely cost-effective, requiring only a $30 monthly
+server fee and no additional workforce (see Supplement §2.6 for a cost-effectiveness analysis).
+These results highlight how novel data-efficient machine learning can address critical challenges
+in healthcare delivery in resource-constrained settings.
+
+Essential Medicines Allocation System
+Maternal mortality remains one of the most pressing global health challenges, particularly in
+developing countries where access to essential health products is often limited by inefficient
+allocation systems46. In Sierra Leone, despite the FHCI providing free medical care to pregnant
+women and children, the maternal mortality rate stands at 717 per 100,000 live births—one of the
+highest in the world47,48.
+Lack of access to essential medicines is one of the key contributors to preventable maternal
+deaths46. In Sierra Leone, the National Medical Supplies Agency (NMSA) (part of the Ministry of
+Health and Sanitation (MoHS)) was created to manage the procurement and distribution of
+medicines and medical supplies to public health facilities across the nation, including over 70
+essential medicines for women and children. Supply of these medicines largely relies on donations
+from international organizations. Prior to our collaboration, the NMSA distributed these medicines
+across the country following a centralized two-level push system15, where the NMSA first
+allocated supply to 16 districts, and the districts then allocated them to individual health facilities
+in their catchment (see details in Supplement §1.3). The two-level system is for administrative
+purposes only; all warehouses and health facilities are owned and operated by the NMSA.
+Allocation decisions were largely made via an Excel tool; however, it was unable to capture key
+demand patterns such as seasonality and other time-varying fluctuations. As a result, district
+pharmacists often made significant manual adjustments because they perceived that the tool’s
+estimates did not accurately reflect the actual needs of health facilities. According to NMSA
+officials, approximately 42% of facility requests were unfulfilled on average.
+In practice, this shortage occurred even when the total supply was adequate—some health facilities
+received a surplus of medicines while others suffered shortages. (Surpluses often did not carry
+
+
+                                                  3
+over fully to the next quarter due to significant reported waste and expiration.) For instance, DHIS2
+data showed significant heterogeneity in both stockouts and wastage—e.g., for the Tonkolili
+district, in 2022 Q1, 10% of facilities that had previous stockouts continued to face supply
+shortages, while 22% of facilities with available stock had excess supply that could have been
+redistributed. These findings suggest more efficient allocation strategies that better match supply
+and demand as a promising path to significantly reducing shortages.
+
+
+
+
+Figure 1: System Overview. Every quarter, our system extracts and processes data including the total available
+central stock and historical facility-level consumption records from mSupply and the DHIS2 government database. It
+then trains a decision-aware prediction model that informs a stochastic optimization procedure to make allocation
+decisions. The system further provides a picking list for frontline workers to collect supplies from designated
+warehouses, enabling efficient distribution to local health facilities. Finally, the resulting patient consumption data is
+recorded for informing predictions and decisions in subsequent quarters.
+
+Fig. 1 illustrates the system we developed and deployed. Unlike the earlier two-level approach,
+our system directly generates facility-level allocations, which are provided to district pharmacists
+to support their decision-making. Our system begins by pulling monthly consumption data from
+DHIS2, along with quarterly data on total central stock available for allocation and corresponding
+expiry dates from the mSupply warehouse management system (see Supplement §1.1 for details).
+Then, it performs significant preprocessing to ensure data reliability and construct informative
+features for prediction (see Supplement §1.2 for details).
+Our prediction and optimization algorithm (illustrated in the box in Fig. 1) can be divided into two
+components. First, we predict the demand distribution for each facility-product pair using a novel
+decision-aware machine learning framework (described in the next section). Second, given the
+demand forecasts, our optimization algorithm outputs allocation decisions directly from the central
+stock to individual health facilities, which are designed to minimize the expected shortage of
+medicines. In particular, for each product, it aims to minimize unmet demand—the total number
+of units of requested product that go unfulfilled—across facilities. To account for the stochastic
+
+
+                                                            4
+nature of demand, we use the expected unmet demand according to probabilistic demand forecasts.
+This optimization problem can be solved efficiently via linear programming using a sample
+average approximation49. Once the allocation is determined, our system assigns each batch of
+supplies to a warehouse based on proximity, central stock availability, and product expiration dates
+(see Supplement §1.4 for details). Finally, new patient consumption data is recorded and used to
+retrain our model each quarter just before making allocation decisions.
+
+Machine Learning for Demand Forecasting
+Next, we describe our machine learning framework for predicting the demand distribution used in
+our optimization algorithm. Given a training dataset constructed from historical demand data, we
+could apply traditional strategies for time series forecasting such as Autoregressive Integrated
+Moving Average (ARIMA)50. However, these approaches work poorly due to data scarcity—e.g.,
+when we trained our model for 2023 Q2 allocations, each facility-product pair had at most 37
+monthly observations (i.e., from January 2020 to January 2023).
+Instead, we designed a machine learning framework that leverages three key techniques: (1) multi-
+task learning to share data across facilities, (2) catalytic priors to regularize the model in data-poor
+regions to mitigate data inequity, and (3) a novel decision-aware learning algorithm to focus
+predictive power on facilities that are most relevant to the downstream optimization problem. We
+summarize our techniques below, and provide details in Supplement §1.5.
+We developed a multi-task learning strategy that trains one demand prediction model for each of
+our two product types (medicines and medical supplies/equipment) across all facility-product pairs
+within that group. Our multi-task learning strategy enables knowledge transfer from locations with
+more available data to ones with less available data35,51,52. Specifically, our system constructs
+features that facilitate generalization across facility-product pairs (e.g., average demand in the past
+year), as well as features that capture trends specific to a given facility-product pair (e.g., the
+facility type and location, product fixed effect). Then, it trains a random forest to predict demand
+from these features. (We use a random forest since it consistently outperforms other methods; see
+Supplement §1.4.)
+While multi-task learning can improve performance in data-poor locations, there are still
+systematic differences between data-poor and data-rich locations (e.g., missing data often arises
+disproportionately in poorer regions due to staffing shortages). Such missing-not-at-random data53
+can lead to covariate shift, which reduces prediction accuracy for data-poor locations. To mitigate
+this data inequity, our system leverages catalytic priors 42 to regularize predictions for data-poor
+locations towards a simpler, less biased population-based model. Specifically, it first uses census
+and satellite data to estimate catchment population, and then estimates demand proportionally to
+the catchment population. This strategy ensures complete coverage of all facilities without biases
+due to low-quality data. Our system integrates this simple model as a catalytic prior for our
+machine learning model, regularizing predictions for data-poor locations towards the population-
+based ones.
+Finally, our system leverages decision-aware learning38,39,41,54 to focus predictive power on
+instances most relevant to optimizing allocation. Intuitively, not all predictions matter equally—
+e.g., since our goal is to prevent unmet demand, we are primarily interested in how much we should
+stock facilities that are likely to be insufficiently stocked for a particular product. Whereas a
+
+
+                                                   5
+standard machine learning approach would treat all facility-product pairs equally when training a
+prediction model, our decision-aware learning algorithm focuses attention on facility-product pairs
+deemed more important to the decision-making objective; in this case, it upweights observations
+corresponding to facilities that are likely to be under-stocked. We found that existing decision-
+aware learning algorithms were either computationally intractable at our scale or incompatible
+with the rest of our prediction and optimization pipeline; thus, we developed a novel decision-
+aware learning algorithm that could be integrated more easily. Prior to deploying our framework,
+we validated it on historical data, showing that it outperformed existing approaches on a held-out
+test set; see Supplement §1.4.
+
+Deployment
+In collaboration with the NMSA, in May 2023, we deployed our system in 5 of the 16 districts in
+Sierra Leone to perform facility-level allocations for the second quarter (June through August).
+These districts—Tonkolili, Falaba, Karene, Kono, and Pujehun (see map in Fig. 2)—were selected
+by the central government based on a randomized allocation schedule. Prior to our deployment,
+the government had already established both the overall supply as well as the total amounts to be
+allocated to control districts. The remaining supply was then to be allocated to the treatment
+districts, maintaining independence of supply quantities between the two groups. Additional
+deployment details are in Supplement §2.1.
+Beyond the performance of the allocation system, a critical priority was ensuring that it could be
+seamlessly integrated into NMSA’s existing workflows. To this end, we conducted two targeted
+training sessions for policymakers and frontline workers, providing the necessary technical
+knowledge for operating our tool and understanding its implications. Implementation emphasized
+stakeholder engagement at every level—outputs were presented in a familiar format that matched
+pre-existing workflows and were reviewed by NMSA management as well as district
+pharmaceutical managers prior to finalization.
+Furthermore, our system functions as a decision support tool, where central and district-level
+planners retain ultimate authority and can override the system when necessary. We found that
+decision-makers closely followed the algorithmic allocations—the normalized overlap between
+the actual and algorithmic allocations ranged from 0.89 to 1 (see Supplement §2.3 for details).
+Given the high compliance rates, stakeholder buy-in, and early indications of improved efficiency
+(detailed in the following section), the national government adopted our system and expanded its
+use to all public-sector health facilities in Sierra Leone beginning in the third quarter of 2023.
+
+
+
+
+                                                6
+Figure 2: Map of treatment distribution in 2023 Q2. Yellow dots denote treated facilities (i.e., those in the Tonkolili,
+Falaba, Karene, Kono, and Pujehun districts), and purple dots denote control facilities (i.e., those in the Kailahun,
+Kenema, Bombali, Koinadugu, Kambia, Port Loko, Bo, Bonthe, Moyamba, Western Area Rural, and Western Area
+Urban districts).
+
+
+Evaluation
+We evaluated the effectiveness of our system at improving allocation efficiency. While our
+optimization objective aims to minimize unmet demand, we do not directly observe this quantity
+(we only observe when patients receive medicine, not when they are turned away due to stockouts).
+Instead, we examined the equivalent objective of maximizing patient consumption, which is
+directly observed—since patient demand (which is fixed but unobserved) equals consumption plus
+unmet demand, maximizing total consumption is equivalent to minimizing total unmet demand.
+(This equivalence holds in a very general setting under the assumption that facilities do not
+wastefully give away medicines to patients that do not need them, which is unlikely in such a
+resource-constrained environment. We provide theoretical and empirical support for this
+equivalence in Supplement §2.3.) We overview our analyses here, and provide details in
+Supplement §2; our results are summarized in Fig. 3 and Table 1.
+Our main analysis focuses on the second quarter of 2023 (2023 Q2), where our system was
+deployed in a randomly selected subset of districts, providing natural variation that enables us to
+estimate causal effects. Specifically, the NMSA performed allocation using standard procedures
+for the 11 control districts, after which our system was used to distribute remaining stock across
+the 5 treated districts. We show descriptive time series trends of average normalized consumption
+for the treatment and control groups in Fig. 3 (left). We estimated how much our system changed
+patient consumption levels in treated districts (i.e., districts where our system was deployed)
+compared to what would have happened without our intervention, known as the Average
+Treatment Effect on the Treated (ATT). We used a balanced panel dataset of 312 facilities in
+treated districts and 746 facilities in control districts using time series data beginning in 2022 Q3
+through 2023 Q3, after which our tool was used nationwide. (Prior to the implementation of the
+data-driven Excel allocation tool by Crown Agents in 2022 Q3, allocation procedures were highly
+inconsistent, rendering the data unreliable.)
+
+
+                                                           7
+Given the limited number of treated districts, we used a Synthetic Difference-in-Differences
+(SynthDiD) analysis43 to analyze the impact of our deployment. SynthDiD combines the strengths
+of Difference-in-Differences55 (which assumes similar trends between treated and untreated
+groups in the pre-treated period) and Synthetic Controls56 (which constructs a synthetic control
+group that is similar to the treated units in terms of observed characteristics and outcome trends in
+the pre-treated period). SynthDiD ensures that differences between facilities in treated districts and
+synthetic control facilities remain stable prior to treatment.
+Fig. 3 (right) shows the corresponding time series trends for the treatment and synthetic control
+groups, and results are shown in the “SynthDiD” row of Table 1. The 5 treated districts
+experienced a statistically significant increase of 19% ( 𝑝 < 0.05 ) in consumption; the
+improvement percentage is calculated from SynthDiD counterfactual estimates as:
+                Average treatment outcome − Average counterfactual outcome
+                              Average counterfactual outcome
+We validated our SynthDiD approach using a standard event-study analysis57, which showed that
+there are no statistically significant differences between treated and synthetic control facilities
+prior to our intervention, and that the change in consumption emerged only after our system was
+deployed. These results suggest that our system substantially improved access to essential
+medicines in treated districts. We provide additional details on our main analysis in
+Supplement §2.2.
+
+
+
+
+       (a) Treatment vs Control Groups.                       (b) Treatment vs Synthetic Control Groups.
+Figure 3: Average normalized consumption time trends. Panel (a) compares treatment (green) versus control
+(orange) groups using raw data. Panel (b) compares treatment (green) versus synthetic control (orange) groups
+constructed via SynthDiD. The 𝑥-axis shows time in quarters and the 𝑦-axis denotes average normalized consumption.
+The vertical dashed line at 2023 Q1 marks the quarter immediately before deployment.
+
+Next, we studied how these improvements were distributed; we summarize our analyses here and
+provide details in Supplement §2.4. First, the NMSA seeks to prioritize larger facilities such as
+hospitals, since these facilities are most relied upon to provide quality care; indeed, we found that
+our system confers systematically greater benefits (36%, 𝑝 < 0.05) for larger facilities, while
+preserving consumption for smaller ones. In contrast, smaller health facilities showed a smaller,
+
+
+                                                        8
+statistically insignificant improvement. They may face more fundamental challenges (e.g.,
+inadequate staffing or equipment) that limit their ability to provide services or utilize medical
+supplies regardless of availability. For instance, during a field visit, we found a small health post
+closed for two consecutive days, and local residents shared that they often seek essential care at
+larger, more reliable facilities.
+Next, we sought to ensure our consumption gains are not concentrated among wealthier patients,
+but also benefit poorer patients with the greatest need. To this end, we examined previously under-
+served facilities (i.e., facilities that experienced at least one stockout in our data prior to our
+deployment). We found that these facilities also saw a significant increase in consumption (32%,
+𝑝 < 0.01), suggesting that our system successfully addressed potential biases from uneven data
+quality and availability, leading to more equitable resource allocation. Similarly, we found that
+rural facilities (which tend to serve poorer populations) benefited from our tool without
+compromising urban ones.
+Finally, we performed several robustness checks to validate our main results. The main checks are
+described below and summarized in Table 1; Supplement §2.5 provides details as well as
+additional checks. First, to ensure consistency under a simpler methodology, we performed a
+standard DiD analysis, finding a consistent 21% increase in consumption (𝑝 < 0.01) (“DiD” row
+in Table 1). Second, to better account for geographic factors, we performed a DiD analysis on
+geographically matched facility pairs (i.e., facilities within a short distance of a district border,
+which have a neighboring facility with the opposite treatment status), again yielding a consistent
+21% increase in consumption (𝑝 < 0.05) (“Matching (15km)” row).
+Third, we considered an alternative analysis where we compared consumption trends across
+products instead of facilities; this robustness check uses a substantially different design with
+additional data to build confidence in our results. In particular, we considered 26 other products
+that were concurrently allocated using a different, pre-existing mechanism. The consumption
+levels for these products can be used as a control group throughout our study period across all
+districts in the country using a staggered treatment—i.e., an advantage of this analysis is that it can
+be performed not just for the partial deployment in 2023 Q2, but also for the nationwide
+implementation starting in Q3. We found a consistent, statistically significant increase in
+consumption of 18% (𝑝 < 0.001) (“Alt. Control” row).
+Next, a potential concern with our evaluation is due to missing data from facilities that failed to
+record consumption in a particular month, which may bias our results. Our main analysis dropped
+observations with missing outcomes, but we also performed robustness checks using multiple
+standard imputation strategies—low-rank matrix completion58, population-based methods, and
+historical average consumption. The resulting SynthDiD ATT estimates are all statistically
+significant and consistent with our main analysis (“Imputation” rows). We also performed
+additional tests suggesting that our results are not driven by differential missingness; see
+Supplement §2.5.5 for details.
+Table 1: Average Treatment Effect on the Treated (ATT). ATT estimates across different estimation strategies.
+SynthDiD, our main specification, shows a 19% increase in consumption, with similar magnitudes under DiD and
+several imputation approaches. Estimation using alternative control product data or geographic facility-level
+
+
+
+
+                                                     9
+matching across district borders also produces consistent positive effects. For stockouts as the outcome, the point
+estimate is negative but statistically insignificant; this is expected since it is not our objective.
+
+ Model                                     Coef.             Std. Error             Obs.            Improv.%
+ Dependent Variable = Consumption
+ SynthDiD                                  0.116*            (0.046)                5,290           19%
+ DiD                                       0.128**           (0.046)                5,290           21%
+ Matching (15km)                           0.121*            (0.054)                2,415           21%
+ Alt. Control                              0.095***          (0.022)                10,520          18%
+ Imputation (low rank)                     0.037**           (0.014)                5,455           15%
+ Imputation (avg cons)                     0.067*            (0.031)                5,455           21%
+ Imputation (pop)                          0.076**           (0.028)                5,455           27%
+ Dependent Variable = Stockout
+ SynthDiD                                  −0.280            (0.179)                5,290           −4.6% (Insig)
+ Notes: *𝑝 < 0.05, ** 𝑝 < 0.01, ***𝑝 < 0.001. Standard errors in parentheses. Improvement % is relative to counterfactual mean.
+
+Finally, we examined the impact of our system on stockouts. While reducing stockouts might seem
+like a natural objective, optimizing for fewer stockouts can actually produce highly undesirable
+allocations—e.g., an optimal strategy is to allocate zero supply to a small number of high-volume
+facilities, thereby ensuring that the remaining facilities are well-stocked. We found a directional
+reduction in stockouts but it is not statistically significant (𝑝 ≈ 0.12) (“Stockouts” rows)—i.e., our
+system does not inadvertently increase stockouts.
+
+Discussion
+Our findings provide strong field evidence of the effectiveness of our novel machine learning
+framework for resource allocation, significantly and equitably improving access to essential
+medicines in a highly constrained environment. By replacing manual effort with data-driven
+decision making, our system streamlined supply chain management, reduced administrative
+burdens, and adapted to real-time changing consumption patterns, enabling facilities to better align
+limited supply with patient demand. Efficient allocation becomes increasingly important as aid
+becomes more constrained to ensure the limited available supply meets demand.
+To ensure sustainable impact, we developed a web application with an intuitive user interface,
+which is now owned by the Sierra Leone government. This system integrates with their
+government databases to automate the entire process, from data extraction and processing to
+generating final allocation results. Notably, it is highly cost-effective, operating without any
+additional workforce requirements and costing only $30 per month nationally in server fees.
+Beyond Sierra Leone, we believe our framework can be easily adapted to other contexts—by
+design, it relies on commonly available data: total available central stock, monthly health facility
+consumption, and stock expiry dates. This data often already exists in a unified, digitized format—
+e.g., 53 (out of 54 total) African countries use DHIS234 and 16 use mSupply59. The key tasks
+required would be adapting our system to local data collection systems and discussing our
+optimization objective with policymakers to incorporate country-specific constraints.
+
+
+                                                              10
+References
+1.     Yadav, P. Health product supply chains in developing countries: diagnosis of the root causes of
+underperformance and an agenda for reform. Health Syst. Reform 1, 142–154 (2015).
+
+2.     UNICEF & others. The State of the World’s Children 2015: Reimagine the Future-Innovation for
+Every Child (Executive Summary). (UN, 2015).
+
+3.     Gallien, J., Leung, N.-H. Z. & Yadav, P. Inventory policies for pharmaceutical distribution in
+Zambia: Improving availability and access equity. Prod. Oper. Manag. 30, 4501–4521 (2021).
+
+4.      Merkuryeva, G., Valberga, A. & Smirnov, A. Demand forecasting in pharmaceutical supply
+chains: A case study. Procedia Comput. Sci. 149, 3–10 (2019).
+
+5.      Yenet, A., Nibret, G. & Tegegne, B. A. Challenges to the availability and affordability of
+essential medicines in African countries: a scoping review. Clin. Outcomes Res. 443–458 (2023).
+
+6.     De Fauw, J. et al. Clinically applicable deep learning for diagnosis and referral in retinal disease.
+Nat. Med. 24, 1342–1350 (2018).
+
+7.      Esteva, A. et al. A guide to deep learning in healthcare. Nat. Med. 25, 24–29 (2019).
+
+8.     Ngiam, K. Y. & Khor, W. Big data and machine learning algorithms for health-care delivery.
+Lancet Oncol. 20, e262–e273 (2019).
+
+9.      Bastani, H. et al. Efficient and targeted COVID-19 border testing via reinforcement learning.
+Nature 599, 108–113 (2021).
+
+10.     Yang, X. et al. A large language model for electronic health records. NPJ Digit. Med. 5, 194
+(2022).
+
+11.    Zuma, S. M. & Modiba, L. M. Challenges associated with provision of essential medicines in the
+Republic of South Africa and other selected African countries. World J Pharm Res 8, 1532–1547 (2019).
+
+12.    World Health Organization. Service Availability and Readiness Assessment (SARA): An Annual
+Monitoring System for Service Delivery. (2018).
+
+13.     Droti, B., O’Neill, K. P., Mathai, M., Dovlo, D. Y. T. & Robertson, J. Poor availability of
+essential medicines for women and children threatens progress towards Sustainable Development Goal 3
+in Africa. BMJ Glob. Health 4, e001306 (2019).
+
+14.     Tetteh, E. Creating reliable pharmaceutical distribution networks and supply chains in African
+countries: Implications for access to medicines. Res. Soc. Adm. Pharm. 5, 286–297 (2009).
+
+15.   Cachon, G. & Terwiesch, C. Matching Supply with Demand: An Introduction to Operations
+Management, 5e. (McGraw-Hill, 2024).
+
+16.   Fenta, T. G. Human resources for public health supply chain management in Ethiopia:
+Competency mapping and training needs. Ethiop. J. Health Dev. 31, 266–275 (2017).
+
+17.     Johnson, A., Peter, K. & Shital, M. Inventory management practices and supply chain
+performance of antiretroviral medicines in public hospitals in Nyamira County, Kenya. Rwanda J. Med.
+Health Sci. 4, 257–268 (2021).
+
+
+
+
+                                                     11
+18.    Mwashiuya, S., Mchopa, A. D. & Shayo, F. A. Effect of Inventory Control on Medical Supply
+Chain Performance: The Moderating Role of Information Technology among Medical Stores Department
+Customers in Tanzania. Afr. J. Procure. Logist. Supply Chain Manag. 8, 01–14 (2025).
+
+19.     Braa, J. & Muquinge, H. Building collaborative networks in Africa on health information systems
+and open source software development-experiences from the HISP/BEANISH Network. IST Afr. 3,
+(2007).
+
+20.     Donnelly, J. How did Sierra Leone provide free health care? The Lancet 377, 1393–1396 (2011).
+
+21.     Linnander, E. et al. Process evaluation of knowledge transfer across industries: leveraging Coca-
+Cola’s supply chain expertise for medicine availability in Tanzania. PloS One 12, e0186832 (2017).
+
+22.     Linnander, E., LaMonaca, K., Brault, M. A., Vyavahare, M. & Curry, L. A mixed methods
+evaluation of a multi-country, cross-sectoral knowledge transfer partnership to improve health systems
+across Africa. Int. J. Mult. Res. Approaches 10, 136–148 (2018).
+
+23.     Project Last Mile. 2023 Annual Report. https://www.projectlastmile.com/wp-
+content/uploads/2024/06/2023-PLM-Annual-Report-240605s.pdf (2023).
+
+24.    Zhu, X., Ninh, A., Zhao, H. & Liu, Z. Demand forecasting with supply-chain information and
+machine learning: Evidence in the pharmaceutical industry. Prod. Oper. Manag. 30, 3231–3252 (2021).
+
+25.     Mbonyinshuti, F., Nkurunziza, J., Niyobuhungiro, J. & Kayitare, E. The prediction of essential
+medicines demand: a machine learning approach using consumption data in Rwanda. Processes 10, 26
+(2021).
+
+26.     Bastani, H., Bastani, O. & Chung, T.-H. Optimizing Health Supply Chains in LMICs with
+Machine Learning: A Case Study in Sierra Leone. in Responsible and Sustainable Operations: The New
+Frontier 187–202 (Springer, 2024).
+
+27.    Bertsimas, D. & Thiele, A. A robust optimization approach to inventory theory. Oper. Res. 54,
+150–168 (2006).
+
+28.     Yang, C., Hu, Z. & Zhou, S. X. Multilocation newsvendor problem: Centralization and inventory
+pooling. Manag. Sci. 67, 185–200 (2021).
+
+29.    Aviv, Y. The effect of collaborative forecasting on supply chain performance. Manag. Sci. 47,
+1326–1343 (2001).
+
+30.     USAID, DELIVER PROJECT, Task Order 4. Quantification of Health Commodities: A Guide to
+Forecasting and Supply Planning for Procurement. (USAID | DELIVER PROJECT, Task Order 4,
+Arlington, Va, 2014).
+
+31.     Reproductive and Maternal Health Services Unit, Ministry of Health. National Guidelines for
+Quantification, Procurement, and Pipeline Monitoring for Family Planning Commodities in Kenya.
+(Ministry of Health, Nairobi, Kenya, 2016).
+
+32.     Fredrick, M. W. & Muturi, W. Factors influencing frequent stock-outs of essential medicines in
+public health facilities in Kisii County, Kenya. IOSR J Bus. Manag 18, 63–75 (2016).
+
+33.    Ban, G.-Y. & Rudin, C. The big data newsvendor: Practical insights from machine learning.
+Oper. Res. 67, 90–108 (2019).
+
+
+
+                                                   12
+34.     HISP Centre, University of Oslo. (2025). DHIS2: Open-source health information management
+platform. https://dhis2.org/
+
+35.     Caruana, R. Multitask learning. Mach. Learn. 28, 41–75 (1997).
+
+36.     Donti, P., Amos, B. & Kolter, J. Z. Task-based end-to-end model learning in stochastic
+optimization. Adv. Neural Inf. Process. Syst. 30, (2017).
+
+37.     Elmachtoub, A. N. & Grigas, P. Smart “predict, then optimize”. Manag. Sci. 68, 9–26 (2022).
+
+38.     Bertsimas, D. & Kallus, N. From predictive to prescriptive analytics. Manag. Sci. 66, 1025–1044
+(2020).
+
+39.      Wilder, B., Dilkina, B. & Tambe, M. Melding the data-decisions pipeline: Decision-focused
+learning for combinatorial optimization. in Proceedings of the AAAI Conference on Artificial Intelligence
+vol. 33 1658–1665 (2019).
+
+40.     Wang, K., Wilder, B., Perrault, A. & Tambe, M. Automatically learning compact quality-aware
+surrogates for optimization problems. Adv. Neural Inf. Process. Syst. 33, 9586–9596 (2020).
+
+41.     Shah, S., Wang, K., Wilder, B., Perrault, A. & Tambe, M. Decision-focused learning without
+decision-making: Learning locally optimized decision losses. Adv. Neural Inf. Process. Syst. 35, 1320–
+1332 (2022).
+
+42.     Huang, D., Stein, N., Rubin, D. B. & Kou, S. Catalytic prior distributions with application to
+generalized linear models. Proc. Natl. Acad. Sci. 117, 12004–12010 (2020).
+
+43.      Arkhangelsky, D., Athey, S., Hirshberg, D. A., Imbens, G. W. & Wager, S. Synthetic difference-
+in-differences. Am. Econ. Rev. 111, 4088–4118 (2021).
+
+44.     World Bank. Crude birth rate (per 1,000 people) - Sierra Leone. (2025).
+
+45.     UNICEF. Sierra Leone: Demographics, Health & Infant Mortality — Country Profile. (2025).
+
+46.    Souza, J. P. et al. A global analysis of the determinants of maternal health and transitions in
+maternal mortality. Lancet Glob. Health 12, e306–e316 (2024).
+
+47.     World Health Organization. Maternal Mortality: Fact Sheet. (2024).
+
+48.      Shafiq, Y. et al. Causes of maternal deaths in Sierra Leone from 2016 to 2019: analysis of
+districts’ maternal death surveillance and response data. BMJ Open 14, e076256 (2024).
+
+49.    Birge, J. R. & Louveaux, F. Introduction to Stochastic Programming. (Springer Science &
+Business Media, 2011).
+
+50.     Gilbert, K. An ARIMA supply chain model. Manag. Sci. 51, 305–310 (2005).
+
+51.    Bastani, H. Predicting with proxies: Transfer learning in high dimension. Manag. Sci. 67, 2964–
+2984 (2021).
+
+52.     Xu, K. & Bastani, H. Multitask learning and bandits via robust statistics. Manag. Sci. (2025).
+
+53.     Rubin, D. B. Inference and missing data. Biometrika 63, 581–592 (1976).
+
+54.     Kallus, N. & Mao, X. Stochastic optimization forests. Manag. Sci. (2022).
+
+
+                                                    13
+55.     Card, D. & Krueger, A. B. Minimum wages and employment: A case study of the fast food
+industry in New Jersey and Pennsylvania. (1993).
+
+56.      Abadie, A., Diamond, A. & Hainmueller, J. Synthetic control methods for comparative case
+studies: Estimating the effect of California’s tobacco control program. J. Am. Stat. Assoc. 105, 493–505
+(2010).
+
+57.     Clarke, D., Pailañir, D., Athey, S. & Imbens, G. Synthetic Difference In Differences Estimation.
+(2023).
+
+58.    Candes, E. & Recht, B. Exact matrix completion via convex optimization. Commun. ACM 55,
+111–119 (2012).
+
+59.     mSupply Foundation. (2024). mSupply: Logistics management information system for health
+supply chains. https://www.msupply.org.nz/
+
+
+
+
+                                                   14
+End Notes
+Acknowledgments. We are grateful for the close partnership offered by the Sierra Leone
+Ministry of Health and Sanitation and the National Medical Supplies Agency; this partnership
+stemmed from an earlier collaboration with Macro-Eyes and its team members (Lydia Bernard-
+Jones, Benjamin Fels, Rene Ishiwe, Musa Komeh, Vahid Rostami, Ashley Schmidt, and Suvrit
+Sra). We acknowledge invaluable research assistance from our team of RAs (Allan Zhang,
+Cheng-Ying Wu, Norris Chen, Bahati Tadjuidje Boniface, and Hingis Chiao-Hsin Chang). This
+draft benefited greatly from critical feedback from an excellent review team and editor, as well
+as helpful comments from Gad Allon, Alison Buttenheim, Gerard Cachon, Vishal Gupta, Harsha
+Thirumurthy, Kai Wang, Prashant Yadav, and participants at various conferences.
+
+
+Funding. This research was supported by generous funding from the Wharton AI & Analytics
+Initiative, Wharton Global Initiatives, and the Wharton Mack Institute for Innovation
+Management.
+
+
+Author Contributions. HB, OB, and AC contributed to the design and methodology of the
+research and to the writing of the manuscript. AC analyzed the results, supervised by HB and
+OB. AC, PB, JA, LS, and FS contributed to the implementation of the research.
+
+Competing Interests. There are no competing interests to declare.
+
+
+Ethics & Inclusion Statement. This research was conducted in close partnership with the Sierra
+Leone Ministry of Health and Sanitation (MoHS) and the National Medical Supplies Agency
+(NMSA), subject to a data-sharing Non-Disclosure Agreement (NDA) and a formal
+Memorandum of Understanding (MOU) with the Government of Sierra Leone. The MoHS and
+NMSA oversaw the system’s deployment and integration into national workflows. We
+collaborated closely with policymakers and frontline personnel, conducted training sessions, and
+aligned our approach with existing government systems and priorities. Roles and responsibilities
+were clearly defined in advance, and system ownership was transferred to the government after
+nationwide deployment.
+
+
+Data and Code Availability
+Data Availability. To support further research, anonymized evaluation data and documentation are
+available at https://doi.org/10.5061/dryad.h9w0vt4tw; data used for machine learning experiment are
+available here: https://github.com/Angel-Chung/AllocMedSL-DAwareML. WorldPop Global Project
+Population Data, the global friction surface dataset (Oxford/MAP/friction_surface_2019), and satellite
+imagery are publicly accessible through Google Earth https://earthengine.google.com.
+
+Code Availability. All code used in this paper was written in Python 3.9 and R (version 4.2.1).
+The code for reproducing our econometric evaluation results is available at
+
+
+                                                   15
+https://github.com/Angel-Chung/AllocMedSL_Eval, and the code for reproducing our pre-
+deployment simulation experiments is available at https://github.com/Angel-
+Chung/AllocMedSL-DAwareML.
+
+
+
+
+                                            16
+                           Supplementary Information
+    §1 describes the data and methods supporting the design of our allocation system; §2
+
+describes the deployment of our system and the empirical evaluation of its effectiveness.
+1      Data and Methods
+
+First, we outline our data sources (§1.1) and detail how we processed the raw data for training our
+
+machine learning model and our evaluation (§1.2). Second, we review the allocation mechanism
+used in Sierra Leone prior to adopting our approach (§1.3). Then, we formalize resource
+allocation as an optimization problem (§1.4). Finally, we present our end-to-end machine
+
+learning pipeline for demand estimation and decision-aware allocation (§1.5), which spans:
+
+      • Multi-Task Learning (§1.5.1): We exploited cross-facility and cross-product patterns to
+        improve predictive accuracy with limited data.
+
+      • Catalytic Priors (§1.5.2): We constructed catalytic priors from population estimates to
+        address data quality issues such as censoring and missing values.
+
+      • Decision-Aware Learning (§1.5.3): We proposed a novel method for re-weighting training
+
+        data to align the prediction objective with the downstream optimization objective, thus
+        shifting the focus from prediction accuracy to improving public health.
+
+1.1     Datasets
+
+List of public health facilities. We obtained information on the ID, latitude, longitude, and
+type of public health facilities in Sierra Leone (60); this data was cross-verified with frontline
+
+staff at the National Medical Supplies Agency (NMSA).
+
+
+Consumption data. We constructed outcomes and features for demand prediction based on
+data extracted from the District Health Information Software 2 (DHIS2) used by Sierra Leone
+
+                                                1
+Ministry of Health and Sanitation (MoHS) to collect and manage health data. The country
+transitioned from paper-based to electronic reporting of health data in public health facilities in
+
+2019 (61). We extracted monthly facility-level data on consumption, opening balance, closing
+balance, and stockouts of 62 medicines and medical supplies across all the public health facilities
+from January 2020 to November 2023. 36 of these products were allocated via our tool (see
+
+Table SI 10) and the remaining 26 were allocated via existing mechanisms (see Table SI 11);
+the latter was either because the allocation for these products was controlled by an external
+third party, or because there was too little historical data to use our system. Data from products
+
+allocated via existing mechanisms was used only to support our multi-task prediction model, and
+for the robustness check of our main analysis using product-level controls (“Alt. Control”).
+
+
+Supply data.       We collected expiry dates1 and available supply of all medicines and medical
+supplies per quarter from mSupply (59), a pharmaceutical logistics and warehouse management
+system used in Sierra Leone (and over 40 other countries). Prior to each allocation quarter, local
+
+staff are required to conduct central stock counts and record the information in mSupply. In
+addition, we used invoice records from the mSupply system to determine the stock received by
+each public health facility to evaluate compliance for district-level allocations.
+
+
+Catchment population. Estimating granular population is particularly challenging in develop-
+ing countries. To address this challenge, we leveraged multiple publicly available datasets to
+
+estimate each health facility’s catchment population (i.e., the number of people each health facil-
+ity is expected to serve): the WorldPop Global Project Population Data (62), the global friction
+surface dataset (Oxford/MAP/friction_surface_2019) from Google Earth (63), and
+
+satellite imagery (64) also accessed through Google Earth. We used this data to create population
+  1
+    In line with the NMSA’s existing practice, we prioritized allocating near-expiry products to larger districts,
+where higher consumption minimizes waste by ensuring supplies are used up prior to expiration.
+
+
+
+                                                        2
+estimates for our catalytic priors (see §1.5.2).
+
+1.2    Data Processing
+
+Training data for demand prediction model.             The data for training our demand prediction
+model is derived from the historical consumption data extracted from DHIS2. We used this time
+                                          ∗
+series data to construct both the demand ξt,n in the current period t for facility n that we are trying
+to predict as well as the features xt,n for prediction. For example, we constructed facility-specific
+
+features, including: consumption, product, facility ID, facility type, latitude and longitude of
+the facility’s geo-location, district, average consumption of the product for the facility in the
+past {1, 2, 3, 4, 5, 6} months, standard deviation of the consumption in the past 3 and 6 months,
+
+total sample size for the facility-product pair, year, month, average consumption of the product
+across facilities in the past {1, 2, 3, 4, 5, 6, 10} months. These features were determined based
+on domain knowledge and feature engineering.
+
+   This data can sometimes be unreliable due to random or inconsistent data entry at individual
+facilities, requiring careful preprocessing. First, we excluded any observations where the inflow
+and outflow are inconsistent—i.e.,
+
+
+      Closing Balance
+
+      ̸= Opening Balance + Quantity Received − Quantity Dispensed + Adjustment/Loss
+
+Second, we removed observations where all recorded quantities were zero, since this likely
+
+indicates the use of a default value. Third, we excluded extreme outliers—specifically, the top
+and bottom 5% of values, to mitigate the impact of potential data entry errors.
+   One major challenge is that we only observe consumption, which does not equal demand
+
+when there is a stockout; this issue is called demand censoring (65). To ensure we are predicting
+actual demand, we used a standard strategy where we dropped censored observations (66). In
+
+
+                                                   3
+                                       ∗
+particular, when constructing (xt,n , ξt,n ) pairs for training, we only included observations where
+                                                                                         ∗
+no stockout occurred; then, consumption is equal to the demand, so we can take it to be ξt,n .
+
+One limitation of this strategy is that it introduces covariate shift, since there may be systematic
+differences between time periods/facilities where stockouts occur and those where they do not
+occur. Covariate shift has the potential to degrade performance of the model compared to what is
+
+expected based on test set evaluation. Thus, we used unbiased population-based models that do
+not suffer from censoring as a catalytic prior when training our predictive models to mitigate this
+covariate shift (see §1.5.2).
+
+
+Panel data for evaluation. Our econometric evaluation uses the same historical DHIS2 data
+as above. In this case, the main preprocessing we performed is to remove unreliable data—i.e.,
+
+excluding any observations where the inflow and outflow are inconsistent and removing observa-
+tions where all recorded quantities were zero, as described above. Importantly, our evaluation is
+performed using consumption outcomes, which are not affected by demand censoring (we also
+
+perform a number of checks to ensure robustness to data missingness; see §2.6). As we show in
+§2.3, increasing consumption is mathematically equivalent to reducing unmet demand.
+   We used data from 2022 Q3 to 2023 Q3. We started in 2022 Q3 since this was the quarter
+
+when the NMSA began using a standardized, data-driven Excel allocation tool by Crown
+Agents; prior to this quarter, allocation procedures were inconsistent, which can prevent reliable
+counterfactual estimation. We constructed a balanced panel dataset with 1,058 facilities for
+
+evaluation.
+   The scale of quarterly consumption at each facility depends on the type and size of the
+facility’s catchment population. To account for these differences, we normalized each product’s
+
+consumption at the facility level by subtracting the mean consumption of that product across all
+
+
+
+
+                                                 4
+facilities and dividing by the standard deviation:
+
+                                            Consumptionn,m − MeanConsumptionm
+           NormalizedConsumptionn,m =                                         ,
+                                                     StdConsumptionm
+
+where n represents the facility, m represents the product, MeanConsumptionm is the average
+consumption of product m across facilities, and StdConsumptionm is the standard deviation of
+
+product m across facilities. For each facility in each quarter, we then calculated the average
+normalized consumption that is available at that facility as:
+                                              P
+                                                     m∈AvailableProductsn NormalizedConsumptionn,m
+FacilityAverageNormalizedConsumptionn =                                                              .
+                                                                AvailableProductsn
+
+Typically, this sum is only over the products that we allocated via our tool (except in our
+staggered SynthDiD approach, where we compared average normalized consumption of products
+
+we allocated vs. products we did not allocate). This approach ensures that the facility-level
+average consumption reflects the relative performance across products while accounting for the
+variability in the consumption level of different products. We show the time series trends of
+
+average normalized consumption for treatment vs. control groups in Fig. 3a in the main paper;
+these raw data trends qualitatively support our main findings in the paper.
+
+1.3    Existing Allocation Approach
+
+Each quarter, the National Medical Supplies Agency (NMSA) of Sierra Leone allocates approx-
+
+imately 70-100 free healthcare products specifically for women and children under five years
+old, with supply primarily dependent on international donations. Our system focuses exclusively
+on allocating these products. Notably, the National Medical Supplies Agency (NMSA) Act of
+
+2017 establishes the NMSA as the sole entity responsible for the procurement and distribution of
+these products to all public health institutions (67). Public facilities are the only source where
+patients can obtain these specific medications for free. While private providers may exist, they
+
+
+                                                5
+are not part of this supply chain, and a majority of patients are unlikely to purchase expensive
+drugs that are available for free. Thus, efficient allocation is critical for equitable access.
+
+    The distribution of central stock to facilities occurs quarterly based on a centralized two-stage
+push system (15), where supplies move from the central government to districts, and then to local
+health facilities. We focused on a subset of 36 products that are regularly distributed—chosen in
+
+collaboration with NMSA officials prior to our deployment—ensuring sufficient historical data
+for model training.
+    Until the deployment of our tool in 2023 Q2, the process of computing the allocation of
+
+central stock to each health facility relied primarily on a complex Excel tool. An important aspect
+was organizing health facilities into three administrative categories: District Medical Stores
+(DMS), District Hospitals (DH), and Western Area Hospitals (WAH). The DMS includes four
+
+facility types: Community Health Centers (CHC), Community Health Posts (CHP), Maternal
+and Child Health Posts (MCHP), and Clinics. Prior to each allocation cycle, all public health
+facilities submit requests based on their recent three-month rolling average of consumption.
+
+Workers can provide this information based on DHIS2, mSupply, or their professional judgment.
+    Upon receiving all facility requests, the NMSA implements a structured allocation process.
+First, the NMSA determines the distribution proportions among the three primary healthcare
+
+facility categories, typically 70% of total stock to DMS across 16 districts, 15% to DH, and
+15% to WAH. Following this initial distribution, each district receives a specific allocation based
+on multiple criteria, including district population, poverty levels, product types, and submitted
+
+requests. For example, if a DMS in a particular district is allocated 10% of the DMS share, it
+receives a quantity calculated as
+
+
+                             total available central stock × 0.7 × 0.1.
+
+In cases where central stock remains after the initial distribution and requests remain partially
+
+
+                                                  6
+fulfilled, the NMSA makes further allocations based on the unfulfilled requests.
+   Once the allocations have been finalized, the distribution process follows a two-tier delivery
+
+system. The NMSA executes the “first mile” delivery to all districts, after which each district
+manages the “last mile” distribution to individual health facilities under the NMSA’s guidance
+and supervision.
+
+   Our system was designed to address several limitations of this Excel-based approach. Most
+importantly, the existing approach predicted demand based on the average demand over the
+previous three months; while this strategy is standard, it fails to capture shifts in demand due to
+
+seasonal fluctuations or demand spikes due to natural disasters or disease outbreaks. Our system
+achieves better demand forecasting through a combination of multi-task learning, catalytic priors,
+and decision-aware learning; in addition, it also significantly automates and improves the data
+
+processing pipeline. The Excel tool relied on manually collecting requests at the district level;
+however, due to tight timelines for making allocation decisions, the government often used out-
+dated records instead. Our system also performs systematic data validation to identify potentially
+
+erroneous entries such as unexpectedly large numbers of zeros or inconsistencies in stock balance
+calculations. Finally, our system incorporates stock expiry dates into allocation decisions, which
+prioritizes sending near-expiring products to larger facilities with more consistent demand to
+
+minimize waste.
+
+1.4    Supply Chain Optimization Algorithm
+
+We designed an optimization algorithm to allocate limited medical resources to health facilities
+to minimize total unmet demand, defined as the total number of units of requested product that
+
+goes unfulfilled. The unmet demand objective is aligned with the goals of NMSA policymakers
+since it reflects the quality of care provision and directly affects patient outcomes, particularly in
+regions with limited access to alternative care options.
+
+
+                                                  7
+   Our system optimizes the allocation of each product separately. There is a fixed total available
+central stock b ∈ R (which we refer to as the budget) to be distributed across N ∈ N facilities.
+
+Each facility n ∈ [N ] has an estimated demand Ξn , where Ξ ∈ RN is a real-valued random
+vector with an estimated distribution PΞ . We denote the allocation decision and facility stock on
+hand as a ∈ RN and s ∈ RN , respectively, where an is the allocation intended for facility n and
+
+sn is the stock on hand at each facility n. Demand Ξn , allocation an , and facility stock sn are all
+measured in units of product. Then, the expected unmet demand measures the amount of unmet
+demand on average across facilities and over Ξ:
+                                                           
+                                   X
+                            EΞ        max{Ξn − an − sn , 0} .                                   (1)
+                                    n∈[N ]
+
+
+If the budget b is very large, we can choose all an sufficiently high to ensure that our objective is
+minimized at approximately 0. If the budget b is very low compared to the total excess demand
+P
+  n∈[N ] (Ξn − sn ), then most facilities will suffer stockouts, and we cannot do much better than
+P
+  n∈[N ] (Ξn − sn ) − b. However, we found that the budget is often on the order of the total excess
+                    P
+demand (i.e., b ≈ n∈[N ] (Ξn − sn )), potentially because the budget is adjusted over time to meet
+demand. In this case, many facilities are both over- and under-stocked; therefore, minimizing
+
+the objective requires setting the allocations an to be as close to the excess demand Ξn − sn as
+possible.
+   We focused on allocating over a single period instead of multi-period allocation. This is
+
+because we found that forecasting demand beyond one quarter is far too noisy to be of value.
+
+
+Optimization strategy.      When Ξ is constant, the optimal policy can be straightforwardly
+
+expressed as a linear program. To account for the uncertainty in Ξ, we use sample average
+approximation (SAA), which takes K demand samples from the estimated demand distribution
+ξ (k) ∼ PΞ (for k ∈ [K]), and then optimizes the objective on average across these samples. The
+
+
+                                                 8
+resulting optimization problem is
+                                    K     N
+                   ∗         1 X X (k)
+                 a = arg min         cn                                                          (2)
+                      a∈RN K k=1 n=1
+
+                       subj. to   c(k)  (k)
+                                   n ≥ ξn − an − sn ,       ∀k ∈ [K], ∀n ∈ [N ],
+
+                                  c(k)
+                                   n ≥ 0,      ∀k ∈ [K], ∀n ∈ [N ],
+
+                                  an ≥ 0,     ∀n ∈ [N ],
+                                  N
+                                  X
+                                        an ≤ b.
+                                  n=1
+
+                                                      (k)
+   where vector inequalities are element-wise, cn denotes the unmet demand for facility n in
+                                                                      (k)        (k)
+sample k, and b is the budget. The first two constraints ensure cn = max{ξn − an − sn , 0},
+with one of these constraints necessarily binding to minimize the objective. The last constraint
+ensures the total allocation does not exceed the budget.
+
+
+Warehouse matching. Based on the final allocation generated by our system, we determined
+the specific inventory in warehouses that should be shipped to each facility. In line with Sierra
+Leone Ministry of Health’s Free Healthcare Initiative policy, we preferentially allocated faster-
+
+expiring stock to higher-volume facilities where it is more likely to be used prior to expiration.
+In particular, for each product, we first ranked the stock based on time to expiration. Then, we
+iterated through facilities based on a ranking provided by the NMSA (typically, facilities with
+
+larger catchment populations are ranked higher). For each facility, we allocated stock that has the
+earliest expiry date across all warehouses, continuing until the facility’s allocation is fully met.
+
+1.5    Machine Learning Framework
+
+We present our machine learning framework for demand forecasting. Our system trains a random
+forest using multi-task learning and catalytic priors; to do so, it uses a novel decision-aware
+learning approach to better align predictions with the downstream optimization loss.
+
+                                                  9
+1.5.1   Multi-Task Learning
+
+A common approach for demand estimation in supply chain management and global health is
+to fit a distribution to historical consumption patterns, e.g., one could estimate the mean and
+
+variance of each facility-product pair separately based on its historical data. Except where
+otherwise noted, we elide the product from our notation; our algorithm applies the procedure we
+describe to train one model per product category (specifically, one for medicines and one for
+
+medical supplies) and uses it to generate predictions for each product. Mathematically, it can be
+viewed as solving the following maximum likelihood problem:
+                                              N
+                                            T X
+                                            X
+                                                              ∗
+                             ℓ̃(µ, σ) = −             log N (ξt,n ; µn , σn2 ),
+                                            t=1 n=1
+
+where N (x; µn , σn2 ) is the Gaussian probability density function in x with mean µn and standard
+deviation σn and ℓ̃(µ, σ) is the negative log-likelihood. This objective ℓ̃ decomposes across
+facilities n ∈ [N ], and the solution for a given n is the empirical mean and variance. However,
+
+this strategy cannot learn dynamic patterns such as seasonal effects or demand that is elevated for
+a period of time (e.g., due to an outbreak). Time series models like ARIMA are also infeasible
+due to the limited number of observations we have for each facility-product pair—rather, we
+
+must leverage cross-facility and cross-product correlations.
+   Multi-task learning allows us to train a single model on multiple interrelated tasks (i.e., the
+different facility-product pairs). By aggregating data and transferring knowledge across related
+
+tasks, multi-task learning increases the effective sample size for each task (35). Intuitively,
+demand may exhibit similar patterns across different facilities (e.g., seasonal trends, regional
+trends), and training a single model enables trends observed in a large fraction of facilities
+
+to be extended to other facilities for which data may be more scarce. Consider the following
+hypothetical example: suppose that the model observes a rise in demand for antimalarial
+medicines during the rainy season at several data-rich rural clinics; then, it can apply this pattern
+
+                                                 10
+to other rural clinics for which there is insufficient data to identify this pattern. Thus, patterns
+in one facility directly inform predictions for other facilities, increasing the overall prediction
+
+accuracy with limited data.
+    In more detail, we first categorized all products into two types (medicines or medical
+supplies/equipment, as shown in Tables SI 10 & SI 11); we trained separate predictive models
+                                                                 ∗
+for these two categories. We associated each demand observation ξt,n with a covariate vector
+xt,n ∈ Rd , which consists of features constructed from (1) the facility n, (2) the time step t, and
+                                                     ∗        ∗               ∗
+(3) the historical demand over the k previous steps ξt−k,n , ξt−k+1,n , ..., ξt−1,n (it also includes
+
+features of the product being allocated), based on domain knowledge from consultations with
+local medical experts and policy makers along with extensive feature engineering. Specifically,
+our prediction model uses the following covariates: consumption, product, facility ID, facility
+
+type, latitude and longitude of the facility’s geo-location, district, average consumption of the
+product for the facility in the past {1, 2, 3, 4, 5, 6} months, standard deviation of the consumption
+in the past 3 and 6 months, total sample size for the facility-product pair, year, month, average
+
+consumption of the product across facilities in the past {1, 2, 3, 4, 5, 6, 10} months.
+    Then, for each category (medicines or medical supply/equipment), we trained a single model
+                                   ∗
+on the resulting dataset {(xt,n , ξt,n )}t∈[T ],n∈[N ] . In particular, we aimed to train predictors µθ (x)
+
+and σθ (x) for the mean and standard deviation, respectively, where θ ∈ Θ are the parameters,
+using the following objective:
+                                       N
+                                     T X
+                                     X
+                                                       ∗
+                         ℓ̃(θ) = −             log N (ξt,n ; µθ (xt,n ), σθ (xt,n )2 ).                (3)
+                                     t=1 n=1
+
+In practice, we found that the following strategy works well. First, we used a random forest to fit
+the mean µθ (xt,n ), assuming the variance is constant. Then, we fit σθ (xt,n ) based only on the
+
+historical data for the facility n and the current product in question.
+    To evaluate our multi-task learning strategy, we compared to two techniques that do not use
+
+
+                                                     11
+multi-task learning. First, we considered the 3-month rolling average, which is the prediction
+strategy used by the existing Excel tool and more broadly is a common strategy for demand
+
+forecasting in LMICs (30, 31). Second, we compared to a standard distribution modeling
+approach, where we fit a demand distribution for each facility-product pair based only on
+historical data from that facility-product pair. We examined the fit of 46 well-known candidate
+
+distributions (e.g., normal, beta, gamma, exponential) and chose the Nakagami distribution as the
+one that best minimized the sum of squared errors between the fitted probability density function
+(PDF) and a histogram of the historical data.
+
+   We also compared to two other standard model families, LASSO regression and neural
+networks (NN), trained using the same multi-task learning pipeline as our random forest. In
+this comparison, we focused on evaluating the mean squared error (MSE) of µθ , since we fit σθ
+
+separately. Results are shown in Fig. SI 1; as can be seen, random forests consistently achieved
+lower MSE across representative products on a held-out test set.
+
+1.5.2   Catalytic Priors
+
+We implemented catalytic priors (42) as a safeguard to improve our model’s robustness to
+
+inequities in data quality (arising from missing data or censoring). Oftentimes, low quality data
+come from poorer districts—thus, a model trained only on the available data may be biased
+in poorer districts, which may create unintentional disparities in predictive performance and
+
+downstream resource allocation.
+   A natural strategy for mitigating such bias is to incorporate auxiliary data sources that are less
+likely to suffer from bias. For example, in public health, a standard approach is population-based
+
+resource allocation (PBRA), which uses population estimates to guide proportional resource
+allocation needs (68). Although population-based prediction is noisier (i.e., higher variance)
+because it cannot capture time-dependent patterns (e.g., seasonality of demand), it is less biased
+
+
+                                                12
+                                  Amoxicillin                 Depo−Provera                             Jadelle                  Magnesium Sulphate
+                       744,309                        1,042                                627                          1,089
+                       700,000
+  Mean Squared Error
+
+
+
+
+                       600,000
+                       500,000
+                                                       600                                 350
+                       400,000
+                                                       500                                 300
+                       300,000                         400                                 250
+                                                       300                                 200
+                       200,000                                                                                           300
+                                                                                           150
+                                                       200                                 100                           200
+                       100,000
+                                                       100                                  50                           100
+                            0                            0                                   0                             0
+                                      g
+
+
+
+
+                                                                  g
+
+
+
+
+                                                                                                      g
+
+
+
+
+                                                                                                                                     g
+                              LA t.
+
+
+
+
+                                                          LA t.
+
+
+
+
+                                                                                              LA t.
+
+
+
+
+                                                                                                                             LA t.
+                             3m RF
+
+
+
+
+                                     O
+
+                                                 N
+
+
+
+
+                                                         3m RF
+
+
+
+
+                                                                 O
+
+                                                                          N
+
+
+
+
+                                                                                             3m RF
+
+
+
+
+                                                                                                     O
+
+                                                                                                                  N
+
+
+
+
+                                                                                                                            3m RF
+
+
+
+
+                                                                                                                                    O
+
+                                                                                                                                               N
+                                  Av
+
+
+
+
+                                                              Av
+
+
+
+
+                                                                                                  Av
+
+
+
+
+                                                                                                                                 Av
+                                   is
+
+
+
+
+                                                               is
+
+
+
+
+                                                                                                   is
+
+
+
+
+                                                                                                                                  is
+                                                N
+
+
+
+
+                                                                         N
+
+
+
+
+                                                                                                                 N
+
+
+
+
+                                                                                                                                              N
+                                 SS
+
+
+
+
+                                                             SS
+
+
+
+
+                                                                                                 SS
+
+
+
+
+                                                                                                                                SS
+                                 D
+
+
+
+
+                                                             D
+
+
+
+
+                                                                                                 D
+
+
+
+
+                                                                                                                                D
+                               th
+
+
+
+
+                                                           th
+
+
+
+
+                                                                                               th
+
+
+
+
+                                                                                                                              th
+         0
+
+
+
+
+                                 Microgynon 30                    ORS                             Oxytocin 10IU                        Zinc
+                         1,281                       25,757                               1,462                       363,948
+  Mean Squared Error
+
+
+
+
+                                                                                                                      300,000
+                                                                                          1,000                       250,000
+                          800
+                                                     14,000                                800                        200,000
+                          600                        12,000
+                                                     10,000                                600                        150,000
+                          400                         8,000
+                                                                                           400                        100,000
+                                                      6,000
+                          200                         4,000                                200                         50,000
+                                                      2,000
+                            0                             0                                  0                             0
+                                      g
+
+
+
+
+                                                                  g
+
+
+
+
+                                                                                                      g
+
+
+
+
+                                                                                                                                     g
+                              LA t.
+
+
+
+
+                                                          LA t.
+
+
+
+
+                                                                                              LA t.
+
+
+
+
+                                                                                                                             LA t.
+                             3m RF
+
+
+
+
+                                     O
+
+                                                 N
+
+
+
+
+                                                         3m RF
+
+
+
+
+                                                                 O
+
+                                                                             N
+
+
+
+
+                                                                                             3m RF
+
+
+
+
+                                                                                                     O
+
+                                                                                                                  N
+
+
+
+
+                                                                                                                            3m RF
+
+
+
+
+                                                                                                                                    O
+
+                                                                                                                                               N
+                                  Av
+
+
+
+
+                                                              Av
+
+
+
+
+                                                                                                  Av
+
+
+
+
+                                                                                                                                 Av
+                                   is
+
+
+
+
+                                                               is
+
+
+
+
+                                                                                                   is
+
+
+
+
+                                                                                                                                  is
+                                                N
+
+
+
+
+                                                                         N
+
+
+
+
+                                                                                                                 N
+
+
+
+
+                                                                                                                                              N
+                                 SS
+
+
+
+
+                                                             SS
+
+
+
+
+                                                                                                 SS
+
+
+
+
+                                                                                                                                SS
+                                 D
+
+
+
+
+                                                             D
+
+
+
+
+                                                                                                 D
+
+
+
+
+                                                                                                                                D
+                               th
+
+
+
+
+                                                           th
+
+
+
+
+                                                                                               th
+
+
+
+
+                                                                                                                              th
+                                                                  3mth Avg        LASSO           RF
+                                      Dist. between
+Figure SI 1: Prediction error comparison        NN  different model families. Random forests
+                                                                                      0
+
+
+
+
+(RF) yield the smallest prediction error for representative essential medicines chosen by the
+NMSA, compared to using a rolling 3-month average (3mth Avg), distribution modeling (Dist.)
+described in §1.5.1, LASSO regression (LASSO), and neural networks (NN).
+
+
+
+since the observations do not suffer from nonrandom missingness or censoring. Catalytic
+priors (42) allow us to suitably trade off bias and variance by regularizing our random forest with
+
+the simpler but less biased population-based model, which predicts demand only based on an
+estimate of the at-risk population in the catchment of a health facility.
+                                                                                          0
+             For a given product, denote the prediction of the population-based model by ξt,n = µC (pn ) =
+
+r · C · pn , where pn is our estimated population in the catchment of facility n; r ∈ R is an
+estimated multiplier derived from census data to account for the at-risk population (defined by
+the percentage of women and children in a given area); and C ∈ R is a single product-specific
+
+parameter estimated from our historical data (i.e., the average quarterly demand per unit of
+at-risk population). The catchment population pn served by each health facility is not readily
+
+
+
+                                                                                 13
+available, so we estimated it as follows:
+
+   1. First, we collected data on geographic coordinates of health facilities in Sierra Leone
+
+         from several sources, including Google Maps and Geo-Referenced Infrastructure and
+         Demographic Data for Development (GRID3) (60).
+
+   2. Next, we used Google Earth engine’s satellite imagery datasets to compute the normalized
+         difference vegetation index (NDVI) on a 10km×10km patch around each facility at
+
+         monthly resolution between January 2022 and December 2022. NDVI serves as a proxy
+         for vegetation density, which can indicate human activity.2
+
+   3. Then we used “friction surface” data from Google Earth (63) to obtain the travel time
+         between every facility and pixel of the area with potential human activity. This allows us
+
+         to define the catchment area based on minimal travel time.
+
+   4. Finally, we estimated pn for health facility n by using data from WorldPop (62), which
+         provides population count estimates for each 100m×100m grid cell.
+
+We estimated r, the proportion of women and children, using 2015 Sierra Leone Census data (69)
+
+at the chiefdom level.3
+       Then, we followed (42), generating synthetic observations from µC to act as a Bayesian
+prior for our random forest. In particular, we used µC to construct a single synthetic example
+
+(xt,n , µC (pn )) for each facility n ∈ [N ] and time period t ∈ [T ]. We then trained µθ̂ on a
+weighted combination of the original dataset and this synthetic dataset. Intuitively, the synthetic
+dataset regularizes µθ̂ towards a stable estimate µC in data-poor regions of the covariate space.
+   2
+      NDVI is derived from satellite images using the formula: NDVI = (NIR − red)/(NIR + red). Since vege-
+tation reflects light in the near-infrared (NIR) spectrum and absorbs light in the red spectrum, areas with higher
+photosynthesis activity exhibit larger NDVI values.
+    3
+      Chiefdoms are a more granular administrative unit than districts; there are 190 chiefdoms in Sierra Leone. We
+further verified these estimates using data from the United Nations Office for the Coordination of Humanitarian
+Affairs (OCHA) (70)
+
+                                                       14
+1.5.3   Decision-Aware Learning
+
+The next step is to incorporate our predictions into the optimization model to generate allocation
+decisions. However, the model is usually trained to forecast demand using a standard objective
+
+such as mean-squared error (MSE), which focuses on minimizing prediction error and ignores
+the decision error in the downstream optimization problem, making it decision-blind. This can
+result in poor performance since it may not focus the capacity of the machine learning model on
+
+predictions that are actually relevant to making decisions (37, 38).
+   Recent work has proposed algorithms that incorporate the downstream optimization objective
+as a decision loss in the training algorithm (38, 71). We found that existing decision-aware
+
+learning algorithms were either computationally intractable at our scale or incompatible with the
+rest of our prediction and optimization pipeline. Thus, we developed a novel and light-weight
+decision-aware learning approach; it relies only on re-weighting observations in model training,
+
+which can be easily integrated with existing data pipelines.
+   In our setting, the decision loss is
+
+                                        ℓ(µ̂; µ∗ ) = L(a∗ (µ̂), µ∗ ),
+
+where
+                                  N
+                                  X
+                     L(a; µ) =          EΞn ∼N (µn ,σ2 ) [max{Ξn − an − sn , 0}] ,
+                                  n=1
+
+is the unmet demand for allocation a ∈ RN assuming the true demand for facility n ∈ [N ]
+is N (µn , σ 2 ) (recall that for training the random forest, we have assumed that the standard
+deviation is a fixed value σ), and where
+
+                           a∗ (µ) = arg min L(a; µ)
+                                             a∈RN
+                                                                 N
+                                                                 X
+                           s.t.   an ≥ 0       (∀n ∈ [N ]),             an ≤ b.
+                                                                 n=1
+
+
+                                                     15
+   is the optimal allocation assuming the demand distributions for n ∈ [N ] is N (µn , σ 2 ). In
+other words, the decision loss is the expected unmet demand incurred when using the predictions
+
+µ̂ in our optimization problem. To address objective mismatch, we could train µθ to directly
+minimize the decision loss:
+                                               N
+                                             T X
+                                             X
+                              θ̂ = arg min             ℓ(µθ (xt,n ); µ∗t,n ).
+                                      θ∈Θ    t=1 n=1
+
+Algorithms for doing so have been proposed in the setting of linear regression (37), and in the
+more general setting of differentiable model families by taking gradients through the optimization
+
+problem (39, 40). However, existing techniques are often limited to specific prediction setups or
+become computationally intractable for large-scale problems (39, 40, 54).
+   Our strategy is to Taylor expand the optimal decision loss, which we will show can be
+
+interpreted as up-weighting data more relevant to the downstream optimization problem. This
+approach can also be easily integrated with existing pipelines and is flexible enough to handle
+a broad range of model families. In particular, we approximated the decision loss by Taylor
+
+expanding it around µ̂ − µ0 (where µ0 is the current prediction and µ̂ = fθ (x)), yielding
+
+           L(a∗ (µ̂); µ∗ ) ≈ L(a∗ (µ0 ); µ∗ ) + ∇a L(a∗ (µ0 ); µ∗ )⊤ ∇µ a∗ (µ0 )⊤ (µ̂ − µ0 ).   (4)
+
+
+Since the first term is a constant, we can ignore it; in particular, we have
+
+                  ℓ(µ̂; µ∗ ) ≈ ∇a L(a∗ (µ0 ); µ∗ )⊤ ∇µ a∗ (µ0 )⊤ (µ̂ − µ0 ) + const
+
+                            = ∇a L(a∗ (µ0 ); µ∗ )⊤ ∇µ a∗ (µ0 )⊤ (µ̂ − µ∗ ) + const.
+
+
+Here, we have replaced µ0 with µ∗ ; since both of these are constants, it does not affect the
+optimal solution. With this replacement, we can upper bound the term by its absolute value to
+
+
+
+
+                                                  16
+avoid “overshooting” ξ ∗ , resulting in a weighted absolute error loss:
+                                          N
+                                        T X
+                                        X
+                               ∗
+                        ℓ(µ̂; µ ) =               wt,n (µ̂t,n − µ∗t,n ) + const
+                                        t=1 n=1
+                                        XT X N
+                                   ≤              |wt,n | · |µ̂t,n − µ∗t,n | + const,
+                                        t=1 n=1
+
+where
+
+                            wt,n = ∇µ a∗ (µ0 )⊤ ∇a L(a∗ (µ0 ); µ∗ ) t,n
+                                                                   
+
+
+Our algorithm uses this upper bound as the loss function, which works with any standard machine
+learning algorithm that can take weighted examples. In particular, we trained our random forest
+
+to minimize this loss on the training data:
+                                            N
+                                          T X
+                                          X
+                                                                              ∗
+                          θ̂ = arg min               |wt,n | · |µθ (xt,n ) − ξt,n |.
+                                    θ      t=1 n=1
+                                                               ∗
+Note that we do not observe the true demand µ∗t,n , so we use ξt,n as an estimate. Finally, as a
+
+heuristic, we replaced the absolute error with the squared error, which is more computationally
+efficient.
+    An important insight here is that the weight can be interpreted as re-weighting training
+
+examples. The wn can be decomposed as two gradients, and this can be computed numerically
+efficiently for a general class of convex programs (72). In our case, we derived the weights
+analytically by solving the optimization problem:
+                                        N
+                                        X
+                    ∗
+                  a (µ) = arg min             EΞn ∼N (µn ,σ2 ) [max{Ξn − an − sn , 0}]
+                             a∈RN       n=1
+                                                                     N
+                                                                     X
+                           subj. to      an ≥ 0 (∀n ∈ [N ]),               an ≤ b.
+                                                                     n=1
+
+    Letting Ξn = µn + ηn , where ηn ∼ N (0, σ 2 ) i.i.d., we can form the Lagrangian:
+                 N                                                    N
+                                                                           !     N
+                X                                                    X          X
+      L(a, λ) =     Eηn [max{µn + ηn − an − sn , 0}] + λ0 b −            an −       λn an .
+                  n=1                                                           n=1      n=1
+
+
+                                                     17
+The KKT conditions are
+
+         0 = ∇an L(a∗ (µ), λ∗ (µ)) = −Pηn [a∗n (µ) ≤ µn + ηn − sn ] + λ∗0 (µ) − λ∗n (µ)
+                                               N
+                                               X
+                         ∗          ∗
+         0 = ∇λ0 L(a (µ), λ (µ)) =                    a∗n (µ) − b
+                                               n=1
+         0 = λ∗n (µ)a∗n (µ)
+
+         0 ≤ λ∗n (µ)
+
+         0 ≤ a∗n (µ).
+
+Let
+
+                                        I(µ) = {n ∈ [N ] | λ∗n (µ) = 0}.
+
+Note that if n ̸∈ I(µ), then a∗n (µ) = 0, so the first condition becomes
+                                (
+                                   µn − sn + Fη−1  (1 − λ∗0 (µ)) if n ∈ I(µ),
+                     a∗n (µ) =                  n
+
+                                   0                              otherwise.
+
+where Fηn is the CDF of ηn . Since the ηn are i.i.d., we write this CDF as simply Fη . Summing
+over n ∈ [N ], we have
+                     N
+                     X                    X
+                             a∗n (µ) =            µn − sn + Fη−1 (1 − λ∗0 (µ))
+                                                                              
+                b=
+                     n=1                 n∈I(µ)
+                                                               
+                                              X
+                                        =            µn − sn  + |I(µ)| · Fη−1 (1 − λ∗0 (µ)).
+                                             n∈I(µ)
+
+Thus, we have
+                                                                P
+                                                          b−        n∈I(µ) (µn − sn )
+                                 Fη−1 (1 − λ∗0 (µ)) =                                   ,
+                                                                     |I(µ)|
+
+so
+                         (                                      
+                                      1
+                                               P
+                          µn − sn + |I(µ)|  b − m∈I(µ) (µm − sm )                           if n ∈ I(µ),
+             a∗n (µ) =
+                             0                                                              otherwise.
+
+                                                           18
+Taking the derivative with respect to µ, we have
+                                                                 1
+                                       ∇µm a∗n (µ) = δm,n −           .
+                                                               |I(µ)|
+Thus, we have
+                                 N
+                                 X
+∇µm L(a∗ (µ), λ∗ (µ)) = ∇µm            Eηn [max{µn + ηn − a∗n (µ) − sn , 0}]
+                                 n=1
+                          N
+                          X
+                      =         Pηn [a∗n (µ) ≤ µn + ηn − sn ] ∇µm a∗n (µ)
+                          n=1
+                           N                                                         
+                          X                                                    1
+                      =         Pηn [a∗n (µ) ≤ µn + ηn − sn ]         δm,n −
+                          n=1
+                                                                             |I(µ)|
+                                                                             N
+                                                                     1 X
+                      = Pηm [a∗m (µ) ≤ µm + ηm − sm ] −                      Pη [a∗ (µ) ≤ µn + ηn − sn ]
+                                                                   |I(µ)| n=1 n n
+                      = Pηm [a∗m (µ) ≤ µm + ηm − sm ] + const
+
+                      ≈ I[a∗m (µ) ≤ µm − sm ] + const,
+
+where the approximation on the last line holds when σ is small. Using this gradient, our predictive
+
+model’s objective can be approximated as
+                               N
+                             T X
+                             X
+              θ̂ = arg min                                                                ∗
+                                       (I[a∗t,n (µ) ≤ µt,n − st,n ] + c) · |µθ (xt,n ) − ξt,n |.
+                      θ      t=1 n=1
+
+for some constant c. This loss up-weights the training examples that are more likely to experience
+
+unmet demand. One remaining issue is that we do not know a∗t,n (µ), which is required to compute
+the weight. We approximated it by first training a decision-blind model, using it to optimize the
+allocations, and then using these allocations to determine the weights.
+
+
+Out-of-Sample Comparison. Prior to deploying our framework, we validated it on historical
+
+data by showing that it outperforms several baselines on a held-out test set, including:
+
+    • Excel tool: Data-driven tool previously used in conjunction with DHIS2 by the NMSA to
+      make allocations.
+
+                                                     19
+       • Decision-blind ablation: Follows our pipeline but uses the MSE loss to train the random
+         forest instead of our decision-aware learning algorithm.
+
+       • StochOptForest: Follows our pipeline but trains decision-aware random forests using the
+
+         end-to-end optimization strategy by (54).
+
+       • Distribution modeling: Estimates demand via distribution modeling (as described in
+         §1.5.1), and then optimizes allocations based on these forecasts.
+
+       • Global Health: Estimates demand via a 3-month rolling average (described in §1.5.1,
+         common in global health (30, 31)), and then optimizes allocations based on these fore-
+
+         casts (73).
+
+       • Population-based: Allocates total available central stock to chiefdoms proportionally to
+         their at-risk population (women and children), as commonly done in global health (30).
+        Within a chiefdom, all facilities are treated equally.4
+
+Here, we introduce the index m ∈ [M ] to denote products. We applied our framework and
+
+evaluate the unmet demand for each facility-product pair:
+                               (
+                                 0                       if µm,n − am,n − sm,n < 0
+           UnmetDemandm,n =                                                                                     (5)
+                                 µm,n − am,n − sm,n otherwise
+
+for all products m ∈ [M ] and facilities n ∈ [N ], where am,n is allocation decision and µm,n is
+the true demand. Then, we computed the total unmet demand across all facilities and divided it
+
+by total demand to obtain a normalized total unmet demand, and averaged across products: 5
+                                                                     M    PN
+                                            1      X
+                                                                             n=1 UnmetDemandm,n
+           NormalizedTotalUnmetDemand =                                          PN             .               (6)
+                                        # products m=1                             n=1 µ m,n
+
+   4
+     Note that current data sources do not provide facility-level population estimates in Sierra Leone; we construct
+such estimates from a variety of data sources in §1.5.2.
+   5
+     Note that we approximate total demand by total consumption.
+
+
+                                                        20
+To test allocation performance in challenging environments, we focused our evaluation on lower
+budgets—specifically, we used the 25th percentile of quarterly budgets (by product) observed in
+
+our data. We then measured how much our approach reduces unmet demand compared to the
+baseline:
+
+         NormalizedTotalUnmetDemandBaseline − NormalizedTotalUnmetDemandOurs
+                                                                             .                  (7)
+                         NormalizedTotalUnmetDemandBaseline
+
+Our results are shown in Table SI 1; they illustrate that our approach outperforms other baselines.
+First, it performs significantly better than non-machine learning approaches, demonstrating the
+
+predictive power of machine learning. Next, StochOptForest most likely performs poorly since it
+is unable to integrate its decision-aware learning strategy with multi-task learning. At a high
+level, their algorithm assumes that there is a single optimization problem for each example in
+
+the dataset (i.e., one for each facility-product pair). However, in our problem, a single product’s
+optimization problem is associated with many examples (i.e., observations across all facilities).
+Thus, to apply their approach, we need to decouple the optimization problem into a separate
+
+optimization problem for each facility, which we do using the optimal dual variable λ. However,
+this eliminates cross-learning between facilities, which may explain the poor results. Finally,
+we also demonstrated a 5% improvement compared to a purely decision-blind approach; while
+
+this improvement is comparatively smaller, a 5% reduction in unmet demand still has significant
+implications for social welfare. Furthermore, it demonstrates the potential for decision-aware
+learning to improve performance even compared to powerful state-of-the-art models such as
+
+multi-task random forests.
+
+
+2    Evaluation and Deployment
+
+In this section, we describe how we deployed our system (§2.1) and econometrically evaluated
+its impact using SynthDiD (§2.2); we established an equivalence between consumption and
+
+                                                21
+Table SI 1: Average % Improvement in Unmet Demand. We compare our framework vs.
+various baselines on an out-of-sample historical dataset.
+
+                                          Method                         Improvement %
+                       Our Framework                                                    0%
+                       Decision-Blind Ablation                                          5%
+                       Population Based Census                                         27%
+                       Distribution Modeling                                           82%
+                       Global Health (3 Month Rolling Avg)                             88%
+                       StochOptForest                                                  92%
+                       Existing Excel Tool                                             98%
+
+
+unmet demand to justify this analysis (§2.3). Then, we investigated real-world compliance
+to our allocations (§2.4), analyzed the distributional impacts of our deployment (§2.5), and
+performed multiple robustness checks to validate our main findings (§2.6). Finally, we performed
+
+a cost-effectiveness analysis (§2.7).
+
+2.1     Deployment Details
+
+The Sierra Leone national government deployed our system in 2023 Q2 for 5 randomly selected
+districts: Tonkolili, Falaba, Karene, Kono, and Pujehun; subsequently, it was rolled out nation-
+
+wide in 2023 Q3. We present a balance table for pre-treatment covariates in Table SI 12;6 as can
+be seen, there are no statistically detectable differences between the two groups. Furthermore,
+we present data missingness rates for treated and control districts in Table SI 13. Prior to the
+
+deployment, the government had established predetermined supply levels for this period and
+allocated resources to control districts. The remaining supply was then assigned to the treatment
+districts, maintaining independence of supply quantities between the two groups.
+   6
+    This table is based on district-level covariates from the Global Data Lab (74) and the Service Delivery Indicators
+Health Survey (75). We constructed the corresponding treatment and control values by averaging over districts in
+each respective group, weighted by their population. One issue is that the districts in both data sources predated the
+2017 creation of two new districts (Koinadugu split in two into Falaba and Koinadugu; Bombali split in two into
+Karene and Bombali); Falaba and Karene are treated districts whereas Koinadugu and Bombali are control districts.
+We took the covariates for Falaba and Karene to be the same as the ones for Koinadugu and Bombali, respectively.
+
+
+                                                         22
+Figure SI 2: Our System’s Web App Interface: Consistent with their prior workflow, users
+upload an Excel sheet with total available central stock information (which is directly downloaded
+from the mSupply database) and then run the tool to obtain downloadable allocation results. This
+web app is now owned and operated by the Sierra Leone national government.
+
+
+   Before the implementation, we first conducted two training sessions for policymakers and
+frontline workers to provide them with a technical understanding of how our tool operated and
+what it did. We ensured that our allocation tool was compatible with the same formatted inputs
+
+and outputs as the prior Excel allocation tool, allowing users to maintain their existing workflows
+with minimal changes. Fig. SI 2 shows a screenshot of our web interface.
+   The deployment began in June 2023. The implementation timeline proceeded as follows:
+
+in the Falaba and Tonkolili districts, last-mile delivery to local health facilities was completed
+by mid-July, while in the Karene, Kono, and Pujehun districts, implementation extended to
+
+
+                                                23
+the end of July due to logistical delays caused by the presidential election in Sierra Leone. To
+evaluate the impact of the intervention, we primarily analyzed outcomes from 2023 Q2 to Q3.
+
+The government did not conduct an allocation in Q4 due to insufficient supply, arising from a
+central-level shortage of health aid from donors.
+   Our system functioned as a decision support tool, where central and district-level planners
+
+retain ultimate authority and can override the system when necessary. During deployment, when
+planners identified discrepancies between our recommendations and their practices (e.g., due
+to data lags, or a strategic need to maintain a larger safety stock for certain items that quarter),
+
+they were able to easily adjust the allocations. This human-in-the-loop approach was crucial
+for building trust and enabling context-specific adaptability. We found that decision-makers
+closely followed the algorithmic allocations—the normalized overlap between the actual and
+
+algorithmic allocations ranged from 0.89 to 1 (see §2.4 for details). The system automatically
+re-trains the machine learning model based on updated data for each new quarterly allocation,
+so that it continuously adapts to shifts in demand patterns. The system is hosted on AWS with
+
+government-controlled access, ensuring institutional ownership. We provided knowledge transfer
+to local personnel to build internal capacity for system maintenance.
+
+2.2    Main Analysis Methodology
+
+While the raw data in Fig. 3a shows a descriptive increase in consumption, the small number
+
+of treated districts necessitates an evaluation strategy that appropriately matches pre-treatment
+patterns across treated and control groups. To this end, we used SynthDiD (43) to analyze
+the impact of our deployment on patient consumption. SynthDiD identifies causal effects by
+
+ensuring that the difference between treated and synthetic control facilities remains stable before
+treatment. To achieve this goal, SynthDiD assigns two sets of weights: one for control facilities
+and another for time periods. The control facility weights are chosen so the weighted average of
+
+
+                                                24
+control facilities’ outcomes best match the unweighted average of treated facilities’ outcomes
+in the pre-treatment period. The time period weights ensure that the weighted average of the
+
+control facilities’ outcomes in the pre-treatment period best match their unweighted average of
+the control facilities’ outcomes in the post-treatment period.
+   By combining these weights, SynthDiD constructs synthetic control facilities whose pre-
+
+treatment trends align with those of the treated facilities, thereby providing a credible estimate of
+the treatment’s causal impact and addressing key limitations in other commonly used estimators.
+Unlike standard difference-in-differences (DiD), which requires a parallel trends assumption,
+
+SynthDiD remains robust even when treatment and control groups show different trends before
+the intervention. Furthermore, it can effectively control for variations in outcomes that arise from
+both time-related and unit-specific factors, unlike standard synthetic controls, which requires a
+
+near-perfect match in pre-treatment levels.
+   Using unit weights ω̂nsdid and time weights λ̂sdid
+                                                 t    derived from Eqs. (4) & (6) in (43), the
+average effect of the treatment on the treated (ATT) is estimated as follows:
+                                                  T
+                                                  N X
+                                                  X
+              τ̂   sdid
+                          , µ̂, α̂, β̂ = argmin             (Yn,t − µ − αn − βt − Wn,t τ )2 ω̂nsdid λ̂sdid
+                                                                                                      t      (8)
+                                        τ,µ,α,β   n=1 t=1
+
+where the outcome Yn,t is the average consumption for facility n at time t across all allocated
+
+products; µ is the baseline average outcome, αn are facility fixed effects, and βt are time period
+fixed effects. The treatment assignment Wn,t indicates whether facility n received treatment at
+time t, and τ is the treatment effect. Control facility weights ω̂nsdid and time period weights λ̂sdid
+                                                                                                  t
+
+account for differences between treated and control groups over time.
+   We independently performed our analysis using both the synthdid package in R and the
+sdid package in STATA, finding consistent results. We estimated standard errors using the
+
+jackknife (Algorithm 3 in (43)). To validate our use of SynthDiD, we also performed an event
+study (57), which showed that there are no statistically significant differences between treated
+
+
+                                                             25
+and control facilities prior to our intervention, and that the change in consumption emerged
+only after our system was deployed (see Fig. SI 3). We used Eq. (8) in (57), which compares
+
+the treated-minus-synthetic-control difference in each time period t to a baseline pre-treatment
+difference:
+
+                                                             Tr
+                                     (ȲtT r − ȲtCo ) − (Ȳbaseline      Co
+                                                                     − Ȳbaseline ),
+
+         Tr             Co
+where Ȳbaseline and Ȳbaseline are the baseline means for the treated group and the synthetic control
+group, respectively. Unlike conventional event studies that choose a single pre-treatment period
+
+as the baseline, the SynthDiD framework selects the optimal pre-treatment weights λ̂sdid
+                                                                                    t
+
+                                     Tpre                                        Tpre
+                                     X                                           X
+                         Tr
+                      Ȳbaseline =          λ̂sdid
+                                              t    ȲtT r   and      Co
+                                                                  Ȳbaseline =          λ̂sdid
+                                                                                          t    ȲtCo .
+                                     t=1                                         t=1
+
+Then, we constructed the event-study estimates from SynthDiD using the following steps:
+
+   1. Initial Estimation:
+
+        (a) Fit SynthDiD on the full sample to obtain time period weights λ̂ and the pre-treatment
+
+              difference in outcomes.
+
+        (b) Adjust post-treatment differences by subtracting the pre-treatment mean difference.
+
+   2. Bootstrap Inference:
+
+        (a) For b ∈ {1, . . . , B}, resample the data and re-estimate SynthDiD.
+
+        (b) Compute the bootstrap-adjusted difference series for each replication.
+
+        (c) Use these bootstrap replicates to compute standard errors and form confidence
+              intervals.
+
+
+
+
+                                                            26
+                                                                     0.20     Point Estimate
+                                                                              95% CI
+
+
+
+
+                         Difference in Avg Normalized Consumption
+                               between treated & control district
+                                                                     0.15
+
+
+
+
+                                                                     0.10
+
+
+
+
+                                                                     0.05
+
+
+
+
+                                                                     0.00
+
+
+
+
+                                                                    −0.05
+                                                                         2022Q3        2022Q4    2023Q1   2023Q2   2023Q3
+
+
+
+Figure SI 3: SynthDiD Event Study. This plot shows the estimated ATT across time. Blue
+diamonds represent point estimates, and the shaded region represents 95% confidence intervals.
+The dashed vertical line indicates the time period immediately prior to our 2023 Q2 deployment.
+As expected, the pre-treatment estimates are close to zero, while the post-treatment estimates are
+positive and large, indicating that our deployment increased consumption.
+
+
+2.3    Equivalence of Consumption and Unmet Demand
+
+One of the key challenges in evaluating our deployment is that unmet demand—the usual metric
+
+for evaluating the efficiency of inventory management policies—is censored since we do not
+observe when patient orders go unfulfilled. Instead, we use consumption as our main metric,
+which measures the total amount of each product distributed to patients across all facilities.
+
+First, we show that under a simple model of dispensing, maximizing total consumption and
+minimizing total unmet demand are mathematically equivalent in our optimization formulation.
+Next, we show that this equivalence is robust to stock-dependent dispensing (such as rationing or
+
+over-dispensing) and product substitution.
+
+
+Basic Model.     In each quarter t, each facility n ∈ [N ] has current stock sm,n,t ∈ R≥0 of
+product m ∈ [M ] and needs to fulfill demand ξm,n,t ∈ R≥0 until it runs out of stock. Our goal
+is to allocate medicines to each facility to minimize unmet demand. The unmet demand and
+
+                                                                                                27
+consumption for product m and facility n in time period t as a function of the allocation a ∈ R≥0
+of that product to that facility in that time period are
+
+                              Um,n,t (a) = max{ξm,n,t − (sm,n,t + a), 0}
+
+                              Cm,n,t (a) = min{ξm,n,t , sm,n,t + a},
+
+respectively. It is easy to check that
+
+                                    Um,n,t (a) + Cm,n,t (a) = ξm,n,t
+
+for any allocation a. Given allocation decisions {an }n for each facility n ∈ [N ], we have
+
+                                 Um,t ({an }n ) + Cm,t ({an }n ) = ξm,t ,
+
+                         PN                                                          PN
+where Um,t ({an }n ) =    n=1 Um,n,t (an ) is total unmet demand, Cm,t ({an }n ) =     n=1 Cm,n,t (an )
+                                    PN
+is total consumption, and ξm,t =       n=1 ξm,n,t is the total demand for quarter t. Thus, total unmet
+
+demand plus total consumption does not depend on our allocation decisions {an }n ; therefore,
+the allocation that minimizes unmet demand also maximizes consumption.
+
+   Of course, this model makes a number of strong assumptions about how stock is distributed.
+We describe how to handle alternative behaviors: (1) rationing (i.e., when the facility is low on
+stock, it allocates less to patients than their need), (2) over-dispensing (i.e., when the facility
+
+has excess stock, it allocates more to patients than they need), and (3) substitution (i.e., when
+stock of one medication runs out, the facility allocates a substitute). We discuss rationing and
+over-dispensing in §2.3.1, and substitution in §2.3.2.
+
+2.3.1   Rationing and Over-Dispensing.
+
+Providers may change their dispensing patterns dynamically as a function of the available stock
+remaining. For instance, if product stock is running low and the next allocation isn’t anticipated
+for some time, a provider may ration stock by only allocating to high-risk patients; alternatively,
+
+                                                   28
+if product stock is relatively high and the next allocation is anticipated soon, a provider may
+dispense to even low-risk patients who are not normally allocated. We show using a Markov
+
+Decision Process analysis that any such stock-dependent allocations still satisfy the equivalence
+of consumption and demand, as long as providers do not waste stock (i.e., dispense to a patient
+with no demand, or dispense more than they could plausibly use). Waste is unlikely to occur in
+
+our setting due to the limited supply. We also performed an empirical analysis to try to detect
+rationing and over-dispensing behavior in our data; we found no evidence for such behaviors.
+
+
+Theoretical analysis.    For this section, we redefine the variables t, st , at , and ξt to be the index
+of the current patient, the current stock of a medicine at a given facility when patient t arrives,
+
+the amount of medicine distributed to patient t, and the target demand of patient t, respectively.
+Specifically, we consider a model where (1) patients arrive at the facility sequentially over T
+steps (indexed by t ∈ [T ]), are distributed at of the product and then leave; (2) each patient has a
+
+target demand ξt depending on their type xt ∈ [K], and the facility distribution satisfies at ≤ ξt ;
+and (3) unmet demand for that patient is ξt − at . Under this assumption, we prove that unmet
+demand and negative consumption are equivalent even in this general setting:
+
+                                      Ū (π) + C̄(π) = const,
+
+where Ū (π) and C̄(π) are the expected unmet demand and consumption when using policy π,
+respectively. This result establishes under general conditions that consumption is a reasonable
+
+proxy for unmet demand.
+    We model the system as a finite-horizon MDP (S, A, R, P, T ), where the state is a pair
+(s, x) ∈ S = (N ∪ {0}) × [K] consisting of the current stock s and the type x of the patient
+
+being served on step t, the action a ∈ A = N indicates the amount of medication to dispense to
+the patient, the reward R(s, x, a) ≥ 0 indicates the payoff for dispensing medicine to the patient
+(with R(s, x, 0) = 0), the transition measure P (s, x, s′ , x′ ) = 1(s′ = s − a) · P (x′ ) consists of
+
+                                                 29
+a deterministic update s′ = s − a to the stock and an i.i.d. sample of the next patient type x′ ,
+and the time horizon is T ∈ N. We assume that patient type x = 1 indicates no patient, and
+
+R(s, 1, a) = 0 for all a ∈ A. We impose the constraint that a ≤ s. We let ξ(x) ∈ N be the ideal
+amount of medication needed by patient of type x.
+    We assume the facility is using a state-dependent and time-dependent policy πt : S → A
+
+to distribute medicine to patients. Since the state includes the current stock and the time
+encodes the time remaining until the end of the quarter, this policy can encode very complex
+rationing and over-dispensing strategies. As usual, a given policy π induces a distribution
+
+D(π) over rollouts ζ = ((s1 , x1 , a1 , r1 ), ..., (sT , xT , aT , rT )). We let Ū (π) = Eζ∼D(π) [U (ζ)] and
+C̄(π) = Eζ∼D(π) [C(ζ)] denote the expected unmet demand and consumption, respectively. The
+following result shows that under this general model, unmet demand and negative consumption
+
+are equivalent metrics.
+
+Theorem 1. Assume at ≤ ξt (where ξt = ξ(xt )) for all t ∈ [T ]. Then, we have Ū (π) = Ξ̄− C̄(π),
+where Ξ̄ is a constant independent of π.
+
+Proof. Given an arbitrary rollout ζ = ((s1 , x1 , a1 , r1 ), ..., (sT , xT , aT , rT )), the total unmet
+demand across ζ is
+                                         T
+                                               max{ξt − at , 0} · 1(xt ̸= 1),
+                                         X
+                              U (ζ) =
+                                         t=1
+
+where ξt = ξ(xt ), and consumption is
+                                           T
+                                                 min{at , ξt } · 1(xt ̸= 1).
+                                           X
+                                  C(ζ) =
+                                           t=1
+
+Under our assumption that at ≤ ξt , we have
+                            T                                        T
+                                  (ξt − at ) · 1(xt ̸= 1) = Ξ(ζ) −          at · 1(xt ̸= 1),
+                            X                                        X
+                  U (ζ) =
+                            t=1                                       t=1
+
+
+
+                                                      30
+and
+                                                   T
+                                                          at · 1(xt ̸= 1),
+                                                   X
+                                       C(ζ) =
+                                                    t=1
+
+                 PT
+where Ξ(ζ) =        t=1 ξt ; it follows that
+
+
+
+                                          U (ζ) = Ξ(ζ) − C(ζ).
+
+
+Taking the expectation over ζ ∼ D(π) , where D(π) is the distribution over rollouts induced by
+using policy π, we have
+
+
+                                               Ū (π) = Ξ̄ − C̄(π),
+
+where Ξ̄ = Ξ̄(π) = Eζ∼D(π) [Ξ(ζ)] is the expected total demand; note that Ξ(ζ) only depends on
+ζ through the sequence of patient covariates (x1 , ..., xT ), so Ξ̄(π) is independent of π.
+
+
+Empirical analysis.        Next, we performed empirical analyses to try to detect rationing and
+
+over-dispensing behaviors. Ideally, we would have patient-level data to understand if providers
+are allocating differently to different risk profiles as a function of available stock; however, such
+data does not exist in a digitized, unified form in many developing countries due to infrastructure
+
+limitations. As a result, we are limited to analyzing aggregate monthly allocations.
+      First, we considered rationing—facilities with low inventory may preemptively reduce
+consumption (e.g., by allocating only to high-risk patients) even if they are sufficiently well
+
+stocked, in order to avoid a stockout in future months before the next allocation. Consider a
+facility in month t − 2 (with an upcoming allocation in month t) that has sufficient stock for
+the current month t − 2 but insufficient stock for the coming month t − 1. If we see “less than
+
+expected” consumption in t − 2, that may indicate rationing behavior.
+      To test this, we first identified facility-month pairs (n, τ ) in our panel data where the opening
+
+
+                                                          31
+balance is sufficiently large to likely avoid a stockout in that month.7 Specifically, we only
+considered (n, τ ) pairs such that the initial stock sn,τ exceeded the average consumption Ȳn
+
+by some multiplicative constant, i.e., sn,τ > C2 Ȳn for some C2 ≥ 1. Then, we estimated the
+following regression model:
+
+          Yn,τ = β1 LowStockn,τ + β2 TimeIndicatorτ + δ(LowStockn,τ × TimeIndicatorτ )
+
+                    + αn + λτ + γXn,τ + ϵn,τ                                                               (9)
+
+where Yn,τ is the consumption of facility n in month τ ; αn and λτ are facility and time fixed
+effects, respectively; Xn,τ denotes controls (including all the features in our demand prediction
+
+model); LowStockn,τ = 1(sn,τ ≤ C1 Ȳn ) for some C1 < 2 indicates whether facility n has likely
+insufficient opening balance in month τ to satisfy future demand in month τ + 1, as estimated
+by a multiplier of its average demand Ȳn ; and TimeIndicatorτ = 1(∃t ∈ Talloc s.t. τ = t − 2)
+
+indicates whether τ is two months prior to a planned allocation t ∈ Talloc . The coefficient of
+interest is δ; a negative value of δ would indicate that facilities reduce distribution in months
+where they have low stock in month t − 2 to save for month t − 1, where t is an allocation month.
+
+       For robustness, we considered several choices of our constants—specifically, C1 ∈ {1.5, 1.75}
+and C2 ∈ {1.0, 1.5}; note that we require C1 > C2 . Results from these regressions are shown in
+Table SI 2. As can be seen, δ is not statistically significantly different from zero in any of them,
+
+so we found no evidence of rationing behaviors. We note that this empirical analysis is only
+suggestive, as we do not have the data to support a causal or more granular analysis.
+       Next, we considered over-dispensing—facilities with high inventory may preemptively
+
+increase consumption (e.g., by allocating to low-risk patients) in anticipation of an upcoming
+allocation. Consider a facility in month t − 1 (with an upcoming allocation in month t) that has
+more than sufficient stock for the current month. If we see “more than expected” consumption in
+   7
+    If not, reduced consumption in that month would simply reflect a stockout rather than rationing behavior to
+protect stock for future months.
+
+                                                      32
+                             Table SI 2: Analysis of Rationing Behavior.
+
+                                                   Condition on Opening Balance C2
+                     Initial Supply Level C1       C2 = 1.0              C2 = 1.5
+                     C1 = 1.5                        0.986                   –
+                                                    (0.592)
+                     C1 = 1.75                       0.360                −0.822
+                                                    (0.496)               (0.810)
+                   Notes: The table reports regression coefficients of the interaction term δ.
+                   Standard errors are in parentheses: ∗ p < 0.05, ∗∗ p < 0.01.
+
+
+t − 1, that may indicate a facility trying to over-dispense a surplus.
+       To test this, as before, we identified facility-month pairs in our panel data where the opening
+
+balance is sufficiently large to avoid a stockout in that month, i.e., (n, τ ) pairs such that sn,τ >
+C2 Ȳn .8 Then, we estimated the following regression model:
+
+
+        Yn,τ = β1 ExcessStockn,τ + β2 TimeIndicatorτ + δ(ExcessStockn,τ × TimeIndicatorτ )
+
+                  + αn + λτ + γXn,τ + ϵn,τ                                                              (10)
+
+where ExcessStockn,τ = 1(sn,τ ≥ C1 Ȳn ) for some C1 > 2 indicates whether facility n will
+
+likely have a significant surplus in month τ + 1 (given the upcoming allocation), as estimated by a
+multiplier of its average demand Ȳn ; we re-defined TimeIndicatorτ = 1(∃t ∈ Talloc s.t. τ = t−1)
+to indicate whether τ is one month prior to a planned allocation t ∈ Talloc .
+
+       For robustness, we considered C1 ∈ {3.0, 5.0} and C2 ∈ {1.0, 1.5}. Results from the
+resulting regressions are shown in Table SI 3. As can be seen, δ is not statistically significantly
+different from zero in any of these regressions, so we found no evidence of over-dispensing
+
+behaviors. We note that this empirical analysis suffers from the same limitations noted earlier for
+rationing.
+   8
+    If not, increased consumption in that month would simply reflect the lack of a stockout rather than over-
+dispensing behavior to use up surplus stock.
+
+
+                                                      33
+                       Table SI 3: Analysis of Over-Dispensing Behavior.
+
+                                               Condition on Opening Balance C2
+                 Initial Supply Level C1       C2 = 1.0             C2 = 1.5
+                 C1 = 3.0                        0.174                0.146
+                                                (0.371)              (0.408)
+                 C1 = 5.0                        0.489                0.503
+                                                (0.368)              (0.380)
+                Notes: The table reports regression coefficients of the interaction term.
+                Standard errors are in parentheses: ∗ p < 0.05, ∗∗ p < 0.01.
+
+
+   One concern could be that our estimates are under-powered. Thus, as a robustness check,
+we took the point estimates for rationing and over-dispensing at face value, and evaluated
+
+their impact on our main analysis. Specifically, we took a conservative approach (i.e., assume
+these behaviors only adversely affect consumption in treated facilities and do not affect control
+
+facilities), which translated into an approximately 2 percentage point reduction in consumption
+in treated facilities. Correspondingly, we adjusted our evaluation by reducing only the treated
+facilities’ consumption in the post-treatment period by 2 percentage points. We then re-ran
+
+our main analysis and found that our deployment still improved consumption by a statistically
+significant 16%. This improvement is quite similar to the 19% improvement found in our original
+analysis.
+
+2.3.2   Substitution
+
+Another potential behavior we do not handle in our basic model is cross-product substitution.
+
+We show theoretically that consumption and unmet demand still remain equivalent under “per-
+fect” product substitution, as long as we evaluate consumption at the level of product clusters
+(that mutually substitute for each other) with appropriate normalization, instead of evaluating
+
+consumption at the level of individual products. We first formalize and prove this result. Based
+on input from medical experts and field workers, we developed a list of all substitutable products
+
+                                                  34
+among the ones we allocated; many of these can be considered perfect (e.g., medications with
+different dosages), for the remaining, perfect substitution was a reasonably good approximation.
+
+Then, we performed a robustness check where we re-ran our main analysis using the above
+strategy and obtained similar results as our main analysis.
+
+
+Theoretical analysis. We consider substitution under the following assumptions: (1) substitu-
+tions are not case-dependent (i.e., if two medicines can either always be substituted, or never be
+substituted), (2) substitutions are transitive (i.e., if m1 substitutes for m2 and m2 substitutes for
+
+m3 , then m1 substitutes for m3 ), and (3) substitutions are always at the same rate (i.e., if m1 and
+m2 are substitutes, then if a patient requires a units of m1 , then they require cm1 →m2 · a units of
+m2 , where cm1 →m2 is constant across patients (with cm→m = 1)). While these assumptions are
+
+somewhat strong, they are accurate to first order for the products distributed by our system.
+   With these assumptions, we can straightforwardly adapt our analysis to handle substitutions.
+Specifically, rather than consider products separately, we first cluster products into K groups
+
+Mk ⊆ [M ] that are mutually substitutable (which is possible by Assumptions 1 & 2). For each
+group k ∈ [K], we can choose one focal product m ∈ Mk in that group and standardize the other
+products relative to m to obtain the following aggregated stock, allocation, and demand:
+
+                                               X
+                                  s̃k,n,t =               cm′ →m · sm′ ,n,t
+                                              m′ ∈Mk
+                                               X
+                                  ãk,n,t =               cm′ →m · am′ ,n,t
+                                              m′ ∈M   k
+                                               X
+                                  ξ˜k,n,t =               cm′ →m · ξm′ ,n,t .
+                                              m′ ∈M   k
+
+
+To account for substitution, we can simply analyze consumption using the normalized variables
+instead of the original ones.
+
+
+
+
+                                                      35
+Empirical analysis.    Using the strategy outlined above, we conducted a robustness check of our
+main analysis based on the normalized product consumption to account for potential substitution
+
+behavior; we discuss this analysis in detail in §2.6.5. We found a consistent, statistically
+significant 18% increase in the consumption of these normalized product groups, demonstrating
+that substitution is unlikely to be the primary driver behind our treatment effect.
+
+2.4    Compliance Analysis
+
+Our system was implemented as a decision support tool that could be overridden by district
+pharmaceutical managers, who may selectively override our recommendations to address short-
+comings in our allocation decisions to improve performance (though they may also make mistakes
+
+that lead to worse outcomes). To measure compliance, we manually collected the local pharma-
+cist’s allocation document and cross-checked all the invoices pulled from mSupply. To quantify
+compliance of a treated district, we normalized the allocation quantity for each facility-product
+
+pair in that district, calculated the absolute difference between the actual allocation and our
+deployed suggestion, and then averaged this value across facility-product pairs. Results are
+shown in Table SI 4; we found that compliance was generally very high, with the Kono and
+
+Pujehun districts having slightly lower compliance than the other three districts. This is likely
+due to logistical and communication issues that arose during the implementation of our system
+in 2023 Q2, which were resolved soon after. In §2.6.7, we disentangled the effect of compliance
+
+with our recommendations in 2023 Q2 from the impact of our system through a standard instru-
+mental variables analysis to compute the Local Average Treatment Effect (LATE). We found
+a statistically significant 37% improvement in consumption among compliers, suggesting that
+
+compliance with our system’s allocations was generally beneficial.
+
+
+
+
+                                                36
+                   Table SI 4: Compliance of Treated Districts in 2023 Q2
+
+                           District    Normalized Avg Absolute Diff
+                           Tonkolili                  0.000
+                           Falaba                     0.028
+                           Karene                     0.039
+                           Kono                       0.073
+                           Pujehun                    0.109
+
+
+2.5    Distributional Impact Analysis
+
+To understand the distributional impacts of our allocation system, we conducted additional
+
+analyses across several dimensions.
+   The first dimension focuses on facility type; given limited resources, NMSA policymakers
+emphasized prioritizing larger facilities (Hospitals and Community Health Centers (CHCs)) to
+
+ensure that care remains available to the greatest number of people. We checked whether these
+facilities are correctly prioritized by our system. Specifically, we categorized facilities into two
+groups: (1) larger, better equipped facilities (Hospitals and Community Health Centers (CHCs)),
+
+and (2) smaller, community-based facilities (Community Health Posts (CHPs) and Maternal
+and Child Health Posts (MCHPs)). Then, we conducted our main analysis separately on each
+group; results are shown in Table SI 5. As can be seen, our positive treatment effect remains
+
+strong and statistically significant for larger facilities, suggesting that our algorithm effectively
+improves consumption at facilities that are well-equipped and consistently operational (consistent
+with NMSA’s stated priorities). In contrast, smaller health posts show a smaller, statistically
+
+insignificant improvement. They may face more fundamental challenges (e.g., inadequate staffing
+or equipment) that limit their ability to provide services or utilize medical supplies, regardless
+of availability. For instance, during a field visit, we found a small health post closed for two
+
+consecutive days, and local residents shared that they often seek essential care at larger, more
+reliable facilities. Improving allocation efficiency for larger facilities is desirable since these
+
+                                                 37
+Table SI 5: Distributional Analysis Results. Columns 1-2 compare large facilities (Hospitals
+and CHCs) vs. smaller, community-based facilities (CHPs and MCHPs). Columns 3-6 analyze
+rural vs. urban facilities based on distance to a city (0.25 or 1 mile). Column 7 examines
+under-served facilities that have experienced at least one stockout since 2020. We found that our
+deployment increased consumption in large facilities, rural facilities, as well as under-served
+facilities.
+
+ Dep. var.: Normalized Consumption      By Facility Type                          By Location
+                                                                                                                  Under-
+                                      Large       Small              0.25 miles                   1 mile          Served
+                                     Facility    Facility        Rural      Urban        Rural        Urban
+                                       (1)         (2)            (3)        (4)          (5)          (6)          (7)
+ Treatment Effect                    0.368∗        0.052        0.107∗∗      0.291      0.090∗         0.334      0.182∗∗
+                                     (0.183)      (0.037)       (0.043)     (0.395)     (0.044)       (0.315)     (0.069)
+ Observations                         1,075       4,215          4,865       425         4,430         860         4,055
+ Improvement %                        36%       10% (Insig)      19%      24% (Insig)     16%       32% (Insig)    32%
+
+Note: Standard errors in parentheses. ∗ p < 0.05, ∗∗ p < 0.01, ∗∗∗ p < 0.001.
+
+
+facilities are relied on to provide consistent care; furthermore, we did so without impacting (or
+
+even slightly improving) efficiency for smaller facilities.
+    Next, we performed two analyses to better understand the equity implications of our system.
+First, we examined the impact on previously under-served facilities; specifically, a facility is
+
+under-served if it experienced at least one stockout in the data from 2020 until the quarter before
+our deployment. Our results are shown in Table SI 5; as can be seen, our results are substantially
+larger (compared to our overall effect of 19%) and statistically significant for under-served
+
+facilities. Second, we examined distributional impacts on urban vs. rural facilities, based on
+geographic location and accessibility; in Sierra Leone, rural facilities tend to be poorer than
+urban ones. We categorized facilities as urban if they were within a walkable distance of a
+
+city or town (76) (either within 0.25 miles based on (77), or within 1 mile as a robustness
+check) and rural otherwise. As can be seen from Table SI 5, the treatment effect is positive
+and statistically significant for rural facilities (it is also positive but statistically insignificant for
+
+urban facilities, but this may be due to the smaller sample size). This suggests that our allocation
+system succeeded at reducing unmet demand at rural (poor) facilities, likely improving equity.
+
+                                                           38
+                             Table SI 6: Robustness Analysis Results.
+
+      Model                         Coefficient    Std. Error     Observations      Improvement %
+      Dependent Variable = Normalized Consumption
+      SynthDiD                        0.116∗         (0.046)          5,290                19%
+      DiD                            0.128∗∗         (0.046)           5,290               21%
+      Matching (5km)                  0.154∗         (0.066)          1,125                25%
+      Matching (10km)                0.166∗∗         (0.064)           1,815               30%
+      Matching (15km)                 0.121∗         (0.054)          2,415                21%
+      Imputation (low rank)          0.037∗∗         (0.014)           5,455               15%
+      Imputation (avg consump)        0.067∗         (0.031)          5,455                21%
+      Imputation (pop)               0.076∗∗         (0.028)           5,455               27%
+      No Missingness Imbalance        0.132∗         (0.058)          5,285                18%
+      Substitution (Method 2)        0.132∗ ∗        (0.048)           5,290               20%
+      Alt. Control                   0.095∗∗∗        (0.022)          10,520               18%
+      Substitution (Method 1)         0.119∗         (0.048)          5,290                18%
+      LATE (Continuous)              0.115∗∗         (0.038)           5,290               37%
+      Dependent Variable = Stockout
+      SynthDiD                        −0.280         (0.179)           5,290          −4.6% (Insig)
+      Dependent Variable = Missingness
+      SynthDiD                        −0.007         (0.006)           5,290          −1.4% (Insig)
+    Notes: ∗ p < 0.05, ∗∗ p < 0.01, ∗∗∗ p < 0.001. Standard errors in parentheses. The balanced dataset
+   includes 1,058 facilities across five quarters from 2022 Q3 to 2023 Q3. The Improvement % column
+   reports the relative change in consumption compared to the counterfactual mean for each specification.
+
+
+2.6    Robustness Checks
+
+We performed a number of robustness checks to support our main results, summarized in
+Table SI 6. Specifically, we performed difference-in-differences (§2.6.1), geographic match-
+
+ing (§2.6.2), imputation strategies (§2.6.3), differential missingness analysis (§2.6.4), and a
+substitution-robust analysis (§2.6.5). We also re-ran our main analysis using alternative controls
+(§2.6.6), examined the treatment effect on compliers (§2.6.7), and examined stockouts (§2.6.8).
+
+
+
+
+                                                    39
+2.6.1   Difference-in-Differences (DiD).
+
+First, we ensured our results are consistent under a simpler DiD analysis (78), which compares
+changes in outcomes over time between the treated and control groups. Fig. SI 4 shows the
+
+corresponding event study, which shows that there are no statistically significant differences
+between treated and control facilities prior to our intervention. The DiD specification is:
+
+                         Yn,t = µ + αn + βt + τ (Treatn × Postt ) + ϵn,t ,                     (11)
+
+where Yn,t is the observed outcome (i.e., normalized consumption) for unit n at time t; µ denotes
+
+the mean outcome; αn represents unit fixed effects; βt represents time period fixed effects; ϵn,t
+is the error term; Treatn is a dummy indicator of treatment; Postt is a dummy indicator for
+post-treatment periods; and τ is the treatment effect. We find that the magnitude and significance
+
+of the increase in consumption are similar to those obtained using SynthDiD.
+
+2.6.2   Matching analysis.
+
+Next, we employed a geographic matching design, which is more robust to geographically-
+
+varying unobserved confounders by restricting the DiD analysis to matching pairs of treatment
+and control facilities that are geographically close together. Specifically, we first restricted our
+sample to facilities within some distance of a district border (either 5km, 10km, or 15km) and that
+
+have a neighboring facility with the opposite treatment status; Fig. SI 5 shows the resulting set
+of facilities for the 15km cutoff. Then, we ran our DiD analysis restricted to matched facilities.
+Results for all three distances are shown in Table SI 6; they show a statistically significant
+
+increase in consumption for treated facilities that is consistent with our main analysis.
+
+2.6.3   Imputation strategies.
+
+Our main analysis simply dropped missing values; however, this may create concerns about
+bias from missing/unreliable data, and so we tested three different imputation strategies (based
+
+                                                40
+                                                                          Point Estimate
+                                                                          95% CI
+                                                           0.2
+               Difference in Avg Normalized Consumption
+                    Between Treated & Control District
+
+
+                                                           0.1
+
+
+
+
+                                                           0.0
+
+
+
+
+                                                          −0.1
+
+
+
+
+                                                                 2022Q3         2022Q4      2023Q1   2023Q2   2023Q3
+
+
+
+
+Figure SI 4: DiD Event Study. This plot shows estimated treatment effects across time. Blue
+dots represent point estimates, and vertical bars denote 95% confidence intervals. The black
+vertical dashed line shows the time period immediately preceding our 2023 Q2 deployment. As
+expected, the pre-treatment estimates are close to zero, while the post-treatment estimates are
+larger, indicating a positive impact on consumption attributable to our deployment.
+
+on low-rank completion, catchment population, and average demand) and found consistent
+treatment effects across all of them (see Table SI 6). Specifically:
+
+    • Low-rank imputation (ImputedLowRank): We used low-rank matrix completion (58),
+
+      a standard approach for handling missing data in large matrices. We used the softImpute
+      R package with rank = 2 and regularization parameter λ = 0.01 (chosen using cross-
+      validation) to impute missing consumption values. Table SI 7 shows that our imputation
+
+      results are robust to the choice of regularization parameter λ.
+
+    • Population-based imputation (ImputedPop): We first estimated demand in proportion
+      to each facility’s catchment population, and then imputed consumption as the minimum of
+
+                                                                                           41
+Figure SI 5: Map of Matched Border Facilities. This map displays the geographic distribution
+of facilities included in the border matching analysis in the “Matching (15km)” row of Table SI 6.
+Purple dots represent control facilities and yellow dots represent treated facilities located within
+15km of district borders. Shorter distances (5km, 10km) yield similar results.
+
+
+
+        the estimated demand and the computed allocation (we computed the allocation via the
+
+        Excel tool in quarters prior to our tool’s deployment, and using our tool otherwise).
+
+    • Average imputation (ImputedAvgConsump). Third, using comprehensive data on unique
+        quarter, facility, and product tuples, we imputed missing consumption values by assigning
+        it to be the average quarterly consumption of the product across all facilities.
+
+We found that our estimates are qualitatively similar to our main analysis, suggesting that our
+
+results are robust to different imputation strategies.
+
+2.6.4    Missingness analysis.
+
+We checked that (1) our allocation tool did not drive differential missingness patterns, and (2)
+that products with differential missingness did not drive our results:
+
+                                                 42
+                    Table SI 7: Low-Rank Imputation with Different λ Values.
+
+                             Coefficient      Std. Error       Observations         Improvement %
+           Dependent Variable = Normalized Consumption
+           (1) λ = 0.01        0.037∗∗           (0.014)            5,455                  15%
+           (2) λ = 0.1         0.044∗∗∗          (0.013)            5,455                  16%
+           (3) λ = 1           0.035∗∗           (0.012)            5,455                  13%
+           (4) λ = 5           0.042∗∗∗          (0.012)            5,455                  14%
+           (5) λ = 10          0.039∗∗           (0.012)            5,455                  16%
+          Notes: Standard errors in parentheses. * p < 0.05, ** p < 0.01, *** p < 0.001.
+
+
+   1. Missingness as the outcome variable: We used a missingness indicator as the dependent
+        variable in our main specification; results are shown in the “Missingness” row of Table SI 6,
+
+        and show no significant treatment effect. These results suggest that our intervention did
+        not cause differential missing data, which could bias our results.
+
+   2. Analysis on a sub-sample with no missingness imbalance: We also re-ran our main
+        analysis on a subset of products that showed no significant difference in missing data rates
+
+        between the treatment and control groups after the treatment. Results are shown in the
+        “No Missingness Imbalance” row of Table SI 6; they are consistent with our main analysis,
+        showing a statistically significant 18% increase in consumption.
+
+These results suggest that our findings are not driven by differential missing data patterns.
+
+2.6.5    Substitution.
+
+As discussed in §2.3.2, facilities may substitute related products when stock of one product is
+low. As outlined in §2.3.2, we merged substitutable products into clusters, and performed our
+analysis on (appropriately normalized) consumption of product clusters.
+
+   To this end, we developed groupings of substitutable products based on conversations with
+two medical experts, and validated them through discussions with field workers. Table SI 8 shows
+
+
+                                                        43
+Table SI 8: Medicine Substitutions. This table lists clinically similar products grouped by sub-
+stitution type: Direct Substitutions (same ingredient but in different doses or forms), Functional
+Substitutions (different products with similar clinical purposes), and Therapeutic Substitutions
+(different medications for the same condition). These expert-provided substitution groups were
+used to test whether observed consumption increases could be driven by product substitution.
+From our conversations, substitution group (5) (marked with a †) was context-dependent; thus,
+we performed checks both with and without this group.
+
+ Type of Substitution          Substitutes
+ Direct Substitutions          (1) Paracetamol (Acetaminophen) 500mg, Tab; Paracetamol (Ac-
+                               etaminophen) 250mg, Dispersible, Tab
+ Functional Substitutions      (2) Syringe, Luer, 2ml, Disposable, Pcs; Syringe, Luer, 10ml,
+                               Disposable, Pcs; Syringe, Luer, 20ml, Disposable, Pcs
+                               (3) Glucose (Dextrose) 5%, IV Inj, 500ml, Soft Bag; Glucose
+                               (Dextrose) Hypertonic 50%, IV Inj, 50ml, Bot
+                               (4) Cannula, IV, 18G, Short, Sterile, Disposable, Pcs; Cannula, IV,
+                               24G, Short, Sterile, Disposable, Pcs
+ Therapeutic Substitutions     (5)† Neomycin & Bacitracin 0.5% & 500IU/g, Ointment, 15g,
+                               Tube; Povidone Iodine 10%, Solution, Bot; Chlorhexidine Glu-
+                               conate 7.1%, Gel
+                               (6) Oxytocin 10IU, Inj, Amp; Misoprostol 200mcg, Tab
+                               (7) Ampicillin 500mg, Pdr for IM/IV, Inj, Vial; Ceftriaxone 250mg,
+                               Pdr for Inj
+ Note: Every substitution requires a qualified healthcare professional to first assess the patient’s specific
+ diagnosis and clinical context, then manage the substitution by adjusting dosage and following clinical
+ or administration procedures (e.g., dilution, etc.).
+
+
+substitutable groups of products among the ones we allocated; direct substitutes are perfect,
+functional substitutes are nearly perfect, and therapeutic substitutes are more complicated but
+
+can reasonably be approximated as being perfect. Our discussions suggested that group 5 was
+context-dependent, so we performed two analyses—one with all seven groups (Method 1) and
+one omitting group 5 (Method 2). We re-ran our primary analysis using both groupings, which
+
+accounts for substitution effects according to our theoretical analysis. Our results (the “Substitu-
+tion” rows in Table SI 6) show consistent and significant ATTs of 18% or 20%, suggesting that
+substitution behavior is unlikely to significantly affect our findings.
+
+
+                                                     44
+2.6.6   Alternative control group (Alt. Control).
+
+We also performed our analysis using an alternative control group of 26 products that were con-
+currently allocated using a different, pre-existing mechanism (see Table SI 11). The consumption
+
+levels for these products can be used as a control group throughout our study period across all
+districts in the country using a staggered treatment—i.e., an advantage of this analysis is that
+it can be performed not just for the partial deployment in 2023 Q2, but also for the nationwide
+
+implementation starting in Q3. We used the sdid package in STATA (57), and found a consistent
+and statistically significant increase in consumption of 18% (“Alt. Control” row in Table SI 6).
+
+2.6.7   Local average treatment effect.
+
+To disentangle the effect of compliance with our recommendations from the impact of our system,
+
+we performed a standard instrumental variables analysis to compute the Local Average Treatment
+Effect (LATE) (79). Following standard practice, we used the government’s random (binary)
+treatment assignment as the instrument, and compliance (measured as a continuous variable,
+
+described in §2.4) as the treatment variable.
+   In general, IV analyses require two conditions to be satisfied. The first is relevance—our
+first-stage results in Table SI 9 show a strong correlation between treatment assignment and
+
+compliance (coefficient = 0.89, p < 0.001), suggesting that the relevance assumption holds.
+The second is the exclusion restriction, which requires that the assignment to treatment affects
+outcomes only through compliance. This is highly plausible in our case. For consumption to
+
+change, either patient/provider behavior or supply chain logistics must change. Yet, patients
+and facility-level providers had no knowledge of our deployment (or more generally, NMSA’s
+operations), and assignment alone did not alter logistics unless the district actually adopted
+
+our recommended allocation. Thus, we believe assignment to treatment would not influence
+consumption except through compliance, satisfying the exclusion restriction.
+
+
+                                                45
+       To estimate the LATE, we used Two-Stage Least Squares (2SLS), with the first-stage
+
+                                          Dn = π1 Zn + π2 Xn + µn ,                                             (12)
+
+
+where Dn is compliance, Zn is treatment assignment, and Xn denotes covariates (indicators for
+the district, quarter, and facility type). Here, n ranges over all (treated and control) facilities.
+
+       The second-stage regression is given by
+
+                                          Yn = β1 Dn + β2 Xn + ϵn ,                                             (13)
+
+
+where Yn is the outcome variable (i.e., normalized consumption). Table SI 9 shows results,
+yielding a significant increase of 0.12 standard deviations. To interpret this result, we make an
+additional assumption that the first-stage relationship between assignment and compliance is
+
+monotonic and linear—then, this result can be interpreted as “a one-unit increase in compliance
+induced by the instrument yields a 0.12 standard deviation increase in outcome,” which can be
+translated to a 37% reduction in unmet demand among compliers.9
+
+2.6.8     Stockouts.
+
+We also assessed the impact of our system on the number of facility-product stockouts. While
+reducing stockouts might seem like a natural objective, optimizing for fewer stockouts produces
+highly undesirable allocations—e.g., an optimal strategy is to allocate zero supply to a small
+
+number of high-volume facilities, thereby ensuring that the remaining facilities are well-stocked.
+Using SynthDiD but replacing our unit-level outcomes with binary stockout indicators, we found
+a directional reduction of 4.6% in stockouts but it is not statistically significant (p ≈ 0.12)
+
+(“Stockouts” rows in Table SI 6)—i.e., our system does not inadvertently increase stockouts.
+   9
+    We can recover the IV coefficient in percentage terms: The implied percentage increase in consumption for each
+                                                       s
+product p is computed as %∆LATE
+                             p     = 100 × β̂ norm × Ȳpp , where β̂ norm is the 2SLS coefficient on the standardized
+outcome, sp is the product-specific standard deviation, and Ȳp is its baseline mean consumption. Then, we take the
+simple average of these product-level effects to obtain an overall increase of approximately 37% for compliers.
+
+
+                                                        46
+Table SI 9: LATE IV Result. Column 1 shows the OLS estimate of treatment compliance
+(continuous measure defined in Supplement §2.4) on normalized consumption. Column 2
+presents the first-stage regression of treatment assignment (instrument) on compliance. Column
+3 reports the IV estimate, which identifies the causal effect for compliers.
+
+                                             (1)                 (2)               (3)
+                                            OLS              First-Stage           IV
+                                         Normalized            Treated          Normalized
+         Dependent variable:
+                                        Consumption           Complier         Consumption
+         Treated Complier                     0.075**                      –        0.115**
+                                               (0.023)                               (0.038)
+         IV (treatment assignment)                   –    0.887***                         –
+                                                            (0.016)
+         Facility fixed effect                 YES             YES        YES
+         Quarter fixed effect                  YES             YES        YES
+         Facility Type fixed effect            YES             YES        YES
+         Observations                         5,290           5,290      5,290
+           2
+         R                                    0.067               -      0.067
+         First-Stage F -Stat                      –           3,318          –
+                                                *      **         ***
+         Notes: Standard errors in parentheses. p<0.05, p<0.01, p<0.001.
+
+
+2.7    Cost-Effectiveness Analysis
+
+Our system was highly cost-effective. By design, it did not induce new costs for warehousing or
+
+logistics; instead, it integrated directly into the existing supply chain infrastructure, replacing the
+previous manual planning process without requiring additional physical resources or personnel.
+The primary cost was a nationwide $30 USD monthly server fee for hosting the prediction and
+
+optimization pipeline and the interface by which NMSA workers interact with our system.
+   We conducted an Incremental Cost-Effectiveness Ratio (ICER) analysis using Disability-
+Adjusted Life Years (DALYs) as our measure of effectiveness; one DALY represents one year
+
+of healthy life, with one year of life with some disease, disability, or other health condition
+represented by some fraction less than one. To this end, we matched each medicine in our study
+to the condition it treats, and obtained the number of DALYs gained by treating that condition
+
+according to the World Health Organization (80). For products that can treat multiple conditions,
+
+
+                                                  47
+we used a conservative approach by using the minimum DALY value that one unit of the medicine
+could avert; this strategy ensures that our effectiveness estimate is a lower bound. The ICER is
+
+then calculated as the incremental cost of the intervention ∆C divided by the incremental health
+effect ∆E. For every product m ∈ [M ], let q̄m denote the minimum number of DALYs that can
+be saved when one extra unit of product m is consumed, and let F = 360 USD denote the yearly
+
+fixed cost of hosting our system for the entire nation. Then, we have
+
+                                           ∆C    F
+                                 ICER =       = PM       ,
+                                           ∆E  δ m=1 q̄m
+
+where δ is the treatment effect from our main impact evaluation. We used δ = 0.19, representing
+the 19% average increase in medicine consumption attributed to our system, and we computed the
+yearly increase in DALYs from increased consumption of distributed products M
+                                                                             P
+                                                                               m=1 q̄m = 361.3.
+
+This analysis yields an average ICER of only $5.24 USD per DALY. This is much smaller than
+the ICER of typical interventions that are considered cost-effective ($50,000–$100,000) (81–83).
+While our ICER is extremely low, it is consistent with recent literature on the “unreasonable
+
+effectiveness of algorithms,” which finds that algorithms can significantly improve resource
+allocation at a very low marginal cost (84).
+
+
+
+
+                                               48
+Table SI 10: Products Allocated via Our Tool. Statistics for monthly facility-level consumption
+between Jan 2020 and Nov 2023. Missing values are excluded.
+
+         Product Name                                              Mean     Median   Std. Dev.
+         Medicines
+         Albendazole 400mg, Tab                                    124.89       90     205.83
+         Aluminium Hydroxide 500mg, Tab                            169.70       85     246.70
+         Ampicillin 500mg, Pdr for IM/IV, Inj, Vial                 65.55       34     203.59
+         Benzyl Benzoate 25%, Emulsion, 100ml, Bot                  12.76        1      65.00
+         Ceftriaxone 250mg, Pdr for Inj                            113.39       25     226.94
+         Chlorhexidine Gluconate 7.1%, Gel                           3.58        2      16.11
+         Ciprofloxacin 500mg, Tab                                  171.57      100     268.18
+         Erythromycin 125mg/5ml, Pdr for Susp, 100ml, Bot           89.27       15     224.83
+         Ferrous Sulphate 200mg, Tab                               512.29      300     673.05
+         Folic Acid 5mg, Tab                                       509.04      398     745.81
+         Glucose (Dextrose) 5%, IV Inj, 500ml, Soft Bag             40.73        6     155.03
+         Glucose (Dextrose) Hypertonic 50%, IV Inj, 50ml, Bot        9.60        2      27.87
+         Methyldopa 250mg, Tab                                      73.73       45     168.29
+         Metoclopramide HCl 10mg, Tab                              147.31       30     306.85
+         Misoprostol 200mcg, Tab                                    31.91       10     144.94
+         Neomycin & Bacitracin 0.5% & 500IU/g, Ointment, 15g,        4.70        2      17.82
+         Tube
+         Oral Rehydration Salts (ORS), Sachet                      121.27      100     187.75
+         Oxytocin 10IU, Inj, Amp                                    19.61       10      86.72
+         Paracetamol (Acetaminophen) 250mg, Dispersible, Tab       464.35      400     475.49
+         Paracetamol (Acetaminophen) 500mg, Tab                    562.41      455     635.66
+         Povidone Iodine 10%, Solution, Bot                          8.64        1      84.45
+         Prednisolone 5mg, Tab                                      65.24       12     134.54
+         Salbutamol 100mcg/dose, Aerosol, Inhaler                    1.50        0      14.28
+         Water for Injection 10ml, Inj, Amp                         33.75       20     124.35
+         Zinc Sulphate 20mg, Dispersible, Tab                      221.20      130     459.66
+         Medical Supplies & Equipment
+         Apron, Plastic, Disposable, Pcs                            24.69       10     124.65
+         Cannula, IV, 18G, Short, Sterile, Disposable, Pcs          14.90       10      48.70
+         Cannula, IV, 24G, Short, Sterile, Disposable, Pcs          16.24       10      61.55
+         Envelope, Dispensing, Plastic, 10cm x 7cm, Pcs            150.11      100     184.44
+         Glove, Exam, Latex, Medium, Nonsterile, Disposable, Pcs   173.18      100     338.22
+         IV Giving Set, Pcs                                         19.23       11      49.27
+         Mask, Surgical, Pcs                                        47.73       12     215.93
+         Rapid test kit, Pregnancy, Pcs                             13.73       10      38.64
+         Syringe, Luer, 10ml, Disposable, Pcs                       37.65       17     188.69
+         Syringe, Luer, 20ml, Disposable, Pcs                       25.80       10      75.47
+         Syringe, Luer, 2ml, Disposable, Pcs                        41.23       25      97.43
+
+
+
+
+                                                   49
+Table SI 11: Products Allocated via Other Mechanisms. Statistics for monthly facility-level
+consumption between Jan 2020 and Nov 2023. Missing values are excluded. Data from these
+products were only used to help train our prediction model and for one of our evaluations
+(staggered SynthDiD using product-level controls, called “Alt. Control” in Table 1).
+
+         Product Name                                              Mean     Median   Std. Dev.
+         Medicines
+         Amoxicillin 250mg, Dispersible, Tab                       592.01      456     734.22
+         Calcium Gluconate 100mg/ml, Inj, 10ml, Amp                  5.20        0      52.47
+         Ceftriaxone 1g, Pdr for Inj, Vial                         164.45       20     502.68
+         Chlorhexidine Gluconate 5%, Solution, 1000ml, Bot           6.38        1     116.60
+         Cloxacillin 500mg, Tab/Cap                                300.74      100     550.75
+         Epinephrine HCl (Adrenaline) 1mg/ml, Inj, 1ml, Amp          9.25        0      78.06
+         Ibuprofen 400mg, Tab                                      284.31      200     346.74
+         Jadelle                                                     8.07        5      22.51
+         Levonorgestrel (Emergency Contraceptive) 1.5mg, Tab         4.87        0      15.75
+         Levoplant                                                   5.33        1      17.90
+         Nystatin 500,000IU, Tab                                     8.74        4      24.61
+         Progesterone-Only (Microlut) Levonorgestrel 30mcg, Tab,    19.63        3     145.70
+         Cycle
+         Sodium Chloride (Normal Saline) 0.9%, IV Inj, 500ml,       12.27        8      50.45
+         Bot
+         Medical Supplies & Equipment
+         Bandage, Elastic, 8cm x 4m, Roll                           10.75        1      43.08
+         Blade, Surgical, No. 22, Sterile, Disposable, Pcs          18.23        5      91.90
+         Cannula, IV, 22G, Short, Sterile, Disposable, Pcs          14.33        6      51.38
+         Condom, Male                                              114.40       60     258.42
+         Copper-Containing Device (Copper T or Copper 7 or IUD)      7.41        0      28.42
+         Cotton Wool, Absorbent, 500g, Roll                          2.73        1      17.93
+         Glove, Surgical, Size 7.5, Sterile, Disposable, Pair       49.34       13     112.43
+         Glove, Surgical, Size 8, Sterile, Disposable, Pair         37.98       10     108.17
+         Needle, Hypodermic, Luer, 21G, Sterile, Disposable         69.56       50     135.77
+         Needle, Hypodermic, Luer, 23G, Sterile, Disposable         62.09       50      97.86
+         Sanitary Pads, Pcs                                          9.56        2      20.52
+         Syringe, Luer, 5ml, Disposable                             57.06       45     111.68
+         Tube, Asp/Feed, CH12, Sterile, Disposable, Pcs              4.16        0      19.59
+
+
+
+
+                                                   50
+            Table SI 12: Balance Table: District Characteristics by Treatment Status
+                                                                                      Control        Treatment          Difference
+                                                                                                                              FDR Adj.
+ Variable                                                                           Mean   (SD)     Mean   (SD)     p-value
+                                                                                                                               p-value
+ Days of service delivery                                                           0.46   (0.17)   0.38   (0.17)    0.35       0.71
+ Hours of service delivery                                                          1.40   (0.56)   1.26   (0.55)    0.14       0.71
+ Facilities where women give birth                                                  6.44   (2.54)   5.23   (2.47)    0.19       0.71
+ Availability of basic emergency obstetric and neonatal care                        0.43   (0.38)   0.19   (0.18)    0.35       0.71
+ Availability of priority drugs                                                     3.62   (1.39)   3.12   (1.58)    0.78       0.88
+ Availability of all tracer drugs                                                   1.84   (1.41)   2.40   (1.78)    0.24       0.71
+ Availability of vaccines                                                           6.32   (2.31)   5.31   (2.46)    0.68       0.88
+ Vaccines storage: refrigerators 2–8 ◦ C                                            1.72   (2.72)   1.06   (2.14)    0.87       0.88
+ Availability of communication equipment                                            3.65   (2.56)   2.56   (1.50)    0.41       0.71
+ Access to various forms of communication                                           3.65   (2.56)   2.56   (1.50)    0.41       0.71
+ Total proportion of facilities carrying out safe health care waste disposal        5.00   (2.10)   3.86   (1.66)    0.68       0.88
+ Availability of basic equipment                                                    1.99   (0.67)   2.00   (0.91)    0.31       0.71
+ Availability of Standard Treatment Guidelines                                      3.63   (1.97)   2.53   (2.56)    0.44       0.71
+ Outpatient caseload (median per facility)                                          0.63   (0.52)   0.51   (0.21)    0.88       0.88
+ Facilities with community health workers                                           5.44   (2.54)   4.84   (2.82)    0.78       0.88
+ Average number of community health workers                                         0.69   (0.24)   0.64   (0.33)    0.57       0.85
+ Average health workers per facility                                                0.47   (0.50)   0.41   (0.38)    0.81       0.88
+ Population Share                                                                   6.95   (3.13)   4.72   (2.45)    0.15       0.71
+ Human Development Index (HDI)                                                      0.45   (0.05)   0.43   (0.02)    0.16       0.21
+ Health Index (health dimension of HDI based on life expectancy at birth)           0.63   (0.05)   0.64   (0.06)    0.66       0.66
+ Income Index (income dimension of HDI based on Gross National Income per capita)   0.41   (0.06)   0.38   (0.02)    0.11       0.21
+Notes: Means and standard deviations are shown as Mean (SD). p-values are from two-sample Welch’s t-tests.
+Multiple testing adjustments control the false discovery rate (FDR) using the Benjamini–Hochberg (BH) procedure.
+
+
+
+
+                                                                 51
+Table SI 13: Percentage of Missing Data by Product. We report missingness rates in consump-
+tion data for each product across control and treated facilities in pre- and post-treatment periods.
+The p-values are from two-sample proportion tests of significant differences in missingness rates
+between control and treated groups, without adjusting for multiple hypothesis testing.
+
+                                                                Pre-Treated                       Post-Treated
+
+  Product
+                                                      Control    Treated      p-value   Control    Treated       p-value
+                                                       (%)         (%)                   (%)         (%)
+  Albendazole 400mg, Tab                                0.00          0.00     1.00       0.10        0.00        1.00
+  Aluminium Hydroxide 500mg, Tab                       97.60         99.00     0.15      95.20       91.70        1.00
+  Ampicillin 500mg, Pdr for IM/IV, Inj, Vial           14.60         24.20     0.06       5.50       10.10       0.00***
+  Apron, Plastic, Disposable, Pcs                      73.80         42.60    0.00***    75.90       55.20       0.00***
+  Benzyl Benzoate 25%, Emulsion, 100ml, Bot            98.50         98.70     1.00      70.20       83.80       0.00***
+  Cannula, IV, 18G, Short, Sterile, Disposable, Pcs    42.50         32.30     0.02*     66.40       53.60       0.00***
+  Cannula, IV, 24G, Short, Sterile, Disposable, Pcs    39.30         26.40    0.00***     6.50        3.60        1.00
+  Ceftriaxone 250mg, Pdr for Inj                       96.70         99.40     0.66      88.90       88.20        0.75
+  Chlorhexidine Gluconate 7.1%, Gel                    28.70         15.90    0.00***     3.90        4.80        0.48
+  Ciprofloxacin 500mg, Tab                             90.60         87.90     0.19      67.90       22.30       0.00***
+  Envelope, Dispensing, Plastic, 10cm x 7cm, Pcs       55.40         32.70    0.00***    70.90       52.90       0.00***
+  Erythromycin 125mg/5ml, Pdr for Susp, 100ml,         99.50         99.00     0.43      82.70       85.40        0.32
+  Bot
+  Ferrous Sulphate 200mg, Tab                          75.70         76.90     0.71      83.40       54.20       0.00***
+  Folic Acid 5mg, Tab                                   0.10          0.30     0.15       1.80        6.10       0.00***
+  Glove, Exam, Latex, Medium, Nonsterile,               4.70          6.90     0.04*     6.90        4.30         0.05
+  Disposable, Pcs
+  Glucose (Dextrose) 5%, IV Inj, 500ml, Soft Bag       91.20         96.50     0.13      76.10       77.60        0.65
+  Glucose (Dextrose) Hypertonic 50%, IV Inj,           99.60         99.40     0.64      87.00       92.90        0.38
+  50ml, Bot
+  IV Giving Set, Pcs                                    5.00          4.20     0.46       4.30        4.80        0.69
+  Mask, Surgical, Pcs                                  79.10         74.00     1.00      83.70       77.20        1.00
+  Methyldopa 250mg, Tab                                 0.20          0.50     0.30       0.30        0.30        1.00
+  Metoclopramide HCl 10mg, Tab                         90.10         88.00     0.33      85.10       84.00        0.65
+  Misoprostol 200mcg, Tab                              60.60         67.90     1.00      70.70       75.40        0.10
+  Neomycin & Bacitracin 0.5% & 500IU/g,                97.60         99.00     0.15      69.30       68.70        0.83
+  Ointment, 15g, Tube
+  Oral Rehydration Salts (ORS), Sachet                  0.00         0.00      1.00       0.20        0.80        0.10
+  Oxytocin 10IU, Inj, Amp                               1.50         1.30      0.86       3.30        3.70        0.68
+  Paracetamol (Acetaminophen) 250mg,                    0.20         0.20      0.64       0.10        0.20        1.00
+  Dispersible, Tab
+  Paracetamol (Acetaminophen) 500mg, Tab                38.20        28.40     0.01*     12.10       21.00       0.00**
+  Povidone Iodine 10%, Solution, Bot                    89.70        90.00     0.91       5.50       20.10       0.00***
+  Prednisolone 5mg, Tab                                100.00        99.00     0.55      93.60       90.70        0.12
+  Rapid test kit, Pregnancy, Pcs                        69.80        61.60     0.49      62.30       59.20        0.35
+  Salbutamol 100mcg/dose, Aerosol, Inhaler              89.10        76.80    0.00***    40.30       44.60        0.20
+  Syringe, Luer, 10ml, Disposable, Pcs                  80.10        54.20    0.00***    57.90       29.00       0.00***
+  Syringe, Luer, 20ml, Disposable, Pcs                  70.40        46.00    0.00***    61.50       31.80       0.00***
+  Syringe, Luer, 2ml, Disposable, Pcs                   75.00        47.00    0.00***    56.80       31.20       0.00***
+  Water for Injection 10ml, Inj, Amp                    25.40        25.20     0.95      32.30       30.80        0.68
+  Zinc Sulphate 20mg, Dispersible, Tab                  0.00         0.00      1.00       0.20        0.30        0.64
+Notes: Significance levels: * p<0.05, ** p<0.01, *** p<0.001.
+
+
+
+
+                                                                52
+References
+60.      Sierra Leone Ministry of Health and Sanitation (MoHS) & Center for International Earth
+Science Information Network (CIESIN), Columbia University. Sierra Leone national health
+facilities dataset version 01. (2023).
+61.     Martin, D. W. et al. Implementing nationwide facility-based electronic disease
+surveillance in Sierra Leone: Lessons learned. Health security 18, S–72 (2020).
+62.   WorldPop. WorldPop global project population data: Estimated residential population per
+100x100m grid square. (2021).
+63.   Weiss, D. et al. Global maps of travel time to healthcare facilities. Nature medicine 26,
+1835–1838 (2020).
+64.   Didan, K. MOD13Q1 MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN
+Grid V006 [Data set]. (2015).
+
+65.    Besbes, O. & Muharremoglu, A. On implications of demand censoring in the newsvendor
+problem. Management Science 59, 1407–1424 (2013).
+66.    Greene, W. H. Econometric analysis 4th edition. International edition, New Jersey:
+Prentice Hall 201–215 (2000).
+67.    NMSA. National medical supplies agency act, 2018. (2018).
+
+68.   Stevens, G. A. et al. Guidelines for accurate and transparent health estimates reporting:
+The GATHER statement. The Lancet 388, e19–e23 (2016).
+69.     Statistics Sierra Leone. 2015 Population and Housing Census.
+https://www.statistics.sl/index.php/census/census-2015.html (2015).
+70.    Humanitarian Data Exchange (HDX). HDX HAPI Population Dataset. (2023).
+71.    Kotary, J., Fioretto, F., Van Hentenryck, P. & Wilder, B. End-to-end constrained
+optimization learning: A survey. arXiv preprint arXiv:2103.16378 (2021).
+72.    Agrawal, A. et al. Differentiable convex optimization layers. Advances in neural
+information processing systems 32, (2019).
+73.    Team, W. H. O. (WHO). Allocation Logic and Algorithm to Support Allocation of
+Vaccines Secured Through the COVAX Facility. (2021).
+
+74.    Lab, G. D. Global data lab — open data on human development, health, education,
+wealth, and more. (2025).
+75.    Africa Health Service Delivery in Sierra Leone: Results of 2018 Service Delivery
+Indicator Survey. (2018).
+76.    SimpleMaps. World cities database. (2025).
+
+
+                                               53
+77.    Yang, Y. & Diez-Roux, A. V. Walking distance by trip purpose and population
+subgroups. American journal of preventive medicine 43, 11–19 (2012).
+78.     Ashenfelter, O. C. & Card, D. Using the longitudinal structure of earnings to estimate the
+effect of training programs. (1984).
+79.     Angrist, J. & Imbens, G. Identification and estimation of local average treatment effects.
+(1995).
+80.    WHO. Global health estimates: Leading causes of DALYs. (2024).
+81.     ICER. Perspectives on Cost-Effectiveness Threshold Ranges. https://icer.org/wp-
+content/uploads/2023/08/ICER_2019_Perspectives-on-Cost-Effectiveness-Threshold-Ranges.pdf
+(2019).
+82.    Health Economics Resource Center (HERC), U. S. D. of V. A. Cost‐effectiveness
+analysis.
+83.    Neumann, P. J., Cohen, J. T., Weinstein, M. C., et al. N Engl J Med 371, 796–797 (2014).
+
+84.     Ludwig, J., Mullainathan, S. & Rambachan, A. The unreasonable effectiveness of
+algorithms. in AEA papers and proceedings vol. 114 623–627 (American Economic Association
+2014 Broadway, Suite 305, Nashville, TN 37203, 2024).
+
+
+
+
+                                                54
+
