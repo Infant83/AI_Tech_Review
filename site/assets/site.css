@@ -50,6 +50,7 @@ a { color: inherit; }
 .topbar-left {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 22px;
   min-width: 0;
   flex: 1;
@@ -68,6 +69,14 @@ a { color: inherit; }
 }
 .top-search {
   width: min(360px, 42vw);
+}
+.topbar-left .public-metrics {
+  flex: 1 1 360px;
+  min-width: min(100%, 330px);
+  margin: 0;
+}
+.topbar-left .public-metrics-pill {
+  background: rgba(255, 255, 255, 0.72);
 }
 .top-search input {
   padding: 10px 12px;
@@ -394,6 +403,14 @@ h3 a:hover {
   border-top: 1px solid rgba(0,0,0,0.12);
   color: #5c6670;
   font-size: 14px;
+}
+.metrics-disclosure {
+  font-size: 12px;
+  color: rgba(234, 240, 243, 0.66);
+}
+.public-note .metrics-disclosure {
+  margin-top: 8px;
+  color: #747e87;
 }
 a:not([href]) {
   color: inherit;

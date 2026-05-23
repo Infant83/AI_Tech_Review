@@ -138,12 +138,10 @@
     widget.innerHTML = isReview
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
-         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
       : `<span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
          <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
-         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`;
+         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 
     if (isReview) {
       const topline = document.querySelector(".topline");
@@ -155,6 +153,11 @@
       return widget;
     }
 
+    const search = document.querySelector(".top-search");
+    if (search) {
+      search.insertAdjacentElement("afterend", widget);
+      return widget;
+    }
     const stats = document.querySelector(".hero .stats");
     if (stats) {
       stats.insertAdjacentElement("afterend", widget);

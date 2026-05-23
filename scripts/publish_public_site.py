@@ -313,6 +313,8 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
             "\n<section id=\"public-local-references\" class=\"public-note\">"
             "<p>공개 HTML에는 본문과 시각 자료, 외부 참고 링크만 포함했습니다. "
             "로컬 작업 메모와 자동화 파일 링크는 공개본에서 비활성화했습니다.</p>"
+            "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
+            "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
             "</section>\n"
         )
         sanitized = sanitized.replace("</body>", public_note + "</body>")
@@ -513,6 +515,7 @@ def render_index(manifest: list[dict[str, object]]) -> str:
             <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
             <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
             <li>EU AI Act 투명성 취지에 따라 AI 생성/보조 작성 콘텐츠임을 명시합니다.</li>
+            <li class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</li>
           </ul>
         </div>
       </section>
@@ -577,6 +580,7 @@ a { color: inherit; }
 .topbar-left {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 22px;
   min-width: 0;
   flex: 1;
@@ -595,6 +599,14 @@ a { color: inherit; }
 }
 .top-search {
   width: min(360px, 42vw);
+}
+.topbar-left .public-metrics {
+  flex: 1 1 360px;
+  min-width: min(100%, 330px);
+  margin: 0;
+}
+.topbar-left .public-metrics-pill {
+  background: rgba(255, 255, 255, 0.72);
 }
 .top-search input {
   padding: 10px 12px;
@@ -922,6 +934,14 @@ h3 a:hover {
   color: #5c6670;
   font-size: 14px;
 }
+.metrics-disclosure {
+  font-size: 12px;
+  color: rgba(234, 240, 243, 0.66);
+}
+.public-note .metrics-disclosure {
+  margin-top: 8px;
+  color: #747e87;
+}
 a:not([href]) {
   color: inherit;
   text-decoration: none;
@@ -998,10 +1018,6 @@ PUBLIC_METRICS_CSS = """
   color: #0d7c66;
   font-weight: 900;
 }
-.public-metrics-note {
-  color: #6a747d;
-  font-size: 12px;
-}
 .public-metrics[data-state="loading"] strong,
 .card-metrics[data-state="loading"] strong,
 .latest-metrics[data-state="loading"] strong {
@@ -1038,9 +1054,6 @@ PUBLIC_METRICS_CSS = """
   .public-metrics-pill {
     flex: 1 1 140px;
     justify-content: center;
-  }
-  .public-metrics-note {
-    flex-basis: 100%;
   }
 }
 """
@@ -1187,12 +1200,10 @@ PUBLIC_METRICS_JS = """
     widget.innerHTML = isReview
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
-         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
       : `<span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
          <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
-         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`;
+         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 
     if (isReview) {
       const topline = document.querySelector(".topline");
@@ -1204,6 +1215,11 @@ PUBLIC_METRICS_JS = """
       return widget;
     }
 
+    const search = document.querySelector(".top-search");
+    if (search) {
+      search.insertAdjacentElement("afterend", widget);
+      return widget;
+    }
     const stats = document.querySelector(".hero .stats");
     if (stats) {
       stats.insertAdjacentElement("afterend", widget);
