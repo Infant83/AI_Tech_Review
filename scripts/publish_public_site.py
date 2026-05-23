@@ -335,10 +335,20 @@ def render_latest_update(item: dict[str, object]) -> str:
     """
 
 
+def render_category_chips(categories: list[str]) -> str:
+    chips = ['<button type="button" class="category-chip active" data-category-filter="">전체</button>']
+    chips.extend(
+        f'<button type="button" class="category-chip" data-category-filter="{html.escape(category, quote=True)}">{html.escape(category)}</button>'
+        for category in categories
+    )
+    return "\n".join(chips)
+
+
 def render_index(manifest: list[dict[str, object]]) -> str:
     updated = date.today().isoformat()
     categories = sorted({str(item["category"]) for item in manifest})
     category_options = "\n".join(f'<option value="{html.escape(category)}">{html.escape(category)}</option>' for category in categories)
+    category_chips = render_category_chips(categories)
     cards = "\n".join(render_review_card(item) for item in manifest)
     latest = render_latest_update(manifest[0]) if manifest else ""
 
@@ -354,7 +364,13 @@ def render_index(manifest: list[dict[str, object]]) -> str:
   <body>
     <header class="site-header">
       <nav class="topbar" aria-label="주요 링크">
-        <a class="brand" href="index.html">AI Tech Review Letters</a>
+        <div class="topbar-left">
+          <a class="brand" href="index.html">AI Tech Review Letters</a>
+          <label class="top-search">
+            <span class="sr-only">리뷰 검색</span>
+            <input id="search" type="search" placeholder="검색: AI scientist, TabPFN, agent..." autocomplete="off">
+          </label>
+        </div>
         <span class="topbar-links">
           <a href="https://infant83.github.io/">Operator</a>
           <a href="manifest.json">Manifest</a>
@@ -365,10 +381,8 @@ def render_index(manifest: list[dict[str, object]]) -> str:
         <h1>Enlighten your AI Technology Insight.</h1>
         <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽는 공개 리뷰 허브입니다.</p>
         <div class="stats" aria-label="허브 요약">
-          <span><strong>{len(manifest)}</strong> 공개 리뷰</span>
-          <span><strong>{len(categories)}</strong> 주제 묶음</span>
-          <span><strong>김현중</strong> 운영</span>
-          <span><strong>HTML</strong> 정적 배포</span>
+          <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
+          <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>
         </div>
       </section>
     </header>
@@ -376,18 +390,23 @@ def render_index(manifest: list[dict[str, object]]) -> str:
     <main>
       {latest}
 
-      <section class="toolbar" aria-label="리뷰 찾기">
-        <label>
-          <span>검색</span>
-          <input id="search" type="search" placeholder="AI scientist, TabPFN, agent..." autocomplete="off">
-        </label>
-        <label>
-          <span>주제</span>
-          <select id="category">
-            <option value="">전체</option>
-            {category_options}
-          </select>
-        </label>
+      <section class="topic-filter" id="topic-filter" aria-label="주제별 리뷰 찾기">
+        <div class="filter-heading">
+          <div>
+            <p class="section-kicker">Browse by topic</p>
+            <h2>주제별 리뷰</h2>
+          </div>
+          <label class="category-select">
+            <span>주제 선택</span>
+            <select id="category">
+              <option value="">전체</option>
+              {category_options}
+            </select>
+          </label>
+        </div>
+        <div class="category-chips" aria-label="주제 빠른 선택">
+          {category_chips}
+        </div>
       </section>
 
       <section class="review-grid" id="review-grid" aria-live="polite">
@@ -398,14 +417,33 @@ def render_index(manifest: list[dict[str, object]]) -> str:
         <div>
           <p class="section-kicker">AI Transparency and Source Notice</p>
           <h2 id="transparency-heading">투명성 및 출처 고지</h2>
-          <p class="operator">사이트 운영자: <a href="https://infant83.github.io/">김현중</a></p>
+          <p class="operator">작성정보</p>
         </div>
-        <ul>
-          <li>이 허브의 게시물은 Federlicht 기반 AI 보조 생성물이며, 최종 책임은 사용자/조직에 있습니다.</li>
-          <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
-          <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
-          <li>EU AI Act 투명성 취지에 따라 AI 생성/보조 작성 콘텐츠임을 명시합니다.</li>
-        </ul>
+        <div class="notice-body">
+          <dl class="credit-list">
+            <div>
+              <dt>작성자</dt>
+              <dd>
+                <a href="https://infant83.github.io/">김현중</a>, AI Governance 팀
+                <span class="credit-links">
+                  <a href="https://infant83.github.io/">Profile</a>
+                  <a href="https://www.linkedin.com/in/hyun-jung-kim-8126a7236/">LinkedIn</a>
+                  <a href="https://scholar.google.com/citations?user=FtSLeT4AAAAJ&hl=en">Google Scholar</a>
+                </span>
+              </dd>
+            </div>
+            <div>
+              <dt>작성 보조 및 퇴고</dt>
+              <dd>Codex 기반 GPT-5 계열 에이전트 하네스</dd>
+            </div>
+          </dl>
+          <ul>
+            <li>이 허브의 게시물은 AI 보조 생성 및 퇴고 과정을 거친 콘텐츠이며, 최종 책임은 작성자와 운영 조직에 있습니다.</li>
+            <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
+            <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
+            <li>EU AI Act 투명성 취지에 따라 AI 생성/보조 작성 콘텐츠임을 명시합니다.</li>
+          </ul>
+        </div>
       </section>
     </main>
 
@@ -441,6 +479,17 @@ h1, h2, h3, .lead, .subtitle, .review-card p, .latest-update p, .transparency-no
   overflow-wrap: break-word;
 }
 a { color: inherit; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .site-header, main {
   width: min(1180px, calc(100% - 36px));
   margin: 0 auto;
@@ -449,19 +498,37 @@ a { color: inherit; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 22px;
   padding: 24px 0 18px;
   font-size: 14px;
   color: var(--muted);
+}
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-width: 0;
+  flex: 1;
 }
 .topbar-links {
   display: inline-flex;
   align-items: center;
   gap: 16px;
+  white-space: nowrap;
 }
 .brand {
   color: var(--ink);
   font-weight: 800;
   text-decoration: none;
+  white-space: nowrap;
+}
+.top-search {
+  width: min(360px, 42vw);
+}
+.top-search input {
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
 }
 .hero {
   border-top: 5px solid var(--green);
@@ -503,11 +570,22 @@ h1 {
   gap: 10px;
   margin-top: 28px;
 }
-.stats span {
+.stat-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.65);
   padding: 10px 13px;
   font-size: 14px;
+  text-decoration: none;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.stat-link:hover,
+.stat-link:focus-visible {
+  border-color: rgba(13, 124, 102, 0.55);
+  background: #ffffff;
+  color: var(--green);
 }
 .latest-update {
   display: grid;
@@ -558,18 +636,63 @@ h1 {
 .text-link:hover {
   color: var(--blue);
 }
-.toolbar {
+.topic-filter {
   display: grid;
-  grid-template-columns: 1fr minmax(180px, 260px);
   gap: 12px;
   margin: 30px 0 18px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
 }
-.toolbar label {
+.filter-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+}
+.filter-heading h2 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 32px);
+}
+.category-select {
+  display: grid;
+  gap: 6px;
+  min-width: min(260px, 100%);
+}
+.category-select span,
+.top-search span {
+  font-size: 13px;
+}
+.category-select span {
   display: grid;
   gap: 6px;
   color: var(--muted);
   font-size: 13px;
   font-weight: 700;
+}
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.category-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--muted);
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.category-chip:hover,
+.category-chip:focus-visible,
+.category-chip.active {
+  border-color: rgba(13, 124, 102, 0.55);
+  background: rgba(13, 124, 102, 0.08);
+  color: var(--green);
 }
 input, select {
   width: 100%;
@@ -682,6 +805,41 @@ h3 a:hover {
   padding-left: 20px;
   color: rgba(234, 240, 243, 0.82);
 }
+.notice-body {
+  display: grid;
+  gap: 22px;
+}
+.credit-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  color: rgba(234, 240, 243, 0.86);
+}
+.credit-list div {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(234, 240, 243, 0.14);
+}
+.credit-list dt {
+  color: rgba(234, 240, 243, 0.62);
+  font-weight: 800;
+}
+.credit-list dd {
+  margin: 0;
+}
+.credit-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: 8px;
+}
+.credit-links a {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
 .transparency-notice li + li {
   margin-top: 8px;
 }
@@ -700,15 +858,33 @@ a:not([href]) {
 }
 .hidden { display: none !important; }
 @media (max-width: 900px) {
+  .topbar,
+  .topbar-left {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .top-search {
+    width: 100%;
+  }
+  .topbar-links {
+    align-self: flex-start;
+  }
   .latest-update,
   .transparency-notice {
     grid-template-columns: 1fr;
+  }
+  .filter-heading,
+  .credit-list div {
+    grid-template-columns: 1fr;
+  }
+  .filter-heading {
+    align-items: stretch;
+    flex-direction: column;
   }
   .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 680px) {
   .site-header, main { width: min(100% - 24px, 1180px); }
-  .toolbar { grid-template-columns: 1fr; }
   .review-grid { grid-template-columns: 1fr; }
   .thumb { aspect-ratio: 16 / 9; }
   .latest-media img { min-height: 220px; }
@@ -720,10 +896,19 @@ a:not([href]) {
 SITE_JS = """
 const search = document.querySelector("#search");
 const category = document.querySelector("#category");
+const reviewGrid = document.querySelector("#review-grid");
+const topicFilter = document.querySelector("#topic-filter");
 const cards = Array.from(document.querySelectorAll(".review-card"));
+const categoryTriggers = Array.from(document.querySelectorAll("[data-category-filter]"));
 
 function normalize(value) {
   return (value || "").toLocaleLowerCase("ko-KR");
+}
+
+function updateCategoryTriggers(value) {
+  for (const trigger of categoryTriggers) {
+    trigger.classList.toggle("active", trigger.dataset.categoryFilter === value);
+  }
 }
 
 function applyFilters() {
@@ -735,10 +920,30 @@ function applyFilters() {
     const searchMatch = !q || haystack.includes(q);
     card.classList.toggle("hidden", !(categoryMatch && searchMatch));
   }
+  updateCategoryTriggers(c);
+}
+
+function setCategory(value, scrollTarget) {
+  category.value = value;
+  applyFilters();
+  if (scrollTarget) {
+    scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 search.addEventListener("input", applyFilters);
 category.addEventListener("change", applyFilters);
+for (const trigger of categoryTriggers) {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    const value = trigger.dataset.categoryFilter || "";
+    setCategory(value, value ? reviewGrid : reviewGrid);
+  });
+}
+document.querySelector('a[href="#topic-filter"]')?.addEventListener("click", (event) => {
+  event.preventDefault();
+  topicFilter.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 """
 
 
