@@ -18,6 +18,7 @@ SITE_DIR = ROOT / "site"
 REVIEWS_DIR = SITE_DIR / "reviews"
 ASSETS_DIR = SITE_DIR / "assets"
 ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "federlicht-icon" / "generated"
+ICON_ASSET_VERSION = "20260523-federlicht"
 
 
 @dataclass(frozen=True)
@@ -191,11 +192,13 @@ def public_metrics_endpoint() -> str:
 
 def public_icon_links(asset_prefix: str = "", indent: int = 4) -> str:
     pad = " " * indent
+    version = f"?v={ICON_ASSET_VERSION}"
+    prefix = html.escape(asset_prefix, quote=True)
     return (
         f"\n{pad}<!-- AI Tech Review Icons -->"
-        f"\n{pad}<link rel=\"icon\" href=\"{html.escape(asset_prefix, quote=True)}favicon.ico\" sizes=\"any\">"
-        f"\n{pad}<link rel=\"icon\" href=\"{html.escape(asset_prefix, quote=True)}assets/federlicht-favicon.svg\" type=\"image/svg+xml\">"
-        f"\n{pad}<link rel=\"apple-touch-icon\" href=\"{html.escape(asset_prefix, quote=True)}assets/apple-touch-icon.png\">"
+        f"\n{pad}<link rel=\"icon\" href=\"{prefix}favicon.ico{version}\" sizes=\"any\">"
+        f"\n{pad}<link rel=\"icon\" href=\"{prefix}assets/federlicht-favicon.svg{version}\" type=\"image/svg+xml\">"
+        f"\n{pad}<link rel=\"apple-touch-icon\" href=\"{prefix}assets/apple-touch-icon.png{version}\">"
         f"\n{pad}<!-- End AI Tech Review Icons -->"
     )
 
