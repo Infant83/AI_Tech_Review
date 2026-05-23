@@ -106,8 +106,19 @@ LOCAL_REF_RE = re.compile(
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
 INTERNAL_PATH_RE = re.compile(r"(?:file:///[A-Za-z]:[\\/][^<>'\"\s]+|(?<![A-Za-z0-9])[A-Za-z]:[\\/][^<>'\"\s]+)")
 CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
+PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
+DEFAULT_PUBLIC_METRICS_ENDPOINT = "https://ai-tech-review-public-metrics.lgdisplay.workers.dev"
+PUBLIC_BASE_PATH = "/AI_Tech_Review/"
 CLOUDFLARE_WEB_ANALYTICS_RE = re.compile(
     r"\s*<!-- Cloudflare Web Analytics -->.*?<!-- End Cloudflare Web Analytics -->\s*",
+    re.IGNORECASE | re.DOTALL,
+)
+PUBLIC_METRICS_HEAD_RE = re.compile(
+    r"\s*<!-- AI Tech Review Public Metrics Styles -->.*?<!-- End AI Tech Review Public Metrics Styles -->\s*",
+    re.IGNORECASE | re.DOTALL,
+)
+PUBLIC_METRICS_SCRIPT_RE = re.compile(
+    r"\s*<!-- AI Tech Review Public Metrics -->.*?<!-- End AI Tech Review Public Metrics -->\s*",
     re.IGNORECASE | re.DOTALL,
 )
 
@@ -169,6 +180,51 @@ def cloudflare_web_analytics_snippet(indent: int = 4) -> str:
     )
 
 
+def public_metrics_endpoint() -> str:
+    return os.environ.get(PUBLIC_METRICS_ENDPOINT_ENV, DEFAULT_PUBLIC_METRICS_ENDPOINT).strip().rstrip("/")
+
+
+def public_metrics_head(asset_prefix: str = "", indent: int = 4) -> str:
+    pad = " " * indent
+    href = f"{asset_prefix}assets/public-metrics.css"
+    return (
+        f"\n{pad}<!-- AI Tech Review Public Metrics Styles -->"
+        f"\n{pad}<link rel=\"stylesheet\" href=\"{html.escape(href, quote=True)}\">"
+        f"\n{pad}<!-- End AI Tech Review Public Metrics Styles -->"
+    )
+
+
+def public_metrics_scripts(asset_prefix: str = "", indent: int = 4) -> str:
+    endpoint = public_metrics_endpoint()
+    if not endpoint:
+        return ""
+    config = json.dumps(
+        {"endpoint": endpoint, "basePath": PUBLIC_BASE_PATH},
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    script_src = f"{asset_prefix}assets/public-metrics.js"
+    pad = " " * indent
+    return (
+        f"\n{pad}<!-- AI Tech Review Public Metrics -->"
+        f"\n{pad}<script>window.AI_TECH_REVIEW_METRICS={config};</script>"
+        f"\n{pad}<script defer src=\"{html.escape(script_src, quote=True)}\"></script>"
+        f"\n{pad}<!-- End AI Tech Review Public Metrics -->"
+    )
+
+
+def inject_public_metrics(html_text: str, asset_prefix: str = "") -> str:
+    html_text = PUBLIC_METRICS_HEAD_RE.sub("\n", html_text)
+    html_text = PUBLIC_METRICS_SCRIPT_RE.sub("\n", html_text)
+    head = public_metrics_head(asset_prefix)
+    scripts = public_metrics_scripts(asset_prefix)
+    if head and "</head>" in html_text:
+        html_text = re.sub(r"\n[ \t]*</head>", head + "\n  </head>", html_text, count=1)
+    if scripts and "</body>" in html_text:
+        html_text = re.sub(r"\n[ \t]*</body>", scripts + "\n  </body>", html_text, count=1)
+    return html_text
+
+
 def inject_cloudflare_web_analytics(html_text: str) -> str:
     snippet = cloudflare_web_analytics_snippet()
     if not snippet:
@@ -177,6 +233,11 @@ def inject_cloudflare_web_analytics(html_text: str) -> str:
     if "</body>" not in html_text:
         return html_text + snippet + "\n"
     return re.sub(r"\n[ \t]*</body>", snippet + "\n  </body>", html_text, count=1)
+
+
+def metric_path_for_href(href: str) -> str:
+    path = f"{PUBLIC_BASE_PATH.rstrip('/')}/{href}".replace("\\", "/")
+    return re.sub(r"/index\.html$", "/", path)
 
 
 def unique_dest_name(source_path: Path, used_names: set[str]) -> str:
@@ -255,6 +316,7 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
             "</section>\n"
         )
         sanitized = sanitized.replace("</body>", public_note + "</body>")
+    sanitized = inject_public_metrics(sanitized, "../../")
     return inject_cloudflare_web_analytics(sanitized), copied
 
 
@@ -285,6 +347,7 @@ def publish_review(review: PublicReview) -> dict[str, object]:
         "tags": list(review.tags),
         "summary": review.summary,
         "href": review.href,
+        "metric_path": metric_path_for_href(review.href),
         "thumbnail": thumbnail,
         "assets": copied_assets,
     }
@@ -299,12 +362,16 @@ def render_review_card(item: dict[str, object]) -> str:
         else '<div class="thumb-placeholder" aria-hidden="true"></div>'
     )
     return f"""
-        <article class="review-card" data-category="{html.escape(str(item["category"]), quote=True)}" data-tags="{html.escape(" ".join(item["tags"]), quote=True)}" data-title="{html.escape(str(item["title"]), quote=True)}">
+        <article class="review-card" data-category="{html.escape(str(item["category"]), quote=True)}" data-tags="{html.escape(" ".join(item["tags"]), quote=True)}" data-title="{html.escape(str(item["title"]), quote=True)}" data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
           <a class="thumb" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
           <div class="review-card-body">
             <p class="meta">{html.escape(str(item["category"]))} · {html.escape(str(item["updated"]))}</p>
             <h3><a href="{html.escape(str(item["href"]), quote=True)}">{html.escape(str(item["title"]))}</a></h3>
             <p class="subtitle">{html.escape(str(item["subtitle"]))}</p>
+            <p class="card-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
+              <span><strong data-metric-field="views">-</strong> 조회</span>
+              <span>평균 <strong data-metric-field="average">-</strong></span>
+            </p>
             <p>{html.escape(str(item["summary"]))}</p>
             <div class="tags">{tags}</div>
           </div>
@@ -327,6 +394,10 @@ def render_latest_update(item: dict[str, object]) -> str:
           <h2 id="latest-heading">{html.escape(str(item["title"]))}</h2>
           <p class="latest-subtitle">{html.escape(str(item["subtitle"]))}</p>
           <p>{html.escape(str(item["summary"]))}</p>
+          <p class="latest-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
+            <span><strong data-metric-field="views">-</strong> 조회</span>
+            <span>평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+          </p>
           <div class="tags">{tags}</div>
           <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>
         </div>
@@ -893,6 +964,331 @@ a:not([href]) {
 """
 
 
+PUBLIC_METRICS_CSS = """
+.public-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  color: #171b1f;
+}
+.public-metrics-pill,
+.card-metrics span,
+.latest-metrics span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  border: 1px solid rgba(13, 124, 102, 0.18);
+  background: rgba(255, 255, 255, 0.78);
+  color: #5c6670;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+.public-metrics-pill {
+  min-height: 36px;
+  padding: 8px 11px;
+  border-radius: 999px;
+}
+.public-metrics strong,
+.card-metrics strong,
+.latest-metrics strong {
+  color: #0d7c66;
+  font-weight: 900;
+}
+.public-metrics-note {
+  color: #6a747d;
+  font-size: 12px;
+}
+.public-metrics[data-state="loading"] strong,
+.card-metrics[data-state="loading"] strong,
+.latest-metrics[data-state="loading"] strong {
+  color: #8a949c;
+}
+.public-metrics[data-state="error"] {
+  display: none;
+}
+.card-metrics,
+.latest-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 10px 0 12px;
+}
+.card-metrics span,
+.latest-metrics span {
+  padding: 5px 8px;
+  border-radius: 999px;
+}
+.public-review .public-metrics {
+  width: min(980px, calc(100% - 36px));
+  margin: 14px auto 18px;
+  padding: 0;
+}
+.public-review .public-metrics-pill {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 24px rgba(15, 23, 31, 0.08);
+}
+@media (max-width: 680px) {
+  .public-metrics {
+    align-items: stretch;
+  }
+  .public-metrics-pill {
+    flex: 1 1 140px;
+    justify-content: center;
+  }
+  .public-metrics-note {
+    flex-basis: 100%;
+  }
+}
+"""
+
+
+PUBLIC_METRICS_JS = """
+(function () {
+  const config = window.AI_TECH_REVIEW_METRICS || {};
+  const endpoint = String(config.endpoint || "").replace(/\\/+$/, "");
+  const basePath = String(config.basePath || "/AI_Tech_Review/");
+  const isHttp = location.protocol === "https:" || location.protocol === "http:";
+
+  if (!endpoint || !isHttp) {
+    return;
+  }
+
+  const pagePath = canonicalPath(location.pathname);
+  if (!pagePath.startsWith(basePath)) {
+    return;
+  }
+
+  const pageWidget = insertPageWidget();
+  const inlineMetricEls = Array.from(document.querySelectorAll("[data-inline-metrics][data-metric-path]"));
+  const paths = Array.from(new Set([pagePath, ...inlineMetricEls.map((el) => canonicalPath(el.dataset.metricPath || ""))]));
+
+  for (const el of inlineMetricEls) {
+    el.dataset.state = "loading";
+  }
+  if (pageWidget) {
+    pageWidget.dataset.state = "loading";
+  }
+
+  sendHitOnce()
+    .then(() => loadSummary(paths))
+    .then((summary) => renderMetrics(summary))
+    .catch(() => {
+      if (pageWidget) {
+        pageWidget.dataset.state = "error";
+      }
+    });
+
+  startEngagementTracking();
+
+  function canonicalPath(rawPath) {
+    let path = String(rawPath || "").trim();
+    if (!path) {
+      return "";
+    }
+    if (/^https?:\\/\\//i.test(path)) {
+      try {
+        path = new URL(path).pathname;
+      } catch {
+        return "";
+      }
+    }
+    if (!path.startsWith("/")) {
+      path = "/" + path;
+    }
+    path = path.replace(/\\/index\\.html$/i, "/");
+    if (path === basePath.replace(/\\/$/, "")) {
+      path = basePath;
+    }
+    return path;
+  }
+
+  async function sendHitOnce() {
+    const key = "ai-tech-review-hit:" + pagePath;
+    try {
+      if (sessionStorage.getItem(key)) {
+        return;
+      }
+      sessionStorage.setItem(key, "1");
+    } catch {
+      // Some privacy modes block sessionStorage. Counting the page load is still acceptable.
+    }
+    await postJson("/hit", { path: pagePath });
+  }
+
+  async function loadSummary(metricPaths) {
+    const url = new URL(endpoint + "/summary");
+    for (const path of metricPaths.filter(Boolean)) {
+      url.searchParams.append("path", path);
+    }
+    const response = await fetch(url.toString(), { method: "GET", mode: "cors", cache: "no-store" });
+    if (!response.ok) {
+      throw new Error("metrics_summary_failed");
+    }
+    return response.json();
+  }
+
+  async function postJson(route, payload, keepalive) {
+    const response = await fetch(endpoint + route, {
+      method: "POST",
+      mode: "cors",
+      cache: "no-store",
+      keepalive: Boolean(keepalive),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) {
+      throw new Error("metrics_post_failed");
+    }
+    return response.json();
+  }
+
+  function renderMetrics(summary) {
+    const pages = summary.pages || {};
+    const page = pages[pagePath] || {};
+    const totals = summary.totals || {};
+
+    if (pageWidget) {
+      pageWidget.dataset.state = "ready";
+      setText(pageWidget, "total", formatNumber(totals.views || 0));
+      setText(pageWidget, "page", formatNumber(page.views || 0));
+      setText(pageWidget, "average", formatDuration(page.averageActiveSeconds || 0));
+    }
+
+    for (const el of inlineMetricEls) {
+      const path = canonicalPath(el.dataset.metricPath || "");
+      const item = pages[path] || {};
+      el.dataset.state = "ready";
+      setText(el, "views", formatNumber(item.views || 0));
+      setText(el, "average", formatDuration(item.averageActiveSeconds || 0));
+    }
+  }
+
+  function setText(root, field, value) {
+    const target = root.querySelector(`[data-metric-field="${field}"]`);
+    if (target) {
+      target.textContent = value;
+    }
+  }
+
+  function insertPageWidget() {
+    if (document.querySelector("[data-public-metrics-widget]")) {
+      return document.querySelector("[data-public-metrics-widget]");
+    }
+    const isReview = document.body.classList.contains("public-review");
+    const widget = document.createElement("aside");
+    widget.className = "public-metrics";
+    widget.dataset.publicMetricsWidget = "true";
+    widget.dataset.state = "loading";
+    widget.setAttribute("aria-live", "polite");
+    widget.innerHTML = isReview
+      ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
+         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
+         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`
+      : `<span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
+         <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+         <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+         <span class="public-metrics-note">개인 식별 정보 없이 집계합니다.</span>`;
+
+    if (isReview) {
+      const topline = document.querySelector(".topline");
+      if (topline) {
+        topline.insertAdjacentElement("afterend", widget);
+      } else {
+        document.body.insertBefore(widget, document.body.firstChild);
+      }
+      return widget;
+    }
+
+    const stats = document.querySelector(".hero .stats");
+    if (stats) {
+      stats.insertAdjacentElement("afterend", widget);
+      return widget;
+    }
+    return null;
+  }
+
+  function startEngagementTracking() {
+    let lastTick = performance.now();
+    let activeMs = 0;
+    let maxScrollPercent = getScrollPercent();
+
+    const tick = () => {
+      const now = performance.now();
+      if (document.visibilityState === "visible") {
+        activeMs += now - lastTick;
+      }
+      lastTick = now;
+      maxScrollPercent = Math.max(maxScrollPercent, getScrollPercent());
+    };
+
+    const flush = (keepalive) => {
+      tick();
+      const activeSeconds = Math.floor(activeMs / 1000);
+      const scroll = Math.round(maxScrollPercent);
+      if (activeSeconds < 5 && scroll < 25) {
+        return;
+      }
+      activeMs = 0;
+      maxScrollPercent = getScrollPercent();
+
+      const payload = { path: pagePath, activeSeconds, maxScrollPercent: scroll };
+      if (keepalive && navigator.sendBeacon) {
+        const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+        navigator.sendBeacon(endpoint + "/engagement", blob);
+        return;
+      }
+      postJson("/engagement", payload, keepalive).catch(() => {});
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        flush(true);
+      } else {
+        lastTick = performance.now();
+      }
+    });
+    window.addEventListener("pagehide", () => flush(true));
+    window.addEventListener("scroll", () => {
+      maxScrollPercent = Math.max(maxScrollPercent, getScrollPercent());
+    }, { passive: true });
+    window.setInterval(() => flush(false), 15000);
+  }
+
+  function getScrollPercent() {
+    const doc = document.documentElement;
+    const body = document.body;
+    const scrollTop = window.scrollY || doc.scrollTop || body.scrollTop || 0;
+    const scrollHeight = Math.max(body.scrollHeight, doc.scrollHeight);
+    const viewport = window.innerHeight || doc.clientHeight || 0;
+    if (scrollHeight <= viewport) {
+      return 100;
+    }
+    return Math.min(100, Math.max(0, ((scrollTop + viewport) / scrollHeight) * 100));
+  }
+
+  function formatNumber(value) {
+    return new Intl.NumberFormat("ko-KR").format(Number(value || 0));
+  }
+
+  function formatDuration(seconds) {
+    const value = Number(seconds || 0);
+    if (value <= 0) {
+      return "-";
+    }
+    if (value < 60) {
+      return `${value}초`;
+    }
+    return `${Math.round(value / 60)}분`;
+  }
+})();
+"""
+
+
 SITE_JS = """
 const search = document.querySelector("#search");
 const category = document.querySelector("#category");
@@ -958,6 +1354,8 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         for match in LOCAL_HREF_RE.finditer(text):
             raw_url = match.group("url")
             if not is_external_or_anchor(raw_url):
+                if raw_url.startswith("../../assets/") and (review_index.parent / split_local_url(raw_url)[0]).resolve().exists():
+                    continue
                 errors.append(f"local href left in {review_index}: {raw_url}")
         if INTERNAL_PATH_RE.search(text):
             errors.append(f"internal path left in {review_index}")
@@ -976,10 +1374,13 @@ def main() -> int:
     manifest = [publish_review(review) for review in REVIEWS]
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
-    (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(render_index(manifest)), encoding="utf-8")
+    index_html = inject_public_metrics(render_index(manifest))
+    (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     (ASSETS_DIR / "site.css").write_text(SITE_CSS.strip() + "\n", encoding="utf-8")
+    (ASSETS_DIR / "public-metrics.css").write_text(PUBLIC_METRICS_CSS.strip() + "\n", encoding="utf-8")
+    (ASSETS_DIR / "public-metrics.js").write_text(PUBLIC_METRICS_JS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "site.js").write_text(SITE_JS.strip() + "\n", encoding="utf-8")
 
     errors = validate_public_site(manifest)
