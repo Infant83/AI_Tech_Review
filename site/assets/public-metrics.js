@@ -169,14 +169,33 @@
   }
 
   function startEngagementTracking() {
+    const IDLE_TIMEOUT_MS = 2 * 60 * 1000;
+    const MAX_SESSION_ACTIVE_MS = 45 * 60 * 1000;
     let lastTick = performance.now();
+    let lastInteractionAt = lastTick;
+    let windowFocused = document.hasFocus ? document.hasFocus() : true;
     let activeMs = 0;
+    let sessionActiveMs = 0;
     let maxScrollPercent = getScrollPercent();
+    let lastReportedScrollPercent = 0;
+
+    const markInteraction = () => {
+      const now = performance.now();
+      if (now - lastInteractionAt > 1000) {
+        lastInteractionAt = now;
+      }
+    };
 
     const tick = () => {
       const now = performance.now();
-      if (document.visibilityState === "visible") {
-        activeMs += now - lastTick;
+      const visible = document.visibilityState === "visible";
+      const focused = document.hasFocus ? document.hasFocus() : windowFocused;
+      const recentlyActive = now - lastInteractionAt <= IDLE_TIMEOUT_MS;
+      if (visible && windowFocused && focused && recentlyActive && sessionActiveMs < MAX_SESSION_ACTIVE_MS) {
+        const delta = Math.max(0, now - lastTick);
+        const allowed = Math.min(delta, MAX_SESSION_ACTIVE_MS - sessionActiveMs);
+        activeMs += allowed;
+        sessionActiveMs += allowed;
       }
       lastTick = now;
       maxScrollPercent = Math.max(maxScrollPercent, getScrollPercent());
@@ -186,10 +205,13 @@
       tick();
       const activeSeconds = Math.floor(activeMs / 1000);
       const scroll = Math.round(maxScrollPercent);
-      if (activeSeconds < 5 && scroll < 25) {
+      const hasActiveTime = activeSeconds >= 5;
+      const hasNewScrollDepth = scroll >= 25 && scroll > lastReportedScrollPercent;
+      if (!hasActiveTime && !hasNewScrollDepth) {
         return;
       }
       activeMs = 0;
+      lastReportedScrollPercent = Math.max(lastReportedScrollPercent, scroll);
       maxScrollPercent = getScrollPercent();
 
       const payload = { path: pagePath, activeSeconds, maxScrollPercent: scroll };
@@ -205,13 +227,30 @@
       if (document.visibilityState === "hidden") {
         flush(true);
       } else {
+        markInteraction();
         lastTick = performance.now();
       }
     });
+    window.addEventListener("blur", () => {
+      flush(true);
+      windowFocused = false;
+      lastTick = performance.now();
+    });
+    window.addEventListener("focus", () => {
+      windowFocused = true;
+      markInteraction();
+      lastTick = performance.now();
+    });
     window.addEventListener("pagehide", () => flush(true));
     window.addEventListener("scroll", () => {
+      markInteraction();
       maxScrollPercent = Math.max(maxScrollPercent, getScrollPercent());
     }, { passive: true });
+    window.addEventListener("pointerdown", markInteraction, { passive: true });
+    window.addEventListener("pointermove", markInteraction, { passive: true });
+    window.addEventListener("wheel", markInteraction, { passive: true });
+    window.addEventListener("touchstart", markInteraction, { passive: true });
+    window.addEventListener("keydown", markInteraction);
     window.setInterval(() => flush(false), 15000);
   }
 

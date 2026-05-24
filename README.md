@@ -19,7 +19,8 @@
 - 공개 허브는 GitHub Pages의 정적 HTML 위에서 동작하고, 조회수 표시는 Cloudflare Worker와 D1을 붙인 작은 집계 API로 처리한다.
 - `scripts/publish_public_site.py`가 `site/assets/public-metrics.js`, `site/assets/public-metrics.css`, `window.AI_TECH_REVIEW_METRICS` 설정을 허브와 리뷰 HTML에 삽입한다.
 - 브라우저는 현재 경로를 `/AI_Tech_Review/` 또는 개별 리뷰 경로로 정규화한 뒤 Worker의 `/hit`에 1회 조회를 보낸다. 같은 탭 세션의 중복 집계는 `sessionStorage` 키로 줄인다.
-- 읽은 시간은 개인정보가 아니라 페이지 활성 시간이다. JS가 화면이 보이는 동안의 시간을 모으고, 15초 주기 또는 `visibilitychange`/`pagehide` 시점에 `/engagement`로 보낸다. 5초 미만이고 스크롤 25% 미만인 짧은 흔적은 버린다.
+- 읽은 시간은 개인정보가 아니라 페이지 활성 시간이다. JS가 화면이 보이고 브라우저 포커스가 있으며 최근 입력/스크롤이 있었던 시간만 모은다. 2분 이상 입력이 없으면 idle로 보고 멈추며, 한 페이지 탭 세션은 최대 45분까지만 누적한다.
+- `/engagement` 전송은 기존처럼 15초 주기 또는 `visibilitychange`/`pagehide`/`blur` 시점에만 수행한다. 5초 미만의 짧은 활성 시간과 이미 보고한 스크롤 깊이는 다시 보내지 않아 Worker/D1 쓰기 비용을 늘리지 않는다.
 - Worker 구현은 `.automation/cloudflare/ai-tech-review-public-metrics/src/worker.js`에 있다. 배포 이름은 `infant83-public-metrics`이고, D1의 `page_counts`, `daily_counts` 테이블에 경로별 `views`, `active_seconds`, `engagement_events`, `max_scroll_percent`만 저장한다.
 - API는 `https://infant83.github.io`와 로컬 개발 origin만 CORS로 허용한다. `profile`, `ai-tech-review`, `ax-camp`, `gitlab-lectures`, `ml-math` site id로 parent/child 경로를 묶고, `/summary`는 페이지별 통계와 사이트별 합계를 함께 반환한다.
 - 집계는 경로 단위 카운터만 저장한다. IP, User-Agent, 쿠키, 개인 식별자는 저장하지 않는다.
