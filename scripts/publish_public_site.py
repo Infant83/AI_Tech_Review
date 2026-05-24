@@ -471,6 +471,10 @@ def render_index(manifest: list[dict[str, object]]) -> str:
             <span class="sr-only">리뷰 검색</span>
             <input id="search" type="search" placeholder="검색: AI scientist, TabPFN, agent..." autocomplete="off">
           </label>
+          <aside class="public-metrics topbar-metrics" data-public-metrics-widget data-state="loading" aria-live="polite" aria-label="허브 조회 통계">
+            <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+            <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+          </aside>
         </div>
         <span class="topbar-links">
           <a href="https://infant83.github.io/">Operator</a>
@@ -625,7 +629,7 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 22px;
+  gap: 14px;
   min-width: 0;
   flex: 1;
 }
@@ -645,12 +649,15 @@ a { color: inherit; }
   width: min(360px, 42vw);
 }
 .topbar-left .public-metrics {
-  flex: 1 1 360px;
-  min-width: min(100%, 330px);
+  flex: 0 0 auto;
+  min-width: 0;
   margin: 0;
 }
 .topbar-left .public-metrics-pill {
   background: rgba(255, 255, 255, 0.72);
+  min-height: 34px;
+  padding: 7px 10px;
+  white-space: nowrap;
 }
 .top-search input {
   padding: 10px 12px;
@@ -1001,6 +1008,9 @@ a:not([href]) {
   .top-search {
     width: 100%;
   }
+  .topbar-left .public-metrics {
+    width: 100%;
+  }
   .topbar-links {
     align-self: flex-start;
   }
@@ -1067,8 +1077,9 @@ PUBLIC_METRICS_CSS = """
 .latest-metrics[data-state="loading"] strong {
   color: #8a949c;
 }
-.public-metrics[data-state="error"] {
-  display: none;
+.public-metrics[data-state="error"] .public-metrics-pill {
+  border-color: rgba(92, 102, 112, 0.16);
+  color: #7a858e;
 }
 .card-metrics,
 .latest-metrics {
@@ -1131,6 +1142,7 @@ PUBLIC_METRICS_JS = """
   }
 
   sendHitOnce()
+    .catch(() => null)
     .then(() => loadSummary(paths))
     .then((summary) => renderMetrics(summary))
     .catch(() => {
@@ -1245,8 +1257,7 @@ PUBLIC_METRICS_JS = """
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
          <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
-      : `<span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
-         <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+      : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 
     if (isReview) {

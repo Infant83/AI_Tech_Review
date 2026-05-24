@@ -25,6 +25,7 @@
   }
 
   sendHitOnce()
+    .catch(() => null)
     .then(() => loadSummary(paths))
     .then((summary) => renderMetrics(summary))
     .catch(() => {
@@ -139,8 +140,7 @@
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
          <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
-      : `<span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>
-         <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+      : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 
     if (isReview) {
