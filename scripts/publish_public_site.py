@@ -108,9 +108,11 @@ LOCAL_REF_RE = re.compile(
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
 INTERNAL_PATH_RE = re.compile(r"(?:file:///[A-Za-z]:[\\/][^<>'\"\s]+|(?<![A-Za-z0-9])[A-Za-z]:[\\/][^<>'\"\s]+)")
 CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
-PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
-DEFAULT_PUBLIC_METRICS_ENDPOINT = "https://ai-tech-review-public-metrics.lgdisplay.workers.dev"
+PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
+LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
+DEFAULT_PUBLIC_METRICS_ENDPOINT = "https://infant83-public-metrics.infant83.workers.dev"
 PUBLIC_BASE_PATH = "/AI_Tech_Review/"
+PUBLIC_SITE_ID = "ai-tech-review"
 CLOUDFLARE_WEB_ANALYTICS_RE = re.compile(
     r"\s*<!-- Cloudflare Web Analytics -->.*?<!-- End Cloudflare Web Analytics -->\s*",
     re.IGNORECASE | re.DOTALL,
@@ -187,7 +189,12 @@ def cloudflare_web_analytics_snippet(indent: int = 4) -> str:
 
 
 def public_metrics_endpoint() -> str:
-    return os.environ.get(PUBLIC_METRICS_ENDPOINT_ENV, DEFAULT_PUBLIC_METRICS_ENDPOINT).strip().rstrip("/")
+    endpoint = (
+        os.environ.get(PUBLIC_METRICS_ENDPOINT_ENV)
+        or os.environ.get(LEGACY_PUBLIC_METRICS_ENDPOINT_ENV)
+        or DEFAULT_PUBLIC_METRICS_ENDPOINT
+    )
+    return endpoint.strip().rstrip("/")
 
 
 def public_icon_links(asset_prefix: str = "", indent: int = 4) -> str:
@@ -218,7 +225,7 @@ def public_metrics_scripts(asset_prefix: str = "", indent: int = 4) -> str:
     if not endpoint:
         return ""
     config = json.dumps(
-        {"endpoint": endpoint, "basePath": PUBLIC_BASE_PATH},
+        {"endpoint": endpoint, "basePath": PUBLIC_BASE_PATH, "siteId": PUBLIC_SITE_ID},
         ensure_ascii=False,
         separators=(",", ":"),
     )
@@ -1119,6 +1126,7 @@ PUBLIC_METRICS_JS = """
   const config = window.AI_TECH_REVIEW_METRICS || {};
   const endpoint = String(config.endpoint || "").replace(/\\/+$/, "");
   const basePath = String(config.basePath || "/AI_Tech_Review/");
+  const siteId = String(config.siteId || "ai-tech-review");
   const isHttp = location.protocol === "https:" || location.protocol === "http:";
 
   if (!endpoint || !isHttp) {
@@ -1190,6 +1198,7 @@ PUBLIC_METRICS_JS = """
 
   async function loadSummary(metricPaths) {
     const url = new URL(endpoint + "/summary");
+    url.searchParams.append("site", siteId);
     for (const path of metricPaths.filter(Boolean)) {
       url.searchParams.append("path", path);
     }
@@ -1218,11 +1227,11 @@ PUBLIC_METRICS_JS = """
   function renderMetrics(summary) {
     const pages = summary.pages || {};
     const page = pages[pagePath] || {};
-    const totals = summary.totals || {};
+    const site = (summary.sites || {})[siteId] || {};
 
     if (pageWidget) {
       pageWidget.dataset.state = "ready";
-      setText(pageWidget, "total", formatNumber(totals.views || 0));
+      setText(pageWidget, "total", formatNumber(site.views || 0));
       setText(pageWidget, "page", formatNumber(page.views || 0));
       setText(pageWidget, "average", formatDuration(page.averageActiveSeconds || 0));
     }
@@ -1256,7 +1265,7 @@ PUBLIC_METRICS_JS = """
     widget.innerHTML = isReview
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`
       : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 

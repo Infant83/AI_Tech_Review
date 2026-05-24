@@ -1,5 +1,38 @@
+const SERVICE_NAME = "infant83-public-metrics";
 const ALLOWED_PRODUCTION_ORIGIN = "https://infant83.github.io";
 const MAX_PATH_LENGTH = 320;
+const SITE_CATALOG = [
+  {
+    id: "profile",
+    label: "Hyun-Jung Kim Profile",
+    exactPaths: ["/", "/ko.html"],
+    prefixes: [],
+  },
+  {
+    id: "ai-tech-review",
+    label: "AI Tech Review Letters",
+    exactPaths: [],
+    prefixes: ["/AI_Tech_Review/"],
+  },
+  {
+    id: "ax-camp",
+    label: "AX Camp",
+    exactPaths: [],
+    prefixes: ["/Lets_AX_EXE/"],
+  },
+  {
+    id: "gitlab-lectures",
+    label: "GitLab Lectures",
+    exactPaths: [],
+    prefixes: ["/GitLab-Onboarding-Lectures/"],
+  },
+  {
+    id: "ml-math",
+    label: "ML Math",
+    exactPaths: [],
+    prefixes: ["/ML_math/"],
+  },
+];
 
 export default {
   async fetch(request, env) {
@@ -18,7 +51,11 @@ export default {
 
     try {
       if (url.pathname === "/health") {
-        return json({ ok: true, service: "ai-tech-review-public-metrics" }, 200, headers);
+        return json({ ok: true, service: SERVICE_NAME, catalog: publicCatalog() }, 200, headers);
+      }
+
+      if (url.pathname === "/catalog" && request.method === "GET") {
+        return json({ ok: true, sites: publicCatalog() }, 200, headers);
       }
 
       if (url.pathname === "/hit" && request.method === "POST") {
@@ -41,12 +78,27 @@ export default {
 
       if (url.pathname === "/stats" && request.method === "GET") {
         const path = normalizePath(url.searchParams.get("path") || "");
-        return json({ ok: true, page: await getPageStats(env.DB, path), totals: await getTotals(env.DB) }, 200, headers);
+        const site = siteForPath(path);
+        return json({
+          ok: true,
+          page: await getPageStats(env.DB, path),
+          site: site ? await getSiteStats(env.DB, site.id) : null,
+          totals: await getTotals(env.DB),
+        }, 200, headers);
       }
 
       if (url.pathname === "/summary" && request.method === "GET") {
         const paths = dedupe(url.searchParams.getAll("path").map(normalizePath)).slice(0, 30);
-        return json({ ok: true, totals: await getTotals(env.DB), pages: await getPageSummary(env.DB, paths) }, 200, headers);
+        const requestedSites = dedupe([
+          ...url.searchParams.getAll("site").map(normalizeSiteId),
+          ...paths.map((path) => siteForPath(path)?.id).filter(Boolean),
+        ]).slice(0, 30);
+        return json({
+          ok: true,
+          totals: await getTotals(env.DB),
+          sites: await getSiteSummary(env.DB, requestedSites),
+          pages: await getPageSummary(env.DB, paths),
+        }, 200, headers);
       }
 
       return json({ ok: false, error: "not_found" }, 404, headers);
@@ -108,22 +160,62 @@ function normalizePath(rawPath) {
     throw new PublicError("missing_path", 400);
   }
   if (/^https?:\/\//i.test(path)) {
-    path = new URL(path).pathname;
+    try {
+      path = new URL(path).pathname;
+    } catch {
+      throw new PublicError("invalid_url", 400);
+    }
   }
-  path = path.replace(/\/index\.html$/i, "/");
   if (!path.startsWith("/")) {
     path = `/${path}`;
   }
-  if (path === "/AI_Tech_Review") {
-    path = "/AI_Tech_Review/";
-  }
-  if (path !== "/" && path !== "/ko.html" && !path.startsWith("/AI_Tech_Review/")) {
-    throw new PublicError("path_not_allowed", 400);
-  }
+  path = path.replace(/\/index\.html$/i, "/");
+  path = normalizeCatalogRoot(path);
   if (path.includes("..") || path.includes("\0") || path.length > MAX_PATH_LENGTH) {
     throw new PublicError("invalid_path", 400);
   }
+  if (!siteForPath(path)) {
+    throw new PublicError("path_not_allowed", 400);
+  }
   return path;
+}
+
+function normalizeCatalogRoot(path) {
+  for (const site of SITE_CATALOG) {
+    for (const prefix of site.prefixes) {
+      const rootWithoutSlash = prefix.replace(/\/$/, "");
+      if (path === rootWithoutSlash) {
+        return prefix;
+      }
+    }
+  }
+  return path;
+}
+
+function normalizeSiteId(rawSiteId) {
+  const siteId = String(rawSiteId || "").trim().toLowerCase();
+  if (!siteId) {
+    throw new PublicError("missing_site", 400);
+  }
+  if (!SITE_CATALOG.some((site) => site.id === siteId)) {
+    throw new PublicError("site_not_allowed", 400);
+  }
+  return siteId;
+}
+
+function siteForPath(path) {
+  return SITE_CATALOG.find((site) => {
+    return site.exactPaths.includes(path) || site.prefixes.some((prefix) => path.startsWith(prefix));
+  }) || null;
+}
+
+function publicCatalog() {
+  return SITE_CATALOG.map((site) => ({
+    id: site.id,
+    label: site.label,
+    exactPaths: site.exactPaths,
+    prefixes: site.prefixes,
+  }));
 }
 
 function clampInteger(value, min, max) {
@@ -213,6 +305,35 @@ async function getTotals(db) {
   return normalizeStats(row, "all");
 }
 
+async function getSiteStats(db, siteId) {
+  const site = SITE_CATALOG.find((item) => item.id === siteId);
+  if (!site) {
+    throw new PublicError("site_not_allowed", 400);
+  }
+  const rows = await getAllPageRows(db);
+  return aggregateSiteRows(rows.filter((row) => siteForPath(row.path)?.id === siteId), siteId);
+}
+
+async function getSiteSummary(db, siteIds) {
+  if (!siteIds.length) {
+    return {};
+  }
+  const rows = await getAllPageRows(db);
+  const sites = {};
+  for (const siteId of siteIds) {
+    sites[siteId] = aggregateSiteRows(rows.filter((row) => siteForPath(row.path)?.id === siteId), siteId);
+  }
+  return sites;
+}
+
+async function getAllPageRows(db) {
+  const { results } = await db.prepare(
+    `SELECT path, views, active_seconds, engagement_events, max_scroll_percent, updated_at
+     FROM page_counts`
+  ).all();
+  return results || [];
+}
+
 async function getPageSummary(db, paths) {
   if (!paths.length) {
     return {};
@@ -240,11 +361,40 @@ function normalizeStats(row, path) {
   const engagementEvents = Number(row?.engagement_events || 0);
   return {
     path,
+    site: siteForPath(path)?.id || null,
     views,
     activeSeconds,
     engagementEvents,
     averageActiveSeconds: views > 0 ? Math.round(activeSeconds / views) : 0,
     maxScrollPercent: Number(row?.max_scroll_percent || 0),
     updatedAt: row?.updated_at || null,
+  };
+}
+
+function aggregateSiteRows(rows, siteId) {
+  let views = 0;
+  let activeSeconds = 0;
+  let engagementEvents = 0;
+  let maxScrollPercent = 0;
+  let updatedAt = null;
+
+  for (const row of rows) {
+    views += Number(row?.views || 0);
+    activeSeconds += Number(row?.active_seconds || 0);
+    engagementEvents += Number(row?.engagement_events || 0);
+    maxScrollPercent = Math.max(maxScrollPercent, Number(row?.max_scroll_percent || 0));
+    if (row?.updated_at && (!updatedAt || row.updated_at > updatedAt)) {
+      updatedAt = row.updated_at;
+    }
+  }
+
+  return {
+    site: siteId,
+    views,
+    activeSeconds,
+    engagementEvents,
+    averageActiveSeconds: views > 0 ? Math.round(activeSeconds / views) : 0,
+    maxScrollPercent,
+    updatedAt,
   };
 }

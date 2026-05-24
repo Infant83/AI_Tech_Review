@@ -2,6 +2,7 @@
   const config = window.AI_TECH_REVIEW_METRICS || {};
   const endpoint = String(config.endpoint || "").replace(/\/+$/, "");
   const basePath = String(config.basePath || "/AI_Tech_Review/");
+  const siteId = String(config.siteId || "ai-tech-review");
   const isHttp = location.protocol === "https:" || location.protocol === "http:";
 
   if (!endpoint || !isHttp) {
@@ -73,6 +74,7 @@
 
   async function loadSummary(metricPaths) {
     const url = new URL(endpoint + "/summary");
+    url.searchParams.append("site", siteId);
     for (const path of metricPaths.filter(Boolean)) {
       url.searchParams.append("path", path);
     }
@@ -101,11 +103,11 @@
   function renderMetrics(summary) {
     const pages = summary.pages || {};
     const page = pages[pagePath] || {};
-    const totals = summary.totals || {};
+    const site = (summary.sites || {})[siteId] || {};
 
     if (pageWidget) {
       pageWidget.dataset.state = "ready";
-      setText(pageWidget, "total", formatNumber(totals.views || 0));
+      setText(pageWidget, "total", formatNumber(site.views || 0));
       setText(pageWidget, "page", formatNumber(page.views || 0));
       setText(pageWidget, "average", formatDuration(page.averageActiveSeconds || 0));
     }
@@ -139,7 +141,7 @@
     widget.innerHTML = isReview
       ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 전체 공개 조회</span>`
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`
       : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
 
