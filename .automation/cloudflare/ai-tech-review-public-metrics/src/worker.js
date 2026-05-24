@@ -117,7 +117,7 @@ function normalizePath(rawPath) {
   if (path === "/AI_Tech_Review") {
     path = "/AI_Tech_Review/";
   }
-  if (path !== "/" && !path.startsWith("/AI_Tech_Review/")) {
+  if (path !== "/" && path !== "/ko.html" && !path.startsWith("/AI_Tech_Review/")) {
     throw new PublicError("path_not_allowed", 400);
   }
   if (path.includes("..") || path.includes("\0") || path.length > MAX_PATH_LENGTH) {
