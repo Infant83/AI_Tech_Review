@@ -1,5 +1,5 @@
 ---
-title: "AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists"
+title: "AI 과학자, 시작의 끝에서"
 subtitle: "에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가"
 type: ai-tech-review-letter
 series: "AI Tech Review Letters"
@@ -30,7 +30,7 @@ tags:
 source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-05-23_ai-scientist-execution-harness\\reports\\2026-05-23_ai-scientist-execution-harness_final_review.md"
 ---
 
-# AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists
+# AI 과학자, 시작의 끝에서
 
 <figure class="article-hero-figure">
   <img src="../artifacts/final_review/figures/imagegen/ai_scientist_erdos_blackboard.png" alt="밤의 수학 연구실에서 인간 수학자와 AI 에이전트 콘솔이 primitive set 약수 격자, Markov chain 경로, 검증 문서를 살피는 장면형 일러스트레이션">

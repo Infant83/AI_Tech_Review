@@ -229,3 +229,21 @@
   - Playwright site home check: latest title/subtitle matched, `hasAiGovernanceTeam: false`, `hasOldResponsibility: false`, `hasNewNotice: true`
   - site preview URL: `http://127.0.0.1:8766/index.html`
   - site preview server pid: `36996`
+
+### 최종 제목 단순화
+
+- 최종 제목: `AI 과학자, 시작의 끝에서`
+- 처리 내용:
+  - 원고 frontmatter `title`과 본문 H1에서 영문 병기 제거
+  - `The End of the Beginning for AI Scientists`는 alias와 참고자료 맥락에만 유지
+  - `scripts/publish_public_site.py`의 AI Tech Review Letters 카드 제목도 동일하게 변경
+- 재생성 명령:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - `python scripts\markdown_to_html.py --mode final-review .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - `python scripts\html_to_dist.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.html --dist .\2026-05-23_ai-scientist-execution-harness\dist --zip --zip-path .\2026-05-23_ai-scientist-execution-harness\dist.zip`
+  - `python scripts\publish_public_site.py`
+- 검증 결과:
+  - 문체/그림 audit: `finding_count: 0`, `figure_count: 7`, `figure_density: ok`
+  - `html_to_dist.py`: `[local-ref-check] ok`
+  - `publish_public_site.py`: `[public-site-check] ok`, `reviews=4`
+  - `site/index.html`, `site/reviews/2026-05-23_ai-scientist-execution-harness/index.html`, `site/manifest.json`에서 제목 `AI 과학자, 시작의 끝에서` 확인

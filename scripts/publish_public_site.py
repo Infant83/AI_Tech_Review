@@ -48,7 +48,7 @@ class PublicReview:
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-05-23_ai-scientist-execution-harness",
-        title="AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists",
+        title="AI 과학자, 시작의 끝에서",
         subtitle="에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가",
         date="2026-05-23",
         updated="2026-05-25",
