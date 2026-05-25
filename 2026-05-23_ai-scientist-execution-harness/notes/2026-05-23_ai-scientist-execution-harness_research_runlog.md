@@ -133,3 +133,99 @@
 - Playwright browser check:
   - command: `npx playwright screenshot --full-page file:///.../reports/2026-05-23_ai-scientist-execution-harness_final_review.html %TEMP%\ai_scientist_final_review_provenance_pass_playwright.png`
   - result: hero, figures, code blocks, 작성 정보, 계층형 References, side TOC rendered normally
+
+## 2026-05-25
+
+### 섹션 단위 퇴고
+
+- 대상 파일: `reports/2026-05-23_ai-scientist-execution-harness_final_review.md`
+- 퇴고 방식: 문단 단위가 아니라 섹션 단위로 도입부, 수학에서 과학으로, 국가/기업 전환, 실행 전략, 결말을 순차 수정
+- 수정 방향:
+  - 도입부의 기사 전달 톤을 줄이고 Liam Price와 에르되시 #1196 장면에서 바로 수학적 질문으로 들어가도록 조정
+  - `수학에서 과학으로` 섹션의 사례 나열을 연구 업무 단위 변화라는 한 축으로 정리
+  - 국가/기업 신호가 회사 문제로 내려오는 연결을 강화
+  - 실행 하네스 설명에서 추상 은유보다 문제 카드, 자료, 평가 함수, 의사결정 로그가 보이도록 수정
+  - 결말의 슬로건성 비유를 낮추고 작은 작업대와 기록 중심의 준비로 마무리
+- 문체/그림 audit:
+  - command: `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - result: `finding_count: 0`, `figure_count: 7`, `figure_density: ok`
+- HTML 재렌더링:
+  - command: `python scripts\markdown_to_html.py --mode final-review .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - result: rendered successfully
+- 배포용 dist 갱신:
+  - command: `python scripts\html_to_dist.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.html --dist .\2026-05-23_ai-scientist-execution-harness\dist --zip --zip-path .\2026-05-23_ai-scientist-execution-harness\dist.zip`
+  - result: `[local-ref-check] ok`
+  - package path: `2026-05-23_ai-scientist-execution-harness\dist`
+  - zip path: `2026-05-23_ai-scientist-execution-harness\dist.zip`
+- 배포본 렌더링 확인:
+  - command: `npx playwright screenshot --full-page http://127.0.0.1:8793/index.html %TEMP%\ai_scientist_dist_section_polish_20260525.png`
+  - result: screenshot captured, `5308634` bytes
+- Obsidian mirror:
+  - mirror root: `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-05-23_ai-scientist-execution-harness`
+  - copied: report markdown, report HTML, research runlog, final review figures
+
+### 제목 확정 후 HTML/dist 재배포
+
+- 대상 파일: `reports/2026-05-23_ai-scientist-execution-harness_final_review.md`
+- 확정 제목: `AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists`
+- 확정 부제: `에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가`
+- 문체/그림 audit:
+  - command: `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - result: `finding_count: 0`, `figure_count: 7`, `figure_density: ok`
+- HTML 재렌더링:
+  - command: `python scripts\markdown_to_html.py --mode final-review .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - result: rendered successfully
+  - html path: `2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.html`
+  - html size: `76055` bytes
+- 배포용 dist 갱신:
+  - command: `python scripts\html_to_dist.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.html --dist .\2026-05-23_ai-scientist-execution-harness\dist --zip --zip-path .\2026-05-23_ai-scientist-execution-harness\dist.zip`
+  - result: `[local-ref-check] ok`
+  - package path: `2026-05-23_ai-scientist-execution-harness\dist`
+  - index path: `2026-05-23_ai-scientist-execution-harness\dist\index.html`
+  - index size: `74847` bytes
+  - zip path: `2026-05-23_ai-scientist-execution-harness\dist.zip`
+  - zip size: `10313814` bytes
+- 배포본 브라우저 검증:
+  - local preview URL: `http://127.0.0.1:8765/index.html`
+  - server pid: `38568`
+  - HTTP status: `200`
+  - Playwright desktop check: title and H1 matched the finalized title; `figureCount: 7`, `imageCount: 7`, `brokenImages: []`
+  - Playwright local href check: unique local hrefs `15`, failed links `0`
+  - Playwright mobile check: viewport width `375`, horizontal overflow `false`, figures contained within page width
+  - verification screenshots were captured through Playwright MCP for desktop and mobile viewport checks and were not added to `dist`
+- Obsidian mirror sync:
+  - mirror root: `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-05-23_ai-scientist-execution-harness`
+  - copied: final review markdown, final review HTML, research runlog, `dist.zip`, final review figures
+  - copied top-level figure items: `7`
+
+### AI Tech Review Letters 사이트 갱신
+
+- 수정 범위:
+  - `reports/2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - `scripts/publish_public_site.py`
+  - `site/index.html`
+  - `site/manifest.json`
+  - `site/reviews/2026-05-23_ai-scientist-execution-harness/index.html`
+- 원고 frontmatter:
+  - `issue date: 2026-05-23` 추가로 상단 발행 라벨을 `AI Tech Review Letters: Week 21 (2026-05-23)`로 고정
+  - `author: "김현중"`으로 변경해 `AI Governance 팀` 표기 제거
+- 사이트 카드:
+  - title: `AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists`
+  - subtitle: `에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가`
+  - updated: `2026-05-25`
+  - tags: `AI for Science`, `AI Scientist`, `AI Co-Scientist`, `Research Harness`
+- 투명성 고지:
+  - 작성자 표기에서 `AI Governance 팀` 제거
+  - 작성자 링크에 `GitHub` 추가: `https://github.com/Infant83`
+  - 책임 문구를 `이 허브의 게시물은 AI 보조 생성 및 퇴고 과정을 거친 콘텐츠입니다.`로 축약
+- 재생성 명령:
+  - `python scripts\markdown_to_html.py --mode final-review .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.md`
+  - `python scripts\html_to_dist.py .\2026-05-23_ai-scientist-execution-harness\reports\2026-05-23_ai-scientist-execution-harness_final_review.html --dist .\2026-05-23_ai-scientist-execution-harness\dist --zip --zip-path .\2026-05-23_ai-scientist-execution-harness\dist.zip`
+  - `python scripts\publish_public_site.py`
+- 검증 결과:
+  - `html_to_dist.py`: `[local-ref-check] ok`
+  - `publish_public_site.py`: `[public-site-check] ok`, `reviews=4`
+  - 문체/그림 audit: `finding_count: 0`, `figure_count: 7`, `figure_density: ok`
+  - Playwright site home check: latest title/subtitle matched, `hasAiGovernanceTeam: false`, `hasOldResponsibility: false`, `hasNewNotice: true`
+  - site preview URL: `http://127.0.0.1:8766/index.html`
+  - site preview server pid: `36996`

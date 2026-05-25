@@ -48,15 +48,15 @@ class PublicReview:
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-05-23_ai-scientist-execution-harness",
-        title="AI 과학자는 어떻게 우리 곁에 오는가",
-        subtitle="에르되시 문제 #1196에서 AI Co-Scientist까지, 발견의 속도와 실행 환경을 함께 읽는 리뷰",
+        title="AI 과학자, 시작의 끝에서: The End of the Beginning for AI Scientists",
+        subtitle="에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가",
         date="2026-05-23",
-        updated="2026-05-23",
+        updated="2026-05-25",
         category="AI for Science",
-        tags=("AI for Science", "AI Scientist", "AI Co-Scientist", "AlphaEvolve"),
+        tags=("AI for Science", "AI Scientist", "AI Co-Scientist", "Research Harness"),
         summary=(
-            "수학 문제 풀이 소식에서 출발해 AI 과학자가 연구 동료, 조수, 검증 대상이 되는 조건을 "
-            "과학 활동과 기업 실행 환경의 관점에서 정리합니다."
+            "에르되시 문제 #1196에서 출발해 AI 과학자가 연구의 속도를 높이는 장면과, 그 속도를 "
+            "검증 가능한 작업으로 바꾸기 위해 필요한 연구 실행 하네스를 함께 살펴봅니다."
         ),
     ),
     PublicReview(
@@ -536,9 +536,10 @@ def render_index(manifest: list[dict[str, object]]) -> str:
             <div>
               <dt>작성자</dt>
               <dd>
-                <a href="https://infant83.github.io/">김현중</a>, AI Governance 팀
+                <a href="https://infant83.github.io/">김현중</a>
                 <span class="credit-links">
                   <a href="https://infant83.github.io/">Profile</a>
+                  <a href="https://github.com/Infant83">GitHub</a>
                   <a href="https://www.linkedin.com/in/hyun-jung-kim-8126a7236/">LinkedIn</a>
                   <a href="https://scholar.google.com/citations?user=FtSLeT4AAAAJ&hl=en">Google Scholar</a>
                 </span>
@@ -550,7 +551,7 @@ def render_index(manifest: list[dict[str, object]]) -> str:
             </div>
           </dl>
           <ul>
-            <li>이 허브의 게시물은 AI 보조 생성 및 퇴고 과정을 거친 콘텐츠이며, 최종 책임은 작성자와 운영 조직에 있습니다.</li>
+            <li>이 허브의 게시물은 AI 보조 생성 및 퇴고 과정을 거친 콘텐츠입니다.</li>
             <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
             <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
             <li>EU AI Act 투명성 취지에 따라 AI 생성/보조 작성 콘텐츠임을 명시합니다.</li>
