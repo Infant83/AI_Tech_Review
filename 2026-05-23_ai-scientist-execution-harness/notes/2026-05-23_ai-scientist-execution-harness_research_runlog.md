@@ -247,3 +247,13 @@
   - `html_to_dist.py`: `[local-ref-check] ok`
   - `publish_public_site.py`: `[public-site-check] ok`, `reviews=4`
   - `site/index.html`, `site/reviews/2026-05-23_ai-scientist-execution-harness/index.html`, `site/manifest.json`에서 제목 `AI 과학자, 시작의 끝에서` 확인
+
+### 배포본 이메일 발송
+
+- 발송 일시: 2026-05-25
+- 수신자: `hyun-jung.kim@lgdisplay.com`
+- 제목: `AI Tech Review Letters 배포본 - AI 과학자, 시작의 끝에서`
+- 첨부: `2026-05-23_ai-scientist-execution-harness\dist.zip`
+- Gmail message id: `19e5f07b84a538f5`
+- Gmail thread id: `19e5f07b84a538f5`
+- 결과: `SENT`
