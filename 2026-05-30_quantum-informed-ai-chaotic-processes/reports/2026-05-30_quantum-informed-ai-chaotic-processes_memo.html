@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quantum-Informed AI for Chaotic Processes - Memo</title>
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>Quantum-Informed AI for Chaotic Processes - Memo</h1>
+        <p class="deck">시장 관점의 리뷰 노트, 신호 클러스터링, 그리고 워크스페이스 증거 링크를 빠르게 읽고 후속 리서치로 연결할 수 있도록 정리한 웹 리포트입니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-05-30 12:54:53</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>5</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-05-30_quantum-informed-ai-chaotic-processes_memo.md">2026-05-30_quantum-informed-ai-chaotic-processes_memo.md</a></span>
+          </li>
+        </ul>
+      </section>
+      
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>Date: 2026-05-30<br />
+Seed video: <a href="https://www.youtube.com/watch?v=na-sQ-g2MAc">Lev Selector, Exciting AI Updates Weekly - May 29, 2026</a></p>
+<h2 id="tldr">TL;DR</h2>
+<p>이번 영상에서 건질 만한 주제는 <strong>양자컴퓨터가 혼돈계를 직접 빠르게 시뮬레이션한다</strong>가 아니라, <strong>양자 회로가 혼돈계의 장기 통계 구조를 압축한 prior를 만들고, 그 prior가 classical ML의 장기 예측을 안정화할 수 있는가</strong>입니다.</p>
+<p>중심 논문은 Wang, Xue, Gao, Coveney의 <a href="https://arxiv.org/abs/2507.19861">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a>입니다. 논문은 Kuramoto-Sivashinsky, 2D Kolmogorov flow, turbulent channel flow를 대상으로 Q-Prior를 붙인 classical Koopman 계열 모델이 classical baseline보다 장기 통계, spectrum fidelity, 안정성에서 좋아졌다고 보고합니다.</p>
+<p>가장 좋은 리뷰 각도는 <strong>Q-Prior as a statistical regularizer for chaotic ML</strong>입니다. Quantum hype로 읽기보다, chaotic system prediction에서 중요한 invariant measure, energy spectrum, autocorrelation, Lyapunov-time horizon을 보존하는 방식으로 읽는 편이 좋습니다.</p>
+<h2 id="_1">핵심 판단</h2>
+<table>
+<thead>
+<tr>
+<th>질문</th>
+<th>판단</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>이 주제는 리뷰할 가치가 있는가?</td>
+<td>있습니다. QML의 추상적 약속이 아니라 chaotic PDE/flow forecasting이라는 구체 benchmark와 연결되어 있습니다.</td>
+</tr>
+<tr>
+<td>당장 실무 적용 가능한가?</td>
+<td>제한적입니다. 코드는 공개되어 있지만, 데이터/하드웨어/shot 수/비교 baseline까지 재현해야 합니다.</td>
+</tr>
+<tr>
+<td>&ldquo;20% 더 정확&rdquo;이라고 말해도 되는가?</td>
+<td>조심해야 합니다. 논문 수치는 up to 17.25% predictive distribution accuracy, up to 29.36% full-spectrum fidelity입니다.</td>
+</tr>
+<tr>
+<td>quantum advantage가 증명되었는가?</td>
+<td>저자들은 practical quantum advantage를 주장하지만, 독립 재현과 비용 포함 비교가 더 필요합니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">먼저 읽을 논문</h2>
+<ol>
+<li>Wang et al. 2026, <a href="https://arxiv.org/abs/2507.19861">QIML for spatiotemporal chaos</a><br />
+   이번 리뷰의 중심 논문입니다. Q-Prior, Koopman 모델, turbulent channel flow 결과를 먼저 봅니다.</li>
+<li>Pathak et al. 2018, <a href="https://doi.org/10.1103/PhysRevLett.120.024102">Model-free prediction of large spatiotemporally chaotic systems</a><br />
+   chaotic forecasting에서 reservoir computing이 왜 강한 baseline인지 확인합니다.</li>
+<li>Ahmed et al. 2024, <a href="https://arxiv.org/abs/2405.03390">Recurrence-free QRC for chaotic dynamics and extreme events</a><br />
+   QRC가 작은 reservoir로 Lorenz/Lorenz-96/MFE extreme event를 다루는 방식을 봅니다.</li>
+<li>Steinegger and Raeth 2025, <a href="https://www.nature.com/articles/s41598-025-87768-0">Four-qubit QRC for 3D chaotic systems</a><br />
+   아주 작은 qubit system이 short-term forecast와 long-term climate를 어느 정도 재현하는지 봅니다.</li>
+<li>Kobayashi and Motome 2026, <a href="https://arxiv.org/abs/2506.17547">Edge of Many-Body Quantum Chaos in QRC</a><br />
+   &ldquo;edge of chaos&rdquo;가 QRC 설계 원리로 확장되는지 보는 이론적 축입니다.</li>
+</ol>
+<h2 id="_3">리뷰 관점</h2>
+<p>이 주제에서 중요한 것은 예측값 하나가 맞느냐보다, 모델이 긴 rollout에서 물리적으로 그럴듯한 분포를 유지하느냐입니다. 혼돈계는 초기조건 오차가 빠르게 커지기 때문에, 한 궤적을 멀리까지 정확히 맞추는 것보다 invariant measure, energy spectrum, autocorrelation, Lyapunov exponent, attractor dimension 같은 장기 성질을 유지하는지가 더 중요한 평가가 됩니다.</p>
+<p>QIML 논문의 장점은 quantum generator를 매 예측마다 부르지 않는다는 점입니다. QPU는 한 번 offline으로 Q-Prior를 만들고, 이후 classical model은 그 prior를 loss에 넣어 장기 통계가 무너지지 않도록 학습합니다. 이 구조는 현재 NISQ 하드웨어의 느린 측정과 noise를 고려하면 꽤 현실적인 분업입니다.</p>
+<p>반대로 조심할 부분도 분명합니다. 논문 결과는 특정 데이터셋과 특정 baseline에서의 결과입니다. quantum module이 실제로 classical generative prior보다 얼마나 비용 효율적인지, shot 수와 calibration 부담까지 포함해 비교했는지, 더 큰 실제 weather/climate/biomedical 데이터에서도 같은 이득이 유지되는지는 아직 열려 있습니다.</p>
+<h2 id="_4">다음 검토 포인트</h2>
+<ul>
+<li>Q-Prior가 classical VAE/GAN/diffusion prior보다 어떤 조건에서 나은지 재현 비교가 필요합니다.</li>
+<li>chaotic forecasting 논문은 one-step MSE가 아니라 long-term statistics 중심으로 읽어야 합니다.</li>
+<li>QRC 논문은 &ldquo;qubit 수가 작다&rdquo;는 말보다 measurement cost, finite sampling noise, data-loading bottleneck을 같이 봐야 합니다.</li>
+<li>Multiverse Computing의 LLM quantum blocks는 흥미로운 인접 신호지만, chaotic-process forecasting과는 다른 리뷰로 분리하는 편이 좋습니다.</li>
+</ul>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-05-30 12:53:43
+        </div>
+      </article>
+
+      <aside class="sidebar">
+        
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#tldr">TL;DR</a></li>
+<li><a href="#_1">핵심 판단</a></li>
+<li><a href="#_2">먼저 읽을 논문</a></li>
+<li><a href="#_3">리뷰 관점</a></li>
+<li><a href="#_4">다음 검토 포인트</a></li>
+</ul>
+</div>
+
+        </section>
+        
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc" target="_blank" rel="noreferrer">Lev Selector, Exciting AI Updates Weekly - May 29, 2026</a></li>
+<li><a href="https://arxiv.org/abs/2507.19861" target="_blank" rel="noreferrer">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevLett.120.024102" target="_blank" rel="noreferrer">Model-free prediction of large spatiotemporally chaotic systems</a></li>
+<li><a href="https://arxiv.org/abs/2405.03390" target="_blank" rel="noreferrer">Recurrence-free QRC for chaotic dynamics and extreme events</a></li>
+<li><a href="https://www.nature.com/articles/s41598-025-87768-0" target="_blank" rel="noreferrer">Four-qubit QRC for 3D chaotic systems</a></li>
+<li><a href="https://arxiv.org/abs/2506.17547" target="_blank" rel="noreferrer">Edge of Many-Body Quantum Chaos in QRC</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

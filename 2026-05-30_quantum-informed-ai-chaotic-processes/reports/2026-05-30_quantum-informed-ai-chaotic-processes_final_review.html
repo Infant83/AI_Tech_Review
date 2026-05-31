@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까</title>
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 22 (2026-05-30)</span>
+      <span><a href="2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md">2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md</a></span>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까</h1>
+        <p class="dek">물속 잉크 한 방울이 순식간에 복잡한 무늬로 퍼지듯, chaotic process에서는 작은 차이가 빠르게 커집니다. QIML 연구는 이 어려운 예측 문제에서 양자 생성 모델을 장기 통계 prior로 쓰는 방법을 제안합니다.</p>
+      </section>
+      
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <figure class="article-hero-figure">
+  <img src="../artifacts/final_review/figures/imagegen/qiml_hero_quantum_prior-web.png" alt="QIML의 혼돈 유동 예측 장면: 거대한 turbulent flow, 작은 Q-Prior 장치, 긴 rollout을 보여주는 scientific ML 대시보드가 함께 놓인 기사형 일러스트레이션">
+  <figcaption><strong>그림 1.</strong> QIML이 다루는 장면을 한 화면에 묶었습니다. 왼쪽의 turbulent flow는 작은 오차가 커지는 혼돈계를, 가운데의 Q-Prior 장치는 양자 생성 모델이 압축한 장기 통계를, 오른쪽의 scientific ML 대시보드는 그 prior를 이용한 long rollout 검증 도구를 나타냅니다.</figcaption>
+</figure>
+
+<p>먼저 아주 작은 실험을 떠올려보겠습니다. 투명한 물통에 잉크 한 방울을 떨어뜨리면 처음에는 어디서 시작했는지 보입니다. 몇 초가 지나면 잉크는 가느다란 실처럼 휘고, 갈라지고, 서로 말려 들어갑니다. 처음 위치가 아주 조금 달랐다면 나중의 무늬도 달라집니다. 그런데 멀리서 보면 여전히 비슷한 점도 있습니다. 잉크가 퍼지는 속도, 소용돌이의 크기, 진해지는 구역과 옅어지는 구역의 분포는 완전히 아무렇게나 움직이지 않습니다.</p>
+<p>혼돈계 예측도 이 장면과 닮았습니다. 여기서 혼돈은 &ldquo;아무 규칙도 없다&rdquo;는 뜻이 아닙니다. 규칙은 있지만, 시작점의 작은 차이가 시간이 지나며 크게 벌어지는 동역학계를 말합니다. 그래서 모델이 처음 몇 step을 맞히는 것과, 긴 시간이 지난 뒤에도 그 시스템다운 분포와 물리량을 유지하는 것은 서로 다른 능력입니다.</p>
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/imagegen/feynman_chaos_drop_analogy-web.png" alt="Chaotic process의 sensitivity to initial conditions를 설명하는 물통 비유: 잉크 소용돌이와 점점 벌어지는 두 색 실">
+  <figcaption><strong>그림 2.</strong> 물속 잉크 한 방울은 sensitivity to initial conditions를 설명하기 좋은 도구입니다. 자세한 무늬는 조금만 지나도 달라지지만, probability density나 소용돌이 scale처럼 장기 통계 검증에 쓰이는 특징은 남습니다.</figcaption>
+</figure>
+
+<p>난류, 유체 흐름, 플라즈마, 일부 화학 반응을 예측할 때도 같은 문제가 나타납니다. 처음에는 그럴듯한 예측이 나옵니다. 하지만 예측을 길게 굴리면 에너지 분포가 흐려지고, 작은 스케일의 움직임이 사라지거나 과장되고, 결국 실제 시스템과 다른 상태로 갑니다. 이때 연구자가 묻는 질문은 단순한 정확도 하나로 끝나지 않습니다. &ldquo;얼마나 오래 비슷한 장면을 따라갔는가&rdquo;와 함께 &ldquo;나중에도 같은 물리계처럼 보이는가&rdquo;를 봐야 합니다.</p>
+<p><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc">Lev Selector의 2026년 5월 29일 AI Updates Weekly</a>에서 눈에 들어온 대목도 여기에 있습니다. 영상의 <code>Quantum-informed AI for Chaotic Processes</code> 장은 University College London 쪽 연구를 소개하며, 양자 계산이 chaotic/complex system 예측에 도움을 줄 수 있다는 신호를 짧게 다룹니다. 중심 논문은 Wang, Xue, Gao, Coveney의 <a href="https://arxiv.org/abs/2507.19861">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a>입니다. 이 논문은 2026년 <em>Science Advances</em>에 실렸고 DOI는 <a href="https://doi.org/10.1126/sciadv.aec5049">10.1126/sciadv.aec5049</a>입니다.</p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Highlight</p>
+<p>이 논문의 목표는 양자컴퓨터로 유체 시뮬레이션 전체를 대신하겠다는 데 있지 않습니다. 더 현실적인 목표는 <strong>양자 생성 모델이 혼돈계의 장기 통계 구조를 작은 prior로 압축하고, 고전적 scientific ML 예측기가 그 prior를 재사용할 수 있는지</strong> 확인하는 것입니다.</p>
+</aside>
+<h2 id="q-prior">Q-Prior가 맡는 일</h2>
+<p><code>prior</code>라는 말부터 풀어보겠습니다. prior는 모델이 예측을 시작하기 전에 가지고 들어가는 배경 지식입니다. 숙련된 연구자가 난류 화면을 볼 때 모든 픽셀을 외우지는 않습니다. 대신 &ldquo;이 정도 스케일의 소용돌이가 생긴다&rdquo;, &ldquo;에너지가 이런 식으로 분포한다&rdquo;, &ldquo;시간 상관은 이 정도로 줄어든다&rdquo; 같은 감각을 가지고 봅니다. QIML 논문은 이런 감각의 일부를 양자 생성 모델로 배워보려 합니다.</p>
+<p>Wang et al. 논문에서 양자 구성요소가 맡는 일은 예측 전체를 실행하는 것이 아닙니다. 먼저 chaotic flow 데이터에서 장기적으로 유지되는 통계 구조를 양자 생성 모델이 학습합니다. 논문은 이 결과를 <strong>Q-Prior</strong>라고 부릅니다. 그다음 Koopman-style 고전 autoregressive predictor가 이 Q-Prior를 loss에 넣어 학습합니다.</p>
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/imagegen/qprior_compact_memory_explainer-web.png" alt="Q-Prior 설명도: 복잡한 chaotic flow가 invariant statistics를 담은 작은 prior 토큰으로 압축되고 Koopman-style predictor 작업대로 전달되는 장면">
+  <figcaption><strong>그림 3.</strong> Q-Prior는 복잡한 유동장 전체를 저장하는 장치가 아닙니다. 긴 예측에서 잃기 쉬운 invariant statistics를 작은 형태로 보존하고, Koopman-style predictor가 학습과 검증 과정에서 다시 참고하는 도구 역할을 맡습니다.</figcaption>
+</figure>
+
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/qprior_pipeline.svg" alt="혼돈 유동 데이터에서 양자 생성 모델이 불변 통계를 학습하고 Q-Prior를 만든 뒤 고전 예측기가 긴 rollout에 사용하는 파이프라인">
+  <figcaption><strong>그림 4.</strong> QIML은 양자 생성 모델이 혼돈계의 불변 통계를 Q-Prior로 압축하고, 고전 예측기가 이를 재사용하는 구조입니다. 양자 하드웨어는 prior 학습 단계에 집중됩니다.</figcaption>
+</figure>
+
+<p>이 설계는 현재 양자 하드웨어의 제약과도 맞물립니다. NISQ 장비는 잡음, 보정, 샷 수, 대기열, 측정 비용이 모두 부담입니다. QIML은 양자 하드웨어를 매 예측 단계마다 쓰지 않고, 한 번 오프라인으로 prior를 만든 뒤 고전 모델이 그 prior를 계속 사용하게 합니다. 양자가 과학 AI 파이프라인 안에서 좁지만 유용한 역할을 맡을 수 있는지 보는 접근입니다.</p>
+<p>논문이 직접 평가한 대상은 세 가지입니다. Kuramoto-Sivashinsky equation, 2D Kolmogorov flow, 3D turbulent channel flow입니다. 영상에서는 weather나 disease spread 같은 응용 가능성도 언급되지만, 이 논문의 직접 benchmark는 위 세 시스템입니다. 보고된 수치도 둥글게 &ldquo;20% 정도&rdquo;로 받아들이기보다 정확히 읽는 편이 좋습니다. 논문은 classical baseline 대비 predictive distribution accuracy를 최대 17.25%, full-spectrum fidelity를 최대 29.36% 개선했다고 보고합니다.</p>
+<h2 id="_1">긴 예측에서 남아야 할 물리량</h2>
+<p>혼돈계 예측을 평가할 때 one-step MSE만 보면 놓치는 부분이 많습니다. 한 장면의 픽셀이나 상태 벡터가 잠깐 맞는 것과, 긴 rollout 뒤에도 실제 시스템의 분포와 스펙트럼을 유지하는 것은 다른 문제입니다. 쉽게 말하면, &ldquo;다음 사진 한 장&rdquo;을 맞히는 시험과 &ldquo;오래 지나도 같은 종류의 물리 현상을 만들고 있는지&rdquo;를 보는 시험은 다릅니다.</p>
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/imagegen/long_rollout_physics_check-web.png" alt="Long rollout 평가 장면: 하나의 turbulent flow 예측은 probability density와 energy spectrum이 무너지고, 다른 예측은 안정적인 통계 패턴을 유지한다">
+  <figcaption><strong>그림 5.</strong> 긴 예측에서는 화면이 그럴듯해 보이는지와 함께 probability density, energy spectrum, autocorrelation이 실제 물리계의 범위 안에 남아 있는지를 검증해야 합니다. 이때 대시보드와 비교 도구는 예측의 물리적 일관성을 보는 데 쓰입니다.</figcaption>
+</figure>
+
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/chaos_metrics.svg" alt="혼돈계 예측 평가에서 Lyapunov horizon, 상태 분포, 에너지 스펙트럼, 자기상관, attractor statistics를 함께 보아야 함을 보여주는 도식">
+  <figcaption><strong>그림 6.</strong> 혼돈계 예측에서는 단기 오차와 함께 상태 분포, 에너지 스펙트럼, 자기상관, attractor statistics를 확인해야 합니다. 긴 시간 뒤에도 같은 물리계처럼 보이는지가 평가의 핵심입니다.</figcaption>
+</figure>
+
+<table>
+<thead>
+<tr>
+<th>평가 관점</th>
+<th>확인할 질문</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lyapunov-time horizon</td>
+<td>개별 궤적을 몇 Lyapunov time 동안 따라가는가</td>
+</tr>
+<tr>
+<td>Probability density</td>
+<td>상태 분포의 중심과 tail이 유지되는가</td>
+</tr>
+<tr>
+<td>Energy spectrum</td>
+<td>큰 scale과 작은 scale의 에너지 분포가 보존되는가</td>
+</tr>
+<tr>
+<td>Autocorrelation</td>
+<td>시간 상관이 실제 시스템과 비슷하게 줄어드는가</td>
+</tr>
+<tr>
+<td>Attractor statistics</td>
+<td>Lyapunov exponent, correlation dimension 같은 장기 구조를 재현하는가</td>
+</tr>
+</tbody>
+</table>
+<p>QIML 논문이 흥미로운 이유는 이런 장기 통계 평가를 전면에 놓기 때문입니다. 특히 turbulent channel inflow 사례에서는 Q-Prior가 빠졌을 때 예측이 불안정해지고, Q-Prior가 들어간 모델은 더 물리적으로 일관된 장기 예측을 보였다고 설명합니다.</p>
+<p>이 지점은 제조, 소재, 공정 데이터에서도 의미가 있습니다. 많은 공정 데이터와 물리 시뮬레이션은 시간이 길어질수록 분포가 무너지는 문제를 겪습니다. OLED 소재 계산, 열 공정, plasma, chemical kinetics, biofluid, 일부 이상징후 예측도 모두 &ldquo;긴 시간 뒤의 평균적인 모양&rdquo;이 중요해지는 순간을 가질 수 있습니다. Q-Prior가 정말로 invariant statistical property를 작게 보존한다면, 양자 AI의 실용성은 &ldquo;멋진 가속&rdquo;보다 &ldquo;긴 예측에서 분포가 덜 무너지는가&rdquo;라는 질문으로 평가해야 합니다.</p>
+<h2 id="_2">같이 읽어야 하는 세 갈래</h2>
+<p>QIML 논문 하나만 읽으면 이 분야를 과대평가하거나 과소평가하기 쉽습니다. 최소한 세 갈래를 같이 놓고 봐야 합니다.</p>
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/literature_map.svg" alt="Classical reservoir computing, quantum reservoir computing, quantum-informed AI 논문 계보를 연결한 문헌 지도">
+  <figcaption><strong>그림 7.</strong> QIML의 의미는 classical reservoir computing, quantum reservoir computing, quantum-informed prior 설계를 함께 비교할 때 선명해집니다. 특히 강한 고전 baseline과 비용 포함 비교가 중요합니다.</figcaption>
+</figure>
+
+<p>첫째, classical reservoir computing입니다. Pathak et al.의 <a href="https://doi.org/10.1103/PhysRevLett.120.024102">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a>는 chaotic forecasting에서 reservoir computing이 왜 강한 baseline인지 보여준 논문입니다. 이어지는 <a href="https://doi.org/10.1063/1.5028373">Hybrid Forecasting of Chaotic Processes</a>는 물리 모델과 ML을 섞는 관점을 제공합니다. QIML을 읽을 때도 이 계열과 비교하지 않으면 양자 구성요소의 실제 기여를 분리하기 어렵습니다.</p>
+<p>둘째, quantum reservoir computing입니다. Fujii and Nakajima의 <a href="https://doi.org/10.1103/PhysRevApplied.8.024030">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a>은 QRC의 초기 핵심 논문입니다. 이후 <a href="https://www.nature.com/articles/s41598-022-05061-w">Natural quantum reservoir computing</a>, <a href="https://www.nature.com/articles/s41534-023-00682-z">Time-series QRC with weak and projective measurements</a>, <a href="https://www.nature.com/articles/s41534-023-00734-4">QRC with coherently coupled quantum oscillators</a>는 실제 하드웨어, 측정 방식, oscillator 기반 구현 문제를 넓혔습니다.</p>
+<p>셋째, chaotic process에 직접 붙은 최신 QRC 연구입니다. Ahmed, Tennie, Magri의 <a href="https://arxiv.org/abs/2405.03390">recurrence-free quantum reservoir computing</a>은 Lorenz-63, Lorenz-96, MFE turbulent shear flow의 extreme event 예측을 다룹니다. Steinegger and Raeth의 <a href="https://www.nature.com/articles/s41598-025-87768-0">four-qubit QRC</a>는 작은 qubit system으로 3D chaotic systems의 short-term forecast와 long-term climate를 평가합니다. Kobayashi and Motome의 <a href="https://arxiv.org/abs/2506.17547">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a>는 classical reservoir의 edge-of-chaos 직관을 quantum many-body system으로 확장하려는 설계 원리입니다.</p>
+<h2 id="quantum-advantage">Quantum advantage라는 말을 분해해서 읽기</h2>
+<p>이 분야에서는 <code>quantum advantage</code>라는 표현이 자주 나옵니다. 좋은 연구 신호와 홍보성 표현이 함께 섞이기 쉬운 단어입니다. 그래서 주장을 볼 때는 먼저 metric, baseline, 비용, 하드웨어 조건을 나누어야 합니다.</p>
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/claim_check.svg" alt="Practical quantum advantage 주장을 metric, baseline, cost, scaling 기준으로 점검하는 체크리스트">
+  <figcaption><strong>그림 8.</strong> `practical quantum advantage`는 정확도 개선만으로 충분하지 않습니다. 어떤 metric에서 좋아졌는지, 어떤 고전 baseline과 비교했는지, QPU shot과 보정 비용까지 고려했는지 확인해야 합니다.</figcaption>
+</figure>
+
+<table>
+<thead>
+<tr>
+<th>주장</th>
+<th>확인할 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>더 정확하다</td>
+<td>어떤 metric에서, 어떤 baseline 대비, 어떤 데이터셋에서 좋아졌는가</td>
+</tr>
+<tr>
+<td>더 작다</td>
+<td>parameter 수인지, 저장공간인지, 학습 데이터인지, QPU shot 비용까지 포함한 것인지</td>
+</tr>
+<tr>
+<td>더 안정적이다</td>
+<td>long rollout에서 PDF, spectrum, autocorrelation이 유지되는가</td>
+</tr>
+<tr>
+<td>양자 하드웨어를 썼다</td>
+<td>emulator인지 실제 QPU인지, qubit 수와 shot 수, error mitigation 방식은 무엇인지</td>
+</tr>
+<tr>
+<td>practical quantum advantage</td>
+<td>classical prior와 비용 포함 비교, 독립 재현, scaling test가 있는지</td>
+</tr>
+</tbody>
+</table>
+<p>Wang et al. 논문은 이 중 일부를 꽤 진지하게 다룹니다. <a href="https://github.com/UCL-CCS/QIML">공식 GitHub 저장소</a>와 <a href="https://doi.org/10.5281/zenodo.16419085">Zenodo 데이터</a>가 공개되어 있어 재현 검토의 출발점도 있습니다. 다만 저장소 README를 보면 training script 경로와 hard-coded data path 같은 실무적 caveat가 보입니다. 재현 가능성은 &ldquo;코드가 있다&rdquo;에서 끝나지 않고, 데이터 경로, QPU 조건, classical baseline 재학습, 비용 산정까지 따라가야 합니다.</p>
+<h2 id="_3">용어 정리</h2>
+<table>
+<thead>
+<tr>
+<th>용어</th>
+<th>짧은 설명</th>
+<th>이 글에서의 의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chaotic process</td>
+<td>초기 조건의 작은 차이가 시간이 지나며 크게 벌어지는 동역학계입니다.</td>
+<td>한 궤적을 오래 맞히기보다 장기 통계를 유지하는 평가가 중요합니다.</td>
+</tr>
+<tr>
+<td>Q-Prior</td>
+<td>QIML 논문에서 양자 생성 모델이 학습한 통계적 prior입니다.</td>
+<td>고전 예측기의 loss에 들어가 장기 통계 일관성을 보완합니다.</td>
+</tr>
+<tr>
+<td>Koopman-style predictor</td>
+<td>비선형 동역학을 더 다루기 쉬운 표현 공간에서 예측하려는 계열의 모델입니다.</td>
+<td>QIML에서는 autoregressive predictor의 고전적 예측 골격으로 사용됩니다.</td>
+</tr>
+<tr>
+<td>Reservoir computing</td>
+<td>고정된 동역학 reservoir와 학습 가능한 readout을 이용하는 시계열 예측 접근입니다.</td>
+<td>chaotic forecasting의 강한 classical baseline입니다.</td>
+</tr>
+<tr>
+<td>Quantum reservoir computing</td>
+<td>양자계의 동역학을 reservoir로 활용하는 QML 접근입니다.</td>
+<td>QIML과 직접 같은 구조는 아니지만 비교해야 할 인접 계열입니다.</td>
+</tr>
+<tr>
+<td>Full-spectrum fidelity</td>
+<td>예측된 에너지 스펙트럼이 실제 시스템의 스펙트럼을 얼마나 잘 유지하는지 보는 평가입니다.</td>
+<td>난류와 유동 예측에서 long rollout 품질을 읽는 중요한 지표입니다.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">리뷰 결론</h2>
+<p>이 주제는 AI_Tech_Review Letters로 다룰 만한 가치가 있습니다. 지금 단계에서 가장 생산적인 결론은 양자 AI가 고전 ML을 대체한다는 선언이 아닙니다. QIML은 고전 모델이 긴 rollout에서 잃어버리기 쉬운 장기 통계 감각을 양자 생성 prior가 보완할 수 있는지 보여준 초기 강한 신호입니다.</p>
+<p>다음 리뷰에서는 세 가지를 더 확인하면 좋겠습니다.</p>
+<ol>
+<li>Q-Prior는 classical VAE, diffusion prior, tensor-network prior보다 어떤 조건에서 실제로 낫습니까?</li>
+<li>QPU shot 수, calibration, queue, 데이터 전처리 비용을 포함해도 memory/accuracy 이득이 유지됩니까?</li>
+<li>noisy measurement와 partial observation이 있는 실제 공정 데이터에서도 invariant measure를 배울 수 있습니까?</li>
+</ol>
+<p>논문이 제시한 개선 수치만 보면 매력적입니다. 하지만 이 분야의 가치는 benchmark 숫자보다 조금 더 깊은 곳에 있습니다. 양자 하드웨어가 과학 AI 파이프라인에서 맡을 수 있는 역할을 &ldquo;장기 통계 prior&rdquo;로 좁혀 본 점, 그리고 그 prior가 실제 난류 예측에서 물리적 일관성을 얼마나 보존하는지 검토한 점이 중요합니다.</p>
+<h2 id="_5">참고자료</h2>
+<ul>
+<li>Lev Selector, <a href="https://www.youtube.com/watch?v=na-sQ-g2MAc">Exciting AI Updates Weekly - May 29, 2026</a></li>
+<li>Wang et al., <a href="https://arxiv.org/abs/2507.19861">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a></li>
+<li>Wang et al., <a href="https://doi.org/10.1126/sciadv.aec5049">Science Advances DOI 10.1126/sciadv.aec5049</a></li>
+<li>UCL CCS, <a href="https://github.com/UCL-CCS/QIML">QIML official implementation</a></li>
+<li>Wang et al., <a href="https://doi.org/10.5281/zenodo.16419085">QIML dataset on Zenodo</a></li>
+<li>Pathak et al., <a href="https://doi.org/10.1103/PhysRevLett.120.024102">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a></li>
+<li>Pathak et al., <a href="https://doi.org/10.1063/1.5028373">Hybrid Forecasting of Chaotic Processes</a></li>
+<li>Fujii and Nakajima, <a href="https://doi.org/10.1103/PhysRevApplied.8.024030">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a></li>
+<li>Negoro et al., <a href="https://www.nature.com/articles/s41598-022-05061-w">Natural quantum reservoir computing</a></li>
+<li>Mujal et al., <a href="https://www.nature.com/articles/s41534-023-00682-z">Time-series quantum reservoir computing with weak and projective measurements</a></li>
+<li>Ghosh et al., <a href="https://www.nature.com/articles/s41534-023-00734-4">Quantum reservoir processing with coherently coupled quantum oscillators</a></li>
+<li>Ahmed, Tennie, Magri, <a href="https://arxiv.org/abs/2405.03390">Prediction of chaotic dynamics and extreme events: RF-QRC</a></li>
+<li>Steinegger and Raeth, <a href="https://www.nature.com/articles/s41598-025-87768-0">Predicting three-dimensional chaotic systems with four qubit quantum systems</a></li>
+<li>Kobayashi and Motome, <a href="https://arxiv.org/abs/2506.17547">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a></li>
+</ul>
+<h2 id="article-metadata">Article Metadata</h2>
+<ul>
+<li>작성 형식: <code>AI Tech Review Letters</code></li>
+<li>발행 라벨: AI Tech Review Letters: Week 22 (2026-05-30)</li>
+<li>영상 intake: <code>Exciting AI Updates Weekly - May 29, 2026</code></li>
+<li>원고 생성: 2026-05-30</li>
+<li>그림 manifest: <code>artifacts/final_review/figure_manifest.md</code></li>
+</ul>
+      <div class="footer">
+        생성 시각: 2026-05-30 13:20:51<br>
+        원본 파일 최종 수정 시각: 2026-05-30 13:20:33
+      </div>
+    </article>
+
+    <aside class="sidebar">
+      
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#q-prior">Q-Prior가 맡는 일</a></li>
+<li><a href="#_1">긴 예측에서 남아야 할 물리량</a></li>
+<li><a href="#_2">같이 읽어야 하는 세 갈래</a></li>
+<li><a href="#quantum-advantage">Quantum advantage라는 말을 분해해서 읽기</a></li>
+<li><a href="#_3">용어 정리</a></li>
+<li><a href="#_4">리뷰 결론</a></li>
+<li><a href="#_5">참고자료</a></li>
+<li><a href="#article-metadata">Article Metadata</a></li>
+</ul>
+</div>
+
+        </section>
+        
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc" target="_blank" rel="noreferrer">Lev Selector의 2026년 5월 29일 AI Updates Weekly</a></li>
+<li><a href="https://arxiv.org/abs/2507.19861" target="_blank" rel="noreferrer">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a></li>
+<li><a href="https://doi.org/10.1126/sciadv.aec5049" target="_blank" rel="noreferrer">10.1126/sciadv.aec5049</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevLett.120.024102" target="_blank" rel="noreferrer">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a></li>
+<li><a href="https://doi.org/10.1063/1.5028373" target="_blank" rel="noreferrer">Hybrid Forecasting of Chaotic Processes</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevApplied.8.024030" target="_blank" rel="noreferrer">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a></li>
+<li><a href="https://www.nature.com/articles/s41598-022-05061-w" target="_blank" rel="noreferrer">Natural quantum reservoir computing</a></li>
+<li><a href="https://www.nature.com/articles/s41534-023-00682-z" target="_blank" rel="noreferrer">Time-series QRC with weak and projective measurements</a></li>
+<li><a href="https://www.nature.com/articles/s41534-023-00734-4" target="_blank" rel="noreferrer">QRC with coherently coupled quantum oscillators</a></li>
+<li><a href="https://arxiv.org/abs/2405.03390" target="_blank" rel="noreferrer">recurrence-free quantum reservoir computing</a></li>
+<li><a href="https://www.nature.com/articles/s41598-025-87768-0" target="_blank" rel="noreferrer">four-qubit QRC</a></li>
+<li><a href="https://arxiv.org/abs/2506.17547" target="_blank" rel="noreferrer">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a></li>
+<li><a href="https://github.com/UCL-CCS/QIML" target="_blank" rel="noreferrer">공식 GitHub 저장소</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.16419085" target="_blank" rel="noreferrer">Zenodo 데이터</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>

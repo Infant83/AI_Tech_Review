@@ -1,0 +1,128 @@
+# Quantum-Informed AI for Chaotic Processes
+
+기술동향 리포트  
+Date: 2026-05-30
+
+## 검토 질문
+
+혼돈계 예측을 해본 사람이라면 한 번쯤 비슷한 답답함을 만납니다. 모델은 짧은 구간에서는 그럴듯하게 맞지만, 시간이 조금 지나면 궤적이 금방 어긋납니다. 그런데 실제로 필요한 것은 개별 궤적 하나를 영원히 맞추는 일이 아닐 때가 많습니다. 난류, 플라즈마, 기상, 전염 확산, 금융 시계열처럼 작은 오차가 빠르게 커지는 시스템에서는 **장기 통계와 구조를 얼마나 안정적으로 유지하는가**가 더 중요한 평가가 됩니다.
+
+이번 영상에서 흥미로운 지점은 여기에 있습니다. 양자컴퓨터가 혼돈계를 통째로 빠르게 푸는 이야기가 아니라, **양자 회로가 혼돈계의 invariant measure를 압축한 Q-Prior를 만들고, classical ML이 그 prior를 써서 긴 rollout을 덜 무너뜨리는가**라는 질문입니다.
+
+## 영상에서 확인한 신호
+
+[Lev Selector 영상](https://www.youtube.com/watch?v=na-sQ-g2MAc)의 관련 장은 `26:20-27:16`, `Quantum-informed AI for Chaotic Processes`입니다. 영상은 University College London 쪽 논문을 소개하며, quantum을 ML pipeline 일부로 넣으면 chaotic/complex system 예측 정확도가 좋아진다는 취지로 설명합니다.
+
+다만 영상 문장은 리뷰 본문으로 그대로 가져오면 안 됩니다. 영상은 weather, turbulence, disease spread를 예시로 언급하지만, 중심 논문이 직접 평가한 대상은 [Kuramoto-Sivashinsky equation, 2D Kolmogorov flow, 3D turbulent channel flow](https://arxiv.org/abs/2507.19861)입니다. 따라서 disease spread는 직접 검증된 benchmark가 아니라 응용 가능성 쪽으로 낮춰 읽어야 합니다.
+
+## 중심 논문
+
+[Wang et al. 2026](https://arxiv.org/abs/2507.19861)은 QIML, 즉 Quantum-Informed Machine Learning을 제안합니다. 논문은 Science Advances 2026, Vol. 12 Issue 16에 실렸고, DOI는 [10.1126/sciadv.aec5049](https://doi.org/10.1126/sciadv.aec5049)입니다. [Argonne ALCF publication page](https://www.alcf.anl.gov/publications/quantum-informed-machine-learning-predicting-spatiotemporal-chaos-practical-quantum)도 같은 논문 정보를 확인해 줍니다.
+
+핵심 구조는 세 단계입니다.
+
+1. 고해상도 chaotic flow 데이터를 만든다.
+2. quantum circuit Born machine 계열의 quantum generator가 데이터의 invariant statistical property를 학습해 **Q-Prior**를 만든다.
+3. classical Koopman-style autoregressive predictor가 Q-Prior를 loss에 넣어 장기 예측의 통계적 일관성을 유지한다.
+
+중요한 점은 QPU가 매 예측마다 호출되는 구조가 아니라는 점입니다. 논문은 Q-Prior를 한 번 offline으로 학습한 뒤 classical model이 이를 statistical regularizer로 쓰는 방식을 취합니다. 이 분업은 NISQ 하드웨어에서 반복적인 quantum-classical loop가 비싸고 느리다는 현실을 꽤 정확히 의식한 설계입니다.
+
+## 결과의 정확한 범위
+
+논문 초록 기준으로, QIML은 classical baseline 대비 predictive distribution accuracy를 최대 17.25%, full-spectrum fidelity를 최대 29.36% 개선했다고 보고합니다. turbulent channel inflow에서는 Q-Prior를 superconducting quantum processor에서 학습했고, Q-Prior가 없을 때 예측이 불안정해지는 반면 QIML은 더 물리적으로 일관된 장기 예측을 만들었다고 설명합니다.
+
+이 숫자는 "일반적으로 20% 더 정확하다"가 아닙니다. 평가 지표, 데이터셋, baseline, rollout 조건이 붙어 있는 결과입니다. 리뷰에서는 `up to`와 metric 이름을 유지해야 합니다.
+
+## 왜 혼돈계에서는 prior가 중요한가
+
+혼돈계에서 모델이 실패하는 방식은 단순한 회귀 오차와 다릅니다. 짧은 구간의 MSE가 낮아도, 긴 rollout에서는 energy spectrum이 무너지거나 probability density tail이 사라지거나, autocorrelation이 실제보다 빨리 죽을 수 있습니다. 그래서 chaotic forecasting의 좋은 평가에는 다음 항목이 들어갑니다.
+
+| 평가 항목 | 보는 것 |
+| --- | --- |
+| Predictability horizon / Lyapunov time | 개별 궤적을 얼마나 오래 따라가는가 |
+| Probability density | 장기 상태 분포를 유지하는가 |
+| Energy spectrum | 작은 scale과 큰 scale의 에너지 분포가 유지되는가 |
+| Temporal autocorrelation | 시간 상관 구조가 실제와 맞는가 |
+| Lyapunov exponent / attractor dimension | 모델이 underlying dynamics의 기하와 불안정성을 재현하는가 |
+
+QIML의 Q-Prior는 이 중 probability density, spectrum, autocorrelation 같은 장기 통계가 무너지는 문제를 줄이기 위한 장치로 이해하는 편이 좋습니다.
+
+## 논문 지도
+
+| 축 | 논문 | 무엇을 봐야 하나 |
+| --- | --- | --- |
+| QIML 중심 | Wang et al., [Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos](https://arxiv.org/abs/2507.19861), Science Advances 2026 | Q-Prior를 classical Koopman model의 loss에 넣는 설계. KS, 2D Kolmogorov, turbulent channel flow benchmark. |
+| 코드/재현 | [UCL-CCS/QIML](https://github.com/UCL-CCS/QIML) | Q-Prior training scripts, QIML training scripts, Zenodo dataset path, hard-coded path caveats. |
+| classical RC baseline | Pathak et al., [Model-Free Prediction of Large Spatiotemporally Chaotic Systems](https://doi.org/10.1103/PhysRevLett.120.024102), PRL 2018 | Kuramoto-Sivashinsky 기반 parallel reservoir computing. QIML 논문을 읽기 전 baseline 감각을 잡는 데 필요합니다. |
+| hybrid classical physics + ML | Pathak et al., [Hybrid Forecasting of Chaotic Processes](https://doi.org/10.1063/1.5028373), Chaos 2018 | knowledge-based model과 reservoir를 섞는 방법. QIML도 넓게 보면 hybrid prior 계열입니다. |
+| QRC 출발점 | Fujii and Nakajima, [Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning](https://doi.org/10.1103/PhysRevApplied.8.024030), Phys. Rev. Applied 2017 | quantum dynamics를 reservoir로 쓰는 원형. 5-7 qubit이 classical reservoir 수백 node와 비교된다는 초기 claim의 출처입니다. |
+| NISQ 실험 | Negoro et al., [Natural quantum reservoir computing for temporal information processing](https://www.nature.com/articles/s41598-022-05061-w), Scientific Reports 2022 | IBM superconducting device noise를 reservoir resource로 쓰는 실험. 실제 하드웨어에서는 classical ESN보다 약한 부분도 솔직히 보입니다. |
+| measurement 문제 | Mujal et al., [Time-series QRC with weak and projective measurements](https://www.nature.com/articles/s41534-023-00682-z), npj Quantum Information 2023 | quantum reservoir에서 측정이 memory를 깨뜨리는 문제와 weak measurement trade-off. |
+| oscillator reservoir | Ghosh et al., [QRC implementation on coherently coupled quantum oscillators](https://www.nature.com/articles/s41534-023-00734-4), npj Quantum Information 2023 | qubit 대신 oscillator basis states를 reservoir neuron으로 쓰는 구현 방향. |
+| chaotic/extreme events | Ahmed et al., [Recurrence-free QRC](https://arxiv.org/abs/2405.03390), Phys. Rev. Research 2024 | Lorenz-63, Lorenz-96, MFE shear flow extreme event. recurrent loop를 제거해 회로 depth와 scalability 문제를 줄입니다. |
+| 작은 qubit forecasting | Steinegger and Raeth, [Four-qubit QRC for 3D chaotic systems](https://www.nature.com/articles/s41598-025-87768-0), Scientific Reports 2025 | 4-qubit simulated reservoir로 8개 3D chaotic system의 short-term forecast와 long-term climate를 평가합니다. |
+| finite sampling | Ahmed et al., [Optimal training of finitely sampled QRC](https://link.springer.com/article/10.1007/s42484-025-00261-9), Quantum Machine Intelligence 2025 | shot noise, denoising, SVD/filtering, RF-QRC의 병렬화 가능성. |
+| 설계 원리 | Kobayashi and Motome, [Edge of Many-Body Quantum Chaos in QRC](https://arxiv.org/abs/2506.17547), PRL 2026 | classical RC의 edge of chaos 개념을 quantum many-body chaos 경계로 확장하려는 이론적 근거. |
+| discrete maps | Li et al., [QRC for predicting and characterizing chaotic maps](https://arxiv.org/abs/2509.12071), arXiv 2026 revision | logistic/Henon map에서 chaotic/non-chaotic phase를 closed-loop prediction으로 구분합니다. |
+
+## 세 가지 기술 관점
+
+### 1. QIML은 QRC가 아닙니다
+
+QRC는 quantum system 자체를 reservoir로 쓰고, 측정된 expectation/probability를 feature로 삼아 readout을 학습합니다. 반면 QIML 중심 논문은 quantum generator가 Q-Prior를 학습한 뒤, classical Koopman-style model을 regularize합니다. 둘 다 quantum Hilbert space의 표현력을 기대하지만, pipeline에서 quantum component가 맡는 역할이 다릅니다.
+
+QRC는 temporal feature generator입니다. QIML의 Q-Prior는 long-term statistical constraint입니다.
+
+### 2. "정확한 궤적"보다 "올바른 climate"가 중요합니다
+
+Steinegger and Raeth의 4-qubit QRC 논문은 이 점을 잘 보여줍니다. 논문은 short-term forecast뿐 아니라 long-term climate, 즉 largest Lyapunov exponent와 correlation dimension을 비교합니다. 혼돈계 예측에서는 이 평가가 더 설득력 있습니다. QIML도 energy spectrum, PDF, autocorrelation을 강조하는 이유가 여기에 있습니다.
+
+### 3. quantum advantage는 비용까지 봐야 합니다
+
+QIML 논문은 memory advantage와 practical quantum advantage를 강하게 주장합니다. 다만 리뷰에서는 `advantage`를 세 가지로 나눠야 합니다.
+
+| advantage 종류 | 확인할 질문 |
+| --- | --- |
+| parameter/memory advantage | 같은 품질을 더 작은 prior 또는 더 적은 parameter로 얻는가 |
+| stability advantage | 긴 rollout에서 spectrum/PDF/autocorrelation이 덜 무너지는가 |
+| wall-clock/cost advantage | QPU shot 수, calibration, queue, data transfer를 포함해도 이득인가 |
+
+현재 논문은 앞의 두 축에서 강한 신호를 보입니다. 세 번째 축은 더 많은 독립 재현이 필요합니다.
+
+## 좋은 리뷰 제목 후보
+
+- `양자 prior는 혼돈 예측을 얼마나 안정화할 수 있을까`
+- `Quantum-Informed AI for Chaos: Q-Prior가 장기 통계를 붙잡는 방식`
+- `난류와 혼돈계 예측에서 quantum은 어디에 들어가는가`
+- `QRC에서 Q-Prior까지: 양자 ML이 chaotic forecasting을 만나는 지점`
+
+## AI_Tech_Review용 결론
+
+이 주제는 AI_Tech_Review에서 다룰 가치가 있습니다. 이유는 두 가지입니다. 첫째, "양자 AI"라는 큰 구호가 아니라 chaotic PDE와 turbulent flow라는 구체 문제에서 benchmark를 제시합니다. 둘째, QPU를 모든 계산의 중심에 놓지 않고, classical HPC/ML pipeline 안에서 quantum prior가 맡을 수 있는 좁고 현실적인 역할을 보여줍니다.
+
+리뷰의 핵심 문장은 이렇게 잡는 편이 좋습니다.
+
+> 이번 신호의 핵심은 quantum이 classical ML을 대체한다는 말이 아니라, chaotic system의 장기 통계를 압축한 prior를 만들어 classical predictor가 긴 rollout에서 덜 무너지게 할 수 있는가입니다.
+
+## 남은 질문
+
+- Q-Prior가 classical generative prior보다 실제로 더 좋은 조건은 무엇인가?
+- 같은 데이터와 compute budget에서 VAE, diffusion prior, tensor-network prior, Koopman/FNO/MNO baseline과 공정하게 비교했는가?
+- QPU shot 수와 measurement mitigation 비용이 커질 때도 이득이 유지되는가?
+- weather/climate나 biomedical flow처럼 실제 operational data가 noisy하고 partial observation인 경우에도 같은 안정성이 나오는가?
+- `practical quantum advantage`라는 표현을 독립 연구 그룹이 재현할 수 있는가?
+
+## 참고자료
+
+- [Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage](https://arxiv.org/abs/2507.19861)
+- [Science Advances DOI 10.1126/sciadv.aec5049](https://doi.org/10.1126/sciadv.aec5049)
+- [UCL-CCS/QIML official implementation](https://github.com/UCL-CCS/QIML)
+- [ALCF publication listing](https://www.alcf.anl.gov/publications/quantum-informed-machine-learning-predicting-spatiotemporal-chaos-practical-quantum)
+- [Prediction of chaotic dynamics and extreme events: RF-QRC](https://arxiv.org/abs/2405.03390)
+- [Predicting three-dimensional chaotic systems with four qubit quantum systems](https://www.nature.com/articles/s41598-025-87768-0)
+- [Edge of Many-Body Quantum Chaos in QRC](https://arxiv.org/abs/2506.17547)
+- [Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning](https://doi.org/10.1103/PhysRevApplied.8.024030)
+- [Natural quantum reservoir computing for temporal information processing](https://www.nature.com/articles/s41598-022-05061-w)
+- [Time-series quantum reservoir computing with weak and projective measurements](https://www.nature.com/articles/s41534-023-00682-z)
+- [QRC implementation on coherently coupled quantum oscillators](https://www.nature.com/articles/s41534-023-00734-4)
+- [Model-free prediction of large spatiotemporally chaotic systems](https://doi.org/10.1103/PhysRevLett.120.024102)

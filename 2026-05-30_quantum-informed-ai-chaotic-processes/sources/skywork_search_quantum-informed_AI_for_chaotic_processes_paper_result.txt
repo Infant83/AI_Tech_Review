@@ -1,0 +1,564 @@
+query: quantum-informed AI for chaotic processes paper
+
+[result-1] https://arxiv.org/abs/2507.19861
+# Quantum Physics
+
+[Submitted on 26 Jul 2025 (v1), last revised 13 Mar 2026 (this version, v5)]
+
+# Title:Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage
+
+View PDF HTML (experimental)Abstract:We introduce a quantum-informed machine learning (QIML) framework for modelling the long-term behaviour of high-dimensional chaotic systems. QIML combines a one-time, offline-trained quantum generative model with a classical autoregressive predictor for spatiotemporal field generation. The quantum model learns a quantum prior (Q-Prior) that guides the representation of small-scale interactions and improves the modelling of fine-scale dynamics. We evaluate QIML on the Kuramoto-Sivashinsky equation, two-dimensional Kolmogorov flow, and the three-dimensional turbulent channel flow used as a realistic inflow condition. Across these systems, QIML improves predictive distribution accuracy by up to 17.25% and full-spectrum fidelity by up to 29.36% relative to classical baselines. For turbulent channel inflow, the Q-Prior is trained on a superconducting quantum processor and proves essential: without it, predictions become unstable, whereas QIML produces physically consistent long-term forecasts that outperform leading PDE solvers. Beyond accuracy, QIML offers a memory advantage by compressing multi-megabyte datasets into a kilobyte-scale Q-Prior, enabling scalable integration of quantum resources into scientific modelling.
+
+## Submission history
+
+From: Maida Wang [view email]**[v1]**Sat, 26 Jul 2025 08:36:16 UTC (5,114 KB)
+
+**[v2]**Fri, 1 Aug 2025 15:03:13 UTC (5,114 KB)
+
+**[v3]**Thu, 28 Aug 2025 11:18:07 UTC (24,153 KB)
+
+**[v4]**Fri, 5 Sep 2025 13:31:46 UTC (24,154 KB)
+
+**[v5]**Fri, 13 Mar 2026 10:48:44 UTC (31,641 KB)
+
+### Current browse context:
+
+quant-ph
+
+### References & Citations
+
+Loading...
+
+# Bibliographic and Citation Tools
+
+Bibliographic Explorer
+
+*(What is the Explorer?)*
+Connected Papers
+
+*(What is Connected Papers?)*
+Litmaps
+
+*(What is Litmaps?)*
+scite Smart Citations
+
+*(What are Smart Citations?)*# Code, Data and Media Associated with this Article
+
+alphaXiv
+
+*(What is alphaXiv?)*
+CatalyzeX Code Finder for Papers
+
+*(What is CatalyzeX?)*
+DagsHub
+
+*(What is DagsHub?)*
+Gotit.pub
+
+*(What is GotitPub?)*
+Hugging Face
+
+*(What is Huggingface?)*
+ScienceCast
+
+*(What is ScienceCast?)*# Demos
+
+# Recommenders and Search Tools
+
+Influence Flower
+
+*(What are Influence Flowers?)*
+CORE Recommender
+
+*(What is CORE?)*# arXivLabs: experimental projects with community collaborators
+
+arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+
+Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+
+Have an idea for a project that will add value for arXiv's community? **Learn more about arXivLabs**.
+
+[result-2] https://www.science.org/doi/10.1126/sciadv.aec5049
+Enable JavaScript and cookies to continue
+
+[result-3] https://www.researchgate.net/publication/394080443_Quantum-Informed_Machine_Learning_for_Chaotic_Systems
+We've detected unusual activity from your network. To continue, complete the security check below.
+
+Ray ID: a03ac095b900369b
+
+Client IP: 47.90.203.250
+
+[result-4] https://arxiv.org/html/2507.19861v1
+# Quantum-Informed Machine Learning for Chaotic Systems
+
+###### Abstract
+
+Learning the behaviour of chaotic systems remains challenging due to instability in long-term predictions and difficulties in accurately capturing invariant statistical properties. While quantum machine learning offers a promising route to efficiently capture physical properties from high-dimensional data, its practical deployment is hindered by current hardware noise and limited scalability. We introduce a quantum-informed machine learning framework for learning partial differential equations, with an application focus on chaotic systems. A quantum circuit Born machine is employed to learn the invariant properties of chaotic dynamical systems, achieving substantial memory efficiency by representing these complex physical statistics with a compact set of trainable circuit parameters. This approach reduces the data storage requirement by over two orders of magnitude compared to the raw simulation data. The resulting statistical quantum-informed prior is then incorporated into a Koopman-based auto-regressive model to address issues such as gradient vanishing or explosion, while maintaining long-term statistical fidelity. The framework is evaluated on three representative systems: the Kuramoto–Sivashinsky equation, two-dimensional Kolmogorov flow and turbulent channel flow. In all cases, the quantum-informed model achieves superior performance compared to its classical counterparts without quantum priors. This hybrid architecture offers a practical route for learning dynamical systems using near-term quantum hardware.
+
+## I INTRODUCTION
+
+Modelling chaotic dynamical systems remains one of the most persistent challenges in computational science. Partial differential equations (PDEs) provide the mathematical backbone for describing a wide range of nonlinear, spatiotemporal processes across scientific domains [1, 2, 3] and engineering domains [4]. However, chaotic systems are notoriously sensitive to initial conditions and the floating-point numbers used to compute them [5, 6, 7, 8], making it highly challenging to extract stable, predictive models from data. Modern machine learning techniques often struggle in this regime: while they may fit short-term trajectories, they fail to learn the invariant statistical properties that govern long-term system behaviour. These challenges are compounded in high-dimensional settings, where data are highly nonlinear and contain complex multi-scale spatial-temporal correlations.
+
+Machine learning has seen transformative success in domains such as large language models [9, 10, 11, 12], computer vision [13, 14, 15, 16], and weather forecasting [17, 18, 19, 20], and is increasingly being adopted in scientific disciplines under the umbrella of scientific machine learning [21, 22]. In fluid mechanics in particular, ML has been used to model complex flow phenomena, including wall modeling [23, 24], subgrid-scale turbulence [25, 26], and direct flow field generation [27, 28]. Physics-informed neural networks [29] attempt to inject domain knowledge into the learning process, yet even these models struggle with the long-term stability and generalisation issues that chaotic systems demand. To address this, generative models such as Generative Adversarial Networks (GANs) [30] and operator-learning architectures like DeepONet [31] and Fourier Neural Operators (FNOs) [32] have been proposed. While neural operators offer discretisation invariance and strong representational power for PDE-based systems, they still suffer from error accumulation and prediction divergence over long horizons, particularly in turbulent or chaotic regimes [33, 34]. Recent work, such as Dyslim [35], enhances stability by leveraging invariant statistical measures. However, these methods depend on estimating such measures from trajectory samples, which can be computationally intensive and inaccurate in all forms of chaotic systems. These limitations have prompted exploration into alternative computational paradigms. Quantum machine learning (QML) has emerged as a compelling candidate due to its ability to natively represent and manipulate high-dimensional probability distributions in Hilbert space. Quantum circuits can exploit entanglement and interference to express rich, non-local statistical dependencies using fewer parameters than their classical counterparts, which makes them well-suited for learning invariant measures in chaotic systems, where long-range correlations and multimodal distributions frequently arise [36]. QML has already demonstrated potential in fields such as quantum chemistry [37, 38, 39, 40], combinatorial optimisation [41, 42, 43], and generative modeling [44, 45, 46, 47]. However, fully quantum approaches remain constrained by current hardware limitations, such as noise, low qubit counts, and the difficulty of encoding classical physical systems into quantum circuits [48]. These challenges limit the standalone utility of QML in scientific applications today. Instead, hybrid quantum–classical models provide a promising compromise, where quantum submodules are embedded into classical learning pipelines to improve expressivity, data efficiency, and physical fidelity without relying on fault-tolerant quantum computers. Consequently, hybrid architectures have emerged as a promising compromise, enabling practical impact even with noisy intermediate-scale quantum (NISQ) devices. Rather than relying on fully quantum pipelines, these approaches embed quantum modules into classical learning systems to exploit quantum expressivity while retaining classical scalability and training robustness. In quantum chemistry, this hybrid paradigm has proven feasible, notably through quantum mechanical/molecular mechanical (QM/MM) coupling [49, 50, 51], where classical force fields are augmented with quantum corrections. Within such frameworks, techniques like quantum-selected configuration interaction (QSCI) [52] have been employed to enhance accuracy while keeping quantum resource requirements tractable.
+
+Here, we propose a Quantum-Informed Machine Learning (QIML) architecture for learning chaotic dynamical systems. At the core of QIML is a quantum circuit Born machine (QCBM) [53, 54], which is trained on superconducting quantum hardware to learn invariant statistical properties directly from observational data. These properties capture complex, high-dimensional distributions compactly by leveraging entangled quantum states. Unlike standard deep-learning surrogates, such as fully connected or convolutional networks that require large parameter counts to represent such structures, QCBMs operate in exponentially large Hilbert spaces, enabling expressive modelling with as few as 10 to 15 qubits. Crucially, this framework circumvents the data-loading bottleneck common to many quantum machine learning algorithms. The QCBM does not need to encode raw data onto quantum states; instead, it learns a compressed, generative model of the data’s underlying statistical properties. The model is trained with a sample-based Maximum Mean Discrepancy (MMD) loss [55], enabling it to learn the quantum representation without knowing the data distribution. The resulting quantum prior (Q-prior) is a highly memory-efficient “quantum device interpreter” that captures the system’s essential statistics in a compact set of parameters in quantum circuits. The data storage requirement is consistently reduced by over two order of magnitude across the studied systems when using the Q-priors instead of the raw simulation data. The resulting Q-prior is then embedded into a Koopman-based machine learning model, guiding it to maintain long-term statistical fidelity while mitigating autoregressive instabilities such as gradient vanishing or explosion. The QIML framework is implemented as a modular pipeline that integrates quantum-generated priors into a differentiable classical loss [56]. This enables joint optimisation of statistical consistency and dynamical fidelity, including full compatibility with existing superconducting quantum hardware. Even without achieving full quantum advantage [57], the inclusion of Q-priors significantly improves parameter efficiency, prediction stability, and statistical alignment in high-dimensional chaotic regimes. This work demonstrates that QIML provides a practical and scalable hybrid solution for scientific machine learning: one that leverages quantum expressivity while remaining compatible with the practical constraints of current quantum hardware.
+
+In this work, we present the QIML architecture that leverages a quantum-classical hybrid approach for machine learning-based modelling of chaotic dynamical systems. Our QIML scheme is illustrated in Fig. 1. The workflow commences with the data generation stage (Fig. 1a), where we employ a numerical solver on a classical computer to simulate complex chaotic flows, producing the necessary training, validation, and testing datasets. Subsequently, in the quantum machine learning phase (Fig. 1b), a QCBM is implemented on a quantum computer to learn the underlying physical invariant distribution, referred to as the Q-prior. Finally, this Q-prior is used to inform and regularise the classical machine learning model during training (Fig. 1c), guiding it toward long-term statistical consistency with the target dynamical system. The proposed integration demonstrates both practical feasibility and scalability, marking a step towards applying quantum modules in the learning of non-linear partial differential equations. We demonstrate the scalability and robustness of the solution of the QIML framework across a hierarchy of increasingly complex chaotic dynamical systems. First, we evaluate the model on the Kuramoto–Sivashinsky (KS) equation. The solution is discretised into 512 spatial grid points, resulting in a 512-dimensional state vector at each time step. Next, we extend our study to a two-dimensional Kolmogorov flow on a spatial grid, where the QCBM is trained in simulation to extract turbulent invariant measures. Finally, we validate the framework on a cross-section of a three-dimensional turbulent channel flow (TCF). The QCBM is trained on superconducting quantum processors. This progression demonstrates the generality and hardware compatibility of QIML. In all cases, our QIML models outperform classical counterparts lacking Q-prior, particularly in terms of long-term prediction stability, statistical fidelity, and resilience to error accumulation. Crucially, the QCBM acquires these priors directly from raw samples, so the framework remains applicable even when the invariant measure of a high-dimensional chaotic system is unknown. We provide concrete demonstrations of how quantum and classical machine learning can be synergistically combined to address high-dimensional dynamical systems.
+
+![Refer to caption](diagrams/QIMLS.001.png)
+
+## II Applications
+
+The selected test cases span increasing levels of physical and dynamical complexity. We begin with the Kuramoto–Sivashinsky equation, a one-dimensional PDE exhibiting spatiotemporal chaos. Next, we consider two-dimensional Kolmogorov flow, governed by the 2D incompressible Navier–Stokes equations in a periodic domain. Finally, we examine cross-sections of a three-dimensional turbulent channel flow, simulated using the lattice Boltzmann method (LBM), which is numerically equivalent to solving the Navier–Stokes equations [58]. While the full flow field is simulated numerically, the extracted two-dimensional cross-sectional datasets used in our analysis do not satisfy any closed-form governing equation. This distinction highlights a further step in complexity: moving from lower-dimensional systems with explicit dynamics to high-dimensional observational data without accessible evolution laws, thereby testing the capacity of QIML to generalise across different scenarios.
+
+Throughout this study, ‘ground truth’ or ‘raw data’ refers to the high-resolution simulation data generated by established numerical solvers. While this raw simulation data has a large memory footprint, the quantum-informed priors offer substantial memory efficiency. They capture the flow’s essential statistical features using fewer than 300 trainable parameters, occupying only a few megabytes of storage, which corresponds to a data storage reduction of over two orders of magnitude compared to the raw data. This approach enables a substantial reduction in data storage requirements compared to using the raw simulation data (see section Method E and Supplementary Sections S2–S3). The classical components of the models were trained on a single NVIDIA A100 80GB GPU using default settings with 32-bit floating-point precision (for details see Supplementary Section S4.3).
+
+### II.1 Kuramoto-Sivashinsky equation
+
+We first apply our QIML framework to learn the solution of the Kuramoto-Sivashinsky equation, which is given by:
+
+| (1) |
+
+where denotes a scalar field representing the state of the system, with representing the spatial domain and the time; and are constants which are set to 1 for this study. The spatial domain is discretised using equidistant grid points. Raw data are generated as described in Supplementary Information S4.1. The dataset consists of trajectories, where each trajectory is made up of time frames. The spatial domain for each frame is discretised using grid points. We partition the trajectories chronologically into training, validation, and test sets. For this system, both the classical Koopman surrogate (without Q-prior) and the main QIML model (with Q-prior) are trained for epochs. The Q-prior for the QIML configuration is generated by a QCBM using qubits ( basis states) and trainable parameters. Full architectural and training details for both configurations are provided in Supplementary Information S7.
+
+![Refer to caption](diagrams/ks_all.001.png)
+
+Fig. 2 presents the QIML evaluation results on the Kuramoto–Sivashinsky system, comparing two configurations against the numerical simulation: a classical surrogate model trained without Q-priors (without Q-prior), and a quantum-informed surrogate model incorporating a QCBM prior trained in simulation (with Q-prior). Both surrogate models perform inference in an auto-regressive manner: starting from an initial condition at time step , the model predicts the next frame at each subsequent step and recursively continues this process up to time steps to ensure long-term statistics. Panel (a) shows the evolution alone the time: with 512 initial states and 500 prediction timesteps and the corresponding relative error evolution. The error metric definition is presented in Supplementary S9. From top to bottom, each row corresponds to the ground truth, the ML model without Q-prior configuration, and the QIML model with Q-prior configuration. These sub-panels are computed over the test dataset to visualize long-term statistical characteristics of the predictions. In the “without Q-Prior” configuration, the model reproduces the general structure of the ground truth. However, over time, the predicted stripe patterns drift upward, revealing noticeable discrepancies in the associated error map. This indicates that the model accumulates errors during long-term prediction, likely due to the absence of prior information to guide the dynamics. In contrast, the “with Q-Prior” model demonstrates much closer alignment with the ground truth. The predicted fields preserve fine-scale features and capture the parallel stripe structures effectively. Additionally, the corresponding error maps exhibit substantially lower and more spatially diffuse errors. These results suggest that incorporating the Q-Prior enhances the model’s stability and accuracy in long-term forecasting. Panel (b) presents the probability density function (PDF) of for each configuration. The distribution is obtained via the entire spatiotemporal test domain (512 states in space and 500 prediction steps in time), allowing for a comparison of global statistical fidelity. The raw test data (solid blue line) serves as the ground truth. The model without Q-Prior (green dashed line) deviates from the raw data, particularly in the tails of the distribution, where it tends to overestimate the probability. In contrast, the model with Q-Prior (orange dash-dotted line) closely matches the ground truth across the full velocity range, especially in the tails. This demonstrates that incorporating the Q-Prior generated by the quantum emulator allows the surrogate model to more accurately reproduce the statistical characteristics of the system, including rare events. Panel (c) shows the energy spectrum as a function of the wave number , comparing the raw data, the surrogate model with and without Q-Prior. The energy spectrum of the raw data follows a smooth decay with increasing , reflecting the distribution of energy across spatial frequencies. The model without Q-Prior overestimates the energy in the large-scale, deviating from the ground truth. However, the model with Q-Prior closely aligns with the raw data across all wave numbers, able to capture both large scale and small-scale (high-) behaviour of the system. To further visualize the invariant structures underlying the KS system, we project both the ground truth and the Q-Prior configuration into the phase space, as shown in Panel (d). The resulting density plots depict the support of the system’s invariant measure, providing insight into its long-term statistical behaviour. Over extended prediction, the model with Q-Prior closely aligns with the ground truth in phase space, accurately capturing the geometry and concentration of the invariant set. This qualitative agreement highlights the Q-Prior model’s ability to preserve the system’s underlying statistical structures over time. Panel (e) illustrates the temporal autocorrelation of the velocity field, averaged over all spatial points, as a function of the dimensionless time lag . Autocorrelation measures how strongly the system retains correlation with its past states over time. Specifically, its calculation is presented in Supplementary S9. In this plot, all cases exhibit a decay in autocorrelation, eventually showing no correlation with the initial state. The configuration with Q-Prior demonstrates stronger short-term correlation (the same as the ground truth data) compared to the model without Q-Prior, indicating better preservation of temporal dynamics in the early prediction period. These outcomes demonstrate that our designed Q-prior can regularise the classical ML model, preserving both long-scale and small-scale structures, and improving long-term statistical accuracy.
+
+### II.2 2D Kolmogorov flow
+
+Next, we apply our QIML framework to learn the dynamics of the 2D Kolmogorov flow, a canonical example of incompressible Navier-Stokes dynamics under sinusoidal forcing. The governing equations are:
+
+| (2) |
+
+| (3) |
+
+where is the velocity field, represents the pressure. Here denotes the velocity field on the 2D cases. In the algorithmic expressions, we revert to the simpler symbol , using it as a generic placeholder for both 1D scalar and 2D velocities, since the learning procedure applies uniformly across dimensionalities. is the kinematic viscosity, and the forcing term is given by for some amplitude and wave number . The domain is periodic in both and directions: with grids. The data source is presented in Supplementary Information S4.2. We use for training, for validation, and for testing. For this system, both the classical Koopman surrogate (without Q-prior) and the main QIML model (with Q-prior) are trained for epochs. For QIML, the QCBM uses qubits ( basis states) and trainable parameters. Detailed network architectures, training hyperparameters, and data generation procedures are provided in Supplementary Information S7.
+
+![Refer to caption](diagrams/kf_all.002.png)
+
+Figure 3 reports the comparative performance of the baseline ML model (without Q-prior) and the quantum-informed ML model (with Q-prior) on the two-dimensional Kolmogorov flow dataset. Panel (a) shows the time-averaged velocity field and the corresponding turbulent kinetic energy (TKE) field across three configurations: the ground truth from simulation, the classical model trained without Q-prior, and the quantum-informed model trained with Q-prior. All models are evaluated on the same test data. Both the “with Q-Prior” and “without Q-Prior” models perform auto-regressive (one frame in one frame out) inference over a horizon of time steps. The visualisations span a two-dimensional domain of size in the – plane. The time-averaged velocity field is plotted on the left column and the corresponding TKE field is shown on the right column. The ground truth velocity field (top left) exhibits coherent, stripe-like structures, and its TKE field (top right) reveals...
+
+[result-5] https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/
+An official website of the United States government
+
+
+**Official websites use .gov**
+
+A
+**.gov** website belongs to an official
+government organization in the United States.
+
+
+**Secure .gov websites use HTTPS**
+
+A **lock** (
+Lock
+Locked padlock icon
+) or **https://** means you've safely
+connected to the .gov website. Share sensitive
+information only on official, secure websites.
+
+
+Primary site navigation
+
+
+Logged in as:
+
+
+Corresponding author. Email: p.v.coveney@ucl.ac.uk
+
+These authors contributed equally to this work.
+
+Received 2025 Sep 25; Accepted 2026 Mar 17; Collection date 2026 Apr 17.
+
+This is an open-access article distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+
+We introduce a quantum-informed machine learning (QIML) framework for modeling the long-term behavior of high-dimensional chaotic systems. QIML combines a one-time, offline-trained quantum generative model with a classical autoregressive predictor for spatiotemporal field generation. The quantum model learns a quantum prior (Q-Prior) that guides the representation of small-scale interactions and improves the modeling of fine-scale dynamics. We evaluate QIML on the Kuramoto-Sivashinsky equation, two-dimensional Kolmogorov flow, and the three-dimensional turbulent channel flow used as a realistic inflow condition. Across these systems, QIML improves predictive distribution accuracy by up to 17.25% and full-spectrum fidelity by up to 29.36% relative to classical baselines. For turbulent channel inflow, the Q-Prior is trained on a superconducting quantum processor and proves essential: without it, predictions become unstable, whereas QIML produces physically consistent long-term forecasts that outperform leading partial differential equation solvers. Beyond accuracy, QIML offers a memory advantage by compressing multimegabyte datasets into a kilobyte-scale Q-Prior, enabling scalable integration of quantum resources into scientific modeling.
+
+Quantum circuits efficiently learn invariant measures of chaotic systems to stabilize long-term predictions.
+
+Modeling high-dimensional dynamical systems remains one of the most persistent challenges in computational science. Partial differential equations (PDEs) provide the mathematical backbone for describing a wide range of nonlinear, spatiotemporal processes across scientific and engineering domains ( [_1_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R1)– [_3_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R3)). However, high-dimensional systems are notoriously sensitive to initial conditions and the floating-point numbers used to compute them ( [_4_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R4)– [_7_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R7)), making it highly challenging to extract stable, predictive models from data. Modern machine learning (ML) techniques often struggle in this regime: While they may fit short-term trajectories, they fail to learn the invariant statistical properties that govern long-term system behavior. These challenges are compounded in high-dimensional settings, where data are highly nonlinear and contain complex multiscale spatiotemporal correlations.
+
+ML has seen transformative success in domains such as large language models ( [_8_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R8), [_9_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R9)), computer vision ( [_10_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R10), [_11_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R11)), and weather forecasting ( [_12_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R12)– [_15_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R15)), and it is increasingly being adopted in scientific disciplines under the umbrella of scientific ML ( [_16_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R16)). In fluid mechanics, in particular, ML has been used to model complex flow phenomena, including wall modeling ( [_17_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R17), [_18_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R18)), subgrid-scale turbulence ( [_19_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R19), [_20_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R20)), and direct flow field generation ( [_21_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R21), [_22_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R22)). Physics-informed neural networks ( [_23_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R23), [_24_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R24)) attempt to inject domain knowledge into the learning process, yet even these models struggle with the long-term stability and generalization issues that high-dimensional dynamical systems demand. To address this, generative models such as generative adversarial networks ( [_25_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R25)) and operator-learning architectures such as DeepONet ( [_26_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R26)) and Fourier neural operators (FNO) ( [_27_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R27)) have been proposed. While neural operators offer discretization invariance and strong representational power for PDE-based systems, they still suffer from error accumulation and prediction divergence over long horizons, particularly in turbulent and other chaotic regimes ( [_28_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R28), [_29_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R29)). Recent work, such as DySLIM ( [_30_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R30)), enhances stability by leveraging invariant statistical measures. However, these methods depend on estimating such measures from trajectory samples, which can be computationally intensive and inaccurate in all forms of chaotic systems, especially in high-dimensional cases. These limitations have prompted exploration into alternative computational paradigms. Quantum machine learning (QML) has emerged as a possible candidate due to its ability to represent and manipulate high-dimensional probability distributions in Hilbert space ( [_31_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R31)). Quantum circuits can exploit entanglement and interference to express rich, nonlocal statistical dependencies using fewer parameters than their promising counterparts, which makes them well suited for capturing invariant measures in high-dimensional dynamical systems, where long-range correlations and multimodal distributions frequently arise ( [_32_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R32)). QML and quantum-inspired ML have already demonstrated potential in fields such as quantum chemistry ( [_33_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R33), [_34_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R34)), combinatorial optimization ( [_35_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R35), [_36_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R36)), and generative modeling ( [_37_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R37), [_38_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R38)). However, the field is constrained on two fronts: Fully quantum approaches are limited by noisy intermediate-scale quantum (NISQ) hardware noise and scalability ( [_39_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R39)), while quantum-inspired algorithms, being classical simulations, cannot natively leverage crucial quantum effects such as entanglement to efficiently represent the complex, nonlocal correlations found in such systems. These challenges limit the standalone utility of QML in scientific applications today. Instead, hybrid quantum-classical models provide a promising compromise, where quantum submodules work together with classical learning pipelines to improve expressivity, data efficiency, and physical fidelity. In quantum chemistry, this hybrid paradigm has proven feasible, notably through quantum mechanical/molecular mechanical coupling ( [_40_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R40), [_41_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R41)), where classical force fields are augmented with quantum corrections. Within such frameworks, techniques such as quantum-selected configuration interaction ( [_42_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R42)) have been used to enhance accuracy while keeping the quantum resource requirements tractable. In the broader landscape of quantum computational fluid dynamics, progress has been made toward developing full quantum solvers for nonlinear PDEs. Recent works by Liu _et al._ ( [_43_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R43)) and Sanavio _et al._ ( [_44_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R44), [_45_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R45)) have successfully applied Carleman linearization to the lattice Boltzmann equation, offering a promising pathway for simulating fluid flows at moderate Reynolds numbers. These approaches, typically using algorithms such as Harrow-Hassidim-Lloyd (HHL) ( [_46_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R46)), promise exponential speedups but generally necessitate deep circuits and fault-tolerant hardware.
+
+Quantum-enhanced machine learning (QEML) combines the representational richness of quantum models with the scalability of classical learning. By leveraging uniquely quantum properties such as superposition and entanglement, QEML can explore richer feature spaces and capture complex correlations that are challenging for purely classical models. Recent successes in quantum-enhanced drug discovery ( [_37_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R37)), where hybrid quantum-classical generative models have produced experimentally validated candidates rivaling state-of-the-art classical methods, demonstrate the practical potential of QEML even before full quantum advantage is achieved. Despite these strengths, practical barriers remain. QEML pipelines require repeated quantum-classical communication during training and rely on costly quantum data-embedding and measurement steps, which slow computation and limit accessibility across research institutions. Moreover, most current QEML applications focus on microscopic problems, such as atomic and molecular systems in quantum chemistry, with little exploration of macroscopic phenomena such as nonlinear PDEs and turbulent flows, where long-term stability and statistical fidelity pose distinct challenges ( [_47_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R47)). In parallel, the pursuit of quantum advantage in pure quantum computing faces closely related challenges. While theoretical speedups are well established for specific algorithms, identifying practical, application-level advantages remains difficult in realistic settings. This difficulty is exacerbated by the overhead associated with data encoding ( [_31_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R31)), the impact of noise in near-term devices ( [_39_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R39)), and fundamental limits on information extraction imposed by Holevo’s bound ( [_48_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R48)). As a result, many demonstrations of quantum advantage to date rely on analog sampling tasks ( [_49_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R49)), quantum-native data, or postprocessing of quantum outputs ( [_50_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R50)) rather than real-world, classically relevant problems.
+
+To address these limitations, we propose a quantum-informed machine learning (QIML) architecture, as shown in [Fig. 1M](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#F1), a specialized hybrid quantum-classical framework for chaotic systems. The quantum component is a sample-based quantum generator grounded on the quantum circuit Born machine ( [_51_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R51), [_52_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R52)), trained once offline on quantum hardware to learn invariant statistical properties directly from observational data. The resulting compact quantum prior (Q-Prior) can be deployed broadly and efficiently without ongoing quantum-classical iteration, eliminating the need for repeated access to quantum hardware during training. This design is specifically tailored to learning the dynamics of nonlinear PDEs. These properties capture complex, high-dimensional distributions compactly by leveraging entangled quantum states. Unlike standard deep learning surrogates, such as fully connected or convolutional networks that require large parameter counts to represent such structures, the quantum generators operate in exponentially large Hilbert spaces, enabling expressive modeling with as few as 10 to 15 qubits for the systems here. Crucially, this framework circumvents the data-loading bottleneck common to many QML algorithms. The generator does not need to encode raw data onto quantum states; instead, it learns a compressed, generative model of the data’s underlying statistical properties. The model is trained with a sample-based maximum mean discrepancy (MMD) loss ( [_53_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R53)), enabling it to learn the quantum representation without knowing the data distribution. After the training of the quantum generator, the resulting Q-Prior is then integrated into an autoregressive, unitary-enhanced Koopman-based ML framework ( [_54_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R54)). This architecture is powerful for learning dynamical systems, as it can linearize nonlinear dynamics in a lifted observable space, making it effective for capturing coherent structures ( [_55_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R55), [_56_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R56)). However, for high-dimensional chaotic systems, its ability to maintain predictive stability remains a notable challenge, often failing to preserve the systems’ physical invariant measures over extended rollouts (i.e., recursive 1-in-1-out predictions where each forecasted state is fed back as input for the next step). This is particularly true when modeling data for which no closed-form governing equation is known—as is the case for a two-dimensional (2D) cross section extracted from a 3D turbulent domain. We address this limitation by embedding the Q-Prior as a differentiable constraint directly within the loss function. This composite loss, which penalizes divergence from the Q-Prior, imposes a powerful statistical regularization on the evolution of the Koopman operator, guiding it to learn a physically consistent and stable long-term dynamic. We evaluate our QIML framework against its classical counterpart without Q-informed guidance, as well as two leading ML models: the FNO for general PDE-based systems and the Markov neural operator (MNO) ( [_57_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R57)) specifically designed for chaotic dynamics. Our QIML framework outperforms all baseline models while requiring orders-of-magnitude fewer trainable parameters.
+
+[![Fig. 1.](https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5317/13089341/aa8f52ecceef/sciadv.aec5049-f1.jpg)](https://www.ncbi.nlm.nih.gov/core/lw/2.0/html/tileshop_pmc/tileshop_pmc_inline.html?title=Click%20on%20image%20to%20zoom&p=PMC3&id=13089341_sciadv.aec5049-f1.jpg)
+
+( **A**) High-dimensional dynamical flow fields are generated using high-resolution numerical solvers and used to construct training, validation, and test datasets. ( **B**) A quantum circuit is trained on superconducting hardware to learn invariant statistical properties from the data (Q-Prior). ( **C**) The learned Q-Prior is integrated into a classical high-performance computer (HPC) cluster, guiding it toward physically consistent predictions and improved long-term stability.
+
+The selected test cases span increasing levels of physical and dynamical complexity. We begin with the Kuramoto-Sivashinsky (KS) equation, a PDE exhibiting spatiotemporal chaos. The solution is discretized into 512 spatial grid points, resulting in a 512D state vector at each time step. Next, we consider 2D Kolmogorov flow on a 64 × 64 spatial grid (dimension = 4096), governed by the 2D incompressible Navier-Stokes equations in a periodic domain, where the quantum generator is trained in emulation to extract turbulent invariant measures. Last, we examine cross sections of a 3D turbulent channel flow (TCF), simulated using the lattice Boltzmann method (LBM), which is numerically equivalent to solving the Navier-Stokes equations ( [_58_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R58)). For the training process, the raw cross sections are downsampled and discretized onto a 64 × 64 spatial grid, resulting in a 4096D state vector. The Q-Prior for TCF is trained on superconducting quantum processors. While the full flow field is simulated numerically, the extracted 2D cross-sectional datasets used in our analysis do not satisfy any closed-form governing equation. This distinction highlights a further step in complexity: moving from lower-dimensional systems with explicit dynamics to high-dimensional observational data without accessible evolution laws, thereby testing the capacity of QIML to generalize across different scenarios. Throughout this study, “ground truth” or “raw data” refers to the high-resolution simulation data generated by established numerical solvers. While this raw simulation data have a large memory footprint, the quantum-informed priors offer parameter efficiency and memory advantage. They capture the flow’s essential statistical features using fewer than 300 trainable parameters, occupying only a few megabytes of storage, which corresponds to a data storage reduction of over two orders of magnitude compared to the raw data. This approach enables a substantial reduction in data storage requirements compared to using the raw simulation data (see section Materials and Methods...
+
+[result-6] https://www.sciencedaily.com/releases/2026/04/260417224455.htm
+# Quantum AI just got shockingly good at predicting chaos
+
+- Date:
+- April 17, 2026
+- Source:
+- University College London
+- Summary:
+- Researchers have shown that blending quantum computing with AI can dramatically improve predictions of complex, chaotic systems. By letting a quantum computer identify hidden patterns in data, the AI becomes more accurate and stable over time. The method outperformed standard models while using far less memory. This could have big implications for fields like climate science, energy, and medicine.
+- Share:
+
+![Quantum AI Is Starting to Crack Chaos](/images/1920/ai-machine-learning-big-data-analytics-neural-network-data-flow.webp)
+
+A new study led by researchers at UCL (University College London) shows that combining quantum computing with artificial intelligence can significantly improve predictions of complex physical systems over long periods. The hybrid approach outperforms leading models that rely only on conventional computers.
+
+The results, published in *Science Advances*, could enhance simulations of how liquids and gases behave, known as fluid dynamics. These types of models are essential in fields such as climate science, transportation, medicine, and energy production.
+
+**Why Quantum Computing Makes a Difference**
+
+The improved accuracy appears to come from how quantum computers process information. Unlike traditional computers that use bits set to either 1 or 0, quantum computers use qubits, which can exist as 1, 0, or anything in between. In addition, each qubit can influence others, allowing a relatively small number of qubits to represent an enormous number of possible states.
+
+Professor Peter Coveney, senior author from UCL Chemistry and the Advanced Research Computing Centre, explained the challenge: "To make predictions about complex systems, we can either run a full simulation, which might take weeks -- often too long to be useful -- or we can use an AI model which is quicker but more unreliable over longer time scales.
+
+"Our quantum-informed AI model means we could provide more accurate predictions quickly. Making predictions about fluid flow and turbulence is a fundamental science challenge but it also has many applications. Our method can be used in climate forecasting, in modeling blood flow and the interaction of molecules, or to better design wind farms so they generate more energy."
+
+**How the Hybrid Quantum-AI Method Works**
+
+Although quantum computers are widely expected to surpass classical machines in power, their real-world use has so far been limited. This new approach integrates quantum computing into a specific stage of the AI training process.
+
+Typically, AI models learn from large datasets generated by simulations or observations. In this case, the data is first processed by a quantum computer, which identifies key statistical patterns that remain stable over time. These patterns, known as invariant statistical properties, are then used to guide the training of an AI model running on a conventional supercomputer.
+
+**Higher Accuracy With Less Memory**
+
+The quantum-informed AI system delivered about 20 percent greater accuracy compared to standard AI models that did not use quantum-derived patterns. It also maintained stable predictions over longer periods, even when modeling chaotic systems.
+
+Another major advantage was efficiency. The method required hundreds of times less memory, making it far more practical for large-scale simulations.
+
+**Quantum Effects Behind the Efficiency**
+
+This performance boost comes from two defining features of quantum computing. Entanglement allows qubits to influence each other regardless of distance, while superposition enables a qubit to exist in multiple states at once until measured. Together, these properties allow quantum systems to process vast amounts of information in a compact form.
+
+**Demonstrating Practical Quantum Advantage**
+
+First author Maida Wang of the UCL Centre for Computational Science said: "Our new method appears to demonstrate 'quantum advantage' in a practical way -- that is, the quantum computer outperforms what is possible through classical computing alone. These findings could inspire the development of novel classical approaches that achieve even higher accuracy, though they would likely lack the remarkable data compression and parameter efficiency offered by our method. The next steps are to scale up the method using larger datasets and to apply it to real-world situations which typically involve even more complexity. In addition, a provable theoretical framework will be proposed."
+
+Co-first author Xiao Xue, from Advanced Research Computing at UCL, added: "In this work, we demonstrate for the first time that quantum computing can be meaningfully integrated with classical machine learning methods to tackle complex dynamical systems, including fluid mechanics. It is exciting to see this kind of 'quantum-informed' approach moving towards practical use."
+
+**Capturing the Physics of Complex Systems**
+
+The researchers suggest that quantum computers are particularly well suited to modeling these systems because they can compactly represent their underlying physics. Many complex systems behave in ways that resemble quantum effects, where changes in one region can influence distant parts of the system, similar to entanglement.
+
+**Overcoming Limits of Current Quantum Hardware**
+
+Current quantum computers face challenges such as noise, errors, and interference, which often require large numbers of measurements. The new method avoids these issues by using the quantum computer only once during the workflow, rather than repeatedly exchanging data between quantum and classical systems.
+
+**Experiment Details and Future Potential**
+
+The study used a 20-qubit IQM quantum computer connected to powerful classical computing resources at the Leibniz Supercomputing Centre in Germany.
+
+To function, quantum computers must operate at extremely low temperatures, around minus 273C (close to absolute zero, colder than anything in space).
+
+The research was funded by UCL and the UK's Engineering and Physical Sciences Research Council (EPSRC), with additional support from IQM Quantum Computers and the Leibniz Supercomputing Centre in Munich.
+
+As researchers continue to scale up this approach, it could open the door to more accurate and efficient predictions across a wide range of scientific and engineering applications.
+
+**Story Source:**
+
+Materials provided by **University College London**. *Note: Content may be edited for style and length.*
+
+**Journal Reference**:
+
+- Maida Wang, Xiao Xue, Mingyang Gao, Peter V. Coveney.
+**Quantum-informed machine learning for predicting spatiotemporal chaos with practical quantum advantage**.*Science Advances*, 2026; 12 (16) DOI: 10.1126/sciadv.aec5049
+
+**Cite This Page**:
+
+*ScienceDaily*. Retrieved May 29, 2026 from www.sciencedaily.com
+
+[result-7] https://phys.org/news/2026-04-quantum-ai-term-turbulence-memory.html
+We’re checking your connection to prevent automated abuse
+
+Verification failed
+
+Verification expired
+
+Verification expired
+
+# Just a quick check
+
+Checking your connectionChecking your Browser…
+
+[result-8] https://ui.adsabs.harvard.edu/abs/2025arXiv250719861W/abstract
+JavaScript is disabled
+In order to continue, we need to verify that you're not a robot. This requires JavaScript. Enable JavaScript and then reload the page.
+
+[result-9] https://mro.massey.ac.nz/bitstreams/13149e4e-530f-4387-9242-760fe829d4c5/download
+Modeling the Chaotic Semantic States of Generative Artificial
+Intelligence (AI): A Quantum Mechanics Analogy Approach
+TONG LIU, Massey University, Albany, New Zealand
+TIMOTHY R. MCINTOSH, RMIT University, Melbourne, Australia and Cyberoo Pty Ltd, Melbourne,
+Australia
+TEO SUSNJAK, Massey University, Auckland, New Zealand
+PAUL WATTERS, Cyberstronomy Pty Ltd, Ballarat, Australia
+MALKA N. HALGAMUGE, RMIT University, Melbourne, Australia
+Generative AI models have revolutionized intelligent systems by enabling machines to produce human-like
+content across diverse domains. However, their outputs often exhibit unpredictability due to complex and
+opaque internal semantic states, posing challenges for reliability in real-world applications. In this article,
+we introduce the AI Uncertainty Principle, a novel theoretical framework inspired by quantum mechanics,
+to model and quantify the inherent unpredictability in generative AI outputs. By drawing parallels with the
+uncertainty principle and superposition, we formalize the tradeoff between the precision of internal semantic
+states and output variability. Through comprehensive experiments involving state-of-the-art models and a
+variety of prompt designs, we analyze how factors such as specificity, complexity, tone, and style influence
+model behavior. Our results demonstrate that carefully engineered prompts can significantly enhance output
+predictability and consistency, while excessive complexity or irrelevant information can increase uncertainty.
+We also show that ensemble techniques, such as Sigma-weighted aggregation across models and prompt
+variations, effectively improve reliability. Our findings have profound implications for the development of
+intelligent systems, emphasizing the critical role of prompt engineering and theoretical modeling in creating
+AI technologies that perceive, reason, and act predictably in the real world.
+CCS Concepts: • Computing methodologies → Artificial intelligence; • Mathematics of computing
+→ Probability and statistics; • Theory of computation → Probabilistic computation; • Human-centered
+computing → Interaction techniques;
+Additional Key Words and Phrases: Generative Artificial Intelligence, Uncertainty, Complexity, Prompt
+Engineering, Output Variability
+ACM Reference format:
+Tong Liu, Timothy R. McIntosh, Teo Susnjak, Paul Watters, and Malka N. Halgamuge. 2025. Modeling the
+Chaotic Semantic States of Generative Artificial Intelligence (AI): A Quantum Mechanics Analogy Approach.
+ACM Trans. Intell. Syst. Technol. 16, 6, Article 126 (October 2025), 36 pages.
+https://doi.org/10.1145/3757927
+Authors’ Contact Information: Tong Liu, Massey University, Albany, New Zealand; e-mail: t.liu@massey.ac.nz; Timothy R. McIntosh (corresponding author), RMIT University, Melbourne, Australia and Cyberoo Pty Ltd, Melbourne,
+Australia; e-mail: timothy.mcintosh@rmit.edu.au; Teo Susnjak, Massey University, Auckland, New Zealand; e-mail:
+t.susnjak@massey.ac.nz; Paul Watters, Cyberstronomy Pty Ltd, Ballarat, Australia; e-mail: ceo@cyberstronomy.com; Malka
+N. Halgamuge, RMIT University, Melbourne, Australia; e-mail: malka.halgamuge@rmit.edu.au.
+This work is licensed under Creative Commons Attribution-NonCommercial-NoDerivatives International
+4.0.
+© 2025 Copyright held by the owner/author(s).
+ACM 2157-6912/2025/10-ART126
+https://doi.org/10.1145/3757927
+ACM Transactions on Intelligent Systems and Technology, Vol. 16, No. 6, Article 126. Publication date: October 2025.
+126:2 T. Liu et al.
+1 Introduction
+Generative AI has transformed the field by enabling machines to produce content closely resembling
+human creations [6, 10, 43]. Significant advancements in natural language processing have been
+achieved through models like the GPT series, Claude, and Google’s Gemini [20, 26, 27]. In image
+synthesis, models such as Variational Autoencoders, Generative Adversarial Networks, and diffusion
+models like Stable Diffusion and Midjourney have enabled the creation of high-quality visuals
+from textual descriptions. Text-to-image models like DALL-E and Imagen translate text into visual
+content, while advanced video generation technologies such as Synthesia have applications in media
+production and personalized content creation. In software development, DeepMind’s AlphaCode
+employs self-supervised learning to improve coding performance, showcasing generative AI’s
+potential in programming and design across architecture and art [2, 8, 28, 29].
+Despite these advancements, a fundamental challenge persists: the internal semantic states of
+generative AI systems remain largely inscrutable. These states, crucial for generating coherent
+and contextually relevant outputs, are not directly observable, hindering our ability to predict and
+control AI behavior and limiting progress towards Artificial General Intelligence (AGI) [19,
+23]. Drawing analogies from quantum mechanics, particularly the principles of uncertainty and
+superposition, provides insights into the inherent unpredictability of generative AI systems. The
+uncertainty principle implies that it is impossible to simultaneously determine the exact internal
+state and output of an AI model, while superposition suggests that AI systems exist in multiple
+potential states until an input prompt collapses them into a specific output. These analogies help
+conceptualize the variability and unpredictability inherent in generative AI. Importantly, throughout
+this article, we employ the quantum mechanics analogy purely as a conceptual and explanatory
+tool, rather than suggesting that generative AI systems possess physical quantum properties or
+that our formulations depend on non-commuting operators as in formal quantum theory.
+We hypothesize that the internal semantic state of generative AI is inherently chaotic, exhibiting
+complexity that defies straightforward analysis or prediction. Inspired by quantum mechanics, we
+posit that interacting with a generative AI system via prompts alters its internal semantic state,
+thereby affecting the output—analogous to the observer effect. This suggests that the true nature of
+a generative AI’s internal processes is fundamentally elusive, accessible only through interactions
+that inevitably influence its behavior. Understanding the chaotic nature of generative AI’s internal
+semantic state holds profound implications for advancing AI research. Grasping these complexities
+is crucial for developing systems that approach or achieve AGI. Such insights could unlock new
+methodologies for designing more robust, predictable, and controllable AI systems, accelerating
+progress towards creating machines capable of human-like thinking and reasoning.
+The major contributions of this article are as follows:
+(1) Proposing the AI Uncertainty Principle, a novel theoretical framework inspired by quantum
+mechanics, to model the inherent unpredictability of generative AI systems and their internal
+semantic states.
+(2) Empirically investigating how prompt characteristics (such as specificity, complexity, tone,
+and style) affect the predictability and consistency of AI-generated outputs, revealing that
+optimal prompt design enhances reliability while excessive complexity diminishes it.
+(3) Demonstrating that ensemble techniques, such as Sigma-weighted aggregation across multiple models and prompt variations, significantly improve output consistency, offering practical
+solutions for developing more robust interactive intelligent systems.
+The rest of the article is organized as follows: Section 2 presents the literature review of
+related studies. Section 3 introduces the theoretical framework, including the AI Uncertainty
+Principle and modeling generative AI behavior. Section 4 summarizes convergence guarantees
+ACM Transactions on Intelligent Systems and Technology, Vol. 16, No. 6, Article 126. Publication date: October 2025.
+The Chaotic Semantic States of Generative AI 126:3
+for the proposed methods, with complete mathematical proofs provided in Appendix B. Section 5
+details the experiments conducted to validate the theoretical framework. Section 6 discusses the
+scope and limitations of our Quantum Analogy, and its implications for AI system design. Finally,
+Section 7 concludes the article with a summary of findings and future research directions.
+2 Literature Review
+Large Language Models (LLMs) have demonstrated impressive capabilities but often display
+troubling unpredictability: even slight variations in prompt wording or formatting can yield significantly different outputs, a phenomenon known as prompt sensitivity [7, 18, 47]. Recent studies
+systematically document this sensitivity, showing that an LLM’s apparent decision-making can
+fluctuate with input phrasing or temperature settings, reversing earlier conclusions when prompts
+are adjusted, and that LLMs are “surprisingly sensitive” to minor variations such as swapping
+words or introducing a spelling mistake [7, 18]. This means that a model might answer correctly
+under one prompt format but fail when the question is equivalently rephrased, which undermines
+reliability and poses challenges for users and evaluators, as even high-performing models can
+underperform due to innocuous changes [7, 21, 22, 30]. As a result, prompt engineering—iteratively tuning prompts to elicit desired responses—has become crucial, yet discovering an “optimal”
+prompt is nontrivial, as phrasing that works well for one model or task may not generalize to others,
+ultimately complicating reliable deployment and undermining user trust, especially in real-world
+settings where hand-crafting prompts for every query is infeasible [1, 14, 46, 48].
+Research has moved beyond anecdotal accounts to introduce systematic benchmarks and metrics
+for prompt robustness, such as the Prompt Sensitivity Index and PromptSensiScore, which demonstrate that neither increased model size nor instruction-tuning alone ensures lower sensitivity,
+whereas even a single in-context example (few-shot prompting) typically decreases variability and
+enhances robustness by stabilizing the model’s internal state [7, 48]. Larger models tend to be more
+robust than smaller ones, and increased model confidence correlates with higher prompt robustness, as higher predicted probability (lower internal uncertainty) makes outputs less perturbed by
+rephrasings [48]. Calls to evaluate models using diverse prompt formats, such as those incorporated
+in HELM and related benchmarks, reflect a consensus that one-prompt evaluations overlook a
+crucial dimension of performance, since models can score well on standardized benchmarks but
+fail when faced with natural prompt variation [12, 16, 22]. Despite these advances, there is still no
+deep theoretical account of why minor input changes so strongly affect output behavior.
+A related research direction investigates adversarial prompting, where prompt sensitivity is
+deliberately exploited to trigger undesired or hidden LLM behaviors; so-called jailbreak attacks
+and prompt injections reliably circumvent safety constraints in aligned models, even transferring
+across proprietary systems, highlighting the fragility of model behavior under distribution shift and
+the insufficiency of ad-hoc fixes [6, 13, 22, 24, 39, 42]. Such attacks reveal that minor, adversarially
+chosen input changes can cause disproportionate response shifts, often by steering the model into
+high-entropy, uncertain regions of state space, thus motivating the need for principled models that
+capture prompt–response variability and inform robust prompt or training design [39].
+Simultaneously, there is a growing focus on quantifying and calibrating LLM uncertainty: empirical studies show that Reinforcement Learning from Human Feedback (RLHF)-aligned
+models tend to be overconfident, with probability estimates poorly calibrated, and methods such
+as UF Calibration, contextual calibration, and self-consistency decoding have been proposed to
+disentangle question uncertainty from answer fidelity and generate more reliable outputs by
+eliciting or estimating model uncertainty directly [15, 17, 38, 44, 45]. These approaches demonstrate that while language models can sometimes recognize when they are correct or uncertain, post-alignment calibration is often needed to restore reliability and mitigate the impact of
+ACM Transactions on Intelligent Systems and Technology, Vol. 16, No. 6, Article 126. Publication date: October 2025.
+126:4 T. Liu et al.
+prompt-induced biases, with techniques like self-consistency decoding effectively reducing output
+variability by aggregating over multiple sampled chains of reasoning.
+Despite this substantial body of work, a gap remains in understanding why generative AI systems
+behave as if stochastic or unstable under certain conditions [4, 20]. Prior research identifies the
+factors influencing LLM output unpredictability—prompt phrasing, sampling settings, training
+biases—and provides tools to measure or counteract these effects, but lacks a unifying theoretical
+perspective [4–6, 26]. Drawing inspiration from Heisenberg’s Uncertainty Principle, which asserts
+that certain properties cannot be measured simultaneously with perfect precision and introduces
+inherent unpredictability, we hypothesize a fundamental tradeoff between the precision of a model’s
+internal semantic state (its “understanding” of a query) and the predictability of its output, such
+that, just as quantum systems exist in a superposition until measured, an LLM’s internal state
+holds a range of responses until a prompt collapses it into a specific output [4, 11, 19, 32, 35–37,
+40]. This intuition, supported by empirical findings, motivates a quantum-inspired AI Uncertainty
+Principle: the more indeterminate the model’s latent belief distribution over answers, the less
+reliably one can predict or control which answer will be realized [19, 25, 34]. This principle, inspired
+by quantum mechanics and substituting semantic intent/output for position/momentum, frames
+LLM unpredictability as intrinsic to their generative nature, not merely as noise or error to eliminate
+[4, 11, 32, 36, 40]. Our principle explains why high model confidence yields stable outputs [3, 25, 33],
+why ensembles or self-consistency voting average out internal randomness and improve reliability
+[9, 31, 33], and why even enormous models can behave unpredictably when pushed into uncertain
+states by tricky prompts [4, 22, 41], providing a new lens to interpret the above studies and integrate
+prompt control with uncertainty modeling.
+3 Theoretical Framework
+In this section, we develop a theoretical framework to capture the inherent unpredictability and
+variability of generative AI systems, drawing precise analogies with quantum mechanics—specifically, the uncertainty principle and superposition. Our focus is on the dynamics of internal semantic
+states within LLMs and the direct impact of these states on the variability of generated outputs. The
+aim is to build a bridge from foundational theory to the empirical measures used in our experiments,
+enabling both theoretical and practical insights into model behavior and its controllability.
+Definition: Semantic State and Output Variability
+Semantic state refers to the latent internal configuration of knowledge, context, and memory
+in a generative AI model at any point prior to prompt input. It encompasses all hidden neural
+activations and intermediate representations that condition the model’s response but are not
+directly observable. In our experiments, we operationalize semantic state uncertainty (Δ𝑆)
+as the entropy or dispersion of the internal activation space—estimated via the diversity of
+generated outputs under controlled prompt perturbations.
+Output variability denotes the observable degree of variation in the model’s outputs, given
+repeated queries with fixed or systematically varied prompts. It is quantified empirically
+through entropy, variance of text length, sentiment dispersion, or semantic distance across
+multiple outputs. Output variability (Δ𝑂) captures how much the response space “spreads
+out” for a given prompt configuration and is central to measuring controllability and
+robustness.
+The uncertainty principle in quantum mechanics asserts that certain pairs of physical properties,
+such as position and momentum, cannot be simultaneously known with arbitrary precision. In
+ACM Transactions on Intelligent Systems and Technology, Vol. 16, No. 6, Article 126. Publication date: October 202
+The Chaotic Semantic States of Generative AI 126:5
+Fig. 1. Analogy between quantum mechanics and generative AI: Dashed ellipses at the top represent distinct
+internal semantic states held in superposition. The leftward arrow (“Input Prompt”) acts as a measurement,
+collapsing the superposition to a unique output (rightward arrow). The double-headed “Superposition” arrow
+signifies indeterminacy prior to input. The dotted line encodes the formal tradeoff: the product of semantic
+state uncertainty (Δ𝑆) and output variability (Δ𝑂) cannot fall below the empirical lower bound ℏAI/2 (see
+Equation (1)).
+direct analogy, generative AI systems exhibit a tradeoff between the precision with which the
+internal semantic state can be inferred or constrained and the predictability of their outputs. We
+term this formal relationship the AI Uncertainty Principle. The concept of superposition—where
+a quantum system exists in multiple potential states until measured—maps to the pre-prompt
+configuration of a generative AI, where many possible internal “interpretations” remain unresolved
+until a prompt is applied.
+Intuitive Analogy: Uncertainty and Superposition in Generative AI
+The unpredictability of AI outputs mirrors the uncertainty of a dice roll: even with perfect
+knowledge of the rules, the exact outcome cannot be determined in advance. The “semantic
+state” is akin to the mental state of a chess grandmaster before making a move—holding
+multiple plans and responses in parallel, only one of which becomes manifest after an
+explicit stimulus. Superposition in this context represents the coexistence of all possible
+response pathways before a prompt collapses the system to a specific answer.
+Figure 1 concretely illustrates these analogies. The diagram shows the generative AI model as
+a system holding several possible internal states (dashed ellipses at the top), each representing
+a distinct configuration of knowledge and context. The “input prompt” acts as a measurement,
+collapsing the superposition of internal states into a concrete output. The two-way arrow labeled
+“Superposition” emphasizes the model’s indeterminacy prior to prompt input, while the dotted
+line at the base encodes the formal tradeoff: the product of semantic state uncertainty (Δ𝑆) and
+output variability (Δ𝑂) cannot fall below the empirical lower bound ℏAI/2 (see Equation (1)). This
+mathematical coupling provides a basis for controlling or predicting generative behavior.
+With this foundational analogy clarified and all key terms defined, we proceed to formalize the
+theoretical constructs and mathematical formulations that underlie the AI Uncertainty Principle
+and show how each variable connects to measurable experimental phenomena.
+3.1 The AI Uncertainty Principle
+Drawing inspiration from quantum mechanics, we introduce the AI Uncertainty Principle to formally
+characterize the empirical tradeoff between internal state knowledge and output predictability in
+ACM Transactions on Intelligent Systems...
+
+[result-10] https://www.ucl.ac.uk/news/2026/apr/quantum-computer-improves-ai-predictions
+# Quantum computer improves AI predictions
+
+**
+17 April 2026 **
+
+An AI model informed by calculations from a quantum computer can better predict the behaviour of a complex physical system over the long term than current best models that use only conventional computers, according to a new study led by UCL researchers.
+
+![quantum computer](https://www.ucl.ac.uk/news/sites/news/files/styles/large_image/public/iqm-hardware-12_cropped.jpg?itok=twfzu4lO)
+
+The findings, published in the journal *Science Advances*, could improve models predicting how liquids and gases move and interact (fluid dynamics), used in areas ranging from climate science to transport, medicine and energy generation.
+
+The researchers say the improved performance is linked to a quantum device’s ability to hold a large amount of information more efficiently. That is because instead of bits that are switched on or off, 1 or 0, like in a classical computer, the quantum computer’s qubits can be 1, 0, or any state in between, and each qubit can affect any of the other qubits – meaning a few qubits can generate a vast number of possible states.
+
+Senior author Professor Peter Coveney, based in UCL Chemistry and the Advanced Research Computing Centre at UCL, said: “To make predictions about complex systems, we can either run a full simulation, which might take weeks – often too long to be useful – or we can use an AI model which is quicker but more unreliable over longer time scales.
+
+“Our quantum-informed AI model means we could provide more accurate predictions quickly. Making predictions about fluid flow and turbulence is a fundamental science challenge but it also has many applications. Our method can be used in climate forecasting, in modelling blood flow and the interaction of molecules, or to better design wind farms so they generate more energy.”
+
+Quantum computers have the potential to be far more powerful than even the fastest conventional computers but so far their practical usefulness has been limited.
+
+To make predictions about a complex system, an AI model is trained on large amounts of simulation or observational data. In the quantum-informed method, this data is first fed to a quantum computer which learns the key statistical patterns of the data, or the invariant statistical properties, i.e. the patterns that stay the same over time. These quantum-learned patterns are then incorporated into the training of the AI model on a conventional supercomputer.
+
+The quantum-informed method was about a fifth more accurate and remained stable over the long term in its predictions of how a complex, chaotic system would behave compared to the AI model that did not use the quantum-learned patterns, and it was much more efficient, requiring hundreds of times less memory.
+
+This efficiency is a result of two quantum properties. One, entanglement, is where each qubit can affect any of the others, regardless of distance. The other, superposition, means a qubit can exist in different classical states simultaneously, until it is measured. These properties mean a quantum computer with only a few qubits still has massive computing power.
+
+First author Maida Wang, based in the UCL Centre for Computational Science, said: “Our new method appears to demonstrate ‘quantum advantage’ in a practical way – that is, the quantum computer outperforms what is possible through classical computing alone. These findings could inspire the development of novel classical approaches that achieve even higher accuracy, though they would likely lack the remarkable data compression and parameter efficiency offered by our method. The next steps are to scale up the method using larger datasets and to apply it to real-world situations which typically involve even more complexity. In addition, a provable theoretical framework will be proposed.”
+
+The other first author, Xiao Xue, based at Advanced Research Computing at UCL, said: “In this work, we demonstrate for the first time that quantum computing can be meaningfully integrated with classical machine learning methods to tackle complex dynamical systems, including fluid mechanics. It is exciting to see this kind of ‘quantum-informed’ approach moving towards practical use.”
+
+The researchers suggested the quantum computer’s ability to compactly capture the underlying physics of such complex systems may be because of the “quantum-like” chaos of these systems, with a movement in one part of the system affecting another part of the system far away (much like entanglement).
+
+Their method, they said, avoids the limitations of current quantum computers – which are very noisy, prone to errors and interference, hence requiring too many measurements to be made – by only using a quantum device at just one stage of the process, rather than flitting data back and forth between classical and quantum systems.
+
+The study used a 20-qubit IQM quantum computer linked to conventional supercomputing resources at the Leibniz Supercomputing Centre in Germany.
+
+To achieve their quantum state, quantum computers are cooled to minus 273C (close to absolute zero, colder than anything in space).
+
+The researchers received funding from UCL and the UK’s Engineering and Physical Sciences Research Council (EPSRC) and support from IQM Quantum Computers and the Leibniz Supercomputing Centre in Munich.
+
+## Links
+
+- The paper in
+*Science Advances* - Professor Peter Coveney’s academic profile
+- Maida Wang’s academic profile
+- Xiao Xue’s research profile
+- UCL Chemistry
+- Advanced Research Computing at UCL
+- UCL Mathematical & Physical Sciences
+
+## Image
+
+- IQM hardware. Credit: IQM.
+
+## Media contact
+
+## Mark Greaves
+
+m.greaves [at] ucl.ac.uk
+
++44 (0)20 3108 9485

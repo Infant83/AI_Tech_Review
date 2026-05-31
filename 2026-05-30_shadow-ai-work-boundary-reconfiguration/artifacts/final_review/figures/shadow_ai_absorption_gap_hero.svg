@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">AI 역량 흡수 격차</title>
+  <desc id="desc">외부 AI 역량은 빠르게 올라가지만 조직의 승인, 보안, 운영 체계가 느리게 움직이면서 숨은 노동과 번아웃이 생기는 구조</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f7f3}
+      .panel{fill:#fff;stroke:#d8d5ca;stroke-width:2}
+      .soft{fill:#f0eee7}
+      .red{fill:#a50034}
+      .redLine{stroke:#a50034;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .line{stroke:#555;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+      .muted{fill:#6b6b63;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:22px}
+      .label{fill:#252525;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:28px;font-weight:700}
+      .small{fill:#404040;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:20px}
+      .tiny{fill:#606060;font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:17px}
+      .num{fill:#fff;font-family:Arial,sans-serif;font-size:24px;font-weight:700}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#555"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#a50034"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="640"/>
+  <rect x="58" y="62" width="1084" height="500" rx="26" class="panel"/>
+  <text x="86" y="112" class="label">AI 역량은 밖에서 먼저 빨라지고, 조직은 안에서 늦게 따라옵니다</text>
+  <text x="86" y="151" class="muted">이 시간차가 Shadow AI, 숨은 노동, 번아웃으로 바뀝니다.</text>
+
+  <rect x="92" y="208" width="286" height="204" rx="18" class="soft"/>
+  <text x="122" y="254" class="label">외부 AI 환경</text>
+  <text x="122" y="297" class="small">개인 계정, SaaS, 에이전트,</text>
+  <text x="122" y="327" class="small">코딩 보조, Deep Research,</text>
+  <text x="122" y="357" class="small">영상·문서 생성 도구</text>
+  <path d="M132 388 C188 366, 244 376, 332 338" class="redLine" marker-end="url(#arrowRed)"/>
+
+  <rect x="458" y="208" width="286" height="204" rx="18" class="soft"/>
+  <text x="488" y="254" class="label">사내 운영 체계</text>
+  <text x="488" y="297" class="small">승인, 보안, 법무, 구매,</text>
+  <text x="488" y="327" class="small">망분리, 데이터 등급,</text>
+  <text x="488" y="357" class="small">근태·성과 기록</text>
+  <path d="M498 388 C564 382, 612 370, 694 364" class="line" marker-end="url(#arrow)"/>
+
+  <rect x="824" y="208" width="286" height="204" rx="18" class="soft"/>
+  <text x="854" y="254" class="label">실무자 흡수 비용</text>
+  <text x="854" y="297" class="small">퇴근 후 실험, 개인 구독,</text>
+  <text x="854" y="327" class="small">외부 구조의 내부 재현,</text>
+  <text x="854" y="357" class="small">검증·증빙·보고 부담</text>
+  <path d="M864 388 C924 434, 998 428, 1060 468" class="redLine" marker-end="url(#arrowRed)"/>
+
+  <path d="M378 310 L458 310" class="line" marker-end="url(#arrow)"/>
+  <path d="M744 310 L824 310" class="line" marker-end="url(#arrow)"/>
+  <path d="M205 462 L1035 462" class="redLine"/>
+  <circle cx="205" cy="462" r="25" class="red"/>
+  <text x="198" y="471" class="num">1</text>
+  <circle cx="602" cy="462" r="25" class="red"/>
+  <text x="595" y="471" class="num">2</text>
+  <circle cx="1035" cy="462" r="25" class="red"/>
+  <text x="1028" y="471" class="num">3</text>
+  <text x="145" y="516" class="tiny">역량 체감</text>
+  <text x="550" y="516" class="tiny">승인 지연</text>
+  <text x="980" y="516" class="tiny">숨은 노동</text>
+</svg>

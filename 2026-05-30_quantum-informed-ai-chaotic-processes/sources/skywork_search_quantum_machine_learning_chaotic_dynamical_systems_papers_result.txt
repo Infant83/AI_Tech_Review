@@ -1,0 +1,462 @@
+query: quantum machine learning chaotic dynamical systems papers
+
+[result-1] https://arxiv.org/abs/2507.19861
+# Quantum Physics
+
+[Submitted on 26 Jul 2025 (v1), last revised 13 Mar 2026 (this version, v5)]
+
+# Title:Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage
+
+View PDF HTML (experimental)Abstract:We introduce a quantum-informed machine learning (QIML) framework for modelling the long-term behaviour of high-dimensional chaotic systems. QIML combines a one-time, offline-trained quantum generative model with a classical autoregressive predictor for spatiotemporal field generation. The quantum model learns a quantum prior (Q-Prior) that guides the representation of small-scale interactions and improves the modelling of fine-scale dynamics. We evaluate QIML on the Kuramoto-Sivashinsky equation, two-dimensional Kolmogorov flow, and the three-dimensional turbulent channel flow used as a realistic inflow condition. Across these systems, QIML improves predictive distribution accuracy by up to 17.25% and full-spectrum fidelity by up to 29.36% relative to classical baselines. For turbulent channel inflow, the Q-Prior is trained on a superconducting quantum processor and proves essential: without it, predictions become unstable, whereas QIML produces physically consistent long-term forecasts that outperform leading PDE solvers. Beyond accuracy, QIML offers a memory advantage by compressing multi-megabyte datasets into a kilobyte-scale Q-Prior, enabling scalable integration of quantum resources into scientific modelling.
+
+## Submission history
+
+From: Maida Wang [view email]**[v1]**Sat, 26 Jul 2025 08:36:16 UTC (5,114 KB)
+
+**[v2]**Fri, 1 Aug 2025 15:03:13 UTC (5,114 KB)
+
+**[v3]**Thu, 28 Aug 2025 11:18:07 UTC (24,153 KB)
+
+**[v4]**Fri, 5 Sep 2025 13:31:46 UTC (24,154 KB)
+
+**[v5]**Fri, 13 Mar 2026 10:48:44 UTC (31,641 KB)
+
+### Current browse context:
+
+quant-ph
+
+### References & Citations
+
+Loading...
+
+# Bibliographic and Citation Tools
+
+Bibliographic Explorer
+
+*(What is the Explorer?)*
+Connected Papers
+
+*(What is Connected Papers?)*
+Litmaps
+
+*(What is Litmaps?)*
+scite Smart Citations
+
+*(What are Smart Citations?)*# Code, Data and Media Associated with this Article
+
+alphaXiv
+
+*(What is alphaXiv?)*
+CatalyzeX Code Finder for Papers
+
+*(What is CatalyzeX?)*
+DagsHub
+
+*(What is DagsHub?)*
+Gotit.pub
+
+*(What is GotitPub?)*
+Hugging Face
+
+*(What is Huggingface?)*
+ScienceCast
+
+*(What is ScienceCast?)*# Demos
+
+# Recommenders and Search Tools
+
+Influence Flower
+
+*(What are Influence Flowers?)*
+CORE Recommender
+
+*(What is CORE?)*# arXivLabs: experimental projects with community collaborators
+
+arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+
+Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+
+Have an idea for a project that will add value for arXiv's community? **Learn more about arXivLabs**.
+
+[result-2] https://www.science.org/doi/10.1126/sciadv.aec5049
+Enable JavaScript and cookies to continue
+
+[result-3] https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/
+An official website of the United States government
+
+
+**Official websites use .gov**
+
+A
+**.gov** website belongs to an official
+government organization in the United States.
+
+
+**Secure .gov websites use HTTPS**
+
+A **lock** (
+Lock
+Locked padlock icon
+) or **https://** means you've safely
+connected to the .gov website. Share sensitive
+information only on official, secure websites.
+
+
+Primary site navigation
+
+
+Logged in as:
+
+
+Corresponding author. Email: p.v.coveney@ucl.ac.uk
+
+These authors contributed equally to this work.
+
+Received 2025 Sep 25; Accepted 2026 Mar 17; Collection date 2026 Apr 17.
+
+This is an open-access article distributed under the terms of the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.
+
+We introduce a quantum-informed machine learning (QIML) framework for modeling the long-term behavior of high-dimensional chaotic systems. QIML combines a one-time, offline-trained quantum generative model with a classical autoregressive predictor for spatiotemporal field generation. The quantum model learns a quantum prior (Q-Prior) that guides the representation of small-scale interactions and improves the modeling of fine-scale dynamics. We evaluate QIML on the Kuramoto-Sivashinsky equation, two-dimensional Kolmogorov flow, and the three-dimensional turbulent channel flow used as a realistic inflow condition. Across these systems, QIML improves predictive distribution accuracy by up to 17.25% and full-spectrum fidelity by up to 29.36% relative to classical baselines. For turbulent channel inflow, the Q-Prior is trained on a superconducting quantum processor and proves essential: without it, predictions become unstable, whereas QIML produces physically consistent long-term forecasts that outperform leading partial differential equation solvers. Beyond accuracy, QIML offers a memory advantage by compressing multimegabyte datasets into a kilobyte-scale Q-Prior, enabling scalable integration of quantum resources into scientific modeling.
+
+Quantum circuits efficiently learn invariant measures of chaotic systems to stabilize long-term predictions.
+
+Modeling high-dimensional dynamical systems remains one of the most persistent challenges in computational science. Partial differential equations (PDEs) provide the mathematical backbone for describing a wide range of nonlinear, spatiotemporal processes across scientific and engineering domains ( [_1_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R1)– [_3_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R3)). However, high-dimensional systems are notoriously sensitive to initial conditions and the floating-point numbers used to compute them ( [_4_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R4)– [_7_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R7)), making it highly challenging to extract stable, predictive models from data. Modern machine learning (ML) techniques often struggle in this regime: While they may fit short-term trajectories, they fail to learn the invariant statistical properties that govern long-term system behavior. These challenges are compounded in high-dimensional settings, where data are highly nonlinear and contain complex multiscale spatiotemporal correlations.
+
+ML has seen transformative success in domains such as large language models ( [_8_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R8), [_9_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R9)), computer vision ( [_10_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R10), [_11_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R11)), and weather forecasting ( [_12_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R12)– [_15_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R15)), and it is increasingly being adopted in scientific disciplines under the umbrella of scientific ML ( [_16_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R16)). In fluid mechanics, in particular, ML has been used to model complex flow phenomena, including wall modeling ( [_17_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R17), [_18_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R18)), subgrid-scale turbulence ( [_19_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R19), [_20_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R20)), and direct flow field generation ( [_21_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R21), [_22_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R22)). Physics-informed neural networks ( [_23_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R23), [_24_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R24)) attempt to inject domain knowledge into the learning process, yet even these models struggle with the long-term stability and generalization issues that high-dimensional dynamical systems demand. To address this, generative models such as generative adversarial networks ( [_25_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R25)) and operator-learning architectures such as DeepONet ( [_26_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R26)) and Fourier neural operators (FNO) ( [_27_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R27)) have been proposed. While neural operators offer discretization invariance and strong representational power for PDE-based systems, they still suffer from error accumulation and prediction divergence over long horizons, particularly in turbulent and other chaotic regimes ( [_28_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R28), [_29_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R29)). Recent work, such as DySLIM ( [_30_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R30)), enhances stability by leveraging invariant statistical measures. However, these methods depend on estimating such measures from trajectory samples, which can be computationally intensive and inaccurate in all forms of chaotic systems, especially in high-dimensional cases. These limitations have prompted exploration into alternative computational paradigms. Quantum machine learning (QML) has emerged as a possible candidate due to its ability to represent and manipulate high-dimensional probability distributions in Hilbert space ( [_31_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R31)). Quantum circuits can exploit entanglement and interference to express rich, nonlocal statistical dependencies using fewer parameters than their promising counterparts, which makes them well suited for capturing invariant measures in high-dimensional dynamical systems, where long-range correlations and multimodal distributions frequently arise ( [_32_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R32)). QML and quantum-inspired ML have already demonstrated potential in fields such as quantum chemistry ( [_33_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R33), [_34_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R34)), combinatorial optimization ( [_35_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R35), [_36_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R36)), and generative modeling ( [_37_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R37), [_38_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R38)). However, the field is constrained on two fronts: Fully quantum approaches are limited by noisy intermediate-scale quantum (NISQ) hardware noise and scalability ( [_39_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R39)), while quantum-inspired algorithms, being classical simulations, cannot natively leverage crucial quantum effects such as entanglement to efficiently represent the complex, nonlocal correlations found in such systems. These challenges limit the standalone utility of QML in scientific applications today. Instead, hybrid quantum-classical models provide a promising compromise, where quantum submodules work together with classical learning pipelines to improve expressivity, data efficiency, and physical fidelity. In quantum chemistry, this hybrid paradigm has proven feasible, notably through quantum mechanical/molecular mechanical coupling ( [_40_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R40), [_41_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R41)), where classical force fields are augmented with quantum corrections. Within such frameworks, techniques such as quantum-selected configuration interaction ( [_42_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R42)) have been used to enhance accuracy while keeping the quantum resource requirements tractable. In the broader landscape of quantum computational fluid dynamics, progress has been made toward developing full quantum solvers for nonlinear PDEs. Recent works by Liu _et al._ ( [_43_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R43)) and Sanavio _et al._ ( [_44_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R44), [_45_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R45)) have successfully applied Carleman linearization to the lattice Boltzmann equation, offering a promising pathway for simulating fluid flows at moderate Reynolds numbers. These approaches, typically using algorithms such as Harrow-Hassidim-Lloyd (HHL) ( [_46_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R46)), promise exponential speedups but generally necessitate deep circuits and fault-tolerant hardware.
+
+Quantum-enhanced machine learning (QEML) combines the representational richness of quantum models with the scalability of classical learning. By leveraging uniquely quantum properties such as superposition and entanglement, QEML can explore richer feature spaces and capture complex correlations that are challenging for purely classical models. Recent successes in quantum-enhanced drug discovery ( [_37_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R37)), where hybrid quantum-classical generative models have produced experimentally validated candidates rivaling state-of-the-art classical methods, demonstrate the practical potential of QEML even before full quantum advantage is achieved. Despite these strengths, practical barriers remain. QEML pipelines require repeated quantum-classical communication during training and rely on costly quantum data-embedding and measurement steps, which slow computation and limit accessibility across research institutions. Moreover, most current QEML applications focus on microscopic problems, such as atomic and molecular systems in quantum chemistry, with little exploration of macroscopic phenomena such as nonlinear PDEs and turbulent flows, where long-term stability and statistical fidelity pose distinct challenges ( [_47_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R47)). In parallel, the pursuit of quantum advantage in pure quantum computing faces closely related challenges. While theoretical speedups are well established for specific algorithms, identifying practical, application-level advantages remains difficult in realistic settings. This difficulty is exacerbated by the overhead associated with data encoding ( [_31_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R31)), the impact of noise in near-term devices ( [_39_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R39)), and fundamental limits on information extraction imposed by Holevo’s bound ( [_48_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R48)). As a result, many demonstrations of quantum advantage to date rely on analog sampling tasks ( [_49_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R49)), quantum-native data, or postprocessing of quantum outputs ( [_50_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R50)) rather than real-world, classically relevant problems.
+
+To address these limitations, we propose a quantum-informed machine learning (QIML) architecture, as shown in [Fig. 1M](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#F1), a specialized hybrid quantum-classical framework for chaotic systems. The quantum component is a sample-based quantum generator grounded on the quantum circuit Born machine ( [_51_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R51), [_52_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R52)), trained once offline on quantum hardware to learn invariant statistical properties directly from observational data. The resulting compact quantum prior (Q-Prior) can be deployed broadly and efficiently without ongoing quantum-classical iteration, eliminating the need for repeated access to quantum hardware during training. This design is specifically tailored to learning the dynamics of nonlinear PDEs. These properties capture complex, high-dimensional distributions compactly by leveraging entangled quantum states. Unlike standard deep learning surrogates, such as fully connected or convolutional networks that require large parameter counts to represent such structures, the quantum generators operate in exponentially large Hilbert spaces, enabling expressive modeling with as few as 10 to 15 qubits for the systems here. Crucially, this framework circumvents the data-loading bottleneck common to many QML algorithms. The generator does not need to encode raw data onto quantum states; instead, it learns a compressed, generative model of the data’s underlying statistical properties. The model is trained with a sample-based maximum mean discrepancy (MMD) loss ( [_53_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R53)), enabling it to learn the quantum representation without knowing the data distribution. After the training of the quantum generator, the resulting Q-Prior is then integrated into an autoregressive, unitary-enhanced Koopman-based ML framework ( [_54_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R54)). This architecture is powerful for learning dynamical systems, as it can linearize nonlinear dynamics in a lifted observable space, making it effective for capturing coherent structures ( [_55_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R55), [_56_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R56)). However, for high-dimensional chaotic systems, its ability to maintain predictive stability remains a notable challenge, often failing to preserve the systems’ physical invariant measures over extended rollouts (i.e., recursive 1-in-1-out predictions where each forecasted state is fed back as input for the next step). This is particularly true when modeling data for which no closed-form governing equation is known—as is the case for a two-dimensional (2D) cross section extracted from a 3D turbulent domain. We address this limitation by embedding the Q-Prior as a differentiable constraint directly within the loss function. This composite loss, which penalizes divergence from the Q-Prior, imposes a powerful statistical regularization on the evolution of the Koopman operator, guiding it to learn a physically consistent and stable long-term dynamic. We evaluate our QIML framework against its classical counterpart without Q-informed guidance, as well as two leading ML models: the FNO for general PDE-based systems and the Markov neural operator (MNO) ( [_57_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R57)) specifically designed for chaotic dynamics. Our QIML framework outperforms all baseline models while requiring orders-of-magnitude fewer trainable parameters.
+
+[![Fig. 1.](https://cdn.ncbi.nlm.nih.gov/pmc/blobs/5317/13089341/aa8f52ecceef/sciadv.aec5049-f1.jpg)](https://www.ncbi.nlm.nih.gov/core/lw/2.0/html/tileshop_pmc/tileshop_pmc_inline.html?title=Click%20on%20image%20to%20zoom&p=PMC3&id=13089341_sciadv.aec5049-f1.jpg)
+
+( **A**) High-dimensional dynamical flow fields are generated using high-resolution numerical solvers and used to construct training, validation, and test datasets. ( **B**) A quantum circuit is trained on superconducting hardware to learn invariant statistical properties from the data (Q-Prior). ( **C**) The learned Q-Prior is integrated into a classical high-performance computer (HPC) cluster, guiding it toward physically consistent predictions and improved long-term stability.
+
+The selected test cases span increasing levels of physical and dynamical complexity. We begin with the Kuramoto-Sivashinsky (KS) equation, a PDE exhibiting spatiotemporal chaos. The solution is discretized into 512 spatial grid points, resulting in a 512D state vector at each time step. Next, we consider 2D Kolmogorov flow on a 64 × 64 spatial grid (dimension = 4096), governed by the 2D incompressible Navier-Stokes equations in a periodic domain, where the quantum generator is trained in emulation to extract turbulent invariant measures. Last, we examine cross sections of a 3D turbulent channel flow (TCF), simulated using the lattice Boltzmann method (LBM), which is numerically equivalent to solving the Navier-Stokes equations ( [_58_](https://pmc.ncbi.nlm.nih.gov/articles/PMC13089341/#R58)). For the training process, the raw cross sections are downsampled and discretized onto a 64 × 64 spatial grid, resulting in a 4096D state vector. The Q-Prior for TCF is trained on superconducting quantum processors. While the full flow field is simulated numerically, the extracted 2D cross-sectional datasets used in our analysis do not satisfy any closed-form governing equation. This distinction highlights a further step in complexity: moving from lower-dimensional systems with explicit dynamics to high-dimensional observational data without accessible evolution laws, thereby testing the capacity of QIML to generalize across different scenarios. Throughout this study, “ground truth” or “raw data” refers to the high-resolution simulation data generated by established numerical solvers. While this raw simulation data have a large memory footprint, the quantum-informed priors offer parameter efficiency and memory advantage. They capture the flow’s essential statistical features using fewer than 300 trainable parameters, occupying only a few megabytes of storage, which corresponds to a data storage reduction of over two orders of magnitude compared to the raw data. This approach enables a substantial reduction in data storage requirements compared to using the raw simulation data (see section Materials and Methods...
+
+[result-4] https://arxiv.org/html/2507.19861v1
+# Quantum-Informed Machine Learning for Chaotic Systems
+
+###### Abstract
+
+Learning the behaviour of chaotic systems remains challenging due to instability in long-term predictions and difficulties in accurately capturing invariant statistical properties. While quantum machine learning offers a promising route to efficiently capture physical properties from high-dimensional data, its practical deployment is hindered by current hardware noise and limited scalability. We introduce a quantum-informed machine learning framework for learning partial differential equations, with an application focus on chaotic systems. A quantum circuit Born machine is employed to learn the invariant properties of chaotic dynamical systems, achieving substantial memory efficiency by representing these complex physical statistics with a compact set of trainable circuit parameters. This approach reduces the data storage requirement by over two orders of magnitude compared to the raw simulation data. The resulting statistical quantum-informed prior is then incorporated into a Koopman-based auto-regressive model to address issues such as gradient vanishing or explosion, while maintaining long-term statistical fidelity. The framework is evaluated on three representative systems: the Kuramoto–Sivashinsky equation, two-dimensional Kolmogorov flow and turbulent channel flow. In all cases, the quantum-informed model achieves superior performance compared to its classical counterparts without quantum priors. This hybrid architecture offers a practical route for learning dynamical systems using near-term quantum hardware.
+
+## I INTRODUCTION
+
+Modelling chaotic dynamical systems remains one of the most persistent challenges in computational science. Partial differential equations (PDEs) provide the mathematical backbone for describing a wide range of nonlinear, spatiotemporal processes across scientific domains [1, 2, 3] and engineering domains [4]. However, chaotic systems are notoriously sensitive to initial conditions and the floating-point numbers used to compute them [5, 6, 7, 8], making it highly challenging to extract stable, predictive models from data. Modern machine learning techniques often struggle in this regime: while they may fit short-term trajectories, they fail to learn the invariant statistical properties that govern long-term system behaviour. These challenges are compounded in high-dimensional settings, where data are highly nonlinear and contain complex multi-scale spatial-temporal correlations.
+
+Machine learning has seen transformative success in domains such as large language models [9, 10, 11, 12], computer vision [13, 14, 15, 16], and weather forecasting [17, 18, 19, 20], and is increasingly being adopted in scientific disciplines under the umbrella of scientific machine learning [21, 22]. In fluid mechanics in particular, ML has been used to model complex flow phenomena, including wall modeling [23, 24], subgrid-scale turbulence [25, 26], and direct flow field generation [27, 28]. Physics-informed neural networks [29] attempt to inject domain knowledge into the learning process, yet even these models struggle with the long-term stability and generalisation issues that chaotic systems demand. To address this, generative models such as Generative Adversarial Networks (GANs) [30] and operator-learning architectures like DeepONet [31] and Fourier Neural Operators (FNOs) [32] have been proposed. While neural operators offer discretisation invariance and strong representational power for PDE-based systems, they still suffer from error accumulation and prediction divergence over long horizons, particularly in turbulent or chaotic regimes [33, 34]. Recent work, such as Dyslim [35], enhances stability by leveraging invariant statistical measures. However, these methods depend on estimating such measures from trajectory samples, which can be computationally intensive and inaccurate in all forms of chaotic systems. These limitations have prompted exploration into alternative computational paradigms. Quantum machine learning (QML) has emerged as a compelling candidate due to its ability to natively represent and manipulate high-dimensional probability distributions in Hilbert space. Quantum circuits can exploit entanglement and interference to express rich, non-local statistical dependencies using fewer parameters than their classical counterparts, which makes them well-suited for learning invariant measures in chaotic systems, where long-range correlations and multimodal distributions frequently arise [36]. QML has already demonstrated potential in fields such as quantum chemistry [37, 38, 39, 40], combinatorial optimisation [41, 42, 43], and generative modeling [44, 45, 46, 47]. However, fully quantum approaches remain constrained by current hardware limitations, such as noise, low qubit counts, and the difficulty of encoding classical physical systems into quantum circuits [48]. These challenges limit the standalone utility of QML in scientific applications today. Instead, hybrid quantum–classical models provide a promising compromise, where quantum submodules are embedded into classical learning pipelines to improve expressivity, data efficiency, and physical fidelity without relying on fault-tolerant quantum computers. Consequently, hybrid architectures have emerged as a promising compromise, enabling practical impact even with noisy intermediate-scale quantum (NISQ) devices. Rather than relying on fully quantum pipelines, these approaches embed quantum modules into classical learning systems to exploit quantum expressivity while retaining classical scalability and training robustness. In quantum chemistry, this hybrid paradigm has proven feasible, notably through quantum mechanical/molecular mechanical (QM/MM) coupling [49, 50, 51], where classical force fields are augmented with quantum corrections. Within such frameworks, techniques like quantum-selected configuration interaction (QSCI) [52] have been employed to enhance accuracy while keeping quantum resource requirements tractable.
+
+Here, we propose a Quantum-Informed Machine Learning (QIML) architecture for learning chaotic dynamical systems. At the core of QIML is a quantum circuit Born machine (QCBM) [53, 54], which is trained on superconducting quantum hardware to learn invariant statistical properties directly from observational data. These properties capture complex, high-dimensional distributions compactly by leveraging entangled quantum states. Unlike standard deep-learning surrogates, such as fully connected or convolutional networks that require large parameter counts to represent such structures, QCBMs operate in exponentially large Hilbert spaces, enabling expressive modelling with as few as 10 to 15 qubits. Crucially, this framework circumvents the data-loading bottleneck common to many quantum machine learning algorithms. The QCBM does not need to encode raw data onto quantum states; instead, it learns a compressed, generative model of the data’s underlying statistical properties. The model is trained with a sample-based Maximum Mean Discrepancy (MMD) loss [55], enabling it to learn the quantum representation without knowing the data distribution. The resulting quantum prior (Q-prior) is a highly memory-efficient “quantum device interpreter” that captures the system’s essential statistics in a compact set of parameters in quantum circuits. The data storage requirement is consistently reduced by over two order of magnitude across the studied systems when using the Q-priors instead of the raw simulation data. The resulting Q-prior is then embedded into a Koopman-based machine learning model, guiding it to maintain long-term statistical fidelity while mitigating autoregressive instabilities such as gradient vanishing or explosion. The QIML framework is implemented as a modular pipeline that integrates quantum-generated priors into a differentiable classical loss [56]. This enables joint optimisation of statistical consistency and dynamical fidelity, including full compatibility with existing superconducting quantum hardware. Even without achieving full quantum advantage [57], the inclusion of Q-priors significantly improves parameter efficiency, prediction stability, and statistical alignment in high-dimensional chaotic regimes. This work demonstrates that QIML provides a practical and scalable hybrid solution for scientific machine learning: one that leverages quantum expressivity while remaining compatible with the practical constraints of current quantum hardware.
+
+In this work, we present the QIML architecture that leverages a quantum-classical hybrid approach for machine learning-based modelling of chaotic dynamical systems. Our QIML scheme is illustrated in Fig. 1. The workflow commences with the data generation stage (Fig. 1a), where we employ a numerical solver on a classical computer to simulate complex chaotic flows, producing the necessary training, validation, and testing datasets. Subsequently, in the quantum machine learning phase (Fig. 1b), a QCBM is implemented on a quantum computer to learn the underlying physical invariant distribution, referred to as the Q-prior. Finally, this Q-prior is used to inform and regularise the classical machine learning model during training (Fig. 1c), guiding it toward long-term statistical consistency with the target dynamical system. The proposed integration demonstrates both practical feasibility and scalability, marking a step towards applying quantum modules in the learning of non-linear partial differential equations. We demonstrate the scalability and robustness of the solution of the QIML framework across a hierarchy of increasingly complex chaotic dynamical systems. First, we evaluate the model on the Kuramoto–Sivashinsky (KS) equation. The solution is discretised into 512 spatial grid points, resulting in a 512-dimensional state vector at each time step. Next, we extend our study to a two-dimensional Kolmogorov flow on a spatial grid, where the QCBM is trained in simulation to extract turbulent invariant measures. Finally, we validate the framework on a cross-section of a three-dimensional turbulent channel flow (TCF). The QCBM is trained on superconducting quantum processors. This progression demonstrates the generality and hardware compatibility of QIML. In all cases, our QIML models outperform classical counterparts lacking Q-prior, particularly in terms of long-term prediction stability, statistical fidelity, and resilience to error accumulation. Crucially, the QCBM acquires these priors directly from raw samples, so the framework remains applicable even when the invariant measure of a high-dimensional chaotic system is unknown. We provide concrete demonstrations of how quantum and classical machine learning can be synergistically combined to address high-dimensional dynamical systems.
+
+![Refer to caption](diagrams/QIMLS.001.png)
+
+## II Applications
+
+The selected test cases span increasing levels of physical and dynamical complexity. We begin with the Kuramoto–Sivashinsky equation, a one-dimensional PDE exhibiting spatiotemporal chaos. Next, we consider two-dimensional Kolmogorov flow, governed by the 2D incompressible Navier–Stokes equations in a periodic domain. Finally, we examine cross-sections of a three-dimensional turbulent channel flow, simulated using the lattice Boltzmann method (LBM), which is numerically equivalent to solving the Navier–Stokes equations [58]. While the full flow field is simulated numerically, the extracted two-dimensional cross-sectional datasets used in our analysis do not satisfy any closed-form governing equation. This distinction highlights a further step in complexity: moving from lower-dimensional systems with explicit dynamics to high-dimensional observational data without accessible evolution laws, thereby testing the capacity of QIML to generalise across different scenarios.
+
+Throughout this study, ‘ground truth’ or ‘raw data’ refers to the high-resolution simulation data generated by established numerical solvers. While this raw simulation data has a large memory footprint, the quantum-informed priors offer substantial memory efficiency. They capture the flow’s essential statistical features using fewer than 300 trainable parameters, occupying only a few megabytes of storage, which corresponds to a data storage reduction of over two orders of magnitude compared to the raw data. This approach enables a substantial reduction in data storage requirements compared to using the raw simulation data (see section Method E and Supplementary Sections S2–S3). The classical components of the models were trained on a single NVIDIA A100 80GB GPU using default settings with 32-bit floating-point precision (for details see Supplementary Section S4.3).
+
+### II.1 Kuramoto-Sivashinsky equation
+
+We first apply our QIML framework to learn the solution of the Kuramoto-Sivashinsky equation, which is given by:
+
+| (1) |
+
+where denotes a scalar field representing the state of the system, with representing the spatial domain and the time; and are constants which are set to 1 for this study. The spatial domain is discretised using equidistant grid points. Raw data are generated as described in Supplementary Information S4.1. The dataset consists of trajectories, where each trajectory is made up of time frames. The spatial domain for each frame is discretised using grid points. We partition the trajectories chronologically into training, validation, and test sets. For this system, both the classical Koopman surrogate (without Q-prior) and the main QIML model (with Q-prior) are trained for epochs. The Q-prior for the QIML configuration is generated by a QCBM using qubits ( basis states) and trainable parameters. Full architectural and training details for both configurations are provided in Supplementary Information S7.
+
+![Refer to caption](diagrams/ks_all.001.png)
+
+Fig. 2 presents the QIML evaluation results on the Kuramoto–Sivashinsky system, comparing two configurations against the numerical simulation: a classical surrogate model trained without Q-priors (without Q-prior), and a quantum-informed surrogate model incorporating a QCBM prior trained in simulation (with Q-prior). Both surrogate models perform inference in an auto-regressive manner: starting from an initial condition at time step , the model predicts the next frame at each subsequent step and recursively continues this process up to time steps to ensure long-term statistics. Panel (a) shows the evolution alone the time: with 512 initial states and 500 prediction timesteps and the corresponding relative error evolution. The error metric definition is presented in Supplementary S9. From top to bottom, each row corresponds to the ground truth, the ML model without Q-prior configuration, and the QIML model with Q-prior configuration. These sub-panels are computed over the test dataset to visualize long-term statistical characteristics of the predictions. In the “without Q-Prior” configuration, the model reproduces the general structure of the ground truth. However, over time, the predicted stripe patterns drift upward, revealing noticeable discrepancies in the associated error map. This indicates that the model accumulates errors during long-term prediction, likely due to the absence of prior information to guide the dynamics. In contrast, the “with Q-Prior” model demonstrates much closer alignment with the ground truth. The predicted fields preserve fine-scale features and capture the parallel stripe structures effectively. Additionally, the corresponding error maps exhibit substantially lower and more spatially diffuse errors. These results suggest that incorporating the Q-Prior enhances the model’s stability and accuracy in long-term forecasting. Panel (b) presents the probability density function (PDF) of for each configuration. The distribution is obtained via the entire spatiotemporal test domain (512 states in space and 500 prediction steps in time), allowing for a comparison of global statistical fidelity. The raw test data (solid blue line) serves as the ground truth. The model without Q-Prior (green dashed line) deviates from the raw data, particularly in the tails of the distribution, where it tends to overestimate the probability. In contrast, the model with Q-Prior (orange dash-dotted line) closely matches the ground truth across the full velocity range, especially in the tails. This demonstrates that incorporating the Q-Prior generated by the quantum emulator allows the surrogate model to more accurately reproduce the statistical characteristics of the system, including rare events. Panel (c) shows the energy spectrum as a function of the wave number , comparing the raw data, the surrogate model with and without Q-Prior. The energy spectrum of the raw data follows a smooth decay with increasing , reflecting the distribution of energy across spatial frequencies. The model without Q-Prior overestimates the energy in the large-scale, deviating from the ground truth. However, the model with Q-Prior closely aligns with the raw data across all wave numbers, able to capture both large scale and small-scale (high-) behaviour of the system. To further visualize the invariant structures underlying the KS system, we project both the ground truth and the Q-Prior configuration into the phase space, as shown in Panel (d). The resulting density plots depict the support of the system’s invariant measure, providing insight into its long-term statistical behaviour. Over extended prediction, the model with Q-Prior closely aligns with the ground truth in phase space, accurately capturing the geometry and concentration of the invariant set. This qualitative agreement highlights the Q-Prior model’s ability to preserve the system’s underlying statistical structures over time. Panel (e) illustrates the temporal autocorrelation of the velocity field, averaged over all spatial points, as a function of the dimensionless time lag . Autocorrelation measures how strongly the system retains correlation with its past states over time. Specifically, its calculation is presented in Supplementary S9. In this plot, all cases exhibit a decay in autocorrelation, eventually showing no correlation with the initial state. The configuration with Q-Prior demonstrates stronger short-term correlation (the same as the ground truth data) compared to the model without Q-Prior, indicating better preservation of temporal dynamics in the early prediction period. These outcomes demonstrate that our designed Q-prior can regularise the classical ML model, preserving both long-scale and small-scale structures, and improving long-term statistical accuracy.
+
+### II.2 2D Kolmogorov flow
+
+Next, we apply our QIML framework to learn the dynamics of the 2D Kolmogorov flow, a canonical example of incompressible Navier-Stokes dynamics under sinusoidal forcing. The governing equations are:
+
+| (2) |
+
+| (3) |
+
+where is the velocity field, represents the pressure. Here denotes the velocity field on the 2D cases. In the algorithmic expressions, we revert to the simpler symbol , using it as a generic placeholder for both 1D scalar and 2D velocities, since the learning procedure applies uniformly across dimensionalities. is the kinematic viscosity, and the forcing term is given by for some amplitude and wave number . The domain is periodic in both and directions: with grids. The data source is presented in Supplementary Information S4.2. We use for training, for validation, and for testing. For this system, both the classical Koopman surrogate (without Q-prior) and the main QIML model (with Q-prior) are trained for epochs. For QIML, the QCBM uses qubits ( basis states) and trainable parameters. Detailed network architectures, training hyperparameters, and data generation procedures are provided in Supplementary Information S7.
+
+![Refer to caption](diagrams/kf_all.002.png)
+
+Figure 3 reports the comparative performance of the baseline ML model (without Q-prior) and the quantum-informed ML model (with Q-prior) on the two-dimensional Kolmogorov flow dataset. Panel (a) shows the time-averaged velocity field and the corresponding turbulent kinetic energy (TKE) field across three configurations: the ground truth from simulation, the classical model trained without Q-prior, and the quantum-informed model trained with Q-prior. All models are evaluated on the same test data. Both the “with Q-Prior” and “without Q-Prior” models perform auto-regressive (one frame in one frame out) inference over a horizon of time steps. The visualisations span a two-dimensional domain of size in the – plane. The time-averaged velocity field is plotted on the left column and the corresponding TKE field is shown on the right column. The ground truth velocity field (top left) exhibits coherent, stripe-like structures, and its TKE field (top right) reveals...
+
+[result-5] https://iopscience.iop.org/article/10.1088/1674-1056/adeb5b
+## Abstract
+
+Replicating the chaotic characteristics inherent in nonlinear dynamical systems via machine learning (ML) is a key challenge in this rapidly advancing interdisciplinary field. In this work, we explore the potential of variational quantum circuits (VQC) for learning the stochastic properties of classical nonlinear dynamical systems. Specifically, we focus on the one- and two-dimensional logistic maps, which, while simple, remain under-explored in the context of learning dynamical characteristics. Our findings reveal that, even for such simple dynamical systems, accurately replicating long-term characteristics is hindered by a pronounced sensitivity to overfitting. While increasing the parameter complexity of the ML model typically enhances short-term prediction accuracy, it also leads to a degradation in the model’s ability to replicate long-term characteristics, primarily due to the detrimental effects of overfitting on generalization power. By comparing the VQC with two widely recognized classical ML techniques, which are long short-term memory (LSTM) networks for time-series processing and reservoir computing, we demonstrate that VQC outperforms these methods in terms of replicating long-term characteristics. Our results suggest that for the ML of dynamics, it is demanded to develop more compact and efficient models (such as VQC) rather than more complicated and large-scale ones.
+
+## Access this article
+
+The computer you are using is not registered by an institution with a subscription to this article. Please choose one of the options below.
+
+[result-6] https://link.aps.org/doi/10.1103/PhysRevResearch.6.043082
+Enable JavaScript and cookies to continue
+
+[result-7] https://www.quantamagazine.org/machine-learnings-amazing-ability-to-predict-chaos-20180418/
+# Machine Learning’s ‘Amazing’ Ability to Predict Chaos
+
+![Gif illustration for "Machine Learning’s ‘Amazing’ Ability to Predict Chaos"](https://www.quantamagazine.org/wp-content/uploads/2018/04/Fire_2880x1220.gif)
+
+Researchers have used machine learning to predict the chaotic evolution of a model flame front.
+
+DVDP for Quanta Magazine
+
+## Introduction
+
+Half a century ago, the pioneers of chaos theory discovered that the “butterfly effect” makes long-term prediction impossible. Even the smallest perturbation to a complex system (like the weather, the economy or just about anything else) can touch off a concatenation of events that leads to a dramatically divergent future. Unable to pin down the state of these systems precisely enough to predict how they’ll play out, we live under a veil of uncertainty.
+
+But now the robots are here to help.
+
+In a series of results reported in the journals *Physical Review Letters* and *Chaos*, scientists have used machine learning — the same computational technique behind recent successes in artificial intelligence — to predict the future evolution of chaotic systems out to stunningly distant horizons. The approach is being lauded by outside experts as groundbreaking and likely to find wide application.
+
+“I find it really amazing how far into the future they predict” a system’s chaotic evolution, said Herbert Jaeger, a professor of computational science at Jacobs University in Bremen, Germany.
+
+The findings come from veteran chaos theorist Edward Ott and four collaborators at the University of Maryland. They employed a machine-learning algorithm called reservoir computing to “learn” the dynamics of an archetypal chaotic system called the Kuramoto-Sivashinsky equation. The evolving solution to this equation behaves like a flame front, flickering as it advances through a combustible medium. The equation also describes drift waves in plasmas and other phenomena, and serves as “a test bed for studying turbulence and spatiotemporal chaos,” said Jaideep Pathak, Ott’s graduate student and the lead author of the new papers.
+
+![Photo of the research group from the University of Maryland.](https://www.quantamagazine.org/wp-content/uploads/2018/04/UMG_Team_FayeLevine.jpg)
+
+Jaideep Pathak, Michelle Girvan, Brian Hunt and Edward Ott of the University of Maryland, who (along with Zhixin Lu, now of the University of Pennsylvania) have shown that machine learning is a powerful tool for predicting chaos.
+
+Faye Levine/University of Maryland
+
+After training itself on data from the past evolution of the Kuramoto-Sivashinsky equation, the researchers’ reservoir computer could then closely predict how the flamelike system would continue to evolve out to eight “Lyapunov times” into the future, eight times further ahead than previous methods allowed, loosely speaking. The Lyapunov time represents how long it takes for two almost-identical states of a chaotic system to exponentially diverge. As such, it typically sets the horizon of predictability.
+
+“This is really very good,” Holger Kantz, a chaos theorist at the Max Planck Institute for the Physics of Complex Systems in Dresden, Germany, said of the eight-Lyapunov-time prediction. “The machine-learning technique is almost as good as knowing the truth, so to say.”
+
+The algorithm knows nothing about the Kuramoto-Sivashinsky equation itself; it only sees data recorded about the evolving solution to the equation. This makes the machine-learning approach powerful; in many cases, the equations describing a chaotic system aren’t known, crippling dynamicists’ efforts to model and predict them. Ott and company’s results suggest you don’t need the equations — only data. “This paper suggests that one day we might be able perhaps to predict weather by machine-learning algorithms and not by sophisticated models of the atmosphere,” Kantz said.
+
+Besides weather forecasting, experts say the machine-learning technique could help with monitoring cardiac arrhythmias for signs of impending heart attacks and monitoring neuronal firing patterns in the brain for signs of neuron spikes. More speculatively, it might also help with predicting rogue waves, which endanger ships, and possibly even earthquakes.
+
+Ott particularly hopes the new tools will prove useful for giving advance warning of solar storms, like the one that erupted across 35,000 miles of the sun’s surface in 1859. That magnetic outburst created aurora borealis visible all around the Earth and blew out some telegraph systems, while generating enough voltage to allow other lines to operate with their power switched off. If such a solar storm lashed the planet unexpectedly today, experts say it would severely damage Earth’s electronic infrastructure. “If you knew the storm was coming, you could just turn off the power and turn it back on later,” Ott said.
+
+![Graphic illustration depicting the charts of training computers to predict chaos.](https://www.quantamagazine.org/wp-content/uploads/2018/04/ChaosCharts_560.jpg)
+
+He, Pathak and their colleagues Brian Hunt, Michelle Girvan and Zhixin Lu (who is now at the University of Pennsylvania) achieved their results by synthesizing existing tools. Six or seven years ago, when the powerful algorithm known as “deep learning” was starting to master AI tasks like image and speech recognition, they started reading up on machine learning and thinking of clever ways to apply it to chaos. They learned of a handful of promising results predating the deep-learning revolution. Most importantly, in the early 2000s, Jaeger and fellow German chaos theorist Harald Haas made use of a network of randomly connected artificial neurons — which form the “reservoir” in reservoir computing — to learn the dynamics of three chaotically coevolving variables. After training on the three series of numbers, the network could predict the future values of the three variables out to an impressively distant horizon. However, when there were more than a few interacting variables, the computations became impossibly unwieldy. Ott and his colleagues needed a more efficient scheme to make reservoir computing relevant for large chaotic systems, which have huge numbers of interrelated variables. Every position along the front of an advancing flame, for example, has velocity components in three spatial directions to keep track of.
+
+It took years to strike upon the straightforward solution. “What we exploited was the locality of the interactions” in spatially extended chaotic systems, Pathak said. Locality means variables in one place are influenced by variables at nearby places but not by places far away. “By using that,” Pathak explained, “we can essentially break up the problem into chunks.” That is, you can parallelize the problem, using one reservoir of neurons to learn about one patch of a system, another reservoir to learn about the next patch, and so on, with slight overlaps of neighboring domains to account for their interactions.
+
+Parallelization allows the reservoir computing approach to handle chaotic systems of almost any size, as long as proportionate computer resources are dedicated to the task.
+
+Ott explained reservoir computing as a three-step procedure. Say you want to use it to predict the evolution of a spreading fire. First, you measure the height of the flame at five different points along the flame front, continuing to measure the height at these points on the front as the flickering flame advances over a period of time. You feed these data-streams in to randomly chosen artificial neurons in the reservoir. The input data triggers the neurons to fire, triggering connected neurons in turn and sending a cascade of signals throughout the network.
+
+The second step is to make the neural network learn the dynamics of the evolving flame front from the input data. To do this, as you feed data in, you also monitor the signal strengths of several randomly chosen neurons in the reservoir. Weighting and combining these signals in five different ways produces five numbers as outputs. The goal is to adjust the weights of the various signals that go into calculating the outputs until those outputs consistently match the next set of inputs — the five new heights measured a moment later along the flame front. “What you want is that the output should be the input at a slightly later time,” Ott explained.
+
+To learn the correct weights, the algorithm simply compares each set of outputs, or predicted flame heights at each of the five points, to the next set of inputs, or actual flame heights, increasing or decreasing the weights of the various signals each time in whichever way would have made their combinations give the correct values for the five outputs. From one time-step to the next, as the weights are tuned, the predictions gradually improve, until the algorithm is consistently able to predict the flame’s state one time-step later.
+
+“In the third step, you actually do the prediction,” Ott said. The reservoir, having learned the system’s dynamics, can reveal how it will evolve. The network essentially asks itself what will happen. Outputs are fed back in as the new inputs, whose outputs are fed back in as inputs, and so on, making a projection of how the heights at the five positions on the flame front will evolve. Other reservoirs working in parallel predict the evolution of height elsewhere in the flame.
+
+In a plot in their *PRL* paper, which appeared in January, the researchers show that their predicted flamelike solution to the Kuramoto-Sivashinsky equation exactly matches the true solution out to eight Lyapunov times before chaos finally wins, and the actual and predicted states of the system diverge.
+
+The usual approach to predicting a chaotic system is to measure its conditions at one moment as accurately as possible, use these data to calibrate a physical model, and then evolve the model forward. As a ballpark estimate, you’d have to measure a typical system’s initial conditions 100,000,000 times more accurately to predict its future evolution eight times further ahead.
+
+That’s why machine learning is “a very useful and powerful approach,” said Ulrich Parlitz of the Max Planck Institute for Dynamics and Self-Organization in Göttingen, Germany, who, like Jaeger, also applied machine learning to low-dimensional chaotic systems in the early 2000s. “I think it’s not only working in the example they present but is universal in some sense and can be applied to many processes and systems.” In a paper soon to be published in *Chaos*, Parlitz and a collaborator applied reservoir computing to predict the dynamics of “excitable media,” such as cardiac tissue. Parlitz suspects that deep learning, while being more complicated and computationally intensive than reservoir computing, will also work well for tackling chaos, as will other machine-learning algorithms. Recently, researchers at the Massachusetts Institute of Technology and ETH Zurich achieved similar results as the Maryland team using a “long short-term memory” neural network, which has recurrent loops that enable it to store temporary information for a long time.
+
+Since the work in their *PRL* paper, Ott, Pathak, Girvan, Lu and other collaborators have come closer to a practical implementation of their prediction technique. In new research accepted for publication in *Chaos*, they showed that improved predictions of chaotic systems like the Kuramoto-Sivashinsky equation become possible by hybridizing the data-driven, machine-learning approach and traditional model-based prediction. Ott sees this as a more likely avenue for improving weather prediction and similar efforts, since we don’t always have complete high-resolution data or perfect physical models. “What we should do is use the good knowledge that we have where we have it,” he said, “and if we have ignorance we should use the machine learning to fill in the gaps where the ignorance resides.” The reservoir’s predictions can essentially calibrate the models; in the case of the Kuramoto-Sivashinsky equation, accurate predictions are extended out to 12 Lyapunov times.
+
+The duration of a Lyapunov time varies for different systems, from milliseconds to millions of years. (It’s a few days in the case of the weather.) The shorter it is, the touchier or more prone to the butterfly effect a system is, with similar states departing more rapidly for disparate futures. Chaotic systems are everywhere in nature, going haywire more or less quickly. Yet strangely, chaos itself is hard to pin down. “It’s a term that most people in dynamical systems use, but they kind of hold their noses while using it,” said Amie Wilkinson, a professor of mathematics at the University of Chicago. “You feel a bit cheesy for saying something is chaotic,” she said, because it grabs people’s attention while having no agreed-upon mathematical definition or necessary and sufficient conditions. “There is no easy concept,” Kantz agreed. In some cases, tuning a single parameter of a system can make it go from chaotic to stable or vice versa.
+
+Wilkinson and Kantz both define chaos in terms of stretching and folding, much like the repeated stretching and folding of dough in the making of puff pastries. Each patch of dough stretches horizontally under the rolling pin, separating exponentially quickly in two spatial directions. Then the dough is folded and flattened, compressing nearby patches in the vertical direction. The weather, wildfires, the stormy surface of the sun and all other chaotic systems act just this way, Kantz said. “In order to have this exponential divergence of trajectories you need this stretching, and in order not to run away to infinity you need some folding,” where folding comes from nonlinear relationships between variables in the systems.
+
+The stretching and compressing in the different dimensions correspond to a system’s positive and negative “Lyapunov exponents,” respectively. In another recent paper in *Chaos**,* the Maryland team reported that their reservoir computer could successfully learn the values of these characterizing exponents from data about a system’s evolution. Exactly why reservoir computing is so good at learning the dynamics of chaotic systems is not yet well understood, beyond the idea that the computer tunes its own formulas in response to data until the formulas replicate the system’s dynamics. The technique works so well, in fact, that Ott and some of the other Maryland researchers now intend to use chaos theory as a way to better understand the internal machinations of neural networks.
+
+*This article was reprinted on Wired.com in Spanish at Investigacionyciencia.es*
+
+[result-8] https://www.researchgate.net/publication/394080443_Quantum-Informed_Machine_Learning_for_Chaotic_Systems
+We've detected unusual activity from your network. To continue, complete the security check below.
+
+Ray ID: a03ac095b900369b
+
+Client IP: 47.90.203.250
+
+[result-9] https://www.nature.com/articles/s41598-025-87768-0.pdf
+Predicting three-dimensional 
+chaotic systems with four qubit 
+quantum systems
+Joel Steinegger1,2 & Christoph Räth1
+Reservoir computing (RC) is among the most promising approaches for AI-based prediction models 
+of complex systems. It combines superior prediction performance with very low CPU-needs for 
+training. Recent results demonstrated that quantum systems are also well-suited as reservoirs in RC. 
+Due to the exponential growth of the Hilbert space dimension obtained by increasing the number 
+of quantum elements small quantum systems are already sufficient for time series prediction. 
+Here, we demonstrate that three-dimensional systems can already well be predicted by quantum 
+reservoir computing with a quantum reservoir consisting of the minimal number of qubits necessary 
+for this task, namely four. This is achieved by optimizing the encoding of the data, using spatial and 
+temporal multiplexing and recently developed read-out-schemes that also involve higher exponents 
+of the reservoir response. We outline, test and validate our approach using eight prototypical 
+three-dimensional chaotic systems. Both, the short-term prediction and the reproduction of the 
+long-term system behavior (the system’s “climate”) are feasible with the same setup of optimized 
+hyperparameters. Our results may be a further step towards the realization of a dedicated small 
+quantum computer for prediction tasks in the NISQ-era.
+A fundamental challenge in various disciplines of science, engineering, medicine, and economics is the 
+prediction of complex dynamical systems1. The ability to predict future trends and behavior from historical 
+data could lead to many advancements in the aforementioned fields. Recent progress in the field of data-driven 
+artificial intelligence (AI) has led to great progress in many areas, including the forecasting of complex dynamical 
+systems2. In this context reservoir computing (RC)3–5 has emerged as a well-suited approach to predict short- 
+and long-term properties of chaotic dynamical systems6–12 that requires only small training datasets compared 
+to other recurrent neural networks (RNNs), does not suffer from the vanishing gradient problem, and has small 
+computational needs. At the core of the model is a random neural network with loops called reservoir that acts 
+as a memory and yields a reservoir state to a given input. After initialization is the network topology fixed and 
+only the weights of a linear output layer are optimized to map the reservoir state to the right output using linear 
+regression. This practice of linearly mapping the reservoir response results in a fast and computationally efficient 
+training. Apart from software-based reservoirs (so-called echo state networks - ESNs) exists the idea to realize a 
+RC by a physical system, leading to novel, unconventional computers going beyond the capability of classical von 
+Neumann computing concepts. A class of systems that are proposed for physical RC are controllable quantum 
+systems - The exponentially large Hilbert space of a quantum system is supposed to be leveraged for time series 
+forecasting. This branch of RC is called Quantum Reservoir Computing (QRC)13–25. QRC is motivated by 
+advancements in the field of quantum computing and is a hybrid classical-quantum machine learning model. 
+Due to the efficient, simple training, this framework is a good candidate for a quantum computing method that 
+can outperform classical computing on NISQ era26–28 devices.
+Here, we introduce a modified version of the basic QRC framework. Our novel approach combines elements 
+from QRC already discussed in the literature (temporal13,14 and spatial multiplexing15), with state-of-the-art 
+practices that stabilize and boost performance in ESNs, namely non-linear readout functions29 and a proper 
+data preprocessing pipeline. The resulting novel framework is benchmarked with prototypical synthetic chaotic 
+systems. The focus here is two-fold. The first goal is to statistically validate the short- and long-term forecasting 
+results of QRC. This important step is - to the best of our knowledge - so far missing in current research. 
+Secondly, we do want to showcase that the proposed framework is capable of achieving very good prediction 
+results with extremely small simulated quantum systems. This is essential for the future application on NISQ 
+devices. In Sect. 2 the general task, the simulation setup and the prediction results are presented. In Sect. 3 the 
+1Institut für KI Sicherheit, Deutsches Zentrum für Luft- und Raumfahrt (DLR), Wilhelm-Runge-Straße 10, 89081 
+Ulm, Germany. 2Institut für Materialphysik im Weltraum, Deutsches Zentrum für Luft- und Raumfahrt (DLR), Linder 
+Höhe, 51170 Köln, Germany. email: christoph.raeth@dlr.de
+OPEN
+Scientific Reports  |         (2025) 15:6201 1 | https://doi.org/10.1038/s41598-025-87768-0
+www.nature.com/scientificreports
+
+results are discussed in the context of future applications and open questions are addressed. Finally, in Sect. 4 
+the model and its hyperparameter space, the details about the simulated quantum systems and the performance 
+measures are introduced.
+Results
+The modified version of the initially proposed QRC-algorithm13,14 investigated in this study is designed to 
+forecast (continue) a d-dimensional discrete time series u(t)={uj}L
+j=1 ={u(t 0),u(t0+∆ t),···}  from past 
+time steps. Meaning, the model is supposed to approximate a function f that fulfils
+ uk+1=f({u j}k
+j=1) (1)
+and generalizes for unseen data. As mentioned in the introduction, RC approaches are well suited to solve such a 
+task. Input data (in discrete time steps) are recurrently injected into the reservoir. The dynamics of the reservoir 
+produces a high-dimensional and non-linear reservoir response that encodes information of the current state 
+and the recent past of the dynamical system. The readout layer is trained to map this reservoir response (or 
+readout vector) to the next step of the time series. To this end, QRC leverages the exponentially large Hilbert 
+space of quantum systems (here multiple qubit systems), as an enhanced feature space. This is done in a way that 
+the quantum state retains information about the present and past of the time series. The full algorithm is defined 
+and explained in detail in Sect. 4.1. It follows a short description of the above described recurrent process. For 
+each step k of the discrete time series, the current state of the time series is encoded into r quantum systems. 
+The systems are then evolved by a unitary operator which scrambles the information. Thereafter, preselected 
+expectation values are measured. This is done V times for each system before the next timstep k+1 is encoded 
+into the systems. By collecting all these observables and also including higher exponents of these observables 
+as additional nodes the output vector q(k ) of step k (reservoir response of step k) is obtained. These vectors are 
+trained by Ridge regression to linearly map the reservoir response onto the subsequent step of the time series and 
+therefore fulfilling the above defined task.
+Simulation setup
+In this study the prediction performance of the QRC model is investigated by forecasting eight different 
+prototypical three-dimensional chaotic systems like the Lorenz-63 and the Rössler system (defined in 
+Supplemental information S4) with a numerical simulation of small controllable quantum systems. To showcase 
+the predictive power of the QRC model when very small qubits systems are accessible, all quantum systems are 
+selected to be as small as the algorithm theoretically allows. Therefore all the results in this work are obtained 
+with four qubit systems. Information regarding the simulated quantum system’s unitary evolution can be found 
+in Sect. 4.3. The time series are preprocessed by standardization and subsequently scaled into the interval [ a,b] 
+with 0≤a<b≤1. This practice gives rise to two new hyperparameters: a and b. The measured expectation 
+values that are selected to built the output vectors q(k)  are the spin-projection ⟨σi
+z⟩ and the spin-correlation 
+⟨σi
+zσl
+z⟩ with i, l∈{1,..., 4}and i<l . The model has some free hyperparameters. The parameters that are 
+part of the classical part of the algorithm are the scaling parameters a and b, the regression parameter β and the 
+degree G of the used exponents of the reservoir readout. The free hyperparameters of this study concerning the 
+quantum part of the algorithm are the number r of employed quantum systems and the number of employed 
+evolution and measurement processes V per encoded time step k.
+The results in this study are obtained for each investigated hyperparameter combination by evaluating the 
+model for Nstat times. For each of these runs, different parts of the chaotic attractors and different choices of 
+the random parameters for the unitary transformations describing the quantum systems are selected to enable 
+statistical significant performance evaluation. Each model is trained (see Sect. 4.1) with Nsync+Ntrain=L 
+consecutive steps of the trajectory and subsequently the time series is continued for Npred steps.
+Prediction results
+In this work, we show that the introduced and simulated QRC model is capable of achieving short-term forecasting 
+quality rivaling and in some cases outperforming “classical” RC methods and also accurately predicting the 
+long-term climate of three-dimensional chaotic systems while utilizing four qubit systems and small training 
+datasets (Nsync= 100  and Ntrain= 2000 ). Our main goal is to introduce techniques that make real world 
+QRC-applications on near-term available quantum computers realistic. We choose a quantum system (unitary 
+evolution) that works (more details Sect. 4.3) and do not further optimize it. The selected hyperparameters 
+critically influence the prediction performance in a non-trivial way (see Supplemental information S1). Covering 
+the hyperparameter space with a fine grid search to find the best performing hyperparameter combination is out 
+of reach due to computational limitations. Instead, a Bayesian hyperparameter optimization using the python 
+package Optuna30 over a hyperparameter space section is applied. For all eight investigated chaotic systems, 
+the best performing configuration of hyperparameters is obtained by maximizing the mean forecast horizon 
+(defined in Sect. 4.4) of the model ( Nstat=100). With these best performing hyperparameter sets we train the 
+model Nstat=500 times and forecast the trajectories for Npred=20000 steps to evaluate the short- and long-term 
+prediction efficiency of the model. The short-term prediction efficiency is measured by the forecast horizon, 
+which determines the time for which the model prediction matches the actual continuation of the forecasted 
+dynamical system up to a small deviation. The long-term prediction efficiency is determined by how well the 
+model is able to recreate statistical properties of the attractor of the dynamical systems. Here we use as measures 
+the largest Lyapunov exponent and correlation dimension. All the measures used to evaluate the prediction 
+Scientific Reports  |         (2025) 15:6201 2 | https://doi.org/10.1038/s41598-025-87768-0www.nature.com/scientificreports/
+quality of these best performing models are defined in detail in Sect. 4.4. The inspected hyperparameter 
+section and the best performing hyperparameter set for each chaotic system can be found in the Supplemental 
+information (S2).
+In many applications, it is important that the machine learning model is able to forecast the time series of a 
+dynamical system very accurately for as long as possible. The best performing hyperparameter configurations 
+are obtained by maximizing this ability. The mean forecast horizon of the 500 trained models can be found for 
+each of the chaotic systems in Table 1 and the distributions are displayed as a boxplot in Fig. 1. A comparison 
+of our results with those of31 shows that the mean forecast horizon is in all cases at least comparably long as in 
+the classical RC approach. Y et in some cases the QRC-models even outperform (larger mean forecast horizon) 
+some hybrid RC approaches. This means that these simulated QRC models which are purely data-driven are 
+able to forecast chaotic systems on longer time scales more accurately than some methods making use of prior 
+knowledge about the physics of the underlying equations of the chaotic systems. This is especially true when 
+the reservoir size is small in conventional hybrid RC. Investigating Table 1 and Fig. 1 shows that three (Chua, 
+Thomas and WINDMI) of the eight chaotic systems are predicted accurately on a much shorter timescale than 
+the other ones. Interestingly enough, these systems are also comparatively badly predicted with conventional 
+RC. It is certainly an obvious and important question to figure out the causes for the systematic differences in 
+performance among the model systems. Y et, this research topic is beyond the scope of this paper.
+In some other application scenarios, the focus might not be on the short-term behavior of the system, but 
+rather on whether a dynamical system’s long-term properties (its “climate”) can be reproduced correctly. We 
+investigate this by calculating two measures quantifying the (strange) attractors of the dynamical systems, 
+Figure 1 . Distributions of the short-term accuracy for all eight forecasted chaotic systems. These are shown in 
+a boxplot of the forecast horizon in Lyapunov times for the dynamical systems. The boxes represent the 25 %
+-75% percentile range of the data and the line in the middle of the box shows the median of the data, i.e. 50 % 
+of the forecast horizons are below this value. The extended lines showcase largest and smallest observation that 
+falls within a distance of 1.5 times the interquartile distance (IQR) of the data. The black dots represent the 
+outliers that are outside of this range. The mean and standard deviations of the distributions can be found in 
+Table 1. System Mean tv Predicted mean λmax True mean λmax Predicted mean υ True mean υ
+Lorenz-63 11.9 ± 1.7 0.91 ± 0.02 0.91 ± 0.02 2.053 ± 0.008 2.052 ± 0.009
+Chen 13.0 ± 2.2 2.02 ± 0.05 2.02 ± 0.05 2.146 ± 0.008 2.145 ± 0.008
+Chua 3.1 ± 1.4 0.31 ± 0.02 0.341 ± 0.007 1.77 ± 0.02 1.75 ± 0.01
+Halvorsen 11.9 ± 2.3 0.78 ± 0.02 0.78 ± 0.02 2.106 ± 0.006 2.106 ± 0.006
+Rössler 11.9 ± 2.4 0.071 ± 0.005 0.072 ± 0.004 1.82 ± 0.02 1.82 ± 0.02
+Rucklidge 12.1 ± 2.0 0.194 ± 0.006 0.194 ± 0.006 1.93 ± 0.02 1.93 ± 0.02
+Thomas 3.0 ± 1.5 0.03 ± 0.004 0.033 ± 0.001 1.8 ± 0.2 1.76 ± 0.04
+WINDMI 5.9 ± 2.9 0.08 ± 0.04 0.074 ± 0.004 1.5 ± 0.8 1.88 ± 0.02
+Table 1 . Table of mean values with standard deviation as derived from 500 realizations of all three evaluation 
+measures for the chosen hyperparameter configuration of all eight chaotic systems. For comparison the results 
+of the largest Lyapunov exponent and the correlation dimension for true trajectories are listed as well. 
+Scientific Reports  |         (2025) 15:6201 3 | https://doi.org/10.1038/s41598-025-87768-0www.nature.com/scientificreports/
+namely the correlation dimension and the largest Lyapunov exponent (both defined in Sect. 4.4). For every 
+chaotic system we use 500 trajectories, all consisting of 20000 steps that were not taken for training the models, 
+to calculate the mean largest Lyapunov exponent and correlation dimension of the systems from true trajectories. 
+We compare the calculated statistics of the attractors with the statistics of the forecasted time series. These findings 
+are presented in Fig. 2 and the mean values are listed in Table 1. The spatial and temporal statistical properties 
+of the five chaotic systems that are forecasted accurately for long time scales are extremely well predicted. In our 
+sample, there are no single outliers with large deviations for the Lyapuov exponent or the correlation dimension. 
+Rather, all realizations are within a ≈5σ error range of the two measured quantities. For the remaining three 
+systems, the climate of the systems is reproduced well in some cases, but some forecasted trajectories exhibit 
+long-term behavior that is far from the statistical fluctuations of the true data. To the best of our knowledge, it 
+is shown for the first time that QRC is capable to also reproduce the statistical long-term properties of predicted 
+chaotic time series. These findings suggest that our (minimal) QRC setup does not only learn patters of the time 
+series by heart leading to good short term predictions but rather correctly learns the dynamics of the underlying 
+chaotic systems, enabling correct long term predictions.
+Discussion and conclusions
+In this work, we present a QRC architecture that is suitable for small quantum systems and performs very well 
+in forecasting low-dimensional chaotic dynamical systems. The eight systems can be predicted on at least a 
+few Lyapunov times very accurately. We demonstrated for the first time that the model is also able to recreate 
+the long term dynamics of the chaotic systems in most cases very well. A future goal should be to decrease the 
+number and optimally fully remove those realizations in the three badly performing systems that completely 
+diverge. First steps for such a procedure are sketched in the Supplemental information (S3). We find indications 
+that the performance of the short term predictions and the correct reproduction of the long term properties of 
+the system are related to the actual choice of random...
+
+[result-10] https://royalsocietypublishing.org/rsif/article/22/231/20250441/235640/Machine-learning-predictions-from-unpredictable
+Enable JavaScript and cookies to continue
