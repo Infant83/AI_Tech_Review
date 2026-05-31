@@ -133,6 +133,24 @@ LOCAL_REF_RE = re.compile(
 )
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
 INTERNAL_PATH_RE = re.compile(r"(?:file:///[A-Za-z]:[\\/][^<>'\"\s]+|(?<![A-Za-z0-9])[A-Za-z]:[\\/][^<>'\"\s]+)")
+PUBLIC_REVIEW_FILE_SUFFIXES = {
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".gif",
+    ".svg",
+    ".css",
+    ".js",
+    ".ico",
+    ".md",
+    ".txt",
+    ".pdf",
+    ".json",
+    ".csv",
+    ".py",
+    ".html",
+}
 CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
 PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
 LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
@@ -330,7 +348,6 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
     copied: list[str] = []
     source_to_dest: dict[Path, str] = {}
     used_names: set[str] = {"index.html"}
-    allowed_asset_suffixes = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg", ".css", ".js", ".ico"}
 
     def replace_ref(match: re.Match[str]) -> str:
         raw_url = match.group("url")
@@ -344,11 +361,7 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
         source_path = (dist_dir / local_path).resolve()
         suffix = source_path.suffix.lower()
 
-        if match.group("prefix").lower().startswith("href") and suffix not in {".css", ".js", ".ico"}:
-            safe_url = html.escape(raw_url, quote=True)
-            return f"data-local-ref=\"{safe_url}\""
-
-        if suffix not in allowed_asset_suffixes:
+        if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES:
             safe_url = html.escape(raw_url, quote=True)
             return f"data-local-ref=\"{safe_url}\""
 
@@ -371,8 +384,8 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
     if "</body>" in sanitized:
         public_note = (
             "\n<section id=\"public-local-references\" class=\"public-note\">"
-            "<p>공개 HTML에는 본문과 시각 자료, 외부 참고 링크만 포함했습니다. "
-            "로컬 작업 메모와 자동화 파일 링크는 공개본에서 비활성화했습니다.</p>"
+            "<p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 "
+            "검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p>"
             "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
             "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
             "</section>\n"
@@ -381,6 +394,20 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
     sanitized = inject_public_icons(sanitized, "../../")
     sanitized = inject_public_metrics(sanitized, "../../")
     return inject_cloudflare_web_analytics(sanitized), copied
+
+
+def copy_public_support_files(dist_dir: Path, public_dir: Path, copied: list[str]) -> list[str]:
+    copied_names = set(copied)
+    for source_path in sorted(dist_dir.iterdir(), key=lambda path: path.name.lower()):
+        if not source_path.is_file():
+            continue
+        if source_path.name == "index.html" or source_path.suffix.lower() not in PUBLIC_REVIEW_FILE_SUFFIXES:
+            continue
+        dest_path = public_dir / source_path.name
+        if not dest_path.exists():
+            shutil.copy2(source_path, dest_path)
+        copied_names.add(source_path.name)
+    return sorted(copied_names)
 
 
 def publish_review(review: PublicReview) -> dict[str, object]:
@@ -395,6 +422,7 @@ def publish_review(review: PublicReview) -> dict[str, object]:
     raw_html = review.dist_index.read_text(encoding="utf-8")
     public_html, copied_assets = sanitize_for_public(raw_html, review.dist_index.parent, public_dir)
     (public_dir / "index.html").write_text(public_html, encoding="utf-8")
+    copied_assets = copy_public_support_files(review.dist_index.parent, public_dir, copied_assets)
 
     parser = FirstImageParser()
     parser.feed(public_html)
@@ -1501,12 +1529,9 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
             raw_url = match.group("url")
             if not is_external_or_anchor(raw_url):
                 local_path = split_local_url(raw_url)[0]
-                if (
-                    (raw_url.startswith("../../assets/") or local_path == "../../favicon.ico")
-                    and (review_index.parent / local_path).resolve().exists()
-                ):
+                if (review_index.parent / local_path).resolve().exists():
                     continue
-                errors.append(f"local href left in {review_index}: {raw_url}")
+                errors.append(f"missing local href in {review_index}: {raw_url}")
         if INTERNAL_PATH_RE.search(text):
             errors.append(f"internal path left in {review_index}")
         parser = FirstImageParser()

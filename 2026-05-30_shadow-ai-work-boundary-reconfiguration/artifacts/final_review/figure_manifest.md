@@ -15,7 +15,7 @@
 | Figure | 파일 | 형식 | 본문 위치 | 목적 | 검토 기록 |
 |---|---|---|---|---|---|
 | 그림 1 | `figures/imagegen/shadow_ai_calm_silo_night_v11_clean.png` | imagegen PNG | 도입부 hero | 밤의 집에서 개인 AI 산출물이 은은한 흐름으로 회사에 닿지만, DX가 된 회사 내부에서는 분리된 팀·승인·검증 silo와 일부 AX 구간이 hidden effort에 기대어 연결되는 장면 | 채택. v10은 메시지는 맞았지만 빛과 속도감이 과해 기존 AI Tech Review Letters의 차분한 수채화 톤과 어긋났습니다. v11 clean은 사외 AI의 빠른 실행, 야간 개인 작업, 회사 내부 silo, 부분적 AX 성공, shadow effort와 burnout을 더 절제된 톤으로 보여줍니다. |
-| 그림 2 | `figures/shadow_ai_absorption_gap_hero.svg` | SVG | 핵심 문제의식 뒤 | 외부 AI 역량과 내부 운영체계의 속도 차이를 구조적으로 설명 | 채택. 정확한 한국어 라벨과 관계 표시가 중요해 SVG로 유지. |
+| 그림 2 | `figures/shadow_ai_absorption_gap_hero.svg` | SVG | 핵심 문제의식 뒤 | 외부 AI 역량과 내부 운영체계의 속도 차이를 구조적으로 설명 | 채택. 정확한 한국어 라벨과 관계 표시가 중요해 SVG로 유지. 2026-05-31 재점검에서 카드 내부 곡선 화살표를 제거하고, 카드 간 진행 화살표와 하단 누적 단계 화살표만 남겨 방향성을 명확히 정리. |
 | 그림 3 | `figures/shadow_ai_mechanism_flow.svg` | SVG | Shadow AI 발생 과정 설명 뒤 | Shadow AI가 개인 일탈이 아니라 단계적 운영 실패로 생기는 과정을 설명 | 채택. 발생 순서를 독자가 따라가도록 7단계 흐름으로 구성. 2026-05-31 배포 전 점검에서 하단 결론 문장이 박스 폭을 넘을 수 있어 2줄 구성으로 수정. |
 | 그림 4 | `figures/imagegen/shadow_ai_hidden_work_cascade.png` | imagegen PNG | AI FOMO Cascade와 숨은 노동 사이 | 경영진 기대, 승인 지연, 보안 점검, 개인 학습 시간이 실무자의 숨은 노동으로 겹치는 장면 제시 | 채택. 감정 과잉 없이 야간의 업무 압박과 보이지 않는 비용을 보여줌. |
 | 그림 5 | `figures/imagegen/shadow_ai_governed_paths_room.png` | imagegen PNG | 공식 사용 경로 섹션 | 공개자료 실험, 사내 일반자료 처리, 민감자료 분석이 검토와 기록으로 연결되는 운영 공간 제시 | 채택. 1차 후보에는 `AI Gateway`라는 읽을 수 있는 영어 라벨이 있어 기각했고, 텍스트 없는 버전으로 재생성. |
@@ -36,3 +36,4 @@
 - 배포용 웹진에서는 `그림 1`, `그림 4`, `그림 5`가 스크롤 리듬을 열고, `그림 2`, `그림 3`, `그림 6`, `그림 7`이 개념과 근거를 정리합니다.
 - 한국어 장문 라벨은 이미지 모델에 맡기지 않고 SVG와 캡션으로 처리했습니다.
 - 2026-05-31 배포 전 브라우저 점검에서 그림 2, 3, 6, 7의 SVG viewBox 밖 텍스트 overflow는 0개, 데스크톱/모바일 페이지 overflow는 0개로 확인했습니다. 확인 스크린샷은 `artifacts/final_review/verification/shadow_ai_figure_*_after_fix_nocache.png`에 저장했습니다.
+- 2026-05-31 추가 재점검에서 그림 2의 화살표 표현을 다시 수정했습니다. 확인 스크린샷은 `artifacts/final_review/verification/shadow_ai_figure_2_arrow_fix.png`에 저장했습니다.

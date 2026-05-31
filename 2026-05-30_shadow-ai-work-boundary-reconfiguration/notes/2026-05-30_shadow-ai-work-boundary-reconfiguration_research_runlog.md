@@ -132,3 +132,28 @@
 - Skywork deck: pending
 - Obsidian sync: complete
 - OpenProject sync: pending target work package
+
+## 2026-05-31 Figure 2 Arrow Fix
+
+- Revised `artifacts/final_review/figures/shadow_ai_absorption_gap_hero.svg` after reader review.
+- Removed the small curved arrows inside the three cards because they made the flow direction ambiguous.
+- Replaced them with two clear card-to-card arrows and one bottom cumulative phase arrow.
+- Verification screenshot: `artifacts/final_review/verification/shadow_ai_figure_2_arrow_fix.png`.
+
+## 2026-05-31 Heading Revision
+
+- Changed the closing section heading from `이 리뷰를 읽고 남겨야 할 질문` to `해결해야 할 숙제`.
+- Re-rendered final-review HTML, regenerated `dist/`, refreshed `dist.zip`, and rebuilt the public site package.
+
+## 2026-05-31 Reference Link Audit
+
+- Updated `scripts/html_to_dist.py` so copied Markdown files inside `dist/` rewrite local image and document links to flat relative paths.
+- Updated `scripts/publish_public_site.py` so public review folders keep clickable local reference links for copied `.md`, `.py`, `.txt`, `.json`, and other safe support files instead of disabling them.
+- Rebuilt `dist/`, `dist.zip`, and `site/reviews/2026-05-30_shadow-ai-work-boundary-reconfiguration/`.
+- Local link audit passed with no missing local references in:
+  - source final-review Markdown
+  - `dist/index.html`
+  - `dist/2026-05-30_shadow-ai-work-boundary-reconfiguration_final_review.md`
+  - public review `index.html`
+  - public review copied final-review Markdown
+- After rebuilding all public review `dist/` packages with the updated packaging script, the full public review set passed the same local link audit for review HTML and copied final-review Markdown files.

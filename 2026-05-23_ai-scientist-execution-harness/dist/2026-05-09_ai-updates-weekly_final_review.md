@@ -23,7 +23,7 @@ tags:
 # AI 에이전트를 일하게 하는 기술: 하네스 엔지니어링
 
 <figure class="article-hero-figure">
-  <img src="../artifacts/final_review/figures/agent-harness-hero-v2-web.png" alt="에이전트 작업 엔진이 문서, 도구 연결, 체크리스트, 권한 장치와 함께 놓인 기사형 일러스트레이션">
+  <img src="agent-harness-hero-v2-web.png" alt="에이전트 작업 엔진이 문서, 도구 연결, 체크리스트, 권한 장치와 함께 놓인 기사형 일러스트레이션">
   <figcaption><strong>그림 1.</strong> 에이전트가 실제 업무 도구가 되는 순간, 문서, 도구 연결, 체크리스트, 권한 장치가 모델 주변에 함께 놓입니다.</figcaption>
 </figure>
 
@@ -54,7 +54,7 @@ AI 에이전트 소식을 들을 때 처음 눈에 들어오는 것은 대개 �
 모델은 문장을 만들고 코드를 제안할 수 있습니다. 업무에는 그 다음 절차가 필요합니다. 메일을 읽고, 문서를 찾고, 표를 고치고, 코드 저장소를 수정하고, 테스트를 돌리고, 누군가의 승인을 받아야 합니다. 이 절차를 모델 혼자 “알아서” 처리하게 두면 책임 경계가 흐려집니다. 그래서 모델 주변에는 실행과 검증을 담당하는 운영층이 필요합니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/harness-stack.svg" alt="모델 코어를 중심으로 맥락, 도구, 기억, 권한, 검증, 승인, 병합과 되돌리기가 연결된 하네스 스택 도식">
+  <img src="harness-stack.svg" alt="모델 코어를 중심으로 맥락, 도구, 기억, 권한, 검증, 승인, 병합과 되돌리기가 연결된 하네스 스택 도식">
   <figcaption><strong>그림 2.</strong> 하네스는 모델 주변의 실행층입니다. 맥락, 도구, 기억, 권한, 평가, 승인, 병합과 되돌리기가 맞물려야 모델 출력이 실제 업무 산출물로 넘어갑니다.</figcaption>
 </figure>
 
@@ -80,7 +80,7 @@ AI 에이전트 소식을 들을 때 처음 눈에 들어오는 것은 대개 �
 최근의 여러 논문과 AI 관련 벤치마크 논의를 보면, 모델의 성능을 이야기할 때 실행 조건을 함께 묻는 장면이 많아졌습니다. 어떤 자료를 기준으로 삼는지, 어떤 업무 앱과 연결되는지, 실패했을 때 무엇을 기록하고 누가 승인하는지가 같이 고려되고 있습니다. 바로 이처럼 에이전트가 실제 업무에 들어가기 위한 설계 문제를 다룰 때 등장하는 말이 하네스 엔지니어링입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/reference-map-legend.svg" alt="하네스 설계를 중심으로 기준 자료, 작업 절차, 업무 앱 연결, 오픈소스 도구, 개발자 워크플로, 거버넌스가 번호와 범례로 정리된 실행 조건 맵">
+  <img src="reference-map-legend.svg" alt="하네스 설계를 중심으로 기준 자료, 작업 절차, 업무 앱 연결, 오픈소스 도구, 개발자 워크플로, 거버넌스가 번호와 범례로 정리된 실행 조건 맵">
   <figcaption><strong>그림 3.</strong> 하네스 설계에는 기준 자료, 작업 절차, 업무 앱 연결, 오픈소스 도구, 개발자 워크플로, 거버넌스가 모두 들어갑니다.</figcaption>
 </figure>
 
@@ -114,7 +114,7 @@ AI 에이전트 소식을 들을 때 처음 눈에 들어오는 것은 대개 �
 [Anthropic의 금융 서비스 에이전트 발표](https://www.anthropic.com/news/finance-agents)를 보면, 하네스 논의가 왜 기업 업무에서 중요해지는지 더 선명해집니다. 발표에는 투자제안서 작성, KYC 고객확인 심사, 월말 결산 같은 업무 템플릿이 들어 있습니다. 모두 민감한 데이터 접근, 문서 생성, 검토, 승인, 감사 기록을 요구하는 일입니다. Microsoft Excel, PowerPoint, Word, Outlook add-in, 금융 데이터 connector, Moody's MCP app이 같이 언급되는 것도 같은 이유입니다. AI가 채팅창을 넘어 업무 문서가 만들어지는 자리로 들어가기 때문입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/enterprise-operating-path-hybrid.svg" alt="업무 데이터, 권한 범위, AI 산출물, 사람 검토, 승인과 감사 기록이 왼쪽에서 오른쪽으로 이어지는 기업용 에이전트 운영 경로">
+  <img src="enterprise-operating-path-hybrid.svg" alt="업무 데이터, 권한 범위, AI 산출물, 사람 검토, 승인과 감사 기록이 왼쪽에서 오른쪽으로 이어지는 기업용 에이전트 운영 경로">
   <figcaption><strong>그림 4.</strong> 기업용 에이전트가 업무에 활용되려면 데이터 접근, 권한 범위, 산출물, 사람 검토, 승인과 감사 기록이 하나의 운영 체계 안에 녹아들어야 합니다.</figcaption>
 </figure>
 
@@ -129,7 +129,7 @@ AI 에이전트 소식을 들을 때 처음 눈에 들어오는 것은 대개 �
 짧은 호흡으로 문답을 주고받는 ChatGPT와 같은 AI 어시스턴트와, 장시간 작업을 맡는 AI 에이전트는 같은 방식으로 다루기 어렵습니다. 작업이 길어지면 파일을 읽은 기록, 실패한 시도, 사용자의 선호, 결과를 평가한 기준이 다음 작업에 계속 영향을 줍니다. 그래서 장기 작업에서는 기억을 많이 쌓는 것보다, 다음 단계에 쓸 기억을 고르고 결과를 다시 평가하는 절차도 중요해집니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/memory-evaluation-control-loop.svg" alt="작업 기록, 기억 선별, 작업 문맥, 에이전트 작업, 평가 기준, 재시도 계획, 사람 승인이 연결된 장기 작업 하네스 도식">
+  <img src="memory-evaluation-control-loop.svg" alt="작업 기록, 기억 선별, 작업 문맥, 에이전트 작업, 평가 기준, 재시도 계획, 사람 승인이 연결된 장기 작업 하네스 도식">
   <figcaption><strong>그림 5.</strong> 장기 작업 하네스는 다음 작업에 쓸 기억을 선별하고, 결과를 기준에 맞춰 평가한 뒤, 부족한 부분만 다시 시도하게 만듭니다.</figcaption>
 </figure>
 
@@ -146,7 +146,7 @@ AI 에이전트 소식을 들을 때 처음 눈에 들어오는 것은 대개 �
 비기술 사용자에게 하네스가 가장 먼저 보이는 지점은 connector일 가능성이 큽니다. [xAI Grok connectors](https://docs.x.ai/grok/connectors)는 **Gmail**, **Google Calendar**, **Google Drive**, **OneDrive**, **Outlook Mail & Calendar**, **SharePoint** 같은 업무 도구 연결을 제공합니다. OAuth로 한 번 연결하면 Grok이 대화 안에서 메일, 파일, 일정 정보를 활용할 수 있습니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/connector-permission-skywork-magazine.svg" alt="메일, 일정, 문서 저장소 connector가 권한 게이트를 거쳐 AI 작업면으로 연결되는 구조">
+  <img src="connector-permission-skywork-magazine.svg" alt="메일, 일정, 문서 저장소 connector가 권한 게이트를 거쳐 AI 작업면으로 연결되는 구조">
   <figcaption><strong>그림 6.</strong> Connector는 사용자에게는 업무 데이터로 들어가는 손잡이입니다. 동시에 관리자에게는 읽기 범위, 민감 정보 정책, 감사 로그를 정해야 하는 제어 지점입니다.</figcaption>
 </figure>
 
@@ -178,7 +178,7 @@ Hermes Curator 사례에서는 스킬 관리가 하네스의 일부가 됩니다
 AI 코딩 에이전트가 늘어나면 코드 작성 속도는 빨라집니다. 그런데 바이브코딩 결과를 팀 코드베이스에 넣으려면 그다음 절차가 필요합니다. 테스트는 통과했는지, 어떤 파일이 바뀌었는지, 여러 에이전트가 만든 수정안을 어떻게 병합할지, 문제가 생기면 어디까지 되돌릴지를 확인하는 Audit, 즉 AI가 만든 변경을 팀 작업으로 받아들이기 위한 검토와 기록 절차가 있어야 합니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/coding-merge-illustration-web.png" alt="많은 코드 변경 조각이 테스트와 리뷰 관문을 지나 정리된 병합 기록으로 이어지는 일러스트레이션">
+  <img src="coding-merge-illustration-web.png" alt="많은 코드 변경 조각이 테스트와 리뷰 관문을 지나 정리된 병합 기록으로 이어지는 일러스트레이션">
   <figcaption><strong>그림 7.</strong> 바이브코딩 결과를 팀 코드베이스에 넣으려면 테스트, 리뷰, 병합, 되돌리기와 변경 기록을 확인하는 Audit 절차가 필요합니다.</figcaption>
 </figure>
 
@@ -199,7 +199,7 @@ AI 코딩 에이전트가 늘어나면 코드 작성 속도는 빨라집니다. 
 절차형 작업에서는 역할을 나누는 방식이 오히려 불리할 수도 있습니다. [In-Context Prompting Obsoletes Agent Orchestration for Procedural Tasks](https://arxiv.org/abs/2604.27891)는 여행 예약, Zoom 기술 지원, 보험 청구 처리처럼 순서가 중요한 작업을 다뤘습니다. 논문은 전체 절차를 시스템 프롬프트에 넣고 모델이 한 흐름으로 처리하게 한 설정에서, LangGraph 기반 외부 오케스트레이션보다 더 높은 점수와 낮은 실패율을 보고했습니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/orchestration-matrix.svg" alt="절차형 작업과 병렬 탐색 작업에서 단일 모델 흐름과 다중 에이전트 분할을 비교하는 판단 매트릭스">
+  <img src="orchestration-matrix.svg" alt="절차형 작업과 병렬 탐색 작업에서 단일 모델 흐름과 다중 에이전트 분할을 비교하는 판단 매트릭스">
   <figcaption><strong>그림 8.</strong> 오케스트레이션은 작업 성격에 맞게 R&R을 조정하는 설계입니다. 순서가 중요한 작업은 한 흐름으로 유지하고, 독립적인 조사와 검토는 역할을 나누는 편이 유리할 수 있습니다.</figcaption>
 </figure>
 
@@ -214,7 +214,7 @@ AI 코딩 에이전트가 늘어나면 코드 작성 속도는 빨라집니다. 
 의료처럼 위험도가 높은 영역에서는 하네스의 역할이 더 분명해집니다. [Google DeepMind의 AI co-clinician](https://deepmind.google/blog/ai-co-clinician/)은 AI가 어디까지 보조하고, 어디에서 멈추며, 어떤 근거를 사람에게 넘겨야 하는지를 생각하게 하는 사례입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/domain-safety-harness.svg" alt="의료 같은 고위험 영역에서 대화 에이전트, 계획 감시, 근거 확인, 안전 경계, 사람 검토가 연결되는 안전 하네스 도식">
+  <img src="domain-safety-harness.svg" alt="의료 같은 고위험 영역에서 대화 에이전트, 계획 감시, 근거 확인, 안전 경계, 사람 검토가 연결되는 안전 하네스 도식">
   <figcaption><strong>그림 9.</strong> 고위험 도메인의 하네스는 성능과 안전을 동시에 다룹니다. 모델이 멈춰야 할 지점, 근거를 확인할 절차, 사람이 검토할 구간을 구조 안에 둡니다.</figcaption>
 </figure>
 
@@ -253,9 +253,9 @@ Anthropic의 금융 업무 에이전트와 Claude Code Security는 문서 생성
 - 바이브퇴고 및 최종 수정: 2026-05-13
 - 주제 탐색 참고자료: [AI Updates Weekly - May 8, 2026](https://www.youtube.com/watch?v=yDfupTHYshQ)와 [원본 슬라이드](https://raw.githubusercontent.com/lselector/seminar/master/2026/2026-05-08-AI-Updates.pptx)를 참고했습니다. 본문 결론은 논문, 공식 발표, 공식 문서, 저장소 문서를 다시 확인해 정리했습니다.
 - 주요 검증 참고자료: arXiv 논문 3건, Anthropic 공식 발표, xAI 공식 문서, Google DeepMind 공식 블로그, GitHub 저장소 문서.
-- 작성 및 검토 방식: 도입부, 섹션 제목, 캡션, 결론 문단에 대해 AI식 관용 표현, 번역체, 과한 대비 구조, 모호한 주어를 점검했고, 문체 기준은 [writing-style-audit-harness](../../.automation/writing-style-audit-harness.md), [writing-harness](../../.codex/rules/writing-harness.md), [horizon-style-patterns](../../.automation/horizon-style-patterns.md), [editorial-reference-pool](../../.automation/editorial-reference-pool.md)를 참고했습니다.
-- 시각 자료 작성 방식: 그래픽 배치는 [editorial-graphics-audit-harness](../../.automation/editorial-graphics-audit-harness.md)와 [visuals-and-image-generation](../../.codex/rules/visuals-and-image-generation.md)를 기준으로 점검했습니다. Skywork Image와 imagegen으로 생성한 기사형 인포그래픽 후보를 사용했고, 정확한 한국어 라벨과 화살표가 필요한 그림은 SVG로 보정했습니다.
-- 배포 패키지 작성 방식: [html_to_dist.py](../../scripts/html_to_dist.py)로 HTML, 이미지, SVG, 로컬 참고 문서를 `dist` 폴더에 모으고, 같은 폴더 기준으로 로컬 참조를 검증했습니다.
+- 작성 및 검토 방식: 도입부, 섹션 제목, 캡션, 결론 문단에 대해 AI식 관용 표현, 번역체, 과한 대비 구조, 모호한 주어를 점검했고, 문체 기준은 [writing-style-audit-harness](writing-style-audit-harness.md), [writing-harness](writing-harness.md), [horizon-style-patterns](horizon-style-patterns.md), [editorial-reference-pool](editorial-reference-pool.md)를 참고했습니다.
+- 시각 자료 작성 방식: 그래픽 배치는 [editorial-graphics-audit-harness](editorial-graphics-audit-harness.md)와 [visuals-and-image-generation](visuals-and-image-generation.md)를 기준으로 점검했습니다. Skywork Image와 imagegen으로 생성한 기사형 인포그래픽 후보를 사용했고, 정확한 한국어 라벨과 화살표가 필요한 그림은 SVG로 보정했습니다.
+- 배포 패키지 작성 방식: [html_to_dist.py](html_to_dist.py)로 HTML, 이미지, SVG, 로컬 참고 문서를 `dist` 폴더에 모으고, 같은 폴더 기준으로 로컬 참조를 검증했습니다.
 
 ## References
 

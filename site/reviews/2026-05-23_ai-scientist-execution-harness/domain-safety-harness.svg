@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">고위험 도메인의 안전 하네스</title>
+  <desc id="desc">의료 같은 고위험 영역에서 대화 에이전트, 계획 감시, 근거 확인, 안전 경계, 사람 검토가 연결되는 안전 하네스 도식</desc>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#29453f"/>
+    </marker>
+    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="9" stdDeviation="11" flood-color="#27413c" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .panel { fill: #ffffff; stroke: #d9ded8; stroke-width: 2; filter: url(#shadow2); }
+      .zone { fill: #eef6f3; stroke: #0f766e; stroke-width: 2.5; }
+      .guard { fill: #fff7ea; stroke: #b86b1d; stroke-width: 2.5; }
+      .node { fill: #f7f8f5; stroke: #64746f; stroke-width: 2; }
+      .title { font: 700 32px 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; fill: #17221f; }
+      .label { font: 700 24px 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; fill: #17221f; }
+      .small { font: 400 18px 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; fill: #4f615b; }
+      .tiny { font: 400 15px 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; fill: #5d6b66; }
+      .arrow { fill: none; stroke: #29453f; stroke-width: 3; marker-end: url(#arrow2); }
+      .audit { fill: none; stroke: #b86b1d; stroke-width: 2; stroke-dasharray: 7 8; marker-end: url(#arrow2); }
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="560"/>
+  <rect class="panel" x="58" y="54" width="1084" height="452" rx="28"/>
+  <text class="title" x="96" y="113">위험한 영역에서 하네스는 성능 장치이면서 안전장치입니다</text>
+  <text class="small" x="98" y="148">대답 품질과 함께 멈춤 지점, 근거 범위, 사람 검토가 설계되어야 합니다.</text>
+
+  <rect class="node" x="104" y="235" width="170" height="100" rx="20"/>
+  <text class="label" x="189" y="276" text-anchor="middle">입력 대화</text>
+  <text class="small" x="189" y="305" text-anchor="middle">증상 · 병력</text>
+
+  <rect class="zone" x="340" y="210" width="210" height="150" rx="24"/>
+  <text class="label" x="445" y="262" text-anchor="middle">Talker</text>
+  <text class="small" x="445" y="292" text-anchor="middle">사용자와 대화</text>
+  <text class="tiny" x="445" y="322" text-anchor="middle">질문 · 정리 · 안내</text>
+
+  <rect class="guard" x="610" y="178" width="230" height="214" rx="24"/>
+  <text class="label" x="725" y="231" text-anchor="middle">Planner</text>
+  <text class="small" x="725" y="261" text-anchor="middle">안전 경계 감시</text>
+  <text class="tiny" x="725" y="296" text-anchor="middle">다음 질문이 적절한가?</text>
+  <text class="tiny" x="725" y="322" text-anchor="middle">근거 범위를 넘지 않는가?</text>
+  <text class="tiny" x="725" y="348" text-anchor="middle">멈춰야 할 지점인가?</text>
+
+  <rect class="node" x="908" y="192" width="180" height="86" rx="18"/>
+  <text class="label" x="998" y="228" text-anchor="middle">근거 확인</text>
+  <text class="small" x="998" y="256" text-anchor="middle">출처와 경계</text>
+
+  <rect class="node" x="908" y="330" width="180" height="86" rx="18"/>
+  <text class="label" x="998" y="366" text-anchor="middle">사람 검토</text>
+  <text class="small" x="998" y="394" text-anchor="middle">적용 전 확인</text>
+
+  <path class="arrow" d="M274 285 C302 285 314 285 340 285"/>
+  <path class="arrow" d="M550 285 C576 285 586 285 610 285"/>
+  <path class="arrow" d="M840 244 C864 239 883 236 908 235"/>
+  <path class="arrow" d="M840 330 C864 349 883 365 908 373"/>
+  <path class="audit" d="M724 392 C690 444 455 448 444 360"/>
+
+  <text class="tiny" x="110" y="430">고위험 도메인의 하네스는 자동화가 넘어가면 안 되는 선을 보이게 합니다.</text>
+</svg>

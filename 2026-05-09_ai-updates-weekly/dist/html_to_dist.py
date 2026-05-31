@@ -13,6 +13,9 @@ LOCAL_REF_RE = re.compile(
     r"(?P<prefix>\b(?:src|href)=['\"])(?P<url>[^'\"]+)(?P<suffix>['\"])",
     re.IGNORECASE,
 )
+MARKDOWN_REF_RE = re.compile(
+    r"(?P<prefix>!?\[[^\]\n]*\]\()(?P<url>[^)\s]+)(?P<suffix>\))"
+)
 
 
 @dataclass
@@ -72,7 +75,9 @@ def unique_dest_name(source_path: Path, used_names: set[str]) -> str:
         index += 1
 
 
-def build_flat_refs(html_text: str, html_dir: Path, dist_dir: Path) -> tuple[str, list[Path], list[str]]:
+def build_flat_refs(
+    html_text: str, html_dir: Path, dist_dir: Path
+) -> tuple[str, list[Path], list[str], dict[Path, str]]:
     copied: list[Path] = []
     missing: list[str] = []
     source_to_dest: dict[Path, str] = {}
@@ -104,7 +109,75 @@ def build_flat_refs(html_text: str, html_dir: Path, dist_dir: Path) -> tuple[str
         return f"{match.group('prefix')}{escaped_url}{match.group('suffix')}"
 
     rewritten = LOCAL_REF_RE.sub(replace, html_text)
-    return rewritten, copied, missing
+    return rewritten, copied, missing, source_to_dest
+
+
+def rewrite_copied_markdown_files(
+    dist_dir: Path,
+    source_to_dest: dict[Path, str],
+    copied: list[Path],
+    missing: list[str],
+    markdown_root: Path,
+) -> None:
+    def should_rewrite_markdown(path: Path) -> bool:
+        if path.name.endswith("_final_review.md"):
+            return True
+        try:
+            path.relative_to(markdown_root)
+            return True
+        except ValueError:
+            return False
+
+    used_names = set(source_to_dest.values()) | {path.name for path in dist_dir.iterdir() if path.is_file()}
+    queue: list[tuple[Path, Path]] = [
+        (source_path, dist_dir / dest_name)
+        for source_path, dest_name in source_to_dest.items()
+        if source_path.suffix.lower() == ".md" and should_rewrite_markdown(source_path)
+    ]
+    seen: set[Path] = set()
+
+    def rewrite_url(raw_url: str, base_dir: Path) -> str:
+        if is_external_or_anchor(raw_url):
+            return raw_url
+
+        local_path, query, fragment = split_local_url(raw_url)
+        if not local_path:
+            return raw_url
+
+        source_path = (base_dir / local_path).resolve()
+        if not source_path.exists() or not source_path.is_file():
+            missing.append(raw_url)
+            return raw_url
+
+        if source_path not in source_to_dest:
+            dest_name = unique_dest_name(source_path, used_names)
+            source_to_dest[source_path] = dest_name
+            dest_path = dist_dir / dest_name
+            shutil.copy2(source_path, dest_path)
+            copied.append(dest_path)
+            if source_path.suffix.lower() == ".md" and should_rewrite_markdown(source_path):
+                queue.append((source_path, dest_path))
+
+        return rebuild_local_url(source_to_dest[source_path], query, fragment)
+
+    while queue:
+        source_path, dest_path = queue.pop(0)
+        if dest_path in seen or not dest_path.exists():
+            continue
+        seen.add(dest_path)
+        text = dest_path.read_text(encoding="utf-8")
+
+        def replace_html_ref(match: re.Match[str]) -> str:
+            new_url = rewrite_url(match.group("url"), source_path.parent)
+            return f"{match.group('prefix')}{html.escape(new_url, quote=True)}{match.group('suffix')}"
+
+        def replace_markdown_ref(match: re.Match[str]) -> str:
+            new_url = rewrite_url(match.group("url"), source_path.parent)
+            return f"{match.group('prefix')}{new_url}{match.group('suffix')}"
+
+        text = LOCAL_REF_RE.sub(replace_html_ref, text)
+        text = MARKDOWN_REF_RE.sub(replace_markdown_ref, text)
+        dest_path.write_text(text, encoding="utf-8")
 
 
 def validate_local_refs(html_text: str, dist_dir: Path) -> list[str]:
@@ -132,7 +205,12 @@ def package_html(source_html: Path, dist_dir: Path | None = None, index_name: st
     final_dist_dir.mkdir(parents=True, exist_ok=True)
 
     raw_html = source_html.read_text(encoding="utf-8")
-    rewritten_html, copied_files, missing_refs = build_flat_refs(raw_html, source_html.parent, final_dist_dir)
+    rewritten_html, copied_files, missing_refs, source_to_dest = build_flat_refs(
+        raw_html, source_html.parent, final_dist_dir
+    )
+    rewrite_copied_markdown_files(
+        final_dist_dir, source_to_dest, copied_files, missing_refs, source_html.parent.parent
+    )
 
     html_output = final_dist_dir / source_html.name
     html_output.write_text(rewritten_html, encoding="utf-8")

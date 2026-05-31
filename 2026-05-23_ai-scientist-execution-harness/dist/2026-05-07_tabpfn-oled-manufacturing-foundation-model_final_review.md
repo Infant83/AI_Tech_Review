@@ -31,7 +31,7 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-05-07_ta
 # TabPFN: Foundation model for Tabular inference
 
 <figure class="article-hero-figure">
-  <img src="../artifacts/final_review/figures/tabpfn_oled_hero_imagegen.png" alt="OLED 연구 책상 위에서 후보 카드와 표 데이터가 실험 queue로 정렬되는 기사형 일러스트레이션">
+  <img src="tabpfn_oled_hero_imagegen.png" alt="OLED 연구 책상 위에서 후보 카드와 표 데이터가 실험 queue로 정렬되는 기사형 일러스트레이션">
   <figcaption><strong>그림 1.</strong> OLED 소재 후보, 양자화학 라벨, 실험 queue, 공정 장비, 검증 체크리스트가 한 작업대 위에 놓였습니다. TabPFN은 후보를 직접 발명하기보다, 비싼 다음 단계로 보낼 후보를 고르는 데 쓰입니다.</figcaption>
 </figure>
 
@@ -73,7 +73,7 @@ TabPFN은 “학습과 튜닝 부담이 작은 빠른 Foundation 모델”입니
 | uncertainty | 회귀 예측에서 단일 값만 보는 대신 예측 분포나 구간까지 보는 관점입니다. [Prior Labs regression 문서](https://docs.priorlabs.ai/capabilities/regression)는 TabPFNRegressor가 평균, 분위수, full distribution을 반환할 수 있다고 설명합니다. | 다음 실험 후보를 고를 때 “가장 좋아 보이는 후보”와 “아직 불확실해서 확인할 후보”를 나눌 수 있습니다. |
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/tabpfn_pretraining_context_generalization.svg" alt="TabPFN 모델 사전학습은 다양한 synthetic task에서 표 안 예시 관계를 푸는 prior를 학습하고, 실제 사용 때 사용자 labeled rows가 target 의미를 정한다는 도식">
+  <img src="tabpfn_pretraining_context_generalization.svg" alt="TabPFN 모델 사전학습은 다양한 synthetic task에서 표 안 예시 관계를 푸는 prior를 학습하고, 실제 사용 때 사용자 labeled rows가 target 의미를 정한다는 도식">
   <figcaption><strong>그림 2.</strong> TabPFN 사용은 배포 전 pretraining과 사용자 fit/predict 단계로 나뉩니다. 배포된 모델 weights는 고정되어 있고, 사용자는 `fit(X_train, y_train)` 또는 API의 fit 단계로 labeled rows를 context로 제공합니다. 그 뒤 `X_test` 같은 query rows의 라벨을 예측합니다. 이 과정은 LLM prompt에 예시와 맥락을 넣는 것과 비슷하게 이해할 수 있지만, RAG처럼 외부 문서를 검색해 붙이는 과정은 아닙니다.</figcaption>
 </figure>
 
@@ -220,7 +220,7 @@ OLED 적용에서는 분자 물성과 소자 성능 사이의 거리를 특히 �
 두 사례는 입력 표를 어떻게 설계해야 하는지도 알려줍니다. 입력 표를 단순한 분자 descriptor 묶음으로 만들면 모델은 분자 수준의 상관관계만 배웁니다. OLED 응용에서 더 유용한 표에는 물리적으로 의미 있는 margin feature, pair feature, host/dopant compatibility feature, 측정 조건, 실패 사유가 들어갑니다. TabPFN은 그런 표에서 후보를 줄이는 일을 도울 수 있습니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/tabpfn_oled_data_junction_imagegen.png" alt="분자, 소자, 제조 기록이 하나의 분석 표로 모이는 editorial infographic">
+  <img src="tabpfn_oled_data_junction_imagegen.png" alt="분자, 소자, 제조 기록이 하나의 분석 표로 모이는 editorial infographic">
   <figcaption><strong>그림 3.</strong> 분자 계산값, 소자 실험 라벨, recipe와 검사 특징량은 서로 다른 형식에서 출발하지만, 후보 순위화나 품질 검증 위험 점수처럼 다음 행동을 정하는 지점에서는 표와 체크리스트로 만납니다.</figcaption>
 </figure>
 
@@ -274,27 +274,27 @@ TabPFN을 산업 데이터에 적용할 후보는 넓습니다. 다만 데이터
 - 웹진형 재작성: 2026-05-11
 - 최종 수정: 2026-05-21
 - TabPFN-3 및 라이선스 업데이트 반영: 2026-05-17
-- 업데이트 검증 메모: [2026-05-17_tabpfn-3-license-update_sources.md](../notes/2026-05-17_tabpfn-3-license-update_sources.md)
+- 업데이트 검증 메모: [2026-05-17_tabpfn-3-license-update_sources.md](2026-05-17_tabpfn-3-license-update_sources.md)
 - DFT·실험 provenance 및 광범위 활용성 보강: 2026-05-17
-- 데이터 provenance 검증 메모: [2026-05-17_tabpfn-data-provenance-usecases_sources.md](../notes/2026-05-17_tabpfn-data-provenance-usecases_sources.md)
+- 데이터 provenance 검증 메모: [2026-05-17_tabpfn-data-provenance-usecases_sources.md](2026-05-17_tabpfn-data-provenance-usecases_sources.md)
 - OLED 분자 양자화학 표현 및 figure 보강: 2026-05-17
-- 계산화학·figure audit 메모: [2026-05-17_tabpfn-qchem-figure-audit_sources.md](../notes/2026-05-17_tabpfn-qchem-figure-audit_sources.md)
+- 계산화학·figure audit 메모: [2026-05-17_tabpfn-qchem-figure-audit_sources.md](2026-05-17_tabpfn-qchem-figure-audit_sources.md)
 - TabPFN context-learning 설명 및 Figure 2 교체: 2026-05-17
-- TabPFN context-learning 검증 메모: [2026-05-17_tabpfn-context-learning-figure_sources.md](../notes/2026-05-17_tabpfn-context-learning-figure_sources.md)
+- TabPFN context-learning 검증 메모: [2026-05-17_tabpfn-context-learning-figure_sources.md](2026-05-17_tabpfn-context-learning-figure_sources.md)
 - Figure 2 pretraining/context 일반화 설명 보정: 2026-05-18
 - Foundation 모델 용어, scikit-learn식 사용 예제, best practice 및 성능 비교 섹션 보강: 2026-05-21
 - TabPFN-3 업데이트 문장 humanize 및 암묵지 설명 보강: 2026-05-21
 - 표지 제목 및 부제 보정: 2026-05-21
-- OLED 계산 역설계 세부 섹션 분리 및 후속 노트 보존: 2026-05-21 ([후속 노트](../notes/2026-05-21_tabpfn-qchem-inverse-design_followup.md))
+- OLED 계산 역설계 세부 섹션 분리 및 후속 노트 보존: 2026-05-21 ([후속 노트](2026-05-21_tabpfn-qchem-inverse-design_followup.md))
 - 최종 구조 audit 및 humanize 재퇴고: 2026-05-21
 - 전체 글쓰기 audit 및 humanize 재퇴고: 2026-05-17
-- 글쓰기 audit 메모: [2026-05-17_tabpfn-human-writing-audit.md](../notes/2026-05-17_tabpfn-human-writing-audit.md)
+- 글쓰기 audit 메모: [2026-05-17_tabpfn-human-writing-audit.md](2026-05-17_tabpfn-human-writing-audit.md)
 - 작성 형식: `AI Tech Review Letters`
 - 주제 탐색 참고자료: ChatGPT 공유 대화의 공개 화면에 보인 `TabPFN2.5 vs XGBoost` seed summary와 기존 `TabPFN OLED Manufacturing Foundation Model Review` 패키지를 참고했습니다. 공유 대화 안의 두 deep research 본문은 공개 렌더링에서 확인되지 않아, 본문 결론에는 공식 문서, 논문, 공개 저장소, OLED 문헌을 우선 적용했습니다.
 - 주요 검증 참고자료: Prior Labs 공식 모델 문서, quickstart, benchmarking, improving-performance 문서, TabPFN-3 changelog, TabPFN-3 license, PyPI release history, Nature 2025 TabPFN 논문, TabPFN-2.5 technical report, TabArena 논문, TabPFN GitHub/Hugging Face 자료, SCM OLED/ADF 문서, Schrödinger organic electronics 문서, TD-DFT charge-transfer review, GW/BSE review, ChemFM 논문, MACE foundation models 저장소, AiiDA provenance review, FAIR 원칙, Materials Experiment Knowledge Graph, Material Data Hub schema, tacit knowledge와 process informatics 참고자료, pinax provenance 논문, OLED host screening 논문, JACS 2026 OLED exciplex host 논문, industrial steel property prediction 논문, IUPAC/NIST/RSC/scikit-learn/DeepChem 용어 자료.
 - 작성 및 검토 방식: 도입부, 제목, 섹션 제목, callout, caption에 대해 AI식 관용 표현, 과한 대비 구조, “글의 정리법”을 설명하는 meta layer를 줄이고, 실제 연구·개발 장면에서 TabPFN의 기술 성격과 OLED 적용 가능성이 드러나도록 다시 썼습니다.
 - 시각 자료 작성 방식: 본문 figure는 `figure_manifest.md`에 기록했습니다. Imagegen은 hero와 data-junction illustration에 사용했고, 정확한 한국어 라벨과 흐름이 필요한 Figure 2는 SVG로 작성했습니다. 2026-05-21에는 OLED 계산 역설계 세부 내용을 후속 노트로 분리하면서 기존 inverse-design SVG를 본문에서 제외하고, data-junction illustration을 Figure 3으로 번호 조정했습니다. Skywork Image용 후보 프롬프트는 `skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md`에 별도 보관했습니다.
-- 문체 기준: [writing-style-audit-harness](../../.automation/writing-style-audit-harness.md), [writing-harness](../../.codex/rules/writing-harness.md), [editorial-graphics-audit-harness](../../.automation/editorial-graphics-audit-harness.md), [visuals-and-image-generation](../../.codex/rules/visuals-and-image-generation.md)을 참고했습니다.
+- 문체 기준: [writing-style-audit-harness](writing-style-audit-harness.md), [writing-harness](writing-harness.md), [editorial-graphics-audit-harness](editorial-graphics-audit-harness.md), [visuals-and-image-generation](visuals-and-image-generation.md)을 참고했습니다.
 
 ## 용어 메모
 
@@ -364,14 +364,14 @@ TabPFN을 산업 데이터에 적용할 후보는 넓습니다. 다만 데이터
 
 ### 처음 참고한 자료
 
-- [처음 참고한 자료 - ChatGPT share capture](../sources/2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md) - 공개 화면에서 확인된 `TabPFN2.5 vs XGBoost` seed summary.
-- [처음 참고한 자료 - Source note](../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md) - 기존 패키지의 source note와 caveat.
-- [처음 참고한 자료 - Research runlog](../notes/2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md) - 공유 링크 접근, 검증 자료, 산출물 기록.
+- [처음 참고한 자료 - ChatGPT share capture](2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md) - 공개 화면에서 확인된 `TabPFN2.5 vs XGBoost` seed summary.
+- [처음 참고한 자료 - Source note](2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md) - 기존 패키지의 source note와 caveat.
+- [처음 참고한 자료 - Research runlog](2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md) - 공유 링크 접근, 검증 자료, 산출물 기록.
 
 ### 문체와 시각자료 참고
 
 - [문체 참고 - 고등과학원 HORIZON](https://horizon.kias.re.kr/) - 한국어 과학 설명의 도입부와 개념 전개 참고.
 - [문체 참고 - 최종현학술원 Science Note 과학노트](https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx) - 기술 뉴스레터형 프레이밍 참고.
 - [시각자료 참고 - Quanta Magazine](https://www.quantamagazine.org/) - 과학 기사형 hero illustration, figure, caption 리듬 참고.
-- [시각자료 제작 기록 - figure manifest](../artifacts/final_review/figure_manifest.md) - 본문 figure와 생성·검토 기록.
-- [시각자료 후보 - Skywork Image prompt pack](../skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md) - Skywork Image 생성용 후보 prompt.
+- [시각자료 제작 기록 - figure manifest](figure_manifest.md) - 본문 figure와 생성·검토 기록.
+- [시각자료 후보 - Skywork Image prompt pack](2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md) - Skywork Image 생성용 후보 prompt.
