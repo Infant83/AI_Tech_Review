@@ -47,6 +47,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-06-05_neuromorphic-edge-ai",
+        title="뉴로모픽, 물리적 AI의 반응 시간을 줄이는 기술",
+        subtitle="MoS2 인-센서 비전 논문에서 edge AI 상용화 신호까지, LLM 이후의 감각 계층을 어떻게 볼 것인가",
+        date="2026-06-05",
+        updated="2026-06-05",
+        category="AI Hardware",
+        tags=("Neuromorphic AI", "Edge AI", "Physical AI", "In-Sensor Computing"),
+        summary=(
+            "ScienceTimes가 소개한 MoS2 인-센서 뉴로모픽 비전 논문을 출발점으로, "
+            "뉴로모픽이 LLM을 직접 대체하기보다 물리적 AI의 저전력 감각·반응 계층으로 "
+            "자리 잡을 가능성을 최신 리뷰와 산업 신호를 통해 점검합니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-05-30_shadow-ai-work-boundary-reconfiguration",
         title="AI Native 시대의 일하는 방식: Shadow AI와 우리",
         subtitle="DX를 이룬 조직에서도 AX가 native하게 흐르지 못할 때, 숨은 AI 활용과 번아웃이 어떻게 생기는지 살펴봅니다",
@@ -785,8 +799,8 @@ h1 {
 }
 .latest-update {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
-  gap: 24px;
+  grid-template-columns: minmax(340px, 0.92fr) minmax(460px, 1.08fr);
+  gap: 0;
   align-items: stretch;
   margin: 30px 0 26px;
   border: 1px solid var(--line);
@@ -796,12 +810,17 @@ h1 {
   overflow: hidden;
 }
 .latest-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: clamp(24px, 4vw, 38px);
 }
 .latest-copy h2 {
   margin: 0 0 12px;
-  font-size: clamp(28px, 4vw, 46px);
-  line-height: 1.08;
+  max-width: 12.5em;
+  font-size: 42px;
+  line-height: 1.12;
+  text-wrap: balance;
 }
 .latest-copy p {
   color: var(--muted);
@@ -809,18 +828,21 @@ h1 {
 .latest-subtitle {
   color: var(--ink) !important;
   font-weight: 800;
+  max-width: 38em;
 }
 .latest-media {
   display: grid;
   min-height: 100%;
   background: #eef1ed;
+  border-left: 1px solid var(--line);
 }
 .latest-media img {
   display: block;
   width: 100%;
   height: 100%;
   min-height: 320px;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center;
 }
 .text-link {
   display: inline-flex;
@@ -1080,6 +1102,13 @@ a:not([href]) {
   .transparency-notice {
     grid-template-columns: 1fr;
   }
+  .latest-copy h2 {
+    font-size: 38px;
+  }
+  .latest-media {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
   .filter-heading,
   .credit-list div {
     grid-template-columns: 1fr;
@@ -1093,6 +1122,7 @@ a:not([href]) {
 @media (max-width: 680px) {
   .site-header, main { width: min(100% - 24px, 1180px); }
   .review-grid { grid-template-columns: 1fr; }
+  .latest-copy h2 { font-size: 32px; }
   .thumb { aspect-ratio: 16 / 9; }
   .latest-media img { min-height: 220px; }
   .hero { padding-top: 36px; }

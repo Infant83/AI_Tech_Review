@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="740" viewBox="0 0 1280 740" role="img" aria-labelledby="title desc">
+  <title id="title">뉴로모픽 workload fit</title>
+  <desc id="desc">뉴로모픽이 잘 맞는 workload, 보조 역할이 큰 workload, 아직 맞지 않는 workload를 비교한 매트릭스</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8f8f4; }
+      .title { font: 700 32px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .subtitle { font: 400 17px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .head { font: 700 19px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .body { font: 400 15px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .grid { fill: #fff; stroke: #d7d9d2; stroke-width: 1.5; rx: 14; }
+      .col1 { fill: #e8f4f1; }
+      .col2 { fill: #fff3df; }
+      .col3 { fill: #f7e7e7; }
+      .line { stroke: #d7d9d2; stroke-width: 1.4; }
+      .badgeGood { fill: #2f8b7b; }
+      .badgeMid { fill: #c97920; }
+      .badgeNo { fill: #ad5656; }
+      .badgeText { font: 700 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #fff; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="740"/>
+  <text x="70" y="70" class="title">뉴로모픽은 어디서 먼저 이길 수 있나</text>
+  <text x="70" y="104" class="subtitle">가까운 상용화 질문은 센서 시간 신호를 낮은 전력으로 처리할 수 있는가입니다.</text>
+
+  <rect x="70" y="145" width="1140" height="500" class="grid"/>
+  <rect x="70" y="145" width="380" height="500" class="col1" opacity="0.55"/>
+  <rect x="450" y="145" width="380" height="500" class="col2" opacity="0.55"/>
+  <rect x="830" y="145" width="380" height="500" class="col3" opacity="0.45"/>
+  <line x1="450" y1="145" x2="450" y2="645" class="line"/>
+  <line x1="830" y1="145" x2="830" y2="645" class="line"/>
+
+  <text x="105" y="185" class="head">잘 맞는 영역</text>
+  <text x="485" y="185" class="head">보조 역할이 큰 영역</text>
+  <text x="865" y="185" class="head">아직 맞지 않는 영역</text>
+
+  <circle cx="106" cy="226" r="18" class="badgeGood"/><text x="99" y="231" class="badgeText">1</text>
+  <text x="135" y="230" class="body">항상 켜진 audio / radar / vibration</text>
+  <text x="135" y="256" class="small">wake-word, 이상 감지, presence detection</text>
+
+  <circle cx="106" cy="306" r="18" class="badgeGood"/><text x="99" y="311" class="badgeText">2</text>
+  <text x="135" y="310" class="body">event camera와 빠른 vision trigger</text>
+  <text x="135" y="336" class="small">드론, 로봇 안전 감시, 저전력 시각</text>
+
+  <circle cx="106" cy="386" r="18" class="badgeGood"/><text x="99" y="391" class="badgeText">3</text>
+  <text x="135" y="390" class="body">웨어러블·생체신호 edge 처리</text>
+  <text x="135" y="416" class="small">ECG, EEG, on-body inference</text>
+
+  <circle cx="486" cy="226" r="18" class="badgeMid"/><text x="479" y="231" class="badgeText">4</text>
+  <text x="515" y="230" class="body">로봇 perception pipeline</text>
+  <text x="515" y="256" class="small">상위 vision backbone 앞의 feature filter</text>
+
+  <circle cx="486" cy="306" r="18" class="badgeMid"/><text x="479" y="311" class="badgeText">5</text>
+  <text x="515" y="310" class="body">엣지 AI 프라이버시 계층</text>
+  <text x="515" y="336" class="small">raw image/audio 대신 event만 전달</text>
+
+  <circle cx="486" cy="386" r="18" class="badgeMid"/><text x="479" y="391" class="badgeText">6</text>
+  <text x="515" y="390" class="body">LLM/VLA를 깨우는 저전력 trigger</text>
+  <text x="515" y="416" class="small">상위 모델 호출 횟수와 데이터 이동 감소</text>
+
+  <circle cx="866" cy="226" r="18" class="badgeNo"/><text x="859" y="231" class="badgeText">7</text>
+  <text x="895" y="230" class="body">대규모 LLM pretraining</text>
+  <text x="895" y="256" class="small">현재는 GPU/TPU 생태계와 training stack이 우세</text>
+
+  <circle cx="866" cy="306" r="18" class="badgeNo"/><text x="859" y="311" class="badgeText">8</text>
+  <text x="895" y="310" class="body">장문 지식 reasoning</text>
+  <text x="895" y="336" class="small">언어·문서·도구 계획은 LLM 계열이 강함</text>
+
+  <circle cx="866" cy="386" r="18" class="badgeNo"/><text x="859" y="391" class="badgeText">9</text>
+  <text x="895" y="390" class="body">범용 개발자 플랫폼</text>
+  <text x="895" y="416" class="small">API, compiler, benchmark 성숙이 더 필요</text>
+
+  <rect x="114" y="515" width="1030" height="86" fill="#ffffff" stroke="#d7d9d2" stroke-width="1.5" rx="12"/>
+  <text x="145" y="550" class="head">전망</text>
+  <text x="145" y="578" class="body">뉴로모픽은 센서 가까운 반응 계층에서 먼저 자리 잡을 가능성이 큽니다.</text>
+  <text x="145" y="604" class="body">큰 모델과는 경쟁보다 하이브리드 구성이 자연스럽습니다.</text>
+</svg>

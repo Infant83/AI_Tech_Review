@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">MoS2 HZO 인-센서 뉴로모픽 비전 구조</title>
+  <desc id="desc">빛 입력이 MoS2 광트랜지스터 기반 LIF neuron, rate and TTFS coding, HZO MoS2 FeFET synapse, SNN task로 이어지는 구조도</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 700 32px "Segoe UI", "Malgun Gothic", sans-serif; fill: #141414; }
+      .subtitle { font: 400 17px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .label { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .body { font: 400 15.5px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .card { rx: 12; stroke-width: 2; }
+      .light { fill: #fff4d7; stroke: #c99328; }
+      .neuron { fill: #e8f4f1; stroke: #2c8b79; }
+      .code { fill: #eaf0fb; stroke: #4c75b8; }
+      .syn { fill: #f0e8f6; stroke: #7e529f; }
+      .task { fill: #f7e7e7; stroke: #ad5656; }
+      .warn { fill: #fff; stroke: #c8c8c8; stroke-width: 1.5; rx: 12; }
+      .arrow { stroke: #333; stroke-width: 2.3; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #777; stroke-width: 1.8; fill: none; stroke-dasharray: 5 6; marker-end: url(#arrowSoft); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333" />
+    </marker>
+    <marker id="arrowSoft" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#777" />
+    </marker>
+  </defs>
+  <rect class="bg" width="1280" height="760"/>
+  <text x="70" y="70" class="title">Wang et al. 2026: 센서와 시냅스를 같은 MoS2 계열 플랫폼으로 묶는다</text>
+  <text x="70" y="104" class="subtitle">감지, 인코딩, 저장을 한 흐름으로 통합한 시각 AI 구조입니다.</text>
+
+  <rect x="70" y="165" width="180" height="142" class="card light"/>
+  <text x="94" y="202" class="label">빛 입력</text>
+  <text x="94" y="236" class="body">RGB wavelength</text>
+  <text x="94" y="262" class="body">optical intensity</text>
+  <text x="94" y="288" class="small">로봇 시각의 원 신호</text>
+
+  <rect x="306" y="145" width="230" height="182" class="card neuron"/>
+  <text x="330" y="184" class="label">MoS2 phototransistor</text>
+  <text x="330" y="218" class="body">optoelectronic LIF neuron</text>
+  <text x="330" y="244" class="body">capacitor-less integration</text>
+  <text x="330" y="270" class="body">threshold-triggered spike</text>
+  <text x="330" y="296" class="small">빛을 신경 spike로 변환</text>
+
+  <rect x="596" y="145" width="215" height="182" class="card code"/>
+  <text x="620" y="184" class="label">두 가지 coding</text>
+  <text x="620" y="220" class="body">rate coding</text>
+  <text x="620" y="246" class="small">강한 자극 = 더 많은 spike</text>
+  <text x="620" y="278" class="body">TTFS coding</text>
+  <text x="620" y="304" class="small">강한 자극 = 더 빠른 첫 spike</text>
+
+  <rect x="870" y="145" width="240" height="182" class="card syn"/>
+  <text x="894" y="184" class="label">MoS2 / HZO FeFET</text>
+  <text x="894" y="220" class="body">ferroelectric synapse</text>
+  <text x="894" y="246" class="body">non-volatile weight</text>
+  <text x="894" y="272" class="body">multilevel storage</text>
+  <text x="894" y="300" class="small">시냅스 가중치 역할</text>
+
+  <rect x="396" y="430" width="500" height="105" class="card task"/>
+  <text x="430" y="464" class="label">SNN system task</text>
+  <text x="430" y="493" class="body">RGB color recognition: 91.7%</text>
+  <text x="430" y="520" class="body">object detection: 93.5%</text>
+
+  <rect x="310" y="595" width="660" height="76" class="warn"/>
+  <text x="342" y="628" class="label">읽을 때 주의할 점</text>
+  <text x="342" y="655" class="body">작은 array와 simulation 기반 검증이다.</text>
+  <text x="342" y="680" class="body">상용 카메라 완성보다 통합 방향의 신호로 읽는다.</text>
+
+  <line x1="250" y1="236" x2="306" y2="236" class="arrow"/>
+  <line x1="536" y1="236" x2="596" y2="236" class="arrow"/>
+  <line x1="811" y1="236" x2="870" y2="236" class="arrow"/>
+  <path d="M990 327 C980 392 846 426 768 430" class="arrow"/>
+  <path d="M421 327 C438 390 522 418 590 430" class="dash"/>
+</svg>

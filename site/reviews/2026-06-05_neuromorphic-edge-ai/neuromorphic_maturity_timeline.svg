@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">뉴로모픽 성숙도 타임라인</title>
+  <desc id="desc">2023년 NorthPole, 2024년 Hala Point, 2025년 Nature 리뷰와 NeuroBench, 2026년 인센서 뉴로모픽 연구와 edge 상용 신호를 보여주는 타임라인</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 700 32px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .subtitle { font: 400 17px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .year { font: 700 22px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .label { font: 700 17px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .body { font: 400 14.5px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .axis { stroke: #333; stroke-width: 3; }
+      .tick { stroke: #333; stroke-width: 2; }
+      .card { fill: #fff; stroke: #d7d9d2; stroke-width: 1.5; rx: 12; }
+      .research { fill: #e8f4f1; stroke: #2f8b7b; }
+      .industry { fill: #fff3df; stroke: #c97920; }
+      .bench { fill: #eaf0fb; stroke: #4c75b8; }
+      .latest { fill: #f0e8f6; stroke: #7e529f; }
+      .dot { stroke: #fff; stroke-width: 3; }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="720"/>
+  <text x="70" y="70" class="title">뉴로모픽은 다시 연구실 데모만의 주제가 아니게 됐습니다</text>
+  <text x="70" y="104" class="subtitle">architecture, benchmark, device, edge product가 함께 진전했습니다.</text>
+
+  <line x1="110" y1="350" x2="1180" y2="350" class="axis"/>
+
+  <g>
+    <line x1="180" y1="330" x2="180" y2="370" class="tick"/>
+    <circle cx="180" cy="350" r="12" fill="#2f8b7b" class="dot"/>
+    <text x="150" y="405" class="year">2023</text>
+    <rect x="80" y="170" width="250" height="130" class="card research"/>
+    <text x="105" y="205" class="label">IBM NorthPole</text>
+    <text x="105" y="232" class="body">memory-compute 결합형</text>
+    <text x="105" y="256" class="body">neural inference architecture</text>
+    <text x="105" y="282" class="small">SNN은 아니지만 같은 병목을 겨냥</text>
+  </g>
+
+  <g>
+    <line x1="430" y1="330" x2="430" y2="370" class="tick"/>
+    <circle cx="430" cy="350" r="12" fill="#c97920" class="dot"/>
+    <text x="400" y="405" class="year">2024</text>
+    <rect x="330" y="430" width="255" height="128" class="card industry"/>
+    <text x="355" y="464" class="label">Intel Hala Point</text>
+    <text x="355" y="491" class="body">1.15B neurons research system</text>
+    <text x="355" y="515" class="body">Loihi 2 기반 대규모 실험</text>
+    <text x="355" y="540" class="small">회사 발표 기준 수치로 해석</text>
+  </g>
+
+  <g>
+    <line x1="690" y1="330" x2="690" y2="370" class="tick"/>
+    <circle cx="690" cy="350" r="12" fill="#4c75b8" class="dot"/>
+    <text x="660" y="405" class="year">2025</text>
+    <rect x="595" y="170" width="275" height="135" class="card bench"/>
+    <text x="620" y="205" class="label">Nature 리뷰와 NeuroBench</text>
+    <text x="620" y="232" class="body">scale, ecosystem, benchmark</text>
+    <text x="620" y="256" class="body">상용화 병목 정리</text>
+    <text x="620" y="282" class="small">비교 가능한 평가 체계로 이동</text>
+  </g>
+
+  <g>
+    <line x1="980" y1="330" x2="980" y2="370" class="tick"/>
+    <circle cx="980" cy="350" r="12" fill="#7e529f" class="dot"/>
+    <text x="950" y="405" class="year">2026</text>
+    <rect x="890" y="430" width="300" height="138" class="card latest"/>
+    <text x="915" y="464" class="label">in-sensor / edge 확장</text>
+    <text x="915" y="491" class="body">MoS2-HZO neuromorphic vision</text>
+    <text x="915" y="515" class="body">NIR, stretchable, signal-folding</text>
+    <text x="915" y="540" class="small">physical AI의 센서 계층으로 이동</text>
+  </g>
+
+  <rect x="120" y="610" width="1040" height="54" fill="#fff" stroke="#d7d9d2" stroke-width="1.4" rx="12"/>
+  <text x="150" y="644" class="body">핵심 변화: "뇌를 닮은 칩"이라는 설명에서 workload 검증 질문으로 이동.</text>
+  <text x="150" y="668" class="body">평가 기준은 낮은 전력, 낮은 지연, 비교 가능한 benchmark입니다.</text>
+</svg>
