@@ -120,8 +120,17 @@ tags:
 - OpenProject:
   - 현재 target work package ID가 지정되지 않았으므로, 잘못된 work package 업데이트를 피하기 위해 pending으로 둔다.
 - GitHub Pages deployment:
-  - site generation은 완료했다.
-  - `main` push 후 GitHub Actions `Publish public report hub`가 `gh-pages` branch로 배포한다.
+  - site generation 완료.
+  - commit: `b5f4fec` (`Publish neuromorphic edge AI review`)
+  - `git push origin main` 완료.
+  - GitHub Actions `Publish public report hub` run id: `26983007032`
+  - workflow status: `completed`, conclusion: `success`
+  - public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/`
+  - public URL check: HTTP `200`, title `뉴로모픽, 물리적 AI의 반응 시간을 줄이는 기술`, image count `7`
 - Email:
   - user requested sending `dist.zip` to `hyun-jung.kim@lgdisplay.com`.
-  - Gmail connector 또는 사용 가능한 메일 경로로 전송 후 message id/blocker를 기록한다.
+  - Gmail sender profile: `angpangmokjang@gmail.com`
+  - first attempt with scalar `attachment_files` failed because connector expected an array.
+  - resent with `attachment_files` array.
+  - sent message id: `19e94bc91346fbaa`
+  - thread id: `19e94bc91346fbaa`
