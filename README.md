@@ -29,6 +29,13 @@
 ## 최근 Daily Review 스냅샷
 _`daily_research_review/`의 최신 5개 항목에서 자동 생성._
 
+### 2026-06-16 · 2026-06-16 Lev Selector Recent Updates
+- 유형: `conversation memo`
+- 소스: [`daily_research_review/2026-06-16_lev-selector-recent-updates.md`](daily_research_review/2026-06-16_lev-selector-recent-updates.md)
+- 2026-06-16 기준 Lev Selector 채널의 최신 주간 AI 업데이트는 2026-06-12 공개된 [Exciting AI Updates Weekly - June 12, 2026](https://www.youtube.com/watch?v=zyE4uXQ5hS4)입니다.
+- GitHub companion slide도 [2026-06-12-AI-Updates.pptx](https://github.com/lselector/seminar/blob/master/2026/2026-06-12-AI-Updates.pptx)가 최신 AI Updates 파일로 확인되었습니다.
+- 이번 주 신호는 새 모델 이름보다 `agent memory`, `harness engineering`, `context compression`, `enterprise data platform 안의 agent`에 더 강하게 모입니다.
+
 ### 2026-05-23 · AI for Science 리뷰 전략
 - 유형: `daily package`
 - 소스: [`daily_research_review/2026-05-23_ai-for-science-review-strategy/reports/2026-05-23_ai-for-science-review-strategy_overview.md`](daily_research_review/2026-05-23_ai-for-science-review-strategy/reports/2026-05-23_ai-for-science-review-strategy_overview.md)
@@ -56,13 +63,6 @@ _`daily_research_review/`의 최신 5개 항목에서 자동 생성._
 - `2026-04-23 GPT Pulse`에서 나온 `LGD OLED 인프라 투자`와 `SID 전 LGD/Fraunhofer 신호`를 하나의 심층 기술 리뷰 패키지로 승격했다.
 - 새 패키지: `C:\Users\angpa\myProjects\Daily_Work\AI_Tech_Review\2026-04-24_lgd-oled-investment-display-week-signals`
 - 핵심 결론은 `LGD 투자 = blue PHOLED 양산 확정`이 아니라, `2026-2028 OLED 기술 인프라 경쟁으로 읽어야 한다`는 것이다.
-
-### 2026-04-23 · 2026-04-23 GPT Pulse Overview
-- 유형: `daily package`
-- 소스: [`daily_research_review/2026-04-23_gpt-pulse-daily-review/reports/2026-04-23_gpt-pulse-daily-review_overview.md`](daily_research_review/2026-04-23_gpt-pulse-daily-review/reports/2026-04-23_gpt-pulse-daily-review_overview.md)
-- 오늘 확인한 최신 Pulse 이슈는 `4월 23일` 표기본이었다.
-- 전체 방향은 `교육/포용`, `MLOps/에이전트 거버넌스`, `중동 지정학 리스크`, `온디바이스 음성 실험`, `OLED/Display Week 신호`의 혼합형 피드였다.
-- 후속 심층리서치 1순위는 `Agent observability and CI workload identity governance`다.
 
 ## README 갱신
 ```bash
