@@ -314,4 +314,8 @@ tags:
   - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
   - updated final review markdown/html, sources note, runlog, `physical_ai_latency_layers.svg`, and verification JSON.
 - GitHub Pages deployment:
-  - pending until commit/push and Actions completion.
+  - commit: `31c5930` (`Clarify Physical AI latency layers in neuromorphic review`)
+  - `git push origin main` 완료.
+  - GitHub Actions `Publish public report hub` run id: `27628063157`, status `completed`, conclusion `success`.
+  - GitHub Pages `pages build and deployment` run id: `27628115847`, status `completed`, conclusion `success`.
+  - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, `HasFastSlow: true`, `HasDisplay: true`, `HasBoston: true`, `HasLargeBehaviorModels: true`, `HasLatencySvg: true`, image tag count `8`, old term count `0`.
