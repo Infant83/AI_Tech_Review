@@ -255,3 +255,63 @@ tags:
     - `artifacts/final_review/verification/neuromorphic_tesla_update_desktop.png`
     - `artifacts/final_review/verification/neuromorphic_tesla_update_mobile.png`
     - `artifacts/final_review/verification/neuromorphic_tesla_update_check.json`
+
+## 2026-06-17 Physical AI latency layer / Atlas / display trend update
+
+### 사용자 요청
+
+- Tesla FSD나 고속 vision AI가 ms 단위 추론 능력을 갖더라도 운전 특화 모델과 제어기의 결과인지, LLM/VLA 기반 agentic Physical AI와 어떻게 다른지 설명.
+- Boston Dynamics Atlas처럼 춤, 계단, 덤블링, 산업 작업을 수행하는 로봇도 정해진 행동 정책과 open-ended 상호작용 사이에 차이가 있는지 정리.
+- 이 차이가 왜 뉴로모픽 디바이스의 필요성과 연구 가치를 키우는지, Wang et al. 논문의 위상과 자연스럽게 연결.
+- 과거 뉴로모픽과 차세대 디스플레이 연결 논의가 최근에는 덜 보이는 이유와 관심 이동을 함께 반영.
+
+### 검색 및 확인 자료
+
+- Boston Dynamics:
+  - `Atlas' Evolution From Research Robot to Industrial Humanoid`
+  - `Large Behavior Models and Atlas Find New Footing`
+- Neuromorphic / display:
+  - `Toward Intelligent Display with Neuromorphic Technology`, Advanced Materials, 2024
+  - `Electrically programmable organic in-display neuromorphic computing`, National Science Review, 2025
+  - `An all-in-one electrochromic neuromorphic display`, National Science Review, 2025
+
+### 반영 내용
+
+- final review에 `빠른 몸과 느린 판단` 섹션 추가.
+- deterministic SVG `physical_ai_latency_layers.svg` 추가.
+- Physical AI stack을 fast reflex/safety loop, learned skill policy, slower language/planning/tool-use layer로 설명.
+- Tesla FSD와 Atlas 사례를 "빠른 몸이 곧 LLM식 open-ended reasoning을 뜻하지 않는다"는 관점으로 보강.
+- 뉴로모픽의 가치를 의지·대화·자율성 부여가 아니라 sensor-near, low-latency, low-power reflex layer를 가볍게 만드는 데서 설명.
+- final review에 `디스플레이 논의의 이동` 섹션 추가.
+- intelligent display / in-display neuromorphic computing 흐름이 최근 edge AI, in-sensor/near-sensor computing, wearable/AR/robot vision 표현으로 흡수되어 보인다는 해석을 추가.
+- References와 sources note에 Atlas/LBM, intelligent display, EP-IDNC 자료 추가.
+
+### 검증
+
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- editorial audit:
+  - result: `h2_count: 13`, `figure_count: 8`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `물리적 AI`, `피지컬 AI`, lowercase `physical AI`, 주요 AI식 상투어 검색 결과 없음.
+- distribution package:
+  - `python scripts\html_to_dist.py ... --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size: `6,640,323` bytes
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local public-site check:
+  - desktop 1440x1100: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 1440`, `unexpectedOverflowCount: 0`, `hasFastSlowSection: true`, `hasDisplaySection: true`, `hasBoston: true`, `hasLargeBehaviorModels: true`
+  - mobile 390x900: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 390`, `unexpectedOverflowCount: 0`, `scrollableFigureCount: 5`
+  - dist desktop 1440x1000: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`
+  - term check in rendered body: `물리적 AI`/`피지컬 AI`/lowercase `physical AI` count `0`
+  - artifacts:
+    - `artifacts/final_review/verification/neuromorphic_physical_ai_layers_update_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_physical_ai_layers_update_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_physical_ai_layers_update_check.json`
+- Obsidian mirror sync:
+  - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - updated final review markdown/html, sources note, runlog, `physical_ai_latency_layers.svg`, and verification JSON.
+- GitHub Pages deployment:
+  - pending until commit/push and Actions completion.

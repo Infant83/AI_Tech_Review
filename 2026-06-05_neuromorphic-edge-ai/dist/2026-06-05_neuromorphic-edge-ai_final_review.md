@@ -104,6 +104,25 @@ Physical AI는 로봇, 자율주행, 산업 설비, 웨어러블처럼 실제 �
 
 다만 이것이 "테슬라에 뉴로모픽이 필수"라는 뜻은 아닙니다. 테슬라는 현재 더 큰 fleet data, end-to-end learning, AI inference chip, simulation/evaluation infrastructure로 문제를 밀고 있습니다. 뉴로모픽이 들어간다면, 전체 FSD brain을 대체하기보다 급격한 움직임, glare/tunnel 전환, parking lot 주변 움직임, 낮은 전력의 always-on monitoring 같은 peripheral reflex layer에서 먼저 검토될 가능성이 큽니다. 자율주행차는 뉴로모픽의 필요성을 곧장 증명하지는 않습니다. 대신 어느 계층에 넣어야 실제 가치가 생기는지 따져볼 수 있는 시험대입니다.
 
+## 빠른 몸과 느린 판단
+
+이 대목에서 자주 생기는 오해가 있습니다. 자동차가 수 ms 단위로 주변을 보고, 로봇이 계단을 오르고, Atlas가 덤블링이나 춤처럼 매우 빠른 동작을 보여주면 기계가 사람처럼 그 순간마다 생각하고 결정하는 것처럼 보입니다. 실제 작동 방식은 조금 다릅니다. 빠른 움직임의 상당 부분은 운전, 보행, 균형, 물체 조작에 맞게 학습되거나 설계된 sensorimotor policy와 제어기의 결과입니다. 언어로 새 목표를 이해하고, 작업을 나누고, 도구를 호출하고, 사람에게 이유를 설명하는 agentic layer와 같은 층이 아닙니다.
+
+그래서 "LLM이 로봇에 들어가면 모든 동작이 느려질 수밖에 없다"는 문장도 절반만 맞습니다. LLM/VLM/VLA가 모든 관절과 모터를 직접 조종한다면 당연히 너무 느립니다. 하지만 실제 Physical AI 시스템은 보통 계층형으로 짜입니다. 균형 유지, 충돌 회피, 제동, 미끄러짐 감지는 매우 빠른 하위 루프가 맡고, 차선 변경이나 물체 집기 같은 숙련 행동은 학습된 policy가 맡습니다. LLM/VLM/VLA는 그 위에서 "무엇을 하라"는 지시를 이해하고, 장면을 설명하고, 작업 순서를 세우고, 필요하면 도구나 업무 시스템을 호출합니다. 느린 판단이 빠른 몸을 매 순간 대신 움직이기보다, 빠른 행동 계층을 선택하고 제약하는 흐름입니다.
+
+[Boston Dynamics가 2026년 공개한 Atlas 관련 글](https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/)도 이 차이를 잘 드러냅니다. 회사는 Atlas가 전기식 산업용 humanoid로 전환되고, Hyundai와 Google DeepMind 배치가 예정되어 있으며, fleet 규모에서 learned behavior를 재배포하고 RL과 foundation model을 활용한다고 설명합니다. 동시에 첫 산업 과제는 자동차 제조의 part sequencing처럼 구체적인 작업입니다. 이는 사람 같은 자유의지를 얻었다는 뜻보다, 산업 현장에서 반복 가능한 작업을 학습·검증·배포하는 능력이 커지고 있다는 신호로 읽는 편이 정확합니다.
+
+[Boston Dynamics와 Toyota Research Institute의 Large Behavior Models 글](https://bostondynamics.com/blog/large-behavior-models-atlas-find-new-footing/)은 더 직접적입니다. 공개 설명에 따르면 Atlas 정책은 이미지, proprioception, 언어 prompt를 입력으로 받아 Atlas 전신을 30 Hz로 제어합니다. 데이터는 teleoperation과 simulation에서 모으고, 품질 검토와 annotation을 거쳐 neural-network policy를 학습합니다. 450M parameter Diffusion Transformer와 flow matching을 사용하고, 1회 inference가 약 1.6초 길이의 action chunk를 예측한다는 설명도 나옵니다. 매우 인상적인 결과지만, 여전히 "사람처럼 매 순간 말로 생각하는 로봇"보다 "언어 조건을 받은 숙련 행동 정책"으로 읽는 편이 맞습니다.
+
+춤, 계단, 덤블링, 부품 이동은 빠르게 보입니다. 그 빠름은 미리 확보한 dynamics, 제어기, 시뮬레이션, 학습 데이터, 정책 모델이 몸에 가까운 층에서 작동하기 때문에 가능합니다. 반대로 사람이 "지금 상황을 보고 새로운 작업 순서를 짜서 이 장비와 저 시스템을 함께 써 봐"라고 말하면, 로봇은 언어 이해, 환경 grounding, 계획 검증, 안전 제약, policy 선택, 실패 복구를 거쳐야 합니다. 이 계층은 훨씬 느릴 수 있고, 그렇게 느린 것이 오히려 정상입니다. 안전과 설명 가능성이 필요한 판단은 빠르게 휘두르는 팔보다 느리게 확인되어야 합니다.
+
+<figure class="figure-panel">
+  <img src="physical_ai_latency_layers.svg" alt="Physical AI 시스템에서 반사 안전 루프, 숙련 행동 정책, 언어 계획 도구 사용 계층이 서로 다른 시간 스케일로 작동하는 관계도">
+  <figcaption><strong>그림 5.</strong> Physical AI는 하나의 속도로 움직이지 않습니다. 빠른 하위 루프는 센서 변화와 안전 반응을 맡고, 학습된 policy는 운전·보행·조작 같은 숙련 행동을 맡습니다. LLM/VLM/VLA는 언어 지시, 계획, 도구 사용을 담당하지만 모든 움직임을 직접 제어하지는 않습니다.</figcaption>
+</figure>
+
+여기서 뉴로모픽의 자리가 분명해집니다. 뉴로모픽 디바이스가 로봇에게 의지나 대화를 주는 것은 아닙니다. 대신 가장 빠르고 전력에 민감한 감각-반응 계층을 가볍게 만들 수 있습니다. event camera는 모든 frame을 보내지 않고 밝기 변화 이벤트를 보냅니다. in-sensor computing은 센서 단계에서 feature나 spike를 만들 수 있습니다. Wang et al.의 MoS2/HZO 논문은 바로 이 점에서 의미가 있습니다. 빛을 받은 자리에서 spike를 만들고, 가까운 synapse array가 가중치 상태를 저장하며, 작은 SNN이 그 신호를 처리하는 흐름을 구현했습니다. 지금은 실험실 규모이지만, Physical AI의 빠른 몸을 더 가볍게 만드는 하드웨어 연구에 힘을 싣는 결과입니다.
+
 ## 첫 시장은 작은 지능
 
 뉴로모픽을 이야기할 때 흔히 나오는 질문이 있습니다. "그럼 GPU를 대체해서 LLM을 학습시키는가?" 가까운 시장은 데이터센터 LLM 훈련보다 edge sensing과 always-on inference 쪽입니다.
@@ -112,7 +131,7 @@ Physical AI는 로봇, 자율주행, 산업 설비, 웨어러블처럼 실제 �
 
 <figure class="figure-panel">
   <img src="neuromorphic_workload_fit.svg" alt="뉴로모픽이 잘 맞는 workload와 아직 맞지 않는 workload를 비교한 매트릭스">
-  <figcaption><strong>그림 5.</strong> 뉴로모픽은 GPT 계열 모델보다 MCU, DSP, NPU, low-power accelerator와 가까운 자리에서 먼저 경쟁합니다. 특히 항상 켜진 시간 신호와 센서 이벤트를 다루는 workload에서 강점이 먼저 드러납니다.</figcaption>
+  <figcaption><strong>그림 6.</strong> 뉴로모픽은 GPT 계열 모델보다 MCU, DSP, NPU, low-power accelerator와 가까운 자리에서 먼저 경쟁합니다. 특히 항상 켜진 시간 신호와 센서 이벤트를 다루는 workload에서 강점이 먼저 드러납니다.</figcaption>
 </figure>
 
 상용화 논문에서 또 중요한 부분은 programming model입니다. 과거에는 SNN application을 만들려면 뉴로모픽 hardware를 잘 아는 전문가가 직접 구조를 설계해야 했습니다. 이제 surrogate gradient와 gradient-based training, deep learning toolchain과 이어지는 open-source framework가 나오면서, 개발자가 기존 ML workflow에 가깝게 SNN을 만들 수 있는 길이 생기고 있습니다. 뉴로모픽이 제품으로 들어가려면 소자의 물리적 효율만큼이나 software API와 benchmark가 중요해집니다.
@@ -137,6 +156,18 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 
 이 흐름을 묶으면 뉴로모픽은 하나의 소자 명칭보다 넓은 기술군입니다. SNN processor, memristor/FeFET compute-in-memory, optoelectronic in-sensor computing, event camera, stretchable OECT array, spintronic neuron이 서로 다른 방향에서 같은 제약을 다룹니다. 공통 제약은 데이터 이동, 전력, 지연, 항상 켜진 sensing, 그리고 physical world와 digital model 사이의 변환 비용입니다.
 
+## 디스플레이 논의의 이동
+
+몇 년 전에는 뉴로모픽과 차세대 디스플레이를 연결한 논의가 꽤 눈에 띄었습니다. 이 흐름이 사라진 것은 아닙니다. 다만 2025-2026년에는 표현의 중심이 "neuromorphic display"에서 in-sensor computing, near-sensor computing, edge AI, wearable interface, AR/VR, robot vision 쪽으로 넓어졌습니다. 디스플레이 단독 시장의 이야기라기보다, 센서와 표시 장치, 메모리와 연산을 한 기판이나 한 device stack 안에서 얼마나 가까이 붙일 수 있는가라는 질문으로 이동한 셈입니다.
+
+[Advanced Materials의 2024년 intelligent display 리뷰](https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821)는 storage, processing, light-emitting 기능을 통합하는 neuromorphic display를 차세대 display 병목을 푸는 방향으로 정리했습니다. 당시에는 display가 사람과 기계가 만나는 면이고, 동시에 대면적 박막전자·광전자 소자 플랫폼이라는 점이 강조되었습니다. 기존 display 산업이 가진 TFT backplane, 산화물/유기 반도체, 광검출·발광 소재, 대면적 array 공정 경험이 AI hardware와 만날 수 있다는 기대도 있었습니다.
+
+최근 문헌은 이 주제를 더 넓은 edge device 문제로 다시 씁니다. [National Science Review의 2025년 EP-IDNC 논문](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)은 electrically programmable in-display neuromorphic computing을 제안했습니다. 이 장치는 organic electrochromic platform 안에서 memory, processing, display 기능을 함께 다루고, noise reduction, motion object perception, car steering reminder를 작은 prototype array로 보였습니다. [같은 저널의 해설](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)은 이 연구가 AR, wearable electronics, autonomous systems로 이어질 수 있다고 보면서도 cycling endurance와 switching speed는 더 개선되어야 한다고 짚었습니다.
+
+왜 지금은 이 논의가 덜 보이는 것처럼 느껴질까요. 첫째, 뉴로모픽 분야의 응용 pull이 robot vision, radar, audio, wearable, industrial IoT처럼 더 직접적인 edge sensing 문제로 이동했습니다. 시장과 논문 제목이 display보다 "항상 켜진 센서"와 "낮은 지연"을 앞세웁니다. 둘째, neuromorphic display는 멋진 개념이지만 실제 제품 조건이 까다롭습니다. 화소 균일도, 수명, 색 안정성, switching speed, backplane 통합, 대면적 수율을 동시에 만족해야 합니다. 셋째, AI hardware 담론이 2025년 이후 benchmark, programming model, SoC integration, hybrid edge stack으로 옮겨 가면서 display-specific 용어가 큰 흐름 안에 흡수되었습니다.
+
+그래도 디스플레이 관점의 의미는 남아 있습니다. 앞으로의 smart display는 단순히 이미지를 보여주는 면을 넘어, 주변 빛과 움직임을 감지하고, 일부 신호를 저장하고, 사람에게 필요한 변화만 낮은 전력으로 보여주는 interface가 될 수 있습니다. 이때 뉴로모픽은 display panel 자체가 GPU를 대체한다는 주장보다, pixel·sensor plane이 조금 더 똑똑한 front-end가 되는 방향으로 이해하는 편이 좋습니다. Wang et al.의 MoS2/HZO 논문도 이 넓은 흐름 안에 놓을 수 있습니다. display 산업의 언어로 보면 photodetector, 2D material, ferroelectric layer, array integration이 AI sensing 쪽으로 넘어오는 사례입니다.
+
 ## 움직이는 산업 신호
 
 산업 신호도 있습니다. 이 부분은 회사 발표와 peer-reviewed 검증을 분리해서 읽어야 합니다.
@@ -151,14 +182,14 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 
 <figure class="figure-panel">
   <img src="neuromorphic_edge_commercialization_editorial-web.png" alt="뉴로모픽 edge AI가 연구 보드에서 radar 테스트, wearable, smart camera 검증 같은 always-on 제품 후보로 이동하는 생성 일러스트">
-  <figcaption><strong>그림 6.</strong> 생성 일러스트. 최근 산업 신호는 데이터센터 학습보다 radar, audio, smart camera, wearable 같은 always-on edge sensing에서 먼저 나옵니다. 이 그림은 Innatera, SynSense, BrainChip 발표의 공통 방향을 설명하기 위한 편집 이미지이며, 성능 근거는 각 회사 발표와 peer-reviewed 테스트·검증 자료를 분리해 읽어야 합니다.</figcaption>
+  <figcaption><strong>그림 7.</strong> 생성 일러스트. 최근 산업 신호는 데이터센터 학습보다 radar, audio, smart camera, wearable 같은 always-on edge sensing에서 먼저 나옵니다. 이 그림은 Innatera, SynSense, BrainChip 발표의 공통 방향을 설명하기 위한 편집 이미지이며, 성능 근거는 각 회사 발표와 peer-reviewed 테스트·검증 자료를 분리해 읽어야 합니다.</figcaption>
 </figure>
 
 이 신호들의 공통점은 거창한 AGI보다 항상 켜져 있고 전력이 제한된 작은 지능입니다. smart home, industrial IoT, radar, audio, gesture, wearable이 먼저 등장하는 이유도 여기에 있습니다.
 
 <figure class="figure-panel">
   <img src="neuromorphic_maturity_timeline.svg" alt="2023 IBM NorthPole, 2024 Intel Hala Point, 2025 Nature 리뷰와 NeuroBench, 2026 in-sensor vision 및 edge neuromorphic 연구로 이어지는 타임라인">
-  <figcaption><strong>그림 7.</strong> 2023-2026년의 흐름은 소자 시연, 대형 research platform, benchmark, 상용 edge signal이 함께 움직인다는 점에서 중요합니다. 뉴로모픽은 아직 주류 컴퓨팅을 대체하지 않았지만, 검토 가능한 산업 질문으로 들어왔습니다.</figcaption>
+  <figcaption><strong>그림 8.</strong> 2023-2026년의 흐름은 소자 시연, 대형 research platform, benchmark, 상용 edge signal이 함께 움직인다는 점에서 중요합니다. 뉴로모픽은 아직 주류 컴퓨팅을 대체하지 않았지만, 검토 가능한 산업 질문으로 들어왔습니다.</figcaption>
 </figure>
 
 ## LLM 다음인가, LLM 아래인가
@@ -207,8 +238,8 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - 업데이트: 2026-06-16
 - 추가 업데이트: 2026-06-17
 - 작성 형식: AI Tech Review Letters
-- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호, Tesla FSD/AI stack 공개 자료와 NHTSA FSD visibility investigation
-- 이미지: OpenAI `imagegen` 생성 일러스트 3장, deterministic SVG 설명도 4장
+- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호, Tesla FSD/AI stack 공개 자료와 NHTSA FSD visibility investigation, Boston Dynamics Atlas/Large Behavior Models 공개 자료, intelligent display 및 in-display neuromorphic computing 문헌
+- 이미지: OpenAI `imagegen` 생성 일러스트 3장, deterministic SVG 설명도 5장
 - 검증 상태: source link refresh, Physical AI 용어 통일, Korean prose audit, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
 
 ## References
@@ -236,6 +267,9 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - [Frontiers in Neuroscience, Neuromorphic Engineering latest articles](https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles)
 - [Tulyakov et al., Low-latency automotive vision with event cameras, Nature, 2024](https://www.nature.com/articles/s41586-024-07409-w)
 - [Event-Based Neuromorphic Vision for Autonomous Driving, IEEE Signal Processing Magazine, 2020](https://mediatum.ub.tum.de/doc/1550369/s510t7a878tkqb3bjfp1dku59.Event-Based_Neuromorphic_Vision_for_Autonomous_Driving_A_Paradigm_Shift_for_Bio-Inspired_Visual_Sensing_and_Perception.pdf)
+- [Zhang et al., Toward Intelligent Display with Neuromorphic Technology, Advanced Materials, 2024](https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821)
+- [Dai et al., Electrically programmable organic in-display neuromorphic computing, National Science Review, 2025](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)
+- [An all-in-one electrochromic neuromorphic display, National Science Review, 2025](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)
 
 ### 산업 신호와 배경자료
 
@@ -243,6 +277,8 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - [Tesla, AI & Robotics](https://www.tesla.com/AI)
 - [Tesla Support, AI Computer Installations](https://www.tesla.com/support/ai-computer)
 - [NHTSA ODI Resume EA26002, FSD Collisions in Reduced Roadway Visibility Conditions, 2026-03-18](https://static.nhtsa.gov/odi/inv/2026/INOA-EA26002-10023.pdf)
+- [Boston Dynamics, Atlas' Evolution From Research Robot to Industrial Humanoid, 2026](https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/)
+- [Boston Dynamics, Large Behavior Models and Atlas Find New Footing, 2026](https://bostondynamics.com/blog/large-behavior-models-atlas-find-new-footing/)
 - [Intel, Hala Point announcement, 2024](https://newsroom.intel.com/artificial-intelligence/intel-builds-worlds-largest-neuromorphic-system-to-enable-more-sustainable-ai)
 - [IBM Research, NorthPole Science paper page, 2023](https://research.ibm.com/publications/neural-inference-at-the-frontier-of-energy-space-and-time)
 - [Innatera, Pulsar at CES 2026 announcement](https://innatera.com/press-releases/redefining-the-cutting-edge-innatera-debuts-real-world-neuromorphic-edge-ai-at-ces-2026)

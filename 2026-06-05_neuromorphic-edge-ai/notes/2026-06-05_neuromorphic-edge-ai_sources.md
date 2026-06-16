@@ -257,6 +257,41 @@ claim status:
   - event-based neuromorphic vision sensor가 low latency, HDR, motion blur 저감에서 autonomous driving perception에 유리할 수 있다고 정리한다.
   - 현재 Tesla architecture와 동일하다는 근거가 아니라, 자율주행차에서 뉴로모픽 sensor/reflex layer가 의미를 가질 수 있는 기술 배경으로 사용.
 
+## 2026-06-17 Physical AI latency / Atlas / display trend update
+
+- 목적: 사용자의 추가 질문에 따라 Tesla FSD와 Boston Dynamics Atlas 같은 빠른 physical system이 LLM/VLA 기반 agentic layer와 어떤 차이를 갖는지 설명하고, 그 차이가 왜 뉴로모픽 디바이스의 연구 가치를 키우는지 보강한다.
+- 판단:
+  - 빠른 운전·보행·조작은 대부분 센서-운동 policy, motion planning, 제어기, simulation/evaluation infrastructure가 함께 만든 결과다.
+  - LLM/VLM/VLA는 언어 지시, 장면 설명, 작업 계획, 도구 호출, 사람과의 상호작용에 유용하지만 모든 관절과 모터를 직접 ms 단위로 제어하는 계층은 아니다.
+  - 따라서 Physical AI는 fast reflex loop, learned skill policy, slower agentic planning layer로 나눠 설명하는 것이 정확하다.
+  - 뉴로모픽의 연구 가치는 이 중 fast reflex / sensor-near layer의 전력, 지연, 데이터 이동 문제를 줄이는 데서 먼저 생긴다.
+
+### Boston Dynamics / Atlas sources
+
+- [Boston Dynamics, "Atlas' Evolution From Research Robot to Industrial Humanoid", 2026](https://bostondynamics.com/blog/atlas-evolution-from-research-robot-to-industrial-humanoid/)
+  - Atlas가 2026년 production-ready industrial humanoid로 전환되고, Hyundai 및 Google DeepMind 배치가 예정되어 있다고 설명한다.
+  - learned behavior를 fleet에 재배포하고 RL/foundation model로 generalist capability를 확장한다는 회사 발표.
+  - 첫 산업 과제는 automotive manufacturing의 part sequencing으로 제시되어, open-ended agency보다 산업용 task learning/deployment 맥락으로 읽는 것이 적절하다.
+
+- [Boston Dynamics, "Large Behavior Models and Atlas Find New Footing", 2026](https://bostondynamics.com/blog/large-behavior-models-atlas-find-new-footing/)
+  - Atlas 정책은 images, proprioception, language prompts를 입력으로 받아 full Atlas robot을 30 Hz로 제어한다고 설명한다.
+  - 데이터 수집은 teleoperation, simulation, annotation, neural-network policy training, evaluation의 iterative process로 제시된다.
+  - 450M parameter Diffusion Transformer와 flow matching을 사용하고, action chunk를 예측한다는 설명이 있어 "언어 조건을 받은 숙련 행동 정책" 사례로 사용한다.
+
+### Neuromorphic display / intelligent display sources
+
+- [Zhang et al., "Toward Intelligent Display with Neuromorphic Technology", Advanced Materials, 2024](https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821)
+  - storage, processing, light-emitting integration을 중심으로 neuromorphic display를 정리한 리뷰.
+  - 몇 년 전 display 중심 논의가 있었음을 보여주는 근거로 사용.
+
+- [Dai et al., "Electrically programmable organic in-display neuromorphic computing", National Science Review, 2025](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)
+  - organic electrochromic platform에서 memory, processing, display 기능을 통합한 electrically programmable IDNC device.
+  - 3x3 prototype array로 noise reduction, motion object perception, car steering reminder를 시연.
+
+- [National Science Review, "An all-in-one electrochromic neuromorphic display", 2025](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)
+  - EP-IDNC 연구가 AR, wearable electronics, autonomous systems로 이어질 수 있다고 평가한다.
+  - cycling endurance와 switching speed가 real-world edge application의 남은 개선점이라고 지적한다.
+
 ## 리포트 핵심 해석
 
 1. 뉴로모픽은 LLM의 직접 대체재라기보다 Physical AI의 reflex/perception substrate에 가깝다.
