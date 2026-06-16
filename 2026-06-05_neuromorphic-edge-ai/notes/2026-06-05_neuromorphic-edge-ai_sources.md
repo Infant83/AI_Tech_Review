@@ -292,6 +292,35 @@ claim status:
   - EP-IDNC 연구가 AR, wearable electronics, autonomous systems로 이어질 수 있다고 평가한다.
   - cycling endurance와 switching speed가 real-world edge application의 남은 개선점이라고 지적한다.
 
+## 2026-06-17 Quanta Magazine neuromorphic context update
+
+- 목적: 사용자가 제시한 Quanta Magazine의 과거 neuromorphic 기사들을 현재 리뷰의 historical framing과 interpretation layer로 연결한다.
+- 판단:
+  - Quanta 기사들은 peer-reviewed primary source는 아니지만, 뉴로모픽 분야가 대중 과학/기술 매체에서 어떤 문제의식으로 읽혀 왔는지 보여주는 좋은 맥락 자료다.
+  - 2017-2022년의 큰 약속은 "뇌처럼 계산하는 새 컴퓨터"였지만, 2026년 현재는 material computing, hardware-aware learning, analog in-memory computing, edge AI accelerator, Physical AI sensing layer로 더 구체화되어 읽힌다.
+  - 최근 뉴로모픽이라는 단어가 덜 보이는 이유는 분야가 죽어서라기보다, 관련 논의가 compute-in-memory, analog AI, event-based vision, in-sensor computing, edge AI, low-power Physical AI accelerator라는 이름으로 분산되었기 때문이다.
+
+### Quanta Magazine sources
+
+- [Quanta Magazine search, neuromorphic](https://www.quantamagazine.org/?s=neuromorphic)
+  - 사용자가 지정한 출발 URL.
+  - `AI Overcomes Stumbling Block on Brain-Inspired Hardware`, `A Brain Built From Atomic Switches Can Learn`, `New Chip Expands the Possibilities for AI` 등을 확인.
+
+- [Quanta Magazine, "A Brain Built From Atomic Switches Can Learn", 2017-09-20](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)
+  - UCLA silver nanowire mesh / atomic switch / artificial synapse 기반 self-organized network 소개.
+  - simple learning, logic, noise cleanup, brain-like energy efficiency 가능성을 대중적으로 설명.
+  - 현재 관점에서는 direct commercial AI chip보다 physical network computing, memristive/self-organized device, reservoir-like material computing 쪽 의미가 크다.
+
+- [Quanta Magazine, "AI Overcomes Stumbling Block on Brain-Inspired Hardware", 2022-02-17](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)
+  - BrainScaleS-2 analog neuromorphic chip과 device mismatch 문제를 다룬 기사.
+  - SNN이 hardware mismatch를 학습으로 보정할 수 있다는 연구를 소개.
+  - 현재 리뷰에서는 "소자 시연 이후에는 variability, calibration, hardware-aware learning, benchmark가 관문"이라는 논지로 연결.
+
+- [Quanta Magazine, "New Chip Expands the Possibilities for AI", 2022-11-10](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)
+  - NeuRRAM / RRAM analog in-memory chip 소개.
+  - memory와 compute를 가까이 두고 image/speech recognition을 작은 장치에서 에너지 효율적으로 수행하려는 방향.
+  - strict SNN neuromorphic보다는 compute-in-memory / analog AI accelerator 흐름으로 해석하는 것이 안전하다.
+
 ## 리포트 핵심 해석
 
 1. 뉴로모픽은 LLM의 직접 대체재라기보다 Physical AI의 reflex/perception substrate에 가깝다.

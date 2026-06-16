@@ -319,3 +319,64 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27628063157`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27628115847`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, `HasFastSlow: true`, `HasDisplay: true`, `HasBoston: true`, `HasLargeBehaviorModels: true`, `HasLatencySvg: true`, image tag count `8`, old term count `0`.
+
+## 2026-06-17 Quanta Magazine historical context update
+
+### 사용자 요청
+
+- Quanta Magazine neuromorphic 검색 결과와 다음 기사들을 현재 리뷰에서 참조할 수 있도록 반영.
+  - `AI Overcomes Stumbling Block on Brain-Inspired Hardware`
+  - `A Brain Built From Atomic Switches Can Learn`
+  - `New Chip Expands the Possibilities for AI`
+- 이 주제들이 현시점 어떤 방향으로 재해석되는지, 의미 있는 논의가 진전되고 있는지, 현재 리뷰를 보강하는지, 다른 해석 여지가 있는지 정리.
+- 최근 뉴로모픽 이야기가 자주 등장하지 않는 것처럼 보이는 이유를 설명.
+
+### 확인 자료
+
+- [Quanta Magazine search, neuromorphic](https://www.quantamagazine.org/?s=neuromorphic)
+- [Quanta Magazine, `A Brain Built From Atomic Switches Can Learn`, 2017](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)
+- [Quanta Magazine, `AI Overcomes Stumbling Block on Brain-Inspired Hardware`, 2022](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)
+- [Quanta Magazine, `New Chip Expands the Possibilities for AI`, 2022](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)
+
+### 반영 내용
+
+- final review에 `퀀타가 남긴 세 질문` 섹션 추가.
+- 세 질문으로 정리:
+  - 물질 자체가 기억과 계산을 함께 할 수 있는가.
+  - analog neuromorphic hardware의 device mismatch를 학습으로 견딜 수 있는가.
+  - 큰 AI 모델을 작은 장치에서 돌릴 만큼 compute와 memory를 가까이 둘 수 있는가.
+- 2017 atomic-switch mesh는 direct AI product보다 material/physical network computing으로 재해석.
+- 2022 BrainScaleS-2는 hardware-aware learning과 device-algorithm co-design의 문제로 재해석.
+- 2022 NeuRRAM은 strict SNN neuromorphic보다 analog in-memory / compute-in-memory AI accelerator 흐름으로 재해석.
+- 최근 뉴로모픽이라는 용어가 덜 보이는 이유를 compute-in-memory, analog AI, event-based sensing, in-sensor computing, edge AI, Physical AI accelerator로 용어가 분산된 결과로 정리.
+- References와 sources note에 Quanta 자료 추가.
+
+### 검증
+
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- editorial audit:
+  - result: `h2_count: 14`, `figure_count: 8`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `물리적 AI`, `피지컬 AI`, lowercase `physical AI`, 주요 AI식 상투어 검색 결과 없음.
+- distribution package:
+  - `python scripts\html_to_dist.py ... --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size: `6,646,200` bytes
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local public-site check:
+  - desktop 1440x1100: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 1440`, `unexpectedOverflowCount: 0`, `hasQuantaSection: true`, `hasAtomicSwitches: true`, `hasBrainScaleS: true`, `hasNeuRRAM: true`, `hasQuantaSearch: true`
+  - mobile 390x900: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 390`, `unexpectedOverflowCount: 0`, `scrollableFigureCount: 5`
+  - dist desktop 1440x1000: title/h1 updated, `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `hasQuantaSection: true`
+  - term check in rendered body: `물리적 AI`/`피지컬 AI`/lowercase `physical AI` count `0`
+  - artifacts:
+    - `artifacts/final_review/verification/neuromorphic_quanta_update_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_quanta_update_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_quanta_update_check.json`
+- Obsidian mirror sync:
+  - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - updated final review markdown/html, sources note, runlog, and `neuromorphic_quanta_update_check.json`.
+- GitHub Pages deployment:
+  - pending until commit/push and Actions completion.

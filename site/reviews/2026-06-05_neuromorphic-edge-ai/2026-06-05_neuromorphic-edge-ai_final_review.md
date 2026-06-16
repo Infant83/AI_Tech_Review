@@ -156,6 +156,20 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 
 이 흐름을 묶으면 뉴로모픽은 하나의 소자 명칭보다 넓은 기술군입니다. SNN processor, memristor/FeFET compute-in-memory, optoelectronic in-sensor computing, event camera, stretchable OECT array, spintronic neuron이 서로 다른 방향에서 같은 제약을 다룹니다. 공통 제약은 데이터 이동, 전력, 지연, 항상 켜진 sensing, 그리고 physical world와 digital model 사이의 변환 비용입니다.
 
+## 퀀타가 남긴 세 질문
+
+뉴로모픽이 2026년에 갑자기 등장한 기술은 아닙니다. [Quanta Magazine의 neuromorphic 검색 결과](https://www.quantamagazine.org/?s=neuromorphic)를 따라가 보면, 이 분야가 오래전부터 세 갈래의 문제를 다뤄 왔음을 알 수 있습니다. 물질 자체가 기억과 계산을 겸할 수 있는지, analog neuromorphic hardware의 불완전성을 학습으로 견딜 수 있는지, 큰 AI 모델을 작은 장치에서 돌릴 만큼 compute와 memory를 가까이 둘 수 있는지가 그 문제들입니다.
+
+[2017년 Quanta의 atomic-switch mesh 기사](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)는 UCLA 연구진의 silver nanowire mesh를 소개했습니다. 작은 self-organized network가 artificial synapse처럼 동작하고, 간단한 학습·논리·noise cleanup을 수행한다는 내용입니다. 당시에는 "뇌처럼 스스로 얽힌 물질망"이라는 이미지가 강했습니다. 지금 다시 읽으면, 이 기사는 범용 AI 칩의 예고편보다 physical network가 계산에 참여할 수 있다는 재료·소자 쪽 논의로 더 잘 들어옵니다. 2026년의 언어로 바꾸면 memristive network, physical neural network, reservoir computing, in-material computing 계열입니다.
+
+[2022년 BrainScaleS-2 기사](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)는 analog neuromorphic chip의 오래된 문제를 다룹니다. 실제 칩의 미세한 소자는 제조 공정 때문에 조금씩 다르고, 이 device mismatch가 디지털 환경에서 학습한 SNN을 하드웨어로 옮길 때 성능을 흔들 수 있습니다. 기사에서 소개한 연구는 SNN이 그 mismatch를 보정하도록 학습해 analog hardware 위에서도 작동할 수 있음을 보였습니다. 지금 관점에서는 "뇌를 닮은 칩"보다 hardware-aware learning과 device-algorithm co-design이 더 중요해 보입니다. Wang et al.의 MoS2/HZO 논문도 결국 같은 관문을 지나야 합니다. 소자 하나가 spike와 synapse를 잘 흉내 내는 것에서 끝나지 않고, variability, calibration, training, benchmark를 동시에 풀어야 합니다.
+
+[2022년 NeuRRAM 기사](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)는 RRAM 기반 analog in-memory chip을 다뤘습니다. Quanta는 NeuRRAM이 3 million memory cells와 hardware neuron을 포함하고, image와 speech recognition 같은 작업에서 digital computer와 비슷한 정확도를 내면서 에너지 효율을 크게 높였다는 연구진의 주장을 소개했습니다. 이 흐름은 strict한 SNN neuromorphic 범주에만 묶기보다 compute-in-memory와 analog AI accelerator 논의까지 연결해 봐야 합니다. 현재 리뷰와 만나는 지점은 분명합니다. 병목은 "더 똑똑한 알고리즘"에만 있지 않고, memory와 processor 사이를 오가는 데이터 이동에도 있습니다.
+
+이 흐름을 보면, 뉴로모픽의 관심이 사라졌다기보다 이름이 여러 갈래로 나뉘었습니다. 2017년에는 brain-like material network가 눈에 띄었고, 2022년에는 analog neuromorphic chip과 RRAM in-memory AI가 주목을 받았습니다. 2025-2026년에는 같은 문제의식이 edge AI, compute-in-memory, event-based vision, in-sensor computing, low-power Physical AI accelerator라는 이름으로 나타납니다. 그래서 "뉴로모픽"이라는 단어 자체는 예전보다 덜 보일 수 있습니다. 대신 그 안의 문제는 더 실무적인 형태로 남아 있습니다. 전력을 얼마나 줄였는가, 지연을 얼마나 낮췄는가, device variability를 어떻게 다뤘는가, 개발자가 쓸 수 있는 software stack과 benchmark가 있는가가 더 자주 묻히고 있습니다.
+
+이 변화는 현재 리뷰의 결론을 보강합니다. Wang et al.의 MoS2/HZO 논문은 독립적인 신기한 소자 발표에 머물지 않습니다. Quanta가 오래전부터 추적해 온 재료, analog hardware, memory-compute 결합 문제가 in-sensor neuromorphic vision 쪽으로 옮겨 온 사례입니다. 다만 다른 해석도 필요합니다. 모든 analog in-memory chip이나 event camera를 곧장 뉴로모픽이라고 부르면 기술 경계가 흐려집니다. 현재 시점의 뉴로모픽은 하나의 제품군보다 "센서, memory, compute, time signal을 얼마나 가까이 묶을 것인가"라는 설계 문제로 읽는 편이 더 정확합니다.
+
 ## 디스플레이 논의의 이동
 
 몇 년 전에는 뉴로모픽과 차세대 디스플레이를 연결한 논의가 꽤 눈에 띄었습니다. 이 흐름이 사라진 것은 아닙니다. 다만 2025-2026년에는 표현의 중심이 "neuromorphic display"에서 in-sensor computing, near-sensor computing, edge AI, wearable interface, AR/VR, robot vision 쪽으로 넓어졌습니다. 디스플레이 단독 시장의 이야기라기보다, 센서와 표시 장치, 메모리와 연산을 한 기판이나 한 device stack 안에서 얼마나 가까이 붙일 수 있는가라는 질문으로 이동한 셈입니다.
@@ -238,7 +252,7 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - 업데이트: 2026-06-16
 - 추가 업데이트: 2026-06-17
 - 작성 형식: AI Tech Review Letters
-- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호, Tesla FSD/AI stack 공개 자료와 NHTSA FSD visibility investigation, Boston Dynamics Atlas/Large Behavior Models 공개 자료, intelligent display 및 in-display neuromorphic computing 문헌
+- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2017-2022년 Quanta Magazine 뉴로모픽 기사, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호, Tesla FSD/AI stack 공개 자료와 NHTSA FSD visibility investigation, Boston Dynamics Atlas/Large Behavior Models 공개 자료, intelligent display 및 in-display neuromorphic computing 문헌
 - 이미지: OpenAI `imagegen` 생성 일러스트 3장, deterministic SVG 설명도 5장
 - 검증 상태: source link refresh, Physical AI 용어 통일, Korean prose audit, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
 
@@ -267,6 +281,10 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - [Frontiers in Neuroscience, Neuromorphic Engineering latest articles](https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles)
 - [Tulyakov et al., Low-latency automotive vision with event cameras, Nature, 2024](https://www.nature.com/articles/s41586-024-07409-w)
 - [Event-Based Neuromorphic Vision for Autonomous Driving, IEEE Signal Processing Magazine, 2020](https://mediatum.ub.tum.de/doc/1550369/s510t7a878tkqb3bjfp1dku59.Event-Based_Neuromorphic_Vision_for_Autonomous_Driving_A_Paradigm_Shift_for_Bio-Inspired_Visual_Sensing_and_Perception.pdf)
+- [Quanta Magazine search, neuromorphic](https://www.quantamagazine.org/?s=neuromorphic)
+- [Quanta Magazine, A Brain Built From Atomic Switches Can Learn, 2017](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)
+- [Quanta Magazine, AI Overcomes Stumbling Block on Brain-Inspired Hardware, 2022](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)
+- [Quanta Magazine, New Chip Expands the Possibilities for AI, 2022](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)
 - [Zhang et al., Toward Intelligent Display with Neuromorphic Technology, Advanced Materials, 2024](https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821)
 - [Dai et al., Electrically programmable organic in-display neuromorphic computing, National Science Review, 2025](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)
 - [An all-in-one electrochromic neuromorphic display, National Science Review, 2025](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)
