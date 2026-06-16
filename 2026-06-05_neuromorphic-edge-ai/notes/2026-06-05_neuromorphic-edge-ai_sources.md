@@ -196,9 +196,28 @@ claim status:
   - robotics SoC, VLA/VLM, edge AI, humanoid robotics를 physical AI stack으로 묶어 발표.
   - 뉴로모픽 자체 근거는 아니며 physical AI 컴퓨팅 수요의 배경으로만 사용.
 
+## 2026-06-16 업데이트 패스
+
+- 목적: 공개 리뷰의 독자 친화적 설명을 강화하고, `물리적 AI`/`피지컬 AI`/`physical AI`로 섞여 있던 표현을 `Physical AI`로 통일한다.
+- 추가 확인한 문헌/자료:
+  - [Chowdhury et al., "Neuromorphic computing for robotic vision: algorithms to hardware advances", Communications Engineering, 2025](https://www.nature.com/articles/s44172-025-00492-5)
+    - event-based camera, SNN/SNN-ANN hybrid, dedicated neuromorphic hardware를 robotic vision system design 문제로 묶어 설명한다.
+    - Physical AI와 뉴로모픽의 연결을 "상위 모델 대체"가 아니라 low-power/low-latency robotic vision stack의 관점에서 보강하는 근거로 사용.
+  - [Kim et al., "AI-native robotic vision systems enabled by in-sensor computing", npj Unconventional Computing, 2026](https://www.nature.com/articles/s44335-025-00047-z)
+    - URL 재확인 완료. DOI는 `10.1038/s44335-025-00047-z`, published 2026-01-07.
+    - 기존 final_review의 링크는 맞았으며, 검색 중 나타난 `s44335-025-00040-6`은 별도 AIoT in-sensor/near-sensor computing 리뷰로 분리.
+  - [Edge intelligence through in-sensor and near-sensor computing for the artificial intelligence of things, npj Unconventional Computing, 2025](https://www.nature.com/articles/s44335-025-00040-6)
+    - neuromorphic architecture, dynamic vision camera, silicon cochlea, in-memory computing을 AIoT edge intelligence 흐름으로 정리한다.
+  - [A comparative review of deep and spiking neural networks for edge AI neuromorphic circuits, Frontiers in Neuroscience, 2025](https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1676570/full)
+    - DNN은 도구와 정확도에서 강하지만 전력 부담이 크고, SNN은 event-driven 효율이 있으나 학습 도구와 benchmark가 더 성숙해야 한다는 균형점을 제공.
+  - [Synopsys, "From Tokens to Physics: How Neuromorphic Computing Will Power Physical AI", 2026-06-03](https://www.synopsys.com/blogs/chip-design/neuromorphic-computing-physical-ai-edge.html)
+    - peer-reviewed 기술 근거가 아니라 산업 framing 자료로만 사용. Physical AI와 neuromorphic edge computing을 실시간·저전력 edge 설계 문제로 묶는 최신 산업 신호.
+  - [Synopsys, Innatera Selects Synopsys Simulation to Scale Brain-Inspired Processors for Edge Devices, 2026-03-02](https://news.synopsys.com/2026-03-02-Innatera-Selects-Synopsys-Simulation-to-Scale-Brain-Inspired-Processors-for-Edge-Devices)
+    - Innatera neuromorphic edge processor와 Physical AI 응용을 EDA/회로 검증 맥락에서 연결한 회사 발표.
+
 ## 리포트 핵심 해석
 
-1. 뉴로모픽은 LLM의 직접 대체재라기보다 physical AI의 reflex/perception substrate에 가깝다.
+1. 뉴로모픽은 LLM의 직접 대체재라기보다 Physical AI의 reflex/perception substrate에 가깝다.
 2. 가장 가까운 상용화 시장은 데이터센터 LLM 훈련이 아니라 항상 켜진 센서, wearables, industrial IoT, radar/audio/vision wake-up, 로봇의 빠른 시각/촉각 반응이다.
 3. 양자 AI와 비교하면, 뉴로모픽은 훨씬 가까운 시점에 edge AI 제품과 연구 prototype으로 검증되고 있다. 다만 "AI 전반의 지능 한계"를 한 번에 넘어서는 기술로 과장해서는 안 된다.
 4. 대상 논문은 in-sensor neuromorphic vision의 좋은 대표 사례지만, system scale과 energy efficiency가 아직 숙제로 남은 실험실 규모 연구다.

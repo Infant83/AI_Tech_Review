@@ -134,3 +134,62 @@ tags:
   - resent with `attachment_files` array.
   - sent message id: `19e94bc91346fbaa`
   - thread id: `19e94bc91346fbaa`
+
+## 2026-06-16 public review update
+
+### 사용자 요청
+
+- Skywork PPT는 이번 범위에서 제외.
+- 기존 공개 리뷰 `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/index.html`의 본문 업데이트.
+- 뉴로모픽 기술 설명을 더 친근하게 정리.
+- `물리적 AI`/`피지컬 AI`/`physical AI` 표기를 `Physical AI`로 통일.
+- Physical AI와 뉴로모픽의 연결을 과장 없이 자연스럽게 설명.
+- 제시 논문 외 2025-2026 리뷰 논문과 최신 산업 신호를 반영.
+- AI 문체 audit 후 AI 작성 말투 제거.
+
+### 반영 내용
+
+- final review 제목 변경:
+  - 이전: `뉴로모픽, 물리적 AI의 반응 시간을 줄이는 기술`
+  - 이후: `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`
+- 본문 구조 업데이트:
+  - 도입부를 로봇/센서/전력/지연 문제에서 시작하도록 재작성.
+  - `Physical AI의 시간`, `첫 시장은 작은 지능`, `2026년의 연구 방향`, `움직이는 산업 신호` 섹션을 중심으로 문장 흐름 정리.
+  - 뉴로모픽을 LLM 직접 대체재가 아니라 Physical AI의 sensor-near perception/reflex layer로 해석.
+- 추가/재확인 근거:
+  - Communications Engineering 2025 robotic vision perspective.
+  - npj Unconventional Computing 2026 AI-native robotic vision review URL 재확인.
+  - npj Unconventional Computing 2025 in-sensor/near-sensor AIoT review.
+  - Frontiers in Neuroscience 2025 DNN/SNN edge AI comparative review.
+  - Synopsys 2026-06-03 Physical AI/neuromorphic edge blog 및 2026-03-02 Innatera-Synopsys 발표.
+- SVG figure text:
+  - `neuromorphic_edge_stack.svg`, `neuromorphic_maturity_timeline.svg`의 `피지컬 AI`/`physical AI` 표기를 `Physical AI`로 수정.
+
+### 검증
+
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 10`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `물리적 AI`, `피지컬 AI`, lowercase `physical AI`, 주요 AI식 상투어 검색 결과 없음.
+- distribution package:
+  - `python scripts\html_to_dist.py ... --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size: 6,620,357 bytes
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local public-site check:
+  - target: `site/reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+  - desktop 1440x1100: title/h1 updated, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `bodyScrollWidth: 1440`, `overflowCount: 0`
+  - mobile 390x900: title/h1 updated, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `bodyScrollWidth: 390`, `overflowCount: 0`
+  - term check in rendered body: `물리적 AI`/`피지컬 AI`/lowercase `physical AI` count `0`
+  - artifacts:
+    - `artifacts/final_review/verification/neuromorphic_public_update_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_public_update_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_public_update_check.json`
+- Obsidian mirror sync:
+  - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - updated final review markdown/html, sources note, runlog, revised SVG figures, verification JSON.
