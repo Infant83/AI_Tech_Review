@@ -11,7 +11,7 @@ author: "김현중 with Codex Agent | AI Governance Team"
 date: 2026-06-05
 issue date: 2026-06-05
 date created: 2026-06-05
-date modified: 2026-06-16
+date modified: 2026-06-17
 slug: neuromorphic-edge-ai
 language: ko
 status: updated-letter
@@ -89,6 +89,20 @@ Physical AI는 로봇, 자율주행, 산업 설비, 웨어러블처럼 실제 �
 [Communications Engineering의 2025년 robotic vision perspective](https://www.nature.com/articles/s44172-025-00492-5)도 같은 방향을 봅니다. 이 글은 event-based camera, SNN 및 SNN-ANN hybrid, 전용 neuromorphic hardware를 따로 보지 말고 system design 문제로 묶어야 한다고 설명합니다. 드론 시각 항법처럼 전력과 지연이 빠듯한 사례에서는 알고리즘과 하드웨어를 함께 설계해야 합니다. 이 관점은 Physical AI와 뉴로모픽의 연결을 억지로 만들지 않습니다. 실제 기계가 빨리 보고, 적게 쓰고, 현장에서 판단해야 하므로 두 논의가 자연스럽게 만납니다.
 
 쉽게 말하면, 뉴로모픽은 로봇에게 "모든 장면을 고해상도 영상으로 설명한 뒤 생각하자"고 말하지 않습니다. 먼저 "방금 무언가 움직였다", "소리가 특정 패턴으로 바뀌었다", "이 진동은 평소와 다르다", "이 빛의 변화는 위험 신호일 수 있다"를 낮은 비용으로 감지합니다. 큰 모델은 그 다음 판단을 맡을 수 있습니다.
+
+## 자율주행차라는 시험대
+
+테슬라 FSD(Full Self-Driving)는 뉴로모픽 기술을 쓰는 사례로 보기는 어렵습니다. 지금 공개된 테슬라의 설명을 기준으로 하면, FSD는 frame-based camera, deep neural network, 차량 내 AI computer, 대규모 fleet data, OTA update를 중심으로 움직입니다. [Tesla FSD 페이지](https://www.tesla.com/fsd)는 외부 카메라의 360도 시야, route navigation, steering, lane change, parking을 설명하면서도 현재 기능은 active supervision이 필요하며 차량을 autonomous vehicle로 만들지는 않는다고 적습니다.
+
+테슬라의 AI stack은 자율주행차가 실제로 어떤 순서로 판단하는지 보여주는 좋은 사례입니다. [Tesla AI & Robotics 페이지](https://www.tesla.com/AI)는 per-camera network가 raw image를 받아 semantic segmentation, object detection, monocular depth estimation을 수행하고, birds-eye-view network가 모든 카메라 영상을 모아 road layout, static infrastructure, 3D object를 top-down view로 출력한다고 설명합니다. 그 다음 autonomy algorithm은 이 세계 표현 안에서 trajectory를 계획합니다. 즉 카메라가 본 장면은 곧바로 steering wheel로 가지 않습니다. 먼저 차 주변의 공간 표현으로 바뀌고, 그 위에서 어느 차선으로 갈지, 어느 속도로 줄일지, 어느 방향으로 피할지 계산됩니다.
+
+이 구조에서 순간적인 움직임은 세 층이 동시에 맞물릴 때 나옵니다. 첫째, perception layer가 앞차, 보행자, 차선, 신호, 도로 경계를 계속 갱신합니다. 둘째, planning layer가 가능한 경로와 위험도를 비교합니다. 셋째, control layer가 조향, 제동, 가속 명령으로 바꿉니다. [Tesla AI computer support 문서](https://www.tesla.com/support/ai-computer)는 이 컴퓨터가 neural network를 빠르게 처리하도록 설계되었다고 설명하지만, 동시에 현재 차량은 완전 자율이 아니며 운전자 감독과 규제 승인이 필요하다고 못박습니다.
+
+이 지점에서 뉴로모픽과 테슬라의 접점이 생깁니다. 테슬라가 현재 쓰는 방식은 뉴로모픽보다 dense visual AI입니다. 그러나 두 기술이 다루는 제약은 상당히 겹칩니다. 카메라 데이터는 많고, 판단은 빨라야 하며, 차 안의 전력과 열은 제한되어 있습니다. 특히 camera-only 전략에서는 센서가 제대로 보지 못하는 순간을 빨리 알아차리는 일도 중요합니다. [NHTSA가 2026년 3월 연 Engineering Analysis](https://static.nhtsa.gov/odi/inv/2026/INOA-EA26002-10023.pdf)는 Tesla FSD의 reduced roadway visibility 조건, 즉 glare와 airborne obscurants 같은 상황에서 camera degradation을 제때 감지하고 운전자에게 충분히 알리는지 평가하겠다고 밝혔습니다. 이 조사는 테슬라에 대한 최종 판정은 아니지만, 자율주행에서 센서 신뢰도와 즉시 반응이 얼마나 중요한지 드러냅니다.
+
+뉴로모픽 event camera와 SNN은 이 지점에서 보조 계층 후보가 됩니다. [Nature의 2024년 event camera 논문](https://www.nature.com/articles/s41586-024-07409-w)은 자동차 vision에서 RGB frame camera가 bandwidth-latency trade-off를 만든다고 보고, event camera가 밝기 변화만 비동기적으로 기록해 temporal resolution과 sparsity를 높일 수 있다고 설명합니다. [IEEE Signal Processing Magazine의 autonomous driving 리뷰](https://mediatum.ub.tum.de/doc/1550369/s510t7a878tkqb3bjfp1dku59.Event-Based_Neuromorphic_Vision_for_Autonomous_Driving_A_Paradigm_Shift_for_Bio-Inspired_Visual_Sensing_and_Perception.pdf)도 event-based neuromorphic vision이 낮은 지연, 높은 dynamic range, motion blur 감소에서 장점을 가진다고 정리합니다.
+
+다만 이것이 "테슬라에 뉴로모픽이 필수"라는 뜻은 아닙니다. 테슬라는 현재 더 큰 fleet data, end-to-end learning, AI inference chip, simulation/evaluation infrastructure로 문제를 밀고 있습니다. 뉴로모픽이 들어간다면, 전체 FSD brain을 대체하기보다 급격한 움직임, glare/tunnel 전환, parking lot 주변 움직임, 낮은 전력의 always-on monitoring 같은 peripheral reflex layer에서 먼저 검토될 가능성이 큽니다. 자율주행차는 뉴로모픽의 필요성을 곧장 증명하지는 않습니다. 대신 어느 계층에 넣어야 실제 가치가 생기는지 따져볼 수 있는 시험대입니다.
 
 ## 첫 시장은 작은 지능
 
@@ -191,8 +205,9 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - 작성자: 김현중 with Codex Agent | AI Governance Team
 - 작성일: 2026-06-05
 - 업데이트: 2026-06-16
+- 추가 업데이트: 2026-06-17
 - 작성 형식: AI Tech Review Letters
-- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호
+- 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 Physical AI/edge neuromorphic 산업 신호, Tesla FSD/AI stack 공개 자료와 NHTSA FSD visibility investigation
 - 이미지: OpenAI `imagegen` 생성 일러스트 3장, deterministic SVG 설명도 4장
 - 검증 상태: source link refresh, Physical AI 용어 통일, Korean prose audit, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
 
@@ -219,9 +234,15 @@ Wang et al.의 MoS2/HZO 논문은 하나의 사례입니다. 2026년의 문헌�
 - [Li et al., A large-scale stretchable neuromorphic circuit for on-body edge computing, Nature Electronics, 2026](https://www.nature.com/articles/s41928-026-01639-8)
 - [An et al., Retinocortical in-sensor neuromorphic vision platform for NIR-augmented artificial vision, Nature Communications Article in Press, 2026](https://www.nature.com/articles/s41467-026-71678-4_reference.pdf)
 - [Frontiers in Neuroscience, Neuromorphic Engineering latest articles](https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles)
+- [Tulyakov et al., Low-latency automotive vision with event cameras, Nature, 2024](https://www.nature.com/articles/s41586-024-07409-w)
+- [Event-Based Neuromorphic Vision for Autonomous Driving, IEEE Signal Processing Magazine, 2020](https://mediatum.ub.tum.de/doc/1550369/s510t7a878tkqb3bjfp1dku59.Event-Based_Neuromorphic_Vision_for_Autonomous_Driving_A_Paradigm_Shift_for_Bio-Inspired_Visual_Sensing_and_Perception.pdf)
 
 ### 산업 신호와 배경자료
 
+- [Tesla, Full Self-Driving (Supervised)](https://www.tesla.com/fsd)
+- [Tesla, AI & Robotics](https://www.tesla.com/AI)
+- [Tesla Support, AI Computer Installations](https://www.tesla.com/support/ai-computer)
+- [NHTSA ODI Resume EA26002, FSD Collisions in Reduced Roadway Visibility Conditions, 2026-03-18](https://static.nhtsa.gov/odi/inv/2026/INOA-EA26002-10023.pdf)
 - [Intel, Hala Point announcement, 2024](https://newsroom.intel.com/artificial-intelligence/intel-builds-worlds-largest-neuromorphic-system-to-enable-more-sustainable-ai)
 - [IBM Research, NorthPole Science paper page, 2023](https://research.ibm.com/publications/neural-inference-at-the-frontier-of-energy-space-and-time)
 - [Innatera, Pulsar at CES 2026 announcement](https://innatera.com/press-releases/redefining-the-cutting-edge-innatera-debuts-real-world-neuromorphic-edge-ai-at-ces-2026)

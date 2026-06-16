@@ -199,3 +199,59 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27624494197`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27624554251`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, image count `7`, old term count `0`.
+
+## 2026-06-17 Tesla FSD / autonomous vehicle update
+
+### 사용자 요청
+
+- Tesla 자율주행차의 센서, AI 연산, 방향 결정, 순간적 움직임이 뉴로모픽 기술과 어떤 관계가 있는지 탐색.
+- Tesla의 실제 자율주행 기술과 미래 기술 방향을 정리.
+- 의미가 있으면 뉴로모픽 리뷰 본문에 반영.
+
+### 검색 및 확인 자료
+
+- Skywork Search:
+  - `Tesla Full Self-Driving 2026 AI architecture cameras neural network planning control official`
+  - `Tesla FSD 2026 end-to-end neural network Robotaxi future technology AI4 HW4`
+  - `Tesla autonomy sensors cameras radar lidar neuromorphic computing relation autonomous vehicles`
+- 확인한 핵심 자료:
+  - Tesla FSD page: active supervision, cameras, route navigation, steering/lane change/parking, future FSD Unsupervised/robotaxi/Cybercab framing.
+  - Tesla AI & Robotics: advanced AI for vision and planning, efficient inference hardware, per-camera networks, birds-eye-view networks, autonomy algorithms, code foundation latency/determinism.
+  - Tesla AI Computer support: custom AI computer, active driver supervision, not fully autonomous today, regulatory approval condition.
+  - NHTSA ODI Resume EA26002: FSD reduced visibility investigation, vision-based camera reliance, degradation detection and driver warning timing.
+  - Nature 2024 low-latency automotive vision with event cameras.
+  - IEEE Signal Processing Magazine 2020 event-based neuromorphic vision for autonomous driving.
+
+### 반영 내용
+
+- final review에 `자율주행차라는 시험대` 섹션 추가.
+- 핵심 해석:
+  - Tesla FSD는 현재 neuromorphic system으로 보기 어렵다.
+  - 현재 Tesla stack은 camera-based dense neural network + in-vehicle AI computer + fleet data + OTA update에 가깝다.
+  - 그러나 Tesla가 다루는 sensor bandwidth, latency, visibility degradation, thermal/power budget, split-second control 문제는 뉴로모픽이 겨냥하는 Physical AI 제약과 겹친다.
+  - 뉴로모픽은 전체 FSD brain 대체보다 event camera/SNN 기반 peripheral reflex layer 후보로 보는 편이 안전하다.
+- References에 Tesla, NHTSA, event camera/autonomous driving 자료 추가.
+- sources note에 2026-06-17 Tesla FSD update section 추가.
+
+### 검증
+
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- editorial audit:
+  - result: `h2_count: 11`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `물리적 AI`, `피지컬 AI`, lowercase `physical AI`, 주요 AI식 상투어 검색 결과 없음.
+- distribution package:
+  - `python scripts\html_to_dist.py ... --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local public-site check:
+  - desktop 1440x1100: title/h1 updated, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `bodyScrollWidth: 1440`, `overflowCount: 0`, `hasTeslaSection: true`, `hasNhtsa: true`
+  - mobile 390x900: title/h1 updated, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `bodyScrollWidth: 390`, `overflowCount: 0`, `hasTeslaSection: true`, `hasNhtsa: true`
+  - term check in rendered body: `물리적 AI`/`피지컬 AI`/lowercase `physical AI` count `0`
+  - artifacts:
+    - `artifacts/final_review/verification/neuromorphic_tesla_update_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_tesla_update_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_tesla_update_check.json`

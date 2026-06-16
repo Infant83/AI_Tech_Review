@@ -215,6 +215,48 @@ claim status:
   - [Synopsys, Innatera Selects Synopsys Simulation to Scale Brain-Inspired Processors for Edge Devices, 2026-03-02](https://news.synopsys.com/2026-03-02-Innatera-Selects-Synopsys-Simulation-to-Scale-Brain-Inspired-Processors-for-Edge-Devices)
     - Innatera neuromorphic edge processor와 Physical AI 응용을 EDA/회로 검증 맥락에서 연결한 회사 발표.
 
+## 2026-06-17 Tesla FSD / autonomous vehicle update
+
+- 목적: 사용자의 질문에 따라 Tesla FSD와 자율주행차의 sensor-compute-planning-control stack이 뉴로모픽과 어떤 관계를 갖는지 검토한다.
+- 판단:
+  - Tesla FSD는 현재 공개 자료 기준으로 neuromorphic architecture가 아니라 camera-based dense neural network + in-vehicle AI computer + fleet data + OTA update 중심의 architecture다.
+  - 그러나 Tesla가 풀고 있는 문제는 뉴로모픽이 겨냥하는 Physical AI 문제와 직접 겹친다. 핵심 제약은 latency, sensor bandwidth, power/thermal budget, visibility degradation detection, instantaneous control이다.
+  - 리뷰에는 "Tesla가 뉴로모픽을 쓴다"가 아니라 "자율주행차는 뉴로모픽이 들어갈 수 있는 peripheral reflex layer의 필요성을 보여준다"는 관점으로 반영한다.
+
+### Tesla official / regulatory sources
+
+- [Tesla, Full Self-Driving (Supervised)](https://www.tesla.com/fsd)
+  - FSD는 route navigation, steering, lane changes, parking 등을 active supervision 아래 수행한다고 설명한다.
+  - Tesla는 현재 enabled features가 active driver supervision을 필요로 하며 vehicle을 autonomous로 만들지 않는다고 명시한다.
+  - Future section은 FSD Unsupervised, robotaxi fleet, Cybercab를 미래 방향으로 제시한다.
+
+- [Tesla, AI & Robotics](https://www.tesla.com/AI)
+  - Tesla는 Full Self-Driving, bipedal robotics 등을 위해 advanced AI for vision and planning, efficient inference hardware를 핵심 접근으로 설명한다.
+  - per-camera network: raw images -> semantic segmentation, object detection, monocular depth estimation.
+  - birds-eye-view network: video from all cameras -> road layout, static infrastructure, 3D objects in top-down view.
+  - autonomy algorithms: world representation 안에서 trajectory planning.
+  - code foundations: throughput, latency, correctness, determinism, sensor data capture, multi-SoC compute pipeline.
+
+- [Tesla Support, AI Computer Installations](https://www.tesla.com/support/ai-computer)
+  - AI computer는 neural network를 빠르게 처리하도록 설계되었다고 설명한다.
+  - Tesla vehicles require active driver supervision and are not fully autonomous today라는 제한을 명시한다.
+  - autonomy activation은 reliability far in excess of human drivers와 regulatory approval에 달려 있다고 설명한다.
+
+- [NHTSA ODI Resume EA26002, FSD Collisions in Reduced Roadway Visibility Conditions, 2026-03-18](https://static.nhtsa.gov/odi/inv/2026/INOA-EA26002-10023.pdf)
+  - Tesla FSD가 vision-based cameras와 FSD software에 의존한다고 설명한다.
+  - reduced roadway visibility 조건에서 degradation detection system이 degraded state를 감지하고 운전자에게 충분히 경고하는지 Engineering Analysis를 개시.
+  - glare, airborne obscurants, lead vehicle detection failure, late alert가 조사 포인트로 등장한다.
+
+### Autonomous driving / neuromorphic vision sources
+
+- [Tulyakov et al., "Low-latency automotive vision with event cameras", Nature, 2024](https://www.nature.com/articles/s41586-024-07409-w)
+  - 자동차 vision에서 image-based RGB camera가 bandwidth-latency trade-off를 만든다고 설명.
+  - event camera는 brightness change를 asynchronous하게 측정해 high temporal resolution과 sparsity를 제공한다.
+
+- [Event-Based Neuromorphic Vision for Autonomous Driving, IEEE Signal Processing Magazine, 2020](https://mediatum.ub.tum.de/doc/1550369/s510t7a878tkqb3bjfp1dku59.Event-Based_Neuromorphic_Vision_for_Autonomous_Driving_A_Paradigm_Shift_for_Bio-Inspired_Visual_Sensing_and_Perception.pdf)
+  - event-based neuromorphic vision sensor가 low latency, HDR, motion blur 저감에서 autonomous driving perception에 유리할 수 있다고 정리한다.
+  - 현재 Tesla architecture와 동일하다는 근거가 아니라, 자율주행차에서 뉴로모픽 sensor/reflex layer가 의미를 가질 수 있는 기술 배경으로 사용.
+
 ## 리포트 핵심 해석
 
 1. 뉴로모픽은 LLM의 직접 대체재라기보다 Physical AI의 reflex/perception substrate에 가깝다.
