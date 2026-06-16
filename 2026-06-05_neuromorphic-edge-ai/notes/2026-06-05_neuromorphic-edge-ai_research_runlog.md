@@ -432,3 +432,9 @@ tags:
 - Obsidian mirror sync:
   - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
   - updated final review markdown/html, sources note, runlog, and strict prose browser check JSON.
+- GitHub Pages deployment:
+  - commit: `88865fe` (`Tighten neuromorphic review prose audit`)
+  - `git push origin main` 완료.
+  - GitHub Actions `Publish public report hub` run id: `27651994226`, status `completed`, conclusion `success`.
+  - GitHub Pages `pages build and deployment` run id: `27652035052`, status `completed`, conclusion `success`.
+  - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, desktop/mobile `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `unexpectedOverflowCount: 0`, required sections present, old phrase hits `[]`, Korean Physical AI term hits `0`, new opening/Tesla/Quanta headings reflected.
