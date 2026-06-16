@@ -384,3 +384,51 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27650153388`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27650187901`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, `HasQuantaSection: true`, `HasAtomicSwitches: true`, `HasBrainScaleS: true`, `HasNeuRRAM: true`, `HasQuantaSearch: true`, image tag count `8`, old term count `0`.
+
+## 2026-06-17 strict AI prose audit update
+
+### 사용자 요청
+
+- AI식 단정형 문체를 더 엄격하게 감사.
+- `~~편이 정확합니다`, `~~입니다`, `~~합니다`가 반복될 때 생기는 선언적·관조적 어조를 줄임.
+- `이 지점에서`, `밀고`, `맞다/틀리다`, `정확하다`, `필수`처럼 지식을 판정하는 표현을 줄임.
+- 뉴로모픽 분야 전문가가 겸손하지만 professional하게 독자를 논의 안으로 끌어들이는 톤으로 조정.
+
+### 반영 내용
+
+- 도입부를 `LLM 후계자` 판정 대신, 뉴로모픽이 오래 붙들어 온 센서-근접 계산의 물음으로 재구성.
+- MoS2/HZO 논문 설명에서 `정확합니다`, `읽는 편이 정확합니다`, `확인된 성과는...` 같은 판정형 문장을 source-bound 설명으로 수정.
+- Tesla/FSD와 Boston Dynamics Atlas 대목에서 `필수`, `시험대`, `맞다`, `좋은 사례` 계열 표현을 제거하고, 공개 자료 기준의 계층형 시간 스케일 설명으로 조정.
+- Quanta, display, industry signal 섹션에서 `보강합니다`, `분명합니다`, `신호입니다` 같은 확정형 설명을 줄이고, 논점이 어떻게 이동했는지 연구자 관찰형 문장으로 수정.
+- 결론부를 처방형 체크리스트보다 `우리 제품과 공정에서 어떤 제약을 묻는가`에 가까운 독자-facing 물음으로 조정.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 14`, `figure_count: 8`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `정확합니다`, `맞습니다`, `틀립니다`, `필수`, `밀고 있습니다`, `시험대입니다`, `좋은 사례`, `이 지점`, `이 대목`, `보여줍니다`, `드러냅니다`, `분명합니다`, `후보가 됩니다`, `가능성이 큽니다`, `읽는 편`, `보는 편`, `좋습니다`, `중요합니다` 검색 결과 없음.
+  - `물리적 AI`, `피지컬 AI`, lowercase `physical AI` 검색 결과 없음.
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - output: `reports/2026-06-05_neuromorphic-edge-ai_final_review.html`
+- distribution package:
+  - `python scripts\html_to_dist.py ... --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size: `6,647,546` bytes
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local browser check:
+  - dist desktop 1440x1200 and mobile 390x900: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `unexpectedOverflowCount: 0`, required sections all present, old phrase hits `[]`, Korean Physical AI term hits `0`.
+  - site desktop 1440x1200 and mobile 390x900: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `unexpectedOverflowCount: 0`, required sections all present, old phrase hits `[]`, Korean Physical AI term hits `0`.
+  - artifacts:
+    - `artifacts/final_review/verification/neuromorphic_strict_prose_browser_check.json`
+    - `artifacts/final_review/verification/neuromorphic_strict_prose_dist_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_strict_prose_dist_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_strict_prose_site_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_strict_prose_site_mobile.png`
+- Obsidian mirror sync:
+  - `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - updated final review markdown/html, sources note, runlog, and strict prose browser check JSON.
