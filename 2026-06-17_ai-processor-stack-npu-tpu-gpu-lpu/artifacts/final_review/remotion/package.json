@@ -1,0 +1,20 @@
+{
+  "name": "ai-processor-stack-remotion",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "still": "remotion still src/index.tsx ProcessorRouting ../figures/remotion/fig04_processor_routing_remotion.png --frame=96",
+    "render": "remotion render src/index.tsx ProcessorRouting out/processor-routing.mp4 --codec=h264 --pixel-format=yuv420p --crf=26"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.375",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.375"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.7.3"
+  }
+}
