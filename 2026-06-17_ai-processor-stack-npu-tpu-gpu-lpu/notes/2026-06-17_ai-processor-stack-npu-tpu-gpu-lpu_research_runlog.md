@@ -164,3 +164,17 @@
   - SVG count: 2
   - console warnings/errors: 0
   - verification server stopped after check
+- GitHub publication:
+  - main commit pushed: `43978e0a96189e1f9e1c34a212b747ca3bd2586f`
+  - `Publish public report hub` workflow completed successfully for the same commit.
+  - `gh-pages` branch commit: `3f4ee0e5dd68fd6c33335454d0989eec19874de4`
+  - GitHub Pages deployment state: success
+- Live public URL verification:
+  - manifest URL: `https://infant83.github.io/AI_Tech_Review/manifest.json`
+  - manifest count after propagation: 8
+  - first manifest folder: `2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu`
+  - review URL status: 200
+  - review URL contains title: true
+  - live review figure mentions: 7
+  - live review image tags: 7
+  - live review contains Remotion still reference: true
