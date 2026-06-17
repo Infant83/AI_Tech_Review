@@ -504,3 +504,9 @@ tags:
     - `artifacts/final_review/verification/neuromorphic_contrast_pivot_dist_mobile.png`
     - `artifacts/final_review/verification/neuromorphic_contrast_pivot_site_desktop.png`
     - `artifacts/final_review/verification/neuromorphic_contrast_pivot_site_mobile.png`
+- GitHub Pages deployment:
+  - commit: `126cd5a` (`Tighten neuromorphic contrast-pivot prose`)
+  - `git push origin main` 완료.
+  - GitHub Actions `Publish public report hub` run id: `27667297260`, status `completed`, conclusion `success`.
+  - GitHub Pages `pages build and deployment` run id: `27667324232`, status `completed`, conclusion `success`.
+  - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, `HasNewHeading: true`, `HasOldPhrase: false`, `HasContrastPivot: false`, `HasPhysicalAI: true`.
