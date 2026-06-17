@@ -47,6 +47,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
+        title="AI 처리장치 스택: CPU, GPU, TPU, NPU, LPU는 왜 나뉘는가",
+        subtitle="병렬성, 데이터 이동, 지연시간, 전력, 소프트웨어 스택으로 AI 칩의 역할을 다시 읽습니다",
+        date="2026-06-17",
+        updated="2026-06-17",
+        category="AI Hardware",
+        tags=("AI Hardware", "AI Accelerators", "GPU/TPU", "NPU/LPU"),
+        summary=(
+            "NPU, LPU, TPU, GPU, CPU, DPU/IPU, QPU를 새 약어 경쟁이 아니라 workload와 "
+            "데이터 경로의 분화로 읽습니다. 메모리 이동, 정밀도, 지연시간, 인프라 오프로드가 "
+            "왜 별도 처리장치를 낳는지 정리합니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-06-05_neuromorphic-edge-ai",
         title="뉴로모픽, 물리적 AI의 반응 시간을 줄이는 기술",
         subtitle="MoS2 인-센서 비전 논문에서 edge AI 상용화 신호까지, LLM 이후의 감각 계층을 어떻게 볼 것인가",

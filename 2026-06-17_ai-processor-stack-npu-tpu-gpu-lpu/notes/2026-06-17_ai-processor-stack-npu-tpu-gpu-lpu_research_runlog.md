@@ -134,3 +134,33 @@
   - key judgments
   - verification summary
   - source highlights
+
+## Public Site Publication
+
+- User requested publication to:
+  - `https://infant83.github.io/AI_Tech_Review/`
+- Public site registration:
+  - added `2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu` to `scripts/publish_public_site.py`
+  - generated `site/reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/index.html`
+  - updated `site/index.html`
+  - updated `site/manifest.json`
+- Target review URL:
+  - `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/`
+- Generation check:
+  - targeted public-site publish was used to avoid mixing pre-existing unrelated `site/assets/site.css` changes.
+  - `[public-site-check] ok`
+- Local public-site verification:
+  - local HTTP server on `127.0.0.1:8768`
+  - hub opened at `http://127.0.0.1:8768/index.html`
+  - hub card count: 8
+  - latest hub title: `AI 처리장치 스택: CPU, GPU, TPU, NPU, LPU는 왜 나뉘는가`
+  - new review link present in hub: true
+  - review opened at `http://127.0.0.1:8768/reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/index.html`
+  - review title ok
+  - 7 figures
+  - 7 images
+  - broken images: 0
+  - Remotion still present
+  - SVG count: 2
+  - console warnings/errors: 0
+  - verification server stopped after check
