@@ -11,7 +11,7 @@ AI 하드웨어 논의는 종종 새 약어의 경쟁처럼 보입니다. GPU가
 이 이름들을 일렬로 세워 “어느 것이 더 높은 단계인가”로 읽으면 금방 헷갈립니다. 더 유용한 출발점은 각 칩이 어떤 지연과 비용을 줄이려 하는지 보는 것입니다. 분기와 운영체제 제어가 많은 작업, 행렬 곱이 끝없이 반복되는 작업, 메모리에서 데이터를 가져오는 데 시간이 많이 드는 작업, 토큰 하나의 지연시간이 서비스 품질을 좌우하는 작업은 같은 하드웨어에서 같은 효율로 처리되지 않습니다. 처리장치가 늘어난 배경에는 계산의 모양이 갈라진 현실이 있습니다.
 
 <figure class="article-hero-figure">
-  <img src="../artifacts/final_review/figures/imagegen/fig01_processor_stack_hero_v2-web.png" alt="중앙 오케스트레이션 칩, 대형 연산 타일, 엣지 디바이스, 토큰 컨베이어, 인프라 게이트, 양자 실험 장치를 하나의 AI 처리장치 생태계로 표현한 생성 일러스트">
+  <img src="fig01_processor_stack_hero_v2-web.png" alt="중앙 오케스트레이션 칩, 대형 연산 타일, 엣지 디바이스, 토큰 컨베이어, 인프라 게이트, 양자 실험 장치를 하나의 AI 처리장치 생태계로 표현한 생성 일러스트">
   <figcaption><strong>그림 1.</strong> 생성 일러스트. 중앙의 제어 칩, 대형 연산 영역, 엣지 장치, 토큰 스트리밍 레인, 인프라 게이트, 실험 장치를 한 작업 공간에 배치했습니다. CPU, GPU, TPU, NPU, LPU, DPU, QPU가 같은 시스템 안에서 서로 다른 병목을 맡는다는 점을 열어주는 그림입니다.</figcaption>
 </figure>
 
@@ -33,7 +33,7 @@ CPU, GPU, TPU, NPU, LPU, DPU, QPU를 나누는 기준은 병렬성, 데이터 �
 넷째, **소프트웨어 스택**입니다. 칩 성능은 compiler, runtime, kernel library, framework, scheduling 도구를 통해 제품 성능으로 바뀝니다. GPU가 오래 강했던 이유는 CUDA, cuDNN, TensorRT, NCCL 같은 생태계가 함께 있었기 때문입니다. TPU는 XLA, JAX, PyTorch preview, Pathways 같은 구글 스택과 같이 움직이고, AWS Trainium은 Neuron SDK를 전면에 둡니다. LPU를 말할 때도 Groq가 강조하는 부분은 static scheduling과 deterministic execution입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/svg/fig02_processor_workload_map.svg" alt="CPU, GPU, TPU, NPU, LPU, DPU, QPU, FPGA를 병렬성, 데이터 이동, 지연시간, 전력 최적화 기준으로 배치한 역할 지도">
+  <img src="fig02_processor_workload_map.svg" alt="CPU, GPU, TPU, NPU, LPU, DPU, QPU, FPGA를 병렬성, 데이터 이동, 지연시간, 전력 최적화 기준으로 배치한 역할 지도">
   <figcaption><strong>그림 2.</strong> 처리장치의 이름보다 workload의 모양을 먼저 봐야 합니다. CPU는 제어와 분기, GPU는 대량 병렬, TPU는 행렬 데이터플로, NPU는 엣지 전력 효율, LPU는 언어 추론 지연시간, DPU/IPU는 인프라 오프로드, QPU는 양자 실험·샘플링 쪽에 놓입니다. FPGA/adaptive compute는 고정 ASIC과 범용 프로세서 사이에서 재구성 가능성을 제공합니다.</figcaption>
 </figure>
 
@@ -44,7 +44,7 @@ CPU, GPU, TPU, NPU, LPU, DPU, QPU를 나누는 기준은 병렬성, 데이터 �
 이 조건에서 전문화가 시작됩니다. GPU는 CPU보다 훨씬 많은 연산기를 놓고, 같은 형태의 연산을 병렬로 처리합니다. TPU는 신경망에 자주 나오는 matrix multiply가 물리적으로 잘 흐르도록 배열을 고정합니다. NPU는 데이터센터 최고 성능 대신 배터리, 발열, 개인정보, 항상 켜진 기능을 우선합니다. DPU는 GPU 앞단에서 네트워크와 스토리지가 막히는 시간을 줄입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/imagegen/fig03_memory_wall_imagegen-web.png" alt="메모리 타워와 compute chiplet 사이의 좁은 데이터 경로, 병목 밸브, 대기 중인 연산 타일을 표현한 생성 일러스트">
+  <img src="fig03_memory_wall_imagegen-web.png" alt="메모리 타워와 compute chiplet 사이의 좁은 데이터 경로, 병목 밸브, 대기 중인 연산 타일을 표현한 생성 일러스트">
   <figcaption><strong>그림 3.</strong> 생성 일러스트. AI 칩 경쟁의 상당 부분은 더 많은 연산기를 넣는 경쟁이면서 동시에 데이터를 덜 움직이는 경쟁입니다. 메모리 대역폭, on-chip SRAM, near-memory compute, HBM, interconnect가 계속 강조되는 이유도 여기에 있습니다.</figcaption>
 </figure>
 
@@ -67,7 +67,7 @@ CPU, GPU, TPU, NPU, LPU, DPU, QPU를 나누는 기준은 병렬성, 데이터 �
 | QPU | 양자 샘플링, 최적화 연구, 물질·화학 simulation 후보 | qubit, superposition, entanglement, error correction | 특정 문제에서 장기적 가능성 | 현재는 일반 AI 학습·추론 대체재가 아님 |
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/remotion/fig04_processor_routing_remotion.png" alt="CPU가 GPU, TPU, LPU, NPU, DPU, QPU로 작업을 라우팅하는 Remotion 렌더링 정적 이미지">
+  <img src="fig04_processor_routing_remotion.png" alt="CPU가 GPU, TPU, LPU, NPU, DPU, QPU로 작업을 라우팅하는 Remotion 렌더링 정적 이미지">
   <figcaption><strong>그림 4.</strong> Remotion으로 만든 라우팅 도식입니다. CPU는 작업을 조율하고, GPU·TPU·LPU·NPU·DPU·QPU는 workload의 성격에 따라 서로 다른 경로를 맡습니다. 정적 페이지에서는 이 장면을 PNG still로 넣었습니다.</figcaption>
 </figure>
 
@@ -96,7 +96,7 @@ NPU는 AI PC, 스마트폰, 카메라, 자동차, IoT 장치에서 중요해지�
 TOPS는 조심해서 읽어야 합니다. TOPS는 대체로 정밀도, sparsity, batch size, memory bandwidth, 실제 kernel support에 따라 체감 성능과 크게 달라집니다. 같은 40 TOPS라도 어떤 모델을 어느 precision으로, 어느 runtime에서, 얼마나 오래 발열 제한 없이 돌리는지가 다릅니다. NPU의 가치는 클라우드 GPU와의 속도 경쟁보다, 네트워크 없이 낮은 전력으로 로컬 inference를 안정적으로 수행하는 데 있습니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/imagegen/fig05_edge_npu_imagegen-web.png" alt="노트북, 스마트폰, 카메라 센서 가까이에 작은 NPU 타일이 놓이고, 먼 클라우드 모델은 흐릿한 배경으로 표현된 생성 일러스트">
+  <img src="fig05_edge_npu_imagegen-web.png" alt="노트북, 스마트폰, 카메라 센서 가까이에 작은 NPU 타일이 놓이고, 먼 클라우드 모델은 흐릿한 배경으로 표현된 생성 일러스트">
   <figcaption><strong>그림 5.</strong> 생성 일러스트. NPU의 강점은 거대한 모델 학습보다 장치 안에서 반복되는 작은 추론입니다. 카메라, 마이크, 키보드, 화면 상태 같은 로컬 신호를 클라우드로 보내지 않고 처리할 수 있으면 지연시간, 전력, 개인정보 측면에서 이점이 생깁니다.</figcaption>
 </figure>
 
@@ -109,7 +109,7 @@ LPU라는 이름은 CPU, GPU처럼 오래 표준화된 범주로 쓰이지 않�
 GPU는 범용성과 throughput이 강합니다. 많은 사용자 요청이 섞이는 serving 환경에서는 tail latency, cache behavior, scheduling overhead가 별도의 문제로 올라옵니다. LPU식 설계는 “토큰이 규칙적으로 지나가는 공장”을 만들려는 시도입니다. 모델 구조가 바뀌거나, workload가 multimodal·tool-use·retrieval-heavy로 복잡해질 때 얼마나 유연하게 대응할 수 있는지가 관건입니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/imagegen/fig06_lpu_dataflow_imagegen-web.png" alt="여러 병렬 레인 위로 빛나는 토큰 패킷이 흐르고, 정해진 타이밍으로 compute tile과 SRAM 섬을 통과하는 생성 일러스트">
+  <img src="fig06_lpu_dataflow_imagegen-web.png" alt="여러 병렬 레인 위로 빛나는 토큰 패킷이 흐르고, 정해진 타이밍으로 compute tile과 SRAM 섬을 통과하는 생성 일러스트">
   <figcaption><strong>그림 6.</strong> 생성 일러스트. LPU를 넓게 해석하면 언어모델 추론에서 예측 가능한 dataflow와 token latency를 최우선으로 삼는 설계입니다. 이 그림은 특정 제품 사양을 표시하지 않고, token stream을 일정한 리듬으로 처리하려는 아키텍처적 의도를 설명합니다.</figcaption>
 </figure>
 
@@ -152,7 +152,7 @@ CPU/GPU/TPU/NPU/LPU 밖에서도 여러 전략이 동시에 실험되고 있습�
 네 번째 함정은 **공급망과 운영**입니다. 데이터센터 가속기는 칩만 사면 끝나지 않습니다. HBM 공급, rack power, liquid cooling, network fabric, software licensing, observability, driver version, security isolation, cloud portability가 같이 따라옵니다. 엣지 NPU도 마찬가지입니다. 모델 변환, quantization, vendor SDK, Windows/Android/macOS API support가 실제 도입 난이도를 좌우합니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/svg/fig07_specialization_curve.svg" alt="CPU에서 GPU, TPU/NPU, LPU/ASIC, wafer-scale/analog/QPU로 갈수록 범용성은 줄고 특정 병목 효율은 높아지는 전문화 곡선">
+  <img src="fig07_specialization_curve.svg" alt="CPU에서 GPU, TPU/NPU, LPU/ASIC, wafer-scale/analog/QPU로 갈수록 범용성은 줄고 특정 병목 효율은 높아지는 전문화 곡선">
   <figcaption><strong>그림 7.</strong> 전문화에는 비용이 따릅니다. 오른쪽으로 갈수록 특정 병목에는 강해지지만, workload가 바뀔 때의 유연성, 소프트웨어 이식성, 공급망, 검증 비용이 커집니다. 그래서 앞으로의 시스템은 여러 처리장치를 조합하는 방향으로 설계될 가능성이 큽니다.</figcaption>
 </figure>
 

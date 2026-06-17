@@ -45,8 +45,6 @@
   - `uv run --with openai --with pillow python C:\Users\angpa\.codex\skills\imagegen\scripts\image_gen.py generate-batch --input ... --out-dir ... --concurrency 2 --max-attempts 3 --downscale-max-dim 1536`
 - First Figure 1 candidate included visible English labels, so it was kept as a rejected alternate and replaced with `fig01_processor_stack_hero_v2-web.png`.
 
-## Pending Verification
-
 ## HTML Verification
 
 - Render command:
@@ -70,10 +68,60 @@
   - SVG present
   - console warnings/errors: 0
 
+## Hyun-Jung Kim-Style Editorial Pass
+
+- Trigger: user approved distribution but requested continued audit/rewrite to better match Hyun-Jung Kim-style writing.
+- References checked:
+  - `C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\SKILL.md`
+  - `references/korean-review-expression-editor.md`
+  - `references/korean-science-prose-patterns.md`
+  - `references/ai-tech-review-final-pass.md`
+  - `.codex/rules/writing-harness.md`
+  - `C:\Users\angpa\.codex\rules\korean-writing-style.md`
+  - `C:\Users\angpa\Obsidian_Vault\hkim_Writings\2026-05-10_AI식 글쓰기 감사와 김현중식 문체 레퍼런스.md`
+  - `C:\Users\angpa\Obsidian_Vault\hkim_Writings\2026-05-10_KIAS_Quanta_CHEY_참고스타일_체크가이드.md`
+- Audit command:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py reports\2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu_final_review.md`
+- Initial finding count after first draft: 22.
+- After rewrite: 7 findings.
+- Remaining findings are interpreted as:
+  - repeated watch terms `장치`, `병목`: expected topic terms for a processor-stack review; kept where technically necessary.
+  - `weak_visual_specificity`: the audit script's concrete visual term list is tuned for agent/harness reviews, not processor hardware reviews. Captions were still tightened and reviewed manually.
+- Main rewrites:
+  - reduced `A가 아니라 B` contrast pivots.
+  - removed reader-facing workflow wording around Remotion source embedding.
+  - changed generic headings into claim-bearing headings.
+  - rewrote conclusion around workload routing and data path rather than slogan.
+  - shortened long SVG text nodes.
+  - synchronized memo and Obsidian mirror with the revised thesis.
+
 ## Pending
 
-- Optional after user confirmation: create `dist/` package and `dist.zip`.
 - Optional: generate actual Skywork PPTX/PDF from the prepared prompt packet.
+
+## Distribution Package
+
+- User confirmed distribution, then requested Hyun-Jung Kim-style audit/rewrite before final packaging.
+- Package command:
+  - `python scripts\html_to_dist.py 2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu\reports\2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu_final_review.html --dist 2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu\dist --zip --zip-path 2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu\dist.zip`
+- Script result:
+  - `[local-ref-check] ok`
+- Dist folder:
+  - `C:\Users\angpa\myProjects\Daily_Work\AI_Tech_Review\2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu\dist`
+- Zip package:
+  - `C:\Users\angpa\myProjects\Daily_Work\AI_Tech_Review\2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu\dist.zip`
+  - size: 5,572,692 bytes
+- Dist verification:
+  - local HTTP server on `127.0.0.1:8767`
+  - opened `http://127.0.0.1:8767/index.html`
+  - title ok
+  - 7 figures
+  - 7 images
+  - broken images: 0
+  - Remotion still present
+  - SVG present
+  - console warnings/errors: 0
+  - verification server stopped after check
 
 ## Obsidian Mirror
 

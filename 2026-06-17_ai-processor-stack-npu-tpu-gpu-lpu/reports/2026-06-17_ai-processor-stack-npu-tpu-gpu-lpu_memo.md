@@ -6,9 +6,9 @@
 
 ## 핵심 요약
 
-AI 처리장치의 분화는 새 약어 경쟁이 아니라 병목의 분화입니다. CPU는 제어와 오케스트레이션, GPU는 대량 병렬 연산, TPU는 행렬 데이터플로와 클라우드 ML 스택, NPU는 엣지·온디바이스 저전력 추론, LPU는 언어모델 추론의 낮은 지연시간, DPU/IPU는 네트워크·스토리지·보안 오프로드, QPU는 양자 샘플링과 오류정정 연구 축으로 나뉩니다.
+AI 처리장치의 분화는 workload가 갈라진 결과입니다. CPU는 제어와 오케스트레이션, GPU는 대량 병렬 연산, TPU는 행렬 데이터플로와 클라우드 ML 스택, NPU는 엣지·온디바이스 저전력 추론, LPU는 언어모델 추론의 낮은 지연시간, DPU/IPU는 네트워크·스토리지·보안 오프로드, QPU는 양자 샘플링과 오류정정 연구 축을 맡습니다.
 
-실제 도입 판단에서는 “어떤 칩이 더 좋은가”보다 “우리 workload의 병목이 어디인가”가 먼저입니다. compute인지, memory bandwidth인지, network fabric인지, tail latency인지, 전력인지, software stack인지에 따라 답이 달라집니다.
+도입 판단에서는 먼저 우리 workload가 어디에서 멈추는지 봐야 합니다. compute, memory bandwidth, network fabric, tail latency, 전력, software stack 중 어느 항목이 비용을 만드는지에 따라 답이 달라집니다.
 
 ## 최근 동향
 
@@ -16,7 +16,7 @@ AI 처리장치의 분화는 새 약어 경쟁이 아니라 병목의 분화입�
 - NVIDIA Blackwell은 GPU 자체와 함께 NVLink, NVLink Switch, FP4 Transformer Engine을 강조합니다. 대형 모델에서는 interconnect와 낮은 정밀도 활용이 핵심입니다.
 - AWS Trainium3, Qualcomm AI200/AI250은 hyperscaler·inference 경제성을 겨냥한 custom ASIC/near-memory 전략을 보여줍니다.
 - Microsoft Copilot+ PC와 Apple M4 Neural Engine은 NPU가 클라우드 대체재라기보다 로컬 추론, 개인정보, 배터리, 지연시간 문제를 다루는 장치임을 보여줍니다.
-- Groq LPU는 표준 범주라기보다 벤더 정의에 가깝지만, deterministic scheduling과 token latency가 새로운 추론 병목으로 부상했다는 점을 잘 드러냅니다.
+- Groq LPU는 벤더 정의가 강한 명칭입니다. 그래도 deterministic scheduling과 token latency가 새로운 추론 병목으로 부상했다는 점을 잘 드러냅니다.
 
 ## 도입 체크리스트
 
@@ -38,4 +38,4 @@ AI 처리장치의 분화는 새 약어 경쟁이 아니라 병목의 분화입�
 
 ## 결론
 
-미래의 AI 컴퓨팅은 하나의 승자 칩으로 정리되기 어렵습니다. 모델과 서비스가 다양해질수록 CPU, GPU, TPU, NPU, LPU, DPU/IPU, QPU와 추가 전략이 서로 다른 시간 스케일과 데이터 경로를 맡게 됩니다. 좋은 AI stack은 약어를 많이 아는 stack이 아니라, 데이터가 어디에서 멈추는지 보고 맞는 처리장치로 라우팅할 수 있는 stack입니다.
+미래의 AI 컴퓨팅은 하나의 승자 칩으로 정리되기 힘듭니다. 모델과 서비스가 다양해질수록 CPU, GPU, TPU, NPU, LPU, DPU/IPU, QPU와 추가 전략이 서로 다른 시간 스케일과 데이터 경로를 맡게 됩니다. AI stack을 평가할 때는 약어의 수보다 데이터가 어디에서 멈추는지, 그 작업을 어느 처리장치로 보내야 하는지 먼저 봐야 합니다.
