@@ -16,11 +16,11 @@ tags:
 
 ## 한 줄 판단
 
-뉴로모픽 컴퓨팅은 LLM을 바로 대체할 범용 지능 모델이라기보다, physical AI가 실제 세계를 보고 듣고 반응하는 순간에 필요한 **저전력·저지연 지각 계층**으로 먼저 자리 잡을 가능성이 큽니다.
+뉴로모픽 컴퓨팅은 physical AI가 실제 세계를 보고 듣고 반응하는 순간에 필요한 **저전력·저지연 지각 계층**으로 먼저 검토할 수 있습니다. 센서 신호를 모두 저장하고 전송하기 전에, 변화가 생긴 부분과 안전에 필요한 이벤트를 가까운 곳에서 먼저 다루려는 접근입니다.
 
 ## 왜 지금 흥미로운가
 
-2026년 AI 논의는 physical AI, agentic AI, edge AI로 빠르게 이동하고 있습니다. 로봇과 자율주행, 웨어러블, 산업용 센서가 실제 환경에서 움직이려면 큰 모델 하나가 모든 센서 데이터를 클라우드에서 처리하는 방식만으로는 지연, 전력, 프라이버시, 네트워크 의존성 문제가 커집니다. 뉴로모픽은 이 병목을 센서 가까이에서 줄이는 방향입니다.
+2026년 AI 논의는 physical AI, agentic AI, edge AI로 빠르게 이동하고 있습니다. 로봇과 자율주행, 웨어러블, 산업용 센서가 실제 환경에서 움직이려면 큰 모델 하나가 모든 센서 데이터를 클라우드에서 처리하는 구조가 곧 비용이 됩니다. 고해상도 센서 데이터는 메모리와 네트워크 bandwidth를 쓰고, 큰 모델 추론은 accelerator 점유 시간과 전력을 요구하며, 현장 제어는 안전 latency에 민감합니다. 뉴로모픽은 이 병목을 센서 가까이에서 줄이는 방향입니다.
 
 ## 기사와 논문 확인
 
@@ -32,7 +32,7 @@ tags:
 
 - [Nature의 "Neuromorphic computing at scale"](https://www.nature.com/articles/s41586-024-08253-8)은 대규모 시스템, 생태계, 소프트웨어 격차를 정리합니다.
 - [Nature Communications의 "The road to commercial success for neuromorphic technologies"](https://www.nature.com/articles/s41467-025-57352-1)는 상용화의 가까운 시장을 wearables, IoT, sensor-adjacent processing, edge inference로 봅니다.
-- [NeuroBench](https://www.nature.com/articles/s41467-025-56739-4)는 뉴로모픽 분야가 벤치마크와 시스템 평가 체계를 갖추려는 움직임을 보여줍니다.
+- [NeuroBench](https://www.nature.com/articles/s41467-025-56739-4)는 뉴로모픽 분야의 벤치마크와 시스템 평가 체계를 정리한 기준점입니다.
 - [npj Unconventional Computing의 AI-native robotic vision 리뷰](https://www.nature.com/articles/s44335-025-00047-z)는 in-sensor computing이 로봇 시각 데이터를 AI 추론에 맞는 형태로 바로 만들 수 있다고 설명합니다.
 
 ## 전망
@@ -41,5 +41,4 @@ tags:
 
 ## 작업 메모
 
-이번 주제는 AI Tech Review Letters 본문에서 "뉴로모픽이 LLM의 다음 대체재인가"라는 질문으로 시작하되, 결론은 더 정확하게 잡는 것이 좋습니다. 뉴로모픽은 범용 LLM의 후계라기보다, physical AI 시대에 큰 모델이 놓치는 물리적 시간과 전력의 문제를 담당할 가능성이 큽니다.
-
+AI Tech Review Letters 본문에서는 뉴로모픽을 physical AI 시대의 물리적 시간과 전력 문제에서 다루는 편이 자연스럽습니다. LLM 대체재 논의는 독자가 실제로 묻는 비교 질문이나 시장 담론을 설명할 때 별도로 다루고, 본문 도입은 센서 가까운 지각·반응 계층에서 시작하는 쪽이 좋습니다.

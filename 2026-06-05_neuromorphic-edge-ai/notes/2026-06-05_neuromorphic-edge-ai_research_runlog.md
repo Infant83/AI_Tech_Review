@@ -510,3 +510,58 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27667297260`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27667324232`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, `HasNewHeading: true`, `HasOldPhrase: false`, `HasContrastPivot: false`, `HasPhysicalAI: true`.
+
+## 2026-06-17 unsupported contrast/glue phrase audit update
+
+### 사용자 요청
+
+- `뉴로모픽 컴퓨팅은 큰 언어 모델의 후계자라기보다...`처럼 독자가 아직 세우지 않은 C를 먼저 꺼내고 B로 고치는 구조를 피할 것.
+- `...인 흐름입니다`, `이 지점에서 다시 살아납니다`처럼 의미 없이 문단 분위기만 바꾸는 접착 문장을 쓰지 않을 것.
+- `무겁습니다`라고 말할 때는 왜 무거운지, 즉 데이터 이동, 메모리 접근, 큰 모델 추론, 네트워크 왕복, 전력, 안전 latency 같은 기술적 브릿지를 둘 것.
+- KIAS HORIZON, 최종현학술원 Science Note, Quanta식 설명을 문장 복제가 아니라 한국어 과학·기술 리뷰의 점검 렌즈로 참조할 것.
+
+### 하네스 반영
+
+- `C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py`
+  - `라기보다`, `로 두지 않고`, `대신할 새`, `흐름입니다`, `흐름으로`, `이 지점에서`, `다시 살아납니다`, `무거워집니다` 감사 패턴 추가.
+  - 테스트 문장 `뉴로모픽 컴퓨팅은 큰 언어 모델의 후계자라기보다... 이 지점에서 다시 살아납니다`에서 `contrast_pivot`과 `micro_cadence`가 검출됨을 확인.
+- `C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\references\korean-review-expression-editor.md`
+  - 보정형 대비와 빈 접착 문장 금지 예시 추가.
+- `C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\references\korean-science-prose-patterns.md`
+  - `무겁다/느리다/가볍다` 평가어에 technical bridge를 붙이는 규칙 추가.
+- `.codex/rules/writing-harness.md`, `AGENTS.md`, `C:\Users\angpa\AGENTS.md`, `C:\Users\angpa\.codex\rules\korean-writing-style.md`
+  - unsupported `A는 C라기보다 B입니다` 구조와 `흐름/이 지점/살아납니다` 접착어 감사를 추가.
+- Obsidian 김현중식 글쓰기 참고풀
+  - `C:\Users\angpa\Obsidian_Vault\hkim_Writings\2026-05-10_AI식 글쓰기 감사와 김현중식 문체 레퍼런스.md`
+  - 2026-06-17 추가 섹션에 사용자 지적 문장, 문제 이유, 대체 방향, technical bridge 기준 기록.
+
+### 리뷰 본문 반영
+
+- 제목을 `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`에서 `뉴로모픽, Physical AI의 빠른 감각 계층`으로 수정.
+- Highlight를 `LLM 후계자라기보다...` 대비 구조에서 sensor data movement, VLM/perception inference, accelerator time, network round trip, safety control loop 비용을 설명하는 문장으로 교체.
+- 첫 본문 문단의 `무거워집니다`를 데이터 이동, 추론 지연, memory/network bandwidth, accelerator 점유 시간, 전력 문제로 풀어 설명.
+- Boston Dynamics/Atlas 문단의 `라기보다`, `흐름입니다`를 제거하고 sensorimotor policy, 상위 agentic layer, action chunk inference의 층위 차이를 직접 설명.
+- Quanta/디스플레이/산업 신호/LLM 섹션의 `흐름`, `라기보다`, `아니라` 반복을 줄이고 기술적 자리와 검토 조건 중심으로 재작성.
+- memo와 SVG 내부 문구도 같은 기준으로 수정.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 14`, `figure_count: 8`, `figure_density: ok`, `finding_count: 0`
+  - memo result: `finding_count: 0`
+- phrase audit:
+  - `라기보다`, `흐름입니다`, `다시 살아`, `이 지점에서`, `흐름으로`, `로 두지 않고`, `LLM을 대신`, `무거워집니다` 검색 결과 없음.
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - `python scripts\markdown_to_html.py --mode auto 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_memo.md`
+- distribution package:
+  - `python scripts\html_to_dist.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local browser check:
+  - local dist URL opened through temporary `python -m http.server`: page title `뉴로모픽, Physical AI의 빠른 감각 계층`
+  - site review URL opened through temporary `python -m http.server`: page title `뉴로모픽, Physical AI의 빠른 감각 계층`
+  - snapshot confirmed updated hero caption and Highlight bridge text.
