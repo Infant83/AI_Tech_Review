@@ -438,3 +438,69 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27651994226`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27652035052`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 감각을 가볍게 만드는 기술`, desktop/mobile `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `unexpectedOverflowCount: 0`, required sections present, old phrase hits `[]`, Korean Physical AI term hits `0`, new opening/Tesla/Quanta headings reflected.
+
+## 2026-06-17 contrast-pivot prose harness update
+
+### 사용자 요청
+
+- `...하기는 어렵습니다. 다만 ...`, `...보다 ...입니다`, `...가 아니라 ...입니다`처럼 부정이나 대비로 결론을 띄우는 AI 번역투를 더 엄격하게 피할 것.
+- 단문을 자연스럽게 연결하되, 과장된 대비나 부정형 도입으로 문단을 시작하지 않을 것.
+- `로봇이 복도에서 사람을 피하는 장면을 떠올려 보면...`처럼 출처나 실제 조건이 없는 작위적 장면 도입을 줄일 것.
+- 이 기준을 김현중식 글쓰기, 현 작업공간 하네스, global 글쓰기 하네스에 남기고 앞으로도 재사용할 것.
+
+### 하네스 반영
+
+- `C:\Users\angpa\AGENTS.md`
+  - Korean writing style baseline에 correction-first / contrast-pivot paragraph 금지 규칙 추가.
+  - staged scene-opener 금지와 `observed situation -> constraint -> technical relation -> evidence` 흐름 명시.
+- `C:\Users\angpa\.codex\rules\korean-writing-style.md`
+  - correction-first 구조, staged scene-opener, short-sentence translationese 감사 항목 추가.
+  - editorial audit 항목을 10개에서 12개로 확장.
+- `AGENTS.md`
+  - AI_Tech_Review workspace의 Korean Human Writing Style Rules에 same rule 추가.
+- `.codex/rules/writing-harness.md`
+  - 선호 예시에 남아 있던 `선명해집니다`, `이어집니다`, `필요해집니다`식 문장 일부를 실제 조건 기반 문장으로 교체.
+  - `Topic-First, Not Negation-First`를 문단 중간 contrast-pivot까지 확장.
+- Obsidian 김현중식 글쓰기 참고풀
+  - `C:\Users\angpa\Obsidian_Vault\hkim_Writings\2026-05-10_AI식 글쓰기 감사와 김현중식 문체 레퍼런스.md`
+  - `C:\Users\angpa\Obsidian_Vault\hkim_Writings\README.md`
+  - 2026-06-17 보강 기준으로 `부정-대비형 문단을 피한다` 섹션 추가.
+
+### 리뷰 본문 반영
+
+- 도입부를 `LLM 후계자로 세우면 논의가 좁아진다` 구조에서 `Physical AI가 실제 제품으로 들어갈 때 센서 데이터가 가까운 곳에서 먼저 줄어들어야 한다`는 조건 기반 설명으로 변경.
+- 작위적인 `로봇이 복도에서 사람을 피하는 장면을 떠올려 보면...` 문단을 로봇·차량·웨어러블의 실제 전력/지연 조건 설명으로 교체.
+- Physical AI 연결부에서 `이 자료들을 뉴로모픽 자체의 성능 근거로 쓰기는 어렵습니다. 다만...` 구조를 제거하고, NVIDIA/Qualcomm 자료가 반복해서 보여주는 실제 제품 조건에서 바로 시작하도록 수정.
+- Tesla/FSD 문단에서 `뉴로모픽이 곧장 필요하다`식 가정-부정 구조를 줄이고, dense visual AI와 뉴로모픽이 만나는 위치를 제약 조건과 peripheral reflex layer로 설명.
+- Boston Dynamics/Atlas 문단에서 빠른 sensorimotor policy와 느린 agentic layer의 차이를 직접 설명하고, 뉴로모픽의 역할을 감각-반응 계층으로 정리.
+- Quanta/디스플레이/LLM 섹션에서 `후보로 보고 싶어집니다`, `귀담아들을 부분`, `사라진 것이 아니라...` 등 평가·대비형 리듬을 줄이고, 2017-2026년 논점 이동을 자료 중심으로 재서술.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 14`, `figure_count: 8`, `figure_density: ok`, `finding_count: 0`
+- phrase audit:
+  - `금방 좁아`, `떠올려`, `선명해`, `성능 근거로 쓰기는 어렵`, `다만 왜`, `붙는 자리`, `검토 테이블`, `절반쯤`, `후보로 보고 싶`, `귀담아`, `물리적 AI`, `피지컬 AI`, `가깝습니다`, `맞습니다` 검색 결과 없음.
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode final-review 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - output: `reports/2026-06-05_neuromorphic-edge-ai_final_review.html`
+- distribution package:
+  - `python scripts\html_to_dist.py 2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist 2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path 2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size: `6,646,564` bytes
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=7`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local browser check:
+  - dist desktop 1440x1200: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 1440`, `viewportWidth: 1440`, `unexpectedOverflowCount: 0`, `missingRequired: []`, `forbiddenHits: []`
+  - dist mobile 390x900: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 390`, `viewportWidth: 390`, `missingRequired: []`, `forbiddenHits: []`
+  - site desktop 1440x1200: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 1440`, `viewportWidth: 1440`, `unexpectedOverflowCount: 0`, `missingRequired: []`, `forbiddenHits: []`
+  - site mobile 390x900: `figureCount: 8`, `imageCount: 8`, `brokenImages: []`, `bodyScrollWidth: 390`, `viewportWidth: 390`, `missingRequired: []`, `forbiddenHits: []`
+  - mobile에서 figure 내부 이미지 5개가 viewport보다 넓게 잡혔으나 `bodyScrollWidth == viewportWidth`로 페이지 수평 스크롤은 없음.
+  - screenshots:
+    - `artifacts/final_review/verification/neuromorphic_contrast_pivot_check.json`
+    - `artifacts/final_review/verification/neuromorphic_contrast_pivot_dist_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_contrast_pivot_dist_mobile.png`
+    - `artifacts/final_review/verification/neuromorphic_contrast_pivot_site_desktop.png`
+    - `artifacts/final_review/verification/neuromorphic_contrast_pivot_site_mobile.png`
