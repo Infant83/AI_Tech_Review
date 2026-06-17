@@ -565,3 +565,9 @@ tags:
   - local dist URL opened through temporary `python -m http.server`: page title `뉴로모픽, Physical AI의 빠른 감각 계층`
   - site review URL opened through temporary `python -m http.server`: page title `뉴로모픽, Physical AI의 빠른 감각 계층`
   - snapshot confirmed updated hero caption and Highlight bridge text.
+- GitHub Pages deployment:
+  - commit: `1d7a9d8` (`Tighten neuromorphic prose audit bridge`)
+  - `git push origin main` 완료.
+  - GitHub Actions `Publish public report hub` run id: `27688479873`, status `completed`, conclusion `success`.
+  - GitHub Pages `pages build and deployment` run id: `27688520480`, status `completed`, conclusion `success`.
+  - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 빠른 감각 계층`, `HasOldTitle: false`, `HasBadPivot: false`, `HasBridge: true`.
