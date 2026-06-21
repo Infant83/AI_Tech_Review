@@ -648,3 +648,8 @@ tags:
   - `pages build and deployment` run id: `27900995407`, status `completed`, conclusion `success`
   - public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/`
   - public URL check: HTTP `200`, title `뉴로모픽, 항상 켜진 AI의 감각층`, `HasEverydayHero: true`, `HasOldHero: false`, `HasTesla: false`
+- Distribution email:
+  - sent via Gmail from `angpangmokjang@gmail.com` to `hyun-jung.kim@lgdisplay.com`
+  - subject: `[AI Tech Review] 뉴로모픽 Edge AI 리뷰 배포본 공유`
+  - attachment: `2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - Gmail message id: `19ee9ad32b0c59f5`
