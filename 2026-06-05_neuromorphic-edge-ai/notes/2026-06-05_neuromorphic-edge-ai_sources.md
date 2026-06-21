@@ -3,13 +3,14 @@ title: "뉴로모픽 Edge AI 리뷰 - source note"
 type: source-note
 author: "김현중"
 date created: 2026-06-05
-date modified: 2026-06-05
+date modified: 2026-06-21
 status: draft
 tags:
   - ai-tech-review
   - neuromorphic-computing
   - edge-ai
-  - physical-ai
+  - always-on-ai
+  - aiot
   - in-sensor-computing
 ---
 
@@ -328,3 +329,15 @@ claim status:
 3. 양자 AI와 비교하면, 뉴로모픽은 훨씬 가까운 시점에 edge AI 제품과 연구 prototype으로 검증되고 있다. 다만 "AI 전반의 지능 한계"를 한 번에 넘어서는 기술로 과장해서는 안 된다.
 4. 대상 논문은 in-sensor neuromorphic vision의 좋은 대표 사례지만, system scale과 energy efficiency가 아직 숙제로 남은 실험실 규모 연구다.
 5. 2025-2026년에 주목할 변화는 소자 성능 하나가 아니라 programming model, benchmark, commercial interface, hybrid edge stack의 성숙이다.
+## 2026-06-21 생활형 edge AI 재검색 메모
+
+- 재검색 질문: 뉴로모픽의 필요성을 자율주행차가 아니라 생활 가까운 always-on AI에서 설명할 수 있는가.
+- 추가·강조한 근거:
+  - [Muir and Sheik 2025, Nature Communications](https://www.nature.com/articles/s41467-025-57352-1): battery-powered system, local IoT compute, consumer wearable, audio/visual wake phrase, gesture, anomaly detection을 초기 상용화 시장으로 제시.
+  - [Edge intelligence through in-sensor and near-sensor computing for AIoT, 2025](https://www.nature.com/articles/s44335-025-00040-6): AIoT sensor node가 수집기에서 계산 node로 바뀌는 방향을 설명.
+  - [Socionext-Innatera 60 GHz FMCW radar, 2026](https://www.innatera.com/newsroom/socionext-and-innatera-introduce-integrated-60-ghz-fmcw-radar-and-neuromorphic-edge-ai-for-human-presence-detection/): human presence detection, sub-milliwatt power level, 3-6배 battery life extension claim. 회사 발표로 제한해 사용.
+  - [Baek and Lee 2024, SNN and sound](https://pmc.ncbi.nlm.nih.gov/articles/PMC11362401/): sound recognition에서 SNN의 low-power, low-latency embedded application 가능성.
+  - [Joya Design / Innatera consumer audio module, 2026](https://www.innatera.com/newsroom/joya-design-takes-neuromorphic-chip-from-design-to-device-with-first-innatera-powered-consumer-audio-product-at-awe-china/): consumer audio product 쪽 산업 신호.
+  - [Li et al. 2026, Nature Electronics stretchable neuromorphic circuit](https://www.nature.com/articles/s41928-026-01639-8): on-body edge computing 근거.
+  - [SynSense Speck](https://www.synsense.ai/products/speck-2/): Dynamic Vision Sensor와 SNN processor 결합 제품 신호.
+- 재작성 판단: 자율주행/Tesla는 시스템 스택이 크고 뉴로모픽의 도입 필요성을 직접 증명하지 않으므로 도입부에서 제거. 스마트홈, 오디오, wearable, smart camera를 중심으로 "오래 깨어 있는 센서 AI의 비용"을 글의 첫 질문으로 설정.

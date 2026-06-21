@@ -3,7 +3,7 @@ title: "뉴로모픽 Edge AI figure manifest"
 type: figure-manifest
 author: "김현중"
 date created: 2026-06-05
-date modified: 2026-06-05
+date modified: 2026-06-21
 status: reviewed
 tags:
   - ai-tech-review
@@ -15,8 +15,8 @@ tags:
 
 | Figure | File | Purpose | Tool | Source/Reference | Review Notes |
 |---|---|---|---|---|---|
-| Figure 1 | `figures/imagegen/neuromorphic_physical_ai_hero-web.png` | physical AI, sensor-near neuromorphic layer, upper model layer의 관계를 여는 대표 이미지 | OpenAI imagegen | Concept grounded in NVIDIA/Qualcomm physical AI background and neuromorphic edge reviews | 생성 일러스트. 특정 논문 장치나 제품 사진이 아니며 증거로 쓰지 않음 |
-| Figure 2 | `figures/neuromorphic_edge_stack.svg` | physical AI stack에서 LLM/VLA와 neuromorphic edge layer의 역할 분리 | deterministic SVG | NVIDIA physical AI, Nature/Nature Communications neuromorphic reviews | Korean labels controlled directly in SVG |
+| Figure 1 | `figures/imagegen/neuromorphic_everyday_ai_hero-web.png` | 스마트홈, 오디오, 웨어러블, smart camera가 작은 local chip과 연결되는 생활형 always-on edge AI 대표 이미지 | OpenAI imagegen | Concept grounded in Muir & Sheik 2025, AIoT in/near-sensor review, Innatera/Socionext/Joya/SynSense public signals | 생성 일러스트. 특정 논문 장치나 회사 제품 사진이 아니며 증거로 쓰지 않음 |
+| Figure 2 | `figures/neuromorphic_edge_stack.svg` | cloud/LLM layer와 neuromorphic edge layer의 역할 분리 | deterministic SVG | Nature/Nature Communications neuromorphic reviews, AIoT in/near-sensor review | Korean labels controlled directly in SVG |
 | Figure 3 | `figures/imagegen/neuromorphic_in_sensor_vision_editorial-web.png` | 빛, spike, synapse 흐름을 감각적으로 설명 | OpenAI imagegen | Wang et al. 2026 target paper | 생성 일러스트. 실제 장치 사진이 아니며 Figure 4와 논문 원문으로 근거 확인 |
 | Figure 4 | `figures/in_sensor_neuromorphic_vision.svg` | Wang et al. 2026 논문의 MoS2 PT, HZO/FeFET, SNN 흐름 설명 | deterministic SVG | Nature Communications 2026 target paper | 성능 수치를 simulation/lab-scale caveat와 함께 배치 |
 | Figure 5 | `figures/neuromorphic_workload_fit.svg` | 뉴로모픽에 적합한 workload와 아직 맞지 않는 workload 비교 | deterministic SVG | Muir & Sheik 2025, NeuroBench, edge-oriented SNN review | LLM replacement overclaim을 피하도록 구성 |

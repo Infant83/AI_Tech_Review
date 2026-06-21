@@ -571,3 +571,74 @@ tags:
   - GitHub Actions `Publish public report hub` run id: `27688479873`, status `completed`, conclusion `success`.
   - GitHub Pages `pages build and deployment` run id: `27688520480`, status `completed`, conclusion `success`.
   - public URL check: HTTP `200`, title `뉴로모픽, Physical AI의 빠른 감각 계층`, `HasOldTitle: false`, `HasBadPivot: false`, `HasBridge: true`.
+
+## 2026-06-21 everyday edge AI reframing update
+
+### 사용자 요청
+
+- 자율주행차/Tesla 사례는 뉴로모픽의 필요성을 설명하는 도입부로 적합하지 않으므로 빼고, 생활 가까운 AI 기술에서 뉴로모픽이 실제로 의미 있는 영역을 찾아 글을 다시 쓸 것.
+- 해당 주제를 기반으로 deep research를 다시 돌리고, 얻은 결과와 insight를 바탕으로 글을 재작성할 것.
+
+### deep research refresh
+
+- 새 research note:
+  - `notes/2026-06-21_neuromorphic-edge-ai_everyday-edge-deepresearch.md`
+- 중점 검토 영역:
+  - smart home presence sensing
+  - always-on audio / sound event recognition
+  - wearable / on-body edge computing
+  - smart camera / in-sensor vision
+- 핵심 근거:
+  - Muir and Sheik 2025 Nature Communications commercial success review
+  - 2025 npj AIoT in-sensor/near-sensor computing review
+  - Socionext-Innatera 60 GHz FMCW radar human presence detection announcement
+  - Baek and Lee 2024 SNN sound review
+  - Joya Design / Innatera consumer audio module announcement
+  - Li et al. 2026 Nature Electronics stretchable neuromorphic circuit
+  - SynSense Speck product page
+  - Wang et al. 2026 Nature Communications target paper
+
+### 본문 반영
+
+- 제목을 `뉴로모픽, 항상 켜진 AI의 감각층`으로 변경.
+- 도입부를 스마트홈, 이어버드, wearable patch, smart camera의 always-on sensor cost로 재작성.
+- 자율주행차, Tesla FSD, NHTSA, Boston Dynamics/Atlas 중심 문단과 참고문헌 제거.
+- 새 hero image 생성:
+  - `artifacts/final_review/figures/imagegen/neuromorphic_everyday_ai_hero.png`
+  - `artifacts/final_review/figures/imagegen/neuromorphic_everyday_ai_hero-web.png`
+- `항상 켜진 AI의 시간`, `가까운 네 가지 장면` 섹션 추가.
+- figure numbering과 `artifacts/final_review/figure_manifest.md` 갱신.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- phrase/source audit:
+  - final review 본문과 figure manifest에서 `Tesla`, `NHTSA`, `자율주행`, `Boston`, `Atlas`, `Physical AI` 검색 결과 없음.
+  - ScienceTimes 원 기사 제목에 포함된 `로봇`은 원문 제목으로만 남김.
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - output: `reports/2026-06-05_neuromorphic-edge-ai_final_review.html`
+- distribution package:
+  - `python scripts\html_to_dist.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist .\2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path .\2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - zip: `2026-06-05_neuromorphic-edge-ai\dist.zip`, size `6,785,095` bytes
+  - stale dist/public assets removed: old physical AI hero image and latency-layer SVG are no longer present in `dist/`, `site/reviews/2026-06-05_neuromorphic-edge-ai/`, or `site/manifest.json`.
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=8`, `reviews/2026-06-05_neuromorphic-edge-ai/index.html`
+- Playwright local browser check:
+  - dist desktop: `title: 뉴로모픽, 항상 켜진 AI의 감각층`, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `hasEverydayHero: true`, `hasOldHero: false`, `hasTesla: false`, `bodyScrollWidth == viewportWidth == 1440`
+  - dist mobile: `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `hasEverydayHero: true`, `bodyScrollWidth == viewportWidth == 390`
+  - site review desktop: `title: 뉴로모픽, 항상 켜진 AI의 감각층`, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `hasEverydayHero: true`, `hasOldHero: false`, `hasTesla: false`
+  - site index card: title `뉴로모픽, 항상 켜진 AI의 감각층`, tags `Neuromorphic AI`, `Edge AI`, `Always-on AI`, `AIoT`, thumbnail `neuromorphic_everyday_ai_hero-web.png`, old card title absent.
+  - screenshots:
+    - `artifacts/final_review/verification/2026-06-21_everyday_edge_dist_desktop.png`
+    - `artifacts/final_review/verification/2026-06-21_everyday_edge_dist_mobile_viewport.png`
+    - `artifacts/final_review/verification/2026-06-21_everyday_edge_site_desktop.png`
+- Obsidian mirror sync:
+  - target: `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - mirror final review title: `뉴로모픽, 항상 켜진 AI의 감각층`
+  - mirror final review references `neuromorphic_everyday_ai_hero-web.png`
+  - mirror final review/dist search for `Tesla`, `NHTSA`, `자율주행`, `Boston`, `Atlas`, `Physical AI`, `물리적 AI의 반응` returned no hits.

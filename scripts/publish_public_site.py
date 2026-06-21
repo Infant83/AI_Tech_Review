@@ -62,16 +62,16 @@ REVIEWS: tuple[PublicReview, ...] = (
     ),
     PublicReview(
         folder="2026-06-05_neuromorphic-edge-ai",
-        title="뉴로모픽, 물리적 AI의 반응 시간을 줄이는 기술",
-        subtitle="MoS2 인-센서 비전 논문에서 edge AI 상용화 신호까지, LLM 이후의 감각 계층을 어떻게 볼 것인가",
+        title="뉴로모픽, 항상 켜진 AI의 감각층",
+        subtitle="스마트홈·오디오·웨어러블 센서에서 보는 저전력 edge intelligence",
         date="2026-06-05",
-        updated="2026-06-05",
+        updated="2026-06-21",
         category="AI Hardware",
-        tags=("Neuromorphic AI", "Edge AI", "Physical AI", "In-Sensor Computing"),
+        tags=("Neuromorphic AI", "Edge AI", "Always-on AI", "AIoT"),
         summary=(
             "ScienceTimes가 소개한 MoS2 인-센서 뉴로모픽 비전 논문을 출발점으로, "
-            "뉴로모픽이 LLM을 직접 대체하기보다 물리적 AI의 저전력 감각·반응 계층으로 "
-            "자리 잡을 가능성을 최신 리뷰와 산업 신호를 통해 점검합니다."
+            "뉴로모픽이 스마트홈 presence sensing, 오디오 wake/event detection, 웨어러블, "
+            "smart camera 같은 항상 켜진 생활형 edge AI에서 어떤 의미를 갖는지 점검합니다."
         ),
     ),
     PublicReview(
