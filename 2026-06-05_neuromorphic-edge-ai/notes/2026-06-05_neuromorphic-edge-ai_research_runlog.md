@@ -642,3 +642,9 @@ tags:
   - mirror final review title: `뉴로모픽, 항상 켜진 AI의 감각층`
   - mirror final review references `neuromorphic_everyday_ai_hero-web.png`
   - mirror final review/dist search for `Tesla`, `NHTSA`, `자율주행`, `Boston`, `Atlas`, `Physical AI`, `물리적 AI의 반응` returned no hits.
+- GitHub Pages deployment:
+  - commit: `e0b4f1b` (`Reframe neuromorphic review around everyday edge AI`)
+  - `Publish public report hub` run id: `27900978418`, status `completed`, conclusion `success`
+  - `pages build and deployment` run id: `27900995407`, status `completed`, conclusion `success`
+  - public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/`
+  - public URL check: HTTP `200`, title `뉴로모픽, 항상 켜진 AI의 감각층`, `HasEverydayHero: true`, `HasOldHero: false`, `HasTesla: false`
