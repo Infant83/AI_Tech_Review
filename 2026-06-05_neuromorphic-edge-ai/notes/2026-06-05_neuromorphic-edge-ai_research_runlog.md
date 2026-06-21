@@ -653,3 +653,38 @@ tags:
   - subject: `[AI Tech Review] 뉴로모픽 Edge AI 리뷰 배포본 공유`
   - attachment: `2026-06-05_neuromorphic-edge-ai\dist.zip`
   - Gmail message id: `19ee9ad32b0c59f5`
+
+## 2026-06-22 Quanta reference flow revision
+
+### 사용자 요청
+
+- `퀀타가 남긴 세 가지 물음` 제목은 Quanta 페이지를 보고 나중에 덧붙인 글처럼 보이므로 수정할 것.
+- Quanta Magazine 글들은 독립된 부록처럼 튀지 않게, 뉴로모픽 논의의 흐름 안에서 자연스럽게 참고되도록 전체 문맥을 조정할 것.
+
+### 본문 반영
+
+- H2를 `퀀타가 남긴 세 가지 물음`에서 `오래된 쟁점은 제품 조건으로 남았습니다`로 변경.
+- Quanta 검색 결과 링크를 reader-facing References에서 제거하고, 2017 atomic-switch mesh, 2022 BrainScaleS-2, 2022 NeuRRAM 기사만 재료망, device mismatch, 데이터 이동 비용 문맥 안에 배치.
+- `Quanta가 오래전부터 추적해 온...`처럼 source를 주어로 세우는 문장을 줄이고, Wang et al. 논문을 sensing-memory-compute 결합 흐름 안의 in-sensor neuromorphic vision 사례로 설명.
+- `~라기보다`, `이어집니다`, 반복적인 `질문` 표현을 정리해 source-added 느낌과 AI식 대비 리듬을 줄임.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- distribution package:
+  - `python scripts\html_to_dist.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist .\2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path .\2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=8`
+- Playwright dist check:
+  - title: `뉴로모픽, 항상 켜진 AI의 감각층`
+  - `hasNewHeading: true`
+  - `hasOldHeading: false`
+  - `hasSearchPhrase: false`
+  - `imageCount: 7`
+  - `brokenImages: []`

@@ -606,13 +606,13 @@
 <p>셋째, 재료와 소자 연구가 계속 확장되고 있습니다. <a href="https://www.nature.com/articles/s41578-026-00924-4">Nature Reviews Materials의 2026년 회고</a>는 analogue in-memory computing, physical neural networks, memristor 기반 edge learning을 나란히 언급합니다. <a href="https://link.springer.com/article/10.1007/s40820-026-02139-2">2D material artificial neuron/synapse review</a>와 <a href="https://link.springer.com/article/10.1007/s40820-025-01940-9">multisensory neuromorphic devices review</a>는 시각, 촉각, 열, 화학 신호를 하나의 하드웨어가 어떻게 받아들이고 융합할 수 있는지 묻습니다. 스마트홈, 웨어러블, 설비 센서, XR interface로 AI가 내려갈수록 이 논점은 더 자주 돌아옵니다.</p>
 <p>넷째, 2026년 논문들은 &ldquo;눈&rdquo;만 보지 않습니다. <a href="https://www.nature.com/articles/s41467-026-71678-4_reference.pdf">Retinocortical in-sensor neuromorphic vision platform 논문</a>은 NIR, 즉 near-infrared 감도를 갖는 in-sensor neuromorphic vision platform을 제안합니다. <a href="https://www.nature.com/articles/s41928-026-01626-z">Nature Electronics의 signal-folding 논문</a>은 MoS2 기반 compute-in-memory hardware에서 weight precision과 energy efficiency 사이의 trade-off를 줄이려 합니다. <a href="https://www.nature.com/articles/s41928-026-01639-8">Stretchable neuromorphic circuit 논문</a>은 on-body edge computing을 위해 stretchable neuromorphic circuit을 제안합니다. <a href="https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles">Frontiers in Neuroscience의 Neuromorphic Engineering 최신 목록</a>을 보면 2026년 5월에도 radar gesture recognition, sparse signal classification processor, traffic sign recognition, edge hardware audio processing 같은 응용 논문이 계속 나오고 있습니다.</p>
 <p>이 문헌을 같이 읽으면 뉴로모픽은 하나의 소자 명칭으로는 다 담기지 않는 기술군으로 다가옵니다. SNN processor, memristor/FeFET compute-in-memory, optoelectronic in-sensor computing, event camera, stretchable OECT array, spintronic neuron이 서로 다른 방향에서 같은 제약을 다룹니다. 공통 제약은 데이터 이동, 전력, 지연, 항상 켜진 sensing, 그리고 physical world와 digital model 사이의 변환 비용입니다.</p>
-<h2 id="_3">퀀타가 남긴 세 가지 물음</h2>
-<p><a href="https://www.quantamagazine.org/?s=neuromorphic">Quanta Magazine의 neuromorphic 검색 결과</a>를 따라가면 2026년의 논점이 갑작스러운 유행으로 튀어나온 것이 아님을 알 수 있습니다. 이 분야는 오래전부터 세 가지 물음을 다뤄 왔습니다. 물질 자체가 기억과 계산을 겸할 수 있는가. analog neuromorphic hardware의 불완전성을 학습으로 견딜 수 있는가. 큰 AI 모델을 작은 장치에서 돌릴 만큼 compute와 memory를 가까이 둘 수 있는가.</p>
-<p><a href="https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/">2017년 Quanta의 atomic-switch mesh 기사</a>는 UCLA 연구진의 silver nanowire mesh를 소개했습니다. 작은 self-organized network가 artificial synapse처럼 동작하고, 간단한 학습·논리·noise cleanup을 수행한다는 내용입니다. 당시에는 &ldquo;뇌처럼 스스로 얽힌 물질망&rdquo;이라는 이미지가 강했습니다. 지금 다시 읽으면 이 기사는 physical network가 계산에 참여할 수 있다는 재료·소자 논의로 들어옵니다. 2026년의 언어로 바꾸면 memristive network, physical neural network, reservoir computing, in-material computing 계열입니다.</p>
-<p><a href="https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/">2022년 BrainScaleS-2 기사</a>는 analog neuromorphic chip의 오래된 문제를 다룹니다. 실제 칩의 미세한 소자는 제조 공정 때문에 조금씩 다르고, 이 device mismatch가 디지털 환경에서 학습한 SNN을 하드웨어로 옮길 때 성능을 흔들 수 있습니다. 기사에서 소개한 연구는 SNN이 그 mismatch를 보정하도록 학습해 analog hardware 위에서도 작동할 수 있음을 보였습니다. 2026년 관점에서는 &ldquo;뇌를 닮은 칩&rdquo;이라는 이미지보다 hardware-aware learning과 device-algorithm co-design이라는 과제가 중심에 남습니다. Wang et al.의 MoS2/HZO 논문도 같은 관문을 만납니다. 소자 하나가 spike와 synapse를 잘 흉내 내는 것에서 끝나지 않고, variability, calibration, training, benchmark를 동시에 풀어야 합니다.</p>
-<p><a href="https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/">2022년 NeuRRAM 기사</a>는 RRAM 기반 analog in-memory chip을 다뤘습니다. Quanta는 NeuRRAM이 3 million memory cells와 hardware neuron을 포함하고, image와 speech recognition 같은 작업에서 digital computer와 비슷한 정확도를 내면서 에너지 효율을 크게 높였다는 연구진의 주장을 소개했습니다. 이 사례는 strict한 SNN neuromorphic 범주와 compute-in-memory, analog AI accelerator 논의를 함께 보게 합니다. 현재 리뷰와 맞닿는 지점은 데이터 이동 비용입니다. 병목은 &ldquo;더 똑똑한 알고리즘&rdquo;에만 있지 않고, memory와 processor 사이를 오가는 데이터 이동에도 있습니다.</p>
-<p>뉴로모픽의 관심은 여러 이름으로 나뉘며 계속 남아 있습니다. 2017년에는 brain-like material network가 눈에 띄었고, 2022년에는 analog neuromorphic chip과 RRAM in-memory AI가 주목을 받았습니다. 2025-2026년에는 같은 문제의식이 edge AI, compute-in-memory, event-based vision, in-sensor computing, low-power sensor intelligence라는 이름으로 나타납니다. 그래서 &ldquo;뉴로모픽&rdquo;이라는 단어 자체는 예전보다 덜 보일 수 있습니다. 대신 그 안의 문제는 더 실무적인 형태로 남아 있습니다. 전력을 얼마나 줄였는가, 지연을 얼마나 낮췄는가, device variability를 어떻게 다뤘는가, 개발자가 쓸 수 있는 software stack과 benchmark가 있는가가 더 자주 검토 항목으로 등장합니다.</p>
-<p>이 변화 속에서 Wang et al.의 MoS2/HZO 논문은 독립적인 신기한 소자 발표를 넘어섭니다. Quanta가 오래전부터 추적해 온 재료, analog hardware, memory-compute 결합 문제가 in-sensor neuromorphic vision 쪽으로 연결되는 사례입니다. 기술 경계를 흐리지 않으려면 모든 analog in-memory chip이나 event camera를 곧장 뉴로모픽이라고 부르지는 않아야 합니다. 현재 시점의 뉴로모픽은 &ldquo;센서, memory, compute, time signal을 얼마나 가까이 묶을 것인가&rdquo;라는 설계 문제입니다.</p>
+<h2 id="_3">오래된 쟁점은 제품 조건으로 남았습니다</h2>
+<p>뉴로모픽을 2026년의 edge AI 유행어로만 읽으면 중요한 배경이 빠집니다. 이 분야는 오래전부터 세 가지 기술 쟁점을 반복해 왔습니다. 물질 자체가 기억과 계산을 겸할 수 있는가. analog neuromorphic hardware의 불완전성을 학습으로 견딜 수 있는가. 큰 AI 모델을 작은 장치에서 돌릴 만큼 compute와 memory를 가까운 곳에 둘 수 있는가. 최근 논문과 제품 발표는 이 쟁점을 더 실용적인 언어로 다시 묻습니다.</p>
+<p>첫 번째 쟁점은 재료가 계산에 참여할 수 있는지입니다. <a href="https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/">2017년 Quanta Magazine의 atomic-switch mesh 기사</a>는 UCLA 연구진의 silver nanowire mesh를 소개했습니다. 작은 self-organized network가 artificial synapse처럼 동작하고, 간단한 학습·논리·noise cleanup을 수행한다는 내용입니다. 당시에는 &ldquo;뇌처럼 스스로 얽힌 물질망&rdquo;이라는 이미지가 앞에 있었지만, 지금 다시 읽으면 physical network가 신호의 상태를 보존하고 변환할 수 있다는 재료·소자 논의가 더 중요하게 보입니다. 2026년의 언어로 바꾸면 memristive network, physical neural network, reservoir computing, in-material computing 계열의 문제입니다.</p>
+<p>두 번째 쟁점은 analog hardware의 불완전성을 어떻게 다룰 것인지입니다. <a href="https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/">2022년 BrainScaleS-2 관련 Quanta 기사</a>가 다룬 device mismatch가 대표적입니다. 실제 칩의 미세한 소자는 제조 공정 때문에 조금씩 다르고, 이 차이는 디지털 환경에서 학습한 SNN을 하드웨어로 옮길 때 성능을 흔들 수 있습니다. 기사에서 소개한 연구는 SNN이 그 mismatch를 보정하도록 학습해 analog hardware 위에서도 작동할 수 있음을 보였습니다. 같은 요구 조건은 Wang et al.의 MoS2/HZO 논문에도 적용됩니다. 소자 하나가 spike와 synapse를 잘 흉내 내는 것만으로는 부족하고, variability, calibration, training, benchmark가 함께 설계되어야 합니다.</p>
+<p>세 번째 쟁점은 데이터 이동 비용입니다. <a href="https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/">2022년 NeuRRAM을 다룬 Quanta 기사</a>는 RRAM 기반 analog in-memory chip을 소개하며, NeuRRAM이 3 million memory cells와 hardware neuron을 포함하고 image·speech recognition에서 디지털 컴퓨터와 비슷한 정확도를 내면서 에너지 효율을 높였다는 연구진의 주장을 전했습니다. 이 사례는 strict한 SNN neuromorphic chip과 compute-in-memory, analog AI accelerator 논의를 함께 보게 합니다. 병목은 모델 연산량에만 있지 않습니다. 센서 데이터가 저장되고, 메모리에서 다시 읽히고, processor와 memory 사이를 오가는 과정도 edge AI의 전력과 지연을 결정합니다.</p>
+<p>이렇게 보면 뉴로모픽의 관심은 이름을 바꾸며 계속 남아 있습니다. 2017년에는 brain-like material network가 눈에 띄었고, 2022년에는 analog neuromorphic chip과 RRAM in-memory AI가 주목을 받았습니다. 2025-2026년에는 같은 문제의식이 edge AI, compute-in-memory, event-based vision, in-sensor computing, low-power sensor intelligence라는 이름으로 나타납니다. 그래서 &ldquo;뉴로모픽&rdquo;이라는 단어 자체는 예전보다 덜 보일 수 있습니다. 대신 전력을 얼마나 줄였는가, 지연을 얼마나 낮췄는가, device variability를 어떻게 다뤘는가, 개발자가 쓸 수 있는 software stack과 benchmark가 있는가가 더 자주 검토 항목으로 등장합니다.</p>
+<p>Wang et al.의 MoS2/HZO 논문도 이 맥락에서 읽는 편이 자연스럽습니다. 이 논문은 sensing, memory, compute를 가까이 묶으려는 긴 연구 흐름 안에 있는 in-sensor neuromorphic vision 사례입니다. 기술 경계를 흐리지 않으려면 모든 analog in-memory chip이나 event camera를 곧장 뉴로모픽이라고 부르지는 않아야 합니다. 다만 제품 관점의 검토 항목은 구체적입니다. 센서 가까운 front-end가 event-driven 처리와 memory-compute 결합으로 전력과 지연을 얼마나 줄일 수 있는가. 그리고 그 효율이 calibration, training, benchmark, software stack의 비용을 견딜 만큼 충분한가.</p>
 <h2 id="_4">디스플레이 논의의 이동</h2>
 <p>몇 년 전에는 뉴로모픽과 차세대 디스플레이를 연결한 논의가 꽤 눈에 띄었습니다. 2025-2026년 문헌에서는 표현의 중심이 &ldquo;neuromorphic display&rdquo;에서 in-sensor computing, near-sensor computing, edge AI, wearable interface, AR/VR, smart vision 쪽으로 넓어졌습니다. 디스플레이 단독 시장의 이야기에서 출발한 논의가 센서와 표시 장치, 메모리와 연산을 한 기판이나 한 device stack 안에서 얼마나 가까이 배치할 수 있는가라는 문제로 확장되었습니다.</p>
 <p><a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821">Advanced Materials의 2024년 intelligent display 리뷰</a>는 storage, processing, light-emitting 기능을 통합하는 neuromorphic display를 차세대 display 병목을 푸는 방향으로 정리했습니다. 당시에는 display가 사람과 기계가 만나는 면이고, 동시에 대면적 박막전자·광전자 소자 플랫폼이라는 점이 강조되었습니다. 기존 display 산업이 가진 TFT backplane, 산화물/유기 반도체, 광검출·발광 소재, 대면적 array 공정 경험이 AI hardware와 만날 수 있다는 기대도 있었습니다.</p>
@@ -669,7 +669,7 @@
 <li>추가 업데이트: 2026-06-17</li>
 <li>생활형 edge AI 재작성: 2026-06-21</li>
 <li>작성 형식: AI Tech Review Letters</li>
-<li>검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2017-2022년 Quanta Magazine 뉴로모픽 기사, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 스마트홈·오디오·웨어러블·smart camera edge neuromorphic 산업 신호, intelligent display 및 in-display neuromorphic computing 문헌</li>
+<li>검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2017-2022년 과학 저널리즘의 뉴로모픽 장기 관찰 자료, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 스마트홈·오디오·웨어러블·smart camera edge neuromorphic 산업 신호, intelligent display 및 in-display neuromorphic computing 문헌</li>
 <li>이미지: OpenAI <code>imagegen</code> 생성 일러스트 3장, deterministic SVG 설명도 4장</li>
 <li>검증 상태: 생활형 edge AI 관점의 source refresh, Korean prose audit, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트</li>
 </ul>
@@ -696,7 +696,6 @@
 <li><a href="https://www.nature.com/articles/s41928-026-01639-8">Li et al., A large-scale stretchable neuromorphic circuit for on-body edge computing, Nature Electronics, 2026</a></li>
 <li><a href="https://www.nature.com/articles/s41467-026-71678-4_reference.pdf">An et al., Retinocortical in-sensor neuromorphic vision platform for NIR-augmented artificial vision, Nature Communications Article in Press, 2026</a></li>
 <li><a href="https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles">Frontiers in Neuroscience, Neuromorphic Engineering latest articles</a></li>
-<li><a href="https://www.quantamagazine.org/?s=neuromorphic">Quanta Magazine search, neuromorphic</a></li>
 <li><a href="https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/">Quanta Magazine, A Brain Built From Atomic Switches Can Learn, 2017</a></li>
 <li><a href="https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/">Quanta Magazine, AI Overcomes Stumbling Block on Brain-Inspired Hardware, 2022</a></li>
 <li><a href="https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/">Quanta Magazine, New Chip Expands the Possibilities for AI, 2022</a></li>
@@ -716,8 +715,8 @@
 <li><a href="https://news.synopsys.com/2026-03-02-Innatera-Selects-Synopsys-Simulation-to-Scale-Brain-Inspired-Processors-for-Edge-Devices">Synopsys, Innatera Selects Synopsys Simulation to Scale Brain-Inspired Processors for Edge Devices, 2026-03-02</a></li>
 </ul>
       <div class="footer">
-        생성 시각: 2026-06-21 18:56:14<br>
-        원본 파일 최종 수정 시각: 2026-06-21 18:55:48
+        생성 시각: 2026-06-22 07:11:13<br>
+        원본 파일 최종 수정 시각: 2026-06-22 07:10:54
       </div>
     </article>
 
@@ -732,7 +731,7 @@
 <li><a href="#_1">가까운 네 가지 장면</a></li>
 <li><a href="#_2">첫 시장은 작은 지능</a></li>
 <li><a href="#2026">2026년의 연구 방향</a></li>
-<li><a href="#_3">퀀타가 남긴 세 가지 물음</a></li>
+<li><a href="#_3">오래된 쟁점은 제품 조건으로 남았습니다</a></li>
 <li><a href="#_4">디스플레이 논의의 이동</a></li>
 <li><a href="#_5">움직이는 산업 신호</a></li>
 <li><a href="#llm-llm">LLM 다음인가, LLM 아래인가</a></li>
@@ -772,10 +771,9 @@
 <li><a href="https://www.nature.com/articles/s41467-026-71678-4_reference.pdf" target="_blank" rel="noreferrer">Retinocortical in-sensor neuromorphic vision platform 논문</a></li>
 <li><a href="https://www.nature.com/articles/s41928-026-01626-z" target="_blank" rel="noreferrer">Nature Electronics의 signal-folding 논문</a></li>
 <li><a href="https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles" target="_blank" rel="noreferrer">Frontiers in Neuroscience의 Neuromorphic Engineering 최신 목록</a></li>
-<li><a href="https://www.quantamagazine.org/?s=neuromorphic" target="_blank" rel="noreferrer">Quanta Magazine의 neuromorphic 검색 결과</a></li>
-<li><a href="https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/" target="_blank" rel="noreferrer">2017년 Quanta의 atomic-switch mesh 기사</a></li>
-<li><a href="https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/" target="_blank" rel="noreferrer">2022년 BrainScaleS-2 기사</a></li>
-<li><a href="https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/" target="_blank" rel="noreferrer">2022년 NeuRRAM 기사</a></li>
+<li><a href="https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/" target="_blank" rel="noreferrer">2017년 Quanta Magazine의 atomic-switch mesh 기사</a></li>
+<li><a href="https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/" target="_blank" rel="noreferrer">2022년 BrainScaleS-2 관련 Quanta 기사</a></li>
+<li><a href="https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/" target="_blank" rel="noreferrer">2022년 NeuRRAM을 다룬 Quanta 기사</a></li>
 <li><a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821" target="_blank" rel="noreferrer">Advanced Materials의 2024년 intelligent display 리뷰</a></li>
 <li><a href="https://academic.oup.com/nsr/article/12/8/nwaf224/8156810" target="_blank" rel="noreferrer">National Science Review의 2025년 EP-IDNC 논문</a></li>
 <li><a href="https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1" target="_blank" rel="noreferrer">같은 저널의 해설</a></li>
