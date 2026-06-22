@@ -81,13 +81,13 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 ## 항상 켜진 AI의 시간
 
-생활형 AI 관점으로 다시 읽으면, 뉴로모픽이 가장 자연스럽게 들어가는 자리는 "오래 기다리는 센서"입니다. [Nature Communications의 2025년 상용화 전망 논문](https://www.nature.com/articles/s41467-025-57352-1)은 초기 시장을 battery-powered system, local compute for IoT, consumer wearable, audio/visual wake phrase, gesture interaction, condition and anomaly detection으로 잡습니다. 이 목록의 공통점은 거대한 추론보다 작은 이벤트를 오래 기다리는 일입니다.
+생활형 AI 관점에서 뉴로모픽이 가장 자연스럽게 들어가는 자리는 "오래 기다리는 센서"입니다. [Nature Communications의 2025년 상용화 전망 논문](https://www.nature.com/articles/s41467-025-57352-1)은 초기 시장을 battery-powered system, local compute for IoT, consumer wearable, audio/visual wake phrase, gesture interaction, condition and anomaly detection으로 잡습니다. 이 목록의 공통점은 거대한 추론보다 작은 이벤트를 오래 기다리는 일입니다.
 
 [npj Unconventional Computing의 2025년 AIoT 리뷰](https://www.nature.com/articles/s44335-025-00040-6)도 같은 문제를 더 넓게 설명합니다. AIoT, 즉 artificial intelligence of things에서는 sensor node가 단순 수집기 역할을 넘어 일부 계산을 맡는 node가 됩니다. in-sensor computing은 센서 안에서 feature를 만들고, near-sensor computing은 센서 바로 옆에서 데이터를 줄입니다. dynamic vision camera와 silicon cochlea처럼 빛과 소리를 event stream으로 바꾸는 인터페이스도 이 흐름 안에 있습니다.
 
 이 관점에서 뉴로모픽은 "잠복하는 AI"의 설계에 잘 맞습니다. 아무 일도 없을 때는 쉬고, 작은 변화가 생기면 깨어나고, 의미 있는 사건일 때만 더 큰 모델이나 네트워크를 호출합니다. 집 안 presence sensor가 사람의 미세 움직임을 보고, earbuds가 호출어를 기다리고, 손목 패치가 심박 리듬 변화를 감지하고, smart camera가 모든 영상을 클라우드로 보내지 않는 장면에서 이 설계 철학이 바로 체감됩니다.
 
-## 가까운 네 가지 장면
+## 생활형 AI 활용 가능성
 
 첫째는 스마트홈 presence sensing입니다. 방 안에 사람이 있는지, 움직임이 미세하게 남아 있는지, 넘어짐이나 비정상 움직임이 있었는지를 계속 보는 센서는 배터리와 프라이버시 압박이 큽니다. [Socionext-Innatera의 2026년 60 GHz FMCW radar 발표](https://www.innatera.com/newsroom/socionext-and-innatera-introduce-integrated-60-ghz-fmcw-radar-and-neuromorphic-edge-ai-for-human-presence-detection/)는 human presence detection을 sub-milliwatt power level과 3-6배 battery life extension이라는 회사 claim으로 제시합니다. peer-reviewed benchmark로 확인된 값은 아니므로 본문에서는 회사 발표 claim으로만 다룹니다. 그래도 radar와 neuromorphic edge AI가 만나는 제품 방향은 분명합니다. 카메라 없이 존재와 움직임을 낮은 전력으로 감지하려는 시장입니다.
 
@@ -99,9 +99,9 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 이 네 장면은 공통적으로 "AI를 어디까지 크게 만들 것인가"보다 "언제 큰 AI를 깨울 것인가"를 묻습니다. 뉴로모픽은 대형 모델의 답변 품질을 직접 높이는 기술이 아닙니다. 대신 센서와 배터리, 개인정보가 얽힌 가장 앞단에서 데이터를 덜 만들고, 덜 보내고, 더 빨리 버리는 기술 후보입니다.
 
-## 첫 시장은 작은 지능
+## 초기 상용화 전망
 
-뉴로모픽을 이야기하면 이런 물음을 자주 받습니다. "그럼 GPU를 대체해서 LLM을 학습시키는가?" 지금 보이는 가까운 시장은 데이터센터 LLM 훈련보다 edge sensing과 always-on inference 쪽에 놓여 있습니다.
+초기 상용화 논의의 중심은 데이터센터 LLM 훈련보다 edge sensing과 always-on inference 쪽에 놓여 있습니다.
 
 [Nature Communications의 2025년 상용화 전망 논문](https://www.nature.com/articles/s41467-025-57352-1)은 뉴로모픽을 단일 killer app 탐색으로 좁히지 않고, 어떤 기존 processor와 application을 보강할 수 있는지 살펴보자고 제안합니다. 생활형 AI 제품에서도 같은 구도가 보입니다. 뉴로모픽이 스마트 스피커나 wearable의 전체 지능을 독점한다고 보기 어렵습니다. 가까운 위치는 MCU·DSP·NPU 옆에서 늘 켜진 event gate, wake-up layer, low-power classifier를 맡는 자리입니다.
 
@@ -110,7 +110,7 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
   <figcaption><strong>그림 5.</strong> 뉴로모픽의 가까운 경쟁·보완 자리는 MCU, DSP, NPU, low-power accelerator 주변입니다. 특히 항상 켜진 시간 신호와 센서 이벤트를 다루는 workload에서 강점이 먼저 드러납니다.</figcaption>
 </figure>
 
-상용화 논문이 강조하는 또 다른 조건은 programming model입니다. 과거에는 SNN application을 만들려면 뉴로모픽 hardware를 잘 아는 전문가가 직접 network를 설계해야 했습니다. 이제 surrogate gradient와 gradient-based training, deep learning toolchain과 연결되는 open-source framework가 나오면서, 개발자가 기존 ML workflow에 가깝게 SNN을 만들 수 있는 길이 생기고 있습니다. 뉴로모픽이 제품으로 들어가려면 소자의 물리적 효율만큼이나 software API와 benchmark가 제품 논의의 일부가 됩니다.
+상용화 논문이 강조하는 또 다른 조건은 programming model입니다. 과거의 SNN application 개발은 뉴로모픽 hardware를 잘 아는 전문가가 직접 network를 설계하는 방식에 가까웠습니다. 이제 surrogate gradient와 gradient-based training, deep learning toolchain과 연결되는 open-source framework가 나오면서, 개발자가 기존 ML workflow에 가깝게 SNN을 만들 수 있는 길이 생기고 있습니다. 제품화 논의에서는 소자의 물리적 효율만큼이나 software API와 benchmark가 중요해집니다.
 
 [Nature의 "Neuromorphic computing at scale"](https://www.nature.com/articles/s41586-024-08253-8)도 같은 문제를 봅니다. 대규모 neuromorphic system은 hardware architecture, algorithm, software ecosystem, benchmark, community readiness가 동시에 성숙해야 합니다. [NeuroBench](https://www.nature.com/articles/s41467-025-56739-4)가 등장한 이유도 여기에 있습니다. 뉴로모픽 분야는 이제 "이 칩이 뇌처럼 멋지다"에서 "같은 task에서 기존 방법보다 얼마나 낫고, 그 차이를 어떻게 공정하게 잴 것인가"를 더 자주 묻고 있습니다.
 
@@ -124,27 +124,27 @@ Wang et al.의 MoS2/HZO 논문은 2026년 연구 방향 중 하나인 in-sensor 
 
 첫째, 센서 안쪽으로 계산이 들어갑니다. [AI-native robotic vision 리뷰](https://www.nature.com/articles/s44335-025-00047-z)는 in-sensor computing을 synaptic, neuronal, hierarchical motif로 나눠 정리합니다. 여기서 중요한 부분은 특정 응용명보다 계산 위치입니다. Synaptic vision은 의미 있는 feature를 강화하고 noise를 줄입니다. Neuronal vision은 analog stimulus를 spike train으로 바꿉니다. Hierarchical vision은 망막처럼 공간 feature를 줄이고 downstream compute 부담을 낮춥니다.
 
-둘째, near-sensor와 in-sensor computing이 AIoT의 기본 설계 과제로 자리 잡고 있습니다. [npj Unconventional Computing의 2025년 리뷰](https://www.nature.com/articles/s44335-025-00040-6)는 memory와 logic을 물리적으로 결합하는 in-memory computing, 이벤트 기반 neuromorphic architecture, dynamic vision camera와 silicon cochlea 같은 센서 인터페이스를 같이 다룹니다. 이 문헌을 읽으면 뉴로모픽은 단일 칩 이름보다 넓은 edge intelligence 설계 묶음으로 다가옵니다.
+둘째, near-sensor와 in-sensor computing이 AIoT의 기본 설계 과제로 자리 잡고 있습니다. [npj Unconventional Computing의 2025년 리뷰](https://www.nature.com/articles/s44335-025-00040-6)는 memory와 logic을 물리적으로 결합하는 in-memory computing, 이벤트 기반 neuromorphic architecture, dynamic vision camera와 silicon cochlea 같은 센서 인터페이스를 같이 다룹니다. 이 문헌에서 뉴로모픽은 단일 칩 이름보다 넓은 edge intelligence 설계 묶음으로 다뤄집니다.
 
 셋째, 재료와 소자 연구가 계속 확장되고 있습니다. [Nature Reviews Materials의 2026년 회고](https://www.nature.com/articles/s41578-026-00924-4)는 analogue in-memory computing, physical neural networks, memristor 기반 edge learning을 나란히 언급합니다. [2D material artificial neuron/synapse review](https://link.springer.com/article/10.1007/s40820-026-02139-2)와 [multisensory neuromorphic devices review](https://link.springer.com/article/10.1007/s40820-025-01940-9)는 시각, 촉각, 열, 화학 신호를 하나의 하드웨어가 어떻게 받아들이고 융합할 수 있는지 묻습니다. 스마트홈, 웨어러블, 설비 센서, XR interface로 AI가 내려갈수록 이 논점은 더 자주 돌아옵니다.
 
 넷째, 2026년 논문들은 "눈"만 보지 않습니다. [Retinocortical in-sensor neuromorphic vision platform 논문](https://www.nature.com/articles/s41467-026-71678-4_reference.pdf)은 NIR, 즉 near-infrared 감도를 갖는 in-sensor neuromorphic vision platform을 제안합니다. [Nature Electronics의 signal-folding 논문](https://www.nature.com/articles/s41928-026-01626-z)은 MoS2 기반 compute-in-memory hardware에서 weight precision과 energy efficiency 사이의 trade-off를 줄이려 합니다. [Stretchable neuromorphic circuit 논문](https://www.nature.com/articles/s41928-026-01639-8)은 on-body edge computing을 위해 stretchable neuromorphic circuit을 제안합니다. [Frontiers in Neuroscience의 Neuromorphic Engineering 최신 목록](https://www.frontiersin.org/journals/neuroscience/sections/neuromorphic-engineering/articles)을 보면 2026년 5월에도 radar gesture recognition, sparse signal classification processor, traffic sign recognition, edge hardware audio processing 같은 응용 논문이 계속 나오고 있습니다.
 
-이 문헌을 같이 읽으면 뉴로모픽은 하나의 소자 명칭으로는 다 담기지 않는 기술군으로 다가옵니다. SNN processor, memristor/FeFET compute-in-memory, optoelectronic in-sensor computing, event camera, stretchable OECT array, spintronic neuron이 서로 다른 방향에서 같은 제약을 다룹니다. 공통 제약은 데이터 이동, 전력, 지연, 항상 켜진 sensing, 그리고 physical world와 digital model 사이의 변환 비용입니다.
+최근 문헌에서 뉴로모픽은 하나의 소자 명칭으로만 다뤄지지 않습니다. SNN processor, memristor/FeFET compute-in-memory, optoelectronic in-sensor computing, event camera, stretchable OECT array, spintronic neuron이 서로 다른 방향에서 같은 제약을 다룹니다. 공통 제약은 데이터 이동, 전력, 지연, 항상 켜진 sensing, 그리고 physical world와 digital model 사이의 변환 비용입니다.
 
-## 오래된 쟁점은 제품 조건으로 남았습니다
+## 재료·변동성·데이터 이동
 
-뉴로모픽을 2026년의 edge AI 유행어로만 읽으면 중요한 배경이 빠집니다. 이 분야는 오래전부터 세 가지 기술 쟁점을 반복해 왔습니다. 물질 자체가 기억과 계산을 겸할 수 있는가. analog neuromorphic hardware의 불완전성을 학습으로 견딜 수 있는가. 큰 AI 모델을 작은 장치에서 돌릴 만큼 compute와 memory를 가까운 곳에 둘 수 있는가. 최근 논문과 제품 발표는 이 쟁점을 더 실용적인 언어로 다시 묻습니다.
+이 대목에서 참고할 만한 배경은 세 갈래입니다. 첫째, 재료와 네트워크 구조가 신호의 상태를 기억하고 변환할 수 있는가. 둘째, analog neuromorphic hardware의 device mismatch를 학습과 보정으로 다룰 수 있는가. 셋째, 센서와 memory, processor 사이의 데이터 이동을 얼마나 줄일 수 있는가. Quanta Magazine이 2017-2022년에 다룬 세 기사는 이 배경을 읽는 보조 자료가 됩니다.
 
-첫 번째 쟁점은 재료가 계산에 참여할 수 있는지입니다. [2017년 Quanta Magazine의 atomic-switch mesh 기사](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)는 UCLA 연구진의 silver nanowire mesh를 소개했습니다. 작은 self-organized network가 artificial synapse처럼 동작하고, 간단한 학습·논리·noise cleanup을 수행한다는 내용입니다. 당시에는 "뇌처럼 스스로 얽힌 물질망"이라는 이미지가 앞에 있었지만, 지금 다시 읽으면 physical network가 신호의 상태를 보존하고 변환할 수 있다는 재료·소자 논의가 더 중요하게 보입니다. 2026년의 언어로 바꾸면 memristive network, physical neural network, reservoir computing, in-material computing 계열의 문제입니다.
+첫째는 재료가 계산에 참여하는 방식입니다. [2017년 Quanta Magazine의 atomic-switch mesh 기사](https://www.quantamagazine.org/a-brain-built-from-atomic-switches-can-learn-20170920/)는 UCLA 연구진의 silver nanowire mesh를 소개했습니다. 작은 self-organized network가 artificial synapse처럼 동작하고, 간단한 학습·논리·noise cleanup을 수행한다는 내용입니다. 이 사례는 physical network가 신호의 상태를 보존하고 변환할 수 있다는 재료·소자 논의로 읽힙니다. 2026년의 언어로 바꾸면 memristive network, physical neural network, reservoir computing, in-material computing 계열의 문제입니다.
 
-두 번째 쟁점은 analog hardware의 불완전성을 어떻게 다룰 것인지입니다. [2022년 BrainScaleS-2 관련 Quanta 기사](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)가 다룬 device mismatch가 대표적입니다. 실제 칩의 미세한 소자는 제조 공정 때문에 조금씩 다르고, 이 차이는 디지털 환경에서 학습한 SNN을 하드웨어로 옮길 때 성능을 흔들 수 있습니다. 기사에서 소개한 연구는 SNN이 그 mismatch를 보정하도록 학습해 analog hardware 위에서도 작동할 수 있음을 보였습니다. 같은 요구 조건은 Wang et al.의 MoS2/HZO 논문에도 적용됩니다. 소자 하나가 spike와 synapse를 잘 흉내 내는 것만으로는 부족하고, variability, calibration, training, benchmark가 함께 설계되어야 합니다.
+둘째는 analog hardware의 변동성입니다. [2022년 BrainScaleS-2 관련 Quanta 기사](https://www.quantamagazine.org/ai-overcomes-stumbling-block-on-brain-inspired-hardware-20220217/)가 다룬 device mismatch가 대표적입니다. 실제 칩의 미세한 소자는 제조 공정 때문에 조금씩 다르고, 이 차이는 디지털 환경에서 학습한 SNN을 하드웨어로 옮길 때 성능을 흔들 수 있습니다. 기사에서 소개한 연구는 SNN이 그 mismatch를 보정하도록 학습해 analog hardware 위에서도 작동할 수 있음을 보였습니다. 같은 요구 조건은 Wang et al.의 MoS2/HZO 논문에도 적용됩니다. 소자 하나가 spike와 synapse를 잘 흉내 내는 것만으로는 부족하고, variability, calibration, training, benchmark가 함께 설계되어야 합니다.
 
-세 번째 쟁점은 데이터 이동 비용입니다. [2022년 NeuRRAM을 다룬 Quanta 기사](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)는 RRAM 기반 analog in-memory chip을 소개하며, NeuRRAM이 3 million memory cells와 hardware neuron을 포함하고 image·speech recognition에서 디지털 컴퓨터와 비슷한 정확도를 내면서 에너지 효율을 높였다는 연구진의 주장을 전했습니다. 이 사례는 strict한 SNN neuromorphic chip과 compute-in-memory, analog AI accelerator 논의를 함께 보게 합니다. 병목은 모델 연산량에만 있지 않습니다. 센서 데이터가 저장되고, 메모리에서 다시 읽히고, processor와 memory 사이를 오가는 과정도 edge AI의 전력과 지연을 결정합니다.
+셋째는 데이터 이동 비용입니다. [2022년 NeuRRAM을 다룬 Quanta 기사](https://www.quantamagazine.org/a-brain-inspired-chip-can-run-ai-with-far-less-energy-20221110/)는 RRAM 기반 analog in-memory chip을 소개하며, NeuRRAM이 3 million memory cells와 hardware neuron을 포함하고 image·speech recognition에서 디지털 컴퓨터와 비슷한 정확도를 내면서 에너지 효율을 높였다는 연구진의 주장을 전했습니다. 이 사례는 strict한 SNN neuromorphic chip과 compute-in-memory, analog AI accelerator 논의를 함께 보게 합니다. 병목은 모델 연산량에만 있지 않습니다. 센서 데이터가 저장되고, 메모리에서 다시 읽히고, processor와 memory 사이를 오가는 과정도 edge AI의 전력과 지연을 결정합니다.
 
-이렇게 보면 뉴로모픽의 관심은 이름을 바꾸며 계속 남아 있습니다. 2017년에는 brain-like material network가 눈에 띄었고, 2022년에는 analog neuromorphic chip과 RRAM in-memory AI가 주목을 받았습니다. 2025-2026년에는 같은 문제의식이 edge AI, compute-in-memory, event-based vision, in-sensor computing, low-power sensor intelligence라는 이름으로 나타납니다. 그래서 "뉴로모픽"이라는 단어 자체는 예전보다 덜 보일 수 있습니다. 대신 전력을 얼마나 줄였는가, 지연을 얼마나 낮췄는가, device variability를 어떻게 다뤘는가, 개발자가 쓸 수 있는 software stack과 benchmark가 있는가가 더 자주 검토 항목으로 등장합니다.
+뉴로모픽 논의의 표현은 시기마다 달라졌습니다. 2017년에는 brain-like material network가 눈에 띄었고, 2022년에는 analog neuromorphic chip과 RRAM in-memory AI가 주목을 받았습니다. 2025-2026년에는 edge AI, compute-in-memory, event-based vision, in-sensor computing, low-power sensor intelligence가 같은 기술 관계를 나눠 담고 있습니다. 제품 검토 항목도 그에 맞춰 구체화됩니다. 전력을 얼마나 줄였는가, 지연을 얼마나 낮췄는가, device variability를 어떻게 다뤘는가, 개발자가 쓸 수 있는 software stack과 benchmark가 있는가가 더 자주 등장합니다.
 
-Wang et al.의 MoS2/HZO 논문도 이 맥락에서 읽는 편이 자연스럽습니다. 이 논문은 sensing, memory, compute를 가까이 묶으려는 긴 연구 흐름 안에 있는 in-sensor neuromorphic vision 사례입니다. 기술 경계를 흐리지 않으려면 모든 analog in-memory chip이나 event camera를 곧장 뉴로모픽이라고 부르지는 않아야 합니다. 다만 제품 관점의 검토 항목은 구체적입니다. 센서 가까운 front-end가 event-driven 처리와 memory-compute 결합으로 전력과 지연을 얼마나 줄일 수 있는가. 그리고 그 효율이 calibration, training, benchmark, software stack의 비용을 견딜 만큼 충분한가.
+Wang et al.의 MoS2/HZO 논문도 sensing, memory, compute를 가까이 묶으려는 연구 흐름 안에 놓입니다. 기술 경계는 구분해 둘 필요가 있습니다. 모든 analog in-memory chip이나 event camera가 곧장 뉴로모픽으로 분류되는 것은 아닙니다. 다만 제품 관점의 검토 항목은 구체적입니다. 센서 가까운 front-end가 event-driven 처리와 memory-compute 결합으로 전력과 지연을 얼마나 줄일 수 있는가. 그리고 그 효율이 calibration, training, benchmark, software stack의 비용을 견딜 만큼 충분한가.
 
 ## 디스플레이 논의의 이동
 
@@ -154,7 +154,7 @@ Wang et al.의 MoS2/HZO 논문도 이 맥락에서 읽는 편이 자연스럽습
 
 최근 문헌은 이 주제를 더 넓은 edge device 문제로 다시 다룹니다. [National Science Review의 2025년 EP-IDNC 논문](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)은 electrically programmable in-display neuromorphic computing을 제안했습니다. 이 장치는 organic electrochromic platform 안에서 memory, processing, display 기능을 동시에 다루고, noise reduction과 motion object perception을 작은 prototype array로 보였습니다. [같은 저널의 해설](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)은 이 연구가 AR과 wearable electronics로 이어질 수 있다고 보면서도 cycling endurance와 switching speed는 더 개선되어야 한다고 짚었습니다.
 
-최근에 이 논의가 덜 보이는 데에는 몇 가지 이유가 있습니다. 첫째, 뉴로모픽 분야의 응용 pull이 smart vision, radar, audio, wearable, industrial IoT처럼 더 직접적인 edge sensing 문제로 이동했습니다. 최근 시장과 논문 제목에서는 "항상 켜진 센서"와 "낮은 지연"이 더 자주 앞에 나옵니다. 둘째, neuromorphic display는 매력적인 개념이지만 실제 제품 조건이 까다롭습니다. 화소 균일도, 수명, 색 안정성, switching speed, backplane 통합, 대면적 수율을 동시에 만족해야 합니다. 셋째, AI hardware 담론이 2025년 이후 benchmark, programming model, SoC integration, hybrid edge stack으로 옮겨 가면서 display-specific 용어가 더 넓은 edge AI 논의 안으로 들어갔습니다.
+최근에 이 논의가 덜 보이는 데에는 몇 가지 이유가 있습니다. 첫째, 뉴로모픽 분야의 응용 pull이 smart vision, radar, audio, wearable, industrial IoT처럼 더 직접적인 edge sensing 문제로 이동했습니다. 최근 시장과 논문 제목에서는 "항상 켜진 센서"와 "낮은 지연"이 더 자주 앞에 나옵니다. 둘째, neuromorphic display는 매력적인 개념이지만 제품화 요구가 까다롭습니다. 화소 균일도, 수명, 색 안정성, switching speed, backplane 통합, 대면적 수율을 동시에 만족해야 합니다. 셋째, AI hardware 담론이 2025년 이후 benchmark, programming model, SoC integration, hybrid edge stack으로 옮겨 가면서 display-specific 용어가 더 넓은 edge AI 논의 안으로 들어갔습니다.
 
 디스플레이 관점은 여전히 의미가 있습니다. 앞으로의 smart display는 단순히 이미지를 보여주는 면을 넘어, 주변 빛과 움직임을 감지하고, 일부 신호를 저장하고, 사람에게 필요한 변화만 낮은 전력으로 보여주는 interface가 될 수 있습니다. 여기서 뉴로모픽의 기술적 자리는 pixel·sensor plane이 더 똑똑한 front-end가 되는 데 있습니다. Wang et al.의 MoS2/HZO 논문도 이 넓은 연구 방향 안에 놓을 수 있습니다. display 산업의 언어로 보면 photodetector, 2D material, ferroelectric layer, array integration이 AI sensing 쪽으로 넘어오는 사례입니다.
 
@@ -198,7 +198,7 @@ LLM의 전력과 지연 문제가 커질수록 뉴로모픽을 대안 하드웨�
 이 구도에서 뉴로모픽의 위치는 큰 모델 아래에서 센서 신호를 먼저 줄이는 계층입니다. LLM 이후의 범용 지능 모델로 다루면 현재 연구와 제품 신호를 제대로 설명하기 어렵습니다. 큰 모델의 지능을 부정하지 않고, 그 모델이 실제 세계에서 너무 비싼 방식으로 일하지 않도록 감각 계층을 바꾸려는 접근입니다.
 
 ::: highlight
-뉴로모픽은 생활형 AI가 항상 켜져 있으면서도 배터리와 프라이버시를 덜 소모하도록 돕는 저전력 감각층으로 먼저 읽힙니다. 이 계층이 성숙하면 큰 모델은 모든 센서 신호를 직접 받지 않아도 됩니다.
+뉴로모픽은 생활형 AI가 항상 켜져 있으면서도 배터리와 프라이버시를 덜 소모하도록 돕는 저전력 감각층으로 먼저 읽힙니다. 이 계층의 성숙도는 큰 모델이 모든 센서 신호를 직접 받아야 하는지, 아니면 의미 있는 이벤트만 넘겨받아도 되는지를 가르는 기준이 됩니다.
 :::
 
 ## 양자 AI와 다른 시계

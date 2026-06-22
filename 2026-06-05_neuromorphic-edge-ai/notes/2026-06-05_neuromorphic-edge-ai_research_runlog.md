@@ -688,3 +688,63 @@ tags:
   - `hasSearchPhrase: false`
   - `imageCount: 7`
   - `brokenImages: []`
+
+## 2026-06-22 heading polish: 활용 가능성과 상용화 전망
+
+### 사용자 요청
+
+- `가까운 네 가지 장면`은 무엇을 말하려는지 모호하므로 활용 가능성에 가까운 제목을 검토할 것.
+- `첫 시장은 작은 지능`은 상용화 전망에 가까운 의미이므로 제목을 더 직접적으로 정리할 것.
+
+### 본문 반영
+
+- H2 `가까운 네 가지 장면`을 `생활형 AI 활용 가능성`으로 변경.
+- H2 `첫 시장은 작은 지능`을 `초기 상용화 전망`으로 변경.
+- 제목은 문장형 결론보다 짧고 핵심을 알 수 있는 명사구로 조정.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- distribution package:
+  - `python scripts\html_to_dist.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist .\2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path .\2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+- public site generation:
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=8`
+- phrase check:
+  - `생활형 AI 활용 가능성`, `초기 상용화 전망` present in reports/dist/site HTML.
+  - `가까운 네 가지 장면`, `첫 시장은 작은 지능` absent from refreshed reader-facing outputs.
+
+## 2026-06-22 anti-strawman prose revision
+
+### 사용자 요청
+
+- `뉴로모픽을 2026년의 edge AI 유행어로만 읽으면 중요한 배경이 빠집니다.` 같은 표현은 쓰지 말 것.
+- 독자가 오해한다고 가정한 뒤 반박하는 허수아비식 전개를 피할 것.
+- `~~하면 ~~빠집니다`류의 조건-결핍 문장도 같은 문제로 보고 줄일 것.
+- `오래된 쟁점은 제품 조건으로 남았습니다`는 근거와 의미가 불명확하므로 제목과 문단을 다시 쓸 것.
+
+### 본문 반영
+
+- H2 `오래된 쟁점은 제품 조건으로 남았습니다`를 `재료·변동성·데이터 이동`으로 변경.
+- `뉴로모픽을 2026년의 edge AI 유행어로만 읽으면 중요한 배경이 빠집니다.` 문장을 삭제.
+- Quanta Magazine 기사들은 반박용 근거가 아니라 `재료`, `device mismatch`, `데이터 이동 비용`을 설명하는 보조 자료로 배치.
+- `그럼 GPU를 대체해서 LLM을 학습시키는가?` 가상 질문도 삭제하고, `초기 상용화 논의의 중심은 데이터센터 LLM 훈련보다 edge sensing과 always-on inference 쪽에 놓여 있습니다.`로 직접 서술.
+- `이렇게 보면`, `기술 경계를 흐리지 않으려면`, `제품 조건` 등 비슷한 결의 표현을 추가 정리.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- reader-facing phrase check:
+  - `뉴로모픽을 2026년의 edge AI 유행어로만`, `중요한 배경이 빠집니다`, `오래된 쟁점은 제품 조건`, `제품 조건으로 남았습니다`, `그럼 GPU`, `가까운 네 가지 장면`, `첫 시장은 작은 지능` absent from reports/dist/site.
+  - `생활형 AI 활용 가능성`, `초기 상용화 전망`, `재료·변동성·데이터 이동` present in reports/dist/site.
+- Playwright dist check:
+  - title: `뉴로모픽, 항상 켜진 AI의 감각층`
+  - headings include `생활형 AI 활용 가능성`, `초기 상용화 전망`, `재료·변동성·데이터 이동`
+  - bad phrases absent, `imageCount: 7`, `brokenImages: []`
