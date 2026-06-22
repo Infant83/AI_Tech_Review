@@ -814,3 +814,8 @@ tags:
   - subject: `[AI Tech Review] 뉴로모픽 Edge AI 리뷰 시각자료 수정본 공유`
   - attachment: `2026-06-05_neuromorphic-edge-ai\dist.zip`
   - Gmail message id: `19eefef5197a191f`
+- GitHub Pages deployment:
+  - visual revision commit: `1a1e82e` (`Revise neuromorphic review figures`)
+  - `Publish public report hub` run id: `27964095528`, status `completed`, conclusion `success`
+  - public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/`
+  - public URL check: HTTP `200`, `HasHero: true`, `HasFig3: true`, `HasFig6: true`, `HasOldFig3: false`, `HasOldFig6: false`, `HasUpdated: true`
