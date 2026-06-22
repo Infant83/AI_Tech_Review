@@ -11,7 +11,7 @@ author: "김현중 with Codex Agent | AI Governance Team"
 date: 2026-06-05
 issue date: 2026-06-05
 date created: 2026-06-05
-date modified: 2026-06-21
+date modified: 2026-06-22
 slug: neuromorphic-edge-ai
 language: ko
 status: updated-letter
@@ -30,8 +30,8 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 # 뉴로모픽, 항상 켜진 AI의 감각층
 
 <figure class="article-hero-figure">
-  <img src="../artifacts/final_review/figures/imagegen/neuromorphic_everyday_ai_hero-web.png" alt="집 안의 presence radar, smart door camera, earbuds, wearable health patch가 작은 local chip과 연결되는 생활형 뉴로모픽 edge AI 생성 일러스트">
-  <figcaption><strong>그림 1.</strong> 생성 일러스트. 이 글에서 뉴로모픽은 스마트홈 센서·earbuds·웨어러블 패치처럼 하루 종일 깨어 있어야 하는 작은 AI의 감각층으로 다뤄집니다. 실제 제품 사진, 성능 테스트, 검증 결과로 쓰는 그림은 아니며, 생활형 always-on edge AI의 문제를 여는 편집 이미지입니다.</figcaption>
+  <img src="../artifacts/final_review/figures/imagegen/neuromorphic_everyday_ai_hero-web.png" alt="현관 센서, 스마트 카메라, 이어버드, 웨어러블 패치의 작은 이벤트가 테이블 위 local edge chip으로 모이고 하나의 신호만 상위 장치로 올라가는 일러스트">
+  <figcaption><strong>그림 1.</strong> 현관 센서, 스마트 카메라, 이어버드, 웨어러블 패치가 만든 작은 이벤트가 local edge chip에서 먼저 걸러집니다. 이 칩은 event gate 또는 wake-up layer처럼 작동해 raw data 전체가 아니라 의미 있는 신호만 상위 시스템으로 보냅니다. 성능 테스트나 제품 검증 자료가 아니라 글의 문제의식을 여는 편집 이미지입니다.</figcaption>
 </figure>
 
 ::: highlight
@@ -46,7 +46,7 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 [사이언스타임즈가 2026년 3월 소개한 기사](https://www.sciencetimes.co.kr/nscvrg/view/menu/250?nscvrgSn=261508&searchCategory=222)는 이 문제를 대중 독자에게 소개한 사례입니다. 기사 제목은 "로봇의 눈이 스스로 생각도 하는 뉴로모픽 비전"입니다. 표현은 조금 과감합니다. 그래도 기사가 짚은 문제의식은 중요합니다. 빛이 들어온 자리에서 일부 감지와 계산이 시작된다면, 카메라와 프로세서 사이를 오가는 데이터 이동 비용은 달라질 수 있습니다. 이 리포트는 그 가능성을 생활형 edge AI의 언어로 다시 읽어봅니다.
 
-<figure class="figure-panel">
+<figure class="figure-panel figure-panel-fit">
   <img src="../artifacts/final_review/figures/neuromorphic_edge_stack.svg" alt="클라우드 LLM 중심 AI와 센서 가까이에서 반응하는 뉴로모픽 edge layer가 만나는 관계도">
   <figcaption><strong>그림 2.</strong> 큰 모델은 언어 이해, 계획, 설명, 복잡한 추론을 맡습니다. 반면 생활형 센서 AI는 낮은 전력으로 오래 깨어 있고, 변화가 생긴 순간에만 신호를 올려야 합니다. 뉴로모픽 edge layer는 raw data를 모두 보내지 않고 중요한 이벤트를 먼저 걸러내는 하위 감각층으로 검토할 수 있습니다.</figcaption>
 </figure>
@@ -57,12 +57,12 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 이 논문에서 먼저 볼 부분은 빛 감지, spike 변환, 가중치 저장을 하나의 플랫폼 안에서 연결했다는 점입니다. 기존 카메라는 빛을 전기 신호로 바꾼 뒤 그 데이터를 별도 프로세서로 보냅니다. 이 연구에서는 센서가 빛의 세기와 파장을 받아 spike train을 만들고, 그 spike가 ferroelectric synapse array의 가중합 연산에 입력됩니다. 카메라와 프로세서 사이의 경계를 센서 쪽으로 옮겨 본 실험으로 해석할 수 있습니다.
 
-<figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/imagegen/neuromorphic_in_sensor_vision_editorial-web.png" alt="빛이 센서 타일에서 spike 테스트 신호로 바뀌고 메모리 시냅스 배열로 전달되는 뉴로모픽 비전 검증 일러스트">
-  <figcaption><strong>그림 3.</strong> 생성 일러스트. Wang et al. 논문의 실제 장치 사진 대신, 빛 감지, spike 인코딩, 시냅스 가중치 저장이 한 처리 경로 안에 놓인다는 개념을 설명하기 위한 편집 이미지입니다. 근거 관계와 테스트 조건은 아래 그림 4와 논문 원문에 있습니다.</figcaption>
+<figure class="figure-panel figure-panel-fit">
+  <img src="../artifacts/final_review/figures/neuromorphic_in_sensor_boundary.svg" alt="기존 카메라 경로와 in-sensor neuromorphic vision 경로를 비교해 계산 위치가 센서 쪽으로 당겨지는 과정을 설명하는 도식">
+  <figcaption><strong>그림 3.</strong> 기존 카메라 경로는 빛을 frame으로 만든 뒤 raw data를 메모리와 외부 프로세서로 보냅니다. Wang et al. 논문이 보여주는 방향은 빛을 받은 자리에서 spike 변환과 시냅스 저장 일부를 시작해, 센서와 연산 사이의 거리를 줄이는 것입니다.</figcaption>
 </figure>
 
-<figure class="figure-panel">
+<figure class="figure-panel figure-panel-fit">
   <img src="../artifacts/final_review/figures/in_sensor_neuromorphic_vision.svg" alt="MoS2 광트랜지스터 기반 LIF neuron과 HZO ferroelectric synapse가 in-sensor neuromorphic vision을 구성하는 흐름도">
   <figcaption><strong>그림 4.</strong> Wang et al. 2026 논문은 완성형 상용 카메라보다 센서-연산 통합 방향을 제시합니다. MoS2 광트랜지스터가 빛을 spike로 바꾸고, HZO/MoS2 FeFET가 가중치를 저장하며, 작은 SNN 시스템이 그 신호를 분류합니다.</figcaption>
 </figure>
@@ -105,7 +105,7 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 [Nature Communications의 2025년 상용화 전망 논문](https://www.nature.com/articles/s41467-025-57352-1)은 뉴로모픽을 단일 killer app 탐색으로 좁히지 않고, 어떤 기존 processor와 application을 보강할 수 있는지 살펴보자고 제안합니다. 생활형 AI 제품에서도 같은 구도가 보입니다. 뉴로모픽이 스마트 스피커나 wearable의 전체 지능을 독점한다고 보기 어렵습니다. 가까운 위치는 MCU·DSP·NPU 옆에서 늘 켜진 event gate, wake-up layer, low-power classifier를 맡는 자리입니다.
 
-<figure class="figure-panel">
+<figure class="figure-panel figure-panel-fit">
   <img src="../artifacts/final_review/figures/neuromorphic_workload_fit.svg" alt="뉴로모픽이 잘 맞는 workload와 아직 맞지 않는 workload를 비교한 매트릭스">
   <figcaption><strong>그림 5.</strong> 뉴로모픽의 가까운 경쟁·보완 자리는 MCU, DSP, NPU, low-power accelerator 주변입니다. 특히 항상 켜진 시간 신호와 센서 이벤트를 다루는 workload에서 강점이 먼저 드러납니다.</figcaption>
 </figure>
@@ -170,14 +170,14 @@ Wang et al.의 MoS2/HZO 논문도 sensing, memory, compute를 가까이 묶으�
 
 2026년 들어 Innatera 쪽 산업 신호는 더 구체적입니다. [Socionext-Innatera 60 GHz FMCW radar 발표](https://www.innatera.com/newsroom/socionext-and-innatera-introduce-integrated-60-ghz-fmcw-radar-and-neuromorphic-edge-ai-for-human-presence-detection/)는 presence detection을 sub-milliwatt power level과 3-6배 battery life extension이라는 회사 claim으로 제시했습니다. [Joya Design의 Pulsar 기반 consumer audio module 발표](https://www.innatera.com/newsroom/joya-design-takes-neuromorphic-chip-from-design-to-device-with-first-innatera-powered-consumer-audio-product-at-awe-china/)는 evaluation board를 넘어 실제 제품 설계에 들어가는 사례로 보입니다. [Innatera-Synopsys 발표](https://news.synopsys.com/2026-03-02-Innatera-Selects-Synopsys-Simulation-to-Scale-Brain-Inspired-Processors-for-Edge-Devices)는 설계 자동화, 회로 검증, 시뮬레이션 쪽에서도 뉴로모픽을 edge device 설계 문제로 다루기 시작한 사례입니다.
 
-<figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/imagegen/neuromorphic_edge_commercialization_editorial-web.png" alt="뉴로모픽 edge AI가 연구 보드에서 radar 테스트, wearable, smart camera 검증 같은 always-on 제품 후보로 이동하는 생성 일러스트">
-  <figcaption><strong>그림 6.</strong> 생성 일러스트. 최근 산업 신호는 데이터센터 학습보다 radar, audio, smart camera, wearable 같은 always-on edge sensing에서 먼저 나옵니다. 이 그림은 Innatera, SynSense, BrainChip 발표의 공통 방향을 설명하기 위한 편집 이미지이며, 성능 근거는 각 회사 발표와 peer-reviewed 테스트·검증 자료를 나누어 확인할 필요가 있습니다.</figcaption>
+<figure class="figure-panel figure-panel-fit">
+  <img src="../artifacts/final_review/figures/neuromorphic_edge_commercialization_map.svg" alt="뉴로모픽 edge AI 상용화 신호가 presence radar, always-on audio, event vision, wearable sensing에 모이고 근거 수준을 회사 발표, 제품 문서, 논문 리뷰로 분리해 읽어야 함을 보여주는 맵">
+  <figcaption><strong>그림 6.</strong> 상용화 신호는 radar, audio, event vision, wearable sensing처럼 항상 켜진 edge sensing workload에 먼저 모입니다. 다만 회사 발표, 제품 문서, peer-reviewed 논문·리뷰는 근거 수준이 다르므로 전력 claim, latency, benchmark, SDK, 장기 안정성을 분리해서 확인해야 합니다.</figcaption>
 </figure>
 
 이 신호들은 공통적으로 거창한 AGI보다 항상 켜져 있고 전력이 제한된 작은 지능을 가리킵니다. smart home, industrial IoT, radar, audio, gesture, wearable이 먼저 등장하는 이유도 여기에 있습니다.
 
-<figure class="figure-panel">
+<figure class="figure-panel figure-panel-fit">
   <img src="../artifacts/final_review/figures/neuromorphic_maturity_timeline.svg" alt="2023 IBM NorthPole, 2024 Intel Hala Point, 2025 Nature 리뷰와 NeuroBench, 2026 in-sensor vision 및 edge neuromorphic 연구로 이어지는 타임라인">
   <figcaption><strong>그림 7.</strong> 2023-2026년에는 소자 시연, 대형 research platform, benchmark, 상용 edge signal이 함께 나타났습니다. 뉴로모픽은 아직 주류 컴퓨팅을 대체하지 않았지만, 검토 가능한 산업 항목으로 들어왔습니다.</figcaption>
 </figure>
@@ -228,10 +228,11 @@ LLM의 전력과 지연 문제가 커질수록 뉴로모픽을 대안 하드웨�
 - 업데이트: 2026-06-16
 - 추가 업데이트: 2026-06-17
 - 생활형 edge AI 재작성: 2026-06-21
+- 시각자료 재설계: 2026-06-22
 - 작성 형식: AI Tech Review Letters
 - 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2017-2022년 과학 저널리즘의 뉴로모픽 장기 관찰 자료, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 스마트홈·오디오·웨어러블·smart camera edge neuromorphic 산업 신호, intelligent display 및 in-display neuromorphic computing 문헌
-- 이미지: OpenAI `imagegen` 생성 일러스트 3장, deterministic SVG 설명도 4장
-- 검증 상태: 생활형 edge AI 관점의 source refresh, Korean prose audit, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
+- 이미지: OpenAI `imagegen` hero 1장, deterministic SVG 설명도 6장
+- 검증 상태: 생활형 edge AI 관점의 source refresh, Korean prose audit, artwork/figure revision, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
 
 ## References
 

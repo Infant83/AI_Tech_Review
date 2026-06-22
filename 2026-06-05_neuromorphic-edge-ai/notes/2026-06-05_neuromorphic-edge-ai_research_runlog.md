@@ -748,3 +748,69 @@ tags:
   - title: `뉴로모픽, 항상 켜진 AI의 감각층`
   - headings include `생활형 AI 활용 가능성`, `초기 상용화 전망`, `재료·변동성·데이터 이동`
   - bad phrases absent, `imageCount: 7`, `brokenImages: []`
+
+## 2026-06-22 visual revision: figures 1, 3, 6 and mobile fit
+
+### 사용자 요청
+
+- 현재 illustration, 참고 그림, 표, figure가 전반적으로 투박하고 메시지가 약하므로 개선할 것.
+- 특히 그림 1, 3, 6은 어떤 메시지를 던지는지 잘 보이지 않으므로 다시 그려볼 것.
+- 다른 리뷰의 그림체와 배치 방식을 참고하고, 작성정보도 다시 업데이트할 것.
+
+### 본문 반영
+
+- Figure 1 hero를 `neuromorphic_everyday_ai_hero-web.png`로 재생성·교체.
+  - 메시지: 현관 센서, 스마트 카메라, 이어버드, 웨어러블 패치가 만든 작은 event를 local edge chip이 먼저 걸러 상위 시스템으로 보낸다.
+  - cloud icon, 과도한 beam, 제품 검증처럼 보일 수 있는 표현을 줄이고 editorial hero로 정리.
+- Figure 3을 `neuromorphic_in_sensor_boundary.svg`로 교체.
+  - 메시지: 기존 카메라 경로와 Wang et al.의 in-sensor neuromorphic vision 경로를 비교해 계산 위치가 센서 쪽으로 당겨지는 것을 설명.
+  - 기존 imagegen 후보는 빛, spike, synapse 분위기는 있었지만 센서-연산 경계 이동 메시지가 약해 본문에서 제외.
+- Figure 6을 `neuromorphic_edge_commercialization_map.svg`로 교체.
+  - 메시지: radar, audio, event vision, wearable sensing 쪽으로 모이는 상용화 신호를 근거 수준별로 분리해서 읽어야 한다.
+  - 기존 분위기형 데스크 이미지는 상용화 전망과 근거 구분을 충분히 전달하지 못해 본문에서 제외.
+- SVG figure에 `figure-panel-fit` 클래스를 적용하고, `scripts/markdown_to_html.py`에 해당 클래스의 모바일 축소 규칙을 추가.
+  - 모바일에서 SVG가 680px 고정 폭으로 잘려 보이던 문제를 제거.
+- 작성정보 업데이트:
+  - `시각자료 재설계: 2026-06-22`
+  - `이미지: OpenAI imagegen hero 1장, deterministic SVG 설명도 6장`
+  - 검증 상태에 `artwork/figure revision` 반영.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 7`, `figure_density: ok`, `finding_count: 0`
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- distribution package:
+  - dist folder was cleared before regeneration to remove stale excluded image files.
+  - `python scripts\html_to_dist.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.html --dist .\2026-06-05_neuromorphic-edge-ai\dist --zip --zip-path .\2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size after visual revision: `2,843,418` bytes
+- public site generation:
+  - `scripts/publish_public_site.py` updated neuromorphic review `updated` date to `2026-06-22`.
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=8`
+- Playwright dist check:
+  - desktop: `title: 뉴로모픽, 항상 켜진 AI의 감각층`, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`
+  - figure sources include `neuromorphic_everyday_ai_hero-web.png`, `neuromorphic_in_sensor_boundary.svg`, `neuromorphic_edge_commercialization_map.svg`
+  - 작성정보: `시각자료 재설계: 2026-06-22`
+  - mobile: `bodyWidth == viewportWidth == 390`, `fig3.w: 324`, `fig3.parent: 364`, `fig6.w: 324`, `fig6.parent: 364`
+  - verification screenshots:
+    - `artifacts/final_review/verification/2026-06-22_neuromorphic_visual_revision_dist_hero.png`
+    - `artifacts/final_review/verification/2026-06-22_neuromorphic_visual_revision_dist_figure3.png`
+    - `artifacts/final_review/verification/2026-06-22_neuromorphic_visual_revision_dist_figure6.png`
+    - `artifacts/final_review/verification/2026-06-22_neuromorphic_visual_revision_dist_mobile_figure3_fit.png`
+    - `artifacts/final_review/verification/2026-06-22_neuromorphic_visual_revision_dist_mobile_figure6_fit.png`
+- Playwright public site check:
+  - site review: `title: 뉴로모픽, 항상 켜진 AI의 감각층`, `figureCount: 7`, `imageCount: 7`, `brokenImages: []`, `hasFig3: true`, `hasFig6: true`, `modified: 시각자료 재설계: 2026-06-22`
+  - site index neuromorphic card: `hasNeuromorphicCard: true`, `hasUpdatedDate: true`, card image `reviews/2026-06-05_neuromorphic-edge-ai/neuromorphic_everyday_ai_hero-web.png`
+  - residual note: site index still reports broken images for two older unrelated review cards, `gpt55_agent_workbench_hero-web.png` and `agent-harness-hero-v2-web.png`. The neuromorphic review page and card assets are clean.
+- Obsidian mirror sync:
+  - target: `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - synced: final review MD/HTML, runlog, figure manifest, new Figure 1 hero, new Figure 3/6 SVGs, refreshed `dist/`, refreshed `dist.zip`
+- Distribution email:
+  - sent via Gmail from `angpangmokjang@gmail.com` to `hyun-jung.kim@lgdisplay.com`
+  - subject: `[AI Tech Review] 뉴로모픽 Edge AI 리뷰 시각자료 수정본 공유`
+  - attachment: `2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - Gmail message id: `19eefef5197a191f`

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" role="img" aria-labelledby="title desc">
+  <title id="title">뉴로모픽 edge AI 상용화 신호 맵</title>
+  <desc id="desc">뉴로모픽 상용화 신호가 radar, audio, event vision, wearable sensing 같은 always-on edge sensing 영역에 모이고, 회사 발표와 peer-reviewed 근거를 구분해야 함을 보여주는 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 700 34px "Segoe UI", "Malgun Gothic", sans-serif; fill: #141414; }
+      .subtitle { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .label { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #161616; }
+      .body { font: 400 15.5px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #575757; }
+      .tag { font: 700 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #fff; }
+      .panel { fill: #fff; stroke: #deded6; stroke-width: 1.6; rx: 20; }
+      .core { fill: #fff3df; stroke: #ca7b20; stroke-width: 2.2; rx: 22; }
+      .app { fill: #eef7f4; stroke: #338878; stroke-width: 2; rx: 16; }
+      .evi { fill: #edf2fb; stroke: #5578b4; stroke-width: 2; rx: 16; }
+      .caution { fill: #f7e9e9; stroke: #ad5656; stroke-width: 2; rx: 16; }
+      .chip { fill: #20242a; stroke: #111; stroke-width: 1.4; rx: 8; }
+      .pin { fill: #cfd7d2; }
+      .line { stroke: #d18429; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #8d9895; stroke-width: 1.8; fill: none; stroke-dasharray: 6 6; marker-end: url(#arrowSoft); }
+      .badgeCompany { fill: #7a5a9c; rx: 12; }
+      .badgeProduct { fill: #3e7d8d; rx: 12; }
+      .badgeReview { fill: #5f7f3f; rx: 12; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#d18429" />
+    </marker>
+    <marker id="arrowSoft" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#8d9895" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="820"/>
+  <text x="72" y="72" class="title">상용화 신호는 always-on sensing 쪽에 먼저 모입니다</text>
+  <text x="72" y="106" class="subtitle">제품 가능성은 응용 후보와 근거 수준을 분리해 읽을 때 더 정확해집니다.</text>
+
+  <rect x="68" y="145" width="1144" height="565" class="panel"/>
+
+  <rect x="500" y="210" width="280" height="150" class="core"/>
+  <text x="535" y="250" class="label">Neuromorphic edge AI</text>
+  <text x="535" y="282" class="body">항상 켜진 센서 앞단</text>
+  <text x="535" y="308" class="body">event gate · low-power classifier</text>
+  <text x="535" y="334" class="small">목표: raw data를 줄이고 필요한 순간만 깨우기</text>
+  <rect x="606" y="376" width="68" height="52" class="chip"/>
+  <rect x="590" y="386" width="14" height="6" class="pin"/>
+  <rect x="676" y="386" width="14" height="6" class="pin"/>
+  <rect x="590" y="404" width="14" height="6" class="pin"/>
+  <rect x="676" y="404" width="14" height="6" class="pin"/>
+
+  <rect x="110" y="190" width="245" height="125" class="app"/>
+  <text x="136" y="227" class="label">presence radar</text>
+  <text x="136" y="256" class="body">사람 존재·미세 움직임</text>
+  <text x="136" y="282" class="small">Socionext-Innatera 60 GHz radar</text>
+
+  <rect x="110" y="430" width="245" height="125" class="app"/>
+  <text x="136" y="467" class="label">always-on audio</text>
+  <text x="136" y="496" class="body">wake-word · abnormal sound</text>
+  <text x="136" y="522" class="small">Joya / Innatera module signal</text>
+
+  <rect x="925" y="190" width="245" height="125" class="app"/>
+  <text x="951" y="227" class="label">event vision</text>
+  <text x="951" y="256" class="body">DVS + SNN processor</text>
+  <text x="951" y="282" class="small">SynSense Speck product page</text>
+
+  <rect x="925" y="430" width="245" height="125" class="app"/>
+  <text x="951" y="467" class="label">wearable sensing</text>
+  <text x="951" y="496" class="body">on-body biosignal edge</text>
+  <text x="951" y="522" class="small">stretchable neuromorphic circuit papers</text>
+
+  <path d="M355 252 C430 250 470 260 500 284" class="line"/>
+  <path d="M355 492 C430 490 472 430 514 360" class="line"/>
+  <path d="M925 252 C850 250 810 260 780 284" class="line"/>
+  <path d="M925 492 C850 490 808 430 766 360" class="line"/>
+
+  <rect x="140" y="622" width="1000" height="58" class="evi"/>
+  <text x="170" y="657" class="label">근거 수준을 분리해서 읽기</text>
+  <rect x="440" y="636" width="118" height="25" class="badgeCompany"/>
+  <text x="458" y="654" class="tag">회사 발표</text>
+  <rect x="580" y="636" width="122" height="25" class="badgeProduct"/>
+  <text x="600" y="654" class="tag">제품 문서</text>
+  <rect x="724" y="636" width="150" height="25" class="badgeReview"/>
+  <text x="742" y="654" class="tag">논문·리뷰</text>
+  <text x="900" y="654" class="body">수치는 같은 표 안에서 비교하지 않는다</text>
+
+  <rect x="185" y="725" width="910" height="58" class="caution"/>
+  <text x="215" y="760" class="label">검토 항목</text>
+  <text x="350" y="760" class="body">전력 claim, latency, benchmark, SDK, 데이터셋, 장기 안정성, 제조 변동성</text>
+</svg>

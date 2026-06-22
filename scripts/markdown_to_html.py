@@ -1115,6 +1115,11 @@ def render_final_review_template(context: RenderContext) -> str:
         width: 680px;
         max-width: none;
       }}
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {{
+        width: 100%;
+        max-width: 100%;
+      }}
     }}
 
     .story-flow {{
