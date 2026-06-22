@@ -819,3 +819,65 @@ tags:
   - `Publish public report hub` run id: `27964095528`, status `completed`, conclusion `success`
   - public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/`
   - public URL check: HTTP `200`, `HasHero: true`, `HasFig3: true`, `HasFig6: true`, `HasOldFig3: false`, `HasOldFig6: false`, `HasUpdated: true`
+
+## 2026-06-23 illustration expansion and figure readability audit
+
+### 사용자 요청
+
+- imagegen 생성 그림이 더 필요하므로 현재보다 2장 더 추가할 것.
+- 그림 2, 4, 5를 다시 살펴보고 Playwright screenshot 또는 PNG export로 실제 표현을 확인할 것.
+- frame을 벗어나는 글자, 메시지 가시성, 비주얼 완성도를 강하게 평가하고 대폭 개선할 것.
+
+### 본문 반영
+
+- OpenAI `imagegen` section illustration 2장을 추가했다.
+  - Figure 3: `artifacts/final_review/figures/imagegen/neuromorphic_sensor_time_section-web.png`
+  - Figure 5: `artifacts/final_review/figures/imagegen/neuromorphic_mos2_lab_section-web.png`
+- 본문 그림 수를 7개에서 9개로 늘렸다.
+  - OpenAI `imagegen` illustration 3장
+  - deterministic SVG 설명도 6장
+- Figure 2 `neuromorphic_edge_stack.svg`를 재편집했다.
+  - 하단 빨간 설명 문장이 오른쪽 frame에 닿던 문제를 제거.
+  - sensor → neuromorphic edge layer → NPU/GPU·LLM/Agent 흐름을 큰 라벨 중심으로 유지.
+- Figure 4 `neuromorphic_in_sensor_boundary.svg`를 재편집했다.
+  - 기존 논문식 작은 box/label 구조를 줄이고 `기존 경로` vs `in-sensor 경로`의 두 단 구조로 정리.
+  - 핵심 메시지를 `데이터를 덜 움직이도록 센서 가까이에서 줄인다`로 명확히 제한.
+- Figure 7 `neuromorphic_workload_fit.svg`는 desktop/mobile screenshot으로 함께 확인했다.
+  - 현재 번호 기준 Figure 7이지만, 이전 7개 체계에서는 사용자 지적 대상이던 Figure 5에 해당한다.
+- 작성 정보와 figure manifest를 2026-06-23 기준으로 갱신했다.
+
+### 검증
+
+- editorial audit:
+  - `python C:\Users\angpa\.codex\skills\ai-tech-review-editorial-harness\scripts\audit_review_text.py .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+  - result: `h2_count: 13`, `figure_count: 9`, `figure_density: ok`, `finding_count: 0`
+- HTML render:
+  - `python scripts\markdown_to_html.py --mode auto .\2026-06-05_neuromorphic-edge-ai\reports\2026-06-05_neuromorphic-edge-ai_final_review.md`
+- Playwright report HTML check:
+  - local URL: `http://127.0.0.1:8783/2026-06-05_neuromorphic-edge-ai/reports/2026-06-05_neuromorphic-edge-ai_final_review.html`
+  - desktop: `title: 뉴로모픽, 항상 켜진 AI의 감각층`, `figures: 9`, `imgs: 9`, `brokenImages: []`, `bodyOverflow: 0`
+  - mobile: `figures: 9`, `imgs: 9`, `bodyOverflow: 0`
+- verification screenshots:
+  - before audit: `artifacts/final_review/verification/2026-06-23_neuromorphic_audit_figure2_desktop_before.png`, `...figure4_desktop_before.png`, `...figure5_desktop_before.png`, plus mobile before screenshots
+  - after rework: `artifacts/final_review/verification/2026-06-23_neuromorphic_visual_recheck_figure2_desktop.png`, `...figure4_desktop.png`, `...figure5_desktop.png`, `...figure6_desktop.png`, `...figure7_desktop.png`
+  - mobile after rework: `artifacts/final_review/verification/2026-06-23_neuromorphic_visual_recheck_figure2_mobile.png`, `...figure4_mobile.png`, `...figure5_mobile.png`, `...figure6_mobile.png`, `...figure7_mobile.png`
+- distribution package:
+  - 기존 `dist/` file을 지운 뒤 `scripts/html_to_dist.py`로 재생성.
+  - result: `[local-ref-check] ok`
+  - `dist.zip` size after illustration expansion: `8,979,835` bytes
+  - Playwright dist check: `figures: 9`, `imgs: 9`, `brokenImages: []`, `hasAddedFig3: true`, `hasAddedFig5: true`, `hasUpdatedDate: true`, `bodyOverflow: 0`
+- public site generation:
+  - `scripts/publish_public_site.py` neuromorphic review `updated` date를 `2026-06-23`으로 변경.
+  - `python scripts\publish_public_site.py`
+  - result: `[public-site-check] ok`, `reviews=8`
+  - Playwright site review check: `figures: 9`, `imgs: 9`, `brokenImages: []`, `hasFig3: true`, `hasFig5: true`, `hasUpdatedDate: true`, `bodyOverflow: 0`
+  - Playwright site index check: neuromorphic card present, card date `2026-06-23`, card image `reviews/2026-06-05_neuromorphic-edge-ai/neuromorphic_everyday_ai_hero-web.png`, `brokenImages: []`
+- Obsidian mirror sync:
+  - target: `C:\Users\angpa\Obsidian_Vault\AI_Tech_Review\2026-06-05_neuromorphic-edge-ai`
+  - synced: final review MD/HTML, runlog, figure manifest, new imagegen PNGs and prompts, revised SVGs, refreshed `dist/`, refreshed `dist.zip`, 2026-06-23 verification screenshots
+  - note: first wildcard copy attempt used `-LiteralPath` with `*` and did not expand; target `dist/` was immediately refilled by enumerating source files explicitly.
+- Distribution email:
+  - sent via Gmail to `hyun-jung.kim@lgdisplay.com`
+  - subject: `[AI Tech Review] 뉴로모픽 Edge AI 리뷰 시각자료 추가 수정본 공유`
+  - attachment: `2026-06-05_neuromorphic-edge-ai\dist.zip`
+  - Gmail message id: `19ef0112f12d406f`

@@ -11,7 +11,7 @@ author: "김현중 with Codex Agent | AI Governance Team"
 date: 2026-06-05
 issue date: 2026-06-05
 date created: 2026-06-05
-date modified: 2026-06-22
+date modified: 2026-06-23
 slug: neuromorphic-edge-ai
 language: ko
 status: updated-letter
@@ -30,8 +30,8 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 # 뉴로모픽, 항상 켜진 AI의 감각층
 
 <figure class="article-hero-figure">
-  <img src="neuromorphic_everyday_ai_hero-web.png" alt="현관 센서, 스마트 카메라, 이어버드, 웨어러블 패치의 작은 이벤트가 테이블 위 local edge chip으로 모이고 하나의 신호만 상위 장치로 올라가는 일러스트">
-  <figcaption><strong>그림 1.</strong> 현관 센서, 스마트 카메라, 이어버드, 웨어러블 패치가 만든 작은 이벤트가 local edge chip에서 먼저 걸러집니다. 이 칩은 event gate 또는 wake-up layer처럼 작동해 raw data 전체가 아니라 의미 있는 신호만 상위 시스템으로 보냅니다. 성능 테스트나 제품 검증 자료가 아니라 글의 문제의식을 여는 편집 이미지입니다.</figcaption>
+  <img src="neuromorphic_everyday_ai_hero-web.png" alt="현관 센서, 스마트 카메라, earbuds, 웨어러블 패치의 작은 이벤트가 테이블 위 local edge chip으로 모이고 하나의 신호만 상위 장치로 올라가는 일러스트">
+  <figcaption><strong>그림 1.</strong> 현관 센서, 스마트 카메라, earbuds, 웨어러블 패치가 만든 작은 이벤트가 local edge chip에서 먼저 걸러집니다. 이 칩은 event gate 또는 wake-up layer처럼 작동해 raw data 전체 대신 의미 있는 신호만 상위 시스템으로 보냅니다. 글의 문제의식을 여는 편집 이미지이며, 성능 테스트나 제품 검증 자료로 쓰는 그림은 아닙니다.</figcaption>
 </figure>
 
 ::: highlight
@@ -48,7 +48,12 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 <figure class="figure-panel figure-panel-fit">
   <img src="neuromorphic_edge_stack.svg" alt="클라우드 LLM 중심 AI와 센서 가까이에서 반응하는 뉴로모픽 edge layer가 만나는 관계도">
-  <figcaption><strong>그림 2.</strong> 큰 모델은 언어 이해, 계획, 설명, 복잡한 추론을 맡습니다. 반면 생활형 센서 AI는 낮은 전력으로 오래 깨어 있고, 변화가 생긴 순간에만 신호를 올려야 합니다. 뉴로모픽 edge layer는 raw data를 모두 보내지 않고 중요한 이벤트를 먼저 걸러내는 하위 감각층으로 검토할 수 있습니다.</figcaption>
+  <figcaption><strong>그림 2.</strong> 생활형 센서 AI에서는 감각 계층과 큰 모델 계층이 나뉘어 일합니다. 뉴로모픽 edge layer는 raw data 전체를 올리기 전에 작은 event를 먼저 고르고, NPU·GPU·LLM은 그다음 판단과 설명을 맡습니다.</figcaption>
+</figure>
+
+<figure class="figure-panel">
+  <img src="neuromorphic_sensor_time_section-web.png" alt="밤 시간의 생활 공간에서 문 센서, 스마트 스피커, earbuds, 웨어러블 패치가 작은 edge chip으로 sparse event를 보내고 하나의 신호가 dim tablet으로 올라가는 일러스트">
+  <figcaption><strong>그림 3.</strong> 뉴로모픽이 생활형 AI에서 먼저 의미를 갖는 시간은 답변을 생성하는 순간보다 길게 깨어 있는 시간입니다. 작은 센서와 edge chip이 오래 기다리다가 의미 있는 event만 상위 시스템으로 올리는 장면입니다. 성능 테스트·제품 검증 자료로 쓰는 그림은 아닙니다.</figcaption>
 </figure>
 
 ## MoS2 시각 소자
@@ -59,12 +64,17 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 <figure class="figure-panel figure-panel-fit">
   <img src="neuromorphic_in_sensor_boundary.svg" alt="기존 카메라 경로와 in-sensor neuromorphic vision 경로를 비교해 계산 위치가 센서 쪽으로 당겨지는 과정을 설명하는 도식">
-  <figcaption><strong>그림 3.</strong> 기존 카메라 경로는 빛을 frame으로 만든 뒤 raw data를 메모리와 외부 프로세서로 보냅니다. Wang et al. 논문이 보여주는 방향은 빛을 받은 자리에서 spike 변환과 시냅스 저장 일부를 시작해, 센서와 연산 사이의 거리를 줄이는 것입니다.</figcaption>
+  <figcaption><strong>그림 4.</strong> 기존 카메라 경로는 빛을 frame으로 만든 뒤 raw data를 메모리와 외부 프로세서로 보냅니다. Wang et al. 논문이 보여주는 방향은 빛을 받은 자리에서 spike 변환과 시냅스 저장 일부를 시작해, 센서와 연산 사이의 거리를 줄이는 것입니다.</figcaption>
+</figure>
+
+<figure class="figure-panel">
+  <img src="neuromorphic_mos2_lab_section-web.png" alt="현미경 아래 박막 센서 칩에 색 있는 빛이 닿고 sparse spike-like signal이 작은 synapse array chip으로 연결되는 실험실 일러스트">
+  <figcaption><strong>그림 5.</strong> 이 논문의 중심에는 박막 소자 위에서 빛, spike-like signal, 시냅스 저장을 한 경로로 묶어 보는 실험이 있습니다. 현미경 아래 소자와 빛의 접점을 먼저 잡아주는 편집 이미지입니다. 성능 테스트·제품 검증 자료로 쓰는 그림은 아닙니다.</figcaption>
 </figure>
 
 <figure class="figure-panel figure-panel-fit">
   <img src="in_sensor_neuromorphic_vision.svg" alt="MoS2 광트랜지스터 기반 LIF neuron과 HZO ferroelectric synapse가 in-sensor neuromorphic vision을 구성하는 흐름도">
-  <figcaption><strong>그림 4.</strong> Wang et al. 2026 논문은 완성형 상용 카메라보다 센서-연산 통합 방향을 제시합니다. MoS2 광트랜지스터가 빛을 spike로 바꾸고, HZO/MoS2 FeFET가 가중치를 저장하며, 작은 SNN 시스템이 그 신호를 분류합니다.</figcaption>
+  <figcaption><strong>그림 6.</strong> Wang et al. 2026 논문은 빛 입력, MoS2 LIF neuron, spike coding, HZO/MoS2 FeFET synapse, 작은 SNN 분류를 한 실험 경로로 연결합니다. 이 도식은 논문의 기능 단위를 제품 과장 없이 간결하게 정리합니다.</figcaption>
 </figure>
 
 논문은 두 가지 encoding을 같이 씁니다. 하나는 rate coding입니다. 빛이 강할수록 일정 시간 안에 spike가 더 많이 나옵니다. 다른 하나는 TTFS(time-to-first-spike)입니다. 자극이 강할수록 첫 spike가 더 빨리 나옵니다. 현관 앞 움직임, 야간 돌봄 카메라, wearable 이상 신호처럼 갑작스러운 변화를 빨리 잡아야 하는 장면에서는 첫 반응 시간이 설계 변수로 떠오릅니다. 반대로 색상과 패턴을 더 안정적으로 구분하려면 spike 빈도도 쓸 만한 정보가 됩니다.
@@ -107,7 +117,7 @@ source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-06-05_ne
 
 <figure class="figure-panel figure-panel-fit">
   <img src="neuromorphic_workload_fit.svg" alt="뉴로모픽이 잘 맞는 workload와 아직 맞지 않는 workload를 비교한 매트릭스">
-  <figcaption><strong>그림 5.</strong> 뉴로모픽의 가까운 경쟁·보완 자리는 MCU, DSP, NPU, low-power accelerator 주변입니다. 특히 항상 켜진 시간 신호와 센서 이벤트를 다루는 workload에서 강점이 먼저 드러납니다.</figcaption>
+  <figcaption><strong>그림 7.</strong> 뉴로모픽의 가까운 자리는 MCU, DSP, NPU, low-power accelerator 주변의 event layer입니다. 항상 켜진 audio, radar, wearable sensing은 먼저 맞고, 큰 모델 학습과 장문 추론은 아직 다른 계층의 강점으로 남습니다.</figcaption>
 </figure>
 
 상용화 논문이 강조하는 또 다른 조건은 programming model입니다. 과거의 SNN application 개발은 뉴로모픽 hardware를 잘 아는 전문가가 직접 network를 설계하는 방식에 가까웠습니다. 이제 surrogate gradient와 gradient-based training, deep learning toolchain과 연결되는 open-source framework가 나오면서, 개발자가 기존 ML workflow에 가깝게 SNN을 만들 수 있는 길이 생기고 있습니다. 제품화 논의에서는 소자의 물리적 효율만큼이나 software API와 benchmark가 중요해집니다.
@@ -152,7 +162,7 @@ Wang et al.의 MoS2/HZO 논문도 sensing, memory, compute를 가까이 묶으�
 
 [Advanced Materials의 2024년 intelligent display 리뷰](https://advanced.onlinelibrary.wiley.com/doi/10.1002/adma.202401821)는 storage, processing, light-emitting 기능을 통합하는 neuromorphic display를 차세대 display 병목을 푸는 방향으로 정리했습니다. 당시에는 display가 사람과 기계가 만나는 면이고, 동시에 대면적 박막전자·광전자 소자 플랫폼이라는 점이 강조되었습니다. 기존 display 산업이 가진 TFT backplane, 산화물/유기 반도체, 광검출·발광 소재, 대면적 array 공정 경험이 AI hardware와 만날 수 있다는 기대도 있었습니다.
 
-최근 문헌은 이 주제를 더 넓은 edge device 문제로 다시 다룹니다. [National Science Review의 2025년 EP-IDNC 논문](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)은 electrically programmable in-display neuromorphic computing을 제안했습니다. 이 장치는 organic electrochromic platform 안에서 memory, processing, display 기능을 동시에 다루고, noise reduction과 motion object perception을 작은 prototype array로 보였습니다. [같은 저널의 해설](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)은 이 연구가 AR과 wearable electronics로 이어질 수 있다고 보면서도 cycling endurance와 switching speed는 더 개선되어야 한다고 짚었습니다.
+최근 문헌은 이 주제를 더 넓은 edge device 문제로 다시 다룹니다. [National Science Review의 2025년 EP-IDNC 논문](https://academic.oup.com/nsr/article/12/8/nwaf224/8156810)은 electrically programmable in-display neuromorphic computing을 제안했습니다. 이 장치는 organic electrochromic platform 안에서 memory, processing, display 기능을 동시에 다루고, noise reduction과 motion object perception을 작은 prototype array로 보였습니다. [같은 저널의 해설](https://academic.oup.com/nsr/advance-article/doi/10.1093/nsr/nwaf515/8340374?searchresult=1)은 이 연구가 AR과 wearable electronics로 확장될 수 있다고 보면서도 cycling endurance와 switching speed는 더 개선되어야 한다고 짚었습니다.
 
 최근에 이 논의가 덜 보이는 데에는 몇 가지 이유가 있습니다. 첫째, 뉴로모픽 분야의 응용 pull이 smart vision, radar, audio, wearable, industrial IoT처럼 더 직접적인 edge sensing 문제로 이동했습니다. 최근 시장과 논문 제목에서는 "항상 켜진 센서"와 "낮은 지연"이 더 자주 앞에 나옵니다. 둘째, neuromorphic display는 매력적인 개념이지만 제품화 요구가 까다롭습니다. 화소 균일도, 수명, 색 안정성, switching speed, backplane 통합, 대면적 수율을 동시에 만족해야 합니다. 셋째, AI hardware 담론이 2025년 이후 benchmark, programming model, SoC integration, hybrid edge stack으로 옮겨 가면서 display-specific 용어가 더 넓은 edge AI 논의 안으로 들어갔습니다.
 
@@ -172,14 +182,14 @@ Wang et al.의 MoS2/HZO 논문도 sensing, memory, compute를 가까이 묶으�
 
 <figure class="figure-panel figure-panel-fit">
   <img src="neuromorphic_edge_commercialization_map.svg" alt="뉴로모픽 edge AI 상용화 신호가 presence radar, always-on audio, event vision, wearable sensing에 모이고 근거 수준을 회사 발표, 제품 문서, 논문 리뷰로 분리해 읽어야 함을 보여주는 맵">
-  <figcaption><strong>그림 6.</strong> 상용화 신호는 radar, audio, event vision, wearable sensing처럼 항상 켜진 edge sensing workload에 먼저 모입니다. 다만 회사 발표, 제품 문서, peer-reviewed 논문·리뷰는 근거 수준이 다르므로 전력 claim, latency, benchmark, SDK, 장기 안정성을 분리해서 확인해야 합니다.</figcaption>
+  <figcaption><strong>그림 8.</strong> 상용화 신호는 radar, audio, event vision, wearable sensing처럼 항상 켜진 edge sensing workload에 먼저 모입니다. 다만 회사 발표, 제품 문서, peer-reviewed 논문·리뷰는 근거 수준이 다르므로 전력 claim, latency, benchmark, SDK, 장기 안정성을 분리해서 확인해야 합니다.</figcaption>
 </figure>
 
 이 신호들은 공통적으로 거창한 AGI보다 항상 켜져 있고 전력이 제한된 작은 지능을 가리킵니다. smart home, industrial IoT, radar, audio, gesture, wearable이 먼저 등장하는 이유도 여기에 있습니다.
 
 <figure class="figure-panel figure-panel-fit">
-  <img src="neuromorphic_maturity_timeline.svg" alt="2023 IBM NorthPole, 2024 Intel Hala Point, 2025 Nature 리뷰와 NeuroBench, 2026 in-sensor vision 및 edge neuromorphic 연구로 이어지는 타임라인">
-  <figcaption><strong>그림 7.</strong> 2023-2026년에는 소자 시연, 대형 research platform, benchmark, 상용 edge signal이 함께 나타났습니다. 뉴로모픽은 아직 주류 컴퓨팅을 대체하지 않았지만, 검토 가능한 산업 항목으로 들어왔습니다.</figcaption>
+  <img src="neuromorphic_maturity_timeline.svg" alt="2023 IBM NorthPole, 2024 Intel Hala Point, 2025 Nature 리뷰와 NeuroBench, 2026 in-sensor vision 및 edge neuromorphic 연구를 연결한 타임라인">
+  <figcaption><strong>그림 9.</strong> 2023-2026년에는 소자 시연, 대형 research platform, benchmark, 상용 edge signal이 함께 나타났습니다. 뉴로모픽은 아직 주류 컴퓨팅을 대체하지 않았지만, 검토 가능한 산업 항목으로 들어왔습니다.</figcaption>
 </figure>
 
 ## LLM 다음인가, LLM 아래인가
@@ -228,10 +238,10 @@ LLM의 전력과 지연 문제가 커질수록 뉴로모픽을 대안 하드웨�
 - 업데이트: 2026-06-16
 - 추가 업데이트: 2026-06-17
 - 생활형 edge AI 재작성: 2026-06-21
-- 시각자료 재설계: 2026-06-22
+- 시각자료 재설계: 2026-06-23
 - 작성 형식: AI Tech Review Letters
 - 검토 범위: ScienceTimes 기사, Nature Communications 대상 논문, 2017-2022년 과학 저널리즘의 뉴로모픽 장기 관찰 자료, 2025-2026년 뉴로모픽 리뷰/벤치마크/상용화 자료, 2026년 edge-oriented SNN 및 multisensory neuromorphic review, 2026년 6월 스마트홈·오디오·웨어러블·smart camera edge neuromorphic 산업 신호, intelligent display 및 in-display neuromorphic computing 문헌
-- 이미지: OpenAI `imagegen` hero 1장, deterministic SVG 설명도 6장
+- 이미지: OpenAI `imagegen` illustration 3장, deterministic SVG 설명도 6장
 - 검증 상태: 생활형 edge AI 관점의 source refresh, Korean prose audit, artwork/figure revision, HTML rendering, dist package regeneration, public site publish 대상으로 업데이트
 
 ## References
