@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="640" viewBox="0 0 1120 640" role="img" aria-labelledby="title desc">
+  <title id="title">Tabular foundation model landscape from TabPFN to TabFM</title>
+  <desc id="desc">TabPFN, TabICL, TabPFN-3, TabFM, BeyondArena의 연구 흐름과 적용 경계를 비교하는 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .axis { stroke: #52615a; stroke-width: 2; marker-end: url(#arrow); }
+      .grid { stroke: #d8d5cb; stroke-width: 1; stroke-dasharray: 4 6; }
+      .card { fill: #ffffff; stroke: #d8d5cb; stroke-width: 1.4; rx: 12; }
+      .pfn { fill: #e8f3ef; stroke: #0f766e; }
+      .icl { fill: #e9eef5; stroke: #25456f; }
+      .fm { fill: #f6eee2; stroke: #a35a16; }
+      .warn { fill: #f5eaea; stroke: #8b3a3a; }
+      .ink { fill: #17211d; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .muted { fill: #5f6b65; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .title { font-size: 27px; font-weight: 760; }
+      .h { font-size: 18px; font-weight: 760; }
+      .body { font-size: 14px; }
+      .small { font-size: 14px; }
+      .badge { font-size: 14px; font-weight: 700; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#52615a"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1120" height="640"/>
+  <text class="ink title" x="52" y="54">TabFM은 TabPFN 계열의 속도와 TabICL 계열의 확장 설계를 함께 가져옵니다</text>
+  <text class="muted body" x="52" y="83">표 데이터 Foundation 모델은 작은 IID 표에서 먼저 성능을 증명했습니다.</text>
+  <text class="muted body" x="52" y="106">2026년에는 큰 표, 비IID split, 라이선스, 운영 검증이 주요 평가 축으로 올라왔습니다.</text>
+
+  <line class="grid" x1="144" y1="520" x2="990" y2="520"/>
+  <line class="grid" x1="144" y1="410" x2="990" y2="410"/>
+  <line class="grid" x1="144" y1="300" x2="990" y2="300"/>
+  <line class="grid" x1="144" y1="190" x2="990" y2="190"/>
+  <line class="axis" x1="144" y1="540" x2="1008" y2="540"/>
+  <line class="axis" x1="144" y1="540" x2="144" y2="150"/>
+  <text class="muted small" x="850" y="574">데이터 규모·feature 폭·운영 조건 증가</text>
+  <text class="muted small" x="64" y="160" transform="rotate(-90 64 160)">검증 난도와 운영 리스크 증가</text>
+
+  <rect class="card pfn" x="178" y="386" width="200" height="118" rx="12"/>
+  <text class="ink h" x="198" y="416">TabPFN v2</text>
+  <text class="muted small" x="198" y="440">Nature 2025</text>
+  <text class="muted small" x="198" y="463">작은 표에서 강한 forward-pass 예측</text>
+  <text class="muted small" x="198" y="486">합성 task prior와 행/열 attention</text>
+
+  <rect class="card icl" x="396" y="330" width="206" height="124" rx="12"/>
+  <text class="ink h" x="416" y="360">TabICL / TabICLv2</text>
+  <text class="muted small" x="416" y="384">ICML 2025, arXiv 2026</text>
+  <text class="muted small" x="416" y="407">행 embedding과 ICL transformer</text>
+  <text class="muted small" x="416" y="430">큰 context 처리와 공개성 강조</text>
+
+  <rect class="card pfn" x="588" y="238" width="210" height="126" rx="12"/>
+  <text class="ink h" x="608" y="268">TabPFN-2.5 / 3</text>
+  <text class="muted small" x="608" y="292">2025-2026 기술보고서</text>
+  <text class="muted small" x="608" y="315">1M 행, thinking, distillation</text>
+  <text class="muted small" x="608" y="338">상용 사용은 별도 계약 경계</text>
+
+  <rect class="card fm" x="766" y="176" width="220" height="134" rx="12"/>
+  <text class="ink h" x="786" y="206">Google TabFM</text>
+  <text class="muted small" x="786" y="230">2026-06-30 발표</text>
+  <text class="muted small" x="786" y="253">TabPFN식 행/열 attention +</text>
+  <text class="muted small" x="786" y="276">TabICL식 행 압축/ICL</text>
+  <text class="muted small" x="786" y="299">BigQuery AI.PREDICT 예고</text>
+
+  <rect class="card warn" x="714" y="402" width="292" height="102" rx="12"/>
+  <text class="ink h" x="734" y="432">BeyondArena 경고선</text>
+  <text class="muted small" x="734" y="456">비IID, temporal/group split, 큰 표, 고차원 feature에서는</text>
+  <text class="muted small" x="734" y="479">tree/deep 모델이 여전히 강한 경우가 많음</text>
+
+  <path d="M378 444 C405 431 397 397 396 391" stroke="#52615a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M600 354 C632 332 604 300 588 295" stroke="#52615a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path d="M798 262 C830 252 760 245 766 242" stroke="#52615a" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <rect class="card" x="72" y="112" width="308" height="96" rx="12"/>
+  <text class="ink h" x="94" y="143">표 모델 평가의 기본 질문</text>
+  <text class="muted small" x="94" y="168">작은 IID benchmark 성능만 볼 것인가</text>
+  <text class="muted small" x="94" y="190">time/group split, drift, license, latency까지 볼 것인가</text>
+
+  <rect class="card" x="72" y="232" width="308" height="92" rx="12"/>
+  <text class="ink h" x="94" y="263">라이선스 경계</text>
+  <text class="muted small" x="94" y="288">TabFM weights: non-commercial</text>
+  <text class="muted small" x="94" y="310">TabPFN 최신 weights: non-commercial / enterprise 별도</text>
+
+  <rect class="card" x="72" y="348" width="308" height="92" rx="12"/>
+  <text class="ink h" x="94" y="379">현장 적용 경계</text>
+  <text class="muted small" x="94" y="404">baseline과 후보 선별에는 유용</text>
+  <text class="muted small" x="94" y="426">생산 의사결정은 split, calibration, 설명가능성 검증 필요</text>
+</svg>

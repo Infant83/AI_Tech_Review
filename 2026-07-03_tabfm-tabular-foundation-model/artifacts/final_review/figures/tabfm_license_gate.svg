@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="520" viewBox="0 0 1120 520" role="img" aria-labelledby="title desc">
+  <title id="title">TabFM license gate for company use</title>
+  <desc id="desc">TabFM 코드와 모델 가중치 라이선스를 분리하고 회사 PoC와 production 사용 경계를 확인하는 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .card { fill: #ffffff; stroke: #d8d5cb; stroke-width: 1.4; rx: 12; }
+      .ok { fill: #e8f3ef; stroke: #0f766e; }
+      .warn { fill: #f6eee2; stroke: #a35a16; }
+      .stop { fill: #f5eaea; stroke: #8b3a3a; }
+      .ink { fill: #17211d; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .muted { fill: #5f6b65; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .title { font-size: 27px; font-weight: 760; }
+      .h { font-size: 19px; font-weight: 760; }
+      .body { font-size: 15px; }
+      .small { font-size: 14px; }
+      .arrow { fill: none; stroke: #52615a; stroke-width: 2.2; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#52615a"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1120" height="520"/>
+  <text class="ink title" x="52" y="54">회사 사용에서는 코드 라이선스와 모델 가중치 라이선스를 따로 봐야 합니다</text>
+  <text class="muted body" x="52" y="84">TabFM GitHub 코드는 Apache-2.0입니다.</text>
+  <text class="muted body" x="52" y="106">공개 weights는 non-commercial license입니다.</text>
+  <text class="muted body" x="52" y="128">결과값 사용도 production 목적이면 제한될 수 있습니다.</text>
+
+  <rect class="card ok" x="70" y="150" width="250" height="160" rx="12"/>
+  <text class="ink h" x="96" y="184">코드</text>
+  <text class="muted small" x="96" y="214">google-research/tabfm</text>
+  <text class="muted small" x="96" y="240">Apache-2.0</text>
+  <text class="muted small" x="96" y="266">설치, wrapper, 내부 테스트 코드</text>
+  <text class="muted small" x="96" y="290">작성에는 비교적 열린 조건</text>
+
+  <path class="arrow" d="M334 230 L398 230"/>
+
+  <rect class="card warn" x="414" y="150" width="280" height="160" rx="12"/>
+  <text class="ink h" x="440" y="184">모델 가중치</text>
+  <text class="muted small" x="440" y="214">Hugging Face TabFM 1.0.0</text>
+  <text class="muted small" x="440" y="240">TabFM Non-Commercial v1.0</text>
+  <text class="muted small" x="440" y="266">testing, evaluation, research 중심</text>
+  <text class="muted small" x="440" y="290">commercial license 필요 가능성</text>
+
+  <path class="arrow" d="M708 230 L772 230"/>
+
+  <rect class="card stop" x="788" y="150" width="260" height="160" rx="12"/>
+  <text class="ink h" x="814" y="184">업무 의사결정</text>
+  <text class="muted small" x="814" y="214">production system</text>
+  <text class="muted small" x="814" y="240">client deliverable</text>
+  <text class="muted small" x="814" y="266">revenue-generating workflow</text>
+  <text class="muted small" x="814" y="290">법무·보안·구매 검토 후 진행</text>
+
+  <rect class="card" x="118" y="344" width="884" height="86" rx="12"/>
+  <text class="ink h" x="144" y="378">권장 운영 원칙</text>
+  <text class="muted small" x="144" y="406">1. 공개 데이터 또는 반출 가능한 샘플로 benchmark를 먼저 수행합니다.</text>
+  <text class="muted small" x="144" y="428">2. 실제 공정·고객·재무 의사결정에 연결하기 전 commercial terms를 확인합니다.</text>
+  <text class="muted small" x="162" y="450">데이터 반출 경계와 결과값 사용 조건도 함께 점검합니다.</text>
+</svg>

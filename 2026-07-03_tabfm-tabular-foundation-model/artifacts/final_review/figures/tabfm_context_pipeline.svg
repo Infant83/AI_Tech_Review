@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">TabFM in-context prediction pipeline</title>
+  <desc id="desc">훈련 행과 예측 행을 하나의 표 문맥으로 넣고, 행/열 attention, 행 압축, ICL transformer를 거쳐 예측을 생성하는 TabFM 흐름도</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf7; }
+      .panel { fill: #ffffff; stroke: #d8d5cb; stroke-width: 1.5; rx: 12; }
+      .panel-soft { fill: #f2f0ea; stroke: #d8d5cb; stroke-width: 1.2; rx: 10; }
+      .green { fill: #e8f3ef; stroke: #0f766e; }
+      .blue { fill: #e9eef5; stroke: #25456f; }
+      .amber { fill: #f6eee2; stroke: #a35a16; }
+      .rose { fill: #f5eaea; stroke: #8b3a3a; }
+      .ink { fill: #17211d; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .muted { fill: #5f6b65; font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif; }
+      .title { font-size: 27px; font-weight: 760; }
+      .h { font-size: 19px; font-weight: 760; }
+      .body { font-size: 15px; }
+      .small { font-size: 14px; }
+      .cell { fill: #ffffff; stroke: #cfcabf; stroke-width: 1; }
+      .cell-train { fill: #e8f3ef; stroke: #9cc9bf; }
+      .cell-test { fill: #fff7e8; stroke: #dfba7c; }
+      .arrow { fill: none; stroke: #52615a; stroke-width: 2.2; marker-end: url(#arrow); }
+      .arrow-green { fill: none; stroke: #0f766e; stroke-width: 2.2; marker-end: url(#arrow-green); }
+      .dash { stroke-dasharray: 5 5; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#52615a"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8.5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L9,3 L0,6 Z" fill="#0f766e"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1120" height="560"/>
+  <text class="ink title" x="52" y="54">TabFM은 새 표를 다시 학습하지 않고, 표 안의 예시 행을 문맥으로 읽습니다</text>
+  <text class="muted body" x="52" y="82">분류·회귀 문제를 in-context learning 문제로 바꾸는 구조입니다.</text>
+  <text class="muted body" x="52" y="105">표는 문장처럼 한 줄로 펼치지 않고, 행과 열의 관계를 따로 보존해야 합니다.</text>
+
+  <rect class="panel" x="48" y="122" width="245" height="335" rx="12"/>
+  <text class="ink h" x="72" y="154">입력 표 문맥</text>
+  <text class="muted small" x="72" y="178">labeled rows + target rows</text>
+  <g transform="translate(72,204)">
+    <rect class="cell" x="0" y="0" width="46" height="28"/>
+    <rect class="cell" x="46" y="0" width="46" height="28"/>
+    <rect class="cell" x="92" y="0" width="46" height="28"/>
+    <rect class="cell" x="138" y="0" width="46" height="28"/>
+    <text class="muted small" x="12" y="19">x1</text>
+    <text class="muted small" x="58" y="19">x2</text>
+    <text class="muted small" x="104" y="19">x3</text>
+    <text class="muted small" x="153" y="19">y</text>
+    <g transform="translate(0,28)">
+      <rect class="cell-train" x="0" y="0" width="46" height="30"/>
+      <rect class="cell-train" x="46" y="0" width="46" height="30"/>
+      <rect class="cell-train" x="92" y="0" width="46" height="30"/>
+      <rect class="cell-train" x="138" y="0" width="46" height="30"/>
+      <rect class="cell-train" x="0" y="30" width="46" height="30"/>
+      <rect class="cell-train" x="46" y="30" width="46" height="30"/>
+      <rect class="cell-train" x="92" y="30" width="46" height="30"/>
+      <rect class="cell-train" x="138" y="30" width="46" height="30"/>
+      <rect class="cell-train" x="0" y="60" width="46" height="30"/>
+      <rect class="cell-train" x="46" y="60" width="46" height="30"/>
+      <rect class="cell-train" x="92" y="60" width="46" height="30"/>
+      <rect class="cell-train" x="138" y="60" width="46" height="30"/>
+      <rect class="cell-test" x="0" y="100" width="46" height="30"/>
+      <rect class="cell-test" x="46" y="100" width="46" height="30"/>
+      <rect class="cell-test" x="92" y="100" width="46" height="30"/>
+      <rect class="cell-test" x="138" y="100" width="46" height="30"/>
+      <text class="muted small" x="151" y="121">?</text>
+    </g>
+  </g>
+  <text class="muted small" x="72" y="390">초록: 라벨이 있는 행</text>
+  <text class="muted small" x="72" y="413">주황: 예측할 행</text>
+
+  <path class="arrow" d="M306 290 C338 290 346 290 373 290"/>
+
+  <rect class="panel blue" x="386" y="122" width="220" height="335" rx="12"/>
+  <text class="ink h" x="414" y="154">행·열 attention</text>
+  <text class="muted small" x="414" y="178">TabPFN식 2차원 표 처리</text>
+  <g transform="translate(426,221)">
+    <rect class="panel-soft" x="0" y="0" width="140" height="110" rx="10"/>
+    <line x1="16" y1="28" x2="124" y2="28" stroke="#25456f" stroke-width="2"/>
+    <line x1="16" y1="55" x2="124" y2="55" stroke="#25456f" stroke-width="2"/>
+    <line x1="16" y1="82" x2="124" y2="82" stroke="#25456f" stroke-width="2"/>
+    <line x1="38" y1="14" x2="38" y2="98" stroke="#0f766e" stroke-width="2"/>
+    <line x1="70" y1="14" x2="70" y2="98" stroke="#0f766e" stroke-width="2"/>
+    <line x1="102" y1="14" x2="102" y2="98" stroke="#0f766e" stroke-width="2"/>
+  </g>
+  <text class="muted small" x="414" y="372">열 간 feature interaction과</text>
+  <text class="muted small" x="414" y="394">행 간 예시 관계를 함께 갱신</text>
+
+  <path class="arrow" d="M619 290 C650 290 660 290 686 290"/>
+
+  <rect class="panel amber" x="700" y="122" width="170" height="335" rx="12"/>
+  <text class="ink h" x="728" y="154">행 압축</text>
+  <text class="muted small" x="728" y="178">TabICL식 row embedding</text>
+  <g transform="translate(738,225)">
+    <rect class="panel-soft" x="0" y="0" width="92" height="28" rx="6"/>
+    <rect class="panel-soft" x="0" y="42" width="92" height="28" rx="6"/>
+    <rect class="panel-soft" x="0" y="84" width="92" height="28" rx="6"/>
+    <circle cx="14" cy="14" r="5" fill="#a35a16"/>
+    <circle cx="34" cy="14" r="5" fill="#a35a16"/>
+    <circle cx="54" cy="14" r="5" fill="#a35a16"/>
+    <circle cx="74" cy="14" r="5" fill="#a35a16"/>
+    <circle cx="14" cy="56" r="5" fill="#a35a16"/>
+    <circle cx="34" cy="56" r="5" fill="#a35a16"/>
+    <circle cx="54" cy="56" r="5" fill="#a35a16"/>
+    <circle cx="74" cy="56" r="5" fill="#a35a16"/>
+    <circle cx="14" cy="98" r="5" fill="#a35a16"/>
+    <circle cx="34" cy="98" r="5" fill="#a35a16"/>
+    <circle cx="54" cy="98" r="5" fill="#a35a16"/>
+    <circle cx="74" cy="98" r="5" fill="#a35a16"/>
+  </g>
+  <text class="muted small" x="728" y="372">각 행을 고정 길이 벡터로 요약해</text>
+  <text class="muted small" x="728" y="394">긴 표 문맥의 계산량을 낮춤</text>
+
+  <path class="arrow" d="M884 290 C912 290 920 290 944 290"/>
+
+  <rect class="panel rose" x="956" y="122" width="118" height="335" rx="12"/>
+  <text class="ink h" x="982" y="154">예측</text>
+  <text class="muted small" x="982" y="178">ICL transformer</text>
+  <g transform="translate(986,226)">
+    <circle cx="30" cy="14" r="12" fill="#8b3a3a" opacity="0.9"/>
+    <circle cx="30" cy="56" r="12" fill="#8b3a3a" opacity="0.75"/>
+    <circle cx="30" cy="98" r="12" fill="#8b3a3a" opacity="0.6"/>
+    <path class="arrow-green" d="M30 114 L30 160"/>
+    <rect class="panel-soft" x="-15" y="170" width="90" height="42" rx="8"/>
+    <text class="ink small" x="-2" y="196">class / y</text>
+  </g>
+  <text class="muted small" x="982" y="394">가중치 업데이트 없이</text>
+  <text class="muted small" x="982" y="416">single forward pass</text>
+
+  <rect class="panel-soft" x="48" y="486" width="1026" height="42" rx="8"/>
+  <text class="muted small" x="72" y="500">주의: TabFM의 `fit`은 데이터셋별 weight update가 아닙니다.</text>
+  <text class="muted small" x="72" y="520">인코딩과 문맥 준비를 수행하는 단계로 보는 편이 맞습니다.</text>
+  <text class="muted small" x="72" y="523">모든 훈련 행이 문맥으로 들어가므로 행 수가 늘면 메모리와 지연이 함께 커집니다.</text>
+</svg>
