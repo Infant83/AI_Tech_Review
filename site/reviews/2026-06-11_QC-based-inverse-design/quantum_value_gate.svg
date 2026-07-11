@@ -1,46 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="title desc">
-  <title id="title">청색 OLED 역설계에서 양자 어닐링을 채택하는 검증 게이트</title>
-  <desc id="desc">데이터 계약, 예측기, 표현과 디코더, QUBO, solver 비교, 고정밀 재검증을 순서대로 통과하는 게이트와 중단 조건</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="980" viewBox="0 0 1080 980" role="img" aria-labelledby="title desc">
+  <title id="title">양자 어닐링의 가치를 판별하는 세 단계</title>
+  <desc id="desc">상류 오류 통제, 동일한 solver arena, 고정밀 재검증을 거쳐 양자 어닐링 채택, 역할 축소 또는 중단을 결정하는 도식</desc>
   <defs>
     <style>
-      .bg{fill:#faf9f6}.rail{stroke:#b6bdc8;stroke-width:6;fill:none}.gate{fill:#fff;stroke:#354052;stroke-width:2.5}.pass{fill:#eaf6ef;stroke:#28745a;stroke-width:2.5}.qa{fill:#f2ebfa;stroke:#74519a;stroke-width:2.5}.stop{fill:#fff0ef;stroke:#a44343;stroke-width:2}.title{font:700 32px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.sub{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5a6575}.g{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.h{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 15px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#3b4656}.small{font:400 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5a6575}.stoptext{font:700 15px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#983b3b}
+      .bg{fill:#faf8f2}.stage{fill:#fff;stroke:#354052;stroke-width:3}.arena{fill:#f3eef9;stroke:#74519a;stroke-width:3}.verify{fill:#edf7f1;stroke:#28745a;stroke-width:3}.stop{fill:#fff0ef;stroke:#a44343;stroke-width:3}.k{font:700 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1px}.h{font:700 40px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.b{font:400 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.decision{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.arrow{stroke:#687386;stroke-width:6;fill:none}.fail{stroke:#a44343;stroke-width:5;stroke-dasharray:10 9;fill:none}
     </style>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#b6bdc8"/></marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+    <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a44343"/></marker>
   </defs>
-  <rect class="bg" width="1400" height="760"/>
-  <text class="title" x="70" y="65">양자 어닐링은 다섯 개의 검증 게이트를 통과한 뒤 평가합니다</text>
-  <text class="sub" x="70" y="100">앞 단계의 오류가 크면 solver 성능을 읽을 수 없습니다.</text>
-  <path class="rail" d="M120 290 L1280 290" marker-end="url(#arrow)"/>
+  <rect class="bg" width="1080" height="980"/>
 
-  <rect class="gate" x="70" y="160" rx="18" width="225" height="260"/>
-  <text class="g" x="95" y="195">G0 · 데이터</text>
-  <text class="body" x="95" y="235">label provenance</text><text class="body" x="95" y="262">duplicate · leakage</text><text class="body" x="95" y="289">scaffold / pair split</text><text class="body" x="95" y="316">uncertainty</text>
-  <rect class="stop" x="90" y="345" rx="10" width="185" height="50"/><text class="stoptext" x="108" y="375">누수·혼합 label이면 중단</text>
+  <rect class="stage" x="100" y="55" rx="28" width="690" height="235"/>
+  <text class="k" x="145" y="105" fill="#416b9a">01 · CONTROL UPSTREAM ERROR</text>
+  <text class="h" x="145" y="165">solver보다 먼저 확인</text>
+  <text class="b" x="145" y="215">데이터 누수 · 예측기 보정</text>
+  <text class="b" x="145" y="258">decoder · QUBO 근사 오차</text>
 
-  <rect class="gate" x="330" y="160" rx="18" width="225" height="260"/>
-  <text class="g" x="355" y="195">G1 · 예측기</text>
-  <text class="body" x="355" y="235">GBDT · GP · TabPFN</text><text class="body" x="355" y="262">GNN / pair-GNN</text><text class="body" x="355" y="289">calibration</text><text class="body" x="355" y="316">top-k recall · OOD</text>
-  <rect class="stop" x="350" y="345" rx="10" width="185" height="50"/><text class="stoptext" x="370" y="375">기준선 미달이면 중단</text>
+  <rect class="stop" x="830" y="92" rx="22" width="200" height="160"/>
+  <text class="k" x="872" y="139" fill="#a44343">STOP</text>
+  <text class="decision" x="864" y="188" fill="#983b3b">오차가 크면</text>
+  <text class="decision" x="884" y="226" fill="#983b3b">비교 중단</text>
+  <path class="fail" d="M790 172 L830 172" marker-end="url(#red)"/>
 
-  <rect class="gate" x="590" y="160" rx="18" width="225" height="260"/>
-  <text class="g" x="615" y="195">G2 · 표현</text>
-  <text class="body" x="615" y="235">fragment / SELFIES</text><text class="body" x="615" y="262">decode validity</text><text class="body" x="615" y="289">synthetic filter</text><text class="body" x="615" y="316">target fidelity</text>
-  <rect class="stop" x="610" y="345" rx="10" width="185" height="50"/><text class="stoptext" x="627" y="375">decode 오차가 크면 중단</text>
+  <path class="arrow" d="M445 290 L445 355" marker-end="url(#arrow)"/>
 
-  <rect class="gate" x="850" y="160" rx="18" width="225" height="260"/>
-  <text class="g" x="875" y="195">G3 · QUBO</text>
-  <text class="body" x="875" y="235">quadratic fit error</text><text class="body" x="875" y="262">constraint feasibility</text><text class="body" x="875" y="289">logical degree</text><text class="body" x="875" y="316">embedding · chain break</text>
-  <rect class="stop" x="870" y="345" rx="10" width="185" height="50"/><text class="stoptext" x="891" y="375">근사 손실이 크면 중단</text>
+  <rect class="arena" x="100" y="370" rx="28" width="880" height="260"/>
+  <text class="k" x="145" y="420" fill="#74519a">02 · SAME SOLVER ARENA</text>
+  <text class="h" x="145" y="480">같은 문제 · 같은 검증 예산</text>
+  <text class="b" x="145" y="535">CP-SAT · GA/BO · SA/Tabu/SQA</text>
+  <text class="b" x="145" y="580">D-Wave QPU · 반복 job · 신뢰구간</text>
 
-  <rect class="qa" x="1110" y="145" rx="18" width="225" height="290"/>
-  <text class="g" x="1135" y="185">G4 · Solver value</text>
-  <text class="body" x="1135" y="225">exact · CP-SAT / MILP</text><text class="body" x="1135" y="252">GA/BO · SA/Tabu/SQA</text><text class="body" x="1135" y="279">D-Wave QPU / hybrid</text><text class="body" x="1135" y="306">end-to-end time-to-target</text><text class="body" x="1135" y="333">hit · diversity · stability</text>
-  <rect class="pass" x="1130" y="365" rx="10" width="185" height="48"/><text class="stoptext" x="1147" y="395" fill="#26755b">검증 뒤 역할을 채택</text>
+  <path class="arrow" d="M540 630 L540 695" marker-end="url(#arrow)"/>
 
-  <rect class="pass" x="185" y="505" rx="20" width="1030" height="175"/>
-  <text class="h" x="220" y="545">최종 gate · 고정밀 계산과 실험</text>
-  <text class="body" x="220" y="578">같은 DFT/TDDFT·실험 예산에서</text>
-  <text class="body" x="220" y="603">joint target hit 또는 information gain이 남는가?</text>
-  <text class="body" x="220" y="630">개선 유지: optimizer 채택 · 다른 basin 제공: diversity sampler로 축소</text>
-  <text class="small" x="220" y="655">개선 소멸: quantum path 중단 · 성공과 중단 모두 재현 가능한 연구결과</text>
+  <rect class="verify" x="100" y="710" rx="28" width="880" height="205"/>
+  <text class="k" x="145" y="760" fill="#28745a">03 · MATERIAL VALIDATION</text>
+  <text class="h" x="145" y="820">고정밀 평가 1회당 validated hit</text>
+  <text class="b" x="145" y="870">개선 유지: 채택 · 다른 basin: 역할 축소 · 개선 소멸: 중단</text>
+  <text class="k" x="705" y="955" fill="#5b6473">성공과 중단 모두 연구결과</text>
 </svg>

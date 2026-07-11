@@ -33,6 +33,9 @@
       if (pageWidget) {
         pageWidget.dataset.state = "error";
       }
+      for (const el of inlineMetricEls) {
+        el.dataset.state = "error";
+      }
     });
 
   startEngagementTracking();

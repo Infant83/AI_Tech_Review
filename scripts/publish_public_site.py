@@ -48,16 +48,16 @@ class PublicReview:
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-06-11_QC-based-inverse-design",
-        title="청색 OLED 분자 역설계: 양자 어닐링을 어디에 둘 것인가",
-        subtitle="DFT·GNN 연구 경험에서 출발해 PhOLED 엑시플렉스 쌍 설계와 양자 가치 검증 조건을 다시 묻습니다",
+        title="재료 역설계의 양자 파이프라인: 양자 어닐링을 어디에 둘 것인가",
+        subtitle="Materials Informatics의 데이터·대리모델·탐색·검증을 잇고, 청색 OLED로 양자 최적화의 역할을 시험합니다",
         date="2026-07-11",
-        updated="2026-07-11",
+        updated="2026-07-12",
         category="Materials AI",
-        tags=("Molecular Inverse Design", "OLED", "Quantum Annealing", "Materials AI"),
+        tags=("Materials Informatics", "Quantum Pipeline", "Inverse Design", "OLED"),
         summary=(
-            "청색 PhOLED 후보를 분자 하나가 아니라 공여체–수용체 쌍과 소자 조건의 문제로 다시 정의합니다. "
-            "DFT·GNN, CRBM, QUBO, 양자 어닐링의 역할을 선행연구와 대조하고, 같은 검증 예산에서 "
-            "가치가 남을 때만 양자 경로를 채택하는 연구 게이트를 제안합니다."
+            "재료정보학의 데이터 계약, 대리모델, 후보 탐색과 고정밀 검증을 하나의 폐루프로 재구성합니다. "
+            "청색 PhOLED를 pair·device 물리가 얽힌 유즈케이스로 삼고, 제한된 이진 후보 선택에서만 "
+            "양자 어닐링을 고전 최적화와 비교하는 채택·중단 규칙을 제안합니다."
         ),
     ),
     PublicReview(
@@ -1202,6 +1202,14 @@ PUBLIC_METRICS_CSS = """
 .latest-metrics[data-state="loading"] strong {
   color: #8a949c;
 }
+.public-metrics[data-state="loading"],
+.public-metrics[data-state="error"],
+.card-metrics[data-state="loading"],
+.card-metrics[data-state="error"],
+.latest-metrics[data-state="loading"],
+.latest-metrics[data-state="error"] {
+  display: none;
+}
 .public-metrics[data-state="error"] .public-metrics-pill {
   border-color: rgba(92, 102, 112, 0.16);
   color: #7a858e;
@@ -1274,6 +1282,9 @@ PUBLIC_METRICS_JS = """
     .catch(() => {
       if (pageWidget) {
         pageWidget.dataset.state = "error";
+      }
+      for (const el of inlineMetricEls) {
+        el.dataset.state = "error";
       }
     });
 

@@ -36,6 +36,14 @@
 .latest-metrics[data-state="loading"] strong {
   color: #8a949c;
 }
+.public-metrics[data-state="loading"],
+.public-metrics[data-state="error"],
+.card-metrics[data-state="loading"],
+.card-metrics[data-state="error"],
+.latest-metrics[data-state="loading"],
+.latest-metrics[data-state="error"] {
+  display: none;
+}
 .public-metrics[data-state="error"] .public-metrics-pill {
   border-color: rgba(92, 102, 112, 0.16);
   color: #7a858e;
