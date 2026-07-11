@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">검증 우선형 청색 PhOLED 엑시플렉스 역설계 구조</title>
+  <desc id="desc">데이터와 계산 조건에서 공여체 수용체 쌍 표현, 예측기 비교, 생성과 최적화, 고정밀 계산 및 실험 검증으로 이어지고 다시 데이터로 환류되는 구조</desc>
+  <defs>
+    <style>
+      .bg{fill:#f7f8fa}.panel{fill:#fff;stroke:#d9dee7;stroke-width:2}.data{fill:#edf4ff;stroke:#446a9b;stroke-width:2}.model{fill:#eef8f2;stroke:#28745a;stroke-width:2}.opt{fill:#fff4e8;stroke:#b36a1e;stroke-width:2}.qa{fill:#f4edfb;stroke:#74519a;stroke-width:2.4}.verify{fill:#fdeeee;stroke:#a44343;stroke-width:2.4}.pill{fill:#f3f4f6;stroke:#d7dbe2;stroke-width:1.4}.title{font:700 32px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.sub{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566174}.h{font:700 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.small{font:400 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#5b6473}.arrow{stroke:#667085;stroke-width:3;fill:none}.feedback{stroke:#a44343;stroke-width:3;stroke-dasharray:9 8;fill:none}.gate{font:700 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#fff}.gatebg{fill:#172033}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#667085"/></marker>
+    <marker id="feedback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a44343"/></marker>
+  </defs>
+  <rect class="bg" width="1400" height="860"/>
+  <text class="title" x="70" y="62">검증 우선형 청색 PhOLED 엑시플렉스 역설계</text>
+  <text class="sub" x="70" y="96">분자 생성보다 쌍 단위 물리와 검증 예산을 먼저 설계합니다.</text>
+
+  <rect class="data" x="70" y="135" rx="18" width="1260" height="125"/>
+  <text class="h" x="100" y="175">1. Multi-fidelity 데이터와 provenance</text>
+  <rect class="pill" x="100" y="195" rx="12" width="220" height="42"/><text class="body" x="124" y="222">DFT / TDDFT / 실험</text>
+  <rect class="pill" x="340" y="195" rx="12" width="240" height="42"/><text class="body" x="364" y="222">계산법 · 환경 · 불확실성</text>
+  <rect class="pill" x="600" y="195" rx="12" width="270" height="42"/><text class="body" x="624" y="222">scaffold · donor · acceptor split</text>
+  <rect class="pill" x="890" y="195" rx="12" width="400" height="42"/><text class="body" x="914" y="222">device 조건 · 실패 사유 · expert review</text>
+
+  <path class="arrow" d="M700 260 L700 295" marker-end="url(#arrow)"/>
+  <circle class="gatebg" cx="700" cy="282" r="18"/><text class="gate" x="690" y="287">G0</text>
+
+  <rect class="panel" x="70" y="300" rx="18" width="1260" height="125"/>
+  <text class="h" x="100" y="340">2. Design object와 쌍 단위 표현</text>
+  <rect class="pill" x="100" y="360" rx="12" width="255" height="42"/><text class="body" x="124" y="387">fragment / Group SELFIES</text>
+  <rect class="pill" x="375" y="360" rx="12" width="240" height="42"/><text class="body" x="399" y="387">molecular graph · fingerprint</text>
+  <rect class="pill" x="635" y="360" rx="12" width="280" height="42"/><text class="body" x="659" y="387">donor–acceptor pair embedding</text>
+  <rect class="pill" x="935" y="360" rx="12" width="355" height="42"/><text class="body" x="959" y="387">CT · T1 · BDE · reorganization · packing</text>
+
+  <path class="arrow" d="M700 425 L700 458" marker-end="url(#arrow)"/>
+  <circle class="gatebg" cx="700" cy="444" r="18"/><text class="gate" x="690" y="449">G1</text>
+
+  <rect class="model" x="70" y="465" rx="18" width="610" height="160"/>
+  <text class="h" x="100" y="505">3A. Predictor arena</text>
+  <text class="body" x="100" y="540">GBDT · Gaussian process · TabPFN · GNN / pair-GNN</text>
+  <text class="body" x="100" y="570">calibration · top-k recall · applicability domain</text>
+  <text class="small" x="100" y="603">같은 split과 metric에서 후보 압축 성능을 비교합니다.</text>
+
+  <rect class="opt" x="720" y="465" rx="18" width="610" height="160"/>
+  <text class="h" x="750" y="505">3B. Generator · optimizer arena</text>
+  <text class="body" x="750" y="540">enumeration · GA/BO · exact/CP-SAT · SA/Tabu/SQA</text>
+  <rect class="qa" x="748" y="558" rx="11" width="335" height="42"/><text class="body" x="770" y="585">D-Wave QA: 선택 모듈 · 동일 QUBO</text>
+  <text class="small" x="1100" y="585">Track A / Track B 분리</text>
+
+  <path class="arrow" d="M375 625 C375 660 500 660 620 678" marker-end="url(#arrow)"/>
+  <path class="arrow" d="M1025 625 C1025 660 900 660 780 678" marker-end="url(#arrow)"/>
+  <circle class="gatebg" cx="700" cy="661" r="18"/><text class="gate" x="690" y="666">G2</text>
+
+  <rect class="verify" x="210" y="685" rx="18" width="980" height="115"/>
+  <text class="h" x="245" y="725">4. 고정밀 계산 · 합성 · 소자 검증</text>
+  <text class="body" x="245" y="750">chemical validity → high-fidelity DFT/TDDFT</text>
+  <text class="body" x="245" y="774">expert review → 실험 가능 후보</text>
+  <text class="small" x="245" y="795">실제 target hit와 정보가치 평가</text>
+  <circle class="gatebg" cx="1170" cy="742" r="24"/><text class="gate" x="1157" y="747">G3</text>
+
+  <path class="feedback" d="M210 742 C110 742 90 610 90 250" marker-end="url(#feedback)"/>
+  <text class="small" x="72" y="826">검증 결과와 실패 사유를 데이터로 환류</text>
+</svg>

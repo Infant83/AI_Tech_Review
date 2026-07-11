@@ -47,6 +47,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-06-11_QC-based-inverse-design",
+        title="청색 OLED 분자 역설계: 양자 어닐링을 어디에 둘 것인가",
+        subtitle="DFT·GNN 연구 경험에서 출발해 PhOLED 엑시플렉스 쌍 설계와 양자 가치 검증 조건을 다시 묻습니다",
+        date="2026-07-11",
+        updated="2026-07-11",
+        category="Materials AI",
+        tags=("Molecular Inverse Design", "OLED", "Quantum Annealing", "Materials AI"),
+        summary=(
+            "청색 PhOLED 후보를 분자 하나가 아니라 공여체–수용체 쌍과 소자 조건의 문제로 다시 정의합니다. "
+            "DFT·GNN, CRBM, QUBO, 양자 어닐링의 역할을 선행연구와 대조하고, 같은 검증 예산에서 "
+            "가치가 남을 때만 양자 경로를 채택하는 연구 게이트를 제안합니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
         title="AI 처리장치 스택: CPU, GPU, TPU, NPU, LPU는 왜 나뉘는가",
         subtitle="병렬성, 데이터 이동, 지연시간, 전력, 소프트웨어 스택으로 AI 칩의 역할을 다시 읽습니다",
@@ -495,7 +509,7 @@ def render_review_card(item: dict[str, object]) -> str:
             <div class="tags">{tags}</div>
           </div>
         </article>
-    """
+    """.rstrip()
 
 
 def render_latest_update(item: dict[str, object]) -> str:
@@ -522,7 +536,7 @@ def render_latest_update(item: dict[str, object]) -> str:
         </div>
         <a class="latest-media" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
       </section>
-    """
+    """.rstrip()
 
 
 def render_category_chips(categories: list[str]) -> str:
@@ -857,6 +871,11 @@ h1 {
   min-height: 320px;
   object-fit: cover;
   object-position: center;
+}
+.latest-media img[src$=".svg"] {
+  object-fit: contain;
+  padding: clamp(12px, 2vw, 22px);
+  background: #f8faf8;
 }
 .text-link {
   display: inline-flex;
