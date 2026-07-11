@@ -1278,7 +1278,10 @@ PUBLIC_METRICS_JS = """
   sendHitOnce()
     .catch(() => null)
     .then(() => loadSummary(paths))
-    .then((summary) => renderMetrics(summary))
+    .then((summary) => {
+      renderMetrics(summary);
+      startEngagementTracking();
+    })
     .catch(() => {
       if (pageWidget) {
         pageWidget.dataset.state = "error";
@@ -1287,8 +1290,6 @@ PUBLIC_METRICS_JS = """
         el.dataset.state = "error";
       }
     });
-
-  startEngagementTracking();
 
   function canonicalPath(rawPath) {
     let path = String(rawPath || "").trim();

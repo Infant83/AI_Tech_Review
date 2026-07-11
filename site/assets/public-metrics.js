@@ -28,7 +28,10 @@
   sendHitOnce()
     .catch(() => null)
     .then(() => loadSummary(paths))
-    .then((summary) => renderMetrics(summary))
+    .then((summary) => {
+      renderMetrics(summary);
+      startEngagementTracking();
+    })
     .catch(() => {
       if (pageWidget) {
         pageWidget.dataset.state = "error";
@@ -37,8 +40,6 @@
         el.dataset.state = "error";
       }
     });
-
-  startEngagementTracking();
 
   function canonicalPath(rawPath) {
     let path = String(rawPath || "").trim();
