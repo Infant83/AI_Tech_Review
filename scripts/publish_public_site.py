@@ -48,16 +48,16 @@ class PublicReview:
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-06-11_QC-based-inverse-design",
-        title="재료 역설계의 양자 파이프라인: 양자 어닐링을 어디에 둘 것인가",
-        subtitle="Materials Informatics의 데이터·대리모델·탐색·검증을 잇고, 청색 OLED로 양자 최적화의 역할을 시험합니다",
+        title="양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가",
+        subtitle="전자구조 계산부터 물성 학습, 후보 생성, 조합 최적화까지 재료정보학 파이프라인의 양자 삽입점을 점검합니다",
         date="2026-07-11",
         updated="2026-07-12",
         category="Materials AI",
-        tags=("Materials Informatics", "Quantum Pipeline", "Inverse Design", "OLED"),
+        tags=("Materials Informatics", "Quantum-Classical", "Inverse Design", "Quantum Chemistry", "QML"),
         summary=(
-            "재료정보학의 데이터 계약, 대리모델, 후보 탐색과 고정밀 검증을 하나의 폐루프로 재구성합니다. "
-            "청색 PhOLED를 pair·device 물리가 얽힌 유즈케이스로 삼고, 제한된 이진 후보 선택에서만 "
-            "양자 어닐링을 고전 최적화와 비교하는 채택·중단 규칙을 제안합니다."
+            "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 교체 가능한 계산 계약으로 나눕니다. "
+            "QPE·VQE, QML, QCBM·QBM, QUBO를 푸는 QA·QAOA의 역할과 성숙도를 구분하고, "
+            "QAE는 장기 확장 모듈로 둡니다. 청색 OLED는 이 구조를 점검하는 첫 유즈케이스입니다."
         ),
     ),
     PublicReview(
