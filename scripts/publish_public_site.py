@@ -55,7 +55,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("Materials Informatics", "Quantum-Classical", "Inverse Design", "Quantum Chemistry", "QML"),
         summary=(
-            "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 교체 가능한 계산 계약으로 나눕니다. "
+            "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 선택 가능한 전문 계산 모듈로 나눕니다. "
             "QPE·VQE, QML, QCBM·QBM, QUBO를 푸는 QA·QAOA의 역할과 성숙도를 구분하고, "
             "QAE는 장기 확장 모듈로 둡니다. 청색 OLED는 이 구조를 점검하는 첫 유즈케이스입니다."
         ),

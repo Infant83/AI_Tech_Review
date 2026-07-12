@@ -949,6 +949,157 @@ def render_final_review_template(context: RenderContext) -> str:
       background: transparent;
     }}
 
+    .math-display {{
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }}
+
+    .math-display .math-row {{
+      min-width: max-content;
+      white-space: nowrap;
+    }}
+
+    .math-display .math-row + .math-row {{
+      margin-top: 2px;
+    }}
+
+    .math-display .math-indent {{
+      padding-left: 2.4em;
+    }}
+
+    .math-display var {{
+      font-family: inherit;
+      font-style: italic;
+    }}
+
+    .math-display .roman {{
+      font-style: normal;
+    }}
+
+    .math-display sub,
+    .math-display sup {{
+      font-size: 0.68em;
+      line-height: 0;
+    }}
+
+    .math-display .sum {{
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }}
+
+    .math-display .frac {{
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }}
+
+    .math-display .frac > span:first-child {{
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }}
+
+    .math-display .frac > span:last-child {{
+      padding: 0.06em 0.22em 0;
+    }}
+
+    .math-display .condition {{
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }}
+
+    .math-inline {{
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }}
+
+    .reader-layers {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }}
+
+    .reader-layer {{
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }}
+
+    .reader-layer strong {{
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }}
+
+    .reader-layer span {{
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }}
+
+    details.deep-dive {{
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }}
+
+    details.deep-dive > summary {{
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }}
+
+    details.deep-dive[open] > summary {{
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }}
+
+    details.deep-dive > :not(summary) {{
+      margin-left: 18px;
+      margin-right: 18px;
+    }}
+
+    details.deep-dive > :last-child {{
+      margin-bottom: 18px;
+    }}
+
+    details.deep-dive > table {{
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }}
+
     .final-article img,
     .final-article svg,
     .final-article video,
@@ -967,6 +1118,10 @@ def render_final_review_template(context: RenderContext) -> str:
       width: 100%;
       border: 1px solid var(--line);
       background: #ffffff;
+    }}
+
+    .diagram-mobile {{
+      display: none !important;
     }}
 
     .article-hero-figure figcaption {{
@@ -1110,6 +1265,32 @@ def render_final_review_template(context: RenderContext) -> str:
     }}
 
     @media (max-width: 760px) {{
+      .reader-layers {{
+        grid-template-columns: 1fr;
+      }}
+
+      .math-display {{
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }}
+
+      .math-display .math-indent {{
+        padding-left: 1.1em;
+      }}
+
+      .diagram-desktop {{
+        display: none !important;
+      }}
+
+      .diagram-mobile {{
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }}
+
       .figure-panel img[src$=".svg"],
       .data-panel img[src$=".svg"] {{
         width: 680px;
