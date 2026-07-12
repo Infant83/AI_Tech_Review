@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="2730" viewBox="0 0 620 2730" role="img" aria-labelledby="title desc">
+  <title id="title">모바일용 기존 재료 역설계 폐루프 위의 선택형 양자 개입점</title>
+  <desc id="desc">문제 정의와 데이터·문헌에서 구조 생성, 물성 평가, 대리모델과 불확실성, 다목적 선별, 합성·실험, 피드백으로 이어지는 기존 재료 역설계 폐루프를 세로로 보여준다. 아래에는 전자구조, 양자머신러닝과 생성모델, 양자 표본추출, QUBO·QA·QAOA를 연결 단계 번호와 함께 독립적인 선택형 양자 모듈로 배치하고 잠재 효용과 현재 병목을 표시한다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.2px;fill:#684790}.title{font:700 35px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.section{font:800 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1px;fill:#5b6473}.stage{fill:#fff;stroke:#c8ced8;stroke-width:2.5}.stagenum{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.7px;fill:#687386}.stagehead{font:700 24px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.stagebody{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.flow{stroke:#687386;stroke-width:5;fill:none}.loop{stroke:#a44343;stroke-width:4;stroke-dasharray:10 8;fill:none}.qcard{fill:#fff;stroke-width:3}.q1{stroke:#28745a}.q2{stroke:#416b9a}.q3{stroke:#aa681f}.q4{stroke:#74519a}.tag{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.8px}.socket{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.qhead{font:700 27px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.method{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.utility{fill:#edf7f1}.blocker{fill:#fbeeee}.bandtag{font:800 14px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.5px}.bandbody{font:600 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.rule{fill:#f3eef9;stroke:#74519a;stroke-width:2.5}.rulehead{font:800 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#684790}.rulebody{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.footer{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+    <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a44343"/></marker>
+  </defs>
+  <rect class="bg" width="620" height="2730"/>
+
+  <text class="eyebrow" x="42" y="48">CLASSICAL BACKBONE + QUANTUM SOCKETS</text>
+  <text class="title" x="42" y="94">기존 폐루프 위에</text>
+  <text class="title" x="42" y="136">양자 모듈을 선택적으로 얹습니다</text>
+  <text class="subtitle" x="42" y="176">한 QPU가 전 과정을 대신하지 않습니다.</text>
+  <text class="subtitle" x="42" y="206">고정된 입출력 계약의 모듈만 따로 검증합니다.</text>
+
+  <text class="section" x="42" y="248">LEGACY MATERIALS INVERSE-DESIGN BACKBONE</text>
+
+  <rect class="stage" x="42" y="275" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="310">01 · DEFINE</text>
+  <text class="stagehead" x="72" y="346">목표·제약 · 문제 정의</text>
+  <text class="stagebody" x="360" y="346">데이터 · 문헌</text>
+  <path class="flow" d="M310 387 L310 417" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="430" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="465">02 · GENERATE</text>
+  <text class="stagehead" x="72" y="501">구조·후보 생성</text>
+  <text class="stagebody" x="300" y="501">enumeration · VAE · diffusion</text>
+  <path class="flow" d="M310 542 L310 572" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="585" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="620">03 · PHYSICS</text>
+  <text class="stagehead" x="72" y="656">물성 평가</text>
+  <text class="stagebody" x="230" y="656">DFT · 양자화학 · MD</text>
+  <path class="flow" d="M310 697 L310 727" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="740" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="775">04 · LEARN</text>
+  <text class="stagehead" x="72" y="811">대리모델 · 불확실성</text>
+  <text class="stagebody" x="340" y="811">GNN · GP · 보정</text>
+  <path class="flow" d="M310 852 L310 882" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="895" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="930">05 · SELECT</text>
+  <text class="stagehead" x="72" y="966">다목적 선별 · 최적화</text>
+  <text class="stagebody" x="350" y="966">Pareto · BO · CP-SAT</text>
+  <path class="flow" d="M310 1007 L310 1037" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="1050" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="1085">06 · VALIDATE</text>
+  <text class="stagehead" x="72" y="1121">합성 · 실험</text>
+  <text class="stagebody" x="245" y="1121">물성 · 소자 측정</text>
+  <path class="flow" d="M310 1162 L310 1192" marker-end="url(#arrow)"/>
+
+  <rect class="stage" x="42" y="1205" rx="20" width="536" height="112"/>
+  <text class="stagenum" x="72" y="1240">07 · FEEDBACK</text>
+  <text class="stagehead" x="72" y="1276">피드백 · 데이터 갱신</text>
+  <text class="stagebody" x="350" y="1276">성공 · 실패 · 계보</text>
+  <path class="loop" d="M60 1261 C26 1261 26 331 60 331" marker-end="url(#red)"/>
+
+  <text class="section" x="42" y="1362">OPTIONAL QUANTUM OVERLAY · 연결 단계 번호로 읽기</text>
+
+  <rect class="qcard q1" x="42" y="1390" rx="23" width="536" height="280"/>
+  <text class="tag" x="72" y="1428" fill="#28745a">QUANTUM ML · GENERATION</text>
+  <text class="socket" x="456" y="1428" fill="#28745a">연결 02·04</text>
+  <text class="qhead" x="72" y="1468">학습 · 생성</text>
+  <text class="method" x="72" y="1504">quantum kernel · QNN</text>
+  <text class="method" x="72" y="1532">quantum generative models</text>
+  <rect class="utility" x="70" y="1550" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="1578" fill="#28745a">잠재 효용</text>
+  <text class="bandbody" x="180" y="1578">고차 feature · 조건부 후보 분포</text>
+  <rect class="blocker" x="70" y="1607" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="1635" fill="#a44343">현재 병목</text>
+  <text class="bandbody" x="180" y="1635">encoding · 집중 · 학습성 · validity</text>
+
+  <rect class="qcard q2" x="42" y="1695" rx="23" width="536" height="280"/>
+  <text class="tag" x="72" y="1733" fill="#416b9a">QUANTUM ELECTRONIC STRUCTURE</text>
+  <text class="socket" x="470" y="1733" fill="#416b9a">연결 03</text>
+  <text class="qhead" x="72" y="1773">전자구조</text>
+  <text class="method" x="72" y="1809">VQE · QPE · quantum simulation</text>
+  <text class="method" x="72" y="1837">active-space solver socket</text>
+  <rect class="utility" x="70" y="1855" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="1883" fill="#28745a">잠재 효용</text>
+  <text class="bandbody" x="180" y="1883">강상관 상태 · 에너지 · 관측량</text>
+  <rect class="blocker" x="70" y="1912" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="1940" fill="#a44343">현재 병목</text>
+  <text class="bandbody" x="180" y="1940">상태 준비 · shots/QEC · 절단 오차</text>
+
+  <rect class="qcard q3" x="42" y="2000" rx="23" width="536" height="280"/>
+  <text class="tag" x="72" y="2038" fill="#aa681f">QUANTUM SAMPLING</text>
+  <text class="socket" x="450" y="2038" fill="#aa681f">연결 02·05</text>
+  <text class="qhead" x="72" y="2078">분포 · 표본추출</text>
+  <text class="method" x="72" y="2114">quantum sampling</text>
+  <text class="method" x="72" y="2142">annealer-assisted sampling</text>
+  <rect class="utility" x="70" y="2160" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="2188" fill="#28745a">잠재 효용</text>
+  <text class="bandbody" x="180" y="2188">다봉 분포 · 낮은 비용 영역 탐색</text>
+  <rect class="blocker" x="70" y="2217" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="2245" fill="#a44343">현재 병목</text>
+  <text class="bandbody" x="180" y="2245">분포 충실도 · mixing · 접근 비용</text>
+
+  <rect class="qcard q4" x="42" y="2305" rx="23" width="536" height="280"/>
+  <text class="tag" x="72" y="2343" fill="#74519a">DISCRETE QUANTUM OPTIMIZATION</text>
+  <text class="socket" x="470" y="2343" fill="#74519a">연결 05</text>
+  <text class="qhead" x="72" y="2383">이산 선택</text>
+  <text class="method" x="72" y="2419">QUBO → QA · QAOA</text>
+  <text class="method" x="72" y="2447">constrained bitstring search</text>
+  <rect class="utility" x="70" y="2465" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="2493" fill="#28745a">잠재 효용</text>
+  <text class="bandbody" x="180" y="2493">조성 · 배치 · 실험 batch 선택</text>
+  <rect class="blocker" x="70" y="2522" rx="12" width="480" height="45"/>
+  <text class="bandtag" x="86" y="2550" fill="#a44343">현재 병목</text>
+  <text class="bandbody" x="180" y="2550">QUBO 왜곡 · embedding/routing · scaling</text>
+
+  <rect class="rule" x="42" y="2610" rx="19" width="536" height="78"/>
+  <text class="rulehead" x="72" y="2644">HYBRID MODULAR REPLACEMENT</text>
+  <text class="rulebody" x="72" y="2673">고전 백본 유지 · 한 모듈씩 교체 · 같은 예산 비교</text>
+  <text class="footer" x="42" y="2718">합성·실험 검증은 모든 경로의 공통 종착점</text>
+</svg>

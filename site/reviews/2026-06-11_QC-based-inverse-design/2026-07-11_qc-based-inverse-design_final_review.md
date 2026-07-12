@@ -1,6 +1,6 @@
 ---
 title: 양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가
-subtitle: DFT·양자화학 연구자가 active-space Hamiltonian을 VQE·QPE로, 이산 설계 문제를 QUBO·QA·QAOA로 옮기는 원리와 양자 이득의 조건을 따라갑니다. 청색 OLED는 이를 점검하는 첫 유즈케이스입니다.
+subtitle: DFT·양자화학의 기존 계산 폐루프를 펼쳐 VQE·QPE, QML·양자 표본추출, QUBO·QA·QAOA가 들어갈 위치와 단계적 전환 조건을 검토합니다. 청색 OLED는 이를 시험하는 첫 유즈케이스입니다.
 type: ai-tech-review-letter
 series: AI Tech Review Letters
 aliases:
@@ -34,30 +34,11 @@ source: reports/2026-07-11_qc-based-inverse-design_final_review.md
   <figcaption><strong>그림 1.</strong> 구리색 경로는 재료정보학의 고전 폐루프이고, 보라색 네 패널은 독립적으로 교체할 수 있는 양자 모듈입니다. 어느 모듈도 전체 파이프라인을 대표하거나 다른 모듈보다 앞서지 않습니다.</figcaption>
 </figure>
 
-하나의 후보 물질이 실험대에 오르기까지 적어도 네 종류의 계산을 거칩니다. 먼저 전자상태와 물성을 계산하고, 그 결과로 빠른 예측 모델을 학습합니다. 넓은 화학공간에서 새 후보를 만든 뒤에는 여러 제약을 만족하는 조합과 실험 순서를 골라야 합니다. 고정밀 계산과 실제 측정에서 얻은 성공·실패 정보는 다시 자료로 돌아갑니다.
+재료 역설계는 목표 물성과 제약을 정하고, 자료와 후보공간을 만들고, 빠른 대리모델과 DFT·양자화학·분자동역학 계산으로 후보를 평가한 뒤, 합성·소자·공정 실험에서 확인하는 폐루프입니다. 계산과 실험에서 얻은 실패 이유는 다음 후보 생성과 모델 학습으로 돌아갑니다. 이 기존 파이프라인은 이미 강하며, 양자컴퓨팅의 가치는 그중 비용과 불확실성이 집중되는 계산을 얼마나 개선하는가로 판단해야 합니다.
 
-양자컴퓨팅은 이 네 계산을 한꺼번에 맡는 엔진이 아닙니다. 전자구조에는 QPE(Quantum Phase Estimation)와 VQE(Variational Quantum Eigensolver), 물성 학습에는 quantum kernel과 양자신경망(QNN), 후보 생성과 표본추출에는 QCBM·QBM과 annealer, 이산 선택에는 quantum annealing(QA)과 QAOA(Quantum Approximate Optimization Algorithm)를 각각 시험할 수 있습니다.
+## 현재의 재료 역설계는 강한 고전 폐루프에서 출발합니다
 
-각 모듈이 받는 입력과 내놓는 출력, 실패 원인과 필요한 하드웨어는 서로 다릅니다. QA가 잘 작동해도 전자구조 계산이 좋아지는 것은 아니며, QML의 예측오차가 낮아져도 생성 후보의 합성 가능성이 보장되지는 않습니다.
-
-계산 전문 독자에게 가장 중요한 구분은 두 종류의 Hamiltonian입니다. VQE·QPE는 고정된 구조와 basis에서 correlated electronic state를 구하는 전자 Hamiltonian을 다룹니다. QUBO·QA·QAOA는 전자구조와 실험에서 얻은 물성값을 이용해 치환기·조성·후보 batch를 고르는 비용 Hamiltonian을 다룹니다. 전자의 바닥상태는 파동함수이고, 후자의 바닥상태는 설계 bitstring입니다. 이 글은 두 계산이 각기 어디에서 시작하고 다시 재료 검증 폐루프에서 어떻게 만나는지 따라갑니다.
-
-> **양자 모듈의 채택 조건** — 고전 재료정보학 폐루프가 공통 기반으로 남습니다. 각 양자 후보 서브루틴은 같은 문제, 정확도와 전체 검증 예산을 받은 강한 고전 방법보다 이득을 남길 때 채택합니다.
-
-## 재료 역설계는 네 가지 계산 문제를 한 폐루프에 묶습니다
-
-Materials Informatics, 즉 재료정보학의 역설계는 원하는 성능과 제약을 먼저 정한 뒤 이를 만족할 구조, 조성, 공정 조건을 찾습니다. 자료의 계보와 표현, 물성 계산, 대리모델, 후보 생성과 선택, 고정밀 검증이 하나의 폐루프를 이룹니다. 교체 후보 계산 단계는 전자구조, 학습, 생성·표본추출, 최적화의 네 가지입니다. 뒤에서 다루는 QAE는 이 지도 밖에 덧붙이는 오류보정 시대의 장기 확장 모듈입니다.
-
-교체 단위는 입력과 출력의 계약입니다. 하드웨어 이름만으로 역할을 정할 수는 없습니다. 예를 들어 전자구조 모듈은 원자 배치와 Hamiltonian을 받아 에너지·상태·관측량을 내놓습니다. 대리모델은 재료 표현과 학습 자료를 받아 물성 예측과 불확실성을 돌려줍니다. 생성모델은 목표 조건에서 후보 분포를 만들고, 최적화 모듈은 명시된 목적함수와 제약 아래에서 선택된 조합을 냅니다.
-
-| 계산 계약 | 강한 고전 기준선 | 양자 후보 | 채택 여부를 가르는 지표 |
-| --- | --- | --- | --- |
-| 구조·환경 → 전자상태·에너지 | DFT·TDDFT, coupled cluster, CASSCF·DMRG, 고전 embedding | VQE·qEOM, QPE | 정확도, active-space 편향, 상태 준비, 논리 큐비트·회로 자원, 전체 시간 |
-| 재료 표현 → 물성·불확실성 | GNN·equivariant model, GP, GBDT, kernel | quantum kernel, QNN, quantum reservoir | 계열 밖 오차, 불확실성 보정, encoding·shot·학습비용 |
-| 목표 조건 → 후보 분포 | VAE·diffusion, autoregressive model | QCBM·QBM hybrid generator | 분포 충실도, 유효성, 다양성, 모드 포괄성 |
-| 에너지 모델 → 표본 | Gibbs sampling, MCMC, parallel tempering | annealer-assisted sampling | 목표 분포 오차, 유효 표본 수, 표본당 전체 비용 |
-| 목적함수·제약 → 선택된 조합 | CP-SAT·MILP, BO·GA, SA·Tabu | QUBO를 푸는 QA·QAOA | 제약 만족률, 목표 도달시간, 검증 예산당 재검증 통과 후보 |
-| 장기 확장: 확률모형·oracle → 기대값 | Monte Carlo, quasi-Monte Carlo | QAE 기반 quantum Monte Carlo | oracle 포함 질의·전체 시간, 오차, 오류보정 자원 |
+실제 프로젝트의 순서는 분야마다 조금씩 다르지만 계산 계약은 비슷합니다. 문제정의 단계에서 목표 물성, 합성·안전·원가·공정 제약과 검증법을 고정합니다. 자료와 표현 단계는 구조, 조성, 계산조건과 측정값의 계보를 맞춥니다. 후보 생성과 빠른 예측이 탐색 범위를 줄이고, DFT·TDDFT·post-HF·MD 같은 고정밀 계산이 전자상태와 물성을 다시 판정합니다. 다목적 선별과 실험 설계는 제한된 계산·합성 예산을 어디에 쓸지 정하며, 실제 측정이 마지막 기준이 됩니다.
 
 <figure class="figure-panel">
   <style>
@@ -67,12 +48,51 @@ Materials Informatics, 즉 재료정보학의 역설계는 원하는 성능과 �
       .figure-panel .diagram-mobile { display: block !important; width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
     }
   </style>
-  <img class="diagram-desktop" src="quantum_insertion_points.svg" alt="고전 재료정보학 폐루프 위에 전자구조, 양자머신러닝, 생성과 샘플링, 이산 최적화 네 양자 후보 모듈이 독립 소켓으로 연결된 구조도">
-  <img class="diagram-mobile" src="quantum_insertion_points_mobile.svg" alt="모바일 화면용 세로 배열로 재구성한 재료 역설계의 네 양자 삽입점 구조도">
-  <figcaption><strong>그림 2.</strong> 네 모듈은 모두 사용해야 하는 순차 단계가 아닙니다. 전자구조 해법 하나만 바꾸거나 선택 문제에서만 QA·QAOA를 시험할 수 있으며, 고정밀 계산과 실험 검증은 공통 기준점으로 남습니다.</figcaption>
+  <img class="diagram-desktop" src="legacy_pipeline_quantum_interventions.svg" alt="문제정의와 자료 구축에서 후보 생성, 대리모델, 고정밀 물성 계산, 다목적 선택, 합성·실험과 피드백으로 이어지는 기존 재료 역설계 폐루프 위에 전자구조, 양자머신러닝, 양자 표본추출, 양자 최적화의 개입 지점을 표시한 구조도">
+  <img class="diagram-mobile" src="legacy_pipeline_quantum_interventions_mobile.svg" alt="모바일 화면용 세로 배열로 재구성한 기존 재료 역설계 파이프라인과 네 양자 개입 지점 구조도">
+  <figcaption><strong>그림 2.</strong> 회색·구리색 경로는 현재 작동하는 계산·실험 폐루프입니다. 보라색 양자 모듈은 특정 입력과 출력을 가진 선택적 교체 지점이며, 자료 계보와 고정밀·실험 검증, 실패 피드백은 공통 기반으로 남습니다.</figcaption>
 </figure>
 
-이 구조는 촉매, 배터리, 고분자, 반도체와 발광재료로 확장하기 쉽습니다. 분야가 바뀌면 설계 대상, 물성 label과 validator가 달라지지만, 각 모듈의 입출력과 비교 규칙은 유지할 수 있습니다.
+이 지도에서 QPU 적용 문제는 `어떤 입력을 받아 어떤 출력을 더 잘 만들 것인가`로 정의됩니다. 촉매, 배터리, 고분자, 반도체와 발광재료는 서로 다른 물성과 검증법을 쓰지만, 계산 경계를 입력·출력·오차·비용으로 고정하는 방법은 그대로 적용할 수 있습니다.
+
+## 전자구조·학습·표본·선택은 서로 다른 양자 해법을 요구합니다
+
+강한 상관이나 여기상태를 다루는 고정밀 전자구조 계산은 후보당 비용이 크고, 자료가 적은 영역의 대리모델은 계열 밖 예측에서 흔들립니다. 생성모델과 Markov chain은 복잡한 후보 분포를 충분히 덮지 못할 수 있고, 다목적 제약이 늘어나면 실험 batch와 조성·치환기 선택이 큰 조합문제가 됩니다. 각 병목에는 서로 다른 양자 해법이 대응합니다. 전자구조에는 VQE(Variational Quantum Eigensolver)와 QPE(Quantum Phase Estimation), 물성 학습에는 quantum kernel과 양자신경망(QNN), 후보 생성과 표본추출에는 QCBM·QBM과 annealer, 이산 선택에는 quantum annealing(QA)과 QAOA(Quantum Approximate Optimization Algorithm)를 각각 시험할 수 있습니다.
+
+| 기존 계산의 병목 | 양자 후보 | 기대하는 국소 효용 | 첫 검증과 비용 누수 |
+| --- | --- | --- | --- |
+| 고정밀 전자구조·여기상태 | VQE·qEOM, QPE와 Hamiltonian simulation | 큰 상관 전자 상태를 직접 표현하고 에너지·관측량을 추정 | **검증:** 같은 geometry·basis·active space에서 DMRG·selected CI와 비교<br>**비용:** active space, 상태 준비, shots·측정, 긴 회로와 오류보정 |
+| 자료가 적은 물성·불확실성 학습 | quantum kernel, QNN, quantum reservoir | 양자 feature map과 회로의 귀납편향으로 유용한 표현을 만들 가능성 | **검증:** 같은 scaffold·composition split과 budget에서 GNN·GP·고전 kernel 비교<br>**비용:** 자료 encoding, kernel concentration, trainability, shot noise |
+| 복잡한 후보 분포 생성·표본추출 | QCBM·QBM, annealer-assisted sampling | 상관·다봉 분포에서 유효하고 다양한 표본을 집중적으로 얻을 가능성 | **검증:** 같은 자료·energy model에서 VAE·diffusion 또는 MCMC·parallel tempering 비교<br>**비용:** 분포 보정, mode coverage, decoder validity, 표본당 전체 비용 |
+| 제약이 많은 이산 선택 | QUBO를 푸는 QA·QAOA | tunneling·interference와 문제 맞춤 mixer로 feasible bitstring에 확률을 모을 가능성 | **검증:** 같은 QUBO 문제군에서 exact·CP-SAT·MILP·SA·Tabu와 비교<br>**비용:** 정식화 왜곡, penalty·ancilla, embedding·routing, 고전 후처리 |
+
+### 국소 효용은 양자 메커니즘과 직접 연결돼야 합니다
+
+전자구조 문제는 원래 양자 상태이므로, qubit의 중첩과 얽힘을 이용해 determinant coefficient를 하나씩 저장하지 않고 correlated state를 준비할 수 있습니다. QPE는 Hamiltonian evolution에서 누적된 위상을 읽어 에너지를 추정하고, 이상적인 조건에서는 독립 표본평균과 다른 정밀도 의존성을 가집니다. 이 힘은 좋은 초기상태와 Hamiltonian simulation을 효율적으로 구현할 수 있을 때 나타납니다.
+
+QML과 양자 생성모델은 회로가 만드는 feature space와 확률분포를 사용합니다. 재료 자료에서 고전 모델이 쉽게 모사하지 못하는 표현이나 분포를 만들 수 있다는 가설이 출발점이며, qubit 수나 Hilbert space의 크기만으로 예측 이득이 생기지는 않습니다. QA와 QAOA도 같은 원칙을 따릅니다. 터널링 또는 cost·mixer 간섭이 해당 문제의 장벽과 제약 구조에 맞을 때 좋은 해의 확률이 높아질 수 있으며, 모든 조합최적화에 공통인 우위는 아닙니다.
+
+### 현재 공개 연구는 소형 문제와 인터페이스를 검증하고 있습니다
+
+기존 파이프라인을 당장 걷어낼 수 없는 이유는 큐비트 수 하나로 설명되지 않습니다. 전자구조에서는 basis·embedding·active-space 편향과 필요한 관측량의 측정비용이 남습니다. QML과 생성모델에는 고전 자료를 양자상태로 넣는 비용, 학습성, 유효한 분자·구조로 되돌리는 decoder가 필요합니다. QA·QAOA는 원래 목적함수와 제약을 QUBO로 옮기는 동안 순위가 왜곡될 수 있고, embedding·routing·후처리가 solver 이득을 소모합니다. 모든 트랙에서 고전 알고리즘도 계속 개선되며, 합성·소자·공정 실험은 양자 결과를 자동으로 신뢰하지 않습니다.
+
+현재 증거로 주장할 수 있는 범위는 `고정된 계산 경계에서의 재현 가능한 국소 이득`입니다. 재료 역설계 전체의 양자우위는 아직 종단 검증이 필요한 가설입니다. 뒤의 VQE·QPE, QML, 표본추출, QA·QAOA 절은 각각 입력과 출력, 힘의 원천, 이득을 소모하는 비용, 첫 검증 문제를 같은 기준으로 살펴봅니다.
+
+**양자 파이프라인**은 이 서브루틴의 입력을 만들고 QPU 작업·측정·오류제어·후처리·고전 fallback과 재료 검증을 연결하는 실행 계층입니다. 하나의 QPU가 네 계산을 모두 맡는 구조를 뜻하지 않습니다.
+
+> **양자 모듈의 채택 조건** — 같은 입력, 정확도와 전체 검증 예산을 받은 강한 고전 방법보다 재검증 통과 후보를 더 많이 남기거나, 같은 품질에 필요한 시간·비용을 낮출 때만 기존 모듈을 교체합니다.
+
+## 전환은 계산 경계를 분해하고 한 단계씩 다시 연결합니다
+
+1. **기준선과 계산 경계를 고정합니다.** 자료 준비부터 재검증까지의 시간·비용을 계측하고, geometry·integral·active space, 재료 split, energy model 또는 QUBO 가운데 하나의 입력·출력과 오차 예산을 동결합니다.
+2. **한 모듈을 shadow mode로 검증합니다.** 기존 결과를 실제 의사결정에 사용하면서 작은 active-space VQE, 고정 energy model의 annealer 표본추출 또는 제한된 QUBO의 QA·QAOA 결과를 나란히 기록합니다. 이후 문제 크기·상관 난도·제약밀도를 늘려 강한 고전 해법과 전체 비용을 비교합니다.
+3. **미공개 후보와 반복 폐루프로 확장합니다.** 고정밀 계산 또는 실험의 blind test에서 이득이 확인되고 여러 batch에서 반복될 때만 모듈을 폐루프에 연결합니다. QPE와 QAE는 초기상태·oracle·논리 큐비트를 포함한 자원추정을 먼저 통과해야 합니다.
+
+### 오류보정 이후에는 계산 가능한 설계공간의 경계가 달라질 수 있습니다
+
+이 단계들이 완성될 경우 장기적으로 가장 큰 변화는 연구 가능한 문제의 범위에서 나타납니다. 현재 비용 때문에 소수 후보에만 적용하는 상관 전자·여기상태 계산을 더 넓은 후보군의 고정밀 판정에 사용하고, 다봉 후보 분포와 불확실성을 유지한 채 다음 계산과 실험을 선택하며, 실패 자료를 즉시 다음 탐색에 반영하는 폐루프를 만들 수 있습니다. 같은 계산·합성·소자 예산에서 더 다양하고 검증된 후보를 남기고, 지금은 계산비용 때문에 일찍 제외하는 설계공간을 탐색 대상으로 되돌리는 것이 종단 목표입니다.
+
+이 목표는 현재 달성된 성과가 아닙니다. 오류보정 하드웨어, 효율적인 상태·oracle 준비, 반복 가능한 문제군 scaling과 전향적 재료 검증이 함께 성립해야 합니다. 첫 전환 대상은 실패해도 기존 자료·모델·검증법이 남는 작은 계산 경계입니다.
 
 ## DFT–QPU 전환은 active-space solver의 경계에서 시작합니다
 
@@ -174,7 +194,9 @@ U(t)|E_k⟩ = exp(-i E_k t)|E_k⟩
 
 이상적인 QPE는 에너지 정밀도 `ε`에 대해 coherent evolution 또는 query가 `O(1/ε)`로 증가합니다. 독립 Pauli 표본평균의 `O(1/ε²)`와 다른 지점입니다. 이는 state preparation·block encoding·오류보정 전의 정밀도 의존성 비교이며, qubitization의 실제 query에는 Hamiltonian normalization factor가 곱해집니다. 또한 FCI coefficient vector를 모두 저장하고 대각화하지 않고도 determinant 중첩에 Hamiltonian evolution을 적용할 수 있습니다. [Aspuru-Guzik 등의 초기 분자 QPE 연구](https://doi.org/10.1126/science.1113479)는 이 경로를 물과 LiH에 대해 구성했습니다.
 
-실제 자원은 QFT보다 Hamiltonian simulation이 좌우합니다. Trotterization, linear-combination-of-unitaries, qubitization 가운데 무엇을 쓰는지, 적분을 어떻게 factorize하는지에 따라 gate 수가 달라집니다. Block encoding은 정규화한 Hamiltonian을 더 큰 unitary 행렬의 한 block으로 구현하는 방법입니다. [Low와 Chuang의 qubitization 연구](https://doi.org/10.22331/q-2019-07-12-163)는 그 고유값을 quantum walk의 고유위상으로 바꾸는 대표 경로를 제시합니다. 깊은 controlled evolution을 정확하게 실행해야 하므로 QPE는 오류보정 양자컴퓨터의 장기 모듈입니다.
+실제 자원은 QFT보다 Hamiltonian simulation이 좌우합니다. Product formula(Trotterization), linear-combination-of-unitaries, qubitization 가운데 무엇을 쓰는지, 적분을 어떻게 factorize하는지에 따라 gate 수가 달라집니다. Block encoding은 정규화한 Hamiltonian `H/λ`를 더 큰 unitary 행렬의 한 block으로 구현하는 방법입니다. Qubitization은 각 고유값을 quantum walk의 회전 위상으로 바꾸며, QSP(Quantum Signal Processing)는 위상각의 연속을 조절해 시간진화나 spectral filter에 필요한 다항함수를 구현할 수 있습니다. QPE는 선택한 Hamiltonian simulation 또는 quantum walk가 만든 고유위상을 에너지로 읽습니다. 대표적인 qubitization 기반 경로는 `integral → block encoding → qubitization → QPE`이며, 필요한 변환에 QSP를 결합할 수 있습니다. QSP와 qubitization은 VQE·QPE와 경쟁하는 별도 전자구조 solver가 아닙니다. [Low와 Chuang의 qubitization 연구](https://doi.org/10.22331/q-2019-07-12-163)는 이 oracle model의 대표 경로를 제시합니다. 이 경로의 실제 자원에는 normalization `λ`, PREPARE·SELECT, 초기상태 overlap과 오류보정 비용이 들어갑니다.
+
+[2026년 PRX Quantum의 H₂ 실증](https://doi.org/10.1103/m7j3-5sk6)은 `[[7,1,3]]` color code와 실시간 오류정정 절차를 QPE 전자구조 계산에 연결해 계산 fidelity가 개선될 수 있음을 보였습니다. QPE가 자원추정에만 머문 것은 아니지만, 최소 basis의 H₂를 다룬 method demonstration이며 재료 규모의 정확도·비용 우위를 입증한 결과는 아닙니다. 깊은 controlled evolution과 반복 가능한 논리 연산이 필요하다는 장기 하드웨어 조건도 그대로 남습니다.
 
 상태 overlap은 별도의 병목입니다. 바닥상태 weight가 `p₀=|α₀|²`이면 원하는 결과를 얻기 위한 반복은 대략 `1/p₀`에 비례합니다. 강상관계에서 Hartree–Fock determinant의 overlap이 지수적으로 작아지면 Hamiltonian simulation의 다항식 scaling만으로는 전체 이득을 설명할 수 없습니다. [2023년 ground-state quantum advantage 분석](https://www.nature.com/articles/s41467-023-37587-6)은 좋은 초기상태를 만들 수 있는 구조가 DMRG·selected CI 같은 고전 방법에도 유리할 수 있어, 일반적인 바닥상태 양자화학의 지수 우위는 아직 입증되지 않았다고 평가했습니다.
 
@@ -200,7 +222,7 @@ QPU의 상태 amplitude를 모두 내려받는 tomography는 지수적으로 비
 
 ## QML은 전자구조 출력을 학습하며 입력비용과 일반화로 평가합니다
 
-전자 Hamiltonian을 매 후보마다 풀 수 없기 때문에, DFT·post-HF·VQE·QPE에서 얻은 에너지와 관측량은 대리모델의 label로 넘어갑니다. 이 학습 단계가 전자상태 문제와 뒤의 설계 비용함수를 잇습니다. 여기서 QML은 필수 연결부가 아니라 GNN·GP·kernel을 대신해 시험할 수 있는 또 하나의 소켓입니다.
+전자 Hamiltonian을 매 후보마다 풀 수 없기 때문에, DFT·post-HF·VQE·QPE에서 얻은 에너지와 관측량은 대리모델의 label로 넘어갑니다. 이 학습 단계가 전자상태 문제와 뒤의 설계 비용함수를 잇습니다. QML은 GNN·GP·kernel과 같은 입력·출력에서 비교하는 선택적 대리모델 후보입니다.
 
 Quantum kernel 가운데 대표적인 fidelity kernel은 고전 descriptor를 양자상태로 인코딩하고 두 상태의 fidelity를 kernel 값으로 사용합니다. Projected kernel은 국소 관측량 등으로 낮은 차원의 특징을 만든 뒤 고전 kernel을 구성합니다. QNN은 parameterized quantum circuit의 측정값을 예측 함수로 학습합니다. 이 방법들은 작은 자료에서 새로운 표현을 제공할 가능성이 있지만, Hilbert space가 지수적으로 크다는 사실만으로 예측 우위가 생기지는 않습니다.
 
@@ -224,7 +246,7 @@ QCBM은 회로가 만든 Born probability를 학습하고, QBM은 Hamiltonian의
 
 여기까지는 어떤 후보 분포를 만들 것인가의 문제입니다. 이제 생성모델이나 데이터베이스가 만든 후보 집합을 고정하고, 제한된 계산·실험 예산으로 무엇을 먼저 검증할지 고르는 이산 최적화로 넘어갑니다.
 
-### 전자구조 계산이 끝나면 문제는 wavefunction에서 bitstring으로 바뀝니다
+## 설계 선택은 물성값과 제약을 비용 Hamiltonian으로 바꿉니다
 
 VQE·QPE와 QA·QAOA를 같은 “에너지 최소화”로 묶으면 계산 대상이 흐려집니다. 전자구조 Hamiltonian `H_e`의 바닥상태는 correlated electronic state이고, 그 고유값이 전자 에너지입니다. 반면 QUBO에서 만든 cost Hamiltonian `H_C`의 바닥상태는 대리모델 점수와 제약 penalty가 가장 낮은 **설계 bitstring**입니다. 이 energy는 실제 물질의 전자 에너지가 아니라 후보의 목적함수 값입니다.
 
@@ -331,6 +353,8 @@ QA·QAOA에는 두 가지 검증이 필요합니다. 먼저 tunneling이나 inte
 
 비교는 한 개의 작은 QUBO가 아니라 크기, graph density, frustration, constraint ratio가 증가하는 문제군에서 해야 합니다. Exact enumeration이 가능한 크기에서는 optimum과 degeneracy를 확인하고, CP-SAT·MILP·branch-and-bound·SA·Tabu·parallel tempering과 전문 heuristic을 함께 둡니다. QA에는 embedding·programming·reads·decoding·chain repair를, QAOA에는 transpilation·모든 optimizer evaluation·shots·오류완화를 포함합니다.
 
+QA의 scaling 근거도 comparator가 바뀌면 판정이 달라집니다. [2025년 PRL 연구](https://doi.org/10.1103/PhysRevLett.134.160601)는 quantum annealing correction을 사용한 특정 2차원 spin-glass 문제군에서 PT-ICM보다 `1%` 이상 optimality gap의 저에너지 표본을 얻는 scaling advantage를 보고했습니다. 그러나 [2026년 7월 Physical Review Applied의 재검토](https://doi.org/10.1103/PhysRevApplied.26.014024)는 GPU simulated bifurcation machine이 그 scaling gap을 닫으며 기존 문제 크기로는 robust advantage를 확정하기 어렵다고 분석했습니다. 이 논쟁을 근거로 `QA에 어떤 scaling evidence도 없다`거나 `QA의 우위가 확정됐다`고 결론 내릴 수 없습니다. 재료 QUBO에서는 별도의 문제군과 최신 고전 해법으로 다시 검증해야 합니다.
+
 성공확률 `p_s`인 solver를 반복해 99% 확률로 한 번 이상 목표 품질의 해를 얻는 표본 수는 다음과 같습니다.
 
 ```text
@@ -372,9 +396,9 @@ OLED와 맞닿은 [2023년 Alq₃ 중수소 치환 연구](https://spj.science.o
 - **VQE** — 고전적으로 contraction하기 어려운 entangled circuit state의 관측량을 QPU가 표본화할 가능성이 있습니다. Ansatz bias, `1/ε²` shots, optimizer와 noise·오류완화가 이득을 지웁니다. 현재는 소형 method·interface 실증 단계이며 일반 speedup 보장은 없습니다.
 - **QPE** — Coherent Hamiltonian evolution과 phase estimation이 이상적인 `1/ε` 정밀도 의존성을 제공합니다. 초기상태 overlap, block encoding, 긴 회로와 오류보정이 조건입니다. 효율적 state preparation을 전제로 한 알고리즘 이득 후보입니다.
 - **QUBO** — 이득을 만드는 알고리즘이 아니라 여러 solver에 같은 문제를 전달하는 표현입니다. Quadratization, ancilla, penalty와 surrogate 왜곡을 포함해 정식화 품질을 평가합니다.
-- **QA** — Transverse-field dynamics와 문제 지형에 따른 tunneling이 가능한 메커니즘입니다. 최소 gap, 온도·freeze-out, minor embedding과 coefficient precision을 포함한 문제군 scaling이 필요합니다.
+- **QA** — Transverse-field dynamics와 문제 지형에 따른 tunneling이 가능한 메커니즘입니다. 특정 합성 spin-glass의 근사 저에너지 표본에서 scaling 주장이 나왔지만 더 강한 GPU 고전 해법이 격차를 닫은 재검토도 있습니다. 최소 gap, 온도·freeze-out, minor embedding, coefficient precision과 comparator를 포함한 문제군 scaling이 필요합니다.
 - **QAOA** — Cost phase와 mixer interference, 문제 맞춤 feasible mixer가 좋은 해의 확률을 집중시킬 수 있습니다. Depth·routing·shots, noise와 parameter learning을 포함한 finite-depth 이득은 문제별 검증 대상입니다.
-- **QML·양자 생성** — 고전적으로 어려운 feature map 또는 분포의 표본화가 출발점입니다. Data loading, kernel concentration, trainability와 validity를 포함해 실제 재료 split과 분포 지표에서 검증해야 합니다.
+- **QML·양자 생성** — 고전적으로 모사하기 어려운 feature map 또는 분포가 실제 재료 예측과 생성에 유용한지를 시험합니다. Data loading, kernel concentration, trainability와 validity를 포함해 실제 재료 split과 분포 지표에서 검증해야 합니다.
 
 전자구조에서는 물리 문제가 본래 양자라는 점 때문에 큰 상태공간을 담는 표현 용량의 출발이 분명합니다. 그래도 모든 amplitude를 읽을 수 없고, 좋은 초기상태를 만들지 못하면 계산 이득으로 이어지지 않습니다. 이산 최적화는 반대로 고전 bitstring 문제입니다. QA·QAOA의 잠재 이득은 양자 표현 자체보다 특정 문제 구조에 맞는 동역학과 간섭에서 생겨야 합니다.
 
@@ -395,7 +419,7 @@ Active learning과 robust design에서는 후보의 평균 성능만큼 실패�
 
 ## 성숙도는 증거 단계와 하드웨어 시기를 함께 봐야 합니다
 
-양자 알고리즘을 한 줄의 순위로 놓을 수는 없습니다. VQE·QML·QAOA는 현재 장치에서 작은 실험을 할 수 있지만 noise와 학습성 문제가 큽니다. QPE 계열과 QAE는 이론적 성질이 더 선명한 대신 오류보정 하드웨어에 의존합니다. 따라서 알고리즘의 약속과 end-to-end 검증 수준을 분리해야 합니다.
+양자 알고리즘을 한 줄의 순위로 놓을 수는 없습니다. VQE·QML·QAOA는 현재 장치에서 작은 실험을 할 수 있지만 noise와 학습성 문제가 큽니다. QPE는 오류정정된 초소형 분자 method demonstration까지 진행됐으나 재료 규모의 실행은 오류보정 하드웨어와 큰 논리 자원에 의존합니다. QAE는 reversible oracle을 포함한 장기 알고리즘입니다. 따라서 알고리즘의 약속과 end-to-end 검증 수준을 분리해야 합니다.
 
 <figure class="figure-panel">
   <img class="diagram-desktop" src="evidence_maturity_ladder.svg" alt="이론과 자원 추정에서 소형 실증, 도메인 벤치마크, 전향적 검증, 반복 가능한 종단 가치로 이어지는 다섯 단계 증거 사다리와 NISQ 및 오류보정 의존성을 함께 보여주는 도식">
@@ -406,14 +430,14 @@ Active learning과 robust design에서는 후보의 평균 성능만큼 실패�
 | 후보 모듈 | 현재 확인 가능한 증거 | 가까운 검증 질문 | 장기 조건 |
 | --- | --- | --- | --- |
 | VQE·qEOM | 작은 molecule·active space, embedding PoC | 오류완화 결과가 강한 active-space 해법과 같은 오차·비용에서 경쟁하는가 | 더 낮은 error, 측정 효율, 확장 가능한 ansatz |
-| QPE 계열 | 알고리즘·자원 추정 중심 | 좋은 초기상태와 Hamiltonian simulation을 포함한 전체 자원이 현실적인가 | fault-tolerant logical qubit와 긴 coherent circuit |
+| QPE 계열 | 자원 추정과 오류정정된 H₂ method demonstration | 좋은 초기상태, 선택한 Hamiltonian simulation과 관측량 측정을 포함한 전체 자원이 현실적인가 | 재료 active space를 감당하는 fault-tolerant logical qubit와 긴 coherent circuit |
 | quantum kernel·QNN | 소형 자료·hardware 또는 simulator PoC | 실제 재료 split에서 고전 모델보다 불확실성 보정·계열 밖 예측 이득이 남는가 | 효율적 encoding, 학습 가능성, 측정 scaling |
 | QCBM·QBM generator | 작은 분포·hybrid generator PoC | 분포 충실도와 유효 후보가 고전 생성모델보다 나은가 | scalable training과 검증 가능한 generative advantage |
 | annealer-assisted sampler | 작은 RBM·latent 표본추출 PoC | 같은 energy model에서 목표 분포와 전체 비용이 MCMC보다 나은가 | 보정 가능한 표본 분포와 반복 가능한 이득 |
-| QA·QAOA 최적화 | 작은 QUBO·도메인 PoC | embedding·compilation·후처리를 포함해 재검증 통과 후보가 늘어나는가 | 문제 구조와 hardware가 맞는 반복 가능한 benchmark |
+| QA·QAOA 최적화 | 작은 QUBO·도메인 PoC와 특정 합성 문제군의 논쟁 중인 근사 scaling 결과 | 최신 고전 해법, embedding·compilation·후처리를 포함해 재검증 통과 후보가 늘어나는가 | 문제 구조와 hardware가 맞는 반복 가능한 재료 benchmark |
 | QAE | oracle/query 복잡도 근거 | materials uncertainty를 reversible oracle로 준비할 수 있는가 | fault-tolerant coherent oracle |
 
-이 리뷰에서 확인한 공개 근거만 보면, 어느 모듈도 재료 역설계 전반의 양자우위를 입증했다고 보기 어렵습니다. 그렇다고 모두 같은 단계에 있는 것도 아닙니다. 작은 계산 계약을 고정하고 증거 사다리의 다음 한 칸을 목표로 삼는 것이 더 생산적입니다.
+이 리뷰에서 확인한 공개 근거만 보면, 어느 모듈도 재료 역설계 전반의 양자우위를 입증했다고 보기 어렵습니다. 모듈별 증거 수준은 서로 다르므로, 작은 계산 계약을 고정하고 증거 사다리의 다음 한 칸을 목표로 삼아야 합니다.
 
 ## 청색 OLED는 네 계산 모듈의 경계를 한 사례에서 드러냅니다
 
@@ -460,7 +484,7 @@ Exciplex-forming co-host형 PhOLED에서는 donor와 acceptor host가 만날 때
 3. 가능한 범위에서 FCI·DMRG·selected CI·CASSCF/NEVPT2 등 가장 강한 고전 기준값을 만듭니다.
 4. Fermion-to-qubit mapping과 symmetry reduction 뒤 noise-free simulator에서 spectrum, VQE ansatz bias와 QPE initial overlap을 따로 확인합니다.
 5. VQE hardware PoC에서는 Pauli grouping, shots, optimizer evaluation, gate error와 오류완화 비용을 기록합니다.
-6. QPE는 당장 실행 성과를 약속하기보다 logical qubit, block-encoding normalization, Toffoli/T count, 초기상태 성공확률을 포함한 자원추정부터 수행합니다.
+6. QPE는 오류정정된 H₂ 실증을 method 기준점으로 삼되, 재료 문제에서는 선택한 simulation 경로의 logical qubit·Toffoli/T count와 초기상태 성공확률을 자원추정합니다. Block-encoding·qubitization 경로를 택했다면 normalization과 PREPARE·SELECT 비용도 포함합니다.
 7. Energy만이 아니라 gap, state ordering, RDM, transition property와 force처럼 downstream 계산이 실제로 쓰는 출력까지 비교합니다.
 
 ### 최적화 트랙의 전환 순서
@@ -509,7 +533,7 @@ Exciplex-forming co-host형 PhOLED에서는 donor와 acceptor host가 만날 때
 
 공개본에는 연구 질문, 공개 논문, 모듈 인터페이스, 비교 방법과 중단 규칙을 남길 수 있습니다. 회사 내부 분자 구조, 물성 DB, 합성경로, 소자 recipe, 공급사, aging 결과와 미공개 IP는 분리해야 합니다. VQE label, QML advantage, QA·QAOA의 재검증 통과 후보 개선, 생성 후보와 자동 합성 폐루프는 아직 검증된 성과가 아닙니다.
 
-재료 역설계의 양자화는 하나의 극적인 교체보다 여러 작은 계약의 검증으로 진행될 가능성이 큽니다. 가까운 시기에는 작은 active space, 제한된 학습 자료와 QUBO형 선택 문제에서 hybrid PoC가 쌓일 것입니다. 오류보정 하드웨어가 성숙하면 QPE와 QAE 같은 모듈의 범위가 넓어질 수 있습니다. 그 사이에도 데이터 계보, 고전 계산, 강한 기준선과 실험 검증은 사라지지 않습니다. 오히려 양자 모듈의 실제 가치를 판단하는 기준으로 더 중요해집니다.
+가까운 시기의 공개 제안은 작은 active space, 제한된 학습 자료와 QUBO형 선택 문제의 hybrid PoC에 맞춰집니다. 데이터 계보, 강한 고전 기준선과 실험 검증은 각 양자 모듈의 채택 여부를 판단하는 공통 기준으로 유지합니다.
 
 ## 참고문헌
 
@@ -550,6 +574,9 @@ Exciplex-forming co-host형 PhOLED에서는 donor와 acceptor host가 만날 때
 35. [Bravyi et al., Obstacles to Variational Quantum Optimization from Symmetry Protection](https://doi.org/10.1103/PhysRevLett.125.260505)
 36. [Rønnow et al., Defining and detecting quantum speedup](https://doi.org/10.1126/science.1252319)
 37. [Zhou et al., QAOA: Performance, Mechanism, and Implementation on Near-Term Devices](https://doi.org/10.1103/PhysRevX.10.021067)
+38. [Yamamoto et al., Quantum Error-Corrected Computation of Molecular Energies](https://doi.org/10.1103/m7j3-5sk6)
+39. [Munoz-Bauza and Lidar, Scaling Advantage in Approximate Optimization with Quantum Annealing](https://doi.org/10.1103/PhysRevLett.134.160601)
+40. [Pawłowski et al., Toward quantum scaling advantage in approximate optimization](https://doi.org/10.1103/PhysRevApplied.26.014024)
 
 ## 작성 정보
 
