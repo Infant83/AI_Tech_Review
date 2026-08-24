@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">The boundary of OTI's iQCC OLED calculation</title>
+  <desc id="desc">A classical iQCC emulation pipeline from Ir and Pt emitters to chemical outputs and a future QPU benchmark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef7f4"/><stop offset="1" stop-color="#eef1f7"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#0f766e"/></marker>
+    <style>
+      .t{font-family:Segoe UI,Noto Sans KR,Arial,sans-serif;fill:#17211d}.t.accent{fill:#0f766e}.h{font-size:32px;font-weight:800}.s{font-size:24px;font-weight:700}.b{font-size:20px;fill:#5f6b65}.box{fill:#fff;stroke:#c9d3cf;stroke-width:2}.line{stroke:#0f766e;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="900" height="620" rx="24" fill="url(#bg)"/>
+  <text x="52" y="60" class="t h">Quantum-native is not QPU-executed</text>
+  <text x="52" y="90" class="t b">Qubit-native chemistry emulated on a classical CPU</text>
+  <rect x="52" y="132" width="212" height="126" rx="14" class="box"/>
+  <circle cx="90" cy="170" r="18" fill="#25456f"/><circle cx="131" cy="170" r="18" fill="#a35a16"/><path d="M108 170h5" stroke="#17211d" stroke-width="3"/>
+  <text x="77" y="211" class="t s">Ir / Pt emitters</text><text x="77" y="240" class="t b">Orbitals + integrals</text>
+  <path d="M264 195H330" class="line"/>
+  <rect x="330" y="132" width="236" height="126" rx="14" class="box"/>
+  <text x="358" y="172" class="t s">Active space</text><text x="358" y="207" class="t h accent">~200 qubits</text><text x="358" y="238" class="t b">Ideal register size</text>
+  <path d="M566 195H632" class="line"/>
+  <rect x="632" y="132" width="216" height="126" rx="14" class="box"/>
+  <text x="661" y="172" class="t s">iQCC on CPU</text><text x="661" y="202" class="t b">Classical emulation</text><text x="661" y="232" class="t b">QPU runs: 0</text>
+  <path d="M740 258V326" class="line"/>
+  <rect x="538" y="326" width="310" height="140" rx="14" class="box"/>
+  <text x="568" y="366" class="t s">Chemical outputs</text><text x="568" y="397" class="t b">T₁ → S₀ gap</text><text x="568" y="424" class="t b">MLCT / LC character</text><text x="568" y="451" class="t b">iQCC+PT MAE 0.0501 eV</text>
+  <path d="M538 396H465" class="line"/>
+  <rect x="52" y="326" width="413" height="140" rx="14" class="box"/>
+  <text x="81" y="366" class="t s">Next QPU benchmark</text><text x="81" y="397" class="t b">Same model + observable</text><text x="81" y="424" class="t b">QEC · shots · total cost</text><text x="81" y="451" class="t b">Beat the classical baseline?</text>
+  <rect x="52" y="510" width="796" height="67" rx="12" fill="#17211d"/>
+  <text x="82" y="550" font-family="Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#fff">~200 qubits marks the baseline — not a QPU result.</text>
+</svg>

@@ -47,6 +47,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-24_oti-iqcc-oled-quantum-emulation",
+        title="200 논리 큐비트 OLED 계산, 양자컴퓨터였나?",
+        subtitle="OTI Lumionics·SAIT의 JACS iQCC 연구가 입증한 것과 실제 QPU가 아직 입증하지 못한 것을 구분합니다",
+        date="2026-08-24",
+        updated="2026-08-24",
+        category="Materials AI",
+        tags=("Quantum Chemistry", "OLED", "iQCC", "Classical Emulation", "Ir/Pt Phosphors"),
+        summary=(
+            "OTI Lumionics와 SAIT는 양자-native iQCC를 고전 CPU에서 약 200 logical-qubit 규모로 "
+            "에뮬레이션해 Ir(III)·Pt(II) 인광체의 T1−S0 갭을 계산했습니다. 실제 QPU 실행이나 "
+            "양자 우위가 아니라 미래 하드웨어가 넘어야 할 정확도·규모·고전 tractability 기준선입니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-06-11_QC-based-inverse-design",
         title="양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가",
         subtitle="전자구조 계산부터 물성 학습, 후보 생성, 조합 최적화까지 재료정보학 파이프라인의 양자 삽입점을 점검합니다",
@@ -423,7 +437,7 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
     sanitized = LOCAL_REF_RE.sub(replace_ref, html_text)
     sanitized = INTERNAL_PATH_RE.sub("[local path removed]", sanitized)
     sanitized = sanitized.replace("<body>", '<body class="public-review">')
-    if "</body>" in sanitized:
+    if "</body>" in sanitized and 'class="public-note"' not in sanitized:
         public_note = (
             "\n<section id=\"public-local-references\" class=\"public-note\">"
             "<p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 "
@@ -454,7 +468,34 @@ def copy_public_support_files(dist_dir: Path, public_dir: Path, copied: list[str
 
 def publish_review(review: PublicReview) -> dict[str, object]:
     if not review.dist_index.exists():
-        raise FileNotFoundError(f"Missing dist index for {review.folder}: {review.dist_index}")
+        public_index = review.public_dir / "index.html"
+        if not public_index.exists():
+            raise FileNotFoundError(f"Missing dist and published index for {review.folder}")
+
+        existing_html = public_index.read_text(encoding="utf-8")
+        parser = FirstImageParser()
+        parser.feed(existing_html)
+        thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
+        copied_assets = sorted(
+            path.name
+            for path in review.public_dir.iterdir()
+            if path.is_file() and path.name != "index.html"
+        )
+        print(f"[public-site:preserve] {review.folder} (source dist missing)")
+        return {
+            "folder": review.folder,
+            "title": review.title,
+            "subtitle": review.subtitle,
+            "date": review.date,
+            "updated": review.updated,
+            "category": review.category,
+            "tags": list(review.tags),
+            "summary": review.summary,
+            "href": review.href,
+            "metric_path": metric_path_for_href(review.href),
+            "thumbnail": thumbnail,
+            "assets": copied_assets,
+        }
 
     public_dir = review.public_dir
     if public_dir.exists():
