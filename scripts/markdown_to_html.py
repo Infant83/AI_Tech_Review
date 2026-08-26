@@ -715,6 +715,21 @@ def render_final_review_template(context: RenderContext) -> str:
   <title>{html.escape(context.title)}</title>
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {{
+      tex: {{
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']]
+      }},
+      options: {{
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }}
+    }};
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
   <style>
     :root {{
       --paper: #fbfaf7;
@@ -947,6 +962,14 @@ def render_final_review_template(context: RenderContext) -> str:
     .final-article pre code {{
       padding: 0;
       background: transparent;
+    }}
+
+    .final-article mjx-container[display="true"] {{
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
     }}
 
     .math-display {{
@@ -1485,7 +1508,9 @@ def build_context(source_path: Path, mode: str = "auto") -> RenderContext:
 
 def render_file(source_path: Path, mode: str = "auto") -> Path:
     context = build_context(source_path, mode)
-    html_text = render_template(context)
+    html_text = "\n".join(
+        line.rstrip() for line in render_template(context).splitlines()
+    ) + "\n"
     context.output_path.write_text(html_text, encoding="utf-8")
     return context.output_path
 

@@ -1,0 +1,70 @@
+{
+  "label": "blocked_after_skywork_qa",
+  "recordedAt": "2026-08-27T02:34:00+09:00",
+  "mode": "official_skywork_deck",
+  "topic": "2026-08-27_dwave-molecular-inverse-design-benchmark",
+  "title": "D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니",
+  "slideCountRequested": 12,
+  "template": "skywork_inputs/LGD_Template.pptx",
+  "prompt": "skywork_inputs/2026-08-27_dwave-molecular-inverse-design-benchmark_skywork_prompt_v1.md",
+  "sourcePack": [
+    "reports/2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md",
+    "reports/2026-08-27_dwave-molecular-inverse-design-benchmark_memo.md",
+    "reports/2026-08-27_dwave-molecular-inverse-design-benchmark_deepresearch.md",
+    "notes/2026-08-27_dwave-molecular-inverse-design-benchmark_sources.md",
+    "artifacts/final_review/data/benchmark_results.csv",
+    "artifacts/final_review/figure_manifest.md",
+    "artifacts/final_review/figures/molecular_inverse_design_hero.png",
+    "artifacts/final_review/figures/molecular_inverse_design_infographic.svg",
+    "artifacts/final_review/figures/01_evidence_layer_pipeline.png",
+    "artifacts/final_review/figures/02_qm9_surrogate_parity.png",
+    "artifacts/final_review/figures/03_generator_metrics.png",
+    "artifacts/final_review/figures/04_acquisition_comparison.png",
+    "artifacts/final_review/figures/05_dft_molecule_validation.png",
+    "artifacts/final_review/figures/06_qm9_replay_convergence.png",
+    "artifacts/final_review/figures/07_exact_vs_qpu_dft_batch.png"
+  ],
+  "skyworkProjectUrl": null,
+  "skyworkViewerUrl": null,
+  "pptxExport": null,
+  "pdfExport": null,
+  "submittedAt": "2026-08-27T02:05:19+09:00",
+  "completedAt": null,
+  "attempts": [
+    {
+      "version": "v1",
+      "result": "exported_but_rejected",
+      "slideCount": 12,
+      "pptx": "skywork_exports/2026-08-27_dwave-molecular-inverse-design-benchmark_skywork_v1.pptx",
+      "pdf": "skywork_exports/2026-08-27_dwave-molecular-inverse-design-benchmark_skywork_v1.pdf",
+      "qa": "Rejected after rendered-slide review because several slides contained corrupted text, invented molecules, and wrong values."
+    },
+    {
+      "version": "v2",
+      "result": "exported_but_rejected",
+      "slideCount": 12,
+      "pptx": "skywork_exports/2026-08-27_dwave-molecular-inverse-design-benchmark_skywork_v2.pptx",
+      "pdf": "skywork_exports/2026-08-27_dwave-molecular-inverse-design-benchmark_skywork_v2.pdf",
+      "qa": "Rejected after rendered-slide review because factual repair still left wrong QPU, DFT, replay, and conclusion content."
+    },
+    {
+      "version": "v3",
+      "result": "failed_during_export",
+      "slideCountPlanned": 12,
+      "qa": "Eleven exact-image replacements were generated, but Skywork export timed out after 180 seconds; no v3 PPTX was delivered."
+    }
+  ],
+  "claimBoundary": {
+    "qpuExactOptimumReproduced": false,
+    "quantumAdvantageEstablished": false,
+    "liveGeneratedSpaceLoopExecuted": false,
+    "liveLoopSlideMustBeMarkedProposed": true
+  },
+  "completionContract": [
+    "real Skywork project or viewer URL",
+    "editable PPTX export",
+    "matching PDF export",
+    "12-slide visual and claim-boundary QA"
+  ],
+  "note": "Skywork was run three times. v1 and v2 are retained only as rejected QA evidence and must not be published. v3 exact-image repair failed during remote export. No authenticated Skywork project/viewer URL was available. A retry requires explicit user authorization."
+}

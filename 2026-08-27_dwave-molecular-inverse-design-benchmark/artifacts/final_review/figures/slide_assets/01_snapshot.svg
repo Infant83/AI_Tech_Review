@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>
+    text{font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif;fill:#142238}.title{font-size:54px;font-weight:800}.sub{font-size:25px;fill:#596779}.kpi{font-size:50px;font-weight:800}.label{font-size:22px;font-weight:700}.small{font-size:18px;fill:#657286}.note{font-size:28px;font-weight:700}.cap{font-size:16px;fill:#6d7888}.white{fill:#fff}.pale{fill:#dce7f5}
+  </style>
+  <rect width="1600" height="900" fill="#f7f8fa"/><rect width="1600" height="18" fill="#d71920"/>
+  <text x="76" y="92" class="title">D-Wave 분자 역설계 실험</text>
+  <text x="76" y="142" class="sub">QPU가 고른 후보를 DFT까지 확인해 보니</text>
+  <text x="76" y="188" class="small">QM9 5,000개 → ML·분자 생성 → QUBO/QPU 배치 선택 → PySCF 검증</text>
+  <g transform="translate(76 250)">
+    <rect width="270" height="162" rx="20" fill="#fff" stroke="#d5dce5"/><text x="26" y="46" class="label">QM9 데이터</text><text x="26" y="110" class="kpi" fill="#167abc">5,000</text><text x="26" y="140" class="small">governed molecules</text>
+    <rect x="294" width="270" height="162" rx="20" fill="#fff" stroke="#d5dce5"/><text x="320" y="46" class="label">생성 후보</text><text x="320" y="110" class="kpi" fill="#e49b00">30</text><text x="320" y="140" class="small">governed union</text>
+    <rect y="188" width="270" height="162" rx="20" fill="#fff" stroke="#d5dce5"/><text x="26" y="234" class="label">D-Wave QPU</text><text x="26" y="298" class="kpi" fill="#c36f9f">100</text><text x="26" y="328" class="small">reads · one submission</text>
+    <rect x="294" y="188" width="270" height="162" rx="20" fill="#fff" stroke="#d5dce5"/><text x="320" y="234" class="label">PySCF DFT</text><text x="320" y="298" class="kpi" fill="#069f83">6 / 6</text><text x="320" y="328" class="small">single-point jobs converged</text>
+  </g>
+  <rect x="76" y="660" width="602" height="118" rx="22" fill="#14243c"/>
+  <text x="112" y="708" class="note white">QPU는 분자를 계산하지 않았다.</text>
+  <text x="112" y="750" class="sub pale">다음 PySCF 계산에 보낼 세 후보의 배치를 골랐다.</text>
+  <image href="../molecular_inverse_design_hero.png" x="735" y="205" width="790" height="445" preserveAspectRatio="xMidYMid slice"/>
+  <text x="735" y="680" class="cap">editorial illustration · 실제 D-Wave 장비 사진이 아님</text>
+  <rect x="735" y="718" width="790" height="60" rx="16" fill="#e9eef4"/>
+  <text x="763" y="757" class="small">REPRODUCED SNAPSHOT · quantum advantage / molecular discovery claim 없음</text>
+  <text x="76" y="850" class="cap">AI Tech Review · 2026-08-27</text>
+</svg>

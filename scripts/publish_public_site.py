@@ -47,6 +47,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-27_dwave-molecular-inverse-design-benchmark",
+        title="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니",
+        subtitle="QM9 5,000개에서 ML·분자 생성·QUBO 선택·QPU 실행·PySCF 검증까지 연결한 계산 스냅샷",
+        date="2026-08-27",
+        updated="2026-08-27",
+        category="Materials AI",
+        tags=("Molecular Inverse Design", "D-Wave", "QUBO", "Chemprop", "PySCF", "Active Learning"),
+        summary=(
+            "Chemprop D-MPNN과 ExtraTrees/Morgan 예측, 세 가지 고전 분자 생성기, 18변수 BQM을 "
+            "거쳐 후보 3개를 선택했습니다. D-Wave QPU 결과를 exact 기준과 비교하고 PySCF DFT로 "
+            "6개 후보를 재검증했으며, 고정 후보군 replay와 실제 active-learning loop의 증거 경계를 구분합니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-08-26_quantum-computing-layers",
         title="재료 계산에서 QRAM까지: 양자 연구를 계산 계층으로 읽는 법",
         subtitle="SiC 색 중심 DFT, 실제 QPU 라우터, 페르미온 회로 컴파일과 QML 시뮬레이션을 같은 기준표 위에서 구분합니다",

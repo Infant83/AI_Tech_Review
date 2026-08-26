@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>text{font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif;fill:#142238}.title{font-size:48px;font-weight:800}.sub{font-size:24px;fill:#596779}.eq{font-size:34px;font-weight:700}.term{font-size:27px}.metric{font-size:34px;font-weight:800}.small{font-size:18px;fill:#657286}.head{font-size:22px;font-weight:800}.body{font-size:21px}.white{fill:#fff}</style>
+  <rect width="1600" height="900" fill="#f7f8fa"/><rect width="1600" height="18" fill="#d71920"/>
+  <text x="70" y="86" class="title">QUBO는 세 후보를 하나의 배치로 고른다</text>
+  <text x="70" y="130" class="sub">BQM energy는 분자 에너지가 아니라 다음 계산을 위한 acquisition score다.</text>
+  <rect x="70" y="182" width="840" height="532" rx="26" fill="#fff" stroke="#d4dce6"/>
+  <text x="112" y="238" class="eq">acquisition score</text>
+  <text x="112" y="304" class="term">= target loss</text>
+  <text x="112" y="356" class="term" fill="#069f83">− uncertainty reward</text>
+  <text x="112" y="408" class="term" fill="#069f83">− novelty reward</text>
+  <text x="112" y="460" class="term" fill="#d71920">+ similarity penalty</text>
+  <text x="112" y="512" class="term" fill="#d71920">+ cardinality penalty</text>
+  <rect x="112" y="566" width="756" height="104" rx="18" fill="#14243c"/>
+  <text x="490" y="613" text-anchor="middle" class="eq white">BQM energy = acquisition score</text>
+  <text x="490" y="650" text-anchor="middle" class="head white">≠ molecular energy</text>
+  <rect x="956" y="182" width="574" height="236" rx="26" fill="#fff" stroke="#d4dce6"/>
+  <text x="996" y="232" class="head">결정 변수</text><text x="996" y="280" class="body">xᵢ = 1  →  후보 i를 배치에 포함</text>
+  <text x="996" y="334" class="small">xᵢ ∈ {0, 1}</text>
+  <rect x="956" y="448" width="574" height="266" rx="26" fill="#fff" stroke="#d4dce6"/>
+  <text x="996" y="500" class="head">Frozen acquisition problem</text>
+  <text x="996" y="558" class="metric" fill="#167abc">18 variables</text>
+  <text x="996" y="608" class="metric" fill="#c36f9f">153 interactions</text>
+  <text x="996" y="658" class="metric" fill="#069f83">batch size 3</text>
+  <rect x="70" y="754" width="1460" height="82" rx="18" fill="#e8eef5"/>
+  <text x="106" y="803" class="body">Target 6.0 eV · independent exact = Ocean ExactSolver = classical SA · coefficient values는 공개 source에 없는 값으로 발명하지 않음</text>
+  <text x="70" y="870" class="small">Source: D-Wave QUBO documentation · uploaded benchmark_results.csv</text>
+</svg>
