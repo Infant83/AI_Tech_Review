@@ -169,3 +169,16 @@ v3용으로 다음 exact slide assets를 만들고 시각 검사했습니다.
 - GitHub Actions run `32996770960` completed successfully and updated `gh-pages` to `739154c467d733bdfcae9cc3890e4d58c42003e4`.
 - Live GitHub Pages returned HTTP 200. The article rendered 6 MathJax containers and 8 images with no broken image or page-level desktop/mobile overflow.
 - The pre-existing public-metrics endpoint `infant83-public-metrics.infant83.workers.dev` returned DNS NXDOMAIN during live QA. Article content and assets are unaffected, but view/read-time counters may remain unavailable until that separate Worker endpoint is restored.
+
+## English Edition Publication — 2026-08-27
+
+- English content commit: `dc8940691cbd89e6718155f0aaf6d49ce168a3e2`
+- Korean URL retained: `https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/`
+- English URL added: `https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/`
+- Added a full English article and a deterministic English SVG/PNG infographic while preserving the Korean article body and all reported benchmark values.
+- Added reciprocal visible language switches, canonical links, `ko`/`en`/`x-default` hreflang metadata, Open Graph article metadata, and Twitter large-card metadata.
+- The scoped publisher preserved the existing 2026-08-24 and 2026-08-26 public review pages byte-for-byte.
+- `dist.zip` now contains 27 public entries, including `en/index.html`; rejected `skywork_exports` and browser-QA scratch files are excluded.
+- GitHub Actions run `33018587666` and Pages deployment run `33018668481` both completed successfully.
+- Both live URLs returned HTTP 200. Live mobile QA at 390×844 found 8 loaded images, 0 broken images, 0 missing-reference markers, and no page-level horizontal overflow. The English-to-Korean language switch navigated successfully.
+- The known public-metrics Worker DNS failure remained the only browser-console error and is independent of the bilingual content and assets.
