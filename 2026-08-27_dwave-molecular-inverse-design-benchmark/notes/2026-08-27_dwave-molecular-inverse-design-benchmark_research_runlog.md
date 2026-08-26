@@ -161,3 +161,11 @@ v3용으로 다음 exact slide assets를 만들고 시각 검사했습니다.
 - MathJax container 6개가 렌더링됐습니다. 긴 QUBO 식은 mobile에서 수식 영역 내부 스크롤로 제한했습니다.
 - 공개 review의 broken image는 0개, browser console error는 0개였고 CSV와 full-size infographic 링크를 확인했습니다.
 - `dist.zip`은 13개 공개 파일만 포함하며 rejected Skywork deck과 log는 포함하지 않습니다.
+
+## Publication Result — 2026-08-27
+
+- Content commit: `31fead94b0db36ca25bfdf6734ab8754bfeec3ff`
+- Public URL: `https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/`
+- GitHub Actions run `32996770960` completed successfully and updated `gh-pages` to `739154c467d733bdfcae9cc3890e4d58c42003e4`.
+- Live GitHub Pages returned HTTP 200. The article rendered 6 MathJax containers and 8 images with no broken image or page-level desktop/mobile overflow.
+- The pre-existing public-metrics endpoint `infant83-public-metrics.infant83.workers.dev` returned DNS NXDOMAIN during live QA. Article content and assets are unaffected, but view/read-time counters may remain unavailable until that separate Worker endpoint is restored.
