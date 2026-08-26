@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import html
 import json
 import os
@@ -10,6 +11,7 @@ from dataclasses import dataclass
 from datetime import date
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
 
@@ -22,6 +24,13 @@ ICON_ASSET_VERSION = "20260523-federlicht"
 
 
 @dataclass(frozen=True)
+class PublicTranslation:
+    language: str
+    subdir: str
+    label: str
+
+
+@dataclass(frozen=True)
 class PublicReview:
     folder: str
     title: str
@@ -31,6 +40,7 @@ class PublicReview:
     category: str
     tags: tuple[str, ...]
     summary: str
+    translations: tuple[PublicTranslation, ...] = ()
 
     @property
     def dist_index(self) -> Path:
@@ -43,6 +53,15 @@ class PublicReview:
     @property
     def href(self) -> str:
         return f"reviews/{self.folder}/index.html"
+
+    def translation_dist_index(self, translation: PublicTranslation) -> Path:
+        return ROOT / self.folder / "dist" / translation.subdir / "index.html"
+
+    def translation_public_dir(self, translation: PublicTranslation) -> Path:
+        return self.public_dir / translation.subdir
+
+    def translation_href(self, translation: PublicTranslation) -> str:
+        return f"reviews/{self.folder}/{translation.subdir}/index.html"
 
 
 REVIEWS: tuple[PublicReview, ...] = (
@@ -59,6 +78,7 @@ REVIEWS: tuple[PublicReview, ...] = (
             "거쳐 후보 3개를 선택했습니다. D-Wave QPU 결과를 exact 기준과 비교하고 PySCF DFT로 "
             "6개 후보를 재검증했으며, 고정 후보군 replay와 실제 active-learning loop의 증거 경계를 구분합니다."
         ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
     ),
     PublicReview(
         folder="2026-08-26_quantum-computing-layers",
@@ -240,6 +260,7 @@ PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
 LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
 DEFAULT_PUBLIC_METRICS_ENDPOINT = "https://infant83-public-metrics.infant83.workers.dev"
 PUBLIC_BASE_PATH = "/AI_Tech_Review/"
+PUBLIC_BASE_URL = "https://infant83.github.io/AI_Tech_Review/"
 PUBLIC_SITE_ID = "ai-tech-review"
 CLOUDFLARE_WEB_ANALYTICS_RE = re.compile(
     r"\s*<!-- Cloudflare Web Analytics -->.*?<!-- End Cloudflare Web Analytics -->\s*",
@@ -271,6 +292,35 @@ class FirstImageParser(HTMLParser):
         src = attr_map.get("src")
         if src:
             self.first_image = src
+
+
+class PageMetadataParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.html_lang = ""
+        self.canonical_urls: list[str] = []
+        self.alternates: dict[str, str] = {}
+        self.language_links: dict[str, str] = {}
+        self.current_languages: set[str] = set()
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = {name.lower(): value or "" for name, value in attrs}
+        if tag.lower() == "html":
+            self.html_lang = values.get("lang", "").strip().lower()
+            return
+        if values.get("aria-current", "").lower() == "page" and values.get("lang"):
+            self.current_languages.add(values["lang"].strip().lower())
+        if tag.lower() == "a" and values.get("hreflang") and values.get("href"):
+            self.language_links[values["hreflang"].strip().lower()] = values["href"].strip()
+        if tag.lower() != "link":
+            return
+
+        rel_values = {part.lower() for part in values.get("rel", "").split()}
+        href = values.get("href", "").strip()
+        if "canonical" in rel_values and href:
+            self.canonical_urls.append(href)
+        if "alternate" in rel_values and href and values.get("hreflang"):
+            self.alternates[values["hreflang"].strip().lower()] = href
 
 
 def is_external_or_anchor(url: str) -> bool:
@@ -402,6 +452,16 @@ def metric_path_for_href(href: str) -> str:
     return re.sub(r"/index\.html$", "/", path)
 
 
+def public_url_for_href(href: str) -> str:
+    relative = re.sub(r"/index\.html$", "/", href.replace("\\", "/"))
+    return f"{PUBLIC_BASE_URL}{relative}"
+
+
+def asset_prefix_for_public_dir(public_dir: Path) -> str:
+    relative = os.path.relpath(SITE_DIR, public_dir).replace("\\", "/")
+    return "" if relative == "." else f"{relative.rstrip('/')}/"
+
+
 def unique_dest_name(source_path: Path, used_names: set[str]) -> str:
     candidate = source_path.name
     if candidate not in used_names:
@@ -428,7 +488,12 @@ def remove_tree(path: Path) -> None:
     shutil.rmtree(path)
 
 
-def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tuple[str, list[str]]:
+def sanitize_for_public(
+    html_text: str,
+    dist_dir: Path,
+    public_dir: Path,
+    language: str = "ko",
+) -> tuple[str, list[str]]:
     copied: list[str] = []
     source_to_dest: dict[Path, str] = {}
     used_names: set[str] = {"index.html"}
@@ -466,17 +531,28 @@ def sanitize_for_public(html_text: str, dist_dir: Path, public_dir: Path) -> tup
     sanitized = INTERNAL_PATH_RE.sub("[local path removed]", sanitized)
     sanitized = sanitized.replace("<body>", '<body class="public-review">')
     if "</body>" in sanitized and 'class="public-note"' not in sanitized:
-        public_note = (
-            "\n<section id=\"public-local-references\" class=\"public-note\">"
-            "<p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 "
-            "검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p>"
-            "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
-            "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
-            "</section>\n"
-        )
+        if language.lower().startswith("en"):
+            public_note = (
+                "\n<section id=\"public-local-references\" class=\"public-note\">"
+                "<p>This public HTML includes the article, figures, external references, and relative links "
+                "to local review notes and authoring-support files.</p>"
+                "<p class=\"metrics-disclosure\">Public views and average reading time are recorded only "
+                "as aggregate values by page path, without personal identifiers.</p>"
+                "</section>\n"
+            )
+        else:
+            public_note = (
+                "\n<section id=\"public-local-references\" class=\"public-note\">"
+                "<p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 "
+                "검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p>"
+                "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
+                "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
+                "</section>\n"
+            )
         sanitized = sanitized.replace("</body>", public_note + "</body>")
-    sanitized = inject_public_icons(sanitized, "../../")
-    sanitized = inject_public_metrics(sanitized, "../../")
+    asset_prefix = asset_prefix_for_public_dir(public_dir)
+    sanitized = inject_public_icons(sanitized, asset_prefix)
+    sanitized = inject_public_metrics(sanitized, asset_prefix)
     return inject_cloudflare_web_analytics(sanitized), copied
 
 
@@ -494,51 +570,49 @@ def copy_public_support_files(dist_dir: Path, public_dir: Path, copied: list[str
     return sorted(copied_names)
 
 
-def publish_review(review: PublicReview) -> dict[str, object]:
-    if not review.dist_index.exists():
-        public_index = review.public_dir / "index.html"
-        if not public_index.exists():
-            raise FileNotFoundError(f"Missing dist and published index for {review.folder}")
-
-        existing_html = public_index.read_text(encoding="utf-8")
-        parser = FirstImageParser()
-        parser.feed(existing_html)
-        thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
-        copied_assets = sorted(
-            path.name
-            for path in review.public_dir.iterdir()
-            if path.is_file() and path.name != "index.html"
-        )
-        print(f"[public-site:preserve] {review.folder} (source dist missing)")
-        return {
-            "folder": review.folder,
-            "title": review.title,
-            "subtitle": review.subtitle,
-            "date": review.date,
-            "updated": review.updated,
-            "category": review.category,
-            "tags": list(review.tags),
-            "summary": review.summary,
-            "href": review.href,
-            "metric_path": metric_path_for_href(review.href),
-            "thumbnail": thumbnail,
-            "assets": copied_assets,
-        }
-
-    public_dir = review.public_dir
-    if public_dir.exists():
-        remove_tree(public_dir)
+def publish_dist_variant(
+    dist_index: Path,
+    public_dir: Path,
+    language: str,
+) -> tuple[str, list[str]]:
     public_dir.mkdir(parents=True, exist_ok=True)
-
-    raw_html = review.dist_index.read_text(encoding="utf-8")
-    public_html, copied_assets = sanitize_for_public(raw_html, review.dist_index.parent, public_dir)
+    raw_html = dist_index.read_text(encoding="utf-8")
+    public_html, copied_assets = sanitize_for_public(
+        raw_html, dist_index.parent, public_dir, language
+    )
     (public_dir / "index.html").write_text(public_html, encoding="utf-8")
-    copied_assets = copy_public_support_files(review.dist_index.parent, public_dir, copied_assets)
+    copied_assets = copy_public_support_files(dist_index.parent, public_dir, copied_assets)
+    return public_html, copied_assets
 
-    parser = FirstImageParser()
-    parser.feed(public_html)
-    thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
 
+def existing_translation_entries(review: PublicReview) -> list[dict[str, object]]:
+    entries: list[dict[str, object]] = []
+    for translation in review.translations:
+        public_dir = review.translation_public_dir(translation)
+        if not (public_dir / "index.html").exists():
+            continue
+        assets = sorted(
+            path.name for path in public_dir.iterdir() if path.is_file() and path.name != "index.html"
+        )
+        href = review.translation_href(translation)
+        entries.append(
+            {
+                "language": translation.language,
+                "label": translation.label,
+                "href": href,
+                "metric_path": metric_path_for_href(href),
+                "assets": assets,
+            }
+        )
+    return entries
+
+
+def build_review_manifest_entry(
+    review: PublicReview,
+    thumbnail: str,
+    copied_assets: list[str],
+    translations: list[dict[str, object]],
+) -> dict[str, object]:
     return {
         "folder": review.folder,
         "title": review.title,
@@ -552,11 +626,103 @@ def publish_review(review: PublicReview) -> dict[str, object]:
         "metric_path": metric_path_for_href(review.href),
         "thumbnail": thumbnail,
         "assets": copied_assets,
+        "translations": translations,
     }
+
+
+def preserve_published_review(review: PublicReview) -> dict[str, object]:
+    public_index = review.public_dir / "index.html"
+    if not public_index.exists():
+        raise FileNotFoundError(f"Missing dist and published index for {review.folder}")
+
+    existing_html = public_index.read_text(encoding="utf-8")
+    parser = FirstImageParser()
+    parser.feed(existing_html)
+    thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
+    copied_assets = sorted(
+        path.name
+        for path in review.public_dir.iterdir()
+        if path.is_file() and path.name != "index.html"
+    )
+    print(f"[public-site:preserve] {review.folder} (source dist missing or not selected)")
+    return build_review_manifest_entry(
+        review, thumbnail, copied_assets, existing_translation_entries(review)
+    )
+
+
+def publish_review(review: PublicReview) -> dict[str, object]:
+    if not review.dist_index.exists():
+        return preserve_published_review(review)
+
+    missing_translation_indexes = [
+        review.translation_dist_index(translation)
+        for translation in review.translations
+        if not review.translation_dist_index(translation).exists()
+    ]
+    if missing_translation_indexes:
+        missing_list = ", ".join(str(path) for path in missing_translation_indexes)
+        raise FileNotFoundError(
+            f"Missing translation dist index for {review.folder}: {missing_list}"
+        )
+
+    public_dir = review.public_dir
+    if public_dir.exists():
+        remove_tree(public_dir)
+    public_dir.mkdir(parents=True, exist_ok=True)
+
+    public_html, copied_assets = publish_dist_variant(review.dist_index, public_dir, "ko")
+
+    parser = FirstImageParser()
+    parser.feed(public_html)
+    thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
+
+    translation_entries: list[dict[str, object]] = []
+    for translation in review.translations:
+        dist_index = review.translation_dist_index(translation)
+        translation_public_dir = review.translation_public_dir(translation)
+        _, translation_assets = publish_dist_variant(
+            dist_index, translation_public_dir, translation.language
+        )
+        href = review.translation_href(translation)
+        translation_entries.append(
+            {
+                "language": translation.language,
+                "label": translation.label,
+                "href": href,
+                "metric_path": metric_path_for_href(href),
+                "assets": translation_assets,
+            }
+        )
+
+    return build_review_manifest_entry(
+        review, thumbnail, copied_assets, translation_entries
+    )
+
+
+def render_translation_badges(item: dict[str, object]) -> str:
+    translations = item.get("translations") or []
+    if not isinstance(translations, list):
+        return ""
+    badges: list[str] = []
+    for translation in translations:
+        if not isinstance(translation, dict):
+            continue
+        href = str(translation.get("href") or "")
+        language = str(translation.get("language") or "")
+        label = str(translation.get("label") or language.upper())
+        if not href or not language:
+            continue
+        badges.append(
+            f'<a class="translation-badge" href="{html.escape(href, quote=True)}" '
+            f'lang="{html.escape(language, quote=True)}" '
+            f'hreflang="{html.escape(language, quote=True)}">{html.escape(label)}</a>'
+        )
+    return "".join(badges)
 
 
 def render_review_card(item: dict[str, object]) -> str:
     tags = "".join(f"<span>{html.escape(tag)}</span>" for tag in item["tags"])
+    translation_badges = render_translation_badges(item)
     thumbnail = item.get("thumbnail") or ""
     image_html = (
         f'<img src="{html.escape(str(thumbnail), quote=True)}" alt="{html.escape(str(item["title"]), quote=True)} 대표 이미지" loading="lazy">'
@@ -567,7 +733,7 @@ def render_review_card(item: dict[str, object]) -> str:
         <article class="review-card" data-category="{html.escape(str(item["category"]), quote=True)}" data-tags="{html.escape(" ".join(item["tags"]), quote=True)}" data-title="{html.escape(str(item["title"]), quote=True)}" data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
           <a class="thumb" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
           <div class="review-card-body">
-            <p class="meta">{html.escape(str(item["category"]))} · {html.escape(str(item["updated"]))}</p>
+            <p class="meta">{html.escape(str(item["category"]))} · {html.escape(str(item["updated"]))}{translation_badges}</p>
             <h3><a href="{html.escape(str(item["href"]), quote=True)}">{html.escape(str(item["title"]))}</a></h3>
             <p class="subtitle">{html.escape(str(item["subtitle"]))}</p>
             <p class="card-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
@@ -583,6 +749,7 @@ def render_review_card(item: dict[str, object]) -> str:
 
 def render_latest_update(item: dict[str, object]) -> str:
     tags = "".join(f"<span>{html.escape(tag)}</span>" for tag in item["tags"][:4])
+    translation_badges = render_translation_badges(item)
     thumbnail = item.get("thumbnail") or ""
     image_html = (
         f'<img src="{html.escape(str(thumbnail), quote=True)}" alt="{html.escape(str(item["title"]), quote=True)} 대표 이미지" loading="eager">'
@@ -601,7 +768,7 @@ def render_latest_update(item: dict[str, object]) -> str:
             <span>평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
           </p>
           <div class="tags">{tags}</div>
-          <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>
+          <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>{translation_badges}
         </div>
         <a class="latest-media" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
       </section>
@@ -617,9 +784,18 @@ def render_category_chips(categories: list[str]) -> str:
     return "\n".join(chips)
 
 
-def render_index(manifest: list[dict[str, object]]) -> str:
+def render_index(
+    manifest: list[dict[str, object]],
+    preferred_category_order: list[str] | None = None,
+) -> str:
     updated = date.today().isoformat()
-    categories = sorted({str(item["category"]) for item in manifest})
+    available_categories = {str(item["category"]) for item in manifest}
+    categories = [
+        category
+        for category in (preferred_category_order or [])
+        if category in available_categories
+    ]
+    categories.extend(sorted(available_categories - set(categories)))
     category_options = "\n".join(f'<option value="{html.escape(category)}">{html.escape(category)}</option>' for category in categories)
     category_chips = render_category_chips(categories)
     cards = "\n".join(render_review_card(item) for item in manifest)
@@ -1069,6 +1245,27 @@ input:focus, select:focus {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+.translation-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 9px;
+  padding: 3px 8px;
+  border: 1px solid rgba(35, 87, 165, 0.34);
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(35, 87, 165, 0.06);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+.translation-badge:hover {
+  border-color: var(--blue);
+  background: rgba(35, 87, 165, 0.12);
+}
 h3 {
   margin: 0 0 10px;
   font-size: 21px;
@@ -1322,6 +1519,8 @@ PUBLIC_METRICS_JS = """
   const endpoint = String(config.endpoint || "").replace(/\\/+$/, "");
   const basePath = String(config.basePath || "/AI_Tech_Review/");
   const siteId = String(config.siteId || "ai-tech-review");
+  const isEnglish = (document.documentElement.lang || "").toLowerCase().startsWith("en");
+  const locale = isEnglish ? "en-US" : "ko-KR";
   const isHttp = location.protocol === "https:" || location.protocol === "http:";
 
   if (!endpoint || !isHttp) {
@@ -1461,12 +1660,20 @@ PUBLIC_METRICS_JS = """
     widget.dataset.publicMetricsWidget = "true";
     widget.dataset.state = "loading";
     widget.setAttribute("aria-live", "polite");
-    widget.innerHTML = isReview
-      ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
+    if (isReview && isEnglish) {
+      widget.setAttribute("aria-label", "Public review metrics");
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> review views</span>
+         <span class="public-metrics-pill">Average reading time <strong data-metric-field="average">-</strong></span>
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> total hub views</span>`;
+    } else if (isReview) {
+      widget.setAttribute("aria-label", "공개 리뷰 조회 통계");
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`
-      : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`;
+    } else {
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
+    }
 
     if (isReview) {
       const topline = document.querySelector(".topline");
@@ -1590,7 +1797,7 @@ PUBLIC_METRICS_JS = """
   }
 
   function formatNumber(value) {
-    return new Intl.NumberFormat("ko-KR").format(Number(value || 0));
+    return new Intl.NumberFormat(locale).format(Number(value || 0));
   }
 
   function formatDuration(seconds) {
@@ -1599,9 +1806,9 @@ PUBLIC_METRICS_JS = """
       return "-";
     }
     if (value < 60) {
-      return `${value}초`;
+      return isEnglish ? `${value}s` : `${value}초`;
     }
-    return `${Math.round(value / 60)}분`;
+    return isEnglish ? `${Math.round(value / 60)} min` : `${Math.round(value / 60)}분`;
   }
 })();
 """
@@ -1661,40 +1868,166 @@ document.querySelector('a[href="#topic-filter"]')?.addEventListener("click", (ev
 """
 
 
-def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
+def load_existing_manifest() -> dict[str, dict[str, object]]:
+    manifest_path = SITE_DIR / "manifest.json"
+    if not manifest_path.exists():
+        return {}
+    raw_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(raw_manifest, list):
+        raise ValueError(f"Expected a list in {manifest_path}")
+    return {
+        str(item["folder"]): item
+        for item in raw_manifest
+        if isinstance(item, dict) and item.get("folder")
+    }
+
+
+def load_existing_category_order() -> list[str]:
+    index_path = SITE_DIR / "index.html"
+    if not index_path.exists():
+        return []
+    text = index_path.read_text(encoding="utf-8")
+    categories: list[str] = []
+    for value in re.findall(r'<option\s+value="([^"]+)">', text, flags=re.IGNORECASE):
+        category = html.unescape(value).strip()
+        if category and category not in categories:
+            categories.append(category)
+    return categories
+
+
+def page_specs(item: dict[str, object]) -> list[tuple[str, str]]:
+    specs = [(str(item["href"]), "ko")]
+    translations = item.get("translations") or []
+    if isinstance(translations, list):
+        for translation in translations:
+            if not isinstance(translation, dict):
+                continue
+            href = str(translation.get("href") or "")
+            language = str(translation.get("language") or "").lower()
+            if href and language:
+                specs.append((href, language))
+    return specs
+
+
+def validate_public_page(
+    href: str,
+    expected_language: str,
+    expected_alternates: dict[str, str],
+) -> list[str]:
     errors: list[str] = []
-    for item in manifest:
-        review_index = SITE_DIR / str(item["href"])
-        if not review_index.exists():
-            errors.append(f"missing review index: {review_index}")
+    review_index = SITE_DIR / href
+    if not review_index.exists():
+        return [f"missing review index: {review_index}"]
+
+    text = review_index.read_text(encoding="utf-8")
+    for match in LOCAL_REF_RE.finditer(text):
+        raw_url = match.group("url")
+        if is_external_or_anchor(raw_url):
             continue
-        text = review_index.read_text(encoding="utf-8")
-        for match in LOCAL_HREF_RE.finditer(text):
-            raw_url = match.group("url")
-            if not is_external_or_anchor(raw_url):
-                local_path = split_local_url(raw_url)[0]
-                if (review_index.parent / local_path).resolve().exists():
-                    continue
-                errors.append(f"missing local href in {review_index}: {raw_url}")
-        if INTERNAL_PATH_RE.search(text):
-            errors.append(f"internal path left in {review_index}")
-        parser = FirstImageParser()
-        parser.feed(text)
-        if parser.first_image and not (review_index.parent / split_local_url(parser.first_image)[0]).exists():
-            errors.append(f"missing thumbnail asset in {review_index}: {parser.first_image}")
+        local_path = split_local_url(raw_url)[0]
+        if local_path and (review_index.parent / local_path).resolve().exists():
+            continue
+        errors.append(f"missing local href/src in {review_index}: {raw_url}")
+
+    if "data-missing-ref=" in text.lower():
+        errors.append(f"data-missing-ref left in {review_index}")
+    if INTERNAL_PATH_RE.search(text):
+        errors.append(f"internal path left in {review_index}")
+
+    metadata = PageMetadataParser()
+    metadata.feed(text)
+    if metadata.html_lang != expected_language:
+        errors.append(
+            f"unexpected html lang in {review_index}: {metadata.html_lang!r} != {expected_language!r}"
+        )
+
+    if expected_alternates:
+        expected_canonical = public_url_for_href(href)
+        if metadata.canonical_urls != [expected_canonical]:
+            errors.append(
+                f"unexpected canonical in {review_index}: {metadata.canonical_urls!r} != {[expected_canonical]!r}"
+            )
+        for language, expected_url in expected_alternates.items():
+            if metadata.alternates.get(language) != expected_url:
+                errors.append(
+                    f"unexpected hreflang {language} in {review_index}: "
+                    f"{metadata.alternates.get(language)!r} != {expected_url!r}"
+                )
+        if expected_language not in metadata.current_languages:
+            errors.append(f"missing visible current-language marker in {review_index}: {expected_language}")
+        for language, expected_url in expected_alternates.items():
+            if language in {"x-default", expected_language}:
+                continue
+            if metadata.language_links.get(language) != expected_url:
+                errors.append(
+                    f"missing visible {language} language switch in {review_index}: {expected_url}"
+                )
     return errors
 
 
-def main() -> int:
+def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
+    errors: list[str] = []
+    for item in manifest:
+        specs = page_specs(item)
+        expected_alternates: dict[str, str] = {}
+        if len(specs) > 1:
+            expected_alternates = {
+                language: public_url_for_href(href) for href, language in specs
+            }
+            expected_alternates["x-default"] = public_url_for_href(str(item["href"]))
+        for href, language in specs:
+            errors.extend(validate_public_page(href, language, expected_alternates))
+    return errors
+
+
+def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Publish the AI Tech Review static hub and registered review pages."
+    )
+    parser.add_argument(
+        "--review",
+        action="append",
+        default=[],
+        metavar="SLUG",
+        help=(
+            "Publish only this registered review directory while preserving all other published "
+            "review directories. May be repeated."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Iterable[str] | None = None) -> int:
+    args = parse_args(argv)
+    selected_reviews = set(args.review)
+    known_reviews = {review.folder: review for review in REVIEWS}
+    unknown_reviews = sorted(selected_reviews - set(known_reviews))
+    if unknown_reviews:
+        for folder in unknown_reviews:
+            print(f"[public-site:error] unknown review: {folder}")
+        return 2
+
+    existing_manifest = load_existing_manifest() if selected_reviews else {}
+    preferred_category_order = load_existing_category_order() if selected_reviews else []
+
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     copy_icon_assets()
 
-    manifest = [publish_review(review) for review in REVIEWS]
+    manifest: list[dict[str, object]] = []
+    for review in REVIEWS:
+        if not selected_reviews or review.folder in selected_reviews:
+            manifest.append(publish_review(review))
+            continue
+        existing_entry = existing_manifest.get(review.folder)
+        if existing_entry is not None:
+            manifest.append(existing_entry)
+        else:
+            manifest.append(preserve_published_review(review))
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
-    index_html = inject_public_icons(render_index(manifest))
+    index_html = inject_public_icons(render_index(manifest, preferred_category_order))
     index_html = inject_public_metrics(index_html)
     (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

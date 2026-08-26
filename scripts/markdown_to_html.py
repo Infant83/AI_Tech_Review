@@ -30,6 +30,15 @@ class LinkItem:
 class RenderContext:
     title: str
     subtitle: str
+    language: str
+    canonical_url: str
+    alternate_ko_url: str
+    alternate_en_url: str
+    alternate_default_url: str
+    social_image_url: str
+    author: str
+    published_date: str
+    modified_date: str
     issue_label: str
     source_path: Path
     output_path: Path
@@ -43,6 +52,34 @@ class RenderContext:
     source_modified_at: str
 
 
+FINAL_REVIEW_LABELS = {
+    "ko": {
+        "signals": "읽기 전에 볼 신호",
+        "toc": "섹션 맵",
+        "links": "근거 링크",
+        "empty_links": "이 리포트에서 명시적 링크가 감지되지 않았습니다.",
+        "glossary": "용어 풀이",
+        "generated": "생성 시각",
+        "source_modified": "원본 파일 최종 수정 시각",
+        "language_nav": "언어 선택",
+        "korean": "한국어",
+        "english": "English",
+    },
+    "en": {
+        "signals": "Signals to note before reading",
+        "toc": "Section map",
+        "links": "Evidence links",
+        "empty_links": "No explicit links were detected in this report.",
+        "glossary": "Notes and terminology",
+        "generated": "Generated",
+        "source_modified": "Source last modified",
+        "language_nav": "Language",
+        "korean": "Korean",
+        "english": "English",
+    },
+}
+
+
 def strip_frontmatter(text: str) -> tuple[dict[str, str], str]:
     match = FRONTMATTER_RE.match(text)
     if not match:
@@ -54,6 +91,131 @@ def strip_frontmatter(text: str) -> tuple[dict[str, str], str]:
         key, value = raw_line.split(":", 1)
         metadata[key.strip().lower()] = value.strip()
     return metadata, text[match.end() :]
+
+
+def metadata_value(metadata: dict[str, str], *keys: str) -> str:
+    for key in keys:
+        value = metadata.get(key.lower(), "").strip()
+        if not value:
+            continue
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            return value[1:-1].strip()
+        return value
+    return ""
+
+
+def normalize_language(value: str) -> str:
+    return "en" if value.strip().lower().startswith("en") else "ko"
+
+
+def final_review_labels(language: str) -> dict[str, str]:
+    return FINAL_REVIEW_LABELS[normalize_language(language)]
+
+
+def render_document_metadata(context: RenderContext) -> str:
+    title = html.escape(context.title, quote=True)
+    description = html.escape(context.subtitle, quote=True)
+    canonical = html.escape(context.canonical_url, quote=True)
+    social_image = html.escape(context.social_image_url, quote=True)
+    locale = "en_US" if context.language == "en" else "ko_KR"
+    alternate_locale = "ko_KR" if context.language == "en" else "en_US"
+    lines: list[str] = []
+
+    if context.subtitle:
+        lines.append(f'  <meta name="description" content="{description}">')
+    if context.canonical_url:
+        lines.append(f'  <link rel="canonical" href="{canonical}">')
+
+    alternates = (
+        ("ko", context.alternate_ko_url),
+        ("en", context.alternate_en_url),
+        ("x-default", context.alternate_default_url),
+    )
+    for language, href in alternates:
+        if href:
+            lines.append(
+                f'  <link rel="alternate" hreflang="{language}" '
+                f'href="{html.escape(href, quote=True)}">'
+            )
+
+    lines.extend(
+        [
+            '  <meta property="og:type" content="article">',
+            '  <meta property="og:site_name" content="AI Tech Review Letters">',
+            f'  <meta property="og:title" content="{title}">',
+        ]
+    )
+    if context.subtitle:
+        lines.append(f'  <meta property="og:description" content="{description}">')
+    if context.canonical_url:
+        lines.append(f'  <meta property="og:url" content="{canonical}">')
+    lines.append(f'  <meta property="og:locale" content="{locale}">')
+    has_locale_alternate = (
+        context.language == "en" and bool(context.alternate_ko_url)
+    ) or (
+        context.language == "ko" and bool(context.alternate_en_url)
+    )
+    if has_locale_alternate:
+        lines.append(f'  <meta property="og:locale:alternate" content="{alternate_locale}">')
+    if context.social_image_url:
+        lines.extend(
+            [
+                f'  <meta property="og:image" content="{social_image}">',
+                f'  <meta property="og:image:alt" content="{title}">',
+            ]
+        )
+    if context.published_date:
+        lines.append(
+            f'  <meta property="article:published_time" '
+            f'content="{html.escape(context.published_date, quote=True)}">'
+        )
+    if context.modified_date:
+        lines.append(
+            f'  <meta property="article:modified_time" '
+            f'content="{html.escape(context.modified_date, quote=True)}">'
+        )
+    if context.author:
+        lines.append(f'  <meta name="author" content="{html.escape(context.author, quote=True)}">')
+
+    lines.extend(
+        [
+            '  <meta name="twitter:card" content="summary_large_image">',
+            f'  <meta name="twitter:title" content="{title}">',
+        ]
+    )
+    if context.subtitle:
+        lines.append(f'  <meta name="twitter:description" content="{description}">')
+    if context.social_image_url:
+        lines.extend(
+            [
+                f'  <meta name="twitter:image" content="{social_image}">',
+                f'  <meta name="twitter:image:alt" content="{title}">',
+            ]
+        )
+    return "\n".join(lines)
+
+
+def render_language_switch(context: RenderContext) -> str:
+    if not context.alternate_ko_url or not context.alternate_en_url:
+        return ""
+
+    labels = final_review_labels(context.language)
+    ko_url = html.escape(context.alternate_ko_url, quote=True)
+    en_url = html.escape(context.alternate_en_url, quote=True)
+    if context.language == "en":
+        options = (
+            f'<a href="{ko_url}" lang="ko" hreflang="ko">{labels["korean"]}</a>'
+            f'<span lang="en" aria-current="page">{labels["english"]}</span>'
+        )
+    else:
+        options = (
+            f'<span lang="ko" aria-current="page">{labels["korean"]}</span>'
+            f'<a href="{en_url}" lang="en" hreflang="en">{labels["english"]}</a>'
+        )
+    return (
+        f'<nav class="language-switch" aria-label="{html.escape(labels["language_nav"], quote=True)}">'
+        f"{options}</nav>"
+    )
 
 
 def split_title(markdown_text: str, default_title: str) -> tuple[str, str]:
@@ -204,9 +366,10 @@ def source_link_href(source_path: Path, output_path: Path) -> str:
         return source_path.name
 
 
-def render_link_items(links: list[LinkItem]) -> str:
+def render_link_items(links: list[LinkItem], language: str = "ko") -> str:
     if not links:
-        return '<li class="empty-state">이 리포트에서 명시적 링크가 감지되지 않았습니다.</li>'
+        empty_label = final_review_labels(language)["empty_links"]
+        return f'<li class="empty-state">{html.escape(empty_label)}</li>'
 
     rendered: list[str] = []
     for item in links:
@@ -245,16 +408,19 @@ def render_template(context: RenderContext) -> str:
         </section>
         """
 
-    link_items = render_link_items(context.links)
+    link_items = render_link_items(context.links, context.language)
 
     source_href = source_link_href(context.source_path, context.output_path)
 
+    document_metadata = render_document_metadata(context)
+
     return f"""<!DOCTYPE html>
-<html lang="ko">
+<html lang="{html.escape(context.language, quote=True)}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(context.title)}</title>
+{document_metadata}
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
@@ -678,6 +844,7 @@ def render_template(context: RenderContext) -> str:
 
 
 def render_final_review_template(context: RenderContext) -> str:
+    labels = final_review_labels(context.language)
     summary_html = ""
     if context.summary_points:
         items = "\n".join(
@@ -685,7 +852,7 @@ def render_final_review_template(context: RenderContext) -> str:
         )
         summary_html = f"""
         <section class="hero-signals" aria-labelledby="signals-heading">
-          <h2 id="signals-heading">읽기 전에 볼 신호</h2>
+          <h2 id="signals-heading">{html.escape(labels["signals"])}</h2>
           <ul>
             {items}
           </ul>
@@ -696,23 +863,26 @@ def render_final_review_template(context: RenderContext) -> str:
     if context.toc_html.strip():
         toc_panel = f"""
         <section class="side-section toc-panel" aria-labelledby="toc-heading">
-          <h2 id="toc-heading">섹션 맵</h2>
+          <h2 id="toc-heading">{html.escape(labels["toc"])}</h2>
           {context.toc_html}
         </section>
         """
 
-    link_items = render_link_items(context.links)
+    link_items = render_link_items(context.links, context.language)
     source_href = source_link_href(context.source_path, context.output_path)
+    document_metadata = render_document_metadata(context)
+    language_switch = render_language_switch(context)
     dek_html = ""
     if context.subtitle:
         dek_html = f'<p class="dek">{html.escape(context.subtitle)}</p>'
 
     return f"""<!DOCTYPE html>
-<html lang="ko">
+<html lang="{html.escape(context.language, quote=True)}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(context.title)}</title>
+{document_metadata}
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <script>
@@ -798,6 +968,24 @@ def render_final_review_template(context: RenderContext) -> str:
       color: var(--blue);
       font-weight: 650;
       text-decoration: none;
+    }}
+
+    .topline-actions,
+    .language-switch {{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }}
+
+    .language-switch {{
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }}
+
+    .language-switch span[aria-current="page"] {{
+      color: var(--ink);
+      font-weight: 760;
     }}
 
     .hero {{
@@ -1199,7 +1387,7 @@ def render_final_review_template(context: RenderContext) -> str:
 
     .final-article .footnote::before,
     .final-article .footnotes::before {{
-      content: "용어 풀이";
+      content: "{labels["glossary"]}";
       display: block;
       margin-bottom: 12px;
       color: var(--blue);
@@ -1431,7 +1619,10 @@ def render_final_review_template(context: RenderContext) -> str:
   <div class="topline">
     <div class="topline-inner">
       <span>{html.escape(context.issue_label)}</span>
-      <span><a href="{html.escape(source_href, quote=True)}">{html.escape(context.source_path.name)}</a></span>
+      <div class="topline-actions">
+        {language_switch}
+        <a href="{html.escape(source_href, quote=True)}">{html.escape(context.source_path.name)}</a>
+      </div>
     </div>
   </div>
 
@@ -1450,15 +1641,15 @@ def render_final_review_template(context: RenderContext) -> str:
     <article class="final-article">
       {context.body_html}
       <div class="footer">
-        생성 시각: {html.escape(context.generated_at)}<br>
-        원본 파일 최종 수정 시각: {html.escape(context.source_modified_at)}
+        {html.escape(labels["generated"])}: {html.escape(context.generated_at)}<br>
+        {html.escape(labels["source_modified"])}: {html.escape(context.source_modified_at)}
       </div>
     </article>
 
     <aside class="sidebar">
       {toc_panel}
       <section class="side-section link-panel" aria-labelledby="links-heading">
-        <h2 id="links-heading">근거 링크</h2>
+        <h2 id="links-heading">{html.escape(labels["links"])}</h2>
         <ul>
           {link_items}
         </ul>
@@ -1473,7 +1664,7 @@ def render_final_review_template(context: RenderContext) -> str:
 def resolve_mode(source_path: Path, requested_mode: str) -> str:
     if requested_mode != "auto":
         return requested_mode
-    if source_path.stem.endswith("_final_review"):
+    if re.search(r"_final_review(?:_(?:ko|en))?$", source_path.stem, re.IGNORECASE):
         return "final-review"
     return "default"
 
@@ -1481,8 +1672,30 @@ def resolve_mode(source_path: Path, requested_mode: str) -> str:
 def build_context(source_path: Path, mode: str = "auto") -> RenderContext:
     raw_text = source_path.read_text(encoding="utf-8")
     metadata, markdown_text = strip_frontmatter(raw_text)
-    title, body_markdown = split_title(markdown_text, metadata.get("title", source_path.stem))
-    subtitle = metadata.get("description") or metadata.get("subtitle") or ""
+    metadata_title = metadata_value(metadata, "title") or source_path.stem
+    title, body_markdown = split_title(markdown_text, metadata_title)
+    subtitle = metadata_value(metadata, "description", "subtitle")
+    language = normalize_language(metadata_value(metadata, "language", "lang"))
+    canonical_url = metadata_value(metadata, "canonical url", "canonical_url", "canonical")
+    alternate_ko_url = metadata_value(
+        metadata, "alternate ko url", "alternate_ko_url", "hreflang ko", "hreflang_ko"
+    )
+    alternate_en_url = metadata_value(
+        metadata, "alternate en url", "alternate_en_url", "hreflang en", "hreflang_en"
+    )
+    alternate_default_url = metadata_value(
+        metadata,
+        "alternate x-default url",
+        "alternate_x_default_url",
+        "hreflang x-default",
+        "hreflang_x_default",
+    ) or alternate_ko_url
+    social_image_url = metadata_value(
+        metadata, "social image url", "social_image_url", "og image", "og_image"
+    )
+    author = metadata_value(metadata, "author")
+    published_date = metadata_value(metadata, "date created", "published date", "date")
+    modified_date = metadata_value(metadata, "date modified", "modified date") or published_date
     body_html, toc_html = build_markdown_html(body_markdown)
     source_stat = source_path.stat()
     generated_at = format_timestamp(datetime.now().astimezone())
@@ -1492,6 +1705,15 @@ def build_context(source_path: Path, mode: str = "auto") -> RenderContext:
     return RenderContext(
         title=title,
         subtitle=subtitle,
+        language=language,
+        canonical_url=canonical_url,
+        alternate_ko_url=alternate_ko_url,
+        alternate_en_url=alternate_en_url,
+        alternate_default_url=alternate_default_url,
+        social_image_url=social_image_url,
+        author=author,
+        published_date=published_date,
+        modified_date=modified_date,
         issue_label=build_issue_label(metadata),
         source_path=source_path,
         output_path=source_path.with_suffix(".html"),
@@ -1523,7 +1745,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
         "--mode",
         choices=["auto", "default", "final-review"],
         default="auto",
-        help="Rendering mode. Auto uses final-review mode for *_final_review.md.",
+        help="Rendering mode. Auto uses final-review mode for *_final_review.md and *_final_review_en.md.",
     )
     parser.add_argument("paths", nargs="+", help="Markdown files to render.")
     return parser.parse_args(argv)

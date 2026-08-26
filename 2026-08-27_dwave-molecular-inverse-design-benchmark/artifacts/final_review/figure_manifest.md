@@ -4,6 +4,7 @@
 | --- | --- | --- | --- | --- |
 | `molecular_inverse_design_hero.png` | 주제형 hero | OpenAI image model; unlabeled second-pass edit | Editorial interpretation of the pipeline | Illustration only; not a molecule, QPU, or DFT result screenshot |
 | `molecular_inverse_design_infographic.svg` | 기술형 detailed infographic | Deterministic SVG authored from recorded metrics | `benchmark_results.csv` and the real-molecule evidence package | Solid blocks are executed; dashed live loop is proposed |
+| `molecular_inverse_design_infographic_en.svg` / `molecular_inverse_design_infographic_en.png` | English-language technical detailed infographic | Deterministic English localization of the Korean SVG; PNG rendered with local Chrome headless | `benchmark_results.csv`, the real-molecule evidence package, and the Korean source SVG | Same evidence boundary: solid blocks are executed, the dashed live loop is proposed, and the BQM acquisition score is not molecular or physical energy |
 | `01_evidence_layer_pipeline.png` | 기술형 pipeline | Project-produced deterministic figure | Evidence package figure manifest | QPU appears only at acquisition; generated-DFT retraining is not run |
 | `02_qm9_surrogate_parity.png` | 증거형 chart | Project-produced figure | Held-out QM9 labels and predictions | Interpolation evidence, not generated-molecule or experimental accuracy |
 | `03_generator_metrics.png` | 증거형 chart | Project-produced figure | Generator counters and timings | Proposal/inference timings are not matched training-cost benchmarks |
@@ -20,3 +21,11 @@
 - Second pass: selected after removing all embedded text and leaving exact labels to deterministic SVG/HTML.
 - Prompt intent: depict candidate molecules and ML scoring, a QUBO/quantum-annealing batch selector, and quantum-chemistry validation as separate stages on a restrained white/light-blue editorial field.
 - Review note: the central hardware object is illustrative and must not be read as a photograph of the D-Wave machine used in the run.
+
+## English infographic localization record
+
+- Source: `molecular_inverse_design_infographic.svg`.
+- Outputs: `molecular_inverse_design_infographic_en.svg` and `molecular_inverse_design_infographic_en.png`.
+- Localization boundary: all embedded Korean text was translated; recorded metrics, node and card coordinates, arrow paths, colors, and solid-versus-dashed evidence semantics were retained. English-only font declarations and a two-line footer reflow prevent label overlap.
+- Rendering: local Google Chrome headless at 1600 × 1900 pixels with device scale factor 1.
+- Visual review: the 1600 × 1900 PNG was inspected at original resolution; headings, cards, metrics, arrowheads, the proposed-loop dashes, and both footer lines are readable without clipping or overlap.

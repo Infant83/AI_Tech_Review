@@ -3,6 +3,8 @@
   const endpoint = String(config.endpoint || "").replace(/\/+$/, "");
   const basePath = String(config.basePath || "/AI_Tech_Review/");
   const siteId = String(config.siteId || "ai-tech-review");
+  const isEnglish = (document.documentElement.lang || "").toLowerCase().startsWith("en");
+  const locale = isEnglish ? "en-US" : "ko-KR";
   const isHttp = location.protocol === "https:" || location.protocol === "http:";
 
   if (!endpoint || !isHttp) {
@@ -142,12 +144,20 @@
     widget.dataset.publicMetricsWidget = "true";
     widget.dataset.state = "loading";
     widget.setAttribute("aria-live", "polite");
-    widget.innerHTML = isReview
-      ? `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
+    if (isReview && isEnglish) {
+      widget.setAttribute("aria-label", "Public review metrics");
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> review views</span>
+         <span class="public-metrics-pill">Average reading time <strong data-metric-field="average">-</strong></span>
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> total hub views</span>`;
+    } else if (isReview) {
+      widget.setAttribute("aria-label", "공개 리뷰 조회 통계");
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 이 리뷰 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`
-      : `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+         <span class="public-metrics-pill"><strong data-metric-field="total">-</strong> 리뷰 허브 전체 조회</span>`;
+    } else {
+      widget.innerHTML = `<span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
          <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>`;
+    }
 
     if (isReview) {
       const topline = document.querySelector(".topline");
@@ -271,7 +281,7 @@
   }
 
   function formatNumber(value) {
-    return new Intl.NumberFormat("ko-KR").format(Number(value || 0));
+    return new Intl.NumberFormat(locale).format(Number(value || 0));
   }
 
   function formatDuration(seconds) {
@@ -280,8 +290,8 @@
       return "-";
     }
     if (value < 60) {
-      return `${value}초`;
+      return isEnglish ? `${value}s` : `${value}초`;
     }
-    return `${Math.round(value / 60)}분`;
+    return isEnglish ? `${Math.round(value / 60)} min` : `${Math.round(value / 60)}분`;
   }
 })();

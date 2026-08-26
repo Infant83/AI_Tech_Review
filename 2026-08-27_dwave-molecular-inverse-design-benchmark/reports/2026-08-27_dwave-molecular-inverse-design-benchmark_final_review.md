@@ -7,6 +7,11 @@ date created: 2026-08-27
 date modified: 2026-08-27
 status: checked
 language: ko
+canonical url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/
+alternate ko url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/
+alternate en url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/
+alternate x-default url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/
+social image url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png
 tags:
   - quantum-annealing
   - molecular-inverse-design

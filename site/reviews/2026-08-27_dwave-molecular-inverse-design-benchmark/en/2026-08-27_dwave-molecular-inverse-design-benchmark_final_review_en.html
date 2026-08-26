@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니</title>
-  <meta name="description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
-  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
+  <title>A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT</title>
+  <meta name="description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
-  <meta property="og:title" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
-  <meta property="og:description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
-  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
-  <meta property="og:locale" content="ko_KR">
-  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
+  <meta property="og:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
-  <meta property="og:image:alt" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
+  <meta property="og:image:alt" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
   <meta property="article:published_time" content="2026-08-27">
   <meta property="article:modified_time" content="2026-08-27">
-  <meta name="author" content="김현중">
+  <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
-  <meta name="twitter:description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
+  <meta name="twitter:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
+  <meta name="twitter:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
-  <meta name="twitter:image:alt" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
+  <meta name="twitter:image:alt" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <script>
@@ -530,7 +530,7 @@
 
     .final-article .footnote::before,
     .final-article .footnotes::before {
-      content: "용어 풀이";
+      content: "Notes and terminology";
       display: block;
       margin-bottom: 12px;
       color: var(--blue);
@@ -757,22 +757,14 @@
       }
     }
   </style>
-    <!-- AI Tech Review Icons -->
-    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
-    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
-    <!-- End AI Tech Review Icons -->
-    <!-- AI Tech Review Public Metrics Styles -->
-    <link rel="stylesheet" href="../../assets/public-metrics.css">
-    <!-- End AI Tech Review Public Metrics Styles -->
-  </head>
-<body class="public-review">
+</head>
+<body>
   <div class="topline">
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 35 (2026-08-27)</span>
       <div class="topline-actions">
-        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/" lang="en" hreflang="en">English</a></nav>
-        <a href="2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md">2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <a href="2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md">2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md</a>
       </div>
     </div>
   </div>
@@ -781,8 +773,8 @@
     <div class="hero-inner">
       <section>
         <p class="eyebrow">AI Tech Review Letters</p>
-        <h1>D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니</h1>
-        <p class="dek">QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.</p>
+        <h1>A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT</h1>
+        <p class="dek">A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.</p>
       </section>
 
     </div>
@@ -790,64 +782,64 @@
 
   <main class="content-grid">
     <article class="final-article">
-      <p>후보 분자 18개 가운데 다음 계산에 보낼 세 개를 골라야 한다고 해보겠습니다. 예측값이 목표에 가까운 후보를 우선하되, 서로 지나치게 닮은 분자만 한꺼번에 뽑히지 않도록 배치 전체를 판단해야 합니다. 이번 실험에서는 이 선택 문제를 QUBO로 만들고, 독립적인 exact search와 classical simulated annealing, D-Wave QPU에 같은 문제를 넣었습니다. 선택된 분자는 PySCF로 다시 계산했습니다.</p>
-<p>실험 범위는 작지만 계산 단계는 실제로 이어졌습니다. QM9에서 추린 5,000개 분자로 예측 모델을 학습했고, 세 가지 생성 경로를 실행했으며, 공통 화학 필터를 통과한 30개 후보를 만들었습니다. 여기서 18개를 고정한 뒤 세 분자 배치를 선택했고, QPU 배치와 exact 배치에 대해 모두 여섯 건의 single-point DFT 계산을 완료했습니다.</p>
-<p><img alt="분자 후보와 ML 예측, QUBO 기반 양자 어닐링 배치 선택, 양자화학 검증을 분리해 묘사한 과학 일러스트" src="molecular_inverse_design_hero.png" /></p>
-<p><em>그림 1. 후보 생성·예측, QUBO/QPU 배치 선택, 양자화학 검증의 역할을 분리해 보여주는 생성 개념 일러스트입니다. 중앙 장치는 편집용 표현이며 실제 사용한 D-Wave 장비의 사진이 아닙니다.</em></p>
+      <p>Suppose we have 18 candidate molecules and must choose three for the next round of calculations. Candidates with predictions close to the target should receive priority, but the batch should not be crowded with nearly identical molecules. In this experiment, we formulated that selection task as a QUBO and sent the same problem to an independent exact search, classical simulated annealing, and a D-Wave QPU. We then recalculated the selected molecules with PySCF.</p>
+<p>The experiment was small, but the computational stages were connected end to end. We trained prediction models on a deterministic 5,000-molecule subset derived from QM9, ran three proposal mechanisms, and produced 30 candidates that passed a shared chemistry filter. We froze a shortlist of 18, selected batches of three, and completed six single-point DFT calculations across the QPU-selected and exact-selected batches.</p>
+<p><img alt="Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation" src="molecular_inverse_design_hero.png" /></p>
+<p><em>Figure 1. A generated conceptual illustration that separates the roles of candidate generation and prediction, QUBO/QPU batch selection, and quantum-chemistry validation. The central device is an editorial representation, not a photograph of the D-Wave hardware used in this experiment.</em></p>
 <aside class="callout callout-highlight">
-<p class="callout-label">이 실험에서 D-Wave가 맡은 일</p>
-<p>D-Wave QPU는 분자의 전자구조를 계산하지 않았습니다. 다음 PySCF 계산에 보낼 <strong>세 후보의 배치를 고르는 획득 최적화</strong>를 수행했습니다. QUBO energy는 선택 점수이고, DFT orbital gap은 분자 계산 결과입니다.</p>
+<p class="callout-label">D-Wave&#x27;s role in this experiment</p>
+<p>The D-Wave QPU performed <strong>batch acquisition optimization to select three candidates</strong> for the next PySCF calculations. Molecular electronic structure was calculated with PySCF. BQM energy is the acquisition-objective value; the DFT orbital gap is the result of a molecular calculation.</p>
 </aside>
-<p><img alt="QM9 데이터부터 ML, 분자 생성, QUBO와 QPU 배치 선택, PySCF DFT, 고정 라벨 replay 및 제안된 live loop를 연결한 상세 인포그래픽" src="molecular_inverse_design_infographic.svg" /></p>
-<p><em>그림 2. 위쪽과 가운데는 실행된 계산을, 아래 점선은 다음 검증 단계로 제안한 live active-learning loop를 나타냅니다. 수치는 <a href="benchmark_results.csv">공개 계산 결과표</a>와 동일합니다.</em></p>
-<p><a href="molecular_inverse_design_infographic.png">상세 인포그래픽을 전체 크기 PNG로 보기</a></p>
-<h2 id="_1">계산한 범위부터 확인해 보자</h2>
-<p>이번 파이프라인은 서로 다른 의미를 가진 여섯 층으로 구성됩니다.</p>
+<p><img alt="English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop" src="molecular_inverse_design_infographic_en.svg" /></p>
+<p><em>Figure 2. The top and middle sections show computations that were executed. The dashed path at the bottom shows the live active-learning loop proposed for the next validation stage. The values match the <a href="benchmark_results.csv">public computation results table</a>.</em></p>
+<p><a href="molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></p>
+<h2 id="what-the-pipeline-actually-computed">What the pipeline actually computed</h2>
+<p>The pipeline consists of six layers with distinct meanings.</p>
 <table>
 <thead>
 <tr>
-<th>계산 층</th>
-<th>실행한 작업</th>
-<th>이번 결과가 말해주는 범위</th>
+<th>Computational layer</th>
+<th>Work executed</th>
+<th>Scope supported by this result</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>데이터</td>
-<td>QM9 기반 5,000개 분자, train/validation/test 분리</td>
-<td>같은 분자군 안에서 모델을 비교할 수 있는 기준 데이터</td>
+<td>Data</td>
+<td>5,000 QM9-based molecules with train/validation/test splits</td>
+<td>A reference dataset for comparing models within the same molecular family</td>
 </tr>
 <tr>
-<td>예측</td>
+<td>Prediction</td>
 <td>Chemprop D-MPNN ensemble, ExtraTrees/Morgan</td>
-<td>held-out QM9 orbital-gap 예측 성능</td>
+<td>Held-out QM9 orbital-gap prediction performance</td>
 </tr>
 <tr>
-<td>생성</td>
+<td>Generation</td>
 <td>Chemprop-guided SELFIES mutation, SELFIES GRU, classical SELFIES RBM</td>
-<td>세 proposal mechanism이 실제로 후보를 반환하고 필터를 통과함</td>
+<td>Three proposal mechanisms returned candidates that passed the filters</td>
 </tr>
 <tr>
-<td>획득 최적화</td>
-<td>독립 exact, Ocean ExactSolver, classical SA, D-Wave QPU</td>
-<td>같은 18-variable BQM에서 세 후보 배치를 선택함</td>
+<td>Acquisition optimization</td>
+<td>Independent exact search, Ocean ExactSolver, classical SA, D-Wave QPU</td>
+<td>Selection of a three-candidate batch from the same 18-variable BQM</td>
 </tr>
 <tr>
-<td>계산 검증</td>
+<td>Computational validation</td>
 <td>PySCF B3LYP/6-31G(2df,p) single point</td>
-<td>고정 force-field geometry의 Kohn–Sham HOMO–LUMO gap</td>
+<td>Kohn-Sham HOMO-LUMO gap at a fixed force-field geometry</td>
 </tr>
 <tr>
-<td>반복 정책</td>
-<td>고정 QM9 pool의 hidden-label replay</td>
-<td>precomputed label을 공개하며 획득 정책을 비교한 고전 proxy</td>
+<td>Iteration policy</td>
+<td>Hidden-label replay on a fixed QM9 pool</td>
+<td>A classical proxy comparing acquisition policies as precomputed labels are revealed</td>
 </tr>
 </tbody>
 </table>
-<p>생성 분자의 안정성, 합성 가능성, optical excitation, 실험 물성은 이 표에 들어 있지 않습니다. 생성 후보 DFT 라벨을 다시 학습 데이터에 넣는 live loop도 아직 실행하지 않았습니다.</p>
-<h2 id="extratrees-mae">예측 모델에서는 ExtraTrees의 MAE가 더 낮았다</h2>
-<p>QM9 derived dataset 5,000개를 train 4,058개, validation 511개, test 431개로 나눴습니다. 목표값은 QM9에 들어 있는 precomputed HOMO–LUMO orbital gap을 eV로 변환한 값입니다. <a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">QM9 원본 collection</a>은 약 13만 개 분자의 양자화학 구조와 물성을 제공하며, 이번 실험은 그중 화학 규칙을 통과한 결정론적 subset을 사용했습니다.</p>
-<p>같은 split에서 <a href="https://chemprop.readthedocs.io/en/main/index.html">Chemprop</a> D-MPNN ensemble과 Morgan fingerprint 기반 ExtraTrees를 비교했습니다.</p>
+<p>This table does not cover the stability, synthetic accessibility, optical excitation, or experimental properties of the generated molecules. A live loop that returns DFT labels for generated candidates to the training data has not yet been run.</p>
+<h2 id="extratrees-achieved-the-lower-prediction-mae">ExtraTrees achieved the lower prediction MAE</h2>
+<p>We divided a 5,000-molecule QM9-derived dataset into 4,058 training, 511 validation, and 431 test molecules. The target was the precomputed HOMO-LUMO orbital gap in QM9, converted to eV. The <a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">original QM9 collection</a> provides quantum-chemical structures and properties for roughly 130,000 molecules. This experiment used a deterministic subset that passed the chemistry rules.</p>
+<p>On the same split, we compared a <a href="https://chemprop.readthedocs.io/en/main/index.html">Chemprop</a> D-MPNN ensemble with ExtraTrees built on Morgan fingerprints.</p>
 <table>
 <thead>
 <tr>
@@ -872,24 +864,24 @@
 </tr>
 </tbody>
 </table>
-<p><img alt="같은 QM9 test split에서 Chemprop D-MPNN과 ExtraTrees Morgan 모델의 예측값과 참조 orbital gap을 비교한 parity plot" src="02_qm9_surrogate_parity.png" /></p>
-<p><em>그림 3. 동일한 431개 test molecule에서 두 모델을 비교했습니다. ExtraTrees의 MAE가 낮았으며, 두 결과 모두 생성 분자에 대한 out-of-domain 정확도나 실험 정확도를 보장하지 않습니다.</em></p>
-<p>이번 smoke benchmark는 GNN 우위 주장을 지지하지 않습니다. Chemprop은 구조를 반영하는 외부 scorer로 생성 후보를 평가하는 데 사용했지만, held-out MAE에서는 고전 baseline보다 높았습니다. QUBO에 들어간 18개 shortlist에서 두 Chemprop model의 prediction spread도 약 $9\times10^{-6}$–0.00275 eV로 매우 작고 calibration을 하지 않았습니다. 따라서 아래 QUBO의 uncertainty term은 탐색용 proxy로만 다뤘습니다.</p>
-<h2 id="_2">세 생성 경로에 같은 화학 규칙을 적용했다</h2>
-<p>후보 생성은 세 경로로 나눴습니다.</p>
+<p><img alt="Parity plot comparing predictions from Chemprop D-MPNN and ExtraTrees Morgan with reference orbital gaps on the same QM9 test split" src="02_qm9_surrogate_parity.png" /></p>
+<p><em>Figure 3. The two models were evaluated on the same 431 test molecules. ExtraTrees achieved the lower MAE. Neither result guarantees out-of-domain accuracy on generated molecules or agreement with experiment.</em></p>
+<p>This smoke benchmark does not support a claim that the GNN outperformed the classical model. Chemprop served as an external, structure-aware scorer for generated candidates, but its held-out MAE was higher than that of the classical baseline. Across the 18-candidate shortlist used in the QUBO, the prediction spread between the two Chemprop models was also very small, approximately $9\times10^{-6}$ to 0.00275 eV, and was not calibrated. The QUBO uncertainty term below was therefore treated only as an exploratory proxy.</p>
+<h2 id="the-same-chemistry-rules-were-applied-to-all-three-proposal-mechanisms">The same chemistry rules were applied to all three proposal mechanisms</h2>
+<p>Candidate generation used three routes:</p>
 <ol>
-<li>Chemprop 점수로 SELFIES mutation을 고르는 guided path</li>
-<li>autoregressive SELFIES GRU decoder</li>
-<li>contrastive divergence와 Gibbs sampling을 사용하는 classical SELFIES RBM</li>
+<li>A guided path that selects SELFIES mutations by Chemprop score</li>
+<li>An autoregressive SELFIES GRU decoder</li>
+<li>A classical SELFIES RBM using contrastive divergence and Gibbs sampling</li>
 </ol>
-<p><a href="https://github.com/the-matter-lab/selfies">SELFIES</a>는 분자 문자열을 생성 모델에 넣기 편하도록 설계된 표현입니다. 문법적으로 해석 가능한 문자열을 얻기 쉽다는 장점이 있지만, 그 자체로 안정성과 합성 가능성을 판정하지는 않습니다.</p>
-<p>각 경로는 30개씩 반환했습니다. RDKit parsing과 canonicalization, CHONF 원소 제한, 최대 9개 heavy atom, neutral closed shell, 중복 제거를 공통으로 적용한 뒤 최종 union에 기여한 수는 11개, 8개, 11개였습니다. 전체 unique candidate는 30개였습니다. raw proposal stream에서는 radical 41개, 크기 제한 초과 15개, 지원하지 않는 원소 3개, non-neutral 1개가 제외됐습니다.</p>
-<p><img alt="세 분자 생성 경로의 validity, uniqueness, novelty, 공통 화학 필터 통과율과 기록된 proposal 시간을 비교한 차트" src="03_generator_metrics.png" /></p>
-<p><em>그림 4. 세 경로의 raw proposal 진단과 공통 필터 통과량입니다. 오른쪽 시간은 동일한 학습비용 비교가 아닙니다. guided path는 Chemprop scoring을 포함하고, GRU와 RBM은 저장된 모델 이후 proposal 시간을 기록했습니다.</em></p>
-<p>여기서 <code>GNN-guided</code>라는 이름은 GNN decoder를 뜻하지 않습니다. Chemprop으로 SELFIES mutation을 점수화한 경로입니다. RBM도 classical model로 실행했습니다.</p>
-<h2 id="qubo">QUBO는 목표 적합성과 배치 다양성을 함께 계산한다</h2>
-<p>후보 $i$를 선택하면 $x_i=1$, 선택하지 않으면 $x_i=0$으로 둡니다. 목표 6.0 eV에 가까운 후보를 우선하고, novelty와 model spread에 보상을 주며, 서로 닮은 후보가 한 배치에 몰리면 penalty를 더했습니다. 정확히 세 개를 고르도록 cardinality penalty도 넣었습니다.</p>
-<p>읽기 쉬운 구현형 식은 다음과 같습니다.</p>
+<p><a href="https://github.com/the-matter-lab/selfies">SELFIES</a> is a molecular string representation designed for convenient use in generative models. It makes syntactically interpretable strings easier to obtain, but it does not by itself establish stability or synthetic accessibility.</p>
+<p>Each route returned 30 candidates. We applied RDKit parsing and canonicalization, a CHONF element restriction, a maximum of nine heavy atoms, a neutral closed-shell requirement, and deduplication across all routes. The final union received 11 candidates from the guided path, 8 from the GRU, and 11 from the RBM, for 30 unique candidates in total. The raw proposal stream excluded 41 radicals, 15 candidates over the size limit, 3 candidates with unsupported elements, and 1 non-neutral candidate.</p>
+<p><img alt="Chart comparing validity, uniqueness, novelty, shared chemistry-filter pass rates, and recorded proposal times for three molecular proposal mechanisms" src="03_generator_metrics.png" /></p>
+<p><em>Figure 4. Raw-proposal diagnostics and the number of candidates passing the shared filter for each route. The times on the right were not measured under equal training costs. The guided path includes Chemprop scoring; the GRU and RBM times cover proposal generation from saved models.</em></p>
+<p>The label <code>GNN-guided</code> refers to a route that scores SELFIES mutations with Chemprop. It is not a GNN decoder. The RBM was also executed as a classical model.</p>
+<h2 id="the-qubo-scores-target-fit-and-batch-diversity-together">The QUBO scores target fit and batch diversity together</h2>
+<p>For candidate $i$, let $x_i=1$ when it is selected and $x_i=0$ otherwise. Candidates close to the 6.0 eV target received priority. Novelty and model spread earned rewards, while high pairwise similarity within the batch incurred a penalty. A cardinality penalty enforced the selection of exactly three candidates.</p>
+<p>The implementation-oriented expression is:</p>
 <pre><code class="language-text">target_loss = sum_i target_weight
                     * ((predicted_gap_i - target_gap) / gap_scale)^2
                     * x_i
@@ -913,7 +905,7 @@ acquisition_score = target_loss
                   + similarity_penalty
                   + cardinality_penalty
 </code></pre>
-<p>Preview용 수식은 다음과 같습니다.</p>
+<p>The same objective in compact notation is:</p>
 <p>$$
 \begin{aligned}
 A(x) ={}&amp; \sum_i w_t
@@ -924,10 +916,10 @@ A(x) ={}&amp; \sum_i w_t
 + w_c\left(\sum_i x_i-k\right)^2.
 \end{aligned}
 $$</p>
-<p><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html">D-Wave의 QUBO 설명</a>에 따르면 binary quadratic model은 0/1 변수의 linear term과 quadratic interaction을 최소화하는 형태로 표현됩니다. 이번 frozen problem에는 variable 18개와 pair interaction 153개가 있었습니다. batch size는 3입니다.</p>
-<p>독립 combination search, Ocean ExactSolver, 2,000-read classical simulated annealing은 모두 같은 세 후보와 acquisition energy <code>-0.480789</code>를 찾았습니다. readable objective와 <code>bqm.energy(sample)</code>도 일치했습니다. 이 검증이 끝난 뒤 같은 BQM을 QPU에 제출했습니다.</p>
-<h2 id="qpu-exact-optimum">한 번의 QPU 실행은 exact optimum을 재현하지 못했다</h2>
-<p>D-Wave QPU에는 frozen BQM을 100 reads로 한 번 제출했습니다. 18개 logical variable은 Pegasus topology의 46개 physical qubit으로 embedding됐습니다. <a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html">EmbeddingComposite</a>는 logical variable을 QPU topology에 맞게 chain으로 embedding하고 chain-break 정보를 반환할 수 있습니다.</p>
+<p>As explained in <a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html">D-Wave&rsquo;s introduction to QUBOs</a>, a binary quadratic model expresses a minimization problem through linear terms and quadratic interactions over 0/1 variables. The frozen problem in this experiment had 18 variables and 153 pairwise interactions. The batch size was 3.</p>
+<p>The independent combination search, Ocean ExactSolver, and classical simulated annealing with 2,000 reads all found the same three candidates at an acquisition energy of <code>-0.480789</code>. The readable objective also matched <code>bqm.energy(sample)</code>. We submitted the same BQM to the QPU after completing these checks.</p>
+<h2 id="one-100-read-qpu-submission-missed-the-exact-optimum">One 100-read QPU submission missed the exact optimum</h2>
+<p>We submitted the frozen BQM to the D-Wave QPU once with 100 reads. The 18 logical variables were embedded into 46 physical qubits on the Pegasus topology. <a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html">EmbeddingComposite</a> maps logical variables to chains on the QPU topology and can return chain-break information.</p>
 <table>
 <thead>
 <tr>
@@ -947,8 +939,8 @@ $$</p>
 <tr>
 <td>classical simulated annealing</td>
 <td style="text-align: right;">-0.480789</td>
-<td style="text-align: right;">약 0</td>
-<td>exact와 동일</td>
+<td style="text-align: right;">zero to the reported precision</td>
+<td>same as exact</td>
 </tr>
 <tr>
 <td>D-Wave QPU</td>
@@ -958,13 +950,13 @@ $$</p>
 </tr>
 </tbody>
 </table>
-<p><img alt="같은 frozen acquisition BQM에서 exact, classical simulated annealing, D-Wave QPU의 solution gap과 기록된 wall time을 비교한 차트" src="04_acquisition_comparison.png" /></p>
-<p><em>그림 5. QPU path는 실행됐지만 exact batch와 일치하지 않았습니다. 오른쪽 wall time은 서로 다른 실행 경로를 포함하므로 speedup 자료로 사용할 수 없습니다.</em></p>
-<p>기록된 occurrence-weighted mean chain-break fraction은 0.01333, client wall time은 2.087초였습니다. 이 한 번의 결과는 QPU path가 작동했다는 점을 확인합니다. exact optimum 재현과 quantum advantage는 확인되지 않았습니다.</p>
-<p>아카이브 품질에도 남은 일이 있습니다. 당시 기록에는 실행 timestamp, 제출 시점의 Python/Ocean version, project source hash, solver timing field의 단위가 명시된 별도 configuration record가 없습니다. 현재 환경의 값을 과거 실행에 덧씌우지 않았습니다. 다음 QPU campaign에서는 제출 전에 이 metadata를 고정할 필요가 있습니다.</p>
-<h2 id="pyscf-exact-batch-qpu-batch">PySCF 계산에서 exact batch는 평균이 낮았고, QPU batch에는 가장 가까운 한 후보가 있었다</h2>
-<p>QPU가 고른 세 분자와 independent exact가 고른 세 분자를 <a href="https://pyscf.org/user/dft.html">PySCF DFT</a>로 계산했습니다. 두 배치에 공통으로 들어간 한 분자는 각각 실행했으므로 총 여섯 job, 다섯 unique molecule입니다. 모든 job이 수렴했습니다.</p>
-<p>계산 조건은 다음과 같습니다.</p>
+<p><img alt="Chart comparing solution gap and recorded wall time for exact search, classical simulated annealing, and the D-Wave QPU on the same frozen acquisition BQM" src="04_acquisition_comparison.png" /></p>
+<p><em>Figure 5. The QPU path executed successfully but returned a different batch from the exact solution. The wall times on the right include different execution paths and cannot support a speedup claim.</em></p>
+<p>The recorded occurrence-weighted mean chain-break fraction was 0.01333, and client wall time was 2.087 seconds. This single result confirms that the QPU path ran. It does not establish reproduction of the exact optimum or quantum advantage.</p>
+<p>The archive also has unresolved quality gaps. The record lacks a separate configuration file containing the execution timestamp, Python and Ocean versions at submission, the project source hash, and explicit units for the solver timing fields. We did not backfill historical execution metadata with values from the current environment. The next QPU campaign should freeze this metadata before submission.</p>
+<h2 id="the-exact-batch-had-the-lower-mean-dft-error-the-qpu-batch-contained-the-closest-individual-candidate">The exact batch had the lower mean DFT error; the QPU batch contained the closest individual candidate</h2>
+<p>We evaluated the three QPU-selected molecules and the three independently exact-selected molecules with <a href="https://pyscf.org/user/dft.html">PySCF DFT</a>. One molecule appeared in both batches and was run separately in each, yielding six jobs over five unique molecules. All jobs converged.</p>
+<p>The calculation settings were:</p>
 <pre><code class="language-text">geometry = RDKit ETKDGv3 embedding + MMFF94s optimization
 calculation = single point
 functional = B3LYP
@@ -1000,16 +992,16 @@ maximum SCF cycles = 100
 </tr>
 </tbody>
 </table>
-<p><img alt="exact-selected batch와 D-Wave QPU-selected batch의 분자별 DFT target error, 평균 오차, 최선 오차를 비교한 차트" src="07_exact_vs_qpu_dft_batch.png" /></p>
-<p><em>그림 6. exact batch의 평균 target error가 낮았습니다. QPU batch에는 이번 스냅샷에서 가장 목표에 가까운 단일 후보가 포함됐습니다. 배치당 세 분자의 결과로 optimizer 우열을 일반화할 수는 없습니다.</em></p>
-<p>QPU batch의 <code>N#CC=C1CC=NC1O</code>는 ML 5.8763 eV, PySCF 5.8808 eV를 기록했습니다. 6.0 eV target과의 차이는 0.1192 eV로, 이번 계산에서 가장 가까운 값입니다. exact batch의 best target error는 0.2994 eV였습니다.</p>
-<p><img alt="QPU batch 세 분자의 Chemprop 예측과 PySCF orbital gap을 구조식과 함께 비교한 차트" src="05_dft_molecule_validation.png" /></p>
-<p><em>그림 7. QPU가 선택한 세 후보의 ML 예측과 PySCF 결과입니다. 첫 후보는 0.005 eV 차이로 일치했지만 나머지 두 후보에서는 약 1.1 eV 차이가 나타났습니다.</em></p>
-<p>이 값은 force-field geometry에서 계산한 Kohn–Sham HOMO–LUMO orbital gap입니다. optical excitation을 계산하려면 <a href="https://pyscf.org/user/tddft.html">TDDFT와 같은 excited-state method</a>가 필요합니다. 이번 결과에는 DFT geometry optimization, stability 분석, 합성, 독성, 실험 측정이 포함되지 않았습니다.</p>
-<h2 id="qm9-replay">반복 정책은 고정 QM9 라벨 replay로 점검했다</h2>
-<p><a href="https://doi.org/10.1038/s41524-019-0153-8">재료 active learning review</a>는 surrogate와 uncertainty, utility, 고비용 oracle을 반복적으로 연결하는 구조를 설명합니다. 이번 프로젝트에서는 먼저 고정된 QM9 pool에서 precomputed label을 숨겼다가 공개하는 replay를 만들었습니다.</p>
-<p>이 replay는 앞 절의 6.0 eV 분자 배치 선택과 별개로, <strong>4.0 eV target</strong>에서 획득 정책을 비교한 benchmark입니다.</p>
-<p>세 paired seed에서 40개 label로 시작해 batch size 3으로 네 번 갱신했습니다. 52개 label budget에서 best target error 평균은 다음과 같습니다.</p>
+<p><img alt="Chart comparing per-molecule DFT target error, mean error, and best error for the exact-selected and D-Wave QPU-selected batches" src="07_exact_vs_qpu_dft_batch.png" /></p>
+<p><em>Figure 6. The exact batch had the lower mean target error. The QPU batch contained the single candidate closest to the target in this snapshot. Three molecules per batch are insufficient to generalize the relative performance of the optimizers.</em></p>
+<p>The QPU-selected <code>N#CC=C1CC=NC1O</code> had an ML prediction of 5.8763 eV and a PySCF value of 5.8808 eV. Its error relative to the 6.0 eV target was 0.1192 eV, the smallest in this set of calculations. The best target error in the exact batch was 0.2994 eV.</p>
+<p><img alt="Chart comparing Chemprop predictions and PySCF orbital gaps alongside the molecular structures of the three QPU-selected candidates" src="05_dft_molecule_validation.png" /></p>
+<p><em>Figure 7. ML predictions and PySCF results for the three QPU-selected candidates. The first candidate differed by about 0.005 eV, while the other two differed by approximately 1.1 eV.</em></p>
+<p>These values are Kohn-Sham HOMO-LUMO orbital gaps calculated at force-field geometries. An excited-state method such as <a href="https://pyscf.org/user/tddft.html">TDDFT</a> is needed to calculate optical excitations. This experiment did not include DFT geometry optimization, stability analysis, synthesis, toxicity assessment, or experimental measurement.</p>
+<h2 id="a-fixed-label-qm9-replay-tested-the-iteration-policy">A fixed-label QM9 replay tested the iteration policy</h2>
+<p>A <a href="https://doi.org/10.1038/s41524-019-0153-8">review of active learning in materials science</a> describes an iterative structure linking a surrogate, uncertainty, utility, and an expensive oracle. As a first step, this project created a replay that hid and then revealed precomputed labels from a fixed QM9 pool.</p>
+<p>This replay was separate from the 6.0 eV molecular batch-selection task above. It compared acquisition policies at a <strong>4.0 eV target</strong>.</p>
+<p>Across three paired seeds, each run began with 40 labels and performed four updates with a batch size of 3. At a budget of 52 labels, the mean best target errors were:</p>
 <table>
 <thead>
 <tr>
@@ -1036,52 +1028,52 @@ maximum SCF cycles = 100
 </tr>
 </tbody>
 </table>
-<p><img alt="40개에서 52개까지 공개한 QM9 label 수에 따라 random, greedy, exact, QUBO simulated annealing의 best target error가 변하는 convergence plot" src="06_qm9_replay_convergence.png" /></p>
-<p><em>그림 8. 4.0 eV target의 고정 QM9 replay에서 QUBO simulated annealing은 기록된 12번의 acquisition 모두 exact batch와 일치했습니다. 음영은 세 seed의 min–max 범위입니다.</em></p>
-<p>Replay는 획득 구현을 점검하는 proxy입니다. 이 과정에서 실행한 새 DFT는 0건, QPU call은 0회, generated chemical-space expansion은 0회였습니다. 앞 절의 여섯 DFT label도 아직 training set에 추가하지 않았습니다.</p>
-<h2 id="_3">확인된 증거와 남은 판단</h2>
+<p><img alt="Convergence plot showing best target error as the number of revealed QM9 labels increases from 40 to 52 for random, greedy, exact, and QUBO simulated-annealing policies" src="06_qm9_replay_convergence.png" /></p>
+<p><em>Figure 8. In the fixed QM9 replay at a 4.0 eV target, QUBO simulated annealing matched the exact batch in all 12 recorded acquisitions. Shading shows the minimum-to-maximum range across three seeds.</em></p>
+<p>The replay is a proxy for checking the acquisition implementation. It performed 0 new DFT calculations, made 0 QPU calls, and performed 0 generated chemical-space expansions. The six DFT labels from the preceding section have not yet been added to the training set.</p>
+<h2 id="what-the-evidence-establishes-and-what-remains-open">What the evidence establishes, and what remains open</h2>
 <table>
 <thead>
 <tr>
-<th>상태</th>
-<th>이번 작업에서 확인한 내용</th>
+<th>Status</th>
+<th>What this work established</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>reproduced</code></td>
-<td>두 surrogate, 세 proposal mechanism, 공통 화학 filter, objective–BQM mapping, exact와 classical SA, QPU 1회, PySCF single-point DFT 6건</td>
+<td>Two surrogate models, three proposal mechanisms, a shared chemistry filter, objective-to-BQM mapping, exact search and classical SA, one 100-read QPU submission, and six PySCF single-point DFT calculations</td>
 </tr>
 <tr>
 <td><code>proxy</code></td>
-<td>고정 QM9 pool과 precomputed labels를 사용한 3-seed replay</td>
+<td>Three-seed replay using a fixed QM9 pool and precomputed labels</td>
 </tr>
 <tr>
 <td><code>not established</code></td>
-<td>optical gap, 안정성·합성 가능성, 실험 물성, persistent live loop, scalable speedup, quantum advantage, molecular discovery</td>
+<td>Optical gap, stability and synthetic accessibility, experimental properties, a persistent live loop, scalable speedup, quantum advantage, or molecular discovery</td>
 </tr>
 </tbody>
 </table>
-<p>QPU가 exact optimum을 놓친 결과도 그대로 남겼습니다. downstream DFT에서는 exact batch가 평균적으로 나았고, QPU batch가 가장 좋은 한 후보를 포함했습니다. 두 관찰은 서로 다른 질문을 답합니다. acquisition score의 최저점과 소수 downstream calculation에서 우연히 얻은 best hit를 같은 성능 지표로 묶으면 안 됩니다.</p>
-<p>다음 실험은 새 분자를 계속 생성하는 것부터 시작하지 않습니다. 먼저 아래 조건을 고정해야 합니다.</p>
+<p>We retained the result in which the QPU missed the exact optimum. In downstream DFT, the exact batch performed better on average, while the QPU batch contained the best individual candidate. These observations answer different questions. The lowest acquisition score and the best hit found in a handful of downstream calculations should not be combined into one performance metric.</p>
+<p>Before generating more molecules, the next experiment should freeze the following conditions:</p>
 <ol>
-<li>후보와 계산 이력을 보존하는 persistent ledger</li>
-<li>동일한 candidate pool, batch size, DFT label budget</li>
-<li>greedy ML, independent exact, classical SA, QPU의 matched comparison</li>
-<li>surrogate fit, QUBO build, queue, sampling, DFT를 분리한 시간·비용 기록</li>
-<li>사전에 정한 go / scale / stop 기준</li>
+<li>A persistent ledger preserving candidates and calculation history</li>
+<li>The same candidate pool, batch size, and DFT label budget</li>
+<li>A matched comparison among greedy ML, independent exact search, classical SA, and the QPU</li>
+<li>Separate time and cost records for surrogate fitting, QUBO construction, queueing, sampling, and DFT</li>
+<li>Predefined go / scale / stop criteria</li>
 </ol>
-<p>새 DFT 라벨을 데이터에 추가하고 surrogate를 재학습한 뒤 다시 생성·선택하는 과정을 여러 round 반복해야 active learning의 실제 효율을 논의할 수 있습니다. 같은 예산에서 강한 classical champion을 넘지 못하면 QPU campaign을 멈추는 기준도 필요합니다.</p>
+<p>Assessing the practical efficiency of active learning will require several rounds in which new DFT labels are added to the data, the surrogate is retrained, and generation and selection run again. The campaign also needs a stop rule if the QPU fails to beat a strong classical champion under the same budget.</p>
 <aside class="callout callout-evidence">
-<p class="callout-label">이번 스냅샷이 남긴 판정</p>
-<p>오픈소스 ML, 세 분자 생성 경로, 검증된 acquisition QUBO, 한 번의 D-Wave QPU 제출, 여섯 건의 PySCF screening을 추적 가능한 계산 파이프라인으로 연결했습니다. 파이프라인은 작동했습니다. 우위 주장은 live-loop bake-off 이후의 판단으로 남습니다.</p>
+<p class="callout-label">Verdict from this snapshot</p>
+<p>Open-source ML, three molecular proposal mechanisms, a validated acquisition QUBO, one 100-read D-Wave QPU submission, and six PySCF screening calculations were connected into a traceable computational pipeline. The stages executed and exchanged artifacts successfully. Any claim of superiority must await a live-loop bake-off.</p>
 </aside>
-<h2 id="_4">작성 정보</h2>
+<h2 id="publication-information">Publication information</h2>
 <ul>
-<li>생성 시각: 2026-08-27 KST</li>
-<li>원본 계산 checkpoint: 2026-08-27</li>
-<li>작성 보조: Codex 기반 GPT-5 계열 에이전트 하네스</li>
-<li>작성 방식: 로컬 CSV·JSON 계산 증거를 먼저 대조하고, 공식 문서와 원 논문으로 용어·방법 경계를 확인한 뒤 한국어 문체·그림·HTML 렌더링 감사를 수행했습니다.</li>
+<li>Generated: 2026-08-27 KST</li>
+<li>Original computation checkpoint: 2026-08-27</li>
+<li>Writing assistance: Codex-based GPT-5 family agent harness</li>
+<li>Method: Local CSV and JSON computational evidence was checked first. Official documentation and primary papers were then used to verify terminology and methodological boundaries, followed by audits of prose, figures, and HTML rendering.</li>
 </ul>
 <h2 id="references">References</h2>
 <ol>
@@ -1096,28 +1088,28 @@ maximum SCF cycles = 100
 <li><a href="https://pyscf.org/user/tddft.html">PySCF, Time-dependent Hartree-Fock and DFT</a></li>
 <li><a href="https://doi.org/10.1038/s41524-019-0153-8">Lookman et al., Active learning in materials science, npj Computational Materials 5, 21 (2019)</a></li>
 </ol>
-<p><small>계산 수치의 출처는 프로젝트가 생성한 CSV·JSON evidence와 figure manifest입니다. raw QM9 mirror는 이 공개 패키지에 포함하지 않았습니다. 생성형 hero와 계산 기반 figure의 제작·검토 기록은 <code>artifacts/final_review/figure_manifest.md</code>에 남겼습니다.</small></p>
+<p><small>The computational values come from the CSV and JSON evidence and figure manifest generated by the project. The raw QM9 mirror is not included in this public package. Production and review records for the generated hero image and computation-based figures are archived in <code>artifacts/final_review/figure_manifest.md</code>.</small></p>
       <div class="footer">
-        생성 시각: 2026-08-27 06:58:53<br>
-        원본 파일 최종 수정 시각: 2026-08-27 06:49:49
+        Generated: 2026-08-27 06:58:53<br>
+        Source last modified: 2026-08-27 06:49:49
       </div>
     </article>
 
     <aside class="sidebar">
 
         <section class="side-section toc-panel" aria-labelledby="toc-heading">
-          <h2 id="toc-heading">섹션 맵</h2>
+          <h2 id="toc-heading">Section map</h2>
           <div class="toc">
 <ul>
-<li><a href="#_1">계산한 범위부터 확인해 보자</a></li>
-<li><a href="#extratrees-mae">예측 모델에서는 ExtraTrees의 MAE가 더 낮았다</a></li>
-<li><a href="#_2">세 생성 경로에 같은 화학 규칙을 적용했다</a></li>
-<li><a href="#qubo">QUBO는 목표 적합성과 배치 다양성을 함께 계산한다</a></li>
-<li><a href="#qpu-exact-optimum">한 번의 QPU 실행은 exact optimum을 재현하지 못했다</a></li>
-<li><a href="#pyscf-exact-batch-qpu-batch">PySCF 계산에서 exact batch는 평균이 낮았고, QPU batch에는 가장 가까운 한 후보가 있었다</a></li>
-<li><a href="#qm9-replay">반복 정책은 고정 QM9 라벨 replay로 점검했다</a></li>
-<li><a href="#_3">확인된 증거와 남은 판단</a></li>
-<li><a href="#_4">작성 정보</a></li>
+<li><a href="#what-the-pipeline-actually-computed">What the pipeline actually computed</a></li>
+<li><a href="#extratrees-achieved-the-lower-prediction-mae">ExtraTrees achieved the lower prediction MAE</a></li>
+<li><a href="#the-same-chemistry-rules-were-applied-to-all-three-proposal-mechanisms">The same chemistry rules were applied to all three proposal mechanisms</a></li>
+<li><a href="#the-qubo-scores-target-fit-and-batch-diversity-together">The QUBO scores target fit and batch diversity together</a></li>
+<li><a href="#one-100-read-qpu-submission-missed-the-exact-optimum">One 100-read QPU submission missed the exact optimum</a></li>
+<li><a href="#the-exact-batch-had-the-lower-mean-dft-error-the-qpu-batch-contained-the-closest-individual-candidate">The exact batch had the lower mean DFT error; the QPU batch contained the closest individual candidate</a></li>
+<li><a href="#a-fixed-label-qm9-replay-tested-the-iteration-policy">A fixed-label QM9 replay tested the iteration policy</a></li>
+<li><a href="#what-the-evidence-establishes-and-what-remains-open">What the evidence establishes, and what remains open</a></li>
+<li><a href="#publication-information">Publication information</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
@@ -1125,37 +1117,31 @@ maximum SCF cycles = 100
         </section>
 
       <section class="side-section link-panel" aria-labelledby="links-heading">
-        <h2 id="links-heading">근거 링크</h2>
+        <h2 id="links-heading">Evidence links</h2>
         <ul>
-          <li><a href="molecular_inverse_design_hero.png">분자 후보와 ML 예측, QUBO 기반 양자 어닐링 배치 선택, 양자화학 검증을 분리해 묘사한 과학 일러스트</a></li>
-<li><a href="molecular_inverse_design_infographic.svg">QM9 데이터부터 ML, 분자 생성, QUBO와 QPU 배치 선택, PySCF DFT, 고정 라벨 replay 및 제안된 live loop를 연결한 상세 인포그래픽</a></li>
-<li><a href="benchmark_results.csv">공개 계산 결과표</a></li>
-<li><a href="molecular_inverse_design_infographic.png">상세 인포그래픽을 전체 크기 PNG로 보기</a></li>
-<li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5" target="_blank" rel="noreferrer">QM9 원본 collection</a></li>
+          <li><a href="molecular_inverse_design_hero.png">Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation</a></li>
+<li><a href="molecular_inverse_design_infographic_en.svg">English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop</a></li>
+<li><a href="benchmark_results.csv">public computation results table</a></li>
+<li><a href="molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></li>
+<li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5" target="_blank" rel="noreferrer">original QM9 collection</a></li>
 <li><a href="https://chemprop.readthedocs.io/en/main/index.html" target="_blank" rel="noreferrer">Chemprop</a></li>
-<li><a href="02_qm9_surrogate_parity.png">같은 QM9 test split에서 Chemprop D-MPNN과 ExtraTrees Morgan 모델의 예측값과 참조 orbital gap을 비교한 parity plot</a></li>
+<li><a href="02_qm9_surrogate_parity.png">Parity plot comparing predictions from Chemprop D-MPNN and ExtraTrees Morgan with reference orbital gaps on the same QM9 test split</a></li>
 <li><a href="https://github.com/the-matter-lab/selfies" target="_blank" rel="noreferrer">SELFIES</a></li>
-<li><a href="03_generator_metrics.png">세 분자 생성 경로의 validity, uniqueness, novelty, 공통 화학 필터 통과율과 기록된 proposal 시간을 비교한 차트</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html" target="_blank" rel="noreferrer">D-Wave의 QUBO 설명</a></li>
+<li><a href="03_generator_metrics.png">Chart comparing validity, uniqueness, novelty, shared chemistry-filter pass rates, and recorded proposal times for three molecular proposal mechanisms</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html" target="_blank" rel="noreferrer">D-Wave&#x27;s introduction to QUBOs</a></li>
 <li><a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html" target="_blank" rel="noreferrer">EmbeddingComposite</a></li>
-<li><a href="04_acquisition_comparison.png">같은 frozen acquisition BQM에서 exact, classical simulated annealing, D-Wave QPU의 solution gap과 기록된 wall time을 비교한 차트</a></li>
+<li><a href="04_acquisition_comparison.png">Chart comparing solution gap and recorded wall time for exact search, classical simulated annealing, and the D-Wave QPU on the same frozen acquisition BQM</a></li>
 <li><a href="https://pyscf.org/user/dft.html" target="_blank" rel="noreferrer">PySCF DFT</a></li>
-<li><a href="07_exact_vs_qpu_dft_batch.png">exact-selected batch와 D-Wave QPU-selected batch의 분자별 DFT target error, 평균 오차, 최선 오차를 비교한 차트</a></li>
-<li><a href="05_dft_molecule_validation.png">QPU batch 세 분자의 Chemprop 예측과 PySCF orbital gap을 구조식과 함께 비교한 차트</a></li>
-<li><a href="https://pyscf.org/user/tddft.html" target="_blank" rel="noreferrer">TDDFT와 같은 excited-state method</a></li>
-<li><a href="https://doi.org/10.1038/s41524-019-0153-8" target="_blank" rel="noreferrer">재료 active learning review</a></li>
-<li><a href="06_qm9_replay_convergence.png">40개에서 52개까지 공개한 QM9 label 수에 따라 random, greedy, exact, QUBO simulated annealing의 best target error가 변하는 convergence plot</a></li>
+<li><a href="07_exact_vs_qpu_dft_batch.png">Chart comparing per-molecule DFT target error, mean error, and best error for the exact-selected and D-Wave QPU-selected batches</a></li>
+<li><a href="05_dft_molecule_validation.png">Chart comparing Chemprop predictions and PySCF orbital gaps alongside the molecular structures of the three QPU-selected candidates</a></li>
+<li><a href="https://pyscf.org/user/tddft.html" target="_blank" rel="noreferrer">TDDFT</a></li>
+<li><a href="https://doi.org/10.1038/s41524-019-0153-8" target="_blank" rel="noreferrer">review of active learning in materials science</a></li>
+<li><a href="06_qm9_replay_convergence.png">Convergence plot showing best target error as the number of revealed QM9 labels increases from 40 to 52 for random, greedy, exact, and QUBO simulated-annealing policies</a></li>
 <li><a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html" target="_blank" rel="noreferrer">PyTorch Geometric QM9 documentation</a></li>
 <li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html" target="_blank" rel="noreferrer">D-Wave, General QPU Solver Properties</a></li>
         </ul>
       </section>
     </aside>
   </main>
-
-<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
-    <!-- AI Tech Review Public Metrics -->
-    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
-    <script defer src="../../assets/public-metrics.js"></script>
-    <!-- End AI Tech Review Public Metrics -->
-  </body>
+</body>
 </html>
