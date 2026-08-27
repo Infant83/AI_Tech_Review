@@ -1,5 +1,5 @@
 ---
-title: "양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트"
+title: "양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로"
 type: final review
 author: "김현중"
 date created: 2026-08-27
@@ -13,19 +13,31 @@ tags:
   - ashn
   - native-gates
   - circuit-depth
+  - circuit-optimization
 ---
 
-# 양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트
+# 양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로
 
-같은 계산을 하는 양자 회로인데 한쪽은 274개의 CX가 필요하고 다른 쪽은 120개로 끝납니다. 같은 평면형 초전도 칩인데도 CZ만 쓸 때보다 2-큐비트 게이트가 약 44–45% 줄어듭니다. 사라진 게이트는 계산을 생략해서 없어진 것이 아닙니다. **같은 기능을 구현하는 여러 방법 가운데 무엇을 언제 선택했는가**가 달랐습니다.
+양자 회로 최적화는 같은 계산을 더 짧은 실행시간과 더 작은 오류 예산 안에서 수행하기 위해 필요합니다. 현재 QPU에서는 회로가 길어질수록 decoherence와 gate error가 누적되고, 특히 많은 초전도 프로세서는 직접 연결된 이웃 큐비트 사이에서만 2-큐비트 연산을 실행할 수 있어 routing SWAP이 추가됩니다. 같은 알고리즘이라도 함수 구현, ancilla 사용, 게이트 재작성, 큐비트 배치와 native gate 선택에 따라 실제 실행 가능성이 크게 달라지는 이유입니다.
 
-2026년 8월 25일 공개된 AshN 연구는 Classiq의 회로 최적화 연구와 닮아 있습니다. 다만 두 연구가 회로를 줄이는 위치는 다릅니다. Classiq은 알고리즘과 함수의 구현을 고르는 상위 합성 단계에서 자유도를 사용하고, AshN은 칩이 직접 실행하는 네이티브 2-큐비트 동작과 라우팅 단계에서 자유도를 사용합니다. 이 구분을 먼저 세우면 두 연구의 공통점, 정량 결과, 아직 입증되지 않은 범위가 자연스럽게 보입니다.
+이 문제를 푸는 방법은 하나가 아닙니다. 문제 표현과 ansatz 설계, 고수준 회로 합성, gate cancellation·commutation·template rewriting, control simplification, topology-aware placement·routing, native-gate decomposition과 pulse scheduling이 서로 다른 층에서 회로 비용을 줄입니다. Classiq은 이 가운데 기능 중심 모델링과 고수준 합성, automatic control skips를 소프트웨어로 구현해 왔습니다. 2026년 8월 25일 공개된 AshN 연구는 더 풍부한 native 2-qubit gate로 논리 연산과 routing을 결합하는 하드웨어–소프트웨어 공동 설계 사례입니다.
+
+이번 리뷰는 Classiq과 AshN을 양자 회로 최적화의 유일한 두 방법으로 다루지 않습니다. 두 연구를 서로 다른 층의 대표 사례로 놓고, Classiq 사례에서 **274개의 CX가 120개로 줄어드는 대신 qubit width가 5에서 7로 늘어난 절충**과 AshN의 **mapped 2-큐비트 gate 약 44–45% 감소**가 각각 무엇을 뜻하는지 구분합니다. 이를 바탕으로 양자 회로 최적화의 전체 지형과 end-to-end 발전 방향을 살펴봅니다.
 
 ![고수준 양자 알고리즘이 여러 회로 후보와 합성 네트워크를 거쳐 초전도 칩의 네이티브 동작으로 이어지는 생성형 과학 일러스트](classiq_ashn_hero_imagegen-web.webp)
 
 *그림 1. 생성 개념 일러스트. 왼쪽은 기능 모델과 회로 후보, 가운데는 합성·라우팅, 오른쪽은 초전도 프로세서의 네이티브 제어를 나타냅니다. 특정 Classiq 화면이나 AshN 실험 장치를 그대로 재현한 그림은 아닙니다.*
 
-## 먼저 결론: 비슷한 철학, 서로 다른 증거
+## 먼저 큰 그림: 양자 회로 최적화는 여러 층에서 일어난다
+
+- **문제 표현·알고리즘 설계:** encoding, ansatz, block encoding과 state preparation 구조를 바꿔 필요한 logical qubit·query·iteration을 줄입니다.
+- **고수준 합성:** 같은 함수를 구현하는 회로 후보와 ancilla·uncomputation 전략을 전역 자원 제약 아래 선택합니다.
+- **논리 게이트 재작성:** cancellation, commutation, template rewriting과 control simplification으로 동일 unitary의 gate count·depth를 줄입니다.
+- **배치·라우팅:** logical-to-physical mapping과 SWAP network를 hardware topology에 맞게 최적화합니다.
+- **네이티브 게이트·펄스:** backend가 직접 실행할 gate family, decomposition, pulse fusion·scheduling과 calibration cost를 함께 고려합니다.
+- **fault-tolerant 논리 자원:** 오류보정 단계에서는 logical T/Toffoli count·depth와 전체 시공간 자원이 주요 목적함수가 됩니다.
+
+Classiq과 AshN은 이 목록 전체를 대체하는 두 경쟁 방법이 아닙니다. 아래 표는 각각 고수준 합성·게이트 재작성과 네이티브 게이트·라우팅 층을 보여주는 **두 대표 사례의 증거 수준**을 비교합니다.
 
 | 항목 | Classiq 계열 연구 | AshN 연구 |
 | --- | --- | --- |
@@ -38,7 +50,7 @@ tags:
 
 여기서 가장 중요한 정정이 하나 있습니다. Classiq의 대표 합성 논문에서 274→120과 1,480→842는 회로 깊이를 보고한 값이 아닙니다. **CX 개수와 qubit width의 절충**입니다. Classiq의 별도 automatic control-skip 연구는 gate count와 depth 감소를 함께 보고합니다. AshN의 45.2%·43.7%도 depth를 뜻하지 않습니다. 1D·2D topology에서의 **mapped 2-큐비트 gate count 감소**입니다. 서로 다른 지표를 하나의 ‘깊이 감소율’ 막대그래프로 합치면 잘못된 비교가 됩니다.
 
-## 1. 연구 배경: 알고리즘 그림과 칩이 실행하는 회로 사이
+## 1. 연구 배경: 왜 양자 회로 최적화가 필요한가
 
 양자 알고리즘 책에서는 멀리 떨어진 두 논리 큐비트도 선 하나로 연결해 gate를 그릴 수 있습니다. 실제 초전도 칩은 대개 평면 위의 이웃한 물리 큐비트끼리만 직접 상호작용합니다. 논리 큐비트 A와 B가 서로 만나야 하는데 칩에서 떨어져 있다면, compiler는 SWAP을 넣어 상태의 위치를 옮깁니다. SWAP 자체도 여러 entangling gate로 분해되므로 gate count, mapped depth와 누적 오류가 늘어납니다.
 
@@ -52,7 +64,7 @@ tags:
 
 ![기능 모델에서 논리 회로, 네이티브 라우팅, 펄스로 내려가는 네 층과 Classiq·AshN의 최적화 범위를 보여주는 도식](stack_where_circuit_shrinks.png)
 
-*그림 2. Classiq과 AshN은 겹치는 부분이 있지만 주된 최적화 층이 다릅니다. Classiq은 위쪽의 기능·논리 합성, AshN은 아래쪽의 native routing·pulse control에 직접 근거를 둡니다.*
+*그림 2. 전체 양자 회로 최적화 지형 위에 두 대표 사례의 범위를 표시했습니다. Classiq은 주로 기능·논리 합성, AshN은 native routing·pulse control에 직접 근거를 두며, 두 범위가 최적화 방법 전체를 뜻하지는 않습니다.*
 
 ### ‘회로 깊이’도 세 종류로 나눠야 한다
 
@@ -119,7 +131,7 @@ AshN control은 tunable exchange interaction과 두 qubit의 동시 microwave dr
 
 SWAP 흡수는 workload structure에 의존합니다. 인접한 $U$와 SWAP이 자주 만나는 구조화된 회로에는 기회가 많지만, interaction partner가 매 layer 빠르게 바뀌는 quantum-volume circuit에서는 흡수할 gate가 적었습니다. calibration 범위도 아직 12-qubit chain과 3×3 array입니다. 더 큰 칩에서 crosstalk, drift, calibration time이 어떻게 늘어나는지 검증되지 않았습니다. 논문은 encoded operation이나 logical error rate도 측정하지 않았습니다.
 
-## 4. 두 연구는 왜 닮았고, 어디가 다른가
+## 4. 두 대표 사례는 왜 닮았고, 어디가 다른가
 
 두 접근의 공통 철학은 **동일 기능의 구현 자유도를 너무 일찍 버리지 않는다**는 것입니다.
 
@@ -129,9 +141,9 @@ SWAP 흡수는 workload structure에 의존합니다. 인접한 $U$와 SWAP이 �
 
 차이는 최적화 레버입니다. Classiq의 대표 증거는 generic 1Q+CX로 낮춘 **고전 합성 결과**이고, AshN의 중심 증거는 특정 superconducting hardware의 gate family·topology·calibration까지 포함한 **제한된 QPU 실험**입니다. Classiq 논문은 connectivity가 구현 선택에 중요하다고 논의하지만 대표 수치에서 physical coupling graph의 routing 비용을 검증하지 않았습니다. AshN 논문은 그 routing 비용 자체를 중심 문제로 삼았습니다.
 
-## 5. 경쟁보다 결합: 스택 전체를 함께 최적화할 수 있을까
+## 5. 발전 방향: 개별 최적화에서 교차 계층 공동 최적화로
 
-이상적인 흐름은 다음과 같습니다.
+발전 방향은 Classiq과 AshN 중 하나를 고르는 데 있지 않습니다. 합성기, gate-rewriting pass, router와 pulse optimizer가 동일한 hardware·application cost model을 공유하는 쪽으로 가야 합니다. 아래 흐름은 Classiq과 AshN을 사용한 하나의 대표적 결합 예이며, 실제 stack에는 다른 synthesizer·mapper·native gate와 fault-tolerant compiler가 들어갈 수 있습니다.
 
 1. Qmod 같은 functional model에서 필요한 계산과 허용 오차를 기술합니다.
 2. high-level synthesis가 QFT/ripple-carry, MCX, ancilla·uncomputation 전략을 고릅니다.
@@ -171,11 +183,13 @@ QAOA에서는 문제 graph가 무작위로 조밀할수록 AshN 흡수 기회가
 - AshN의 대규모 수치는 compilation-only이며, larger-device calibration·crosstalk·drift 비용은 남아 있습니다.
 - gate count 또는 depth 감소만으로 total runtime·에너지·정확도 개선을 보장할 수 없습니다.
 
-## 결론
+## 결론: 최적화는 연결된 설계 문제다
 
-Classiq과 AshN 연구를 함께 읽으면 ‘좋은 compiler가 회로를 정리한다’보다 더 넓은 그림이 보입니다. 효율은 회로가 완성된 뒤 불필요한 gate를 지우는 데서만 나오지 않습니다. 기능 모델에서 함수 구현을 고르는 순간, ancilla를 배치하는 순간, qubit를 라우팅하는 순간, 칩의 native interaction을 정하는 순간마다 같은 계산의 비용이 바뀝니다.
+양자 회로 최적화는 특정 알고리즘, 기업의 소프트웨어 또는 하나의 compiler pass로 환원되지 않습니다. 문제 표현과 ansatz, 고수준 합성, 논리 게이트 재작성, ancilla 관리, 큐비트 배치·라우팅, native gate와 pulse scheduling이 서로 영향을 주며, 어떤 회로가 최적인지는 workload와 hardware cost model에 따라 달라집니다.
 
-Classiq은 상위 설계 공간을 오래 열어 두는 방법을, AshN은 하위 hardware-control 공간을 넓히는 방법을 보여줬습니다. 다음 단계는 둘을 직접 연결해 같은 QAOA·양자화학 workload에서 native gate duration, error와 calibration cost까지 포함한 end-to-end 비교를 하는 것입니다. 그 검증이 나오기 전까지 가장 정확한 표현은 ‘양자 가속’이 아니라 **hardware–software co-design으로 routing과 entangling overhead를 줄인 진전**입니다.
+Classiq과 AshN은 이 넓은 지형의 서로 다른 지점을 보여주는 대표 사례입니다. Classiq은 기능을 gate circuit으로 너무 일찍 고정하지 않을 때 얻는 설계 여지를, AshN은 routing과 native interaction을 분리하지 않을 때 얻는 이득을 보여줍니다. 다음 단계에서는 특정 두 방법의 우열보다 상위 합성부터 pulse·calibration까지 같은 목적함수를 공유하는 교차 계층 최적화가 중요합니다.
+
+가까운 시기의 검증에서는 동일 logical workload에 대해 CX·native 2Q count, mapped depth, scheduled duration, output error, compile·calibration·shot wall-clock을 함께 비교해야 합니다. fault-tolerant 단계에서는 여기에 logical T/Toffoli cost와 오류보정 시공간 자원이 추가됩니다. 이런 end-to-end 검증이 나오기 전까지 이번 결과는 양자 가속의 증거가 아니라, 서로 다른 설계 층에서 circuit overhead를 줄일 수 있음을 보여준 사례로 읽는 것이 정확합니다.
 
 ## References
 
