@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Classiq과 AshN의 정량 근거 지도</title>
+  <desc id="desc">Classiq의 CX count와 width 결과, control-skip 결과를 AshN의 mapped native two-qubit count와 실제 QPU fidelity 결과와 분리해 제시한다.</desc>
+  <rect width="1200" height="760" rx="24" fill="#f8f7f3"/>
+  <text x="64" y="66" font-family="Noto Sans KR, Segoe UI, sans-serif" font-size="34" font-weight="800" fill="#17211d">숫자는 같은 축에 놓지 않습니다</text>
+  <text x="64" y="102" font-family="Noto Sans KR, Segoe UI, sans-serif" font-size="18" fill="#5f6b65">CX count·width와 native 2Q count·fidelity는 서로 다른 metric과 검증 층입니다.</text>
+
+  <g font-family="Noto Sans KR, Segoe UI, sans-serif">
+    <rect x="54" y="138" width="526" height="516" rx="20" fill="#ffffff" stroke="#0f766e" stroke-width="3"/>
+    <rect x="620" y="138" width="526" height="516" rx="20" fill="#ffffff" stroke="#a35a16" stroke-width="3"/>
+
+    <text x="88" y="188" font-size="26" font-weight="800" fill="#0f766e">Classiq · 고전 합성</text>
+    <text x="88" y="218" font-size="16" fill="#5f6b65">QPU 실행 없음 · generic 1Q + CX lowering</text>
+
+    <rect x="86" y="248" width="462" height="112" rx="14" fill="#e9f3ef"/>
+    <text x="112" y="282" font-size="17" font-weight="700" fill="#17211d">Circle quantum walk</text>
+    <text x="112" y="326" font-size="31" font-weight="850" fill="#0f766e">274 → 120 CX</text>
+    <text x="405" y="326" font-size="17" fill="#5f6b65">5 → 7 qubits</text>
+
+    <rect x="86" y="378" width="462" height="112" rx="14" fill="#e9eef5"/>
+    <text x="112" y="412" font-size="17" font-weight="700" fill="#17211d">N=20 block encoding</text>
+    <text x="112" y="456" font-size="31" font-weight="850" fill="#25456f">1,480 → 842 CX</text>
+    <text x="405" y="456" font-size="17" fill="#5f6b65">44 → 47 qubits</text>
+
+    <rect x="86" y="508" width="462" height="112" rx="14" fill="#f2f0ea"/>
+    <text x="112" y="542" font-size="17" font-weight="700" fill="#17211d">Automatic control skips</text>
+    <text x="112" y="582" font-size="25" font-weight="850" fill="#17211d">state prep &gt;50%</text>
+    <text x="364" y="582" font-size="18" fill="#5f6b65">brickwork ≈8%</text>
+    <text x="112" y="607" font-size="14" fill="#5f6b65">gate count·depth 감소, workload-dependent</text>
+
+    <text x="654" y="188" font-size="26" font-weight="800" fill="#a35a16">AshN · 실제 QPU + 컴파일</text>
+    <text x="654" y="218" font-size="16" fill="#5f6b65">mapped native 2Q cost · 최대 8-qubit 회로 실험</text>
+
+    <rect x="652" y="248" width="462" height="112" rx="14" fill="#f6eee2"/>
+    <text x="678" y="282" font-size="17" font-weight="700" fill="#17211d">7 benchmark circuits</text>
+    <text x="678" y="326" font-size="31" font-weight="850" fill="#a35a16">−45.2% · −43.7%</text>
+    <text x="678" y="350" font-size="14" fill="#5f6b65">1D · 2D native 2Q gate count vs CZ</text>
+
+    <rect x="652" y="378" width="462" height="112" rx="14" fill="#f5eaea"/>
+    <text x="678" y="412" font-size="17" font-weight="700" fill="#17211d">8-qubit Dicke state</text>
+    <text x="678" y="454" font-size="28" font-weight="850" fill="#8b3a3a">31 → 23 entanglers</text>
+    <text x="678" y="480" font-size="16" fill="#5f6b65">fidelity 0.631 → 0.736</text>
+
+    <rect x="652" y="508" width="462" height="112" rx="14" fill="#f2f0ea"/>
+    <text x="678" y="542" font-size="17" font-weight="700" fill="#17211d">Average XEB error</text>
+    <text x="678" y="582" font-size="26" font-weight="850" fill="#17211d">CZ 0.550%</text>
+    <text x="886" y="582" font-size="22" font-weight="750" fill="#5f6b65">AshN 0.615%</text>
+    <text x="678" y="607" font-size="14" fill="#5f6b65">더 적은 gate 수가 약간 높은 per-gate error를 상쇄</text>
+
+    <rect x="174" y="684" width="852" height="48" rx="12" fill="#fff3e8" stroke="#d7a46b"/>
+    <text x="600" y="714" text-anchor="middle" font-size="17" font-weight="750" fill="#8a4b13">주의: 위 숫자를 하나의 ‘회로 깊이 감소율’로 직접 비교할 수 없습니다.</text>
+  </g>
+</svg>
+

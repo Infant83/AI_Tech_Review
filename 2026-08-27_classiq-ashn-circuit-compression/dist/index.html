@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Classiq의 고수준 회로 합성과 automatic control skips, AshN의 네이티브 2-큐비트 gate·SWAP absorption을 연구 배경부터 실제 QPU 증거와 한계까지 비교합니다.">
+  <meta name="author" content="김현중">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트">
+  <meta property="og:description" content="Classiq의 고수준 회로 합성과 automatic control skips, AshN의 네이티브 2-큐비트 gate·SWAP absorption을 연구 배경부터 실제 QPU 증거와 한계까지 비교합니다.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/classiq_ashn_hero_imagegen-web.webp">
+  <meta property="og:image:alt" content="고수준 양자 회로 합성과 초전도 프로세서의 네이티브 게이트를 연결한 개념 일러스트">
+  <meta property="article:published_time" content="2026-08-27">
+  <meta property="article:modified_time" content="2026-08-27">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트">
+  <meta name="twitter:description" content="Classiq의 고수준 회로 합성과 automatic control skips, AshN의 네이티브 2-큐비트 gate·SWAP absorption을 연구 배경부터 실제 QPU 증거와 한계까지 비교합니다.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/classiq_ashn_hero_imagegen-web.webp">
+  <title>양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트</title>
+  <style>
+    :root{--paper:#fbfaf7;--paper2:#f2f0ea;--ink:#17211d;--muted:#5f6b65;--line:#d8d5cb;--teal:#0f766e;--blue:#25456f;--amber:#a35a16;--rose:#8b3a3a;--green:#e9f3ef;--blue-soft:#e9eef5;--amber-soft:#f6eee2;--wrap:1180px;--article:790px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Noto Sans KR",Arial,sans-serif;text-rendering:optimizeLegibility}a{color:var(--teal);text-underline-offset:3px}.topline{border-bottom:1px solid var(--line);background:#fff}.topline-inner,.hero-inner,.content-grid{width:min(var(--wrap),calc(100% - 40px));margin:0 auto}.topline-inner{display:flex;justify-content:space-between;gap:18px;padding:14px 0;color:var(--muted);font-size:.9rem}.topline a{font-weight:700;text-decoration:none;color:var(--blue)}
+    .hero{border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(15,118,110,.11),transparent 48%),linear-gradient(180deg,#fff 0%,var(--paper) 100%)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 455px;gap:40px;align-items:center;padding:46px 0 36px}.eyebrow{margin:0 0 16px;color:var(--teal);font-size:.82rem;font-weight:800;text-transform:uppercase}h1{margin:0;font-size:clamp(2.2rem,4.8vw,3.85rem);line-height:1.07;letter-spacing:-.035em;word-break:keep-all}.dek{margin:22px 0 0;color:var(--muted);font-size:1.08rem;line-height:1.75;word-break:keep-all}.hero-figure{margin:0;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.hero-figure img{display:block;width:100%;height:auto;border-radius:6px}.hero-figure figcaption{padding:9px 5px 2px;color:var(--muted);font-size:.78rem;line-height:1.55}
+    .content-grid{display:grid;grid-template-columns:minmax(0,var(--article)) minmax(250px,310px);gap:52px;align-items:start;padding:40px 0 62px}article{min-width:0}.lead{font-size:1.17rem;line-height:1.84;color:#20302a}article h2{margin:50px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:1.72rem;line-height:1.3;word-break:keep-all}article h3{margin:31px 0 12px;color:var(--blue);font-size:1.2rem;line-height:1.42;word-break:keep-all}article p,article li{font-size:1.01rem;line-height:1.88}article p{margin:0 0 18px}article ul,article ol{padding-left:24px;margin:0 0 22px}article li+li{margin-top:8px}article small{color:var(--muted);line-height:1.72}.math{overflow-x:auto}.display.math{display:block;margin:24px 0;padding:18px;background:#fff;border-left:4px solid var(--teal);text-align:center}
+    .figure-panel{margin:30px 0 8px;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.figure-panel img{display:block;width:100%;height:auto;border-radius:6px}.figure-caption{margin:0 5px 32px!important;color:var(--muted);font-size:.82rem!important;line-height:1.65!important}.table-wrap{overflow-x:auto;margin:22px 0 30px}.table-wrap:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.58}th{background:var(--blue-soft);color:var(--blue)}
+    article h2:first-of-type{margin-top:32px}.sidebar{position:sticky;top:20px}.side-section{margin-bottom:18px;padding:18px 19px;border:1px solid var(--line);background:#fff}.side-section.accent{border-top:4px solid var(--teal)}.side-section h2{margin:0 0 12px;color:var(--blue);font-size:.88rem;text-transform:uppercase}.side-section ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.65}.side-section li+li{margin-top:7px}.side-section p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.68}.side-section p+p{margin-top:10px}.tag{display:inline-block;margin:0 5px 6px 0;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700}.metric{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:.84rem}.metric:first-of-type{border-top:0}.metric strong{color:var(--ink)}.public-note{width:min(var(--wrap),calc(100% - 40px));margin:0 auto 50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.87rem;line-height:1.65}code{padding:.12em .35em;background:var(--paper2);border-radius:4px}
+    @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:760px}.sidebar{position:static}}@media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.25rem}article h2{font-size:1.44rem}th,td{min-width:138px}.figure-panel{padding:6px}}
+</style>
+  <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+</head>
+<body class="public-review">
+  <div class="topline"><div class="topline-inner"><span>AI Tech Review Letters · 2026-08-27</span><span><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브로 돌아가기</a></span></div></div>
+  <header class="hero"><div class="hero-inner">
+    <section>
+      <p class="eyebrow">Quantum Compilation · Hardware–Software Co-design</p>
+      <h1>양자 회로는<br>어디에서 짧아지는가</h1>
+      <p class="dek">Classiq의 고수준 합성과 automatic control skips, AshN의 native gate·SWAP absorption을 한 스택 위에 놓습니다. CX count, mapped depth, QPU fidelity를 섞지 않고 무엇을 실제로 입증했는지 살펴봅니다.</p>
+    </section>
+    <figure class="hero-figure"><img src="classiq_ashn_hero_imagegen-web.webp" alt="고수준 회로 후보가 합성 네트워크를 거쳐 초전도 양자 프로세서로 이어지는 생성형 과학 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. 기능 모델–합성–네이티브 제어의 연결을 표현했으며 특정 제품 화면이나 실험 장치를 재현하지 않습니다.</figcaption></figure>
+  </div></header>
+  <main class="content-grid">
+    <article><p class="lead">같은 계산을 하는 양자 회로인데 한쪽은 274개의 CX가 필요하고 다른 쪽은
+120개로 끝납니다. 같은 평면형 초전도 칩인데도 CZ만 쓸 때보다 2-큐비트
+게이트가 약 44–45% 줄어듭니다. 사라진 게이트는 계산을 생략해서 없어진
+것이 아닙니다. <strong>같은 기능을 구현하는 여러 방법 가운데 무엇을 언제
+선택했는가</strong>가 달랐습니다.</p>
+<p>2026년 8월 25일 공개된 AshN 연구는 Classiq의 회로 최적화 연구와 닮아
+있습니다. 다만 두 연구가 회로를 줄이는 위치는 다릅니다. Classiq은
+알고리즘과 함수의 구현을 고르는 상위 합성 단계에서 자유도를 사용하고,
+AshN은 칩이 직접 실행하는 네이티브 2-큐비트 동작과 라우팅 단계에서
+자유도를 사용합니다. 이 구분을 먼저 세우면 두 연구의 공통점, 정량 결과,
+아직 입증되지 않은 범위가 자연스럽게 보입니다.</p>
+<h2 id="먼저-결론-비슷한-철학-서로-다른-증거">먼저 결론: 비슷한 철학,
+서로 다른 증거</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="기술 비교 표"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>항목</th>
+<th>Classiq 계열 연구</th>
+<th>AshN 연구</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>분류</td>
+<td>[프리프린트] 고전 컴파일·회로 합성</td>
+<td>[프리프린트] 실제 QPU 실험 + 고전 컴파일 확장 연구</td>
+</tr>
+<tr class="even">
+<td>줄이는 위치</td>
+<td>기능 모델, 함수 구현, 제어 패턴, ancilla 배치</td>
+<td>네이티브 2-큐비트 게이트, topology-aware routing</td>
+</tr>
+<tr class="odd">
+<td>대표 지표</td>
+<td>CX <strong>개수</strong>·qubit width, 일부 연구의 gate
+count·depth</td>
+<td>mapped native 2Q gate count, 2Q depth overhead, 실제 state
+fidelity</td>
+</tr>
+<tr class="even">
+<td>실제 QPU</td>
+<td>대표 합성·control-skip 결과에는 없음</td>
+<td>최대 8-qubit 회로 실험, 12-qubit chain·3×3 array에서 gate
+calibration</td>
+</tr>
+<tr class="odd">
+<td>공통 원리</td>
+<td>동일 기능의 구현을 너무 일찍 한 회로로 고정하지 않음</td>
+<td>동일 기능의 구현을 너무 일찍 한 gate set과 routing으로 고정하지
+않음</td>
+</tr>
+<tr class="even">
+<td>입증하지 않은 것</td>
+<td>QPU wall-clock 가속, 양자우위</td>
+<td>대규모 calibration 확장, fault-tolerant 이득, 양자우위</td>
+</tr>
+</tbody>
+</table></div>
+<p>여기서 가장 중요한 정정이 하나 있습니다. Classiq의 대표 합성 논문에서
+274→120과 1,480→842는 회로 깊이를 보고한 값이 아닙니다. <strong>CX
+개수와 qubit width의 절충</strong>입니다. Classiq의 별도 automatic
+control-skip 연구는 gate count와 depth 감소를 함께 보고합니다. AshN의
+45.2%·43.7%도 depth를 뜻하지 않습니다. 1D·2D topology에서의
+<strong>mapped 2-큐비트 gate count 감소</strong>입니다. 서로 다른 지표를
+하나의 ‘깊이 감소율’ 막대그래프로 합치면 잘못된 비교가 됩니다.</p>
+<h2 id="연구-배경-알고리즘-그림과-칩이-실행하는-회로-사이">1. 연구 배경:
+알고리즘 그림과 칩이 실행하는 회로 사이</h2>
+<p>양자 알고리즘 책에서는 멀리 떨어진 두 논리 큐비트도 선 하나로 연결해
+gate를 그릴 수 있습니다. 실제 초전도 칩은 대개 평면 위의 이웃한 물리
+큐비트끼리만 직접 상호작용합니다. 논리 큐비트 A와 B가 서로 만나야 하는데
+칩에서 떨어져 있다면, compiler는 SWAP을 넣어 상태의 위치를 옮깁니다.
+SWAP 자체도 여러 entangling gate로 분해되므로 gate count, mapped depth와
+누적 오류가 늘어납니다.</p>
+<p>이때 최종 자원량은 알고리즘 수식만으로 정해지지 않습니다.</p>
+<ol type="1">
+<li>덧셈·MCX·state preparation을 어떤 회로로 구현했는가</li>
+<li>ancilla qubit를 더 써서 gate를 줄일 것인가, qubit를 아끼고 gate를
+늘릴 것인가</li>
+<li>칩의 coupling graph에서 논리 qubit를 어디에 배치하고 어떻게 옮길
+것인가</li>
+<li>CZ·iSWAP·AshN처럼 어떤 동작을 native gate로 직접 실행할 수
+있는가</li>
+<li>각 gate의 pulse duration, calibration error와 병렬 실행 가능성이
+어떠한가</li>
+</ol>
+<figure class="figure-panel">
+<img src="stack_where_circuit_shrinks.png"
+alt="기능 모델에서 논리 회로, 네이티브 라우팅, 펄스로 내려가는 네 층과 Classiq·AshN의 최적화 범위를 보여주는 도식" />
+
+</figure>
+<p class="figure-caption">그림 2. Classiq과 AshN은 겹치는 부분이 있지만 주된 최적화 층이
+다릅니다. Classiq은 위쪽의 기능·논리 합성, AshN은 아래쪽의 native
+routing·pulse control에 직접 근거를 둡니다.</p>
+<h3 id="회로-깊이도-세-종류로-나눠야-한다">’회로 깊이’도 세 종류로
+나눠야 한다</h3>
+<p><strong>Logical depth</strong>는 칩의 연결망을 적용하기 전 병렬 gate
+layer의 수입니다. <strong>Mapped 또는 transpiled depth</strong>는 native
+decomposition과 SWAP routing을 넣은 뒤의 layer 수입니다. <strong>실제
+실행시간</strong>은 각 pulse의 길이, 동시에 실행할 수 없는 gate, 제어
+지연, reset·measurement까지 포함합니다.</p>
+<p>따라서 2-큐비트 gate가 줄었다고 실행시간이 같은 비율로 줄지는
+않습니다. 서로 다른 native gate는 pulse duration이 다르고, gate 수가 더
+많은 회로가 병렬성이 좋아 더 빨리 끝날 수도 있습니다. Tremba 등의 연구도
+일반 circuit depth가 compiled circuit의 runtime 순서를 자주 잘못
+예측하며, gate duration으로 가중한 gate-aware depth가 더 정확하다고
+보고했습니다. AshN 논문 역시 gate count를 단순화된 비용으로 사용했고,
+개별 native gate의 duration을 포함한 비교가 더 정교하다고
+명시합니다.</p>
+<h2 id="classiq은-위쪽에서-구현을-고른다">2. Classiq은 위쪽에서 구현을
+고른다</h2>
+<h3 id="qmod와-eda식-합성-먼저-기능을-쓰고-나중에-회로를-정한다">Qmod와
+EDA식 합성: 먼저 기능을 쓰고 나중에 회로를 정한다</h3>
+<p>전통적인 transpiler는 이미 gate circuit으로 구체화된 입력을 받아
+gate를 취소하고, qubit를 배치하고, backend gate set으로 분해합니다. 이
+단계에 오면 “QFT adder와 ripple-carry adder 중 어느 것을 쓸까”, “MCX에
+ancilla를 몇 개 줄까” 같은 큰 설계 결정은 대부분 끝난 상태입니다.</p>
+<p>Classiq의 Qmod는 사용자가 “이 숫자를 증가시켜라”, “이 함수를
+제어하라”, “최대 width는 얼마다”, “CX를 줄여라”처럼 기능과 제약을
+기술하도록 합니다. 합성 엔진은 함수마다 가능한 구현, ancilla
+allocation·reuse, uncomputation과 전역 자원 제약을 함께 탐색합니다. 고전
+반도체 설계에서 RTL·logic·physical implementation을 차례로 정하는 EDA와
+닮은 접근입니다.</p>
+<p>Classiq이 2025년 1월 22일 수정한 <em>Design and synthesis of scalable
+quantum programs</em> v2의 두 예가 이 생각을 잘 보여줍니다.</p>
+<ul>
+<li>2<sup>5</sup>-node circle quantum walk에서는 width를 최소화한 결과가
+<strong>5 qubits·274 CX</strong>, CX를 줄이도록 합성한 결과가 <strong>7
+qubits·120 CX</strong>였습니다. qubit 두 개를 더 써 CX를 56.2% 줄인
+절충입니다.</li>
+<li>N=20 block-encoding에서는 QFT-adder 계열이 <strong>44 qubits·1,480
+CX</strong>, ripple-carry 계열이 <strong>47 qubits·842
+CX</strong>였습니다. qubit 세 개를 더 써 CX를 43.1% 줄였습니다.</li>
+</ul>
+<p>두 결과를 모든 자원의 동시 감소로 해석할 수는 없습니다.
+<strong>width와 entangling-gate cost 사이의 Pareto 선택</strong>입니다.
+실험에는 Classiq 0.60.0, Qiskit 1.2.4, PyTKET 1.34.0, PennyLane 0.39.0과
+Catalyst 0.9.0이 사용됐고, 모두 1-qubit gate와 CX로 낮춰 비교했습니다.
+컴파일은 Apple M1 Pro 한 대에서 실행됐습니다. QPU noise, fidelity, pulse
+schedule과 wall-clock 실행은 측정하지 않았습니다.</p>
+<p>논문 v2는 Qiskit과 PennyLane의 가파른 곡선 일부가 controlled-MCX를 더
+큰 MCX로 인식하지 못한 baseline 구현에서 비롯됐을 수 있다고 스스로
+설명합니다. 각 도구에 더 효율적인 ad hoc MCX 구현이 있다는 점도
+적었습니다. 따라서 이 연구를 ’Classiq이 모든 compiler보다 보편적으로
+orders of magnitude 우수하다’고 읽기보다, <strong>고수준에서 ancilla와
+함수 구현을 공동 최적화할 때 생기는 설계 여지</strong>의 증거로 읽는
+편이 정확합니다.</p>
+<h3
+id="automatic-control-skips-제어하지-않아도-되는-부분을-찾는다">Automatic
+control skips: 제어하지 않아도 되는 부분을 찾는다</h3>
+<p>사용자가 기억한 ’회로 깊이를 줄이는 Classiq 연구’와 가장 직접적으로
+맞닿는 논문은 2025년 5월 23일 공개된 <em>Efficient Quantum Control via
+Automatic Control Skips</em>입니다. 양자 프로그램에서 <code>if</code>와
+비슷한 coherent control은 비쌉니다. single-qubit gate에 control 하나가
+붙으면 2-qubit gate가 되고, multi-control은 더 많은 native gate로
+분해됩니다.</p>
+<p>하지만 계산과 uncomputation이 한 쌍으로 감싸는 구조에서는 모든 gate에
+control을 붙일 필요가 없습니다.</p>
+<p><span
+class="math display">ctrl(<em>U</em><sup>†</sup><em>V</em><em>U</em>) = <em>U</em><sup>†</sup> ctrl(<em>V</em>) <em>U</em></span></p>
+<p>쉬운 비유로 말하면, 작업대를 준비하는 단계 <span
+class="math inline"><em>U</em></span>와 치우는 단계 <span
+class="math inline"><em>U</em><sup>†</sup></span>는 control branch가
+어느 쪽이든 실행해도 최종 효과가 상쇄됩니다. 실제로 조건을 걸어야 하는
+중심 작업 <span class="math inline"><em>V</em></span>에만 control을 남길
+수 있습니다. Classiq 연구진은 이런 conjugation pair 가운데 동시에
+건너뛰어도 안전하고 비용 절감이 큰 조합을 찾는 문제를 Max Conjugation
+Pairs로 만들었습니다. 최적해 탐색은 일반적으로 NP-hard이지만, 특정
+비가환 구조에서는 dynamic programming으로 다항시간 근사를
+구성했습니다.</p>
+<p>Qiskit 1.2.4 basis로 transpile한 고전 회로 실험에서 state-preparation
+사례는 gate count와 depth가 <strong>50% 넘게</strong> 줄 수 있었고,
+random brickwork circuit은 약 <strong>8%</strong> 감소했습니다. 큰 숫자
+하나가 모든 workload에 적용되는 결과는 아닙니다. 또한 저자들은 이
+generic 방법이 알고리즘별로 손으로 만든 specialized implementation을
+이길 가능성은 낮으며, 그 위에 추가로 적용하는 compiler pass라고
+설명합니다. 실제 QPU 결과도 없습니다.</p>
+<h2 id="ashn은-아래쪽에서-이동과-계산을-합친다">3. AshN은 아래쪽에서
+’이동과 계산’을 합친다</h2>
+<p>2026년 8월 25일 공개된 Wang 등의 프리프린트는 문제를 물리 gate에 더
+가까운 층에서 풉니다. 기존 CZ 중심 gate set에서는 멀리 떨어진 논리
+qubit를 만나게 하려고 SWAP을 넣고, 그 SWAP을 여러 native entangler로
+분해합니다. 연구진은 “물리 coupler를 더 만들지 않고, 기존 edge 하나가 할
+수 있는 일을 늘리면 어떨까”라고 묻습니다.</p>
+<p>임의의 2-qubit unitary는 KAK decomposition을 통해 앞뒤의 single-qubit
+rotation과 다음 비국소 핵심으로 나눌 수 있습니다.</p>
+<p><span
+class="math display"><em>U</em> = (<em>O</em><sub>1</sub>⊗<em>O</em><sub>2</sub>) <em>e</em><sup><em>i</em>(<em>a</em><em>X</em><em>X</em>+<em>b</em><em>Y</em><em>Y</em>+<em>c</em><em>Z</em><em>Z</em>)</sup> (<em>O</em>′<sub>1</sub>⊗<em>O</em>′<sub>2</sub>)</span></p>
+<p>AshN control은 tunable exchange interaction과 두 qubit의 동시
+microwave drive를 조절해 Weyl chamber의 넓은 2-qubit operation을 직접
+만듭니다. 중요한 algebra는 단순합니다. router가 같은 physical pair에서
+논리 연산 <span class="math inline"><em>U</em></span> 뒤에 SWAP을 넣으려
+한다면, <span class="math inline"><em>U</em> ⋅ SWAP</span>도 하나의
+2-qubit unitary입니다. 이를 한 번의 AshN native operation으로 실행하고
+logical-to-physical mapping만 갱신하면 explicit SWAP gate와 별도 layer를
+흡수할 수 있습니다.</p>
+<p>연구진은 SABRE를 gate-set-aware하게 확장한 MirrorSABRE로 앞으로
+필요한 qubit 거리와 SWAP 흡수 가능성을 함께 평가했습니다. 실제
+장치에서는 12-qubit chain과 3×3 array에 필요한 AshN gate를 병렬
+calibration했고, 회로 실험은 현재 CZ 회로가 너무 깊어지는 한계 때문에
+최대 7-qubit benchmark와 8-qubit Dicke-state preparation에
+집중했습니다.</p>
+<h3 id="실제-qpu에서-확인된-숫자">실제 QPU에서 확인된 숫자</h3>
+<ul>
+<li>일곱 benchmark circuit에서 CZ compilation 대비 mapped 2-qubit gate
+count의 geometric-mean 감소는 <strong>1D 45.2%, 2D
+43.7%</strong>였습니다.</li>
+<li>defect-free 2×4 topology의 8-qubit two-excitation Dicke state는
+AshN이 <strong>23 entangling gates</strong>, CZ가 <strong>31
+gates</strong>를 사용했습니다.</li>
+<li>Dicke-state fidelity는 AshN <strong>0.736±0.001</strong>, CZ
+<strong>0.631±0.001</strong>였습니다.</li>
+<li>fully PPT entanglement witness는 AshN 상태에서
+<strong>−0.0344±0.0008</strong>로 genuine multipartite entanglement를
+인증했지만, CZ 상태의 <strong>0.0593±0.0008</strong>에서는 같은 인증에
+실패했습니다.</li>
+<li>CZ의 평균 XEB error는 <strong>0.550%</strong>,
+iSWAP·√iSWAP·SWAP·B-like AshN gate의 평균은
+<strong>0.615%</strong>였습니다. gate 하나씩 보면 AshN 쪽 오류가 약간 더
+높았습니다. 전체 entangler 수가 줄면서 회로 결과가 좋아진
+사례입니다.</li>
+</ul>
+<figure class="figure-panel">
+<img src="classiq_ashn_evidence_map.png"
+alt="Classiq과 AshN의 정량 결과를 서로 다른 지표와 검증 층으로 분리한 증거 지도" />
+
+</figure>
+<p class="figure-caption">그림 3. 왼쪽의 CX count·width 결과와 오른쪽의 native 2Q count·QPU
+fidelity는 같은 축의 수치가 아닙니다. 각각의 baseline과 증거 층 안에서
+읽어야 합니다.</p>
+<p>더 큰 수십-qubit·수천 2-qubit-gate 사례는 <strong>고전
+compilation-only</strong> 연구입니다. 2D에서 all-to-all reference 대비
+routing overhead의 geometric mean이 CZ의 gate count 1.65×·2Q depth
+1.86×에서 AshN의 1.13×·1.24×로 낮아졌습니다. all-to-all 값은 fully
+connected QPU 측정값이 아니며, compiler가 만든 reference입니다.</p>
+<h3 id="어디에서-잘-안-듣는가">어디에서 잘 안 듣는가</h3>
+<p>SWAP 흡수는 workload structure에 의존합니다. 인접한 <span
+class="math inline"><em>U</em></span>와 SWAP이 자주 만나는 구조화된
+회로에는 기회가 많지만, interaction partner가 매 layer 빠르게 바뀌는
+quantum-volume circuit에서는 흡수할 gate가 적었습니다. calibration
+범위도 아직 12-qubit chain과 3×3 array입니다. 더 큰 칩에서 crosstalk,
+drift, calibration time이 어떻게 늘어나는지 검증되지 않았습니다. 논문은
+encoded operation이나 logical error rate도 측정하지 않았습니다.</p>
+<h2 id="두-연구는-왜-닮았고-어디가-다른가">4. 두 연구는 왜 닮았고,
+어디가 다른가</h2>
+<p>두 접근의 공통 철학은 <strong>동일 기능의 구현 자유도를 너무 일찍
+버리지 않는다</strong>는 것입니다.</p>
+<ul>
+<li>Classiq은 “adder는 이 회로”, “MCX는 이 decomposition”이라고 미리
+고정하지 않고 함수 구현과 ancilla를 전역 제약 아래 선택합니다.</li>
+<li>control-skip compiler는 모든 subcircuit에 control을 기계적으로
+붙이지 않고, 같은 unitary를 만드는 더 싼 표현을 찾습니다.</li>
+<li>AshN은 “2-qubit operation은 CZ의 반복”, “routing은 별도 SWAP”이라고
+고정하지 않고 <span class="math inline"><em>U</em> ⋅ SWAP</span>을
+native control 한 번으로 합칩니다.</li>
+</ul>
+<p>차이는 최적화 레버입니다. Classiq의 대표 증거는 generic 1Q+CX로 낮춘
+<strong>고전 합성 결과</strong>이고, AshN의 중심 증거는 특정
+superconducting hardware의 gate family·topology·calibration까지 포함한
+<strong>제한된 QPU 실험</strong>입니다. Classiq 논문은 connectivity가
+구현 선택에 중요하다고 논의하지만 대표 수치에서 physical coupling
+graph의 routing 비용을 검증하지 않았습니다. AshN 논문은 그 routing 비용
+자체를 중심 문제로 삼았습니다.</p>
+<h2 id="경쟁보다-결합-스택-전체를-함께-최적화할-수-있을까">5. 경쟁보다
+결합: 스택 전체를 함께 최적화할 수 있을까</h2>
+<p>이상적인 흐름은 다음과 같습니다.</p>
+<ol type="1">
+<li>Qmod 같은 functional model에서 필요한 계산과 허용 오차를
+기술합니다.</li>
+<li>high-level synthesis가 QFT/ripple-carry, MCX, ancilla·uncomputation
+전략을 고릅니다.</li>
+<li>backend cost model이 단순한 ‘CX 한 개=1’ 대신 실제 topology, AshN
+gate duration·error, calibration availability를 반영합니다.</li>
+<li>native-gate-aware router가 남은 <span
+class="math inline"><em>U</em>+</span>SWAP을 흡수합니다.</li>
+<li>pulse scheduler가 crosstalk과 병렬 실행을 포함한 실제 시간을
+계산합니다.</li>
+</ol>
+<p>이 결합은 합리적인 연구 방향이지만, <strong>두 논문이 Classiq와
+AshN을 실제로 연결해 end-to-end 성능을 검증한 결과는 아닙니다.</strong>
+현재 근거에서 말할 수 있는 것은 위쪽과 아래쪽에서 각각 구현 자유도를
+남겼을 때 자원 절감 기회가 생겼다는 점입니다.</p>
+<h2 id="qaoa양자화학재료-계산에서-어떻게-시험할까">6. QAOA·양자화학·재료
+계산에서 어떻게 시험할까</h2>
+<p>사용자의 최적화와 DFT·OLED 연구에 연결하면, 다음 benchmark가
+실용적입니다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="기술 비교 표"><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>연구 회로</th>
+<th>Classiq 계열에서 볼 것</th>
+<th>AshN 계열에서 볼 것</th>
+<th>반드시 함께 볼 고전·실험 지표</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>QAOA MaxCut·QUBO</td>
+<td>mixer·cost implementation, ancilla, logical CX count</td>
+<td>problem graph와 chip graph 불일치, SWAP absorption</td>
+<td>approximation ratio, shots, compile time, scheduled duration</td>
+</tr>
+<tr class="even">
+<td>UCC·ADAPT-VQE</td>
+<td>excitation·control·uncomputation 합성</td>
+<td>fermionic routing과 반복 interaction 구조</td>
+<td>energy error, 2Q count/depth, measurement cost, wall-clock</td>
+</tr>
+<tr class="odd">
+<td>QPE·block encoding</td>
+<td>arithmetic·MCX·state preparation의 width–CX 절충</td>
+<td>controlled unitary의 physical routing</td>
+<td>logical error budget, T/Clifford cost, success probability</td>
+</tr>
+<tr class="even">
+<td>Dicke·correlated state</td>
+<td>state-preparation 회로 후보</td>
+<td>entangler 수와 topology defect 내성</td>
+<td>tomography fidelity, witness, calibration drift</td>
+</tr>
+</tbody>
+</table></div>
+<p>가장 공정한 실험은 동일한 logical workload를 고정하고 세 경로를
+비교하는 것입니다. (A) CZ baseline compiler, (B) Classiq식 high-level
+synthesis 후 같은 CZ backend, (C) 같은 functional model을 AshN-aware
+backend까지 내린 경로입니다. 각 경로에서 logical 2Q count/depth, mapped
+native count/depth, SWAP 수, scheduled pulse duration, per-gate error,
+output fidelity·energy error, compile·calibration time과 전체 shot
+wall-clock을 모두 기록해야 합니다.</p>
+<p>QAOA에서는 문제 graph가 무작위로 조밀할수록 AshN 흡수 기회가 줄 수
+있습니다. 양자화학에서는 Jordan–Wigner parity chain이나 fermionic-swap
+network 같은 구조가 반복되므로 유망한 가설이 있지만, 이번 AshN 논문이
+분자 Hamiltonian을 직접 실행한 것은 아닙니다. OLED active-space 회로에
+바로 성능 향상을 일반화해서는 안 됩니다.</p>
+<h2 id="무엇이-입증됐고-무엇이-남았나">7. 무엇이 입증됐고 무엇이
+남았나</h2>
+<p><strong>입증된 것</strong></p>
+<ul>
+<li>Classiq synthesis는 함수 구현과 ancilla 선택을 늦추면 특정
+benchmark에서 CX count–width 절충을 자동으로 찾을 수 있음을
+보였습니다.</li>
+<li>automatic control skips는 일부 controlled circuit에서 기능을
+보존하면서 gate count와 depth를 줄이는 generic compiler pass를
+보였습니다.</li>
+<li>AshN은 더 풍부한 native 2-qubit control과 routing을 결합하면 제한된
+superconducting QPU에서 entangler 수 감소가 실제 fidelity·entanglement
+certification 개선으로 이어질 수 있음을 보였습니다.</li>
+</ul>
+<p><strong>아직 입증되지 않은 것</strong></p>
+<ul>
+<li>어느 연구도 고전 기준선을 넘는 양자우위나 application-level
+wall-clock 가속을 보이지 않았습니다.</li>
+<li>Classiq 결과는 QPU noise와 pulse timing을 포함하지 않았고, baseline
+library·implementation에 민감합니다.</li>
+<li>AshN의 대규모 수치는 compilation-only이며, larger-device
+calibration·crosstalk·drift 비용은 남아 있습니다.</li>
+<li>gate count 또는 depth 감소만으로 total runtime·에너지·정확도 개선을
+보장할 수 없습니다.</li>
+</ul>
+<h2 id="결론">결론</h2>
+<p>Classiq과 AshN 연구를 함께 읽으면 ’좋은 compiler가 회로를
+정리한다’보다 더 넓은 그림이 보입니다. 효율은 회로가 완성된 뒤 불필요한
+gate를 지우는 데서만 나오지 않습니다. 기능 모델에서 함수 구현을 고르는
+순간, ancilla를 배치하는 순간, qubit를 라우팅하는 순간, 칩의 native
+interaction을 정하는 순간마다 같은 계산의 비용이 바뀝니다.</p>
+<p>Classiq은 상위 설계 공간을 오래 열어 두는 방법을, AshN은 하위
+hardware-control 공간을 넓히는 방법을 보여줬습니다. 다음 단계는 둘을
+직접 연결해 같은 QAOA·양자화학 workload에서 native gate duration,
+error와 calibration cost까지 포함한 end-to-end 비교를 하는 것입니다. 그
+검증이 나오기 전까지 가장 정확한 표현은 ’양자 가속’이 아니라
+<strong>hardware–software co-design으로 routing과 entangling overhead를
+줄인 진전</strong>입니다.</p>
+<h2 id="references">References</h2>
+<ol type="1">
+<li><a href="https://arxiv.org/abs/2608.24084" target="_blank" rel="noreferrer">Wang et al., <em>Lifting
+connectivity bottlenecks in superconducting quantum processors via
+enriched native two-qubit gates</em>, arXiv:2608.24084 v1
+(2026-08-25)</a></li>
+<li><a href="https://arxiv.org/pdf/2608.24084" target="_blank" rel="noreferrer">Wang et al., full paper
+PDF and Supplementary Material</a></li>
+<li><a href="https://arxiv.org/html/2412.07372v2" target="_blank" rel="noreferrer">Goldfriend et al.,
+<em>Design and synthesis of scalable quantum programs</em>,
+arXiv:2412.07372 v2 (2025-01-22)</a></li>
+<li><a href="https://arxiv.org/abs/2505.18256" target="_blank" rel="noreferrer">Emanuel et al.,
+<em>Efficient Quantum Control via Automatic Control Skips</em>,
+arXiv:2505.18256 (2025-05-23)</a></li>
+<li><a href="https://arxiv.org/abs/2502.19368" target="_blank" rel="noreferrer">Vax et al., <em>Qmod:
+Expressive High-Level Quantum Modeling</em>, arXiv:2502.19368
+(2025-02-26)</a></li>
+<li><a href="https://doi.org/10.1109/QSW67625.2025.00026" target="_blank" rel="noreferrer">Qmod, IEEE QSW
+2025 proceedings paper</a></li>
+<li><a href="https://arxiv.org/abs/2505.16908" target="_blank" rel="noreferrer">Tremba et al., <em>Is
+Circuit Depth Accurate for Comparing Quantum Circuit Runtimes?</em>,
+arXiv:2505.16908 v3</a></li>
+<li><a href="https://www.classiq.io/classiq-research" target="_blank" rel="noreferrer">Classiq Research —
+primary research index</a></li>
+</ol>
+<p><small>작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열
+에이전트 하네스. 검증 기준일: 2026-08-27. Classiq의 두 대표 최적화
+논문과 AshN 논문은 모두 동료평가 전 프리프린트이며, Qmod 언어 논문은
+IEEE QSW 2025 proceedings에 수록됐습니다.</small></p>
+</article>
+    <aside class="sidebar">
+      <section class="side-section accent"><h2>오늘의 한 문장</h2><p>두 연구는 같은 계산의 구현 자유도를 끝까지 보존하지만, Classiq은 알고리즘·함수 층에서, AshN은 네이티브 gate·pulse 층에서 그 자유도를 사용합니다.</p></section>
+      <section class="side-section"><h2>분류</h2><span class="tag">Quantum Compilation</span><span class="tag">Classiq</span><span class="tag">Qmod</span><span class="tag">AshN</span><span class="tag">Native Gates</span><span class="tag">Circuit Depth</span></section>
+      <section class="side-section"><h2>정량 근거</h2><div class="metric"><span>Classiq quantum walk</span><strong>274→120 CX</strong></div><div class="metric"><span>Classiq control skips</span><strong>&gt;50%*</strong></div><div class="metric"><span>AshN 1D / 2D</span><strong>−45.2 / −43.7%</strong></div><div class="metric"><span>Dicke fidelity</span><strong>.631→.736</strong></div><p>*state-preparation benchmark. 각 수치는 metric과 검증 층이 다릅니다.</p></section>
+      <section class="side-section"><h2>증거 층</h2><ul><li>Classiq synthesis: 고전 컴파일</li><li>Control skips: 고전 transpilation</li><li>AshN 7 circuits: 실제 QPU</li><li>AshN large scale: compilation-only</li><li>모두 양자우위 증거 아님</li></ul></section>
+      <section class="side-section"><h2>연구자가 볼 지표</h2><ul><li>logical vs mapped 2Q depth</li><li>SWAP·ancilla·routing overhead</li><li>native gate duration·XEB error</li><li>output fidelity·energy error</li><li>compile·calibration·shot wall-clock</li></ul></section>
+      <section class="side-section"><h2>검증 기준</h2><p>2026-08-27<br>Classiq v2·AshN v1 원문과 Supplementary Material 기준</p></section>
+    </aside>
+  </main>
+  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-27. 생성형 이미지는 개념 일러스트이며 실제 pulse·chip layout 데이터를 나타내지 않습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section>
+</body>
+</html>

@@ -66,6 +66,20 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-27_classiq-ashn-circuit-compression",
+        title="양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트",
+        subtitle="고수준 기능 합성, automatic control skips, native gate·SWAP absorption이 회로 비용을 줄이는 서로 다른 층을 비교합니다",
+        date="2026-08-27",
+        updated="2026-08-27",
+        category="Quantum Computing",
+        tags=("Quantum Compilation", "Classiq", "Qmod", "AshN", "Native Gates", "Circuit Depth"),
+        summary=(
+            "Classiq은 기능 모델에서 함수 구현·ancilla·control pattern을 고르고, AshN은 실제 초전도 QPU의 "
+            "native two-qubit gate로 논리 연산과 routing SWAP을 흡수합니다. CX count, mapped depth와 "
+            "QPU fidelity를 분리해 두 접근의 공통 원리, 정량 결과, 결합 가능성과 미입증 범위를 검토합니다."
+        ),
+    ),
+    PublicReview(
         folder="2026-08-27_dwave-molecular-inverse-design-benchmark",
         title="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니",
         subtitle="QM9 5,000개에서 ML·분자 생성·QUBO 선택·QPU 실행·PySCF 검증까지 연결한 계산 스냅샷",
@@ -481,10 +495,13 @@ def remove_tree(path: Path) -> None:
         return
     for item in path.rglob("*"):
         try:
-            item.chmod(stat.S_IWRITE | stat.S_IREAD)
+            mode = stat.S_IWRITE | stat.S_IREAD
+            if item.is_dir():
+                mode |= stat.S_IEXEC
+            item.chmod(mode)
         except OSError:
             pass
-    path.chmod(stat.S_IWRITE | stat.S_IREAD)
+    path.chmod(stat.S_IWRITE | stat.S_IREAD | stat.S_IEXEC)
     shutil.rmtree(path)
 
 
