@@ -1,6 +1,6 @@
 ---
-title: "Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design"
-subtitle: "The 21–27 August 2026 literature window favors richer excited-state labels and better classical electronic-structure layers; current quantum results remain bounded enabling studies."
+title: "Mechanism-Aware Property Labels for OLED Molecular Inverse Design: From Isomer-Dependent ISC to Scalable DFT and ML"
+subtitle: "Research trends from 21–27 August 2026 across isomer-dependent ISC, intermolecular potentials, SCF acceleration, and the current evidence boundary for quantum methods."
 type: final review
 author: "Hyun-Jung Kim"
 date created: 2026-08-28
@@ -11,7 +11,7 @@ canonical url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_week
 alternate ko url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/
 alternate en url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/
 alternate x-default url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/
-social image url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/oled_weekly_pipeline.svg
+social image url: https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/mechanism_aware_oled_inverse_design_hero.jpg
 tags:
   - OLED
   - molecular-inverse-design
@@ -23,7 +23,7 @@ tags:
   - quantum-computing
 ---
 
-# Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design
+# Mechanism-Aware Property Labels for OLED Molecular Inverse Design: From Isomer-Dependent ISC to Scalable DFT and ML
 
 The literature screened from 21 to 27 August 2026 contains one directly OLED-relevant, peer-reviewed study and six enabling-method preprints. Together they point to a practical correction in how OLED molecular inverse design should be organized.
 
@@ -31,9 +31,9 @@ The immediate bottleneck is not the absence of another molecular generator. A mo
 
 Two adjacent computational studies address other missing layers. DensIP uses machine-learned electron densities in a physics-based intermolecular potential, offering a possible route from isolated molecules to host–dopant and host–host energetics. A Kohn–Sham neural operator replaces repeated orbital diagonalization inside self-consistent-field iterations and demonstrates unusually large out-of-distribution calculations. Neither method has yet been validated as an OLED production workflow, but both are more immediately actionable than this week’s quantum papers.
 
-![Mechanism-aware OLED inverse-design pipeline separating photophysical labels, intermolecular and SCF layers, closed-loop learning, and bounded quantum components](../artifacts/oled_weekly_pipeline.svg)
+![Concept illustration of mechanism-aware property labels and computational layers for OLED molecular inverse design](../artifacts/mechanism_aware_oled_inverse_design_hero.jpg)
 
-*Figure 1. Evidence-guided workflow map. Solid paths represent methods demonstrated in the reviewed literature; dashed OLED translations are proposed tests, not completed results.*
+*Figure 1. Concept illustration of the review theme. The central motif represents excited states and mechanism-aware property labels; the lower-left and lower-right elements represent host–dopant interactions and DFT/ML layers. The small peripheral quantum motif reflects the limited enabling-component evidence in this week’s literature. The molecular form is not a structural formula for a specific compound or a computed result.*
 
 ::: highlight Review verdict
 For near-term OLED inverse design, the strongest research move is a mechanism-aware label audit, followed by packing-aware intermolecular validation and controlled tests of SCF acceleration. The two quantum studies reviewed this week address optimizer shot placement and spin-state preparation on small simulated or reconstructed systems. They do not demonstrate OLED-scale VQE, quantum speedup, or quantum advantage.
@@ -154,6 +154,12 @@ The following experiment is a review proposal, not a completed result.
 6. **Apply a circularity gate.** Continue only if Models B or C improve scaffold-held-out ranking without using the same computed rate formula both to construct the descriptors and to define the validation target.
 
 A positive result would justify expanding mechanistic labels in the production dataset. A negative result would still be useful: it would show whether the extra computational cost adds information beyond geometry, energy gaps, and conventional SOC descriptors.
+
+The audit belongs within a broader evidence-gated workflow that separates demonstrated classical-method layers from proposed OLED translations and bounded quantum-component tests.
+
+![Mechanism-aware OLED inverse-design pipeline separating photophysical labels, intermolecular and SCF layers, closed-loop learning, and bounded quantum components](../artifacts/oled_weekly_pipeline.svg)
+
+*Figure 3. Evidence-guided OLED inverse-design workflow. Solid paths represent method layers demonstrated in the reviewed literature; dashed OLED translations are proposed tests, not completed results.*
 
 ## 7. What was not found this week
 

@@ -67,17 +67,17 @@ class PublicReview:
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
-        title="ΔEST만으로는 부족하다: OLED 역설계를 위한 기작 중심 라벨",
-        subtitle="위치 이성질체의 ISC 기작, host-dopant 상호작용, SCF 가속, closed-loop AI와 양자 준비도를 한 주의 연구로 연결합니다",
+        title="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지",
+        subtitle="2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준",
         date="2026-08-28",
         updated="2026-08-28",
         category="Materials AI",
         tags=("OLED", "TADF", "Molecular Inverse Design", "Spin-Vibronic Coupling", "DFT/ML", "VQE"),
         summary=(
-            "이번 주의 직접 OLED 논문은 비슷한 ISC 속도도 direct SOC, Herzberg-Teller, spin-vibronic의 "
-            "서로 다른 조합에서 나올 수 있음을 보였습니다. ΔEST 하나가 아니라 state character, higher triplet, "
-            "SOC와 promoting mode를 함께 학습하는 라벨 설계를 제안하고, DensIP·Kohn-Sham neural operator·"
-            "closed-loop AI 및 VQE 구성요소의 실제 적용 경계를 구분합니다."
+            "이번 주 OLED 광물리 논문은 위치 이성질체별 ISC 속도를 direct SOC, Herzberg-Teller, "
+            "spin-vibronic 기여로 분해했습니다. 이를 바탕으로 ΔEST 중심 데이터셋을 state character, "
+            "higher triplet, SOC와 promoting mode까지 포함하는 물성 라벨로 확장할 필요성을 검토하고, "
+            "DensIP·Kohn-Sham neural operator·closed-loop AI와 VQE 구성요소의 적용 범위를 정리합니다."
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
     ),

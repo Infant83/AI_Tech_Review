@@ -1,6 +1,6 @@
 ---
-title: "ΔEST만으로는 부족하다: OLED 분자 역설계를 위한 기작 중심 라벨과 확장형 계산 워크플로"
-subtitle: "위치 이성질체의 ISC 기작, host-dopant 상호작용, SCF 가속, closed-loop AI와 양자 준비도를 한 주의 연구로 연결합니다"
+title: "OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지"
+subtitle: "2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준"
 type: final review
 author: "김현중"
 date created: 2026-08-28
@@ -11,7 +11,7 @@ canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_wee
 alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/"
 alternate en url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/"
 alternate x-default url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/"
-social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/oled_weekly_pipeline.svg"
+social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/mechanism_aware_oled_inverse_design_hero.jpg"
 tags:
   - ai-tech-review
   - oled
@@ -24,7 +24,7 @@ tags:
   - vqe
 ---
 
-# ΔEST만으로는 부족하다: OLED 분자 역설계를 위한 기작 중심 라벨과 확장형 계산 워크플로
+# OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지
 
 OLED 분자 역설계에서는 흔히 S<sub>1</sub>과 T<sub>1</sub>의 에너지 차이인 ΔE<sub>ST</sub>를 핵심 선별 지표로 사용한다. 작은 ΔE<sub>ST</sub>는 열활성화 지연형광(TADF)의 역항간전이(reverse intersystem crossing, RISC)에 유리한 조건이 될 수 있지만, 전이 속도를 단독으로 결정하지 않는다. singlet와 triplet의 상태 성격, spin-orbit coupling(SOC), 고차 triplet 상태, 분자 진동이 전자상태를 섞는 방식까지 달라지면 비슷한 ΔE<sub>ST</sub>를 가진 분자도 서로 다른 광물리 경로를 밟을 수 있다.
 
@@ -32,9 +32,9 @@ OLED 분자 역설계에서는 흔히 S<sub>1</sub>과 T<sub>1</sub>의 에너�
 
 이번 주에는 새로운 OLED 생성 모델보다 계산 파이프라인의 중간층을 강화할 방법이 더 많이 제시됐다. DensIP는 ML 전자밀도와 물리적 상호작용 항을 결합해 host-host와 host-dopant 비공유 상호작용을 다룰 가능성을 보여줬다. Kohn-Sham neural operator는 SCF 반복 안의 potential-to-density map을 학습해 큰 시스템으로의 확장성을 시험했다. BoMolLLM과 PhysECD는 각각 closed-loop 분자 생성과 물리량 기반 스펙트럼 조립이라는 설계 패턴을 제시했다. 반면 이번 주의 두 양자 연구는 작은 Hamiltonian에서의 VQE 최적화와 spin eigenfunction 상태 준비를 다룬 구성요소 연구다. OLED 분자에 대한 양자 우위나 실용적 VQE 성능을 보여준 결과는 아니다.
 
-![광물리 기작 라벨, DFT·분자간 상호작용, 불확실성을 포함한 ML 설계, 제한된 양자 구성요소 시험을 분리한 OLED 역설계 파이프라인](../artifacts/oled_weekly_pipeline.svg)
+![OLED 분자 역설계의 기작 중심 물성 라벨과 계산 계층을 표현한 개념 일러스트](../artifacts/mechanism_aware_oled_inverse_design_hero.jpg)
 
-*그림 1. 검증 근거에 따라 구성한 OLED 역설계 흐름. 실선은 이번 문헌에서 실제로 다룬 방법층이고, OLED workflow로 이어지는 적용안은 후속 검증이 필요한 리뷰 제안이다.*
+*그림 1. 리뷰 주제를 시각화한 개념 일러스트. 중앙은 여기상태와 기작 중심 물성 라벨, 왼쪽 아래는 host–dopant 상호작용, 오른쪽 아래는 DFT·ML 계산층을 나타낸다. 가장자리의 양자 요소는 이번 주 문헌에서 보조 구성요소 수준에 머문다는 증거 경계를 반영한다. 그림 속 분자 형태는 특정 화합물의 구조식이나 계산 결과가 아니다.*
 
 ::: highlight 이번 리뷰의 판정
 가까운 시기에 가장 먼저 할 일은 새로운 생성기를 추가하는 것보다 기작 중심 라벨 감사를 수행하는 것이다. 그다음 host-dopant 상호작용과 SCF 가속을 고정된 고전 기준선 위에서 검증할 수 있다. 이번 주의 양자 연구는 optimizer shot 배치와 spin-state preparation 구성요소를 다뤘으며 OLED 규모 VQE, 양자 가속 또는 양자 우위를 입증하지 않았다.
@@ -343,6 +343,10 @@ O(n²) logical depth도 NISQ 장치에는 부담이 크다. controlled rotation�
 
 7. **선택적 양자 benchmark**  
    4-8 orbital fragment처럼 고전 exact reference가 가능한 문제에서 optimizer와 state preparation을 구성요소별로 시험한다. 실제 QPU를 사용할 때는 shots, commuting groups, native gate depth, queue와 classical preprocessing을 포함한 end-to-end 비용을 기록한다.
+
+![광물리 기작 라벨, DFT·분자간 상호작용, 불확실성을 포함한 ML 설계, 제한된 양자 구성요소 시험을 분리한 OLED 역설계 파이프라인](../artifacts/oled_weekly_pipeline.svg)
+
+*그림 3. 검증 근거에 따라 구성한 OLED 역설계 흐름. 실선은 이번 문헌에서 실제로 다룬 방법층이고, OLED workflow로 이어지는 적용안은 후속 검증이 필요한 리뷰 제안이다.*
 
 이 구조에서 양자 알고리즘은 현재의 DFT/ML screening을 대체하는 중심 엔진이 아니다. 검증 가능한 작은 active-space 문제에서 특정 solver 또는 state-preparation 구성요소를 비교하는 연구 경로다. DensIP와 neural operator도 마찬가지로 논문의 benchmark 수치만으로 OLED production layer가 되지 않는다. 각 모듈은 자신이 들어갈 위치에 맞는 blind test와 decision gate를 통과해야 한다.
 
