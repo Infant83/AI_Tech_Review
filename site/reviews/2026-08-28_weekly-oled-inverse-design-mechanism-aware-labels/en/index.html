@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design</title>
+  <meta name="description" content="The 21–27 August 2026 literature window favors richer excited-state labels and better classical electronic-structure layers; current quantum results remain bounded enabling studies.">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design">
+  <meta property="og:description" content="The 21–27 August 2026 literature window favors richer excited-state labels and better classical electronic-structure layers; current quantum results remain bounded enabling studies.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/oled_weekly_pipeline.svg">
+  <meta property="og:image:alt" content="Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design">
+  <meta property="article:published_time" content="2026-08-28">
+  <meta property="article:modified_time" content="2026-08-28">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design">
+  <meta name="twitter:description" content="The 21–27 August 2026 literature window favors richer excited-state labels and better classical electronic-structure layers; current quantum results remain bounded enabling studies.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/oled_weekly_pipeline.svg">
+  <meta name="twitter:image:alt" content="Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 35 (2026-08-28)</span>
+      <div class="topline-actions">
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <a href="2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels_final_review_en.md">2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels_final_review_en.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Beyond ΔEST: Mechanism-Aware Labels, Scalable DFT, and the Real Quantum Readiness of OLED Inverse Design</h1>
+        <p class="dek">The 21–27 August 2026 literature window favors richer excited-state labels and better classical electronic-structure layers; current quantum results remain bounded enabling studies.</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>The literature screened from 21 to 27 August 2026 contains one directly OLED-relevant, peer-reviewed study and six enabling-method preprints. Together they point to a practical correction in how OLED molecular inverse design should be organized.</p>
+<p>The immediate bottleneck is not the absence of another molecular generator. A more consequential weakness lies in the property labels used to train and rank candidates. A small singlet–triplet gap, $\Delta E_{\mathrm{ST}}$, is useful, but it does not identify which triplet state participates, whether the states have charge-transfer (CT) or locally excited (LE) character, how strongly spin–orbit coupling (SOC) connects them, or whether nuclear motion opens a spin-vibronic pathway. Two isomers can therefore show similar intersystem-crossing rates while reaching them through different mechanisms.</p>
+<p>Two adjacent computational studies address other missing layers. DensIP uses machine-learned electron densities in a physics-based intermolecular potential, offering a possible route from isolated molecules to host–dopant and host–host energetics. A Kohn–Sham neural operator replaces repeated orbital diagonalization inside self-consistent-field iterations and demonstrates unusually large out-of-distribution calculations. Neither method has yet been validated as an OLED production workflow, but both are more immediately actionable than this week’s quantum papers.</p>
+<p><img alt="Mechanism-aware OLED inverse-design pipeline separating photophysical labels, intermolecular and SCF layers, closed-loop learning, and bounded quantum components" src="oled_weekly_pipeline.svg" /></p>
+<p><em>Figure 1. Evidence-guided workflow map. Solid paths represent methods demonstrated in the reviewed literature; dashed OLED translations are proposed tests, not completed results.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Review verdict</p>
+<p>For near-term OLED inverse design, the strongest research move is a mechanism-aware label audit, followed by packing-aware intermolecular validation and controlled tests of SCF acceleration. The two quantum studies reviewed this week address optimizer shot placement and spin-state preparation on small simulated or reconstructed systems. They do not demonstrate OLED-scale VQE, quantum speedup, or quantum advantage.</p>
+</aside>
+<p>The layout-verified eight-page source brief is available as a <a href="oled_inverse_design_weekly_brief_2026-08-28.pdf">downloadable PDF</a>.</p>
+<h2 id="evidence-map-one-direct-oled-paper-six-enabling-preprints">Evidence map: one direct OLED paper, six enabling preprints</h2>
+<table>
+<thead>
+<tr>
+<th>Study</th>
+<th>Publication status</th>
+<th>Direct result</th>
+<th>Relevance to OLED inverse design</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Karak et al., structural-isomer-dependent ISC</td>
+<td><strong>Peer-reviewed</strong>, <em>Journal of Chemical Physics</em> 165, 084303</td>
+<td>DSO, Herzberg–Teller, and spin-vibronic rate decomposition for three carbazole–benzoate isomers</td>
+<td>Direct evidence that scalar $\Delta E_{\mathrm{ST}}$ screening can miss the operative mechanism</td>
+</tr>
+<tr>
+<td>Wing et al., DensIP</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Density-based intermolecular potential fitted to CCSD(T)/CBS dimer energies</td>
+<td>Candidate method for host–host, host–dopant, and exciplex-contact energetics</td>
+</tr>
+<tr>
+<td>Khan et al., Kohn–Sham neural operator</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Potential-to-density map used in quasi-linear-scaling SCF</td>
+<td>Possible ground-state SCF accelerator, not a TDDFT replacement</td>
+</tr>
+<tr>
+<td>Xu et al., BoMolLLM</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Closed-loop generation using frozen LLM surrogates and learned oracles</td>
+<td>Useful orchestration pattern, with unresolved oracle circularity and uncertainty</td>
+</tr>
+<tr>
+<td>Jiang et al., PhysECD</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Physics-constrained prediction of transition quantities and ECD spectra</td>
+<td>A design pattern for predicting physical generators before assembled observables</td>
+</tr>
+<tr>
+<td>Stalschus et al., PAS-VQE</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Adaptive measurement shifts for coordinate-wise VQE optimization</td>
+<td>Small simulator-only optimizer component</td>
+</tr>
+<tr>
+<td>Tao et al., spin-eigenfunction preparation</td>
+<td><strong>arXiv v1 preprint</strong></td>
+<td>Deterministic circuits for arbitrary total-spin eigenfunctions</td>
+<td>Potential state-preparation primitive, not a molecular property calculation</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="Evidence map placing the seven papers by OLED proximity and evidence layer" src="evidence_readiness_map.svg" /></p>
+<p><em>Figure 2. Karak et al. provides the only direct, peer-reviewed OLED-photophysics evidence in this window. The other studies are preprints at adjacent classical-method or future quantum-component layers.</em></p>
+<p>The workflow recommendations below are review inferences. They were not executed or validated by the source papers unless stated otherwise.</p>
+<h2 id="1-similar-rates-do-not-imply-the-same-photophysical-mechanism">1. Similar rates do not imply the same photophysical mechanism</h2>
+<p>Karak and co-workers studied methyl 2-, 3-, and 4-(9H-carbazol-9-yl)benzoate, denoted o-, m-, and p-MCBA. They classified excited states as CT, LE, or mixed CT+LE and calculated intersystem-crossing contributions using a time-dependent correlation-function framework.</p>
+<p>For the lowest-singlet pathway, the reported direct spin–orbit/Herzberg–Teller rates were:</p>
+<table>
+<thead>
+<tr>
+<th>Isomer</th>
+<th style="text-align: right;">Direct SOC rate</th>
+<th style="text-align: right;">Herzberg–Teller rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ortho</td>
+<td style="text-align: right;">$0.87\times10^6\ \mathrm{s^{-1}}$</td>
+<td style="text-align: right;">$4.16\times10^6\ \mathrm{s^{-1}}$</td>
+</tr>
+<tr>
+<td>para</td>
+<td style="text-align: right;">$1.18\times10^6\ \mathrm{s^{-1}}$</td>
+<td style="text-align: right;">$2.24\times10^6\ \mathrm{s^{-1}}$</td>
+</tr>
+<tr>
+<td>meta</td>
+<td style="text-align: right;">$5.67\times10^3\ \mathrm{s^{-1}}$</td>
+<td style="text-align: right;">$4.02\times10^6\ \mathrm{s^{-1}}$</td>
+</tr>
+</tbody>
+</table>
+<p>The meta isomer additionally exhibited a spin-vibronic-assisted $k_{\mathrm{ISC}}$ of $5.45\times10^6\ \mathrm{s^{-1}}$. Direct SOC plus Herzberg–Teller coupling dominated the ortho and para pathways, whereas Herzberg–Teller plus spin-vibronic coupling dominated the meta pathway. Larger $S_1$–higher-triplet and higher-triplet–$T_1$ energy separations suppressed the spin-vibronic route in the ortho and para structures.</p>
+<p><strong>Source result.</strong> The three positional isomers can reach ISC rates of a similar order through different combinations of electronic SOC, nuclear-motion-assisted SOC, and higher-triplet mediation.</p>
+<p><strong>Workflow inference.</strong> A model trained only on $\Delta E_{\mathrm{ST}}$ and one static $S_1$–$T_1$ SOC value can rank the observed rate without learning the correct pathway. A more auditable label vector would retain at least $S_1$, $T_1$, $T_2$, and $T_3$ energies; CT/LE state character; oscillator strength; relevant $S_1$–$T_n$ SOC matrix elements; and a descriptor for promoting-mode or spin-vibronic activity.</p>
+<p>The boundary matters. This is a three-isomer ISC study, not a complete TADF reverse-intersystem-crossing or device-efficiency study. Transfer to rigid multiresonance TADF emitters, heavy-atom phosphorescent emitters, or amorphous host environments remains an inference. The calculated rates also remain conditional on the electronic-structure, vibronic, and line-broadening approximations.</p>
+<h2 id="2-intermolecular-energetics-is-the-missing-bridge-to-the-oled-film">2. Intermolecular energetics is the missing bridge to the OLED film</h2>
+<p>An isolated-molecule model does not determine how a candidate behaves in an amorphous film. Host–dopant and host–host contacts alter electrostatics, dispersion, induction, orbital overlap, CT-state formation, and conformational distributions.</p>
+<p>The DensIP preprint combines electron densities predicted by DenSNet with a four-parameter physical model containing electrostatics, exchange repulsion, induction, and many-body dispersion. DenSNet uses 20,000 DFT calculations. The four universal parameters are fitted with 1,016 training calculations from the optimized DES15K subset, which contains 4,063 configurations from 1,016 unique dimers; molecule-disjoint splits and $5\times5$ cross-validation are used for the small-dimer fit.</p>
+<p>Reported test RMSEs against CCSD(T)/CBS are 0.7 kcal/mol near equilibrium, 0.2 kcal/mol at medium range, 0.7 kcal/mol for molecular-dynamics conformations, and 0.7 kcal/mol for neutral PLF547 protein–ligand fragments. The S66x8 total-energy RMSE is 0.6 kcal/mol. On the authors’ hardware, a benzene dimer required approximately 30 CPU-s with DensIP versus approximately 2,000 CPU-s with PBE.</p>
+<p>The limitations are substantial for OLED use. Training chemistry is restricted to neutral, closed-shell H/C/N/O systems. Repulsive-wall and short-range RMSEs rise to 3.8 and 2.2 kcal/mol, respectively. Nitriles and carboxylic acids are difficult, and compensation between induction and exchange errors is reported. No OLED blend, amorphous morphology, excited state, or force-field molecular-dynamics validation is included.</p>
+<p><strong>Workflow inference.</strong> A useful next benchmark would contain 100–300 host–host and host–emitter geometries spanning stacked, T-shaped, CT-contact, and separated configurations. A DensIP-like model could be compared with $\omega$B97X-D/def2-TZVP and a smaller DLPNO-CCSD(T) anchor set. Its role would be to re-rank packing-aware candidates before expensive excited-state cluster calculations, not to replace those calculations.</p>
+<h2 id="3-a-neural-kohnsham-map-could-accelerate-scf-but-not-the-whole-oled-calculation">3. A neural Kohn–Sham map could accelerate SCF, but not the whole OLED calculation</h2>
+<p>Khan and co-workers learn a map from a Kohn–Sham potential on a real-space grid to the corresponding electron density. Their domain-invariant, SE(3)-equivariant Fourier neural operator replaces repeated orbital diagonalizations during SCF and has reported cost scaling of $O(N_g\log N_g)$.</p>
+<p>Training combines 2,004 molecules and 6,500 solids, using 59,500 ordinary SCF potential–density labels. The tests include QM9, larger QMugs molecules, metals, insulators, and magnesium dislocations. For held-out QM9 systems, the density error is 0.625%, compared with 0.662% for a direct ground-state predictor. On out-of-distribution QMugs molecules, the self-consistent neural-operator error is 2.23% versus 9.97%; the dipole error is 0.026 versus 0.237 D/electron. The method converges magnesium dislocations containing up to 8,250 atoms and 82,500 valence electrons on one GPU after training on cells no larger than 364 atoms.</p>
+<p><strong>Source result.</strong> The learned density map supports stable SCF iterations across unusually different chemical and solid-state domains, including a large out-of-distribution metallic defect calculation.</p>
+<p><strong>Workflow inference.</strong> For OLED calculations, this should initially be tested as a ground-state SCF preconditioner. A controlled benchmark would measure SCF wall time and failure rate for 50–200 large donor–acceptor molecules and dimers, recover orbitals through fixed-density post-SCF diagonalization, and then run the unchanged TDA/TDDFT layer.</p>
+<p>Only the density component is learned in this preprint. Total energies and spectra still require post-SCF orbital recovery. Excited states, hybrid and range-separated functionals, forces, charged species, and organic-film conformers are not established. If the fixed-density diagonalization consumes most of the original cost, the end-to-end acceleration may be much smaller than the SCF scaling result suggests.</p>
+<h2 id="4-closed-loop-generation-still-needs-a-trustworthy-oracle">4. Closed-loop generation still needs a trustworthy oracle</h2>
+<p>BoMolLLM freezes both a graph-based Llamole generator and an LLM surrogate. The surrogate reads the design instruction, previous SMILES, and oracle scores, then selects top-$k$ reference molecules and may provide a one-sentence search guide. Its classical comparison is a Matérn-5/2 Gaussian process with automatic relevance determination on 768-dimensional generator embeddings compressed by truncated SVD, using LogEI acquisition.</p>
+<p>The study tests Llama-3.1-8B, Mistral-7B, and Qwen2-7B on six MolQA tasks: HIV, BBBP, and BACE classification plus CO2, O2, and N2 permeability. The oracles are random forests trained on ECFP4 fingerprints. Improvements are heterogeneous. With Mistral, BACE AUC rises from 0.6209 in one-shot generation to 0.6443, while O2 log-MAE changes from 0.7621 to 0.7535. Random search and GP Bayesian optimization are often close, and the material-task improvements with Qwen are small.</p>
+<p>The loop optimizes learned oracles and evaluates with closely related machinery, so oracle exploitation is unresolved. Prompted “exploration” is not calibrated posterior uncertainty. Invalid material SMILES are excluded from MAE calculations, which can bias the reported metric. The study contains no excited-state OLED data, DFT validation, synthesis planning, or retrosynthesis constraint.</p>
+<p>For an OLED loop, the LLM is better assigned to summarizing failure clusters and choosing interpretable references. Numerical predictions and uncertainty should remain with a calibrated GNN ensemble or GP. Each iteration should reserve a blinded DFT batch and report enrichment, calibration error, scaffold diversity, synthetic feasibility, and oracle disagreement.</p>
+<p>PhysECD supplies a complementary modeling pattern. Its parity-aware E(3)-equivariant network predicts per-state excitation energies and electric and magnetic transition dipoles, then reconstructs rotatory strengths and spectra with differentiable Gaussian broadening. Mirror reflection exactly reverses the predicted ECD spectrum by construction. On CMCDS, the reported per-molecule spectral Pearson correlation is 0.642 mean and 0.822 median.</p>
+<p>ECD is not TADF, and spectral correlation alone does not establish excitation-energy or intensity accuracy at OLED design precision. Nevertheless, “predict physical generators, then assemble the observable” is a transferable design principle. An OLED model could predict state energies, transition dipoles, transition-density descriptors, and SOC-related quantities before a differentiable photophysics layer constructs spectra or rate proxies.</p>
+<h2 id="5-the-quantum-papers-are-components-not-oled-calculations">5. The quantum papers are components, not OLED calculations</h2>
+<p>The PAS-VQE preprint modifies one-parameter-at-a-time Rotosolve/NFT-style optimization. Three circuit-energy evaluations reconstruct a sinusoid. A von Mises prior is placed over the minimizer, and the measurement shift adapts from $2\pi/3$ for a weak prior toward $\pi/2$ for a concentrated prior.</p>
+<p>All reported benchmarks are simulations: a 5-qubit transverse-field Ising model with a three-layer efficient-SU(2) circuit and 40 parameters, and 4-qubit MaxCut with a five-layer hardware-efficient circuit and 20 parameters. The study uses 100 random starts. Shot budgets are 1,000 or 100 shots per evaluation for the Ising model and 200 or 20 for MaxCut. PAS recovers whichever of two fixed shifts performs better in each regime; it does not claim a universal multiplicative speedup.</p>
+<p>No molecular Hamiltonian, active space, fermion-to-qubit mapping, excited-state objective, hardware noise, or chemistry optimizer baseline is tested. A molecular experiment must report the full multiplication of parameters, updates, three shifts, Pauli measurement groups, and shots. The familiar $O(1/\sqrt{N_{\mathrm{shots}}})$ shot-noise scaling remains.</p>
+<p>The spin-eigenfunction preprint deterministically prepares total-spin eigenfunctions using sequential branching paths or binary spin-coupling trees. Branching-path SCS-CG circuits can reach $O(n)$ depth. The more general WDB-CG construction uses an auxiliary qubit and has at least $O(n^2)$ depth. Small-qubit instances are checked with classical amplitude reconstruction; there is no QPU run, molecular energy calculation, or noise study.</p>
+<p>Spin-pure configuration state functions could improve initial overlap for open-shell or strongly correlated active spaces. However, an $n$-spin eigenfunction is not yet a molecular electronic wavefunction. Orbital occupations, antisymmetry mapping, the active-space Hamiltonian, and a correlation ansatz remain necessary.</p>
+<aside class="callout callout-evidence">
+<p class="callout-label">Quantum boundary</p>
+<p>Neither preprint demonstrates quantum advantage for OLED chemistry. PAS is a simulator-only shot-placement method, while the spin study provides theoretical state-preparation circuits verified by classical reconstruction. Both may enter a future active-space VQE workflow, but neither replaces DFT/TDDFT screening.</p>
+</aside>
+<h2 id="6-proposed-experiment-a-1224-molecule-mechanistic-label-audit">6. Proposed experiment: a 12–24-molecule mechanistic label audit</h2>
+<p>The following experiment is a review proposal, not a completed result.</p>
+<ol>
+<li>
+<p><strong>Select the chemical set.</strong> Choose three or four scaffold families containing positional or torsional isomers. Include at least one known fast-RISC example and one weak or negative control per family. A total of 12–24 molecules is large enough to expose isomer misranking while remaining compatible with careful excited-state inspection.</p>
+</li>
+<li>
+<p><strong>Freeze geometries and base labels.</strong> At existing optimized geometries, extract $S_1$, $T_1$, and at least $T_2$ energies; use $T_3$ where state ordering requires it. Record oscillator strength, natural-transition-orbital CT/LE descriptors, and relevant $S_1$–$T_n$ SOC matrix elements.</p>
+</li>
+<li>
+<p><strong>Add a limited vibronic tier.</strong> For four to six representatives, calculate selected normal-mode SOC derivatives or a clearly defined spin-vibronic proxy. This tier should be reserved for molecules chosen before model evaluation, not only for cases that the simpler model already misranks.</p>
+</li>
+<li>
+<p><strong>Fit matched models.</strong></p>
+</li>
+</ol>
+<ul>
+<li>Model A: $\Delta E_{\mathrm{ST}}$ only</li>
+<li>Model B: $\Delta E_{\mathrm{ST}}$ + static SOC + state character</li>
+<li>Model C: Model B + promoting-mode or spin-vibronic descriptors</li>
+</ul>
+<ol start="5">
+<li>
+<p><strong>Use scaffold-held-out validation.</strong> Compare leave-one-scaffold-out ranking of measured $k_{\mathrm{RISC}}$, or a higher-level computed rate when measurement is unavailable. Report uncertainty calibration and the frequency of catastrophic isomer inversions, not only aggregate MAE.</p>
+</li>
+<li>
+<p><strong>Apply a circularity gate.</strong> Continue only if Models B or C improve scaffold-held-out ranking without using the same computed rate formula both to construct the descriptors and to define the validation target.</p>
+</li>
+</ol>
+<p>A positive result would justify expanding mechanistic labels in the production dataset. A negative result would still be useful: it would show whether the extra computational cost adds information beyond geometry, energy gaps, and conventional SOC descriptors.</p>
+<h2 id="7-what-was-not-found-this-week">7. What was not found this week</h2>
+<p>No credible new primary study in the screened window established a PhOLED host design with device or lifetime validation, a degradation mechanism connecting bond dissociation and exciton or polaron chemistry to operational lifetime, a SELFIES-specific synthesis-constrained workflow, a CRBM/Boltzmann molecular inverse-design result, a chemistry-relevant D-Wave or QAOA encoding with competitive classical baselines, an OLED-scale VQE resource estimate, or a new OLED-relevant GW–BSE result.</p>
+<p>An <em>Organic Letters</em> paper on fully resonant B/N-doped hetero[8]helicenes appeared online on 27 August 2026. It was too new at the screening cutoff for a reliable quantitative summary and is retained as a watchlist item rather than incorporated speculatively.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>This week’s papers reorganize the OLED inverse-design problem into three coupled layers.</p>
+<p>The molecular layer needs labels that distinguish state character, SOC pathways, and vibronic mediation instead of compressing photophysics into $\Delta E_{\mathrm{ST}}$. The environmental layer needs intermolecular energetics that can evaluate host–host and host–emitter contacts. The computational layer needs faster ground-state calculations whose end-to-end benefit survives orbital recovery and subsequent excited-state work.</p>
+<p>Current quantum methods sit outside this main production path. Adaptive VQE shifts and deterministic spin-state preparation may become useful subroutines for carefully chosen active spaces, but the reviewed evidence contains no OLED molecular Hamiltonian benchmark, QPU chemistry calculation, or advantage claim. The defensible next step is therefore a mechanism-aware label audit, followed by packing and SCF benchmarks with frozen classical baselines. Quantum components should enter only where their resource cost and chemical contribution can be measured separately.</p>
+<h2 id="publication-information">Publication information</h2>
+<ul>
+<li>Coverage window: 2026-08-21 to 2026-08-27</li>
+<li>Screening cutoff: 2026-08-28, approximately 08:58 KST</li>
+<li>Selected records: one peer-reviewed article and six arXiv v1 preprints</li>
+<li>Duplicate control: studies included in the 2026-08-21 brief were excluded</li>
+<li>Interpretation rule: numerical findings are source-reported; OLED workflow translations and the mechanistic-label audit are review inferences requiring independent validation</li>
+</ul>
+<h2 id="references">References</h2>
+<ol>
+<li>P. Karak, K. Basu, A. Ghosh, and S. Chakrabarti, <a href="https://doi.org/10.1063/5.0343043">“Role of spin-orbit and nuclear motion assisted spin-orbit coupling on the structural isomerism dependent intersystem crossing mechanism,” <em>Journal of Chemical Physics</em> 165, 084303 (2026)</a>. <strong>Peer-reviewed.</strong></li>
+<li>D. Wing, M. Bogojeski, S. Goger, K.-R. Müller, and A. Tkatchenko, <a href="https://arxiv.org/abs/2608.20753">“Accurate and Transferable Intermolecular Potential Based on Machine-Learned Molecular Electron Density,” arXiv:2608.20753v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li>D. Khan, M. D. Hanisch, N. Argatoff, E. Xie, S. Sharma, and A. Anandkumar, <a href="https://arxiv.org/abs/2608.23895">“Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory,” arXiv:2608.23895v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li>Y. Xu, X. Zhao, X. Song, L. Bai, and T. Yu, <a href="https://arxiv.org/abs/2608.22967">“Closed-Loop Bayesian Molecular Inverse Design with Semantic LLM Surrogates,” arXiv:2608.22967v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li>Y. Jiang, L. Chen, R. Shi, L. Han, T. Zhu, and Y. Yang, <a href="https://arxiv.org/abs/2608.21892">“PhysECD: A Physics-Constrained E(3)-Equivariant Framework for Electronic Circular Dichroism Spectrum Prediction,” arXiv:2608.21892v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li>F. Stalschus, S. Pedrielli, S. Kühn, K. Jansen, K. A. Nicoli, and S. Nakajima, <a href="https://arxiv.org/abs/2608.21616">“Prior-Informed Adaptive Shifts for Sequential Minimal Optimization in Variational Quantum Eigensolvers,” arXiv:2608.21616v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li>W. Tao, J. Wang, and F. Zuo, <a href="https://arxiv.org/abs/2608.22892">“Deterministic Preparation of Arbitrary Spin Eigenfunctions,” arXiv:2608.22892v1 (2026)</a>. <strong>Preprint.</strong></li>
+<li><a href="https://doi.org/10.1021/acs.orglett.6c03273">“Integration of Multiresonance Heterocyclic Aromatic Hydrocarbons for Fully Resonant B/N-Doped Hetero[8]helicenes with Long-Wavelength Ultra-Narrow-Band Emission,” <em>Organic Letters</em>, published online 27 August 2026</a>. <strong>Watchlist; not quantitatively reviewed here.</strong></li>
+</ol>
+      <div class="footer">
+        Generated: 2026-08-28 20:58:15<br>
+        Source last modified: 2026-08-28 20:51:54
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#evidence-map-one-direct-oled-paper-six-enabling-preprints">Evidence map: one direct OLED paper, six enabling preprints</a></li>
+<li><a href="#1-similar-rates-do-not-imply-the-same-photophysical-mechanism">1. Similar rates do not imply the same photophysical mechanism</a></li>
+<li><a href="#2-intermolecular-energetics-is-the-missing-bridge-to-the-oled-film">2. Intermolecular energetics is the missing bridge to the OLED film</a></li>
+<li><a href="#3-a-neural-kohnsham-map-could-accelerate-scf-but-not-the-whole-oled-calculation">3. A neural Kohn–Sham map could accelerate SCF, but not the whole OLED calculation</a></li>
+<li><a href="#4-closed-loop-generation-still-needs-a-trustworthy-oracle">4. Closed-loop generation still needs a trustworthy oracle</a></li>
+<li><a href="#5-the-quantum-papers-are-components-not-oled-calculations">5. The quantum papers are components, not OLED calculations</a></li>
+<li><a href="#6-proposed-experiment-a-1224-molecule-mechanistic-label-audit">6. Proposed experiment: a 12–24-molecule mechanistic label audit</a></li>
+<li><a href="#7-what-was-not-found-this-week">7. What was not found this week</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#publication-information">Publication information</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="oled_weekly_pipeline.svg">Mechanism-aware OLED inverse-design pipeline separating photophysical labels, intermolecular and SCF layers, closed-loop learning, and bounded quantum components</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-08-28.pdf">downloadable PDF</a></li>
+<li><a href="evidence_readiness_map.svg">Evidence map placing the seven papers by OLED proximity and evidence layer</a></li>
+<li><a href="https://doi.org/10.1063/5.0343043" target="_blank" rel="noreferrer">“Role of spin-orbit and nuclear motion assisted spin-orbit coupling on the structural isomerism dependent intersystem crossing mechanism,” *Journal of Chemical Physics* 165, 084303 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.20753" target="_blank" rel="noreferrer">“Accurate and Transferable Intermolecular Potential Based on Machine-Learned Molecular Electron Density,” arXiv:2608.20753v1 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.23895" target="_blank" rel="noreferrer">“Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory,” arXiv:2608.23895v1 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.22967" target="_blank" rel="noreferrer">“Closed-Loop Bayesian Molecular Inverse Design with Semantic LLM Surrogates,” arXiv:2608.22967v1 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.21892" target="_blank" rel="noreferrer">“PhysECD: A Physics-Constrained E(3)-Equivariant Framework for Electronic Circular Dichroism Spectrum Prediction,” arXiv:2608.21892v1 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.21616" target="_blank" rel="noreferrer">“Prior-Informed Adaptive Shifts for Sequential Minimal Optimization in Variational Quantum Eigensolvers,” arXiv:2608.21616v1 (2026)</a></li>
+<li><a href="https://arxiv.org/abs/2608.22892" target="_blank" rel="noreferrer">“Deterministic Preparation of Arbitrary Spin Eigenfunctions,” arXiv:2608.22892v1 (2026)</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, external references, and relative links to local review notes and authoring-support files.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>

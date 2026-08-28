@@ -66,6 +66,22 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
+        title="ΔEST만으로는 부족하다: OLED 역설계를 위한 기작 중심 라벨",
+        subtitle="위치 이성질체의 ISC 기작, host-dopant 상호작용, SCF 가속, closed-loop AI와 양자 준비도를 한 주의 연구로 연결합니다",
+        date="2026-08-28",
+        updated="2026-08-28",
+        category="Materials AI",
+        tags=("OLED", "TADF", "Molecular Inverse Design", "Spin-Vibronic Coupling", "DFT/ML", "VQE"),
+        summary=(
+            "이번 주의 직접 OLED 논문은 비슷한 ISC 속도도 direct SOC, Herzberg-Teller, spin-vibronic의 "
+            "서로 다른 조합에서 나올 수 있음을 보였습니다. ΔEST 하나가 아니라 state character, higher triplet, "
+            "SOC와 promoting mode를 함께 학습하는 라벨 설계를 제안하고, DensIP·Kohn-Sham neural operator·"
+            "closed-loop AI 및 VQE 구성요소의 실제 적용 경계를 구분합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+    ),
+    PublicReview(
         folder="2026-08-27_classiq-ashn-circuit-compression",
         title="양자 회로는 어디에서 짧아지는가: Classiq 합성과 AshN 네이티브 게이트",
         subtitle="고수준 기능 합성, automatic control skips, native gate·SWAP absorption이 회로 비용을 줄이는 서로 다른 층을 비교합니다",
