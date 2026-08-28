@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane</title>
+  <meta name="description" content="How the KDC Hamiltonian is mapped to grid-encoded qubits, what a 23-wire classical simulation establishes, and what is still required for TADF and OLED research">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane">
+  <meta property="og:description" content="How the KDC Hamiltonian is mapped to grid-encoded qubits, what a 23-wire classical simulation establishes, and what is still required for TADF and OLED research">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg">
+  <meta property="og:image:alt" content="From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane">
+  <meta property="article:published_time" content="2026-08-29">
+  <meta property="article:modified_time" content="2026-08-29">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane">
+  <meta name="twitter:description" content="How the KDC Hamiltonian is mapped to grid-encoded qubits, what a 23-wire classical simulation establishes, and what is still required for TADF and OLED research">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg">
+  <meta name="twitter:image:alt" content="From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 35 (2026-08-29)</span>
+      <div class="topline-actions">
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <a href="2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md">2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane</h1>
+        <p class="dek">How the KDC Hamiltonian is mapped to grid-encoded qubits, what a 23-wire classical simulation establishes, and what is still required for TADF and OLED research</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>A molecule does not respond to light through electronic energy levels alone. Its nuclei move, bonds stretch and twist, and those motions change the energies and characters of the electronic states. This coupled electronic–vibrational motion—<strong>vibronic dynamics</strong>—is central to internal conversion, intersystem crossing, energy transfer, and charge transfer.</p>
+<p>The PennyLane demo <a href="https://pennylane.ai/demos/simulating_vibronic_dynamics"><em>A quantum algorithm for vibronic dynamics</em></a>, published on 19 August 2026, turns this problem into executable circuit components. It implements a small example of the peer-reviewed algorithm developed by Motlagh and co-workers in <a href="https://doi.org/10.1088/2058-9565/ae0828"><em>Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design</em></a>, <em>Quantum Science and Technology</em> <strong>10</strong>, 045048 (2025).</p>
+<p>The boundary is important. This is <strong>not a real molecule run on a quantum processor</strong>. The supplied program evolves an illustrative two-electronic-state, one-vibrational-mode model with the CPU-based <code>lightning.qubit</code> state-vector simulator. Its contribution is architectural and educational: it exposes how a fault-tolerant vibronic algorithm can be assembled from a real-space grid, a Quantum Fourier Transform (QFT), quantum read-only memory (QROM), reversible arithmetic, a phase-gradient state, and a second-order Trotter product formula.</p>
+<p><img alt="Concept illustration connecting coupled electron–nuclear motion, potential-energy surfaces, and grid-encoded quantum time evolution" src="../artifacts/vibronic_dynamics_quantum_simulation_hero.jpg" /></p>
+<p><em>Figure 1. Concept illustration linking electronic-state change, nuclear-wavepacket motion, and real-space grid encoding. It is not the structure of a specific molecule, a literal quantum circuit, or a computed result.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Review verdict</p>
+<p>The PennyLane page is an implementation tutorial for a future fault-tolerant algorithm, not evidence that present quantum hardware has solved nonadiabatic molecular dynamics. Its executed result is a 23-wire classical state-vector toy simulation. The formalism is relevant to mechanism-resolved TADF and OLED photophysics, but the code contains no spin–orbit coupling, ISC/RISC, real-molecule parameters, thermal environment, or QPU run.</p>
+</aside>
+<h2 id="evidence-at-a-glance">Evidence at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Verified scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Public artifact</td>
+<td>Emily Nobes, PennyLane educational demo, 19 August 2026</td>
+</tr>
+<tr>
+<td>Underlying research</td>
+<td>Motlagh et al., <em>Quantum Science and Technology</em> <strong>10</strong>, 045048 (2025)</td>
+</tr>
+<tr>
+<td>Algorithm class</td>
+<td>Digital gate-based real-time Hamiltonian simulation; not VQE, QAOA, or annealing</td>
+</tr>
+<tr>
+<td>Execution backend</td>
+<td>CPU C++ <code>lightning.qubit</code> state-vector simulator</td>
+</tr>
+<tr>
+<td>Demonstrated model</td>
+<td>Two electronic states, one vibrational mode, four grid points, linear coupling</td>
+</tr>
+<tr>
+<td>Full circuit width</td>
+<td>23 simulated wires: three system wires and 20 work/precision wires</td>
+</tr>
+<tr>
+<td>Readout</td>
+<td>Exact electronic-state probabilities from the state vector</td>
+</tr>
+<tr>
+<td>Not demonstrated</td>
+<td>Molecular accuracy, a QPU run, noise/error correction, quantum advantage, or OLED prediction</td>
+</tr>
+<tr>
+<td>Research position</td>
+<td>Algorithm and resource-feasibility work aimed at early fault-tolerant computing</td>
+</tr>
+</tbody>
+</table>
+<p>This review keeps four evidence layers separate:</p>
+<ul>
+<li><strong>Demo result:</strong> settings and outputs in the public PennyLane code</li>
+<li><strong>Source paper:</strong> the peer-reviewed algorithm and current arXiv v3 resource estimates</li>
+<li><strong>Computational boundary:</strong> accuracy, chemistry, and hardware claims that were not tested</li>
+<li><strong>Review inference:</strong> a bounded path toward TADF, PhOLED, and inverse-design research</li>
+</ul>
+<h2 id="1-an-intuitive-picture-a-wavepacket-moving-across-several-landscapes">1. An intuitive picture: a wavepacket moving across several landscapes</h2>
+<p>The Born–Oppenheimer approximation uses the fact that electrons usually respond much faster than nuclei. One first solves the electronic problem at a chosen nuclear geometry, then treats the nuclei as moving on the resulting potential-energy surface. This picture is extraordinarily productive for equilibrium structures and ground-state energies.</p>
+<p>After photoexcitation, however, several electronic surfaces can approach or intersect. Imagine them as flexible landscape sheets stacked above the same molecular coordinates. A nuclear wavepacket moves across a sheet. When it reaches a region where two sheets interact strongly, part of the wavepacket may transfer to the other electronic state, split between pathways, or retain coherence. A table of vertical excitation energies records selected heights; it does not propagate the moving wavepacket.</p>
+<p>The algorithm divides this motion into short movie frames. During every small interval $dt$, it alternates between two updates:</p>
+<ol>
+<li>move the nuclear wavepacket according to its momentum;</li>
+<li>update phases and state couplings according to nuclear position and electronic label.</li>
+</ol>
+<p>A symmetric sequence of those updates is a second-order Suzuki–Trotter product formula.</p>
+<p>The introductory PennyLane prose is too broad when it suggests that classical computers simply cannot handle dynamics. Surface hopping, Ehrenfest dynamics, multiconfiguration time-dependent Hartree (MCTDH), multilayer MCTDH, and tensor-network methods all address parts of this problem. The narrower challenge is that systematically accurate, full-dimensional quantum propagation can become expensive when many modes and electronic states develop strong correlations.</p>
+<h2 id="2-the-physical-model-the-kdc-vibronic-hamiltonian">2. The physical model: the KDC vibronic Hamiltonian</h2>
+<p>The Köppel–Domcke–Cederbaum (KDC) Hamiltonian treats electronic labels and nuclear vibrations as one quantum system:</p>
+<p>$$
+H=\mathbb I_{\mathrm{el}}\otimes(T_{\mathrm{nuc}}+V_0)+\mathbf W(\mathbf Q).
+$$</p>
+<p>$T_{\mathrm{nuc}}$ is nuclear vibrational kinetic energy, $V_0$ is a reference harmonic potential, and $\mathbf W(\mathbf Q)$ is a diabatic matrix of electronic energies and couplings that changes with the normal-mode coordinates $\mathbf Q$.</p>
+<p>A matrix element can be truncated at quadratic order:</p>
+<p>$$
+W&rsquo;<em r_r_="r,r'">{ij}(\mathbf Q)=\lambda^{(i,j)}
++\sum_r a_r^{(i,j)}Q_r
++\sum</em>.
+$$}b_{rr&rsquo;}^{(i,j)}Q_rQ_{r&rsquo;</p>
+<p>The coordinate-independent $\lambda$ terms set energy offsets and couplings, $a_rQ_r$ gives linear vibronic coupling, and $b_{rr&rsquo;}Q_rQ_{r&rsquo;}$ introduces quadratic and mode–mode dependence. Keeping only the linear terms gives an LVC model; retaining the quadratic terms gives a QVC model. Each $Q_r$ is a dimensionless molecular normal coordinate, not the position of one atom.</p>
+<p>This Hamiltonian is an input model, not an automatic electronic-structure calculation. Electronic states, frequencies, normal modes, and coupling coefficients must be obtained upstream from DFT/TDDFT or multireference calculations and a diabatization procedure. The <a href="https://arxiv.org/html/2411.13669v3">current arXiv v3</a> explicitly leaves Hamiltonian construction outside the quantum-propagation algorithm.</p>
+<h2 id="3-encoding-continuous-nuclear-motion-on-qubits">3. Encoding continuous nuclear motion on qubits</h2>
+<p>Each vibrational coordinate is discretized over $K=2^k$ real-space grid points and stored in a $k$-qubit register. The computational basis represents position:</p>
+<p>$$
+Q|x\rangle=\Delta(x-K/2)|x\rangle,
+\qquad \Delta=\sqrt{2\pi/K}.
+$$</p>
+<p>With $M$ vibrational modes and $N$ electronic states, the main system register uses</p>
+<p>$$
+M\log_2K+\lceil\log_2N\rceil
+$$</p>
+<p>qubits before work and precision registers are added.</p>
+<p>One common misconception should be removed: this demo does <strong>not</strong> place vibrations in photonic continuous-variable qumodes. It represents both the electronic-state label and every vibrational position grid with <strong>qubit registers</strong>, then evaluates the circuit with <code>lightning.qubit</code>. The code variable called <code>electrons</code> denotes the diabatic electronic-state register, not the number of electrons.</p>
+<p>A primitive classical grid stores $N K^M$ complex amplitudes explicitly, so memory can grow exponentially with the number of modes. A quantum state can encode those amplitudes in a smaller register. That representational compression does not eliminate state preparation, coefficient loading, quantum arithmetic, circuit precision, error correction, or measurement costs.</p>
+<p><img alt="Exact mapping from the KDC Hamiltonian to qubit grids and a symmetric second-order Trotter step" src="../artifacts/vibronic_dynamics_algorithm_map.svg" /></p>
+<p><em>Figure 2. Source-derived mapping from the vibronic model to electronic-state and vibrational grid registers and then to one symmetric Trotter step. The scope bar records the settings executed in the PennyLane toy example. The vibrational coordinates are grid-encoded on qubits, not qumodes.</em></p>
+<h2 id="4-how-one-time-step-is-assembled">4. How one time step is assembled</h2>
+<p>The target evolution is $|\psi(t)\rangle=e^{-iHt}|\psi(0)\rangle$. Kinetic and potential terms generally do not commute, so their exponentials cannot simply be separated without error. The demo uses a kinetic half-step, the potential fragments in forward and reverse order, and a final kinetic half-step.</p>
+<h3 id="kinetic-energy-visit-momentum-space-with-a-qft">Kinetic energy: visit momentum space with a QFT</h3>
+<p>Position $Q$ is diagonal on the computational grid, whereas momentum $P$ is not. For each mode, the circuit applies a QFT to enter the momentum representation, uses <code>OutPoly</code> to compute $(x-K/2)^2$ in a work register, converts the kinetic contribution into phase, uncomputes the intermediate value, and applies the inverse QFT.</p>
+<h3 id="potential-energy-load-state-specific-coefficients-and-turn-them-into-phase">Potential energy: load state-specific coefficients and turn them into phase</h3>
+<p>Potential coefficients depend on the electronic state. <code>LoadCoeffsKDC</code> uses QROM to load a precomputed bit string conditioned on the electronic-state register. QROM here is a reversible lookup circuit for a fixed coefficient table; it is not a hardware QRAM that provides coherent access to an external database.</p>
+<p>Reversible arithmetic evaluates $Q_r$ for a linear term or $Q_rQ_{r&rsquo;}$ for a quadratic term. The result controls addition into the reusable $b$-qubit phase-gradient state</p>
+<p>$$
+|R_b\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{i2\pi y/2^b}|y\rangle,
+$$</p>
+<p>thereby applying the energy–time phase. The QROM and arithmetic work are uncomputed afterward.</p>
+<h3 id="off-diagonal-electronic-coupling-xor-fragments-and-clifford-diagonalization">Off-diagonal electronic coupling: XOR fragments and Clifford diagonalization</h3>
+<p>Electronic-state couplings make the potential matrix off-diagonal. The source algorithm groups matrix elements whose electronic labels have the same bitwise XOR difference. A single differing bit can be diagonalized with a Hadamard; multiple differing bits are reduced with controlled-NOT operations before the Hadamard. This block-diagonalization uses Clifford gates, after which each fragment can receive a coordinate-dependent phase efficiently.</p>
+<h2 id="5-what-the-public-program-actually-computes">5. What the public program actually computes</h2>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th style="text-align: right;">Value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>electronic states</td>
+<td style="text-align: right;">2</td>
+<td>$</td>
+</tr>
+<tr>
+<td>vibrational modes</td>
+<td style="text-align: right;">1</td>
+<td>one normal coordinate</td>
+</tr>
+<tr>
+<td>$k$</td>
+<td style="text-align: right;">2</td>
+<td>two qubits for the mode</td>
+</tr>
+<tr>
+<td>$K=2^k$</td>
+<td style="text-align: right;">4</td>
+<td>four position-grid points</td>
+</tr>
+<tr>
+<td>$b$</td>
+<td style="text-align: right;">5</td>
+<td>phase/coefficient precision from <code>delta=0.04</code></td>
+</tr>
+<tr>
+<td>$\omega$</td>
+<td style="text-align: right;">1</td>
+<td>illustrative frequency</td>
+</tr>
+<tr>
+<td>$dt$</td>
+<td style="text-align: right;">0.4 a.u.</td>
+<td>duration of one step</td>
+</tr>
+<tr>
+<td>steps</td>
+<td style="text-align: right;">10</td>
+<td>trajectories evaluated through 4 a.u.</td>
+</tr>
+<tr>
+<td>potential order</td>
+<td style="text-align: right;">$\alpha=1$</td>
+<td>the executed example uses linear coordinate dependence</td>
+</tr>
+<tr>
+<td>coefficient array</td>
+<td style="text-align: right;"><code>[[1.0, 0.0], [-1.3, 1.3]]</code></td>
+<td>illustrative rather than molecular parameters</td>
+</tr>
+</tbody>
+</table>
+<p>The registers total 23 simulated wires:</p>
+<table>
+<thead>
+<tr>
+<th>Register</th>
+<th style="text-align: right;">Wires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>electronic state</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr>
+<td>vibrational grid</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>phase gradient</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>coefficients</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>scratch</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td>cache</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td><strong>total</strong></td>
+<td style="text-align: right;"><strong>23</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Only three wires encode the physical toy model. The other 20 provide precision and reversible-arithmetic workspace. Calling this a “23-qubit molecular calculation” would therefore be misleading.</p>
+<p>The initial nuclear state is a discrete Gaussian approximation to a harmonic-oscillator ground wavepacket. For each $t=0,\ldots,10$, the program recomputes the state vector from the beginning and returns <code>qp.probs</code> on the electronic register. No shots are specified, so the curves are exact state-vector probabilities rather than finite-sampling estimates. The page reports approximately 8 minutes 9.7 seconds for the whole script.</p>
+<p>The two electronic populations oscillate and the transfer remains incomplete. Their sum staying at one is a necessary consequence of a normalized unitary evolution in a two-state register. The demo does not compare against exact classical grid propagation, MCTDH, a Trotter convergence study, or experiment, so this is a qualitative functionality check rather than a chemical-accuracy validation.</p>
+<h2 id="6-computational-boundary">6. Computational boundary</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Demonstrated</th>
+<th>Not demonstrated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>device</td>
+<td>CPU state-vector simulation</td>
+<td>QPU or photonic-chip execution</td>
+</tr>
+<tr>
+<td>measurement</td>
+<td>exact electronic probabilities</td>
+<td>finite-shot uncertainty and sampling cost</td>
+</tr>
+<tr>
+<td>circuit</td>
+<td>high-level PennyLane arithmetic</td>
+<td>native compilation to a hardware topology</td>
+</tr>
+<tr>
+<td>error</td>
+<td>one coarse grid, fixed precision, and Trotterization</td>
+<td>a separated, converged error budget</td>
+</tr>
+<tr>
+<td>chemistry</td>
+<td>illustrative two-state, one-mode LVC</td>
+<td>real-molecule parameterization and a classical reference</td>
+</tr>
+<tr>
+<td>OLED</td>
+<td>formal possibility of spin-vibronic extension</td>
+<td>SOC, singlet–triplet states, ISC/RISC, or a host environment</td>
+</tr>
+<tr>
+<td>performance</td>
+<td>implementation functionality</td>
+<td>quantum speedup or quantum advantage</td>
+</tr>
+</tbody>
+</table>
+<p>A realistic study must separate at least eight errors: state/mode selection, LVC/QVC truncation, electronic-structure parameterization and diabatization, grid size $K$, Trotter order and step size, fixed-point precision $b$, state preparation and finite-shot readout, and finally hardware noise plus logical-to-physical error-correction overhead.</p>
+<h2 id="7-source-paper-resource-estimates-at-chemically-motivated-scale">7. Source-paper resource estimates at chemically motivated scale</h2>
+<p>The current journal/arXiv v3 analysis uses $K=16$ grid points per mode and a second-order product formula. Selected <strong>algorithmic/logical</strong> estimates are:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th style="text-align: right;">States · modes</th>
+<th style="text-align: right;">Propagation target</th>
+<th style="text-align: right;">Qubits</th>
+<th style="text-align: right;">Toffoli gates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$(\mathrm{NO})_4$-Anth</td>
+<td style="text-align: right;">5 · 19</td>
+<td style="text-align: right;">100 fs, 10%</td>
+<td style="text-align: right;">146</td>
+<td style="text-align: right;">$5.47\times10^6$</td>
+</tr>
+<tr>
+<td>$(\mathrm{NO})_4$-Anth</td>
+<td style="text-align: right;">5 · 19</td>
+<td style="text-align: right;">100 fs, 1%</td>
+<td style="text-align: right;">146</td>
+<td style="text-align: right;">$1.73\times10^7$</td>
+</tr>
+<tr>
+<td>anthracene dimer</td>
+<td style="text-align: right;">6 · 21</td>
+<td style="text-align: right;">100 fs, 1%</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">$2.76\times10^6$</td>
+</tr>
+<tr>
+<td>anthracene dimer</td>
+<td style="text-align: right;">6 · 21</td>
+<td style="text-align: right;">500 fs, 1%</td>
+<td style="text-align: right;">154</td>
+<td style="text-align: right;">$3.54\times10^7$</td>
+</tr>
+<tr>
+<td>anthracene/$\mathrm{C}_{60}$, reduced</td>
+<td style="text-align: right;">4 · 11</td>
+<td style="text-align: right;">100 fs, 1%</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">$6.62\times10^5$</td>
+</tr>
+<tr>
+<td>anthracene/$\mathrm{C}_{60}$, full</td>
+<td style="text-align: right;">4 · 246</td>
+<td style="text-align: right;">100 fs, 1%</td>
+<td style="text-align: right;">1,053</td>
+<td style="text-align: right;">$2.66\times10^7$</td>
+</tr>
+</tbody>
+</table>
+<p>These circuits were not executed. The estimates do not include physical-qubit counts, code distance, magic-state factories, control hardware, or an end-to-end wall-clock time. A 154-logical-qubit estimate does not mean that the calculation fits on a present 154-physical-qubit processor.</p>
+<p>Version control also matters. The v1 preprint reported 1,065 qubits and $2.7\times10^9$ Toffolis for the full 246-mode anthracene/$\mathrm{C}_{60}$ model. Version 3 reports 1,053 qubits and $2.66\times10^7$ Toffolis after changing the resource and empirical-error analysis. That reduction is an analytical revision, not a hardware result.</p>
+<p>A separate PennyLane <a href="https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics">resource-estimation demo</a> gives a dense upper bound of 146 wires, $6.082\times10^7$ Toffolis, and $5.21\times10^8$ total gates for a $(\mathrm{NO})_4$-Anth model. Its larger count illustrates how Hamiltonian sparsity and circuit construction materially change feasibility.</p>
+<p>No quantum advantage is established. The peer-reviewed work identifies strongly correlated, higher-order vibronic dynamics as a plausible difficult regime for classical tensor methods, but a matched end-to-end comparison in accuracy, runtime, Hamiltonian construction, and observable extraction remains undone.</p>
+<h2 id="8-how-this-differs-from-vqe">8. How this differs from VQE</h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>VQE</th>
+<th>Vibronic dynamics algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary task</td>
+<td>Find a low-energy eigenstate and its energy</td>
+<td>Propagate state populations after excitation</td>
+</tr>
+<tr>
+<td>Computation</td>
+<td>Minimize the energy of a parameterized state</td>
+<td>Apply real-time $e^{-iHt}$ evolution</td>
+</tr>
+<tr>
+<td>Typical output</td>
+<td>Energies and static observables</td>
+<td>$P_j(t)$, pathways, correlation functions, spectra candidates</td>
+</tr>
+<tr>
+<td>Main circuit elements</td>
+<td>ansatz, Pauli measurements, classical optimizer</td>
+<td>QFT, QROM, arithmetic, phase gradient, Trotter steps</td>
+</tr>
+<tr>
+<td>Hardware orientation</td>
+<td>Often NISQ-motivated shallow circuits</td>
+<td>Deep arithmetic aimed at fault-tolerant devices</td>
+</tr>
+</tbody>
+</table>
+<p>Static energies from VQE could help parameterize a dynamics model. They do not by themselves produce vibrationally mediated population transfer in time.</p>
+<h2 id="9-review-inference-relevance-to-tadf-and-pholed-research">9. Review inference: relevance to TADF and PhOLED research</h2>
+<p>Reverse intersystem crossing (RISC) in thermally activated delayed fluorescence (TADF) is not determined by a single $\Delta E_{\mathrm{ST}}$. Singlet and triplet state character, higher triplets, spin–orbit coupling (SOC), promoting modes, dielectric surroundings, and structural disorder can all alter the pathway.</p>
+<p>The KDC framework can in principle be extended with a spin–orbit Hamiltonian,</p>
+<p>$$
+\mathbf W&rsquo;(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q),
+$$</p>
+<p>and the source paper identifies TADF as a possible application.</p>
+<table>
+<thead>
+<tr>
+<th>OLED physics</th>
+<th>Vibronic-model element</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$S_1$, $T_1$, and $T_n$ energies and characters</td>
+<td>diabatic electronic-state manifold</td>
+</tr>
+<tr>
+<td>SOC</td>
+<td>$\mathbf H_{\mathrm{SO}}$ and inter-state couplings</td>
+</tr>
+<tr>
+<td>promoting vibrations</td>
+<td>$a_r^{(i,j)}$ and $b_{rr&rsquo;}^{(i,j)}$</td>
+</tr>
+<tr>
+<td>ISC/RISC pathway</td>
+<td>singlet–triplet population transfer</td>
+</tr>
+<tr>
+<td>time-resolved occupation</td>
+<td>$P_{S_1}(t)$, $P_{T_1}(t)$, $P_{T_n}(t)$</td>
+</tr>
+<tr>
+<td>spectra</td>
+<td>Fourier transform of a time-correlation function</td>
+</tr>
+</tbody>
+</table>
+<p>This connection is a review inference, not a demo result. The code contains neither SOC nor triplet states. A real TADF or PhOLED film also requires thermal mode populations, dephasing, host polarization, disorder, intermolecular modes, and open-system relaxation. Coherent oscillations in a closed two-state toy model cannot be read directly as irreversible ISC or RISC rates.</p>
+<p>The algorithm is therefore better positioned as a future high-fidelity dynamics kernel for a small number of valuable candidates than as a near-term high-throughput generator.</p>
+<h2 id="10-a-bounded-validation-workflow-for-oled-inverse-design">10. A bounded validation workflow for OLED inverse design</h2>
+<p>A defensible research sequence would be:</p>
+<ol>
+<li>generate or retrieve molecular candidates;</li>
+<li>screen synthesizability, stability, and inexpensive electronic descriptors classically;</li>
+<li>obtain states, Hessians, normal modes, and SOC with DFT/TDDFT or multireference methods;</li>
+<li>perform diabatization and construct a compact LVC/QVC spin-vibronic Hamiltonian;</li>
+<li>validate it first with exact grids, MCTDH, or an appropriate tensor-network baseline;</li>
+<li>separate grid, Trotter, and fixed-point errors under the same accuracy target;</li>
+<li>consider quantum propagation only where the controlled classical baseline becomes limiting;</li>
+<li>feed populations, pathway sensitivities, and uncertainty back into a mechanism-aware ML surrogate.</li>
+</ol>
+<p>A useful first proof of concept would contain $S_1$, $T_1$, one or two higher triplets, and 5–10 selected promoting modes from a published model. Every trajectory should be compared with an exact or MCTDH reference while $K$, $dt$, and $b$ are varied independently. Larger state spaces or open-system models should come only after that validation ladder is passed.</p>
+<h2 id="assessment">Assessment</h2>
+<p>The PennyLane demo succeeds as an implementation tutorial. It makes the circuit roles of QFT, QROM, reversible arithmetic, phase-gradient states, electronic-fragment diagonalization, and Trotterization inspectable rather than treating vibronic simulation as a black box.</p>
+<p>Its scientific claim must remain bounded. The result is a 23-wire CPU state-vector toy simulation, not a real-molecule calculation, a QPU experiment, a quantitative dynamics benchmark, or evidence of quantum advantage. The source paper’s hundreds of logical qubits and millions of Toffoli gates are fault-tolerant algorithm estimates, not physical-hardware costs.</p>
+<p>The research direction is nevertheless coherent. Moving OLED molecular design beyond static $\Delta E_{\mathrm{ST}}$ and oscillator strength toward state populations, higher-state mediation, SOC, and promoting-mode dynamics will require real-time vibronic propagation. Turning that direction into a useful tool will depend as much on credible Hamiltonian construction and strict classical validation as on a deeper quantum circuit.</p>
+<h2 id="primary-and-official-sources">Primary and official sources</h2>
+<ol>
+<li>Emily Nobes, <a href="https://pennylane.ai/demos/simulating_vibronic_dynamics"><em>A quantum algorithm for vibronic dynamics</em></a>, PennyLane Demos, 19 August 2026.</li>
+<li>D. Motlagh et al., <a href="https://doi.org/10.1088/2058-9565/ae0828"><em>Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design</em></a>, <em>Quantum Science and Technology</em> <strong>10</strong>, 045048 (2025).</li>
+<li>D. Motlagh et al., <a href="https://arxiv.org/html/2411.13669v3">arXiv:2411.13669v3</a>, current technical version.</li>
+<li>D. Dhawan, <a href="https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics"><em>Quantifying resource requirements for vibronic dynamics simulation</em></a>, PennyLane Demos, updated 27 May 2026.</li>
+<li>PennyLaneAI, <a href="https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py">official demo source at fixed commit</a>.</li>
+<li>PennyLane, <a href="https://docs.pennylane.ai/projects/lightning/en/stable/index.html"><code>lightning.qubit</code> documentation</a>.</li>
+</ol>
+<p><em>Verification note: numerical settings and resource figures were checked against the public PennyLane code, official documentation, the peer-reviewed paper, and the current arXiv v3. Demo execution, source-paper estimates, and the OLED extension proposed by this review remain separate evidence layers.</em></p>
+      <div class="footer">
+        Generated: 2026-08-29 05:02:45<br>
+        Source last modified: 2026-08-29 05:00:34
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#evidence-at-a-glance">Evidence at a glance</a></li>
+<li><a href="#1-an-intuitive-picture-a-wavepacket-moving-across-several-landscapes">1. An intuitive picture: a wavepacket moving across several landscapes</a></li>
+<li><a href="#2-the-physical-model-the-kdc-vibronic-hamiltonian">2. The physical model: the KDC vibronic Hamiltonian</a></li>
+<li><a href="#3-encoding-continuous-nuclear-motion-on-qubits">3. Encoding continuous nuclear motion on qubits</a></li>
+<li><a href="#4-how-one-time-step-is-assembled">4. How one time step is assembled</a><ul>
+<li><a href="#kinetic-energy-visit-momentum-space-with-a-qft">Kinetic energy: visit momentum space with a QFT</a></li>
+<li><a href="#potential-energy-load-state-specific-coefficients-and-turn-them-into-phase">Potential energy: load state-specific coefficients and turn them into phase</a></li>
+<li><a href="#off-diagonal-electronic-coupling-xor-fragments-and-clifford-diagonalization">Off-diagonal electronic coupling: XOR fragments and Clifford diagonalization</a></li>
+</ul>
+</li>
+<li><a href="#5-what-the-public-program-actually-computes">5. What the public program actually computes</a></li>
+<li><a href="#6-computational-boundary">6. Computational boundary</a></li>
+<li><a href="#7-source-paper-resource-estimates-at-chemically-motivated-scale">7. Source-paper resource estimates at chemically motivated scale</a></li>
+<li><a href="#8-how-this-differs-from-vqe">8. How this differs from VQE</a></li>
+<li><a href="#9-review-inference-relevance-to-tadf-and-pholed-research">9. Review inference: relevance to TADF and PhOLED research</a></li>
+<li><a href="#10-a-bounded-validation-workflow-for-oled-inverse-design">10. A bounded validation workflow for OLED inverse design</a></li>
+<li><a href="#assessment">Assessment</a></li>
+<li><a href="#primary-and-official-sources">Primary and official sources</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="https://pennylane.ai/demos/simulating_vibronic_dynamics" target="_blank" rel="noreferrer">*A quantum algorithm for vibronic dynamics*</a></li>
+<li><a href="https://doi.org/10.1088/2058-9565/ae0828" target="_blank" rel="noreferrer">*Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design*</a></li>
+<li><a href="../artifacts/vibronic_dynamics_quantum_simulation_hero.jpg">Concept illustration connecting coupled electron–nuclear motion, potential-energy surfaces, and grid-encoded quantum time evolution</a></li>
+<li><a href="https://arxiv.org/html/2411.13669v3" target="_blank" rel="noreferrer">current arXiv v3</a></li>
+<li><a href="../artifacts/vibronic_dynamics_algorithm_map.svg">Exact mapping from the KDC Hamiltonian to qubit grids and a symmetric second-order Trotter step</a></li>
+<li><a href="https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics" target="_blank" rel="noreferrer">resource-estimation demo</a></li>
+<li><a href="https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py" target="_blank" rel="noreferrer">official demo source at fixed commit</a></li>
+<li><a href="https://docs.pennylane.ai/projects/lightning/en/stable/index.html" target="_blank" rel="noreferrer">`lightning.qubit` documentation</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>

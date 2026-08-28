@@ -66,6 +66,21 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-29_quantum-simulation-vibronic-dynamics",
+        title="정적 에너지에서 광여기 동역학으로: PennyLane 진동-전자 양자 시뮬레이션의 원리와 연구 전망",
+        subtitle="KDC 해밀토니안을 격자 큐비트로 옮기는 방법, 23-wire 고전 시뮬레이션의 계산 경계, TADF·OLED 연구로 확장하기 위한 조건",
+        date="2026-08-29",
+        updated="2026-08-29",
+        category="Quantum Computing",
+        tags=("Vibronic Dynamics", "Nonadiabatic Dynamics", "Quantum Simulation", "PennyLane", "Quantum Chemistry", "OLED"),
+        summary=(
+            "PennyLane 데모가 KDC 진동-전자 해밀토니안을 실공간 격자, QROM, 가역 산술과 2차 Trotter 전개로 "
+            "옮기는 방법을 해설합니다. 23-wire CPU 상태벡터 toy simulation과 실제 QPU·분자 계산의 경계를 구분하고, "
+            "TADF·OLED의 spin-vibronic 동역학으로 확장하기 위한 검증 단계를 제시합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+    ),
+    PublicReview(
         folder="2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
         title="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지",
         subtitle="2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준",
