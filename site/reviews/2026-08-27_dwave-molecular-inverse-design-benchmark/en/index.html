@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT</title>
   <meta name="description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
-  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
+
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
-  <meta property="og:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
+
   <meta property="og:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <meta property="og:locale" content="en_US">
@@ -26,7 +26,6 @@
   <meta name="twitter:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
   <meta name="twitter:image:alt" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
-  <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <script>
     window.MathJax = {
@@ -756,7 +755,8 @@
         position: static;
       }
     }
-  </style>
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
+    <meta property="og:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
     <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
@@ -771,8 +771,9 @@
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 35 (2026-08-27)</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
-        <a href="2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md">2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md</a>
+        <span class="private-source-omitted">private working file omitted</span>
       </div>
     </div>
   </div>
@@ -787,7 +788,7 @@
 
     </div>
   </header>
-
+<p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-08-27 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
   <main class="content-grid">
     <article class="final-article">
       <p>Suppose we have 18 candidate molecules and must choose three for the next round of calculations. Candidates with predictions close to the target should receive priority, but the batch should not be crowded with nearly identical molecules. In this experiment, we formulated that selection task as a QUBO and sent the same problem to an independent exact search, classical simulated annealing, and a D-Wave QPU. We then recalculated the selected molecules with PySCF.</p>
@@ -799,7 +800,7 @@
 <p>The D-Wave QPU performed <strong>batch acquisition optimization to select three candidates</strong> for the next PySCF calculations. Molecular electronic structure was calculated with PySCF. BQM energy is the acquisition-objective value; the DFT orbital gap is the result of a molecular calculation.</p>
 </aside>
 <p><img alt="English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop" src="molecular_inverse_design_infographic_en.svg" /></p>
-<p><em>Figure 2. The top and middle sections show computations that were executed. The dashed path at the bottom shows the live active-learning loop proposed for the next validation stage. The values match the <a href="benchmark_results.csv">public computation results table</a>.</em></p>
+<p><em>Figure 2. The top and middle sections show computations that were executed. The dashed path at the bottom shows the live active-learning loop proposed for the next validation stage. The values match the <span class="private-source-omitted">private working file omitted</span>.</em></p>
 <p><a href="molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></p>
 <h2 id="what-the-pipeline-actually-computed">What the pipeline actually computed</h2>
 <p>The pipeline consists of six layers with distinct meanings.</p>
@@ -1076,13 +1077,6 @@ maximum SCF cycles = 100
 <p class="callout-label">Verdict from this snapshot</p>
 <p>Open-source ML, three molecular proposal mechanisms, a validated acquisition QUBO, one 100-read D-Wave QPU submission, and six PySCF screening calculations were connected into a traceable computational pipeline. The stages executed and exchanged artifacts successfully. Any claim of superiority must await a live-loop bake-off.</p>
 </aside>
-<h2 id="publication-information">Publication information</h2>
-<ul>
-<li>Generated: 2026-08-27 KST</li>
-<li>Original computation checkpoint: 2026-08-27</li>
-<li>Writing assistance: Codex-based GPT-5 family agent harness</li>
-<li>Method: Local CSV and JSON computational evidence was checked first. Official documentation and primary papers were then used to verify terminology and methodological boundaries, followed by audits of prose, figures, and HTML rendering.</li>
-</ul>
 <h2 id="references">References</h2>
 <ol>
 <li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">QM9 original collection, Figshare</a></li>
@@ -1097,6 +1091,23 @@ maximum SCF cycles = 100
 <li><a href="https://doi.org/10.1038/s41524-019-0153-8">Lookman et al., Active learning in materials science, npj Computational Materials 5, 21 (2019)</a></li>
 </ol>
 <p><small>The computational values come from the CSV and JSON evidence and figure manifest generated by the project. The raw QM9 mirror is not included in this public package. Production and review records for the generated hero image and computation-based figures are archived in <code>artifacts/final_review/figure_manifest.md</code>.</small></p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>Codex-based GPT-5-family agent harness; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>individual agent-role roster not retained</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>primary and official sources listed in the article; public links and final HTML</dd></div>
+          <div><dt>Human review record</dt><dd>review level not separately retained</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-08-27</dd></div>
+        </dl>
+        <p class="disclosure-note">Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
         Generated: 2026-08-27 06:58:53<br>
         Source last modified: 2026-08-27 06:49:49
@@ -1117,7 +1128,7 @@ maximum SCF cycles = 100
 <li><a href="#the-exact-batch-had-the-lower-mean-dft-error-the-qpu-batch-contained-the-closest-individual-candidate">The exact batch had the lower mean DFT error; the QPU batch contained the closest individual candidate</a></li>
 <li><a href="#a-fixed-label-qm9-replay-tested-the-iteration-policy">A fixed-label QM9 replay tested the iteration policy</a></li>
 <li><a href="#what-the-evidence-establishes-and-what-remains-open">What the evidence establishes, and what remains open</a></li>
-<li><a href="#publication-information">Publication information</a></li>
+<li><a href="#authoring-disclosure">Publication information</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
@@ -1129,7 +1140,7 @@ maximum SCF cycles = 100
         <ul>
           <li><a href="molecular_inverse_design_hero.png">Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation</a></li>
 <li><a href="molecular_inverse_design_infographic_en.svg">English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop</a></li>
-<li><a href="benchmark_results.csv">public computation results table</a></li>
+
 <li><a href="molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></li>
 <li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5" target="_blank" rel="noreferrer">original QM9 collection</a></li>
 <li><a href="https://chemprop.readthedocs.io/en/main/index.html" target="_blank" rel="noreferrer">Chemprop</a></li>
@@ -1150,9 +1161,7 @@ maximum SCF cycles = 100
         </ul>
       </section>
     </aside>
-  </main>
-
-<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, external references, and relative links to local review notes and authoring-support files.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
+  </main><section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../../assets/public-metrics.js"></script>

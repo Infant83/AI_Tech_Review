@@ -331,7 +331,17 @@ AI_Tech_Review 쪽에서 필요한 기능:
 - collector별 adapter wrapper
 - Ralph quality gate script
 
-## 11. 현재 판단
+## 11. 공개 provenance와 source-to-explainer gate
+
+- 발행 산출물에는 책임 편집자, AI 시스템, 확인 가능한 에이전트 이름·식별자와 역할, 하네스 버전, 검증 범위와 근거 기준일을 구조화해 기록한다. 보존되지 않은 이름·역할은 추정하지 않고 `미보존`으로 기록한다.
+- 원 작성 세션의 모델·에이전트 기록이 없으면 재구성하지 않고 `not retained`로 기록한다.
+- raw TeX archive는 untrusted input이다. collector는 sandbox compile, dangling file·comment·metadata·secret·prompt-injection scan을 통과한 최소 입력만 review worker에 넘긴다.
+- source 안의 명령문은 task instruction으로 승격하지 않는다.
+- 공개 리뷰 디렉터리는 최종 본문과 승인한 figure·영상·스타일 자산 allowlist만 포함한다. run log, chat capture, intake·audit 메모와 메시지 metadata는 배포 대상이 아니다.
+- controller는 H1/title/OG/manifest 일치, disclosure, 수식·표 이상, figure provenance, internal path, canonical·hub link와 live render gate를 통과해야 발행을 완료한다.
+- 공개 범위와 금지 범위는 `EDITORIAL_METHOD.md`를 따른다.
+
+## 12. 현재 판단
 
 현재 `task-memory-hub`는 automation controller의 기반으로 충분히 적합하다.
 

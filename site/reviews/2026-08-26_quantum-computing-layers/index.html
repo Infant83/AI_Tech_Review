@@ -14,12 +14,17 @@
     .figure-panel{margin:30px 0 8px;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.figure-panel img{display:block;width:100%;height:auto;border-radius:6px}.figure-caption{margin:0 5px 32px!important;color:var(--muted);font-size:.82rem!important;line-height:1.65!important}.table-wrap{overflow-x:auto;margin:22px 0 30px}.table-wrap:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}th{background:var(--blue-soft);color:var(--blue)}
     article h2:first-of-type{margin-top:32px}.sidebar{position:sticky;top:20px}.side-section{margin-bottom:18px;padding:18px 19px;border:1px solid var(--line);background:#fff}.side-section h2{margin:0 0 12px;color:var(--blue);font-size:.88rem;text-transform:uppercase}.side-section ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.65}.side-section li+li{margin-top:7px}.side-section p{color:var(--muted);font-size:.9rem;line-height:1.65}.tag{display:inline-block;margin:0 5px 6px 0;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700}.download{display:block;margin-top:12px;padding:10px 12px;border:1px solid #9fc3be;border-radius:7px;background:var(--green);font-weight:700;text-align:center;text-decoration:none}.public-note{width:min(var(--wrap),calc(100% - 40px));margin:0 auto 50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.87rem;line-height:1.65}code{padding:.12em .35em;background:var(--paper2);border-radius:4px}
     @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:720px}.sidebar{position:static}}@media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.25rem}article h2{font-size:1.42rem}th,td{min-width:132px}.figure-panel{padding:6px}}
-</style>
-  <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
-  <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
-  <link rel="stylesheet" href="../../assets/public-metrics.css">
-</head>
+</style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-26_quantum-computing-layers/">
+    <meta property="og:title" content="재료 계산에서 QRAM까지: 양자 연구를 계산 계층으로 읽는 법">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
 <body class="public-review">
   <div class="topline"><div class="topline-inner"><span>AI Tech Review Letters · 2026-08-26</span><span><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브로 돌아가기</a></span></div></div>
   <header class="hero"><div class="hero-inner">
@@ -30,6 +35,7 @@
     </section>
     <figure class="hero-figure"><img src="quantum_layers_hero_imagegen-web.webp" alt="SiC 색 중심, 초전도 QRAM 라우터, 페르미온 회로 컴파일을 세 개의 분리된 계산 층으로 묘사한 생성형 과학 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. 왼쪽의 SiC 결함 계산, 가운데 실제 QPU router, 오른쪽 회로·compiler는 서로 다른 연구 층입니다. SiC 계산이 양자칩에서 수행됐다는 뜻은 아닙니다.</figcaption></figure>
   </div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-08-26 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article><p class="lead">양자컴퓨팅 소식을 한꺼번에 읽다 보면 서로 전혀 다른 종류의 결과가
 같은 문장 안에 놓입니다. 4H-SiC 결함을 계산한 first-principles 연구,
@@ -263,9 +269,28 @@ Function, Physical Review X (2026-08-24)</a></li>
       <section class="side-section"><h2>연구자가 볼 지표</h2><ul><li>방사·비방사·vibronic 채널</li><li>postselection 성공률</li><li>compiled depth와 실제 wall-clock</li><li>shots·drift·classical optimization</li><li>같은 예산의 고전 기준선</li></ul></section>
       <section class="side-section"><h2>소셜 신호</h2><p>공개 검색 범위에서 원 논문으로 역추적 가능한 신규 고신호 LinkedIn 게시물은 확인되지 않았습니다. 전날 다룬 tracker 게시물은 실질적 변경이 없어 반복하지 않았습니다.</p></section>
     </aside>
-  </main>
-  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-26. 생성형 이미지는 개념 일러스트이며 실제 계산 오비탈·장치 배치를 재현하지 않습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section>
-  <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
-  <script defer src="../../assets/public-metrics.js"></script>
-</body>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-26</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-26. 생성형 이미지는 개념 일러스트이며 실제 계산 오비탈·장치 배치를 재현하지 않습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
 </html>

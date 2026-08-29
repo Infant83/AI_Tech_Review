@@ -12,6 +12,12 @@ alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_
 alternate en url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
 alternate x-default url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
 social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
+writing assistance: "OpenAI Codex Work Mode; exact model identifier and original article agent roster not retained"
+agent roles: "2026-08-29 public repair: orchestration and editorial integration; LinkedIn and primary-paper research; disclosure design; repository audit and publication QA"
+editorial harness: "AI Tech Review Editorial Harness v2026.08"
+verification sources: "PennyLane demo and fixed-commit source; peer-reviewed paper; current arXiv version; official documentation; final HTML"
+human review record: "scope, direction, and publication request confirmed; line-by-line review not separately retained"
+evidence cutoff: "2026-08-29"
 tags:
   - ai-tech-review
   - vibronic-dynamics
@@ -150,7 +156,7 @@ Electronic-state couplings make the potential matrix off-diagonal. The source al
 
 | Setting | Value | Meaning |
 |---|---:|---|
-| electronic states | 2 | $|0\rangle$ and $|1\rangle$ in a one-qubit state register |
+| electronic states | 2 | $\lvert 0\rangle$ and $\lvert 1\rangle$ in a one-qubit state register |
 | vibrational modes | 1 | one normal coordinate |
 | $k$ | 2 | two qubits for the mode |
 | $K=2^k$ | 4 | four position-grid points |

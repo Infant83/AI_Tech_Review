@@ -3,7 +3,7 @@
 - Asset: `classiq_ashn_hero_imagegen-web.webp`
 - Generated: 2026-08-27
 - Use: AI Tech Review article hero
-- Source image: `/workspace/scratch/e549f492fd9c/generated_images/exec-d1736003-207b-40c5-a4da-ccb3285b04d0.png`
+- Source image: generated in the Codex runtime; private scratch path intentionally not published
 - Model/tool: OpenAI image generation tool available in the Codex runtime
 - Prompt summary: A wide technical editorial illustration linking a high-level quantum algorithm blueprint, multiple synthesis candidates, a compiler/routing lattice, and a superconducting processor whose native two-qubit interactions merge routing and entangling operations. No logos or text.
 - Transform: resized to fit within 1600×900, encoded as WebP quality 86

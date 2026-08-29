@@ -6,10 +6,10 @@
   <meta name="color-scheme" content="light">
   <meta name="description" content="양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.">
   <meta name="author" content="김현중">
-  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
-  <meta property="og:title" content="양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로">
+
   <meta property="og:description" content="양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
   <meta property="og:locale" content="ko_KR">
@@ -32,7 +32,8 @@
     @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:760px}.sidebar{position:static}}@media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.25rem}article h2{font-size:1.44rem}th,td{min-width:138px}.figure-panel{padding:6px}}
 </style>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+    <meta property="og:title" content="양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
     <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
@@ -47,11 +48,12 @@
   <header class="hero"><div class="hero-inner">
     <section>
       <p class="eyebrow">Quantum Circuit Optimization · From Synthesis to Native Control</p>
-      <h1>양자 회로 최적화는<br>왜 필요한가</h1>
+      <h1>양자 회로 최적화는 왜 필요한가:<br>Classiq와 AshN을 대표 사례로</h1>
       <p class="dek">양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.</p>
     </section>
     <figure class="hero-figure"><img src="classiq_ashn_hero_imagegen-web.webp" alt="고수준 회로 후보가 합성 네트워크를 거쳐 초전도 양자 프로세서로 이어지는 생성형 과학 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. 기능 모델–합성–네이티브 제어의 연결을 표현했으며 특정 제품 화면이나 실험 장치를 재현하지 않습니다.</figcaption></figure>
   </div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-08-27 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article><p class="lead">양자 회로 최적화는 같은 계산을 더 짧은 실행시간과 더 작은 오류 예산 안에서 수행하기 위해 필요합니다. 현재 QPU에서는 회로가 길어질수록 decoherence와 gate error가 누적되고, 특히 많은 초전도 프로세서는 직접 연결된 이웃 큐비트 사이에서만 2-큐비트 연산을 실행할 수 있어 routing SWAP이 추가됩니다. 같은 알고리즘도 함수 구현, ancilla 사용, 게이트 재작성, 큐비트 배치와 native gate 선택에 따라 실제 실행 가능성이 크게 달라집니다.</p>
 <p>문제 표현과 ansatz 설계, 고수준 합성, gate cancellation·commutation·template rewriting, control simplification, topology-aware placement·routing, native-gate decomposition과 pulse scheduling은 서로 다른 층에서 회로 비용을 줄입니다. Classiq은 기능 중심 모델링과 고수준 합성, automatic control skips를 소프트웨어로 구현해 왔고, 2026년 8월 25일 공개된 AshN 연구는 더 풍부한 native 2-qubit gate로 논리 연산과 routing을 결합하는 하드웨어–소프트웨어 공동 설계 사례입니다.</p>
@@ -446,10 +448,6 @@ arXiv:2505.16908 v3</a></li>
 <li><a href="https://www.classiq.io/classiq-research" target="_blank" rel="noreferrer">Classiq Research —
 primary research index</a></li>
 </ol>
-<p><small>작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열
-에이전트 하네스. 검증 기준일: 2026-08-27. Classiq의 두 대표 최적화
-논문과 AshN 논문은 모두 동료평가 전 프리프린트이며, Qmod 언어 논문은
-IEEE QSW 2025 proceedings에 수록됐습니다.</small></p>
 </article>
     <aside class="sidebar">
       <section class="side-section accent"><h2>오늘의 한 문장</h2><p>양자 회로 최적화는 하나의 방법이 아니라 알고리즘·합성·게이트 재작성·라우팅·네이티브 제어를 잇는 교차 계층 문제이며, Classiq과 AshN은 서로 다른 두 층을 보여주는 대표 사례입니다.</p></section>
@@ -459,8 +457,25 @@ IEEE QSW 2025 proceedings에 수록됐습니다.</small></p>
       <section class="side-section"><h2>연구자가 볼 지표</h2><ul><li>logical vs mapped 2Q depth</li><li>SWAP·ancilla·routing overhead</li><li>native gate duration·XEB error</li><li>output fidelity·energy error</li><li>compile·calibration·shot wall-clock</li></ul></section>
       <section class="side-section"><h2>검증 기준</h2><p>2026-08-27<br>Classiq v2·AshN v1 원문과 Supplementary Material 기준</p></section>
     </aside>
-  </main>
-  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-27. 생성형 이미지는 개념 일러스트이며 실제 pulse·chip layout 데이터를 나타내지 않습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>본문에 기재된 원문·공식 자료; 공개 링크와 최종 HTML</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-27</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-27. 생성형 이미지는 개념 일러스트이며 실제 pulse·chip layout 데이터를 나타내지 않습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../assets/public-metrics.js"></script>

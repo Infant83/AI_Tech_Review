@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TabPFN: Foundation model for Tabular inference</title>
-  <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <style>
     :root {
@@ -507,7 +506,8 @@
         position: static;
       }
     }
-  </style>
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-07_tabpfn-oled-manufacturing-foundation-model/">
+    <meta property="og:title" content="TabPFN: Foundation model for Tabular inference">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
     <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
@@ -518,10 +518,11 @@
     <!-- End AI Tech Review Public Metrics Styles -->
   </head>
 <body class="public-review">
+  <nav class="public-fallback-nav" aria-label="AI Tech Review"><a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a></nav>
   <div class="topline">
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 21 (2026-05-21)</span>
-      <span><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md">2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md</a></span>
+      <span><span class="private-source-omitted">비공개 작업 파일 생략</span></span>
     </div>
   </div>
 
@@ -532,10 +533,10 @@
         <h1>TabPFN: Foundation model for Tabular inference</h1>
         <p class="dek">TabPFN은 표 데이터를 미리 학습한 Foundation 모델로, 작은 데이터에서도 빠른 비교 기준을 세우는 데 강점이 있어 새로운 표준으로 자리잡아 가고 있습니다. 이 리뷰는 OLED 분자 계산부터 공정, SCM, 검사, 설계 데이터까지 TabPFN을 효과적으로 적용하기 위한 고려사항을 논의합니다.</p>
       </section>
-      
+
     </div>
   </header>
-
+<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-05-21 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article class="final-article">
       <figure class="article-hero-figure">
@@ -921,27 +922,27 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 <li>웹진형 재작성: 2026-05-11</li>
 <li>최종 수정: 2026-05-21</li>
 <li>TabPFN-3 및 라이선스 업데이트 반영: 2026-05-17</li>
-<li>업데이트 검증 메모: <a href="2026-05-17_tabpfn-3-license-update_sources.md">2026-05-17_tabpfn-3-license-update_sources.md</a></li>
+
 <li>DFT·실험 provenance 및 광범위 활용성 보강: 2026-05-17</li>
-<li>데이터 provenance 검증 메모: <a href="2026-05-17_tabpfn-data-provenance-usecases_sources.md">2026-05-17_tabpfn-data-provenance-usecases_sources.md</a></li>
+
 <li>OLED 분자 양자화학 표현 및 figure 보강: 2026-05-17</li>
-<li>계산화학·figure audit 메모: <a href="2026-05-17_tabpfn-qchem-figure-audit_sources.md">2026-05-17_tabpfn-qchem-figure-audit_sources.md</a></li>
+
 <li>TabPFN context-learning 설명 및 Figure 2 교체: 2026-05-17</li>
-<li>TabPFN context-learning 검증 메모: <a href="2026-05-17_tabpfn-context-learning-figure_sources.md">2026-05-17_tabpfn-context-learning-figure_sources.md</a></li>
+
 <li>Figure 2 pretraining/context 일반화 설명 보정: 2026-05-18</li>
 <li>Foundation 모델 용어, scikit-learn식 사용 예제, best practice 및 성능 비교 섹션 보강: 2026-05-21</li>
 <li>TabPFN-3 업데이트 문장 humanize 및 암묵지 설명 보강: 2026-05-21</li>
 <li>표지 제목 및 부제 보정: 2026-05-21</li>
-<li>OLED 계산 역설계 세부 섹션 분리 및 후속 노트 보존: 2026-05-21 (<a href="2026-05-21_tabpfn-qchem-inverse-design_followup.md">후속 노트</a>)</li>
+
 <li>최종 구조 audit 및 humanize 재퇴고: 2026-05-21</li>
 <li>전체 글쓰기 audit 및 humanize 재퇴고: 2026-05-17</li>
-<li>글쓰기 audit 메모: <a href="2026-05-17_tabpfn-human-writing-audit.md">2026-05-17_tabpfn-human-writing-audit.md</a></li>
+
 <li>작성 형식: <code>AI Tech Review Letters</code></li>
 <li>주제 탐색 참고자료: ChatGPT 공유 대화의 공개 화면에 보인 <code>TabPFN2.5 vs XGBoost</code> seed summary와 기존 <code>TabPFN OLED Manufacturing Foundation Model Review</code> 패키지를 참고했습니다. 공유 대화 안의 두 deep research 본문은 공개 렌더링에서 확인되지 않아, 본문 결론에는 공식 문서, 논문, 공개 저장소, OLED 문헌을 우선 적용했습니다.</li>
 <li>주요 검증 참고자료: Prior Labs 공식 모델 문서, quickstart, benchmarking, improving-performance 문서, TabPFN-3 changelog, TabPFN-3 license, PyPI release history, Nature 2025 TabPFN 논문, TabPFN-2.5 technical report, TabArena 논문, TabPFN GitHub/Hugging Face 자료, SCM OLED/ADF 문서, Schrödinger organic electronics 문서, TD-DFT charge-transfer review, GW/BSE review, ChemFM 논문, MACE foundation models 저장소, AiiDA provenance review, FAIR 원칙, Materials Experiment Knowledge Graph, Material Data Hub schema, tacit knowledge와 process informatics 참고자료, pinax provenance 논문, OLED host screening 논문, JACS 2026 OLED exciplex host 논문, industrial steel property prediction 논문, IUPAC/NIST/RSC/scikit-learn/DeepChem 용어 자료.</li>
 <li>작성 및 검토 방식: 도입부, 제목, 섹션 제목, callout, caption에 대해 AI식 관용 표현, 과한 대비 구조, “글의 정리법”을 설명하는 meta layer를 줄이고, 실제 연구·개발 장면에서 TabPFN의 기술 성격과 OLED 적용 가능성이 드러나도록 다시 썼습니다.</li>
 <li>시각 자료 작성 방식: 본문 figure는 <code>figure_manifest.md</code>에 기록했습니다. Imagegen은 hero와 data-junction illustration에 사용했고, 정확한 한국어 라벨과 흐름이 필요한 Figure 2는 SVG로 작성했습니다. 2026-05-21에는 OLED 계산 역설계 세부 내용을 후속 노트로 분리하면서 기존 inverse-design SVG를 본문에서 제외하고, data-junction illustration을 Figure 3으로 번호 조정했습니다. Skywork Image용 후보 프롬프트는 <code>skywork_inputs/2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md</code>에 별도 보관했습니다.</li>
-<li>문체 기준: <a href="writing-style-audit-harness.md">writing-style-audit-harness</a>, <a href="writing-harness.md">writing-harness</a>, <a href="editorial-graphics-audit-harness.md">editorial-graphics-audit-harness</a>, <a href="visuals-and-image-generation.md">visuals-and-image-generation</a>을 참고했습니다.</li>
+
 </ul>
 <h2 id="_10">용어 메모</h2>
 <h2 id="references">References</h2>
@@ -1007,17 +1008,17 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 </ul>
 <h3 id="_12">처음 참고한 자료</h3>
 <ul>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md">처음 참고한 자료 - ChatGPT share capture</a> - 공개 화면에서 확인된 <code>TabPFN2.5 vs XGBoost</code> seed summary.</li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md">처음 참고한 자료 - Source note</a> - 기존 패키지의 source note와 caveat.</li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md">처음 참고한 자료 - Research runlog</a> - 공유 링크 접근, 검증 자료, 산출물 기록.</li>
+
+
+
 </ul>
 <h3 id="_13">문체와 시각자료 참고</h3>
 <ul>
 <li><a href="https://horizon.kias.re.kr/">문체 참고 - 고등과학원 HORIZON</a> - 한국어 과학 설명의 도입부와 개념 전개 참고.</li>
 <li><a href="https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx">문체 참고 - 최종현학술원 Science Note 과학노트</a> - 기술 뉴스레터형 프레이밍 참고.</li>
 <li><a href="https://www.quantamagazine.org/">시각자료 참고 - Quanta Magazine</a> - 과학 기사형 hero illustration, figure, caption 리듬 참고.</li>
-<li><a href="figure_manifest.md">시각자료 제작 기록 - figure manifest</a> - 본문 figure와 생성·검토 기록.</li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md">시각자료 후보 - Skywork Image prompt pack</a> - Skywork Image 생성용 후보 prompt.</li>
+
+
 </ul>
 <div class="footnote">
 <hr />
@@ -1027,6 +1028,23 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 </li>
 </ol>
 </div>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-05-21</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
         생성 시각: 2026-05-21 06:12:27<br>
         원본 파일 최종 수정 시각: 2026-05-21 06:12:18
@@ -1034,7 +1052,7 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
     </article>
 
     <aside class="sidebar">
-      
+
         <section class="side-section toc-panel" aria-labelledby="toc-heading">
           <h2 id="toc-heading">섹션 맵</h2>
           <div class="toc">
@@ -1061,7 +1079,7 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 </div>
 
         </section>
-        
+
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
@@ -1092,16 +1110,16 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 <li><a href="https://snu.elsevierpure.com/en/publications/machine-learning-guided-discovery-of-sterically-protected-high-tr/" target="_blank" rel="noreferrer">JACS exciplex host 연구</a></li>
 <li><a href="https://arxiv.org/abs/2603.22738" target="_blank" rel="noreferrer">steel property prediction 논문</a></li>
 <li><a href="https://huggingface.co/Prior-Labs/tabpfn_3/blob/main/LICENSE" target="_blank" rel="noreferrer">TabPFN-3 License v1.0</a></li>
-<li><a href="2026-05-17_tabpfn-3-license-update_sources.md">2026-05-17_tabpfn-3-license-update_sources.md</a></li>
-<li><a href="2026-05-17_tabpfn-data-provenance-usecases_sources.md">2026-05-17_tabpfn-data-provenance-usecases_sources.md</a></li>
-<li><a href="2026-05-17_tabpfn-qchem-figure-audit_sources.md">2026-05-17_tabpfn-qchem-figure-audit_sources.md</a></li>
-<li><a href="2026-05-17_tabpfn-context-learning-figure_sources.md">2026-05-17_tabpfn-context-learning-figure_sources.md</a></li>
-<li><a href="2026-05-21_tabpfn-qchem-inverse-design_followup.md">후속 노트</a></li>
-<li><a href="2026-05-17_tabpfn-human-writing-audit.md">2026-05-17_tabpfn-human-writing-audit.md</a></li>
-<li><a href="writing-style-audit-harness.md">writing-style-audit-harness</a></li>
-<li><a href="writing-harness.md">writing-harness</a></li>
-<li><a href="editorial-graphics-audit-harness.md">editorial-graphics-audit-harness</a></li>
-<li><a href="visuals-and-image-generation.md">visuals-and-image-generation</a></li>
+
+
+
+
+
+
+
+
+
+
 <li><a href="https://hai.stanford.edu/ai-definitions/what-are-foundation-models" target="_blank" rel="noreferrer">Stanford HAI Foundation Models 해설</a></li>
 <li><a href="https://docs.priorlabs.ai/benchmarking" target="_blank" rel="noreferrer">Prior Labs Benchmarking TabPFN</a></li>
 <li><a href="https://docs.priorlabs.ai/improving-performance" target="_blank" rel="noreferrer">Prior Labs Improving Performance</a></li>
@@ -1133,20 +1151,18 @@ print(mean_absolute_error(y.iloc[test_idx], pred))
 <li><a href="https://tabicl.readthedocs.io/en/latest/" target="_blank" rel="noreferrer">TabICL documentation</a></li>
 <li><a href="https://arxiv.org/abs/2502.05564" target="_blank" rel="noreferrer">TabICL paper</a></li>
 <li><a href="https://www.nature.com/articles/s41570-021-00278-1" target="_blank" rel="noreferrer">Molecular excited states through a machine learning lens</a></li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_chatgpt_share_capture.md">처음 참고한 자료 - ChatGPT share capture</a></li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_sources.md">처음 참고한 자료 - Source note</a></li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_research_runlog.md">처음 참고한 자료 - Research runlog</a></li>
+
+
+
 <li><a href="https://horizon.kias.re.kr/" target="_blank" rel="noreferrer">문체 참고 - 고등과학원 HORIZON</a></li>
 <li><a href="https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx" target="_blank" rel="noreferrer">문체 참고 - 최종현학술원 Science Note 과학노트</a></li>
 <li><a href="https://www.quantamagazine.org/" target="_blank" rel="noreferrer">시각자료 참고 - Quanta Magazine</a></li>
-<li><a href="figure_manifest.md">시각자료 제작 기록 - figure manifest</a></li>
-<li><a href="2026-05-07_tabpfn-oled-manufacturing-foundation-model_skywork_image_prompt_pack.md">시각자료 후보 - Skywork Image prompt pack</a></li>
+
+
         </ul>
       </section>
     </aside>
-  </main>
-
-<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+  </main><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../assets/public-metrics.js"></script>

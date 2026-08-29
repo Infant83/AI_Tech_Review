@@ -14,6 +14,19 @@ import markdown
 
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
+FENCED_CODE_START_RE = re.compile(
+    r"(?m)^ {0,3}(?P<fence>`{3,}|~{3,})[^\n]*(?:\n|\Z)"
+)
+INDENTED_CODE_LINE_RE = re.compile(r"(?m)^(?: {4}|\t)[^\n]*(?:\n|\Z)")
+BLOCKQUOTE_PREFIX_RE = re.compile(r"(?: {0,3}>[ \t]?)+")
+AUTOLINK_RE = re.compile(r"<[A-Za-z][A-Za-z0-9+.-]*:[^<>\s]+>")
+OPAQUE_HTML_TAGS = {"script", "style", "pre", "code", "textarea", "noscript"}
+RAW_HTML_TAG_RE = re.compile(
+    r"</?[A-Za-z][A-Za-z0-9:-]*"
+    r"(?:\s+[A-Za-z_:][A-Za-z0-9:._-]*"
+    r"(?:\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s\"'=<>`]+))?)*"
+    r"\s*/?>"
+)
 SECTION_RE = re.compile(r"^#{1,6}\s+(.+?)\s*$", re.MULTILINE)
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
 BARE_URL_RE = re.compile(r"(?<!\()https?://[^\s<>)]+")
@@ -24,6 +37,12 @@ class LinkItem:
     label: str
     href: str
     external: bool
+
+
+@dataclass(frozen=True)
+class ProtectedMathExpression:
+    source: str
+    placeholder: str
 
 
 @dataclass
@@ -340,6 +359,425 @@ def preprocess_custom_blocks(markdown_text: str) -> str:
     return "\n".join(output)
 
 
+def _is_escaped(text: str, index: int) -> bool:
+    backslashes = 0
+    cursor = index - 1
+    while cursor >= 0 and text[cursor] == "\\":
+        backslashes += 1
+        cursor -= 1
+    return backslashes % 2 == 1
+
+
+def _fenced_code_end(markdown_text: str, index: int) -> int | None:
+    opening = FENCED_CODE_START_RE.match(markdown_text, index)
+    if not opening:
+        return None
+
+    fence = opening.group("fence")
+    closing_re = re.compile(
+        rf"(?m)^ {{0,3}}{re.escape(fence[0])}{{{len(fence)},}}"
+        r"[ \t]*\r?(?:\n|\Z)"
+    )
+    closing = closing_re.search(markdown_text, opening.end())
+    return closing.end() if closing else len(markdown_text)
+
+
+def _indented_code_end(markdown_text: str, index: int) -> int | None:
+    if index > 0:
+        previous_end = index - 1
+        previous_start = markdown_text.rfind("\n", 0, previous_end) + 1
+        if markdown_text[previous_start:previous_end].strip():
+            return None
+
+    opening = INDENTED_CODE_LINE_RE.match(markdown_text, index)
+    if not opening:
+        return None
+
+    block_end = opening.end()
+    cursor = block_end
+    while cursor < len(markdown_text):
+        line_end = markdown_text.find("\n", cursor)
+        line_end = len(markdown_text) if line_end < 0 else line_end + 1
+        line = markdown_text[cursor:line_end]
+        if line.strip() and not line.startswith(("    ", "\t")):
+            break
+        block_end = line_end
+        cursor = line_end
+    return block_end
+
+
+def _code_span_end(markdown_text: str, index: int) -> tuple[int, int | None]:
+    opening_end = index + 1
+    while opening_end < len(markdown_text) and markdown_text[opening_end] == "`":
+        opening_end += 1
+    opening_length = opening_end - index
+
+    cursor = opening_end
+    while cursor < len(markdown_text):
+        candidate = markdown_text.find("`", cursor)
+        if candidate < 0:
+            break
+        candidate_end = candidate + 1
+        while (
+            candidate_end < len(markdown_text)
+            and markdown_text[candidate_end] == "`"
+        ):
+            candidate_end += 1
+        if candidate_end - candidate == opening_length:
+            return opening_end, candidate_end
+        cursor = candidate_end
+    return opening_end, None
+
+
+def _markdown_bracket_end(markdown_text: str, index: int) -> int | None:
+    depth = 0
+    cursor = index
+    while cursor < len(markdown_text):
+        character = markdown_text[cursor]
+        if character == "\\" and not _is_escaped(markdown_text, cursor):
+            cursor += 2
+            continue
+        if character == "[":
+            depth += 1
+        elif character == "]":
+            depth -= 1
+            if depth == 0:
+                return cursor + 1
+        cursor += 1
+    return None
+
+
+def _markdown_destination_end(markdown_text: str, index: int) -> int | None:
+    if not markdown_text.startswith("(", index):
+        return None
+
+    depth = 0
+    quote: str | None = None
+    cursor = index
+    while cursor < len(markdown_text):
+        character = markdown_text[cursor]
+        if character == "\\" and not _is_escaped(markdown_text, cursor):
+            cursor += 2
+            continue
+        if quote:
+            if character == quote:
+                quote = None
+        elif (
+            character in {'"', "'"}
+            and cursor > index
+            and markdown_text[cursor - 1].isspace()
+        ):
+            quote = character
+        elif character == "(":
+            depth += 1
+        elif character == ")":
+            depth -= 1
+            if depth == 0:
+                return cursor + 1
+        cursor += 1
+    return None
+
+
+def _markdown_image_end(markdown_text: str, index: int) -> int | None:
+    if not markdown_text.startswith("![", index):
+        return None
+    label_end = _markdown_bracket_end(markdown_text, index + 1)
+    if label_end is None:
+        return None
+    destination_end = _markdown_destination_end(markdown_text, label_end)
+    if destination_end is not None:
+        return destination_end
+    if markdown_text.startswith("[", label_end):
+        return _markdown_bracket_end(markdown_text, label_end) or label_end
+    return label_end
+
+
+def _raw_html_end(markdown_text: str, index: int) -> int | None:
+    autolink = AUTOLINK_RE.match(markdown_text, index)
+    if autolink:
+        return autolink.end()
+    if markdown_text.startswith("<!--", index):
+        closing = markdown_text.find("-->", index + 4)
+        return len(markdown_text) if closing < 0 else closing + 3
+    if markdown_text.startswith("<![CDATA[", index):
+        closing = markdown_text.find("]]>", index + 9)
+        return len(markdown_text) if closing < 0 else closing + 3
+    if markdown_text.startswith("<?", index):
+        closing = markdown_text.find("?>", index + 2)
+        return len(markdown_text) if closing < 0 else closing + 2
+
+    remainder = markdown_text[index:]
+    opening_tag = re.match(r"<(?P<tag>[A-Za-z][A-Za-z0-9:-]*)(?:\s|/?>)", remainder)
+    if not re.match(r"</?[A-Za-z]", remainder) and not re.match(
+        r"<![A-Za-z]", remainder
+    ):
+        return None
+
+    quote: str | None = None
+    cursor = index + 1
+    while cursor < len(markdown_text):
+        character = markdown_text[cursor]
+        if quote:
+            if character == quote:
+                quote = None
+        elif character in {'"', "'"}:
+            quote = character
+        elif character == ">":
+            tag_end = cursor + 1
+            tag_source = markdown_text[index:tag_end]
+            if remainder.startswith(("<", "</")) and not remainder.startswith("<!"):
+                if not RAW_HTML_TAG_RE.fullmatch(tag_source):
+                    return None
+            if (
+                opening_tag
+                and opening_tag.group("tag").lower() in OPAQUE_HTML_TAGS
+                and not markdown_text[index:tag_end].rstrip().endswith("/>")
+            ):
+                tag = re.escape(opening_tag.group("tag"))
+                closing = re.compile(rf"</{tag}\s*>", re.IGNORECASE).search(
+                    markdown_text, tag_end
+                )
+                return closing.end() if closing else len(markdown_text)
+            return tag_end
+        cursor += 1
+    return None
+
+
+def _find_math_closer(
+    markdown_text: str, start: int, delimiter: str
+) -> int | None:
+    cursor = start
+    while True:
+        candidate = markdown_text.find(delimiter, cursor)
+        if candidate < 0:
+            return None
+        if not _is_escaped(markdown_text, candidate) and candidate > start:
+            return candidate + len(delimiter)
+        cursor = candidate + len(delimiter)
+
+
+def _inline_dollar_end(markdown_text: str, index: int) -> int | None:
+    if (
+        _is_escaped(markdown_text, index)
+        or index + 1 >= len(markdown_text)
+        or markdown_text[index + 1] == "$"
+        or markdown_text[index + 1].isspace()
+    ):
+        return None
+
+    cursor = index + 1
+    while True:
+        candidate = markdown_text.find("$", cursor)
+        if candidate < 0 or "\n" in markdown_text[index:candidate]:
+            return None
+        escaped = _is_escaped(markdown_text, candidate)
+        following = markdown_text[candidate + 1 : candidate + 2]
+        body = markdown_text[index + 1 : candidate]
+        previous = markdown_text[candidate - 1]
+        pipe_can_close = (
+            previous != "|"
+            or body.startswith(("|", r"\|", r"\lvert", r"\left|"))
+        )
+        if (
+            not escaped
+            and previous != "$"
+            and not previous.isspace()
+            and previous not in "([{/+-–—"
+            and pipe_can_close
+            and following != "$"
+            and not following.isdigit()
+        ):
+            return candidate + 1
+        if not escaped:
+            return None
+        cursor = candidate + 1
+
+
+def _math_expression_end(
+    markdown_text: str, index: int
+) -> tuple[int, bool] | None:
+    if markdown_text.startswith("$$", index) and not _is_escaped(
+        markdown_text, index
+    ):
+        end = _find_math_closer(markdown_text, index + 2, "$$")
+        return (end, True) if end is not None else None
+    if markdown_text.startswith(r"\[", index) and not _is_escaped(
+        markdown_text, index
+    ):
+        end = _find_math_closer(markdown_text, index + 2, r"\]")
+        return (end, True) if end is not None else None
+    if markdown_text.startswith(r"\(", index) and not _is_escaped(
+        markdown_text, index
+    ):
+        end = _find_math_closer(markdown_text, index + 2, r"\)")
+        return (end, False) if end is not None else None
+    if markdown_text[index] == "$":
+        end = _inline_dollar_end(markdown_text, index)
+        return (end, False) if end is not None else None
+    return None
+
+
+def _normalize_blockquote_math(
+    markdown_text: str, index: int, expression: str, display: bool
+) -> str:
+    if not display:
+        return expression
+    line_start = markdown_text.rfind("\n", 0, index) + 1
+    prefix = markdown_text[line_start:index]
+    if not BLOCKQUOTE_PREFIX_RE.fullmatch(prefix):
+        return expression
+
+    quote_depth = prefix.count(">")
+    lines = expression.splitlines(keepends=True)
+    normalized = [lines[0]]
+    for line in lines[1:]:
+        line_prefix = BLOCKQUOTE_PREFIX_RE.match(line)
+        if not line_prefix or line_prefix.group(0).count(">") != quote_depth:
+            return expression
+        normalized.append(line[line_prefix.end() :])
+    return "".join(normalized)
+
+
+def _opaque_markdown_ranges(markdown_text: str) -> list[tuple[int, int]]:
+    ranges: list[tuple[int, int]] = []
+    cursor = 0
+    while cursor < len(markdown_text):
+        protected_start = cursor
+        protected_end: int | None = None
+        if cursor == 0 or markdown_text[cursor - 1] == "\n":
+            protected_end = _fenced_code_end(markdown_text, cursor)
+            if protected_end is None:
+                protected_end = _indented_code_end(markdown_text, cursor)
+
+        character = markdown_text[cursor]
+        if (
+            protected_end is None
+            and character == "`"
+            and not _is_escaped(markdown_text, cursor)
+        ):
+            opening_end, code_span_end = _code_span_end(markdown_text, cursor)
+            if code_span_end is None:
+                cursor = opening_end
+                continue
+            protected_end = code_span_end
+        if protected_end is None and character == "!":
+            protected_end = _markdown_image_end(markdown_text, cursor)
+        if protected_end is None and character == "<":
+            protected_end = _raw_html_end(markdown_text, cursor)
+        if (
+            protected_end is None
+            and character == "]"
+            and markdown_text.startswith("(", cursor + 1)
+        ):
+            protected_start = cursor + 1
+            protected_end = _markdown_destination_end(markdown_text, protected_start)
+        if (
+            protected_end is None
+            and character == "]"
+            and markdown_text.startswith("[", cursor + 1)
+        ):
+            protected_start = cursor + 1
+            protected_end = _markdown_bracket_end(markdown_text, protected_start)
+
+        if protected_end is not None:
+            ranges.append((protected_start, protected_end))
+            cursor = protected_end
+        else:
+            cursor += 1
+    return ranges
+
+
+def _protect_math_in_prose(
+    markdown_text: str,
+    expressions: list[ProtectedMathExpression],
+    placeholder_attribute: str,
+) -> str:
+    output: list[str] = []
+    cursor = 0
+    while cursor < len(markdown_text):
+        character = markdown_text[cursor]
+        if (
+            character == "\\"
+            and markdown_text.startswith(r"\$", cursor)
+            and not _is_escaped(markdown_text, cursor)
+        ):
+            output.append('<span class="tex2jax_ignore">$</span>')
+            cursor += 2
+            continue
+
+        math_end = _math_expression_end(markdown_text, cursor)
+        if math_end is not None:
+            expression_end, display = math_end
+            expression = _normalize_blockquote_math(
+                markdown_text,
+                cursor,
+                markdown_text[cursor:expression_end],
+                display,
+            )
+            index = len(expressions)
+            tag = "div" if display else "span"
+            placeholder = (
+                f'<{tag} {placeholder_attribute}="{index}"></{tag}>'
+            )
+            expressions.append(
+                ProtectedMathExpression(source=expression, placeholder=placeholder)
+            )
+            output.append(placeholder)
+            cursor = expression_end
+            continue
+        if character == "$":
+            output.append('<span class="tex2jax_ignore">$</span>')
+            cursor += 1
+            continue
+
+        output.append(character)
+        cursor += 1
+
+    return "".join(output)
+
+
+def protect_math_expressions(
+    markdown_text: str,
+) -> tuple[str, list[ProtectedMathExpression]]:
+    """Hide TeX from Markdown parsing, except inside code and raw HTML."""
+    expressions: list[ProtectedMathExpression] = []
+    output: list[str] = []
+    cursor = 0
+    placeholder_index = 0
+    placeholder_attribute = f"data-ai-tech-math-{placeholder_index}"
+    while placeholder_attribute in markdown_text:
+        placeholder_index += 1
+        placeholder_attribute = f"data-ai-tech-math-{placeholder_index}"
+
+    for opaque_start, opaque_end in _opaque_markdown_ranges(markdown_text):
+        output.append(
+            _protect_math_in_prose(
+                markdown_text[cursor:opaque_start],
+                expressions,
+                placeholder_attribute,
+            )
+        )
+        output.append(markdown_text[opaque_start:opaque_end])
+        cursor = opaque_end
+    output.append(
+        _protect_math_in_prose(
+            markdown_text[cursor:], expressions, placeholder_attribute
+        )
+    )
+
+    return "".join(output), expressions
+
+
+def restore_math_expressions(
+    html_text: str, expressions: list[ProtectedMathExpression]
+) -> str:
+    for expression in expressions:
+        html_text = html_text.replace(
+            expression.placeholder, html.escape(expression.source, quote=False)
+        )
+    return html_text
+
+
 def build_markdown_html(markdown_text: str) -> tuple[str, str]:
     renderer = markdown.Markdown(
         extensions=["extra", "toc", "sane_lists", "smarty", "md_in_html"],
@@ -350,8 +788,11 @@ def build_markdown_html(markdown_text: str) -> tuple[str, str]:
             }
         },
     )
-    body_html = renderer.convert(preprocess_custom_blocks(markdown_text))
-    toc_html = renderer.toc or ""
+    prepared = preprocess_custom_blocks(markdown_text)
+    prepared, math_expressions = protect_math_expressions(prepared)
+    body_html = renderer.convert(prepared)
+    body_html = restore_math_expressions(body_html, math_expressions)
+    toc_html = restore_math_expressions(renderer.toc or "", math_expressions)
     return body_html, toc_html
 
 
@@ -888,11 +1329,12 @@ def render_final_review_template(context: RenderContext) -> str:
   <script>
     window.MathJax = {{
       tex: {{
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']]
+        inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+        displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']]
       }},
       options: {{
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
       }}
     }};
   </script>
@@ -1620,6 +2062,7 @@ def render_final_review_template(context: RenderContext) -> str:
     <div class="topline-inner">
       <span>{html.escape(context.issue_label)}</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">{("리뷰 허브" if context.language == "ko" else "Review hub")}</a>
         {language_switch}
         <a href="{html.escape(source_href, quote=True)}">{html.escape(context.source_path.name)}</a>
       </div>

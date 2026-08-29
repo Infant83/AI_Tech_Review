@@ -12,6 +12,12 @@ alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_
 alternate en url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
 alternate x-default url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
 social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
+writing assistance: "OpenAI Codex Work Mode; exact model identifier and original article agent roster not retained"
+agent roles: "2026-08-29 public repair: orchestration and editorial integration; LinkedIn and primary-paper research; disclosure design; repository audit and publication QA"
+editorial harness: "AI Tech Review Editorial Harness v2026.08"
+verification sources: "PennyLane demo and fixed-commit source; peer-reviewed paper; current arXiv version; official documentation; final HTML"
+human review record: "scope, direction, and publication request confirmed; line-by-line review not separately retained"
+evidence cutoff: "2026-08-29"
 tags:
   - ai-tech-review
   - vibronic-dynamics
@@ -155,7 +161,7 @@ $$
 
 | 변수 | 값 | 의미 |
 |---|---:|---|
-| electronic states | 2 | 1-qubit 전자상태 레지스터의 $|0\rangle$, $|1\rangle$ |
+| electronic states | 2 | 1-qubit 전자상태 레지스터의 $\lvert 0\rangle$, $\lvert 1\rangle$ |
 | vibrational modes | 1 | 정상모드 하나 |
 | $k$ | 2 | 모드당 큐비트 수 |
 | $K=2^k$ | 4 | 진동 좌표 격자점 수 |

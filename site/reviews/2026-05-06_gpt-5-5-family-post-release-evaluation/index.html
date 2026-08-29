@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건</title>
-  <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <style>
     :root {
@@ -507,7 +506,8 @@
         position: static;
       }
     }
-  </style>
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-06_gpt-5-5-family-post-release-evaluation/">
+    <meta property="og:title" content="GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
     <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
@@ -518,10 +518,11 @@
     <!-- End AI Tech Review Public Metrics Styles -->
   </head>
 <body class="public-review">
+  <nav class="public-fallback-nav" aria-label="AI Tech Review"><a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a></nav>
   <div class="topline">
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 19 (2026-05-10)</span>
-      <span><a href="2026-05-06_gpt-5-5-family-post-release-evaluation_final_review.md">2026-05-06_gpt-5-5-family-post-release-evaluation_final_review.md</a></span>
+      <span><span class="private-source-omitted">비공개 작업 파일 생략</span></span>
     </div>
   </div>
 
@@ -532,10 +533,10 @@
         <h1>GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건</h1>
         <p class="dek">GPT-5.5는 코드 수정, 도구 호출, 긴 문맥 조사처럼 여러 단계를 이어 가는 작업에서 개선을 강조합니다. 이 글은 Claude Opus 4.7과의 차이, Hallucination 평가가 엇갈리는 이유, 하네스 설계와 검증 절차가 실제 활용 신뢰를 어떻게 바꾸는지 살펴봅니다.</p>
       </section>
-      
+
     </div>
   </header>
-
+<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-05-10 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article class="final-article">
       <p>최근 GPT-5.5 업데이트를 직접 써보셨다면, 한 번의 답변 품질과 함께 코드 수정, 자료 조사, 도구 호출이 여러 단계로 이어질 때의 안정감을 보셨을 겁니다. 이 모델은 긴 작업을 얼마나 오래 유지할 수 있을까요? 사람이 중간에 확인해야 하는 지점은 어디일까요? Terminal-Bench, SWE-Bench Pro, BrowseComp, MCP Atlas 같은 벤치마크 이름도 결국 이 질문과 연결되어 있습니다.</p>
@@ -572,7 +573,7 @@
 <p>이 구분은 평가 결과를 읽을 때 중요합니다. Thinking의 Terminal-Bench 개선은 장기 작업 수행 능력에 관한 이야기입니다. Pro의 개선은 지연 시간과 비용을 더 쓰는 실행 방식이 어려운 과제에서 얼마나 값을 하는지 묻습니다. Instant의 사실성 개선은 기본 대화 경험에서 특정 오류 유형이 줄었는지를 봅니다. 세 결과를 하나로 섞으면 도입 판단이 흐려집니다.</p>
 <p><a href="https://developers.openai.com/api/docs/pricing">OpenAI 가격표</a>에서도 이 차이가 확인됩니다. 2026년 5월 10일 접근 기준 <code>gpt-5.5</code>는 표준 short-context에서 100만 토큰당 입력 5달러, 출력 30달러이고, <code>gpt-5.5-pro</code>는 입력 30달러, 출력 180달러입니다. 비용이 높아진 만큼 운영팀은 성공한 작업당 총비용, 재시도율, 사람 검토 시간, 오류 복구 가능성을 같이 봐야 합니다.</p>
 <h2 id="opus-47">Opus 4.7과의 비교는 작업 성격에서 드러납니다</h2>
-<p>GPT-5.5와 Claude Opus 4.7을 비교할 때 가장 먼저 조심해야 할 점은 벤치마크마다 평가 항목이 다르다는 것입니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI 발표</a> 표에서는 GPT-5.5가 Terminal-Bench 2.0에서 82.7%로 Opus 4.7의 69.4%를 앞섭니다. BrowseComp도 GPT-5.5 84.4%, GPT-5.5 Pro 90.1%로 Opus 4.7의 79.3%를 앞섭니다. 같은 OpenAI 표에서 SWE-Bench Pro는 GPT-5.5가 58.6%, Opus 4.7이 64.3%입니다. <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale MCP Atlas</a>도 2026년 5월 10일 접근 기준 Opus 4.7 max 79.1%, GPT-5.5 xhigh 75.3%로 Opus가 앞섭니다.</p>
+<p><span id="fnref:mcp"></span>GPT-5.5와 Claude Opus 4.7을 비교할 때 가장 먼저 조심해야 할 점은 벤치마크마다 평가 항목이 다르다는 것입니다. <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI 발표</a> 표에서는 GPT-5.5가 Terminal-Bench 2.0에서 82.7%로 Opus 4.7의 69.4%를 앞섭니다. BrowseComp도 GPT-5.5 84.4%, GPT-5.5 Pro 90.1%로 Opus 4.7의 79.3%를 앞섭니다. 같은 OpenAI 표에서 SWE-Bench Pro는 GPT-5.5가 58.6%, Opus 4.7이 64.3%입니다. <a href="https://labs.scale.com/leaderboard/mcp_atlas">Scale MCP Atlas</a>도 2026년 5월 10일 접근 기준 Opus 4.7 max 79.1%, GPT-5.5 xhigh 75.3%로 Opus가 앞섭니다.</p>
 <p>이 차이는 모델을 고르기 전에 작업 조건을 먼저 보게 만듭니다. Terminal-Bench는 터미널 환경에서 작업을 풀어가는 능력을 강하게 봅니다. SWE-Bench Pro는 실제 저장소 이슈를 해결하는 장기 소프트웨어 작업을 묻습니다. MCP Atlas는 여러 MCP 서버와 도구가 열린 상태에서 적절한 도구를 고르고, 인자를 넣고, 중간 결과를 합치는 능력을 봅니다. 같은 “코딩”이나 “도구 사용”이라고 불러도 실제 시험지는 서로 다릅니다.</p>
 <p><a href="https://www.anthropic.com/news/claude-opus-4-7">Anthropic의 Opus 4.7 발표</a>는 기업 고객 사례에서 역할 유지, 지시 따르기, 도구 실패 후 지속 수행, 문서 추론을 강조합니다. <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a>는 GPT-5.5가 Intelligence Index에서 1위를 기록했고, medium effort가 Opus 4.7 max와 같은 지표 점수를 더 낮은 비용으로 냈다고 평가했습니다. 이 자료들을 같이 읽으면 GPT-5.5는 토큰 효율, 검색·브라우징, 터미널형 실행, OpenAI 생태계의 Codex/Responses API 결합에서 강한 신호가 있고, Opus 4.7은 긴 소프트웨어 이슈, 도구 오케스트레이션, 문서 기반 엔터프라이즈 작업에서 강한 비교 신호가 있습니다.</p>
 <figure class="figure-panel">
@@ -581,7 +582,7 @@
 </figure>
 
 <p>모델을 고를 때는 먼저 우리 업무의 실패 형태를 적어보는 편이 좋습니다. 터미널에서 테스트를 돌리고 빠르게 고쳐야 하는지, 큰 저장소의 이슈를 장시간 추적해야 하는지, 많은 도구 중 적절한 API를 찾아야 하는지, 문서 근거를 정교하게 다뤄야 하는지에 따라 답이 달라집니다.</p>
-<h2 id="hallucination">Hallucination이 많아 보이는 이유는 평가가 다른 능력을 재기 때문입니다</h2>
+<h2 id="hallucination"><span id="fnref:hallucination"></span>Hallucination이 많아 보이는 이유는 평가가 다른 능력을 재기 때문입니다</h2>
 <p>GPT-5.5에서 가장 흥미로운 대목은 사실성과 Hallucination입니다. <a href="https://openai.com/index/gpt-5-5-instant/">OpenAI Instant 발표</a>는 GPT-5.5 Instant가 GPT-5.3 Instant 대비 의학, 법률, 금융 같은 고위험 문항에서 hallucinated claims를 52.5% 줄였고, 사용자가 사실 오류로 신고했던 어려운 대화에서 부정확한 주장을 37.3% 줄였다고 설명합니다. 이 숫자만 보면 사실성 문제가 크게 개선된 것처럼 보입니다.</p>
 <p>한편 <a href="https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/">Artificial Analysis</a>는 GPT-5.5 xhigh가 AA-Omniscience에서 정확도 57%로 가장 높은 값을 보였지만 Hallucination 비율은 86%였다고 보고했습니다. 같은 자료에서 Opus 4.7 max는 36%, Gemini 3.1 Pro Preview는 50%로 제시됩니다. 두 결과가 다르게 보이는 이유는 평가 단위가 다르기 때문입니다.</p>
 <p>OpenAI의 Instant 평가는 특정 고위험 문항 묶음이나 사용자 신고 기반 오류 대화에서 이전 Instant 모델과 비교한 개선입니다. Artificial Analysis의 AA-Omniscience는 모델이 다양한 사실 문항에 답할 때 얼마나 많이 맞히는지와, 모르는 문항에서도 답을 시도하는지를 동시에 봅니다. GPT-5.5가 더 많은 사실을 알고 더 많은 문제를 맞히면서도, 불확실할 때 답을 보류하는 능력에서는 불리하게 보일 수 있습니다.</p>
@@ -593,7 +594,7 @@
 <p>이 구분은 사용자의 신뢰 문제와 바로 연결됩니다. 지식이 많은 모델은 틀릴 때도 더 설득력 있게 틀릴 수 있습니다. 긴 작업을 잘 수행하는 모델은 잘못된 중간 가정도 더 오래 끌고 갈 수 있습니다. 그래서 신뢰할 수 있는 AI 활용은 “모델이 사실을 많이 안다”에서 출발하되, “모를 때 어떻게 행동하는가”와 “근거를 어떻게 남기는가”까지 확인해야 합니다.</p>
 <h2 id="_1">엔지니어링은 모델의 실제 성격을 바꿉니다</h2>
 <p>GPT-5.5 같은 모델을 써보면 모델의 특성이 고정된 것처럼 느껴질 때가 있습니다. 어떤 날은 빠르고 간결하고, 어떤 작업에서는 지나치게 오래 탐색하고, 또 어떤 상황에서는 확신 있게 틀립니다. 이 차이의 일부는 모델 자체에서 오지만, 상당 부분은 엔지니어링 조건에서 옵니다.</p>
-<p><a href="https://developers.openai.com/api/docs/guides/latest-model">OpenAI API 문서</a>는 GPT-5.5를 이전 모델의 drop-in replacement처럼 다루지 말고 새 기준선에서 조정하라고 안내합니다. <code>reasoning.effort</code>는 기본값이 <code>medium</code>이며, <code>low</code>, <code>high</code>, <code>xhigh</code>를 업무에 맞춰 평가하라고 합니다. 같은 문서는 higher reasoning effort를 항상 품질 개선으로 취급하지 말라고 설명합니다. 중단 기준이 약하거나 도구 접근이 넓거나 지시가 충돌하면 더 오래 생각하는 설정이 과도한 검색, 과잉 추론, 품질 저하를 만들 수 있습니다.</p>
+<p><span id="fnref:reasoning-effort"></span><a href="https://developers.openai.com/api/docs/guides/latest-model">OpenAI API 문서</a>는 GPT-5.5를 이전 모델의 drop-in replacement처럼 다루지 말고 새 기준선에서 조정하라고 안내합니다. <code>reasoning.effort</code>는 기본값이 <code>medium</code>이며, <code>low</code>, <code>high</code>, <code>xhigh</code>를 업무에 맞춰 평가하라고 합니다. 같은 문서는 higher reasoning effort를 항상 품질 개선으로 취급하지 말라고 설명합니다. 중단 기준이 약하거나 도구 접근이 넓거나 지시가 충돌하면 더 오래 생각하는 설정이 과도한 검색, 과잉 추론, 품질 저하를 만들 수 있습니다.</p>
 <p>모델의 실제 성격은 다음 요소에서 만들어집니다. 어떤 문서를 검색하게 하는가. 검색 결과를 어떻게 인용하게 하는가. 도구 이름과 인자를 얼마나 명확하게 설명하는가. 파일 쓰기나 외부 요청 권한을 어디까지 줄 것인가. 실패했을 때 재시도할지 멈출지 어떻게 알려줄 것인가. 결과물을 어떤 테스트와 사람 검토에 통과시킬 것인가. 이 모든 것이 합쳐져 우리가 체감하는 “모델의 신뢰성”이 됩니다.</p>
 <figure class="figure-panel">
   <img src="gpt55_engineering_harness.svg" alt="모델, 검색, 도구 권한, 평가, 사람 검토, 롤백이 신뢰를 만드는 하네스 도식">
@@ -666,6 +667,23 @@
 </li>
 </ol>
 </div>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex Agent; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-05-10</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
         생성 시각: 2026-05-10 23:47:21<br>
         원본 파일 최종 수정 시각: 2026-05-10 23:47:02
@@ -673,7 +691,7 @@
     </article>
 
     <aside class="sidebar">
-      
+
         <section class="side-section toc-panel" aria-labelledby="toc-heading">
           <h2 id="toc-heading">섹션 맵</h2>
           <div class="toc">
@@ -693,7 +711,7 @@
 </div>
 
         </section>
-        
+
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
@@ -712,9 +730,7 @@
         </ul>
       </section>
     </aside>
-  </main>
-
-<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+  </main><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../assets/public-metrics.js"></script>

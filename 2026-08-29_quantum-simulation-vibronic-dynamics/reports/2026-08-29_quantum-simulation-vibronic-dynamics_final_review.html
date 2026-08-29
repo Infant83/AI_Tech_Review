@@ -31,11 +31,12 @@
   <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']]
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
       }
     };
   </script>
@@ -763,6 +764,7 @@
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 35 (2026-08-29)</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
         <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/" lang="en" hreflang="en">English</a></nav>
         <a href="2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md">2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md</a>
       </div>
@@ -857,9 +859,10 @@
 <p>PennyLane 소개문은 고전 계산이 동역학을 사실상 다룰 수 없다는 인상을 준다. 이는 범위가 너무 넓다. Surface hopping, Ehrenfest dynamics, multiconfiguration time-dependent Hartree(MCTDH), multilayer MCTDH와 tensor-network 등 여러 고전 방법이 이미 쓰인다. 더 정확한 문제 정의는 <strong>많은 진동모드와 전자상태가 강하게 상관된 전체 양자 동역학을 체계적으로 정확하게 전파할 때 비용이 빠르게 증가한다</strong>는 것이다.</p>
 <h2 id="2-kdc-">2. 계산할 물리: KDC 진동-전자 해밀토니안</h2>
 <p>데모가 사용하는 Köppel–Domcke–Cederbaum(KDC) 해밀토니안은 전자상태와 핵 진동을 한 양자계로 적는다.</p>
-<p>$$
+$$
 H=\mathbb I_{\mathrm{el}}\otimes(T_{\mathrm{nuc}}+V_0)+\mathbf W(\mathbf Q).
-$$</p>
+$$
+
 <ul>
 <li>$\mathbb I_{\mathrm{el}}$은 전자상태 공간의 항등연산자다.</li>
 <li>$T_{\mathrm{nuc}}$은 핵 진동의 운동에너지다.</li>
@@ -867,23 +870,26 @@ $$</p>
 <li>$\mathbf W(\mathbf Q)$는 정상모드 좌표 $\mathbf Q$에 따라 변하는 전자상태 에너지와 상태 간 결합을 담은 diabatic potential matrix다.</li>
 </ul>
 <p>두 전자상태 $i,j$ 사이의 퍼텐셜 블록은 기준 구조 주변에서 다음처럼 전개할 수 있다.</p>
-<p>$$
-W&rsquo;<em r_r_="r,r'">{ij}(\mathbf Q)=\lambda^{(i,j)}
+$$
+W'_{ij}(\mathbf Q)=\lambda^{(i,j)}
 +\sum_r a_r^{(i,j)}Q_r
-+\sum</em>.
-$$}b_{rr&rsquo;}^{(i,j)}Q_rQ_{r&rsquo;</p>
-<p>$\lambda$는 좌표와 무관한 에너지 또는 결합, $a_rQ_r$은 선형 진동-전자 결합, $b_{rr&rsquo;}Q_rQ_{r&rsquo;}$은 이차 및 모드 간 결합을 나타낸다. 선형항까지 남기면 linear vibronic coupling(LVC), 이차항까지 포함하면 quadratic vibronic coupling(QVC) 모델이다. 여기서 $Q_r$은 원자 하나의 위치가 아니라 분자 전체가 함께 움직이는 <strong>무차원 정상모드 좌표</strong>다.</p>
++\sum_{r,r'}b_{rr'}^{(i,j)}Q_rQ_{r'}.
+$$
+
+<p>$\lambda$는 좌표와 무관한 에너지 또는 결합, $a_rQ_r$은 선형 진동-전자 결합, $b_{rr'}Q_rQ_{r'}$은 이차 및 모드 간 결합을 나타낸다. 선형항까지 남기면 linear vibronic coupling(LVC), 이차항까지 포함하면 quadratic vibronic coupling(QVC) 모델이다. 여기서 $Q_r$은 원자 하나의 위치가 아니라 분자 전체가 함께 움직이는 <strong>무차원 정상모드 좌표</strong>다.</p>
 <p>이 해밀토니안은 압축된 물리 모형이지 전자구조를 자동으로 만들어 주는 장치가 아니다. 전자상태, 진동수, 정상모드와 결합계수는 DFT/TDDFT 또는 다중참조 전자구조 계산과 diabatization으로 먼저 얻어야 한다. <a href="https://arxiv.org/html/2411.13669v3">기반 논문 최신 v3</a>도 해밀토니안 구성 자체는 양자 동역학 알고리즘의 범위 밖이라고 명시한다.</p>
 <h2 id="3">3. 연속적인 핵 운동을 큐비트 격자에 넣는 법</h2>
 <p>각 진동모드를 $K=2^k$개의 위치 격자점으로 이산화하면 한 모드를 $k$개 큐비트에 저장할 수 있다. 계산기저 $|x\rangle$가 위치를 나타내며,</p>
-<p>$$
+$$
 Q|x\rangle=\Delta(x-K/2)|x\rangle,
 \qquad \Delta=\sqrt{2\pi/K}
-$$</p>
+$$
+
 <p>로 좌표를 정의한다. 전자상태가 $N$개이고 진동모드가 $M$개라면 물리계를 나타내는 주 레지스터는</p>
-<p>$$
+$$
 M\log_2K+\lceil\log_2N\rceil
-$$</p>
+$$
+
 <p>개의 큐비트를 사용한다.</p>
 <p>중요한 정정이 하나 있다. 이 데모는 진동을 연속변수 <strong>qumode</strong>로 처리하는 광자 하이브리드 구현이 아니다. 전자상태 레지스터와 모든 진동 격자 레지스터를 <strong>모두 큐비트</strong>로 표현하고 <code>lightning.qubit</code>에서 계산한다. 코드의 <code>electrons</code> 변수도 전자 수가 아니라 diabatic electronic-state register를 뜻한다.</p>
 <p>고전적인 primitive grid는 $N K^M$개의 복소 진폭을 명시적으로 저장해야 하므로 모드 수에 따라 메모리가 지수적으로 늘 수 있다. 양자상태는 이 진폭을 더 작은 큐비트 레지스터에 부호화할 수 있다. 하지만 이 압축이 곧 저비용 계산을 뜻하지는 않는다. 상태 준비, 계수 로딩, 양자 산술, Trotter 반복, 오류정정과 측정 비용이 남는다.</p>
@@ -895,10 +901,11 @@ $$</p>
 <p>위치 $Q$는 격자 계산기저에서 대각형이지만 운동량 $P$는 그렇지 않다. 회로는 각 모드에 QFT를 적용해 운동량기저로 이동하고, <code>OutPoly</code>로 $(x-K/2)^2$을 보조 레지스터에 계산한다. 이 값과 운동에너지 계수로 위상을 누적한 뒤 중간 계산을 되돌리고 역 QFT로 위치기저에 복귀한다.</p>
 <h3 id="qrom">퍼텐셜: 상태별 계수를 QROM으로 불러와 위상으로 바꾼다</h3>
 <p>퍼텐셜 계수는 전자상태에 따라 달라진다. <code>LoadCoeffsKDC</code>는 QROM을 사용해 현재 전자상태에 맞는 미리 계산된 비트열을 계수 레지스터로 적재한다. 여기서 QROM은 외부 데이터베이스에 양자적으로 접속하는 하드웨어 QRAM이 아니다. <strong>고정된 coefficient table을 가역 회로로 조회하는 논리 연산</strong>이다.</p>
-<p>선형항은 $Q_r$, 이차항은 $Q_rQ_{r&rsquo;}$를 산술회로로 계산한다. 그 결과를 재사용 가능한 $b$-qubit 위상 기울기 상태</p>
-<p>$$
+<p>선형항은 $Q_r$, 이차항은 $Q_rQ_{r'}$를 산술회로로 계산한다. 그 결과를 재사용 가능한 $b$-qubit 위상 기울기 상태</p>
+$$
 |R_b\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{i2\pi y/2^b}|y\rangle
-$$</p>
+$$
+
 <p>에 더해 에너지와 시간에 해당하는 위상을 만든다. $b$는 회전의 고정소수점 정밀도를 정한다. 위상을 적용한 뒤 QROM과 산술 중간값을 uncompute해 보조 레지스터를 원상복구한다.</p>
 <h3 id="xor-fragment-clifford">비대각 전자 결합: XOR fragment와 Clifford 대각화</h3>
 <p>전자상태 사이의 결합은 전자 부분에서 비대각 행렬을 만든다. 기반 알고리즘은 두 전자상태 인덱스의 XOR 차이가 같은 항을 하나의 fragment로 묶는다. 비트열이 한 자리에서 다르면 Hadamard로, 여러 자리에서 다르면 CNOT으로 차이를 한 자리에 모은 뒤 Hadamard로 block diagonalization한다. 이 과정은 Clifford gate만 사용한다. 각 fragment가 대각형이 된 뒤에야 위치별 퍼텐셜 위상을 효율적으로 적용할 수 있다.</p>
@@ -916,7 +923,7 @@ $$</p>
 <tr>
 <td>electronic states</td>
 <td style="text-align: right;">2</td>
-<td>1-qubit 전자상태 레지스터의 $</td>
+<td>1-qubit 전자상태 레지스터의 $\lvert 0\rangle$, $\lvert 1\rangle$</td>
 </tr>
 <tr>
 <td>vibrational modes</td>
@@ -1165,9 +1172,10 @@ $$</p>
 <p>VQE로 얻은 에너지는 동역학 해밀토니안의 입력 일부가 될 수 있다. 그러나 정적 에너지 하나가 진동이 유도하는 시간별 population transfer를 자동으로 주지는 않는다.</p>
 <h2 id="9-tadfpholed">9. [리뷰 해석] TADF·PhOLED 연구에 연결되는 지점</h2>
 <p>Thermally activated delayed fluorescence(TADF)의 reverse intersystem crossing(RISC)은 $\Delta E_{\mathrm{ST}}$ 하나로 결정되지 않는다. singlet와 triplet의 state character, higher triplet, SOC, 특정 promoting mode, 주변 유전환경과 구조 변동이 함께 관여할 수 있다. KDC 형식은 원리상 퍼텐셜 행렬에 SOC 해밀토니안을 더해</p>
-<p>$$
-\mathbf W&rsquo;(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q)
-$$</p>
+$$
+\mathbf W'(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q)
+$$
+
 <p>와 같은 spin-vibronic 모형으로 확장할 수 있다. 기반 논문도 TADF를 잠재 응용으로 언급한다.</p>
 <table>
 <thead>
@@ -1187,7 +1195,7 @@ $$</p>
 </tr>
 <tr>
 <td>promoting vibration</td>
-<td>$a_r^{(i,j)}$, $b_{rr&rsquo;}^{(i,j)}$</td>
+<td>$a_r^{(i,j)}$, $b_{rr'}^{(i,j)}$</td>
 </tr>
 <tr>
 <td>ISC/RISC 경로</td>
@@ -1233,8 +1241,8 @@ $$</p>
 </ol>
 <p><em>검증 메모: 수치와 실행 조건은 PennyLane 공개 코드, 공식 문서, 동료평가 논문과 최신 arXiv v3를 대조했다. 데모 결과, 논문 자원 추정, OLED 적용에 관한 리뷰 해석을 서로 다른 증거 층으로 유지했다.</em></p>
       <div class="footer">
-        생성 시각: 2026-08-29 05:02:45<br>
-        원본 파일 최종 수정 시각: 2026-08-29 04:58:39
+        생성 시각: 2026-08-29 08:48:06<br>
+        원본 파일 최종 수정 시각: 2026-08-29 07:55:10
       </div>
     </article>
 

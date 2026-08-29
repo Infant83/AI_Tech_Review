@@ -48,16 +48,17 @@
     code{padding:.12em .35em;background:var(--paper2);border-radius:4px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
     @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:620px}.sidebar{position:static}.verdict{grid-template-columns:1fr}.flow{grid-template-columns:1fr;row-gap:24px}.flow div:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-22px;transform:translateX(-50%)}.metric-strip{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.35rem}.metric-strip{grid-template-columns:1fr 1fr}article h2{font-size:1.42rem}th,td{min-width:112px}}
-  </style>
-  <!-- AI Tech Review Icons -->
-  <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
-  <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
-  <!-- End AI Tech Review Icons -->
-  <!-- AI Tech Review Public Metrics Styles -->
-  <link rel="stylesheet" href="../../assets/public-metrics.css">
-  <!-- End AI Tech Review Public Metrics Styles -->
-</head>
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/">
+    <meta property="og:title" content="200 논리 큐비트 OLED 계산, 양자컴퓨터였나?">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
 <body class="public-review">
   <div class="topline"><div class="topline-inner"><span>AI Tech Review Letters · 2026-08-24</span><span><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브로 돌아가기</a></span></div></div>
   <header class="hero"><div class="hero-inner">
@@ -68,7 +69,7 @@
     </section>
     <figure class="hero-figure"><img src="oti_iqcc_oled_hero_imagegen-web.webp" alt="고전 CPU 계산 장치와 Ir·Pt OLED 인광체의 분자·오비탈 모형, 발광 소자를 연결한 생성 개념 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. Quantum-native iQCC로 구성된 Ir·Pt 인광체의 전자구조 문제를 고전 CPU에서 에뮬레이션하고 OLED 방출과 연결하는 장면이다. 실제 QPU 실행이나 특정 분자의 계산 오비탈을 재현한 그림은 아니다.</figcaption></figure>
   </div></header>
-
+<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-08-24 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article>
       <p class="lead"><a href="https://doi.org/10.1021/jacs.6c04752" target="_blank" rel="noreferrer">JACS에 2026년 8월 13일 공개된 연구</a>에서 OTI Lumionics와 SAIT 연구진은 iQCC 전자구조 알고리즘을 고전 하드웨어에서 대규모로 에뮬레이션했습니다. 실제 Ir·Pt 인광체 14종의 T<sub>1</sub>→S<sub>0</sub> 방출 에너지와 MLCT/LC 성격을 정량화했지만, 보고된 계산은 “OLED를 200큐비트 양자컴퓨터로 계산했다”는 QPU 실험이 아닙니다.</p>
@@ -170,12 +171,29 @@
       <section class="side-section"><h2>계산 경계</h2><ul><li>플랫폼: 고전 CPU 기반 에뮬레이션</li><li>실제 QPU: 사용하지 않음</li><li>문제: T<sub>1</sub>−S<sub>0</sub> 및 상태 성격</li><li>분자: Ir(III)/Pt(II) phosphors</li><li>최대 규모: Q1 약 200 logical qubits</li></ul></section>
       <section class="side-section"><h2>연구자가 볼 포인트</h2><ul><li>iQCC와 iQCC+PT를 분리</li><li>실험 오차와 solver 오차 분리</li><li>logical-qubit 표현과 실제 QPU 구분</li><li>DFT/DMRG/selected-CI 기준선</li><li>MLCT·LC 관측량의 설계 가치</li></ul></section>
     </aside>
-  </main>
 
-  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-24. LinkedIn 게시물은 discovery lead로 사용하고 핵심 수치는 JACS 원 논문을 우선했습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section>
-  <!-- AI Tech Review Public Metrics -->
-  <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
-  <script defer src="../../assets/public-metrics.js"></script>
-  <!-- End AI Tech Review Public Metrics -->
-</body>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-24</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+
+  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-24. LinkedIn 게시물은 discovery lead로 사용하고 핵심 수치는 JACS 원 논문을 우선했습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
 </html>

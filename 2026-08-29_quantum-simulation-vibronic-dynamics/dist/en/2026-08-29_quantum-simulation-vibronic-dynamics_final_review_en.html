@@ -31,11 +31,12 @@
   <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']]
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
       }
     };
   </script>
@@ -763,6 +764,7 @@
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 35 (2026-08-29)</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
         <a href="2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md">2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md</a>
       </div>
@@ -857,28 +859,32 @@
 <p>The introductory PennyLane prose is too broad when it suggests that classical computers simply cannot handle dynamics. Surface hopping, Ehrenfest dynamics, multiconfiguration time-dependent Hartree (MCTDH), multilayer MCTDH, and tensor-network methods all address parts of this problem. The narrower challenge is that systematically accurate, full-dimensional quantum propagation can become expensive when many modes and electronic states develop strong correlations.</p>
 <h2 id="2-the-physical-model-the-kdc-vibronic-hamiltonian">2. The physical model: the KDC vibronic Hamiltonian</h2>
 <p>The Köppel–Domcke–Cederbaum (KDC) Hamiltonian treats electronic labels and nuclear vibrations as one quantum system:</p>
-<p>$$
+$$
 H=\mathbb I_{\mathrm{el}}\otimes(T_{\mathrm{nuc}}+V_0)+\mathbf W(\mathbf Q).
-$$</p>
+$$
+
 <p>$T_{\mathrm{nuc}}$ is nuclear vibrational kinetic energy, $V_0$ is a reference harmonic potential, and $\mathbf W(\mathbf Q)$ is a diabatic matrix of electronic energies and couplings that changes with the normal-mode coordinates $\mathbf Q$.</p>
 <p>A matrix element can be truncated at quadratic order:</p>
-<p>$$
-W&rsquo;<em r_r_="r,r'">{ij}(\mathbf Q)=\lambda^{(i,j)}
+$$
+W'_{ij}(\mathbf Q)=\lambda^{(i,j)}
 +\sum_r a_r^{(i,j)}Q_r
-+\sum</em>.
-$$}b_{rr&rsquo;}^{(i,j)}Q_rQ_{r&rsquo;</p>
-<p>The coordinate-independent $\lambda$ terms set energy offsets and couplings, $a_rQ_r$ gives linear vibronic coupling, and $b_{rr&rsquo;}Q_rQ_{r&rsquo;}$ introduces quadratic and mode–mode dependence. Keeping only the linear terms gives an LVC model; retaining the quadratic terms gives a QVC model. Each $Q_r$ is a dimensionless molecular normal coordinate, not the position of one atom.</p>
++\sum_{r,r'}b_{rr'}^{(i,j)}Q_rQ_{r'}.
+$$
+
+<p>The coordinate-independent $\lambda$ terms set energy offsets and couplings, $a_rQ_r$ gives linear vibronic coupling, and $b_{rr'}Q_rQ_{r'}$ introduces quadratic and mode–mode dependence. Keeping only the linear terms gives an LVC model; retaining the quadratic terms gives a QVC model. Each $Q_r$ is a dimensionless molecular normal coordinate, not the position of one atom.</p>
 <p>This Hamiltonian is an input model, not an automatic electronic-structure calculation. Electronic states, frequencies, normal modes, and coupling coefficients must be obtained upstream from DFT/TDDFT or multireference calculations and a diabatization procedure. The <a href="https://arxiv.org/html/2411.13669v3">current arXiv v3</a> explicitly leaves Hamiltonian construction outside the quantum-propagation algorithm.</p>
 <h2 id="3-encoding-continuous-nuclear-motion-on-qubits">3. Encoding continuous nuclear motion on qubits</h2>
 <p>Each vibrational coordinate is discretized over $K=2^k$ real-space grid points and stored in a $k$-qubit register. The computational basis represents position:</p>
-<p>$$
+$$
 Q|x\rangle=\Delta(x-K/2)|x\rangle,
 \qquad \Delta=\sqrt{2\pi/K}.
-$$</p>
+$$
+
 <p>With $M$ vibrational modes and $N$ electronic states, the main system register uses</p>
-<p>$$
+$$
 M\log_2K+\lceil\log_2N\rceil
-$$</p>
+$$
+
 <p>qubits before work and precision registers are added.</p>
 <p>One common misconception should be removed: this demo does <strong>not</strong> place vibrations in photonic continuous-variable qumodes. It represents both the electronic-state label and every vibrational position grid with <strong>qubit registers</strong>, then evaluates the circuit with <code>lightning.qubit</code>. The code variable called <code>electrons</code> denotes the diabatic electronic-state register, not the number of electrons.</p>
 <p>A primitive classical grid stores $N K^M$ complex amplitudes explicitly, so memory can grow exponentially with the number of modes. A quantum state can encode those amplitudes in a smaller register. That representational compression does not eliminate state preparation, coefficient loading, quantum arithmetic, circuit precision, error correction, or measurement costs.</p>
@@ -890,10 +896,11 @@ $$</p>
 <p>Position $Q$ is diagonal on the computational grid, whereas momentum $P$ is not. For each mode, the circuit applies a QFT to enter the momentum representation, uses <code>OutPoly</code> to compute $(x-K/2)^2$ in a work register, converts the kinetic contribution into phase, uncomputes the intermediate value, and applies the inverse QFT.</p>
 <h3 id="potential-energy-load-state-specific-coefficients-and-turn-them-into-phase">Potential energy: load state-specific coefficients and turn them into phase</h3>
 <p>Potential coefficients depend on the electronic state. <code>LoadCoeffsKDC</code> uses QROM to load a precomputed bit string conditioned on the electronic-state register. QROM here is a reversible lookup circuit for a fixed coefficient table; it is not a hardware QRAM that provides coherent access to an external database.</p>
-<p>Reversible arithmetic evaluates $Q_r$ for a linear term or $Q_rQ_{r&rsquo;}$ for a quadratic term. The result controls addition into the reusable $b$-qubit phase-gradient state</p>
-<p>$$
+<p>Reversible arithmetic evaluates $Q_r$ for a linear term or $Q_rQ_{r'}$ for a quadratic term. The result controls addition into the reusable $b$-qubit phase-gradient state</p>
+$$
 |R_b\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{i2\pi y/2^b}|y\rangle,
-$$</p>
+$$
+
 <p>thereby applying the energy–time phase. The QROM and arithmetic work are uncomputed afterward.</p>
 <h3 id="off-diagonal-electronic-coupling-xor-fragments-and-clifford-diagonalization">Off-diagonal electronic coupling: XOR fragments and Clifford diagonalization</h3>
 <p>Electronic-state couplings make the potential matrix off-diagonal. The source algorithm groups matrix elements whose electronic labels have the same bitwise XOR difference. A single differing bit can be diagonalized with a Hadamard; multiple differing bits are reduced with controlled-NOT operations before the Hadamard. This block-diagonalization uses Clifford gates, after which each fragment can receive a coordinate-dependent phase efficiently.</p>
@@ -910,7 +917,7 @@ $$</p>
 <tr>
 <td>electronic states</td>
 <td style="text-align: right;">2</td>
-<td>$</td>
+<td>$\lvert 0\rangle$ and $\lvert 1\rangle$ in a one-qubit state register</td>
 </tr>
 <tr>
 <td>vibrational modes</td>
@@ -1151,9 +1158,10 @@ $$</p>
 <h2 id="9-review-inference-relevance-to-tadf-and-pholed-research">9. Review inference: relevance to TADF and PhOLED research</h2>
 <p>Reverse intersystem crossing (RISC) in thermally activated delayed fluorescence (TADF) is not determined by a single $\Delta E_{\mathrm{ST}}$. Singlet and triplet state character, higher triplets, spin–orbit coupling (SOC), promoting modes, dielectric surroundings, and structural disorder can all alter the pathway.</p>
 <p>The KDC framework can in principle be extended with a spin–orbit Hamiltonian,</p>
-<p>$$
-\mathbf W&rsquo;(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q),
-$$</p>
+$$
+\mathbf W'(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q),
+$$
+
 <p>and the source paper identifies TADF as a possible application.</p>
 <table>
 <thead>
@@ -1173,7 +1181,7 @@ $$</p>
 </tr>
 <tr>
 <td>promoting vibrations</td>
-<td>$a_r^{(i,j)}$ and $b_{rr&rsquo;}^{(i,j)}$</td>
+<td>$a_r^{(i,j)}$ and $b_{rr'}^{(i,j)}$</td>
 </tr>
 <tr>
 <td>ISC/RISC pathway</td>
@@ -1219,8 +1227,8 @@ $$</p>
 </ol>
 <p><em>Verification note: numerical settings and resource figures were checked against the public PennyLane code, official documentation, the peer-reviewed paper, and the current arXiv v3. Demo execution, source-paper estimates, and the OLED extension proposed by this review remain separate evidence layers.</em></p>
       <div class="footer">
-        Generated: 2026-08-29 05:02:45<br>
-        Source last modified: 2026-08-29 05:00:34
+        Generated: 2026-08-29 08:48:06<br>
+        Source last modified: 2026-08-29 07:55:11
       </div>
     </article>
 

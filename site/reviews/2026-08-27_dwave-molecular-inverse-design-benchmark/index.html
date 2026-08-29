@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니</title>
   <meta name="description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
-  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
+
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
-  <meta property="og:title" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
+
   <meta property="og:description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <meta property="og:locale" content="ko_KR">
@@ -26,7 +26,6 @@
   <meta name="twitter:description" content="QM9 5,000개 분자, 오픈소스 ML·분자 생성기·QUBO·한 번의 D-Wave QPU 실행·여섯 건의 PySCF 계산을 하나의 검증 가능한 스냅샷으로 연결했습니다.">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
   <meta name="twitter:image:alt" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
-  <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
   <script>
     window.MathJax = {
@@ -756,7 +755,8 @@
         position: static;
       }
     }
-  </style>
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
+    <meta property="og:title" content="D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
     <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
@@ -771,8 +771,9 @@
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 35 (2026-08-27)</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
         <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/" lang="en" hreflang="en">English</a></nav>
-        <a href="2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md">2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md</a>
+        <span class="private-source-omitted">비공개 작업 파일 생략</span>
       </div>
     </div>
   </div>
@@ -787,7 +788,7 @@
 
     </div>
   </header>
-
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-08-27 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article class="final-article">
       <p>후보 분자 18개 가운데 다음 계산에 보낼 세 개를 골라야 한다고 해보겠습니다. 예측값이 목표에 가까운 후보를 우선하되, 서로 지나치게 닮은 분자만 한꺼번에 뽑히지 않도록 배치 전체를 판단해야 합니다. 이번 실험에서는 이 선택 문제를 QUBO로 만들고, 독립적인 exact search와 classical simulated annealing, D-Wave QPU에 같은 문제를 넣었습니다. 선택된 분자는 PySCF로 다시 계산했습니다.</p>
@@ -799,7 +800,7 @@
 <p>D-Wave QPU는 분자의 전자구조를 계산하지 않았습니다. 다음 PySCF 계산에 보낼 <strong>세 후보의 배치를 고르는 획득 최적화</strong>를 수행했습니다. QUBO energy는 선택 점수이고, DFT orbital gap은 분자 계산 결과입니다.</p>
 </aside>
 <p><img alt="QM9 데이터부터 ML, 분자 생성, QUBO와 QPU 배치 선택, PySCF DFT, 고정 라벨 replay 및 제안된 live loop를 연결한 상세 인포그래픽" src="molecular_inverse_design_infographic.svg" /></p>
-<p><em>그림 2. 위쪽과 가운데는 실행된 계산을, 아래 점선은 다음 검증 단계로 제안한 live active-learning loop를 나타냅니다. 수치는 <a href="benchmark_results.csv">공개 계산 결과표</a>와 동일합니다.</em></p>
+<p><em>그림 2. 위쪽과 가운데는 실행된 계산을, 아래 점선은 다음 검증 단계로 제안한 live active-learning loop를 나타냅니다. 수치는 <span class="private-source-omitted">비공개 작업 파일 생략</span>와 동일합니다.</em></p>
 <p><a href="molecular_inverse_design_infographic.png">상세 인포그래픽을 전체 크기 PNG로 보기</a></p>
 <h2 id="_1">계산한 범위부터 확인해 보자</h2>
 <p>이번 파이프라인은 서로 다른 의미를 가진 여섯 층으로 구성됩니다.</p>
@@ -1076,13 +1077,6 @@ maximum SCF cycles = 100
 <p class="callout-label">이번 스냅샷이 남긴 판정</p>
 <p>오픈소스 ML, 세 분자 생성 경로, 검증된 acquisition QUBO, 한 번의 D-Wave QPU 제출, 여섯 건의 PySCF screening을 추적 가능한 계산 파이프라인으로 연결했습니다. 파이프라인은 작동했습니다. 우위 주장은 live-loop bake-off 이후의 판단으로 남습니다.</p>
 </aside>
-<h2 id="_4">작성 정보</h2>
-<ul>
-<li>생성 시각: 2026-08-27 KST</li>
-<li>원본 계산 checkpoint: 2026-08-27</li>
-<li>작성 보조: Codex 기반 GPT-5 계열 에이전트 하네스</li>
-<li>작성 방식: 로컬 CSV·JSON 계산 증거를 먼저 대조하고, 공식 문서와 원 논문으로 용어·방법 경계를 확인한 뒤 한국어 문체·그림·HTML 렌더링 감사를 수행했습니다.</li>
-</ul>
 <h2 id="references">References</h2>
 <ol>
 <li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">QM9 original collection, Figshare</a></li>
@@ -1097,6 +1091,23 @@ maximum SCF cycles = 100
 <li><a href="https://doi.org/10.1038/s41524-019-0153-8">Lookman et al., Active learning in materials science, npj Computational Materials 5, 21 (2019)</a></li>
 </ol>
 <p><small>계산 수치의 출처는 프로젝트가 생성한 CSV·JSON evidence와 figure manifest입니다. raw QM9 mirror는 이 공개 패키지에 포함하지 않았습니다. 생성형 hero와 계산 기반 figure의 제작·검토 기록은 <code>artifacts/final_review/figure_manifest.md</code>에 남겼습니다.</small></p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>본문에 기재된 원문·공식 자료; 공개 링크와 최종 HTML</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-27</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
         생성 시각: 2026-08-27 06:58:53<br>
         원본 파일 최종 수정 시각: 2026-08-27 06:49:49
@@ -1117,7 +1128,7 @@ maximum SCF cycles = 100
 <li><a href="#pyscf-exact-batch-qpu-batch">PySCF 계산에서 exact batch는 평균이 낮았고, QPU batch에는 가장 가까운 한 후보가 있었다</a></li>
 <li><a href="#qm9-replay">반복 정책은 고정 QM9 라벨 replay로 점검했다</a></li>
 <li><a href="#_3">확인된 증거와 남은 판단</a></li>
-<li><a href="#_4">작성 정보</a></li>
+<li><a href="#authoring-disclosure">작성 정보</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
@@ -1129,7 +1140,7 @@ maximum SCF cycles = 100
         <ul>
           <li><a href="molecular_inverse_design_hero.png">분자 후보와 ML 예측, QUBO 기반 양자 어닐링 배치 선택, 양자화학 검증을 분리해 묘사한 과학 일러스트</a></li>
 <li><a href="molecular_inverse_design_infographic.svg">QM9 데이터부터 ML, 분자 생성, QUBO와 QPU 배치 선택, PySCF DFT, 고정 라벨 replay 및 제안된 live loop를 연결한 상세 인포그래픽</a></li>
-<li><a href="benchmark_results.csv">공개 계산 결과표</a></li>
+
 <li><a href="molecular_inverse_design_infographic.png">상세 인포그래픽을 전체 크기 PNG로 보기</a></li>
 <li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5" target="_blank" rel="noreferrer">QM9 원본 collection</a></li>
 <li><a href="https://chemprop.readthedocs.io/en/main/index.html" target="_blank" rel="noreferrer">Chemprop</a></li>
@@ -1150,9 +1161,7 @@ maximum SCF cycles = 100
         </ul>
       </section>
     </aside>
-  </main>
-
-<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 시각 자료, 외부 참고 링크와 함께 검토에 사용한 로컬 메모와 작성 보조 파일의 상대경로 링크를 포함했습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+  </main><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../assets/public-metrics.js"></script>
