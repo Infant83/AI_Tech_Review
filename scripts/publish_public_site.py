@@ -96,6 +96,65 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-30_practical-quantum-computing-stack",
+        title="양자컴퓨터가 계산 시스템이 되기까지",
+        subtitle="최신 고전 기준선에서 회로 구현·판독·오류정정·제조 기반까지, 실용성을 가르는 다섯 검증 단계",
+        date="2026-08-30",
+        updated="2026-08-30",
+        category="Quantum Computing",
+        tags=(
+            "Practical Quantum Computing",
+            "Kohn-Sham FNO",
+            "Quantum Circuit Synthesis",
+            "Quantum Readout",
+            "Fault Tolerance",
+            "Quantum Manufacturing",
+            "OLED",
+        ),
+        summary=(
+            "양자컴퓨터의 실용성을 최신 고전 기준선, 회로 구현, 판독, 오류정정 메모리, 제조·배치의 "
+            "다섯 검증 단계로 읽습니다. KS-FNO, Classiq challenge, PTSET, FTQC 하한과 Xanadu·Pasqal "
+            "소식을 서로 다른 증거 층에 놓고, OLED·재료 PoC에 제한된 양자 커널을 배치하는 기준을 제시합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(
+            PublicAgent("Codex (main)", "orchestration, evidence integration, and publication", "총괄·근거 통합·게시"),
+            PublicAgent("repo_audit", "repository and publication-pipeline audit", "저장소·게시 파이프라인 감사"),
+            PublicAgent("source_verify", "primary-source and quantitative-claim verification", "1차 출처·정량 주장 검증"),
+            PublicAgent("editorial", "bilingual narrative and figure specification", "한영 서사·도해 명세"),
+            PublicAgent("boundary_review", "independent evidence-boundary review", "독립 증거 경계 검토"),
+            PublicAgent("translation_audit", "English fidelity and terminology audit", "영문 충실도·용어 감사"),
+            PublicAgent("public_audit", "public-site and accessibility audit", "공개 사이트·접근성 감사"),
+            PublicAgent("deploy_qa", "local and deployed-page verification", "로컬·배포 페이지 검증"),
+        ),
+        verification_scope=(
+            "official challenge specification",
+            "three arXiv v1 preprints and full text",
+            "Government of Canada release, Pasqal release, and SEC filing",
+            "bilingual HTML, figures, PDF, metadata, links, and responsive rendering",
+        ),
+        verification_scope_ko=(
+            "공식 challenge 사양",
+            "arXiv v1 프리프린트 3건과 원문",
+            "캐나다 정부·Pasqal 발표와 SEC 공시",
+            "한영 HTML·도해·PDF·metadata·링크·반응형 렌더링",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-08-30",
+        human_review_level="topic, framing, and publication request confirmed; line-by-line review not separately retained",
+        human_review_level_ko="주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+        disclosure_note_ko=(
+            "모델의 정확한 식별자는 세션 기록에 남지 않았습니다. 기재된 에이전트명과 역할은 이번 게시 작업에서 "
+            "실제로 사용한 멀티에이전트 구성입니다."
+        ),
+        disclosure_note_en=(
+            "The exact model identifier was not retained in the session record. The listed agent names and roles are the "
+            "multi-agent configuration actually used for this publication."
+        ),
+    ),
+    PublicReview(
         folder="2026-08-29_quantum-simulation-vibronic-dynamics",
         title="정적 에너지에서 광여기 동역학으로: PennyLane 진동-전자 양자 시뮬레이션의 원리와 연구 전망",
         subtitle="KDC 해밀토니안을 격자 큐비트로 옮기는 방법, 23-wire 고전 시뮬레이션의 계산 경계, TADF·OLED 연구로 확장하기 위한 조건",

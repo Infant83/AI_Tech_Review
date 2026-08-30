@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What It Takes for a Quantum Computer to Become a Computing System</title>
+  <meta name="description" content="Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/practical_quantum_stack_hero-web.webp">
+  <meta property="og:image:alt" content="What It Takes for a Quantum Computer to Become a Computing System">
+  <meta property="article:published_time" content="2026-08-30">
+  <meta property="article:modified_time" content="2026-08-30">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What It Takes for a Quantum Computer to Become a Computing System">
+  <meta name="twitter:description" content="Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/practical_quantum_stack_hero-web.webp">
+  <meta name="twitter:image:alt" content="What It Takes for a Quantum Computer to Become a Computing System">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/">
+    <meta property="og:title" content="What It Takes for a Quantum Computer to Become a Computing System">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 35 (2026-08-30)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>What It Takes for a Quantum Computer to Become a Computing System</h1>
+        <p class="dek">Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-08-30 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>Judging the practical value of a quantum computer by qubit count or a single circuit-depth metric obscures where the bottlenecks actually arise. The strongest classical method for the same problem must first be fixed as the baseline. The remaining task must then be realized as an executable circuit, and repeated measurements must become trustworthy data at the sensor. Long computations also require error-correction resources that preserve logical information, while deployment depends on a manufacturing base capable of producing devices repeatedly.</p>
+<p>Five developments reported in late August 2026 illuminate different points along this path. Classiq launched an open challenge to reduce the depth of a phase oracle. A Kohn–Sham Fourier neural operator (KS-FNO) from Caltech researchers replaced repeated orbital diagonalization with density prediction on a classical GPU. Researchers at Quantum Motion demonstrated PTSET, a more sensitive charge sensor for semiconductor spin qubits. A separate theoretical study established an unavoidable logarithmic term in the cumulative spacetime cost of quantum memory. Canadian investment in Xanadu’s manufacturing project and Pasqal’s public listing show that the industrial base for producing and deploying research hardware is a bottleneck in its own right.</p>
+<p>These results were not integrated and demonstrated in one device. Nor are they competing records of the same quantity. This review places them along a validation path—<strong>classical baseline → circuit realization → readout → fault-tolerant memory → manufacturing and deployment</strong>—and asks where a bounded quantum kernel could reasonably enter an OLED or materials-computing workflow.</p>
+<figure class="article-hero-figure">
+  <img src="practical_quantum_stack_hero-web.webp" alt="Concept illustration linking electron density, a quantum circuit, cryogenic readout, an error-correction lattice, and semiconductor manufacturing along one computational path" width="1600" height="900" loading="eager">
+  <figcaption>Figure 1. From problem representation to manufacturing, practical quantum computing must pass the constraints of the entire path rather than post one best-in-class metric at a single stage. This conceptual illustration contains no quantitative data and does not reproduce any company’s device.</figcaption>
+</figure>
+
+<aside class="callout callout-evidence">
+<p class="callout-label">Review verdict</p>
+<p>The strongest signal today is not that quantum hardware is about to replace classical computing. While classical baselines such as KS-FNO advance rapidly, a quantum computation must increasingly be judged by its full cost, including oracle realization, readout, error correction, and manufacturing. An OLED or materials PoC should first fix that classical baseline, then place a bounded quantum kernel only at a residual bottleneck such as a strongly correlated active space or state selection.</p>
+</aside>
+<h2 id="evidence-map-at-a-glance">Evidence map at a glance</h2>
+<div aria-label="Today’s five evidence items and their computational boundaries" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>Validation gate</th>
+<th>Case</th>
+<th>What was established</th>
+<th>What was not directly established</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classical baseline</td>
+<td>KS-FNO, arXiv preprint</td>
+<td>Trained on 8,504 molecules and solids. Converged the density SCF for 8,250 Mg atoms and 82,500 valence electrons on one B300</td>
+<td>A QPU result, excited-state OLED properties, complete orbital-free DFT, or a hardware-matched speedup</td>
+</tr>
+<tr>
+<td>Circuit realization</td>
+<td>Official Classiq challenge</td>
+<td>Implement a phase oracle for 1,097 marked pixels in a 64×64 image, using separate 6-qubit x and y registers. Depth is the primary ranking metric and CX count the tie-breaker</td>
+<td>A winning result, QPU execution, quantum acceleration, or the cost under an unpublished gate basis and topology</td>
+</tr>
+<tr>
+<td>Readout</td>
+<td>PTSET, arXiv preprint</td>
+<td>Approximately 10-fold large-signal and 100-fold small-signal sensitivity gains over a conventional rfSET</td>
+<td>Actual spin-state readout fidelity, array multiplexing, crosstalk, or thermal load</td>
+</tr>
+<tr>
+<td>Fault-tolerant memory</td>
+<td>FTQC theory, arXiv preprint</td>
+<td>A tight memory bound with an unavoidable logarithmic contribution to cumulative spacetime overhead</td>
+<td>The impossibility of FTQC, physical resources for a particular surface-code device, or a QPU experiment</td>
+</tr>
+<tr>
+<td>Manufacturing and deployment</td>
+<td>Canada–Xanadu and Pasqal</td>
+<td>A CAD 195M government investment in a CAD 893M project; approximately USD 360M in cash available to Pasqal at closing</td>
+<td>Facility completion, logical-qubit performance, fault-tolerant operation, or quantum advantage</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="figure-panel figure-panel-fit">
+  <img src="practical_quantum_validation_gates_en.svg" alt="Evidence map placing KS-FNO, the Classiq phase oracle, PTSET, the FTQC memory bound, Xanadu, and Pasqal at five distinct validation gates" width="1200" height="920" loading="lazy">
+  <figcaption>Figure 2. The five cases measure different objects at different levels of evidence. The arrows indicate an order for assessing practicality; they do not imply that these technologies have been demonstrated as one device or integrated workflow.</figcaption>
+</figure>
+
+<h2 id="1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</h2>
+<p>A Kohn–Sham DFT self-consistent field (SCF) calculation constructs a Kohn–Sham potential from an input density, diagonalizes the Hamiltonian to obtain new orbitals and a new density, and repeats the cycle to convergence. As the system grows, orbital diagonalization at every iteration becomes a bottleneck with roughly cubic scaling. Orbital-free DFT has long sought to avoid this step, but a transferable kinetic-energy functional has proved difficult to construct.</p>
+<p><a href="https://arxiv.org/abs/2608.23895">Danish Khan and colleagues</a> did not train an inverse map or attempt to predict the final ground-state density in one step. Instead, they learned the <strong>forward Kohn–Sham map</strong> inside the SCF cycle:</p>
+$$
+v_{\mathrm{KS}}(\mathbf r)\longmapsto n^{\mathrm{out}}(\mathbf r).
+$$
+
+<p>Their SE(3)-equivariant Fourier neural operator takes a potential on a real-space grid and predicts the next density. Construction of the Hartree and exchange-correlation potentials, together with density mixing, remains within the conventional SCF structure. The precise interpretation is therefore that a <strong>learned operator replaces the repeated one-particle eigensolve</strong>, not that a neural network has replaced all of DFT.</p>
+<h3 id="the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</h3>
+<p>The base model was trained from <strong>59,500 ordinary SCF labels</strong> obtained for <strong>8,504 systems</strong>: 2,004 QM9 molecules and 6,500 MC3D solids. The authors treated density self-consistency for molecules, insulators, and metals within one model family, then evaluated spectra and structural observables using a fixed-density post-SCF diagonalization.</p>
+<p>The 82,500-electron Mg dislocation result was not a direct extrapolation of the base model. That model diverged for every tested dislocation cell. The researchers therefore fine-tuned it on <strong>1,203 Mg structures containing 20–364 atoms</strong>, spanning bulk, strain, surface, stacking-fault, and dislocation-core environments. They then converged the density of a system with as many as <strong>8,250 Mg atoms and 82,500 valence electrons</strong> on <strong>one NVIDIA B300</strong> to a relative-\(L^1\) fixed-point threshold of \(10^{-3}\).</p>
+<p>The fitted exponent for a complete SCF update was \(p=1.03\) for KS-FNO and \(p=3.37\) for Quantum ESPRESSO. Absolute wall-clock time is not a hardware-matched benchmark, however, because the comparison places FNO timings from one B300 against Quantum ESPRESSO timings linearly rescaled from a 192-core AMD EPYC 9655 node. No PBE reference density exists for the largest system. Density errors of <strong>0.33–0.35%</strong> were checked on core crops containing at most 528 atoms; convergence of the 8,250-atom calculation is not by itself independent proof of PBE ground-state accuracy.</p>
+<h3 id="what-remains-to-be-calculated">What remains to be calculated</h3>
+<p>The present model learns only the density component of the joint Kohn–Sham operator. Total energies and orbital-resolved spectra still require one fixed-density post-SCF orbital calculation. Removing that step would require a forward kinetic-energy model and additional validation. The paper’s references to “quantum calculations” mean electronic-structure calculations, not computation on a quantum computer.</p>
+<p>For OLED research, this result is not a substitute for excited-state calculations. It does not directly predict \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), oscillator strength, spin–orbit coupling (SOC), \(k_r\), or \(k_{nr}\). Its significance is that the classical baseline for ground-state density and large-structure calculations has become stronger. A quantum PoC should confront that advancing baseline directly and compare residual bottlenecks—strong correlation, excited states, or sampling—under matched conditions.</p>
+<h2 id="2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</h2>
+<p>Descriptions of quantum algorithms often draw an oracle as a one-line box that “marks every state satisfying the condition.” Hardware does not execute that box; it executes the decomposed gate sequence. The structure of the Boolean expression, the use of ancillas, uncomputation, decomposition of multi-controlled gates, and routing for the target topology all affect circuit depth and the number of two-qubit gates.</p>
+<p>The <a href="https://get.classiq.io/quantum-circuit-challenge/">Classiq Quantum Circuit Challenge</a> turns this gap into a concrete problem. The target consists of <strong>1,097 marked pixels</strong> in a 64×64 binary image. The x and y coordinates are represented by separate 6-qubit registers, and the task is to implement the phase oracle</p>
+$$
+U_f\lvert x,y\rangle=(-1)^{f(x,y)}\lvert x,y\rangle,\qquad
+f(x,y)=
+\begin{cases}
+1,&amp;(x,y)\text{ is a marked pixel},\\
+0,&amp;\text{otherwise.}
+\end{cases}
+$$
+
+<p>The two address registers contain 12 qubits in total, but this should not be described as a “12-qubit circuit” or as solving the problem with “12 logical qubits.” An implementation may add ancillas. A submitted circuit must first pass the oracle-correctness test; valid entries are then ranked by <strong>circuit depth</strong>, with <strong>CX count</strong> used to break ties. Participants submit both a Classiq <code>.qmod</code> source file and an OpenQASM <code>.qasm</code> file implementing the same circuit.</p>
+<p>The challenge opened on 28 August 2026 and closes on 30 September. What is currently public is the problem and its evaluation procedure, not an optimization result. The public page does not specify a baseline depth or CX count, the permitted ancilla count, the evaluation gate basis, connectivity, or the detailed depth-counting rules. QPU execution is not listed as an evaluation criterion.</p>
+<p>The case nevertheless has clear educational value. Quantum-circuit optimization cannot be reduced to a single Classiq method. Problem representation, high-level synthesis, Boolean factorization, logical rewriting, qubit mapping and routing, native gates, pulses, and fault-tolerant resource optimization operate at different layers. The Classiq challenge is one example that turns <strong>high-level modeling and synthesis search</strong> into a measurable task. The broader landscape is reviewed in <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/"><em>Why Quantum Circuit Optimization Matters</em></a>.</p>
+<h2 id="3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</h2>
+<p>A semiconductor spin qubit is not read directly with a voltmeter. Spin-dependent tunnelling or Pauli blockade generally converts spin information into a charge configuration, after which the radio-frequency response of a nearby charge sensor is measured. Insufficient sensor sensitivity or bandwidth lengthens the required integration time, allowing relaxation and noise to limit readout fidelity.</p>
+<p>The <a href="https://arxiv.org/abs/2608.27045">PTSET study</a> placed a TiN element with low critical current and high kinetic inductance in series with the matching network of a radio-frequency single-electron transistor (rfSET). When the SET current exceeds a threshold, the TiN switches from the superconducting to the normal state, abruptly changing the circuit impedance and reflected RF signal. The architecture uses a phase transition to amplify a small, continuous change in resistance.</p>
+<p>The experimental device was fabricated in GlobalFoundries <strong>22-nm FD-SOI CMOS</strong>. At an out-of-plane field of 0.6 T, the switching current was approximately <strong>33 nA</strong> and the resonance frequency was 334 MHz. Rather than using an adjacent spin qubit, the researchers emulated a charge event through a gate-bias shift. Relative to the conventional rfSET mode, sensitivity defined through the minimum integration time improved by nearly <strong>one order of magnitude</strong> in the large-signal regime and by <strong>two orders of magnitude</strong> in the small-signal regime, which more closely resembles spin readout.</p>
+<p>It would therefore be incorrect to state that “spin-qubit readout fidelity improved by a factor of 100.” The experiment did not read an actual spin state or report a fidelity. The IQ traces used an integration time of <strong>637 μs</strong>. The apparatus could not directly resolve the switching and recovery dynamics, and the reported <strong>10–100 ns recovery time</strong> is an estimate based on TiN properties. The value of <strong>more than 350-fold SNR</strong> over a conventional rfSET under well-overcoupled conditions is likewise a circuit-model prediction, not an experimental result. Array yield, multiplexing crosstalk, cryogenic wiring, and thermal load remain to be tested.</p>
+<h2 id="4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</h2>
+<p>The fault-tolerance threshold theorem states that, below a threshold physical error rate, arbitrarily reliable computation can be achieved by adding physical qubits and circuit depth. The remaining question is whether the cumulative space×time cost can stay at a constant ratio to the useful computation.</p>
+<p>The theoretical analysis by <a href="https://arxiv.org/abs/2608.26272">Bharti, Haug, and Tanggara</a> begins with the simplest case, quantum memory. Under optimistic assumptions—independent erasure noise with known erased locations, \(0&lt;p&lt;\delta_{\mathrm{GV}}\simeq0.1100\), arbitrary adaptive protocols, and ideal recovery—the minimum worst-case physical storage-location cost for retaining \(K\) logical qubits over \(S\) time steps with total error no greater than \(\varepsilon\) is</p>
+$$
+C_{\min}(K,S,\varepsilon)
+=\Theta\!\left[S\left(K+\log\frac{S}{\varepsilon}\right)\right].
+$$
+
+<p>The relative overhead is</p>
+$$
+\Theta\!\left(1+\frac{\log(S/\varepsilon)}{K}\right).
+$$
+
+<p>The logarithmic term cannot be avoided when a small number of logical qubits must be preserved for a very long time. Conversely, a sufficiently wide computation with \(K=\Omega(\log(S/\varepsilon))\) can share the reliability cost across many logical qubits and maintain bounded relative overhead.</p>
+<p>The title’s statement that fault-tolerant quantum computation “cannot be achieved with constant spacetime overhead” is not an impossibility theorem for FTQC. The authors also construct positive-rate CSS codes that attain the memory bound. Their extension to general fault-tolerant circuits is discussed under sufficient conditions on codes and gadgets; it is not a matching lower bound for every algorithm and every noise model. Nor is this a QPU experiment or a physical-qubit estimate for a specific surface-code machine. The result establishes an information-theoretic cost that remains even when erasure locations are known and ideal recovery is allowed.</p>
+<h2 id="5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</h2>
+<p>Even improved algorithms and device fidelity cannot produce a computing system if complex optical, cryogenic, and electronic-control hardware cannot be manufactured and installed repeatedly. On 28 August, the Canadian government announced <a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html">a CAD 195M Strategic Response Fund investment in Xanadu’s CAD 893M project</a>. The scope includes expanding R&amp;D facilities and building capabilities for integrating, packaging, testing, and assembling photonic and semiconductor components. The project is expected to create <strong>275 highly skilled jobs</strong>.</p>
+<p>This announcement is a commitment to manufacturing facilities and process qualification. It is not evidence that the facilities have been completed or that a fault-tolerant photonic processor is operating. The government release calls the CAD 195M an investment but does not break down its grant, repayment, or equity terms on the public page.</p>
+<p>On 27 August, Pasqal announced <a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/">completion of its business combination with Bleichroeder Acquisition Corp. II</a>. The surviving company, Pasqal Holding SA, was listed on Nasdaq under ticker <code>PSQL</code>, with warrants under <code>PSQLW</code>, and said that <strong>approximately USD 360M in cash was available at closing</strong>. This amount is not pure new financing, enterprise value, or revenue. The company stated that it plans to use the capital for QPU manufacturing and deployment, its fault-tolerant roadmap, cloud and software, HPC integration, and commercial operations.</p>
+<p>The Xanadu and Pasqal developments involve different currencies and transaction structures. Their amounts should neither be added nor compared as though they were quantum-performance metrics. They show that manufacturing capacity and long-term capital have become independent competitive dimensions of the quantum industry; they do not demonstrate fault-tolerant performance.</p>
+<h2 id="6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</h2>
+<p>The purpose of inverse molecular design for OLEDs is not to execute a quantum circuit. It is to change the ranking of host and dopant candidates that can be synthesized and to improve decisions about emission efficiency, stability, and lifetime. The first question should therefore be <strong>“What bottleneck remains after applying the best available classical method?”</strong>, rather than “Which quantum algorithm should we use?”</p>
+<p>A defensible bounded workflow proceeds as follows.</p>
+<ol>
+<li>Reduce chemical space with classical generative models and chemical rules.</li>
+<li>Fix baselines for \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), SOC, rates, and stability using DFT/TDDFT, multireference calculations, and validated ML surrogates.</li>
+<li>Record errors, data splits, hardware, wall-clock time, and uncertainty together.</li>
+<li>Select one residual bottleneck, such as a strongly correlated active space, an excited-state manifold, state selection, sampling, or combinatorial optimization.</li>
+<li>Define a small quantum kernel that includes encoding, state preparation, oracle or Hamiltonian construction, and success probability.</li>
+<li>Record the logical circuit together with mapped two-qubit depth, CX/SWAP count, ancillas, shots, and queue time on the target backend.</li>
+<li>Compare the end-to-end result—including assignment error, mitigation, postselection, and classical post-processing—with a classical baseline at the same scientific accuracy.</li>
+</ol>
+<figure class="figure-panel figure-panel-fit">
+  <img src="bounded_quantum_materials_workflow_en.svg" alt="OLED and materials workflow that narrows chemical space with DFT, TDDFT, and ML baselines before placing a bounded quantum kernel at a residual bottleneck and assessing its total cost" width="1200" height="760" loading="lazy">
+  <figcaption>Figure 3. A validated classical workflow narrows the full chemical space, and only the residual bottleneck becomes a candidate for a quantum kernel. The KS-FNO and Classiq values are separate evidence anchors for costs at different stages, not results from one integrated demonstration.</figcaption>
+</figure>
+
+<p>KS-FNO represents progress in the classical backbone of this structure. The Classiq challenge exposes the cost of translating an already defined Boolean oracle into an executable gate sequence. PTSET reminds us that shots become data only after passing through a readout chain, the FTQC bound captures the memory cost of long circuits, and the Xanadu and Pasqal developments highlight the cost of supplying hardware. None is an OLED quantum-computing result, but together they provide a checklist for assessing an OLED PoC.</p>
+<h2 id="7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</h2>
+<div aria-label="Evidence-ledger checklist for an OLED and materials quantum PoC" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Minimum record</th>
+<th>Decision question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scientific objective</td>
+<td>Target property, acceptable error, experimental decision</td>
+<td>Would the result change the ranking of any candidate?</td>
+</tr>
+<tr>
+<td>Classical baseline</td>
+<td>Method and version, data, hardware, wall-clock time, uncertainty</td>
+<td>Is this the strongest current baseline at matched accuracy?</td>
+</tr>
+<tr>
+<td>Problem reduction</td>
+<td>Active space, state manifold, QUBO or oracle definition</td>
+<td>Does the accounting include the cost of constructing the quantum-kernel input?</td>
+</tr>
+<tr>
+<td>Circuit</td>
+<td>Logical and compiled two-qubit depth, CX/SWAP, ancillas, native gates, topology</td>
+<td>Has the circuit been compared under the conditions of an actual backend?</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Shots, assignment error, sensitivity, mitigation, postselection</td>
+<td>Are sensor sensitivity and final readout fidelity kept distinct?</td>
+</tr>
+<tr>
+<td>Error correction</td>
+<td>Logical and physical qubits, T count and depth, code distance, memory spacetime</td>
+<td>Are algorithmic resources separated from device resources?</td>
+</tr>
+<tr>
+<td>Total cost</td>
+<td>Queue and runtime, preprocessing and post-processing, total cost and energy</td>
+<td>Is there an end-to-end gain at the same problem and accuracy?</td>
+</tr>
+<tr>
+<td>Reproducibility</td>
+<td>Code, seed, calibration date, failed cases, provenance</td>
+<td>Can a reader still distinguish QPU, simulator, and classical emulation?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>“Quantum advantage” cannot be inferred from a shallow circuit or a large qubit count alone. Encoding, data loading, state preparation, shots, readout, mitigation, post-processing, and wall-clock time must be compared with the classical baseline at the same problem size and solution quality. Each of today’s five cases fills a different column in that comparison.</p>
+<h2 id="final-assessment">Final assessment</h2>
+<p>Practical quantum computing is not a single-algorithm problem. The oracle in the Classiq challenge must realize the correct unitary in a shallow circuit, while PTSET illustrates the need to convert a circuit output into a trustworthy electrical signal. The FTQC memory bound fixes a cost for preserving information during a long computation. The Xanadu and Pasqal developments show that an industrial base is needed to manufacture and deploy such devices repeatedly.</p>
+<p>KS-FNO sets the starting point for this path. As classical DFT handles larger systems at lower scaling, the role of quantum computing does not simply disappear; it becomes more narrowly defined. Advanced classical AI and HPC can handle ground-state density, routine screening, and large-scale chemical-space reduction, while a quantum kernel must be tested against the strongly correlated, state-selection, or measurement bottlenecks that classical methods leave behind.</p>
+<p>A persuasive OLED or materials PoC does not end with the statement that a quantum computer was used. It becomes a reusable computational asset only when the strongest classical baseline is fixed, the quantum kernel is tightly bounded, and circuit, readout, error-correction, and manufacturing costs are recorded in the same evidence ledger.</p>
+<h2 id="sources">Sources</h2>
+<ol>
+<li>Classiq Technologies, <a href="https://get.classiq.io/quantum-circuit-challenge/">Classiq Quantum Circuit Challenge</a>, 28 August–30 September 2026.</li>
+<li>D. Khan et al., <a href="https://arxiv.org/abs/2608.23895"><em>Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory</em></a>, arXiv:2608.23895v1, 24 August 2026.</li>
+<li>G. Aizpurua-Iraola et al., <a href="https://arxiv.org/abs/2608.27045"><em>A Superconducting Phase Transition Single-Electron Transistor</em></a>, arXiv:2608.27045v1, 27 August 2026.</li>
+<li>K. Bharti, T. Haug, A. Tanggara, <a href="https://arxiv.org/abs/2608.26272"><em>Fault-tolerant quantum computation cannot be achieved with constant spacetime overhead</em></a>, arXiv:2608.26272v1, 26 August 2026.</li>
+<li>Innovation, Science and Economic Development Canada, <a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html"><em>Government of Canada invests in Xanadu to build up advanced quantum manufacturing in Canada</em></a>, 28 August 2026.</li>
+<li>Pasqal, <a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/"><em>Pasqal and Bleichroeder Acquisition Corp. II Complete Business Combination</em></a>, 27 August 2026; <a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm">SEC Form 6-K</a>.</li>
+</ol>
+<p><a href="daily_quantum_brief_2026-08-30.pdf">Download the verified five-page Daily Quantum Brief PDF</a></p>
+<p><em>Verification note: Quantitative claims, publication status, and execution location were checked against the official challenge documentation, the full arXiv papers, the government announcement, the company announcement, and the SEC filing. QPU, classical GPU, device PoC, theory, and industry announcement remain separate evidence layers. Evidence cutoff: 30 August 2026.</em></p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex (main) — orchestration, evidence integration, and publication; repo_audit — repository and publication-pipeline audit; source_verify — primary-source and quantitative-claim verification; editorial — bilingual narrative and figure specification; boundary_review — independent evidence-boundary review; translation_audit — English fidelity and terminology audit; public_audit — public-site and accessibility audit; deploy_qa — local and deployed-page verification</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>official challenge specification; three arXiv v1 preprints and full text; Government of Canada release, Pasqal release, and SEC filing; bilingual HTML, figures, PDF, metadata, links, and responsive rendering</dd></div>
+          <div><dt>Human review record</dt><dd>topic, framing, and publication request confirmed; line-by-line review not separately retained</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-08-30</dd></div>
+        </dl>
+        <p class="disclosure-note">The exact model identifier was not retained in the session record. The listed agent names and roles are the multi-agent configuration actually used for this publication.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-08-30 09:37:39<br>
+        Source last modified: 2026-08-30 09:37:25
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#evidence-map-at-a-glance">Evidence map at a glance</a></li>
+<li><a href="#1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</a><ul>
+<li><a href="#the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</a></li>
+<li><a href="#what-remains-to-be-calculated">What remains to be calculated</a></li>
+</ul>
+</li>
+<li><a href="#2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</a></li>
+<li><a href="#3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</a></li>
+<li><a href="#4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</a></li>
+<li><a href="#5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</a></li>
+<li><a href="#6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</a></li>
+<li><a href="#7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</a></li>
+<li><a href="#final-assessment">Final assessment</a></li>
+<li><a href="#sources">Sources</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="https://arxiv.org/abs/2608.23895" target="_blank" rel="noreferrer">Danish Khan and colleagues</a></li>
+<li><a href="https://get.classiq.io/quantum-circuit-challenge/" target="_blank" rel="noreferrer">Classiq Quantum Circuit Challenge</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/" target="_blank" rel="noreferrer">*Why Quantum Circuit Optimization Matters*</a></li>
+<li><a href="https://arxiv.org/abs/2608.27045" target="_blank" rel="noreferrer">PTSET study</a></li>
+<li><a href="https://arxiv.org/abs/2608.26272" target="_blank" rel="noreferrer">Bharti, Haug, and Tanggara</a></li>
+<li><a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html" target="_blank" rel="noreferrer">a CAD 195M Strategic Response Fund investment in Xanadu’s CAD 893M project</a></li>
+<li><a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/" target="_blank" rel="noreferrer">completion of its business combination with Bleichroeder Acquisition Corp. II</a></li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm" target="_blank" rel="noreferrer">SEC Form 6-K</a></li>
+<li><a href="daily_quantum_brief_2026-08-30.pdf">Download the verified five-page Daily Quantum Brief PDF</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>
