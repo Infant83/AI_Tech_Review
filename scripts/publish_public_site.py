@@ -96,6 +96,61 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-08-31_thermal-quantum-states-exciton-validation",
+        title="뜨거운 양자상태를 만들고, 엑시톤을 따라간다",
+        subtitle="유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기",
+        date="2026-08-31",
+        updated="2026-08-31",
+        category="Quantum Computing",
+        tags=(
+            "Thermal State Preparation",
+            "Analog Quantum Simulation",
+            "Exciton Wavefunction",
+            "OLED",
+            "Quantum Control",
+            "Quantum Hardware",
+        ),
+        summary=(
+            "유한온도 Gibbs 상태 준비, 2D XY 아날로그 양자 시뮬레이터의 정량 검증, "
+            "α-sexithiophene 엑시톤 파동함수 복원을 하나의 검증 경로로 읽습니다. "
+            "Fluxonium–transmon 아키텍처와 기하학적 펄스 제어를 전체 최적화 스택에 배치하고, "
+            "Classiq와 AshN은 서로 다른 층의 대표 사례일 뿐이라는 점을 분명히 합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(
+            PublicAgent("Codex (main)", "evidence integration, narrative, figures, and publication", "근거 통합·서사·도해·게시"),
+            PublicAgent("source_verify", "primary-source and quantitative-claim verification", "1차 출처·정량 주장 검증"),
+            PublicAgent("repo_pattern", "repository and publication-pipeline audit", "저장소·게시 파이프라인 감사"),
+            PublicAgent("hero_image", "scientific editorial hero generation", "과학 편집형 대표 이미지 생성"),
+            PublicAgent("english_draft", "English translation draft", "영문 번역 초안"),
+            PublicAgent("boundary_audit", "final bilingual claim-boundary and publication audit", "최종 한영 주장 경계·게시 감사"),
+        ),
+        verification_scope=(
+            "five APS peer-reviewed papers and author preprints",
+            "publication dates, execution locations, quantitative claims, and non-claims",
+            "bilingual HTML, figures, PDF, metadata, and local-reference validation",
+        ),
+        verification_scope_ko=(
+            "APS 동료평가 논문 5건과 저자 프리프린트",
+            "게재일·실행 위치·정량 수치·미입증 범위",
+            "한영 HTML·도해·PDF·metadata·로컬 참조 검증",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-08-31",
+        human_review_level="topic, framing, and publication request confirmed; line-by-line review not separately retained",
+        human_review_level_ko="주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+        disclosure_note_ko=(
+            "정확한 모델 식별자는 세션 기록에 남지 않았습니다. 기재한 에이전트명과 역할은 이번 게시 작업에서 "
+            "실제로 사용한 구성입니다."
+        ),
+        disclosure_note_en=(
+            "The exact model identifier was not retained in the session record. The listed agent names and roles are the "
+            "configuration actually used for this publication."
+        ),
+    ),
+    PublicReview(
         folder="2026-08-30_practical-quantum-computing-stack",
         title="양자컴퓨터가 계산 시스템이 되기까지",
         subtitle="최신 고전 기준선에서 회로 구현·판독·오류정정·제조 기반까지, 실용성을 가르는 다섯 검증 단계",

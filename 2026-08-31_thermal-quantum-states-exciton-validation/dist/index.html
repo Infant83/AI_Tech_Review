@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>뜨거운 양자상태를 만들고, 엑시톤을 따라간다</title>
+  <meta name="description" content="유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="뜨거운 양자상태를 만들고, 엑시톤을 따라간다">
+  <meta property="og:description" content="유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp">
+  <meta property="og:image:alt" content="뜨거운 양자상태를 만들고, 엑시톤을 따라간다">
+  <meta property="article:published_time" content="2026-08-31">
+  <meta property="article:modified_time" content="2026-08-31">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="뜨거운 양자상태를 만들고, 엑시톤을 따라간다">
+  <meta name="twitter:description" content="유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp">
+  <meta name="twitter:image:alt" content="뜨거운 양자상태를 만들고, 엑시톤을 따라간다">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-08-31)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/" lang="en" hreflang="en">English</a></nav>
+        <a href="2026-08-31_thermal-quantum-states-exciton-validation_final_review.md">2026-08-31_thermal-quantum-states-exciton-validation_final_review.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>뜨거운 양자상태를 만들고, 엑시톤을 따라간다</h1>
+        <p class="dek">유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>양자계산 설명은 흔히 가장 낮은 에너지의 바닥상태에서 시작한다. 개념적으로 자연스럽고 전자구조와 물성의 기준이 되기 때문이다. 실제 물질과 소자는 온도가 0 K가 아니며, 빛을 흡수한 유기 반도체는 평형 바닥상태에 머물지도 않는다. 열에 의해 여러 에너지 상태가 섞이고, 전자와 정공이 만든 엑시톤은 분자 사이로 퍼졌다가 격자 진동과 상호작용하며 모양을 바꾼다.</p>
+<p>따라서 실용적인 양자 시뮬레이션에는 두 질문이 따라온다. <strong>원하는 유한온도 상태를 계산 장치에 어떻게 준비할 것인가?</strong> 그리고 <strong>준비하거나 모사한 상태가 실제 물질을 올바르게 나타낸다는 것을 어떤 관측량으로 확인할 것인가?</strong> 2026년 8월 28일 발표된 연구들은 이 두 질문의 서로 다른 부분을 다룬다.</p>
+<p>한 연구는 reset 가능한 보조 bath를 이용해 Gibbs 열 상태를 만드는 알고리즘을 제안했고, 다른 연구는 2차원 XY 모델의 스핀 확산을 광격자 아날로그 양자 시뮬레이터와 고전 계산에서 대조했다. 유기 반도체 연구는 α-sexithiophene 박막의 엑시톤을 femtosecond 분광으로 추적해 실공간 파동함수를 복원했다. 같은 날 발표된 fluxonium–transmon 아키텍처와 기하학적 펄스 제어는 계산의 더 아래쪽, 즉 소자 배치와 물리 제어 층을 다룬다.</p>
+<p>이 다섯 결과는 하나의 통합 장치나 동일 지표의 성능 경쟁이 아니다. 실제 실험, 아날로그 시뮬레이터, 고전 수치 검증과 하드웨어 제안을 분리한 뒤, OLED·재료 계산에 어떤 검증 기준을 더하는지 살펴본다.</p>
+<figure class="article-hero-figure">
+  <img src="thermal_quantum_exciton_hero-web.webp" alt="reset 가능한 열 bath와 이차원 양자 격자, 유기 분자 박막 위에서 수축하는 엑시톤 파동함수를 연결한 개념 일러스트" width="1536" height="1024" loading="eager">
+  <figcaption>그림 1. 왼쪽은 열 reservoir와 양자 격자의 에너지 교환, 오른쪽은 분자 여러 개에 퍼진 엑시톤의 수축을 나타낸 개념 일러스트다. 특정 실험 장치나 정량 데이터를 재현한 그림은 아니다.</figcaption>
+</figure>
+
+<aside class="callout callout-evidence">
+<p class="callout-label">리뷰 판정</p>
+<p>오늘의 진전은 새로운 양자 우위가 아니다. 유한온도 상태를 준비하는 알고리즘, 아날로그 시뮬레이터를 고전 계산과 맞춰 보는 검증법, OLED 계산이 비교할 수 있는 엑시톤의 공간·위상·시간 관측량이 동시에 구체화됐다. 실제 QPU 성능으로 확인된 항목은 없으며, 2D XY 연구만 실제 아날로그 양자 시뮬레이터를 사용했다.</p>
+</aside>
+<h2 id="_1">한눈에 보는 증거 지도</h2>
+<div aria-label="다섯 연구의 실행 위치와 입증 범위" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>실제로 한 일</th>
+<th>확인된 수치</th>
+<th>아직 입증하지 않은 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gibbs 상태 준비 · PRX</td>
+<td>고전 컴퓨터에서 2D 양자 Ising과 자유 페르미온 수치 검증</td>
+<td>Ising 최대 16 spins, 자유 페르미온 수백 sites; 약결합 오차 \(O(\theta^2)\)</td>
+<td>실제 QPU, reset 비용, mixing time, 전체 wall-clock</td>
+</tr>
+<tr>
+<td>2D XY 확산 · PRB</td>
+<td>광격자 hard-core boson 아날로그 양자 시뮬레이터와 Dyn-HTE 비교</td>
+<td>실험 \(D=0.82(3)J\); \(J/T=0.47^{+0.07}_{-0.09}\)에서 이론과 합의</td>
+<td>범용 디지털 QPU, 고전 계산 대비 속도·비용 우위</td>
+</tr>
+<tr>
+<td>α-sexithiophene 엑시톤 · PRX</td>
+<td>운동량공간을 직접 측정하고 실공간 진폭·위상을 모델로 복원</td>
+<td>약 3개 분자에 coherent delocalization; 400 fs 안에 반경 약 25% 수축</td>
+<td>실공간 직접 촬영, self-trapping의 유일 원인 확정, OLED 소자 성능</td>
+</tr>
+<tr>
+<td>fluxonium–transmon · PR Research</td>
+<td>혼합 큐비트 격자와 CZ pulse를 폐쇄계 수치 시뮬레이션</td>
+<td>30 ns에서 single-tone 대비 infidelity 최대 4 orders 감소; 50 ns spectator 예 \(3.8\times10^{-5}\)</td>
+<td>칩 제작, 측정 fidelity, array yield, 반복 QEC</td>
+</tr>
+<tr>
+<td>기하학적 di-ad 제어 · PR Research</td>
+<td>다준위 pulse 설계를 기하학적 metric과 1차 ODE로 구성</td>
+<td>double-dot 초기화 \(&gt;99\%\), state shuttling 약 99% 수치 fidelity</td>
+<td>실제 pulse generator·spin-qubit 하드웨어 실험</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="figure-panel figure-panel-fit">
+  <img src="evidence_layers_ko.png" alt="Gibbs 상태 준비, 이차원 XY 확산, 유기 반도체 엑시톤, fluxonium-transmon 아키텍처, 기하학적 펄스 제어를 실행 위치에 따라 구분한 증거 지도" width="1800" height="1380" loading="lazy">
+  <figcaption>그림 2. 모두 동료평가 저널 논문이지만 증거의 종류는 다르다. 논문 게재 여부와 실제 장치 실행 여부를 같은 축으로 취급하면 안 된다. <a href="evidence_layers_ko.svg">확대 가능한 SVG</a></figcaption>
+</figure>
+
+<h2 id="1">1. 왜 바닥상태만으로는 부족한가</h2>
+<p>Hamiltonian \(H\)가 주어지면 바닥상태는 가장 낮은 고유에너지를 갖는 순수상태다. 온도가 올라가면 계는 하나의 고유상태에만 머물지 않는다. 에너지 \(E_i\)의 상태가 나타날 확률은 Boltzmann factor \(e^{-\beta E_i}\)로 가중되고, 평형 상태는 Gibbs density matrix</p>
+$$
+\rho_\beta=\frac{e^{-\beta H}}{Z},\qquad Z=\mathrm{Tr}\left(e^{-\beta H}\right)
+$$
+
+<p>로 표현된다. 여기서 \(\beta=1/(k_{\mathrm B}T)\)다. 온도가 높을수록 여러 상태가 섞이며, 상전이 부근과 강상관계에서는 고전적으로 \(e^{-\beta H}\)를 계산하고 표본화하는 비용이 빠르게 커질 수 있다.</p>
+<p>Finite-temperature correlation, transport, magnetic response 또는 열적 최적화 분포를 계산하는 직접적인 경로 중 하나는 양자 프로세서에 이 mixed state를 준비하는 것이다. 문제는 “큐비트를 데우면 되지 않는가”가 아니다. 환경에 무작정 노출하면 원하는 Hamiltonian의 Gibbs 상태가 아니라 장치 고유의 잡음과 손실이 만든 상태에 도달한다. 에너지 교환 비율이 목표 온도의 detailed balance를 따르도록 상호작용을 설계해야 한다.</p>
+<h3 id="reset-bath">reset 가능한 bath가 하는 일</h3>
+<p><a href="https://doi.org/10.1103/cbrd-ssnm">Lloyd와 Abanin의 PRX 연구</a>는 계산 대상 system을 작은 보조 bath와 잠시 결합하고, bath를 다시 초기화하는 과정을 반복한다. 변조된 system–bath coupling은 에너지를 흡수하거나 방출하는 전이의 비율이 목표 온도에 맞도록 조절한다. 매 cycle의 결과는 density matrix에 작용하는 quantum channel이며, 반복했을 때 그 고정점이 Gibbs 상태에 가까워지도록 설계된다.</p>
+<p>약결합 세기 \(\theta\)가 작아질수록 준비 상태와 목표 Gibbs 상태의 차이는 \(O(\theta^2)\)로 줄어든다. 저자들은 2D 양자 Ising 모델에서 최대 16 spins까지 온도와 상전이 부근을 수치 검증했고, 자유 페르미온 계에서는 수백 sites 규모까지 약결합 정확도를 분석했다.</p>
+<p>이것은 <strong>고전 컴퓨터에서 알고리즘을 수치 검증한 결과</strong>다. 실제 QPU에서 bath reset, coupling modulation과 반복 channel을 실행하지 않았다. 원하는 오차에 도달하는 mixing time, 필요한 reset 횟수, 장치 잡음과 총 wall-clock도 비교하지 않았다. “near-term processor에 적합하다”는 표현은 구현 경로가 비교적 단순하다는 저자들의 판단이며, 실기기 효율의 측정값은 아니다.</p>
+<h3 id="oled">OLED와 곧바로 연결되지는 않는다</h3>
+<p>Gibbs 상태는 평형 유한온도 문제에 적합하다. 광여기 직후의 OLED 재료처럼 펌프된 전자계, 진동과의 비평형 relaxation, singlet–triplet 전환을 기술하려면 real-time 또는 open-system dynamics가 추가로 필요하다. 열 상태를 준비할 수 있다는 사실만으로 400 fs 엑시톤 수축을 계산할 수 있는 것은 아니다. 전자–정공 Hamiltonian, exciton–phonon coupling과 시간 의존 관측량까지 포함해야 연결이 성립한다.</p>
+<h2 id="2">2. 양자 시뮬레이터를 어떻게 믿을 것인가</h2>
+<p>아날로그 양자 시뮬레이터는 범용 gate circuit을 실행하는 대신, 원자·이온·광자의 물리적 상호작용을 목표 Hamiltonian과 닮도록 조정한다. 큰 계에서 고전 계산이 어려운 영역을 탐색할 수 있지만, 바로 그 이유 때문에 정답을 대조하기 어렵다. 검증에는 <strong>실험과 고전 계산이 둘 다 가능한 겹치는 영역</strong>이 필요하다.</p>
+<p><a href="https://doi.org/10.1103/whhg-tfv4">2D XY spin diffusion 연구</a>는 square-lattice spin-1/2 XY 모델을 광격자의 hard-core boson으로 구현했다. 실험에서는 domain wall이 시간에 따라 퍼지는 모습을 측정했고, 이론에서는 dynamical high-temperature expansion(Dyn-HTE)으로 긴 시간·긴 거리의 hydrodynamic regime을 계산했다.</p>
+<p>실험의 spin diffusion constant는 \(D=0.82(3)J\)였다. 독립적으로 추정한 온도 \(J/T=0.47^{+0.07}_{-0.09}\)를 Dyn-HTE에 넣었을 때 이론과 정량적으로 합의했으며, 무한온도 이론값은 약 \(0.72J\)다. 의미는 “양자 장치가 고전 계산보다 빨랐다”가 아니라, 두 방법이 겹치는 조건에서 같은 transport coefficient를 냈다는 데 있다.</p>
+<p>이 결과는 범용 디지털 QPU의 알고리즘 실행이 아니다. 고전 계산 대비 총시간·에너지 우위를 측정하지도 않았다. 대신 아날로그 시뮬레이터가 2차원 양자 수송의 정량 관측량을 재현하는지 검증하는 기준점을 제공한다. 앞으로 고전 계산이 어려워지는 더 낮은 온도나 더 긴 시간으로 이동할 때, 이 겹치는 영역의 합의가 extrapolation의 신뢰 기반이 된다.</p>
+<h2 id="3">3. 엑시톤을 ‘본다’는 말의 정확한 뜻</h2>
+<p>엑시톤은 빛에 의해 생성된 전자와 정공이 Coulomb interaction으로 결합한 준입자다. 유기 반도체에서는 분자 안에 국소화될 수도 있고 여러 분자에 coherent하게 퍼질 수도 있다. 공간 크기와 위상, 격자 진동에 의한 self-trapping은 에너지 이동, 발광과 비방사 손실에 영향을 준다.</p>
+<p>기존 optical spectrum은 exciton energy와 lifetime을 알려주지만, 파동함수의 공간 분포와 내부 위상을 동시에 직접 제공하지는 않는다. <a href="https://doi.org/10.1103/3zmg-276c">α-sexithiophene 연구</a>는 femtosecond time-resolved photoemission orbital tomography(trPOT)를 사용했다. Pump pulse가 엑시톤을 만들고 high-harmonic probe가 시간별 photoelectron의 에너지와 운동량 분포를 기록한다.</p>
+<p>여기서 <strong>직접 측정한 것은 운동량공간의 photoelectron distribution</strong>이다. 연구진은 이 분포를 exciton model과 결합해 실공간의 진폭과 내부 phase structure를 복원했다. 현미경으로 실공간 파동함수를 그대로 촬영한 것은 아니다.</p>
+<p>복원된 exciton은 약 3개 분자 단위에 coherent하게 퍼져 있었고, ab initio many-body perturbation theory의 phase pattern과 부합했다. 시간분해 측정에서는 400 fs 안에 exciton radius가 약 25% 줄었다. 이 수축은 exciton–phonon coupling에 의한 self-trapping과 일치하지만, 단일 관측만으로 가능한 모든 원인 중 하나를 유일하게 확정한 것은 아니다.</p>
+<h3 id="oled_1">OLED 계산에 새로 생긴 검증 표적</h3>
+<p>OLED·유기반도체 계산은 흔히 \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), oscillator strength와 SOC를 중심으로 비교한다. 이번 결과는 검증 표적을 다음과 같이 넓힌다.</p>
+<ol>
+<li><strong>공간 크기:</strong> exciton radius와 몇 개 분자에 걸쳐 delocalize되는지</li>
+<li><strong>내부 위상:</strong> electron–hole amplitude의 부호와 phase modulation</li>
+<li><strong>시간 변화:</strong> 수백 femtosecond 동안의 contraction과 localization</li>
+<li><strong>진동 결합:</strong> 어떤 phonon mode가 self-trapping과 비방사 경로를 촉진하는지</li>
+</ol>
+<p>GW/BSE, TDDFT, 다중참조 전자구조와 nonadiabatic dynamics가 이 관측량을 같은 박막 구조·온도 조건에서 예측할 수 있는지 비교할 수 있다. 모델 학습에서도 exciton energy 하나를 label로 두는 것보다 크기·phase proxy·contraction time을 함께 사용해야 물리적으로 다른 후보를 구분하기 쉽다.</p>
+<h2 id="4">4. 아키텍처와 펄스도 별도의 최적화 층이다</h2>
+<p>같은 날의 두 Physical Review Research 논문은 양자계산을 실제 장치로 내리는 과정의 서로 다른 층을 다룬다.</p>
+<p><a href="https://doi.org/10.1103/ts1j-nfg1">fluxonium–transmon 아키텍처</a>는 긴 coherence와 큰 anharmonicity를 갖는 fluxonium을 data qubit로, 성숙한 readout 기술이 있는 fixed-frequency transmon을 measurement ancilla로 번갈아 배치한다. 두 종류의 qubit는 tunable transmon coupler로 연결된다. 서로 다른 스펙트럼을 교대로 배치해 level crowding을 줄이고 idle ZZ crosstalk을 0에 가깝게 설계하려는 접근이다.</p>
+<p>Hamiltonian 기반 폐쇄계 수치실험에서 two-tone flux pulse는 30 ns CZ gate의 infidelity를 single-tone 방식보다 최대 4 orders 줄였다. 여러 spectator를 포함한 50 ns 최적화 예에서는 계산 오차 \(3.8\times10^{-5}\)를 보고했다. 이 수치들은 실제 칩에서 측정한 gate fidelity가 아니다. Fabrication variation, control electronics, decoherence, leakage calibration, array yield와 반복 QEC는 실험으로 남아 있다.</p>
+<p><a href="https://doi.org/10.1103/hfv7-3pxt">기하학적 diabatic–adiabatic 제어</a>는 다준위 스펙트럼에서 원하는 전이는 통과시키고 원하지 않는 누설은 억제하는 metric을 만든다. 천천히 움직여 모든 diabatic excitation을 피하는 대신, 유익한 전이와 해로운 전이를 구분해 pulse path를 설계한다. 특히 제어변수가 하나일 때 최적화가 1차 ordinary differential equation으로 줄어든다.</p>
+<p>Double quantum dot의 초기화 수치실험은 99% 초과 fidelity, state shuttling은 약 99%를 보고했다. 실제 pulse generator와 spin-qubit 하드웨어에서 실행한 결과는 아니다. GRAPE처럼 전체 time evolution의 gradient를 반복 계산하는 접근보다 매개변수가 적을 수 있지만, noise model·calibration drift·control bandwidth를 포함한 공정한 wall-clock 비교가 필요하다.</p>
+<h2 id="5-classiq-ashn">5. Classiq와 AshN만 있는 것이 아니다</h2>
+<p>양자회로 최적화는 “Classiq 대 AshN”처럼 두 방법의 경쟁으로 설명할 수 없다. Classiq는 고수준 기능 모델에서 가능한 회로 구현을 탐색하는 <strong>합성 프레임워크의 한 사례</strong>다. AshN은 초전도 장치의 네이티브 2-qubit interaction을 활용해 논리 gate와 routing SWAP 일부를 흡수하는 <strong>네이티브 게이트 층의 최근 사례</strong>다.</p>
+<p>그 사이와 아래에는 Boolean factorization, peephole rewrite, ZX-calculus, phase-polynomial synthesis, qubit placement, routing, calibration-aware compilation, pulse shaping, optimal control, error-aware scheduling 등 서로 다른 최적화 계열이 있다. 오늘의 기하학적 di-ad 제어는 이 지형의 <strong>펄스·물리 제어 층</strong>에 놓인다. Fluxonium–transmon 연구는 한 단계 위의 <strong>소자 아키텍처 층</strong>이다.</p>
+<figure class="figure-panel figure-panel-fit">
+  <img src="quantum_optimization_stack_ko.png" alt="문제 표현부터 고수준 합성, 논리 최적화, 라우팅, 네이티브 게이트, 물리 아키텍처, 펄스 제어와 측정까지 양자 계산 최적화의 층을 보여주는 그림" width="1800" height="1470" loading="lazy">
+  <figcaption>그림 3. Classiq, AshN, fluxonium–transmon 설계와 기하학적 제어는 서로 다른 층의 사례다. 같은 기능을 직접 대체하지 않으며 함께 사용될 수도 있다. <a href="quantum_optimization_stack_ko.svg">확대 가능한 SVG</a></figcaption>
+</figure>
+
+<p>각 층이 줄이는 비용도 다르다. 고수준 합성은 logical depth와 ancilla를, routing은 SWAP과 mapped depth를, native gate는 실제 calibrated entangler 수를, pulse 제어는 gate time·leakage·robustness를 바꾼다. 한 단계에서 좋아진 숫자가 end-to-end fidelity나 wall-clock 개선으로 이어지는지는 target backend에서 다시 측정해야 한다.</p>
+<p>회로 최적화를 비교할 때는 최소한 다음 Pareto front를 남겨야 한다.</p>
+<ul>
+<li>logical depth와 logical 2Q gate count</li>
+<li>mapping 이후 2Q depth, SWAP과 ancilla</li>
+<li>native gate와 calibration date, 예상·측정 fidelity</li>
+<li>pulse length, leakage, crosstalk과 spectator 영향</li>
+<li>shots, readout error, mitigation·postselection 성공률</li>
+<li>compile time, queue time, QPU runtime과 고전 전후처리</li>
+</ul>
+<p>이 전체 지형의 배경과 Classiq·AshN의 정량 경계는 앞선 리뷰 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">「양자 회로 최적화는 왜 필요한가」</a>에서 자세히 다뤘다.</p>
+<h2 id="6-oled">6. OLED·재료 연구에서 바로 바꿀 기록 항목</h2>
+<p>이번 연구들을 하나의 OLED 계산 workflow로 억지로 묶을 필요는 없다. 대신 각 결과가 요구하는 검증 항목을 기존 DFT·ML·양자 계산 기록에 추가할 수 있다.</p>
+<table>
+<thead>
+<tr>
+<th>연구 단계</th>
+<th>추가할 기록</th>
+<th>판단 질문</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>전자구조</td>
+<td>\(S_1/T_1\) 에너지뿐 아니라 exciton radius·phase proxy·delocalization length</td>
+<td>실험 trPOT가 복원한 공간 구조를 같은 박막 조건에서 재현하는가</td>
+</tr>
+<tr>
+<td>동역학</td>
+<td>400 fs 전후 wavefunction contraction, phonon mode, nonadiabatic population</td>
+<td>Self-trapping의 시간척도와 원인을 분리해 예측하는가</td>
+</tr>
+<tr>
+<td>유한온도 양자 시뮬레이션</td>
+<td>target \(T\), Gibbs error, bath size, reset 횟수, mixing time</td>
+<td>State-preparation 비용을 관측량 계산과 분리해 기록했는가</td>
+</tr>
+<tr>
+<td>아날로그 시뮬레이터</td>
+<td>고전적으로 풀리는 overlap regime와 동일 observable</td>
+<td>검증 영역 밖 extrapolation에 앞서 정량 합의를 보였는가</td>
+</tr>
+<tr>
+<td>회로·하드웨어</td>
+<td>compiled 2Q depth, native gate, pulse, spectators, shots, wall-clock</td>
+<td>Classiq·AshN·pulse 개선을 같은 end-to-end 지표로 내렸는가</td>
+</tr>
+</tbody>
+</table>
+<p>DFT·GW/BSE·TDDFT는 ground state와 excited-state electronic structure의 강한 고전 기준선이다. 양자 계산은 이를 통째로 대체한다고 가정하기보다, 강상관 active space, 유한온도 correlated state, 실시간 다체동역학 또는 표본추출처럼 남은 병목에 제한적으로 배치해야 한다. 그 뒤 에너지 오차만 보지 말고 엑시톤 크기·위상·시간과 같은 실험 관측량을 비교해야 한다.</p>
+<h2 id="_2">최종 평가</h2>
+<p>Gibbs 상태 준비 연구는 유한온도 양자 시뮬레이션의 상태 준비를 더 단순한 reset-and-couple protocol로 바꿨다. 현재 증거는 고전 수치이며, 실제 장치에서 필요한 reset·mixing·noise 비용은 남아 있다. 2D XY 연구는 실제 아날로그 양자 시뮬레이터의 확산계수가 고전 Dyn-HTE와 겹치는 영역에서 맞는다는 정량 검증을 제공했다. 이는 양자 가속이 아니라 시뮬레이터의 신뢰도를 높인 결과다.</p>
+<p>α-sexithiophene 연구는 OLED 계산이 맞춰야 할 관측량을 에너지와 수명에서 파동함수의 공간 크기·내부 위상·400 fs 수축으로 넓혔다. 운동량공간은 직접 측정했고 실공간 파동함수는 모델로 복원했다는 경계를 유지해야 한다.</p>
+<p>Fluxonium–transmon과 기하학적 제어 연구는 회로 최적화가 고수준 합성이나 네이티브 게이트에서 끝나지 않음을 보여준다. Classiq와 AshN은 각각 전체 스택의 대표 사례일 뿐이며, 아키텍처·펄스·측정까지 이어지는 최적화가 target backend의 실제 fidelity와 wall-clock에서 합쳐져야 한다.</p>
+<h2 id="_3">근거 자료</h2>
+<ol>
+<li>J. Lloyd and D. A. Abanin, <a href="https://doi.org/10.1103/cbrd-ssnm"><em>Quantum Thermal State Preparation for Near-Term Quantum Processors</em></a>, Physical Review X 16, 031053, 28 August 2026; <a href="https://arxiv.org/abs/2506.21318">author preprint</a>.</li>
+<li>M. Theilen et al., <a href="https://doi.org/10.1103/3zmg-276c"><em>Observing the Spatial and Temporal Evolution of Exciton Wave Functions in Organic Semiconductors</em></a>, Physical Review X 16, 031054, 28 August 2026.</li>
+<li>E. Fitzner et al., <a href="https://doi.org/10.1103/whhg-tfv4"><em>Finite-temperature spin diffusion in the two-dimensional XY model</em></a>, Physical Review B 114, 094303, 28 August 2026; <a href="https://arxiv.org/abs/2605.20124">author preprint</a>.</li>
+<li>L. Heunisch et al., <a href="https://doi.org/10.1103/ts1j-nfg1"><em>Scalable fluxonium-transmon architecture for error-corrected quantum processors</em></a>, Physical Review Research 8, 033245, 28 August 2026; <a href="https://arxiv.org/abs/2508.09267">author preprint</a>.</li>
+<li>C. Ventura-Meinersen et al., <a href="https://doi.org/10.1103/hfv7-3pxt"><em>Multilevel spectral navigation with geometric diabatic-adiabatic control</em></a>, Physical Review Research 8, L032034, 28 August 2026; <a href="https://arxiv.org/abs/2602.14756">author preprint</a>.</li>
+</ol>
+<p><a href="daily_quantum_brief_2026-08-31.pdf">검증된 4쪽 Daily Quantum Brief PDF 내려받기</a></p>
+<p><em>검증 메모: 다섯 항목의 게재일·실행 위치·정량 수치·미입증 범위를 APS 원문과 저자 프리프린트에서 대조했다. 실제 분광 실험, 실제 아날로그 양자 시뮬레이터, 고전 수치 검증과 하드웨어 제안을 서로 다른 증거 층으로 유지했으며, 근거 기준일은 2026년 8월 31일이다.</em></p>
+      <div class="footer">
+        생성 시각: 2026-08-31 02:44:30<br>
+        원본 파일 최종 수정 시각: 2026-08-31 02:44:17
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#_1">한눈에 보는 증거 지도</a></li>
+<li><a href="#1">1. 왜 바닥상태만으로는 부족한가</a><ul>
+<li><a href="#reset-bath">reset 가능한 bath가 하는 일</a></li>
+<li><a href="#oled">OLED와 곧바로 연결되지는 않는다</a></li>
+</ul>
+</li>
+<li><a href="#2">2. 양자 시뮬레이터를 어떻게 믿을 것인가</a></li>
+<li><a href="#3">3. 엑시톤을 ‘본다’는 말의 정확한 뜻</a><ul>
+<li><a href="#oled_1">OLED 계산에 새로 생긴 검증 표적</a></li>
+</ul>
+</li>
+<li><a href="#4">4. 아키텍처와 펄스도 별도의 최적화 층이다</a></li>
+<li><a href="#5-classiq-ashn">5. Classiq와 AshN만 있는 것이 아니다</a></li>
+<li><a href="#6-oled">6. OLED·재료 연구에서 바로 바꿀 기록 항목</a></li>
+<li><a href="#_2">최종 평가</a></li>
+<li><a href="#_3">근거 자료</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="https://doi.org/10.1103/cbrd-ssnm" target="_blank" rel="noreferrer">Lloyd와 Abanin의 PRX 연구</a></li>
+<li><a href="https://doi.org/10.1103/whhg-tfv4" target="_blank" rel="noreferrer">2D XY spin diffusion 연구</a></li>
+<li><a href="https://doi.org/10.1103/3zmg-276c" target="_blank" rel="noreferrer">α-sexithiophene 연구</a></li>
+<li><a href="https://doi.org/10.1103/ts1j-nfg1" target="_blank" rel="noreferrer">fluxonium–transmon 아키텍처</a></li>
+<li><a href="https://doi.org/10.1103/hfv7-3pxt" target="_blank" rel="noreferrer">기하학적 diabatic–adiabatic 제어</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/" target="_blank" rel="noreferrer">「양자 회로 최적화는 왜 필요한가」</a></li>
+<li><a href="https://arxiv.org/abs/2506.21318" target="_blank" rel="noreferrer">author preprint</a></li>
+<li><a href="https://arxiv.org/abs/2605.20124" target="_blank" rel="noreferrer">author preprint</a></li>
+<li><a href="https://arxiv.org/abs/2508.09267" target="_blank" rel="noreferrer">author preprint</a></li>
+<li><a href="https://arxiv.org/abs/2602.14756" target="_blank" rel="noreferrer">author preprint</a></li>
+<li><a href="daily_quantum_brief_2026-08-31.pdf">검증된 4쪽 Daily Quantum Brief PDF 내려받기</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>
