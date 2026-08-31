@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Preparing Hot Quantum States and Tracking an Exciton</title>
-  <meta name="description" content="Reading finite-temperature state preparation, analog quantum simulation, and OLED spectroscopy as one validation path">
+  <meta name="description" content="How finite-temperature states are prepared—and what lets us trust quantum simulators and OLED calculations">
 
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/">
@@ -12,7 +12,7 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
 
-  <meta property="og:description" content="Reading finite-temperature state preparation, analog quantum simulation, and OLED spectroscopy as one validation path">
+  <meta property="og:description" content="How finite-temperature states are prepared—and what lets us trust quantum simulators and OLED calculations">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="ko_KR">
@@ -23,7 +23,7 @@
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Preparing Hot Quantum States and Tracking an Exciton">
-  <meta name="twitter:description" content="Reading finite-temperature state preparation, analog quantum simulation, and OLED spectroscopy as one validation path">
+  <meta name="twitter:description" content="How finite-temperature states are prepared—and what lets us trust quantum simulators and OLED calculations">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp">
   <meta name="twitter:image:alt" content="Preparing Hot Quantum States and Tracking an Exciton">
   <meta name="color-scheme" content="light">
@@ -785,7 +785,7 @@
       <section>
         <p class="eyebrow">AI Tech Review Letters</p>
         <h1>Preparing Hot Quantum States and Tracking an Exciton</h1>
-        <p class="dek">Reading finite-temperature state preparation, analog quantum simulation, and OLED spectroscopy as one validation path</p>
+        <p class="dek">How finite-temperature states are prepared—and what lets us trust quantum simulators and OLED calculations</p>
       </section>
 
     </div>
@@ -797,17 +797,17 @@
       <p>Explanations of quantum computing often begin with the lowest-energy ground state. It is a conceptually natural reference point for electronic structure and material properties. Real materials and devices, however, are not at 0 K, and an organic semiconductor that has absorbed light does not remain in its equilibrium ground state. Heat mixes multiple energy states, while an exciton formed by an electron and a hole spreads across molecules and then changes shape as it interacts with lattice vibrations.</p>
 <p>Practical quantum simulation therefore raises two questions. <strong>How can a desired finite-temperature state be prepared on a computing device?</strong> And <strong>which observables can verify that the prepared or simulated state correctly represents the real material?</strong> Studies published on August 28, 2026, address different parts of these questions.</p>
 <p>One study proposed an algorithm that produces Gibbs thermal states using a resettable auxiliary bath, while another compared spin diffusion in the two-dimensional XY model between an optical-lattice analog quantum simulator and classical calculations. An organic-semiconductor study tracked excitons in an α-sexithiophene thin film with femtosecond spectroscopy and reconstructed their real-space wave functions. Fluxonium–transmon architecture and geometric pulse control, reported on the same day, address lower layers of computation: device layout and physical control.</p>
-<p>These five results do not constitute one integrated device or a performance contest on a common metric. This review separates physical experiments, analog simulators, classical numerical validation, and hardware proposals, then examines the validation criteria they add to OLED and materials calculations.</p>
+<p>The studies address different systems with different methods. This article first separates values measured on physical devices, values calculated on classical computers, and proposals that remain at the design stage. That distinction lets us state concretely which experimental quantities OLED calculations can now match and which costs remain when a quantum circuit is placed on hardware.</p>
 <figure class="article-hero-figure">
   <img src="thermal_quantum_exciton_hero-web.webp" alt="Concept illustration connecting a resettable thermal bath, a two-dimensional quantum lattice, and a contracting exciton wave function above an organic molecular thin film" width="1536" height="1024" loading="eager">
   <figcaption>Figure 1. The left side depicts energy exchange between a thermal reservoir and a quantum lattice; the right side depicts the contraction of an exciton spread across several molecules. This is a conceptual illustration, not a reproduction of a specific experimental device or quantitative data.</figcaption>
 </figure>
 
 <aside class="callout callout-evidence">
-<p class="callout-label">Review verdict</p>
-<p>Today’s advance is not a new quantum advantage. An algorithm for preparing finite-temperature states, a validation method that compares an analog simulator with classical calculations, and spatial, phase, and temporal observables for excitons against which OLED calculations can be tested have all become more concrete. None of these items was verified through the performance of an actual QPU; only the 2D XY study used an actual analog quantum simulator.</p>
+<p class="callout-label">What these studies actually show</p>
+<p>The five APS papers published on August 28 present a method for preparing finite-temperature states, an experiment that compares the diffusion coefficient of a 2D XY simulator with a classical calculation, and a spectroscopic method that reconstructs how the size, phase, and shape of an exciton change with time. None of these five papers measures performance on a gate-model QPU; only the 2D XY study uses a physical analog quantum simulator. Their achievements therefore need to be judged through the quantities they actually calculate or measure, such as state-preparation error, diffusion coefficient, and exciton radius.</p>
 </aside>
-<h2 id="evidence-map-at-a-glance">Evidence map at a glance</h2>
+<h2 id="what-the-five-studies-actually-did">What the five studies actually did</h2>
 <div aria-label="Execution setting and scope of evidence for the five studies" class="data-panel" role="region" tabindex="0">
 <table>
 <thead>
@@ -853,7 +853,7 @@
 </table>
 </div>
 <figure class="figure-panel figure-panel-fit">
-  <img src="evidence_layers_en.svg" alt="Evidence map distinguishing Gibbs-state preparation, two-dimensional XY diffusion, organic-semiconductor excitons, fluxonium-transmon architecture, and geometric pulse control by execution setting" width="1200" height="920" loading="lazy">
+  <img src="evidence_layers_en.svg" alt="Diagram separating Gibbs-state preparation, two-dimensional XY diffusion, organic-semiconductor excitons, fluxonium-transmon architecture, and geometric pulse control into physical-device and numerical studies" width="1200" height="920" loading="lazy">
   <figcaption>Figure 2. All five are peer-reviewed journal articles, but they provide different kinds of evidence. Publication in a journal and execution on an actual device should not be treated as points on the same axis.</figcaption>
 </figure>
 
@@ -864,11 +864,11 @@ $$
 $$
 
 <p>where \(\beta=1/(k_{\mathrm B}T)\). At higher temperatures, more states are mixed, and near phase transitions and in strongly correlated systems, the cost of classically computing and sampling \(e^{-\beta H}\) can grow rapidly.</p>
-<p>One direct route to calculating finite-temperature correlations, transport, magnetic response, or thermal optimization distributions is to prepare this mixed state on a quantum processor. The question is not simply, “Why not heat the qubits?” Uncontrolled exposure to the environment produces a state shaped by the device’s own noise and loss, not the Gibbs state of the desired Hamiltonian. The interaction must be designed so that the rates of energy exchange obey detailed balance at the target temperature.</p>
+<p>One direct route to calculating finite-temperature correlations, transport, magnetic response, or thermal optimization distributions is to prepare this mixed state on a quantum processor. The question is not simply, “Why not heat the qubits?” Uncontrolled exposure to the environment produces a state shaped by device-specific noise and loss, not the Gibbs state of the desired Hamiltonian. The interaction must be designed so that the rates of energy exchange obey detailed balance at the target temperature.</p>
 <h3 id="what-a-resettable-bath-does">What a resettable bath does</h3>
 <p><a href="https://doi.org/10.1103/cbrd-ssnm">The PRX study by Lloyd and Abanin</a> repeatedly couples the system under study to a small auxiliary bath for a short time and then resets the bath. A modulated system–bath coupling adjusts the ratio of transitions that absorb or release energy to the target temperature. The result of each cycle is a quantum channel acting on the density matrix, designed so that its fixed point after repeated application approaches the Gibbs state.</p>
 <p>As the weak-coupling strength \(\theta\) decreases, the difference between the prepared state and the target Gibbs state falls as \(O(\theta^2)\). The authors numerically validated temperature behavior and the vicinity of the phase transition for up to 16 spins in the 2D quantum Ising model, and analyzed weak-coupling accuracy for free-fermion systems with up to hundreds of sites.</p>
-<p>This is <strong>numerical validation of the algorithm on a classical computer</strong>. The authors did not execute bath reset, coupling modulation, or the repeated channel on an actual QPU. Nor did they compare the mixing time needed to reach a target error, the required number of resets, device noise, or total wall-clock time. The description “suitable for near-term processors” is the authors’ judgment that the implementation path is relatively simple, not a measured result for efficiency on physical hardware.</p>
+<p>This is <strong>numerical validation of the algorithm on a classical computer</strong>. The authors did not execute bath reset, coupling modulation, or the repeated channel on an actual QPU. Nor did they compare the mixing time needed to reach a target error, the required number of resets, device noise, or total wall-clock time. The description “suitable for near-term processors” expresses the judgment of the authors that the implementation path is relatively simple, not a measured result for efficiency on physical hardware.</p>
 <h3 id="the-connection-to-oleds-is-not-immediate">The connection to OLEDs is not immediate</h3>
 <p>Gibbs states are appropriate for equilibrium finite-temperature problems. Describing pumped electronic systems, nonequilibrium relaxation involving vibrations, and singlet–triplet conversion—such as those in an OLED material immediately after photoexcitation—also requires real-time or open-system dynamics. The ability to prepare a thermal state alone is not enough to calculate exciton contraction over 400 fs. The connection requires an electron–hole Hamiltonian, exciton–phonon coupling, and time-dependent observables as well.</p>
 <h2 id="2-how-can-a-quantum-simulator-be-trusted">2. How can a quantum simulator be trusted?</h2>
@@ -878,11 +878,11 @@ $$
 <p>This result is not the execution of an algorithm on a universal digital QPU. Nor did the study measure an advantage in total time or energy over classical computation. It instead provides a benchmark for testing whether an analog simulator reproduces quantitative observables of two-dimensional quantum transport. As future work moves to lower temperatures or longer times where classical computation becomes harder, agreement in this overlap regime provides a basis for trusting the extrapolation.</p>
 <h2 id="3-what-exactly-does-it-mean-to-see-an-exciton">3. What exactly does it mean to “see” an exciton?</h2>
 <p>An exciton is a quasiparticle formed when a photoexcited electron and hole bind through the Coulomb interaction. In an organic semiconductor, it may be localized within a molecule or coherently spread across several molecules. Its spatial extent and phase, as well as self-trapping induced by lattice vibrations, affect energy transfer, light emission, and nonradiative loss.</p>
-<p>Conventional optical spectra reveal exciton energy and lifetime, but do not simultaneously and directly provide the wave function’s spatial distribution and internal phase. <a href="https://doi.org/10.1103/3zmg-276c">The α-sexithiophene study</a> used femtosecond time-resolved photoemission orbital tomography (trPOT). A pump pulse creates the exciton, and a high-harmonic probe records the energy and momentum distribution of photoelectrons over time.</p>
+<p>Conventional optical spectra reveal exciton energy and lifetime, but do not simultaneously and directly provide the spatial distribution and internal phase of the wave function. <a href="https://doi.org/10.1103/3zmg-276c">The α-sexithiophene study</a> used femtosecond time-resolved photoemission orbital tomography (trPOT). A pump pulse creates the exciton, and a high-harmonic probe records the energy and momentum distribution of photoelectrons over time.</p>
 <p>What was <strong>measured directly was the photoelectron distribution in momentum space</strong>. The researchers combined that distribution with an exciton model to reconstruct the real-space amplitude and internal phase structure. They did not image the real-space wave function itself with a microscope.</p>
 <p>The reconstructed exciton was coherently delocalized across approximately 3 molecular units, and its phase pattern agreed with ab initio many-body perturbation theory. In the time-resolved measurements, the exciton radius decreased by approximately 25% within 400 fs. This contraction is consistent with self-trapping through exciton–phonon coupling, but a single observation does not uniquely establish it among all possible causes.</p>
-<h3 id="new-validation-targets-for-oled-calculations">New validation targets for OLED calculations</h3>
-<p>OLED and organic-semiconductor calculations are commonly compared in terms of \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), oscillator strength, and SOC. This result broadens the validation targets as follows.</p>
+<h3 id="what-oled-calculations-can-now-compare-with-experiment">What OLED calculations can now compare with experiment</h3>
+<p>OLED and organic-semiconductor calculations are commonly compared in terms of \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), oscillator strength, and SOC. This study adds the following physical quantities to that comparison.</p>
 <ol>
 <li><strong>Spatial extent:</strong> exciton radius and the number of molecules over which it is delocalized</li>
 <li><strong>Internal phase:</strong> the sign and phase modulation of the electron–hole amplitude</li>
@@ -898,25 +898,32 @@ $$
 <p>Numerical simulations of double-quantum-dot initialization reported fidelity above 99%, while state shuttling reached approximately 99%. These results were not obtained on an actual pulse generator or spin-qubit hardware. The method may require fewer parameters than approaches such as GRAPE, which repeatedly calculate gradients of the full time evolution, but a fair wall-clock comparison must include a noise model, calibration drift, and control bandwidth.</p>
 <h2 id="5-the-landscape-extends-beyond-classiq-and-ashn">5. The landscape extends beyond Classiq and AshN</h2>
 <p>Quantum-circuit optimization cannot be described as a two-way contest between “Classiq and AshN.” Classiq is <strong>one example of a synthesis framework</strong> that searches for feasible circuit implementations from a high-level functional model. AshN is <strong>a recent example at the native-gate layer</strong> that uses the native two-qubit interaction of superconducting devices to absorb some logical gates and routing SWAPs.</p>
-<p>Between and beneath them are distinct optimization families, including Boolean factorization, peephole rewrites, ZX-calculus, phase-polynomial synthesis, qubit placement, routing, calibration-aware compilation, pulse shaping, optimal control, and error-aware scheduling. Today’s geometric di-ad control sits at the <strong>pulse and physical-control layer</strong> of this landscape. The fluxonium–transmon study sits one level above, at the <strong>device-architecture layer</strong>.</p>
+<p>Between and beneath them are distinct optimization families, including Boolean factorization, peephole rewrites, ZX-calculus, phase-polynomial synthesis, qubit placement, routing, calibration-aware compilation, pulse shaping, optimal control, and error-aware scheduling. The geometric di-ad control reported here sits at the <strong>pulse and physical-control layer</strong> of this landscape. The fluxonium–transmon study sits one level above, at the <strong>device-architecture layer</strong>.</p>
+<h3 id="fewer-entangling-operations-more-measurements">Fewer entangling operations, more measurements</h3>
+<p>Qubit count is not the only reason quantum optimization runs into current hardware limits. Encoding the requirement “select exactly \(k\) out of \(n\) candidates” as a quadratic QAOA penalty produces \(O(n^2)\) pairwise \(R_{ZZ}\) gates and effectively requires all-to-all connectivity. On a superconducting chip with limited connections, additional SWAP operations are needed to bring distant qubits together. The circuit used to express the constraint can become harder to execute than the optimization task itself.</p>
+<p>The <a href="https://arxiv.org/abs/2605.18985">IBM Research Fourier-LCU preprint</a>, highlighted by Jay Gambetta, changes the implementation of the cardinality penalty rather than replacing the whole algorithm. The Fourier expansion itself is an exact identity that expresses this penalty unitary as a weighted sum of \(n+1\) unitaries. In each term, the penalty part is one parallel layer of single-qubit \(R_Z\) gates. The Fourier transform supplies the decomposition coefficients; it is not a quantum Fourier transform circuit.</p>
+<p>The exact channel-QPD construction in the paper uses an ancilla and controlled branch operations. The ancilla-free version removes them and runs the branch circuits separately before combining their outputs classically, but it does not reproduce the full output distribution of the coherent circuit. Instead, it guarantees \(\widetilde p_x\ge p_x/\Gamma\) for every bitstring \(x\), so obtaining a particular bitstring may require roughly \(\Gamma\) times as many samples in the worst case. Decomposing several QAOA layers can multiply the \(\Gamma\) factors.</p>
+<p>After exact 12-qubit statevector studies, the authors ran an \(n=106\), \(k=35\), depth-\(p=1\) densest-\(k\)-subgraph circuit on 106 physical qubits of the <code>ibm_boston</code> system. The objective \(H_1\) and SWAP portion common to every branch used 886 CZ gates and had a two-qubit depth of 25. In each repetition of Experiment 1, the authors evaluated all 107 penalty-LCU branches, for which \(\Gamma=104.1328\), with 32,768 shots per circuit. Because the complete three-experiment series was repeated ten times, Experiment 1 alone used 3,506,176 shots per repetition and 35,061,760 across ten repetitions. These totals are derived from the reported settings and exclude the additional executions used to optimize the single-branch circuits in Experiments 2 and 3.</p>
+<p>CPLEX found an optimum of 98 edges. Across ten hardware repetitions, the maximum best-solution values were 60 for the ancilla-free Fourier-LCU aggregation, 80 for a single penalty-basis circuit, and 81 for a single XY-mixer-basis circuit; the corresponding averages were 57.4, 72.3, and 76.8. The latter two came from optimizing one LCU basis circuit as a separate variational ansatz with the nonlinear \(\mathrm{CVaR}_{1/\Gamma}\) objective. The single-branch guarantee in Sec. V assumes a linear sample-based objective, global optimization, and infinitely many shots, so it does not apply to these two CVaR results; the paper treats this use as heuristic. The hardware experiment showed that the all-to-all interactions of the cardinality penalty can be exchanged for simpler branches and more measurements, but the objective-and-SWAP portion of every branch still used 886 CZ gates. It did not demonstrate a better solution than the classical solver or a shorter time to solution, and it remains a non-peer-reviewed preprint.</p>
 <figure class="figure-panel figure-panel-fit">
   <img src="quantum_optimization_stack_en.svg" alt="Diagram showing the layers of quantum-computing optimization, from problem representation through high-level synthesis, logical optimization, routing, native gates, physical architecture, pulse control, and measurement" width="1200" height="980" loading="lazy">
   <figcaption>Figure 3. Classiq, AshN, fluxonium–transmon design, and geometric control are examples from different layers. They do not directly replace the same function and may be used together.</figcaption>
 </figure>
 
-<p>Each layer also reduces a different cost. High-level synthesis changes logical depth and ancilla requirements; routing changes SWAP count and mapped depth; native gates change the number of calibrated entanglers actually used; and pulse control changes gate time, leakage, and robustness. Whether an improved figure at one stage leads to better end-to-end fidelity or wall-clock time must be measured again on the target backend.</p>
+<p>Each layer also changes a different cost. Problem representation and algorithmic decomposition can exchange entangling gates for branches, shots, and classical aggregation. High-level synthesis changes logical depth and ancilla requirements; routing changes SWAP count and mapped depth; native gates change the number of calibrated entanglers actually used; and pulse control changes gate time, leakage, and robustness. Whether an improved figure at one stage leads to better end-to-end fidelity or wall-clock time must be measured again on the target backend.</p>
 <p>At minimum, comparisons of circuit optimization should retain the following Pareto front:</p>
 <ul>
 <li>logical depth and logical 2Q gate count</li>
 <li>2Q depth after mapping, SWAP count, and ancilla count</li>
 <li>native gates and calibration date, with expected and measured fidelity</li>
 <li>pulse length, leakage, crosstalk, and spectator effects</li>
-<li>shots, readout error, and mitigation and postselection success rates</li>
+<li>LCU branch count, sampling overhead \(\Gamma\), shots, and classical aggregation cost</li>
+<li>readout error and mitigation and postselection success rates</li>
 <li>compile time, queue time, QPU runtime, and classical pre- and postprocessing</li>
 </ul>
 <p>The background to this full landscape and the quantitative boundaries of Classiq and AshN are discussed in detail in the <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">earlier Korean-language review, “Why Quantum Circuit Optimization Is Necessary”</a>.</p>
 <h2 id="6-record-keeping-changes-that-oled-and-materials-research-can-make-now">6. Record-keeping changes that OLED and materials research can make now</h2>
-<p>There is no need to force these studies into a single OLED-computation workflow. Instead, the validation items required by each result can be added to existing DFT, ML, and quantum-computation records.</p>
+<p>There is no need to force these studies into a single OLED-computation workflow. The quantities that each study actually measured or calculated can instead be added to existing DFT, ML, and quantum-computation records.</p>
 <table>
 <thead>
 <tr>
@@ -948,16 +955,17 @@ $$
 </tr>
 <tr>
 <td>Circuit and hardware</td>
-<td>Compiled 2Q depth, native gates, pulses, spectators, shots, and wall-clock time</td>
-<td>Were the improvements from Classiq, AshN, and pulse control reduced to the same end-to-end metric?</td>
+<td>Compiled 2Q depth, native gates, LCU branches and \(\Gamma\), pulses, spectators, shots, and wall-clock time</td>
+<td>Were the improvements from Classiq, AshN, Fourier-LCU, and pulse control reduced to the same end-to-end metric?</td>
 </tr>
 </tbody>
 </table>
 <p>DFT, GW/BSE, and TDDFT remain strong classical baselines for ground-state and excited-state electronic structure. Rather than assuming that quantum computation will replace them wholesale, it should be deployed selectively at remaining bottlenecks such as strongly correlated active spaces, finite-temperature correlated states, real-time many-body dynamics, or sampling. The resulting calculations should then be compared not only through energy errors, but also against experimental observables such as exciton size, phase, and temporal evolution.</p>
 <h2 id="final-assessment">Final assessment</h2>
 <p>The Gibbs-state-preparation study recast state preparation for finite-temperature quantum simulation as a simpler reset-and-couple protocol. The current evidence is classical and numerical; the reset, mixing, and noise costs required on actual devices remain unresolved. The 2D XY study provided quantitative validation that the diffusion coefficient measured on an actual analog quantum simulator agrees with classical Dyn-HTE in an overlapping regime. This is not quantum acceleration; it is a result that increases confidence in the simulator.</p>
-<p>The α-sexithiophene study expanded the observables that OLED calculations must match from energy and lifetime to the wave function’s spatial extent, internal phase, and contraction over 400 fs. The boundary between the direct momentum-space measurement and the model-based reconstruction of the real-space wave function must be maintained.</p>
+<p>The α-sexithiophene study expanded the observables that OLED calculations must match from energy and lifetime to the spatial extent, internal phase, and contraction of the wave function over 400 fs. The boundary between the direct momentum-space measurement and the model-based reconstruction of the real-space wave function must be maintained.</p>
 <p>The fluxonium–transmon and geometric-control studies show that circuit optimization does not end at high-level synthesis or native gates. Classiq and AshN are representative examples within the full stack, and optimization across architecture, pulses, and measurement must ultimately be combined and evaluated through actual fidelity and wall-clock time on the target backend.</p>
+<p>Fourier-LCU moves cost near the top of this stack, at problem representation and algorithmic decomposition. This study split an all-to-all penalty into simpler branches and ran them on 106 physical qubits of <code>ibm_boston</code>. The reported experimental setup used millions of shots and classical aggregation. Any comparison must therefore include branch count, \(\Gamma\), total shots, and time to solution rather than stopping at circuit depth.</p>
 <h2 id="sources">Sources</h2>
 <ol>
 <li>J. Lloyd and D. A. Abanin, <a href="https://doi.org/10.1103/cbrd-ssnm"><em>Quantum Thermal State Preparation for Near-Term Quantum Processors</em></a>, Physical Review X 16, 031053, 28 August 2026; <a href="https://arxiv.org/abs/2506.21318">author preprint</a>.</li>
@@ -965,9 +973,10 @@ $$
 <li>E. Fitzner et al., <a href="https://doi.org/10.1103/whhg-tfv4"><em>Finite-temperature spin diffusion in the two-dimensional XY model</em></a>, Physical Review B 114, 094303, 28 August 2026; <a href="https://arxiv.org/abs/2605.20124">author preprint</a>.</li>
 <li>L. Heunisch et al., <a href="https://doi.org/10.1103/ts1j-nfg1"><em>Scalable fluxonium-transmon architecture for error-corrected quantum processors</em></a>, Physical Review Research 8, 033245, 28 August 2026; <a href="https://arxiv.org/abs/2508.09267">author preprint</a>.</li>
 <li>C. Ventura-Meinersen et al., <a href="https://doi.org/10.1103/hfv7-3pxt"><em>Multilevel spectral navigation with geometric diabatic-adiabatic control</em></a>, Physical Review Research 8, L032034, 28 August 2026; <a href="https://arxiv.org/abs/2602.14756">author preprint</a>.</li>
+<li>A. Carrera Vazquez, D. J. Egger, and S. Woerner, <a href="https://arxiv.org/abs/2605.18985"><em>Efficient Fourier-Based Linear Combination of Unitaries and Applications in Quantum Optimization</em></a>, arXiv:2605.18985v1, submitted 18 May 2026; 12-qubit statevector simulations and an experiment using 106 qubits of <code>ibm_boston</code>. Discovery context: <a href="https://www.linkedin.com/posts/jay-gambetta-a274753a_quantum-optimization-is-ultimately-about-activity-7490780037571411969-F5za">LinkedIn post by Jay Gambetta</a>, 5 August 2026.</li>
 </ol>
-<p><a href="daily_quantum_brief_2026-08-31.pdf">Download the verified four-page Korean-language Daily Quantum Brief PDF</a></p>
-<p><em>Verification note: The publication dates, execution settings, quantitative figures, and unproven boundaries of all five items were checked against the APS articles and author preprints. The spectroscopic experiment, actual analog quantum simulator, classical numerical validation, and hardware proposals were kept as distinct layers of evidence. The evidence cutoff is August 31, 2026.</em></p>
+<p><a href="daily_quantum_brief_2026-08-31.pdf">Download the four-page Korean-language Daily Quantum Brief covering the five core APS papers</a></p>
+<p><em>Source-check note: The publication dates, execution settings, quantitative figures, and unproven boundaries of the five core items were checked against the APS articles and author preprints. The added Fourier-LCU result is identified as a non-peer-reviewed preprint, and its physical-QPU execution using 106 qubits is kept separate from any claim of quantum advantage. The evidence cutoff is August 31, 2026.</em></p>
 
       <!-- AI Tech Review Authoring Disclosure -->
       <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
@@ -976,9 +985,9 @@ $$
         <dl>
           <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
           <div><dt>AI system</dt><dd>OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08; exact model identifier not retained</dd></div>
-          <div><dt>Verifiable agent roles</dt><dd>Codex (main) — evidence integration, narrative, figures, and publication; source_verify — primary-source and quantitative-claim verification; repo_pattern — repository and publication-pipeline audit; hero_image — scientific editorial hero generation; english_draft — English translation draft; boundary_audit — final bilingual claim-boundary and publication audit</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex (main) — evidence integration, narrative, figures, and publication; source_verify — primary-source and quantitative-claim verification; repo_pattern — repository and publication-pipeline audit; hero_image — scientific editorial hero generation; english_draft — English translation draft; boundary_audit — final bilingual claim-boundary and publication audit; post_research — LinkedIn and Fourier-LCU primary-source verification; repo_audit — revision scope and publication-file audit</dd></div>
           <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
-          <div><dt>Verification scope</dt><dd>five APS peer-reviewed papers and author preprints; publication dates, execution locations, quantitative claims, and non-claims; bilingual HTML, figures, PDF, metadata, and local-reference validation</dd></div>
+          <div><dt>Verification scope</dt><dd>five APS peer-reviewed papers, one IBM Research preprint, and author posts; publication dates, execution locations, quantitative claims, and non-claims; bilingual HTML, figures, PDF, metadata, and local-reference validation</dd></div>
           <div><dt>Human review record</dt><dd>topic, framing, and publication request confirmed; line-by-line review not separately retained</dd></div>
           <div><dt>Evidence cutoff</dt><dd>2026-08-31</dd></div>
         </dl>
@@ -986,8 +995,8 @@ $$
       </section>
       <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
-        Generated: 2026-08-31 02:44:30<br>
-        Source last modified: 2026-08-31 02:44:19
+        Generated: 2026-08-31 04:29:10<br>
+        Source last modified: 2026-08-31 04:25:26
       </div>
     </article>
 
@@ -997,7 +1006,7 @@ $$
           <h2 id="toc-heading">Section map</h2>
           <div class="toc">
 <ul>
-<li><a href="#evidence-map-at-a-glance">Evidence map at a glance</a></li>
+<li><a href="#what-the-five-studies-actually-did">What the five studies actually did</a></li>
 <li><a href="#1-why-the-ground-state-is-not-enough">1. Why the ground state is not enough</a><ul>
 <li><a href="#what-a-resettable-bath-does">What a resettable bath does</a></li>
 <li><a href="#the-connection-to-oleds-is-not-immediate">The connection to OLEDs is not immediate</a></li>
@@ -1005,11 +1014,14 @@ $$
 </li>
 <li><a href="#2-how-can-a-quantum-simulator-be-trusted">2. How can a quantum simulator be trusted?</a></li>
 <li><a href="#3-what-exactly-does-it-mean-to-see-an-exciton">3. What exactly does it mean to “see” an exciton?</a><ul>
-<li><a href="#new-validation-targets-for-oled-calculations">New validation targets for OLED calculations</a></li>
+<li><a href="#what-oled-calculations-can-now-compare-with-experiment">What OLED calculations can now compare with experiment</a></li>
 </ul>
 </li>
 <li><a href="#4-architecture-and-pulses-are-separate-optimization-layers">4. Architecture and pulses are separate optimization layers</a></li>
-<li><a href="#5-the-landscape-extends-beyond-classiq-and-ashn">5. The landscape extends beyond Classiq and AshN</a></li>
+<li><a href="#5-the-landscape-extends-beyond-classiq-and-ashn">5. The landscape extends beyond Classiq and AshN</a><ul>
+<li><a href="#fewer-entangling-operations-more-measurements">Fewer entangling operations, more measurements</a></li>
+</ul>
+</li>
 <li><a href="#6-record-keeping-changes-that-oled-and-materials-research-can-make-now">6. Record-keeping changes that OLED and materials research can make now</a></li>
 <li><a href="#final-assessment">Final assessment</a></li>
 <li><a href="#sources">Sources</a></li>
@@ -1026,12 +1038,14 @@ $$
 <li><a href="https://doi.org/10.1103/3zmg-276c" target="_blank" rel="noreferrer">The α-sexithiophene study</a></li>
 <li><a href="https://doi.org/10.1103/ts1j-nfg1" target="_blank" rel="noreferrer">The fluxonium–transmon architecture</a></li>
 <li><a href="https://doi.org/10.1103/hfv7-3pxt" target="_blank" rel="noreferrer">Geometric diabatic–adiabatic control</a></li>
+<li><a href="https://arxiv.org/abs/2605.18985" target="_blank" rel="noreferrer">IBM Research Fourier-LCU preprint</a></li>
 <li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/" target="_blank" rel="noreferrer">earlier Korean-language review, “Why Quantum Circuit Optimization Is Necessary”</a></li>
 <li><a href="https://arxiv.org/abs/2506.21318" target="_blank" rel="noreferrer">author preprint</a></li>
 <li><a href="https://arxiv.org/abs/2605.20124" target="_blank" rel="noreferrer">author preprint</a></li>
 <li><a href="https://arxiv.org/abs/2508.09267" target="_blank" rel="noreferrer">author preprint</a></li>
 <li><a href="https://arxiv.org/abs/2602.14756" target="_blank" rel="noreferrer">author preprint</a></li>
-<li><a href="daily_quantum_brief_2026-08-31.pdf">Download the verified four-page Korean-language Daily Quantum Brief PDF</a></li>
+<li><a href="https://www.linkedin.com/posts/jay-gambetta-a274753a_quantum-optimization-is-ultimately-about-activity-7490780037571411969-F5za" target="_blank" rel="noreferrer">LinkedIn post by Jay Gambetta</a></li>
+<li><a href="daily_quantum_brief_2026-08-31.pdf">Download the four-page Korean-language Daily Quantum Brief covering the five core APS papers</a></li>
         </ul>
       </section>
     </aside>

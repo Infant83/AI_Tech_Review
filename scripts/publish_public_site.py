@@ -98,7 +98,7 @@ REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-08-31_thermal-quantum-states-exciton-validation",
         title="뜨거운 양자상태를 만들고, 엑시톤을 따라간다",
-        subtitle="유한온도 상태 준비·아날로그 양자 시뮬레이터·OLED 분광을 하나의 검증 경로로 읽기",
+        subtitle="유한온도 상태는 어떻게 만들고, 양자 시뮬레이터와 OLED 계산은 무엇으로 믿을 수 있는가",
         date="2026-08-31",
         updated="2026-08-31",
         category="Quantum Computing",
@@ -109,12 +109,13 @@ REVIEWS: tuple[PublicReview, ...] = (
             "OLED",
             "Quantum Control",
             "Quantum Hardware",
+            "Quantum Optimization",
+            "Fourier LCU",
         ),
         summary=(
-            "유한온도 Gibbs 상태 준비, 2D XY 아날로그 양자 시뮬레이터의 정량 검증, "
-            "α-sexithiophene 엑시톤 파동함수 복원을 하나의 검증 경로로 읽습니다. "
-            "Fluxonium–transmon 아키텍처와 기하학적 펄스 제어를 전체 최적화 스택에 배치하고, "
-            "Classiq와 AshN은 서로 다른 층의 대표 사례일 뿐이라는 점을 분명히 합니다."
+            "유한온도 Gibbs 상태를 준비하는 방법, 2D XY 시뮬레이터와 고전 계산이 같은 확산계수를 내는지, "
+            "α-sexithiophene의 엑시톤이 400 fs 동안 어떻게 수축하는지 설명합니다. 이어서 하드웨어·펄스 설계와 "
+            "Fourier-LCU가 회로 연결, 측정 횟수와 고전 집계 비용을 어떻게 맞바꾸는지 살펴봅니다."
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -126,14 +127,16 @@ REVIEWS: tuple[PublicReview, ...] = (
             PublicAgent("hero_image", "scientific editorial hero generation", "과학 편집형 대표 이미지 생성"),
             PublicAgent("english_draft", "English translation draft", "영문 번역 초안"),
             PublicAgent("boundary_audit", "final bilingual claim-boundary and publication audit", "최종 한영 주장 경계·게시 감사"),
+            PublicAgent("post_research", "LinkedIn and Fourier-LCU primary-source verification", "LinkedIn·Fourier-LCU 1차 출처 검증"),
+            PublicAgent("repo_audit", "revision scope and publication-file audit", "수정 범위·게시 파일 감사"),
         ),
         verification_scope=(
-            "five APS peer-reviewed papers and author preprints",
+            "five APS peer-reviewed papers, one IBM Research preprint, and author posts",
             "publication dates, execution locations, quantitative claims, and non-claims",
             "bilingual HTML, figures, PDF, metadata, and local-reference validation",
         ),
         verification_scope_ko=(
-            "APS 동료평가 논문 5건과 저자 프리프린트",
+            "APS 동료평가 논문 5건, IBM Research 프리프린트 1건과 저자 게시물",
             "게재일·실행 위치·정량 수치·미입증 범위",
             "한영 HTML·도해·PDF·metadata·로컬 참조 검증",
         ),
