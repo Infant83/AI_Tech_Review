@@ -65,6 +65,22 @@ class PublicSitePrivacyTests(unittest.TestCase):
         risks = public_text_risks("Private e-mail subject and timestamp: hidden")
         self.assertIn("private message metadata", risks)
 
+    def test_math_delimiters_in_scripts_do_not_capture_visible_smart_quotes(self) -> None:
+        source = """
+        <script>window.MathJax = {tex: {displayMath: [['$$', '$$']]}};</script>
+        <p>The paper&rsquo;s result precedes a displayed equation.</p>
+        $$
+        \\mathrm{MSE}=\\mathrm{Bias}^2+\\mathrm{Variance}
+        $$
+        """
+
+        self.assertNotIn("smart-quote entity inside math", public_text_risks(source))
+
+    def test_smart_quote_entity_inside_visible_math_remains_a_risk(self) -> None:
+        source = r"<p>\(W&rdquo;s\)</p>"
+
+        self.assertIn("smart-quote entity inside math", public_text_risks(source))
+
 
 if __name__ == "__main__":
     unittest.main()

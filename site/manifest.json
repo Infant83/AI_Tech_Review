@@ -1,5 +1,148 @@
 [
   {
+    "folder": "2026-09-01_quantum-error-mitigation-net-benefit",
+    "title": "오류완화는 언제 순이득을 내는가",
+    "subtitle": "판독 반복부호와 IBM Heron 연구가 보여준 정확도·큐비트·샷 비용",
+    "date": "2026-09-01",
+    "updated": "2026-09-01",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Error Mitigation",
+      "Measurement Error",
+      "Zero-Noise Extrapolation",
+      "Shot Allocation",
+      "IBM Heron",
+      "Photonic Circuits",
+      "AI for Quantum",
+      "Cavity Materials",
+      "OLED"
+    ],
+    "summary": "판독 반복부호가 11배 물리 큐비트와 추가 CNOT으로 얻는 수치 예측, IBM Heron 연구의 실제 작은 회로 실행과 장치 보정값 기반 ZNE 수치실험을 분리해 읽습니다. 정확도와 함께 shots·추가 회로·2Q depth·postselection·wall-clock을 기록해야 하는 이유를 설명하고, 광자회로·에너지망·AI-for-quantum·cavity 재료 연구를 각각 평가합니다.",
+    "href": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/",
+    "thumbnail": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/quantum_error_mitigation_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-01.pdf",
+      "mitigation_resource_ledger_ko.svg",
+      "quantum_error_mitigation_hero-web.webp"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-01.pdf",
+          "mitigation_resource_ledger_en.svg",
+          "quantum_error_mitigation_hero-web.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 8,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "evidence integration, narrative, figures, PDF correction, and publication",
+            "role_ko": "근거 통합·서사·도해·PDF 수정·게시"
+          },
+          {
+            "name": "verify_mitigation",
+            "role": "primary-source audit of readout mitigation and ZNE",
+            "role_ko": "판독 오류완화·ZNE 1차 출처 감사"
+          },
+          {
+            "name": "verify_adjacent",
+            "role": "primary-source audit of four adjacent research papers",
+            "role_ko": "인접 연구 4건 1차 출처 감사"
+          },
+          {
+            "name": "repo_pattern",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          },
+          {
+            "name": "narrative_outline",
+            "role": "human-readable article structure",
+            "role_ko": "독자 중심 글 구조 설계"
+          },
+          {
+            "name": "pdf_audit",
+            "role": "brief PDF content and layout audit",
+            "role_ko": "브리핑 PDF 내용·조판 감사"
+          },
+          {
+            "name": "english_draft",
+            "role": "English translation draft",
+            "role_ko": "영문 번역 초안"
+          },
+          {
+            "name": "boundary_audit",
+            "role": "final bilingual claim-boundary review",
+            "role_ko": "최종 한영 주장 경계 검토"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — evidence integration, narrative, figures, PDF correction, and publication",
+          "verify_mitigation — primary-source audit of readout mitigation and ZNE",
+          "verify_adjacent — primary-source audit of four adjacent research papers",
+          "repo_pattern — repository and publication-pipeline audit",
+          "narrative_outline — human-readable article structure",
+          "pdf_audit — brief PDF content and layout audit",
+          "english_draft — English translation draft",
+          "boundary_audit — final bilingual claim-boundary review"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 근거 통합·서사·도해·PDF 수정·게시",
+          "verify_mitigation — 판독 오류완화·ZNE 1차 출처 감사",
+          "verify_adjacent — 인접 연구 4건 1차 출처 감사",
+          "repo_pattern — 저장소·게시 파이프라인 감사",
+          "narrative_outline — 독자 중심 글 구조 설계",
+          "pdf_audit — 브리핑 PDF 내용·조판 감사",
+          "english_draft — 영문 번역 초안",
+          "boundary_audit — 최종 한영 주장 경계 검토"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-01",
+        "primary_source_check": true,
+        "scope": [
+          "two error-mitigation papers and four adjacent primary research papers",
+          "publication status, execution setting, circuit scale, quantitative claims, and non-claims",
+          "corrected PDF, bilingual HTML and figures, metadata, and local-reference validation"
+        ],
+        "scope_ko": [
+          "오류완화 논문 2건과 인접 1차 연구 논문 4건",
+          "게재 상태·실행 위치·회로 규모·정량 수치·미입증 범위",
+          "수정 PDF·한영 HTML·도해·metadata·로컬 참조 검증"
+        ],
+        "human_review_level": {
+          "ko": "주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "topic, writing direction, and publication request confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "정확한 모델 식별자는 세션 기록에 남지 않았습니다. 기재한 에이전트명과 역할은 이번 게시 작업에서 실제로 사용한 구성입니다.",
+        "en": "The exact model identifier was not retained in the session record. The listed agent names and roles are the configuration actually used for this publication."
+      }
+    }
+  },
+  {
     "folder": "2026-08-31_thermal-quantum-states-exciton-validation",
     "title": "뜨거운 양자상태를 만들고, 엑시톤을 따라간다",
     "subtitle": "유한온도 상태는 어떻게 만들고, 양자 시뮬레이터와 OLED 계산은 무엇으로 믿을 수 있는가",

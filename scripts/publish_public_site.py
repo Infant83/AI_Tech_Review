@@ -96,6 +96,65 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-01_quantum-error-mitigation-net-benefit",
+        title="오류완화는 언제 순이득을 내는가",
+        subtitle="판독 반복부호와 IBM Heron 연구가 보여준 정확도·큐비트·샷 비용",
+        date="2026-09-01",
+        updated="2026-09-01",
+        category="Quantum Computing",
+        tags=(
+            "Quantum Error Mitigation",
+            "Measurement Error",
+            "Zero-Noise Extrapolation",
+            "Shot Allocation",
+            "IBM Heron",
+            "Photonic Circuits",
+            "AI for Quantum",
+            "Cavity Materials",
+            "OLED",
+        ),
+        summary=(
+            "판독 반복부호가 11배 물리 큐비트와 추가 CNOT으로 얻는 수치 예측, IBM Heron 연구의 실제 작은 회로 실행과 "
+            "장치 보정값 기반 ZNE 수치실험을 분리해 읽습니다. 정확도와 함께 shots·추가 회로·2Q depth·postselection·"
+            "wall-clock을 기록해야 하는 이유를 설명하고, 광자회로·에너지망·AI-for-quantum·cavity 재료 연구를 각각 평가합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(
+            PublicAgent("Codex (main)", "evidence integration, narrative, figures, PDF correction, and publication", "근거 통합·서사·도해·PDF 수정·게시"),
+            PublicAgent("verify_mitigation", "primary-source audit of readout mitigation and ZNE", "판독 오류완화·ZNE 1차 출처 감사"),
+            PublicAgent("verify_adjacent", "primary-source audit of four adjacent research papers", "인접 연구 4건 1차 출처 감사"),
+            PublicAgent("repo_pattern", "repository and publication-pipeline audit", "저장소·게시 파이프라인 감사"),
+            PublicAgent("narrative_outline", "human-readable article structure", "독자 중심 글 구조 설계"),
+            PublicAgent("pdf_audit", "brief PDF content and layout audit", "브리핑 PDF 내용·조판 감사"),
+            PublicAgent("english_draft", "English translation draft", "영문 번역 초안"),
+            PublicAgent("boundary_audit", "final bilingual claim-boundary review", "최종 한영 주장 경계 검토"),
+        ),
+        verification_scope=(
+            "two error-mitigation papers and four adjacent primary research papers",
+            "publication status, execution setting, circuit scale, quantitative claims, and non-claims",
+            "corrected PDF, bilingual HTML and figures, metadata, and local-reference validation",
+        ),
+        verification_scope_ko=(
+            "오류완화 논문 2건과 인접 1차 연구 논문 4건",
+            "게재 상태·실행 위치·회로 규모·정량 수치·미입증 범위",
+            "수정 PDF·한영 HTML·도해·metadata·로컬 참조 검증",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-01",
+        human_review_level="topic, writing direction, and publication request confirmed; line-by-line review not separately retained",
+        human_review_level_ko="주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+        disclosure_note_ko=(
+            "정확한 모델 식별자는 세션 기록에 남지 않았습니다. 기재한 에이전트명과 역할은 이번 게시 작업에서 "
+            "실제로 사용한 구성입니다."
+        ),
+        disclosure_note_en=(
+            "The exact model identifier was not retained in the session record. The listed agent names and roles are the "
+            "configuration actually used for this publication."
+        ),
+    ),
+    PublicReview(
         folder="2026-08-31_thermal-quantum-states-exciton-validation",
         title="뜨거운 양자상태를 만들고, 엑시톤을 따라간다",
         subtitle="유한온도 상태는 어떻게 만들고, 양자 시뮬레이터와 OLED 계산은 무엇으로 믿을 수 있는가",
@@ -576,6 +635,10 @@ SMARTY_ENTITY_IN_MATH_RE = re.compile(
     rf")",
     re.IGNORECASE | re.DOTALL,
 )
+SCRIPT_STYLE_BLOCK_RE = re.compile(
+    r"<(?:script|style)\b[^>]*>.*?</(?:script|style)\s*>",
+    re.IGNORECASE | re.DOTALL,
+)
 CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
 PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
 LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
@@ -946,7 +1009,8 @@ def public_text_risks(text: str) -> list[str]:
         risks.append("credential-like secret")
     if any(private_url(match.group(0)) for match in PRIVATE_URL_RE.finditer(text)):
         risks.append("private link")
-    if SMARTY_ENTITY_IN_MATH_RE.search(text):
+    visible_math_text = SCRIPT_STYLE_BLOCK_RE.sub("", text)
+    if SMARTY_ENTITY_IN_MATH_RE.search(visible_math_text):
         risks.append("smart-quote entity inside math")
     if re.search(r"W(?:&rsquo;|')?\s*<em\b", text, flags=re.IGNORECASE):
         risks.append("markdown emphasis inside math")
