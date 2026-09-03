@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design</title>
+  <meta name="description" content="Research trends from 28 August to 3 September 2026 across latent Hamiltonians, QED-GW/BSE, uncertainty-guided selection, reaction flows, and quantum baselines">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design">
+  <meta property="og:description" content="Research trends from 28 August to 3 September 2026 across latent Hamiltonians, QED-GW/BSE, uncertainty-guided selection, reaction flows, and quantum baselines">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/excited_state_reliability_hero-web.webp">
+  <meta property="og:image:alt" content="Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design">
+  <meta property="article:published_time" content="2026-09-04">
+  <meta property="article:modified_time" content="2026-09-04">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design">
+  <meta name="twitter:description" content="Research trends from 28 August to 3 September 2026 across latent Hamiltonians, QED-GW/BSE, uncertainty-guided selection, reaction flows, and quantum baselines">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/excited_state_reliability_hero-web.webp">
+  <meta name="twitter:image:alt" content="Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-04)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <a href="2026-09-04_weekly-oled-inverse-design-excited-state-reliability_final_review_en.md">2026-09-04_weekly-oled-inverse-design-excited-state-reliability_final_review_en.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Learning Coupled Excited-State Landscapes: Physical Representations and Validation Boundaries for OLED Inverse Design</h1>
+        <p class="dek">Research trends from 28 August to 3 September 2026 across latent Hamiltonians, QED-GW/BSE, uncertainty-guided selection, reaction flows, and quantum baselines</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>No newly posted or substantially revised paper in the 28 August to 3 September 2026 window directly designed or validated a TADF emitter or PhOLED host. The week is still informative. The immediate methodological problem in OLED inverse design is less about producing more candidates than about representing several interacting excited states and knowing when their predictions remain trustworthy.</p>
+<p>The read-first paper is Juergens and co-workers&rsquo; LUSH model. Instead of regressing each state energy as an unrelated scalar, it learns a symmetric Hamiltonian in latent space and diagonalizes it. Energies, oscillator strengths, and inter-state relationships can therefore live inside a common operator structure. The week&rsquo;s uncertainty, reaction-generation, and cavity GW-BSE papers address adjacent layers of the same question: can the representation and its validation boundary withstand a design decision, rather than merely achieve a favorable average metric?</p>
+<p><img alt="Conceptual illustration of coupled excited-state surfaces, a molecular environment, reaction constraints, uncertainty-guided acquisition, and bounded quantum components" src="excited_state_reliability_hero-web.webp" /></p>
+<p><em>Figure 1. Concept illustration for this review. The center represents coupled excited states and a crossing region; surrounding elements represent uncertainty-guided acquisition, reaction constraints, and a host environment. The small quantum motif at the right reflects its status as a bounded benchmarking component in this week&rsquo;s evidence. Molecular, wavefunction, and circuit motifs are conceptual rather than exact structures, computed surfaces, measured morphologies, or executable circuits.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Review verdict</p>
+<p>LUSH offers a plausible design principle for learning S1, T1, higher triplets, oscillator strength, and eventually SOC-related operators as connected objects. Its present demonstrations, however, use singlet-centered datasets and random splits; they do not validate triplets, SOC, RISC, or host effects in TADF materials. The most useful next experiment is a controlled comparison between scalar multitask and latent-Hamiltonian models on a small held-out OLED isomer and conformer set.</p>
+</aside>
+<p>The layout-verified technical brief is available as a <a href="oled_inverse_design_weekly_brief_2026-09-04.pdf">downloadable PDF</a>.</p>
+<h2 id="ranked-shortlist">Ranked shortlist</h2>
+<ol>
+<li><strong>LUSH</strong> - represents multiple excited states as eigenvalues and operators of a learned Hamiltonian rather than independent scalar labels.</li>
+<li><strong>QED-GW/BSE</strong> - separates cavity contributions to quasiparticles and excitons, while exposing how far the benchmark coupling lies from conventional OLED cavities.</li>
+<li><strong>AdaptNTK</strong> - derives uncertainty from a single neural potential and discourages redundant configurations during active-learning selection.</li>
+<li><strong>MAELLE</strong> - uses discrete flows over electron occupations to generate reaction products and mechanism-like trajectories.</li>
+<li><strong>HiPoly</strong> - shares a hierarchy of composition, motif, and atomic representations across property prediction and generation, followed by MD-level validation.</li>
+<li><strong>LiFT</strong> - uses a language-model prior to steer 3D flow matching, but evaluates synthesis and properties through proxies in a protein-ligand domain.</li>
+<li><strong>D-Wave t-VMC study</strong> - quantifies the accuracy and large classical sampling cost of emulating annealer dynamics, strengthening the baseline required for an advantage claim.</li>
+<li><strong>Torsion-space VQE</strong> - runs a compact six-logical-qubit circuit on two IBM QPUs, but performs warm-started sampling rather than on-QPU VQE optimization or electronic structure.</li>
+</ol>
+<p><img alt="Evidence map positioning eight papers by OLED proximity and actual execution setting" src="evidence_map.svg" /></p>
+<p><em>Figure 2. Reviewer-constructed qualitative evidence map. Position indicates proximity to an OLED workflow, not a performance ranking. Badges state the execution setting actually used in each paper. All eight selected records are preprints, and none directly validates OLED materials.</em></p>
+<h2 id="1-direct-oled-tadf-and-pholed-evidence-no-selected-paper-this-week">1. Direct OLED, TADF, and PhOLED evidence: no selected paper this week</h2>
+<p>The search found no reliable new primary record within the window that directly combined TADF-emitter, PhOLED-host, host-dopant/exciplex, degradation, or device-lifetime work with the requested inverse-design methods. Papers already covered in the 21 and 28 August briefs were excluded. The eight selections below are enabling methods. This distinction does not diminish their technical quality; it prevents adjacent evidence from being misreported as OLED performance.</p>
+<h2 id="2-lush-learns-a-smooth-multi-state-hamiltonian-instead-of-disconnected-state-labels">2. LUSH learns a smooth multi-state Hamiltonian instead of disconnected state labels</h2>
+<p>David Juergens, Martin Stöhr, Andreas E. Hillers-Bendtsen, O. Jonathan Fajen, and Todd J. Martínez posted <a href="https://arxiv.org/abs/2609.01871"><em>Latent unified smooth Hamiltonians for excited state chemistry</em></a> on 1 September 2026.</p>
+<h3 id="source-reported-method-and-results">Source-reported method and results</h3>
+<p>LUSH takes atomic numbers and Cartesian coordinates through an SE(3)-invariant message-passing network, compresses the representation into fixed trainable latents by cross-attention, forms state-pair features with a Pairformer, and predicts a symmetric latent Hamiltonian. Diagonalization yields adiabatic energies. Unified latent operators produce transition dipoles and oscillator strengths, while nonadiabatic couplings can be obtained through a Hellmann-Feynman relation. The construction is intended to remain smooth around conical intersections, where independent energy regressors often struggle with state identity.</p>
+<p>On 134,000 QM9 molecules labeled at B3LYP/6-31G(2df,p), a roughly 5.95-million-parameter model approached 1 kcal/mol after about 48 hours on one Tesla V100. The supplement reports an energy MAE of 0.059 eV, about 1.36 kcal/mol, for a roughly 7.05-million-parameter configuration. QeMFi experiments use 135,000 CAM-B3LYP/def2-TZVP geometries across nine molecules. The azobenzene experiment uses 780,745 FOMO-hh-TDA-BHLYP/def2-SVP single points. At least two states above the states of interest act as buffers so that intersections at a truncated spectral boundary do not contaminate the target manifold.</p>
+<h3 id="limitations-and-oled-translation">Limitations and OLED translation</h3>
+<p>QeMFi uses a 90/10 random split, and azobenzene uses a 99/1 random split. Neither is a scaffold-extrapolation test. Twisted and cis azobenzene regions are underrepresented and correspondingly less accurate. The demonstrations do not include an OLED triplet manifold, SOC, RISC, or solid host perturbation. Code is promised after peer-reviewed acceptance, limiting immediate reproducibility.</p>
+<p>An OLED test could place S0, S1, T1, and higher triplets in one structured model, retain transition dipoles and oscillator strengths, and add a proposed SOC operator head. That extension is not demonstrated in the paper: mixed spin symmetries, phase conventions, and SOC labels would require new design and validation. Success should be judged by state-order swaps and isomer-ranking errors under scaffold- and conformer-held-out splits, not by random-split MAE alone.</p>
+<h2 id="3-qed-gwbse-decomposes-cavity-effects-on-quasiparticles-and-excitons">3. QED-GW/BSE decomposes cavity effects on quasiparticles and excitons</h2>
+<p>Soohaeng Yoo Willow and eight co-authors posted <a href="https://arxiv.org/abs/2609.00594"><em>GW and Bethe-Salpeter Theory for Molecular Polaritons, Quasiparticles, and Excitons</em></a> on 1 September 2026.</p>
+<p>Starting from a dipole-gauge Pauli-Fierz Hamiltonian and coherent-state QED-HF reference, the work derives QED-GW ionization potentials and electron affinities, followed by a static Bethe-Salpeter equation. Cavity effects enter through a static dipole-self-energy shift, a DSE augmentation of the screened interaction, and a polaritonic pole. Benchmarks cover four hydrides and two aromatic systems. Where comparisons are available, QED-CCSD cavity-induced shifts agree with near-exact QED-DMRG within 1 meV.</p>
+<p>GW tends to overestimate cavity-induced IP redshifts for closed-shell or unbound-anion cases. EA shifts are nearly quantitative, although this does not imply accurate absolute EAs. Among the tested molecules, only ammonia shows an appreciable effect on the lowest excitation. Exciton binding energies for unbound anions are strongly basis-dependent.</p>
+<p>The principal coupling of λ=0.05 a.u. corresponds to a mode volume of about 0.74 nm³, roughly a 0.9-nm cube, and is therefore closer to a picocavity or plasmonic nanogap than to a conventional planar cavity. For a diffraction-limited 110-nm planar cavity, the authors estimate a single-molecule coupling around 10^-4 and roughly 2×10^5 molecules to reach a collective λ=0.05. An OLED workflow can borrow the paper&rsquo;s correction ledger for IP, EA, optical gap, and exciton binding, but cannot infer conventional-device effects from its strong single-molecule coupling. Ensemble disorder and loss remain outside the benchmark. OmegaQMC examples and MOLMPS are public.</p>
+<h2 id="4-adaptntk-turns-single-model-geometry-sensitivity-into-an-acquisition-rule">4. AdaptNTK turns single-model geometry sensitivity into an acquisition rule</h2>
+<p>Prajwal Ananth and Shuwen Yue posted <a href="https://arxiv.org/abs/2609.00488"><em>AdaptNTK: Adaptive Uncertainty Quantification and Active Learning for Neural Network Potentials</em></a> on 31 August 2026.</p>
+<p>AdaptNTK measures a regularized Mahalanobis distance in empirical neural-tangent-kernel feature space. A Sherman-Morrison update refreshes uncertainty after each selected configuration without retraining the potential during sequential batch construction. Similar candidates lose value as the batch grows, which directly addresses acquisition redundancy.</p>
+<p>On held-out rMD17 configurations, the reported Spearman and Pearson correlations between uncertainty and error are 0.683±0.018 and 0.706±0.021. AdaptNTK obtains AURCn 0.312±0.014, versus 0.310±0.013 for a three-model ensemble, and ENCE 0.0125±0.0018. In rMD17 and Transition-1X active-learning tests it attains the lowest force errors and selects transition-state configurations. Per-cycle time on Transition-1X is 2.6 times lower than the ensemble under matched MACE architecture, loss, splits, and seeds.</p>
+<p>These results concern ground-state force potentials, not uncertainty in excited-state energies, SOC, or rates. An OLED study should compute NTK and ensemble scores for both scalar and latent-Hamiltonian models, then test calibration target by target. The useful measurement is whether new TDDFT/TDA points are diverse in torsion, state-crossing, and scaffold space and whether uncertainty bins predict observed errors.</p>
+<h2 id="5-maelle-follows-discrete-changes-in-electron-occupation">5. MAELLE follows discrete changes in electron occupation</h2>
+<p>Nguyen Xuan-Vu, Octavian Susanu, Daniel Armstrong, and Philippe Schwaller revised <a href="https://arxiv.org/abs/2608.27429"><em>Mechanistic Reaction Prediction via Discrete Flow Matching on Graph-Structured Electron Occupation</em></a> to v2 on 28 August 2026.</p>
+<p>MAELLE represents integer electron occupation at bonds, nonbonding sites, and hydrogen sites, then evolves that graph state with continuous-time Markov-chain discrete flow matching. An edit-based mixture path and optimal transport induce mechanism-like electron moves without elementary-step labels.</p>
+<p>On USPTO-480K, top-1, top-3, top-5, and top-10 accuracies are 87.2%, 93.0%, 93.9%, and 94.6%. Top-1 is below Graph2SMILES at 90.3% and NERF at 90.7%. Across 37,583 bond-forming steps in the FlowER test set, 64 trajectories together cover 63.0%; persistent and transient edit coverage are 99.6% and 29.6%. Directional agreement is 78.2% overall, 84.6% for correct predictions, and 89.0% for correct top-1 predictions. An LLM plausibility judge gives approximately 81.1±0.1% coverage.</p>
+<p>Mechanism-like trajectories created without step labels are not proofs of chemical mechanism. The LLM judge is subjective, and product accuracy is not experimental route success. For OLED candidates, a MAELLE-like score is best treated as a veto or reranking signal rather than a hard synthesizability oracle. It should be validated on actual OLED reaction families, including Buchwald-Hartwig coupling, SNAr, borylation, and ligand formation, with availability, protecting-group, and purification costs tracked separately.</p>
+<h2 id="6-hipoly-and-lift-show-why-conditions-and-validation-matter-more-than-another-generator">6. HiPoly and LiFT show why conditions and validation matter more than another generator</h2>
+<p>Ge Sun and co-workers posted <a href="https://arxiv.org/abs/2609.02746"><em>HiPoly: a hierarchical polymer-native AI framework for property prediction and generative design</em></a> on 2 September 2026. G2RINS combines monomer, motif, and atom graph levels with stochastic inter-monomer connectivity, mole fraction, and molecular weight. A shared latent space is trained on roughly 6,000 unlabeled polymers and about 600 MD-labeled polymers. Fivefold-CV R² is 0.803±0.147 for Tg and 0.945±0.024 for density; removing composition aggregation collapses Tg R² to 0.291. The authors generate 25,000 PFAS-free candidates and reassess top candidates with OPLS-based MD.</p>
+<p>That validation remains at the force-field simulation layer rather than experiment. NVT at 600 K, a 50-ns NPT ramp from 600 to 300 K, and 20-ns NVT at 300 K do not validate a small-molecule OLED glass. The transferable lesson is representational: an OLED model may need molecule, conformer, dimer, mixture, and morphology levels rather than one isolated graph.</p>
+<p>Tianyu Gao and seven co-authors posted <a href="https://arxiv.org/abs/2608.31009"><em>Language-Informed Flow Matching for Trend-Guided Structure-Based 3D Molecular Generation</em></a> on 31 August 2026, with acceptance to Findings of EMNLP 2026 stated in the paper. LiFT has an LLM agent produce target-aware SMILES conditions, embeds them with a frozen chemical foundation model, and injects the prior into a 3D ODE flow. On CrossDocked2020, no-reference configurations report QED up to 0.757, SA score 2.659, RDKit/REOS pass rates above 71%, and PoseBusters up to 73.56%.</p>
+<p>Those are protein-pocket ligand metrics. SA scores and rule filters do not prove synthesis, and a language prior is not a quantitative property oracle. OLED translation would replace the pocket with host-dopant packing or aggregate context and compare language conditioning against simple property tokens and latent controls on a scaffold-held-out DFT blind set.</p>
+<h2 id="7-the-actual-quantum-boundary-classical-annealer-emulation-and-warm-started-qpu-sampling">7. The actual quantum boundary: classical annealer emulation and warm-started QPU sampling</h2>
+<h3 id="71-classical-t-vmc-simulation-of-d-wave-annealing">7.1 Classical t-VMC simulation of D-Wave annealing</h3>
+<p>Roeland Wiersema posted <a href="https://arxiv.org/abs/2609.01719"><em>Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo</em></a> on 1 September 2026. A classical correlator-state t-VMC method simulates D-Wave Advantage2 frustrated transverse-field Ising anneals on 2D-cylinder, 3D-dimer, diamond, and biclique geometries at anneal times of 7 and 20 ns.</p>
+<p>For an N=72 biclique, the final two-spin correlation is within about 7.6% of the QPU result. An N=128 diamond run has a stable TDVP residual of 4.27×10^-3 but lacks exact ground truth. One N=72 estimate uses 4,194,304 samples and requires hundreds of GPU-hours, whereas the QPU executes in seconds. The author explicitly avoids a strong scalability claim because larger systems demand more samples and sweeps. Parallel tempering, blurred sampling, and an importance-weighted ODE solver are implemented in public code.</p>
+<p>This is not a molecular QUBO and does not select OLED candidates. Its value is methodological: claims about an annealer require instance-matched comparisons of correlations or objective values, total samples, GPU-hours, preprocessing, and QPU access time against exact solvers, simulated annealing, and appropriate tensor or Monte Carlo baselines.</p>
+<h3 id="72-six-logical-qubits-and-600-hardware-jobs-for-torsion-space-vqe">7.2 Six logical qubits and 600 hardware jobs for torsion-space VQE</h3>
+<p>Fabio Cumbo and six co-authors posted <a href="https://arxiv.org/abs/2609.02113"><em>Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space</em></a> on 2 September 2026. Torsional degrees of freedom are phase encoded with O(log2 N) qubits, followed by EfficientSU2 and multi-stage relaxation. Statevector calculations access phase; hardware reconstruction instead uses the empirical CDF of computational-basis probabilities.</p>
+<p>Classical statevector optimization gives a retained-snapshot Cα RMSD of 0.623 Å and final RMSD of 1.199 Å for chignolin; Trp-cage gives 2.501 and 3.512 Å. Hardware sampling uses 300 jobs each on the 156-qubit Heron R2 <code>ibm_cleveland</code> and 120-qubit Nighthawk R1 <code>ibm_miami</code>, with 8192 shots per job. The same six-logical-qubit circuit runs on both devices. Miami uses exactly 60 CZ gates but yields a poorer distribution and about seven times longer job runtime. Best RMSDs are 1.758 Å and 1.782 Å; native-like samples below 2 Å occur in 88/300 Cleveland and 45/300 Miami jobs.</p>
+<p>The QPU runs are warm-started from simulation-optimized parameters. They do not perform iterative on-QPU VQE. The empirical-probability decoder demands many shots as the state space grows; logarithmic qubit count moves cost into circuit depth, sampling, and classical reconstruction. The problem is protein conformation, not electronic-structure VQE. A cautious OLED benchmark could test compact torsion encoding for donor-acceptor conformers, but it must beat classical conformer search in end-to-end cost and must not be described as an electronic-correlation calculation.</p>
+<h2 id="8-practical-experiment-compare-lush-lite-and-uncertainty-acquisition-on-a-small-oled-set">8. Practical experiment: compare LUSH-lite and uncertainty acquisition on a small OLED set</h2>
+<p><img alt="Reviewer-proposed workflow connecting candidates, a reaction gate, a multi-state model, uncertainty acquisition, and TDDFT labels" src="proposed_workflow.svg" /></p>
+<p><em>Figure 3. Reviewer-proposed validation workflow synthesized from this week&rsquo;s literature. No source paper executed this OLED pipeline end to end. The LUSH-inspired SOC head and OLED transfer are hypotheses for follow-up work.</em></p>
+<p>Start with 12-24 molecules or isomer families and several torsional geometries per molecule. Under one TDA/TDDFT protocol, calculate S1, T1, T2/T3, oscillator strength, and NTO-derived CT/LE descriptors. Add S1-Tn SOC only for a smaller calibration tier.</p>
+<p>Model A is a scalar multitask GNN. Model B predicts a symmetric four- to six-state latent Hamiltonian and transition operators, with two buffer states above the states of interest. Treat an SOC head as a separate proposed ablation. Use both leave-one-scaffold-out and torsion-held-out evaluation.</p>
+<p>At each active-learning round, compare 20-40 geometries selected by AdaptNTK with those selected by a three-model ensemble. Record energy and gap MAE, state-order swaps, oscillator-strength error, isomer ranking, uncertainty calibration, selected-batch diversity, and DFT wall time. Advance the structured model only if it reduces catastrophic ranking errors against fixed baselines and the gain survives a new scaffold.</p>
+<h2 id="9-coverage-gaps">9. Coverage gaps</h2>
+<p>No credible new item in the seven-day window covered:</p>
+<ul>
+<li>direct TADF-emitter, PhOLED-host, host-dopant/exciplex, or device validation;</li>
+<li>OLED stability, degradation, or operational lifetime;</li>
+<li>SELFIES-specific synthesis constraints, CRBM, or Boltzmann-machine molecular sampling;</li>
+<li>chemistry-relevant D-Wave/QUBO or QAOA with competitive classical baselines;</li>
+<li>electronic-structure VQE or resource estimates for an OLED active space; or</li>
+<li>demonstrated quantum advantage for an OLED workflow.</li>
+</ul>
+<p>These are window-specific gaps, not claims that the broader fields are inactive.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The strongest signal this week lies in the structure of the state representation. LUSH treats crossing and mixing excited states as a spectrum of one learned Hamiltonian, while AdaptNTK offers a way to decide which geometries deserve additional labels. MAELLE and the hierarchical generation papers add reaction, composition, and environment constraints around that predictor.</p>
+<p>The evidence boundaries are equally important. The strong single-molecule coupling in the cavity benchmark is not a conventional OLED microcavity condition. The D-Wave paper is a classical GPU simulation, and the torsion-VQE hardware result is warm-started sampling. None establishes quantum advantage or a production TADF/PhOLED workflow.</p>
+<p>The next low-cost experiment is therefore a controlled comparison of scalar labels and a structured operator representation on a small molecular set. If the latter reduces state-ordering failures and isomer misranking under held-out chemistry, OLED inverse design gains something more valuable than another large candidate pool: a model whose internal representation tracks the photophysics on which the ranking depends.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>D. Juergens, M. Stöhr, A. E. Hillers-Bendtsen, O. J. Fajen, T. J. Martínez, <a href="https://arxiv.org/abs/2609.01871">“Latent unified smooth Hamiltonians for excited state chemistry,” arXiv:2609.01871v1 (1 September 2026)</a>. <strong>Preprint.</strong></li>
+<li>S. Y. Willow, G. B. Sim, T. H. Park, T. I. Kim, D. C. Yang, M. Matoušek, J. Brabec, L. Veis, C. W. Myung, <a href="https://arxiv.org/abs/2609.00594">“GW and Bethe-Salpeter Theory for Molecular Polaritons, Quasiparticles, and Excitons,” arXiv:2609.00594v1 (1 September 2026)</a>. <strong>Preprint.</strong></li>
+<li>P. Ananth, S. Yue, <a href="https://arxiv.org/abs/2609.00488">“AdaptNTK: Adaptive Uncertainty Quantification and Active Learning for Neural Network Potentials,” arXiv:2609.00488v1 (31 August 2026)</a>. <strong>Preprint.</strong></li>
+<li>N. Xuan-Vu, O. Susanu, D. Armstrong, P. Schwaller, <a href="https://arxiv.org/abs/2608.27429">“Mechanistic Reaction Prediction via Discrete Flow Matching on Graph-Structured Electron Occupation,” arXiv:2608.27429v2 (28 August 2026)</a>. <strong>Preprint v2.</strong></li>
+<li>G. Sun, G. Zaldivar, Y. Tian, G. Perez Lemus, J. Park, D. Safarian, M. Han, J. J. de Pablo, <a href="https://arxiv.org/abs/2609.02746">“HiPoly: a hierarchical polymer-native AI framework for property prediction and generative design,” arXiv:2609.02746v1 (2 September 2026)</a>. <strong>Preprint.</strong></li>
+<li>T. Gao, Z. Su, J. Li, W. Gao, Z. Ying, Z. Zhao, F. Zhang, Y. Wei, <a href="https://arxiv.org/abs/2608.31009">“Language-Informed Flow Matching for Trend-Guided Structure-Based 3D Molecular Generation,” arXiv:2608.31009v1 (31 August 2026)</a>. <strong>Preprint; accepted to Findings of EMNLP 2026 as stated by the authors.</strong></li>
+<li>R. Wiersema, <a href="https://arxiv.org/abs/2609.01719">“Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo,” arXiv:2609.01719v1 (1 September 2026)</a>. <strong>Preprint; classical GPU simulation.</strong></li>
+<li>F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, D. Blankenberg, <a href="https://arxiv.org/abs/2609.02113">“Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space,” arXiv:2609.02113v1 (2 September 2026)</a>. <strong>Preprint; actual QPU sampling, not on-QPU optimization.</strong></li>
+</ol>
+<hr />
+<p>Publication note. Author: Hyun-Jung Kim. AI assistance: OpenAI Codex Work Mode. Evidence cutoff: 4 September 2026. Quantitative findings and methods are source-reported. OLED workflow translations, the proposed LUSH-inspired SOC head, and the practical experiment are reviewer inferences. All eight selected records are preprints; the absence of a direct OLED paper and the execution setting of each quantum result are stated explicitly.</p>
+      <div class="footer">
+        Generated: 2026-09-04 08:29:59<br>
+        Source last modified: 2026-09-04 08:24:58
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#ranked-shortlist">Ranked shortlist</a></li>
+<li><a href="#1-direct-oled-tadf-and-pholed-evidence-no-selected-paper-this-week">1. Direct OLED, TADF, and PhOLED evidence: no selected paper this week</a></li>
+<li><a href="#2-lush-learns-a-smooth-multi-state-hamiltonian-instead-of-disconnected-state-labels">2. LUSH learns a smooth multi-state Hamiltonian instead of disconnected state labels</a><ul>
+<li><a href="#source-reported-method-and-results">Source-reported method and results</a></li>
+<li><a href="#limitations-and-oled-translation">Limitations and OLED translation</a></li>
+</ul>
+</li>
+<li><a href="#3-qed-gwbse-decomposes-cavity-effects-on-quasiparticles-and-excitons">3. QED-GW/BSE decomposes cavity effects on quasiparticles and excitons</a></li>
+<li><a href="#4-adaptntk-turns-single-model-geometry-sensitivity-into-an-acquisition-rule">4. AdaptNTK turns single-model geometry sensitivity into an acquisition rule</a></li>
+<li><a href="#5-maelle-follows-discrete-changes-in-electron-occupation">5. MAELLE follows discrete changes in electron occupation</a></li>
+<li><a href="#6-hipoly-and-lift-show-why-conditions-and-validation-matter-more-than-another-generator">6. HiPoly and LiFT show why conditions and validation matter more than another generator</a></li>
+<li><a href="#7-the-actual-quantum-boundary-classical-annealer-emulation-and-warm-started-qpu-sampling">7. The actual quantum boundary: classical annealer emulation and warm-started QPU sampling</a><ul>
+<li><a href="#71-classical-t-vmc-simulation-of-d-wave-annealing">7.1 Classical t-VMC simulation of D-Wave annealing</a></li>
+<li><a href="#72-six-logical-qubits-and-600-hardware-jobs-for-torsion-space-vqe">7.2 Six logical qubits and 600 hardware jobs for torsion-space VQE</a></li>
+</ul>
+</li>
+<li><a href="#8-practical-experiment-compare-lush-lite-and-uncertainty-acquisition-on-a-small-oled-set">8. Practical experiment: compare LUSH-lite and uncertainty acquisition on a small OLED set</a></li>
+<li><a href="#9-coverage-gaps">9. Coverage gaps</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="excited_state_reliability_hero-web.webp">Conceptual illustration of coupled excited-state surfaces, a molecular environment, reaction constraints, uncertainty-guided acquisition, and bounded quantum components</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-09-04.pdf">downloadable PDF</a></li>
+<li><a href="evidence_map.svg">Evidence map positioning eight papers by OLED proximity and actual execution setting</a></li>
+<li><a href="https://arxiv.org/abs/2609.01871" target="_blank" rel="noreferrer">*Latent unified smooth Hamiltonians for excited state chemistry*</a></li>
+<li><a href="https://arxiv.org/abs/2609.00594" target="_blank" rel="noreferrer">*GW and Bethe-Salpeter Theory for Molecular Polaritons, Quasiparticles, and Excitons*</a></li>
+<li><a href="https://arxiv.org/abs/2609.00488" target="_blank" rel="noreferrer">*AdaptNTK: Adaptive Uncertainty Quantification and Active Learning for Neural Network Potentials*</a></li>
+<li><a href="https://arxiv.org/abs/2608.27429" target="_blank" rel="noreferrer">*Mechanistic Reaction Prediction via Discrete Flow Matching on Graph-Structured Electron Occupation*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02746" target="_blank" rel="noreferrer">*HiPoly: a hierarchical polymer-native AI framework for property prediction and generative design*</a></li>
+<li><a href="https://arxiv.org/abs/2608.31009" target="_blank" rel="noreferrer">*Language-Informed Flow Matching for Trend-Guided Structure-Based 3D Molecular Generation*</a></li>
+<li><a href="https://arxiv.org/abs/2609.01719" target="_blank" rel="noreferrer">*Numerical simulation of D-Wave&#x27;s quantum advantage experiment with time-dependent variational Monte Carlo*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02113" target="_blank" rel="noreferrer">*Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space*</a></li>
+<li><a href="proposed_workflow.svg">Reviewer-proposed workflow connecting candidates, a reaction gate, a multi-state model, uncertainty acquisition, and TDDFT labels</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>

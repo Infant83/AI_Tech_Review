@@ -96,6 +96,42 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-04_weekly-oled-inverse-design-excited-state-reliability",
+        title="다중 여기상태를 매끄럽게 학습하는 법: OLED 분자 역설계의 물리 표현과 검증 경계",
+        subtitle="2026년 8월 28일-9월 3일 연구 동향: latent Hamiltonian, QED-GW/BSE, 불확실성 기반 선택, 반응 흐름과 양자 기준선",
+        date="2026-09-04",
+        updated="2026-09-04",
+        category="Materials AI",
+        tags=("OLED", "Molecular Inverse Design", "Excited-State ML", "GW-BSE", "Active Learning", "Reaction Prediction", "Quantum Annealing", "VQE"),
+        summary=(
+            "LUSH가 여러 여기상태를 독립적인 scalar 대신 latent Hamiltonian의 고유값과 연산자로 학습하는 방식을 중심으로, "
+            "QED-GW/BSE·AdaptNTK·reaction flow·계층형 생성 연구를 OLED 역설계 관점에서 검토합니다. 직접 OLED 논문이 없었던 "
+            "주간이라는 한계와 D-Wave 고전 모사, warm-start QPU sampling의 실행 경계를 분리해 기록합니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(
+            PublicAgent("Codex", "primary-source screening, evidence integration, bilingual writing, figures, PDF, and publication", "1차 출처 선별·근거 통합·한영 집필·도해·PDF·게시"),
+        ),
+        verification_scope=(
+            "eight newly posted or meaningfully revised preprints in the seven-day window",
+            "publication dates, datasets, methods, quantitative findings, execution setting, and non-claims",
+            "bilingual HTML, figures, PDF, metadata, links, and deployed pages",
+        ),
+        verification_scope_ko=(
+            "7일 범위의 신규 또는 의미 있게 개정된 프리프린트 8편",
+            "게시일·데이터셋·방법·정량 결과·실행 위치·미입증 범위",
+            "한영 HTML·도해·PDF·metadata·링크·배포 페이지",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-04",
+        human_review_level="recurring scope and publication direction confirmed; line-by-line review not separately retained",
+        human_review_level_ko="정기 범위와 발행 방향 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+        disclosure_note_ko="이번 호는 단일 Codex 실행에서 작성·검증했습니다. 문헌의 수치와 실행 위치를 원문 결과로, OLED 적용안은 리뷰 제안으로 구분했습니다.",
+        disclosure_note_en="This issue was written and checked in a single Codex run. Source-reported numbers and execution settings are separated from proposed OLED translations.",
+    ),
+    PublicReview(
         folder="2026-09-01_quantum-error-mitigation-net-benefit",
         title="오류완화는 언제 순이득을 내는가",
         subtitle="판독 반복부호와 IBM Heron 연구가 보여준 정확도·큐비트·샷 비용",
