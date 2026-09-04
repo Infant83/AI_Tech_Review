@@ -1,5 +1,126 @@
 [
   {
+    "folder": "2026-09-04_quantum-advantage-evidence-ledger",
+    "title": "양자 우위의 경계는 계속 다시 그려진다",
+    "subtitle": "D-Wave 고전 모사, 92큐비트 노이즈 학습, QML·단백질·oscillator–transmon을 하나의 자원 장부로 읽기",
+    "date": "2026-09-04",
+    "updated": "2026-09-04",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Advantage",
+      "D-Wave",
+      "Error Mitigation",
+      "QuanONet",
+      "Quantum MeanFlow",
+      "Protein VQE",
+      "Bosonic QSP",
+      "Resource Accounting"
+    ],
+    "summary": "D-Wave annealing의 고전 t-VMC 재현, self-consistent Pauli noise와 PEC, QuanONet·Quantum MeanFlow, torsion-space 단백질 VQE, oscillator–transmon potential gate를 같은 증거 장부에 놓습니다. 관측량의 분모, 실행 위치, 회로·shots, 고전 전후처리와 matched baseline을 함께 기록해야 양자 우위와 실용성을 구분할 수 있습니다.",
+    "href": "reviews/2026-09-04_quantum-advantage-evidence-ledger/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/",
+    "thumbnail": "reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-04.pdf",
+      "quantum_evidence_ledger_hero-web.webp",
+      "quantum_evidence_ledger_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-04_quantum-advantage-evidence-ledger/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-04.pdf",
+          "quantum_evidence_ledger_en.svg",
+          "quantum_evidence_ledger_hero-web.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "orchestration, evidence integration, figures, copyediting, and publication",
+            "role_ko": "총괄·근거 통합·도해·감수·게시"
+          },
+          {
+            "name": "evidence_algorithms",
+            "role": "primary-source audit of t-VMC, Pauli-noise PEC, and QuanONet",
+            "role_ko": "t-VMC·Pauli-noise PEC·QuanONet 1차 출처 감사"
+          },
+          {
+            "name": "evidence_applications",
+            "role": "primary-source audit of QMF, protein VQE, and oscillator–transmon",
+            "role_ko": "QMF·단백질 VQE·oscillator–transmon 1차 출처 감사"
+          },
+          {
+            "name": "draft_sep4_review",
+            "role": "bilingual long-form draft",
+            "role_ko": "한영 장문 초안"
+          },
+          {
+            "name": "repo_publication_audit",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — orchestration, evidence integration, figures, copyediting, and publication",
+          "evidence_algorithms — primary-source audit of t-VMC, Pauli-noise PEC, and QuanONet",
+          "evidence_applications — primary-source audit of QMF, protein VQE, and oscillator–transmon",
+          "draft_sep4_review — bilingual long-form draft",
+          "repo_publication_audit — repository and publication-pipeline audit"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 총괄·근거 통합·도해·감수·게시",
+          "evidence_algorithms — t-VMC·Pauli-noise PEC·QuanONet 1차 출처 감사",
+          "evidence_applications — QMF·단백질 VQE·oscillator–transmon 1차 출처 감사",
+          "draft_sep4_review — 한영 장문 초안",
+          "repo_publication_audit — 저장소·게시 파이프라인 감사"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-04",
+        "primary_source_check": true,
+        "scope": [
+          "six primary research records published or posted through the evidence cutoff",
+          "publication status, observable denominator, execution layer, circuit and measurement cost, classical workload, and non-claims",
+          "bilingual HTML, hero and quantitative figure, source ledger, PDF, metadata, privacy, links, and deployed pages"
+        ],
+        "scope_ko": [
+          "근거 기준일까지 게재·게시된 1차 연구 6건",
+          "게재 상태·관측량 분모·실행 계층·회로와 측정비용·고전 계산·미입증 범위",
+          "한영 HTML·대표 이미지·정량 도식·근거 원장·PDF·metadata·개인정보·링크·배포 페이지"
+        ],
+        "human_review_level": {
+          "ko": "범위·통합 방향·공개 게시 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "scope, synthesis direction, and public publication confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "수치는 원 논문의 분모와 실행 위치까지 재확인했습니다. 연구 간 공통 자원 장부와 개발 제안은 리뷰의 해석이며 원 논문의 공동 결론이 아닙니다.",
+        "en": "Reported numbers were rechecked with their denominators and execution settings. The cross-study resource ledger and development recommendations are editorial synthesis, not a joint conclusion of the source papers."
+      }
+    }
+  },
+  {
     "folder": "2026-09-04_weekly-oled-inverse-design-excited-state-reliability",
     "title": "다중 여기상태를 매끄럽게 학습하는 법: OLED 분자 역설계의 물리 표현과 검증 경계",
     "subtitle": "2026년 8월 28일-9월 3일 연구 동향: latent Hamiltonian, QED-GW/BSE, 불확실성 기반 선택, 반응 흐름과 양자 기준선",
@@ -91,6 +212,129 @@
       "note": {
         "ko": "이번 호는 단일 Codex 실행에서 작성·검증했습니다. 문헌의 수치와 실행 위치를 원문 결과로, OLED 적용안은 리뷰 제안으로 구분했습니다.",
         "en": "This issue was written and checked in a single Codex run. Source-reported numbers and execution settings are separated from proposed OLED translations."
+      }
+    }
+  },
+  {
+    "folder": "2026-09-03_quantum-full-stack-codesign",
+    "title": "큐비트 수를 넘어: 양자컴퓨팅은 시스템 경쟁으로 간다",
+    "subtitle": "D-Wave 분자 생성과 광섬유 transmon 제어부터 IBM·QuEra·IonQ·오류정정 컴파일까지",
+    "date": "2026-09-03",
+    "updated": "2026-09-04",
+    "category": "Quantum Computing",
+    "tags": [
+      "Full-Stack Co-Design",
+      "D-Wave",
+      "Transmon",
+      "IBM Quantum",
+      "QuEra",
+      "IonQ",
+      "Quantum Chemistry",
+      "Fault-Tolerant Compilation"
+    ],
+    "summary": "D-Wave 분자 생성과 광섬유 기반 transmon control을 출발점으로, IBM sampling·kernel 연구, QuEra·IonQ 응용 PoC, 측정비용과 오류정정 컴파일을 연결합니다. 큐비트 수보다 상태준비·측정·고전 후처리·논리 라우팅을 함께 최적화하는 full-stack co-design이 개발 방향을 좌우한다는 관점입니다.",
+    "href": "reviews/2026-09-03_quantum-full-stack-codesign/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/",
+    "thumbnail": "reviews/2026-09-03_quantum-full-stack-codesign/quantum_full_stack_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-02.pdf",
+      "daily_quantum_brief_2026-09-03.pdf",
+      "quantum_full_stack_hero-web.webp",
+      "quantum_full_stack_map_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-03_quantum-full-stack-codesign/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-02.pdf",
+          "daily_quantum_brief_2026-09-03.pdf",
+          "quantum_full_stack_hero-web.webp",
+          "quantum_full_stack_map_en.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "evidence integration, bilingual writing, figures, and publication",
+            "role_ko": "근거 통합·한영 집필·도해·게시"
+          },
+          {
+            "name": "dwave_evidence",
+            "role": "D-Wave post and primary-source audit",
+            "role_ko": "D-Wave 게시물·1차 출처 감사"
+          },
+          {
+            "name": "transmon_evidence",
+            "role": "transmon post and primary-source audit",
+            "role_ko": "transmon 게시물·1차 출처 감사"
+          },
+          {
+            "name": "hub_structure",
+            "role": "review-hub structure and publication audit",
+            "role_ko": "리뷰허브 구조·게시 감사"
+          },
+          {
+            "name": "recover_sep3_package",
+            "role": "package recovery and public-file validation",
+            "role_ko": "패키지 복구·공개 파일 검증"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — evidence integration, bilingual writing, figures, and publication",
+          "dwave_evidence — D-Wave post and primary-source audit",
+          "transmon_evidence — transmon post and primary-source audit",
+          "hub_structure — review-hub structure and publication audit",
+          "recover_sep3_package — package recovery and public-file validation"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 근거 통합·한영 집필·도해·게시",
+          "dwave_evidence — D-Wave 게시물·1차 출처 감사",
+          "transmon_evidence — transmon 게시물·1차 출처 감사",
+          "hub_structure — 리뷰허브 구조·게시 감사",
+          "recover_sep3_package — 패키지 복구·공개 파일 검증"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-03",
+        "primary_source_check": true,
+        "scope": [
+          "the two forwarded public technical posts and their primary records",
+          "the 2–3 September quantum briefs and cited primary papers",
+          "execution setting, quantitative denominator, classical workload, non-claims, bilingual pages, and public-file privacy"
+        ],
+        "scope_ko": [
+          "전달된 공개 기술 게시물 2건과 연결 1차 출처",
+          "9월 2–3일 양자 브리프와 인용 1차 논문",
+          "실행 위치·정량 분모·고전 계산·미입증 범위·한영 페이지·공개 파일 개인정보"
+        ],
+        "human_review_level": {
+          "ko": "범위·통합 방향·공개 게시 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "scope, synthesis direction, and public publication confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "공개 게시물의 기술 주장만 원 출처와 대조해 사용했으며 비공개 메시지 metadata는 게시물에 포함하지 않았습니다.",
+        "en": "Only public technical claims were checked against primary sources; private message metadata is not included in the publication."
       }
     }
   },

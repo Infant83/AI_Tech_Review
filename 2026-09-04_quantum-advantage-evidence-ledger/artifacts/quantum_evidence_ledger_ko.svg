@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">양자 연구를 읽는 다섯 칸의 자원 장부</title>
+  <desc id="desc">여섯 최신 연구의 실행 경계와 핵심 수치를 관측량, 양자 자원, 고전 비용, 검증 기준으로 비교한 도식</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#122342"/></linearGradient>
+    <style>
+      .h1{font:700 42px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#f4f8ff}.sub{font:400 20px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#b9c8dc}.chip{font:600 18px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#eaf4ff}.ct{font:700 23px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#f5f8ff}.body{font:400 17px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#c7d5e7}.num{font:700 20px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#6ee7f2}.warn{font:600 16px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#ffc778}.foot{font:600 20px 'Noto Sans KR','Apple SD Gothic Neo',sans-serif;fill:#eef6ff}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1430" cy="120" r="210" fill="#246b8a" opacity=".16"/><circle cx="130" cy="810" r="250" fill="#6948a8" opacity=".13"/>
+  <text class="h1" x="80" y="76">양자 연구를 읽는 다섯 칸의 자원 장부</text>
+  <text class="sub" x="80" y="111">‘무엇을 맞혔는가’와 ‘전체 계산비용이 줄었는가’를 같은 문장으로 쓰지 않는다</text>
+  <g transform="translate(80 145)">
+    <g><rect width="270" height="58" rx="17" fill="#163755"/><text class="chip" x="135" y="36" text-anchor="middle">① 관측량·분모</text></g>
+    <g transform="translate(290)"><rect width="270" height="58" rx="17" fill="#174664"/><text class="chip" x="135" y="36" text-anchor="middle">② 실행 위치</text></g>
+    <g transform="translate(580)"><rect width="270" height="58" rx="17" fill="#15556c"/><text class="chip" x="135" y="36" text-anchor="middle">③ 회로·측정</text></g>
+    <g transform="translate(870)"><rect width="270" height="58" rx="17" fill="#304d78"/><text class="chip" x="135" y="36" text-anchor="middle">④ 고전 전후처리</text></g>
+    <g transform="translate(1160)"><rect width="280" height="58" rx="17" fill="#514271"/><text class="chip" x="140" y="36" text-anchor="middle">⑤ 기준선·미입증</text></g>
+  </g>
+  <g>
+    <g transform="translate(80 245)"><rect width="455" height="225" rx="22" fill="#102d47" stroke="#2d6f8c"/><text class="ct" x="28" y="42">D-Wave t-VMC</text><text class="num" x="28" y="78">7.6% = QPU 상관행렬 대비</text><text class="body" x="28" y="111">72-spin biclique · 전면 고전 GPU 모사</text><text class="body" x="28" y="140">전체 2,123.02 wall-clock hours</text><text class="warn" x="28" y="180">ground truth 오차·일반적 우위 반박 아님</text></g>
+    <g transform="translate(572 245)"><rect width="455" height="225" rx="22" fill="#12344c" stroke="#327f92"/><text class="ct" x="28" y="42">Pauli noise · PEC</text><text class="num" x="28" y="78">92Q proxy · 20Q 실제 PEC</text><text class="body" x="28" y="111">γ² 예측 표본비용 약 173배 감소</text><text class="body" x="28" y="140">20Q median error 21.8% → 2.4%</text><text class="warn" x="28" y="180">92Q 오류정정·실측 속도향상 아님</text></g>
+    <g transform="translate(1064 245)"><rect width="455" height="225" rx="22" fill="#19344f" stroke="#4a7ead"/><text class="ct" x="28" y="42">QuanONet</text><text class="num" x="28" y="78">O(p²) 표현공간</text><text class="body" x="28" y="111">p=256은 8큐비트 상태벡터 모사</text><text class="body" x="28" y="140">실제 QPU는 사전학습 2Q 추론 PoC</text><text class="warn" x="28" y="180">학습시간·end-to-end 가속 아님</text></g>
+    <g transform="translate(80 505)"><rect width="455" height="225" rx="22" fill="#172f4d" stroke="#566bb4"/><text class="ct" x="28" y="42">Quantum MeanFlow</text><text class="num" x="28" y="78">11Q · 240 CNOT · 8,192 shots</text><text class="body" x="28" y="111">raw 0.20 → BoN=8 뒤 0.60</text><text class="body" x="28" y="140">선택 출력 1개당 65,536 shots</text><text class="warn" x="28" y="180">‘single-shot’은 1회 시간적분 단계</text></g>
+    <g transform="translate(572 505)"><rect width="455" height="225" rx="22" fill="#1b304e" stroke="#7167ba"/><text class="ct" x="28" y="42">단백질 torsion VQE</text><text class="num" x="28" y="78">6Q · 600 jobs · 4.92M shots</text><text class="body" x="28" y="111">best 1.758 Å · chignolin만 QPU 실행</text><text class="body" x="28" y="140">statevector 파라미터 warm-start</text><text class="warn" x="28" y="180">on-QPU VQE·독립 예측 아님</text></g>
+    <g transform="translate(1064 505)"><rect width="455" height="225" rx="22" fill="#24304b" stroke="#8c67ad"/><text class="ct" x="28" y="42">Oscillator–transmon</text><text class="num" x="28" y="78">1 mode + 1 transmon · M=11–14</text><text class="body" x="28" y="111">4.4M–67M measurement outcomes</text><text class="body" x="28" y="140">cubic·double-well·근사 Morse gate</text><text class="warn" x="28" y="180">Morse wall 회수·분자동역학은 미실증</text></g>
+  </g>
+  <rect x="80" y="774" width="1440" height="72" rx="20" fill="#133c55" stroke="#5bd4dd" opacity=".95"/>
+  <text class="foot" x="800" y="819" text-anchor="middle">판정 단위: observable → circuit·shots → classical stack → wall-clock·energy → matched baseline</text>
+</svg>

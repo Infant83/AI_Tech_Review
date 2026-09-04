@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>양자 우위의 경계는 계속 다시 그려진다</title>
+  <meta name="description" content="D-Wave 고전 모사, 92큐비트 잡음 학습, QuanONet·Quantum MeanFlow, 단백질 VQE와 oscillator–transmon을 하나의 근거 장부로 읽기">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="양자 우위의 경계는 계속 다시 그려진다">
+  <meta property="og:description" content="D-Wave 고전 모사, 92큐비트 잡음 학습, QuanONet·Quantum MeanFlow, 단백질 VQE와 oscillator–transmon을 하나의 근거 장부로 읽기">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp">
+  <meta property="og:image:alt" content="양자 우위의 경계는 계속 다시 그려진다">
+  <meta property="article:published_time" content="2026-09-04">
+  <meta property="article:modified_time" content="2026-09-04">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="양자 우위의 경계는 계속 다시 그려진다">
+  <meta name="twitter:description" content="D-Wave 고전 모사, 92큐비트 잡음 학습, QuanONet·Quantum MeanFlow, 단백질 VQE와 oscillator–transmon을 하나의 근거 장부로 읽기">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp">
+  <meta name="twitter:image:alt" content="양자 우위의 경계는 계속 다시 그려진다">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-04)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/" lang="en" hreflang="en">English</a></nav>
+        <a href="2026-09-04_quantum-advantage-evidence-ledger_final_review.md">2026-09-04_quantum-advantage-evidence-ledger_final_review.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>양자 우위의 경계는 계속 다시 그려진다</h1>
+        <p class="dek">D-Wave 고전 모사, 92큐비트 잡음 학습, QuanONet·Quantum MeanFlow, 단백질 VQE와 oscillator–transmon을 하나의 근거 장부로 읽기</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>2026년 9월 4일의 양자 연구를 한 줄로 요약하면 “누가 더 빨랐는가”가 아니다. <strong>무엇을 답으로 삼았고, 어느 비용까지 분모에 넣었으며, 계산의 어느 구간을 실제 양자장치에서 수행했는가</strong>가 이전보다 더 중요해졌다는 것이다.</p>
+<p>이번에 함께 읽은 여섯 연구는 겉으로는 서로 멀리 떨어져 있다. 한 연구는 D-Wave annealer의 spin-glass 동역학을 고전 GPU로 모사했고, 다른 연구는 IBM 양자장치에서 식별 불가능한 Pauli noise의 gauge를 다뤘다. QuanONet은 quantum neural operator의 표현력 경계를 제시했고, Quantum MeanFlow는 생성모델의 순차 ODE 적분을 한 단계로 줄였다. 단백질 연구는 연속 torsion을 로그 규모 큐비트에 넣었고, superconducting harmonic oscillator–transmon 실험은 cubic·double-well·근사 Morse potential을 같은 장치에서 프로그래밍했다.</p>
+<p>이 결과들을 “고전이 양자를 따라잡았다”, “양자 신경망이 고전 모델보다 우월하다”, “양자컴퓨터가 단백질을 접었다”, “분자 시뮬레이션이 구현됐다”로 묶으면 모두 틀리거나 불완전하다. 각 논문이 측정한 대상, 비교한 기준선, 제외한 비용과 실제 실행 위치가 다르기 때문이다. 반대로 이 차이를 정확히 남기면 여섯 연구는 하나의 공통 방향을 보여준다. 양자컴퓨팅은 단일 칩의 큐비트 수 경쟁에서 <strong>표현–제어–측정–오류완화–고전 전후처리를 함께 설계하는 시스템 경쟁</strong>으로 이동하고 있다.</p>
+<p><img alt="양자프로세서, 고전 GPU, 측정 장부, 연속변수 potential과 하이브리드 계산 경계를 한 장면에 배치한 개념 일러스트" src="quantum_evidence_ledger_hero-web.webp" /></p>
+<p><em>그림 1. 이번 리뷰의 개념 일러스트. 양자장치와 GPU, 관측량과 자원 장부, 생성·분자·연속변수 응용을 하나의 검증 구조로 표현한다. 특정 칩 배선, 실험 데이터, 분자구조, potential 또는 성능 그래프를 재현한 그림은 아니다.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">이번 리뷰의 판정</p>
+<p>이번 주의 핵심 진전은 보편적인 양자 우위의 확정이 아니라 비교 단위의 정교화다. t-VMC는 선택된 2점 상관관계를 큰 고전 비용으로 재현했고, Pauli-noise 연구는 self-consistent model에서 gauge ambiguity가 완화 관측량을 훼손하지 않음을 보였다. QuanONet의 이점은 표현력 경계이며 실행시간 우위가 아니다. Quantum MeanFlow의 한 단계는 ODE 적분 단계이지 한 번의 물리적 shot이나 전체 작업 한 건이 아니다. 단백질 VQE는 simulation-optimized parameter로 QPU sampling을 했고, oscillator–transmon은 분자 potential의 구성요소를 구현했지만 실제 분자 spectrum이나 반응속도를 계산하지 않았다.</p>
+</aside>
+<p>레이아웃을 검증한 5쪽 기술 브리프는 <a href="daily_quantum_brief_2026-09-04.pdf">PDF로 내려받을 수 있다</a>.</p>
+<h2 id="1">1. 같은 “양자 결과”라도 증거 단위가 다르다</h2>
+<p>양자 논문의 headline을 읽을 때 먼저 확인할 것은 큐비트 수가 아니다. 다음 네 질문이 우선한다.</p>
+<ol>
+<li><strong>관측량</strong>: energy, correlation, classification accuracy, RMSD, state fidelity 중 무엇을 맞췄는가?</li>
+<li><strong>분모</strong>: shots, 회로 수, 반복 횟수, GPU/QPU 시간, classical training·decoding 중 무엇을 비용에 넣었는가?</li>
+<li><strong>실행 경계</strong>: 학습·최적화·추론·sampling 가운데 어느 구간이 실제 QPU에서 일어났는가?</li>
+<li><strong>기준선</strong>: 같은 instance, 같은 정확도 목표, 같은 총예산에서 어떤 고전 방법과 비교했는가?</li>
+</ol>
+<p>이 네 항목을 기준으로 이번 주 여섯 연구를 정리하면 다음과 같다.</p>
+<div aria-label="여섯 양자 연구의 근거 단위와 미입증 범위" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>연구</th>
+<th>실제 실행 경계</th>
+<th>확인된 최소 주장</th>
+<th>비용·분모에서 함께 볼 항목</th>
+<th>입증하지 않은 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D-Wave t-VMC</td>
+<td>전면 고전 GPU simulation; D-Wave QPU 상관행렬과 비교</td>
+<td>72-spin precision-256 biclique의 최종 2점 상관행렬이 QPU reference 대비 상대 $L_2$ 오차 약 7.6%</td>
+<td>전체 실험 2,123.02 wall-clock hours, GPU 수·종류, 표본·sweep·solver 안정성, QPU access 비용</td>
+<td>ground-truth state의 7.6% 오차, $J=\pm1$ 최대난도 해결, 기존 우위 주장 전체의 반박</td>
+</tr>
+<tr>
+<td>self-consistent Pauli noise</td>
+<td>실제 IBM QPU; 92큐비트 proxy mitigation, 20큐비트 end-to-end PEC</td>
+<td>gate set 전체를 함께 학습하면 gauge가 noisy prediction·완화 관측량을 바꾸지 않으며 gauge 선택 최적화로 예측 sampling overhead를 낮출 수 있음</td>
+<td>characterization circuits·shots, PEC norm과 leakage postselection, mitigation variance, calibration drift</td>
+<td>92큐비트 end-to-end PEC, 물리 오류의 제거, fault-tolerant QEC, 모든 잡음의 Pauli model 환원</td>
+</tr>
+<tr>
+<td>QuanONet</td>
+<td>이론·수치 benchmark와 미리 학습한 2큐비트 <code>ibm_fez</code> 추론 PoC</td>
+<td>density matrix가 implicit quadratic feature frame을 만들고 matched classical model의 $O(p)$ 대비 최대 $O(p^2)$ operator feature span을 제공</td>
+<td>data encoding, circuit compilation, shots, training time, classical optimizer</td>
+<td>$O(p^2)$의 runtime speedup, 전체 PDE solver의 비용 우위, 일반적인 quantum advantage</td>
+</tr>
+<tr>
+<td>Quantum MeanFlow</td>
+<td>statevector 학습, IBM QPU 추론</td>
+<td>다단계 ODE 적분을 one-step average velocity로 바꿔 sequential submission 수를 줄임</td>
+<td>11Q·240 CNOT, 출력당 8,192 shots; BoN=8이면 65,536 shots와 고전 classifier</td>
+<td>한 번의 물리적 shot, 고전 생성모델 대비 우위, noisy-QPU 품질 보존</td>
+</tr>
+<tr>
+<td>torsion-space VQE</td>
+<td>고전 statevector 최적화 후 IBM QPU sampling</td>
+<td>chignolin 44 torsion을 6Q로 표현; 600 jobs의 best-of-repeats 1.758 Å</td>
+<td>총 4,915,200 shots, circuit depth, CDF decoder, 좌표 복원·고전 energy optimization</td>
+<td>오류정정 logical qubit, on-QPU iterative VQE, 독립 단백질 예측, end-to-end 가속</td>
+</tr>
+<tr>
+<td>oscillator–transmon</td>
+<td>실제 superconducting oscillator 1 mode와 transmon 1개</td>
+<td>cubic phase, tunable double-well, band-limited approximate Morse의 non-Gaussian phase gate</td>
+<td>$M=11$–14; potential별 4.4M–67M outcomes; tomography·reconstruction·calibration</td>
+<td>coherent probe로 Morse wall 회수, 실제 분자 spectrum·동역학·반응속도</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img alt="관측량·분모, 실행 위치, 회로·측정, 고전 전후처리, 기준선·미입증의 다섯 칸을 여섯 연구에 대응시킨 자원 장부" src="quantum_evidence_ledger_ko.svg" /></p>
+<p><em>그림 2. 리뷰어가 구성한 다섯 칸의 자원 장부. 각 연구의 성능 순위가 아니라 관측량·분모, 실행 위치, 회로·측정, 고전 전후처리, 기준선·미입증 범위를 한 화면에서 대조한다.</em></p>
+<h3 id="_1">함께 읽기: 시스템 병목에서 근거 장부로</h3>
+<p><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/">9월 3일의 full-stack co-design 리뷰</a>는 합성·상태준비·측정·라우팅·고전 후처리를 따라가며 최적화가 한 계층의 비용을 줄일 때 병목이 어디로 이동하는지를 물었다. 이번 글은 그 지도를 반복하지 않는다. 대신 다음 날의 여섯 연구를 이용해 <strong>이동한 병목을 어떤 observable과 분모로 측정할 것인지</strong>를 엄격하게 적는다. 9월 3일 글이 “전체 stack의 어디를 함께 설계할 것인가”를 묻는다면, 9월 4일 글은 “그 설계가 총비용을 실제로 줄였다고 판정할 장부는 무엇인가”를 제시한다.</p>
+<h2 id="2-d-wave">2. D-Wave를 고전적으로 재현했다는 말의 정확한 범위</h2>
+<p>Roeland Wiersema의 <a href="https://arxiv.org/abs/2609.01719"><em>Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo</em></a>은 2026년 9월 1일 공개된 프리프린트다. 연구는 D-Wave Advantage2에서 다룬 frustrated transverse-field Ising annealing을 correlator-state 기반 time-dependent variational Monte Carlo(t-VMC)로 모사한다. 대상은 2D cylinder, 3D dimer, diamond, biclique의 네 graph family이며 anneal time은 7 ns와 20 ns다.</p>
+<p>이 논문의 중요한 선택은 “파동함수 전체를 얼마나 정확히 복원했는가”가 아니라 <strong>최종 2점 상관행렬이 QPU 결과에 얼마나 가까운가</strong>를 보는 것이다. ansatz 크기를 체계적으로 늘리면 이 오차가 QPU 수준에 접근했고, 360개 결합과 최대 차수 14를 가진 72-spin biclique에서도 가까운 일치를 얻었다. 약 7.6%는 모든 $i&gt;j$에 대해 계산한 상관행렬의 상대 $L_2$ 오차이며 reference는 QPU 상관행렬이다. 이 규모에는 수렴한 MPS ground truth가 없다. 따라서 이 수치는 전체 양자상태 fidelity, 정확한 해와의 오차 또는 모든 고차 상관관계의 오차가 아니다. 해당 72-spin 문제의 결합도 precision-256 값이며 더 까다로운 bimodal $J=\pm1$ instance가 아니다.</p>
+<p>결과는 고전 모사의 가능성과 비용을 동시에 드러낸다. 논문이 표로 합산한 run별 wall-clock은 2,123.02시간이다. 이것은 GPU 장치 수를 곱한 GPU-hours가 아니다. 각 run은 A100 4개 또는 H200 8개를 사용했고, 가장 비싼 단일 run은 H200 8개에서 109.25시간이 걸렸다. annealer의 물리적 anneal time과 이 campaign 시간을 바로 나란히 놓아 “속도”를 판정해서도 안 된다. QPU에는 programming, readout, repetition, queue와 access overhead가 있고, 고전 쪽에는 hyperparameter 탐색과 실패한 run, Markov-chain sample 및 numerical stabilization 비용이 있다. 의미 있는 비교는 같은 instance에서 목표 correlation error를 고정하고 양쪽의 준비·반복·후처리까지 합친 시간과 에너지를 기록해야 한다.</p>
+<p>논문은 고전 계산의 실패 원인도 숨기지 않는다. poor Markov-chain mixing, high-variance local-energy estimator, stochastic Runge–Kutta error estimate가 불안정을 만들었고, parallel tempering, blurred sampling, importance-weighted differential-equation solver가 이를 완화했다. 즉 “일반적인 VMC가 간단히 D-Wave를 모사했다”기보다 <strong>문제 구조에 맞춘 ansatz와 sampling·적분 기법을 함께 설계해 특정 observable을 재현했다</strong>가 정확하다.</p>
+<p>이 결과가 기존 quantum-advantage 주장을 전면 무효화하지는 않는다. 더 큰 규모와 어려운 ±1 instance, 다른 observable, 전체 분포, 고차 상관관계에서는 비용 곡선이 달라질 수 있다. 반대로 “고전 모사는 불가능하다”는 문장도 유지하기 어렵다. 응용 연구자가 가져갈 교훈은 승패가 아니라 benchmark discipline이다. 분자 선택이나 물류 최적화를 QUBO로 옮긴다면 exact solver, MILP/CP-SAT, simulated annealing, tensor-network 또는 Monte Carlo 방법을 같은 instance와 종료조건에서 고정하고, best objective 하나가 아니라 solution distribution과 time-to-target을 비교해야 한다.</p>
+<h2 id="3">3. 식별할 수 없는 잡음이 언제 문제가 되지 않는가</h2>
+<p>Edward H. Chen, Senrui Chen, Laurin E. Fischer 등 연구진의 <a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6"><em>Disambiguating Pauli Noise in Quantum Computers</em></a>은 2026년 9월 3일 <em>PRX Quantum</em>에 게재된 동료평가 논문이다. 실제 IBM 양자프로세서에서 최대 92큐비트 실험을 수행했다.</p>
+<p>잡음 특성화에는 근본적인 식별 불가능성이 있다. state preparation, gate와 measurement에 생긴 오류 일부는 실험 데이터만으로 서로 유일하게 분리할 수 없다. 서로 다른 parameter set이 같은 관측 통계를 낼 수 있는데, 이 자유도를 gauge라고 부른다. 표면적으로는 “noise model을 하나로 정하지 못하니 그 model을 이용한 예측과 오류완화도 믿을 수 없다”는 문제가 생긴다.</p>
+<p>논문의 답은 self-consistency다. state preparation, measurement, 1큐비트 gate와 multi-qubit entangling Clifford gate를 따로 떼어 임의의 이상적 구성요소를 가정하지 않고, 완전한 gate set의 learnable parameter를 함께 특성화하면 unlearnable gauge degree of freedom이 noisy dynamics의 예측이나 error-mitigated observable을 바꾸지 않는다는 것을 이론과 실험으로 보였다. 더 나아가 물리적으로 같은 관측값을 주는 gauge 가운데 sampling overhead가 작은 표현을 선택할 수 있다.</p>
+<p>규모별 실험의 역할은 구분해야 한다. <code>ibm_strasbourg</code>의 최대 21큐비트 GHZ와 92큐비트 ring은 고전적으로 계산 가능한 Clifford 회로의 prediction ratio를 이용한 proxy mitigation이다. 92개 국소 $Z_i$ 관측량의 median error는 4.9%에서 3.1%로 줄었다. 실제 randomized PEC를 끝까지 수행한 실험은 <code>ibm_fez</code>의 20큐비트 non-Clifford 회로다. 모델마다 100,000개 randomized circuit instance를 한 shot씩 실행했고 leakage postselection 뒤 약 18%만 남았다. unmitigated median absolute error 21.8%는 inconsistent PEC에서 5.6%, gauge-optimized consistent PEC에서 2.4%로 줄었다.</p>
+<p>같은 20큐비트 실험에서 PEC norm $\gamma$는 inconsistent model 6.74, default-gauge consistent model 48.68, optimized consistent model 3.7이었다. 표본비용 proxy인 $\gamma^2$로 보면 default consistent gauge 대비 optimized gauge가 약 173배 작다. 이것은 173배의 실측 속도향상이나 실제 shots 절감을 직접 측정한 값이 아니라, 같은 PEC 추정 정밀도에 필요한 <strong>예측 sampling overhead</strong>의 감소다.</p>
+<p>여기서 “gauge가 무관하다”와 “gauge를 최적화한다”는 말은 모순이 아니다. self-consistent하게 계산한 최종 observable은 gauge-invariant지만, probabilistic error cancellation과 같은 구현에서 쓰이는 decomposition의 coefficient 크기와 그에 따른 분산·표본비용은 표현 선택에 따라 달라질 수 있다. 정답은 같아도 정답을 추정하는 비용이 달라진다.</p>
+<p>이것은 오류정정 실증이 아니다. 물리 오류를 검출·수정하는 logical qubit을 만들지 않았고, 임의의 비-Pauli 또는 강한 non-Markovian noise까지 해결했다는 뜻도 아니다. 정확한 실무 문장은 다음과 같다. <strong>모델의 모든 parameter를 유일하게 식별하지 못해도, self-consistent하게 학습한 범위에서는 유용한 noisy prediction과 mitigation이 가능하며 gauge를 비용 최적화 변수로 사용할 수 있다.</strong></p>
+<p>가까운 활용처는 명확하다. 오류완화 실험은 mitigation 전후의 absolute error만 보고하지 말고 noise characterization shots, sampling amplification, calibration 시점, drift와 최종 유효 표본 수를 함께 남겨야 한다. OLED·재료의 VQE나 SQD에서도 energy error가 작아진 만큼 PEC/ZNE의 variance와 QPU allowance가 늘었다면 순이득은 별도로 계산해야 한다. 이 논문은 “식별 가능성”이라는 이론적 문제를 “같은 observable을 더 적은 shots로 추정할 수 있는 표현 선택”이라는 운영 문제로 바꿨다는 데 가치가 있다.</p>
+<h2 id="4-quanonet">4. QuanONet의 $O(p^2)$는 속도가 아니라 표현력 경계다</h2>
+<p>Ruocheng Wang, Xiaoqiu Zhong, Zhuo Xia, Junchi Yan의 <a href="https://www.nature.com/articles/s42256-026-01289-7"><em>Quantum neural operators with implicit quadratic frame and expressivity advantages</em></a>은 2026년 9월 3일 <em>Nature Machine Intelligence</em>에 게재됐다. 이 연구가 제안한 QuanONet은 함수에서 함수로의 사상, 즉 differential equation의 solution operator를 근사하는 quantum neural operator다.</p>
+<p>핵심 이론은 exponential Hilbert space라는 막연한 설명과 다르다. architecture의 density matrix가 입력 feature에 대한 implicit quadratic frame을 만들며, operator approximation에서 matched classical model의 $O(p)$ linear capacity에 비해 최대 $O(p^2)$ feature span을 제공한다. 여기서 $p$는 sampling location 또는 latent representation의 차원이지 큐비트 수가 아니다. pair-product feature가 선형독립일 때 quadratic scaling에 도달하며, 보충자료의 Sidon-spectrum 예에서는 coverage가 $O(p^{3/2})$로 낮아진다. 논문은 continuous nonlinear operator에 대한 universal approximation result도 양자 영역으로 확장한다.</p>
+<p>이 결과의 정확한 주장은 <strong>같은 방식으로 맞춘 고전 모델과 비교한 특정 architecture class의 표현 용량 경계</strong>다. $O(p^2)$가 $O(p)$보다 크다는 사실만으로 학습시간, inference latency, 필요한 데이터, shots 또는 에너지가 줄어들지는 않는다. density matrix의 유용한 항을 읽으려면 측정이 필요하고, classical data를 encoding하는 비용과 parameter optimization도 남는다. 더 큰 function space를 표현할 수 있다는 것과 그 안에서 좋은 해를 효율적으로 찾는다는 것은 별개의 명제다.</p>
+<p><code>ibm_fez</code> 실제 장치 실행은 hardware feasibility를 보여주는 정성적 proof of concept로 읽는 것이 맞다. 미리 학습한 2큐비트 model로 antiderivative 문제의 100개 출력 좌표를 추론했고 공개 script의 Estimator 기본값은 10,000 shots다. QPU에서 학습한 것이 아니다. noise-free simulation과 실제 장치의 비교 및 compilation 정보가 제시됐지만, quantum system이 전체 PDE workflow에서 경쟁 고전 neural operator보다 빠르거나 적은 에너지를 썼다는 end-to-end benchmark는 아니다. 공개 구현에서 $p=2^n$이므로 $p=256$ scaling은 256큐비트가 아니라 8큐비트 statevector simulation이다. 이 scaling 실험과 별도의 strict parameter-matched 비교를 하나의 hardware 결과처럼 합쳐서는 안 된다.</p>
+<p>그럼에도 연구 방향은 중요하다. QML의 설득력 있는 질문이 “Hilbert space가 지수적으로 크다”에서 “어떤 feature interaction을 어떤 회로와 measurement로 싸게 얻는가”로 이동하기 때문이다. 다음 실험에서는 classical polynomial-feature model, kernel method, DeepONet/FNO 계열과 parameter count뿐 아니라 data preprocessing, circuit depth, measurement setting, shots, training wall-clock을 맞춰야 한다. 실제 장치에서는 동일 데이터 split과 seed를 유지하고 simulator–QPU gap, calibration 간 분산과 error mitigation 비용을 공개해야 한다.</p>
+<h2 id="5-quantum-meanflow">5. Quantum MeanFlow의 ‘한 단계’는 어디까지 한 단계인가</h2>
+<p>Ashish Joshi, Eshaan Mistry, Takahiko Koyama의 <a href="https://arxiv.org/abs/2609.02186"><em>Quantum MeanFlow: single-shot generative sampling on NISQ hardware</em></a>은 2026년 9월 2일 공개된 프리프린트다. Flow matching은 단순 분포를 target distribution으로 옮기는 velocity field를 학습한 뒤 inference에서 ODE를 적분한다. 기존 Quantum Flow Matching(QFM)은 여러 time step이 순차 의존하기 때문에 QPU submission과 입출력 overhead가 누적된다. Quantum MeanFlow(QMF)는 순간 velocity 대신 구간 평균 velocity를 학습해 이 적분을 한 단계로 바꾼다.</p>
+<p>“single-shot”을 물리적 shot 한 번으로 읽으면 안 된다. QMF의 one step은 <strong>하나의 ODE integration step 또는 한 번의 model evaluation 단계</strong>라는 algorithmic 의미다. 실제 구현은 결과를 복원하기 위해 X·Z 두 measurement basis를 사용하고 basis마다 4,096 shots를 쓴다. QMF 이미지 한 장에 8,192 shots, BoN=8까지 포함하면 65,536 shots가 필요하다. 11큐비트, 24층, 층당 10 CNOT인 QMF 회로는 총 240 CNOT과 792 trainable parameter를 포함한다. 따라서 one-step이라는 좋은 구조적 성질과 deep noisy circuit의 측정비용은 동시에 존재한다.</p>
+<p>또 하나의 실행 경계는 학습 위치다. 약 $2.2\times10^5$ parameter의 고전 autoencoder로 16×16 MNIST를 32차원 latent에 압축하고, QMF·QFM parameter는 statevector/simulator에서 학습했다. IBM Heron 장치인 <code>ibm_pittsburgh</code>와 <code>ibm_boston</code>에서는 고정된 parameter로 inference를 수행했다. 즉 QPU가 전체 생성 pipeline을 학습한 것이 아니라, classical encoding과 simulator training 뒤의 quantum inference block을 실행했다.</p>
+<p>결과도 분해해서 읽어야 한다. statevector에서 60-step Heun QFM의 정확도는 0.85, one-step QMF는 0.63이었고, 연구진이 학습한 classifier feature space에서 2,000개 표본으로 계산한 FID는 QFM 10.62, QMF 28.26으로 QMF 품질이 낮았다. <code>ibm_boston</code>의 raw accuracy는 QFM 0.30, QMF 0.20이었다. best-of-$N$(BoN) rejection sampling에서 $N=8$을 쓰자 각각 0.80과 0.60으로 회복됐다. 그러나 이는 후보를 여덟 배 생성한 뒤 test accuracy 98.2%인 고전 classifier가 가장 좋은 후보를 선택한 결과다. 같은 classifier가 선택과 평가에 관여해 독립적인 downstream validation으로 보기도 어렵다. 회로를 바꾸지 않고 noise loss를 완화한다는 장점이 있지만, 생성비용·shots·classifier 비용도 여덟 배 반복 구조에 포함해야 한다.</p>
+<p>따라서 이 연구가 입증한 것은 sequential ODE submissions를 줄이는 architecture trade-off와 noisy-hardware inference의 가능성이다. 고전 diffusion/flow model 대비 품질이나 총시간 우위, QPU 자체의 학습 가속, one-shot physical generation은 입증하지 않았다. 다음 방향은 단순하다. integration step 수뿐 아니라 <code>basis 수 × shots × BoN × 회로 depth × queue/latency</code>를 한 항으로 계산하고, 같은 latent·classifier·acceptance rule을 쓴 고전 MeanFlow와 비교해야 한다. QMF가 짧은 workflow 덕분에 유리한지는 이 총비용에서 판정해야 한다.</p>
+<h2 id="6-vqe">6. 로그 큐비트 단백질 VQE는 비용을 없애지 않고 이동시킨다</h2>
+<p>Fabio Cumbo 등 연구진의 <a href="https://arxiv.org/abs/2609.02113"><em>Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space</em></a>은 2026년 9월 2일 공개된 프리프린트다. lattice에 단백질을 억지로 올리는 대신 연속 torsional degree of freedom을 phase에 encoding해 필요한 qubit 수를 $O(\log_2 N)$으로 낮추고, classical algorithm이 torsion에서 heavy-atom coordinate를 복원한다.</p>
+<p>statevector 단계에서는 relative phase로 torsion을 읽지만 hardware에서는 computational-basis probability의 empirical cumulative distribution function(CDF)을 bounded torsion variable에 매핑한다. EfficientSU2 ansatz와 multi-stage relaxation을 사용하고, 구조 평가는 custom molecular-mechanics, Rosetta 또는 OpenMM scoring backend에 의존한다. Rosetta와 OpenMM은 독립적인 folding pipeline 기준선이 아니라 QTF 내부의 energy function이다. 그러므로 “큐비트 수가 로그 규모”라는 표현은 맞지만, 물리 정보를 읽는 shots와 깊은 circuit, 고전 좌표 복원·energy evaluation 비용이 사라졌다는 뜻은 아니다.</p>
+<p>고전 statevector optimization에서 chignolin은 retained snapshot Cα RMSD 0.623 Å, final model 1.199 Å를 기록했고, Trp-cage는 각각 2.501 Å와 3.512 Å였다. 0.623 Å는 두 단백질에 걸친 7.33 million retained snapshots 가운데 알려진 PDB 구조를 기준으로 사후 선택한 extreme best이며, energy function이 최종 선택한 평균 성능이 아니다. Trp-cage에서는 2 Å 미만 snapshot이 없었다.</p>
+<p>hardware 실험은 chignolin의 6큐비트 회로만 156큐비트 Heron R2 <code>ibm_cleveland</code>와 120큐비트 Nighthawk R1 <code>ibm_miami</code>에서 실행했다. 여기서 6큐비트는 회로 변수의 폭이며 오류정정된 logical qubit 6개가 아니다. 장치마다 300 jobs, job당 8,192 shots, 합계 600 jobs·4,915,200 shots를 사용했다. best-of-repeats RMSD는 Cleveland 1.758 Å, Miami 1.782 Å였고 2 Å 미만 native-like sample은 각각 88/300과 45/300 jobs에서 나왔다. 이 RMSD는 terminal residue를 제외한 structure core 기준이다. Cleveland의 transpiled CZ 중앙값은 204개이고 QPU time은 job당 약 5초였지만, Miami는 CZ 60개인데도 약 35초가 걸렸다. 더 적은 2Q gate가 곧 더 짧은 처리시간이나 더 좋은 회수율을 뜻하지 않는 사례다.</p>
+<p>가장 중요한 경계는 parameter optimization이다. 실제 QPU run은 세 energy function마다 simulation에서 RMSD가 낮았던 chignolin final model 10개, 모두 30개 회로를 고른 뒤 각각 10회 반복한 parameter-transfer sampling이다. hardware loop 안에서 energy를 측정하고 parameter를 갱신한 on-QPU VQE가 아니다. warm-start RMSD 자체가 1.199–2.270 Å였고, 대다수 hardware 반복은 이 시작점보다 나빠졌다. “양자컴퓨터가 단백질 구조를 처음부터 최적화했다”는 설명은 과장이다. 또한 이 Hamiltonian은 torsional conformer의 hybrid score를 다루며 전자 Hamiltonian의 ground state를 구한 electronic-structure VQE가 아니다.</p>
+<p>응용 가능성은 benchmark 가설로 남아 있다. OLED donor–acceptor 분자의 6–12개 주요 torsion이나 고분자 backbone의 저차원 conformer를 compact encoding으로 탐색할 수 있다. 다만 RDKit/CREST, molecular dynamics, basin hopping, learned potential과 동일한 conformer family·energy function·budget에서 비교해야 한다. qubit 절약으로 늘어난 circuit depth, shots와 decoder sensitivity를 모두 포함했을 때 더 좋은 low-energy conformer를 더 빨리 찾는지가 기준이다. 현재 결과는 그 질문을 시험할 하드웨어 protocol을 제시했지만 답을 확정하지 않았다.</p>
+<h2 id="7-oscillatortransmon-potential">7. oscillator–transmon은 분자를 푼 것이 아니라 potential을 프로그래밍했다</h2>
+<p>Clara Yun Fontaine 등 12명의 <a href="https://arxiv.org/abs/2609.02405"><em>Programming anharmonic potentials in a superconducting harmonic oscillator</em></a>은 2026년 9월 2일 공개된 프리프린트다. long-lived superconducting harmonic oscillator를 transmon qubit에 dispersive coupling하고, bosonic quantum signal processing에서 유도한 modular circuit로 non-Gaussian phase gate $e^{-iV(\hat X)}$를 구현한다. 고정된 calibrated control unitary 사이의 qubit rotation angle만 바꿔 한 장치에서 여러 $V(X)$를 프로그래밍한다.</p>
+<p>harmonic oscillator만으로 쉽게 만드는 Gaussian operation은 universal continuous-variable processing에 충분하지 않다. cubic phase와 같은 비선형 potential은 non-Gaussian resource를 제공한다. 이 실험은 cubic $V(X)=0.6X^3$, 대칭·비대칭 double-well, 근사 Morse potential을 순서대로 구현했다. elementary echoed conditional displacement gate는 약 520 ns, qubit rotation은 28 ns이고, 사용한 Fourier order는 대략 11–14다. cubic gate에서는 재구성한 coefficient $c_3=0.68\pm0.10$, state fidelity 하한 0.84, Wigner negativity 하한 0.11을 보고했다. 반복 적용에서도 non-Gaussianity가 누적되는 경향을 확인했다.</p>
+<p>double-well에서는 linear bias를 조절해 대칭성과 well-depth difference를 바꿨고, 재구성 및 bootstrap 검정으로 topology가 유지되는지를 확인했다. 그러나 측정비용은 작지 않았다. potential별 총 measurement outcome은 cubic·symmetric double-well·broken double-well이 각각 약 $4.4\times10^6$, asymmetric double-well이 $5.3\times10^7$, Morse가 $6.7\times10^7$이었다.</p>
+<p>Morse gate는 분자 진동 potential의 exponential 형태를 향한 근사 구현으로 제시됐다. 실제 coherent probe에서는 $|n|\le2$ harmonic만 안정적으로 복원돼 steep repulsive wall이 충분히 나타나지 않았다. 10.9 dB squeezed probe로 $|n|\le7$까지 wall을 회수한 결과는 simulation이며, 완전한 $M=13$ 복원에는 계산상 16.3 dB squeezing과 29 probe position이 필요하다. 또한 데이터 수집 뒤 complementary polynomial 구성의 $\pi$ 인자 누락이 확인됐다. 논문은 실행된 회로 자체를 기준으로 결과를 다시 비교했으므로 topology와 asymmetry 관찰은 남지만, intended potential을 높은 정밀도로 그대로 구현했다고 표현해서는 안 된다.</p>
+<p>중요한 단어는 <strong>근사</strong>와 <strong>potential gate</strong>다. 실제 분자의 parameter를 넣어 vibrational spectrum을 계산하거나 chemical reaction rate·tunnelling yield를 예측한 것이 아니다. potential을 impulsive phase로 작용시킨 구성요소와 그 pointwise force reconstruction을 실증한 단계다.</p>
+<p>이 결과의 가까운 개발 방향은 두 갈래다. 첫째, 더 긴 coherence와 짧은 modular sequence, robust calibration으로 높은 Fourier order의 누적오차를 줄인다. 둘째, potential gate만 따로 평가하지 않고 kinetic evolution과 결합해 known spectrum·wavepacket dynamics를 재현하는 end-to-end analog benchmark로 이동한다. 분자 응용을 주장하려면 Morse oscillator의 낮은 고유준위, tunnelling splitting, time-correlation function처럼 고전 수치해가 정밀한 작은 문제부터 blind comparison을 해야 한다.</p>
+<h2 id="8">8. 여섯 연구가 함께 가리키는 개발 방향</h2>
+<h3 id="81">8.1 큐비트 수보다 계산 경계를 먼저 설계한다</h3>
+<p>QMF와 단백질 VQE는 양자 block의 호출 횟수나 qubit 수를 줄였지만 비용을 다른 곳으로 옮겼다. QMF는 sequential step을 줄이는 대신 깊은 회로, 두 measurement basis와 BoN을 남긴다. torsion encoding은 qubit를 줄이는 대신 phase information을 probability distribution에서 복원해야 한다. 좋은 co-design은 한 자원만 최소화하지 않는다. encoding, ansatz, measurement와 classical decoder를 묶어 total error와 total time의 Pareto front를 그려야 한다.</p>
+<h3 id="82">8.2 오류모형은 정답뿐 아니라 표본비용을 결정한다</h3>
+<p>Pauli-noise 연구는 gauge가 최종 observable에 영향을 주지 않아도 sampling overhead에는 영향을 줄 수 있음을 보였다. 이는 device calibration을 단순한 사전 점검이 아니라 compiler와 mitigation의 objective로 사용할 수 있다는 뜻이다. 어느 qubit·coupler를 쓰고, 어떤 Pauli frame과 decomposition을 선택하며, 어느 observable에 shots를 더 줄지를 한 최적화 문제로 다룰 수 있다.</p>
+<h3 id="83">8.3 표현력 정리와 응용 가속을 분리한다</h3>
+<p>QuanONet의 quadratic frame은 유의미한 이론 결과다. 그러나 실제 응용에서 유용하려면 더 적은 parameter로 같은 error를 얻는지, 같은 시간에 더 정확한 operator를 배우는지, 또는 같은 정확도에서 measurement cost가 줄어드는지로 번역해야 한다. theorem, simulator benchmark, device PoC, end-to-end advantage를 네 단계로 분리해 보고하면 한 단계의 성공이 다음 단계를 자동으로 보증하는 오류를 피할 수 있다.</p>
+<h3 id="84">8.4 응용은 검증 가능한 작은 물리량부터 시작한다</h3>
+<p>단백질의 전체 folding이나 분자 반응 전체를 한 번에 목표로 잡으면 classical preprocessing과 heuristic score가 결과를 얼마나 결정했는지 알기 어렵다. torsion study는 fixed decoder와 energy function에서 sample recovery를, oscillator–transmon은 known anharmonic potential의 재구성을 먼저 시험했다. 재료·OLED에서는 작은 active space energy, 제한된 torsion family, known vibrational level, 특정 correlation function처럼 고전 기준선이 강한 물리량에서 quantum block의 순기여를 측정하는 편이 낫다.</p>
+<h2 id="9">9. 양자–고전 자원 장부의 최소 형식</h2>
+<p>이번 여섯 논문을 같은 장부에 넣기 위해서는 적어도 아래 항목이 필요하다. 한두 개가 비어 있으면 “양자” 또는 “고전”의 비용이 보이지 않는 구간이 생긴다.</p>
+<table>
+<thead>
+<tr>
+<th>장부 항목</th>
+<th>반드시 기록할 내용</th>
+<th>빠질 때 생기는 오해</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>문제와 instance</td>
+<td>graph·분자·데이터 split, 규모, 난도 분포</td>
+<td>쉬운 instance만 고른 결과를 일반화</td>
+</tr>
+<tr>
+<td>목표 observable</td>
+<td>energy, correlation order, accuracy, RMSD, fidelity, spectrum</td>
+<td>서로 다른 답을 같은 정확도처럼 비교</td>
+</tr>
+<tr>
+<td>성공 기준</td>
+<td>target error, confidence interval, valid-sample 조건</td>
+<td>best run 하나를 평균 성능으로 오인</td>
+</tr>
+<tr>
+<td>양자 실행 경계</td>
+<td>training, optimization, inference, sampling 중 QPU 구간</td>
+<td>hybrid pipeline 전체를 QPU 계산으로 오인</td>
+</tr>
+<tr>
+<td>회로 자원</td>
+<td>logical/physical qubit, 2Q gate, depth, basis, circuit count</td>
+<td>큐비트 절약이 깊이 증가를 감춤</td>
+</tr>
+<tr>
+<td>측정 자원</td>
+<td>shots/basis, repetitions, postselection, BoN, 유효 표본</td>
+<td>noise 완화·선택 비용이 사라짐</td>
+</tr>
+<tr>
+<td>고전 자원</td>
+<td>encoding, optimizer, decoder, CI/DFT/MD, GPU/CPU time·memory</td>
+<td>quantum subroutine만 시간을 보고함</td>
+</tr>
+<tr>
+<td>운영 자원</td>
+<td>compile, queue, calibration, QPU access, wall-clock, energy</td>
+<td>anneal time과 GPU 총시간을 직접 비교</td>
+</tr>
+<tr>
+<td>기준선</td>
+<td>같은 instance·budget·stopping rule의 최고 고전 방법</td>
+<td>약한 baseline에 대한 개선을 우위로 확대</td>
+</tr>
+<tr>
+<td>반복성</td>
+<td>seeds, calibration dates, 실패 run, uncertainty</td>
+<td>선택된 성공 사례를 안정적 성능으로 오인</td>
+</tr>
+</tbody>
+</table>
+<p>OLED·재료 계산에 적용하면 표는 더 구체적이어야 한다. target overlap, active-space 정의, state-preparation cost, compiled 2Q depth, commuting group 수, shots, mitigation amplification, postselection yield, QPU time, classical CI/DFT time과 메모리를 한 행에 둔다. 최적화 문제라면 encoding penalty, feasible-shot rate, time-to-best, optimality gap과 classical solver의 termination condition을 추가한다. 생성모델이라면 FID나 classifier accuracy뿐 아니라 후보 수, rejection rate, scoring model과 selection compute를 기록한다.</p>
+<h2 id="10">10. 지금 실행할 수 있는 세 가지 검증 실험</h2>
+<p>첫째, <strong>D-Wave 또는 QAOA benchmark를 observable-matched 방식으로 다시 설계한다.</strong> 같은 Ising/QUBO instance에서 objective만 보지 말고 2점·고차 correlation과 sample diversity를 정한다. exact method가 가능한 작은 규모, tensor/Monte Carlo가 경쟁하는 중간 규모, QPU만 가능한 주장 규모를 나누고 time-to-target과 energy-to-target을 보고한다.</p>
+<p>둘째, <strong>QML PoC에 end-to-end denominator를 붙인다.</strong> QuanONet과 QMF 모두 classical encoding·training·selection을 포함한 pipeline graph를 공개하고, quantum block을 동일 크기의 classical quadratic feature 또는 MeanFlow block으로 교체한 ablation을 둔다. QPU calibration 세 번 이상에서 shots-to-accuracy와 wall-clock-to-accuracy를 비교한다.</p>
+<p>셋째, <strong>분자·재료 응용은 decoder와 물리 solver를 분리 평가한다.</strong> torsion encoding에서는 정확한 phase/statevector를 넣었을 때 decoder error, noisy distribution을 넣었을 때 추가 error, classical energy function이 만드는 ranking error를 따로 잰다. oscillator–transmon에서는 potential reconstruction 뒤 known eigenvalue와 dynamical observable까지 이어지는 benchmark를 추가한다. 이렇게 해야 양자 state preparation, measurement와 classical reconstruction 중 어디가 병목인지 보인다.</p>
+<h2 id="11">11. 이번 동향을 활용 방향별로 정리하면</h2>
+<ul>
+<li><strong>가장 가까운 운영 활용</strong>: self-consistent Pauli-noise learning과 gauge optimization. 장치 특성화·오류완화의 sampling overhead를 줄이는 직접적인 engineering 문제다.</li>
+<li><strong>가까운 연구용 활용</strong>: t-VMC를 포함한 강한 고전 모사를 quantum-advantage benchmark의 대조군으로 사용한다. 양자장치를 대체한다기보다 주장 가능한 영역을 더 정확히 정한다.</li>
+<li><strong>중기 QML 활용</strong>: QuanONet의 quadratic frame과 QMF의 one-step inference를 측정비용까지 포함해 시험한다. 현재는 architecture·PoC 단계다.</li>
+<li><strong>중기 분자·생물물리 활용</strong>: compact torsion representation과 bosonic anharmonic gate를 작은 conformer·vibrational benchmark에 연결한다. 단백질 folding이나 화학반응의 전체 가속으로 확대하기에는 이르다.</li>
+<li><strong>장기 방향</strong>: error-corrected gate model, bosonic mode와 고성능 classical simulation을 문제별로 조합하는 heterogeneous stack. 어느 한 플랫폼이 모든 계산을 맡기보다 잘 정의된 observable마다 가장 싼 계산층을 선택하는 방향이다.</li>
+</ul>
+<h2 id="_2">결론</h2>
+<p>이번 주 연구는 양자와 고전의 승패를 확정하지 않았다. 대신 승패를 말하려면 무엇을 세어야 하는지를 더 분명하게 만들었다. t-VMC는 D-Wave의 선택된 correlation을 큰 GPU 비용으로 재현해 고전 기준선을 끌어올렸다. self-consistent Pauli-noise learning은 식별 불가능성이 곧 예측 불가능성을 뜻하지 않으며, 같은 정답을 더 적은 표본으로 얻는 gauge 선택이 가능함을 보였다. QuanONet은 표현력의 이론적 근거를, QMF는 sequential inference를 줄이는 구조를 제시했다. torsion VQE와 oscillator–transmon은 각각 compact encoding과 programmable non-Gaussian potential이라는 구성요소를 실제 장치에 올렸다.</p>
+<p>그러나 어느 결과도 보편적인 quantum advantage, 전체 응용 workflow의 가속, 실제 분자 반응의 계산을 입증하지 않았다. 그 한계를 적는 것은 연구를 깎아내리는 일이 아니다. 어떤 구성요소가 이미 작동하고 무엇이 다음 검증 대상인지 분리해야 연구개발 자원이 올바른 병목에 투입된다.</p>
+<p>앞으로의 핵심 지표는 큐비트 수 하나가 아니다. <strong>관측량의 적합성, 비교 분모의 완전성, 실행 경계의 투명성, 그리고 같은 예산의 강한 고전 기준선</strong>이 함께 있어야 한다. 양자 우위의 경계는 계속 다시 그려질 것이다. 좋은 리뷰와 좋은 실험은 그 경계선을 넓게 그리는 대신, 어느 좌표에서 어떤 비용으로 확인했는지를 남긴다.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>R. Wiersema, <a href="https://arxiv.org/abs/2609.01719">“Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo,” arXiv:2609.01719v1 (1 September 2026)</a>. <strong>프리프린트; 고전 GPU simulation.</strong> <a href="https://github.com/therooler/dwave_vmc">코드</a></li>
+<li>E. H. Chen, S. Chen, L. E. Fischer et al., <a href="https://doi.org/10.1103/69wc-gzl6">“Disambiguating Pauli Noise in Quantum Computers,” <em>PRX Quantum</em> 7, 033045 (3 September 2026)</a>. <strong>동료평가 논문; 실제 IBM QPU, 최대 92큐비트.</strong></li>
+<li>R. Wang, X. Zhong, Z. Xia, J. Yan, <a href="https://doi.org/10.1038/s42256-026-01289-7">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” <em>Nature Machine Intelligence</em> (3 September 2026)</a>. <strong>동료평가 논문; <code>ibm_fez</code> 정성적 PoC.</strong> <a href="https://github.com/Wang-Ruocheng/QuanONet">코드</a></li>
+<li>A. Joshi, E. Mistry, T. Koyama, <a href="https://arxiv.org/abs/2609.02186">“Quantum MeanFlow: single-shot generative sampling on NISQ hardware,” arXiv:2609.02186v1 (2 September 2026)</a>. <strong>프리프린트; simulator 학습과 실제 IBM QPU 추론.</strong></li>
+<li>F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, D. Blankenberg, <a href="https://arxiv.org/abs/2609.02113">“Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space,” arXiv:2609.02113v1 (2 September 2026)</a>. <strong>프리프린트; 실제 QPU sampling, on-QPU optimization 아님.</strong> <a href="https://github.com/cumbof/qtf">코드</a> · <a href="https://doi.org/10.5281/zenodo.22088098">데이터</a></li>
+<li>C. Y. Fontaine, M. Somani, K. Yu et al., <a href="https://arxiv.org/abs/2609.02405">“Programming anharmonic potentials in a superconducting harmonic oscillator,” arXiv:2609.02405v1 (2 September 2026)</a>. <strong>프리프린트; 실제 superconducting oscillator–transmon 장치.</strong></li>
+</ol>
+<hr />
+<p>작성정보. 책임 편집: 김현중. AI 보조: OpenAI Codex Work Mode multi-agent workflow. 검증 기준일: 2026년 9월 4일. <code>evidence_algorithms</code>가 t-VMC·Pauli-noise·QuanONet을, <code>evidence_applications</code>가 Quantum MeanFlow·torsion-space VQE·oscillator–transmon을 원 출처에서 점검했고, <code>draft_sep4_review</code>가 한·영 원고를 구성했다. 수치와 방법은 원문 보고값이며, OLED·재료 적용, 공통 자원 장부와 세 가지 검증 실험은 리뷰 제안이다. 동료평가 논문 2편과 프리프린트 4편을 구분했고, 실제 QPU·고전 simulation·simulator training·classical decoding의 경계를 따로 표시했다.</p>
+      <div class="footer">
+        생성 시각: 2026-09-04 11:22:30<br>
+        원본 파일 최종 수정 시각: 2026-09-04 11:22:21
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#1">1. 같은 “양자 결과”라도 증거 단위가 다르다</a><ul>
+<li><a href="#_1">함께 읽기: 시스템 병목에서 근거 장부로</a></li>
+</ul>
+</li>
+<li><a href="#2-d-wave">2. D-Wave를 고전적으로 재현했다는 말의 정확한 범위</a></li>
+<li><a href="#3">3. 식별할 수 없는 잡음이 언제 문제가 되지 않는가</a></li>
+<li><a href="#4-quanonet">4. QuanONet의 는 속도가 아니라 표현력 경계다</a></li>
+<li><a href="#5-quantum-meanflow">5. Quantum MeanFlow의 ‘한 단계’는 어디까지 한 단계인가</a></li>
+<li><a href="#6-vqe">6. 로그 큐비트 단백질 VQE는 비용을 없애지 않고 이동시킨다</a></li>
+<li><a href="#7-oscillatortransmon-potential">7. oscillator–transmon은 분자를 푼 것이 아니라 potential을 프로그래밍했다</a></li>
+<li><a href="#8">8. 여섯 연구가 함께 가리키는 개발 방향</a><ul>
+<li><a href="#81">8.1 큐비트 수보다 계산 경계를 먼저 설계한다</a></li>
+<li><a href="#82">8.2 오류모형은 정답뿐 아니라 표본비용을 결정한다</a></li>
+<li><a href="#83">8.3 표현력 정리와 응용 가속을 분리한다</a></li>
+<li><a href="#84">8.4 응용은 검증 가능한 작은 물리량부터 시작한다</a></li>
+</ul>
+</li>
+<li><a href="#9">9. 양자–고전 자원 장부의 최소 형식</a></li>
+<li><a href="#10">10. 지금 실행할 수 있는 세 가지 검증 실험</a></li>
+<li><a href="#11">11. 이번 동향을 활용 방향별로 정리하면</a></li>
+<li><a href="#_2">결론</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="quantum_evidence_ledger_hero-web.webp">양자프로세서, 고전 GPU, 측정 장부, 연속변수 potential과 하이브리드 계산 경계를 한 장면에 배치한 개념 일러스트</a></li>
+<li><a href="daily_quantum_brief_2026-09-04.pdf">PDF로 내려받을 수 있다</a></li>
+<li><a href="quantum_evidence_ledger_ko.svg">관측량·분모, 실행 위치, 회로·측정, 고전 전후처리, 기준선·미입증의 다섯 칸을 여섯 연구에 대응시킨 자원 장부</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/" target="_blank" rel="noreferrer">9월 3일의 full-stack co-design 리뷰</a></li>
+<li><a href="https://arxiv.org/abs/2609.01719" target="_blank" rel="noreferrer">*Numerical simulation of D-Wave&#x27;s quantum advantage experiment with time-dependent variational Monte Carlo*</a></li>
+<li><a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">*Disambiguating Pauli Noise in Quantum Computers*</a></li>
+<li><a href="https://www.nature.com/articles/s42256-026-01289-7" target="_blank" rel="noreferrer">*Quantum neural operators with implicit quadratic frame and expressivity advantages*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02186" target="_blank" rel="noreferrer">*Quantum MeanFlow: single-shot generative sampling on NISQ hardware*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02113" target="_blank" rel="noreferrer">*Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02405" target="_blank" rel="noreferrer">*Programming anharmonic potentials in a superconducting harmonic oscillator*</a></li>
+<li><a href="https://github.com/therooler/dwave_vmc" target="_blank" rel="noreferrer">코드</a></li>
+<li><a href="https://doi.org/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">“Disambiguating Pauli Noise in Quantum Computers,” *PRX Quantum* 7, 033045 (3 September 2026)</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01289-7" target="_blank" rel="noreferrer">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” *Nature Machine Intelligence* (3 September 2026)</a></li>
+<li><a href="https://github.com/Wang-Ruocheng/QuanONet" target="_blank" rel="noreferrer">코드</a></li>
+<li><a href="https://github.com/cumbof/qtf" target="_blank" rel="noreferrer">코드</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.22088098" target="_blank" rel="noreferrer">데이터</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>
