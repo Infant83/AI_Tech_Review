@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?</title>
+  <meta name="description" content="DeMARS turns disordered CIFs into atomistic models by bounding LLM judgment between deterministic gates; we assess its held-out test and unreleased code.">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?">
+  <meta property="og:description" content="DeMARS turns disordered CIFs into atomistic models by bounding LLM judgment between deterministic gates; we assess its held-out test and unreleased code.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
+  <meta property="og:image:alt" content="Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?">
+  <meta property="article:published_time" content="2026-09-06">
+  <meta property="article:modified_time" content="2026-09-06">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?">
+  <meta name="twitter:description" content="DeMARS turns disordered CIFs into atomistic models by bounding LLM judgment between deterministic gates; we assess its held-out test and unreleased code.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
+  <meta name="twitter:image:alt" content="Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-06)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <a href="2026-09-06_agentic-programs-materials-science_final_review_en.md">2026-09-06_agentic-programs-materials-science_final_review_en.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?</h1>
+        <p class="dek">DeMARS turns disordered CIFs into atomistic models by bounding LLM judgment between deterministic gates; we assess its held-out test and unreleased code.</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <h2 id="three-sentence-summary">Three-sentence summary</h2>
+<p>In a preprint posted on 1 September 2026, a Seoul National University team proposes the <strong>agentic program</strong>: not a general AI scientist, but scientific software that assumes end-to-end responsibility for one verifiable, bounded task. Their case study, DeMARS, converts crystallographic information files (CIFs) with partial occupancies into atomistic models; the authors report maturing the system over roughly 800 disordered CIFs and then running a held-out set of 100 without case-by-case human intervention. The code is not yet public, however, and the paper does not report the certified-versus-refused denominator, repeated-run variability, or an independent external assessment, so the present evidence supports a promising architecture and an internally reviewed case study—not a fully reproduced production system.</p>
+<p><img alt="Scientific editorial concept showing a partially occupied disordered crystal branching into candidate atomic arrangements and passing physical constraints before explicit atomistic models emerge" src="../artifacts/agentic_programs_materials_hero.webp" /></p>
+<p><em>Figure 1. AI-generated conceptual illustration. It depicts a partially occupied crystal, candidate branching, physical constraints, and explicit atomistic models. It is not an exact material, a DeMARS interface, or a reproduction of quantitative results.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Editorial verdict</p>
+<p>DeMARS&rsquo;s most consequential claim is not that an LLM “does materials science.” It is an architectural claim: <strong>deterministic code should own quantities and physical checks; the LLM should decide only underdetermined intermediate choices; and computation should make the consequences of those choices falsifiable.</strong> The paper supports this design with a concrete workflow and cases, but generality and reproducibility remain open until code, run records, and the missing evaluation denominators become available.</p>
+</aside>
+<h2 id="why-this-matters-automation-often-stops-at-judgment-not-computation">Why this matters: automation often stops at judgment, not computation</h2>
+<p>Computational materials science is already heavily automated. Electronic-structure packages execute well-defined calculations, while AiiDA, atomate2, AFLOW, and AMP² manage dependencies, retries, and provenance. Yet researchers still spend substantial time deciding which supercell is commensurate with fractional occupancies, which nearby sites are mutually exclusive, how to impose charge compensation, or whether a failed self-consistent-field calculation calls for a numerical change or a revised physical model.</p>
+<p>Traditional automation requires such decisions to be expressed as explicit rules. A general LLM agent offers flexibility, but may vary its decision for the same input or approve an attractive but physically unsound structure. The new paper places a narrower software object between these extremes: use an LLM only for incomplete decision rules that remain after the inputs, outputs, allowed operations, and scientific constraints have been specified.</p>
+<p>This is a follow-up, not a restatement, of the May review <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/">“AI Scientists at the End of the Beginning”</a>. That article examined verification across broad research workflows, from hypothesis generation to writing. The present study moves in the opposite direction: it restricts autonomy until one responsibility might be delegated completely in routine production.</p>
+<h2 id="terms-to-define-first">Terms to define first</h2>
+<ul>
+<li>A <strong>crystallographic information file (CIF)</strong> records lattice parameters, symmetry, atomic positions, species, and occupancies.</li>
+<li><strong>Partial occupancy</strong> represents a crystallographic average in which a site is occupied with a probability between zero and one. Most atomistic simulations instead require integer atom counts in an explicit periodic model.</li>
+<li>A <strong>disordered crystal</strong> contains substitutions, vacancies, interstitials, or coupled occupancy rules that cannot be mapped directly to one periodic arrangement.</li>
+<li>A <strong>machine-learning interatomic potential (MLIP)</strong> approximates energies and forces learned from first-principles data. It makes the relaxation of many candidates much cheaper than density functional theory (DFT). DeMARS uses the SevenNet family of universal MLIPs, according to the paper.</li>
+<li>An <strong>agent harness</strong> connects an LLM to files, executable tools, persistent instructions, memory, and reviewer roles.</li>
+<li>In the authors&rsquo; definition, an <strong>agentic program</strong> combines deterministic algorithms and bounded LLM judgment to complete one scientific task whose input, objective, tools, constraints, and acceptance criteria are defined in advance.</li>
+</ul>
+<h2 id="why-a-disordered-cif-requires-judgment">Why a disordered CIF requires judgment</h2>
+<p>Turning partial occupancy into a DFT-ready model is not merely a random vacancy-placement problem. Consider the paper&rsquo;s $\mathrm{Ca}_{1-x}\mathrm{Th}_x\mathrm{F}_{2+2x}$ example at $x=0.18$. Replacing $\mathrm{Ca}^{2+}$ with $\mathrm{Th}^{4+}$ adds two units of positive charge, so two additional $\mathrm{F}^{-}$ ions are required per Th. The simple check $2+2x=2.36$ matches the refined fluorine composition, but selecting associated interstitial sites and coupled exclusions requires structural and chemical interpretation.</p>
+<p>Citing a prior statistical study, the authors state that roughly half of the Inorganic Crystal Structure Database (ICSD) entries are reported as disordered, and that about 60% of the disordered CIFs are relatively simple substitutional solid solutions. More complicated cases can violate charge, composition, or connectivity if each partially occupied site is enumerated independently; the combinatorics may also explode. The hard step is therefore often not sampling more structures, but deciding <strong>which chemical model ought to be enumerated</strong>.</p>
+<p>DeMARS stands for De-averaged Minimal Atomistic Representation System. Its goal is not to recover the unique microscopic “true structure” from diffraction. It constructs a minimal explicit model, or an ensemble of models, consistent with the CIF evidence and chemical rules so that downstream atomistic calculations can proceed. A small periodic cell cannot in general reproduce all spatial and temporal disorder correlations hidden by a crystallographic average.</p>
+<h2 id="the-core-method-place-the-llm-between-programs">The core method: place the LLM between programs</h2>
+<p>The architecture described in the paper can be reduced to seven steps.</p>
+<ol>
+<li>Deterministic Python code extracts composition, occupancy, symmetry, and site evidence from a CIF into a structured bundle.</li>
+<li>An LLM analyst converts that bundle into an executable specification: supercell size, merged or mutually exclusive sites, charge-balanced targets, and whether model repair or custom construction is required.</li>
+<li>An enumeration engine generates candidate arrangements; SevenNet relaxes them and supplies an energy distribution.</li>
+<li>Code checks charge neutrality, fidelity to reported occupancy, polyanion connectivity, and other predefined requirements. Energy above hull is recorded as an interpretive quantity, not as a pass/fail gate.</li>
+<li>The analyst examines the structure and energy distributions, then accepts the result or tightens the specification and reruns the engine.</li>
+<li>A separate reviewer agent audits the final record in a fresh context.</li>
+<li>The program returns either a certified model or an explicit refusal with evidence.</li>
+</ol>
+<p><img alt="Architecture diagram showing deterministic evidence extraction, bounded LLM specification, enumeration and MLIP relaxation, physical gates, fresh-context review, and certification or refusal" src="../artifacts/agentic_program_architecture_en.svg" /></p>
+<p><em>Figure 2. Reviewer-constructed architecture based on the paper&rsquo;s Figure 3 and textual description. Blue denotes deterministic computation, violet denotes LLM judgment, and amber denotes physical or structural gates. It does not reproduce run logs or measured performance.</em></p>
+<p>The important claim is not that physical knowledge has somehow been absorbed perfectly by the LLM. The model neither creates the quantitative evidence nor certifies its own work. It interprets code-produced evidence, emits a computable specification, and has the consequences checked by independent code. Judgment becomes a hypothesis generator whose outputs can fail.</p>
+<h2 id="how-this-differs-from-workflows-and-assistants">How this differs from workflows and assistants</h2>
+<table>
+<thead>
+<tr>
+<th>System form</th>
+<th>Human responsibility</th>
+<th>Software responsibility</th>
+<th>Failure control</th>
+<th>Human in routine production</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conventional workflow</td>
+<td>Define every decision rule</td>
+<td>Repeat specified algorithms</td>
+<td>Exceptions and unit tests</td>
+<td>Needed for new exceptions</td>
+</tr>
+<tr>
+<td>Interactive AI assistant</td>
+<td>Ask, choose, and approve</td>
+<td>Explain and propose code</td>
+<td>User inspection</td>
+<td>Always in the loop</td>
+</tr>
+<tr>
+<td>General AI scientist</td>
+<td>Set the objective and supervise</td>
+<td>Explore broadly from hypotheses to writing</td>
+<td>General evaluators and peer review</td>
+<td>Varies by scope</td>
+</tr>
+<tr>
+<td>Proposed agentic program</td>
+<td>Define objective, bounded responsibility, and principles</td>
+<td>Execute the bounded task end to end</td>
+<td>Task-specific deterministic gates and a separate reviewer</td>
+<td>Outside the mature routine loop</td>
+</tr>
+</tbody>
+</table>
+<p>None of the individual components is new: tool-using agents, MLIPs, verification checklists, reviewer agents, and version control already exist. The proposal is to package them as a <strong>fully delegable, narrow scientific responsibility</strong>. Rather than maximize autonomy over an open domain, it shrinks the task until success and failure can be specified.</p>
+<p>The analogy to MLOps and DevOps is strong. A production system validates input contracts, fails closed outside its support envelope, pins versions, and runs regression tests. Scientific correctness, however, extends beyond an API schema to the adequacy of a physical model. Deterministic gates are necessary but cannot be assumed complete.</p>
+<h2 id="quantitative-evidenceand-the-missing-denominators">Quantitative evidence—and the missing denominators</h2>
+<p>The paper&rsquo;s largest-scale evidence rests on two counts.</p>
+<ul>
+<li>During development, recurring decisions from <strong>roughly 800 disordered CIFs</strong> were converted into instructions, diagnostics, verification gates, and deterministic code.</li>
+<li>The mature system processed <strong>100 held-out CIFs</strong> end to end without human intervention during execution. These inputs were randomly selected under stated filters: three to five elements, nontrivial site disorder, at most 40 listed sites, and no use during maturation.</li>
+</ul>
+<p>The authors manually inspected every output afterward. They report that certified models were chemically reasonable and consistent with the reported disorder, and that every refusal had a reason verifiable from its own record. “Processed 100,” however, does not mean “certified 100.” The paper gives no count of certifications, refusals, custom constructions, or model repairs.</p>
+<p>One failure episode is especially informative. In $\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$, every generated structure passed the existing deterministic gates, yet a reviewer agent noticed that all candidates shared the same cation arrangement. Deterministic ordering in a coupled-enumeration routine had prevented the intended Li/Mo antisite degree of freedom from being sampled. Correcting that routine turned one reviewer-detected failure into a persistent regression improvement.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Source-reported fact</th>
+<th>Independent check in this review</th>
+<th>Still unknown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Release</td>
+<td>arXiv v1, 1 September 2026</td>
+<td>arXiv metadata and HTML checked</td>
+<td>Changes after peer review</td>
+</tr>
+<tr>
+<td>Maturation set</td>
+<td>About 800 disordered CIFs</td>
+<td>Internal numerical and case consistency checked</td>
+<td>Per-case inputs, outputs, and interventions</td>
+</tr>
+<tr>
+<td>Held-out test</td>
+<td>100 unused CIFs; no human execution intervention</td>
+<td>Filters and post-hoc inspection statement checked</td>
+<td>Certification/refusal denominator, success rate, runtime, LLM cost</td>
+</tr>
+<tr>
+<td>Chemical example</td>
+<td>$2+2(0.18)=2.36$</td>
+<td>Charge-compensation arithmetic recalculated</td>
+<td>Uniqueness of the microscopic disorder model</td>
+</tr>
+<tr>
+<td>Software</td>
+<td>DeMARS architecture described</td>
+<td>Current non-release statement confirmed</td>
+<td>Repeated-run stability, model sensitivity, environment reproducibility</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-main-limitation-good-architecture-is-not-yet-a-validated-product">The main limitation: good architecture is not yet a validated product</h2>
+<p>First, this is a preprint. DeMARS code is promised only upon publication of a peer-reviewed version. A third party cannot yet determine whether the same CIF produces the same construction, refusal, or cost.</p>
+<p>Second, the 100-case test lacks the denominators needed to interpret it: certification rate, refusal rate, failure classes, retry counts, evaluator agreement, and a baseline comparison. “Chemically reasonable” is useful expert judgment, but it is not a blind external assessment or a quantitative metric.</p>
+<p>Third, stochastic stability is not measured. We do not know how often repeated runs with the same model and different seeds produce the same executable specification, final structural ensemble, and certification decision. Nor do we know the regression rate after changing the LLM, skills, or episodic record. The authors themselves argue for joint versioning and continuing audits.</p>
+<p>Fourth, the universal MLIP introduces a separate validity boundary. It makes many inexpensive episodes possible, but energy ordering can fail outside its training distribution—for unusual coordination, charge states, heavy elements, or bonding. Passing composition and connectivity gates does not establish DFT-level relative stability or correct disorder thermodynamics.</p>
+<p>Finally, a minimal periodic model may not represent short-range order, configurational entropy, finite-temperature occupancy, or diffuse scattering. DeMARS can provide a plausible starting model without solving the inverse problem uniquely.</p>
+<h2 id="implications-for-materials-research-and-industrial-workflows">Implications for materials research and industrial workflows</h2>
+<p>For a DFT, OLED, and agentic-workflow practice, the immediate lesson is to avoid starting with an agent that “does all research.” Better targets have clear inputs and deliverables but recurring intermediate judgments.</p>
+<ol>
+<li>A <strong>DFT protocol steward</strong> could propose pseudopotentials, cutoffs, $k$ meshes, smearing, spin, and spin–orbit coupling, while convergence, symmetry, and magnetic-state checks determine certification.</li>
+<li>A <strong>calculation-failure diagnostician</strong> could classify self-consistent-field oscillation, charge sloshing, and geometry blow-up from logs, apply only bounded remedies, and stop when energy, force, or occupation regressions fail.</li>
+<li>A <strong>defect/interface builder</strong> could propose terminations, charge compensation, and passivation while deterministic code checks stoichiometry, neutrality, minimum distances, symmetry, and finite-size conditions.</li>
+<li>An <strong>OLED excited-state triage program</strong> could combine state character, oscillator strength, spin–orbit coupling, root flipping, and conformer dependence to decide when TDDFT or TDA must be rerun. A rate or mechanism would be certified only when logs and state tracking support it.</li>
+<li>In <strong>on-premises research operations</strong>, an internal LLM gateway could make bounded decisions while VASP, Gaussian, or Fortran jobs remain under the established scheduler and GitLab runner. Input/output hashes, compiler or container, code commit, model and skill versions, and all gate results should share one evidence record.</li>
+</ol>
+<p>Industrial organizations should read “removing the human from the loop” as a responsibility boundary, not simply a staffing claim. Routine runs can be delegated, while a newly discovered failure class triggers human approval of updated principles, code, tests, or doctrines. Useful operating metrics would include certification coverage, false-certification rate, justified-refusal rate, intervention rate, repeated-run agreement, and total cost per certified case across LLM tokens, MLIP/DFT compute, wall time, and retries.</p>
+<h2 id="the-validation-package-a-follow-up-study-should-publish">The validation package a follow-up study should publish</h2>
+<p>The strongest next result would not merely use a larger language model. It would:</p>
+<ol>
+<li>publish the fixed identities and certification/refusal outcomes for the 100 held-out CIFs;</li>
+<li>compare a rule-based baseline, a general tool-using agent, and DeMARS under the same inputs and compute budget;</li>
+<li>repeat each case five to ten times and report variance in specifications, structure clusters, and certification;</li>
+<li>re-relax a stratified subset with DFT and measure preservation of structures and energy ordering;</li>
+<li>use blind rubrics from external crystallographers and computational materials scientists, reporting inter-rater agreement;</li>
+<li>release pinned code, skills, model configuration, and a regression suite spanning version changes; and</li>
+<li>retain refusal and failure artifacts, not just successful structures, to define where the system should not be trusted.</li>
+</ol>
+<h2 id="researchers-to-watch-and-seminar-questions">Researchers to watch and seminar questions</h2>
+<ul>
+<li><strong>Seungwu Han — Department of Materials Science and Engineering and Research Institute of Advanced Materials, Seoul National University; Center for AI and Natural Sciences, KIAS.</strong> Corresponding author with a substantial SevenNet and atomistic-automation program. Question: “How will you expose certification, refusal, and custom-construction denominators, plus repeated-run variance, in a public benchmark?”</li>
+<li><strong>Yunsung Lim — Research Institute of Advanced Materials, Seoul National University.</strong> Co-first author presenting the agentic-program concept and DeMARS case. Question: “What criterion decides whether an episode becomes a skill, a doctrine, or deterministic code, and what is the rollback protocol?”</li>
+<li><strong>Haekwan Jeon — Department of Materials Science and Engineering, Seoul National University.</strong> Co-first author involved in DeMARS. Question: “Which gate detects when a minimal periodic model is insufficient and an ensemble or explicit short-range order is required?”</li>
+</ul>
+<h2 id="questions-to-watch">Questions to watch</h2>
+<ul>
+<li>Is the code released with the peer-reviewed paper?</li>
+<li>Are the detailed outcomes and execution costs for the 100 held-out CIFs disclosed?</li>
+<li>Can another LLM and harness preserve the same responsibility boundary and gates?</li>
+<li>What is the false-certification rate on public datasets and under an independent team?</li>
+<li>Where does MLIP screening become insufficient once the workflow extends to DFT, phonons, defects, and thermodynamics?</li>
+<li>Can research organizations manage episodes as versioned scientific software assets rather than private chat history?</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The paper asks a more useful question than whether AI will replace scientists: <strong>when can one narrow, repeated act of scientific judgment become software&rsquo;s responsibility?</strong> DeMARS answers by mixing algorithms and judgment while refusing to let the LLM create its own quantitative evidence or certify its own output. The model is a bounded decision-maker between deterministic programs.</p>
+<p>Computational materials science is a favorable domain for this design: inputs and deliverables are often explicit; composition, symmetry, charge, forces, and energies provide computable constraints; and MLIPs reduce the cost of accumulating episodes. Those advantages also raise the evidentiary bar. Once the code is public, evaluation denominators are disclosed, and repeatability and external validation are demonstrated, the “agentic program” could move from an interesting concept to a credible new category of scientific software.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>Y. Lim, H. Jeon, J. Kim, J. Kim, S. Han, <a href="https://arxiv.org/abs/2609.00795">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a>. <strong>Primary source; preprint; DeMARS code not yet released.</strong></li>
+<li>D. Antypov et al., <a href="https://doi.org/10.1107/S1600576725003000">“Classification and statistical analysis of structural disorder in crystalline materials,” <em>Journal of Applied Crystallography</em> 58, 659–677 (2025)</a>. <strong>Source for the ICSD disorder taxonomy.</strong></li>
+<li>A. M. Ganose et al., <a href="https://doi.org/10.1039/D5DD00019J">“atomate2: modular workflows for materials science,” <em>Digital Discovery</em> 4, 1944–1973 (2025)</a>. <strong>Context for deterministic workflow automation.</strong></li>
+<li>Y. Park et al., <a href="https://arxiv.org/abs/2606.09422">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a>. <strong>Earlier atomistic-agent work from the related research ecosystem.</strong></li>
+<li>J. Kim et al., <a href="https://doi.org/10.1038/s41467-026-70195-8">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” <em>Nature Communications</em> 17, 3432 (2026)</a>. <strong>Background for the SevenNet-family MLIP used by DeMARS.</strong></li>
+<li>J. Gottweis et al., <a href="https://doi.org/10.1038/s41586-026-10644-y">“Accelerating scientific discovery with Co-Scientist,” <em>Nature</em> 655, 487–496 (2026)</a>. <strong>Comparison with a broad AI co-scientist.</strong></li>
+<li>Google Research, <a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a>. <strong>Comparison for claim-to-code-to-log linkage and independent reruns.</strong></li>
+<li>Z. Chen et al., <a href="https://doi.org/10.1038/s42256-026-01261-5">“An agentic artificially intelligent X-ray scientist,” <em>Nature Machine Intelligence</em> 8, 1075–1086 (2026)</a>. <strong>Comparison for virtual-to-real instrumentation and a human-relay safety boundary.</strong></li>
+</ol>
+<hr />
+<p><em>Evidence cutoff: 6 September 2026. The architecture and counts of roughly 800 and 100 CIFs are source-reported; this review did not execute DeMARS. Independent checks were limited to arXiv metadata, internal numerical and chemical consistency, current code availability, cited official or peer-reviewed context, and final-page rendering. Proposed applications and operating metrics are editorial interpretations.</em></p>
+      <div class="footer">
+        Generated: 2026-09-06 12:21:12<br>
+        Source last modified: 2026-09-06 12:20:23
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#three-sentence-summary">Three-sentence summary</a></li>
+<li><a href="#why-this-matters-automation-often-stops-at-judgment-not-computation">Why this matters: automation often stops at judgment, not computation</a></li>
+<li><a href="#terms-to-define-first">Terms to define first</a></li>
+<li><a href="#why-a-disordered-cif-requires-judgment">Why a disordered CIF requires judgment</a></li>
+<li><a href="#the-core-method-place-the-llm-between-programs">The core method: place the LLM between programs</a></li>
+<li><a href="#how-this-differs-from-workflows-and-assistants">How this differs from workflows and assistants</a></li>
+<li><a href="#quantitative-evidenceand-the-missing-denominators">Quantitative evidence—and the missing denominators</a></li>
+<li><a href="#the-main-limitation-good-architecture-is-not-yet-a-validated-product">The main limitation: good architecture is not yet a validated product</a></li>
+<li><a href="#implications-for-materials-research-and-industrial-workflows">Implications for materials research and industrial workflows</a></li>
+<li><a href="#the-validation-package-a-follow-up-study-should-publish">The validation package a follow-up study should publish</a></li>
+<li><a href="#researchers-to-watch-and-seminar-questions">Researchers to watch and seminar questions</a></li>
+<li><a href="#questions-to-watch">Questions to watch</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="../artifacts/agentic_programs_materials_hero.webp">Scientific editorial concept showing a partially occupied disordered crystal branching into candidate atomic arrangements and passing physical constraints before explicit atomistic models emerge</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/" target="_blank" rel="noreferrer">“AI Scientists at the End of the Beginning”</a></li>
+<li><a href="../artifacts/agentic_program_architecture_en.svg">Architecture diagram showing deterministic evidence extraction, bounded LLM specification, enumeration and MLIP relaxation, physical gates, fresh-context review, and certification or refusal</a></li>
+<li><a href="https://arxiv.org/abs/2609.00795" target="_blank" rel="noreferrer">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a></li>
+<li><a href="https://doi.org/10.1107/S1600576725003000" target="_blank" rel="noreferrer">“Classification and statistical analysis of structural disorder in crystalline materials,” *Journal of Applied Crystallography* 58, 659–677 (2025)</a></li>
+<li><a href="https://doi.org/10.1039/D5DD00019J" target="_blank" rel="noreferrer">“atomate2: modular workflows for materials science,” *Digital Discovery* 4, 1944–1973 (2025)</a></li>
+<li><a href="https://arxiv.org/abs/2606.09422" target="_blank" rel="noreferrer">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a></li>
+<li><a href="https://doi.org/10.1038/s41467-026-70195-8" target="_blank" rel="noreferrer">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” *Nature Communications* 17, 3432 (2026)</a></li>
+<li><a href="https://doi.org/10.1038/s41586-026-10644-y" target="_blank" rel="noreferrer">“Accelerating scientific discovery with Co-Scientist,” *Nature* 655, 487–496 (2026)</a></li>
+<li><a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/" target="_blank" rel="noreferrer">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01261-5" target="_blank" rel="noreferrer">“An agentic artificially intelligent X-ray scientist,” *Nature Machine Intelligence* 8, 1075–1086 (2026)</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>
