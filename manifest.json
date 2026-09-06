@@ -1,0 +1,2065 @@
+[
+  {
+    "folder": "2026-09-06_agentic-programs-materials-science",
+    "title": "계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나",
+    "subtitle": "무질서 CIF를 검증 가능한 원자 모델로 바꾸는 DeMARS의 bounded judgment와 아직 남은 재현성 공백",
+    "date": "2026-09-06",
+    "updated": "2026-09-06",
+    "category": "AI for Science",
+    "tags": [
+      "Agentic Programs",
+      "Materials Science",
+      "DeMARS",
+      "Disordered Crystals",
+      "CIF",
+      "MLIP",
+      "Scientific Software",
+      "Verification"
+    ],
+    "summary": "DeMARS가 무질서 결정의 부분 점유 CIF를 계산 가능한 원자 모델로 바꾸면서, LLM 판단을 결정론적 코드와 물리 검증 사이에 제한하는 방식을 분석합니다. 약 800개 성숙 사례와 100개 외부 테스트가 보여주는 진전, 그리고 코드 비공개·인증/거절 분모 미공개가 남기는 검증 공백을 함께 짚습니다.",
+    "href": "reviews/2026-09-06_agentic-programs-materials-science/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/",
+    "thumbnail": "reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp",
+    "assets": [
+      "agentic_program_architecture_ko.svg",
+      "agentic_programs_materials_hero.webp"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-06_agentic-programs-materials-science/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/",
+        "assets": [
+          "agentic_program_architecture_en.svg",
+          "agentic_programs_materials_hero.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 1,
+        "agents": [
+          {
+            "name": "Codex",
+            "role": "repository audit, primary-source research, candidate scoring, bilingual writing, figures, validation, publication, and live-site verification",
+            "role_ko": "저장소 감사·1차 출처 조사·후보 평가·한영 집필·도해·검증·게시·공개 페이지 확인"
+          }
+        ],
+        "agent_roles": [
+          "Codex — repository audit, primary-source research, candidate scoring, bilingual writing, figures, validation, publication, and live-site verification"
+        ],
+        "agent_roles_ko": [
+          "Codex — 저장소 감사·1차 출처 조사·후보 평가·한영 집필·도해·검증·게시·공개 페이지 확인"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-06",
+        "primary_source_check": true,
+        "scope": [
+          "arXiv primary paper, HTML full text, code-availability statement, and cited peer-reviewed context",
+          "candidate scoring, prior-hub duplicate check, numerical and chemical-consistency checks, and evidence-boundary review",
+          "bilingual HTML, 16:9 conceptual hero, reviewer-constructed SVGs, metadata, links, privacy, and deployed pages"
+        ],
+        "scope_ko": [
+          "arXiv 원 논문·HTML 본문·코드 공개 문구와 인용 동료평가 자료",
+          "후보 평가·기존 허브 중복 점검·수치와 화학식 일관성·주장 경계 검토",
+          "한영 HTML·16:9 개념 대표 이미지·리뷰어 구성 SVG·metadata·링크·개인정보·배포 페이지"
+        ],
+        "human_review_level": {
+          "ko": "정기 리뷰 범위와 공개 게시 권한 확인. 이번 실행에서 별도 문장 단위 사람 검토는 수행되지 않음",
+          "en": "recurring scope and publication authority confirmed; no separate line-by-line human review in this run"
+        }
+      },
+      "note": {
+        "ko": "약 800개 성숙 사례와 100개 외부 테스트는 저자 보고이며 DeMARS를 독립 실행하지 못했습니다. 코드는 아직 공개되지 않았고 인증·거절 분모가 제시되지 않았다는 한계를 본문에 표시했습니다.",
+        "en": "The roughly 800 maturation cases and 100 held-out tests are author-reported; DeMARS was not independently run. The review explicitly records that the code and certification/refusal denominator are unavailable."
+      }
+    }
+  },
+  {
+    "folder": "2026-09-04_quantum-advantage-evidence-ledger",
+    "title": "양자 우위의 경계는 계속 다시 그려진다",
+    "subtitle": "D-Wave 고전 모사, 92큐비트 노이즈 학습, QML·단백질·oscillator–transmon을 하나의 자원 장부로 읽기",
+    "date": "2026-09-04",
+    "updated": "2026-09-04",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Advantage",
+      "D-Wave",
+      "Error Mitigation",
+      "QuanONet",
+      "Quantum MeanFlow",
+      "Protein VQE",
+      "Bosonic QSP",
+      "Resource Accounting"
+    ],
+    "summary": "D-Wave annealing의 고전 t-VMC 재현, self-consistent Pauli noise와 PEC, QuanONet·Quantum MeanFlow, torsion-space 단백질 VQE, oscillator–transmon potential gate를 같은 증거 장부에 놓습니다. 관측량의 분모, 실행 위치, 회로·shots, 고전 전후처리와 matched baseline을 함께 기록해야 양자 우위와 실용성을 구분할 수 있습니다.",
+    "href": "reviews/2026-09-04_quantum-advantage-evidence-ledger/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/",
+    "thumbnail": "reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-04.pdf",
+      "quantum_evidence_ledger_hero-web.webp",
+      "quantum_evidence_ledger_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-04_quantum-advantage-evidence-ledger/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-04.pdf",
+          "quantum_evidence_ledger_en.svg",
+          "quantum_evidence_ledger_hero-web.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "orchestration, evidence integration, figures, copyediting, and publication",
+            "role_ko": "총괄·근거 통합·도해·감수·게시"
+          },
+          {
+            "name": "evidence_algorithms",
+            "role": "primary-source audit of t-VMC, Pauli-noise PEC, and QuanONet",
+            "role_ko": "t-VMC·Pauli-noise PEC·QuanONet 1차 출처 감사"
+          },
+          {
+            "name": "evidence_applications",
+            "role": "primary-source audit of QMF, protein VQE, and oscillator–transmon",
+            "role_ko": "QMF·단백질 VQE·oscillator–transmon 1차 출처 감사"
+          },
+          {
+            "name": "draft_sep4_review",
+            "role": "bilingual long-form draft",
+            "role_ko": "한영 장문 초안"
+          },
+          {
+            "name": "repo_publication_audit",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — orchestration, evidence integration, figures, copyediting, and publication",
+          "evidence_algorithms — primary-source audit of t-VMC, Pauli-noise PEC, and QuanONet",
+          "evidence_applications — primary-source audit of QMF, protein VQE, and oscillator–transmon",
+          "draft_sep4_review — bilingual long-form draft",
+          "repo_publication_audit — repository and publication-pipeline audit"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 총괄·근거 통합·도해·감수·게시",
+          "evidence_algorithms — t-VMC·Pauli-noise PEC·QuanONet 1차 출처 감사",
+          "evidence_applications — QMF·단백질 VQE·oscillator–transmon 1차 출처 감사",
+          "draft_sep4_review — 한영 장문 초안",
+          "repo_publication_audit — 저장소·게시 파이프라인 감사"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-04",
+        "primary_source_check": true,
+        "scope": [
+          "six primary research records published or posted through the evidence cutoff",
+          "publication status, observable denominator, execution layer, circuit and measurement cost, classical workload, and non-claims",
+          "bilingual HTML, hero and quantitative figure, source ledger, PDF, metadata, privacy, links, and deployed pages"
+        ],
+        "scope_ko": [
+          "근거 기준일까지 게재·게시된 1차 연구 6건",
+          "게재 상태·관측량 분모·실행 계층·회로와 측정비용·고전 계산·미입증 범위",
+          "한영 HTML·대표 이미지·정량 도식·근거 원장·PDF·metadata·개인정보·링크·배포 페이지"
+        ],
+        "human_review_level": {
+          "ko": "범위·통합 방향·공개 게시 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "scope, synthesis direction, and public publication confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "수치는 원 논문의 분모와 실행 위치까지 재확인했습니다. 연구 간 공통 자원 장부와 개발 제안은 리뷰의 해석이며 원 논문의 공동 결론이 아닙니다.",
+        "en": "Reported numbers were rechecked with their denominators and execution settings. The cross-study resource ledger and development recommendations are editorial synthesis, not a joint conclusion of the source papers."
+      }
+    }
+  },
+  {
+    "folder": "2026-09-04_weekly-oled-inverse-design-excited-state-reliability",
+    "title": "다중 여기상태를 매끄럽게 학습하는 법: OLED 분자 역설계의 물리 표현과 검증 경계",
+    "subtitle": "2026년 8월 28일-9월 3일 연구 동향: latent Hamiltonian, QED-GW/BSE, 불확실성 기반 선택, 반응 흐름과 양자 기준선",
+    "date": "2026-09-04",
+    "updated": "2026-09-04",
+    "category": "Materials AI",
+    "tags": [
+      "OLED",
+      "Molecular Inverse Design",
+      "Excited-State ML",
+      "GW-BSE",
+      "Active Learning",
+      "Reaction Prediction",
+      "Quantum Annealing",
+      "VQE"
+    ],
+    "summary": "LUSH가 여러 여기상태를 독립적인 scalar 대신 latent Hamiltonian의 고유값과 연산자로 학습하는 방식을 중심으로, QED-GW/BSE·AdaptNTK·reaction flow·계층형 생성 연구를 OLED 역설계 관점에서 검토합니다. 직접 OLED 논문이 없었던 주간이라는 한계와 D-Wave 고전 모사, warm-start QPU sampling의 실행 경계를 분리해 기록합니다.",
+    "href": "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/",
+    "thumbnail": "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/excited_state_reliability_hero-web.webp",
+    "assets": [
+      "evidence_map.svg",
+      "excited_state_reliability_hero-web.webp",
+      "oled_inverse_design_weekly_brief_2026-09-04.pdf",
+      "proposed_workflow.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/",
+        "assets": [
+          "evidence_map.svg",
+          "excited_state_reliability_hero-web.webp",
+          "oled_inverse_design_weekly_brief_2026-09-04.pdf",
+          "proposed_workflow.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 1,
+        "agents": [
+          {
+            "name": "Codex",
+            "role": "primary-source screening, evidence integration, bilingual writing, figures, PDF, and publication",
+            "role_ko": "1차 출처 선별·근거 통합·한영 집필·도해·PDF·게시"
+          }
+        ],
+        "agent_roles": [
+          "Codex — primary-source screening, evidence integration, bilingual writing, figures, PDF, and publication"
+        ],
+        "agent_roles_ko": [
+          "Codex — 1차 출처 선별·근거 통합·한영 집필·도해·PDF·게시"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-04",
+        "primary_source_check": true,
+        "scope": [
+          "eight newly posted or meaningfully revised preprints in the seven-day window",
+          "publication dates, datasets, methods, quantitative findings, execution setting, and non-claims",
+          "bilingual HTML, figures, PDF, metadata, links, and deployed pages"
+        ],
+        "scope_ko": [
+          "7일 범위의 신규 또는 의미 있게 개정된 프리프린트 8편",
+          "게시일·데이터셋·방법·정량 결과·실행 위치·미입증 범위",
+          "한영 HTML·도해·PDF·metadata·링크·배포 페이지"
+        ],
+        "human_review_level": {
+          "ko": "정기 범위와 발행 방향 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "recurring scope and publication direction confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "이번 호는 단일 Codex 실행에서 작성·검증했습니다. 문헌의 수치와 실행 위치를 원문 결과로, OLED 적용안은 리뷰 제안으로 구분했습니다.",
+        "en": "This issue was written and checked in a single Codex run. Source-reported numbers and execution settings are separated from proposed OLED translations."
+      }
+    }
+  },
+  {
+    "folder": "2026-09-03_quantum-full-stack-codesign",
+    "title": "큐비트 수를 넘어: 양자컴퓨팅은 시스템 경쟁으로 간다",
+    "subtitle": "D-Wave 분자 생성과 광섬유 transmon 제어부터 IBM·QuEra·IonQ·오류정정 컴파일까지",
+    "date": "2026-09-03",
+    "updated": "2026-09-04",
+    "category": "Quantum Computing",
+    "tags": [
+      "Full-Stack Co-Design",
+      "D-Wave",
+      "Transmon",
+      "IBM Quantum",
+      "QuEra",
+      "IonQ",
+      "Quantum Chemistry",
+      "Fault-Tolerant Compilation"
+    ],
+    "summary": "D-Wave 분자 생성과 광섬유 기반 transmon control을 출발점으로, IBM sampling·kernel 연구, QuEra·IonQ 응용 PoC, 측정비용과 오류정정 컴파일을 연결합니다. 큐비트 수보다 상태준비·측정·고전 후처리·논리 라우팅을 함께 최적화하는 full-stack co-design이 개발 방향을 좌우한다는 관점입니다.",
+    "href": "reviews/2026-09-03_quantum-full-stack-codesign/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/",
+    "thumbnail": "reviews/2026-09-03_quantum-full-stack-codesign/quantum_full_stack_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-02.pdf",
+      "daily_quantum_brief_2026-09-03.pdf",
+      "quantum_full_stack_hero-web.webp",
+      "quantum_full_stack_map_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-03_quantum-full-stack-codesign/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-02.pdf",
+          "daily_quantum_brief_2026-09-03.pdf",
+          "quantum_full_stack_hero-web.webp",
+          "quantum_full_stack_map_en.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "evidence integration, bilingual writing, figures, and publication",
+            "role_ko": "근거 통합·한영 집필·도해·게시"
+          },
+          {
+            "name": "dwave_evidence",
+            "role": "D-Wave post and primary-source audit",
+            "role_ko": "D-Wave 게시물·1차 출처 감사"
+          },
+          {
+            "name": "transmon_evidence",
+            "role": "transmon post and primary-source audit",
+            "role_ko": "transmon 게시물·1차 출처 감사"
+          },
+          {
+            "name": "hub_structure",
+            "role": "review-hub structure and publication audit",
+            "role_ko": "리뷰허브 구조·게시 감사"
+          },
+          {
+            "name": "recover_sep3_package",
+            "role": "package recovery and public-file validation",
+            "role_ko": "패키지 복구·공개 파일 검증"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — evidence integration, bilingual writing, figures, and publication",
+          "dwave_evidence — D-Wave post and primary-source audit",
+          "transmon_evidence — transmon post and primary-source audit",
+          "hub_structure — review-hub structure and publication audit",
+          "recover_sep3_package — package recovery and public-file validation"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 근거 통합·한영 집필·도해·게시",
+          "dwave_evidence — D-Wave 게시물·1차 출처 감사",
+          "transmon_evidence — transmon 게시물·1차 출처 감사",
+          "hub_structure — 리뷰허브 구조·게시 감사",
+          "recover_sep3_package — 패키지 복구·공개 파일 검증"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-03",
+        "primary_source_check": true,
+        "scope": [
+          "the two forwarded public technical posts and their primary records",
+          "the 2–3 September quantum briefs and cited primary papers",
+          "execution setting, quantitative denominator, classical workload, non-claims, bilingual pages, and public-file privacy"
+        ],
+        "scope_ko": [
+          "전달된 공개 기술 게시물 2건과 연결 1차 출처",
+          "9월 2–3일 양자 브리프와 인용 1차 논문",
+          "실행 위치·정량 분모·고전 계산·미입증 범위·한영 페이지·공개 파일 개인정보"
+        ],
+        "human_review_level": {
+          "ko": "범위·통합 방향·공개 게시 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "scope, synthesis direction, and public publication confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "공개 게시물의 기술 주장만 원 출처와 대조해 사용했으며 비공개 메시지 metadata는 게시물에 포함하지 않았습니다.",
+        "en": "Only public technical claims were checked against primary sources; private message metadata is not included in the publication."
+      }
+    }
+  },
+  {
+    "folder": "2026-09-01_quantum-error-mitigation-net-benefit",
+    "title": "오류완화는 언제 순이득을 내는가",
+    "subtitle": "판독 반복부호와 IBM Heron 연구가 보여준 정확도·큐비트·샷 비용",
+    "date": "2026-09-01",
+    "updated": "2026-09-01",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Error Mitigation",
+      "Measurement Error",
+      "Zero-Noise Extrapolation",
+      "Shot Allocation",
+      "IBM Heron",
+      "Photonic Circuits",
+      "AI for Quantum",
+      "Cavity Materials",
+      "OLED"
+    ],
+    "summary": "판독 반복부호가 11배 물리 큐비트와 추가 CNOT으로 얻는 수치 예측, IBM Heron 연구의 실제 작은 회로 실행과 장치 보정값 기반 ZNE 수치실험을 분리해 읽습니다. 정확도와 함께 shots·추가 회로·2Q depth·postselection·wall-clock을 기록해야 하는 이유를 설명하고, 광자회로·에너지망·AI-for-quantum·cavity 재료 연구를 각각 평가합니다.",
+    "href": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/",
+    "thumbnail": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/quantum_error_mitigation_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-09-01.pdf",
+      "mitigation_resource_ledger_ko.svg",
+      "quantum_error_mitigation_hero-web.webp"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/",
+        "assets": [
+          "daily_quantum_brief_2026-09-01.pdf",
+          "mitigation_resource_ledger_en.svg",
+          "quantum_error_mitigation_hero-web.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 8,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "evidence integration, narrative, figures, PDF correction, and publication",
+            "role_ko": "근거 통합·서사·도해·PDF 수정·게시"
+          },
+          {
+            "name": "verify_mitigation",
+            "role": "primary-source audit of readout mitigation and ZNE",
+            "role_ko": "판독 오류완화·ZNE 1차 출처 감사"
+          },
+          {
+            "name": "verify_adjacent",
+            "role": "primary-source audit of four adjacent research papers",
+            "role_ko": "인접 연구 4건 1차 출처 감사"
+          },
+          {
+            "name": "repo_pattern",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          },
+          {
+            "name": "narrative_outline",
+            "role": "human-readable article structure",
+            "role_ko": "독자 중심 글 구조 설계"
+          },
+          {
+            "name": "pdf_audit",
+            "role": "brief PDF content and layout audit",
+            "role_ko": "브리핑 PDF 내용·조판 감사"
+          },
+          {
+            "name": "english_draft",
+            "role": "English translation draft",
+            "role_ko": "영문 번역 초안"
+          },
+          {
+            "name": "boundary_audit",
+            "role": "final bilingual claim-boundary review",
+            "role_ko": "최종 한영 주장 경계 검토"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — evidence integration, narrative, figures, PDF correction, and publication",
+          "verify_mitigation — primary-source audit of readout mitigation and ZNE",
+          "verify_adjacent — primary-source audit of four adjacent research papers",
+          "repo_pattern — repository and publication-pipeline audit",
+          "narrative_outline — human-readable article structure",
+          "pdf_audit — brief PDF content and layout audit",
+          "english_draft — English translation draft",
+          "boundary_audit — final bilingual claim-boundary review"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 근거 통합·서사·도해·PDF 수정·게시",
+          "verify_mitigation — 판독 오류완화·ZNE 1차 출처 감사",
+          "verify_adjacent — 인접 연구 4건 1차 출처 감사",
+          "repo_pattern — 저장소·게시 파이프라인 감사",
+          "narrative_outline — 독자 중심 글 구조 설계",
+          "pdf_audit — 브리핑 PDF 내용·조판 감사",
+          "english_draft — 영문 번역 초안",
+          "boundary_audit — 최종 한영 주장 경계 검토"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-09-01",
+        "primary_source_check": true,
+        "scope": [
+          "two error-mitigation papers and four adjacent primary research papers",
+          "publication status, execution setting, circuit scale, quantitative claims, and non-claims",
+          "corrected PDF, bilingual HTML and figures, metadata, and local-reference validation"
+        ],
+        "scope_ko": [
+          "오류완화 논문 2건과 인접 1차 연구 논문 4건",
+          "게재 상태·실행 위치·회로 규모·정량 수치·미입증 범위",
+          "수정 PDF·한영 HTML·도해·metadata·로컬 참조 검증"
+        ],
+        "human_review_level": {
+          "ko": "주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "topic, writing direction, and publication request confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "정확한 모델 식별자는 세션 기록에 남지 않았습니다. 기재한 에이전트명과 역할은 이번 게시 작업에서 실제로 사용한 구성입니다.",
+        "en": "The exact model identifier was not retained in the session record. The listed agent names and roles are the configuration actually used for this publication."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-31_thermal-quantum-states-exciton-validation",
+    "title": "뜨거운 양자상태를 만들고, 엑시톤을 따라간다",
+    "subtitle": "유한온도 상태는 어떻게 만들고, 양자 시뮬레이터와 OLED 계산은 무엇으로 믿을 수 있는가",
+    "date": "2026-08-31",
+    "updated": "2026-08-31",
+    "category": "Quantum Computing",
+    "tags": [
+      "Thermal State Preparation",
+      "Analog Quantum Simulation",
+      "Exciton Wavefunction",
+      "OLED",
+      "Quantum Control",
+      "Quantum Hardware",
+      "Quantum Optimization",
+      "Fourier LCU"
+    ],
+    "summary": "유한온도 Gibbs 상태를 준비하는 방법, 2D XY 시뮬레이터와 고전 계산이 같은 확산계수를 내는지, α-sexithiophene의 엑시톤이 400 fs 동안 어떻게 수축하는지 설명합니다. 이어서 하드웨어·펄스 설계와 Fourier-LCU가 회로 연결, 측정 횟수와 고전 집계 비용을 어떻게 맞바꾸는지 살펴봅니다.",
+    "href": "reviews/2026-08-31_thermal-quantum-states-exciton-validation/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/",
+    "thumbnail": "reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-08-31.pdf",
+      "evidence_layers_ko.png",
+      "evidence_layers_ko.svg",
+      "quantum_optimization_stack_ko.png",
+      "quantum_optimization_stack_ko.svg",
+      "thermal_quantum_exciton_hero-web.webp"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/",
+        "assets": [
+          "daily_quantum_brief_2026-08-31.pdf",
+          "evidence_layers_en.svg",
+          "quantum_optimization_stack_en.svg",
+          "thermal_quantum_exciton_hero-web.webp"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 8,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "evidence integration, narrative, figures, and publication",
+            "role_ko": "근거 통합·서사·도해·게시"
+          },
+          {
+            "name": "source_verify",
+            "role": "primary-source and quantitative-claim verification",
+            "role_ko": "1차 출처·정량 주장 검증"
+          },
+          {
+            "name": "repo_pattern",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          },
+          {
+            "name": "hero_image",
+            "role": "scientific editorial hero generation",
+            "role_ko": "과학 편집형 대표 이미지 생성"
+          },
+          {
+            "name": "english_draft",
+            "role": "English translation draft",
+            "role_ko": "영문 번역 초안"
+          },
+          {
+            "name": "boundary_audit",
+            "role": "final bilingual claim-boundary and publication audit",
+            "role_ko": "최종 한영 주장 경계·게시 감사"
+          },
+          {
+            "name": "post_research",
+            "role": "LinkedIn and Fourier-LCU primary-source verification",
+            "role_ko": "LinkedIn·Fourier-LCU 1차 출처 검증"
+          },
+          {
+            "name": "repo_audit",
+            "role": "revision scope and publication-file audit",
+            "role_ko": "수정 범위·게시 파일 감사"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — evidence integration, narrative, figures, and publication",
+          "source_verify — primary-source and quantitative-claim verification",
+          "repo_pattern — repository and publication-pipeline audit",
+          "hero_image — scientific editorial hero generation",
+          "english_draft — English translation draft",
+          "boundary_audit — final bilingual claim-boundary and publication audit",
+          "post_research — LinkedIn and Fourier-LCU primary-source verification",
+          "repo_audit — revision scope and publication-file audit"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 근거 통합·서사·도해·게시",
+          "source_verify — 1차 출처·정량 주장 검증",
+          "repo_pattern — 저장소·게시 파이프라인 감사",
+          "hero_image — 과학 편집형 대표 이미지 생성",
+          "english_draft — 영문 번역 초안",
+          "boundary_audit — 최종 한영 주장 경계·게시 감사",
+          "post_research — LinkedIn·Fourier-LCU 1차 출처 검증",
+          "repo_audit — 수정 범위·게시 파일 감사"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-31",
+        "primary_source_check": true,
+        "scope": [
+          "five APS peer-reviewed papers, one IBM Research preprint, and author posts",
+          "publication dates, execution locations, quantitative claims, and non-claims",
+          "bilingual HTML, figures, PDF, metadata, and local-reference validation"
+        ],
+        "scope_ko": [
+          "APS 동료평가 논문 5건, IBM Research 프리프린트 1건과 저자 게시물",
+          "게재일·실행 위치·정량 수치·미입증 범위",
+          "한영 HTML·도해·PDF·metadata·로컬 참조 검증"
+        ],
+        "human_review_level": {
+          "ko": "주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "topic, framing, and publication request confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "정확한 모델 식별자는 세션 기록에 남지 않았습니다. 기재한 에이전트명과 역할은 이번 게시 작업에서 실제로 사용한 구성입니다.",
+        "en": "The exact model identifier was not retained in the session record. The listed agent names and roles are the configuration actually used for this publication."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-30_practical-quantum-computing-stack",
+    "title": "양자컴퓨터가 계산 시스템이 되기까지",
+    "subtitle": "최신 고전 기준선에서 회로 구현·판독·오류정정·제조 기반까지, 실용성을 가르는 다섯 검증 단계",
+    "date": "2026-08-30",
+    "updated": "2026-08-30",
+    "category": "Quantum Computing",
+    "tags": [
+      "Practical Quantum Computing",
+      "Kohn-Sham FNO",
+      "Quantum Circuit Synthesis",
+      "Quantum Readout",
+      "Fault Tolerance",
+      "Quantum Manufacturing",
+      "OLED"
+    ],
+    "summary": "양자컴퓨터의 실용성을 최신 고전 기준선, 회로 구현, 판독, 오류정정 메모리, 제조·배치의 다섯 검증 단계로 읽습니다. KS-FNO, Classiq challenge, PTSET, FTQC 하한과 Xanadu·Pasqal 소식을 서로 다른 증거 층에 놓고, OLED·재료 PoC에 제한된 양자 커널을 배치하는 기준을 제시합니다.",
+    "href": "reviews/2026-08-30_practical-quantum-computing-stack/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/",
+    "thumbnail": "reviews/2026-08-30_practical-quantum-computing-stack/practical_quantum_stack_hero-web.webp",
+    "assets": [
+      "bounded_quantum_materials_workflow_ko.png",
+      "bounded_quantum_materials_workflow_ko.svg",
+      "daily_quantum_brief_2026-08-30.pdf",
+      "practical_quantum_stack_hero-web.webp",
+      "practical_quantum_validation_gates_ko.png",
+      "practical_quantum_validation_gates_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-08-30_practical-quantum-computing-stack/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/",
+        "assets": [
+          "bounded_quantum_materials_workflow_en.svg",
+          "daily_quantum_brief_2026-08-30.pdf",
+          "practical_quantum_stack_hero-web.webp",
+          "practical_quantum_validation_gates_en.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        "system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 8,
+        "agents": [
+          {
+            "name": "Codex (main)",
+            "role": "orchestration, evidence integration, and publication",
+            "role_ko": "총괄·근거 통합·게시"
+          },
+          {
+            "name": "repo_audit",
+            "role": "repository and publication-pipeline audit",
+            "role_ko": "저장소·게시 파이프라인 감사"
+          },
+          {
+            "name": "source_verify",
+            "role": "primary-source and quantitative-claim verification",
+            "role_ko": "1차 출처·정량 주장 검증"
+          },
+          {
+            "name": "editorial",
+            "role": "bilingual narrative and figure specification",
+            "role_ko": "한영 서사·도해 명세"
+          },
+          {
+            "name": "boundary_review",
+            "role": "independent evidence-boundary review",
+            "role_ko": "독립 증거 경계 검토"
+          },
+          {
+            "name": "translation_audit",
+            "role": "English fidelity and terminology audit",
+            "role_ko": "영문 충실도·용어 감사"
+          },
+          {
+            "name": "public_audit",
+            "role": "public-site and accessibility audit",
+            "role_ko": "공개 사이트·접근성 감사"
+          },
+          {
+            "name": "deploy_qa",
+            "role": "local and deployed-page verification",
+            "role_ko": "로컬·배포 페이지 검증"
+          }
+        ],
+        "agent_roles": [
+          "Codex (main) — orchestration, evidence integration, and publication",
+          "repo_audit — repository and publication-pipeline audit",
+          "source_verify — primary-source and quantitative-claim verification",
+          "editorial — bilingual narrative and figure specification",
+          "boundary_review — independent evidence-boundary review",
+          "translation_audit — English fidelity and terminology audit",
+          "public_audit — public-site and accessibility audit",
+          "deploy_qa — local and deployed-page verification"
+        ],
+        "agent_roles_ko": [
+          "Codex (main) — 총괄·근거 통합·게시",
+          "repo_audit — 저장소·게시 파이프라인 감사",
+          "source_verify — 1차 출처·정량 주장 검증",
+          "editorial — 한영 서사·도해 명세",
+          "boundary_review — 독립 증거 경계 검토",
+          "translation_audit — 영문 충실도·용어 감사",
+          "public_audit — 공개 사이트·접근성 감사",
+          "deploy_qa — 로컬·배포 페이지 검증"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-30",
+        "primary_source_check": true,
+        "scope": [
+          "official challenge specification",
+          "three arXiv v1 preprints and full text",
+          "Government of Canada release, Pasqal release, and SEC filing",
+          "bilingual HTML, figures, PDF, metadata, links, and responsive rendering"
+        ],
+        "scope_ko": [
+          "공식 challenge 사양",
+          "arXiv v1 프리프린트 3건과 원문",
+          "캐나다 정부·Pasqal 발표와 SEC 공시",
+          "한영 HTML·도해·PDF·metadata·링크·반응형 렌더링"
+        ],
+        "human_review_level": {
+          "ko": "주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "topic, framing, and publication request confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "모델의 정확한 식별자는 세션 기록에 남지 않았습니다. 기재된 에이전트명과 역할은 이번 게시 작업에서 실제로 사용한 멀티에이전트 구성입니다.",
+        "en": "The exact model identifier was not retained in the session record. The listed agent names and roles are the multi-agent configuration actually used for this publication."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-29_quantum-simulation-vibronic-dynamics",
+    "title": "정적 에너지에서 광여기 동역학으로: PennyLane 진동-전자 양자 시뮬레이션의 원리와 연구 전망",
+    "subtitle": "KDC 해밀토니안을 격자 큐비트로 옮기는 방법, 23-wire 고전 시뮬레이션의 계산 경계, TADF·OLED 연구로 확장하기 위한 조건",
+    "date": "2026-08-29",
+    "updated": "2026-08-29",
+    "category": "Quantum Computing",
+    "tags": [
+      "Vibronic Dynamics",
+      "Nonadiabatic Dynamics",
+      "Quantum Simulation",
+      "PennyLane",
+      "Quantum Chemistry",
+      "OLED"
+    ],
+    "summary": "PennyLane 데모가 KDC 진동-전자 해밀토니안을 실공간 격자, QROM, 가역 산술과 2차 Trotter 전개로 옮기는 방법을 해설합니다. 23-wire CPU 상태벡터 toy simulation과 실제 QPU·분자 계산의 경계를 구분하고, TADF·OLED의 spin-vibronic 동역학으로 확장하기 위한 검증 단계를 제시합니다.",
+    "href": "reviews/2026-08-29_quantum-simulation-vibronic-dynamics/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/",
+    "thumbnail": "reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg",
+    "assets": [
+      "vibronic_dynamics_algorithm_map.svg",
+      "vibronic_dynamics_quantum_simulation_hero.jpg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/",
+        "assets": [
+          "vibronic_dynamics_algorithm_map.svg",
+          "vibronic_dynamics_quantum_simulation_hero.jpg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode",
+        "system_ko": "OpenAI Codex Work Mode",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "Codex",
+            "role": "orchestration and editorial integration",
+            "role_ko": "총괄 편집·통합"
+          },
+          {
+            "name": "Volta",
+            "role": "LinkedIn post and primary-paper research",
+            "role_ko": "LinkedIn 게시물·연결 논문 조사"
+          },
+          {
+            "name": "Feynman",
+            "role": "disclosure and authoring-standard design",
+            "role_ko": "공개·하네스 기준 설계"
+          },
+          {
+            "name": "Carson",
+            "role": "repository audit and publication QA",
+            "role_ko": "저장소 감사·게시 QA"
+          },
+          {
+            "name": "Kierkegaard",
+            "role": "independent final diff review",
+            "role_ko": "독립 최종 차분 검토"
+          }
+        ],
+        "agent_roles": [
+          "Codex — orchestration and editorial integration",
+          "Volta — LinkedIn post and primary-paper research",
+          "Feynman — disclosure and authoring-standard design",
+          "Carson — repository audit and publication QA",
+          "Kierkegaard — independent final diff review"
+        ],
+        "agent_roles_ko": [
+          "Codex — 총괄 편집·통합",
+          "Volta — LinkedIn 게시물·연결 논문 조사",
+          "Feynman — 공개·하네스 기준 설계",
+          "Carson — 저장소 감사·게시 QA",
+          "Kierkegaard — 독립 최종 차분 검토"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-29",
+        "primary_source_check": true,
+        "scope": [
+          "PennyLane demo and fixed-commit source",
+          "peer-reviewed paper and current arXiv version",
+          "official documentation",
+          "equation, table, link, metadata, and final-HTML rendering"
+        ],
+        "scope_ko": [
+          "PennyLane 데모와 고정 commit 코드",
+          "동료평가 논문과 최신 arXiv 버전",
+          "공식 문서",
+          "수식·표·링크·metadata·최종 HTML"
+        ],
+        "human_review_level": {
+          "ko": "범위·방향 확인 및 발행 요청. 문장 단위 검토 여부는 별도 기록되지 않음",
+          "en": "scope, direction, and publication request confirmed; line-by-line review not separately retained"
+        }
+      },
+      "note": {
+        "ko": "원 리뷰 작성 세션의 전체 에이전트 roster는 보존되지 않았습니다. 기재한 역할은 2026-08-29 공개 보완과 방법 업데이트에서 확인 가능한 역할입니다.",
+        "en": "The original article session did not retain a complete agent roster. The listed roles are the verifiable roles used for the 2026-08-29 public repair and methods update."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
+    "title": "OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지",
+    "subtitle": "2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준",
+    "date": "2026-08-28",
+    "updated": "2026-08-28",
+    "category": "Materials AI",
+    "tags": [
+      "OLED",
+      "TADF",
+      "Molecular Inverse Design",
+      "Spin-Vibronic Coupling",
+      "DFT/ML",
+      "VQE"
+    ],
+    "summary": "이번 주 OLED 광물리 논문은 위치 이성질체별 ISC 속도를 direct SOC, Herzberg-Teller, spin-vibronic 기여로 분해했습니다. 이를 바탕으로 ΔEST 중심 데이터셋을 state character, higher triplet, SOC와 promoting mode까지 포함하는 물성 라벨로 확장할 필요성을 검토하고, DensIP·Kohn-Sham neural operator·closed-loop AI와 VQE 구성요소의 적용 범위를 정리합니다.",
+    "href": "reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/",
+    "thumbnail": "reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/mechanism_aware_oled_inverse_design_hero.jpg",
+    "assets": [
+      "evidence_readiness_map.svg",
+      "mechanism_aware_oled_inverse_design_hero.jpg",
+      "oled_inverse_design_weekly_brief_2026-08-28.pdf",
+      "oled_weekly_pipeline.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/",
+        "assets": [
+          "evidence_readiness_map.svg",
+          "mechanism_aware_oled_inverse_design_hero.jpg",
+          "oled_inverse_design_weekly_brief_2026-08-28.pdf",
+          "oled_weekly_pipeline.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-28",
+        "primary_source_check": true,
+        "scope": [
+          "primary and official sources listed in the article",
+          "public links and final HTML"
+        ],
+        "scope_ko": [
+          "본문에 기재된 원문·공식 자료",
+          "공개 링크와 최종 HTML"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-27_classiq-ashn-circuit-compression",
+    "title": "양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로",
+    "subtitle": "고수준 기능 합성, automatic control skips, native gate·SWAP absorption이 회로 비용을 줄이는 서로 다른 층을 비교합니다",
+    "date": "2026-08-27",
+    "updated": "2026-08-27",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Compilation",
+      "Classiq",
+      "Qmod",
+      "AshN",
+      "Native Gates",
+      "Circuit Depth"
+    ],
+    "summary": "Classiq은 기능 모델에서 함수 구현·ancilla·control pattern을 고르고, AshN은 실제 초전도 QPU의 native two-qubit gate로 논리 연산과 routing SWAP을 흡수합니다. CX count, mapped depth와 QPU fidelity를 분리해 두 접근의 공통 원리, 정량 결과, 결합 가능성과 미입증 범위를 검토합니다.",
+    "href": "reviews/2026-08-27_classiq-ashn-circuit-compression/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/",
+    "thumbnail": "reviews/2026-08-27_classiq-ashn-circuit-compression/classiq_ashn_hero_imagegen-web.webp",
+    "assets": [
+      "classiq_ashn_evidence_map.png",
+      "classiq_ashn_evidence_map.svg",
+      "classiq_ashn_hero_imagegen-web.webp",
+      "stack_where_circuit_shrinks.png",
+      "stack_where_circuit_shrinks.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-27",
+        "primary_source_check": true,
+        "scope": [
+          "primary and official sources listed in the article",
+          "public links and final HTML"
+        ],
+        "scope_ko": [
+          "본문에 기재된 원문·공식 자료",
+          "공개 링크와 최종 HTML"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-27_dwave-molecular-inverse-design-benchmark",
+    "title": "D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니",
+    "subtitle": "QM9 5,000개에서 ML·분자 생성·QUBO 선택·QPU 실행·PySCF 검증까지 연결한 계산 스냅샷",
+    "date": "2026-08-27",
+    "updated": "2026-08-27",
+    "category": "Materials AI",
+    "tags": [
+      "Molecular Inverse Design",
+      "D-Wave",
+      "QUBO",
+      "Chemprop",
+      "PySCF",
+      "Active Learning"
+    ],
+    "summary": "Chemprop D-MPNN과 ExtraTrees/Morgan 예측, 세 가지 고전 분자 생성기, 18변수 BQM을 거쳐 후보 3개를 선택했습니다. D-Wave QPU 결과를 exact 기준과 비교하고 PySCF DFT로 6개 후보를 재검증했으며, 고정 후보군 replay와 실제 active-learning loop의 증거 경계를 구분합니다.",
+    "href": "reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/",
+    "thumbnail": "reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png",
+    "assets": [
+      "02_qm9_surrogate_parity.png",
+      "03_generator_metrics.png",
+      "04_acquisition_comparison.png",
+      "05_dft_molecule_validation.png",
+      "06_qm9_replay_convergence.png",
+      "07_exact_vs_qpu_dft_batch.png",
+      "molecular_inverse_design_hero.png",
+      "molecular_inverse_design_infographic.png",
+      "molecular_inverse_design_infographic.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/",
+        "assets": [
+          "02_qm9_surrogate_parity.png",
+          "03_generator_metrics.png",
+          "04_acquisition_comparison.png",
+          "05_dft_molecule_validation.png",
+          "06_qm9_replay_convergence.png",
+          "07_exact_vs_qpu_dft_batch.png",
+          "molecular_inverse_design_hero.png",
+          "molecular_inverse_design_infographic_en.png",
+          "molecular_inverse_design_infographic_en.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-27",
+        "primary_source_check": true,
+        "scope": [
+          "primary and official sources listed in the article",
+          "public links and final HTML"
+        ],
+        "scope_ko": [
+          "본문에 기재된 원문·공식 자료",
+          "공개 링크와 최종 HTML"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-26_quantum-computing-layers",
+    "title": "재료 계산에서 QRAM까지: 양자 연구를 계산 계층으로 읽는 법",
+    "subtitle": "SiC 색 중심 DFT, 실제 QPU 라우터, 페르미온 회로 컴파일과 QML 시뮬레이션을 같은 기준표 위에서 구분합니다",
+    "date": "2026-08-26",
+    "updated": "2026-08-26",
+    "category": "Quantum Computing",
+    "tags": [
+      "Quantum Computing",
+      "Materials Science",
+      "QRAM",
+      "Qiskit Fermions",
+      "VQE",
+      "QML"
+    ],
+    "summary": "8월 25일 공개된 QRAM router는 실제 초전도 QPU 실험입니다. SiC color-center 연구는 고전 HSE06/DFT, Qiskit Fermions의 depth 12는 컴파일 결과이며, PAS와 QRC+PIC는 시뮬레이션입니다. 서로 다른 증거 층을 분리해 성취와 남은 비용을 평가합니다.",
+    "href": "reviews/2026-08-26_quantum-computing-layers/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-26_quantum-computing-layers/",
+    "thumbnail": "reviews/2026-08-26_quantum-computing-layers/quantum_layers_hero_imagegen-web.webp",
+    "assets": [
+      "daily_quantum_brief_2026-08-26.pdf",
+      "qrc_baseline_comparison.svg",
+      "quantum_evidence_layers.svg",
+      "quantum_layers_hero_imagegen-web.webp"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-26",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-08-24_oti-iqcc-oled-quantum-emulation",
+    "title": "200 논리 큐비트 OLED 계산, 양자컴퓨터였나?",
+    "subtitle": "OTI Lumionics·SAIT의 JACS iQCC 연구가 입증한 것과 실제 QPU가 아직 입증하지 못한 것을 구분합니다",
+    "date": "2026-08-24",
+    "updated": "2026-08-24",
+    "category": "Materials AI",
+    "tags": [
+      "Quantum Chemistry",
+      "OLED",
+      "iQCC",
+      "Classical Emulation",
+      "Ir/Pt Phosphors"
+    ],
+    "summary": "OTI Lumionics와 SAIT는 양자-native iQCC를 고전 CPU에서 약 200 logical-qubit 규모로 에뮬레이션해 Ir(III)·Pt(II) 인광체의 T1−S0 갭을 계산했습니다. 실제 QPU 실행이나 양자 우위가 아니라 미래 하드웨어가 넘어야 할 정확도·규모·고전 tractability 기준선입니다.",
+    "href": "reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/",
+    "thumbnail": "reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/oti_iqcc_oled_hero_imagegen-web.webp",
+    "assets": [
+      "oti_iqcc_mlct_lc_imagegen-web.webp",
+      "oti_iqcc_oled_boundary.svg",
+      "oti_iqcc_oled_hero_imagegen-web.webp"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-08-24",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-06-11_QC-based-inverse-design",
+    "title": "양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가",
+    "subtitle": "전자구조 계산부터 물성 학습, 후보 생성, 조합 최적화까지 재료정보학 파이프라인의 양자 삽입점을 점검합니다",
+    "date": "2026-07-11",
+    "updated": "2026-07-12",
+    "category": "Materials AI",
+    "tags": [
+      "Materials Informatics",
+      "Quantum-Classical",
+      "Inverse Design",
+      "Quantum Chemistry",
+      "QML"
+    ],
+    "summary": "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 선택 가능한 전문 계산 모듈로 나눕니다. QPE·VQE, QML, QCBM·QBM, QUBO를 푸는 QA·QAOA의 역할과 성숙도를 구분하고, QAE는 장기 확장 모듈로 둡니다. 청색 OLED는 이 구조를 점검하는 첫 유즈케이스입니다.",
+    "href": "reviews/2026-06-11_QC-based-inverse-design/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-06-11_QC-based-inverse-design/",
+    "thumbnail": "reviews/2026-06-11_QC-based-inverse-design/candidate_journey_quantum_specialists.svg",
+    "assets": [
+      "blue_pholed_three_component_hero.png",
+      "candidate_journey_quantum_specialists.svg",
+      "candidate_journey_quantum_specialists_mobile.svg",
+      "candidate_to_device_validation_loop.png",
+      "electronic_structure_quantum_bridge.svg",
+      "electronic_structure_quantum_bridge_mobile.svg",
+      "evidence_maturity_ladder.svg",
+      "evidence_maturity_ladder_mobile.svg",
+      "exciplex_cohost_dopant_context.png",
+      "legacy_pipeline_quantum_interventions.svg",
+      "legacy_pipeline_quantum_interventions_mobile.svg",
+      "qa_qaoa_search_intuition.svg",
+      "qa_qaoa_search_intuition_mobile.svg",
+      "quantum_advantage_ledger.svg",
+      "quantum_advantage_ledger_mobile.svg",
+      "qubo_qa_qaoa_bridge.svg",
+      "qubo_qa_qaoa_bridge_mobile.svg",
+      "vqe_qpe_mechanism_comparison.svg",
+      "vqe_qpe_mechanism_comparison_mobile.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "AI-assisted workflow; exact system record not retained",
+        "system_ko": "AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-07-12",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
+    "title": "AI 처리장치 스택: CPU, GPU, TPU, NPU, LPU는 왜 나뉘는가",
+    "subtitle": "병렬성, 데이터 이동, 지연시간, 전력, 소프트웨어 스택으로 AI 칩의 역할을 다시 읽습니다",
+    "date": "2026-06-17",
+    "updated": "2026-06-17",
+    "category": "AI Hardware",
+    "tags": [
+      "AI Hardware",
+      "AI Accelerators",
+      "GPU/TPU",
+      "NPU/LPU"
+    ],
+    "summary": "NPU, LPU, TPU, GPU, CPU, DPU/IPU, QPU를 새 약어 경쟁이 아니라 workload와 데이터 경로의 분화로 읽습니다. 메모리 이동, 정밀도, 지연시간, 인프라 오프로드가 왜 별도 처리장치를 낳는지 정리합니다.",
+    "href": "reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/",
+    "thumbnail": "reviews/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/fig01_processor_stack_hero_v2-web.png",
+    "assets": [
+      "fig01_processor_stack_hero_v2-web.png",
+      "fig02_processor_workload_map.svg",
+      "fig03_memory_wall_imagegen-web.png",
+      "fig04_processor_routing_remotion.png",
+      "fig05_edge_npu_imagegen-web.png",
+      "fig06_lpu_dataflow_imagegen-web.png",
+      "fig07_specialization_curve.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "AI-assisted workflow; exact system record not retained",
+        "system_ko": "AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-06-17",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-06-05_neuromorphic-edge-ai",
+    "title": "뉴로모픽, 항상 켜진 AI의 감각층",
+    "subtitle": "스마트홈·오디오·웨어러블 센서에서 보는 저전력 edge intelligence",
+    "date": "2026-06-05",
+    "updated": "2026-06-23",
+    "category": "AI Hardware",
+    "tags": [
+      "Neuromorphic AI",
+      "Edge AI",
+      "Always-on AI",
+      "AIoT"
+    ],
+    "summary": "ScienceTimes가 소개한 MoS2 인-센서 뉴로모픽 비전 논문을 출발점으로, 뉴로모픽이 스마트홈 presence sensing, 오디오 wake/event detection, 웨어러블, smart camera 같은 항상 켜진 생활형 edge AI에서 어떤 의미를 갖는지 점검합니다.",
+    "href": "reviews/2026-06-05_neuromorphic-edge-ai/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-06-05_neuromorphic-edge-ai/",
+    "thumbnail": "reviews/2026-06-05_neuromorphic-edge-ai/neuromorphic_everyday_ai_hero-web.png",
+    "assets": [
+      "in_sensor_neuromorphic_vision.svg",
+      "neuromorphic_edge_commercialization_map.svg",
+      "neuromorphic_edge_stack.svg",
+      "neuromorphic_everyday_ai_hero-web.png",
+      "neuromorphic_in_sensor_boundary.svg",
+      "neuromorphic_maturity_timeline.svg",
+      "neuromorphic_mos2_lab_section-web.png",
+      "neuromorphic_sensor_time_section-web.png",
+      "neuromorphic_workload_fit.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex Agent",
+        "system_ko": "Codex Agent",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-06-23",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-30_shadow-ai-work-boundary-reconfiguration",
+    "title": "AI Native 시대의 일하는 방식: Shadow AI와 우리",
+    "subtitle": "DX를 이룬 조직에서도 AX가 native하게 흐르지 못할 때, 숨은 AI 활용과 번아웃이 어떻게 생기는지 살펴봅니다",
+    "date": "2026-05-31",
+    "updated": "2026-05-31",
+    "category": "AI Governance",
+    "tags": [
+      "Shadow AI",
+      "AI Governance",
+      "AX",
+      "AI Burnout"
+    ],
+    "summary": "외부 AI 도구의 속도, 회사 내부 silo, 승인·검증 경로의 지연이 만날 때 Shadow AI는 개인의 일탈이 아니라 조직이 아직 흡수하지 못한 전환 비용으로 나타납니다.",
+    "href": "reviews/2026-05-30_shadow-ai-work-boundary-reconfiguration/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-30_shadow-ai-work-boundary-reconfiguration/",
+    "thumbnail": "reviews/2026-05-30_shadow-ai-work-boundary-reconfiguration/shadow_ai_calm_silo_night_v11_clean.png",
+    "assets": [
+      "shadow_ai_absorption_gap_hero.svg",
+      "shadow_ai_calm_silo_night_v11_clean.png",
+      "shadow_ai_governance_model.svg",
+      "shadow_ai_governed_paths_room.png",
+      "shadow_ai_hidden_work_cascade.png",
+      "shadow_ai_mechanism_flow.svg",
+      "shadow_ai_reference_map.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-31",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-30_quantum-informed-ai-chaotic-processes",
+    "title": "혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까",
+    "subtitle": "난류와 같은 chaotic process에서 장기 통계를 유지하는 예측을 위해 QIML이 제안한 양자 prior 접근을 살펴봅니다",
+    "date": "2026-05-30",
+    "updated": "2026-05-30",
+    "category": "Quantum AI",
+    "tags": [
+      "Quantum AI",
+      "Scientific ML",
+      "Chaotic Systems",
+      "QIML"
+    ],
+    "summary": "Lev Selector의 AI Updates Weekly에서 포착한 QIML 연구를 출발점으로, 양자 생성 모델이 혼돈계의 불변 통계를 prior로 압축하고 고전 예측기의 긴 rollout을 안정화할 수 있는지 검토합니다.",
+    "href": "reviews/2026-05-30_quantum-informed-ai-chaotic-processes/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-30_quantum-informed-ai-chaotic-processes/",
+    "thumbnail": "reviews/2026-05-30_quantum-informed-ai-chaotic-processes/qiml_hero_quantum_prior-web.png",
+    "assets": [
+      "chaos_metrics.svg",
+      "claim_check.svg",
+      "feynman_chaos_drop_analogy-web.png",
+      "literature_map.svg",
+      "long_rollout_physics_check-web.png",
+      "qiml_hero_quantum_prior-web.png",
+      "qprior_compact_memory_explainer-web.png",
+      "qprior_pipeline.svg",
+      "quantum_chaos_hero.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "AI-assisted workflow; exact system record not retained",
+        "system_ko": "AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-30",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-23_ai-scientist-execution-harness",
+    "title": "AI 과학자, 시작의 끝에서",
+    "subtitle": "에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가",
+    "date": "2026-05-23",
+    "updated": "2026-05-25",
+    "category": "AI for Science",
+    "tags": [
+      "AI for Science",
+      "AI Scientist",
+      "AI Co-Scientist",
+      "Research Harness"
+    ],
+    "summary": "에르되시 문제 #1196에서 출발해 AI 과학자가 연구의 속도를 높이는 장면과, 그 속도를 검증 가능한 작업으로 바꾸기 위해 필요한 연구 실행 하네스를 함께 살펴봅니다.",
+    "href": "reviews/2026-05-23_ai-scientist-execution-harness/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/",
+    "thumbnail": "reviews/2026-05-23_ai-scientist-execution-harness/ai_scientist_erdos_blackboard.png",
+    "assets": [
+      "agent-harness-hero-v2-web.png",
+      "ai_scientist_coscientist_lab.png",
+      "ai_scientist_erdos_1196_explainer.svg",
+      "ai_scientist_erdos_blackboard.png",
+      "ai_scientist_guarded_library.png",
+      "ai_scientist_guardrail_matrix.svg",
+      "ai_scientist_harness_example.svg",
+      "ai_scientist_validation_loop.svg",
+      "coding-merge-illustration-web.png",
+      "connector-permission-skywork-magazine.svg",
+      "domain-safety-harness.svg",
+      "enterprise-operating-path-hybrid.svg",
+      "harness-stack.svg",
+      "memory-evaluation-control-loop.svg",
+      "orchestration-matrix.svg",
+      "reference-map-legend.svg",
+      "tabpfn_oled_data_junction_imagegen.png",
+      "tabpfn_oled_hero_imagegen.png",
+      "tabpfn_pretraining_context_generalization.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-25",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-07_tabpfn-oled-manufacturing-foundation-model",
+    "title": "TabPFN: Foundation model for Tabular inference",
+    "subtitle": "OLED 분자 계산, 공정, SCM, 검사 데이터에서 표 기반 Foundation 모델을 어떻게 읽을 것인가",
+    "date": "2026-05-17",
+    "updated": "2026-05-21",
+    "category": "Materials AI",
+    "tags": [
+      "TabPFN",
+      "OLED",
+      "Materials Informatics",
+      "Data Provenance"
+    ],
+    "summary": "작은 표 데이터에서 빠른 기준 모델을 세우는 TabPFN의 장점과, OLED 연구·제조 데이터에 적용할 때 함께 보아야 할 계산 조건과 실험 provenance를 살펴봅니다.",
+    "href": "reviews/2026-05-07_tabpfn-oled-manufacturing-foundation-model/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-07_tabpfn-oled-manufacturing-foundation-model/",
+    "thumbnail": "reviews/2026-05-07_tabpfn-oled-manufacturing-foundation-model/tabpfn_oled_hero_imagegen.png",
+    "assets": [
+      "tabpfn_oled_data_junction_imagegen.png",
+      "tabpfn_oled_hero_imagegen.png",
+      "tabpfn_pretraining_context_generalization.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-21",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-06_gpt-5-5-family-post-release-evaluation",
+    "title": "GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건",
+    "subtitle": "긴 작업 수행 능력, Hallucination 평가, Claude Opus 4.7 비교, 안전한 활용 조건",
+    "date": "2026-05-10",
+    "updated": "2026-05-10",
+    "category": "Frontier Models",
+    "tags": [
+      "GPT-5.5",
+      "Claude Opus",
+      "Agentic AI",
+      "Trust and Safety"
+    ],
+    "summary": "GPT-5.5 계열 모델의 장시간 작업 수행 능력과 외부 평가를 함께 보며, 실제 업무에 맡길 수 있는 일의 조건을 점검합니다.",
+    "href": "reviews/2026-05-06_gpt-5-5-family-post-release-evaluation/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-06_gpt-5-5-family-post-release-evaluation/",
+    "thumbnail": "reviews/2026-05-06_gpt-5-5-family-post-release-evaluation/gpt55_agent_workbench_hero-web.png",
+    "assets": [
+      "gpt55_agent_workbench_hero-web.png",
+      "gpt55_development_arc.svg",
+      "gpt55_engineering_harness.svg",
+      "gpt55_hallucination_lens.svg",
+      "gpt55_opus_comparison.svg",
+      "gpt55_safe_delegation_matrix.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex Agent",
+        "system_ko": "Codex Agent",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-10",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  },
+  {
+    "folder": "2026-05-09_ai-updates-weekly",
+    "title": "AI 에이전트를 일하게 하는 기술: 하네스 엔지니어링",
+    "subtitle": "도구 호출, 권한, 기억, 검증, 병합이 에이전트 운영의 기본 조건이 되는 이유",
+    "date": "2026-05-09",
+    "updated": "2026-05-13",
+    "category": "Agent Systems",
+    "tags": [
+      "AI Agents",
+      "Harness Engineering",
+      "Developer Tools",
+      "Governance"
+    ],
+    "summary": "모델 성능만으로는 설명하기 어려운 에이전트 운영 문제를 권한, 메모리, 검증, 승인, 병합의 관점에서 따라갑니다.",
+    "href": "reviews/2026-05-09_ai-updates-weekly/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/",
+    "thumbnail": "reviews/2026-05-09_ai-updates-weekly/agent-harness-hero-v2-web.png",
+    "assets": [
+      "agent-harness-hero-v2-web.png",
+      "coding-merge-illustration-web.png",
+      "connector-permission-skywork-magazine.svg",
+      "domain-safety-harness.svg",
+      "enterprise-operating-path-hybrid.svg",
+      "harness-stack.svg",
+      "memory-evaluation-control-loop.svg",
+      "orchestration-matrix.svg",
+      "reference-map-legend.svg"
+    ],
+    "translations": [],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "Codex-based GPT-5-family agent harness",
+        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": null,
+        "agents": [],
+        "agent_roles": [
+          "individual agent-role roster not retained"
+        ],
+        "agent_roles_ko": [
+          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-05-13",
+        "primary_source_check": null,
+        "scope": [
+          "original source-verification record not retained",
+          "current public links and final HTML checked"
+        ],
+        "scope_ko": [
+          "원 작성 세션의 출처 검증 기록 미보존",
+          "현재 공개 링크와 최종 HTML 확인"
+        ],
+        "human_review_level": {
+          "ko": "세부 검토 수준은 별도 기록되지 않음",
+          "en": "review level not separately retained"
+        }
+      },
+      "note": {
+        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
+        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+      }
+    }
+  }
+]

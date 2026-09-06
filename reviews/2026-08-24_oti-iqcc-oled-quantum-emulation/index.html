@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="OTI Lumionics와 SAIT의 JACS iQCC 연구를 실제 QPU, 고전 에뮬레이션, OLED 계산의 관점에서 검증한 기술 리뷰">
+  <title>200 논리 큐비트 OLED 계산, 양자컴퓨터였나?</title>
+  <style>
+    :root {
+      --paper:#fbfaf7; --paper2:#f2f0ea; --ink:#17211d; --muted:#5f6b65;
+      --line:#d8d5cb; --teal:#0f766e; --blue:#25456f; --amber:#a35a16;
+      --rose:#8b3a3a; --green:#e9f3ef; --blue-soft:#e9eef5; --amber-soft:#f6eee2;
+      --wrap:1180px; --article:790px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Noto Sans KR",Arial,sans-serif;text-rendering:optimizeLegibility}
+    a{color:var(--teal);text-underline-offset:3px}.topline{border-bottom:1px solid var(--line);background:#fff}
+    .topline-inner,.hero-inner,.content-grid{width:min(var(--wrap),calc(100% - 40px));margin:0 auto}
+    .topline-inner{display:flex;justify-content:space-between;gap:18px;padding:14px 0;color:var(--muted);font-size:.9rem}
+    .topline a{font-weight:700;text-decoration:none;color:var(--blue)}
+    .hero{border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(15,118,110,.12),transparent 46%),linear-gradient(180deg,#fff 0%,var(--paper) 100%)}
+    .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:40px;align-items:center;padding:46px 0 36px}
+    .eyebrow{margin:0 0 16px;color:var(--teal);font-size:.82rem;font-weight:800;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(2.2rem,5vw,4.1rem);line-height:1.04;letter-spacing:-.035em;word-break:keep-all}
+    .dek{margin:22px 0 0;color:var(--muted);font-size:1.08rem;line-height:1.75;word-break:keep-all}
+    .hero-figure{margin:0;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}
+    .hero-figure img{display:block;width:100%;height:auto}.hero-figure figcaption{padding:9px 5px 2px;color:var(--muted);font-size:.78rem;line-height:1.55}
+    .figure-panel{margin:28px 0 34px;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}
+    .figure-panel img{display:block;width:100%;height:auto;border-radius:6px}.figure-panel figcaption{padding:10px 5px 2px;color:var(--muted);font-size:.82rem;line-height:1.6}
+    .content-grid{display:grid;grid-template-columns:minmax(0,var(--article)) minmax(250px,310px);gap:52px;align-items:start;padding:40px 0 62px}
+    article{min-width:0}.lead{font-size:1.16rem;line-height:1.82;color:#20302a}
+    article h2{margin:48px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:1.7rem;line-height:1.3;word-break:keep-all}
+    article h3{margin:30px 0 12px;color:var(--blue);font-size:1.18rem;line-height:1.4}
+    article p,article li{font-size:1.01rem;line-height:1.86}article p{margin:0 0 18px}article ul,article ol{padding-left:24px;margin:0 0 22px}article li+li{margin-top:8px}
+    blockquote{margin:28px 0;padding:18px 22px;border-left:4px solid var(--teal);background:var(--green);font-size:1.08rem;line-height:1.75}
+    .verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+    .verdict div{padding:17px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .verdict strong{display:block;margin-bottom:8px;color:var(--blue);font-size:.9rem}.verdict span{color:var(--muted);line-height:1.6}
+    .callout{margin:26px 0;padding:18px 20px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .callout.evidence{border-color:#9fc3be;background:var(--green)}.callout.caution{border-color:#d6b17d;background:var(--amber-soft)}
+    .callout-label{margin:0 0 7px!important;color:var(--teal);font-size:.8rem!important;font-weight:800;text-transform:uppercase}
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:25px 0}.flow div{position:relative;padding:15px 10px;text-align:center;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:.87rem;line-height:1.5}.flow div:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:50%;z-index:2;color:var(--teal);font-weight:900;transform:translateY(-50%)}
+    .table-wrap{overflow-x:auto;margin:20px 0 27px}.table-wrap:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.9rem}caption{padding:0 0 10px;text-align:left;color:var(--muted);font-weight:700}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}th{background:var(--blue-soft);color:var(--blue)}tr.highlight td{background:#eef7f4;font-weight:700}
+    .metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}.metric{padding:15px;border:1px solid var(--line);background:#fff;text-align:center}.metric strong{display:block;color:var(--teal);font-size:1.45rem}.metric span{display:block;margin-top:5px;color:var(--muted);font-size:.82rem;line-height:1.4}
+    .sidebar{position:sticky;top:20px}.side-section{margin-bottom:18px;padding:18px 19px;border:1px solid var(--line);background:#fff}.side-section h2{margin:0 0 12px;color:var(--blue);font-size:.88rem;text-transform:uppercase}.side-section ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.65}.side-section li+li{margin-top:7px}.side-section p{color:var(--muted);font-size:.9rem;line-height:1.65}.tag{display:inline-block;margin:0 5px 6px 0;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700}
+    .refs{font-size:.92rem}.refs li{overflow-wrap:anywhere}.public-note{width:min(var(--wrap),calc(100% - 40px));margin:0 auto 50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.87rem;line-height:1.65}
+    code{padding:.12em .35em;background:var(--paper2);border-radius:4px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:620px}.sidebar{position:static}.verdict{grid-template-columns:1fr}.flow{grid-template-columns:1fr;row-gap:24px}.flow div:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-22px;transform:translateX(-50%)}.metric-strip{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.35rem}.metric-strip{grid-template-columns:1fr 1fr}article h2{font-size:1.42rem}th,td{min-width:112px}}
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/">
+    <meta property="og:title" content="200 논리 큐비트 OLED 계산, 양자컴퓨터였나?">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline"><div class="topline-inner"><span>AI Tech Review Letters · 2026-08-24</span><span><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브로 돌아가기</a></span></div></div>
+  <header class="hero"><div class="hero-inner">
+    <section>
+      <p class="eyebrow">Materials AI · Quantum Chemistry</p>
+      <h1>200 논리 큐비트 OLED 계산,<br>양자컴퓨터였나?</h1>
+      <p class="dek">OTI Lumionics와 Samsung Advanced Institute of Technology(SAIT, 삼성종합기술원)의 JACS 연구를 검토합니다. Ir(III)·Pt(II) 인광체에서 계산한 결과, 실제 QPU 실행 여부, 미래 양자 하드웨어가 비교해야 할 고전 에뮬레이션 기준선을 구분했습니다.</p>
+    </section>
+    <figure class="hero-figure"><img src="oti_iqcc_oled_hero_imagegen-web.webp" alt="고전 CPU 계산 장치와 Ir·Pt OLED 인광체의 분자·오비탈 모형, 발광 소자를 연결한 생성 개념 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. Quantum-native iQCC로 구성된 Ir·Pt 인광체의 전자구조 문제를 고전 CPU에서 에뮬레이션하고 OLED 방출과 연결하는 장면이다. 실제 QPU 실행이나 특정 분자의 계산 오비탈을 재현한 그림은 아니다.</figcaption></figure>
+  </div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-08-24 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="content-grid">
+    <article>
+      <p class="lead"><a href="https://doi.org/10.1021/jacs.6c04752" target="_blank" rel="noreferrer">JACS에 2026년 8월 13일 공개된 연구</a>에서 OTI Lumionics와 SAIT 연구진은 iQCC 전자구조 알고리즘을 고전 하드웨어에서 대규모로 에뮬레이션했습니다. 실제 Ir·Pt 인광체 14종의 T<sub>1</sub>→S<sub>0</sub> 방출 에너지와 MLCT/LC 성격을 정량화했지만, 보고된 계산은 “OLED를 200큐비트 양자컴퓨터로 계산했다”는 QPU 실험이 아닙니다.</p>
+
+      <div class="verdict">
+        <div><strong>실제로 한 것</strong><span>iQCC를 고전 컴퓨터에서 실행했습니다. 약 200 spin-orbital qubit는 Q1 최대 규모의 active-space 스케일링 사례입니다.</span></div>
+        <div><strong>실제로 하지 않은 것</strong><span>200개의 오류정정 logical qubit이나 1천만 개의 물리적 two-qubit gate를 QPU에서 실행하지 않았습니다.</span></div>
+        <div><strong>평가의 기준선</strong><span>OLED 응용에서 정확도·규모·고전 계산 가능성의 기준선을 제시했습니다. 총비용 비교는 후속 QPU 평가 과제입니다.</span></div>
+      </div>
+
+      <blockquote><strong>판정.</strong> 보고된 계산은 강한 고전 에뮬레이션 기준선입니다. QPU의 양자 우위는 동일한 문제와 정확도에서 end-to-end 비용을 비교한 뒤 판단해야 합니다.</blockquote>
+
+      <figure class="figure-panel"><img src="oti_iqcc_oled_boundary.svg" alt="DFT 전처리에서 고전 iQCC 에뮬레이션과 OLED 여기상태 해석, 미래 QPU 기준선으로 이어지는 계산 경계" loading="lazy" decoding="async"><figcaption>그림 2. 계산 경계. 양자-native 알고리즘은 고전 CPU에서 에뮬레이션됐다. 약 200 logical qubits는 Q1 최대 규모 사례의 spin-orbital 수에 대응하는 이상적 register 규모이고, 1천만 two-qubit gates는 QEC overhead를 제외한 logical-level ansatz count다.</figcaption></figure>
+
+      <h2>Ir·Pt 인광체의 T<sub>1</sub> 상태가 어려운 이유</h2>
+      <p>OLED 인광체의 색과 에너지 전달을 이해하려면 가장 낮은 triplet 상태 T<sub>1</sub>과 singlet 바닥상태 S<sub>0</sub> 사이의 에너지 차를 안정적으로 계산해야 합니다. Cyclometalated Ir(III)와 Pt(II) 착물에서는 ligand-centered π→π* 여기와 metal-to-ligand charge transfer가 섞이고, 금속 중심의 큰 상대론 효과와 spin-orbit coupling이 발광·광물리 특성을 좌우합니다.</p>
+      <p>문제는 T<sub>1</sub>이 하나의 Slater determinant로 잘 표현되지 않는 경우가 많다는 점입니다. 단일 reference에 강하게 의존하는 projective coupled-cluster 계산은 spin contamination과 다중참조 성격 때문에 상태를 잘못 식별하거나 방출 갭을 지나치게 낮게 예측할 수 있습니다. 반면 범함수 선택에 민감한 DFT·TDDFT는 후보군에 따라 오차와 순위가 달라집니다.</p>
+
+      <div class="flow" aria-label="계산 흐름">
+        <div><strong>분자·궤도</strong><br>고전 전처리</div><div><strong>Q1 active space</strong><br>72→약 200 qubits</div><div><strong>iQCC</strong><br>고전 에뮬레이션</div><div><strong>T<sub>1</sub>−S<sub>0</sub></strong><br>MLCT/LC 분석</div><div><strong>실험 비교</strong><br>미래 QPU 기준선</div>
+      </div>
+
+      <h2>iQCC가 계산한 대상과 범위</h2>
+      <p>Iterative Qubit Coupled Cluster(iQCC)는 전자 Hamiltonian을 qubit Pauli operator의 합으로 바꾸고, 선택된 entangler를 순차적으로 적용하는 unitary ansatz로 상관 에너지를 낮춥니다. 양자회로에서는 Pauli rotation과 entangling gate로 구현할 수 있으므로 VQE 계열의 quantum-native solver입니다.</p>
+      <p>실제 계산은 QPU 대신 고전 하드웨어에서 수행됐습니다. Hamiltonian dressing과 Pauli-operator 구조를 이용해 특정 iQCC ansatz의 선택·최적화를 에뮬레이션했으므로, 전체 상태벡터를 직접 전개하는 범용 200-qubit 시뮬레이션과는 범주가 다릅니다. 이 구조적 가정은 임의의 200-qubit 회로까지 고전적으로 쉬워졌다는 결론을 허용하지 않습니다. 연구진은 Q1의 active space를 약 72에서 약 200 logical qubit 규모로 넓혔습니다. 최대 약 150만 개 parameter와 1천만 개를 넘는 logical-level two-qubit entangling gate를 갖는 추상 ansatz를 최적화했다고 보고했습니다.</p>
+      <div class="callout caution"><p class="callout-label">숫자를 읽는 법</p><p><strong>200 logical qubits</strong>는 활성공간의 spin-orbital 수에 대응하는 이상적 logical-level register 규모입니다. 오류정정된 200 logical-qubit 장치를 사용했다는 뜻이 아닙니다. <strong>1천만 two-qubit gates</strong>는 ansatz의 logical-level gate count이며, 물리 gate 실행 횟수나 완전한 fault-tolerant 자원 추정치와 구분해야 합니다. 오류정정 encoding, Clifford+T 컴파일, 라우팅과 physical-gate overhead는 포함하지 않습니다.</p></div>
+
+      <h2>정확도 개선은 iQCC보다 iQCC+PT에서 크게 나타났다</h2>
+      <p>논문의 14개 인광체 비교에서 순수 iQCC는 MAE 0.1180 eV를 기록했습니다. 표에 제시된 DFT/TDDFT 두 방법과 MAE가 비슷했고, 결정계수 R²는 PT를 쓰지 않은 비교군 중 가장 높았습니다. 여기서 R²는 선형 적합의 결정계수이며 순위상관계수가 아닙니다. 비변분적 고전 보정인 Epstein-Nesbet perturbation theory를 더한 <strong>iQCC+PT</strong>는 MAE 0.0501 eV와 R² 0.9411을 얻었습니다.</p>
+
+      <div class="callout evidence"><p class="callout-label">계산·실험 조건</p><p>비교값은 B3LYP 최적화 구조에서 계산한 vertical Franck–Condon T<sub>1</sub>→S<sub>0</sub> gap입니다. Ir/Pt에는 LANL2DZ ECP, 나머지 원자에는 6-31G**를 썼고 spin–orbit coupling과 zero-point energy는 포함하지 않았습니다. 실험 PL은 77 K 저유전 용매 조건이며, 12종은 본 연구 측정값, Q12·Q14는 문헌값입니다.</p></div>
+
+      <div class="table-wrap" tabindex="0" role="region" aria-label="계산 방법별 실험 비교 성능표"><table>
+        <caption>14개 Ir(III)·Pt(II) 인광체의 계산 방법별 실험 비교</caption>
+        <thead><tr><th scope="col">방법</th><th scope="col">R²</th><th scope="col">MAE (eV)</th><th scope="col">해석</th></tr></thead>
+        <tbody>
+          <tr><td>RO-CAM-B3LYP</td><td>0.6085</td><td>0.1161</td><td>비교군에서 낮은 DFT MAE</td></tr>
+          <tr><td>TD-B3LYP</td><td>0.6638</td><td>0.1209</td><td>순수 iQCC와 유사한 MAE</td></tr>
+          <tr><td>CCSD</td><td>0.8070</td><td>0.2200</td><td>단일-reference 한계가 드러남</td></tr>
+          <tr><td>CR-CC(2,3)</td><td>0.7791</td><td>0.2912</td><td>triplet 상태의 spin contamination 영향</td></tr>
+          <tr><td>iQCC</td><td>0.8786</td><td>0.1180</td><td>더 높은 선형 적합도, MAE는 DFT와 비슷</td></tr>
+          <tr class="highlight"><td>iQCC+PT</td><td>0.9411</td><td>0.0501</td><td>이번 비교의 최상 결과</td></tr>
+        </tbody>
+      </table></div>
+
+      <p>실험과의 일치만으로 active-space solver의 정확도를 인증할 수는 없습니다. Basis, active space, scalar-relativistic Hamiltonian과 환경 근사의 오차가 solver 오차와 상쇄될 수 있기 때문입니다. 저자들도 이 한계를 명시했습니다. 같은 모델에서는 variational energy를 CISD와 비교해 iQCC가 더 낮은 에너지를 준다는 결과를 별도 근거로 제시했습니다.</p>
+      <div class="callout evidence"><p class="callout-label">검증의 두 층</p><p><strong>Solver accuracy</strong>는 동일 Hamiltonian·active space에서 FCI, DMRG, selected CI 또는 엄밀한 variational bound와 비교해야 합니다. <strong>Model-to-experiment accuracy</strong>는 geometry, basis, 상대론 처리, spin-orbit coupling, 환경과 진동 효과까지 합친 결과입니다. 두 오차를 섞으면 알고리즘의 실제 기여를 과대평가할 수 있습니다.</p></div>
+
+      <h2>MLCT와 LC 성격까지 읽은 분석</h2>
+      <p>저자들은 에너지 오차와 함께 iQCC wavefunction의 금속 중심 전하 변화를 분석했습니다. Ir 착물 Q1·Q6은 각각 약 −0.358e와 −0.462e로 metal-to-ligand charge-transfer 성격이 크고, Pt 착물 Q9·Q14는 약 −0.102e와 −0.112e로 ligand-centered 전이가 우세하다고 분류했습니다.</p>
+      <figure class="figure-panel"><img src="oti_iqcc_mlct_lc_imagegen-web.webp" alt="금속에서 리간드로 여기 성격이 이어지는 MLCT 개념과 리간드에 더 국소화된 LC 개념을 대비한 비특정 분자 일러스트" loading="lazy" decoding="async"><figcaption>그림 3. 생성 개념 일러스트. 왼쪽은 금속 중심에서 리간드로 여기 성격이 퍼지는 MLCT를, 오른쪽은 리간드 π계에 더 국소화된 LC를 대비한다. 특정 Q1·Q6·Q9·Q14 구조나 실제 계산된 전이밀도를 재현한 그림은 아니다.</figcaption></figure>
+      <p>이 분석은 양자화학 결과를 chemist가 분자 설계에 사용하는 상태 character로 연결합니다. OLED 후보 선별에서는 T<sub>1</sub> 갭과 함께 metal participation, ligand localization, 전하이동 방향, transition property를 참고할 수 있습니다. 이 정보는 후속 치환기 설계와 열화 메커니즘 판단에 유용한 입력이 될 수 있습니다.</p>
+
+      <div class="metric-strip">
+        <div class="metric"><strong>14</strong><span>Ir/Pt phosphor 비교</span></div><div class="metric"><strong>~200</strong><span>Q1 스케일링 규모</span></div><div class="metric"><strong>0.0501 eV</strong><span>iQCC+PT MAE</span></div><div class="metric"><strong>0</strong><span>실제 QPU 실행 횟수</span></div>
+      </div>
+
+      <h2>LinkedIn 설명과 원 논문의 차이</h2>
+      <p><a href="https://www.linkedin.com/posts/scott-genin-943a9118_large-scale-quantum-computing-emulation-for-activity-7495917046858276864-yjOW" target="_blank" rel="noreferrer">Scott N. Genin의 게시물</a>은 “약 200 logical qubits”, “1천만 개 이상의 two-qubit gates”, “150만 parameters”, “single chip”을 강조합니다. 이 수치들은 원 논문의 고전 계산 규모를 나타냅니다. 실제 fault-tolerant QPU의 실행 성과나 QEC·컴파일 비용을 포함한 physical resource estimate로 해석하면 안 됩니다.</p>
+      <p>원 논문이 보고한 성과는 고전 에뮬레이션입니다. OLED 응용에서 정확도·규모·고전 계산 가능성의 기준을 선명하게 만들었지만, 현재 또는 근시일 물리 QPU의 성능을 측정하지는 않았습니다. state preparation·QEC·측정·후처리까지 합친 총비용 비교도 논문 결과에 포함되지 않았으며, 본 리뷰가 후속 평가 기준으로 제안합니다.</p>
+
+      <h2>OLED·DFT·ML 역설계 업무에서의 활용</h2>
+      <p>OLED inverse-design pipeline에서는 iQCC 계열 계산을 <strong>고가치 후보의 고정밀 전자구조 재판정층</strong>에 둘 수 있습니다. GNN·surrogate와 DFT/TDDFT로 넓은 chemical space를 먼저 줄인 뒤, spin contamination·다중참조·상태 ordering이 의심되는 소수 Ir/Pt 착물을 다시 계산하는 방식입니다.</p>
+      <ol>
+        <li>TDDFT와 orbital 분석으로 불확실성이 큰 후보와 CT/LC character가 뒤집히는 후보를 고릅니다.</li>
+        <li>Geometry, basis, relativistic treatment와 active space를 고정합니다.</li>
+        <li>iQCC·iQCC+PT를 DMRG, selected CI, CASSCF/NEVPT2 같은 강한 기준선과 같은 Hamiltonian에서 비교합니다.</li>
+        <li>T<sub>1</sub> 갭 외에 metal charge, natural occupation, transition density와 spin purity를 함께 기록합니다.</li>
+        <li>미공개 후보의 spectroscopy 또는 device 결과로 blind test를 수행합니다.</li>
+      </ol>
+      <p>고전 계산으로 처리한 Q1의 200-qubit-equivalent 문제는 QPU 평가의 <strong>baseline</strong>입니다. 미래 QPU의 유용성은 같은 active space에서 더 낮은 variational energy나 더 정확한 관측량을 내고, integral 준비·상태 준비·오류정정·측정·후처리를 포함한 총시간과 비용에서도 경쟁하는지로 평가해야 합니다.</p>
+
+      <h2>미래 QPU가 넘어야 할 체크리스트</h2>
+      <ul>
+        <li><strong>같은 문제인가:</strong> geometry, basis, active space, Hamiltonian과 상대론 처리가 동일해야 합니다.</li>
+        <li><strong>같은 출력인가:</strong> ground-state energy, T<sub>1</sub> 갭, MLCT/LC 같은 관측량을 함께 비교해야 합니다.</li>
+        <li><strong>같은 정확도인가:</strong> 실험 오차와 solver 오차를 분리하고 variational 기준을 제시해야 합니다.</li>
+        <li><strong>총비용인가:</strong> logical-qubit overhead, state preparation, T/Toffoli count, shots, queue, decoding과 고전 전후처리를 포함해야 합니다.</li>
+        <li><strong>강한 고전 상대인가:</strong> iQCC emulation, DMRG, selected CI, tensor network와 최신 multireference 방법을 포함해야 합니다.</li>
+      </ul>
+
+      <h2>결론</h2>
+      <p>OTI·SAIT 연구진은 양자-native ansatz를 고전적으로 처리해 큰 active space의 실제 산업 분자를 계산했습니다. iQCC+PT는 이 비교군에서 MAE와 R²가 모두 가장 좋았습니다. 다만 OLED 재료를 양자컴퓨터로 더 빠르게 풀었는지는 측정하지 않았습니다.</p>
+      <p>강한 고전 emulation은 미래 QPU의 평가 기준을 구체화합니다. “200 qubits를 실행했다”는 규모 자체보다, <strong>동일한 OLED 문제에서 이 고전 기준선보다 정확하고 저렴하며 재현 가능하게 계산했는가</strong>를 검증해야 합니다.</p>
+
+      <h2>References</h2>
+      <ol class="refs">
+        <li><a href="https://doi.org/10.1021/jacs.6c04752" target="_blank" rel="noreferrer">Genin et al., Large-Scale Quantum Computing Emulation for Accurate Triplet States of Ir(III) and Pt(II) Phosphorescent Emitters, JACS (2026)</a></li>
+        <li><a href="https://pubs.acs.org/doi/10.1021/jacs.6c04752" target="_blank" rel="noreferrer">ACS article and Supporting Information landing page</a></li>
+        <li><a href="https://www.linkedin.com/posts/scott-genin-943a9118_large-scale-quantum-computing-emulation-for-activity-7495917046858276864-yjOW" target="_blank" rel="noreferrer">Scott N. Genin, LinkedIn research announcement</a></li>
+        <li><a href="https://doi.org/10.1021/acs.chemrev.8b00803" target="_blank" rel="noreferrer">Cao et al., Quantum Chemistry in the Age of Quantum Computing, Chemical Reviews (2019)</a></li>
+        <li><a href="https://doi.org/10.1021/acs.jctc.5c00150" target="_blank" rel="noreferrer">Mullinax et al., Classical preoptimization for ADAPT-VQE, JCTC (2025)</a></li>
+      </ol>
+    </article>
+
+    <aside class="sidebar">
+      <section class="side-section"><h2>분류</h2><span class="tag">Materials AI</span><span class="tag">Quantum Chemistry</span><span class="tag">OLED</span><span class="tag">iQCC</span><span class="tag">Classical Emulation</span></section>
+      <section class="side-section"><h2>논문 상태</h2><p>JACS Communication<br>Published online: 2026-08-13<br>Open access<br>DOI 10.1021/jacs.6c04752</p></section>
+      <section class="side-section"><h2>계산 경계</h2><ul><li>플랫폼: 고전 CPU 기반 에뮬레이션</li><li>실제 QPU: 사용하지 않음</li><li>문제: T<sub>1</sub>−S<sub>0</sub> 및 상태 성격</li><li>분자: Ir(III)/Pt(II) phosphors</li><li>최대 규모: Q1 약 200 logical qubits</li></ul></section>
+      <section class="side-section"><h2>연구자가 볼 포인트</h2><ul><li>iQCC와 iQCC+PT를 분리</li><li>실험 오차와 solver 오차 분리</li><li>logical-qubit 표현과 실제 QPU 구분</li><li>DFT/DMRG/selected-CI 기준선</li><li>MLCT·LC 관측량의 설계 가치</li></ul></section>
+    </aside>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-24</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+
+  <section class="public-note"><p><strong>작성정보.</strong> 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일: 2026-08-24. LinkedIn 게시물은 discovery lead로 사용하고 핵심 수치는 JACS 원 논문을 우선했습니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>
