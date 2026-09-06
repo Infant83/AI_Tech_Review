@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나</title>
+  <meta name="description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
+  <meta property="og:description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
+  <meta property="og:image:alt" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
+  <meta property="article:published_time" content="2026-09-06">
+  <meta property="article:modified_time" content="2026-09-06">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
+  <meta name="twitter:description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
+  <meta name="twitter:image:alt" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-06)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/" lang="en" hreflang="en">English</a></nav>
+        <a href="2026-09-06_agentic-programs-materials-science_final_review.md">2026-09-06_agentic-programs-materials-science_final_review.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나</h1>
+        <p class="dek">DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <h2 id="3">3문장 요약</h2>
+<p>서울대학교 연구진은 2026년 9월 1일 공개한 프리프린트에서, 대규모언어모델(Large Language Model, LLM)을 범용 ‘AI 과학자’로 쓰기보다 <strong>검증 가능한 좁은 과학 업무를 끝까지 맡는 소프트웨어</strong>로 만드는 ‘에이전트 프로그램(agentic program)’ 개념을 제안했다. 사례인 DeMARS는 부분 점유가 포함된 무질서 결정의 결정학정보파일(Crystallographic Information File, CIF)을 읽어 계산 가능한 원자 모델을 만들며, 약 800개 CIF에서 규칙을 축적한 뒤 별도의 100개 CIF를 사람의 실행 개입 없이 처리했다고 보고한다. 그러나 코드는 아직 공개되지 않았고, 100개 중 인증·거절 수와 반복 실행 안정성, 외부 독립 평가가 제시되지 않아 현재 근거는 <strong>유망한 설계 원리와 내부 사례 검증</strong>이지 재현이 끝난 생산 소프트웨어는 아니다.</p>
+<p><img alt="부분 점유가 있는 무질서 결정에서 후보 원자배열을 만들고 물리 제약을 통과한 구조만 남기는 과정을 표현한 과학 편집형 개념도" src="../artifacts/agentic_programs_materials_hero.webp" /></p>
+<p><em>그림 1. 이미지 생성으로 만든 개념 일러스트. 왼쪽의 부분 점유 결정, 가운데의 후보 분기와 물리 제약, 오른쪽의 명시적 원자 모델을 표현한다. 특정 물질의 실제 구조, 논문 수치 또는 DeMARS 화면을 재현한 그림은 아니다.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">이번 리뷰의 판정</p>
+<p>DeMARS의 가장 중요한 주장은 LLM이 재료 계산을 ‘잘한다’는 것이 아니다. <strong>수치와 물리 검사는 결정론적 코드가 맡고, LLM은 미리 완전히 규칙화하기 어려운 중간 선택만 하며, 그 선택의 결과를 다시 계산으로 반박 가능하게 만든다</strong>는 설계다. 이 주장은 현재 논문의 구조와 사례로 뒷받침되지만, 코드·실행 로그·성공률 분모가 공개될 때까지 일반화 가능성과 재현성은 보류해야 한다.</p>
+</aside>
+<h2 id="_1">왜 중요한가: 자동화가 멈추는 곳은 계산이 아니라 판단이다</h2>
+<p>재료 계산은 이미 상당히 자동화되어 있다. VASP·Quantum ESPRESSO 같은 전자구조 코드는 주어진 입력을 계산하고, AiiDA·atomate2·AFLOW·AMP² 같은 workflow 도구는 의존관계와 재시작, 데이터 provenance를 관리한다. 그러나 실제 연구에서 시간이 많이 드는 지점은 종종 계산 명령 자체가 아니다. 어떤 supercell이 분수 점유와 정합적인지, 서로 가까운 두 site가 동시에 점유될 수 있는지, 결함의 전하상태를 어떻게 정할지, self-consistent field 계산이 실패했을 때 수치 설정을 바꿀지 물리 모델을 의심할지 같은 선택은 아직 연구자의 판단에 남아 있다.</p>
+<p>기존 자동화는 명확한 규칙을 코드로 써야 한다. 반대로 범용 LLM 에이전트에 전체 업무를 맡기면 유연성은 생기지만, 같은 입력에서 다른 결론을 내리거나 그럴듯한 설명으로 잘못된 구조를 통과시킬 수 있다. 이번 논문은 그 사이에 좁은 길을 제안한다. LLM을 계산기의 대체재로 쓰는 것이 아니라 <strong>정해진 입출력과 물리 제약 사이에 남아 있는 불완전한 결정 규칙</strong>을 담당시키는 것이다.</p>
+<p>이 글은 5월의 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/">「AI 과학자, 시작의 끝에서」</a>를 반복하지 않는다. 당시 리뷰가 가설 생성부터 논문 작성까지 넓은 연구 하네스의 검증 문제를 다뤘다면, 이번 연구는 그 반대 방향을 택한다. 자율성의 범위를 넓히기보다, <strong>하나의 책임을 충분히 좁혀 routine production에서 사람을 빼낼 수 있는가</strong>를 묻는다.</p>
+<h2 id="_2">먼저 정의할 용어</h2>
+<ul>
+<li><strong>결정학정보파일(Crystallographic Information File, CIF)</strong>: 단위격자, 대칭, 원자 위치, 원소와 점유율을 담는 표준 구조 파일이다.</li>
+<li><strong>부분 점유(partial occupancy)</strong>: 결정학적으로 하나의 평균 site에 특정 원소가 0과 1 사이의 확률로 존재한다고 기술된 상태다. 전자구조 계산에는 보통 정수 개의 원자를 가진 명시적 supercell 모델이 필요하다.</li>
+<li><strong>무질서 결정(disordered crystal)</strong>: 치환, vacancy, interstitial 또는 서로 결합된 점유 규칙 때문에 하나의 주기적 원자배열로 바로 환원되지 않는 결정이다.</li>
+<li><strong>머신러닝 원자간 퍼텐셜(Machine-Learning Interatomic Potential, MLIP)</strong>: 제일원리 계산으로 학습한 에너지와 힘을 빠르게 근사해 많은 후보 구조를 이완하는 모델이다. DeMARS는 SevenNet 계열 universal MLIP을 사용했다고 보고한다.</li>
+<li><strong>에이전트 하네스(agent harness)</strong>: LLM에 파일, 코드 실행, 지속 메모리, 기술 규칙, 별도 검토 역할을 연결하는 실행 환경이다.</li>
+<li><strong>에이전트 프로그램(agentic program)</strong>: 저자들의 정의로는 입력·목표·허용 도구·과학 제약·검증 기준이 정해진 하나의 bounded task를, 결정론적 알고리즘과 제한된 LLM 판단을 결합해 끝까지 수행하는 프로그램이다.</li>
+</ul>
+<h2 id="cif">무질서 CIF가 왜 ‘판단이 필요한 계산’인가</h2>
+<p>부분 점유 CIF를 density functional theory(DFT) 입력으로 바꾸는 일을 단순히 vacancy를 임의 배치하는 문제로 보면 중요한 화학을 놓친다. 논문이 든 $\mathrm{Ca}_{1-x}\mathrm{Th}_{x}\mathrm{F}_{2+2x}$의 $x=0.18$ 사례에서는 $\mathrm{Ca}^{2+}$를 $\mathrm{Th}^{4+}$로 하나 바꿀 때 양전하가 2만큼 늘어난다. 따라서 전하 중성을 유지하려면 Th 하나당 $\mathrm{F}^{-}$ 두 개가 추가되어야 하며, $2+2x=2.36$은 보고 조성과 일치한다. 이 산술은 간단하지만, 추가 F를 어느 interstitial에 놓고 어떤 점유가 서로 배타적인지 결정하려면 결정 구조와 국소 화학을 함께 읽어야 한다.</p>
+<p>논문은 ICSD(Inorganic Crystal Structure Database) 항목의 약 절반이 무질서 구조로 보고되며, 그중 약 60%는 비교적 단순한 치환형 고용체라고 선행 연구를 인용한다. 나머지 복잡한 경우는 각 부분 점유 site를 독립적으로 열거하면 조성·전하·국소 연결성이 깨지거나 조합 수가 폭증한다. 이때 필요한 것은 더 많은 brute-force sampling이 아니라 <strong>무엇을 열거해야 하는지 정의하는 모델 선택</strong>이다.</p>
+<p>DeMARS라는 이름은 De-averaged Minimal Atomistic Representation System의 약자다. 목표는 실험의 평균 구조를 유일한 ‘실제 구조’로 복원하는 것이 아니다. 원 CIF의 근거와 화학 규칙을 만족하면서 후속 원자 시뮬레이션에 사용할 수 있는 최소 원자 모델 또는 구조 ensemble을 만드는 것이다. 이 구분이 중요하다. 회절 refinement의 부분 점유는 실제 재료의 공간·시간적 무질서를 평균낸 표현이므로, 하나의 작은 periodic cell이 모든 disorder correlation을 재현한다고 보장할 수 없다.</p>
+<h2 id="llm">핵심 방법: LLM을 코드 사이에 가둔다</h2>
+<p>논문이 설명한 DeMARS 흐름은 다음과 같다.</p>
+<ol>
+<li>결정론적 Python 코드가 CIF에서 조성, 부분 점유, 대칭과 site 정보를 추출해 구조화된 evidence bundle을 만든다.</li>
+<li>LLM analyst는 그 근거를 읽고 supercell 크기, 합치거나 배타적으로 취급할 site, 전하 중성 조성, 누락 수소의 수리 또는 custom construction 필요 여부를 실행 명세로 만든다.</li>
+<li>열거 엔진이 후보 배치를 만들고 SevenNet MLIP으로 구조를 이완해 에너지 분포를 계산한다.</li>
+<li>코드가 전하 중성, 원 CIF 점유와의 일치, polyanion 연결성 등 미리 정의한 검사를 수행한다. energy above hull은 해석 정보로 계산하지만 pass/fail 기준으로 쓰지 않는다고 명시한다.</li>
+<li>analyst가 구조와 에너지 분포를 보고 수용하거나 더 좁은 명세로 재실행한다.</li>
+<li>별도 reviewer agent가 새 문맥에서 최종 기록을 반대 관점으로 점검한다.</li>
+<li>프로그램은 인증된 모델을 내거나, 근거가 충분하지 않다면 이유와 함께 인증을 거절한다.</li>
+</ol>
+<p><img alt="무질서 CIF에서 결정론적 근거 추출, 제한된 LLM 실행 명세, 구조 열거와 MLIP 이완, 물리 게이트, 새 문맥 검토를 거쳐 인증 또는 거절로 가는 구조도" src="../artifacts/agentic_program_architecture_ko.svg" /></p>
+<p><em>그림 2. 논문의 Fig. 3과 본문을 바탕으로 리뷰어가 다시 그린 기능 구조도. 파란색은 결정론적 계산, 보라색은 LLM 판단, 주황색은 물리·구조 검사다. 원 논문의 실행 로그나 정량 성능을 재현한 도표가 아니다.</em></p>
+<p>이 구조의 핵심은 “LLM에게 물리를 가르쳤다”가 아니다. LLM은 정량 근거를 생성하지 않고, 자신의 결과를 최종 인증하지도 않는다. 코드가 제공한 근거를 해석해 계산 가능한 명세를 만들고, 그 명세의 결과는 다시 독립적인 코드에 의해 검사된다. 저자들의 표현을 바꾸어 말하면 판단은 신뢰의 대상이 아니라 <strong>검사 가능한 가설 생성기</strong>다.</p>
+<h2 id="workflowai-assistant">기존 workflow·AI assistant와 무엇이 다른가</h2>
+<table>
+<thead>
+<tr>
+<th>시스템 형태</th>
+<th>사람이 맡는 일</th>
+<th>소프트웨어가 맡는 일</th>
+<th>실패를 잡는 방식</th>
+<th>생산 단계의 사람</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>전통적 workflow</td>
+<td>모든 판단 규칙 정의</td>
+<td>정해진 알고리즘 반복</td>
+<td>예외 처리·단위 테스트</td>
+<td>새 예외에서 필요</td>
+</tr>
+<tr>
+<td>대화형 AI assistant</td>
+<td>질문·선택·최종 승인</td>
+<td>설명·코드 제안</td>
+<td>사용자의 검토</td>
+<td>항상 loop 안</td>
+</tr>
+<tr>
+<td>범용 AI scientist</td>
+<td>연구 목표와 감독</td>
+<td>가설부터 글쓰기까지 넓은 탐색</td>
+<td>일반 evaluator·peer review</td>
+<td>범위에 따라 다름</td>
+</tr>
+<tr>
+<td>논문이 제안한 agentic program</td>
+<td>목표·책임·원칙 정의, 새 실패를 제도화</td>
+<td>bounded task의 routine execution</td>
+<td>task-specific deterministic gate와 별도 reviewer</td>
+<td>성숙 후 routine loop 밖</td>
+</tr>
+</tbody>
+</table>
+<p>새로운 것은 개별 부품이 아니다. tool-using agent, MLIP, verification checklist, reviewer agent, version control은 이미 존재한다. 논문이 제안하는 차이는 이들을 <strong>완전 위임 가능한 좁은 과학 책임</strong>이라는 소프트웨어 단위로 묶는 데 있다. 범용 에이전트의 capability를 계속 넓히는 대신, 성공과 실패를 판정할 수 있을 만큼 업무를 작게 만든다.</p>
+<p>이 관점은 MLOps와 DevOps의 오래된 원리와도 닮았다. production system은 모든 입력에서 답을 억지로 내기보다 입력 계약을 검사하고, 지원하지 않는 경우 fail closed하며, 회귀 테스트와 version pinning으로 변경을 통제한다. 다만 과학 프로그램에서는 correctness가 단순한 API schema를 넘어 물리 모델의 타당성까지 포함하므로, deterministic gate가 모든 오류를 잡을 수 있다는 전제는 위험하다.</p>
+<h2 id="_3">정량 결과: 무엇이 보고되었고 무엇이 빠졌나</h2>
+<p>논문이 제시한 가장 큰 규모의 근거는 두 숫자다.</p>
+<ul>
+<li>개발 과정에서 <strong>약 800개의 무질서 CIF</strong>를 다루며 반복되는 판단을 규칙, 진단, 검증 게이트와 결정론적 코드로 옮겼다.</li>
+<li>성숙 과정에 쓰지 않은 <strong>무작위 100개 CIF</strong>를 별도로 선택해 end-to-end로 처리했고, 실행 도중 case-by-case human intervention은 없었다고 보고한다. 표본은 원소 3–5개, nontrivial site disorder, CIF에 기재된 site 40개 이하라는 조건을 가진다.</li>
+</ul>
+<p>저자들은 100개 출력 모두를 사후 수동 검사했으며, 인증된 모델은 화학적으로 합리적이고 보고 disorder와 일관됐고, 인증을 거절한 경우에는 기록의 근거로 이유를 확인할 수 있었다고 적었다. 여기서 주의할 점은 “100개를 처리했다”와 “100개 모두 구조를 인증했다”가 같지 않다는 것이다. 논문은 인증 수, 거절 수, custom construction 수, model repair 수를 나누어 제시하지 않는다.</p>
+<p>또 하나의 유용한 실패 사례는 $\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$이다. 기존 deterministic gate를 모두 통과했지만 reviewer agent가 모든 후보에 같은 cation arrangement만 존재한다는 사실을 발견했다. coupled-enumeration routine의 ordering이 Li/Mo anti-site disorder 자유도를 실제로 sampling하지 못한 것이 원인이었고, 이를 수정해 영구적인 회귀 개선으로 만들었다고 보고한다. 이 사례는 reviewer가 단순한 문장 교정기가 아니라 <strong>탐색 공간이 의도대로 열렸는지 검사하는 역할</strong>임을 잘 보여준다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>원문이 보고한 사실</th>
+<th>이번 리뷰의 독립 점검</th>
+<th>아직 알 수 없는 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>공개 시점</td>
+<td>arXiv v1, 2026-09-01</td>
+<td>arXiv metadata와 HTML 확인</td>
+<td>동료평가 후 변경될 내용</td>
+</tr>
+<tr>
+<td>성숙 자료</td>
+<td>약 800개 disordered CIF</td>
+<td>본문 수치와 사례 일관성 확인</td>
+<td>case별 입력·출력·intervention log</td>
+</tr>
+<tr>
+<td>외부 테스트</td>
+<td>미사용 100개 CIF, 실행 중 사람 개입 없음</td>
+<td>표본 조건과 사후 수동검사 문장 확인</td>
+<td>인증/거절 분모, task success rate, 소요시간·LLM 비용</td>
+</tr>
+<tr>
+<td>물리 예시</td>
+<td>$2+2(0.18)=2.36$</td>
+<td>전하 보상 산술 재계산</td>
+<td>실제 disorder correlation의 유일성</td>
+</tr>
+<tr>
+<td>소프트웨어</td>
+<td>DeMARS architecture 설명</td>
+<td>공개 소스 없음 확인</td>
+<td>재실행 안정성, model/version 민감도, 환경 재현성</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_4">가장 큰 한계: 좋은 설계와 검증된 제품은 다르다</h2>
+<p>첫째, 논문은 프리프린트다. 동료평가를 거치지 않았고 DeMARS 코드는 “peer-reviewed version 출판 시 공개”될 예정이라고만 명시한다. 따라서 제3자가 동일 CIF를 넣어 같은 구조, 같은 거절 판단, 같은 계산 비용을 얻는지 확인할 수 없다.</p>
+<p>둘째, 100개 test set의 핵심 분모가 없다. 인증률, 거절률, 오류 유형, 재시도 횟수, 사람 사후검사 기준과 평가자 일치도, baseline 대비 개선을 알 수 없다. ‘화학적으로 합리적’이라는 판정은 중요하지만, blind external reviewer나 독립 계산과의 비교가 아니며 정량 metric도 아니다.</p>
+<p>셋째, 결과의 비결정성이 측정되지 않았다. 동일한 CIF를 같은 모델과 다른 random seed로 여러 번 실행했을 때 실행 명세와 최종 구조 ensemble이 얼마나 달라지는지, LLM을 교체하거나 version이 올라갈 때 regression이 생기는지 보고하지 않는다. 저자들도 model·skills·episode record를 함께 versioning하고 지속적으로 audit해야 한다고 인정한다.</p>
+<p>넷째, MLIP 검증 경계가 남는다. universal MLIP은 많은 episode를 싸게 만드는 핵심이지만, training distribution 밖의 coordination, charge state, heavy element 또는 unusual bonding에서 에너지 ordering이 틀릴 수 있다. 구조·조성 게이트를 모두 통과해도 DFT 수준의 상대 안정성이나 실제 disorder thermodynamics가 맞는 것은 아니다.</p>
+<p>다섯째, 최소 periodic model이 실험의 disorder를 대표한다는 보장은 없다. short-range order, configurational entropy, finite-temperature occupancy, diffuse scattering을 연구하려면 단일 구조보다 ensemble과 크기 수렴성이 필요할 수 있다. DeMARS는 좋은 starting model을 만들 수 있지만, 실험 평균 구조의 유일한 microscopic inverse를 복원했다고 읽어서는 안 된다.</p>
+<h2 id="_5">재료 계산과 산업 연구에서의 시사점</h2>
+<p>김현중 연구자의 DFT·OLED·agentic workflow 관점에서 가장 직접적인 교훈은 ‘모든 연구를 하는 agent’를 먼저 만들지 말라는 것이다. 다음과 같이 <strong>입력과 deliverable이 분명하지만 중간 판단이 반복되는 일</strong>이 더 적합하다.</p>
+<ol>
+<li><strong>DFT protocol steward</strong>: 구조·원소·목표 물성에서 PAW/pseudopotential, cutoff, $k$-mesh, smearing, spin·SOC 설정을 제안하되, convergence test와 symmetry·magnetic-state 검사로 결과를 인증한다.</li>
+<li><strong>계산 실패 진단 프로그램</strong>: SCF oscillation, charge sloshing, geometry blow-up을 로그에서 분류하고 제한된 수정만 허용하며, 에너지·force·occupation 회귀 검사를 통과하지 못하면 중단한다.</li>
+<li><strong>defect/interface builder</strong>: 가능한 termination, charge compensation, passivation을 제안하고 stoichiometry·neutrality·minimum-distance·symmetry·finite-size 기준을 코드로 검사한다.</li>
+<li><strong>OLED excited-state triage</strong>: state character, oscillator strength, spin–orbit coupling, root flipping과 conformer dependence를 묶어 TDDFT/TDA 결과의 재계산 필요 여부를 판정한다. 최종 rate나 기작은 계산 로그와 state tracking이 뒷받침할 때만 인증한다.</li>
+<li><strong>on-premises research operations</strong>: LLM은 사내 gateway에서 판단하고 VASP/Gaussian/Fortran job은 기존 scheduler와 GitLab runner가 실행한다. 입력·output hash, container/compiler, code commit, model version, skill version과 gate 결과를 하나의 evidence record로 남긴다.</li>
+</ol>
+<p>산업 조직에서는 ‘사람을 loop에서 제거’라는 문장을 인력 대체로 읽기보다 책임 경계로 읽어야 한다. routine run은 자동화하되, 새로운 failure class가 발견되면 사람이 원칙을 승인하고 code·test·doctrine을 업데이트한다. 이때 중요한 운영 metric은 대화 횟수가 아니라 다음과 같다.</p>
+<ul>
+<li>certification coverage: 전체 입력 중 프로그램이 인증한 비율</li>
+<li>false certification rate: 사후 고급 계산·실험에서 잘못된 인증으로 판정된 비율</li>
+<li>justified refusal rate: 거절이 실제로 근거 부족 또는 지원 범위 밖이었던 비율</li>
+<li>intervention rate: routine batch에서 사람 개입이 필요했던 case 비율</li>
+<li>repeatability: 동일 입력 반복 실행의 구조·판정 일치도</li>
+<li>cost-to-certify: case당 LLM token, MLIP/DFT GPU·CPU 시간, wall-clock과 재시도 횟수</li>
+</ul>
+<h2 id="_6">후속 연구에서 꼭 보고 싶은 검증</h2>
+<p>가장 설득력 있는 다음 논문은 더 큰 언어모델을 쓰는 연구가 아니라 다음 실험을 공개하는 연구다.</p>
+<ol>
+<li>고정된 100개 test CIF의 ID와 인증·거절 outcome을 공개한다.</li>
+<li>규칙 기반 baseline, 일반 tool-using agent, DeMARS를 같은 입력·계산 budget에서 비교한다.</li>
+<li>각 CIF를 5–10회 반복해 실행 명세, 최종 구조 cluster, 인증 결과의 분산을 제시한다.</li>
+<li>SevenNet screening 뒤 일부를 DFT로 재이완해 구조·에너지 ordering의 보존률을 측정한다.</li>
+<li>외부 결정학자와 계산재료 연구자가 blind rubric으로 결과를 평가하고 합의도를 보고한다.</li>
+<li>code·skill·model version을 고정한 재현 package와, version 변경 전후 regression suite를 공개한다.</li>
+<li>성공한 구조만이 아니라 refusal과 failure artifact도 남겨 어떤 범위에서 프로그램을 믿지 말아야 하는지 보여준다.</li>
+</ol>
+<h2 id="_7">관련 연구자와 초청 세미나 질문</h2>
+<ul>
+<li><strong>Seungwu Han — 서울대학교 재료공학부·첨단재료연구소, KIAS AI and Natural Sciences Center.</strong> DeMARS의 교신저자이며 SevenNet·자동 원자 시뮬레이션 연구를 이끌어 왔다. 질문: “100개 test set에서 인증·거절·custom construction의 분모와 반복 실행 분산을 어떤 공개 benchmark로 만들 계획인가?”</li>
+<li><strong>Yunsung Lim — 서울대학교 첨단재료연구소.</strong> 논문의 공동 제1저자로 agentic program 개념과 DeMARS 사례를 제시했다. 질문: “에피소드에서 얻은 판단을 skill, doctrine, deterministic code 중 어디로 옮길지 결정하는 기준과 rollback 절차는 무엇인가?”</li>
+<li><strong>Haekwan Jeon — 서울대학교 재료공학부.</strong> 공동 제1저자로 DeMARS 개발에 참여했다. 질문: “부분 점유의 최소 원자 모델이 충분하지 않고 ensemble·short-range order가 필요한 경우를 어떤 gate가 탐지하는가?”</li>
+</ul>
+<h2 id="_8">관찰할 질문</h2>
+<ul>
+<li>코드는 동료평가 논문과 함께 실제로 공개되는가?</li>
+<li>held-out 100개 CIF의 상세 outcome과 실행 비용이 공개되는가?</li>
+<li>다른 LLM·하네스에서도 같은 bounded responsibility와 gate를 유지할 수 있는가?</li>
+<li>ICSD 외 공개 데이터셋과 독립 연구팀 평가에서 false certification이 얼마나 되는가?</li>
+<li>DFT, phonon, defect thermodynamics까지 이어질 때 어느 지점에서 MLIP gate가 부족해지는가?</li>
+<li>연구 조직이 episode를 개인의 대화 기록이 아니라 versioned scientific software asset으로 관리할 수 있는가?</li>
+</ul>
+<h2 id="_9">결론</h2>
+<p>이번 논문은 ‘AI가 과학자를 대체하는가’보다 훨씬 실용적인 질문을 던진다. <strong>과학자가 반복해서 내리는 좁은 판단 하나를, 어디까지 소프트웨어의 책임으로 바꿀 수 있는가?</strong> DeMARS의 답은 알고리즘과 판단을 섞되, LLM을 근거 생성자나 자기 인증자로 두지 말고 결정론적 코드 사이의 bounded decision maker로 두라는 것이다.</p>
+<p>이 설계는 계산재료과학과 잘 맞는다. 입력과 산출물이 비교적 명확하고, 조성·대칭·전하·힘·에너지처럼 계산 가능한 제약이 많으며, MLIP이 반복 episode의 비용을 낮추기 때문이다. 동시에 바로 그 이유로 검증 기준도 높아야 한다. 코드를 공개하고, 인증·거절의 분모를 밝히며, 반복성과 외부 평가를 통과할 때 ‘agentic program’은 흥미로운 개념에서 신뢰할 수 있는 새로운 과학 소프트웨어 범주로 넘어갈 수 있다.</p>
+<h2 id="_10">참고자료</h2>
+<ol>
+<li>Y. Lim, H. Jeon, J. Kim, J. Kim, S. Han, <a href="https://arxiv.org/abs/2609.00795">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a>. <strong>이번 리뷰의 주 출처; 프리프린트; DeMARS 코드는 아직 미공개.</strong></li>
+<li>D. Antypov et al., <a href="https://doi.org/10.1107/S1600576725003000">“Classification and statistical analysis of structural disorder in crystalline materials,” <em>Journal of Applied Crystallography</em> 58, 659–677 (2025)</a>. <strong>ICSD disorder 분류의 근거.</strong></li>
+<li>A. M. Ganose et al., <a href="https://doi.org/10.1039/D5DD00019J">“atomate2: modular workflows for materials science,” <em>Digital Discovery</em> 4, 1944–1973 (2025)</a>. <strong>결정론적 workflow automation 비교 맥락.</strong></li>
+<li>Y. Park et al., <a href="https://arxiv.org/abs/2606.09422">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a>. <strong>같은 연구 생태계의 원자 시뮬레이션 에이전트 선행 연구.</strong></li>
+<li>J. Kim et al., <a href="https://doi.org/10.1038/s41467-026-70195-8">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” <em>Nature Communications</em> 17, 3432 (2026)</a>. <strong>DeMARS가 활용한 SevenNet 계열 MLIP의 배경.</strong></li>
+<li>J. Gottweis et al., <a href="https://doi.org/10.1038/s41586-026-10644-y">“Accelerating scientific discovery with Co-Scientist,” <em>Nature</em> 655, 487–496 (2026)</a>. <strong>넓은 AI co-scientist 접근과의 비교.</strong></li>
+<li>Google Research, <a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a>. <strong>주장–코드–로그 연결과 독립 재실행의 비교 기준.</strong></li>
+<li>Z. Chen et al., <a href="https://doi.org/10.1038/s42256-026-01261-5">“An agentic artificially intelligent X-ray scientist,” <em>Nature Machine Intelligence</em> 8, 1075–1086 (2026)</a>. <strong>virtual instrument에서 real beamline으로 옮긴 human-relay 안전 경계의 비교 사례.</strong></li>
+</ol>
+<hr />
+<p><em>근거 기준일: 2026년 9월 6일. 논문의 800·100개 수치와 architecture는 저자 보고이며 이 리뷰가 DeMARS를 재실행한 결과가 아니다. 독립 점검은 arXiv 게시 정보, 본문 내부 수치·화학식의 일관성, 코드 공개 상태, 인용된 공식·동료평가 자료와 공개 페이지 렌더링에 한정된다. 적용 제안과 운영 metric은 편집자 해석이다.</em></p>
+      <div class="footer">
+        생성 시각: 2026-09-06 12:21:12<br>
+        원본 파일 최종 수정 시각: 2026-09-06 12:20:21
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#3">3문장 요약</a></li>
+<li><a href="#_1">왜 중요한가: 자동화가 멈추는 곳은 계산이 아니라 판단이다</a></li>
+<li><a href="#_2">먼저 정의할 용어</a></li>
+<li><a href="#cif">무질서 CIF가 왜 ‘판단이 필요한 계산’인가</a></li>
+<li><a href="#llm">핵심 방법: LLM을 코드 사이에 가둔다</a></li>
+<li><a href="#workflowai-assistant">기존 workflow·AI assistant와 무엇이 다른가</a></li>
+<li><a href="#_3">정량 결과: 무엇이 보고되었고 무엇이 빠졌나</a></li>
+<li><a href="#_4">가장 큰 한계: 좋은 설계와 검증된 제품은 다르다</a></li>
+<li><a href="#_5">재료 계산과 산업 연구에서의 시사점</a></li>
+<li><a href="#_6">후속 연구에서 꼭 보고 싶은 검증</a></li>
+<li><a href="#_7">관련 연구자와 초청 세미나 질문</a></li>
+<li><a href="#_8">관찰할 질문</a></li>
+<li><a href="#_9">결론</a></li>
+<li><a href="#_10">참고자료</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="../artifacts/agentic_programs_materials_hero.webp">부분 점유가 있는 무질서 결정에서 후보 원자배열을 만들고 물리 제약을 통과한 구조만 남기는 과정을 표현한 과학 편집형 개념도</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/" target="_blank" rel="noreferrer">「AI 과학자, 시작의 끝에서」</a></li>
+<li><a href="../artifacts/agentic_program_architecture_ko.svg">무질서 CIF에서 결정론적 근거 추출, 제한된 LLM 실행 명세, 구조 열거와 MLIP 이완, 물리 게이트, 새 문맥 검토를 거쳐 인증 또는 거절로 가는 구조도</a></li>
+<li><a href="https://arxiv.org/abs/2609.00795" target="_blank" rel="noreferrer">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a></li>
+<li><a href="https://doi.org/10.1107/S1600576725003000" target="_blank" rel="noreferrer">“Classification and statistical analysis of structural disorder in crystalline materials,” *Journal of Applied Crystallography* 58, 659–677 (2025)</a></li>
+<li><a href="https://doi.org/10.1039/D5DD00019J" target="_blank" rel="noreferrer">“atomate2: modular workflows for materials science,” *Digital Discovery* 4, 1944–1973 (2025)</a></li>
+<li><a href="https://arxiv.org/abs/2606.09422" target="_blank" rel="noreferrer">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a></li>
+<li><a href="https://doi.org/10.1038/s41467-026-70195-8" target="_blank" rel="noreferrer">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” *Nature Communications* 17, 3432 (2026)</a></li>
+<li><a href="https://doi.org/10.1038/s41586-026-10644-y" target="_blank" rel="noreferrer">“Accelerating scientific discovery with Co-Scientist,” *Nature* 655, 487–496 (2026)</a></li>
+<li><a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/" target="_blank" rel="noreferrer">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01261-5" target="_blank" rel="noreferrer">“An agentic artificially intelligent X-ray scientist,” *Nature Machine Intelligence* 8, 1075–1086 (2026)</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>

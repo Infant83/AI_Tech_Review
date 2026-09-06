@@ -96,6 +96,52 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-06_agentic-programs-materials-science",
+        title="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나",
+        subtitle="무질서 CIF를 검증 가능한 원자 모델로 바꾸는 DeMARS의 bounded judgment와 아직 남은 재현성 공백",
+        date="2026-09-06",
+        updated="2026-09-06",
+        category="AI for Science",
+        tags=("Agentic Programs", "Materials Science", "DeMARS", "Disordered Crystals", "CIF", "MLIP", "Scientific Software", "Verification"),
+        summary=(
+            "DeMARS가 무질서 결정의 부분 점유 CIF를 계산 가능한 원자 모델로 바꾸면서, LLM 판단을 결정론적 코드와 "
+            "물리 검증 사이에 제한하는 방식을 분석합니다. 약 800개 성숙 사례와 100개 외부 테스트가 보여주는 진전, "
+            "그리고 코드 비공개·인증/거절 분모 미공개가 남기는 검증 공백을 함께 짚습니다."
+        ),
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(
+            PublicAgent(
+                "Codex",
+                "repository audit, primary-source research, candidate scoring, bilingual writing, figures, validation, publication, and live-site verification",
+                "저장소 감사·1차 출처 조사·후보 평가·한영 집필·도해·검증·게시·공개 페이지 확인",
+            ),
+        ),
+        verification_scope=(
+            "arXiv primary paper, HTML full text, code-availability statement, and cited peer-reviewed context",
+            "candidate scoring, prior-hub duplicate check, numerical and chemical-consistency checks, and evidence-boundary review",
+            "bilingual HTML, 16:9 conceptual hero, reviewer-constructed SVGs, metadata, links, privacy, and deployed pages",
+        ),
+        verification_scope_ko=(
+            "arXiv 원 논문·HTML 본문·코드 공개 문구와 인용 동료평가 자료",
+            "후보 평가·기존 허브 중복 점검·수치와 화학식 일관성·주장 경계 검토",
+            "한영 HTML·16:9 개념 대표 이미지·리뷰어 구성 SVG·metadata·링크·개인정보·배포 페이지",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-06",
+        human_review_level="recurring scope and publication authority confirmed; no separate line-by-line human review in this run",
+        human_review_level_ko="정기 리뷰 범위와 공개 게시 권한 확인. 이번 실행에서 별도 문장 단위 사람 검토는 수행되지 않음",
+        disclosure_note_ko=(
+            "약 800개 성숙 사례와 100개 외부 테스트는 저자 보고이며 DeMARS를 독립 실행하지 못했습니다. "
+            "코드는 아직 공개되지 않았고 인증·거절 분모가 제시되지 않았다는 한계를 본문에 표시했습니다."
+        ),
+        disclosure_note_en=(
+            "The roughly 800 maturation cases and 100 held-out tests are author-reported; DeMARS was not independently run. "
+            "The review explicitly records that the code and certification/refusal denominator are unavailable."
+        ),
+    ),
+    PublicReview(
         folder="2026-09-04_quantum-advantage-evidence-ledger",
         title="양자 우위의 경계는 계속 다시 그려진다",
         subtitle="D-Wave 고전 모사, 92큐비트 노이즈 학습, QML·단백질·oscillator–transmon을 하나의 자원 장부로 읽기",
@@ -758,7 +804,7 @@ SCRIPT_STYLE_BLOCK_RE = re.compile(
 CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV = "CLOUDFLARE_WEB_ANALYTICS_TOKEN"
 PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
 LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
-DEFAULT_PUBLIC_METRICS_ENDPOINT = "https://infant83-public-metrics.infant83.workers.dev"
+DEFAULT_PUBLIC_METRICS_ENDPOINT = ""
 PUBLIC_BASE_PATH = "/AI_Tech_Review/"
 PUBLIC_BASE_URL = "https://infant83.github.io/AI_Tech_Review/"
 PUBLIC_SITE_ID = "ai-tech-review"
@@ -996,22 +1042,33 @@ def strip_private_public_material(html_text: str, language: str) -> str:
 
 def inject_public_local_note(html_text: str, language: str) -> str:
     html_text = PUBLIC_LOCAL_NOTE_RE.sub("\n", html_text)
+    metrics_enabled = bool(public_metrics_endpoint())
     if language.lower().startswith("en"):
+        metrics_note = (
+            "<p class=\"metrics-disclosure\">Public views and average reading time are recorded only "
+            "as aggregate values by page path, without personal identifiers.</p>"
+            if metrics_enabled
+            else ""
+        )
         public_note = (
             "\n<section id=\"public-local-references\" class=\"public-note\">"
             "<p>This public HTML includes the article, figures, and public external references. "
             "Private working notes and message metadata are not published.</p>"
-            "<p class=\"metrics-disclosure\">Public views and average reading time are recorded only "
-            "as aggregate values by page path, without personal identifiers.</p>"
+            f"{metrics_note}"
             "</section>\n"
         )
     else:
+        metrics_note = (
+            "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
+            "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
+            if metrics_enabled
+            else ""
+        )
         public_note = (
             "\n<section id=\"public-local-references\" class=\"public-note\">"
             "<p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. "
             "비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p>"
-            "<p class=\"metrics-disclosure\">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 "
-            "페이지 경로 단위의 집계값으로만 기록합니다.</p>"
+            f"{metrics_note}"
             "</section>\n"
         )
     if "</body>" in html_text:
@@ -2061,6 +2118,14 @@ def render_review_card(item: dict[str, object]) -> str:
         if thumbnail
         else '<div class="thumb-placeholder" aria-hidden="true"></div>'
     )
+    metrics_html = (
+        f'''            <p class="card-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
+              <span><strong data-metric-field="views">-</strong> 조회</span>
+              <span>평균 <strong data-metric-field="average">-</strong></span>
+            </p>'''
+        if public_metrics_endpoint()
+        else ""
+    )
     return f"""
         <article class="review-card" data-category="{html.escape(str(item["category"]), quote=True)}" data-tags="{html.escape(" ".join(item["tags"]), quote=True)}" data-title="{html.escape(str(item["title"]), quote=True)}" data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
           <a class="thumb" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
@@ -2068,10 +2133,7 @@ def render_review_card(item: dict[str, object]) -> str:
             <p class="meta">{html.escape(str(item["category"]))} · {html.escape(str(item["updated"]))}{translation_badges}</p>
             <h3><a href="{html.escape(str(item["href"]), quote=True)}">{html.escape(str(item["title"]))}</a></h3>
             <p class="subtitle">{html.escape(str(item["subtitle"]))}</p>
-            <p class="card-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
-              <span><strong data-metric-field="views">-</strong> 조회</span>
-              <span>평균 <strong data-metric-field="average">-</strong></span>
-            </p>
+{metrics_html}
             <p>{html.escape(str(item["summary"]))}</p>
             <div class="tags">{tags}</div>
           </div>
@@ -2088,6 +2150,14 @@ def render_latest_update(item: dict[str, object]) -> str:
         if thumbnail
         else '<div class="thumb-placeholder" aria-hidden="true"></div>'
     )
+    metrics_html = (
+        f'''          <p class="latest-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
+            <span><strong data-metric-field="views">-</strong> 조회</span>
+            <span>평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+          </p>'''
+        if public_metrics_endpoint()
+        else ""
+    )
     return f"""
       <section class="latest-update" aria-labelledby="latest-heading">
         <div class="latest-copy">
@@ -2095,10 +2165,7 @@ def render_latest_update(item: dict[str, object]) -> str:
           <h2 id="latest-heading">{html.escape(str(item["title"]))}</h2>
           <p class="latest-subtitle">{html.escape(str(item["subtitle"]))}</p>
           <p>{html.escape(str(item["summary"]))}</p>
-          <p class="latest-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
-            <span><strong data-metric-field="views">-</strong> 조회</span>
-            <span>평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-          </p>
+{metrics_html}
           <div class="tags">{tags}</div>
           <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>{translation_badges}
         </div>
@@ -2142,6 +2209,19 @@ def render_index(
         if home_image
         else ""
     )
+    topbar_metrics = (
+        '''          <aside class="public-metrics topbar-metrics" data-public-metrics-widget data-state="loading" aria-live="polite" aria-label="허브 조회 통계">
+            <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
+            <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
+          </aside>'''
+        if public_metrics_endpoint()
+        else ""
+    )
+    metrics_disclosure = (
+        '<li class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</li>'
+        if public_metrics_endpoint()
+        else ""
+    )
 
     return f"""<!doctype html>
 <html lang="ko">
@@ -2170,10 +2250,7 @@ def render_index(
             <span class="sr-only">리뷰 검색</span>
             <input id="search" type="search" placeholder="검색: AI scientist, TabPFN, agent..." autocomplete="off">
           </label>
-          <aside class="public-metrics topbar-metrics" data-public-metrics-widget data-state="loading" aria-live="polite" aria-label="허브 조회 통계">
-            <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
-            <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-          </aside>
+{topbar_metrics}
         </div>
         <span class="topbar-links">
           <a href="https://infant83.github.io/">김현중</a>
@@ -2249,7 +2326,7 @@ def render_index(
             <li>논문 보고 결과, 독립 검증, 리뷰 해석, 후속 제안을 구분하고 QPU·실험, 고전 시뮬레이션, 컴파일, 논리 자원 추정을 같은 증거 수준으로 섞지 않습니다.</li>
             <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
             <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
-            <li class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</li>
+{metrics_disclosure}
           </ul>
         </div>
       </section>
@@ -3620,8 +3697,6 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         errors.append(f"{risk} left in {site_index}")
     singleton_patterns = {
         "public metrics stylesheet": r"assets/public-metrics\.css",
-        "public metrics script": r"assets/public-metrics\.js",
-        "public metrics config": r"window\.AI_TECH_REVIEW_METRICS\s*=",
         "favicon": r"favicon\.ico",
         "SVG favicon": r"federlicht-favicon\.svg",
         "apple-touch icon": r"apple-touch-icon\.png",
@@ -3630,6 +3705,13 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         count = len(re.findall(pattern, index_text, flags=re.IGNORECASE))
         if count != 1:
             errors.append(f"unexpected {label} count in {site_index}: {count}")
+    metrics_script_count = len(re.findall(r"assets/public-metrics\.js", index_text, flags=re.IGNORECASE))
+    metrics_config_count = len(re.findall(r"window\.AI_TECH_REVIEW_METRICS\s*=", index_text, flags=re.IGNORECASE))
+    if metrics_script_count not in {0, 1} or metrics_config_count != metrics_script_count:
+        errors.append(
+            f"public metrics script/config must be absent together or appear once in {site_index}: "
+            f"script={metrics_script_count}, config={metrics_config_count}"
+        )
     for required in (
         '<link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/">',
         '<meta property="og:title" content="AI Tech Review Letters">',
