@@ -96,6 +96,36 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-09_quantum-resource-aware-workflows",
+        title="양자 계산의 전체 비용을 설계하다",
+        subtitle="오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽기",
+        date="2026-09-09",
+        updated="2026-09-09",
+        category="Quantum Computing",
+        tags=("Resource Estimation", "Fermi-Hubbard", "QPE", "QCBM", "Quantum Machine Learning", "DS-NOCI", "IonQ", "D-Wave"),
+        summary="Fermi–Hubbard 컴파일의 active volume, 실제 IonQ SAR 학습, 전력망 QML의 입력 병목과 DS-NOCI 기준 상태를 분석합니다. Superion 256과 Qubits Asia는 제작·행사 단계로 구분하고, 재료·OLED·최적화 연구에서 전체 비용을 비교하는 기준을 제안합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
+        ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+        agents=(PublicAgent("Codex", "primary-source verification, bilingual writing, figure construction, copyediting, publication and live-page checks", "1차 출처 확인·한영 집필·도표 구성·감수·게시·공개 페이지 확인"),),
+        verification_scope=(
+            "four arXiv papers and official IonQ and D-Wave announcements available at the evidence cutoff",
+            "dates, author attribution, metric definitions, comparison conditions and QPU/simulation/resource-estimate boundaries",
+            "bilingual HTML, conceptual hero, original comparison diagrams, corrected Korean PDF, local links and publication metadata",
+        ),
+        verification_scope_ko=(
+            "근거 기준일까지 공개된 arXiv 논문 4건과 IonQ·D-Wave 공식 안내",
+            "날짜·저자 표기·지표 정의·비교 조건·QPU와 시뮬레이션 및 자원 추정의 경계",
+            "한영 HTML·개념 이미지·비교 도표·교정한 한국어 PDF·파일 링크·게시 metadata",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-09",
+        human_review_level="topic and public publication explicitly requested; no separate line-by-line human review in this publication task",
+        human_review_level_ko="주제와 공개 게시 요청 확인. 이번 게시 작업에서 별도 문장 단위 사람 검토는 수행되지 않음",
+        disclosure_note_ko="논문 계산을 독립 재실행하지 않았습니다. 응용 제안과 연구 간 비교 기준은 리뷰의 해석이며, 연구 수치의 실제 계산 플랫폼과 검증 범위는 본문에 표시했습니다.",
+        disclosure_note_en="The computations were not independently rerun. Application suggestions and cross-study evaluation criteria are editorial interpretation; execution settings and evidence limits are stated in the article.",
+    ),
+    PublicReview(
         folder="2026-09-06_agentic-programs-materials-science",
         title="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나",
         subtitle="무질서 CIF를 검증 가능한 원자 모델로 바꾸는 DeMARS의 bounded judgment와 아직 남은 재현성 공백",

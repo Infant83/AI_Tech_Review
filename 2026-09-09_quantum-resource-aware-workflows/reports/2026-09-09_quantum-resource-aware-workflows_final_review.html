@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>양자 계산의 전체 비용을 설계하다</title>
+  <meta name="description" content="오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽는 9월 9일 연구 리뷰">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="양자 계산의 전체 비용을 설계하다">
+  <meta property="og:description" content="오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽는 9월 9일 연구 리뷰">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/quantum_resources_hero.webp">
+  <meta property="og:image:alt" content="양자 계산의 전체 비용을 설계하다">
+  <meta property="article:published_time" content="2026-09-09">
+  <meta property="article:modified_time" content="2026-09-09">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="양자 계산의 전체 비용을 설계하다">
+  <meta name="twitter:description" content="오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽는 9월 9일 연구 리뷰">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/quantum_resources_hero.webp">
+  <meta name="twitter:image:alt" content="양자 계산의 전체 비용을 설계하다">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 37 (2026-09-09)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/" lang="en" hreflang="en">English</a></nav>
+        <a href="2026-09-09_quantum-resource-aware-workflows_final_review.md">2026-09-09_quantum-resource-aware-workflows_final_review.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>양자 계산의 전체 비용을 설계하다</h1>
+        <p class="dek">오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽는 9월 9일 연구 리뷰</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>분자의 에너지를 계산하거나 산업 데이터를 분류하는 양자 알고리즘을 고를 때, 연구자는 제한된 장비 시간과 정확도 목표를 함께 맞춰야 합니다. 회로가 짧아져도 입력을 준비하는 비용이 커질 수 있고, 좋은 예측값을 얻으려면 같은 회로를 수천 번 반복해야 할 수도 있습니다. 오류정정 장치에서는 연산을 기다리는 논리 큐비트까지 공간과 시간을 차지합니다. <strong>어느 자원을 줄였으며, 그 절감이 전체 작업의 개선으로 이어지는가</strong>를 확인해야 하는 이유입니다.</p>
+<p>9월 9일 브리핑의 여섯 업데이트를 이 질문으로 다시 읽어봅니다. 오류정정 회로 컴파일, 위성영상과 전력망의 양자 머신러닝, 분자 계산의 기준 상태, 장치 제작과 산업 실증 예고를 다룹니다. 각 분야의 배경부터 살펴보고 실제로 확인된 결과와 다음 검증 과제를 연결합니다. 학술 항목 네 건은 모두 동료평가 전 프리프린트입니다.</p>
+<p><img alt="공간을 차지하는 격자, 반복 표본을 상징하는 투명 시트, 지형과 기준 파동을 함께 배치한 개념 일러스트" src="../artifacts/quantum_resources_hero.webp" /></p>
+<p><em>그림 1. 양자 계산에 필요한 공간, 입력 데이터, 반복 표본, 기준 모델을 함께 생각하기 위한 개념도입니다. 특정 장치나 실험 데이터를 재현한 그림은 아닙니다.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">오늘의 한 문장</p>
+<p>실용적인 양자 계산을 평가하려면 회로의 공간·시간 비용, 유용한 입력 정보, 샷 예산과 고전 기준 상태를 함께 최적화해야 합니다.</p>
+</aside>
+<p><a href="../artifacts/daily_quantum_brief_2026-09-09.pdf">5쪽 한국어 PDF 브리핑 내려받기</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/">English review</a></p>
+<h2 id="1">1. 어떤 비용을 세고 있는가</h2>
+<p><strong>회로 깊이</strong>는 병렬로 실행할 수 있는 게이트를 묶었을 때 남는 순차 단계 수입니다. 게이트 수가 같아도 동시에 수행하는 정도에 따라 깊이가 달라집니다. 실제 장치에서는 게이트 종류별 시간, 큐비트 사이의 이동·연결, 측정과 리셋도 영향을 줍니다. <strong>샷(shot)</strong>은 회로를 실행하고 측정해 표본 하나를 얻는 반복 단위입니다. 양자 처리장치인 <strong>QPU(quantum processing unit)</strong>에서 한 번 좋은 값을 얻는 것과 충분히 신뢰할 통계량을 만드는 것은 서로 다른 비용을 요구합니다.</p>
+<table>
+<thead>
+<tr>
+<th>이번 업데이트</th>
+<th>계산·검증 위치</th>
+<th>핵심 결과의 단위</th>
+<th>함께 확인할 비용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fermi–Hubbard QPE 컴파일</td>
+<td>고전 컴파일·오류정정 자원 추정</td>
+<td>active volume, Toffoli 수</td>
+<td>논리 블록, 대기 공간, 코드 주기, 상태 준비</td>
+</tr>
+<tr>
+<td>SAR 변화 탐지</td>
+<td>일부 학습·추론을 실제 IonQ QPU에서 수행</td>
+<td>필터·임계값 조정 후 최대 F1</td>
+<td>회로 평가 수, shots, 고전 영상 처리</td>
+</tr>
+<tr>
+<td>전력망 QML</td>
+<td>무잡음·해석적 회로 시뮬레이션</td>
+<td>균형 정확도</td>
+<td>입력 인코딩, 유한 shots, 선택 측정의 성공률</td>
+</tr>
+<tr>
+<td>DS-NOCI 분자 계산</td>
+<td>고전 수치실험·모의 잡음</td>
+<td>반응장벽 오차</td>
+<td>기준 상태, 행렬 측정, 부분공간 크기</td>
+</tr>
+<tr>
+<td>Superion 256</td>
+<td>칩 제작·프로토타입 발표</td>
+<td>제작 및 초기 이온 포획 단계</td>
+<td>동시 운영 규모, 시스템 오류, 응용 성능</td>
+</tr>
+<tr>
+<td>Qubits Asia</td>
+<td>산업 발표를 예고한 행사</td>
+<td>공개 일정과 발표 주제</td>
+<td>문제 규모, 고전 기준선, 총 실행시간</td>
+</tr>
+</tbody>
+</table>
+<p>회로 최적화에는 문제 표현, 고수준 합성, 게이트 재작성, 라우팅, 네이티브 게이트, 펄스, 오류정정 스케줄링 등 여러 연구 축이 있습니다. 이 리뷰의 <strong>active-volume 컴파일은 오류정정 아키텍처를 고려하는 사례</strong>입니다. Classiq의 고수준 합성이나 AshN의 네이티브 게이트 설계와 연결해 생각할 수 있지만, 이들 사이의 직접 성능 비교를 수행한 연구는 아닙니다.</p>
+<h2 id="2">2. 게이트 수를 넘어 실제 연산 공간을 줄이는 컴파일</h2>
+<p><strong>[프리프린트 · 자원 추정]</strong> Harriet Apel 외, v1 공개 <strong>2026-09-04</strong>.</p>
+<p>Fermi–Hubbard 모델은 격자에서 전자가 이동하고 같은 위치의 전자끼리 상호작용하는 다체계의 기본 모델입니다. 바닥상태 에너지를 구하는 <strong>QPE(quantum phase estimation, 양자 위상 추정)</strong>는 시간 진화에 담긴 위상으로 에너지를 읽습니다. 이때 긴 시간 진화를 기본 연산으로 나누는 과정에서 큰 회로가 생깁니다.</p>
+<p>오류정정 환경에서는 비싼 Toffoli 게이트의 개수를 줄이는 일이 중요합니다. 그러나 다른 연산이나 대기를 위해 사용하는 공간도 남습니다. 이 논문의 <strong>active volume</strong>은 실제 연산에 투입되는 논리 블록의 누적 비용을 세는 아키텍처 지표입니다. 유휴 블록의 비용과 전체 장치의 시공간 부피는 따로 구분해야 합니다.</p>
+<p>연구진은 시간 진화의 순서와 병합, 회전 연산 공유, 페르미온 이동과 ZX 표현의 단순화를 함께 조정했습니다. (L=4)부터 (20)까지의 정사각 격자에서 기존 비-Clifford 비용 중심 회로보다 <strong>active volume을 최대 3.9배 줄였고</strong>, (L=20)에서는 <strong>Toffoli 수도 약 2배 줄였습니다</strong>. 이 값들은 서로 다른 비용 지표입니다. 두 배수를 곱해 실행속도 개선으로 읽을 수 없습니다. <a href="https://arxiv.org/html/2609.05316v1">원 논문</a></p>
+<p>실제 오류정정 QPU 실행은 없습니다. 실행시간 추정은 코드 주기, 측정 결과에 따른 다음 동작 결정 시간, 허용 실패율 등에 의존합니다. <strong>재료 계산에 주는 의미:</strong> 같은 Hamiltonian과 목표 에너지 오차를 유지한 채, 회로 수치뿐 아니라 실행할 아키텍처까지 맞춰 비교해야 합니다. 초기 상태 준비와 충분한 바닥상태 겹침을 확보하는 비용도 별도로 남겨야 합니다.</p>
+<h2 id="3-qpu">3. 위성영상: 실제 QPU로 분포를 학습하면 무엇이 좋아지는가</h2>
+<p><strong>[프리프린트 · 실제 QPU 포함]</strong> Samwel K. Sekwao 외, v1 공개 <strong>2026-09-04</strong>.</p>
+<p><strong>SAR(synthetic aperture radar, 합성개구레이더)</strong>의 전후 영상을 비교하려면 “변화가 없었다면 두 번째 영상이 어떻게 보였을까”를 추정해야 합니다. 관측 표본이 드문 밝기 구간에서는 단순 통계 추정이 불안정해집니다. 연구진은 두 시점의 밝기 사이 관계를 생성모델로 학습했습니다. <strong>QCBM(quantum circuit Born machine)</strong>은 회로 측정에서 나오는 확률분포로 표본을 생성하는 모델입니다. 여기서는 개별 밝기 분포를 정규화하고 두 변수의 의존 관계를 다루는 copula 공간에서 학습합니다.</p>
+<p>공항 자료의 한 설정에서는 <strong>20큐비트 IonQ 회로를 학습과 추론에 모두 사용</strong>했습니다. 최적화 300회, 회로 평가당 5,000 shots, 추론 100,000 shots를 사용했습니다. 필터·임계값 조정 후 최대 F1은 <strong>QCBM 0.32, 고전 NLCD 0.16, 고전 copula 0.24</strong>였습니다. F1은 정밀도와 재현율을 함께 반영하는 지표이며, 일반적인 분류 정확도와 다릅니다. <a href="https://arxiv.org/html/2609.05313v1">원 논문</a></p>
+<p><img alt="공항 SAR 자료의 최대 filtered F1을 같은 0에서 0.4 축으로 비교한 막대그래프" src="../artifacts/sar_f1_ko.svg" /></p>
+<p><em>그림 2. Miramar 공항 자료의 해당 비교에서 QCBM이 두 기준선보다 높은 값을 보였습니다. 수치는 필터와 임계값을 조정한 뒤의 최대 F1입니다. 전체 학습시간이나 다른 데이터에 대한 성능을 나타내지는 않습니다.</em></p>
+<p>간섭 정보를 활용하는 <strong>InSAR(interferometric SAR)</strong> 화산 자료에서는 세 방법이 모두 약 0.66이었습니다. 장면과 분포에 따라 이득이 달랐으며, 총 실행시간·에너지 측면의 양자 가속은 제시되지 않았습니다. <strong>제조·재료 분석에 주는 의미:</strong> 결함 영상이나 공정 이상 탐지에서도 드문 사건의 분포를 얼마나 잘 배우는지 살펴볼 수 있습니다. 적용하려면 고전 생성모델, 동일한 전처리와 임계값 선택 규칙, 추론 비용까지 비교해야 합니다.</p>
+<h2 id="4-qml">4. 전력망 QML: 늘어난 큐비트에 유용한 입력이 들어가는가</h2>
+<p><strong>[프리프린트 · 무잡음 시뮬레이션]</strong> Sang Hyub Kim 외, v1 공개 <strong>2026-09-04</strong>.</p>
+<p>시계열 기반 모델은 센서의 긴 변화를 고차원 특징으로 바꿉니다. 이 특징을 작은 양자회로에 넣으려면 압축해야 하는데, 그 과정에서 분류에 필요한 정보가 사라질 수 있습니다. 연구진은 Chronos의 표현을 이용해 전력망 사건을 분류하고, 기존 회로에 새로운 입력을 전달하는 작은 <strong>wing 모듈</strong>을 붙였습니다.</p>
+<p>12큐비트 core와 선택 측정용 1큐비트를 쓰는 구성은 균형 정확도 <strong>83.6%</strong>, 두 wing을 붙인 19큐비트 구성은 <strong>85.2%</strong>였습니다. 균형 정확도는 클래스별 재현율을 평균해 데이터 수가 많은 클래스의 영향을 줄입니다. 새로운 정보 없이 회로만 확대한 비교에서는 이득이 없었습니다. <strong>동일 입력의 더 큰 고전 MLP와 비교한 개선 폭은 1.7–2.0%p</strong>로 별도의 비교입니다. <a href="https://arxiv.org/html/2609.05408v1">원 논문</a></p>
+<p>모든 회로는 <strong>잡음과 유한 shots가 없는 해석적 시뮬레이션</strong>에서 평가됐습니다. 독립 시험집합에서는 4–5%p의 일반화 격차가 있었고, 실제 QPU의 인코딩·측정·선택 성공률 비용은 남았습니다. <strong>OLED·재료 ML에 주는 의미:</strong> 분자 특징을 양자회로 폭에 맞출 때 어떤 정보가 보존되는지 먼저 확인해야 합니다. 같은 특징을 받은 고전 모델과의 비교가 큐비트 수를 늘리는 실험보다 앞서야 합니다.</p>
+<h2 id="5">5. 분자 계산: 좋은 고전 기준 상태를 함께 유지하기</h2>
+<p><strong>[프리프린트 · 고전 수치실험·모의 잡음]</strong> Vibin Abraham 외, v1 공개 <strong>2026-09-03</strong>.</p>
+<p>분자 전자구조를 근사할 때 하나의 전자 배치만으로 부족한 경우 여러 상태를 섞어 사용합니다. <strong>NOCI(nonorthogonal configuration interaction, 비직교 배치 상호작용)</strong>는 서로 직교하지 않아도 되는 기준 상태들을 결합합니다. 양자회로가 추가로 만든 상관 상태가 불완전하면, 그 상태들만 사용했을 때 결과가 나빠질 수 있습니다.</p>
+<p><strong>DS-NOCI(dual-space NOCI)</strong>는 고전 기준 상태와 상관 상태를 같은 변분공간에 함께 유지합니다. 정확한 Hamiltonian 행렬과 겹침 행렬을 사용하면 확대된 공간은 기존 공간의 해를 포함합니다. 다만 잡음이 있는 행렬에도 에너지 상한 보장이 자동으로 유지되는 것은 아닙니다.</p>
+<p>cyclobutadiene의 작은 활성공간 ((4e,4o)), 즉 전자 4개·궤도 4개를 다룬 반응장벽 계산에서 기준값은 <strong>8.96 kcal/mol</strong>이었습니다. NOQE의 장벽 오차 <strong>1.26 kcal/mol</strong>이 DS-NOCI에서 <strong>0.34 kcal/mol</strong>로 줄었습니다. <a href="https://arxiv.org/html/2609.04387v1">원 논문</a></p>
+<p><img alt="cyclobutadiene 활성공간 장벽 기준과 두 근사법의 장벽·절대오차를 비교한 도표" src="../artifacts/chemistry_barrier_ko.svg" /></p>
+<p><em>그림 3. 같은 작은 활성공간 기준값에 대한 비교입니다. 기준 상태를 함께 유지했을 때 장벽 오차가 감소했습니다. 전체 분자의 완전한 에너지, 대형 OLED 분자의 정확도 또는 실제 QPU 결과를 뜻하지 않습니다.</em></p>
+<p>실험은 소형 분자의 수치 계산과 모의 잡음 검증입니다. <strong>DFT·OLED 연구에 주는 의미:</strong> 기존 계산에서 얻은 유용한 기준을 보존하면서 상관 효과를 보완하는 설계가 관심 대상입니다. 실제 적용에서는 활성공간 선택, 겹침 행렬의 안정성, 상태 준비와 행렬 측정비용을 함께 평가해야 합니다.</p>
+<h2 id="6">6. 장치 제작과 산업 실증은 어느 단계인가</h2>
+<p><strong>[산업/제품 · 로드맵] IonQ Superion 256 — 발표 2026-09-08.</strong></p>
+<p>IonQ는 첫 집적 칩 제작과 프로토타입의 초기 이온 포획을 발표했으며, 납품 목표는 <strong>2027년</strong>입니다. 전자식 큐비트 제어와 제조 확장을 지향하지만, 이번 발표에서 256큐비트 동시 운영, 완성된 시스템의 fidelity, 오류정정 반복 성능이나 응용 benchmark는 확인되지 않았습니다. 기존 제어 실험의 fidelity를 Superion 256 전체의 성능으로 옮겨 적을 수 없습니다. <a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing">IonQ 공식 발표</a></p>
+<p><strong>[PoC/행사 예고] D-Wave Qubits Asia — 행사 2026-10-28, 서울.</strong></p>
+<p>행사 안내는 통신 운영, 항만 배정, 영상 재구성, 반도체 최적화 같은 산업 응용을 검토할 기회를 제공합니다. <strong>행사 일정과 응용 소개는 성능 검증의 출발점</strong>입니다. 발표 이후 문제 규모, 기존 운영 솔버, QPU 사용시간과 고전 후처리 비중을 확인해야 합니다. 행사 페이지 확인일은 2026-09-09이며, 행사일을 연구 결과의 최초 공개일로 사용하지 않았습니다. <a href="https://qubitsasia26.dwavequantum.com/">공식 행사 페이지</a></p>
+<h2 id="7">7. 연구에서 다음으로 기록할 항목</h2>
+<p>여섯 업데이트를 연결하면 연구 설계의 질문이 구체적이 됩니다. 회로를 줄였을 때 아키텍처 비용도 줄었는지, 큐비트를 늘렸을 때 유용한 정보가 추가됐는지, 양자 상태가 기존 고전 기준에 어떤 정보를 보탰는지를 따로 확인할 수 있습니다. 다음 표는 <strong>이 리뷰가 제안하는 기록 양식</strong>이며 논문들이 공통으로 제시한 결론은 아닙니다.</p>
+<table>
+<thead>
+<tr>
+<th>업무</th>
+<th>비교에서 고정할 것</th>
+<th>추가로 기록할 것</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>전자구조·OLED</td>
+<td>분자 구조, 기저, 활성공간, 목표 오차</td>
+<td>기준 상태, 에너지·장벽 오차, 상태 준비, 행렬 측정 수</td>
+</tr>
+<tr>
+<td>양자·고전 ML</td>
+<td>입력 특징, 데이터 분할, 전처리, 선택 규칙</td>
+<td>seed, 유한 shots, 성공률, 학습·추론 시간, 강한 고전 모델</td>
+</tr>
+<tr>
+<td>회로·오라클 최적화</td>
+<td>같은 함수, 정확도, 큐비트 예산, 목표 장치</td>
+<td>깊이, 2큐비트 게이트, ancilla, 이동·대기, active volume</td>
+</tr>
+<tr>
+<td>산업 최적화</td>
+<td>같은 instance, 제약조건, 허용시간</td>
+<td>feasible 해 비율, 후처리 후 비용, QPU·CPU 시간, 반복 안정성</td>
+</tr>
+</tbody>
+</table>
+<p>어떤 방법이 유리한지는 사용하려는 문제와 장치에서 판정해야 합니다. 재료 연구라면 익숙한 작은 분자에서 고전 기준을 먼저 고정하고, 후보 회로의 개선이 목표 관측량과 전체 작업시간에 어떻게 반영되는지 확인하는 실험이 다음 단계입니다. 회로 수준의 절감, 예측값의 개선, 실제 운영의 이득을 같은 기록 안에 남기면 기술 선택의 근거가 분명해집니다.</p>
+<h2 id="8">8. 출처와 검증 범위</h2>
+<table>
+<thead>
+<tr>
+<th>원 자료</th>
+<th>최초 공개·발표</th>
+<th>상태와 직접 링크</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Apel 외, <em>Compiling the 2D Fermi-Hubbard ground-state energy estimation algorithm for active volume quantum architectures</em></td>
+<td>2026-09-04 v1</td>
+<td><a href="https://arxiv.org/abs/2609.05316">프리프린트 · arXiv:2609.05316</a></td>
+</tr>
+<tr>
+<td>Sekwao 외, <em>SAR and InSAR Change Detection with Quantum Generative Models</em></td>
+<td>2026-09-04 v1</td>
+<td><a href="https://arxiv.org/abs/2609.05313">프리프린트 · arXiv:2609.05313</a></td>
+</tr>
+<tr>
+<td>Kim 외, <em>Towards Scaling Quantum Fine-Tuning of Foundational Time Series Models for Classification</em></td>
+<td>2026-09-04 v1</td>
+<td><a href="https://arxiv.org/abs/2609.05408">프리프린트 · arXiv:2609.05408</a></td>
+</tr>
+<tr>
+<td>Abraham 외, <em>Toward Resilient Many-Body Formulations under Incomplete Correlation Models: A Dual-Space Variational Formulation</em></td>
+<td>2026-09-03 v1</td>
+<td><a href="https://arxiv.org/abs/2609.04387">프리프린트 · arXiv:2609.04387</a></td>
+</tr>
+<tr>
+<td>IonQ, Superion 제품군 공식 발표</td>
+<td>2026-09-08</td>
+<td><a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing">기업 발표</a></td>
+</tr>
+<tr>
+<td>D-Wave, Qubits Asia 2026</td>
+<td>행사 2026-10-28</td>
+<td><a href="https://qubitsasia26.dwavequantum.com/">공식 행사 · 확인 2026-09-09</a></td>
+</tr>
+</tbody>
+</table>
+<p>논문 수치와 플랫폼, 비교 조건을 원문과 대조했습니다. 원 논문의 계산을 독립 재실행하지는 않았습니다. AI 학회의 accepted 본논문으로 확인된 항목은 없으며, 새롭게 원 출처까지 검증된 LinkedIn 기술 신호도 이번 글에 추가하지 않았습니다. 공개 소셜 검색은 전체 피드의 완전한 모니터링을 뜻하지 않습니다.</p>
+<p>PDF 공개본에서는 첫 문장의 최적화 대상 표현, SAR 논문의 첫 저자 표기, 최대 F1의 평가 조건을 바로잡았습니다. 서로 다른 비용 배수를 이어 붙였던 PDF 도표도 같은 active-volume 기준의 비교로 교체했습니다. 핵심 수치와 계산 플랫폼 구분은 유지했습니다.</p>
+      <div class="footer">
+        생성 시각: 2026-09-09 14:17:26<br>
+        원본 파일 최종 수정 시각: 2026-09-09 14:17:26
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#1">1. 어떤 비용을 세고 있는가</a></li>
+<li><a href="#2">2. 게이트 수를 넘어 실제 연산 공간을 줄이는 컴파일</a></li>
+<li><a href="#3-qpu">3. 위성영상: 실제 QPU로 분포를 학습하면 무엇이 좋아지는가</a></li>
+<li><a href="#4-qml">4. 전력망 QML: 늘어난 큐비트에 유용한 입력이 들어가는가</a></li>
+<li><a href="#5">5. 분자 계산: 좋은 고전 기준 상태를 함께 유지하기</a></li>
+<li><a href="#6">6. 장치 제작과 산업 실증은 어느 단계인가</a></li>
+<li><a href="#7">7. 연구에서 다음으로 기록할 항목</a></li>
+<li><a href="#8">8. 출처와 검증 범위</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="../artifacts/quantum_resources_hero.webp">공간을 차지하는 격자, 반복 표본을 상징하는 투명 시트, 지형과 기준 파동을 함께 배치한 개념 일러스트</a></li>
+<li><a href="../artifacts/daily_quantum_brief_2026-09-09.pdf">5쪽 한국어 PDF 브리핑 내려받기</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/" target="_blank" rel="noreferrer">English review</a></li>
+<li><a href="https://arxiv.org/html/2609.05316v1" target="_blank" rel="noreferrer">원 논문</a></li>
+<li><a href="https://arxiv.org/html/2609.05313v1" target="_blank" rel="noreferrer">원 논문</a></li>
+<li><a href="../artifacts/sar_f1_ko.svg">공항 SAR 자료의 최대 filtered F1을 같은 0에서 0.4 축으로 비교한 막대그래프</a></li>
+<li><a href="https://arxiv.org/html/2609.05408v1" target="_blank" rel="noreferrer">원 논문</a></li>
+<li><a href="https://arxiv.org/html/2609.04387v1" target="_blank" rel="noreferrer">원 논문</a></li>
+<li><a href="../artifacts/chemistry_barrier_ko.svg">cyclobutadiene 활성공간 장벽 기준과 두 근사법의 장벽·절대오차를 비교한 도표</a></li>
+<li><a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing" target="_blank" rel="noreferrer">IonQ 공식 발표</a></li>
+<li><a href="https://qubitsasia26.dwavequantum.com/" target="_blank" rel="noreferrer">공식 행사 페이지</a></li>
+<li><a href="https://arxiv.org/abs/2609.05316" target="_blank" rel="noreferrer">프리프린트 · arXiv:2609.05316</a></li>
+<li><a href="https://arxiv.org/abs/2609.05313" target="_blank" rel="noreferrer">프리프린트 · arXiv:2609.05313</a></li>
+<li><a href="https://arxiv.org/abs/2609.05408" target="_blank" rel="noreferrer">프리프린트 · arXiv:2609.05408</a></li>
+<li><a href="https://arxiv.org/abs/2609.04387" target="_blank" rel="noreferrer">프리프린트 · arXiv:2609.04387</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>
