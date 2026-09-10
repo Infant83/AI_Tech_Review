@@ -96,6 +96,28 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-11_weekly-oled-inverse-design-excitonic-reliability",
+        title="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도",
+        subtitle="2026년 9월 4–10일 연구 동향 | 공액고분자 탈위상, 3D 생성, 실패 탐지, 비단열·양자 자원 평가",
+        date="2026-09-11",
+        updated="2026-09-11",
+        category="Materials AI",
+        tags=("OLED", "Exciton Dephasing", "Molecular Inverse Design", "3D Generation", "MLIP Validation", "Nonadiabatic Dynamics", "VQE", "Quantum Error Mitigation"),
+        summary="직접적인 TADF·PhOLED 신작이 없던 주간에, 공액고분자의 집단 엑시톤 탈위상 실험을 핵심으로 3D 분자 생성, MLIP 실패 탐지, 비단열 결합, 유효 퍼텐셜, OOD 역설계와 양자 계산의 오차·샷 비용을 함께 평가합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode",
+        ai_system_ko="OpenAI Codex Work Mode",
+        agents=(PublicAgent("Codex", "primary-source research, bilingual writing, illustration direction, deterministic evidence figures, scientific copyediting, implementation and publication verification", "1차 출처 조사·한영 집필·일러스트 구성·근거 도표·과학 감수·구현·게시 검증"),),
+        verification_scope=("eight arXiv preprints posted or revised 2026-09-04 through 2026-09-10, checked against primary abstract and full-text pages", "reported numerical results, benchmark conditions, QPU versus simulator execution, sampling costs, and OLED translation boundaries", "bilingual HTML, conceptual hero, two reviewer-constructed SVG figures, verified five-page PDF, metadata and local links"),
+        verification_scope_ko=("2026년 9월 4–10일 게시·개정된 arXiv 프리프린트 8건의 초록·본문 확인", "보고 수치·벤치마크 조건·QPU와 시뮬레이터 경계·샷 비용·OLED 전이 조건", "한영 HTML·개념 대표 이미지·리뷰어 구성 SVG 2점·검증한 5쪽 PDF·게시 정보·로컬 링크"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-10",
+        human_review_level="scheduled publication requested; no separate line-by-line human review",
+        human_review_level_ko="정기 게시 요청에 따라 작성. 별도 문장 단위 사람 검토는 수행되지 않음",
+        disclosure_note_ko="선정 자료는 모두 프리프린트이며 직접적인 신규 TADF·PhOLED·호스트-도펀트 소자 논문은 없었습니다. 수치를 독립 재현하지 않았고 OLED 적용과 주간 실험안은 리뷰어의 제안입니다. 생성 대표 이미지는 개념 그림입니다.",
+        disclosure_note_en="All selected items are preprints, and no directly relevant new TADF, PhOLED, or host–dopant device paper appeared. Numerical results were not independently reproduced; OLED translations and the weekly experiment are reviewer proposals. The generated hero is conceptual.",
+    ),
+    PublicReview(
         folder="2026-09-11_quantum-ai-brain-frontiers",
         title="양자진공에서 AI 수학 증명과 기억 조절까지",
         subtitle="강한 빛·입자 충돌·Navier–Stokes·신경 자극을 원리와 실험으로 읽는 과학 리뷰",

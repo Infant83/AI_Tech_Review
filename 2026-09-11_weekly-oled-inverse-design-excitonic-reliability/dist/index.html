@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도</title>
+  <meta name="description" content="2026년 9월 4-10일 연구 동향 | 공액고분자 탈위상, 3D 잠재 흐름, 비단열 전자구조와 실제 QPU 측정비용">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도">
+  <meta property="og:description" content="2026년 9월 4-10일 연구 동향 | 공액고분자 탈위상, 3D 잠재 흐름, 비단열 전자구조와 실제 QPU 측정비용">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/excitonic_reliability_hero-web.webp">
+  <meta property="og:image:alt" content="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도">
+  <meta property="article:published_time" content="2026-09-11">
+  <meta property="article:modified_time" content="2026-09-11">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도">
+  <meta name="twitter:description" content="2026년 9월 4-10일 연구 동향 | 공액고분자 탈위상, 3D 잠재 흐름, 비단열 전자구조와 실제 QPU 측정비용">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/excitonic_reliability_hero-web.webp">
+  <meta name="twitter:image:alt" content="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 37 (2026-09-11)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/" lang="en" hreflang="en">English</a></nav>
+        <a href="2026-09-11_weekly-oled-inverse-design-excitonic-reliability_final_review.md">2026-09-11_weekly-oled-inverse-design-excitonic-reliability_final_review.md</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도</h1>
+        <p class="dek">2026년 9월 4-10일 연구 동향 | 공액고분자 탈위상, 3D 잠재 흐름, 비단열 전자구조와 실제 QPU 측정비용</p>
+      </section>
+
+    </div>
+  </header>
+
+  <main class="content-grid">
+    <article class="final-article">
+      <p>2026년 9월 4일부터 10일까지의 새 문헌은 TADF 발광체나 PhOLED host를 직접 설계한 성과를 내놓지 않았다. 대신 OLED 역설계가 어디서 틀릴 수 있는지를 더 정밀하게 보여준다. 분자 하나의 에너지와 진동자 세기를 맞히는 것만으로는 응집상에서의 엑시톤 코히런스, 상태 교차 부근의 비단열 결합, 생성 분자의 크기와 3차원 구조, 모델의 분포 밖 실패를 동시에 설명할 수 없다.</p>
+<p>이번 주의 중심 근거는 공액고분자 5종에 대한 2차원 전자분광 실험이다. 절대 균질 선폭은 약 20-90 meV로 크게 달랐지만 온도에 따른 증가는 모든 재료에서 약했다. 검출 방식에 따라 선폭의 절대값도 바뀌었다. 이 결과는 OLED 후보의 광물성을 단일 분자 scalar로만 학습할 때 빠지는 집단상태와 관측량 의존성을 보여준다. 나머지 7편은 이 문제를 계산과 검증의 층으로 확장한다.</p>
+<p><img alt="공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트" src="../artifacts/excitonic_reliability_hero-web.webp" /></p>
+<p><em>그림 1. 이번 리뷰의 개념 일러스트. 중앙의 발광 집합체는 집단 엑시톤과 탈위상을, 주변 요소는 가변 크기 생성·전자상태 교차·양자 측정비용을 나타낸다. 생성된 분자와 퍼텐셜, 양자 요소는 특정 화학구조, 측정 morphology, 정량 곡면 또는 실행 가능한 회로가 아니다.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">이번 주의 판정</p>
+<p>광여기 분자 역설계의 신뢰도는 생성 후보 수보다 검증 계층에 의해 좌우된다. 분자 단위 DFT/ML 예측 위에 응집상 광물리, 분포 밖 실패 탐색, 고수준 전자구조 확인을 올려야 한다. 실제 QPU 결과는 8-qubit 물 분자 PES에서 오차 완화의 가능성을 보였지만, chemical accuracy에 접근할수록 평균 약 1,676만 shots가 필요해 OLED 규모의 전자구조 계산과는 거리가 멀다.</p>
+</aside>
+<p>레이아웃을 검증한 영문 기술 브리프는 <a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a>.</p>
+<h2 id="_1">먼저 읽을 순서</h2>
+<ol>
+<li><strong>Collective excitonic structure governs weak thermal optical dephasing</strong> - 공액고분자 5종의 실험이 분자구조와 집단 광학 관측량을 직접 연결한다.</li>
+<li><strong>EF-TALFM</strong> - 고정 차원 latent에서 분자 크기까지 생성하고, HOMO-LUMO gap hit를 DFT로 확인한다.</li>
+<li><strong>MLIP Detective</strong> - 평균 benchmark 점수 밖의 물리적 실패를 가설-검증 과정으로 찾는다.</li>
+<li><strong>DMRG-QD-NEVPT2 analytic derivatives</strong> - 8 GB 소비자 GPU에서 교차점까지 매끄러운 gradient와 NACME를 계산한다.</li>
+<li><strong>Multipole splats</strong> - OEP와 inverted Kohn-Sham 문제를 안정적인 Hamiltonian learning으로 재구성한다.</li>
+<li><strong>OOD differentiable inverse design</strong> - 학습 범위 밖 물성을 dynamics-based surrogate와 물리 제약으로 설계한다.</li>
+<li><strong>QESEM water PES</strong> - 실제 IBM QPU에서 오차를 줄이지만 샷 비용이 급증한다.</li>
+<li><strong>CASH-QSE</strong> - 고전 CASSCF 기준상태를 다시 측정하지 않는 QSE를 제안하되 결과는 이상적 자원 분석이다.</li>
+</ol>
+<p><img alt="선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도" src="../artifacts/evidence_map.svg" /></p>
+<p><em>그림 2. 리뷰어가 구성한 정성적 근거 지도. 위치는 OLED workflow와의 근접성과 원 논문이 실제로 수행한 검증 수준을 나타내며 성능 순위가 아니다. 선정 논문은 모두 프리프린트다.</em></p>
+<h2 id="1-oledtadfpholed">1. 직접 OLED·TADF·PhOLED 연구는 없었다</h2>
+<p>이번 범위에서 TADF 발광체, PhOLED host, host-dopant/exciplex 또는 OLED 소자를 직접 설계·검증한 새 primary record는 찾지 못했다. 아래 8편은 유기 반도체 광물리 또는 인접 계산방법이다. 8월 21일·28일과 9월 4일 브리핑에 실린 항목은 반복하지 않았다.</p>
+<h2 id="2-5">2. 공액고분자 5종에서 확인된 약한 열적 광학 탈위상</h2>
+<p>Henry J. Kantrow, Elizabeth Gutiérrez-Meza, Eric R. Bittner, Hao Li, Carlos Silva-Acuña의 <a href="https://arxiv.org/abs/2609.06742"><em>Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers</em></a>은 2026년 9월 6일 공개된 프리프린트다.</p>
+<h3 id="_2">[원 논문 결과]</h3>
+<p>P3HT, P3HHT, PBTTT, PCE11, N2200을 coherence-detected COLBERT와 population-detected 2D photoluminescence spectroscopy로 비교했다. 재료는 backbone, donor-acceptor 성격, side chain, 고체 조직이 서로 다르다. 균질 선폭은 약 20-90 meV였고 N2200의 COLBERT 값이 약 20 meV로 가장 좁았지만, 각 재료의 온도 의존성은 측정 범위에서 모두 약했다. PBTTT에서는 2DPL 선폭이 COLBERT보다 일관되게 컸으나 약한 열적 scaling은 두 방식에서 유지됐다.</p>
+<h3 id="oled">[한계와 OLED 번역]</h3>
+<p>저자들은 선폭 차이의 미시적 원인을 확정하지 않았다. exciton-vibration coupling과 relaxation pathway의 정량 모델이 필요하고, 공개 데이터 저장소 URL도 프리프린트에는 placeholder로 남아 있다. 또한 발광 저분자나 OLED 소자를 측정한 연구가 아니다.</p>
+<p>OLED 파이프라인에서는 단분자 S1/T1·oscillator strength 예측 뒤에 dimer/aggregate exciton model과 observable-specific dephasing 검증을 별도 단계로 두어야 한다. 선폭 하나를 분자 고유 상수처럼 학습하지 말고, 검출 방식·온도·형태학 조건을 provenance로 보존하는 것이 직접적인 번역이다.</p>
+<h2 id="3-latent-3d">3. 고정 차원 latent가 분자 크기까지 결정하는 3D 생성</h2>
+<p>Weichi Yao, Cameron Gruich, Bryan R. Goldsmith, Yixin Wang의 <a href="https://arxiv.org/abs/2609.08333"><em>Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules</em></a>은 9월 8일 공개됐다.</p>
+<h3 id="_3">[원 논문 결과]</h3>
+<p>EF-TALFM은 고정 크기 분자 latent를 flow matching으로 샘플링한 뒤 autoregressive Transformer가 원자 종류, 좌표, 화학 상태와 분자 크기를 함께 결정한다. canonical atom ordering과 rigid-pose alignment를 사용해 equivariant layer 없이 3D 구조를 복원한다. PCQM4Mv2에서 unique·training-set novel·sanitization·PoseBusters를 모두 통과한 비율은 89.4%로, UAE-3D 75.6%, FlowMol 69.8%보다 높았다.</p>
+<p>HOMO-LUMO gap은 4.1-7.8 eV 사이 10개 target을 두고 target당 10,000개를 생성했다. 내부 ranking을 적용하면 DFT 값이 target의 0.1 eV 안에 들어오는 hit 밀도가 약 2배가 되었고, unique verified hit의 novelty는 97%였다. 보고된 latent dimension은 32이며 총 학습시간은 882분으로 UAE-3D의 1,644분보다 짧았다.</p>
+<h3 id="oled_1">[한계와 OLED 번역]</h3>
+<p>PCQM4Mv2의 HOMO-LUMO gap은 OLED의 S1, T1, ΔEST, SOC 또는 고체상 성능을 대체하지 않는다. canonical ordering과 alignment가 더 큰 비평면 donor-acceptor 분자에서 얼마나 안정적인지, route feasibility와 scaffold OOD가 유지되는지도 확인되지 않았다.</p>
+<p>OLED용 재현 실험에서는 분자 크기를 사전 고정하지 않는 장점을 유지하되, 생성 후 상위 후보를 동일한 TDDFT/TDA·conformer protocol로 재평가해야 한다. novelty보다 target hit의 scaffold-held-out calibration과 합성 route 존재 여부를 우선 기록하는 편이 안전하다.</p>
+<h2 id="4-mlip-detective">4. 평균 점수 밖의 실패를 능동적으로 찾는 MLIP Detective</h2>
+<p>Ryuhei Okuno, Nontawat Charoenphakdee, Kaoru Hisama, Yuta Tsuboi의 <a href="https://arxiv.org/abs/2609.08399"><em>MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials</em></a>은 9월 8일 공개됐다.</p>
+<h3 id="_4">[원 논문 결과]</h3>
+<p>LLM 기반 Detective Agent가 검증 가능한 물리 가설을 만들고, 여러 Probe Agent가 값싼 simulation과 model committee disagreement로 이를 시험한 뒤 의심 사례만 사람과 DFT에 넘긴다. MACE-MPA-0에서 O·F adsorbate가 포함된 PBE/PBE+U 혼합 영역의 40개 조합 가운데 27개가 분리 fragment보다 높은 비정상 에너지를 보였고, 영역 밖 72개 조합에서는 0개였다.</p>
+<p>CO/Cu(111)은 benchmark adsorption energy가 실험과 0.04 eV 안에서 맞았지만, desorption path에서는 모델이 vacuum asymptote보다 0.208 eV 높은 장벽을 만들었다. 동일한 25개 image에 대한 plane-wave PBE single point는 0.022 eV만 상승했다. 즉 equilibrium benchmark가 맞아도 경로가 물리적으로 틀릴 수 있음을 DFT로 확인했다.</p>
+<h3 id="oled_2">[한계와 OLED 번역]</h3>
+<p>현재 실증은 표면 흡착과 소수 failure family에 한정된다. LLM의 사전학습 노출을 배제할 수 없고, inspection specification이 탐색 경계를 정하며, 최종 확인은 여전히 전문가와 DFT 비용을 요구한다.</p>
+<p>OLED 모델에도 같은 구조를 적용할 수 있다. ΔEST가 맞지만 state ordering이 틀리는 경우, relaxed conformer에서는 맞지만 torsion scan에서 불연속이 생기는 경우, host-dopant separation limit에서 비물리적 CT가 나타나는 경우를 미리 가설로 등록하고 상위 실패만 high-level 계산에 올린다.</p>
+<h2 id="5-8-gb-gpu">5. 교차점을 통과하는 비단열 미분을 8 GB GPU에 올리다</h2>
+<p>Rubén Darío Guerrero의 <a href="https://arxiv.org/abs/2609.09990"><em>Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU</em></a>은 9월 9일 공개됐다.</p>
+<h3 id="_5">[원 논문 결과]</h3>
+<p>DMRG가 active-space static correlation을, quasi-degenerate strongly contracted NEVPT2가 dynamic correlation을 담당한다. gradient와 interstate nonadiabatic coupling matrix element는 contraction graph의 reverse-mode transpose로 계산된다. NVIDIA RTX 4060 8 GB에서 전 과정을 실행했고, twisted ethene 교차점에서 smooth adiabat와 1/ΔE 형태로 발산하는 nonzero NACME를 얻었다. 비교한 adiabatic linear-response TDDFT는 그 지점에서 zero coupling을 반환했다.</p>
+<p>FCI-in-active-space 일치는 10^-15, single-precision leg의 에너지 영향은 10^-6 eV 미만이었다. CAS(10,10)의 dense 4-RDM 경로는 12.6 GB가 필요하지만 contraction을 융합하면 7.1 GB에 들어갔고 dense result와 8.9×10^-16 수준으로 맞았다. ethene aug-cc-pVTZ Cholesky build는 40분 안에 끝나지 않던 기존 구현에서 약 3분으로 줄었다.</p>
+<h3 id="oled_3">[한계와 OLED 번역]</h3>
+<p>단일 저자의 프리프린트이며 ethene 중심 검증이다. 실제 TADF 다중상태, triplet manifold, SOC, 용매·host, 큰 donor-acceptor에서의 안정성과 wall time은 보고되지 않았다. 저자도 σ-polarization과 diffuse function 확장을 후속 과제로 둔다.</p>
+<p>OLED에서는 TDDFT/TDA screening 뒤 state crossing이나 CT/LE mixing이 심한 5-10개 후보만 active-space multireference 확인에 보내는 escalation layer로 적합하다. 모든 후보를 이 방법으로 처리하는 생산 pipeline으로 읽어서는 안 된다.</p>
+<h2 id="6-oep-inverted-kohn-sham-hamiltonian-learning">6. OEP와 inverted Kohn-Sham을 안정적인 Hamiltonian learning으로 재구성</h2>
+<p>Matija Medvidović, Angel Rubio, Juan Carrasquilla의 <a href="https://arxiv.org/abs/2609.09280"><em>Multipole splats for optimized and inverted effective potentials</em></a>은 9월 8일 공개됐다.</p>
+<p>multipole splat은 올바른 장거리 감쇠를 구조적으로 넣은 local trial potential이다. 저자들은 optimized effective potential과 inverted Kohn-Sham을 각각 variational·supervised Hamiltonian learning으로 표현했다. near-exact inverted correlation potential과 비교해 self-interaction, delocalization, static-correlation error의 공간적 흔적을 분리했고, 경험적 tail 보정 없이 Rydberg series를 회복했다. benzene·naphthalene까지 약 70 electrons 규모의 π-conjugated system에서 exact-exchange source density를 계산했다.</p>
+<p>이 결과는 ground-state effective potential과 spectral access에 관한 것이며 OLED excited-state benchmark는 아니다. 그래도 long-range CT와 diffuse excitation이 중요한 후보에서 scalar orbital energy만 저장하기보다 potential representation과 density-derived diagnostic을 학습 데이터로 남기는 방향을 제시한다. basis sensitivity와 hybrid-functional dependence는 별도 검증해야 한다.</p>
+<h2 id="7-dynamics-based-surrogate">7. dynamics-based surrogate가 보여준 분포 밖 역설계</h2>
+<p>Sergey A. Shteingolts, Salman N. Salman, Ron Levie, Dan Mendels의 <a href="https://arxiv.org/abs/2609.06655"><em>Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics</em></a>은 9월 6일 공개됐다.</p>
+<p>graph neural network molecular dynamics simulator를 짧은 동역학 초기화와 물리 제약 refinement에 연결했다. Poisson ratio 0.1-0.4의 non-auxetic network만 학습했지만 -0.3까지의 auxetic 구조를 설계했다. 학습 크기는 150-200 nodes였고, 최종 시험은 최대 5,000 nodes까지 확장됐다. static structure-to-property predictor는 같은 OOD 역설계에 실패했다. bond length는 원래의 30% 이상, 인접 bond angle은 20도 이상으로 제한했다.</p>
+<p>이는 분자가 아니라 disordered elastic network simulation이다. OLED 번역은 결과가 아니라 설계 원리다. surrogate의 직접 역전보다 differentiable trajectory와 물리 제약을 통해 torsion 또는 morphology를 최적화하고, 최종 후보를 원래 oracle로 재검증해야 한다. 화학 그래프로 성능 수치를 옮길 근거는 없다.</p>
+<h2 id="8-qpu">8. 실제 QPU가 드러낸 오차 완화의 샷 비용</h2>
+<p>Renato Olarte Hernandez 등 8명의 <a href="https://arxiv.org/abs/2609.07284"><em>Implementing QESEM&rsquo;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study</em></a>은 9월 7일 공개됐다.</p>
+<h3 id="qpu">[실제 QPU 실행]</h3>
+<p>IBM Aachen Heron r3에서 156 physical qubit 가운데 8 qubit register를 사용했다. 대상은 H2O symmetric stretch 11개 geometry, (4,4) active space, STO-3G, 1-layer perfect-pairing tiled unitary product state다. ansatz와 orbital parameter는 QPU가 아니라 statevector oo-VQE에서 먼저 최적화했고, 실제 하드웨어에서는 energy expectation을 측정했다.</p>
+<p>raw QPU energy는 reference보다 대체로 약 500 mHa 높았다. QESEM으로 loose precision 0.1 Ha에서는 약 100 mHa 안에, tight precision 0.01 Ha에서는 대부분 30 mHa 안에 들어왔다. tight case의 maximum error는 34 mHa였고 merged result는 20 mHa 안이었다. 11개 가운데 한 점이 chemical accuracy에 직접 들어왔으며 ±5 mHa uncertainty까지 고려하면 5개가 해당 범위와 겹쳤다.</p>
+<p>비용은 크다. merged result당 평균 shots는 loose 3,135,921, tight 16,762,896이었다. tight run의 QPU 시간은 geometry당 약 0.5-2.5시간이었다. 따라서 이는 OLED-size VQE나 quantum advantage가 아니다. 8-qubit small-basis water PES에서 characterization-based mitigation이 bias를 줄인 실제 하드웨어 증거다.</p>
+<h2 id="9-cash-qse">9. 고전 기준상태를 다시 측정하지 않는 CASH-QSE</h2>
+<p>Artur F. Izmaylov의 <a href="https://arxiv.org/abs/2609.08170"><em>Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy</em></a>은 9월 8일 공개됐다.</p>
+<p>CASSCF reference는 고전적으로 계산하고, occupation structure로 reference 및 서로에 대해 정확히 직교하는 quantum component를 만든다. overlap measurement 없이 Hermitian eigenproblem을 풀며, H2O와 N2 bond stretching을 STO-3G와 제한된 cc-pVDZ 공간에서 시험했다. H2O/STO-3G equilibrium에서 idealized shots는 5.6×10^3으로 ADAPT-VQE 2.9×10^6보다 520배 적었다. 3.0 Å에서는 3.2×10^2 대 1.2×10^5로 약 370배였다. 가장 큰 complete measurement circuit은 all-to-all logical CNOT 수백 개였다.</p>
+<p>그러나 component 선택은 FCI 정보로 안내됐고, 수치는 noisy QPU 실행이 아닌 idealized final-energy sampling estimate다. chemical accuracy와 shot reduction은 작은 분자·기저에서의 결과이며 물리 qubit, routing, error mitigation 비용을 포함하지 않는다. OLED 적용은 active-space fragment를 고전 reference로 얼마나 잘 포착하는지부터 검증해야 한다.</p>
+<h2 id="10">10. 이번 주 실행안</h2>
+<p><img alt="생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow" src="../artifacts/proposed_workflow.svg" /></p>
+<p><em>그림 3. 이번 문헌을 바탕으로 리뷰어가 제안한 workflow. 어느 원 논문도 이 OLED pipeline을 end-to-end로 실행하지 않았다.</em></p>
+<p>12-24개 donor-acceptor 또는 host 후보 family를 정하고 conformer와 dimer geometry를 함께 만든다. EF-TALFM형 생성기는 분자 크기를 자유롭게 두되 reaction template와 commercial building block gate를 통과한 후보만 남긴다. 같은 TDDFT/TDA 설정에서 S1, T1, 상위 triplet, oscillator strength, NTO CT/LE 지표를 계산하고, dimer에는 excitonic coupling과 host perturbation descriptor를 추가한다.</p>
+<p>검증은 평균 MAE보다 failure hypothesis로 설계한다. scaffold-held-out, torsion-held-out, dimer-separation scan에서 state-order swap, 비연속 energy, 비물리적 CT, 과도한 oscillator strength를 찾는다. 가장 의심스러운 5-10개만 multireference 또는 더 높은 기저 계산으로 올린다. QPU는 생산 계산에 넣지 않고, 작은 active-space test에서 logical circuit·shots·QPU time·classical baseline을 기록하는 자원 실험으로 분리한다.</p>
+<h2 id="11">11. 근거 공백</h2>
+<p>이번 7일 범위에는 다음 항목을 직접 다룬 신뢰할 만한 새 자료가 없었다.</p>
+<ul>
+<li>TADF emitter·PhOLED host·host-dopant/exciplex의 직접 분자 설계와 소자 검증</li>
+<li>OLED 안정성, 열화와 operational lifetime</li>
+<li>SELFIES-specific 제약, CRBM 또는 Boltzmann-machine molecular sampling</li>
+<li>chemistry-relevant D-Wave/QUBO 또는 QAOA와 동등 예산의 고전 기준선</li>
+<li>OLED active space에서의 VQE 자원 추정 또는 quantum advantage</li>
+</ul>
+<h2 id="_6">결론</h2>
+<p>이번 주 문헌은 광여기 분자 설계를 세 개의 길이척도로 나눈다. 분자 내부에서는 전자상태와 교차를 안정적으로 계산해야 하고, 분자 사이에서는 집단 엑시톤과 관측량 의존 탈위상을 다뤄야 하며, 설계 탐색에서는 분포 밖 실패를 의도적으로 찾아야 한다. EF-TALFM은 후보 생성의 자유도를 넓혔지만, 그 후보를 OLED 재료로 만드는 증거는 별도의 전자구조·응집상·합성 검증에 있다.</p>
+<p>양자 계산의 경계도 수치로 드러났다. QESEM은 실제 QPU에서 error를 줄였지만 tight target에는 평균 약 1,676만 shots가 필요했고, CASH-QSE의 큰 절감은 FCI-guided idealized estimate다. 이번 주 근거가 지지하는 결론은 quantum advantage가 아니라, 측정비용을 숨기지 않는 자원 장부와 고전 기준선이 먼저라는 것이다.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>H. J. Kantrow et al., <a href="https://arxiv.org/abs/2609.06742">“Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers,” arXiv:2609.06742v1 (6 Sep 2026)</a>. <strong>Preprint; experiment.</strong></li>
+<li>W. Yao et al., <a href="https://arxiv.org/abs/2609.08333">“Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules,” arXiv:2609.08333v1 (8 Sep 2026)</a>. <strong>Preprint; DFT-verified property hits.</strong></li>
+<li>R. Okuno et al., <a href="https://arxiv.org/abs/2609.08399">“MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials,” arXiv:2609.08399v1 (8 Sep 2026)</a>. <strong>Preprint; agentic search with DFT verification.</strong></li>
+<li>R. D. Guerrero, <a href="https://arxiv.org/abs/2609.09990">“Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU,” arXiv:2609.09990v1 (9 Sep 2026)</a>. <strong>Preprint; classical GPU.</strong></li>
+<li>M. Medvidović, A. Rubio, J. Carrasquilla, <a href="https://arxiv.org/abs/2609.09280">“Multipole splats for optimized and inverted effective potentials,” arXiv:2609.09280v1 (8 Sep 2026)</a>. <strong>Preprint; classical calculation.</strong></li>
+<li>S. A. Shteingolts et al., <a href="https://arxiv.org/abs/2609.06655">“Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics,” arXiv:2609.06655v1 (6 Sep 2026)</a>. <strong>Preprint; simulation outside molecular chemistry.</strong></li>
+<li>R. O. Hernandez et al., <a href="https://arxiv.org/abs/2609.07284">“Implementing QESEM&rsquo;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study,” arXiv:2609.07284v1 (7 Sep 2026)</a>. <strong>Preprint; actual IBM QPU measurement after statevector optimization.</strong></li>
+<li>A. F. Izmaylov, <a href="https://arxiv.org/abs/2609.08170">“Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy,” arXiv:2609.08170v1 (8 Sep 2026)</a>. <strong>Preprint; idealized resource analysis, no QPU run.</strong></li>
+</ol>
+<hr />
+<p>작성정보. 작성자: 김현중. AI 보조: OpenAI Codex Work Mode. 검증 기준일: 2026년 9월 10일. 수치와 실행 위치는 원문 보고를 따랐으며, OLED workflow 번역과 이번 주 실행안은 리뷰 제안이다. 선정된 8편은 모두 프리프린트다.</p>
+      <div class="footer">
+        생성 시각: 2026-09-10 19:39:00<br>
+        원본 파일 최종 수정 시각: 2026-09-10 19:36:56
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#_1">먼저 읽을 순서</a></li>
+<li><a href="#1-oledtadfpholed">1. 직접 OLED·TADF·PhOLED 연구는 없었다</a></li>
+<li><a href="#2-5">2. 공액고분자 5종에서 확인된 약한 열적 광학 탈위상</a><ul>
+<li><a href="#_2">[원 논문 결과]</a></li>
+<li><a href="#oled">[한계와 OLED 번역]</a></li>
+</ul>
+</li>
+<li><a href="#3-latent-3d">3. 고정 차원 latent가 분자 크기까지 결정하는 3D 생성</a><ul>
+<li><a href="#_3">[원 논문 결과]</a></li>
+<li><a href="#oled_1">[한계와 OLED 번역]</a></li>
+</ul>
+</li>
+<li><a href="#4-mlip-detective">4. 평균 점수 밖의 실패를 능동적으로 찾는 MLIP Detective</a><ul>
+<li><a href="#_4">[원 논문 결과]</a></li>
+<li><a href="#oled_2">[한계와 OLED 번역]</a></li>
+</ul>
+</li>
+<li><a href="#5-8-gb-gpu">5. 교차점을 통과하는 비단열 미분을 8 GB GPU에 올리다</a><ul>
+<li><a href="#_5">[원 논문 결과]</a></li>
+<li><a href="#oled_3">[한계와 OLED 번역]</a></li>
+</ul>
+</li>
+<li><a href="#6-oep-inverted-kohn-sham-hamiltonian-learning">6. OEP와 inverted Kohn-Sham을 안정적인 Hamiltonian learning으로 재구성</a></li>
+<li><a href="#7-dynamics-based-surrogate">7. dynamics-based surrogate가 보여준 분포 밖 역설계</a></li>
+<li><a href="#8-qpu">8. 실제 QPU가 드러낸 오차 완화의 샷 비용</a><ul>
+<li><a href="#qpu">[실제 QPU 실행]</a></li>
+</ul>
+</li>
+<li><a href="#9-cash-qse">9. 고전 기준상태를 다시 측정하지 않는 CASH-QSE</a></li>
+<li><a href="#10">10. 이번 주 실행안</a></li>
+<li><a href="#11">11. 근거 공백</a></li>
+<li><a href="#_6">결론</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="../artifacts/excitonic_reliability_hero-web.webp">공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트</a></li>
+<li><a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a></li>
+<li><a href="../artifacts/evidence_map.svg">선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도</a></li>
+<li><a href="https://arxiv.org/abs/2609.06742" target="_blank" rel="noreferrer">*Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08333" target="_blank" rel="noreferrer">*Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08399" target="_blank" rel="noreferrer">*MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials*</a></li>
+<li><a href="https://arxiv.org/abs/2609.09990" target="_blank" rel="noreferrer">*Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU*</a></li>
+<li><a href="https://arxiv.org/abs/2609.09280" target="_blank" rel="noreferrer">*Multipole splats for optimized and inverted effective potentials*</a></li>
+<li><a href="https://arxiv.org/abs/2609.06655" target="_blank" rel="noreferrer">*Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics*</a></li>
+<li><a href="https://arxiv.org/abs/2609.07284" target="_blank" rel="noreferrer">*Implementing QESEM&#x27;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08170" target="_blank" rel="noreferrer">*Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy*</a></li>
+<li><a href="../artifacts/proposed_workflow.svg">생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+</body>
+</html>
