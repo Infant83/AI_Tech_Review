@@ -95,7 +95,7 @@ The density matrix ρ describes the state, the σ matrices represent spin along 
 
 ### Observed entanglement is not a dark-matter detection
 
-CMS reported top–antitop entanglement in a selected near-threshold region in 2024. Its witness was D = −0.480 with +0.026/−0.029 uncertainty, against a separable-state boundary of −1/3; the reported significance was 5.1σ. These values belong to the specified phase space and analysis. [5]
+CMS reported top–antitop entanglement in a selected near-threshold region in 2024. Its parton-level witness was D = −0.480 with +0.026/−0.029 uncertainty, against a separable-state boundary of −1/3; the reported significance was 5.1σ. These values belong to the specified phase space and analysis. [5]
 
 Entanglement, a Bell-inequality violation and discovery of a new particle are distinct claims. Entanglement rules out a mixture of independent subsystem states. Bell tests impose stronger requirements. A 2026 study of the hierarchy of top-quark quantum correlations explicitly distinguished these categories and found no Bell correlations in the phase space it examined. [6]
 
