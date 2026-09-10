@@ -1,0 +1,347 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A long-form review of vacuum optics, collider quantum information, AI-assisted Navier–Stokes proofs and memory stimulation, with figures and a climate note."><meta name="author" content="AI Tech Review"><meta property="og:type" content="article"><meta property="og:description" content="A long-form review of vacuum optics, collider quantum information, AI-assisted Navier–Stokes proofs and memory stimulation, with figures and a climate note."><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/vacuum.webp"><meta name="twitter:card" content="summary_large_image"><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/"><title>From the Quantum Vacuum to AI Proofs and Memory</title><style>
+:root{color-scheme:light;--ink:#183843;--teal:#177b80;--paper:#fbf9f3;--muted:#54676c;--line:#d2dbd8;--gold:#a66c32}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans KR",Arial,sans-serif;font-size:18px;line-height:1.94;word-break:normal;overflow-wrap:anywhere}
+.topbar{position:sticky;top:0;z-index:5;background:rgba(251,249,243,.96);border-bottom:1px solid var(--line);padding:10px max(20px,calc((100vw - 1060px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;line-height:1.5}
+.topbar a{color:var(--ink);text-decoration:none}.topbar strong{letter-spacing:.11em;font-size:12px}
+main{max-width:1000px;margin:0 auto;padding:54px 44px 88px}
+h1{font-size:clamp(36px,5vw,61px);font-weight:760;line-height:1.27;letter-spacing:-.04em;margin:18px 0 24px;text-wrap:balance}
+.eyebrow,.chapter-no{font-size:12px;line-height:1.4;font-weight:750;letter-spacing:.15em;color:var(--teal)}
+.dek{font-size:23px;line-height:1.65;color:var(--muted);max-width:850px;margin:0 0 30px}
+h2{font-size:34px;line-height:1.42;letter-spacing:-.025em;margin:105px 0 32px;padding-top:32px;border-top:2px solid var(--ink);text-wrap:balance}
+.chapter-no{display:block;margin-bottom:13px}
+h3{font-size:24px;line-height:1.5;letter-spacing:-.018em;margin:49px 0 18px}
+p{margin:18px 0 24px}a{color:var(--teal);text-underline-offset:4px}strong{font-weight:750}
+figure{margin:35px 0 42px}figure img{width:100%;height:auto;display:block;border-radius:12px}
+figure.hero{margin:37px -24px 42px}figcaption{font-size:14px;line-height:1.75;color:var(--muted);margin:14px 3px 0}
+.scope{border-left:4px solid var(--gold);background:#f2eee3;padding:22px 27px;margin:32px 0;font-size:16px;line-height:1.85}.scope p{margin:8px 0 0}
+.contents{display:grid;grid-template-columns:1fr 1fr;gap:0 30px;margin:34px 0 54px;padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.contents a{display:flex;gap:15px;padding:15px 0;font-size:15px;text-decoration:none;line-height:1.6}.contents b{color:var(--gold);min-width:22px}
+.equation{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:26px;text-align:center;line-height:1.7;background:#eef2ef;border-radius:10px;padding:25px 22px;margin:28px 0;overflow:auto;white-space:nowrap;overflow-wrap:normal}
+.equation.wide{font-size:23px}
+.table-wrap{overflow-x:auto;margin:30px 0 38px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:630px;font-size:15px;line-height:1.7}
+th,td{text-align:left;vertical-align:top;padding:16px 16px;border-bottom:1px solid var(--line)}th{background:#eaf0ed;font-weight:750}tr:last-child td{border-bottom:0}
+ul{padding-left:24px}li{margin:12px 0}.citation{font-size:13px;white-space:nowrap;font-weight:700}
+.refs{font-size:14px;line-height:1.75;padding-left:30px}.refs li{padding:9px 0}.refs small{display:block;color:var(--muted);margin-top:3px;font-size:12px}
+.topic-links{font-size:14px;line-height:1.8}
+.interactive{padding:27px 30px;background:#163944;color:#fff;border-radius:14px;margin:30px 0}
+.interactive h4{margin:0 0 8px;font-size:21px}.interactive p{font-size:14px;line-height:1.7;color:#c9dadd;margin:8px 0 20px}
+.interactive label{display:block;font-size:16px;margin:12px 0}.interactive input{width:100%;accent-color:#dfaa69;height:30px;cursor:pointer}
+.interactive .readout{display:flex;justify-content:space-between;gap:15px;margin:16px 0;font-variant-numeric:tabular-nums;font-size:18px}
+.signal-track{height:18px;background:#385762;border-radius:12px;overflow:hidden}.signal-fill{height:100%;background:#efb774;width:1%;transition:width .12s}
+button{font:inherit;font-size:14px;border:1px solid #9aafb4;background:transparent;color:white;border-radius:6px;padding:6px 14px;cursor:pointer;margin-top:18px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #bf833d;outline-offset:5px}
+.language-nav{font-size:14px;text-align:right;margin-bottom:25px}.source-code{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:24px;margin-top:50px}
+@media(max-width:680px){body{font-size:17px;line-height:1.9}main{padding:28px 21px 55px}h1{font-size:37px}.dek{font-size:20px}h2{font-size:28px;margin-top:75px}h3{font-size:22px}figure.hero{margin-left:0;margin-right:0}figcaption{font-size:13px}.contents{grid-template-columns:1fr;gap:0}.contents a{padding:10px 0}.scope{padding:18px 19px}.equation,.equation.wide{font-size:21px;text-align:left}.interactive{padding:22px 20px}.interactive .readout{flex-direction:column;gap:2px}.diagram-wrap{overflow-x:auto;border-radius:12px}.diagram-wrap img{min-width:680px}.topbar strong{font-size:11px}.topbar{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.signal-fill{transition:none}}
+@media print{.topbar,.interactive{display:none}body{font-size:11pt;background:white}main{max-width:none;padding:0}h2{break-before:page;margin-top:0}figure,table{break-inside:avoid}a{color:inherit}}
+</style></head><body><header class="topbar"><a href="https://infant83.github.io/AI_Tech_Review/"><strong>AI TECH REVIEW</strong></a><a href="#vacuum">Quantum</a><a href="#ai">AI</a><a href="#brain">Brain</a><span>2026.09.11</span></header><main><article><nav class="language-nav" aria-label="Language"><a lang="ko" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_quantum-ai-brain-frontiers/">한국어</a> · <span lang="en" aria-current="page">English</span></nav><p class="eyebrow">SCIENCE FRONTIERS · 2026.09.11</p>
+
+<h1>From the Quantum Vacuum to AI Proofs and Memory</h1>
+<p class="dek">How intense light probes empty space, collider decays preserve quantum information, AI tackles a fluid singularity, and peripheral nerves may influence learning.</p>
+
+<figure class="hero"><img src="assets/vacuum.webp" alt="Conceptual illustration of a powerful laser meeting an X-ray probe in vacuum" width="1672" height="941"><figcaption>Conceptual artwork about reading the vacuum through light. This is neither an apparatus drawing nor an observation; the beams and polarization changes are exaggerated.</figcaption></figure>
+
+<p>A tiny change in the polarization of light can reveal something about empty space. The directions of decay products can carry information about particles that no longer exist. A fluid might retain finite total kinetic energy while its maximum speed becomes unbounded. Sensory input from the face might change how the brain learns. Each question asks how a difficult-to-observe process becomes accessible through a measurable quantity or a precise mathematical statement.</p>
+<p>This review takes topics highlighted by New Scientist Weekly as starting points and develops them through separately identified papers and official sources. It is a subject review rather than a newsletter digest: two chapters on quantum physics, one on AI and mathematics, one on the brain, and a short climate note.</p>
+<div class="scope"><strong>Scope and date</strong><p>Evidence cutoff: 10 September 2026. The New Scientist full articles were unavailable. In particular, the new experiment behind the facial-stimulation story could not be identified. The brain chapter reviews named earlier studies and does not invent the new experiment's design or results. The vacuum and collider papers below are independently selected technical examples, not confirmed identifications of the magazine's featured studies.</p></div>
+
+<nav class="contents" aria-label="Contents">
+<a href="#vacuum"><b>01</b> How does the vacuum respond to light?</a>
+<a href="#collider"><b>02</b> Quantum information after a collision</a>
+<a href="#ai"><b>03</b> What does the AI Navier–Stokes proof mean?</a>
+<a href="#brain"><b>04</b> Can sensory stimulation change memory?</a>
+<a href="#climate"><b>05</b> El Niño and the Amazon, briefly</a>
+<a href="#sources"><b>↗</b> Sources, scope and discussion questions</a>
+</nav>
+
+<h2 id="vacuum"><span class="chapter-no">01 / QUANTUM VACUUM</span>How does the vacuum respond to light?</h2>
+
+<h3>Empty space is not a complete physical description</h3>
+<p>In elementary electromagnetism, vacuum is the background through which light travels. Maxwell&#39;s linear equations allow two crossing light waves simply to superpose. This is enough to explain why intersecting flashlight beams do not visibly bounce off one another.</p>
+<p>Quantum electrodynamics, or QED, treats the electromagnetic field and charged particles together. Vacuum is their lowest-energy state. A vanishing mean electric field does not imply vanishing quantum fluctuations: a random variable can have zero mean and nonzero variance. The average field therefore does not exhaust the properties of the vacuum.</p>
+<p>The familiar image of particle–antiparticle pairs briefly appearing is a heuristic for quantum calculations. Experiments do not photograph virtual particles as little objects. They compare incoming and outgoing light and ask whether their relationship has changed as predicted by quantum field interactions. “Seeing the vacuum” is best understood here as observing its response.</p>
+<h3>A strong field creates a tiny optical asymmetry</h3>
+<p>Electrons in glass respond to light and produce an optical refractive index. QED predicts that vacuum in a strong external electromagnetic field can also respond nonlinearly to a probe. If two probe polarizations acquire different phase velocities, an initially linear polarization becomes slightly elliptical. The difference in refractive index is vacuum birefringence.</p>
+<p>A strong pump establishes the interaction conditions; a weaker probe reads their effect. This resembles pump–probe spectroscopy of matter, except that the target contains no deliberately introduced atoms or molecules. Geometry matters: an ideal single electromagnetic plane wave has vanishing electromagnetic invariants. Intensity alone does not specify the relevant interaction. Beam direction, focus and temporal overlap must also be designed.</p>
+<figure><div class="diagram-wrap"><img src="assets/vacuum.svg" alt="Conceptual pump–probe experiment with a crossed analyzer and pump-on/pump-off comparison" width="1200" height="640" loading="lazy"></div><figcaption>Figure 1. Conceptual vacuum-birefringence measurement. Distances, angles and effect sizes are not an engineering specification. Separating a tiny photon signal from optical leakage and pump-related background is essential.</figcaption></figure>
+
+<p>For a uniform interaction length L, ordinary probe wavelength λ and refractive-index difference Δn, the relative phase is</p>
+<div class="equation">Δφ = 2π Δn L / λ.</div>
+
+<p>Suppose the incident polarization is at 45° to the two optical eigenaxes and an analyzer blocks the original polarization. Ideally, the fraction transmitted into the crossed channel is</p>
+<div class="equation">P<sub>⊥</sub> = sin²(Δφ / 2) ≈ (π Δn L / λ)² &nbsp; (|Δφ| ≪ 1).</div>
+
+<p>The small phase shift enters the probability quadratically. More probe photons help, but they do not remove leakage or scattering that can imitate a signal.</p>
+<section class="interactive" aria-label="Change the polarization phase"><h4>Change the polarization phase</h4><p>An enlarged educational range, not the size of a physical vacuum effect.</p><label for="phase">Relative phase Δφ</label><input id="phase" type="range" min="0" max="1.57" value="0.20" step="0.01"><div class="readout"><span>Δφ = <output id="phase-value" for="phase">0.20 rad</output></span><span>Crossed-channel fraction: <output id="probability" for="phase">0.997%</output></span></div><div class="signal-track" aria-hidden="true"><div class="signal-fill" id="signal-fill"></div></div><button type="button" id="phase-reset">Reset</button><noscript><p>Δφ = 0.20 rad → P = sin²(0.10) ≈ 0.997%.</p></noscript></section>
+
+<p>This control evaluates ideal polarization optics over an intentionally enlarged phase range. It does not predict the count rate or physical effect size of a laser-vacuum experiment.</p>
+<h3>What has actually been demonstrated?</h3>
+<p>A concrete primary-source example is the BIREF@HIBEF collaboration&#39;s 2024 letter of intent, combining the ReLaX laser with an X-ray probe at the European XFEL HED instrument. An illustrative estimate gives a polarization-flipped photon fraction around 10⁻¹². This is a proposal and sensitivity estimate, not a detection report. <span class="citation"><a href="#ref-1" aria-label="Reference 1">[1]</a></span></p>
+<p>A complementary route exchanges a brief intense interaction for a long effective optical path. Spector and colleagues tested an interferometric technique in a 19 m optical cavity in 2025. That demonstration used no magnetic field: it tested the measurement method, not magnetic vacuum birefringence itself. <span class="citation"><a href="#ref-2" aria-label="Reference 2">[2]</a></span></p>
+<div class="table-wrap" role="region" tabindex="0" aria-label="Comparison table"><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>How it increases sensitivity</th>
+<th>Crucial qualification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Intense laser and X-ray probe</td>
+<td>Strong field and short wavelength</td>
+<td>Pulse overlap and polarization background</td>
+</tr>
+<tr>
+<td>Magnetic field and optical cavity</td>
+<td>Long effective optical path</td>
+<td>Cavity noise and field-correlated artifacts</td>
+</tr>
+<tr>
+<td>Photon scattering in heavy-ion collisions</td>
+<td>Electromagnetic photon interactions</td>
+<td>Collision background and event selection</td>
+</tr>
+</tbody></table></div>
+<p>Related quantum electromagnetic effects have already been observed. ATLAS reported light-by-light scattering in ultraperipheral lead–lead collisions in 2019. That supports nonlinear quantum electromagnetic interactions, but it is a different observation from laboratory laser-vacuum birefringence. Any claim of a “first view” needs an explicit observable and experimental regime. <span class="citation"><a href="#ref-3" aria-label="Reference 3">[3]</a></span></p>
+<h3>Where dark matter enters</h3>
+<p>A new light particle coupled to photons could, in principle, modify an optical signal relative to the QED prediction. An unexpected polarization change would still require a careful account of residual gas, mirror birefringence, beam geometry and pump scattering before an exotic explanation became persuasive. Wavelength, field-strength and orientation dependence would need to fit a consistent model.</p>
+<p>A successful QED measurement would matter even without a new particle. A null result can also constrain a model within the demonstrated sensitivity. Neither outcome amounts to measuring dark energy or photographing a sea of virtual particles.</p>
+<p>For readers accustomed to quantum computing, this is another kind of quantum research. Its immediate currency is phase sensitivity, photon statistics and background control, rather than qubit count or circuit depth.</p>
+<h2 id="collider"><span class="chapter-no">02 / QUANTUM INFORMATION AT COLLIDERS</span>Quantum information after a collision</h2>
+
+<figure><img src="assets/collider.webp" alt="Conceptual particle-detector cutaway with opposing sprays of decay tracks" width="1672" height="941" loading="lazy"><figcaption>Artwork about quantum correlations appearing in decay-angle distributions. It is not an experimental event display or a dark-matter discovery image.</figcaption></figure>
+
+<h3>Classical records can contain evidence of quantum correlations</h3>
+<p>The Large Hadron Collider, LHC, produces collisions; detectors record positions, energies and arrival times. Those records are classical numbers. That does not mean they contain no information about quantum phenomena. Quantum mechanics predicts probabilities and correlations between measurement outcomes.</p>
+<p>Two spins provide a useful example. Each may have no preferred direction when considered alone, while their joint outcomes are strongly correlated. An analysis retaining only separate averages loses information that is present in the joint distribution.</p>
+<p>Short-lived particles cannot be held while an experimenter rotates a spin measurement apparatus. Their decay products can instead act as spin analyzers. Reconstructing a top–antitop spin state from decay angles is a form of quantum-state tomography: recovering a state from multiple kinds of observations. Afik and Muñoz de Nova developed this approach for the LHC. <span class="citation"><a href="#ref-4" aria-label="Reference 4">[4]</a></span></p>
+<p>A general pair of spin-1/2 systems can be written as</p>
+<div class="equation wide">ρ = ¼ [ I ⊗ I + Σᵢ Bᵢ⁺ σᵢ ⊗ I + Σⱼ Bⱼ⁻ I ⊗ σⱼ + Σᵢⱼ Cᵢⱼ σᵢ ⊗ σⱼ ].</div>
+
+<p>The density matrix ρ describes the state, the σ matrices represent spin along three axes, B describes individual polarization, and C describes correlations. The important feature is the separation of individual and joint information. The coefficients are estimated from many collision events, not all measured simultaneously in a single event.</p>
+<h3>Observed entanglement is not a dark-matter detection</h3>
+<p>CMS reported top–antitop entanglement in a selected near-threshold region in 2024. Its witness was D = −0.480 with +0.026/−0.029 uncertainty, against a separable-state boundary of −1/3; the reported significance was 5.1σ. These values belong to the specified phase space and analysis. <span class="citation"><a href="#ref-5" aria-label="Reference 5">[5]</a></span></p>
+<p>Entanglement, a Bell-inequality violation and discovery of a new particle are distinct claims. Entanglement rules out a mixture of independent subsystem states. Bell tests impose stronger requirements. A 2026 study of the hierarchy of top-quark quantum correlations explicitly distinguished these categories and found no Bell correlations in the phase space it examined. <span class="citation"><a href="#ref-6" aria-label="Reference 6">[6]</a></span></p>
+<p>Invisible particles can produce an imbalance in the summed transverse momenta of visible objects. Neutrinos and detector effects can do that too. Better use of spin and angular correlations may sharpen discrimination between hypotheses, but entanglement is not by itself a dark-matter fingerprint.</p>
+<h3>Two different uses of “quantum”</h3>
+<p>One research program infers the quantum correlations of collision products from classical detector data. Another encodes stored event features into qubits and processes them with a quantum model. The second is quantum machine learning, or QML.</p>
+<figure><div class="diagram-wrap"><img src="assets/collider.svg" alt="Branching diagram separating spin-state inference from feature encoding into a quantum circuit" width="1200" height="690" loading="lazy"></div><figcaption>Figure 2. Classical observations can support quantum-state inference. Encoding those observations into a new quantum circuit does not restore the coherence of the original collision state.</figcaption></figure>
+
+<p>A 2024 quantum-autoencoder paper involving Sarah Malik belongs to the second program. It studies unsupervised searches for beyond-standard-model events through a learned compression model and anomaly score. A new circuit architecture and benchmark are not an experimental particle discovery. <span class="citation"><a href="#ref-7" aria-label="Reference 7">[7]</a></span></p>
+<p>The separate 2025 “1 Particle 1 Qubit” paper offers a more concrete example. A jet is a group of particles traveling in roughly the same direction. Selected particle kinematics are mapped to rotation angles, with one qubit assigned to each retained particle. Entanglement created by the circuit is a computational resource of this encoding, not coherent transfer of the complete collision state into quantum memory. <span class="citation"><a href="#ref-8" aria-label="Reference 8">[8]</a></span></p>
+<figure><div class="diagram-wrap"><img src="assets/auc.svg" alt="AUC comparison for quantum and classical autoencoders in the 1 Particle 1 Qubit paper" width="1200" height="650" loading="lazy"></div><figcaption>Figure 3. Redrawn from Table I of <span class="citation"><a href="#ref-8" aria-label="Reference 8">[8]</a></span>. Quantum/classical AUC: W 0.715/0.671; Higgs→bb 0.774/0.739; top 0.872/0.858. These are paper-reported results under a restricted comparison. The source table supplies no error bars, so none are invented.</figcaption></figure>
+
+<p>AUC is the area under the receiver operating characteristic curve. It summarizes how well a score ranks signal relative to background as the decision threshold changes. An AUC of 0.872 is not an 87.2% discovery probability or classification accuracy. Real searches must also consider performance at very low false-positive rates and under severe class imbalance.</p>
+<p>The circuit experiments used a classical simulator and at most the ten hardest particles per jet. Fewer trainable parameters do not establish an end-to-end quantum speedup. Encoding, measurement shots, optimization, noise and strong classical baselines all belong in the comparison. <span class="citation"><a href="#ref-8" aria-label="Reference 8">[8]</a></span></p>
+<h3>What would make the next result convincing?</h3>
+<p>A useful follow-up would identify which physical information produces a gain. Holding particle count and input features fixed can help separate a model effect from a data-selection effect. Performance should also survive changes in background modeling and detector conditions.</p>
+<p>For tomography, acceptance, background subtraction and unobserved degrees of freedom can bias the inferred density matrix. For QML, input selection can dominate the apparent advantage of an architecture. The programs can inform one another, but their claims need different evidence.</p>
+<h2 id="ai"><span class="chapter-no">03 / AI & MATHEMATICS</span>What does the AI Navier–Stokes proof mean?</h2>
+
+<figure><img src="assets/fluid.webp" alt="Conceptual narrowing vortex beside abstract mathematical construction sheets" width="1672" height="941" loading="lazy"><figcaption>Artwork about localized fluid concentration and mathematical construction. It is not a simulation of the paper's solution or an observed singularity.</figcaption></figure>
+
+<h3>From a stirred cup to a global existence question</h3>
+<p>Stirring a cup produces large flows and smaller vortices that eventually dissipate. The incompressible Navier–Stokes equations describe advection, pressure, viscosity and external forcing while imposing local volume conservation:</p>
+<div class="equation wide">∂<sub>t</sub>u + (u · ∇)u = −∇p + νΔu + f, &nbsp; ∇ · u = 0.</div>
+
+<p>Here u is velocity, p is pressure divided by constant density, ν is kinematic viscosity and f is force per unit mass. The nonlinear advection term lets the flow transport itself. Viscosity smooths sharp variations. The mathematical challenge concerns whether smooth starting conditions remain smooth for all time.</p>
+<p>A numerical simulation discretizes space and time. Increasing resolution may expose faster motion at smaller scales, but no finite grid alone proves behavior at arbitrarily small scales. Numerical blowup and a mathematical finite-time singularity are therefore different kinds of evidence.</p>
+<h3>The actual claim published in September</h3>
+<p>OpenAI released a paper and Lean formalization on 8 September 2026. Theorem 1.1 claims a finite-time blowup construction for three-dimensional incompressible Navier–Stokes, for every positive viscosity, starting from rest under a smooth external force. Total kinetic energy remains uniformly bounded before blowup while the maximum velocity becomes unbounded. The paper treats both whole space and a periodic domain. <span class="citation"><a href="#ref-9" aria-label="Reference 9">[9]</a></span></p>
+<p>With the blowup time normalized to t = 1, the coexistence is</p>
+<div class="equation">sup<sub>t &lt; 1</sub> ‖u(t)‖<sub>2</sub> &lt; ∞, &nbsp;&nbsp; limsup<sub>t ↑ 1</sub> ‖u(t)‖<sub>∞</sub> = ∞.</div>
+
+<p>The force is smooth and compactly supported in space and time. The claim is thus more demanding than injecting a singular force by hand. <span class="citation"><a href="#ref-9" aria-label="Reference 9">[9]</a></span></p>
+<p>Forcing is an essential qualification, but not an escape from the official problem. Clay&#39;s formulation includes smooth-forcing breakdown alternatives C and D, alongside unforced global-regularity alternatives. A correct result on that route would address an allowed version of the Millennium Problem. It would not justify setting the force to zero and keeping the same conclusion. <span class="citation"><a href="#ref-10" aria-label="Reference 10">[10]</a></span></p>
+<div class="table-wrap" role="region" tabindex="0" aria-label="Comparison table"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Relation to the announcement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Can smooth forcing produce finite-time blowup?</td>
+<td>Central claim of the released paper</td>
+</tr>
+<tr>
+<td>Does unforced 3D Navier–Stokes also blow up?</td>
+<td>Not settled by this result alone</td>
+</tr>
+<tr>
+<td>Can we now predict every turbulent flow?</td>
+<td>A different problem</td>
+</tr>
+<tr>
+<td>Does real water attain infinite speed?</td>
+<td>The claim concerns a continuum equation</td>
+</tr>
+<tr>
+<td>Has the Clay award process concluded?</td>
+<td>Not established at the evidence cutoff</td>
+</tr>
+</tbody></table></div>
+<h3>Finite energy can coexist with an unbounded peak</h3>
+<p>Energy integrates squared velocity over space. A peak can rise while the region containing it shrinks fast enough to keep the integral finite.</p>
+<p>Let a concentrated region have length scale ε and representative velocity ε⁻ᵃ. In three dimensions its volume scales as ε³, so its local energy scales as ε³⁻²ᵃ. Taking a = 1 makes peak velocity grow as ε⁻¹ while local energy decreases as ε.</p>
+<figure><div class="diagram-wrap"><img src="assets/concentration.svg" alt="Illustrative scaling plot with increasing peak velocity and decreasing local energy as length scale shrinks" width="1200" height="650" loading="lazy"></div><figcaption>Figure 4. An educational scaling calculation at ε = 1, 1/2, 1/4, 1/8. Velocity scales as ε⁻¹ and local energy as ε. The panels use separately normalized vertical axes. This is neither the paper's solution nor a Navier–Stokes simulation.</figcaption></figure>
+
+<p>This is not a proof. An arbitrary narrow, fast field may violate incompressibility, require a nonsmooth force, or fail to admit a consistent pressure. A genuine construction must satisfy the equation and regularity conditions simultaneously.</p>
+<p>Writing vorticity as ω = ∇ × u exposes the competing mechanisms:</p>
+<div class="equation wide">∂<sub>t</sub>ω + (u · ∇)ω = (ω · ∇)u + νΔω + ∇ × f.</div>
+
+<p>The first term on the right includes three-dimensional vortex stretching and reorientation; viscosity smooths gradients. The scaling example only explains why bounded energy and an unbounded peak are logically compatible. It does not build the required balance of these terms.</p>
+<h3>What the AI did, and what a checker does</h3>
+<p>The official account describes an internal model stronger than the publicly available model and a large agent search. For the Navier–Stokes stage, it reports about 10,000 concurrent agents, 88 hours of search and a further 17 hours of formalization and verification. These are author-reported execution figures, not independently audited logs or costs. This review does not combine token totals from different stages or infer a price from them. <span class="citation"><a href="#ref-11" aria-label="Reference 11">[11]</a></span></p>
+<p>A generative model and a proof checker have different roles. The model proposes definitions and lemmas, explores ideas and repairs failures. A checker determines whether a formal proof follows from its stated assumptions and axioms. A broad search can tolerate many wrong ideas if correct candidates can be filtered rigorously. But a perfectly checked proof of a mistranslated statement can still miss the intended problem.</p>
+<figure><div class="diagram-wrap"><img src="assets/proof.svg" alt="Diagram separating AI proof search, formal checking, correspondence to the original statement and expert assessment" width="1200" height="700" loading="lazy"></div><figcaption>Figure 5. Formal correctness, correspondence to the original problem and mathematical understanding require complementary checks. The arrows show review relationships, not a claim that every check has been completed here.</figcaption></figure>
+
+<p>The public repository includes Lean code and a separate statement-comparison and verification procedure. Fixed, inspectable artifacts make independent examination more concrete than a press release alone. For this review, repository documentation and entry files were inspected; the full Lean build and independent checker were not run. <span class="citation"><a href="#ref-12" aria-label="Reference 12">[12]</a></span></p>
+<p>Human understanding remains useful even after formal acceptance. Knowing what makes the construction work can enable extensions, simpler proofs and new estimates. A theorem&#39;s conclusion alone does not explain the mechanism behind it.</p>
+<h3>Credit and the history of the method</h3>
+<p>Córdoba and Martínez-Zoroa studied forced three-dimensional Euler blowup with rougher forcing. Euler has no viscosity term, so that result cannot be identified with ordinary Navier–Stokes. It nevertheless supplies relevant history for a program that improves forcing regularity and investigates different dissipation regimes. <span class="citation"><a href="#ref-13" aria-label="Reference 13">[13]</a></span></p>
+<p>In a public statement, Tristan Buckmaster described how his collaboration with Levent Alpöge built on that program with LLM assistance to obtain smooth-forcing Euler results. He disputed aspects of the announcement and credit, while explicitly saying he did not know whether their data had been used. OpenAI stated that it had not accessed the unpublished work and could not exclude a contribution from de-identified usage data to training. These are separate parties&#39; accounts; the public material does not establish unauthorized data use or misconduct. <span class="citation"><a href="#ref-14" aria-label="Reference 14">[14]</a> <a href="#ref-11" aria-label="Reference 11">[11]</a></span></p>
+<p>The truth of a theorem and the accuracy of its research history are related responsibilities, but distinct questions. A true result can be presented with inadequate credit; a disputed presentation does not automatically make a theorem false.</p>
+<p>Clay&#39;s page still marked the problem “Active” at the cutoff. Its award rules include at least two years after publication in a qualifying outlet and general acceptance by the mathematical community. The careful current description is a major solution claim, on an allowed route, released with a paper and formal artifacts—not a completed prize determination. <span class="citation"><a href="#ref-15" aria-label="Reference 15">[15]</a> <a href="#ref-16" aria-label="Reference 16">[16]</a></span></p>
+<h3>What other AI-for-science workflows can learn</h3>
+<p>The transferable lesson is not an agent count. It is a research design that leaves outputs in an independently checkable form. In materials science, those might include structures, inputs, convergence settings and energy calculations. In an experiment, they include calibration, raw signals and analysis code. Fields without a checker as strong as formal logic need more explicit statements of what each verification step establishes.</p>
+<p>Cost reporting should also include failed candidates, restarts, tool calls and human selection, not just the successful final run. Problems with cheap verifiers can support a different search strategy from problems in which every candidate requires an expensive physical experiment. As independent mathematical review proceeds, both the proof and the design of the search will be worth studying.</p>
+<h2 id="brain"><span class="chapter-no">04 / BRAIN & MEMORY</span>Can sensory stimulation change memory?</h2>
+
+<figure><img src="assets/brain.webp" alt="Conceptual adult profile linking facial sensory input with distributed brain regions" width="1672" height="941" loading="lazy"><figcaption>Artwork about peripheral input influencing brain state. It is not an anatomical atlas or electrode-placement guide. The diagram below separates proposed mechanisms from measured outcomes.</figcaption></figure>
+
+<div class="scope"><strong>Evidence boundary</strong><p>The new experiment behind the newsletter's face-stimulation story remains unidentified. The results below belong to named 2024 and 2025 studies. No sample size, effect magnitude or duration has been invented for the new story.</p></div>
+
+<h3>Why might the face have anything to do with memory?</h3>
+<p>Sensory nerves carry touch, pain and temperature information to the brainstem. The brain integrates that information with its current attentional and arousal state. The trigeminal nerve is a major route for facial sensation. “A nerve in the face” is not interchangeable with the anatomically named facial nerve; changing that label changes the target of the research.</p>
+<p>Transcutaneous trigeminal nerve stimulation, TNS, delivers peripheral input through the skin. A frequently proposed mechanism involves brainstem pathways and noradrenergic modulation from the locus coeruleus, LC, influencing attention and learning. Anatomical plausibility, however, does not demonstrate that a particular behavioral effect traveled through that pathway. <span class="citation"><a href="#ref-17" aria-label="Reference 17">[17]</a></span></p>
+<p>Noradrenaline is not a simple memory-enhancement switch. Arousal can support learning, while excessive arousal can interfere with concentration. Stimulation before a task and stimulation during it may therefore have different effects. The participant&#39;s starting state and the demands of the task also matter.</p>
+<figure><div class="diagram-wrap"><img src="assets/brain.svg" alt="Conceptual sensory-input pathway with dashed links for mechanisms not directly established in the compared behavioral study" width="1200" height="690" loading="lazy"></div><figcaption>Figure 6. Simplified proposed relationships among sensory input, arousal modulation and learning. Dashed links were not directly established in the behavioral study compared here. Neural signals and memory performance require separate measurements.</figcaption></figure>
+
+<h3>Neural communication and memory contain several distinct claims</h3>
+<p>It helps to distinguish encoding, consolidation and retrieval. Encoding acquires and differentiates new information. Consolidation stabilizes it over time. Retrieval makes it available again. Better attention during learning could increase the number of words remembered a week later without changing the rate of forgetting.</p>
+<p>“Stronger brain signals” is equally underspecified. It could mean a larger evoked response, a change in an EEG frequency band or greater statistical coupling between regions. Increased correlation does not directly establish stronger synapses; a common input or arousal change can affect both signals.</p>
+<p>Plasticity is activity-dependent change in connection efficacy, but indiscriminately strengthening every connection is not a learning strategy. Discrimination, inhibition and timing matter. A chain from signal increase to plasticity to restored memory cannot be established by a single endpoint.</p>
+<div class="table-wrap" role="region" tabindex="0" aria-label="Comparison table"><table>
+<thead>
+<tr>
+<th>Observation</th>
+<th>Direct interpretation</th>
+<th>Additional evidence needed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Evoked response or EEG change</td>
+<td>A neural response changed under those recording conditions</td>
+<td>Persistent strengthening of a specific synapse</td>
+</tr>
+<tr>
+<td>Pupil or salivary biomarker change</td>
+<td>An indirect correlate of arousal or modulation</td>
+<td>Direct LC activity</td>
+</tr>
+<tr>
+<td>Immediate word-learning score</td>
+<td>Performance on that task</td>
+<td>Long-term consolidation or everyday memory</td>
+</tr>
+<tr>
+<td>Delayed recall and forgetting rate</td>
+<td>Retention across time</td>
+<td>Transfer to other tasks and populations</td>
+</tr>
+</tbody></table></div>
+<h3>A 2024 result that a positive-only narrative would miss</h3>
+<p>Arias and Buneo studied visuomotor learning in healthy young adults: 63 participants in a pre-task stimulation experiment and 63 in a separate concurrent-stimulation experiment. Pre-task 60 Hz stimulation produced slower learning than sham or 120 Hz; concurrent stimulation showed no significant group difference. The study measured behavior rather than directly testing the LC mechanism. <span class="citation"><a href="#ref-17" aria-label="Reference 17">[17]</a></span></p>
+<p>It would be incorrect to turn this into “120 Hz improved memory.” Doing better than a condition that performed worse is not equivalent to beating sham. Visuomotor adaptation is also different from word learning or memory for everyday events.</p>
+<p>Neutral and adverse effects can still inform mechanism. Dependence on timing or frequency may suggest state-dependent processing, but discomfort, distraction and other physiological explanations require separation. That is a follow-up hypothesis, not a mechanism established by the behavioral result.</p>
+<h3>A 2025 memory study targeted a different nerve</h3>
+<p>Arulchelvan and Vanneste studied transcutaneous greater occipital nerve stimulation and word-pair learning in 60 participants across two double-blind experiments. Their abstract reports improved learning and delayed memory but no significant consolidation difference, with EEG and salivary alpha-amylase measurements. The result was checked at abstract level for this review. <span class="citation"><a href="#ref-18" aria-label="Reference 18">[18]</a></span></p>
+<p>The greater occipital nerve is neither the trigeminal nor the facial nerve. This paper therefore cannot be relabeled as proof of facial stimulation. Its relevance is the experimental separation of peripheral input, learning and retention. A salivary biomarker is also not a direct measurement of brain noradrenaline.</p>
+<div class="table-wrap" role="region" tabindex="0" aria-label="Comparison table"><table>
+<thead>
+<tr>
+<th>Study</th>
+<th>Actual target and task</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Arias &amp; Buneo, 2024 <span class="citation"><a href="#ref-17" aria-label="Reference 17">[17]</a></span></td>
+<td>Trigeminal nerve; visuomotor learning</td>
+<td>Slower learning after pre-task 60 Hz; no significant concurrent group effect</td>
+</tr>
+<tr>
+<td>Arulchelvan &amp; Vanneste, 2025 <span class="citation"><a href="#ref-18" aria-label="Reference 18">[18]</a></span></td>
+<td>Greater occipital nerve; word-pair episodic memory</td>
+<td>Learning and delayed-memory benefit reported; no significant consolidation difference; abstract checked</td>
+</tr>
+<tr>
+<td>New newsletter story</td>
+<td>Primary experiment not identified</td>
+<td>Not assumed to be either study above</td>
+</tr>
+</tbody></table></div>
+<h3>What should the next paper show?</h3>
+<p>A persuasive memory figure would show participant-level variation, uncertainty and prespecified primary outcomes, not only a favorable mean. Immediate and delayed scores together can help distinguish learning more from forgetting less. Transfer to another task is important for practical meaning.</p>
+<p>Controls are especially important when stimulation creates a recognizable skin sensation. Researchers should assess whether sensations were matched and whether blinding held. Prespecified relationships between physiological and behavioral endpoints are more informative than choosing a plausible brain region after an effect appears.</p>
+<p>Clinical translation is another step. A short-term result in healthy adults does not establish treatment benefit for children, brain injury, impaired consciousness or dementia. This chapter provides research interpretation, not instructions for self-stimulation.</p>
+<p>The interesting possibility is that peripheral input can adjust the brain state in which learning occurs. Testing that possibility requires a clearly specified nerve, task, timing and memory stage.</p>
+<h2 id="climate"><span class="chapter-no">05 / CLIMATE NOTE</span>El Niño and the Amazon, briefly</h2>
+
+<figure><img src="assets/climate.webp" alt="Conceptual Amazon river landscape showing vulnerability to heat and drying" width="1672" height="941" loading="lazy"><figcaption>Artwork about heat and drying stress. It is neither an observed scene nor a regional drought forecast map.</figcaption></figure>
+
+<p>El Niño changes a coupled ocean–atmosphere system, shifting tropical convection and rainfall. Its effects can reach the Amazon, where reduced rainfall may interact with heat, land use and forest degradation.</p>
+<p>NOAA&#39;s 10 September 2026 discussion assigned a greater than 90% chance to a very strong event during Northern Hemisphere autumn and winter 2026–27. August&#39;s Niño-3.4 sea-surface-temperature anomaly was +1.8°C. The first is a forecast probability; the second is a regional monthly observation. <span class="citation"><a href="#ref-19" aria-label="Reference 19">[19]</a></span></p>
+<p>MAAP&#39;s Amazon analysis emphasizes fires originating in recently cleared areas and spreading into dry surrounding forests. Dry fuel and human ignition need to be considered together. It also notes limited historical sample size and omission of the tropical North Atlantic temperature contribution from its analysis. <span class="citation"><a href="#ref-20" aria-label="Reference 20">[20]</a></span></p>
+<p>Local rainfall, soil moisture, river level and fire monitoring therefore matter more than the dramatic label “super El Niño.” A high probability of a strong event supports preparation; it does not guarantee the same drought outcome across the Amazon.</p>
+<h2 id="sources">Sources, scope and questions to carry forward</h2>
+
+<p>Each topic depends on interpreting a signal: background photons in vacuum optics, inferred states in collider physics, exact statements in mathematics, and physiological versus behavioral endpoints in neuroscience. These distinctions identify the next observation or check that would deepen understanding.</p>
+<ul>
+<li><strong>Vacuum:</strong> Does the signal follow the predicted intensity, polarization and delay dependence after background controls change?</li>
+<li><strong>Colliders:</strong> Does improved discrimination come from spin-sensitive information, input selection or the choice of baseline?</li>
+<li><strong>AI mathematics:</strong> Who checked the correspondence to the original problem, reran the complete verification and understood the central construction?</li>
+<li><strong>Memory:</strong> Is delayed performance still better after initial learning is matched? Was the proposed mechanism measured directly?</li>
+</ul>
+<p>Researchers worth following include <strong>Sarah Malik</strong> for collider quantum machine learning, <strong>Tristan Buckmaster</strong> for fluid blowup and its research history, and <strong>Sven Vanneste</strong> for peripheral stimulation and memory. Their specific methods and comparisons matter more than authority by name.</p>
+<ol class="refs"><li id="ref-1"><a href="https://arxiv.org/abs/2405.18063">BIREF@HIBEF Collaboration (2024). Towards a Vacuum Birefringence Experiment at HIBEF.</a><small>Proposal / full text</small></li>
+<li id="ref-2"><a href="https://arxiv.org/abs/2510.14064">Spector, Kozlowski &amp; Roberts (2025). Demonstration of an interferometric technique for measuring vacuum magnetic birefringence with an optical cavity.</a><small>Abstract; prototype without magnetic field</small></li>
+<li id="ref-3"><a href="https://arxiv.org/abs/1904.03536">ATLAS Collaboration (2019). Observation of light-by-light scattering in ultraperipheral Pb+Pb collisions.</a><small>Published primary experiment / abstract</small></li>
+<li id="ref-4"><a href="https://arxiv.org/abs/2003.02280">Afik &amp; Muñoz de Nova (2020). Entanglement and quantum tomography with top quarks at the LHC.</a><small>Primary theoretical study / abstract</small></li>
+<li id="ref-5"><a href="https://arxiv.org/abs/2406.03976">CMS Collaboration (2024). Observation of quantum entanglement in top quark pair production in proton-proton collisions at √s = 13 TeV.</a><small>Primary experimental paper / abstract</small></li>
+<li id="ref-6"><a href="https://arxiv.org/abs/2602.15115">Afik et al. (2026). Experimental characterization of the hierarchy of quantum correlations in top quark pairs.</a><small>Primary research / abstract</small></li>
+<li id="ref-7"><a href="https://arxiv.org/abs/2407.07961">Duffy et al. (2024). Unsupervised Beyond-Standard-Model Event Discovery at the LHC with a Novel Quantum Autoencoder.</a><small>Primary QML proposal / abstract</small></li>
+<li id="ref-8"><a href="https://arxiv.org/html/2502.17301v2">Bal et al. (2025). 1 Particle – 1 Qubit: Particle Physics Data Encoding for Quantum Machine Learning.</a><small>Full text, simulation setting and Table I</small></li>
+<li id="ref-9"><a href="https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf">OpenAI (2026). Finite Time Blowup for Navier–Stokes.</a><small>Paper: statement and selected introductory sections; not a full proof audit</small></li>
+<li id="ref-10"><a href="https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf">Fefferman / Clay Mathematics Institute. Existence and Smoothness of the Navier–Stokes Equation.</a><small>Official problem statement</small></li>
+<li id="ref-11"><a href="https://openai.com/index/navier-stokes-solution/">OpenAI (8 September 2026). Navier–Stokes announcement and research account.</a><small>First-party claims; execution not independently audited</small></li>
+<li id="ref-12"><a href="https://github.com/openai/NavierStokesAndEuler/tree/f9e8bc5b38b6e212696e8a30e3e91517af887bbd">OpenAI. NavierStokesAndEuler, commit f9e8bc5b38b6e212696e8a30e3e91517af887bbd.</a><small>Documentation and entry-file inspection; no Lean build</small></li>
+<li id="ref-13"><a href="https://arxiv.org/abs/2309.08495">Córdoba &amp; Martínez-Zoroa (2023). Blow-up for the incompressible 3D Euler equations with uniform C^(1,1/2−ε) ∩ L² force.</a><small>Primary predecessor / abstract</small></li>
+<li id="ref-14"><a href="https://cims.nyu.edu/~tristanb/statement.pdf">Tristan Buckmaster (September 2026). Public statement on the research and announcement.</a><small>First-person statement; contested matters attributed</small></li>
+<li id="ref-15"><a href="https://www.claymath.org/millennium/navier-stokes-equation/">Clay Mathematics Institute. Navier–Stokes Equation.</a><small>Status checked 10 September 2026</small></li>
+<li id="ref-16"><a href="https://www.claymath.org/millennium-problems/rules/">Clay Mathematics Institute. Rules for the Millennium Prizes.</a><small>Official award conditions</small></li>
+<li id="ref-17"><a href="https://www.frontiersin.org/journals/human-neuroscience/articles/10.3389/fnhum.2024.1436365/full">Arias &amp; Buneo (2024). Effects of online and offline trigeminal nerve stimulation on visuomotor learning.</a><small>Full text; behavioral endpoints and null/adverse results</small></li>
+<li id="ref-18"><a href="https://doi.org/10.1016/j.brs.2025.01.008">Arulchelvan &amp; Vanneste (2025). Transcutaneous electrical stimulation enhances episodic memory encoding via a noradrenaline-attention network, with associated neuroinflammatory changes.</a><small>Primary abstract via scholarly index; greater occipital nerve, not facial stimulation</small></li>
+<li id="ref-19"><a href="https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml">NOAA Climate Prediction Center (10 September 2026). ENSO Diagnostic Discussion.</a><small>Dated observation and probabilistic outlook; page updates over time</small></li>
+<li id="ref-20"><a href="https://www.maapprogram.org/el-nino-amazon-fires/">MAAP. El Niño and Amazon fires: historical patterns and outlook.</a><small>Monitoring analysis; methods and limitations</small></li></ol>
+
+<h3>Editorial verification record</h3>
+<p>Primary papers and official statements were prioritized. Source <span class="citation"><a href="#ref-1" aria-label="Reference 1">[1]</a></span> is a proposal, <span class="citation"><a href="#ref-2" aria-label="Reference 2">[2]</a></span> a field-free method demonstration, <span class="citation"><a href="#ref-5" aria-label="Reference 5">[5]</a></span> an analysis of real collision data, <span class="citation"><a href="#ref-8" aria-label="Reference 8">[8]</a></span> a classically simulated quantum-circuit study, <span class="citation"><a href="#ref-9" aria-label="Reference 9">[9]</a></span> a released mathematical solution claim, <span class="citation"><a href="#ref-18" aria-label="Reference 18">[18]</a></span> an abstract-level check, and <span class="citation"><a href="#ref-19" aria-label="Reference 19">[19]</a></span> a dated probabilistic outlook.</p>
+<p>Execution costs and logs, the full Lean proof, collider benchmarks and stimulation experiments were not independently reproduced. Five raster illustrations were newly generated as conceptual artwork. Six SVG figures were constructed directly: Figure 3 uses the source table; Figure 4 and the polarization control use the equations shown here. Generated imagery was not used to validate anatomy, apparatus design or fluid data.</p>
+<p>The New Scientist links below document topic discovery, not full-text access. No private email addresses, headers or tracking links are included.</p>
+<ul class="topic-links"><li><a href="https://www.newscientist.com/article/2586310-were-on-the-verge-of-seeing-the-quantum-vacuum-for-the-first-time/">New Scientist · Quantum vacuum</a></li>
+<li><a href="https://www.newscientist.com/article/2586285-lost-quantum-traces-could-reveal-dark-matter-at-the-large-hadron-collider/">New Scientist · Quantum traces at the LHC</a></li>
+<li><a href="https://www.newscientist.com/article/2588063-openai-has-solved-the-navier-stokes-millennium-problem-using-15m-of-ai-effort/">New Scientist · AI and Navier–Stokes</a></li>
+<li><a href="https://www.newscientist.com/article/2588288-why-is-there-controversy-around-openais-millennium-prize-maths-breakthrough/">New Scientist · The mathematics controversy</a></li>
+<li><a href="https://www.newscientist.com/article/2588180-zapping-the-face-could-boost-brain-signalling-and-memory/">New Scientist · Facial stimulation and memory</a></li>
+<li><a href="https://www.newscientist.com/article/2587998-super-el-nino-set-to-cause-terribly-dangerous-amazon-drought/">New Scientist · El Niño and Amazon drought</a></li></ul>
+
+</article></main><script>
+(()=>{const slider=document.getElementById('phase');if(!slider)return;
+const phase=document.getElementById('phase-value'),prob=document.getElementById('probability'),bar=document.getElementById('signal-fill');
+const update=()=>{const v=Number(slider.value),p=Math.sin(v/2)**2;phase.textContent=v.toFixed(2)+' rad';prob.textContent=(100*p).toFixed(3)+'%';bar.style.width=(100*p)+'%';slider.setAttribute('aria-valuetext',v.toFixed(2)+' radians');};
+slider.addEventListener('input',update);document.getElementById('phase-reset').addEventListener('click',()=>{slider.value='0.20';update()});update();})();
+</script></body></html>
