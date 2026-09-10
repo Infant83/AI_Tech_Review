@@ -11,7 +11,7 @@ const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replace
 const css=`
 :root{color-scheme:light;--ink:#183843;--teal:#177b80;--paper:#fbf9f3;--muted:#54676c;--line:#d2dbd8;--gold:#a66c32}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans KR",Arial,sans-serif;font-size:18px;line-height:1.94;word-break:normal;overflow-wrap:anywhere}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans KR",Arial,sans-serif;font-size:18px;line-height:1.94;word-break:keep-all;overflow-wrap:anywhere}
 .topbar{position:sticky;top:0;z-index:5;background:rgba(251,249,243,.96);border-bottom:1px solid var(--line);padding:10px max(20px,calc((100vw - 1060px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:13px;line-height:1.5}
 .topbar a{color:var(--ink);text-decoration:none}.topbar strong{letter-spacing:.11em;font-size:12px}
 main{max-width:1000px;margin:0 auto;padding:54px 44px 88px}
