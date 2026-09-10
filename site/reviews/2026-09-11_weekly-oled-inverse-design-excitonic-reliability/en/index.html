@@ -786,13 +786,13 @@
     <article class="final-article">
       <p>No paper posted from 4 through 10 September 2026 directly designed a TADF emitter or PhOLED host. The useful evidence instead locates the failure boundaries of an OLED inverse-design workflow. Accurate single-molecule energies and oscillator strengths do not by themselves capture collective excitons in condensed phases, nonadiabatic behavior near state crossings, the joint generation of molecular size and three-dimensional structure, or failures outside a model&rsquo;s benchmark distribution.</p>
 <p>The week&rsquo;s central result is an experimental comparison of five conjugated polymers. Their absolute homogeneous linewidths span roughly 20-90 meV, yet all show weak temperature dependence over the measured ranges. The absolute linewidth also depends on whether coherence or population is detected. The other seven papers extend that lesson into computation: reliability must be built through explicit representations, falsification tests, escalation to higher-level electronic structure, and a transparent account of quantum-measurement cost.</p>
-<p><img alt="Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer" src="../artifacts/excitonic_reliability_hero-web.webp" /></p>
+<p><img alt="Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer" src="excitonic_reliability_hero-web.webp" /></p>
 <p><em>Figure 1. Conceptual illustration for this review. The central aggregate represents collective excitons and dephasing; the surrounding elements represent variable-size generation, state crossings, and quantum sampling cost. The generated molecules, potentials, and quantum motifs are not exact structures, measured morphology, quantitative surfaces, or executable circuits.</em></p>
 <aside class="callout callout-highlight">
 <p class="callout-label">Assessment</p>
 <p>Reliability in photoactive molecular inverse design is set by its validation hierarchy, not simply by the number of generated candidates. Aggregate photophysics, out-of-distribution failure discovery, and selective high-level electronic-structure checks must sit above molecular DFT/ML predictions. The actual-QPU study uses an 8-qubit water PES and shows useful error reduction, but its tight setting averages about 16.8 million shots per merged geometry; it is not evidence that OLED-scale electronic-structure VQE is ready.</p>
 </aside>
-<p>The layout-verified technical brief is available as a <a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a>.</p>
+<p>The layout-verified technical brief is available as a <a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a>.</p>
 <h2 id="ranked-shortlist">Ranked shortlist</h2>
 <ol>
 <li><strong>Collective excitonic structure governs weak thermal optical dephasing</strong> - the only direct condensed-phase photophysics experiment in the set.</li>
@@ -804,7 +804,7 @@
 <li><strong>QESEM water PES</strong> - reduces hardware bias on an IBM QPU while exposing a steep sampling cost.</li>
 <li><strong>CASH-QSE</strong> - avoids remeasuring a classical CASSCF contribution, but its reported resource gains are idealized rather than hardware results.</li>
 </ol>
-<p><img alt="Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary" src="../artifacts/evidence_map.svg" /></p>
+<p><img alt="Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary" src="evidence_map.svg" /></p>
 <p><em>Figure 2. Reviewer-constructed qualitative evidence map. Placement reflects OLED-workflow proximity and what each paper actually executed; it is not a performance ranking. All eight selected items are preprints.</em></p>
 <h2 id="1-no-direct-oled-tadf-or-pholed-paper-met-the-threshold">1. No direct OLED, TADF, or PhOLED paper met the threshold</h2>
 <p>The search found no new primary record that directly designed or validated a TADF emitter, PhOLED host, host-dopant/exciplex system, or OLED device. The eight items below concern organic-semiconductor photophysics or enabling computational methods. Papers covered in the 21 August, 28 August, and 4 September briefs are not repeated.</p>
@@ -858,7 +858,7 @@
 <p>For H2O/STO-3G at equilibrium, the idealized final-energy estimate is 5.6×10^3 shots versus 2.9×10^6 for ADAPT-VQE, a factor of 520. At 3.0 Å it is 3.2×10^2 versus 1.2×10^5, about 370-fold. The largest complete measurement circuits use a few hundred all-to-all logical CNOTs.</p>
 <p>Component selection is guided by FCI information, and the figures are idealized sampling estimates, not noisy QPU runs. They omit physical-qubit routing and error-mitigation overhead. OLED translation must begin by testing whether a tractable classical active-space reference retains the relevant CT/LE and spin character.</p>
 <h2 id="10-practical-experiment-for-the-coming-week">10. Practical experiment for the coming week</h2>
-<p><img alt="Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification" src="../artifacts/proposed_workflow.svg" /></p>
+<p><img alt="Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification" src="proposed_workflow.svg" /></p>
 <p><em>Figure 3. Reviewer-proposed workflow synthesized from this week&rsquo;s literature. No selected paper executes this OLED pipeline end to end.</em></p>
 <p>Choose a 12-24-member donor-acceptor or host family and construct conformers plus selected dimers. Allow an EF-TALFM-like generator to vary molecular size, but retain only candidates passing reaction-template and commercial-building-block gates. Under one TDDFT/TDA protocol, compute S1, T1, higher triplets, oscillator strength, and NTO-based CT/LE descriptors; add excitonic coupling and host perturbation descriptors for dimers.</p>
 <p>Evaluate preregistered failure hypotheses rather than average MAE alone: state-order swaps, discontinuous torsion scans, unphysical long-range charge transfer, and inflated oscillator strengths under scaffold-held-out, torsion-held-out, and dimer-separation tests. Escalate only 5-10 cases to a multireference or larger-basis calculation. Keep QPU work as a separate resource experiment reporting logical circuits, shots, QPU time, and matched classical baselines.</p>
@@ -940,9 +940,9 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">Evidence links</h2>
         <ul>
-          <li><a href="../artifacts/excitonic_reliability_hero-web.webp">Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer</a></li>
-<li><a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a></li>
-<li><a href="../artifacts/evidence_map.svg">Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary</a></li>
+          <li><a href="excitonic_reliability_hero-web.webp">Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a></li>
+<li><a href="evidence_map.svg">Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary</a></li>
 <li><a href="https://arxiv.org/abs/2609.06742" target="_blank" rel="noreferrer">*Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08333" target="_blank" rel="noreferrer">*Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08399" target="_blank" rel="noreferrer">*MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials*</a></li>
@@ -951,7 +951,7 @@
 <li><a href="https://arxiv.org/abs/2609.06655" target="_blank" rel="noreferrer">*Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics*</a></li>
 <li><a href="https://arxiv.org/abs/2609.07284" target="_blank" rel="noreferrer">*Implementing QESEM&#x27;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08170" target="_blank" rel="noreferrer">*Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy*</a></li>
-<li><a href="../artifacts/proposed_workflow.svg">Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification</a></li>
+<li><a href="proposed_workflow.svg">Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification</a></li>
         </ul>
       </section>
     </aside>

@@ -786,13 +786,13 @@
     <article class="final-article">
       <p>2026년 9월 4일부터 10일까지의 새 문헌은 TADF 발광체나 PhOLED host를 직접 설계한 성과를 내놓지 않았다. 대신 OLED 역설계가 어디서 틀릴 수 있는지를 더 정밀하게 보여준다. 분자 하나의 에너지와 진동자 세기를 맞히는 것만으로는 응집상에서의 엑시톤 코히런스, 상태 교차 부근의 비단열 결합, 생성 분자의 크기와 3차원 구조, 모델의 분포 밖 실패를 동시에 설명할 수 없다.</p>
 <p>이번 주의 중심 근거는 공액고분자 5종에 대한 2차원 전자분광 실험이다. 절대 균질 선폭은 약 20-90 meV로 크게 달랐지만 온도에 따른 증가는 모든 재료에서 약했다. 검출 방식에 따라 선폭의 절대값도 바뀌었다. 이 결과는 OLED 후보의 광물성을 단일 분자 scalar로만 학습할 때 빠지는 집단상태와 관측량 의존성을 보여준다. 나머지 7편은 이 문제를 계산과 검증의 층으로 확장한다.</p>
-<p><img alt="공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트" src="../artifacts/excitonic_reliability_hero-web.webp" /></p>
+<p><img alt="공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트" src="excitonic_reliability_hero-web.webp" /></p>
 <p><em>그림 1. 이번 리뷰의 개념 일러스트. 중앙의 발광 집합체는 집단 엑시톤과 탈위상을, 주변 요소는 가변 크기 생성·전자상태 교차·양자 측정비용을 나타낸다. 생성된 분자와 퍼텐셜, 양자 요소는 특정 화학구조, 측정 morphology, 정량 곡면 또는 실행 가능한 회로가 아니다.</em></p>
 <aside class="callout callout-highlight">
 <p class="callout-label">이번 주의 판정</p>
 <p>광여기 분자 역설계의 신뢰도는 생성 후보 수보다 검증 계층에 의해 좌우된다. 분자 단위 DFT/ML 예측 위에 응집상 광물리, 분포 밖 실패 탐색, 고수준 전자구조 확인을 올려야 한다. 실제 QPU 결과는 8-qubit 물 분자 PES에서 오차 완화의 가능성을 보였지만, chemical accuracy에 접근할수록 평균 약 1,676만 shots가 필요해 OLED 규모의 전자구조 계산과는 거리가 멀다.</p>
 </aside>
-<p>레이아웃을 검증한 영문 기술 브리프는 <a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a>.</p>
+<p>레이아웃을 검증한 영문 기술 브리프는 <a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a>.</p>
 <h2 id="_1">먼저 읽을 순서</h2>
 <ol>
 <li><strong>Collective excitonic structure governs weak thermal optical dephasing</strong> - 공액고분자 5종의 실험이 분자구조와 집단 광학 관측량을 직접 연결한다.</li>
@@ -804,7 +804,7 @@
 <li><strong>QESEM water PES</strong> - 실제 IBM QPU에서 오차를 줄이지만 샷 비용이 급증한다.</li>
 <li><strong>CASH-QSE</strong> - 고전 CASSCF 기준상태를 다시 측정하지 않는 QSE를 제안하되 결과는 이상적 자원 분석이다.</li>
 </ol>
-<p><img alt="선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도" src="../artifacts/evidence_map.svg" /></p>
+<p><img alt="선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도" src="evidence_map.svg" /></p>
 <p><em>그림 2. 리뷰어가 구성한 정성적 근거 지도. 위치는 OLED workflow와의 근접성과 원 논문이 실제로 수행한 검증 수준을 나타내며 성능 순위가 아니다. 선정 논문은 모두 프리프린트다.</em></p>
 <h2 id="1-oledtadfpholed">1. 직접 OLED·TADF·PhOLED 연구는 없었다</h2>
 <p>이번 범위에서 TADF 발광체, PhOLED host, host-dopant/exciplex 또는 OLED 소자를 직접 설계·검증한 새 primary record는 찾지 못했다. 아래 8편은 유기 반도체 광물리 또는 인접 계산방법이다. 8월 21일·28일과 9월 4일 브리핑에 실린 항목은 반복하지 않았다.</p>
@@ -858,7 +858,7 @@
 <p>CASSCF reference는 고전적으로 계산하고, occupation structure로 reference 및 서로에 대해 정확히 직교하는 quantum component를 만든다. overlap measurement 없이 Hermitian eigenproblem을 풀며, H2O와 N2 bond stretching을 STO-3G와 제한된 cc-pVDZ 공간에서 시험했다. H2O/STO-3G equilibrium에서 idealized shots는 5.6×10^3으로 ADAPT-VQE 2.9×10^6보다 520배 적었다. 3.0 Å에서는 3.2×10^2 대 1.2×10^5로 약 370배였다. 가장 큰 complete measurement circuit은 all-to-all logical CNOT 수백 개였다.</p>
 <p>그러나 component 선택은 FCI 정보로 안내됐고, 수치는 noisy QPU 실행이 아닌 idealized final-energy sampling estimate다. chemical accuracy와 shot reduction은 작은 분자·기저에서의 결과이며 물리 qubit, routing, error mitigation 비용을 포함하지 않는다. OLED 적용은 active-space fragment를 고전 reference로 얼마나 잘 포착하는지부터 검증해야 한다.</p>
 <h2 id="10">10. 이번 주 실행안</h2>
-<p><img alt="생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow" src="../artifacts/proposed_workflow.svg" /></p>
+<p><img alt="생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow" src="proposed_workflow.svg" /></p>
 <p><em>그림 3. 이번 문헌을 바탕으로 리뷰어가 제안한 workflow. 어느 원 논문도 이 OLED pipeline을 end-to-end로 실행하지 않았다.</em></p>
 <p>12-24개 donor-acceptor 또는 host 후보 family를 정하고 conformer와 dimer geometry를 함께 만든다. EF-TALFM형 생성기는 분자 크기를 자유롭게 두되 reaction template와 commercial building block gate를 통과한 후보만 남긴다. 같은 TDDFT/TDA 설정에서 S1, T1, 상위 triplet, oscillator strength, NTO CT/LE 지표를 계산하고, dimer에는 excitonic coupling과 host perturbation descriptor를 추가한다.</p>
 <p>검증은 평균 MAE보다 failure hypothesis로 설계한다. scaffold-held-out, torsion-held-out, dimer-separation scan에서 state-order swap, 비연속 energy, 비물리적 CT, 과도한 oscillator strength를 찾는다. 가장 의심스러운 5-10개만 multireference 또는 더 높은 기저 계산으로 올린다. QPU는 생산 계산에 넣지 않고, 작은 active-space test에서 logical circuit·shots·QPU time·classical baseline을 기록하는 자원 실험으로 분리한다.</p>
@@ -940,9 +940,9 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
-          <li><a href="../artifacts/excitonic_reliability_hero-web.webp">공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트</a></li>
-<li><a href="../artifacts/oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a></li>
-<li><a href="../artifacts/evidence_map.svg">선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도</a></li>
+          <li><a href="excitonic_reliability_hero-web.webp">공액 유기분자 집합의 광학 코히런스가 점차 탈위상되고, 잠재공간 생성·교차하는 퍼텐셜·제한된 양자 측정이 주변 검증층으로 배치된 개념 일러스트</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF로 내려받을 수 있다</a></li>
+<li><a href="evidence_map.svg">선정된 8편을 OLED 근접성과 실제 실행 경계에 따라 배치한 근거 지도</a></li>
 <li><a href="https://arxiv.org/abs/2609.06742" target="_blank" rel="noreferrer">*Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08333" target="_blank" rel="noreferrer">*Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08399" target="_blank" rel="noreferrer">*MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials*</a></li>
@@ -951,7 +951,7 @@
 <li><a href="https://arxiv.org/abs/2609.06655" target="_blank" rel="noreferrer">*Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics*</a></li>
 <li><a href="https://arxiv.org/abs/2609.07284" target="_blank" rel="noreferrer">*Implementing QESEM&#x27;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study*</a></li>
 <li><a href="https://arxiv.org/abs/2609.08170" target="_blank" rel="noreferrer">*Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy*</a></li>
-<li><a href="../artifacts/proposed_workflow.svg">생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow</a></li>
+<li><a href="proposed_workflow.svg">생성, 전자상태 계산, 응집상 환경, 실패 검증을 순환시키는 제안 workflow</a></li>
         </ul>
       </section>
     </aside>
