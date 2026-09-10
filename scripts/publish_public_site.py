@@ -96,6 +96,28 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-10_cash-qse-classical-quantum-chemistry",
+        title="분자 계산의 일을 나누는 법: CASH-QSE로 이해하는 고전·양자 협업",
+        subtitle="전자상관·활성공간·직교 부분공간과 측정비용을 이해하는 심층 리뷰",
+        date="2026-09-10",
+        updated="2026-09-10",
+        category="Quantum Computing",
+        tags=("CASH-QSE", "Quantum Chemistry", "CASSCF", "Active Space", "VQE", "Measurement", "OLED"),
+        summary="전자상관과 활성공간의 배경부터 고전 기준상태와 양자 보정을 결합하는 원리를 설명합니다. 두 상태 조작 예제, 물·질소의 샷 비교, 불리한 사례와 FCI 의존성을 검토하고 DFT·OLED 연구로의 확장 조건을 살펴봅니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode",
+        ai_system_ko="OpenAI Codex Work Mode",
+        agents=(PublicAgent("Codex", "primary-source research, bilingual writing, mathematical illustration, copyediting, implementation and publication verification", "1차 출처 연구·한영 집필·수학 예제 구성·감수·구현·게시 검증"),),
+        verification_scope=("CASH-QSE v1 full text, selected tables and appendices; primary predecessor papers and PySCF documentation", "metric definitions, sampling assumptions, computational platform, numerical counterexamples and classical baselines", "bilingual pages, source data, illustrative two-state eigenproblem, links and publication metadata"),
+        verification_scope_ko=("CASH-QSE v1 본문·선별 표·부록, 선행 원문과 PySCF 공식 문서", "지표 정의·샷 가정·계산 플랫폼·불리한 사례·고전 기준선", "한영 페이지·표 데이터·설명용 두 상태 고유값 계산·링크·게시 정보"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-10",
+        human_review_level="topic and public publication requested; no separate line-by-line human review in this task",
+        human_review_level_ko="주제 및 공개 게시 요청 확인. 이번 작업에서 별도 문장 단위 사람 검토는 수행되지 않음",
+        disclosure_note_ko="분자 벤치마크를 독립 재현하지 않았습니다. 조작 예제는 두 직교 상태의 설명용 모델이며, OLED 적용과 후속 연구 방향은 리뷰의 제안입니다.",
+        disclosure_note_en="Molecular benchmarks were not independently reproduced. The interactive example is an educational two-state model; OLED applications and follow-up directions are editorial proposals.",
+    ),
+    PublicReview(
         folder="2026-09-09_quantum-resource-aware-workflows",
         title="양자 계산의 전체 비용을 설계하다",
         subtitle="오류정정 회로의 공간·시간, QML의 입력과 샷, 분자 계산의 기준 상태를 함께 읽기",
