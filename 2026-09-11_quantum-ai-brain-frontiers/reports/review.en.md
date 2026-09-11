@@ -4,7 +4,7 @@
 
 <p class="dek">How intense light probes empty space, collider decays preserve quantum information, AI tackles a fluid singularity, and peripheral nerves may influence learning.</p>
 
-<figure class="hero"><img src="assets/vacuum.webp" alt="Conceptual illustration of a powerful laser meeting an X-ray probe in vacuum" width="1672" height="941"><figcaption>Conceptual artwork about reading the vacuum through light. This is neither an apparatus drawing nor an observation; the beams and polarization changes are exaggerated.</figcaption></figure>
+<figure class="hero"><img src="assets/quantum_vacuum_birefringence_cover_v2.webp" alt="Vermilion and indigo print-style artwork suggesting light polarization changing in a strong field" width="1672" height="941"><figcaption>Conceptual print-style artwork suggesting the vacuum's polarization response to a strong field. The vermilion field and indigo light are artistic metaphors, not an apparatus, observation, or quantitative depiction.</figcaption></figure>
 
 A tiny change in the polarization of light can reveal something about empty space. The directions of decay products can carry information about particles that no longer exist. A fluid might retain finite total kinetic energy while its maximum speed becomes unbounded. Sensory input from the face might change how the brain learns. Each question asks how a difficult-to-observe process becomes accessible through a measurable quantity or a precise mathematical statement.
 
