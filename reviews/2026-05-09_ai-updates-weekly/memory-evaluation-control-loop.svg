@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">장기 작업 에이전트를 위한 기억 선별과 평가 루프</title>
+  <desc id="desc">이전 작업 기록이 기억 선별을 거쳐 작업 문맥으로 들어가고, 에이전트 산출물이 평가 기준과 사람 승인, 재시도 계획으로 이어지는 장기 작업 하네스 도식</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbf7ee"/>
+      <stop offset="0.55" stop-color="#f6efe3"/>
+      <stop offset="1" stop-color="#fbf8f1"/>
+    </linearGradient>
+    <filter id="grain" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.06"/>
+      </feComponentTransfer>
+    </filter>
+    <filter id="shadow" x="-10%" y="-20%" width="120%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#20352f" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2d6963"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#c77a28"/>
+    </marker>
+    <style>
+      .title{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-weight:850;font-size:34px;fill:#172823}
+      .lead{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:18px;fill:#465850}
+      .label{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-weight:820;font-size:25px;fill:#14251f}
+      .sub{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:16px;fill:#465850}
+      .micro{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:14px;fill:#5b6a63}
+      .card{fill:#fffdf7;stroke:#c9bea9;stroke-width:1.6;rx:20}
+      .soft{fill:#f7f3e8;stroke:#d2c5aa;stroke-width:1.3;rx:16}
+      .accent{fill:#e7f4f0;stroke:#16766f;stroke-width:2.2;rx:20}
+      .teal{fill:#10766f;stroke:#075f59;stroke-width:1.8;rx:20}
+      .tealText{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-weight:850;font-size:28px;fill:#fff}
+      .tealSub{font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;font-size:16px;fill:#e6f2ef}
+      .amber{fill:#fff3df;stroke:#c77a28;stroke-width:2;rx:20}
+      .rule{fill:none;stroke:#2d6963;stroke-width:3.2;marker-end:url(#arrowTeal)}
+      .retry{fill:none;stroke:#c77a28;stroke-width:3.2;stroke-dasharray:9 8;marker-end:url(#arrowAmber)}
+      .thin{fill:none;stroke:#6f8179;stroke-width:1.4}
+    </style>
+  </defs>
+
+  <rect width="1400" height="820" fill="url(#paper)"/>
+  <rect width="1400" height="820" filter="url(#grain)" opacity="0.62"/>
+
+  <g filter="url(#shadow)">
+    <rect x="48" y="44" width="1304" height="716" rx="30" fill="rgba(255,253,248,0.88)" stroke="#d8ccb8" stroke-width="1.4"/>
+  </g>
+
+  <text class="title" x="92" y="112">장기 작업 하네스는 기억을 고르고 결과를 다시 봅니다</text>
+  <text class="lead" x="92" y="145">이전 기록은 다음 작업에 쓸 항목으로 압축됩니다.</text>
+  <text class="lead" x="92" y="172">산출물은 기준표와 승인 절차를 지나 다시 작업에 반영됩니다.</text>
+
+  <g filter="url(#shadow)">
+    <rect class="soft" x="92" y="218" width="250" height="146"/>
+    <text class="label" x="217" y="264" text-anchor="middle">작업 기록</text>
+    <text class="sub" x="217" y="292" text-anchor="middle">파일 · 시도 · 실패 · 선호</text>
+    <path class="thin" d="M145 320 H290"/>
+    <circle cx="166" cy="335" r="6" fill="#8aa39b"/>
+    <circle cx="196" cy="335" r="6" fill="#d99b49"/>
+    <circle cx="226" cy="335" r="6" fill="#8aa39b"/>
+    <circle cx="256" cy="335" r="6" fill="#d99b49"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="accent" x="420" y="194" width="270" height="192"/>
+    <text class="label" x="555" y="246" text-anchor="middle">기억 선별</text>
+    <text class="sub" x="555" y="276" text-anchor="middle">다음 실행에 쓸 기록만 고릅니다</text>
+    <path d="M488 306 H622 L584 340 V358 H526 V340 Z" fill="#dca052" stroke="#94611e" stroke-width="2"/>
+    <text class="micro" x="555" y="376" text-anchor="middle">성공 · 실패 · 선호 · 결정 기록</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="card" x="780" y="218" width="260" height="146"/>
+    <text class="label" x="910" y="264" text-anchor="middle">작업 문맥</text>
+    <text class="sub" x="910" y="292" text-anchor="middle">이번 작업에 넣을 정보 묶음</text>
+    <rect x="840" y="316" width="140" height="18" rx="9" fill="#dbe9e5"/>
+    <rect x="860" y="342" width="100" height="12" rx="6" fill="#f0c47c"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="teal" x="520" y="444" width="330" height="130"/>
+    <text class="tealText" x="685" y="494" text-anchor="middle">에이전트 작업</text>
+    <text class="tealSub" x="685" y="528" text-anchor="middle">문서 · 코드 · 분석 산출</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="card" x="1012" y="418" width="268" height="168"/>
+    <text class="label" x="1146" y="464" text-anchor="middle">평가 기준</text>
+    <text class="sub" x="1146" y="493" text-anchor="middle">성공 조건과 채점표</text>
+    <path d="M1078 526 l18 18 l42 -48" fill="none" stroke="#178078" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M1160 544 H1230" class="thin"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="amber" x="828" y="624" width="304" height="94"/>
+    <text class="label" x="980" y="664" text-anchor="middle">재시도 계획</text>
+    <text class="sub" x="980" y="693" text-anchor="middle">부족한 부분만 다시 실행합니다</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="card" x="1044" y="194" width="236" height="128"/>
+    <text class="label" x="1162" y="244" text-anchor="middle">사람 승인</text>
+    <text class="sub" x="1162" y="274" text-anchor="middle">반영 전 검토</text>
+  </g>
+
+  <path class="rule" d="M342 291 C374 291 388 291 420 291"/>
+  <path class="rule" d="M690 291 C725 291 745 291 780 291"/>
+  <path class="rule" d="M910 364 C895 420 860 462 850 492"/>
+  <path class="rule" d="M850 509 C916 509 951 509 1012 509"/>
+  <path class="rule" d="M1146 418 C1146 374 1148 354 1162 322"/>
+  <path class="retry" d="M1012 586 C1012 610 1002 620 980 624"/>
+  <path class="retry" d="M828 671 C690 686 552 656 566 574"/>
+
+  <g>
+    <rect x="112" y="468" width="318" height="130" rx="22" fill="#fff8ea" stroke="#d7b06f" stroke-width="1.5"/>
+    <text class="label" x="271" y="515" text-anchor="middle">하네스가 하는 일</text>
+    <text class="sub" x="271" y="546" text-anchor="middle">기억을 저장만 하지 않고</text>
+    <text class="sub" x="271" y="576" text-anchor="middle">다음 실행에 쓸 형태로 정리합니다</text>
+  </g>
+
+  <g>
+    <rect x="462" y="644" width="246" height="58" rx="18" fill="#f7f3e8" stroke="#c9bea9" stroke-width="1.4"/>
+    <text class="sub" x="585" y="679" text-anchor="middle">평가 결과가 다음 작업 조건이 됩니다</text>
+  </g>
+</svg>

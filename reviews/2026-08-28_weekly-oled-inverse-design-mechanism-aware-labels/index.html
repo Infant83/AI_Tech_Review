@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지</title>
+  <meta name="description" content="2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/mechanism_aware_oled_inverse_design_hero.jpg">
+  <meta property="og:image:alt" content="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지">
+  <meta property="article:published_time" content="2026-08-28">
+  <meta property="article:modified_time" content="2026-08-28">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지">
+  <meta name="twitter:description" content="2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/mechanism_aware_oled_inverse_design_hero.jpg">
+  <meta name="twitter:image:alt" content="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "용어 풀이";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/">
+    <meta property="og:title" content="OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 35 (2026-08-28)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+        <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/en/" lang="en" hreflang="en">English</a></nav>
+        <span class="private-source-omitted">비공개 작업 파일 생략</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>OLED 분자 역설계를 위한 기작 중심 물성 라벨: 이성질체 ISC에서 확장형 DFT·ML까지</h1>
+        <p class="dek">2026년 8월 21–27일 연구 동향: 위치 이성질체의 ISC 기작, 분자간 상호작용, SCF 가속과 양자 계산의 검증 수준</p>
+      </section>
+
+    </div>
+  </header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-08-28 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>OLED 분자 역설계에서는 흔히 S<sub>1</sub>과 T<sub>1</sub>의 에너지 차이인 ΔE<sub>ST</sub>를 핵심 선별 지표로 사용한다. 작은 ΔE<sub>ST</sub>는 열활성화 지연형광(TADF)의 역항간전이(reverse intersystem crossing, RISC)에 유리한 조건이 될 수 있지만, 전이 속도를 단독으로 결정하지 않는다. singlet와 triplet의 상태 성격, spin-orbit coupling(SOC), 고차 triplet 상태, 분자 진동이 전자상태를 섞는 방식까지 달라지면 비슷한 ΔE<sub>ST</sub>를 가진 분자도 서로 다른 광물리 경로를 밟을 수 있다.</p>
+<p>2026년 8월 21일부터 27일까지 공개된 연구 가운데 이 문제를 가장 직접적으로 드러낸 논문은 carbazole-benzoate 위치 이성질체의 intersystem crossing(ISC)을 분석한 Karak 등의 연구다. 세 이성질체는 비슷한 크기의 ISC 속도를 가질 수 있지만, ortho와 para에서는 direct SOC와 Herzberg-Teller 기여가, meta에서는 Herzberg-Teller와 spin-vibronic 경로가 중심이 됐다. 총속도 하나만 학습하면 이 차이가 사라진다. 역설계 모델이 구조 변화의 이유를 배우려면 ΔE<sub>ST</sub>, 정적 SOC, CT/LE 상태 성격, higher-triplet mediation과 promoting mode를 분리된 라벨로 다뤄야 한다.</p>
+<p>이번 주에는 새로운 OLED 생성 모델보다 계산 파이프라인의 중간층을 강화할 방법이 더 많이 제시됐다. DensIP는 ML 전자밀도와 물리적 상호작용 항을 결합해 host-host와 host-dopant 비공유 상호작용을 다룰 가능성을 보여줬다. Kohn-Sham neural operator는 SCF 반복 안의 potential-to-density map을 학습해 큰 시스템으로의 확장성을 시험했다. BoMolLLM과 PhysECD는 각각 closed-loop 분자 생성과 물리량 기반 스펙트럼 조립이라는 설계 패턴을 제시했다. 반면 이번 주의 두 양자 연구는 작은 Hamiltonian에서의 VQE 최적화와 spin eigenfunction 상태 준비를 다룬 구성요소 연구다. OLED 분자에 대한 양자 우위나 실용적 VQE 성능을 보여준 결과는 아니다.</p>
+<p><img alt="OLED 분자 역설계의 기작 중심 물성 라벨과 계산 계층을 표현한 개념 일러스트" src="mechanism_aware_oled_inverse_design_hero.jpg" /></p>
+<p><em>그림 1. 리뷰 주제를 시각화한 개념 일러스트. 중앙은 여기상태와 기작 중심 물성 라벨, 왼쪽 아래는 host–dopant 상호작용, 오른쪽 아래는 DFT·ML 계산층을 나타낸다. 가장자리의 양자 요소는 이번 주 문헌에서 보조 구성요소 수준에 머문다는 증거 경계를 반영한다. 그림 속 분자 형태는 특정 화합물의 구조식이나 계산 결과가 아니다.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">이번 리뷰의 판정</p>
+<p>가까운 시기에 가장 먼저 할 일은 새로운 생성기를 추가하는 것보다 기작 중심 라벨 감사를 수행하는 것이다. 그다음 host-dopant 상호작용과 SCF 가속을 고정된 고전 기준선 위에서 검증할 수 있다. 이번 주의 양자 연구는 optimizer shot 배치와 spin-state preparation 구성요소를 다뤘으며 OLED 규모 VQE, 양자 가속 또는 양자 우위를 입증하지 않았다.</p>
+</aside>
+<p>레이아웃 검증을 마친 8페이지 원문 브리프는 <a href="oled_inverse_design_weekly_brief_2026-08-28.pdf">PDF로 내려받을 수 있다</a>.</p>
+<h2 id="_1">이번 주 연구를 읽는 기준</h2>
+<p>이번 리뷰는 2026년 8월 21일부터 27일까지의 공개 자료를 대상으로 하며, 직전 주간 브리프에 포함된 논문은 제외했다. 총 7편을 선정했다. 이 가운데 OLED 광물리를 직접 다룬 논문은 동료평가를 거쳐 <em>Journal of Chemical Physics</em>에 게재된 Karak 등의 연구 한 편이다. 나머지 6편은 arXiv v1 프리프린트이며, OLED 데이터셋이나 소자 검증을 수행한 연구가 아니다.</p>
+<p><img alt="이번 주 7편의 논문을 OLED 근접성과 증거 층으로 배치한 정성적 지도" src="evidence_readiness_map.svg" /></p>
+<p><em>그림 2. 가로축은 편집적 판단에 따른 OLED 근접성이지 성능 점수가 아니다. Karak 등의 논문만 직접 OLED 광물리와 동료평가 근거를 함께 갖는다.</em></p>
+<p>각 절에서는 다음 세 범주를 구분한다.</p>
+<ul>
+<li><strong>[원 논문 결과]</strong> 저자들이 계산하거나 보고한 방법, 수치와 결론</li>
+<li><strong>[한계]</strong> 논문의 검증 범위, 빠진 비교군과 적용 조건</li>
+<li><strong>[리뷰 제안]</strong> 원 논문을 OLED DFT·ML 역설계에 연결한 본 리뷰의 해석과 후속 실험안</li>
+</ul>
+<p>프리프린트의 수치와 주장은 후속 동료평가 과정에서 달라질 수 있다. 다른 화학계나 OLED workflow로의 전이는 별도 검증이 필요하다.</p>
+<h2 id="1-isc">1. 위치 이성질체는 비슷한 ISC 속도를 서로 다른 방법으로 만든다</h2>
+<h3 id="karak-et-al-journal-of-chemical-physics-165-084303">[동료평가] Karak et al., Journal of Chemical Physics 165, 084303</h3>
+<p>Karak, Basu, Ghosh, Chakrabarti는 <a href="https://doi.org/10.1063/5.0343043"><em>Role of spin-orbit and nuclear motion assisted spin-orbit coupling on the structural isomerism dependent intersystem crossing mechanism</em></a>에서 methyl 2-, 3-, 4-(9H-carbazol-9-yl)benzoate, 즉 o-, m-, p-MCBA를 비교했다. 논문은 2026년 8월 24일 <em>Journal of Chemical Physics</em> 165, 084303으로 출판됐다.</p>
+<h3 id="dso-ht-sv-isc">[원 논문 결과] DSO, HT, SV를 분해해서 본 ISC</h3>
+<p>저자들은 여기상태를 charge-transfer(CT), locally excited(LE), CT+LE 혼합 상태로 분류하고, 시간 의존 상관함수 방법으로 ISC 속도를 계산했다. 계산된 속도는 direct spin-orbit(DSO), Herzberg-Teller(HT), spin-vibronic(SV) 기여로 나뉜다.</p>
+<p>가장 낮은 singlet에서 시작하는 경로에 대해 논문이 보고한 DSO/HT 속도는 다음과 같다.</p>
+<table>
+<thead>
+<tr>
+<th>이성질체</th>
+<th style="text-align: right;">DSO rate (s⁻¹)</th>
+<th style="text-align: right;">HT rate (s⁻¹)</th>
+<th style="text-align: right;">추가 SV 경로</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ortho-MCBA</td>
+<td style="text-align: right;">0.87×10⁶</td>
+<td style="text-align: right;">4.16×10⁶</td>
+<td style="text-align: right;">지배적 경로로 보고되지 않음</td>
+</tr>
+<tr>
+<td>para-MCBA</td>
+<td style="text-align: right;">1.18×10⁶</td>
+<td style="text-align: right;">2.24×10⁶</td>
+<td style="text-align: right;">지배적 경로로 보고되지 않음</td>
+</tr>
+<tr>
+<td>meta-MCBA</td>
+<td style="text-align: right;">5.67×10³</td>
+<td style="text-align: right;">4.02×10⁶</td>
+<td style="text-align: right;">k<sub>ISC</sub> = 5.45×10⁶ s⁻¹</td>
+</tr>
+</tbody>
+</table>
+<p>ortho와 para에서는 DSO+HT가 주된 경로였지만, meta에서는 직접 SOC 기여가 작고 HT+SV가 중심이 됐다. 논문의 해석에 따르면 ortho와 para에서 S<sub>1</sub>-higher-T 및 higher-T-T<sub>1</sub> 에너지 간격이 더 커지면서 higher-triplet을 경유하는 SV 경로가 억제된다.</p>
+<p>이 결과는 “SOC를 포함해야 한다”는 일반론보다 구체적이다. 같은 분자 골격에서 치환 위치만 달라져도 직접 SOC, 핵운동에 의한 SOC 변화, higher-triplet mediation의 상대적 역할이 바뀐다. 비슷한 크기의 총 ISC 속도가 같은 전자구조 기작을 뜻하지 않는다.</p>
+<h3 id="dso-ht-sv">DSO, HT와 SV는 어떤 정보를 담는가</h3>
+<p>DSO는 특정 핵배치에서 계산한 전자상태 사이의 정적 SOC에 해당한다. HT 항은 핵좌표가 변할 때 SOC가 어떻게 변하는지를 포함한다. 정적 평형구조에서 작았던 결합도 특정 진동 모드를 따라 커질 수 있다. SV 경로에서는 vibronic coupling과 SOC가 higher triplet 또는 다른 전자상태를 매개로 결합된다. 따라서 S<sub>1</sub>-T<sub>1</sub> 에너지 차이만으로는 이 경로의 유무를 알 수 없다.</p>
+<p>TADF 역설계에서 ΔE<sub>ST</sub>는 여전히 유용하다. 다만 이는 에너지 조건을 나타내는 한 좌표이지, 전이 행렬원소와 진동 매개의 정보를 모두 대체하는 충분통계량은 아니다. 위치 또는 비틀림 이성질체처럼 에너지는 비슷하지만 state character가 달라지는 화학계에서는 이 한계가 더 크게 나타날 수 있다.</p>
+<h3 id="isc-risc">[한계] ISC 연구를 RISC와 소자 성능으로 바로 옮길 수는 없다</h3>
+<p>이 논문은 세 개 MCBA 이성질체의 ISC를 분석한다. 완전한 TADF RISC cycle, 발광 양자수율, 비복사 소멸, 고체 host 환경과 소자 수명을 함께 계산한 연구가 아니다. 보고된 k<sub>ISC</sub> 값을 k<sub>RISC</sub>로 바꾸어 읽거나, 세 분자의 경향을 rigid MR-TADF 또는 heavy-atom PhOLED 계열에 그대로 일반화해서는 안 된다.</p>
+<p>속도의 정량 정확도도 전자구조 방법, vibronic treatment와 line-broadening 근사에 의존한다. 이 연구가 강하게 뒷받침하는 범위는 세 위치 이성질체 안에서 DSO, HT와 SV 기여가 서로 다르다는 점이다. 다른 OLED 화학계로의 전이는 검증할 연구가설이다.</p>
+<h2 id="2-est">2. ΔEST 중심 데이터셋을 기작 중심 라벨로 확장하는 방법</h2>
+<h3 id="_2">[리뷰 제안] 총속도보다 원인 변수를 먼저 기록한다</h3>
+<p>많은 역설계 workflow는 S<sub>1</sub>, T<sub>1</sub>, ΔE<sub>ST</sub>, oscillator strength와 계산된 k<sub>RISC</sub>를 하나의 property table에 넣는다. 이 구조는 대규모 screening에 실용적이지만, k<sub>RISC</sub>가 동일한 계산식에서 만들어진 파생값이라면 모델은 그 식을 재현할 뿐 실제 화학적 기작을 구분하지 못할 수 있다.</p>
+<p>기작 중심 데이터셋은 라벨을 네 층으로 나눌 수 있다.</p>
+<table>
+<thead>
+<tr>
+<th>라벨 층</th>
+<th>기록할 항목</th>
+<th>설계 질문</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>에너지</td>
+<td>S<sub>1</sub>, T<sub>1</sub>, T<sub>2</sub> 및 필요 시 T<sub>3</sub>, ΔE<sub>ST</sub>, S<sub>1</sub>-T<sub>n</sub> gap</td>
+<td>전이가 열역학적으로 접근 가능한가</td>
+</tr>
+<tr>
+<td>상태 성격</td>
+<td>NTO 기반 CT/LE descriptor, CT+LE mixing, orbital localization, oscillator strength</td>
+<td>어느 상태가 어떤 전자구조 성격을 갖는가</td>
+</tr>
+<tr>
+<td>결합</td>
+<td>S<sub>1</sub>-T<sub>n</sub> SOC, 선택된 normal-mode SOC derivative 또는 spin-vibronic proxy</td>
+<td>전자상태가 실제로 어떻게 연결되는가</td>
+</tr>
+<tr>
+<td>복합 결과</td>
+<td>계산·측정 k<sub>ISC</sub>, k<sub>RISC</sub>, 방사·비방사 속도</td>
+<td>개별 원인이 합쳐져 어떤 관측량을 만드는가</td>
+</tr>
+</tbody>
+</table>
+<p>마지막 층의 총속도는 최종 평가에 필요하지만, 유일한 학습 라벨로 두지 않는 편이 좋다. 에너지, 상태 성격과 결합 정보를 multi-task target으로 학습하면 모델이 잘못 예측한 이유도 추적할 수 있다. 예를 들어 ΔE<sub>ST</sub>는 정확하지만 T<sub>2</sub>의 LE 성격이나 S<sub>1</sub>-T<sub>2</sub> SOC를 놓친 후보를 별도 failure class로 분류할 수 있다.</p>
+<h2 id="3-12-24">3. 이번 주 실행안: 12-24개 분자의 기작 라벨 감사</h2>
+<p>대규모 데이터셋 전체에 vibronic 계산을 추가하기 전에 작은 감사(audit) 세트로 정보 이득을 확인할 수 있다. 목적은 복잡한 descriptor를 많이 만드는 것이 아니라, ΔE<sub>ST</sub>만 사용했을 때 발생하는 이성질체 오순위가 state character와 coupling label을 넣었을 때 실제로 줄어드는지 검증하는 것이다.</p>
+<h3 id="31">3.1 분자 선정</h3>
+<p>전체 규모는 12-24개로 제한한다. positional 또는 torsional isomer를 포함하는 3-4개 scaffold family를 고르고, 각 family에는 알려진 fast-RISC 후보와 weak 또는 negative control을 최소 한 개씩 넣는다. 한 family 안에서 구조 변화가 충분히 작아야 에너지 차이와 기작 차이를 분리해 볼 수 있지만, 모든 family를 donor-acceptor형 하나로만 채우면 scaffold-held-out 검증의 의미가 약해진다.</p>
+<p>선정 시 다음 provenance를 함께 기록한다.</p>
+<ul>
+<li>분자 구조와 이성질체 관계</li>
+<li>실험 k<sub>RISC</sub>의 측정 조건 또는 고수준 계산 rate의 방법</li>
+<li>용매, host, 온도와 상태 배정</li>
+<li>geometry optimization method와 conformer 선택</li>
+<li>fast, weak, negative control을 정한 근거</li>
+</ul>
+<p>실험값과 계산값을 같은 종류의 정답처럼 섞지 않는다. 측정 조건이 다른 문헌값도 그대로 한 순위표에 놓지 말고 조건별로 구분한다.</p>
+<h3 id="32">3.2 공통 계산</h3>
+<p>기존 최적화 구조에서 S<sub>1</sub>, T<sub>1</sub>, T<sub>2</sub> 에너지, NTO 기반 CT/LE descriptor, oscillator strength와 S<sub>1</sub>-T<sub>n</sub> SOC를 추출한다. T<sub>3</sub>가 경로 해석에 필요하고 상태 추적이 안정적인 계열에서는 함께 보존한다. 서로 다른 geometry, functional 또는 basis의 결과를 한 라벨 열에 혼합하지 않는다.</p>
+<p>전체 12-24개 중 4-6개 대표 분자에는 선택된 normal mode를 따라 SOC derivative를 계산하거나 검증된 spin-vibronic proxy를 추가한다. 이 부분은 비용이 큰 calibration tier다. 모든 normal mode를 무차별 계산하기보다 fast-RISC, weak control과 이성질체 오순위가 예상되는 사례를 우선한다.</p>
+<h3 id="33">3.3 세 개의 맞춤 모델</h3>
+<p>동일한 분할과 동일한 학습 조건에서 다음 세 모델을 비교한다.</p>
+<ul>
+<li><strong>Model A:</strong> ΔE<sub>ST</sub>만 사용</li>
+<li><strong>Model B:</strong> ΔE<sub>ST</sub> + 정적 SOC + CT/LE 상태 성격</li>
+<li><strong>Model C:</strong> Model B + promoting-mode 또는 spin-vibronic descriptor</li>
+</ul>
+<p>표본이 12-24개뿐이므로 큰 신경망의 평균 성능 경쟁으로 만들지 않는다. 규제된 선형모델, Gaussian process, 작은 tree ensemble처럼 데이터 크기에 맞는 모델을 사용하고, descriptor 증가가 단순 과적합으로 이어지는지 확인하는 편이 적절하다.</p>
+<h3 id="34">3.4 검증과 판정</h3>
+<p>평가는 leave-one-scaffold-out 방식으로 수행한다. 목표는 measured k<sub>RISC</sub> 또는 독립적인 고수준 계산 rate의 순위다. 평균 오차만 보지 않고 다음 항목을 함께 기록한다.</p>
+<ul>
+<li>scaffold-held-out ranking</li>
+<li>예측 불확실성의 calibration</li>
+<li>positional/torsional isomer pair의 순위 역전</li>
+<li>fast-RISC와 weak control의 분리</li>
+<li>상태 assignment가 바뀌는 후보의 failure rate</li>
+<li>Model B/C가 catastrophic isomer misranking을 줄이는지 여부</li>
+</ul>
+<p>진행 조건도 사전에 고정해야 한다. Model B 또는 C가 held-out scaffold의 순위를 개선하고, 그 개선이 검증 target을 만든 동일한 rate formula의 입력값을 되풀이해서 얻은 것이 아닐 때 다음 규모로 확장한다. 같은 SOC·energy 식으로 계산한 k<sub>RISC</sub>를 target으로 두고 그 식의 입력을 feature로 넣으면 성능이 높아도 독립적인 기작 검증이 아니다.</p>
+<p>이 감사는 12-24개 분자로 일반적인 TADF 성능을 확립하려는 실험이 아니다. 어떤 추가 라벨이 비싼 계산비용을 정당화하는지 결정하는 데이터 설계 실험이다.</p>
+<h2 id="4-host-dopant-densip">4. 고립 분자에서 host-dopant 상호작용으로: DensIP</h2>
+<h3 id="wing-et-al-arxiv260820753v1">[프리프린트] Wing et al., arXiv:2608.20753v1</h3>
+<p><a href="https://arxiv.org/abs/2608.20753"><em>Accurate and Transferable Intermolecular Potential Based on Machine-Learned Molecular Electron Density</em></a>은 ML 전자밀도와 물리 기반 상호작용 모형을 결합한 DensIP를 제시한다. OLED를 직접 다룬 논문은 아니지만, isolated-molecule property와 amorphous-film morphology 사이에 놓인 dimer interaction 층과 관련이 있다.</p>
+<h3 id="_3">[원 논문 결과]</h3>
+<p>DensIP는 DenSNet이 예측한 전자밀도에 electrostatics, exchange repulsion, induction, many-body dispersion을 포함한 four-parameter physics model을 결합한다. DenSNet 학습에는 20,000건의 DFT 계산이 사용됐다. 네 개의 보편 매개변수는 DES15K 최적화 부분집합의 1,016개 training calculation에 맞춰졌고, 이 부분집합 전체는 1,016개 고유 dimer의 4,063개 configuration으로 구성된다. 작은 dimer fit에는 molecule-disjoint split과 5×5 cross-validation이 적용됐다.</p>
+<p>CCSD(T)/CBS 기준 test RMSE는 평형 부근 0.7 kcal/mol, 중거리 0.2 kcal/mol, MD conformation 0.7 kcal/mol, 중성 PLF547 protein-ligand fragment 0.7 kcal/mol이었다. S66x8 total-energy RMSE는 0.6 kcal/mol이다. 논문이 사용한 하드웨어에서 benzene dimer는 약 30 CPU-s, PBE는 약 2,000 CPU-s가 보고됐다. 이 값은 해당 구현과 하드웨어의 비교이며, 모든 분자나 DFT 설정에 적용되는 보편적 가속비가 아니다.</p>
+<h3 id="_4">[한계]</h3>
+<p>화학공간은 중성 closed-shell H/C/N/O 계열로 제한된다. repulsive-wall와 short-range test RMSE는 각각 3.8, 2.2 kcal/mol로 증가한다. nitrile과 carboxylic acid가 어려운 사례였고, induction과 exchange 항 사이의 error compensation도 보고됐다. 선도적인 ML force field보다 평형 부근 정확도가 낮은 경우가 있지만, 장거리 오차가 물리적으로 감쇠한다는 장점이 있다.</p>
+<p>OLED blend, amorphous morphology, excited state 또는 force-field MD 검증은 수행되지 않았다. 따라서 DensIP의 수치를 host-dopant energetics 성능으로 직접 인용할 수 없다.</p>
+<h3 id="100-300-oled-dimer-benchmark">[리뷰 제안] 100-300개 OLED dimer benchmark</h3>
+<p>후속 검증은 host-host와 host-emitter pose 100-300개로 시작할 수 있다. stacked, T-shaped, charge-transfer contact와 분리된 geometry를 포함하고, DensIP형 density feature를 ωB97X-D/def2-TZVP 및 더 작은 DLPNO-CCSD(T) anchor set과 비교한다.</p>
+<p>목표는 DensIP를 곧바로 production force field로 채택하는 것이 아니다. isolated-molecule excited-state screening을 통과한 후보를 packing-aware interaction energy로 다시 정렬할 수 있는지 확인하는 것이다. ground-state dimer energy가 유망한 후보에 대해서만 excited-state cluster 또는 exciplex 계산을 수행하면 계산 예산의 배분 근거를 만들 수 있다.</p>
+<h2 id="5-scf-kohn-sham-neural-operator">5. SCF 병목을 줄일 수 있을까: Kohn-Sham neural operator</h2>
+<h3 id="khan-et-al-arxiv260823895v1">[프리프린트] Khan et al., arXiv:2608.23895v1</h3>
+<p><a href="https://arxiv.org/abs/2608.23895"><em>Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory</em></a>은 real-space grid의 Kohn-Sham potential을 output density로 직접 보내는 domain-invariant SE(3)-equivariant Fourier neural operator를 제안한다. 반복적인 orbital diagonalization을 SCF 내부에서 대체하며, 제시된 연산 복잡도는 O(N<sub>g</sub> log N<sub>g</sub>)다.</p>
+<h3 id="_5">[원 논문 결과]</h3>
+<p>학습 데이터는 2,004개 분자와 6,500개 고체에서 얻은 59,500개의 일반 SCF potential-density label이다. 시험 대상은 QM9, 더 큰 QMugs 분자, 금속, 절연체와 Mg dislocation을 포함한다.</p>
+<p>held-out QM9 density error는 0.625%였고 direct ground-state predictor의 0.662%와 비교됐다. out-of-distribution QMugs에서는 self-consistent FNO error가 2.23%, direct predictor가 9.97%였다. dipole error는 각각 0.026과 0.237 D/electron이다. 학습에 사용한 cell은 최대 364 atoms였지만, 한 GPU에서 최대 8,250 atoms와 82,500 valence electrons의 Mg dislocation을 수렴시킨 결과가 제시됐다.</p>
+<h3 id="_6">[한계]</h3>
+<p>학습된 대상은 density component다. total energy와 spectrum을 얻으려면 fixed-density post-SCF diagonalization이 여전히 필요하다. excited state, hybrid 또는 range-separated functional, force, charged state와 organic-film conformer에 대한 성능은 확립되지 않았다. 큰 Mg dislocation 결과가 donor-acceptor OLED 분자에서도 같은 정확도와 가속을 보장하지 않는다.</p>
+<h3 id="tddft-ground-state-preconditioner">[리뷰 제안] TDDFT 대체가 아니라 ground-state preconditioner로 시험한다</h3>
+<p>OLED 적용성은 50-200개의 큰 donor-acceptor 분자와 dimer에서 SCF wall time, 실패율과 density error를 먼저 측정해야 한다. 이후 fixed-density orbital recovery를 수행하고 기존 TDA/TDDFT 계산을 변경하지 않은 채 연결한다.</p>
+<p>채택 기준은 SCF 반복만 빨라졌는지가 아니다. post-SCF diagonalization까지 포함한 end-to-end 시간이 감소하는지, energy와 force drift가 허용되는지, conformer와 charge-transfer contact에서 안정적으로 수렴하는지를 함께 확인해야 한다. 검증을 통과하기 전에는 TDDFT solver나 excited-state surrogate로 부르기보다 ground-state preconditioner 후보로 두는 편이 정확하다.</p>
+<h2 id="6-closed-loop-llm">6. Closed-loop 생성에서 LLM이 맡아야 할 역할</h2>
+<h3 id="xu-et-al-arxiv260822967v1">[프리프린트] Xu et al., arXiv:2608.22967v1</h3>
+<p><a href="https://arxiv.org/abs/2608.22967"><em>Closed-Loop Bayesian Molecular Inverse Design with Semantic LLM Surrogates</em></a>은 BoMolLLM이라는 반복형 분자 설계 구조를 제안한다. graph-based generator인 Llamole과 LLM surrogate를 고정하고, LLM이 설계 지시, SMILES history와 oracle score를 읽어 다음 round의 top-k reference molecule을 선택한다. 선택적으로 한 문장의 search guide도 생성한다.</p>
+<h3 id="_7">[원 논문 결과]</h3>
+<p>비교용 Gaussian process는 768차원 generator conditioning embedding을 truncated SVD로 압축하고, ARD가 적용된 Matérn-5/2 kernel과 LogEI acquisition을 사용했다. Llama-3.1-8B, Mistral-7B, Qwen2-7B 세 LLM backbone을 HIV, BBBP, BACE classifier와 CO₂, O₂, N₂ permeability를 포함한 여섯 MolQA task에 평가했다. oracle은 ECFP4 fingerprint를 입력으로 받는 random forest였다.</p>
+<p>향상 폭은 task와 backbone에 따라 달랐다. 예를 들어 Mistral에서 BACE AUC는 one-shot 0.6209에서 0.6443으로 증가했고 O₂ log-MAE는 0.7621에서 0.7535로 감소했다. random search와 GP-BO가 근접한 경우가 많았으며, Qwen 기반 material task의 개선은 작았다.</p>
+<h3 id="_8">[한계]</h3>
+<p>생성 loop가 학습된 oracle을 최적화하고 유사한 task machinery로 평가하므로 oracle exploitation 위험이 있다. LLM surrogate는 calibrated probabilistic model이 아니다. 프롬프트가 유도한 “exploration”을 posterior uncertainty와 동일하게 해석할 수 없다. material task에서 invalid SMILES를 MAE 계산에서 제외한 것도 결과를 편향시킬 수 있다.</p>
+<p>합성 계획, DFT blind validation, excited-state property와 OLED 데이터셋은 포함되지 않았다.</p>
+<h3 id="llm">[리뷰 제안] LLM은 불확실성을 대신하지 않는다</h3>
+<p>OLED closed-loop에서는 GNN ensemble 또는 GP가 S<sub>1</sub>, T<sub>1</sub>, ΔE<sub>ST</sub>, oscillator strength와 수치적 불확실성을 담당하고, LLM은 실패 cluster를 요약하거나 해석 가능한 reference molecule을 선택하는 역할로 제한할 수 있다.</p>
+<p>각 round에는 학습에 노출되지 않은 blinded DFT batch를 남기고 enrichment, uncertainty calibration error, scaffold diversity, synthetic accessibility 또는 retrosynthesis feasibility, oracle-disagreement rate를 기록해야 한다. LLM이 유창한 설명을 생성했다는 사실은 chemical-space exploration이 정량적으로 개선됐다는 증거가 아니다.</p>
+<h2 id="7">7. 스펙트럼 자체보다 물리적 생성량을 예측한다</h2>
+<h3 id="jiang-et-al-arxiv260821892v1">[프리프린트] Jiang et al., arXiv:2608.21892v1</h3>
+<p><a href="https://arxiv.org/abs/2608.21892"><em>PhysECD: A Physics-Constrained E(3)-Equivariant Framework for Electronic Circular Dichroism Spectrum Prediction</em></a>은 ECD를 대상으로 하지만 OLED surrogate 설계에도 참고할 구조를 제공한다.</p>
+<h3 id="_9">[원 논문 결과]</h3>
+<p>parity-aware E(3)-equivariant network가 상태별 excitation energy와 electric·magnetic transition dipole을 예측한다. rotatory strength와 spectrum은 differentiable Gaussian broadening layer에서 조립된다. pseudoscalar parity constraint를 적용했기 때문에 mirror reflection은 예측 ECD spectrum의 부호를 정확히 반전시킨다. 대칭성을 data augmentation으로 암기하는 대신 representation에 포함한 것이다.</p>
+<p>CMCDS에서 molecule별 spectral Pearson correlation은 평균 0.642, 중앙값 0.822였다. 저자들은 기존 learned predictor보다 높다고 보고했으며, 여러 backbone 시험을 통해 구조의 이식 가능성을 확인했다.</p>
+<h3 id="_10">[한계]</h3>
+<p>목표 물성은 fluorescence나 TADF가 아니라 ECD다. 결과는 conformer-specific이며 ensemble weighting과 solvent effect는 별도 문제다. Pearson correlation이 높아도 excitation energy 또는 intensity가 OLED 색좌표와 ΔE<sub>ST</sub>에 필요한 정밀도로 맞는다는 뜻은 아니다. 공개된 abstract record에는 uncertainty calibration이 보고되지 않았다.</p>
+<h3 id="_11">[리뷰 제안] 관측량을 구성하는 물리량을 먼저 학습한다</h3>
+<p>OLED 모델도 전체 spectrum이나 k<sub>RISC</sub>를 직접 회귀하기 전에 state energy, transition dipole, transition-density descriptor와 SOC vector 같은 생성량을 예측하고, differentiable photophysics layer에서 broadened absorption·emission과 rate proxy를 조립할 수 있다.</p>
+<p>이 구조는 최종 오차를 energy, transition property, broadening 또는 state assignment의 문제로 분해할 수 있다는 장점이 있다. 다만 PhysECD의 정확도를 OLED에 이전할 수 있다는 뜻은 아니다. 이전 가능한 것은 “물리적 생성량을 먼저 예측하고 관측량을 조립한다”는 모델 설계 원리다.</p>
+<h2 id="8-oled">8. 이번 주의 양자 연구는 OLED 계산이 아니라 구성요소 연구다</h2>
+<p>이번 주 선정된 두 양자 논문은 모두 arXiv 프리프린트다. 하나는 VQE의 parameter update에 쓰는 측정 위치를 조정하고, 다른 하나는 임의의 total-spin eigenfunction을 준비하는 회로를 제안한다. OLED 분자 Hamiltonian, 실제 QPU와 end-to-end 화학 물성 계산을 검증한 연구는 아니다.</p>
+<h3 id="81-pas-vqe-shot">8.1 [프리프린트] PAS-VQE: shot 배치를 바꾸는 최적화 기법</h3>
+<p>Stalschus 등의 <a href="https://arxiv.org/abs/2608.21616"><em>Prior-Informed Adaptive Shifts for Sequential Minimal Optimization in Variational Quantum Eigensolvers</em></a>은 one-parameter-at-a-time Rotosolve/NFT형 VQE를 다룬다.</p>
+<h4 id="_12">[원 논문 결과]</h4>
+<p>하나의 parameter에 대해 세 번의 circuit-energy evaluation을 수행하면 sinusoid를 복원할 수 있다. PAS는 minimizer에 von Mises prior를 두고, prior가 약할 때 measurement shift를 2π/3 부근에 두었다가 prior가 집중되면 π/2 방향으로 조정한다.</p>
+<p>benchmark는 모두 시뮬레이션이다. 5-qubit transverse-field Ising model에는 3-layer efficient-SU(2) circuit과 40 parameters를, 4-qubit MaxCut에는 5-layer hardware-efficient circuit과 20 parameters를 사용했다. 각 문제에서 100 random starts를 평가했다. shot budget은 TFIM에서 evaluation당 1,000 또는 100 shots, MaxCut에서 200 또는 20 shots였다.</p>
+<p>PAS는 각 noise regime에서 두 fixed shift 중 더 잘 작동하는 쪽을 회복했다. 논문은 보편적인 multiplicative speedup을 주장하지 않는다.</p>
+<h4 id="_13">[한계]</h4>
+<p>Hamiltonian은 generic Pauli form이며 second-quantized molecular Hamiltonian이 아니다. active space, fermion-to-qubit mapping과 excited-state objective도 시험하지 않았다. noise model은 ideal hardware에 constant-variance Gaussian shot noise를 더한 형태다. gate noise, drift, measurement grouping별 variance와 재사용 측정의 상관은 제외됐다.</p>
+<p>각 parameter update에는 여전히 세 개의 새로운 energy estimate가 필요하다. 분자 Hamiltonian에서는 Pauli measurement group 수가 비용에 추가되고 shot noise는 O(1/√N<sub>shots</sub>)로 남는다. 비교 대상도 fixed-shift Rotosolve이며 SPSA, gradient method, Bayesian optimizer 또는 chemistry-specific optimizer와의 비교는 없다.</p>
+<h4 id="_14">[리뷰 제안]</h4>
+<p>4-8 orbital OLED fragment의 VQE를 시험한다면 PAS를 여러 optimizer arm 중 하나로 포함할 수 있다. 총실행 비용은 다음처럼 분해해 보고해야 한다.</p>
+<p><code>총 circuit executions = parameters × updates × 3 shifts × commuting groups × shots</code></p>
+<p>동일 active-space Hamiltonian에서 exact diagonalization 또는 CASCI, 표준 VQE optimizer와 energy error 및 wall time을 비교해야 한다. 4-5 qubit 시뮬레이션에서 OLED 화학의 이점이나 양자 우위를 추론해서는 안 된다.</p>
+<h3 id="82-spin-eigenfunction">8.2 [프리프린트] 임의 spin eigenfunction의 결정론적 준비</h3>
+<p>Tao, Wang, Zuo의 <a href="https://arxiv.org/abs/2608.22892"><em>Deterministic Preparation of Arbitrary Spin Eigenfunctions</em></a>은 sequential branching path 또는 binary spin-coupling tree로 표현된 total-spin eigenfunction을 결정론적으로 준비하는 회로를 제시한다.</p>
+<h4 id="_15">[원 논문 결과]</h4>
+<p>branching-path SCS-CG 회로는 O(n) depth로 병렬화할 수 있다. 더 일반적인 spin-tree WDB-CG 구성은 한 개의 auxiliary qubit를 사용하며 최소 O(n²) depth를 갖는다. Clebsch-Gordan 구조를 이용해 Dicke-state circuit을 일반화한다.</p>
+<p>저자들은 classical amplitude reconstruction으로 여러 small-qubit instance를 검증했다. 실제 하드웨어 실행, molecular Hamiltonian energy, noise study와 chemistry-adapted state-preparation 방식과의 비교는 없다.</p>
+<h4 id="_16">[한계]</h4>
+<p>spin-pure configuration state function은 open-shell, diradical 또는 strongly correlated active space의 초기 overlap을 개선할 가능성이 있다. TADF의 singlet-triplet manifold와 연결해 연구할 수 있는 지점이다. 그러나 n-spin eigenfunction 자체가 분자 전자파동함수는 아니다. orbital occupation, fermionic antisymmetry mapping, active-space Hamiltonian과 이후 correlation ansatz가 추가로 필요하다.</p>
+<p>O(n²) logical depth도 NISQ 장치에는 부담이 크다. controlled rotation을 native noisy two-qubit gate로 분해하면 실제 depth와 error cost는 더 증가할 수 있다.</p>
+<h4 id="_17">[리뷰 제안]</h4>
+<p>먼저 classical reconstruction으로 spin-adapted CSF를 만들고 donor-acceptor radical pair에서 Hartree-Fock 및 small-CAS reference와 overlap·energy를 비교한다. overlap 이점이 남을 때만 양자회로를 compile한다. 보고 항목은 logical qubit, ancilla, native two-qubit count와 depth, state fidelity다. 이 단계의 결과는 state-preparation study이며 OLED 물성 계산으로 부르지 않는다.</p>
+<h2 id="9">9. 이번 주에 새 근거가 없었던 영역</h2>
+<p>다음 결과는 “해당 분야에 연구가 없다”는 뜻이 아니다. 2026년 8월 21-27일의 검색 범위와 선정 기준 안에서, 기술적으로 검토할 만한 새로운 primary record를 찾지 못했다는 의미다.</p>
+<table>
+<thead>
+<tr>
+<th>요청 주제</th>
+<th>이번 주 판정</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PhOLED host 또는 host-dopant device</td>
+<td>host design과 device 또는 lifetime validation을 함께 제시한 신뢰할 만한 새 primary paper가 없었다.</td>
+</tr>
+<tr>
+<td>안정성·열화</td>
+<td>bond dissociation, polaron/exciton chemistry와 operational lifetime을 연결한 새 기작 논문이 없었다.</td>
+</tr>
+<tr>
+<td>SELFIES·reaction-aware synthesis</td>
+<td>지난주의 PGFS++를 넘어서는 SELFIES-specific 또는 retrosynthesis-constrained 연구를 선정하지 못했다.</td>
+</tr>
+<tr>
+<td>CRBM·Boltzmann machine</td>
+<td>새로운 molecular inverse-design 실증이 없었으며 기존 Boltzmann 연구를 반복 수록하지 않았다.</td>
+</tr>
+<tr>
+<td>D-Wave·quantum annealing·QUBO</td>
+<td>경쟁력 있는 classical baseline과 hardware sampling을 함께 갖춘 chemistry-relevant encoding 연구가 없었다.</td>
+</tr>
+<tr>
+<td>QAOA</td>
+<td>새 molecular-design 결과가 없었다. oracle cost 분석 없이 database optimization용 toy QUBO를 화학 문제로 옮기지 않았다.</td>
+</tr>
+<tr>
+<td>OLED 규모 VQE</td>
+<td>TADF 또는 PhOLED 분자에 대한 active-space/resource estimate가 없었다. PAS와 spin-state preparation은 구성요소 연구다.</td>
+</tr>
+<tr>
+<td>GW-BSE</td>
+<td>분자 여기상태 또는 OLED에 직접 연결할 수 있는 새 연구를 선정하지 못했다.</td>
+</tr>
+</tbody>
+</table>
+<p>한 편은 watchlist에 남겼다. <em>Organic Letters</em>에 2026년 8월 27일 온라인 공개된 <em>Integration of Multiresonance Heterocyclic Aromatic Hydrocarbons for Fully Resonant B/N-Doped Hetero[8]helicenes with Long-Wavelength Ultra-Narrow-Band Emission</em>이다. DOI는 <a href="https://doi.org/10.1021/acs.orglett.6c03273">10.1021/acs.orglett.6c03273</a>이다. 제목상 OLED emitter 설계와 직접 관련되지만, screening 시점에 신뢰할 수 있는 정량 record를 충분히 확보하지 못해 이번 7편에는 포함하지 않았다. 수치나 성능을 추측해 요약하는 대신 다음 검토 대상으로 보류했다.</p>
+<h2 id="10-oled-workflow">10. 확장형 OLED 역설계 workflow</h2>
+<h3 id="_18">[리뷰 제안] 하나의 거대 모델보다 검증 가능한 계산층을 연결한다</h3>
+<p>이번 주 연구를 하나의 pipeline으로 연결하면 다음 구조가 된다.</p>
+<ol>
+<li>
+<p><strong>분자 생성과 초기 선별</strong><br />
+   SELFIES, graph generator 또는 reaction-aware generator로 후보를 만들고 validity, novelty, scaffold diversity와 합성 가능성을 검사한다. LLM은 reference 선택과 failure summary를 보조할 수 있지만 수치적 uncertainty를 대체하지 않는다.</p>
+</li>
+<li>
+<p><strong>에너지와 상태 성격 계산</strong><br />
+   DFT·TDA/TDDFT로 S<sub>1</sub>, T<sub>1</sub>, higher triplet, oscillator strength와 NTO 기반 CT/LE character를 계산한다. ΔE<sub>ST</sub>는 첫 번째 filter이지만 단독 판정 기준으로 쓰지 않는다.</p>
+</li>
+<li>
+<p><strong>기작 라벨 감사</strong><br />
+   소수 calibration set에서 S<sub>1</sub>-T<sub>n</sub> SOC, promoting-mode derivative와 spin-vibronic proxy를 계산한다. Model A/B/C 비교로 추가 라벨이 이성질체 오순위를 실제로 줄이는지 판단한다.</p>
+</li>
+<li>
+<p><strong>packing-aware 재정렬</strong><br />
+   host-host와 host-emitter dimer interaction을 계산해 isolated-molecule property가 좋아도 packing에서 불리한 후보를 걸러낸다. DensIP형 모델은 이 단계의 연구 후보이며 OLED benchmark를 먼저 통과해야 한다.</p>
+</li>
+<li>
+<p><strong>SCF 가속 검증</strong><br />
+   Kohn-Sham neural operator를 ground-state preconditioner로 시험한다. SCF 반복뿐 아니라 fixed-density diagonalization과 후속 TDA/TDDFT를 포함한 총시간, 실패율과 property drift를 평가한다.</p>
+</li>
+<li>
+<p><strong>고정밀 재판정</strong><br />
+   다중참조 성격, state ordering 또는 spin contamination이 의심되는 소수 후보는 CASSCF/NEVPT2, selected CI, DMRG 또는 검증된 고정밀 solver로 재계산한다. 전체 chemical space에 동일한 고비용 방법을 적용하지 않는다.</p>
+</li>
+<li>
+<p><strong>선택적 양자 benchmark</strong><br />
+   4-8 orbital fragment처럼 고전 exact reference가 가능한 문제에서 optimizer와 state preparation을 구성요소별로 시험한다. 실제 QPU를 사용할 때는 shots, commuting groups, native gate depth, queue와 classical preprocessing을 포함한 end-to-end 비용을 기록한다.</p>
+</li>
+</ol>
+<p><img alt="광물리 기작 라벨, DFT·분자간 상호작용, 불확실성을 포함한 ML 설계, 제한된 양자 구성요소 시험을 분리한 OLED 역설계 파이프라인" src="oled_weekly_pipeline.svg" /></p>
+<p><em>그림 3. 검증 근거에 따라 구성한 OLED 역설계 흐름. 실선은 이번 문헌에서 실제로 다룬 방법층이고, OLED workflow로 이어지는 적용안은 후속 검증이 필요한 리뷰 제안이다.</em></p>
+<p>이 구조에서 양자 알고리즘은 현재의 DFT/ML screening을 대체하는 중심 엔진이 아니다. 검증 가능한 작은 active-space 문제에서 특정 solver 또는 state-preparation 구성요소를 비교하는 연구 경로다. DensIP와 neural operator도 마찬가지로 논문의 benchmark 수치만으로 OLED production layer가 되지 않는다. 각 모듈은 자신이 들어갈 위치에 맞는 blind test와 decision gate를 통과해야 한다.</p>
+<h2 id="_19">결론</h2>
+<p>이번 주의 직접 OLED 연구가 수정한 것은 특정 계산법보다 데이터셋의 관점이다. o-, m-, p-MCBA는 비슷한 크기의 ISC 속도를 서로 다른 DSO, HT와 SV 조합으로 만들었다. ΔE<sub>ST</sub>와 정적 SOC만 학습한 모델은 총속도를 맞히면서도 구조 변화의 기작을 잘못 배울 수 있다.</p>
+<p>가장 현실적인 다음 단계는 12-24개 분자의 기작 라벨 감사다. positional·torsional isomer와 fast·weak control을 포함하고, ΔE<sub>ST</sub> only 모델을 state character, S<sub>1</sub>-T<sub>n</sub> SOC와 spin-vibronic descriptor가 포함된 모델과 비교한다. leave-one-scaffold-out 순위와 불확실성을 기준으로 추가 계산의 가치를 판단해야 한다.</p>
+<p>그 바깥의 workflow도 층별로 확장할 수 있다. DensIP는 host-dopant 상호작용, Kohn-Sham neural operator는 SCF 병목, BoMolLLM은 반복 설계의 orchestration, PhysECD는 물리적 생성량을 먼저 예측하는 구조를 제공한다. 이번 주의 양자 논문은 VQE optimizer와 spin-state preparation의 연구 재료를 추가했지만 OLED 분자에 대한 advantage를 보여주지는 않았다.</p>
+<p>분자 역설계의 성능은 더 많은 후보를 생성하는 능력만으로 결정되지 않는다. 구조 변화가 어떤 상태를 만들고, 그 상태가 어떤 coupling channel을 통해 전이하며, host 환경에서 그 관계가 유지되는지를 학습 가능한 라벨로 보존해야 한다. 이번 주의 읽을거리는 그 출발점을 ΔE<sub>ST</sub> 하나에서 기작을 분해한 데이터 구조로 옮긴다.</p>
+<h2 id="references">References</h2>
+<ol>
+<li><strong>[동료평가]</strong> P. Karak, K. Basu, A. Ghosh, S. Chakrabarti, <a href="https://doi.org/10.1063/5.0343043">“Role of spin-orbit and nuclear motion assisted spin-orbit coupling on the structural isomerism dependent intersystem crossing mechanism,” <em>Journal of Chemical Physics</em> <strong>165</strong>, 084303 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> D. Wing, M. Bogojeski, S. Goger, K.-R. Müller, A. Tkatchenko, <a href="https://arxiv.org/abs/2608.20753">“Accurate and Transferable Intermolecular Potential Based on Machine-Learned Molecular Electron Density,” arXiv:2608.20753 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> D. Khan, M. D. Hanisch, N. Argatoff, E. Xie, S. Sharma, A. Anandkumar, <a href="https://arxiv.org/abs/2608.23895">“Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory,” arXiv:2608.23895 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> Y. Xu, X. Zhao, X. Song, L. Bai, T. Yu, <a href="https://arxiv.org/abs/2608.22967">“Closed-Loop Bayesian Molecular Inverse Design with Semantic LLM Surrogates,” arXiv:2608.22967 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> Y. Jiang, L. Chen, R. Shi, L. Han, T. Zhu, Y. Yang, <a href="https://arxiv.org/abs/2608.21892">“PhysECD: A Physics-Constrained E(3)-Equivariant Framework for Electronic Circular Dichroism Spectrum Prediction,” arXiv:2608.21892 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> F. Stalschus, S. Pedrielli, S. Kühn, K. Jansen, K. A. Nicoli, S. Nakajima, <a href="https://arxiv.org/abs/2608.21616">“Prior-Informed Adaptive Shifts for Sequential Minimal Optimization in Variational Quantum Eigensolvers,” arXiv:2608.21616 (2026)</a>.</li>
+<li><strong>[프리프린트 v1]</strong> W. Tao, J. Wang, F. Zuo, <a href="https://arxiv.org/abs/2608.22892">“Deterministic Preparation of Arbitrary Spin Eigenfunctions,” arXiv:2608.22892 (2026)</a>.</li>
+<li><strong>[동료평가·watchlist]</strong> <a href="https://doi.org/10.1021/acs.orglett.6c03273">“Integration of Multiresonance Heterocyclic Aromatic Hydrocarbons for Fully Resonant B/N-Doped Hetero[8]helicenes with Long-Wavelength Ultra-Narrow-Band Emission,” <em>Organic Letters</em>, published online 27 August 2026</a>.</li>
+</ol>
+<hr />
+<p>작성정보. 작성자: 김현중. 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스. 검증 기준일은 2026년 8월 28일이며, 검색 마감은 약 08:58 KST였다. 수치는 각 원 논문 또는 프리프린트가 보고한 값이다. OLED workflow translation과 12-24개 분자 기작 라벨 감사는 본 리뷰의 제안이며 원 논문의 실증 결과가 아니다.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>Codex 기반 GPT-5 계열 에이전트 하네스; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>본문에 기재된 원문·공식 자료; 공개 링크와 최종 HTML</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-08-28</dd></div>
+        </dl>
+        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        생성 시각: 2026-08-28 21:43:05<br>
+        원본 파일 최종 수정 시각: 2026-08-28 21:41:30
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#_1">이번 주 연구를 읽는 기준</a></li>
+<li><a href="#1-isc">1. 위치 이성질체는 비슷한 ISC 속도를 서로 다른 방법으로 만든다</a><ul>
+<li><a href="#karak-et-al-journal-of-chemical-physics-165-084303">[동료평가] Karak et al., Journal of Chemical Physics 165, 084303</a></li>
+<li><a href="#dso-ht-sv-isc">[원 논문 결과] DSO, HT, SV를 분해해서 본 ISC</a></li>
+<li><a href="#dso-ht-sv">DSO, HT와 SV는 어떤 정보를 담는가</a></li>
+<li><a href="#isc-risc">[한계] ISC 연구를 RISC와 소자 성능으로 바로 옮길 수는 없다</a></li>
+</ul>
+</li>
+<li><a href="#2-est">2. ΔEST 중심 데이터셋을 기작 중심 라벨로 확장하는 방법</a><ul>
+<li><a href="#_2">[리뷰 제안] 총속도보다 원인 변수를 먼저 기록한다</a></li>
+</ul>
+</li>
+<li><a href="#3-12-24">3. 이번 주 실행안: 12-24개 분자의 기작 라벨 감사</a><ul>
+<li><a href="#31">3.1 분자 선정</a></li>
+<li><a href="#32">3.2 공통 계산</a></li>
+<li><a href="#33">3.3 세 개의 맞춤 모델</a></li>
+<li><a href="#34">3.4 검증과 판정</a></li>
+</ul>
+</li>
+<li><a href="#4-host-dopant-densip">4. 고립 분자에서 host-dopant 상호작용으로: DensIP</a><ul>
+<li><a href="#wing-et-al-arxiv260820753v1">[프리프린트] Wing et al., arXiv:2608.20753v1</a></li>
+<li><a href="#_3">[원 논문 결과]</a></li>
+<li><a href="#_4">[한계]</a></li>
+<li><a href="#100-300-oled-dimer-benchmark">[리뷰 제안] 100-300개 OLED dimer benchmark</a></li>
+</ul>
+</li>
+<li><a href="#5-scf-kohn-sham-neural-operator">5. SCF 병목을 줄일 수 있을까: Kohn-Sham neural operator</a><ul>
+<li><a href="#khan-et-al-arxiv260823895v1">[프리프린트] Khan et al., arXiv:2608.23895v1</a></li>
+<li><a href="#_5">[원 논문 결과]</a></li>
+<li><a href="#_6">[한계]</a></li>
+<li><a href="#tddft-ground-state-preconditioner">[리뷰 제안] TDDFT 대체가 아니라 ground-state preconditioner로 시험한다</a></li>
+</ul>
+</li>
+<li><a href="#6-closed-loop-llm">6. Closed-loop 생성에서 LLM이 맡아야 할 역할</a><ul>
+<li><a href="#xu-et-al-arxiv260822967v1">[프리프린트] Xu et al., arXiv:2608.22967v1</a></li>
+<li><a href="#_7">[원 논문 결과]</a></li>
+<li><a href="#_8">[한계]</a></li>
+<li><a href="#llm">[리뷰 제안] LLM은 불확실성을 대신하지 않는다</a></li>
+</ul>
+</li>
+<li><a href="#7">7. 스펙트럼 자체보다 물리적 생성량을 예측한다</a><ul>
+<li><a href="#jiang-et-al-arxiv260821892v1">[프리프린트] Jiang et al., arXiv:2608.21892v1</a></li>
+<li><a href="#_9">[원 논문 결과]</a></li>
+<li><a href="#_10">[한계]</a></li>
+<li><a href="#_11">[리뷰 제안] 관측량을 구성하는 물리량을 먼저 학습한다</a></li>
+</ul>
+</li>
+<li><a href="#8-oled">8. 이번 주의 양자 연구는 OLED 계산이 아니라 구성요소 연구다</a><ul>
+<li><a href="#81-pas-vqe-shot">8.1 [프리프린트] PAS-VQE: shot 배치를 바꾸는 최적화 기법</a><ul>
+<li><a href="#_12">[원 논문 결과]</a></li>
+<li><a href="#_13">[한계]</a></li>
+<li><a href="#_14">[리뷰 제안]</a></li>
+</ul>
+</li>
+<li><a href="#82-spin-eigenfunction">8.2 [프리프린트] 임의 spin eigenfunction의 결정론적 준비</a><ul>
+<li><a href="#_15">[원 논문 결과]</a></li>
+<li><a href="#_16">[한계]</a></li>
+<li><a href="#_17">[리뷰 제안]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#9">9. 이번 주에 새 근거가 없었던 영역</a></li>
+<li><a href="#10-oled-workflow">10. 확장형 OLED 역설계 workflow</a><ul>
+<li><a href="#_18">[리뷰 제안] 하나의 거대 모델보다 검증 가능한 계산층을 연결한다</a></li>
+</ul>
+</li>
+<li><a href="#_19">결론</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">근거 링크</h2>
+        <ul>
+          <li><a href="mechanism_aware_oled_inverse_design_hero.jpg">OLED 분자 역설계의 기작 중심 물성 라벨과 계산 계층을 표현한 개념 일러스트</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-08-28.pdf">PDF로 내려받을 수 있다</a></li>
+<li><a href="evidence_readiness_map.svg">이번 주 7편의 논문을 OLED 근접성과 증거 층으로 배치한 정성적 지도</a></li>
+<li><a href="https://doi.org/10.1063/5.0343043" target="_blank" rel="noreferrer">*Role of spin-orbit and nuclear motion assisted spin-orbit coupling on the structural isomerism dependent intersystem crossing mechanism*</a></li>
+<li><a href="https://arxiv.org/abs/2608.20753" target="_blank" rel="noreferrer">*Accurate and Transferable Intermolecular Potential Based on Machine-Learned Molecular Electron Density*</a></li>
+<li><a href="https://arxiv.org/abs/2608.23895" target="_blank" rel="noreferrer">*Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory*</a></li>
+<li><a href="https://arxiv.org/abs/2608.22967" target="_blank" rel="noreferrer">*Closed-Loop Bayesian Molecular Inverse Design with Semantic LLM Surrogates*</a></li>
+<li><a href="https://arxiv.org/abs/2608.21892" target="_blank" rel="noreferrer">*PhysECD: A Physics-Constrained E(3)-Equivariant Framework for Electronic Circular Dichroism Spectrum Prediction*</a></li>
+<li><a href="https://arxiv.org/abs/2608.21616" target="_blank" rel="noreferrer">*Prior-Informed Adaptive Shifts for Sequential Minimal Optimization in Variational Quantum Eigensolvers*</a></li>
+<li><a href="https://arxiv.org/abs/2608.22892" target="_blank" rel="noreferrer">*Deterministic Preparation of Arbitrary Spin Eigenfunctions*</a></li>
+<li><a href="https://doi.org/10.1021/acs.orglett.6c03273" target="_blank" rel="noreferrer">10.1021/acs.orglett.6c03273</a></li>
+<li><a href="oled_weekly_pipeline.svg">광물리 기작 라벨, DFT·분자간 상호작용, 불확실성을 포함한 ML 설계, 제한된 양자 구성요소 시험을 분리한 OLED 역설계 파이프라인</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1040" viewBox="0 0 1440 1040" role="img" aria-labelledby="title desc">
+  <title id="title">표현 용량에서 종단 간 재료 이득까지의 양자 이득 장부</title>
+  <desc id="desc">양자 상태의 표현 용량, 특정 알고리즘의 복잡도 이득, 실제 재료개발의 종단 간 이득을 세 단계로 구분한다. 상태 준비, 측정, 오류정정, 임베딩, 검증에서 시간과 정확도 이득이 누수될 수 있음을 보여주며, 가장 강한 고전 기준선보다 검증된 후보당 비용과 시간이 좋아야 재료 이득이라고 판단한다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:2px;fill:#684790}.title{font:700 42px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 23px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.card{fill:#fff;stroke-width:3}.c1{stroke:#416b9a}.c2{stroke:#74519a}.c3{stroke:#28745a}.tag{font:800 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.2px}.head{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.formula{font:600 21px Consolas,'Segoe UI Symbol',monospace;fill:#293548}.sector{font:700 15px Consolas,'Segoe UI Symbol',monospace;fill:#416b9a}.gate{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.flow{stroke:#687386;stroke-width:5;fill:none}.notenough{font:700 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.ledger{fill:#fbeeee;stroke:#a44343;stroke-width:2.5}.ledgerhead{font:800 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.leak{fill:#fff;stroke:#c96b6b;stroke-width:2}.leakhead{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#653333}.leakbody{font:400 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#6d5252}.dash{stroke:#a44343;stroke-width:3;stroke-dasharray:8 7;fill:none}.verdict{fill:#edf7f1;stroke:#28745a;stroke-width:3}.verdicthead{font:800 24px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#1f654d}.verdictbody{font:600 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354f46}.footer{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+    <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a44343"/></marker>
+  </defs>
+  <rect class="bg" width="1440" height="1040"/>
+
+  <text class="eyebrow" x="55" y="50">QUANTUM ADVANTAGE LEDGER</text>
+  <text class="title" x="55" y="99">‘큐비트로 표현된다’와 ‘재료개발이 빨라진다’ 사이에는 두 개의 문이 있습니다</text>
+  <text class="subtitle" x="55" y="137">각 단계의 이득은 다음 단계의 필요조건일 뿐입니다. 전처리와 판독 비용을 빼고 남은 값만 장부에 기록합니다.</text>
+
+  <rect class="card c1" x="55" y="205" rx="24" width="400" height="360"/>
+  <text class="tag" x="87" y="248" fill="#416b9a">LEVEL 1 · REPRESENTATION</text>
+  <text class="head" x="87" y="294">표현 용량</text>
+  <text class="formula" x="87" y="340">n spin orbitals → n qubits</text>
+  <text class="body" x="87" y="377">2<tspan baseline-shift="super" font-size="14">n</tspan>개 진폭을 양자 상태에 암묵적으로 보유</text>
+  <text class="sector" x="87" y="402">고정 전자수 sector: C(n,N<tspan baseline-shift="sub" font-size="11">e</tspan>)</text>
+  <line x1="87" y1="420" x2="423" y2="420" stroke="#d5d9df" stroke-width="2"/>
+  <text class="gate" x="87" y="446" fill="#416b9a">증명해야 할 문</text>
+  <text class="body" x="87" y="479">관심 상태를 효율적으로 준비하는가?</text>
+  <text class="body" x="87" y="512">관심 관측량을 적은 측정으로 읽는가?</text>
+  <rect x="84" y="528" rx="11" width="340" height="24" fill="#eef4fb"/>
+  <text class="notenough" x="102" y="546">상태 저장 능력만으로 속도향상은 성립하지 않음</text>
+
+  <rect class="card c2" x="520" y="205" rx="24" width="400" height="360"/>
+  <text class="tag" x="552" y="248" fill="#74519a">LEVEL 2 · ALGORITHM</text>
+  <text class="head" x="552" y="294">알고리즘 이득</text>
+  <text class="formula" x="552" y="340">QPE · Hamiltonian simulation</text>
+  <text class="body" x="552" y="381">특정 ε·계 구조에서 가능한 복잡도 이점</text>
+  <line x1="552" y1="410" x2="888" y2="410" stroke="#d5d9df" stroke-width="2"/>
+  <text class="gate" x="552" y="446" fill="#74519a">증명해야 할 문</text>
+  <text class="body" x="552" y="479">상태 중첩·logical depth가 감당되는가?</text>
+  <text class="body" x="552" y="512">같은 정확도에서 최선 고전법보다 싼가?</text>
+  <rect x="549" y="528" rx="11" width="340" height="24" fill="#f3eef9"/>
+  <text class="notenough" x="569" y="546">점근 복잡도만으로 현재 wall-clock은 결정되지 않음</text>
+
+  <rect class="card c3" x="985" y="205" rx="24" width="400" height="360"/>
+  <text class="tag" x="1017" y="248" fill="#28745a">LEVEL 3 · MATERIALS E2E</text>
+  <text class="head" x="1017" y="294">종단 간 재료 이득</text>
+  <text class="formula" x="1017" y="340">validated hits / total budget</text>
+  <text class="body" x="1017" y="381">후보 생성부터 DFT·합성·소자 검증까지 포함</text>
+  <line x1="1017" y1="410" x2="1353" y2="410" stroke="#d5d9df" stroke-width="2"/>
+  <text class="gate" x="1017" y="446" fill="#28745a">증명해야 할 문</text>
+  <text class="body" x="1017" y="479">시간·비용·에너지·hit rate가 좋아지는가?</text>
+  <text class="body" x="1017" y="512">여러 배치에서 반복되고 실패도 추적되는가?</text>
+  <rect x="1014" y="528" rx="11" width="340" height="24" fill="#edf7f1"/>
+  <text class="notenough" x="1034" y="546">이 단계의 반복 가능한 차이만 재료 이득으로 채택</text>
+
+  <path class="flow" d="M455 385 L512 385" marker-end="url(#arrow)"/>
+  <path class="flow" d="M920 385 L977 385" marker-end="url(#arrow)"/>
+
+  <rect class="ledger" x="55" y="610" rx="22" width="1330" height="235"/>
+  <text class="ledgerhead" x="85" y="652">이득이 새는 다섯 곳 · 각 비용을 분모에 포함</text>
+
+  <rect class="leak" x="85" y="682" rx="15" width="225" height="125"/>
+  <text class="leakhead" x="105" y="716">상태 준비</text>
+  <text class="leakbody" x="105" y="746">낮은 overlap · 깊은 준비회로</text>
+  <text class="leakbody" x="105" y="774">반복 횟수와 성공확률 악화</text>
+
+  <rect class="leak" x="340" y="682" rx="15" width="225" height="125"/>
+  <text class="leakhead" x="360" y="716">측정 · shots</text>
+  <text class="leakbody" x="360" y="746">Pauli 항·분산·통계 오차</text>
+  <text class="leakbody" x="360" y="774">판독량이 실험시간을 지배</text>
+
+  <rect class="leak" x="595" y="682" rx="15" width="225" height="125"/>
+  <text class="leakhead" x="615" y="716">오류정정</text>
+  <text class="leakbody" x="615" y="746">logical qubit · T-count</text>
+  <text class="leakbody" x="615" y="774">긴 결맞음 회로의 물리 자원</text>
+
+  <rect class="leak" x="850" y="682" rx="15" width="225" height="125"/>
+  <text class="leakhead" x="870" y="716">embedding · 변환</text>
+  <text class="leakbody" x="870" y="746">활성공간 오차 · chain · SWAP</text>
+  <text class="leakbody" x="870" y="774">모델·하드웨어 사이의 마찰</text>
+
+  <rect class="leak" x="1105" y="682" rx="15" width="250" height="125"/>
+  <text class="leakhead" x="1125" y="716">고정밀 · 실험 검증</text>
+  <text class="leakbody" x="1125" y="746">잘못된 후보 · 합성 실패 · 소자 편차</text>
+  <text class="leakbody" x="1125" y="774">실제 hit까지의 마지막 병목</text>
+
+  <path class="dash" d="M198 682 L198 575" marker-end="url(#red)"/>
+  <path class="dash" d="M452 682 C452 610 400 600 400 565" marker-end="url(#red)"/>
+  <path class="dash" d="M707 682 L707 575" marker-end="url(#red)"/>
+  <path class="dash" d="M962 682 C962 610 1040 600 1040 565" marker-end="url(#red)"/>
+  <path class="dash" d="M1230 682 L1230 575" marker-end="url(#red)"/>
+
+  <rect class="verdict" x="220" y="880" rx="22" width="1000" height="105"/>
+  <text class="verdicthead" x="255" y="920">채택 판정</text>
+  <text class="verdictbody" x="385" y="920">동일 정확도·동일 성공확률에서</text>
+  <text class="verdictbody" x="385" y="953">최선 고전 기준선보다 검증된 hit당 총시간·총비용이 낮아야 합니다.</text>
+  <text class="footer" x="55" y="1022">필요조건 ≠ 종단 이득</text>
+  <text class="footer" x="330" y="1022">가장 큰 병목이 이득을 결정</text>
+</svg>

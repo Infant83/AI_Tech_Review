@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760" viewBox="0 0 1280 760" role="img" aria-labelledby="title desc">
+  <title id="title">센서-연산 경계 이동</title>
+  <desc id="desc">기존 카메라 경로와 in-sensor neuromorphic vision 경로를 비교해 계산 위치가 센서 쪽으로 이동하는 것을 설명하는 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .title { font: 800 52px "Segoe UI", "Malgun Gothic", sans-serif; fill: #141414; }
+      .subtitle { font: 400 26px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4c4c4c; }
+      .section { font: 800 34px "Segoe UI", "Malgun Gothic", sans-serif; fill: #171717; }
+      .label { font: 800 30px "Segoe UI", "Malgun Gothic", sans-serif; fill: #161616; }
+      .body { font: 500 24px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .small { font: 500 21px "Segoe UI", "Malgun Gothic", sans-serif; fill: #595959; }
+      .panel { fill: #fff; stroke: #deded6; stroke-width: 2; rx: 26; }
+      .old { fill: #eef1f3; stroke: #8b959d; stroke-width: 3; rx: 20; }
+      .new { fill: #fff1df; stroke: #c8781e; stroke-width: 3; rx: 20; }
+      .sensor { fill: #e6f3ee; stroke: #318675; stroke-width: 3; rx: 20; }
+      .compute { fill: #eaf0fb; stroke: #4a70ad; stroke-width: 3; rx: 20; }
+      .syn { fill: #eee6f6; stroke: #7b519a; stroke-width: 3; rx: 20; }
+      .note { fill: #f7e7e7; stroke: #ad5656; stroke-width: 3; rx: 20; }
+      .arrow { stroke: #2f2f2f; stroke-width: 5; fill: none; marker-end: url(#arrow); }
+      .arrowSoft { stroke: #8a8a8a; stroke-width: 4; fill: none; stroke-dasharray: 10 10; marker-end: url(#arrowSoft); }
+      .event { fill: #df7d20; opacity: .92; }
+      .raw { fill: #9aa3aa; opacity: .9; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#2f2f2f" />
+    </marker>
+    <marker id="arrowSoft" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#8a8a8a" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="760"/>
+  <text x="70" y="82" class="title">계산 위치가 센서 쪽으로 당겨집니다</text>
+  <text x="72" y="128" class="subtitle">핵심은 더 큰 프로세서가 아니라, 빛을 받은 자리에서 일부 판단을 시작하는 설계입니다.</text>
+
+  <rect x="70" y="166" width="1140" height="230" class="panel"/>
+  <text x="108" y="220" class="section">기존 경로</text>
+  <rect x="108" y="254" width="210" height="92" class="old"/>
+  <text x="138" y="300" class="label">frame</text>
+  <text x="138" y="330" class="small">많은 raw data</text>
+  <g>
+    <circle cx="360" cy="300" r="7" class="raw"/>
+    <circle cx="386" cy="300" r="7" class="raw"/>
+    <circle cx="412" cy="300" r="7" class="raw"/>
+    <circle cx="438" cy="300" r="7" class="raw"/>
+    <circle cx="464" cy="300" r="7" class="raw"/>
+  </g>
+  <line x1="318" y1="300" x2="530" y2="300" class="arrowSoft"/>
+  <rect x="530" y="254" width="250" height="92" class="old"/>
+  <text x="560" y="300" class="label">이동</text>
+  <text x="560" y="330" class="small">저장 · 전송</text>
+  <line x1="780" y1="300" x2="878" y2="300" class="arrowSoft"/>
+  <rect x="878" y="254" width="224" height="92" class="compute"/>
+  <text x="908" y="300" class="label">큰 연산</text>
+  <text x="908" y="330" class="small">processor 쪽 판단</text>
+
+  <rect x="70" y="430" width="1140" height="230" class="panel"/>
+  <text x="108" y="484" class="section">in-sensor 경로</text>
+  <rect x="108" y="518" width="230" height="92" class="sensor"/>
+  <text x="138" y="564" class="label">빛 자리</text>
+  <text x="138" y="594" class="small">MoS2 LIF neuron</text>
+  <g>
+    <circle cx="385" cy="564" r="7" class="event"/>
+    <circle cx="412" cy="564" r="7" class="event"/>
+    <circle cx="442" cy="564" r="7" class="event"/>
+  </g>
+  <line x1="338" y1="564" x2="508" y2="564" class="arrow"/>
+  <rect x="508" y="518" width="230" height="92" class="new"/>
+  <text x="538" y="564" class="label">spike</text>
+  <text x="538" y="594" class="small">rate · TTFS coding</text>
+  <line x1="738" y1="564" x2="830" y2="564" class="arrow"/>
+  <rect x="830" y="518" width="230" height="92" class="syn"/>
+  <text x="860" y="564" class="label">저장</text>
+  <text x="860" y="594" class="small">FeFET synapse</text>
+
+  <rect x="328" y="680" width="624" height="54" class="note"/>
+  <text x="376" y="716" class="body">그림의 메시지: 데이터를 덜 움직이도록 센서 가까이에서 줄입니다.</text>
+</svg>

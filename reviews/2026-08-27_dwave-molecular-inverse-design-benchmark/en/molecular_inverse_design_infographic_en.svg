@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1900" viewBox="0 0 1600 1900" role="img" aria-labelledby="title desc">
+  <title id="title">D-Wave molecular inverse-design pipeline and computed results</title>
+  <desc id="desc">Detailed infographic separating QM9 data, two predictive models, three molecular proposal routes, QUBO and D-Wave QPU batch selection, PySCF DFT screening, fixed-pool QM9 label replay, and a live active-learning loop that has not yet been executed.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7fafc; }
+      .ink { fill: #172033; }
+      .muted { fill: #5c687d; }
+      .white { fill: #ffffff; }
+      .navy { fill: #13243a; }
+      .blue { fill: #1479b8; }
+      .teal { fill: #0a9d7a; }
+      .amber { fill: #e79b00; }
+      .pink { fill: #c36f9f; }
+      .blue-soft { fill: #e8f3fb; }
+      .teal-soft { fill: #e5f5f0; }
+      .amber-soft { fill: #fff3d8; }
+      .pink-soft { fill: #f7e8f1; }
+      .gray-soft { fill: #eef2f6; }
+      .card { fill: #ffffff; stroke: #d6dee8; stroke-width: 2; }
+      .title { font: 700 58px "Segoe UI", Arial, sans-serif; letter-spacing: -1.5px; }
+      .subtitle { font: 400 26px "Segoe UI", Arial, sans-serif; }
+      .section { font: 700 34px "Segoe UI", Arial, sans-serif; }
+      .node-title { font: 700 25px "Segoe UI", Arial, sans-serif; }
+      .loop-title { font: 700 20px "Segoe UI", Arial, sans-serif; }
+      .body { font: 400 22px "Segoe UI", Arial, sans-serif; }
+      .small { font: 400 18px "Segoe UI", Arial, sans-serif; }
+      .tiny { font: 400 15px "Segoe UI", Arial, sans-serif; }
+      .footer { font: 400 18px "Segoe UI", Arial, sans-serif; }
+      .metric { font: 750 39px "Segoe UI", Arial, sans-serif; }
+      .metric-small { font: 700 28px "Segoe UI", Arial, sans-serif; }
+      .chip { font: 700 17px "Segoe UI", Arial, sans-serif; letter-spacing: .4px; }
+      .arrow { fill: none; stroke: #26354d; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+      .future { fill: none; stroke: #8a96a8; stroke-width: 4; stroke-dasharray: 12 10; stroke-linecap: round; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#26354d"/>
+    </marker>
+    <marker id="arrowFuture" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8a96a8"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#20304a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="1600" height="1900"/>
+  <rect x="0" y="0" width="1600" height="16" class="teal"/>
+
+  <text x="82" y="105" class="title ink">Quantum-Assisted Molecular Inverse Design</text>
+  <text x="84" y="154" class="subtitle muted">5,000 QM9 molecules → ML + generation → QUBO/QPU batch selection → PySCF DFT screening</text>
+  <rect x="1290" y="76" width="220" height="58" rx="29" class="navy"/>
+  <text x="1400" y="113" text-anchor="middle" class="chip white">REPRODUCED SNAPSHOT</text>
+
+  <text x="82" y="232" class="section ink">1. Pipeline Executed in This Snapshot</text>
+
+  <g filter="url(#shadow)">
+    <rect x="82" y="270" width="250" height="250" rx="28" class="card"/>
+    <rect x="82" y="270" width="250" height="18" rx="9" class="blue"/>
+    <circle cx="126" cy="329" r="22" class="blue-soft"/>
+    <text x="126" y="337" text-anchor="middle" class="node-title blue">1</text>
+    <text x="112" y="386" class="node-title ink">QM9 Data</text>
+    <text x="112" y="432" class="metric blue">5,000</text>
+    <text x="112" y="466" class="small muted">structures + computed labels</text>
+    <text x="112" y="494" class="tiny muted">train / val / test</text>
+
+    <rect x="376" y="270" width="250" height="250" rx="28" class="card"/>
+    <rect x="376" y="270" width="250" height="18" rx="9" class="teal"/>
+    <circle cx="420" cy="329" r="22" class="teal-soft"/>
+    <text x="420" y="337" text-anchor="middle" class="node-title teal">2</text>
+    <text x="406" y="386" class="node-title ink">Property Prediction</text>
+    <text x="406" y="419" class="body ink">ExtraTrees / Morgan</text>
+    <text x="406" y="458" class="metric-small teal">0.4743 eV</text>
+    <text x="406" y="489" class="small muted">Chemprop 0.5308 eV</text>
+    <text x="406" y="510" class="tiny muted">held-out MAE · same split</text>
+
+    <rect x="670" y="270" width="250" height="250" rx="28" class="card"/>
+    <rect x="670" y="270" width="250" height="18" rx="9" class="amber"/>
+    <circle cx="714" cy="329" r="22" class="amber-soft"/>
+    <text x="714" y="337" text-anchor="middle" class="node-title amber">3</text>
+    <text x="700" y="386" class="node-title ink">Candidate Generation</text>
+    <text x="700" y="431" class="body ink">guided mutation</text>
+    <text x="700" y="463" class="body ink">SELFIES GRU · RBM</text>
+    <text x="700" y="502" class="metric amber">30</text>
+
+    <rect x="964" y="270" width="250" height="250" rx="28" class="card"/>
+    <rect x="964" y="270" width="250" height="18" rx="9" class="pink"/>
+    <circle cx="1008" cy="329" r="22" class="pink-soft"/>
+    <text x="1008" y="337" text-anchor="middle" class="node-title pink">4</text>
+    <text x="994" y="386" class="node-title ink">Acquisition QUBO</text>
+    <text x="994" y="431" class="metric pink">18 → 3</text>
+    <text x="994" y="466" class="small muted">binary variables 18</text>
+    <text x="994" y="494" class="small muted">interactions 153</text>
+
+    <rect x="1258" y="270" width="250" height="250" rx="28" class="card"/>
+    <rect x="1258" y="270" width="250" height="18" rx="9" class="blue"/>
+    <circle cx="1302" cy="329" r="22" class="blue-soft"/>
+    <text x="1302" y="337" text-anchor="middle" class="node-title blue">5</text>
+    <text x="1288" y="386" class="node-title ink">PySCF DFT</text>
+    <text x="1288" y="431" class="metric blue">6 / 6</text>
+    <text x="1288" y="466" class="small muted">single-point jobs</text>
+    <text x="1288" y="494" class="small muted">all converged</text>
+  </g>
+
+  <path d="M 337 395 L 366 395" class="arrow" marker-end="url(#arrow)"/>
+  <path d="M 631 395 L 660 395" class="arrow" marker-end="url(#arrow)"/>
+  <path d="M 925 395 L 954 395" class="arrow" marker-end="url(#arrow)"/>
+  <path d="M 1219 395 L 1248 395" class="arrow" marker-end="url(#arrow)"/>
+
+  <rect x="82" y="575" width="1426" height="264" rx="34" class="navy"/>
+  <text x="122" y="632" class="chip" fill="#86d8c4">ROLE SEPARATION</text>
+  <text x="122" y="688" class="section white">BQM acquisition score and DFT orbital gap measure different quantities</text>
+  <rect x="122" y="727" width="600" height="76" rx="18" fill="#273b55"/>
+  <text x="152" y="758" class="node-title" fill="#e9b9d5">QUBO / D-Wave QPU</text>
+  <text x="152" y="789" class="small white">Scores which three candidates to send to the next DFT step</text>
+  <circle cx="795" cy="765" r="31" fill="#ffffff" opacity="0.14"/>
+  <text x="795" y="774" text-anchor="middle" class="node-title white">≠</text>
+  <rect x="868" y="727" width="600" height="76" rx="18" fill="#273b55"/>
+  <text x="898" y="758" class="node-title" fill="#93cbed">PySCF DFT</text>
+  <text x="898" y="789" class="small white">Computes the Kohn–Sham orbital gap at fixed geometry</text>
+
+  <text x="82" y="918" class="section ink">2. Four Views of the Computed Results</text>
+
+  <g filter="url(#shadow)">
+    <rect x="82" y="960" width="690" height="250" rx="28" class="card"/>
+    <rect x="112" y="990" width="146" height="36" rx="18" class="teal-soft"/>
+    <text x="185" y="1014" text-anchor="middle" class="chip teal">MODEL CHECK</text>
+    <text x="112" y="1066" class="node-title ink">Classical baseline had lower held-out MAE</text>
+    <text x="112" y="1120" class="metric teal">0.4743 &lt; 0.5308 eV</text>
+    <text x="112" y="1160" class="small muted">ExtraTrees/Morgan &lt; Chemprop D-MPNN ensemble</text>
+    <text x="112" y="1188" class="tiny muted">Same QM9 split; not generated-molecule or experimental accuracy</text>
+
+    <rect x="816" y="960" width="692" height="250" rx="28" class="card"/>
+    <rect x="846" y="990" width="146" height="36" rx="18" class="pink-soft"/>
+    <text x="919" y="1014" text-anchor="middle" class="chip pink">QPU SNAPSHOT</text>
+    <text x="846" y="1066" class="node-title ink">One 100-read QPU submission missed the exact batch</text>
+    <text x="846" y="1120" class="metric pink">gap +0.046334</text>
+    <text x="846" y="1160" class="small muted">exact −0.480789 · QPU −0.434455</text>
+    <text x="846" y="1188" class="tiny muted">18 logical → 46 physical qubits · no quantum-advantage claim</text>
+
+    <rect x="82" y="1248" width="690" height="250" rx="28" class="card"/>
+    <rect x="112" y="1278" width="146" height="36" rx="18" class="blue-soft"/>
+    <text x="185" y="1302" text-anchor="middle" class="chip blue">DFT CHECK</text>
+    <text x="112" y="1354" class="node-title ink">Exact: lower mean error; QPU: best single hit</text>
+    <text x="112" y="1408" class="metric-small teal">Exact 0.620 eV</text>
+    <text x="442" y="1408" class="metric-small pink">QPU 0.761 eV</text>
+    <text x="112" y="1452" class="small muted">QPU batch best single target error: <tspan font-weight="700" fill="#c36f9f">0.119 eV</tspan></text>
+    <text x="112" y="1480" class="tiny muted">five unique molecules · no statistical ranking</text>
+
+    <rect x="816" y="1248" width="692" height="250" rx="28" class="card"/>
+    <rect x="846" y="1278" width="146" height="36" rx="18" class="amber-soft"/>
+    <text x="919" y="1302" text-anchor="middle" class="chip amber">QM9 REPLAY</text>
+    <rect x="1268" y="1278" width="206" height="36" rx="18" class="gray-soft"/>
+    <text x="1371" y="1302" text-anchor="middle" class="chip muted">TARGET 4.0 eV</text>
+    <text x="846" y="1354" class="node-title ink">QUBO-SA matched exact 12 / 12 in fixed-pool replay</text>
+    <text x="846" y="1408" class="metric-small amber">0.1261 eV</text>
+    <text x="1088" y="1408" class="small muted">exact / QUBO-SA</text>
+    <text x="846" y="1452" class="small muted">random 0.2813 · greedy 0.1298 · final labels 52</text>
+    <text x="846" y="1480" class="tiny muted">new DFT 0 · QPU calls 0 · chemical-space expansions 0</text>
+  </g>
+
+  <text x="82" y="1570" class="section ink">3. Next Validation Gate: Live Loop Not Yet Executed</text>
+  <rect x="82" y="1604" width="1426" height="196" rx="30" class="gray-soft" stroke="#ccd5df" stroke-width="2"/>
+  <rect x="112" y="1634" width="146" height="36" rx="18" fill="#dde3ea"/>
+  <text x="185" y="1658" text-anchor="middle" class="chip muted">PROPOSED</text>
+
+  <g>
+    <rect x="112" y="1690" width="220" height="70" rx="16" class="white" stroke="#b9c4d1" stroke-width="2"/>
+    <text x="222" y="1719" text-anchor="middle" class="loop-title ink">① Generate</text>
+    <text x="222" y="1746" text-anchor="middle" class="tiny muted">deduplicate + filter</text>
+    <rect x="397" y="1690" width="220" height="70" rx="16" class="white" stroke="#b9c4d1" stroke-width="2"/>
+    <text x="507" y="1719" text-anchor="middle" class="loop-title ink">② New DFT</text>
+    <text x="507" y="1746" text-anchor="middle" class="tiny muted">fixed validation budget</text>
+    <rect x="682" y="1690" width="220" height="70" rx="16" class="white" stroke="#b9c4d1" stroke-width="2"/>
+    <text x="792" y="1719" text-anchor="middle" class="loop-title ink">③ Add labels + retrain</text>
+    <text x="792" y="1746" text-anchor="middle" class="tiny muted">persistent ledger</text>
+    <rect x="967" y="1690" width="220" height="70" rx="16" class="white" stroke="#b9c4d1" stroke-width="2"/>
+    <text x="1077" y="1719" text-anchor="middle" class="loop-title ink">④ Regenerate</text>
+    <text x="1077" y="1746" text-anchor="middle" class="tiny muted">chemical-space growth</text>
+    <rect x="1252" y="1690" width="220" height="70" rx="16" class="white" stroke="#b9c4d1" stroke-width="2"/>
+    <text x="1362" y="1719" text-anchor="middle" class="loop-title ink">⑤ Reselect</text>
+    <text x="1362" y="1746" text-anchor="middle" class="tiny muted">exact · SA · QPU</text>
+    <path d="M 337 1725 L 386 1725" class="future" marker-end="url(#arrowFuture)"/>
+    <path d="M 622 1725 L 671 1725" class="future" marker-end="url(#arrowFuture)"/>
+    <path d="M 907 1725 L 956 1725" class="future" marker-end="url(#arrowFuture)"/>
+    <path d="M 1192 1725 L 1241 1725" class="future" marker-end="url(#arrowFuture)"/>
+  </g>
+
+  <text x="82" y="1842" class="footer muted">Established: open-source ML · 3 proposal routes · QUBO mapping · 1 QPU submission · 6 single-point DFT jobs</text>
+  <text x="1518" y="1875" text-anchor="end" class="footer muted">Not established: optical gap · synthesis · experiment · live active learning · speedup · quantum advantage</text>
+</svg>

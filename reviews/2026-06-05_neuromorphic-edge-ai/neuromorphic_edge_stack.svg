@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">뉴로모픽 edge layer</title>
+  <desc id="desc">센서 데이터가 뉴로모픽 edge layer에서 event로 걸러지고 필요할 때 NPU GPU 또는 LLM Agent로 올라가는 관계도</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8f4; }
+      .title { font: 800 54px "Segoe UI", "Malgun Gothic", sans-serif; fill: #121614; }
+      .subtitle { font: 400 28px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4d5551; }
+      .panel { fill: #fff; stroke: #d9ddd5; stroke-width: 2; rx: 28; }
+      .sensor { fill: #e6f4f1; stroke: #2f8b7b; stroke-width: 3; rx: 22; }
+      .gate { fill: #fff0d9; stroke: #d07a22; stroke-width: 3.4; rx: 26; }
+      .model { fill: #efe8f6; stroke: #7b4a9c; stroke-width: 3; rx: 22; }
+      .compute { fill: #e8eefb; stroke: #4b70ad; stroke-width: 3; rx: 22; }
+      .service { fill: #f8e9e8; stroke: #ad5656; stroke-width: 3; rx: 22; }
+      .h { font: 800 36px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .b { font: 500 26px "Segoe UI", "Malgun Gothic", sans-serif; fill: #2d3430; }
+      .s { font: 500 22px "Segoe UI", "Malgun Gothic", sans-serif; fill: #5b625f; }
+      .chip { fill: #171b1c; }
+      .pin { fill: #6b7474; }
+      .dot { fill: #d8892e; opacity: .9; }
+      .quiet { fill: #9fa8a5; opacity: .6; }
+      .arrow { stroke: #282d2a; stroke-width: 4.5; fill: none; marker-end: url(#arrow); }
+      .soft { stroke: #7e8581; stroke-width: 3; stroke-dasharray: 8 8; fill: none; marker-end: url(#arrowSoft); }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#282d2a" />
+    </marker>
+    <marker id="arrowSoft" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#7e8581" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <text x="70" y="82" class="title">감각은 가까운 곳에서 먼저 줄어듭니다</text>
+  <text x="72" y="128" class="subtitle">늘 켜진 센서는 작은 event를 만들고, 큰 모델은 필요할 때만 호출됩니다.</text>
+
+  <rect x="58" y="162" width="1164" height="456" class="panel"/>
+
+  <rect x="96" y="248" width="230" height="160" class="sensor"/>
+  <text x="128" y="305" class="h">센서</text>
+  <text x="128" y="348" class="b">camera · radar</text>
+  <text x="128" y="384" class="b">audio · biosignal</text>
+
+  <circle cx="372" cy="282" r="8" class="quiet"/>
+  <circle cx="396" cy="306" r="8" class="quiet"/>
+  <circle cx="420" cy="332" r="8" class="quiet"/>
+  <circle cx="444" cy="358" r="8" class="quiet"/>
+  <circle cx="468" cy="382" r="8" class="quiet"/>
+  <circle cx="392" cy="385" r="7" class="dot"/>
+  <circle cx="420" cy="372" r="7" class="dot"/>
+  <circle cx="450" cy="360" r="7" class="dot"/>
+
+  <rect x="492" y="218" width="300" height="220" class="gate"/>
+  <text x="536" y="278" class="h">뉴로모픽</text>
+  <text x="536" y="320" class="h">edge layer</text>
+  <text x="536" y="372" class="b">event gate</text>
+  <text x="536" y="408" class="s">wake-up · reflex · filter</text>
+  <rect x="614" y="454" width="56" height="44" rx="8" class="chip"/>
+  <rect x="604" y="466" width="10" height="8" class="pin"/>
+  <rect x="670" y="466" width="10" height="8" class="pin"/>
+
+  <path d="M326 328 C370 328 430 328 492 328" class="arrow"/>
+  <path d="M792 328 C844 286 894 262 946 250" class="arrow"/>
+  <path d="M792 350 C848 384 896 430 946 478" class="soft"/>
+
+  <rect x="946" y="206" width="230" height="130" class="compute"/>
+  <text x="980" y="260" class="h">NPU/GPU</text>
+  <text x="980" y="300" class="b">큰 perception</text>
+
+  <rect x="946" y="404" width="230" height="150" class="model"/>
+  <text x="980" y="460" class="h">LLM/Agent</text>
+  <text x="980" y="502" class="b">설명 · 계획</text>
+  <text x="980" y="538" class="b">도구 호출</text>
+
+  <rect x="364" y="540" width="514" height="62" class="service"/>
+  <text x="398" y="582" class="b">상위 시스템에는 걸러진 event만 올라갑니다</text>
+</svg>
