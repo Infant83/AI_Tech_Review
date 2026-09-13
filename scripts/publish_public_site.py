@@ -96,6 +96,28 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-13_avatar-scientific-workflow-control",
+        title="연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용",
+        subtitle="과학 워크플로의 복구·자원 확장·종료 판단에서 규칙과 LLM을 비교한 실험",
+        date="2026-09-13",
+        updated="2026-09-13",
+        category="Agent Systems",
+        tags=("Scientific Workflows", "Agent Systems", "HPC", "On-premises AI", "Evaluation", "Materials AI"),
+        summary="Avatar는 같은 실행 구조에서 규칙과 LLM 판단을 비교합니다. QM9 조회 기반 탐색의 GPU 사용시간 약 40% 감소와 자원 제어의 대기열 악화를 함께 분석하고, 실제 DFT·총비용·강한 기준선 검증이 남은 이유를 설명합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex",
+        ai_system_ko="OpenAI Codex",
+        agents=(PublicAgent("Codex", "primary-source research, bilingual writing, scientific copyediting, image direction, deterministic SVG, code and publication checks", "1차 출처 조사·한영 집필·과학 감수·이미지 구성·SVG 제작·코드 및 게시 검사"),),
+        verification_scope=("Avatar v1 full text: policy placement, workload definitions, dates, numerical comparisons and execution boundaries; Academy and Colmena official documentation", "round-count arithmetic; bilingual rendering, unit tests, public-site validator, metadata, local and reference links, thumbnail consistency", "single-agent source checking; no independent experiment reproduction or separate verification agent"),
+        verification_scope_ko=("Avatar v1 본문: 정책 배치·작업 정의·날짜·수치 비교·실행 범위; Academy·Colmena 공식 문서", "회차 비율 산술·한영 렌더링·단위 테스트·공개 사이트 검사·metadata·로컬 및 참고 링크·표지 정합성", "단일 에이전트 출처 대조; 별도 검증 에이전트나 실험 독립 재현 없음"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-12",
+        human_review_level="recurring publication authorized; no line-by-line human review",
+        human_review_level_ko="정기 공개 게시 요청에 따라 작성; 문장 단위 사람 검토 없음",
+        disclosure_note_ko="웹 조사·GitHub 연결·로컬 Python 검사·브라우저 확인·내장 imagegen을 사용했습니다. 정확한 모델 식별자는 미보존입니다. GPU 시간은 저자 보고이며 QM9 조회는 신규 DFT 실행이 아닙니다. 총 추론 비용·일반화는 미확인이고 운영 구조는 후속 제안입니다.",
+        disclosure_note_en="Used web research, GitHub connection, local Python checks, browser inspection and built-in imagegen. Exact model identifier not retained. GPU time is author-reported; QM9 lookup is not new DFT execution. Total inference cost and generalization remain unverified; the operational design is proposed.",
+    ),
+    PublicReview(
         folder="2026-09-13_multiphoton-reservoir-classical-light",
         title="빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다",
         subtitle="고전광·편광·OAM에서 861개 특징, 측정시간과 고전 시뮬레이션 조건까지",
