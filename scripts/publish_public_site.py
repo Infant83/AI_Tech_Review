@@ -96,6 +96,28 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-13_multiphoton-reservoir-classical-light",
+        title="빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다",
+        subtitle="고전광·편광·OAM에서 861개 특징, 측정시간과 고전 시뮬레이션 조건까지",
+        date="2026-09-13",
+        updated="2026-09-13",
+        category="Quantum Computing",
+        tags=("Photonic Computing", "Quantum Reservoir", "Classical Light", "Photon Counting", "OAM", "Classical Simulation", "Measurement Cost"),
+        summary="고전광과 광자 계수로 만든 저장소의 원리를 설명하고, 보충자료의 함수별 성능·유효차원·약 32분 취득시간을 검토합니다. 검출기 교정과 고전 표본화 조건을 살피며 센싱·재료 응용의 다음 실험을 제안합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode",
+        ai_system_ko="OpenAI Codex Work Mode",
+        agents=(PublicAgent("Codex", "primary-source research, bilingual writing, conceptual illustration direction, deterministic figures, scientific copyediting, implementation and publication verification", "1차 출처 조사·한영 집필·개념 일러스트 구성·수식 도표·과학 감수·구현·게시 검증"),),
+        verification_scope=("Hong et al. Advanced Science e77225 main article and 15-page Supporting Information; phase-space classical simulation primary paper", "Table S2 transcription, source configurations, feature dimensions, acquisition costs, detector-model limits and sampling-versus-probability distinction", "bilingual HTML, generated conceptual hero, two original SVG figures, CSV data, local links and publication metadata"),
+        verification_scope_ko=("Hong 등 Advanced Science e77225 본문·15쪽 보충자료, 위상공간 고전 시뮬레이션 선행 원문", "표 S2 전사·실험별 광원·특징 차원·취득비용·검출 모델 한계·확률 계산과 표본화 구분", "한영 HTML·생성 개념 표지·SVG 도표 2점·CSV·로컬 링크·게시 정보"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-13",
+        human_review_level="topic and public publication explicitly requested; no separate line-by-line human review",
+        human_review_level_ko="주제 및 공개 게시 요청 확인. 별도 문장 단위 사람 검토는 수행되지 않음",
+        disclosure_note_ko="실험 데이터와 시간을 독립 재현하지 않았습니다. 높은 광자 수 계수와 검출 모델의 연결은 추가 확인이 필요합니다. 고전 표본화 구성과 응용 방향은 리뷰어의 해석·제안이며, 표지는 생성 개념 그림입니다.",
+        disclosure_note_en="Experimental data and timings were not independently reproduced. High-count detection and its model need further reconciliation. The classical sampling construction and applications are editorial analysis and proposals; the generated hero is conceptual.",
+    ),
+    PublicReview(
         folder="2026-09-11_weekly-oled-inverse-design-excitonic-reliability",
         title="집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도",
         subtitle="2026년 9월 4–10일 연구 동향 | 공액고분자 탈위상, 3D 생성, 실패 탐지, 비단열·양자 자원 평가",
