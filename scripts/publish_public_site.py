@@ -96,6 +96,28 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-19_transfer-learning-chemical-bayesian-optimization",
+        title="과거 실험을 재사용하는 화학 베이지안 최적화: 전이학습의 이점과 한계",
+        subtitle="Digital Discovery 게재 연구의 공개 초록·코드와 차원에 맞춘 GP 사전 설정을 읽다",
+        date="2026-09-19",
+        updated="2026-09-19",
+        category="Materials AI",
+        tags=("Bayesian Optimization", "Transfer Learning", "Gaussian Process", "Molecular Representation", "Negative Transfer", "OLED"),
+        summary="과거 반응 데이터를 새 화학 후보 탐색에 재사용하는 두 단계 전이를 해설합니다. 차원에 맞춘 GP 하이퍼프라이어, 공개 코드의 A–B–C 단계 구분과 음의 전이, OLED 평가 조건을 살피며 본문 미열람에 따른 검토 범위를 명시합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode",
+        ai_system_ko="OpenAI Codex Work Mode",
+        agents=(PublicAgent("Codex", "primary-source and code inspection, bilingual writing, scientific copyediting, illustration direction, original SVGs and publication checks", "1차 자료·코드 대조, 한영 집필, 과학 감수, 일러스트 구성, SVG 제작과 게시 검사"),),
+        verification_scope=("publication DOI and author announcement; complete Crossref-registered preprint v2 abstract; predecessor publisher abstract and metadata; LogEI abstract", "TL-ChemBO commit a35276c: implementation inspection, stub-based task-label probe and hyperprior construction checks; no BO campaign reproduction", "bilingual HTML, original generated illustration and SVGs, publication metadata and local assets; final journal full text and supplement unavailable"),
+        verification_scope_ko=("게재 DOI·저자 발표, Crossref 등록 공개 원고 v2 전체 초록, 선행 연구 출판사 초록·서지, LogEI 초록", "TL-ChemBO a35276c 구현 대조, 의존성을 대체한 단계 라벨 검사와 하이퍼프라이어 구성 확인; 전체 BO 캠페인 재현 없음", "한영 HTML·생성 개념 그림·SVG, 게시 metadata와 로컬 자산; 최종 게재본 본문·보충자료 미열람"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-19",
+        human_review_level="topic and publication explicitly requested; no separate line-by-line human review",
+        human_review_level_ko="주제 및 공개 게시 요청 확인; 별도 문장 단위 사람 검토 없음",
+        disclosure_note_ko="단일 Codex 에이전트가 웹·서지 API·공식 GitHub 코드·내장 imagegen으로 작성했습니다. scientific-stop-slop-ko 출판 감수를 적용했습니다. 독립 검증 에이전트는 사용하지 않았습니다. 출판사와 ChemRxiv의 접근 제한으로 최종 논문·보충자료 성능 수치를 검증하지 않았으며, OLED 평가안은 리뷰 제안입니다.",
+        disclosure_note_en="A single Codex agent used web research, bibliographic APIs, official GitHub code and built-in imagegen, with scientific-stop-slop-ko publication copyediting. No independent verification agent was used. Publisher and ChemRxiv access restrictions prevented verification of final article and supplementary performance values. The OLED evaluation design is proposed by this review.",
+    ),
+    PublicReview(
         folder="2026-09-18_weekly-oled-inverse-design-sparse-excited-state-validation",
         title="희소한 여기상태 조건을 겨냥한 분자 역설계의 검증 기준",
         subtitle="2026년 9월 11–17일 연구 동향 | 생성 공간, 삼중항 환경, DMRG·에이전트 검증과 VQE 누설",
