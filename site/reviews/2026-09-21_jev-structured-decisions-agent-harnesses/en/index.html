@@ -1,0 +1,118 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Fast Decisions Inside Agents: Jev’s Structured Outputs and Practical Limits</title><meta name="description" content="A review of TypeSafe Jev, its decision primitives and calibration claims, a five-case repeated-judge experiment, and practical limits for research and coding harnesses."><meta name="author" content="Hyun-Jung Kim">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/">
+<meta property="og:description" content="A review of TypeSafe Jev, its decision primitives and calibration claims, a five-case repeated-judge experiment, and practical limits for research and coding harnesses."><meta property="og:type" content="article"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/en/jev_hero.webp"><meta property="og:image:alt" content="Conceptual illustration of unstructured material passing through a sorting apparatus into distinct organized forms"><meta name="twitter:card" content="summary_large_image"><meta property="article:published_time" content="2026-09-21"><meta property="article:modified_time" content="2026-09-21"><link rel="stylesheet" href="review.css">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/en/">
+    <meta property="og:title" content="Fast Decisions Inside Agents: Jev’s Structured Outputs and Practical Limits">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review"><nav class="top"><a href="https://infant83.github.io/AI_Tech_Review/">AI Tech Review Letters</a><span><a lang="ko" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/" >한국어</a> · <a lang="en" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-21_jev-structured-decisions-agent-harnesses/en/" aria-current="page" >English</a></span></nav><div class="wrap"><header><div class="kicker">Special review · Agent systems · Early experiment analysis</div><h1>Fast Decisions Inside Agents: Jev’s Structured Outputs and Practical Limits</h1><p class="subtitle">Examining System One interfaces, calibration and early evaluations for research harnesses</p><p class="date">Responsible editor: Hyun-Jung Kim · AI-assisted · Evidence cutoff 2026-09-21</p></header><figure class="hero"><img src="jev_hero.webp" width="1672" height="941" alt="Conceptual illustration of unstructured material passing through a sorting apparatus into distinct organized forms" fetchpriority="high"><figcaption>Figure 1. AI-generated metaphor for turning material into bounded decisions. It depicts no real apparatus, neural architecture or measured data. Created with OpenAI imagegen.</figcaption></figure><p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-21 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main><nav class="toc" aria-label="Contents"><ul><li><a href="#identity">Decisions that software can consume</a></li><li><a href="#mechanism">Parallel questions, composition in code</a></li><li><a href="#calibration">Probability, calibration and confidence</a></li><li><a href="#evidence">Promising observations with narrow comparison conditions</a></li><li><a href="#alternatives">Compare against classifiers as well as LLMs</a></li><li><a href="#limits">Schema compliance leaves semantic errors unresolved</a></li><li><a href="#application">First experiments for research and coding harnesses</a></li><li><a href="#reading">Related discussion and reading</a></li></ul></nav><article><p class="lead">Agents repeatedly decide whether evidence is relevant, a failed task deserves another attempt, or a stronger model is needed. Generating a response for every small decision can make waiting for the model a substantial part of the workflow. Jev aims to make these judgments available through a short software call.</p>
+<div class="scope"><strong>Assessment: worth examining as a way to change the cost and frequency of decisions in agent harnesses.</strong><p>This review compares documentation and an early public experiment and checks ratios in published aggregates. It does not run the Jev API or reproduce the benchmark. The evidence does not establish general reasoning or scientific-computing superiority.</p></div>
+
+<section id="identity"><h2>Decisions that software can consume</h2>
+<p>TypeSafe AI announced Jev on September 15, 2026. Its label <em>System One</em> emphasizes fast, focused judgments; it should not be read as a demonstrated model of human cognition or an established scientific taxonomy. Jev takes its name from William Stanley Jevons. <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">[1]</a></p>
+<p>Requests separate the material being assessed, <code>state</code>, from <code>questions</code>. Unlike a conventional large language model (LLM), Jev uses predefined answer spaces. It currently accepts text, including text in JSON objects and arrays, but no images, audio or video. Game demonstrations therefore do not establish visual perception or real-world robotic control. <a href="https://docs.typesafe.ai/concepts/system-one">[2]</a></p>
+<div class="table-wrap"><table><thead><tr><th>Primitive</th><th>Output</th><th>Reviewer-designed example</th></tr></thead><tbody>
+<tr><td><code>Choice</code></td><td>An option, option probabilities and confidence</td><td>Classify a run as normal, a retry candidate, needing investigation, or none of these</td></tr>
+<tr><td><code>Score</code></td><td>A distribution over ordered levels, its mean score and confidence</td><td>Evidence: unrelated, indirect or direct</td></tr>
+<tr><td><code>Noul</code></td><td>A 0–1 estimate that a statement is true</td><td>Does the document state the requested experimental condition?</td></tr></tbody></table></div>
+<p>Choice allows up to 255 options. Designers can include <code>other</code> or <code>not_stated</code>. Noul has no separate confidence field. Thresholds need to respect these different meanings. <a href="https://docs.typesafe.ai/primitives/choice">[3]</a> <a href="https://docs.typesafe.ai/primitives/noul">[4]</a></p>
+</section>
+
+<section id="mechanism"><h2>Parallel questions, composition in code</h2>
+<p>The documentation describes isolated, parallel evaluations against shared state. A broad question about whether a document can be processed can be decomposed into relevance, required information and ambiguity. Code combines the answers. Additional questions consume tokens but reportedly add little latency. Separate evaluation does not establish statistical independence or logical consistency across answers. <a href="https://docs.typesafe.ai/introduction">[5]</a></p>
+<figure><img src="decision_flow_en.svg" alt="Prepared evidence enters focused questions; code checks results before choosing automated handling, additional reasoning or human review" width="800" height="650" loading="lazy"><figcaption>Figure 2. A proposed harness design based on the documented interface. Execution permissions and mandatory checks remain in code. This is not Jev's internal neural architecture.</figcaption></figure>
+<p>Conceptually, latency includes preparing evidence, evaluating a model, generating sequential output and postprocessing. Removing open-ended generation can reduce one component. Input processing, network round trips, queueing and subsequent model calls remain. A model-call speedup is therefore different from a complete-workflow speedup.</p>
+<p>If a replaceable decision stage accounts for fraction <i>f</i> of runtime and becomes <i>s</i> times faster, an elementary model gives total speedup <code>1 / [(1 − f) + f / s]</code>, assuming other costs remain fixed. In an illustrative scenario, making a stage that consumes 20% of runtime 100 times faster produces only about 1.25 times overall acceleration. Measure where time is spent first.</p>
+</section>
+
+<section id="calibration"><h2>Probability, calibration and confidence</h2>
+<p>TypeSafe calls its training method reinforcement learning for calibrated decisions (RLCD). It distinguishes this goal from reinforcement learning from human feedback (RLHF) and reinforcement learning with verifiable rewards (RLVR). The consulted material does not specify enough about rewards, training procedures, model size or architecture to reimplement Jev. A particular encoder or loss function cannot be inferred from the interface. <a href="https://docs.typesafe.ai/introduction/machine-learning-primer">[6]</a></p>
+<p>Calibration is a property evaluated across predictions. Among cases assigned roughly 0.8 probability of relevance, approximately 80% should be relevant. This does not guarantee any individual answer. Calibration predates Jev: Guo and colleagues studied how neural-network accuracy and calibration can diverge and evaluated temperature scaling. <a href="https://proceedings.mlr.press/v70/guo17a.html">[7]</a></p>
+<p>The API's <code>confidence</code> field has another meaning. For Choice and Score, it summarizes the concentration of the returned distribution. The explanation page does not give its exact formula. <strong>A confidence value of 0.9 must not be translated into 90% accuracy.</strong> Calibrate probabilities and abstention policies on the intended workload. <a href="https://docs.typesafe.ai/confidence">[8]</a></p>
+<p>For Score, the default result is <code>Σ k·pₖ</code>, where <i>k</i> is a level index and <i>p</i><sub>k</sub> its probability. Ordered labels do not automatically have equally spaced meanings. This score is not a validated estimate of an energy or another physical quantity. <a href="https://docs.typesafe.ai/primitives/score">[9]</a></p>
+</section>
+
+<section id="evidence"><h2>Promising observations with narrow comparison conditions</h2>
+<p>TypeSafe's headline 193.6-times speed and 444.6-times cost improvements come from its own workflow evaluation. It uses strong external models' mean predictions as references and requests probability-bearing structured outputs from competing LLMs. This differs from a broad benchmark with independently established human answers. <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">[1]</a></p>
+<p>LangChain's September 20 experiment instead evaluated five frozen weather-agent responses 100 times per judge. Binary agreement with one human reviewer and variation in continuous scores were measured separately. LLM sampling settings were left at provider defaults; the Jev service version was not retained in the experiment metadata. <a href="https://www.langchain.com/blog/jev-agent-evals-langsmith">[10]</a></p>
+<div class="table-wrap"><table><thead><tr><th>Judge</th><th>Human-label agreement</th><th>Mean latency / call</th><th>Mean cost / call</th></tr></thead><tbody>
+<tr><td>Jev</td><td>100.0%</td><td>0.44 s</td><td>$0.00035</td></tr>
+<tr><td>GPT-5.6 Luna</td><td>96.4%</td><td>2.50 s</td><td>$0.00039</td></tr>
+<tr><td>GPT-5.6 Terra</td><td>99.8%</td><td>2.83 s</td><td>$0.00289</td></tr>
+<tr><td>Claude Sonnet 4.6</td><td>80.0%</td><td>2.16 s</td><td>$0.02811</td></tr></tbody></table></div>
+<p>These are reported repository values. <strong>There are only five distinct cases</strong>, not 500 independent problems. A judge can also be consistently wrong. <a href="https://github.com/danielgshea/jev-as-a-judge/tree/adfea74905f721ea2594e22804c8c8edf1693163">[11]</a></p>
+<figure><img src="benchmark.svg" alt="Zero-baseline bars comparing mean per-call latency in the early LangChain experiment" width="800" height="440" loading="lazy"><figcaption>Figure 3. A reconstruction of the table's latency values, not new measurements. The source table supplies no uncertainty intervals. Jev's speed advantage in this setting is approximately 4.9–6.4 times.</figcaption></figure>
+<p>Dividing the rounded mean costs gives advantages of approximately 1.11 times over Luna, 8.26 over Terra and 80.31 over Sonnet. Published JSON aggregates also give a mean within-case quality variance of approximately 1.494×10<sup>−5</sup> for Jev; competitors' variances are about 92–913 times larger. <a href="https://github.com/danielgshea/jev-as-a-judge/blob/adfea74905f721ea2594e22804c8c8edf1693163/assets/benchmark-jev-luna-terra-sonnet/6d08df72-c878-458c-b7c5-a7824ee6e721/benchmark.json">[12]</a></p>
+<p>Repeatability deserves investigation, but low score variance proves neither calibration nor general accuracy superiority. Tuned baselines, many more independent cases, multiple human reviewers and longitudinal evaluation are needed to determine whether the gains transfer.</p>
+</section>
+
+<section id="alternatives"><h2>Compare against classifiers as well as LLMs</h2>
+<p>Classification without text generation is well established. Encoder models such as ModernBERT provide relevant efficient baselines. Returning a category alone does not establish a novel learning principle. Jev should be assessed as a combination of a question-defined interface, probability outputs, parallel evaluation and a managed service. <a href="https://arxiv.org/abs/2412.13663">[13]</a></p>
+<div class="table-wrap"><table><thead><tr><th>Approach</th><th>Suitable conditions</th><th>Costs to compare</th></tr></thead><tbody>
+<tr><td>Rules and parsers</td><td>Explicit formats, arithmetic, dates and permissions</td><td>Maintaining exceptions</td></tr>
+<tr><td>Encoder classifiers</td><td>Stable categories and labeled examples</td><td>Labeling, training and infrastructure</td></tr>
+<tr><td>Structured-output LLMs</td><td>Judgment combined with reasoning, explanation or generation</td><td>Input/output length, reasoning and retries</td></tr>
+<tr><td>Jev</td><td>Frequent focused semantic decisions with bounded answers</td><td>Service calls, question design, calibration and escalation</td></tr></tbody></table></div>
+<p>This table offers selection criteria, not measured rankings. LangChain's <code>TypeSafeClassifier</code> integration illustrates uses such as model routing. Retaining the generation model while replacing selected decisions is a natural experiment. <a href="https://www.langchain.com/blog/building-a-harness-with-jev">[14]</a></p>
+</section>
+
+<section id="limits"><h2>Schema compliance leaves semantic errors unresolved</h2>
+<p>A constrained answer space prevents inventing an option outside that space. It does not prevent choosing the wrong permitted answer. This review therefore separates schema compliance from correctness when interpreting the company's “no hallucinations” language.</p>
+<p>The documented Jev 1.13 weaknesses include arithmetic, counting, date comparison, indirect references, irrelevant long context and adversarial input. Independently asking a proposition and its negation does not guarantee probabilities summing to one. When the intended events are true complements, compute <code>1 − p</code> in code instead of expecting separate model responses to enforce probability identities. <a href="https://docs.typesafe.ai/model-jaggedness/jev-1.13">[15]</a></p>
+<p>Permissions and objective success criteria should remain explicit. File existence, exit codes, test results and numeric tolerances belong in code. The proposed role for Jev is interpreting unstructured descriptions. This architecture is a reviewer recommendation, not evidence that Jev is a validated security control.</p>
+</section>
+
+<section id="application"><h2>First experiments for research and coding harnesses</h2>
+<p>One candidate is screening public papers: does an abstract report measured device lifetime, or does the supplied passage directly support a particular claim? Keep the model that explains the paper while comparing the cost of repeated selection decisions.</p>
+<p>Another is categorizing execution logs. A parser checks the exit code; Jev classifies unstructured error descriptions; code determines whether to retry, stop or call another model. In density functional theory (DFT) workflows, convergence tolerances, energy differences and forces remain numerical tasks. There is no evidence here that Jev replaces electronic-structure calculations or a validated property predictor.</p>
+<p>The documented fixed model is <code>jev-1.13.0</code>, priced at $0.042 per million input tokens with no output charge. The whole request permits 64k tokens, while state plus its longest question permits 32k. English is the primary training language; Korean needs separate evaluation. The consulted documentation did not establish deployable on-premises weights. <a href="https://docs.typesafe.ai/models">[16]</a></p>
+<p>This illustrative request screens a public abstract. It has not been sent to the API. The instructions and criteria carry the intended meaning.</p>
+<pre><code>{
+  "model": "jev-1.13.0",
+  "state": {"abstract": "Public abstract to evaluate"},
+  "questions": {
+    "reports_device_lifetime": {
+      "type": "noul",
+      "instructions": "Does the abstract explicitly report measured OLED device lifetime?",
+      "criteria": {
+        "true": "A measured device lifetime result is explicitly stated.",
+        "false": "No such result is stated, or only a calculated proxy is given."
+      }
+    }
+  }
+}</code></pre>
+<p>Establish human labels for representative cases and compare rules, a small classifier, the current LLM and Jev on the same inputs. Record false positives, missed cases, observed accuracy by probability bin, abstention, median and 95th-percentile latency, and costs including retries and escalation. Separate repeated judgments of identical cases from evaluation on new independent cases.</p>
+<p>The operational metric is cost per completed task meeting the required quality. Cheap classification can lose its advantage when errors create expensive rework. The proposed starting point is observation without changing execution, followed by limited deployment after error types and consequences are understood.</p>
+</section>
+
+<section id="reading"><h2>Related discussion and reading</h2>
+<p><a href="https://www.linkedin.com/posts/sergii-shcherbak-10068866_typesafe-ai-has-introduced-jev-its-first-activity-7505969687915094017-zlGD">Sergii Shcherbak's public LinkedIn introduction</a> includes a Doom demonstration and links to the vendor announcement. Social content is treated as a discovery source; technical judgments above rely on primary documentation and the public experiment.</p>
+<ul><li>Product intent and internal comparison conditions: <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">TypeSafe announcement [1]</a></li><li>The interface: <a href="https://docs.typesafe.ai/concepts/system-one">System One [2]</a> and <a href="https://docs.typesafe.ai/confidence">Confidence [8]</a></li><li>Sample size and reproducibility: <a href="https://www.langchain.com/blog/jev-agent-evals-langsmith">LangChain evaluation [10]</a> and <a href="https://github.com/danielgshea/jev-as-a-judge/tree/adfea74905f721ea2594e22804c8c8edf1693163">pinned repository [11]</a></li><li>Before deployment: <a href="https://docs.typesafe.ai/model-jaggedness/jev-1.13">documented Jev 1.13 limitations [15]</a></li></ul>
+</section>
+</article>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source review, bilingual writing, scientific copyediting, original figures, aggregate arithmetic and publication checks</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>TypeSafe documentation and release, LangChain experiment and public repository pinned at adfea74905f721ea2594e22804c8c8edf1693163; reported means, public JSON aggregate variance ratios and five-case/100-repeat design; no live API or benchmark reproduction; bilingual HTML, generated hero, deterministic SVGs, metadata and local assets; one agent with no independent verification agent</dd></div>
+          <div><dt>Human review record</dt><dd>topic and conditional publication requested; no separate line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-21</dd></div>
+        </dl>
+        <p class="disclosure-note">A technical review of official documentation and an early experiment, without new API measurements. Code computes reported-value ratios and figures; harness applications are reviewer proposals. scientific-stop-slop-ko publication copyediting applied. Exact authoring-model identifier not retained.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main><footer><a href="https://infant83.github.io/AI_Tech_Review/">AI Tech Review Letters</a> · <a href="https://infant83.github.io/AI_Tech_Review/methods/">Editorial methods</a></footer></div>
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body></html>
