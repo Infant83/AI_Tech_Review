@@ -39,3 +39,24 @@ Only final HTML, the generated WebP hero, CSS and SVG figures are published unde
 Responsible editor: Hyun-Jung Kim. AI assistance: Codex, one agent, primary-source inspection, bilingual writing, scientific copyediting, figure creation and publication checks. Exact model identifier not retained. AI Tech Review Editorial Harness 2026.08. No separate verification agent or line-by-line human review is claimed.
 
 Copyediting audit: removed generic importance claims and repeated rhetorical contrasts; retained numerical values, sample boundaries, type-versus-correctness and API-versus-proposal distinctions; training internals, broad calibration and workload generalization remain unresolved.
+
+## Follow-up: shared LinkedIn post (2026-09-21)
+
+The user supplied https://lnkd.in/p/guwDmcaA, resolving to the public post by 차예솔 (Peter Cha), activity 7507419610468503552. The post was read as public HTML. Its external-link pages identify browser-use/jev-ultrafast, standardagents/jevpilot and the TypeSafe launch. Only a short attributed summary is republished, not the post or captured third-party files.
+
+| Evidence | Finding | Boundary |
+|---|---|---|
+| Jev Ultrafast, commit `1231850a0bf1a0c0341fe408ef1668dbbfdfac46`, README and `jev_ultrafast/agent.py` | Indexed observed controls; operation and targets; text-helper handoff; stale-state handling | Code inspection, no execution or API calls |
+| Same commit, `docs/flights-measurement.json` and `docs/performance.md` | 7.073 seconds; 17 Jev requests; 2 Mercury 2.5 calls; 90,558 input tokens | Initial navigation/setup and independent final verification outside timer; search only, not booking |
+| Token arithmetic at $0.042 / million plus reported helper charge | $0.003803436 + $0.00006272 = $0.003866156 | Jev dollar amount estimated, browser/hosting/development excluded |
+| `docs/full-speed-measurement.json` | 3 runs per implementation, both 3/3; medians 9.450 → 7.092 seconds and 1,092 → 101 protocol calls | Runtime-code comparison holding models fixed; one task; no general reliability inference |
+| JevPilot, commit `e1beeb13b9a928fb76f167f86af584f4ce9cf180`, README, `src/jev-request.js`, `server/jev.js` | Local candidate construction, single-option resolution, validated selection and imminent-collision rejection | Simulation only; no camera perception or road-safety validation |
+| https://jev-trader.vercel.app/ | MON/USDC bid/ask interface; dry-run label, connecting/waiting state | No transactions, profitability claims, wallet connection or execution |
+| https://docs.typesafe.ai/patterns/fan-out | Concurrent speculative questions with code selecting the relevant branch | Interface pattern, not statistical-independence claim |
+
+New `action_loop_ko.svg` and `action_loop_en.svg` are original explanatory figures, not screenshots or measured data. Existing benchmarks and the initial scope remain unchanged. The update adds a visible dated note, source links, bilingual sections and expanded authoring/verification disclosures.
+
+Publication copyediting audit:
+- Replaced broad novelty/speed rhetoric with the concrete model/executor division.
+- Preserved source sample sizes, models, timing exclusions, price units and simulation boundaries.
+- Remaining uncertainty: out-of-task reliability, deployment cost, broad calibration and trading outcomes; no independent rerun or separate verification agent.

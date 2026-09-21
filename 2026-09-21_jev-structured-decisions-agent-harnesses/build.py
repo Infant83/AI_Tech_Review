@@ -8,8 +8,8 @@ import shutil
 P = Path(__file__).resolve().parent
 BASE = 'https://infant83.github.io/AI_Tech_Review/'
 META = {
- 'ko': {'title':'에이전트의 작은 판단을 빠르게: Jev의 구조화된 결정과 적용 한계', 'subtitle':'System One 모델의 인터페이스·확률 보정·초기 평가를 읽고 연구 하네스의 적용 조건을 살피다', 'description':'TypeSafe Jev의 Choice·Score·Noul, RLCD와 확률 보정, LangChain의 5개 사례 반복 평가를 분석합니다. 형식 보장과 정확성을 구분하고 연구·코딩 하네스의 적용 조건을 제안합니다.', 'alt':'비정형 자료가 분류 장치를 지나 서로 다른 형태로 정돈되는 판단 모델의 개념 일러스트', 'caption':'그림 1. 자료를 정해진 형태의 판단으로 바꾸는 과정을 표현한 생성 일러스트입니다. 실제 장치·신경망 구조·측정 데이터가 아닙니다. OpenAI imagegen 제작.', 'label':'번외 심층 리뷰 · 에이전트 시스템 · 초기 실험 분석'},
- 'en': {'title':'Fast Decisions Inside Agents: Jev’s Structured Outputs and Practical Limits', 'subtitle':'Examining System One interfaces, calibration and early evaluations for research harnesses', 'description':'A review of TypeSafe Jev, its decision primitives and calibration claims, a five-case repeated-judge experiment, and practical limits for research and coding harnesses.', 'alt':'Conceptual illustration of unstructured material passing through a sorting apparatus into distinct organized forms', 'caption':'Figure 1. AI-generated metaphor for turning material into bounded decisions. It depicts no real apparatus, neural architecture or measured data. Created with OpenAI imagegen.', 'label':'Special review · Agent systems · Early experiment analysis'}
+ 'ko': {'title':'에이전트의 작은 판단을 빠르게: Jev의 구조화된 결정과 적용 한계', 'subtitle':'System One 모델의 인터페이스·확률 보정·초기 평가를 읽고 연구 하네스의 적용 조건을 살피다', 'description':'TypeSafe Jev의 Choice·Score·Noul, RLCD와 확률 보정, LangChain의 5개 사례 반복 평가를 분석합니다. 항공편 검색·주행 데모의 코드와 측정 범위를 대조하고 연구·코딩 하네스의 적용 조건을 제안합니다.', 'alt':'비정형 자료가 분류 장치를 지나 서로 다른 형태로 정돈되는 판단 모델의 개념 일러스트', 'caption':'그림 1. 자료를 정해진 형태의 판단으로 바꾸는 과정을 표현한 생성 일러스트입니다. 실제 장치·신경망 구조·측정 데이터가 아닙니다. OpenAI imagegen 제작.', 'label':'번외 심층 리뷰 · 에이전트 시스템 · 초기 실험 분석'},
+ 'en': {'title':'Fast Decisions Inside Agents: Jev’s Structured Outputs and Practical Limits', 'subtitle':'Examining System One interfaces, calibration and early evaluations for research harnesses', 'description':'A review of TypeSafe Jev, its decision primitives and calibration claims, a five-case repeated-judge experiment, flight-search and driving implementations, and practical limits for research harnesses.', 'alt':'Conceptual illustration of unstructured material passing through a sorting apparatus into distinct organized forms', 'caption':'Figure 1. AI-generated metaphor for turning material into bounded decisions. It depicts no real apparatus, neural architecture or measured data. Created with OpenAI imagegen.', 'label':'Special review · Agent systems · Early experiment analysis'}
 }
 
 def diagram(lang):
@@ -53,7 +53,7 @@ def build():
   dist=P/'dist'/('en' if lang=='en' else '')
   dist.mkdir(parents=True,exist_ok=True)
   (P/'artifacts'/f'decision_flow_{lang}.svg').write_text(diagram(lang))
-  for f in ['jev_hero.webp','review.css','benchmark.svg',f'decision_flow_{lang}.svg']:
+  for f in ['jev_hero.webp','review.css','benchmark.svg',f'decision_flow_{lang}.svg',f'action_loop_{lang}.svg']:
    shutil.copy2(P/'artifacts'/f,dist/f)
   body=(P/'reports'/f'review_{lang}.html').read_text()
   toc=''.join(f'<li><a href="#{i}">{t}</a></li>' for i,t in re.findall(r'<section id="([^"]+)"><h2>(.*?)</h2>',body))
