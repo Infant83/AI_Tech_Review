@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="880" viewBox="0 0 1400 880" role="img" aria-labelledby="title desc">
+  <title id="title">AI 과학자 하네스 실행 예시</title>
+  <desc id="desc">회사 문제를 문제 카드, 프롬프트, 데이터 폴더, 서비스형 에이전트, 온프레미스 에이전트, 평가기, 결과 저장소로 연결하는 실제 사용 시나리오 그림</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8faf7; }
+      .title { font: 700 36px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .subtitle { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4a4a4a; }
+      .section { font: 700 22px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .label { font: 700 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .body { font: 400 15px "Segoe UI", "Malgun Gothic", sans-serif; fill: #333; }
+      .code { font: 400 14px "Consolas", "D2Coding", monospace; fill: #1f2933; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .panel { fill: #ffffff; stroke: #d7dcd2; stroke-width: 1.5; rx: 14; }
+      .input { fill: #fff5e8; stroke: #c9832b; stroke-width: 2; rx: 12; }
+      .service { fill: #eaf1ff; stroke: #4f77b8; stroke-width: 2; rx: 12; }
+      .local { fill: #e8f6ee; stroke: #2e8d63; stroke-width: 2; rx: 12; }
+      .eval { fill: #f4effc; stroke: #7f5aa6; stroke-width: 2; rx: 12; }
+      .result { fill: #eef7f8; stroke: #39838a; stroke-width: 2; rx: 12; }
+      .file { fill: #ffffff; stroke: #bfc6bb; stroke-width: 1.2; rx: 8; }
+      .arrow { stroke: #2d3436; stroke-width: 2.4; fill: none; marker-end: url(#arrowhead); }
+      .soft { stroke: #8a8f86; stroke-width: 1.7; fill: none; stroke-dasharray: 6 5; marker-end: url(#arrowhead-soft); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2d3436" />
+    </marker>
+    <marker id="arrowhead-soft" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#8a8f86" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="880"/>
+  <text x="70" y="64" class="title">실제 사용 시나리오: 문제 하나를 AI 과학자 하네스에 올리는 법</text>
+  <text x="70" y="98" class="subtitle">프롬프트 하나로 끝내지 않고, 파일·데이터 스키마·평가 함수·결과 로그를</text>
+  <text x="70" y="124" class="subtitle">함께 준비해야 AI가 조수처럼 움직인다.</text>
+
+  <rect x="60" y="130" width="1280" height="680" class="panel"/>
+
+  <rect x="95" y="178" width="210" height="160" class="input"/>
+  <text x="120" y="214" class="label">1. 문제 카드</text>
+  <text x="120" y="246" class="body">해결하고 싶은 문제</text>
+  <text x="120" y="272" class="body">성공 기준과 금지선</text>
+  <text x="120" y="298" class="body">공개/민감 자료 구분</text>
+  <text x="120" y="324" class="small">problem_card.yaml</text>
+
+  <rect x="95" y="380" width="210" height="210" class="input"/>
+  <text x="120" y="416" class="label">2. 하네스 폴더</text>
+  <text x="120" y="448" class="code">AGENTS.md</text>
+  <text x="120" y="472" class="code">prompts/</text>
+  <text x="120" y="496" class="code">data/public/</text>
+  <text x="120" y="520" class="code">data/internal_redacted/</text>
+  <text x="120" y="544" class="code">evaluators/</text>
+  <text x="120" y="568" class="code">runs/exp_001/</text>
+
+  <rect x="370" y="174" width="290" height="178" class="service"/>
+  <text x="398" y="212" class="section">서비스형 에이전트</text>
+  <text x="398" y="246" class="body">Codex: 코드·문서·리포트 하네스</text>
+  <text x="398" y="272" class="body">Gemini CLI: headless 자동화·JSON 출력</text>
+  <text x="398" y="298" class="body">Claude Code: 긴 문맥 설계 검토</text>
+  <text x="398" y="324" class="small">공개 자료, 샘플 데이터, 비민감 코드에 우선 사용</text>
+
+  <rect x="370" y="406" width="290" height="178" class="local"/>
+  <text x="398" y="444" class="section">온프레미스 에이전트</text>
+  <text x="398" y="478" class="body">Cline + Qwen / Ollama / LM Studio</text>
+  <text x="398" y="504" class="body">MCP: 사내 문서·실험 DB·파일시스템</text>
+  <text x="398" y="530" class="body">체크포인트로 실패 비용 축소</text>
+  <text x="398" y="556" class="small">민감 로그, 사내 노트, 비공개 분석 코드에 사용</text>
+
+  <rect x="725" y="190" width="265" height="150" class="file"/>
+  <text x="750" y="224" class="label">프롬프트 묶음</text>
+  <text x="750" y="256" class="code">hypothesis_generation.md</text>
+  <text x="750" y="280" class="code">critique_gate.md</text>
+  <text x="750" y="304" class="code">code_repair.md</text>
+  <text x="750" y="328" class="code">report_builder.md</text>
+
+  <rect x="725" y="386" width="265" height="150" class="file"/>
+  <text x="750" y="420" class="label">데이터 구조</text>
+  <text x="750" y="452" class="code">source_manifest.json</text>
+  <text x="750" y="476" class="code">experiment_log_schema.json</text>
+  <text x="750" y="500" class="code">hypothesis_candidates.json</text>
+  <text x="750" y="524" class="code">scorecard.csv</text>
+
+  <rect x="1045" y="178" width="230" height="170" class="eval"/>
+  <text x="1072" y="214" class="label">평가 함수</text>
+  <text x="1072" y="246" class="body">근거 링크 존재 여부</text>
+  <text x="1072" y="272" class="body">재현 가능 코드 실행</text>
+  <text x="1072" y="298" class="body">전문가 검토 점수</text>
+  <text x="1072" y="324" class="small">evaluators/*.py</text>
+
+  <rect x="1045" y="406" width="230" height="190" class="result"/>
+  <text x="1072" y="442" class="label">결과 저장소</text>
+  <text x="1072" y="474" class="code">runs/exp_001/model_outputs/</text>
+  <text x="1072" y="498" class="code">runs/exp_001/evaluation.json</text>
+  <text x="1072" y="522" class="code">runs/exp_001/decision_log.md</text>
+  <text x="1072" y="546" class="code">reports/review_memo.md</text>
+  <text x="1072" y="570" class="small">다음 실험은 여기서 다시 시작</text>
+
+  <line x1="305" y1="258" x2="370" y2="258" class="arrow"/>
+  <line x1="305" y1="482" x2="370" y2="482" class="arrow"/>
+  <line x1="660" y1="263" x2="725" y2="263" class="arrow"/>
+  <line x1="660" y1="495" x2="725" y2="462" class="arrow"/>
+  <line x1="990" y1="265" x2="1045" y2="265" class="arrow"/>
+  <line x1="990" y1="462" x2="1045" y2="492" class="arrow"/>
+  <path d="M1158 596 C1040 700 520 706 212 590" class="soft"/>
+
+  <rect x="145" y="660" width="1110" height="92" class="panel"/>
+  <text x="174" y="698" class="label">핵심 원칙</text>
+  <text x="174" y="730" class="body">AI가 만든 가설과 코드는 모두 파일로 남긴다.</text>
+  <text x="174" y="756" class="body">사람이 검토한 판단, 기각 이유, 다음 실험 조건까지 함께 기록한다.</text>
+</svg>

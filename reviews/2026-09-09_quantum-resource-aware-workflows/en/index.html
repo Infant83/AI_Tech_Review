@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Designing the full cost of quantum computation</title>
+  <meta name="description" content="Architecture space and time, useful inputs and shots, and classical reference states: a research review for September 9">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Architecture space and time, useful inputs and shots, and classical reference states: a research review for September 9">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/quantum_resources_hero.webp">
+  <meta property="og:image:alt" content="Designing the full cost of quantum computation">
+  <meta property="article:published_time" content="2026-09-09">
+  <meta property="article:modified_time" content="2026-09-09">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Designing the full cost of quantum computation">
+  <meta name="twitter:description" content="Architecture space and time, useful inputs and shots, and classical reference states: a research review for September 9">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/quantum_resources_hero.webp">
+  <meta name="twitter:image:alt" content="Designing the full cost of quantum computation">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/">
+    <meta property="og:title" content="Designing the full cost of quantum computation">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 37 (2026-09-09)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Designing the full cost of quantum computation</h1>
+        <p class="dek">Architecture space and time, useful inputs and shots, and classical reference states: a research review for September 9</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-09 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>A researcher choosing a quantum algorithm for molecular energies or industrial classification must meet an accuracy target within a limited computing budget. A shorter circuit can require expensive input preparation. A promising prediction can demand thousands of repeated measurements. An error-corrected device also spends space and time keeping logical qubits available while they wait. <strong>Which resource improved, and does that improvement survive the complete workflow?</strong></p>
+<p>This review connects six updates from the September 9 briefing: error-corrected compilation, satellite and power-grid machine learning, molecular reference states, hardware fabrication, and forthcoming industrial presentations. All four research papers are preprints. Their results establish different things, so their resource estimates, hardware experiments, simulations, and roadmap claims remain separate below.</p>
+<p><img alt="A conceptual lattice, layered sample sheets, terrain and a reference wave representing the resources of quantum computation" src="quantum_resources_hero.webp" /></p>
+<p><em>Figure 1. Space, input data, repeated samples and reference models belong in the same planning discussion. This conceptual illustration depicts no particular device or experimental dataset.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">The central question</p>
+<p>Evaluate quantum computation through architecture space and time, useful input information, measurement budgets and classical reference states together.</p>
+</aside>
+<p><a href="daily_quantum_brief_2026-09-09.pdf">Download the five-page Korean briefing</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">한국어 리뷰</a></p>
+<h2 id="1-what-is-being-counted">1. What is being counted?</h2>
+<p><strong>Circuit depth</strong> counts sequential layers after compatible gates are placed in parallel. It differs from gate count and from physical duration. <strong>Shots</strong> are repeated circuit executions and measurements used to obtain samples. A <strong>quantum processing unit (QPU)</strong> must supply enough of them for a statistically useful result.</p>
+<table>
+<thead>
+<tr>
+<th>Update</th>
+<th>Execution or validation setting</th>
+<th>Result unit</th>
+<th>Other costs to record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fermi–Hubbard compilation</td>
+<td>Classical compilation and fault-tolerant resource estimation</td>
+<td>Active volume; Toffoli count</td>
+<td>Logical blocks, idle space, code cycles, preparation</td>
+</tr>
+<tr>
+<td>SAR change detection</td>
+<td>Selected training and inference on an IonQ QPU</td>
+<td>Maximized filtered F1</td>
+<td>Evaluations, shots, classical image processing</td>
+</tr>
+<tr>
+<td>Power-grid QML</td>
+<td>Noiseless analytic circuit simulation</td>
+<td>Balanced accuracy</td>
+<td>Encoding, finite shots, postselection success</td>
+</tr>
+<tr>
+<td>DS-NOCI chemistry</td>
+<td>Classical numerical tests and synthetic noise</td>
+<td>Barrier error</td>
+<td>Reference construction, matrices, subspace size</td>
+</tr>
+<tr>
+<td>Superion 256</td>
+<td>Fabrication and prototype announcement</td>
+<td>Development milestone</td>
+<td>Concurrent operation, system error, applications</td>
+</tr>
+<tr>
+<td>Qubits Asia</td>
+<td>Forthcoming industrial presentations</td>
+<td>Event and application agenda</td>
+<td>Problem size, classical baseline, elapsed time</td>
+</tr>
+</tbody>
+</table>
+<p>Circuit optimization spans problem formulation, high-level synthesis, rewriting, routing, native gates, pulses and error-correction scheduling. Active-volume compilation is one architecture-aware example. It can be placed alongside Classiq synthesis and AshN native-gate design without implying that these exhaust the field or that this paper compared them directly.</p>
+<h2 id="2-compiling-the-space-used-by-operations">2. Compiling the space used by operations</h2>
+<p><strong>[Preprint · resource estimation] Harriet Apel et al. First posted September 4, 2026.</strong></p>
+<p>The Fermi–Hubbard model represents interacting electrons moving on a lattice. <strong>Quantum phase estimation (QPE)</strong> reads energy from a time-evolution phase; decomposing that evolution creates a large circuit. In an error-corrected architecture, reducing expensive Toffoli operations helps, but other operations and waiting resources still matter.</p>
+<p>The paper measures <strong>active volume</strong> through logical blocks used for computation, distinct from idle volume and total device spacetime. Architecture-aware compilation reduces this volume by up to <strong>3.9×</strong> over prior non-Clifford-focused circuits across square lattices with (L=4) to (20). At (L=20), Toffoli count falls by about <strong>2×</strong>. These are different metrics; their factors must not be multiplied into a runtime claim. <a href="https://arxiv.org/html/2609.05316v1">Primary paper</a></p>
+<p>There is no fault-tolerant QPU execution. Runtime projections depend on code cycles, feedforward latency and failure assumptions. For materials work, fix the Hamiltonian and target energy error, then compare architecture costs while recording initial-state preparation separately.</p>
+<h2 id="3-satellite-imagery-learning-a-distribution-on-a-qpu">3. Satellite imagery: learning a distribution on a QPU</h2>
+<p><strong>[Preprint · includes actual QPU execution] Samwel K. Sekwao et al. First posted September 4, 2026.</strong></p>
+<p><strong>Synthetic aperture radar (SAR)</strong> change detection estimates the later image expected if nothing had changed. Sparse observations make that background estimate unreliable. A <strong>quantum circuit Born machine (QCBM)</strong> generates samples from its measurement distribution. Here it learns dependence between two image intensities in copula space, separating dependence from individual intensity distributions.</p>
+<p>A selected airport configuration used <strong>20 IonQ qubits for both training and inference</strong>: 300 optimization iterations, 5,000 shots per evaluation and 100,000 inference shots. Maximized filtered F1 was <strong>0.32</strong>, versus <strong>0.16</strong> for classical NLCD and <strong>0.24</strong> for a classical copula estimator. F1 combines precision and recall; this is the maximum after filtering and threshold adjustment. <a href="https://arxiv.org/html/2609.05313v1">Primary paper</a></p>
+<p><img alt="Comparison of maximized filtered F1 on the selected airport SAR configuration" src="sar_f1_en.svg" /></p>
+<p><em>Figure 2. A common zero-based axis compares the reported airport results. It does not represent training speed or performance across all scenes.</em></p>
+<p>On volcanic <strong>interferometric SAR (InSAR)</strong> data, all three methods reached approximately 0.66. The study establishes hardware feasibility with scene-dependent improvements, without an elapsed-time advantage. Industrial defect detection would need matched preprocessing and stronger classical generative baselines.</p>
+<h2 id="4-power-grid-learning-useful-information-in-added-qubits">4. Power-grid learning: useful information in added qubits</h2>
+<p><strong>[Preprint · noiseless simulation] Sang Hyub Kim et al. First posted September 4, 2026.</strong></p>
+<p>A foundation model converts long sensor sequences into high-dimensional features. Compressing those features into a small quantum register can discard useful information. This study uses Chronos representations for power-grid event classification and adds small <strong>wing modules</strong> that carry new input to a fixed core.</p>
+<p>Balanced accuracy, the average recall across classes, rose from <strong>83.6%</strong> with a 12-qubit core plus one postselection qubit to <strong>85.2%</strong> with two wings and 19 qubits in total. Enlarging a circuit without supplying new information did not help. A separate matched-input comparison against a larger classical multilayer perceptron reported <strong>1.7–2.0 percentage points</strong> of improvement. <a href="https://arxiv.org/html/2609.05408v1">Primary paper</a></p>
+<p>Every circuit used <strong>noiseless analytic simulation without finite shots</strong>. A small held-out test set showed a 4–5-point generalization gap. Physical encoding, sampling and postselection costs remain untested. For molecular or OLED learning, track which features survive compression and give the same inputs to classical models before attributing gains to additional qubits.</p>
+<h2 id="5-chemistry-retain-a-useful-classical-reference">5. Chemistry: retain a useful classical reference</h2>
+<p><strong>[Preprint · numerical tests and synthetic noise] Vibin Abraham et al. First posted September 3, 2026.</strong></p>
+<p>Molecular wavefunctions may require several electronic configurations. <strong>Nonorthogonal configuration interaction (NOCI)</strong> combines reference states that need not be orthogonal. If approximate correlated states are poor, relying on them alone can damage the result.</p>
+<p><strong>Dual-space NOCI (DS-NOCI)</strong> retains classical references alongside correlated companions in one variational space. With exact Hamiltonian and overlap matrices, that space includes the original solutions. Noisy matrix estimates do not automatically preserve this variational guarantee.</p>
+<p>For the cyclobutadiene barrier in a four-electron, four-orbital active space, the reference barrier was <strong>8.96 kcal/mol</strong>. Error decreased from <strong>1.26 kcal/mol</strong> for NOQE to <strong>0.34 kcal/mol</strong> for DS-NOCI. <a href="https://arxiv.org/html/2609.04387v1">Primary paper</a></p>
+<p><img alt="Cyclobutadiene active-space barrier estimates and their absolute errors" src="chemistry_barrier_en.svg" /></p>
+<p><em>Figure 3. The comparison shares one small active-space reference. It is not a large-molecule or actual-QPU result.</em></p>
+<p>Validation uses small molecular calculations and modeled perturbations. For OLED chemistry, retaining a useful reference while adding correlation is a research direction; active-space choice, overlap conditioning, preparation and matrix-measurement costs still need assessment.</p>
+<h2 id="6-hardware-and-industrial-deployment-milestones">6. Hardware and industrial deployment milestones</h2>
+<p><strong>[Industry/product · roadmap] IonQ Superion 256. Announced September 8, 2026.</strong> IonQ reported first integrated-chip fabrication and initial ion trapping in prototypes, targeting deliveries in <strong>2027</strong>. The announcement does not establish concurrent 256-qubit operation, complete-system fidelity, repeated error correction or an application benchmark. Earlier control fidelity cannot be assigned to the full Superion system. <a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing">Official announcement</a></p>
+<p><strong>[PoC/event preview] D-Wave Qubits Asia. October 28, 2026, Seoul.</strong> The event provides a place to examine telecommunications, port scheduling, imaging and semiconductor optimization applications. An application agenda starts the evaluation: problem size, incumbent solvers, QPU time and classical postprocessing determine what the eventual demonstrations establish. The page was checked on September 9; the event date is not a research publication date. <a href="https://qubitsasia26.dwavequantum.com/">Official event page</a></p>
+<h2 id="7-a-practical-research-record">7. A practical research record</h2>
+<p>The following is this review&rsquo;s proposed evaluation record, not a shared conclusion asserted by the source authors.</p>
+<table>
+<thead>
+<tr>
+<th>Workflow</th>
+<th>Keep matched</th>
+<th>Record alongside the headline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Electronic structure / OLED</td>
+<td>Geometry, basis, active space, target error</td>
+<td>References, barrier error, preparation, matrix measurements</td>
+</tr>
+<tr>
+<td>Quantum / classical ML</td>
+<td>Features, data splits, preprocessing, selection rules</td>
+<td>Seeds, shots, acceptance, training and inference time</td>
+</tr>
+<tr>
+<td>Circuit / oracle optimization</td>
+<td>Function, accuracy, qubit budget, target device</td>
+<td>Depth, two-qubit gates, ancillas, movement, idle and active volume</td>
+</tr>
+<tr>
+<td>Industrial optimization</td>
+<td>Instances, constraints, time allowance</td>
+<td>Feasibility, repaired solution cost, QPU/CPU time, stability</td>
+</tr>
+</tbody>
+</table>
+<p>For a materials workflow, a useful next experiment starts with a familiar small molecule and a fixed classical reference. It then measures whether the candidate circuit changes the target observable and complete execution cost. Keeping circuit savings, predictive improvement and operational benefit in the same record makes technology choices easier to justify.</p>
+<h2 id="8-sources-and-verification">8. Sources and verification</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>First public date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.05316">Apel et al., arXiv:2609.05316</a></td>
+<td>September 4, 2026, v1</td>
+<td>Preprint</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.05313">Sekwao et al., arXiv:2609.05313</a></td>
+<td>September 4, 2026, v1</td>
+<td>Preprint</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.05408">Kim et al., arXiv:2609.05408</a></td>
+<td>September 4, 2026, v1</td>
+<td>Preprint</td>
+</tr>
+<tr>
+<td><a href="https://arxiv.org/abs/2609.04387">Abraham et al., arXiv:2609.04387</a></td>
+<td>September 3, 2026, v1</td>
+<td>Preprint</td>
+</tr>
+<tr>
+<td><a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing">IonQ Superion announcement</a></td>
+<td>September 8, 2026</td>
+<td>Company announcement</td>
+</tr>
+<tr>
+<td><a href="https://qubitsasia26.dwavequantum.com/">D-Wave Qubits Asia</a></td>
+<td>Event: October 28, 2026</td>
+<td>Checked September 9; event preview</td>
+</tr>
+</tbody>
+</table>
+<p>Metrics, platforms and comparison conditions were checked against primary sources. The computations were not independently reproduced. No item is presented as a newly accepted AI-conference main paper. No newly validated LinkedIn technical signal was added; public search does not provide complete feed monitoring.</p>
+<p>The public Korean PDF corrects the opening description of optimization targets, the SAR paper&rsquo;s first-author attribution, and the qualification of maximized filtered F1. Its cost chart now compares like-for-like active volume rather than combining factors from different comparisons. Principal numerical results and platform distinctions are preserved.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source verification, bilingual writing, figure construction, copyediting, publication and live-page checks</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>four arXiv papers and official IonQ and D-Wave announcements available at the evidence cutoff; dates, author attribution, metric definitions, comparison conditions and QPU/simulation/resource-estimate boundaries; bilingual HTML, conceptual hero, original comparison diagrams, corrected Korean PDF, local links and publication metadata</dd></div>
+          <div><dt>Human review record</dt><dd>topic and public publication explicitly requested; no separate line-by-line human review in this publication task</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-09</dd></div>
+        </dl>
+        <p class="disclosure-note">The computations were not independently rerun. Application suggestions and cross-study evaluation criteria are editorial interpretation; execution settings and evidence limits are stated in the article.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-09-09 14:17:27<br>
+        Source last modified: 2026-09-09 14:17:26
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#1-what-is-being-counted">1. What is being counted?</a></li>
+<li><a href="#2-compiling-the-space-used-by-operations">2. Compiling the space used by operations</a></li>
+<li><a href="#3-satellite-imagery-learning-a-distribution-on-a-qpu">3. Satellite imagery: learning a distribution on a QPU</a></li>
+<li><a href="#4-power-grid-learning-useful-information-in-added-qubits">4. Power-grid learning: useful information in added qubits</a></li>
+<li><a href="#5-chemistry-retain-a-useful-classical-reference">5. Chemistry: retain a useful classical reference</a></li>
+<li><a href="#6-hardware-and-industrial-deployment-milestones">6. Hardware and industrial deployment milestones</a></li>
+<li><a href="#7-a-practical-research-record">7. A practical research record</a></li>
+<li><a href="#8-sources-and-verification">8. Sources and verification</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="quantum_resources_hero.webp">A conceptual lattice, layered sample sheets, terrain and a reference wave representing the resources of quantum computation</a></li>
+<li><a href="daily_quantum_brief_2026-09-09.pdf">Download the five-page Korean briefing</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/" target="_blank" rel="noreferrer">한국어 리뷰</a></li>
+<li><a href="https://arxiv.org/html/2609.05316v1" target="_blank" rel="noreferrer">Primary paper</a></li>
+<li><a href="https://arxiv.org/html/2609.05313v1" target="_blank" rel="noreferrer">Primary paper</a></li>
+<li><a href="sar_f1_en.svg">Comparison of maximized filtered F1 on the selected airport SAR configuration</a></li>
+<li><a href="https://arxiv.org/html/2609.05408v1" target="_blank" rel="noreferrer">Primary paper</a></li>
+<li><a href="https://arxiv.org/html/2609.04387v1" target="_blank" rel="noreferrer">Primary paper</a></li>
+<li><a href="chemistry_barrier_en.svg">Cyclobutadiene active-space barrier estimates and their absolute errors</a></li>
+<li><a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing" target="_blank" rel="noreferrer">Official announcement</a></li>
+<li><a href="https://qubitsasia26.dwavequantum.com/" target="_blank" rel="noreferrer">Official event page</a></li>
+<li><a href="https://arxiv.org/abs/2609.05316" target="_blank" rel="noreferrer">Apel et al., arXiv:2609.05316</a></li>
+<li><a href="https://arxiv.org/abs/2609.05313" target="_blank" rel="noreferrer">Sekwao et al., arXiv:2609.05313</a></li>
+<li><a href="https://arxiv.org/abs/2609.05408" target="_blank" rel="noreferrer">Kim et al., arXiv:2609.05408</a></li>
+<li><a href="https://arxiv.org/abs/2609.04387" target="_blank" rel="noreferrer">Abraham et al., arXiv:2609.04387</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body>
+</html>

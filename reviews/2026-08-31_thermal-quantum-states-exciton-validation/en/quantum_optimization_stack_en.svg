@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" role="img" aria-labelledby="title desc">
+  <title id="title">The full quantum-computing optimization stack</title>
+  <desc id="desc">A layered map from problem formulation and high-level synthesis through logical optimization, routing, native gates, physical architecture, pulse control, and measurement, locating Classiq, AshN, fluxonium-transmon, and geometric control at different layers</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbfaf7"/>
+      <stop offset="1" stop-color="#eef3f1"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#73817a"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; fill: #17211d; }
+      .title { font-size: 42px; font-weight: 700; }
+      .subtitle { font-size: 21px; fill: #59665f; }
+      .stage { font-size: 21px; font-weight: 700; }
+      .examples { font-size: 17px; fill: #48554f; }
+      .metric { font-size: 16px; font-weight: 600; fill: #25456f; }
+      .tag { font-size: 17px; font-weight: 700; }
+      .foot { font-size: 19px; fill: #e0ebe8; }
+      .footstrong { font-size: 20px; font-weight: 700; fill: #ffffff; }
+    </style>
+  </defs>
+  <rect width="1200" height="980" rx="28" fill="url(#bg)"/>
+  <text x="62" y="72" class="title">Classiq and AshN are two examples in a wider stack</text>
+  <text x="62" y="109" class="subtitle">Circuit depth is the backend result of design choices made across several layers.</text>
+
+  <g stroke="#73817a" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M210 226 V254"/><path d="M210 326 V354"/><path d="M210 426 V454"/>
+    <path d="M210 526 V554"/><path d="M210 626 V654"/><path d="M210 726 V754"/>
+    <path d="M210 826 V854"/>
+  </g>
+
+  <g>
+    <rect x="62" y="150" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="150" width="296" height="76" rx="15" fill="#edf3f1"/>
+    <text x="90" y="180" class="stage">1. Problem formulation</text>
+    <text x="90" y="207" class="examples">Hamiltonian · oracle · QUBO</text>
+    <text x="392" y="181" class="examples">Reduce sparsity, symmetries, and constraints before circuit construction</text>
+    <text x="392" y="207" class="metric">Metrics: variables · Pauli terms · violations · state-preparation cost</text>
+
+    <rect x="62" y="250" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="250" width="296" height="76" rx="15" fill="#e5f3ef"/>
+    <text x="90" y="280" class="stage">2. High-level synthesis</text>
+    <text x="90" y="307" class="examples">Function model → circuit search</text>
+    <rect x="392" y="266" width="94" height="28" rx="14" fill="#cde8df"/>
+    <text x="439" y="286" text-anchor="middle" class="tag" fill="#0f6d62">Classiq</text>
+    <text x="503" y="286" class="examples">among many synthesis and compiler frameworks</text>
+    <text x="392" y="312" class="metric">Metrics: logical depth · gate count · ancillas · correctness</text>
+
+    <rect x="62" y="350" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="350" width="296" height="76" rx="15" fill="#eef0f7"/>
+    <text x="90" y="380" class="stage">3. Logical optimization</text>
+    <text x="90" y="407" class="examples">rewrite · ZX · phase polynomial</text>
+    <text x="392" y="381" class="examples">Gate cancellation · Boolean factorization · synthesis rescan</text>
+    <text x="392" y="407" class="metric">Metrics: 1Q/2Q gates · T count/depth · critical path</text>
+
+    <rect x="62" y="450" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="450" width="296" height="76" rx="15" fill="#f1eee7"/>
+    <text x="90" y="480" class="stage">4. Mapping and routing</text>
+    <text x="90" y="507" class="examples">topology · placement · SWAP</text>
+    <text x="392" y="481" class="examples">Reduce qubit movement under physical connectivity and calibration</text>
+    <text x="392" y="507" class="metric">Metrics: mapped 2Q depth · SWAPs · success probability</text>
+
+    <rect x="62" y="550" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="550" width="296" height="76" rx="15" fill="#f6eadf"/>
+    <text x="90" y="580" class="stage">5. Native gates</text>
+    <text x="90" y="607" class="examples">hardware-native entangler</text>
+    <rect x="392" y="566" width="76" height="28" rx="14" fill="#f2d8c0"/>
+    <text x="430" y="586" text-anchor="middle" class="tag" fill="#955013">AshN</text>
+    <text x="486" y="586" class="examples">among native-gate and SWAP-absorption approaches</text>
+    <text x="392" y="612" class="metric">Metrics: calibrated entanglers · native depth · measured QPU fidelity</text>
+
+    <rect x="62" y="650" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="650" width="296" height="76" rx="15" fill="#e8eef6"/>
+    <text x="90" y="680" class="stage">6. Physical architecture</text>
+    <text x="90" y="707" class="examples">qubit · coupler · spectator</text>
+    <rect x="392" y="666" width="278" height="28" rx="14" fill="#dce6f2"/>
+    <text x="531" y="686" text-anchor="middle" class="tag" fill="#315887">fluxonium–transmon proposal</text>
+    <text x="688" y="686" class="examples">is a numerical design at this layer</text>
+    <text x="392" y="712" class="metric">Metrics: crosstalk · coherence · leakage · array yield</text>
+
+    <rect x="62" y="750" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="750" width="296" height="76" rx="15" fill="#edf2e6"/>
+    <text x="90" y="780" class="stage">7. Pulses and control</text>
+    <text x="90" y="807" class="examples">DRAG · GRAPE · CRAB · STA</text>
+    <rect x="392" y="766" width="238" height="28" rx="14" fill="#dfe9d4"/>
+    <text x="511" y="786" text-anchor="middle" class="tag" fill="#4c6635">geometric di-ad control</text>
+    <text x="648" y="786" class="examples">is one method at this layer</text>
+    <text x="392" y="812" class="metric">Metrics: pulse time · leakage · robustness · measured fidelity</text>
+
+    <rect x="62" y="850" width="1076" height="76" rx="15" fill="#ffffff"/>
+    <rect x="62" y="850" width="296" height="76" rx="15" fill="#f2e9ef"/>
+    <text x="90" y="880" class="stage">8. Measurement</text>
+    <text x="90" y="907" class="examples">readout · shots · mitigation</text>
+    <text x="392" y="881" class="examples">Turn circuit output into a trustworthy observable</text>
+    <text x="392" y="907" class="metric">Metrics: assignment error · shots · postselection · wall-clock</text>
+  </g>
+
+  <rect x="62" y="944" width="1076" height="28" rx="14" fill="#173d36"/>
+  <text x="88" y="965" class="footstrong">Comparison</text>
+  <text x="225" y="965" class="foot">Use a backend-level Pareto front, not logical depth alone.</text>
+</svg>

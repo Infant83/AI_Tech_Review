@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">뉴로모픽 workload fit</title>
+  <desc id="desc">뉴로모픽이 먼저 맞는 always-on sensing, 보완 영역, 아직 맞지 않는 큰 모델 영역을 구분한 도식</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8f8f4; }
+      .title { font: 800 52px "Segoe UI", "Malgun Gothic", sans-serif; fill: #151515; }
+      .subtitle { font: 400 27px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .card { stroke-width: 3; rx: 28; }
+      .good { fill: #e4f3ef; stroke: #2f8b7b; }
+      .mid { fill: #fff0d9; stroke: #c97920; }
+      .far { fill: #f7e7e7; stroke: #ad5656; }
+      .h { font: 800 36px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .b { font: 500 25px "Segoe UI", "Malgun Gothic", sans-serif; fill: #2f3331; }
+      .s { font: 500 21px "Segoe UI", "Malgun Gothic", sans-serif; fill: #5b625f; }
+      .axis { stroke: #9aa29d; stroke-width: 4; fill: none; marker-end: url(#axisArrow); }
+      .tick { stroke: #9aa29d; stroke-width: 3; }
+      .note { fill: #fff; stroke: #d7d9d2; stroke-width: 2; rx: 18; }
+      .dotGood { fill: #2f8b7b; }
+      .dotMid { fill: #c97920; }
+      .dotFar { fill: #ad5656; }
+    </style>
+    <marker id="axisArrow" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#9aa29d" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1280" height="720"/>
+  <text x="70" y="82" class="title">먼저 맞는 곳은 작은 감각 업무입니다</text>
+  <text x="72" y="128" class="subtitle">평가 기준은 모델 크기가 아니라 센서 가까움, 전력, 지연시간, 데이터 이동입니다.</text>
+
+  <line x1="120" y1="598" x2="1160" y2="598" class="axis"/>
+  <line x1="190" y1="584" x2="190" y2="612" class="tick"/>
+  <line x1="640" y1="584" x2="640" y2="612" class="tick"/>
+  <line x1="1060" y1="584" x2="1060" y2="612" class="tick"/>
+  <text x="116" y="650" class="s">센서 가까움 · 항상 켜짐</text>
+  <text x="480" y="650" class="s">하이브리드 edge</text>
+  <text x="920" y="650" class="s">큰 모델 · 긴 추론</text>
+
+  <rect x="70" y="188" width="350" height="310" class="card good"/>
+  <circle cx="118" cy="244" r="14" class="dotGood"/>
+  <text x="150" y="258" class="h">잘 맞는 자리</text>
+  <text x="112" y="326" class="b">always-on audio</text>
+  <text x="112" y="366" class="b">presence radar</text>
+  <text x="112" y="406" class="b">웨어러블 신호</text>
+  <text x="112" y="456" class="s">작고 드문 event를 오래 기다리는 업무</text>
+
+  <rect x="465" y="188" width="350" height="310" class="card mid"/>
+  <circle cx="513" cy="244" r="14" class="dotMid"/>
+  <text x="545" y="258" class="h">보완 자리</text>
+  <text x="507" y="326" class="b">vision trigger</text>
+  <text x="507" y="366" class="b">privacy filter</text>
+  <text x="507" y="406" class="b">LLM wake-up</text>
+  <text x="507" y="456" class="s">큰 모델 호출 전의 낮은 전력 관문</text>
+
+  <rect x="860" y="188" width="350" height="310" class="card far"/>
+  <circle cx="908" cy="244" r="14" class="dotFar"/>
+  <text x="940" y="258" class="h">아직 먼 자리</text>
+  <text x="902" y="326" class="b">LLM pretraining</text>
+  <text x="902" y="366" class="b">장문 reasoning</text>
+  <text x="902" y="406" class="b">범용 개발 플랫폼</text>
+  <text x="902" y="456" class="s">소프트웨어·벤치마크 생태계가 더 필요</text>
+
+  <rect x="160" y="522" width="960" height="54" class="note"/>
+  <text x="210" y="558" class="b">뉴로모픽은 LLM의 후계자보다 MCU·DSP·NPU 옆의 event layer로 먼저 검토됩니다.</text>
+</svg>

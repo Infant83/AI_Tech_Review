@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc" fill="#172033">
+  <title id="title">A resource ledger for deciding whether error mitigation delivers a net gain</title>
+  <desc id="desc">Comparison of the resources and evidence in repetition-based readout mitigation and adaptive zero-noise extrapolation, followed by seven fields needed for fixed-budget evaluation.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#eef6f8"/><stop offset="1" stop-color="#f7f4ee"/></linearGradient>
+    <linearGradient id="teal" x1="0" x2="1"><stop offset="0" stop-color="#0f766e"/><stop offset="1" stop-color="#0e7490"/></linearGradient>
+    <linearGradient id="blue" x1="0" x2="1"><stop offset="0" stop-color="#1d4ed8"/><stop offset="1" stop-color="#4f46e5"/></linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#17324d" flood-opacity="0.10"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#64748b"/></marker>
+    <style>
+      text { font-family: "Segoe UI", Arial, sans-serif; }
+      .muted { fill: #5b6475; }
+      .small { font-size: 24px; }
+      .tiny { font-size: 21px; }
+      .label { fill: white; font-size: 21px; font-weight: 700; letter-spacing: .4px; }
+      .card-title { font-size: 33px; font-weight: 750; }
+      .number { font-size: 42px; font-weight: 800; }
+      .pill { font-size: 22px; font-weight: 650; }
+    </style>
+  </defs>
+  <rect width="1600" height="1060" rx="32" fill="url(#bg)"/>
+  <text x="70" y="78" font-size="48" font-weight="800">How to ask whether mitigation delivers a net gain</text>
+  <text x="70" y="120" class="small muted">Put the error reduction and the resources used to obtain it on the same page</text>
+
+  <g filter="url(#shadow)"><rect x="70" y="165" width="700" height="500" rx="28" fill="#ffffff"/><rect x="830" y="165" width="700" height="500" rx="28" fill="#ffffff"/></g>
+  <rect x="105" y="198" width="320" height="42" rx="21" fill="url(#teal)"/><text x="265" y="227" text-anchor="middle" class="label">PEER REVIEWED · MODEL</text>
+  <text x="105" y="286" class="card-title">Repetition-based readout</text>
+  <text x="105" y="324" class="small muted">Copy one data qubit, then decode by majority vote</text>
+  <circle cx="150" cy="404" r="24" fill="#0f766e"/><path d="M190 404 H252" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+  <g fill="#a7f3d0" stroke="#0f766e" stroke-width="3"><circle cx="305" cy="370" r="17"/><circle cx="353" cy="370" r="17"/><circle cx="401" cy="370" r="17"/><circle cx="449" cy="370" r="17"/><circle cx="497" cy="370" r="17"/><circle cx="545" cy="370" r="17"/><circle cx="329" cy="418" r="17"/><circle cx="377" cy="418" r="17"/><circle cx="425" cy="418" r="17"/><circle cx="473" cy="418" r="17"/><circle cx="521" cy="418" r="17"/></g>
+  <path d="M580 404 H642" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/><circle cx="690" cy="404" r="24" fill="#0f766e"/>
+  <text x="150" y="458" text-anchor="middle" class="tiny muted">1 data qubit</text><text x="425" y="458" text-anchor="middle" class="tiny muted">11 physical qubits</text><text x="690" y="458" text-anchor="middle" class="tiny muted">majority</text>
+  <rect x="105" y="496" width="300" height="128" rx="18" fill="#ecfdf5"/><text x="128" y="532" class="tiny muted">Added resource</text><text x="128" y="580" class="number" fill="#0f766e">11× qubits</text><text x="128" y="610" class="tiny muted">+ encoding CNOTs</text>
+  <rect x="425" y="496" width="310" height="128" rx="18" fill="#f0fdfa"/><text x="448" y="532" class="tiny muted">Model estimate</text><text x="448" y="580" class="number" fill="#0f766e">10<tspan baseline-shift="super" font-size="24">-8</tspan>–10<tspan baseline-shift="super" font-size="24">-9</tspan></text><text x="448" y="610" class="tiny muted">Zuchongzhi 3.0 · Willow</text>
+
+  <rect x="865" y="198" width="220" height="42" rx="21" fill="url(#blue)"/><text x="975" y="227" text-anchor="middle" class="label">PREPRINT · MIXED</text>
+  <text x="865" y="286" class="card-title">Adaptive ZNE shot allocation</text>
+  <text x="865" y="324" class="small muted">Split a fixed shot budget across several noise levels</text>
+  <circle cx="940" cy="406" r="45" fill="#dbeafe" stroke="#2563eb" stroke-width="4"/><text x="940" y="415" text-anchor="middle" font-size="27" font-weight="750">λ=1</text>
+  <circle cx="1075" cy="406" r="45" fill="#e0e7ff" stroke="#4f46e5" stroke-width="4"/><text x="1075" y="415" text-anchor="middle" font-size="27" font-weight="750">λ=3</text>
+  <circle cx="1210" cy="406" r="45" fill="#ede9fe" stroke="#7c3aed" stroke-width="4"/><text x="1210" y="415" text-anchor="middle" font-size="27" font-weight="750">λ=5</text>
+  <path d="M1265 406 H1330" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/><circle cx="1382" cy="406" r="49" fill="#fff7ed" stroke="#d97706" stroke-width="4"/><text x="1382" y="400" text-anchor="middle" font-size="22" font-weight="750">λ→0</text><text x="1382" y="428" text-anchor="middle" class="tiny muted">fit</text>
+  <text x="940" y="476" text-anchor="middle" class="tiny muted">same total shots</text><text x="1210" y="476" text-anchor="middle" class="tiny muted">allocation changes</text>
+  <rect x="865" y="496" width="300" height="128" rx="18" fill="#eff6ff"/><text x="888" y="532" class="tiny muted">Six noise-model budgets</text><text x="888" y="580" class="number" fill="#1d4ed8">2 / 6</text><text x="888" y="610" class="tiny muted">adaptive MSE was lower</text>
+  <rect x="1185" y="496" width="310" height="128" rx="18" fill="#eef2ff"/><text x="1208" y="532" class="tiny muted">Table 6 ratio mean</text><text x="1208" y="580" class="number" fill="#4f46e5" style="font-size:36px">recalc. ≈2.32×</text><text x="1208" y="610" class="tiny muted">paper reports 2.16</text>
+
+  <rect x="70" y="705" width="1460" height="285" rx="28" fill="#172033"/>
+  <text x="105" y="760" fill="#ffffff" font-size="34" font-weight="750">Numbers to keep under the same budget</text>
+  <text x="105" y="796" fill="#cbd5e1" class="small">Record the full cost of one useful estimate, not only the smallest error</text>
+  <rect x="105" y="832" width="185" height="62" rx="31" fill="#24445a"/><text x="197" y="872" text-anchor="middle" fill="#ffffff" class="pill">raw / mitigated</text>
+  <rect x="307" y="832" width="165" height="62" rx="31" fill="#24445a"/><text x="389" y="872" text-anchor="middle" fill="#ffffff" class="pill">run variance</text>
+  <rect x="489" y="832" width="160" height="62" rx="31" fill="#24445a"/><text x="569" y="872" text-anchor="middle" fill="#ffffff" class="pill">total shots</text>
+  <rect x="666" y="832" width="190" height="62" rx="31" fill="#24445a"/><text x="761" y="872" text-anchor="middle" fill="#ffffff" class="pill">added circuits</text>
+  <rect x="873" y="832" width="225" height="62" rx="31" fill="#24445a"/><text x="985" y="872" text-anchor="middle" fill="#ffffff" class="pill">compiled 2Q depth</text>
+  <rect x="1115" y="832" width="175" height="62" rx="31" fill="#24445a"/><text x="1202" y="872" text-anchor="middle" fill="#ffffff" class="pill">postselection</text>
+  <rect x="1307" y="832" width="188" height="62" rx="31" fill="#24445a"/><text x="1401" y="872" text-anchor="middle" fill="#ffffff" class="pill">wall-clock</text>
+  <text x="105" y="950" fill="#fbbf24" class="small" font-weight="700">CAUTION</text><text x="245" y="950" fill="#e2e8f0" class="small">156 is the backend size; paper 2.16 and recomputed ≈2.32 are simulation results.</text>
+</svg>

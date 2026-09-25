@@ -1,0 +1,174 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다</title><meta name="description" content="고전광·편광·OAM·광자 계수의 원리에서 861개 특징, 함수 복원 성능, 32분 취득비용과 고전 시뮬레이션 조건까지 검토합니다.">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/"><meta property="og:type" content="article">
+<meta property="og:description" content="고전광·편광·OAM·광자 계수의 원리에서 861개 특징, 함수 복원 성능, 32분 취득비용과 고전 시뮬레이션 조건까지 검토합니다."><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/photon_reservoir_hero.webp"><meta name="twitter:card" content="summary_large_image"><meta name="author" content="김현중"><meta property="article:published_time" content="2026-09-13"><meta property="article:modified_time" content="2026-09-13"><style>
+:root{--paper:#fbfaf7;--ink:#17211d;--muted:#5f6b65;--line:#d8d5cb;--teal:#0f766e;--blue:#25456f}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR","Segoe UI",Arial,sans-serif;text-rendering:optimizeLegibility}a{color:var(--teal);text-underline-offset:3px}a:hover{color:var(--blue)}.topline{background:white;border-bottom:1px solid var(--line)}.topline-inner{max-width:1180px;margin:auto;padding:16px 24px;display:flex;justify-content:space-between;gap:20px;font-size:14px}.topline-actions{display:flex;flex-wrap:wrap;gap:18px}.brand{font-weight:700;letter-spacing:.03em}.hero-inner{max-width:1180px;margin:auto;padding:52px 24px 34px}.hero h1{max-width:950px;font-size:clamp(28px,4.3vw,48px);line-height:1.32;letter-spacing:-.045em;word-break:keep-all;margin:0}.content-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,800px) minmax(180px,240px);gap:60px;padding:32px 24px 60px}.final-article{min-width:0;font-size:17px;line-height:1.95;word-break:keep-all;overflow-wrap:break-word}.final-article p{margin:0 0 24px}.final-article h2{font-size:26px;line-height:1.5;margin:62px 0 22px;letter-spacing:-.035em;padding-top:22px;border-top:1px solid var(--line)}.final-article h2:first-of-type{margin-top:45px}.final-article strong{font-weight:750}.final-article img{display:block;width:100%;height:auto}.final-article p:has(>img){margin:30px 0 10px}.final-article p:has(>em:only-child){font-size:14px;color:var(--muted);line-height:1.7}.final-article em{font-style:normal}.sidebar{align-self:start;position:sticky;top:25px;font-size:14px;line-height:1.75;color:var(--muted)}.sidebar h2{font-size:15px;color:var(--ink);margin:0 0 15px}.sidebar a{display:block;color:var(--muted);margin-bottom:12px;text-decoration:none}.sidebar a:hover{text-decoration:underline}.sidebar hr{border:0;border-top:1px solid var(--line);margin:25px 0}.table-wrap{width:100%;overflow:auto;margin:28px 0 18px;outline-offset:4px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.65;word-break:normal}th,td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{background:#eaf0ee;font-weight:700;white-space:normal}td:nth-child(n+3){font-variant-numeric:tabular-nums}tbody tr:nth-child(even){background:#f4f4ef}figure{margin:32px 0}figcaption{font-size:14px;color:var(--muted);line-height:1.65;margin-top:10px}.matrix-figure img{background:#fff;border:1px solid var(--line)}.math{overflow-x:auto;max-width:100%}.display-math{display:block;text-align:center;margin:25px 0;padding:10px 0;font-size:1rem;overflow-x:auto}.toy{border-top:3px solid var(--teal);border-bottom:1px solid var(--line);padding:24px;background:#f1f5f2;margin:28px 0}.toy h3{margin:0 0 8px;font-size:20px}.toy p{font-size:14px;line-height:1.65;margin-bottom:18px}.toy-controls{display:grid;grid-template-columns:1fr 1fr;gap:20px}.toy label{display:block;font-size:14px;font-weight:650}.toy input{display:block;width:100%;padding:9px 12px;margin:7px 0 0;border:1px solid #899b94;border-radius:3px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}.toy button{margin:18px 10px 18px 0;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--teal);background:white;color:var(--teal);border-radius:3px}.toy-results{display:grid;grid-template-columns:1fr 1fr;gap:15px}.toy-results div{padding-top:12px;border-top:1px solid #bbc8c1;font-size:14px}.toy-results output{display:block;font-size:24px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}.weight-track{margin:18px 0 8px;background:#0f766e;height:18px;display:flex}.classical-weight{background:#25456f;width:96.42383454%}.quantum-weight{background:#0f766e;flex:1}.weight-legend{display:flex;justify-content:space-between;font-size:13px}.weight-legend span:first-child{color:var(--blue)}.weight-legend span:last-child{color:var(--teal)}.toy .error{color:#922f2f;margin:8px 0}.toy small{font-size:12px;color:var(--muted)}.final-article ol{padding-left:22px;font-size:14px;line-height:1.8}.final-article li{margin-bottom:14px}.publication-note{border-top:1px solid var(--line);margin-top:45px;padding-top:18px;color:var(--muted);font-size:13px;line-height:1.8}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #bc6414;outline-offset:3px}
+@media(max-width:1000px){.content-grid{grid-template-columns:1fr;gap:35px;max-width:848px}.sidebar{position:static;grid-row:1;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:15px}.sidebar nav{display:flex;flex-wrap:wrap;gap:4px 16px}.sidebar nav a{margin:0}.sidebar .side-extra{display:none}.hero-inner{max-width:848px}.final-article{font-size:16px}}
+@media(max-width:560px){.topline-inner{padding:14px 18px;display:block}.topline-actions{margin-top:10px;font-size:13px}.hero-inner{padding:34px 18px 24px}.content-grid{padding:22px 18px 50px}.final-article h2{font-size:22px;margin-top:42px}.final-article{line-height:1.9;word-break:normal}table{min-width:620px}.toy{padding:18px}.toy-controls,.toy-results{gap:12px}.toy-results output{font-size:21px}.matrix-figure{overflow-x:auto}.matrix-figure img{min-width:590px}.display-math{font-size:13px}.sidebar h2{margin-bottom:8px}}
+@media print{body{background:white}.topline,.sidebar,.toy-controls,.toy button{display:none}.content-grid{display:block;padding:0;max-width:none}.hero-inner{padding:0 0 20px}.final-article{font-size:11pt}.final-article h2{break-after:avoid;font-size:16pt}.table-wrap{overflow:visible}table{min-width:0!important}.toy,figure{break-inside:avoid}a{color:inherit}.display-math{overflow:visible}}
+
+.final-article img{border-radius:4px}.final-article ul{padding-left:24px}.final-article li{font-size:15px}.kicker{font-size:13px;letter-spacing:.1em;color:#5f6b65;margin-bottom:18px}.standfirst{max-width:780px;font-size:18px;line-height:1.8;color:#5f6b65;margin:22px 0 0}.final-article p:has(>img[src="pipeline.svg"]),.final-article p:has(>img[src="poisson_features.svg"]){border:1px solid #d8d5cb;background:white}.math{display:inline-block;vertical-align:middle}.final-article li .math{display:inline}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/">
+    <meta property="og:title" content="빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review"><div class="topline"><div class="topline-inner"><span class="brand">AI Tech Review Letters</span><div class="topline-actions"><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/en/" hreflang="en">English</a><a href="https://github.com/Infant83/AI_Tech_Review/blob/main/2026-09-13_multiphoton-reservoir-classical-light/dist/review.md">Markdown</a></div></div></div><header class="hero"><div class="hero-inner"><div class="kicker">PHOTONIC COMPUTING · 2026.09.13</div><h1>빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다</h1><p class="standfirst">고전광·편광·OAM·광자 계수의 원리에서 861개 특징, 함수 복원 성능, 32분 취득비용과 고전 시뮬레이션 조건까지 검토합니다.</p></div></header><p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-09-13 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="content-grid"><article class="final-article"><p>광학 계산의 매력은 빛이 여러 경로를 동시에 지나며 입력을 빠르게 변환한다는 데 있습니다. 그러나 빛이 빨리 전파된다는 사실만으로 학습기가 빨라지지는 않습니다. 어떤 정보를 빛에 담고, 출력에서 무엇을 측정하며, 그 값을 얼마나 오래 모아야 하는지가 함께 중요합니다. Hong 등의 <strong>다광자 양자 저장소(multiphoton quantum reservoir)</strong> 연구는 이 가운데 측정 방식을 바꿨을 때 생기는 가능성을 보여줍니다. 평균 광량 대신 광자 수의 확률분포를 읽어, 같은 광학장을 더 풍부한 학습 특징으로 사용했습니다.</p>
+<p>이번 결과의 설득력 있는 부분은 접근하기 쉬운 광원과 고정된 광학 회로로 비선형 함수의 특징을 만들었다는 점입니다. 동시에 논문이 사용하는 ‘양자 가속’이라는 표현은 실험별로 나눠 읽어야 합니다. 함수 복원 성능의 향상, 공간 분포의 빠른 확산, 고전 시뮬레이션의 계산복잡도는 서로 다른 검증 대상입니다. 이 리뷰는 장치의 원리에서 출발해 세 주장을 구분하고, 실제 응용으로 이어질 조건을 살펴봅니다.</p>
+<p><img alt="고전광이 파장판을 거쳐 나선형 파면을 이루고 광자 계수기로 들어가는 개념 일러스트" fetchpriority="high" height="1024" src="photon_reservoir_hero.webp" width="1536"/></p>
+<p><em>빛의 모드 변환과 광자 계수를 표현한 생성 일러스트입니다. 실제 실험 장치의 배치나 측정 데이터를 재현한 그림은 아닙니다.</em></p>
+<p><strong>연구 상태.</strong> Mingyuan Hong 등, <em>Multiphoton Quantum Reservoirs For Robust Multidimensional Computing</em>, <strong>Advanced Science</strong>, e77225. 최초 게재일은 <strong>2026년 8월 19일</strong>, 리뷰 기준일은 <strong>9월 13일</strong>입니다. 동료평가를 거친 실제 상온 광학 실험이며, 본문과 15쪽 보충자료를 검토했습니다. 원시 데이터는 요청 시 제공하는 방식으로 안내되어 있어 실험 수치를 독립 재현하지는 않았습니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">논문</a> · <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료</a></p>
+<h2 id="section-1">1. 고전광에서도 광자는 셀 수 있습니다</h2>
+<p>양자광학에서 <strong>고전광(classical light)</strong>은 광자가 없다는 뜻이 아닙니다. 광학장의 상태를 코히런트 상태(coherent state)의 비음수 확률 혼합으로 표현할 수 있다는 뜻입니다. 이상적인 레이저를 설명하는 코히런트 상태와 열광(thermal light)이 대표적입니다. 코히런트 상태의 광자 수는 Poisson 분포를 따르고, 단일 모드 열광은 그보다 큰 수 변동을 보입니다. 반면 고정된 광자 수를 가진 Fock 상태나 압축광은 이 정의에서 비고전적인 자원이 될 수 있습니다.</p>
+<p><strong>Fock 상태</strong> <span class="math">\(|n\rangle\)</span>는 특정 모드의 광자 수가 <span class="math">\(n\)</span>으로 정해진 상태입니다. 논문은 광자 수를 구별하는 측정을 Fock 기저의 투영으로 설명합니다. 실제 장치에서는 검출 사건의 시각을 기록하고 정해진 시간창 안의 계수를 모아 분포를 구성합니다. ‘광자 7개가 검출된 경우만 골라 공간 분포를 본다’는 것은 측정 기록을 조건부로 선택하는 일입니다. 광자를 흡수하는 검출 뒤에 7광자 상태가 남아 다음 연산에 투입된다는 뜻은 아닙니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">본문 §2; 보충자료 Note 4–5</a></p>
+<p>이 구분은 보도의 ‘고전광을 양자로 바꿨다’는 표현을 이해하는 데 필요합니다. 광자 수에 따라 선택한 통계에는 평균 세기만으로 보이지 않던 구조가 나타날 수 있습니다. 그러나 그런 구조를 관측했다는 사실, 재사용 가능한 비고전적 상태를 준비했다는 사실, 고전 알고리즘보다 계산이 어렵다는 사실은 각각 입증해야 합니다.</p>
+<h2 id="section-2">2. 편광을 입력하고, 빛의 공간 모드를 섞습니다</h2>
+<p>장치는 빛의 <strong>편광(polarization)</strong>과 <strong>궤도각운동량(OAM, orbital angular momentum)</strong>을 함께 이용합니다. 편광은 전기장의 진동 방향을 나타냅니다. OAM 모드는 빔 둘레를 돌 때 위상이 얼마나 감기는지를 정수 <span class="math">\(\ell\)</span>로 구분하는 공간 모드입니다. 실공간에 격자를 새긴 것이 아니라, 이 모드들을 서로 연결해 합성 격자처럼 다룹니다.</p>
+<p>반파장판(HWP)은 편광을 회전시키고, 사분파장판(QWP)은 편광 성분의 상대 위상을 바꿉니다. q-plate는 편광과 OAM을 결합해 빛을 다른 모드로 옮깁니다. 학습 실험에서는 내부 파장판 각도를 무작위로 한 번 정한 뒤 고정했습니다. 입력만 수평에서 수직 편광으로 바꾸므로 모든 데이터가 같은 물리적 변환을 거칩니다. 출력은 공간광변조기(SLM)로 OAM 모드를 선택해 측정합니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Note 4</a></p>
+<p>논문 안에서도 광원은 실험마다 다릅니다. 광원 준비에는 633 nm 레이저와 회전하는 간유리로 만든 열광이 쓰입니다. 랜덤워크와 열화 통계 실험에는 열광을 사용하지만, 함수 복원 부분은 <strong>공간적으로 코히런트한 빛의 편광에 입력을 인코딩</strong>한다고 설명합니다. 따라서 모든 결과를 하나의 열광 학습 실험으로 묶으면 실제 구성이 흐려집니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">본문 §4</a></p>
+<p><img alt="입력 인코딩, 고정 광학 변환, 반복 계수, 학습되는 선형 읽기층의 역할" fetchpriority="auto" height="510" loading="lazy" src="pipeline.svg" width="760"/></p>
+<p><em>리뷰어가 재구성한 계산 흐름입니다. 광학 회로는 고정하고, 마지막 고전 회귀의 가중치만 학습합니다. 분포를 얻기 위한 반복 취득이 광학 전파와 별도로 필요합니다.</em></p>
+<h2 id="section-3">3. 선형 광학 뒤에서 비선형 특징을 얻는 원리</h2>
+<p><strong>저장소 계산(reservoir computing)</strong>은 입력을 고정된 복잡한 시스템에 통과시킨 뒤, 그 응답을 간단한 읽기층으로 결합하는 방법입니다. 물리계 내부를 모두 학습할 필요가 없다는 장점이 있습니다. 이 논문이 검증한 것은 현재 입력값을 비선형 특징으로 바꾸는 함수 복원입니다. 과거 입력을 기억해야 하는 시계열 예측 성능은 별도의 과제입니다.</p>
+<p>평균 검출 광자 수를 <span class="math">\(\lambda\)</span>라고 합시다. 이상적인 단일 코히런트 모드를 광자 계수하면 다음 확률을 얻습니다.</p>
+<p><span class="display-math">\[P_n(\lambda)=e^{-\lambda}\frac{\lambda^n}{n!}.\]</span></p>
+<p>평균 <span class="math">\(\lambda\)</span> 하나만 쓰는 것과 <span class="math">\(P_0,P_1,P_2,\ldots\)</span>를 쓰는 것은 서로 다른 특징 설계입니다. <span class="math">\(P_0\)</span>는 광량이 증가할수록 감소하고, <span class="math">\(P_1\)</span>이나 <span class="math">\(P_2\)</span>는 각각 다른 위치에서 봉우리를 만듭니다. 광학 소자가 물질의 비선형 반응을 일으키지 않아도 <strong>측정 확률은 입력 광량의 비선형 함수</strong>가 됩니다. 이는 이상적 Poisson 모델로 설명한 원리이며, 실제 검출기의 응답을 그대로 재현한 식은 아닙니다.</p>
+<p><img alt="평균 광량에 따라 서로 다른 봉우리를 만드는 Poisson 광자 계수 특징" fetchpriority="auto" height="490" loading="lazy" src="poisson_features.svg" width="760"/></p>
+<p><em>설명용 정확한 수식 그래프입니다. 실험 데이터가 아닙니다. 평균 광량을 그대로 읽는 것과 광자 수별 확률을 읽는 것이 다른 특징을 만든다는 점을 보여줍니다.</em></p>
+<p>실험에서는 <span class="math">\(\ell=-10\ldots10\)</span>의 <strong>21개 OAM 투영</strong>과 <span class="math">\(n=0\ldots40\)</span>의 <strong>41개 광자 수 항목</strong>을 결합해 <strong>861개 성분</strong>을 만들었습니다. 마지막에는 <span class="math">\(\hat y=b+\sum_{\ell,n}w_{\ell,n}P_{\ell,n}(x)\)</span> 형태의 선형 읽기층을 학습합니다. 보충자료는 가중치가 지나치게 커지는 것을 억제하는 ridge 정규화를 명시합니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">본문 Fig. 4; 보충자료 Note 7</a></p>
+<p>861은 큐비트 수나 독립적인 계산 자유도의 수가 아닙니다. 보충자료의 주성분분석(PCA)에서 첫 성분이 분산의 <strong>75%</strong>, 16개 성분이 <strong>99%</strong>를 설명하며, 참여비(participation ratio)로 계산한 유효차원은 <strong>1.7</strong>입니다. 저자들은 91개 입력에 대한 특징 행렬의 rank가 91이라고 보고합니다. 행렬의 rank와 분산이 집중되는 정도는 다른 수치입니다. 가느다란 곡선도 여러 방향으로 휘어질 수 있듯, 낮은 유효차원의 입력이 풍부한 비선형 특징을 만들 수 있습니다. 다만 rank가 높다는 사실만으로 새로운 데이터에 대한 일반화가 보장되지는 않습니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Note 7C</a></p>
+<h2 id="section-4">4. 성능은 어느 기준선보다 좋아졌나</h2>
+<p>입력은 편광을 바꿔 만든 <strong>91개 상태</strong>이며, 무작위로 <strong>80%를 학습, 20%를 평가</strong>에 사용했습니다. 아래 값은 여러 무작위 분할에서 평균한 평가 결정계수 <span class="math">\(R^2\)</span>입니다. 1에 가까울수록 평가값을 잘 복원합니다. 기준선은 같은 광학장에서 <strong>각 OAM의 평균 광자 수만 유지한 21차원 특징</strong>에 선형 회귀를 붙인 모델입니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Table S2</a></p>
+<div aria-label="연구 비교 표" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>목표 함수</th>
+<th style="text-align: right;">평균 광량 특징 · 21개</th>
+<th style="text-align: right;">광자 수 분포 특징 · 861개</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2차 함수</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">0.94</td>
+</tr>
+<tr>
+<td>3차 함수</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.93</td>
+</tr>
+<tr>
+<td>4차 함수</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.94</td>
+</tr>
+<tr>
+<td>지수 함수</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">0.97</td>
+</tr>
+<tr>
+<td>로그 함수</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.97</td>
+</tr>
+<tr>
+<td>감쇠 사인 함수</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.94</td>
+</tr>
+<tr>
+<td>논문 보고 평균</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.95</td>
+</tr>
+</tbody>
+</table></div>
+<p>감쇠 사인 함수에서 가장 큰 개선이 나타납니다. 로그 함수는 표시된 정밀도에서 차이가 없습니다. 보충자료의 설명 문장은 4차 함수와 감쇠 사인 함수를 함께 묶어 0.69→0.94라고 표현하지만, <strong>표 S2에서 4차 함수는 0.90→0.94</strong>입니다. 이 리뷰는 개별 행의 값을 따랐습니다.</p>
+<p>이 비교는 광자 수 분포를 보존하는 측정이 평균 세기만 읽는 것보다 유용하다는 근거입니다. 고전 학습 방법 전체보다 우월하다는 근거로 확장하려면 비교를 보강해야 합니다. 특히 평균 광량으로 계산한 Poisson 특징, 다항식·Fourier 특징, kernel ridge 회귀를 같은 데이터 분할과 조정 예산으로 비교할 필요가 있습니다. 특징 수와 정규화 선택의 효과도 분리해야 합니다. 이들은 본 리뷰가 제안하는 후속 기준선이며, 논문에서 이미 수행한 실험은 아닙니다.</p>
+<h2 id="section-5">5. 빠른 읽기층과 전체 측정시간을 함께 보기</h2>
+<p>보충자료 표 S1의 <strong>30 μs 학습시간</strong>은 읽기층 학습에 관한 저자 보고값입니다. 광원을 설정하고 분포를 얻는 전체 시간과 동일하지 않습니다. 검출 기록은 <strong>1 μs 시간창</strong>으로 묶고, 편광–OAM 설정마다 <strong>1초 동안 100만 개 창</strong>을 취득합니다. 따라서 전체 데이터의 순수 취득시간은 <span class="math">\(91\times21\times1\,\mathrm{s}=1,911\,\mathrm{s}\)</span>, 약 <strong>31.85분</strong>입니다. 보충자료도 약 32분을 명시합니다. 광학 설정 변경, 정렬, 교정, 데이터 이동은 여기에 추가됩니다. 같은 특징 데이터는 여섯 함수에 재사용할 수 있으므로 취득시간을 함수마다 여섯 번 더할 필요도 없습니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Notes 4, 7A, 7D</a></p>
+<p>검출기 해석도 중요합니다. 장치는 애벌랜치 광다이오드(APD)와 시각 기록 장치를 이용한 시간 구간 계수 방식입니다. 보충자료는 <strong>50 ns 불감시간(dead time)</strong>과 1 μs 안의 <strong>20개 유효 구간</strong>을 모델링합니다. 평균 광자 수 4.1의 열광에서 이상적 분포와의 유사도는 약 97%라고 보고합니다. 여기서 유사도는 <span class="math">\(\sum_n\sqrt{p_nq_n}\)</span>로 정의한 분포 간 값이며, 양자상태나 계산 결과의 충실도가 아닙니다. 평균 계수가 커질수록 모델과 이상 분포의 차이도 커집니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Note 5, Fig. S2</a></p>
+<p><strong>높은 광자 수 영역에는 추가 확인이 필요합니다.</strong> 20구간 검출 모델, 특징 벡터의 0–40 표기, 일부 두 팔 측정의 팔당 21광자 선택이 실제 시간창·채널 결합·계수 보정에서 어떻게 연결되는지, 확인한 자료만으로는 충분히 해명되지 않습니다. 낮은 평균에서의 분포 일치만으로 모든 높은 계수 항목이 이상적으로 분해되었다고 볼 수는 없습니다. 원시 시각 기록과 검출 응답으로 확인해야 할 구체적인 재현성 질문입니다.</p>
+<p>희귀한 계수 결과를 충분히 모으는 데에도 비용이 듭니다. 확률 <span class="math">\(p\)</span>의 사건을 독립 표본 <span class="math">\(M\)</span>개로 추정할 때 상대 표준오차 <span class="math">\(\epsilon\)</span>을 얻으려면 <span class="math">\(M=(1-p)/(\epsilon^2p)\)</span>가 필요합니다. 열광의 높은 광자 수 꼬리에서는 <span class="math">\(p\)</span>가 작아지므로 필요한 시간이 증가합니다. 이 식은 이상적 검출과 독립 표본을 가정하며, 불감시간이나 광원의 시간 상관을 보상하지 않습니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Note 6, Eq. S72</a></p>
+<h2 id="section-6">6. ‘양자 가속’ 주장을 세 부분으로 나눠 읽기</h2>
+<p>첫째, 랜덤워크 실험은 단계 수에 따른 분포 폭을 비교합니다. 정렬된 광학망에서는 OAM 분포가 탄도적(ballistic)으로 벌어져 폭이 단계 수에 비례하고, 비교하는 확산적 분포의 폭은 단계 수의 제곱근에 비례합니다. 이는 <strong>전파 단계와 관측량의 관계</strong>입니다. CPU나 GPU에서 같은 답을 얻는 데 걸리는 시간과 장치의 전체 실행시간을 비교한 결과는 아닙니다. 7광자 그림은 검출 결과를 선택한 <span class="math">\(P(\ell\mid n=7)\)</span>이며, 독립적으로 준비한 단일광자 일곱 개의 동시 검출과 구분됩니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">본문 Fig. 2; 보충자료 Note 4</a></p>
+<p>둘째, 광자 수 쌍을 선택하면 보손형 또는 페르미온형으로 불리는 공간 상관 패턴이 나타납니다. 광자가 페르미온으로 바뀌었다는 뜻은 아닙니다. 초록의 ‘최대 40광자’와 별도로 Fig. 2의 <span class="math">\((21,21)\)</span> 조건은 합계 42를 뜻하므로, 숫자는 해당 조건과 함께 읽어야 합니다. 열화·반열화 실험도 선택한 모드에서 광자 수 통계와 2차 상관함수 <span class="math">\(g^{(2)}(0)\)</span>가 변하는 것을 다룹니다. 실제 분자나 상호작용 전자계의 열화 계산을 검증한 것은 아닙니다. <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">본문 Figs. 2–3</a></p>
+<p>셋째, 저자들은 광자 검출 확률의 permanent 표현과 보손 샘플링을 연결해 계산복잡도를 논합니다. <strong>어떤 확률을 정확히 계산하는 문제와, 그 분포에서 표본을 생성하는 문제는 다릅니다.</strong> 실제 입력 계열과 측정 과제에 난해성 주장이 적용되는지도 확인해야 합니다. 비음수 위상공간 분포를 이용하는 고전 광학 시뮬레이션의 충분조건은 이미 정리되어 있습니다. <a href="https://arxiv.org/abs/1511.06526">Rahimi-Keshari·Ralph·Caves, Physical Review X 6, 021039 (2016)</a></p>
+<p>이 장치에 대한 유용한 점검법은 보충자료 자체의 코히런트 상태 혼합 표현에서 나옵니다. 유한한 모드 수에서 효율적으로 표본화할 수 있는 비음수 Gaussian 분포로 입력 진폭 <span class="math">\(\alpha\)</span>를 뽑고, 선형 광학 변환 <span class="math">\(\beta=U\alpha\)</span>를 적용한 다음, 각 모드에서 평균 <span class="math">\(\eta_j|\beta_j|^2\)</span>의 Poisson 계수를 뽑을 수 있습니다. <span class="math">\(\eta_j\)</span>는 검출 효율입니다. 모드를 합쳐 읽으면 해당 강도를 더합니다. 코히런트 입력은 진폭이 고정된 특수한 경우입니다. <strong>이상적인 해당 입력·측정 모델의 비조건부 샘플링에는 permanent를 매번 계산할 필요가 없다는 리뷰어의 해석</strong>입니다. 보충자료 Note 2의 식 S19, S29, S35가 이 구성의 직접적인 근거입니다. 희귀 조건부 표본을 얻는 비용과 실제 검출 응답의 재현은 별도로 남습니다. <a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료 Note 2</a></p>
+<p>따라서 이 논문의 permanent 논의만으로 실험에 사용한 모든 입력이 고전적으로 어려운 계산을 수행했다고 결론내릴 수는 없습니다. 광학 특징 변환의 실용적인 가치는 여전히 검토할 만합니다. 다만 그 가치는 보정된 고전 시뮬레이터와 비교한 정확도·처리량·에너지로 평가해야 합니다.</p>
+<h2 id="section-7">7. 개발과 응용은 무엇부터 확인하면 좋을까</h2>
+<p>가까운 응용 후보는 이미 광학 신호로 입력이 들어오는 센싱과 계측입니다. 전기적 데이터를 빛으로 바꾸는 비용을 줄일 수 있고, 평균 광량 이외의 분포 정보를 직접 활용할 여지가 있습니다. 재료·OLED 연구에서는 여러 조건에서 얻은 발광 신호를 분류하거나 품질 지표를 회귀하는 실험을 생각할 수 있습니다. <strong>이는 본 리뷰의 제안이며, 해당 논문이 OLED 데이터나 분자 계산을 수행했다는 뜻은 아닙니다.</strong> 분자 Hamiltonian을 푸는 양자화학 알고리즘과는 입력과 목표가 다릅니다.</p>
+<p>개발 순서는 특징을 더 늘리기 전에 측정에서 얻는 정보를 검증하는 쪽이 합리적입니다. 먼저 평균 광량으로 예측한 계수 분포와 실제 계수 분포를 같은 검출 모델로 비교해야 합니다. 그다음 특징 수, 광자 수 절단값, 취득시간을 줄여도 성능이 유지되는지 확인할 수 있습니다. 성능이 일부 낮은 계수 항목에 집중된다면 더 작은 읽기 장치로 구현할 수 있습니다. 높은 계수 항목이 꼭 필요하다면 채널 다중화와 검출 응답 교정의 우선순위가 높아집니다.</p>
+<div aria-label="연구 비교 표" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>개발 질문</th>
+<th>다음에 필요한 비교</th>
+<th>응용 판단에 주는 정보</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>분포가 평균 광량보다 무엇을 더 주나</td>
+<td>측정 분포 대 교정된 Poisson·열광 특징</td>
+<td>실제 추가 정보와 단순 특징 확장의 구분</td>
+</tr>
+<tr>
+<td>적은 데이터에서도 일반화하나</td>
+<td>연속 구간을 통째로 제외한 평가, 반복 분할·불확실성</td>
+<td>보간에서 외삽·분포 변화로의 확장</td>
+</tr>
+<tr>
+<td>측정이 얼마나 빨라질 수 있나</td>
+<td>취득시간·모드 수·계수 항목 수에 따른 정확도</td>
+<td>처리량과 정밀도의 교환관계</td>
+</tr>
+<tr>
+<td>광학 장치가 전체 비용을 줄이나</td>
+<td>광원·SLM·검출·데이터 이동·학습까지 같은 목표 오차에서 측정</td>
+<td>CPU/GPU 기준선 대비 실용성</td>
+</tr>
+<tr>
+<td>시간이 지나도 동작하나</td>
+<td>날짜를 달리한 교정·온도·손실·드리프트 평가</td>
+<td>고정된 검출 응답에 대한 학습이 현장에서 유지되는지</td>
+</tr>
+</tbody>
+</table></div>
+<p>이 연구가 제시한 유용한 개발 방향은 <strong>측정 분포를 계산 자원으로 설계하는 것</strong>입니다. 고전광을 쓰는 접근성, 고정 회로의 단순한 학습, 평균값에서 버려지던 통계 정보는 후속 연구의 출발점이 됩니다. 다음 진전은 명목상의 광자 수나 특징 수를 더하는 데서만 나오지 않습니다. 어떤 특징이 실제 정보를 더하고, 그것을 얻는 데 얼마의 시간이 들며, 강한 고전 기준선과 비교해 어느 조건에서 이익이 생기는지를 실험으로 보여주는 데 달려 있습니다.</p>
+<h2 id="section-8">자료와 검토 범위</h2>
+<ul>
+<li>Hong 등, <a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">논문 본문</a> 및 <a href="https://advanced.onlinelibrary.wiley.com/doi/pdf/10.1002/advs.77225">본문 PDF</a>: 실제 광학 구성, 세 실험군, 데이터 공개 조건 확인. 저자 저작물은 Creative Commons Attribution으로 공개되어 있습니다.</li>
+<li><a href="https://advanced.onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1002%2Fadvs.77225&amp;file=advs77225-sup-0001-SuppMat.pdf">보충자료</a>: Note 2의 확률 모델, Note 4–7의 측정·검출·비용·기준선과 Table S2를 중점 확인했습니다.</li>
+<li>Rahimi-Keshari 등, <a href="https://arxiv.org/html/1511.06526v2">고전 시뮬레이션 충분조건 원문</a>: 비음수 위상공간 표현과 표본화 조건을 대조했습니다. 이 리뷰의 간단한 표본화 구성은 실험 재현이나 장치 시간 벤치마크가 아닙니다.</li>
+<li><a href="https://github.com/Infant83/AI_Tech_Review/blob/main/2026-09-13_multiphoton-reservoir-classical-light/dist/benchmarks.csv">표 S2 전사 데이터</a>: 원문 수치를 보존한 CSV입니다. 그림 두 점은 리뷰어가 만든 설명 자료이며, 원시 측정 데이터를 대체하지 않습니다.</li>
+</ul><div class="publication-note">생성 표지는 개념 일러스트입니다. 두 SVG 도표는 논문의 측정 흐름과 이상적 Poisson 식을 설명하기 위해 제작했습니다.</div></article><aside class="sidebar"><h2>이 글의 순서</h2><nav aria-label="목차"><a href="#section-1">1. 고전광에서도 광자는 셀 수 있습니다</a><a href="#section-2">2. 편광을 입력하고, 빛의 공간 모드를 섞습니다</a><a href="#section-3">3. 선형 광학 뒤에서 비선형 특징을 얻는 원리</a><a href="#section-4">4. 성능은 어느 기준선보다 좋아졌나</a><a href="#section-5">5. 빠른 읽기층과 전체 측정시간을 함께 보기</a><a href="#section-6">6. ‘양자 가속’ 주장을 세 부분으로 나눠 읽기</a><a href="#section-7">7. 개발과 응용은 무엇부터 확인하면 좋을까</a><a href="#section-8">자료와 검토 범위</a></nav><div class="side-extra"><hr><a href="https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225">Advanced Science · e77225</a><a href="https://github.com/Infant83/AI_Tech_Review/blob/main/2026-09-13_multiphoton-reservoir-classical-light/dist/benchmarks.csv">표 데이터 CSV</a><p>동료평가 논문 · 상온 광학 실험</p></div></aside>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>OpenAI Codex Work Mode; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>Codex — 1차 출처 조사·한영 집필·개념 일러스트 구성·수식 도표·과학 감수·구현·게시 검증</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>Hong 등 Advanced Science e77225 본문·15쪽 보충자료, 위상공간 고전 시뮬레이션 선행 원문; 표 S2 전사·실험별 광원·특징 차원·취득비용·검출 모델 한계·확률 계산과 표본화 구분; 한영 HTML·생성 개념 표지·SVG 도표 2점·CSV·로컬 링크·게시 정보</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>주제 및 공개 게시 요청 확인. 별도 문장 단위 사람 검토는 수행되지 않음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-09-13</dd></div>
+        </dl>
+        <p class="disclosure-note">실험 데이터와 시간을 독립 재현하지 않았습니다. 높은 광자 수 계수와 검출 모델의 연결은 추가 확인이 필요합니다. 고전 표본화 구성과 응용 방향은 리뷰어의 해석·제안이며, 표지는 생성 개념 그림입니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p></section>
+</body></html>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">양자컴퓨팅 full-stack 연구 지도</title>
+  <desc id="desc">하드웨어와 입출력, 상태 표본 측정, 컴파일 오류정정, 응용 검증의 네 계층에 실제 QPU와 수치실험 성과를 배치하고 총비용 기록 항목을 보여준다.</desc>
+  <rect width="1600" height="1120" rx="36" fill="#071622"/>
+  <text x="90" y="92" fill="#F2F8FC" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="44" font-weight="750">큐비트 수를 넘어: 병목을 줄이는 네 계층</text>
+  <text x="90" y="138" fill="#9FB7C8" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="24">개선율은 원래 측정한 계층 안에서만 비교한다</text>
+
+  <g font-family="Pretendard, Noto Sans KR, sans-serif" font-size="20" font-weight="650">
+    <rect x="1070" y="66" width="174" height="42" rx="21" fill="#0E5F68"/><text x="1092" y="94" fill="#DFFFFB">● 실제 QPU</text>
+    <rect x="1260" y="66" width="230" height="42" rx="21" fill="#294A68"/><text x="1282" y="94" fill="#E3F0FF">◆ 수치·컴파일</text>
+  </g>
+
+  <g font-family="Pretendard, Noto Sans KR, sans-serif">
+    <rect x="80" y="190" width="700" height="330" rx="26" fill="#0C2633" stroke="#2A9FA7" stroke-width="2"/>
+    <rect x="106" y="216" width="202" height="40" rx="20" fill="#0E5F68"/>
+    <text x="130" y="244" fill="#DFFFFB" font-size="20" font-weight="700">1  하드웨어·I/O</text>
+    <text x="110" y="306" fill="#F4FAFD" font-size="31" font-weight="750">제어선도 큐비트와 함께 확장해야 한다</text>
+    <text x="110" y="354" fill="#B7CBD7" font-size="23">USTC · 1490 nm 광링크 → 4 K photodiode</text>
+    <text x="110" y="392" fill="#FFFFFF" font-size="23" font-weight="650">실제 2 transmon: 1Q 99.915% · CZ pure 99.676%</text>
+    <text x="110" y="433" fill="#F1B883" font-size="21">경계  수천 채널은 열예산 추정, readout·mK 배선은 남음</text>
+    <text x="110" y="480" fill="#7AD4D0" font-size="20" font-weight="700">다음 지표  동시구동 · drift · 총 냉각부하</text>
+
+    <rect x="820" y="190" width="700" height="330" rx="26" fill="#0C2633" stroke="#4E8DC2" stroke-width="2"/>
+    <rect x="846" y="216" width="272" height="40" rx="20" fill="#294A68"/>
+    <text x="870" y="244" fill="#E3F0FF" font-size="20" font-weight="700">2  상태·표본·측정</text>
+    <text x="850" y="306" fill="#F4FAFD" font-size="31" font-weight="750">한 번의 실행을 더 정보 많은 표본으로</text>
+    <text x="850" y="354" fill="#B7CBD7" font-size="23">IBM 100-site: CNOT depth 18–39</text>
+    <text x="850" y="392" fill="#FFFFFF" font-size="23" font-weight="650">MC-PQE 5–10× 표준오차↓ · DF-SQD shots↓</text>
+    <text x="850" y="433" fill="#F1B883" font-size="21">경계  DMRG 기준선 · basis noise · 큰 classical CI</text>
+    <text x="850" y="480" fill="#8DBCE3" font-size="20" font-weight="700">다음 지표  depth · groups · shots · 전체 시간</text>
+
+    <rect x="80" y="558" width="700" height="330" rx="26" fill="#0C2633" stroke="#A47BC1" stroke-width="2"/>
+    <rect x="106" y="584" width="278" height="40" rx="20" fill="#583D70"/>
+    <text x="130" y="612" fill="#F1E3FF" font-size="20" font-weight="700">3  컴파일·오류정정</text>
+    <text x="110" y="674" fill="#F4FAFD" font-size="31" font-weight="750">FTQC는 gate count와 다른 비용을 쓴다</text>
+    <text x="110" y="722" fill="#B7CBD7" font-size="23">SpiderLS: lattice-surgery volume 49.2%↓</text>
+    <text x="110" y="760" fill="#FFFFFF" font-size="23" font-weight="650">BB-code MCT: inter-module instruction 16.02%↓</text>
+    <text x="110" y="801" fill="#F1B883" font-size="21">경계  compiler·logical estimate, 실제 FT QPU 아님</text>
+    <text x="110" y="848" fill="#CF9EF0" font-size="20" font-weight="700">다음 지표  patch · cycle · factory · routing</text>
+
+    <rect x="820" y="558" width="700" height="330" rx="26" fill="#0C2633" stroke="#C98B4E" stroke-width="2"/>
+    <rect x="846" y="584" width="250" height="40" rx="20" fill="#6E4728"/>
+    <text x="870" y="612" fill="#FFEBD6" font-size="20" font-weight="700">4  응용·검증</text>
+    <text x="850" y="674" fill="#F4FAFD" font-size="31" font-weight="750">작은 양자 kernel, 큰 고전 workflow</text>
+    <text x="850" y="722" fill="#B7CBD7" font-size="23">D-Wave: latent sampler · validity 96.97%</text>
+    <text x="850" y="760" fill="#FFFFFF" font-size="23" font-weight="650">QuEra·IonQ: 산업 문제의 실제 QPU PoC</text>
+    <text x="850" y="801" fill="#F1B883" font-size="21">경계  uniqueness 51.92% · classical speedup 없음</text>
+    <text x="850" y="848" fill="#F0B779" font-size="20" font-weight="700">다음 지표  유효해 · 최종 물성 · total cost</text>
+  </g>
+
+  <rect x="80" y="930" width="1440" height="124" rx="24" fill="#102F3E" stroke="#3D6477"/>
+  <text x="110" y="976" fill="#FFFFFF" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="24" font-weight="750">모든 계층을 잇는 Full-stack resource ledger</text>
+  <text x="110" y="1024" fill="#BBD0DB" font-family="Pretendard, Noto Sans KR, sans-serif" font-size="21">문제 규모  ·  compiled 2Q depth  ·  shots  ·  유효/폐기율  ·  mitigation  ·  QPU+고전 시간  ·  메모리  ·  에너지/비용  ·  불확실성  ·  Classical Champion</text>
+</svg>

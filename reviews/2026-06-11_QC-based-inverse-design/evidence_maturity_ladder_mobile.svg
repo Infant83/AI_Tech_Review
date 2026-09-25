@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="2390" viewBox="0 0 620 2390" role="img" aria-labelledby="title desc">
+  <title id="title">모바일용 양자 재료 역설계 증거 성숙도 사다리</title>
+  <desc id="desc">E0 이론과 자원 추정에서 E4 반복 가능한 종단 간 가치까지 다섯 증거 단계를 세로로 보여주고, NISQ와 초기 오류정정, 완전한 오류정정 체제의 알고리즘 의존성을 별도 축으로 정리한다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.3px;fill:#684790}.title{font:700 34px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.step{fill:#fff;stroke-width:3}.e0{stroke:#8a94a3}.e1{stroke:#416b9a}.e2{stroke:#74519a}.e3{stroke:#aa681f}.e4{stroke:#28745a}.level{font:800 27px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.head{font:700 28px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.pass{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.rise{stroke:#687386;stroke-width:5;fill:none}.panel{fill:#fff;stroke:#c7ced8;stroke-width:2}.pill{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.5px}.regime{font:700 23px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.rbody{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.rule{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.footer{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+  </defs>
+  <rect class="bg" width="620" height="2390"/>
+
+  <text class="eyebrow" x="42" y="48">EVIDENCE MATURITY · E0 → E4</text>
+  <text class="title" x="42" y="94">하드웨어가 좋아져도</text>
+  <text class="title" x="42" y="136">증거는 자동으로 오르지 않습니다</text>
+  <text class="subtitle" x="42" y="178">실행 가능성과 재료개발 유효성은 다른 질문입니다.</text>
+
+  <rect class="step e0" x="42" y="220" rx="22" width="536" height="245"/>
+  <text class="level" x="76" y="264" fill="#687386">E0</text>
+  <text class="head" x="147" y="264">이론 · 자원 추정</text>
+  <text class="body" x="76" y="311">복잡도 · qubit · depth · shots · 오류율 가정</text>
+  <line x1="76" y1="342" x2="544" y2="342" stroke="#d2d7de" stroke-width="2"/>
+  <text class="pass" x="76" y="380" fill="#687386">통과 기준</text>
+  <text class="body" x="76" y="418">가정과 총비용을 공개합니다</text>
+  <path class="rise" d="M310 465 L310 510" marker-end="url(#arrow)"/>
+
+  <rect class="step e1" x="42" y="525" rx="22" width="536" height="245"/>
+  <text class="level" x="76" y="569" fill="#416b9a">E1</text>
+  <text class="head" x="147" y="569">소규모 실행 시연</text>
+  <text class="body" x="76" y="616">작은 분자·그래프, 실기기 또는 logical demo</text>
+  <line x1="76" y1="647" x2="544" y2="647" stroke="#d2d7de" stroke-width="2"/>
+  <text class="pass" x="76" y="685" fill="#416b9a">통과 기준</text>
+  <text class="body" x="76" y="723">실행 가능성이 독립적으로 재현됩니다</text>
+  <path class="rise" d="M310 770 L310 815" marker-end="url(#arrow)"/>
+
+  <rect class="step e2" x="42" y="830" rx="22" width="536" height="245"/>
+  <text class="level" x="76" y="874" fill="#74519a">E2</text>
+  <text class="head" x="147" y="874">통제 벤치마크</text>
+  <text class="body" x="76" y="921">강한 고전 기준선 · 동일 예산 · ablation</text>
+  <line x1="76" y1="952" x2="544" y2="952" stroke="#d2d7de" stroke-width="2"/>
+  <text class="pass" x="76" y="990" fill="#74519a">통과 기준</text>
+  <text class="body" x="76" y="1028">통계적 우위 또는 동등성을 확인합니다</text>
+  <path class="rise" d="M310 1075 L310 1120" marker-end="url(#arrow)"/>
+
+  <rect class="step e3" x="42" y="1135" rx="22" width="536" height="245"/>
+  <text class="level" x="76" y="1179" fill="#aa681f">E3</text>
+  <text class="head" x="147" y="1179">전향적 재료 검증</text>
+  <text class="body" x="76" y="1226">blind candidate → 고정밀 계산·실험 확인</text>
+  <line x1="76" y1="1257" x2="544" y2="1257" stroke="#d2d7de" stroke-width="2"/>
+  <text class="pass" x="76" y="1295" fill="#aa681f">통과 기준</text>
+  <text class="body" x="76" y="1333">validated hit가 재검증 뒤에도 유지됩니다</text>
+  <path class="rise" d="M310 1380 L310 1425" marker-end="url(#arrow)"/>
+
+  <rect class="step e4" x="42" y="1440" rx="22" width="536" height="245"/>
+  <text class="level" x="76" y="1484" fill="#28745a">E4</text>
+  <text class="head" x="147" y="1484">반복 가능한 E2E 가치</text>
+  <text class="body" x="76" y="1531">여러 배치 · 시간 · 비용 · 운영 안정성</text>
+  <line x1="76" y1="1562" x2="544" y2="1562" stroke="#d2d7de" stroke-width="2"/>
+  <text class="pass" x="76" y="1600" fill="#28745a">통과 기준</text>
+  <text class="body" x="76" y="1638">가치와 한계가 반복해서 재현됩니다</text>
+
+  <text class="eyebrow" x="42" y="1740">COMPUTE REGIME · 별도의 축</text>
+  <rect class="panel" x="42" y="1770" rx="22" width="536" height="465"/>
+
+  <rect x="72" y="1800" rx="14" width="112" height="40" fill="#eaf1f9"/>
+  <text class="pill" x="103" y="1827" fill="#416b9a">NISQ</text>
+  <text class="regime" x="72" y="1878">변분형 · 얕은 회로</text>
+  <text class="rbody" x="72" y="1915">VQE · quantum kernel/QNN</text>
+  <text class="rbody" x="72" y="1947">QAOA 소규모 실행</text>
+
+  <line x1="72" y1="1978" x2="548" y2="1978" stroke="#d8dde4" stroke-width="2"/>
+  <rect x="72" y="2000" rx="14" width="140" height="40" fill="#f3eef9"/>
+  <text class="pill" x="91" y="2027" fill="#74519a">EARLY FT</text>
+  <text class="regime" x="72" y="2078">작은 logical 회로 · 더 깊은 실행</text>
+  <text class="rbody" x="72" y="2115">small QPE · 오류정정 primitive</text>
+
+  <line x1="72" y1="2146" x2="548" y2="2146" stroke="#d8dde4" stroke-width="2"/>
+  <rect x="72" y="2164" rx="14" width="88" height="40" fill="#edf7f1"/>
+  <text class="pill" x="106" y="2191" fill="#28745a">FT</text>
+  <text class="regime" x="186" y="2191">production QPE</text>
+  <text class="rbody" x="186" y="2220">amplitude estimation</text>
+
+  <text class="rule" x="42" y="2280">NISQ·early FT·FT는 실행 가능성을 말할 뿐,</text>
+  <text class="rule" x="42" y="2310">E2·E3·E4를 자동으로 보증하지 않습니다.</text>
+  <text class="footer" x="42" y="2354">현재 claim을 지지하는 가장 높은 검증 단계로</text>
+  <text class="footer" x="42" y="2380">성숙도를 판정합니다.</text>
+</svg>

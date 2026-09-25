@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 780" role="img" aria-labelledby="title desc">
+  <title id="title">TabPFN uses a released foundation model to predict labels for new rows</title>
+  <desc id="desc">The figure separates TabPFN model pretraining before release from user-time fit and predict. Users provide labeled rows as context and ask for query-row predictions with uncertainty.</desc>
+  <defs>
+    <filter id="softShadow" x="-10%" y="-12%" width="120%" height="128%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#182a2f" flood-opacity="0.14"/>
+    </filter>
+    <filter id="tinyShadow" x="-8%" y="-10%" width="116%" height="124%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#182a2f" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="11" markerHeight="11" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#2f6670"/>
+    </marker>
+    <style>
+      .font { font-family: Pretendard, "Noto Sans KR", "Segoe UI", Arial, sans-serif; }
+      .title { font-size: 34px; font-weight: 850; fill: #1f2c32; letter-spacing: 0; }
+      .subtitle { font-size: 19px; fill: #4d5b62; }
+      .stage { font-size: 17px; font-weight: 800; fill: #2f6670; letter-spacing: 0.5px; }
+      .h2 { font-size: 25px; font-weight: 850; fill: #213238; }
+      .body { font-size: 18px; fill: #425058; }
+      .small { font-size: 15px; fill: #66747a; }
+      .tiny { font-size: 14px; fill: #6a767b; }
+      .white { fill: #ffffff; }
+      .panel { fill: #ffffff; stroke: #d8d0c1; stroke-width: 1.4; }
+      .panelSoft { fill: #fbfaf6; stroke: #e4ddcf; stroke-width: 1.2; }
+      .mint { fill: #edf8f5; stroke: #b9d8d2; stroke-width: 1.2; }
+      .cream { fill: #fff7e8; stroke: #e3cfa8; stroke-width: 1.2; }
+      .rose { fill: #fff0ed; stroke: #e2b8af; stroke-width: 1.2; }
+      .teal { fill: #2f6670; }
+      .ink { fill: #1f2c32; }
+      .red { fill: #a5392d; }
+      .line { stroke: #2f6670; stroke-width: 5; fill: none; stroke-linecap: round; }
+      .dash { stroke: #c9d8d5; stroke-width: 2; stroke-dasharray: 6 8; fill: none; }
+      .tableLine { stroke: #e4d6bd; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="780" fill="#fbfaf6"/>
+
+  <g class="font">
+    <text x="70" y="68" class="title">TabPFN은 배포된 Foundation 모델로 새 행의 라벨을 예측합니다</text>
+    <text x="70" y="99" class="subtitle">모델 제작 단계의 pretraining과</text>
+    <text x="70" y="126" class="subtitle">사용자가 표를 넣어 예측하는 fit/predict 단계를 분리해서 봅니다.</text>
+
+    <rect x="58" y="148" width="405" height="460" rx="22" class="panel" filter="url(#softShadow)"/>
+    <text x="88" y="190" class="stage">MODEL DEVELOPMENT</text>
+    <text x="88" y="225" class="h2">1. 배포 전 pretraining</text>
+    <text x="88" y="254" class="body">여러 synthetic tabular task로</text>
+    <text x="88" y="278" class="body">표 안의 예시 관계를 푸는 prior를 학습합니다.</text>
+
+    <rect x="88" y="310" width="328" height="66" rx="13" class="mint"/>
+    <text x="112" y="338" class="body" font-weight="750">Task A</text>
+    <text x="112" y="362" class="small">[a, b, c] 입력 → d 예측</text>
+
+    <rect x="88" y="392" width="328" height="66" rx="13" class="mint"/>
+    <text x="112" y="420" class="body" font-weight="750">Task B</text>
+    <text x="112" y="444" class="small">[a, b] 입력 → e 예측</text>
+
+    <rect x="88" y="474" width="328" height="66" rx="13" class="mint"/>
+    <text x="112" y="502" class="body" font-weight="750">Task N</text>
+    <text x="112" y="526" class="small">[p, q, r] 입력 → t 예측</text>
+
+    <text x="88" y="570" class="tiny">a, b, d, e는 고정된 업무 용어가 아니라</text>
+    <text x="88" y="590" class="tiny">각 task 안에서 정해지는 열의 역할입니다.</text>
+
+    <path d="M 466 368 L 564 368" class="line" marker-end="url(#arrow)"/>
+
+    <rect x="565" y="224" width="270" height="288" rx="30" class="teal" filter="url(#softShadow)"/>
+    <text x="604" y="278" class="stage white">RELEASED MODEL</text>
+    <text x="604" y="318" class="h2 white">배포된 TabPFN</text>
+    <text x="604" y="350" class="body white">foundation model</text>
+    <line x1="604" y1="374" x2="796" y2="374" stroke="#c6e0dd" stroke-width="1.4" opacity="0.55"/>
+    <text x="604" y="412" class="body white">weights는 이미</text>
+    <text x="604" y="440" class="body white">학습되어 있고,</text>
+    <text x="604" y="468" class="body white">사용자는 labeled rows를</text>
+    <text x="604" y="496" class="body white">context로 제공합니다.</text>
+
+    <path d="M 838 368 L 936 368" class="line" marker-end="url(#arrow)"/>
+
+    <rect x="936" y="148" width="406" height="460" rx="22" class="panel" filter="url(#softShadow)"/>
+    <text x="966" y="190" class="stage">USER-TIME INFERENCE</text>
+    <text x="966" y="225" class="h2">2. 사용자 적용: fit / predict</text>
+    <text x="966" y="254" class="body">labeled rows가 target의 뜻을 정하고,</text>
+    <text x="966" y="278" class="body">query rows에서 빠진 y를 예측합니다.</text>
+
+    <rect x="984" y="292" width="306" height="188" rx="15" class="cream" filter="url(#tinyShadow)"/>
+    <rect x="984" y="292" width="306" height="38" rx="15" fill="#20333a"/>
+    <rect x="984" y="318" width="306" height="12" fill="#20333a"/>
+    <text x="1031" y="318" class="small white" font-weight="800">a</text>
+    <text x="1133" y="318" class="small white" font-weight="800">e</text>
+    <text x="1236" y="318" class="small white" font-weight="800">y</text>
+    <line x1="984" y1="370" x2="1290" y2="370" class="tableLine"/>
+    <line x1="984" y1="416" x2="1290" y2="416" class="tableLine"/>
+    <line x1="1086" y1="292" x2="1086" y2="480" class="tableLine"/>
+    <line x1="1188" y1="292" x2="1188" y2="480" class="tableLine"/>
+    <text x="1018" y="358" class="small">1.2</text>
+    <text x="1120" y="358" class="small">0.4</text>
+    <text x="1211" y="358" class="small">known</text>
+    <text x="1018" y="404" class="small">0.7</text>
+    <text x="1120" y="404" class="small">0.9</text>
+    <text x="1211" y="404" class="small">known</text>
+    <text x="1018" y="450" class="small">1.4</text>
+    <text x="1120" y="450" class="small">0.2</text>
+    <text x="1238" y="450" class="small" font-weight="850">?</text>
+
+    <rect x="1010" y="512" width="240" height="58" rx="15" class="red"/>
+    <text x="1044" y="548" class="body white" font-weight="850">y 예측 + uncertainty</text>
+
+    <rect x="88" y="626" width="1224" height="98" rx="18" class="panelSoft"/>
+    <text x="118" y="667" class="h2">작동 특징</text>
+
+    <rect x="282" y="644" width="300" height="62" rx="13" class="mint"/>
+    <text x="306" y="670" class="body" font-weight="850">사전학습 prior</text>
+    <text x="306" y="693" class="small">여러 표 과제에서 관계 읽는 법을 학습</text>
+
+    <rect x="614" y="644" width="300" height="62" rx="13" class="cream"/>
+    <text x="638" y="670" class="body" font-weight="850">사용 시 context</text>
+    <text x="638" y="693" class="small">labeled rows가 target 의미를 정함</text>
+
+    <rect x="946" y="644" width="300" height="62" rx="13" class="mint"/>
+    <text x="970" y="670" class="body" font-weight="850">예측 출력</text>
+    <text x="970" y="693" class="small">query rows의 y와 uncertainty를 반환</text>
+
+    <path d="M 700 548 L 700 615" class="dash"/>
+    <text x="620" y="596" class="tiny">weights는 고정, 표가 context</text>
+  </g>
+</svg>
