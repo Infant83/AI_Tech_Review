@@ -96,6 +96,26 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-09-25_weekly-oled-inverse-design-generative-validation",
+        title="광전자 분자 역설계의 신뢰도를 규정하는 생성 검증과 화학적 초기화",
+        subtitle="2026년 9월 18–24일 연구 동향 | variable-size 3D 생성의 수정된 DFT 검증, 다중 제약 에이전트, 치환기 효과와 UCCSD-VQE trainability",
+        date="2026-09-25", updated="2026-09-25", category="Materials AI",
+        tags=("OLED", "Molecular Inverse Design", "Molecular Generation", "Latent Flow", "Chemical Agents", "Substituent Effects", "VQE", "Validation"),
+        summary="직접적인 TADF·PhOLED 신작이 없던 주간에 variable-size 3D 생성의 수정된 DFT 검증, 다중 제약 에이전트, 치환기 외삽과 화학적 초기화의 UCCSD-VQE trainability를 함께 읽고, 광전자 분자 역설계의 독립 검증 gate를 제안합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex",
+        ai_system_ko="OpenAI Codex",
+        agents=(PublicAgent("Codex", "primary-source research, bilingual synthesis, scientific copyediting, image direction, deterministic evidence figure, PDF and publication verification", "1차 출처 조사·한영 종합·과학 감수·이미지 구성·결정론적 근거 도표·PDF 및 게시 검증"),),
+        verification_scope=("Four arXiv records posted or meaningfully revised 2026-09-18 through 2026-09-24: version history, methods, datasets, reported numerical results and execution boundaries", "bilingual rendering, verified five-page PDF, metadata, local and reference links, figures and thumbnail consistency", "single-agent source checking; no independent computational reproduction, synthesis or device-level OLED validation"),
+        verification_scope_ko=("2026-09-18~24 공개·의미 있게 개정된 arXiv 기록 4편: 버전 이력·방법·데이터셋·보고 수치·실행 경계", "한영 렌더링·검증한 5쪽 PDF·metadata·로컬 및 참고 링크·그림과 썸네일 정합성", "단일 에이전트 출처 대조; 계산 독립 재현·합성·OLED 소자 수준 검증 없음"),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-09-24",
+        human_review_level="recurring publication authorized; no line-by-line human review",
+        human_review_level_ko="정기 공개 게시 요청에 따라 작성; 문장 단위 사람 검토 없음",
+        disclosure_note_ko="웹 조사·기존 브리프 중복 확인·GitHub 연결·로컬 PDF와 링크 검사·내장 imagegen을 사용했습니다. 한 편은 COLM 2026, 한 편은 EMNLP 2026 채택 논문이고 나머지는 프리프린트이며, 직접적인 신규 TADF·PhOLED 논문은 없습니다. VQE 연구는 정확한 고전 수치 계산으로 실제 QPU·샷 잡음·양자 우위를 검증하지 않았습니다. OLED 적용안과 주간 실험안은 리뷰어 제안입니다.",
+        disclosure_note_en="Used web research, duplicate checking against earlier briefs, GitHub connection, local PDF and link checks, and built-in imagegen. One item is accepted at COLM 2026, one at EMNLP 2026 and the remainder are preprints; none is a direct new TADF or PhOLED study. The VQE study uses exact classical numerical evaluation and does not demonstrate QPU execution, shot noise or quantum advantage. OLED workflow translations and the weekly experiment are reviewer proposals.",
+    ),
+    PublicReview(
         folder="2026-09-21_jev-structured-decisions-agent-harnesses",
         title="에이전트의 작은 판단을 빠르게: Jev의 구조화된 결정과 적용 한계",
         subtitle="System One 모델의 인터페이스·확률 보정·초기 평가를 읽고 연구 하네스의 적용 조건을 살피다",
@@ -3996,4 +4016,3 @@ def main(argv: Iterable[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
