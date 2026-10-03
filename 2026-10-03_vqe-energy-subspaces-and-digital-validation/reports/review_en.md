@@ -188,7 +188,7 @@ A reasonable research proposal is to identify a small subset of candidates for w
 
 ## 12. The choice changes as fault-tolerant hardware improves
 
-VQE uses comparatively short coherent evolution with repeated measurements. QPE demands more substantial state preparation and controlled evolution but resolves energy coherently. With FTQC, variational or subspace preparation could supply a useful initial state before QPE refines the energy. Relevant resources include eigenstate overlap, spectral gaps, Hamiltonian-simulation cost, and physical error-correction overhead.
+VQE aims to combine comparatively short state-preparation circuits with repeated measurements. Actual depth depends on the ansatz and problem. QPE demands more substantial state preparation and controlled evolution but resolves energy coherently. With FTQC, variational or subspace preparation could supply a useful initial state before QPE refines the energy. Relevant resources include eigenstate overlap, spectral gaps, Hamiltonian-simulation cost, and physical error-correction overhead.
 
 VQE can therefore serve as a tool for problem definition, compact state preparation, and identifying correlated sectors, even when a different algorithm performs the final precision calculation. An FTQC reference workload must still be complemented by tests of decoding, logical errors, non-Clifford resources, and real-time control. A classical known-answer workflow exercise does not replace those physical tests.
 
