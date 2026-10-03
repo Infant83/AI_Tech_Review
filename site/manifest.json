@@ -1,5 +1,102 @@
 [
   {
+    "folder": "2026-10-03_vqe-energy-subspaces-and-digital-validation",
+    "title": "VQE의 현재와 다음 단계: 에너지 최소화, 부분공간 계산, 디지털 검증",
+    "subtitle": "분자와 스핀계의 바닥상태를 구하는 원리부터 DecaQ의 400스핀 사례, HI-VQE·SQD와 OLED 응용의 조건까지",
+    "date": "2026-10-03",
+    "updated": "2026-10-03",
+    "category": "Quantum Computing",
+    "tags": [
+      "VQE",
+      "DecaQ",
+      "Quantum Chemistry",
+      "HI-VQE",
+      "SQD",
+      "QSCI",
+      "FTQC",
+      "OLED"
+    ],
+    "summary": "VQE의 변분 원리·측정 비용·최적화와 부분공간 방법을 연결하고, DecaQ의 400스핀 사례가 검증한 범위를 분석합니다. 같은 규모 수치를 갖는 독립 설명 예제와 두 스핀 인터랙티브 계산으로 상태 표현력과 계산 난도를 구분합니다.",
+    "href": "reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/",
+    "thumbnail": "reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/hero.webp",
+    "assets": [
+      "division_ko.svg",
+      "entanglement.svg",
+      "hero.webp",
+      "interactive.js",
+      "review.css"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/",
+        "assets": [
+          "division_en.svg",
+          "entanglement.svg",
+          "hero.webp",
+          "interactive.js",
+          "review.css"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex Work Mode",
+        "system_ko": "OpenAI Codex Work Mode",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 1,
+        "agents": [
+          {
+            "name": "Codex",
+            "role": "primary-source research, bilingual technical synthesis, scientific copyediting, original numerical examples, visual direction, interactive explanation and publication verification",
+            "role_ko": "1차 출처 조사·한영 기술 종합·과학 감수·독립 수치 예제·표지 구성·인터랙티브 해설·게시 검증"
+          }
+        ],
+        "agent_roles": [
+          "Codex — primary-source research, bilingual technical synthesis, scientific copyediting, original numerical examples, visual direction, interactive explanation and publication verification"
+        ],
+        "agent_roles_ko": [
+          "Codex — 1차 출처 조사·한영 기술 종합·과학 감수·독립 수치 예제·표지 구성·인터랙티브 해설·게시 검증"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-10-03",
+        "primary_source_check": true,
+        "scope": [
+          "Public LinkedIn post, DecaQ product scope and company release; original VQE and subspace-method papers and current IBM HI-VQE documentation",
+          "Independent teaching examples: four-spin dense diagonalization, 400-spin commuting product-state energy and term count, two-spin analytical spectra and variational bounds; not a DecaQ reproduction",
+          "Bilingual HTML, protected equations, figures, interactive energy calculations, publication metadata and public links; one authoring agent, no independent review agent"
+        ],
+        "scope_ko": [
+          "LinkedIn 공개 본문·DecaQ 제품 범위와 회사 보도자료·VQE 및 부분공간 원 논문·현재 IBM HI-VQE 문서",
+          "독립 설명 예제: 4스핀 조밀 대각화·400스핀 가환 곱상태 에너지와 항 수·2스핀 분석적 스펙트럼과 변분 상한; DecaQ 재현 아님",
+          "한영 HTML·수식 보호·도표·인터랙티브 에너지 계산·공개 metadata와 링크; 작성 에이전트 1개, 독립 리뷰 에이전트 없음"
+        ],
+        "human_review_level": {
+          "ko": "주제와 공개 게시 요청 확인; 문장 단위 사람 검토 없음",
+          "en": "topic and public posting explicitly requested; no line-by-line human review"
+        }
+      },
+      "note": {
+        "ko": "공개 포스트의 첨부 백서는 읽지 못했으므로 정확한 해밀토니안·엔진·실행시간을 독립 확인하지 않았습니다. DecaQ 수치는 작성자 보고이며, 회사는 범용 고전 하드웨어 실행을 설명합니다. 리뷰의 계산 예제는 원 결과의 재현이 아닙니다. HI-VQE·SQD 논문의 실행 경계와 Deep QSCI의 무잡음 고전 시뮬레이션을 구분했습니다. 실제 QPU 실행·양자 우위·OLED 소자 성능을 새로 검증하지 않았습니다. scientific-stop-slop-ko 감수를 적용했고 표지는 내장 imagegen, 정확한 도표는 분석식·SVG로 제작했습니다. 단일 에이전트 작업입니다.",
+        "en": "The attached white paper was unreadable, so the exact Hamiltonian, engine and runtime were not independently verified. DecaQ numbers are author-reported; the company describes general-purpose classical execution. The review's numerical examples do not reproduce the vendor result. Distinguished HI-VQE and SQD execution evidence from Deep QSCI's noiseless classical simulation. No new physical QPU, quantum-advantage or OLED-device validation was performed. Applied scientific-stop-slop-ko copyediting; the cover uses built-in imagegen and precise figures use analytical formulas and SVG. Single-agent work."
+      }
+    }
+  },
+  {
     "folder": "2026-10-02_weekly-oled-inverse-design-triplet-state-control",
     "title": "청색 OLED의 삼중항 준위 제어와 분자 역설계 검증의 연결",
     "subtitle": "2026년 9월 25일–10월 1일 연구 동향 | bridged resonance 소자, 마스킹 생성, 합성경로, Deep QSCI와 제약 보존 QAOA",
