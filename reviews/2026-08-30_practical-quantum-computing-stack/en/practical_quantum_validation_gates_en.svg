@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920" role="img" aria-labelledby="title desc">
+  <title id="title">Five validation gates for practical quantum computing</title>
+  <desc id="desc">A five-stage evidence map separating the classical baseline, circuit realization, readout, fault-tolerant memory, and manufacturing</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}.title{font:700 32px Arial,sans-serif;fill:#17211d}.sub{font:400 16px Arial,sans-serif;fill:#5f6b65}.stage{font:700 14px Arial,sans-serif;fill:#0f766e;letter-spacing:.35px}.head{font:700 20px Arial,sans-serif;fill:#17211d}.body{font:400 15px Arial,sans-serif;fill:#33413b}.metric{font:700 17px Arial,sans-serif;fill:#25456f}.boundary{font:600 13px Arial,sans-serif;fill:#8b3a3a}.card{fill:#fff;stroke:#d8d5cb;stroke-width:1.5}.rail{stroke:#93bdb7;stroke-width:4}.dot{fill:#0f766e}.pill{fill:#f5eaea;stroke:#dfbcbc}.note{font:400 14px Arial,sans-serif;fill:#5f6b65}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="920"/>
+  <text class="title" x="70" y="62">Five validation gates for practical quantum computing</text>
+  <text class="sub" x="70" y="94">Different costs and evidence levels; this is an assessment path, not an integrated demonstration.</text>
+  <line class="rail" x1="104" y1="158" x2="104" y2="786"/>
+
+  <circle class="dot" cx="104" cy="188" r="11"/>
+  <rect class="card" x="145" y="132" rx="12" width="985" height="112"/>
+  <text class="stage" x="176" y="163">GATE 1 · CLASSICAL BASELINE</text>
+  <text class="head" x="176" y="193">KS-FNO moves the baseline</text>
+  <text class="metric" x="545" y="166">8,504 systems · 59,500 SCF labels · max. 82,500 valence e⁻</text>
+  <text class="body" x="545" y="194">8,250 Mg atoms on 1× NVIDIA B300 · density component focus</text>
+  <rect class="pill" x="866" y="205" rx="12" width="236" height="25"/>
+  <text class="boundary" x="984" y="223" text-anchor="middle">preprint · classical GPU · no QPU</text>
+
+  <circle class="dot" cx="104" cy="323" r="11"/>
+  <rect class="card" x="145" y="267" rx="12" width="985" height="112"/>
+  <text class="stage" x="176" y="298">GATE 2 · CIRCUIT REALIZATION</text>
+  <text class="head" x="176" y="328">The oracle is a synthesis task</text>
+  <text class="metric" x="545" y="301">64×64 coordinates · 1,097 marked · 12 address qubits</text>
+  <text class="body" x="545" y="329">Correctness first · rank: depth, then CX · QMOD/QASM</text>
+  <rect class="pill" x="824" y="340" rx="12" width="278" height="25"/>
+  <text class="boundary" x="963" y="358" text-anchor="middle">official software challenge · no QPU</text>
+
+  <circle class="dot" cx="104" cy="458" r="11"/>
+  <rect class="card" x="145" y="402" rx="12" width="985" height="112"/>
+  <text class="stage" x="176" y="433">GATE 3 · READOUT</text>
+  <text class="head" x="176" y="457"><tspan x="176">A shot becomes data</tspan><tspan x="176" dy="23">through a sensor</tspan></text>
+  <text class="metric" x="545" y="436">PTSET: ~10× large-signal · ~100× small-signal</text>
+  <text class="body" x="545" y="464">Versus conventional rfSET · minimum-integration-time sensitivity</text>
+  <rect class="pill" x="836" y="475" rx="12" width="266" height="25"/>
+  <text class="boundary" x="969" y="493" text-anchor="middle">sensor PoC · not spin-readout fidelity</text>
+
+  <circle class="dot" cx="104" cy="593" r="11"/>
+  <rect class="card" x="145" y="537" rx="12" width="985" height="112"/>
+  <text class="stage" x="176" y="568">GATE 4 · FAULT-TOLERANT MEMORY</text>
+  <text class="head" x="176" y="592"><tspan x="176">Preserving information</tspan><tspan x="176" dy="23">also consumes spacetime</tspan></text>
+  <text class="metric" x="545" y="571">Cmin = Θ[S(K + log(S/ε))]</text>
+  <text class="body" x="545" y="599">Wide K can share reliability cost across logical qubits</text>
+  <rect class="pill" x="824" y="610" rx="12" width="278" height="25"/>
+  <text class="boundary" x="963" y="628" text-anchor="middle">theory bound · FTQC remains possible</text>
+
+  <circle class="dot" cx="104" cy="728" r="11"/>
+  <rect class="card" x="145" y="672" rx="12" width="985" height="128"/>
+  <text class="stage" x="176" y="703">GATE 5 · MANUFACTURING</text>
+  <text class="head" x="176" y="727"><tspan x="176">Scaling also requires</tspan><tspan x="176" dy="23">factories and patient capital</tspan></text>
+  <text class="metric" x="545" y="706">Xanadu: C$195M in a C$893M project · 275 jobs</text>
+  <text class="metric" x="545" y="734">Pasqal: approximately US$360M cash available at closing</text>
+  <rect class="pill" x="786" y="755" rx="12" width="316" height="25"/>
+  <text class="boundary" x="944" y="773" text-anchor="middle">official announcements · not performance</text>
+
+  <text class="note" x="70" y="858">Evidence cutoff: 2026-08-30. Values in different currencies are not combined; every metric remains tied to its source definition and conditions.</text>
+</svg>

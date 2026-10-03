@@ -1,0 +1,250 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VQE Today and Beyond: Energy Minimization, Subspace Methods, and Digital Validation</title><meta name="description" content="A technical review of VQE, measurement costs, optimization, HI-VQE and SQD, and the evidence boundaries of DecaQ’s 400-spin digital case.">
+<link rel="stylesheet" href="review.css"><script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{enableMenu:false}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script><script defer src="interactive.js"></script><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/"><meta property="og:type" content="article"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/hero.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/hero.webp">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/">
+    <meta property="og:title" content="VQE Today and Beyond: Energy Minimization, Subspace Methods, and Digital Validation">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review"><header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="Language"><span class="language-current" lang="en" aria-current="page">English</span><a lang="ko" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/">한국어</a></nav></div></header><p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-10-03 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main><h1>VQE Today and Beyond: Energy Minimization, Subspace Methods, and Digital Validation</h1>
+<p>From the variational principle to DecaQ’s 400-spin case, HI-VQE and SQD, and the requirements of OLED research</p>
+<p>Predicting a molecular energy difference requires both a reliable description of electron correlation and an affordable way to obtain it. A quantum processor offers a different representation of an electronic wavefunction, but preparing that state, reading its energy, and improving it all have costs. The variational quantum eigensolver, or VQE, divides these tasks between parameterized quantum circuits and classical optimization.</p>
+<p>This review starts from <a href="https://www.linkedin.com/posts/alexgeunholee_vqe-on-digital-quantum-computer-ugcPost-7510988368860655616-h2Yv/">Alex G. Lee’s DecaQ VQE post</a>. It proposes a known-answer 400-spin problem as a reference workload for developing future fault-tolerant quantum computing workflows. Assessing that proposal requires understanding what VQE computes, why it becomes difficult, and how recent methods change the quantum processor’s job.</p>
+<figure><img src="hero.webp" alt="Conceptual spin lattice, energy basin, and molecular orbitals representing variational quantum calculations" width="1672" height="941"><figcaption>Conceptual illustration of changing spin and electronic states to lower their energy. It does not depict an actual processor, DecaQ’s Hamiltonian, or measured data. Created with OpenAI’s built-in image generation tool.</figcaption></figure><details class="toc"><summary>Contents</summary><ol><li><a href="#section-1">1. The variational principle becomes a computational procedure</a></li><li><a href="#section-2">2. Physical approximations enter before the circuit is built</a></li><li><a href="#section-3">3. Short circuits trade coherent depth for repeated energy measurements</a></li><li><a href="#section-4">4. Ansatz, optimization, and noise interact</a></li><li><a href="#section-5">5. What the DecaQ post proposes and reports</a></li><li><a href="#section-6">6. An easy 400-spin problem can reproduce the same headline numbers</a></li><li><a href="#section-7">7. A small model shows when entanglement matters</a></li><li><a href="#section-8">8. Compare improvements by the work they change</a></li><li><a href="#section-9">9. HI-VQE and SQD assign configuration discovery to the processor</a></li><li><a href="#section-10">10. Subspaces and partitions can also change the approximate problem</a></li><li><a href="#section-11">11. OLED research needs more than a ground-state energy</a></li><li><a href="#section-12">12. The choice changes as fault-tolerant hardware improves</a></li><li><a href="#section-13">13. Assessment of the post and useful next tests</a></li><li><a href="#section-14">Reading guide and references</a></li></ol></details>
+
+<p>The evidence cutoff is October 3, 2026. The public LinkedIn text and DecaQ’s official product scope were inspected. The attached white paper was unreadable in the public session, so its exact Hamiltonian, ansatz, executable code, and runtime were not verified. The 400-spin model developed below is <strong>an independently constructed teaching example, not a reproduction of DecaQ’s experiment.</strong></p>
+<h2 id="section-1">1. The variational principle becomes a computational procedure</h2>
+<p>For a normalized trial state and a fixed Hamiltonian,</p>
+<div class="math-block">\[E_0\leq E(\boldsymbol\theta)=\langle\psi(\boldsymbol\theta)|H|\psi(\boldsymbol\theta)\rangle,\qquad |\psi(\boldsymbol\theta)\rangle=U(\boldsymbol\theta)|\phi_{\rm ref}\rangle.\]</div>
+<p>U is a parameterized circuit and θ contains rotation angles or related controls. Hartree–Fock is a common molecular reference state. VQE minimizes energy within the states that its circuit can express. The <a href="https://arxiv.org/abs/1304.3061">early demonstration by Peruzzo and colleagues</a> combined a photonic processor with classical optimization for a small HeH⁺ electronic-structure problem.</p>
+<p>This is closely related to Rayleigh–Ritz reasoning. Rather than explicitly storing every trial-wavefunction coefficient in classical memory, the circuit prepares a state and repeated measurements estimate selected expectation values. Compact state preparation and efficient optimization are separate requirements. VQE does not guarantee polynomial-time solution of arbitrary many-body ground-state problems.</p>
+<p>The exact expectation of a physical noisy state also obeys Tr(ρH) ≥ E₀. A finite-shot estimate can fluctuate below that bound, and some mitigation or extrapolation estimators need not correspond to the expectation of a physical state. A reported energy below a reference therefore does not, by itself, demonstrate a better variational wavefunction.</p>
+<h2 id="section-2">2. Physical approximations enter before the circuit is built</h2>
+<p>One convention for a nonrelativistic Born–Oppenheimer electronic Hamiltonian is</p>
+<div class="math-block">\[H=E_{\rm nuc}+\sum_{pq}h_{pq}a_p^\dagger a_q+\frac12\sum_{pqrs}g_{pqrs}a_p^\dagger a_q^\dagger a_s a_r.\]</div>
+<p>Here h and g are one-electron and non-antisymmetrized two-electron integrals in the chosen spin-orbital basis. The basis set, frozen core, and active space must be defined first. Jordan–Wigner or Bravyi–Kitaev transformations then map fermionic operators to Pauli strings. Direct occupation encoding usually assigns one qubit per spin orbital: M spatial orbitals correspond to 2M qubits before reductions such as <a href="https://arxiv.org/abs/1701.08213">symmetry tapering</a>.</p>
+<p>Agreement with CASCI in a small active space tests accuracy within that space. It does not establish recovery of excluded dynamic correlation, basis convergence, environmental effects, or relativistic physics. Comparisons with DFT likewise require a common observable and a clearly specified physical model. Comparing a whole-molecule DFT energy directly with a truncated VQE active-space energy is not a controlled algorithm comparison.</p>
+<h2 id="section-3">3. Short circuits trade coherent depth for repeated energy measurements</h2>
+<p>After mapping, H = ΣₗcₗPₗ and E = Σₗcₗ⟨Pₗ⟩. Expectation values are estimated by repeating state preparation and measurement, either term by term or in compatible groups. For independent term measurements,</p>
+<div class="math-block">\[\operatorname{Var}(\widehat E)=\sum_l\frac{c_l^2\operatorname{Var}(P_l)}{N_l},\qquad N_{\rm tot}^{\rm opt}\approx\frac{\left(\sum_l |c_l|\sqrt{\operatorname{Var}(P_l)}\right)^2}{\epsilon^2}.\]</div>
+<p>Nₗ is the shot allocation and ε the target standard error. The allocation formula assumes known variances, independent measurements, and continuously adjustable shot counts. Grouped measurements introduce covariances. Under otherwise identical conditions, a tenfold improvement in statistical precision therefore costs roughly a hundredfold increase in shots. The number of Pauli terms alone cannot determine that cost.</p>
+<p><a href="https://arxiv.org/abs/1907.13117">Huggins and colleagues</a> use tensor factorization and orbital rotations to reduce measurement requirements. <a href="https://arxiv.org/abs/2012.04001">Gonthier and colleagues’ resource analysis</a> found that contemporary measurement improvements remained insufficient for practical advantage on their molecular set and assumptions. This is a resource assessment for defined workloads, not a general impossibility theorem for every subsequent method.</p>
+<p>End-to-end VQE runtime includes objective evaluations, gradients, shots, resets, state preparation, device latency, and classical processing. A basic parameter-shift derivative typically requires two shifted evaluations per eligible parameter. SPSA can estimate an update direction with two objective evaluations per iteration even for many parameters, but its noise sensitivity and convergence requirements remain part of the total cost.</p>
+<h2 id="section-4">4. Ansatz, optimization, and noise interact</h2>
+<p>UCCSD introduces single and double excitations around a reference state. Its chemical interpretation is useful, but circuit depth can grow rapidly. Hardware-efficient circuits can exploit native connectivity and gates; their ability to express and locate the desired symmetry sector must still be demonstrated. Expressibility, gate fidelity, and energy accuracy are different properties.</p>
+<p>The <a href="https://arxiv.org/abs/1803.11173">original barren-plateau result</a> identifies random-circuit conditions under which gradient signals become exponentially small with system size. It does not say that every VQE has the same problem. <a href="https://arxiv.org/abs/2007.14384">Noise-induced barren plateaus</a> add conditions under which increasing noisy depth suppresses training information. Chemical initialization, symmetry preservation, structured circuits, and staged training are possible responses, rather than universal cures.</p>
+<p><a href="https://arxiv.org/abs/1909.02108">Quantum natural gradient</a> uses quantum-state geometry to define an update direction. Equal parameter changes need not produce equal changes in the state. Estimating or approximating that geometry costs measurements and numerical regularization, so fewer optimization iterations must be weighed against that overhead. Changing the optimizer cannot automatically restore information that the experiment fails to resolve.</p>
+<p>Error mitigation similarly requires a joint assessment of reduced bias and increased variance. Symmetry postselection can discard invalid particle-number outcomes, but discarded shots still cost time. Conserving electron number and S_z does not imply exact S² adaptation. Energy, uncertainty, accepted-shot fraction, and total shots should be reported together.</p>
+<h2 id="section-5">5. What the DecaQ post proposes and reports</h2>
+<p>The post presents VQE as a scientific-workflow reference for future FTQC engineering: constructing Hamiltonians, passing parameters, evaluating energies, optimizing, and linking outputs to their source inputs. Other reference families test oracle behavior, adaptive control, phase processing, and optimization. The following values are <strong>author-reported, not independently executed in this review</strong>.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Public-post item</th>
+<th>Reported value</th>
+<th>Interpretation requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Synthetic lattice</td>
+<td>20×20, maximum width 400</td>
+<td>Distinguish model width from physical QPU qubits</td>
+</tr>
+<tr>
+<td>Variational parameters</td>
+<td>400</td>
+<td>Independence, equivalent angles, and search procedure</td>
+</tr>
+<tr>
+<td>Coupled spin pairs</td>
+<td>760</td>
+<td>Connectivity, signs, and frustration</td>
+</tr>
+<tr>
+<td>One- and two-body X/Z terms</td>
+<td>3,840</td>
+<td>Coefficients and full operator structure</td>
+</tr>
+<tr>
+<td>Known ground-state energy</td>
+<td>−780</td>
+<td>No separate physical energy unit in the post</td>
+</tr>
+<tr>
+<td>Returned energy and error</td>
+<td>−780 and 0</td>
+<td>Numerical precision, tolerance, and evaluation convention</td>
+</tr>
+<tr>
+<td>Optimal-parameter matches</td>
+<td>400/400</td>
+<td>Separation of known-answer data from optimizer inputs</td>
+</tr>
+<tr>
+<td>Dense global statevector</td>
+<td>Reportedly no 2⁴⁰⁰ materialization</td>
+<td>Validity and complexity of the alternative representation</td>
+</tr>
+</tbody></table></div>
+<p>Known-answer workloads are valuable. Sign, register-order, constant-offset, and parameter-binding mistakes can cause a converged optimizer to solve the wrong problem. Source-linked outputs help track such errors. Provenance, however, records what was computed; it does not independently establish correctness or difficult-workload performance.</p>
+<p><a href="https://decaq.ai/">DecaQ’s official product scope</a> limits capacity to supported profiles and states that operator, precision, and workload limits depend on the algorithm family. Its <a href="https://nasa.einnews.com/pr_news/946031992/decaq-launches-cloud-beta-2-with-400-logical-digital-qubits-and-six-quantum-algorithm-families">September 29 company release</a> describes execution on general-purpose classical hardware without physical qubits or a QPU. Its “400 logical qubits” terminology should not be read as an experimental demonstration of 400 error-corrected logical QPU qubits. This review classifies the case as a structured digital computation and workflow exercise on classical hardware. The available evidence does not demonstrate physical-QPU VQE, error correction, or quantum advantage. The engine’s precise classification and arbitrary-circuit coverage cannot be established from the public post alone.</p>
+<p>The proposed reference workloads make sense as software tests. BV and DJ check function semantics, IPE checks conditional control, QPE checks phase information and inverse-QFT handling, and QAOA and VQE check the link between objective evaluation and optimization. These can expose concrete mistakes in qubit ordering, phase signs, control branches, and energy offsets. Checking those semantics in a classical engine and verifying physical quantum states or logical gates require different evidence. The proposal can serve part of an FTQC engineering workflow; demonstrating accelerated hardware development would require additional measures such as development time or error-detection yield.</p>
+<h2 id="section-6">6. An easy 400-spin problem can reproduce the same headline numbers</h2>
+<p>The following construction demonstrates why width and Pauli-term count do not determine computational difficulty. <strong>It is a counterexample to an inference from the public numbers, not a reconstruction or allegation about DecaQ’s undisclosed Hamiltonian.</strong></p>
+<p>Choose known angles 0 &lt; αᵢ &lt; π/2 and define Qᵢ = cos(αᵢ)Zᵢ + sin(αᵢ)Xᵢ. On an open square lattice, set</p>
+<div class="math-block">\[H_{\rm example}=-h\sum_i Q_i-J\sum_{\langle i,j\rangle}Q_iQ_j,\qquad h=0.05,\quad J=1.\]</div>
+<p>A 20×20 grid has 400 sites and 2×20×19 = 760 nearest-neighbor edges. Each one-body term expands into X and Z; each pair term expands into XX, XZ, ZX, and ZZ. With generic angles, there are 2×400 + 4×760 = 3,840 distinct nonzero Pauli terms.</p>
+<p>All Qᵢ commute because they act on different sites. Local basis rotations turn this Hamiltonian into a classical ferromagnetic Ising model. Positive h and J make the all-+1 configuration the unique ground state in that basis:</p>
+<div class="math-block">\[|\psi_0\rangle=\bigotimes_i R_y(\alpha_i)|0\rangle,\qquad E_0=-0.05(400)-760=-780.\]</div>
+<p>For independently parameterized product rotations, its energy is</p>
+<div class="math-block">\[E(\boldsymbol\theta)=-0.05\sum_i\cos(\theta_i-\alpha_i)-\sum_{\langle i,j\rangle}\cos(\theta_i-\alpha_i)\cos(\theta_j-\alpha_j).\]</div>
+<p>The minimum occurs at θᵢ = αᵢ. The construction has 400 known optimal parameters, 3,840 X/Z Pauli terms, an energy of −780, and no need for a global statevector. One energy evaluation takes O(sites + edges) arithmetic. This does not additionally prove that a particular optimizer converges quickly from every initialization.</p>
+<p>For a 2×2 version, this review checked the formula against dense diagonalization of a 16×16 matrix. For 400 spins, it verified the term count and product-state energy. <a href="https://github.com/Infant83/AI_Tech_Review/blob/main/2026-10-03_vqe-energy-subspaces-and-digital-validation/artifacts/verify_examples.py">The calculation code is public</a>. These checks validate the teaching example, not DecaQ’s engine or an unknown many-body ground state.</p>
+<p>Avoiding a dense statevector is good computational design. Tensor networks, stabilizer methods, local-observable causal cones, and analytic structure can also do so. A quantum-advantage claim additionally requires the applicable input family, representation limits, and matched end-to-end comparisons with strong classical alternatives.</p>
+<h2 id="section-7">7. A small model shows when entanglement matters</h2>
+<p>Consider two spins with energies measured in units of coupling J=1 and g≥0:</p>
+<div class="math-block">\[H=-Z_1Z_2-g(X_1+X_2),\qquad E_0=-\sqrt{1+4g^2}.\]</div>
+<p>For generic positive g, the ground state is entangled. Minimizing identical real product rotations gives the optimal product-state energy −1−g² for g≤1 and −2g for g≥1. Define Φ⁺=(|00⟩+|11⟩)/√2 and Ψ⁺=(|01⟩+|10⟩)/√2. The entangled family cos(t)Φ⁺+sin(t)Ψ⁺ has E(t)=−cos(2t)−2g sin(2t) and can reach the exact minimum.</p>
+<figure><img src="entanglement.svg" alt="Exact and product-state ground energies in an independently constructed two-spin model" width="1100" height="650"><figcaption>Analytic teaching model H=−Z₁Z₂−g(X₁+X₂). At g=0.5, the best product energy is −1.25 and the exact energy is −√2≈−1.414214. This is not a company or molecular benchmark.</figcaption></figure>
+
+<section class="lab" aria-labelledby="lab-title"><h3 id="lab-title">Explore the two-spin energy</h3><p>Teaching model H=−ZZ−g(XI+IX), J=1. Adjust the field g and angle t of the entangled trial state. Results use analytical formulas without shots or device noise. Defaults g=0.5 and t=0.25 are review examples.</p><div class="controls"><div class="control"><label for="field-g">Transverse field g = <output id="g-value">0.500</output></label><input type="range" id="field-g" min="0" max="2" step="0.005" value="0.5"></div><div class="control"><label for="trial-t">Entangled trial-state angle t = <output id="t-value">0.2500</output> rad</label><input type="range" id="trial-t" min="0" max="0.7853981633974483" step="any" value="0.25"></div></div><div class="lab-buttons"><button type="button" data-optimize>Optimize t for this g</button><button type="button" data-reset>Reset</button></div><table class="lab-readout"><thead><tr><th>State / space</th><th>E / J</th><th>Error vs E₀</th></tr></thead><tbody><tr><td>Exact ground state</td><td data-energy="exact">—</td><td class="gap" data-error="exact">—</td></tr><tr><td>Best product state</td><td data-energy="product">—</td><td class="gap" data-error="product">—</td></tr><tr><td>Current entangled trial state</td><td data-energy="trial">—</td><td class="gap" data-error="trial">—</td></tr><tr><td>Subspace |00⟩, |11⟩</td><td data-energy="subspace">—</td><td class="gap" data-error="subspace">—</td></tr></tbody></table><svg class="lab-plot" viewBox="0 0 750 350" role="img" aria-label="Trial-state angle and energy"><path d="M62 44 V279 H700" fill="none" stroke="#97a6a8"/><text x="10" y="50">1</text><text x="10" y="283">−5</text><text x="60" y="310">0</text><text x="671" y="310">π/4</text><text x="285" y="340">t (rad)</text><text x="64" y="24">E / J</text><line data-bound x1="62" x2="700" y1="120" y2="120" stroke="#116f79" stroke-width="2" stroke-dasharray="7 5"/><path data-curve d="M62 122 H700" fill="none" stroke="#b44e3a" stroke-width="3"/><circle data-point cx="260" cy="130" r="7" fill="#b44e3a" stroke="white" stroke-width="2"/></svg><p>The dot marks the current trial state, the curve shows E(t), and the dashed line shows exact E₀. Optimize inserts t*=½ arctan(2g). This is an analytical teaching example, not a QPU execution or vendor benchmark.</p><noscript><p>JavaScript is required for the interactive calculation. The static figure and analytical formulas above provide the same reference.</p></noscript></section>
+
+<p>Standard VQE needs an ansatz that can represent the relevant entanglement. Subspace methods need the right basis states and a reliable optimization of their coefficients. Retaining only |00⟩ and |11⟩ gives energy −1 in this model, omitting the transverse-field connections to |01⟩ and |10⟩. Increasing shots cannot remove that truncation error while the selected space stays fixed.</p>
+<h2 id="section-8">8. Compare improvements by the work they change</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Changes</th>
+<th>Potential benefit</th>
+<th>Remaining cost</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UCCSD, symmetry, chemical initialization</td>
+<td>Trial states and starting points</td>
+<td>Physical structure guides search</td>
+<td>Depth and active-space approximations</td>
+</tr>
+<tr>
+<td>ADAPT-VQE and qubit-ADAPT families</td>
+<td>Incremental operator selection</td>
+<td>Fewer unnecessary gates and parameters</td>
+<td>Operator-pool screening measurements</td>
+</tr>
+<tr>
+<td>Factorization, grouping, shot allocation</td>
+<td>Energy estimation</td>
+<td>Lower measurement burden</td>
+<td>Basis rotations and covariance treatment</td>
+</tr>
+<tr>
+<td>QNG, SPSA, staged optimization</td>
+<td>Update procedure</td>
+<td>Workload-dependent convergence improvement</td>
+<td>Geometry, noise, and initialization</td>
+</tr>
+<tr>
+<td>Symmetry checks and mitigation</td>
+<td>Estimator bias</td>
+<td>Reduced device errors</td>
+<td>Shot loss and increased variance</td>
+</tr>
+<tr>
+<td>iQCC, fragmentation, embedding</td>
+<td>Operators or problem partition</td>
+<td>Redistributed circuit and register demands</td>
+<td>Operator growth and boundary correlation</td>
+</tr>
+<tr>
+<td>QSE and Krylov methods</td>
+<td>State subspaces</td>
+<td>Corrections and excited states</td>
+<td>Matrix measurement and conditioning</td>
+</tr>
+<tr>
+<td>QSCI, SQD, HI-VQE</td>
+<td>Configuration selection and classical diagonalization</td>
+<td>Offload quantum energy measurements</td>
+<td>Sample quality, subspace size, classical memory</td>
+</tr>
+</tbody></table></div>
+<p><a href="https://arxiv.org/abs/1812.11173">ADAPT-VQE</a> grows a circuit by selecting operators that offer useful energy reduction. Pool screening contributes to its total cost, so the shortest final circuit is not necessarily the fastest complete workflow. The original molecular results were numerical simulations rather than a universal hardware advantage demonstration.</p>
+<p><a href="https://arxiv.org/abs/1906.11192">iQCC</a> repeatedly transforms the Hamiltonian. Reducing wavefunction-circuit demands can increase the number of classically handled operator terms. Classical CPU/GPU emulation and physical QPU execution must remain separate evidence categories. Our <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-24_oti-iqcc-oled-quantum-emulation/index.html">earlier OLED iQCC review</a> develops this distinction.</p>
+<h2 id="section-9">9. HI-VQE and SQD assign configuration discovery to the processor</h2>
+<figure><img src="division_en.svg" alt="Quantum and classical roles in energy-measurement VQE and sampled-subspace methods" width="1000" height="490"><figcaption>The information read from the processor changes between the two approaches. HI-VQE and SQD implementations need not share the same circuit-training procedure. Original explanatory schematic.</figcaption></figure>
+
+<p>In conventional VQE, the processor estimates the energy of its prepared state. In QSCI, SQD, and HI-VQE workflows, it samples occupation bitstrings; classical computation builds and diagonalizes a Hamiltonian in the selected determinant space. The diagonalization determines the output wavefunction coefficients.</p>
+<div class="math-block">\[(H_{\cal S})_{xy}=\langle x|H|y\rangle,\qquad H_{\cal S}\boldsymbol c=E_{\cal S}\boldsymbol c,\qquad E_{\cal S}\geq E_0.\]</div>
+<p>The bound requires a valid subspace of the same Hamiltonian and sufficiently accurate matrix construction and diagonalization. Noisy samples can yield a poor subspace while preserving this variational principle. The bound alone does not certify closeness to the full ground energy. Determinants are orthogonal, unlike generic QSE states, so the overlap matrix is the identity.</p>
+<p><a href="https://quantum.cloud.ibm.com/docs/en/guides/qunova-chemistry">IBM’s current HI-VQE documentation</a> describes iterative subspace construction, screening before and after diagonalization, optional classical expansion, and circuit updates. The circuit is trained to find useful configurations without reproducing every ground-state amplitude. Invalid particle-number or spin-projection samples can be recovered or discarded. Missing configurations and difficult training remain possible.</p>
+<p><a href="https://arxiv.org/html/2503.06292v2">HI-VQE v2, Table 2</a> reports NH₃ in 6-31G with 10 electrons, 15 spatial orbitals, and 30 qubits: energy −56.29215769 Ha from 199,809 determinants, against CASCI −56.29239989 Ha from 9,018,009 determinants. Direct subtraction gives <strong>0.24220 mHa</strong> error; the determinant ratio is approximately <strong>2.216%</strong>. This demonstrates compact-space accuracy for that case, not a corresponding runtime speedup. Accurate energy also does not automatically imply equally accurate dipoles or transition properties.</p>
+<p><a href="https://arxiv.org/html/2405.05068v3">The large SQD experiment</a> combines Heron QPU samples with Fugaku computation. Total device widths were 58, 45, and 77 for nitrogen and the iron–sulfur clusters. Supplementary Table S1 distinguishes 72 occupation-encoding qubits from 77 including auxiliaries for [4Fe–4S]; the largest circuit contains 3,590 two-qubit gates. The largest classical projections reach 100 million configurations, with 64 Fugaku nodes per batch and 100 batches. Exceeding exact-diagonalization sizes does not establish superiority over every classical approximation.</p>
+<p>Appropriate comparisons include HCI, SHCI, CIPSI, DMRG, and suitable coupled-cluster or multireference methods. A useful ablation replaces QPU-selected configurations with strong classical selection while matching target accuracy and total runtime. Subspace convergence, batch variability, shots, and classical memory should be reported alongside energies.</p>
+<h2 id="section-10">10. Subspaces and partitions can also change the approximate problem</h2>
+<p><a href="https://arxiv.org/abs/1603.05681">QSE</a> applies operators to a reference state, measures Hamiltonian and overlap matrices, and solves Hc=ESc. It can provide corrections and excited states, but nearly dependent basis vectors can amplify measurement errors. Overlap cutoffs and stability need inspection. Our <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/index.html">CASH-QSE review</a> explores a complementary division between classical reference states and quantum corrections.</p>
+<p><a href="https://arxiv.org/abs/2501.09702">Sample-Based Krylov Diagonalization</a> combines sampling from time-evolved Krylov states with classical diagonalization. Its polynomial-convergence result depends on Krylov assumptions and ground-state sparsity; it is not unconditional efficiency for arbitrary many-body systems.</p>
+<p>The September 29, 2026 <a href="https://arxiv.org/html/2609.36708v1">Deep QSCI preprint</a> reuses benzene-monomer calculations and reduces the quantum register from 40 to 20 qubits. Its Classiq circuits use <strong>noiseless classical simulation</strong>. At 4.0 Å with 6-31G**, the model interaction is −0.908 kcal/mol versus −1.139 kcal/mol for the comparison CCSD(T) result. Different Hamiltonian construction and BSSE treatment prevent a controlled accuracy comparison. Neutral-monomer spaces exclude intermonomer charge transfer, and the variational bound applies only to the model Hamiltonian. Such exclusions are especially relevant when considering OLED exciplex and CT states.</p>
+<h2 id="section-11">11. OLED research needs more than a ground-state energy</h2>
+<p>OLED targets include S₁, T₁, ΔE_ST, local-excitation and charge-transfer character, SOC, vibronic coupling, and geometry or environmental changes. Ground-state VQE alone does not predict excited-state lifetimes or RISC. <a href="https://arxiv.org/abs/1805.08138">Variational quantum deflation</a> penalizes overlaps with previously found states to target excitations. QSE and state-averaged methods are alternatives, with additional measurement and state-selection demands.</p>
+<p>For ΔE_ST = E(S₁)−E(T₁), correlated errors matter:</p>
+<div class="math-block">\[\operatorname{Var}(\Delta E_{ST})=\operatorname{Var}(E_{S_1})+\operatorname{Var}(E_{T_1})-2\operatorname{Cov}(E_{S_1},E_{T_1}).\]</div>
+<p>The conventional chemical-accuracy scale of about 1.6 mHa is roughly 0.044 eV. It is not a universal sufficient tolerance for TADF gaps, state ordering, or rates. Separately accepted state-energy errors can add or cancel in a difference. Balanced active spaces, orbitals, symmetry treatment, and state descriptions are necessary.</p>
+<p>A reasonable research proposal is to identify a small subset of candidates for which TDDFT/TDA and classical multireference calculations become unreliable, then test the relevant active spaces with VQE or sampled-subspace methods. PhOLED problems additionally require relativistic modeling and SOC matrix elements. Improved isolated-molecule energies should not be directly translated into solid-state emission efficiency or degradation stability. This is a proposed research strategy, not an established OLED quantum-advantage result.</p>
+<h2 id="section-12">12. The choice changes as fault-tolerant hardware improves</h2>
+<p>VQE aims to combine comparatively short state-preparation circuits with repeated measurements. Actual depth depends on the ansatz and problem. QPE demands more substantial state preparation and controlled evolution but resolves energy coherently. With FTQC, variational or subspace preparation could supply a useful initial state before QPE refines the energy. Relevant resources include eigenstate overlap, spectral gaps, Hamiltonian-simulation cost, and physical error-correction overhead.</p>
+<p>VQE can therefore serve as a tool for problem definition, compact state preparation, and identifying correlated sectors, even when a different algorithm performs the final precision calculation. An FTQC reference workload must still be complemented by tests of decoding, logical errors, non-Clifford resources, and real-time control. A classical known-answer workflow exercise does not replace those physical tests.</p>
+<h2 id="section-13">13. Assessment of the post and useful next tests</h2>
+<p>The useful proposal is to inspect a complete scientific computation with independently known reference answers. The public post reports width and answer agreement, but it lacks enough accessible detail to assess generic entangled workloads, total computational cost, or independent reproducibility. Obtaining the attached white paper would allow a more specific assessment.</p>
+<p>Useful follow-up evidence includes the exact Hamiltonian and coefficients, supported operators and circuits, the ground-state derivation, separation of answer data from optimizer inputs, energy values at arbitrary test parameters, multiple starts and failures, and runtime, memory, and precision. Tests can progress from locally rotated easy models to noncommuting or frustrated systems and chemically correlated active spaces, using exact diagonalization, tensor networks, or selected CI as appropriate references. Source-linked records should accompany those comparisons.</p>
+<p>VQE development increasingly redistributes work among circuits, measurements, state search, configuration selection, and classical diagonalization. For materials research, the relevant outcome is whether this division reduces the error in a target property and the complete computational cost. The DecaQ post is a starting point for workflow validation; it does not establish generic 400-qubit quantum computation or physical FTQC.</p>
+<h2 id="section-14">Reading guide and references</h2>
+<p>Start with Peruzzo’s original VQE paper and Tilly’s review, then read the measurement-resource analysis. Comparing ADAPT-VQE with HI-VQE and SQD separates circuit compression from changing the quantum measurement task. For excited states and OLED applications, add VQD, QSE, and the modeling boundaries of Deep QSCI.</p>
+<ol>
+<li><a href="https://www.linkedin.com/posts/alexgeunholee_vqe-on-digital-quantum-computer-ugcPost-7510988368860655616-h2Yv/">Alex G. Lee — public DecaQ VQE post</a>. Public text inspected; attached white paper unread.</li>
+<li><a href="https://decaq.ai/">DecaQ official product and supported scope</a>. Company description; accessed 2026-10-03.</li>
+<li><a href="https://arxiv.org/abs/1304.3061">Peruzzo et al., A variational eigenvalue solver on a quantum processor</a>. Nature Communications 5, 4213 (2014), DOI: 10.1038/ncomms5213.</li>
+<li><a href="https://arxiv.org/abs/2111.05176">Tilly et al., The Variational Quantum Eigensolver: a review of methods and best practices</a>. Physics Reports 986 (2022), DOI: 10.1016/j.physrep.2022.08.003.</li>
+<li><a href="https://arxiv.org/abs/1701.08213">Bravyi et al., Tapering off qubits to simulate fermionic Hamiltonians</a>.</li>
+<li><a href="https://arxiv.org/abs/1907.13117">Huggins et al., Efficient and Noise Resilient Measurements for Quantum Chemistry</a>. npj Quantum Information 7, 23 (2021).</li>
+<li><a href="https://arxiv.org/abs/2012.04001">Gonthier et al., Measurements as a roadblock to near-term practical quantum advantage in chemistry</a>. Physical Review Research 4, 033154 (2022).</li>
+<li><a href="https://arxiv.org/abs/1803.11173">McClean et al., Barren plateaus in quantum neural network training landscapes</a>.</li>
+<li><a href="https://arxiv.org/abs/2007.14384">Wang et al., Noise-Induced Barren Plateaus in Variational Quantum Algorithms</a>.</li>
+<li><a href="https://arxiv.org/abs/1909.02108">Stokes et al., Quantum Natural Gradient</a>.</li>
+<li><a href="https://arxiv.org/abs/1812.11173">Grimsley et al., An adaptive variational algorithm for exact molecular simulations</a>.</li>
+<li><a href="https://arxiv.org/abs/1906.11192">Ryabinkin et al., Iterative Qubit Coupled Cluster approach with efficient screening of generators</a>.</li>
+<li><a href="https://arxiv.org/html/2503.06292v2">Pellow-Jarman et al., HI-VQE v2</a>. Preprint; methods and NH₃ Table 2 checked.</li>
+<li><a href="https://quantum.cloud.ibm.com/docs/en/guides/qunova-chemistry">IBM Quantum — HI-VQE Chemistry</a>. Official implementation description.</li>
+<li><a href="https://arxiv.org/html/2405.05068v3">Robledo-Moreno et al., Chemistry Beyond the Scale of Exact Diagonalization on a Quantum-Centric Supercomputer</a>. Methods and Supplementary Table S1 checked.</li>
+<li><a href="https://arxiv.org/abs/1603.05681">McClean et al., Hybrid Quantum-Classical Hierarchy for Mitigation of Decoherence and Determination of Excited States</a>.</li>
+<li><a href="https://arxiv.org/abs/2501.09702">Yu et al., Quantum-Centric Algorithm for Sample-Based Krylov Diagonalization</a>.</li>
+<li><a href="https://arxiv.org/html/2609.36708v1">Tajima, Sato et al., Deep QSCI for the benzene dimer</a>. September 29, 2026 preprint; methods, results, and model limits checked.</li>
+<li><a href="https://arxiv.org/abs/1805.08138">Higgott et al., Variational Quantum Computation of Excited States</a>.</li>
+<li><a href="https://nasa.einnews.com/pr_news/946031992/decaq-launches-cloud-beta-2-with-400-logical-digital-qubits-and-six-quantum-algorithm-families">DecaQ Cloud Beta 2 company release</a>. 2026-09-29; distributed through EIN Presswire. This is a company release, not independent validation or a NASA announcement.</li>
+</ol>
+<p>Scientific copyedit: Removed unsupported scale and speedup language and repetitive contrasts. Preserved the post’s numerical claims, active spaces, units, and execution boundaries. The DecaQ white paper and independent engine reproduction remain unverified.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source research, bilingual technical synthesis, scientific copyediting, original numerical examples, visual direction, interactive explanation and publication verification</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>Public LinkedIn post, DecaQ product scope and company release; original VQE and subspace-method papers and current IBM HI-VQE documentation; Independent teaching examples: four-spin dense diagonalization, 400-spin commuting product-state energy and term count, two-spin analytical spectra and variational bounds; not a DecaQ reproduction; Bilingual HTML, protected equations, figures, interactive energy calculations, publication metadata and public links; one authoring agent, no independent review agent</dd></div>
+          <div><dt>Human review record</dt><dd>topic and public posting explicitly requested; no line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-10-03</dd></div>
+        </dl>
+        <p class="disclosure-note">The attached white paper was unreadable, so the exact Hamiltonian, engine and runtime were not independently verified. DecaQ numbers are author-reported; the company describes general-purpose classical execution. The review&#x27;s numerical examples do not reproduce the vendor result. Distinguished HI-VQE and SQD execution evidence from Deep QSCI&#x27;s noiseless classical simulation. No new physical QPU, quantum-advantage or OLED-device validation was performed. Applied scientific-stop-slop-ko copyediting; the cover uses built-in imagegen and precise figures use analytical formulas and SVG. Single-agent work.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">AI Tech Review · 2026-10-03</div></main>
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body></html>

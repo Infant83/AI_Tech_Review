@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Shadow AI 발생 메커니즘</title>
+  <desc id="desc">외부 AI 체감에서 조직학습 실패까지 이어지는 단계별 흐름</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}
+      .card{fill:#fff;stroke:#d9d5c9;stroke-width:2}
+      .alt{fill:#f3f0e8;stroke:#d9d5c9;stroke-width:2}
+      .risk{fill:#fff4f5;stroke:#a50034;stroke-width:2}
+      .arrow{stroke:#666;stroke-width:2.6;fill:none;marker-end:url(#arrow)}
+      .rArrow{stroke:#a50034;stroke-width:3.2;fill:none;marker-end:url(#arrowRed)}
+      .h{font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:30px;font-weight:700;fill:#252525}
+      .t{font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:20px;fill:#333}
+      .s{font-family:'Malgun Gothic','Apple SD Gothic Neo',Arial,sans-serif;font-size:17px;fill:#5d5d57}
+      .n{font-family:Arial,sans-serif;font-size:20px;font-weight:700;fill:#fff}
+      .badge{fill:#a50034}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#666"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#a50034"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="760"/>
+  <text x="70" y="70" class="h">Shadow AI는 도구 이름보다 운영 경로의 실패에서 생깁니다</text>
+  <text x="70" y="108" class="s">단계가 뒤로 갈수록 개인의 문제가 아니라 조직이 보지 못한 업무부하와 리스크가 커집니다.</text>
+
+  <rect x="70" y="160" width="245" height="122" rx="18" class="card"/>
+  <circle cx="105" cy="194" r="20" class="badge"/><text x="99" y="201" class="n">1</text>
+  <text x="135" y="196" class="t">외부 AI 체감</text>
+  <text x="95" y="232" class="s">개인 계정과 외부 SaaS에서</text>
+  <text x="95" y="257" class="s">새로운 작업 속도를 경험</text>
+
+  <rect x="365" y="160" width="245" height="122" rx="18" class="alt"/>
+  <circle cx="400" cy="194" r="20" class="badge"/><text x="394" y="201" class="n">2</text>
+  <text x="430" y="196" class="t">사내 경로 부재</text>
+  <text x="390" y="232" class="s">승인, 보안, 구매, 망분리가</text>
+  <text x="390" y="257" class="s">빠른 실험을 받쳐주지 못함</text>
+
+  <rect x="660" y="160" width="245" height="122" rx="18" class="card"/>
+  <circle cx="695" cy="194" r="20" class="badge"/><text x="689" y="201" class="n">3</text>
+  <text x="725" y="196" class="t">기대치 상승</text>
+  <text x="685" y="232" class="s">보고서, 영상, 코드, 자동화의</text>
+  <text x="685" y="257" class="s">속도와 품질 요구가 올라감</text>
+
+  <rect x="955" y="160" width="175" height="122" rx="18" class="risk"/>
+  <circle cx="990" cy="194" r="20" class="badge"/><text x="984" y="201" class="n">4</text>
+  <text x="1020" y="196" class="t">우회</text>
+  <text x="980" y="232" class="s">퇴근 후 실험</text>
+  <text x="980" y="257" class="s">개인 구독</text>
+
+  <path d="M315 221 L365 221" class="arrow"/>
+  <path d="M610 221 L660 221" class="arrow"/>
+  <path d="M905 221 L955 221" class="rArrow"/>
+
+  <rect x="190" y="390" width="245" height="126" rx="18" class="risk"/>
+  <circle cx="225" cy="426" r="20" class="badge"/><text x="219" y="433" class="n">5</text>
+  <text x="255" y="428" class="t">숨은 노동</text>
+  <text x="215" y="464" class="s">프롬프트, 검증, 재작성,</text>
+  <text x="215" y="489" class="s">증빙, 내부 재현이 늘어남</text>
+
+  <rect x="490" y="390" width="245" height="126" rx="18" class="alt"/>
+  <circle cx="525" cy="426" r="20" class="badge"/><text x="519" y="433" class="n">6</text>
+  <text x="555" y="428" class="t">기록 공백</text>
+  <text x="515" y="464" class="s">근태와 성과지표에는</text>
+  <text x="515" y="489" class="s">최종 산출물만 남음</text>
+
+  <rect x="790" y="390" width="245" height="126" rx="18" class="risk"/>
+  <circle cx="825" cy="426" r="20" class="badge"/><text x="819" y="433" class="n">7</text>
+  <text x="855" y="428" class="t">학습 실패</text>
+  <text x="815" y="464" class="s">보안팀은 위험을, 팀장은</text>
+  <text x="815" y="489" class="s">실제 시간을 보지 못함</text>
+
+  <path d="M1042 282 C1042 350, 913 350, 913 390" class="rArrow"/>
+  <path d="M435 453 L490 453" class="arrow"/>
+  <path d="M735 453 L790 453" class="arrow"/>
+
+  <rect x="260" y="606" width="680" height="96" rx="24" class="risk"/>
+  <text x="330" y="646" class="t">결과: 전환 비용은 실무자에게 먼저 내려옵니다.</text>
+  <text x="330" y="674" class="s">조직은 위험과 시간을 늦게 보게 됩니다.</text>
+  <path d="M912 516 C894 570, 750 590, 692 612" class="rArrow"/>
+</svg>

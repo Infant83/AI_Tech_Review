@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Quantum computing full-stack research map</title>
+  <desc id="desc">Four layers—hardware and I/O, state sampling and measurement, compilation and fault tolerance, and applications and validation—with actual-QPU and numerical results plus a total-cost ledger.</desc>
+  <rect width="1600" height="1120" rx="36" fill="#071622"/>
+  <text x="90" y="92" fill="#F2F8FC" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="750">Beyond qubit counts: four layers of bottlenecks</text>
+  <text x="90" y="138" fill="#9FB7C8" font-family="Inter, Arial, sans-serif" font-size="24">Compare each improvement only within the layer and cost function it measured</text>
+
+  <g font-family="Inter, Arial, sans-serif" font-size="20" font-weight="650">
+    <rect x="1070" y="66" width="174" height="42" rx="21" fill="#0E5F68"/><text x="1092" y="94" fill="#DFFFFB">● Actual QPU</text>
+    <rect x="1260" y="66" width="230" height="42" rx="21" fill="#294A68"/><text x="1282" y="94" fill="#E3F0FF">◆ Numeric/compiler</text>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="80" y="190" width="700" height="330" rx="26" fill="#0C2633" stroke="#2A9FA7" stroke-width="2"/>
+    <rect x="106" y="216" width="220" height="40" rx="20" fill="#0E5F68"/>
+    <text x="130" y="244" fill="#DFFFFB" font-size="20" font-weight="700">1  Hardware &amp; I/O</text>
+    <text x="110" y="306" fill="#F4FAFD" font-size="31" font-weight="750">Control must scale with the qubits</text>
+    <text x="110" y="354" fill="#B7CBD7" font-size="23">USTC · 1490 nm optical link → 4 K photodiode</text>
+    <text x="110" y="392" fill="#FFFFFF" font-size="23" font-weight="650">2 transmons: 1Q 99.915% · CZ pure 99.676%</text>
+    <text x="110" y="433" fill="#F1B883" font-size="21">Limit  Thousands of channels are a thermal estimate</text>
+    <text x="110" y="480" fill="#7AD4D0" font-size="20" font-weight="700">Next  concurrency · drift · total cooling load</text>
+
+    <rect x="820" y="190" width="700" height="330" rx="26" fill="#0C2633" stroke="#4E8DC2" stroke-width="2"/>
+    <rect x="846" y="216" width="340" height="40" rx="20" fill="#294A68"/>
+    <text x="870" y="244" fill="#E3F0FF" font-size="20" font-weight="700">2  States, samples &amp; measurement</text>
+    <text x="850" y="306" fill="#F4FAFD" font-size="31" font-weight="750">Make every execution more informative</text>
+    <text x="850" y="354" fill="#B7CBD7" font-size="23">IBM 100 sites: CNOT depth 18–39</text>
+    <text x="850" y="392" fill="#FFFFFF" font-size="23" font-weight="650">MC-PQE 5–10× SE↓ · DF-SQD fewer shots</text>
+    <text x="850" y="433" fill="#F1B883" font-size="21">Limits  DMRG baseline · basis noise · large classical CI</text>
+    <text x="850" y="480" fill="#8DBCE3" font-size="20" font-weight="700">Next  depth · groups · shots · end-to-end time</text>
+
+    <rect x="80" y="558" width="700" height="330" rx="26" fill="#0C2633" stroke="#A47BC1" stroke-width="2"/>
+    <rect x="106" y="584" width="350" height="40" rx="20" fill="#583D70"/>
+    <text x="130" y="612" fill="#F1E3FF" font-size="20" font-weight="700">3  Compilation &amp; fault tolerance</text>
+    <text x="110" y="674" fill="#F4FAFD" font-size="31" font-weight="750">FTQC uses a different cost function</text>
+    <text x="110" y="722" fill="#B7CBD7" font-size="23">SpiderLS: lattice-surgery volume 49.2%↓</text>
+    <text x="110" y="760" fill="#FFFFFF" font-size="23" font-weight="650">BB-code MCT: inter-module instructions 16.02%↓</text>
+    <text x="110" y="801" fill="#F1B883" font-size="21">Limit  Compiler/logical estimate, no FT QPU run</text>
+    <text x="110" y="848" fill="#CF9EF0" font-size="20" font-weight="700">Next  patches · cycles · factories · routing</text>
+
+    <rect x="820" y="558" width="700" height="330" rx="26" fill="#0C2633" stroke="#C98B4E" stroke-width="2"/>
+    <rect x="846" y="584" width="270" height="40" rx="20" fill="#6E4728"/>
+    <text x="870" y="612" fill="#FFEBD6" font-size="20" font-weight="700">4  Applications &amp; validation</text>
+    <text x="850" y="674" fill="#F4FAFD" font-size="31" font-weight="750">Small quantum kernel, large workflow</text>
+    <text x="850" y="722" fill="#B7CBD7" font-size="23">D-Wave: latent sampler · validity 96.97%</text>
+    <text x="850" y="760" fill="#FFFFFF" font-size="23" font-weight="650">QuEra &amp; IonQ: industrial QPU proofs of concept</text>
+    <text x="850" y="801" fill="#F1B883" font-size="21">Limits  uniqueness 51.92% · no classical speedup</text>
+    <text x="850" y="848" fill="#F0B779" font-size="20" font-weight="700">Next  valid solutions · final properties · total cost</text>
+  </g>
+
+  <rect x="80" y="930" width="1440" height="124" rx="24" fill="#102F3E" stroke="#3D6477"/>
+  <text x="110" y="976" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="750">Full-stack resource ledger</text>
+  <text x="110" y="1024" fill="#BBD0DB" font-family="Inter, Arial, sans-serif" font-size="21">problem scale · compiled 2Q depth · shots · valid/discard rate · mitigation · QPU + classical time · memory · energy/cost · uncertainty · Classical Champion</text>
+</svg>
