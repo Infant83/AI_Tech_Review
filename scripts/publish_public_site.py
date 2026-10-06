@@ -96,6 +96,38 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-06_quantum-quasiparticles-and-structured-computation",
+        title="엑시톤에서 최적해까지: 물리적 구조가 바꾸는 양자계산 비용",
+        subtitle="다중 엑시톤의 Bethe–Salpeter 모형, 구조를 이용한 어닐링·상태준비, 그리고 공정한 검증의 조건",
+        date="2026-10-06", updated="2026-10-06", category="Quantum Computing",
+        tags=("Excitons", "GW/BSE", "OLED", "FTQC", "D-Wave", "State Preparation", "QML", "QEC"),
+        summary="엑시톤·GW/BSE의 물리부터 전체 해밀토니안 모형과의 자원 비교, 큐비트–게이트 절충과 상태준비 비용을 해설합니다. D-Wave의 최적해 다양성, ASPIRE, QML 정규화와 SMP 재분석을 통해 구조를 이용한 개선의 검증 조건을 짚습니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
+        agents=(
+            PublicAgent("Codex", "lead synthesis, Korean writing, mathematical teaching examples, deterministic figures, typesetting and publication verification", "전체 종합·한국어 작성·설명용 수식·결정론적 도표·조판·게시 검증"),
+            PublicAgent("verify_oct6", "BSE and D-Wave primary-source verification", "BSE·D-Wave 원문 수치·자원 조건 검증"),
+            PublicAgent("audit_oct6", "ASPIRE, quantum attention and SMP source checking; Korean scientific audit", "ASPIRE·quantum attention·SMP 원문 대조·한국어 과학 감수"),
+            PublicAgent("english_oct6", "English adaptation and bilingual numerical integrity", "영어판 작성·한영 수치와 방법 경계 보존"),
+            PublicAgent("cover_oct6", "conceptual image direction and visual inspection", "개념 표지 구성·이미지 생성·시각 검수"),
+        ),
+        verification_scope=(
+            "Five arXiv v1 preprints submitted 2026-10-02: methods, reported numbers, resource settings, comparators and execution boundaries",
+            "Official SaTQuML dates and non-archival status; paper-level acceptance is author-reported and not independently confirmed",
+            "Bilingual equations and HTML, deterministic explanatory SVGs, embedded-font PDFs and public publication links",
+        ),
+        verification_scope_ko=(
+            "2026-10-02 제출 arXiv v1 5편의 방법·보고 수치·자원 설정·기준선·실행 경계 대조",
+            "공식 SaTQuML 개최일·non-archival 상태 확인; 논문별 채택 결정은 독립 확인하지 못한 저자 표기",
+            "한영 수식·HTML·설명용 SVG·글꼴 포함 PDF·공개 게시 링크 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-06",
+        human_review_level="topic, physically literate audience, tone and public posting explicitly requested; no line-by-line human approval",
+        human_review_level_ko="주제·물리적 소양을 갖춘 독자·문체·공개 게시 요청 확인; 문장 단위 사람 승인 없음",
+        disclosure_note_ko="scientific-stop-slop-ko 감수로 수치·단위·기준선·방법 경계를 보존했습니다. BSE는 미래 내결함성 자원추정, D-Wave는 실제 어닐러, ASPIRE·QML은 고전 모사, SMP는 공개 QPU 자료의 고전 재분석입니다. OLED 적용과 비용 장부는 리뷰어 해석·설명 예제입니다. 워크숍의 개별 OpenReview decision은 접근 제한으로 독립 확인하지 못했습니다. 독립 실험 재현·양자 우위·OLED 소자 성능 검증은 수행하지 않았습니다. 표지는 내장 imagegen 개념 일러스트이며 수식·도표는 결정론적으로 제작했습니다.",
+        disclosure_note_en="Applied scientific-stop-slop-ko to preserve values, units, comparators and method boundaries. BSE estimates future fault-tolerant resources; D-Wave runs an actual annealer; ASPIRE and QML use classical simulation; SMP classically re-decodes public QPU data. OLED applications and the cost ledger are reviewer interpretations or teaching examples. The individual OpenReview decision could not be independently checked because of access restrictions. No independent experimental reproduction, quantum-advantage or OLED-device validation was performed. The built-in imagegen cover is conceptual; equations and explanatory figures are deterministic.",
+    ),
+    PublicReview(
         folder="2026-10-03_vqe-energy-subspaces-and-digital-validation",
         title="VQE의 현재와 다음 단계: 에너지 최소화, 부분공간 계산, 디지털 검증",
         subtitle="분자와 스핀계의 바닥상태를 구하는 원리부터 DecaQ의 400스핀 사례, HI-VQE·SQD와 OLED 응용의 조건까지",

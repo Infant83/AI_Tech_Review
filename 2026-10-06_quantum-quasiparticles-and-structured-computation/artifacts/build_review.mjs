@@ -1,0 +1,40 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const {marked}=await import(pathToFileURL(path.join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES,'marked/lib/marked.esm.js')));
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const titles={ko:'엑시톤에서 최적해까지: 물리적 구조가 바꾸는 양자계산 비용',en:'From Excitons to Optimal Solutions: How Physical Structure Changes Quantum Resource Costs'};
+const desc={ko:'OLED에 연결되는 엑시톤·GW/BSE의 물리부터 내결함성 자원 절충, D-Wave 표본 다양성, 상태준비와 QML·오류정정의 검증 조건까지 풀어 설명합니다.',en:'An accessible technical review of excitons and GW/BSE, fault-tolerant resource tradeoffs, D-Wave sampling diversity, state preparation, and fair QML and QEC validation.'};
+const base='https://infant83.github.io/AI_Tech_Review/reviews/'+path.basename(root)+'/';
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+const mathMap=JSON.parse(fs.readFileSync(path.join(root,'artifacts','math_map.json'),'utf8'));
+const fontLicense=fs.readFileSync(path.join(root,'artifacts','font-license.txt'),'utf8');
+const css='/* Embedded Noto Sans KR subset. (c) 2014-2021 Adobe, with Reserved Font Name Source.\n'+fontLicense.replaceAll('*/','')+'\n*/\n'+fs.readFileSync(path.join(root,'artifacts','font.css'),'utf8')+'\n'+fs.readFileSync(path.join(root,'artifacts','review.css'),'utf8');
+for(const lang of ['ko','en']){
+  const ko=lang==='ko';
+  const src=fs.readFileSync(path.join(root,'reports',`review_${lang}.md`),'utf8');
+  const math=[];
+  const protectedSource=src.replace(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g,(_,a,b)=>{
+    const tex=(a||b).trim(),file=mathMap[tex];
+    if(!file)throw Error('Unrendered equation: '+tex);
+    const svg=fs.readFileSync(path.join(root,'artifacts',file),'utf8');
+    const width=Number(svg.match(/width="([\d.]+)pt"/)[1])*4/3*1.7;
+    math.push(a?`<div class="math-block"><img src="${file}" style="width:${width.toFixed(1)}px" alt="${esc(tex)}"></div>`:`<img class="math-inline" src="${file}" alt="${esc(tex)}">`);
+    return a?`\n\nMATHBLOCK${math.length-1}END\n\n`:`MATHINLINE${math.length-1}END`;
+  });
+  let body=marked.parse(protectedSource);
+  body=body.replace(/<p>MATHBLOCK(\d+)END<\/p>/g,(_,i)=>math[+i]);
+  body=body.replace(/MATHINLINE(\d+)END/g,(_,i)=>math[+i]);
+  let section=0;const toc=[];
+  body=body.replace(/<h2>(.*?)<\/h2>/g,(_,label)=>{const id=`section-${++section}`;toc.push(`<li><a href="#${id}">${label}</a></li>`);return `<h2 id="${id}">${label}</h2>`});
+  body=body.replaceAll('<table>','<div class="table-scroll" tabindex="0" role="region" aria-label="'+(ko?'연구 비교 표':'Research comparison table')+'"><table>').replaceAll('</table>','</table></div>');
+  const figEnd=body.indexOf('</figure>')+9;
+  body=body.slice(0,figEnd)+`<details class="toc"><summary>${ko?'내용 살펴보기':'Contents'}</summary><ol>${toc.join('')}</ol></details>`+body.slice(figEnd);
+  const dir=path.join(root,'dist',ko?'':'en');fs.mkdirSync(dir,{recursive:true});
+  const url=base+(ko?'':'en/'),other=base+(ko?'en/':'');
+  const content=`<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(titles[lang])}</title><meta name="description" content="${esc(desc[lang])}"><link rel="stylesheet" href="review.css"><link rel="canonical" href="${url}"><link rel="alternate" hreflang="ko" href="${base}"><link rel="alternate" hreflang="en" href="${base}en/"><link rel="alternate" hreflang="x-default" href="${base}"><meta property="og:title" content="${esc(titles[lang])}"><meta property="og:description" content="${esc(desc[lang])}"><meta property="og:url" content="${url}"><meta property="og:type" content="article"><meta property="og:image" content="${base}hero.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${base}hero.webp"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="article:published_time" content="2026-10-06"></head><body><header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="${ko?'언어':'Language'}"><span class="language-current" lang="${lang}" aria-current="page">${ko?'한국어':'English'}</span><a lang="${ko?'en':'ko'}" hreflang="${ko?'en':'ko'}" href="${other}">${ko?'English':'한국어'}</a></nav></div></header><main>${body}<div class="footer">AI Tech Review Letters · 2026-10-06</div></main></body></html>`;
+  fs.writeFileSync(path.join(dir,'index.html'),content);
+  fs.writeFileSync(path.join(dir,'review.css'),css);
+  for(const file of ['hero.webp',`model_${lang}.svg`,...new Set([...content.matchAll(/src="(math_\d+\.svg)"/g)].map(m=>m[1]))])fs.copyFileSync(path.join(root,'artifacts',file),path.join(dir,file));
+  console.log(`${lang}: ${section} sections, ${math.length} rendered equations`);
+}
