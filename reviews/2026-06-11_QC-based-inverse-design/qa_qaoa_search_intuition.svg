@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1060" viewBox="0 0 1440 1060" role="img" aria-labelledby="title desc">
+  <title id="title">같은 QUBO 채점표를 사용하는 QA와 QAOA의 서로 다른 탐색 원리</title>
+  <desc id="desc">동일한 QUBO 목적함수와 제약을 입력으로 받아 양자 어닐링은 transverse-field driver에서 문제 해밀토니안으로 이어지는 연속 스케줄과 개방계 동역학을 거쳐 낮은 에너지 비트열 표본을 만든다. QAOA는 비용 위상으로 비트열 성분에 점수를 태그하고 mixer가 진폭을 다시 섞은 뒤 간섭으로 측정분포를 바꾼다. QAOA는 후보 하나가 지형을 따라 움직이는 궤적이 아니다. 두 방법 모두 강한 고전 비교군과 종단 간 재료 검증을 통과해야 한다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:2px;fill:#684790}.title{font:700 43px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 23px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.common{fill:#fff;stroke:#c8ced8;stroke-width:2.5}.commonhead{font:800 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.2px;fill:#5b6473}.commonbody{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.chip{fill:#edf0f4;stroke:#b9c1cd;stroke-width:1.5}.chiptext{font:700 14px Consolas,'Segoe UI Symbol',monospace;fill:#354052}.panel{stroke-width:3}.qa{fill:#fff7ec;stroke:#aa681f}.qaoa{fill:#f5f0fa;stroke:#74519a}.tag{font:800 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1px}.panelhead{font:700 30px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.panelbody{font:400 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.step{fill:#fff;stroke-width:2}.stepnum{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.stephead{font:700 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.stepbody{font:400 15px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.flowo{stroke:#aa681f;stroke-width:4;fill:none}.flowp{stroke:#74519a;stroke-width:4;fill:none}.analogy{fill:#fff;stroke-width:2}.analogyhead{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.analogybody{font:600 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.caution{fill:#fbeeee;stroke:#a44343;stroke-width:2}.cautionhead{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.cautionbody{font:600 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#653333}.curveA{stroke:#416b9a;stroke-width:4;fill:none}.curveB{stroke:#aa681f;stroke-width:4;fill:none}.gate{fill:#edf7f1;stroke:#28745a;stroke-width:3}.gatehead{font:800 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#1f654d}.gatesub{font:800 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.7px}.gatebody{font:600 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.verdict{font:800 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.footer{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="grey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+    <marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#aa681f"/></marker>
+    <marker id="purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#74519a"/></marker>
+  </defs>
+  <rect class="bg" width="1440" height="1060"/>
+
+  <text class="eyebrow" x="55" y="50">QA vs QAOA · SAME SCORECARD, DIFFERENT DYNAMICS</text>
+  <text class="title" x="55" y="101">같은 QUBO 채점표, 다른 탐색 원리</text>
+  <text class="subtitle" x="55" y="140">비트열 비용과 제약은 같아도 QA는 아날로그 스케줄, QAOA는 위상·믹서·간섭으로 표본을 만듭니다.</text>
+
+  <rect class="common" x="155" y="175" rx="22" width="1130" height="120"/>
+  <text class="commonhead" x="190" y="213">COMMON INPUT · QUBO SCORECARD</text>
+  <text class="commonbody" x="190" y="252">후보 bitstring마다 같은 비용과 제약을 적용</text>
+  <rect class="chip" x="600" y="202" rx="11" width="150" height="38"/>
+  <text class="chiptext" x="615" y="227">0010 · 낮은 비용</text>
+  <rect class="chip" x="765" y="202" rx="11" width="150" height="38"/>
+  <text class="chiptext" x="780" y="227">1011 · 높은 비용</text>
+  <rect class="chip" x="930" y="202" rx="11" width="150" height="38"/>
+  <text class="chiptext" x="945" y="227">0101 · 제약 위반</text>
+  <rect class="chip" x="1095" y="202" rx="11" width="160" height="38"/>
+  <text class="chiptext" x="1110" y="227">1100 · feasible</text>
+  <text class="panelbody" x="600" y="270">목적함수 · penalty · 비교 예산을 고정합니다</text>
+
+  <path class="flowo" d="M500 295 L500 330" marker-end="url(#orange)"/>
+  <path class="flowp" d="M940 295 L940 330" marker-end="url(#purple)"/>
+
+  <rect class="panel qa" x="55" y="340" rx="25" width="650" height="490"/>
+  <text class="tag" x="88" y="382" fill="#aa681f">ANALOG · QUANTUM ANNEALING</text>
+  <text class="panelhead" x="88" y="424">QA · 해밀토니안 스케줄을 바꿉니다</text>
+  <text class="panelbody" x="88" y="456">닫힌 단일 궤적이 아니라 유한 온도의 open-system 동역학입니다.</text>
+
+  <rect class="step" x="88" y="485" rx="15" width="135" height="140" stroke="#aa681f"/>
+  <text class="stepnum" x="105" y="516" fill="#aa681f">01</text>
+  <text class="stephead" x="105" y="544">transverse field</text>
+  <circle cx="123" cy="579" r="6" fill="#416b9a"/><circle cx="153" cy="579" r="6" fill="#416b9a"/><circle cx="183" cy="579" r="6" fill="#416b9a"/>
+  <path d="M119 596 Q153 568 187 596" stroke="#416b9a" stroke-width="2.5" fill="none"/>
+  <text class="stepbody" x="105" y="615">중첩 driver</text>
+
+  <rect class="step" x="239" y="485" rx="15" width="135" height="140" stroke="#aa681f"/>
+  <text class="stepnum" x="256" y="516" fill="#aa681f">02</text>
+  <text class="stephead" x="256" y="544">anneal schedule</text>
+  <path class="curveA" d="M258 570 C286 570 315 595 352 602"/>
+  <path class="curveB" d="M258 602 C293 596 322 570 352 570"/>
+  <text class="stepbody" x="256" y="615">driver ↓ · cost ↑</text>
+
+  <rect class="step" x="390" y="485" rx="15" width="135" height="140" stroke="#aa681f"/>
+  <text class="stepnum" x="407" y="516" fill="#aa681f">03</text>
+  <text class="stephead" x="407" y="544">open-system</text>
+  <path d="M412 574 C424 560 436 588 448 574 C460 560 472 588 484 574 C496 560 508 588 520 574" stroke="#a44343" stroke-width="3" fill="none"/>
+  <text class="stepbody" x="407" y="601">열 · 환경</text>
+  <text class="stepbody" x="407" y="615">제어오차와 공존</text>
+
+  <rect class="step" x="541" y="485" rx="15" width="130" height="140" stroke="#aa681f"/>
+  <text class="stepnum" x="558" y="516" fill="#aa681f">04</text>
+  <text class="stephead" x="558" y="540">low-energy</text>
+  <text class="stephead" x="558" y="560">samples</text>
+  <rect class="chip" x="558" y="578" rx="8" width="45" height="27"/>
+  <text class="chiptext" x="564" y="596">0010</text>
+  <rect class="chip" x="607" y="578" rx="8" width="45" height="27"/>
+  <text class="chiptext" x="613" y="596">1100</text>
+
+  <path class="flowo" d="M223 555 L231 555" marker-end="url(#orange)"/>
+  <path class="flowo" d="M374 555 L382 555" marker-end="url(#orange)"/>
+  <path class="flowo" d="M525 555 L533 555" marker-end="url(#orange)"/>
+
+  <rect class="analogy" x="88" y="650" rx="16" width="270" height="135" stroke="#aa681f"/>
+  <text class="analogyhead" x="108" y="682" fill="#aa681f">초심자용 한 줄 비유</text>
+  <path d="M112 742 C145 702 172 758 203 720 C233 684 263 755 330 704" stroke="#aa681f" stroke-width="3" fill="none"/>
+  <path d="M180 725 Q198 725 214 725" stroke="#74519a" stroke-width="3" stroke-dasharray="6 5" fill="none"/>
+  <text class="analogybody" x="108" y="711">흔들리던 지형이 서서히 굳어</text>
+  <text class="analogybody" x="108" y="772">낮은 골짜기 표본을 남깁니다</text>
+
+  <rect class="caution" x="375" y="650" rx="16" width="296" height="135"/>
+  <text class="cautionhead" x="395" y="682">비용 지형·tunneling 비유의 한계</text>
+  <text class="cautionbody" x="395" y="714">QUBO는 그래프 해밀토니안이며,</text>
+  <text class="cautionbody" x="395" y="741">실제 장치는 열·환경·제어오차와</text>
+  <text class="cautionbody" x="395" y="768">함께 진화합니다.</text>
+
+  <rect class="panel qaoa" x="735" y="340" rx="25" width="650" height="490"/>
+  <text class="tag" x="768" y="382" fill="#74519a">GATE · QUANTUM APPROXIMATE OPTIMIZATION</text>
+  <text class="panelhead" x="768" y="424">QAOA · cost phase와 mixer를 교대합니다</text>
+  <text class="panelbody" x="768" y="456">후보 하나가 지형을 따라 이동하는 trajectory가 아닙니다.</text>
+
+  <rect class="step" x="768" y="485" rx="15" width="135" height="140" stroke="#74519a"/>
+  <text class="stepnum" x="785" y="516" fill="#74519a">01</text>
+  <text class="stephead" x="785" y="544">cost phase</text>
+  <text class="stepbody" x="785" y="574">비용에 따라</text>
+  <text class="stepbody" x="785" y="597">bitstring 성분에</text>
+  <text class="stepbody" x="785" y="615">위상을 태그</text>
+
+  <rect class="step" x="919" y="485" rx="15" width="135" height="140" stroke="#74519a"/>
+  <text class="stepnum" x="936" y="516" fill="#74519a">02</text>
+  <text class="stephead" x="936" y="544">mixer</text>
+  <circle cx="955" cy="580" r="6" fill="#74519a"/><circle cx="986" cy="568" r="6" fill="#74519a"/><circle cx="1017" cy="588" r="6" fill="#74519a"/>
+  <path d="M960 578 L980 570 M991 572 L1011 585 M1011 591 L960 584" stroke="#74519a" stroke-width="2.5" fill="none"/>
+  <text class="stepbody" x="936" y="615">진폭을 다시 섞음</text>
+
+  <rect class="step" x="1070" y="485" rx="15" width="135" height="140" stroke="#74519a"/>
+  <text class="stepnum" x="1087" y="516" fill="#74519a">03</text>
+  <text class="stephead" x="1087" y="544">interference</text>
+  <path d="M1092 588 C1105 560 1118 612 1131 584 C1144 556 1157 608 1190 570" stroke="#74519a" stroke-width="3" fill="none"/>
+  <text class="stepbody" x="1087" y="615">측정분포를 변화</text>
+
+  <rect class="step" x="1221" y="485" rx="15" width="130" height="140" stroke="#74519a"/>
+  <text class="stepnum" x="1238" y="516" fill="#74519a">04</text>
+  <text class="stephead" x="1238" y="544">measure</text>
+  <rect x="1238" y="581" width="15" height="17" fill="#c9b7df"/><rect x="1259" y="568" width="15" height="30" fill="#9d7abb"/><rect x="1280" y="550" width="15" height="48" fill="#74519a"/><rect x="1301" y="576" width="15" height="22" fill="#b9a0d0"/>
+  <text class="stepbody" x="1238" y="614">bitstring 표본</text>
+
+  <path class="flowp" d="M903 555 L911 555" marker-end="url(#purple)"/>
+  <path class="flowp" d="M1054 555 L1062 555" marker-end="url(#purple)"/>
+  <path class="flowp" d="M1205 555 L1213 555" marker-end="url(#purple)"/>
+
+  <rect class="analogy" x="768" y="650" rx="16" width="270" height="135" stroke="#74519a"/>
+  <text class="analogyhead" x="788" y="682" fill="#74519a">초심자용 한 줄 비유</text>
+  <text class="analogybody" x="788" y="714">점수에 따라 박자를 달리 붙이고</text>
+  <text class="analogybody" x="788" y="742">다시 섞어 좋은 답의</text>
+  <text class="analogybody" x="788" y="770">측정확률을 키웁니다</text>
+
+  <rect class="caution" x="1055" y="650" rx="16" width="296" height="135"/>
+  <text class="cautionhead" x="1075" y="682">trajectory가 아닙니다</text>
+  <text class="cautionbody" x="1075" y="714">한 bitstring의 이동 경로가 아니라</text>
+  <text class="cautionbody" x="1075" y="741">전체 양자상태의 진폭과 위상이</text>
+  <text class="cautionbody" x="1075" y="768">측정분포를 바꿉니다.</text>
+
+  <rect class="gate" x="55" y="865" rx="22" width="1330" height="140"/>
+  <text class="gatehead" x="85" y="905">COMMON EVIDENCE GATE</text>
+  <text class="verdict" x="405" y="905">양자 동역학 ≠ 양자 우위</text>
+  <line x1="85" y1="925" x2="1355" y2="925" stroke="#bdd8ca" stroke-width="2"/>
+  <text class="gatesub" x="85" y="958" fill="#416b9a">STRONG CLASSICAL COMPARATOR</text>
+  <text class="gatebody" x="405" y="958">같은 QUBO · 같은 tuning 예산 · CP-SAT · SA/Tabu · parallel tempering · 전용 휴리스틱</text>
+  <text class="gatesub" x="85" y="988" fill="#28745a">END-TO-END VALIDATION</text>
+  <text class="gatebody" x="365" y="988">mapping · embedding · training · decoding · 고정밀 계산 · 합성·실험까지 포함</text>
+  <text class="footer" x="55" y="1040">판정 지표 · 같은 성공확률의 time-to-target · 검증 통과 후보 수 · 전체 wall-clock과 총비용</text>
+</svg>

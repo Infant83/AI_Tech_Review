@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When Does Error Mitigation Pay Off?</title>
+  <meta name="description" content="What readout repetition coding and IBM Heron studies reveal about accuracy, qubit, and shot costs">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="What readout repetition coding and IBM Heron studies reveal about accuracy, qubit, and shot costs">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/quantum_error_mitigation_hero-web.webp">
+  <meta property="og:image:alt" content="When Does Error Mitigation Pay Off?">
+  <meta property="article:published_time" content="2026-09-01">
+  <meta property="article:modified_time" content="2026-09-01">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="When Does Error Mitigation Pay Off?">
+  <meta name="twitter:description" content="What readout repetition coding and IBM Heron studies reveal about accuracy, qubit, and shot costs">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/quantum_error_mitigation_hero-web.webp">
+  <meta name="twitter:image:alt" content="When Does Error Mitigation Pay Off?">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/">
+    <meta property="og:title" content="When Does Error Mitigation Pay Off?">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-01)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>When Does Error Mitigation Pay Off?</h1>
+        <p class="dek">What readout repetition coding and IBM Heron studies reveal about accuracy, qubit, and shot costs</p>
+      </section>
+
+    </div>
+  </header>
+<p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-01 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>Saying that a quantum computer&rsquo;s error has decreased may sound like enough. But if the result required eleven times as many qubits, circuits repeated at three noise levels, and several times as many measurement shots, it is not yet clear that the computation as a whole improved. The relevant test is whether the same hardware and time produced a more useful answer.</p>
+<p>This problem will not disappear soon. On today&rsquo;s devices, which lack full error correction, gate errors, readout errors, and decoherence alter computational results. Instead of building logical qubits that continually detect and correct physical errors, error mitigation reruns circuits or post-processes measurements to reduce errors in expectation values and samples. The implementation threshold is lower, but the price is paid in shots, circuit count, variance, or auxiliary qubits.</p>
+<p>Two studies made public in late August 2026 expose these costs in different places. A peer-reviewed paper calculated whether measurement errors could be sharply reduced by adding up to 10 auxiliary qubits per data qubit and reading the result by majority vote. A separate preprint ran small circuits on an IBM Heron device, then used a noise model built from device calibration data to compare how a limited shot budget should be allocated across ZNE circuits.</p>
+<p>The two papers neither address the same error nor compete with each other. There is still a clear reason to read them together: if additional qubits, CNOTs, circuit repetitions, shots, and total runtime are omitted from the accuracy figure, the price of the improvement disappears.</p>
+<figure class="article-hero-figure">
+  <img src="quantum_error_mitigation_hero-web.webp" alt="Concept illustration balancing a cleaner quantum measurement signal against additional qubits, circuit repetitions, and measurement shots" width="1536" height="1024" loading="eager">
+  <figcaption>Figure 1. Error mitigation should be judged as a combination of error and resource cost, not by error alone. This editorial concept image does not reproduce a specific device or quantitative result.</figcaption>
+</figure>
+
+<aside class="callout callout-evidence">
+<p class="callout-label">A correction made before this article was published</p>
+<p>The IBM study used a 156-qubit <em>backend</em>, but it did not report a 156-qubit circuit. On the physical device, the authors selected an 8-qubit chain and ran small circuits including 2-, 4-, and 6-qubit GHZ circuits. The finding that adaptive allocation improved only 2 of 6 shot budgets did not come from six shot-budget experiments on the QPU. It came from numerical experiments with a noise model calibrated to the Heron hardware. The paper reports a mean adaptive-to-uniform MSE ratio of 2.16, but the six ratios in Table 6 have an arithmetic mean of about 2.32. This article follows the method description in §5.5 and Table 6 rather than the broader wording in the abstract, while making that arithmetic discrepancy explicit.</p>
+</aside>
+<h2 id="first-separate-what-the-two-studies-actually-did">First, separate what the two studies actually did</h2>
+<div aria-label="Comparison of readout repetition coding and adaptive ZNE studies" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Readout repetition coding</th>
+<th>IBM Heron and adaptive ZNE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Research status</td>
+<td>Peer-reviewed paper in npj Unconventional Computing</td>
+<td>arXiv v1 preprint</td>
+</tr>
+<tr>
+<td>Error being addressed</td>
+<td>Readout errors that mistake 0 for 1 or 1 for 0 at final measurement</td>
+<td>Bias and variance when extrapolating expectation values from several noise levels</td>
+</tr>
+<tr>
+<td>Method actually used</td>
+<td>Classical numerical calculations with an independent-error analytic model and published device error rates</td>
+<td>Ideal and noisy numerical calculations, plus small-circuit runs on ibm_marrakesh</td>
+</tr>
+<tr>
+<td>Additional cost</td>
+<td>Up to 10 auxiliary qubits per data qubit and encoding CNOTs</td>
+<td>Circuits at several noise factors, pilot shots, and extrapolation that can increase variance</td>
+</tr>
+<tr>
+<td>Representative result</td>
+<td>Predicted readout errors of \(10^{-8}\)–\(10^{-9}\) at \(k=9,11\) for two low-error device profiles</td>
+<td>Adaptive MSE was lower in only 2 of 6 shot budgets in the noise model; the Table 6 ratios average about 2.32, although the paper reports 2.16</td>
+</tr>
+<tr>
+<td>Not yet demonstrated</td>
+<td>Actual QPU execution, correlated readout errors, routing, total shots, and wall-clock time</td>
+<td>A 156-qubit circuit, six-budget comparison on an actual QPU, or the general superiority of one ZNE approach</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="1-why-readout-errors-can-ruin-an-entire-sample">1. Why readout errors can ruin an entire sample</h2>
+<p>When estimating one expectation value, many shots are averaged, leaving room to correct statistically for some misread bits. In tasks such as random-circuit sampling or measurement-based quantum computing, by contrast, the <strong>bit string itself is the answer</strong>. Every bit must be correct to obtain one intact sample. If each qubit has an independent readout error rate \(e_m\), the probability that all bits in an \(n\)-bit sample are correct falls approximately as \((1-e_m)^n\).</p>
+<p><a href="https://www.nature.com/articles/s44335-026-00094-0">He-Liang Huang&rsquo;s paper</a> adds a repetition code familiar from classical communications immediately before readout. The value of each data qubit is copied with CNOTs across an odd number \(k\) of physical qubits. All are measured, and the majority value is selected as the answer. If one or two readouts flip, the majority vote can recover the original value.</p>
+<p>If the encoding gates are ideal and readout errors are independent, the dominant term in the residual error falls as \(e_m^{\lceil k/2\rceil}\). Real CNOTs also introduce errors, so the paper calculated an effective error rate that includes a two-qubit depolarizing error \(e_g\). The resource requirement is explicit: at \(k=11\), reading one data qubit uses 11 physical qubits—10 of them auxiliary—as well as additional CNOTs.</p>
+<h3 id="is-not-a-measured-result">\(10^{-9}\) is not a measured result</h3>
+<p>For the Zuchongzhi 3.0 profile, the paper calculated an effective readout error of \(4.11\times10^{-8}\) at \(k=9\) and \(1.91\times10^{-9}\) at \(k=11\). The corresponding Willow-profile values were \(3.65\times10^{-8}\) and \(1.66\times10^{-9}\). These numbers were not measured by running the repetition-code circuits on the devices. They are predictions from an independent-noise model populated with previously reported readout and two-qubit gate error rates.</p>
+<p>The results change when the same equations are applied to other profiles. At \(k=11\), the calculated values for Zuchongzhi 2.0 and Sycamore were \(8.61\times10^{-6}\) and \(3.64\times10^{-6}\), respectively. This is why the result cannot be generalized as “approximately ten times as many qubits always yields \(10^{-9}\).”</p>
+<p>The method also acts only at the final readout stage. It is not a demonstration of general-purpose error correction that reverses gate errors and decoherence accumulated earlier in the circuit. Actual-chip experiments still need to establish how long the additional CNOTs become after routing, how correlated readout errors and crosstalk undermine majority voting, and how many shots and how much wall-clock time are required.</p>
+<h2 id="2-zne-can-reduce-bias-while-increasing-variance">2. ZNE can reduce bias while increasing variance</h2>
+<p>Zero-noise extrapolation (ZNE) runs the same circuit at its original noise level \(\lambda=1\) and at deliberately amplified levels such as \(\lambda=3,5\), then extrapolates the trend in the measurements to \(\lambda\to0\). The idea is to infer the noise-free value from how the observable changes as noise increases.</p>
+<p>The difficulty is that extrapolation adds and subtracts several noisy estimates with large coefficients. Systematic bias may decrease while sampling variance increases. If the total shot budget \(B\) is fixed, giving more shots to one point leaves fewer for another. The paper therefore compares mean squared error rather than absolute error alone:</p>
+$$
+\mathrm{MSE}=\mathrm{Bias}^2+\mathrm{Variance}
+$$
+
+<p><a href="https://arxiv.org/abs/2608.28535">Sumit Chongder&rsquo;s preprint</a> compared uniform allocation across \(\lambda=1,3,5\) with ASB-ZNE, which first estimates the variance at each point using a 100-shot pilot and then distributes the remaining shots through Neyman allocation. Allocating more shots to the noisier points could, in principle, reduce extrapolation variance under the same total budget.</p>
+<p>But even a good allocation of variance cannot improve MSE when extrapolation bias dominates. In the noise model based on Heron calibration data, the adaptive-to-uniform MSE ratios were:</p>
+<table>
+<thead>
+<tr>
+<th>Total shot budget \(B\)</th>
+<th style="text-align: right;">900</th>
+<th style="text-align: right;">1,500</th>
+<th style="text-align: right;">3,000</th>
+<th style="text-align: right;">6,000</th>
+<th style="text-align: right;">12,000</th>
+<th style="text-align: right;">21,000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Adaptive / uniform MSE</td>
+<td style="text-align: right;">5.96</td>
+<td style="text-align: right;">0.998</td>
+<td style="text-align: right;">1.47</td>
+<td style="text-align: right;">0.988</td>
+<td style="text-align: right;">2.08</td>
+<td style="text-align: right;">2.43</td>
+</tr>
+</tbody>
+</table>
+<p>The improvements in the two cases below 1 were only approximately 0.2% and 1.2%. The paper reports a mean adaptive-to-uniform MSE ratio of 2.16, but the six ratios in Table 6 have an arithmetic mean of about 2.32. The reported 2.16 instead matches the mean adaptive MSE, \(2.16\times10^{-3}\), suggesting an arithmetic or labeling error in the manuscript. Either calculation leaves the qualitative result unchanged: adaptive allocation was worse in four of the six budgets. This is a comparison <strong>between adaptive ZNE and uniform ZNE</strong>, not between error mitigation as a whole and raw measurement.</p>
+<h3 id="what-the-physical-heron-runs-actually-established">What the physical Heron runs actually established</h3>
+<p>ibm_marrakesh is a 156-qubit Heron-family processor, but the researchers selected a low-error 8-qubit chain from a calibration snapshot. The hardware circuits included 2-, 4-, and 6-qubit GHZ circuits; repeated-layer circuits with up to \(L=8\); and a 4-node, \(p=1\) QAOA circuit. The total QPU allowance was approximately 10 minutes.</p>
+<p>The clearest hardware result concerned placement. The \(ZZ\) measurement was 0.909 on the low-error coupler \(\{33,39\}\) and 0.751 on the deliberately selected high-error coupler \(\{119,133\}\). Even within the same calibration snapshot, the choice of connection changed the observable by approximately 0.16. This device measurement shows that changing qubit and coupler placement may be cheaper than selecting a more elaborate post-processing method.</p>
+<p>The paper&rsquo;s abstract and conclusion place the 2-of-6 finding within wording that says “on our device.” Section 5.5 of the main text, however, explicitly labels the comparison as a “simulation with a hardware-anchored noise model.” Reproduction and subsequent comparisons should use the latter method description. It should also remain clear that this is a single-author preprint that has not yet undergone peer review.</p>
+<figure class="figure-panel figure-panel-fit">
+  <img src="mitigation_resource_ledger_en.svg" alt="Diagram comparing the resources, numerical results, and boundary between physical-QPU runs and numerical calculations in the readout repetition-coding and adaptive-ZNE studies, followed by seven reporting fields" width="1600" height="1060" loading="lazy">
+  <figcaption>Figure 2. The first study spends additional qubits and CNOTs; the second spends additional circuits and shots. The \(10^{-8}\)–\(10^{-9}\) values, the 2-of-6 result, and the recomputed Table 6 mean of about 2.32× all come from numerical calculations. The manuscript reports the last mean as 2.16.</figcaption>
+</figure>
+
+<h2 id="3-what-belongs-on-an-error-mitigation-scorecard">3. What belongs on an error-mitigation scorecard?</h2>
+<p>The statement “error fell by 30% after mitigation” is not enough to choose a method. If the result used three times as many circuits and ten times as many shots, it must be compared with giving the same computation time to the raw method. Experimental records for VQE, SQD, and optimization circuits should retain the following items together.</p>
+<table>
+<thead>
+<tr>
+<th>Field to record</th>
+<th>Why it is needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raw and mitigated errors</td>
+<td>Directly compares the magnitude and direction of the change produced by mitigation</td>
+</tr>
+<tr>
+<td>Variance and confidence interval across repeated runs</td>
+<td>Distinguishes one favorable run from a stable improvement</td>
+</tr>
+<tr>
+<td>Total shots</td>
+<td>Captures the most direct cost paid to reduce statistical error</td>
+</tr>
+<tr>
+<td>Additional circuit count and noise factors</td>
+<td>Exposes the additional runs created by ZNE, PEC, and twirling</td>
+</tr>
+<tr>
+<td>Compiled two-qubit depth and SWAP count</td>
+<td>Records the error burden of the logical circuit on the physical backend</td>
+</tr>
+<tr>
+<td>Postselection and discard rate</td>
+<td>Accounts for both the accuracy of retained samples and the cost of discarded ones</td>
+</tr>
+<tr>
+<td>Compile, queue, QPU, and post-processing wall-clock time</td>
+<td>Compares the full time experienced by the researcher</td>
+</tr>
+</tbody>
+</table>
+<p>A fairer question than “Was it more accurate after mitigation?” is more specific: <strong>Under the same total budget, did it reach the target error sooner, or produce a lower MSE in the same time?</strong> The answer must be measured again when the problem, observable, backend, or calibration changes.</p>
+<h2 id="4-four-studies-released-the-same-day-address-different-problems">4. Four studies released the same day address different problems</h2>
+<p>The remaining four papers in today&rsquo;s briefing do not need to be forced into an error-mitigation narrative. The photonic-circuit paper concerns the number and success probability of physical optical components; the Energy Internet paper concerns a QUBO formulation and classical baselines; M-Diffushadow concerns missing quantum measurement records; and the cavity study concerns structural changes in layered materials.</p>
+<h3 id="success-probabilities-fall-as-photonic-gates-are-chained-together">Success probabilities fall as photonic gates are chained together</h3>
+<p>Two-qubit gates in linear-optical quantum circuits often rely on postselection. If a completed logical circuit is translated one component at a time into gates such as CNOT, the number of optical elements and ancillas rises, while the success probabilities at each stage multiply and rapidly reduce the overall success rate.</p>
+<p><a href="https://doi.org/10.1103/xjrz-csmx">The APS Open Science paper by Javier Osca and Jiri Vala</a> began with a broad optical ansatz comprising 7 layers with 3 beam splitters per layer. After optimizing the parameters, the method repeatedly pruned beam splitters and phase shifters that were no longer necessary. In the SOQCS numerical design, the approximate CNOT used 6 beam splitters, had a maximum output error of 0.6%, and succeeded with probability 5.7%. The CNOT that the authors call “numerically exact” used 7 beam splitters and had a 7.4% success probability.</p>
+<p>Designing a two-qubit Grover circuit as a whole required 8 beam splitters and produced a 7.4% success probability. A gate-by-gate substitution would use 18 components and reduce the success probability to \((2/27)^2\). These figures explain why the entire physical circuit is optimized together.</p>
+<p>The study did not fabricate a photonic chip or measure photon loss, detector efficiency, or process variation. Nor is it a direct competitor to high-level synthesis systems such as Classiq or superconducting native gates such as AshN. It determines the placement of beam splitters, phase shifters, and ancillas on a photonic platform.</p>
+<h3 id="turning-energy-internet-routing-into-a-qubo-does-not-constitute-a-quantum-run">Turning Energy Internet routing into a QUBO does not constitute a quantum run</h3>
+<p><a href="https://arxiv.org/abs/2608.28401">The Energy Internet routing preprint</a> converted energy routers and transmission losses into binary variables and constructed QUBO and Ising Hamiltonians. In the 9-node case, every method found the path 1–3–7–8–9 with a loss of 74.687 W.</p>
+<p>The runtime difference was clearer than the agreement on the answer. Dijkstra took 0.00002524 s, Qiskit Sampler with COBYLA took 539 s, and D-Wave simulated annealing took 0.02229 s. The 30-node case required 112 binary variables; Dijkstra took 0.00005223 s and simulated annealing took 1.391 s. QAOA and the Ocean exact solver could not be run at this size.</p>
+<p>Every calculation ran on classical hardware. Qiskit Sampler and NumPyEigenSolver did not execute on a gate-model QPU, and D-Wave Tabu and simulated annealing are classical samplers rather than a quantum annealer. The demonstrated result is limited to a QUBO formulation that produced the correct route in two small cases. The paper did not establish quantum speedup or performance at the scale of a real power grid.</p>
+<h3 id="m-diffushadow-fills-gaps-in-quantum-data-with-classical-ai">M-Diffushadow fills gaps in quantum data with classical AI</h3>
+<p>When one quantum state is measured in different bases such as X, Y, and Z, each record captures a different part of the state. <a href="https://doi.org/10.1103/4tft-d7gf">The M-Diffushadow paper</a> asks whether a generative model can learn the related distributions and reconstruct missing parts when some bases are absent or measurement records are lost.</p>
+<p>The researchers jointly trained on classical-shadow records and nearest-neighbor spin-product records from a 10-qubit periodic transverse-field Ising model. They trained at 8 values of \(g\) and evaluated at 41. When the two modalities were generated together, the mean absolute difference in \(\langle Z_iZ_{i+1}\rangle\) was below \(2.92\times10^{-3}\). With 80% of the records masked in the ferromagnetic region, the mean reconstruction accuracy for the spin products was 98.78%; the two lowest points were 90%.</p>
+<p>This is AI-for-quantum research in which a classical Transformer and discrete diffusion model process numerically generated quantum many-body data. It is not QML trained or inferred on a QPU, and it does not include noise from a physical device. The 80% masking result also comes from the comparatively favorable ferromagnetic setting in which every measurement axis was Z. The official repository states that it is not yet a complete reproduction package.</p>
+<h3 id="an-ab-initio-prediction-that-a-cavity-can-alter-interlayer-coupling">An ab initio prediction that a cavity can alter interlayer coupling</h3>
+<p>An optical cavity retains vacuum fluctuations even when no external light is injected. If coupling between this electromagnetic field and matter changes long-range van der Waals interactions, it may also change the spacing and vibrations of layered materials. <a href="https://arxiv.org/abs/2608.28521">The pMBD–QEDFT preprint</a> extends photon many-body dispersion from molecules to periodic solids.</p>
+<p>The researchers calculated bilayer hBN and graphene in a single 2 eV cavity mode polarized out of plane. At coupling strength \(\lambda=0.1\) a.u., the interlayer distance increased by approximately 0.15 Å and the layer-breathing frequency decreased by 18%. At \(\lambda=0.2\) a.u., the distance increase reached approximately 0.8 Å. In the calculations, hBN&rsquo;s preferred stacking changed from AB to AA′ near \(\lambda=0.14\) a.u.; graphene did not change over the same range.</p>
+<p>The absolute stacking prediction needs care. Even without the cavity, the hBN calculation found AB to be the most stable configuration, whereas the experimentally established preference is AA′. The authors explain that the calculated energy difference between the two structures is below 0.5 meV/atom and therefore within the accuracy limits of DFT. The useful finding is consequently not that the calculation “correctly reversed the stacking,” but that different stackings respond differently to the cavity.</p>
+<p>These results come from classical ab initio calculations, not a quantum computer, and they have not been demonstrated in a cavity experiment. The method uses a single mode, the long-wavelength approximation, and \(\Gamma\)-point coupling. The paper directly examines hBN and graphene. The connection to OLEDs is this review&rsquo;s extension—that cavity environments may also be worth including in calculations of organic optoelectronic materials—not evidence that the paper demonstrated OLED device performance.</p>
+<h2 id="5-a-practical-change-in-how-research-and-pocs-are-judged">5. A practical change in how research and PoCs are judged</h2>
+<p>The goal of an error-mitigation PoC should be to obtain a more reliable answer within a fixed device budget, not merely to show that “mitigation was applied.” Before an experiment, fix the raw baseline, target MSE, maximum shot count, and wall-clock time. Afterward, record not only the successful configuration but also the depths, observables, and calibrations for which the method did not help.</p>
+<p>For OLED and materials VQE or SQD, energy error alone is insufficient. Variance across repetitions, the effective sample count after postselection, compiled two-qubit depth, and total time must also be stored before the result can be compared with a classical solver, a different ansatz, or another backend. A method that helped under one calibration will not automatically retain that benefit after the calibration changes.</p>
+<p>The Energy Internet case calls for the same practical discipline. Separate the fact that a problem can be represented as a QUBO from the claim that a particular solver is faster, and first fix Dijkstra, MILP, CP-SAT, and metaheuristic baselines under the same problem and stopping conditions. For M-Diffushadow and cavity pMBD–QEDFT, the next baselines are physical-device data and experimental structures, respectively.</p>
+<h2 id="final-assessment">Final assessment</h2>
+<p>The repetition-code paper made explicit that lowering readout error costs qubits and CNOTs. It predicted \(10^{-8}\)–\(10^{-9}\) for two low-error device profiles, but these are not yet results from physical chips. The IBM Heron preprint measured the effect of coupler selection using small physical-device circuits. In a separate numerical experiment with a device-calibrated noise model, its simple adaptive ZNE shot allocation did not consistently outperform uniform allocation.</p>
+<p>This does not show that error mitigation is useless. Nor does an improvement in accuracy alone establish success. A fair comparison states which error was reduced and how many additional qubits, gates, circuits, shots, and units of time were spent to obtain the result. <strong>A better computation under the same total budget</strong> is a more practical benchmark than the smallest error in isolation.</p>
+<h2 id="sources">Sources</h2>
+<ol>
+<li>H.-L. Huang, <a href="https://www.nature.com/articles/s44335-026-00094-0"><em>Exponential measurement error mitigation in quantum sampling</em></a>, npj Unconventional Computing 3, Article 47, published 31 August 2026.</li>
+<li>S. Chongder, <a href="https://arxiv.org/abs/2608.28535"><em>Hardware-Efficient Error Mitigation and Shot-Efficient Sampling on IBM Quantum Hardware</em></a>, arXiv:2608.28535v1, submitted 28 August 2026. The PDF title differs from the arXiv metadata title.</li>
+<li>J. Osca and J. Vala, <a href="https://doi.org/10.1103/xjrz-csmx"><em>Automated design of photonic two-qubit quantum gates and circuits via optimization and pruning</em></a>, APS Open Sci. 1, 000115, published 31 August 2026.</li>
+<li>A. A. Tehrani, M. Boroushaki, and A. Rajabi, <a href="https://arxiv.org/abs/2608.28401"><em>Energy Internet Routing using Quantum Optimization Algorithms</em></a>, arXiv:2608.28401v1, submitted 28 August 2026.</li>
+<li>Y. Li and H.-K. Tang, <a href="https://doi.org/10.1103/4tft-d7gf"><em>Multimodal discrete diffusion for quantum measurement generation in the one-dimensional transverse-field Ising model</em></a>, APS Open Sci. 1, 000116, published 31 August 2026.</li>
+<li>M. Hassan, C. Tasci, L. A. Cunha, and J. Flick, <a href="https://arxiv.org/abs/2608.28521"><em>Modifying van der Waals Materials via Cavity Vacuum Fluctuations</em></a>, arXiv:2608.28521v1, submitted 28 August 2026.</li>
+</ol>
+<p><a href="daily_quantum_brief_2026-09-01.pdf">Download the corrected five-page Daily Quantum Brief PDF</a></p>
+<p><em>Verification note: DOI, publication status, device and circuit scales, numerical values, and computational settings were checked against the primary sources. No new D-Wave or Classiq newsletter, publicly verifiable LinkedIn technical signal traceable to a primary source, or newly listed official QML research paper from a major AI conference was found by the evidence cutoff. Public search cannot exhaustively cover private feeds or every index.</em></p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex (main) — evidence integration, narrative, figures, PDF correction, and publication; verify_mitigation — primary-source audit of readout mitigation and ZNE; verify_adjacent — primary-source audit of four adjacent research papers; repo_pattern — repository and publication-pipeline audit; narrative_outline — human-readable article structure; pdf_audit — brief PDF content and layout audit; english_draft — English translation draft; boundary_audit — final bilingual claim-boundary review</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>two error-mitigation papers and four adjacent primary research papers; publication status, execution setting, circuit scale, quantitative claims, and non-claims; corrected PDF, bilingual HTML and figures, metadata, and local-reference validation</dd></div>
+          <div><dt>Human review record</dt><dd>topic, writing direction, and publication request confirmed; line-by-line review not separately retained</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-01</dd></div>
+        </dl>
+        <p class="disclosure-note">The exact model identifier was not retained in the session record. The listed agent names and roles are the configuration actually used for this publication.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-08-31 20:59:42<br>
+        Source last modified: 2026-08-31 20:59:33
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#first-separate-what-the-two-studies-actually-did">First, separate what the two studies actually did</a></li>
+<li><a href="#1-why-readout-errors-can-ruin-an-entire-sample">1. Why readout errors can ruin an entire sample</a><ul>
+<li><a href="#is-not-a-measured-result">is not a measured result</a></li>
+</ul>
+</li>
+<li><a href="#2-zne-can-reduce-bias-while-increasing-variance">2. ZNE can reduce bias while increasing variance</a><ul>
+<li><a href="#what-the-physical-heron-runs-actually-established">What the physical Heron runs actually established</a></li>
+</ul>
+</li>
+<li><a href="#3-what-belongs-on-an-error-mitigation-scorecard">3. What belongs on an error-mitigation scorecard?</a></li>
+<li><a href="#4-four-studies-released-the-same-day-address-different-problems">4. Four studies released the same day address different problems</a><ul>
+<li><a href="#success-probabilities-fall-as-photonic-gates-are-chained-together">Success probabilities fall as photonic gates are chained together</a></li>
+<li><a href="#turning-energy-internet-routing-into-a-qubo-does-not-constitute-a-quantum-run">Turning Energy Internet routing into a QUBO does not constitute a quantum run</a></li>
+<li><a href="#m-diffushadow-fills-gaps-in-quantum-data-with-classical-ai">M-Diffushadow fills gaps in quantum data with classical AI</a></li>
+<li><a href="#an-ab-initio-prediction-that-a-cavity-can-alter-interlayer-coupling">An ab initio prediction that a cavity can alter interlayer coupling</a></li>
+</ul>
+</li>
+<li><a href="#5-a-practical-change-in-how-research-and-pocs-are-judged">5. A practical change in how research and PoCs are judged</a></li>
+<li><a href="#final-assessment">Final assessment</a></li>
+<li><a href="#sources">Sources</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="https://www.nature.com/articles/s44335-026-00094-0" target="_blank" rel="noreferrer">He-Liang Huang&#x27;s paper</a></li>
+<li><a href="https://arxiv.org/abs/2608.28535" target="_blank" rel="noreferrer">Sumit Chongder&#x27;s preprint</a></li>
+<li><a href="https://doi.org/10.1103/xjrz-csmx" target="_blank" rel="noreferrer">The APS Open Science paper by Javier Osca and Jiri Vala</a></li>
+<li><a href="https://arxiv.org/abs/2608.28401" target="_blank" rel="noreferrer">The Energy Internet routing preprint</a></li>
+<li><a href="https://doi.org/10.1103/4tft-d7gf" target="_blank" rel="noreferrer">The M-Diffushadow paper</a></li>
+<li><a href="https://arxiv.org/abs/2608.28521" target="_blank" rel="noreferrer">The pMBD–QEDFT preprint</a></li>
+<li><a href="daily_quantum_brief_2026-09-01.pdf">Download the corrected five-page Daily Quantum Brief PDF</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main><section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>

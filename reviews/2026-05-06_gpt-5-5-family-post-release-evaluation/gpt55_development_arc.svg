@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="title desc">
+  <title id="title">GPT-5.5 발전 방향</title>
+  <desc id="desc">AI 모델 평가가 답변에서 추론, 도구 사용, 긴 작업, 통제된 위임으로 이동하는 흐름</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf6}
+      .rail{fill:none;stroke:#2e4057;stroke-width:4;stroke-linecap:round}
+      .node{fill:#fff;stroke:#2e4057;stroke-width:2}
+      .accent{fill:#2f6f73}
+      .warn{fill:#9a3f3f}
+      .text{font-family:Arial,'Noto Sans KR',sans-serif;fill:#24313f}
+      .small{font-size:17px}
+      .label{font-size:22px;font-weight:700}
+      .caption{font-size:15px;fill:#59636f}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2e4057"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="960" height="420" rx="22"/>
+  <text x="48" y="54" class="text label">평가의 중심이 답변에서 작업으로 이동합니다</text>
+  <text x="48" y="84" class="text caption">GPT-5.5가 중요한 이유는 모델이 여러 단계를 얼마나 오래 유지하는지 묻게 만들기 때문입니다.</text>
+  <path class="rail" d="M100 230 C240 120, 360 320, 500 210 S760 170, 850 118" marker-end="url(#arrow)"/>
+  <g transform="translate(54 180)">
+    <rect class="node" width="150" height="102" rx="18"/>
+    <circle cx="28" cy="28" r="11" class="accent"/>
+    <text x="52" y="34" class="text label">답변</text>
+    <text x="24" y="68" class="text small">한 질문에</text>
+    <text x="24" y="91" class="text small">정확히 답하기</text>
+  </g>
+  <g transform="translate(238 132)">
+    <rect class="node" width="150" height="102" rx="18"/>
+    <circle cx="28" cy="28" r="11" class="accent"/>
+    <text x="52" y="34" class="text label">추론</text>
+    <text x="24" y="68" class="text small">계획 세우기</text>
+    <text x="24" y="91" class="text small">중간 점검</text>
+  </g>
+  <g transform="translate(422 184)">
+    <rect class="node" width="150" height="102" rx="18"/>
+    <circle cx="28" cy="28" r="11" class="accent"/>
+    <text x="52" y="34" class="text label">도구</text>
+    <text x="24" y="68" class="text small">API, 파일, 웹</text>
+    <text x="24" y="91" class="text small">상태 읽기</text>
+  </g>
+  <g transform="translate(606 130)">
+    <rect class="node" width="150" height="102" rx="18"/>
+    <circle cx="28" cy="28" r="11" class="accent"/>
+    <text x="52" y="34" class="text label">긴 작업</text>
+    <text x="24" y="68" class="text small">실패 복구</text>
+    <text x="24" y="91" class="text small">다시 이어가기</text>
+  </g>
+  <g transform="translate(748 54)">
+    <rect class="node" width="160" height="122" rx="18"/>
+    <circle cx="28" cy="28" r="11" class="warn"/>
+    <text x="52" y="34" class="text label">위임</text>
+    <text x="24" y="68" class="text small">권한 제한</text>
+    <text x="24" y="91" class="text small">검증 기록</text>
+    <text x="24" y="114" class="text small">되돌리기</text>
+  </g>
+  <text x="72" y="356" class="text caption">단계가 올라갈수록 모델 능력만으로는 부족하고, 하네스와 운영 통제가 함께 필요해집니다.</text>
+</svg>

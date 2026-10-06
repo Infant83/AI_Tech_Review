@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>When Should a Research Agent Intervene? Avatar and the Cost of Judgment</title>
+  <meta name="description" content="Avatar compares rules and LLM control in scientific workflows. Its mixed results clarify where reasoning helps, where latency hurts, and what remains unproven.">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Avatar compares rules and LLM control in scientific workflows. Its mixed results clarify where reasoning helps, where latency hurts, and what remains unproven.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/avatar_control_hero.webp">
+  <meta property="og:image:alt" content="When Should a Research Agent Intervene? Avatar and the Cost of Judgment">
+  <meta property="article:published_time" content="2026-09-13">
+  <meta property="article:modified_time" content="2026-09-13">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="When Should a Research Agent Intervene? Avatar and the Cost of Judgment">
+  <meta name="twitter:description" content="Avatar compares rules and LLM control in scientific workflows. Its mixed results clarify where reasoning helps, where latency hurts, and what remains unproven.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/avatar_control_hero.webp">
+  <meta name="twitter:image:alt" content="When Should a Research Agent Intervene? Avatar and the Cost of Judgment">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/">
+    <meta property="og:title" content="When Should a Research Agent Intervene? Avatar and the Cost of Judgment">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 37 (2026-09-13)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>When Should a Research Agent Intervene? Avatar and the Cost of Judgment</h1>
+        <p class="dek">Avatar compares rules and LLM control in scientific workflows. Its mixed results clarify where reasoning helps, where latency hurts, and what remains unproven.</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-12 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <h2 id="three-sentence-summary">Three-sentence summary</h2>
+<p>The Avatar preprint, submitted on September 9, compares rule-based control with large language model (LLM) decisions while retaining the surrounding scientific-workflow architecture. Its authors report approximately 40% less GPU-busy time in a molecular search, but a larger mean backlog—about 99 tasks rather than 21—when LLM control replaces a rule-based autoscaler. The contrast supports separating decisions by their timescale and the cost of being wrong, within an important boundary: the molecular experiment retrieved existing QM9 values rather than running new electronic-structure calculations. [1]</p>
+<p><img alt="A lower conveyor performs regular computations while an upper inspection path reviews accumulated results and diverts further work" src="avatar_control_hero.webp" /></p>
+<p><em>Figure 1 · AI-generated conceptual. A dedicated illustration of fast execution and slower judgment. The atomistic model, compute hardware and inspection lenses represent concepts, not a measured material, an Avatar apparatus or experimental data.</em></p>
+<p>This review covers September 6–12, 2026. It follows the <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">DeMARS article</a>, but addresses a different problem with new evidence. DeMARS concerns constructing atomistic models from disordered structures. Avatar examines decisions made <strong>during execution: recovery, resource scaling and campaign termination</strong>. Relative to the earlier <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/">harness-engineering review</a>, the new contribution is a controlled comparison containing both favorable and unfavorable outcomes.</p>
+<h2 id="running-the-calculation-is-only-part-of-running-the-research">Running the calculation is only part of running the research</h2>
+<p>A computational materials campaign leaves a trail of decisions after its inputs have been prepared. Should a failed job be retried? Is the failure temporary, or will another attempt repeat it? Does another batch of candidates justify its cost? Automating these decisions could reduce the time researchers spend watching logs. It could also leave resources idle while a model deliberates, or terminate a promising campaign too soon.</p>
+<p>A workflow management system (WMS) tracks task dependencies and execution state. In high-performance computing (HPC), it interacts with schedulers, data movement and recovery mechanisms. An agent&rsquo;s <strong>harness</strong> specifies the state it can observe, the tools it can use, its permitted actions, and the validation and records surrounding those actions. A model&rsquo;s ability to interpret context does not remove these responsibilities.</p>
+<p>Avatar asks a tractable question: if the execution architecture and action interface remain fixed, which decisions benefit from replacing a rule with an LLM policy? This is more informative than a fluent demonstration that changes the model, tools and workflow simultaneously. The results discussed here are author-reported; this review did not independently rerun the experiments. [1]</p>
+<h2 id="separate-the-responsibilities-then-vary-the-policy">Separate the responsibilities, then vary the policy</h2>
+<p>Avatar separates an <strong>orchestrator</strong>, which governs logical workflow progress; an <strong>executor</strong>, which realizes actions on computational resources; and a <strong>provenance component</strong>, which preserves execution history and produces diagnostic triggers. Provenance makes it possible to trace a result to its inputs, attempts and execution conditions. [1, §III–IV]</p>
+<p>An actor is a stateful software component that communicates through messages. An actor need not contain an LLM. Academy, the middleware underlying Avatar, likewise supports stateful agents without requiring a language model. This distinction makes the following comparison possible. [1, 2]</p>
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Observation and failure diagnosis</th>
+<th>Recovery and progression decisions</th>
+<th>Task execution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M0</td>
+<td>Rules</td>
+<td>Rules</td>
+<td>Rules</td>
+</tr>
+<tr>
+<td>M1</td>
+<td>LLM diagnosis added</td>
+<td>Rules</td>
+<td>Rules</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>LLM</td>
+<td>LLM</td>
+<td>Rules</td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 1 · Source-derived from Avatar §IV. Even M2 retains rule-based execution; it is not an experiment with an LLM controlling every component.</em></p>
+<p>Proposed actions pass through an adapter: code that translates representations and checks actions against the supported interface. The common catalog includes retrying, scaling resources, throttling work, proposing candidate batches, retraining a surrogate and stopping a campaign. Policies therefore act through defined operations rather than unrestricted natural-language commands. [1]</p>
+<p>This interface is necessary but does not certify scientific judgment. A <code>stop-campaign</code> action can be well formed and authorized while scientifically premature. This review therefore distinguishes three checks: valid syntax, authorized action and justified scientific decision. Passing one does not imply the others.</p>
+<p>The reported stack includes Python 3.12, Academy 0.5.0, Parsl 2026.3.9, TaskVine and Colmena. Reasoning uses <code>open-ai/gpt-oss-20b</code>, served through Argonne&rsquo;s Sophia inference endpoint. The E1/E2 compute node has a Xeon Gold 6248R at 3 GHz, 48 CPU cores and 192 GB of memory; the actors communicate through a local, in-process exchange. Academy&rsquo;s support for distributed agents must not be confused with Avatar&rsquo;s actual test scope: these experiments do not establish operation across multiple institutions or heterogeneous compute sites. [1, 2]</p>
+<h2 id="three-experiments-three-distinct-questions">Three experiments, three distinct questions</h2>
+<h3 id="recovery-how-much-work-is-spent-repeating-permanent-failures">Recovery: how much work is spent repeating permanent failures?</h3>
+<p>E1 uses synthetic matrix-computation tasks with injected transient or permanent failures. The default failure probability is 0.35; the parameter determining the fraction of permanent failures is 1/3. The study varies the retry ceiling and failure conditions. M2 uses repeated-failure history and abandons tasks diagnosed as permanently failing after one retry. The reported reduction of up to approximately 55% concerns wasted computation under these recovery conditions. [1, §V]</p>
+<p>That is not a 55% reduction in total research time. Nor does the comparison establish superiority over a failure-aware deterministic classifier. The principal baseline retries blindly up to a limit. Electronic-structure workloads contain failures with very different remedies, including memory exhaustion, invalid inputs and electronic convergence problems. Rules that recognize these conditions are an important stronger baseline for isolating the benefit of language-model reasoning.</p>
+<h3 id="scaling-a-decision-can-arrive-too-late">Scaling: a decision can arrive too late</h3>
+<p>E2 is a streaming workload with changing arrival rates. Each input creates preprocessing, parallel analysis and aggregation stages. The study compares fixed Parsl worker pools and dynamic Avatar control. A worker is an execution slot; backlog counts tasks waiting for processing. [1]</p>
+<p>At N=128, the reported mean backlog is approximately 21 for rule-based autoscaling, M0/M1, and 99 for M2. The authors attribute the degradation to reasoning that cannot respond quickly enough for the control loop. These are task counts within one experiment, not model-accuracy scores. The paper also says backlog was sampled every 0.2 seconds; that sampling interval should not be silently reinterpreted as every policy&rsquo;s decision period. [1, §V-A–B]</p>
+<p>This negative result matters for implementation. A fast, repetitive control operation should justify the latency of text-based reasoning before adopting it. A useful follow-up would preserve lightweight control rules and escalate only situations those rules cannot resolve.</p>
+<h3 id="stopping-can-a-campaign-do-less-work-without-losing-its-best-result">Stopping: can a campaign do less work without losing its best result?</h3>
+<p>E3 uses Colmena for molecular active learning: a model chooses which candidates to evaluate next, then learns from the newly acquired values. The objective is to maximize the energy difference between the highest occupied molecular orbital (HOMO) and lowest unoccupied molecular orbital (LUMO). The setup uses 5,000 QM9 candidates, 100 initial labels and batches of 32 selections. A multilayer perceptron (MLP) trained on Morgan molecular fingerprints serves as the GPU-based surrogate. [1]</p>
+<p>The evaluation step retrieves a <strong>stored QM9 gap</strong>. It does not run a new density functional theory (DFT) calculation or synthesize a molecule. Existing values stand in for an expensive property calculation, allowing the experiment to test the surrounding campaign control. [1, §V-A]</p>
+<p>The native baseline and M0/M1 run all 12 rounds. M2 interprets the learning history and stops at round 7, reaching the same best observed gap while reducing GPU-busy time by approximately 40%, according to the authors. The campaign uses one NVIDIA Quadro RTX 6000 with CUDA 12.2 and requests 16 CPU cores. [1, §V]</p>
+<table>
+<thead>
+<tr>
+<th>Experiment</th>
+<th>Reported comparison</th>
+<th>Quantity measured</th>
+<th>Claim not established</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1: recovery</td>
+<td>Up to approximately 55% less wasted computation</td>
+<td>Wasted worker time in a synthetic failure workload</td>
+<td>55% less total research time or better DFT recovery</td>
+</tr>
+<tr>
+<td>E2: scaling</td>
+<td>Mean backlog approximately 21 → 99, N=128</td>
+<td>Pending tasks, rule autoscaler versus M2</td>
+<td>An accuracy difference or universal latency ratio</td>
+</tr>
+<tr>
+<td>E3: stopping</td>
+<td>12 → 7 rounds; approximately 40% less GPU-busy time</td>
+<td>GPU activity in a QM9-lookup campaign</td>
+<td>40% less DFT time, total cost or energy</td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 2 · Source-derived from Avatar §V and the textual discussion of Figures 5–6. The rows describe different tasks and metrics, not a combined ranking. The reported measurements were not independently reproduced.</em></p>
+<p>Skipping five of twelve rounds is 5/12, approximately 41.7%. This review checked that arithmetic, not the GPU measurement. Training-set growth and fixed overhead mean round counts need not scale directly with GPU activity. The paper&rsquo;s best-gap number lacks a sufficiently explicit unit description in the main text; this review does not assign it an assumed eV or Hartree unit.</p>
+<h2 id="what-is-missing-from-the-cost-denominator">What is missing from the cost denominator?</h2>
+<p>Less GPU activity does not by itself establish a cheaper whole system. The accounting should include inference-service resources, network waits, CPU work, recovery from bad decisions and human intervention. GPU-busy time is activity duration, not an energy integral or an invoice.</p>
+<p>An <strong>editorial accounting proposal</strong> for a follow-up experiment is:</p>
+$$G = p_{\mathrm{useful}}C_{\mathrm{saved}}-C_{\mathrm{inference}}-\mathbb{E}[C_{\mathrm{wrong}}].$$
+
+<p>G denotes expected net benefit; p is the probability of a useful intervention; C_saved is the cost it avoids; C_inference covers inference and communication; the final term is expected loss from a wrong decision. All costs must use a common unit. CPU-seconds and GPU-seconds cannot simply be added. This is not an equation fitted or proposed by Avatar&rsquo;s authors; it is a way to expose omitted costs.</p>
+<p>A timing constraint remains separate. If decision latency τ is comparable to the environment&rsquo;s change timescale Δ, even a well-reasoned action may be stale when applied. The paper does not prove a universal safety threshold for τ/Δ. E2 and E3 instead illustrate different costs of waiting for a decision.</p>
+<figure class="figure-panel figure-panel-fit">
+<img src="control_boundary_en.svg" alt="A proposed two-timescale system keeps fast rule-based execution running, escalates failures or stalled progress to slower LLM review, and checks state, authority and scientific constraints before accepting a proposal">
+<figcaption>Figure 2 · Proposed / reviewer-constructed. A materials-workflow design motivated by Avatar's separation of policies. Stale proposals are discarded and scientific stopping criteria are checked separately. This is neither a reconstruction of the Avatar implementation nor a performance guarantee.</figcaption>
+</figure>
+
+<h2 id="testing-whether-the-system-knows-when-to-stop">Testing whether the system knows when to stop</h2>
+<p>A stronger follow-up should compare M2 with adaptive stopping rules. These include patience policies that terminate after several rounds without improvement, policies based on uncertainty and expected improvement, and fixed-cost budgets. They should share the candidate pool and resource constraints. Doing less work than an unconditional twelve-round baseline does not establish superiority over those alternatives.</p>
+<p>Reaching the same best value in the reported run also does not establish lossless stopping across new seeds and pools. Useful measurements include the best remaining candidate at termination, outcome distributions over initial samples, and improvements discovered by continuing after the proposed stopping point. Because QM9 labels already exist, the study setting is well suited to measuring retrospective loss on unselected candidates. In genuinely new calculations that ground truth is costly; some continuation budget must be reserved for validation.</p>
+<p>Reproducibility is another boundary. The authors describe approximately 1,200 lines of common core code retained across the three workloads, but this investigation did <strong>not identify a public, experiment-specific Avatar repository and pinned commit</strong>. Public Academy and Colmena code does not establish that Avatar&rsquo;s prompts, policies, invalid-action handling and per-seed logs are available. The review checked the paper and simple arithmetic, not the authors&rsquo; implementation by execution. [1–3]</p>
+<h2 id="a-bounded-experiment-for-materials-research-and-enterprise-operations">A bounded experiment for materials research and enterprise operations</h2>
+<p>The following is a proposal, not a reported deployment. A practical first target is to read historical calculation failures and recommend next actions. That task can be evaluated against prior outcomes before granting authority over an entire molecular-discovery campaign.</p>
+<ol>
+<li><strong>Replay completed cases.</strong> Present failure logs but hide their eventual resolution. Compare ordinary retry, failure-aware rules, LLM diagnosis with rule execution, and LLM action proposals. Split related calculation families across evaluation boundaries to reduce leakage.</li>
+<li><strong>Fix the scientific contract.</strong> Record charge, spin, exchange–correlation functional, basis, k-point sampling and convergence criteria. A proposal that changes these conditions becomes a new scientific task, not an invisible retry. Finishing faster by calculating a different physical problem should not count as success.</li>
+<li><strong>Begin in read-only shadow mode.</strong> Let the model propose without actuating. Record human interventions and their duration, recoverable calculations wrongly abandoned, and the fraction yielding scientifically valid outputs. Report both all-task and automatically accepted-task denominators.</li>
+<li><strong>Grant only bounded execution.</strong> Use an approved action catalog, cost limits, state-version checks, duplicate-execution protection and a rule-based fallback. Leave global queue control and fast monitoring with the established execution system.</li>
+</ol>
+<p>For organic light-emitting diode (OLED) research, an orbital gap does not substitute for excited-state properties, emission rates or degradation stability. Avatar should be transferred as a testable control architecture, not presented as an OLED-discovery result. The object being evaluated here is the <strong>policy running the research</strong>, not its property predictor; this distinguishes the article from the recurring quantum and OLED briefs.</p>
+<p>On-premises model hosting and restricted execution authority are separate design decisions. This review proposes separating the model service, compute execution account and publication or merge account, and treating logs as untrusted input. GitLab continuous integration/continuous delivery (CI/CD) can retain tests and change approval, while an HPC scheduler retains resource execution. This is an operational proposal, not a GitLab integration validated in Avatar.</p>
+<h2 id="researchers-and-seminar-questions">Researchers and seminar questions</h2>
+<table>
+<thead>
+<tr>
+<th>Candidate</th>
+<th>Public affiliation and relevant evidence</th>
+<th>Question for a seminar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Suman Raj</td>
+<td>Avatar first author; University of Chicago and Argonne National Laboratory affiliations in the paper [1]</td>
+<td>How much benefit remains after adding a deterministic permanent-failure classifier and a patience-based stopping policy?</td>
+</tr>
+<tr>
+<td>Kyle Chard</td>
+<td>Research Associate Professor at the University of Chicago and Argonne researcher; Avatar coauthor and Academy-related work [1, 2, 4]</td>
+<td>How should multi-node systems reject stale or duplicated actions, and which execution records can be released for independent evaluation?</td>
+</tr>
+</tbody>
+</table>
+<p>Affiliations reflect the checked public records. Project-specific leadership responsibilities were not inferred.</p>
+<h2 id="what-to-watch-next">What to watch next</h2>
+<p>Avatar is worth reading because it reports a condition in which rules outperform LLM control alongside favorable results. Stronger evidence would add real DFT execution, multi-node placement, adaptive baselines, total inference costs and repeated evaluation including human intervention. The next decision should turn on <strong>total cost per valid result at matched scientific quality and acceptable risk</strong>, not merely the size of the model attached to the workflow.</p>
+<h2 id="references-and-a-short-reading-order">References and a short reading order</h2>
+<ol>
+<li><strong><a href="https://arxiv.org/abs/2609.10509v1">Raj et al., Avatar, arXiv:2609.10509v1</a></strong> — submitted September 9, 2026; preprint. Start with <a href="https://arxiv.org/html/2609.10509v1">§III–V</a> and the M0/M1/M2 and E1/E2/E3 definitions. Submission date was checked; experiment dates were not separately reported.</li>
+<li><strong><a href="https://academy-agents.org/">Academy official overview</a></strong> and <a href="https://github.com/academy-agents/academy">source repository</a> — state, actions and asynchronous messages as components independent of an LLM. Distinguish current documentation from the 0.5.0 version used in the paper.</li>
+<li><strong><a href="https://colmena.readthedocs.io/en/latest/">Colmena documentation</a></strong> — background on machine-learning-based steering of scientific work. This is not the Avatar experiment&rsquo;s reproduction package.</li>
+<li><strong><a href="https://kylechard.com/">Kyle Chard&rsquo;s public profile</a></strong> — affiliation verification. Sources checked September 13, 2026.</li>
+</ol>
+<h2 id="preparation-and-review-information">Preparation and review information</h2>
+<p>Responsible editor: Hyun-Jung Kim. One OpenAI Codex agent performed research, bilingual writing, source checks, scientific copyediting, coding and publication checks under the recurring publication request. The exact runtime model identifier was not retained. There was no separate verification agent or line-by-line human review. The evidence cutoff is September 12, 2026; source inspection took place on September 13.</p>
+<p>The workflow followed <a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness v2026.08</a>, using web research, the GitHub connection, local Python rendering and checks, and browser inspection. The hero used the built-in imagegen tool; the diagram is deterministic SVG. Scientific copyediting preserved measurements and comparison conditions while removing abstract importance claims and excessive contrasts. Checks covered the paper, round-count arithmetic, pages, links and metadata; Avatar computations and GPU measurements were not reproduced. Total inference cost and generalization remain unverified.</p>
+<p>Attribution and adaptation: Avatar v1 by Raj, Nguyen, Pan, R. Chard, K. Chard and Foster is distributed under CC BY-NC-SA 4.0. Paper-derived explanations and tables here translate, summarize and critically adapt that work; no original figure was copied. This bilingual review text and its reconstructed diagrams are provided under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>. The generated hero is a separate AI conceptual illustration, not a figure from the paper.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source research, bilingual writing, scientific copyediting, image direction, deterministic SVG, code and publication checks</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>Avatar v1 full text: policy placement, workload definitions, dates, numerical comparisons and execution boundaries; Academy and Colmena official documentation; round-count arithmetic; bilingual rendering, unit tests, public-site validator, metadata, local and reference links, thumbnail consistency; single-agent source checking; no independent experiment reproduction or separate verification agent</dd></div>
+          <div><dt>Human review record</dt><dd>recurring publication authorized; no line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-12</dd></div>
+        </dl>
+        <p class="disclosure-note">Used web research, GitHub connection, local Python checks, browser inspection and built-in imagegen. Exact model identifier not retained. GPU time is author-reported; QM9 lookup is not new DFT execution. Total inference cost and generalization remain unverified; the operational design is proposed.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-09-12 21:02:26<br>
+        Source last modified: 2026-09-12 21:02:26
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#three-sentence-summary">Three-sentence summary</a></li>
+<li><a href="#running-the-calculation-is-only-part-of-running-the-research">Running the calculation is only part of running the research</a></li>
+<li><a href="#separate-the-responsibilities-then-vary-the-policy">Separate the responsibilities, then vary the policy</a></li>
+<li><a href="#three-experiments-three-distinct-questions">Three experiments, three distinct questions</a><ul>
+<li><a href="#recovery-how-much-work-is-spent-repeating-permanent-failures">Recovery: how much work is spent repeating permanent failures?</a></li>
+<li><a href="#scaling-a-decision-can-arrive-too-late">Scaling: a decision can arrive too late</a></li>
+<li><a href="#stopping-can-a-campaign-do-less-work-without-losing-its-best-result">Stopping: can a campaign do less work without losing its best result?</a></li>
+</ul>
+</li>
+<li><a href="#what-is-missing-from-the-cost-denominator">What is missing from the cost denominator?</a></li>
+<li><a href="#testing-whether-the-system-knows-when-to-stop">Testing whether the system knows when to stop</a></li>
+<li><a href="#a-bounded-experiment-for-materials-research-and-enterprise-operations">A bounded experiment for materials research and enterprise operations</a></li>
+<li><a href="#researchers-and-seminar-questions">Researchers and seminar questions</a></li>
+<li><a href="#what-to-watch-next">What to watch next</a></li>
+<li><a href="#references-and-a-short-reading-order">References and a short reading order</a></li>
+<li><a href="#preparation-and-review-information">Preparation and review information</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="avatar_control_hero.webp">A lower conveyor performs regular computations while an upper inspection path reviews accumulated results and diverts further work</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/" target="_blank" rel="noreferrer">DeMARS article</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/" target="_blank" rel="noreferrer">harness-engineering review</a></li>
+<li><a href="https://arxiv.org/abs/2609.10509v1" target="_blank" rel="noreferrer">Raj et al., Avatar, arXiv:2609.10509v1</a></li>
+<li><a href="https://arxiv.org/html/2609.10509v1" target="_blank" rel="noreferrer">§III–V</a></li>
+<li><a href="https://academy-agents.org/" target="_blank" rel="noreferrer">Academy official overview</a></li>
+<li><a href="https://github.com/academy-agents/academy" target="_blank" rel="noreferrer">source repository</a></li>
+<li><a href="https://colmena.readthedocs.io/en/latest/" target="_blank" rel="noreferrer">Colmena documentation</a></li>
+<li><a href="https://kylechard.com/" target="_blank" rel="noreferrer">Kyle Chard&#x27;s public profile</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/methods/" target="_blank" rel="noreferrer">AI Tech Review Editorial Harness v2026.08</a></li>
+<li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body>
+</html>

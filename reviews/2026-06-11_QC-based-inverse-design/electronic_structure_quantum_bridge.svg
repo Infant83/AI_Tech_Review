@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1180" viewBox="0 0 1440 1180" role="img" aria-labelledby="title desc">
+  <title id="title">고전 전자구조 계산에서 VQE와 QPE로 이어지는 변환 사슬</title>
+  <desc id="desc">SCF 또는 주기계 환경에서 활성공간 적분을 만들고, 이차양자화된 페르미온 해밀토니안을 Jordan-Wigner 또는 Bravyi-Kitaev 방식으로 큐비트 연산자에 매핑한다. 이후 짧은 회로와 반복 측정을 쓰는 VQE와 상태 준비, 긴 결맞음 시간, 위상 추정을 쓰는 QPE로 갈라진다. 역 QFT는 QPE 내부에서 위상 레지스터를 판독하는 단계에만 표시된다. 에너지와 축약밀도행렬은 고전 외부 루프로 돌아간다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:2px;fill:#684790}.title{font:700 42px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 23px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.step{fill:#fff;stroke:#c8ced8;stroke-width:2.5}.stepnum{font:800 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1px}.head{font:700 25px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.smallhead{font:700 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.formula{font:600 18px Consolas,'Segoe UI Symbol',monospace;fill:#293548}.flow{stroke:#687386;stroke-width:5;fill:none}.fork{stroke:#74519a;stroke-width:5;fill:none}.vqe{fill:#eef4fb;stroke:#416b9a;stroke-width:3}.qpe{fill:#f3eef9;stroke:#74519a;stroke-width:3}.tag{font:800 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.2px}.panelhead{font:700 31px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.panelbody{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.pill{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.micro{fill:#fff;stroke-width:2}.microhead{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.microbody{font:400 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.out{fill:#edf7f1;stroke:#28745a;stroke-width:3}.loop{stroke:#a44343;stroke-width:5;stroke-dasharray:12 9;fill:none}.looptext{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.note{fill:#fff4e5;stroke:#aa681f;stroke-width:2.5}.notetext{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#8c571c}.footer{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+    <marker id="purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#74519a"/></marker>
+    <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a44343"/></marker>
+  </defs>
+  <rect class="bg" width="1440" height="1180"/>
+
+  <text class="eyebrow" x="55" y="50">FROM ELECTRONIC STRUCTURE TO QUANTUM SOLVERS</text>
+  <text class="title" x="55" y="99">DFT 실무는 사라지지 않고, 양자 문제의 경계를 만듭니다</text>
+  <text class="subtitle" x="55" y="137">환경·기저·적분·활성공간은 고전 계산이 정하고, 그 안의 다체 파동함수 문제만 선택적으로 넘깁니다.</text>
+
+  <rect class="step" x="55" y="190" rx="20" width="230" height="225"/>
+  <text class="stepnum" x="80" y="226" fill="#416b9a">01 · ENVIRONMENT</text>
+  <text class="head" x="80" y="268">SCF · 주기계 환경</text>
+  <text class="body" x="80" y="306">구조 · 기저 · ECP</text>
+  <text class="body" x="80" y="338">mean field · embedding</text>
+  <rect x="78" y="358" rx="11" width="184" height="34" fill="#edf0f4"/>
+  <text class="pill" x="95" y="381" fill="#5b6473">고전 계산이 계속 담당</text>
+
+  <rect class="step" x="320" y="190" rx="20" width="230" height="225"/>
+  <text class="stepnum" x="345" y="226" fill="#28745a">02 · DOWNSCOPE</text>
+  <text class="head" x="345" y="268">활성공간 · 적분</text>
+  <text class="body" x="345" y="306">frozen core · orbital 선택</text>
+  <text class="body" x="345" y="338">h<tspan baseline-shift="sub" font-size="14">pq</tspan> · g<tspan baseline-shift="sub" font-size="14">pqrs</tspan> · 전자수</text>
+  <rect x="343" y="358" rx="11" width="184" height="34" fill="#edf7f1"/>
+  <text class="pill" x="365" y="381" fill="#28745a">정확도–자원 절충</text>
+
+  <rect class="step" x="585" y="190" rx="20" width="255" height="225"/>
+  <text class="stepnum" x="610" y="226" fill="#aa681f">03 · FERMION MODEL</text>
+  <text class="head" x="610" y="268">이차양자화 H<tspan baseline-shift="sub" font-size="17">e</tspan></text>
+  <text class="formula" x="610" y="307">Σ h<tspan baseline-shift="sub" font-size="13">pq</tspan> a†<tspan baseline-shift="sub" font-size="13">p</tspan>a<tspan baseline-shift="sub" font-size="13">q</tspan></text>
+  <text class="formula" x="610" y="339">+ ½Σ g<tspan baseline-shift="sub" font-size="13">pqrs</tspan> a†<tspan baseline-shift="sub" font-size="13">p</tspan>a†<tspan baseline-shift="sub" font-size="13">q</tspan>a<tspan baseline-shift="sub" font-size="13">s</tspan>a<tspan baseline-shift="sub" font-size="13">r</tspan></text>
+  <text class="body" x="610" y="379">전자 상관을 보존한 H 정의</text>
+
+  <rect class="step" x="875" y="190" rx="20" width="230" height="225"/>
+  <text class="stepnum" x="900" y="226" fill="#74519a">04 · ENCODING</text>
+  <text class="head" x="900" y="268">JW · BK 매핑</text>
+  <text class="body" x="900" y="306">fermion 연산자 → qubit</text>
+  <text class="body" x="900" y="338">점유수·parity 부호화</text>
+  <rect x="898" y="358" rx="11" width="184" height="34" fill="#f3eef9"/>
+  <text class="pill" x="923" y="381" fill="#74519a">회로 locality가 변함</text>
+
+  <rect class="step" x="1140" y="190" rx="20" width="245" height="225"/>
+  <text class="stepnum" x="1165" y="226" fill="#684790">05 · QUBIT MODEL</text>
+  <text class="smallhead" x="1165" y="268">Pauli 합 · block encoding</text>
+  <text class="formula" x="1165" y="309">H<tspan baseline-shift="sub" font-size="13">q</tspan> = Σ c<tspan baseline-shift="sub" font-size="13">j</tspan>P<tspan baseline-shift="sub" font-size="13">j</tspan></text>
+  <text class="body" x="1165" y="342">VQE: Pauli 항 측정</text>
+  <text class="body" x="1165" y="374">QPE: U=e<tspan baseline-shift="super" font-size="13">−iHt</tspan> 구현</text>
+
+  <path class="flow" d="M285 302 L312 302" marker-end="url(#arrow)"/>
+  <path class="flow" d="M550 302 L577 302" marker-end="url(#arrow)"/>
+  <path class="flow" d="M840 302 L867 302" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1105 302 L1132 302" marker-end="url(#arrow)"/>
+
+  <path class="fork" d="M1262 415 L1262 465 L720 465 L720 500" marker-end="url(#purple)"/>
+  <path class="fork" d="M1262 465 L1262 500" marker-end="url(#purple)"/>
+
+  <rect class="vqe" x="55" y="515" rx="24" width="665" height="325"/>
+  <text class="tag" x="88" y="558" fill="#416b9a">NISQ / EARLY-FT BRANCH</text>
+  <text class="panelhead" x="88" y="602">VQE · 짧은 회로를 많이 반복합니다</text>
+  <text class="panelbody" x="88" y="640">E(θ)=Σ c<tspan baseline-shift="sub" font-size="14">j</tspan>〈ψ(θ)|P<tspan baseline-shift="sub" font-size="14">j</tspan>|ψ(θ)〉 ≥ E<tspan baseline-shift="sub" font-size="14">0</tspan></text>
+
+  <rect class="micro" x="88" y="674" rx="16" width="170" height="120" stroke="#416b9a"/>
+  <text class="microhead" x="108" y="707">① Ansatz</text>
+  <text class="microbody" x="108" y="738">|ψ(θ)〉 준비</text>
+  <text class="microbody" x="108" y="765">얕은 회로</text>
+  <rect class="micro" x="276" y="674" rx="16" width="170" height="120" stroke="#416b9a"/>
+  <text class="microhead" x="296" y="707">② Shots</text>
+  <text class="microbody" x="296" y="738">Pauli 항 측정</text>
+  <text class="microbody" x="296" y="765">통계 오차</text>
+  <rect class="micro" x="464" y="674" rx="16" width="220" height="120" stroke="#416b9a"/>
+  <text class="microhead" x="484" y="707">③ 고전 최적화</text>
+  <text class="microbody" x="484" y="738">θ 갱신 · 수렴 판정</text>
+  <text class="microbody" x="484" y="765">barren plateau 점검</text>
+  <path d="M258 734 L268 734" stroke="#416b9a" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M446 734 L456 734" stroke="#416b9a" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect class="qpe" x="755" y="515" rx="24" width="630" height="325"/>
+  <text class="tag" x="788" y="558" fill="#74519a">FAULT-TOLERANT BRANCH</text>
+  <text class="panelhead" x="788" y="602">QPE · 에너지를 위상으로 읽습니다</text>
+  <text class="panelbody" x="788" y="640">U(t)|ψ<tspan baseline-shift="sub" font-size="14">k</tspan>〉=e<tspan baseline-shift="super" font-size="14">−iEₖt</tspan>|ψ<tspan baseline-shift="sub" font-size="14">k</tspan>〉</text>
+
+  <rect class="micro" x="788" y="674" rx="16" width="170" height="120" stroke="#74519a"/>
+  <text class="microhead" x="808" y="707">① 상태 준비</text>
+  <text class="microbody" x="808" y="738">|ψ<tspan baseline-shift="sub" font-size="12">0</tspan>〉와 고유상태</text>
+  <text class="microbody" x="808" y="765">중첩 |〈ψ<tspan baseline-shift="sub" font-size="12">k</tspan>|ψ<tspan baseline-shift="sub" font-size="12">0</tspan>〉|²</text>
+  <rect class="micro" x="976" y="674" rx="16" width="170" height="120" stroke="#74519a"/>
+  <text class="microhead" x="996" y="707">② controlled-U</text>
+  <text class="microbody" x="996" y="738">긴 결맞음 진화</text>
+  <text class="microbody" x="996" y="765">오류정정 자원</text>
+  <rect class="micro" x="1164" y="674" rx="16" width="185" height="120" stroke="#74519a"/>
+  <text class="microhead" x="1184" y="707">③ 역 QFT</text>
+  <text class="microbody" x="1184" y="738">위상 레지스터 판독</text>
+  <text class="microbody" x="1184" y="765">QFT의 유일한 위치</text>
+  <path d="M958 734 L968 734" stroke="#74519a" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1146 734 L1156 734" stroke="#74519a" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <path class="flow" d="M388 840 L388 892 L610 892" marker-end="url(#arrow)"/>
+  <path class="flow" d="M1070 840 L1070 892 L830 892" marker-end="url(#arrow)"/>
+  <rect class="out" x="515" y="875" rx="22" width="410" height="145"/>
+  <text class="tag" x="548" y="916" fill="#28745a">SHARED SCIENTIFIC OUTPUT</text>
+  <text class="panelhead" x="548" y="960">에너지 · RDM · 관측량</text>
+  <text class="panelbody" x="548" y="994">힘·여기상태·응답함수는 추가 측정 계약이 필요</text>
+
+  <path class="loop" d="M515 948 C340 948 208 928 170 1015 C125 1118 785 1128 1090 1010" marker-end="url(#red)"/>
+  <rect x="190" y="1050" rx="10" width="600" height="43" fill="#faf8f2"/>
+  <text class="looptext" x="210" y="1080">궤도·embedding·구조·surrogate를 갱신하는 고전 외부 루프</text>
+
+  <rect class="note" x="1020" y="920" rx="18" width="365" height="106"/>
+  <text class="notetext" x="1046" y="958">QFT는 DFT의 대체물이 아닙니다.</text>
+  <text class="body" x="1046" y="990">QPE 안에서 위상을 판독하는 서브루틴입니다.</text>
+
+  <text class="footer" x="55" y="1150">비교 기준 · 동일 active space · 정확도 · 총비용</text>
+</svg>
