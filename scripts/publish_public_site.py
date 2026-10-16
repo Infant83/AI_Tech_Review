@@ -17,6 +17,11 @@ from pathlib import Path
 from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
+try:
+    from .document_archive_site import publish_archive, render_archive_teaser, validate_archive
+except ImportError:
+    from document_archive_site import publish_archive, render_archive_teaser, validate_archive
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
@@ -1570,6 +1575,27 @@ def public_metrics_endpoint() -> str:
     return endpoint
 
 
+def restore_published_analytics() -> None:
+    """Retain published, public analytics settings on a newly configured host."""
+    index = SITE_DIR / "index.html"
+    if not index.exists():
+        return
+    existing = index.read_text(encoding="utf-8")
+    if not (os.environ.get(PUBLIC_METRICS_ENDPOINT_ENV) or os.environ.get(LEGACY_PUBLIC_METRICS_ENDPOINT_ENV)):
+        match = re.search(r'window\.AI_TECH_REVIEW_METRICS\s*=\s*(\{[^<]*?\})\s*;', existing)
+        if match:
+            endpoint = json.loads(match.group(1)).get("endpoint", "")
+            if endpoint:
+                os.environ[PUBLIC_METRICS_ENDPOINT_ENV] = endpoint
+                public_metrics_endpoint()  # Validate before rendering any output.
+    if not os.environ.get(CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV):
+        match = re.search(r"data-cf-beacon=['\"]([^'\"]+)['\"]", existing)
+        if match:
+            token = json.loads(html.unescape(match.group(1))).get("token", "")
+            if token:
+                os.environ[CLOUDFLARE_WEB_ANALYTICS_TOKEN_ENV] = token
+
+
 def public_icon_links(asset_prefix: str = "", indent: int = 4) -> str:
     pad = " " * indent
     version = f"?v={ICON_ASSET_VERSION}"
@@ -2510,7 +2536,9 @@ def render_category_chips(categories: list[str]) -> str:
 def render_index(
     manifest: list[dict[str, object]],
     preferred_category_order: list[str] | None = None,
+    documents: list[dict] | None = None,
 ) -> str:
+    documents = documents or []
     updated = date.today().isoformat()
     available_categories = {str(item["category"]) for item in manifest}
     categories = [
@@ -2564,6 +2592,7 @@ def render_index(
     <meta name="twitter:title" content="AI Tech Review Letters">
     <meta name="twitter:description" content="{html.escape(home_description, quote=True)}">
     <link rel="stylesheet" href="assets/site.css">
+    <link rel="stylesheet" href="assets/archive.css">
   </head>
   <body>
     <header class="site-header">
@@ -2582,19 +2611,26 @@ def render_index(
           <a href="manifest.json">데이터</a>
         </span>
       </nav>
+      <nav class="hub-nav" aria-label="허브 메뉴">
+        <a href="./" aria-current="page">리뷰허브</a>
+        <a href="archive/">문서 아카이브 <span>{len(documents)}</span></a>
+      </nav>
       <section class="hero">
         <p class="eyebrow">Public report hub · {updated}</p>
         <h1>Enlighten your AI Technology Insight.</h1>
-        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽는 공개 리뷰 허브입니다.</p>
+        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽습니다. 심층 리뷰와 매일의 양자 브리핑, 주간·수시 PDF를 한곳에 모았습니다.</p>
         <div class="stats" aria-label="허브 요약">
           <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
           <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>
+          <a href="archive/" class="stat-link"><strong>{len(documents)}</strong> 아카이브 문서</a>
         </div>
       </section>
     </header>
 
     <main>
       {latest}
+
+      {render_archive_teaser(documents)}
 
       <section class="topic-filter" id="topic-filter" aria-label="주제별 리뷰 찾기">
         <div class="filter-heading">
@@ -4012,6 +4048,12 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
             )
             errors.extend(validate_public_support_files((SITE_DIR / href).parent))
     errors.extend(validate_methods_page(sparse_tracked_paths))
+    errors.extend(validate_archive(SITE_DIR))
+    for archive_page in (SITE_DIR / "archive/index.html", SITE_DIR / "archive/en/index.html"):
+        if archive_page.exists():
+            archive_text = archive_page.read_text(encoding="utf-8")
+            errors.extend(validate_local_references(archive_page, archive_text, sparse_tracked_paths))
+            errors.extend(f"{risk} left in {archive_page}" for risk in public_text_risks(archive_text))
     site_index = SITE_DIR / "index.html"
     if not site_index.exists():
         errors.append(f"missing site index: {site_index}")
@@ -4052,6 +4094,11 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
         description="Publish the AI Tech Review static hub and registered review pages."
     )
     parser.add_argument(
+        "--hub-only",
+        action="store_true",
+        help="Rebuild the hub and PDF archive while leaving published review files unchanged.",
+    )
+    parser.add_argument(
         "--review",
         action="append",
         default=[],
@@ -4066,6 +4113,9 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
 
 def main(argv: Iterable[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.hub_only and args.review:
+        print("[public-site:error] --hub-only cannot be combined with --review")
+        return 2
     selected_reviews = set(args.review)
     known_reviews = {review.folder: review for review in REVIEWS}
     unknown_reviews = sorted(selected_reviews - set(known_reviews))
@@ -4074,16 +4124,20 @@ def main(argv: Iterable[str] | None = None) -> int:
             print(f"[public-site:error] unknown review: {folder}")
         return 2
 
-    preferred_category_order = load_existing_category_order() if selected_reviews else []
+    preferred_category_order = load_existing_category_order() if selected_reviews or args.hub_only else []
     existing_manifest = load_existing_manifest()
+    if args.hub_only and not existing_manifest:
+        print("[public-site:error] --hub-only requires an existing published review manifest")
+        return 2
+    restore_published_analytics()
 
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     copy_icon_assets()
 
-    manifest: list[dict[str, object]] = []
-    for review in REVIEWS:
+    manifest: list[dict[str, object]] = list(existing_manifest.values()) if args.hub_only else []
+    for review in (() if args.hub_only else REVIEWS):
         if not selected_reviews or review.folder in selected_reviews:
             manifest.append(publish_review(review, existing_manifest.get(review.folder)))
             continue
@@ -4092,7 +4146,11 @@ def main(argv: Iterable[str] | None = None) -> int:
         )
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
-    index_html = inject_public_icons(render_index(manifest, preferred_category_order))
+    def decorate_archive(text: str, prefix: str) -> str:
+        return inject_cloudflare_web_analytics(inject_public_metrics(inject_public_icons(text, prefix), prefix))
+
+    documents = publish_archive(ROOT / "archive", SITE_DIR, PUBLIC_BASE_URL, decorate_archive)
+    index_html = inject_public_icons(render_index(manifest, preferred_category_order, documents))
     index_html = inject_public_metrics(index_html)
     (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -4110,6 +4168,7 @@ def main(argv: Iterable[str] | None = None) -> int:
 
     print(f"[public-site] {SITE_DIR}")
     print(f"[public-site] reviews={len(manifest)}")
+    print(f"[public-site] archive_documents={len(documents)}")
     for item in manifest:
         print(f"[review] {item['href']}")
     print("[public-site-check] ok")

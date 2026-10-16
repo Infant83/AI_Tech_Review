@@ -6,6 +6,13 @@
 - 루트 주제 패키지는 `YYYY-MM-DD_<topic-slug>` 형식으로 관리한다.
 - 일별 인테이크와 대화 메모는 `daily_research_review/` 아래에 누적한다.
 - 리서치 리포트, 슬라이드 입력/산출물, 보조 소스는 주제 폴더 안에 함께 보관한다.
+- 공개 PDF 문서는 `archive/manifest.json`에 등록하며, [아카이브 운영 안내](archive/README.md)에 따라 추가한다.
+
+## 리뷰허브와 문서 아카이브
+
+[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [문서 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)에서 Daily Quantum Review(Daily Quantum Brief), 주간 리뷰, 수시 PDF 아티클을 검색한다. 아카이브는 발행 월·키워드·분류로 찾기, 날짜순 정렬, PDF 열기·다운로드를 지원한다.
+
+PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실행하면 기존 리뷰 파일을 다시 생성하지 않고 허브와 아카이브만 갱신한다. 기존 허브에 공개 조회수·분석 설정이 있으면 새 컴퓨터에서도 이를 보존하며, 명시한 환경변수가 있으면 그 설정을 우선한다. `site/manifest.json`은 심층 리뷰 목록, `site/archive-manifest.json`은 문서 목록이다.
 
 ## 기본 흐름
 1. 주제 또는 소스 팩을 받는다.
@@ -73,4 +80,3 @@ python scripts/generate_readme.py
 ```bash
 python scripts/generate_readme.py --limit 8
 ```
-
