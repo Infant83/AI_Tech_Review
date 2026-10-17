@@ -12,6 +12,7 @@ SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
+    "lecture-notes": ("렉처 노트", "Lecture notes"),
 }
 
 
@@ -29,7 +30,7 @@ def render_archive_teaser(documents: list[dict]) -> str:
     return f'''<section class="archive-preview" aria-labelledby="archive-preview-title">
       <div><p class="section-kicker">The document library</p>
       <h2 id="archive-preview-title">메일로 읽은 리뷰를 한곳에.</h2>
-      <p>Daily Quantum Review부터 주간 리뷰와 수시 아티클까지. 날짜와 주제로 찾고 PDF 원본을 다시 읽습니다.</p>
+      <p>Daily Quantum Review부터 주간 리뷰, 수시 아티클과 렉처 노트까지. 날짜와 주제로 찾고 PDF 원본을 다시 읽습니다.</p>
       <a class="archive-cta" href="archive/">문서 아카이브 <span>{len(documents)}건 →</span></a></div>
       <ul class="archive-recent">{recent}</ul>
     </section>'''
@@ -41,8 +42,8 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
     pdf_prefix = "../files/" if en else "files/"
     current_url = base_url + "archive/" + ("en/" if en else "")
     title = "Document archive" if en else "리뷰 문서 아카이브"
-    description = ("Daily Quantum Review, weekly reviews and occasional articles in one searchable PDF library."
-                   if en else "Daily Quantum Review, 주간 리뷰와 수시 아티클을 날짜와 주제로 다시 찾는 PDF 라이브러리입니다.")
+    description = ("Daily Quantum Review, weekly reviews, articles and lecture notes in one searchable PDF library."
+                   if en else "Daily Quantum Review, 주간 리뷰, 수시 아티클과 렉처 노트를 날짜와 주제로 다시 찾는 PDF 라이브러리입니다.")
     counts = {key: sum(doc["series"] == key for doc in documents) for key in SERIES}
     buttons = f'<button type="button" class="collection-button active" data-series="" aria-pressed="true">{"All documents" if en else "전체 문서"}<span>{len(documents)}</span></button>'
     buttons += "".join(
@@ -98,7 +99,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
   <main>
     <section class="archive-browser" aria-label="{'Find documents' if en else '문서 찾기'}">
       <div class="collection-filters" aria-label="{'Collections' if en else '문서 분류'}">{buttons}</div>
-      <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the emailed Daily Quantum Brief series. Weekly reviews and occasional PDFs are added as they arrive.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰와 수시 PDF 아티클도 같은 곳에서 보관합니다.'}</p>
+      <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the Daily Quantum Brief series. Weekly reviews, articles and lecture notes are archived alongside it. For revised lecture notes, only the latest supplied edition is listed.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰, 수시 PDF와 렉처 노트를 함께 보관하며, 개정된 렉처 노트는 확인된 최신본만 등록합니다.'}</p>
       <div class="archive-controls">
         <label class="archive-search"><span>{'Search documents' if en else '문서 검색'}</span><input id="archive-search" type="search" placeholder="{'Title, topic, keyword…' if en else '제목, 주제, 키워드로 검색…'}" autocomplete="off"></label>
         <label><span>{'Month' if en else '발행 월'}</span><select id="archive-month"><option value="">{'All months' if en else '전체 기간'}</option>{month_options}</select></label>

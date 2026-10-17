@@ -10,7 +10,7 @@
 
 ## 리뷰허브와 문서 아카이브
 
-[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [문서 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)에서 Daily Quantum Review(Daily Quantum Brief), 주간 리뷰, 수시 PDF 아티클을 검색한다. 아카이브는 발행 월·키워드·분류로 찾기, 날짜순 정렬, PDF 열기·다운로드를 지원한다.
+[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [문서 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)에서 Daily Quantum Review(Daily Quantum Brief), 주간 리뷰, 수시 PDF 아티클과 렉처 노트를 검색한다. 아카이브는 발행 월·키워드·분류로 찾기, 날짜순 정렬, PDF 열기·다운로드를 지원한다.
 
 PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실행하면 기존 리뷰 파일을 다시 생성하지 않고 허브와 아카이브만 갱신한다. 기존 허브에 공개 조회수·분석 설정이 있으면 새 컴퓨터에서도 이를 보존하며, 명시한 환경변수가 있으면 그 설정을 우선한다. `site/manifest.json`은 심층 리뷰 목록, `site/archive-manifest.json`은 문서 목록이다.
 

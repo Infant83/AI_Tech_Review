@@ -2618,7 +2618,7 @@ def render_index(
       <section class="hero">
         <p class="eyebrow">Public report hub · {updated}</p>
         <h1>Enlighten your AI Technology Insight.</h1>
-        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽습니다. 심층 리뷰와 매일의 양자 브리핑, 주간·수시 PDF를 한곳에 모았습니다.</p>
+        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽습니다. 심층 리뷰와 매일의 양자 브리핑, 주간·수시 PDF와 렉처 노트를 한곳에 모았습니다.</p>
         <div class="stats" aria-label="허브 요약">
           <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
           <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>

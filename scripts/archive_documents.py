@@ -21,7 +21,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ARCHIVE_DIR = ROOT / "archive"
-SERIES = frozenset({"daily-quantum", "weekly-review", "article"})
+SERIES = frozenset({"daily-quantum", "weekly-review", "article", "lecture-notes"})
 LANGUAGES = frozenset({"ko", "en"})
 REQUIRED_FIELDS = frozenset(
     {"id", "date", "series", "title", "summary", "language", "file", "tags", "public_reviewed"}
