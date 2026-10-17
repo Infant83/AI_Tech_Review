@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="780" viewBox="0 0 1360 780" role="img" aria-labelledby="title desc">
+  <title id="title">에르되시 문제 1196 설명 도해</title>
+  <desc id="desc">원시 집합, 에르되시 합, 기존 1.399 상한, GPT-5.4 Pro와 Liam Price의 프롬프트에서 출발한 Markov chain 및 von Mangoldt weights 방법, 인간 수학자와 Lean 검증까지 이어지는 흐름</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8f6ef; }
+      .title { font: 700 34px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .sub { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #454545; }
+      .panel { fill: #ffffff; stroke: #d8d2c2; stroke-width: 1.6; rx: 16; }
+      .warm { fill: #fff1df; stroke: #c67a2a; stroke-width: 2; rx: 14; }
+      .cool { fill: #eaf3f7; stroke: #3f7f96; stroke-width: 2; rx: 14; }
+      .green { fill: #edf7ec; stroke: #4f8b5f; stroke-width: 2; rx: 14; }
+      .violet { fill: #f1edf9; stroke: #7962aa; stroke-width: 2; rx: 14; }
+      .dark { fill: #18222b; stroke: #18222b; rx: 14; }
+      .label { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .body { font: 400 16px "Segoe UI", "Malgun Gothic", sans-serif; fill: #2f3437; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .math { font: 500 20px "Cambria Math", "Times New Roman", serif; fill: #111; }
+      .mathwhite { font: 500 20px "Cambria Math", "Times New Roman", serif; fill: #fff; }
+      .whitelabel { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #fff; }
+      .whitebody { font: 400 16px "Segoe UI", "Malgun Gothic", sans-serif; fill: #ecf3f4; }
+      .node { fill: #fefefe; stroke: #333; stroke-width: 1.4; }
+      .prime { fill: #f4c95d; stroke: #8d5d0d; stroke-width: 1.2; }
+      .arrow { stroke: #333; stroke-width: 2.4; fill: none; marker-end: url(#arrowhead); }
+      .soft { stroke: #7c858a; stroke-width: 2; fill: none; stroke-dasharray: 6 6; marker-end: url(#arrowhead-soft); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#333"/>
+    </marker>
+    <marker id="arrowhead-soft" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7c858a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1360" height="780"/>
+  <text x="64" y="66" class="title">에르되시 문제 #1196: AI가 건드린 것은 “모든 원시 집합”의 상한이었다</text>
+  <text x="64" y="102" class="sub">소수와 약수 관계가 만든 격자에서, 어떤 수가 다른 수를 나누지 않는 집합의</text>
+  <text x="64" y="128" class="sub">가중합이 1에 가까워지는지 묻는 문제입니다.</text>
+
+  <rect x="64" y="145" width="295" height="205" class="warm"/>
+  <text x="92" y="184" class="label">1. 원시 집합</text>
+  <text x="92" y="218" class="body">집합 안의 두 수가 서로</text>
+  <text x="92" y="244" class="body">약수 관계가 되지 않도록 고른다.</text>
+  <circle cx="126" cy="292" r="20" class="prime"/><text x="119" y="299" class="body">6</text>
+  <circle cx="202" cy="292" r="20" class="prime"/><text x="191" y="299" class="body">10</text>
+  <circle cx="280" cy="292" r="20" class="prime"/><text x="269" y="299" class="body">15</text>
+  <line x1="146" y1="292" x2="182" y2="292" class="soft"/>
+  <line x1="222" y1="292" x2="260" y2="292" class="soft"/>
+  <text x="92" y="330" class="small">예: 서로 나누지 않는 수들의 antichain</text>
+
+  <rect x="396" y="145" width="310" height="205" class="cool"/>
+  <text x="424" y="184" class="label">2. 에르되시 합</text>
+  <text x="424" y="222" class="math">Σ 1 / (a log a)</text>
+  <text x="424" y="258" class="body">원시 집합 A의 모든 원소 a에</text>
+  <text x="424" y="284" class="body">작은 가중치를 붙여 더한다.</text>
+  <text x="424" y="322" class="small">큰 수로 갈수록 이 합이 얼마나 커질까?</text>
+
+  <rect x="743" y="145" width="255" height="205" class="violet"/>
+  <text x="770" y="184" class="label">3. 기존 진전</text>
+  <text x="770" y="222" class="body">Lichtman은 일반 상한을</text>
+  <text x="770" y="250" class="math">≈ 1.399 + o(1)</text>
+  <text x="770" y="286" class="body">까지 낮췄지만, 추측한</text>
+  <text x="770" y="312" class="math">1 + o(1)</text>
+  <text x="870" y="312" class="body">에는 닿지 못했다.</text>
+
+  <rect x="1035" y="145" width="260" height="205" class="dark"/>
+  <text x="1063" y="184" class="whitelabel">4. AI-assisted jump</text>
+  <text x="1063" y="220" class="whitebody">Liam Price의 프롬프트와</text>
+  <text x="1063" y="248" class="whitebody">GPT-5.4 Pro 출력에서</text>
+  <text x="1063" y="276" class="whitebody">Markov chain과</text>
+  <text x="1063" y="304" class="whitebody">von Mangoldt weights를 결합한</text>
+  <text x="1063" y="332" class="whitebody">새 방법이 제안됐다.</text>
+
+  <line x1="359" y1="248" x2="396" y2="248" class="arrow"/>
+  <line x1="706" y1="248" x2="743" y2="248" class="arrow"/>
+  <line x1="998" y1="248" x2="1035" y2="248" class="arrow"/>
+
+  <rect x="100" y="420" width="350" height="220" class="panel"/>
+  <text x="130" y="460" class="label">왜 어려웠나?</text>
+  <text x="130" y="496" class="body">특정 예쁜 집합 하나가 아니라</text>
+  <text x="130" y="522" class="body">모든 원시 집합을 상대해야 한다.</text>
+  <text x="130" y="558" class="body">소수 분포, 약수 격자, 점근 상한이</text>
+  <text x="130" y="584" class="body">한꺼번에 얽힌다.</text>
+  <text x="130" y="620" class="small">좋은 아이디어가 있어도 엄밀한 부등식으로</text>
+  <text x="130" y="642" class="small">끝까지 밀어붙여야 한다.</text>
+
+  <rect x="505" y="420" width="350" height="220" class="green"/>
+  <text x="535" y="460" class="label">무엇이 달라졌나?</text>
+  <text x="535" y="496" class="body">정수 n에서 소인수를 따라 내려가는</text>
+  <text x="535" y="522" class="body">확률적 경로를 만들고,</text>
+  <text x="535" y="558" class="body">von Mangoldt 가중치로 흐름을 맞춘다.</text>
+  <text x="535" y="596" class="math">Σ 1 / (a log a) ≤ 1 + O(1 / log x)</text>
+  <text x="535" y="626" class="small">추측한 1에 점근적으로 도달한다.</text>
+
+  <rect x="910" y="420" width="350" height="220" class="panel"/>
+  <text x="940" y="460" class="label">무엇을 배워야 하나?</text>
+  <text x="940" y="496" class="body">AI 출력은 초안과 힌트에 가깝다.</text>
+  <text x="940" y="522" class="body">수학자들이 논리를 짧게 다듬고,</text>
+  <text x="940" y="548" class="body">기존 문헌과 중복을 확인하고,</text>
+  <text x="940" y="574" class="body">Lean 같은 형식 검증까지 붙인다.</text>
+  <text x="940" y="620" class="small">AI + 인간 검토 + 형식 검증이 함께 움직였다.</text>
+
+  <path d="M275 350 C275 390 275 400 275 420" class="soft"/>
+  <path d="M1165 350 C1165 387 1000 396 1085 420" class="soft"/>
+  <path d="M680 640 C680 690 1085 690 1085 640" class="arrow"/>
+</svg>

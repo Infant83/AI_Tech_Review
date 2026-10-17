@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design</title>
+  <meta name="description" content="Research published 25 September–1 October 2026 | bridged-resonance devices, masked generation, synthesis routes, Deep QSCI and constraint-preserving QAOA">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Research published 25 September–1 October 2026 | bridged-resonance devices, masked generation, synthesis routes, Deep QSCI and constraint-preserving QAOA">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/triplet_state_control_hero-web.webp">
+  <meta property="og:image:alt" content="Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design">
+  <meta property="article:published_time" content="2026-10-02">
+  <meta property="article:modified_time" content="2026-10-02">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design">
+  <meta name="twitter:description" content="Research published 25 September–1 October 2026 | bridged-resonance devices, masked generation, synthesis routes, Deep QSCI and constraint-preserving QAOA">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/triplet_state_control_hero-web.webp">
+  <meta name="twitter:image:alt" content="Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/en/">
+    <meta property="og:title" content="Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 40 (2026-10-02)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Triplet-State Control in Blue OLEDs and the Validation Chain for Molecular Inverse Design</h1>
+        <p class="dek">Research published 25 September–1 October 2026 | bridged-resonance devices, masked generation, synthesis routes, Deep QSCI and constraint-preserving QAOA</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-10-01 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>This week produced one directly relevant OLED paper. He, Zhang and Li report a <strong>bridged resonance configuration</strong> that modulates triplet excited states in blue organic light-emitting diodes and reaches a maximum external quantum efficiency (EQE) of 42.6%. Because the evidence extends through synthesis, photophysics and a device, rather than stopping at a generator or surrogate, it ranks first.</p>
+<p>The other four records explain why that device result does not mean inverse design is solved. CAGenMol-2 uses one masked model for property prediction, conditional generation and local editing, but validates it on drug-like data. A polymer-informatics roadmap argues that synthetic routes should define the search space rather than remain an after-the-fact filter. Deep QSCI and QAOA address weak π–π interactions and constrained optimization, respectively, but both use noiseless classical simulation rather than a physical quantum processor. The unit of OLED inverse design is therefore not “a generated molecule,” but a validation chain spanning excited states, synthesis, aggregation, devices and computational resources.</p>
+<p><img alt="Conceptual blue emitter in an OLED layer, with blue singlet emission, an amber triplet pathway, and motifs for generation, synthesis, pi stacking and constrained optimization" src="triplet_state_control_hero-web.webp" /></p>
+<p><em>Figure 1. Conceptual illustration generated for this review. The molecular motifs, orbitals and landscape are not exact structures, measured morphologies, quantitative plots or executable quantum circuits.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Assessment</p>
+<p>The strongest evidence is the device study that treats the triplet manifold as a design variable and reports 42.6% EQE. Adjacent papers expand candidate search or reduce computational demands, but none validates OLED excited states, synthesis, condensed-phase behavior and lifetime in one workflow. Bridged resonance should be translated into explicit targets and protocols without mistaking a generative hit rate or qubit reduction for device performance or quantum advantage.</p>
+</aside>
+<p>The layout-checked <a href="oled_inverse_design_weekly_brief_2026-10-02.pdf">weekly technical brief is available as a PDF</a>.</p>
+<h2 id="ranked-reading-list">Ranked reading list</h2>
+<ol>
+<li><strong>Bridged resonance configuration enables high-efficiency and narrow-emission in blue organic light-emitting diodes</strong> — direct synthesis, photophysics and device evidence; EQEmax 42.6%.</li>
+<li><strong>One Sequence, Many Decodings: CAGenMol-2 Recasts Drug Design as Masked Molecular Inference</strong> — one SAFE-based masked model for prediction, generation and local optimization.</li>
+<li><strong>A roadmap for polymer informatics super-intelligence</strong> — connects generation, prediction and synthesis planning, including prior work with 44 reaction chains and 32 polymer classes.</li>
+<li><strong>A Divide-and-Conquer Quantum-Selected Configuration Interaction for Evaluating π–π Stacking Interaction Energies in the Benzene Dimer</strong> — 40→20 qubits through monomer reuse, in simulation.</li>
+<li><strong>Quantum Approximate Optimisation Algorithm for Protein Sidechain Packing</strong> — W-state plus XY ring mixer preserves one-hot constraints, in A100 state-vector simulation.</li>
+</ol>
+<p><img alt="Evidence ladder for five records, including source-reported values and their application boundaries" src="evidence_ladder.svg" /></p>
+<p><em>Figure 2. Reviewer-constructed evidence map using source-reported values. It is not a ranking across unlike tasks; neither quantum study ran on a physical QPU.</em></p>
+<h2 id="1-a-blue-oled-that-makes-the-triplet-manifold-a-design-target">1. A blue OLED that makes the triplet manifold a design target</h2>
+<h3 id="bridged-resonance-configuration-enables-high-efficiency-and-narrow-emission-in-blue-organic-light-emitting-diodes">Bridged resonance configuration enables high-efficiency and narrow-emission in blue organic light-emitting diodes</h3>
+<p><strong>Yi-Hui He, Zhen Zhang, Yan-Qing Li.</strong> <em>Nature Communications</em>, 29 September 2026. DOI: <a href="https://doi.org/10.1038/s41467-026-78234-0">10.1038/s41467-026-78234-0</a></p>
+<p>Blue-OLED efficiency and linewidth cannot be optimized by considering singlet emission alone. Where electrically generated triplets reside, and how they return to an emissive singlet, affects accumulation, roll-off and degradation risk. The paper proposes a bridged resonance configuration to modulate triplet states while retaining high photoluminescence quantum yield and narrow blue emission, and reports maximum EQE of 42.6%.</p>
+<p><strong>Evidence boundary.</strong> This is the issue&rsquo;s only peer-reviewed, directly device-relevant paper. The open Nature Communications index and DOI metadata confirm the date, three authors and 42.6% EQE. The publisher redirected the full text through authentication in this environment, so detailed values for ΔE_ST, k_RISC, linewidth or lifetime were not extracted or inferred.</p>
+<p><strong>Workflow translation — reviewer proposal.</strong> Represent bridged resonance with S_1/T_n ordering, spin–orbit or vibronic-coupling proxies, transition-density localization and conformer sensitivity. Screen with a fixed TDDFT/TDA protocol, reserve state-specific benchmarks for a shortlist, and test triplet accumulation in host-polarized films and devices. The 42.6% value belongs to the reported material and stack, not to a generic inverse-design hit rate.</p>
+<h2 id="2-one-masked-model-can-support-several-tasks-but-not-replace-oled-validation">2. One masked model can support several tasks, but not replace OLED validation</h2>
+<h3 id="one-sequence-many-decodings-cagenmol-2-recasts-drug-design-as-masked-molecular-inference">One Sequence, Many Decodings: CAGenMol-2 Recasts Drug Design as Masked Molecular Inference</h3>
+<p><strong>Yanting Li, Enyan Dai, Lei Wang, Wen-Cai Ye, Li Liu.</strong> arXiv:2609.34301v1, 28 September 2026. <a href="https://arxiv.org/abs/2609.34301">Preprint</a></p>
+<p>CAGenMol-2 combines a molecular SAFE sequence, continuous scalar slots for logP, molecular weight, QED, synthetic accessibility and molar refractivity, and optional 3D pocket tokens. The same checkpoint changes tasks by changing observed and masked regions. AdaFO adds gradient-free mask-and-refill local search.</p>
+<p><strong>Source-reported results.</strong> Mean single-property hit rates were 0.89 ID and 0.72 OOD. Joint hit rates were 0.76 for a three-property Lipinski-like target and 0.84 for a lead-like pair. On 5,000 held-out molecules, the scalar head reached macro R² 0.910 and Pearson 0.974. Selecting the most confident 25% reduced MAE by 29.1–59.9%. Across 100 CrossDocked pockets, AdaFO raised success from 30.2% to 70.8%, with mean Vina −8.76 kcal/mol and 85.1% high-affinity fraction.</p>
+<p><strong>Limitations and translation.</strong> These are drug-like and pocket tasks; confidence is not a calibrated posterior. SAFE validity, SA score and docking do not establish synthesis, excited-state accuracy or OLED performance. OLED records should bind each property to method and environment, while shortlisted mask-and-refill candidates undergo independent TDDFT and reaction-aware filtering.</p>
+<h2 id="3-synthesizability-should-define-the-space-not-merely-score-its-output">3. Synthesizability should define the space, not merely score its output</h2>
+<h3 id="a-roadmap-for-polymer-informatics-super-intelligence">A roadmap for polymer informatics super-intelligence</h3>
+<p><strong>Akhlak Mahmood, Janhavi Nistane, Huan Tran, Chiho Kim, Rampi Ramprasad.</strong> arXiv:2609.34051v1, 28 September 2026. <a href="https://arxiv.org/abs/2609.34051">Preprint</a></p>
+<p>This is a roadmap rather than a new benchmark. It connects representations, data extraction, property models, generative design, retrosynthesis and agents. It summarizes prior RxnChainer work that applied 44 reaction chains over 32 polymer classes to enumerate more than 289 million potentially makeable homopolymers. It also describes polyT5 training at more than 100 million polymers and a polyBART example with predicted Tg 595 K versus experimental 513 K.</p>
+<p><strong>Evidence boundary and translation.</strong> These values belong to cited prior studies, not a new autonomous-lab demonstration. “Super-intelligence” is an aspiration extending to closed-loop experimentation. For OLED emitters and hosts, validated coupling, borylation or SNAr templates and building-block inventories are more informative than one SA score. Route length, rare reagents and yield uncertainty should be stored before excited-state ranking. Polymer statistics are not small-molecule OLED synthesis yields.</p>
+<h2 id="4-deep-qsci-halves-the-register-but-accuracy-and-advantage-remain-open">4. Deep QSCI halves the register, but accuracy and advantage remain open</h2>
+<h3 id="a-divide-and-conquer-quantum-selected-configuration-interaction-for-evaluating-stacking-interaction-energies-in-the-benzene-dimer">A Divide-and-Conquer Quantum-Selected Configuration Interaction for Evaluating π–π Stacking Interaction Energies in the Benzene Dimer</h3>
+<p><strong>Ryotaro Tajima, Rei Sato, Yosuke Iyama, Ryo Kiguchi, Yoshitake Kitanishi.</strong> arXiv:2609.36708v1, 29 September 2026. <a href="https://arxiv.org/abs/2609.36708">Preprint</a></p>
+<p>Deep QSCI samples determinants from one monomer, builds local bases with particle-number-conserving excitations, and classically diagonalizes a dimer effective Hamiltonian. The monomer result is reused for both fragments and all separations.</p>
+<p><strong>Results and execution boundary.</strong> Direct CAS(28e,20o) requires 40 qubits; the CAS(14e,10o) monomer requires 20. UCCSD inputs were evaluated with Classiq SDK 1.25.0 by <strong>noiseless simulation</strong>, using 10⁴ shots per point and 5×10⁴ for the scan. With 6-31G**, Deep QSCI gives −0.908 kcal/mol at 4.0 Å versus counterpoise-corrected CCSD(T) −1.139 kcal/mol; effective dimension is 8,649.</p>
+<p><strong>Limitations and translation.</strong> Different Hamiltonians, orbitals and counterpoise treatments preclude quantitative validation. cc-pVDZ exposes large cancellation and missing charge transfer. There is no QPU, runtime benchmark or quantum advantage. OLED studies should treat this as a small host–guest active-space benchmark beside SAPT, DLPNO-CCSD(T) or dispersion-corrected DFT.</p>
+<h2 id="5-constraint-preserving-qaoa-is-an-encoding-idea-not-hardware-evidence">5. Constraint-preserving QAOA is an encoding idea, not hardware evidence</h2>
+<h3 id="quantum-approximate-optimisation-algorithm-for-protein-sidechain-packing">Quantum Approximate Optimisation Algorithm for Protein Sidechain Packing</h3>
+<p><strong>Sebastian O. M. Stewart, Nick Chancellor, Jonte R Hance, Ittoop Vergheese Puthoor.</strong> arXiv:2609.31077v1, 25 September 2026. <a href="https://arxiv.org/abs/2609.31077">Preprint</a></p>
+<p>The study maps one-rotamer-per-residue packing to a one-/two-body QUBO. W-state initialization and a cyclic XY mixer preserve Hamming weight one. The authors reduce two-qubit-gate scaling from O(MN²) to O(MN) and mixer depth from O(N) to 2.</p>
+<p><strong>Execution and results.</strong> PennyLane 0.44.1, Lightning 0.44.0 and JAX 0.7.2 simulated 5–22 qubits, p≤12 and 30 seeds on an A100 GPU. The fitted 99.99%-recovery budget stayed below 500 through 22 qubits, but actual 22-qubit subsections ranged about 52.5–732.9 shots. In 1,500 moderate-confidence 5–14-qubit runs, 54% beat the AlphaFold PyRosetta baseline; mean winning improvement was −8.114 kcal/mol.</p>
+<p><strong>Limitations and translation.</strong> <code>StatePrep</code> hides hardware-native W-state cost. The gain reflects a weaker baseline, not stronger quantum power. No QPU, routing/noise/latency or strong classical-heuristic comparison is supplied. OLED one-hot selection can borrow the mixer idea only after comparison with simulated annealing, tabu search and CP-SAT.</p>
+<h2 id="practical-experiment-for-the-coming-week">Practical experiment for the coming week</h2>
+<p>Build a reaction-aware audit set around bridged-resonance chemistry. Start from 20 public MR-TADF scaffolds and enumerate ten bridge or adjacent-substituent variants per scaffold using real reaction templates. Under one geometry protocol, calculate S_1, T_1, nearby T_n states, oscillator strength and transition-density localization; add an SOC or spin-vibronic proxy only for the top 20. Use scaffold-disjoint splits and record generative confidence beside an independent TDDFT hit rate.</p>
+<h2 id="read-first">Read first</h2>
+<p>Start with <a href="https://doi.org/10.1038/s41467-026-78234-0">He and co-workers&rsquo; bridged-resonance blue-OLED paper</a>. It is the only record this week spanning synthesis, photophysics and a device, and makes the triplet manifold a primary design target.</p>
+<h2 id="coverage-gaps">Coverage gaps</h2>
+<p>No new PhOLED host, host–dopant/exciplex, OLED-degradation, GW–BSE, SELFIES, CRBM/Boltzmann-machine, or D-Wave/quantum-annealing work met the window. CAGenMol-2 uses SAFE, not SELFIES. Deep QSCI and QAOA are classical-simulator results with no physical QPU, noise-aware resource estimate or quantum advantage. No new OLED-scale VQE result was found.</p>
+<h2 id="evidence-and-disclosure">Evidence and disclosure</h2>
+<p>The window covers records first published 25 September–1 October 2026. Items from the previous eight issues were excluded. Values are source-reported; no calculation, synthesis or device experiment was independently reproduced. OLED translations and the proposed experiment are reviewer proposals. The hero is conceptual and exact evidence is separated into a deterministic SVG. scientific-stop-slop-ko publication copyediting was applied.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>Y.-H. He, Z. Zhang, Y.-Q. Li, <em>Nature Communications</em> (29 Sep 2026). https://doi.org/10.1038/s41467-026-78234-0</li>
+<li>Y. Li et al., arXiv:2609.34301v1 (28 Sep 2026). https://arxiv.org/abs/2609.34301</li>
+<li>A. Mahmood et al., arXiv:2609.34051v1 (28 Sep 2026). https://arxiv.org/abs/2609.34051</li>
+<li>R. Tajima et al., arXiv:2609.36708v1 (29 Sep 2026). https://arxiv.org/abs/2609.36708</li>
+<li>S. O. M. Stewart et al., arXiv:2609.31077v1 (25 Sep 2026). https://arxiv.org/abs/2609.31077</li>
+</ol>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source research, bilingual synthesis, scientific copyediting, image direction, deterministic evidence figure, PDF and publication verification</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>One peer-reviewed Nature Communications article and four arXiv v1 records first published 2026-09-25 through 2026-10-01; metadata, methods, datasets, reported values and execution boundaries; bilingual rendering, verified four-page PDF, metadata, local and reference links, figures and shared thumbnail; single-agent source checking; no independent calculation, synthesis, OLED-device reproduction or QPU execution</dd></div>
+          <div><dt>Human review record</dt><dd>recurring publication authorized; no line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-10-01</dd></div>
+        </dl>
+        <p class="disclosure-note">Used web research, duplicate checking against earlier issues, GitHub publication, local PDF and link checks, and built-in imagegen. Checked the Nature Communications index and DOI metadata plus four full arXiv records. The publisher full text redirected through authentication, so detailed numerical tables for the blue-OLED paper were not independently extracted and unverified values were not added. Both quantum studies use noiseless classical simulation, not physical QPU execution or demonstrated quantum advantage. OLED translations and the weekly experiment are reviewer proposals.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-10-02 07:51:05<br>
+        Source last modified: 2026-10-02 07:44:31
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#ranked-reading-list">Ranked reading list</a></li>
+<li><a href="#1-a-blue-oled-that-makes-the-triplet-manifold-a-design-target">1. A blue OLED that makes the triplet manifold a design target</a><ul>
+<li><a href="#bridged-resonance-configuration-enables-high-efficiency-and-narrow-emission-in-blue-organic-light-emitting-diodes">Bridged resonance configuration enables high-efficiency and narrow-emission in blue organic light-emitting diodes</a></li>
+</ul>
+</li>
+<li><a href="#2-one-masked-model-can-support-several-tasks-but-not-replace-oled-validation">2. One masked model can support several tasks, but not replace OLED validation</a><ul>
+<li><a href="#one-sequence-many-decodings-cagenmol-2-recasts-drug-design-as-masked-molecular-inference">One Sequence, Many Decodings: CAGenMol-2 Recasts Drug Design as Masked Molecular Inference</a></li>
+</ul>
+</li>
+<li><a href="#3-synthesizability-should-define-the-space-not-merely-score-its-output">3. Synthesizability should define the space, not merely score its output</a><ul>
+<li><a href="#a-roadmap-for-polymer-informatics-super-intelligence">A roadmap for polymer informatics super-intelligence</a></li>
+</ul>
+</li>
+<li><a href="#4-deep-qsci-halves-the-register-but-accuracy-and-advantage-remain-open">4. Deep QSCI halves the register, but accuracy and advantage remain open</a><ul>
+<li><a href="#a-divide-and-conquer-quantum-selected-configuration-interaction-for-evaluating-stacking-interaction-energies-in-the-benzene-dimer">A Divide-and-Conquer Quantum-Selected Configuration Interaction for Evaluating π–π Stacking Interaction Energies in the Benzene Dimer</a></li>
+</ul>
+</li>
+<li><a href="#5-constraint-preserving-qaoa-is-an-encoding-idea-not-hardware-evidence">5. Constraint-preserving QAOA is an encoding idea, not hardware evidence</a><ul>
+<li><a href="#quantum-approximate-optimisation-algorithm-for-protein-sidechain-packing">Quantum Approximate Optimisation Algorithm for Protein Sidechain Packing</a></li>
+</ul>
+</li>
+<li><a href="#practical-experiment-for-the-coming-week">Practical experiment for the coming week</a></li>
+<li><a href="#read-first">Read first</a></li>
+<li><a href="#coverage-gaps">Coverage gaps</a></li>
+<li><a href="#evidence-and-disclosure">Evidence and disclosure</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="triplet_state_control_hero-web.webp">Conceptual blue emitter in an OLED layer, with blue singlet emission, an amber triplet pathway, and motifs for generation, synthesis, pi stacking and constrained optimization</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-10-02.pdf">weekly technical brief is available as a PDF</a></li>
+<li><a href="evidence_ladder.svg">Evidence ladder for five records, including source-reported values and their application boundaries</a></li>
+<li><a href="https://doi.org/10.1038/s41467-026-78234-0" target="_blank" rel="noreferrer">10.1038/s41467-026-78234-0</a></li>
+<li><a href="https://arxiv.org/abs/2609.34301" target="_blank" rel="noreferrer">Preprint</a></li>
+<li><a href="https://arxiv.org/abs/2609.34051" target="_blank" rel="noreferrer">Preprint</a></li>
+<li><a href="https://arxiv.org/abs/2609.36708" target="_blank" rel="noreferrer">Preprint</a></li>
+<li><a href="https://arxiv.org/abs/2609.31077" target="_blank" rel="noreferrer">Preprint</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body>
+</html>

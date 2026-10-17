@@ -1,0 +1,174 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>From Excitons to Optimal Solutions: How Physical Structure Changes Quantum Resource Costs</title><meta name="description" content="An accessible technical review of excitons and GW/BSE, fault-tolerant resource tradeoffs, D-Wave sampling diversity, state preparation, and fair QML and QEC validation."><link rel="stylesheet" href="review.css">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/">
+<meta property="og:description" content="An accessible technical review of excitons and GW/BSE, fault-tolerant resource tradeoffs, D-Wave sampling diversity, state preparation, and fair QML and QEC validation."><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/en/"><meta property="og:type" content="article"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/hero.webp"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/hero.webp"><meta name="author" content="Hyun-Jung Kim"><meta property="article:published_time" content="2026-10-06">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/en/">
+    <meta property="og:title" content="From Excitons to Optimal Solutions: How Physical Structure Changes Quantum Resource Costs">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review"><header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="Language"><span class="language-current" lang="en" aria-current="page">English</span><a lang="ko" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/">한국어</a></nav></div></header><p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-10-06 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main><h1>From Excitons to Optimal Solutions: How Physical Structure Changes Quantum Resource Costs</h1>
+<p class="dek">The Bethe–Salpeter description of multiple excitons, structure-aware annealing and state preparation, and the conditions for a fair comparison</p>
+
+<p class="kicker">RESEARCH LETTER · OCTOBER 6, 2026 · A guide for readers with a background in physics</p>
+
+<figure class="hero"><img src="hero.webp" alt="Conceptual illustration of electron and hole wave packets leading into a sparse computational structure"><figcaption>A conceptual illustration of translating multi-exciton correlations into a computational representation. It does not reproduce the papers’ experimental data or a device architecture.</figcaption></figure><details class="toc"><summary>Contents</summary><ol><li><a href="#section-1">1. Must we calculate every electron in a material?</a></li><li><a href="#section-2">2. An exciton is a two-particle problem with a background built in</a></li><li><a href="#section-3">3. What remains after a large resource reduction?</a></li><li><a href="#section-4">4. Quantum annealing: one good solution and many good solutions are different objectives</a></li><li><a href="#section-5">5. State preparation: a shorter circuit does not eliminate the cost of its starting point</a></li><li><a href="#section-6">6. What a comparison means physically: two cautions from QML and error correction</a></li><li><a href="#section-7">7. Bring the order of validation into your research—not just the numbers</a></li><li><a href="#section-8">References and primary sources</a></li></ol></details>
+
+<h2 id="section-1">1. Must we calculate every electron in a material?</h2>
+<p>Consider an electron and a hole meeting in an OLED and emitting light. Their positions alone do not tell us enough. We want to know how strongly they bind, how their energy depends on spin, and how they lose energy when they encounter another excitation. These questions involve the collective response of the electrons around them. Describing that response, however, does not always require tracking every electron explicitly.</p>
+<p>Many physical models exploit this distinction. They absorb complicated background motion into an effective mass or a dielectric response, leaving only a few degrees of freedom explicit. A <em>quasiparticle</em> is not an extra fundamental particle: it is an effective excitation whose motion incorporates the response of its surroundings. A successful effective model can substantially reduce the calculation. But if omitted physics controls the observable, solving that model accurately still will not predict the experiment accurately.</p>
+<p>This issue asks: <strong>what changes when we use physics and problem structure to redefine the calculation before passing it to a quantum computer?</strong> A new BSE quantum-simulation study applies this strategy to excited states in materials. Annealing and state-preparation studies use graph structure and entanglement structure. The QML and error-correction examples that follow show why a structural improvement also needs carefully designed comparison conditions.</p>
+<aside class="note">All five core papers are preprints submitted on October 2, 2026. They span an actual annealer run, classical simulation, reanalysis of public QPU data, and future fault-tolerant resource estimates. They should not be grouped together as a new demonstration of quantum advantage.</aside>
+
+<h2 id="section-2">2. An exciton is a two-particle problem with a background built in</h2>
+<p>When light excites an electron, a hole remains in a previously occupied state. The hole is an absence of an electron described as a particle, rather than a separate positively charged fundamental particle. Coulomb attraction correlates the electron and hole. The difference between the energy of independent particles and that of a bound excitation contains information about exciton binding.</p>
+<p>The surrounding electrons and the polarization of the material cannot simply be ignored. The bare Coulomb interaction in vacuum differs from the effective interaction inside matter. The GW approximation estimates the electronic self-energy using the Green function <img class="math-inline" src="math_00.svg" alt="G">, which describes electron propagation, and the screened interaction <img class="math-inline" src="math_01.svg" alt="W">. The Bethe–Salpeter equation (BSE) then describes correlated electron–hole excitations built from these quasiparticles. The new work translates an established physical description from materials calculations into a quantum algorithm. [6]</p>
+<p>A standard schematic form for a single electron–hole pair makes the physics concrete. This equation explains the content of BSE; it is not the new paper’s resource formula.</p>
+<div class="math-block"><img src="math_02.svg" style="width:446.5px" alt="\sum_{v'c'}\left[(\varepsilon_c-\varepsilon_v)\delta_{vv'}\delta_{cc'}+K_{vc,v'c'}\right]A^S_{v'c'}=\Omega_S A^S_{vc}."></div>
+<p>Here <img class="math-inline" src="math_03.svg" alt="v"> denotes an occupied state and <img class="math-inline" src="math_04.svg" alt="c"> an unoccupied state. The difference <img class="math-inline" src="math_05.svg" alt="\varepsilon_c-\varepsilon_v"> is the independent-quasiparticle excitation energy. The kernel <img class="math-inline" src="math_06.svg" alt="K"> contains direct electron–hole interactions and exchange. The amplitude <img class="math-inline" src="math_07.svg" alt="A^S"> specifies how much each electron–hole combination contributes to excited state <img class="math-inline" src="math_08.svg" alt="S">, while <img class="math-inline" src="math_09.svg" alt="\Omega_S"> is its energy. The relevant question is <strong>which correlations are restored on top of the independent-particle energies</strong>, not merely what we call the state or how many qubits represent it.</p>
+<p>Screening of the direct interaction should not be conflated with exchange. In this study, direct interactions include screening, while electron–hole exchange uses a bare Coulomb term. The spin dependence of exchange is important for understanding singlet–triplet energy differences. Multiple excitons also require electron–electron and hole–hole interactions. A single electron–hole binding energy therefore cannot stand in for all correlations among several excitations. [1]</p>
+<figure><img src="model_en.svg" alt="Computational stages from a full electronic Hamiltonian through a GW background and a few-electron–hole BSE model to logical-circuit resources"><figcaption>An explanatory diagram prepared for this review. The accuracy of an effective model and the cost of solving it are separate validation questions. Resources should be recorded at each stage.</figcaption></figure>
+
+<h3>Where this connects to OLED research—and where it does not yet</h3>
+<p>For OLED researchers, this framework is appealing because it could connect singlet–triplet splitting, the spatial character of excitations, and correlations between multiple excitations within one computational language. The present paper, however, does not validate emission efficiency or lifetime in OLED molecules or devices. Nor does the framework automatically include structural relaxation, environmental polarization, spin–orbit coupling, vibrational coupling, or nonradiative pathways in organic materials. This connection is <strong>an application interpretation offered by the reviewer</strong>.</p>
+<p>The first question is therefore whether the BSE approximation is appropriate for the observable of interest, and what additional physics it needs. A model that reproduces an energy gap may face different requirements from one that reproduces a reverse intersystem-crossing rate. Narrowing a singlet–triplet gap and extending device lifetime are distinct validation tasks.</p>
+<h2 id="section-3">3. What remains after a large resource reduction?</h2>
+<p>Chen, Sun, and Chan construct a BSE Hamiltonian that keeps a small number of electrons and holes explicit. They use a first-quantized orbital representation, integral factorization, and crystal symmetry to reduce quantum-circuit resources. A triexciton contains three electrons and three holes. This is distinct from a spin triplet; it is neither a three-qubit calculation nor a calculation of every electron in the material. The study estimates future fault-tolerant resources under static self-energy, static screening, and Tamm–Dancoff approximations. It reports no actual QPU execution. [1]</p>
+<p>Consider the diamond example with <img class="math-inline" src="math_10.svg" alt="N_k=1000">, corresponding to a 2,000-atom model. The target precision is 0.1 eV per eigenvalue. The few-hundred-logical-qubit setting and the minimum-gate-cost setting are different choices.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Research comparison table"><table>
+<thead>
+<tr>
+<th>Computational setting</th>
+<th align="right">Logical qubits</th>
+<th align="right">Toffoli count</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BSE, Toffoli-optimized</td>
+<td align="right">33,000</td>
+<td align="right"><img class="math-inline" src="math_11.svg" alt="5.5\times10^{11}"></td>
+</tr>
+<tr>
+<td>BSE, qubit-optimized</td>
+<td align="right">266</td>
+<td align="right"><img class="math-inline" src="math_12.svg" alt="2.0\times10^{13}"></td>
+</tr>
+<tr>
+<td>Full-Hamiltonian second-quantized baseline</td>
+<td align="right">—</td>
+<td align="right"><img class="math-inline" src="math_13.svg" alt="3.7\times10^{17}"></td>
+</tr>
+<tr>
+<td>Full-Hamiltonian first-quantized baseline</td>
+<td align="right">—</td>
+<td align="right"><img class="math-inline" src="math_14.svg" alt="4.2\times10^{18}"></td>
+</tr>
+</tbody></table></div>
+<p class="caption">Source: [1], Fig. 3 and resource tables. This compares quantum-algorithm resource estimates, not classical execution times: a BSE excitation energy versus full-Hamiltonian supercell total energies, excluding constant overheads for energy differences. The second-quantized baseline uses an active-electron orbital model; the first-quantized baseline uses an 80 Ry pseudopotential plane-wave model. “Full” means the Hamiltonian before BSE reduction, not a pseudopotential-free all-electron calculation. The baselines do not exhaust the latest algorithms.</p>
+
+<p>The qubit-optimized setting uses roughly 36 times as many Toffoli gates. This is a familiar space–time tradeoff: saving storage can require more frequent data access or repeated computation. Logical qubits also differ from physical qubits. Translating this table into a device size or runtime requires an error-correction code, a target failure probability, logical-gate throughput, magic-state supply, and routing. The table alone cannot establish a practical execution time.</p>
+<p>Why does this representation fit in a small register? Let <img class="math-inline" src="math_15.svg" alt="m"> be the number of electron–hole pairs and <img class="math-inline" src="math_16.svg" alt="N"> the scale of the orbital choices available to one particle. The naive product space has dimension on the order of <img class="math-inline" src="math_17.svg" alt="N^{2m}">, while binary registers storing each particle’s orbital index require approximately <img class="math-inline" src="math_18.svg" alt="2m\log_2N"> bits. At fixed <img class="math-inline" src="math_15.svg" alt="m">, the representation is therefore compact. This does not make reading every amplitude inexpensive. Register size and the time needed to obtain a useful answer are different quantities. This pedagogical dimension count omits antisymmetrization, symmetry, and auxiliary registers; it is not the formula used to obtain the qubit counts in the table.</p>
+<p>Another substantial omission is <strong>initial-state preparation</strong>. Phase estimation needs an input with sufficient overlap with the desired eigenstate. Small overlap can require more repetitions and change the total cost. The physical approximation error of the BSE model is also separate from the numerical eigenvalue precision of 0.1 eV. Running a circuit longer cannot restore physics omitted from its Hamiltonian. [1]</p>
+<p>In general, block encoding embeds a Hamiltonian as <img class="math-inline" src="math_19.svg" alt="H/\lambda"> in part of a larger unitary. The parameter <img class="math-inline" src="math_20.svg" alt="\lambda"> is the normalization scale. A schematic cost ledger for phase estimation includes the following terms. [7]</p>
+<div class="math-block"><img src="math_21.svg" style="width:573.5px" alt="C_{\rm total}\;\sim\; C_{\rm classical}
+ + n_{\rm repeat}\left(C_{\rm prepare}+\frac{\lambda}{\epsilon}C_{\rm walk}\right)
+ + C_{\rm output}."></div>
+<p>This is an explanatory expression for the review, not the paper’s detailed resource formula. Every <img class="math-inline" src="math_22.svg" alt="C"> must be expressed in the same normalized cost or time unit; CPU operations and Toffoli counts cannot be added directly. Here <img class="math-inline" src="math_23.svg" alt="C_{\rm classical}"> is one-time classical preprocessing, <img class="math-inline" src="math_24.svg" alt="C_{\rm prepare}"> is state preparation on each attempt, and <img class="math-inline" src="math_25.svg" alt="C_{\rm walk}"> is the cost of one quantum-walk operation. The energy precision is <img class="math-inline" src="math_26.svg" alt="\epsilon">, <img class="math-inline" src="math_27.svg" alt="n_{\rm repeat}"> is the repetition factor needed to achieve the desired success probability, and <img class="math-inline" src="math_28.svg" alt="C_{\rm output}"> is the total output and postprocessing cost. Reducing a gate cost, reducing the normalization scale, and simplifying state preparation are distinct improvements. The paper’s large reductions constitute a significant design advance; they do not mean that classical materials calculations have already been replaced.</p>
+<h2 id="section-4">4. Quantum annealing: one good solution and many good solutions are different objectives</h2>
+<p>The minimum vertex cover (MVC) annealing study illustrates this distinction. We choose as few vertices as possible while ensuring that every edge touches at least one chosen vertex. This can serve as a simplified model for production, placement, or resource-allocation problems, but the paper does not solve the schedule of a particular factory. [2]</p>
+<p>For illustration, let the binary variable <img class="math-inline" src="math_29.svg" alt="x_i=1"> mean that vertex <img class="math-inline" src="math_44.svg" alt="i"> is selected. One possible QUBO is</p>
+<div class="math-block"><img src="math_30.svg" style="width:555.3px" alt="E(x)=A\sum_{(i,j)\in\mathcal E}(1-x_i)(1-x_j)+B\sum_i x_i,\qquad A&gt;B&gt;0."></div>
+<p>The first term penalizes uncovered edges; the second charges for selected vertices. Adding an endpoint of an uncovered edge costs <img class="math-inline" src="math_31.svg" alt="B"> but removes a penalty of at least <img class="math-inline" src="math_32.svg" alt="A">, so an optimal solution leaves no edge uncovered. Several vertex sets may share the same minimum size. When downstream constraints have not yet been settled, a diverse collection of equally optimal candidates can itself be useful.</p>
+<p>The study changes this sampling diversity on Advantage2 by delaying the anneal progression of high-degree vertices. The 120 paired comparisons use BA <img class="math-inline" src="math_33.svg" alt="m=2">, <img class="math-inline" src="math_34.svg" alt="N=70\!–\!150">, and 1,000 reads per protocol, against a zero-offset baseline with the same embedding. The mean number of distinct certified optimal covers rises from 171.7 to 455.8, and Hamming-distance families from 22.5 to 80.0. Certification requires a feasible cover whose cardinality matches the HiGHS ILP minimum. Families are complete-linkage clusters at <img class="math-inline" src="math_35.svg" alt="0.1N">, not measurements of dynamical basins. [2]</p>
+<p>The limitations are clear. The direction reverses on 3-regular and ER graphs, with optimal-solution support in ER falling from 19.9 to 3.5. At <img class="math-inline" src="math_36.svg" alt="N=150">, a comparison using 50,000 output samples finds 19,040.15 distinct optimal solutions for classical simulated annealing, exceeding the method’s 15,929.55. Although this is not a time-normalized comparison, it supplies no basis for a claim of quantum acceleration or generally superior diversity. [2]</p>
+<p>An application should evaluate the minimum objective value, constraint satisfaction, candidate diversity, and total processing time separately. A control rule that helps one graph structure may hurt another. Exploiting problem structure entails identifying the structures on which the method actually works.</p>
+<h2 id="section-5">5. State preparation: a shorter circuit does not eliminate the cost of its starting point</h2>
+<p>ASPIRE classically designs a state-preparation circuit using an MPS (matrix product state) representation of the target and the device’s connectivity. It aims to remove long-range entanglement more efficiently and arrange allowed operations in parallel. Cases with long-range correlations generally yield shallower, more accurate circuits, but some nearest-neighbor-only conditions tie or underperform the comparison method. There is no actual QPU execution. [3]</p>
+<p>An MPS is a classical representation whose bond dimension limits the number of Schmidt components needed when the system is split into two parts. It can avoid storing the entire state vector, at the cost of restrictions on the entanglement it represents. If a tractable MPS is already available, that structure can guide circuit construction. This does not make an arbitrary difficult target state inexpensive to discover. Obtaining and compressing the target, and optimizing the circuit, also belong in the cost ledger.</p>
+<p>Noise evaluations for the 30-qubit examples are simulations. The 12-qubit hardware-learned noise model likewise does not constitute an actual QPU run. Single-qubit gates are treated as noiseless, and circuits are selected using noiseless MPS calculations. The small error rate <img class="math-inline" src="math_37.svg" alt="p=10^{-4}"> is a prospective condition, not a current operating point. [3] ASPIRE consequently cannot be assumed to supply the state-preparation cost omitted by the BSE paper. Particle symmetry, the target state, initial overlap, and connectivity would need separate validation for that connection.</p>
+<h2 id="section-6">6. What a comparison means physically: two cautions from QML and error correction</h2>
+<h3>When normalization changes the meaning of robustness</h3>
+<p>The quantum-attention audit uses a four-qubit exact statevector and synthetic power-grid trajectories. The ranking of input-scaling choices reverses depending on how the attack budget is matched. Neither comparison establishes a causal robustness benefit from scaling itself. There is no actual QPU or field power-grid validation. [4]</p>
+<p>Let <img class="math-inline" src="math_38.svg" alt="x"> be the input and <img class="math-inline" src="math_39.svg" alt="\phi(x)"> its encoding. A small perturbation <img class="math-inline" src="math_40.svg" alt="\delta x"> in the physical input produces an encoded change of approximately <img class="math-inline" src="math_41.svg" alt="J_\phi\delta x">. Scaling also changes this Jacobian. Holding <img class="math-inline" src="math_42.svg" alt="\lVert\delta x\rVert"> fixed asks how the model tolerates a perturbation in physical input units. Matching an upper bound on the encoded change compares the perturbation budget received by the circuit. The paper matches an encoder-sensitivity bound, not the actual distance between quantum states. The comparisons thus answer different questions. A preprocessing step that compresses a perturbation does not, by itself, establish that a quantum learner is safer.</p>
+<p>The same issue arises in OLED spectra and process sensors. Without fixing units, normalization, and encoder sensitivity, model architecture and preprocessing effects become entangled. An actual QPU implementation would additionally need to account for shots, noise, training time, and data-input costs.</p>
+<p>Publication status also needs care. The authors state that the paper was accepted as a NeurIPS 2026 SaTQuML long oral. The official workshop is scheduled for December 12–13 and describes itself as non-archival, with no official proceedings. A public OpenReview accepted decision could not be independently checked because of access restrictions. This review therefore treats the paper as <strong>[preprint; workshop acceptance reported by the authors]</strong>, not as a main-conference paper. [4,8]</p>
+<h3>Separating better postprocessing from better hardware</h3>
+<p>When one circuit fault causes three or more syndrome detection events, a matching graph built from pairwise links cannot fully express that correlation. SMP reads local patterns associated with these hyperedge faults and updates the matching graph’s weights while retaining the downstream matching solver. Its Willow result is a classical re-decoding of public experimental data, not a new QPU experiment. For a distance-7, 13-round memory under the SI1000 condition, the failure probabilities are 2.487% for correlated MWPM, 2.265% with SMP, and 2.026% for Harmony-51. SMP improves that MWPM baseline, while the Harmony-51 ensemble has a lower failure probability in the comparison table. These are <strong>whole-experiment, 13-round</strong> failure probabilities, not per-round error rates. [5]</p>
+<p>Extracting correlated structure from a sensor’s residuals can improve diagnosis without changing the sensor. Decoder improvements and hardware improvements are similarly distinct. Low asymptotic preprocessing complexity also does not establish that decoding finishes within the actual control cycle. Connecting such a method to logical computation requires both error-rate and real-time latency measurements.</p>
+<h2 id="section-7">7. Bring the order of validation into your research—not just the numbers</h2>
+<p>The five studies do not assemble into one algorithm. Their platforms and tasks differ. What they share is that improvements become interpretable when the computational target and comparison conditions are specified. The following order is useful for OLED, DFT, and ML research, as well as optimization work.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Research comparison table"><table>
+<thead>
+<tr>
+<th>Define first</th>
+<th>Question to check</th>
+<th>Costs and baselines to record</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Observable and physical model</td>
+<td>Are we matching an energy, spin splitting, rate, or lifetime?</td>
+<td>GW, BSE, and active-space approximations; experimental validation</td>
+</tr>
+<tr>
+<td>Input and state preparation</td>
+<td>How is the target state or feature representation obtained?</td>
+<td>Classical preparation, compression, encoding, and initial overlap</td>
+</tr>
+<tr>
+<td>Execution</td>
+<td>QPU run, simulation, or reanalysis of public data?</td>
+<td>Logical and physical qubits, gates, shots, and noise</td>
+</tr>
+<tr>
+<td>Output and comparison</td>
+<td>Does accuracy, optimal value, diversity, or failure probability improve?</td>
+<td>Strong classical and existing quantum baselines; matched budgets</td>
+</tr>
+<tr>
+<td>Practical value</td>
+<td>Is the entire workflow faster and more reliable?</td>
+<td>Wall-clock time, postprocessing, latency, failures, and retries</td>
+</tr>
+</tbody></table></div>
+<p>This table is the reviewer’s proposal, not a list of experiments performed by all five papers. In particular, physical-model error, numerical-solution error, and device error should not be collapsed into a single “accuracy.” The cost of making the problem smaller and the benefit of solving it better need separate assessments.</p>
+<p>The BSE study’s most practical message is that quantum computers, too, need physical approximations. An approximation is not merely a weakness. Once validated, it can become a resource-saving design principle. Yet <strong>how accurately we solve a model</strong> and <strong>how accurately that model describes the material</strong> remain separate questions throughout.</p>
+<h2 id="section-8">References and primary sources</h2>
+<ol>
+<li>Chen, J.; Sun, J.; Chan, G. K.-L. <em>Quasiparticle quantum simulation of materials with the Bethe-Salpeter equation</em>. arXiv:2610.02916v1. Submitted October 2, 2026. <a href="https://arxiv.org/html/2610.02916v1">Full text</a> · <a href="https://arxiv.org/abs/2610.02916">Bibliography and versions</a>.</li>
+<li>Kang, J.; Han, N. <em>Degree-conditioned anneal offsets reshape certified-optimum sampling for minimum vertex cover</em>. arXiv:2610.03379v1. Submitted October 2, 2026. <a href="https://arxiv.org/html/2610.03379v1">Full text</a> · <a href="https://github.com/o773h/dcosqa-mvc-data/releases/tag/v1.0.0">Public code and data v1.0.0</a>.</li>
+<li>Hasselgren, F.; Sims-Goh, M. L. <em>Breaking the chain: geometry-native state preparation with ASPIRE</em>. arXiv:2610.03528v1. Submitted October 2, 2026. <a href="https://arxiv.org/pdf/2610.03528v1">Paper PDF</a> · <a href="https://arxiv.org/abs/2610.03528">Bibliography and versions</a>.</li>
+<li>Friedewald, O.; Alla, S.; Shiri Sichani, A.; Shyu, C.-R. <em>When Normalization Selects the Sign: Auditing Robustness Ablations in Quantum Attention</em>. arXiv:2610.02641v1. Submitted October 2, 2026. <a href="https://arxiv.org/html/2610.02641v1">Full text</a> · <a href="https://arxiv.org/abs/2610.02641">Bibliography and authors’ workshop statement</a>. The authors’ Figshare link uses private access rather than a permanent public identifier; continued public availability of the code is not assured.</li>
+<li>Wang, S.; Yan, Y.; Xia, Z.; Shi, C.; Yuan, H.; Wang, X.-B. <em>SMP: A General Hyperedge-Based Framework for Circuit-Level Quantum Error Correction</em>. arXiv:2610.02734v1. Submitted October 2, 2026. <a href="https://arxiv.org/html/2610.02734v1">Full text</a> · <a href="https://arxiv.org/abs/2610.02734">Bibliography and versions</a>.</li>
+<li>Onida, G.; Reining, L.; Rubio, A. <em>Electronic excitations: density-functional versus many-body Green&#39;s-function approaches</em>. Rev. Mod. Phys. <strong>74</strong>, 601 (2002). <a href="https://doi.org/10.1103/RevModPhys.74.601">DOI</a>. Background for the GW/BSE explanation, not a recent result.</li>
+<li>Low, G. H.; Chuang, I. L. <em>Hamiltonian Simulation by Qubitization</em>. Quantum <strong>3</strong>, 163 (2019). <a href="https://quantum-journal.org/papers/q-2019-07-12-163/">Full text</a> · <a href="https://doi.org/10.22331/q-2019-07-12-163">DOI</a>. Background for block encoding and precision costs.</li>
+<li>SaTQuML 2026. <a href="https://satquml.github.io/">Official workshop</a> · <a href="https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/SaTQuML">OpenReview group</a>. The dates and non-archival policy were checked; paper-specific acceptance decisions could not be independently verified.</li>
+</ol>
+<p class="reading">Further reading: <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/en/">VQE principles, subspace methods, and digital validation</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-02_weekly-oled-inverse-design-triplet-state-control/en/">Triplet-level control and molecular inverse design for blue OLEDs</a></p>
+
+<p class="downloads"><a href="review_en.pdf">Download English PDF</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-06_quantum-quasiparticles-and-structured-computation/review_ko.pdf">한국어 PDF</a></p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — lead synthesis, Korean writing, mathematical teaching examples, deterministic figures, typesetting and publication verification; verify_oct6 — BSE and D-Wave primary-source verification; audit_oct6 — ASPIRE, quantum attention and SMP source checking; Korean scientific audit; english_oct6 — English adaptation and bilingual numerical integrity; cover_oct6 — conceptual image direction and visual inspection</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>Five arXiv v1 preprints submitted 2026-10-02: methods, reported numbers, resource settings, comparators and execution boundaries; Official SaTQuML dates and non-archival status; paper-level acceptance is author-reported and not independently confirmed; Bilingual equations and HTML, deterministic explanatory SVGs, embedded-font PDFs and public publication links</dd></div>
+          <div><dt>Human review record</dt><dd>topic, physically literate audience, tone and public posting explicitly requested; no line-by-line human approval</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-10-06</dd></div>
+        </dl>
+        <p class="disclosure-note">Applied scientific-stop-slop-ko to preserve values, units, comparators and method boundaries. BSE estimates future fault-tolerant resources; D-Wave runs an actual annealer; ASPIRE and QML use classical simulation; SMP classically re-decodes public QPU data. OLED applications and the cost ledger are reviewer interpretations or teaching examples. The individual OpenReview decision could not be independently checked because of access restrictions. No independent experimental reproduction, quantum-advantage or OLED-device validation was performed. The built-in imagegen cover is conceptual; equations and explanatory figures are deterministic.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">AI Tech Review Letters · 2026-10-06</div></main>
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body></html>

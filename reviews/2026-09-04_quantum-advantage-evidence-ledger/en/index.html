@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Boundary of Quantum Advantage Keeps Moving</title>
+  <meta name="description" content="Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp">
+  <meta property="og:image:alt" content="The Boundary of Quantum Advantage Keeps Moving">
+  <meta property="article:published_time" content="2026-09-04">
+  <meta property="article:modified_time" content="2026-09-04">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Boundary of Quantum Advantage Keeps Moving">
+  <meta name="twitter:description" content="Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp">
+  <meta name="twitter:image:alt" content="The Boundary of Quantum Advantage Keeps Moving">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
+    <meta property="og:title" content="The Boundary of Quantum Advantage Keeps Moving">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body class="public-review">
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 36 (2026-09-04)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>The Boundary of Quantum Advantage Keeps Moving</h1>
+        <p class="dek">Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-04 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>The quantum research of September 4, 2026 cannot be summarized by asking “who was faster?” What matters more is <strong>what counted as the answer, which costs entered the denominator, and which part of the computation actually ran on quantum hardware</strong>.</p>
+<p>The six studies reviewed together here appear far apart. One study simulated D-Wave spin-glass dynamics classically on GPUs, while another examined the gauge freedom of non-identifiable Pauli noise on IBM quantum hardware. QuanONet established an expressivity bound for quantum neural operators, and Quantum MeanFlow reduced sequential ODE integration in a generative model to one step. A protein study encoded continuous torsions with logarithmically scaling qubit counts, while a superconducting harmonic oscillator–transmon experiment programmed cubic, double-well, and approximate Morse potentials on the same device.</p>
+<p>It would be wrong or incomplete to summarize these results as “classical computing has caught up with quantum,” “a quantum neural network outperformed classical models,” “a quantum computer folded a protein,” or “molecular simulation has been realized.” Each paper measures a different target, uses a different baseline, excludes different costs, and places a different part of the workflow on quantum hardware. When those distinctions are preserved, however, the six studies reveal a common direction: quantum computing is moving from a contest over the qubit count of a single chip toward a <strong>systems competition that co-designs representation, control, measurement, error mitigation, and classical pre- and post-processing</strong>.</p>
+<p><img alt="Conceptual illustration combining a quantum processor, classical GPUs, a measurement ledger, continuous-variable potentials, and hybrid-computing boundaries" src="quantum_evidence_ledger_hero-web.webp" /></p>
+<p><em>Figure 1. Conceptual illustration for this review. Quantum hardware and GPUs, observables and resource accounting, and generative, molecular, and continuous-variable applications are arranged within one validation framework. The image does not reproduce any specific chip wiring, experimental dataset, molecular structure, potential, or performance curve.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Verdict of this review</p>
+<p>The central advance this week is not the confirmation of universal quantum advantage, but the refinement of the units of comparison. t-VMC reproduced selected two-point correlations at substantial classical cost. The Pauli-noise study showed that gauge ambiguity does not corrupt mitigated observables under a self-consistent model. QuanONet’s advantage is an expressivity bound, not a runtime advantage. Quantum MeanFlow’s “one step” is an ODE integration step, not one physical shot or one complete job. The protein VQE used QPU sampling with simulation-optimized parameters, while the oscillator–transmon experiment implemented components of molecular potentials without calculating an actual molecular spectrum or reaction rate.</p>
+</aside>
+<p>The 5-page technical brief, whose layout has been verified, is available as a <a href="daily_quantum_brief_2026-09-04.pdf">PDF download</a>.</p>
+<h2 id="1-different-quantum-results-use-different-units-of-evidence">1. Different “Quantum Results” Use Different Units of Evidence</h2>
+<p>The first thing to check in the headline of a quantum paper is not the qubit count. Four questions come first.</p>
+<ol>
+<li><strong>Observable</strong>: What was matched—energy, correlation, classification accuracy, RMSD, or state fidelity?</li>
+<li><strong>Denominator</strong>: Which costs were counted—shots, circuit count, repetitions, GPU/QPU time, classical training, or decoding?</li>
+<li><strong>Execution boundary</strong>: Which stage—training, optimization, inference, or sampling—actually ran on a QPU?</li>
+<li><strong>Baseline</strong>: Which classical method was compared on the same instance, at the same target accuracy, and under the same total budget?</li>
+</ol>
+<p>Applying these four questions to this week’s six studies produces the following ledger.</p>
+<div aria-label="Evidence units and unproven scope of six quantum studies" class="data-panel" role="region" tabindex="0">
+<table>
+<thead>
+<tr>
+<th>Study</th>
+<th>Actual execution boundary</th>
+<th>Minimum verified claim</th>
+<th>Costs and denominators to track</th>
+<th>Not demonstrated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D-Wave t-VMC</td>
+<td>Fully classical GPU simulation; compared with a D-Wave QPU correlation matrix</td>
+<td>The final two-point matrix of a 72-spin precision-256 biclique had about 7.6% relative $L_2$ error to the QPU reference</td>
+<td>2,123.02 aggregate wall-clock hours, GPU count and type, samples, sweeps, solver stability, and QPU access</td>
+<td>7.6% error to a ground-truth state, hardest $J=\pm1$ instances, or a refutation of all prior advantage claims</td>
+</tr>
+<tr>
+<td>Self-consistent Pauli noise</td>
+<td>Actual IBM QPUs; 92-qubit proxy mitigation and 20-qubit end-to-end PEC</td>
+<td>Jointly learning the full gate set makes the gauge irrelevant to noisy predictions and mitigated observables; optimizing the gauge choice can lower predicted sampling overhead</td>
+<td>Characterization circuits and shots, PEC norm, leakage postselection, mitigation variance, and calibration drift</td>
+<td>92-qubit end-to-end PEC, elimination of physical errors, fault-tolerant QEC, or reduction of all noise to a Pauli model</td>
+</tr>
+<tr>
+<td>QuanONet</td>
+<td>Theory, numerical benchmarks, and a pretrained 2-qubit <code>ibm_fez</code> inference PoC</td>
+<td>The density matrix creates an implicit quadratic feature frame and provides an operator feature span of up to $O(p^2)$ versus $O(p)$ for a matched classical model</td>
+<td>Data encoding, circuit compilation, shots, training time, and the classical optimizer</td>
+<td>An $O(p^2)$ runtime speedup, a cost advantage for the full PDE solver, or general quantum advantage</td>
+</tr>
+<tr>
+<td>Quantum MeanFlow</td>
+<td>Statevector training and IBM QPU inference</td>
+<td>Replaces multistep ODE integration with a one-step average velocity, reducing sequential submissions</td>
+<td>11Q, 240 CNOTs, 8,192 shots/output; 65,536 with BoN=8 plus a classical classifier</td>
+<td>One physical shot, advantage over classical generators, or preservation of quality on a noisy QPU</td>
+</tr>
+<tr>
+<td>Torsion-space VQE</td>
+<td>Classical statevector optimization followed by IBM QPU sampling</td>
+<td>Encoded 44 chignolin torsions in 6Q; best-of-repeats RMSD was 1.758 Å across 600 jobs</td>
+<td>4,915,200 shots, circuit depth, CDF decoding, coordinate reconstruction, and classical energy optimization</td>
+<td>Error-corrected logical qubits, iterative on-QPU VQE, independent protein prediction, or end-to-end acceleration</td>
+</tr>
+<tr>
+<td>Oscillator–transmon</td>
+<td>One superconducting oscillator mode and one transmon</td>
+<td>Programmable non-Gaussian phase gates with cubic, tunable double-well, and band-limited approximate Morse forms</td>
+<td>$M=11$–14; 4.4M–67M outcomes by potential; tomography, reconstruction, and calibration</td>
+<td>Coherent-probe recovery of the Morse wall, molecular spectra, dynamics, or reaction rates</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img alt="Five-column resource ledger mapping six studies across observable and denominator, execution location, circuit and measurement, classical pre- and post-processing, and baseline and nonclaims" src="quantum_evidence_ledger_en.svg" /></p>
+<p><em>Figure 2. Five-column resource ledger constructed for this review. It does not rank the six studies by performance; it compares their observables and denominators, execution locations, circuit and measurement costs, classical pre- and post-processing, and baselines and nonclaims in one view.</em></p>
+<h3 id="read-together-from-system-bottlenecks-to-an-evidence-ledger">Read Together: From System Bottlenecks to an Evidence Ledger</h3>
+<p>The <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">September 3 review of full-stack co-design</a> followed synthesis, state preparation, measurement, routing, and classical post-processing to ask where the bottleneck moves when an optimization reduces the cost of one layer. This article does not repeat that map. Instead, it uses six studies from the following day to specify <strong>which observables and denominators should measure the shifted bottleneck</strong>. If the September 3 article asked “which parts of the full stack must be co-designed,” the September 4 article asks “what ledger can establish that the resulting design actually reduced total cost?”</p>
+<h2 id="2-the-exact-scope-of-the-claim-that-d-wave-was-classically-reproduced">2. The Exact Scope of the Claim That D-Wave Was Classically Reproduced</h2>
+<p>Roeland Wiersema’s <a href="https://arxiv.org/abs/2609.01719"><em>Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo</em></a> is a preprint released on September 1, 2026. It simulates frustrated transverse-field Ising annealing studied on D-Wave Advantage2 using correlator-state-based time-dependent variational Monte Carlo (t-VMC). The targets comprise four graph families—2D cylinder, 3D dimer, diamond, and biclique—with anneal times of 7 ns and 20 ns.</p>
+<p>The paper makes an important choice: it asks not “how accurately was the entire wavefunction reconstructed?” but <strong>how closely the full final two-point-correlation matrix matched the QPU result</strong>. Systematically increasing the ansatz size brought this error toward the QPU level, with close agreement even on a 72-spin biclique with 360 couplings and maximum degree 14. The approximately 7.6% figure is the relative $L_2$ error of the correlation matrix over all $i&gt;j$, using the QPU matrix as the reference. No converged MPS ground truth is available at this size. The number is therefore not an error against an exact solution, a full-state-fidelity error, or an error for every higher-order correlation. The couplings of this 72-spin problem are also precision-256 values, not the harder bimodal $J=\pm1$ instances.</p>
+<p>The result exposes both the capability and cost of classical simulation. The paper’s table sums to 2,123.02 wall-clock hours across runs; this is not GPU-hours multiplied by the number of devices. Each run used either 4 A100 or 8 H200 GPUs, and the most expensive single run took 109.25 hours on 8 H200s. One cannot place the annealer’s physical anneal time directly beside this campaign time and declare a speed winner. The QPU side also includes programming, readout, repetition, queueing, and access overhead; the classical side includes hyperparameter search, failed runs, Markov-chain sampling, and numerical stabilization. A meaningful comparison must fix the target correlation error on the same instance and record time and energy for preparation, repetition, and post-processing on both sides.</p>
+<p>The paper is also explicit about the sources of classical failure. Poor Markov-chain mixing, a high-variance local-energy estimator, and stochastic Runge–Kutta error estimates caused instability. Parallel tempering, blurred sampling, and an importance-weighted differential-equation solver mitigated these problems. The accurate conclusion is therefore not that “generic VMC easily simulated D-Wave,” but that <strong>an ansatz and sampling and integration techniques tailored to the problem structure reproduced a specific observable</strong>.</p>
+<p>This result does not invalidate every prior quantum-advantage claim. Cost scaling may differ at larger sizes, on harder ±1 instances, for other observables, for the full distribution, or for higher-order correlations. Conversely, it is also difficult to maintain a blanket claim that classical simulation is impossible. The lesson for application researchers is benchmark discipline, not a win–loss verdict. If molecular selection or logistics optimization is mapped to a QUBO, exact solvers, MILP/CP-SAT, simulated annealing, tensor-network, and Monte Carlo methods should be fixed to the same instances and stopping conditions. Comparisons should report solution distributions and time-to-target alongside the best objective value.</p>
+<h2 id="3-when-does-non-identifiable-noise-cease-to-be-a-problem">3. When Does Non-Identifiable Noise Cease to Be a Problem?</h2>
+<p>Edward H. Chen, Senrui Chen, Laurin E. Fischer, and colleagues’ <a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6"><em>Disambiguating Pauli Noise in Quantum Computers</em></a> was published in the peer-reviewed journal <em>PRX Quantum</em> on September 3, 2026. The experiments ran on actual IBM quantum processors with up to 92 qubits.</p>
+<p>Noise characterization has a fundamental identifiability problem. Some errors in state preparation, gates, and measurement cannot be uniquely separated using experimental data alone. Different parameter sets may produce the same observed statistics; this freedom is called a gauge. At first glance, this creates a serious concern: if the noise model cannot be uniquely specified, perhaps its predictions and error-mitigation results cannot be trusted.</p>
+<p>The paper’s answer is self-consistency. Rather than characterizing state preparation, measurement, single-qubit gates, and multi-qubit entangling Clifford gates separately while assuming arbitrary ideal components, the authors jointly characterize the learnable parameters of the complete gate set. They show theoretically and experimentally that, under this treatment, unlearnable gauge degrees of freedom do not change predictions of noisy dynamics or error-mitigated observables. Moreover, among gauges that produce the same physical observables, one can select a representation with lower sampling overhead.</p>
+<p>The roles of experiments at different scales must be kept separate. The largest experiments on <code>ibm_strasbourg</code>—GHZ circuits with up to 21 qubits and a 92-qubit ring—used prediction ratios on classically tractable Clifford circuits for proxy mitigation. Across 92 local $Z_i$ observables, the median error fell from 4.9% to 3.1%. The full randomized PEC experiment instead used 20-qubit non-Clifford circuits on <code>ibm_fez</code>. Each model ran 100,000 randomized circuit instances with one shot per instance; only about 18% remained after leakage postselection. The median absolute error was 21.8% without mitigation, 5.6% with inconsistent PEC, and 2.4% with gauge-optimized consistent PEC.</p>
+<p>In the same 20-qubit experiment, the PEC norm $\gamma$ was 6.74 for the inconsistent model, 48.68 for the default-gauge consistent model, and 3.7 for the optimized consistent model. Using $\gamma^2$ as a proxy for sampling cost, the optimized gauge was about 173 times lower than the default consistent gauge. This is neither a measured speedup nor a direct measurement that fewer shots were used. It is a reduction in the <strong>predicted sampling overhead</strong> needed to reach the same PEC estimation precision.</p>
+<p>There is no contradiction between saying that “the gauge is irrelevant” and “the gauge can be optimized.” The final observable, when computed self-consistently, is gauge-invariant. Yet the magnitudes of decomposition coefficients used in implementations such as probabilistic error cancellation—and therefore their variance and sampling cost—can depend on the representation. The answer stays the same; the cost of estimating it changes.</p>
+<p>This is not a demonstration of quantum error correction. The work neither creates logical qubits that detect and correct physical errors nor claims to solve arbitrary non-Pauli or strongly non-Markovian noise. The precise practical statement is: <strong>even when every model parameter cannot be uniquely identified, useful noisy predictions and mitigation remain possible within a self-consistently learned model, and the gauge can serve as a cost-optimization variable.</strong></p>
+<p>The nearest-term use is in reporting. Error-mitigation experiments should include absolute error before and after mitigation alongside noise-characterization shots, sampling amplification, calibration time, drift, and the final effective sample size. The same applies to VQE or SQD for OLED and materials problems: if a lower energy error requires a larger PEC/ZNE variance and a higher QPU allocation, the net benefit must be calculated separately. The paper’s value lies in translating the theoretical problem of identifiability into the operational problem of selecting a representation that estimates the same observable with fewer shots.</p>
+<h2 id="4-quanonets-is-an-expressivity-bound-not-a-speedup">4. QuanONet’s $O(p^2)$ Is an Expressivity Bound, Not a Speedup</h2>
+<p>Ruocheng Wang, Xiaoqiu Zhong, Zhuo Xia, and Junchi Yan’s <a href="https://www.nature.com/articles/s42256-026-01289-7"><em>Quantum neural operators with implicit quadratic frame and expressivity advantages</em></a> was published in <em>Nature Machine Intelligence</em> on September 3, 2026. QuanONet, the model proposed in the study, is a quantum neural operator that approximates mappings from functions to functions—that is, the solution operator of a differential equation.</p>
+<p>The central theory is more specific than a vague appeal to an exponentially large Hilbert space. The architecture’s density matrix creates an implicit quadratic frame over the input features, providing a feature span of up to $O(p^2)$ for operator approximation compared with the $O(p)$ linear capacity of a matched classical model. Here, $p$ is the dimension of the sampling locations or latent representation, not a qubit count. Quadratic scaling requires linearly independent pair-product features; in a Sidon-spectrum example in the supplement, coverage falls to $O(p^{3/2})$. The paper also extends a universal-approximation result for continuous nonlinear operators to the quantum setting.</p>
+<p>The exact claim is an <strong>expressive-capacity bound for a particular architecture class against a classically matched model</strong>. The fact that $O(p^2)$ exceeds $O(p)$ does not by itself reduce training time, inference latency, data requirements, shots, or energy use. Extracting useful density-matrix terms requires measurement, and the costs of encoding classical data and optimizing the parameters remain. The ability to represent a larger function space is distinct from the ability to find a good solution within that space efficiently.</p>
+<p>The run on actual <code>ibm_fez</code> hardware is best understood as a qualitative proof of hardware feasibility. A pretrained 2-qubit model inferred 100 output coordinates for an antiderivative problem; the public script sets the Estimator default to 10,000 shots. The QPU did not perform training. The paper presents a comparison with noise-free simulation and provides compilation information, but it does not offer an end-to-end benchmark showing that the quantum system solves the full PDE workflow faster or with less energy than a competitive classical neural operator. In the public implementation $p=2^n$, so the $p=256$ scaling experiment is an 8-qubit statevector simulation, not a 256-qubit experiment. It should not be conflated with the separate strict parameter-matched comparison as though both were one hardware result.</p>
+<p>The research direction remains important. It moves the persuasive question in QML from “the Hilbert space is exponentially large” to “which feature interactions can be obtained cheaply with which circuits and measurements?” Future experiments should match parameter counts, data preprocessing, circuit depth, measurement settings, shots, and training wall-clock against classical polynomial-feature models, kernel methods, and DeepONet/FNO families. Hardware studies should retain the same data splits and seeds while reporting the simulator-to-QPU gap, variation across calibrations, and error-mitigation costs.</p>
+<h2 id="5-how-far-does-quantum-meanflows-one-step-extend">5. How Far Does Quantum MeanFlow’s “One Step” Extend?</h2>
+<p>Ashish Joshi, Eshaan Mistry, and Takahiko Koyama’s <a href="https://arxiv.org/abs/2609.02186"><em>Quantum MeanFlow: single-shot generative sampling on NISQ hardware</em></a> is a preprint released on September 2, 2026. Flow matching learns a velocity field that transports a simple distribution to a target distribution and then integrates an ODE during inference. Conventional Quantum Flow Matching (QFM) accumulates QPU submissions and input/output overhead because its multiple time steps are sequentially dependent. Quantum MeanFlow (QMF) replaces the instantaneous velocity with an interval-averaged velocity, reducing the integration to one step.</p>
+<p>“Single-shot” must not be read as one physical shot. QMF’s one step has the algorithmic meaning of <strong>one ODE integration step, or one model-evaluation stage</strong>. The implementation reconstructs the output from X and Z measurement bases with 4,096 shots per basis. One QMF image therefore costs 8,192 shots, or 65,536 shots when BoN=8 is included. The 11-qubit QMF circuit has 24 layers with 10 CNOTs per layer, for 240 CNOTs and 792 trainable parameters in total. The favorable structural property of one-step integration therefore coexists with the measurement cost of a deep, noisy circuit.</p>
+<p>A second boundary concerns where training occurs. A classical autoencoder with about $2.2\times10^5$ parameters compresses 16×16 MNIST images into a 32-dimensional latent space, and the QMF and QFM parameters were trained with a statevector simulator. The IBM Heron systems <code>ibm_pittsburgh</code> and <code>ibm_boston</code> performed inference with fixed parameters. The QPU therefore did not train the complete generative pipeline; it executed a quantum inference block after classical encoding and simulator training.</p>
+<p>The results must also be decomposed. In statevector simulation, 60-step Heun QFM achieved an accuracy of 0.85, compared with 0.63 for one-step QMF. FID, calculated from 2,000 samples in the feature space of a classifier trained by the authors, was 10.62 for QFM and 28.26 for QMF, indicating lower QMF quality. On <code>ibm_boston</code>, raw accuracy was 0.30 for QFM and 0.20 for QMF. With best-of-$N$ (BoN) rejection sampling at $N=8$, the figures recovered to 0.80 and 0.60, respectively. That recovery came from generating eight times as many candidates and using a classical classifier with 98.2% test accuracy to choose the best. Because the same classifier participates in both selection and evaluation, this is difficult to treat as independent downstream validation. The method can mitigate noise-induced quality loss without modifying the circuit, but repeated generation, shots, and classifier cost must all enter the accounting.</p>
+<p>The study therefore demonstrates an architectural trade-off that reduces sequential ODE submissions and the feasibility of inference on noisy hardware. It does not demonstrate a quality or total-time advantage over classical diffusion or flow models, QPU-accelerated training, or one-shot physical generation. The next comparison is straightforward: compute <code>number of bases × shots × BoN × circuit depth × queue/latency</code> as one cost term, then compare against classical MeanFlow using the same latent representation, classifier, and acceptance rule. Whether QMF’s shorter workflow provides an advantage must be decided from this total cost.</p>
+<h2 id="6-logarithmic-qubit-protein-vqe-moves-costs-rather-than-removing-them">6. Logarithmic-Qubit Protein VQE Moves Costs Rather Than Removing Them</h2>
+<p>Fabio Cumbo and colleagues’ <a href="https://arxiv.org/abs/2609.02113"><em>Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space</em></a> is a preprint released on September 2, 2026. Instead of forcing a protein onto a lattice, the method encodes continuous torsional degrees of freedom in phase, reducing the required qubit count to $O(\log_2 N)$, while a classical algorithm reconstructs heavy-atom coordinates from the torsions.</p>
+<p>At the statevector stage, torsions are read from relative phases. On hardware, computational-basis probabilities are instead mapped to bounded torsion variables through an empirical cumulative distribution function (CDF). The workflow uses an EfficientSU2 ansatz and multistage relaxation, while structural evaluation depends on custom molecular-mechanics, Rosetta, or OpenMM scoring backends. Rosetta and OpenMM are internal QTF energy functions here, not independent folding-pipeline baselines. “Logarithmic qubit count” is therefore accurate, but it does not mean that the shots required to recover physical information, deep circuits, classical coordinate reconstruction, or energy-evaluation costs disappear.</p>
+<p>In classical statevector optimization, chignolin achieved a retained-snapshot Cα RMSD of 0.623 Å and a final-model RMSD of 1.199 Å; for Trp-cage, the corresponding values were 2.501 Å and 3.512 Å. The 0.623 Å result was an extreme best selected after the fact against a known PDB structure from 7.33 million retained snapshots across the two proteins; it was not the average performance of candidates selected by the energy function. No Trp-cage snapshot fell below 2 Å.</p>
+<p>The hardware experiment ran only the six-qubit chignolin circuit on the 156-qubit Heron R2 <code>ibm_cleveland</code> and the 120-qubit Nighthawk R1 <code>ibm_miami</code>. The six qubits describe the circuit width, not six error-corrected logical qubits. Each device executed 300 jobs with 8,192 shots per job, for a total of 600 jobs and 4,915,200 shots. The best-of-repeats RMSD was 1.758 Å on Cleveland and 1.782 Å on Miami; native-like samples below 2 Å appeared in 88/300 and 45/300 jobs, respectively. These RMSDs are calculated on the structural core with terminal residues excluded. Cleveland used a median of 204 transpiled CZ gates and about 5 seconds of QPU time per job. Miami used only 60 CZ gates but took about 35 seconds. This is a useful example of why fewer 2Q gates do not necessarily imply shorter processing time or a higher recovery rate.</p>
+<p>The most important boundary is parameter optimization. For each of three energy functions, the hardware experiment selected 10 final chignolin models with low simulation RMSD—30 circuits in total—and repeated each 10 times as a parameter-transfer sampling experiment. It did not perform on-QPU VQE in which energy is measured and parameters are iteratively updated inside the hardware loop. The warm-start RMSD was already 1.199–2.270 Å, and most hardware repeats were worse than their starting points. Saying that “a quantum computer optimized a protein structure from scratch” would overstate the result. The Hamiltonian also scores torsional conformers through a hybrid objective; this is not electronic-structure VQE that finds the ground state of an electronic Hamiltonian.</p>
+<p>The application case remains a benchmark hypothesis. Compact encoding could be used to search 6–12 important torsions in an OLED donor–acceptor molecule or low-dimensional conformers along a polymer backbone. The test would need to hold the conformer family, energy function, and budget fixed against RDKit/CREST, molecular dynamics, basin hopping, and learned potentials. The criterion is whether the method finds a better low-energy conformer faster after accounting for the greater circuit depth, shots, and decoder sensitivity associated with the narrower qubit width. The present study supplies a hardware protocol for asking that question; it does not settle the answer.</p>
+<h2 id="7-the-oscillatortransmon-programmed-potentials-not-a-molecule">7. The Oscillator–Transmon Programmed Potentials, Not a Molecule</h2>
+<p>The 12-author team led by Clara Yun Fontaine released <a href="https://arxiv.org/abs/2609.02405"><em>Programming anharmonic potentials in a superconducting harmonic oscillator</em></a> as a preprint on September 2, 2026. The experiment dispersively couples a long-lived superconducting harmonic oscillator to a transmon qubit and uses a modular circuit derived from bosonic quantum signal processing to implement a non-Gaussian phase gate $e^{-iV(\hat X)}$. Changing only the qubit-rotation angles between fixed calibrated control unitaries programs several $V(X)$ functions on the same device.</p>
+<p>Gaussian operations readily implemented with a harmonic oscillator are not sufficient for universal continuous-variable processing. Nonlinear potentials such as the cubic phase supply a non-Gaussian resource. The experiment implemented a cubic potential $V(X)=0.6X^3$, symmetric and asymmetric double wells, and an approximate Morse potential. Each elementary echoed conditional-displacement gate lasted about 520 ns, each qubit rotation 28 ns, and the Fourier orders were approximately 11–14. For the cubic gate, the authors reported a reconstructed coefficient of $c_3=0.68\pm0.10$, a lower bound on state fidelity of 0.84, and a lower bound on Wigner negativity of 0.11. Repeated applications also showed an accumulating trend in non-Gaussianity.</p>
+<p>For the double wells, a linear bias tuned the symmetry and well-depth difference, and reconstruction with bootstrap tests checked whether the topology remained intact. Measurement cost was nevertheless substantial. Total measurement outcomes were approximately $4.4\times10^6$ each for the cubic, symmetric-double-well, and broken-double-well potentials; $5.3\times10^7$ for the asymmetric double well; and $6.7\times10^7$ for Morse.</p>
+<p>The Morse gate was presented as an approximate implementation of the exponential form of a molecular vibrational potential. Actual coherent probes stably reconstructed only harmonics with $|n|\le2$, so the steep repulsive wall did not emerge adequately. Recovery of the wall through $|n|\le7$ with 10.9 dB squeezed probes was a simulation. Full $M=13$ reconstruction was estimated to require 16.3 dB of squeezing and 29 probe positions. The authors also identified after data collection a missing $\pi$ factor in constructing the complementary polynomial. Because the paper re-evaluates the results against the circuit that actually ran, the observations of topology and asymmetry remain. It would nevertheless be inaccurate to say that the intended potentials were implemented unchanged at high precision.</p>
+<p>The decisive words are <strong>approximate</strong> and <strong>potential gate</strong>. The experiment neither inserted parameters for a real molecule to calculate its vibrational spectrum nor predicted a chemical reaction rate or tunnelling yield. It demonstrated a component that applies a potential as an impulsive phase, together with pointwise force reconstruction.</p>
+<p>Two near-term development paths follow. First, longer coherence, shorter modular sequences, and robust calibration could reduce accumulated error at higher Fourier orders. Second, the field can move from testing a potential gate in isolation to an end-to-end analogue benchmark that combines it with kinetic evolution and reproduces a known spectrum or wavepacket dynamics. Any molecular claim should begin with blind comparisons on small problems with precise classical numerical solutions, such as the low-lying eigenlevels of a Morse oscillator, tunnelling splitting, or a time-correlation function.</p>
+<h2 id="8-development-directions-shared-by-the-six-studies">8. Development Directions Shared by the Six Studies</h2>
+<h3 id="81-design-the-execution-boundary-before-minimizing-the-qubit-count">8.1 Design the Execution Boundary Before Minimizing the Qubit Count</h3>
+<p>QMF and the protein VQE reduce the number of calls to the quantum block or the qubit count, but they move costs elsewhere. QMF removes sequential steps while retaining a deep circuit, two measurement bases, and BoN. Torsion encoding narrows the circuit while requiring phase information to be recovered from a probability distribution. Sound co-design does not minimize one resource in isolation. Encoding, ansatz, measurement, and classical decoding should be evaluated together on a Pareto frontier of total error and total time.</p>
+<h3 id="82-a-noise-model-determines-sampling-cost-as-well-as-the-answer">8.2 A Noise Model Determines Sampling Cost as Well as the Answer</h3>
+<p>The Pauli-noise study shows that a gauge can leave the final observable unchanged while still affecting sampling overhead. Device calibration can therefore serve not merely as a preliminary check, but as an objective for compilation and mitigation. Qubit and coupler selection, Pauli frames and decompositions, and shot allocation across observables can be treated as one optimization problem.</p>
+<h3 id="83-separate-expressivity-theorems-from-application-speedups">8.3 Separate Expressivity Theorems from Application Speedups</h3>
+<p>QuanONet’s quadratic frame is a substantive theoretical result. For an application, however, it must translate into the same error with fewer parameters, a more accurate operator within the same time, or lower measurement cost at the same accuracy. Reporting the theorem, simulator benchmark, device PoC, and end-to-end advantage as four distinct stages prevents success at one stage from being treated as an automatic guarantee of the next.</p>
+<h3 id="84-begin-applications-with-small-verifiable-physical-quantities">8.4 Begin Applications with Small, Verifiable Physical Quantities</h3>
+<p>Targeting an entire protein-folding process or chemical reaction at once makes it difficult to determine how much of the result was set by classical preprocessing and heuristic scoring. The torsion study first tested sample recovery under a fixed decoder and energy function; the oscillator–transmon study first tested reconstruction of known anharmonic potentials. For materials and OLED problems, the quantum block’s net contribution is easier to measure on quantities with strong classical baselines: energy in a small active space, a restricted torsion family, a known vibrational level, or a specific correlation function.</p>
+<h2 id="9-a-minimum-quantumclassical-resource-ledger">9. A Minimum Quantum–Classical Resource Ledger</h2>
+<p>At least the following fields are required to place these six papers in one ledger. Leaving even one or two blank creates an invisible-cost segment on the quantum or classical side.</p>
+<table>
+<thead>
+<tr>
+<th>Ledger field</th>
+<th>What must be recorded</th>
+<th>Misinterpretation when omitted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem and instance</td>
+<td>Graph, molecule, or data split; size; distribution of difficulty</td>
+<td>Generalizing from a handpicked set of easy instances</td>
+</tr>
+<tr>
+<td>Target observable</td>
+<td>Energy, correlation order, accuracy, RMSD, fidelity, or spectrum</td>
+<td>Comparing different answers as though they had the same accuracy</td>
+</tr>
+<tr>
+<td>Success criterion</td>
+<td>Target error, confidence interval, valid-sample condition</td>
+<td>Treating one best run as average performance</td>
+</tr>
+<tr>
+<td>Quantum execution boundary</td>
+<td>Which of training, optimization, inference, and sampling ran on a QPU</td>
+<td>Treating an entire hybrid pipeline as QPU computation</td>
+</tr>
+<tr>
+<td>Circuit resources</td>
+<td>Logical and physical qubits, 2Q gates, depth, bases, circuit count</td>
+<td>Hiding greater depth behind a lower qubit count</td>
+</tr>
+<tr>
+<td>Measurement resources</td>
+<td>Shots per basis, repetitions, postselection, BoN, effective sample count</td>
+<td>Erasing the cost of mitigation and selection</td>
+</tr>
+<tr>
+<td>Classical resources</td>
+<td>Encoding, optimizer, decoder, CI/DFT/MD, GPU/CPU time and memory</td>
+<td>Reporting time only for the quantum subroutine</td>
+</tr>
+<tr>
+<td>Operational resources</td>
+<td>Compilation, queue, calibration, QPU access, wall-clock, energy</td>
+<td>Directly comparing anneal time with total GPU time</td>
+</tr>
+<tr>
+<td>Baseline</td>
+<td>Best classical method under the same instance, budget, and stopping rule</td>
+<td>Expanding an improvement over a weak baseline into an advantage claim</td>
+</tr>
+<tr>
+<td>Repeatability</td>
+<td>Seeds, calibration dates, failed runs, uncertainty</td>
+<td>Treating selected successes as stable performance</td>
+</tr>
+</tbody>
+</table>
+<p>For OLED and materials calculations, the ledger should become more specific. Put target overlap, active space definition, state-preparation cost, compiled 2Q depth, number of commuting groups, shots, mitigation amplification, postselection yield, QPU time, and classical CI/DFT time and memory in the same row. For optimization problems, add encoding penalties, feasible-shot rate, time-to-best, optimality gap, and the classical solver’s termination condition. For generative models, record the candidate count, rejection rate, scoring model, and selection compute in addition to FID or classifier accuracy.</p>
+<h2 id="10-three-validation-experiments-that-can-be-run-now">10. Three Validation Experiments That Can Be Run Now</h2>
+<p>First, <strong>redesign a D-Wave or QAOA benchmark around matched observables</strong>. On the same Ising/QUBO instances, measure the objective together with two-point and higher-order correlations and sample diversity. Separate a small regime accessible to exact methods, a middle regime where tensor-network or Monte Carlo methods remain competitive, and the claimed QPU-only regime. Report time-to-target and energy-to-target.</p>
+<p>Second, <strong>attach an end-to-end denominator to each QML PoC</strong>. QuanONet and QMF should both publish a pipeline graph that includes classical encoding, training, and selection, with an ablation in which the quantum block is replaced by a classical quadratic-feature or MeanFlow block of the same size. Across at least three QPU calibrations, compare shots-to-accuracy and wall-clock-to-accuracy.</p>
+<p>Third, <strong>evaluate the decoder separately from the physical solver in molecular and materials applications</strong>. For torsion encoding, measure decoder error with exact phase/statevector input, the additional error with a noisy distribution, and the ranking error introduced by the classical energy function. For the oscillator–transmon system, extend potential reconstruction to a benchmark of known eigenvalues and dynamical observables. This decomposition reveals whether the bottleneck lies in quantum-state preparation, measurement, or classical reconstruction.</p>
+<h2 id="11-application-outlook">11. Application Outlook</h2>
+<ul>
+<li><strong>Nearest-term operational use</strong>: self-consistent Pauli-noise learning and gauge optimization. These directly address the engineering problem of reducing sampling overhead in device characterization and error mitigation.</li>
+<li><strong>Near-term research use</strong>: employ strong classical simulations, including t-VMC, as controls for quantum-advantage benchmarks. Their role is less to replace the quantum device than to define more precisely where a defensible claim begins.</li>
+<li><strong>Medium-term QML use</strong>: evaluate QuanONet’s quadratic frame and QMF’s one-step inference with measurement cost included. Both remain at the architecture and PoC stage.</li>
+<li><strong>Medium-term molecular and biophysical use</strong>: connect compact torsion representations and bosonic anharmonic gates to small conformer and vibrational benchmarks. It is too early to extend these results to end-to-end acceleration of protein folding or chemical reactions.</li>
+<li><strong>Long-term direction</strong>: a heterogeneous stack that combines error-corrected gate models, bosonic modes, and high-performance classical simulation by problem. Rather than assigning every calculation to one platform, the stack selects the least expensive computational layer for each well-defined observable.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>This week’s research did not settle a contest between quantum and classical computation. It clarified what must be counted before such a contest can be judged. t-VMC raised the classical baseline by reproducing selected D-Wave correlations at substantial GPU cost. Self-consistent Pauli-noise learning showed that non-identifiability does not necessarily imply unpredictability, and that gauge choice can reduce the sample cost of reaching the same answer. QuanONet supplied a theoretical basis for greater expressivity, while QMF proposed a structure that reduces sequential inference. Torsion VQE and the oscillator–transmon experiment placed, respectively, compact encoding and programmable non-Gaussian potentials on real hardware.</p>
+<p>None of these results demonstrates universal quantum advantage, acceleration of a full application workflow, or the calculation of a real chemical reaction. Stating those limits does not diminish the research. Separating what already works from what remains to be tested directs research and development effort toward the actual bottleneck.</p>
+<p>Qubit count alone is no longer an adequate headline metric. <strong>The relevance of the observable, the completeness of the comparison denominator, the transparency of the execution boundary, and a strong classical baseline under the same budget</strong> must be reported together. The boundary of quantum advantage will keep moving. Good reviews and good experiments do not draw that boundary broadly; they record the coordinates and costs at which it was established.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>R. Wiersema, <a href="https://arxiv.org/abs/2609.01719">“Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo,” arXiv:2609.01719v1 (1 September 2026)</a>. <strong>Preprint; classical GPU simulation.</strong> <a href="https://github.com/therooler/dwave_vmc">Code</a></li>
+<li>E. H. Chen, S. Chen, L. E. Fischer et al., <a href="https://doi.org/10.1103/69wc-gzl6">“Disambiguating Pauli Noise in Quantum Computers,” <em>PRX Quantum</em> 7, 033045 (3 September 2026)</a>. <strong>Peer-reviewed article; actual IBM QPUs, up to 92 qubits.</strong></li>
+<li>R. Wang, X. Zhong, Z. Xia, J. Yan, <a href="https://doi.org/10.1038/s42256-026-01289-7">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” <em>Nature Machine Intelligence</em> (3 September 2026)</a>. <strong>Peer-reviewed article; qualitative <code>ibm_fez</code> PoC.</strong> <a href="https://github.com/Wang-Ruocheng/QuanONet">Code</a></li>
+<li>A. Joshi, E. Mistry, T. Koyama, <a href="https://arxiv.org/abs/2609.02186">“Quantum MeanFlow: single-shot generative sampling on NISQ hardware,” arXiv:2609.02186v1 (2 September 2026)</a>. <strong>Preprint; simulator training and actual IBM QPU inference.</strong></li>
+<li>F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, D. Blankenberg, <a href="https://arxiv.org/abs/2609.02113">“Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space,” arXiv:2609.02113v1 (2 September 2026)</a>. <strong>Preprint; actual QPU sampling, not on-QPU optimization.</strong> <a href="https://github.com/cumbof/qtf">Code</a> · <a href="https://doi.org/10.5281/zenodo.22088098">Data</a></li>
+<li>C. Y. Fontaine, M. Somani, K. Yu et al., <a href="https://arxiv.org/abs/2609.02405">“Programming anharmonic potentials in a superconducting harmonic oscillator,” arXiv:2609.02405v1 (2 September 2026)</a>. <strong>Preprint; actual superconducting oscillator–transmon device.</strong></li>
+</ol>
+<hr />
+<p>Authoring information. Responsible editor: Hyun-Jung Kim. AI assistance: OpenAI Codex Work Mode multi-agent workflow. Evidence cutoff: September 4, 2026. <code>evidence_algorithms</code> checked t-VMC, Pauli-noise learning, and QuanONet against primary sources; <code>evidence_applications</code> checked Quantum MeanFlow, torsion-space VQE, and oscillator–transmon control; and <code>draft_sep4_review</code> assembled the Korean and English reviews. Numerical values and methods are source-reported; their proposed translation to OLED and materials applications, the shared resource ledger, and the three validation experiments are editorial recommendations. The review distinguishes 2 peer-reviewed articles from 4 preprints and separately identifies actual QPU execution, classical simulation, simulator training, and classical decoding.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex (main) — orchestration, evidence integration, figures, copyediting, and publication; evidence_algorithms — primary-source audit of t-VMC, Pauli-noise PEC, and QuanONet; evidence_applications — primary-source audit of QMF, protein VQE, and oscillator–transmon; draft_sep4_review — bilingual long-form draft; repo_publication_audit — repository and publication-pipeline audit</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>six primary research records published or posted through the evidence cutoff; publication status, observable denominator, execution layer, circuit and measurement cost, classical workload, and non-claims; bilingual HTML, hero and quantitative figure, source ledger, PDF, metadata, privacy, links, and deployed pages</dd></div>
+          <div><dt>Human review record</dt><dd>scope, synthesis direction, and public publication confirmed; line-by-line review not separately retained</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-04</dd></div>
+        </dl>
+        <p class="disclosure-note">Reported numbers were rechecked with their denominators and execution settings. The cross-study resource ledger and development recommendations are editorial synthesis, not a joint conclusion of the source papers.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-09-04 11:22:30<br>
+        Source last modified: 2026-09-04 11:22:22
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#1-different-quantum-results-use-different-units-of-evidence">1. Different “Quantum Results” Use Different Units of Evidence</a><ul>
+<li><a href="#read-together-from-system-bottlenecks-to-an-evidence-ledger">Read Together: From System Bottlenecks to an Evidence Ledger</a></li>
+</ul>
+</li>
+<li><a href="#2-the-exact-scope-of-the-claim-that-d-wave-was-classically-reproduced">2. The Exact Scope of the Claim That D-Wave Was Classically Reproduced</a></li>
+<li><a href="#3-when-does-non-identifiable-noise-cease-to-be-a-problem">3. When Does Non-Identifiable Noise Cease to Be a Problem?</a></li>
+<li><a href="#4-quanonets-is-an-expressivity-bound-not-a-speedup">4. QuanONet’s Is an Expressivity Bound, Not a Speedup</a></li>
+<li><a href="#5-how-far-does-quantum-meanflows-one-step-extend">5. How Far Does Quantum MeanFlow’s “One Step” Extend?</a></li>
+<li><a href="#6-logarithmic-qubit-protein-vqe-moves-costs-rather-than-removing-them">6. Logarithmic-Qubit Protein VQE Moves Costs Rather Than Removing Them</a></li>
+<li><a href="#7-the-oscillatortransmon-programmed-potentials-not-a-molecule">7. The Oscillator–Transmon Programmed Potentials, Not a Molecule</a></li>
+<li><a href="#8-development-directions-shared-by-the-six-studies">8. Development Directions Shared by the Six Studies</a><ul>
+<li><a href="#81-design-the-execution-boundary-before-minimizing-the-qubit-count">8.1 Design the Execution Boundary Before Minimizing the Qubit Count</a></li>
+<li><a href="#82-a-noise-model-determines-sampling-cost-as-well-as-the-answer">8.2 A Noise Model Determines Sampling Cost as Well as the Answer</a></li>
+<li><a href="#83-separate-expressivity-theorems-from-application-speedups">8.3 Separate Expressivity Theorems from Application Speedups</a></li>
+<li><a href="#84-begin-applications-with-small-verifiable-physical-quantities">8.4 Begin Applications with Small, Verifiable Physical Quantities</a></li>
+</ul>
+</li>
+<li><a href="#9-a-minimum-quantumclassical-resource-ledger">9. A Minimum Quantum–Classical Resource Ledger</a></li>
+<li><a href="#10-three-validation-experiments-that-can-be-run-now">10. Three Validation Experiments That Can Be Run Now</a></li>
+<li><a href="#11-application-outlook">11. Application Outlook</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="quantum_evidence_ledger_hero-web.webp">Conceptual illustration combining a quantum processor, classical GPUs, a measurement ledger, continuous-variable potentials, and hybrid-computing boundaries</a></li>
+<li><a href="daily_quantum_brief_2026-09-04.pdf">PDF download</a></li>
+<li><a href="quantum_evidence_ledger_en.svg">Five-column resource ledger mapping six studies across observable and denominator, execution location, circuit and measurement, classical pre- and post-processing, and baseline and nonclaims</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/" target="_blank" rel="noreferrer">September 3 review of full-stack co-design</a></li>
+<li><a href="https://arxiv.org/abs/2609.01719" target="_blank" rel="noreferrer">*Numerical simulation of D-Wave&#x27;s quantum advantage experiment with time-dependent variational Monte Carlo*</a></li>
+<li><a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">*Disambiguating Pauli Noise in Quantum Computers*</a></li>
+<li><a href="https://www.nature.com/articles/s42256-026-01289-7" target="_blank" rel="noreferrer">*Quantum neural operators with implicit quadratic frame and expressivity advantages*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02186" target="_blank" rel="noreferrer">*Quantum MeanFlow: single-shot generative sampling on NISQ hardware*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02113" target="_blank" rel="noreferrer">*Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space*</a></li>
+<li><a href="https://arxiv.org/abs/2609.02405" target="_blank" rel="noreferrer">*Programming anharmonic potentials in a superconducting harmonic oscillator*</a></li>
+<li><a href="https://github.com/therooler/dwave_vmc" target="_blank" rel="noreferrer">Code</a></li>
+<li><a href="https://doi.org/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">“Disambiguating Pauli Noise in Quantum Computers,” *PRX Quantum* 7, 033045 (3 September 2026)</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01289-7" target="_blank" rel="noreferrer">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” *Nature Machine Intelligence* (3 September 2026)</a></li>
+<li><a href="https://github.com/Wang-Ruocheng/QuanONet" target="_blank" rel="noreferrer">Code</a></li>
+<li><a href="https://github.com/cumbof/qtf" target="_blank" rel="noreferrer">Code</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.22088098" target="_blank" rel="noreferrer">Data</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p><p class="metrics-disclosure">Public views and average reading time are recorded only as aggregate values by page path, without personal identifiers.</p></section>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
+</html>

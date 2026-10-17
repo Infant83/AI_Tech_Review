@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="920" viewBox="0 0 1200 920" role="img" aria-labelledby="title desc">
+  <title id="title">2026년 8월 28일 발표된 다섯 연구에서 실제로 실행하고 측정한 것</title>
+  <desc id="desc">Gibbs 상태 준비, 이차원 XY 아날로그 양자 시뮬레이터, 유기 반도체 엑시톤 분광, fluxonium-transmon 아키텍처, 기하학적 펄스 제어를 실제 장치 측정과 컴퓨터 계산으로 나눈 그림</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8faf9"/>
+      <stop offset="1" stop-color="#eef3f1"/>
+    </linearGradient>
+    <style>
+      text { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; fill: #17211d; }
+      .title { font-size: 42px; font-weight: 700; }
+      .subtitle { font-size: 22px; fill: #59665f; }
+      .type { font-size: 19px; font-weight: 700; letter-spacing: 1px; }
+      .name { font-size: 27px; font-weight: 700; }
+      .body { font-size: 20px; fill: #46534d; }
+      .boundary { font-size: 18px; fill: #6a736e; }
+      .footer-title { font-size: 21px; font-weight: 700; fill: #ffffff; }
+      .footer-body { font-size: 19px; fill: #d7e7e2; }
+    </style>
+  </defs>
+  <rect width="1200" height="920" rx="28" fill="url(#bg)"/>
+  <text x="70" y="78" class="title">같은 날 발표됐지만, 실제로 한 일은 서로 다르다</text>
+  <text x="70" y="116" class="subtitle">장치에서 측정한 값과 컴퓨터로 계산한 값을 구분하면 성과를 정확히 볼 수 있다.</text>
+
+  <g>
+    <rect x="70" y="160" width="1060" height="116" rx="18" fill="#ffffff"/>
+    <rect x="70" y="160" width="12" height="116" rx="6" fill="#b36a1e"/>
+    <rect x="102" y="180" width="168" height="34" rx="17" fill="#f8ebdc"/>
+    <text x="186" y="203" text-anchor="middle" class="type" fill="#8f4e12">고전 컴퓨터 계산</text>
+    <text x="300" y="205" class="name">Gibbs 열 상태 준비</text>
+    <text x="300" y="239" class="body">reset 가능한 bath와 변조 결합 · 2D Ising 최대 16 spins · 자유 페르미온 수백 sites</text>
+    <text x="300" y="266" class="boundary">실제 QPU, reset 비용, mixing time, 전체 wall-clock은 측정하지 않음</text>
+
+    <rect x="70" y="294" width="1060" height="116" rx="18" fill="#ffffff"/>
+    <rect x="70" y="294" width="12" height="116" rx="6" fill="#147d75"/>
+    <rect x="102" y="314" width="168" height="34" rx="17" fill="#e4f3ef"/>
+    <text x="186" y="337" text-anchor="middle" class="type" fill="#0d665f">실제 아날로그 실험</text>
+    <text x="300" y="339" class="name">2D XY 스핀 확산</text>
+    <text x="300" y="373" class="body">광격자 hard-core boson simulator · 실험 D = 0.82(3)J · 고전 Dyn-HTE와 합의</text>
+    <text x="300" y="400" class="boundary">범용 디지털 QPU나 고전 계산 대비 속도 우위 실증은 아님</text>
+
+    <rect x="70" y="428" width="1060" height="116" rx="18" fill="#ffffff"/>
+    <rect x="70" y="428" width="12" height="116" rx="6" fill="#8c3f79"/>
+    <rect x="102" y="448" width="168" height="34" rx="17" fill="#f5e8f1"/>
+    <text x="186" y="471" text-anchor="middle" class="type" fill="#733164">실제 분광 실험</text>
+    <text x="300" y="473" class="name">α-sexithiophene 엑시톤</text>
+    <text x="300" y="507" class="body">운동량공간은 직접 측정 · 실공간 진폭·위상은 모델 복원 · 약 3개 분자에 delocalization</text>
+    <text x="300" y="534" class="boundary">400 fs 안의 반경 약 25% 수축은 self-trapping과 부합하지만 유일 원인 확정은 아님</text>
+
+    <rect x="70" y="562" width="1060" height="116" rx="18" fill="#ffffff"/>
+    <rect x="70" y="562" width="12" height="116" rx="6" fill="#315887"/>
+    <rect x="102" y="582" width="168" height="34" rx="17" fill="#e8eef6"/>
+    <text x="186" y="605" text-anchor="middle" class="type" fill="#274b77">폐쇄계 수치 설계</text>
+    <text x="300" y="607" class="name">fluxonium–transmon 혼합 아키텍처</text>
+    <text x="300" y="641" class="body">fluxonium data qubit · transmon measurement ancilla · tunable coupler</text>
+    <text x="300" y="668" class="boundary">30 ns 이상 CZ 수치 결과이며 실제 칩 fidelity·array yield·logical error rate가 아님</text>
+
+    <rect x="70" y="696" width="1060" height="116" rx="18" fill="#ffffff"/>
+    <rect x="70" y="696" width="12" height="116" rx="6" fill="#556b3e"/>
+    <rect x="102" y="716" width="168" height="34" rx="17" fill="#edf2e6"/>
+    <text x="186" y="739" text-anchor="middle" class="type" fill="#455c31">이론·수치 제어</text>
+    <text x="300" y="741" class="name">기하학적 diabatic–adiabatic 펄스</text>
+    <text x="300" y="775" class="body">다준위 누설을 억제하며 원하는 전이를 허용 · 단일 제어변수는 1차 ODE로 환원</text>
+    <text x="300" y="802" class="boundary">실제 pulse generator나 spin-qubit 하드웨어에서 측정된 fidelity는 없음</text>
+  </g>
+
+  <rect x="70" y="842" width="1060" height="52" rx="14" fill="#173d36"/>
+  <text x="95" y="875" class="footer-title">읽는 법</text>
+  <text x="190" y="875" class="footer-body">논문 게재만 보지 말고 실행 위치·측정값·비교 기준을 확인한다.</text>
+</svg>

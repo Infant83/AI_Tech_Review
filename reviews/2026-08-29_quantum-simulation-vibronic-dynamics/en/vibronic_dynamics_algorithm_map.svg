@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">From a vibronic Hamiltonian to grid-encoded quantum time evolution</title>
+  <desc id="desc">Three-panel technical figure showing the coupled electronic and nuclear KDC Hamiltonian, its encoding into electronic-state and vibrational position-grid qubit registers, and the symmetric second-order Trotter sequence used by the PennyLane demonstration. A scope bar lists the exact toy-model settings and states that the program ran on a classical state-vector simulator rather than quantum hardware.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07152f"/>
+      <stop offset="1" stop-color="#142344"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5fd7e5"/>
+      <stop offset="1" stop-color="#88edf2"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d99a5e"/>
+      <stop offset="1" stop-color="#f2c47e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#020817" flood-opacity="0.45"/>
+    </filter>
+    <marker id="arrowC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#72ddea"/>
+    </marker>
+    <marker id="arrowA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#edb66f"/>
+    </marker>
+    <style>
+      .sans{font-family:Inter,"Noto Sans",Arial,sans-serif}.serif{font-family:"STIX Two Text","Times New Roman",serif}
+      .h1{font:700 39px Inter,"Noto Sans",Arial,sans-serif;fill:#f6f2e8}.sub{font:400 19px Inter,"Noto Sans",Arial,sans-serif;fill:#bcc8da}
+      .paneltitle{font:700 24px Inter,"Noto Sans",Arial,sans-serif;fill:#f6f2e8}.label{font:600 17px Inter,"Noto Sans",Arial,sans-serif;fill:#e7edf6}
+      .body{font:400 16px Inter,"Noto Sans",Arial,sans-serif;fill:#c8d3e3}.small{font:400 14px Inter,"Noto Sans",Arial,sans-serif;fill:#aebdd2}
+      .math{font:400 19px "STIX Two Text","Times New Roman",serif;fill:#f6f2e8}.mathsmall{font:400 16px "STIX Two Text","Times New Roman",serif;fill:#dce8f5}
+      .card{fill:#101f3b;stroke:#334a6d;stroke-width:1.5}.soft{fill:#142745;stroke:#385475;stroke-width:1.2}.cyan{fill:#77e1eb}.amber{fill:#edb66f}.violet{fill:#ad93e8}
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <text x="70" y="70" class="h1">From vibronic structure to quantum time evolution</text>
+  <text x="70" y="104" class="sub">What the PennyLane demo encodes, how one symmetric time step is assembled, and what was actually simulated</text>
+
+  <!-- Panel A -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="145" width="470" height="570" rx="20" class="card"/>
+  </g>
+  <circle cx="94" cy="181" r="16" fill="#21445e" stroke="#72ddea"/>
+  <text x="88" y="187" class="label">A</text>
+  <text x="124" y="190" class="paneltitle">Electron–nuclear model</text>
+  <text x="92" y="235" class="math">H = I<tspan baseline-shift="sub" font-size="13">el</tspan> ⊗ (T<tspan baseline-shift="sub" font-size="13">nuc</tspan> + V<tspan baseline-shift="sub" font-size="13">0</tspan>) + W(Q)</text>
+  <text x="92" y="270" class="body">Electronic and nuclear coordinates</text>
+  <text x="92" y="293" class="body">evolve together.</text>
+
+  <rect x="95" y="314" width="154" height="68" rx="14" class="soft"/>
+  <rect x="340" y="314" width="154" height="68" rx="14" class="soft"/>
+  <text x="136" y="344" class="label">state |0⟩</text>
+  <text x="380" y="344" class="label">state |1⟩</text>
+  <text x="123" y="369" class="small">diabatic label</text>
+  <text x="367" y="369" class="small">diabatic label</text>
+  <line x1="253" y1="348" x2="336" y2="348" stroke="#72ddea" stroke-width="3" marker-start="url(#arrowC)" marker-end="url(#arrowC)"/>
+  <text x="269" y="333" class="mathsmall">W<tspan baseline-shift="sub" font-size="11">01</tspan>(Q)</text>
+
+  <path d="M100 452 C125 420 150 485 175 452 S225 420 250 452 S300 485 325 452 S375 420 400 452 S450 485 490 452" fill="none" stroke="url(#cyan)" stroke-width="5"/>
+  <text x="100" y="420" class="label">normal coordinates Q<tspan baseline-shift="sub" font-size="12">1</tspan> … Q<tspan baseline-shift="sub" font-size="12">M</tspan></text>
+  <text x="100" y="490" class="small">Q is a dimensionless normal-mode coordinate.</text>
+  <text x="100" y="511" class="small">It is not the position of one atom.</text>
+
+  <rect x="92" y="525" width="405" height="145" rx="14" fill="#0d1931" stroke="#2c4466"/>
+  <text x="112" y="555" class="label">Linear / quadratic vibronic coupling</text>
+  <text x="112" y="594" class="mathsmall">W′<tspan baseline-shift="sub" font-size="11">ij</tspan>(Q) = λ<tspan baseline-shift="super" font-size="11">(ij)</tspan> + Σ<tspan baseline-shift="sub" font-size="11">r</tspan> a<tspan baseline-shift="sub" font-size="11">r</tspan><tspan baseline-shift="super" font-size="11">(ij)</tspan>Q<tspan baseline-shift="sub" font-size="11">r</tspan></text>
+  <text x="215" y="628" class="mathsmall">+ Σ<tspan baseline-shift="sub" font-size="11">rr′</tspan> b<tspan baseline-shift="sub" font-size="11">rr′</tspan><tspan baseline-shift="super" font-size="11">(ij)</tspan>Q<tspan baseline-shift="sub" font-size="11">r</tspan>Q<tspan baseline-shift="sub" font-size="11">r′</tspan></text>
+  <text x="112" y="655" class="small">The executed toy example retains only linear terms.</text>
+
+  <!-- Panel B -->
+  <g filter="url(#shadow)"><rect x="565" y="145" width="470" height="570" rx="20" class="card"/></g>
+  <circle cx="599" cy="181" r="16" fill="#3a315b" stroke="#b29beb"/>
+  <text x="593" y="187" class="label">B</text>
+  <text x="629" y="190" class="paneltitle">Grid encoding on qubits</text>
+  <text x="597" y="232" class="body">Electronic labels and vibrational position grids</text>
+  <text x="597" y="255" class="body">are both encoded on qubits.</text>
+
+  <rect x="600" y="273" width="400" height="88" rx="14" class="soft"/>
+  <text x="620" y="302" class="label">Electronic-state register</text>
+  <text x="620" y="331" class="mathsmall">n = ⌈log<tspan baseline-shift="sub" font-size="11">2</tspan>N⌉ qubits</text>
+  <g transform="translate(877 289)">
+    <rect x="0" y="0" width="45" height="45" rx="8" fill="#23455e" stroke="#72ddea"/><text x="14" y="29" class="label">0</text>
+    <rect x="55" y="0" width="45" height="45" rx="8" fill="#23455e" stroke="#72ddea"/><text x="69" y="29" class="label">1</text>
+    <text x="113" y="29" class="body">…</text>
+  </g>
+
+  <rect x="600" y="384" width="400" height="166" rx="14" class="soft"/>
+  <text x="620" y="414" class="label">Mode r: position-grid register</text>
+  <text x="620" y="443" class="mathsmall">K = 2<tspan baseline-shift="super" font-size="11">k</tspan> points  ↔  k = log<tspan baseline-shift="sub" font-size="11">2</tspan>K qubits</text>
+  <g transform="translate(620 466)">
+    <circle cx="11" cy="18" r="8" class="amber"/><circle cx="49" cy="18" r="8" class="amber"/><circle cx="87" cy="18" r="8" class="amber"/>
+    <circle cx="125" cy="18" r="8" class="amber"/><circle cx="163" cy="18" r="8" class="amber"/><circle cx="201" cy="18" r="8" class="amber"/>
+    <circle cx="239" cy="18" r="8" class="amber"/><circle cx="277" cy="18" r="8" class="amber"/><line x1="11" y1="18" x2="277" y2="18" stroke="#edb66f" stroke-width="2"/>
+    <text x="302" y="24" class="small">position samples</text>
+  </g>
+  <text x="620" y="528" class="mathsmall">Q|x⟩ = Δ(x − K/2)|x⟩,  Δ = √(2π/K)</text>
+
+  <rect x="600" y="573" width="400" height="99" rx="14" fill="#0d1931" stroke="#2c4466"/>
+  <text x="620" y="602" class="label">Auxiliary registers</text>
+  <text x="620" y="631" class="body">phase gradient · coefficients/QROM</text>
+  <text x="620" y="655" class="body">scratch · cache</text>
+
+  <!-- Panel C -->
+  <g filter="url(#shadow)"><rect x="1070" y="145" width="470" height="570" rx="20" class="card"/></g>
+  <circle cx="1104" cy="181" r="16" fill="#5a3a2c" stroke="#edb66f"/>
+  <text x="1098" y="187" class="label">C</text>
+  <text x="1134" y="190" class="paneltitle">Symmetric Trotter step</text>
+  <text x="1102" y="232" class="body">Kinetic and potential evolutions are interleaved</text>
+  <text x="1102" y="255" class="body">in a second-order symmetric sequence.</text>
+
+  <rect x="1102" y="268" width="406" height="56" rx="12" fill="#193552" stroke="#72ddea"/>
+  <text x="1121" y="302" class="label">Prepare |ψ<tspan baseline-shift="sub" font-size="12">0</tspan>⟩ = |j⟩<tspan baseline-shift="sub" font-size="12">el</tspan> ⊗ ∏<tspan baseline-shift="sub" font-size="12">r</tspan>|χ<tspan baseline-shift="sub" font-size="12">0</tspan>⟩<tspan baseline-shift="sub" font-size="12">r</tspan></text>
+  <line x1="1305" y1="324" x2="1305" y2="348" stroke="#72ddea" stroke-width="3" marker-end="url(#arrowC)"/>
+
+  <rect x="1102" y="350" width="406" height="58" rx="12" fill="#4c3425" stroke="#edb66f"/>
+  <text x="1120" y="385" class="label">Kinetic half-step: QFT → P² phase → QFT†</text>
+  <line x1="1305" y1="408" x2="1305" y2="432" stroke="#edb66f" stroke-width="3" marker-end="url(#arrowA)"/>
+
+  <rect x="1102" y="434" width="406" height="105" rx="12" fill="#26335a" stroke="#b29beb"/>
+  <text x="1120" y="466" class="label">Potential fragments, forward order</text>
+  <text x="1120" y="494" class="small">Clifford diagonalize → QROM load → Q/Q·Q arithmetic</text>
+  <text x="1120" y="519" class="small">→ phase-gradient addition → uncompute → un-diagonalize</text>
+  <line x1="1305" y1="539" x2="1305" y2="562" stroke="#b29beb" stroke-width="3" marker-end="url(#arrowC)"/>
+
+  <rect x="1102" y="564" width="406" height="58" rx="12" fill="#26335a" stroke="#b29beb"/>
+  <text x="1120" y="599" class="label">Potential fragments, reverse order</text>
+  <line x1="1305" y1="622" x2="1305" y2="646" stroke="#edb66f" stroke-width="3" marker-end="url(#arrowA)"/>
+
+  <rect x="1102" y="648" width="195" height="42" rx="11" fill="#4c3425" stroke="#edb66f"/>
+  <text x="1120" y="675" class="label">Kinetic half-step</text>
+  <rect x="1313" y="648" width="195" height="42" rx="11" fill="#193552" stroke="#72ddea"/>
+  <text x="1330" y="675" class="label">Measure P(j,t)</text>
+  <line x1="1298" y1="669" x2="1309" y2="669" stroke="#72ddea" stroke-width="3" marker-end="url(#arrowC)"/>
+
+  <!-- Scope bar -->
+  <rect x="60" y="752" width="1480" height="104" rx="18" fill="#0b172d" stroke="#3b5478" stroke-width="1.5"/>
+  <text x="88" y="788" class="label">Executed toy scope</text>
+  <text x="88" y="821" class="body">2 electronic states · 1 mode · K = 4 · b = 5 · 23 simulated wires · dt = 0.4 a.u. · 10 steps · linear α = 1</text>
+  <rect x="1117" y="775" width="390" height="54" rx="12" fill="#462c2f" stroke="#e18b83"/>
+  <text x="1159" y="799" class="label">CPU lightning.qubit state-vector simulation</text>
+  <text x="1228" y="821" class="small">exact probabilities · no QPU</text>
+</svg>

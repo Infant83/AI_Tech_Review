@@ -1,0 +1,223 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sharing the work of molecular calculation: classical–quantum collaboration through CASH-QSE</title><meta name="description" content="An in-depth explanation of electron correlation, active spaces, classical references, quantum corrections and measurement costs.">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/"><meta property="og:type" content="article">
+<meta property="og:description" content="An in-depth explanation of electron correlation, active spaces, classical references, quantum corrections and measurement costs."><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/en/cash_qse_hero.webp"><meta name="twitter:card" content="summary_large_image"><meta name="author" content="김현중"><meta property="article:published_time" content="2026-09-10"><meta property="article:modified_time" content="2026-09-10"><style>
+:root{--paper:#fbfaf7;--ink:#17211d;--muted:#5f6b65;--line:#d8d5cb;--teal:#0f766e;--blue:#25456f}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans KR","Segoe UI",Arial,sans-serif;text-rendering:optimizeLegibility}a{color:var(--teal);text-underline-offset:3px}a:hover{color:var(--blue)}.topline{background:white;border-bottom:1px solid var(--line)}.topline-inner{max-width:1180px;margin:auto;padding:16px 24px;display:flex;justify-content:space-between;gap:20px;font-size:14px}.topline-actions{display:flex;flex-wrap:wrap;gap:18px}.brand{font-weight:700;letter-spacing:.03em}.hero-inner{max-width:1180px;margin:auto;padding:52px 24px 34px}.hero h1{max-width:950px;font-size:clamp(28px,4.3vw,48px);line-height:1.32;letter-spacing:-.045em;word-break:keep-all;margin:0}.content-grid{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,800px) minmax(180px,240px);gap:60px;padding:32px 24px 60px}.final-article{min-width:0;font-size:17px;line-height:1.95;word-break:keep-all;overflow-wrap:break-word}.final-article p{margin:0 0 24px}.final-article h2{font-size:26px;line-height:1.5;margin:62px 0 22px;letter-spacing:-.035em;padding-top:22px;border-top:1px solid var(--line)}.final-article h2:first-of-type{margin-top:45px}.final-article strong{font-weight:750}.final-article img{display:block;width:100%;height:auto}.final-article p:has(>img){margin:30px 0 10px}.final-article p:has(>em:only-child){font-size:14px;color:var(--muted);line-height:1.7}.final-article em{font-style:normal}.sidebar{align-self:start;position:sticky;top:25px;font-size:14px;line-height:1.75;color:var(--muted)}.sidebar h2{font-size:15px;color:var(--ink);margin:0 0 15px}.sidebar a{display:block;color:var(--muted);margin-bottom:12px;text-decoration:none}.sidebar a:hover{text-decoration:underline}.sidebar hr{border:0;border-top:1px solid var(--line);margin:25px 0}.table-wrap{width:100%;overflow:auto;margin:28px 0 18px;outline-offset:4px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.65;word-break:normal}th,td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}th{background:#eaf0ee;font-weight:700;white-space:normal}td:nth-child(n+3){font-variant-numeric:tabular-nums}tbody tr:nth-child(even){background:#f4f4ef}figure{margin:32px 0}figcaption{font-size:14px;color:var(--muted);line-height:1.65;margin-top:10px}.matrix-figure img{background:#fff;border:1px solid var(--line)}.math{overflow-x:auto;max-width:100%}.display-math{display:block;text-align:center;margin:25px 0;padding:10px 0;font-size:1rem;overflow-x:auto}.toy{border-top:3px solid var(--teal);border-bottom:1px solid var(--line);padding:24px;background:#f1f5f2;margin:28px 0}.toy h3{margin:0 0 8px;font-size:20px}.toy p{font-size:14px;line-height:1.65;margin-bottom:18px}.toy-controls{display:grid;grid-template-columns:1fr 1fr;gap:20px}.toy label{display:block;font-size:14px;font-weight:650}.toy input{display:block;width:100%;padding:9px 12px;margin:7px 0 0;border:1px solid #899b94;border-radius:3px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}.toy button{margin:18px 10px 18px 0;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--teal);background:white;color:var(--teal);border-radius:3px}.toy-results{display:grid;grid-template-columns:1fr 1fr;gap:15px}.toy-results div{padding-top:12px;border-top:1px solid #bbc8c1;font-size:14px}.toy-results output{display:block;font-size:24px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums}.weight-track{margin:18px 0 8px;background:#0f766e;height:18px;display:flex}.classical-weight{background:#25456f;width:96.42383454%}.quantum-weight{background:#0f766e;flex:1}.weight-legend{display:flex;justify-content:space-between;font-size:13px}.weight-legend span:first-child{color:var(--blue)}.weight-legend span:last-child{color:var(--teal)}.toy .error{color:#922f2f;margin:8px 0}.toy small{font-size:12px;color:var(--muted)}.final-article ol{padding-left:22px;font-size:14px;line-height:1.8}.final-article li{margin-bottom:14px}.publication-note{border-top:1px solid var(--line);margin-top:45px;padding-top:18px;color:var(--muted);font-size:13px;line-height:1.8}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #bc6414;outline-offset:3px}
+@media(max-width:1000px){.content-grid{grid-template-columns:1fr;gap:35px;max-width:848px}.sidebar{position:static;grid-row:1;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:15px}.sidebar nav{display:flex;flex-wrap:wrap;gap:4px 16px}.sidebar nav a{margin:0}.sidebar .side-extra{display:none}.hero-inner{max-width:848px}.final-article{font-size:16px}}
+@media(max-width:560px){.topline-inner{padding:14px 18px;display:block}.topline-actions{margin-top:10px;font-size:13px}.hero-inner{padding:34px 18px 24px}.content-grid{padding:22px 18px 50px}.final-article h2{font-size:22px;margin-top:42px}.final-article{line-height:1.9;word-break:normal}table{min-width:620px}.toy{padding:18px}.toy-controls,.toy-results{gap:12px}.toy-results output{font-size:21px}.matrix-figure{overflow-x:auto}.matrix-figure img{min-width:590px}.display-math{font-size:13px}.sidebar h2{margin-bottom:8px}}
+@media print{body{background:white}.topline,.sidebar,.toy-controls,.toy button{display:none}.content-grid{display:block;padding:0;max-width:none}.hero-inner{padding:0 0 20px}.final-article{font-size:11pt}.final-article h2{break-after:avoid;font-size:16pt}.table-wrap{overflow:visible}table{min-width:0!important}.toy,figure{break-inside:avoid}a{color:inherit}.display-math{overflow:visible}}
+</style>
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/en/">
+    <meta property="og:title" content="Sharing the work of molecular calculation: classical–quantum collaboration through CASH-QSE">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review"><div class="topline"><div class="topline-inner"><span class="brand">AI Tech Review Letters</span><div class="topline-actions"><a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a><span lang="en" aria-current="page">English</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-10_cash-qse-classical-quantum-chemistry/" hreflang="ko">한국어</a><a href="https://github.com/infant83/AI_Tech_Review/blob/main/2026-09-10_cash-qse-classical-quantum-chemistry/dist/en/review.md">Markdown</a></div></div></div><header class="hero"><div class="hero-inner"><h1>Sharing the work of molecular calculation: classical–quantum collaboration through CASH-QSE</h1></div></header><p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-10 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid"><article class="final-article"><p>Calculating molecular properties requires a description of electrons that respond to one another. As a bond stretches, competing electronic configurations can change their importance. Classical electronic-structure methods have developed sophisticated ways to handle this problem. Quantum algorithms offer another set of representations, with their own preparation and measurement costs.</p>
+<p>How should a calculation divide the work between a reliable classical description and additional quantum states? We begin with electron correlation and active spaces, explain how separately prepared states enter a small matrix, and use <strong>CASH-QSE</strong> to examine the resource tradeoffs. The discussion then considers what would be needed for molecular and OLED research.</p>
+<p><img alt="Separate sculptural layers representing components of a wavefunction" fetchpriority="high" height="1024" src="cash_qse_hero.webp" width="1536"/></p>
+<p><em>An editorial metaphor for combining wavefunction components. This is not a computed molecular orbital or electron-density plot.</em></p>
+<p><strong>Research status.</strong> Artur F. Izmaylov first submitted CASH-QSE on 8 September 2026. It is a preprint at this review's evidence cutoff of 10 September. The reported benchmarks use classical statevector calculations and circuit/sampling resource analysis; they do not execute on a quantum processing unit (QPU). <a href="https://arxiv.org/abs/2609.08170v1">Version 1</a></p>
+<h2 id="section-1">1. Why a stretching bond can require several electronic configurations</h2>
+<p>Electrons repel one another: the probability of finding one electron depends on the positions of the others. Hartree–Fock (HF) obtains orbitals in a mean field and describes the wavefunction with one Slater determinant. A determinant specifies occupied spin orbitals while enforcing the antisymmetry required when electrons are exchanged.</p>
+<p>A single closed-shell bonding configuration can become inadequate as atoms separate. Combining configurations with different bonding and antibonding occupations permits a more flexible description of the separated fragments. Multiconfigurational methods therefore optimize a linear combination of determinants. <a href="https://pyscf.org/user/mcscf.html">PySCF MCSCF documentation</a></p>
+<p>Full configuration interaction (<strong>FCI</strong>) considers every allowed configuration in a specified orbital space. The reference is exact within that space, whose dimension grows rapidly. Before additional symmetry reductions, six spin-up and six spin-down electrons in 12 spatial orbitals give <span class="math">\(\binom{12}{6}^{2}=853,776\)</span> determinants. Ten of each spin in 20 spatial orbitals give <span class="math">\(\binom{20}{10}^{2}=34,134,779,536\)</span>. These are independently calculated combinatorial examples, not CASH-QSE benchmark sizes.</p>
+<p>An <strong>active space</strong> concentrates the detailed treatment on selected electrons and orbitals. CAS(6,6) distributes six electrons among six spatial orbitals in all allowed ways. CASSCF optimizes both configuration coefficients and orbitals. External correlation remains to be recovered. Classical options include multireference perturbation theory such as CASPT2 and NEVPT2, and larger active-space treatments using selected CI or DMRG. Quantum subspace methods enter an established field with strong classical alternatives. <a href="https://pyscf.org/user/mcscf.html">MCSCF</a> · <a href="https://pyscf.org/user/mrpt.html">MRPT</a> · <a href="https://arxiv.org/abs/1912.08379">ASCI-SCF</a></p>
+<h2 id="section-2">2. Short circuits still need repeated measurements</h2>
+<p>The variational quantum eigensolver (<strong>VQE</strong>) prepares a parametrized state, estimates its energy, and lets a classical optimizer update the circuit parameters. ADAPT-VQE grows the circuit by choosing useful operators rather than fixing the entire ansatz in advance. <a href="https://arxiv.org/abs/1812.11173">ADAPT-VQE, Nature Communications 2019</a></p>
+<p>A single circuit execution does not return an exact energy. The mapped molecular Hamiltonian contains many Pauli terms; compatible terms can be grouped, and their expectations are estimated through repeated preparation and measurement. One such repetition is a <strong>shot</strong>. For independent samples with standard deviation <span class="math">\(\sigma\)</span>, the standard error of the mean is <span class="math">\(\sigma/\sqrt{M}\)</span>. Halving it requires four times as many samples.</p>
+<p>This measurement problem predates CASH-QSE. Gonthier and colleagues analyzed VQE resources for molecular combustion energies and found that measurement requirements remained a serious obstacle for their molecular set even with improved Hamiltonian decompositions. Their conclusion is specific to the investigated workloads and assumptions, rather than an impossibility result for quantum chemistry. <a href="https://arxiv.org/abs/2012.04001">Physical Review Research 2022</a></p>
+<h2 id="section-3">3. Combining classical and quantum states in a small matrix</h2>
+<p>Subspace approaches prepare several states and optimize their linear combination. Quantum subspace expansion (<strong>QSE</strong>) developed this idea for excited-state estimation and noise treatment. Classically boosted VQE later explicitly combined classically tractable states with quantum-prepared states, allowing known classical energies to be reused. <a href="https://arxiv.org/abs/1603.05681">QSE</a> · <a href="https://arxiv.org/abs/2106.04755">CB-VQE</a></p>
+<p>For a normalized classical reference <span class="math">\(|C\rangle\)</span> and correction <span class="math">\(|q\rangle\)</span>, a trial state is <span class="math">\(c_C|C\rangle+c_q|q\rangle\)</span>. Its energy depends on both diagonal energies and the coupling <span class="math">\(V=\langle C|H|q\rangle\)</span>. Adding the two diagonal energies alone would miss the mixing.</p>
+<figure class="matrix-figure"><img alt="Classical and quantum Hamiltonian blocks" height="400" loading="lazy" src="matrix.svg" width="760"/><figcaption>Reuse the classical block and combine it with measured correction and coupling entries.</figcaption></figure>
+<p>Orthogonality, <span class="math">\(\langle C|q\rangle=0\)</span>, does not imply that <span class="math">\(V\)</span> vanishes. Orthogonal states are distinct directions in Hilbert space; the Hamiltonian can connect them. The example below diagonalizes a two-state matrix and displays the lower energy and the correction's weight as the coupling changes.</p>
+<section aria-labelledby="toy-heading" class="toy" data-language="en" id="two-state-model"><h3 id="toy-heading">Mix two states</h3><p>Educational 2×2 model · not molecular data</p><div class="toy-controls"><label>Correction energy Δ (eV)<input id="delta" max="2" min="0.1" step="0.1" type="number" value="1"/></label><label>Coupling V (eV)<input id="coupling" max="0.5" min="0" step="0.05" type="number" value="0.2"/></label></div><button id="toy-reset" type="button">Reset</button><button id="toy-strong" type="button">Stronger coupling</button><div aria-live="polite" class="toy-results"><div>Lower eigenvalue E₋<output id="energy">−0.03852 eV</output></div><div>Correction weight<output id="weight">3.58%</output></div></div><div aria-hidden="true" class="weight-track"><span class="classical-weight" id="classical-bar"></span><span class="quantum-weight"></span></div><div class="weight-legend"><span>Classical component</span><span>Correction component</span></div><p>Sensitivity |∂E₋/∂V|: <output id="sensitivity">0.37139</output></p><p class="error" id="toy-error" role="status"></p><small>Input range: Δ = 0.1–2 eV, V = 0–0.5 eV. E꜀ = 0.</small></section>
+<p>The model sets <span class="math">\(E_C=0\)</span> and <span class="math">\(E_q=\Delta&gt;0\)</span>. It is an educational calculation, not a molecular simulation or a prediction of CASH-QSE shot savings. At the default <span class="math">\(\Delta=1\)</span> eV and <span class="math">\(V=0.2\)</span> eV, the lower eigenvalue is approximately −0.03852 eV and the correction weight is 3.58%. These defaults and the formula remain available without JavaScript.</p>
+<p><span class="display-math">\[E_- = \frac{\Delta-\sqrt{\Delta^2+4V^2}}{2},\qquad |c_q|^2 = \frac{1-\Delta/\sqrt{\Delta^2+4V^2}}{2}.\]</span></p>
+<p>An exactly evaluated classical diagonal element contributes no shot noise. To first order, the sensitivity of the lower eigenvalue to error in the correction's diagonal energy is <span class="math">\(|c_q|^2\)</span>. A small correction can therefore reduce this sensitivity. Actual sampling expense also depends on operator variances and transition measurements; the correction weight alone cannot determine the gain.</p>
+<h2 id="section-4">4. How occupation constraints remove overlap</h2>
+<p>Different circuits may prepare nearly identical states. General subspace calculations then need an overlap matrix <span class="math">\(S\)</span> and solve <span class="math">\(Hc=ESc\)</span>. For two normalized states with real overlap <span class="math">\(s\)</span>, the overlap eigenvalues are <span class="math">\(1+s\)</span> and <span class="math">\(1-s\)</span>. At <span class="math">\(s=0.99\)</span>, their ratio is 199. This elementary example illustrates why small overlap eigenvalues demand careful error handling. <a href="https://arxiv.org/abs/2106.04755">CB-VQE</a></p>
+<p>CASH-QSE constructs correction states orthogonal to the classical CASSCF reference and to each other through occupation structure. It avoids overlap measurements and uses an ordinary Hermitian eigenproblem. The classical block is evaluated classically, but preparing the reference or its components may still be necessary to measure classical–quantum couplings. <a href="https://arxiv.org/html/2609.08170v1#S2">CASH-QSE, Sections II–V</a></p>
+<p>Consider an illustrative reference space where orbital A must be doubly occupied and external orbital B must be empty. Classify configurations by the first condition they fail:</p>
+<div aria-label="Research comparison table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>Sector</th>
+<th>A occupation</th>
+<th>B occupation</th>
+<th>Assignment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classical space</td>
+<td>2</td>
+<td>0</td>
+<td>Passes both tests</td>
+</tr>
+<tr>
+<td>Correction 1</td>
+<td>0 or 1</td>
+<td>Allowed by remaining constraints</td>
+<td>Fails A first</td>
+</tr>
+<tr>
+<td>Correction 2</td>
+<td>2</td>
+<td>1 or 2</td>
+<td>Passes A, then fails B</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only configurations compatible with particle number and symmetry are admitted. Each belongs to one sector, so states supported on different sectors are orthogonal. Multiple states within one sector still require an orthogonal construction or a further subdivision. Merely preparing separate circuits does not establish orthogonality.</p>
+<p>This partition does not automatically identify inexpensive, useful states. Further subdivision can simplify each preparation while increasing the number of matrix elements. Noise can also violate the occupation conditions that guarantee ideal-state orthogonality. Those effects require hardware-level evaluation.</p>
+<h2 id="section-5">5. What the nitrogen and water numbers actually compare</h2>
+<p>Selected nitrogen results show how classical-reference choice changes the balance between circuit and measurement resources. Shot counts cover the <strong>converged final-energy estimate</strong>, using exact statevector variances and FCI-assisted state selection, at sampling uncertainty 1.6 mEₕ. They are not total optimization costs or measured device runtimes. <a href="https://arxiv.org/html/2609.08170v1#S8">Tables 6–7</a></p>
+<div aria-label="Research comparison table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>N₂ / STO–3G</th>
+<th>Reference</th>
+<th style="text-align: right;">CASH shots</th>
+<th style="text-align: right;">ADAPT shots</th>
+<th style="text-align: right;">ADAPT/CASH</th>
+<th style="text-align: right;">CASH largest complete circuit, CNOTs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.8 Å</td>
+<td>HF</td>
+<td style="text-align: right;">1.1×10⁶</td>
+<td style="text-align: right;">2.4×10⁶</td>
+<td style="text-align: right;">2.1</td>
+<td style="text-align: right;">342</td>
+</tr>
+<tr>
+<td>1.8 Å</td>
+<td>CAS(4,4)</td>
+<td style="text-align: right;">1.6×10⁵</td>
+<td style="text-align: right;">2.4×10⁶</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">333</td>
+</tr>
+<tr>
+<td>1.8 Å</td>
+<td>CAS(6,6)</td>
+<td style="text-align: right;">8.5×10²</td>
+<td style="text-align: right;">2.4×10⁶</td>
+<td style="text-align: right;">2,800</td>
+<td style="text-align: right;">328</td>
+</tr>
+<tr>
+<td>3.0 Å</td>
+<td>HF</td>
+<td style="text-align: right;">2.3×10⁶</td>
+<td style="text-align: right;">7.7×10⁵</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">338</td>
+</tr>
+<tr>
+<td>3.0 Å</td>
+<td>CAS(4,4)</td>
+<td style="text-align: right;">8.1×10⁵</td>
+<td style="text-align: right;">7.7×10⁵</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">328</td>
+</tr>
+<tr>
+<td>3.0 Å</td>
+<td>CAS(6,6)</td>
+<td style="text-align: right;">Classical stop</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Ratios retain the paper's rounding. Above one means fewer CASH shots. Complete measurement circuits include preparation, transition operations and measurement-basis changes, with all-to-all logical connectivity. Counts are not depth or measured hardware gate counts.</em></p>
+<p>At 1.8 Å the largest circuits change only modestly, while sampling costs change dramatically. At 3.0 Å the HF partition retains short circuits yet loses the shot comparison. The final row also matters operationally: if the classical reference already meets the target, the computation can stop there.</p>
+<p>The term chemical accuracy needs a precise scope. The FCI energy-error target of 1.6 mEₕ and the sampling standard uncertainty of 1.6 mEₕ are separate budgets, roughly on the familiar 1 kcal/mol scale. They do not constitute a combined error guarantee. Agreement with FCI in a restricted basis also does not guarantee agreement with experiment.</p>
+<p>The water extension illustrates discrete shot allocation. It uses a <strong>restricted 14-spatial-orbital cc-pVDZ window</strong>, with CAS(4,4), rather than the complete cc-pVDZ space. Requiring at least one shot for every measurement group raises the estimate. <a href="https://arxiv.org/html/2609.08170v1#A3">Tables 5 and 8</a></p>
+<div aria-label="Research comparison table" class="table-wrap" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th>H₂O O–H distance</th>
+<th style="text-align: right;">CASH continuous shots</th>
+<th style="text-align: right;">CASH with one-shot group floor</th>
+<th style="text-align: right;">ADAPT/CASH with the same floor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.96 Å</td>
+<td style="text-align: right;">2.1×10⁴</td>
+<td style="text-align: right;">5.18×10⁴</td>
+<td style="text-align: right;">560</td>
+</tr>
+<tr>
+<td>1.75 Å</td>
+<td style="text-align: right;">1.2×10⁴</td>
+<td style="text-align: right;">3.28×10⁴</td>
+<td style="text-align: right;">630</td>
+</tr>
+<tr>
+<td>3.0 Å</td>
+<td style="text-align: right;">5.1×10²</td>
+<td style="text-align: right;">9.41×10²</td>
+<td style="text-align: right;">4,400</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>Both methods receive the same floor. Variances are assumed known; pilot measurements are excluded. At 3.0 Å, the ADAPT shot estimate uses exact window FCI as a proxy, while the circuit count refers to a finite ADAPT state.</em></p>
+<p><a href="https://github.com/infant83/AI_Tech_Review/blob/main/2026-09-10_cash-qse-classical-quantum-chemistry/dist/benchmarks.csv">Download table data as CSV</a></p>
+<h2 id="section-6">6. The costs still outside the comparison</h2>
+<p>Known occupation and symmetry constraints can identify zero matrix elements and nonconnecting operator terms before measurement. Changes to an estimator that preserve its mean can also change how grouped terms fluctuate together. Such opportunities depend on the states and grouping; they are not universal savings rules.</p>
+<p>Three additional costs must enter an application assessment: selecting correction states, learning useful measurement allocations, and executing circuits on a device. The reported ratios exclude pilot measurements, repeated state and orbital optimization, device noise and hardware routing. <a href="https://arxiv.org/html/2609.08170v1#S7">Computational details</a></p>
+<p>FCI assistance is a substantial qualification. Showing that an economical representation exists when detailed information about the answer is available is different from finding it efficiently for an unknown large molecule. The paper provides useful targets and counterexamples for that latter research problem. Its ADAPT comparator also has a specific operator pool, orbital choice and synthesis convention. It does not establish an optimum over all VQE implementations or superiority to classical DMRG, selected CI or NEVPT2.</p>
+<h2 id="section-7">7. Connecting this approach to DFT and OLED research</h2>
+<p>The classical block should not be confused with a DFT total energy. Kohn–Sham DFT evaluates an energy functional of the density with an exchange–correlation approximation. Inserting that scalar directly in place of <span class="math">\(\langle C|H|C\rangle\)</span> does not preserve the same wavefunction variational problem. Using DFT orbitals as an initial guess is a separate, valid concept. <a href="https://pyscf.org/user/dft.html">DFT documentation</a> · <a href="https://pyscf.org/user/mcscf.html">CASSCF initial orbitals</a></p>
+<p>An OLED application is a <strong>research proposal</strong>, not a result of these benchmarks. One could first identify orbitals involved in excitation and charge transfer, build tractable multireference reference problems, and ask whether the partition treats ground and excited states evenly. Small errors in two separate energies can still produce an inaccurate energy difference.</p>
+<p>Emission studies would additionally need transition properties, spin–orbit coupling, vibrations, structural relaxation and environmental effects as appropriate to the target property. The water and nitrogen ground-state tests validate none of these OLED observables. Prior QSE work supplies an excited-state direction to investigate, with material-specific accuracy and cost still to be established. <a href="https://arxiv.org/abs/1603.05681">Excited-state QSE</a></p>
+<h2 id="section-8">8. Finding useful partitions without already knowing the answer</h2>
+<p>The first practical research question is whether accessible chemical information can replace FCI-guided selection. Natural occupations, localized bonds, selected-CI approximations or tensor-network information are possible inputs. Each brings classical expense and a strong baseline: the preprocessing method might already solve the intended problem adequately.</p>
+<p>A second task is to learn variances from limited pilot data and allocate later measurements robustly. Initial budgets, stopping rules and uncertainty estimates should be reported. Large numbers of short circuits also make device invocation and reset costs relevant. Finally, hardware tests need to quantify violations of occupation constraints and bias in transition estimates, including the expense of any symmetry checks or error mitigation.</p>
+<p>CASH-QSE is a useful case study in preserving classical wavefunction information while designing the additional representation and its measurements together. Chemistry determines which configurations matter, linear algebra determines how the components combine, and statistics determines how accurately their matrix elements can be estimated. Practical value will depend on whether that combination remains favorable for unknown molecules after all preparation and learning costs are included.</p>
+<h2 id="section-9">References and further reading</h2>
+<ol>
+<li>Artur F. Izmaylov. <em>Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy</em>. arXiv:2609.08170v1, 8 September 2026. Preprint. <a href="https://arxiv.org/abs/2609.08170v1">Version record</a> · <a href="https://arxiv.org/html/2609.08170v1">Full text</a></li>
+<li>PySCF Developers. <em>Multi-configuration self-consistent field (MCSCF)</em>. Official documentation, accessed 10 September 2026. <a href="https://pyscf.org/user/mcscf.html">Documentation</a></li>
+<li>Harper R. Grimsley et al. <em>An adaptive variational algorithm for exact molecular simulations on a quantum computer</em>. Nature Communications 10, 3007 (2019); first preprint 28 December 2018. <a href="https://arxiv.org/abs/1812.11173">Open version</a> · <a href="https://doi.org/10.1038/s41467-019-10988-2">DOI</a></li>
+<li>Jérôme F. Gonthier et al. <em>Measurements as a roadblock to near-term practical quantum advantage in chemistry: Resource analysis</em>. Physical Review Research 4, 033154 (2022); first preprint 7 December 2020. <a href="https://arxiv.org/abs/2012.04001">Open version</a> · <a href="https://doi.org/10.1103/PhysRevResearch.4.033154">DOI</a></li>
+<li>Jarrod R. McClean et al. <em>Hybrid quantum-classical hierarchy for mitigation of decoherence and determination of excited states</em>. Physical Review A 95, 042308 (2017); first preprint 17 March 2016. <a href="https://arxiv.org/abs/1603.05681">Open version</a> · <a href="https://doi.org/10.1103/PhysRevA.95.042308">DOI</a></li>
+<li>Maxwell D. Radin and Peter Johnson. <em>Classically-Boosted Variational Quantum Eigensolver</em>. arXiv:2106.04755, first submitted 9 June 2021. The cited record is a preprint. <a href="https://arxiv.org/abs/2106.04755">Paper</a></li>
+<li>Daniel S. Levine et al. <em>CASSCF with Extremely Large Active Spaces using the Adaptive Sampling Configuration Interaction Method</em>. arXiv:1912.08379, first submitted 18 December 2019. <a href="https://arxiv.org/abs/1912.08379">Paper</a></li>
+<li>PySCF Developers. <em>Multi-reference perturbation theory</em>; <em>Density functional theory</em>. Accessed 10 September 2026. <a href="https://pyscf.org/user/mrpt.html">MRPT</a> · <a href="https://pyscf.org/user/dft.html">DFT</a></li>
+</ol>
+<p><em>Selected numerical data are reformatted from the paper. The two-state model and determinant counts are independent educational calculations. The molecular benchmarks have not been independently reproduced for this review.</em></p><div class="publication-note">The matrix diagram and two-state model are educational constructions for this article. The opening illustration was made with OpenAI image generation.</div></article><aside class="sidebar"><h2>In this article</h2><nav aria-label="Contents"><a href="#section-1">1. Why a stretching bond can require several electronic configurations</a><a href="#section-2">2. Short circuits still need repeated measurements</a><a href="#section-3">3. Combining classical and quantum states in a small matrix</a><a href="#section-4">4. How occupation constraints remove overlap</a><a href="#section-5">5. What the nitrogen and water numbers actually compare</a><a href="#section-6">6. The costs still outside the comparison</a><a href="#section-7">7. Connecting this approach to DFT and OLED research</a><a href="#section-8">8. Finding useful partitions without already knowing the answer</a><a href="#section-9">References and further reading</a></nav><div class="side-extra"><hr><a href="https://arxiv.org/abs/2609.08170v1">CASH-QSE · arXiv v1</a><a href="https://github.com/infant83/AI_Tech_Review/blob/main/2026-09-10_cash-qse-classical-quantum-chemistry/dist/benchmarks.csv">Table data CSV</a><p>Preprint · classical numerical and resource analysis</p></div></aside>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source research, bilingual writing, mathematical illustration, copyediting, implementation and publication verification</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>CASH-QSE v1 full text, selected tables and appendices; primary predecessor papers and PySCF documentation; metric definitions, sampling assumptions, computational platform, numerical counterexamples and classical baselines; bilingual pages, source data, illustrative two-state eigenproblem, links and publication metadata</dd></div>
+          <div><dt>Human review record</dt><dd>topic and public publication requested; no separate line-by-line human review in this task</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-10</dd></div>
+        </dl>
+        <p class="disclosure-note">Molecular benchmarks were not independently reproduced. The interactive example is an educational two-state model; OLED applications and follow-up directions are editorial proposals.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main><script type="module" src="two_state.js"></script>
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body></html>

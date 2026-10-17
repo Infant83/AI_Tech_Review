@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design</title>
+  <meta name="description" content="Research published 4-10 September 2026 | conjugated-polymer dephasing, variable-size 3D generation, nonadiabatic electronic structure, and QPU sampling cost">
+
+  <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/">
+  <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="Research published 4-10 September 2026 | conjugated-polymer dephasing, variable-size 3D generation, nonadiabatic electronic structure, and QPU sampling cost">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/excitonic_reliability_hero-web.webp">
+  <meta property="og:image:alt" content="Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design">
+  <meta property="article:published_time" content="2026-09-11">
+  <meta property="article:modified_time" content="2026-09-11">
+  <meta name="author" content="Hyun-Jung Kim">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design">
+  <meta name="twitter:description" content="Research published 4-10 September 2026 | conjugated-polymer dephasing, variable-size 3D generation, nonadiabatic electronic structure, and QPU sampling cost">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/excitonic_reliability_hero-web.webp">
+  <meta name="twitter:image:alt" content="Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design">
+  <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --paper-soft: #f2f0ea;
+      --ink: #17211d;
+      --muted: #5f6b65;
+      --line: #d8d5cb;
+      --teal: #0f766e;
+      --blue: #25456f;
+      --amber: #a35a16;
+      --rose: #8b3a3a;
+      --green-soft: #e9f3ef;
+      --blue-soft: #e9eef5;
+      --amber-soft: #f6eee2;
+      --rose-soft: #f5eaea;
+      --wrap: 1180px;
+      --article: 780px;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .topline {
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topline-inner,
+    .hero-inner,
+    .content-grid {
+      width: min(var(--wrap), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topline-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 14px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .topline a {
+      color: var(--blue);
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(15, 118, 110, 0.10), transparent 46%),
+        linear-gradient(180deg, #ffffff 0%, var(--paper) 100%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 40px;
+      align-items: end;
+      padding: 46px 0 34px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      color: var(--ink);
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+      font-weight: 820;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .dek {
+      margin: 22px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.75;
+      word-break: keep-all;
+    }
+
+    .hero-signals {
+      padding: 18px 20px;
+      border-top: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.82);
+    }
+
+    .hero-signals h2,
+    .side-section h2 {
+      margin: 0 0 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero-signals ul,
+    .side-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) minmax(260px, 310px);
+      gap: 52px;
+      align-items: start;
+      padding: 38px 0 56px;
+    }
+
+    .final-article {
+      min-width: 0;
+      overflow-wrap: break-word;
+    }
+
+    .final-article > :first-child {
+      margin-top: 0;
+    }
+
+    .final-article h2 {
+      margin: 46px 0 16px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 1.72rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+      word-break: keep-all;
+    }
+
+    .final-article h3 {
+      margin: 30px 0 12px;
+      color: var(--blue);
+      font-size: 1.18rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .final-article p,
+    .final-article li {
+      color: var(--ink);
+      font-size: 1.02rem;
+      line-height: 1.86;
+    }
+
+    .final-article p {
+      margin: 0 0 18px;
+    }
+
+    .final-article ul,
+    .final-article ol {
+      margin: 0 0 22px;
+      padding-left: 24px;
+    }
+
+    .final-article li + li {
+      margin-top: 8px;
+    }
+
+    .final-article blockquote {
+      margin: 28px 0;
+      padding: 4px 0 4px 22px;
+      border-left: 4px solid var(--amber);
+      color: var(--ink);
+      font-size: 1.12rem;
+    }
+
+    .final-article blockquote p {
+      color: var(--ink);
+      font-size: 1.12rem;
+      line-height: 1.75;
+    }
+
+    .final-article code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #ebe7de;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    .final-article pre {
+      margin: 22px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f0ede6;
+    }
+
+    .final-article pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .final-article img,
+    .final-article svg,
+    .final-article video,
+    .final-article canvas,
+    .final-article iframe {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .article-hero-figure {
+      margin: 0 0 34px;
+    }
+
+    .article-hero-figure img {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
+    }
+
+    .article-hero-figure figcaption {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      word-break: keep-all;
+    }
+
+    .final-article p:has(> img) {
+      margin: 30px 0;
+    }
+
+    .final-article table {
+      display: block;
+      width: 100%;
+      margin: 24px 0;
+      overflow-x: auto;
+      border-collapse: collapse;
+      font-size: 0.96rem;
+    }
+
+    .final-article th,
+    .final-article td {
+      min-width: 140px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.58;
+    }
+
+    .final-article th {
+      background: var(--paper-soft);
+      color: var(--blue);
+      font-weight: 760;
+    }
+
+    .final-article .footnote-ref {
+      font-size: 0.78em;
+      line-height: 0;
+    }
+
+    .final-article .footnote,
+    .final-article .footnotes {
+      margin: 44px 0 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .final-article .footnote::before,
+    .final-article .footnotes::before {
+      content: "Notes and terminology";
+      display: block;
+      margin-bottom: 12px;
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 760;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .final-article .footnote ol,
+    .final-article .footnotes ol {
+      margin-bottom: 0;
+      padding-left: 22px;
+    }
+
+    .final-article .footnote li,
+    .final-article .footnote p,
+    .final-article .footnotes li,
+    .final-article .footnotes p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.72;
+    }
+
+    .callout {
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+      background: var(--green-soft);
+    }
+
+    .callout-label {
+      margin: 0 0 8px !important;
+      color: var(--teal) !important;
+      font-size: 0.84rem !important;
+      font-weight: 780;
+      line-height: 1.3 !important;
+      text-transform: uppercase;
+    }
+
+    .callout-think,
+    .callout-thinking {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .callout-think .callout-label,
+    .callout-thinking .callout-label {
+      color: var(--amber) !important;
+    }
+
+    .callout-evidence {
+      border-left-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .callout-evidence .callout-label {
+      color: var(--blue) !important;
+    }
+
+    .callout-operator {
+      border-left-color: var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .callout-operator .callout-label {
+      color: var(--rose) !important;
+    }
+
+    .figure-panel,
+    .data-panel {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      overflow-x: auto;
+    }
+
+    .figure-panel figcaption,
+    .data-panel figcaption {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .figure-panel img[src$=".svg"],
+      .data-panel img[src$=".svg"] {
+        width: 680px;
+        max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"] {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .story-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .story-flow > * {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-soft);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .side-section {
+      padding: 0 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toc-panel a,
+    .link-panel a {
+      color: var(--muted);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .toc-panel a:hover,
+    .link-panel a:hover {
+      color: var(--teal);
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 42px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1120px) {
+      .hero-inner,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topline-inner,
+      .hero-inner,
+      .content-grid {
+        width: min(var(--wrap), calc(100% - 24px));
+      }
+
+      .topline-inner {
+        display: grid;
+      }
+
+      .hero-inner {
+        padding: 34px 0 28px;
+      }
+
+      .final-article h2 {
+        font-size: 1.42rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .hero {
+        background: #ffffff;
+      }
+
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/">
+    <meta property="og:title" content="Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
+<body>
+  <div class="topline">
+    <div class="topline-inner">
+      <span>AI Tech Review Letters: Week 37 (2026-09-11)</span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
+        <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
+        <span class="private-source-omitted">private working file omitted</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <section>
+        <p class="eyebrow">AI Tech Review Letters</p>
+        <h1>Collective Excitons and Error Budgets Define Reliability in Photoactive Molecular Inverse Design</h1>
+        <p class="dek">Research published 4-10 September 2026 | conjugated-polymer dephasing, variable-size 3D generation, nonadiabatic electronic structure, and QPU sampling cost</p>
+      </section>
+
+    </div>
+  </header>
+
+  <p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-09-10 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="content-grid">
+    <article class="final-article">
+      <p>No paper posted from 4 through 10 September 2026 directly designed a TADF emitter or PhOLED host. The useful evidence instead locates the failure boundaries of an OLED inverse-design workflow. Accurate single-molecule energies and oscillator strengths do not by themselves capture collective excitons in condensed phases, nonadiabatic behavior near state crossings, the joint generation of molecular size and three-dimensional structure, or failures outside a model&rsquo;s benchmark distribution.</p>
+<p>The week&rsquo;s central result is an experimental comparison of five conjugated polymers. Their absolute homogeneous linewidths span roughly 20-90 meV, yet all show weak temperature dependence over the measured ranges. The absolute linewidth also depends on whether coherence or population is detected. The other seven papers extend that lesson into computation: reliability must be built through explicit representations, falsification tests, escalation to higher-level electronic structure, and a transparent account of quantum-measurement cost.</p>
+<p><img alt="Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer" src="excitonic_reliability_hero-web.webp" /></p>
+<p><em>Figure 1. Conceptual illustration for this review. The central aggregate represents collective excitons and dephasing; the surrounding elements represent variable-size generation, state crossings, and quantum sampling cost. The generated molecules, potentials, and quantum motifs are not exact structures, measured morphology, quantitative surfaces, or executable circuits.</em></p>
+<aside class="callout callout-highlight">
+<p class="callout-label">Assessment</p>
+<p>Reliability in photoactive molecular inverse design is set by its validation hierarchy, not simply by the number of generated candidates. Aggregate photophysics, out-of-distribution failure discovery, and selective high-level electronic-structure checks must sit above molecular DFT/ML predictions. The actual-QPU study uses an 8-qubit water PES and shows useful error reduction, but its tight setting averages about 16.8 million shots per merged geometry; it is not evidence that OLED-scale electronic-structure VQE is ready.</p>
+</aside>
+<p>The layout-verified technical brief is available as a <a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a>.</p>
+<h2 id="ranked-shortlist">Ranked shortlist</h2>
+<ol>
+<li><strong>Collective excitonic structure governs weak thermal optical dephasing</strong> - the only direct condensed-phase photophysics experiment in the set.</li>
+<li><strong>EF-TALFM</strong> - lets a fixed-dimensional latent determine molecular size and validates HOMO-LUMO-gap hits with DFT.</li>
+<li><strong>MLIP Detective</strong> - searches for physically falsifiable failures beyond benchmark averages.</li>
+<li><strong>DMRG-QD-NEVPT2 analytic derivatives</strong> - evaluates gradients and interstate couplings through a crossing on an 8 GB consumer GPU.</li>
+<li><strong>Multipole splats</strong> - reframes optimized and inverted Kohn-Sham potentials as stable Hamiltonian-learning problems.</li>
+<li><strong>OOD differentiable inverse design</strong> - combines a dynamics surrogate with physical refinement beyond the training-property range.</li>
+<li><strong>QESEM water PES</strong> - reduces hardware bias on an IBM QPU while exposing a steep sampling cost.</li>
+<li><strong>CASH-QSE</strong> - avoids remeasuring a classical CASSCF contribution, but its reported resource gains are idealized rather than hardware results.</li>
+</ol>
+<p><img alt="Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary" src="evidence_map.svg" /></p>
+<p><em>Figure 2. Reviewer-constructed qualitative evidence map. Placement reflects OLED-workflow proximity and what each paper actually executed; it is not a performance ranking. All eight selected items are preprints.</em></p>
+<h2 id="1-no-direct-oled-tadf-or-pholed-paper-met-the-threshold">1. No direct OLED, TADF, or PhOLED paper met the threshold</h2>
+<p>The search found no new primary record that directly designed or validated a TADF emitter, PhOLED host, host-dopant/exciplex system, or OLED device. The eight items below concern organic-semiconductor photophysics or enabling computational methods. Papers covered in the 21 August, 28 August, and 4 September briefs are not repeated.</p>
+<h2 id="2-weak-thermal-optical-dephasing-across-five-conjugated-polymers">2. Weak thermal optical dephasing across five conjugated polymers</h2>
+<p>Henry J. Kantrow, Elizabeth Gutiérrez-Meza, Eric R. Bittner, Hao Li, and Carlos Silva-Acuña posted <a href="https://arxiv.org/abs/2609.06742"><em>Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers</em></a> on 6 September 2026.</p>
+<h3 id="source-reported-result">Source-reported result</h3>
+<p>The study compares P3HT, P3HHT, PBTTT, PCE11, and N2200 using coherence-detected COLBERT and population-detected two-dimensional photoluminescence spectroscopy. The materials differ in backbone structure, donor-acceptor character, side chains, and solid-state organization. Homogeneous linewidths span about 20-90 meV; N2200 reaches about 20 meV in COLBERT. Every material nevertheless shows weak temperature scaling over its measured range. For PBTTT, 2DPL gives a systematically larger linewidth than COLBERT, while both preserve weak thermal scaling.</p>
+<h3 id="limitation-and-workflow-translation">Limitation and workflow translation</h3>
+<p>The paper does not assign a microscopic cause to the linewidth differences. Quantitative treatment of exciton-vibration coupling and relaxation pathways remains necessary, and the preprint&rsquo;s data-repository URL is still a placeholder. It studies polymers rather than OLED emitters or devices.</p>
+<p>An OLED pipeline should therefore place a dimer/aggregate exciton model and observable-specific dephasing test above isolated-molecule S1/T1 and oscillator-strength predictions. Linewidth should be stored with detection mode, temperature, and morphology provenance rather than treated as a molecular constant.</p>
+<h2 id="3-variable-size-3d-generation-from-a-fixed-dimensional-latent">3. Variable-size 3D generation from a fixed-dimensional latent</h2>
+<p>Weichi Yao, Cameron Gruich, Bryan R. Goldsmith, and Yixin Wang posted <a href="https://arxiv.org/abs/2609.08333"><em>Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules</em></a> on 8 September.</p>
+<h3 id="source-reported-result_1">Source-reported result</h3>
+<p>EF-TALFM samples a fixed-size molecular latent with flow matching. An autoregressive Transformer then generates atom types, coordinates, chemical states, and molecular size. Canonical atom ordering and rigid-pose alignment permit a non-equivariant Transformer to reconstruct the 3D graph. On PCQM4Mv2, 89.4% of samples are simultaneously unique, training-set novel, sanitizable, and PoseBusters-clean, compared with 75.6% for UAE-3D and 69.8% for FlowMol.</p>
+<p>The conditional benchmark uses ten HOMO-LUMO-gap targets from 4.1 to 7.8 eV and 10,000 samples per target. Internal ranking approximately doubles the density of DFT values within 0.1 eV of target while retaining 97% novelty among unique verified hits. The reported latent dimension is 32; total training time is 882 minutes versus 1,644 minutes for UAE-3D.</p>
+<h3 id="limitation-and-workflow-translation_1">Limitation and workflow translation</h3>
+<p>A PCQM4Mv2 HOMO-LUMO gap is not an OLED S1, T1, ΔEST, SOC, or condensed-phase performance target. Stability of canonical ordering for larger, nonplanar donor-acceptor molecules, route feasibility, and scaffold-OOD calibration remain untested.</p>
+<p>For OLED work, preserve the ability to generate molecular size but re-evaluate shortlisted candidates under one conformer and TDDFT/TDA protocol. Rank scaffold-held-out target calibration and plausible synthesis routes above raw novelty.</p>
+<h2 id="4-mlip-detective-searches-for-failures-hidden-by-benchmark-averages">4. MLIP Detective searches for failures hidden by benchmark averages</h2>
+<p>Ryuhei Okuno, Nontawat Charoenphakdee, Kaoru Hisama, and Yuta Tsuboi posted <a href="https://arxiv.org/abs/2609.08399"><em>MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials</em></a> on 8 September.</p>
+<h3 id="source-reported-result_2">Source-reported result</h3>
+<p>A Detective Agent proposes falsifiable physical hypotheses. Probe Agents screen them with inexpensive simulations, physical constraints, and committee disagreement before expensive human and DFT verification. For MACE-MPA-0, 27 of 40 O- or F-containing combinations in a mixed PBE/PBE+U region predict the relaxed adsorbate-surface system above separated fragments; none of 72 combinations outside that region does.</p>
+<p>CO/Cu(111) matches a benchmark adsorption energy within 0.04 eV of experiment, yet its desorption path is defective. MACE-MPA-0 produces a 0.208 eV barrier above the vacuum asymptote, whereas plane-wave PBE on the same 25 images rises only 0.022 eV. A correct equilibrium score therefore coexists with a qualitatively wrong path.</p>
+<h3 id="limitation-and-workflow-translation_2">Limitation and workflow translation</h3>
+<p>The demonstrations cover surface adsorption and a small number of failure families. LLM pretraining exposure cannot be excluded; the human-authored inspection specification bounds the search; final confirmation still consumes expert and DFT effort.</p>
+<p>For OLED models, preregister failures such as correct ΔEST with incorrect state ordering, a smooth minimum with a discontinuous torsion scan, or unphysical charge transfer at large host-dopant separation. Escalate only the strongest candidates to high-level calculations.</p>
+<h2 id="5-nonadiabatic-derivatives-through-a-crossing-on-an-8-gb-gpu">5. Nonadiabatic derivatives through a crossing on an 8 GB GPU</h2>
+<p>Rubén Darío Guerrero posted <a href="https://arxiv.org/abs/2609.09990"><em>Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU</em></a> on 9 September.</p>
+<h3 id="source-reported-result_3">Source-reported result</h3>
+<p>DMRG supplies active-space static correlation; quasi-degenerate strongly contracted NEVPT2 adds dynamic correlation. Gradients and interstate nonadiabatic coupling matrix elements are evaluated as a reverse-mode transpose of a contraction graph. The full stack runs on an NVIDIA RTX 4060 with 8 GB. At twisted ethene, the method produces smooth adiabats and a nonzero, 1/ΔE-divergent coupling through the crossing, where adiabatic linear-response TDDFT returns zero.</p>
+<p>The DMRG reference agrees with FCI in the active space to 10^-15, and the single-precision leg changes energies by less than 10^-6 eV. A dense CAS(10,10) four-RDM route would require 12.6 GB; fused contractions use 7.1 GB and agree with the dense result at 8.9×10^-16. An ethene aug-cc-pVTZ Cholesky build falls from not finishing within 40 minutes to about 3 minutes.</p>
+<h3 id="limitation-and-workflow-translation_3">Limitation and workflow translation</h3>
+<p>This is a single-author preprint centered on ethene. Behavior for TADF multistate manifolds, triplets, SOC, host environments, larger donor-acceptor chromophores, and diffuse functions is not established. Use it as an escalation layer for the few candidates with severe CT/LE mixing or crossings, not as a production screen.</p>
+<h2 id="6-multipole-splats-stabilize-optimized-and-inverted-kohn-sham-potentials">6. Multipole splats stabilize optimized and inverted Kohn-Sham potentials</h2>
+<p>Matija Medvidović, Angel Rubio, and Juan Carrasquilla posted <a href="https://arxiv.org/abs/2609.09280"><em>Multipole splats for optimized and inverted effective potentials</em></a> on 8 September.</p>
+<p>Multipole splats impose the correct asymptotic decay on local trial potentials. The authors cast optimized effective potential and inverted Kohn-Sham calculations as variational and supervised Hamiltonian learning. They separate spatial fingerprints of self-interaction, delocalization, and static-correlation errors; recover Rydberg series without an empirical asymptotic correction; and compute exact-exchange source densities for benzene and naphthalene at roughly the 70-electron scale.</p>
+<p>This is not an excited-state OLED benchmark. Its practical value is representational: for long-range CT and diffuse excitations, store potential- and density-based diagnostics alongside scalar orbital energies. Basis sensitivity and dependence on the underlying hybrid approximation remain part of the validation ledger.</p>
+<h2 id="7-out-of-distribution-inverse-design-with-a-dynamics-surrogate">7. Out-of-distribution inverse design with a dynamics surrogate</h2>
+<p>Sergey A. Shteingolts, Salman N. Salman, Ron Levie, and Dan Mendels posted <a href="https://arxiv.org/abs/2609.06655"><em>Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics</em></a> on 6 September.</p>
+<p>A graph-neural-network molecular-dynamics simulator is coupled to a short dynamical initialization and physics-based refinement. Although trained only on non-auxetic networks with Poisson ratios from 0.1 to 0.4, it designs values as low as -0.3. Training systems contain 150-200 nodes, while tests extend to 5,000 nodes. A comparable static structure-to-property predictor fails in the extrapolative design regime. Constraints keep bonds above 30% of original length and adjacent angles above 20 degrees.</p>
+<p>These are disordered elastic networks, not molecules. The defensible OLED translation is methodological: optimize through a differentiable trajectory with explicit geometric constraints, then rerun the original electronic-structure oracle. None of the reported mechanical performance transfers quantitatively to chemical graphs.</p>
+<h2 id="8-actual-qpu-execution-exposes-the-cost-of-error-mitigation">8. Actual QPU execution exposes the cost of error mitigation</h2>
+<p>Renato Olarte Hernandez and seven coauthors posted <a href="https://arxiv.org/abs/2609.07284"><em>Implementing QESEM&rsquo;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study</em></a> on 7 September.</p>
+<h3 id="actual-qpu-execution">Actual QPU execution</h3>
+<p>The experiment uses an 8-qubit register on IBM Aachen, a 156-qubit Heron r3 processor. It scans eleven symmetric-stretch geometries of H2O in a (4,4) active space with STO-3G and a one-layer perfect-pairing tiled unitary product state. Ansatz and orbital parameters are optimized classically at statevector level; the QPU measures energies rather than performing iterative on-device VQE optimization.</p>
+<p>Raw energies are typically about 500 mHa above the reference. QESEM brings loose 0.1 Ha settings within about 100 mHa; tight 0.01 Ha settings put all but one individual result within 30 mHa, with a 34 mHa maximum, while merged results lie within 20 mHa. One of eleven merged points is directly within chemical accuracy; with a ±5 mHa uncertainty band, five overlap that range.</p>
+<p>The merged average shot count is 3,135,921 at the loose setting and 16,762,896 at the tight setting. Tight runs take roughly 0.5-2.5 hours of QPU time per geometry. This is evidence that characterization-based mitigation can reduce bias for an 8-qubit small-basis water PES. It is not OLED-scale VQE or quantum advantage.</p>
+<h2 id="9-cash-qse-avoids-remeasuring-a-classically-known-reference">9. CASH-QSE avoids remeasuring a classically known reference</h2>
+<p>Artur F. Izmaylov posted <a href="https://arxiv.org/abs/2609.08170"><em>Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy</em></a> on 8 September.</p>
+<p>CASH-QSE retains the CASSCF reference classically and constructs occupation-structured quantum components exactly orthogonal to the reference and one another. It avoids overlap measurements and solves an ordinary Hermitian eigenproblem. Tests cover H2O and N2 bond stretching in STO-3G plus a restricted cc-pVDZ H2O space.</p>
+<p>For H2O/STO-3G at equilibrium, the idealized final-energy estimate is 5.6×10^3 shots versus 2.9×10^6 for ADAPT-VQE, a factor of 520. At 3.0 Å it is 3.2×10^2 versus 1.2×10^5, about 370-fold. The largest complete measurement circuits use a few hundred all-to-all logical CNOTs.</p>
+<p>Component selection is guided by FCI information, and the figures are idealized sampling estimates, not noisy QPU runs. They omit physical-qubit routing and error-mitigation overhead. OLED translation must begin by testing whether a tractable classical active-space reference retains the relevant CT/LE and spin character.</p>
+<h2 id="10-practical-experiment-for-the-coming-week">10. Practical experiment for the coming week</h2>
+<p><img alt="Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification" src="proposed_workflow.svg" /></p>
+<p><em>Figure 3. Reviewer-proposed workflow synthesized from this week&rsquo;s literature. No selected paper executes this OLED pipeline end to end.</em></p>
+<p>Choose a 12-24-member donor-acceptor or host family and construct conformers plus selected dimers. Allow an EF-TALFM-like generator to vary molecular size, but retain only candidates passing reaction-template and commercial-building-block gates. Under one TDDFT/TDA protocol, compute S1, T1, higher triplets, oscillator strength, and NTO-based CT/LE descriptors; add excitonic coupling and host perturbation descriptors for dimers.</p>
+<p>Evaluate preregistered failure hypotheses rather than average MAE alone: state-order swaps, discontinuous torsion scans, unphysical long-range charge transfer, and inflated oscillator strengths under scaffold-held-out, torsion-held-out, and dimer-separation tests. Escalate only 5-10 cases to a multireference or larger-basis calculation. Keep QPU work as a separate resource experiment reporting logical circuits, shots, QPU time, and matched classical baselines.</p>
+<h2 id="11-coverage-gaps">11. Coverage gaps</h2>
+<p>No credible new item in the seven-day window directly addressed:</p>
+<ul>
+<li>molecular or device validation of a TADF emitter, PhOLED host, or host-dopant/exciplex system;</li>
+<li>OLED degradation, stability, or operational lifetime;</li>
+<li>SELFIES-specific constraints, CRBM, or Boltzmann-machine molecular sampling;</li>
+<li>chemistry-relevant D-Wave/QUBO or QAOA with a matched classical budget;</li>
+<li>VQE resource estimates or quantum advantage for an OLED active space.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The week&rsquo;s literature separates photoactive molecular design across three scales. Electronic states and crossings must be computed reliably within a molecule; collective excitons and observable-dependent dephasing enter between molecules; and the design loop must actively search for failures outside benchmark distributions. EF-TALFM expands generative freedom, but electronic-structure, aggregate, and synthesis validation determine whether its candidates become OLED materials.</p>
+<p>The quantum evidence is equally bounded. QESEM reduces actual hardware error, but its tight setting averages about 16.8 million shots per geometry. CASH-QSE reports much lower idealized sampling cost with FCI-guided component selection, not a hardware demonstration. The supported conclusion is not quantum advantage; it is the need for a complete resource ledger and matched classical baselines.</p>
+<h2 id="references">References</h2>
+<ol>
+<li>H. J. Kantrow et al., <a href="https://arxiv.org/abs/2609.06742">“Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers,” arXiv:2609.06742v1 (6 Sep 2026)</a>. <strong>Preprint; experiment.</strong></li>
+<li>W. Yao et al., <a href="https://arxiv.org/abs/2609.08333">“Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules,” arXiv:2609.08333v1 (8 Sep 2026)</a>. <strong>Preprint; DFT-verified property hits.</strong></li>
+<li>R. Okuno et al., <a href="https://arxiv.org/abs/2609.08399">“MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials,” arXiv:2609.08399v1 (8 Sep 2026)</a>. <strong>Preprint; agentic search with DFT verification.</strong></li>
+<li>R. D. Guerrero, <a href="https://arxiv.org/abs/2609.09990">“Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU,” arXiv:2609.09990v1 (9 Sep 2026)</a>. <strong>Preprint; classical GPU.</strong></li>
+<li>M. Medvidović, A. Rubio, J. Carrasquilla, <a href="https://arxiv.org/abs/2609.09280">“Multipole splats for optimized and inverted effective potentials,” arXiv:2609.09280v1 (8 Sep 2026)</a>. <strong>Preprint; classical calculation.</strong></li>
+<li>S. A. Shteingolts et al., <a href="https://arxiv.org/abs/2609.06655">“Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics,” arXiv:2609.06655v1 (6 Sep 2026)</a>. <strong>Preprint; non-chemical simulation.</strong></li>
+<li>R. O. Hernandez et al., <a href="https://arxiv.org/abs/2609.07284">“Implementing QESEM&rsquo;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study,” arXiv:2609.07284v1 (7 Sep 2026)</a>. <strong>Preprint; actual IBM QPU measurement after statevector optimization.</strong></li>
+<li>A. F. Izmaylov, <a href="https://arxiv.org/abs/2609.08170">“Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy,” arXiv:2609.08170v1 (8 Sep 2026)</a>. <strong>Preprint; idealized resource analysis, no QPU run.</strong></li>
+</ol>
+<hr />
+<p>Publication record. Responsible editor: Hyun-Jung Kim. AI assistance: OpenAI Codex Work Mode. Evidence cutoff: 10 September 2026. Numerical values and execution boundaries follow the cited sources; OLED workflow translations and the proposed experiment are reviewer inferences. All eight selected papers are preprints.</p>
+
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex Work Mode; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>Codex — primary-source research, bilingual writing, illustration direction, deterministic evidence figures, scientific copyediting, implementation and publication verification</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>eight arXiv preprints posted or revised 2026-09-04 through 2026-09-10, checked against primary abstract and full-text pages; reported numerical results, benchmark conditions, QPU versus simulator execution, sampling costs, and OLED translation boundaries; bilingual HTML, conceptual hero, two reviewer-constructed SVG figures, verified five-page PDF, metadata and local links</dd></div>
+          <div><dt>Human review record</dt><dd>scheduled publication requested; no separate line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-09-10</dd></div>
+        </dl>
+        <p class="disclosure-note">All selected items are preprints, and no directly relevant new TADF, PhOLED, or host–dopant device paper appeared. Numerical results were not independently reproduced; OLED translations and the weekly experiment are reviewer proposals. The generated hero is conceptual.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+      <div class="footer">
+        Generated: 2026-09-10 19:39:00<br>
+        Source last modified: 2026-09-10 19:38:32
+      </div>
+    </article>
+
+    <aside class="sidebar">
+
+        <section class="side-section toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">Section map</h2>
+          <div class="toc">
+<ul>
+<li><a href="#ranked-shortlist">Ranked shortlist</a></li>
+<li><a href="#1-no-direct-oled-tadf-or-pholed-paper-met-the-threshold">1. No direct OLED, TADF, or PhOLED paper met the threshold</a></li>
+<li><a href="#2-weak-thermal-optical-dephasing-across-five-conjugated-polymers">2. Weak thermal optical dephasing across five conjugated polymers</a><ul>
+<li><a href="#source-reported-result">Source-reported result</a></li>
+<li><a href="#limitation-and-workflow-translation">Limitation and workflow translation</a></li>
+</ul>
+</li>
+<li><a href="#3-variable-size-3d-generation-from-a-fixed-dimensional-latent">3. Variable-size 3D generation from a fixed-dimensional latent</a><ul>
+<li><a href="#source-reported-result_1">Source-reported result</a></li>
+<li><a href="#limitation-and-workflow-translation_1">Limitation and workflow translation</a></li>
+</ul>
+</li>
+<li><a href="#4-mlip-detective-searches-for-failures-hidden-by-benchmark-averages">4. MLIP Detective searches for failures hidden by benchmark averages</a><ul>
+<li><a href="#source-reported-result_2">Source-reported result</a></li>
+<li><a href="#limitation-and-workflow-translation_2">Limitation and workflow translation</a></li>
+</ul>
+</li>
+<li><a href="#5-nonadiabatic-derivatives-through-a-crossing-on-an-8-gb-gpu">5. Nonadiabatic derivatives through a crossing on an 8 GB GPU</a><ul>
+<li><a href="#source-reported-result_3">Source-reported result</a></li>
+<li><a href="#limitation-and-workflow-translation_3">Limitation and workflow translation</a></li>
+</ul>
+</li>
+<li><a href="#6-multipole-splats-stabilize-optimized-and-inverted-kohn-sham-potentials">6. Multipole splats stabilize optimized and inverted Kohn-Sham potentials</a></li>
+<li><a href="#7-out-of-distribution-inverse-design-with-a-dynamics-surrogate">7. Out-of-distribution inverse design with a dynamics surrogate</a></li>
+<li><a href="#8-actual-qpu-execution-exposes-the-cost-of-error-mitigation">8. Actual QPU execution exposes the cost of error mitigation</a><ul>
+<li><a href="#actual-qpu-execution">Actual QPU execution</a></li>
+</ul>
+</li>
+<li><a href="#9-cash-qse-avoids-remeasuring-a-classically-known-reference">9. CASH-QSE avoids remeasuring a classically known reference</a></li>
+<li><a href="#10-practical-experiment-for-the-coming-week">10. Practical experiment for the coming week</a></li>
+<li><a href="#11-coverage-gaps">11. Coverage gaps</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+        </section>
+
+      <section class="side-section link-panel" aria-labelledby="links-heading">
+        <h2 id="links-heading">Evidence links</h2>
+        <ul>
+          <li><a href="excitonic_reliability_hero-web.webp">Conceptual illustration of optical coherence dephasing across an aggregate of conjugated molecules, surrounded by latent-space generation, crossing potential surfaces, and a bounded quantum-measurement layer</a></li>
+<li><a href="oled_inverse_design_weekly_brief_2026-09-11.pdf">PDF download</a></li>
+<li><a href="evidence_map.svg">Qualitative map of the eight papers by proximity to OLED design and by demonstrated execution boundary</a></li>
+<li><a href="https://arxiv.org/abs/2609.06742" target="_blank" rel="noreferrer">*Collective Excitonic Structure Governs Anomalously Weak Thermal Optical Dephasing in Conjugated Polymers*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08333" target="_blank" rel="noreferrer">*Fixed-Dimensional Latent Flow for Generating Variable-Size 3D Molecules*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08399" target="_blank" rel="noreferrer">*MLIP Detective: Active Failure Mode Discovery Beyond Benchmark Scores for Machine-Learning Interatomic Potentials*</a></li>
+<li><a href="https://arxiv.org/abs/2609.09990" target="_blank" rel="noreferrer">*Analytic Gradients and Nonadiabatic Couplings for Device-Resident DMRG-QD-NEVPT2 Through Conical Intersections on a Consumer GPU*</a></li>
+<li><a href="https://arxiv.org/abs/2609.09280" target="_blank" rel="noreferrer">*Multipole splats for optimized and inverted effective potentials*</a></li>
+<li><a href="https://arxiv.org/abs/2609.06655" target="_blank" rel="noreferrer">*Out-of-Distribution Inverse Design of Elastic Networks with Differentiable Graph Neural Network Molecular Dynamics*</a></li>
+<li><a href="https://arxiv.org/abs/2609.07284" target="_blank" rel="noreferrer">*Implementing QESEM&#x27;s High-Accuracy Error Mitigation on a Quantum Computer: a Water Potential Energy Surface Study*</a></li>
+<li><a href="https://arxiv.org/abs/2609.08170" target="_blank" rel="noreferrer">*Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy*</a></li>
+<li><a href="proposed_workflow.svg">Proposed cycle connecting molecular generation, electronic-state calculation, aggregate environment, and falsification</a></li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body>
+</html>
