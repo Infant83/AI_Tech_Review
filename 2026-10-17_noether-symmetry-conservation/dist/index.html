@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리</title><meta name="description" content="노터 정리의 변분 원리와 연속대칭, 국소 게이지 대칭의 차이부터 구조 보존 계산과 과학기계학습의 응용까지."><meta name="author" content="김현중"><meta property="og:title" content="대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리"><meta property="og:description" content="노터 정리의 변분 원리와 연속대칭, 국소 게이지 대칭의 차이부터 구조 보존 계산과 과학기계학습의 응용까지."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/hero.webp"><link rel="stylesheet" href="review.css"></head><body>
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review_ko.pdf">PDF ↓</a></div></header>
+<main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.17</span><span>물리학 · 과학 계산 · 과학기계학습</span></div><article><h1>대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리</h1>
+<p class="dek">작용의 연속 대칭이 운동량과 에너지로 이어지는 이유, 그리고 그 구조를 시뮬레이션·과학 AI·양자계산에 옮길 때의 조건</p>
+
+<p class="kicker">TECH REVIEW · 2026년 10월 17일 · 물리 원리와 계산 응용</p>
+
+<div class="editor-line">책임 편집: 김현중 · AI 보조 작성: Codex · 근거 기준일: 2026년 10월 17일 · <a href="#authoring-disclosure">작성·검증 범위</a></div><figure class="hero"><img src="hero.webp" alt="반복되는 고리와 연속적인 푸른 리본으로 병진과 회전의 대칭을 표현한 개념 일러스트"><figcaption>대칭 변환 속에서 유지되는 구조를 표현한 생성형 개념 일러스트. 실제 실험 장치, 입자 궤적이나 측정 데이터를 나타내지 않는다.</figcaption></figure><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">1. 예측이 그럴듯해도 물리적으로 틀릴 수 있다</a></li><li><a href="#section-2">2. ‘바꾸어도 같다’는 말의 정확한 대상</a></li><li><a href="#section-3">3. 작용에서 보존량이 나오는 짧은 유도</a></li><li><a href="#section-4">4. 노터의 두 정리는 무엇이 다른가</a></li><li><a href="#section-5">5. 팽창하는 우주의 빛은 왜 에너지를 잃는가</a></li><li><a href="#section-6">6. 수치 시뮬레이션에서는 대칭을 어떻게 남길까</a></li><li><a href="#section-7">7. 과학 AI는 보존법칙을 학습할까, 구조로 가질까</a></li><li><a href="#section-8">8. 등변 신경망과 원자간 퍼텐셜의 연결</a></li><li><a href="#section-9">9. 양자계산에서는 대칭이 오류를 가려낸다</a></li><li><a href="#section-10">10. 대칭이 ‘깨진다’는 세 가지 다른 상황</a></li><li><a href="#section-11">11. 연구와 개발에서 실제로 확인할 것</a></li><li><a href="#section-12">참고문헌과 원문</a></li></ol></details>
+
+<h2 id="section-1">1. 예측이 그럴듯해도 물리적으로 틀릴 수 있다</h2>
+<p>분자 시뮬레이션에서 처음 몇 번의 진동은 잘 맞는데 시간이 지나면서 계의 총에너지가 계속 증가한다고 해 보자. 외부에서 일을 하지 않았고 열도 들어오지 않았다면, 실제 물리보다 계산 방법을 먼저 의심해야 한다. 원자 위치의 짧은 구간 예측이 정확하다는 것과 긴 시간 동안 에너지가 타당하게 변한다는 것은 다른 조건이다. 학습 데이터의 오차가 작은 AI 모델에서도 비슷한 문제가 생길 수 있다.</p>
+<p>이때 대칭은 유용한 질문을 준다. 분자 전체를 조금 옮겼다는 이유로 내부 에너지가 달라져야 하는가? 같은 배치를 통째로 회전했을 때 에너지는 유지되고 힘의 방향은 함께 회전하는가? 외부 조건이 시간에 따라 바뀌지 않는 닫힌 모형에서 에너지가 계속 증가한다면 무엇이 잘못됐는가?</p>
+<p>노터 정리는 이런 질문들을 하나의 수학적 관계로 연결한다. <strong>적절한 작용의 연속 대칭은 운동방정식을 따르는 해에서 보존되는 양을 만든다.</strong> 이를 계산에 활용하려면 물리 모형, 학습 구조, 수치 알고리즘이 각각 어떤 대칭을 유지하는지 확인해야 한다. 하나가 다른 것까지 자동으로 보장하지는 않는다. [2–4]</p>
+<p>출발점은 Shalma Wegsman의 Quanta Magazine 기사 「How Noether’s Theorem Revolutionized Physics」다. 2025년 2월 7일 발행된 이 기사는 일반상대론의 에너지 문제와 에미 노터의 1918년 연구를 연결해 설명한다. 공유된 LinkedIn 글은 같은 기사를 다시 소개한 것이다. 아래의 수학과 계산 응용은 원 기사에 관련 원전·연구를 더해 전개한다. [1]</p>
+<h2 id="section-2">2. ‘바꾸어도 같다’는 말의 정확한 대상</h2>
+<p>대칭은 언제나 무엇을 바꾸고 무엇을 같다고 보는지 정해야 한다. 원을 회전해도 모양이 같다는 기하학적 대칭과, 실험 전체를 옮겨도 같은 법칙이 적용된다는 물리적 대칭은 연결되어 있지만 대상이 다르다. 물리학에서는 개별 사진이나 순간 상태보다 운동을 정하는 법칙과 작용의 변환을 살핀다.</p>
+<p>자유입자는 한 방향으로 움직이므로 그 궤적의 그림은 모든 회전에 대해 똑같지 않다. 그래도 자유입자의 법칙에는 특별히 선호되는 공간 방향이 없다. <strong>법칙의 대칭과 특정 해의 대칭을 구분해야 한다.</strong> 반대로 지지대에 고정한 용수철에서 질점만 옮기면 늘어난 길이가 바뀐다. 그 질점의 운동만 기술한 모형에는 그 방향의 병진 대칭이 없다. 장치와 환경 중 무엇을 계에 포함했는지가 중요하다. [2,3]</p>
+<p>노터 제1정리에서 핵심이 되는 것은 매끄럽게 조금씩 바꿀 수 있는 연속 대칭이다. 이동 거리, 회전각, 시간의 원점을 연속적으로 바꾸는 변환이 대표적이다. 삼각형의 120도 회전이나 좌우 반사 같은 이산 대칭에는 같은 무한소 생성자 논법을 그대로 적용할 수 없다. 시간의 원점을 옮기는 시간 병진과, 시간의 진행 방향을 뒤집는 시간반전도 다르다. [2,3]</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>변환과 성립 조건</th>
+<th>대응하는 보존량</th>
+<th>조건을 바꾸는 예</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>닫힌 계 전체의 연속 공간 병진</td>
+<td>총 선운동량</td>
+<td>고정된 외부 퍼텐셜과의 운동량 교환</td>
+</tr>
+<tr>
+<td>닫힌 계 전체의 연속 공간 회전</td>
+<td>총 각운동량</td>
+<td>외부 토크 또는 고정된 방향을 갖는 장</td>
+</tr>
+<tr>
+<td>작용의 시간 병진</td>
+<td>해밀토니안에 해당하는 에너지</td>
+<td>시간에 따라 바꾸는 외부 구동</td>
+</tr>
+<tr>
+<td>물질장의 전역 위상 회전</td>
+<td>해당 이론의 전하</td>
+<td>어떤 위상 대칭인지와 상호작용을 확인해야 함</td>
+</tr>
+</tbody></table></div>
+<p>표의 ‘전체’는 핵심 조건이다. 두 입자가 상대 위치에만 의존하는 힘으로 상호작용하면 한 입자의 운동량은 계속 바뀌어도 둘의 총운동량은 일정할 수 있다. 작은 부분계의 관측량이 변했다는 것만으로 보존법칙이 실패한 것은 아니다.</p>
+<h2 id="section-3">3. 작용에서 보존량이 나오는 짧은 유도</h2>
+<p>입자의 위치나 회전각 같은 일반화 좌표를 <img class="math-inline" src="math_2cb63c6d70a63e.svg" alt="q_i" style="width:1.749ex;height:1.439ex;vertical-align:-0.439ex">, 그 시간 미분을 <img class="math-inline" src="math_8c67f4b3143b0f.svg" alt="\dot q_i" style="width:1.749ex;height:2.174ex;vertical-align:-0.439ex">라 하자. 라그랑지안 <img class="math-inline" src="math_11b9891ac97e16.svg" alt="L(q,\dot q,t)" style="width:8.211ex;height:2.301ex;vertical-align:-0.566ex">는 보통 운동에너지와 퍼텐셜에너지의 차이이며 에너지 단위를 갖는다. 작용 <img class="math-inline" src="math_e9eb23551c7241.svg" alt="S" style="width:1.459ex;height:1.645ex;vertical-align:-0.05ex">는 이를 시간에 대해 적분한 양으로, SI 단위는 J·s다.</p>
+<div class="math-block"><img src="math_7c7f6397d6a7c3.svg" alt="S[q]=\int_{t_1}^{t_2}L(q,\dot q,t)\,dt." style="width:22.12ex;height:auto"></div>
+<p>실제 운동은 허용된 작은 궤적 변형에 대해 작용이 정류하는 조건을 만족한다. ‘정류’는 일차 변화가 0이라는 뜻이며 언제나 최소라는 뜻은 아니다. 이 조건에서 오일러–라그랑주 방정식과 정준 운동량 <img class="math-inline" src="math_9e838fc4b91a64.svg" alt="p_i" style="width:1.878ex;height:1.439ex;vertical-align:-0.439ex">를 얻는다. 좌표가 위치이면 운동량의 단위는 kg·m/s이고, 좌표가 각도이면 대응 운동량은 각운동량이다. [2,3]</p>
+<div class="math-block"><img src="math_f137b3acc759d2.svg" alt="\frac{d}{dt}\frac{\partial L}{\partial\dot q_i}-\frac{\partial L}{\partial q_i}=0,
+\qquad p_i=\frac{\partial L}{\partial\dot q_i}." style="width:33.032ex;height:auto"></div>
+<p>먼저 시간을 바꾸지 않고 <img class="math-inline" src="math_2cb63c6d70a63e.svg" alt="q_i" style="width:1.749ex;height:1.439ex;vertical-align:-0.439ex">를 <img class="math-inline" src="math_a0267e7480e4c9.svg" alt="\epsilon\eta_i" style="width:2.783ex;height:1.489ex;vertical-align:-0.489ex">만큼 바꾸자. <img class="math-inline" src="math_621281a68ecae8.svg" alt="\epsilon" style="width:0.919ex;height:1ex;vertical-align:-0.025ex">은 작은 변환 매개변수이며 <img class="math-inline" src="math_a0267e7480e4c9.svg" alt="\epsilon\eta_i" style="width:2.783ex;height:1.489ex;vertical-align:-0.489ex">가 좌표와 같은 단위를 갖는다. 라그랑지안의 일차 변화가 <img class="math-inline" src="math_b4cae4425e14a0.svg" alt="\epsilon\,dB/dt" style="width:7.314ex;height:2.262ex;vertical-align:-0.566ex">인 경우를 허용한다. 즉 작용이 끝점에서만 달라져도 된다. 운동방정식을 대입해 정리하면 다음을 얻는다.</p>
+<div class="math-block"><img src="math_9b41727991cc95.svg" alt="\frac{\delta L}{\epsilon}
+=\sum_i\left(\frac{\partial L}{\partial q_i}\eta_i+p_i\dot\eta_i\right)
+=\frac{d}{dt}\sum_i p_i\eta_i
+=\frac{dB}{dt}." style="width:47.233ex;height:auto"></div>
+<p>따라서 <img class="math-inline" src="math_0ef40bb0711320.svg" alt="Q=\sum_i p_i\eta_i-B" style="width:16.537ex;height:2.36ex;vertical-align:-0.663ex">의 시간 미분은 0이다. 이는 해를 따라 성립한다. 대칭 변환에서 작용의 변화가 경계에만 남는다는 조건과, 운동방정식에서 나타나는 전미분이 만나 보존량을 만든 것이다. 라그랑지안 자체가 한 글자도 변하지 않아야 한다는 요구보다 넓다. [2,3]</p>
+<p>시간까지 함께 바꾸면 식에 한 항이 더 들어간다. <img class="math-inline" src="math_216de3794ba66c.svg" alt="t'=t+\epsilon\tau" style="width:10.132ex;height:1.903ex;vertical-align:-0.186ex">, <img class="math-inline" src="math_c55cee4834b267.svg" alt="q_i'(t')=q_i(t)+\epsilon\eta_i" style="width:17.879ex;height:2.309ex;vertical-align:-0.592ex">라고 정의하고, 변환한 <img class="math-inline" src="math_4b02432a3d1e12.svg" alt="L\,dt" style="width:3.912ex;height:1.595ex;vertical-align:-0.025ex">의 일차 변화가 <img class="math-inline" src="math_d9c034fcf67651.svg" alt="\epsilon\,dB" style="width:4.19ex;height:1.595ex;vertical-align:-0.025ex">라고 하자. 매개변수의 단위는 변환마다 선택하며, <img class="math-inline" src="math_95d2014ce49bda.svg" alt="\epsilon\tau" style="width:2.088ex;height:1.005ex;vertical-align:-0.029ex">는 시간, <img class="math-inline" src="math_a0267e7480e4c9.svg" alt="\epsilon\eta_i" style="width:2.783ex;height:1.489ex;vertical-align:-0.489ex">는 좌표, <img class="math-inline" src="math_542a952909865d.svg" alt="\epsilon B" style="width:2.636ex;height:1.57ex;vertical-align:-0.025ex">는 작용의 단위를 갖는다. <img class="math-inline" src="math_4acc18ce73889b.svg" alt="H=\sum_i p_i\dot q_i-L" style="width:16.465ex;height:2.398ex;vertical-align:-0.663ex">이면 보존량은 다음과 같다.</p>
+<div class="math-block"><img src="math_74a6ccf9b55c5f.svg" alt="Q=\sum_i p_i\eta_i-H\tau-B,\qquad \frac{dQ}{dt}=0." style="width:36.89ex;height:auto"></div>
+<p>공간 병진에서는 <img class="math-inline" src="math_3ed2408270950a.svg" alt="\tau=0" style="width:5.318ex;height:1.692ex;vertical-align:-0.186ex">이고 일정한 <img class="math-inline" src="math_013848c9dbeec5.svg" alt="\eta_i" style="width:1.864ex;height:1.489ex;vertical-align:-0.489ex"> 방향의 운동량을 얻는다. 회전에서는 <img class="math-inline" src="math_fd8298afba06f3.svg" alt="\boldsymbol\eta=\boldsymbol\omega\times\mathbf r" style="width:9.837ex;height:1.796ex;vertical-align:-0.477ex">를 넣어 <img class="math-inline" src="math_1c38bc0c5e00fe.svg" alt="\mathbf r\times\mathbf p" style="width:5.284ex;height:1.55ex;vertical-align:-0.439ex">와 연결한다. 시간 병진을 <img class="math-inline" src="math_6f5e5f0950d602.svg" alt="\tau=1,\eta_i=0,B=0" style="width:19.208ex;height:2.034ex;vertical-align:-0.489ex">으로 잡으면 <img class="math-inline" src="math_302d7ffd7c1588.svg" alt="Q=-H" style="width:8.576ex;height:2.032ex;vertical-align:-0.439ex">다. 전체 부호는 변환 방향의 관례이며, 보존되는 에너지는 <img class="math-inline" src="math_eee2caf92cdd63.svg" alt="H" style="width:2.009ex;height:1.545ex;vertical-align:0">로 표현하면 된다. 일반적인 라그랑지안에서 <img class="math-inline" src="math_eee2caf92cdd63.svg" alt="H" style="width:2.009ex;height:1.545ex;vertical-align:0">가 일상적인 <img class="math-inline" src="math_66a55fc8bfc263.svg" alt="T+V" style="width:6.098ex;height:1.731ex;vertical-align:-0.186ex">와 같은지는 별도로 확인한다. [3]</p>
+<p>구동되는 용수철은 조건의 의미를 잘 보여 준다. <img class="math-inline" src="math_31e3e5d8bed7f9.svg" alt="L=m\dot x^2/2-k(t)x^2/2" style="width:22.154ex;height:2.452ex;vertical-align:-0.566ex">에서는 강성 <img class="math-inline" src="math_a93b96f12969a6.svg" alt="k(t)" style="width:3.756ex;height:2.262ex;vertical-align:-0.566ex">가 외부에서 변한다. 운동방정식을 만족하는 운동에 대해 다음이 성립한다.</p>
+<div class="math-block"><img src="math_93db531d4314fb.svg" alt="\frac{dH}{dt}=-\frac{\partial L}{\partial t}
+=\frac{1}{2}\dot k(t)x^2." style="width:24.585ex;height:auto"></div>
+<p>SI 단위로 <img class="math-inline" src="math_cbb528642e1ba1.svg" alt="k" style="width:1.179ex;height:1.595ex;vertical-align:-0.025ex">는 N/m이고 오른쪽은 일률 W다. 에너지 변화는 외부 구동과 일관된다. 강성을 조절하는 장치까지 포함하면 더 큰 계의 에너지 교환을 기술해야 한다. 이를 단순히 ‘에너지 보존 위반’이라고 부르면 계의 경계를 놓치게 된다.</p>
+<figure><img src="symmetry_ko.svg" alt="작용의 연속 대칭에서 운동방정식과 보존 전류를 거쳐 경계 유출에 따른 영역 내 보존량으로 연결되는 도표"><figcaption>노터 정리와 연속방정식의 관계를 재구성한 설명 도표. 전류의 발산이 0이어도 경계를 통한 유출이 있으면 영역 안의 총량은 바뀐다. 특정 실험의 측정 결과가 아니다. [2–4]</figcaption></figure>
+
+<h2 id="section-4">4. 노터의 두 정리는 무엇이 다른가</h2>
+<p>공간에 퍼진 전하나 유체를 다룰 때는 보존량을 밀도와 흐름으로 나눠 쓴다. 전하 밀도를 <img class="math-inline" src="math_f23546fca103c4.svg" alt="\rho_Q" style="width:2.623ex;height:1.65ex;vertical-align:-0.65ex">, 전류 밀도를 <img class="math-inline" src="math_9e614425e05560.svg" alt="\mathbf j" style="width:0.794ex;height:2.025ex;vertical-align:-0.452ex">라 하면 국소 보존식과 유한 영역 <img class="math-inline" src="math_d68f06261174f7.svg" alt="V" style="width:1.74ex;height:1.595ex;vertical-align:-0.05ex">의 전하 <img class="math-inline" src="math_f2469fb288697e.svg" alt="Q_V" style="width:3.208ex;height:2.032ex;vertical-align:-0.439ex">는 다음을 만족한다.</p>
+<div class="math-block"><img src="math_59037d39b452da.svg" alt="\frac{\partial\rho_Q}{\partial t}+\nabla\cdot\mathbf j=0,
+\qquad \frac{dQ_V}{dt}=-\oint_{\partial V}\mathbf j\cdot d\mathbf A." style="width:42.35ex;height:auto"></div>
+<p>전하의 경우 <img class="math-inline" src="math_f23546fca103c4.svg" alt="\rho_Q" style="width:2.623ex;height:1.65ex;vertical-align:-0.65ex">는 C/m³, <img class="math-inline" src="math_9e614425e05560.svg" alt="\mathbf j" style="width:0.794ex;height:2.025ex;vertical-align:-0.452ex">는 A/m²이며 표면 적분은 A다. 지역 안의 전하가 줄어도 그만큼 밖으로 흘렀다면 보존식은 정확히 성립한다. 제1정리도 장 이론에서는 이런 <strong>국소 연속방정식</strong>을 준다. 전체 적분을 일정한 보존량으로 쓰려면 유출과 경계조건을 확인해야 한다. [4]</p>
+<p>두 정리의 구별은 ‘전체 공간인가 작은 공간인가’에 있지 않다. 제1정리는 이동 거리나 회전각처럼 상수 매개변수로 기술하는 연속 대칭을 다룬다. 제2정리는 변환 매개변수를 시공간의 임의 함수로 허용하는 국소 대칭을 다루며, 운동방정식들 사이의 미분 항등식을 준다. 이 항등식은 운동방정식을 푼 뒤에만 성립하는 관계가 아니다. [2]</p>
+<p>전자기 퍼텐셜의 게이지 변환과 일반상대론의 좌표 재기술이 그 배경이다. 같은 물리 상태를 여러 방식으로 표현할 수 있어 방정식 전체가 서로 독립적이지 않다. 전자기 전하를 설명할 때도 물질장의 전역 위상 대칭에서 얻는 전류, 국소 게이지 불변성이 주는 제약, 경계에 정의하는 전하를 구분해야 한다. 국소 게이지 자유도 하나하나를 새로운 독립 보존량으로 세지는 않는다. [2,4,5]</p>
+<h2 id="section-5">5. 팽창하는 우주의 빛은 왜 에너지를 잃는가</h2>
+<p>원 기사의 가장 흥미로운 대목은 일반상대론과 에너지다. 여기서는 ‘에너지 보존이 깨진다’는 표현의 범위를 정밀하게 잡을 필요가 있다. 일반상대론에서도 물질의 에너지–운동량 텐서 <img class="math-inline" src="math_0a62d1992a5b1f.svg" alt="T^{\mu\nu}" style="width:3.72ex;height:1.532ex;vertical-align:0">는 운동방정식과 함께 공변 보존식 <img class="math-inline" src="math_e0627f9f13db2b.svg" alt="\nabla_\mu T^{\mu\nu}=0" style="width:10.905ex;height:2.23ex;vertical-align:-0.685ex">을 만족한다. 휘어진 시공간에서의 이 관계를, 우주 전체에 걸쳐 에너지를 단순 합산한 값이 일정하다는 주장과 동일시할 수는 없다. [6]</p>
+<p>전역적으로 보존되는 에너지를 표준적인 방식으로 만들려면 적절한 시간 대칭과 경계조건이 필요하다. 시간 방향 킬링 벡터는 시공간의 기하가 그 방향으로 변하지 않는다는 뜻이다. 일반적인 팽창 우주에서는 이런 전역 시간 병진 대칭을 기대할 수 없다. 한편 고립계의 점근적 조건이나 다른 기하학적 조건을 이용한 에너지 정의도 있으므로, ‘곡률이 있으면 어떤 에너지도 정의할 수 없다’는 결론 역시 과하다. [6]</p>
+<p>균질·등방 우주의 국소 보존식을 보면 광자의 적색편이와의 관계가 선명해진다. 빛의 속도를 1로 놓은 단위계에서 에너지 밀도를 <img class="math-inline" src="math_9e29319b7d927a.svg" alt="\rho" style="width:1.17ex;height:1.489ex;vertical-align:-0.489ex">, 압력을 <img class="math-inline" src="math_e508c02b0ef767.svg" alt="P" style="width:1.699ex;height:1.545ex;vertical-align:0">, 우주의 척도인자를 <img class="math-inline" src="math_7904fa26204b65.svg" alt="a(t)" style="width:3.774ex;height:2.262ex;vertical-align:-0.566ex">라 쓰면 다음이 성립한다.</p>
+<div class="math-block"><img src="math_c571d59b9efca1.svg" alt="\dot\rho+3\frac{\dot a}{a}(\rho+P)=0,
+\qquad d(\rho a^3)=-P\,d(a^3)." style="width:43.228ex;height:auto"></div>
+<p>여기서 <img class="math-inline" src="math_445e79ffc8fb69.svg" alt="a^3" style="width:2.185ex;height:1.908ex;vertical-align:-0.023ex">는 고정된 공변 부피에 대응하는 물리 부피에 비례한다. 복사는 <img class="math-inline" src="math_df3cd2cace605d.svg" alt="P=\rho/3" style="width:8.148ex;height:2.262ex;vertical-align:-0.566ex">이므로 에너지 밀도가 <img class="math-inline" src="math_1a58877f58d315.svg" alt="a^{-4}" style="width:3.429ex;height:1.927ex;vertical-align:-0.023ex">에 비례한다. 부피 증가에 따른 희석 외에 광자 하나의 에너지도 <img class="math-inline" src="math_97b6d8ff180f69.svg" alt="a^{-1}" style="width:3.429ex;height:1.909ex;vertical-align:-0.023ex">에 비례해 감소한다. 이 현상은 국소 공변 보존식과 양립하며 가속 팽창을 전제로 하지도 않는다. 원 기사의 직관을 받아들이되, 이를 실험실의 닫힌 계에서 임의로 에너지를 만들 수 있다는 주장으로 옮겨서는 안 된다. [6]</p>
+<h2 id="section-6">6. 수치 시뮬레이션에서는 대칭을 어떻게 남길까</h2>
+<p>연속시간의 방정식에 보존법칙이 있어도 컴퓨터는 유한한 시간 간격으로 계산한다. 이산화 과정이 원래 구조를 잃으면 작은 오차가 쌓여 가짜 가열이나 비물리적인 운동량 변화를 만들 수 있다.</p>
+<p>변분 적분기는 운동방정식을 직접 근사하는 대신 작용을 이산화하고 거기서 갱신식을 유도한다. 이산 라그랑지안이 해당 대칭을 유지하면 이산 노터 정리에 따라 대응 운동량을 보존한다. 적절한 조건에서 심플렉틱 구조도 유지한다. 심플렉틱 구조는 위치와 운동량이 이루는 위상공간의 기하로, 장시간 운동을 계산할 때 중요한 제약이다. Marsden과 West의 정리와 해설은 분자동역학의 Verlet 같은 방법을 이 관점에서 연결한다. [7]</p>
+<p>다만 심플렉틱이라는 이름이 원래 물리적 에너지의 매 단계 정확한 보존을 뜻하지는 않는다. 고정 시간 간격의 일반적인 방법에서는 에너지가 작게 진동할 수 있고, 일정한 정칙성·안정성 조건에서 그 오차가 장시간 잘 제어된다. 보존하는 운동량, 보존하는 기하, 에너지의 오차 거동을 따로 적어야 한다. [7]</p>
+<p>이를 보기 위해 리뷰에서 조화진동자를 직접 계산했다. 질량과 각진동수를 각각 1로 정규화하고, 초기 위치 1·운동량 0, 시간 간격 0.1, 총 2,000단계를 사용했다. 시간은 고유 각진동수의 역수 단위로 표시한다. 정확한 해의 에너지는 <img class="math-inline" src="math_c2b03db9218123.svg" alt="H=(p^2+q^2)/2=0.5" style="width:21.992ex;height:2.452ex;vertical-align:-0.566ex">로 일정하다.</p>
+<figure><img src="integrator_ko.svg" alt="동일 조화진동자의 전진 오일러, 심플렉틱 오일러, velocity Verlet 계산에서 나타나는 에너지 변화 비교"><figcaption>리뷰 자체 계산. 위 패널은 초기 에너지로 나눈 값을 로그 눈금으로, 아래는 구조를 보존하는 두 방법의 작은 진동을 확대해 보인다. 동일 시간 간격의 교육용 비교이며 계산시간·정확도를 맞춘 성능 벤치마크나 논문 재현은 아니다. 원자료와 갱신식은 동봉한 계산 스크립트로 생성했다.</figcaption></figure>
+
+<p>전진 오일러의 마지막 에너지는 처음의 약 4.39억 배다. 이 사례에서는 단계마다 에너지가 정확히 <img class="math-inline" src="math_e83e71001d4380.svg" alt="1+0.1^2" style="width:7.776ex;height:2.14ex;vertical-align:-0.186ex">배가 되므로 수치값을 해석적으로도 확인할 수 있다. 심플렉틱 오일러의 최대 상대 에너지 오차는 약 5.26%, velocity Verlet은 약 0.25%다. 후자의 오차도 0은 아니다. 이 결과는 선택한 진동자와 시간 간격의 성질이며 모든 심플렉틱 방법이 모든 다른 방법보다 정확하다는 주장을 뒷받침하지 않는다.</p>
+<p>더 복잡한 예로 Xiao 등의 Vlasov–Maxwell particle-in-cell 연구는 입자와 전자기장의 이산 라그랑지안, 게이지 불변성, 비정준 심플렉틱 구조를 함께 설계한다. 연구진은 전하 보존을 유지하는 알고리즘을 구성하고 비선형 Landau 감쇠와 전자 Bernstein 파동으로 검증했다. 이는 플라스마 장시간 계산의 구체적 방법론이며, 해당 결과만으로 핵융합 장치의 제어 성능까지 판단할 수는 없다. [8]</p>
+<h2 id="section-7">7. 과학 AI는 보존법칙을 학습할까, 구조로 가질까</h2>
+<p>일반 신경망으로 위치와 속도의 다음 값을 예측하면, 데이터에 보존 운동이 많더라도 보존법칙이 정확하게 내장되지는 않는다. Hamiltonian Neural Network(HNN)는 스칼라 함수 <img class="math-inline" src="math_cfaee4006d6222.svg" alt="H_\theta(q,p)" style="width:7.763ex;height:2.262ex;vertical-align:-0.566ex">를 학습하고 미분을 통해 운동을 만든다. <img class="math-inline" src="math_75e51a37244b90.svg" alt="\theta" style="width:1.061ex;height:1.618ex;vertical-align:-0.023ex">는 신경망 매개변수이고 <img class="math-inline" src="math_fe1714860f05b7.svg" alt="q,p" style="width:3.185ex;height:1.439ex;vertical-align:-0.439ex">는 정준 좌표와 운동량이다. [9]</p>
+<div class="math-block"><img src="math_0325a102a9e8dc.svg" alt="\dot q=\frac{\partial H_\theta}{\partial p},\qquad
+\dot p=-\frac{\partial H_\theta}{\partial q}." style="width:26.321ex;height:auto"></div>
+<p>시간에 명시적으로 의존하지 않는 매끄러운 <img class="math-inline" src="math_2f5df819bcf77a.svg" alt="H_\theta" style="width:2.818ex;height:1.901ex;vertical-align:-0.355ex">라면 연속시간에서 두 항이 상쇄되어 <img class="math-inline" src="math_6c0820570c56d9.svg" alt="dH_\theta/dt=0" style="width:11.267ex;height:2.262ex;vertical-align:-0.566ex">이다. 여기서 보존되는 것은 <strong>학습된 함수</strong>다. 실제 에너지를 정확히 학습했는지, 위치와 운동량의 정준 구조가 맞는지, 계산 중 적분 오차가 얼마나 생기는지는 남는 문제다. 원 연구는 스프링·진자·이체 운동과 영상 기반 예시를 사용했으며, 마찰을 다루려면 추가 모델링이 필요하다고 명시한다. [9]</p>
+<p>Lagrangian Neural Network(LNN)는 좌표와 속도에서 <img class="math-inline" src="math_57a5f2a1aa7385.svg" alt="L_\theta(q,\dot q)" style="width:7.326ex;height:2.301ex;vertical-align:-0.566ex">를 학습한 뒤 오일러–라그랑주 방정식으로 운동을 구한다. 정준 운동량을 직접 알기 어려울 때 장점이 있다. 그러나 가속도를 풀기 위한 속도에 대한 Hessian의 비특이성, 시간 의존성, 제약·소산 처리가 중요하다. 원 논문은 이중 진자, 상대론적 입자, 1차원 파동방정식 등을 제시한 2020년 워크숍 연구다. 이 예시만으로 산업용 디지털 트윈의 신뢰성을 보장할 수는 없다. [10]</p>
+<p>이 접근의 실용적 가치는 학습기에게 ‘어떤 함수든 맞혀 보라’고 하기보다 물리에 맞는 함수와 운동의 관계를 제한하는 데 있다. 반면 열이 빠져나가는 장치, 마찰·화학반응·외부 구동이 있는 계에 보존계를 강제하면 틀린 가정이 된다. 그런 경우에는 일과 열의 전달, 소산, 제어 입력을 모형에 포함해 관측되는 에너지 변화를 설명해야 한다.</p>
+<h2 id="section-8">8. 등변 신경망과 원자간 퍼텐셜의 연결</h2>
+<p>분자 전체를 회전해도 에너지는 같아야 한다. 힘 벡터는 회전에 맞춰 돌아가야 한다. 앞은 불변성, 뒤는 등변성이다. 회전 행렬 <img class="math-inline" src="math_b45559a58b73b5.svg" alt="R" style="width:1.717ex;height:1.593ex;vertical-align:-0.048ex">에 대해 스칼라 예측은 <img class="math-inline" src="math_acdbac1608079a.svg" alt="E(R\mathbf r)=E(\mathbf r)" style="width:13.856ex;height:2.262ex;vertical-align:-0.566ex">, 힘은 <img class="math-inline" src="math_81b133667118b7.svg" alt="\mathbf F(R\mathbf r)=R\mathbf F(\mathbf r)" style="width:15.393ex;height:2.262ex;vertical-align:-0.566ex">를 만족하는 것이 목표다. 외부 방향을 가진 장이나 기판이 있다면 그 환경도 함께 변환하거나 대칭 조건을 조정해야 한다.</p>
+<p>NequIP은 이런 공간 대칭에 맞는 표현을 사용하는 원자간 퍼텐셜 모델이다. 연구진은 물, 비정질 물질, 계면과 이온 전도체 등의 계에서 데이터 효율과 예측 성능을 평가했다. 중요한 것은 힘을 벡터로 잘 변환하는 구조와 보존적 힘을 얻는 구조를 함께 보는 것이다. NequIP은 예측한 총 퍼텐셜에너지에서 다음과 같이 힘을 계산한다. [11]</p>
+<div class="math-block"><img src="math_1229d171523e32.svg" alt="\mathbf F_i=-\nabla_{\mathbf r_i}E_\theta." style="width:13.745ex;height:auto"></div>
+<p>미분 가능한 에너지의 음의 기울기를 쓰면 보존적 힘장을 구성할 수 있다. 고립계에서 그 에너지가 공통 병진과 회전에 불변이면, 순힘과 순토크가 0이라는 제약도 따른다. <strong>등변 벡터를 출력한다는 사실만으로 어떤 벡터장이나 보존적이 되는 것은 아니다.</strong> 실제 분자동역학의 총에너지 거동은 시간 간격과 적분기, 온도조절기에도 달려 있다. [11]</p>
+<p>OLED·분자재료 연구로 연결한다면, 먼저 전자 바닥상태 퍼텐셜에서의 구조·열적 운동을 평가하는 과제가 자연스럽다. 여기상태, 전하이동, 스핀–궤도 결합, 비단열 전이, 발광 수명은 추가 물리와 검증이 필요하다. 이 연결은 리뷰의 적용 제안이며 NequIP 원 논문이 OLED 소자의 효율이나 수명을 검증했다는 뜻은 아니다.</p>
+<h2 id="section-9">9. 양자계산에서는 대칭이 오류를 가려낸다</h2>
+<p>양자계에서도 해밀토니안과 교환하는, 명시적 시간 의존성이 없는 관측량은 닫힌 계의 시간 진화에서 보존된다. 이를 이용하면 계산이 유지해야 할 입자수나 대칭 부분공간을 정하고 결과를 검사할 수 있다. 보존량을 활용해 허용된 부분공간을 좁히는 것과 계산 전체가 더 빨라지는 것은 별도로 평가한다. [4,12]</p>
+<p>Sagastizabal 등의 2019년 연구는 초전도 회로 QED 프로세서의 두 큐비트로 수소 분자의 바닥상태를 추정하면서 패리티 대칭을 검증했다. 이상적인 계산이 머물러야 할 대칭 부분공간 밖으로 나간 성분을 배제해, 큐비트 이완과 잔여 여기로 생기는 오차를 줄였다. 이는 실제 소규모 양자 장치의 실험이다. [12]</p>
+<p>개념적으로 목표 부분공간의 사영 연산자를 <img class="math-inline" src="math_efecf6db3ae778.svg" alt="\Pi" style="width:1.697ex;height:1.538ex;vertical-align:0">, 잡음이 포함된 상태를 <img class="math-inline" src="math_9e29319b7d927a.svg" alt="\rho" style="width:1.17ex;height:1.489ex;vertical-align:-0.489ex">라 하면 조건부 상태는 다음과 같다.</p>
+<div class="math-block"><img src="math_87c87a42b39840.svg" alt="\rho_{\rm kept}=\frac{\Pi\rho\Pi}{\mathrm{Tr}(\Pi\rho)},
+\qquad p_{\rm keep}=\mathrm{Tr}(\Pi\rho)." style="width:36.388ex;height:auto"></div>
+<p><img class="math-inline" src="math_ea0fc1542fcc99.svg" alt="p_{\rm keep}" style="width:4.481ex;height:1.65ex;vertical-align:-0.65ex">는 유지되는 비율이다. 이상적으로 독립 표본을 선별한다면 같은 수의 유지 표본을 얻는 데 약 <img class="math-inline" src="math_0b4dc36b8a025f.svg" alt="1/p_{\rm keep}" style="width:6.743ex;height:2.347ex;vertical-align:-0.65ex">배의 시도가 필요하다. 실제 비용은 측정 방식과 추정량의 분산에도 좌우된다. 목표 부분공간 안에 남는 오류는 이 검사만으로 찾지 못한다. [12]</p>
+<p>여기서 패리티는 이산 대칭이다. 따라서 이 사례를 연속 대칭에 관한 노터 제1정리의 직접 적용으로 부르면 부정확하다. 대칭을 모델과 알고리즘의 제약으로 쓰고, 그 제약을 결과 검증에도 활용한다는 넓은 연결로 이해하는 것이 적절하다. 오류정정의 완전한 대체나 양자 우위의 증명도 아니다.</p>
+<h2 id="section-10">10. 대칭이 ‘깨진다’는 세 가지 다른 상황</h2>
+<p>첫째는 <strong>명시적 깨짐</strong>이다. 라그랑지안에 특정 방향의 외부장이나 시간 의존 구동을 넣어 해당 대칭을 없앤다. 보존량 변화에는 그 항이 주는 힘·토크·일률이 나타난다. 앞서 강성을 바꾼 용수철이 예다.</p>
+<p>둘째는 <strong>자발적 깨짐</strong>이다. 작용과 법칙에는 정확한 대칭이 남아 있지만 선택된 바닥상태가 그 대칭을 공유하지 않는다. 이는 그 자체로 노터 전류의 비보존을 뜻하지 않는다. 원점에서 모든 방향이 동등한 퍼텐셜을 생각해도 특정한 상태는 한 방향을 선택할 수 있다. 법칙과 상태의 구별이 다시 중요해진다. [13]</p>
+<p>셋째는 <strong>양자 이상(anomaly)</strong>이다. 고전 작용의 대칭이 양자화한 이론의 적분측도와 정칙화까지 유지되지 않을 수 있다. Fujikawa의 원 연구는 경로적분 측도의 변환으로 축 이상을 설명한다. 축 전류의 이상을 전자기 전하가 임의로 보존되지 않는다는 주장과 혼동해서는 안 된다. 동역학적 게이지 이론의 일관성을 위해 필요한 이상 상쇄 문제도 별도로 존재한다. [14]</p>
+<p>이 구별은 기술 검증에도 쓸모가 있다. 계산에서 기대한 보존량이 변했다면 원인이 외부 구동인지, 부분계의 유출인지, 근사 모형인지, 이산화인지부터 따져야 한다. 수치 오차를 곧바로 새로운 물리나 양자 이상으로 해석할 근거는 없다.</p>
+<h2 id="section-11">11. 연구와 개발에서 실제로 확인할 것</h2>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>적용하려는 문제</th>
+<th>유용한 설계 선택</th>
+<th>결과를 판단할 관측량</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>분자동역학·기계계의 장시간 적분</td>
+<td>계의 대칭에 맞는 변분·심플렉틱 적분기</td>
+<td>에너지 오차의 시간 변화, 총운동량, 위상 오차</td>
+</tr>
+<tr>
+<td>데이터로 동역학 학습</td>
+<td>HNN·LNN과 적합한 외력·소산 항</td>
+<td>미관측 궤적, 실제 에너지, 여러 시간 간격에서의 오차</td>
+</tr>
+<tr>
+<td>원자간 퍼텐셜 학습</td>
+<td>에너지 불변성, 힘의 등변성, 에너지 미분</td>
+<td>회전·병진 검사, 힘 오차, 닫힌 궤적의 일, NVE 안정성</td>
+</tr>
+<tr>
+<td>입자·전자기장 계산</td>
+<td>이산 게이지 구조와 전하 연속식 유지</td>
+<td>전하 잔차, 장 제약, 장시간 물리량</td>
+</tr>
+<tr>
+<td>양자 상태·에너지 추정</td>
+<td>대칭 부분공간과 검증 측정</td>
+<td>에너지 편향, 유지 비율, 총 측정 횟수, 검출 불가 오류</td>
+</tr>
+</tbody></table></div>
+<p>이 표는 연구 결과를 적용할 때의 검토 제안이다. 예를 들어 원자간 모델에서는 원자 전체를 옮기거나 돌린 뒤 에너지와 힘의 변화를 비교할 수 있다. 외력이 없는 고립계라면 총힘과 총토크도 검사한다. 에너지가 없는 힘 전용 모델이라면 폐곡선을 따라 한 일이 0인지가 보존성을 점검하는 한 방법이다. NVE는 입자수·부피·에너지를 고정한 고립계 조건을 뜻하며, 안정적인 궤적만으로 퍼텐셜이 정확하다고 판정할 수는 없다.</p>
+<p>학습 오차가 작더라도 힘을 적분했을 때 운동이 어긋날 수 있고, 보존량을 정확히 유지하더라도 잘못된 퍼텐셜 위를 정확하게 움직일 수 있다. 따라서 데이터 적합도, 물리 대칭, 보존 관계, 수치 적분, 실험 관측량을 연결해서 판단해야 한다. 이 중 하나만으로 나머지를 대체할 수 없다.</p>
+<p>노터 정리가 과학 계산에 주는 힘은 해를 하나 더 계산하는 데 있지 않다. <strong>허용되는 모델과 운동을 제한하고, 계산이 어디서 물리 구조를 잃었는지 묻는 기준을 준다.</strong> 그 기준은 고전역학과 장 이론에서 시작해 수치해석과 과학 AI로 이어진다. 실제 응용에서는 항상 계의 경계와 외부 구동, 근사와 알고리즘을 함께 명시해야 한다.</p>
+<h2 id="section-12">참고문헌과 원문</h2><div class="references">
+<ol>
+<li>Wegsman, S. <em>How Noether’s Theorem Revolutionized Physics</em>. Quanta Magazine, 2025-02-07. <a href="https://www.quantamagazine.org/how-noethers-theorem-revolutionized-physics-20250207/">기사</a>. 역사와 문제의식의 출발점.</li>
+<li>Noether, E. <em>Invariante Variationsprobleme</em> (1918), 235–257. M. A. Tavel 영문 번역, <em>Transport Theory and Statistical Physics</em> <strong>1</strong>(3), 186–207 (1971). <a href="https://doi.org/10.1080/00411457108231446">DOI</a> · <a href="https://arxiv.org/html/physics/0503066v3">영문 원문, arXiv:physics/0503066v3, 2018-05-30</a>. 제1·2정리는 §1–2.</li>
+<li>Harvey Mudd College Physics 111 자료. <em>Symmetries and Conservation Laws</em>, Chapter 6, §6.4–6.5. <a href="https://www.physics.hmc.edu/~saeta/courses/p111/uploads/Y2012/Ch06.pdf">원문 PDF</a>. Saeta 교수의 강의 웹사이트에서 제공하는 교재 장으로, PDF에 명시되지 않은 저자는 지정하지 않았다. 시간 변환·경계항을 포함한 역학 설명.</li>
+<li>Tong, D. <em>Quantum Field Theory</em>, §1.3, Symmetries and Noether’s theorem. <a href="https://www.damtp.cam.ac.uk/user/tong/qft/qfthtml/S1.html">공식 강의 노트</a>. 전류·전하·경계조건과 양자 이론의 배경.</li>
+<li>Avery, S. G.; Schwab, B. U. W. <em>Noether’s Second Theorem and Ward Identities for Gauge Symmetries</em>. <em>Journal of High Energy Physics</em> <strong>2016</strong>, 31. <a href="https://arxiv.org/abs/1510.07038">arXiv:1510.07038</a> · <a href="https://doi.org/10.1007/JHEP02(2016)031">DOI</a>. 국소 대칭과 항등식, 경계의 역할.</li>
+<li>Tong, D. <em>General Relativity</em>, Chapter 4, 특히 §4.3 및 §4.5–4.6. <a href="https://www.damtp.cam.ac.uk/user/tong/gr/grhtml/S4.html">공식 강의 노트</a>. 공변 보존, Killing 대칭, 에너지와 우주론.</li>
+<li>Marsden, J. E.; West, M. <em>Discrete mechanics and variational integrators</em>. <em>Acta Numerica</em> <strong>10</strong>, 357–514 (2001). <a href="https://doi.org/10.1017/S096249290100006X">DOI</a> · <a href="https://lagrangeweb.web.engr.illinois.edu/var_int/">저자 해설</a>. 이산 작용, 운동량과 심플렉틱 구조.</li>
+<li>Xiao, J. et al. <em>Explicit high-order non-canonical symplectic particle-in-cell algorithms for Vlasov-Maxwell systems</em>. <em>Physics of Plasmas</em> <strong>22</strong>, 112504 (2015). <a href="https://doi.org/10.1063/1.4935904">DOI</a> · <a href="https://arxiv.org/abs/1510.06972v2">arXiv:1510.06972v2, 2016-03-12</a>. 플라스마 수치계산 사례.</li>
+<li>Greydanus, S.; Dzamba, M.; Yosinski, J. <em>Hamiltonian Neural Networks</em>. NeurIPS 2019. <a href="https://arxiv.org/html/1906.01563">원문</a> · <a href="https://papers.neurips.cc/paper_files/paper/2019/hash/26cd8ecadce0d4efd6cc8a8725cbd1f8-Abstract.html">학회</a>. §2의 구조와 §3.2의 보존량 해석.</li>
+<li>Cranmer, M. et al. <em>Lagrangian Neural Networks</em>. ICLR 2020 Deep Differential Equations Workshop. <a href="https://arxiv.org/abs/2003.04630v2">arXiv:2003.04630v2, 2020-07-30</a> · <a href="https://github.com/MilesCranmer/lagrangian_nns">저자 코드</a>. 학회 본회의 논문과 구분하는 워크숍 연구.</li>
+<li>Batzner, S. et al. <em>E(3)-equivariant graph neural networks for data-efficient and accurate interatomic potentials</em>. <em>Nature Communications</em> <strong>13</strong>, 2453 (2022). <a href="https://doi.org/10.1038/s41467-022-29939-5">DOI</a> · <a href="https://arxiv.org/html/2101.03164">공개 원고</a>. Methods의 에너지·힘 구성.</li>
+<li>Sagastizabal, R. et al. <em>Experimental error mitigation via symmetry verification in a variational quantum eigensolver</em>. <em>Physical Review A</em> <strong>100</strong>, 010302(R) (2019). <a href="https://doi.org/10.1103/PhysRevA.100.010302">DOI</a> · <a href="https://arxiv.org/html/1902.11258">공개 원고</a>. 공개 원고의 제목은 <em>Error Mitigation by Symmetry Verification on a Variational Quantum Eigensolver</em>.</li>
+<li>Kaplunovsky, V. <em>Spontaneous Symmetry Breaking</em>, University of Texas 강의자료 (2020). <a href="https://web2.ph.utexas.edu/~vadim/Classes/2020f/SSB.pdf">원문 PDF</a>. 법칙·바닥상태의 대칭과 보존 전류.</li>
+<li>Fujikawa, K. <em>Path-Integral Measure for Gauge-Invariant Fermion Theories</em>. <em>Physical Review Letters</em> <strong>42</strong>, 1195–1198 (1979). <a href="https://doi.org/10.1103/PhysRevLett.42.1195">DOI·원문</a>. 축 이상과 적분측도. <a href="https://www.damtp.cam.ac.uk/user/tong/gaugetheory/3anom.pdf">Tong, Gauge Theory §3.2–3.4</a>는 이상과 상쇄의 보충 설명.</li>
+</ol>
+<p class="downloads"><a href="review_ko.pdf">한국어 PDF</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">English review</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/review_en.pdf">English PDF</a></p>
+</div><!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">작성·검증 정보</h2><dl><div><dt>책임 편집자</dt><dd>김현중</dd></div><div><dt>AI 보조</dt><dd>OpenAI Codex · 정확한 작성 모델 식별자: 미보존</dd></div><div><dt>에이전트와 역할</dt><dd>root: 자료 종합·한국어 작성·편집·설명 그림·계산 예제; academic_sources: 원 논문·수식·학술적 한계 확인; applications_sources: 계산·과학기계학습 응용과 1차 출처 조사·영어 번역; review_format: 저장소 형식 감사·한영 조판·HTML/PDF 생성과 출력 검사</dd></div><div><dt>입력과 산출물</dt><dd>공유 LinkedIn 링크, 공개 논문·공식 자료 → 한영 기술 리뷰, 개념 표지, 설명용 도표·수식 및 PDF</dd></div><div><dt>제작 요청 요약</dt><dd>공유 기사에서 출발해 노터 정리의 물리·수학적 의미를 설명하고, 관련 학술 연구와 계산·과학 AI의 응용을 1차 출처로 보강한 기술 리뷰 작성.</dd></div><div><dt>하네스</dt><dd><a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a></dd></div><div><dt>검증 범위</dt><dd>공개 1차 출처·서지·핵심 수식과 해석의 범위, 한영 수치·기호, 로컬 자산·표·수식·페이지 출력 검사. 독립 실험 재현은 수행하지 않았다.</dd></div><div><dt>사람 검토 수준</dt><dd>주제·작성·공개 게시 요청 확인; 문장 단위 사람 승인 없음.</dd></div><div><dt>근거 기준일</dt><dd>2026-10-17</dd></div></dl><p>원문의 보고 결과, 리뷰의 설명용 재구성과 후속 응용 제안을 구분한다. 표지는 AI로 만든 개념 그림이며 실험 영상이나 계산 데이터가 아니다.</p></section><!-- End AI Tech Review Authoring Disclosure --></article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-17<br>연속대칭, 보존량과 계산의 구조를 연결하는 해설.</footer></main></body></html>

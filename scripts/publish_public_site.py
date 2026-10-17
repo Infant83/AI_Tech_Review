@@ -101,6 +101,38 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-17_noether-symmetry-conservation",
+        title="대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리",
+        subtitle="작용의 연속 대칭이 운동량과 에너지로 이어지는 이유, 그리고 그 구조를 시뮬레이션·과학 AI·양자계산에 옮길 때의 조건",
+        date="2026-10-17", updated="2026-10-17", category="AI for Science",
+        tags=("Noether’s Theorem", "Symmetry", "Conservation Laws", "Scientific Computing", "Scientific Machine Learning", "Molecular Dynamics", "Quantum Computing"),
+        summary="노터 정리의 변분 원리와 두 정리의 차이, 일반상대론의 에너지 문제를 설명합니다. 구조 보존 적분·HNN/LNN·등변 원자간 퍼텐셜·양자 대칭 검증을 연결하고, 직접 계산한 진동자 예제로 물리적 보존과 수치 오차를 구분합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "synthesis, Korean writing, conceptual cover, original figures and numerical examples; publication integration and live QA", "자료 종합·한국어 작성·개념 표지·설명 그림·계산 예제·게시 통합 및 공개 페이지 검증"),
+            PublicAgent("academic_sources", "foundational primary-source research, formula checking and scholarly limitations audit", "기초 원전 조사·수식 확인·학술적 한계 검토"),
+            PublicAgent("applications_sources", "scientific-computing and scientific-ML applications research, primary-source checking and English translation", "과학 계산·과학기계학습 응용 조사·1차 출처 확인·영어 번역"),
+            PublicAgent("review_format", "repository-format audit, bilingual typesetting, HTML/PDF generation and output QA", "저장소 형식 감사·한영 조판·HTML/PDF 생성·출력 검사"),
+            PublicAgent("publish_audit", "publication configuration, asset dependencies and deployment-path audit", "게시 설정·자산 의존성·배포 경로 감사"),
+        ),
+        verification_scope=(
+            "Quanta source article, original papers and university lecture notes: bibliography, Noether transformation convention, field-theory and general-relativity boundaries, and computational application claims",
+            "Independent harmonic-oscillator teaching calculation with three integrators; bilingual formulas and values, deterministic explanatory figures, HTML/PDF and desktop/mobile output checks",
+            "Public-review registration, metadata and language/download links, font and figure dependencies, disclosure boundaries and GitHub Pages deployment configuration",
+        ),
+        verification_scope_ko=(
+            "Quanta 출발 기사·원 논문·대학 강의노트의 서지, 노터 변환 관례, 장론·일반상대론의 성립 범위와 계산 응용 주장 대조",
+            "세 적분기를 사용한 독립 조화진동자 설명 계산·한영 수식과 수치·결정론적 도표·HTML/PDF·데스크톱 및 모바일 출력 검사",
+            "공개 리뷰 등록·metadata·언어 및 PDF 링크·글꼴과 그림 의존성·작성 공개 범위·GitHub Pages 배포 설정 검토",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-17",
+        human_review_level="topic, writing and public posting explicitly requested; no line-by-line human approval",
+        human_review_level_ko="주제·작성·공개 게시 요청 확인; 문장 단위 사람 승인 없음",
+        disclosure_note_ko="공유된 Quanta 기사는 출발점이며, 원전·학술 연구를 보강한 독립 기술 리뷰입니다. 진동자 수치 계산과 설명 도표는 직접 제작한 교육 예제로 인용 논문의 실험 재현이나 비용을 맞춘 적분기 벤치마크가 아닙니다. HNN의 학습된 에너지 보존, NequIP의 에너지 기울기 힘, 이산 패리티 검증과 연속 대칭 노터 정리의 차이를 구분했습니다. OLED 연결은 리뷰어의 응용 제안이며, 독립 실험·양자 우위·OLED 소자 성능을 새로 검증하지 않았습니다. 표지는 내장 imagegen으로 만든 개념 일러스트입니다. 정확한 작성 모델 식별자는 미보존입니다.",
+        disclosure_note_en="The shared Quanta article is the starting point for an independent technical synthesis supplemented with original papers and scholarly sources. The oscillator calculation and explanatory figures are original teaching examples, not reproductions of cited experiments or cost-matched integrator benchmarks. Distinguished conservation of an HNN's learned energy, NequIP's energy-gradient forces, discrete parity verification and continuous-symmetry Noether theorems. OLED connections are reviewer proposals; no new independent experiment, quantum-advantage or OLED-device validation was performed. The cover is a conceptual illustration made with built-in imagegen. Exact authoring-model identifier not retained.",
+    ),
+    PublicReview(
         folder="2026-10-06_quantum-quasiparticles-and-structured-computation",
         title="엑시톤에서 최적해까지: 물리적 구조가 바꾸는 양자계산 비용",
         subtitle="다중 엑시톤의 Bethe–Salpeter 모형, 구조를 이용한 어닐링·상태준비, 그리고 공정한 검증의 조건",

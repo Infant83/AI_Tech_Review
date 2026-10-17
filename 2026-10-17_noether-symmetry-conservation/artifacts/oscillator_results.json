@@ -1,0 +1,41 @@
+{
+  "purpose": "Independent teaching calculation; not experimental data or a reproduction.",
+  "normalization": {
+    "mass": 1,
+    "angular_frequency": 1,
+    "initial_q": 1,
+    "initial_p": 0
+  },
+  "step_size": 0.1,
+  "steps": 2000,
+  "final_time": 200.0,
+  "forward_euler_analytic_final_ratio": 439286205.05010384,
+  "methods": {
+    "forward": {
+      "initial_energy": 0.5,
+      "final_energy_ratio": 439286205.0500984,
+      "min_energy_ratio": 1.0,
+      "max_energy_ratio": 439286205.0500984,
+      "max_relative_energy_error": 439286204.0500984
+    },
+    "symplectic": {
+      "initial_energy": 0.5,
+      "final_energy_ratio": 1.049825516576355,
+      "min_energy_ratio": 0.9523809649125872,
+      "max_energy_ratio": 1.052631575867839,
+      "max_relative_energy_error": 0.052631575867839064
+    },
+    "verlet": {
+      "initial_energy": 0.5,
+      "final_energy_ratio": 0.9982791509297443,
+      "min_energy_ratio": 0.9975000006991349,
+      "max_energy_ratio": 1.0,
+      "max_relative_energy_error": 0.0024999993008650856
+    }
+  },
+  "updates": {
+    "forward": "q_next=q+h*p; p_next=p-h*q",
+    "symplectic": "p_next=p-h*q; q_next=q+h*p_next",
+    "verlet": "p_half=p-h*q/2; q_next=q+h*p_half; p_next=p_half-h*q_next/2"
+  }
+}
