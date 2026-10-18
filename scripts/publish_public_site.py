@@ -121,8 +121,8 @@ REVIEWS: tuple[PublicReview, ...] = (
             PublicAgent("hero_illustration", "built-in image generation, cover export and visual inspection", "내장 이미지 생성·표지 저장 및 시각 검토"),
             PublicAgent("figures_layers", "original technology-layer and agent-path diagrams with source mapping", "기술층·에이전트 경로 도식 제작 및 근거 연결"),
             PublicAgent("evidence_figure", "primary-source value checks and redrawing of three independent result panels", "원문 수치 대조·서로 다른 성과의 독립 패널 재도식화"),
-            PublicAgent("agent_visual_audit", "read-only review of agent actions, feedback and independent-checker boundaries in the cover", "표지의 에이전트 행동·피드백·독립 검증기 구분 감사"),
-            PublicAgent("hero_agent_revision", "built-in cover-image editing to show agent tool use and iterative revision", "내장 이미지 편집으로 에이전트의 도구 호출·반복 수정 표현"),
+            PublicAgent("agent_visual_audit", "read-only review of expert-agent balance, actions, feedback and independent-checker boundaries in the cover", "표지의 전문가·에이전트 균형과 행동·피드백·독립 검증기 구분 감사"),
+            PublicAgent("hero_agent_revision", "built-in cover-image editing to show expert-agent interaction, tool use and iterative revision", "내장 이미지 편집으로 전문가와 에이전트의 상호작용·도구 호출·반복 수정 표현"),
         ),
         verification_scope=(
             "Primary papers, official product documentation and author repositories available through 2026-10-19; publication dates, comparison metrics and execution settings",
@@ -3014,6 +3014,10 @@ h1 {
   object-fit: contain;
   padding: clamp(12px, 2vw, 22px);
   background: #f8faf8;
+}
+.latest-media img[src$="circuit_design_expert_agent_hero_v3.webp"] {
+  object-fit: contain;
+  background: #f3efe8;
 }
 .text-link {
   display: inline-flex;

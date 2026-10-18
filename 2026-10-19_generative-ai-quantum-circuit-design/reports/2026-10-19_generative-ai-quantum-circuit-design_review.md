@@ -9,7 +9,7 @@ status: published
 language: ko
 canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/"
 alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/"
-social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_agent_hero_v2.webp"
+social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_expert_agent_hero_v3.webp"
 evidence cutoff: "2026-10-19"
 writing assistance: "OpenAI Codex"
 editorial harness: "AI Tech Review Writing Harness"
@@ -27,8 +27,8 @@ tags:
 양자 알고리즘을 실행하려면 수식을 실제 게이트의 순서로 바꿔야 합니다. 같은 계산도 중간 결과를 얼마나 저장하는지, 보조 큐비트를 언제 되돌려 놓는지, 어떤 연산을 함께 처리하는지에 따라 필요한 자원이 크게 달라집니다. 생성형 AI는 이 구현을 여러 방식으로 제안하고, 컴파일러와 평가기가 좋은 후보를 고르는 과정에 참여하고 있습니다.
 
 <figure class="article-hero-figure">
-<img src="../artifacts/circuit_design_agent_hero_v2.webp" width="1600" height="900" alt="AI 에이전트가 회로 후보를 제안하고 별도 검증 도구를 호출한 뒤 피드백을 받아 후보를 수정하는 반복 과정을 보여주는 일러스트" decoding="async">
-<figcaption>그림 1. AI 에이전트가 회로 후보를 제안하고 별도 검증 도구를 호출합니다. 검증·평가 결과가 에이전트로 돌아와 후보 수정으로 이어지는 과정을 표현했습니다.</figcaption>
+<img src="../artifacts/circuit_design_expert_agent_hero_v3.webp" width="1600" height="900" alt="작은 전문가가 요구사항을 조정하며 AI 에이전트와 상호작용하고, 에이전트가 회로 후보를 제안해 별도 검증 도구의 피드백으로 수정하는 과정" decoding="async">
+<figcaption>그림 1. 전문가는 목표와 제약을 전달하고 제안을 검토합니다. AI 에이전트는 회로 후보를 작성하고 별도 검증 도구의 피드백을 받아 수정을 반복합니다.</figcaption>
 </figure>
 
 <small>AI로 제작한 개념 일러스트이며 실제 제품 화면·장치·실험 결과를 나타내지 않습니다.</small>

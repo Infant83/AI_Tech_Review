@@ -1,0 +1,72 @@
+{
+  "asset": "circuit_design_expert_agent_hero_v3",
+  "created": "2026-10-19",
+  "mode": "built-in image_gen edit",
+  "use_case": "precise-object-edit",
+  "input_images": [
+    {
+      "path": "circuit_design_agent_hero_v2.png",
+      "role": "edit target; preserve composition, tool invocation and return loop; reduce console emphasis and add a supporting human expert"
+    }
+  ],
+  "prompts": [
+    {
+      "step": 1,
+      "role": "initial local edit",
+      "prompt": "Use case: precise-object-edit.\nAsset type: 16:9 scientific editorial website hero.\nInput image 1 is the edit target. The user likes this overall illustration and requests a SMALL, LOCAL REVISION, NOT a redesign.\n\nCHANGE ONLY TWO THINGS:\n1. Add one small adult human expert interacting with the AI agent on the LEFT SIDE, in the space between/behind the existing specification card and the AI AGENT console. The expert is a restrained tactile 3D editorial figurine in simple charcoal-gray professional clothing, neutral appearance and understated face details, about 20–25% of the full image height. They are clearly an adult, not a child or robot. Show an active interaction: holding or reading a modest specification tablet with one hand and using the other hand to point at a constraint on the existing specification card or operate a small input surface at the edge of the agent console. Their gaze and body angle face the specification card AND console, conveying a human expert providing requirements and reviewing the agent's proposals. They must be close enough to touch the input, not a detached decorative visitor. Keep hands simple and natural, no unnecessary fingers detail. The human is a supporting element and does not dominate.\n2. Make the existing AI AGENT console, including its base, about 15–20% smaller. Reduce the AI AGENT lettering proportionally and slightly reduce the teal rim glow/contrast. It should still read clearly but no longer overwhelm the expert, candidate circuits, independent checker and feedback loop. Use the freed space naturally for the expert. Keep the same console identity, materials, face and slight isometric perspective.\n\nLOCK ALL OTHER DETAILS AS CLOSELY AS POSSIBLE:\nThe warm off-white environment, muted teal, charcoal, tiny vermilion accents, tactile glass circuit cards, lighting, editorial materials, perspective and camera framing. The large PROPOSE arrow from the agent toward the same three transparent candidate circuit cards, including the middle rejected candidate with a red X. The separate CHECK instrument module and magnifying-glass emblem. The broad vermilion REFINE arrow returning from CHECK back into AI AGENT, with its arrowhead at the agent. The final small selected circuit on its small abstract substrate at the right. Preserve the exact four word labels and their spelling: \"AI AGENT\", \"PROPOSE\", \"CHECK\", \"REFINE\". Preserve positions and directions of the proposal/check/refinement story; minor repositioning to accommodate the smaller console is permitted, no wholesale rearrangement.\n\nThe result should feel like the SAME scene with a human specialist visibly collaborating with a slightly quieter software agent. Maintain balanced human–agent–tool interaction. Do not introduce a large person or portrait, a robot, a brain, a second human, new labels, new arrows, new circuit candidates, extra decorative objects, numerical claims, logos, actual QPU hardware, or code walls. Opaque background.",
+      "result": "Preserved scene and reduced console; expert was too tall, so a single targeted refinement followed."
+    },
+    {
+      "step": 2,
+      "role": "selected targeted refinement of previous generated edit",
+      "prompt": "Use case: precise-object-edit.\nInput image 1 is the edit target. It is almost correct. MAKE ONLY ONE LOCAL CHANGE: reduce the human expert's scale by about 45%, so the whole adult figure is approximately 25–28% of the total image height instead of almost half the image height. This is a small supporting figurine, not a visual main subject. Position the smaller figure immediately beside the left edge of the AI AGENT console, between the console and the specification card, feet on the same floor plane. Preserve the expert's charcoal-gray clothes, tablet in one hand, and active pointing gesture with the other hand toward the lower part of the specification card or the small console input, to retain clear interaction. Make any tiny finger adjustment natural for the smaller scale. Face details understated. The figure must remain visibly an adult professional in miniature, not a child.\nLOCK EVERYTHING ELSE EXACTLY AS IT IS: the now quieter smaller AI AGENT console, specification card, all four labels AI AGENT / PROPOSE / CHECK / REFINE, three circuit candidates with the rejected middle candidate, independent checker, outgoing arrows, returning vermilion feedback arrow, final small circuit and substrate, warm off-white background, materials, palette, lighting, framing, 16:9 camera and perspective. No extra people, no new text, no pipeline redesign. The existing composition is already liked. Only the small human's scale and nearby position need adjustment.",
+      "result": "Reduced expert to a supporting figure near the console, preserving tablet, pointing gesture and all pipeline labels."
+    }
+  ],
+  "outputs": [
+    {
+      "path": "circuit_design_expert_agent_hero_v3.png",
+      "format": "PNG",
+      "width": 1672,
+      "height": 941,
+      "bytes": 1883190,
+      "role": "selected original generated output"
+    },
+    {
+      "path": "circuit_design_expert_agent_hero_v3.webp",
+      "format": "WebP",
+      "width": 1600,
+      "height": 900,
+      "bytes": 134218,
+      "role": "web hero",
+      "export": {
+        "quality": 91,
+        "method": 6,
+        "resampling": "Pillow LANCZOS, ImageOps.fit center crop; approximately 0.06% vertical crop to 16:9"
+      }
+    }
+  ],
+  "conceptual_status": "Conceptual editorial illustration of expert–agent–tool interaction; no experimental measurement or actual QPU performance is represented.",
+  "qa": {
+    "original_inspected": true,
+    "webp_inspected": true,
+    "mobile_preview_inspected": {
+      "width": 366,
+      "height": 206,
+      "result": "Expert silhouette, tablet and pointing gesture remain visible as a supporting element; AI AGENT and the propose/check/refine loop remain readable."
+    },
+    "criteria": [
+      "One small adult expert visibly points at the specification card while holding a tablet near the console.",
+      "The agent console is approximately 15–20% smaller than v2 and its lettering is proportionally reduced.",
+      "PROPOSE, CHECK and REFINE labels and arrow directions are preserved.",
+      "The independent checker remains separated from the agent.",
+      "Three candidates, including a rejected middle candidate, and the secondary final output remain present.",
+      "Warm off-white, muted teal/charcoal and vermilion tactile editorial style is preserved."
+    ],
+    "limitations": [
+      "Expert occupies roughly the left 14–19% of the image width, so a narrow centered cover crop may trim part of the figure; full-width article hero displays it.",
+      "Gate symbols and revisions are conceptual, not executable circuits.",
+      "Checker represents independent tool feedback, not a claim that all circuits are formally proven or hardware performance is measured."
+    ]
+  }
+}
