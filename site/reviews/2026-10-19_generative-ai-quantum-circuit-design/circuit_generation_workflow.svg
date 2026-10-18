@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">생성형 AI를 이용한 양자회로 설계와 검증의 흐름</title>
+  <desc id="desc">문제와 제약에서 출발해 AI 후보 생성, 독립 검증, 장치별 컴파일과 평가, 채택 회로로 이어진다. 평가 결과는 후보 생성으로 돌아가 수정에 쓰인다. 코드 에이전트, 게이트 시퀀스 모델, 확산 및 강화학습은 서로 다른 후보 생성 방식이다. Classiq의 LLM, Qmod, 합성기 경로는 선택적 구현 예이며 공통 필수 단계가 아니다. 의미 정확성, 회로 비용, 실제 양자 장치 실증은 별도 평가 항목이다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#34414d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L8 5 L1 9" fill="none" stroke="#a43c3c" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; fill: #202b35; }
+      .heading { font-size: 21px; font-weight: 700; }
+      .body { font-size: 16px; }
+      .small { font-size: 14px; fill: #5c6770; }
+      .muted { fill: #5c6770; }
+      .red { fill: #a43c3c; }
+      .box { fill: #fff; stroke: #9ca7af; stroke-width: 1.4; }
+      .flow { fill: none; stroke: #34414d; stroke-width: 1.8; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="680" fill="#fff"/>
+  <text x="38" y="50" font-size="30" font-weight="750">생성형 AI 양자회로 설계: 생성에서 검증과 채택까지</text>
+  <text x="38" y="82" font-size="17" class="muted">좋은 후보를 제안하는 능력과, 그 회로가 맞고 유용함을 확인하는 절차를 함께 본다.</text>
+
+  <!-- Feedback returns to proposal generation; it is not an approval shortcut. -->
+  <path d="M815 158 V123 H363 V158" fill="none" stroke="#a43c3c" stroke-width="1.8" marker-end="url(#redArrow)"/>
+  <rect x="445" y="110" width="290" height="25" fill="#fff"/>
+  <text x="590" y="128" text-anchor="middle" font-size="15" class="red">평가 피드백 → 후보 수정과 재탐색</text>
+
+  <!-- Main workflow. -->
+  <rect class="box" x="38" y="158" width="200" height="132" rx="12"/>
+  <text x="56" y="188" class="small">01</text>
+  <text x="56" y="216" class="heading">문제와 제약</text>
+  <text x="56" y="246" class="body">목표 연산·허용 오차</text>
+  <text x="56" y="270" class="body">자원 한도·장치 조건</text>
+
+  <path class="flow" d="M239 224 H264"/>
+  <rect x="268" y="158" width="190" height="132" rx="12" fill="#fcf5f4" stroke="#a43c3c" stroke-width="1.6"/>
+  <text x="286" y="188" class="small red">02</text>
+  <text x="286" y="216" class="heading">AI 후보 생성</text>
+  <text x="286" y="246" class="body">구조·코드·명세 제안</text>
+  <text x="286" y="270" class="small">필요 시 합성기로 회로화</text>
+
+  <path class="flow" d="M459 224 H484"/>
+  <rect class="box" x="488" y="158" width="190" height="132" rx="12"/>
+  <text x="506" y="188" class="small">03</text>
+  <text x="506" y="216" class="heading">독립 검증</text>
+  <text x="506" y="246" class="body">의미·오차·제약 확인</text>
+  <text x="506" y="270" class="body">위상·보조 큐비트 점검</text>
+
+  <path class="flow" d="M679 224 H704"/>
+  <rect class="box" x="708" y="158" width="215" height="132" rx="12"/>
+  <text x="726" y="188" class="small">04</text>
+  <text x="726" y="216" font-size="20" font-weight="700">장치별 컴파일과 평가</text>
+  <text x="726" y="246" class="body">게이트·연결성에 맞춤</text>
+  <text x="726" y="270" class="body">자원·잡음·실행성 평가</text>
+
+  <path class="flow" d="M924 224 H949"/>
+  <rect class="box" x="953" y="158" width="209" height="132" rx="12"/>
+  <text x="971" y="188" class="small">05</text>
+  <text x="971" y="216" class="heading">채택 회로</text>
+  <text x="971" y="246" class="body">목표를 만족하는 후보</text>
+  <text x="971" y="270" class="body">근거와 적용 한계 기록</text>
+
+  <!-- These are alternatives, not a compulsory sequence. -->
+  <path d="M363 291 V306" stroke="#a43c3c" stroke-width="1.2"/>
+  <rect x="268" y="307" width="190" height="86" rx="9" fill="#fafafa" stroke="#dedfe1"/>
+  <text x="363" y="331" text-anchor="middle" font-size="15">코드 에이전트</text>
+  <text x="363" y="356" text-anchor="middle" font-size="15">게이트 시퀀스 모델</text>
+  <text x="363" y="381" text-anchor="middle" font-size="15">확산·강화학습</text>
+  <text x="480" y="336" font-size="15" class="muted">후보를 만드는 서로 다른 접근</text>
+  <text x="480" y="361" class="small">생성 모델·탐색 정책·코드 작성 도구를 구분한다.</text>
+  <text x="480" y="384" class="small">검증 실패 후보도 피드백을 받아 다시 생성할 수 있다.</text>
+
+  <!-- An explicit implementation example, confined to its own explanatory lane. -->
+  <rect x="38" y="416" width="1124" height="84" rx="11" fill="#fafafa" stroke="#dedfe1"/>
+  <text x="57" y="443" font-size="16" font-weight="700">Classiq 경로의 예</text>
+  <text x="57" y="470" class="small">AI 생성·합성 단계의 구현</text>
+  <rect x="265" y="434" width="104" height="42" rx="7" fill="#fff" stroke="#b2bbc2"/>
+  <text x="317" y="461" text-anchor="middle" font-size="17" font-weight="600">LLM</text>
+  <path class="flow" d="M376 455 H399"/>
+  <rect x="406" y="434" width="123" height="42" rx="7" fill="#fff" stroke="#b2bbc2"/>
+  <text x="467.5" y="461" text-anchor="middle" font-size="17" font-weight="600">Qmod 명세</text>
+  <path class="flow" d="M536 455 H559"/>
+  <rect x="566" y="434" width="112" height="42" rx="7" fill="#fff" stroke="#b2bbc2"/>
+  <text x="622" y="461" text-anchor="middle" font-size="17" font-weight="600">합성기</text>
+  <path class="flow" d="M685 455 H708"/>
+  <rect x="715" y="434" width="126" height="42" rx="7" fill="#fff" stroke="#b2bbc2"/>
+  <text x="778" y="461" text-anchor="middle" font-size="17" font-weight="600">게이트 회로</text>
+  <text x="866" y="449" font-size="15" class="muted">Qmod는 이 경로의 중간 표현</text>
+  <text x="866" y="474" font-size="15" class="muted">생성 방식마다 다른 경로 사용</text>
+
+  <!-- Separate evidence layers: do not collapse syntax, semantics, and hardware. -->
+  <text x="38" y="535" font-size="18" font-weight="700">세 가지 결과를 따로 확인</text>
+  <rect x="38" y="550" width="354" height="91" rx="10" fill="#fff" stroke="#ccd2d7"/>
+  <rect x="38" y="566" width="4" height="25" fill="#a43c3c"/>
+  <text x="57" y="578" font-size="17" font-weight="700">정확도 · 의미</text>
+  <text x="57" y="604" font-size="15">요구한 연산을 허용 오차 안에서 수행하는가</text>
+  <text x="57" y="626" class="small">형식·시뮬레이션·동등성 검사 등</text>
+
+  <rect x="423" y="550" width="354" height="91" rx="10" fill="#fff" stroke="#ccd2d7"/>
+  <rect x="423" y="566" width="4" height="25" fill="#a43c3c"/>
+  <text x="442" y="578" font-size="17" font-weight="700">회로 비용</text>
+  <text x="442" y="604" font-size="15">큐비트·게이트 수·깊이를 얼마나 쓰는가</text>
+  <text x="442" y="626" class="small">정확도 조건과 기준선·장치 제약을 함께 명시</text>
+
+  <rect x="808" y="550" width="354" height="91" rx="10" fill="#fff" stroke="#ccd2d7"/>
+  <rect x="808" y="566" width="4" height="25" fill="#a43c3c"/>
+  <text x="827" y="578" font-size="17" font-weight="700">실제 QPU 검증</text>
+  <text x="827" y="604" font-size="15">실제 장치에서도 성능이 확인되는가</text>
+  <text x="827" y="626" class="small">장치 실험을 별도 보고 · 시뮬레이션과 구분</text>
+
+  <text x="38" y="665" font-size="13" class="muted">리뷰 개념도 · 특정 제품의 전체 구조나 실험 성과를 나타내지 않음 · 2026-10-19</text>
+</svg>

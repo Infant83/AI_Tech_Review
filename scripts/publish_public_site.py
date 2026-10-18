@@ -101,6 +101,41 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-19_generative-ai-quantum-circuit-design",
+        title="생성형 AI를 통한 양자회로 설계와 최적화",
+        subtitle="회로 생성 연구와 기업별 기술 자산을 비교하고 범용 에이전트 시대의 플랫폼 경쟁력을 전망합니다",
+        date="2026-10-19", updated="2026-10-19", category="Quantum Computing",
+        tags=("Generative AI", "Quantum Circuit Synthesis", "Classiq", "Reinforcement Learning", "Quantum Chemistry", "FTQC", "Agentic AI"),
+        summary="확산모델·Transformer·강화학습·LLM 에이전트의 양자회로 생성과 최적화를 검토합니다. Classiq와 IBM·NVIDIA·Quantinuum 등의 기술층별 자산을 비교하고, 전문가와 범용 에이전트·공개 도구의 조합을 기준선으로 플랫폼의 방어 가능성과 전체 비용을 평가합니다.",
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "research integration, Korean writing, strategic analysis, publication preparation and deployed-page verification", "조사 통합·한국어 집필·전략 분석·게재 준비·공개 페이지 검증"),
+            PublicAgent("papers", "primary-paper research and final factual audit", "원 논문 조사·최종 사실관계 감사"),
+            PublicAgent("industry", "company, product and benchmark research and scope audit", "기업·제품·벤치마크 조사·주장 범위 감사"),
+            PublicAgent("frontier", "latest-result verification and deterministic workflow diagram", "최신 결과 대조·결정론적 절차 도식 작성"),
+            PublicAgent("moat_classiq", "Classiq technical-asset and public-alternative analysis", "Classiq 기술 자산·공개 대안 분석"),
+            PublicAgent("moat_compare", "cross-company differentiation and execution-layer comparison", "기업별 차별화·실행 계층 비교"),
+            PublicAgent("agent_bypass", "agent-substitution analysis and evaluation-design audit", "에이전트 대체 가능성·평가 설계 감사"),
+            PublicAgent("publication_audit", "read-only publication pipeline and public-asset audit", "게시 파이프라인·공개 자산 읽기 감사"),
+            PublicAgent("publication_copyedit", "publication prose and claim-boundary review", "게재 문체·주장 범위 검토"),
+        ),
+        verification_scope=(
+            "Primary papers, official product documentation and author repositories available through 2026-10-19; publication dates, comparison metrics and execution settings",
+            "Circuit-resource estimates, classical simulation and physical-QPU results distinguished; no independent model training, circuit reproduction or product benchmark",
+            "Technical-asset analysis and conditional outlook; proposed same-agent platform comparison not executed; Korean HTML, conceptual SVG, public metadata, links and desktop/mobile publication checks",
+        ),
+        verification_scope_ko=(
+            "2026-10-19까지 공개된 원 논문·공식 제품 문서·저자 저장소의 공개일·비교 지표·실행 환경 대조",
+            "회로 자원 추정·고전 시뮬레이션·실제 QPU 결과 구분; 모델 학습·회로 계산·제품 벤치마크의 독립 재현 없음",
+            "기술 자산 분석·조건부 전망; 동일 에이전트의 플랫폼 비교 실험 미실행; 한국어 HTML·개념 SVG·게시 metadata·링크·데스크톱 및 모바일 공개 페이지 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-19",
+        human_review_level="topic, strategic framing and public posting explicitly requested; no separately recorded line-by-line human review",
+        human_review_level_ko="주제·전략적 관점·공개 게시 요청 확인; 별도 문장 단위 사람 검토 기록 없음",
+        disclosure_note_ko="Anthropic의 39배는 특정 가역회로의 Toffoli 수와 최대 논리 큐비트 수의 곱이며 QPU 실행속도 배수가 아닙니다. ADAPT-GQE의 학습비 제외 비교와 12큐비트 실기기 검증, DQAOA-GPT의 GPU 시뮬레이션을 구분했습니다. QMill의 기능 보존과 Haiqu의 근사 상태 압축을 직접 같은 지표로 비교하지 않았습니다. Q-CTRL 비교 논문의 유료 자문 이해관계를 표시했습니다. 기업의 전략 자산과 향후 시나리오는 공개 기술 자료에 기초한 분석이며 독점 데이터·가격지배력·고객 유지율의 입증이 아닙니다. 도식은 직접 작성한 개념도입니다. 정확한 작성 모델 식별자는 미보존입니다.",
+        disclosure_note_en="The Anthropic 39x figure is a task-specific Toffoli-count times peak-logical-qubit metric, not measured QPU speed. Distinguished ADAPT-GQE inference comparisons excluding training and its 12-qubit hardware validation from DQAOA-GPT GPU simulations. Exact-function compression and approximate state compression are different tasks. Disclosed the paid-consultancy conflict in the Q-CTRL comparison paper. Strategic assets and future scenarios are analytical interpretations, not demonstrated proprietary-data advantages, pricing power or retention. The workflow SVG is an original conceptual diagram. Exact authoring-model identifier not retained.",
+    ),
+    PublicReview(
         folder="2026-10-18_materials-dataset-redundancy",
         title="OMat24 데이터 중복성과 국소 화학 환경을 이용한 학습 집합 압축",
         subtitle="원자 환경의 다양성, 예측 오차와 고정밀 기준 계산의 배분",
