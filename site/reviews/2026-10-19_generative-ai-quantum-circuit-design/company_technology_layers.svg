@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1624" viewBox="0 0 1000 1624" role="img" aria-labelledby="title desc">
+  <title id="title">양자 소프트웨어 기업의 공개 기능을 다섯 기술층에 배치한 지도</title>
+  <desc id="desc">의도 해석과 모델 작성에는 Classiq와 IBM, 합성과 컴파일에는 Classiq, IBM, Quantinuum, QMill, Haiqu, 응용과 검증에는 Quantinuum과 NVIDIA의 분자 연구 및 Haiqu 실행 통합, 오류와 오류정정 자원 관리에는 Classiq, NVIDIA, Q-CTRL, Qedma, GPU와 QPU 실행에는 NVIDIA, IBM, Quantinuum을 배치한다. 정확성 검증은 모든 경로에서 필요하다. 이 지도는 공개 기능의 범주를 정리하며 성능, 시장 지배력, 사업적 방어력의 순위가 아니다. 전략 해석은 별도의 붉은 영역에 표시한다.</desc>
+  <defs>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; fill: #202b35; }
+      .title { font-size: 36px; font-weight: 750; }
+      .sub { font-size: 22px; fill: #59676d; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .company { font-size: 24px; font-weight: 700; fill: #346c6b; }
+      .body { font-size: 24px; }
+      .note { font-size: 22px; fill: #59676d; }
+      .caption { font-size: 20px; fill: #59676d; }
+      .red { fill: #a43c3c; }
+      .panel { fill: #fff; stroke: #c9d3d4; stroke-width: 1.4; }
+    </style>
+  </defs>
+  <rect width="1000" height="1624" fill="#fff"/>
+  <text x="48" y="62" class="title">기업별로 값이 쌓이는 기술층이 다르다</text>
+  <text x="48" y="103" class="sub">공개 기능의 범주형 지도 · 위치는 성능이나 방어력의 순위가 아니다.</text>
+  <rect x="48" y="131" width="17" height="17" rx="3" fill="#5f8c88"/>
+  <text x="78" y="148" class="note">공개 자료의 기능 분류</text>
+  <rect x="368" y="131" width="17" height="17" rx="3" fill="#a43c3c"/>
+  <text x="398" y="148" class="note">조건부 전략 해석</text>
+
+  <rect x="48" y="178" width="904" height="180" rx="15" class="panel"/>
+  <rect x="48" y="178" width="8" height="180" rx="4" fill="#5f8c88"/>
+  <text x="80" y="222" class="heading">01 의도 해석 · 모델 작성</text>
+  <text x="80" y="266" class="company">Classiq</text>
+  <text x="352" y="266" class="body">Qmod · 개발 에이전트</text>
+  <text x="80" y="303" class="company">IBM</text>
+  <text x="352" y="303" class="body">Qiskit · MCP 도구 연결</text>
+  <text x="80" y="339" class="note">범용 에이전트는 여러 업체의 도구를 선택해 호출할 수 있다.</text>
+
+  <rect x="48" y="378" width="904" height="262" rx="15" class="panel"/>
+  <rect x="48" y="378" width="8" height="262" rx="4" fill="#5f8c88"/>
+  <text x="80" y="422" class="heading">02 합성 · 컴파일</text>
+  <text x="80" y="466" class="company">Classiq</text>
+  <text x="352" y="466" class="body">고수준 합성 · 자원 배분</text>
+  <text x="80" y="503" class="company">IBM · Quantinuum</text>
+  <text x="352" y="503" class="body">AI pass / TKET 컴파일</text>
+  <text x="80" y="540" class="company">QMill</text>
+  <text x="352" y="540" class="body">회로 압축 · 전체 기능 보존 주장</text>
+  <text x="80" y="577" class="company">Haiqu</text>
+  <text x="352" y="577" class="body">특정 초기상태의 근사 압축</text>
+  <text x="80" y="617" class="note">전체 연산의 보존과 특정 상태의 근사는 평가 목적이 다르다.</text>
+
+  <rect x="48" y="660" width="904" height="180" rx="15" class="panel"/>
+  <rect x="48" y="660" width="8" height="180" rx="4" fill="#5f8c88"/>
+  <text x="80" y="704" class="heading">03 응용 · 검증</text>
+  <text x="80" y="748" class="company">Quantinuum · NVIDIA</text>
+  <text x="416" y="748" class="body">ADAPT-GQE 분자 응용 연구</text>
+  <text x="80" y="785" class="company">Haiqu</text>
+  <text x="416" y="785" class="body">압축 · 오류 완화 · 실행 통합</text>
+  <text x="80" y="821" class="note">독립 정확성 검증은 업체와 관계없이 모든 경로의 공통 요구다.</text>
+
+  <rect x="48" y="860" width="904" height="218" rx="15" class="panel"/>
+  <rect x="48" y="860" width="8" height="218" rx="4" fill="#5f8c88"/>
+  <text x="80" y="904" class="heading">04 오류 관리 · 오류정정 자원</text>
+  <text x="80" y="948" class="company">Classiq</text>
+  <text x="352" y="948" class="body">Fault Tolerance Engine</text>
+  <text x="80" y="985" class="company">NVIDIA</text>
+  <text x="352" y="985" class="body">CUDA-Q Logical</text>
+  <text x="80" y="1022" class="company">Q-CTRL · Qedma</text>
+  <text x="352" y="1022" class="body">장치 오류 억제·완화 · 성능 관리</text>
+  <text x="80" y="1059" class="note">오류정정 자원 추정과 현재 장치의 오류 완화는 별개다.</text>
+
+  <rect x="48" y="1098" width="904" height="180" rx="15" class="panel"/>
+  <rect x="48" y="1098" width="8" height="180" rx="4" fill="#5f8c88"/>
+  <text x="80" y="1142" class="heading">05 GPU · QPU 실행</text>
+  <text x="80" y="1186" class="company">NVIDIA</text>
+  <text x="352" y="1186" class="body">GPU 모사 · 학습 · 실행 인프라</text>
+  <text x="80" y="1223" class="company">IBM · Quantinuum</text>
+  <text x="352" y="1223" class="body">QPU · 실행 소프트웨어</text>
+  <text x="80" y="1259" class="note">NVIDIA의 GPU 인프라와 장치 업체의 QPU 제공을 구분한다.</text>
+
+  <rect x="48" y="1310" width="904" height="208" rx="15" fill="#fcf4f3" stroke="#e1c2bf" stroke-width="1.4"/>
+  <text x="80" y="1354" class="heading red">전략적 해석: 고객은 어떤 차이에 비용을 내는가</text>
+  <text x="80" y="1398" class="body">대체 압력: 코드 작성 · 도구 연결 · 공개 엔진의 개선</text>
+  <text x="80" y="1437" class="body">검증할 가치: 합성 성능 · 장치 효과 · 총비용 절감</text>
+  <text x="80" y="1484" class="note">기능의 존재만으로 독점성이나 사업 방어력이 입증되지는 않는다.</text>
+
+  <text x="48" y="1557" class="caption">선택한 주요 기능만 배치한 리뷰 개념도 · 한 업체가 여러 층에 참여할 수 있음</text>
+  <text x="48" y="1593" class="caption">출처와 지원 범위는 본문 참조 · 업체별 완전한 제품 목록이나 성능 비교가 아님 · 2026-10-19</text>
+</svg>

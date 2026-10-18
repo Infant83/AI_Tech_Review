@@ -9,6 +9,7 @@ status: published
 language: ko
 canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/"
 alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/"
+social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_hero.webp"
 evidence cutoff: "2026-10-19"
 writing assistance: "OpenAI Codex"
 editorial harness: "AI Tech Review Writing Harness"
@@ -25,15 +26,14 @@ tags:
 
 양자 알고리즘을 실행하려면 수식을 실제 게이트의 순서로 바꿔야 합니다. 같은 계산도 중간 결과를 얼마나 저장하는지, 보조 큐비트를 언제 되돌려 놓는지, 어떤 연산을 함께 처리하는지에 따라 필요한 자원이 크게 달라집니다. 생성형 AI는 이 구현을 여러 방식으로 제안하고, 컴파일러와 평가기가 좋은 후보를 고르는 과정에 참여하고 있습니다.
 
+<figure class="article-hero-figure">
+<img src="../artifacts/circuit_design_hero.webp" width="1600" height="900" alt="여러 양자회로 후보가 검증을 거쳐 간결한 회로로 선택되고 추상적 하드웨어 기판에 연결되는 개념 일러스트" decoding="async">
+<figcaption>그림 1. 여러 회로 후보에서 검증과 자원 평가를 거쳐 실행할 구현을 선택하는 과정을 표현했습니다. AI로 제작한 개념 일러스트이며 실제 장치나 실험 결과를 나타내지 않습니다.</figcaption>
+</figure>
+
 최근 연구는 관심을 가질 만한 구체적인 결과를 내놓았습니다. 2026년 10월 Anthropic 연구는 검증기의 피드백을 받은 LLM이 가역 산술회로의 설계를 개선했습니다. 7월 Quantinuum·NVIDIA·Pfizer 등의 ADAPT-GQE 연구는 Transformer로 분자의 바닥상태를 준비하는 회로를 생성하고 일부를 실제 QPU에서 실행했습니다. Classiq는 자연어 에이전트와 고수준 합성기를 제품 안에 결합했습니다. 각각 **설계 탐색, 응용별 회로 생성, 개발 도구의 제품화**를 보여주는 사례입니다. [Anthropic 논문](https://arxiv.org/abs/2610.22367), [ADAPT-GQE 논문](https://arxiv.org/abs/2607.22468), [Classiq 에이전트 발표](https://www.classiq.io/insights/classiqs-quantum-engineering-agents-now-in-your-ide-and-the-platform)
 
 이 주제의 중심에는 **AI가 제안한 구현을 어떤 방법으로 검증하고, 어떤 자원 비용으로 평가하는가**라는 문제가 있습니다. 생성 속도, 회로의 정확성, 실제 장치에서의 성능을 구분하면 최근 성과가 어디까지 도달했는지 판단할 수 있습니다.
-
-![AI 후보 생성과 독립 검증 및 장치별 평가의 관계](../artifacts/circuit_generation_workflow.svg)
-
-*그림 1. 문제와 제약에서 회로 후보를 만들고, 검증 결과와 자원 비용을 다음 탐색에 반영하는 과정을 보여줍니다. Classiq의 Qmod 합성 경로와 회로를 직접 생성하는 모델은 서로 다른 구현입니다.*
-
-[도식 원본 크게 보기](../artifacts/circuit_generation_workflow.svg)
 
 ## 1 양자회로 생성과 최적화의 범위
 
@@ -58,6 +58,13 @@ LLM, 자기회귀 Transformer, 확산모델은 생성 방법을 가리킵니다.
 Classiq의 Qmod에서는 개별 게이트를 모두 지정하기 전에 필요한 함수와 자원 제약을 기술합니다. 합성 엔진은 가능한 구현, 보조 큐비트의 할당과 재사용, 중간 계산을 되돌리는 **uncomputation**을 선택합니다. 예를 들어 덧셈을 수행할 때 큐비트를 더 사용해 게이트 수를 줄이는 구현과, 큐비트를 아끼는 구현 사이에서 선택할 수 있습니다. [Classiq 제품 설명](https://www.classiq.io/product), [Qmod 논문](https://arxiv.org/abs/2502.19368)
 
 2026년 7월 9일 발표한 **Quantum Engineering Agents**는 이 합성 과정 앞에 자연어 개발 환경을 제공합니다. LLM이 요구를 Qmod 모델로 작성·수정하고, 합성기가 회로를 구체화합니다. IDE 플러그인은 Claude Code·Cursor·Cline·Codex 등과 연결하며, 플랫폼 Assistant는 모델링과 합성까지 지원합니다. 발표 기준 플랫폼 Assistant는 유료 구독, IDE 플러그인은 enterprise·early-adopter 대상입니다. [공식 출시 설명](https://www.classiq.io/insights/classiqs-quantum-engineering-agents-now-in-your-ide-and-the-platform)
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="설명 그림: 좁은 화면에서 좌우로 이동하여 보기" tabindex="0">
+<img src="../artifacts/circuit_generation_workflow.svg" width="1200" height="680" alt="요구사항에서 두 생성 경로를 거쳐 독립 검증과 장치별 평가를 반복하는 회로 설계 과정" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 2. 문제와 제약에서 회로 후보를 만들고, 검증 결과와 자원 비용을 다음 탐색에 반영합니다. Classiq의 Qmod 합성 경로와 회로를 직접 생성하는 모델은 서로 다른 구현입니다. <a href="../artifacts/circuit_generation_workflow.svg">그림 크게 보기</a></figcaption>
+</figure>
 
 이 구조에서 LLM의 역할과 합성기의 역할을 분리해야 성과를 평가할 수 있습니다. 요구를 더 빨리 코드로 옮겼는지, 같은 Qmod 모델에서 합성기가 더 좋은 회로를 만들었는지, 사람이 작성한 모델과 비교해 오류가 줄었는지는 각각 다른 실험입니다. Classiq의 기존 회로 압축 성과를 모두 생성형 AI의 효과로 귀속할 수는 없습니다.
 
@@ -101,6 +108,13 @@ Gu 등의 *Discovering state-of-the-art quantum circuits with large language mod
 
 2026년 9월의 **QuantumEvo**는 LLM이 BDD 기반 합성의 변수 순서를 정하는 휴리스틱 코드를 생성·진화시키는 사례입니다. 최종 회로를 직접 쓰는 모델 외에도, 기존 합성기를 더 잘 탐색하게 하는 알고리즘을 생성할 수 있습니다. [논문](https://arxiv.org/abs/2609.05327)
 
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="설명 그림: 좁은 화면에서 좌우로 이동하여 보기" tabindex="0">
+<img src="../artifacts/reported_results_boundaries.svg" width="1000" height="1100" alt="Anthropic의 Toffoli와 큐비트 감소, DQAOA-GPT의 생성 및 평가 시간, ADAPT-GQE의 이상적 모사와 실기기 에너지 오차를 독립된 세 패널로 비교한 그림" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 3. 회로 자원 절감, 생성·평가 시간 단축, 장치 정확성은 서로 다른 성과입니다. 세 논문의 보고값을 재도식화했으며 각 패널의 단위와 축은 독립입니다. 실험을 재실행한 결과가 아닙니다. 출처: <a href="https://arxiv.org/html/2610.22367v1">Gu 등</a>, <a href="https://arxiv.org/html/2607.20225v1">DQAOA-GPT</a>, <a href="https://arxiv.org/html/2607.22468v1#S4.SS3">ADAPT-GQE</a>. <a href="../artifacts/reported_results_boundaries.svg">그림 크게 보기</a></figcaption>
+</figure>
+
 ## 4 생성 성공률과 정확성 사이의 간격
 
 양자회로의 검증에서는 “코드가 실행된다”, “의도한 함수를 계산한다”, “위상과 보조 큐비트까지 올바르다”를 나눠 확인해야 합니다. 산술 출력이 맞아도 상대 위상이 틀리거나 중간 정보가 남으면 더 큰 양자 알고리즘 안에서 문제가 생길 수 있습니다. 근사 합성에서는 허용 오차를 먼저 정해야 합니다.
@@ -112,6 +126,13 @@ AMD 연구진의 *When Close Enough Is Not Enough*는 2026년 7월 공개됐으�
 정확성의 요구 수준은 응용에 따라서도 다릅니다. 유니터리 합성은 모든 허용 입력에 대한 연산을 비교합니다. 분자 상태 준비는 특정 초기상태에서 얻은 에너지나 상태를 평가합니다. 잡음이 있는 장치에서는 이상적 회로의 근사 오차를 조금 허용해 게이트 수를 크게 줄이는 편이 측정 결과를 개선할 수도 있습니다. 이 경우 허용한 근사와 장치 오류를 구분해 기록해야 합니다.
 
 ## 5 산업계는 어떤 기능을 제품으로 제공하는가
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="설명 그림: 좁은 화면에서 좌우로 이동하여 보기" tabindex="0">
+<img src="../artifacts/company_technology_layers.svg" width="1000" height="1624" alt="개발 인터페이스부터 합성, 응용, 오류정정과 실행까지 기업들이 제공하는 기능을 기술층별로 배치한 지도" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 4. 기업의 공개 제품과 연구가 맡는 역할을 기술층별로 배치했습니다. 여러 층에 걸친 기능과 협업이 있으며, 배치는 성능·시장점유율·사업적 방어력의 순위를 뜻하지 않습니다. 근거는 아래 산업 동향과 9절의 기업별 비교에 연결했습니다. <a href="../artifacts/company_technology_layers.svg">그림 크게 보기</a></figcaption>
+</figure>
 
 | 기업 및 협업 | 제공하는 기능과 공개 상태 | 기술 평가에서 볼 부분 |
 |---|---|---|
@@ -165,6 +186,13 @@ Classiq를 함께 평가하려면 같은 계산 요구와 자원 제약을 명�
 이미 IBM은 범용 에이전트가 회로 작성, AI transpilation, 장치 선택과 작업 실행을 호출할 수 있는 **Qiskit MCP Servers**를 제공합니다. Classiq도 범용 코딩 에이전트에서 Qmod 모델 작성과 자사 합성 엔진을 이용하는 플러그인 경로를 제공합니다. 기업의 웹 화면을 거치지 않고 기존 개발 환경에서 기능을 사용하는 구성이 가능합니다. [IBM MCP 문서](https://quantum.cloud.ibm.com/docs/en/guides/qiskit-mcp-servers), [Classiq 플러그인 문서](https://docs.classiq.io/user-guide/ai/quantum-engineer-plugin)
 
 여기에는 서로 다른 경쟁 상황이 있습니다. 에이전트가 Classiq를 호출하면 합성 엔진의 고객 접점이 바뀝니다. 에이전트가 공개 도구를 조합해 같은 결과를 내면 Classiq를 우회합니다. QuantumEvo처럼 새로운 합성 휴리스틱을 만들면 엔진 자체의 성능을 놓고 경쟁합니다. 앞서 살펴본 연구는 세 번째 가능성도 보여주므로, 합성 엔진이 AI의 대체 압력에서 언제나 안전하다고 가정할 수는 없습니다.
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="설명 그림: 좁은 화면에서 좌우로 이동하여 보기" tabindex="0">
+<img src="../artifacts/circuit_design_layers.svg" width="1000" height="1452" alt="같은 전문가 요구와 범용 에이전트에서 공개 도구 경로와 Classiq 합성 엔진 경로로 나뉜 뒤 동일한 검증과 장치 평가로 합류하는 비교 구조" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 5. 에이전트가 Classiq를 이용하는 경우와 공개 도구로 우회하는 경우를 구분했습니다. 두 경로의 가치는 같은 요구·정확도·장치·시간 예산에서 비교해야 합니다. 공개 기술에 기초한 평가 설계이며 두 경로의 성능을 직접 측정한 결과는 아닙니다. <a href="../artifacts/circuit_design_layers.svg">그림 크게 보기</a></figcaption>
+</figure>
 
 ### 기술층별로 다른 대체 압력
 

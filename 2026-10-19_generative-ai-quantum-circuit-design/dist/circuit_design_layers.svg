@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1452" viewBox="0 0 1000 1452" role="img" aria-labelledby="title desc">
+  <title id="title">범용 에이전트가 공개 도구와 Classiq를 선택하는 두 경로</title>
+  <desc id="desc">전문가의 요구를 받은 동일한 범용 에이전트가 공개 SDK인 Qiskit, TKET, Qrisp와 공개 검증 도구를 조합하거나 Classiq의 Qmod와 합성 엔진을 호출할 수 있다. 두 경로의 회로는 공통 독립 검증과 동일 장치 평가를 거쳐야 한다. 공개 도구만으로 같은 결과를 얻으면 플랫폼을 우회하지만 Classiq 도구를 호출하면 엔진의 고객 접점이 달라진다. 이는 조건부 전략 해석이다. AI는 합성 엔진의 규칙과 휴리스틱도 개선할 수 있으므로 엔진이 영구적인 방어력을 보장하지 않는다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse"><path d="M2 1 L10 6 L2 11" fill="none" stroke="#576b70" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans CJK KR', 'Noto Sans KR', sans-serif; fill: #202b35; }
+      .title { font-size: 36px; font-weight: 750; }
+      .sub { font-size: 23px; fill: #59676d; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .body { font-size: 24px; }
+      .note { font-size: 22px; fill: #59676d; }
+      .caption { font-size: 20px; fill: #59676d; }
+      .teal { fill: #346c6b; }
+      .red { fill: #a43c3c; }
+      .flow { fill: none; stroke: #576b70; stroke-width: 2.2; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1000" height="1452" fill="#fff"/>
+  <text x="48" y="62" class="title">범용 에이전트는 무엇을 호출하는가</text>
+  <text x="48" y="104" class="sub">같은 전문가 · 같은 모델 · 같은 평가 조건에서 도구의 가치를 비교한다.</text>
+
+  <rect x="148" y="148" width="704" height="104" rx="16" fill="#f7f9f9" stroke="#c9d3d4" stroke-width="1.5"/>
+  <text x="500" y="190" text-anchor="middle" class="heading">전문가의 요구 · 함수 · 자원 제약</text>
+  <text x="500" y="229" text-anchor="middle" class="note">입력 명세와 허용 오차를 먼저 고정</text>
+  <path class="flow" d="M500 253 V282"/>
+
+  <rect x="148" y="294" width="704" height="112" rx="16" fill="#edf5f3" stroke="#5f8c88" stroke-width="1.7"/>
+  <text x="500" y="339" text-anchor="middle" class="heading teal">동일한 범용 에이전트</text>
+  <text x="500" y="378" text-anchor="middle" class="body">요구 해석 → 모델 작성 → 도구 호출</text>
+  <path class="flow" d="M500 407 V432 H264 V450"/>
+  <path class="flow" d="M500 432 H736 V450"/>
+
+  <rect x="48" y="462" width="432" height="310" rx="16" fill="#fff" stroke="#9aafb0" stroke-width="1.7"/>
+  <rect x="520" y="462" width="432" height="310" rx="16" fill="#fff" stroke="#5f8c88" stroke-width="1.7"/>
+  <text x="72" y="510" class="heading">A 공개 도구 조합</text>
+  <text x="544" y="510" class="heading teal">B Classiq 도구 호출</text>
+  <text x="72" y="554" class="body">Qiskit · TKET · Qrisp</text>
+  <text x="72" y="589" class="body">공개 합성기·컴파일러</text>
+  <text x="72" y="624" class="body">공개 검증기·시뮬레이터</text>
+  <text x="544" y="554" class="body">Qmod 명세 → 합성 엔진</text>
+  <text x="544" y="589" class="body">구현 선택·보조 큐비트 관리</text>
+  <text x="544" y="624" class="body">구조 보존·자원 배분</text>
+  <rect x="72" y="650" width="384" height="66" rx="10" fill="#f3f6f6"/>
+  <rect x="544" y="650" width="384" height="66" rx="10" fill="#edf5f3"/>
+  <text x="264" y="692" text-anchor="middle" class="body">공개 도구의 회로 후보</text>
+  <text x="736" y="692" text-anchor="middle" class="body">Classiq의 회로 후보</text>
+  <text x="264" y="750" text-anchor="middle" class="note">도구별 검사·검증을 함께 활용</text>
+  <text x="736" y="750" text-anchor="middle" class="note">출력 회로의 정확성 확인 필요</text>
+
+  <path class="flow" d="M264 773 V800 H500 V814"/>
+  <path d="M736 773 V800 H500" fill="none" stroke="#576b70" stroke-width="2.2"/>
+  <rect x="48" y="826" width="904" height="174" rx="16" fill="#f7f9f9" stroke="#9aafb0" stroke-width="1.7"/>
+  <text x="80" y="868" class="heading">공통 평가: 독립 검증 + 동일 장치·예산</text>
+  <text x="80" y="908" class="body">의미·허용 오차 · 위상·보조 큐비트 · 제출 회로의 재검증</text>
+  <text x="80" y="945" class="body">게이트·깊이·큐비트 · 장치 결과 · 실패율·전체 비용</text>
+  <text x="80" y="980" class="note">검증 기능은 공개 도구에도 있다. 지원 범위와 검사 비용을 비교한다.</text>
+
+  <path class="flow" d="M500 1001 V1024 H264 V1030"/>
+  <path class="flow" d="M500 1024 H736 V1030"/>
+  <rect x="48" y="1042" width="432" height="126" rx="13" fill="#fcf4f3" stroke="#e1c2bf"/>
+  <rect x="520" y="1042" width="432" height="126" rx="13" fill="#fcf4f3" stroke="#e1c2bf"/>
+  <text x="72" y="1080" class="heading red">A로 같은 결과를 얻으면</text>
+  <text x="72" y="1119" class="body">플랫폼을 우회할 수 있다</text>
+  <text x="72" y="1152" class="note">추가 요금을 정당화할 이득 감소</text>
+  <text x="544" y="1080" class="heading red">B의 엔진을 호출하면</text>
+  <text x="544" y="1119" class="body">에이전트가 고객 접점이 된다</text>
+  <text x="544" y="1152" class="note">도구 선택의 성능·가격 경쟁 지속</text>
+
+  <rect x="48" y="1192" width="904" height="116" rx="13" fill="#fff" stroke="#b56a63" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="80" y="1235" class="heading red">합성 엔진도 AI가 개선할 수 있다</text>
+  <text x="80" y="1275" class="note">새 규칙·휴리스틱 발견 → 두 경로의 성능 격차는 변할 수 있다.</text>
+
+  <text x="48" y="1359" class="heading">판단 기준은 검증된 결과를 얻는 총비용</text>
+  <text x="48" y="1398" class="note">개발·검증·실행·요금·유지보수를 같은 조건에서 비교한다.</text>
+  <text x="48" y="1435" class="caption">리뷰 개념도 · 붉은 영역은 조건부 전략 해석 · 2026-10-19</text>
+</svg>
