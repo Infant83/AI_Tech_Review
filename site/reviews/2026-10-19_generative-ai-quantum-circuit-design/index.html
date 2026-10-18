@@ -14,7 +14,7 @@
   <meta property="og:description" content="회로 생성 연구와 기업별 기술 자산을 비교하고 범용 에이전트 시대의 플랫폼 경쟁력을 전망합니다">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/">
   <meta property="og:locale" content="ko_KR">
-  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_hero.webp">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_agent_hero_v2.webp">
   <meta property="og:image:alt" content="생성형 AI를 통한 양자회로 설계와 최적화">
   <meta property="article:published_time" content="2026-10-19">
   <meta property="article:modified_time" content="2026-10-19">
@@ -22,7 +22,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="생성형 AI를 통한 양자회로 설계와 최적화">
   <meta name="twitter:description" content="회로 생성 연구와 기업별 기술 자산을 비교하고 범용 에이전트 시대의 플랫폼 경쟁력을 전망합니다">
-  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_hero.webp">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_agent_hero_v2.webp">
   <meta name="twitter:image:alt" content="생성형 AI를 통한 양자회로 설계와 최적화">
   <meta name="color-scheme" content="light">
   <script>
@@ -794,10 +794,11 @@
     <article class="final-article">
       <p>양자 알고리즘을 실행하려면 수식을 실제 게이트의 순서로 바꿔야 합니다. 같은 계산도 중간 결과를 얼마나 저장하는지, 보조 큐비트를 언제 되돌려 놓는지, 어떤 연산을 함께 처리하는지에 따라 필요한 자원이 크게 달라집니다. 생성형 AI는 이 구현을 여러 방식으로 제안하고, 컴파일러와 평가기가 좋은 후보를 고르는 과정에 참여하고 있습니다.</p>
 <figure class="article-hero-figure">
-<img src="circuit_design_hero.webp" width="1600" height="900" alt="여러 양자회로 후보가 검증을 거쳐 간결한 회로로 선택되고 추상적 하드웨어 기판에 연결되는 개념 일러스트" decoding="async">
-<figcaption>그림 1. 여러 회로 후보에서 검증과 자원 평가를 거쳐 실행할 구현을 선택하는 과정을 표현했습니다. AI로 제작한 개념 일러스트이며 실제 장치나 실험 결과를 나타내지 않습니다.</figcaption>
+<img src="circuit_design_agent_hero_v2.webp" width="1600" height="900" alt="AI 에이전트가 회로 후보를 제안하고 별도 검증 도구를 호출한 뒤 피드백을 받아 후보를 수정하는 반복 과정을 보여주는 일러스트" decoding="async">
+<figcaption>그림 1. AI 에이전트가 회로 후보를 제안하고 별도 검증 도구를 호출합니다. 검증·평가 결과가 에이전트로 돌아와 후보 수정으로 이어지는 과정을 표현했습니다.</figcaption>
 </figure>
 
+<p><small>AI로 제작한 개념 일러스트이며 실제 제품 화면·장치·실험 결과를 나타내지 않습니다.</small></p>
 <p>최근 연구는 관심을 가질 만한 구체적인 결과를 내놓았습니다. 2026년 10월 Anthropic 연구는 검증기의 피드백을 받은 LLM이 가역 산술회로의 설계를 개선했습니다. 7월 Quantinuum·NVIDIA·Pfizer 등의 ADAPT-GQE 연구는 Transformer로 분자의 바닥상태를 준비하는 회로를 생성하고 일부를 실제 QPU에서 실행했습니다. Classiq는 자연어 에이전트와 고수준 합성기를 제품 안에 결합했습니다. 각각 <strong>설계 탐색, 응용별 회로 생성, 개발 도구의 제품화</strong>를 보여주는 사례입니다. <a href="https://arxiv.org/abs/2610.22367">Anthropic 논문</a>, <a href="https://arxiv.org/abs/2607.22468">ADAPT-GQE 논문</a>, <a href="https://www.classiq.io/insights/classiqs-quantum-engineering-agents-now-in-your-ide-and-the-platform">Classiq 에이전트 발표</a></p>
 <p>이 주제의 중심에는 <strong>AI가 제안한 구현을 어떤 방법으로 검증하고, 어떤 자원 비용으로 평가하는가</strong>라는 문제가 있습니다. 생성 속도, 회로의 정확성, 실제 장치에서의 성능을 구분하면 최근 성과가 어디까지 도달했는지 판단할 수 있습니다.</p>
 <h2 id="1">1 양자회로 생성과 최적화의 범위</h2>
@@ -1235,7 +1236,7 @@
         <dl>
           <div><dt>책임 편집자</dt><dd>김현중</dd></div>
           <div><dt>AI 시스템</dt><dd>OpenAI Codex; 정확한 모델 식별자는 보존되지 않음</dd></div>
-          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 조사 통합·한국어 집필·전략 분석·게재 준비·공개 페이지 검증; papers — 원 논문 조사·최종 사실관계 감사; industry — 기업·제품·벤치마크 조사·주장 범위 감사; frontier — 최신 결과 대조·결정론적 절차 도식 작성; moat_classiq — Classiq 기술 자산·공개 대안 분석; moat_compare — 기업별 차별화·실행 계층 비교; agent_bypass — 에이전트 대체 가능성·평가 설계 감사; publication_audit — 게시 파이프라인·공개 자산 읽기 감사; publication_copyedit — 게재 문체·주장 범위 검토; hero_illustration — 내장 이미지 생성·표지 저장 및 시각 검토; figures_layers — 기술층·에이전트 경로 도식 제작 및 근거 연결; evidence_figure — 원문 수치 대조·서로 다른 성과의 독립 패널 재도식화</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 조사 통합·한국어 집필·전략 분석·게재 준비·공개 페이지 검증; papers — 원 논문 조사·최종 사실관계 감사; industry — 기업·제품·벤치마크 조사·주장 범위 감사; frontier — 최신 결과 대조·결정론적 절차 도식 작성; moat_classiq — Classiq 기술 자산·공개 대안 분석; moat_compare — 기업별 차별화·실행 계층 비교; agent_bypass — 에이전트 대체 가능성·평가 설계 감사; publication_audit — 게시 파이프라인·공개 자산 읽기 감사; publication_copyedit — 게재 문체·주장 범위 검토; hero_illustration — 내장 이미지 생성·표지 저장 및 시각 검토; figures_layers — 기술층·에이전트 경로 도식 제작 및 근거 연결; evidence_figure — 원문 수치 대조·서로 다른 성과의 독립 패널 재도식화; agent_visual_audit — 표지의 에이전트 행동·피드백·독립 검증기 구분 감사; hero_agent_revision — 내장 이미지 편집으로 에이전트의 도구 호출·반복 수정 표현</dd></div>
           <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
           <div><dt>검증 범위</dt><dd>2026-10-19까지 공개된 원 논문·공식 제품 문서·저자 저장소의 공개일·비교 지표·실행 환경 대조; 회로 자원 추정·고전 시뮬레이션·실제 QPU 결과 구분; 모델 학습·회로 계산·제품 벤치마크의 독립 재현 없음; 기술 자산 분석·조건부 전망; 동일 에이전트의 플랫폼 비교 실험 미실행; AI 생성 개념 표지·직접 작성한 SVG 도식·논문 보고값 재도식화·게시 metadata·링크·데스크톱 및 모바일 공개 페이지 검사</dd></div>
           <div><dt>사람 검토 기록</dt><dd>주제·전략적 관점·공개 게시 요청 확인; 별도 문장 단위 사람 검토 기록 없음</dd></div>
@@ -1245,8 +1246,8 @@
       </section>
       <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
-        생성 시각: 2026-10-19 07:34:37<br>
-        원본 파일 최종 수정 시각: 2026-10-19 07:34:37
+        생성 시각: 2026-10-19 08:28:09<br>
+        원본 파일 최종 수정 시각: 2026-10-19 08:27:51
       </div>
     </article>
 
