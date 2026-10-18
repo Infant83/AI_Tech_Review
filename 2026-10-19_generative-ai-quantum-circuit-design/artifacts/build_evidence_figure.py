@@ -104,5 +104,6 @@ svg = OUT / "reported_results_boundaries.svg"
 fig.savefig(png, dpi=100, metadata={"Title": "세 연구가 개선한 것은 서로 다르다"})
 fig.savefig(svg, metadata={"Title": "세 연구가 개선한 것은 서로 다르다",
     "Description": "Independent panels show Toffoli/qubit resources, GPU simulated runtime, and energy error. Replotted from three primary papers; not independently rerun."})
+svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
 print(png)
 print(svg)
