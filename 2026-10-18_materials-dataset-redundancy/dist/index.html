@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OMat24 데이터 중복성과 국소 화학 환경을 이용한 학습 집합 압축</title><meta name="description" content="OMat24의 99% 중복성 주장을 원자·구조 비율과 힘·에너지·동역학 평가로 검토하고, 국소 화학 환경에 따른 학습 집합 압축의 의미와 한계를 정리한다."><meta name="author" content="김현중"><meta property="og:title" content="OMat24 데이터 중복성과 국소 화학 환경을 이용한 학습 집합 압축"><meta property="og:description" content="OMat24의 99% 중복성 주장을 원자·구조 비율과 힘·에너지·동역학 평가로 검토하고, 국소 화학 환경에 따른 학습 집합 압축의 의미와 한계를 정리한다."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/"><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/hero.webp"><meta property="article:published_time" content="2026-10-19"><link rel="stylesheet" href="review.css"></head><body>
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review_ko.pdf">PDF ↓</a></div></header>
+<main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.19</span><span>재료 데이터 · 원자간 포텐셜 · 과학기계학습</span></div><article><h1>OMat24 데이터 중복성과 국소 화학 환경을 이용한 학습 집합 압축</h1>
+<p class="dek">OMat24 압축 실험으로 살펴본 원자 환경의 다양성, 예측 오차와 고정밀 계산의 배분</p>
+
+<div class="editor-line">책임 편집: 김현중 · AI 보조 작성: Codex · 근거 기준일: 2026년 10월 19일 · <a href="#authoring-disclosure">작성·검증 범위</a></div><figure class="hero"><img src="hero.webp" alt="반복된 결정 배위 모형 앞에 서로 다른 국소 환경을 강조한 개념 일러스트"><figcaption>반복되는 국소 환경과 다양한 대표 환경의 선택을 표현한 생성형 개념 그림. 실제 결정 구조, 원자 수 또는 측정된 압축률을 나타내지 않는다.</figcaption></figure><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">어떤 데이터를 중복이라고 부르는가</a></li><li><a href="#section-2">1퍼센트의 분모</a></li><li><a href="#section-3">EnvTok은 무엇을 골라내는가</a></li><li><a href="#section-4">성능은 얼마나 유지되는가</a></li><li><a href="#section-5">연구의 기여와 해석의 한계</a></li><li><a href="#section-6">데이터 구축에 적용할 방법</a></li><li><a href="#section-7">자료와 확인 범위</a></li></ol></details>
+
+<p><strong>이 논문은 대규모 재료 학습 데이터의 압축 가능성을 설득력 있게 보여준다. 다만 99%는 특정 데이터셋과 평가 조건에서 붙인 요약이며, 모든 분자·재료 데이터베이스에 적용되는 상수가 아니다.</strong> 실무적으로 검토할 가치는 비싼 계산을 어떤 구조에 배분할지 결정하는 데 있다. 데이터의 가치는 용도와 허용 오차를 함께 정해야 평가할 수 있다.</p>
+<p>대상은 Evgeny Moerman, Igor Poltavsky, Anton Charkin-Gorbulin, Alexandre Tkatchenko의 「Atoms that Matter: Largest Materials Datasets Are 99% Redundant, and Local Chemistry Can Guide the Required 1%」다. 2026년 10월 9일 제출된 arXiv v1 프리프린트다. <a href="https://arxiv.org/abs/2610.14392v1">논문 정보</a></p>
+<h2 id="section-1">어떤 데이터를 중복이라고 부르는가</h2>
+<p>OMat24는 에너지·힘·응력 등을 계산한 대규모 무기 재료 데이터셋으로, 원 배포는 1억 1천만 건 이상의 DFT 계산을 포함한다. 평형 구조에서 원자를 흔들거나 분자동역학으로 얻은 여러 배치를 포함하므로, 서로 다른 구조에서도 비슷한 원자 주변 환경이 반복될 수 있다. <a href="https://arxiv.org/abs/2410.12771">OMat24 원논문</a></p>
+<p>여기서 구분할 것은 <strong>완전히 같은 레코드의 중복</strong>과 <strong>현재 모델의 성능을 개선하는 데 기여가 작은 추가 표본</strong>이다. 이 연구가 다루는 것은 후자다. 같은 환경의 작은 변형도 진동·탄성·정밀한 에너지 차이를 학습하는 데 유용할 수 있으므로, 중복성이 높다는 결과만으로 원본을 삭제할 근거가 되지는 않는다.</p>
+<h2 id="section-2">1퍼센트의 분모</h2>
+<p>실험은 f-block을 제외한 약 6,500만 구조·12억 원자에서 약 650만 원자를 선택했다. 같은 MACE 계열로 EnvTok, DIRECT, 무작위 부분집합을 학습하고, 전체 OMat24로 학습된 공개 기준 모델 MACE-OMAT-0 medium과 비교했다. 부분집합의 선별 모집단과 기준 모델의 원래 전체 학습자료 범위에는 이 차이가 있다. <a href="https://arxiv.org/html/2610.14392v1#S2">Methods II</a>, <a href="https://arxiv.org/html/2610.14392v1#as1_S2">SI S2</a></p>
+<p>아래 비율은 공개된 부분집합 규모와 위의 근사 모집단으로 계산했다. 원자 수와 구조 수는 서로 다른 분모다. <a href="https://github.com/em819/omat24-chemenv-subset/tree/723696de2c26584b8a907ef900690c0caf3c7b68">공개 코드와 데이터 설명</a></p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교 표"><table>
+<thead>
+<tr>
+<th>선택법</th>
+<th align="right">구조 수</th>
+<th align="right">원자 수</th>
+<th align="right">원자 비율</th>
+<th align="right">구조 비율</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EnvTok</td>
+<td align="right">795,721</td>
+<td align="right">6,566,253</td>
+<td align="right">약 0.55%</td>
+<td align="right">약 1.22%</td>
+</tr>
+<tr>
+<td>DIRECT</td>
+<td align="right">458,754</td>
+<td align="right">6,532,238</td>
+<td align="right">약 0.54%</td>
+<td align="right">약 0.71%</td>
+</tr>
+<tr>
+<td>무작위 4개 집합</td>
+<td align="right">356,247–356,249</td>
+<td align="right">약 650만</td>
+<td align="right">약 0.54%</td>
+<td align="right">약 0.55%</td>
+</tr>
+</tbody></table></div>
+<p><strong>EnvTok은 선별 대상 풀의 구조 수로는 1%를 넘는다.</strong> 작은 셀로 다양한 환경을 담기 때문에 생기는 차이다. 비교를 설명할 때는 “원자 수 기준 약 0.5%의 부분집합”이라는 표현이 가장 명료하다. 원자 수를 맞추는 것은 합리적인 예산 기준이지만, 실제 DFT 시간은 전자구조·셀 크기·수렴 난이도에도 좌우되므로 비용을 완전히 같게 만드는 통제는 아니다.</p>
+<h2 id="section-3">EnvTok은 무엇을 골라내는가</h2>
+<p>EnvTok은 원소, 자기상태, 이웃 원소, 배위다면체, 왜곡, 결합 압축, 비대칭을 토큰으로 만들고 환경을 덮는 구조 집합을 고른다. 에너지·힘 라벨과 사전학습 힘장이 필요 없으며 자기모멘트는 선택적으로 쓴다. <a href="https://arxiv.org/html/2610.14392v1#S2">Methods II와 Fig. 1</a></p>
+<p>이를 데이터베이스 설계 관점에서 보면 각 구조를 하나의 덩어리로 비교하는 대신, 그 안에 어떤 화학 환경이 들어 있는지 묻는 방식이다. 새로운 구조라도 이미 충분히 본 환경만 담고 있다면 우선순위를 낮출 수 있다. 반대로 드문 환경을 담은 구조는 작아도 높은 가치를 가질 수 있다.</p>
+<p>그러나 같은 토큰이 같은 물리를 보장하는 것은 아니다. 구간으로 나눈 표현은 경계 안의 차이를 압축한다. 장거리 상호작용이나 더 먼 이웃, 전자상태가 목표 물성에 중요하다면 표현과 평가 항목을 함께 확장해야 한다. 환경 종류를 고르게 포함하는 것과 각 환경 주변의 곡률을 정밀하게 배우는 것도 별도의 요구다.</p>
+<h2 id="section-4">성능은 얼마나 유지되는가</h2>
+<figure><img src="force_mae_ko.svg" alt="벌크 힘 성분별 평균절대오차가 전체 모델 126.4에서 부분집합 모델 약149에서151 meV/Å로 증가하는 막대그래프"><figcaption>벌크 힘 성분별 MAE(meV/Å), 낮을수록 좋다. 저자의 공개 peratom_force_mae_bulk.csv(commit 723696d)의 comp 행을 재도식화했다. 무작위 추출은 네 시드의 평균이며, 모델을 독립 재학습한 결과가 아니다.</figcaption></figure>
+
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교 표"><table>
+<thead>
+<tr>
+<th>평가</th>
+<th align="right">전체 데이터 모델</th>
+<th align="right">부분집합 모델</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>벌크 힘 성분별 MAE, meV/Å</td>
+<td align="right">126.4</td>
+<td align="right">EnvTok 148.6, DIRECT 151.2, 무작위 평균 150.9</td>
+</tr>
+<tr>
+<td>형성에너지 MAE, meV/atom</td>
+<td align="right">56</td>
+<td align="right">63–74</td>
+</tr>
+<tr>
+<td>MD 평균 진행률</td>
+<td align="right">75%</td>
+<td align="right">EnvTok 92%, DIRECT 93%, 무작위 81%</td>
+</tr>
+<tr>
+<td>Li 이동장벽 MAE, eV</td>
+<td align="right">0.146</td>
+<td align="right">EnvTok 0.124, DIRECT 0.116, 무작위 0.148</td>
+</tr>
+</tbody></table></div>
+<p>힘은 <a href="https://github.com/em819/omat24-chemenv-subset/blob/723696de2c26584b8a907ef900690c0caf3c7b68/09_benchmarks/matpes/paper_tables/peratom_force_mae_bulk.csv">공개 집계 CSV</a>의 <code>comp</code> 행이다. 벡터 오차 크기의 평균인 <code>norm</code> 행과 혼용하면 안 된다. EnvTok 형성에너지 MAE는 <a href="https://github.com/em819/omat24-chemenv-subset/blob/723696de2c26584b8a907ef900690c0caf3c7b68/09_benchmarks/matcalc/results/Equilibrium_mace-omat-medium-subset-v14_T100_a1_suppm_0.01_FULL.csv">공개 결과 CSV</a>의 유효한 466개 결과에서 재계산하면 62.7 meV/atom이다. 이는 저자의 결과 파일을 이용한 산술 확인이며 모델의 독립 재학습은 아니다.</p>
+<p>나머지 수치는 논문 보고값이다. MD는 80개 계를 10 ps 동안 300→3000 K, 0→500 GPa로 변화시킨 시험이다. 92·93%는 평균 진행률이며, 끝까지 완료한 실행 비율은 각각 68·64%다. Li 비교는 Hubbard U 적용 차이가 없는 621개 경로 집단에서 모델별 비수렴 약 3–4%를 제외한 결과다. 이 집단에도 기준값의 비자성 PBE와 학습자료의 스핀 분극 PBE 차이는 남는다. <a href="https://arxiv.org/html/2610.14392v1#S3">Fig. 2–3와 Table II</a>, <a href="https://arxiv.org/html/2610.14392v1#as1_S4.SS4">Li 평가 절차</a></p>
+<p>힘 오차는 약 18–20%, 형성에너지 오차는 약 13–32% 증가한다. 따라서 결과의 가치는 데이터 축소와 허용 오차의 교환 관계에 있다. 작은 에너지 차이로 후보를 순위화하는 작업이라면 이 정도 증가도 의사결정에 중요할 수 있다. MD 진행률이 높다는 사실은 수치적 붕괴에 관한 증거이며, 실제 궤적이나 상변화가 DFT와 맞는지 판단하는 증거와는 구별해야 한다.</p>
+<h2 id="section-5">연구의 기여와 해석의 한계</h2>
+<p>재료 데이터의 중복성 자체는 선행연구가 있다. Li 등의 2023년 연구는 여러 재료 물성 데이터에서 최대 95%를 제거해도 분포 내 예측 성능의 변화가 작을 수 있고, 과대표집된 데이터가 분포 밖 성능 저하를 해결하지 못한다고 보고했다. <a href="https://www.nist.gov/publications/exploiting-redundancy-large-materials-datasets-efficient-machine-learning-less-data">저자기관 NIST의 연구 소개</a></p>
+<p>DIRECT도 사전학습 표현을 차원축소·군집화해 구조를 추출하는 방법을 이미 제안했다. <a href="https://arxiv.org/abs/2307.13710">DIRECT 원논문</a></p>
+<p>이번 연구는 이 질문을 OMat24 규모로 확장하고 여러 사용 목적을 함께 평가한다는 점에서 가치가 있다. 아래는 그 결과에 대한 리뷰의 판단이다.</p>
+<ul>
+<li><strong>무작위 기준선이 강하다는 점이 핵심이다.</strong> 정교한 선별법만 좋은 결과를 냈다면 알고리즘의 능력과 데이터의 중복성을 분리하기 어렵다. 무작위 부분집합도 상당한 성능을 유지했다는 사실은 데이터 효율성 문제를 더 직접적으로 드러낸다. 동시에 EnvTok이 모든 물성에서 최선이라는 결론은 약해진다.</li>
+<li><strong>데이터량의 순수한 인과 효과까지 분리한 비교는 아니다.</strong> <a href="https://arxiv.org/html/2610.14392v1#as1_S3">SI S3</a>에는 전체 기준 모델과 부분집합 모델의 유효 배치 크기·수치 정밀도·학습 절차 차이가 명시된다. 동일한 계산 예산과 최적화 절차에서 다시 비교하면 데이터 구성과 학습 효과를 더 명확히 나눌 수 있다.</li>
+<li><strong>평균 성능과 드문 실패를 함께 봐야 한다.</strong> 큰 평균오차가 일부 실패에 좌우되는지, 일반적인 사례도 악화되는지에 따라 사용할 모델이 달라진다. 전체 모델보다 작은 평균오차만으로 각 사례에서 더 안전하다고 판단할 수 없다.</li>
+<li><strong>선택법의 독립성과 검증의 일반성은 다르다.</strong> 모델 없이 집합을 선택할 수 있어도, 다양한 모델 구조에서 같은 압축률과 성능을 얻는지는 별도로 시험해야 한다.</li>
+</ul>
+<p>분자 데이터 OMol25·QCML의 비슷한 중복성은 결론에서 후속 연구로 남겨 둔다. <a href="https://arxiv.org/html/2610.14392v1#S4">Conclusions</a> 따라서 분자·OLED·여기상태 데이터에 99%라는 값을 그대로 옮기는 것은 이 논문의 실증 범위를 넘어선다.</p>
+<h2 id="section-6">데이터 구축에 적용할 방법</h2>
+<p>다음은 논문의 결과를 바탕으로 한 적용 제안이다. 목표는 미리 정한 압축률을 달성하는 것이 아니라, 연구 목적에 필요한 정확도를 적은 라벨로 달성하는지 확인하는 것이다.</p>
+<ol>
+<li><strong>목표 물성과 허용 오차를 먼저 정한다.</strong> 힘장, 에너지 순위, 이동장벽, 여기상태 예측은 서로 다른 평가를 요구한다.</li>
+<li><strong>같은 원자·계산 예산에서 기준선을 비교한다.</strong> 무작위 추출, 화학적 다양성에 따른 추출, 모델 불확실성에 따른 추출을 함께 평가한다.</li>
+<li><strong>비슷한 구조가 시험 집합으로 새어 들어가는지 통제한다.</strong> 같은 모체에서 나온 변형들은 함께 묶어 분할하고, 새로운 조성·골격·배위 환경을 별도로 시험한다.</li>
+<li><strong>평균오차와 함께 희귀 사례를 유지한다.</strong> 결함·압축·분해 경로 등 실제 실패가 중요한 조건은 별도 평가 집합으로 보존한다.</li>
+<li><strong>절약한 라벨 예산을 고정밀 계산과 연결한다.</strong> 일부를 높은 이론 수준으로 다시 계산해 목표 물성의 개선을 검증한 다음 확대한다.</li>
+</ol>
+<p>유기발광분자에 적용한다면 골격과 입체배치뿐 아니라 목표로 하는 전하·스핀·여기상태, 분자 간 배치를 평가 설계에 포함하는 편이 타당하다. 국소 구조가 비슷하다는 이유만으로 관심 전자상태까지 같다고 취급하면, 압축 과정에서 연구에 필요한 차이를 잃을 수 있다.</p>
+<p>또한 선별에도 계산비가 든다. 공개 코드 문서는 전체 토큰화 약 440 CPU node-days, 선택 단계 400 GB RAM, 학습 A100 8개×2일을 제시한다. 공개된 구조 ID 목록을 재사용하면 선별 과정을 생략할 수 있다. <a href="https://github.com/em819/omat24-chemenv-subset/tree/723696de2c26584b8a907ef900690c0caf3c7b68">공식 실행 안내</a> 라벨 수 감소율을 전체 계산비 절감률로 해석하지 말고, 탐색·선별·라벨링·학습 비용을 합산해야 한다.</p>
+<h2 id="section-7">자료와 확인 범위</h2>
+<p>원문 본문·보충자료·주요 도표를 대조하고 공개 결과 CSV를 확인했다. EnvTok 형성에너지 평균오차, 힘 오차의 상대 증가율과 원자·구조 비율은 별도로 계산했다. DFT 계산과 모델 학습·MD는 재실행하지 않았다.</p>
+<p><a href="https://github.com/em819/omat24-chemenv-subset/tree/723696de2c26584b8a907ef900690c0caf3c7b68">공개 코드</a>는 위 commit으로 고정했다. <a href="https://doi.org/10.5281/zenodo.23137852">Zenodo 데이터</a>는 API 메타데이터에서 부분집합·모델·벤치마크 파일 목록을 확인했으며 전체 아카이브는 내려받지 않았다.</p>
+<!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">작성·검증 정보</h2><dl><div><dt>책임 편집자</dt><dd>김현중</dd></div><div><dt>AI 보조</dt><dd>OpenAI Codex · 정확한 작성 모델 식별자: 미보존</dd></div><div><dt>에이전트와 역할</dt><dd>root: 원문·공개 CSV 대조, 수치 계산, 한국어 집필·편집과 게시; identify_paper: 독립 논문 식별·선행연구 조사·영문 집필; critical_audit: 수치·방법론 감사; publication_build: 결정론적 비교 그림, 폰트·한영 HTML/PDF 제작과 출력 검사.</dd></div><div><dt>입력과 산출물</dt><dd>논문과 공식 공개 코드·결과 자료 → 한영 기술 리뷰, 개념 표지, 수치 비교 그림과 PDF.</dd></div><div><dt>제작 요청 요약</dt><dd>대규모 재료 데이터 중복성과 국소 화학 환경 선별 논문을 검토하고 AI Tech Review에 정리·보관.</dd></div><div><dt>하네스</dt><dd><a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a></dd></div><div><dt>검증 범위</dt><dd>arXiv v1 본문·보충자료와 고정 commit 공개 결과의 수치·단위·해석 범위 대조; 원자·구조 비율과 오차의 산술 확인; 한영 제목·자산·모바일·PDF 출력 확인. DFT·모델 학습·MD는 재실행하지 않았다.</dd></div><div><dt>사람 검토 수준</dt><dd>주제·리뷰·아카이브 발행 요청 확인; 문장별 사람 승인 없음.</dd></div><div><dt>근거 기준일</dt><dd>2026-10-19</dd></div></dl><p>논문 보고 결과, 공개 결과의 산술 확인, 리뷰 해석과 적용 제안을 구분한다. 표지는 AI로 만든 개념 그림이며 실제 원자 구조나 계산 결과가 아니다. 수치 비교 그림은 저자 공개값을 코드로 다시 그렸다.</p></section><!-- End AI Tech Review Authoring Disclosure --></article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-18_materials-dataset-redundancy/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-19<br>재료 데이터 압축의 정확도와 적용 범위를 검토하는 기술 리뷰.</footer></main></body></html>

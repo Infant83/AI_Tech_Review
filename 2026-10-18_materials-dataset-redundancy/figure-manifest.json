@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "review": "2026-10-18_materials-dataset-redundancy",
+  "publication_date": "2026-10-19",
+  "figures": [
+    {
+      "prompt": "Use case: stylized-concept. Asset type: 16:9 scientific editorial hero illustration for an article about redundancy in large inorganic materials datasets and selecting distinct local chemical environments. Create a sophisticated tactile scientific still-life: a broad field of many repeated small translucent crystal coordination motifs on a pale warm mineral surface, with a compact selection of visibly different coordination geometries brought into clear focus in the foreground, joined only by subtle visual rhythm. Use restrained deep teal, muted copper, frosted glass and off-white. Fine ball-and-stick crystalline local coordination forms, close-up editorial macro photography mixed with elegant 3D scientific illustration, soft directional studio light, premium scholarly magazine quality, generous calm composition. The image is a qualitative conceptual illustration, so do not imply exact atom counts or a measured selection ratio. No text, letters, numbers, percentages, logos, watermarks, labels, charts, robots, brains, circuit boards, interface panels or arrows. Landscape exactly 16:9.",
+      "source": "built-in image_gen tool",
+      "filename": "hero.webp",
+      "usage": "conceptual editorial illustration, not data",
+      "width": 1672,
+      "height": 941,
+      "published_dimensions": "landscape approximately 16:9",
+      "alt_ko": "반복된 결정 배위 모형과 다양한 대표 국소 환경",
+      "alt_en": "Repeated crystal coordination motifs and diverse representative local environments",
+      "file": "artifacts/hero.webp",
+      "role": "conceptual cover",
+      "license_note": "AI-generated project asset; not a reproduction of a source figure"
+    },
+    {
+      "file": "artifacts/force_mae_ko.svg",
+      "english_file": "artifacts/force_mae_en.svg",
+      "role": "deterministic reconstruction of published numeric results",
+      "metric": "Bulk force component MAE, meV/angstrom; comp row; random mean across four subsets",
+      "values": {
+        "full": 126.40121,
+        "EnvTok": 148.5957,
+        "DIRECT": 151.20484,
+        "random": 150.90115
+      },
+      "source": "https://github.com/em819/omat24-chemenv-subset/blob/723696de2c26584b8a907ef900690c0caf3c7b68/09_benchmarks/matpes/paper_tables/peratom_force_mae_bulk.csv",
+      "limits": "Read from author-reported aggregate outputs, no model retraining; no error bars or causal estimate"
+    }
+  ]
+}

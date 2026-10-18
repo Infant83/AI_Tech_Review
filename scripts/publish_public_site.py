@@ -101,6 +101,37 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-18_materials-dataset-redundancy",
+        title="OMat24 데이터 중복성과 국소 화학 환경을 이용한 학습 집합 압축",
+        subtitle="원자 환경의 다양성, 예측 오차와 고정밀 기준 계산의 배분",
+        date="2026-10-19", updated="2026-10-19", category="AI for Science",
+        tags=("OMat24", "Dataset Redundancy", "EnvTok", "MACE", "Machine Learning Force Fields", "Materials AI", "Data Selection"),
+        summary="OMat24의 약 0.5% 원자 예산으로 학습한 힘장 연구를 검토합니다. 99% 중복 주장의 분모, 힘·형성에너지 오차 증가와 MD 안정성을 구분하고, 국소 환경을 이용한 선별과 고정밀 라벨링의 적용 조건을 설명합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "source comparison, published-CSV arithmetic, Korean writing, conceptual cover, publication integration and live QA", "원문 대조·공개 CSV 산술·한국어 작성·개념 표지·게시 통합 및 공개 페이지 검증"),
+            PublicAgent("identify_paper", "independent paper identification, prior-work research and English adaptation", "독립 논문 식별·선행연구 조사·영어판 작성"),
+            PublicAgent("critical_audit", "independent numerical, methodological and evidence-scope audit", "독립 수치·방법론·주장 범위 감사"),
+            PublicAgent("publication_build", "deterministic data figures, bilingual typesetting, font subsets, HTML/PDF generation and output QA", "결정론적 수치 도표·한영 조판·글꼴 subset·HTML/PDF 생성 및 출력 검사"),
+        ),
+        verification_scope=(
+            "arXiv:2610.14392v1 main paper and supplementary information, OMat24 and DIRECT primary sources, prior redundancy study, pinned public code and Zenodo API metadata",
+            "Arithmetic on author-reported outputs: atom and structure fractions, bulk force-component MAE and EnvTok formation-energy MAE over 466 valid rows; no new DFT, MLFF training or MD reproduction",
+            "Bilingual interpretation boundaries, deterministic force-error chart, local assets, embedded-font PDFs, publication metadata, archive registration and desktop/mobile live links",
+        ),
+        verification_scope_ko=(
+            "arXiv:2610.14392v1 본문·보충자료, OMat24·DIRECT 원논문과 중복성 선행연구, 고정 commit의 공개 코드·Zenodo API metadata 대조",
+            "저자 공개 결과의 산술 확인: 원자·구조 비율, 벌크 힘 성분 MAE와 유효 466행의 EnvTok 형성에너지 MAE; DFT·힘장 학습·MD의 독립 재현 없음",
+            "한영 해석 범위·결정론적 힘 오차 도표·로컬 자산·글꼴 포함 PDF·게시 metadata·아카이브 등록·데스크톱 및 모바일 공개 링크 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-19",
+        human_review_level="review preparation and public archiving explicitly requested; no line-by-line human approval",
+        human_review_level_ko="리뷰 작성·공개 아카이브 요청 확인; 문장 단위 사람 승인 없음",
+        disclosure_note_ko="99%는 모든 분자·재료 데이터의 보편적 중복률이 아닙니다. 원자 수 기준 약 0.55%와 구조 수 기준 약 1.22%를 구분했고, 벌크 힘 성분 MAE와 벡터 오차 크기, MD 평균 진행률과 실행 완료율을 구별했습니다. Li 장벽의 모델별 비수렴 제외·계산 수준·스핀 차이와 전체 기준 모델의 학습 조건 차이를 명시했습니다. OLED 및 고정밀 재라벨링은 후속 적용 제안입니다. 저자 공개 CSV의 산술을 확인했으며 모델을 재학습하지 않았습니다. 표지는 내장 imagegen 개념 그림이고 도표는 공개 수치의 재도식화입니다. 정확한 작성 모델 식별자는 미보존입니다.",
+        disclosure_note_en="The 99% headline is not a universal redundancy rate for molecular or materials data. Distinguished approximately 0.55% of atoms from 1.22% of structures, force-component MAE from force-error vector norms, and mean MD trajectory completion from fully completed runs. Recorded model-specific Li nonconvergence exclusions, reference-theory and spin differences, and training-setting differences from the full-data reference. OLED applications and high-accuracy relabeling are proposals. Arithmetic on published CSVs was checked without retraining models. The built-in imagegen cover is conceptual; the chart redraws reported values. Exact authoring-model identifier not retained.",
+    ),
+    PublicReview(
         folder="2026-10-17_noether-symmetry-conservation",
         title="대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리",
         subtitle="작용의 연속 대칭이 운동량과 에너지로 이어지는 이유, 그리고 그 구조를 시뮬레이션·과학 AI·양자계산에 옮길 때의 조건",
