@@ -109,7 +109,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const dir=path.join(root,'dist',ko?'':'en');fs.mkdirSync(dir,{recursive:true});
  const other=publicBase?publicBase+(ko?'en/':''):(ko?'en/index.html':'../index.html');
  const url=publicBase?publicBase+(ko?'':'en/'):'';
- const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}hero.webp">`:'';
+ const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}hero-v2.webp">`:'';
  const localBadge=publicBase?'':`<span class="local-status">${ko?'로컬 검토본':'Local review copy'}</span>`;
  const html=`<!doctype html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css"></head><body>
@@ -117,7 +117,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
 <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.20</span><span>${ko?'수학 · AI 연구 · 증명 검증':'MATHEMATICS · AI RESEARCH · PROOF VERIFICATION'}</span></div><article>${body}${disclosure(ko)}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">AI Tech Review Letters · ${cutoff}<br>${ko?'소수 분포의 수학과 AI 증명 검증을 연결하는 해설.':'Prime-distribution mathematics and the verification of AI-assisted proofs.'}</footer></main></body></html>\n`;
  fs.writeFileSync(path.join(dir,'index.html'),html.split('\n').map(line=>line.trimEnd()).join('\n'));
  fs.writeFileSync(path.join(dir,'review.css'),stylesheet);
- const allowedFigures=new Set(['hero.webp',`zero_regions_${lang}.svg`,`prime_error_${lang}.svg`,`proof_path_${lang}.svg`,`zero_regions_mobile_${lang}.svg`,`prime_error_mobile_${lang}.svg`,`proof_path_mobile_${lang}.svg`]);
+ const allowedFigures=new Set(['hero-v2.webp',`zero_regions_${lang}.svg`,`prime_error_${lang}.svg`,`proof_path_${lang}.svg`,`zero_regions_mobile_${lang}.svg`,`prime_error_mobile_${lang}.svg`,`proof_path_mobile_${lang}.svg`]);
  const assetNames=new Set(math.map(x=>x.filename));
  for(const match of html.matchAll(/\bsrc="([^"#]+)"/g)){
   if(!/^(?:https?:|data:|\/)/.test(match[1])){

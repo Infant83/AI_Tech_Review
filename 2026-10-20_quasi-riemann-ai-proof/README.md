@@ -7,7 +7,7 @@ The review examines the mathematical statement behind the quasi-Riemann hypothes
 ## Package contents
 
 - `reports/review_ko.md`, `reports/review_en.md`: complete article manuscripts.
-- `artifacts/hero.webp`: AI-generated conceptual cover, not mathematical evidence.
+- `artifacts/hero-v2.webp`: revised AI-generated cover showing a symbolic critical strip and central zero line, not mathematical evidence. The earlier abstract cover is retained only in the source package as `artifacts/hero.webp`.
 - [figure-manifest.json](figure-manifest.json): cover generation mode and full prompt, figure provenance, teaching-data files and source revisions.
 - `artifacts/zero_regions_*.svg`, `artifacts/prime_error_*.svg`, `artifacts/proof_path_*.svg`: original, deterministic explanatory figures.
 - `artifacts/build_mobile_figures.py`: compact mobile variants with vertically stacked panels, a readable power plot and wrapped verification cards. The desktop figures remain the print/PDF versions.

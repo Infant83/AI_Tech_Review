@@ -4,7 +4,7 @@
 
 <p class="kicker">TECH REVIEW · October 20, 2026 · Analytic number theory and AI-assisted research</p>
 
-<figure class="hero"><img src="hero.webp" alt="Mathematical concept illustration of a transparent vertical passage emerging within a dark space of points and curves"><figcaption>An AI-generated conceptual image of discovering hidden mathematical structure and making an argument intelligible. It does not plot actual zeta zeros or proof data.</figcaption></figure>
+<figure class="hero"><img src="hero-v2.webp" alt="Riemann-hypothesis concept illustration with a vertical critical strip, gold zeros on a central line, and oscillatory curves on both sides"><figcaption>Gold points on the central line symbolize RH’s predicted \(\operatorname{Re}s=1/2\) location for nontrivial zeros. The broad band evokes the wider region allowed by quasi-RH; the exact 7/8 and 11/12 boundaries are compared below. This AI-generated illustration contains no computed zero or prime data.</figcaption></figure>
 
 ## 1. How precisely can we describe the locations of primes?
 
