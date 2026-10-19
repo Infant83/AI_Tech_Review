@@ -1,0 +1,149 @@
+{
+  "as_of": "2026-10-19",
+  "created_by": "AI Tech Review",
+  "method": "Original code-native diagrams and Matplotlib quantitative plot. No reproduced or traced publisher figures. SVG text outlined; accessible title and description embedded.",
+  "script": "artifacts/build_scientific_figures.py",
+  "style": {
+    "background": "#F9FAF7",
+    "ink": "#193342",
+    "teal": "#237F80",
+    "amber": "#AF7A29",
+    "font": "Noto Sans KR Regular / Bold (outlined in SVG)"
+  },
+  "build": {
+    "python": "3.12",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "command": "python artifacts/build_scientific_figures.py",
+    "deterministic_svg": "fixed svg.hashsalt; omitted Date metadata"
+  },
+  "figures": [
+    {
+      "file": "artifacts/qubit_mechanisms.svg",
+      "caption_ko": "여섯 물리 플랫폼의 정보 저장과 연결 원리. 모든 도형은 편집부가 작성한 개념도이며, 실제 장치의 치수·배치·에너지 간격을 나타내지 않는다. 보소닉 부호화와 오류정정부호는 이 물리계 분류와 별도의 층이다.",
+      "alt_ko": "이온의 공유 운동, 중성원자의 Rydberg 상호작용, 초전도 회로의 Josephson 접합, 스핀의 교환과 이동, 광자의 간섭과 측정, 결함 중심의 스핀–광자 링크를 비교한 여섯 개념도.",
+      "sources": [
+        {
+          "platform": "trapped ions",
+          "url": "https://doi.org/10.1038/s41586-026-10676-4",
+          "scope": "Article trapped-ion mechanism section and cited processor paper."
+        },
+        {
+          "platform": "neutral atoms",
+          "url": "https://arxiv.org/html/2606.04079v1",
+          "scope": "§II, §III: nuclear-spin qubits, Rydberg gates, rearrangement, loss replenishment."
+        },
+        {
+          "platform": "superconducting circuits",
+          "url": "https://doi.org/10.1103/PRXQuantum.6.010349",
+          "scope": "Article Josephson nonlinear circuit description; schematic shows generic simplified transmon circuit rather than fluxonium hardware."
+        },
+        {
+          "platform": "semiconductor spins",
+          "url": "https://doi.org/10.1038/s41586-026-10766-3",
+          "scope": "Article exchange and shuttling description; alternatives rather than one particular device layout."
+        },
+        {
+          "platform": "photons",
+          "url": "https://doi.org/10.1038/s41586-025-08820-7",
+          "scope": "Dual-rail and optical interference/measurement illustration, not a literal implementation photograph."
+        },
+        {
+          "platform": "solid-state defects",
+          "url": "https://doi.org/10.1038/s41467-026-72818-6",
+          "scope": "Article local spin memory and heralded optical entanglement; link is not deterministic entanglement generation."
+        }
+      ],
+      "caveats": [
+        "Ion circles are localized ions, not electronic orbits.",
+        "Neutral-atom curves depict trapping potentials, not orbiting electrons.",
+        "The photon card illustrates a dual-rail interferometer; it does not imply deterministic two-photon gates.",
+        "Hardware issues are qualitative questions, not maturity scores."
+      ]
+    },
+    {
+      "file": "artifacts/evidence_requirements.svg",
+      "caption_ko": "양자 하드웨어 결과를 읽을 때 필요한 네 종류의 검증. 규모, 반복 오류정정, 코드 확대, 논리 계산은 서로 다른 질문이다. 상자 배열은 플랫폼의 성숙도나 순위를 표현하지 않는다. 후선택 사용 시에는 채택률과 재시도 비용을 함께 확인한다.",
+      "alt_ko": "규모와 자원, 반복 오류정정, 코드 확대의 효과, 논리 연산과 계산이라는 네 가지 증거와 모든 결과에 적용할 후선택 및 출판 상태 조건.",
+      "sources": [
+        {
+          "url": "https://arxiv.org/html/2606.04079v1",
+          "scope": "§I and §V distinguish finite-size suppression from asymptotic threshold and short circuits from long-run cycles."
+        },
+        {
+          "url": "https://arxiv.org/abs/2602.22211",
+          "scope": "Encoded logical qubits and postselection require explicit interpretation; see reviewed manuscript in article."
+        },
+        {
+          "url": "https://doi.org/10.1038/s41586-025-09848-5",
+          "scope": "Universal fault-tolerant ingredients, memory versus operations, readout and feed-forward conditions as discussed in article."
+        }
+      ],
+      "caveats": [
+        "Editorial synthesis of criteria, not a data plot or a technology readiness ranking."
+      ]
+    },
+    {
+      "file": "artifacts/toric_long_run.svg",
+      "raster": "artifacts/toric_long_run.png",
+      "mobile": "artifacts/toric_long_run_mobile.svg",
+      "mobile_dimensions_px": [
+        480,
+        580
+      ],
+      "mobile_note": "Compact layout of the identical two values, uncertainties, data/ancilla counts and maximum cycles; zero-baseline y axis retained. Detailed interpretation and source remain in the article caption.",
+      "caption_ko": "같은 장치 안의 비교. Atom Computing의 중성원자 twisted toric code에서 저장소 재공급을 포함한 긴 실행의 Z 논리 오류율. 작은 코드(데이터 16+보조 16, 최대 90주기)는 0.63±0.03%/주기, 큰 코드(32+32, 최대 70주기)는 0.64±0.04%/주기다. 점은 상수 주기 오류 모형의 적합값, 막대는 원문이 보고한 ± 불확도다. 오차 범위가 겹치며, 이 긴 실행 지표에서 큰 코드의 추가 억제는 확인되지 않았다. X·Z 평균이나 논리 게이트 성능으로 일반화하지 않는다.",
+      "alt_ko": "원자 32개와 64개의 두 코드에 대한 Z 논리 오류율 0.63±0.03% 및 0.64±0.04%를 같은 0–0.86% 세로축에서 비교한 오차막대 그림.",
+      "source": {
+        "title": "Quantum error correction with the toric code",
+        "authors": "Atom Computing and Collaborators",
+        "url": "https://arxiv.org/html/2606.04079v1",
+        "abstract_url": "https://arxiv.org/abs/2606.04079",
+        "version": "v1",
+        "posted": "2026-06-02",
+        "publication_status": "preprint",
+        "verified": "2026-10-19",
+        "locations": [
+          "§III code parameters",
+          "Fig. 3b caption",
+          "§V long-run reloading experiment"
+        ]
+      },
+      "metric": "Z-type logical error per syndrome-extraction cycle, fit to long-run datasets with storage-zone reloads every tenth cycle; percent units.",
+      "data": [
+        {
+          "code": "det 8",
+          "data_qubits": 16,
+          "ancilla_qubits": 16,
+          "total_array_qubits": 32,
+          "max_cycles": 90,
+          "z_error_per_cycle_percent": 0.63,
+          "reported_plusminus_percent": 0.03
+        },
+        {
+          "code": "det 16",
+          "data_qubits": 32,
+          "ancilla_qubits": 32,
+          "total_array_qubits": 64,
+          "max_cycles": 70,
+          "z_error_per_cycle_percent": 0.64,
+          "reported_plusminus_percent": 0.04
+        }
+      ],
+      "error_bar_definition": "Reproduces the ± fit-parameter uncertainties reported in Fig.3b and §V. Does not relabel them as a 95% CI or claim a separately verified confidence level.",
+      "conditions": [
+        "Role swapping, mid-circuit measurement/reset, loss-aware decoding, and replacement of lost atoms are included.",
+        "Storage-zone refilling every 10 cycles is part of the plotted long-run fits.",
+        "Max cycles differ by code; this graphic does not assert matched circuit durations.",
+        "The resource count is data plus syndrome ancillas, not the entire device atom inventory.",
+        "No synthetic per-cycle trajectory, extrapolated raw observations, or cross-platform score is drawn."
+      ],
+      "interpretation_limits": [
+        "Overlap of reported intervals is a descriptive observation, not a formal equivalence or noninferiority test.",
+        "The plot does not summarize X-type logical error or a two-axis average.",
+        "No assertion about universal logical computation follows from these memory measurements.",
+        "Short-run code-size suppression uses different conditions and is intentionally not mixed into this chart."
+      ]
+    }
+  ]
+}
