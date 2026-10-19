@@ -68,6 +68,33 @@ LinkedIn 글이 사진 출처로 제시한 Norcia 등의 *Iterative Assembly of 
 <figcaption>그림 2. 물리계의 선택과 부호화 방식, 연결 구조, 오류정정부호는 함께 설계한다. 보소닉 부호화는 초전도와 광자에 모두 적용할 수 있다. 각 층에서 센 자원 수를 논리 큐비트 수로 그대로 환산할 수는 없다. 본문의 정의에 따른 개념도. <a href="qubit_layers.svg">그림 크게 보기</a></figcaption>
 </figure>
 
+## 두 상태를 고르고 제어하고 읽는 공통 물리
+
+실제 원자·회로·전자기장은 대개 두 상태보다 훨씬 큰 Hilbert 공간을 갖는다. 큐비트를 만든다는 것은 그 안에서 제어 가능한 두 차원 부분공간을 고르고, 나머지 자유도와의 결합을 관리하는 일이다. 아래 부호화 수식의 아래첨자 L은 선택한 두 차원 공간의 이름이며, 그 표기만으로 반복 오류정정의 성공을 뜻하지 않는다. 그 두 상태가 반드시 입자의 두 위치이거나, 항상 에너지의 바닥 두 준위인 것은 아니다. 내부 스핀, 회로의 고유상태, 두 광학 모드의 점유, 여러 모드에 분산된 부호 공간이 모두 가능하다.
+
+순수 상태는 $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$, $|\alpha|^2+|\beta|^2=1$로 쓴다. $|0\rangle$와 $|1\rangle$의 상대위상이 간섭과 연산에 관여하며, 모든 성분에 같은 전체 위상을 곱하는 것은 관측 결과를 바꾸지 않는다. 환경과 얽혀 혼합 상태가 되면 밀도행렬 $\rho$가 필요하다. 두 차원 안에서는 $\rho=(I+\mathbf r\cdot\boldsymbol\sigma)/2$로 나타낼 수 있고, $I$는 항등 연산자, $\boldsymbol\sigma$는 Pauli 행렬, $\mathbf r$은 길이가 1 이하인 Bloch 벡터다. 이 구의 방향은 상태 공간의 좌표이며 전자나 원자가 실제 공간에서 같은 방향으로 돈다는 뜻은 아니다.
+
+계산 부분공간 안의 유효 Hamiltonian을 $H_{\rm q}=E_{\rm av}I+\hbar\mathbf h\cdot\boldsymbol\sigma/2$로 쓰면, 제어장은 벡터 $\mathbf h$의 성분과 시간 변화를 조절한다. $E_{\rm av}$는 공통 에너지, $\mathbf h$의 각 성분은 각주파수 단위이며 $\hbar$는 환산 Planck 상수다. 일정한 축 $\mathbf n$에 대한 이상적 회전은 $U=\exp[-i\theta\mathbf n\cdot\boldsymbol\sigma/2]$다. 실제 구동은 다른 준위로의 **누설**, 이웃 큐비트에 대한 비의도적 작용, 제어장의 잡음을 함께 일으킬 수 있다. 두 큐비트를 얽히게 하려면 단일 큐비트 제어 외에 공동의 상호작용이나 측정 자원도 필요하다.
+
+**판독은 중첩의 두 복소 진폭을 한 번에 꺼내는 과정이 아니다.** 이상적인 계산 기저 측정은 $|0\rangle$와 $|1\rangle$의 확률을 각각 $\rho_{00}$와 $\rho_{11}$로 준다. 상대위상까지 추정하려면 동일하게 준비한 여러 상태를 서로 다른 기저에서 측정해야 한다. 실제 장치는 내부상태를 형광 수, 전하 센서 신호, 마이크로파의 위상, 광자 계수 같은 고전적 기록에 대응시킨다. 비파괴 또는 quantum-nondemolition 판독도 모든 중첩을 보존한다는 뜻은 아니다. 이상적 측정 과정이 해당 관측량의 고유값을 바꾸지 않아 반복 판독에서 같은 값을 얻는다는 뜻이며, 검출 중의 이완과 측정의 역작용은 따로 평가해야 한다. [연속 QND 판독과 이완의 원 연구](https://doi.org/10.1103/PhysRevA.76.012325)
+
+수명에도 물리적 의미를 붙여야 한다. $T_1$은 선택한 이준위 모형에서 들뜬 상태 점유가 평형으로 돌아가는 시간이고, $T_2$는 지정한 조건에서 비대각 성분의 결맞음이 줄어드는 시간이다. 에너지 이완과 순수 탈위상이 독립적으로 지수 감쇠하는 Markov 모형에서는
+
+$$
+\frac{1}{T_2}=\frac{1}{2T_1}+\frac{1}{T_\phi}.
+$$
+
+여기서 $T_\phi$는 순수 탈위상 시간이다. 느린 주파수 변동이 포함된 Ramsey의 $T_2^*$, echo 펄스로 잡음을 일부 거른 시간, 구동 중 Rabi 감쇠는 서로 다른 실험이다. 비지수 감쇠·누설·입자 소실까지 있는 장치에 위 식을 그대로 적용할 수는 없다. 이어지는 각 플랫폼의 ‘긴 수명’은 **어떤 상태 또는 관측량을, 어떤 구동·판독 조건에서 유지했는가**와 함께 읽어야 한다. [Ramsey의 분리 구동](https://doi.org/10.1103/PhysRev.78.695), [Hahn의 echo](https://doi.org/10.1103/PhysRev.80.580)
+
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 3 Dual-rail과 cat과 GKP와 tetron에서 서로 다른 두 상태의 부호 공간을 고르는 원리" tabindex="0">
+<img class="diagram-desktop" src="qubit_encoding_spaces.svg" width="1320" height="1280" alt="Dual-rail과 cat과 GKP와 tetron에서 서로 다른 두 상태의 부호 공간을 고르는 원리" loading="lazy" decoding="async">
+<img class="diagram-mobile" src="qubit_encoding_spaces_mobile.svg" width="480" height="2290" alt="Dual-rail과 cat과 GKP와 tetron에서 서로 다른 두 상태의 부호 공간을 고르는 원리" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 3. 모드·여기 수와 큐비트 수의 구분. Dual-rail의 두 기저는 각각 총 한 여기를 가지며, 두 성분 cat의 홀짝 기저와 결맞음 상태 성분은 구별한다. GKP는 q 표현에서 유한 폭 피크와 포락선의 모양만 그린 예이며 Wigner 함수나 측정 자료가 아니다. Tetron은 총 짝수 패리티를 고정한 두 상태의 예다. 각 부호의 정의·근사 조건·원 논문은 아래 마요라나·보소닉·광자 절에 제시했다. 모든 패널은 편집부 원본 도식이다. <a href="qubit_encoding_spaces.svg">그림 크게 보기</a></figcaption>
+</figure>
+
 ## 현재 성과를 비교할 때 읽어야 할 지표
 
 **물리 큐비트 수와 논리 큐비트 수.** 여러 물리 큐비트를 한 논리 큐비트에 사용할 수 있다. [[n,k,d]] 부호는 n개의 물리 큐비트에 k개의 논리 큐비트를 담고 코드 거리 d를 갖는다. 작은 d로 k를 크게 만든 장치와, 큰 d로 오류를 강하게 억제한 장치는 성격이 다르다. 실제 장비에는 데이터 외에 측정 보조 큐비트, 이동 공간, 상태 공급 장치도 필요하다.
@@ -83,10 +110,10 @@ LinkedIn 글이 사진 출처로 제시한 Norcia 등의 *Iterative Assembly of 
 공통적으로 볼 항목은 논리 오류율, 오류정정 주기, 코드 거리, 연속 라운드 수, 논리 게이트 오류, 후선택 채택률, 연결 비용, 보정 및 재시도까지 포함한 실행시간이다. **99.9% 같은 하나의 수치는 모든 플랫폼에 공통인 오류내성 합격선이 아니다.** 문턱값은 부호, 오류의 상관관계, 측정·누설·소실, 디코더와 연결 방식에 달려 있다.
 
 <figure class="figure-panel">
-<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 3 좌우로 이동하여 보기" tabindex="0">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 4 좌우로 이동하여 보기" tabindex="0">
 <img src="evidence_requirements.svg" width="1440" height="1040" alt="규모와 자원, 반복 오류정정, 코드 확대의 효과, 논리 연산과 계산이라는 네 가지 증거와 모든 결과에 적용할 후선택 및 출판 상태 조건." loading="lazy" decoding="async">
 </div>
-<figcaption>그림 3. 양자 하드웨어 결과를 읽을 때 필요한 네 종류의 검증. 규모, 반복 오류정정, 코드 확대, 논리 계산은 서로 다른 질문이다. 상자 배열은 플랫폼의 성숙도나 순위를 표현하지 않는다. 후선택 사용 시에는 채택률과 재시도 비용을 함께 확인한다. 본문의 지표 구분을 도식화했다. <a href="evidence_requirements.svg">그림 크게 보기</a></figcaption>
+<figcaption>그림 4. 양자 하드웨어 결과를 읽을 때 필요한 네 종류의 검증. 규모, 반복 오류정정, 코드 확대, 논리 계산은 서로 다른 질문이다. 상자 배열은 플랫폼의 성숙도나 순위를 표현하지 않는다. 후선택 사용 시에는 채택률과 재시도 비용을 함께 확인한다. 본문의 지표 구분을 도식화했다. <a href="evidence_requirements.svg">그림 크게 보기</a></figcaption>
 </figure>
 
 ## 주요 플랫폼의 비교
@@ -94,10 +121,10 @@ LinkedIn 글이 사진 출처로 제시한 Norcia 등의 *Iterative Assembly of 
 아래 평가는 뒤의 논문들을 종합한 해석이다. 각 행의 성과는 서로 다른 규모와 프로토콜에서 측정되었으므로 숫자로 단일 순위를 매기지 않는다.
 
 <figure class="figure-panel">
-<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 4 좌우로 이동하여 보기" tabindex="0">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 5 좌우로 이동하여 보기" tabindex="0">
 <img src="qubit_mechanisms.svg" width="1440" height="1110" alt="이온의 공유 운동, 중성원자의 Rydberg 상호작용, 초전도 회로의 Josephson 접합, 스핀의 교환과 이동, 광자의 간섭과 측정, 결함 중심의 스핀–광자 링크를 비교한 여섯 개념도." loading="lazy" decoding="async">
 </div>
-<figcaption>그림 4. 여섯 물리 플랫폼의 정보 저장과 연결 원리. 모든 도형은 편집부가 작성한 개념도이며, 실제 장치의 치수·배치·에너지 간격을 나타내지 않는다. 보소닉 부호화와 오류정정부호는 이 물리계 분류와 별도의 층이다. 각 플랫폼의 원리와 근거 논문은 이어지는 절에서 설명한다. <a href="qubit_mechanisms.svg">그림 크게 보기</a></figcaption>
+<figcaption>그림 5. 여섯 물리 플랫폼의 정보 저장과 연결 원리. 모든 도형은 편집부가 작성한 개념도이며, 실제 장치의 치수·배치·에너지 간격을 나타내지 않는다. 보소닉 부호화와 오류정정부호는 이 물리계 분류와 별도의 층이다. 각 플랫폼의 원리와 근거 논문은 이어지는 절에서 설명한다. <a href="qubit_mechanisms.svg">그림 크게 보기</a></figcaption>
 </figure>
 
 | 플랫폼 | 양자정보와 얽힘 방식 | 현재 확인된 강점 | 다음 확장 과제 |
@@ -115,9 +142,37 @@ LinkedIn 글이 사진 출처로 제시한 Norcia 등의 *Iterative Assembly of 
 
 **마요라나는 성공했을 때의 파급력이 크지만, 보호된 고정밀 계산 큐비트를 입증하는 선결 위험도 큰 경로다.** 2026년에는 긴 패리티 안정성과 최소 Kitaev 사슬의 결맞는 제어가 각각 진전했다. 이들은 다른 장치·프로토콜의 결과이며, 한 장치에서 긴 결맞음과 고충실도 연산과 위상 보호를 함께 달성했다는 의미로 합칠 수 없다.
 
-### 성공했을 때 무엇이 달라지는가
+### 영모드와 고정 패리티의 부호화
 
-여기서 마요라나는 초전도체에서 전자와 정공이 결합된 Majorana 영모드라는 준입자 상태를 가리킨다. Tetron 제안은 네 영모드와 고정된 전체 패리티를 이용해 하나의 큐비트를 구성한다. 정보를 떨어진 자유도에 분산해 국소 잡음에 덜 민감하게 만들고, 패리티 측정의 조합으로 연산하는 것이 목표다. 이 보호가 실제 장치에서 유지되면 잔류 오류와 바깥 오류정정에 드는 자원을 함께 줄일 여지가 있다. [Microsoft의 소자·연산 로드맵](https://arxiv.org/abs/2502.12252)
+이 문맥의 Majorana 영모드(MZM)는 초전도체의 전자·정공 성분이 결합한 **저에너지 준입자 자유도**다. 전자 한 개를 공간에서 두 조각으로 잘랐다는 뜻이 아니다. 이상적인 영모드 연산자는
+
+$$
+\gamma_j=\gamma_j^\dagger,\qquad
+\{\gamma_i,\gamma_j\}=2\delta_{ij}
+$$
+
+를 만족한다. 서로 떨어진 두 영모드로 복소 페르미온 모드 $f=(\gamma_1+i\gamma_2)/2$를 정의하면, 그 점유수 $n=f^\dagger f$와 쌍의 측정량은
+
+$$
+i\gamma_1\gamma_2=2n-1
+$$
+
+로 연결된다. 여기서 페르미온 패리티를 $P=(-1)^n$으로 정의하면 $P=-i\gamma_1\gamma_2$다. 문헌에서 ‘쌍 패리티’에 붙이는 전체 부호는 정의에 따라 달라지므로 식과 점유수의 대응을 함께 밝혀야 한다. [Kitaev 원 논문, 식 (1)–(2)와 점유수](https://arxiv.org/html/cond-mat/0010440v2)
+
+**한 쌍의 전체 패리티를 고정하면 남는 상태는 하나이므로 그것만으로 큐비트를 만들 수 없다.** 네 영모드를 쓰는 tetron은 두 복소 모드 $f_{12},f_{34}$의 총패리티를 고정해도 두 상태가 남는다. 예를 들어 짝수 부문에서
+
+$$
+|0_L\rangle=|n_{12}=0,n_{34}=0\rangle,\qquad
+|1_L\rangle=|n_{12}=1,n_{34}=1\rangle
+$$
+
+을 선택한다. 두 상태 모두 같은 총패리티를 가지며, 총패리티가 고정되면 (12)와 (34)의 패리티는 독립적이지 않다. (12)와 (23)처럼 한 영모드를 공유하는 쌍을 택하면 서로 비가환인 논리 측정축을 구성한다. 부유 초전도 섬의 충전 에너지는 단일 전자의 출입을 억제해 이 총패리티 제약을 유지하는 수단이다. [네 영모드와 고정 패리티를 이용한 Majorana box qubit 제안](https://arxiv.org/html/1609.01697)
+
+보호의 요점은 충분히 떨어진 영모드에 저장한 정보를 국소적인 패리티 보존 교란이 쉽게 구별하거나 바꾸지 못하게 하는 데 있다. 이를 위해 벌크 여기와 분리하는 에너지 갭, 영모드의 공간적 국소화, 충분한 분리 $L\gg\xi$, 낮은 여기 점유와 패리티 보존이 필요하다. 이상적인 긴 계에서는 영모드 파동함수의 겹침이 만드는 에너지 분리가 대략 $\delta E\propto e^{-L/\xi}$로 줄지만, 실제 계에서는 진동 인자·무질서·기생 결합·충전 효과도 작용한다. 유한 겹침은 상태 사이에 원치 않는 상대 위상을 쌓고, 준입자 유입에 따른 **poisoning**은 패리티 자체를 바꾼다. 갭을 닫거나 영모드를 접근시키는 제어, 측정 회로와의 결합도 보호 조건을 바꿀 수 있다. 따라서 긴 패리티 수명이 곧 임의의 중첩 상태의 결맞음이나 게이트 충실도는 아니다. [원형 큐비트의 보호·겹침·poisoning 검증법](https://arxiv.org/html/1511.05153v2)
+
+이상적인 교환은 $U_{ij}=\exp(\pm\pi\gamma_i\gamma_j/4)$로 표현되고, 이웃한 교환의 순서를 바꾸면 결과가 달라질 수 있다. 교환 방향과 연산자 정의가 부호를 정한다. 영모드의 위치를 교환하는 braiding 외에, 보조 자원과 순차 패리티 측정으로 대응하는 변환을 구현하는 경로도 있다. 표준 MZM 인코딩에서 이런 보호된 braiding·패리티 측정 기반 Clifford 연산만으로는 보편 게이트 집합이 되지 않는다. 비Clifford 연산이나 magic state와 잔류 오류정정이 추가로 필요하다. [비가환 교환의 원 유도](https://arxiv.org/html/cond-mat/0005069), [측정 기반 Clifford 제안](https://arxiv.org/html/1609.01697), [Clifford와 magic state의 보편성](https://arxiv.org/html/quant-ph/0403025)
+
+### 성공했을 때 무엇이 달라지는가
 
 파급력은 기존 범용 알고리즘의 구현 비용을 낮추는 데 있다. 마요라나라는 물리계 자체가 분자 계산이나 최적화에 새로운 알고리즘적 가속을 자동으로 주는 것은 아니다. 작은 소자 면적, 전기적 제어와 패리티 측정은 집적에 유리할 수 있지만, 반도체의 무질서·자기장·게이트 조정·판독 회로의 비용을 포함해야 한다. 보호된 Clifford 연산에 더해 비Clifford 자원과 잔류 오류정정도 필요하다. 로드맵이 제안하는 단일 큐비트 검증, 두 tetron 연산, 여덟 tetron 오류검출과 논리 오류정정은 각각 별도 이정표다. [로드맵 저자 공개본](https://arxiv.org/html/2502.12252v3)
 
@@ -127,18 +182,18 @@ LinkedIn 글이 사진 출처로 제시한 Norcia 등의 *Iterative Assembly of 
 | --- | --- | --- |
 | Microsoft InAs–Al의 X·Z loop 측정. 2025년 사전공개, 2026년 10월 1일 Physical Review A 심사 채택 | X loop 수명 14.5 ± 0.3 μs, Z loop 수명 12.4 ± 0.4 ms. 적분 시간 2 μs 및 50 μs에서 operational assignment error는 각각 16%, 0.5% | 두 패리티 판독 경로의 성과다. 저자들은 빠른 교차 측정으로 X·Z의 비가환성을 확인하는 일을 다음 단계로 남겼다. [PRA 채택 원고](https://journals.aps.org/pra/accepted/10.1103/cx4w-lxx1), [본문](https://arxiv.org/html/2507.08795v2) |
 | Microsoft InAs–Pb tetron. 2026년 6월 2일 사전공개 | Z 패리티 전환 시간 22 ± 1 s. 논문 제목은 *20 Second Parity Lifetime in an InAs–Pb Tetron Device* | 재료 변화로 패리티를 바꾸는 오류 경로를 크게 줄인 성과다. 임의 중첩의 T₂, 두 큐비트 게이트 충실도나 보호된 논리 수명이 아니다. [원문](https://arxiv.org/html/2606.03884v1) |
-| QuTech의 결합한 최소 Kitaev 사슬. 2026년 7월 10일 사전공개 | 결맞는 패리티 Rabi 진동. 대표 측정에서 진동 주파수 106.7(0.4) MHz, 감쇠 시간 T₂ᴿᵃᵇⁱ = 26 ± 2 ns | 시간 영역에서의 결맞는 제어가 출현했다. 짧은 이른바 poor man's Majorana 사슬의 부분적 보호이며, 긴 계의 지수적 보호나 높은 게이트 충실도와 구분한다. [실험 원문](https://arxiv.org/html/2607.09511v1) |
+| QuTech의 결합한 최소 Kitaev 사슬. 2026년 7월 10일 사전공개 | 결맞는 패리티 Rabi 진동. 대표 측정에서 진동 주파수 106.7(0.4) MHz, 감쇠 시간 T₂ᴿᵃᵇⁱ = 26 ± 2 ns | 시간 영역에서의 결맞는 제어가 출현했다. 짧은 최소 Majorana 사슬의 부분적 보호이며, 긴 계의 지수적 보호나 높은 게이트 충실도와 구분한다. [실험 원문](https://arxiv.org/html/2607.09511v1) |
 
 판독 오류 0.5%를 다른 플랫폼의 두 큐비트 게이트 오류 0.5%와 같은 것으로 놓아서는 안 된다. 패리티 전환과 신호 잡음을 포함한 판독 연산 오류, 임의 상태를 조작하는 연산 오류, 여러 번의 연산 후 남는 논리 오류는 서로 다른 지표다. 22초와 26 ns도 서로 다른 장치에서 다른 동역학을 측정한 값이므로 성능 비율로 계산할 수 없다.
 
 2026년 2월의 *Single-shot parity readout of a minimal Kitaev chain*는 최소 사슬의 단발 판독을 발전시켰고, 7월 연구는 결합한 사슬의 결맞는 제어로 범위를 넓혔다. 따라서 현황은 패리티 판독에만 머무른다는 서술로 정리하기 어렵다. 관건은 **결맞는 제어를 유지하면서 보호 이득과 연산 정확도를 함께 높이는가**다. [Nature 판독 논문](https://doi.org/10.1038/s41586-025-09927-7)
 
 <figure class="figure-panel">
-<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 5 마요라나 연구의 성과와 검증 과제" tabindex="0">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 6 마요라나 연구의 성과와 검증 과제" tabindex="0">
 <img class="diagram-desktop" src="majorana_evidence.svg" width="1440" height="1140" alt="서로 다른 InAs–Al 루프 판독, InAs–Pb의 긴 Z 패리티 수명, 결합한 최소 Kitaev 사슬의 결맞는 제어를 구분하고 비가환 제어와 보호 및 연산 오류의 후속 검증을 제시한 도식" loading="lazy" decoding="async">
 <img class="diagram-mobile" src="majorana_evidence_mobile.svg" width="480" height="2380" alt="세 마요라나 실험은 다른 장치와 측정량이다. 패리티 수명과 Rabi 감쇠를 게이트 충실도로 환산할 수 없으며, 보호와 제어와 반복 연산 정확도의 통합 검증이 필요하다." loading="lazy" decoding="async">
 </div>
-<figcaption>그림 5. 마요라나 관련 세 실험의 성과와 해석 범위. 세 패널은 다른 장치·프로토콜이며 성숙도 순위가 아니다. 패리티 전환, Rabi 감쇠와 판독 오류는 서로 다른 측정량이다. 아래의 네 항목은 후속 검증 기준이다. 소자 그림은 실제 배치를 재현하지 않은 편집부 개념도이며 출처와 조건은 위 표 및 이어지는 두 이론 논문에 제시했다. <a href="majorana_evidence.svg">그림 크게 보기</a></figcaption>
+<figcaption>그림 6. 마요라나 관련 세 실험의 성과와 해석 범위. 세 패널은 다른 장치·프로토콜이며 성숙도 순위가 아니다. 패리티 전환, Rabi 감쇠와 판독 오류는 서로 다른 측정량이다. 아래의 네 항목은 후속 검증 기준이다. 소자 그림은 실제 배치를 재현하지 않은 편집부 개념도이며 출처와 조건은 위 표 및 이어지는 두 이론 논문에 제시했다. <a href="majorana_evidence.svg">그림 크게 보기</a></figcaption>
 </figure>
 
 ### 수명과 보호를 판별하는 최근 연구
@@ -178,9 +233,30 @@ Microsoft는 2026년 6월 Majorana 2 발표에서 2029년 확장 가능한 컴�
 
 ### 물리 원리와 장점
 
-트랩트 이온은 전하를 가진 원자를 전자기장으로 가두고, 초미세 상태나 수명이 긴 광학 전이 상태 등을 큐비트로 쓴다. 레이저 또는 마이크로파가 단일 큐비트를 회전시키고, Coulomb 힘으로 결합된 운동 모드가 두 큐비트의 얽힘을 매개한다. 같은 동위원소의 원자들은 본질적으로 같은 에너지 구조를 가져 소자별 제조 편차를 줄일 수 있다. 실제 빔 세기, 자기장, 운동 가열의 균일성은 여전히 제어해야 한다.
+트랩트 이온에서 **포획되는 것은 원자의 질량중심이고, 계산 정보를 담는 것은 원자 내부의 두 양자상태**다. 바닥 전자상태의 초미세 준위 두 개를 고르거나, 바닥상태와 수명이 긴 준안정 전자상태를 고른다. 초미세 준위는 전자와 원자핵의 각운동량 결합으로 생기므로 순수한 핵스핀과 같지 않다. 전하에 작용하는 포획장은 이 내부상태를 공간적으로 붙잡는 기반이다. 선형 Paul 트랩은 비균일한 RF 전기장이 만드는 유효 퍼텐셜로 방사 방향을, DC 전극으로 축 방향을 가둔다. 정적 전기장과 자기장을 결합하는 Penning 트랩은 다른 방식이다. [Wineland 등, 포획과 내부상태 제어](https://pmc.ncbi.nlm.nih.gov/articles/PMC4898965/)
 
-한 이온 사슬 안에서는 공유 운동을 통해 여러 쌍을 연결할 수 있다. QCCD 구조는 이온을 저장·연산·측정 구역 사이로 옮겨 필요한 쌍을 만난다. ‘all-to-all 연결’에는 이 이동과 스케줄링의 비용이 포함된다. 서로 다른 진공 장치 사이의 연결에는 광학 링크 같은 별도의 계층이 필요하다.
+단일 큐비트 연산은 두 준위 사이의 **전이 진폭과 상대위상**을 제어한다. 초미세 큐비트에는 공명 마이크로파나 두 광장의 주파수 차를 이용하는 유도 Raman 전이를, 광학 큐비트에는 해당 광학 전이를 구동할 수 있다. 공명하고 빠른 진동항을 버리는 회전파 근사에서 제어를 간단히 쓰면
+
+$$
+H_{\mathrm d}=\frac{\hbar\Omega(t)}{2}\left(e^{-i\phi}|1\rangle\langle0|+e^{i\phi}|0\rangle\langle1|\right).
+$$
+
+여기서 $\Omega$는 각주파수 단위의 Rabi 주파수, $\phi$는 구동 위상, $\hbar$는 환산 Planck 상수다. 공명 펄스의 면적 $\theta=\int\Omega(t)dt$가 회전각을, $\phi$가 적도면의 회전축을 정한다. Raman에서는 실제 광학 여기상태를 크게 점유하지 않고 두 장 사이의 결맞은 이광자 과정을 이용한다. [Wineland 등, 전이 Hamiltonian과 Raman 제어](https://pmc.ncbi.nlm.nih.gov/articles/PMC4898965/)
+
+두 이온은 Coulomb 힘으로 결합하므로 변위가 독립적이지 않고 **공유 정상모드**를 이룬다. 모드의 진동 각주파수가 $\nu$일 때, 내부 전이 $\omega_{01}$ 근처의 carrier는 주로 내부상태만 바꾸고 $\omega_{01}\pm\nu$의 운동 측대역은 내부상태와 진동 양자수를 함께 바꾼다. Lamb–Dicke 매개변수 $\eta$는 구동의 유효 파수와 그 방향 영점운동 폭의 곱이다. $\eta\sqrt{2\bar n+1}\ll1$이면 운동에 따른 광학 위상 변화를 낮은 차수로 전개할 수 있다. $\bar n$은 해당 모드의 평균 진동 양자수다. [Sørensen–Mølmer, 측대역과 Lamb–Dicke 근사](https://arxiv.org/html/quant-ph/0002024)
+
+대표적인 Mølmer–Sørensen 게이트는 적색·청색 측대역 부근의 결맞은 구동으로 내부상태에 따라 방향이 달라지는 힘을 만든다. 그 결과 운동의 위치–운동량 위상공간에 상태별 궤적이 생긴다. 게이트 끝에 관련 모드의 궤적을 모두 닫으면 운동은 내부상태와 분리되지만 궤적의 면적에 해당하는 얽힘 위상이 남는다. 이상적인 두 큐비트 연산은 전체 위상을 제외하면
+
+$$
+U_{\mathrm{MS}}=\exp[-i\chi\,\sigma_{\varphi}^{(1)}\sigma_{\varphi}^{(2)}],\qquad
+\sigma_{\varphi}=\cos\varphi\,\sigma_x+\sin\varphi\,\sigma_y
+$$
+
+로 표현할 수 있다. $\sigma_x,\sigma_y$는 내부 큐비트의 Pauli 연산자, $\varphi$는 구동이 정한 스핀축, $\chi$는 누적 상호작용 위상이며 $|\chi|=\pi/4$는 최대 얽힘을 만들 수 있다. **모든 게이트가 운동 바닥상태를 요구하는 것은 아니다.** 이 방식에서는 근사의 유효성과 최종 운동 분리가 핵심이며, 실제 가열·주파수 변동·불완전한 궤적 폐합은 오류를 만든다. [Sørensen–Mølmer, 열운동에서도 가능한 게이트와 한계](https://arxiv.org/html/quant-ph/0002024)
+
+판독에서는 내부상태를 광자 수의 차이로 바꾼다. 한 상태는 들뜬 준위와 순환전이를 반복해 형광을 내고, 다른 상태는 검출광과 결합하지 않는 dark 상태로 남는다. 초미세 큐비트의 한 성분을 준안정 준위로 옮기는 shelving도 이용한다. 검출기는 이온의 위치 자체가 아니라 이 상태 의존 형광을 읽으며, 광자 수집 부족·배경광·검출 중 상태 전이가 밝음/어두움 분포를 겹치게 한다. [Myerson 등, 상태 의존 형광과 shelving](https://arxiv.org/html/0802.1684)
+
+한 이온 사슬 안에서는 공유 운동을 통해 여러 쌍을 연결할 수 있다. QCCD 구조는 이온을 저장·연산·측정 구역 사이로 옮겨 필요한 쌍을 만난다. ‘all-to-all 연결’에는 이 이동과 스케줄링의 비용이 포함된다. 서로 다른 진공 장치 사이의 연결에는 광학 링크 같은 별도의 계층이 필요하다. 같은 동위원소의 내부 준위는 본질적으로 같지만 국소 빔·자기장·운동 가열은 균일하게 제어해야 한다.
 
 ### 논문이 보여주는 현위치
 
@@ -204,9 +280,39 @@ Microsoft는 2026년 6월 Majorana 2 발표에서 2029년 확장 가능한 컴�
 
 ### 물리 원리와 원자종 선택
 
-광학 집게와 광격자는 전하가 없는 원자를 가둘 수 있다. 큐비트는 원자 내부의 두 상태에 저장하며, 얽힘 게이트 때 원자를 전자의 공간 분포가 크게 확장된 Rydberg 상태로 잠시 올려 강한 상호작용을 이용한다. 한 원자의 여기가 근처 원자의 여기를 막는 Rydberg blockade가 대표적 원리다. 원자를 이동시켜 상호작용할 쌍을 바꿀 수 있어 기하학적 배치와 계산 연결을 유연하게 설계한다.
+중성원자도 **위치를 붙잡는 장치와 정보를 저장하는 내부상태**를 구분해야 한다. 광학 집게는 집속된 빛이 유도한 쌍극자의 AC Stark 에너지 이동으로 원자의 질량중심을 가둔다. 약한 여기와 분산적 반응을 가정하고 선택한 상태·편광에 대한 유효 동적 분극률을 $\alpha(\omega)$라 하면
 
-Rb와 Cs 같은 알칼리 원자는 초미세 상태 제어 경험이 풍부하다. Sr 같은 알칼리 토금속과 Yb 같은 알칼리 토금속 유사 원자는 핵스핀, 광학 시계 전이, 준안정 상태를 활용할 수 있어 저장·연산·판독의 역할을 나누기 좋다. 원자종의 선택은 가능한 레이저, 냉각, 판독, 소실 검출과 게이트 오류의 구조까지 바꾼다. 특정 원자종의 배열 성과를 다른 원자종의 게이트 성능과 합쳐 하나의 장비 성능처럼 제시하면 안 된다.
+$$
+U(\mathbf r)=-\frac{\operatorname{Re}\alpha(\omega)}{2\epsilon_0c}I(\mathbf r),\qquad
+\mathbf F=-\nabla U.
+$$
+
+$I$는 시간 평균 광세기, $\omega$는 빛의 각주파수, $\epsilon_0$는 진공 유전율, $c$는 빛의 속도다. $\operatorname{Re}\alpha>0$이면 세기 최대가 에너지 최소다. 고립된 이준위 원자의 멀리 벗어난 적색 detuning은 이 경우에 해당하지만, 실제 다준위 원자의 부호는 파장·내부상태·편광에 달린다. 광격자는 간섭무늬의 주기적 에너지 최소를 이용한다. 이 보존적인 쌍극자 힘과 냉각에 쓰이는 광자 산란력은 서로 다른 작용이다. [Chu 등, 유도 쌍극자 포획의 원 실험](https://doi.org/10.1103/PhysRevLett.57.314)
+
+Rb·Cs에서는 전자 각운동량 $J$와 핵스핀 $I_{\rm nuc}$이 결합한 초미세 준위의 두 상태를 흔히 저장 큐비트로 쓴다. Sr·Yb의 일부 동위원소에서는 $J=0$ 전자상태 안의 서로 다른 핵스핀 투영을 고를 수 있다. 이와 달리 **광학 clock 큐비트는** ${}^{1}S_0$와 ${}^{3}P_0$처럼 서로 다른 전자상태를 연결한다. 핵스핀 큐비트, 초미세 큐비트, 광학 clock 큐비트는 같은 부호화의 다른 이름이 아니다. 또한 ‘clock 상태’라는 말은 자기장에 둔감한 초미세 상태에도 쓰이므로 전이 종류를 함께 밝혀야 한다. 단일 큐비트 회전은 선택한 부호화에 맞는 마이크로파·Raman·광학 구동으로 구현한다. [Ma 등, 핵스핀 부호화](https://doi.org/10.1103/PhysRevX.12.021028), [광학 clock 큐비트 실험](https://doi.org/10.1038/s41567-022-01678-w)
+
+저장상태의 원자끼리는 유용한 게이트를 할 만큼 강하게 결합하지 않는 경우가 많아, 한 성분을 높은 주양자수의 Rydberg 상태 $|r\rangle$로 잠시 결합한다. 전자의 큰 공간 분포와 가까운 여기준위들이 강한 원자 간 상호작용을 가능하게 한다. 원자 위치를 고정하고 $|1\rangle\leftrightarrow|r\rangle$만 구동하는 유효 모형은
+
+$$
+H=\sum_{i=1}^{2}\left[\frac{\hbar\Omega_i(t)}2|r_i\rangle\langle1_i|+\mathrm{h.c.}-\hbar\Delta_i(t)n_i\right]+B(R)n_1n_2,
+\qquad n_i=|r_i\rangle\langle r_i|.
+$$
+
+$\Omega_i$는 위상을 포함한 복소 Rabi 각주파수, $\Delta_i=\omega_{\rm drive}-\omega_{1r}$는 각주파수 detuning, $R$은 원자 간 거리, $B$는 **두 원자가 함께 Rydberg 상태일 때의 상호작용 에너지 이동**이다. h.c.는 앞 전이항의 Hermitian 켤레다. 실제 게이트에서는 다준위 구조·운동·붕괴를 더 고려한다. [Jaksch 등, Rydberg 조건부 위상 게이트의 원형](https://arxiv.org/html/quant-ph/0004038)
+
+고립된 단일 원자에 공명하도록 구동했을 때 $|B|\gg\hbar|\Omega_i|$이면 $|rr\rangle$가 공명에서 벗어나 이중 여기가 억제된다. 이것이 **Rydberg blockade**이며, 원자가 서로 충돌하거나 한 원자가 상대를 고전적으로 감지해 끄는 현상이 아니다. 얽힘 게이트에는 이 에너지 구조에 더해 결맞은 펄스와 위상 제어가 필요하다. 예를 들어 제어 원자에 $\pi$, 표적에 $2\pi$, 제어에 $\pi$ 펄스를 가하면 제어상태에 따라 표적의 Rabi 순환이 달라진다. 이상적인 경우 단일 큐비트 위상을 보정한 뒤 $|11\rangle$ 성분만 부호가 바뀌는 CZ가 된다. 실제 펄스 설계는 다양하며 blockade 관측만으로 범용 게이트를 입증한 것은 아니다. [Jaksch 등, 펄스 순서와 조건부 위상](https://arxiv.org/html/quant-ph/0004038), [Isenhower 등, CNOT 구현](https://doi.org/10.1103/PhysRevLett.104.010503)
+
+원자를 옮기면 $R$과 상호작용할 쌍을 바꿀 수 있지만 이동 자체는 위의 얽힘 연산을 대신하지 않는다. 판독은 내부상태를 상태 선택적인 형광·shelving·제거 과정 등에 대응시켜 수행한다. 따라서 영상의 빈자리가 논리 $|0\rangle$라는 해석은 일반적으로 성립하지 않으며, 의도한 상태 선택 판독과 비의도적 원자 손실을 구분할 별도 절차가 필요하다. 원자종과 부호화의 선택은 이 과정, 냉각·레이저 구성·누설 검출 방식까지 함께 바꾼다. [Ma 등, 상태 준비·제어·상태 선택 판독](https://arxiv.org/html/2112.06799)
+
+특정 원자종의 배열 성과와 다른 원자종의 게이트 성능을 합쳐 하나의 장비 성능처럼 읽어서는 안 된다.
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 7 원자 포획과 내부 상태, 이온의 공유 운동과 중성원자의 Rydberg 이중 여기 이동을 구별한 원리 도식" tabindex="0">
+<img class="diagram-desktop" src="atomic_physics.svg" width="1320" height="1000" alt="원자 포획과 내부 상태, 이온의 공유 운동과 중성원자의 Rydberg 이중 여기 이동을 구별한 원리 도식" loading="lazy" decoding="async">
+<img class="diagram-mobile" src="atomic_physics_mobile.svg" width="480" height="1650" alt="원자 포획과 내부 상태, 이온의 공유 운동과 중성원자의 Rydberg 이중 여기 이동을 구별한 원리 도식" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 7. 이온의 질량중심 포획과 내부 상태, 운동을 매개로 한 얽힘 및 Rydberg 상호작용의 역할. 오른쪽의 두 원자 사다리는 양의 이중 여기 에너지 이동의 예다. 결맞는 펄스와 국소 위상 보정을 포함한 조건부 연산은 본문에서 설명했다. 에너지·위치 축척은 실제 값이 아니며, 특정 원자종의 전체 준위도를 재현하지 않았다. <a href="https://doi.org/10.1103/PhysRevA.62.022311">이온 게이트의 원 모형</a>, <a href="https://doi.org/10.1103/PhysRevLett.85.2208">Rydberg 게이트의 원 모형</a>에 근거한 편집부 도식. <a href="atomic_physics.svg">그림 크게 보기</a></figcaption>
+</figure>
 
 ### 논문이 보여주는 현위치
 
@@ -219,11 +325,11 @@ Rb와 Cs 같은 알칼리 원자는 초미세 상태 제어 경험이 풍부하�
 2026년 6월 2일 사전공개된 *Quantum error correction with the toric code*는 중간 측정·초기화, 원자 손실 교체와 저장소 재공급을 결합했다. 데이터+보조 원자가 32개 또는 64개인 메모리를 각각 최대 90 또는 70주기 실행했다. 4주기 시점에서 X·Z 논리 관측량을 평균한 코드 확대의 오류 억제계수는 1.30(3)배였다. 그러나 장시간 실행의 Z 논리 오류는 작은 코드에서 주기당 0.63(3)%, 큰 코드에서 0.64(4)%로 큰 코드의 추가 억제가 유지되지 않았다. 지속 운영의 성과와 남은 오류 누적 문제가 동시에 드러난다. [arXiv 사전공개](https://arxiv.org/abs/2606.04079)
 
 <figure class="figure-panel">
-<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 6 좌우로 이동하여 보기" tabindex="0">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 8 좌우로 이동하여 보기" tabindex="0">
 <img class="diagram-desktop" src="toric_long_run.svg" width="1440" height="950" alt="원자 32개와 64개의 두 코드에 대한 Z 논리 오류율 0.63±0.03% 및 0.64±0.04%를 같은 0–0.86% 세로축에서 비교한 오차막대 그림." loading="lazy" decoding="async">
 <img class="diagram-mobile" src="toric_long_run_mobile.svg" width="480" height="580" alt="작은 코드와 큰 코드의 Z 논리 오류율 0.63±0.03% 및 0.64±0.04%를 함께 표시한 모바일용 오차막대 그래프" loading="lazy" decoding="async">
 </div>
-<figcaption>그림 6. 중성원자 장치의 두 twisted toric code에서, 저장소 재공급을 포함한 긴 실행의 Z 논리 오류율을 비교했다. 점은 상수 주기 오류 모형의 적합값, 막대는 논문 보고의 ± 불확도다. 데이터와 보조 원자는 각각 16+16개 및 32+32개이고, 최대 실행 길이는 90주기 및 70주기로 다르다. 이 지표에서 큰 코드의 추가 억제는 확인되지 않았다. 부호의 원자 수는 장치 전체의 원자 수와 다르다. <a href="https://arxiv.org/html/2606.04079v1">Atom Computing 등의 사전공개 논문 Fig. 3b와 V절</a>에 보고된 값을 재도식화했다. <a href="toric_long_run.svg">그림 크게 보기</a></figcaption>
+<figcaption>그림 8. 중성원자 장치의 두 twisted toric code에서, 저장소 재공급을 포함한 긴 실행의 Z 논리 오류율을 비교했다. 점은 상수 주기 오류 모형의 적합값, 막대는 논문 보고의 ± 불확도다. 데이터와 보조 원자는 각각 16+16개 및 32+32개이고, 최대 실행 길이는 90주기 및 70주기로 다르다. 이 지표에서 큰 코드의 추가 억제는 확인되지 않았다. 부호의 원자 수는 장치 전체의 원자 수와 다르다. <a href="https://arxiv.org/html/2606.04079v1">Atom Computing 등의 사전공개 논문 Fig. 3b와 V절</a>에 보고된 값을 재도식화했다. <a href="toric_long_run.svg">그림 크게 보기</a></figcaption>
 </figure>
 
 2026년 6월 12일 출판된 *Logical qubits with erasure conversion using metastable neutral atoms*는 ¹⁷¹Yb의 준안정 핵스핀 상태에서 오류를 위치가 알려지는 소거(erasure) 오류로 전환·검출했다. 이는 원자 자체의 손실뿐 아니라 부호화 공간 밖으로의 검출 가능한 누설도 포함한다. [[4,2,2]] 부호가 임의의 단일 Pauli 오류는 정정하지 못해도, 위치를 아는 한 개의 소거 오류는 복구할 수 있다는 차이를 활용한다. 같은 날 출판된 *High-fidelity entanglement and coherent multi-qubit mapping in an atom array*는 여러 원자 내부 부호화 사이의 얽힘 전달과 최대 20원자 GHZ를 보였다. 후자의 두 큐비트 게이트 충실도 99.78(4)%는 소실을 검출한 조건부 수치다. [Nature Physics 소거 전환](https://doi.org/10.1038/s41567-026-03309-0), [Nature Physics 얽힘 전달](https://doi.org/10.1038/s41567-026-03258-8)
@@ -238,9 +344,47 @@ Rb와 Cs 같은 알칼리 원자는 초미세 상태 제어 경험이 풍부하�
 
 ### Transmon과 fluxonium
 
-Josephson 접합과 축전기·인덕터로 비선형 양자 진동자를 만들고, 선택한 두 에너지 준위를 큐비트로 사용한다. Transmon은 전하 잡음 민감도를 낮추고, fluxonium은 큰 인덕턴스를 포함한 다른 설계를 사용한다. 마이크로파 펄스와 결합기가 연산을 제어한다. 수십 mK 수준의 냉각 환경, 제어 배선, 증폭기와 판독 회로가 시스템을 이룬다.
+초전도 큐비트가 다루는 것은 초전도 응축체와 회로의 **집단 전자기 자유도**다. 축전기의 전하와 접합 양단의 초전도 위상차를 양자화하면 에너지 준위가 생긴다. 선형 LC 진동자는 준위 간격이 같아서 한 주파수로 0↔1 전이만 골라 구동하기 어렵다. Josephson 접합의 코사인형 에너지는 이 등간격을 깨뜨리며, 그중 두 준위를 계산 공간으로 선택하게 한다. 공진기와의 결합을 잠시 제외한 단일 접합 회로의 기본 모형은 다음과 같다. [Koch 등의 원 논문](https://doi.org/10.1103/PhysRevA.76.042319)
 
-빠른 게이트와 측정은 오류정정 주기를 줄이는 데 유리하다. 반면 재료·계면 손실, 준입자, 주파수 충돌, 비계산 준위로의 누설, 제어선 간 간섭과 드문 상관 오류를 함께 다루어야 한다. 한 소자의 긴 수명을 다수 큐비트가 동시에 동작하는 장치의 성능으로 일반화할 수 없다.
+$$
+\begin{gathered}
+\hat H_{\mathrm T}=4E_C(\hat n-n_g)^2-E_J\cos\hat\varphi,\\
+[\hat\varphi,\hat n]=i,\qquad E_C=\frac{e^2}{2C_\Sigma}.
+\end{gathered}
+$$
+
+여기서 $\hat n$은 초전도 섬의 초과 전하를 $2e$ 단위로 표현한 정수 Cooper 쌍 수 연산자, $n_g$는 $2e$ 단위의 오프셋 전하, $\varphi$는 무차원 위상차다. $C_\Sigma$는 유효 총 정전용량이며, $E_J$는 Josephson 에너지다. **Transmon은 $E_J/E_C\gg1$로 설계한 이 회로의 동작 영역**이다. 큰 병렬 정전용량으로 $E_C$를 낮추면 낮은 준위의 전하 분산이 $\exp[-\sqrt{8E_J/E_C}]$에 비례하는 인자로 억제된다. 반면 비조화도 $\omega_{12}-\omega_{01}$는 저준위 근사에서 $-E_C/\hbar$ 정도로 남는다. 따라서 전하 잡음에 대한 안정성과 전이 선택성을 함께 얻되, 정전용량을 무한히 키울 수는 없다. 이 근사는 낮은 준위와 큰 에너지 비율에 해당한다. [Koch 등의 해밀토니언·점근식](https://arxiv.org/pdf/cond-mat/0703002)
+
+Fluxonium은 작은 Josephson 접합을 매우 큰 인덕턴스인 superinductor로 병렬 연결한다. 접합 배열의 내부 모드를 동결하고 유효 선형 인덕터 $L$로 볼 수 있는 저에너지 모형에서는
+
+$$
+\begin{aligned}
+\hat H_{\mathrm F}&=4E_C\hat n^2-E_J\cos\hat\varphi\\
+&\quad+\frac{E_L}{2}(\hat\varphi-\varphi_{\rm ext})^2.
+\end{aligned}
+$$
+
+$$
+\begin{gathered}
+E_L=\frac{(\Phi_0/2\pi)^2}{L},\\
+\varphi_{\rm ext}=2\pi\frac{\Phi_{\rm ext}}{\Phi_0},\qquad
+\Phi_0=\frac{h}{2e}.
+\end{gathered}
+$$
+
+여기서 $\varphi$는 접합 위상이며 루프의 방향을 골라 인덕터 항을 $(\varphi-\varphi_{\rm ext})^2$로 썼다. 외부자속의 부호는 그 방향 관례에 따른다. 위상의 원점을 옮기면 외부자속을 코사인 항에 넣는 동등한 표기도 가능하다. 인덕터가 연결된 이 유효 모형의 $n=Q/(2e)$는 연속 스펙트럼의 공액 전하 변수이며, 앞 transmon의 정수 전하 기저와 구분한다. 이상적인 인덕턴스는 정적 오프셋 전하 민감도를 제거하면서도 강한 비조화 스펙트럼을 허용한다. 외부자속에 따른 준위·전이 행렬원소, 유전체 손실과 접합 배열의 기생 모드는 별도로 관리해야 한다. [Manucharyan 등의 fluxonium 원 논문과 보충자료](https://arxiv.org/pdf/0906.0831)
+
+연산에서는 공명하는 마이크로파 펄스로 두 준위 사이의 진폭과 상대위상을 제어하고, 두 회로의 직접 결합·공진기·가변 결합기로 얽힘을 만든다. 계산 공간은 실제로 다준위계의 일부이므로 펄스가 너무 강하거나 넓은 주파수 성분을 가지면 $|2\rangle$ 이상으로 누설된다. 특히 transmon의 약한 비조화도는 빠른 게이트와 누설 억제 사이의 절충을 만든다. 비조화도가 큰 설계도 원하는 전이의 결합 세기와 다른 준위의 영향을 함께 최적화해야 한다. [Koch 등의 전이 선택성 분석](https://doi.org/10.1103/PhysRevA.76.042319)
+
+판독은 대개 큐비트와 주파수를 충분히 떨어뜨린 공진기의 **상태 의존적 분산 응답**을 이용한다. 큐비트 상태에 따라 공진 주파수가 조금 달라지므로 입사 마이크로파의 반사·투과 진폭과 위상을 증폭해 분류한다. 한 번의 측정은 선택한 관측량의 결과를 주며, 파동함수의 복소 진폭을 직접 촬영하지 않는다. 상대위상까지 재구성하려면 준비·기저 회전·반복 측정이 필요하다. 양자 비파괴 판독도 분산 근사와 적절한 측정 세기 아래의 성질이며, 실제 판독에는 완화·측정 유도 전이·오분류가 남는다. [Blais 등의 분산 판독 제안](https://doi.org/10.1103/PhysRevA.69.062320)
+
+<figure class="figure-panel">
+<div class="figure-scroll" style="overflow-x: auto" role="region" aria-label="그림 9 서로 다른 매개변수의 transmon과 fluxonium 해밀토니안에서 계산한 퍼텐셜과 낮은 세 에너지 준위" tabindex="0">
+<img class="diagram-desktop" src="circuit_energy_models.svg" width="1320" height="1080" alt="서로 다른 매개변수의 transmon과 fluxonium 해밀토니안에서 계산한 퍼텐셜과 낮은 세 에너지 준위" loading="lazy" decoding="async">
+<img class="diagram-mobile" src="circuit_energy_models_mobile.svg" width="480" height="1750" alt="서로 다른 매개변수의 transmon과 fluxonium 해밀토니안에서 계산한 퍼텐셜과 낮은 세 에너지 준위" loading="lazy" decoding="async">
+</div>
+<figcaption>그림 9. 본문 Hamiltonian의 설명용 수치 모형. Transmon은 Josephson/충전 에너지 비율 50, 오프셋 전하 0으로 전하 기저를 대각화했다. Fluxonium은 Josephson/충전 에너지 비율 4, 유도/충전 에너지 비율 0.5, 외부 위상 π로 유한차분 계산했다. 곡선은 퍼텐셜, 수평선은 낮은 세 고유에너지이며 세로축은 각 퍼텐셜 최솟값을 뺀 충전 에너지 단위다. 매개변수와 축 범위가 다른 두 모형으로 실제 장치의 성능을 비교할 수 없다. <a href="https://doi.org/10.1103/PhysRevA.76.042319">Transmon 원 모형</a>, <a href="https://arxiv.org/abs/0906.0831">fluxonium 원 모형</a>. <a href="circuit_energy_models.svg">그림 크게 보기</a></figcaption>
+</figure>
 
 ### 논문이 보여주는 현위치
 
@@ -262,9 +406,32 @@ Google의 *Quantum error correction below the surface code threshold*는 Willow�
 
 ### 진동자의 공간을 활용하는 이유
 
-보소닉 부호는 하나의 진동자가 가진 여러 에너지 상태를 사용해 정보를 분산한다. Cat 부호는 떨어진 결맞음 상태들을 이용하고, GKP 부호는 위상공간의 격자 구조로 작은 변위를 검출한다. Dual-rail은 두 모드에 하나의 여기를 분산해 두 상태를 정의하며, 여기가 사라진 사건을 알아낼 수 있다. 이들은 같은 방식이 아니며 서로 다른 오류에 유리하다.
+보소닉 부호화는 진동자의 광자 수 상태 $|0\rangle,|1\rangle,|2\rangle,\ldots$와 위상공간 안에서 두 차원 부분공간을 논리 큐비트로 정한다. **회로와 부호화는 별개의 선택**이므로 cat·GKP·dual-rail은 transmon·fluxonium과 다른 분류 층이다. 공진기가 오래 살아도 상태 준비·비선형 연산·신드롬 판독에는 보조 큐비트나 구동·소산 공학이 필요하며 이들도 오류를 만든다. [Teoh 등의 보소닉 회로 설계](https://doi.org/10.1073/pnas.2221736120)
 
-‘한 공진기에 논리 큐비트를 넣는다’고 해서 전체 장비가 한 소자로 끝나는 것은 아니다. 보조 큐비트, 읽기 회로, 안정화 구동, 다른 공진기와의 결합, 바깥쪽 오류정정부호가 추가될 수 있다. 특정 오류를 물리적으로 억제하고 나머지를 부호로 정정하는 설계가 핵심이다.
+Cat 계열에서 $|\alpha\rangle$는 광자 소멸 연산자 $\hat a$의 고유값이 복소수 $\alpha$인 결맞음 상태다. 아래 두 성분 cat의 식에서는 $\alpha\ne0$으로 둔다. 서로 반대 위상의 두 결맞음 상태로부터 정규직교한 홀짝 상태를 만들 수 있다.
+
+$$
+|C_\alpha^\pm\rangle=
+\frac{|\alpha\rangle\pm|-\alpha\rangle}
+{\sqrt{2(1\pm e^{-2|\alpha|^2})}},
+\qquad \hat a|\pm\alpha\rangle=\pm\alpha|\pm\alpha\rangle.
+$$
+
+두 광자 구동·소산을 조합하면 이 공간을 안정화한다. **홀짝 cat을 논리 0·1로 쓰는 관례와 $|\pm\alpha\rangle$에 가까운 상태를 쓰는 관례는 다르다.** 유한한 $|\alpha|$에서 두 결맞음 상태는 겹치므로 후자의 표기는 근사다. 광자 하나의 손실은 홀짝 기저에서는 두 상태를 교환하고, 충분히 분리된 결맞음 상태 기저에서는 주로 상대부호를 바꾼다. 따라서 ‘비트 반전 억제’에는 논리 기저가 따라야 한다. 후자의 기저에서는 두 상태의 분리를 키우면 비트 반전이 억제되지만 광자 손실에 따른 위상 오류는 증가한다. 이 **오류 편향**을 바깥 부호로 활용한다. 두 성분 cat의 홀짝 자체는 논리 관측량이므로, 패리티를 측정하면 언제나 정보를 보존하며 손실을 정정한다는 설명도 틀리다. 네 성분 cat 등은 계산 공간과 손실 신드롬 공간을 다르게 구성한다. [Mirrahimi 등의 부호·기저 비교](https://arxiv.org/pdf/1312.2017), [Lescanne 등의 오류 편향 실험](https://doi.org/10.1038/s41567-020-0824-x)
+
+GKP는 진동자의 두 무차원 사분면 $q,p$를 $[q,p]=i$로 정규화했을 때 위상공간 격자에 정보를 담는다. 정사각 격자 부호의 이상적인 위치 파동함수는
+
+$$
+\langle q|\mu_L\rangle\propto
+\sum_{s\in\mathbb Z}\delta\!\left(q-(2s+\mu)\sqrt\pi\right),
+\qquad \mu=0,1.
+$$
+
+$q,p$를 각각 $\sqrt\pi$로 나눈 나머지에 해당하는 신드롬을 측정해 작은 변위를 되돌린다. 이는 서로 가환하는 격자 변위 안정자 $e^{i2\sqrt\pi q}$와 $e^{-i2\sqrt\pi p}$의 측정이며, 비가환인 $q,p$ 자체를 동시에 무한 정밀도로 읽는 과정이 아니다. 이상적이고 잡음 없는 신드롬 판독에서는 두 축의 변위가 각각 $\sqrt\pi/2$보다 작으면 가장 가까운 격자로 복구할 수 있다. 위 델타 빗살은 정규화되지 않고 무한 에너지를 요구한다. 실험 상태는 유한 폭 피크와 유한 포락선을 가지므로 초기 상태 자체의 불확실성, 측정 잡음과 보정 오류가 논리 오류 확률을 만든다. 또한 광자 손실은 단순한 고정 변위만이 아니라 감쇠와 잡음을 동반하므로, 격자 그림만으로 완전 정정이 보장되지는 않는다. [Gottesman–Kitaev–Preskill 원 논문의 부호·유한 압축 분석](https://arxiv.org/pdf/quant-ph/0008040)
+
+Dual-rail은 두 모드 A·B의 **총 여기 수가 하나인 공간**을 사용한다. 예를 들어 $|0_L\rangle=|1_A0_B\rangle$, $|1_L\rangle=|0_A1_B\rangle$로 정하면, 어느 모드에서든 한 광자가 사라질 때 출력은 $|0_A0_B\rangle$가 된다. 총 광자 수나 공동 패리티를 논리 상태를 구분하지 않게 측정하면 어느 큐비트에서 계산 공간 이탈이 생겼는지 알 수 있다. 이것이 검출된 소거 오류이며, 알려진 위치를 활용하는 바깥 부호가 복구를 담당한다. 각 모드의 점유를 따로 알아내는 것은 논리 판독이다. 검출 누락·오경보, 검출 사이의 복합 사건, 남아 있는 위상 오류는 별도 문제이며, 두 모드의 손실률이 다르면 손실이 검출되지 않은 조건에서도 중첩의 가중치가 변한다. [Teoh 등의 dual-rail과 잔류 오류 분석](https://doi.org/10.1073/pnas.2221736120)
+
+### 논문이 보여주는 현위치
 
 *Hardware-efficient quantum error correction via concatenated bosonic qubits*는 cat 내부에서 bit flip을 억제하고 바깥 반복 부호로 phase flip을 정정했다. 거리 3과 5의 최소 평균 논리 오류는 각각 주기당 1.75(2)%와 1.65(3)%였다. 이 결과는 물리적으로 편향된 오류와 바깥 부호를 결합한 사례다. 긴 bit-flip 수명 하나를 전체 양자 상태의 수명으로 읽으면 안 된다. [Nature, 2025년 2월 26일](https://doi.org/10.1038/s41586-025-08642-7)
 
@@ -280,9 +447,32 @@ Google의 *Quantum error correction below the surface code threshold*는 Willow�
 
 ### 반도체 집적의 기회와 제어의 어려움
 
-게이트 전극이 만든 양자점에 전자나 정공을 가두고 스핀 상태를 쓴다. 실리콘 도너는 전자와 인 원자 등의 핵스핀을 활용한다. 두 스핀의 교환 상호작용으로 얽힘을 만들 수 있으며, 여러 스핀에 정보를 담는 exchange-only 부호화도 있다. 동위원소 정제는 주변 핵스핀 잡음을 줄이는 수단이다.
+게이트로 만든 양자점은 전자·정공을 가두고, 자기장은 선택한 저에너지 이중항을 Zeeman 분리한다. 단일 전자 스핀 큐비트는 두 스핀 고유상태를 계산 기저로 쓴다. 궤도·valley 여기를 무시하고, 자기장을 공통 z방향으로 잡으며 교환을 등방적으로 근사하면
 
-소자가 작고 반도체 공정과 연결된다는 점은 기회다. 그러나 양자점마다 전위와 에너지 구조가 다르고, 실리콘의 valley 상태, 전하 잡음, 교환 결합의 민감도, 느린 판독, 복잡한 배선이 장애다. 제조 장비가 익숙하다는 사실만으로 많은 큐비트가 자동으로 균일해지는 것은 아니다. 정공 스핀은 전기적 제어와 다른 재료 선택지를 제공하지만 이 역시 해당 소자의 다중 큐비트 검증이 필요하다.
+$$
+\hat H_{\rm spin}=\sum_i g_i\mu_B B_i\hat s_i^z
++\sum_{\langle ij\rangle}J_{ij}(t)\,\hat{\boldsymbol s}_i\!\cdot\!\hat{\boldsymbol s}_j,
+\qquad \hat{\boldsymbol s}=\frac{\boldsymbol\sigma}{2}.
+$$
+
+$\boldsymbol\sigma$는 Pauli 행렬, $g_i$는 유효 g인자, $\mu_B$는 Bohr 자기자다. 스핀 연산자는 무차원이고 $J$는 에너지다. 정공은 스핀–궤도 결합이 섞인 **유효 스핀 이중항**이며, 방향 의존 g텐서와 비등방 교환이 필요할 수 있다. [Loss–DiVincenzo의 모형](https://arxiv.org/pdf/cond-mat/9701055), [정공의 비등방 교환 실험](https://doi.org/10.1038/s41567-024-02481-5)
+
+가상 터널링·Coulomb 에너지·페르미온의 교환 대칭성으로 singlet와 triplet의 에너지가 달라진다. 이 차이가 교환 결합 $J$다. 단순한 두 자리 Hubbard 모형의 대칭점에서는 $J\simeq4t_c^2/U$이며, $t_c$는 터널 진폭, $U$는 이중 점유 비용이다. 이는 $t_c\ll U$이고 높은 궤도와 복잡한 Coulomb 항을 무시하는 근사다. 게이트 전압으로 $J$를 조절해 얽힘을 만들지만, 전하 잡음도 교환 변동으로 전달된다. [Loss–DiVincenzo의 적용 조건](https://arxiv.org/pdf/cond-mat/9701055)
+
+**ESR은 정자기장에 수직인 교류 자기장**으로 회전을 구동한다. [Koppens 등의 ESR 실험](https://doi.org/10.1038/nature05065) EDSR은 교류 전기장을 쓰되 전기장과 스핀을 연결하는 과정이 필요하다. 스핀–궤도 결합은 전기적으로 움직이는 궤도와 스핀을 연결한다. Micromagnet 방식은 정적 자기장 구배 속에서 전하를 흔들어 유효 교류 자기장을 만든다. Ge 정공의 강한 스핀–궤도 결합은 빠른 전기적 제어와 함께, 동작점에 따라 전하 잡음을 스핀 주파수에 전달할 경로도 제공한다. [Nowack 등의 스핀–궤도 EDSR](https://arxiv.org/abs/0707.3080), [Pioro-Ladrière 등의 micromagnet EDSR](https://doi.org/10.1038/nphys1053), [Ge 정공 제어](https://doi.org/10.1038/s41586-019-1919-3)
+
+판독은 **스핀을 전하로 변환해 센서로 검출**한다. 에너지 선택 터널링은 한 Zeeman 상태만 저장고로 빠져나가도록 준위를 맞춘다. Pauli 스핀 봉쇄는 다른 변환 방법이다. 두 전자 양자점의 낮은 (0,2) 상태가 singlet이면 singlet의 (1,1)→(0,2) 전이는 허용되지만 triplet은 측정 에너지 창 안에 스핀을 보존하며 접근할 최종 상태가 없어 막힌다. 괄호는 두 점의 전자 수다. 이는 singlet–triplet 대칭성의 판독이므로 임의의 단일 스핀 방향을 읽으려면 추가 매핑이 필요하다. [Elzerman 등의 에너지 선택 판독](https://doi.org/10.1038/nature02693), [Ono 등의 Pauli 봉쇄](https://doi.org/10.1126/science.1070958)
+
+Exchange-only의 대표적인 세 스핀 부호화는 총스핀 1/2 부문의 내부 결합 구조에 한 큐비트를 담고, 이웃 교환 펄스로 논리 회전을 합성한다. 이 부문은 논리 자유도와 총스핀 투영의 게이지 자유도를 함께 가지므로, 투영을 고정하거나 게이지를 논리 정보와 분리해 다룬다. 개별 ESR의 필요를 줄이는 대신 세 스핀, 긴 펄스열과 누설 관리가 필요하다. 따라서 양자점·전자 수와 계산 큐비트 수를 구분해야 한다. [DiVincenzo 등의 exchange-only 제안](https://arxiv.org/pdf/quant-ph/0005116)
+
+실리콘 도너에서는 불순물 원자가 묶어 둔 전자와 도너 핵스핀을 함께 활용한다. 예를 들어 $^{31}\mathrm P$는 핵스핀 1/2이며, 전자·핵의 접촉 초미세 결합은 다음처럼 쓸 수 있다.
+
+$$
+\hat H_{\rm D}=g_e\mu_BB\hat s_z-g_n\mu_NB\hat I_z
++A\,\hat{\boldsymbol s}\cdot\hat{\boldsymbol I}.
+$$
+
+$\boldsymbol I$도 무차원이며 $A$는 에너지, $g_n\mu_N$은 핵의 자기모멘트 계수다. $A$를 Hz로 제시한 문헌은 위 식에서 $hA$로 환산해야 한다. 전자 Zeeman 에너지가 초미세 결합보다 크면 전자·핵 곱상태가 좋은 근사다. 전자 ESR과 핵 NMR로 각 자유도를 제어한다. 핵 상태에 따른 전자 공명 차이로 핵 정보를 전자에 매핑해 전하 판독으로 읽는다. 전자는 제어·판독·결합 자원, 핵은 저장·계산 큐비트가 된다. $^{28}\mathrm{Si}$ 정제는 주변 $^{29}\mathrm{Si}$ 핵스핀 잡음을 줄이며 계면·전하·valley 문제는 남는다. [Kane의 도너 제안](https://doi.org/10.1038/30156), [Pla 등의 핵스핀 판독](https://arxiv.org/pdf/1302.0047), [정제 Si 양자점](https://doi.org/10.1038/nnano.2014.216)
 
 ### 논문이 보여주는 현위치
 
@@ -306,9 +496,31 @@ Google의 *Quantum error correction below the surface code threshold*는 Willow�
 
 ### 이산변수와 연속변수
 
-이산변수 광자 큐비트는 한 광자의 경로·편광·시간 구간 등을 쓴다. 빔분할기와 위상기, 측정 및 feed-forward로 연산한다. 광자끼리의 직접 상호작용이 약해, 측정으로 유도한 연산이나 작은 얽힘 자원들을 fusion으로 이어 큰 계산 자원을 만드는 설계를 쓴다.
+광학 **모드**는 공간 경로·편광·도착 시간 등으로 구별하는 전자기장의 진동 자유도다. 한 모드의 광자 수 상태인 Fock 상태 $|n\rangle$에서 $n=0,1,2,\ldots$는 그 모드의 여기 수다. 따라서 모드·광자·큐비트는 서로 다른 자원 단위다. 대표적인 이산변수(DV) 방식인 dual-rail은 서로 직교하는 두 모드 $a,b$의 **총광자 수가 하나인 부분공간**을 선택한다.
 
-연속변수 방식은 빛의 두 직교 위상 성분을 활용하고 squeezed light와 cluster state를 만들 수 있다. 다만 Gaussian 상태와 Gaussian 연산만으로 보편적인 계산을 완성할 수 없으므로 GKP 같은 비Gaussian 자원이 중요하다. 광학계가 상온에서 동작하는 부분이 있어도 광원·검출기까지 모두 상온일 필요는 없으며 실제로 극저온 부품이 사용된다.
+$$
+|0_L\rangle=|1\rangle_a|0\rangle_b,\qquad
+|1_L\rangle=|0\rangle_a|1\rangle_b,\qquad
+|\psi\rangle=\alpha|10\rangle+\beta|01\rangle,
+\quad |\alpha|^2+|\beta|^2=1.
+$$
+
+여기서 $|10\rangle$의 숫자는 광자 수이고 $|0_L\rangle$의 0은 논리 상태의 이름이다. 두 레일은 두 경로뿐 아니라 수평·수직 편광이나 이른·늦은 시간 구간일 수도 있다. 광자를 잃어 생긴 $|00\rangle$는 부호공간을 벗어난 상태다. [KLM 원 논문, 부호화와 광학 소자](https://arxiv.org/html/quant-ph/0006088)
+
+빔분할기와 위상기는 생성연산자를 $a_j^\dagger\mapsto\sum_k U_{kj}a_k^\dagger$처럼 선형으로 섞는다. 손실 없는 두 모드에서는 이 변환과 위상 조절로 위의 한 큐비트에 임의의 회전을 줄 수 있다. 그러나 **수동 선형광학의 간섭만으로, 서로 독립적으로 부호화한 두 광자 큐비트 사이에 결정론적인 얽힘 게이트를 구현할 수는 없다.** 광자가 한 빔분할기에서 간섭한다는 사실은 이 조건을 충족하지 않는다. KLM 방식은 보조 광자와 검출 결과에 조건을 건 연산으로 유효 비선형성을 만들고, 성공을 알리는 헤럴딩·상태 준비·feed-forward를 사용한다. Fusion 방식은 작은 얽힘 자원의 일부 광자를 함께 측정해 남은 자원 사이의 연결을 만들며, 실패 사건과 소모 광자까지 자원량에 포함한다. [KLM](https://arxiv.org/html/quant-ph/0006088), [Browne–Rudolph의 fusion 제안](https://arxiv.org/html/quant-ph/0405157)
+
+연속변수(CV) 방식은 모드의 전체 진동자 공간에서 두 직교 quadrature를 다룬다. 무차원 정규화를 다음처럼 고정하면
+
+$$
+\hat q=\frac{a+a^\dagger}{\sqrt2},\qquad
+\hat p=\frac{a-a^\dagger}{i\sqrt2},\qquad
+[\hat q,\hat p]=i,\qquad
+\Delta q\,\Delta p\ge\frac12.
+$$
+
+$q,p$는 광자의 실제 위치·운동량이 아니라 광장 진폭의 두 위상 성분이다. 진공의 두 분산은 각각 $1/2$다. 이상적인 순수 squeezed vacuum의 축을 $q$에 맞추면 $(\Delta q)^2=e^{-2r}/2$, $(\Delta p)^2=e^{2r}/2$로, 한쪽 잡음을 줄이는 대신 다른 쪽을 늘린다. 서로 다른 압축광을 간섭시켜 얽힌 Gaussian cluster를 만들고, homodyne으로 선택한 quadrature를 측정하며 결과를 되먹임할 수 있다. 실제 유한 squeezing은 정보가 전파될 때 추가 잡음을 남긴다. [CV cluster 원 논문, 정규화와 유한 squeezing](https://arxiv.org/html/quant-ph/0605198)
+
+Gaussian 상태·Gaussian 연산·Gaussian 측정만으로 구성한 과정은 효율적인 고전 모사가 가능하므로 보편 계산에는 그 집합을 벗어나는 자원이 필요하다. 광자수 측정, 비선형 위상 연산, 비Gaussian GKP 자원은 그 경로의 예다. GKP는 한 모드의 위상공간 격자에 두 상태를 부호화하며 작은 변위 오류를 검출한다. 실험 상태의 봉우리는 유한 폭을 가지며, 보편적인 부호화 계산에는 적절한 비Clifford 자원도 갖춰야 한다. 따라서 모드 수나 squeezing 수치만으로 논리 큐비트 수·보편 계산 능력을 정할 수 없다. [Gaussian 과정의 고전 모사 정리](https://arxiv.org/html/quant-ph/0109047), [GKP 원 논문](https://arxiv.org/html/quant-ph/0008040)
 
 ### 논문이 보여주는 현위치
 
@@ -328,7 +540,21 @@ Aurora의 *Scaling and networking a modular photonic quantum computer*는 84개 
 
 ## 결함 중심과 양자 네트워크
 
-다이아몬드의 NV·SiV 중심이나 SiC의 결함 등은 고체 속 특정 결함의 전자 스핀을 큐비트로 사용한다. 주변 핵스핀을 메모리로 쓰고 전자와 광학 전이를 통신에 활용할 수 있다. 원자처럼 국소화된 준위를 고체 소자와 광학 구조 안에서 다룬다는 장점이 있다. 결함 종류마다 전이, 수명과 온도 요구가 다르므로 NV의 성과를 SiC 전체에 일반화할 수 없다.
+### 전자 스핀과 핵 메모리와 광학 연결
+
+결함 중심은 결정 속 원자 배열과 전하 상태가 만드는 국소 전자 준위를 이용한다. 흔히 쓰는 음전하 다이아몬드 NV$^-$의 바닥상태는 **$S=1$인 스핀 삼중항**이다. 예를 들어 $|0\rangle=|m_s=0\rangle$, $|1\rangle=|m_s=-1\rangle$을 선택하고, 자기장으로 전이를 구별한 뒤 공명 마이크로파로 회전시킨다. 광학 여기와 스핀 의존 형광은 초기화·판독에 쓰인다. 반면 SiV$^-$는 $S=1/2$ 전자와 궤도 자유도가 spin–orbit 결합으로 묶인 준위 구조를 가지므로 NV의 세 준위 그림을 그대로 적용할 수 없다. 변형률·자기장·온도는 SiV의 제어와 광학 선택 규칙, 포논에 의한 결맞음 손실을 함께 바꾼다. [NV 레지스터 원 논문](https://arxiv.org/html/1309.5452), [SiV 준위와 제어의 실험 분석](https://arxiv.org/html/1907.13200)
+
+전자와 주변 핵스핀은 초미세 상호작용으로 연결된다.
+
+$$
+H_{\rm hf}/\hbar=\mathbf S\cdot\mathbf A\cdot\mathbf I.
+$$
+
+여기서 $\mathbf S,\mathbf I$는 무차원 스핀 연산자이고 $\mathbf A$는 각주파수 단위의 결합 텐서다. 전자 상태에 따라 핵의 세차축·주파수가 달라지는 성질로 조건부 회전과 정보 전달을 구현한다. 전자는 빠른 제어와 광학 접속을, $^{13}$C나 $^{29}$Si 등의 핵은 긴 저장을 맡을 수 있다. 광학 재시도가 핵에 주는 교란도 함께 억제해야 한다. [전자 제어에 의한 핵스핀 게이트](https://arxiv.org/html/1309.5452)
+
+통신에서는 스핀 상태를 방출 또는 반사 광자의 시간 구간·편광 등과 얽히게 한다. 대표적인 NV 경로에서는 두 노드의 광자를 구별 불가능하게 만들어 공동 측정하고, 특정 검출 결과로 남은 스핀의 얽힘 준비 성공을 알린다. 이 **헤럴딩은 성공 여부의 정보이며, 링크가 매번 성공한다는 뜻은 아니다.** 핵 메모리는 성공한 얽힘을 저장해 다른 연결의 재시도를 기다리는 데 쓰인다. 반드시 ‘전자에서 핵으로 SWAP’하는 한 경로만 있는 것은 아니다. 최근 SiV 구현은 전자와 광학 공진기를 매개로 $^{29}$Si 핵과 광자의 직접 얽힘도 사용한다. [NV 원격 얽힘 원 논문](https://arxiv.org/html/1212.6136), [SiV 핵 메모리 네트워크 원 논문](https://arxiv.org/html/2310.01316)
+
+### 논문이 보여주는 현위치
 
 *Entanglement of nanophotonic quantum memory nodes in a telecom network*는 다이아몬드 SiV 기반 핵스핀 메모리 노드의 얽힘을 35 km의 설치 광섬유 경로에서 보였다. 이는 광섬유 경로 길이이며 두 장치의 직선거리를 뜻하지 않는다. 메모리와 통신을 결합하는 장점을 보여 준다. [Nature, 2024](https://doi.org/10.1038/s41586-024-07252-z)
 
@@ -336,9 +562,13 @@ Aurora의 *Scaling and networking a modular photonic quantum computer*는 84개 
 
 국소 레지스터 제어에서도 진전이 있다. *Single-gate, multipartite entanglement on a room-temperature quantum register*는 상온 NV 전자와 핵스핀 세 개의 4스핀 얽힘 연산을 14.8 μs에 구현했고 충실도는 0.92(4)였다. 상온 국소 제어의 성과이며 극저온 광학 링크의 결과와 구분한다. SiC의 *Room-Temperature Storage of Entanglement in a Silicon Carbide Quantum Node*는 전자와 두 핵스핀의 국소 저장을 보고한 사전공개 논문이다. 원격 네트워크 구현에 대한 결과는 아니다. [Nature Nanotechnology, 2026년 9월 14일](https://doi.org/10.1038/s41565-026-02254-6), [SiC 사전공개, 2026년 9월 12일](https://arxiv.org/abs/2609.13744)
 
+### 확장 과제
+
 핵심 병목은 광자 수집·결합 효율, 서로 다른 결함이 내는 빛의 주파수 일치, 표면 가공에 따른 잡음, 노드마다 다른 핵스핀 배치다. 원격 연산에는 메모리 수명 안에 좋은 얽힘을 공급해야 한다. 헤럴딩은 얽힘 준비의 성공을 알려 주지만 성공률 자체를 100%로 만드는 것은 아니다. 통신용 노드와 계산용 대형 프로세서는 서로 다른 역할을 담당할 수 있다.
 
 ## 분자와 다른 초기 플랫폼
+
+극성 분자의 회전상태를 큐비트로 쓰면 마이크로파로 두 회전준위의 중첩을 만들고, 전기 쌍극자 상호작용으로 $|01\rangle\leftrightarrow|10\rangle$의 회전 여기를 결맞게 교환할 수 있다. 여기서 ‘극성’은 먼저 **분자에 고정된 좌표계의 쌍극자 모멘트**를 뜻한다. 외부 전기장이 없고 상태가 패리티 고유상태라면 실험실 좌표계의 정적 쌍극자 평균은 0이다. 그래도 서로 다른 패리티의 회전준위를 잇는 전이 쌍극자는 0이 아닐 수 있어 공명 교환과 얽힘이 가능하다. DC 전기장이나 마이크로파 dressing으로 준위를 섞으면 실험실 좌표계의 유효 쌍극자와 상호작용도 조절할 수 있다. [Field-linked resonances, 분자/실험실 좌표계 구분](https://doi.org/10.1038/s41586-022-05651-8), [회전 여기의 쌍극자 교환 관측](https://doi.org/10.1038/nature12483), [Ruttley 등, 회전상태 얽힘의 Hamiltonian](https://arxiv.org/html/2408.14904)
 
 *Long-lived entanglement of molecules in magic-wavelength optical tweezers*는 극성 분자의 회전 상태를 이용해 초 단위 얽힘을 보였다. Bell 상태 충실도는 0.924, 검출 가능한 누설을 보정하면 0.976이었다. 누설을 오류로 포함한 원값과 검출 가능한 누설을 보정한 값을 구분해야 한다. 분자의 결맞는 상호작용을 입증한 결과이며 큰 범용 프로세서나 반복 오류정정 시연은 아니다. [Nature, 2025년 1월 15일](https://doi.org/10.1038/s41586-024-08365-1)
 
@@ -380,7 +610,7 @@ $$
 
 ## 문헌의 범위와 최근 논문 목록
 
-확인 기준일은 2026년 10월 19일이다. 기술 평가는 출판사 원문과 저자들의 arXiv 공개본을 중심으로 구성했고, 자본·산업 기반은 공시와 기관·기업의 공식 발표를 대조했다. 동료심사 출판물과 사전공개 논문을 표시했고, 온라인 공개일과 권호 연도가 다른 경우에는 이를 병기했다. 최신 논문의 선별 비교이며 모든 플랫폼의 전 문헌을 망라한 체계적 문헌고찰은 아니다.
+확인 기준일은 2026년 10월 19일이다. 기술 평가는 출판사 원문과 저자들의 arXiv 공개본을 중심으로 구성했고, 자본·산업 기반은 공시와 기관·기업의 공식 발표를 대조했다. 동료심사 출판물과 사전공개 논문을 표시했고, 온라인 공개일과 권호 연도가 다른 경우에는 이를 병기했다. 물리 원리는 각 방식의 원형 논문까지 거슬러 설명했다. 최신 논문의 선별 비교이며 모든 플랫폼의 전 문헌을 망라한 체계적 문헌고찰은 아니다.
 
 아래는 2026년에 공개되거나 심사 상태가 갱신된 주요 문헌이다. 첫 공개일 또는 명시한 상태 갱신일 순으로 정렬했다. 핵심 수치와 실험 조건은 해당 절에서 설명했으며, 이론·사전공개·심사 채택을 구별했다.
 

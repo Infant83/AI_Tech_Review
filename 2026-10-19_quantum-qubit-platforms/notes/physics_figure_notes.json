@@ -1,0 +1,109 @@
+{
+  "as_of": "2026-10-19",
+  "creator": "AI Tech Review; original deterministic scientific schematics",
+  "generator": "artifacts/build_physics_figures.py",
+  "figure_type": "Conceptual diagrams and explicit toy-model energy calculations; no reported experimental observations redrawn.",
+  "files": {
+    "atomic_physics": {
+      "desktop": [
+        1320,
+        1000
+      ],
+      "mobile": [
+        480,
+        1650
+      ]
+    },
+    "circuit_energy_models": {
+      "desktop": [
+        1320,
+        1080
+      ],
+      "mobile": [
+        480,
+        1750
+      ]
+    },
+    "qubit_encoding_spaces": {
+      "desktop": [
+        1320,
+        1280
+      ],
+      "mobile": [
+        480,
+        2290
+      ]
+    }
+  },
+  "model": {
+    "transmon": {
+      "EJ_over_EC": 50,
+      "ng": 0,
+      "charge_basis_n": [
+        -35,
+        35
+      ],
+      "energies_minus_potential_min_in_EC": [
+        9.743220453433025,
+        28.6851393777496,
+        46.477835272841084
+      ]
+    },
+    "fluxonium": {
+      "EJ_over_EC": 4,
+      "EL_over_EC": 0.5,
+      "external_phase": "pi",
+      "phase_domain": [
+        "-2pi",
+        "4pi"
+      ],
+      "grid_points": 601,
+      "boundary": "finite-difference Dirichlet; extended phase domain",
+      "energy_check_901_grid_max_difference_EC": 0.0001264179175199942,
+      "energies_minus_potential_min_in_EC": [
+        2.502122287328784,
+        2.7393286902249696,
+        6.445142851853634
+      ]
+    }
+  },
+  "limits": [
+    "Atomic energy and position motifs are schematic and have no common scale.",
+    "The Rydberg ladder illustrates a positive pair energy shift; blockade relies on the magnitude and coherent pulse protocol, not collision.",
+    "Circuit spectra are parameter-specific model calculations and do not rank platforms or imply device fidelity.",
+    "Cat phase-space ellipses mark coherent-state components, not a positive probability substitute for the full cat Wigner function.",
+    "GKP waveforms are schematic finite-width approximate q-space amplitudes, vertically offset for clarity; not a Wigner plot, measured distribution or a specified experimentally prepared state.",
+    "Tetron basis uses even total parity as a convention and does not claim protected experimental operations."
+  ],
+  "sources": [
+    {
+      "figure": "atomic_physics",
+      "urls": [
+        "https://doi.org/10.1103/PhysRevA.62.022311",
+        "https://doi.org/10.1103/PhysRevLett.85.2208",
+        "https://doi.org/10.1103/PhysRevLett.57.314"
+      ]
+    },
+    {
+      "figure": "circuit_energy_models",
+      "urls": [
+        "https://doi.org/10.1103/PhysRevA.76.042319",
+        "https://arxiv.org/abs/0906.0831"
+      ]
+    },
+    {
+      "figure": "qubit_encoding_spaces",
+      "urls": [
+        "https://doi.org/10.1073/pnas.2221736120",
+        "https://arxiv.org/abs/1312.2017",
+        "https://arxiv.org/abs/quant-ph/0008040",
+        "https://arxiv.org/abs/1609.01697"
+      ]
+    }
+  ],
+  "independent_model_audit": {
+    "fluxonium_expanded_domain_energy_change_EC": 4.18e-07,
+    "review": "Second-agent finite-difference boundary check; Hamiltonian coefficients, charge conventions and low-energy gaps checked."
+  },
+  "visual_qa": "Desktop and mobile previews inspected; state labels, phase-space axes and parity conventions audited. Mobile tetron and footer wrapping corrected before final render."
+}
