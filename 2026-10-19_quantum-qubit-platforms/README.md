@@ -7,6 +7,8 @@ Tomer Itelson의 중성원자 입문 글을 출발점으로 트랩트 이온, �
 - [구현 계층 개념도](artifacts/qubit_layers.svg)
 - [물리 원리 도식](artifacts/qubit_mechanisms.svg)
 - [성과 판독 기준 도식](artifacts/evidence_requirements.svg)
+- [마요라나 성과와 검증 과제 도식](artifacts/majorana_evidence.svg)
+- [마요라나 도식의 출처·측정 조건](notes/majorana_evidence_notes.json)
 - [중성원자 장시간 오류정정 그래프](artifacts/toric_long_run.svg)
 - [대표 일러스트](artifacts/qubit_platforms_hero_v1.webp)
 - [일러스트 생성 프롬프트와 검수 기록](artifacts/hero_imagegen_manifest.json)
@@ -14,5 +16,7 @@ Tomer Itelson의 중성원자 입문 글을 출발점으로 트랩트 이온, �
 - [출처 목록](notes/source_links.json)
 
 논문마다 물리 큐비트와 논리 큐비트, 오류검출과 반복 오류정정, 후선택과 채택률, 실험과 시뮬레이션을 구분합니다. 온라인 공개일과 권호 연도가 다른 경우도 병기했습니다. Nature의 2026년 Majorana 관련 Matters Arising와 Reply를 함께 반영했습니다.
+
+마요라나는 서로 다른 장치의 패리티 수명과 결맞는 제어를 구분하고, 2026년 7월 실험과 10월 이론·심사 상태 갱신까지 반영했습니다. 플랫폼별 비중은 가까운 실현 가능성과 성공 시 파급력에 따라 조정했습니다. 민간 조달·공모 자금·정부 지원·제조시설은 공식 공시와 발표에 근거한 선별 사례로, 기술 성능과 별도로 평가합니다.
 
 공개 경로는 [AI Tech Review 리뷰 페이지](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-19_quantum-qubit-platforms/)입니다. 표지 일러스트, 직접 제작한 개념도, 같은 논문 안의 적합값을 재도식화한 그래프를 구분합니다.

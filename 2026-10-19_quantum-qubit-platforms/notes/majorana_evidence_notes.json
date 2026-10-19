@@ -1,0 +1,87 @@
+{
+  "figure_id": "majorana_evidence",
+  "as_of": "2026-10-19",
+  "creator": "AI Tech Review editorial / original code-native illustration",
+  "generator": "artifacts/build_majorana_figure.py",
+  "runtime": {
+    "python": "3.12",
+    "matplotlib": "3.11.2",
+    "command": "python artifacts/build_majorana_figure.py",
+    "font_override": "QUBIT_FIGURE_FONT"
+  },
+  "files": {
+    "desktop": {
+      "path": "artifacts/majorana_evidence.svg",
+      "width": 1440,
+      "height": 1140
+    },
+    "mobile": {
+      "path": "artifacts/majorana_evidence_mobile.svg",
+      "width": 480,
+      "height": 2380
+    }
+  },
+  "visual_qa": {
+    "desktop_preview_inspected": true,
+    "mobile_preview_inspected": true,
+    "mobile_309px_width_preview_inspected": true,
+    "result": "No clipped or overlapping labels; math labels render without missing-font warnings."
+  },
+  "caption": "Majorana 관련 세 연구의 성과와 해석 범위. 세 열은 서로 다른 장치·프로토콜이며 성숙도 순위가 아니다. Microsoft InAs–Al의 X/Z 루프 패리티 판독, 별도 InAs–Pb 소자의 긴 Z 패리티 수명, QuTech 최소 Kitaev 사슬의 결맞는 패리티 진동을 구분했다. 수명·Rabi 감쇠·판독 오류는 서로 다른 측정량이며 게이트 충실도로 환산할 수 없다. 모든 소자 그림은 편집부가 작성한 개념도이다.",
+  "alt": "세 연구는 서로 다른 소자와 프로토콜의 결과이다. Microsoft InAs–Al 장치의 X와 Z 루프 패리티 전환 수명은 각각 14.5±0.3 마이크로초, 12.4±0.4 밀리초이며 판독 오류는 16%, 0.5%이다. 별도 InAs–Pb 장치는 Z 패리티 전환 수명 22±1초를 보고했다. QuTech의 결합된 최소 Kitaev 사슬은 Rabi 감쇠 시간 26±2나노초의 결맞는 패리티 진동을 보고했다. 패리티 수명, 유휴 결맞음, Rabi 감쇠 시간과 게이트 충실도는 서로 다른 물리량이며 수치를 순위 비교할 수 없다. 다음 검증 과제는 비가환 제어와 별도 유휴 결맞음, 길이에 따른 보호, joint-parity와 얽힘, 연산 오류이다.",
+  "sources": [
+    {
+      "title": "Distinct lifetimes for X and Z loop measurements in a Majorana tetron device",
+      "url": "https://journals.aps.org/pra/accepted/10.1103/cx4w-lxx1",
+      "full_text": "https://arxiv.org/html/2507.08795v2",
+      "status": "Physical Review A accepted 2026-10-01; first preprint 2025-07-11",
+      "facts": {
+        "X_parity_switching": "14.5 ± 0.3 μs",
+        "Z_parity_switching": "12.4 ± 0.4 ms",
+        "operational_assignment_error": "X 16% at 2 μs integration; Z 0.5% at 50 μs integration"
+      },
+      "limits": "The two loop measurements were designed for Pauli X and Z. The authors identify rapid sequences demonstrating noncommutation as a next step. Assignment errors are measurement-operation metrics, not randomized-benchmarking gate infidelities."
+    },
+    {
+      "title": "20 Second Parity Lifetime in an InAs–Pb Tetron Device",
+      "url": "https://arxiv.org/abs/2606.03884",
+      "full_text": "https://arxiv.org/html/2606.03884v1",
+      "status": "Preprint submitted 2026-06-02",
+      "facts": {
+        "Z_parity_switching": "22 ± 1 s",
+        "dwell_intervals": 324
+      },
+      "limits": "The long-lifetime result is a Z-loop parity switching measurement in the Pb material platform. It is not an idle arbitrary-state T2, a demonstrated 22-second coherent superposition, or a gate-fidelity measurement."
+    },
+    {
+      "title": "Majorana parity qubit in coupled minimal Kitaev chains",
+      "url": "https://arxiv.org/abs/2607.09511",
+      "full_text": "https://arxiv.org/html/2607.09511v1",
+      "status": "Preprint submitted 2026-07-10",
+      "facts": {
+        "representative_Rabi_decay": "26 ± 2 ns",
+        "frequency": "106.7(0.4) MHz"
+      },
+      "limits": "Coupled two-site chains exhibit coherent parity oscillations and limited sweet-spot protection. The reported Rabi decay is neither idle T2 nor a gate-fidelity benchmark; this is distinct from long-wire exponentially protected operations."
+    },
+    {
+      "title": "Measurement-induced enhancement of the X-parity lifetime in a Majorana tetron",
+      "url": "https://arxiv.org/abs/2610.12223",
+      "status": "Theory preprint submitted 2026-10-08",
+      "use": "Motivates independent idle-coherence tests: a readout dot can stabilize observed switching without equally long bare-tetron T2*."
+    },
+    {
+      "title": "Revealing topological protection through unprotected operations in a Majorana parity qubit",
+      "url": "https://arxiv.org/abs/2610.17198",
+      "status": "Theory preprint submitted 2026-10-12",
+      "use": "Motivates length-dependent optimized Rabi and decoupled Ramsey tests; it is a proposal and analysis, not a new experimental protection result."
+    }
+  ],
+  "scientific_limits": [
+    "No platform ranking, cross-platform normalized score, or lifetime bar chart is used.",
+    "The three research lines are separate devices and protocols, not successive measurements of one qubit.",
+    "The H and chain glyphs are conceptual motifs, not literal micrographs, hardware layouts or paper-figure reconstructions.",
+    "Long parity lifetime, readout assignment error, Rabi decay, idle coherence and gate fidelity remain distinct quantities.",
+    "The bottom tests are editorial evaluation criteria grounded in the papers, not dated corporate delivery promises."
+  ]
+}

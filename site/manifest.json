@@ -2,12 +2,13 @@
   {
     "folder": "2026-10-19_quantum-qubit-platforms",
     "title": "양자 큐비트 플랫폼의 현재와 확장 과제",
-    "subtitle": "트랩트 이온과 중성원자부터 초전도·스핀·광자까지 최근 논문으로 비교한 성과와 확장 병목",
+    "subtitle": "마요라나의 보호 검증과 이온·중성원자·초전도의 실현 경로를 논문·제어 성능·투자 흐름으로 비교하다",
     "date": "2026-10-19",
     "updated": "2026-10-19",
     "category": "Quantum Computing",
     "tags": [
       "Qubit Platforms",
+      "Majorana",
       "Trapped Ions",
       "Neutral Atoms",
       "Superconducting Qubits",
@@ -15,12 +16,14 @@
       "Photonics",
       "Quantum Error Correction"
     ],
-    "summary": "이온·중성원자·초전도·반도체 스핀·광자·결함 중심과 Majorana의 물리 원리, 최근 논문과 확장 과제를 비교합니다. 물리 큐비트와 논리 큐비트, 후선택과 반복 오류정정, 메모리와 계산의 차이를 구분하고 보소닉 부호화의 역할을 설명합니다.",
+    "summary": "마요라나의 패리티 수명·결맞는 제어·보호 검증을 구별하고, 이온·초전도·중성원자 등 주요 경로를 가까운 실현 가능성과 장기 파급력으로 평가합니다. 충실도·제어·운영 비용·제조 기반을 함께 읽으며 민간 조달과 정부 지원의 의미를 구분합니다.",
     "href": "reviews/2026-10-19_quantum-qubit-platforms/index.html",
     "metric_path": "/AI_Tech_Review/reviews/2026-10-19_quantum-qubit-platforms/",
     "thumbnail": "reviews/2026-10-19_quantum-qubit-platforms/qubit_platforms_hero_v1.webp",
     "assets": [
       "evidence_requirements.svg",
+      "majorana_evidence.svg",
+      "majorana_evidence_mobile.svg",
       "qubit_layers.svg",
       "qubit_mechanisms.svg",
       "qubit_platforms_hero_v1.webp",
@@ -38,7 +41,7 @@
         "system_ko": "OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": 7,
+        "agent_count": 10,
         "agents": [
           {
             "name": "root",
@@ -74,6 +77,21 @@
             "name": "hero_illustration",
             "role": "built-in image generation, cover export and visual inspection",
             "role_ko": "내장 이미지 생성·표지 저장 및 시각 검토"
+          },
+          {
+            "name": "majorana_audit",
+            "role": "updated Majorana primary-source audit and original desktop/mobile evidence diagrams",
+            "role_ko": "마요라나 최신 원문 대조·PC 및 모바일 성과와 검증 도식 제작"
+          },
+          {
+            "name": "platform_outlook",
+            "role": "feasibility, control, operational costs and near-term milestones review",
+            "role_ko": "실현 가능성·제어·운영 비용·가까운 이정표 검토"
+          },
+          {
+            "name": "investment_signals",
+            "role": "official financing, public filings, manufacturing commitments and independent-test program audit",
+            "role_ko": "공식 조달·공시·제조 지원·외부 시험 프로그램 사실관계 검토"
           }
         ],
         "agent_roles": [
@@ -83,7 +101,10 @@
           "photonic_topological — photonic, defect-center, molecular and Majorana primary-paper research and factual audit",
           "publication_audit — publication pipeline inspection and scientific prose review",
           "scientific_figures — original physical-mechanism schematics, evidence diagram and source-checked quantitative figure",
-          "hero_illustration — built-in image generation, cover export and visual inspection"
+          "hero_illustration — built-in image generation, cover export and visual inspection",
+          "majorana_audit — updated Majorana primary-source audit and original desktop/mobile evidence diagrams",
+          "platform_outlook — feasibility, control, operational costs and near-term milestones review",
+          "investment_signals — official financing, public filings, manufacturing commitments and independent-test program audit"
         ],
         "agent_roles_ko": [
           "root — 1차 자료 종합·한국어 과학 집필·편집·그림 통합·게시 검증",
@@ -92,7 +113,10 @@
           "photonic_topological — 광자·결함 중심·분자·Majorana 원 논문 조사 및 사실관계 검토",
           "publication_audit — 게시 파이프라인 점검·과학 문체 검토",
           "scientific_figures — 물리 원리 개념도·근거 판독 도식·원문 수치 대조 그래프 제작",
-          "hero_illustration — 내장 이미지 생성·표지 저장 및 시각 검토"
+          "hero_illustration — 내장 이미지 생성·표지 저장 및 시각 검토",
+          "majorana_audit — 마요라나 최신 원문 대조·PC 및 모바일 성과와 검증 도식 제작",
+          "platform_outlook — 실현 가능성·제어·운영 비용·가까운 이정표 검토",
+          "investment_signals — 공식 조달·공시·제조 지원·외부 시험 프로그램 사실관계 검토"
         ]
       },
       "harness": {
@@ -106,12 +130,14 @@
         "scope": [
           "Selected publisher and author-manuscript primary sources through 2026-10-19; online publication dates, physical/logical resources, error metrics and postselection conditions",
           "Experimental results, theoretical estimates and simulations distinguished; no independent device experiment or reproduction of published raw data",
-          "Conceptual AI-generated cover and original schematics; toric-code chart redraws fitted long-run Z error rates reported in arXiv:2606.04079; public metadata, links, assets and desktop/mobile publication checks"
+          "Conceptual AI-generated cover and original schematics; toric-code chart redraws fitted long-run Z error rates reported in arXiv:2606.04079; public metadata, links, assets and desktop/mobile publication checks",
+          "Majorana device and measurement distinctions, July coherent-control experiment and October theory/acceptance updates; official financing instruments and DARPA Stage C status distinguished from validated performance"
         ],
         "scope_ko": [
           "2026-10-19까지의 선정 출판사·저자 공개 1차 자료에서 온라인 공개일·물리 및 논리 자원·오류 지표·후선택 조건 대조",
           "실험 결과·이론적 자원 추정·시뮬레이션 구분; 독립 장치 실험이나 논문 원자료 재현 없음",
-          "AI 생성 개념 표지와 직접 제작한 도식; toric-code 그래프는 arXiv:2606.04079에 보고된 긴 실행의 Z 논리 오류 적합값을 재도식화; 공개 metadata·링크·자산·PC 및 모바일 게시 화면 검사"
+          "AI 생성 개념 표지와 직접 제작한 도식; toric-code 그래프는 arXiv:2606.04079에 보고된 긴 실행의 Z 논리 오류 적합값을 재도식화; 공개 metadata·링크·자산·PC 및 모바일 게시 화면 검사",
+          "마요라나의 장치·측정량 구분과 7월 결맞는 제어 및 10월 이론·심사 상태 갱신 대조; 공식 조달·지원 수단과 DARPA Stage C 진입을 검증된 성능과 구분"
         ],
         "human_review_level": {
           "ko": "주제·과학적 글쓰기 기조·공개 게시 요청 확인; 별도 문장 단위 사람 검토 기록 없음",
