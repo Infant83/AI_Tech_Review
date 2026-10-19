@@ -1,0 +1,61 @@
+{
+  "purpose": "Original teaching calculations; not zero observations, measured errors, a benchmark or an independent proof verification.",
+  "numeric_policy": "Exact integer inputs are stored as strings; rational exponents and decimal coefficients are specified exactly. Numerical outputs are rounded approximations computed with Decimal precision 80, not a claim of exact integer arithmetic or certified interval arithmetic.",
+  "plot": {
+    "x_min": "100",
+    "x_max": "1000000000000000000000000",
+    "sample_count": 353,
+    "factors_exact": {
+      "beta_11_12": "x^(-1/12)",
+      "beta_7_8": "x^(-1/8)",
+      "beta_1_2": "x^(-1/2)"
+    },
+    "excluded": "Constants, logarithmic factors, epsilon and zero-height contributions; curves are not full pi/psi error bounds. beta=1/2 is hypothetical RH comparison."
+  },
+  "fiori_normalized_bound": {
+    "source": "Andrew Fiori and Mikko Jaskari, Explicit bounds for the prime number theorem, arXiv:2609.23222v2 (2026-10-08), Theorem 1.4 and abstract.",
+    "url": "https://arxiv.org/html/2609.23222v2",
+    "assumption": "Every nontrivial zeta zero has real part at most 7/8; this calculation does not independently establish that assumption.",
+    "formula": "0.04934*x^(-1/4)*(ln(x))^2 + 0.02636425*x^(-1/8)",
+    "bounds": "abs(psi(x)-x)/x",
+    "domain": "x >= 21 (the theorem gives x > exp(3))",
+    "logarithm": "natural",
+    "precision": "80-digit Decimal working precision; output rounded to 19 significant decimal digits"
+  },
+  "samples": [
+    {
+      "x_exact_integer": "21",
+      "factor_beta_11_12_approx": "7.759166276675356017E-1",
+      "factor_beta_7_8_approx": "6.834749283830388677E-1",
+      "factor_beta_1_2_approx": "2.182178902359923813E-1",
+      "fiori_normalized_bound_approx": "2.316593581705604567E-1"
+    },
+    {
+      "x_exact_integer": "1000000",
+      "factor_beta_11_12_approx": "3.162277660168379332E-1",
+      "factor_beta_7_8_approx": "1.778279410038922801E-1",
+      "factor_beta_1_2_approx": "1.000000000000000000E-3",
+      "fiori_normalized_bound_approx": "3.024940122453797714E-1"
+    },
+    {
+      "x_exact_integer": "1000000000000",
+      "factor_beta_11_12_approx": "1.000000000000000000E-1",
+      "factor_beta_7_8_approx": "3.162277660168379332E-2",
+      "factor_beta_1_2_approx": "1.000000000000000000E-6",
+      "fiori_normalized_bound_approx": "3.850348478704554068E-2"
+    },
+    {
+      "x_exact_integer": "1000000000000000000000000",
+      "factor_beta_11_12_approx": "1.000000000000000000E-2",
+      "factor_beta_7_8_approx": "1.000000000000000000E-3",
+      "factor_beta_1_2_approx": "1.000000000000000000E-12",
+      "fiori_normalized_bound_approx": "1.770433459960983949E-4"
+    }
+  ],
+  "independent_checks": [
+    "For d = 12, 8, 2, (x^(-1/d))^d * x = 1 to relative tolerance 1e-65.",
+    "Decimal powers and normalized Fiori values agree with separate float calculations to relative tolerance 3e-14.",
+    "The normalized Fiori expression equals the unnormalized expression divided by x to relative tolerance 1e-65.",
+    "At x=10^12, x^(-1/12)=0.1; at x=10^24, x^(-1/8)=0.001 and x^(-1/2)=10^-12."
+  ]
+}

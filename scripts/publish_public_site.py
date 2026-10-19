@@ -101,6 +101,38 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-20_quasi-riemann-ai-proof",
+        title="준리만가설과 AI 수학: 소수 분포의 경계와 증명의 검증",
+        subtitle="제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지",
+        date="2026-10-20", updated="2026-10-20", category="AI for Science",
+        tags=("AI Mathematics", "Number Theory", "Quasi-Riemann Hypothesis", "Prime Distribution", "L-functions", "Lean", "Formal Verification"),
+        summary="제타함수의 영점이 소수 분포의 오차를 제한하는 원리를 설명하고, 7/8·11/12 원고의 성립 범위와 증명 도구를 분석합니다. 공개 Lean 진술·정의·검증 경로와 전문가의 이해를 구분하며, 명시적 소수정리 상계·알고리즘·암호 응용의 조건을 살펴봅니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, Korean writing, conceptual cover, scientific editing, publication integration and live verification", "1차 자료 종합·한국어 집필·개념 표지·과학 편집·게시 통합 및 공개 페이지 검증"),
+            PublicAgent("academic_sources", "mathematical source research, theorem and formula audit, proof-scope and Mathlib pole-semantics checking", "수학 원전 조사·정리와 수식 감수·증명 범위 및 Mathlib 극점 관례 확인"),
+            PublicAgent("applications_sources", "AI-workflow and applications research, English translation, original figures and independent teaching calculations", "AI 연구 절차·응용 조사·영어 번역·설명 도표·독립 교육용 계산"),
+            PublicAgent("review_format", "bilingual equation/font typesetting, responsive figures, full HTML/PDF production and publication-output checks", "한영 수식·글꼴 조판·반응형 도표·HTML/PDF 제작 및 게시 출력 검사"),
+            PublicAgent("publish_audit", "publication metadata, link, asset and disclosure audit", "공개 메타데이터·링크·자산·작성 공개 정보 감사"),
+        ),
+        verification_scope=(
+            "Quanta 2026-10-19 reporting; the 7/8 and 11/12 manuscripts, family 003 scope, declarations and configurations at openai/math commit 1581d4cbdd69a0faf34b2089614fe2a814316a6a",
+            "Euler-product convergence, explicit-formula conditions, exponent extraction, Fiori-Jaskari application bounds, and Mathlib definitions at commit d13f23b723b8a846827a245b89c10fc7d3f11612; no independent full-proof verification or Lean rebuild",
+            "Independent teaching power-factor and normalized-bound calculations; bilingual figures, formulas, PDF metadata, desktop/mobile layout and deployed page/PDF links",
+        ),
+        verification_scope_ko=(
+            "Quanta 2026-10-19 보도·7/8 및 11/12 원고·openai/math 커밋 1581d4cbdd69a0faf34b2089614fe2a814316a6a의 family 003 범위·진술·검증 설정 대조",
+            "오일러 곱 수렴 영역·명시적 공식 조건·지수 추출·Fiori–Jaskari 응용 상계·Mathlib 커밋 d13f23b723b8a846827a245b89c10fc7d3f11612의 정의 확인; 원증명 전체의 독립 검증·Lean 재빌드 없음",
+            "교육용 거듭제곱 인자·정규화 상계의 독립 계산·한영 도표와 수식·PDF 메타데이터·데스크톱 및 모바일·공개 본문과 PDF 링크 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-20",
+        human_review_level="topic, writing and public posting explicitly requested; no line-by-line human approval",
+        human_review_level_ko="주제·작성·공개 게시 요청 확인; 문장 단위 사람 승인 없음",
+        disclosure_note_ko="7/8과 11/12는 서로 다른 원고의 경계이며, 리만가설의 1/2 경계는 해결하지 않습니다. 전문가의 원고 이해·공개 형식화·이 리뷰의 정적 코드 검토와 독립 재실행을 구분합니다. Lean challenge의 자리표시자는 별도 solution의 증명과 다르며, 함수의 극점 관례도 정의까지 대조했습니다. 도표와 수치 예시는 직접 제작한 설명 자료로 실제 영점 측정·완전한 소수 오차의 관측·원증명 재현이 아닙니다. 표지는 내장 imagegen 개념 그림입니다. 실용적 인수분해나 암호 해독 성능을 검증하지 않았습니다.",
+        disclosure_note_en="The 7/8 and 11/12 boundaries belong to separate manuscripts and do not settle RH's 1/2 boundary. Distinguished expert understanding, published formalization, static code inspection in this review, and independent execution. A placeholder in a Lean challenge is distinct from its separate solution; pole conventions were checked against definitions. Original diagrams and numerical examples are teaching material, not observed zeros, measured complete prime-counting errors or reproductions of the proof. The built-in imagegen cover is conceptual. No practical factoring or cryptanalytic performance was validated.",
+    ),
+    PublicReview(
         folder="2026-10-19_quantum-qubit-platforms",
         title="양자 큐비트 플랫폼의 현재와 확장 과제",
         subtitle="마요라나의 보호 검증과 이온·중성원자·초전도의 실현 경로를 논문·제어 성능·투자 흐름으로 비교하다",

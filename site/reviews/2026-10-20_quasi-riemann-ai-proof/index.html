@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>준리만가설과 AI 수학: 소수 분포의 경계와 증명의 검증</title><meta name="description" content="제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지"><meta name="author" content="김현중">
+<meta property="og:description" content="제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/hero.webp"><link rel="stylesheet" href="review.css">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/">
+    <meta property="og:title" content="준리만가설과 AI 수학: 소수 분포의 경계와 증명의 검증">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review">
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review_ko.pdf">PDF ↓</a></div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-10-20 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.20</span><span>수학 · AI 연구 · 증명 검증</span></div><article><h1>준리만가설과 AI 수학: 소수 분포의 경계와 증명의 검증</h1>
+<p class="dek">제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지</p>
+
+<p class="kicker">TECH REVIEW · 2026년 10월 20일 · 해석적 수론과 AI 보조 연구</p>
+<figure class="hero"><img src="hero.webp" alt="점과 곡선으로 이루어진 어두운 공간 속에 투명한 수직 통로가 드러나는 수학적 개념 일러스트"><figcaption>숨겨진 수학적 구조를 발견하고 논증을 명료하게 만드는 과정을 표현한 생성형 개념 그림. 제타함수의 실제 영점이나 증명 데이터를 그린 그림은 아니다.</figcaption></figure><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">1. 소수의 위치를 얼마나 정확하게 설명할 수 있을까</a></li><li><a href="#section-2">2. 제타함수가 소수와 만나는 자리</a></li><li><a href="#section-3">3. 복소평면의 경계가 소수 개수의 오차가 되는 이유</a></li><li><a href="#section-4">4. 제타함수 하나를 더 큰 가족 속에 넣다</a></li><li><a href="#section-5">5. 기존 도구를 어떻게 연결했는가</a></li><li><a href="#section-6">6. 소수 분포 연구에는 무엇이 달라질까</a></li><li><a href="#section-7">7. Lean이 확인하는 것과 사람이 확인할 것</a></li><li><a href="#section-8">8. AI가 한 일은 공개 기록으로 어디까지 알 수 있을까</a></li><li><a href="#section-9">9. 소수 판정과 암호 응용은 어떤 조건을 더 요구할까</a></li><li><a href="#section-10">10. AI 수학 연구를 판단하는 실질적인 순서</a></li><li><a href="#section-11">참고문헌과 원문</a></li></ol></details>
+
+<h2 id="section-1">1. 소수의 위치를 얼마나 정확하게 설명할 수 있을까</h2>
+<p>2, 3, 5, 7, 11처럼 소수는 간단히 정의되지만, 어디에 얼마나 자주 나타나는지를 정밀하게 설명하는 일은 어렵다. 큰 수로 갈수록 소수가 드물어진다는 평균적 경향은 알려져 있다. 그러나 평균에서 얼마나 벗어날 수 있는지, 특정 나머지를 갖는 소수는 얼마나 고르게 나타나는지를 묻는 순간 문제가 깊어진다.</p>
+<p>이 질문을 복소함수의 영점 문제로 바꾸는 것이 리만 제타함수다. 영점이 복소평면의 어디에 놓일 수 있는지를 제한하면 소수 분포의 오차도 제한할 수 있다. 리만가설은 모든 비자명 영점이 실수부 1/2인 직선 위에 있다고 주장한다. 준리만가설은 더 약하지만 여전히 강력한 목표다. 영점이 실수부 1에 접근하지 못하도록, 높이와 무관한 고정된 간격을 확보한다. [2,5,6]</p>
+<p>2026년 10월 19일 Quanta Magazine의 Konstantin Kakaes는 OpenAI가 공개한 준리만가설 원고와 이를 읽는 수학자들의 반응을 보도했다. 이 글이 공유 링크의 원문이다. 공개 자료에는 실수부 7/8의 경계를 주장하는 긴 원고, 사람의 편집을 거친 11/12 대안 원고, 그리고 관련 Lean 형식화가 있다. 전문가들은 주로 짧은 대안 논증을 해석하고 있으며, 긍정적 평가와 상세 검토의 필요성이 함께 제기되고 있다. [1–4]</p>
+<p><strong>핵심 성과의 범위는 고정된 영점 배제 영역이다. 리만가설 자체의 1/2 경계는 여전히 남는다.</strong> 이 차이를 이해해야 수론적 파급력과 AI의 역할을 제대로 평가할 수 있다. 아래에서는 원고가 주장하는 수학, 공개 코드로 확인할 수 있는 것, 실제 응용에 추가로 필요한 조건을 나누어 설명한다.</p>
+<h2 id="section-2">2. 제타함수가 소수와 만나는 자리</h2>
+<p>복소수 <img class="math-inline" src="math_0ba2c05b5fb34f.svg" alt="s=\sigma+it" style="width:9.733ex;height:1.681ex;vertical-align:-0.186ex">에서 <img class="math-inline" src="math_4365a82b7f7c80.svg" alt="\sigma" style="width:1.292ex;height:1ex;vertical-align:-0.025ex">는 실수부, <img class="math-inline" src="math_b7a93ee24ce852.svg" alt="t" style="width:0.817ex;height:1.441ex;vertical-align:-0.025ex">는 허수부다. 실수부가 1보다 큰 영역에서는 제타함수를 무한급수와 소수에 대한 무한곱으로 동시에 쓸 수 있다.</p>
+<div class="math-block"><img src="math_ea9e588ceff2fa.svg" alt="\zeta(s)=\sum_{n=1}^{\infty}\frac{1}{n^s}
+=\prod_{p\,\mathrm{prime}}\left(1-p^{-s}\right)^{-1},
+\qquad \operatorname{Re}s&gt;1." style="width:48.358ex;height:auto"></div>
+<p>오일러 곱을 전개하면 각 소수의 거듭제곱을 선택하는 조합에서 모든 양의 정수가 나타난다. 정수의 소인수분해가 유일하다는 성질이 이 등식의 배경이다. 따라서 제타함수에는 소수들의 정보가 한꺼번에 담긴다. 다만 위 급수·곱의 통상적인 수렴 등식에는 반드시 <img class="math-inline" src="math_028378b8d03191.svg" alt="\operatorname{Re}s&gt;1" style="width:8.256ex;height:1.636ex;vertical-align:-0.09ex">이라는 조건이 붙는다. 나머지 영역은 해석적 연속으로 다루며, <img class="math-inline" src="math_dbdbb4ba31feae.svg" alt="s=1" style="width:5.209ex;height:1.692ex;vertical-align:-0.186ex">에는 단순극점이 있다. 원 기사의 직관적 설명을 이 조건 없이 옮기면 부정확하다. [5,6]</p>
+<p>음의 짝수 −2, −4, …에 있는 영점은 자명한 영점이다. 관심의 중심인 비자명 영점은 <img class="math-inline" src="math_efdc494135d3fe.svg" alt="0&lt;\operatorname{Re}s&lt;1" style="width:12.404ex;height:1.636ex;vertical-align:-0.09ex">인 임계띠에 놓인다. 리만가설은 그 위치를 띠의 중심선 하나로 좁힌다. 준리만가설은 어떤 고정된 <img class="math-inline" src="math_a21c92692fa237.svg" alt="\theta&lt;1" style="width:5.209ex;height:1.686ex;vertical-align:-0.09ex">를 찾아 오른쪽 반평면에서 영점을 배제한다.</p>
+<div class="math-block"><img src="math_cddfd9ab562b62.svg" alt="\zeta(s)\ne0\quad\text{for}\quad
+\operatorname{Re}s&gt;\theta,\ s\ne1." style="width:31.244ex;height:auto"></div>
+<p>여기서 고정된다는 말이 중요하다. 허수부가 커질수록 실수부 1에 가까워지는 고전적인 영점 배제 영역과 달리, 같은 <img class="math-inline" src="math_75e51a37244b90.svg" alt="\theta" style="width:1.061ex;height:1.618ex;vertical-align:-0.023ex">가 모든 높이에 적용되어야 한다. 제타함수의 함수방정식이 주는 반사 대칭을 함께 쓰면, 비자명 영점의 실수부는 <img class="math-inline" src="math_4433fa8ff1314a.svg" alt="1-\theta" style="width:4.958ex;height:1.781ex;vertical-align:-0.186ex">와 <img class="math-inline" src="math_75e51a37244b90.svg" alt="\theta" style="width:1.061ex;height:1.618ex;vertical-align:-0.023ex"> 사이로 제한된다. [2,5]</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>구분</th>
+<th>제타함수 비자명 영점의 실수부에 대한 범위</th>
+<th>이 리뷰에서의 지위</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>임계띠</td>
+<td>0과 1 사이</td>
+<td>고전적 배경</td>
+</tr>
+<tr>
+<td>11/12 대안 원고</td>
+<td>[1/12, 11/12]</td>
+<td>사람의 편집을 거친 별도 논증의 주장</td>
+</tr>
+<tr>
+<td>7/8 원고</td>
+<td>[1/8, 7/8]</td>
+<td>더 강한 원고의 주장·공개 형식화 대상</td>
+</tr>
+<tr>
+<td>리만가설</td>
+<td>정확히 1/2</td>
+<td>이번 결과가 해결하지 않은 가설</td>
+</tr>
+</tbody></table></div>
+<p>7/8은 11/12보다 작다. 오른쪽 경계를 더 왼쪽으로 옮기므로 7/8 결과가 더 강하다. 영점이 없다는 주장은 경계보다 엄격히 오른쪽인 열린 반평면에 관한 것이다. 경계선 자체의 영점까지 배제했다고 읽어서는 안 된다.</p>
+<figure><img class="figure-desktop" src="zero_regions_ko.svg" alt="11/12 및 7/8 원고의 영점 후보 영역과 리만가설의 실수부 1/2 직선을 비교하는 도식"><img class="figure-mobile" src="zero_regions_mobile_ko.svg" alt="11/12 및 7/8 원고의 영점 후보 영역과 리만가설의 실수부 1/2 직선을 비교하는 도식"><figcaption>제타함수의 비자명 영점이 남을 수 있는 영역을 비교한 설명 도표. 실제 영점을 측정하거나 수치 탐색해 찍은 그림이 아니다. 대칭을 적용한 띠의 경계는 포함하며, RH 선은 아직 가설이다. [2,3,5]</figcaption></figure>
+
+<h2 id="section-3">3. 복소평면의 경계가 소수 개수의 오차가 되는 이유</h2>
+<p><img class="math-inline" src="math_541fa7b8c352ba.svg" alt="x" style="width:1.294ex;height:1.025ex;vertical-align:-0.025ex"> 이하 소수의 개수를 <img class="math-inline" src="math_1043594225bd3e.svg" alt="\pi(x)" style="width:4.344ex;height:2.262ex;vertical-align:-0.566ex">라 하자. 소수정리는 <img class="math-inline" src="math_1043594225bd3e.svg" alt="\pi(x)" style="width:4.344ex;height:2.262ex;vertical-align:-0.566ex">가 <img class="math-inline" src="math_5a3aff835a2866.svg" alt="x/\log x" style="width:7.365ex;height:2.262ex;vertical-align:-0.566ex">와 점근적으로 같다고 말한다. 더 정밀한 평균 근사에는 <img class="math-inline" src="math_c3011ee82c61c0.svg" alt="\operatorname{Li}_2(x)=\int_2^x dt/\log t" style="width:19.678ex;height:2.683ex;vertical-align:-0.771ex">를 쓴다. 여기서 로그는 자연로그다.</p>
+<p>관계를 보기 편하게 만드는 함수가 Chebyshev의 <img class="math-inline" src="math_ecaabe4078e9d6.svg" alt="\psi(x)" style="width:4.527ex;height:2.262ex;vertical-align:-0.566ex">다. 소수뿐 아니라 소수의 거듭제곱에도 가중치를 준다.</p>
+<div class="math-block"><img src="math_385fed7c8944fb.svg" alt="\psi(x)=\sum_{p^k\le x}\log p." style="width:16.643ex;height:auto"></div>
+<p>제타함수의 명시적 공식은 이 합을 주항 <img class="math-inline" src="math_541fa7b8c352ba.svg" alt="x" style="width:1.294ex;height:1.025ex;vertical-align:-0.025ex">와 영점들이 만드는 진동 항으로 연결한다. 예를 들어 <img class="math-inline" src="math_bfa41b65174473.svg" alt="x&gt;1" style="width:5.442ex;height:1.597ex;vertical-align:-0.09ex">에서 점프의 양쪽 값을 평균한 <img class="math-inline" src="math_93316a0dc8f84f.svg" alt="\psi_0(x)" style="width:5.515ex;height:2.262ex;vertical-align:-0.566ex">를 사용하면 다음 구조를 얻는다. 영점 합은 비자명 영점을 중복도와 함께 세며 허수부의 높이를 대칭적으로 늘리는 극한으로 해석한다. [5,6]</p>
+<div class="math-block"><img src="math_7422aea835872d.svg" alt="\psi_0(x)=x-\sum_{\rho}\frac{x^{\rho}}{\rho}
+-\log(2\pi)-\frac12\log(1-x^{-2})." style="width:46.975ex;height:auto"></div>
+<p>영점 하나를 <img class="math-inline" src="math_c9d7d8bf8a5695.svg" alt="\rho=\beta+i\gamma" style="width:10.242ex;height:2.084ex;vertical-align:-0.489ex">라 쓰면 <img class="math-inline" src="math_bb49b8d5d1735c.svg" alt="x^\rho=x^\beta e^{i\gamma\log x}" style="width:13.869ex;height:2.135ex;vertical-align:-0.186ex">다. 실수부 <img class="math-inline" src="math_d0b64abc19a5de.svg" alt="\beta" style="width:1.281ex;height:2.034ex;vertical-align:-0.439ex">가 진동의 크기 증가율을 정한다. 주항 <img class="math-inline" src="math_541fa7b8c352ba.svg" alt="x" style="width:1.294ex;height:1.025ex;vertical-align:-0.025ex">로 나누었을 때 이 항의 크기는 <img class="math-inline" src="math_91fa2a90e92b85.svg" alt="x^{\beta-1}/|\rho|" style="width:7.991ex;height:2.515ex;vertical-align:-0.566ex">다. <img class="math-inline" src="math_d0b64abc19a5de.svg" alt="\beta" style="width:1.281ex;height:2.034ex;vertical-align:-0.439ex">를 1에서 고정된 거리만큼 떼어 놓으면, 그 증가율을 주항보다 작게 제한할 수 있다.</p>
+<p>전체 오차를 얻으려면 모든 영점의 합과 절단 오차 등을 제어해야 한다. 따라서 이 한 항의 관찰을 곧바로 완전한 소수정리 오차식으로 쓰지는 않는다. 고정된 <img class="math-inline" src="math_d464673987ae72.svg" alt="1/2\le\theta&lt;1" style="width:11.62ex;height:2.262ex;vertical-align:-0.566ex">에 대해 모든 비자명 영점이 <img class="math-inline" src="math_68417df1b7f0f9.svg" alt="\operatorname{Re}\rho\le\theta" style="width:8.295ex;height:2.084ex;vertical-align:-0.489ex">를 만족하면, 임의의 <img class="math-inline" src="math_597a7d5d8d56b1.svg" alt="\varepsilon&gt;0" style="width:5.203ex;height:1.597ex;vertical-align:-0.09ex">에 대해 다음이 성립한다. [6]</p>
+<div class="math-block"><img src="math_5edcbc13c531ae.svg" alt="\pi(x)=\operatorname{Li}_2(x)
++O_{\theta,\varepsilon}\!\left(x^{\theta+\varepsilon}\right)." style="width:26.989ex;height:auto"></div>
+<p><img class="math-inline" src="math_795c81301dc6ab.svg" alt="O_{\theta,\varepsilon}" style="width:3.855ex;height:2.242ex;vertical-align:-0.65ex">는 상계에 들어가는 상수가 고정한 <img class="math-inline" src="math_75e51a37244b90.svg" alt="\theta" style="width:1.061ex;height:1.618ex;vertical-align:-0.023ex">와 <img class="math-inline" src="math_cc52deca71b2de.svg" alt="\varepsilon" style="width:1.054ex;height:1.072ex;vertical-align:-0.05ex">에 의존할 수 있다는 뜻이다. <img class="math-inline" src="math_90568992a74cf3.svg" alt="\varepsilon=0" style="width:5.203ex;height:1.692ex;vertical-align:-0.186ex">을 그대로 넣는 표기가 아니다. RH가 주는 더 강한 고전적 오차 <img class="math-inline" src="math_1426a360889cc4.svg" alt="O(\sqrt{x}\log x)" style="width:11.65ex;height:2.473ex;vertical-align:-0.566ex">와도 구분해야 한다. 고정된 작은 양의 <img class="math-inline" src="math_fdbfa31bde7d8c.svg" alt="\varepsilon&lt;1-\theta" style="width:9.029ex;height:1.781ex;vertical-align:-0.186ex">를 택하면 오차의 거듭제곱이 1보다 작아진다는 점이 준리만 결과의 큰 변화다.</p>
+<figure><img class="figure-desktop" src="prime_error_ko.svg" alt="실수부 지수 11/12, 7/8, 1/2에 대응하는 x의 거듭제곱 성장인자를 로그 눈금으로 비교한 그래프"><img class="figure-mobile" src="prime_error_mobile_ko.svg" alt="실수부 지수 11/12, 7/8, 1/2에 대응하는 x의 거듭제곱 성장인자를 로그 눈금으로 비교한 그래프"><figcaption>리뷰가 직접 계산한 순수 거듭제곱 인자 <img class="math-inline" src="math_02fe350e32eba5.svg" alt="x^{\beta-1}" style="width:4.432ex;height:1.974ex;vertical-align:-0.025ex">의 비교. 영점 높이에 따른 인자, 상수·로그·<img class="math-inline" src="math_cc52deca71b2de.svg" alt="\varepsilon" style="width:1.054ex;height:1.072ex;vertical-align:-0.05ex">와 여러 영점의 합을 포함하지 않으므로 실제 <img class="math-inline" src="math_3e0a10bb196145.svg" alt="\pi" style="width:1.29ex;height:1ex;vertical-align:-0.025ex"> 또는 <img class="math-inline" src="math_9f4add1721074c.svg" alt="\psi" style="width:1.473ex;height:2.034ex;vertical-align:-0.464ex">의 오차상계나 측정값이 아니다.</figcaption></figure>
+
+<h2 id="section-4">4. 제타함수 하나를 더 큰 가족 속에 넣다</h2>
+<p>새 원고의 명제는 제타함수 하나보다 넓다. 7/8 원고는 모든 Dirichlet <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수와 <img class="math-inline" src="math_bb6566527ea023.svg" alt="K=\mathbb Q(\sqrt{-3})" style="width:13.37ex;height:2.645ex;vertical-align:-0.566ex"> 위의 유한 차수 Hecke <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수에 같은 경계를 주장한다. 주특성에 대응하는 <img class="math-inline" src="math_dbdbb4ba31feae.svg" alt="s=1" style="width:5.209ex;height:1.692ex;vertical-align:-0.186ex">의 극점은 허용한다. 11/12 원고도 같은 계열에서 더 약한 경계를 제시한다. 모든 수체나 모든 자동형 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수에 대한 일반화 리만가설을 증명한 것은 아니다. [2,3]</p>
+<p>Dirichlet 특성 <img class="math-inline" src="math_95dc6e42c1a961.svg" alt="\chi" style="width:1.416ex;height:1.462ex;vertical-align:-0.462ex">는 나머지류의 곱셈 구조를 복소수 값으로 표현하는 주기적 함수다. 그 가중치를 넣으면, 처음에는 수렴 영역에서 다음을 얻는다.</p>
+<div class="math-block"><img src="math_4dcc7d6f9d469e.svg" alt="L(s,\chi)=\sum_{n=1}^{\infty}\frac{\chi(n)}{n^s},
+\qquad \operatorname{Re}s&gt;1." style="width:33.391ex;height:auto"></div>
+<p>이런 가중치를 조합하면 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex">로 나눈 나머지가 <img class="math-inline" src="math_d0bb3b13ce91f2.svg" alt="a" style="width:1.197ex;height:1.02ex;vertical-align:-0.023ex">인 소수를 골라낼 수 있다. 예를 들어 1, 5, 9, …처럼 나머지가 정해진 수열에서 소수가 얼마나 나타나는지를 다룬다. 단, 소수 분포를 논하는 표준적인 나머지류 조건은 <img class="math-inline" src="math_355497bd2e5c3d.svg" alt="\gcd(a,q)=1" style="width:12.546ex;height:2.262ex;vertical-align:-0.566ex">이다. 나머지류를 분리하는 함수와 그 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수의 영점이 연결되므로, 함수족 전체의 균일한 경계는 응용 범위를 넓힌다.</p>
+<p>여기서 <img class="math-inline" src="math_baa4b3df62f8a0.svg" alt="\mathbb Q(\sqrt{-3})" style="width:8.342ex;height:2.645ex;vertical-align:-0.566ex">는 유리수에 <img class="math-inline" src="math_765f05ff2d8aba.svg" alt="\sqrt{-3}" style="width:4.821ex;height:2.398ex;vertical-align:-0.319ex">을 더한 수체다. 그 안의 Eisenstein 정수와 3차·6차 잉여 특성이 증명에서 중요한 무대를 이룬다. Hecke <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수는 이런 수체의 산술을 담는 더 일반적인 틀이다. 독자가 모든 정의를 먼저 익힐 필요는 없지만, <strong>함수 하나의 영점을 직접 추적하는 대신 연관된 가족과 평균을 활용한다</strong>는 접근은 기억할 만하다.</p>
+<h2 id="section-5">5. 기존 도구를 어떻게 연결했는가</h2>
+<p>이 절은 사람이 편집한 11/12 원고 §2의 논증 구조를 설명한다. 전체 증명을 재현하는 것은 아니다. 핵심은 Möbius 계수가 들어간 합에서 충분한 상쇄를 얻고, 이를 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수의 영점 배제로 옮기는 것이다. Möbius 함수 <img class="math-inline" src="math_1586e01463ad62.svg" alt="\mu(n)" style="width:4.482ex;height:2.262ex;vertical-align:-0.566ex">는 제곱인수를 가진 정수에서는 0, 서로 다른 소인수가 <img class="math-inline" src="math_640a535e9ee5fc.svg" alt="r" style="width:1.02ex;height:1.025ex;vertical-align:-0.025ex">개인 정수에서는 <img class="math-inline" src="math_1571ee70a260b1.svg" alt="(-1)^r" style="width:5.561ex;height:2.262ex;vertical-align:-0.566ex">이다. 제타함수 역수의 Dirichlet 급수에 나타나므로 영점 문제와 연결된다. [3,6]</p>
+<p>먼저 Eisenstein 정수에서 6차 특성으로 꼬인 Möbius 합의 가족을 만든다. ‘꼬임’은 항마다 산술적 위상 가중치를 넣는다는 뜻이다. 개별 합의 절댓값을 따로 더하는 대신, 가족 전체의 평균제곱에서 상쇄를 찾는다. Poisson 합산과 Gauss–Jacobi 관계가 이를 3차 Gauss 합과 연결한다. [3]</p>
+<p>그 계수는 Kubota의 3차 메타플렉틱 세타 함수의 Fourier 계수로 해석된다. 메타플렉틱 형식은 여기서 서로 다른 합산 표현을 연결하는 변환 법칙을 제공한다. 세타의 Voronoi형 변환을 거치면 6차 특성의 세제곱인 2차 특성이 나타나고, 여러 2차 특성에 대한 합을 함께 제한하는 quadratic large sieve를 쓸 수 있다. 변환에 필요했던 세제곱 인자는 Möbius 반전으로 제거하며, 나머지 항은 추가 Poisson 변환과 재귀로 제어한다. 이 재귀와 나머지 추정이 논증의 어려운 부분이다. [3,7]</p>
+<p>지수 11/12가 나오는 마지막 계산은 비교적 짧게 볼 수 있다. 여기서는 정수의 Möbius 함수를 소아이디얼 분해에 따라 확장한 <img class="math-inline" src="math_6feb3ae444949f.svg" alt="\mu_K" style="width:2.974ex;height:1.489ex;vertical-align:-0.489ex">를 사용한다. 고정한 유한 차수 Hecke 특성 <img class="math-inline" src="math_ad576dd11be9df.svg" alt="\nu" style="width:1.199ex;height:1ex;vertical-align:0">, 매끄럽고 지지가 콤팩트한 가중함수 <img class="math-inline" src="math_761280291df2b1.svg" alt="W" style="width:2.371ex;height:1.595ex;vertical-align:-0.05ex">, <img class="math-inline" src="math_7a1b9a1bdd0487.svg" alt="u\in\mathcal O_K" style="width:7.471ex;height:1.934ex;vertical-align:-0.339ex">에 대해 다음 합을 생각한다. [3]</p>
+<div class="math-block"><img src="math_4cb771fdaf6af4.svg" alt="A_u(D)=\sum_{\mathfrak n}
+\mu_K(\mathfrak n)\nu(\mathfrak n)\chi_{\mathfrak n}(u)
+W\!\left(\frac{N\mathfrak n}{D}\right)." style="width:39.2ex;height:auto"></div>
+<p>합은 2, 3 및 <img class="math-inline" src="math_ad576dd11be9df.svg" alt="\nu" style="width:1.199ex;height:1ex;vertical-align:0">의 도체와 서로소인 0이 아닌 정수 아이디얼에 걸치며, <img class="math-inline" src="math_c09c75af28275c.svg" alt="\chi_{\mathfrak n}(u)" style="width:5.501ex;height:2.262ex;vertical-align:-0.566ex">는 6차 잉여 특성이다. <img class="math-inline" src="math_bac4923e26e1ce.svg" alt="N" style="width:2.009ex;height:1.545ex;vertical-align:0">은 대수적 노름이고 <img class="math-inline" src="math_eee2caf92cdd63.svg" alt="H" style="width:2.009ex;height:1.545ex;vertical-align:0">는 가족의 크기 제한이다. <img class="math-inline" src="math_7d0d222e79f2e2.svg" alt="D\ge2" style="width:6.022ex;height:1.857ex;vertical-align:-0.312ex">, <img class="math-inline" src="math_9417246159c6f8.svg" alt="0&lt;\vartheta\le1/10" style="width:13.027ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_597a7d5d8d56b1.svg" alt="\varepsilon&gt;0" style="width:5.203ex;height:1.597ex;vertical-align:-0.09ex">에서 원고의 평균제곱 상계는 다음과 같다. <img class="math-inline" src="math_676532969d0674.svg" alt="\ll" style="width:2.262ex;height:1.437ex;vertical-align:-0.152ex">의 숨은 상수는 <img class="math-inline" src="math_abe88b1ca599e4.svg" alt="\nu,W,\vartheta,\varepsilon" style="width:8.98ex;height:2.034ex;vertical-align:-0.439ex">에 의존할 수 있다.</p>
+<div class="math-block"><img src="math_6a652aa949a8b4.svg" alt="\sum_{0&lt;N(u)\le H}|A_u(D)|^2
+\ll D^{1+\varepsilon}H,
+\qquad H=D^{1+\vartheta}." style="width:43.963ex;height:auto"></div>
+<p><img class="math-inline" src="math_03cbbdecb693fe.svg" alt="u=p^6" style="width:6.437ex;height:2.326ex;vertical-align:-0.439ex">인 행에서는 6차 특성이 대부분 1이 되어 <img class="math-inline" src="math_486d17bd3db701.svg" alt="A_1(D)" style="width:6.318ex;height:2.262ex;vertical-align:-0.566ex">와 비교할 수 있다. 노름이 <img class="math-inline" src="math_b1544068007192.svg" alt="H^{1/6}" style="width:4.716ex;height:2.021ex;vertical-align:0"> 규모인 소수 <img class="math-inline" src="math_e4bd8005f58b3d.svg" alt="p" style="width:1.138ex;height:1.439ex;vertical-align:-0.439ex">들을 이용하면 다음 상계가 나온다.</p>
+<div class="math-block"><img src="math_bc6f69c564175e.svg" alt="|A_1(D)|^2
+\ll D^{1+\varepsilon}H^{5/6}+D^2H^{-1/3}." style="width:33.867ex;height:auto"></div>
+<p><img class="math-inline" src="math_b4a02ec3c91a21.svg" alt="\vartheta&gt;0" style="width:5.485ex;height:1.686ex;vertical-align:-0.09ex">를 작게 택하면 첫 항의 지수는 11/6에 임의로 작은 양을 더한 값이고, 제곱근을 취해 <img class="math-inline" src="math_28002c5dd46bb7.svg" alt="D^{11/12+\varepsilon}" style="width:8.051ex;height:2.021ex;vertical-align:0"> 형태를 얻는다. 여기서 <img class="math-inline" src="math_cc52deca71b2de.svg" alt="\varepsilon" style="width:1.054ex;height:1.072ex;vertical-align:-0.05ex">은 작은 손실을 흡수하도록 다시 잡을 수 있다. 이 계산이 짧다고 해서 평균제곱 추정 자체가 쉬운 것은 아니다. 7/8 원고는 더 긴 모멘트·보상 인자 논증을 사용하므로, 위 두 줄을 조금 조정하면 7/8까지 나온다고 해석해서도 안 된다.</p>
+<p>선행연구의 역할도 정확히 구분해야 한다. Dunn–Radziwiłł의 <em>Bias in cubic Gauss sums: Patterson’s conjecture</em>는 2021년 프리프린트, 2024년 Annals 논문이다. 2022년은 Quanta가 관련 연구를 보도한 해다. 그 연구의 소수에 대한 점근식은 GRH 조건부이지만, 이번 원고가 가져오는 세타의 전개·합산 공식은 무조건부 도구다. 조건부 최종 결론을 전제로 준리만가설을 증명하는 순환논증이라고 설명하면 원고의 논리와 다르다. [2,7]</p>
+<h2 id="section-6">6. 소수 분포 연구에는 무엇이 달라질까</h2>
+<p>실용적인 첫 변화는 정량적인 오차식이다. Fiori–Jaskari의 후속 연구는 비자명 영점의 실수부가 7/8 이하라는 조건을 결합해 다음의 명시적 상계를 제시한다. 여기서 <img class="math-inline" src="math_9f4add1721074c.svg" alt="\psi" style="width:1.473ex;height:2.034ex;vertical-align:-0.464ex">는 앞서 정의한 가중 소수 합이며, 로그는 자연로그다. [8]</p>
+<div class="math-block"><img src="math_1f32b71505d704.svg" alt="|\psi(x)-x|
+&lt;0.04934\,x^{3/4}(\log x)^2
++0.02636425\,x^{7/8},\qquad x\ge21." style="width:62.417ex;height:auto"></div>
+<p>이 식은 ‘어떤 상수가 있다’에서 더 나아가 계산에 넣을 계수와 적용 범위를 준다. 리뷰에서 우변을 <img class="math-inline" src="math_541fa7b8c352ba.svg" alt="x" style="width:1.294ex;height:1.025ex;vertical-align:-0.025ex">로 나누어 계산하면 <img class="math-inline" src="math_05237e1784df72.svg" alt="x=10^{12}" style="width:8.361ex;height:2.14ex;vertical-align:-0.186ex">에서 약 0.03850, <img class="math-inline" src="math_1c473092335d1e.svg" alt="x=10^{24}" style="width:8.361ex;height:2.158ex;vertical-align:-0.186ex">에서 약 0.0001770이다. 이는 각각 약 3.85%, 0.0177%의 상대오차 상계이며 실제 오차를 측정한 값이 아니다. 후속 논문은 7/8 결과를 가정한 귀결로 제시하며, 원증명 전체의 독립 검증을 뜻하지는 않는다. 또한 <img class="math-inline" src="math_ecaabe4078e9d6.svg" alt="\psi(x)" style="width:4.527ex;height:2.262ex;vertical-align:-0.566ex">의 상계와 <img class="math-inline" src="math_1043594225bd3e.svg" alt="\pi(x)" style="width:4.344ex;height:2.262ex;vertical-align:-0.566ex">의 상계를 같은 식으로 취급할 수 없다.</p>
+<p>두 번째 변화는 산술진행의 소수다. 11/12 원고 Corollary 1.2는 <img class="math-inline" src="math_d55605bf995e81.svg" alt="\pi(x;q,a)" style="width:8.594ex;height:2.262ex;vertical-align:-0.566ex">와 <img class="math-inline" src="math_6f6e5526798f76.svg" alt="\operatorname{Li}_2(x)/\varphi(q)" style="width:11.497ex;height:2.262ex;vertical-align:-0.566ex">의 차이에 <img class="math-inline" src="math_5a4ac8fe728f6a.svg" alt="x^{11/12}\log x" style="width:10.421ex;height:2.487ex;vertical-align:-0.466ex"> 규모의 균일한 절대오차 상계를 주장한다. <img class="math-inline" src="math_5d9a6286c21293.svg" alt="\varphi(q)" style="width:4.281ex;height:2.262ex;vertical-align:-0.566ex">는 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex">와 서로소인 나머지류의 수다. 주항에 <img class="math-inline" src="math_b8ef01f058a9e4.svg" alt="1/\varphi(q)" style="width:6.543ex;height:2.262ex;vertical-align:-0.566ex">가 있으므로 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex">가 커지면 주항이 작아질 수 있다. 따라서 모든 <img class="math-inline" src="math_338dccc5cf8342.svg" alt="q\le x" style="width:5.352ex;height:1.878ex;vertical-align:-0.439ex">에서 상대오차까지 작다는 뜻은 아니다. [3]</p>
+<p>세 번째는 Landau–Siegel 예외적 영점 문제다. 실수 Dirichlet 특성의 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수에 실수부 1에 지나치게 가까운 실수 영점이 있을 가능성은 여러 수론적 추정의 효과성을 어렵게 했다. 공개 형식화 범위에는 원시 비주특성인 실수 Dirichlet 특성 <img class="math-inline" src="math_95dc6e42c1a961.svg" alt="\chi" style="width:1.416ex;height:1.462ex;vertical-align:-0.462ex">의 도체 <img class="math-inline" src="math_42a957b61de46e.svg" alt="q\ge3" style="width:5.189ex;height:1.943ex;vertical-align:-0.439ex">와 그 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수의 실수 영점 <img class="math-inline" src="math_f2f40ac1ae8482.svg" alt="0&lt;\beta&lt;1" style="width:9.577ex;height:2.034ex;vertical-align:-0.439ex">에 대해, 하나의 상수 <img class="math-inline" src="math_91463cf8d2b560.svg" alt="c&gt;0" style="width:5.128ex;height:1.597ex;vertical-align:-0.09ex">로 <img class="math-inline" src="math_c92b83f3134fa7.svg" alt="1-\beta\ge c/\log q" style="width:14.992ex;height:2.262ex;vertical-align:-0.566ex">를 얻는 진술도 포함된다. 이는 모든 실수 영점을 없앤다는 뜻이 아니며, 해당 문서에는 <img class="math-inline" src="math_9bc7baa8bb0970.svg" alt="c" style="width:0.98ex;height:1.025ex;vertical-align:-0.025ex">의 명시적 값도 없다. [9]</p>
+<p>따라서 응용 논문을 읽을 때는 어떤 함수족의 어떤 경계를 사용하는지, 상수가 명시적·유효한지, 변수 범위가 어디까지인지 확인해야 한다. 짧은 소수 구간에 대한 귀결이 나온다는 사실만으로 기존 최고 기록보다 짧은 구간을 얻었다고 할 수도 없다. 다른 방법이 이미 더 강한 특정 구간 결과를 줄 수 있기 때문이다.</p>
+<h2 id="section-7">7. Lean이 확인하는 것과 사람이 확인할 것</h2>
+<p>형식 증명에서는 정리의 진술과 논리적 추론을 코드로 표현하고, 작은 검증 핵심인 커널이 증명 항의 타당성을 검사한다. 모델이 자연어로 ‘증명했다’고 말하는 것보다 강한 검증 수단이지만, 어떤 명제를 어떤 정의 아래에서 검사했는지를 함께 봐야 한다. [10,15]</p>
+<p>가족 003의 공개 범위 문서는 제타함수·모든 Dirichlet 특성·지정한 Hecke 함수족의 7/8 경계와 예외적 실수 영점 간격을 구분한다. 원고의 뒤쪽 응용 전체를 형식화했다고 하지는 않는다. 저장소의 Comparator 설정은 공개된 문제 진술과 별도 solution 모듈의 정리를 비교하고, 허용된 공리 등의 조건을 검사하도록 구성된다. [9,15]</p>
+<p>여기서는 두 파일의 역할을 혼동하기 쉽다. <code>QuasiRiemannHypothesis.lean</code>이라는 challenge 파일에는 <code>sorry</code>가 있다. 이것은 비교할 문제 진술의 자리표시자이며 실제 증명은 별도 solution 모듈에 연결되어 있다. 이 파일 하나만 보고 증명이 비어 있다고 결론 내릴 수 없다. 반대로 별도 모듈이 있다는 것만으로 독립 재검증이 끝났다고 할 수도 없다.</p>
+<p>확인한 Comparator 설정은 <code>propext</code>, <code>Quot.sound</code>, <code>Classical.choice</code>를 허용공리로 열거하며, 해당 설정의 <code>enable_nanoda</code>는 false다. 마지막 값은 추가 커널 옵션의 설정값이지, 기본 Lean 검사가 없다는 뜻이 아니다. 저장소의 <code>review.status: unchecked</code> 역시 검토 메타데이터이며 그것만으로 커널 검사가 실패했다고 해석할 수 없다. 이 리뷰는 공개 진술·정의·연결 경로를 읽어 확인했으며, 전체 라이브러리를 깨끗한 환경에서 다시 빌드하거나 Comparator를 독립 실행하지는 않았다. [9,10,15]</p>
+<figure><img class="figure-desktop" src="proof_path_ko.svg" alt="자연어 정리에서 형식 진술과 정의를 검토하고 별도 증명을 커널로 검사한 뒤 수학적 이해와 응용을 확인하는 과정"><img class="figure-mobile" src="proof_path_mobile_ko.svg" alt="자연어 정리에서 형식 진술과 정의를 검토하고 별도 증명을 커널로 검사한 뒤 수학적 이해와 응용을 확인하는 과정"><figcaption>공개 저장소의 구성과 형식 검증의 역할을 재구성한 도식. 이 리뷰에서 전체 Lean 재빌드를 실행했다는 기록이나 증명 발견 과정의 실행 로그가 아니다. [9,10,15]</figcaption></figure>
+
+<h3>극점인 1에도 함수 값이 있는 이유</h3>
+<p>구체적인 예를 보자. 수학의 제타함수는 <img class="math-inline" src="math_dbdbb4ba31feae.svg" alt="s=1" style="width:5.209ex;height:1.692ex;vertical-align:-0.186ex">에서 극점을 가지지만, Mathlib의 <code>riemannZeta : ℂ → ℂ</code>는 모든 복소수에 값을 주는 총함수다. 사용한 라이브러리 버전은 그 점에 다음의 특별한 값을 부여한다. <img class="math-inline" src="math_7d38c82d984061.svg" alt="\gamma" style="width:1.229ex;height:1.486ex;vertical-align:-0.489ex">는 Euler–Mascheroni 상수다. [11]</p>
+<div class="math-block"><img src="math_edb0699a3c2c25.svg" alt="\texttt{riemannZeta}(1)
+=\frac{\gamma-\log(4\pi)}{2}\ne0." style="width:35.813ex;height:auto"></div>
+<p>이는 해석적 제타함수의 발산을 없앴다는 뜻이 아니다. 코드의 함수를 전체 입력에 정의하기 위한 관례다. 실제 solution 경로는 <img class="math-inline" src="math_dbdbb4ba31feae.svg" alt="s=1" style="width:5.209ex;height:1.692ex;vertical-align:-0.186ex">을 별도 분기로 처리하고, 나머지 경우에는 Dirichlet <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수의 비영점 정리를 적용한다. 따라서 challenge에 <img class="math-inline" src="math_b2ab0da0bf6fd0.svg" alt="s\ne1" style="width:5.209ex;height:2.106ex;vertical-align:-0.486ex"> 조건이 없다는 이유만으로 잘못된 정리라고 판단하면 안 된다. [11]</p>
+<p>이 사례는 의미 검토가 왜 필요한지 보여 준다. 커널은 코드 안의 명제와 증명 사이의 관계를 검사한다. 사람이 의도한 수학적 대상·가정·예외가 그 코드와 맞는지는 정의까지 읽어 확인해야 한다. 같은 함수 이름이나 정리 이름만 비교해서는 충분하지 않다.</p>
+<h2 id="section-8">8. AI가 한 일은 공개 기록으로 어디까지 알 수 있을까</h2>
+<p>이번 발표는 미공개 내부 모델을 사용한 연구 평가에서 나온 것이다. 저장소는 약 4,000개 문제를 모델에 제시했다고 설명하며, 일반적인 고정 절차의 평균 계산량을 해당 모델의 ChatGPT Pro thinking 약 3시간에 해당하는 양으로 표현한다. 그러나 <strong>제타함수 영점 배제 연구는 그 절차의 예외로 명시되어 있다.</strong> 준리만 결과를 ‘일반 사용자가 3시간 만에 재현할 수 있는 증명’으로 소개할 근거는 없다. 공개 자료만으로 이 결과의 모델 버전·총 계산량·전체 탐색 과정을 확정할 수도 없다. [4]</p>
+<p>발표 수치도 단위를 구분해야 한다. Quanta는 10월 6일 발표를 377개 결과와 722편 원고로 소개했다. 이 리뷰가 고정한 10월 12일 커밋의 저장소 목록은 372개 family와 719편 manuscript다. 보도의 ‘결과’와 저장소의 ‘family’가 동일한 집계 단위라고 단정해서는 안 된다. family 하나에는 주결과, 대안 증명과 귀결 원고 등이 함께 들어갈 수 있다. 수정 이력에는 Hodge 관련 3편 철회와 다른 원고들의 변경이 기록돼 있다. 따라서 최초 보도 숫자를 현재의 ‘검증 완료 정리 수’로 바꾸어 쓰면 안 된다. [1,4]</p>
+<p>AI 수학의 다른 사례도 작업의 종류를 구분하는 데 도움이 된다. 2024년 공개된 AlphaProof의 IMO 시연은 사람이 형식화한 문제를 입력으로 받아 형식 언어 안에서 탐색·검증하는 과정을 설명한다. 그 조건과 미공개 모델의 연구문제 탐색은 서로 다르다. 어느 한쪽의 성공률이나 소요시간을 다른 쪽의 재현 성능으로 옮길 수 없다. [14]</p>
+<p>이번 결과에서 흥미로운 것은 기존 수학을 연결할 후보를 넓게 찾는 능력이다. 그 연결이 다른 연구자가 다시 사용할 수 있는 지식이 되려면 가정과 선행연구를 명료하게 쓰고, 핵심 보조정리를 분리하며, 사람이 읽을 수 있는 설명을 만들어야 한다. 발견한 결과의 수와 그 결과를 이해·검증·확장하는 데 드는 비용을 함께 평가해야 한다.</p>
+<h2 id="section-9">9. 소수 판정과 암호 응용은 어떤 조건을 더 요구할까</h2>
+<p>소수 분포, 소수 판정, 인수분해는 서로 다른 문제다. <img class="math-inline" src="math_541fa7b8c352ba.svg" alt="x" style="width:1.294ex;height:1.025ex;vertical-align:-0.025ex"> 부근에 소수가 얼마나 있는지는 분포의 질문이다. 주어진 정수가 소수인지 결정하는 것은 판정의 질문이다. 주어진 합성수의 소인수를 출력하는 것은 인수분해다. 분포를 더 잘 통제하는 정리만으로 마지막 문제를 푸는 알고리즘이 주어지는 것은 아니다.</p>
+<p>리만형 가정과 알고리즘의 연결은 오래전부터 있었다. Miller의 1976년 연구는 확장된 리만가설 아래의 소수 판정을 다룬다. 하지만 준리만 결과와 그 알고리즘이 요구하는 ERH를 같은 가정으로 취급하면 안 된다. 그리고 무조건적인 결정적 다항시간 소수 판정은 이미 AKS의 <em>PRIMES is in P</em>로 알려져 있다. 이번 결과가 처음으로 빠른 소수 판정을 가능하게 했다고 설명할 수는 없다. [12,13]</p>
+<p>암호에 대한 실질적인 주장을 하려면 어떤 문제의 입력·출력인지, 실행시간이 어떻게 개선되는지, 어떤 크기의 정수에서 무엇을 측정했는지까지 필요하다. 이번에 확인한 자료에서는 준리만 결과로 실제 RSA 인수분해나 암호 해독 성능을 입증한 근거가 없다. 즉각적인 보안 성능 수치보다, 조건부 알고리즘 분석 중 어느 부분이 해당 함수족의 영점 경계만 요구하는지 다시 검토하는 연구가 자연스럽다.</p>
+<h2 id="section-10">10. AI 수학 연구를 판단하는 실질적인 순서</h2>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>먼저 확인할 대상</th>
+<th>확인할 질문</th>
+<th>이번 사례에서의 예</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>정리의 정확한 범위</td>
+<td>어떤 함수·변수·경계·예외를 다루는가?</td>
+<td>7/8과 11/12, 주특성의 극점, 지정한 Hecke 함수족</td>
+</tr>
+<tr>
+<td>원고의 논리</td>
+<td>어느 보조정리가 새롭고 어떤 선행 결과를 쓰는가?</td>
+<td>Möbius 평균제곱, 세타 변환, 조건부 결과와 무조건부 도구의 구분</td>
+</tr>
+<tr>
+<td>형식 진술과 정의</td>
+<td>논문이 말하는 대상과 코드가 같은가?</td>
+<td><code>riemannZeta</code>의 총함수 관례와 1에서의 분기</td>
+</tr>
+<tr>
+<td>실제 검증 실행</td>
+<td>어떤 버전·공리·의존성으로 무엇을 다시 검사했는가?</td>
+<td>Comparator 대상 정리와 별도 solution 모듈</td>
+</tr>
+<tr>
+<td>응용으로의 이전</td>
+<td>상수·효과성·변수 범위·알고리즘 비용이 확보됐는가?</td>
+<td>명시적 <img class="math-inline" src="math_9f4add1721074c.svg" alt="\psi" style="width:1.473ex;height:2.034ex;vertical-align:-0.464ex"> 상계와 산술진행의 절대오차</td>
+</tr>
+</tbody></table></div>
+<p>이 순서는 리뷰의 연구·개발 적용 제안이다. 논문 PDF, 고정한 저장소 커밋, 대상 정리와 라이브러리 버전, 검증 명령과 실제 결과를 묶어 보관하면 후속 검토가 쉬워진다. 일부 정리만 형식화했으면 그 범위를 밝히고, 수치 예시는 무한한 경우에 대한 증명과 구분해야 한다.</p>
+<p>준리만 결과의 파급력은 소수가 조금 더 규칙적으로 보인다는 인상보다 구체적이다. 영점의 위치에 고정된 제한을 두고, 이를 소수 분포의 정량적 오차와 관련 <img class="math-inline" src="math_7b308afe6a6ec7.svg" alt="L" style="width:1.541ex;height:1.545ex;vertical-align:0">-함수의 문제로 옮기는 것이다. AI 연구의 관점에서는 넓은 탐색에서 찾아낸 논증을 <strong>다른 사람이 검증하고 재사용할 수 있는 수학</strong>으로 만드는 과정까지가 중요한 과제다. 2026년 10월 20일 현재 이 두 과정을 함께 살펴보는 것이 이 결과를 평가하는 적절한 출발점이다.</p>
+<h2 id="section-11">참고문헌과 원문</h2><div class="references">
+<ol>
+<li>Kakaes, K. <em>AI Proved the Quasi-Riemann Hypothesis. What Happens Now?</em> Quanta Magazine, 2026-10-19. <a href="https://www.quantamagazine.org/ai-proved-the-quasi-riemann-hypothesis-what-happens-now-20261019/">기사</a>. 전문가의 반응과 사람의 이해·검토 현황에 관한 보도이며 원증명 전체의 독립 검증을 대신하지 않는다.</li>
+<li>OpenAI. <em>The Quasi-Riemann Hypothesis: A Zero-Free Half-Plane Re(s)&gt;7/8</em>. 2026-09-30 원고, 199쪽. <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/paper.pdf">고정 버전 PDF</a>. Theorem 1.1 및 서론의 함수족·선행 결과 조건.</li>
+<li>OpenAI. <em>The Quasi-Riemann Hypothesis</em>, alternate 11/12 proof, 2026-10-05, 49쪽. <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-October-5-2026/paper2.pdf">고정 버전 PDF</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/preprints/The-Quasi-Riemann-Hypothesis-October-5-2026/README.md">원고 안내</a>. Theorem 1.1·Corollary 1.2, §2 및 식 (2.2)–(2.5). 사람의 편집을 거친 별도 논증.</li>
+<li>OpenAI. <em>Sharing AI progress in mathematics</em>, 2026-10-06 발표, 10-15 갱신. <a href="https://openai.com/index/sharing-ai-progress-in-mathematics/">공식 발표</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/README.md">저장소 README</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/history.md">수정 이력</a>. 저장소 근거는 커밋 <code>1581d4c</code>에 고정했다.</li>
+<li>Bombieri, E. <em>The Riemann Hypothesis</em>. Clay Mathematics Institute 문제 해설. <a href="https://www.claymath.org/wp-content/uploads/2022/05/riemann.pdf">공식 PDF</a>. 제타함수·영점·RH·소수 분포의 기초.</li>
+<li>Sutherland, A. V. MIT 18.785, <em>Number Theory I</em>, Fall 2019. <a href="https://math.mit.edu/classes/18.785/2019fa/ProblemSet8.pdf">Problem Set 8</a>, Problem 1의 명시적 공식과 (f)의 영점 경계에 따른 오차. <a href="https://math.mit.edu/classes/18.785/2019fa/LectureNotes17.pdf">Lecture 17</a>은 함수방정식·임계띠 배경.</li>
+<li>Dunn, A.; Radziwiłł, M. <em>Bias in cubic Gauss sums: Patterson’s conjecture</em>. Annals of Mathematics <strong>200</strong>(3), 967–1057 (2024). <a href="https://annals.math.princeton.edu/2024/200-3/p03">출판 원문</a> · <a href="https://doi.org/10.4007/annals.2024.200.3.3">DOI</a> · <a href="https://arxiv.org/abs/2109.07463">arXiv:2109.07463</a>. 2021년 프리프린트와 2024년 출판을 구분한다.</li>
+<li>Fiori, A.; Jaskari, M. <em>Explicit bounds for the prime number theorem</em>. <a href="https://arxiv.org/html/2609.23222v2">arXiv:2609.23222v2, 2026-10-08</a>. Theorem 1.4와 7/8 가정을 대입한 명시적 <img class="math-inline" src="math_9f4add1721074c.svg" alt="\psi" style="width:1.473ex;height:2.034ex;vertical-align:-0.464ex"> 상계.</li>
+<li>OpenAI. Family 003 formalization scope and configurations. <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/docs/003.md">범위 문서</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/ComparatorChallenges/QuasiRiemannHypothesis.lean">challenge 진술</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/ComparatorChallenges/QuasiRiemannHypothesis.json">Comparator 설정</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/formalization.yaml">형식화 목록</a>. 이 리뷰의 확인은 코드·진술의 정적 검토다.</li>
+<li>Lean. <em>Theorem Proving in Lean 4</em>, Axioms and Computation. <a href="https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/">공식 문서</a>. 공리·증명·계산과 검증의 배경.</li>
+<li>Mathlib. <em>NumberTheory/Harmonic/ZetaAsymp.lean</em>, <code>riemannZeta_one</code> 및 <code>riemannZeta_one_ne_zero</code>. <a href="https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/NumberTheory/Harmonic/ZetaAsymp.lean#L419">라이브러리 고정 버전</a>. <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/OAI/NumberTheory/DirichletL/Hecke/Dirichlet.lean#L171">OpenAI의 실제 1 분기</a>.</li>
+<li>Agrawal, M.; Kayal, N.; Saxena, N. <em>PRIMES is in P</em>. Annals of Mathematics <strong>160</strong>, 781–793 (2004). <a href="https://annals.math.princeton.edu/2004/160-2/p12">출판 원문</a> · <a href="https://doi.org/10.4007/annals.2004.160.781">DOI</a>. 무조건 결정적 다항시간 소수 판정.</li>
+<li>Miller, G. L. <em>Riemann’s Hypothesis and Tests for Primality</em>. Journal of Computer and System Sciences <strong>13</strong>(3), 300–317 (1976). <a href="https://www.cs.cmu.edu/~glmiller/Publications/Papers/Mi76.pdf">저자 공개 PDF</a>. ERH 조건과 소수 판정의 연결.</li>
+<li>Google DeepMind. <em>AI achieves silver-medal standard solving International Mathematical Olympiad problems</em>, 2024-07-25. <a href="https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/">공식 설명</a>. AlphaProof·AlphaGeometry 2 시연의 문제 형식화와 계산 조건.</li>
+<li>Leanprover. <em>Comparator</em>. <a href="https://github.com/leanprover/comparator">공식 저장소</a> · <a href="https://github.com/openai/math/blob/1581d4cbdd69a0faf34b2089614fe2a814316a6a/lean/ComparatorChallenges/README.md">OpenAI의 실행 안내</a>. challenge·solution 비교와 허용공리 검사 구성을 읽었으며, 이 리뷰에서 해당 전체 검증을 재실행하지 않았다.</li>
+</ol>
+<p class="downloads"><a href="review_ko.pdf">한국어 PDF</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/en/">English review</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/en/review_en.pdf">English PDF</a></p>
+</div>
+</article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_quasi-riemann-ai-proof/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-20<br>소수 분포의 수학과 AI 증명 검증을 연결하는 해설.</footer>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>OpenAI Codex; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 1차 자료 종합·한국어 집필·개념 표지·과학 편집·게시 통합 및 공개 페이지 검증; academic_sources — 수학 원전 조사·정리와 수식 감수·증명 범위 및 Mathlib 극점 관례 확인; applications_sources — AI 연구 절차·응용 조사·영어 번역·설명 도표·독립 교육용 계산; review_format — 한영 수식·글꼴 조판·반응형 도표·HTML/PDF 제작 및 게시 출력 검사; publish_audit — 공개 메타데이터·링크·자산·작성 공개 정보 감사</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>Quanta 2026-10-19 보도·7/8 및 11/12 원고·openai/math 커밋 1581d4cbdd69a0faf34b2089614fe2a814316a6a의 family 003 범위·진술·검증 설정 대조; 오일러 곱 수렴 영역·명시적 공식 조건·지수 추출·Fiori–Jaskari 응용 상계·Mathlib 커밋 d13f23b723b8a846827a245b89c10fc7d3f11612의 정의 확인; 원증명 전체의 독립 검증·Lean 재빌드 없음; 교육용 거듭제곱 인자·정규화 상계의 독립 계산·한영 도표와 수식·PDF 메타데이터·데스크톱 및 모바일·공개 본문과 PDF 링크 검사</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>주제·작성·공개 게시 요청 확인; 문장 단위 사람 승인 없음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-10-20</dd></div>
+        </dl>
+        <p class="disclosure-note">7/8과 11/12는 서로 다른 원고의 경계이며, 리만가설의 1/2 경계는 해결하지 않습니다. 전문가의 원고 이해·공개 형식화·이 리뷰의 정적 코드 검토와 독립 재실행을 구분합니다. Lean challenge의 자리표시자는 별도 solution의 증명과 다르며, 함수의 극점 관례도 정의까지 대조했습니다. 도표와 수치 예시는 직접 제작한 설명 자료로 실제 영점 측정·완전한 소수 오차의 관측·원증명 재현이 아닙니다. 표지는 내장 imagegen 개념 그림입니다. 실용적 인수분해나 암호 해독 성능을 검증하지 않았습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p></section>
+</body></html>
