@@ -11,6 +11,8 @@ NVIDIA/Jülich의 고전 GPU 모사와 실제 QPU 실험을 구분한다. 104개
 
 표지는 내장 imagegen으로 생성한 개념 일러스트다. 정확한 수식·메모리 값·과정도는 결정론적으로 제작했다. 사적인 메일 원문·헤더·첨부 취득 정보와 원문 수집 파일은 이 폴더에 포함하지 않는다.
 
+2026-10-20 표지를 ‘다시 쓰이는 자리’로 개편했다. [과학 표지 제작 원칙](../COVER_ART_DIRECTION.md)에 따라 세 발상을 비교하고, 측정·해제 이후 저장공간 재사용을 종이의 시간층으로 표현했다. [이 리뷰의 기획·적용 기록](cover-art-brief.md)과 `artifacts/hero-v2-imagegen.json`에 선택 이유·시각 요소의 뜻·프롬프트·검토 결과를 남겼다. 이전 표지는 원본 자산과 이력에 보존한다.
+
 ## 재생성
 
 `artifacts/build_figures.py`는 matplotlib·numpy·fonttools·brotli와 Nanum Gothic 글꼴을 사용한다. `build_fonts.py`에는 `--regular`·`--bold`로 정규·굵은 글꼴을 지정한다. 글꼴의 공개 라이선스는 `artifacts/font-license.txt`에 포함한다.
