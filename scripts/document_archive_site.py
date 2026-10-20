@@ -16,6 +16,7 @@ SERIES = {
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
 }
+LIBRARY_ASSET_VERSION = "20261020-learning-nav"
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
@@ -121,7 +122,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
   <link rel="alternate" hreflang="x-default" href="{base_url}archive/">
   <meta property="og:type" content="website"><meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}"><meta property="og:url" content="{current_url}">
-  <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css">
+  <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
 </head><body class="archive-page">
   <header class="site-header">
     <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
@@ -150,7 +151,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
     </section>
     <footer class="archive-note"><p>{'Archived PDFs are preserved in their original language. The English catalog describes the collection; it does not imply an English PDF translation.' if en else '문서는 발행 당시의 언어와 내용으로 보관합니다. 아카이브 등록은 본문의 연구 결과를 새로 검증하거나 독립 재현했다는 뜻이 아닙니다.'}</p><a href="{prefix}archive-manifest.json">{'Archive data (JSON)' if en else '아카이브 데이터 (JSON)'} ↗</a></footer>
   </main>
-  <script src="{prefix}assets/archive.js" defer></script>
+  <script src="{prefix}assets/archive.js?v={LIBRARY_ASSET_VERSION}" defer></script>
 </body></html>'''
 
 
@@ -215,7 +216,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
       <link rel="alternate" hreflang="x-default" href="{base_url}lectures/">
       <meta property="og:type" content="website"><meta property="og:title" content="{title}">
       <meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">
-      <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css">
+      <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
       </head><body class="lectures-page">
       <header class="site-header">
         <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">

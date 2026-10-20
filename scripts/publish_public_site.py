@@ -18,9 +18,9 @@ from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
 try:
-    from .document_archive_site import publish_archive, render_learning_teaser, render_library_navigation, validate_archive
+    from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
 except ImportError:
-    from document_archive_site import publish_archive, render_learning_teaser, render_library_navigation, validate_archive
+    from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -2804,7 +2804,7 @@ def render_index(
     <meta name="twitter:title" content="AI Tech Review Letters">
     <meta name="twitter:description" content="{html.escape(home_description, quote=True)}">
     <link rel="stylesheet" href="assets/site.css">
-    <link rel="stylesheet" href="assets/archive.css">
+    <link rel="stylesheet" href="assets/archive.css?v={LIBRARY_ASSET_VERSION}">
   </head>
   <body>
     <header class="site-header">
