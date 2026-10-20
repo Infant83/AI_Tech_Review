@@ -1,0 +1,704 @@
+{
+  "archive_basis_date": "2026-10-20",
+  "python_version": "3.12.14",
+  "numpy_version": "2.3.5",
+  "execution_level": "classical_offline_only",
+  "labs": {
+    "1": {
+      "execution_level": "classical_statevector_and_binomial_sampling",
+      "seed": 101,
+      "basis_order": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "bell_probabilities": [
+        0.4999999999999999,
+        0.0,
+        0.0,
+        0.4999999999999999
+      ],
+      "bell_counts_4096": [
+        2110,
+        0,
+        0,
+        1986
+      ],
+      "bell_Z0": 0.0,
+      "bell_Z0Z1": 0.9999999999999998,
+      "bell_X0X1": 0.9999999999999998,
+      "incoherent_mixture_X0X1": 0.0,
+      "theta_radians": 0.73,
+      "exact_expectation": 0.7451744023448705,
+      "analytic_derivative": -0.6668696350036979,
+      "parameter_shift": -0.6668696350036978,
+      "finite_difference": -0.6668696350686787,
+      "shot_parameter_shift": -0.677490234375,
+      "shots_per_shift": 4096,
+      "shot_shift_standard_error_known_model": 0.008233091766635791,
+      "checks": "Bell correlations and derivative checked against analytic identities"
+    },
+    "2": {
+      "execution_level": "classical_linear_algebra_on_encoded_states",
+      "original_vectors": [
+        [
+          1.0,
+          0.1
+        ],
+        [
+          1.0,
+          -0.1
+        ],
+        [
+          -1.0,
+          -0.1
+        ],
+        [
+          -1.0,
+          0.1
+        ],
+        [
+          0.1,
+          1.0
+        ],
+        [
+          -0.1,
+          1.0
+        ],
+        [
+          -0.1,
+          -1.0
+        ],
+        [
+          0.1,
+          -1.0
+        ]
+      ],
+      "normalized_vectors": [
+        [
+          0.9950371902099893,
+          0.09950371902099893
+        ],
+        [
+          0.9950371902099893,
+          -0.09950371902099893
+        ],
+        [
+          -0.9950371902099893,
+          -0.09950371902099893
+        ],
+        [
+          -0.9950371902099893,
+          0.09950371902099893
+        ],
+        [
+          0.09950371902099893,
+          0.9950371902099893
+        ],
+        [
+          -0.09950371902099893,
+          0.9950371902099893
+        ],
+        [
+          -0.09950371902099893,
+          -0.9950371902099893
+        ],
+        [
+          0.09950371902099893,
+          -0.9950371902099893
+        ]
+      ],
+      "projective_fidelity_clustering": {
+        "labels": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "centroids": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "objective_history": [
+          0.15684736790510412,
+          0.0792079207920775
+        ],
+        "iterations": 2
+      },
+      "euclidean_kmeans_on_normalized_data": {
+        "labels": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "centroids": [
+          [
+            0.49751859510499463,
+            -0.49751859510499463
+          ],
+          [
+            -0.49751859510499463,
+            0.49751859510499463
+          ]
+        ],
+        "objective_history": [
+          8.871287128712872,
+          4.039603960396041
+        ],
+        "iterations": 2
+      },
+      "opposite_vector_fidelity": 0.9999999999999998,
+      "opposite_normalized_vector_squared_euclidean_distance": 3.9999999999999996,
+      "scaled_vector_fidelity": 0.9999999999999998,
+      "angle_kernel_statevector": 0.2985717802437121,
+      "angle_kernel_product_formula": 0.2985717802437121,
+      "checks": "normalization, phase/norm information loss, Rayleigh centroid, objective descent"
+    },
+    "3": {
+      "execution_level": "classical_exact_statevector_formula_and_linear_algebra",
+      "dataset": "independent uniform [-1.4,1.4]^2, label=sign(x0*x1)",
+      "train_size": 80,
+      "test_size": 160,
+      "ridge_lambda": 0.1,
+      "vqc_steps": 600,
+      "vqc_learning_rate": 0.08,
+      "shots": null,
+      "hyperparameter_selection": "prespecified; no validation/test selection",
+      "runs": [
+        {
+          "seed": 11,
+          "metrics": {
+            "linear_ridge": {
+              "train_accuracy": 0.6875,
+              "test_accuracy": 0.64375,
+              "test_mse": 1.0129042190679018
+            },
+            "classical_matched_trig_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.9,
+              "test_mse": 0.40430413141692123
+            },
+            "quantum_angle_fidelity_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.85625,
+              "test_mse": 0.41580849270898756
+            },
+            "classical_rbf_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.89375,
+              "test_mse": 0.2988393866247626
+            },
+            "vqc_2_parameter": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.91875,
+              "test_mse": 0.3958242019934718
+            }
+          },
+          "vqc_theta": [
+            -1.6722193923571953,
+            -1.5399715557260805
+          ],
+          "vqc_gain": 1.7242753714091712,
+          "vqc_bias": 0.0976257988845703,
+          "vqc_loss_history": [
+            {
+              "step": 0,
+              "train_mse": 0.5043393336282687
+            },
+            {
+              "step": 100,
+              "train_mse": 0.3176346048991894
+            },
+            {
+              "step": 200,
+              "train_mse": 0.31755179461639604
+            },
+            {
+              "step": 300,
+              "train_mse": 0.31755173634730094
+            },
+            {
+              "step": 400,
+              "train_mse": 0.3175517363062873
+            },
+            {
+              "step": 500,
+              "train_mse": 0.31755173630625844
+            },
+            {
+              "step": 599,
+              "train_mse": 0.3175517363062584
+            }
+          ],
+          "kernel_minimum_eigenvalue": -1.3482272863397454e-14,
+          "vqc_matrix_vs_formula_max_error": 3.3306690738754696e-16
+        },
+        {
+          "seed": 23,
+          "metrics": {
+            "linear_ridge": {
+              "train_accuracy": 0.6625,
+              "test_accuracy": 0.56875,
+              "test_mse": 1.0317382831176372
+            },
+            "classical_matched_trig_ridge": {
+              "train_accuracy": 0.95,
+              "test_accuracy": 0.84375,
+              "test_mse": 0.45205133839610256
+            },
+            "quantum_angle_fidelity_kernel_ridge": {
+              "train_accuracy": 0.9375,
+              "test_accuracy": 0.84375,
+              "test_mse": 0.46654074829642533
+            },
+            "classical_rbf_kernel_ridge": {
+              "train_accuracy": 0.9875,
+              "test_accuracy": 0.925,
+              "test_mse": 0.3184023274509276
+            },
+            "vqc_2_parameter": {
+              "train_accuracy": 0.95,
+              "test_accuracy": 0.875,
+              "test_mse": 0.4385240814879475
+            }
+          },
+          "vqc_theta": [
+            -1.4737326059399263,
+            -1.6795313402607057
+          ],
+          "vqc_gain": 1.8055425846684752,
+          "vqc_bias": 0.11550831403624104,
+          "vqc_loss_history": [
+            {
+              "step": 0,
+              "train_mse": 0.6157308412136413
+            },
+            {
+              "step": 100,
+              "train_mse": 0.3510839916119222
+            },
+            {
+              "step": 200,
+              "train_mse": 0.35081890197118915
+            },
+            {
+              "step": 300,
+              "train_mse": 0.35081828529778897
+            },
+            {
+              "step": 400,
+              "train_mse": 0.3508182838589276
+            },
+            {
+              "step": 500,
+              "train_mse": 0.3508182838555699
+            },
+            {
+              "step": 599,
+              "train_mse": 0.350818283855562
+            }
+          ],
+          "kernel_minimum_eigenvalue": -8.96414941807811e-15,
+          "vqc_matrix_vs_formula_max_error": 3.3306690738754696e-16
+        },
+        {
+          "seed": 37,
+          "metrics": {
+            "linear_ridge": {
+              "train_accuracy": 0.6,
+              "test_accuracy": 0.4375,
+              "test_mse": 1.1075910191664913
+            },
+            "classical_matched_trig_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.88125,
+              "test_mse": 0.4276832008744771
+            },
+            "quantum_angle_fidelity_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.86875,
+              "test_mse": 0.43619420564033434
+            },
+            "classical_rbf_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.95625,
+              "test_mse": 0.2621936724011129
+            },
+            "vqc_2_parameter": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.95,
+              "test_mse": 0.3918626366369162
+            }
+          },
+          "vqc_theta": [
+            1.6146774129125199,
+            1.5827865211997656
+          ],
+          "vqc_gain": 1.8258856693755,
+          "vqc_bias": 0.07839177405713751,
+          "vqc_loss_history": [
+            {
+              "step": 0,
+              "train_mse": 0.8000422890481182
+            },
+            {
+              "step": 100,
+              "train_mse": 0.27549903042797713
+            },
+            {
+              "step": 200,
+              "train_mse": 0.27487799245480643
+            },
+            {
+              "step": 300,
+              "train_mse": 0.2748772431706724
+            },
+            {
+              "step": 400,
+              "train_mse": 0.2748772422662208
+            },
+            {
+              "step": 500,
+              "train_mse": 0.27487724226512905
+            },
+            {
+              "step": 599,
+              "train_mse": 0.2748772422651277
+            }
+          ],
+          "kernel_minimum_eigenvalue": -9.803522367443614e-15,
+          "vqc_matrix_vs_formula_max_error": 4.440892098500626e-16
+        },
+        {
+          "seed": 41,
+          "metrics": {
+            "linear_ridge": {
+              "train_accuracy": 0.7875,
+              "test_accuracy": 0.675,
+              "test_mse": 1.0549431078735345
+            },
+            "classical_matched_trig_ridge": {
+              "train_accuracy": 0.9625,
+              "test_accuracy": 0.96875,
+              "test_mse": 0.3644776118879757
+            },
+            "quantum_angle_fidelity_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.9625,
+              "test_mse": 0.37072274734199273
+            },
+            "classical_rbf_kernel_ridge": {
+              "train_accuracy": 0.975,
+              "test_accuracy": 0.94375,
+              "test_mse": 0.2516996599598998
+            },
+            "vqc_2_parameter": {
+              "train_accuracy": 0.9625,
+              "test_accuracy": 0.96875,
+              "test_mse": 0.3654137969551032
+            }
+          },
+          "vqc_theta": [
+            1.5007596876836498,
+            1.6259702443026847
+          ],
+          "vqc_gain": 1.846772071375096,
+          "vqc_bias": 0.005696748902845063,
+          "vqc_loss_history": [
+            {
+              "step": 0,
+              "train_mse": 0.4573178019170802
+            },
+            {
+              "step": 100,
+              "train_mse": 0.28257675019560347
+            },
+            {
+              "step": 200,
+              "train_mse": 0.2822433065129578
+            },
+            {
+              "step": 300,
+              "train_mse": 0.28224253209811956
+            },
+            {
+              "step": 400,
+              "train_mse": 0.2822425302968673
+            },
+            {
+              "step": 500,
+              "train_mse": 0.28224253029267743
+            },
+            {
+              "step": 599,
+              "train_mse": 0.2822425302926677
+            }
+          ],
+          "kernel_minimum_eigenvalue": -9.408432803360867e-15,
+          "vqc_matrix_vs_formula_max_error": 4.440892098500626e-16
+        },
+        {
+          "seed": 53,
+          "metrics": {
+            "linear_ridge": {
+              "train_accuracy": 0.6375,
+              "test_accuracy": 0.60625,
+              "test_mse": 1.028710219382268
+            },
+            "classical_matched_trig_ridge": {
+              "train_accuracy": 0.9625,
+              "test_accuracy": 0.83125,
+              "test_mse": 0.4532772532700311
+            },
+            "quantum_angle_fidelity_kernel_ridge": {
+              "train_accuracy": 0.9625,
+              "test_accuracy": 0.8375,
+              "test_mse": 0.46218392554454474
+            },
+            "classical_rbf_kernel_ridge": {
+              "train_accuracy": 0.9625,
+              "test_accuracy": 0.875,
+              "test_mse": 0.3381021360804251
+            },
+            "vqc_2_parameter": {
+              "train_accuracy": 0.95,
+              "test_accuracy": 0.88125,
+              "test_mse": 0.43079740564842944
+            }
+          },
+          "vqc_theta": [
+            1.5695335076136323,
+            1.5996012139265403
+          ],
+          "vqc_gain": 1.8962233305273433,
+          "vqc_bias": 0.1513961670458245,
+          "vqc_loss_history": [
+            {
+              "step": 0,
+              "train_mse": 0.911790271079892
+            },
+            {
+              "step": 100,
+              "train_mse": 0.30716475864742787
+            },
+            {
+              "step": 200,
+              "train_mse": 0.30643552674475755
+            },
+            {
+              "step": 300,
+              "train_mse": 0.30643394569183025
+            },
+            {
+              "step": 400,
+              "train_mse": 0.30643394226015347
+            },
+            {
+              "step": 500,
+              "train_mse": 0.30643394225270465
+            },
+            {
+              "step": 599,
+              "train_mse": 0.30643394225268844
+            }
+          ],
+          "kernel_minimum_eigenvalue": -1.1104728566732535e-14,
+          "vqc_matrix_vs_formula_max_error": 2.220446049250313e-16
+        }
+      ],
+      "summary": {
+        "linear_ridge": {
+          "test_accuracy_mean": 0.58625,
+          "test_accuracy_sample_std_across_seeds": 0.09221662675461516
+        },
+        "classical_matched_trig_ridge": {
+          "test_accuracy_mean": 0.885,
+          "test_accuracy_sample_std_across_seeds": 0.05441449714919728
+        },
+        "quantum_angle_fidelity_kernel_ridge": {
+          "test_accuracy_mean": 0.87375,
+          "test_accuracy_sample_std_across_seeds": 0.05104379247273856
+        },
+        "classical_rbf_kernel_ridge": {
+          "test_accuracy_mean": 0.91875,
+          "test_accuracy_sample_std_across_seeds": 0.03394618903500068
+        },
+        "vqc_2_parameter": {
+          "test_accuracy_mean": 0.91875,
+          "test_accuracy_sample_std_across_seeds": 0.04122158111960287
+        }
+      },
+      "interpretation": "toy nonlinear task; VQC and fidelity kernel are classically tractable; no quantum advantage"
+    },
+    "4": {
+      "execution_level": "offline_cost_bookkeeping_and_classical_binomial_sampling",
+      "physical_qpu_executed": false,
+      "seed": 404,
+      "assumptions": {
+        "parameters": 6,
+        "batch_size": 12,
+        "steps": 25,
+        "measurement_groups": 2,
+        "shots_per_setting": 2048,
+        "settings_per_example_including_forward": 13,
+        "max_settings_per_job": 300,
+        "circuit_duration_seconds_per_shot": 5e-05,
+        "queue_seconds_per_job_serial_assumption": 30.0,
+        "fixed_overhead_seconds_per_job": 0.2
+      },
+      "vqc": {
+        "circuit_settings": 7800,
+        "total_shots": 15974400,
+        "jobs": 26,
+        "shot_execution_seconds": 798.72,
+        "serial_queue_seconds": 780.0,
+        "fixed_overhead_seconds": 5.2,
+        "assumed_serial_wall_seconds": 1583.92
+      },
+      "kernel": {
+        "train_unique_off_diagonal_pairs": 3160,
+        "test_train_pairs": 12800,
+        "settings_total": 15960,
+        "shots_at_same_shot_budget": 32686080
+      },
+      "shot_sweep": [
+        {
+          "shots": 128,
+          "repeated_experiments": 1000,
+          "empirical_rmse": 0.06012071339795848,
+          "binomial_standard_error": 0.05894350513481408
+        },
+        {
+          "shots": 512,
+          "repeated_experiments": 1000,
+          "empirical_rmse": 0.028729667433012696,
+          "binomial_standard_error": 0.02947175256740704
+        },
+        {
+          "shots": 2048,
+          "repeated_experiments": 1000,
+          "empirical_rmse": 0.014911334721260978,
+          "binomial_standard_error": 0.01473587628370352
+        },
+        {
+          "shots": 8192,
+          "repeated_experiments": 1000,
+          "empirical_rmse": 0.0072833149676611005,
+          "binomial_standard_error": 0.00736793814185176
+        }
+      ],
+      "checks": "setting count independently enumerated; standard error scales as shots^(-1/2)",
+      "not_included": [
+        "transpilation and routing",
+        "state-preparation decomposition",
+        "calibration",
+        "provider billing",
+        "parallel scheduling",
+        "failed jobs",
+        "data transfer"
+      ]
+    },
+    "5": {
+      "execution_level": "classical_scalar_noise_and_binomial_readout_toy",
+      "physical_qpu_executed": false,
+      "seed": 505,
+      "ideal_expectation": 0.7451744023448704,
+      "noise_model": "E(s)=cos(0.73)*exp(-0.12*s)",
+      "noise_scale_factors": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "exact_noisy_expectations": [
+        0.6609104063581593,
+        0.5861749462380927,
+        0.5198905393101455
+      ],
+      "richardson_coefficients": [
+        3.0,
+        -3.0,
+        1.0
+      ],
+      "exact_zne_expectation": 0.7440969196703453,
+      "exact_zne_bias": -0.001077482674525121,
+      "true_symmetric_readout_error": 0.08,
+      "estimated_assignment_matrix_columns_true_state": [
+        [
+          0.9238999999999999,
+          0.0791
+        ],
+        [
+          0.0761,
+          0.9209
+        ]
+      ],
+      "assignment_condition_number": 1.1837493272627901,
+      "calibration_shots_total": 40000,
+      "science_shots_per_scale": 4000,
+      "repeated_science_experiments": 1000,
+      "first_experiment": {
+        "raw_by_scale": [
+          0.5625,
+          0.49649999999999994,
+          0.44900000000000007
+        ],
+        "readout_corrected_by_scale": [
+          0.6622869318181818,
+          0.5841619318181818,
+          0.5279356060606062
+        ],
+        "zne": 0.762310606060606
+      },
+      "raw_scale_1": {
+        "mean": 0.5551664999999999,
+        "bias_to_ideal": -0.19000790234487053,
+        "sample_std": 0.012770595752190484,
+        "rmse_to_ideal": 0.19043615198078284
+      },
+      "readout_corrected_scale_1": {
+        "mean": 0.6536061789772728,
+        "bias_to_ideal": -0.09156822336759762,
+        "sample_std": 0.015116708986967903,
+        "rmse_to_ideal": 0.09280638936196334
+      },
+      "readout_corrected_zne": {
+        "mean": 0.7365500710227273,
+        "bias_to_ideal": -0.00862433132214313,
+        "sample_std": 0.06837063219771906,
+        "rmse_to_ideal": 0.06887850096018903
+      },
+      "budget_matched_no_zne": {
+        "mean": 0.6536860795454545,
+        "bias_to_ideal": -0.09148832279941588,
+        "sample_std": 0.00907444960968554,
+        "rmse_to_ideal": 0.09193680709450988
+      },
+      "zne_conditional_standard_error_known_model": 0.06966176217182289,
+      "coefficient_squared_sum": 19.0,
+      "calibration_uncertainty": "not propagated; 1000 repetitions share one fixed calibration",
+      "not_demonstrated": [
+        "physical noise scaling",
+        "gate folding",
+        "fault tolerance",
+        "error correction"
+      ],
+      "checks": "Richardson moment conditions; matrix inverse equals affine correction; bias-variance comparison"
+    }
+  }
+}

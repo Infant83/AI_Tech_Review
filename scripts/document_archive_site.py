@@ -4,6 +4,8 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import posixpath
+import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -13,6 +15,24 @@ SERIES = {
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
+}
+
+# Reviewed, self-contained study sites. Never discover or copy a topic folder.
+LECTURE_BUNDLES = {
+    "2026-10-20-quantum-machine-learning-lecture-notes-ko": {
+        "source": "2026-10-20_quantum-machine-learning-lecture-series/dist",
+        "href": "lectures/quantum-machine-learning/",
+        "files": (
+            "index.html", "notes.css", "notes.pdf",
+            "assets/qml-sans-regular.woff2", "assets/qml-sans-bold.woff2",
+            "assets/font-OFL.txt", "assets/figure-manifest.json",
+            "gradient-variance.svg", "shot-error.svg", "signal-attenuation.svg",
+            "labs/qml_labs.py", "labs/pennylane_compare.py", "labs/requirements.txt",
+            "labs/requirements-pennylane.txt", "labs/sdk-lock.txt",
+            "labs/qpu_submission_template.json", "labs/results/reference-results.json",
+            "labs/results/pennylane-results.json",
+        ),
+    },
 }
 
 
@@ -29,7 +49,7 @@ def render_archive_teaser(documents: list[dict]) -> str:
     )
     return f'''<section class="archive-preview" aria-labelledby="archive-preview-title">
       <div><p class="section-kicker">The document library</p>
-      <h2 id="archive-preview-title">메일로 읽은 리뷰를 한곳에.</h2>
+      <h2 id="archive-preview-title">리뷰와 학습 자료를 한곳에.</h2>
       <p>Daily Quantum Review부터 주간 리뷰, 수시 아티클과 렉처 노트까지. 날짜와 주제로 찾고 PDF 원본을 다시 읽습니다.</p>
       <a class="archive-cta" href="archive/">문서 아카이브 <span>{len(documents)}건 →</span></a></div>
       <ul class="archive-recent">{recent}</ul>
@@ -62,15 +82,18 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
         searchable = " ".join(str(doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "source_title")) + " " + " ".join(doc["tags"])
         pdf = f'{pdf_prefix}{escape(doc["id"])}.pdf'
+        study = f'{prefix}{escape(doc["study_href"])}' if doc.get("study_href") else ""
+        title_link = f'<a href="{study}">{escape(doc_title)}</a>' if study else f'<a href="{pdf}" target="_blank" rel="noopener">{escape(doc_title)}</a>'
+        study_link = f'<a href="{study}">{"Korean study notes" if en else "강의 노트 읽기"} →</a>' if study else ""
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
         native_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         cards.append(f'''<article class="document-card" data-series="{escape(doc['series'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
           <div class="document-meta"><span>{SERIES[doc['series']][int(en)]}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
-          <h2 lang="{text_language}"><a href="{pdf}" target="_blank" rel="noopener">{escape(doc_title)}</a></h2>
+          <h2 lang="{text_language}">{title_link}</h2>
           <p class="document-summary" lang="{summary_language}">{escape(doc_summary)}</p>
           <div class="tags">{tags}</div>
           <div class="document-footer"><span>{native_language} · {doc['size_bytes'] / 1024:.0f} KB</span>
-          <div><a href="{pdf}" target="_blank" rel="noopener">{'Open PDF' if en else 'PDF 열기'} ↗</a><a href="{pdf}" download>{'Download' if en else '다운로드'} ↓</a></div></div>
+          <div>{study_link}<a href="{pdf}" target="_blank" rel="noopener">{'Open PDF' if en else 'PDF 열기'} ↗</a><a href="{pdf}" download>{'Download' if en else '다운로드'} ↓</a></div></div>
         </article>''')
     latest = documents[0]["date"] if documents else "—"
     return f'''<!doctype html>
@@ -91,7 +114,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
       <a class="brand" href="{prefix}index.html">AI Tech Review Letters</a>
       <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
     </nav>
-    <nav class="hub-nav" aria-label="{'Library navigation' if en else '허브 메뉴'}"><a href="{prefix}index.html">{'Review hub' if en else '리뷰허브'}</a><a href="./" aria-current="page">{'Document archive' if en else '문서 아카이브'} <span>{len(documents)}</span></a></nav>
+    <nav class="hub-nav" aria-label="{'Library navigation' if en else '허브 메뉴'}"><a href="{prefix}index.html">{'Review hub' if en else '리뷰허브'}</a><a href="./" aria-current="page">{'Document archive' if en else '문서 아카이브'} <span>{len(documents)}</span></a><a href="./?series=lecture-notes">{'Lecture notes' if en else '렉처 노트'} <span>{counts['lecture-notes']}</span></a></nav>
     <section class="hero archive-hero"><p class="eyebrow">The document library</p><h1>{title}</h1><p class="lead">{description}</p>
       <p class="archive-caption">{'Latest issue' if en else '최근 발행'} <time>{latest}</time> <span>·</span> {'Original PDF documents' if en else 'PDF 원본 보관'}</p>
     </section>
@@ -117,6 +140,63 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
 </body></html>'''
 
 
+def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec: dict,
+                         base_url: str, decorate) -> Path:
+    """Copy only reviewed assets, validating everything before replacing output."""
+    try:
+        from .archive_documents import _reject_symlink_components
+    except ImportError:
+        from archive_documents import _reject_symlink_components
+    href = spec["href"]
+    if not re.fullmatch(r"lectures/[a-z0-9]+(?:-[a-z0-9]+)*/", href):
+        raise ValueError("Invalid lecture destination")
+    source = archive_dir.parent / spec["source"]
+    files = spec["files"]
+    if not {"index.html", "notes.pdf"}.issubset(files) or len(set(files)) != len(files):
+        raise ValueError("Lecture allowlist must contain index.html and notes.pdf without duplicates")
+    destination = staging / href
+    for name in files:
+        if Path(name).is_absolute() or ".." in Path(name).parts:
+            raise ValueError("Invalid lecture asset path")
+        asset = source / name
+        _reject_symlink_components(asset)
+        if not asset.is_file():
+            raise ValueError(f"Missing lecture asset: {name}")
+        target = destination / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(asset, target)
+    if (destination / "notes.pdf").read_bytes() != (archive_dir / document["file"]).read_bytes():
+        raise ValueError("Lecture PDF differs from registered archive PDF")
+    index = destination / "index.html"
+    text = index.read_text(encoding="utf-8")
+    canonical = base_url + href
+    metadata = (f'<link rel="canonical" href="{escape(canonical)}">'
+                f'<meta property="og:type" content="article">'
+                f'<meta property="og:title" content="{escape(document["title"])}">'
+                f'<meta property="og:description" content="{escape(document["summary"])}">'
+                f'<meta property="og:url" content="{escape(canonical)}">')
+    prefix = posixpath.relpath(".", href.rstrip("/")) + "/"
+    navigation = (f'<nav aria-label="테크리뷰 바로가기"><a href="{prefix}archive/?series=lecture-notes">← 렉처 노트 목록</a>'
+                  '<a href="#doc-study-guide">학습 시작 안내</a>'
+                  '<a href="#doc-glossary">한영 용어집</a>'
+                  '<a href="#doc-labs-readme">실습과 코드</a></nav>')
+    text = text.replace("</head>", metadata + "</head>", 1)
+    sidebar = re.search(r'<aside\b[^>]*class="sidebar"[^>]*>', text)
+    if sidebar:
+        text = text[:sidebar.end()] + navigation + text[sidebar.end():]
+    else:
+        text = text.replace("<body>", "<body>" + navigation, 1)
+    publication_note = ('<section class="document publication-note" aria-label="웹 게재 기록">'
+                        '<h2>웹 게재 기록</h2><p>2026-10-20 · OpenAI Codex의 root가 웹 게재를 통합하고, '
+                        'lecture_publish_audit가 공개 자산과 아카이브 연결을 독립 검토했다. '
+                        '강의 집필·수학 검토·실습 실행의 역할과 범위는 본문 작성 공개를 따른다. '
+                        '영문 목록은 한국어 학습 자료의 안내이며 영어 번역본이 아니다.</p></section>')
+    text = text.replace("</main>", publication_note + "</main>", 1)
+    text = decorate(text, prefix)
+    index.write_text(text, encoding="utf-8")
+    return destination
+
+
 def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) -> list[dict]:
     try:
         from .archive_documents import load_documents
@@ -131,6 +211,18 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
         documents.append(doc)
     # Stage the complete allowlist before replacing the generated archive.
     with tempfile.TemporaryDirectory(prefix="document-archive-", dir=site_dir.parent) as temporary:
+        temporary_root = Path(temporary)
+        lecture_outputs = []
+        for source, document in zip(source_documents, documents):
+            spec = LECTURE_BUNDLES.get(source["id"])
+            if spec:
+                if source["series"] != "lecture-notes":
+                    raise ValueError("Study bundles must belong to lecture-notes")
+                staged = stage_lecture_bundle(archive_dir, temporary_root, source, spec, base_url, decorate)
+                # Only derived, public fields leave the source registry.
+                document["study_href"] = spec["href"]
+                document["study_assets"] = {name: hashlib.sha256((staged / name).read_bytes()).hexdigest() for name in spec["files"]}
+                lecture_outputs.append((staged, site_dir / spec["href"]))
         staging = Path(temporary) / "archive"
         (staging / "files").mkdir(parents=True)
         (staging / "en").mkdir()
@@ -143,11 +235,43 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
         if target.exists():
             shutil.rmtree(target)
         shutil.move(str(staging), str(target))
+        for staged, target in lecture_outputs:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if target.exists():
+                shutil.rmtree(target)
+            shutil.move(str(staged), str(target))
     (site_dir / "archive-manifest.json").write_text(json.dumps({"version": 1, "documents": documents}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     assets = site_dir / "assets"
     (assets / "archive.css").write_text(ARCHIVE_CSS.strip() + "\n", encoding="utf-8")
     (assets / "archive.js").write_text(ARCHIVE_JS.strip() + "\n", encoding="utf-8")
     return documents
+
+
+def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]:
+    errors = []
+    for document in documents:
+        spec = LECTURE_BUNDLES.get(document["id"])
+        if not spec:
+            if document.get("study_href"):
+                errors.append(f"unregistered study site: {document['id']}")
+            continue
+        if document.get("study_href") != spec["href"]:
+            errors.append(f"missing lecture link: {document['id']}")
+            continue
+        root = site_dir / spec["href"]
+        expected = set(spec["files"])
+        actual = {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()}
+        if actual != expected:
+            errors.append(f"lecture output differs from allowlist: {document['id']}")
+        hashes = document.get("study_assets", {})
+        if set(hashes) != expected:
+            errors.append(f"lecture asset hashes differ from allowlist: {document['id']}")
+        for name in actual & expected:
+            if hashlib.sha256((root / name).read_bytes()).hexdigest() != hashes.get(name):
+                errors.append(f"lecture asset checksum mismatch: {name}")
+        if (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
+            errors.append(f"lecture PDF differs from archive: {document['id']}")
+    return errors
 
 
 def validate_archive(site_dir: Path) -> list[str]:
@@ -156,6 +280,7 @@ def validate_archive(site_dir: Path) -> list[str]:
     if not manifest_path.exists():
         return ["missing public archive manifest"]
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    errors.extend(validate_lecture_bundles(site_dir, manifest["documents"]))
     expected_files = {"index.html", "en/index.html"}
     for doc in manifest["documents"]:
         path = site_dir / doc["href"]
@@ -227,7 +352,7 @@ ARCHIVE_CSS = '''
 .document-summary { color:var(--muted); font-size:14px; margin:0 0 18px; word-break:keep-all; overflow-wrap:anywhere; }
 .document-card .tags { margin-top:auto; margin-bottom:22px; }
 .document-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:17px; border-top:1px solid #edf0eb; font-size:12px; color:var(--muted); }
-.document-footer > div { display:flex; gap:18px; }
+.document-footer > div { display:flex; gap:18px; flex-wrap:wrap; }
 .document-footer a { font-weight:700; color:var(--ink); text-decoration:none; }
 .archive-empty { text-align:center; padding:64px 24px; border:1px dashed var(--line); border-radius:12px; background:white; }
 .archive-empty h2 { font-size:21px; margin:0 0 12px; }

@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "kind": "deterministic teaching figures",
+  "date": "2026-10-20",
+  "not_device_data": true,
+  "python_packages": {
+    "numpy": "2.3.5",
+    "matplotlib": "3.10.7"
+  },
+  "figures": [
+    {
+      "file": "shot-error.svg",
+      "lecture": 2,
+      "source": "Var(mean)=(1-f^2)/S for independent +/-1 outcomes",
+      "f": 0.5,
+      "shots_range": [
+        16,
+        1000000
+      ]
+    },
+    {
+      "file": "gradient-variance.svg",
+      "lecture": 9,
+      "source": "Independent uniform Ry angles and global versus local projector costs; derived in lecture 9",
+      "n_range": [
+        1,
+        40
+      ]
+    },
+    {
+      "file": "signal-attenuation.svg",
+      "lecture": 18,
+      "source": "D_p(rho)=(1-p)rho+pI/2 on each qubit; Pauli weight w; inverse correction variance-bound factor",
+      "p": 0.01,
+      "weight_range": [
+        0,
+        100
+      ]
+    }
+  ]
+}

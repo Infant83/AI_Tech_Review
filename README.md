@@ -14,6 +14,8 @@
 
 PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실행하면 기존 리뷰 파일을 다시 생성하지 않고 허브와 아카이브만 갱신한다. 기존 허브에 공개 조회수·분석 설정이 있으면 새 컴퓨터에서도 이를 보존하며, 명시한 환경변수가 있으면 그 설정을 우선한다. `site/manifest.json`은 심층 리뷰 목록, `site/archive-manifest.json`은 문서 목록이다.
 
+2026-10-20에는 CMU 17-620 공개 실라버스에서 출발한 [퀀텀 머신러닝 독립 렉처 시리즈](2026-10-20_quantum-machine-learning-lecture-series/README.md)를 작성했다. [테크리뷰의 렉처 노트 항목](https://infant83.github.io/AI_Tech_Review/archive/?series=lecture-notes)에서 [웹 학습 노트](https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/)와 PDF를 읽을 수 있다. 147쪽 2.0판은 80분 한국어 강의 18개·문제와 완전 풀이 72개·수학 준비편·한영 용어 144항목·14주 자율학습 안내·실행 실습 5개·프로젝트 3개를 제공한다. 원강의 녹취나 공식 교재가 아니며, 2025–2026 연구의 가정과 실제 QPU·고전 모사·논리 자원 추정의 범위를 구분한다.
+
 ## 기본 흐름
 
 새 리뷰의 표지는 [과학 표지 제작 원칙](COVER_ART_DIRECTION.md)에 따라 기획하고 [표지 기획 양식](templates/cover-art-brief.md)을 주제 폴더에 남긴다. 과학 분야·표현 유형·매체를 구분하고, 의미를 보존하는 관계·기사 고유성·최근 표지와의 다양성·작은 화면에서의 판독을 함께 확인한다.

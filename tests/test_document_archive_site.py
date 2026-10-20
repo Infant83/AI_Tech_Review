@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts import publish_public_site as publisher
+from scripts import document_archive_site as archive_site
 from scripts.document_archive_site import publish_archive, validate_archive
 
 
@@ -25,10 +26,16 @@ class LinkParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.links: list[dict[str, str | None]] = []
+        self.metadata: dict[str, str | None] = {}
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         if tag in {"a", "link"}:
             self.links.append(dict(attrs))
+        elif tag == "meta":
+            values = dict(attrs)
+            key = values.get("property") or values.get("name")
+            if key:
+                self.metadata[key] = values.get("content")
 
 
 def archive_document(document_id: str = "2026-10-16-quantum-review") -> dict:
@@ -194,6 +201,172 @@ class DocumentArchiveSiteTests(unittest.TestCase):
 
         after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
         self.assertEqual(after, before)
+
+    def lecture_fixture(self) -> tuple[dict, dict, Path]:
+        document = archive_document("2026-10-20-quantum-machine-learning-lecture-notes-ko")
+        document.update(series="lecture-notes", title="양자 머신러닝 자율학습", title_en="Quantum machine learning self-study")
+        source = self.root / "src" / "dist"
+        (source / "labs").mkdir(parents=True)
+        (source / "index.html").write_text(
+            '<!doctype html><html lang="ko"><head><meta charset="utf-8">'
+            '<title>양자 머신러닝 자율학습</title><link rel="stylesheet" href="notes.css">'
+            '</head><body><aside class="sidebar"><div class="brand">QUANTUM MACHINE LEARNING</div>'
+            '<h2>양자 머신러닝 자율학습</h2></aside><main class="workspace"><h1>양자 머신러닝 자율학습</h1>'
+            '<a href="notes.pdf">통합 PDF</a><a href="labs/demo.py">실습 코드</a>'
+            '</main></body></html>',
+            encoding="utf-8",
+        )
+        (source / "notes.css").write_text("main { max-width: 70ch; }\n", encoding="utf-8")
+        (source / "notes.pdf").write_bytes(PDF_BYTES)
+        (source / "labs/demo.py").write_text('print("educational lab")\n', encoding="utf-8")
+        bundle = {
+            document["id"]: {
+                "source": str(source),
+                "href": "lectures/quantum-machine-learning/",
+                "files": ("index.html", "notes.css", "notes.pdf", "labs/demo.py"),
+            }
+        }
+        return document, bundle, source
+
+    def test_lecture_publication_copies_reviewed_allowlist_and_adds_public_navigation(self) -> None:
+        document, bundles, source = self.lecture_fixture()
+        self.registry([document])
+        (source / "private-intake.json").write_text('{"private": "intake"}', encoding="utf-8")
+        (source / "labs/private.env").write_text("PRIVATE_EXAMPLE=do-not-publish\n", encoding="utf-8")
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            published = self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+
+        lecture_dir = self.site / "lectures/quantum-machine-learning"
+        self.assertEqual(
+            {path.relative_to(lecture_dir).as_posix() for path in lecture_dir.rglob("*") if path.is_file()},
+            set(bundles[document["id"]]["files"]),
+        )
+        self.assertEqual((lecture_dir / "notes.pdf").read_bytes(), PDF_BYTES)
+        self.assertEqual((lecture_dir / "labs/demo.py").read_bytes(), (source / "labs/demo.py").read_bytes())
+        self.assertEqual(published[0]["study_href"], "lectures/quantum-machine-learning/")
+        self.assertEqual(set(published[0]["study_assets"]), set(bundles[document["id"]]["files"]))
+        for relative, digest in published[0]["study_assets"].items():
+            self.assertEqual(hashlib.sha256((lecture_dir / relative).read_bytes()).hexdigest(), digest)
+        serialized = (self.site / "archive-manifest.json").read_text(encoding="utf-8")
+        self.assertNotIn(str(self.root), serialized)
+        self.assertNotIn('"source":', serialized)
+        self.assertNotIn("private-intake", serialized)
+
+        study_page = (lecture_dir / "index.html").read_text(encoding="utf-8")
+        links = LinkParser()
+        links.feed(study_page)
+        canonical = [link["href"] for link in links.links if link.get("rel") == "canonical"]
+        self.assertEqual(canonical, [BASE_URL + "lectures/quantum-machine-learning/"])
+        self.assertEqual(links.metadata.get("og:url"), canonical[0])
+        self.assertEqual(links.metadata.get("og:title"), document["title"])
+        self.assertIn(links.metadata.get("og:type"), {"article", "website"})
+        return_links = [link for link in links.links if str(link.get("href", "")).rstrip("/") in {
+            BASE_URL.rstrip("/"), "../..", "../../index.html", "../../archive/?series=lecture-notes"
+        }]
+        self.assertTrue(return_links, "Lecture page needs a link back to the Tech Review hub or lecture catalog")
+
+        for relative, study_href, study_label in (
+            ("index.html", "../lectures/quantum-machine-learning/", "강의 노트 읽기"),
+            ("en/index.html", "../../lectures/quantum-machine-learning/", "Korean study notes"),
+        ):
+            with self.subTest(catalog=relative):
+                page_path = self.site / "archive" / relative
+                page = page_path.read_text(encoding="utf-8")
+                parser = LinkParser()
+                parser.feed(page)
+                study_links = [link for link in parser.links if link.get("href") == study_href]
+                self.assertEqual(len(study_links), 2, "Title and explicit study action should open the HTML notes")
+                self.assertTrue((page_path.parent / study_href / "index.html").resolve().is_file())
+                self.assertIn(study_label, page)
+                pdf_links = [link for link in parser.links if str(link.get("href", "")).endswith(".pdf")]
+                self.assertEqual(len(pdf_links), 2, "PDF open and download should remain available")
+                self.assertEqual(sum("download" in link for link in pdf_links), 1)
+
+    def test_unregistered_lecture_bundle_is_not_published_or_required(self) -> None:
+        document, bundles, source = self.lecture_fixture()
+        self.registry([archive_document()])
+        bundles[document["id"]]["source"] = str(source / "not-present")
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            published = self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+
+        self.assertTrue(all("study_href" not in document for document in published))
+        self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
+
+    def test_lecture_pdf_mismatch_rejects_build_without_replacing_published_archive(self) -> None:
+        self.registry([archive_document()])
+        self.publish()
+        before = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
+        document, bundles, source = self.lecture_fixture()
+        self.registry([document])
+        (source / "notes.pdf").write_bytes(PDF_BYTES + b"\n%different edition\n")
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            with self.assertRaisesRegex(ValueError, "(?i)pdf|mismatch|differ"):
+                self.publish()
+
+        after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
+        self.assertEqual(after, before)
+
+    def test_lecture_validator_rejects_extra_output_and_pdf_tampering(self) -> None:
+        document, bundles, _source = self.lecture_fixture()
+        self.registry([document])
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+            lecture_dir = self.site / "lectures/quantum-machine-learning"
+            extra = lecture_dir / "private-support.txt"
+            extra.write_text("not approved for publication", encoding="utf-8")
+            errors = validate_archive(self.site)
+            self.assertTrue(errors, "Unlisted lecture output must fail validation")
+            self.assertTrue(any("private-support.txt" in error or "allowlist" in error for error in errors), errors)
+            extra.unlink()
+            (lecture_dir / "notes.pdf").write_bytes(PDF_BYTES.replace(b"Catalog", b"Corrupt"))
+            errors = validate_archive(self.site)
+            self.assertTrue(any("pdf" in error.lower() or "checksum" in error.lower() or "mismatch" in error.lower() for error in errors), errors)
+
+    def test_lecture_asset_hashes_detect_same_size_script_corruption(self) -> None:
+        document, bundles, _source = self.lecture_fixture()
+        self.registry([document])
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+            script = self.site / "lectures/quantum-machine-learning/labs/demo.py"
+            script.write_bytes(script.read_bytes().replace(b"educational", b"unreviewed!"))
+
+            errors = validate_archive(self.site)
+
+        self.assertTrue(errors, "Same-size changes to a downloadable lab must fail validation")
+        self.assertTrue(any("demo.py" in error for error in errors), errors)
+
+    def test_missing_approved_lecture_file_rejects_publication(self) -> None:
+        document, bundles, source = self.lecture_fixture()
+        self.registry([document])
+        (source / "labs/demo.py").unlink()
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            with self.assertRaisesRegex(ValueError, "(?i)missing|unavailable|demo.py|not.*file"):
+                self.publish()
+
+        self.assertFalse((self.site / "archive").exists())
+        self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
+
+    def test_symlink_in_approved_lecture_files_is_rejected(self) -> None:
+        document, bundles, source = self.lecture_fixture()
+        self.registry([document])
+        outside = self.root / "private-code.py"
+        outside.write_text('print("private source")\n', encoding="utf-8")
+        target = source / "labs/demo.py"
+        target.unlink()
+        target.symlink_to(outside)
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            with self.assertRaisesRegex(ValueError, "(?i)symlink|linked"):
+                self.publish()
+
+        self.assertFalse((self.site / "archive").exists())
+        self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
 
     def published_index(self) -> str:
         return (

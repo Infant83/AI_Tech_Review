@@ -2826,6 +2826,7 @@ def render_index(
       <nav class="hub-nav" aria-label="허브 메뉴">
         <a href="./" aria-current="page">리뷰허브</a>
         <a href="archive/">문서 아카이브 <span>{len(documents)}</span></a>
+        <a href="archive/?series=lecture-notes">렉처 노트 <span>{sum(doc['series'] == 'lecture-notes' for doc in documents)}</span></a>
       </nav>
       <section class="hero">
         <p class="eyebrow">Public report hub · {updated}</p>
@@ -4266,6 +4267,20 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
             errors.extend(validate_public_support_files((SITE_DIR / href).parent))
     errors.extend(validate_methods_page(sparse_tracked_paths))
     errors.extend(validate_archive(SITE_DIR))
+    archive_manifest = SITE_DIR / "archive-manifest.json"
+    if archive_manifest.exists():
+        for doc in json.loads(archive_manifest.read_text(encoding="utf-8"))["documents"]:
+            if not doc.get("study_href"):
+                continue
+            study_root = SITE_DIR / doc["study_href"]
+            study_index = study_root / "index.html"
+            if study_index.exists():
+                text = study_index.read_text(encoding="utf-8")
+                errors.extend(validate_local_references(study_index, text, sparse_tracked_paths))
+            for name in doc.get("study_assets", {}):
+                path = study_root / name
+                if path.is_file() and path.suffix in {".html", ".css", ".svg", ".json", ".py", ".txt"}:
+                    errors.extend(f"{risk} left in lecture asset {name}" for risk in public_text_risks(path.read_text(encoding="utf-8")))
     for archive_page in (SITE_DIR / "archive/index.html", SITE_DIR / "archive/en/index.html"):
         if archive_page.exists():
             archive_text = archive_page.read_text(encoding="utf-8")
