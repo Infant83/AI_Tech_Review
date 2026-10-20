@@ -1,6 +1,7 @@
 ---
 title: AI_Tech_Review Editorial Reference Pool
 date: 2026-05-09
+updated: 2026-10-20
 status: active
 scope:
   - reports/*_final_review.md
@@ -15,6 +16,8 @@ tags:
 # AI_Tech_Review Editorial Reference Pool
 
 이 문서는 `AI_Tech_Review` 리뷰의 글쓰기와 시각 자료를 점검할 때 참고할 외부 편집 스타일 풀입니다. 특정 매체를 모방하기 위한 문서가 아닙니다. 좋은 과학·기술 글쓰기의 공통 원칙을 AI 기술 리뷰에 맞게 빌려오기 위한 기준입니다.
+
+표지 제작에는 [과학 표지 제작 원칙](../COVER_ART_DIRECTION.md)과 [기획 양식](../templates/cover-art-brief.md)을 적용합니다. 이 문서의 참고 매체는 발상의 재료이며, 과학 분야·표현 유형·매체 선택과 검수 기준은 해당 가이드에서 관리합니다. HORIZON·Quanta의 개별 표지 사례와 제작 설명의 해석 범위도 그곳에 기록합니다.
 
 ## 등록 레퍼런스
 

@@ -1,6 +1,7 @@
 ---
 title: Editorial Graphics Audit Harness
 date: 2026-05-09
+updated: 2026-10-20
 status: active
 scope:
   - AI_Tech_Review final reviews
@@ -18,6 +19,12 @@ AI_Tech_Review의 최종 리뷰는 글과 그림이 따로 놀면 안 됩니다.
 목표는 Quanta Magazine류의 과학 기사처럼 세련되지만, 한국어 기술 리뷰에 맞게 더 빠르게 주제를 보여주는 구성입니다. 독자는 바쁜 동료, 기술 리더, 실무 담당자입니다. 그림은 예쁘기만 하면 부족하고, “아, 이 글은 이 이야기를 하려는 거구나”라는 감을 줘야 합니다.
 
 기본 참고 사이트는 [editorial-reference-pool](./editorial-reference-pool.md)에 등록합니다. 현재 기준은 [Quanta Magazine](https://www.quantamagazine.org/), [고등과학원 HORIZON](https://horizon.kias.re.kr/), [최종현학술원 Science Note 과학노트](https://www.chey.org/Kor/ScienceNote/ScienceNoteList.aspx)입니다.
+
+## 과학 표지 제작 기준
+
+표지를 새로 만들거나 개편할 때는 [과학 표지 제작 원칙](../COVER_ART_DIRECTION.md)을 읽고 [기획 양식](../templates/cover-art-brief.md)을 주제 폴더의 `cover-art-brief.md`로 남깁니다. 과학 분야·표현 유형·매체를 따로 선택하고, 핵심 사건·보존할 관계·시각 요소의 뜻과 오독 위험을 정한 뒤 서로 다른 세 발상을 비교합니다. 고해상도 이미지 세 장을 생성할 필요는 없습니다.
+
+표지의 과학적 대응과 최근 작품의 다양성, 실제 카드 크롭·320×180 썸네일·모바일·흑백 판독을 확인합니다. 생성·편집 프롬프트 전문과 출처·캡션·실제 검토 결과를 기록합니다. 표지와 정확한 본문 도식의 역할을 구분하며, 도구 선택은 [편집 정책](../EDITORIAL_POLICY.md)과 현재 작업 환경의 사용 가능한 도구를 따릅니다. 아래의 매체·도구별 사례가 이 과학적 정확성 기준을 대신하지 않습니다.
 
 ## 역할 분리
 
