@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>104큐비트 프로토콜의 고전 모사: JUPITER로 시험한 매직상태 배양</title><meta name="description" content="좋은 양자계산을 만들기 위해 거대한 고전계산이 필요한 이유 - 매직상태, 결맞는 오차와 누설, 45비트 상태 레지스터의 의미"><meta name="author" content="김현중">
+<meta property="og:description" content="좋은 양자계산을 만들기 위해 거대한 고전계산이 필요한 이유 - 매직상태, 결맞는 오차와 누설, 45비트 상태 레지스터의 의미"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/hero.webp"><link rel="stylesheet" href="review.css">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/">
+    <meta property="og:title" content="104큐비트 프로토콜의 고전 모사: JUPITER로 시험한 매직상태 배양">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review">
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review_ko.pdf">PDF ↓</a></div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-10-20 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.20</span><span>양자 컴퓨팅 · HPC · 오류 허용</span></div><article><h1>104큐비트 프로토콜의 고전 모사: JUPITER로 시험한 매직상태 배양</h1>
+<p class="dek">좋은 양자계산을 만들기 위해 거대한 고전계산이 필요한 이유 - 매직상태, 결맞는 오차와 누설, 45비트 상태 레지스터의 의미</p>
+
+<p class="kicker">TECH REVIEW · 2026년 10월 20일 · 양자 오류정정과 고성능 컴퓨팅</p>
+<figure class="hero"><img src="hero.webp" alt="슈퍼컴퓨터 랙 앞의 추상적인 양자 격자와 청색·구리색 위상 파동"><figcaption>고전 슈퍼컴퓨터에서 논리 양자상태의 위상 오차와 계산 부분공간 밖 누설을 시험하는 과정을 표현한 개념 일러스트. 실제 양자장치·회로 또는 계산 데이터가 아니다. AI 생성 이미지.</figcaption></figure><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">1. 양자컴퓨터를 설계하는 고전 슈퍼컴퓨터</a></li><li><a href="#section-2">2. 논리 메모리에서 계산으로: 매직상태의 역할</a></li><li><a href="#section-3">3. 이번에 계산한 프로토콜</a></li><li><a href="#section-4">4. 결맞는 위상 오차와 누설을 구별해야 하는 이유</a></li><li><a href="#section-5">5. 104개의 위치가 45비트 저장 레지스터가 되는 과정</a></li><li><a href="#section-6">6. 512 TiB가 말해 주는 것</a></li><li><a href="#section-7">7. 개선 수치는 같은 조건에서 읽어야 한다</a></li><li><a href="#section-8">8. 무엇을 확인했고, 무엇이 더 필요한가</a></li><li><a href="#section-9">9. 재료·화학 계산으로 이어지는 경로</a></li><li><a href="#section-10">참고문헌</a></li></ol></details>
+
+<h2 id="section-1">1. 양자컴퓨터를 설계하는 고전 슈퍼컴퓨터</h2>
+<p>양자 오류정정의 목표는 오류가 생기는 물리 큐비트로 신뢰할 수 있는 논리 큐비트를 만드는 것이다. 그러나 정보를 오래 보존하는 것만으로 유용한 계산이 완성되지는 않는다. 논리 게이트를 수행하고, 측정 결과에 따라 다음 동작을 바꾸며, 실패한 준비 과정을 다시 시도해야 한다. 이 과정 전체가 잡음 속에서 어떻게 작동하는지 시험하는 일도 설계의 일부다.</p>
+<p>2026년 10월 19일 NVIDIA는 율리히 슈퍼컴퓨팅 센터의 JUPITER에서 <strong>104개의 물리 큐비트 위치를 사용하는 매직상태 배양 프로토콜</strong>을 모사했다고 발표했다. 사용한 계산 자원은 GH200 GPU 8,192개다. 이것은 실제 양자 프로세서에서 실행한 104큐비트 실험이 아니라, 양자 프로토콜을 고전 GPU로 계산한 결과다. [1,2]</p>
+<p>성과를 이해하는 핵심은 두 가지다. 첫째, 왜 매직상태라는 자원이 오류 허용 계산의 병목이 되는가. 둘째, 104개의 위치가 등장하는 회로를 어떻게 최대 45비트의 부호화된 상태 레지스터로 계산했는가. 두 번째 질문의 답에는 측정 이후의 저장공간 재사용과 3준위 상태의 묶음 부호화가 들어간다. 임의의 104큐비트 상태를 작은 상태로 압축했다는 뜻은 아니다.</p>
+<h2 id="section-2">2. 논리 메모리에서 계산으로: 매직상태의 역할</h2>
+<p>Clifford 게이트는 Pauli 연산자를 다른 Pauli 연산자로 바꾸는 게이트다. 오류정정의 많은 연산을 이 틀에서 다룰 수 있다. 안정자 상태 입력, Clifford 게이트와 Pauli 측정으로 제한하고 적합한 Pauli 잡음을 사용하면, 거대한 상태벡터를 저장하지 않는 효율적인 안정자 모사가 가능하다. [3]</p>
+<p>범용 양자계산에는 이 틀을 넘어서는 자원이 필요하다. 대표적인 예가 T 게이트다. 여기서는 다음 표준 관례를 쓴다.</p>
+<div class="math-block"><img src="math_5f4c5b8c506861.svg" alt="T=\operatorname{diag}(1,e^{i\pi/4}),\qquad
+|T\rangle=T|+\rangle=
+\frac{|0\rangle+e^{i\pi/4}|1\rangle}{\sqrt{2}}." style="width:50.468ex;height:auto"></div>
+<p>이런 비안정자 자원을 적절히 준비하면 Clifford 연산·측정·피드포워드와 결합하여 논리 T 연산을 구현할 수 있다. 매직상태는 이 과정에서 소비되는 자원이다. 모든 비Clifford 회로가 반드시 어려운 것은 아니지만, 단순한 안정자 모사만으로 일반적인 계산을 처리할 수는 없어진다. [3]</p>
+<p>많은 부정확한 상태를 함께 처리하는 전통적인 증류와 달리, 매직상태 <strong>배양(cultivation)</strong>은 작은 부호에서 상태를 준비하고 반복 검사하며 더 큰 부호로 옮기는 접근이다. 검사에서 문제가 드러나면 그 시도를 버리고 다시 시작한다. Gidney·Shutty·Jones의 원 연구는 지정한 회로 수준 잡음 모형에서 이러한 절차의 비용 절감을 분석했다. [4]</p>
+<p>따라서 성공한 상태의 충실도만으로 공장의 성능을 평가할 수 없다. 독립적이고 동일한 시도의 수락 확률이 <img class="math-inline" src="math_b4de6de21ccef1.svg" alt="A" style="width:1.697ex;height:1.62ex;vertical-align:0">, 한 시도의 고정 비용이 <img class="math-inline" src="math_9882396e197ef0.svg" alt="C_{\rm trial}" style="width:4.744ex;height:1.952ex;vertical-align:-0.357ex">이라면 단순한 평균 비용은 다음과 같다.</p>
+<div class="math-block"><img src="math_4aec927b38eacb.svg" alt="\mathbb{E}[N_{\rm attempts}]=\frac1A,\qquad
+C_{\rm accepted}=\frac{C_{\rm trial}}A." style="width:39.475ex;height:auto"></div>
+<p>이는 설명용 관계다. 실제 장치에서는 조기 중단, 병렬 준비, 재설정과 버퍼 대기 때문에 비용 모형이 달라진다. 핵심은 <strong>낮은 출력 오류율과 높은 수락률을 함께 확보해야 한다</strong>는 점이다.</p>
+<h2 id="section-3">3. 이번에 계산한 프로토콜</h2>
+<p>기술 자료가 설명하는 흐름은 거리 3 색 부호의 준비, 추가 flag 측정, 거리 7의 색 부호·표면 부호 혼합 구조로의 성장, 추가 오류정정과 판독이다. Flag는 어떤 오류 전파 경로가 발생했는지 알려 주는 보조 측정이다. 104는 프로토콜 순서 전체에 사용되는 데이터·보조 물리 위치를 포함한다. [1]</p>
+<figure><img class="figure-desktop" src="cultivation_flow_ko.svg" alt="거리 3 색 부호에서 flag 검사 후 거리 7 혼합 부호로 성장하고 오류정정·판독하는 단계"><img class="figure-mobile" src="cultivation_flow_mobile_ko.svg" alt="거리 3 색 부호에서 flag 검사 후 거리 7 혼합 부호로 성장하고 오류정정·판독하는 단계"><figcaption>공개 기술 설명을 바탕으로 직접 그린 절차 개념도. 정확한 게이트별 회로를 복제한 그림이 아니다. 후선택에는 폐기·재시도 비용이 따른다. 완성된 자원의 후속 논리 T 연산 사용은 일반적인 응용 맥락이며, 이번 발표가 실행한 응용 알고리즘이 아니다. [1,4]</figcaption></figure>
+
+<p>여기서 부호 거리는 검출하거나 교정할 수 있는 오류의 구조를 설명하는 중요한 지표다. 하지만 회로 도중의 오류 전파, 비Clifford 연산과 측정까지 포함한 실제 오류 억제 차수가 정적 부호 거리와 자동으로 같아지는 것은 아니다. 추가 flag 연구가 필요한 이유가 여기에 있다. [5]</p>
+<h2 id="section-4">4. 결맞는 위상 오차와 누설을 구별해야 하는 이유</h2>
+<p>실제 하드웨어의 잡음을 항상 독립적인 Pauli 오류로 바꿔 생각할 수는 없다. 예를 들어 작은 위상 회전이 같은 방향으로 반복되면 진폭의 위상이 누적된다. 반면 확률적 Z 오류에서는 짝수 번과 홀수 번의 오류가 만드는 통계가 중요하다.</p>
+<p>이를 보기 위해 <img class="math-inline" src="math_9d9aeeb16ecd45.svg" alt="|+\rangle" style="width:3.269ex;height:2.262ex;vertical-align:-0.566ex"> 상태에 <img class="math-inline" src="math_5c649a48c1d2b4.svg" alt="R_z(\theta)=e^{-i\theta Z/2}" style="width:15.033ex;height:2.587ex;vertical-align:-0.566ex">를 <img class="math-inline" src="math_640a535e9ee5fc.svg" alt="r" style="width:1.02ex;height:1.025ex;vertical-align:-0.025ex">번 적용하고 X 기저에서 측정하는 <strong>단일 큐비트 교육용 예</strong>를 생각하자. 중간 오류정정은 없다. 한 번의 X 측정 오류 확률이 같도록 확률적 Z 오류의 확률을 <img class="math-inline" src="math_89e774859ee3ea.svg" alt="p=\sin^2(\theta/2)" style="width:13.005ex;height:2.527ex;vertical-align:-0.566ex">로 맞추면,</p>
+<div class="math-block"><img src="math_409c3810818f01.svg" alt="P_{-}^{\rm coherent}=\sin^2\!\left(\frac{r\theta}{2}\right),\qquad
+P_{-}^{\rm stochastic}=\frac{1-(1-2p)^r}{2}." style="width:52.938ex;height:auto"></div>
+<p><img class="math-inline" src="math_29972a6080c817.svg" alt="\theta=0.01" style="width:8.101ex;height:1.781ex;vertical-align:-0.186ex"> 라디안, <img class="math-inline" src="math_459e2a3550e081.svg" alt="r=20" style="width:6.3ex;height:1.692ex;vertical-align:-0.186ex">이면 각각 약 <strong>0.997%와 0.0500%</strong>다. 같은 한 단계 오류 확률에서 출발해도 반복 결과가 달라진다. 이 수치는 위 식을 직접 계산한 예이며 JUPITER 프로토콜의 오류율 예측이 아니다.</p>
+<p>누설은 또 다른 문제다. 물리 소자가 두 계산 준위 밖의 세 번째 준위에 들어가면 추가 성분이 필요하다. 순수 상태의 예로 다음처럼 쓸 수 있다.</p>
+<div class="math-block"><img src="math_3d63ea213b3ccd.svg" alt="|\psi\rangle=a|0\rangle+b|1\rangle+c|2\rangle,
+\qquad |a|^2+|b|^2+|c|^2=1." style="width:48.322ex;height:auto"></div>
+<p>계산 부분공간에 남아 있을 확률은 <img class="math-inline" src="math_a2a71777e83554.svg" alt="1-|c|^2" style="width:7.122ex;height:2.451ex;vertical-align:-0.564ex">다. 계산 공간 안에서 작용하는 Z 오류와 달리, 누설은 게이트와 측정의 해석 자체를 바꿀 수 있다. 이번 기술 설명은 선택한 물리 위치에 결맞는 위상 오차와 세 번째 준위 누설을 포함한다고 밝힌다. 구체적인 잡음 강도는 공개하지 않는다. [1]</p>
+<figure><img class="figure-desktop" src="noise_channels_ko.svg" alt="두 계산 준위 안의 위상 변화와 세 번째 준위로 이동하는 누설의 차이"><img class="figure-mobile" src="noise_channels_mobile_ko.svg" alt="두 계산 준위 안의 위상 변화와 세 번째 준위로 이동하는 누설의 차이"><figcaption>위상 오차와 누설의 차이를 설명하는 교육용 도식. 화살표와 준위 간 결합은 일반적인 예이며 이번 계산의 실제 잡음 채널·발생률·측정 데이터가 아니다.</figcaption></figure>
+
+<h2 id="section-5">5. 104개의 위치가 45비트 저장 레지스터가 되는 과정</h2>
+<p>임의의 순수 n큐비트 상태를 직접 저장하려면 <img class="math-inline" src="math_950b75a0197509.svg" alt="2^n" style="width:2.279ex;height:1.528ex;vertical-align:0">개의 복소 진폭이 필요하다. 따라서 104개 큐비트가 모두 살아 있는 임의의 얽힌 상태를 그대로 유지한다면, 45비트 상태벡터로 담을 수 없다.</p>
+<p>이번 계산은 프로토콜의 시간 구조를 이용한다. 어떤 보조 상태를 측정하고 더 이상 양자 상태로 유지할 필요가 없어지면 저장공간을 해제하고 이후 단계에서 재사용한다. 측정 결과가 제어하는 고전적 의존성과 확률 통계는 보존해야 한다. 여전히 필요한 얽힘을 임의로 버리는 작업과 다르다. 연산 순서를 바꾸어 동시에 살아 있어야 하는 상태의 수를 줄이는 것이다. [1]</p>
+<p>여기에 qutrit packing이 더해진다. 두 준위 대신 세 준위를 표현하는 qutrit 다섯 개의 기저 상태 수는 <img class="math-inline" src="math_e620f62a94e96b.svg" alt="3^5=243" style="width:8.53ex;height:2.072ex;vertical-align:-0.186ex">이다. 각 qutrit를 2비트씩 따로 배정하면 10비트가 필요하지만, 다섯 개를 묶으면 8비트의 256칸에 정확히 대응시킬 수 있다.</p>
+<div class="math-block"><img src="math_06a3f1cc9da4f1.svg" alt="j=\sum_{k=0}^{4}3^k\ell_k,\quad \ell_k\in\{0,1,2\},
+\qquad 0\le j\le242,\quad
+\lceil\log_2 243\rceil=8." style="width:62.105ex;height:auto"></div>
+<p>남는 13칸은 부호화의 패딩이다. 물리적인 새 준위가 아니며, 이 매핑 자체가 유효한 진폭을 잘라내는 것도 아니다. 다만 전체 프로토콜의 104→45 감소를 이 예 하나로 설명할 수는 없다. 공개 자료는 최대 부호화 레지스터가 45비트라고 제시하지만, 그 순간의 이준위·삼준위 자유도별 상세 구성은 밝히지 않는다. [1]</p>
+<figure><img class="figure-desktop" src="memory_register_ko.svg" alt="104개 물리 위치, 측정 후 저장공간 재사용, 45비트 부호화 레지스터와 512 TiB 메모리를 연결하는 설명도"><img class="figure-mobile" src="memory_register_mobile_ko.svg" alt="104개 물리 위치, 측정 후 저장공간 재사용, 45비트 부호화 레지스터와 512 TiB 메모리를 연결하는 설명도"><figcaption>물리 위치 수와 동시 저장 레지스터의 차이를 보여 주는 원본 설명 그림. 메모리 수치는 complex128 상태벡터의 직접 계산이며 실제 전체 작업 메모리나 실행시간의 측정값이 아니다. 5 qutrit→8비트는 공개된 부호화 예다. [1]</figcaption></figure>
+
+<h2 id="section-6">6. 512 TiB가 말해 주는 것</h2>
+<p>복소수 하나를 16바이트로 저장하는 complex128 관례에서 상태벡터의 메모리는 <img class="math-inline" src="math_392149cf3b3344.svg" alt="M(n)=16\times2^n" style="width:15.82ex;height:2.262ex;vertical-align:-0.566ex">바이트다. 아래 수치는 이 식을 직접 계산한 것이다. TiB와 PiB는 각각 <img class="math-inline" src="math_3a290d99fe1c13.svg" alt="2^{40}" style="width:2.919ex;height:1.904ex;vertical-align:0">, <img class="math-inline" src="math_92f482d546bbed.svg" alt="2^{50}" style="width:2.919ex;height:1.887ex;vertical-align:0">바이트다.</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>부호화 레지스터</th>
+<th align="right">상태벡터만의 메모리</th>
+<th>해석</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>40비트</td>
+<td align="right">16 TiB</td>
+<td>45비트의 1/32</td>
+</tr>
+<tr>
+<td>45비트</td>
+<td align="right">512 TiB</td>
+<td>공개된 최대 레지스터</td>
+</tr>
+<tr>
+<td>46비트</td>
+<td align="right">1 PiB</td>
+<td>한 비트 추가로 두 배</td>
+</tr>
+<tr>
+<td>50비트</td>
+<td align="right">16 PiB</td>
+<td>45비트의 32배</td>
+</tr>
+</tbody></table></div>
+<p>45비트에서는 <img class="math-inline" src="math_642549450d89a1.svg" alt="2^{45}" style="width:2.919ex;height:1.904ex;vertical-align:0">, 약 35.2조 개 진폭을 저장한다. 512 TiB를 GPU 8,192개에 균등하게 나누면 GPU당 <strong>64 GiB</strong>다. 이것은 상태벡터만의 산술값이며 통신 버퍼·작업공간·분해 분석용 메모리를 포함하지 않는다. 큰 분산 계산의 성능에는 메모리 외에도 GPU 사이의 진폭 교환, 연산 배치와 네트워크가 영향을 준다. 메모리 크기만으로 실행시간이나 에너지 비용을 계산할 수는 없다.</p>
+<p>기술 자료는 선택한 상태 분할에 cuBLASMp·cuSOLVERMp 기반 분해 분석을 적용해 더 간결한 근사 표현의 가능성을 살폈다고 설명한다. <strong>기준 모사는 원래 상태에서 계속 진행했다.</strong> 분해 분석을 했다는 사실을 전체 기준 계산이 잘린 텐서 표현으로 실행됐다는 뜻으로 바꾸어서는 안 된다. [1,6]</p>
+<h2 id="section-7">7. 개선 수치는 같은 조건에서 읽어야 한다</h2>
+<p>관련 자료에는 성격이 다른 숫자들이 함께 등장한다. 원 배양 연구의 비용 개선은 지정한 잡음과 목표 충실도 아래의 <strong>qubit-rounds</strong>, 즉 공간과 시간을 함께 세는 자원량 비교다. NVIDIA 발표의 “90% 적은 큐비트”는 회사가 제시한 요약 주장이다. 동일한 목표 오류율·처리량·재시도 비용을 맞춘 비교표가 이번 발표에 제시되지는 않았으므로, 모든 오류 허용 계산에 적용되는 물리 큐비트 90% 감소로 일반화할 수 없다. [2,4]</p>
+<p>Chan 등은 별도의 사전공개 연구에서 비Clifford 배양 회로의 오류 전파를 분석하고 추가 flag 검사를 제안했다. 그 연구의 회로 수준 depolarizing 모형에서, 거리 5의 escape 이전 단계와 잡음 확률 <img class="math-inline" src="math_ea984582022612.svg" alt="p=10^{-3}" style="width:8.65ex;height:2.392ex;vertical-align:-0.439ex">에서 보고한 예는 논리 오류 4.9배 감소와 수락 상태당 시도 횟수 1.36배 증가다. 더 강한 검사가 출력 품질과 수락 비용을 함께 바꾼다는 사례다. <strong>이 수치는 JUPITER의 결맞는 오차·누설 모사에서 얻은 측정값이 아니다.</strong> [5]</p>
+<p>실제 장치 실험도 별도로 존재한다. Google의 Willow 배양 실험은 배양하지 않은 상태 대비 40배 오류 감소, 충실도 0.9999(1)를 보고했으며 전체 시도 중 8%가 유지되는 후선택 조건을 함께 제시했다. 이는 물리 프로세서의 실험 근거이고, JUPITER 고전 모사의 성능 지표와 직접 순위를 매길 수 없다. [7]</p>
+<h2 id="section-8">8. 무엇을 확인했고, 무엇이 더 필요한가</h2>
+<p>공개 기술 글의 약 <img class="math-inline" src="math_b1bd4bf2aeb300.svg" alt="10^{-13}" style="width:5.295ex;height:2.005ex;vertical-align:-0.05ex"> 확률 일치는 NVAQC에서 수행한 <strong>작은 packed 회로의 상태벡터·텐서 네트워크 교차검증</strong>에 해당한다. 전체 104 위치 프로토콜의 논리 오류율이나 모든 출력의 정확도 보증이 아니다. 전체 실행의 시간·GPU 시간·샷 또는 trajectory 수·수락률·출력 논리 오류율·오차막대는 확인한 공개 자료에 제시되지 않았다. [1]</p>
+<p>GPU 수는 발표의 도입부와 공식 보도자료가 일치하는 8,192개를 사용했다. 기술 글 한 문단에는 8,912라는 상충 표기가 있다. 이 리뷰는 공개 설명과 수식·메모리를 대조했으며 JUPITER 실행을 재현하지 않았다. 공개된 기존 배양 연구 코드와 이번 전체 캠페인의 재현 가능한 실행 패키지도 구별한다.</p>
+<p>다음 단계에서 특히 유용한 자료는 잡음 세기별 출력 오류율과 수락률, 시도당·성공당 비용, 사용한 회로·디코더·샘플링 방법과 통계 구간이다. 그래야 작은 참조 계산으로 검증한 구현이 큰 프로토콜에서 어떤 설계 결정을 바꾸었는지 평가할 수 있다.</p>
+<h2 id="section-9">9. 재료·화학 계산으로 이어지는 경로</h2>
+<p>오류 허용 양자 화학이나 재료 시뮬레이션의 자원 추정에는 논리 큐비트 수뿐 아니라 비Clifford 연산의 수와 공급 속도가 들어간다. 매직상태 공장의 비용이 줄고 공급을 신뢰할 수 있게 되면 전체 알고리즘의 시간·공간 예산도 달라질 수 있다. 그러나 이를 연결하려면 해당 알고리즘의 T 자원 요구량, 허용 실패 확률, 공장의 수락률과 오류율, 처리량을 함께 맞춰야 한다.</p>
+<p>이번 결과는 특정 분자의 에너지를 더 정확히 계산했거나 양자 우위를 실증한 사례가 아니다. 의미 있는 연결 고리는 <strong>설계 전에 더 현실적인 잡음으로 자원 준비 절차를 시험하는 능력</strong>이다. 결맞는 오차와 누설이 어떤 검사에서 드러나는지, 어느 단계에 보조 측정을 추가하는 것이 유리한지, 충실도 개선이 재시도 비용을 얼마나 늘리는지 탐색할 수 있다. 거대한 고전 계산은 이런 선택의 참조점이 된다. 그 참조점을 실제 장치의 교정·측정·누설 제거와 대조할 때 오류 허용 계산의 공학으로 이어진다.</p>
+<p>최근 DQB 원문은 <a href="https://infant83.github.io/AI_Tech_Review/archive/files/2026-10-20-daily-quantum-brief.pdf">2026년 10월 20일 아카이브 PDF</a>에서, 다른 호는 <a href="https://infant83.github.io/AI_Tech_Review/archive/">문서 아카이브</a>에서 볼 수 있다.</p>
+<h2 id="section-10">참고문헌</h2><div class="references">
+<ol>
+<li>Holmes, Kloss, Pancotti, Svore. <a href="https://nvidia.github.io/cuda-quantum/blogs/blog/2026/10/19/jupiter-magic-state-simulation/">Advancing Fault-Tolerant Quantum Computing with GPU-Accelerated Simulation</a>. NVIDIA Quantum, 2026-10-19. 프로토콜·잡음·저장 방식·소형 교차검증에 관한 핵심 기술 설명.</li>
+<li>NVIDIA. <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Runs-Record-Simulation-of-Fault-Tolerant-Quantum-Computing-at-Jlich-Supercomputing-Centre/default.aspx">NVIDIA Runs Record Simulation of Fault-Tolerant Quantum Computing at Jülich Supercomputing Centre</a>, 2026-10-19. 장비 맥락: JSC, <a href="https://www.fz-juelich.de/en/jsc/systems/supercomputers/jupiter">JUPITER</a>.</li>
+<li>Bravyi, Kitaev. <a href="https://arxiv.org/abs/quant-ph/0403025">Universal Quantum Computation with ideal Clifford gates and noisy ancillas</a>. Physical Review A 71, 022316 (2005).</li>
+<li>Gidney, Shutty, Jones. <a href="https://arxiv.org/abs/2409.17595">Magic state cultivation: growing T states as cheap as CNOT gates</a>, 2024년 최초 공개. <a href="https://doi.org/10.5281/zenodo.13777072">원 연구의 회로·통계·코드</a>.</li>
+<li>Chan, Strikis, Sun, Cai. <a href="https://arxiv.org/abs/2609.17706">Diagnosing and Restoring the Degraded Fault Distance of Magic State Cultivation</a>, v3, 2026-09-30. 사전공개 논문; JUPITER 캠페인과 별도 연구.</li>
+<li>NVIDIA. <a href="https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/index.html">cuStateVec</a>, <a href="https://docs.nvidia.com/cuda/cublasmp/index.html">cuBLASMp</a>, <a href="https://docs.nvidia.com/cuda/cusolvermp/">cuSOLVERMp</a>. 상태벡터·분산 선형대수 소프트웨어 문서.</li>
+<li>Rosenfeld 등. <a href="https://arxiv.org/abs/2512.13908">Magic state cultivation on a superconducting quantum processor</a>. 실제 장치 실험. Google Quantum AI의 <a href="https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/">2026-10-15 공식 설명</a>과 대조.</li>
+</ol>
+</div>
+</article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-20<br>오류 허용 양자 프로토콜을 고전 초고성능 컴퓨팅으로 검증하는 방법과 한계.</footer>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>OpenAI Codex; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 1차 자료 종합·한국어와 영어 집필·과학 편집·게시 통합 및 공개 페이지 검증; jupiter_sources — 원 논문·공식 자료 조사·수치와 모형·주장 범위 대조 및 독립 원고 감수; jupiter_production — 한영 반응형 설명 그림·교육용 메모리 계산·글꼴과 수식 조판·HTML/PDF 제작 및 검증; jupiter_cover — 내장 이미지 생성·개념 표지 저장 및 시각 검토; mail_inventory — 최근 DQB 목록·첨부 파일 대조·원본 PDF 아카이브 등록</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>NVIDIA 2026-10-19 기술 글과 공식 발표·JSC 시스템 자료·원 배양 및 flag 논문·별도 Willow 장치 실험 대조; 104개 프로토콜 위치와 45비트 동시 저장 레지스터 구별·qutrit 매핑·complex128 메모리·결맞는 오차와 확률적 오차의 단일 큐비트 교육용 계산; JUPITER 실행·장치 실험 재현 없음; 한국어 정본과 전체 영어판·원본 설명 그림·전체 PDF 페이지 렌더링·공개 메타데이터·자산·아카이브 체크섬·PC 및 모바일 게시 화면 검사</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>최근 DQB 아카이브와 별도 테크리뷰 기사 편집 요청 확인; 문장 단위 사람 검토 없음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-10-20</dd></div>
+        </dl>
+        <p class="disclosure-note">고전 GPU 모사와 실제 QPU 실험을 구별했습니다. 45비트는 부호화된 동시 저장 레지스터로, 임의의 104큐비트 상태를 압축했다는 뜻이 아닙니다. 약 10^-13 확률 일치는 소형 회로의 교차검증이며 전체 실행의 논리 오류율이 아닙니다. 90% 개선 주장·원 배양의 qubit-rounds·별도 flag 연구·Willow 후선택 실험은 각 출처와 조건에 귀속했습니다. 표지는 내장 imagegen 개념 일러스트이며 설명 도표와 수치 예시는 직접 제작했습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p></section>
+</body></html>

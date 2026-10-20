@@ -1,0 +1,95 @@
+{
+  "title": "JUPITER magic-state cultivation review: original figure provenance",
+  "date": "2026-10-20",
+  "hero": {
+    "path": "artifacts/hero.webp",
+    "source_original": "artifacts/hero-original.png",
+    "dimensions": [
+      1664,
+      936
+    ],
+    "mode": "built-in image_gen tool; new image generation",
+    "generated_date": "2026-10-20",
+    "prompt": "Use case: stylized-concept\nAsset type: editorial cover illustration for a physics and technology review, wide 16:9 composition.\nPrimary request: A refined physics-journal conceptual illustration of classical supercomputing used to test logical magic-state cultivation under coherent phase errors and leakage models.\nScene/backdrop: A deep midnight-navy computational space, with restrained repeating HPC rack geometry far in the background as supporting context, abstract and unbranded.\nSubject: In the clear focused foreground, translucent paired wave/amplitude ribbons travel horizontally through layered sparse logical parity lattice structures. Their gentle phase relation is visible through elegant offset waveforms and interference-like light. One small warm-amber amplitude gently leaves a two-level plane toward a third level, a subtle visual metaphor for leakage, without labels or literal counted levels.\nStyle/medium: High-quality sophisticated scientific editorial illustration, polished dimensional rendering with precise sparse linework, restrained luminous surfaces and elegant spatial depth.\nComposition/framing: Broad horizontal 16:9 frame, coherent foreground focal point, uncluttered spacing, abstract supercomputing context subordinate to the layered ribbons and logical lattice.\nLighting/mood: Quiet concentrated computational atmosphere; delicate internal illumination and copper accents.\nColor palette: Deep midnight navy, muted teal, a few copper and warm amber highlights.\nText: No text.\nConstraints: This is a conceptual illustration only, not scientific data, not an exact circuit, not a demonstrated device, and not a photograph of a real quantum processor. Preserve the distinction between classical GPU supercomputer simulation and physical quantum hardware. No exact physical-qubit count or level-count labels.\nAvoid: Humans, text, letters, numerals, logos, brand marks, equations, chart axes, generic brain, robot, stock circuit board, cryostat imagery, and exaggerated lightning.",
+    "processing": "Original PNG preserved; WebP derivative converted to RGB and resized to 1664 × 936.",
+    "conceptual": true,
+    "claim": "Conceptual illustration of classical supercomputer tests of logical quantum states under coherent phase errors and leakage outside the computational subspace. It depicts no actual quantum device, exact circuit, or simulation data. AI-generated image.",
+    "constraints": [
+      "Concept only; not scientific data or a hardware photograph.",
+      "No text, labels, logos, or exact physical qubit count.",
+      "Classical simulation context."
+    ]
+  },
+  "deterministic_figures": [
+    {
+      "paths": [
+        "artifacts/memory_register_ko.svg",
+        "artifacts/memory_register_en.svg",
+        "artifacts/memory_register_mobile_ko.svg",
+        "artifacts/memory_register_mobile_en.svg"
+      ],
+      "method": "Original explanatory schematic and independent complex128 state-vector memory calculation. Matplotlib SVG with outlined text.",
+      "scripts": [
+        "artifacts/build_figures.py"
+      ],
+      "basis": "Reported 104 physical data/auxiliary positions over the whole protocol, live binary-encoded 45-bit register and 512 TiB state vector. Source encoding example: 5 qutrits -> 243 basis states -> 8 binary bits. Exact qubit:qutrit split of the actual live register is not disclosed.",
+      "primary_source": "https://nvidia.github.io/cuda-quantum/blogs/blog/2026/10/19/jupiter-magic-state-simulation/",
+      "claim": "The source quantities count different things; release/reuse/reordering is not physical compression of an arbitrary simultaneous 104-qubit state. The curve M(n)=16*2^n bytes is a teaching calculation excluding workspace, communication buffers and runtime overhead.",
+      "data": [
+        "artifacts/memory_teaching_values.csv",
+        "artifacts/memory_teaching_values.json"
+      ]
+    },
+    {
+      "paths": [
+        "artifacts/cultivation_flow_ko.svg",
+        "artifacts/cultivation_flow_en.svg",
+        "artifacts/cultivation_flow_mobile_ko.svg",
+        "artifacts/cultivation_flow_mobile_en.svg"
+      ],
+      "method": "Original schematic with deliberately generic patch motifs; no source circuit image is reproduced. Matplotlib SVG with outlined text.",
+      "scripts": [
+        "artifacts/build_figures.py"
+      ],
+      "basis": "Source stages: distance-3 color code, additional flag checks, distance-7 hybrid color/surface code, correction rounds and readout. Rejection/retry explains the cultivation concept.",
+      "primary_source": "https://nvidia.github.io/cuda-quantum/blogs/blog/2026/10/19/jupiter-magic-state-simulation/",
+      "claim": "Patch motifs are not an exact code layout or gate schedule. Downstream consumption of accepted magic states via Clifford gates, measurement and feedforward is conceptually connected but lies outside the reported JUPITER measurement scope."
+    },
+    {
+      "paths": [
+        "artifacts/noise_channels_ko.svg",
+        "artifacts/noise_channels_en.svg",
+        "artifacts/noise_channels_mobile_ko.svg",
+        "artifacts/noise_channels_mobile_en.svg"
+      ],
+      "method": "Original generic educational diagrams of coherent phase rotation, stochastic Pauli dephasing, and a three-level system with a qubit computational subspace. Matplotlib SVG with outlined text.",
+      "scripts": [
+        "artifacts/build_figures.py"
+      ],
+      "basis": "The technical source reports coherent phase errors and selected superconducting-site third-level leakage; it does not publish a full channel matrix, rates or relaxation parameters.",
+      "primary_source": "https://nvidia.github.io/cuda-quantum/blogs/blog/2026/10/19/jupiter-magic-state-simulation/",
+      "claim": "Rz(theta), the Pauli mixture with probability p and the |1><->|2> arrow are generic teaching models. They do not reproduce the run's channels, measured events or fitted parameters. No quantitative error-performance curve is fabricated."
+    }
+  ],
+  "equation_rendering": {
+    "method": "Static MathJax SVG; no browser-side external math service.",
+    "script": "artifacts/build_review.mjs"
+  },
+  "typography": {
+    "method": "Openly licensed Nanum Gothic subsets renamed Review Sans Subset; complete OFL retained and embedded with the public stylesheet.",
+    "scripts": [
+      "artifacts/build_fonts.py"
+    ],
+    "license": "artifacts/font-OFL.txt"
+  },
+  "distribution": {
+    "allowed": "Final HTML/PDF, conceptual hero, referenced original explanatory and equation SVGs, CSS with embedded local openly licensed fonts and their license.",
+    "excluded": "Research notes, raw source captures, email data, screenshots, private host paths, build scripts and source Markdown, third-party full-text papers, and this provenance JSON."
+  },
+  "independent_teaching_calculations": {
+    "script": "artifacts/validate_calculations.py",
+    "data": "artifacts/teaching_calculations.json",
+    "scope": "Complex128 state-memory arithmetic at 40,45,46,50 bits; 64 GiB per GPU for state alone; 5-qutrit encoding; generic single-qubit coherent-vs-stochastic example. Not a JUPITER rerun or a cultivation-circuit error prediction.",
+    "independent_checks": "Repeated two-amplitude unitary evolution and an iterative two-state probability recurrence agree with the article closed forms. theta=0.01 radians and r=20: coherent 0.9966711079%, stochastic 0.04997584085%."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "purpose": "Independent arithmetic for educational examples. No JUPITER simulation, QPU experiment, error-correction circuit or performance measurement is reproduced.",
+  "coherent_vs_stochastic": {
+    "theta_radians": 0.01,
+    "repetitions": 20,
+    "single_step_p": 2.4999791667361107e-05,
+    "coherent_X_minus_probability": 0.009966711079379185,
+    "coherent_X_minus_percent": 0.9966711079379185,
+    "stochastic_X_minus_probability": 0.0004997584085387752,
+    "stochastic_X_minus_percent": 0.04997584085387752,
+    "independent_checks": {
+      "repeated_two_amplitude_evolution": 0.00996671107937918,
+      "stochastic_probability_recurrence": 0.0004997584085386067
+    }
+  },
+  "complex128_memory": {
+    "bytes_per_amplitude": 16,
+    "cases": [
+      {
+        "encoded_bits": 40,
+        "amplitudes": 1099511627776,
+        "state_bytes": 17592186044416,
+        "state_TiB": 16
+      },
+      {
+        "encoded_bits": 45,
+        "amplitudes": 35184372088832,
+        "state_bytes": 562949953421312,
+        "state_TiB": 512
+      },
+      {
+        "encoded_bits": 46,
+        "amplitudes": 70368744177664,
+        "state_bytes": 1125899906842624,
+        "state_TiB": 1024
+      },
+      {
+        "encoded_bits": 50,
+        "amplitudes": 1125899906842624,
+        "state_bytes": 18014398509481984,
+        "state_TiB": 16384
+      }
+    ],
+    "gpu_count": 8192,
+    "45_bit_state_GiB_per_GPU": 64.0,
+    "excluded": "Workspace, communication buffers, factorization analysis and runtime overhead."
+  },
+  "illustrative_qutrit_encoding": {
+    "qutrit_count": 5,
+    "basis_states": 243,
+    "binary_bits": 8,
+    "binary_entries": 256,
+    "padding_entries": 13
+  }
+}
