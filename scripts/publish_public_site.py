@@ -101,6 +101,38 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-20_jupiter-fault-tolerant-simulation",
+        title="104큐비트 프로토콜의 고전 모사: JUPITER로 시험한 매직상태 배양",
+        subtitle="매직상태의 역할, 결맞는 오차와 누설, 45비트 부호화 레지스터와 512 TiB 메모리를 설명합니다",
+        date="2026-10-20", updated="2026-10-20", category="Quantum Computing",
+        tags=("JUPITER", "Magic State Cultivation", "Fault Tolerance", "GPU Simulation", "Quantum Error Correction", "Leakage"),
+        summary="JUPITER의 8,192개 GH200으로 모사한 104개 물리 위치의 매직상태 배양 절차를 살펴봅니다. 저장공간 재사용·qutrit packing·상태벡터 메모리를 설명하고, 결맞는 오차와 누설, 수락률과 비용, 소형 교차검증과 전체 실행의 공개 범위를 구분합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, Korean and English writing, scientific editing, publication integration and live verification", "1차 자료 종합·한국어와 영어 집필·과학 편집·게시 통합 및 공개 페이지 검증"),
+            PublicAgent("jupiter_sources", "primary-paper and official-source research, numerical/model/claim-scope checking and independent manuscript audit", "원 논문·공식 자료 조사·수치와 모형·주장 범위 대조 및 독립 원고 감수"),
+            PublicAgent("jupiter_production", "original bilingual responsive figures, teaching memory calculations, font/equation typesetting and HTML/PDF production and validation", "한영 반응형 설명 그림·교육용 메모리 계산·글꼴과 수식 조판·HTML/PDF 제작 및 검증"),
+            PublicAgent("jupiter_cover", "built-in image generation, conceptual-cover export and visual inspection", "내장 이미지 생성·개념 표지 저장 및 시각 검토"),
+            PublicAgent("mail_inventory", "recent DQB inventory, attachment comparison and original-PDF archive intake", "최근 DQB 목록·첨부 파일 대조·원본 PDF 아카이브 등록"),
+        ),
+        verification_scope=(
+            "NVIDIA 2026-10-19 technical account and official release, JSC system documentation, original cultivation and flag papers, and the separate Willow experiment",
+            "104 protocol locations versus a 45-bit encoded live register; qutrit mapping, complex128 storage and coherent/stochastic single-qubit teaching calculations; no independent JUPITER run or device experiment",
+            "Korean and complete English manuscripts, original diagrams, full PDF page rendering, public metadata, assets, archive checksums and desktop/mobile publication checks",
+        ),
+        verification_scope_ko=(
+            "NVIDIA 2026-10-19 기술 글과 공식 발표·JSC 시스템 자료·원 배양 및 flag 논문·별도 Willow 장치 실험 대조",
+            "104개 프로토콜 위치와 45비트 동시 저장 레지스터 구별·qutrit 매핑·complex128 메모리·결맞는 오차와 확률적 오차의 단일 큐비트 교육용 계산; JUPITER 실행·장치 실험 재현 없음",
+            "한국어 정본과 전체 영어판·원본 설명 그림·전체 PDF 페이지 렌더링·공개 메타데이터·자산·아카이브 체크섬·PC 및 모바일 게시 화면 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-20",
+        human_review_level="recent DQB archiving and a separate Tech Review article requested; no line-by-line human review",
+        human_review_level_ko="최근 DQB 아카이브와 별도 테크리뷰 기사 편집 요청 확인; 문장 단위 사람 검토 없음",
+        disclosure_note_ko="고전 GPU 모사와 실제 QPU 실험을 구별했습니다. 45비트는 부호화된 동시 저장 레지스터로, 임의의 104큐비트 상태를 압축했다는 뜻이 아닙니다. 약 10^-13 확률 일치는 소형 회로의 교차검증이며 전체 실행의 논리 오류율이 아닙니다. 90% 개선 주장·원 배양의 qubit-rounds·별도 flag 연구·Willow 후선택 실험은 각 출처와 조건에 귀속했습니다. 표지는 내장 imagegen 개념 일러스트이며 설명 도표와 수치 예시는 직접 제작했습니다.",
+        disclosure_note_en="Distinguished classical GPU simulation from physical QPU experiments. The 45-bit quantity is an encoded live register, not compression of an arbitrary 104-qubit state. Approximately 10^-13 probability agreement concerns small-circuit cross-checks, not the full run's logical error rate. Attributed the 90% claim, original cultivation qubit-rounds, separate flag study and postselected Willow experiment to their own sources and conditions. The built-in imagegen cover is conceptual; diagrams and numerical examples are original teaching material.",
+    ),
+    PublicReview(
         folder="2026-10-20_quasi-riemann-ai-proof",
         title="준리만가설과 AI 수학: 소수 분포의 경계와 증명의 검증",
         subtitle="제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지",

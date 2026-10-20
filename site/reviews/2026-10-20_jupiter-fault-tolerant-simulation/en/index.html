@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Classical Simulation of a 104-Qubit Protocol: Testing Magic-State Cultivation on JUPITER</title><meta name="description" content="Why building reliable quantum computation needs large classical calculations - magic states, coherent errors and leakage, and the meaning of a 45-bit state register"><meta name="author" content="Hyun-Jung Kim">
+<meta property="og:description" content="Why building reliable quantum computation needs large classical calculations - magic states, coherent errors and leakage, and the meaning of a 45-bit state register"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/hero.webp"><link rel="stylesheet" href="review.css">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/en/">
+    <meta property="og:title" content="Classical Simulation of a 104-Qubit Protocol: Testing Magic-State Cultivation on JUPITER">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review">
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="Language"><span class="language-current" aria-current="page" lang="en">English</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/" lang="ko" hreflang="ko">한국어</a></nav><a class="download" href="review_en.pdf">PDF ↓</a></div></header>
+<p class="byline-disclosure">Hyun-Jung Kim · AI-assisted · primary sources checked · evidence cutoff 2026-10-20 · <a href="../../../methods/">Methods &amp; agent disclosure</a></p>
+  <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.20</span><span>QUANTUM COMPUTING · HPC · FAULT TOLERANCE</span></div><article><h1>Classical Simulation of a 104-Qubit Protocol: Testing Magic-State Cultivation on JUPITER</h1>
+<p class="dek">Why building reliable quantum computation needs large classical calculations - magic states, coherent errors and leakage, and the meaning of a 45-bit state register</p>
+
+<p class="kicker">TECH REVIEW · 20 October 2026 · Quantum error correction and high-performance computing</p>
+<figure class="hero"><img src="hero.webp" alt="An abstract quantum lattice and blue and copper phase waves in front of supercomputer racks"><figcaption>A conceptual illustration of testing logical-state phase errors and leakage outside the computational subspace on a classical supercomputer. It depicts neither an actual quantum device or circuit nor computed data. AI-generated image.</figcaption></figure><details class="toc"><summary>Contents</summary><ol><li><a href="#section-1">1. A classical supercomputer for designing quantum computers</a></li><li><a href="#section-2">2. From logical memory to computation: the role of magic states</a></li><li><a href="#section-3">3. The protocol being simulated</a></li><li><a href="#section-4">4. Why coherent phase errors and leakage differ</a></li><li><a href="#section-5">5. From 104 locations to a 45-bit storage register</a></li><li><a href="#section-6">6. What 512 TiB tells us</a></li><li><a href="#section-7">7. Improvements require matched conditions</a></li><li><a href="#section-8">8. Verification and the information still needed</a></li><li><a href="#section-9">9. A route toward materials and chemistry applications</a></li><li><a href="#section-10">References</a></li></ol></details>
+
+<h2 id="section-1">1. A classical supercomputer for designing quantum computers</h2>
+<p>Quantum error correction aims to build reliable logical qubits from imperfect physical qubits. Storing information for a long time, however, does not complete a useful computer. A machine must also perform logical gates, change its actions in response to measurements, and retry failed preparations. Testing this whole process under noise is part of its design.</p>
+<p>On 19 October 2026, NVIDIA announced a simulation of a magic-state cultivation protocol using <strong>104 physical qubit locations</strong> on JUPITER at the Jülich Supercomputing Centre. The computation used 8,192 GH200 GPUs. This was a classical GPU calculation of a quantum protocol, rather than a 104-qubit experiment on a quantum processor. [1,2]</p>
+<p>Two questions explain its significance. Why are magic states a bottleneck in fault-tolerant computation? And how could a circuit involving 104 locations be computed with a maximum encoded state register of 45 bits? The second answer involves reusing storage after measurement and packing three-level states together. It does not mean compressing an arbitrary 104-qubit state into a smaller state.</p>
+<h2 id="section-2">2. From logical memory to computation: the role of magic states</h2>
+<p>A Clifford gate maps Pauli operators to Pauli operators. Many error-correction operations fit this framework. With stabilizer-state inputs, Clifford gates, Pauli measurements and suitable Pauli noise, an efficient stabilizer simulator can avoid storing a huge state vector. [3]</p>
+<p>Universal quantum computation requires resources beyond that restricted framework. One example is the T gate. We use the standard convention</p>
+<div class="math-block"><img src="math_5f4c5b8c506861.svg" alt="T=\operatorname{diag}(1,e^{i\pi/4}),\qquad
+|T\rangle=T|+\rangle=
+\frac{|0\rangle+e^{i\pi/4}|1\rangle}{\sqrt{2}}." style="width:50.468ex;height:auto"></div>
+<p>An appropriately prepared nonstabilizer resource can be combined with Clifford operations, measurement and feedforward to implement a logical T operation. A magic state is consumed in that process. Not every non-Clifford circuit is hard to simulate, but the simple stabilizer shortcut no longer covers general computation. [3]</p>
+<p>Conventional distillation processes several imperfect resource states together. <strong>Cultivation</strong> instead prepares a state in a small code, repeatedly checks it and transfers it into a larger code. A failed check can cause the attempt to be discarded and restarted. Gidney, Shutty and Jones analyzed the resource savings of this approach under specified circuit-level noise assumptions. [4]</p>
+<p>Output fidelity alone therefore cannot characterize a factory. For independent, identical attempts with acceptance probability <img class="math-inline" src="math_b4de6de21ccef1.svg" alt="A" style="width:1.697ex;height:1.62ex;vertical-align:0"> and fixed cost <img class="math-inline" src="math_9882396e197ef0.svg" alt="C_{\rm trial}" style="width:4.744ex;height:1.952ex;vertical-align:-0.357ex"> per attempt, a simple average gives</p>
+<div class="math-block"><img src="math_4aec927b38eacb.svg" alt="\mathbb{E}[N_{\rm attempts}]=\frac1A,\qquad
+C_{\rm accepted}=\frac{C_{\rm trial}}A." style="width:39.475ex;height:auto"></div>
+<p>This is a teaching relation. Early termination, parallel preparation, resets and buffer waiting change a real cost model. Its lesson is that <strong>low output error and adequate acceptance must be achieved together</strong>.</p>
+<h2 id="section-3">3. The protocol being simulated</h2>
+<p>The technical account describes preparation in a distance-3 color code, additional flag measurements, growth into a distance-7 hybrid color/surface-code structure, and further error correction and readout. Flags are auxiliary measurements that expose particular error-propagation paths. The 104 locations include data and auxiliary physical positions used across the protocol sequence. [1]</p>
+<figure><img class="figure-desktop" src="cultivation_flow_en.svg" alt="Stages from a distance-3 color code through flag checks to a distance-7 hybrid code, correction and readout"><img class="figure-mobile" src="cultivation_flow_mobile_en.svg" alt="Stages from a distance-3 color code through flag checks to a distance-7 hybrid code, correction and readout"><figcaption>An original conceptual diagram based on the public technical account, rather than a gate-by-gate circuit reproduction. Postselection incurs discard and retry costs. Subsequent use of the resource in a logical T operation is general application context, not an application algorithm executed in this announcement. [1,4]</figcaption></figure>
+
+<p>Code distance is important for describing correctable or detectable error structure. Nevertheless, the effective suppression order of a complete noisy circuit does not automatically equal its static code distance. Error propagation, non-Clifford layers and measurements all matter. This motivates the additional flag research. [5]</p>
+<h2 id="section-4">4. Why coherent phase errors and leakage differ</h2>
+<p>Physical noise cannot always be replaced by independent Pauli errors. Small rotations repeated in the same direction can accumulate phase coherently. For stochastic Z errors, the statistics of even and odd error counts instead determine the outcome.</p>
+<p>Consider a <strong>single-qubit teaching example</strong>: prepare <img class="math-inline" src="math_9d9aeeb16ecd45.svg" alt="|+\rangle" style="width:3.269ex;height:2.262ex;vertical-align:-0.566ex">, apply <img class="math-inline" src="math_5c649a48c1d2b4.svg" alt="R_z(\theta)=e^{-i\theta Z/2}" style="width:15.033ex;height:2.587ex;vertical-align:-0.566ex"> a total of <img class="math-inline" src="math_640a535e9ee5fc.svg" alt="r" style="width:1.02ex;height:1.025ex;vertical-align:-0.025ex"> times, then measure X. There is no intervening error correction. Match the one-step X-measurement error by choosing an independent stochastic Z error probability <img class="math-inline" src="math_89e774859ee3ea.svg" alt="p=\sin^2(\theta/2)" style="width:13.005ex;height:2.527ex;vertical-align:-0.566ex">. Then</p>
+<div class="math-block"><img src="math_409c3810818f01.svg" alt="P_{-}^{\rm coherent}=\sin^2\!\left(\frac{r\theta}{2}\right),\qquad
+P_{-}^{\rm stochastic}=\frac{1-(1-2p)^r}{2}." style="width:52.938ex;height:auto"></div>
+<p>For <img class="math-inline" src="math_29972a6080c817.svg" alt="\theta=0.01" style="width:8.101ex;height:1.781ex;vertical-align:-0.186ex"> radians and <img class="math-inline" src="math_459e2a3550e081.svg" alt="r=20" style="width:6.3ex;height:1.692ex;vertical-align:-0.186ex">, these are approximately <strong>0.997% and 0.0500%</strong>. Matching a one-step probability does not match repeated behavior. These values are independently calculated from the displayed formulas; they do not predict the JUPITER protocol&#39;s error rate.</p>
+<p>Leakage presents a different problem. If a physical element occupies a third level outside the two computational levels, an additional component is needed. As a pure-state illustration,</p>
+<div class="math-block"><img src="math_3d63ea213b3ccd.svg" alt="|\psi\rangle=a|0\rangle+b|1\rangle+c|2\rangle,
+\qquad |a|^2+|b|^2+|c|^2=1." style="width:48.322ex;height:auto"></div>
+<p>The probability of remaining in the computational subspace is <img class="math-inline" src="math_a2a71777e83554.svg" alt="1-|c|^2" style="width:7.122ex;height:2.451ex;vertical-align:-0.564ex">. Unlike a Z error within that subspace, leakage can change how gates and measurements must be interpreted. The JUPITER technical account includes coherent phase errors and third-level leakage at selected physical locations, without publishing numerical noise strengths. [1]</p>
+<figure><img class="figure-desktop" src="noise_channels_en.svg" alt="Phase evolution within two computational levels contrasted with leakage into a third level"><img class="figure-mobile" src="noise_channels_mobile_en.svg" alt="Phase evolution within two computational levels contrasted with leakage into a third level"><figcaption>An educational schematic distinguishing phase error from leakage. The arrows and level coupling are generic examples, not the campaign's actual noise channel, rates or measured data.</figcaption></figure>
+
+<h2 id="section-5">5. From 104 locations to a 45-bit storage register</h2>
+<p>Direct storage of an arbitrary pure n-qubit state requires <img class="math-inline" src="math_950b75a0197509.svg" alt="2^n" style="width:2.279ex;height:1.528ex;vertical-align:0"> complex amplitudes. An arbitrary entangled state with 104 simultaneously live qubits therefore cannot fit into a 45-bit state vector.</p>
+<p>This calculation exploits the protocol&#39;s time structure. Once an auxiliary state is measured and no longer needs to remain quantum, its storage can be released and reused later. Classical dependencies and measurement probabilities must still be preserved. This is different from arbitrarily discarding entanglement that remains necessary. Reordering operations reduces the storage that must be simultaneously live. [1]</p>
+<p>Qutrit packing provides another saving. Five three-level systems have <img class="math-inline" src="math_e620f62a94e96b.svg" alt="3^5=243" style="width:8.53ex;height:2.072ex;vertical-align:-0.186ex"> basis states. Assigning two binary bits separately to each qutrit would require ten bits. Packing the five together instead maps them exactly into 256 entries represented by eight bits:</p>
+<div class="math-block"><img src="math_06a3f1cc9da4f1.svg" alt="j=\sum_{k=0}^{4}3^k\ell_k,\quad \ell_k\in\{0,1,2\},
+\qquad 0\le j\le242,\quad
+\lceil\log_2 243\rceil=8." style="width:62.105ex;height:auto"></div>
+<p>The remaining thirteen entries are encoding padding, not new physical levels. This mapping does not truncate valid amplitudes. It also cannot, by itself, explain the full 104-to-45 reduction. The public account reports a maximum 45-bit encoded register but does not specify the exact peak breakdown of two- and three-level degrees of freedom. [1]</p>
+<figure><img class="figure-desktop" src="memory_register_en.svg" alt="104 physical locations connected through measurement and storage reuse to a 45-bit encoded register and 512 TiB memory"><img class="figure-mobile" src="memory_register_mobile_en.svg" alt="104 physical locations connected through measurement and storage reuse to a 45-bit encoded register and 512 TiB memory"><figcaption>An original explanation of physical locations versus simultaneously stored register size. Memory values are calculated for a complex128 state vector; they are not measurements of total job memory or runtime. Five qutrits packed into eight bits is the published encoding example. [1]</figcaption></figure>
+
+<h2 id="section-6">6. What 512 TiB tells us</h2>
+<p>With complex128 storage at sixteen bytes per amplitude, state-vector memory is <img class="math-inline" src="math_392149cf3b3344.svg" alt="M(n)=16\times2^n" style="width:15.82ex;height:2.262ex;vertical-align:-0.566ex"> bytes. The following values are independently calculated from that expression. TiB and PiB mean <img class="math-inline" src="math_3a290d99fe1c13.svg" alt="2^{40}" style="width:2.919ex;height:1.904ex;vertical-align:0"> and <img class="math-inline" src="math_92f482d546bbed.svg" alt="2^{50}" style="width:2.919ex;height:1.887ex;vertical-align:0"> bytes.</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Comparison and applications table"><table>
+<thead>
+<tr>
+<th>Encoded register</th>
+<th align="right">State-vector memory only</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>40 bits</td>
+<td align="right">16 TiB</td>
+<td>1/32 of the 45-bit case</td>
+</tr>
+<tr>
+<td>45 bits</td>
+<td align="right">512 TiB</td>
+<td>Reported maximum register</td>
+</tr>
+<tr>
+<td>46 bits</td>
+<td align="right">1 PiB</td>
+<td>One additional bit doubles memory</td>
+</tr>
+<tr>
+<td>50 bits</td>
+<td align="right">16 PiB</td>
+<td>32 times the 45-bit case</td>
+</tr>
+</tbody></table></div>
+<p>At 45 bits there are <img class="math-inline" src="math_642549450d89a1.svg" alt="2^{45}" style="width:2.919ex;height:1.904ex;vertical-align:0">, roughly 35.2 trillion amplitudes. Dividing 512 TiB evenly among 8,192 GPUs gives <strong>64 GiB per GPU</strong>. This is state storage alone, excluding communication buffers, workspaces and factorization analysis. Performance also depends on amplitude exchanges, operation placement and the network. Memory capacity alone cannot determine runtime or energy consumption.</p>
+<p>The technical account also describes cuBLASMp/cuSOLVERMp-based factorization analyses of selected state partitions to investigate compact approximate representations. <strong>The reference simulation continued from the original state.</strong> An analysis of possible factorization is not evidence that the full reference computation proceeded with a truncated tensor representation. [1,6]</p>
+<h2 id="section-7">7. Improvements require matched conditions</h2>
+<p>Different kinds of improvement numbers appear in the surrounding literature. The original cultivation study compares <strong>qubit-rounds</strong>, a space-time resource, under specified noise and target-fidelity assumptions. NVIDIA&#39;s “90% fewer qubits” is a company summary claim. The announcement does not provide a matched comparison of target error, throughput and retry accounting, so it does not establish a universal 90% reduction in physical qubits for fault-tolerant computing. [2,4]</p>
+<p>In a separate preprint, Chan and colleagues analyze error propagation through non-Clifford cultivation circuits and introduce additional flags. For distance-5 cultivation before escape, at circuit-level depolarizing noise probability <img class="math-inline" src="math_ea984582022612.svg" alt="p=10^{-3}" style="width:8.65ex;height:2.392ex;vertical-align:-0.439ex">, one reported example reduces logical error by a factor of 4.9 while increasing attempts per accepted state by a factor of 1.36. Stronger checks can improve output quality and increase acceptance cost simultaneously. <strong>Those are not measurements from JUPITER&#39;s coherent-error and leakage simulation.</strong> [5]</p>
+<p>There is also physical-hardware evidence. Google&#39;s Willow cultivation experiment reports a 40-fold error reduction relative to uncultivated states and fidelity 0.9999(1), together with postselection retaining 8% of attempts. That is a processor experiment; its metrics cannot be directly ranked against the classical JUPITER calculation. [7]</p>
+<h2 id="section-8">8. Verification and the information still needed</h2>
+<p>The approximately <img class="math-inline" src="math_b1bd4bf2aeb300.svg" alt="10^{-13}" style="width:5.295ex;height:2.005ex;vertical-align:-0.05ex"> agreement in probabilities described in the technical article concerns <strong>small packed-circuit cross-checks between state-vector and tensor-network methods at NVAQC</strong>. It is neither the full 104-location protocol&#39;s logical error rate nor a guarantee for every output. The inspected public sources do not report full-run runtime, GPU-hours, shot or trajectory count, acceptance yield, output logical error or uncertainty intervals. [1]</p>
+<p>We use 8,192 GPUs, consistent across the technical introduction and official release. One technical paragraph instead prints 8,912. This review checks the public explanation, formulas and memory arithmetic; it does not reproduce the JUPITER run. Existing cultivation research code and a reproducible package for this full campaign are also distinct resources.</p>
+<p>The most useful next evidence would be output error and acceptance versus noise strength, cost per attempt and per accepted state, and the circuits, decoder, sampling procedure and statistical intervals. These would show which design decisions the large calculation changes beyond the implementation checks available on smaller circuits.</p>
+<h2 id="section-9">9. A route toward materials and chemistry applications</h2>
+<p>Resource estimates for fault-tolerant chemistry and materials simulation depend on non-Clifford resource demand and supply rate as well as logical-qubit count. A cheaper, reliable magic-state factory could change an algorithm&#39;s time and space budget. Establishing that connection requires matching the algorithm&#39;s T-resource demand and tolerated failure probability to the factory&#39;s acceptance, error and throughput.</p>
+<p>This result does not demonstrate a more accurate molecular energy or quantum advantage. Its practical connection is the <strong>ability to test resource preparation under more realistic noise before committing to hardware design</strong>. Such calculations can investigate which checks reveal coherent errors or leakage, where additional measurements help, and how fidelity gains affect retries. Large classical calculations supply a reference. Comparing that reference with a device&#39;s calibration, measurement and leakage-removal behavior is the route toward fault-tolerant engineering.</p>
+<p>The source DQB issue is available as the <a href="https://infant83.github.io/AI_Tech_Review/archive/files/2026-10-20-daily-quantum-brief.pdf">20 October 2026 archived PDF</a>; other issues remain in the <a href="https://infant83.github.io/AI_Tech_Review/archive/">document archive</a>.</p>
+<h2 id="section-10">References</h2><div class="references">
+<ol>
+<li>Holmes, Kloss, Pancotti and Svore. <a href="https://nvidia.github.io/cuda-quantum/blogs/blog/2026/10/19/jupiter-magic-state-simulation/">Advancing Fault-Tolerant Quantum Computing with GPU-Accelerated Simulation</a>. NVIDIA Quantum, 19 October 2026. Principal technical account of the protocol, noise, storage and small-circuit cross-checks.</li>
+<li>NVIDIA. <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Runs-Record-Simulation-of-Fault-Tolerant-Quantum-Computing-at-Jlich-Supercomputing-Centre/default.aspx">NVIDIA Runs Record Simulation of Fault-Tolerant Quantum Computing at Jülich Supercomputing Centre</a>, 19 October 2026. System context: JSC, <a href="https://www.fz-juelich.de/en/jsc/systems/supercomputers/jupiter">JUPITER</a>.</li>
+<li>Bravyi and Kitaev. <a href="https://arxiv.org/abs/quant-ph/0403025">Universal Quantum Computation with ideal Clifford gates and noisy ancillas</a>. Physical Review A 71, 022316 (2005).</li>
+<li>Gidney, Shutty and Jones. <a href="https://arxiv.org/abs/2409.17595">Magic state cultivation: growing T states as cheap as CNOT gates</a>, first released in 2024. <a href="https://doi.org/10.5281/zenodo.13777072">Original circuits, statistics and code</a>.</li>
+<li>Chan, Strikis, Sun and Cai. <a href="https://arxiv.org/abs/2609.17706">Diagnosing and Restoring the Degraded Fault Distance of Magic State Cultivation</a>, v3, 30 September 2026. Preprint; a separate study from the JUPITER campaign.</li>
+<li>NVIDIA. <a href="https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/index.html">cuStateVec</a>, <a href="https://docs.nvidia.com/cuda/cublasmp/index.html">cuBLASMp</a>, <a href="https://docs.nvidia.com/cuda/cusolvermp/">cuSOLVERMp</a>. State-vector and distributed linear-algebra software documentation.</li>
+<li>Rosenfeld et al. <a href="https://arxiv.org/abs/2512.13908">Magic state cultivation on a superconducting quantum processor</a>. Physical-hardware experiment; checked against Google Quantum AI&#39;s <a href="https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/">15 October 2026 explanation</a>.</li>
+</ol>
+</div>
+</article><div class="downloads"><a href="review_en.pdf">Download English PDF</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/">한국어판</a></div><footer class="footer">AI Tech Review Letters · 2026-10-20<br>Methods and limits of testing fault-tolerant quantum protocols with classical high-performance computing.</footer>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">How this review was made</h2>
+        <dl>
+          <div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div>
+          <div><dt>AI system</dt><dd>OpenAI Codex; exact model identifier not retained</dd></div>
+          <div><dt>Verifiable agent roles</dt><dd>root — primary-source synthesis, Korean and English writing, scientific editing, publication integration and live verification; jupiter_sources — primary-paper and official-source research, numerical/model/claim-scope checking and independent manuscript audit; jupiter_production — original bilingual responsive figures, teaching memory calculations, font/equation typesetting and HTML/PDF production and validation; jupiter_cover — built-in image generation, conceptual-cover export and visual inspection; mail_inventory — recent DQB inventory, attachment comparison and original-PDF archive intake</dd></div>
+          <div><dt>Editorial harness</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../../methods/">public method</a></dd></div>
+          <div><dt>Verification scope</dt><dd>NVIDIA 2026-10-19 technical account and official release, JSC system documentation, original cultivation and flag papers, and the separate Willow experiment; 104 protocol locations versus a 45-bit encoded live register; qutrit mapping, complex128 storage and coherent/stochastic single-qubit teaching calculations; no independent JUPITER run or device experiment; Korean and complete English manuscripts, original diagrams, full PDF page rendering, public metadata, assets, archive checksums and desktop/mobile publication checks</dd></div>
+          <div><dt>Human review record</dt><dd>recent DQB archiving and a separate Tech Review article requested; no line-by-line human review</dd></div>
+          <div><dt>Evidence cutoff</dt><dd>2026-10-20</dd></div>
+        </dl>
+        <p class="disclosure-note">Distinguished classical GPU simulation from physical QPU experiments. The 45-bit quantity is an encoded live register, not compression of an arbitrary 104-qubit state. Approximately 10^-13 probability agreement concerns small-circuit cross-checks, not the full run&#x27;s logical error rate. Attributed the 90% claim, original cultivation qubit-rounds, separate flag study and postselected Willow experiment to their own sources and conditions. The built-in imagegen cover is conceptual; diagrams and numerical examples are original teaching material.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main>
+<section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
+</body></html>
