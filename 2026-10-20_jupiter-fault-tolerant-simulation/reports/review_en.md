@@ -4,7 +4,7 @@
 
 <p class="kicker">TECH REVIEW · 20 October 2026 · Quantum error correction and high-performance computing</p>
 
-<figure class="hero"><img src="hero.webp" alt="An abstract quantum lattice and blue and copper phase waves in front of supercomputer racks"><figcaption>A conceptual illustration of testing logical-state phase errors and leakage outside the computational subspace on a classical supercomputer. It depicts neither an actual quantum device or circuit nor computed data. AI-generated image.</figcaption></figure>
+<figure class="hero"><img src="hero-v2.webp" alt="Three aligned paper lattices show a vermilion fold, a bright empty bay, and a new fold in the same place across time, with a fine graphite record continuing beside them."><figcaption>Translucent paper layers represent successive times; the vermilion folds and intervening vacancy symbolize storage being released after measurement and reused later. Fine dotted traces stand for retained classical measurement records. AI-generated conceptual illustration, not an exact circuit, qubit count, or simulation data.</figcaption></figure>
 
 ## 1. A classical supercomputer for designing quantum computers
 

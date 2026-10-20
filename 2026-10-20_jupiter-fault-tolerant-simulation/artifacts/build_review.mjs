@@ -25,6 +25,7 @@ const adaptor=liteAdaptor();RegisterHTMLHandler(adaptor);
 const mathDocument=mathjax.document('',{InputJax:new TeX({packages:AllPackages}),OutputJax:new SVG({fontCache:'local'})});
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const cutoff='2026-10-20';
+const heroFilename='hero-v2.webp';
 const onlyLanguage=process.argv.find(a=>a.startsWith('--language='))?.split('=')[1];
 if(onlyLanguage&&!['ko','en'].includes(onlyLanguage))throw Error('--language must be ko or en.');
 const publicBase=(process.argv.find(a=>a.startsWith('--public-base='))?.split('=').slice(1).join('=')||'https://infant83.github.io/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/').replace(/\/?$/,'/');
@@ -48,7 +49,8 @@ function disclosure(ko){
   ['제작 요청 요약','최근 DQB를 아카이브하고 율리히 연구소의 JUPITER 매직상태 배양 모사 결과를 별도 기술 리뷰로 편집·게재.'],
   ['하네스','<a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a>'],
   ['검증 범위','공개 1차 출처·서지·큐비트 수와 메모리 단위·잡음 모형·주장 범위를 대조하고, 한영 수치·기호·그림과 HTML/PDF 출력을 확인했다. JUPITER 계산이나 실제 양자 프로세서 실험을 재실행하지 않았다.'],
-  ['사람 검토 수준','주제·작성·공개 게시 요청 확인; 문장 단위 사람 검토 없음.'],['근거 기준일',cutoff]
+  ['표지 개편','jupiter_cover_rework: 저장공간 재사용을 표현한 새 표지 생성; cover_update_audit: 과학적 대응·표현과 재사용 지침의 독립 검토. 과학 표지 제작 원칙 1.0 적용.'],
+  ['사람 검토 수준','주제·작성·공개 게시 및 표지 원칙 적용 요청 확인; 문장 단위 또는 새 표지의 개별 사람 심사 없음.'],['근거 기준일',cutoff]
  ]:[
   ['Responsible editor','Hyun-Jung Kim'],['AI assistance','OpenAI Codex; exact authoring-model identifier not retained.'],
   ['Agents and roles','root: primary-source synthesis, Korean and English writing, scientific editing and publication integration; jupiter_cover: conceptual cover generation; jupiter_sources: research on the original paper and technical sources, numerical/model/claim-scope checking; jupiter_production: bilingual original figures, teaching memory calculations, equation/font typesetting, HTML/PDF production and output validation; mail_inventory: received DQB and attachment inventory and archive comparison.'],
@@ -56,7 +58,8 @@ function disclosure(ko){
   ['Production request','Archive recent DQB issues and edit a separate technical review of the Jülich JUPITER magic-state cultivation simulation for publication.'],
   ['Harness','<a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a>'],
   ['Verification scope','Public primary sources, bibliographic records, qubit counts and memory units, noise models and claim boundaries; bilingual values, symbols, figures and HTML/PDF output. The JUPITER computation and physical quantum-processor experiments were not independently rerun.'],
-  ['Human review','Topic, writing and public posting explicitly requested; no line-by-line human review.'],['Evidence cutoff',cutoff]
+  ['Cover revision','jupiter_cover_rework: original storage-reuse cover generation; cover_update_audit: independent review of scientific correspondence, composition and reusable guidance. Scientific cover principles version 1.0 applied.'],
+  ['Human review','Topic, writing, public posting and application of cover principles requested; no line-by-line or individual new-cover human review.'],['Evidence cutoff',cutoff]
  ];
  return `<!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">${ko?'작성·검증 정보':'How this review was made'}</h2><dl>${rows.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl><p>${ko?'원문의 보고 내용, 독립적인 교육용 계산, 리뷰의 개념 설명을 구분한다. AI 개념 표지는 실제 장비 사진·회로도·성능 측정값이 아니다.':'Reported source results, independent teaching calculations and conceptual explanations are distinguished. The AI-generated conceptual cover is not a photograph, circuit schematic or performance measurement.'}</p></section><!-- End AI Tech Review Authoring Disclosure -->`;
 }
@@ -68,7 +71,7 @@ function mathImage(tex,display){
  const svg=rendered.match(/<svg[\s\S]*<\/svg>/)?.[0];
  if(!svg||/data-mjx-error|merror/.test(svg))throw Error(`Math typesetting failed: ${tex}`);
  const clean=svg.replace(/<title>[\s\S]*?<\/title>/,'');
- fs.writeFileSync(path.join(artifacts,filename),clean);
+ fs.writeFileSync(path.join(artifacts,filename),clean+'\n');
  const width=svg.match(/\bwidth="([\d.]+)ex"/)?.[1]||'1';
  const height=svg.match(/\bheight="([\d.]+)ex"/)?.[1]||'1';
  const valign=svg.match(/vertical-align:\s*([^;" ]+)/)?.[1]||'0';
@@ -109,7 +112,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const dir=path.join(root,'dist',ko?'':'en');fs.mkdirSync(dir,{recursive:true});
  const other=publicBase?publicBase+(ko?'en/':''):(ko?'en/index.html':'../index.html');
  const url=publicBase?publicBase+(ko?'':'en/'):'';
- const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}hero.webp">`:'';
+ const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}${heroFilename}">`:'';
  const localBadge=publicBase?'':`<span class="local-status">${ko?'로컬 검토본':'Local review copy'}</span>`;
  const html=`<!doctype html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css"></head><body>
@@ -117,7 +120,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
 <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.20</span><span>${ko?'양자 컴퓨팅 · HPC · 오류 허용':'QUANTUM COMPUTING · HPC · FAULT TOLERANCE'}</span></div><article>${body}${disclosure(ko)}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">AI Tech Review Letters · ${cutoff}<br>${ko?'오류 허용 양자 프로토콜을 고전 초고성능 컴퓨팅으로 검증하는 방법과 한계.':'Methods and limits of testing fault-tolerant quantum protocols with classical high-performance computing.'}</footer></main></body></html>\n`;
  fs.writeFileSync(path.join(dir,'index.html'),html.split('\n').map(line=>line.trimEnd()).join('\n'));
  fs.writeFileSync(path.join(dir,'review.css'),stylesheet);
- const allowedFigures=new Set(['hero.webp',`memory_register_${lang}.svg`,`cultivation_flow_${lang}.svg`,`noise_channels_${lang}.svg`,`memory_register_mobile_${lang}.svg`,`cultivation_flow_mobile_${lang}.svg`,`noise_channels_mobile_${lang}.svg`]);
+ const allowedFigures=new Set([heroFilename,`memory_register_${lang}.svg`,`cultivation_flow_${lang}.svg`,`noise_channels_${lang}.svg`,`memory_register_mobile_${lang}.svg`,`cultivation_flow_mobile_${lang}.svg`,`noise_channels_mobile_${lang}.svg`]);
  const assetNames=new Set(math.map(x=>x.filename));
  for(const match of html.matchAll(/\bsrc="([^"#]+)"/g)){
   if(!/^(?:https?:|data:|\/)/.test(match[1])){

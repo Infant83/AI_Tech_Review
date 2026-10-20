@@ -17,11 +17,11 @@
     "summary": "JUPITER의 8,192개 GH200으로 모사한 104개 물리 위치의 매직상태 배양 절차를 살펴봅니다. 저장공간 재사용·qutrit packing·상태벡터 메모리를 설명하고, 결맞는 오차와 누설, 수락률과 비용, 소형 교차검증과 전체 실행의 공개 범위를 구분합니다.",
     "href": "reviews/2026-10-20_jupiter-fault-tolerant-simulation/index.html",
     "metric_path": "/AI_Tech_Review/reviews/2026-10-20_jupiter-fault-tolerant-simulation/",
-    "thumbnail": "reviews/2026-10-20_jupiter-fault-tolerant-simulation/hero.webp",
+    "thumbnail": "reviews/2026-10-20_jupiter-fault-tolerant-simulation/hero-v2.webp",
     "assets": [
       "cultivation_flow_ko.svg",
       "cultivation_flow_mobile_ko.svg",
-      "hero.webp",
+      "hero-v2.webp",
       "math_06a3f1cc9da4f1.svg",
       "math_29972a6080c817.svg",
       "math_392149cf3b3344.svg",
@@ -60,7 +60,7 @@
         "assets": [
           "cultivation_flow_en.svg",
           "cultivation_flow_mobile_en.svg",
-          "hero.webp",
+          "hero-v2.webp",
           "math_06a3f1cc9da4f1.svg",
           "math_29972a6080c817.svg",
           "math_392149cf3b3344.svg",
@@ -102,7 +102,7 @@
         "system_ko": "OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": 5,
+        "agent_count": 7,
         "agents": [
           {
             "name": "root",
@@ -128,6 +128,16 @@
             "name": "mail_inventory",
             "role": "recent DQB inventory, attachment comparison and original-PDF archive intake",
             "role_ko": "최근 DQB 목록·첨부 파일 대조·원본 PDF 아카이브 등록"
+          },
+          {
+            "name": "jupiter_cover_rework",
+            "role": "new storage-reuse cover concept, built-in image generation and visual checks under scientific cover principles 1.0",
+            "role_ko": "과학 표지 원칙 1.0에 따른 저장공간 재사용 표지 개편·내장 이미지 생성·시각 검사"
+          },
+          {
+            "name": "cover_update_audit",
+            "role": "independent scientific-correspondence, thumbnail, grayscale and reusable-guidance audit of the revised cover",
+            "role_ko": "개편 표지의 과학적 대응·썸네일·흑백·재사용 지침 독립 검토"
           }
         ],
         "agent_roles": [
@@ -135,14 +145,18 @@
           "jupiter_sources — primary-paper and official-source research, numerical/model/claim-scope checking and independent manuscript audit",
           "jupiter_production — original bilingual responsive figures, teaching memory calculations, font/equation typesetting and HTML/PDF production and validation",
           "jupiter_cover — built-in image generation, conceptual-cover export and visual inspection",
-          "mail_inventory — recent DQB inventory, attachment comparison and original-PDF archive intake"
+          "mail_inventory — recent DQB inventory, attachment comparison and original-PDF archive intake",
+          "jupiter_cover_rework — new storage-reuse cover concept, built-in image generation and visual checks under scientific cover principles 1.0",
+          "cover_update_audit — independent scientific-correspondence, thumbnail, grayscale and reusable-guidance audit of the revised cover"
         ],
         "agent_roles_ko": [
           "root — 1차 자료 종합·한국어와 영어 집필·과학 편집·게시 통합 및 공개 페이지 검증",
           "jupiter_sources — 원 논문·공식 자료 조사·수치와 모형·주장 범위 대조 및 독립 원고 감수",
           "jupiter_production — 한영 반응형 설명 그림·교육용 메모리 계산·글꼴과 수식 조판·HTML/PDF 제작 및 검증",
           "jupiter_cover — 내장 이미지 생성·개념 표지 저장 및 시각 검토",
-          "mail_inventory — 최근 DQB 목록·첨부 파일 대조·원본 PDF 아카이브 등록"
+          "mail_inventory — 최근 DQB 목록·첨부 파일 대조·원본 PDF 아카이브 등록",
+          "jupiter_cover_rework — 과학 표지 원칙 1.0에 따른 저장공간 재사용 표지 개편·내장 이미지 생성·시각 검사",
+          "cover_update_audit — 개편 표지의 과학적 대응·썸네일·흑백·재사용 지침 독립 검토"
         ]
       },
       "harness": {
@@ -164,13 +178,13 @@
           "한국어 정본과 전체 영어판·원본 설명 그림·전체 PDF 페이지 렌더링·공개 메타데이터·자산·아카이브 체크섬·PC 및 모바일 게시 화면 검사"
         ],
         "human_review_level": {
-          "ko": "최근 DQB 아카이브와 별도 테크리뷰 기사 편집 요청 확인; 문장 단위 사람 검토 없음",
-          "en": "recent DQB archiving and a separate Tech Review article requested; no line-by-line human review"
+          "ko": "최근 DQB 아카이브·별도 리뷰·표지 원칙 적용 요청 확인; 문장 단위 또는 새 표지의 개별 사람 심사 없음",
+          "en": "recent DQB archiving, separate review and application of cover principles requested; no line-by-line or individual new-cover human review"
         }
       },
       "note": {
-        "ko": "고전 GPU 모사와 실제 QPU 실험을 구별했습니다. 45비트는 부호화된 동시 저장 레지스터로, 임의의 104큐비트 상태를 압축했다는 뜻이 아닙니다. 약 10^-13 확률 일치는 소형 회로의 교차검증이며 전체 실행의 논리 오류율이 아닙니다. 90% 개선 주장·원 배양의 qubit-rounds·별도 flag 연구·Willow 후선택 실험은 각 출처와 조건에 귀속했습니다. 표지는 내장 imagegen 개념 일러스트이며 설명 도표와 수치 예시는 직접 제작했습니다.",
-        "en": "Distinguished classical GPU simulation from physical QPU experiments. The 45-bit quantity is an encoded live register, not compression of an arbitrary 104-qubit state. Approximately 10^-13 probability agreement concerns small-circuit cross-checks, not the full run's logical error rate. Attributed the 90% claim, original cultivation qubit-rounds, separate flag study and postselected Willow experiment to their own sources and conditions. The built-in imagegen cover is conceptual; diagrams and numerical examples are original teaching material."
+        "ko": "고전 GPU 모사와 실제 QPU 실험을 구별했습니다. 45비트는 부호화된 동시 저장 레지스터로, 임의의 104큐비트 상태를 압축했다는 뜻이 아닙니다. 약 10^-13 확률 일치는 소형 회로의 교차검증이며 전체 실행의 논리 오류율이 아닙니다. 90% 개선 주장·원 배양의 qubit-rounds·별도 flag 연구·Willow 후선택 실험은 각 출처와 조건에 귀속했습니다. 과학 표지 원칙 1.0을 적용한 새 표지는 시간층의 점유·빈자리·재점유로 측정 후 저장공간 재사용을 상징한 내장 imagegen 개념 그림입니다. 칸과 점의 개수는 물리량을 나타내지 않습니다. 설명 도표와 수치 예시는 직접 제작했습니다.",
+        "en": "Distinguished classical GPU simulation from physical QPU experiments. The 45-bit quantity is an encoded live register, not compression of an arbitrary 104-qubit state. Approximately 10^-13 probability agreement concerns small-circuit cross-checks, not the full run's logical error rate. Attributed the 90% claim, original cultivation qubit-rounds, separate flag study and postselected Willow experiment to their own sources and conditions. The revised built-in imagegen cover applies scientific cover principles 1.0: occupied, empty and reoccupied bays across time symbolize storage reuse after measurement. Bay and dot counts encode no physical quantity. Diagrams and numerical examples are original teaching material."
       }
     }
   },
