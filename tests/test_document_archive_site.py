@@ -7,9 +7,12 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.parse import urlsplit
 
 from scripts import publish_public_site as publisher
 from scripts import document_archive_site as archive_site
@@ -36,6 +39,30 @@ class LinkParser(HTMLParser):
             key = values.get("property") or values.get("name")
             if key:
                 self.metadata[key] = values.get("content")
+
+
+class NavigationParser(LinkParser):
+    """Retain visible link labels without depending on a card's CSS layout."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.anchors: list[dict] = []
+        self._anchor: dict | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        super().handle_starttag(tag, attrs)
+        if tag == "a":
+            self._anchor = {**dict(attrs), "text": ""}
+            self.anchors.append(self._anchor)
+
+    def handle_data(self, data: str) -> None:
+        if self._anchor is not None:
+            self._anchor["text"] += data
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a" and self._anchor is not None:
+            self._anchor["text"] = " ".join(self._anchor["text"].split())
+            self._anchor = None
 
 
 def archive_document(document_id: str = "2026-10-16-quantum-review") -> dict:
@@ -212,6 +239,7 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             '<title>양자 머신러닝 자율학습</title><link rel="stylesheet" href="notes.css">'
             '</head><body><aside class="sidebar"><div class="brand">QUANTUM MACHINE LEARNING</div>'
             '<h2>양자 머신러닝 자율학습</h2></aside><main class="workspace"><h1>양자 머신러닝 자율학습</h1>'
+            '<section id="doc-study-guide"><h2>학습 안내</h2></section>'
             '<a href="notes.pdf">통합 PDF</a><a href="labs/demo.py">실습 코드</a>'
             '</main></body></html>',
             encoding="utf-8",
@@ -263,9 +291,11 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertEqual(links.metadata.get("og:title"), document["title"])
         self.assertIn(links.metadata.get("og:type"), {"article", "website"})
         return_links = [link for link in links.links if str(link.get("href", "")).rstrip("/") in {
-            BASE_URL.rstrip("/"), "../..", "../../index.html", "../../archive/?series=lecture-notes"
+            BASE_URL.rstrip("/"), "../..", "../../index.html", "../../lectures"
         }]
         self.assertTrue(return_links, "Lecture page needs a link back to the Tech Review hub or lecture catalog")
+        self.assertIn('href="../../lectures/"', study_page)
+        self.assertNotIn('href="../../archive/?series=lecture-notes"', study_page)
 
         for relative, study_href, study_label in (
             ("index.html", "../lectures/quantum-machine-learning/", "강의 노트 읽기"),
@@ -368,6 +398,132 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertFalse((self.site / "archive").exists())
         self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
 
+    def test_library_navigation_orders_learning_before_secondary_document_storage(self) -> None:
+        documents = [archive_document(), {**archive_document("2026-10-16-lecture"), "series": "lecture-notes"}]
+        for language, prefix in (("ko", "../"), ("en", "../../")):
+            for area in ("reviews", "lectures", "archive"):
+                with self.subTest(language=language, area=area):
+                    parser = NavigationParser()
+                    parser.feed(archive_site.render_library_navigation(documents, area, language, prefix))
+                    anchors = parser.anchors
+                    self.assertEqual(len(anchors), 3)
+                    self.assertTrue(anchors[0]["text"].startswith("Review hub" if language == "en" else "리뷰허브"))
+                    self.assertTrue(anchors[1]["text"].startswith("Lecture notes" if language == "en" else "렉처 노트"))
+                    self.assertIn("hub-utility", anchors[2].get("class", "").split())
+                    self.assertNotIn("hub-utility", anchors[0].get("class", "").split())
+                    self.assertNotIn("hub-utility", anchors[1].get("class", "").split())
+                    self.assertEqual(anchors[1]["href"], prefix + "lectures/" + ("en/" if language == "en" else ""))
+                    self.assertEqual(anchors[2]["href"], prefix + "archive/" + ("en/" if language == "en" else ""))
+                    current = [anchor for anchor in anchors if anchor.get("aria-current") == "page"]
+                    self.assertEqual(current, [anchors[("reviews", "lectures", "archive").index(area)]])
+
+    def test_lecture_landing_publication_is_bilingual_and_contains_only_learning_documents(self) -> None:
+        study, bundles, _source = self.lecture_fixture()
+        pdf_only = archive_document("2026-10-16-condensed-matter-lecture")
+        pdf_only.update(series="lecture-notes", title="응집물질 PDF 강의", title_en="Condensed matter PDF lecture")
+        review = archive_document("2026-10-15-daily-research")
+        review.update(title="학습 목록에 없는 일일 리뷰", title_en="Daily review outside the learning catalog")
+        self.registry([review, pdf_only, study])
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+
+        for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            with self.subTest(language=language):
+                page = (self.site / "lectures" / relative).read_text(encoding="utf-8")
+                parser = NavigationParser()
+                parser.feed(page)
+                canonical = [link["href"] for link in parser.links if link.get("rel") == "canonical"]
+                self.assertEqual(canonical, [BASE_URL + "lectures/" + ("en/" if language == "en" else "")])
+                alternates = {link.get("hreflang"): link["href"] for link in parser.links if link.get("rel") == "alternate"}
+                self.assertEqual(alternates, {"ko": BASE_URL + "lectures/", "en": BASE_URL + "lectures/en/", "x-default": BASE_URL + "lectures/"})
+                self.assertIn(study["title_en" if language == "en" else "title"], page)
+                self.assertIn(pdf_only["title_en" if language == "en" else "title"], page)
+                self.assertNotIn(review["title"], page)
+                self.assertNotIn(review["title_en"], page)
+                for control in ("archive-search", "archive-month", "archive-sort", "collection-filters"):
+                    self.assertNotIn(control, page, "The learning catalog must not inherit archive controls")
+                current = [anchor for anchor in parser.anchors if anchor.get("aria-current") == "page"]
+                self.assertEqual(len(current), 1)
+                self.assertTrue(current[0]["text"].startswith("Lecture notes" if language == "en" else "렉처 노트"))
+                self.assertIn("Korean" if language == "en" else "한국어", page)
+
+    def test_lecture_actions_open_web_study_and_pdf_only_materials_without_broken_paths(self) -> None:
+        study, bundles, _source = self.lecture_fixture()
+        pdf_only = archive_document("2026-10-16-condensed-matter-lecture")
+        pdf_only.update(series="lecture-notes", title="응집물질 PDF 강의", title_en="Condensed matter PDF lecture")
+        self.registry([study, pdf_only])
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+
+        for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            with self.subTest(language=language):
+                page_path = self.site / "lectures" / relative
+                parser = NavigationParser()
+                parser.feed(page_path.read_text(encoding="utf-8"))
+                start = [anchor for anchor in parser.anchors if anchor["text"].startswith("Start learning" if language == "en" else "학습 시작")]
+                pdf_start = [anchor for anchor in parser.anchors if "lecture-primary" in anchor.get("class", "").split() and anchor["text"].startswith("Read PDF" if language == "en" else "PDF 읽기")]
+                self.assertEqual(len(start), 1)
+                self.assertEqual(len(pdf_start), 1)
+                study_url = urlsplit(start[0]["href"])
+                study_path = (page_path.parent / study_url.path / "index.html").resolve()
+                self.assertEqual(study_path, self.site / "lectures/quantum-machine-learning/index.html")
+                self.assertEqual(study_url.fragment, "doc-study-guide")
+                self.assertIn(f'id="{study_url.fragment}"', study_path.read_text(encoding="utf-8"))
+                self.assertEqual((page_path.parent / pdf_start[0]["href"]).resolve(), self.site / "archive" / pdf_only["file"])
+                pdf_links = [anchor for anchor in parser.anchors if str(anchor.get("href", "")).endswith(".pdf")]
+                self.assertGreaterEqual(len(pdf_links), 4)
+                downloads = [anchor for anchor in pdf_links if "download" in anchor]
+                self.assertEqual(len(downloads), 1)
+                self.assertEqual((page_path.parent / downloads[0]["href"]).resolve(), self.site / "archive" / pdf_only["file"])
+                for anchor in pdf_links:
+                    target = (page_path.parent / anchor["href"]).resolve()
+                    self.assertTrue(target.is_relative_to(self.site))
+                    self.assertEqual(target.read_bytes(), PDF_BYTES)
+
+    def test_lecture_landing_escapes_registry_content_and_handles_an_empty_catalog(self) -> None:
+        document = archive_document()
+        document.update(series="lecture-notes", href="archive/files/example.pdf", size_bytes=len(PDF_BYTES))
+        for language in ("ko", "en"):
+            with self.subTest(language=language):
+                page = archive_site.render_lectures([document], BASE_URL, language)
+                self.assertNotIn("<b>", page)
+                self.assertNotIn("<script>alert(1)</script>", page)
+                self.assertIn("&lt;b&gt;", page)
+                self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", page)
+                parser = NavigationParser()
+                parser.feed(archive_site.render_lectures([], BASE_URL, language))
+                self.assertEqual(sum(anchor.get("aria-current") == "page" for anchor in parser.anchors), 1)
+                self.assertFalse(any(str(anchor.get("href", "")).endswith(".pdf") for anchor in parser.anchors))
+
+    @unittest.skipUnless(shutil.which("node"), "Node.js is required to exercise the published legacy-link routing")
+    def test_legacy_lecture_link_routes_to_learning_but_preserves_explicit_archive_searches(self) -> None:
+        cases = [
+            {"lang": language, "query": query}
+            for language in ("ko", "en")
+            for query in ("?series=lecture-notes", "?series=lecture-notes&q=kernel", "?series=lecture-notes&q=", "?series=lecture-notes&month=2026-10", "?series=lecture-notes&sort=oldest", "?series=lecture-notes&sort=newest", "?series=daily-quantum", "")
+        ]
+        harness = r"""
+const vm = require('node:vm');
+const input = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));
+const results = input.cases.map(item => {
+  let destination = null;
+  const location = {search: item.query, pathname: item.lang === 'en' ? '/AI_Tech_Review/archive/en/' : '/AI_Tech_Review/archive/', hash: '', replace(value) { destination = value; }};
+  const context = {URLSearchParams, URL, location, window: {location}, document: {documentElement: {lang: item.lang}, querySelector() {return null;}}};
+  vm.runInNewContext(input.script, context);
+  return destination;
+});
+process.stdout.write(JSON.stringify(results));
+"""
+        result = subprocess.run([shutil.which("node"), "-e", harness], input=json.dumps({"script": archive_site.ARCHIVE_JS, "cases": cases}), text=True, capture_output=True, check=True)
+        results = json.loads(result.stdout)
+        for case, destination in zip(cases, results):
+            with self.subTest(**case):
+                expected = ("../../lectures/en/" if case["lang"] == "en" else "../lectures/") if case["query"] == "?series=lecture-notes" else None
+                self.assertEqual(destination, expected)
+
     def published_index(self) -> str:
         return (
             '<!doctype html><html><head></head><body>'
@@ -424,7 +580,7 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertEqual(manifest_path.read_bytes(), manifest_before)
         after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in (self.site / "reviews").rglob("*") if path.is_file()}
         self.assertEqual(after, before)
-        for relative, asset_prefix in (("index.html", ""), ("archive/index.html", "../"), ("archive/en/index.html", "../../")):
+        for relative, asset_prefix in (("index.html", ""), ("archive/index.html", "../"), ("archive/en/index.html", "../../"), ("lectures/index.html", "../"), ("lectures/en/index.html", "../../")):
             with self.subTest(page=relative):
                 page = (self.site / relative).read_text(encoding="utf-8")
                 self.assertEqual(page.count("window.AI_TECH_REVIEW_METRICS="), 1)

@@ -1,4 +1,10 @@
 (() => {
+  const en = document.documentElement.lang === 'en';
+  const params = new URLSearchParams(location.search);
+  if (params.get('series') === 'lecture-notes' && !['q', 'month', 'sort'].some(key => params.has(key))) {
+    location.replace(en ? '../../lectures/en/' : '../lectures/');
+    return;
+  }
   const search = document.querySelector('#archive-search');
   if (!search) return;
   const month = document.querySelector('#archive-month');
@@ -9,8 +15,6 @@
   const count = document.querySelector('#archive-result-count');
   const empty = document.querySelector('#archive-empty');
   const more = document.querySelector('#archive-more');
-  const en = document.documentElement.lang === 'en';
-  const params = new URLSearchParams(location.search);
   let series = buttons.some(button => button.dataset.series === params.get('series')) ? params.get('series') : '';
   let limit = 12;
   search.value = params.get('q') || '';

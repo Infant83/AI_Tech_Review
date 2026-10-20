@@ -8,13 +8,13 @@
 - 리서치 리포트, 슬라이드 입력/산출물, 보조 소스는 주제 폴더 안에 함께 보관한다.
 - 공개 PDF 문서는 `archive/manifest.json`에 등록하며, [아카이브 운영 안내](archive/README.md)에 따라 추가한다.
 
-## 리뷰허브와 문서 아카이브
+## 리뷰 읽기·렉처 학습·자료 보관
 
-[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [문서 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)에서 Daily Quantum Review(Daily Quantum Brief), 주간 리뷰, 수시 PDF 아티클과 렉처 노트를 검색한다. 아카이브는 발행 월·키워드·분류로 찾기, 날짜순 정렬, PDF 열기·다운로드를 지원한다.
+[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [렉처 노트](https://infant83.github.io/AI_Tech_Review/lectures/)에서 주제별 학습을 시작한다. [전체 자료 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)는 Daily Quantum Review(Daily Quantum Brief), 주간 리뷰, 수시 PDF와 강의 노트의 보관본을 날짜·주제·분류로 찾아보는 별도 영역이다.
 
 PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실행하면 기존 리뷰 파일을 다시 생성하지 않고 허브와 아카이브만 갱신한다. 기존 허브에 공개 조회수·분석 설정이 있으면 새 컴퓨터에서도 이를 보존하며, 명시한 환경변수가 있으면 그 설정을 우선한다. `site/manifest.json`은 심층 리뷰 목록, `site/archive-manifest.json`은 문서 목록이다.
 
-2026-10-20에는 CMU 17-620 공개 실라버스에서 출발한 [퀀텀 머신러닝 독립 렉처 시리즈](2026-10-20_quantum-machine-learning-lecture-series/README.md)를 작성했다. [테크리뷰의 렉처 노트 항목](https://infant83.github.io/AI_Tech_Review/archive/?series=lecture-notes)에서 [웹 학습 노트](https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/)와 PDF를 읽을 수 있다. 147쪽 2.0판은 80분 한국어 강의 18개·문제와 완전 풀이 72개·수학 준비편·한영 용어 144항목·14주 자율학습 안내·실행 실습 5개·프로젝트 3개를 제공한다. 원강의 녹취나 공식 교재가 아니며, 2025–2026 연구의 가정과 실제 QPU·고전 모사·논리 자원 추정의 범위를 구분한다.
+2026-10-20에는 CMU 17-620 공개 실라버스에서 출발한 [퀀텀 머신러닝 독립 렉처 시리즈](2026-10-20_quantum-machine-learning-lecture-series/README.md)를 작성했다. [테크리뷰의 렉처 노트 항목](https://infant83.github.io/AI_Tech_Review/lectures/)에서 [웹 학습 노트](https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/)와 PDF를 읽을 수 있다. 147쪽 2.0판은 80분 한국어 강의 18개·문제와 완전 풀이 72개·수학 준비편·한영 용어 144항목·14주 자율학습 안내·실행 실습 5개·프로젝트 3개를 제공한다. 원강의 녹취나 공식 교재가 아니며, 2025–2026 연구의 가정과 실제 QPU·고전 모사·논리 자원 추정의 범위를 구분한다.
 
 ## 기본 흐름
 

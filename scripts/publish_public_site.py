@@ -18,9 +18,9 @@ from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
 try:
-    from .document_archive_site import publish_archive, render_archive_teaser, validate_archive
+    from .document_archive_site import publish_archive, render_learning_teaser, render_library_navigation, validate_archive
 except ImportError:
-    from document_archive_site import publish_archive, render_archive_teaser, validate_archive
+    from document_archive_site import publish_archive, render_learning_teaser, render_library_navigation, validate_archive
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -2823,11 +2823,7 @@ def render_index(
           <a href="manifest.json">데이터</a>
         </span>
       </nav>
-      <nav class="hub-nav" aria-label="허브 메뉴">
-        <a href="./" aria-current="page">리뷰허브</a>
-        <a href="archive/">문서 아카이브 <span>{len(documents)}</span></a>
-        <a href="archive/?series=lecture-notes">렉처 노트 <span>{sum(doc['series'] == 'lecture-notes' for doc in documents)}</span></a>
-      </nav>
+      {render_library_navigation(documents, "reviews")}
       <section class="hero">
         <p class="eyebrow">Public report hub · {updated}</p>
         <h1>Enlighten your AI Technology Insight.</h1>
@@ -2835,7 +2831,7 @@ def render_index(
         <div class="stats" aria-label="허브 요약">
           <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
           <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>
-          <a href="archive/" class="stat-link"><strong>{len(documents)}</strong> 아카이브 문서</a>
+          <a href="lectures/" class="stat-link"><strong>{sum(doc['series'] == 'lecture-notes' for doc in documents)}</strong> 렉처 노트</a>
         </div>
       </section>
     </header>
@@ -2843,7 +2839,7 @@ def render_index(
     <main>
       {latest}
 
-      {render_archive_teaser(documents)}
+      {render_learning_teaser(documents)}
 
       <section class="topic-filter" id="topic-filter" aria-label="주제별 리뷰 찾기">
         <div class="filter-heading">
@@ -4281,7 +4277,8 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
                 path = study_root / name
                 if path.is_file() and path.suffix in {".html", ".css", ".svg", ".json", ".py", ".txt"}:
                     errors.extend(f"{risk} left in lecture asset {name}" for risk in public_text_risks(path.read_text(encoding="utf-8")))
-    for archive_page in (SITE_DIR / "archive/index.html", SITE_DIR / "archive/en/index.html"):
+    for archive_page in (SITE_DIR / "archive/index.html", SITE_DIR / "archive/en/index.html",
+                         SITE_DIR / "lectures/index.html", SITE_DIR / "lectures/en/index.html"):
         if archive_page.exists():
             archive_text = archive_page.read_text(encoding="utf-8")
             errors.extend(validate_local_references(archive_page, archive_text, sparse_tracked_paths))
