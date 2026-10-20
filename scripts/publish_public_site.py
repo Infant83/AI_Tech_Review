@@ -2832,6 +2832,7 @@ def render_index(
           <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
           <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>
           <a href="lectures/" class="stat-link"><strong>{sum(doc['series'] == 'lecture-notes' for doc in documents)}</strong> 렉처 노트</a>
+          <a href="briefings/" class="stat-link"><strong>{sum(doc['series'] in {'daily-quantum', 'weekly-review'} for doc in documents)}</strong> 브리핑</a>
         </div>
       </section>
     </header>
@@ -4278,7 +4279,8 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
                 if path.is_file() and path.suffix in {".html", ".css", ".svg", ".json", ".py", ".txt"}:
                     errors.extend(f"{risk} left in lecture asset {name}" for risk in public_text_risks(path.read_text(encoding="utf-8")))
     for archive_page in (SITE_DIR / "archive/index.html", SITE_DIR / "archive/en/index.html",
-                         SITE_DIR / "lectures/index.html", SITE_DIR / "lectures/en/index.html"):
+                         SITE_DIR / "lectures/index.html", SITE_DIR / "lectures/en/index.html",
+                         SITE_DIR / "briefings/index.html", SITE_DIR / "briefings/en/index.html"):
         if archive_page.exists():
             archive_text = archive_page.read_text(encoding="utf-8")
             errors.extend(validate_local_references(archive_page, archive_text, sparse_tracked_paths))

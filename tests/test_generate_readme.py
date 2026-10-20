@@ -16,6 +16,7 @@ PERSISTENT_REFERENCES = (
     "`archive/manifest.json`",
     "[리뷰허브](https://infant83.github.io/AI_Tech_Review/)",
     "[렉처 노트](https://infant83.github.io/AI_Tech_Review/lectures/)",
+    "[브리핑](https://infant83.github.io/AI_Tech_Review/briefings/)",
     "[전체 자료 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)",
     "python3 scripts/publish_public_site.py --hub-only",
     "`site/manifest.json`",
@@ -51,6 +52,10 @@ class GenerateReadmeTests(unittest.TestCase):
             self.assertEqual(first, repeated)
             for text in (first, repeated, smaller, empty):
                 self.assert_persistent_guidance(text)
+                self.assertIn("리뷰허브 → 렉처 노트 → 브리핑", text)
+                self.assertIn("월별 달력과 게시판 목록", text)
+                self.assertIn("발행일 기준", text)
+                self.assertIn("메일 수신 시간이나 개인 메일 원문은 공개하지 않으며", text)
             self.assertIn("최신 2개 항목", first)
             self.assertLess(first.index("### 2026-10-20 · Latest review"), first.index("### 2026-10-19 · Middle review"))
             self.assertNotIn("Older review", first)

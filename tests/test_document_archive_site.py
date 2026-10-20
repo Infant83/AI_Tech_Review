@@ -401,21 +401,24 @@ class DocumentArchiveSiteTests(unittest.TestCase):
     def test_library_navigation_orders_learning_before_secondary_document_storage(self) -> None:
         documents = [archive_document(), {**archive_document("2026-10-16-lecture"), "series": "lecture-notes"}]
         for language, prefix in (("ko", "../"), ("en", "../../")):
-            for area in ("reviews", "lectures", "archive"):
+            for area in ("reviews", "lectures", "briefings", "archive"):
                 with self.subTest(language=language, area=area):
                     parser = NavigationParser()
                     parser.feed(archive_site.render_library_navigation(documents, area, language, prefix))
                     anchors = parser.anchors
-                    self.assertEqual(len(anchors), 3)
+                    self.assertEqual(len(anchors), 4)
                     self.assertTrue(anchors[0]["text"].startswith("Review hub" if language == "en" else "리뷰허브"))
                     self.assertTrue(anchors[1]["text"].startswith("Lecture notes" if language == "en" else "렉처 노트"))
-                    self.assertIn("hub-utility", anchors[2].get("class", "").split())
+                    self.assertTrue(anchors[2]["text"].startswith("Briefings" if language == "en" else "브리핑"))
+                    self.assertIn("hub-utility", anchors[3].get("class", "").split())
                     self.assertNotIn("hub-utility", anchors[0].get("class", "").split())
                     self.assertNotIn("hub-utility", anchors[1].get("class", "").split())
+                    self.assertNotIn("hub-utility", anchors[2].get("class", "").split())
                     self.assertEqual(anchors[1]["href"], prefix + "lectures/" + ("en/" if language == "en" else ""))
-                    self.assertEqual(anchors[2]["href"], prefix + "archive/" + ("en/" if language == "en" else ""))
+                    self.assertEqual(anchors[2]["href"], prefix + "briefings/" + ("en/" if language == "en" else ""))
+                    self.assertEqual(anchors[3]["href"], prefix + "archive/" + ("en/" if language == "en" else ""))
                     current = [anchor for anchor in anchors if anchor.get("aria-current") == "page"]
-                    self.assertEqual(current, [anchors[("reviews", "lectures", "archive").index(area)]])
+                    self.assertEqual(current, [anchors[("reviews", "lectures", "briefings", "archive").index(area)]])
 
     def test_lecture_landing_publication_is_bilingual_and_contains_only_learning_documents(self) -> None:
         study, bundles, _source = self.lecture_fixture()
@@ -498,12 +501,134 @@ class DocumentArchiveSiteTests(unittest.TestCase):
                 self.assertEqual(sum(anchor.get("aria-current") == "page" for anchor in parser.anchors), 1)
                 self.assertFalse(any(str(anchor.get("href", "")).endswith(".pdf") for anchor in parser.anchors))
 
+    def test_briefing_landing_is_bilingual_and_lists_only_published_briefing_series(self) -> None:
+        daily = archive_document("2026-10-20-daily-briefing")
+        daily.update(title="양자 오류 정정 브리핑", title_en="Quantum error correction briefing")
+        weekly = archive_document("2026-10-16-weekly-briefing")
+        weekly.update(series="weekly-review", title="주간 양자 연구 브리핑", title_en="Weekly quantum research briefing")
+        older = archive_document("2026-09-30-daily-briefing")
+        older.update(title="9월 양자 네트워크 브리핑", title_en="September quantum network briefing")
+        article = archive_document("2026-10-19-research-article")
+        article.update(series="article", title="수시 아티클 전용 제목", title_en="An article outside the briefing catalog")
+        lecture = archive_document("2026-10-18-standalone-lecture")
+        lecture.update(series="lecture-notes", title="렉처 노트 전용 제목", title_en="A lecture outside the briefing catalog")
+        self.registry([daily, weekly, older, article, lecture])
+
+        self.publish()
+
+        for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            with self.subTest(language=language):
+                page_path = self.site / "briefings" / relative
+                page = page_path.read_text(encoding="utf-8")
+                parser = NavigationParser()
+                parser.feed(page)
+                canonical = [link["href"] for link in parser.links if link.get("rel") == "canonical"]
+                self.assertEqual(canonical, [BASE_URL + "briefings/" + ("en/" if language == "en" else "")])
+                alternates = {link.get("hreflang"): link["href"] for link in parser.links if link.get("rel") == "alternate"}
+                self.assertEqual(alternates, {
+                    "ko": BASE_URL + "briefings/", "en": BASE_URL + "briefings/en/", "x-default": BASE_URL + "briefings/",
+                })
+                self.assertIn(f'<html lang="{language}">', page)
+                self.assertNotIn(article["title"], page)
+                self.assertNotIn(article["title_en"], page)
+                self.assertNotIn(lecture["title"], page)
+                self.assertNotIn(lecture["title_en"], page)
+                current = [anchor for anchor in parser.anchors if anchor.get("aria-current") == "page"]
+                self.assertEqual(len(current), 1)
+                self.assertTrue(current[0]["text"].startswith("Briefings" if language == "en" else "브리핑"))
+                pdf_links = [anchor for anchor in parser.anchors if str(anchor.get("href", "")).endswith(".pdf")]
+                targets = {(page_path.parent / anchor["href"]).resolve() for anchor in pdf_links}
+                for document in (daily, weekly, older):
+                    self.assertIn(self.site / "archive" / document["file"], targets, "Every registered briefing needs a readable list link even without JavaScript")
+                for target in targets:
+                    self.assertTrue(target.is_relative_to(self.site))
+                    self.assertEqual(target.read_bytes(), PDF_BYTES)
+                self.assertIn("2026-10", page)
+                self.assertIn("2026-09", page)
+        self.assertEqual(validate_archive(self.site), [])
+
+    def test_briefing_landing_escapes_registry_text_and_keeps_source_fields_private(self) -> None:
+        document = archive_document()
+        document["source_title"] = "PRIVATE_SOURCE_METADATA_DO_NOT_RENDER"
+        self.registry([document])
+        (self.archive / "intake.json").write_text('{"mail_id":"PRIVATE_MAIL_ID_DO_NOT_RENDER"}', encoding="utf-8")
+
+        self.publish()
+
+        for relative in ("index.html", "en/index.html"):
+            with self.subTest(page=relative):
+                page = (self.site / "briefings" / relative).read_text(encoding="utf-8")
+                self.assertNotIn("<b>", page)
+                self.assertNotIn("<script>alert(1)</script>", page)
+                self.assertNotIn("PRIVATE_SOURCE_METADATA_DO_NOT_RENDER", page)
+                self.assertNotIn("PRIVATE_MAIL_ID_DO_NOT_RENDER", page)
+                self.assertNotIn(str(self.root), page)
+                self.assertIn("&lt;b&gt;", page)
+                self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", page)
+
+    def test_briefing_landing_has_useful_empty_state_when_only_other_documents_exist(self) -> None:
+        article = archive_document()
+        article.update(series="article", title="수시 연구 아티클", title_en="Research article")
+        self.registry([article])
+
+        self.publish()
+
+        for relative in ("index.html", "en/index.html"):
+            with self.subTest(page=relative):
+                page = (self.site / "briefings" / relative).read_text(encoding="utf-8")
+                parser = NavigationParser()
+                parser.feed(page)
+                self.assertFalse(any(str(anchor.get("href", "")).endswith(".pdf") for anchor in parser.anchors))
+                self.assertEqual(sum(anchor.get("aria-current") == "page" for anchor in parser.anchors), 1)
+                self.assertNotIn(article["title"], page)
+                self.assertNotIn(article["title_en"], page)
+                self.assertNotIn("undefined", page)
+                self.assertNotIn("NaN", page)
+        self.assertEqual(validate_archive(self.site), [])
+
+    def test_briefing_validator_rejects_unlisted_output_and_mismatched_public_data(self) -> None:
+        self.registry([archive_document()])
+        self.publish()
+        unexpected = self.site / "briefings" / "private-intake.txt"
+        unexpected.write_text("private material", encoding="utf-8")
+
+        errors = validate_archive(self.site)
+
+        self.assertTrue(any("briefing" in error and "allowlist" in error for error in errors), errors)
+        unexpected.unlink()
+        page_path = self.site / "briefings" / "index.html"
+        original = page_path.read_text(encoding="utf-8")
+        start = original.index('<script type="application/json" id="briefing-data">') + len('<script type="application/json" id="briefing-data">')
+        end = original.index("</script>", start)
+        payload = json.loads(original[start:end])
+        payload["documents"] = []
+        page_path.write_text(original[:start] + json.dumps(payload) + original[end:], encoding="utf-8")
+
+        errors = validate_archive(self.site)
+
+        self.assertTrue(any("briefing" in error and "registry" in error for error in errors), errors)
+
+    def test_briefing_validator_reports_missing_language_page(self) -> None:
+        self.registry([archive_document()])
+        self.publish()
+        (self.site / "briefings" / "en" / "index.html").unlink()
+
+        errors = validate_archive(self.site)
+
+        self.assertTrue(any("missing briefing page" in error and "en/index.html" in error for error in errors), errors)
+
     @unittest.skipUnless(shutil.which("node"), "Node.js is required to exercise the published legacy-link routing")
-    def test_legacy_lecture_link_routes_to_learning_but_preserves_explicit_archive_searches(self) -> None:
+    def test_legacy_section_links_route_to_primary_sections_but_preserve_archive_searches(self) -> None:
         cases = [
             {"lang": language, "query": query}
             for language in ("ko", "en")
-            for query in ("?series=lecture-notes", "?series=lecture-notes&q=kernel", "?series=lecture-notes&q=", "?series=lecture-notes&month=2026-10", "?series=lecture-notes&sort=oldest", "?series=lecture-notes&sort=newest", "?series=daily-quantum", "")
+            for query in (
+                "?series=lecture-notes", "?series=lecture-notes&q=kernel", "?series=lecture-notes&q=",
+                "?series=lecture-notes&month=2026-10", "?series=lecture-notes&sort=oldest", "?series=lecture-notes&sort=newest",
+                "?series=daily-quantum", "?series=daily-quantum&q=kernel", "?series=daily-quantum&q=",
+                "?series=daily-quantum&month=2026-10", "?series=daily-quantum&sort=oldest", "?series=daily-quantum&sort=newest",
+                "?series=weekly-review", "?series=weekly-review&q=kernel", "?series=weekly-review&month=2026-10", "?series=weekly-review&sort=oldest", "",
+            )
         ]
         harness = r"""
 const vm = require('node:vm');
@@ -521,7 +646,15 @@ process.stdout.write(JSON.stringify(results));
         results = json.loads(result.stdout)
         for case, destination in zip(cases, results):
             with self.subTest(**case):
-                expected = ("../../lectures/en/" if case["lang"] == "en" else "../lectures/") if case["query"] == "?series=lecture-notes" else None
+                destination_section = {
+                    "?series=lecture-notes": "lectures",
+                    "?series=daily-quantum": "briefings",
+                    "?series=weekly-review": "briefings",
+                }.get(case["query"])
+                expected = (
+                    ("../../" if case["lang"] == "en" else "../") + destination_section + ("/en/" if case["lang"] == "en" else "/")
+                    if destination_section else None
+                )
                 self.assertEqual(destination, expected)
 
     def published_index(self) -> str:
@@ -580,7 +713,7 @@ process.stdout.write(JSON.stringify(results));
         self.assertEqual(manifest_path.read_bytes(), manifest_before)
         after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in (self.site / "reviews").rglob("*") if path.is_file()}
         self.assertEqual(after, before)
-        for relative, asset_prefix in (("index.html", ""), ("archive/index.html", "../"), ("archive/en/index.html", "../../"), ("lectures/index.html", "../"), ("lectures/en/index.html", "../../")):
+        for relative, asset_prefix in (("index.html", ""), ("archive/index.html", "../"), ("archive/en/index.html", "../../"), ("lectures/index.html", "../"), ("lectures/en/index.html", "../../"), ("briefings/index.html", "../"), ("briefings/en/index.html", "../../")):
             with self.subTest(page=relative):
                 page = (self.site / relative).read_text(encoding="utf-8")
                 self.assertEqual(page.count("window.AI_TECH_REVIEW_METRICS="), 1)

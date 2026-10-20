@@ -5,6 +5,10 @@
     location.replace(en ? '../../lectures/en/' : '../lectures/');
     return;
   }
+  if (['daily-quantum', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
+    location.replace(en ? '../../briefings/en/' : '../briefings/');
+    return;
+  }
   const search = document.querySelector('#archive-search');
   if (!search) return;
   const month = document.querySelector('#archive-month');

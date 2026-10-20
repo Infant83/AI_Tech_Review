@@ -10,13 +10,18 @@ import shutil
 import tempfile
 from pathlib import Path
 
+try:
+    from .briefing_site import render_briefings, validate_briefings
+except ImportError:
+    from briefing_site import render_briefings, validate_briefings
+
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
 }
-LIBRARY_ASSET_VERSION = "20261020-learning-nav"
+LIBRARY_ASSET_VERSION = "20261020-briefings"
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
@@ -44,11 +49,13 @@ def escape(value: object) -> str:
 def render_library_navigation(documents: list[dict], area: str, language: str = "ko", prefix: str = "") -> str:
     en = language == "en"
     count = sum(doc["series"] == "lecture-notes" for doc in documents)
+    briefing_count = sum(doc["series"] in {"daily-quantum", "weekly-review"} for doc in documents)
     current = lambda key: ' aria-current="page"' if area == key else ""
     return (f'<nav class="hub-nav" aria-label="{"Site sections" if en else "콘텐츠 메뉴"}">'
             '<div class="hub-primary">'
             f'<a href="{prefix}index.html"{current("reviews")}>{"Review hub" if en else "리뷰허브"}</a>'
             f'<a href="{prefix}lectures/{"en/" if en else ""}"{current("lectures")}>{"Lecture notes" if en else "렉처 노트"}<span>{count}</span></a>'
+            f'<a href="{prefix}briefings/{"en/" if en else ""}"{current("briefings")}>{"Briefings" if en else "브리핑"}<span>{briefing_count}</span></a>'
             '</div>'
             f'<a class="hub-utility" href="{prefix}archive/{"en/" if en else ""}"{current("archive")}>'
             f'{"All-document archive" if en else "전체 자료 아카이브"}<span>{len(documents)}</span></a></nav>')
@@ -77,8 +84,8 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
     pdf_prefix = "../files/" if en else "files/"
     current_url = base_url + "archive/" + ("en/" if en else "")
     title = "All-document archive" if en else "전체 자료 아카이브"
-    description = ("Find preserved PDFs by title, topic and publication date. For a guided study path, visit Lecture notes."
-                   if en else "발행한 PDF를 제목·주제·날짜로 다시 찾는 자료 보관소입니다. 강의를 따라 공부하려면 렉처 노트에서 시작하세요.")
+    description = ("Find preserved PDFs by title, topic and publication date. Explore the Briefings calendar or study with Lecture notes."
+                   if en else "발행한 PDF를 제목·주제·날짜로 다시 찾는 자료 보관소입니다. 날짜별 소식은 브리핑에서, 주제별 학습은 렉처 노트에서 시작하세요.")
     counts = {key: sum(doc["series"] == key for doc in documents) for key in SERIES}
     buttons = f'<button type="button" class="collection-button active" data-series="" aria-pressed="true">{"All documents" if en else "전체 문서"}<span>{len(documents)}</span></button>'
     buttons += "".join(
@@ -321,6 +328,12 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             page = temporary_root / "lectures" / ("en/index.html" if lang == "en" else "index.html")
             page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text(decorate(render_lectures(documents, base_url, lang), prefix), encoding="utf-8")
+            page = temporary_root / "briefings" / ("en/index.html" if lang == "en" else "index.html")
+            page.parent.mkdir(parents=True, exist_ok=True)
+            navigation = render_library_navigation(documents, "briefings", lang, prefix)
+            page.write_text(decorate(render_briefings(documents, base_url, lang, navigation, LIBRARY_ASSET_VERSION), prefix), encoding="utf-8")
+        # Read all source assets before replacing any published output.
+        briefing_assets = {name: (Path(__file__).parent / "assets" / name).read_text(encoding="utf-8") for name in ("briefings.css", "briefings.js")}
         staging = Path(temporary) / "archive"
         (staging / "files").mkdir(parents=True)
         (staging / "en").mkdir()
@@ -342,10 +355,16 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             target = site_dir / "lectures" / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(temporary_root / "lectures" / relative, target)
+        target = site_dir / "briefings"
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.move(str(temporary_root / "briefings"), str(target))
     (site_dir / "archive-manifest.json").write_text(json.dumps({"version": 1, "documents": documents}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     assets = site_dir / "assets"
     (assets / "archive.css").write_text(ARCHIVE_CSS.strip() + "\n", encoding="utf-8")
     (assets / "archive.js").write_text(ARCHIVE_JS.strip() + "\n", encoding="utf-8")
+    for name, text in briefing_assets.items():
+        (assets / name).write_text(text, encoding="utf-8")
     return documents
 
 
@@ -383,6 +402,7 @@ def validate_archive(site_dir: Path) -> list[str]:
         return ["missing public archive manifest"]
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     errors.extend(validate_lecture_bundles(site_dir, manifest["documents"]))
+    errors.extend(validate_briefings(site_dir, manifest["documents"]))
     for relative in ("index.html", "en/index.html"):
         if not (site_dir / "lectures" / relative).is_file():
             errors.append(f"missing lecture catalog: {relative}")
@@ -498,7 +518,7 @@ ARCHIVE_CSS = '''
 .archive-note { padding:24px 0 48px; margin-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
 .archive-note p { max-width:800px; }
 @media(max-width:760px) { .archive-preview { grid-template-columns:1fr; gap:20px; padding:24px; } .archive-controls { grid-template-columns:1fr 1fr; padding:16px; gap:12px; } .archive-search { grid-column:1 / -1; } .document-grid { grid-template-columns:1fr; } .document-card { padding:22px; } .collection-button { padding:10px 12px; font-size:13px; } .archive-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; } .archive-page .topbar-links { font-size:12px; } }
-@media(max-width:600px) { .hub-nav { gap:4px 10px; padding:8px 0 12px; } .hub-primary { gap:4px; } .hub-primary a { padding:10px 14px; font-size:15px; } .hub-nav .hub-utility { border-left:0; font-size:11px; padding:6px 0; } .lecture-hero { padding:22px 0 18px; } .lecture-hero h1 { font-size:32px; margin-bottom:10px; } .lecture-hero>p:not(.section-kicker) { font-size:14px; line-height:1.7; } .lecture-list { gap:16px; } .lecture-card { padding:22px; border-radius:11px; } .lecture-card h2 { font-size:21px; line-height:1.45; margin:13px 0 10px; } .lecture-summary { font-size:14px; line-height:1.75; margin-bottom:14px; } .lecture-facts { gap:7px 14px; font-size:12px; margin-bottom:17px; } .lecture-actions a { font-size:13px; padding:10px 14px; } .lecture-resources { gap:0 18px; margin-top:12px; padding-top:8px; } .lecture-resources a { font-size:12px; } .lectures-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; padding-top:20px; padding-bottom:15px; min-height:0; } .lectures-page .topbar-links { font-size:12px; } }
+@media(max-width:600px) { .hub-nav { gap:4px 10px; padding:8px 0 12px; } .hub-primary { gap:4px; width:100%; } .hub-primary a { padding:10px 11px; font-size:14px; } .hub-primary span { font-size:11px; margin-left:5px; } .hub-nav .hub-utility { border-left:0; font-size:11px; padding:6px 0; } .lecture-hero { padding:22px 0 18px; } .lecture-hero h1 { font-size:32px; margin-bottom:10px; } .lecture-hero>p:not(.section-kicker) { font-size:14px; line-height:1.7; } .lecture-list { gap:16px; } .lecture-card { padding:22px; border-radius:11px; } .lecture-card h2 { font-size:21px; line-height:1.45; margin:13px 0 10px; } .lecture-summary { font-size:14px; line-height:1.75; margin-bottom:14px; } .lecture-facts { gap:7px 14px; font-size:12px; margin-bottom:17px; } .lecture-actions a { font-size:13px; padding:10px 14px; } .lecture-resources { gap:0 18px; margin-top:12px; padding-top:8px; } .lecture-resources a { font-size:12px; } .lectures-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; padding-top:20px; padding-bottom:15px; min-height:0; } .lectures-page .topbar-links { font-size:12px; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 '''
 
@@ -508,6 +528,10 @@ ARCHIVE_JS = '''
   const params = new URLSearchParams(location.search);
   if (params.get('series') === 'lecture-notes' && !['q', 'month', 'sort'].some(key => params.has(key))) {
     location.replace(en ? '../../lectures/en/' : '../lectures/');
+    return;
+  }
+  if (['daily-quantum', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
+    location.replace(en ? '../../briefings/en/' : '../briefings/');
     return;
   }
   const search = document.querySelector('#archive-search');
