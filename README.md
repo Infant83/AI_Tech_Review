@@ -22,6 +22,12 @@ PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실�
 
 새 리뷰의 표지는 [과학 표지 제작 원칙](COVER_ART_DIRECTION.md)에 따라 기획하고 [표지 기획 양식](templates/cover-art-brief.md)을 주제 폴더에 남긴다. 과학 분야·표현 유형·매체를 구분하고, 의미를 보존하는 관계·기사 고유성·최근 표지와의 다양성·작은 화면에서의 판독을 함께 확인한다.
 
+비디오 abstract는 사용자 요청·발행 요건 또는 편집 판단에 따라 선택한다. [시범 제작 원칙](VIDEO_ABSTRACT_DIRECTION.md), [영상 브리프](templates/video-abstract-brief.md), [노터 비디오 abstract 제작 소스](2026-10-21_video-abstract-pilot/v4/README.md)를 참고한다. 생성형 비디오 API 없이 코드로 제작하며 렉처 노트 등에 기본으로 추가하지 않는다.
+
+게시물·피규어·영상의 용어·설명 순서·메시지 전달은 [공통 설명 준칙](SCIENTIFIC_EXPLANATION_DIRECTION.md)을 따른다. [게시물 개편 양식](templates/review-explanation-brief.md)과 [노터 영상 브리프](2026-10-17_noether-symmetry-conservation/video-abstract-brief.md)에 문장·발화·그림의 연결을 구체화한다.
+
+노터 v4는 생성한 개념 배경에 검증한 운동·수식·수치와 한영 합성 내레이션을 합성한다. 실제 발화에 맞춰 용어와 도식의 등장·변화·정지를 배치하며, 대표 사례를 게시물의 ‘대칭·보존법칙을 설계와 검증에 쓴다’는 논지로 연결한다. 짧은 abstract와 심화 설명의 범위를 구분한다.
+
 1. 주제 또는 소스 팩을 받는다.
 2. 소스와 노트를 워크스페이스 구조에 맞게 정리한다.
 3. 심층 리서치를 수행하거나 보강한다.

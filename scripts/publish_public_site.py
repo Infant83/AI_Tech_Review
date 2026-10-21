@@ -331,7 +331,8 @@ REVIEWS: tuple[PublicReview, ...] = (
             PublicAgent("publish_audit", "publication configuration, asset dependencies and deployment-path audit", "게시 설정·자산 의존성·배포 경로 감사"),
             PublicAgent("explanation_harness_review", "2026-10-22 Korean revision: argument continuity, first-use terms and interpretation of figures", "2026-10-22 한국어 개편: 논리 연결·첫 용어 설명·피규어 해석"),
             PublicAgent("v3_science_visual", "2026-10-22 primary-source recheck, scientific conditions and English revision", "2026-10-22 원전 재대조·과학적 조건 검토·영어 개편"),
-            PublicAgent("final_audit", "2026-10-22 explanatory-figure revision and publication-path audit", "2026-10-22 설명 도표 개편·게시 경로 감사"),
+            PublicAgent("final_audit", "2026-10-22 explanatory-figure revision, publication-path audit and named-video publication/privacy checks", "2026-10-22 설명 도표 개편·게시 경로 감사·영상 명명 허용목록 및 비공개 정보 검사"),
+            PublicAgent("v3_video_renderer", "2026-10-22 bilingual video-abstract rendering, local synthetic narration and encoded-output checks", "2026-10-22 한영 비디오 abstract 렌더링·로컬 합성 내레이션·인코딩 출력 검사"),
             PublicAgent("noether_revision_reader", "2026-10-22 independent reading of the revised Korean argument without planning notes", "2026-10-22 기획 문서 없이 개정 국문 본문의 논지·연결 독립 검토"),
             PublicAgent("noether_output_qa", "2026-10-22 complete bilingual PDF visual inspection, responsive HTML and privacy/link checks", "2026-10-22 한영 PDF 전 페이지 시각 검수·반응형 HTML·비공개 경로 및 링크 검사"),
         ),
@@ -348,8 +349,8 @@ REVIEWS: tuple[PublicReview, ...] = (
         primary_sources_checked=True, evidence_cutoff="2026-10-22",
         human_review_level="topic, revision and public posting explicitly requested; no line-by-line human approval or reader-comprehension study",
         human_review_level_ko="주제・개편・공개 게시 요청 확인; 문장 단위 사람 승인・독자 이해도 평가 없음",
-        disclosure_note_ko="2026-10-22 개편에 공통 설명 준칙 1.0을 적용해 용어의 첫 설명, 문단 연결과 도표 해석을 보완하고 원전을 재대조했습니다. 진동자 계산은 교육 예제로 논문 실험 재현이나 비용을 맞춘 적분기 벤치마크가 아닙니다. HNN의 학습 함수 보존, 실제 에너지의 정확성, 수치 적분 오차와 이산 패리티 검증을 구분했습니다. OLED 연결은 응용 제안이며 독립 실험・양자 우위・소자 성능을 새로 검증하지 않았습니다. 표지는 기존 AI 생성 개념 일러스트입니다. 정확한 작성 모델 식별자는 미보존이며 이번 개편은 새 비디오의 제작・검수를 포함하지 않습니다.",
-        disclosure_note_en="The 22 October 2026 revision applies shared explanation guidance 1.0 to first-use terms, argument continuity and figure interpretation, with a primary-source recheck. The oscillator is a teaching calculation, not an experimental reproduction or cost-matched integrator benchmark. Conservation of an HNN's learned function, true-energy accuracy, integration error and discrete parity verification are distinguished. OLED applications remain proposals; no new experiment, quantum advantage or device validation is claimed. The existing AI-generated cover is conceptual. Exact authoring-model identifier not retained. This revision does not produce or validate a new video.",
+        disclosure_note_ko="2026-10-22 개편에 공통 설명 준칙 1.0을 적용해 용어의 첫 설명, 문단 연결과 도표 해석을 보완하고 원전을 재대조했습니다. 진동자 계산은 교육 예제로 논문 실험 재현이나 비용을 맞춘 적분기 벤치마크가 아닙니다. HNN의 학습 함수 보존, 실제 에너지의 정확성, 수치 적분 오차와 이산 패리티 검증을 구분했습니다. OLED 연결은 응용 제안이며 독립 실험・양자 우위・소자 성능을 새로 검증하지 않았습니다. 기존 개념 표지 아래 한영 비디오 abstract를 추가했으며, 코드로 그린 과학 도식과 로컬 합성 내레이션을 사용했습니다. 각 언어의 자막과 시각 설명 transcript를 제공합니다. 사람의 청취·발음·이해도 평가는 수행하지 않았습니다. 정확한 작성 모델 식별자는 미보존입니다.",
+        disclosure_note_en="The 22 October 2026 revision applies shared explanation guidance 1.0 to first-use terms, argument continuity and figure interpretation, with a primary-source recheck. The oscillator is a teaching calculation, not an experimental reproduction or cost-matched integrator benchmark. Conservation of an HNN's learned function, true-energy accuracy, integration error and discrete parity verification are distinguished. OLED applications remain proposals; no new experiment, quantum advantage or device validation is claimed. A bilingual video abstract below the existing conceptual cover uses scientific diagrams drawn in code and local synthetic narration, with language-specific captions and visual-description transcripts. No human listening, pronunciation or comprehension assessment was performed. Exact authoring-model identifier not retained.",
     ),
     PublicReview(
         folder="2026-10-06_quantum-quasiparticles-and-structured-computation",
@@ -1283,7 +1284,7 @@ REVIEWS: tuple[PublicReview, ...] = (
 
 
 LOCAL_REF_RE = re.compile(
-    r"(?P<prefix>\b(?:src|href)=['\"])(?P<url>[^'\"]+)(?P<suffix>['\"])",
+    r"(?P<prefix>\b(?:src|href|poster)=['\"])(?P<url>[^'\"]+)(?P<suffix>['\"])",
     re.IGNORECASE,
 )
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
@@ -1308,7 +1309,19 @@ PUBLIC_REVIEW_FILE_SUFFIXES = {
     ".ico",
     ".pdf",
 }
-PUBLIC_TEXT_FILE_SUFFIXES = {".svg", ".css", ".js", ".md", ".txt", ".json", ".csv", ".py", ".html"}
+PUBLIC_TEXT_FILE_SUFFIXES = {".svg", ".css", ".js", ".md", ".txt", ".vtt", ".json", ".csv", ".py", ".html"}
+# Publication approval is for this article and these final filenames only.
+# Keep MP4/VTT/TXT out of the general extension allowlist.
+NOETHER_VIDEO_FOLDER = "2026-10-17_noether-symmetry-conservation"
+NOETHER_VIDEO_ASSETS = {
+    language: {
+        "video": f"noether-abstract-{language}.mp4",
+        "poster": f"noether-abstract-poster-{language}.webp",
+        "captions": f"noether-abstract-{language}.vtt",
+        "transcript": f"noether-abstract-transcript-{language}.txt",
+    }
+    for language in ("ko", "en")
+}
 PUBLIC_LOCAL_NOTE_RE = re.compile(
     r"\s*<section\b(?=[^>]*\bid=['\"]public-local-references['\"])[^>]*>.*?</section>\s*",
     re.IGNORECASE | re.DOTALL,
@@ -1447,6 +1460,33 @@ class FirstImageParser(HTMLParser):
         src = attr_map.get("src")
         if src:
             self.first_image = src
+
+
+class VideoEmbedParser(HTMLParser):
+    """Collect native-video attributes, independently of surrounding prose."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.videos: list[dict[str, object]] = []
+        self.hrefs: list[str] = []
+        self.current: dict[str, object] | None = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        tag = tag.lower()
+        values = {name.lower(): value or "" for name, value in attrs}
+        if tag == "video":
+            if self.current is not None:
+                raise ValueError("Nested video elements are not supported")
+            self.current = {"attrs": values, "sources": [], "tracks": []}
+            self.videos.append(self.current)
+        elif self.current is not None and tag in {"source", "track"}:
+            self.current["sources" if tag == "source" else "tracks"].append(values)
+        if tag == "a" and values.get("href"):
+            self.hrefs.append(values["href"])
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() == "video":
+            self.current = None
 
 
 class PageMetadataParser(HTMLParser):
@@ -1588,12 +1628,21 @@ def rebuild_local_url(filename: str, query: str, fragment: str) -> str:
     return rebuilt
 
 
-def unpublished_local_text_reference(fragment: str) -> bool:
+def approved_video_assets(review: PublicReview | None, language: str) -> dict[str, str]:
+    if review is None or review.folder != NOETHER_VIDEO_FOLDER:
+        return {}
+    return NOETHER_VIDEO_ASSETS.get(language, {})
+
+
+def unpublished_local_text_reference(fragment: str, approved_names: Iterable[str] = ()) -> bool:
+    approved_names = set(approved_names)
     for match in LOCAL_HREF_RE.finditer(fragment):
         raw_url = match.group("url")
         if is_external_or_anchor(raw_url):
             continue
         local_path = split_local_url(raw_url)[0]
+        if local_path in approved_names:
+            continue
         suffix = Path(local_path).suffix.lower()
         if suffix in {".md", ".txt", ".json", ".csv", ".py"}:
             return True
@@ -1602,16 +1651,19 @@ def unpublished_local_text_reference(fragment: str) -> bool:
     return False
 
 
-def strip_private_public_material(html_text: str, language: str) -> str:
+def strip_private_public_material(
+    html_text: str, language: str, approved_names: Iterable[str] = (),
+) -> str:
+    approved_names = set(approved_names)
     def strip_list_item(match: re.Match[str]) -> str:
         item = match.group(0)
-        if PRIVATE_MESSAGE_METADATA_RE.search(item) or unpublished_local_text_reference(item):
+        if PRIVATE_MESSAGE_METADATA_RE.search(item) or unpublished_local_text_reference(item, approved_names):
             return ""
         return item
 
     def strip_anchor(match: re.Match[str]) -> str:
         anchor = match.group(0)
-        if not unpublished_local_text_reference(anchor):
+        if not unpublished_local_text_reference(anchor, approved_names):
             return anchor
         label = "private working file omitted" if language.lower().startswith("en") else "비공개 작업 파일 생략"
         return f'<span class="private-source-omitted">{label}</span>'
@@ -1656,23 +1708,30 @@ def inject_public_local_note(html_text: str, language: str) -> str:
     return html_text
 
 
-def public_asset_names(values: Iterable[object]) -> list[str]:
+def public_asset_names(
+    values: Iterable[object], *, review: PublicReview | None = None, language: str = "ko",
+) -> list[str]:
+    approved_names = set(approved_video_assets(review, language).values())
     return sorted(
         {
             str(value)
             for value in values
             if Path(str(value)).suffix.lower() in PUBLIC_REVIEW_FILE_SUFFIXES
+            or str(value) in approved_names
         }
     )
 
 
-def prune_public_support_files(public_dir: Path) -> None:
+def prune_public_support_files(
+    public_dir: Path, *, review: PublicReview | None = None, language: str = "ko",
+) -> None:
+    approved_names = set(approved_video_assets(review, language).values())
     if not public_dir.exists():
         return
     for support_path in public_dir.iterdir():
         if not support_path.is_file() or support_path.name == "index.html":
             continue
-        if support_path.suffix.lower() not in PUBLIC_REVIEW_FILE_SUFFIXES:
+        if support_path.suffix.lower() not in PUBLIC_REVIEW_FILE_SUFFIXES and support_path.name not in approved_names:
             support_path.unlink()
 
 
@@ -1770,7 +1829,184 @@ def public_text_risks(text: str) -> list[str]:
     return list(dict.fromkeys(risks))
 
 
+def validate_video_text(source_path: Path) -> None:
+    """Fail on private text instead of silently changing a timed/public master."""
+    if source_path.stat().st_size > 512 * 1024:
+        raise ValueError(f"Video text exceeds the reviewed size limit: {source_path.name}")
+    try:
+        text = source_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"Video text is not UTF-8: {source_path.name}") from error
+    risks = public_text_risks(html.unescape(text))
+    if risks:
+        raise ValueError(f"Unsafe video text in {source_path.name}: {', '.join(risks)}")
+    if not text.strip():
+        raise ValueError(f"Empty video text: {source_path.name}")
+    if source_path.suffix.lower() != ".vtt":
+        return
+    if not re.match(r"\A\ufeff?WEBVTT(?:[ \t][^\r\n]*)?\r?\n", text):
+        raise ValueError(f"Missing WEBVTT header: {source_path.name}")
+    timestamp = r"(?:\d{2,}:)?\d{2}:\d{2}\.\d{3}"
+    cues = re.findall(rf"^({timestamp})[ \t]+-->[ \t]+({timestamp})(?:[ \t].*)?$", text, re.MULTILINE)
+    if not cues or len(cues) != text.count("-->"):
+        raise ValueError(f"Invalid video caption timing: {source_path.name}")
+    last_end = 0.0
+    for start, end in cues:
+        def seconds(value: str) -> float:
+            parts = value.split(":")
+            hours, minutes, secs = (["0"] + parts) if len(parts) == 2 else parts
+            if int(minutes) >= 60 or float(secs) >= 60:
+                raise ValueError(f"Invalid video caption timestamp: {source_path.name}")
+            return int(hours) * 3600 + int(minutes) * 60 + float(secs)
+        left, right = seconds(start), seconds(end)
+        if left < last_end - .001 or right <= left:
+            raise ValueError(f"Unordered video captions: {source_path.name}")
+        last_end = right
+
+
+def mp4_boxes(data: bytes, start: int = 0, end: int | None = None):
+    """Read ISO-BMFF box boundaries; media decoding is a separate render QA."""
+    end = len(data) if end is None else end
+    while start < end:
+        if start + 8 > end:
+            raise ValueError("Truncated MP4 box header")
+        size = int.from_bytes(data[start:start + 4], "big")
+        kind = data[start + 4:start + 8]
+        header = 8
+        if size == 1:
+            if start + 16 > end:
+                raise ValueError("Truncated extended MP4 box")
+            size, header = int.from_bytes(data[start + 8:start + 16], "big"), 16
+        elif size == 0:
+            size = end - start
+        if size < header or start + size > end:
+            raise ValueError("Invalid MP4 box size")
+        yield kind, start + header, start + size
+        start += size
+
+
+def validate_video_binary(source_path: Path) -> None:
+    """Check final-container metadata without depending on a local ffprobe."""
+    data = source_path.read_bytes()
+    if source_path.suffix.lower() == ".webp":
+        if data[:4] != b"RIFF" or data[8:12] != b"WEBP" or int.from_bytes(data[4:8], "little") + 8 != len(data):
+            raise ValueError(f"Invalid WebP poster: {source_path.name}")
+        offset, image_chunks = 12, 0
+        while offset < len(data):
+            if offset + 8 > len(data):
+                raise ValueError("Truncated WebP poster chunk")
+            kind = data[offset:offset + 4]
+            size = int.from_bytes(data[offset + 4:offset + 8], "little")
+            end = offset + 8 + size
+            if end > len(data) or kind not in {b"VP8 ", b"VP8L", b"VP8X", b"ALPH"}:
+                raise ValueError(f"Unapproved WebP metadata/chunk in {source_path.name}")
+            if kind == b"VP8X" and (size != 10 or data[offset + 8] & 0x2e):
+                raise ValueError(f"Poster contains metadata or animation flags: {source_path.name}")
+            image_chunks += kind in {b"VP8 ", b"VP8L"}
+            offset = end + size % 2
+        if offset != len(data) or image_chunks != 1:
+            raise ValueError(f"Invalid static WebP poster: {source_path.name}")
+        return
+    if source_path.suffix.lower() != ".mp4":
+        raise ValueError(f"Unapproved video binary: {source_path.name}")
+    top = list(mp4_boxes(data))
+    kinds = [kind for kind, _, _ in top]
+    if any(k not in {b"ftyp", b"moov", b"mdat", b"free"} for k in kinds) or any(kinds.count(k) != 1 for k in (b"ftyp", b"moov", b"mdat")):
+        raise ValueError(f"Unexpected MP4 container layout: {source_path.name}")
+    if kinds[0] != b"ftyp" or kinds.index(b"moov") > kinds.index(b"mdat"):
+        raise ValueError(f"MP4 must use fast start: {source_path.name}")
+
+    def check_handler(start: int, end: int) -> None:
+        name = data[start + 24:end].decode("utf-8", errors="replace").rstrip("\0")
+        if public_text_risks(name) or name not in {"", "VideoHandler", "SoundHandler", "MetadataHandler"}:
+            raise ValueError(f"Unsafe MP4 track metadata: {source_path.name}")
+
+    def walk(start: int, end: int) -> None:
+        for kind, left, right in mp4_boxes(data, start, end):
+            if kind in {b"moov", b"trak", b"mdia", b"minf", b"stbl", b"edts", b"dinf"}:
+                walk(left, right)
+            elif kind == b"udta":
+                for child, a, b in mp4_boxes(data, left, right):
+                    if child != b"meta":
+                        raise ValueError(f"Unapproved MP4 user metadata: {source_path.name}")
+                    for field, c, d in mp4_boxes(data, a + 4, b):
+                        if field == b"hdlr":
+                            check_handler(c, d)
+                        elif field == b"ilst":
+                            for item, e, f in mp4_boxes(data, c, d):
+                                if item != b"\xa9too":
+                                    raise ValueError(f"Unapproved MP4 metadata field: {source_path.name}")
+                                for value, g, h in mp4_boxes(data, e, f):
+                                    encoder = data[g + 8:h].decode("utf-8", errors="replace").rstrip("\0")
+                                    if value != b"data" or not re.fullmatch(r"Lav[fc][0-9.]+(?: libx264)?", encoder):
+                                        raise ValueError(f"Unapproved MP4 encoder metadata: {source_path.name}")
+                        else:
+                            raise ValueError(f"Unapproved MP4 metadata field: {source_path.name}")
+            elif kind == b"hdlr":
+                check_handler(left, right)
+            elif kind == b"dref":
+                references = list(mp4_boxes(data, left + 8, right))
+                if len(references) != 1 or int.from_bytes(data[left + 4:left + 8], "big") != 1 or any(
+                    entry != b"url " or data[a:b] != b"\0\0\0\1" for entry, a, b in references
+                ):
+                    raise ValueError(f"MP4 must not contain external data references: {source_path.name}")
+            elif kind in {b"meta", b"uuid", b"name"} or kind.startswith(b"\xa9"):
+                raise ValueError(f"Unapproved MP4 metadata: {source_path.name}")
+    for kind, start, end in top:
+        if kind == b"moov":
+            walk(start, end)
+        elif kind == b"free" and any(data[start:end]):
+            raise ValueError(f"Nonempty MP4 padding metadata: {source_path.name}")
+
+
+def validate_video_embed(
+    text: str, directory: Path, review: PublicReview | None, language: str,
+) -> set[str]:
+    parser = VideoEmbedParser()
+    parser.feed(text)
+    if not parser.videos:
+        return set()
+    names = approved_video_assets(review, language)
+    if not names or len(parser.videos) != 1:
+        raise ValueError("Native video is approved only for the registered Noether abstract")
+    record = parser.videos[0]
+    attrs = record["attrs"]
+    if not {"controls", "playsinline"} <= attrs.keys() or {"autoplay", "loop"} & attrs.keys() or attrs.get("preload") not in {"none", "metadata"}:
+        raise ValueError("Video must have reader controls, inline playback and restrained preloading")
+
+    def require_url(value: str, expected: str) -> None:
+        if is_external_or_anchor(value) or split_local_url(value)[0] != expected:
+            raise ValueError(f"Video reference must use the approved flat filename: {expected}")
+    require_url(attrs.get("poster", ""), names["poster"])
+    sources = ([attrs["src"]] if attrs.get("src") else []) + [s.get("src", "") for s in record["sources"]]
+    if len(sources) != 1:
+        raise ValueError("Video must have exactly one approved MP4 source")
+    require_url(sources[0], names["video"])
+    tracks = record["tracks"]
+    if len(tracks) != 1 or tracks[0].get("kind") not in {"captions", "subtitles"} or tracks[0].get("srclang") != language:
+        raise ValueError("Video must use its own language's caption timeline")
+    require_url(tracks[0].get("src", ""), names["captions"])
+    if not any(not is_external_or_anchor(url) and split_local_url(url)[0] == names["transcript"] for url in parser.hrefs):
+        raise ValueError("Video requires its approved visual transcript link")
+    directory_root = directory.resolve()
+    for role, filename in names.items():
+        source = directory / filename
+        if source.is_symlink() or not source.is_file() or source.resolve().parent != directory_root:
+            raise ValueError(f"Missing or nonlocal approved video asset: {filename}")
+        if role in {"captions", "transcript"}:
+            validate_video_text(source)
+        else:
+            validate_video_binary(source)
+    return set(names.values())
+
+
 def copy_public_file(source_path: Path, dest_path: Path) -> None:
+    if source_path.suffix.lower() == ".vtt" or source_path.name in {
+        names["transcript"] for names in NOETHER_VIDEO_ASSETS.values()
+    }:
+        validate_video_text(source_path)
+        shutil.copy2(source_path, dest_path)
+        return
     if source_path.suffix.lower() not in PUBLIC_TEXT_FILE_SUFFIXES:
         shutil.copy2(source_path, dest_path)
         return
@@ -2353,6 +2589,7 @@ def sanitize_for_public(
     source_to_dest: dict[Path, str] = {}
     used_names: set[str] = {"index.html"}
     dist_root = dist_dir.resolve()
+    video_files = validate_video_embed(html_text, dist_dir, review, language)
 
     def replace_ref(match: re.Match[str]) -> str:
         raw_url = match.group("url")
@@ -2365,6 +2602,9 @@ def sanitize_for_public(
 
         source_path = (dist_dir / local_path).resolve()
         suffix = source_path.suffix.lower()
+        if suffix in {".mp4", ".vtt"} or Path(local_path).name.startswith("noether-abstract-"):
+            if local_path not in video_files:
+                raise ValueError("Unapproved video asset filename or path")
 
         try:
             source_path.relative_to(dist_root)
@@ -2372,7 +2612,7 @@ def sanitize_for_public(
             safe_url = html.escape(raw_url, quote=True)
             return f'data-blocked-ref="{safe_url}"'
 
-        if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES:
+        if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES and local_path not in video_files:
             safe_url = html.escape(raw_url, quote=True)
             return f"data-local-ref=\"{safe_url}\""
 
@@ -2389,7 +2629,7 @@ def sanitize_for_public(
         new_url = rebuild_local_url(source_to_dest[source_path], query, fragment)
         return f"{match.group('prefix')}{html.escape(new_url, quote=True)}{match.group('suffix')}"
 
-    sanitized = strip_private_public_material(html_text, language)
+    sanitized = strip_private_public_material(html_text, language, video_files)
     sanitized = LOCAL_REF_RE.sub(replace_ref, sanitized)
     sanitized = sanitize_public_text(sanitized)
     sanitized = sanitized.replace("<body>", '<body class="public-review">')
@@ -2408,9 +2648,12 @@ def sanitize_for_public(
     return inject_cloudflare_web_analytics(sanitized), copied
 
 
-def copy_public_support_files(dist_dir: Path, public_dir: Path, copied: list[str]) -> list[str]:
+def copy_public_support_files(
+    dist_dir: Path, public_dir: Path, copied: list[str], *,
+    review: PublicReview | None = None, language: str = "ko",
+) -> list[str]:
     del dist_dir, public_dir
-    return public_asset_names(copied)
+    return public_asset_names(copied, review=review, language=language)
 
 
 def publish_dist_variant(
@@ -2431,7 +2674,9 @@ def publish_dist_variant(
         public_identity_dir,
     )
     (public_dir / "index.html").write_text(public_html, encoding="utf-8")
-    copied_assets = copy_public_support_files(dist_index.parent, public_dir, copied_assets)
+    copied_assets = copy_public_support_files(
+        dist_index.parent, public_dir, copied_assets, review=review, language=language,
+    )
     return public_html, copied_assets
 
 
@@ -2443,7 +2688,8 @@ def refresh_existing_public_variant(
     index_path = public_dir / "index.html"
     existing_html = index_path.read_text(encoding="utf-8")
     asset_prefix = asset_prefix_for_public_dir(public_dir)
-    refreshed = strip_private_public_material(existing_html, language)
+    video_files = validate_video_embed(existing_html, public_dir, review, language)
+    refreshed = strip_private_public_material(existing_html, language, video_files)
     refreshed = sanitize_public_text(refreshed)
     refreshed = inject_public_local_note(refreshed, language)
     refreshed = normalize_review_metadata(refreshed, review, language, public_dir)
@@ -2457,7 +2703,7 @@ def refresh_existing_public_variant(
     refreshed = inject_public_metrics(refreshed, asset_prefix)
     refreshed = inject_cloudflare_web_analytics(refreshed)
     index_path.write_text(refreshed, encoding="utf-8")
-    prune_public_support_files(public_dir)
+    prune_public_support_files(public_dir, review=review, language=language)
     return refreshed
 
 
@@ -2478,12 +2724,12 @@ def existing_translation_entries(
         refresh_existing_public_variant(review, public_dir, translation.language)
         prior = prior_translations.get(translation.language)
         if prior is not None:
-            assets = public_asset_names(prior.get("assets") or [])
+            assets = public_asset_names(prior.get("assets") or [], review=review, language=translation.language)
         else:
             assets = public_asset_names(
-                path.name
-                for path in public_dir.iterdir()
-                if path.is_file() and path.name != "index.html"
+                (path.name for path in public_dir.iterdir()
+                 if path.is_file() and path.name != "index.html"),
+                review=review, language=translation.language,
             )
         href = review.translation_href(translation)
         entries.append(
@@ -2601,13 +2847,13 @@ def preserve_published_review(
     parser.feed(existing_html)
     if existing_entry is not None:
         thumbnail = str(existing_entry.get("thumbnail") or "")
-        copied_assets = public_asset_names(existing_entry.get("assets") or [])
+        copied_assets = public_asset_names(existing_entry.get("assets") or [], review=review, language="ko")
     else:
         thumbnail = f"reviews/{review.folder}/{parser.first_image}" if parser.first_image else ""
         copied_assets = public_asset_names(
-            path.name
-            for path in review.public_dir.iterdir()
-            if path.is_file() and path.name != "index.html"
+            (path.name for path in review.public_dir.iterdir()
+             if path.is_file() and path.name != "index.html"),
+            review=review, language="ko",
         )
     print(f"[public-site:preserve] {review.folder} (source dist missing or not selected)")
     return build_review_manifest_entry(
@@ -4041,7 +4287,7 @@ def validate_local_references(
             resolved_path = (document_path.parent / local_path).resolve()
             if resolved_path.exists() or resolved_path in (sparse_tracked_paths or set()):
                 continue
-        errors.append(f"missing local href/src in {document_path}: {raw_url}")
+        errors.append(f"missing local href/src/poster in {document_path}: {raw_url}")
     return errors
 
 
@@ -4101,11 +4347,29 @@ def validate_disclosure(review_index: Path, text: str) -> list[str]:
     return errors
 
 
-def validate_public_support_files(public_dir: Path) -> list[str]:
+def validate_public_support_files(
+    public_dir: Path, *, review: PublicReview | None = None, language: str = "ko",
+) -> list[str]:
     errors: list[str] = []
+    video_names = approved_video_assets(review, language)
     if not public_dir.exists():
         return errors
     for support_path in sorted(public_dir.iterdir(), key=lambda path: path.name.lower()):
+        if support_path.is_file() and (
+            support_path.suffix.lower() in {".mp4", ".vtt"}
+            or support_path.name.startswith("noether-abstract-")
+        ):
+            if support_path.name not in video_names.values():
+                errors.append(f"unapproved video asset in public output: {support_path.name}")
+                continue
+            try:
+                if support_path.suffix.lower() in {".txt", ".vtt"}:
+                    validate_video_text(support_path)
+                else:
+                    validate_video_binary(support_path)
+            except (OSError, ValueError) as error:
+                errors.append(str(error))
+            continue
         if (
             not support_path.is_file()
             or support_path.name == "index.html"
@@ -4128,6 +4392,7 @@ def validate_public_page(
     expected_alternates: dict[str, str],
     expected_title: str = "",
     sparse_tracked_paths: set[Path] | None = None,
+    review: PublicReview | None = None,
 ) -> list[str]:
     errors: list[str] = []
     review_index = SITE_DIR / href
@@ -4136,6 +4401,10 @@ def validate_public_page(
 
     text = review_index.read_text(encoding="utf-8")
     errors.extend(validate_local_references(review_index, text, sparse_tracked_paths))
+    try:
+        validate_video_embed(text, review_index.parent, review, expected_language)
+    except (OSError, ValueError) as error:
+        errors.append(f"invalid video embed in {review_index}: {error}")
 
     if "data-missing-ref=" in text.lower():
         errors.append(f"data-missing-ref left in {review_index}")
@@ -4281,6 +4550,7 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
             relative_path = raw_entry[2:].decode("utf-8", errors="surrogateescape")
             sparse_tracked_paths.add((ROOT / relative_path).resolve())
     for item in manifest:
+        registered_review = next((review for review in REVIEWS if review.folder == item.get("folder")), None)
         errors.extend(validate_manifest_disclosure(item))
         specs = page_specs(item)
         expected_alternates: dict[str, str] = {}
@@ -4298,9 +4568,12 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
                     expected_alternates,
                     expected_title,
                     sparse_tracked_paths,
+                    registered_review,
                 )
             )
-            errors.extend(validate_public_support_files((SITE_DIR / href).parent))
+            errors.extend(validate_public_support_files(
+                (SITE_DIR / href).parent, review=registered_review, language=language,
+            ))
     errors.extend(validate_methods_page(sparse_tracked_paths))
     errors.extend(validate_archive(SITE_DIR))
     archive_manifest = SITE_DIR / "archive-manifest.json"

@@ -18,6 +18,10 @@ def main():
     text += '김현중책임편집보조작성근거기준일검토본로컬검증정보모델식별자미보존사람주제요청문장단위승인없음역할원문조사학술응용한영종합시각자료조판출력결과독립실험재현수행하지않았습니다입력산출물하네스개념그림수식도표번역참고출처페이지목차내용살펴보기한국어영어내려받기이동PDF'
     # UI/disclosure strings are included so generated typography remains self-contained.
     text += (ROOT / 'artifacts' / 'build_review.mjs').read_text(encoding='utf-8')
+    text += (ROOT / 'artifacts' / 'video_module.mjs').read_text(encoding='utf-8')
+    transcript = ROOT / 'artifacts' / 'noether-abstract-transcript-ko.txt'
+    if transcript.exists():
+        text += transcript.read_text(encoding='utf-8')
     license_parts = []
     for label, source in [('regular', args.regular), ('bold', args.bold)]:
         font = TTFont(source)

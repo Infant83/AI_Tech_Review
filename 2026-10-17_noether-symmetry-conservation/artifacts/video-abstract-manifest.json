@@ -1,0 +1,112 @@
+{
+  "version": "v4",
+  "date": "2026-10-22",
+  "status": "ready",
+  "scope": "Article argument through a spring calculation and Hamiltonian-learning construction.",
+  "method": "Deterministic local rendering; separate native WebVTT captions; no generative video API.",
+  "production_manifest_sha256": "2df3eaf7eba31274b529cf1cdad94dddc188b1464f4981600d54bba67c49217e",
+  "production_source": "2026-10-21_video-abstract-pilot/v4",
+  "synthetic_narration": "Supertonic 2 F1; local inference; disclosed in video and article.",
+  "audio_rights": "MIT inference code; BigScience OpenRAIL-M model. Model section6 disclaims output rights except as stated; use restrictions apply. AttachmentA(e) requires synthetic-content disclosure, supplied in video and transcript. No macOS system-voice recording is included.",
+  "sources": {
+    "R": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/",
+    "N": "https://arxiv.org/html/physics/0503066v3",
+    "M": "https://www.physics.hmc.edu/~saeta/courses/p111/uploads/Y2012/Ch06.pdf",
+    "V": "https://lagrangeweb.web.engr.illinois.edu/var_int/",
+    "HNN": "https://arxiv.org/html/1906.01563",
+    "CALC": "https://github.com/Infant83/AI_Tech_Review/blob/main/2026-10-17_noether-symmetry-conservation/artifacts/build_figures.py",
+    "DERIV": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#section-6"
+  },
+  "numeric_conditions": "Normalized h=0.1, 2000 steps, q0=1,u0=0. Teaching calculation, not a matched-cost benchmark.",
+  "interpretation_limits": {
+    "model": "Undamped undriven horizontal linear spring, fixed mass and stiffness.",
+    "normalization": {
+      "q": "x/A",
+      "u": "v/(Aω)",
+      "tau": "ωt",
+      "h": "ωΔt"
+    },
+    "h": 0.1,
+    "steps": 2000,
+    "initial_state": [
+      1,
+      0
+    ],
+    "initial_normalized_energy": 0.5,
+    "Euler_energy_factor": 439286205.0500984,
+    "Verlet_max_abs_relative_energy_error": 0.0024999993008650856,
+    "comparison_scope": "Same h teaching calculation, not an equal-cost or equal-accuracy benchmark.",
+    "HNN": "Smooth autonomous learned function in canonical coordinates; Hamilton equations conserve it in continuous time. Learned physical accuracy and discrete integration error remain separate tests."
+  },
+  "human_review": "No human listening, pronunciation or reader-comprehension study.",
+  "article_player_checks": {
+    "status": "passed",
+    "browsers": "Chrome 155 headless, desktop 1440 and mobile viewport 390, landscape 844×390; not a physical-device study.",
+    "initial_state": "Paused, controls/playsinline, preload none, no autoplay or loop.",
+    "captions": "Default language WebVTT showing; lower caption band preserves scientific labels, dense scenes and three longest cues checked per language.",
+    "controls": "Play/pause, first/middle/end seeking, end/replay, collapse pauses; container fullscreen enter/exit button and app Escape handler.",
+    "reduced_motion": "Static poster first; explicit manual reveal; no autoplay.",
+    "accessibility": "Visual transcript and MP4/VTT/TXT downloads, no document overflow or missing images.",
+    "audio_scope": "Browser playback checked muted. Full PCM signal/decode checks passed; no human listening/pronunciation/comprehension study.",
+    "pdf": "KO15 and EN18 pages, all pages visually checked; final render, text and annotations identical after web CSS change; no private-path or attachment leak.",
+    "independent_caption_visual_review": "Passed for bilingual dense scenes and longest cues, inline and container fullscreen; meaningful scientific labels remain visible."
+  },
+  "languages": {
+    "ko": {
+      "duration_seconds": 236.75,
+      "assets": {
+        "video": {
+          "file": "noether-abstract-ko.mp4",
+          "bytes": 10922257,
+          "sha256": "4af4ab7e3b3666cd874b0260e9c1664347d80b744673503cd0955fd06d3802e8"
+        },
+        "poster": {
+          "file": "noether-abstract-poster-ko.webp",
+          "bytes": 107670,
+          "sha256": "65cdddcdd2752b4790e5c2c72815bcdf533803c6df10a0aca71fbd0925218ff1"
+        },
+        "captions": {
+          "file": "noether-abstract-ko.vtt",
+          "bytes": 4759,
+          "sha256": "c3097bb46c89625cb9b5c51585ed5280d7f21d3b5e1e5bfa2cbc2e12b98d2c0c"
+        },
+        "transcript": {
+          "file": "noether-abstract-transcript-ko.txt",
+          "bytes": 8539,
+          "sha256": "ecf972f9facef67618b4e8e5cfd52399159f586a53ef4abbc520c481169f9ba7"
+        }
+      }
+    },
+    "en": {
+      "duration_seconds": 228.0,
+      "assets": {
+        "video": {
+          "file": "noether-abstract-en.mp4",
+          "bytes": 10995569,
+          "sha256": "bf1526e5a3fe2d4b5d22baf2b8189dc247d3a5731abbc0c1771ee44ddc0a5e29"
+        },
+        "poster": {
+          "file": "noether-abstract-poster-en.webp",
+          "bytes": 118656,
+          "sha256": "4f1f2f93368a9839af8c0bbc405e6379c226378ca0bfd93b366d1585beef3783"
+        },
+        "captions": {
+          "file": "noether-abstract-en.vtt",
+          "bytes": 4271,
+          "sha256": "c39bd35788bc67d3d05f7b94b8ae013ffc341df4c5b074bad37976c032deb1a8"
+        },
+        "transcript": {
+          "file": "noether-abstract-transcript-en.txt",
+          "bytes": 7699,
+          "sha256": "7a739dc46b4e4374615760f4e309dd0a26e14ca893f9e365d83abef002102417"
+        }
+      }
+    }
+  },
+  "publication_checks": {
+    "status": "prepared; live verification pending",
+    "canonical_ko": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract",
+    "canonical_en": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract",
+    "archive": "Local review, archive and public-site PDF copies are byte-identical."
+  }
+}
