@@ -2,7 +2,7 @@
 
 기준: [영상 제작 원칙](../VIDEO_ABSTRACT_DIRECTION.md) · [과학 설명 준칙](../SCIENTIFIC_EXPLANATION_DIRECTION.md)
 
-- 작성·개정일: 2026-10-22. 상태: v4 영상·기사 통합 검수 완료, 공개 배포·URL 확인 대기.
+- 작성·개정일: 2026-10-22. 상태: v4 영상·기사 통합 검수와 공개 배포·실제 URL 검증 완료.
 - 적용 이유: 사용자가 영상 자체의 개편과 표지 일러스트 바로 아래 게시를 요청했다. 다른 리뷰·렉처 노트의 기본 첨부 요건으로 확대하지 않는다.
 - 범위: 기사의 중심 논지를 대표 사례로 설명하는 abstract. 노터 유도·우주론·양자계산 등 모든 절의 축약이나 새 HNN 학습 실험의 보고가 아니다.
 - 독자: 미적분과 기본 역학에 익숙한 과학·공학 독자. 질문: 보존법칙을 넣은 모형과 계산은 언제 신뢰할 수 있는가?
@@ -64,3 +64,5 @@
 - 사람의 청취·발음·이해도 시험과 정지 그림 대비 효과 연구는 미실시다. 에이전트의 정지·전후 프레임 검토와 브라우저 조작 검사를 연속적인 사람 시청 평가로 부르지 않는다.
 - 최종 플레이어: Chrome 155의 한영×1440/390 및 reduced-motion 총 8 case 통과. 밀집 장면과 언어별 최장 cue 3개, 844×390 가로 컨테이너 전체 화면에서 과학 라벨과 자막의 분리를 확인했다. 버튼 진입·복귀와 앱 Escape 처리, seek·재생/정지·재시작·접기 pause, TXT·VTT·MP4 다운로드 정상. 브라우저 재생은 muted로 검사했다. 실기기 iOS/Safari 검토는 하지 않았다.
 - 최종 PDF: 한글 15쪽·영문 18쪽. 33쪽의 PNG·본문·주석이 검수본과 동일하며 공개 영상 링크·합성음성 안내·개인정보/내부 경로 검사 통과. 로컬 원본·아카이브·사이트 사본이 각각 byte 동일하다.
+
+- 실제 공개 검증: [한국어 영상 모듈](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract) · [영문 영상 모듈](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract). GitHub Pages 배포 성공 뒤 HTML·MP4·poster·VTT·TXT·helper·한영 PDF/아카이브·두 manifest 총 18개 파일의 HTTP200와 SHA256 일치를 확인했다. 각 MP4의 첫·중간·끝 6개 Range 요청은 HTTP206 및 원본 바이트 일치. 실제 KO390·EN1440 페이지의 배치·기본 정지·시각 자막·컨테이너 전체 화면·자산 실패 없음도 확인했다. 검증일 2026-10-22.
