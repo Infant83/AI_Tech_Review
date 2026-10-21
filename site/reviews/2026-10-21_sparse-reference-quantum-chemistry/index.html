@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량</title><meta name="description" content="대학원 세미나 90분 - 투영의 기하에서 측정 통계까지, 수식을 유도하고 Helios 실험을 읽는다"><meta name="author" content="김현중">
+<meta property="og:description" content="대학원 세미나 90분 - 투영의 기하에서 측정 통계까지, 수식을 유도하고 Helios 실험을 읽는다"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/hero.webp"><link rel="stylesheet" href="review.css">
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/">
+    <meta property="og:title" content="양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량">
+    <!-- AI Tech Review Icons -->
+    <link rel="icon" href="../../favicon.ico?v=20260523-federlicht" sizes="any">
+    <link rel="icon" href="../../assets/federlicht-favicon.svg?v=20260523-federlicht" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png?v=20260523-federlicht">
+    <!-- End AI Tech Review Icons -->
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head><body class="public-review">
+<header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review.pdf">PDF ↓</a></div></header>
+<p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-10-21 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+  <main class="paper"><div class="issue-meta"><span>GRADUATE SEMINAR</span><span>2026.10.21</span><span>양자화학 · 측정 · 90분 세미나</span></div><article><h1>양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량</h1>
+<p class="dek">대학원 세미나 90분 - 투영의 기하에서 측정 통계까지, 수식을 유도하고 Helios 실험을 읽는다</p>
+
+<p class="kicker">TECH REVIEW · 2026년 10월 21일 · 양자화학·양자 측정·과학 계산</p>
+<figure class="hero"><img src="hero.webp" alt="성긴 무늬의 기준판과 세밀한 무늬의 잔차판이 하나의 큰 표적 인상에 가까이 놓인 판화풍 개념 그림."><figcaption>성긴 기준판과 별도의 잔차판을 같은 표적 인상에 대조하는 장면은, 기준·잔차상태와 표적상태의 두 중첩확률로 에너지를 추정하는 발상을 상징한다. 실제 분자·측정 장치·정량 데이터가 아닌 AI 생성 개념 일러스트이며, 두 번의 샷으로 측정이 끝난다는 뜻은 아니다.</figcaption></figure><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">강의의 출발점: 좋은 상태를 만들었는데 왜 계산이 끝나지 않을까</a></li><li><a href="#section-2">1. 화학이 원하는 것은 큰 에너지 사이의 작은 차이다</a></li><li><a href="#section-3">2. 에너지가 정해진 상태를 반복 측정하는 이유</a></li><li><a href="#section-4">3. 칠판 유도: Hamiltonian이 기준상태를 어디로 보내는가</a></li><li><a href="#section-5">4. 위상을 전부 측정하지 않고도 되는 조건</a></li><li><a href="#section-6">5. 손으로 푸는 두 준위 예제</a></li><li><a href="#section-7">6. 두 확률의 통계: 어디에 shot을 더 써야 할까</a></li><li><a href="#section-8">7. 원문 실험을 읽는 첫 단계: 400과 10,000을 같은 축으로 잇지 않는다</a></li><li><a href="#section-9">8. 숫자 읽기 실습: 후선택은 분자와 분모를 함께 바꾼다</a></li><li><a href="#section-10">9. 읽기 비용을 줄인 뒤: SVD-THC가 묻는 다른 질문</a></li><li><a href="#section-11">10. 세미나 토론: 다음 논문이라면 무엇을 보여야 할까</a></li><li><a href="#section-12">11. 연습문제와 해설</a></li><li><a href="#section-13">12. 다시 첫 질문으로</a></li><li><a href="#section-14">참고문헌과 이어 읽기</a></li></ol></details>
+
+<h2 id="section-1">강의의 출발점: 좋은 상태를 만들었는데 왜 계산이 끝나지 않을까</h2>
+<p>분자의 두 구조 가운데 어느 쪽이 더 안정한지 알고 싶다고 하자. 양자 프로세서가 두 전자 상태를 준비하는 데 성공했다. 이제 에너지를 한 번씩 읽어 빼면 끝날까?</p>
+<p>여기서 멈춰 생각해 보자. 에너지 고유상태는 에너지가 정해진 상태다. 그런데 그 상태에서 에너지를 알아내려는 실험은 왜 수천 번, 때로는 수백만 번 반복해야 할까? <strong>상태가 가진 에너지의 불확실성과 우리가 선택한 측정 절차의 통계적 비용은 같은 것이 아니기 때문이다.</strong> 이 차이를 이해하면 오늘 논문의 아이디어가 보인다.</p>
+<p>Lenihan 등은 광활성 Ru 분자 모델에서, 희소한 고전 기준상태와 양자적으로 준비한 목표상태를 결합해 에너지를 읽는 방법을 연구했다. 핵심은 많은 Hamiltonian 항을 측정하는 일을 기준상태와 잔차에 대한 overlap 측정으로 바꾸는 것이다. 실제 Quantinuum Helios 실행도 포함하지만, 이상적 샷 추정·장치의 통계 정밀도·남아 있는 편향은 구분해야 한다. 논문은 2026-10-19 공개된 <strong>프리프린트 v1</strong>이다. [1]</p>
+<p>이 글은 논문의 순서를 따라가는 초록 확장판보다, 독자가 직접 유도하고 반례를 만들며 결과를 판단하도록 구성한 독립 세미나 노트다. 원 연구의 공식 강의록이 아니며, 아래 두 준위 모형·계산·문제는 리뷰가 만든 교육 자료다.</p>
+<h3>90분 수업의 흐름과 준비</h3>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>시간</th>
+<th>수업에서 할 일</th>
+<th>답할 질문</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0-10분</td>
+<td>에너지 차이와 측정 비용</td>
+<td>에너지 고유상태인데 왜 반복 측정하는가?</td>
+</tr>
+<tr>
+<td>10-30분</td>
+<td>기준·잔차 분해와 부호 유도</td>
+<td>두 overlap으로 무엇을 복원할 수 있는가?</td>
+</tr>
+<tr>
+<td>30-45분</td>
+<td>두 준위 계산과 반례</td>
+<td>어떤 가정이 사라지면 공식이 틀리는가?</td>
+</tr>
+<tr>
+<td>45-60분</td>
+<td>오차 전파와 샷 배분</td>
+<td>같은 예산을 두 회로에 어떻게 나누는가?</td>
+</tr>
+<tr>
+<td>60-75분</td>
+<td>Helios 표와 후선택</td>
+<td>작은 오차막대는 정확한 답을 뜻하는가?</td>
+</tr>
+<tr>
+<td>75-85분</td>
+<td>SVD-THC와 전체 비용</td>
+<td>읽기 비용을 줄인 다음 무엇이 남는가?</td>
+</tr>
+<tr>
+<td>85-90분</td>
+<td>결과 판정과 토론</td>
+<td>다음 실험에서 무엇을 비교해야 하는가?</td>
+</tr>
+</tbody></table></div>
+<p>선수 지식은 복소 벡터·내적·Hermitian 행렬·고유값, 양자 상태의 정규화, Bernoulli 분산이다. 전자구조 전공자가 아니라면 아래 활성공간 설명을 먼저 읽으면 된다. 혼자 공부할 때에는 유도와 문제를 포함해 90-120분을 잡을 수 있다. 수업의 목표는 공식을 외우는 것이 아니라 <strong>왜 정확한가, 무엇을 측정하는가, 언제 믿을 수 없는가</strong>를 구별하는 것이다.</p>
+<h2 id="section-2">1. 화학이 원하는 것은 큰 에너지 사이의 작은 차이다</h2>
+<p>원 논문의 H₂DBB-Ru는 Ru가 기능화된 Hf 금속유기골격체에서 떼어낸 분자 모델이다. 금속에서 리간드로 전하가 옮겨간 성격의 삼중항 상태인 MLCT와 금속 중심의 MC 성격이 경쟁한다. 핵 좌표가 바뀌면 어떤 전자 배치가 중요한지도 달라진다. 하나의 Slater determinant로 전자를 설명하기 어려운 <strong>다중참조성</strong>이 이 문제를 까다롭게 한다. [1, §2.2]</p>
+<p>활성공간 <img class="math-inline" src="math_dfde9b9bb82fc1.svg" alt="(n_e,n_o)" style="width:7.378ex;height:2.262ex;vertical-align:-0.566ex">는 선택한 공간 오비탈 <img class="math-inline" src="math_740ac3ab61deb2.svg" alt="n_o" style="width:2.321ex;height:1.357ex;vertical-align:-0.357ex">개에서 전자 <img class="math-inline" src="math_13d8331c3628bf.svg" alt="n_e" style="width:2.291ex;height:1.357ex;vertical-align:-0.357ex">개를 상관시킨다는 뜻이다. <img class="math-inline" src="math_bdea92ae8da328.svg" alt="(10,10)" style="width:7.291ex;height:2.262ex;vertical-align:-0.566ex">은 오비탈 10개에 전자 10개이며, 공간 오비탈마다 두 스핀 오비탈을 쓰는 여기의 표현에서는 데이터 20큐비트에 대응한다. 논문의 50큐비트 회로는 이 활성공간을 50오비탈로 넓힌 결과가 아니다.</p>
+<p>CASCI는 정해진 오비탈·활성공간 안에서 가능한 전자 배치를 모두 포함해 대각화한 기준 계산이다. 그 공간 안에서는 엄밀한 비교점이지만, 활성공간 밖 상관·기저집합·환경·핵 운동까지 포함한 실제 분자 에너지의 정답과 같지는 않다. 이번 연구는 <img class="math-inline" src="math_265bc4375ccdcf.svg" alt="(6,6),(8,8),(10,10)" style="width:19.36ex;height:2.262ex;vertical-align:-0.566ex">을 방법 검증에 사용한다. [1]</p>
+<p>실제로 원문의 CASCI 두 구조 에너지 차이는 활성공간을 넓히면서 약 −6.3, −6.3, +0.1 mHa로 바뀐다. 마지막 두 공간에서 부호도 달라진다. 장치가 한 활성공간의 CASCI를 잘 맞추는 것과, 화학적 에너지 차이가 활성공간에 수렴하는 것은 별도 질문이다. [1, Table S6]</p>
+<p>단위의 크기도 확인하자. 1 mHa는 <img class="math-inline" src="math_2f44ee0910b7af.svg" alt="10^{-3}E_h" style="width:7.274ex;height:2.31ex;vertical-align:-0.357ex">이며 약 27.2114 meV다. 논문이 목표로 잡은 1.6 mHa는 약 43.54 meV다. 교육용으로 prefactor가 같은 단순 Arrhenius 식 <img class="math-inline" src="math_da70b55bcd98cf.svg" alt="k\propto e^{-E_a/(k_BT)}" style="width:13.59ex;height:2.046ex;vertical-align:-0.025ex">을 생각하면, 300 K에서 장벽을 1.6 mHa 다르게 잡는 것은 속도비 약 5.39배에 해당한다. 이는 NIST 상수로 계산한 <strong>민감도 예시</strong>이며 Ru 모델의 실제 반응속도식·치료 효능 계산이 아니다. [3]</p>
+<blockquote>
+<p><strong>첫 질문.</strong> 절대에너지 하나의 오차가 5 mHa라면 두 구조의 에너지 차이도 반드시 5 mHa 틀릴까? 두 오차가 함께 움직이는지부터 알아야 한다. 이 질문은 장치 결과를 읽을 때 다시 등장한다.</p>
+</blockquote>
+<h2 id="section-3">2. 에너지가 정해진 상태를 반복 측정하는 이유</h2>
+<p>큐비트에 매핑한 전자 Hamiltonian을 Pauli 문자열로 쓴다.</p>
+<div class="math-block"><img src="math_04958e0489a5a9.svg" alt="H=\sum_j c_jP_j,\qquad E=\sum_jc_j\langle P_j\rangle." style="width:33.232ex;height:auto"></div>
+<p>여기서 <img class="math-inline" src="math_9b593b3181d28c.svg" alt="P_j" style="width:2.299ex;height:2.211ex;vertical-align:-0.666ex">는 I·X·Y·Z의 tensor product, <img class="math-inline" src="math_993cf4cddc1689.svg" alt="c_j" style="width:1.827ex;height:1.666ex;vertical-align:-0.666ex">는 에너지 단위를 가진 계수다. 서로 다른 문자열이 같은 측정 기저를 공유하지 못하면 별도 회로·샷이 필요하다. 한 shot은 상태 준비부터 측정까지 한 번 실행한 것이다. 정해진 호환 그룹 <img class="math-inline" src="math_186962fd16a06c.svg" alt="H_g" style="width:2.831ex;height:2.213ex;vertical-align:-0.667ex">를 서로 독립적으로 표본추출하면,</p>
+<div class="math-block"><img src="math_13a66761f7f41b.svg" alt="\operatorname{Var}(\widehat E)=\sum_g\frac{\operatorname{Var}_{\Psi}(H_g)}{N_g}." style="width:25.228ex;height:auto"></div>
+<p>각 그룹 안의 공분산은 <img class="math-inline" src="math_021b947a229c19.svg" alt="\operatorname{Var}(H_g)" style="width:8.306ex;height:2.364ex;vertical-align:-0.667ex">에 포함된다. 이 식은 모든 측정을 독립 단일 Pauli로 처리하라는 뜻이 아니다.</p>
+<p>정확한 에너지 고유상태에서는 <img class="math-inline" src="math_f25393408a148f.svg" alt="\operatorname{Var}_{\Psi}(H)=0" style="width:13.065ex;height:2.262ex;vertical-align:-0.566ex">이다. 그러나 선택한 각 측정 그룹의 분산이 모두 0일 필요는 없다. Hamiltonian 고유기저의 측정을 효율적으로 구현하는 것과, 쉽게 실행할 수 있는 여러 Pauli 기저에서 평균을 조합하는 것은 다른 작업이다. 양자 위상추정은 또 다른 읽기 방식이지만 더 긴 coherent evolution과 별도 자원을 요구한다.</p>
+<p>오늘의 전략은 모든 상태 정보를 복원하려 하지 않는다. <strong>고전적으로 알 수 있는 부분을 먼저 계산하고, 남은 에너지 보정에 필요한 양만 측정한다.</strong> 이 전환이 혼합 추정량의 출발점이다.</p>
+<h2 id="section-4">3. 칠판 유도: Hamiltonian이 기준상태를 어디로 보내는가</h2>
+<p>정규화된 목표상태를 <img class="math-inline" src="math_ef10040e99d0da.svg" alt="\lvert\Psi\rangle" style="width:3.269ex;height:2.262ex;vertical-align:-0.566ex">, 고전적으로 구성 가능한 희소 기준상태를 <img class="math-inline" src="math_508e96565e347d.svg" alt="\lvert\Phi\rangle" style="width:3.143ex;height:2.262ex;vertical-align:-0.566ex">라 하자. 희소하다는 것은 선택한 전자 determinant의 집합 <img class="math-inline" src="math_de349e1787e86f.svg" alt="S_\Phi" style="width:2.73ex;height:1.934ex;vertical-align:-0.339ex">가 작다는 뜻이다.</p>
+<div class="math-block"><img src="math_2bb9cc629024a5.svg" alt="\lvert\Phi\rangle=\sum_{x\in S_\Phi}a_x\lvert x\rangle,
+\qquad \sum_x|a_x|^2=1." style="width:34.049ex;height:auto"></div>
+<p>먼저 기준상태의 에너지를 계산한다. 다음으로 <img class="math-inline" src="math_dc667d1d3686f2.svg" alt="H\lvert\Phi\rangle" style="width:5.152ex;height:2.262ex;vertical-align:-0.566ex">에서 기준에 평행한 성분을 뺀다.</p>
+<div class="math-block"><img src="math_17af99a6992714.svg" alt="E_\Phi=\langle\Phi|H|\Phi\rangle,\qquad
+Q_\Phi=I-\lvert\Phi\rangle\langle\Phi\rvert," style="width:36.824ex;height:auto"></div>
+<div class="math-block"><img src="math_9bb01744f2975c.svg" alt="\lvert R\rangle=Q_\Phi H\lvert\Phi\rangle,
+\qquad r_\Phi=\sqrt{\langle R|R\rangle},
+\qquad \lvert\Lambda\rangle=\frac{\lvert R\rangle}{r_\Phi}." style="width:50.048ex;height:auto"></div>
+<p>마지막 정의는 <img class="math-inline" src="math_992ee8452f4011.svg" alt="r_\Phi&gt;0" style="width:6.512ex;height:1.846ex;vertical-align:-0.339ex">인 경우에만 쓴다. <img class="math-inline" src="math_f4406a08289172.svg" alt="\langle\Phi|\Lambda\rangle=0" style="width:9.741ex;height:2.262ex;vertical-align:-0.566ex">이므로 <img class="math-inline" src="math_1564ee74d25ea0.svg" alt="\Lambda" style="width:1.57ex;height:1.62ex;vertical-align:0">는 기준과 직교하는 정규화된 잔차 상태다. 따라서 다음은 근사가 아닌 항등식이다.</p>
+<div class="math-block"><img src="math_b8f3851601dcf3.svg" alt="\boxed{H\lvert\Phi\rangle
+=E_\Phi\lvert\Phi\rangle+r_\Phi\lvert\Lambda\rangle.}" style="width:24.369ex;height:auto"></div>
+<p>여기서 <img class="math-inline" src="math_f309ff42c002a0.svg" alt="r_\Phi" style="width:2.363ex;height:1.339ex;vertical-align:-0.339ex">는 확률이 아니라 에너지 단위의 크기다. Hermitian <img class="math-inline" src="math_eee2caf92cdd63.svg" alt="H" style="width:2.009ex;height:1.545ex;vertical-align:0">와 정규화된 기준을 이용하면,</p>
+<div class="math-block"><img src="math_59ab176078d9db.svg" alt="r_\Phi^2=\langle\Phi|H^2|\Phi\rangle-E_\Phi^2." style="width:21.189ex;height:auto"></div>
+<p>즉 기준상태에서의 에너지 분산과 같다. 고유상태를 기준으로 잡으면 잔차는 0이다. 이 경우 에너지는 이미 <img class="math-inline" src="math_7ce7242462864c.svg" alt="E_\Phi" style="width:3.013ex;height:1.878ex;vertical-align:-0.339ex">이며 <img class="math-inline" src="math_1564ee74d25ea0.svg" alt="\Lambda" style="width:1.57ex;height:1.62ex;vertical-align:0">를 따로 정의할 이유가 없다. 반대로 잔차가 작다는 것만으로 원하는 고유상태와 가깝다고 결론내릴 수는 없다. 원하지 않은 다른 고유상태도 잔차가 0이기 때문이다.</p>
+<figure><img class="figure-desktop" src="projection_residual_ko.svg" alt="Hamiltonian을 작용시킨 기준상태를 기준에 평행한 성분과 직교 잔차로 나누고 두 성분을 목표상태와 대조하는 기하"><img class="figure-mobile" src="projection_residual_mobile_ko.svg" alt="Hamiltonian을 작용시킨 기준상태를 기준에 평행한 성분과 직교 잔차로 나누고 두 성분을 목표상태와 대조하는 기하"><figcaption>원 논문 식(1)-(4)의 관계를 직접 재구성한 교육 도식. 직교 관계는 Hilbert 공간의 내적에 대한 것이며 실제 분자 방향·장치 배선이 아니다. 그림은 실수 고유상태의 관계를 보여주는 개념적 단면이며, 복소 상태의 위상은 본문의 식에서 다룬다. [1]</figcaption></figure>
+
+<p>이제 이 항등식의 왼쪽에 <img class="math-inline" src="math_94214571c8b0fa.svg" alt="\langle\Psi|" style="width:3.269ex;height:2.262ex;vertical-align:-0.566ex">를 곱한다. <img class="math-inline" src="math_04fdf7cbd8a903.svg" alt="s=\langle\Psi|\Phi\rangle\ne0" style="width:14.009ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_bfefe55a277ed1.svg" alt="h=\langle\Psi|\Lambda\rangle" style="width:10.04ex;height:2.262ex;vertical-align:-0.566ex">라 쓰면,</p>
+<div class="math-block"><img src="math_8714ec5fceeadf.svg" alt="\boxed{E_{\rm ME}
+=\frac{\langle\Psi|H|\Phi\rangle}{\langle\Psi|\Phi\rangle}
+=E_\Phi+r_\Phi\frac hs.}" style="width:32.142ex;height:auto"></div>
+<p>목표가 정확한 고유상태라면 <img class="math-inline" src="math_51c508a54a2ec2.svg" alt="\langle\Psi|H=E\langle\Psi|" style="width:13.293ex;height:2.262ex;vertical-align:-0.566ex">이므로 분자는 <img class="math-inline" src="math_c90d63deb704dd.svg" alt="E s" style="width:2.79ex;height:1.561ex;vertical-align:-0.023ex">가 되고 비율은 정확한 고유값을 준다. 기준이 근사 상태여도 이 대수적 정확성은 유지된다. 필요한 것은 0이 아닌 overlap과 정확한 목표 고유상태, 정확한 고전 상수·잔차다. 목표상태까지 근사인 경우는 뒤에서 따로 검토한다. [1, §2.1]</p>
+<blockquote>
+<p><strong>칠판에서 확인할 것.</strong> 이 식은 <img class="math-inline" src="math_3b0627f6797be5.svg" alt="\langle\Psi|H|\Psi\rangle" style="width:8.548ex;height:2.262ex;vertical-align:-0.566ex">와 다르다. 분자에 기준과 목표가 함께 들어가기 때문에 ‘혼합’ 추정량이다. 혼합 추정량을 보통 기대값으로 바꾸면 뒤의 변분성 논의도 달라진다.</p>
+</blockquote>
+<h3>희소 기준이라고 잔차도 저절로 싸지는 것은 아니다</h3>
+<p><img class="math-inline" src="math_bb2385f89115b7.svg" alt="H\Phi" style="width:3.643ex;height:1.545ex;vertical-align:0">에 포함되는 determinant 수는 기준보다 커질 수 있다. 잔차를 더 작은 <img class="math-inline" src="math_9af5557898150a.svg" alt="\widetilde\Lambda" style="width:1.57ex;height:2.367ex;vertical-align:0">로 절단해 준비하면 앞의 정확한 항등식에도 근사가 들어간다. <img class="math-inline" src="math_0224f5cd8591ed.svg" alt="E_\Phi,r_\Phi,s" style="width:8.449ex;height:1.977ex;vertical-align:-0.439ex">를 고정한 signed 추정량에서 Cauchy-Schwarz 부등식은,</p>
+<div class="math-block"><img src="math_8f8c7df2f29f85.svg" alt="|\widetilde E_{\rm ME}-E_{\rm ME}|
+\le\frac{r_\Phi}{|s|}\,\|\widetilde\Lambda-\Lambda\|" style="width:27.774ex;height:auto"></div>
+<p>를 준다. 이는 논문 식(5)와 같은 형태의 최악 정렬 bound다. 잔차 절단 오차·근사 목표 오차·장치 잡음·활성공간 밖 화학 오차는 서로 다른 항목이다. 분모 overlap이 작으면 절단 오차도 증폭된다. 실험의 determinant 선택은 고전적으로 확보한 CASCI 정보를 이용하므로, 고전적으로 접근할 수 없는 분자의 해를 독립 발견한 사례로 읽을 수는 없다. [1, §2.3·S2]</p>
+<h2 id="section-5">4. 위상을 전부 측정하지 않고도 되는 조건</h2>
+<p>일반적인 <img class="math-inline" src="math_4f06f9ee0c8060.svg" alt="h,s" style="width:3.37ex;height:2.009ex;vertical-align:-0.439ex">는 복소수다. 절댓값 두 개만 알면 복소 비율의 위상까지 알 수는 없다. 그런데 정확한 고유상태에 대한 <img class="math-inline" src="math_c012ef348aff89.svg" alt="E-E_\Phi" style="width:7.507ex;height:1.878ex;vertical-align:-0.339ex">는 실수다. 더구나 목표가 <strong>기준과 같은 불변 대칭 부분공간에서 가장 낮은 고유상태</strong>이면 변분원리가 다음 부호를 정한다.</p>
+<div class="math-block"><img src="math_b3330306a9e4ba.svg" alt="E-E_\Phi=r_\Phi h/s\le0." style="width:21.16ex;height:auto"></div>
+<p>이 조건에서는 측정 확률</p>
+<div class="math-block"><img src="math_4b32807748b8a3.svg" alt="p=|h|^2=p_\Lambda,\qquad q=|s|^2=p_\Phi" style="width:31.55ex;height:auto"></div>
+<p>로부터 음의 가지를 선택할 수 있다.</p>
+<div class="math-block"><img src="math_2ae9c09f44a2d2.svg" alt="\boxed{E_{\rm ME}=E_\Phi-r_\Phi\sqrt{p/q},\qquad q&gt;0.}" style="width:33.747ex;height:auto"></div>
+<p>핵심은 ‘복소 위상이 언제나 사라진다’가 아니다. 정확한 고유상태가 비율을 실수로 만들고, 그중 해당 부분공간의 최저 상태라는 조건이 부호까지 결정한다. 임의의 근사상태에서는 비율이 복소수일 수도 있고, 임의의 들뜬 고유상태에서는 양의 보정이 필요할 수 있다.</p>
+<p>원 논문이 화학적으로 들뜬 삼중항을 다룬다고 해서 이 조건과 모순되는 것은 아니다. 계산은 선택한 활성공간의 <strong>최저 삼중항 상태</strong>를 대상으로 한다. 이는 분자 전체의 singlet 바닥상태와 구별되는 대칭 부문 문제다. 전자 수를 <img class="math-inline" src="math_f120ad29aa62fc.svg" alt="(N_\alpha,N_\beta)=(4,2),(5,3),(6,4)" style="width:28.82ex;height:2.347ex;vertical-align:-0.65ex">로 잡으면 <img class="math-inline" src="math_33f9872b497391.svg" alt="M_S=1" style="width:7.563ex;height:1.92ex;vertical-align:-0.375ex">이지만, 고정 <img class="math-inline" src="math_f51265fd69e9f3.svg" alt="M_S" style="width:3.414ex;height:1.92ex;vertical-align:-0.375ex">만으로 총스핀 <img class="math-inline" src="math_9914aade7d7f2f.svg" alt="S=1" style="width:5.608ex;height:1.781ex;vertical-align:-0.186ex">이 보장되지는 않는다. 상태 구성·스핀 점검과 대칭 조건을 함께 확인해야 한다. 임의의 높은 MLCT·MC root에 음의 가지를 그대로 적용할 수는 없다. [1, §2.2]</p>
+<h3>Compute-uncompute 회로가 읽는 확률</h3>
+<p>여기서는 서로 독립인 두 CU 회로를 설명한다. <img class="math-inline" src="math_8cc61540104ce4.svg" alt="U_\Psi\lvert0\rangle=\lvert\Psi\rangle" style="width:11.904ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_4abdea3e1b478b.svg" alt="U_\Phi\lvert0\rangle=\lvert\Phi\rangle" style="width:11.688ex;height:2.262ex;vertical-align:-0.566ex">라 하면, 목표를 준비한 뒤 기준 준비의 역회로를 적용하고 모든 비트가 0인지 측정한다.</p>
+<div class="math-block"><img src="math_297e14f948f4eb.svg" alt="\Pr(0^n)=|\langle0|U_\Phi^\dagger U_\Psi|0\rangle|^2
+=|\langle\Phi|\Psi\rangle|^2=q." style="width:38.608ex;height:auto"></div>
+<p>기준 역회로를 잔차의 역회로로 바꾸면 <img class="math-inline" src="math_e4bd8005f58b3d.svg" alt="p" style="width:1.138ex;height:1.439ex;vertical-align:-0.439ex">를 얻는다. 회로 종류가 두 개라는 말은 shot이 두 번이면 충분하다는 말이 아니다. 각 확률을 원하는 정밀도로 추정하려면 반복이 필요하다. 기준·잔차가 복잡하면 그 역회로도 비싸진다. 원 논문은 signed-overlap, classical shadows, flagged CU도 비교한다. 두 확률을 한 회로에서 함께 다루는 방식에는 별도의 공분산·회로 비용 계산이 필요하다. [1, §2.4·S3-S4]</p>
+<h2 id="section-6">5. 손으로 푸는 두 준위 예제</h2>
+<p>이제 실제 분자를 잠시 내려놓자. 다음은 원 논문의 데이터가 아닌 <strong>리뷰의 검산 가능한 교육 모형</strong>이다. 에너지 간격 <img class="math-inline" src="math_02971e0aeb5b93.svg" alt="\Delta=100\,{\rm mHa}" style="width:13.386ex;height:1.805ex;vertical-align:-0.186ex">, 기준각 <img class="math-inline" src="math_460e6847929e66.svg" alt="\theta=30^\circ" style="width:7.328ex;height:1.785ex;vertical-align:-0.186ex">로 잡는다.</p>
+<div class="math-block"><img src="math_c43cda039d6c95.svg" alt="H=\begin{pmatrix}0&amp;0\\0&amp;\Delta\end{pmatrix},\quad
+\lvert\Psi_0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\quad
+\lvert\Phi\rangle=\begin{pmatrix}\cos\theta\\\sin\theta\end{pmatrix}." style="width:46.491ex;height:auto"></div>
+<p>직접 곱하고 평행 성분을 빼면,</p>
+<div class="math-block"><img src="math_e6913ca0bc9d2f.svg" alt="E_\Phi=\Delta\sin^2\theta,\quad
+r_\Phi=\Delta\sin\theta\cos\theta,\quad
+\lvert\Lambda\rangle=\begin{pmatrix}-\sin\theta\\\cos\theta\end{pmatrix}" style="width:52.513ex;height:auto"></div>
+<p>를 얻는다. 이 표현은 <img class="math-inline" src="math_96350a66ddb8ac.svg" alt="0&lt;\theta&lt;\pi/2" style="width:11.779ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_8d95520afa2016.svg" alt="\Delta&gt;0" style="width:6.033ex;height:1.71ex;vertical-align:-0.09ex">에서 쓴다. 따라서 <img class="math-inline" src="math_020fc91c507111.svg" alt="q=\cos^2\theta" style="width:9.511ex;height:2.326ex;vertical-align:-0.439ex">, <img class="math-inline" src="math_7effdf7562faa7.svg" alt="p=\sin^2\theta" style="width:9.359ex;height:2.4ex;vertical-align:-0.439ex">이며,</p>
+<div class="math-block"><img src="math_f924fc7b5c715d.svg" alt="E_{\rm ME}=\Delta\sin^2\theta
+-\Delta\sin\theta\cos\theta\sqrt{\frac{\sin^2\theta}{\cos^2\theta}}=0." style="width:42.516ex;height:auto"></div>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>양</th>
+<th align="right">교육 예제의 값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>기준 에너지 <img class="math-inline" src="math_7ce7242462864c.svg" alt="E_\Phi" style="width:3.013ex;height:1.878ex;vertical-align:-0.339ex"></td>
+<td align="right">25 mHa</td>
+<td>기준만 사용한 값</td>
+</tr>
+<tr>
+<td>잔차 크기 <img class="math-inline" src="math_f309ff42c002a0.svg" alt="r_\Phi" style="width:2.363ex;height:1.339ex;vertical-align:-0.339ex"></td>
+<td align="right">43.301270 mHa</td>
+<td>에너지 단위의 잔차 norm</td>
+</tr>
+<tr>
+<td>기준 확률 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex"></td>
+<td align="right">0.75</td>
+<td>목표와 기준의 overlap 제곱</td>
+</tr>
+<tr>
+<td>잔차 확률 <img class="math-inline" src="math_e4bd8005f58b3d.svg" alt="p" style="width:1.138ex;height:1.439ex;vertical-align:-0.439ex"></td>
+<td align="right">0.25</td>
+<td>목표와 잔차의 overlap 제곱</td>
+</tr>
+<tr>
+<td>보정 <img class="math-inline" src="math_1de2a54032730a.svg" alt="-r_\Phi\sqrt{p/q}" style="width:9.741ex;height:2.851ex;vertical-align:-0.639ex"></td>
+<td align="right">−25 mHa</td>
+<td>부호 조건을 사용한 보정</td>
+</tr>
+<tr>
+<td>혼합 추정량</td>
+<td align="right">0 mHa</td>
+<td>정확한 목표 고유값</td>
+</tr>
+</tbody></table></div>
+<figure><img class="figure-desktop" src="two_level_model_ko.svg" alt="에너지 0과 100 mHa의 두 준위에서 30도 기준상태를 투영해 25 mHa 기준 에너지와 음의 보정을 계산하는 예"><img class="figure-mobile" src="two_level_model_mobile_ko.svg" alt="에너지 0과 100 mHa의 두 준위에서 30도 기준상태를 투영해 25 mHa 기준 에너지와 음의 보정을 계산하는 예"><figcaption>리뷰가 만든 두 준위 교육 모형. Δ=100 mHa·θ=30°는 설명용 선택이며 Ru 분자나 Helios의 parameter·관측값이 아니다. 본문의 행렬 곱과 확률·분산을 독립 수치 계산으로 대조했다.</figcaption></figure>
+
+<section class="teaching-lab" data-two-level-lab aria-label="합성 2준위 실습">
+ <p class="lab-kicker">리뷰의 교육용 재구성 · 논문 기본값 없음</p>
+ <h3>직접 조절하기: 기준 중첩과 측정 배분</h3>
+ <p>Δ = 100 mHa, H = diag(0, Δ), 정확한 목표 상태 |0⟩. 독립적인 Bernoulli 투영 측정과 1차 분산 근사를 사용한다. 장치 잡음·누설·오류 완화·계산시간은 포함하지 않는다.</p>
+ <p>이 모형은 pΛ+pΦ=1이지만 두 회로의 배분을 배우기 위해 각각 따로 표본추출한다. 이 특별한 관계를 이용한 단일 확률 추정은 더 적은 측정으로 가능하며, 아래 최적 배분은 두 회로라는 제약 안에서의 결과다.</p>
+ <div class="lab-controls">
+ <label for="toy-theta">기준상태 각도 θ (도) <output data-value="theta" for="toy-theta">30°</output><input id="toy-theta" data-theta type="range" min="1" max="89" step="1" value="30"></label>
+ <label for="toy-shots">채택된 총 측정 횟수 N <output data-value="shots" for="toy-shots">10,000</output><input id="toy-shots" data-shots type="range" min="1000" max="50000" step="1000" value="10000"></label>
+ <label for="toy-fraction">잔차 측정에 배분할 비율 (%) <output data-value="fraction" for="toy-fraction">75%</output><input id="toy-fraction" data-fraction type="range" min="1" max="99" step="1" value="75"></label>
+ <div class="lab-buttons"><button type="button" data-lab-optimal>최적 비율 적용</button><button type="button" data-lab-reset>교육용 기본값으로 초기화</button></div></div>
+ <svg class="lab-bars" viewBox="0 0 420 92" role="img" aria-label="기준 에너지와 음의 보정 항의 크기는 같다"><text x="0" y="21">기준 에너지</text><rect x="170" y="6" width="60" height="22" fill="#11666d" data-energy-bar></rect><text x="0" y="65">음의 보정 항</text><rect x="170" y="50" width="60" height="22" fill="#b77b30" data-correction-bar></rect></svg>
+ <div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table><caption>기본값 θ = 30°, N = 10,000회. 값은 모형에서 결정론적으로 계산한다.</caption><tbody>
+ <tr><th>기준 에너지 EΦ</th><td data-value="reference">25.0000 mHa</td><th>잔차 크기 r</th><td data-value="r">43.3013 mHa</td></tr>
+ <tr><th>보정 항</th><td data-value="correction">-25.0000 mHa</td><th>혼합 추정량</th><td data-value="energy">0.0000 mHa</td></tr>
+ <tr><th>pΛ</th><td data-value="p">0.2500</td><th>pΦ</th><td data-value="q">0.7500</td></tr>
+ <tr><th>잔차 측정 횟수</th><td data-value="residual-shots">7,500</td><th>기준 측정 횟수</th><td data-value="reference-shots">2,500</td></tr>
+ <tr><th>현재 배분의 근사 SE</th><td data-value="se">0.2887 mHa</td><th>최적 잔차 비율</th><td data-value="optimal-fraction">75.0%</td></tr>
+ <tr><th>최적 배분의 근사 SE</th><td data-value="optimal-se">0.2887 mHa</td><td colspan="2">단위: mHa · 측정 횟수는 채택 후 기준</td></tr>
+ </tbody></table></div>
+ <p class="lab-warning" data-rare-event hidden>일부 기대 빈도가 30회 미만이다. 비선형 비율 추정량에서 이 1차 근사로 신뢰구간을 보장할 수 없다.</p>
+ <p class="lab-status" data-lab-status aria-live="polite">교육용 기본값에서 혼합 추정량은 0 mHa다.</p>
+ <noscript><p>JavaScript가 꺼져 있어 교육용 기본값을 표시한다.</p></noscript>
+ <p class="caption">0°에서 잔차는 불필요하고 90°에서 참조 중첩은 0이다. 슬라이더는 두 끝점을 제외한다. 최적화는 잔차 비율을 1% 단위로 반올림한다. 논문의 분자·회로·측정 성능을 재현한 자료가 아니다.</p></section>
+
+<p>이 예에서는 <img class="math-inline" src="math_26c66a118457c2.svg" alt="p+q=1" style="width:9.093ex;height:1.946ex;vertical-align:-0.439ex">이다. 일반 Hilbert 공간에서 목표가 <img class="math-inline" src="math_13b6c368c66278.svg" alt="\Phi,\Lambda" style="width:4.21ex;height:2.059ex;vertical-align:-0.439ex">가 만드는 평면 밖 성분도 가지면 <img class="math-inline" src="math_f92bb7adceba53.svg" alt="p+q\le1" style="width:9.093ex;height:1.946ex;vertical-align:-0.439ex">이며 등호를 가정할 수 없다. 이 제한 모형에서 등호를 이미 안다면 한 확률에서 다른 확률을 추론할 수도 있다. 여기서는 일반적인 두 독립 CU 회로의 통계를 연습하려고 따로 측정한다고 가정하며, 이 모형이 최적 측정법이나 양자 가속을 입증하는 것은 아니다. 또한 <img class="math-inline" src="math_3e9fb6e710663f.svg" alt="\theta=0" style="width:5.209ex;height:1.781ex;vertical-align:-0.186ex">이면 잔차가 0이어서 잔차 상태를 정의하지 않고, <img class="math-inline" src="math_7d396be64c48bd.svg" alt="\theta=90^\circ" style="width:7.328ex;height:1.785ex;vertical-align:-0.186ex">이면 <img class="math-inline" src="math_f5cd5870b2234c.svg" alt="q=0" style="width:5.189ex;height:1.946ex;vertical-align:-0.439ex">이어서 혼합 추정량 자체를 사용할 수 없다.</p>
+<h3>반례 1: 목표가 정확해도 부호를 잘못 고르면 틀린다</h3>
+<p>목표를 들뜬 상태 <img class="math-inline" src="math_04ba652a956295.svg" alt="\lvert\Psi_1\rangle=(0,1)^T" style="width:13.617ex;height:2.47ex;vertical-align:-0.566ex">로 바꾸자. 같은 기준에서 <img class="math-inline" src="math_4498afef305746.svg" alt="s=1/2" style="width:7.472ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_9747ca3d7a43f9.svg" alt="h=\sqrt3/2" style="width:9.644ex;height:2.713ex;vertical-align:-0.566ex">다. signed 비율을 쓰면 <img class="math-inline" src="math_415f04884bb9ac.svg" alt="25+75=100\,{\rm mHa}" style="width:18.792ex;height:1.731ex;vertical-align:-0.186ex">로 정확하다. 그러나 음의 가지를 강제로 적용하면 <img class="math-inline" src="math_8483cc556b1d9d.svg" alt="25-75=-50\,{\rm mHa}" style="width:19.421ex;height:1.731ex;vertical-align:-0.186ex">가 된다. 확률 측정이 틀린 것이 아니라 <strong>그 확률을 해석하는 부호 가정이 틀린 것</strong>이다.</p>
+<h3>반례 2: 근사 목표에서는 바닥에너지 아래로 내려갈 수 있다</h3>
+<p>목표를 <img class="math-inline" src="math_7609d4780f5fb4.svg" alt="\lvert\Psi_\eta\rangle=(\cos\eta,\sin\eta)^T" style="width:20.158ex;height:2.589ex;vertical-align:-0.685ex">, <img class="math-inline" src="math_40aad493dcb49d.svg" alt="\eta=-5^\circ" style="width:8.021ex;height:2.02ex;vertical-align:-0.489ex">로 조금 기울이면,</p>
+<div class="math-block"><img src="math_cd7db8f98d158f.svg" alt="E_{\rm ME}(\eta)=\frac{\Delta\sin\theta\sin\eta}{\cos(\theta-\eta)}
+\simeq-5.319876\,{\rm mHa}." style="width:41.49ex;height:auto"></div>
+<p>그 상태의 보통 기대값은 <img class="math-inline" src="math_25a261cd1dc88f.svg" alt="\Delta\sin^2\eta\simeq0.759612\,{\rm mHa}" style="width:24.184ex;height:2.45ex;vertical-align:-0.489ex">로 바닥에너지 이상이다. 혼합 추정량은 반대로 0 아래다. 즉 근사 목표에 대한 혼합 추정량은 일반적으로 변분 상계가 아니다. 낮은 숫자를 얻었다는 사실을 더 좋은 파동함수의 증거로 삼으면 안 된다. 이 반례는 논문 실험의 오류를 재현한 것이 아니라 수학적 성질을 분리한 교육 계산이다.</p>
+<h3>그렇다면 근사 목표에 왜 이 방법을 쓸까</h3>
+<p>정확한 목표 고유상태를 <img class="math-inline" src="math_ccddcec8da1e01.svg" alt="\Psi_0" style="width:2.748ex;height:1.92ex;vertical-align:-0.375ex">, 그 에너지를 <img class="math-inline" src="math_ee943baca95b63.svg" alt="E_0" style="width:2.657ex;height:1.913ex;vertical-align:-0.375ex">라 하자. 위상을 맞추어 <img class="math-inline" src="math_e6807b5b6e3b01.svg" alt="\Psi=\Psi_0+\delta\Psi" style="width:13.056ex;height:1.997ex;vertical-align:-0.375ex">, <img class="math-inline" src="math_6f5ef54a580c06.svg" alt="\Phi=\Psi_0+\delta\Phi" style="width:12.802ex;height:1.997ex;vertical-align:-0.375ex">로 쓰고 분자에서 <img class="math-inline" src="math_085d7ebeb66fdb.svg" alt="E_0s" style="width:3.718ex;height:1.913ex;vertical-align:-0.375ex">를 빼면 다음 항등식이 나온다.</p>
+<div class="math-block"><img src="math_f7e26d0813e104.svg" alt="E_{\rm ME}-E_0
+=\frac{\langle\delta\Psi|(H-E_0)|\delta\Phi\rangle}
+{\langle\Psi|\Phi\rangle}." style="width:32.092ex;height:auto"></div>
+<p>정확한 고유벡터가 들어간 교차항은 0이 되기 때문이다. 기준과 목표가 모두 좋고 분모가 충분히 크면 오차는 두 상태 오차의 곱에 의존한다. 좋은 고전 기준이 목표 준비의 부담을 줄일 수 있는 이유다. 반면 한쪽이 나쁘거나 분모가 작으면 유리하다는 보장은 없다. 이는 리뷰가 직접 전개한 설명용 항등식이며 모든 분자에서의 성능 향상 정리가 아니다.</p>
+<h2 id="section-7">6. 두 확률의 통계: 어디에 shot을 더 써야 할까</h2>
+<p>독립 Bernoulli 측정으로 잔차 확률 <img class="math-inline" src="math_e4bd8005f58b3d.svg" alt="p" style="width:1.138ex;height:1.439ex;vertical-align:-0.439ex">를 <img class="math-inline" src="math_57d3740f2c1674.svg" alt="N_p" style="width:2.809ex;height:2.195ex;vertical-align:-0.65ex">번, 기준 확률 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex">를 <img class="math-inline" src="math_4ff40e5e825559.svg" alt="N_q" style="width:2.74ex;height:2.195ex;vertical-align:-0.65ex">번 추정한다고 하자. <img class="math-inline" src="math_44760eaead52e8.svg" alt="E_\Phi,r_\Phi" style="width:6.382ex;height:1.977ex;vertical-align:-0.439ex">는 정확하게 아는 상수로 둔다. <img class="math-inline" src="math_7cd09e7c909bed.svg" alt="f(p,q)=E_\Phi-r_\Phi\sqrt{p/q}" style="width:22.965ex;height:2.851ex;vertical-align:-0.639ex">를 미분하면,</p>
+<div class="math-block"><img src="math_ae63b9d4908129.svg" alt="\frac{\partial f}{\partial p}=-\frac{r_\Phi}{2\sqrt{pq}},\qquad
+\frac{\partial f}{\partial q}=\frac{r_\Phi\sqrt p}{2q^{3/2}}." style="width:33.657ex;height:auto"></div>
+<p>큰 표본에서 1차 오차 전파를 적용하면,</p>
+<div class="math-block"><img src="math_ab24ea03b9eb51.svg" alt="\sigma_E^2\simeq\frac{r_\Phi^2}{4}
+\left[\frac{1-p}{qN_p}+\frac{p(1-q)}{q^2N_q}\right]
+=\frac A{N_p}+\frac B{N_q}." style="width:43.047ex;height:auto"></div>
+<p>여기서 <img class="math-inline" src="math_69270ebde8f69a.svg" alt="A=r_\Phi^2(1-p)/(4q)" style="width:18.936ex;height:2.565ex;vertical-align:-0.679ex">, <img class="math-inline" src="math_0eb679040d232f.svg" alt="B=r_\Phi^2p(1-q)/(4q^2)" style="width:21.099ex;height:2.565ex;vertical-align:-0.679ex">의 단위는 에너지 제곱이다. 이 식은 원 논문 S4의 CU 분산과 같은 가정을 사용해 직접 유도했다. 작은 <img class="math-inline" src="math_b824901f93f004.svg" alt="q" style="width:1.041ex;height:1.439ex;vertical-align:-0.439ex">는 분모의 통계를 불안정하게 만든다. 모든 샷에서 분모 사건이 0번 관측되는 경우에는 이 근사를 계산할 수도 없다. 경계 확률·작은 표본에서는 비선형 비율의 bias, bootstrap·신뢰구간과 0-count 처리가 필요하다. [1, S4.4·S4.8-S4.9]</p>
+<p>총 accepted shot <img class="math-inline" src="math_fe71ae8ed4e960.svg" alt="N=N_p+N_q" style="width:13.342ex;height:2.195ex;vertical-align:-0.65ex">를 고정하고 두 종류의 비용이 같다면 Cauchy-Schwarz 부등식 또는 Lagrange 승수로,</p>
+<div class="math-block"><img src="math_ddd9070be24595.svg" alt="N_p:N_q=\sqrt [local path removed] B,\qquad
+\sigma_{E,\min}^2=\frac{(\sqrt A+\sqrt B)^2}{N}" style="width:47.757ex;height:auto"></div>
+<p>를 얻는다. 두 회로를 무조건 반반 실행하는 것이 최적은 아니다.</p>
+<p>두 준위 기본 예제에서는 <img class="math-inline" src="math_c0b43d3a014b3c.svg" alt="A=468.75" style="width:10.999ex;height:1.805ex;vertical-align:-0.186ex">, <img class="math-inline" src="math_2cae9adf8bf256.svg" alt="B=52.083333" style="width:14.413ex;height:1.731ex;vertical-align:-0.186ex"> mHa²다. accepted shot 10,000번을 잔차 7,500·기준 2,500으로 나누면 예측 표준오차는 <strong>0.288675 mHa</strong>, 반반 나누면 <strong>0.322749 mHa</strong>다. 두 수치는 독립 교육 계산이며 논문의 2,000:8,000 배분을 다시 최적화한 결과가 아니다.</p>
+<p>시간 비용이 다르면 답도 바뀐다. accepted shot 하나당 평균 비용을 <img class="math-inline" src="math_1dc14cb51c1b35.svg" alt="c_p,c_q" style="width:4.881ex;height:1.65ex;vertical-align:-0.65ex">로 잡을 때, 같은 정밀도에서 최소 시간을 주는 비율은,</p>
+<div class="math-block"><img src="math_b1378ae9d15634.svg" alt="\frac{N_p}{N_q}=\sqrt{\frac{Ac_q}{Bc_p}}." style="width:14.443ex;height:auto"></div>
+<p>단순한 고정 시도 비용 모형에서 수락률이 <img class="math-inline" src="math_f2d0620de8201d.svg" alt="\alpha_j" style="width:2.295ex;height:1.666ex;vertical-align:-0.666ex">, 제출 한 번의 시간이 <img class="math-inline" src="math_f0b21df628cfb7.svg" alt="\tau_j" style="width:1.836ex;height:1.641ex;vertical-align:-0.666ex">라면 <img class="math-inline" src="math_7701a31816294a.svg" alt="c_j\simeq\tau_j/\alpha_j" style="width:10.105ex;height:2.363ex;vertical-align:-0.666ex">다. 실제로는 준비·역회로·측정·재설정 시간이 다르고 조기 종료나 교정·대기 비용도 있다. <strong>최소 shot과 최소 시간은 서로 다른 최적화 문제</strong>다.</p>
+<h2 id="section-8">7. 원문 실험을 읽는 첫 단계: 400과 10,000을 같은 축으로 잇지 않는다</h2>
+<p>Fig.6(d)의 약 400 CU shot은 특정 <img class="math-inline" src="math_975c4f20c5ffdf.svg" alt="(6,6)" style="width:5.029ex;height:2.262ex;vertical-align:-0.566ex"> 구조·희소 기준 조건에서 1.6 mHa를 얻기 위한 <strong>이상적 분산 기반 추정</strong>이다. 같은 그림에서 단일 determinant·classical-shadow 방식은 약 40,000 shot, grouped Pauli 방식은 694,194 shot이다. 기준상태와 측정 프로토콜이 함께 달라지므로 ‘희소 기준 하나만 바꾸어 100배’라는 단일 요인의 ablation으로 읽을 수 없다. Pauli 기준의 CASCI 분산과 CU의 선택된 근사 목표 조건도 구별해야 한다. [1, §2.4·Fig.6·Table S7]</p>
+<p>실제 <img class="math-inline" src="math_bdea92ae8da328.svg" alt="(10,10)" style="width:7.291ex;height:2.262ex;vertical-align:-0.566ex"> Helios 실험은 구조마다 기준 회로 2,000+잔차 회로 8,000, <strong>총 10,000 제출 shot</strong>을 사용했다. 개별 에너지 표준오차 1.66-1.73 mHa를 보고했다. 더 큰 활성공간·장치 잡음·후선택·준비 회로라는 조건이 다르다. 따라서 ‘400에서 10,000으로 성능이 25배 악화했다’는 비교도 성립하지 않는다. [1, Table 1·Fig.8]</p>
+<p>두 구조의 에너지 차이를 만들려면 이 예산이 두 번 필요해 제출 shot은 합계 20,000개다. 개별 에너지의 정밀도 목표와 차이 자체의 정밀도 목표도 구분해야 한다.</p>
+<figure><img class="figure-desktop" src="evidence_conditions_ko.svg" alt="6,6 활성공간의 이상적 400샷 추정과 10,10 활성공간의 실제 10000 제출샷 실험을 조건별로 분리하고 표준오차와 중심값 편차를 구별한 패널"><img class="figure-mobile" src="evidence_conditions_mobile_ko.svg" alt="6,6 활성공간의 이상적 400샷 추정과 10,10 활성공간의 실제 10000 제출샷 실험을 조건별로 분리하고 표준오차와 중심값 편차를 구별한 패널"><figcaption>원 논문 Fig.6·Table 1·Fig.8을 바탕으로 조건을 나누어 직접 그렸다. 400과 10,000은 같은 workload의 속도비가 아니다. 표준오차는 유한 표본 정밀도이고 CASCI 편차는 중심값의 일치 정도다. 원 실험을 독립 재실행한 결과가 아니다. [1]</figcaption></figure>
+
+<p>또 하나의 큰 숫자가 50큐비트다. <img class="math-inline" src="math_bdea92ae8da328.svg" alt="(10,10)" style="width:7.291ex;height:2.262ex;vertical-align:-0.566ex">의 데이터는 20큐비트다. leakage 검출만 쓰면 총 20, coherent parity check(CPC)는 총 22, measurement-based parity check(MBPC)는 데이터 20+보조 30인 총 50큐비트를 사용한다. 더 많은 보조 검사가 더 큰 전자 활성공간을 뜻하지 않으며, 검사 강도가 최종 에너지 차이를 항상 개선하지도 않았다. [1, §4.5·Table 1]</p>
+<h2 id="section-9">8. 숫자 읽기 실습: 후선택은 분자와 분모를 함께 바꾼다</h2>
+<p>논문 Table 1의 Helios-1 <img class="math-inline" src="math_dc82e121eeb8b1.svg" alt="R_x" style="width:2.82ex;height:1.902ex;vertical-align:-0.357ex">, <img class="math-inline" src="math_bdea92ae8da328.svg" alt="(10,10)" style="width:7.291ex;height:2.262ex;vertical-align:-0.566ex"> 결과 일부를 읽어 보자. 아래 확률은 검사를 통과한 샷에 조건부로 계산한 all-zero 확률이다. <img class="math-inline" src="math_b7c4deb092eb7e.svg" alt="s" style="width:1.061ex;height:1.023ex;vertical-align:-0.023ex"> 회로는 기준, <img class="math-inline" src="math_05f96ad34ce666.svg" alt="h" style="width:1.303ex;height:1.595ex;vertical-align:-0.025ex"> 회로는 잔차를 측정한다.</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>검사</th>
+<th align="right">전체 큐비트</th>
+<th>기준/잔차 수락률</th>
+<th align="right"><img class="math-inline" src="math_c8dc3117d7cf28.svg" alt="q=p_\Phi" style="width:6.539ex;height:1.758ex;vertical-align:-0.439ex"></th>
+<th align="right"><img class="math-inline" src="math_fdc7ad4c1f7d28.svg" alt="p=p_\Lambda" style="width:6.591ex;height:1.758ex;vertical-align:-0.439ex"></th>
+<th align="right"><img class="math-inline" src="math_2547c07b90a177.svg" alt="\sqrt{p/q}" style="width:5.618ex;height:2.851ex;vertical-align:-0.639ex"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Leakage</td>
+<td align="right">20</td>
+<td>92.4% / 85.7%</td>
+<td align="right">0.7829 ± 0.0096</td>
+<td align="right">0.0733 ± 0.0031</td>
+<td align="right">0.3059 ± 0.0068</td>
+</tr>
+<tr>
+<td>Leakage + CPC</td>
+<td align="right">22</td>
+<td>86.5% / 78.8%</td>
+<td align="right">0.8242 ± 0.0092</td>
+<td align="right">0.0782 ± 0.0034</td>
+<td align="right">0.3080 ± 0.0069</td>
+</tr>
+<tr>
+<td>Leakage + MBPC</td>
+<td align="right">50</td>
+<td>85.2% / 78.8%</td>
+<td align="right">0.8256 ± 0.0092</td>
+<td align="right">0.0773 ± 0.0034</td>
+<td align="right">0.3059 ± 0.0069</td>
+</tr>
+</tbody></table></div>
+<p class="helios-count-note">표의 오차는 원문 보고의 1 standard error다. 예를 들어 leakage-only의 accepted shot은 약 <img class="math-inline" src="math_db4df20378915c.svg" alt="2000\times0.924=1848" style="width:19.986ex;height:1.717ex;vertical-align:-0.186ex">, <img class="math-inline" src="math_3fa22bdd3b61c8.svg" alt="8000\times0.857=6856" style="width:19.986ex;height:1.715ex;vertical-align:-0.186ex">개다. 공개 비율이 반올림되었으므로 이는 보고된 수락률에서 계산한 근삿값이지 원시 정수 count를 새로 확보한 것이 아니다. 조건부 확률의 표준오차를 계산할 때 2,000·8,000을 그대로 accepted 분모로 쓰면 안 된다.</p>
+<p>잡음이 두 확률을 <img class="math-inline" src="math_6e6f5b3d20d0aa.svg" alt="p(1+\epsilon_p),q(1+\epsilon_q)" style="width:18.252ex;height:2.347ex;vertical-align:-0.65ex">로 바꾼다고 하자. 작은 상대오차의 1차 전개는,</p>
+<div class="math-block"><img src="math_67cd5fe2f04b19.svg" alt="\sqrt{\frac{p(1+\epsilon_p)}{q(1+\epsilon_q)}}
+\simeq\sqrt{p/q}\left[1+\frac{\epsilon_p-\epsilon_q}{2}\right]" style="width:34.822ex;height:auto"></div>
+<p>를 준다. 공통 상대오차는 비율에서 일부 상쇄되지만, 검사 하나가 한 확률만 더 개선하면 비율은 오히려 멀어질 수 있다. 양자 측정 확률이 더 좋아졌다는 말과 그 확률로 만드는 최종 에너지가 더 정확해졌다는 말은 다르다.</p>
+<p>두 구조의 차이 <img class="math-inline" src="math_a91fcfed02058b.svg" alt="\Delta E=E_x-E_0" style="width:14.826ex;height:1.994ex;vertical-align:-0.375ex">도 마찬가지다. 중심값의 편향이 각각 <img class="math-inline" src="math_47b2e5a6a4ef33.svg" alt="b_x,b_0" style="width:5.038ex;height:2.009ex;vertical-align:-0.439ex">이면 차이의 편향은 <img class="math-inline" src="math_38c5656a6c6acb.svg" alt="b_x-b_0" style="width:6.797ex;height:1.945ex;vertical-align:-0.375ex">다. 반면 표본 분산은,</p>
+<div class="math-block"><img src="math_426edb1e78101e.svg" alt="\operatorname{Var}(\widehat{\Delta E})
+=\sigma_x^2+\sigma_0^2-2\operatorname{Cov}(\widehat E_x,\widehat E_0)" style="width:35.975ex;height:auto"></div>
+<p>이다. 독립 샷 실험의 통계 공분산이 0이어도 공통 장치 오차가 중심값의 편향에서 일부 상쇄될 수 있다. 이 두 종류의 ‘상쇄’를 혼동하면 안 된다.</p>
+<p>원 논문은 emulator·hardware의 개별 에너지 CASCI 편차를 약 0.5-13 mHa, 에너지 차이 편차를 약 0.2-9 mHa로 보고한다. 이 범위는 여러 조건의 결과를 모은 것이며 특정 단일 설정의 오차막대가 아니다. Helios-1의 parity check는 최종 에너지 차이를 일관되게 개선하지 않았다. <strong>1.7 mHa 정도의 표준오차를 얻었다는 사실은 그 값이 CASCI에서 1.7 mHa 이내라는 보장이 아니다.</strong> [1, Fig.8]</p>
+<p>실제 숫자 한 쌍을 계산해 보자. Table S8의 Helios-1 leakage-only 추정 중심값을 빼면 <img class="math-inline" src="math_a63bd13c34986c.svg" alt="\Delta E=-3.676\,{\rm mHa}" style="width:18.635ex;height:1.805ex;vertical-align:-0.186ex">, 독립 표준오차를 전파하면 약 2.392 mHa다. Table S6의 해당 CASCI 차이는 약 +0.119 mHa이므로 중심값의 차이는 −3.795 mHa다. 이는 공개 표의 반올림값을 이용한 <strong>리뷰의 산술 대조</strong>이지 새로운 장치 측정이 아니다. 또한 이 불일치만으로 특정 물리 잡음 원인을 확정하거나 통계적 유의성을 주장할 수는 없다. [1, Tables S6·S8]</p>
+<h2 id="section-10">9. 읽기 비용을 줄인 뒤: SVD-THC가 묻는 다른 질문</h2>
+<p>지금까지는 하나의 구조에서 준비된 상태의 에너지를 읽었다. 반응 경로나 conformer 지형에서는 수천 개 구조의 Hamiltonian을 준비해야 한다. Cortes 등의 SVD-THC는 구조별 전자 적분의 공통 저랭크 표현을 찾아 앙상블을 하나의 multiplexed block encoding으로 묶는다. 이는 미래 내결함성 양자 회로의 <strong>입력·자원 설계</strong>다. 현재 Helios 실험의 측정 절감과 같은 실행 단계가 아니다. [2]</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="비교와 응용 표"><table>
+<thead>
+<tr>
+<th>Alanine 5,184구조의 비교</th>
+<th align="right">회로 큐비트</th>
+<th align="right">sliced-THC 대비 Toffoli 이득</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sliced-THC 기준</td>
+<td align="right">1,191</td>
+<td align="right">1배</td>
+</tr>
+<tr>
+<td>SVD-THC Toffoli-optimal</td>
+<td align="right">8,498</td>
+<td align="right">약 201배</td>
+</tr>
+<tr>
+<td>SVD-THC qubit-comparable</td>
+<td align="right">1,330</td>
+<td align="right">108배</td>
+</tr>
+</tbody></table></div>
+<p>8,498큐비트 설정의 active-volume 이득은 22.1배다. Clifford 연산과 데이터 이동 등이 Toffoli 수만으로 드러나지 않기 때문이다. 최소기저 STO-3G의 개념검증이며, 0.6 mHa 미만이라는 정확도는 비압축 Hamiltonian의 CCSD 상관에너지와 비교한 압축·절단 오차다. 실제 정확한 분자 에너지나 물리 장치 성능의 보장이 아니다. [2, Tables VI-VII]</p>
+<p>이 비교를 넣는 이유는 두 논문의 절감률을 곱하기 위해서가 아니다. <strong>구조를 넣는 비용, 상태를 만드는 비용, 원하는 값을 읽는 비용이 각각 남는다</strong>는 사실을 확인하기 위해서다. 작은 앙상블에서는 고정 압축비용이 이득을 없앨 수도 있다. 같은 화학 정확도·실행 방식에서 전체 비용을 다시 계산해야 한다.</p>
+<figure><img class="figure-desktop" src="cost_chain_ko.svg" alt="전자구조·기준 생성과 회로 합성·양자 준비 및 overlap 측정·후선택·에너지 차이 계산을 이어 전체 비용을 확인하는 흐름"><img class="figure-mobile" src="cost_chain_mobile_ko.svg" alt="전자구조·기준 생성과 회로 합성·양자 준비 및 overlap 측정·후선택·에너지 차이 계산을 이어 전체 비용을 확인하는 흐름"><figcaption>두 논문을 연결해 직접 구성한 작업 흐름. 각 단계의 시간·메모리·수락률은 별도로 측정해야 한다. OLED·촉매의 실제 성능이나 두 방법을 결합한 가속을 검증한 파이프라인이 아니다. [1,2]</figcaption></figure>
+
+<h2 id="section-11">10. 세미나 토론: 다음 논문이라면 무엇을 보여야 할까</h2>
+<p>이 연구의 성과는 희소 기준상태와 직접 overlap 측정을 함께 설계하면 측정 분산을 줄일 수 있고, 이를 실제 trapped-ion 장치에서 시험했다는 데 있다. 아직 입증하지 않은 것은 수렴한 분자 반응속도, OLED 발광체의 성능 개선, 강한 고전 방법에 대한 전체 시간 우위다.</p>
+<p>후속 실험은 같은 구조·기저·활성공간·목표 오차에서 기준상태 크기, 목표 준비 깊이, 제출·accepted shot, 회로 시간, 고전 전처리와 편향을 함께 보고해야 한다. CASSCF/NEVPT2·selected CI 같은 고전 비교도 같은 물리 문제와 정확도 조건으로 맞춰야 한다. 원문의 AI-assisted 과정은 sparse support와 회로를 선택하는 고전 최적화 요소이며 비용에서 빠지는 마법의 단계가 아니다.</p>
+<p>OLED·전이금속 광활성 분자로의 적용은 <strong>리뷰의 후속 제안</strong>이다. 비틀림 경로에서 기준이 계속 좋은 overlap을 유지하는지, 전자 상태 성격이 바뀌어도 같은 부호·대칭 가정이 성립하는지, 동적 상관과 환경 효과를 더했을 때 비교가 유지되는지부터 시험할 수 있다. 이 논문이 OLED 소자나 치료효과를 검증했다고 확대하지 않는다.</p>
+<p>마지막 5분에는 다음 세 문장을 토론해 보자.</p>
+<ol>
+<li>‘더 좋은 기준’이란 낮은 변분 에너지, 작은 잔차, 큰 목표 overlap, 짧은 준비 회로 가운데 무엇을 최적화하는 것인가? 이 목표들이 충돌하는 예를 만들 수 있는가?</li>
+<li>에너지 차이의 좋은 정확도가 장치 편향의 우연한 상쇄에서 왔다면, 다른 구조에서도 신뢰할 수 있는지 어떤 검사를 설계할 것인가?</li>
+<li>같은 정밀도의 총시간으로 비교하면 CU·classical shadows·Pauli 측정의 순위가 바뀔 수 있는가? 기준을 여러 개 재사용할 때에는 어떤가?</li>
+</ol>
+<h2 id="section-12">11. 연습문제와 해설</h2>
+<h3>문제 1 - 잔차의 norm을 유도하라</h3>
+<p>정규화된 <img class="math-inline" src="math_12bc9ac7d052b9.svg" alt="\Phi" style="width:1.633ex;height:1.545ex;vertical-align:0">에 대해 <img class="math-inline" src="math_8db9429435cf46.svg" alt="R=(H-E_\Phi)\Phi" style="width:15.915ex;height:2.262ex;vertical-align:-0.566ex">라 두고 <img class="math-inline" src="math_ff25b3794bcb51.svg" alt="r_\Phi^2=\langle H^2\rangle_\Phi-E_\Phi^2" style="width:17.378ex;height:2.565ex;vertical-align:-0.679ex">를 유도하라. <img class="math-inline" src="math_02f95a31e581ef.svg" alt="r_\Phi=0" style="width:6.512ex;height:1.846ex;vertical-align:-0.339ex">일 때의 의미와, 이 조건이 원하는 바닥상태를 보장하는지도 설명하라.</p>
+<p><strong>해설.</strong> <img class="math-inline" src="math_40904c15363e6b.svg" alt="\langle(H-E_\Phi)^2\rangle=\langle H^2\rangle-2E_\Phi\langle H\rangle+E_\Phi^2" style="width:36.646ex;height:2.565ex;vertical-align:-0.679ex">이고 <img class="math-inline" src="math_ff5c3762cfc071.svg" alt="\langle H\rangle=E_\Phi" style="width:9.799ex;height:2.262ex;vertical-align:-0.566ex">이므로 결과가 나온다. 분산 0은 <img class="math-inline" src="math_f39931bb0ec603.svg" alt="(H-E_\Phi)\Phi=0" style="width:15.329ex;height:2.262ex;vertical-align:-0.566ex">, 즉 어떤 고유상태임을 뜻한다. 원하는 대칭 부문의 최저 고유상태인지까지는 보장하지 않는다. 잔차가 0이면 <img class="math-inline" src="math_ad20dad79c9e73.svg" alt="\Lambda=R/r_\Phi" style="width:9.799ex;height:2.262ex;vertical-align:-0.566ex">는 정의하지 않는다.</p>
+<h3>문제 2 - 정확한 들뜬상태의 부호를 찾으라</h3>
+<p>두 준위 모형에서 목표를 <img class="math-inline" src="math_fa7b3efe78d1d8.svg" alt="\Psi_1=(0,1)^T" style="width:12.108ex;height:2.47ex;vertical-align:-0.566ex">로 잡고 <img class="math-inline" src="math_83ef0970c30e93.svg" alt="s,h,E_{\rm ME}" style="width:8.79ex;height:2.009ex;vertical-align:-0.439ex">를 계산하라. 음의 제곱근 공식을 적용하면 왜 −50 mHa가 되는가?</p>
+<p><strong>해설.</strong> <img class="math-inline" src="math_3076f787b2c822.svg" alt="s=\sin30^\circ=1/2" style="width:16.894ex;height:2.262ex;vertical-align:-0.566ex">, <img class="math-inline" src="math_cb1ed9db9cbf13.svg" alt="h=\cos30^\circ=\sqrt3/2" style="width:19.315ex;height:2.713ex;vertical-align:-0.566ex">이므로 signed 비율은 <img class="math-inline" src="math_c8b46d5ad33216.svg" alt="\sqrt3" style="width:3.061ex;height:2.398ex;vertical-align:-0.251ex">다. <img class="math-inline" src="math_04af62a0ac691c.svg" alt="25+43.301270\sqrt3=100" style="width:24.179ex;height:2.398ex;vertical-align:-0.251ex"> mHa다. 확률만 측정해 음의 부호를 강제하면 같은 보정의 절댓값 75를 빼 −50을 얻는다. 목표가 해당 공간의 최저 상태라는 가정이 깨진다.</p>
+<h3>문제 3 - 같은 shot 예산을 최적으로 나누라</h3>
+<p>기본 두 준위 모형에서 총 accepted shot 10,000개를 배분하라. 잔차 회로의 accepted shot 비용이 기준 회로의 4배라면 최소 시간 배분 비율은 어떻게 바뀌는가?</p>
+<p><strong>해설.</strong> <img class="math-inline" src="math_21cd8a40d402e0.svg" alt="A/B=9" style="width:8.694ex;height:2.262ex;vertical-align:-0.566ex">이므로 동일 비용에서는 <img class="math-inline" src="math_0a488154759ec9.svg" alt="N_p/N_q=3" style="width:10.829ex;height:2.347ex;vertical-align:-0.65ex">, 즉 7,500:2,500이고 표준오차는 0.288675 mHa다. 비용이 <img class="math-inline" src="math_b74767cc022c08.svg" alt="c_p=4c_q" style="width:8.024ex;height:2.181ex;vertical-align:-0.65ex">이면 <img class="math-inline" src="math_2d76c4609b317d.svg" alt="N_p/N_q=\sqrt{9/4}=1.5" style="width:21.308ex;height:2.861ex;vertical-align:-0.65ex">다. 이것은 목표 정밀도에서 최소 시간을 주는 비율이며, 같은 10,000 shot을 고정했을 때 최소 분산을 주는 비율과 구별해야 한다.</p>
+<h3>문제 4 - 수락률과 에너지 차이의 오차를 분리하라</h3>
+<p>기준 2,000회·잔차 8,000회를 제출하고 각각 90%·80%를 수락했다. 평균 accepted count를 구하라. 두 구조의 통계 표준오차가 각각 1.7 mHa이고 독립이면 차이의 표준오차는 얼마인가? 중심값 편향이 각각 +8·+6 mHa이면 차이의 편향은?</p>
+<p><strong>해설.</strong> accepted count의 기대값은 1,800과 6,400이다. 통계 표준오차는 <img class="math-inline" src="math_65d0e9ef878155.svg" alt="\sqrt{1.7^2+1.7^2}=2.404163" style="width:24.396ex;height:2.851ex;vertical-align:-0.309ex"> mHa다. 차이의 편향은 +2 mHa다. 편향이 작은 것과 표본 오차막대가 작은 것은 별개이며, 이 예는 논문 raw count를 복제한 것이 아니다.</p>
+<h3>문제 5 - 201배라는 숫자를 평가하라</h3>
+<p>SVD-THC의 201배를 물리 실행시간 개선이라고 설명한 문장을 고쳐라. 큐비트가 비슷한 설정과 다른 비용 지표를 함께 쓰라.</p>
+<p><strong>해설.</strong> ‘Alanine 5,184구조의 지정 energy-thresholding 회로에서 Toffoli-optimal SVD-THC는 sliced-THC보다 약 201배 적은 Toffoli를 요구하지만 회로 큐비트는 1,191→8,498로 늘었다. 1,330큐비트 설정의 Toffoli 이득은 108배이고, 8,498큐비트 설정의 active-volume 이득은 22.1배다. 물리 오류정정·factory·대기시간을 포함한 전체 실행시간을 측정한 결과가 아니다.’ 두 논문을 결합한 가속률도 여기서 계산할 수 없다.</p>
+<h2 id="section-13">12. 다시 첫 질문으로</h2>
+<p>정확한 에너지 고유상태라 해도 쉽게 구현한 측정 절차의 통계 비용은 남는다. 희소 기준상태로 이미 아는 부분을 떼어내면, 목표와 기준·잔차의 관계에서 에너지 보정을 읽을 수 있다. 하지만 이때도 고유상태·대칭·부호·0이 아닌 분모라는 가정, 실제 준비 회로와 샷의 비용, 장치 편향을 함께 확인해야 한다.</p>
+<p>이 세미나에서 가져갈 판단은 하나다. <strong>양자화학의 좋은 에너지 추정량은 대수적으로 맞는 공식, 실행 가능한 측정, 믿을 수 있는 불확실성 설명을 함께 가져야 한다.</strong> 이번 연구는 그 세 항목을 같은 실험에서 살펴볼 수 있는 구체적인 사례다.</p>
+<h2 id="section-14">참고문헌과 이어 읽기</h2><div class="references">
+<ol>
+<li>Lenihan et al. <a href="https://arxiv.org/abs/2610.26689v1">Measurement-efficient energy estimator for quantum chemistry of photodynamic materials</a>, arXiv:2610.26689v1, 2026-10-19. <a href="https://arxiv.org/html/2610.26689v1">전체 HTML·보충자료</a>. 핵심 위치: §2.1 식(1)-(4), §2.2 대칭·활성공간, §2.4 Fig.6, §2.5 Table 1·Fig.8, Methods §4.5-4.6, S4 분산·배분·시간, S5 장치 결과. 저자 보고 결과이며 원 논문 실험을 독립 재현하지 않았다.</li>
+<li>Cortes et al. <a href="https://arxiv.org/abs/2610.25968v1">Efficient Block Encodings for Ensembles of Molecular Hamiltonians</a>, arXiv:2610.25968v1, 2026-10-19. <a href="https://arxiv.org/html/2610.25968v1">전체 HTML</a>. §V-VI·Tables VI-VII와 Appendix C. 논리 회로 자원 추정이며 Helios 실험과 별도다.</li>
+<li>NIST/CODATA. <a href="https://physics.nist.gov/cuu/pdf/all.pdf">2022 recommended fundamental constants</a>. Hartree-eV 환산과 Boltzmann 상수를 사용한 본문의 열적 민감도는 리뷰의 직접 계산이다.</li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/archive/files/2026-10-21-daily-quantum-brief.pdf">10월 21일 DQB 공개 보관본</a>. 이번 세미나의 주제 발굴 출발점이다. 기초를 더 공부하려면 <a href="https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/">퀀텀 머신러닝 독립 학습 노트</a>를 함께 볼 수 있다.</li>
+</ol>
+<p>수식·두 준위 예제·최적 샷 배분의 수치 계산은 리뷰 제작 코드로 확인했다. 이는 교육용 수학의 검산이며 Ru 분자의 전자구조, 원 논문의 최적화·장치 회로·QPU 샷을 독립 재실행했다는 뜻이 아니다. 생성 표지는 개념 일러스트이며 설명 그림·실습의 정확한 구조와 수치는 결정론적으로 제작했다.</p>
+</div>
+</article><div class="downloads"><a href="review.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-21<br>희소 기준상태와 혼합 추정량으로 양자화학 에너지 차이를 읽는 대학원 세미나.</footer>
+      <!-- AI Tech Review Authoring Disclosure -->
+      <section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="authoring-disclosure-heading">
+        <p class="disclosure-kicker">Authorship, AI assistance &amp; verification</p>
+        <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
+        <dl>
+          <div><dt>책임 편집자</dt><dd>김현중</dd></div>
+          <div><dt>AI 시스템</dt><dd>OpenAI Codex; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 1차 자료 종합·한영 대학원 세미나 집필·과학 편집·게시 통합 및 공개 페이지 검증; seminar_science — 원 논문·부록 조사·수치와 수식·주장 범위 대조 및 독립 원고 감수; seminar_production — 한영 반응형 설명 그림·독립 2준위 계산과 인터랙티브 실습·수식과 글꼴 조판·HTML/PDF 제작 및 검증; seminar_cover — 과학 표지 기획·내장 이미지 생성·시각 검수; seminar_translation — 한국어 정본 세미나의 전체 영어 번역·수식과 수치·과학적 조건 보존</dd></div>
+          <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
+          <div><dt>검증 범위</dt><dd>arXiv:2610.26689v1 원 논문·부록의 식과 수치표·활성공간·분산 추정·실제 QPU와 emulator 구분·후선택·오차 지표 및 별도 SVD-THC 논리 자원 추정 대조; 독립 합성 2준위 항등식·델타 방법의 미분과 분산·최적 측정 배분 계산; 분자 계산·QPU 실험 독립 재현 없음; 한영 원고·원본 그림·수식·인터랙티브 교육 제어·HTML/PDF 메타데이터 및 PC·모바일 게시 출력 확인</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>대학원 세미나 구성·작성·공개 게재 요청 확인; 문장 단위 사람 검토 없음</dd></div>
+          <div><dt>근거 기준일</dt><dd>2026-10-21</dd></div>
+        </dl>
+        <p class="disclosure-note">약 400회는 (6,6) 활성공간의 이상적 측정 분산 추정이고, 10,000회는 (10,10) 활성공간의 실제 Helios-1 QPU 제출 측정 횟수입니다. 두 수를 같은 조건의 속도 향상 비율로 읽지 않습니다. 합성 2준위 실습은 논문 데이터가 아니며, 공통 확률 축척의 상쇄·유한 표본 분산·참조 중첩 조건을 구별합니다. 개념 표지와 정량 교육 도표의 역할을 분리했습니다.</p>
+      </section>
+      <!-- End AI Tech Review Authoring Disclosure -->
+    </main><script src="two_level_explorer.js" defer></script>
+<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p></section>
+</body></html>

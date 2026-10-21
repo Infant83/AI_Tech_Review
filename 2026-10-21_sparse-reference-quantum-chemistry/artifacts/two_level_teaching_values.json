@@ -1,0 +1,75 @@
+{
+  "basis": "Independent synthetic two-level teaching model, not paper data. Exact normalized target |0>, H=diag(0,100) mHa. Independent Bernoulli projector samples and first-order delta-method variance; no hardware noise, leakage, correction, state-preparation or runtime costs.",
+  "theta_degrees": 30,
+  "delta_mHa": 100.0,
+  "reference_energy_mHa": 25,
+  "residual_norm_mHa": 43.30127018922193,
+  "p_residual": 0.25,
+  "p_reference": 0.75,
+  "accepted_shots": 10000,
+  "variance_coefficient_residual_mHa2": 468.75,
+  "variance_coefficient_reference_mHa2": 52.083333333333336,
+  "optimal_residual_shots": 7500,
+  "optimal_reference_shots": 2500,
+  "optimal_SE_mHa": 0.2886751345948129,
+  "equal_allocation_SE_mHa": 0.3227486121839514,
+  "sweep_points": 177,
+  "maximum_exact_identity_error_mHa": 2.842170943040401e-14,
+  "finite_difference_gradients": [
+    -49.999999998107114,
+    16.666666665443586
+  ],
+  "analytic_gradients": [
+    -50.0,
+    16.666666666666664
+  ],
+  "approximate_target_eta_degrees": -5,
+  "approximate_target_mixed_energy_mHa": -5.319875800548582,
+  "approximate_target_variational_energy_mHa": 0.759612349389597,
+  "excited_target_signed_energy_mHa": 100.0,
+  "excited_target_wrong_negative_branch_mHa": -50.0,
+  "thermal_sensitivity": {
+    "basis": "Independent Arrhenius sensitivity calculation using 2022 CODATA Hartree energy, exact SI kB, fixed prefactors. Not a Ru model rate prediction.",
+    "energy_difference_mHa": 1.6,
+    "temperature_K": 300,
+    "rate_ratio": 5.38778021219304
+  },
+  "reported_energy_recalculations": [
+    {
+      "source": "arXiv:2610.26689v1 Tables S8 and S6; recalculation from printed rounded values",
+      "detection": "Leakage",
+      "geometry_deviations_mHa": [
+        6.4640000000508735,
+        10.2590000001328
+      ],
+      "energy_difference_mHa": -3.6760000002686866,
+      "independent_difference_SE_mHa": 2.391890465719532,
+      "CASCI_difference_mHa": 0.11899999981324072,
+      "difference_deviation_mHa": -3.7950000000819273
+    },
+    {
+      "source": "arXiv:2610.26689v1 Tables S8 and S6; recalculation from printed rounded values",
+      "detection": "CPC",
+      "geometry_deviations_mHa": [
+        5.927000000156113,
+        13.101000000006024
+      ],
+      "energy_difference_mHa": -7.055000000036671,
+      "independent_difference_SE_mHa": 2.422031585260605,
+      "CASCI_difference_mHa": 0.11899999981324072,
+      "difference_deviation_mHa": -7.1739999998499115
+    },
+    {
+      "source": "arXiv:2610.26689v1 Tables S8 and S6; recalculation from printed rounded values",
+      "detection": "MBPC",
+      "geometry_deviations_mHa": [
+        6.462000000283297,
+        10.76599999987593
+      ],
+      "energy_difference_mHa": -4.184999999779393,
+      "independent_difference_SE_mHa": 2.419240583323618,
+      "CASCI_difference_mHa": 0.11899999981324072,
+      "difference_deviation_mHa": -4.303999999592634
+    }
+  ]
+}
