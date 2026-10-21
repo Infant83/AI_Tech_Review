@@ -1,8 +1,8 @@
-# 희소 기준상태와 혼합 추정량: 대학원 세미나 리뷰
+# 양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량
 
-근거 기준일: 2026-10-21. Lenihan et al., arXiv:2610.26689v1을 중심으로 독립 집필한 90분 세미나형 AI Tech Review다. 원 연구의 공식 수업이나 강의 녹취가 아니다.
+근거 기준일: 2026-10-21. Lenihan et al., arXiv:2610.26689v1을 중심으로 독립 집필한 심층 AI Tech Review다. 실제 화학적 질문에서 유도·예제·반례·실험 해석으로 이어진다.
 
-- 한국어 정본: [세미나 원고](reports/2026-10-21_sparse-reference-quantum-chemistry_final_review.md)
+- 한국어 정본: [한국어 원고](reports/2026-10-21_sparse-reference-quantum-chemistry_final_review.md)
 - 전체 영어판: [English manuscript](reports/2026-10-21_sparse-reference-quantum-chemistry_final_review_en.md)
 - 공개 웹판: `dist/index.html`, `dist/en/index.html`
 - PDF: `dist/review.pdf`, `dist/en/review-en.pdf`

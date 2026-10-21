@@ -1,34 +1,20 @@
 # Reading Energy Differences in Quantum Chemistry: Sparse References and Mixed Estimators
 
-<p class="dek">A 90-minute graduate seminar — derive the equations, move from projection geometry to measurement statistics, and read the Helios experiments critically</p>
+<p class="dek">How sparse references reduce energy-measurement costs — from projection geometry to the interpretation of Helios experiments</p>
 
 <p class="kicker">TECH REVIEW · October 21, 2026 · Quantum chemistry · Quantum measurement · Scientific computing</p>
 
 <figure class="hero"><img src="hero.webp" alt="A printmaking-inspired conceptual scene with a sparse reference plate and a finely textured residual plate placed against one larger target impression."><figcaption>A sparse reference plate and a separate residual plate are compared with one target impression, symbolizing energy estimation from the target state's overlaps with reference and residual states. This AI-generated conceptual illustration depicts no molecule, measurement apparatus or quantitative data; it does not imply that two shots suffice.</figcaption></figure>
 
-## Opening question: we prepared a good state, so why is the calculation not finished?
+## We prepared a good state, so why is the calculation not finished?
 
 Suppose we want to know which of two molecular geometries is more stable. A quantum processor has successfully prepared their two electronic states. Can we simply read each energy once and subtract?
 
-Pause here. An energy eigenstate has a definite energy. Why, then, might an experiment to determine that energy require thousands, or even millions, of repetitions? **The energy uncertainty of a state and the statistical cost of our chosen measurement procedure are different things.** Once we understand that distinction, the idea behind today's paper comes into view.
+An energy eigenstate has a definite energy. Why, then, might an experiment to determine that energy require thousands, or even millions, of repetitions? **The energy uncertainty of a state and the statistical cost of our chosen measurement procedure are different things.** Once we understand that distinction, the idea behind this study comes into view.
 
 Lenihan and colleagues study how to read energies by combining a sparse classical reference state with a quantum-prepared target state, using a model of a photoactive Ru molecule. The key move is to replace measurements of many Hamiltonian terms with overlap measurements involving the reference and its residual. The study includes execution on the Quantinuum Helios device, but ideal shot estimates, statistical precision on hardware, and remaining bias must be distinguished. The paper is **preprint v1**, released on October 19, 2026. [1]
 
-This article is an independent set of seminar notes designed to let readers derive the results, construct counterexamples, and judge the evidence for themselves. It does not follow the paper as an expanded abstract. It is not an official lecture from the original research team; the two-level model, calculations, and exercises below are educational material developed for this review.
-
-### The 90-minute class: structure and preparation
-
-| Time | What we will do | Question to answer |
-|---|---|---|
-| 0–10 min | Energy differences and measurement cost | Why repeat measurements of an energy eigenstate? |
-| 10–30 min | Reference–residual decomposition and the sign | What can two overlaps recover? |
-| 30–45 min | A two-level calculation and counterexamples | Which missing assumption makes the formula fail? |
-| 45–60 min | Error propagation and shot allocation | How should one budget be divided between two circuits? |
-| 60–75 min | The Helios table and postselection | Does a small error bar mean an accurate answer? |
-| 75–85 min | SVD-THC and total cost | What remains after reducing the cost of reading an energy? |
-| 85–90 min | Evaluating the result and discussion | What should the next experiment compare? |
-
-The prerequisites are complex vectors, inner products, Hermitian matrices and eigenvalues, normalization of quantum states, and Bernoulli variance. Readers without an electronic-structure background can begin with the active-space explanation below. For independent study, allow 90–120 minutes including the derivations and exercises. The aim is to distinguish **why a formula is exact, what is measured, and when the result cannot be trusted**, rather than simply memorize the expression.
+Deriving the estimator from the relation between the reference and its residual reveals when two probabilities can recover an energy, and where that argument fails. The two-level model, calculations, and exercises below are educational material developed for this review, distinct from the paper's experimental data.
 
 ## 1. Chemistry asks for small differences between large energies
 
@@ -62,9 +48,9 @@ Covariances within each group are included in \(\operatorname{Var}(H_g)\). This 
 
 For an exact energy eigenstate, \(\operatorname{Var}_{\Psi}(H)=0\). Yet the variance of each chosen measurement group need not vanish. Efficiently implementing a measurement in the Hamiltonian's eigenbasis is a different task from combining averages measured in several readily accessible Pauli bases. Quantum phase estimation is another way to read an energy, but requires longer coherent evolution and additional resources.
 
-Today's strategy does not attempt to reconstruct the entire state. **First calculate what can be known classically, then measure only the quantities needed for the remaining energy correction.** This shift is the starting point of the mixed estimator.
+The method does not attempt to reconstruct the entire state. **First calculate what can be known classically, then measure only the quantities needed for the remaining energy correction.** This shift is the starting point of the mixed estimator.
 
-## 3. Blackboard derivation: where does the Hamiltonian send the reference?
+## 3. Where does the Hamiltonian send the reference?
 
 Let the normalized target state be \(\lvert\Psi\rangle\), and let \(\lvert\Phi\rangle\) be a sparse reference state that can be constructed classically. Sparse means that its set of selected electronic determinants, \(S_\Phi\), is small.
 
@@ -113,7 +99,7 @@ $$
 
 If the target is an exact eigenstate, \(\langle\Psi|H=E\langle\Psi|\), so the numerator is \(E s\), and the ratio gives the exact eigenvalue. This algebraic exactness holds even when the reference is approximate. It requires a nonzero overlap, an exact target eigenstate, and exact classical constants and residual. We will examine an approximate target separately below. [1, §2.1]
 
-> **Check at the blackboard.** This expression differs from \(\langle\Psi|H|\Psi\rangle\). It is a “mixed” estimator because the numerator contains both the target and the reference. Replacing the mixed functional with the ordinary expectation value changes the later discussion of variational bounds.
+> **Mixed estimator versus expectation value.** This expression differs from \(\langle\Psi|H|\Psi\rangle\). It is a “mixed” estimator because the numerator contains both the target and the reference. Replacing the mixed functional with the ordinary expectation value changes the later discussion of variational bounds.
 
 ### A sparse reference does not automatically make the residual cheap
 
@@ -278,7 +264,7 @@ Constructing the energy difference between two geometries requires this budget t
 
 Another large number is 50 qubits. The \((10,10)\) data register contains 20 qubits. Leakage detection alone uses 20 qubits in total; coherent parity checks (CPC) use 22; and measurement-based parity checks (MBPC) use 20 data qubits plus 30 auxiliary qubits, or 50 in total. Additional auxiliary checks do not imply a larger electronic active space, and stronger checks did not always improve the final energy difference. [1, §4.5; Table 1]
 
-## 8. Reading the numbers: postselection changes numerator and denominator together
+## 8. Postselection changes numerator and denominator together
 
 Consider part of the Helios-1 \(R_x\), \((10,10)\) results in Table 1 of the paper. The probabilities below are all-zero probabilities conditioned on shots passing the checks. The \(s\) circuit measures the reference overlap; the \(h\) circuit measures the residual overlap.
 
@@ -328,7 +314,7 @@ This comparison does not justify multiplying the two papers' reduction factors. 
 
 <figure><img src="cost_chain_en.svg" alt="A workflow connects electronic structure and reference construction, circuit synthesis, quantum preparation and overlap measurement, postselection, and energy-difference calculation to assess total cost."><figcaption>A workflow constructed for this review by connecting the two papers. Time, memory, and acceptance rates must be measured separately at each stage. This is not a pipeline that has validated OLED or catalyst performance, or a speedup from combining the two methods. [1,2]</figcaption></figure>
 
-## 10. Seminar discussion: what should the next paper show?
+## 10. What should the next study show?
 
 The achievement is that jointly designing a sparse reference and direct overlap measurements can reduce measurement variance, and that the authors tested the approach on a physical trapped-ion device. The study does not establish converged molecular reaction rates, improved OLED emitter performance, or a total-time advantage over strong classical methods.
 
@@ -336,7 +322,7 @@ Follow-up experiments should jointly report reference size, target-preparation d
 
 Application to OLEDs and photoactive transition-metal molecules is **a follow-up proposal from this review**. Initial tests could ask whether the reference maintains good overlap along a torsional path, whether the same sign and symmetry assumptions hold as electronic-state character changes, and whether the comparison survives inclusion of dynamic correlation and environmental effects. The paper should not be described as validating OLED devices or therapeutic efficacy.
 
-Use the final five minutes to discuss these three questions.
+These results leave three questions for further work.
 
 1. What does a “better reference” optimize: lower variational energy, a smaller residual, larger target overlap, or a shorter preparation circuit? Can you construct an example in which these goals conflict?
 2. If an accurate energy difference results from fortuitous cancellation of device biases, what tests would establish whether it remains reliable at other geometries?
@@ -378,13 +364,13 @@ Correct a sentence that describes the 201-fold SVD-THC improvement as a physical
 
 Even an exact energy eigenstate leaves a statistical cost when we use a readily implementable measurement procedure. By separating the part already known through a sparse reference, we can read an energy correction from the target's relationships with the reference and residual. We must still check the eigenstate, symmetry, sign, and nonzero-denominator assumptions, the costs of actual preparation circuits and shots, and device bias.
 
-The judgment to take from this seminar is this: **a good quantum-chemical energy estimator needs an algebraically correct formula, an executable measurement, and a trustworthy account of uncertainty together.** This study offers a concrete case in which all three can be examined within the same experiment.
+**A good quantum-chemical energy estimator needs an algebraically correct formula, an executable measurement, and a trustworthy account of uncertainty together.** This study offers a concrete case in which all three can be examined within the same experiment.
 
 ## References and further reading
 
 1. Lenihan et al. [Measurement-efficient energy estimator for quantum chemistry of photodynamic materials](https://arxiv.org/abs/2610.26689v1), arXiv:2610.26689v1, October 19, 2026. [Full HTML and supplementary information](https://arxiv.org/html/2610.26689v1). Key locations: §2.1, equations (1)–(4); §2.2, symmetry and active spaces; §2.4, Fig. 6; §2.5, Table 1 and Fig. 8; Methods §4.5–4.6; S4, variance, allocation, and time; S5, hardware results. These are author-reported results; the original experiments were not independently reproduced.
 2. Cortes et al. [Efficient Block Encodings for Ensembles of Molecular Hamiltonians](https://arxiv.org/abs/2610.25968v1), arXiv:2610.25968v1, October 19, 2026. [Full HTML](https://arxiv.org/html/2610.25968v1). §V–VI, Tables VI–VII, and Appendix C. These are logical-circuit resource estimates, separate from the Helios experiments.
 3. NIST/CODATA. [2022 recommended fundamental constants](https://physics.nist.gov/cuu/pdf/all.pdf). The thermal-sensitivity example in the text was calculated directly for this review using the Hartree–eV conversion and Boltzmann constant.
-4. [Public archive of the October 21 DQB](https://infant83.github.io/AI_Tech_Review/archive/files/2026-10-21-daily-quantum-brief.pdf). This was the starting point for identifying the seminar topic. For further foundational study, see the [independent study notes on quantum machine learning](https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/).
+4. [Public archive of the October 21 DQB](https://infant83.github.io/AI_Tech_Review/archive/files/2026-10-21-daily-quantum-brief.pdf). This was the starting point for identifying this review's topic. For further foundational study, see the [independent study notes on quantum machine learning](https://infant83.github.io/AI_Tech_Review/lectures/quantum-machine-learning/).
 
 The equations, two-level examples, and numerical calculations of optimal shot allocation were checked with code developed for this review. These checks verify the educational mathematics; they do not constitute independent reruns of the Ru molecule's electronic structure, the paper's optimization and device circuits, or its QPU shots. The generated cover is a conceptual illustration. The exact structures and numerical values in the explanatory figures and exercises were produced deterministically.

@@ -16,3 +16,5 @@ figure img.figure-mobile{display:none}
 @media print{.teaching-lab{font-size:8.5pt;padding:12pt 14pt;break-inside:avoid}.lab-controls,.lab-buttons,.lab-status{display:none}.lab-kicker{font-size:7pt}.teaching-lab h3{font-size:12pt}.teaching-lab .table-scroll{margin:10pt 0}.teaching-lab table{font-size:7.2pt}.teaching-lab caption,.teaching-lab .caption{font-size:7pt}.lab-bars{max-height:30mm;margin:7pt 0}.seminar-map,.learning-objectives,.teaching-callout,.worked-example,.exercise,.solution,.seminar-note{font-size:9pt;padding:12pt 15pt;margin:15pt 0;break-inside:avoid}.solution{display:block}.solution>summary{display:none}.solution>*{display:block}.print-only{display:block}.screen-only{display:none}}
 @media print{h3+p{break-inside:avoid}}
 @media print{.helios-count-note{break-inside:avoid}}
+/* Keep the opening puzzle and study introduction intact across the cover page. */
+@media print{article>.toc+h2+p+p,article>.toc+h2+p+p+p{break-inside:avoid}}

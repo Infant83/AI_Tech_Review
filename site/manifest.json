@@ -2,7 +2,7 @@
   {
     "folder": "2026-10-21_sparse-reference-quantum-chemistry",
     "title": "양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량",
-    "subtitle": "90분 대학원 세미나: 잔차 항등식의 유도·2준위 계산 실습·Helios 측정 결과와 전체 계산비용",
+    "subtitle": "희소 기준상태가 에너지 측정을 줄이는 원리와 조건, Helios 실험의 정밀도와 정확도",
     "date": "2026-10-21",
     "updated": "2026-10-21",
     "category": "Quantum Computing",
@@ -12,7 +12,7 @@
       "Mixed Estimator",
       "Measurement Cost",
       "Helios",
-      "Graduate Seminar"
+      "Energy Estimation"
     ],
     "summary": "에너지 차이가 화학적 판단을 바꾸는 이유에서 출발해 희소 기준상태와 잔차, 혼합 추정량의 유도와 오차를 설명합니다. 독립적인 2준위 실습과 문제·풀이를 거쳐 이상적 약 400회 추정과 실제 QPU 10,000회 측정의 조건, 정밀도와 정확도, 전체 계산비용을 구분합니다.",
     "href": "reviews/2026-10-21_sparse-reference-quantum-chemistry/index.html",
@@ -338,12 +338,12 @@
         "system_ko": "OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": 5,
+        "agent_count": 7,
         "agents": [
           {
             "name": "root",
-            "role": "primary-source synthesis, bilingual graduate-seminar writing, scientific editing, publication integration and live verification",
-            "role_ko": "1차 자료 종합·한영 대학원 세미나 집필·과학 편집·게시 통합 및 공개 페이지 검증"
+            "role": "primary-source synthesis, bilingual in-depth review writing and topic-led revision, scientific editing, publication integration and live verification",
+            "role_ko": "1차 자료 종합·한영 심층 리뷰 집필·주제 중심 도입 편집·과학 편집·게시 통합 및 공개 페이지 검증"
           },
           {
             "name": "seminar_science",
@@ -362,23 +362,37 @@
           },
           {
             "name": "seminar_translation",
-            "role": "full English translation of the Korean canonical seminar, preserving formulas, numerical values and scientific conditions",
-            "role_ko": "한국어 정본 세미나의 전체 영어 번역·수식과 수치·과학적 조건 보존"
+            "role": "full English translation of the Korean canonical review, preserving formulas, numerical values and scientific conditions",
+            "role_ko": "한국어 정본 리뷰의 전체 영어 번역·수식과 수치·과학적 조건 보존"
+          },
+          {
+            "name": "implicit_structure_review",
+            "role": "independent editorial audit of topic-led framing and reader-facing wording",
+            "role_ko": "주제 중심 구성·독자용 표현의 독립 편집 감수"
+          },
+          {
+            "name": "revision_production",
+            "role": "revised bilingual HTML/PDF regeneration and output checks",
+            "role_ko": "개정 한영 HTML/PDF 재생성과 출력 검수"
           }
         ],
         "agent_roles": [
-          "root — primary-source synthesis, bilingual graduate-seminar writing, scientific editing, publication integration and live verification",
+          "root — primary-source synthesis, bilingual in-depth review writing and topic-led revision, scientific editing, publication integration and live verification",
           "seminar_science — original-paper and supplement research, numerical/formula/claim-scope checking and independent manuscript audit",
           "seminar_production — original bilingual responsive figures, independently checked two-level calculation and interactive lab, equation/font typesetting and HTML/PDF production and validation",
           "seminar_cover — scientific-cover planning, built-in image generation and visual review",
-          "seminar_translation — full English translation of the Korean canonical seminar, preserving formulas, numerical values and scientific conditions"
+          "seminar_translation — full English translation of the Korean canonical review, preserving formulas, numerical values and scientific conditions",
+          "implicit_structure_review — independent editorial audit of topic-led framing and reader-facing wording",
+          "revision_production — revised bilingual HTML/PDF regeneration and output checks"
         ],
         "agent_roles_ko": [
-          "root — 1차 자료 종합·한영 대학원 세미나 집필·과학 편집·게시 통합 및 공개 페이지 검증",
+          "root — 1차 자료 종합·한영 심층 리뷰 집필·주제 중심 도입 편집·과학 편집·게시 통합 및 공개 페이지 검증",
           "seminar_science — 원 논문·부록 조사·수치와 수식·주장 범위 대조 및 독립 원고 감수",
           "seminar_production — 한영 반응형 설명 그림·독립 2준위 계산과 인터랙티브 실습·수식과 글꼴 조판·HTML/PDF 제작 및 검증",
           "seminar_cover — 과학 표지 기획·내장 이미지 생성·시각 검수",
-          "seminar_translation — 한국어 정본 세미나의 전체 영어 번역·수식과 수치·과학적 조건 보존"
+          "seminar_translation — 한국어 정본 리뷰의 전체 영어 번역·수식과 수치·과학적 조건 보존",
+          "implicit_structure_review — 주제 중심 구성·독자용 표현의 독립 편집 감수",
+          "revision_production — 개정 한영 HTML/PDF 재생성과 출력 검수"
         ]
       },
       "harness": {
@@ -400,8 +414,8 @@
           "한영 원고·원본 그림·수식·인터랙티브 교육 제어·HTML/PDF 메타데이터 및 PC·모바일 게시 출력 확인"
         ],
         "human_review_level": {
-          "ko": "대학원 세미나 구성·작성·공개 게재 요청 확인; 문장 단위 사람 검토 없음",
-          "en": "graduate seminar format, writing and public posting requested; no line-by-line human review"
+          "ko": "주제 중심의 도입·표현에 대한 편집 피드백 반영; 전체 원고의 문장 단위 사람 검토 없음",
+          "en": "editorial feedback on topic-led framing and wording incorporated; no line-by-line human review of the full manuscript"
         }
       },
       "note": {
