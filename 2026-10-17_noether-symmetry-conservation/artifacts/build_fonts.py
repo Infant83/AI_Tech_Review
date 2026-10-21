@@ -45,7 +45,7 @@ def main():
     if not args.license.exists():
         raise FileNotFoundError('A complete source-font license is required; pass --license.')
     license_text = '\n\n'.join(dict.fromkeys(license_parts)).strip() + '\n\n' + args.license.read_text(encoding='utf-8')
-    (ROOT / 'artifacts' / 'font-license.txt').write_text(license_text + '\n', encoding='utf-8')
+    (ROOT / 'artifacts' / 'font-license.txt').write_text(license_text.rstrip() + '\n', encoding='utf-8')
     print('Created two local font subsets and retained font licensing records.')
 
 if __name__ == '__main__':

@@ -38,4 +38,23 @@ Responsible editor: Hyun-Jung Kim / 김현중. AI assistance: OpenAI Codex. Actu
 
 The article distinguishes reported scientific results, explanatory reconstructions and proposed applications. The numerical illustration is a teaching example rather than a reproduction of a cited experiment. Fonts, equations and local figures are bundled so no browser-side math service or external font download is needed.
 
+## Explanation revision on 22 October 2026
+
+The original eleven-section scope and fourteen references are retained. The revision applies the shared explanation guidance to the article itself. Its central argument is that symmetry supplies constraints for model design and tests for computed results, while physical-model accuracy, learned-function accuracy and numerical integration remain separate questions. The conceptual cover and existing video files are unchanged.
+
+This section also serves as the article's explanation brief; a duplicate planning document is unnecessary.
+
+| Relationship to explain | Article passage | Figure or quantity to read | Connection to the next question |
+|---|---|---|---|
+| A valid conservation law can expose a numerical artifact | §§1–3 introduce the spring, action, canonical momentum and the conserved charge | The same spring exchanges kinetic and elastic energy; the action assigns a value to each candidate path | Which assumptions and boundaries make a conserved quantity constant? |
+| Local conservation permits changes inside an open region | §4 interprets the continuity equation before the symmetry diagram | Read its three conditions in sequence, then distinguish the two theorems | Does a whole expanding spacetime have the required time symmetry? |
+| The discrete update changes energy accumulation | §6 defines dimensionless coordinates and derives Euler's per-step increase | Read the logarithmic energy ratio first, then the linear enlargement near one; both axes show E/E₀ | Does a learned model preserve the right function, and does its integrator preserve the intended motion? |
+| A structural constraint supplies a useful but limited test | §§7–11 distinguish learned Hamiltonians, force symmetry and quantum verification | Interpret the Hamilton equations, energy gradients, retained probability and practical comparison table | Return to the initial question: identify what is conserved and diagnose why a computation departs from it |
+
+The source recheck corrected the continuity-equation caption, clarified energy exchange in reduced chemical/thermal models, specified the translationally invariant interaction potential, and separated direct sample rejection from the quantum experiment's expectation-value post-processing. First-use terms retain disciplinary names and symbols with concrete explanations.
+
+Original publication remains 17 October 2026. The revised article and source recheck are dated 22 October 2026. Human line-by-line approval and a reader-comprehension study have not been performed.
+
+Final local checks: Korean 14-page and English 16-page PDFs were rendered and visually inspected in full, with equation/figure pages checked at readable resolution. A literal emphasis marker and an isolated Korean sentence ending were repaired and rechecked. Desktop/mobile HTML at 1440/390 px has no missing assets or horizontal overflow; language, anchor and PDF links resolve. PDF metadata, text and annotations contain no private host paths. The publisher's six privacy unit tests pass. The numerical CSV, results JSON and conceptual cover remain byte-for-byte unchanged. `noether_revision_reader` independently summarized the revised argument without planning notes; `noether_output_qa` performed the complete output inspection. QA images and support reports remain in ignored local `tmp/` folders rather than public deliverables.
+
 The cover was created with the built-in `image_gen` tool and saved as `artifacts/hero.webp` (1600 × 900). The complete final prompt is retained in [figure-manifest.json](figure-manifest.json): it requests a text-free conceptual scientific editorial illustration of repeated brass rings and a continuous blue ribbon, evoking symmetry under translation, rotation and time evolution. The cover is not scientific data.

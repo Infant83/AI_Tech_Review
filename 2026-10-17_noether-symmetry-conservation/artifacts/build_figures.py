@@ -15,6 +15,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+from matplotlib.lines import Line2D
+from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / 'artifacts'
@@ -23,15 +25,46 @@ INK = '#18313c'
 TEAL = '#116f79'
 ORANGE = '#ae5b36'
 BLUE = '#4869a2'
+METHODS = ['forward', 'symplectic', 'verlet']
+COLORS = [ORANGE, BLUE, TEAL]
+# Keep method identity in grayscale and in both panels/languages.
+LINESTYLES = ['-', (0, (5, 2.5)), (0, (1.2, 2.4))]
 
 def setup(font):
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'svg.fonttype':'path',
-                         'font.size':12, 'axes.spines.top':False,
+                         'svg.hashsalt':'noether-review-figures-20261022',
+                         'font.size':14, 'axes.spines.top':False,
                          'axes.spines.right':False, 'text.color':INK,
                          'axes.labelcolor':INK, 'xtick.color':INK,
                          'ytick.color':INK, 'axes.edgecolor':'#bbc9c6',
                          'savefig.facecolor':PAPER})
     return FontProperties(fname=str(font))
+
+def save_svg(fig, filename, title, description):
+    destination = ART / filename
+    fig.savefig(destination, metadata={'Date':None,
+                'Creator':'AI Tech Review; artifacts/build_figures.py; original teaching material'})
+    svg = destination.read_text(encoding='utf-8')
+    # Outlined glyphs remain independent of fonts; title/desc retain semantics.
+    start = svg.index('>', svg.index('<svg')) + 1
+    svg = svg[:start] + f'\n <title>{escape(title)}</title>\n <desc>{escape(description)}</desc>' + svg[start:]
+    destination.write_text('\n'.join(line.rstrip() for line in svg.splitlines())+'\n', encoding='utf-8')
+
+def load_existing_calculation():
+    """Render existing verified samples without rewriting numerical sources."""
+    with (ART / 'oscillator_data.csv').open(encoding='utf-8', newline='') as handle:
+        rows = list(csv.DictReader(handle))
+    time = np.array([float(row['time']) for row in rows])
+    energies = {key:np.array([float(row[f'energy_{key}']) for row in rows])
+                for key in METHODS}
+    results = json.loads((ART / 'oscillator_results.json').read_text(encoding='utf-8'))
+    assert len(time) == results['steps'] + 1 == 2001
+    assert time[0] == 0 and time[-1] == 200
+    for key, values in energies.items():
+        assert math.isclose(values[0], results['methods'][key]['initial_energy'])
+        assert math.isclose(float(np.max(np.abs(values/values[0]-1))),
+                            results['methods'][key]['max_relative_energy_error'], rel_tol=1e-12)
+    return time, energies, results
 
 def simulate():
     h, n = 0.1, 2000
@@ -75,72 +108,123 @@ def simulate():
 
 def integration_plot(lang, font, time, energies):
     ko=lang=='ko'
-    fig,axes=plt.subplots(2,1,figsize=(10.8,7.2),gridspec_kw={'height_ratios':[1,1.05]},facecolor=PAPER)
+    fp=font if ko else None
+    fig=plt.figure(figsize=(6,8.2),facecolor=PAPER)
+    axes=[fig.add_axes([.17,.505,.78,.225]),fig.add_axes([.17,.17,.78,.225])]
     labels=['전진 오일러','심플렉틱 오일러','velocity Verlet'] if ko else ['Forward Euler','Symplectic Euler','Velocity Verlet']
-    colors=[ORANGE,BLUE,TEAL]
-    for index,(key,values) in enumerate(energies.items()):
-        axes[0].plot(time,values/values[0],color=colors[index],label=labels[index],lw=1.7)
+    title='같은 진동자, 다른 수치 에너지' if ko else 'Three methods, one oscillator'
+    fig.text(.055,.969,title,fontproperties=fp,fontsize=18,va='top')
+    fig.text(.055,.923,r'$\tau=\omega t,\quad h=\omega\Delta t=0.1$' +
+             (' · 2,000단계' if ko else ' · 2,000 steps'),fontproperties=fp,fontsize=13)
+    fig.text(.055,.891,r'$m=\omega=1,\ q_0=1,\ p_0=0,\ E_0=1/2$',fontsize=13)
+    legend_labels=[
+        labels[0]+(' · 최종 비율 ' if ko else ' · final ratio ')+r'$4.39\times10^8$',
+        labels[1]+(' · 최대 오차 5.26%' if ko else ' · max error 5.26%'),
+        labels[2]+(' · 최대 오차 0.25%' if ko else ' · max error 0.25%')]
+    handles=[Line2D([],[],color=c,lw=2.2,ls=s) for c,s in zip(COLORS,LINESTYLES)]
+    fig.legend(handles,legend_labels,loc='upper left',bbox_to_anchor=(.05,.875),
+               prop=FontProperties(fname=font.get_file(),size=13) if ko else {'size':13},
+               frameon=False,handlelength=3.2,labelspacing=.65,borderaxespad=0)
+    for index,key in enumerate(METHODS):
+        values=energies[key]
+        axes[0].plot(time,values/values[0],color=COLORS[index],
+                     ls=LINESTYLES[index],lw=2.0,zorder=3+index)
     axes[0].set_yscale('log')
-    axes[0].set_ylabel('에너지 / 초기 에너지' if ko else 'Energy / initial energy',fontproperties=font if ko else None)
+    axes[0].set_yticks([1,1e3,1e6,1e9])
+    axes[0].set_yticklabels(['1',r'$10^3$',r'$10^6$',r'$10^9$'])
     axes[0].set_ylim(0.7,1e9)
-    axes[0].legend(prop=font if ko else None,loc='upper left',frameon=False,ncol=1)
+    axes[0].set_title('A  장시간 변화 · 로그 축' if ko else 'A  Long-time growth · log scale',
+                      loc='left',fontproperties=fp,fontsize=14,pad=13)
     for index,key in enumerate(['symplectic','verlet'],1):
         values=energies[key]
-        axes[1].plot(time,values/values[0],color=colors[index],label=labels[index],lw=1.15)
-    axes[1].axhline(1,ls='--',color='#687873',lw=1)
+        axes[1].plot(time,values/values[0],color=COLORS[index],
+                     ls=LINESTYLES[index],lw=1.75,zorder=3+index)
     axes[1].set_ylim(.94,1.065)
-    axes[1].set_ylabel('확대: 에너지 / 초기 에너지' if ko else 'Zoom: energy / initial energy',fontproperties=font if ko else None)
-    axes[1].set_xlabel('시간 (고유 각진동수의 역수 단위)' if ko else 'Time (inverse natural angular-frequency units)',fontproperties=font if ko else None)
-    axes[1].legend(prop=font if ko else None,loc='upper right',frameon=True,
-                   facecolor=PAPER,edgecolor='none',framealpha=.95)
+    axes[1].set_yticks([.95,1,1.05])
+    axes[1].set_yticklabels(['0.95','1.00','1.05'])
+    axes[1].set_title('B  1 부근 확대 · 선형 축' if ko else 'B  Zoom around 1 · linear scale',
+                      loc='left',fontproperties=fp,fontsize=14,pad=13)
+    axes[1].set_xlabel(r'$\tau=\omega t$',fontsize=14,labelpad=8)
     for ax in axes:
-        ax.set_facecolor(PAPER);ax.set_xlim(0,200);ax.grid(alpha=.18)
-    fig.suptitle('같은 방정식도 이산화에 따라 에너지가 달라진다' if ko else 'Discretization changes the computed energy',fontproperties=font if ko else None,fontsize=19,x=.09,ha='left',y=.97)
-    fig.text(.09,.915,'리뷰 자체 계산 · h = 0.1 · 2,000단계 · 질량 = 각진동수 = 1' if ko else 'Original teaching calculation · h = 0.1 · 2,000 steps · mass = angular frequency = 1',fontproperties=font if ko else None,fontsize=11,color='#566b70')
-    fig.subplots_adjust(left=.12,right=.97,top=.87,bottom=.1,hspace=.25)
-    fig.savefig(ART/f'integrator_{lang}.svg',metadata={'Date':None,'Creator':'AI Tech Review; original teaching calculation'})
-    fig.savefig(ART/f'integrator_{lang}.png',dpi=130)
+        ax.set_facecolor(PAPER);ax.set_xlim(0,200)
+        ax.set_xticks([0,50,100,150,200])
+        ax.tick_params(labelsize=12,pad=5)
+        ax.set_ylabel(r'$E/E_0$',fontsize=15,labelpad=7)
+        ax.axhline(1,ls=(0,(2,4)),color='#67736f',lw=1.1,zorder=2)
+        ax.grid(axis='x',alpha=.18)
+        ax.grid(axis='y',alpha=.18)
+        ax.set_axisbelow(True)
+    fig.text(.055,.073,('연속 운동의 기준: ' if ko else 'Exact-motion reference: ')+r'$E/E_0=1$',
+             fontproperties=fp,fontsize=12.5)
+    fig.text(.055,.04,('최대 오차: ' if ko else 'Max error: ')+r'$\max|E/E_0-1|$',
+             fontproperties=fp,fontsize=12.5)
+    fig.text(.055,.012,'같은 h의 교육용 비교 · 계산비용 미보정' if ko else
+             'Same h; teaching comparison, not cost matched',fontproperties=fp,fontsize=11,color='#566b70')
+    save_svg(fig,f'integrator_{lang}.svg',title,
+             ('위 A는 로그 축, 아래 B는 선형 축의 같은 에너지 비율 E/E0이다. 연속 운동의 기준은 1이다. '
+              '실선은 전진 오일러, 파선은 심플렉틱 오일러, 점선은 velocity Verlet이다. '
+              'τ=ωt, h=ωΔt=0.1, 2000단계의 기존 리뷰 계산을 표시한다.' if ko else
+              'Top A uses a logarithmic scale and bottom B a linear scale for the same energy ratio E/E0. '
+              'The exact-motion reference is 1. Solid: forward Euler; dashed: symplectic Euler; dotted: velocity Verlet. '
+              'Existing review calculation: tau=omega*t, h=omega*delta_t=0.1, 2000 steps.'))
     plt.close(fig)
 
 def symmetry_diagram(lang,font):
     ko=lang=='ko'
-    fig,ax=plt.subplots(figsize=(10.8,6.3),facecolor=PAPER)
+    fp=font if ko else None
+    fig,ax=plt.subplots(figsize=(6,8.2),facecolor=PAPER)
     ax.set_xlim(0,1);ax.set_ylim(0,1);ax.axis('off')
-    title='대칭에서 보존량까지, 두 가지 조건이 더 필요하다' if ko else 'From symmetry to conservation: dynamics and boundaries matter'
-    ax.text(.025,.95,title,fontproperties=font if ko else None,fontsize=18,va='top')
-    rows=[('작용의 연속 대칭','법칙을 정하는 작용이 경계항까지만 변한다'),
-          ('운동방정식을 만족하는 운동','제1정리가 국소 연속방정식을 준다'),
-          ('선택한 영역의 보존량','경계를 통한 순유출이 0이면 총량이 일정하다')]
+    title='대칭에서 공간 영역의 보존량까지' if ko else 'From symmetry to conserved charge'
+    ax.text(.055,.972,title,fontproperties=fp,fontsize=18 if ko else 17,va='top')
+    ax.text(.055,.918,'제1정리: 작용의 대칭 → 전류 → 경계 조건' if ko else
+            'First theorem: action → current → boundary',fontproperties=fp,fontsize=12.5)
+    rows=[('작용의 연속 전역 대칭','법칙을 정하는 작용은\n경계항까지 불변이다'),
+          ('운동방정식을 만족하는 운동','제1정리가 보존 전류를 준다\n국소 연속방정식이 성립한다'),
+          ('고정한 공간 영역의 총량 Q','경계의 순유출이 0이면\n영역 안의 보존량 Q가 일정하다')]
     if not ko:
-        rows=[('Continuous symmetry of the action','The action is invariant up to a boundary term'),
-              ('Motion satisfying the equations','The first theorem gives a local continuity equation'),
-              ('Charge in the chosen region','The total stays constant if net boundary flux vanishes')]
+        rows=[('Continuous global symmetry','The action is invariant\nup to a boundary term'),
+              ('Motion obeying the equations','The first theorem gives a conserved current:\na local continuity equation holds'),
+              ('Charge Q in a fixed spatial region','Zero net boundary flux\nmakes the regional total Q constant')]
     for i,(heading,sub) in enumerate(rows):
-        y=.69-i*.245
-        box=FancyBboxPatch((.03,y),.69,.17,boxstyle='round,pad=0.015,rounding_size=.015',facecolor='#e8f0eb',edgecolor='#b4cec5',linewidth=1)
+        y=.72-i*.22
+        box=FancyBboxPatch((.06,y),.88,.16,boxstyle='round,pad=0.015,rounding_size=.015',facecolor='#e8f0eb',edgecolor='#b4cec5',linewidth=1.2)
         ax.add_patch(box)
-        ax.text(.055,y+.112,heading,fontproperties=font if ko else None,fontsize=16,color=TEAL,va='center')
-        ax.text(.055,y+.05,sub,fontproperties=font if ko else None,fontsize=11.4,va='center')
-        if i<2:ax.add_patch(FancyArrowPatch((.37,y-.025),(.37,y-.065),arrowstyle='-|>',mutation_scale=15,color=TEAL,linewidth=1.4))
-    ax.text(.77,.785,'제1정리' if ko else 'First theorem',fontproperties=font if ko else None,fontsize=14,color=TEAL)
-    ax.text(.77,.715,'연속 전역 대칭' if ko else 'Continuous global',fontproperties=font if ko else None,fontsize=11)
-    ax.text(.77,.67,'→ 보존 전류' if ko else '→ conserved current',fontproperties=font if ko else None,fontsize=11)
-    ax.text(.77,.485,'제2정리' if ko else 'Second theorem',fontproperties=font if ko else None,fontsize=14,color=ORANGE)
-    ax.text(.77,.415,'임의 함수의 국소 대칭' if ko else 'Local symmetry functions',fontproperties=font if ko else None,fontsize=10.6)
-    ax.text(.77,.37,'→ 방정식 사이 항등식' if ko else '→ identities of equations',fontproperties=font if ko else None,fontsize=10.6)
-    ax.text(.03,.06,'보존 전류 ≠ 경계가 열린 부분계의 일정한 총량' if ko else 'A conserved current does not require a constant total inside an open region.',fontproperties=font if ko else None,fontsize=12,color='#566b70')
-    fig.subplots_adjust(left=.015,right=.99,top=.99,bottom=.015)
-    fig.savefig(ART/f'symmetry_{lang}.svg',metadata={'Date':None,'Creator':'AI Tech Review; original explanatory diagram'})
-    fig.savefig(ART/f'symmetry_{lang}.png',dpi=130)
+        ax.text(.095,y+.119,f'{i+1}  '+heading,fontproperties=fp,
+                fontsize=15 if ko else 13.6,color=TEAL,va='center')
+        ax.text(.095,y+.057,sub,fontproperties=fp,fontsize=13.3 if ko else 12.6,
+                linespacing=1.5,va='center')
+        if i<2:ax.add_patch(FancyArrowPatch((.5,y-.021),(.5,y-.052),
+                            arrowstyle='-|>',mutation_scale=18,color=TEAL,linewidth=1.7))
+    # A separate box, without an inference arrow from the first-theorem chain.
+    ax.add_patch(FancyBboxPatch((.06,.055),.88,.155,
+                 boxstyle='round,pad=0.015,rounding_size=.015',facecolor='#f2e8dd',
+                 edgecolor='#d8bda9',linewidth=1.2))
+    ax.text(.095,.171,'제2정리 · 임의 함수의 국소 대칭' if ko else
+            'Second theorem · local symmetry',fontproperties=fp,fontsize=14 if ko else 13.3,
+            color=ORANGE,va='center')
+    ax.text(.095,.11,'임의의 함수에 의존하는 대칭은\n운동방정식 사이의 항등식을 준다' if ko else
+            'Symmetry depending on arbitrary functions\ngives identities among the field equations',
+            fontproperties=fp,fontsize=13 if ko else 12.4,linespacing=1.5,va='center')
+    fig.subplots_adjust(left=0,right=1,top=1,bottom=0)
+    save_svg(fig,f'symmetry_{lang}.svg',title,
+             ('제1정리는 작용의 연속 전역 대칭에서 운동방정식을 만족할 때 보존 전류를 준다. '
+              '고정한 공간 영역의 총량이 일정하려면 경계 순유출이 0이어야 한다. '
+              '별도 제2정리는 임의 함수에 의존하는 국소 대칭에서 방정식 사이 항등식을 준다.' if ko else
+              'The first theorem gives a conserved current from a continuous global symmetry of the action '
+              'on solutions of the equations of motion. Constant charge in a fixed region additionally needs '
+              'zero net boundary flux. The separate second theorem gives identities among equations '
+              'from local symmetries depending on arbitrary functions.'))
     plt.close(fig)
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--font',type=Path,required=True)
+    parser.add_argument('--figures-only',action='store_true',
+                        help='Read existing CSV/JSON; do not rewrite the verified calculation.')
     args=parser.parse_args()
     ART.mkdir(parents=True,exist_ok=True)
     font=setup(args.font)
-    time,energies,results=simulate()
+    time,energies,results=load_existing_calculation() if args.figures_only else simulate()
     for lang in ['ko','en']:
         integration_plot(lang,font,time,energies)
         symmetry_diagram(lang,font)
