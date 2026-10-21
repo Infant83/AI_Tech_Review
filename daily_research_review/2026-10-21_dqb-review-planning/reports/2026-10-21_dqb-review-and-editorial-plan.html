@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DQB 2026-10-21: 주요 내용·인사이트와 테크리뷰 게재 기획</title>
+  <meta name="description" content="오늘 DQB 다섯 편의 주요 결과와 원문 대조, 연구 인사이트, 짧은 리뷰 초안과 우선순위별 기사 기획을 정리했습니다.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="DQB 2026-10-21: 주요 내용·인사이트와 테크리뷰 게재 기획">
+  <meta property="og:description" content="오늘 DQB 다섯 편의 주요 결과와 원문 대조, 연구 인사이트, 짧은 리뷰 초안과 우선순위별 기사 기획을 정리했습니다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="article:published_time" content="2026-10-21">
+  <meta property="article:modified_time" content="2026-10-21">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DQB 2026-10-21: 주요 내용·인사이트와 테크리뷰 게재 기획">
+  <meta name="twitter:description" content="오늘 DQB 다섯 편의 주요 결과와 원문 대조, 연구 인사이트, 짧은 리뷰 초안과 우선순위별 기사 기획을 정리했습니다.">
+  <link rel="icon" href="data:,">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f766e'/%3E%3Cpath d='M18 22h28v6H18zm0 14h20v6H18z' fill='%23ffffff'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #edf2f0;
+      --surface: #ffffff;
+      --surface-alt: #f6f8f7;
+      --ink: #14201a;
+      --muted: #52615a;
+      --line: #d9e1dd;
+      --accent: #0f766e;
+      --accent-alt: #3f6212;
+      --accent-warm: #c2410c;
+      --shadow: 0 18px 40px rgba(20, 32, 26, 0.08);
+      --radius: 8px;
+      --wrap: 1220px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #f4f7f5 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      width: min(var(--wrap), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .headline {
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(15, 118, 110, 0.18);
+      background: rgba(15, 118, 110, 0.08);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.7rem;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    .deck {
+      margin: 16px 0 0;
+      max-width: 70ch;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .meta-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .meta-list li {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .meta-list strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .meta-list span {
+      display: block;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .summary-band {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, #f8fbfa 0%, #eef4f1 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-band h2,
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-alt);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+      line-height: 1.65;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .report {
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .report > :first-child {
+      margin-top: 0;
+    }
+
+    .report h2 {
+      margin: 38px 0 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    .report h3 {
+      margin: 24px 0 12px;
+      font-size: 1.1rem;
+      line-height: 1.35;
+    }
+
+    .report p,
+    .report li {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink);
+    }
+
+    .report ul,
+    .report ol {
+      margin: 0 0 18px;
+      padding-left: 22px;
+    }
+
+    .report li + li {
+      margin-top: 8px;
+    }
+
+    .report strong {
+      color: var(--ink);
+    }
+
+    .report blockquote {
+      margin: 20px 0;
+      padding: 16px 18px;
+      border-left: 4px solid var(--accent);
+      background: #f5f9f8;
+      color: var(--muted);
+    }
+
+    .report code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef4f1;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92rem;
+    }
+
+    .report pre {
+      margin: 18px 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f3f7f5;
+    }
+
+    .report pre code {
+      padding: 0;
+      background: transparent;
+    }
+
+    .report table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      display: block;
+      overflow-x: auto;
+    }
+
+    .report th,
+    .report td {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      min-width: 140px;
+    }
+
+    .report th {
+      background: #f4f8f6;
+      color: var(--accent-alt);
+      font-weight: 700;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .toc-panel ul,
+    .link-panel ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.55;
+    }
+
+    .toc-panel li,
+    .link-panel li {
+      color: var(--muted);
+    }
+
+    .link-panel a {
+      display: inline-block;
+      word-break: break-word;
+    }
+
+    .empty-state {
+      list-style: none;
+      margin-left: -18px;
+      color: var(--muted);
+    }
+
+    .footer {
+      margin-top: 20px;
+      padding: 14px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 1080px) {
+      .masthead,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(var(--wrap), calc(100% - 20px));
+        padding-top: 14px;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .meta-list {
+        grid-template-columns: 1fr;
+      }
+
+      .report h2 {
+        font-size: 1.28rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .headline,
+      .summary-band,
+      .report,
+      .panel {
+        box-shadow: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <section class="headline">
+        <p class="eyebrow">데일리 리뷰 시그널 브리프</p>
+        <h1>DQB 2026-10-21: 주요 내용·인사이트와 테크리뷰 게재 기획</h1>
+        <p class="deck">오늘 DQB 다섯 편의 주요 결과와 원문 대조, 연구 인사이트, 짧은 리뷰 초안과 우선순위별 기사 기획을 정리했습니다.</p>
+        <ul class="meta-list">
+          <li>
+            <strong>생성 시각</strong>
+            <span>2026-10-21 09:00:39</span>
+          </li>
+          <li>
+            <strong>섹션 수</strong>
+            <span>9</span>
+          </li>
+          <li>
+            <strong>원본 마크다운</strong>
+            <span><a href="2026-10-21_dqb-review-and-editorial-plan.md">2026-10-21_dqb-review-and-editorial-plan.md</a></span>
+          </li>
+        </ul>
+      </section>
+
+    </header>
+
+    <main class="layout">
+      <article class="report">
+        <p>근거 기준일: 2026-10-21 · 성격: DQB 재검토와 편집 기획 · 상태: 심층 기사 게재 전</p>
+<p>오늘 DQB의 가장 좋은 기사 후보는 <strong>희소한 고전 기준상태와 양자 측정을 결합해 분자 에너지 차이를 읽는 혼합 추정량</strong>이다. 실제 Helios 실험이 있고, 다중참조 분자·광활성 재료라는 구체적 문제가 있으며, 통계 정밀도 개선과 남아 있는 편향을 함께 설명할 수 있다. SVD-THC는 같은 기사에 짧은 비교 상자로 넣고, Hamiltonian embedding과 giant atom은 별도 후속 기획으로 둔다.</p>
+<h2 id="_1">아카이빙 결과</h2>
+<ul>
+<li>대상: 2026-10-21 Daily Quantum Brief, 한국어 5쪽.</li>
+<li>표지 제목: <strong>「측정은 마지막 단계가 아니라 계산 비용의 중심이다」</strong>.</li>
+<li><a href="../../../archive/files/2026-10-21-daily-quantum-brief.pdf">공개 보관용 PDF</a>.</li>
+<li>공개 등록 ID: <code>2026-10-21-daily-quantum-brief</code>. 한영 아카이브·브리핑 목록은 같은 한국어 PDF를 안내한다.</li>
+<li>원본은 개인 보관하고, 공개본에서는 메일 관련 수집 기록을 제거했다. 5쪽에 참고문헌 [5]의 저자 표기 정정 주를 추가했다. 과학 본문·수치·참고문헌 링크를 유지했다.</li>
+<li>새 심층 리뷰나 표지는 아직 발행하지 않았다. 아래 내용은 기사 작성에 바로 사용할 수 있는 기획이다.</li>
+</ul>
+<h2 id="_2">오늘 다섯 편이 실제로 보인 것</h2>
+<table>
+<thead>
+<tr>
+<th>주제</th>
+<th>핵심 결과와 조건</th>
+<th>인사이트·읽을 때의 제한</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>희소 기준상태 혼합 추정량</td>
+<td>이상적인 (6,6) 특정 조건에서는 약 400샷으로 1.6 mHa 정밀도를 예상. 실제 Helios (10,10)은 구조당 10,000 <strong>제출샷</strong>, 개별 에너지 표준오차 1.66–1.73 mHa.</td>
+<td>좋은 기준상태가 측정 분산을 크게 낮춘다. 그러나 표준오차가 작아도 추정 중심값의 오차는 남는다. 50큐비트 회로는 데이터 20+오류검출 보조 30개다. <a href="https://arxiv.org/abs/2610.26689v1">Lenihan et al. v1</a>, §2.4–2.5·Table 1.</td>
+</tr>
+<tr>
+<td>분자 앙상블 SVD-THC</td>
+<td>최대 5,184구조의 공통 적분 구조를 압축. alanine의 Toffoli-optimal 설정은 sliced-THC 대비 약 201배 절감.</td>
+<td>이 설정의 회로 큐비트는 1,191→8,498개로 증가한다. 큐비트가 비슷한 설정은 1,330개·108배다. 8,498큐비트 설정의 active volume 이득은 22.1배다. QPU 실험·물리 자원 추정이 아니다. <a href="https://arxiv.org/abs/2610.25968v1">Cortes et al. v1</a>, Tables VI–VII.</td>
+</tr>
+<tr>
+<td>고차 parity QAOA</td>
+<td>IBM Heron에서 40정점 Signed Max-Cut의 20개 결합 인스턴스를 비교. 고전 warm start·오류완화·M=7 spanning-tree 디코딩을 포함한 parity 방식은 각 인스턴스의 최적해를 적어도 한 번 표본추출.</td>
+<td>40정점은 이 parity 표현에서 60개 큐비트에 대응한다. 모든 샷의 성공률이 100%라는 뜻이 아니다. 논문의 Gurobi 비교는 40정점 최적값 계산을 약 0.02초로 보고해 고전 대비 가속 주장을 뒷받침하지 않는다. <a href="https://arxiv.org/abs/2610.26381v1">Weidinger et al. v1</a>, §III·Appendix D.</td>
+</tr>
+<tr>
+<td>Hamiltonian embedding 학습</td>
+<td>훈련자료를 하나의 매개변수화 Hamiltonian에 넣고 근사 바닥상태로 분류. 156큐비트 Heron r2 중 데이터 50큐비트로 Fashion-MNIST dress/shirt 분류를 실행.</td>
+<td>QPU는 표본을 생성하고 부분공간 대각화·gradient·Adam은 고전 계산이다. 하드웨어 5개 run은 고전 validation 결과로 사전 선별했다. 암호 가정하의 난해성 정리는 이 이미지 실험의 양자우위를 증명하지 않는다. <a href="https://arxiv.org/abs/2610.26833v1">Molteni et al. v1</a>, §III–IV·Appendix J.</td>
+</tr>
+<tr>
+<td>Giant atom 수동 상태전송</td>
+<td>여러 waveguide 결합점의 위치·세기로 파형을 설계. chiral coupling을 가정한 결합점 1개·2개·10개 이상에서 최대 전달확률 약 54%·87%·99% 초과를 이론·수치 계산으로 보고.</td>
+<td>실시간 제어 일부를 공간 구조 설계로 옮기는 물리적 아이디어다. 실험 process fidelity나 실제 통신망 성능이 아니다. <a href="https://journals.aps.org/prxquantum/abstract/10.1103/6wcb-nj42">Diekmann et al., PRX Quantum</a>, §III·Fig. 3.</td>
+</tr>
+</tbody>
+</table>
+<p>앞 네 편은 2026-10-19 제출 프리프린트다. 마지막 논문은 2026-10-20 게재된 동료평가 논문이지만 결과의 성격은 이론·수치 설계다.</p>
+<h3 id="dqb">DQB에서 더 명확히 적어야 할 부분</h3>
+<ol>
+<li><strong>수백 샷의 조건:</strong> 약 400샷은 (6,6), 특정 구조, 8-determinant 기준상태의 이상적 분산 추정이다. 같은 그림의 약 100배 비교 대상은 단일 determinant와 classical shadows를 쓰는 추정량이며, 약 1,700배는 해당 grouped-Pauli 측정 대비다. 실제 (10,10) 실험 수치와 합쳐 하나의 성능처럼 쓰지 않는다.</li>
+<li><strong>에너지의 정확도:</strong> DQB의 ‘중앙값 편향’은 통계적 median처럼 읽힐 수 있다. 기사에는 ‘추정 중심값의 편차’ 또는 ‘체계적 편향’으로 쓴다. CASCI 대비 개별 에너지 편차 약 0.5–13 mHa와 에너지 차이 편차 약 0.2–9 mHa를 표준오차와 구별한다.</li>
+<li><strong>압축의 정확도:</strong> SVD-THC의 0.6 mHa 미만은 비압축 Hamiltonian의 CCSD 상관에너지와 비교한 압축·절단 오차다. 정확한 분자 에너지의 오차 보장이나 큰 기저·실제 재료에 대한 검증이 아니다. 모델은 STO-3G 최소기저다.</li>
+<li><strong>참고문헌 정정:</strong> DQB [5]의 <code>Diekmann, Krimer &amp; Rotter</code>는 부정확하다. 정확한 표기는 <strong>Diekmann et al.</strong>, DOI는 <strong>10.1103/6wcb-nj42</strong>이며 Krimer는 저자가 아니다. 공개 보관본 5쪽에 정정 주를 넣었다.</li>
+</ol>
+<p>상세 위치는 <a href="../notes/chemistry-source-check.md">양자화학 원문 대조</a>와 <a href="../notes/other-source-check.md">QAOA·QML·giant atom 원문 대조</a>에 기록했다. 원문 논문의 보고 결과를 확인한 것이며 QPU 실행·학습·분해 계산을 독립 재현한 것은 아니다.</p>
+<h2 id="_3">연구·개발 관점에서 얻을 인사이트</h2>
+<p><strong>고전 기준상태는 양자 측정의 일부가 된다.</strong> 혼합 추정량에서는 고전적으로 만드는 기준이 단순한 초기 추측을 넘어 어떤 두 overlap을 얼마나 정밀하게 측정할지 결정한다. 연구할 대상은 큐비트 수만이 아니라 기준상태의 크기, 목표와의 overlap, 상태 준비 깊이, 받아들여지는 샷 비율이다. 이는 두 화학 논문의 보고 결과에서 도출한 리뷰 해석이다.</p>
+<p><strong>상관된 오차가 차이에서 지워지는 상황은 기회이면서 취약점이다.</strong> 두 구조의 에너지 오차가 비슷하면 에너지 차이가 더 정확할 수 있다. 하지만 구조·상태 성격이 달라지면서 오차의 상관이 사라지면 이 이점도 사라질 수 있다. 반응면이나 발광체 비틀림 경로에 적용하려면 한 지점의 낮은 표준오차보다 여러 구조에서 편향이 어떻게 변하는지 확인해야 한다. OLED에 대한 부분은 아직 검증되지 않은 후속 제안이다.</p>
+<p><strong>큰 절감률의 대가를 다른 열에서 찾아야 한다.</strong> SVD-THC의 201배는 더 많은 논리 회로 큐비트를 쓰는 설정이다. 입력 적분 생성, 데이터 로딩, Clifford 연산, 메모리와 물리 오류정정 비용을 더하면 유리한 설정이 바뀔 수 있다. 201배와 108배·22.1배는 서로 다른 비용 질문의 답이며 곱하거나 같은 지표로 비교하지 않는다.</p>
+<p><strong>하드웨어 실행의 역할을 특정해야 후속 연구가 명확해진다.</strong> Hamiltonian embedding에서 남는 질문은 ‘50큐비트로 학습했는가’보다 ‘QPU가 만든 표본이 같은 비용의 고전 표본보다 어떤 부분공간을 더 잘 찾는가’다. 데이터 split과 초기값 선택을 포함해 정확도·샷·고전 시간을 기록하는 비교가 필요하다. QAOA에서도 표현 변경, warm start, 오류완화와 디코딩의 기여를 따로 봐야 한다.</p>
+<p><strong>Giant atom은 별도의 물리 기사로 가치가 있다.</strong> 동일한 ‘양자 성능’ 이야기로 묶기보다, 시간에 따라 조절하던 방출·흡수 과정을 정적인 다중 결합점의 간섭으로 설계하는 원리를 설명할 수 있다. 파형과 지연을 보여주는 시각자료가 실제 이해에 도움이 되는 주제다.</p>
+<h2 id="_4">짧은 리뷰 초안: 분자 에너지를 읽는 횟수는 왜 중요한가</h2>
+<p>분자 구조의 안정성이나 반응을 판단할 때 필요한 값은 두 상태 사이의 작은 에너지 차이인 경우가 많다. 양자 회로가 전자들의 상관을 표현하더라도 그 값을 충분히 정밀하게 읽으려면 같은 준비와 측정을 반복해야 한다. 따라서 상태를 만들 수 있다는 사실만으로 화학 계산의 비용이 결정되지는 않는다.</p>
+<p>Lenihan 등의 연구는 Hamiltonian의 많은 항을 직접 측정하는 대신, 고전적으로 구성한 희소 다중배치 기준상태를 이용한다. 기준상태에 Hamiltonian을 작용시킨 뒤 기준에 평행한 성분과 직교 잔차를 나누고, 양자 장치에서는 목표상태와 기준·잔차의 overlap을 측정한다. 필요한 에너지 보정을 적은 수의 측정 종류로 바꾸는 발상이다.</p>
+<p>이때 중요한 조건이 있다. 목표가 같은 대칭 부문의 최저 고유상태이면 보정의 부호를 정할 수 있어 overlap의 크기만으로 에너지를 읽는 공식이 성립한다. 임의의 들뜬상태나 불완전하게 준비한 상태에도 같은 부호 보장이 있다고 가정할 수는 없다. 기준과 목표의 overlap이 너무 작아져도 비율 추정은 불안정해진다. ‘두 overlap이면 충분하다’는 설명에는 이 조건이 함께 붙어야 한다.</p>
+<p>광활성 Ru 분자 모델의 특정 (6,6) 조건에서는 이상적인 분산 계산으로 약 400샷에 1.6 mHa 정밀도를 예상했다. 실제 Helios의 더 큰 (10,10) 실험에서는 구조당 10,000샷을 제출해 개별 에너지 표준오차 1.66–1.73 mHa를 얻었다. 두 숫자는 서로 다른 조건의 결과다. 작은 표준오차와 별도로 CASCI 기준에서 벗어난 추정 중심값도 남았으며, 두 에너지의 오차가 비슷할 때 차이에서 일부가 지워지는 현상은 보장된 정확도가 아니다.</p>
+<p>따라서 이 연구가 보여준 가치는 현재 장치에서 측정 분산을 낮출 수 있는 구체적 설계다. 활성공간이 수렴한 반응속도 계산이나 전체 작업의 양자 가속까지 입증한 것은 아니다. 다음 비교에는 기준상태 생성, 회로 합성, 후선택, 고전 후처리와 같은 정확도의 고전 전자구조 계산을 포함해야 한다.</p>
+<p>같은 날의 SVD-THC 연구는 많은 분자 구조의 Hamiltonian을 공통 저랭크 표현으로 묶는다. 이쪽은 미래 내결함성 회로의 입력 비용을 다루며, 현재 Helios 측정 개선과 실행 단계가 다르다. 두 결과를 이어 읽을 수는 있지만 절감률을 곱해 하나의 속도 향상으로 제시할 수 없다. 양자화학의 실용성은 이처럼 서로 다른 비용을 같은 작업 조건에서 다시 합산할 때 판단할 수 있다.</p>
+<p>위 문단은 원문을 바탕으로 한 <strong>편집용 짧은 리뷰 초안</strong>이다. 완성 기사·사람 검토 완료본을 뜻하지 않는다.</p>
+<h2 id="_5">게재 우선순위</h2>
+<table>
+<thead>
+<tr>
+<th>순위</th>
+<th>기획</th>
+<th>판단·기존 기사와의 차이</th>
+<th>권장 분량</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>희소 기준상태 혼합 추정량과 에너지 차이</td>
+<td><strong>심층 리뷰 우선 작성.</strong> 10/03 VQE 총론과 달리, 두 overlap으로 읽는 원리·부호 조건·실제 잡음 편향을 한 실험에서 설명한다. 10/19 Helios 플랫폼 소개와도 질문이 다르다.</td>
+<td>한국어 8–10분, 영어 동등 내용</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Hamiltonian embedding의 학습과 고전 추론</td>
+<td><strong>독립 후속 기사.</strong> 10/20 QML 학습서를 반복하지 않고 새 학습 목적함수, 바닥상태 접근과 실제 표본의 기여를 평가한다.</td>
+<td>8–10분</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Giant atom의 공간 설계와 수동 전송</td>
+<td><strong>물리 메커니즘 기사로 보관.</strong> 기존 큐비트 플랫폼 총론보다 다중 결합점·파형·전파지연의 인과관계를 깊게 다룬다.</td>
+<td>6–8분</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SVD-THC의 앙상블 압축과 자원 교환</td>
+<td><strong>1순위 기사 비교 상자 우선.</strong> 독립 기사로 확대하려면 201배/108배/22.1배와 큐비트 교환을 주제로 삼는다. 10/06 자원 총론·10/18 데이터 중복성 기사와 범위를 나눈다.</td>
+<td>상자 600–900자 또는 짧은 분석</td>
+</tr>
+<tr>
+<td>5</td>
+<td>고차 parity QAOA</td>
+<td><strong>현재는 기술 단신.</strong> 40정점·60큐비트·디코딩·고전 warm start를 설명할 가치는 있으나 강한 고전 기준 대비 성과는 없다. 최근 생성형 회로·QAOA 기사와도 가까운 주제다.</td>
+<td>1,000–1,500자</td>
+</tr>
+</tbody>
+</table>
+<p>순위는 기사 고유성, 원문 근거, 독자의 응용 판단에 주는 도움과 최근 기사 중복을 종합한 편집 판단이다. 미래 기술 성능의 순위가 아니다.</p>
+<h2 id="1">1순위 기사 기획서</h2>
+<p><strong>국문 가제:</strong> 희소 기준상태와 혼합 추정량을 이용한 양자화학 에너지 차이 측정</p>
+<p><strong>영문 가제:</strong> Measuring Correlated Energy Differences with Sparse-Reference Mixed Estimators</p>
+<p><strong>부제:</strong> Helios 광활성 Ru 모델 실험에서 줄어든 분산과 남은 편향</p>
+<p><strong>핵심 질문:</strong> 상관된 분자 상태를 준비한 뒤, 작은 에너지 차이를 읽는 데 드는 반복 측정을 어떻게 줄일 수 있는가?</p>
+<p><strong>한 문장 논지:</strong> 희소한 고전 기준상태는 양자 overlap 측정의 분산을 낮추지만, 실제 화학 정확도와 전체 비용은 기준의 품질·상태 준비·잡음 편향·후선택까지 포함해 따로 확인해야 한다.</p>
+<p><strong>독자와 실무 연결:</strong> 전자구조·재료 계산 연구자, 양자 알고리즘 개발자, 광활성 분자 연구자. Ru 모델의 실제 문제를 먼저 설명하고, OLED·촉매로의 연결은 마지막의 조건부 제안으로 제한한다.</p>
+<p><strong>기사 흐름:</strong></p>
+<ol>
+<li>작은 에너지 차이로 두 구조·상태의 순위를 판단해야 하는 장면에서 시작한다. Ru 모델의 MLCT/MC 경쟁과 통제된 CASCI 기준을 소개한다.</li>
+<li>직접 Hamiltonian 항 측정의 반복 비용을 설명하고, 희소 기준상태·직교 잔차·두 overlap의 역할을 도식으로 보여준다.</li>
+<li>변분원리가 보정 부호를 정하는 조건과 0이 아닌 분모를 설명한다. 근사상태·다른 대칭·들뜬상태의 제한을 바로 붙인다.</li>
+<li>약 400 이상적 샷과 10,000 제출샷 실험을 <strong>활성공간·측정 조건을 나눈 패널</strong>에 담는다. 표준오차와 CASCI 편차는 다른 열에 적는다.</li>
+<li>데이터 20+보조 30큐비트, 후선택과 조건부 오차 상쇄를 설명한다. parity check가 최종 에너지 차이를 일관되게 개선하지 않은 결과도 포함한다.</li>
+<li>SVD-THC를 미래 입력 비용의 비교 상자로 연결한다. 마지막에는 같은 정확도의 고전 기준과 총시간 비교가 필요한 항목을 제시한다.</li>
+</ol>
+<p><strong>필수 시각자료:</strong></p>
+<ul>
+<li>코드·SVG 개념도: 기준상태에 평행한 성분과 직교 잔차, 두 overlap, 부호를 정하는 가정을 연결한다. 실제 장치 회로와 구별한다.</li>
+<li>원문 수치 재도식화: 이상적 샷 추정/실제 제출샷/표준오차/CASCI 편차를 조건별로 분리한다. 400→10,000을 성능 악화의 동일 조건 비교로 그리지 않는다.</li>
+<li>작은 자원 표: SVD-THC의 Toffoli-optimal·qubit-comparable·active volume을 각각 제시한다. 서로 다른 지표를 같은 막대축에 놓지 않는다.</li>
+</ul>
+<p>표지 제작을 시작할 때 별도 주제 폴더의 <code>cover-art-brief.md</code>에서 세 발상을 비교한다. 개념 표지와 검증된 수학·수치 도식의 역할을 나누며, 이번 기획 단계에서는 표지를 생성하지 않았다.</p>
+<p><strong>원고 작성 때 추가할 검증:</strong></p>
+<ul>
+<li>원문 §2.1·식(1)–(4), 식(6)–(7)의 정규화·부호·분모 조건을 수학 검토자에게 다시 대조한다.</li>
+<li>Fig.6의 약 400/40,000/694,194샷 비교는 같은 (6,6)·구조·목표 정밀도 조건으로 표기한다. Pauli 측정의 CASCI 분산과 CU의 선택된 근사 목표상태 조건을 각주로 구분해, 같은 정밀도가 같은 전체 정확도를 뜻하지 않음을 적는다.</li>
+<li>Table 1·S8에서 10,000 제출샷과 후선택 후 받아들인 샷, 1.66–1.73 mHa를 정확히 연결한다. 회로 50큐비트와 활성공간 (10,10)을 분리한다.</li>
+<li>CASCI에 대한 편차를 실제 물질·수렴한 활성공간 정확도로 읽히게 하지 않는다.</li>
+<li>고전 CASSCF/NEVPT2·selected CI 등 비교의 정확도·시간 조건을 조사하되, 없는 benchmark를 만들어 채우지 않는다.</li>
+<li>완성 기사는 한국어·영어, 작성 공개, 출처·그림 provenance, 한영 메타데이터·PDF·모바일·공개 URL까지 기존 발행 기준으로 검수한다.</li>
+</ul>
+<p><strong>완료 기준:</strong> 서로 다른 측정 조건과 비용을 독자가 구분할 수 있고, 실제 장치가 입증한 결과·원문의 해석·리뷰의 응용 제안이 명확해야 한다. 코드 재실행을 하지 않으면 독립 재현으로 표시하지 않는다.</p>
+<h2 id="_6">후속 두 주제의 구체적 출발점</h2>
+<p><strong>Hamiltonian embedding — 「훈련자료를 해밀토니안에 넣는 양자 학습: 바닥상태 근사와 고전 추론」.</strong> 데이터셋→유효 Hamiltonian→QPU 표본→고전 부분공간 대각화→학습·추론의 흐름으로 구성한다. 이론의 난해성 조건과 Fashion-MNIST 평가를 분리하고, 전체 100-run 고전 비교와 사전 선별된 5개 하드웨어 run의 선택 조건을 설명한다. QPU 표본이 같은 크기의 고전 부분공간보다 제공한 것이 무엇인지가 기사 질문이다. 후속 계산을 한다면 data split·초기값 선별을 고정해 고전 기준과 비교한다.</p>
+<p><strong>Giant atom — 「공간 설계로 만드는 수동 양자 상태전송」.</strong> 여러 결합점에서 방출된 파가 전파지연과 간섭을 거쳐 수신 원자에 흡수되는 원리를 설명한다. 한 결합점의 비대칭 방출→시간반전 대칭에 가까운 파형→유한 결합점 근사→위치·결합·분산 오차의 순서로 전개한다. 도표의 세로축은 최대 수신 여기확률로 정의하며, 실제 네트워크 fidelity를 측정한 것처럼 쓰지 않는다. Fig.3의 N은 chiral coupling 모델의 결합점 수다. 양방향 waveguide에서 구조적으로 chirality를 만드는 부록의 구현 제안은 2N개의 physical legs를 쓴다는 차이도 설명한다. 정확한 결합점 구조는 결정론적으로 그리고, 모델 밖 손실·잡음을 넣는 탐색은 리뷰 재구성으로 표시한다.</p>
+<h2 id="_7">작성·검증 기록</h2>
+<p>AI 보조: Codex. 정확한 실행 모델 식별자: 미보존. 편집 기준: AI Tech Review Editorial Harness 2026.08과 2026-10-20 표지 보완 원칙.</p>
+<ul>
+<li><code>root</code>: 자료 통합, PDF 공개본 정리, 요약·리뷰 초안·기획서 작성, 아카이브 등록·사이트 출력 확인.</li>
+<li><code>editorial_fit</code>: 기존 기사 중복·저장소 형식 조사, 별도 PDF 공개본 검수.</li>
+<li><code>chemistry_sources</code>: 두 양자화학 논문의 핵심 절·표·보충자료·부호와 수치 조건 대조.</li>
+<li><code>other_sources</code>: QAOA·Hamiltonian embedding·giant atom의 원문·실행 범위·서지 대조.</li>
+</ul>
+<p>사람의 문장별 검토나 최종 기사 게재 승인 완료를 뜻하지 않는다. 독립 QPU 실험·전자구조 계산·모델 학습은 수행하지 않았다. 이 기획서와 조사 노트는 공개 사이트의 기사 배포 목록에 넣지 않았다.</p>
+        <div class="footer">
+          원본 파일 최종 수정 시각: 2026-10-21 09:00:39
+        </div>
+      </article>
+
+      <aside class="sidebar">
+
+        <section class="panel toc-panel" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">섹션 맵</h2>
+          <div class="toc">
+<ul>
+<li><a href="#_1">아카이빙 결과</a></li>
+<li><a href="#_2">오늘 다섯 편이 실제로 보인 것</a><ul>
+<li><a href="#dqb">DQB에서 더 명확히 적어야 할 부분</a></li>
+</ul>
+</li>
+<li><a href="#_3">연구·개발 관점에서 얻을 인사이트</a></li>
+<li><a href="#_4">짧은 리뷰 초안: 분자 에너지를 읽는 횟수는 왜 중요한가</a></li>
+<li><a href="#_5">게재 우선순위</a></li>
+<li><a href="#1">1순위 기사 기획서</a></li>
+<li><a href="#_6">후속 두 주제의 구체적 출발점</a></li>
+<li><a href="#_7">작성·검증 기록</a></li>
+</ul>
+</div>
+
+        </section>
+
+        <section class="panel link-panel" aria-labelledby="links-heading">
+          <h2 id="links-heading">연결된 근거</h2>
+          <ul>
+            <li><a href="../../../archive/files/2026-10-21-daily-quantum-brief.pdf">공개 보관용 PDF</a></li>
+<li><a href="https://arxiv.org/abs/2610.26689v1" target="_blank" rel="noreferrer">Lenihan et al. v1</a></li>
+<li><a href="https://arxiv.org/abs/2610.25968v1" target="_blank" rel="noreferrer">Cortes et al. v1</a></li>
+<li><a href="https://arxiv.org/abs/2610.26381v1" target="_blank" rel="noreferrer">Weidinger et al. v1</a></li>
+<li><a href="https://arxiv.org/abs/2610.26833v1" target="_blank" rel="noreferrer">Molteni et al. v1</a></li>
+<li><a href="https://journals.aps.org/prxquantum/abstract/10.1103/6wcb-nj42" target="_blank" rel="noreferrer">Diekmann et al., PRX Quantum</a></li>
+<li><a href="../notes/chemistry-source-check.md">양자화학 원문 대조</a></li>
+<li><a href="../notes/other-source-check.md">QAOA·QML·giant atom 원문 대조</a></li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
