@@ -1,6 +1,6 @@
 # AI Tech Review Q/node icon
 
-2026-10-22 · Asset version: `20261022-quantum-node-sky`
+2026-10-22 · Asset version: `20261022-quantum-node-walnut`
 
 AI·양자 기술 리뷰의 홈 화면·브라우저 아이콘. 독립적으로 설계한 기하학적 Q와
 두 개의 연결 노드를 사용한다. 특정 양자 상태·얽힘·실험 장치의 도식이 아닌 브랜드 심볼이다.
@@ -11,10 +11,12 @@ AI·양자 기술 리뷰의 홈 화면·브라우저 아이콘. 독립적으로 
 2. 아이보리 Q 안에 독립된 두 노드를 연결: 작은 크기의 Q 판독과 계산·연결의 상징이 함께 남음. **선택.**
 3. Q 안에 세 갈래 노드를 배치: 작은 크기에서 가지와 Q 꼬리가 경쟁함.
 
-매트한 짙은 하늘빛 블루 배경 `#315F86`, 아이보리 `#F4F4EC`, 민트 `#69DECA`의 평면 그래픽이다.
+매트한 월넛 브라운 배경 `#4B3930`, 베이지 `#EADCC3`의 Q와 차분한 청록색
+`#99BFB4`의 노드를 조합한다. 낮은 대비의 가는 곡선으로 은은한 나무결을 더한다.
 글자·그라데이션·광택·그림자를 넣지 않는다. 배경은 불투명하게 끝까지 채워 iOS가
 모서리를 한 번만 마스킹하도록 한다. 마크에는 충분한 여백을 둔다.
-배경색은 초기 잉크색 `#10242C`에서 사용자가 요청한 푸른 하늘의 느낌으로 조정했다.
+초기 잉크색 `#10242C`, 매트한 하늘빛 블루 `#315F86`를 거쳐 사용자가 요청한
+갈색·베이지·고풍스러운 나무 느낌을 반영했다. 실제 나무 사진을 사용하지 않는다.
 
 ## Regenerate
 
@@ -24,13 +26,14 @@ Pillow가 설치된 Python으로 저장소 루트에서 실행한다.
 python3 .automation/assets/ai-tech-review-icon/build_favicon.py
 ```
 
-`build_favicon.py`의 공통 `SHAPES` 기하가 SVG와 고해상도 래스터를 생성한다.
+`build_favicon.py`의 공통 `SHAPES`와 `GRAIN_PATHS` 기하가 SVG와 고해상도 래스터를 생성한다.
+Q의 외곽·안쪽 여백과 노드 위치는 유지하며, 나무결은 원형 내부까지 이어진다.
 폰트·외부 이미지·생성형 이미지 모델에 의존하지 않는다.
 
 - `ai-tech-review-icon.svg`: 확장 가능한 벡터
 - `ai-tech-review-icon-512.png`: 512px 원본
 - `apple-touch-icon.png`: 180px, 불투명 RGB
-- `favicon-{16,32,64}x{16,32,64}.png`: 브라우저용 PNG
+- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-64x64.png`: 브라우저용 PNG
 - `favicon.ico`: 16/32/48/64/128/256px 슬롯
 
 `scripts/publish_public_site.py`가 최종 아이콘만 `site/`에 복사하며,
@@ -40,10 +43,10 @@ python3 .automation/assets/ai-tech-review-icon/build_favicon.py
 ## Verification
 
 - 512px 원본, 180px 홈 화면, 64/32/16px 탭 아이콘을 시각 검토했다.
-  16px에서 내부 연결은 작은 민트색 포인트로 축소되며 Q 윤곽은 남는다.
+  16px에서 내부 연결은 작은 청록색 포인트로 축소되며 Q 윤곽은 남는다.
 - 둥근 모서리 마스크와 흑백으로 확인했다. 실제 iOS 기기의 설치 검수는 하지 않았다.
 - PNG 크기·불투명 RGB·빈 metadata, ICO의 여섯 크기, 공개본과 생성 원본의
-  바이트 일치를 확인했다. SVG와 PNG는 같은 좌표·색·도형 목록을 사용한다.
+  바이트 일치를 확인했다. SVG와 PNG는 같은 좌표·색·도형과 나무결 곡선을 사용한다.
 - 별도 검토자가 후보의 소형 판독성과 공개 HTML의 아이콘 경로를 확인했다.
 
 QA용 비교판과 화면 캡처는 공개 `site/`에 포함하지 않는다.
