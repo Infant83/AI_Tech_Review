@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
-BACKGROUND = "#10242C"
+BACKGROUND = "#315F86"
 IVORY = "#F4F4EC"
 MINT = "#69DECA"
 CANVAS = 512
