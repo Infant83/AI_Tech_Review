@@ -1,50 +1,52 @@
-# AI Tech Review Letters editorial icon
+# AI Tech Review Letters quantum / AI review icon
 
-2026-10-22 · Asset version: `20261022-editorial-walnut`
+2026-10-22 · Asset version: `20261022-qai-review-watercolor`
 
 최신 양자·AI 렉처, 학술 리뷰, 기술 리뷰와 저널 형식의 기사를 발행하는
-**독립 리뷰·학습 매체**의 로고다. 펼친 학술지의 두 페이지와 중앙 제본선으로
-읽기·설명·출판을 먼저 드러낸다. 어두운 매트 월넛 브라운, 누른 베이지 외곽,
-차분한 청록 제본선을 사용하며 오른쪽 페이지 끝이 한 획의 수채화 안료로 풀린다.
+**독립 리뷰·학습 매체**의 로고다. 저널 페이지가 접힌 큰 **R**은 Review를,
+그 여백 안의 **Q / AI**는 양자와 인공지능을 나타낸다. 실제 장치·회로나
+학술 인증을 나타내는 도식이 아닌 매체의 상징이다.
 
-페이지 내부는 밝은 면으로 채우지 않아 어두운 인상을 유지한다. 문구·본문 흉내·
-인장·인증 체크를 넣지 않으며 특정 논문이나 실제 양자 장치의 도식으로 제시하지 않는다.
-양자·AI 분야는 매체명과 실제 콘텐츠가 설명하고, 로고는 리뷰·렉처·기사 전반을 담는다.
+어두운 월넛 브라운, 종이색 베이지와 차분한 청록을 유지한다. R의 선명한
+외곽은 오른쪽 아래에서 수채화 안료와 얇은 번짐으로 풀린다. 표면빛은 매우
+약하게 억제하고, 첫 시안의 금박 같은 질감을 한 번의 생성 편집으로 낮췄다.
+표면의 종이·안료 무늬는 남아 있으며 완전한 단색 벡터 로고가 아니다.
 
-## Actual concept comparison
+## Actual revised concept comparison
 
-이전 Q 수채화 로고를 색감·무광·수채화의 참고로만 사용하고 핵심 기호를 다시 설계했다.
-built-in `image_gen`으로 네 가지 실제 시안을 제작했다. 각 원본은 1254×1254px RGB이고
-정확한 내부 모델 식별자는 도구에서 제공되지 않았다.
+사용자가 제안한 펼친 책의 좌우 Q/AI와 기존 B/C/D를 각각 발전시켜 실제
+이미지 네 장을 built-in `image_gen`으로 제작했다. 모두 같은 다크 월넛 계열에서
+비교했으며, 이전 버건디 시안은 별도 이력으로 남겨 둔다.
 
-| 후보 | 의미 | 판단 |
+| 후보 | 의미 | 실제 결과의 판단 |
 |---|---|---|
-| **A · 펼친 학술지** | 두 페이지·제본·열린 읽기 경험 | **독립 디자인 디렉터 선택** |
-| B · 리뷰의 여백 | 원고와 주석 괄호 | 실제 결과의 중괄호가 코드 문서로 먼저 읽힘 |
-| C · 한 권의 저널 | 학술지 한 권과 제본 | 닫힌 책·도서관의 인상, 작은 테두리 약화 |
-| D · 페이지로 만든 R | REVIEW 모노그램과 종이 접힘 | 개성·16px 판독성은 좋지만 작은 크기에서는 출판보다 문자 R이 먼저 남음 |
+| A · 열린 저널 Q / AI | 왼쪽 Q와 오른쪽 AI, 펼친 지면 | 180/64px 문자 판독 우선 시 독립 판독 검토자의 추천안. 활자와 책 외곽이 다소 빽빽함 |
+| B · 리뷰의 여백 | 접힌 원고와 주석 괄호, Q/AI | 코드 문서 인상이 강함 |
+| C · 한 권의 저널 | 저널 표지의 Q/AI, 청록 제본 | 출판 인상은 분명하지만 투시·페이지 단면·상단 빛이 경쟁함 |
+| **D · 페이지로 만든 R** | 큰 Review 기호 속 작은 Q/AI | **디자인 디렉터 선택. 하나의 기호와 16px 실루엣 우선** |
 
-- [기존 Q와 네 시안 비교](studies/20261022-editorial/comparison.png)
-- [로고·매체명 조합 시안](studies/20261022-editorial-walnut/brand-context.png)
-- [180/64/32/16px·흑백 비교](studies/20261022-editorial/legibility.png)
-- [디자인 선택 기록](studies/20261022-editorial/design-review.md)
-- [별도 판독성·매체 적합성 검토](studies/20261022-editorial/legibility-review.md)
-- [프롬프트 전문](studies/20261022-editorial/prompts.json), [원본 해시·크기](studies/20261022-editorial/assets.json)
-- [브라운 색상 조정 비교](studies/20261022-editorial-walnut/palette-comparison.png)
-- [색상 편집 프롬프트](studies/20261022-editorial-walnut/prompt.json), [색상·형태 검토](studies/20261022-editorial-walnut/color-review.md)
+글자 인지를 우선한 별도 판독 검토자는 A를 추천했다. 최종 선택은 디자인
+디렉터의 D를 따르되 축소 한계를 기록했다. D에 재질만 한 번 보정한 실제
+결과를 다시 검토한 뒤 `selected-D-watercolor.png`로 확정했다. 생성 편집이므로
+원본과 픽셀 단위로 동일한 형태라는 뜻은 아니며 구조·비례가 시각적으로 유지됐다.
+에이전트의 디자인·판독 평가이며 사람 선호도 조사나 실제 iOS 설치 검수는 아니다.
 
-A는 열린 학술지의 직관성과 작은 크기의 두 페이지 구조를 우선해 선택했다.
-익숙한 펼친 책 기호라는 한계가 있으므로 매체 고유성은 이름·기사와 함께 형성한다.
-선택은 실제 이미지에 대한 에이전트의 편집·디자인 평가이며 사람 선호도 조사가 아니다.
-이전 [Q 수채화 연구](studies/20261022-watercolor/design-review.md)는 별도 이력으로 보존한다.
-형태 선정 뒤 사용자가 선호한 이전 다크 월넛 팔레트로 built-in `image_gen` 색상 편집을 했다.
-버건디로 제작한 네 형태 비교 시안과 그 선정 기록은 당시 상태로 보존한다.
+- [네 실제 시안 비교](studies/20261022-quantum-ai-editorial/comparison.png)
+- [선택안 보정까지 반영한 비교](studies/20261022-quantum-ai-editorial/comparison-final.png)
+- [후보별 실제 축소·흑백](studies/20261022-quantum-ai-editorial/legibility.png)
+- [선택 D의 재질 보정 전후](studies/20261022-quantum-ai-editorial/refinement-comparison.png)
+- [최종안 실제 축소·흑백](studies/20261022-quantum-ai-editorial/selected-legibility.png)
+- [디자인 판단](studies/20261022-quantum-ai-editorial/design-review.md)
+- [독립 판독 검토](studies/20261022-quantum-ai-editorial/legibility-review.md)
+- [프롬프트 전문](studies/20261022-quantum-ai-editorial/prompts.json)
+- [원본 해시·크기](studies/20261022-quantum-ai-editorial/assets.json)
+- [프로덕션 검증](studies/20261022-quantum-ai-editorial/production-validation.json)
 
 ## Source and regeneration
 
-최종 원본은 [journal-walnut.png](studies/20261022-editorial-walnut/journal-walnut.png)다.
-고정된 원본을 수정하지 않고 크기 조정과 metadata 없는 내보내기만 수행한다.
-재빌드에 네트워크나 이미지 생성 호출은 필요 없다.
+최종 원본은 [selected-D-watercolor.png](studies/20261022-quantum-ai-editorial/selected-D-watercolor.png)다.
+고정된 원본을 크기 조정하고 metadata 없이 내보낸다. 재빌드에는 생성 호출,
+네트워크, 색 보정, 크롭이나 예술적 필터가 필요 없다.
 
 ```sh
 python3 .automation/assets/ai-tech-review-icon/build_favicon.py
@@ -52,17 +54,21 @@ python3 .automation/assets/ai-tech-review-icon/build_favicon.py
 
 - `ai-tech-review-icon-512.png`: 원본의 512px 내보내기
 - `apple-touch-icon.png`: 180px 불투명 RGB
-- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-64x64.png`: 같은 원본의 작은 크기
+- `favicon-16x16.png`, `favicon-32x32.png`, `favicon-64x64.png`: 같은 원본의 축소본
 - `favicon.ico`: 16/32/48/64/128/256px 슬롯
 - `ai-tech-review-icon.svg`: 같은 512px PNG를 data URL로 내장한 SVG. 벡터 원화가 아니다.
 
-16px에서는 수채화 입자 대부분이 사라지지만 두 페이지의 외곽과 중앙 접힘은 남는다.
-다른 작은 로고로 교체하지 않고 같은 원본을 사용한다. 공개 아이콘만 게시기가
-`site/`에 복사하며 시안·프롬프트·검토 기록은 공개 사이트 자산에 포함하지 않는다.
+180px에서는 Q·AI를 읽을 수 있지만, 64px부터 작아지고 32/16px에서 문자
+완독을 보장하지 않는다. 16px에서는 R의 큰 실루엣이 브랜드를 담당한다.
+작은 크기에도 별도 그림을 대입하지 않고 같은 원본을 사용한다.
+게시기는 최종 공개 아이콘만 `site/`에 복사한다. 시안·프롬프트·검토 기록과
+QA 이미지는 공개 사이트 자산에 포함하지 않는다.
 
-## Verification
+## Historical studies
 
-실제 180/64/32/16px, 둥근 마스크, 흑백에서 후보를 비교했다.
-공개 내보내기의 RGB·크기·metadata·ICO 슬롯·내장 PNG와 원본/공개본 일치를 확인했다.
-임시 폴더의 재생성 결과가 바이트 단위로 같았으며 전체 사이트 검증을 통과했다.
-실제 iOS 설치 검수나 사람 선호도 평가는 하지 않았다.
+- [Q 수채화 로고](studies/20261022-watercolor/design-review.md)
+- [출판 정체성 네 시안](studies/20261022-editorial/design-review.md)
+- [펼친 저널의 월넛 팔레트](studies/20261022-editorial-walnut/color-review.md)
+
+과거 시안과 판단은 당시 상태로 보존한다. 이 변경은 사이트 아이콘만 다루며
+기사 본문·표지·PDF를 재제작하지 않는다.
