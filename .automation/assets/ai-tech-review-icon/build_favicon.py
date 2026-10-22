@@ -15,7 +15,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
-ARTWORK_SOURCE = ROOT / "studies" / "20261022-watercolor" / "candidate-A.png"
+ARTWORK_SOURCE = ROOT / "studies" / "20261022-editorial" / "candidate-A.png"
 
 
 def main() -> None:
@@ -42,7 +42,7 @@ def main() -> None:
     encoded = base64.b64encode(png).decode("ascii")
     (GENERATED / "ai-tech-review-icon.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" '
-        'role="img" aria-label="AI Tech Review watercolor Q with connected nodes">\n'
+        'role="img" aria-label="AI Tech Review Letters open-journal icon">\n'
         f'  <image width="512" height="512" href="data:image/png;base64,{encoded}"/>\n'
         '</svg>\n',
         encoding="utf-8",
