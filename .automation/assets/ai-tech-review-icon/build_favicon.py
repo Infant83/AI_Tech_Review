@@ -15,7 +15,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
-ARTWORK_SOURCE = ROOT / "studies" / "20261022-editorial" / "candidate-A.png"
+ARTWORK_SOURCE = ROOT / "studies" / "20261022-editorial-walnut" / "journal-walnut.png"
 
 
 def main() -> None:

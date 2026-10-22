@@ -1,10 +1,10 @@
 # AI Tech Review Letters editorial icon
 
-2026-10-22 · Asset version: `20261022-editorial-journal`
+2026-10-22 · Asset version: `20261022-editorial-walnut`
 
 최신 양자·AI 렉처, 학술 리뷰, 기술 리뷰와 저널 형식의 기사를 발행하는
 **독립 리뷰·학습 매체**의 로고다. 펼친 학술지의 두 페이지와 중앙 제본선으로
-읽기·설명·출판을 먼저 드러낸다. 어두운 매트 버건디, 누른 베이지 외곽,
+읽기·설명·출판을 먼저 드러낸다. 어두운 매트 월넛 브라운, 누른 베이지 외곽,
 차분한 청록 제본선을 사용하며 오른쪽 페이지 끝이 한 획의 수채화 안료로 풀린다.
 
 페이지 내부는 밝은 면으로 채우지 않아 어두운 인상을 유지한다. 문구·본문 흉내·
@@ -25,20 +25,24 @@ built-in `image_gen`으로 네 가지 실제 시안을 제작했다. 각 원본�
 | D · 페이지로 만든 R | REVIEW 모노그램과 종이 접힘 | 개성·16px 판독성은 좋지만 작은 크기에서는 출판보다 문자 R이 먼저 남음 |
 
 - [기존 Q와 네 시안 비교](studies/20261022-editorial/comparison.png)
-- [로고·매체명 조합 시안](studies/20261022-editorial/brand-context.png)
+- [로고·매체명 조합 시안](studies/20261022-editorial-walnut/brand-context.png)
 - [180/64/32/16px·흑백 비교](studies/20261022-editorial/legibility.png)
 - [디자인 선택 기록](studies/20261022-editorial/design-review.md)
 - [별도 판독성·매체 적합성 검토](studies/20261022-editorial/legibility-review.md)
 - [프롬프트 전문](studies/20261022-editorial/prompts.json), [원본 해시·크기](studies/20261022-editorial/assets.json)
+- [브라운 색상 조정 비교](studies/20261022-editorial-walnut/palette-comparison.png)
+- [색상 편집 프롬프트](studies/20261022-editorial-walnut/prompt.json), [색상·형태 검토](studies/20261022-editorial-walnut/color-review.md)
 
 A는 열린 학술지의 직관성과 작은 크기의 두 페이지 구조를 우선해 선택했다.
 익숙한 펼친 책 기호라는 한계가 있으므로 매체 고유성은 이름·기사와 함께 형성한다.
 선택은 실제 이미지에 대한 에이전트의 편집·디자인 평가이며 사람 선호도 조사가 아니다.
 이전 [Q 수채화 연구](studies/20261022-watercolor/design-review.md)는 별도 이력으로 보존한다.
+형태 선정 뒤 사용자가 선호한 이전 다크 월넛 팔레트로 built-in `image_gen` 색상 편집을 했다.
+버건디로 제작한 네 형태 비교 시안과 그 선정 기록은 당시 상태로 보존한다.
 
 ## Source and regeneration
 
-최종 원본은 [candidate-A.png](studies/20261022-editorial/candidate-A.png)다.
+최종 원본은 [journal-walnut.png](studies/20261022-editorial-walnut/journal-walnut.png)다.
 고정된 원본을 수정하지 않고 크기 조정과 metadata 없는 내보내기만 수행한다.
 재빌드에 네트워크나 이미지 생성 호출은 필요 없다.
 
