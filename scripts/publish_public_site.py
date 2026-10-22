@@ -27,8 +27,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 REVIEWS_DIR = SITE_DIR / "reviews"
 ASSETS_DIR = SITE_DIR / "assets"
-ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "federlicht-icon" / "generated"
-ICON_ASSET_VERSION = "20260523-federlicht"
+ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "ai-tech-review-icon" / "generated"
+ICON_ASSET_VERSION = "20261022-quantum-node"
 EDITORIAL_HARNESS_NAME = "AI Tech Review Editorial Harness"
 EDITORIAL_HARNESS_VERSION = "2026.08"
 EDITORIAL_METHODS_HREF = "methods/"
@@ -1435,7 +1435,7 @@ PUBLIC_METRICS_CONFIG_RE = re.compile(
     re.IGNORECASE | re.DOTALL,
 )
 PUBLIC_ICON_LINK_RE = re.compile(
-    r"\s*<link\b(?=[^>]*\bhref=['\"](?:data:,|[^'\"]*(?:favicon\.ico|federlicht-favicon\.svg|apple-touch-icon\.png)(?:\?[^'\"]*)?)['\"])[^>]*>",
+    r"\s*<link\b(?=[^>]*\bhref=['\"](?:data:,|[^'\"]*(?:favicon\.ico|(?:federlicht-favicon|ai-tech-review-icon)\.svg|apple-touch-icon\.png)(?:\?[^'\"]*)?)['\"])[^>]*>",
     re.IGNORECASE,
 )
 CANONICAL_LINK_RE = re.compile(
@@ -2090,7 +2090,7 @@ def public_icon_links(asset_prefix: str = "", indent: int = 4) -> str:
     return (
         f"\n{pad}<!-- AI Tech Review Icons -->"
         f"\n{pad}<link rel=\"icon\" href=\"{prefix}favicon.ico{version}\" sizes=\"any\">"
-        f"\n{pad}<link rel=\"icon\" href=\"{prefix}assets/federlicht-favicon.svg{version}\" type=\"image/svg+xml\">"
+        f"\n{pad}<link rel=\"icon\" href=\"{prefix}assets/ai-tech-review-icon.svg{version}\" type=\"image/svg+xml\">"
         f"\n{pad}<link rel=\"apple-touch-icon\" href=\"{prefix}assets/apple-touch-icon.png{version}\">"
         f"\n{pad}<!-- End AI Tech Review Icons -->"
     )
@@ -3196,7 +3196,7 @@ def render_index(
 def copy_icon_assets() -> None:
     required = {
         "favicon.ico": SITE_DIR / "favicon.ico",
-        "federlicht-favicon.svg": ASSETS_DIR / "federlicht-favicon.svg",
+        "ai-tech-review-icon.svg": ASSETS_DIR / "ai-tech-review-icon.svg",
         "apple-touch-icon.png": ASSETS_DIR / "apple-touch-icon.png",
         "favicon-16x16.png": ASSETS_DIR / "favicon-16x16.png",
         "favicon-32x32.png": ASSETS_DIR / "favicon-32x32.png",
@@ -4607,7 +4607,7 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
     singleton_patterns = {
         "public metrics stylesheet": r"assets/public-metrics\.css",
         "favicon": r"favicon\.ico",
-        "SVG favicon": r"federlicht-favicon\.svg",
+        "SVG favicon": r"ai-tech-review-icon\.svg",
         "apple-touch icon": r"apple-touch-icon\.png",
     }
     for label, pattern in singleton_patterns.items():
