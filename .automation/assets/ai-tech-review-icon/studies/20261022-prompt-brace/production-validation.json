@@ -1,0 +1,82 @@
+{
+  "asset_version": "20261022-prompt-brace",
+  "date": "2026-10-22",
+  "status": "passed",
+  "checks": {
+    "svg_embedded_payload_matches_png": true,
+    "ico_sizes": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "public_icon_copies_match": [
+      "favicon.ico",
+      "ai-tech-review-icon.svg",
+      "apple-touch-icon.png",
+      "favicon-16x16.png",
+      "favicon-32x32.png",
+      "favicon-64x64.png"
+    ],
+    "png_metadata_empty": true,
+    "html_files": 82,
+    "icon_links": 246,
+    "html_diff_only_cache_version": true,
+    "archive_only_two_study_hashes": [
+      "lectures/classiq-talk-series/",
+      "lectures/quantum-machine-learning/"
+    ]
+  },
+  "full_site_validation": {
+    "reviewer": "/root/resume_icon_audit",
+    "command": "scripts.publish_public_site.validate_public_site(existing published manifest)",
+    "status": "passed",
+    "errors": []
+  },
+  "diff_validation": {
+    "git_diff_check": "passed",
+    "tracked_changed_files": 99,
+    "html_scope": "Only246 icon cache version tokens across82 HTML pages",
+    "archive_scope": "Only2 lecture study index hashes"
+  },
+  "visual_review": {
+    "design_reviewer": "/root/topic_design_review",
+    "legibility_reviewer": "/root/keyword_audit",
+    "left_opening_curly_brace_direction": "passed",
+    "R_silhouette": "passed",
+    "seven_exact_topic_tokens": "passed",
+    "records": [
+      "design-review.md",
+      "legibility-review.md"
+    ]
+  },
+  "production_method": "Resize only; no artistic postprocessing",
+  "public_distribution": "Only final icons; no prompts, studies, QA boards or research files copied to site",
+  "limits": [
+    "Agent visual review, no human preference/accessibility testing",
+    "No actual iOS installation test",
+    "No independent SVG rasterizer test",
+    "No guarantee of full topic text reading at64/32/16px",
+    "Generative edit preserves composition visually, not pixel-identical nonedited regions"
+  ]
+}

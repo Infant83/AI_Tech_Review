@@ -15,7 +15,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
-ARTWORK_SOURCE = ROOT / "studies" / "20261022-topic-keywords" / "selected-A-keywords.png"
+ARTWORK_SOURCE = ROOT / "studies" / "20261022-prompt-brace" / "selected-A-brace.png"
 
 
 def main() -> None:
@@ -42,7 +42,7 @@ def main() -> None:
     encoded = base64.b64encode(png).decode("ascii")
     (GENERATED / "ai-tech-review-icon.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" '
-        'role="img" aria-label="AI Tech Review Letters review monogram with topic keywords Q AI DFT VQE LLM OLED GPU">\n'
+        'role="img" aria-label="AI Tech Review Letters journal-page R with a prompt-inspired opening curly brace stem and topic keywords Q AI DFT VQE LLM OLED GPU">\n'
         f'  <image width="512" height="512" href="data:image/png;base64,{encoded}"/>\n'
         '</svg>\n',
         encoding="utf-8",
