@@ -42,6 +42,8 @@ for(const weight of ['regular','bold']){
  stylesheet=stylesheet.replaceAll(`url('${file}')`,`url('data:font/woff2;base64,${encoded}')`);
 }
 stylesheet='/* '+fs.readFileSync(path.join(artifacts,'font-license.txt'),'utf8').replaceAll('*/','')+' */\n'+stylesheet;
+const styleVersion=crypto.createHash('sha256').update(stylesheet).digest('hex').slice(0,10);
+const playerVersion=crypto.createHash('sha256').update(fs.readFileSync(path.join(artifacts,'noether-video-player.js'))).digest('hex').slice(0,10);
 
 function disclosure(ko){
  const rows=ko?[
@@ -115,10 +117,10 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}hero.webp"><meta property="article:published_time" content="2026-10-17"><meta property="article:modified_time" content="${revision}">`:'';
  const localBadge=publicBase?'':`<span class="local-status">${ko?'로컬 검토본':'Local review copy'}</span>`;
  const html=`<!doctype html>
-<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(descriptors[lang])}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(descriptors[lang])}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css"></head><body>
+<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(descriptors[lang])}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(descriptors[lang])}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css?v=${styleVersion}"></head><body>
 <header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions">${localBadge}<nav class="language-switcher" aria-label="${ko?'언어 선택':'Language'}"><span class="language-current" aria-current="page" lang="${lang}">${ko?'한국어':'English'}</span><a href="${other}" lang="${ko?'en':'ko'}" hreflang="${ko?'en':'ko'}">${ko?'English':'한국어'}</a></nav><a class="download" href="review_${lang}.pdf">PDF ↓</a></div></header>
 <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.17</span><span>${ko?'물리학 · 과학 계산 · 과학기계학습':'PHYSICS · SCIENTIFIC COMPUTING · SCIENTIFIC ML'}</span></div><article>${body}${disclosure(ko)}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">AI Tech Review Letters · ${cutoff}<br>${ko?'연속대칭, 보존량과 계산의 구조를 연결하는 해설.':'An explainer connecting continuous symmetry, conservation and computational structure.'}</footer></main></body></html>\n`;
- fs.writeFileSync(path.join(dir,'index.html'),html.replace('</body>','<script src="noether-video-player.js" defer></script></body>'));
+ fs.writeFileSync(path.join(dir,'index.html'),html.replace('</body>',`<script src="noether-video-player.js?v=${playerVersion}" defer></script></body>`));
  fs.writeFileSync(path.join(dir,'review.css'),stylesheet);
  const assetNames=new Set(['review-regular.woff2','review-bold.woff2','font-license.txt',...video.assets,...math.map(x=>x.filename)]);
  for(const match of html.matchAll(/\bsrc="([^"#]+)"/g)){

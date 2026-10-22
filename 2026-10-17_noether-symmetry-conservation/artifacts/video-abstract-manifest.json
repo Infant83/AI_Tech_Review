@@ -3,7 +3,7 @@
   "date": "2026-10-22",
   "status": "ready",
   "scope": "Article argument through a spring calculation and Hamiltonian-learning construction.",
-  "method": "Deterministic local rendering; separate native WebVTT captions; no generative video API.",
+  "method": "Deterministic local rendering; separate WebVTT captions with progressive inline presentation and native fallback; no generative video API.",
   "production_manifest_sha256": "2df3eaf7eba31274b529cf1cdad94dddc188b1464f4981600d54bba67c49217e",
   "production_source": "2026-10-21_video-abstract-pilot/v4",
   "synthetic_narration": "Supertonic 2 F1; local inference; disclosed in video and article.",
@@ -41,15 +41,18 @@
   "human_review": "No human listening, pronunciation or reader-comprehension study.",
   "article_player_checks": {
     "status": "passed",
-    "browsers": "Chrome 155 headless, desktop 1440 and mobile viewport 390, landscape 844×390; not a physical-device study.",
-    "initial_state": "Paused, controls/playsinline, preload none, no autoplay or loop.",
-    "captions": "Default language WebVTT showing; lower caption band preserves scientific labels, dense scenes and three longest cues checked per language.",
-    "controls": "Play/pause, first/middle/end seeking, end/replay, collapse pauses; container fullscreen enter/exit button and app Escape handler.",
+    "revision": "mobile-inline-20261022",
+    "reason": "User iPhone screenshot exposed an artificially tall media box and low captions; remove the padded box and expanded panels.",
+    "browsers": "Chromium and WebKit 26.5, both languages at 390/430/1440 CSS pixels (12 layout cases); engine automation, not a physical iPhone test.",
+    "initial_state": "Paused; controls/playsinline, preload none, no autoplay or loop; intrinsic and displayed picture 1600×900 / 16:9.",
+    "captions": "Current cue immediately below the 16:9 picture. Native CC selection retained; native painting resumes without JavaScript or in native fullscreen/PIP. Both engines checked for duplicate cues and clipping. KO390 longest 3 lines, EN390 longest 4 lines.",
+    "controls": "Actual MP4 play/pause, five seek positions, CC off/on; Chromium native video fullscreen enter/exit passed. WebKit headless native fullscreen raises InvalidStateError and remains unverified on physical iOS.",
     "reduced_motion": "Static poster first; explicit manual reveal; no autoplay.",
-    "accessibility": "Visual transcript and MP4/VTT/TXT downloads, no document overflow or missing images.",
-    "audio_scope": "Browser playback checked muted. Full PCM signal/decode checks passed; no human listening/pronunciation/comprehension study.",
-    "pdf": "KO15 and EN18 pages, all pages visually checked; final render, text and annotations identical after web CSS change; no private-path or attachment leak.",
-    "independent_caption_visual_review": "Passed for bilingual dense scenes and longest cues, inline and container fullscreen; meaningful scientific labels remain visible."
+    "accessibility": "MP4/VTT/visual-transcript TXT downloads only; no expanded transcript or production panel. Four JavaScript-off native fallback and four CC-toggle cases passed.",
+    "audio_scope": "Browser playback checked muted. Existing PCM/decode checks unchanged; no new listening/pronunciation/comprehension study.",
+    "print": "Visible print element text/geometry identical to previous layout: 97 elements per language. Existing PDFs and archive copies unchanged.",
+    "independent_caption_visual_review": "Chromium/WebKit screenshots at mobile and desktop widths reviewed. No horizontal overflow, duplicated captions, text clipping or artificial picture-to-caption gap.",
+    "media_scope": "Web player and layout only; MP4, poster, VTT and TXT bytes unchanged."
   },
   "languages": {
     "ko": {
@@ -103,16 +106,27 @@
       }
     }
   },
+  "publication_history": [
+    {
+      "revision": "v4-original-player",
+      "checks": {
+        "status": "live verified",
+        "canonical_ko": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract",
+        "canonical_en": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract",
+        "archive": "Local review, archive and public-site PDF copies are byte-identical.",
+        "verified_date": "2026-10-22",
+        "deployment": "https://github.com/Infant83/AI_Tech_Review/actions/runs/39691993839",
+        "live_files": 18,
+        "full_sha256_matches": true,
+        "mp4_range_requests": "Six HTTP206 matches: start, midpoint and end for each language.",
+        "live_browser": "Canonical KO390 and EN1440 HTTP200; actual timed captions, correct placement, paused initial state, no overflow, container fullscreen and no failed article/media assets."
+      }
+    }
+  ],
   "publication_checks": {
-    "status": "live verified",
+    "status": "local verified; mobile player publication pending",
     "canonical_ko": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract",
     "canonical_en": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract",
-    "archive": "Local review, archive and public-site PDF copies are byte-identical.",
-    "verified_date": "2026-10-22",
-    "deployment": "https://github.com/Infant83/AI_Tech_Review/actions/runs/39691993839",
-    "live_files": 18,
-    "full_sha256_matches": true,
-    "mp4_range_requests": "Six HTTP206 matches: start, midpoint and end for each language.",
-    "live_browser": "Canonical KO390 and EN1440 HTTP200; actual timed captions, correct placement, paused initial state, no overflow, container fullscreen and no failed article/media assets."
+    "scope": "Web layout/helper only; existing approved media and PDFs unchanged."
   }
 }

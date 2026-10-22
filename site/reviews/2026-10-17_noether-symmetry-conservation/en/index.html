@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>From Symmetry to Conservation: Noether’s Theorems in Scientific Computing</title><meta name="description" content="From action symmetries to conserved quantities: using oscillator errors and learned dynamics to distinguish physical constraints from numerical and model accuracy."><meta name="author" content="Hyun-Jung Kim">
 <meta property="og:description" content="From action symmetries to conserved quantities: using oscillator errors and learned dynamics to distinguish physical constraints from numerical and model accuracy."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
-<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/hero.webp"><meta property="article:published_time" content="2026-10-17"><meta property="article:modified_time" content="2026-10-22"><link rel="stylesheet" href="review.css">
+<link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/hero.webp"><meta property="article:published_time" content="2026-10-17"><meta property="article:modified_time" content="2026-10-22"><link rel="stylesheet" href="review.css?v=fab3bae34d">
     <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">
     <meta property="og:title" content="From Symmetry to Conservation: Noether’s Theorems in Scientific Computing">
     <!-- AI Tech Review Icons -->
@@ -21,8 +21,8 @@
 <p class="kicker">TECH REVIEW · October 17, 2026 · Physical principles and computational applications</p>
 
 <div class="editor-line">Responsible editor: Hyun-Jung Kim · AI assistance: Codex · Revised and sources rechecked: 22 October 2026 · <a href="#authoring-disclosure">Production and verification</a></div><figure class="hero"><img src="hero.webp" alt="Conceptual illustration of translational and rotational symmetry using repeated rings and a continuous blue ribbon"><figcaption>An AI-generated conceptual illustration of structure preserved under symmetry transformations. It does not depict an experimental apparatus, particle trajectories, or measured data.</figcaption></figure><section class="video-abstract" id="video-abstract" aria-labelledby="video-abstract-title" data-manual-video="false">
- <details class="video-view" open><summary class="video-heading"><h2 id="video-abstract-title">Video abstract</h2><span class="video-duration">3:48 · English</span></summary>
- <p class="video-intro">A spring calculation and a learned-model construction explain why symmetry and conservation help design and test scientific computation.</p>
+ <div class="video-view"><div class="video-heading"><h2 id="video-abstract-title">Video abstract</h2><span class="video-duration">3:48 · English</span></div>
+ <p class="video-intro video-print-intro">A spring calculation and a learned-model construction explain why symmetry and conservation help design and test scientific computation.</p>
  <div class="video-web">
   <div class="video-stage">
    <img class="video-static" src="noether-abstract-poster-en.webp" alt="Still from the video about using symmetry and conservation to test scientific computation">
@@ -32,64 +32,14 @@
     <track kind="captions" src="noether-abstract-en.vtt" srclang="en" label="English" default>
     <p><a href="noether-abstract-en.mp4">Open the video file</a></p>
    </video>
-   <div class="video-tools"><button class="video-fullscreen" type="button" hidden data-enter="Full screen" data-exit="Exit full screen">Full screen</button></div>
+   <div class="video-captions" role="group" aria-label="Current captions" aria-live="off" hidden></div>
   </div>
-  <p class="video-caption">The oscillator is a teaching calculation; the learned model is a method schematic. Narration uses synthetic speech.</p>
-  <div class="video-links"><a href="noether-abstract-en.mp4" download>MP4</a><a href="noether-abstract-en.vtt" download>Captions VTT</a><a href="noether-abstract-transcript-en.txt" download>Download visual transcript</a></div>
-  <details class="video-transcript"><summary>Read the script and visual description</summary><pre>Using symmetry and conservation to test scientific computation
-
-Machine-generated narration synthesized locally with Supertonic 2 preset F1; not a human recording or a cloned person.
-
-[00:00:00.000] Using symmetry and conservation to test computation
-A spring with no friction or external energy input should keep oscillating with the same amplitude. Yet the amplitude computed by forward Euler grows with time. This review starts from that discrepancy to ask how symmetry and conservation laws can guide the design and testing of scientific computations.
-Visual: Exact and forward-Euler springs share one initial state and fixed display scale. Dashed bounds mark equilibrium and the initial amplitude ±A; actual Euler coordinates first cross the initial position range at n=27. After the first crossing, the label records that the initial bounds have been exceeded; it is not a claim that every later position is outside. The final n=150 state is held through the article question. Previously generated hero concept art is background, not data.
-Equations: q = cos τ; q[n+1] = q[n] + h u[n]; u[n+1] = u[n] − h q[n]
-Sources: R, CALC
-
-[00:00:24.042] Energy exchange and time symmetry
-Watch the kinetic and elastic energy bars for the exact reference motion. As one falls, the other rises, keeping their sum fixed. The two timelines beside them show the same motion with a different choice of time origin. The spring obeys the same law in either description. For this spring, action is the time integral of kinetic minus elastic energy. Its action is also unchanged by this shift. Noether's theorem connects that time-translation symmetry to conserved energy.
-Visual: Only the exact spring and its kinetic/elastic bars move initially. At the clock-origin explanation, the exact state τ=3π/2 freezes and remains as context while two static curves label the same event with origins differing by π/2. Action is introduced as S=∫(T−V)dt, followed by the model-specific relation between time-translation symmetry and conserved energy. The energy bars do not by themselves prove action symmetry.
-Equations: T/E0 = u²; V/E0 = q²; T + V = E0; t′ = t − π/(2ω)
-Sources: R, N, M
-
-[00:01:00.667] A tangent step leaves the circle
-Whether a numerical calculation retains that relationship is a separate question. Normalize the spring’s position and velocity by fixed reference values. Plot each pair as one point in the phase plane. For this oscillator, states with the same energy lie on a circle. This is not the mass's path through space. Forward Euler takes a straight step along the tangent from the current state. The new point falls outside the circle, at a higher energy. With the time step used here, each update increases the energy by one percent.
-Visual: The constant energy from the preceding scene becomes a question about numerical approximation. A physical spring initially at x=A,v=0 remains while normalization by A and Aω gives q=1,u=0; that pair is mapped to one point in the phase plane. The equal-energy circle appears next. The first Euler update (1,0)→(1,−.1), an actual isotropic 25× coordinate inset, and finally E1/E0=1.01 are introduced in order. The straight arrow is an algorithmic update, not a physical path.
-Equations: q = x/A; u = v/(Aω); E/E0 = q² + u²; (q1,u1)=(1,−0.1); E1/E0=1.01
-Sources: R, CALC, DERIV
-
-[00:01:41.042] Repeat the small error two thousand times
-The energy graph shows what happens when that small increase repeats. After two thousand equal steps, Euler's energy is about 440 million times its starting value. Velocity Verlet solves the same equation with the same time step, but its curve stays close to the initial energy. The enlarged lower panel shows an error within a quarter of one percent of that initial value throughout this run. The comparison tells us that the numerical method changes how energy error accumulates. A small energy error still does not guarantee correct oscillation timing.
-Visual: The upper logarithmic energy-ratio plot advances as the narration repeats the preceding 1% increase, then holds the actual 2,000-step endpoint. The Euler result precedes the Verlet curve; only the enlarged-error explanation introduces the lower linear-percent panel, with the upper plot retained dimly. Both results remain through interpretation: about 4.39×10^8 for Euler and at most about 0.25% error for Verlet, relative to the initial energy. This is an equal-step teaching comparison.
-Equations: h=.1; E2000/E0=(1.01)^2000; max |ΔE/E0|≈.0025
-Sources: R, CALC, DERIV, V
-
-[00:02:24.375] Test both the learned function and computed motion
-When AI predicts motion, we also need to test the model it has learned. A Hamiltonian neural network learns an energy-like function. Previously, q and u were normalized position and velocity. Here q and p are the coordinate and canonical momentum. Hamilton’s equations use derivatives of the learned function to set how those two quantities change with time. In this construction, the learned function has no explicit time dependence. The resulting continuous-time motion conserves that learned function. Whether that function represents the actual energy still needs checking. So does the error introduced by step-by-step numerical integration.
-Visual: The preceding energy plot first returns to distinguish testing the numerical method from testing a learned model. Data and learned Hθ appear before a recap of q/u and the definitions of canonical q/p. Hamilton’s equations appear with their spoken introduction. Continuous-time conservation dHθ/dt=0 is identified separately under smooth autonomous canonical assumptions. A question about physical-energy accuracy is attached to the learned function; the numerical-error question introduces the integrator and computed discrete states. Here p is canonical momentum; for the earlier normalized oscillator with m=ω=1 its numerical value equals u. This is a method schematic, not a trained result.
-Equations: q̇ = ∂Hθ/∂p; ṗ = −∂Hθ/∂q; dHθ/dt = 0 (continuous time)
-Sources: R, HNN
-
-[00:03:12.875] Design with symmetry; test with conserved quantities
-The spring exposes a numerical error. The learning diagram explains why the learned law needs scrutiny too. Symmetry supplies constraints for a model, while conserved quantities such as energy help test the calculation. The review's central argument is to build those constraints into the design and then check whether the resulting predictions are physically sound. If work or heat passes into or out of the system, that exchange must also be included in the model.
-Visual: The earlier logarithmic energy graph and learned-model construction return in sequence as their meanings are recalled. The miniature graph retains energy-ratio and numerical-step axes. The schematic reuses learned-function, Hamilton-equation and integration labels without introducing a new J∇H symbol. The article’s design-and-test argument remains while the final external-work and heat condition appears as text, without an invented driven motion.
-Equations:
-Sources: R, V, HNN
-
-Source-code legend and original references
-R = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/
-N = https://arxiv.org/html/physics/0503066v3
-M = https://www.physics.hmc.edu/~saeta/courses/p111/uploads/Y2012/Ch06.pdf
-V = https://lagrangeweb.web.engr.illinois.edu/var_int/
-HNN = https://arxiv.org/html/1906.01563
-CALC = https://github.com/Infant83/AI_Tech_Review/blob/main/2026-10-17_noether-symmetry-conservation/artifacts/build_figures.py
-DERIV = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#section-6
-</pre></details>
-  <details class="video-production"><summary>Sources and production</summary><p>Equations, data and diagrams are rendered from code using the article’s oscillator calculation and Hamiltonian-network discussion. The conceptual background reuses an AI-generated still. Narration is synthesized with Supertonic 2 F1. The oscillator is a teaching calculation and the learned model is a schematic.</p></details>
+  <div class="video-meta"><p class="video-caption">Teaching calculation & method schematic · AI narration</p>
+  <div class="video-links" aria-label="Download video materials"><a href="noether-abstract-en.mp4" download>Video MP4</a><a href="noether-abstract-en.vtt" download>Captions VTT</a><a href="noether-abstract-transcript-en.txt" download>Script TXT</a></div></div>
   <noscript><p><a href="noether-abstract-en.mp4">Open the video file</a></p></noscript>
  </div>
  <div class="video-print"><figure><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract"><img src="noether-abstract-poster-en.webp" alt="Still from the video about using symmetry and conservation to test scientific computation"></a><figcaption>Video abstract · 3:48 · Synthetic narration. <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract">Watch and read the visual transcript online</a></figcaption></figure></div>
-</details></section><details class="toc"><summary>Contents</summary><ol><li><a href="#section-1">1. A plausible prediction can still be physically wrong</a></li><li><a href="#section-2">2. What exactly remains unchanged?</a></li><li><a href="#section-3">3. A short derivation from action to conserved quantity</a></li><li><a href="#section-4">4. How do Noether’s two theorems differ?</a></li><li><a href="#section-5">5. Why does light lose energy in an expanding universe?</a></li><li><a href="#section-6">6. How can a numerical simulation retain symmetry?</a></li><li><a href="#section-7">7. Should scientific AI learn conservation laws or embody them?</a></li><li><a href="#section-8">8. Equivariant neural networks and interatomic potentials</a></li><li><a href="#section-9">9. In quantum computing, symmetry can identify errors</a></li><li><a href="#section-10">10. Three different meanings of broken symmetry</a></li><li><a href="#section-11">11. What to check in research and development</a></li><li><a href="#section-12">References and source material</a></li></ol></details>
+</div></section><details class="toc"><summary>Contents</summary><ol><li><a href="#section-1">1. A plausible prediction can still be physically wrong</a></li><li><a href="#section-2">2. What exactly remains unchanged?</a></li><li><a href="#section-3">3. A short derivation from action to conserved quantity</a></li><li><a href="#section-4">4. How do Noether’s two theorems differ?</a></li><li><a href="#section-5">5. Why does light lose energy in an expanding universe?</a></li><li><a href="#section-6">6. How can a numerical simulation retain symmetry?</a></li><li><a href="#section-7">7. Should scientific AI learn conservation laws or embody them?</a></li><li><a href="#section-8">8. Equivariant neural networks and interatomic potentials</a></li><li><a href="#section-9">9. In quantum computing, symmetry can identify errors</a></li><li><a href="#section-10">10. Three different meanings of broken symmetry</a></li><li><a href="#section-11">11. What to check in research and development</a></li><li><a href="#section-12">References and source material</a></li></ol></details>
 
 <h2 id="section-1">1. A plausible prediction can still be physically wrong</h2>
 <p>Release a mass attached to an ideal spring on a frictionless horizontal surface. The mass moves fastest as it passes through equilibrium and briefly stops at maximum extension or compression. For the linear spring considered here, the restoring force is proportional to displacement. Kinetic energy and elastic energy exchange throughout the motion, but their sum stays constant when stiffness is fixed and no external work is done. A computer calculation of the same motion can nevertheless produce a growing amplitude and increasing energy. In the forward Euler example below, this artificial heating comes from the numerical approximation, not from an actual supply of work or heat.</p>
@@ -287,6 +237,6 @@ DERIV = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-sym
         <p class="disclosure-note">The 22 October 2026 revision applies shared explanation guidance 1.0 to first-use terms, argument continuity and figure interpretation, with a primary-source recheck. The oscillator is a teaching calculation, not an experimental reproduction or cost-matched integrator benchmark. Conservation of an HNN&#x27;s learned function, true-energy accuracy, integration error and discrete parity verification are distinguished. OLED applications remain proposals; no new experiment, quantum advantage or device validation is claimed. A bilingual video abstract below the existing conceptual cover uses scientific diagrams drawn in code and local synthetic narration, with language-specific captions and visual-description transcripts. No human listening, pronunciation or comprehension assessment was performed. Exact authoring-model identifier not retained.</p>
       </section>
       <!-- End AI Tech Review Authoring Disclosure -->
-    </main><script src="noether-video-player.js" defer></script>
+    </main><script src="noether-video-player.js?v=51a0d3de88" defer></script>
 <section id="public-local-references" class="public-note"><p>This public HTML includes the article, figures, and public external references. Private working notes and message metadata are not published.</p></section>
 </body></html>

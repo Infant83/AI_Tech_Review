@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리</title><meta name="description" content="작용의 대칭에서 보존량을 유도하고, 용수철의 수치 오차와 학습 모형의 정확성을 구분해 과학 계산을 설계하고 검사하는 방법."><meta name="author" content="김현중"><meta property="og:title" content="대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리"><meta property="og:description" content="작용의 대칭에서 보존량을 유도하고, 용수철의 수치 오차와 학습 모형의 정확성을 구분해 과학 계산을 설계하고 검사하는 방법."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/hero.webp"><meta property="article:published_time" content="2026-10-17"><meta property="article:modified_time" content="2026-10-22"><link rel="stylesheet" href="review.css"></head><body>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리</title><meta name="description" content="작용의 대칭에서 보존량을 유도하고, 용수철의 수치 오차와 학습 모형의 정확성을 구분해 과학 계산을 설계하고 검사하는 방법."><meta name="author" content="김현중"><meta property="og:title" content="대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리"><meta property="og:description" content="작용의 대칭에서 보존량을 유도하고, 용수철의 수치 오차와 학습 모형의 정확성을 구분해 과학 계산을 설계하고 검사하는 방법."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/"><meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/hero.webp"><meta property="article:published_time" content="2026-10-17"><meta property="article:modified_time" content="2026-10-22"><link rel="stylesheet" href="review.css?v=fab3bae34d"></head><body>
 <header><a class="brand" href="https://infant83.github.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions"><nav class="language-switcher" aria-label="언어 선택"><span class="language-current" aria-current="page" lang="ko">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/" lang="en" hreflang="en">English</a></nav><a class="download" href="review_ko.pdf">PDF ↓</a></div></header>
 <main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.10.17</span><span>물리학 · 과학 계산 · 과학기계학습</span></div><article><h1>대칭에서 보존법칙으로: 노터 정리와 과학 계산의 설계 원리</h1>
 <p class="dek">작용의 연속 대칭이 운동량과 에너지로 이어지는 이유, 그리고 그 구조를 시뮬레이션·과학 AI·양자계산에 옮길 때의 조건</p>
@@ -7,8 +7,8 @@
 <p class="kicker">TECH REVIEW · 2026년 10월 17일 · 물리 원리와 계산 응용</p>
 
 <div class="editor-line">책임 편집: 김현중 · AI 보조 작성: Codex · 개정·근거 재확인: 2026년 10월 22일 · <a href="#authoring-disclosure">작성·검증 범위</a></div><figure class="hero"><img src="hero.webp" alt="반복되는 고리와 연속적인 푸른 리본으로 병진과 회전의 대칭을 표현한 개념 일러스트"><figcaption>대칭 변환 속에서 유지되는 구조를 표현한 생성형 개념 일러스트. 실제 실험 장치, 입자 궤적이나 측정 데이터를 나타내지 않는다.</figcaption></figure><section class="video-abstract" id="video-abstract" aria-labelledby="video-abstract-title" data-manual-video="false">
- <details class="video-view" open><summary class="video-heading"><h2 id="video-abstract-title">비디오 abstract</h2><span class="video-duration">3:57 · 한국어</span></summary>
- <p class="video-intro">용수철 계산과 학습 모형을 통해, 대칭과 보존량을 설계·검증에 쓰는 이유를 설명합니다.</p>
+ <div class="video-view"><div class="video-heading"><h2 id="video-abstract-title">비디오 abstract</h2><span class="video-duration">3:57 · 한국어</span></div>
+ <p class="video-intro video-print-intro">용수철 계산과 학습 모형을 통해, 대칭과 보존량을 설계·검증에 쓰는 이유를 설명합니다.</p>
  <div class="video-web">
   <div class="video-stage">
    <img class="video-static" src="noether-abstract-poster-ko.webp" alt="대칭과 보존량으로 과학 계산을 검사하는 영상의 정지 화면">
@@ -18,64 +18,14 @@
     <track kind="captions" src="noether-abstract-ko.vtt" srclang="ko" label="한국어" default>
     <p><a href="noether-abstract-ko.mp4">영상 파일 열기</a></p>
    </video>
-   <div class="video-tools"><button class="video-fullscreen" type="button" hidden data-enter="전체 화면" data-exit="전체 화면 종료">전체 화면</button></div>
+   <div class="video-captions" role="group" aria-label="현재 자막" aria-live="off" hidden></div>
   </div>
-  <p class="video-caption">진동자는 리뷰 자체 계산, 학습 모형은 방법 구성도입니다. 합성음성을 사용했습니다.</p>
-  <div class="video-links"><a href="noether-abstract-ko.mp4" download>MP4</a><a href="noether-abstract-ko.vtt" download>자막 VTT</a><a href="noether-abstract-transcript-ko.txt" download>시각 설명 내려받기</a></div>
-  <details class="video-transcript"><summary>대본과 장면의 시각 설명 읽기</summary><pre>대칭과 보존법칙으로 과학 계산을 검사한다
-
-Supertonic 2 기본 음성 F1으로 기기에서 합성한 AI 음성입니다. 사람의 녹음이나 특정인의 복제 음성이 아닙니다.
-
-[00:00:00.000] 대칭과 보존법칙으로 과학 계산을 검사한다
-마찰도 외부 에너지 공급도 없는 용수철은 일정한 진폭으로 움직여야 합니다. 그런데 화면의 전진 오일러 계산에서는 진폭이 점점 커집니다. 이 게시물은 이런 차이를 출발점으로, 대칭과 보존법칙을 과학 계산의 설계와 검증에 어떻게 쓸 수 있는지 살펴봅니다.
-화면: 같은 초기상태·고정축척의 정확한 용수철 운동과 전진 오일러 계산을 비교한다. 평형위치와 초기 진폭 ±A를 점선으로 유지하며, 실제 수치점이 범위를 벗어나는 n=27 이후 초기 범위를 넘어선 적이 있음을 과거 사건으로 표시한다. 마지막 n=150 상태는 게시물의 질문을 말하는 동안 유지한다. 생성한 기존 hero 개념 그림은 배경이며 데이터가 아니다.
-식: q = cos τ; q[n+1] = q[n] + h u[n]; u[n+1] = u[n] − h q[n]
-Sources: R, CALC
-
-[00:00:24.333] 에너지의 교환과 시간의 대칭
-정확한 기준 운동의 운동에너지와 탄성에너지 막대를 보면, 하나가 줄어드는 만큼 다른 하나가 늘고 합은 일정합니다. 옆의 두 시간축은 같은 운동에서 시간의 원점만 다르게 표시한 것입니다. 용수철의 법칙은 어느 시각을 원점으로 잡아도 같습니다. 여기서 작용은 운동에너지와 탄성에너지의 차이를 시간에 걸쳐 더한 양입니다. 이 모형의 작용도 이런 시간 이동에 대해 변하지 않습니다. 노터 정리는 이 시간 대칭과 보존되는 에너지의 관계를 설명합니다.
-화면: 먼저 같은 정확해를 따르는 용수철과 운동·탄성 에너지 막대만 움직인다. 두 시간축을 설명할 때 정확해의 τ=3π/2 상태를 정지해 보조영역에 유지하고, 같은 사건을 두 시간 원점에서 표시한 정지 곡선을 새로 보여준다. 아래 시간축의 눈금만 π/2만큼 옮긴다. 작용을 정의할 때 S=∫(T−V)dt를 제시하고, 노터 관계를 말할 때 이 모형의 시간 병진 대칭과 에너지 보존을 강조한다. 막대만으로 작용 대칭을 증명한 그림은 아니다.
-식: T/E0 = u²; V/E0 = q²; T + V = E0; t′ = t − π/(2ω)
-Sources: R, N, M
-
-[00:01:04.708] 접선 한 걸음이 원을 벗어난다
-그 관계가 계산에도 남는지는 따로 확인해야 합니다. 용수철의 한순간 위치와 속도를 각각 고정된 기준값으로 나누어 보겠습니다. 그 한 쌍을 점으로 그린 곳이 위상 평면입니다. 이 진동자에서 같은 에너지의 상태들은 원 위에 놓입니다. 물체가 실제로 원을 그리며 움직이는 것은 아닙니다. 전진 오일러는 현재 상태에서 접선 방향으로 한 걸음 계산하므로, 다음 점이 원 바깥에 놓입니다. 에너지가 더 큰 상태를 계산한 것입니다. 이 예의 시간 간격에서는 한 단계마다 에너지가 1퍼센트씩 늘어납니다.
-화면: 앞 장면의 일정한 에너지에서 근사 계산으로 질문을 잇는다. 실제 용수철의 초기상태 x=A,v=0를 남기고, A와 Aω를 기준으로 q=1,u=0을 표시한 뒤 그 한 쌍을 위상 평면의 한 점에 대응시킨다. 다음 발화에서 같은 에너지의 상태 모음인 원을 제시한다. 첫 오일러 갱신 (1,0)→(1,−.1)을 고정해 보이고, 실제 좌표의 등방 25배 확대와 마지막 E1/E0=1.01을 연결한다. 직선은 알고리즘 갱신이며 물체가 이동한 경로가 아니다.
-식: q = x/A; u = v/(Aω); E/E0 = q² + u²; (q1,u1)=(1,−0.1); E1/E0=1.01
-Sources: R, CALC, DERIV
-
-[00:01:49.250] 작은 차이를 2천 번 반복하면
-에너지 그래프는 그 작은 증가를 오래 반복한 결과입니다. 같은 시간 간격으로 2천 단계 계산했을 때, 오일러의 에너지는 처음의 약 4억 4천만 배가 됩니다. 같은 방정식을 벨레 방법으로 계산한 곡선은 처음 값 가까이에 머뭅니다. 아래 확대 그래프에서 보듯, 초기 에너지에 대한 오차는 이 구간 내내 0.25퍼센트 이내입니다. 이 차이는 물리 법칙을 계산으로 옮기는 방법이 에너지 오차의 누적을 바꾼다는 뜻입니다. 다만 작은 에너지 오차만으로 진동의 타이밍까지 정확하다고 할 수는 없습니다.
-화면: 앞의 1% 증가를 반복한다는 설명에 맞춰 상단 초기 대비 에너지 비율을 로그 눈금으로 진행시키고 2,000단계 끝값을 유지한다. Euler 결과를 읽은 뒤 벨레 곡선을 지목하고, 아래 확대를 말할 때만 선형 % 오차 패널을 제시한다. 그 구간에는 위 패널을 약하게 남긴다. 결과를 해석할 때 두 패널과 약4.39×10^8배·최대약.25%를 함께 유지한다. 분모는 초기 에너지이며 같은 h의 교육용 비교다.
-식: h=.1; E2000/E0=(1.01)^2000; max |ΔE/E0|≈.0025
-Sources: R, CALC, DERIV, V
-
-[00:02:34.417] 배운 함수와 계산한 운동도 검사한다
-AI로 운동을 예측할 때는 계산 방법에 더해, 학습한 모형도 검사해야 합니다. 해밀토니안 신경망은 에너지에 해당하는 함수를 학습합니다. 앞의 q와 u는 정규화한 위치와 속도였습니다. 여기서는 q가 좌표, p가 정준 운동량입니다. 그 함수를 미분한 해밀턴 방정식이 두 양의 시간 변화를 정합니다. 이 구성은 시간을 별도 입력으로 쓰지 않습니다. 이때 연속시간 운동은 학습한 함수를 보존합니다. 그 함수가 실제 에너지를 제대로 나타내는지는 따로 확인해야 합니다. 한 단계씩 계산할 때 생기는 오차도 검사해야 합니다.
-화면: 먼저 앞의 에너지 그래프를 회수해 계산법에 더해 배운 모형도 검사한다는 전환을 보인다. 데이터와 학습한 Hθ를 먼저 제시하고, q/u를 회수한 뒤 q/p 정준변수의 뜻을 밝힌다. 해밀턴 방정식을 말할 때 두 미분식을 새로 제시한다. 자율적이고 매끄러운 Hθ의 연속시간 해에서 dHθ/dt=0임을 따로 표시한다. 실제 에너지의 정확성은 학습 함수 쪽 질문으로, 한 단계씩 계산한 오차는 적분기와 이산 예측 상태 쪽 질문으로 남긴다. 이 HNN의 q,p는 좌표와 정준 운동량이다. 앞 정규화 진동자의 m=ω=1 단위에서는 p와 u의 수치가 같다. 구성도이며 새 학습 결과가 아니다.
-식: q̇ = ∂Hθ/∂p; ṗ = −∂Hθ/∂q; dHθ/dt = 0 (continuous time)
-Sources: R, HNN
-
-[00:03:20.625] 대칭을 설계에, 보존량을 검증에
-용수철의 사례는 계산 오차를 검사해야 하는 이유를 보여줍니다. 학습 모형의 구성은 배운 법칙도 따져야 한다는 뜻입니다. 대칭은 모형이 따라야 할 조건을 주고, 에너지 같은 보존량은 계산을 검사할 기준을 줍니다. 그 조건을 설계에 반영한 뒤 실제 예측이 타당한지 다시 확인해야 한다는 것이 이 게시물의 핵심입니다. 외부에서 일이나 열이 오가는 계라면, 그 에너지 교환도 모형에 포함해야 합니다.
-화면: 각 사례의 의미를 말할 때 앞의 로그 에너지 그래프와 학습 구성도를 차례로 회수한다. 작은 그래프에도 에너지 비율의 세로축과 계산 단계의 가로축을 남긴다. 이미 설명한 학습 함수·해밀턴 식·수치 계산 라벨만 재사용하며 새 J∇H 기호를 도입하지 않는다. 대칭을 설계 조건으로 삼고 보존량으로 실제 예측을 검사한다는 게시물 결론을 유지한다. 마지막 외부 일·열교환 조건은 새 구동 운동을 만들지 않고 문구로 제시한다.
-식:
-Sources: R, V, HNN
-
-출처 코드와 원문
-R = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/
-N = https://arxiv.org/html/physics/0503066v3
-M = https://www.physics.hmc.edu/~saeta/courses/p111/uploads/Y2012/Ch06.pdf
-V = https://lagrangeweb.web.engr.illinois.edu/var_int/
-HNN = https://arxiv.org/html/1906.01563
-CALC = https://github.com/Infant83/AI_Tech_Review/blob/main/2026-10-17_noether-symmetry-conservation/artifacts/build_figures.py
-DERIV = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#section-6
-</pre></details>
-  <details class="video-production"><summary>영상의 근거와 제작 정보</summary><p>본문의 진동자 계산과 해밀토니안 신경망 설명을 바탕으로 식·데이터·도식을 코드로 그린 영상입니다. 개념 배경은 AI 생성 정지 이미지를 재사용했습니다. 음성은 Supertonic 2 F1로 합성했습니다. 진동자는 교육용 계산이며 학습 모형은 구성도입니다.</p></details>
+  <div class="video-meta"><p class="video-caption">교육용 계산·방법 구성도 · AI 합성음성</p>
+  <div class="video-links" aria-label="영상 자료 내려받기"><a href="noether-abstract-ko.mp4" download>영상 MP4</a><a href="noether-abstract-ko.vtt" download>자막 VTT</a><a href="noether-abstract-transcript-ko.txt" download>대본 TXT</a></div></div>
   <noscript><p><a href="noether-abstract-ko.mp4">영상 파일 열기</a></p></noscript>
  </div>
  <div class="video-print"><figure><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract"><img src="noether-abstract-poster-ko.webp" alt="대칭과 보존량으로 과학 계산을 검사하는 영상의 정지 화면"></a><figcaption>영상 요약 · 3:57 · 합성음성 사용. <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract">웹에서 영상과 시각 설명 보기</a></figcaption></figure></div>
-</details></section><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">1. 예측이 그럴듯해도 물리적으로 틀릴 수 있다</a></li><li><a href="#section-2">2. ‘바꾸어도 같다’는 말의 정확한 대상</a></li><li><a href="#section-3">3. 작용에서 보존량이 나오는 짧은 유도</a></li><li><a href="#section-4">4. 노터의 두 정리는 무엇이 다른가</a></li><li><a href="#section-5">5. 팽창하는 우주의 빛은 왜 에너지를 잃는가</a></li><li><a href="#section-6">6. 수치 시뮬레이션에서는 대칭을 어떻게 남길까</a></li><li><a href="#section-7">7. 과학 AI는 보존법칙을 학습할까, 구조로 가질까</a></li><li><a href="#section-8">8. 등변 신경망과 원자간 퍼텐셜의 연결</a></li><li><a href="#section-9">9. 양자계산에서는 대칭이 오류를 가려낸다</a></li><li><a href="#section-10">10. 대칭이 ‘깨진다’는 세 가지 다른 상황</a></li><li><a href="#section-11">11. 연구와 개발에서 실제로 확인할 것</a></li><li><a href="#section-12">참고문헌과 원문</a></li></ol></details>
+</div></section><details class="toc"><summary>내용 살펴보기</summary><ol><li><a href="#section-1">1. 예측이 그럴듯해도 물리적으로 틀릴 수 있다</a></li><li><a href="#section-2">2. ‘바꾸어도 같다’는 말의 정확한 대상</a></li><li><a href="#section-3">3. 작용에서 보존량이 나오는 짧은 유도</a></li><li><a href="#section-4">4. 노터의 두 정리는 무엇이 다른가</a></li><li><a href="#section-5">5. 팽창하는 우주의 빛은 왜 에너지를 잃는가</a></li><li><a href="#section-6">6. 수치 시뮬레이션에서는 대칭을 어떻게 남길까</a></li><li><a href="#section-7">7. 과학 AI는 보존법칙을 학습할까, 구조로 가질까</a></li><li><a href="#section-8">8. 등변 신경망과 원자간 퍼텐셜의 연결</a></li><li><a href="#section-9">9. 양자계산에서는 대칭이 오류를 가려낸다</a></li><li><a href="#section-10">10. 대칭이 ‘깨진다’는 세 가지 다른 상황</a></li><li><a href="#section-11">11. 연구와 개발에서 실제로 확인할 것</a></li><li><a href="#section-12">참고문헌과 원문</a></li></ol></details>
 
 <h2 id="section-1">1. 예측이 그럴듯해도 물리적으로 틀릴 수 있다</h2>
 <p>마찰 없는 수평면에서 이상적인 용수철에 연결한 질점을 놓으면, 질점이 평형 위치를 지날 때는 빠르게 움직이고 가장 멀리 늘어나거나 압축된 곳에서는 잠시 멈춘다. 여기서는 복원력이 변위에 비례하는 선형 용수철을 생각한다. 운동에너지와 용수철의 탄성에너지는 서로 바뀌지만, 강성을 고정하고 외부에서 일을 하지 않는 이 모형에서는 두 에너지의 합이 일정하다. 그런데 같은 운동을 컴퓨터로 계산하면 진폭과 에너지가 조금씩 커질 수 있다. 뒤에서 볼 전진 오일러 계산의 증가는 실제로 열이나 일을 공급한 결과가 아니라 수치 근사에서 생긴 ‘가짜 가열’이다.</p>
@@ -255,4 +205,4 @@ DERIV = https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-sym
 <li>Fujikawa, K. <em>Path-Integral Measure for Gauge-Invariant Fermion Theories</em>. <em>Physical Review Letters</em> <strong>42</strong>, 1195–1198 (1979). <a href="https://doi.org/10.1103/PhysRevLett.42.1195">DOI·원문</a>. 축 이상과 적분측도. <a href="https://www.damtp.cam.ac.uk/user/tong/gaugetheory/3anom.pdf">Tong, Gauge Theory §3.2–3.4</a>는 이상과 상쇄의 보충 설명.</li>
 </ol>
 <p class="downloads"><a href="review_ko.pdf">한국어 PDF</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">English review</a> · <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/review_en.pdf">English PDF</a></p>
-</div><!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">작성·검증 정보</h2><dl><div><dt>책임 편집자</dt><dd>김현중</dd></div><div><dt>AI 보조</dt><dd>OpenAI Codex · 정확한 작성 모델 식별자: 미보존</dd></div><div><dt>에이전트와 역할</dt><dd>root: 자료 종합·한국어 작성·편집·설명 그림·계산 예제; academic_sources: 원 논문·수식·학술적 한계 확인; applications_sources: 계산·과학기계학습 응용과 1차 출처 조사·영어 번역; review_format: 저장소 형식 감사·한영 조판·HTML/PDF 생성과 출력 검사</dd></div><div><dt>입력과 산출물</dt><dd>공유 LinkedIn 링크, 공개 논문·공식 자료 → 한영 기술 리뷰, 개념 표지, 설명용 도표·수식, 비디오 abstract와 PDF</dd></div><div><dt>제작 요청 요약</dt><dd>공유 기사에서 출발해 노터 정리의 물리·수학적 의미를 설명하고, 관련 학술 연구와 계산·과학 AI의 응용을 1차 출처로 보강한 기술 리뷰 작성.</dd></div><div><dt>2026-10-22 개편</dt><dd>root: 한영 편집·출력·게시; explanation_harness_review: 한국어 설명 개편; v3_science_visual: 원전 재대조·영어 개편; final_audit: 게시 경로·설명 도표 개편. 기존 제작 역할과 구분한다.</dd></div><div><dt>비디오 제작</dt><dd>v3_video_renderer: 의미별 발화에 맞춘 코드 렌더·로컬 Supertonic 2 F1 합성음성; v3_science_visual: 대본·과학 도식·인코딩 화면 별도 검토; root: 기사 통합; noether_output_qa: 플레이어·PDF 출력 검사. 생성형 비디오 API는 사용하지 않았다.</dd></div><div><dt>하네스</dt><dd><a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a> · 2026-10-22 공통 설명 준칙 1.0 반영</dd></div><div><dt>검증 범위</dt><dd>공개 1차 출처·서지·핵심 수식과 해석의 범위, 한영 수치·기호, 로컬 자산·표·수식·페이지 출력 검사. 독립 실험 재현은 수행하지 않았다.</dd></div><div><dt>사람 검토 수준</dt><dd>주제·작성·개편·공개 게시 요청 확인; 문장 단위 사람 승인·영상 청취·발음·독자 이해도 평가 없음.</dd></div><div><dt>근거 재확인일</dt><dd>2026-10-22</dd></div></dl><p>원문의 보고 결과, 리뷰의 설명용 재구성과 후속 응용 제안을 구분한다. 표지는 AI로 만든 개념 그림이며 실험 영상이나 계산 데이터가 아니다.</p></section><!-- End AI Tech Review Authoring Disclosure --></article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-22<br>연속대칭, 보존량과 계산의 구조를 연결하는 해설.</footer></main><script src="noether-video-player.js" defer></script></body></html>
+</div><!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">작성·검증 정보</h2><dl><div><dt>책임 편집자</dt><dd>김현중</dd></div><div><dt>AI 보조</dt><dd>OpenAI Codex · 정확한 작성 모델 식별자: 미보존</dd></div><div><dt>에이전트와 역할</dt><dd>root: 자료 종합·한국어 작성·편집·설명 그림·계산 예제; academic_sources: 원 논문·수식·학술적 한계 확인; applications_sources: 계산·과학기계학습 응용과 1차 출처 조사·영어 번역; review_format: 저장소 형식 감사·한영 조판·HTML/PDF 생성과 출력 검사</dd></div><div><dt>입력과 산출물</dt><dd>공유 LinkedIn 링크, 공개 논문·공식 자료 → 한영 기술 리뷰, 개념 표지, 설명용 도표·수식, 비디오 abstract와 PDF</dd></div><div><dt>제작 요청 요약</dt><dd>공유 기사에서 출발해 노터 정리의 물리·수학적 의미를 설명하고, 관련 학술 연구와 계산·과학 AI의 응용을 1차 출처로 보강한 기술 리뷰 작성.</dd></div><div><dt>2026-10-22 개편</dt><dd>root: 한영 편집·출력·게시; explanation_harness_review: 한국어 설명 개편; v3_science_visual: 원전 재대조·영어 개편; final_audit: 게시 경로·설명 도표 개편. 기존 제작 역할과 구분한다.</dd></div><div><dt>비디오 제작</dt><dd>v3_video_renderer: 의미별 발화에 맞춘 코드 렌더·로컬 Supertonic 2 F1 합성음성; v3_science_visual: 대본·과학 도식·인코딩 화면 별도 검토; root: 기사 통합; noether_output_qa: 플레이어·PDF 출력 검사. 생성형 비디오 API는 사용하지 않았다.</dd></div><div><dt>하네스</dt><dd><a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness 2026.08</a> · 2026-10-22 공통 설명 준칙 1.0 반영</dd></div><div><dt>검증 범위</dt><dd>공개 1차 출처·서지·핵심 수식과 해석의 범위, 한영 수치·기호, 로컬 자산·표·수식·페이지 출력 검사. 독립 실험 재현은 수행하지 않았다.</dd></div><div><dt>사람 검토 수준</dt><dd>주제·작성·개편·공개 게시 요청 확인; 문장 단위 사람 승인·영상 청취·발음·독자 이해도 평가 없음.</dd></div><div><dt>근거 재확인일</dt><dd>2026-10-22</dd></div></dl><p>원문의 보고 결과, 리뷰의 설명용 재구성과 후속 응용 제안을 구분한다. 표지는 AI로 만든 개념 그림이며 실험 영상이나 계산 데이터가 아니다.</p></section><!-- End AI Tech Review Authoring Disclosure --></article><div class="downloads"><a href="review_ko.pdf">한국어 PDF 내려받기</a><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/">English version</a></div><footer class="footer">AI Tech Review Letters · 2026-10-22<br>연속대칭, 보존량과 계산의 구조를 연결하는 해설.</footer></main><script src="noether-video-player.js?v=51a0d3de88" defer></script></body></html>
