@@ -1,0 +1,161 @@
+{
+  "asset_version": "20261022-topic-keywords",
+  "status": "passed",
+  "date": "2026-10-22",
+  "checks": {
+    "asset_exports": [
+      {
+        "filename": "ai-tech-review-icon-512.png",
+        "bytes": 321329,
+        "sha256": "927952191ab62072e46ecaf0548dc1d597948e6380db9e2ad134f79b8b69fbed",
+        "size": [
+          512,
+          512
+        ],
+        "mode": "RGB",
+        "metadata_keys": []
+      },
+      {
+        "filename": "ai-tech-review-icon.svg",
+        "bytes": 428685,
+        "sha256": "2ea485f60b0d2e06be5b8f0aee8e0402aa4e1dad44fb608c63092995cd8c0bcc"
+      },
+      {
+        "filename": "apple-touch-icon.png",
+        "bytes": 44249,
+        "sha256": "1964b9b2b9cb7311668da9aab079bb98395c49e0b4ece2dcfec90eff3086d1d0",
+        "size": [
+          180,
+          180
+        ],
+        "mode": "RGB",
+        "metadata_keys": []
+      },
+      {
+        "filename": "favicon-16x16.png",
+        "bytes": 707,
+        "sha256": "edc771085544ea14ac67ecf527a5d5cfb6b606a80d374e86a7fcd8b33e0835e2",
+        "size": [
+          16,
+          16
+        ],
+        "mode": "RGB",
+        "metadata_keys": []
+      },
+      {
+        "filename": "favicon-32x32.png",
+        "bytes": 2082,
+        "sha256": "35beb965526e8d3a67e681151908130bf75ccd822623395c24e10ce351424b0a",
+        "size": [
+          32,
+          32
+        ],
+        "mode": "RGB",
+        "metadata_keys": []
+      },
+      {
+        "filename": "favicon-64x64.png",
+        "bytes": 6933,
+        "sha256": "1148fba7ed5d1a6e98f9282bfd880a5635914fe680d6ff7bd371d9c03c94c33e",
+        "size": [
+          64,
+          64
+        ],
+        "mode": "RGB",
+        "metadata_keys": []
+      },
+      {
+        "filename": "favicon.ico",
+        "bytes": 128306,
+        "sha256": "1120c539b573ed57403ad06cae0ad1be1732724702b6b084648c4f6b945e3d6c"
+      }
+    ],
+    "svg_embedded_payload_matches_png": true,
+    "ico_sizes": [
+      [
+        16,
+        16
+      ],
+      [
+        32,
+        32
+      ],
+      [
+        48,
+        48
+      ],
+      [
+        64,
+        64
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        256,
+        256
+      ]
+    ],
+    "public_icon_copies_match": [
+      "favicon.ico",
+      "ai-tech-review-icon.svg",
+      "apple-touch-icon.png",
+      "favicon-16x16.png",
+      "favicon-32x32.png",
+      "favicon-64x64.png"
+    ],
+    "html_files": 82,
+    "icon_links": 246,
+    "html_diff_only_cache_version": true,
+    "archive_study_hashes_refreshed": [
+      "lectures/classiq-talk-series/",
+      "lectures/quantum-machine-learning/"
+    ]
+  },
+  "full_site_validation": {
+    "reviewer": "/root/resume_icon_audit",
+    "command": "scripts.publish_public_site.validate_public_site(existing published manifest)",
+    "status": "passed",
+    "errors": []
+  },
+  "diff_validation": {
+    "reviewer": "/root/resume_icon_audit",
+    "git_diff_check": "passed",
+    "tracked_changed_files": 99,
+    "html_scope": "82 HTML files changed only in 246 icon cache version tokens",
+    "archive_scope": "Only the two published lecture study index hashes updated"
+  },
+  "visual_review": {
+    "design_reviewer": "/root/topic_design_review",
+    "legibility_reviewer": "/root/keyword_audit",
+    "selected": "A",
+    "tokens": [
+      "Q",
+      "AI",
+      "DFT",
+      "VQE",
+      "LLM",
+      "OLED",
+      "GPU"
+    ],
+    "each_token_exactly_once": true,
+    "records": [
+      "design-review.md",
+      "legibility-review.md",
+      "keyword-audit.json"
+    ]
+  },
+  "public_distribution": {
+    "included": "Final icon PNG/ICO and embedded-PNG SVG only",
+    "excluded": "Candidates, prompts, QA boards, internal research and review records",
+    "png_metadata": "All exported PNG metadata empty",
+    "svg_external_image_requests": false
+  },
+  "limits": [
+    "Agent visual review; no human preference/accessibility study",
+    "No actual iOS home-screen installation test",
+    "No independent SVG rasterizer test",
+    "At 64px full text reading is not assured; at32/16px rely on R silhouette"
+  ]
+}
