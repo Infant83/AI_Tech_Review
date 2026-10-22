@@ -19,8 +19,10 @@ from urllib.parse import unquote, urlsplit
 
 try:
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
+    from .site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
+    from site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +30,6 @@ SITE_DIR = ROOT / "site"
 REVIEWS_DIR = SITE_DIR / "reviews"
 ASSETS_DIR = SITE_DIR / "assets"
 ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "ai-tech-review-icon" / "generated"
-ICON_ASSET_VERSION = "20261022-prompt-brace"
 EDITORIAL_HARNESS_NAME = "AI Tech Review Editorial Harness"
 EDITORIAL_HARNESS_VERSION = "2026.08"
 EDITORIAL_METHODS_HREF = "methods/"
@@ -3088,14 +3089,14 @@ def render_index(
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AI Tech Review Letters">
     <meta name="twitter:description" content="{html.escape(home_description, quote=True)}">
-    <link rel="stylesheet" href="assets/site.css">
+    <link rel="stylesheet" href="assets/site.css?v={SITE_STYLES_VERSION}">
     <link rel="stylesheet" href="assets/archive.css?v={LIBRARY_ASSET_VERSION}">
   </head>
   <body>
     <header class="site-header">
       <nav class="topbar" aria-label="주요 링크">
         <div class="topbar-left">
-          <a class="brand" href="index.html">AI Tech Review Letters</a>
+          {render_brand_link()}
           <label class="top-search">
             <span class="sr-only">리뷰 검색</span>
             <input id="search" type="search" placeholder="검색: AI scientist, TabPFN, agent..." autocomplete="off">
@@ -3123,7 +3124,7 @@ def render_index(
     </header>
 
     <main>
-      {latest}
+{latest}
 
       {render_learning_teaser(documents)}
 
@@ -3147,7 +3148,7 @@ def render_index(
       </section>
 
       <section class="review-grid" id="review-grid" aria-live="polite">
-        {cards}
+{cards}
       </section>
 
       <section class="transparency-notice" aria-labelledby="transparency-heading">
@@ -3274,10 +3275,24 @@ a { color: inherit; }
   white-space: nowrap;
 }
 .brand {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  flex: 0 0 auto;
+  gap: 10px;
   color: var(--ink);
+  font-size: 16px;
   font-weight: 800;
+  line-height: 1.25;
   text-decoration: none;
   white-space: nowrap;
+}
+.brand-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 10px;
 }
 .top-search {
   width: min(360px, 42vw);
@@ -3710,6 +3725,8 @@ a:not([href]) {
 }
 @media (max-width: 680px) {
   .site-header, main { width: min(100% - 24px, 1180px); }
+  .brand { font-size: 15px; }
+  .brand-icon { width: 40px; height: 40px; flex-basis: 40px; border-radius: 9px; }
   .review-grid { grid-template-columns: 1fr; }
   .latest-copy h2 { font-size: 32px; }
   .thumb { aspect-ratio: 16 / 9; }
@@ -4610,8 +4627,10 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         "SVG favicon": r"ai-tech-review-icon\.svg",
         "apple-touch icon": r"apple-touch-icon\.png",
     }
+    head_match = re.search(r"<head\b[^>]*>(.*?)</head>", index_text, flags=re.IGNORECASE | re.DOTALL)
+    index_head = head_match.group(1) if head_match else index_text
     for label, pattern in singleton_patterns.items():
-        count = len(re.findall(pattern, index_text, flags=re.IGNORECASE))
+        count = len(re.findall(pattern, index_head, flags=re.IGNORECASE))
         if count != 1:
             errors.append(f"unexpected {label} count in {site_index}: {count}")
     metrics_script_count = len(re.findall(r"assets/public-metrics\.js", index_text, flags=re.IGNORECASE))

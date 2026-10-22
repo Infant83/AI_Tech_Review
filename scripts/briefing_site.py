@@ -8,6 +8,11 @@ import json
 from pathlib import Path
 import re
 
+try:
+    from .site_brand import SITE_STYLES_VERSION, render_brand_link
+except ImportError:
+    from site_brand import SITE_STYLES_VERSION, render_brand_link
+
 BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
 PUBLIC_FIELDS = ("id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href")
 
@@ -125,9 +130,9 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
       <link rel="canonical" href="{canonical}">
       <link rel="alternate" hreflang="ko" href="{base_url}briefings/"><link rel="alternate" hreflang="en" href="{base_url}briefings/en/"><link rel="alternate" hreflang="x-default" href="{base_url}briefings/">
       <meta property="og:type" content="website"><meta property="og:title" content="{title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">
-      <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css?v={asset_version}"><link rel="stylesheet" href="{prefix}assets/briefings.css?v={asset_version}">
+      <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={asset_version}"><link rel="stylesheet" href="{prefix}assets/briefings.css?v={asset_version}">
       </head><body class="briefings-page">
-      <header class="site-header"><nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}"><a class="brand" href="{prefix}index.html">AI Tech Review Letters</a><span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span></nav>
+      <header class="site-header"><nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">{render_brand_link(prefix)}<span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span></nav>
       {navigation}<section class="briefing-hero"><p class="section-kicker">Day by day · Quantum research</p><h1>{title}</h1><p>{description}</p><div class="briefing-hero-meta"><span>{str(len(issues)) + ' published briefings' if en else str(len(issues)) + '건의 브리핑'}</span>{f'<span>{"Latest issue" if en else "최근 발행"} <time datetime="{latest_date}">{latest_date}</time></span>' if latest_date else ''}<a href="#briefing-board">{'Browse list' if en else '목록으로 보기'} ↓</a></div></section></header>
       <main>
       <div class="briefing-tools" role="search">

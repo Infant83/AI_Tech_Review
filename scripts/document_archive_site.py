@@ -12,8 +12,10 @@ from pathlib import Path
 
 try:
     from .briefing_site import render_briefings, validate_briefings
+    from .site_brand import SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
+    from site_brand import SITE_STYLES_VERSION, render_brand_link
 
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
@@ -170,11 +172,11 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
   <link rel="alternate" hreflang="x-default" href="{base_url}archive/">
   <meta property="og:type" content="website"><meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}"><meta property="og:url" content="{current_url}">
-  <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
+  <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
 </head><body class="archive-page">
   <header class="site-header">
     <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
-      <a class="brand" href="{prefix}index.html">AI Tech Review Letters</a>
+      {render_brand_link(prefix)}
       <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
     </nav>
     {render_library_navigation(documents, "archive", language, prefix)}
@@ -281,11 +283,11 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
       <link rel="alternate" hreflang="x-default" href="{base_url}lectures/">
       <meta property="og:type" content="website"><meta property="og:title" content="{title}">
       <meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">
-      <link rel="stylesheet" href="{prefix}assets/site.css"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
+      <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
       </head><body class="lectures-page">
       <header class="site-header">
         <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
-          <a class="brand" href="{prefix}index.html">AI Tech Review Letters</a>
+          {render_brand_link(prefix)}
           <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
         </nav>
         {render_library_navigation(documents, 'lectures', language, prefix)}
