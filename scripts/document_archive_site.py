@@ -39,6 +39,47 @@ LECTURE_BUNDLES = {
             "labs/results/pennylane-results.json",
         ),
     },
+    "2026-10-22-classiq-talk-series-notes-ko": {
+        "source": "2026-10-22_classiq-talk-series/dist",
+        "href": "lectures/classiq-talk-series/",
+        "start_anchor": "chapter-0",
+        "navigation": (
+            ("chapter-0", "학습 시작 안내"),
+            ("chapter-6", "한영 용어집"),
+            ("chapter-7", "복습 질문과 풀이"),
+        ),
+        "publication_note": (
+            "2026-10-22 · OpenAI Codex의 root가 웹 게재를 통합하고, "
+            "publish_audit가 공개 자산과 아카이브 연결을 독립 검토했다. "
+            "다시보기 정리·수학 대조·도식과 발표 화면 검토의 역할과 범위는 본문 작성 공개를 따른다. "
+            "독립 보충 해설과 손계산은 원발표와 구분해 수록했다. "
+            "영문 목록은 한국어 학습 자료의 안내이며 영어 번역본이 아니다."
+        ),
+        "files": (
+            "index.html", "notes.css", "notes.pdf", "font-OFL.txt",
+            "assets/qml-sans-regular.woff2", "assets/qml-sans-bold.woff2",
+            "figures/manifest.json",
+            "figures/concepts/01-platform-workflow.svg",
+            "figures/concepts/02-grover-geometry.svg",
+            "figures/concepts/03-qaoa-feasible-subspace.svg",
+            "figures/concepts/04-payoff-probability-encoding.svg",
+            "figures/concepts/05-iqae-adaptive-loop.svg",
+            "figures/concepts/06-resource-scope-tradeoffs.svg",
+            "figures/screens/platform-skills.png",
+            "figures/screens/platform-grover-histogram.png",
+            "figures/screens/platform-qaoa-standard.png",
+            "figures/screens/platform-qaoa-comparison.png",
+            "figures/screens/platform-hardware.png",
+            "figures/screens/platform-ft-layout.png",
+            "figures/screens/platform-encoding-table.png",
+            "figures/screens/finance-pyomo-model.png",
+            "figures/screens/finance-qaoa-settings.png",
+            "figures/screens/finance-cudaq-cpu.png",
+            "figures/screens/finance-qaoa-output.png",
+            "figures/screens/finance-option-payoff.png",
+            "figures/screens/finance-iqae-output.png",
+        ),
+    },
 }
 
 
@@ -172,6 +213,9 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
     canonical = base_url + "lectures/" + ("en/" if en else "")
     count_label = f"{len(lectures)} learning resources" if en else f"{len(lectures)}개 학습 자료"
     intros = {
+        "2026-10-22-classiq-talk-series-notes-ko": (
+            "Classiq의 다시보기 네 회를 따라 모델링·회로 합성·실행·결과 해석을 공부합니다. 실제 질의응답과 복습 풀이, 발표 화면과 개념 도식을 함께 수록했습니다.",
+            "Study modeling, circuit synthesis, execution and interpretation through four Classiq replays, with the original Q&A, worked review questions, presentation screenshots and explanatory diagrams."),
         "2026-10-20-quantum-machine-learning-lecture-notes-ko": (
             "양자정보의 기초부터 모델 훈련과 최신 연구 읽기까지, 18개의 80분 단원으로 공부합니다. 수학 준비편과 단계별 유도, 예제·풀이·실습을 함께 제공합니다.",
             "Work from quantum-information foundations to model training and current research in 18 units of 80 minutes, with a mathematics primer, derivations, worked examples and labs."),
@@ -189,6 +233,8 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
         title_language = "en" if en and doc.get("title_en") else doc["language"]
         summary_language = "en" if en and (doc.get("summary_en") or doc["id"] in intros) else doc["language"]
         format_label = ("Online notes + labs" if en else "온라인 노트 · 실습") if study else ("PDF lecture notes" if en else "PDF 강의 노트")
+        if doc["id"] == "2026-10-22-classiq-talk-series-notes-ko" and study:
+            format_label = "Illustrated online notes" if en else "온라인 노트 · 그림 해설"
         native = ({"ko": "Korean", "en": "English"} if en else {"ko": "한국어", "en": "영어"})[doc["language"]]
         stats = quick_links = ""
         if doc["id"] == "2026-10-20-quantum-machine-learning-lecture-notes-ko":
@@ -200,8 +246,20 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
                     for anchor, label in [("doc-math-primer", "Mathematics primer" if en else "수학 준비편"),
                                           ("doc-glossary", "Bilingual glossary" if en else "한영 용어집"),
                                           ("doc-labs-readme", "Labs and code" if en else "실습과 코드")]) + '</div>'
+        elif doc["id"] == "2026-10-22-classiq-talk-series-notes-ko":
+            metrics = ["4 replays", "61-page PDF", "19 figures"] if en else ["다시보기 4회", "PDF 61쪽", "그림 19개"]
+            stats = '<ul class="lecture-facts" aria-label="' + ("Learning materials" if en else "학습 자료 구성") + '">' + ''.join(f'<li>{escape(item)}</li>' for item in metrics) + '</ul>'
+            if study:
+                quick_links = '<div class="lecture-resources">' + ''.join(
+                    f'<a href="{escape(study)}#{anchor}">{label} →</a>'
+                    for anchor, label in [("chapter-1", "New Classiq platform" if en else "새 플랫폼"),
+                                          ("chapter-2", "CUDA-Q finance" if en else "CUDA-Q 금융 응용"),
+                                          ("chapter-3", "AI agents" if en else "AI 에이전트"),
+                                          ("chapter-4", "Finance foundations" if en else "금융 기초"),
+                                          ("chapter-7", "Review questions and solutions" if en else "복습 질문과 풀이")]) + '</div>'
         if study:
-            actions = (f'<a class="lecture-primary" href="{escape(study)}#doc-study-guide">{"Start learning" if en else "학습 시작"} →</a>'
+            start_anchor = LECTURE_BUNDLES.get(doc["id"], {}).get("start_anchor", "doc-study-guide")
+            actions = (f'<a class="lecture-primary" href="{escape(study)}#{escape(start_anchor)}">{"Start learning" if en else "학습 시작"} →</a>'
                        f'<a class="lecture-secondary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>')
         else:
             actions = (f'<a class="lecture-primary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>'
@@ -277,21 +335,33 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
                 f'<meta property="og:description" content="{escape(document["summary"])}">'
                 f'<meta property="og:url" content="{escape(canonical)}">')
     prefix = posixpath.relpath(".", href.rstrip("/")) + "/"
+    navigation_links = spec.get("navigation", (
+        ("doc-study-guide", "학습 시작 안내"),
+        ("doc-glossary", "한영 용어집"),
+        ("doc-labs-readme", "실습과 코드"),
+    ))
+    if "navigation" in spec:
+        anchors = {anchor for anchor, _label in navigation_links} | {spec.get("start_anchor", "doc-study-guide")}
+        for anchor in anchors:
+            if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", anchor) or f'id="{anchor}"' not in text:
+                raise ValueError(f"Missing lecture navigation anchor: {anchor}")
     navigation = (f'<nav aria-label="테크리뷰 바로가기"><a href="{prefix}lectures/">← 렉처 노트 목록</a>'
-                  '<a href="#doc-study-guide">학습 시작 안내</a>'
-                  '<a href="#doc-glossary">한영 용어집</a>'
-                  '<a href="#doc-labs-readme">실습과 코드</a></nav>')
+                  + ''.join(f'<a href="#{escape(anchor)}">{escape(label)}</a>' for anchor, label in navigation_links)
+                  + '</nav>')
     text = text.replace("</head>", metadata + "</head>", 1)
     sidebar = re.search(r'<aside\b[^>]*class="sidebar"[^>]*>', text)
     if sidebar:
         text = text[:sidebar.end()] + navigation + text[sidebar.end():]
     else:
         text = text.replace("<body>", "<body>" + navigation, 1)
+    publication_text = spec.get("publication_note", (
+        '2026-10-20 · OpenAI Codex의 root가 웹 게재를 통합하고, '
+        'lecture_publish_audit가 공개 자산과 아카이브 연결을 독립 검토했다. '
+        '강의 집필·수학 검토·실습 실행의 역할과 범위는 본문 작성 공개를 따른다. '
+        '영문 목록은 한국어 학습 자료의 안내이며 영어 번역본이 아니다.'
+    ))
     publication_note = ('<section class="document publication-note" aria-label="웹 게재 기록">'
-                        '<h2>웹 게재 기록</h2><p>2026-10-20 · OpenAI Codex의 root가 웹 게재를 통합하고, '
-                        'lecture_publish_audit가 공개 자산과 아카이브 연결을 독립 검토했다. '
-                        '강의 집필·수학 검토·실습 실행의 역할과 범위는 본문 작성 공개를 따른다. '
-                        '영문 목록은 한국어 학습 자료의 안내이며 영어 번역본이 아니다.</p></section>')
+                        f'<h2>웹 게재 기록</h2><p>{escape(publication_text)}</p></section>')
     text = text.replace("</main>", publication_note + "</main>", 1)
     text = decorate(text, prefix)
     index.write_text(text, encoding="utf-8")

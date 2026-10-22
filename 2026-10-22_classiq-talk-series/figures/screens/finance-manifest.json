@@ -1,0 +1,160 @@
+{
+  "figures": [
+    {
+      "id": "finance-pyomo-model",
+      "title": "포트폴리오의 Pyomo 모델",
+      "timestamp_seconds": 1410,
+      "crop": [
+        93,
+        265,
+        666,
+        530
+      ],
+      "description": "다시보기의 Pyomo 모델 코드. 정수 보유량 0–7, 예산 상한, 위험−기대수익 목적함수를 함께 보여준다.",
+      "file": "figures/screens/finance-pyomo-model.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1410s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "7c27b8986a6345461de0c4349d5a01d8dbcbe7985a10e78ae86c00808ed4757c",
+      "width": 573,
+      "height": 265,
+      "caption": "발표 화면 02-a · Pyomo로 작성한 포트폴리오 모델(23:30). 정수 보유량의 범위, 예산 상한, 위험−기대수익 목적함수가 먼저 정의된다. 이 단계의 코드는 양자 게이트를 직접 지정하지 않는다.",
+      "insertion_anchor": "Pyomo의 정수 변수·제약조건·목적함수로 이 부분을 작성한다.",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "finance-qaoa-settings",
+      "title": "QAOA 층 수와 제약 벌점",
+      "timestamp_seconds": 1505,
+      "crop": [
+        94,
+        414,
+        673,
+        505
+      ],
+      "description": "다시보기의 QAOA 설정 코드. NUM_LAYERS=3과 PENALTY=10을 CombinatorialProblem에 전달한다.",
+      "file": "figures/screens/finance-qaoa-settings.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1505s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "e288d9ee654cb8dc49c6e0b29f51972fe6a42c862dbd57258317018891e41ce3",
+      "width": 579,
+      "height": 91,
+      "caption": "발표 화면 02-b · QAOA 문제 설정(25:05). 층 수는 3, 예산 위반 벌점은 10이다. 주석은 CUDA-Q 해밀토니안에서도 같은 벌점을 써야 한다고 명시한다.",
+      "insertion_anchor": "[25:02–27:43]",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "finance-cudaq-cpu",
+      "title": "CPU 실행 경로와 고전 최적화",
+      "timestamp_seconds": 1765,
+      "crop": [
+        94,
+        185,
+        581,
+        488
+      ],
+      "description": "다시보기의 CUDA-Q 실행 코드. qpp-cpu 백엔드, observe 기대값 평가, COBYLA 최적화와 최대 반복 60이 보인다.",
+      "file": "figures/screens/finance-cudaq-cpu.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1765s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "ae7876130d6cde7e4339a1ac1915aebbaa344a4a492e978fd1d5c04d1bceb68e",
+      "width": 487,
+      "height": 303,
+      "caption": "발표 화면 02-c · CUDA-Q 실행과 고전 최적화(29:25). 실제 선택은 qpp-cpu이며 nvidia는 대안 주석이다. observe로 기대값을 평가하고 COBYLA가 회전 매개변수를 갱신하며 최대 반복은 60이다.",
+      "insertion_anchor": "### 실제 출력과 읽는 방법",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "finance-qaoa-output",
+      "title": "QAOA 시연 출력과 수렴 그래프",
+      "timestamp_seconds": 1818,
+      "crop": [
+        77,
+        182,
+        530,
+        605
+      ],
+      "description": "다시보기의 QAOA 출력. H 기대값 662.9515, 시간 7.80초, 배분 [3,1,2], 비용 −4.6과 약 60회 평가 그래프가 함께 보인다.",
+      "file": "figures/screens/finance-qaoa-output.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1818s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "719d17d440e06a776d640c515a57e62be71bd6d4eb6f12d5e064e50d559a9144",
+      "width": 453,
+      "height": 423,
+      "caption": "발표 화면 02-d · 실제 QAOA 출력(30:18). 상단의 H 기대값과 한 배분의 비용 −4.6은 다른 지표다. 그래프는 약 60회 평가 중 크게 오르내린다. 표시 배분 [3,1,2]의 전역 최적성은 별도 고전 검산에서 성립하지 않았다.",
+      "insertion_anchor": "기대값 `<H>`와 개별 배분의 비용 −4.6은 서로 다른 값이다.",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "finance-option-payoff",
+      "title": "가격 확률과 콜옵션 지급액",
+      "timestamp_seconds": 2415,
+      "crop": [
+        87,
+        159,
+        572,
+        504
+      ],
+      "description": "다시보기의 가격 확률 및 지급액 그래프. 가로축은 만기 자산가치, 왼쪽 초록축은 격자 확률, 오른쪽 빨간축은 지급액이며 행사가격 1.9에서 지급액이 증가하기 시작한다.",
+      "file": "figures/screens/finance-option-payoff.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2415s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "41ab870597ff93293889601530989aa21879eeb35c48bfcad7eb7202d86c60bd",
+      "width": 485,
+      "height": 345,
+      "caption": "발표 화면 02-e · 가격분포와 콜옵션 지급액(40:15). 초록 점은 64개 격자 가격의 확률(왼쪽 축), 빨간 선은 지급액(오른쪽 축)이다. 기대지급액은 두 값을 곱한 뒤 모든 격자점에서 합한 양이다. 두 세로축의 눈금은 서로 다르다.",
+      "insertion_anchor": "그래프에는 초록색 확률분포와 빨간색 지급액을 함께 그린다.",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    },
+    {
+      "id": "finance-iqae-output",
+      "title": "IQAE 두 실행 경로의 최종 비교",
+      "timestamp_seconds": 2685,
+      "crop": [
+        78,
+        443,
+        463,
+        513
+      ],
+      "description": "다시보기의 최종 IQAE 표. Classiq 0.17771, CUDA-Q 0.17675, 같은 격자 고전 기준 0.17674와 99% 신뢰구간을 비교한다.",
+      "file": "figures/screens/finance-iqae-output.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2685s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "05960a7fcaeed5af4e369141c6859334f628a1b7a92b7cf06a6ffc47bfd7057d",
+      "width": 385,
+      "height": 70,
+      "caption": "발표 화면 02-f · IQAE 최종 출력표(44:45). Classiq·CUDA-Q 경로의 추정값과 99% 신뢰구간을 같은 64점 격자의 고전 합 0.17674와 대조한다. 이 표에는 실행시간 열이 없다.",
+      "insertion_anchor": "두 추정 신뢰구간에 같은 격자 기준값이 들어 있다.",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ]
+    }
+  ]
+}

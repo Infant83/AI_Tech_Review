@@ -326,6 +326,105 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertTrue(all("study_href" not in document for document in published))
         self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
 
+    def classiq_fixture(self) -> tuple[dict, dict, Path]:
+        document = archive_document("2026-10-22-classiq-talk-series-notes-ko")
+        document.update(series="lecture-notes", title="Classiq 최근 토크시리즈 상세 학습 노트",
+                        title_en="Classiq replay study notes", summary="네 회의 다시보기와 질문·그림 해설.")
+        spec = dict(archive_site.LECTURE_BUNDLES[document["id"]])
+        source = self.root / "classiq" / "dist"
+        for name in spec["files"]:
+            path = source / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(PDF_BYTES if name == "notes.pdf" else f"Reviewed public asset: {name}".encode())
+        (source / "index.html").write_text(
+            '<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>Classiq</title></head>'
+            '<body><aside class="sidebar"></aside><main>'
+            + ''.join(f'<section id="chapter-{i}"><h1>Chapter {i}</h1></section>' for i in range(9))
+            + '<a href="notes.pdf">PDF</a></main></body></html>', encoding="utf-8")
+        spec["source"] = str(source)
+        return document, {document["id"]: spec}, source
+
+    def test_classiq_bundle_publishes_only_illustrated_allowlist_with_consistent_metadata(self) -> None:
+        document, bundles, source = self.classiq_fixture()
+        self.registry([document])
+        (source / "research").mkdir()
+        (source / "research/replay-transcript.txt").write_text("PRIVATE_TRANSCRIPT", encoding="utf-8")
+        (source / "figures/screens/unreviewed.png").write_bytes(b"PRIVATE_UNREVIEWED_SCREEN")
+        (source.parent / "private-intake.json").write_text("PRIVATE_MAIL_METADATA", encoding="utf-8")
+
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            published = self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+
+        spec = bundles[document["id"]]
+        destination = self.site / spec["href"]
+        actual = {path.relative_to(destination).as_posix() for path in destination.rglob("*") if path.is_file()}
+        self.assertEqual(actual, set(spec["files"]))
+        self.assertEqual(len(actual), 26)
+        self.assertEqual(len([name for name in actual if name.startswith("figures/concepts/")]), 6)
+        self.assertEqual(len([name for name in actual if name.startswith("figures/screens/")]), 13)
+        page = (destination / "index.html").read_text(encoding="utf-8")
+        parser = NavigationParser()
+        parser.feed(page)
+        canonical = [link["href"] for link in parser.links if link.get("rel") == "canonical"]
+        self.assertEqual(canonical, [BASE_URL + spec["href"]])
+        self.assertEqual(parser.metadata["og:url"], canonical[0])
+        self.assertEqual(parser.metadata["og:title"], document["title"])
+        self.assertEqual(parser.metadata["og:description"], document["summary"])
+        self.assertEqual((destination / "notes.pdf").read_bytes(), (self.site / published[0]["href"]).read_bytes())
+        self.assertIn("2026-10-22 · OpenAI Codex의 root", page)
+        self.assertIn("publish_audit가 공개 자산과 아카이브 연결을 독립 검토", page)
+        self.assertIn("독립 보충 해설과 손계산은 원발표와 구분", page)
+        self.assertNotIn("2026-10-20", page)
+        self.assertNotIn("doc-labs-readme", page)
+        for anchor in parser.anchors:
+            href = str(anchor.get("href", ""))
+            if href.startswith("#"):
+                self.assertIn(f'id="{href[1:]}"', page)
+        public_manifest = (self.site / "archive-manifest.json").read_text(encoding="utf-8")
+        for private in (str(self.root), "PRIVATE_", "research/", "unreviewed.png", "private-intake"):
+            self.assertNotIn(private, public_manifest)
+
+    def test_classiq_catalog_uses_real_chapters_and_describes_illustrated_notes(self) -> None:
+        document, bundles, _source = self.classiq_fixture()
+        self.registry([document])
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+        for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            with self.subTest(language=language):
+                path = self.site / "lectures" / relative
+                page = path.read_text(encoding="utf-8")
+                parser = NavigationParser()
+                parser.feed(page)
+                for metric in (["4 replays", "61-page PDF", "19 figures"] if language == "en" else ["다시보기 4회", "PDF 61쪽", "그림 19개"]):
+                    self.assertIn(metric, page)
+                primary = next(anchor for anchor in parser.anchors if "lecture-primary" in anchor.get("class", "").split())
+                self.assertEqual(urlsplit(primary["href"]).fragment, "chapter-0")
+                chapter_links = [anchor for anchor in parser.anchors if urlsplit(anchor.get("href", "")).fragment.startswith("chapter-")]
+                self.assertEqual({urlsplit(anchor["href"]).fragment for anchor in chapter_links},
+                                 {"chapter-0", "chapter-1", "chapter-2", "chapter-3", "chapter-4", "chapter-7"})
+                for anchor in chapter_links:
+                    url = urlsplit(anchor["href"])
+                    target = (path.parent / url.path / "index.html").resolve()
+                    self.assertEqual(target, self.site / "lectures/classiq-talk-series/index.html")
+                    self.assertIn(f'id="{url.fragment}"', target.read_text(encoding="utf-8"))
+                self.assertNotIn("doc-study-guide", page)
+                self.assertNotIn("Online notes + labs" if language == "en" else "온라인 노트 · 실습", page)
+
+    def test_missing_custom_lecture_anchor_rejects_build_before_replacing_output(self) -> None:
+        self.registry([archive_document()])
+        self.publish()
+        before = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
+        document, bundles, source = self.classiq_fixture()
+        self.registry([document])
+        index = source / "index.html"
+        index.write_text(index.read_text(encoding="utf-8").replace('id="chapter-7"', 'id="missing-chapter"'), encoding="utf-8")
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            with self.assertRaisesRegex(ValueError, "Missing lecture navigation anchor: chapter-7"):
+                self.publish()
+        after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
+        self.assertEqual(after, before)
+
     def test_lecture_pdf_mismatch_rejects_build_without_replacing_published_archive(self) -> None:
         self.registry([archive_document()])
         self.publish()

@@ -1,0 +1,538 @@
+{
+  "edition": "1.1",
+  "scope": "Selected official replay excerpts and independently authored teaching diagrams",
+  "figures": [
+    {
+      "id": "01-platform-workflow",
+      "file": "figures/concepts/01-platform-workflow.svg",
+      "title": "Classiq·CUDA-Q·CPU·GPU·QPU 역할 지도",
+      "kind": "concept",
+      "description": "모델 작성, 합성, 실행 인터페이스, 결과 해석을 연결하고 CPU/GPU 시뮬레이션과 실제 QPU를 구별한다. 이 도식은 강연 경로의 설명용 재구성이며 실제 제품 UI가 아니다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2567s",
+        "https://nvidia.github.io/cuda-quantum/latest/using/basics/run_kernel.html"
+      ],
+      "parameters": {},
+      "sha256": "3209dfbc02ec6193bdbbae4c295b797097f8aaa7cd84a6d82de35e1cfc911285",
+      "number": "3-1",
+      "alt": "Qmod 모델과 Classiq 합성기, CUDA-Q 실행 인터페이스 및 CPU GPU 시뮬레이터와 실제 QPU의 역할을 나눈 개념도",
+      "caption": "**모델에서 결과까지 도구와 장치의 역할.** 이 회차의 네 단계에 10월 금융 세션의 CUDA-Q 연동을 이어 붙인 설명용 도식이다. 실행 인터페이스 아래에서 CPU·GPU 시뮬레이터와 실제 QPU가 갈라지는 부분을 읽는다. Classiq 자체의 실행 경로도 있으며, 그림은 CUDA-Q를 사용하는 대표 경로를 보여준다. QAOA의 각도와 IQAE의 증폭 깊이를 갱신하는 고전 반복은 서로 다른 목적을 갖는다.",
+      "chapter": "sessions/03-ai-agents.md"
+    },
+    {
+      "id": "02-grover-geometry",
+      "file": "figures/concepts/02-grover-geometry.svg",
+      "title": "Grover의 2차원 회전과 이상적 성공확률",
+      "kind": "calculation",
+      "description": "정답·비정답 중첩의 평면에서 Grover 회전을 표시하고 k=0…8의 이상적 정답 확률을 직접 계산했다. 원영상의 측정 히스토그램을 재현한 그림이 아니다.",
+      "source_urls": [
+        "https://arxiv.org/abs/quant-ph/0005055",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1113s"
+      ],
+      "parameters": {
+        "N": 64,
+        "M": 4,
+        "theta_rad": 0.25268025514207865,
+        "iterations": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "success_probabilities": [
+          0.0625,
+          0.47265625,
+          0.908447265625,
+          0.9613189697265625,
+          0.5817041397094727,
+          0.1254916787147522,
+          0.020380768924951515,
+          0.36491288826800855,
+          0.8360891748598078
+        ],
+        "k3_success": 0.9613189697265625
+      },
+      "sha256": "7057c4cd0eb4f020188b66486ee3015c661f000c77917fa42a9249fd86b1b676",
+      "number": "3-2",
+      "alt": "Grover 알고리즘이 좋은 상태와 나쁜 상태의 평면에서 진폭 벡터를 회전시키고, 반복 수에 따라 성공확률이 오르내리는 계산 그림",
+      "caption": "**진폭의 회전이 확률을 바꾸는 방법.** 왼쪽은 정규화된 정답·비정답 중첩을 축으로 한 평면이며, 화살표의 세로 성분을 제곱하면 정답 확률이다. 오른쪽은 후보 64개 중 정답 4개인 무잡음 균등 준비 예의 직접 계산이다. 3회 반복에서 96.13%지만 이후 감소할 수 있다. 원영상의 측정 히스토그램을 재현한 실험 그래프가 아니다.",
+      "chapter": "sessions/03-ai-agents.md"
+    },
+    {
+      "id": "03-qaoa-feasible-subspace",
+      "file": "figures/concepts/03-qaoa-feasible-subspace.svg",
+      "title": "QAOA의 전체 공간과 카디널리티 제약 부분공간",
+      "kind": "calculation",
+      "description": "5비트 상태 32개를 전수 열거하고 정확히 3개의 자산을 선택하는 10개를 강조했다. 2%와 25%는 재현하거나 가상의 분포로 그리지 않았으며 초기 상태·탐색 공간의 차이만 설명한다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1319s",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1538s",
+        "https://arxiv.org/abs/1411.4028"
+      ],
+      "parameters": {
+        "n_assets": 5,
+        "cardinality": 3,
+        "total_states": 32,
+        "feasible_states": 10,
+        "bitstring_order": "lexicographic 00000 to 11111"
+      },
+      "sha256": "58c533531cf996fbb4d70f3defa050356d45fa8115c6d111bc7a96b762364d35",
+      "number": "1-4",
+      "alt": "5비트 전체 32개 상태에서 시작하는 경우와 1이 세 개인 10개 유효 상태만 준비하는 경우의 비교",
+      "caption": "**전체 공간과 제약 보존 공간의 차이.** 타일 하나가 하나의 5비트 상태이며, 청록색 10개는 정확히 세 자산을 선택하는 상태다. 왼쪽은 나머지 22개 상태도 포함하고, 오른쪽은 Dicke 상태 준비와 제약 보존 믹서로 유효 공간 안에서 움직인다. 정리자가 32개 비트열을 열거해 만든 개념도이며 측정 분포를 그린 그림은 아니다.",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "04-payoff-probability-encoding",
+      "file": "figures/concepts/04-payoff-probability-encoding.svg",
+      "title": "가격 분포·보수·기대값의 확률 인코딩",
+      "kind": "calculation",
+      "description": "가격의 확률과 보수를 별도 축에 표시하고 정규화·가중·역변환으로 기대 보수 13과 표시 비트 확률 13/30을 연결했다. 원영상의 로그정규분포나 실제 시장 입력이 아닌 손계산 예제다.",
+      "source_urls": [
+        "https://arxiv.org/abs/quant-ph/0005055",
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2358s",
+        "https://www.youtube.com/watch?v=diJa_JRJ2F8&t=2181s"
+      ],
+      "parameters": {
+        "prices": [
+          80,
+          100,
+          120,
+          140
+        ],
+        "probabilities": [
+          0.1,
+          0.2,
+          0.4,
+          0.3
+        ],
+        "strike": 110,
+        "payoffs": [
+          0,
+          0,
+          10,
+          30
+        ],
+        "payoff_normalization": 30,
+        "expected_undiscounted_payoff": 13.0,
+        "indicator_probability": 0.43333333333333335,
+        "exercise_probability": 0.7
+      },
+      "sha256": "4b1dd8e937f9499afee019327714856aab7d4f486c88f142aecf1e2c14502411",
+      "number": "4-1",
+      "alt": "가격 확률과 지급액을 별도로 그린 뒤, 정규화 확률 13 나누기 30에서 기대지급액 13을 복원하는 교육 예제",
+      "caption": "**지급액의 크기까지 표시 비트의 확률에 넣는다.** 위 두 패널은 같은 네 가격의 확률과 지급액이며 아래는 지급액을 30으로 나눠 정규화하고 확률로 가중한 뒤 단위를 복원하는 순서다. 마지막 비트가 1일 확률은 13/30이고 그 부분공간의 진폭은 그 제곱근이다. 실제 시장 데이터나 발표의 64점 로그정규 예제를 그린 것이 아닌 독립 손계산 도식이다.",
+      "chapter": "sessions/04-finance-foundations.md"
+    },
+    {
+      "id": "05-iqae-adaptive-loop",
+      "file": "figures/concepts/05-iqae-adaptive-loop.svg",
+      "title": "단순 측정과 IQAE의 적응적 증폭·추정 루프",
+      "kind": "concept",
+      "description": "같은 인코딩 확률을 반복 측정하는 k=0 방식과, 서로 다른 Grover power·측정 통계·고전적 구간 갱신을 사용하는 IQAE를 비교한다. 고전 Monte Carlo의 모든 기법을 이 상단 경로로 대표하지 않는다.",
+      "source_urls": [
+        "https://arxiv.org/abs/1912.05559",
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2567s",
+        "https://www.youtube.com/watch?v=diJa_JRJ2F8&t=2315s"
+      ],
+      "parameters": {
+        "cost_definition": "Q^k A circuit uses 2k+1 calls of A or A† under the standard Grover decomposition; shot count is Σ n_k",
+        "no_numerical_benchmark": true
+      },
+      "sha256": "f377cf45e7184e676f003dfbb7724beb50a6222aae369395137baec0aa6be355",
+      "number": "4-2",
+      "alt": "고정 깊이의 단순 측정과, 매번 새로 상태를 준비하며 증폭 깊이를 선택하고 고전 신뢰구간을 갱신하는 IQAE의 비교 절차도",
+      "caption": "**IQAE에서 고전 피드백은 무엇을 바꾸는가.** 위는 같은 확률 인코딩을 증폭 없이 반복 측정하는 경로이고, 아래는 측정 통계로 다음 Grover 반복 횟수 k를 고르는 경로다. 매 회로는 상태를 새로 준비한다. 한 샷 안에 들어가는 준비·역준비 호출량이 깊이에 따라 달라지므로 샷 수와 질의 수를 따로 센다. IQAE 원리의 설명용 재구성이며 특정 성능 측정값을 그리지 않았다.",
+      "chapter": "sessions/04-finance-foundations.md"
+    },
+    {
+      "id": "06-resource-scope-tradeoffs",
+      "file": "figures/concepts/06-resource-scope-tradeoffs.svg",
+      "title": "폭·깊이 교환과 다기간 포트폴리오 축소의 범위",
+      "kind": "concept",
+      "description": "일반적인 폭·깊이 교환과 발표 화면의 400큐비트 전체 10일, 하루 40큐비트, 방향 고정 하루 20큐비트를 분리해 설명한다. 일별 처리의 고전 DP 비용과 방향 고정의 헤지 자유도 손실을 보존했다. 원 실험을 재현한 벤치마크가 아니다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=gaLZNQkcsp8&t=917s",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2934s",
+        "https://docs.classiq.io/qmod-reference/language-reference/uncomputation"
+      ],
+      "parameters": {
+        "stocks": 10,
+        "whole_horizon_days": 10,
+        "exact_counts_qubits_per_stock_day": 4,
+        "direction_fixed_qubits_per_stock_day": 2,
+        "whole_horizon_qubits": 400,
+        "daily_exact_qubits": 40,
+        "daily_direction_fixed_qubits": 20,
+        "scope_warning": "400 is all 10 days; 40 and 20 are per day; 20 removes direction choice"
+      },
+      "sha256": "5c7c994e0e064802a9a6ef1da37a7cf92a88b27d0acbb732b9dba843617729b8",
+      "number": "5-1",
+      "alt": "같은 모델의 폭과 깊이 교환을 설명하고, 전체 10일 400큐비트와 하루 40큐비트, 방향 고정 하루 20큐비트의 범위 차이를 비교한 개념도",
+      "caption": "**회로 비용의 교환과 문제 범위의 변경.** 위는 임시 공간 재사용에 따른 일반적인 폭·깊이 교환 가능성이다. 아래는 [새 플랫폼 발표 50:10](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=3010s)의 10주식·10일 설계를 한국어로 재구성했다. 400은 전체 기간, 40과 20은 하루 기준이며, 일별 고전 DP 비용과 방향 고정의 헤지 자유도 손실을 함께 읽는다. 같은 문제의 성능을 재측정한 그림이 아니다.",
+      "chapter": "technical-companion.md"
+    },
+    {
+      "id": "platform-skills",
+      "file": "figures/screens/platform-skills.png",
+      "title": "개발 흐름별 Classiq AI 스킬 여섯 가지",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=566s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 566,
+      "crop": {
+        "x": 8,
+        "y": 102,
+        "width": 1627,
+        "height": 916,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "Modeling·Synthesis·Execution과 Post-processing·Analysis·Qiskit Translation의 역할을 보여 주는 발표 슬라이드. 제목·설명·로고를 유지하고 발표자 창을 제외했다.",
+      "sha256": "bea8f26c78eb71c35b08152a82e7b3b81556b00d8bee6c5348439abb321a029d",
+      "width": 1627,
+      "height": 916,
+      "caption": "**개발 단계별 AI 스킬 여섯 가지.** 위쪽은 모델 작성→합성→실행, 아래쪽은 결과 해석·회로 분석·코드 변환이다. 아래 행을 하나의 순차적 처리 순서로 읽을 필요는 없다. 원 슬라이드의 명칭을 위 한국어 표와 대응시킬 수 있다. 출처: Classiq Technologies, [09:26](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=566s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-1",
+      "alt": "모델링 합성 실행 결과 해석 분석 Qiskit 변환의 여섯 역할을 나눈 실제 발표 슬라이드",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-grover-histogram",
+      "file": "figures/screens/platform-grover-histogram.png",
+      "title": "Grover 실행 결과의 네 개 높은 측정 빈도",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1135s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 1135,
+      "crop": {
+        "x": 1044,
+        "y": 248,
+        "width": 870,
+        "height": 572,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "64개 비트열 가운데 네 개의 측정 빈도가 높게 나타난 실제 히스토그램. 원래 축은 확률이 아닌 측정 횟수(count)다.",
+      "sha256": "0b8f1e2918812be78394cdf9e72436aa9a2e42e964e5454de868a99e000180b3",
+      "width": 870,
+      "height": 572,
+      "caption": "**발표에서 실행한 Grover 예제의 측정 분포.** 가로축은 비트열, 세로축은 측정 횟수(count)다. 네 높은 막대가 곱이 6인 순서쌍에 대응한다. 확률로 읽으려면 총샷 수로 나누어야 하며, 이 그림은 별도의 이상적 확률 계산과 구별한다. 출처: Classiq Technologies, [18:55](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1135s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-2",
+      "alt": "실제 Grover 실행에서 64개 비트열 중 네 결과에 측정 횟수가 집중되는 히스토그램",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-qaoa-standard",
+      "file": "figures/screens/platform-qaoa-standard.png",
+      "title": "첫 QAOA 구현: 2000샷 중 최적 포트폴리오 43회",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1520s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 1520,
+      "crop": {
+        "x": 1052,
+        "y": 268,
+        "width": 852,
+        "height": 449,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "원 보고서가 전체 2000샷, 유효 포트폴리오 237샷(11.85%), 최적 포트폴리오 비트열10101·자산0,2,4·43샷·2.15%를 명시한 화면.",
+      "sha256": "f9713dbdf91fad107db15584441e609785016feb442e63d0978e997ae9f4dba6",
+      "width": 852,
+      "height": 449,
+      "caption": "**첫 QAOA 결과의 분모를 확인하는 원화면.** 위 문장에 전체 샷 2,000개와 유효 샷 237개가 명시돼 있고, 첫 행의 `10101`은 43샷·2.15%다. 유효 상태만 보여주는 표에서도 확률은 전체 샷 기준이라는 점을 확인할 수 있다. 원보고서의 최적성 주장을 이 노트가 독립 재실행한 것은 아니다. 출처: Classiq Technologies, [25:20](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1520s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-3",
+      "alt": "전체 2000샷 중 유효 237샷, 포트폴리오 10101이 43샷 2.15퍼센트라고 적힌 실제 결과 보고서",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-qaoa-comparison",
+      "file": "figures/screens/platform-qaoa-comparison.png",
+      "title": "전체 비트열 QAOA와 Dicke 상태 기반 GM-QAOA의 비교",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1680s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 1680,
+      "crop": {
+        "x": 350,
+        "y": 240,
+        "width": 651,
+        "height": 564,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "시작 상태32개대10개, 믹서와 비용층의 변화, 유효샷237/2000대2000/2000, 최적해확률2.15%대25.9%를 보여 주는 실제 비교표.",
+      "sha256": "7010cedfee48e898e99a78d531ce08b24e4d8b55cf03a26e49d961608d4e2a1d",
+      "width": 651,
+      "height": 564,
+      "caption": "**어떤 변경이 어떤 비율과 함께 보고됐는가.** 첫 세 행은 시작 상태·믹서·비용층의 차이이며, 아래 두 행은 유효 샷과 최적 포트폴리오의 비율이다. 확률의 분모는 두 구현 모두 전체 2,000샷이다. 보고서의 약 12배라는 표현은 이 예제의 최적 포트폴리오 빈도 비율이며 실행시간 가속비가 아니다. 출처: Classiq Technologies, [28:00](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1680s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-5",
+      "alt": "시작 상태와 믹서 및 비용층, 유효 샷 비율과 최적 포트폴리오 비율을 구별한 실제 QAOA 비교표",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-hardware",
+      "file": "figures/screens/platform-hardware.png",
+      "title": "동일한 논리 회로를 다섯 하드웨어 조건으로 합성한 표",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2790s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 2790,
+      "crop": {
+        "x": 253,
+        "y": 505,
+        "width": 1027,
+        "height": 234,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "벤더·연결구조·깊이·2큐비트및1큐비트게이트수를 나열한 노트북의 실제 컴파일 결과. 브라우저·로컬 환경의 주변 패널은 제외했다.",
+      "sha256": "beb129ddfbf9eb9475122c0f0884447d3ac05609b58bd620c84762aa67e4ac9c",
+      "width": 1027,
+      "height": 234,
+      "caption": "**하드웨어 조건이 바꾸는 합성 회로의 자원.** 먼저 `topology`를 읽고 `depth`, `2q gates`, `1q gates`를 비교한다. 원표의 수치는 이 모델·합성 설정의 결과이며 실제 QPU에서 측정한 정확도·실행시간의 순위는 아니다. 게이트의 기본 단위도 장치별로 다를 수 있다. 출처: Classiq Technologies, [46:30](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2790s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-6",
+      "alt": "다섯 하드웨어의 연결 구조와 합성된 회로의 깊이, 2큐비트 및 1큐비트 게이트 수를 비교한 실제 표",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-ft-layout",
+      "file": "figures/screens/platform-ft-layout.png",
+      "title": "표면 코드의 배치와 논리 시간을 함께 나타낸 시각화",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2880s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 2880,
+      "crop": {
+        "x": 234,
+        "y": 379,
+        "width": 1298,
+        "height": 698,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "발표의 surface-code view: 수평면의패치배치와세로방향의논리시간을 보여준다. X face·Z face·Y cube·T cube 범례와 topological program 요약을 유지했다.",
+      "sha256": "05584dcfeb1bd8ba73a145d143f373efeba0687faf11da06bc2db6849bc5ae55",
+      "width": 1298,
+      "height": 698,
+      "caption": "**표면 코드의 공간 배치와 논리 시간을 함께 본다.** 수평면의 q0–q7은 패치의 위치이고, 위로 쌓인 방향은 논리적 시간이다. 왼쪽 요약은 전체 2,165주기 중 0–39주기를 표시한다고 적고 있다. 아래 범례의 X·Z 면과 Y·T 큐브는 프로그램의 시공간 표현이며 물리 장치의 사진이나 독립 측정 결과가 아니다. 출처: Classiq Technologies, [48:00](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2880s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-7",
+      "alt": "표면 코드 패치 배치와 논리 시간 방향에 쌓인 연산을 보여주는 실제 내결함성 프로그램 시각화",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "platform-encoding-table",
+      "file": "figures/screens/platform-encoding-table.png",
+      "title": "포트폴리오 인코딩에 따른 큐비트 수와 표현력 비교",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=3010s",
+      "video_id": "QtKbkvWgncQ",
+      "timestamp_seconds": 3010,
+      "crop": {
+        "x": 252,
+        "y": 159,
+        "width": 1240,
+        "height": 663,
+        "reference_width": 1920,
+        "reference_height": 1080
+      },
+      "description": "네인코딩의qubits per stock per day·표현·short2AAPL예·표현가능범위·trade-off열을 읽을수있는 원표. 아래의 일반하드웨어수치설명과로컬경로코드는 제외했다.",
+      "sha256": "2786e5f0de0a5fa107b73cb36c81396da2c3cc06dda6fdd462fb0934128d04b7",
+      "width": 1240,
+      "height": 663,
+      "caption": "**큐비트 수의 분모와 표현 범위를 읽는 원표.** 두 번째 열은 주식 하나·하루 단위의 수이고 오른쪽 열은 10개 주식 예의 전체 기간 또는 하루 자원을 설명한다. 마지막 행은 롱·숏 방향을 미리 고정하므로 헤지 자유도를 잃는다. 위의 한국어 표는 이 원화면을 풀어 쓴 것이다. 출처: Classiq Technologies, [50:10](https://www.youtube.com/watch?v=QtKbkvWgncQ&t=3010s).",
+      "credit": "Classiq Technologies 공식 다시보기 화면 발췌. 원 저작권은 Classiq 및 해당 발표자에게 있음.",
+      "processing": "원본1080p비디오의해당시각첫프레임을추출하여직사각형으로자름.색상·수치·라벨을변경하지않음. PNG메타데이터없음.",
+      "number": "1-8",
+      "alt": "원 벤치마크와 이진 카운터, 일별 처리, 방향 고정의 큐비트 요구 및 표현력을 비교한 실제 원표",
+      "chapter": "sessions/01-new-platform.md"
+    },
+    {
+      "id": "finance-pyomo-model",
+      "title": "포트폴리오의 Pyomo 모델",
+      "timestamp_seconds": 1410,
+      "crop": [
+        93,
+        265,
+        666,
+        530
+      ],
+      "description": "다시보기의 Pyomo 모델 코드. 정수 보유량 0–7, 예산 상한, 위험−기대수익 목적함수를 함께 보여준다.",
+      "file": "figures/screens/finance-pyomo-model.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1410s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "7c27b8986a6345461de0c4349d5a01d8dbcbe7985a10e78ae86c00808ed4757c",
+      "width": 573,
+      "height": 265,
+      "caption": "**업무 조건을 먼저 고정하는 실제 발표 코드.** `bounds=(0,7)`은 정수 보유량의 범위이고, 합계의 `<= total_budget`은 예산 상한이다. 아래에서 위험−기대수익을 최소화한다. 원화면의 관련 코드만 발췌했다. 출처: Classiq·NVIDIA, [23:30](https://www.youtube.com/watch?v=E4Uko49fBaU&t=1410s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-1",
+      "alt": "정수 보유량 범위와 예산 상한, 위험에서 수익을 뺀 목적함수를 정의한 실제 Pyomo 코드",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    },
+    {
+      "id": "finance-qaoa-settings",
+      "title": "QAOA 층 수와 제약 벌점",
+      "timestamp_seconds": 1505,
+      "crop": [
+        94,
+        414,
+        673,
+        505
+      ],
+      "description": "다시보기의 QAOA 설정 코드. NUM_LAYERS=3과 PENALTY=10을 CombinatorialProblem에 전달한다.",
+      "file": "figures/screens/finance-qaoa-settings.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1505s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "e288d9ee654cb8dc49c6e0b29f51972fe6a42c862dbd57258317018891e41ce3",
+      "width": 579,
+      "height": 91,
+      "caption": "**수학 모델을 QAOA로 연결하는 설정.** 층 수 3과 벌점 10이 코드에 명시된다. 원화면의 주석도 CUDA-Q에서 평가하는 해밀토니안의 벌점을 같게 유지하라고 강조한다. 출처: Classiq·NVIDIA, [25:05](https://www.youtube.com/watch?v=E4Uko49fBaU&t=1505s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-2",
+      "alt": "QAOA 층 수 3과 벌점 10을 CombinatorialProblem에 전달하는 실제 설정",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    },
+    {
+      "id": "finance-cudaq-cpu",
+      "title": "CPU 실행 경로와 고전 최적화",
+      "timestamp_seconds": 1765,
+      "crop": [
+        94,
+        185,
+        581,
+        488
+      ],
+      "description": "다시보기의 CUDA-Q 실행 코드. qpp-cpu 백엔드, observe 기대값 평가, COBYLA 최적화와 최대 반복 60이 보인다.",
+      "file": "figures/screens/finance-cudaq-cpu.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1765s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "ae7876130d6cde7e4339a1ac1915aebbaa344a4a492e978fd1d5c04d1bceb68e",
+      "width": 487,
+      "height": 303,
+      "caption": "**실제 데모의 실행 대상은 CPU 시뮬레이터다.** 맨 위의 `qpp-cpu`가 선택돼 있고 `nvidia`는 대안 주석이다. 가운데의 `observe` 호출을 고전 최적화기 COBYLA가 반복한다. GPU 가속 기능 소개와 이 노트북의 실제 실행 설정을 구별할 근거가 되는 화면이다. 출처: Classiq·NVIDIA, [29:25](https://www.youtube.com/watch?v=E4Uko49fBaU&t=1765s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-3",
+      "alt": "qpp-cpu 실행 타깃과 observe 기대값 평가, COBYLA 최대 60회 최적화를 보여주는 실제 코드",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    },
+    {
+      "id": "finance-qaoa-output",
+      "title": "QAOA 시연 출력과 수렴 그래프",
+      "timestamp_seconds": 1818,
+      "crop": [
+        77,
+        182,
+        530,
+        605
+      ],
+      "description": "다시보기의 QAOA 출력. H 기대값 662.9515, 시간 7.80초, 배분 [3,1,2], 비용 −4.6과 약 60회 평가 그래프가 함께 보인다.",
+      "file": "figures/screens/finance-qaoa-output.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=1818s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "719d17d440e06a776d640c515a57e62be71bd6d4eb6f12d5e064e50d559a9144",
+      "width": 453,
+      "height": 423,
+      "caption": "**원영상의 실제 출력과 평가 곡선.** 위의 `<H>`는 전체 상태의 기대값이고 `cost=-4.6`은 표시한 한 배분의 비용이다. 가로축은 평가 반복, 세로축은 `<H>`이며 곡선은 오르내린다. 화면의 7.80초는 표시된 최적화 호출 시간이다. 출처: Classiq·NVIDIA, [30:18](https://www.youtube.com/watch?v=E4Uko49fBaU&t=1818s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-4",
+      "alt": "기대값 662.9515와 비용 마이너스 4.6, 배분 3 1 2 및 단조롭지 않은 비용 평가 곡선",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    },
+    {
+      "id": "finance-option-payoff",
+      "title": "가격 확률과 콜옵션 지급액",
+      "timestamp_seconds": 2415,
+      "crop": [
+        87,
+        159,
+        572,
+        504
+      ],
+      "description": "다시보기의 가격 확률 및 지급액 그래프. 가로축은 만기 자산가치, 왼쪽 초록축은 격자 확률, 오른쪽 빨간축은 지급액이며 행사가격 1.9에서 지급액이 증가하기 시작한다.",
+      "file": "figures/screens/finance-option-payoff.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2415s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "41ab870597ff93293889601530989aa21879eeb35c48bfcad7eb7202d86c60bd",
+      "width": 485,
+      "height": 345,
+      "caption": "**확률과 지급액을 함께 읽는 발표 그래프.** 초록 점은 가격 격자별 확률로 왼쪽 축을, 빨간 선은 지급액으로 오른쪽 축을 사용한다. 두 세로축의 눈금과 단위가 다르므로 곡선의 교차점 자체에 금융적 의미를 부여하지 않는다. 기대지급액은 같은 가격에서의 두 값을 곱해 합한 양이다. 출처: Classiq·NVIDIA, [40:15](https://www.youtube.com/watch?v=E4Uko49fBaU&t=2415s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-5",
+      "alt": "만기 자산가치에 따른 64점 확률분포와 행사가격 1.9인 콜옵션 지급액의 실제 그래프",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    },
+    {
+      "id": "finance-iqae-output",
+      "title": "IQAE 두 실행 경로의 최종 비교",
+      "timestamp_seconds": 2685,
+      "crop": [
+        78,
+        443,
+        463,
+        513
+      ],
+      "description": "다시보기의 최종 IQAE 표. Classiq 0.17771, CUDA-Q 0.17675, 같은 격자 고전 기준 0.17674와 99% 신뢰구간을 비교한다.",
+      "file": "figures/screens/finance-iqae-output.png",
+      "kind": "replay-frame",
+      "source_url": "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2685s",
+      "video_id": "E4Uko49fBaU",
+      "sha256": "05960a7fcaeed5af4e369141c6859334f628a1b7a92b7cf06a6ffc47bfd7057d",
+      "width": 385,
+      "height": 70,
+      "caption": "**발표의 최종 비교 출력.** 위의 한국어 표는 이 원출력의 값을 옮긴 것이다. 두 추정값은 같은 격자 기준과 비교되며, 실행시간 열은 없다. 이 표로 GPU 속도 향상이나 실제 QPU 우위를 계산할 수는 없다. 출처: Classiq·NVIDIA, [44:45](https://www.youtube.com/watch?v=E4Uko49fBaU&t=2685s).",
+      "processing": "Single rectangular crop from original replay frame; pixels preserved; no redrawing, retouching, sharpening, overlays or rescaling.",
+      "source_dimensions": [
+        1280,
+        720
+      ],
+      "number": "2-6",
+      "alt": "Classiq와 CUDA-Q IQAE 추정값 및 99퍼센트 신뢰구간을 고전 격자 기준과 비교하는 실제 출력표",
+      "chapter": "sessions/02-cuda-q-finance.md"
+    }
+  ]
+}

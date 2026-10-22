@@ -20,6 +20,8 @@ PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실�
 
 ## 기본 흐름
 
+2026-10-22에는 Classiq의 최근 Quantum Office Hours 세 회와 NVIDIA 공동 금융 웨비나 한 회를 [상세 학습 노트](2026-10-22_classiq-talk-series/README.md)로 정리했다. [렉처 노트 목록](https://infant83.github.io/AI_Tech_Review/lectures/)에서 [웹 노트](https://infant83.github.io/AI_Tech_Review/lectures/classiq-talk-series/)와 61쪽 PDF를 읽을 수 있다. 1.1판은 실제 질의응답·수학 보충 해설·용어집·복습 문제와 풀이에 발표 화면 13개와 독립 설명 도식 6개를 함께 제공한다. 발표자의 보고값과 계산 예제, CPU·GPU 모사와 실제 QPU 실행의 범위를 구별한 독립 학습 자료다.
+
 새 리뷰의 표지는 [과학 표지 제작 원칙](COVER_ART_DIRECTION.md)에 따라 기획하고 [표지 기획 양식](templates/cover-art-brief.md)을 주제 폴더에 남긴다. 과학 분야·표현 유형·매체를 구분하고, 의미를 보존하는 관계·기사 고유성·최근 표지와의 다양성·작은 화면에서의 판독을 함께 확인한다.
 
 비디오 abstract는 사용자 요청·발행 요건 또는 편집 판단에 따라 선택한다. [시범 제작 원칙](VIDEO_ABSTRACT_DIRECTION.md), [영상 브리프](templates/video-abstract-brief.md), [노터 비디오 abstract 제작 소스](2026-10-21_video-abstract-pilot/v4/README.md)를 참고한다. 생성형 비디오 API 없이 코드로 제작하며 렉처 노트 등에 기본으로 추가하지 않는다.

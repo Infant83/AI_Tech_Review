@@ -1,0 +1,161 @@
+{
+  "figures": [
+    {
+      "id": "01-platform-workflow",
+      "file": "figures/concepts/01-platform-workflow.svg",
+      "png": "figures/concepts/01-platform-workflow.png",
+      "title": "Classiq·CUDA-Q·CPU·GPU·QPU 역할 지도",
+      "kind": "concept",
+      "description": "모델 작성, 합성, 실행 인터페이스, 결과 해석을 연결하고 CPU/GPU 시뮬레이션과 실제 QPU를 구별한다. 이 도식은 강연 경로의 설명용 재구성이며 실제 제품 UI가 아니다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2567s",
+        "https://nvidia.github.io/cuda-quantum/latest/using/basics/run_kernel.html"
+      ],
+      "parameters": {},
+      "sha256": "3209dfbc02ec6193bdbbae4c295b797097f8aaa7cd84a6d82de35e1cfc911285"
+    },
+    {
+      "id": "02-grover-geometry",
+      "file": "figures/concepts/02-grover-geometry.svg",
+      "png": "figures/concepts/02-grover-geometry.png",
+      "title": "Grover의 2차원 회전과 이상적 성공확률",
+      "kind": "calculation",
+      "description": "정답·비정답 중첩의 평면에서 Grover 회전을 표시하고 k=0…8의 이상적 정답 확률을 직접 계산했다. 원영상의 측정 히스토그램을 재현한 그림이 아니다.",
+      "source_urls": [
+        "https://arxiv.org/abs/quant-ph/0005055",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1113s"
+      ],
+      "parameters": {
+        "N": 64,
+        "M": 4,
+        "theta_rad": 0.25268025514207865,
+        "iterations": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "success_probabilities": [
+          0.0625,
+          0.47265625,
+          0.908447265625,
+          0.9613189697265625,
+          0.5817041397094727,
+          0.1254916787147522,
+          0.020380768924951515,
+          0.36491288826800855,
+          0.8360891748598078
+        ],
+        "k3_success": 0.9613189697265625
+      },
+      "sha256": "7057c4cd0eb4f020188b66486ee3015c661f000c77917fa42a9249fd86b1b676"
+    },
+    {
+      "id": "03-qaoa-feasible-subspace",
+      "file": "figures/concepts/03-qaoa-feasible-subspace.svg",
+      "png": "figures/concepts/03-qaoa-feasible-subspace.png",
+      "title": "QAOA의 전체 공간과 카디널리티 제약 부분공간",
+      "kind": "calculation",
+      "description": "5비트 상태 32개를 전수 열거하고 정확히 3개의 자산을 선택하는 10개를 강조했다. 2%와 25%는 재현하거나 가상의 분포로 그리지 않았으며 초기 상태·탐색 공간의 차이만 설명한다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1319s",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=1538s",
+        "https://arxiv.org/abs/1411.4028"
+      ],
+      "parameters": {
+        "n_assets": 5,
+        "cardinality": 3,
+        "total_states": 32,
+        "feasible_states": 10,
+        "bitstring_order": "lexicographic 00000 to 11111"
+      },
+      "sha256": "58c533531cf996fbb4d70f3defa050356d45fa8115c6d111bc7a96b762364d35"
+    },
+    {
+      "id": "04-payoff-probability-encoding",
+      "file": "figures/concepts/04-payoff-probability-encoding.svg",
+      "png": "figures/concepts/04-payoff-probability-encoding.png",
+      "title": "가격 분포·보수·기대값의 확률 인코딩",
+      "kind": "calculation",
+      "description": "가격의 확률과 보수를 별도 축에 표시하고 정규화·가중·역변환으로 기대 보수 13과 표시 비트 확률 13/30을 연결했다. 원영상의 로그정규분포나 실제 시장 입력이 아닌 손계산 예제다.",
+      "source_urls": [
+        "https://arxiv.org/abs/quant-ph/0005055",
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2358s",
+        "https://www.youtube.com/watch?v=diJa_JRJ2F8&t=2181s"
+      ],
+      "parameters": {
+        "prices": [
+          80,
+          100,
+          120,
+          140
+        ],
+        "probabilities": [
+          0.1,
+          0.2,
+          0.4,
+          0.3
+        ],
+        "strike": 110,
+        "payoffs": [
+          0,
+          0,
+          10,
+          30
+        ],
+        "payoff_normalization": 30,
+        "expected_undiscounted_payoff": 13.0,
+        "indicator_probability": 0.43333333333333335,
+        "exercise_probability": 0.7
+      },
+      "sha256": "4b1dd8e937f9499afee019327714856aab7d4f486c88f142aecf1e2c14502411"
+    },
+    {
+      "id": "05-iqae-adaptive-loop",
+      "file": "figures/concepts/05-iqae-adaptive-loop.svg",
+      "png": "figures/concepts/05-iqae-adaptive-loop.png",
+      "title": "단순 측정과 IQAE의 적응적 증폭·추정 루프",
+      "kind": "concept",
+      "description": "같은 인코딩 확률을 반복 측정하는 k=0 방식과, 서로 다른 Grover power·측정 통계·고전적 구간 갱신을 사용하는 IQAE를 비교한다. 고전 Monte Carlo의 모든 기법을 이 상단 경로로 대표하지 않는다.",
+      "source_urls": [
+        "https://arxiv.org/abs/1912.05559",
+        "https://www.youtube.com/watch?v=E4Uko49fBaU&t=2567s",
+        "https://www.youtube.com/watch?v=diJa_JRJ2F8&t=2315s"
+      ],
+      "parameters": {
+        "cost_definition": "Q^k A circuit uses 2k+1 calls of A or A† under the standard Grover decomposition; shot count is Σ n_k",
+        "no_numerical_benchmark": true
+      },
+      "sha256": "f377cf45e7184e676f003dfbb7724beb50a6222aae369395137baec0aa6be355"
+    },
+    {
+      "id": "06-resource-scope-tradeoffs",
+      "file": "figures/concepts/06-resource-scope-tradeoffs.svg",
+      "png": "figures/concepts/06-resource-scope-tradeoffs.png",
+      "title": "폭·깊이 교환과 다기간 포트폴리오 축소의 범위",
+      "kind": "concept",
+      "description": "일반적인 폭·깊이 교환과 발표 화면의 400큐비트 전체 10일, 하루 40큐비트, 방향 고정 하루 20큐비트를 분리해 설명한다. 일별 처리의 고전 DP 비용과 방향 고정의 헤지 자유도 손실을 보존했다. 원 실험을 재현한 벤치마크가 아니다.",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=gaLZNQkcsp8&t=917s",
+        "https://www.youtube.com/watch?v=QtKbkvWgncQ&t=2934s",
+        "https://docs.classiq.io/qmod-reference/language-reference/uncomputation"
+      ],
+      "parameters": {
+        "stocks": 10,
+        "whole_horizon_days": 10,
+        "exact_counts_qubits_per_stock_day": 4,
+        "direction_fixed_qubits_per_stock_day": 2,
+        "whole_horizon_qubits": 400,
+        "daily_exact_qubits": 40,
+        "daily_direction_fixed_qubits": 20,
+        "scope_warning": "400 is all 10 days; 40 and 20 are per day; 20 removes direction choice"
+      },
+      "sha256": "5c7c994e0e064802a9a6ef1da37a7cf92a88b27d0acbb732b9dba843617729b8"
+    }
+  ]
+}
