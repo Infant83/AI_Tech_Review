@@ -52,7 +52,8 @@
     "audio_scope": "Browser playback checked muted. Existing PCM/decode checks unchanged; no new listening/pronunciation/comprehension study.",
     "print": "Visible print element text/geometry identical to previous layout: 97 elements per language. Existing PDFs and archive copies unchanged.",
     "independent_caption_visual_review": "Chromium/WebKit screenshots at mobile and desktop widths reviewed. No horizontal overflow, duplicated captions, text clipping or artificial picture-to-caption gap.",
-    "media_scope": "Web player and layout only; MP4, poster, VTT and TXT bytes unchanged."
+    "media_scope": "Web player and layout only; MP4, poster, VTT and TXT bytes unchanged.",
+    "native_pip_scope": "Native fallback branch implemented; no physical-device picture-in-picture verification."
   },
   "languages": {
     "ko": {
@@ -124,9 +125,20 @@
     }
   ],
   "publication_checks": {
-    "status": "local verified; mobile player publication pending",
+    "status": "live verified",
     "canonical_ko": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/#video-abstract",
     "canonical_en": "https://infant83.github.io/AI_Tech_Review/reviews/2026-10-17_noether-symmetry-conservation/en/#video-abstract",
-    "scope": "Web layout/helper only; existing approved media and PDFs unchanged."
+    "scope": "Web layout/helper only; existing approved media and PDFs unchanged.",
+    "verified_date": "2026-10-22",
+    "deployment": "https://github.com/Infant83/AI_Tech_Review/actions/runs/39705975896",
+    "source_commit": "7a205056e9a03564b2ef2a666d23a5a5303bc886",
+    "live_files": 14,
+    "full_sha256_matches": true,
+    "mp4_range_requests": "Both language MP4 start requests returned HTTP206 with exact source bytes.",
+    "live_browser": "Canonical KO/EN at390px in Chromium and WebKit (4 cases): actual74s seek, matching cue,0px picture-to-caption gap,16:9,3 downloads,0 expanded panels,0 overflow and0 page/asset errors. Versioned CSS/JS returned HTTP200. Not a physical iPhone test.",
+    "cache_versions": {
+      "css": "fab3bae34d",
+      "player": "51a0d3de88"
+    }
   }
 }
