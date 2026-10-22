@@ -14,9 +14,9 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parent
 GENERATED = ROOT / "generated"
-BACKGROUND = "#4B3930"
-BEIGE = "#EADCC3"
-PATINA = "#99BFB4"
+BACKGROUND = "#2F241E"
+BEIGE = "#B39B79"
+PATINA = "#6F9185"
 CANVAS = 512
 
 # Circle: (kind, fill, cx, cy, radius).
@@ -35,7 +35,7 @@ SHAPES = (
 # Decorative grain is deliberately much lower contrast than the brand mark.
 GRAIN_PATHS = tuple(
     (
-        "#58453A" if i % 3 else "#423229",
+        "#352921" if i % 3 else "#2B211B",
         1.5 if i % 4 else 2,
         ((x, -24), (x + 18 + (i % 3) * 7, 128), (x - 20 - (i % 4) * 5, 392), (x + 6, 536)),
     )
