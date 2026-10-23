@@ -102,6 +102,40 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-23_neural-representations-interpretability",
+        title="신경망을 이해한다는 것: 의미를 읽고 원인을 시험하는 과학",
+        subtitle="뉴런·특징·회로의 해석에서 모델 수정과 지속 감사, 신뢰의 조건까지",
+        date="2026-10-23", updated="2026-10-23", category="AI Research",
+        tags=("Mechanistic Interpretability", "Neural Representations", "Circuit Tracing", "Sparse Autoencoders", "Persona Vectors", "AI Auditing"),
+        summary="댈러스의 주도를 답하는 모델의 중간 계산에 개입한 사례에서 출발해 뉴런·특징·회로를 쉽게 설명합니다. 원래 뉴런의 정량 연구와 Goodfire 논쟁, 특징 조절·페르소나 벡터·AuditBench를 연결하며, 모델을 고치고 업데이트 뒤 다시 검사하는 연구가 신뢰와 독립 검증에 던지는 질문을 살펴봅니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, accessible bilingual writing, implications, retained conceptual cover and publication integration", "1차 자료 종합·교양과학 한영 집필·후속 논의 편집·기존 개념 표지와 게시 통합"),
+            PublicAgent("deep_mechanisms", "original papers, pinned official code, circuit/intervention/metric checking and independent scientific manuscript audit", "원 논문·고정 공식 코드·회로와 개입·평가 지표 대조 및 독립 과학 감수"),
+            PublicAgent("deep_implications", "steering, persona vectors, reasoning faithfulness and auditing research; independent exposition and implications audit", "특징 조절·페르소나·추론 충실도·감사 조사와 독립 설명·후속 논의 감수"),
+            PublicAgent("deep_production", "new bilingual teaching diagrams, font and HTML/PDF production and full output checks", "새 한영 교육 도식·글꼴·HTML/PDF 제작과 전체 출력 검수"),
+            PublicAgent("research_evidence", "initial-edition source, response, numerical-denominator and bilingual manuscript checking", "초기 리뷰의 원문·반론·수치 분모와 한영 원고 검토"),
+            PublicAgent("mechanism_figures", "initial-edition conceptual distinctions and retained bilingual representation diagram", "초기 개념 구분과 이번에 유지한 한영 표현 도식 제작"),
+            PublicAgent("pipeline_audit", "initial-edition build investigation and HTML/PDF production checks", "초기 빌드 방식 조사와 HTML/PDF 제작 검수"),
+        ),
+        verification_scope=(
+            "Original circuit-tracing papers; Arora et al. v2 and pinned official code; Goodfire essay and Gao response; feature steering, Persona Vectors v3 and AuditBench v4",
+            "Models, feature groups versus native neurons, token-position nodes, intervention targets, held-out evaluation, numerical denominators and reported-result/interpretation/proposal boundaries; no model-training or intervention reproduction",
+            "Bilingual manuscripts, three types of original teaching diagrams, retained conceptual cover, all PDF pages, local assets, metadata, mobile output and archive checksums",
+        ),
+        verification_scope_ko=(
+            "회로 추적 원 논문·Arora v2와 고정 공식 코드·Goodfire 에세이와 Gao 반론·특징 조절·Persona Vectors v3·AuditBench v4 대조",
+            "모델·특징군과 원래 뉴런·토큰 위치별 노드·개입 대상·분리 평가·수치 분모와 결과/해석/제안 경계 확인; 모델 학습·개입 독립 재현 없음",
+            "한영 원고·원본 교육 도식 3종·기존 개념 표지·전체 PDF 페이지·자산·메타데이터·모바일 출력과 아카이브 체크섬 확인",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-23",
+        human_review_level="editorial direction to adopt the topic and develop accessible science writing and implications; no line-by-line human review or comprehension study",
+        human_review_level_ko="주제 채택·교양과학 문체·후속 논의에 대한 편집 방향 반영; 문장 단위 사람 감수·이해도 평가 없음",
+        disclosure_note_ko="CLT 특징군의 도시–주–주도 개입과 원래 MLP 뉴런 연구는 별도 모델·실험입니다. 약 200개는 제한된 문법 과제의 토큰 위치별 회로 노드이며, 90%는 예비적인 뉴런 pole 판정으로 모델 이해율이 아닙니다. 금문교 실험은 가중치 수정이 아닌 활성 조절입니다. AuditBench는 버그 수정 뒤 재실행한 v4를 기준으로 읽었습니다. 모델 수리·지속 감사·독립 검증에 대한 전망은 보고 결과와 구분했습니다.",
+        disclosure_note_en="CLT feature-group city–state–capital interventions and native MLP-neuron results concern separate models and experiments. Roughly 200 refers to token-position circuit nodes on limited grammar tasks; 90% is a preliminary neuron-pole judgment, not model understanding. Golden Gate steering changes activations rather than weights. AuditBench uses v4 after corrected data and rerun experiments. Prospects for repair, continuous auditing and independent verification are distinguished from reported results.",
+    ),
+    PublicReview(
         folder="2026-10-21_sparse-reference-quantum-chemistry",
         title="양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량",
         subtitle="희소 기준상태가 에너지 측정을 줄이는 원리와 조건, Helios 실험의 정밀도와 정확도",

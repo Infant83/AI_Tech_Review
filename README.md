@@ -20,6 +20,8 @@ PDF를 등록한 뒤 `python3 scripts/publish_public_site.py --hub-only`를 실�
 
 ## 기본 흐름
 
+2026-10-23에는 [「신경망을 이해한다는 것: 의미를 읽고 원인을 시험하는 과학」](2026-10-23_neural-representations-interpretability/README.md)을 교양과학 독자를 위한 한영 심층 리뷰로 작성했다. 도시–주–주도 회로 개입에서 출발해 뉴런·특징·중첩과 원래 뉴런의 정량 연구를 설명하고, Goodfire 논쟁을 특징 조절·페르소나 벡터·AuditBench v4와 연결한다. 모델 수정의 부작용, 내부 지표와 행동 개선의 차이, 업데이트 뒤의 재검사와 독립 검증의 조건을 살핀다. 원 논문 보고·리뷰 해석·후속 제안을 구별하며 모델 실험을 독립 재현한 것으로 표시하지 않는다.
+
 2026-10-22에는 Classiq의 최근 Quantum Office Hours 세 회와 NVIDIA 공동 금융 웨비나 한 회를 [상세 학습 노트](2026-10-22_classiq-talk-series/README.md)로 정리했다. [렉처 노트 목록](https://infant83.github.io/AI_Tech_Review/lectures/)에서 [웹 노트](https://infant83.github.io/AI_Tech_Review/lectures/classiq-talk-series/)와 61쪽 PDF를 읽을 수 있다. 1.1판은 실제 질의응답·수학 보충 해설·용어집·복습 문제와 풀이에 발표 화면 13개와 독립 설명 도식 6개를 함께 제공한다. 발표자의 보고값과 계산 예제, CPU·GPU 모사와 실제 QPU 실행의 범위를 구별한 독립 학습 자료다.
 
 새 리뷰의 표지는 [과학 표지 제작 원칙](COVER_ART_DIRECTION.md)에 따라 기획하고 [표지 기획 양식](templates/cover-art-brief.md)을 주제 폴더에 남긴다. 과학 분야·표현 유형·매체를 구분하고, 의미를 보존하는 관계·기사 고유성·최근 표지와의 다양성·작은 화면에서의 판독을 함께 확인한다.
