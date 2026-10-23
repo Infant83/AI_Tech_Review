@@ -2,7 +2,7 @@
 
 - 리뷰 제목·슬러그: 신경망을 이해한다는 것: 의미를 읽고 원인을 시험하는 과학 / neural-representations-interpretability
 - 작성일: 2026-10-23
-- 상태: 제작·로컬 검수 완료; 외부 미발행
+- 상태: 제작·로컬 검수와 공개 게시 완료 · 2026-10-23
 - 담당: root 기획·생성·검수; research_evidence와 mechanism_figures 과학 내용 독립 검토
 
 ## 전달할 사건
