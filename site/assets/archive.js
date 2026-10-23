@@ -41,7 +41,7 @@
       button.classList.toggle('active', active);
       button.setAttribute('aria-pressed', String(active));
     }
-    count.textContent = en ? `${matches} documents · ${Math.min(limit, matches)} shown` : `${matches}건의 문서 · ${Math.min(limit, matches)}건 표시`;
+    count.textContent = en ? `${matches} resources · ${Math.min(limit, matches)} shown` : `${matches}건의 자료 · ${Math.min(limit, matches)}건 표시`;
     empty.hidden = matches !== 0;
     more.hidden = matches <= limit;
     more.textContent = en ? `Show more (${matches - limit} remaining) ↓` : `문서 더 보기 (${matches - limit}건 남음) ↓`;

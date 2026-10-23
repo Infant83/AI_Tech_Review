@@ -218,6 +218,59 @@ class DocumentArchiveSiteTests(unittest.TestCase):
 
         self.assertTrue(any("checksum mismatch" in error for error in errors), errors)
 
+    def test_external_book_links_are_searchable_bilingual_and_never_publish_private_pdf(self) -> None:
+        from test_external_resources import resource
+        document = archive_document()
+        self.registry([document])
+        item = resource()
+        item["title"] = 'Quantum Algorithms <First Principles> & "Derivations"'
+        (self.archive / "external-resources.json").write_text(json.dumps({"version": 1, "resources": [item]}), encoding="utf-8")
+        (self.archive / "private").mkdir()
+        private_payload = b"%PDF-1.7\nprivate copyrighted book contents"
+        (self.archive / "private/book.pdf").write_bytes(private_payload)
+
+        published = self.publish()
+
+        self.assertEqual(len(published), 1)
+        self.assertEqual((self.site / published[0]["href"]).read_bytes(), PDF_BYTES)
+        manifest = json.loads((self.site / "archive-manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["documents"], published)
+        self.assertEqual(manifest["external_resources"], [{key: value for key, value in item.items() if key != "public_reviewed"}])
+        for relative in ("index.html", "en/index.html"):
+            page = (self.site / "archive" / relative).read_text(encoding="utf-8")
+            start = page.index(f'<article id="{item["id"]}"')
+            card = page[start:page.index("</article>", start)]
+            parser = LinkParser()
+            parser.feed(card)
+            self.assertEqual({link["href"] for link in parser.links}, {item["author_url"], item["book_url"]})
+            self.assertFalse(any("download" in link for link in parser.links))
+            self.assertIn('data-series="external-book"', card)
+            self.assertIn("Muhammad Faryad", card)
+            self.assertIn("&lt;First Principles&gt; &amp; &quot;Derivations&quot;", card)
+            self.assertIn('<h2 lang="en">', card)
+            self.assertNotIn(f"files/{item['id']}.pdf", page)
+        for path in self.site.rglob("*"):
+            if path.is_file():
+                self.assertNotIn(private_payload, path.read_bytes())
+        self.assertEqual(validate_archive(self.site), [])
+        english = self.site / "archive/en/index.html"
+        english.write_text(english.read_text(encoding="utf-8").replace(item["author_url"] + '"', 'https://example.com/"'), encoding="utf-8")
+        self.assertTrue(any("external book link absent" in error for error in validate_archive(self.site)))
+
+    def test_invalid_external_registry_does_not_replace_published_archive(self) -> None:
+        from test_external_resources import resource
+        self.registry([archive_document()])
+        self.publish()
+        before = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}
+        item = resource()
+        item["book_url"] += "?token=private"
+        (self.archive / "external-resources.json").write_text(json.dumps({"version": 1, "resources": [item]}), encoding="utf-8")
+
+        with self.assertRaisesRegex(ValueError, "HTTPS"):
+            self.publish()
+
+        self.assertEqual({path.relative_to(self.site).as_posix(): path.read_bytes() for path in self.site.rglob("*") if path.is_file()}, before)
+
     def test_failed_page_render_does_not_replace_existing_archive(self) -> None:
         self.registry([archive_document()])
         self.publish()

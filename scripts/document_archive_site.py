@@ -1,4 +1,4 @@
-"""Build the public PDF library from an explicitly reviewed document registry."""
+"""Build a public library from reviewed PDFs and official external book links."""
 from __future__ import annotations
 
 import hashlib
@@ -22,8 +22,9 @@ SERIES = {
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
+    "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261020-briefings"
+LIBRARY_ASSET_VERSION = "20261023-books"
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
@@ -101,7 +102,7 @@ def render_library_navigation(documents: list[dict], area: str, language: str = 
             f'<a href="{prefix}briefings/{"en/" if en else ""}"{current("briefings")}>{"Briefings" if en else "브리핑"}<span>{briefing_count}</span></a>'
             '</div>'
             f'<a class="hub-utility" href="{prefix}archive/{"en/" if en else ""}"{current("archive")}>'
-            f'{"All-document archive" if en else "전체 자료 아카이브"}<span>{len(documents)}</span></a></nav>')
+            f'{"All-document archive" if en else "전체 자료 아카이브"}<span>{len(documents)} PDF</span></a></nav>')
 
 
 def render_learning_teaser(documents: list[dict]) -> str:
@@ -121,24 +122,25 @@ def render_learning_teaser(documents: list[dict]) -> str:
     </section>'''
 
 
-def render_archive(documents: list[dict], base_url: str, language: str = "ko") -> str:
+def render_archive(documents: list[dict], base_url: str, language: str = "ko", external_resources: list[dict] | None = None) -> str:
     en = language == "en"
+    catalog = sorted(documents + (external_resources or []), key=lambda doc: (doc["date"], doc["id"]), reverse=True)
     prefix = "../../" if en else "../"
     pdf_prefix = "../files/" if en else "files/"
     current_url = base_url + "archive/" + ("en/" if en else "")
     title = "All-document archive" if en else "전체 자료 아카이브"
-    description = ("Find preserved PDFs by title, topic and publication date. Explore the Briefings calendar or study with Lecture notes."
-                   if en else "발행한 PDF를 제목·주제·날짜로 다시 찾는 자료 보관소입니다. 날짜별 소식은 브리핑에서, 주제별 학습은 렉처 노트에서 시작하세요.")
-    counts = {key: sum(doc["series"] == key for doc in documents) for key in SERIES}
-    buttons = f'<button type="button" class="collection-button active" data-series="" aria-pressed="true">{"All documents" if en else "전체 문서"}<span>{len(documents)}</span></button>'
+    description = ("Find preserved PDFs and official book resources by title, topic and date. Explore the Briefings calendar or study with Lecture notes."
+                   if en else "발행한 PDF와 외부 서적의 공식 안내를 제목·주제·날짜로 찾습니다. 날짜별 소식은 브리핑에서, 주제별 학습은 렉처 노트에서 시작하세요.")
+    counts = {key: sum(doc["series"] == key for doc in catalog) for key in SERIES}
+    buttons = f'<button type="button" class="collection-button active" data-series="" aria-pressed="true">{"All resources" if en else "전체 자료"}<span>{len(catalog)}</span></button>'
     buttons += "".join(
         f'<button type="button" class="collection-button" data-series="{key}" aria-pressed="false">{labels[int(en)]}<span>{counts[key]}</span></button>'
         for key, labels in SERIES.items()
     )
-    months = sorted({doc["date"][:7] for doc in documents}, reverse=True)
+    months = sorted({doc["date"][:7] for doc in catalog}, reverse=True)
     month_options = "".join(f'<option value="{month}">{month}</option>' for month in months)
     cards = []
-    for doc in documents:
+    for doc in catalog:
         doc_title = doc.get("title_en") if en else doc["title"]
         doc_summary = doc.get("summary_en") if en else doc["summary"]
         doc_title = doc_title or doc["title"]
@@ -146,11 +148,25 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
         text_language = "en" if en and doc.get("title_en") else doc["language"]
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
         searchable = " ".join(str(doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "source_title")) + " " + " ".join(doc["tags"])
+        if doc.get("author"):
+            searchable += " " + doc["author"]
+        tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
+        if doc["series"] == "external-book":
+            native = ({"ko": "Korean book", "en": "English book"} if en else {"ko": "한국어 서적", "en": "영어 서적"})[doc["language"]]
+            cards.append(f'''<article id="{escape(doc['id'])}" class="document-card" data-series="external-book" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
+              <div class="document-meta"><span>{SERIES['external-book'][int(en)]}</span><time datetime="{escape(doc['date'])}">{'Added' if en else '등록'} {escape(doc['date'])}</time></div>
+              <h2 lang="{text_language}"><a href="{escape(doc['book_url'])}" target="_blank" rel="noopener">{escape(doc_title)}</a></h2>
+              <p class="document-author">{escape(doc['author'])} · {native}</p>
+              <p class="document-summary" lang="{'en' if en else 'ko'}">{escape(doc_summary)}</p>
+              <div class="tags">{tags}</div>
+              <p class="external-book-note">{'Get the PDF from the author’s site. This archive does not redistribute it.' if en else 'PDF는 저자 사이트에서 받으세요. 이 아카이브에서는 재배포하지 않습니다.'}</p>
+              <div class="document-footer"><div><a href="{escape(doc['author_url'])}" target="_blank" rel="noopener">{'Author page' if en else '저자 페이지'} ↗</a><a href="{escape(doc['book_url'])}" target="_blank" rel="noopener">{'Book & download information' if en else '책·다운로드 안내'} ↗</a></div></div>
+            </article>''')
+            continue
         pdf = f'{pdf_prefix}{escape(doc["id"])}.pdf'
         study = f'{prefix}{escape(doc["study_href"])}' if doc.get("study_href") else ""
         title_link = f'<a href="{study}">{escape(doc_title)}</a>' if study else f'<a href="{pdf}" target="_blank" rel="noopener">{escape(doc_title)}</a>'
         study_link = f'<a href="{study}">{"Korean study notes" if en else "강의 노트 읽기"} →</a>' if study else ""
-        tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
         native_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         cards.append(f'''<article class="document-card" data-series="{escape(doc['series'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
           <div class="document-meta"><span>{SERIES[doc['series']][int(en)]}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
@@ -160,7 +176,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
           <div class="document-footer"><span>{native_language} · {doc['size_bytes'] / 1024:.0f} KB</span>
           <div>{study_link}<a href="{pdf}" target="_blank" rel="noopener">{'Open PDF' if en else 'PDF 열기'} ↗</a><a href="{pdf}" download>{'Download' if en else '다운로드'} ↓</a></div></div>
         </article>''')
-    latest = documents[0]["date"] if documents else "—"
+    latest = catalog[0]["date"] if catalog else "—"
     return f'''<!doctype html>
 <html lang="{language}"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -181,19 +197,19 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko") -
     </nav>
     {render_library_navigation(documents, "archive", language, prefix)}
     <section class="hero archive-hero"><p class="eyebrow">Reference library</p><h1>{title}</h1><p class="lead">{description}</p>
-      <p class="archive-caption">{'Latest issue' if en else '최근 발행'} <time>{latest}</time> <span>·</span> {'Original PDF documents' if en else 'PDF 원본 보관'}</p>
+      <p class="archive-caption">{'Latest addition' if en else '최근 등록'} <time>{latest}</time> <span>·</span> {'Preserved PDFs & official book links' if en else 'PDF 보관본 · 서적 공식 링크'}</p>
     </section>
   </header>
   <main>
     <section class="archive-browser" aria-label="{'Find documents' if en else '문서 찾기'}">
       <div class="collection-filters" aria-label="{'Collections' if en else '문서 분류'}">{buttons}</div>
-      <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the Daily Quantum Brief series. Weekly reviews, articles and lecture notes are archived alongside it. For revised lecture notes, only the latest supplied edition is listed.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰, 수시 PDF와 렉처 노트를 함께 보관하며, 개정된 렉처 노트는 확인된 최신본만 등록합니다.'}</p>
+      <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the Daily Quantum Brief series alongside weekly reviews, articles and the latest supplied lecture notes. External books link to their authors and official book pages; their dates indicate catalog registration.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰, 수시 PDF와 확인된 최신 렉처 노트를 보관합니다. 외부 서적은 저자·책 공식 안내로 연결하며 날짜는 아카이브 등록일입니다.'}</p>
       <div class="archive-controls">
         <label class="archive-search"><span>{'Search documents' if en else '문서 검색'}</span><input id="archive-search" type="search" placeholder="{'Title, topic, keyword…' if en else '제목, 주제, 키워드로 검색…'}" autocomplete="off"></label>
-        <label><span>{'Month' if en else '발행 월'}</span><select id="archive-month"><option value="">{'All months' if en else '전체 기간'}</option>{month_options}</select></label>
+        <label><span>{'Month' if en else '발행·등록 월'}</span><select id="archive-month"><option value="">{'All months' if en else '전체 기간'}</option>{month_options}</select></label>
         <label><span>{'Sort' if en else '정렬'}</span><select id="archive-sort"><option value="newest">{'Newest first' if en else '최신순'}</option><option value="oldest">{'Oldest first' if en else '오래된순'}</option></select></label>
       </div>
-      <div class="archive-results-bar"><p id="archive-result-count" role="status">{len(documents)} {'documents' if en else '건의 문서'}</p><button type="button" id="archive-reset">{'Reset filters' if en else '필터 초기화'}</button></div>
+      <div class="archive-results-bar"><p id="archive-result-count" role="status">{len(catalog)} {'resources' if en else '건의 자료'}</p><button type="button" id="archive-reset">{'Reset filters' if en else '필터 초기화'}</button></div>
       <div class="document-grid" id="document-grid">{''.join(cards)}</div>
       <div id="archive-empty" class="archive-empty" hidden><h2>{'No matching documents' if en else '조건에 맞는 문서가 없습니다'}</h2><p>{'Try another keyword or clear the filters. Empty collections will appear here when documents are added.' if en else '검색어나 기간을 바꾸거나 필터를 초기화해 보세요. 아직 비어 있는 분류는 문서가 등록되면 이곳에 표시됩니다.'}</p></div>
       <button type="button" class="archive-more" id="archive-more" hidden>{'Show more documents' if en else '문서 더 보기'} ↓</button>
@@ -373,9 +389,15 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
 def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) -> list[dict]:
     try:
         from .archive_documents import load_documents
+        from .external_resources import load_external_resources
     except ImportError:
         from archive_documents import load_documents
+        from external_resources import load_external_resources
     source_documents = load_documents(archive_dir)
+    external_resources = load_external_resources(archive_dir)
+    if {doc["id"] for doc in source_documents} & {item["id"] for item in external_resources}:
+        raise ValueError("External resource id duplicates a PDF document")
+    external_resources = [{key: value for key, value in item.items() if key != "public_reviewed"} for item in external_resources]
     documents = []
     for source in source_documents:
         payload = (archive_dir / source["file"]).read_bytes()
@@ -413,7 +435,7 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             shutil.copyfile(archive_dir / source["file"], staging / "files" / f'{source["id"]}.pdf')
         for lang, prefix in (("ko", "../"), ("en", "../../")):
             target = staging / ("en/index.html" if lang == "en" else "index.html")
-            target.write_text(decorate(render_archive(documents, base_url, lang), prefix), encoding="utf-8")
+            target.write_text(decorate(render_archive(documents, base_url, lang, external_resources), prefix), encoding="utf-8")
         target = site_dir / "archive"
         if target.exists():
             shutil.rmtree(target)
@@ -431,7 +453,7 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
         if target.exists():
             shutil.rmtree(target)
         shutil.move(str(temporary_root / "briefings"), str(target))
-    (site_dir / "archive-manifest.json").write_text(json.dumps({"version": 1, "documents": documents}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (site_dir / "archive-manifest.json").write_text(json.dumps({"version": 1, "documents": documents, "external_resources": external_resources}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     assets = site_dir / "assets"
     (assets / "archive.css").write_text(ARCHIVE_CSS.strip() + "\n", encoding="utf-8")
     (assets / "archive.js").write_text(ARCHIVE_JS.strip() + "\n", encoding="utf-8")
@@ -468,11 +490,23 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
 
 
 def validate_archive(site_dir: Path) -> list[str]:
+    try:
+        from .external_resources import validate_resources
+    except ImportError:
+        from external_resources import validate_resources
     errors = []
     manifest_path = site_dir / "archive-manifest.json"
     if not manifest_path.exists():
         return ["missing public archive manifest"]
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    external_resources = manifest.get("external_resources", [])
+    try:
+        external_resources = validate_resources([{**item, "public_reviewed": True} for item in external_resources])
+        if {doc["id"] for doc in manifest["documents"]} & {item["id"] for item in external_resources}:
+            raise ValueError("External resource id duplicates a PDF document")
+    except (ValueError, TypeError) as exc:
+        errors.append(f"invalid public external resources: {exc}")
+        external_resources = []
     errors.extend(validate_lecture_bundles(site_dir, manifest["documents"]))
     errors.extend(validate_briefings(site_dir, manifest["documents"]))
     for relative in ("index.html", "en/index.html"):
@@ -500,6 +534,10 @@ def validate_archive(site_dir: Path) -> list[str]:
             for doc in manifest["documents"]:
                 if f"files/{doc['id']}.pdf" not in page:
                     errors.append(f"archive PDF absent from {relative}: {doc['id']}")
+            for item in external_resources:
+                for expected in (f'id="{escape(item["id"])}"', f'href="{escape(item["author_url"])}"', f'href="{escape(item["book_url"])}"'):
+                    if expected not in page:
+                        errors.append(f"external book link absent from {relative}: {item['id']}")
     return errors
 
 
@@ -578,6 +616,8 @@ ARCHIVE_CSS = '''
 .document-card h2 { font-size:20px; line-height:1.5; margin:17px 0 10px; letter-spacing:-.02em; word-break:keep-all; overflow-wrap:anywhere; }
 .document-card h2 a { text-decoration:none; }
 .document-card h2 a:hover { color:var(--green); text-decoration:underline; text-underline-offset:5px; }
+.document-author { margin:0 0 12px; color:var(--muted); font-size:13px; }
+.external-book-note { color:var(--muted); font-size:12px; line-height:1.7; margin:0 0 16px; }
 .document-summary { color:var(--muted); font-size:14px; margin:0 0 18px; word-break:keep-all; overflow-wrap:anywhere; }
 .document-card .tags { margin-top:auto; margin-bottom:22px; }
 .document-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:17px; border-top:1px solid #edf0eb; font-size:12px; color:var(--muted); }
@@ -638,7 +678,7 @@ ARCHIVE_JS = '''
       button.classList.toggle('active', active);
       button.setAttribute('aria-pressed', String(active));
     }
-    count.textContent = en ? `${matches} documents · ${Math.min(limit, matches)} shown` : `${matches}건의 문서 · ${Math.min(limit, matches)}건 표시`;
+    count.textContent = en ? `${matches} resources · ${Math.min(limit, matches)} shown` : `${matches}건의 자료 · ${Math.min(limit, matches)}건 표시`;
     empty.hidden = matches !== 0;
     more.hidden = matches <= limit;
     more.textContent = en ? `Show more (${matches - limit} remaining) ↓` : `문서 더 보기 (${matches - limit}건 남음) ↓`;
