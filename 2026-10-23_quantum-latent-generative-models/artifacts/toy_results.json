@@ -1,0 +1,147 @@
+{
+  "kind": "limited CPU run of public single-loop toy code, with review-added distinguishable control",
+  "not_reproduced": [
+    "paper Figure 1 three-loop 1-3-9 circuit",
+    "QM9",
+    "physical QPU",
+    "protein generation"
+  ],
+  "upstream_repository": "https://github.com/orcacomputing/quantum-latent-distributions",
+  "upstream_commit": "b950127d3584561fee4aea4af566bcce697d6946",
+  "upstream_license": "Apache-2.0",
+  "upstream_sha256": {
+    "src/gan.py": "734e46baf9580b817c9499fe468b98370ad2db34a10dc103178fa9a1d63e33a7",
+    "src/gaussians_utils.py": "71b1968cf312674ecc4f40663512e15865bf09610db2d1b4ccdcfc3d23791939",
+    "src/tbi_sampler.py": "5dd0893a35229d97a12a7bc50634d7ba581b3e56feb3d1bb5f35b218d6304514",
+    "src/utils.py": "29af5c596abe2faa47b3a525481531989f81251248e5e5cbafb986143df47295"
+  },
+  "seed": 20261023,
+  "circuit_seed": 20261024,
+  "sampler_seed": 20261025,
+  "device": "cpu",
+  "threads": 1,
+  "python": "3.12.14",
+  "torch": "2.2.2",
+  "numpy": "1.26.4",
+  "numba": "0.61.2",
+  "steps_per_latent": 5000,
+  "critic_steps_per_generator": 5,
+  "batch_size": 32,
+  "learning_rate": 0.0005,
+  "gradient_penalty": 10,
+  "generator": "16 -> 256 -> 256 -> 2; LeakyReLU(0.2)",
+  "critic": "2 -> 256 -> 256 -> 1; LeakyReLU(0.2)",
+  "opt": "Adam betas=(0,0.9)",
+  "circuit": "lossless single-loop, 8 input photons / 16 time bins; last loop occupancy discarded",
+  "theta_radians": [
+    1.191271628396068,
+    0.7714578425747208,
+    0.5294324003399895,
+    1.0715173754519784,
+    1.014814376504449,
+    0.06189412431467332,
+    1.2061055563673333,
+    0.6218625045720475,
+    0.4917838272999504,
+    0.7706726285617297,
+    1.549627056214281,
+    0.7722883360682957,
+    0.128063530076987,
+    0.6237311237094941,
+    0.8611368567773767,
+    1.1248217900505162
+  ],
+  "input_state": [
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0
+  ],
+  "latent_preprocessing": "photonic occupancy minus 0.5, exactly as public notebook; Gaussian unchanged",
+  "dataset": {
+    "n": 10500,
+    "n_blobs": 7,
+    "radius": 5,
+    "radial_std": 0.2,
+    "angular_std_radians": 0.05,
+    "generator": "upstream SevenGaussians internal default torch.Generator()"
+  },
+  "evaluation": {
+    "n": 10000,
+    "within_mode_radius": 0.75,
+    "within_mode_definition": "distance to closest ideal center <= 0.75",
+    "mode_coverage_definition": "number of centers with at least 1% of all generated points within radius 0.75",
+    "warning": "Review-defined diagnostics on one seed, not paper metrics or significance test"
+  },
+  "checks": {
+    "balanced_HOM_coincidence_probability": 4.930380657631324e-32,
+    "balanced_distinguishable_coincidence_probability": 0.5,
+    "beam_splitter_probability_normalization": "passed n=0..8,m=0,1,5 angles",
+    "sample_photon_conservation": "checked every sample"
+  },
+  "runs": [
+    {
+      "latent": "gaussian",
+      "training_seconds": 52.29351285099983,
+      "within_mode_fraction": 0.705,
+      "outside_mode_fraction": 0.29500000000000004,
+      "mode_counts": [
+        928,
+        1173,
+        813,
+        915,
+        1025,
+        1187,
+        1009
+      ],
+      "mode_coverage": 7,
+      "mean_nearest_center_distance": 0.6562421917915344
+    },
+    {
+      "latent": "distinguishable",
+      "training_seconds": 55.177549871004885,
+      "within_mode_fraction": 0.8087,
+      "outside_mode_fraction": 0.19130000000000003,
+      "mode_counts": [
+        1502,
+        1355,
+        899,
+        1475,
+        800,
+        862,
+        1194
+      ],
+      "mode_coverage": 7,
+      "mean_nearest_center_distance": 0.4574308693408966
+    },
+    {
+      "latent": "quantum_simulated",
+      "training_seconds": 77.27551506899181,
+      "within_mode_fraction": 0.952,
+      "outside_mode_fraction": 0.04800000000000004,
+      "mode_counts": [
+        1245,
+        1417,
+        1420,
+        1323,
+        1478,
+        1468,
+        1169
+      ],
+      "mode_coverage": 7,
+      "mean_nearest_center_distance": 0.2853745222091675
+    }
+  ]
+}

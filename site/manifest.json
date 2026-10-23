@@ -1,5 +1,161 @@
 [
   {
+    "folder": "2026-10-23_quantum-latent-generative-models",
+    "title": "광양자 샘플링과 생성형 AI: 출발 분포는 분자 설계를 바꾸는가",
+    "subtitle": "광자 간섭의 확률 규칙, 분자 생성의 성과와 고전 기준선, 단백질 설계로 넘어가기 위한 조건",
+    "date": "2026-10-23",
+    "updated": "2026-10-23",
+    "category": "Quantum Computing",
+    "tags": [
+      "Photonic Quantum Computing",
+      "Generative Models",
+      "Latent Distributions",
+      "Boson Sampling",
+      "Molecular Design",
+      "Proteína"
+    ],
+    "summary": "분자를 제안하는 생성형 AI가 무작위 숫자에서 출발한다는 질문으로 시작합니다. 두 광자의 간섭부터 잠재분포와 표현력의 조건, QM9의 품질 개선과 고전 학습 조정 뒤의 음성 결과를 설명합니다. 제한적인 CPU 예제 실행을 덧붙이고, PT-3 단백질 발표의 designability와 전체 계산비용에 남은 검증 과제를 살펴봅니다.",
+    "href": "reviews/2026-10-23_quantum-latent-generative-models/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/",
+    "thumbnail": "reviews/2026-10-23_quantum-latent-generative-models/hero.webp",
+    "assets": [
+      "hero.webp",
+      "hom_interference_ko.svg",
+      "hom_interference_mobile_ko.svg",
+      "math_40c3e2b505699b.svg",
+      "math_541fa7b8c352ba.svg",
+      "math_5aea13830f6708.svg",
+      "math_75e51a37244b90.svg",
+      "math_d7f2c948cc9fc7.svg",
+      "math_ee376b4fc31711.svg",
+      "qm9_results_ko.svg",
+      "qm9_results_mobile_ko.svg",
+      "review.css",
+      "review_ko.pdf",
+      "sampling_pipeline_ko.svg",
+      "sampling_pipeline_mobile_ko.svg",
+      "toy_latents_ko.svg",
+      "toy_latents_mobile_ko.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-10-23_quantum-latent-generative-models/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/en/",
+        "assets": [
+          "hero.webp",
+          "hom_interference_en.svg",
+          "hom_interference_mobile_en.svg",
+          "math_40c3e2b505699b.svg",
+          "math_541fa7b8c352ba.svg",
+          "math_5aea13830f6708.svg",
+          "math_75e51a37244b90.svg",
+          "math_d7f2c948cc9fc7.svg",
+          "math_ee376b4fc31711.svg",
+          "qm9_results_en.svg",
+          "qm9_results_mobile_en.svg",
+          "review.css",
+          "review_en.pdf",
+          "sampling_pipeline_en.svg",
+          "sampling_pipeline_mobile_en.svg",
+          "toy_latents_en.svg",
+          "toy_latents_mobile_en.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex",
+        "system_ko": "OpenAI Codex",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 6,
+        "agents": [
+          {
+            "name": "root",
+            "role": "primary-source synthesis, accessible Korean writing, original conceptual cover, scientific editing and publication integration",
+            "role_ko": "1차 자료 종합·교양과학 한국어 집필·원본 개념 표지·과학 편집 및 게시 통합"
+          },
+          {
+            "name": "academic_sources",
+            "role": "primary-paper, theory, metric, version and claim-scope checks; independent scientific manuscript audit",
+            "role_ko": "원 논문·이론·지표·버전과 주장 범위 대조 및 독립 과학 감수"
+          },
+          {
+            "name": "academic_sources/theory_crosscheck",
+            "role": "independent mathematical assumptions and theorem-scope crosscheck",
+            "role_ko": "수학적 가정과 정리 적용 범위의 독립 교차 검토"
+          },
+          {
+            "name": "applications_sources",
+            "role": "limited single-seed CPU training, exact small-case sampler checks and original bilingual explanatory figures",
+            "role_ko": "한 시드의 제한 CPU 학습·작은 정확 사례의 표본기 검사·원본 한영 설명 도표"
+          },
+          {
+            "name": "review_format",
+            "role": "bilingual math and font typesetting, HTML/PDF production and complete output checks",
+            "role_ko": "한영 수식·글꼴 조판·HTML/PDF 제작과 전체 출력 검사"
+          },
+          {
+            "name": "publish_audit",
+            "role": "independent explanation and conceptual-cover audit, complete English translation and publication audit",
+            "role_ko": "설명·개념 표지의 의미 독립 감사·영어 전문 번역 및 출판 감사"
+          }
+        ],
+        "agent_roles": [
+          "root — primary-source synthesis, accessible Korean writing, original conceptual cover, scientific editing and publication integration",
+          "academic_sources — primary-paper, theory, metric, version and claim-scope checks; independent scientific manuscript audit",
+          "academic_sources/theory_crosscheck — independent mathematical assumptions and theorem-scope crosscheck",
+          "applications_sources — limited single-seed CPU training, exact small-case sampler checks and original bilingual explanatory figures",
+          "review_format — bilingual math and font typesetting, HTML/PDF production and complete output checks",
+          "publish_audit — independent explanation and conceptual-cover audit, complete English translation and publication audit"
+        ],
+        "agent_roles_ko": [
+          "root — 1차 자료 종합·교양과학 한국어 집필·원본 개념 표지·과학 편집 및 게시 통합",
+          "academic_sources — 원 논문·이론·지표·버전과 주장 범위 대조 및 독립 과학 감수",
+          "academic_sources/theory_crosscheck — 수학적 가정과 정리 적용 범위의 독립 교차 검토",
+          "applications_sources — 한 시드의 제한 CPU 학습·작은 정확 사례의 표본기 검사·원본 한영 설명 도표",
+          "review_format — 한영 수식·글꼴 조판·HTML/PDF 제작과 전체 출력 검사",
+          "publish_audit — 설명·개념 표지의 의미 독립 감사·영어 전문 번역 및 출판 감사"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-10-23",
+        "primary_source_check": true,
+        "scope": [
+          "ICML 2026 camera-ready paper, arXiv v3 and official code pinned at b950127d3584561fee4aea4af566bcce697d6946; theoretical inverse/regularity assumptions, Table 4 denominators and standard errors, Appendix H negative results and postselection/cost conditions",
+          "Original Proteína model and designability protocol, separate PT-2 peptide study and PT-3 announcement distinguished; no corresponding detailed quantum-Proteína paper or reproducible evaluation confirmed at the evidence cutoff",
+          "Limited classical CPU training of a single-loop synthetic-point example with one training seed; exact two-photon and optical-unitary checks; no independent reproduction of the paper's three-loop Figure 1, QM9, QPU or protein experiments",
+          "Bilingual manuscripts, original conceptual cover and deterministic figures, all PDF pages, metadata, local assets, mobile output and archive checksums"
+        ],
+        "scope_ko": [
+          "ICML 2026 게재본·arXiv v3·b950127d3584561fee4aea4af566bcce697d6946 고정 공식 코드 대조; 역함수와 정규성의 이론 조건·표 4 분모와 표준오차·부록 H 음성 결과·후선택과 비용 조건 확인",
+          "원 Proteína 모델의 designability 절차·별도 PT-2 펩타이드 연구·PT-3 발표 구별; 근거 기준일까지 해당 양자 Proteína 확장판의 상세 논문이나 재현 가능한 평가 자료를 확인하지 못함",
+          "한 훈련 시드·단일 루프의 합성 점 예제를 고전 CPU에서 제한 학습하고 두 광자 확률·광학 유니터리를 검사; 논문 Figure 1의 3루프·QM9·QPU·단백질 실험 독립 재현 없음",
+          "한영 원고·원본 개념 표지와 결정론적 도표·전체 PDF 페이지·메타데이터·자산·모바일 출력과 아카이브 체크섬 확인"
+        ],
+        "human_review_level": {
+          "ko": "주제·집필·공개 게시와 교양과학 편집 방향 요청 반영; 문장 단위 사람 승인·독자 이해도 실험 없음",
+          "en": "topic, writing, public posting and accessible scientific editorial direction requested; no line-by-line human approval or reader comprehension study"
+        }
+      },
+      "note": {
+        "ko": "표 4의 1,962개는 10,000회 시도 중 유효하고 서로 다른 분자의 평균 수이고, 오차는 20개 훈련 시드의 표준오차입니다. 가우시안 대비 약 48.6%의 상대 증가와 6.42%포인트 차이를 구별합니다. 광학 표본은 한 고정 회로에서 수집했습니다. CPU 점 예제는 리뷰의 제한 실행이며 논문 실험의 재현이나 양자우위 검정이 아닙니다. PT-3의 20%는 공급자 발표이고, 별도 펩타이드의 실험실 결과와 합치지 않습니다. 개념 표지와 정량 도표를 구분했습니다.",
+        "en": "Table 4's 1,962 is the mean count of valid, unique molecules per 10,000 attempts; errors are standard errors over 20 training seeds. A roughly 48.6% relative increase over Gaussian is distinct from a 6.42 percentage-point difference. Optical samples came from one fixed circuit. The CPU point example is a limited review run, not a reproduction of the paper's experiments or a quantum-advantage test. PT-3's 20% is a supplier announcement and is not combined with separate peptide laboratory results. The conceptual cover and quantitative figures are distinguished."
+      }
+    }
+  },
+  {
     "folder": "2026-10-23_neural-representations-interpretability",
     "title": "신경망을 이해한다는 것: 의미를 읽고 원인을 시험하는 과학",
     "subtitle": "뉴런·특징·회로의 해석에서 모델 수정과 지속 감사, 신뢰의 조건까지",

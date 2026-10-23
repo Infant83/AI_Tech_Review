@@ -1,0 +1,84 @@
+{
+  "source": "https://arxiv.org/html/2508.19857v3#S4.SS2.SSS3",
+  "published_version": "https://proceedings.mlr.press/v306/bacarreza26a.html",
+  "table": 4,
+  "evidence": "author-reported; not independently reproduced",
+  "spread": "standard error of the mean over 20 training seeds",
+  "latent_dimension": 32,
+  "generation_attempts_per_evaluation": 10000,
+  "qpu": {
+    "nominal_effective_photons": 16,
+    "channels": 32,
+    "collected_samples": 500000,
+    "circuit_realizations": 1,
+    "post_selection": "all 32 input bins populated; detections with fewer than 16 photons discarded",
+    "training_seed_scope": "20 training seeds reuse one hardware sample pool, not 20 independent device experiments"
+  },
+  "metrics": {
+    "fcd": "Frechet ChemNet Distance; lower is better",
+    "valid_unique": "number of chemically valid, nonduplicated molecules; higher is better",
+    "novel": "valid and unique molecules absent from training set; higher is better"
+  },
+  "rows": [
+    {
+      "latent": "quantum_real",
+      "fcd": 1.41,
+      "fcd_se": 0.07,
+      "valid_unique": 1962,
+      "valid_unique_se": 75,
+      "novel": 1084,
+      "novel_se": 45,
+      "fcd_reported": "1.410 \u00b1 0.07",
+      "valid_unique_reported": "1962 \u00b1 75",
+      "novel_reported": "1084 \u00b1 45"
+    },
+    {
+      "latent": "quantum_simulated",
+      "fcd": 1.414,
+      "fcd_se": 0.07,
+      "valid_unique": 1903,
+      "valid_unique_se": 66,
+      "novel": 1073,
+      "novel_se": 36,
+      "fcd_reported": "1.414 \u00b1 0.07",
+      "valid_unique_reported": "1903 \u00b1 66",
+      "novel_reported": "1073 \u00b1 36"
+    },
+    {
+      "latent": "photonic_distinguishable",
+      "fcd": 1.56,
+      "fcd_se": 0.09,
+      "valid_unique": 1638,
+      "valid_unique_se": 102,
+      "novel": 900,
+      "novel_se": 50,
+      "fcd_reported": "1.560 \u00b1 0.09",
+      "valid_unique_reported": "1638 \u00b1 102",
+      "novel_reported": "900 \u00b1 50"
+    },
+    {
+      "latent": "bernoulli",
+      "fcd": 1.646,
+      "fcd_se": 0.09,
+      "valid_unique": 1391,
+      "valid_unique_se": 77,
+      "novel": 790,
+      "novel_se": 44,
+      "fcd_reported": "1.646 \u00b1 0.09",
+      "valid_unique_reported": "1391 \u00b1 77",
+      "novel_reported": "790 \u00b1 44"
+    },
+    {
+      "latent": "gaussian",
+      "fcd": 1.823,
+      "fcd_se": 0.07,
+      "valid_unique": 1320,
+      "valid_unique_se": 53,
+      "novel": 768,
+      "novel_se": 35,
+      "fcd_reported": "1.823 \u00b1 0.07",
+      "valid_unique_reported": "1320 \u00b1 53",
+      "novel_reported": "768 \u00b1 35"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "title": "Photonic latent-distribution review figure provenance",
+  "date": "2026-10-23",
+  "hero": {
+    "path": "artifacts/hero.webp",
+    "dimensions": [
+      1600,
+      900
+    ],
+    "mode": "generate",
+    "method": "Built-in image_gen; RGB WebP derivative",
+    "prompt": "Use case: scientific-educational. Asset type: original 16:9 editorial cover for a rigorous, accessible review of photonic quantum sampling and the starting distributions of generative molecular models. Primary request: make the relationship DIFFERENT STARTING STATISTICS, SAME KIND OF GENERATIVE TRANSFORMATION, DIFFERENT CANDIDATE STRUCTURES legible as an elegant conceptual scene. Create a refined flat screen-print and gouache editorial illustration on warm pale ivory, restrained cobalt-blue, vermilion, amber and charcoal inks, with generous negative space and subtle ink texture. Two parallel horizontal compositions stacked with clear breathing room: at the upper left, a compact motif of overlapping light fringes gathers into an irregular structured cluster of small dots; at the lower left, a softer smooth cloud of dots has visibly different organization. In the center of each row, the same stylized abstract folding mechanism, like an identical broad curved strip of paper passing through a simple bend, transforms the dots into a small group of distinct folded ribbon candidates on the right. The two folding mechanisms have the same shape and scale. Both rows produce visually interesting, equally plausible candidates; do not portray one row as a winner, larger yield, failure or proven better quality. The folded ribbons should suggest generated molecular or protein-shape candidates without drawing literal atoms, chemical bonds or a real known protein. The upper light-fringe motif should make optical interference recognizable, while the rest stays graphic and quiet. Readable at small thumbnail size, crisp deliberate silhouettes, strong rhythmic arrangement and visual hierarchy, sophisticated science-magazine composition. It is an independent conceptual metaphor, not an apparatus diagram, measured probability plot, real chemical structure, quantitative benchmark or claim that photons physically assemble molecules. No words, letters, numbers, equations, labels, arrows, logos, watermarks, people, robots, brains, circuit-board patterns, shiny metal balls, deep-space background, neon haze, glass architecture, perspective corridor or imitation of any named artist or publication's specific illustration. Exact wide 16:9 composition.",
+    "conceptual": true,
+    "claim": "Two sample patterns pass through the same kind of abstract transformation and yield different ribbon candidates. No output is marked superior. Fringes, dots, folds and counts are illustrative, not a real apparatus, computed distribution or protein structure."
+  },
+  "sources": {
+    "main_paper": "https://proceedings.mlr.press/v306/bacarreza26a.html",
+    "code_commit": "b950127d3584561fee4aea4af566bcce697d6946"
+  },
+  "deterministic_figures": [
+    {
+      "stem": "sampling_pipeline",
+      "type": "original explanatory diagram",
+      "meaning": "Classical or photonic samples feed separately trained classical generators of the same architecture, followed by independent output evaluation.",
+      "source": "Bacarreza et al., ICML 2026 and pinned official code",
+      "limits": "No gradient through the QPU, actual hardware wiring or measured speedup.",
+      "variants": [
+        "artifacts/sampling_pipeline_ko.svg",
+        "artifacts/sampling_pipeline_en.svg",
+        "artifacts/sampling_pipeline_mobile_ko.svg",
+        "artifacts/sampling_pipeline_mobile_en.svg"
+      ],
+      "production": "artifacts/build_figures.py; outlined SVG text, independently inspected desktop/mobile layouts"
+    },
+    {
+      "stem": "hom_interference",
+      "type": "exact teaching calculation",
+      "data": "artifacts/hom_probabilities.json",
+      "meaning": "Lossless ideal 50:50 splitter, one photon per input: distinguishable (1/4,1/2,1/4), indistinguishable (1/2,0,1/2) for outputs (2,0),(1,1),(0,2).",
+      "limits": "Ideal simultaneous matching wave packets and polarization; not measured visibility or quantum advantage.",
+      "variants": [
+        "artifacts/hom_interference_ko.svg",
+        "artifacts/hom_interference_en.svg",
+        "artifacts/hom_interference_mobile_ko.svg",
+        "artifacts/hom_interference_mobile_en.svg"
+      ],
+      "production": "artifacts/build_figures.py; outlined SVG text, independently inspected desktop/mobile layouts"
+    },
+    {
+      "stem": "qm9_results",
+      "type": "redrawn author-reported data",
+      "data": [
+        "artifacts/qm9_table4.json",
+        "artifacts/qm9_table4.csv"
+      ],
+      "source": "ICML camera-ready Table 4, latent dimension 32; 10,000 generation attempts, 20 training seeds, mean ± standard error.",
+      "limits": "One fixed hardware circuit/sample pool; not 20 independent device realizations. No independent QM9 reproduction.",
+      "variants": [
+        "artifacts/qm9_results_ko.svg",
+        "artifacts/qm9_results_en.svg",
+        "artifacts/qm9_results_mobile_ko.svg",
+        "artifacts/qm9_results_mobile_en.svg"
+      ],
+      "production": "artifacts/build_figures.py; outlined SVG text, independently inspected desktop/mobile layouts"
+    },
+    {
+      "stem": "toy_latents",
+      "type": "limited review-generated classical CPU experiment",
+      "data": [
+        "artifacts/toy_results.json",
+        "artifacts/toy_results.csv",
+        "artifacts/toy_points.npz"
+      ],
+      "code": [
+        "artifacts/run_toy.py",
+        "artifacts/verify_toy_sampler.py"
+      ],
+      "meaning": "One training seed 20261023, 5,000 steps, single-loop 8-photon/16-bin simulator and matched distinguishable control. Review-defined concentration diagnostic at radius 0.75.",
+      "limits": "Not the paper three-loop Figure 1, QM9, physical QPU or protein reproduction; no significance test or general superiority claim.",
+      "variants": [
+        "artifacts/toy_latents_ko.svg",
+        "artifacts/toy_latents_en.svg",
+        "artifacts/toy_latents_mobile_ko.svg",
+        "artifacts/toy_latents_mobile_en.svg"
+      ],
+      "production": "artifacts/build_figures.py; outlined SVG text, independently inspected desktop/mobile layouts"
+    }
+  ],
+  "distribution": {
+    "allowed": "Final HTML/PDF, referenced per-language SVGs, cover WebP and CSS embedding licensed font subsets and full license.",
+    "excluded": "Source captures, research notes, raw paper PDFs, QA screens, scripts, data/provenance JSON/CSV, Markdown and internal paths."
+  },
+  "inspection": {
+    "planning": "cover-art-brief.md",
+    "completed": [
+      "Compared concept against the four recent covers before generation.",
+      "Inspected generated two-row composition: paired transformation motifs and equal numbers of unranked output forms; no text or fabricated chart.",
+      "Inspected 320×180 thumbnail and 640×360 grayscale: the two sample patterns, paired transformations and unranked ribbon groups remain legible.",
+      "Independent conceptual-cover audit by publish_audit passed; no actual apparatus, protein or outcome ranking implied.",
+      "All 16 deterministic SVG variants inspected and checked: artifacts/figure_validation.json.",
+      "Final Korean 9-page and English 11-page PDFs rendered and every page inspected; all fonts embedded, no attachment/private URI or missing image.",
+      "Desktop and 390px HTML reviewed: cover placement, all four figure pairs, captions, six equations, metadata and links passed; no document overflow."
+    ],
+    "pending": [
+      "Live publication and deployed-file checksum inspection"
+    ]
+  }
+}
