@@ -102,6 +102,40 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-23_php-ai-vulnerability-disclosure",
+        title="AI 시대의 취약점과 수리의 시간: PHP 보안 사태가 드러낸 병목",
+        subtitle="메모리 오류의 원리에서 AI 보조 발견, 수리의 속도와 조정된 공개까지",
+        date="2026-10-23", updated="2026-10-23", category="AI Security",
+        tags=("AI Security", "PHP2Shell", "Memory Safety", "Vulnerability Disclosure", "Open Source"),
+        summary="PHP의 메모리 부족과 요청 상태의 수명 오류에서 출발해 AI 보조 연구가 오래된 징후를 공격 실증으로 연결한 과정을 설명합니다. 연구진의 시연과 실제 침해, 보급 통계와 피해 규모를 구별하고, 빨라진 발견이 조정된 공개·유지보수·실제 패치 적용으로 이어지기 위한 조건을 살펴봅니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        ai_model="exact model identifier not retained", ai_model_ko="정확한 모델 식별자는 보존되지 않음",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, accessible Korean writing, English manuscript audit, conceptual cover planning and editorial integration", "1차 자료 종합·교양과학 한국어 집필·영어 원고 검토·개념 표지 기획 및 편집 통합"),
+            PublicAgent("php_mechanism", "official PHP advisory, mechanism, affected-condition and timeline checks; independent scientific manuscript and figure audit; publication registration", "공식 PHP 권고·원인·영향 조건과 연혁 대조·독립 원고 및 도식 과학 감수·게시 등록"),
+            PublicAgent("ai_claims", "AI contribution, reporting claims, sensor observations and implications crosschecks; independent exposition audit and full English translation", "AI 기여·보도 주장·센서 관측 및 후속 논의 대조·독립 설명 검토·영어 전문 번역"),
+            PublicAgent("production_setup", "original bilingual explanatory figures, font and HTML/PDF production and output checks", "원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 출력 검사"),
+        ),
+        verification_scope=(
+            "Official PHP advisories, release notices and manual; memory/request lifetimes, OOM handling, worker privileges, conditional FPM paths and the separate October 23 session advisory",
+            "Discovery and maintainer accounts, AWS sensor observations, revised exploitability assessments and reporting frames; research demonstrations, attack attempts and confirmed real-world compromise distinguished",
+            "Numerical denominators, CVSS severity, AI-assisted case reports versus controlled model evaluation, bilingual manuscripts, deterministic teaching figures and conceptual cover; no independent attack or exploit reproduction, model benchmark or global loss estimate",
+            "HTML/PDF assets, metadata, local links, desktop/mobile output and archive consistency; no video produced",
+        ),
+        verification_scope_ko=(
+            "공식 PHP 권고·릴리스 공지·매뉴얼 대조; 메모리와 요청의 수명·OOM 처리·워커 권한·조건부 FPM 경로 및 10월23일 별도 세션 공지 확인",
+            "발견·유지보수 측 기록·AWS 센서 관측·공격 성립 범위의 수정 평가와 보도 관점 대조; 연구진의 실증·공격 시도·확인된 실제 침해 구별",
+            "수치 분모·CVSS 심각도·AI 보조 사례와 통제된 모델 평가의 차이·한영 원고·결정론적 설명 도식과 개념 표지 검토; 독립 공격·exploit 재현·모델 성능 대조·세계 피해액 추정 없음",
+            "HTML/PDF 자산·메타데이터·로컬 링크·PC와 모바일 출력 및 아카이브 정합성 확인; 영상 제작 없음",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-23",
+        human_review_level="editorial direction to develop the topic, accessible scientific writing and implications incorporated; no line-by-line human review or reader comprehension study",
+        human_review_level_ko="주제 발전·교양과학 문체·후속 논의에 대한 편집 방향 반영; 문장 단위 사람 감수·독자 이해도 평가 없음",
+        disclosure_note_ko="기사에서 언급하는 보안 연구용 AI 모델과 이 글의 작성 시스템을 구별하며, 작성 세션의 정확한 모델 식별자는 미보존입니다. PHP 사용 비중은 취약·침해 비율이 아니고, CVSS 점수는 공격 성공 확률이 아닙니다. AWS의 10월17일 관측은 공격 시도이며 8월의 AI 보조 발견보다 늦습니다. 10월23일 공지는 별도 CVE의 드문 세션 설정 경로에 관한 것입니다. 공격자 AI 사용·전 세계 침해 규모·모델의 독자적 기여율은 확인하지 않았으며, 수리 역량과 공개 제도의 후속 과제는 보고 결과와 구별했습니다.",
+        disclosure_note_en="The security-research AI models discussed in the article are distinct from its writing system; the exact model identifier for the writing session was not retained. PHP usage share is neither vulnerability prevalence nor compromise rate, and CVSS severity is not attack success probability. AWS's October 17 observation concerns an attempt and follows the AI-assisted August findings. The October 23 notice concerns a rare session configuration path under a separate CVE. Attacker AI use, global compromise totals and model-only contributions were not established; proposed work on repair capacity and disclosure is distinguished from reported results.",
+    ),
+    PublicReview(
         folder="2026-10-23_quantum-latent-generative-models",
         title="광양자 샘플링과 생성형 AI: 출발 분포는 분자 설계를 바꾸는가",
         subtitle="광자 간섭의 확률 규칙, 분자 생성의 성과와 고전 기준선, 단백질 설계로 넘어가기 위한 조건",
