@@ -1,8 +1,8 @@
 # Photonic sampling and quantum latent generative models
 
-Bilingual AI Tech Review prepared for publication on 2026-10-23. Korean is canonical; the English edition preserves the same reported values, comparison conditions and execution boundaries.
+Bilingual AI Tech Review published on 2026-10-23. Korean is canonical; the English edition preserves the same reported values, comparison conditions and execution boundaries.
 
-Intended public destinations: [한국어 리뷰](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/), [English edition](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/en/), and [document archive](https://infant83.github.io/AI_Tech_Review/archive/).
+Public destinations: [한국어 리뷰](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/), [English edition](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/en/), and [document archive](https://infant83.github.io/AI_Tech_Review/archive/).
 
 ## Contents
 
@@ -53,6 +53,14 @@ The Korean PDF has 9 pages and the complete English PDF has 11 pages. Every page
 
 The related repository test suite ran 78 tests: 77 passed and one optional Python-Markdown test was skipped because that dependency is absent. The limited CPU experiment and exact small-case checks have their own recorded scope in `artifacts/FIGURE_PROVENANCE.md`; they are not molecular or physical-QPU replications.
 
-The finalized PDFs are registered in the review and document-archive catalogs. Korean and English each have four byte-identical copies: package output, source archive, public review and public archive. All 44 previous review records and 74 previous archive records were preserved. Live deployment is recorded separately after verification.
+The finalized PDFs are registered in the review and document-archive catalogs. Korean and English each have four byte-identical copies: package output, source archive, public review and public archive. All 44 previous review records and 74 previous archive records were preserved. Live deployment and verification are recorded below.
 
 An independent publication audit passed after restoring all prior review files: the public-site validator returned no errors, the new language variants have single bylines/disclosures and six recorded roles, all local links/assets resolve, and both archive manifests match the final PDF sizes and SHA256 values.
+
+## Live publication · 2026-10-23
+
+Published the [Korean review](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/) and [complete English edition](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-23_quantum-latent-generative-models/en/), with final PDFs in the document archive. The publication source commit is `c71d6e9ca5c8299e37c2004bd4f1fed50b73aa5b`. [Publish workflow](https://github.com/Infant83/AI_Tech_Review/actions/runs/39943309073) and [Pages deployment](https://github.com/Infant83/AI_Tech_Review/actions/runs/39943405587) both succeeded.
+
+Both canonical language URLs returned HTTP 200 and matched the local pages. All 43 checked deployed files—including full review assets, both PDFs, archive copies, the hub and catalogs—matched their reviewed local SHA256 values. The unrelated video-pilot work was excluded from this publication.
+
+Live Chrome inspection also passed for both languages at 1440×1000 and 390×844. Titles, the cover and every image loaded; all four mobile figure variants were selected correctly. Korean → English → Korean navigation and both PDF links worked. Document overflow, page errors and console errors/warnings were zero. QA screenshots and detailed records remain in ignored temporary storage.

@@ -3,7 +3,7 @@
 - 리뷰: 광양자 샘플링과 생성형 AI: 출발 분포는 분자 설계를 바꾸는가
 - 슬러그: 2026-10-23_quantum-latent-generative-models
 - 작성일: 2026-10-23
-- 상태: 제작·개념·최종 HTML/PDF 검수 완료; 공개 배포 확인 대기
+- 상태: 제작·개념·최종 HTML/PDF와 공개 배포 검수 완료
 - 기획·제작: root. 과학·설명 검토는 별도 역할이 수행한다.
 
 ## 전달할 사건
@@ -53,3 +53,7 @@
 - English: Interference-like light bands, clustered samples and folded ribbons symbolize how a starting distribution can change the composition of generated candidates. AI-generated conceptual illustration, not an optical apparatus, protein structure or computed result.
 - 대체 텍스트: 서로 다른 빛과 점의 패턴이 변환 틀을 거쳐 서로 다른 접힌 리본 후보로 이어지는 개념 그림.
 - provenance: figure-manifest.json. 조사 원문·QA 화면·내부 경로는 공개 배포물에 포함하지 않는다.
+
+## 공개 배포 검수 · 2026-10-23
+
+한영 공개 주소에서 표지와 관련 자산의 HTTP 200·로컬 파일 SHA256 일치를 확인했다. 실제 Chrome의 1440px·390px 한영 화면에서도 표지와 캡션, 모바일 도표가 정상 표시됐다. 언어 전환·PDF 링크가 작동하며 가로 넘침·이미지 누락·브라우저 오류가 없다. QA 화면과 내부 기록은 공개 자산에 넣지 않았다.
