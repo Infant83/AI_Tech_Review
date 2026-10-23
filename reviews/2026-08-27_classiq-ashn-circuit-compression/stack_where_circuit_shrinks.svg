@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">회로가 짧아지는 네 층</title>
+  <desc id="desc">기능 모델, 논리 회로 합성, 네이티브 매핑과 라우팅, 펄스와 calibration의 네 층에서 Classiq과 AshN의 주된 최적화 범위를 비교한다.</desc>
+  <rect width="1200" height="720" rx="24" fill="#f8f7f3"/>
+  <text x="64" y="68" font-family="Noto Sans KR, Segoe UI, sans-serif" font-size="34" font-weight="800" fill="#17211d">회로가 짧아지는 위치는 하나가 아닙니다</text>
+  <text x="64" y="104" font-family="Noto Sans KR, Segoe UI, sans-serif" font-size="18" fill="#5f6b65">같은 기능을 유지하면서 각 층이 서로 다른 구현 자유도를 사용합니다.</text>
+
+  <g font-family="Noto Sans KR, Segoe UI, sans-serif">
+    <rect x="300" y="144" width="620" height="104" rx="16" fill="#e9f3ef" stroke="#0f766e" stroke-width="2"/>
+    <circle cx="350" cy="196" r="26" fill="#0f766e"/>
+    <text x="350" y="203" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">1</text>
+    <text x="394" y="184" font-size="24" font-weight="800" fill="#17211d">기능 모델 · Qmod</text>
+    <text x="394" y="218" font-size="17" fill="#5f6b65">무엇을 계산할지, 허용 width·오차·목표를 기술</text>
+
+    <path d="M610 248v30" stroke="#82918a" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="300" y="278" width="620" height="104" rx="16" fill="#e9eef5" stroke="#25456f" stroke-width="2"/>
+    <circle cx="350" cy="330" r="26" fill="#25456f"/>
+    <text x="350" y="337" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">2</text>
+    <text x="394" y="318" font-size="24" font-weight="800" fill="#17211d">논리 합성</text>
+    <text x="394" y="352" font-size="17" fill="#5f6b65">adder·MCX·ancilla·uncomputation을 선택</text>
+
+    <path d="M610 382v30" stroke="#82918a" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="300" y="412" width="620" height="104" rx="16" fill="#f6eee2" stroke="#a35a16" stroke-width="2"/>
+    <circle cx="350" cy="464" r="26" fill="#a35a16"/>
+    <text x="350" y="471" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">3</text>
+    <text x="394" y="452" font-size="24" font-weight="800" fill="#17211d">네이티브 매핑 · 라우팅</text>
+    <text x="394" y="486" font-size="17" fill="#5f6b65">coupling graph에서 SWAP을 넣고 native gate로 분해</text>
+
+    <path d="M610 516v30" stroke="#82918a" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="300" y="546" width="620" height="104" rx="16" fill="#f5eaea" stroke="#8b3a3a" stroke-width="2"/>
+    <circle cx="350" cy="598" r="26" fill="#8b3a3a"/>
+    <text x="350" y="605" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">4</text>
+    <text x="394" y="586" font-size="24" font-weight="800" fill="#17211d">펄스 · calibration</text>
+    <text x="394" y="620" font-size="17" fill="#5f6b65">gate duration·drive·crosstalk·parallel schedule</text>
+
+    <path d="M264 151h-28q-20 0-20 20v190q0 20 20 20h28" fill="none" stroke="#0f766e" stroke-width="5"/>
+    <text x="135" y="258" text-anchor="middle" font-size="22" font-weight="800" fill="#0f766e">Classiq</text>
+    <text x="135" y="286" text-anchor="middle" font-size="15" fill="#5f6b65">주된 증거 층</text>
+
+    <path d="M956 419h28q20 0 20 20v190q0 20-20 20h-28" fill="none" stroke="#a35a16" stroke-width="5"/>
+    <text x="1068" y="525" text-anchor="middle" font-size="22" font-weight="800" fill="#a35a16">AshN</text>
+    <text x="1068" y="553" text-anchor="middle" font-size="15" fill="#5f6b65">주된 증거 층</text>
+
+    <rect x="956" y="272" width="180" height="92" rx="14" fill="#fff" stroke="#d8d5cb"/>
+    <text x="1046" y="306" text-anchor="middle" font-size="16" font-weight="700" fill="#25456f">결합 가능성</text>
+    <text x="1046" y="333" text-anchor="middle" font-size="14" fill="#5f6b65">native cost를</text>
+    <text x="1046" y="354" text-anchor="middle" font-size="14" fill="#5f6b65">상위 합성에 전달</text>
+  </g>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#82918a"/></marker>
+  </defs>
+</svg>

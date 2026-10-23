@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">A five-column resource ledger for reading quantum research</title>
+  <desc id="desc">A comparison of execution boundaries and key denominators in six recent quantum studies</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#122342"/></linearGradient>
+    <style>
+      .h1{font:700 42px Inter,Arial,sans-serif;fill:#f4f8ff}.sub{font:400 20px Inter,Arial,sans-serif;fill:#b9c8dc}.chip{font:600 18px Inter,Arial,sans-serif;fill:#eaf4ff}.ct{font:700 23px Inter,Arial,sans-serif;fill:#f5f8ff}.body{font:400 17px Inter,Arial,sans-serif;fill:#c7d5e7}.num{font:700 20px Inter,Arial,sans-serif;fill:#6ee7f2}.warn{font:600 16px Inter,Arial,sans-serif;fill:#ffc778}.foot{font:600 19px Inter,Arial,sans-serif;fill:#eef6ff}
+    </style>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1430" cy="120" r="210" fill="#246b8a" opacity=".16"/><circle cx="130" cy="810" r="250" fill="#6948a8" opacity=".13"/>
+  <text class="h1" x="80" y="76">A five-column resource ledger for quantum research</text>
+  <text class="sub" x="80" y="111">“What matched?” and “Did total cost fall?” are different questions</text>
+  <g transform="translate(80 145)">
+    <g><rect width="270" height="58" rx="17" fill="#163755"/><text class="chip" x="135" y="36" text-anchor="middle">1 · Observable</text></g>
+    <g transform="translate(290)"><rect width="270" height="58" rx="17" fill="#174664"/><text class="chip" x="135" y="36" text-anchor="middle">2 · Execution</text></g>
+    <g transform="translate(580)"><rect width="270" height="58" rx="17" fill="#15556c"/><text class="chip" x="135" y="36" text-anchor="middle">3 · Circuit &amp; shots</text></g>
+    <g transform="translate(870)"><rect width="270" height="58" rx="17" fill="#304d78"/><text class="chip" x="135" y="36" text-anchor="middle">4 · Classical stack</text></g>
+    <g transform="translate(1160)"><rect width="280" height="58" rx="17" fill="#514271"/><text class="chip" x="140" y="36" text-anchor="middle">5 · Baseline</text></g>
+  </g>
+  <g>
+    <g transform="translate(80 245)"><rect width="455" height="225" rx="22" fill="#102d47" stroke="#2d6f8c"/><text class="ct" x="28" y="42">D-Wave t-VMC</text><text class="num" x="28" y="78">7.6% = versus QPU correlations</text><text class="body" x="28" y="111">72-spin biclique · classical GPU simulation</text><text class="body" x="28" y="140">2,123.02 aggregate wall-clock hours</text><text class="warn" x="28" y="180">Not error to ground truth or a general refutation</text></g>
+    <g transform="translate(572 245)"><rect width="455" height="225" rx="22" fill="#12344c" stroke="#327f92"/><text class="ct" x="28" y="42">Pauli noise · PEC</text><text class="num" x="28" y="78">92Q proxy · 20Q actual PEC</text><text class="body" x="28" y="111">Predicted γ² overhead reduced ~173×</text><text class="body" x="28" y="140">20Q median error: 21.8% → 2.4%</text><text class="warn" x="28" y="180">Not 92Q QEC or measured speedup</text></g>
+    <g transform="translate(1064 245)"><rect width="455" height="225" rx="22" fill="#19344f" stroke="#4a7ead"/><text class="ct" x="28" y="42">QuanONet</text><text class="num" x="28" y="78">O(p²) feature span</text><text class="body" x="28" y="111">p=256 is an 8-qubit statevector run</text><text class="body" x="28" y="140">QPU: pretrained 2Q inference PoC</text><text class="warn" x="28" y="180">Not training or end-to-end acceleration</text></g>
+    <g transform="translate(80 505)"><rect width="455" height="225" rx="22" fill="#172f4d" stroke="#566bb4"/><text class="ct" x="28" y="42">Quantum MeanFlow</text><text class="num" x="28" y="78">11Q · 240 CNOT · 8,192 shots</text><text class="body" x="28" y="111">raw 0.20 → 0.60 after BoN=8</text><text class="body" x="28" y="140">65,536 shots per selected output</text><text class="warn" x="28" y="180">“Single-shot” means one integration step</text></g>
+    <g transform="translate(572 505)"><rect width="455" height="225" rx="22" fill="#1b304e" stroke="#7167ba"/><text class="ct" x="28" y="42">Protein torsion VQE</text><text class="num" x="28" y="78">6Q · 600 jobs · 4.92M shots</text><text class="body" x="28" y="111">best 1.758 Å · chignolin hardware only</text><text class="body" x="28" y="140">statevector-parameter warm start</text><text class="warn" x="28" y="180">Not on-QPU VQE or independent prediction</text></g>
+    <g transform="translate(1064 505)"><rect width="455" height="225" rx="22" fill="#24304b" stroke="#8c67ad"/><text class="ct" x="28" y="42">Oscillator–transmon</text><text class="num" x="28" y="78">1 mode + 1 transmon · M=11–14</text><text class="body" x="28" y="111">4.4M–67M measurement outcomes</text><text class="body" x="28" y="140">cubic, double-well, approximate Morse</text><text class="warn" x="28" y="180">Morse wall and molecular dynamics unshown</text></g>
+  </g>
+  <rect x="80" y="774" width="1440" height="72" rx="20" fill="#133c55" stroke="#5bd4dd" opacity=".95"/>
+  <text class="foot" x="800" y="819" text-anchor="middle">Decision unit: observable → circuit &amp; shots → classical stack → wall-clock &amp; energy → matched baseline</text>
+</svg>
