@@ -1,19 +1,20 @@
 [
   {
     "folder": "2026-10-23_php-ai-vulnerability-disclosure",
-    "title": "AI 시대의 취약점과 수리의 시간: PHP 보안 사태가 드러낸 병목",
-    "subtitle": "메모리 오류의 원리에서 AI 보조 발견, 수리의 속도와 조정된 공개까지",
+    "title": "AI 시대의 보안 전환: PHP 사태에서 새 기반의 설계까지",
+    "subtitle": "긴급 패치에서 레거시 전환·에이전트 권한·새 보안 기준과 기업 서비스까지",
     "date": "2026-10-23",
     "updated": "2026-10-23",
     "category": "AI Security",
     "tags": [
       "AI Security",
+      "Security Architecture",
+      "Legacy Modernization",
+      "Agent Authorization",
       "PHP2Shell",
-      "Memory Safety",
-      "Vulnerability Disclosure",
-      "Open Source"
+      "Secure by Design"
     ],
-    "summary": "PHP의 메모리 부족과 요청 상태의 수명 오류에서 출발해 AI 보조 연구가 오래된 징후를 공격 실증으로 연결한 과정을 설명합니다. 연구진의 시연과 실제 침해, 보급 통계와 피해 규모를 구별하고, 빨라진 발견이 조정된 공개·유지보수·실제 패치 적용으로 이어지기 위한 조건을 살펴봅니다.",
+    "summary": "PHP의 메모리 오류와 AI 보조 발견에서 출발해, 같은 기반을 계속 수리하는 능력과 더 안전하고 교체 가능한 기반으로 전환하는 능력을 함께 묻습니다. 제로 트러스트·메모리 안전 로드맵·에이전트 신원과 위임·Secure by Design 및 구매 지침을 대조하고, 이전·검증·이탈 능력을 제공하는 B2B 서비스의 방향을 제안합니다.",
     "href": "reviews/2026-10-23_php-ai-vulnerability-disclosure/index.html",
     "metric_path": "/AI_Tech_Review/reviews/2026-10-23_php-ai-vulnerability-disclosure/",
     "thumbnail": "reviews/2026-10-23_php-ai-vulnerability-disclosure/hero.webp",
@@ -51,7 +52,7 @@
         "system_ko": "OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": 4,
+        "agent_count": 7,
         "agents": [
           {
             "name": "root",
@@ -70,21 +71,42 @@
           },
           {
             "name": "production_setup",
-            "role": "original bilingual explanatory figures, font and HTML/PDF production and output checks",
-            "role_ko": "원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 출력 검사"
+            "role": "initial-edition original bilingual figures, font and HTML/PDF production and output checks",
+            "role_ko": "초판 원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 출력 검사"
+          },
+          {
+            "name": "architecture_standards",
+            "role": "primary architecture and security-guidance research; independent scientific and argument audit of the expanded manuscript",
+            "role_ko": "보안 아키텍처·공식 지침 조사 및 확장 원고의 독립 과학·논증 감수"
+          },
+          {
+            "name": "migration_argument",
+            "role": "legacy modernization, lock-in and B2B research; expanded English manuscript translation and correspondence checks",
+            "role_ko": "레거시 전환·공급자 종속·B2B 역할 조사 및 확장 영어판 번역·대응 검토"
+          },
+          {
+            "name": "agent_standards",
+            "role": "agent identity, delegation and OAuth standards research; revised font, HTML/PDF production and full output checks",
+            "role_ko": "에이전트 신원·위임·OAuth 표준 조사 및 개편 글꼴·HTML/PDF 제작·전체 출력 검사"
           }
         ],
         "agent_roles": [
           "root — primary-source synthesis, accessible Korean writing, English manuscript audit, conceptual cover planning and editorial integration",
           "php_mechanism — official PHP advisory, mechanism, affected-condition and timeline checks; independent scientific manuscript and figure audit; publication registration",
           "ai_claims — AI contribution, reporting claims, sensor observations and implications crosschecks; independent exposition audit and full English translation",
-          "production_setup — original bilingual explanatory figures, font and HTML/PDF production and output checks"
+          "production_setup — initial-edition original bilingual figures, font and HTML/PDF production and output checks",
+          "architecture_standards — primary architecture and security-guidance research; independent scientific and argument audit of the expanded manuscript",
+          "migration_argument — legacy modernization, lock-in and B2B research; expanded English manuscript translation and correspondence checks",
+          "agent_standards — agent identity, delegation and OAuth standards research; revised font, HTML/PDF production and full output checks"
         ],
         "agent_roles_ko": [
           "root — 1차 자료 종합·교양과학 한국어 집필·영어 원고 검토·개념 표지 기획 및 편집 통합",
           "php_mechanism — 공식 PHP 권고·원인·영향 조건과 연혁 대조·독립 원고 및 도식 과학 감수·게시 등록",
           "ai_claims — AI 기여·보도 주장·센서 관측 및 후속 논의 대조·독립 설명 검토·영어 전문 번역",
-          "production_setup — 원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 출력 검사"
+          "production_setup — 초판 원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 출력 검사",
+          "architecture_standards — 보안 아키텍처·공식 지침 조사 및 확장 원고의 독립 과학·논증 감수",
+          "migration_argument — 레거시 전환·공급자 종속·B2B 역할 조사 및 확장 영어판 번역·대응 검토",
+          "agent_standards — 에이전트 신원·위임·OAuth 표준 조사 및 개편 글꼴·HTML/PDF 제작·전체 출력 검사"
         ]
       },
       "harness": {
@@ -99,22 +121,24 @@
           "Official PHP advisories, release notices and manual; memory/request lifetimes, OOM handling, worker privileges, conditional FPM paths and the separate October 23 session advisory",
           "Discovery and maintainer accounts, AWS sensor observations, revised exploitability assessments and reporting frames; research demonstrations, attack attempts and confirmed real-world compromise distinguished",
           "Numerical denominators, CVSS severity, AI-assisted case reports versus controlled model evaluation, bilingual manuscripts, deterministic teaching figures and conceptual cover; no independent attack or exploit reproduction, model benchmark or global loss estimate",
-          "HTML/PDF assets, metadata, local links, desktop/mobile output and archive consistency; no video produced"
+          "Open-design principles, NIST zero-trust guidance, memory-safe roadmaps, government legacy and lock-in guidance, OAuth specifications, ongoing agent-identity work and secure-by-design/demand guidance; architecture and B2B proposals distinguished from measured outcomes",
+          "Revised bilingual HTML/PDF assets, metadata, local links, desktop/mobile output and archive consistency; retained conceptual cover and original diagrams; no video produced"
         ],
         "scope_ko": [
           "공식 PHP 권고·릴리스 공지·매뉴얼 대조; 메모리와 요청의 수명·OOM 처리·워커 권한·조건부 FPM 경로 및 10월23일 별도 세션 공지 확인",
           "발견·유지보수 측 기록·AWS 센서 관측·공격 성립 범위의 수정 평가와 보도 관점 대조; 연구진의 실증·공격 시도·확인된 실제 침해 구별",
           "수치 분모·CVSS 심각도·AI 보조 사례와 통제된 모델 평가의 차이·한영 원고·결정론적 설명 도식과 개념 표지 검토; 독립 공격·exploit 재현·모델 성능 대조·세계 피해액 추정 없음",
-          "HTML/PDF 자산·메타데이터·로컬 링크·PC와 모바일 출력 및 아카이브 정합성 확인; 영상 제작 없음"
+          "공개 설계 원칙·NIST 제로 트러스트·메모리 안전 로드맵·정부 레거시와 종속 관리·OAuth·진행 중인 에이전트 신원 논의·Secure by Design/Demand 대조; 아키텍처와 B2B 제안은 측정 결과와 구별",
+          "개편 한영 HTML/PDF 자산·메타데이터·로컬 링크·PC와 모바일 출력 및 아카이브 정합성 확인; 기존 개념 표지·설명 도식 유지, 영상 제작 없음"
         ],
         "human_review_level": {
-          "ko": "주제 발전·교양과학 문체·후속 논의에 대한 편집 방향 반영; 문장 단위 사람 감수·독자 이해도 평가 없음",
-          "en": "editorial direction to develop the topic, accessible scientific writing and implications incorporated; no line-by-line human review or reader comprehension study"
+          "ko": "주제 발전·교양과학 문체·기반 전환과 기업 서비스 관점에 대한 편집 방향 반영; 문장 단위 사람 감수·독자 이해도 평가 없음",
+          "en": "editorial direction on accessible science writing, architecture transition and enterprise services incorporated; no line-by-line human review or reader comprehension study"
         }
       },
       "note": {
-        "ko": "기사에서 언급하는 보안 연구용 AI 모델과 이 글의 작성 시스템을 구별하며, 작성 세션의 정확한 모델 식별자는 미보존입니다. PHP 사용 비중은 취약·침해 비율이 아니고, CVSS 점수는 공격 성공 확률이 아닙니다. AWS의 10월17일 관측은 공격 시도이며 8월의 AI 보조 발견보다 늦습니다. 10월23일 공지는 별도 CVE의 드문 세션 설정 경로에 관한 것입니다. 공격자 AI 사용·전 세계 침해 규모·모델의 독자적 기여율은 확인하지 않았으며, 수리 역량과 공개 제도의 후속 과제는 보고 결과와 구별했습니다.",
-        "en": "The security-research AI models discussed in the article are distinct from its writing system; the exact model identifier for the writing session was not retained. PHP usage share is neither vulnerability prevalence nor compromise rate, and CVSS severity is not attack success probability. AWS's October 17 observation concerns an attempt and follows the AI-assisted August findings. The October 23 notice concerns a rare session configuration path under a separate CVE. Attacker AI use, global compromise totals and model-only contributions were not established; proposed work on repair capacity and disclosure is distinguished from reported results."
+        "ko": "기사에서 언급하는 보안 연구용 AI 모델과 이 글의 작성 시스템을 구별하며, 작성 세션의 정확한 모델 식별자는 미보존입니다. PHP 사용 비중은 취약·침해 비율이 아니고, CVSS 점수는 공격 성공 확률이 아닙니다. AWS의 10월17일 관측은 공격 시도이며 8월의 AI 보조 발견보다 늦습니다. 10월23일 공지는 별도 CVE의 드문 세션 설정 경로에 관한 것입니다. 공격자 AI 사용·전 세계 침해 규모·모델의 독자적 기여율은 확인하지 않았으며, 제로 트러스트·현대화 지침·OAuth의 기존 구성요소와 진행 중인 에이전트 표준화를 구별했습니다. 전환·검증·이탈 능력의 B2B 제안은 특정 업체의 현황·시장 예측이나 안전성 보증이 아닙니다.",
+        "en": "The security-research AI models discussed in the article are distinct from its writing system; the exact model identifier for the writing session was not retained. PHP usage share is neither vulnerability prevalence nor compromise rate, and CVSS severity is not attack success probability. AWS's October 17 observation concerns an attempt and follows the AI-assisted August findings. The October 23 notice concerns a rare session configuration path under a separate CVE. Attacker AI use, global compromise totals and model-only contributions were not established; established guidance and OAuth components are distinguished from ongoing agent standardization. Proposed B2B value in migration, verification and exit capability is not a claim about any company, a market forecast or a security guarantee."
       }
     }
   },
