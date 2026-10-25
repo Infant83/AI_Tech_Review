@@ -36,6 +36,39 @@ class ReaderEnrichmentTests(unittest.TestCase):
         self.assertNotIn("<", config)
         self.assertEqual(json.loads(config)["article"]["title"], article["title"])
 
+    def test_optional_asset_versions_change_only_reader_asset_links(self):
+        original = '<html><head><link rel="icon" href="old.ico"></head><body>Original</body></html>'
+        versions = {"reader-engagement.js": "123456abcdef", "reader-engagement.css": "abcdef123456"}
+        result = reader.enrich_html(original, "reviews/example/en/index.html", ARTICLE, asset_versions=versions)
+        self.assertIn('src="../../../assets/reader-engagement.js?v=123456abcdef"', result)
+        self.assertIn('href="../../../assets/reader-engagement.css?v=abcdef123456"', result)
+        self.assertIn('href="../../../app.webmanifest"', result)
+        self.assertEqual(reader.strip_engagement(result), original)
+        self.assertEqual(reader.enrich_html(result, "reviews/example/en/index.html", ARTICLE, asset_versions=versions), result)
+
+    def test_enrichment_versions_follow_source_content_independently(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            js_hash = hashlib.sha256((frontend / "reader-engagement.js").read_bytes()).hexdigest()[:12]
+            css_hash = hashlib.sha256((frontend / "reader-engagement.css").read_bytes()).hexdigest()[:12]
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            first = (site / "index.html").read_text()
+            sw = (site / "sw.js").read_bytes()
+            manifest = (site / "app.webmanifest").read_bytes()
+            self.assertIn(f"reader-engagement.js?v={js_hash}", first)
+            self.assertIn(f"reader-engagement.css?v={css_hash}", first)
+            (frontend / "reader-engagement.css").write_text("updated CSS only")
+            changed_hash = hashlib.sha256((frontend / "reader-engagement.css").read_bytes()).hexdigest()[:12]
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            updated = (site / "index.html").read_text()
+            self.assertIn(f"reader-engagement.js?v={js_hash}", updated)
+            self.assertIn(f"reader-engagement.css?v={changed_hash}", updated)
+            self.assertNotIn(f"reader-engagement.css?v={css_hash}", updated)
+            self.assertEqual(reader.strip_engagement(updated), reader.strip_engagement(first))
+            self.assertEqual((site / "sw.js").read_bytes(), sw)
+            self.assertEqual((site / "app.webmanifest").read_bytes(), manifest)
+            self.assertEqual(reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)["html_changed"], 0)
+
     def test_publication_paths_reject_offsite_traversal_and_wrong_topics(self):
         for href in ["../private.html", "https://example.org/", "/other/", "reviews/%2e%2e/", "reviews//x/", "reviews/a/?redirect=x", "reviews/a/#x"]:
             with self.subTest(href=href), self.assertRaises(ValueError):

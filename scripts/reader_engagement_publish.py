@@ -108,7 +108,8 @@ def strip_engagement(text: str) -> str:
     return text
 
 
-def enrich_html(text: str, relative_path: str, article: dict | None) -> str:
+def enrich_html(text: str, relative_path: str, article: dict | None,
+                *, asset_versions: dict[str, str] | None = None) -> str:
     text = strip_engagement(text)
     if not re.search(r"</head\s*>", text, re.I) or not re.search(r"</body\s*>", text, re.I):
         return text
@@ -117,13 +118,17 @@ def enrich_html(text: str, relative_path: str, article: dict | None) -> str:
     prefix = "" if prefix == "." else prefix.rstrip("/") + "/"
     config = {"apiBase": API_BASE, "siteRoot": SITE_ROOT, "scope": SCOPE,
               "catalogUrl": SITE_ROOT + CATALOG_NAME, "article": article}
+    versions = asset_versions or {}
+    def asset_href(name: str) -> str:
+        suffix = "?v=" + versions[name] if versions.get(name) else ""
+        return html.escape(prefix + "assets/" + name + suffix, quote=True)
     head = (f'<!-- {BLOCKS[0]} -->\n'
             f'<link rel="manifest" href="{html.escape(prefix, quote=True)}app.webmanifest">\n'
-            f'<link rel="stylesheet" href="{html.escape(prefix, quote=True)}assets/reader-engagement.css">\n'
+            f'<link rel="stylesheet" href="{asset_href("reader-engagement.css")}">\n'
             f'<!-- End {BLOCKS[0]} -->\n')
     controls = (f'<!-- {BLOCKS[1]} -->\n'
                 f'<script type="application/json" id="reader-engagement-config">{json_script(config)}</script>\n'
-                f'<script defer src="{html.escape(prefix, quote=True)}assets/reader-engagement.js"></script>\n'
+                f'<script defer src="{asset_href("reader-engagement.js")}"></script>\n'
                 f'<!-- End {BLOCKS[1]} -->\n')
     return re.sub(r"[ \t]*</body\s*>", lambda m: controls.replace("\n", newline) + m.group(),
                   re.sub(r"[ \t]*</head\s*>", lambda m: head.replace("\n", newline) + m.group(), text, count=1, flags=re.I),
@@ -153,6 +158,8 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
         if path.is_symlink() or not path.is_file():
             raise ValueError(f"Missing reader frontend asset: {source}")
         payloads[target] = path.read_bytes()
+    asset_versions = {name: hashlib.sha256(payloads[ASSETS[name]]).hexdigest()[:12]
+                      for name in ("reader-engagement.js", "reader-engagement.css")}
     for target, payload in payloads.items():
         write_changed(site_dir / target, payload)
     changed = 0
@@ -161,7 +168,7 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
             raise ValueError("Reader output cannot contain symlink HTML")
         relative = path.relative_to(site_dir).as_posix()
         original = path.read_bytes().decode("utf-8")
-        enriched = enrich_html(original, relative, pages.get(relative))
+        enriched = enrich_html(original, relative, pages.get(relative), asset_versions=asset_versions)
         changed += write_changed(path, enriched.encode("utf-8"))
     # Lecture bundles checksum their HTML; keep the derived registry truthful.
     archive_path = site_dir / "archive-manifest.json"
