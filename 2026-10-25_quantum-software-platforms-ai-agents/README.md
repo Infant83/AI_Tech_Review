@@ -1,8 +1,8 @@
 # Quantum software platforms and AI agents
 
-Bilingual AI Tech Review prepared for 2026-10-25. Korean is canonical; the English edition preserves the same conditions, evidence levels, reported values and verification limits.
+Bilingual AI Tech Review published on 2026-10-25. Korean is canonical; the English edition preserves the same conditions, evidence levels, reported values and verification limits.
 
-Public destinations: [한국어 리뷰](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/), [English edition](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/en/), and [document archive](https://infant83.github.io/AI_Tech_Review/archive/). These links describe intended publication destinations until deployment is recorded.
+Public destinations: [한국어 리뷰](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/), [English edition](https://infant83.github.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/en/), and [document archive](https://infant83.github.io/AI_Tech_Review/archive/). The original GitHub Pages addresses currently redirect to the service domain infant83.io.
 
 ## Contents
 
@@ -58,3 +58,11 @@ The final PDFs have 11 Korean pages and 13 English pages. All 24 pages were rend
 The isolated publication checkout passed 90 repository tests: 89 passed and one optional Python-Markdown test was skipped because its dependency is unavailable. The reviewed PDFs were copied without any byte change from the production workspace. Concurrent, unrelated site-feature edits were excluded from this publication.
 
 An independent final publication audit passed after restoring prior review files: the public-site validator returned no errors, all 46 prior review and 78 prior archive records were preserved, and each language has four byte-identical PDF copies. SVG path-line trailing spaces were normalized in production and reading copies; parsed XML geometry, attributes and text were unchanged, and the generator now applies the same normalization. The finalized PDFs were unchanged.
+
+## Live publication · 2026-10-25
+
+The [Korean review](https://infant83.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/) and [complete English edition](https://infant83.io/AI_Tech_Review/reviews/2026-10-25_quantum-software-platforms-ai-agents/en/) are published with their PDFs in the review and document-archive catalogs. Publication source commit: `559225822b74613910ffe884f1866c91d4fecae0`. The [publish workflow](https://github.com/Infant83/AI_Tech_Review/actions/runs/40158428322) and [Pages deployment](https://github.com/Infant83/AI_Tech_Review/actions/runs/40158506190) succeeded.
+
+Both original language addresses followed the existing redirect to infant83.io, returned HTTP 200 at their final destinations and matched the local reading copies. All 39 checked files—including review assets, both PDFs, archive copies, the hub and catalogs—matched their reviewed local SHA256 values. Domain settings and unrelated site-feature work were not changed by this publication.
+
+Live Chrome QA also passed on the resolved infant83.io pages in both languages at 1440×1000 and 390×844. The cover and all images loaded, all three responsive figure pairs selected correctly, Korean → English → Korean links were clicked successfully, and both PDF links were correct. Document overflow, page errors and console errors/warnings were zero. Screenshots and detailed QA records remain outside public distribution.
