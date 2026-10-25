@@ -52,4 +52,16 @@ Actual Chrome QA confirmed public counts and count definitions, successful link 
 
 RSS/email delivery was researched separately; no email provider was connected, no recipients were imported, no email was sent and no paid plan was enabled by this metrics change.
 
+## Immediate like response and count verification — 2026-10-25
+
+The former like flow awaited device registration and the desired-state PUT before updating its heart/count. Known sessions now reuse proven connection state, and the heart/known count changes immediately with a saving status. Unknown totals remain unknown until a valid response arrives. Confirmed server totals replace provisional values. Errors restore the previous display and retain the intended value for an explicit retry; a timeout cannot establish whether the server committed. Late initial reads, registrations and write results cannot silently replace a newer operation. Registration is single-flight and session proof is invalidated by a protected 401 response.
+
+Current frontend/badge verification: 82 tests passed, zero failed; eight retained browser regression cases were skipped. Coverage includes delayed confirmations, rollback, ambiguous response loss, retry intent, operation deadlines, late registration, strict response validation, stale initial reads, shared registration and session reuse. The backend contract and deployment were unchanged in this iteration.
+
+A loopback-only proxy delayed like writes by two seconds and deliberately lost the first successful save response. Actual Chrome showed the updated heart/count and saving status immediately, restored the old display on the simulated response failure, retried to exactly one stored like and immediately displayed unlike on the next click. These fixtures affected only local D1 and were not deployed or written to production counters.
+
+Actual production Chrome currently advertises GPC/Do Not Track and is intentionally excluded from visiting/open/share event recording. Its exclusion reason is now visible outside the collapsed count definitions. Independent local HTTP requests verified that an eligible first article open increments to one, another open of the same article stays at one, another article increments the total, and DNT/GPC/prefetch requests change no counters. Korean/English configurations retain one article identity. In actual Chrome, returning from an article to the hub updated a changed local total from two to three. Back/forward-cache restoration requests fresh public totals without a new open or identifier, waiting behind pending writes to avoid stale reads.
+
+Client-side counters remain best-effort: privacy exclusions, blocked storage, content blockers and failed network requests can omit events. A same-browser same-article open counts once per Korea calendar day rather than on every reload. No production visits or shares were fabricated to demonstrate a positive number.
+
 See the backend README for deployment, key backup, quotas, recovery and future hosting migration. Keep the existing origin, service-worker scope and VAPID key when migrating hosting to preserve existing subscriptions where the browser permits it.

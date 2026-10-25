@@ -38,6 +38,7 @@
   outline-offset: 3px;
 }
 .atr-reader-button:disabled { opacity: .58; cursor: default; }
+.atr-reader-button[data-reader-action="like"][aria-busy="true"] { opacity: .85; cursor: progress; }
 .atr-reader-button[aria-pressed="true"],
 .atr-reader-button[data-subscribed="true"] {
   color: var(--green, #0d7c66);
@@ -101,6 +102,7 @@
 .atr-reader-metrics-note { margin: 7px 0 12px; font-size: 11px; line-height: 1.8; overflow-wrap: anywhere; }
 .atr-reader-metrics-status { margin: 4px 0; font-size: 11px; line-height: 1.7; }
 .atr-reader-metrics-status:empty { display: none; }
+.atr-reader-metrics-exclusion:empty { display: none; }
 .atr-reader-metrics-article { flex: 1 0 100%; margin: 0; }
 .atr-reader-metrics-article .atr-reader-metrics-details { margin-bottom: -7px; }
 .atr-reader-dialog {

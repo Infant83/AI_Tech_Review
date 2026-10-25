@@ -300,7 +300,7 @@ function frontendHarness(options = {}) {
   context.window = context;
   const initializer = source.lastIndexOf('\n  mount();');
   assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
-  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId };\n})();';
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
@@ -762,14 +762,17 @@ test('successful like loading clears its earlier retry error and rejects nonnume
   const harness = frontendHarness({ article: { id: 'test-review' }, responseStatus: (url, init) => {
     if (url.endsWith('/like') && init.method === 'GET' && ++gets === 1) return 503;
     return 200;
-  }, responseJSON: () => ({ ok: true, liked: false, count: '<img src=x onerror=alert(1)>', error: '<script>bad</script>' }) });
+  }, responseJSON: () => gets < 3 ? ({ ok: true, liked: false, count: '<img src=x onerror=alert(1)>', error: '<script>bad</script>' }) : ({ ok: true, liked: false, count: 4 }) });
   harness.api.mount();
   const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
   await harness.api.loadLikes();
   assert.match(status.textContent, /불러올 수 없어요/);
   await harness.api.loadLikes();
+  assert.match(status.textContent, /불러올 수 없어요/);
+  assert.equal(harness.api.state.count, null, 'invalid counts must not become a fake confirmed zero');
+  await harness.api.loadLikes();
   assert.equal(status.textContent, '');
-  assert.equal(harness.api.state.count, 0);
+  assert.equal(harness.api.state.count, 4);
 });
 test('a slow initial like response cannot overwrite a newer confirmed mutation', async () => {
   let releaseRead;
@@ -1037,4 +1040,201 @@ test('a subscription-change refresh queues one fresh read behind an older in-fli
   assert.equal(harness.calls.length, 2);
   releaseRead(metricsSummary()); await flushPromises();
   assert.equal(harness.calls.length, 2);
+});
+
+test('likes immediately change the heart and known count while saving, then reconcile the server total', async () => {
+  let releaseWrite;
+  const harness = frontendHarness({ article: { id: 'test-review' }, responseJSON: (url, init) => {
+    if (url.endsWith('/v1/devices')) return { ok: true, deviceId: 'existing-test-device' };
+    if (url.endsWith('/like')) return new Promise(resolve => { releaseWrite = resolve; });
+    return { ok: true };
+  }});
+  harness.api.mount(); harness.api.state.count = 4;
+  const saving = harness.api.like();
+  const button = harness.articleElement.adjacent[0].element.children.find(element => element.dataset.readerAction === 'like');
+  const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
+  assert.equal(harness.api.state.liked, true);
+  assert.equal(harness.api.state.count, 5);
+  assert.equal(button.getAttribute('aria-pressed'), 'true');
+  assert.equal(button.getAttribute('aria-busy'), 'true');
+  assert.equal(button.disabled, true);
+  assert.match(status.textContent, /저장 중/);
+  await flushPromises();
+  releaseWrite({ ok: true, liked: true, count: 9 }); await saving;
+  assert.equal(harness.api.state.count, 9, 'server totals may include other readers');
+  assert.equal(button.getAttribute('aria-busy'), 'false');
+  assert.equal(button.disabled, false);
+  assert.match(status.textContent, /반영했어요/);
+});
+test('an optimistic unlike rolls back on failure, retaining the same desired retry state', async () => {
+  let writes = 0;
+  const harness = frontendHarness({ article: { id: 'test-review' }, responseStatus: (url, init) => url.endsWith('/like') && init.method === 'PUT' && ++writes === 1 ? 503 : 200,
+    responseJSON: (url, init) => url.endsWith('/like') ? { ok: true, liked: JSON.parse(init.body).liked, count: 3 } : { ok: true, deviceId: 'device' } });
+  harness.api.mount(); harness.api.state.count = 4; harness.api.state.liked = true;
+  const saving = harness.api.like();
+  assert.equal(harness.api.state.liked, false); assert.equal(harness.api.state.count, 3);
+  await saving;
+  assert.equal(harness.api.state.liked, true); assert.equal(harness.api.state.count, 4);
+  assert.equal(harness.api.state.likeRetryDesired, false);
+  const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
+  assert.match(status.textContent, /이전 상태로 되돌렸어요/);
+  assert.equal(status.children.find(element => element.tagName === 'BUTTON').dataset.readerAction, 'retry-like');
+  await harness.api.like(true);
+  const requests = harness.calls.filter(call => call.url.endsWith('/like'));
+  assert.deepEqual(requests.map(call => JSON.parse(call.init.body).liked), [false, false]);
+  assert.equal(harness.api.state.liked, false);
+});
+test('unknown initial totals stay unknown during optimistic feedback and a stale initial read cannot replace intent', async () => {
+  let releaseRead, releaseWrite;
+  const harness = frontendHarness({ english: true, article: { id: 'test-review' }, responseJSON: (url, init) => {
+    if (url.endsWith('/like')) return new Promise(resolve => { if (init.method === 'GET') releaseRead = resolve; else releaseWrite = resolve; });
+    return { ok: true, deviceId: 'device' };
+  }});
+  harness.api.mount();
+  const read = harness.api.loadLikes(); await flushPromises();
+  const saving = harness.api.like();
+  const button = harness.articleElement.adjacent[0].element.children.find(element => element.dataset.readerAction === 'like');
+  const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
+  assert.equal(harness.api.state.liked, true); assert.equal(harness.api.state.count, null);
+  assert.match(button.textContent, /♥ Like —/); assert.equal(status.textContent, 'Saving…');
+  releaseRead({ ok: true, liked: false, count: 10 }); await read;
+  assert.equal(harness.api.state.liked, true); assert.equal(harness.api.state.count, null);
+  await flushPromises(); releaseWrite({ ok: true, liked: true, count: 11 }); await saving;
+  assert.equal(harness.api.state.count, 11);
+});
+test('a timed-out registration cannot issue a late like write after optimistic state rolls back', async () => {
+  const clock = fakeClock(); let releaseDevice;
+  const harness = frontendHarness({ clock, article: { id: 'test-review' }, responseJSON: url => url.endsWith('/v1/devices')
+    ? new Promise(resolve => { releaseDevice = resolve; }) : { ok: true, liked: true, count: 1 } });
+  harness.api.mount(); harness.api.state.count = 0;
+  const saving = harness.api.like(); await flushPromises();
+  clock.advance(12000); await saving;
+  assert.equal(harness.api.state.liked, false); assert.equal(harness.api.state.count, 0);
+  assert.equal(harness.api.state.likeBusy, false);
+  releaseDevice({ ok: true, deviceId: 'device' }); await flushPromises();
+  assert.equal(harness.calls.some(call => call.url.endsWith('/like')), false);
+  await harness.api.like(true);
+  assert.equal(harness.api.state.liked, true);
+  assert.equal(harness.calls.filter(call => call.url.endsWith('/v1/devices')).length, 1);
+});
+test('a timed-out pending write is reused by the same desired retry and confirmed once', async () => {
+  const clock = fakeClock(); let releaseWrite;
+  const harness = frontendHarness({ clock, article: { id: 'test-review' }, responseJSON: url => url.endsWith('/like')
+    ? new Promise(resolve => { releaseWrite = resolve; }) : { ok: true, deviceId: 'device' } });
+  harness.api.mount(); harness.api.state.count = 2;
+  const first = harness.api.like(); await flushPromises(); clock.advance(12000); await first;
+  assert.equal(harness.api.state.liked, false); assert.equal(harness.api.state.count, 2);
+  const retry = harness.api.like(true); await flushPromises();
+  assert.equal(harness.calls.filter(call => call.url.endsWith('/like')).length, 1);
+  releaseWrite({ ok: true, liked: true, count: 3 }); await retry;
+  assert.equal(harness.api.state.liked, true); assert.equal(harness.api.state.count, 3);
+});
+test('malformed mutation acknowledgments never confirm an optimistic like or fabricated count', async () => {
+  const invalid = [
+    { ok: true, liked: false, count: 4 }, { ok: true, liked: 'true', count: 4 }, { ok: true, liked: true, count: '4' },
+    { ok: true, liked: true, count: -1 }, { liked: true, count: 4 }, { ok: true, liked: true, count: 1.5 }
+  ];
+  for (const result of invalid) {
+    const harness = frontendHarness({ article: { id: 'test-review' }, responseJSON: url => url.endsWith('/like') ? result : { ok: true, deviceId: 'device' } });
+    harness.api.mount(); harness.api.state.count = 3;
+    await harness.api.like();
+    assert.equal(harness.api.state.liked, false); assert.equal(harness.api.state.count, 3);
+    assert.equal(harness.api.state.likeRetryDesired, true);
+    assert.equal(harness.api.state.likeBusy, false);
+  }
+});
+test('device registration is single-flight, reused after proof, and invalidated after a credentialed 401', async () => {
+  let releaseDevice, deviceCalls = 0, failLike = true;
+  const harness = frontendHarness({ article: { id: 'test-review' }, responseStatus: (url, init) => url.endsWith('/like') && init.method === 'PUT' && failLike ? 401 : 200,
+    responseJSON: url => url.endsWith('/v1/devices') ? (++deviceCalls === 1 ? new Promise(resolve => { releaseDevice = resolve; }) : { ok: true, deviceId: 'device' }) : { ok: true, liked: true, count: 1 } });
+  harness.api.mount();
+  const first = harness.api.ensureDevice(), second = harness.api.ensureDevice(); await flushPromises();
+  assert.equal(first, second); assert.equal(harness.calls.filter(call => call.url.endsWith('/v1/devices')).length, 1);
+  releaseDevice({ ok: true, deviceId: 'device' }); await first;
+  await harness.api.ensureDevice();
+  assert.equal(harness.calls.filter(call => call.url.endsWith('/v1/devices')).length, 1);
+  await harness.api.like(); assert.equal(harness.api.state.liked, false);
+  failLike = false; await harness.api.like(true);
+  assert.equal(harness.calls.filter(call => call.url.endsWith('/v1/devices')).length, 2);
+  assert.equal(harness.api.state.liked, true);
+});
+test('a successful existing-session subscription read avoids registration before a like', async () => {
+  const harness = frontendHarness({ unsupported: true, article: { id: 'test-review' }, responseJSON: url => url.endsWith('/v1/subscription')
+    ? { ok: true, subscribed: false, subscription: null, topics: [] }
+    : url.endsWith('/like') ? { ok: true, liked: true, count: 1 } : { ok: true, vapidPublicKey: 'B' + 'A'.repeat(86) } });
+  harness.api.mount(); await harness.api.prepare(); await harness.api.like();
+  assert.equal(harness.calls.some(call => call.url.endsWith('/v1/devices')), false);
+  assert.equal(harness.api.state.liked, true);
+});
+test('retry after an ambiguous write and a confirming read preserves the original desired value', async () => {
+  let writes = 0;
+  const harness = frontendHarness({ article: { id: 'test-review' }, responseStatus: (url, init) => url.endsWith('/like') && init.method === 'PUT' && ++writes === 1 ? 503 : 200,
+    responseJSON: url => url.endsWith('/like') ? { ok: true, liked: true, count: 5 } : { ok: true, deviceId: 'device' } });
+  harness.api.mount(); harness.api.state.count = 4;
+  await harness.api.like();
+  await harness.api.loadLikes();
+  assert.equal(harness.api.state.liked, true); assert.equal(harness.api.state.count, 5);
+  await harness.api.like(true);
+  assert.deepEqual(harness.calls.filter(call => call.url.endsWith('/like') && call.init.method === 'PUT').map(call => JSON.parse(call.init.body).liked), [true, true]);
+  assert.equal(harness.api.state.count, 5);
+});
+
+test('a malformed liked flag in an initial read leaves unknown state and exposes a safe retry', async () => {
+  const harness = frontendHarness({ article: { id: 'test-review' }, responseJSON: () => ({ ok: true, liked: 'false', count: 8 }) });
+  harness.api.mount(); await harness.api.loadLikes();
+  assert.equal(harness.api.state.count, null);
+  assert.equal(harness.api.state.liked, false);
+  const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
+  assert.equal(status.dataset.readerStatusAction, 'load-likes');
+  assert.match(status.textContent, /불러올 수 없어요/);
+});
+
+test('privacy and storage exclusions remain visible when count definitions are collapsed', async () => {
+  for (const options of [{ gpc: true }, { dnt: '1' }, { storageBlocked: true }]) {
+    const harness = frontendHarness({ ...options, metricsStorage: true, responseJSON: () => metricsSummary() });
+    harness.api.mount(); harness.api.startMetrics(); await flushPromises();
+    const root = harness.api.metricsRoot();
+    const notice = root.children.find(element => String(element.className || '').includes('atr-reader-metrics-exclusion'));
+    assert.equal(notice.parentNode, root, 'exclusion is outside the closed details');
+    assert.equal(notice.getClientRects().length, 1);
+    assert.equal(notice.getAttribute('role'), 'status');
+    assert.match(notice.textContent, options.storageBlocked ? /집계용 식별자를 저장할 수 없어/ : /개인정보 보호 설정에 따라 집계에서 제외/);
+  }
+});
+test('a visible BFcache restore refreshes public totals without counting a second open or creating another identifier', async () => {
+  const harness = frontendHarness({ metricsStorage: true, responseJSON: () => metricsSummary() });
+  harness.api.mount(); harness.api.startMetrics(); await flushPromises();
+  const visitor = Array.from(harness.storage.values())[0];
+  harness.api.metricsPageShow({ persisted: true }); await flushPromises();
+  assert.deepEqual(harness.calls.map(call => call.init.method), ['POST', 'GET']);
+  assert.equal(harness.calls[1].url, 'https://api.infant83.io/v1/metrics');
+  assert.equal(harness.calls[1].init.credentials, 'omit');
+  assert.equal(harness.calls[1].init.body, undefined);
+  assert.equal(harness.storage.size, 1);
+  assert.equal(Array.from(harness.storage.values())[0], visitor);
+  harness.api.metricsPageShow({ persisted: false }); await flushPromises();
+  assert.equal(harness.calls.length, 2);
+});
+test('a BFcache restore does not create an identifier and skips hidden or framed pages', async () => {
+  const visible = frontendHarness({ metricsStorage: true, responseJSON: () => metricsSummary() });
+  visible.api.mount(); visible.api.metricsPageShow({ persisted: true }); await flushPromises();
+  assert.equal(visible.calls[0].init.method, 'GET'); assert.equal(visible.storage.size, 0);
+  for (const options of [{ visibility: 'hidden' }, { iframe: true }]) {
+    const harness = frontendHarness({ ...options, metricsStorage: true });
+    harness.api.mount(); harness.api.metricsPageShow({ persisted: true }); await flushPromises();
+    assert.equal(harness.calls.length, 0); assert.equal(harness.storage.size, 0);
+  }
+});
+test('BFcache refresh waits for a pending metrics write and cannot replace its count with an earlier snapshot', async () => {
+  let releaseWrite;
+  const harness = frontendHarness({ metricsStorage: true, responseJSON: (url, init) => init.method === 'POST'
+    ? new Promise(resolve => { releaseWrite = resolve; })
+    : { ...metricsSummary(), site: { ...metricsSummary().site, visitors: 43 } } });
+  harness.api.mount(); harness.api.startMetrics(); await flushPromises();
+  harness.api.metricsPageShow({ persisted: true }); harness.api.metricsPageShow({ persisted: true });
+  await flushPromises();
+  assert.equal(harness.calls.length, 1, 'GET must wait for the in-flight open POST');
+  releaseWrite(metricsSummary()); await flushPromises(); await flushPromises();
+  assert.deepEqual(harness.calls.map(call => call.init.method), ['POST', 'GET']);
+  assert.match(harness.api.metricsRoot().textContent, /방문 브라우저43/);
 });

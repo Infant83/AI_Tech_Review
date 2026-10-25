@@ -42,7 +42,7 @@
     partialOff: "This browser’s alerts are off, but the server connection could not be removed. Try again to finish removing it.",
     reconnect: "Reconnect alerts", reconnectNote: "The browser and server connection needs to be refreshed.",
     failed: "The connection failed. Please try again.", like: "Like", unlike: "Unlike", liked: "Liked", likedSaved: "Your like was saved.",
-    unlikedSaved: "Your like was removed.", likeFailed: "Your like could not be saved.", likeLoadFailed: "Likes are temporarily unavailable.",
+    unlikedSaved: "Your like was removed.", likeSaving: "Saving…", likeFailed: "Could not confirm your like. The previous display has been restored.", likeLoadFailed: "Likes are temporarily unavailable.",
     share: "Share", copy: "Copy link", copied: "Article link copied.", shareFailed: "Sharing failed. You can copy the article link instead.",
     copyFailed: "The link could not be copied. Select and copy this address:", install: "Add to Home Screen", installLater: "You can enable alerts whenever you are ready.",
     iosVersion: "Web alerts require iOS or iPadOS 16.4 or later.", busy: "Connecting…", actions: "Reader actions",
@@ -67,7 +67,7 @@
     partialOff: "이 브라우저의 알림은 해제했지만 서버 연결을 지우지 못했어요. 다시 시도하면 정리를 마칠 수 있어요.",
     reconnect: "알림 다시 연결", reconnectNote: "브라우저와 서버의 알림 연결을 다시 확인해 주세요.",
     failed: "연결하지 못했어요. 다시 시도해 주세요.", like: "좋아요", unlike: "좋아요 취소", liked: "좋아요", likedSaved: "좋아요를 반영했어요.",
-    unlikedSaved: "좋아요를 취소했어요.", likeFailed: "좋아요를 반영하지 못했어요.", likeLoadFailed: "지금은 좋아요 정보를 불러올 수 없어요.",
+    unlikedSaved: "좋아요를 취소했어요.", likeSaving: "저장 중…", likeFailed: "좋아요 저장 여부를 확인하지 못해 화면을 이전 상태로 되돌렸어요.", likeLoadFailed: "지금은 좋아요 정보를 불러올 수 없어요.",
     share: "공유", copy: "주소 복사", copied: "글 주소를 복사했어요.", shareFailed: "공유하지 못했어요. 글 주소를 복사할 수 있어요.",
     copyFailed: "주소를 복사하지 못했어요. 아래 주소를 선택해 복사해 주세요.", install: "홈 화면에 추가", installLater: "원할 때 새 글 알림을 켤 수 있어요.",
     iosVersion: "웹 알림은 iOS·iPadOS 16.4 이상에서 사용할 수 있어요.", busy: "연결 중…", actions: "독자 참여",
@@ -130,15 +130,16 @@
   };
   var state = { preparing: true, busy: false, configError: false, registrationError: false, key: "", registration: null,
     localSubscription: null, serverSubscription: null, topics: ["review", "lecture"], feedback: "", feedbackError: false,
-    liked: false, count: null, likeBusy: false, pendingServerDelete: false, guideDevice: null, guideOpen: null, installBusy: false,
+    liked: false, count: null, likeBusy: false, likeRetryDesired: null, pendingServerDelete: false, guideDevice: null, guideOpen: null, installBusy: false,
     notificationHistory: [], historyReady: false, historyLimit: 5, historyCount: null };
   var subscriptionButtons = [];
   var dialog = null, dialogBody = null, dialogHeading = null, dialogFeedback = null, opener = null;
   var likeButton = null, articleStatus = null, likeRevision = 0, scrollState = null;
   var pendingPermission = null, pendingPushLookup = null, pendingPushSubscription = null;
+  var deviceSessionKnown = false, pendingDeviceRegistration = null, pendingLikeWrite = null;
   var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
-  var metricsRoot = null, metricsFields = {}, metricsSince = null, metricsStatus = null, metricsParticipation = null, metricsRequest = null, metricsRefreshQueued = false, metricsGeneration = 0, metricsOpenStarted = false;
+  var metricsRoot = null, metricsFields = {}, metricsSince = null, metricsStatus = null, metricsParticipation = null, metricsExclusionNotice = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
   var metricsText = english ? {
     title: "Reader activity", visitors: "Visiting browsers", today: "Today", opens: "Article opens", shares: "Shares · copies",
@@ -148,7 +149,8 @@
     privacy: "A random identifier is saved only in this site's browser storage for duplicate counting. The server stores its hash, not your name or raw IP address. Global Privacy Control or Do Not Track disables visit/open/share counting in this browser. If browser storage is unavailable, only public totals are loaded.",
     optedOut: "This browser's privacy preference (Global Privacy Control or Do Not Track) disables visit, open and share counting. Public totals remain available.",
     storageOff: "This browser cannot use a stored counting identifier, so its visits, opens and shares are not counted. Public totals remain available.",
-    participating: "This browser participates in browser-based visit, open and share counting."
+    participating: "This browser participates in browser-based visit, open and share counting.",
+    excludedShort: "This browser is excluded from counts by its privacy preference.", storageShort: "This browser cannot save a counting identifier, so its activity is excluded."
   } : {
     title: "독자 활동", visitors: "방문 브라우저", today: "오늘 방문", opens: "글 열람", shares: "공유·복사",
     subscribers: "알림 구독", registrations: "구독 등록", sent: "새 글 알림 발송",
@@ -157,7 +159,8 @@
     privacy: "중복 집계를 줄이기 위해 이 사이트의 브라우저 저장소에 임의 식별자를 저장합니다. 서버에는 해시를 저장하며 이름·원문 IP는 저장하지 않아요. 브라우저의 Global Privacy Control 또는 Do Not Track을 켜면 방문·열람·공유 집계에 참여하지 않습니다. 저장소를 사용할 수 없으면 공개된 통계만 불러옵니다.",
     optedOut: "이 브라우저는 개인정보 보호 설정(GPC·Do Not Track)에 따라 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
     storageOff: "이 브라우저에서는 집계용 식별자를 저장해 사용할 수 없어 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
-    participating: "이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여하고 있어요."
+    participating: "이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여하고 있어요.",
+    excludedShort: "이 브라우저는 개인정보 보호 설정에 따라 집계에서 제외돼요.", storageShort: "이 브라우저는 집계용 식별자를 저장할 수 없어 집계에서 제외돼요."
   };
 
   function node(tag, className, content) {
@@ -406,9 +409,16 @@
         body: body === undefined ? undefined : JSON.stringify(body),
         signal: controller ? controller.signal : undefined
       });
-      if (!response.ok) throw apiError("http_" + response.status);
+      if (!response.ok) {
+        if (response.status === 401 && credentials !== "omit") deviceSessionKnown = false;
+        throw apiError("http_" + response.status);
+      }
       var result = await response.json();
       if (!result || typeof result !== "object" || Array.isArray(result) || result.ok === false) throw apiError("api_failed");
+      if (credentials !== "omit" && result.ok === true &&
+        ((path === "/v1/devices" && typeof result.deviceId === "string" && result.deviceId.length > 0)
+          || (path === "/v1/subscription" && (method === "PUT" || method === "DELETE" || ((!method || method === "GET") && typeof result.subscribed === "boolean")))
+          || (method === "PUT" && /^\/v1\/articles\/[^/]+\/like$/.test(path)))) deviceSessionKnown = true;
       return result;
     } finally { if (timer !== null) window.clearTimeout(timer); }
   }
@@ -418,6 +428,7 @@
   function updateMetricsParticipation() {
     if (!metricsParticipation) return;
     metricsParticipation.textContent = !metricsTracked() ? metricsText.optedOut : !metricsStorageChecked ? "" : metricsVisitor ? metricsText.participating : metricsText.storageOff;
+    if (metricsExclusionNotice) metricsExclusionNotice.textContent = !metricsTracked() ? metricsText.excludedShort : metricsStorageChecked && !metricsVisitor ? metricsText.storageShort : "";
   }
   function metricsUUID() {
     if (!window.crypto) return null;
@@ -474,6 +485,10 @@
     metricsStatus.setAttribute("role", "status");
     metricsStatus.setAttribute("aria-live", "polite");
     metricsRoot.appendChild(metricsStatus);
+    metricsExclusionNotice = node("p", "atr-reader-metrics-note atr-reader-metrics-exclusion");
+    metricsExclusionNotice.setAttribute("role", "status");
+    metricsExclusionNotice.setAttribute("aria-live", "polite");
+    metricsRoot.appendChild(metricsExclusionNotice);
     var details = node("details", "atr-reader-metrics-details");
     details.appendChild(node("summary", "", metricsText.details));
     var extra = node("div", "atr-reader-metrics-row");
@@ -489,8 +504,6 @@
     details.appendChild(node("p", "atr-reader-metrics-note", metricsText.criteria));
     details.appendChild(node("p", "atr-reader-metrics-note", metricsText.privacy));
     metricsParticipation = node("p", "atr-reader-metrics-note atr-reader-metrics-participation");
-    metricsParticipation.setAttribute("role", "status");
-    metricsParticipation.setAttribute("aria-live", "polite");
     details.appendChild(metricsParticipation);
     updateMetricsParticipation();
     metricsRoot.appendChild(details);
@@ -526,7 +539,7 @@
     if (metricsStatus) metricsStatus.textContent = "";
   }
   async function metricsCall(type) {
-    var generation;
+    var generation, writing = false;
     try {
       var path = "/v1/metrics" + (article ? "?articleId=" + encodeURIComponent(article.id) : "");
       var body;
@@ -537,6 +550,7 @@
         body = { type: type, visitorId: visitorId, eventId: eventId, articleId: article ? article.id : null };
       }
       generation = ++metricsGeneration;
+      if (body) { writing = true; metricsWrites += 1; }
       var result = await withDeadline(request(path, body ? "POST" : "GET", body, "omit"), 5000, "metrics_timeout");
       if (generation === metricsGeneration) applyMetrics(result);
     } catch (_) {
@@ -544,14 +558,17 @@
         metricsRoot.dataset.state = "error"; metricsRoot.setAttribute("title", metricsText.unavailable);
         if (metricsStatus) metricsStatus.textContent = metricsText.unavailable;
       }
-    }
+    } finally { if (writing) { metricsWrites -= 1; flushMetricsRefresh(); } }
+  }
+  function flushMetricsRefresh() {
+    if (metricsRefreshQueued && !metricsRequest && metricsWrites === 0) { metricsRefreshQueued = false; void refreshMetrics(); }
   }
   function refreshMetrics(force) {
     if (!metricsRoot) return Promise.resolve();
-    if (metricsRequest) { if (force) metricsRefreshQueued = true; return metricsRequest; }
+    if (metricsRequest || metricsWrites > 0) { if (force) metricsRefreshQueued = true; return metricsRequest || Promise.resolve(); }
     metricsRequest = metricsCall().finally(function () {
       metricsRequest = null;
-      if (metricsRefreshQueued) { metricsRefreshQueued = false; void refreshMetrics(); }
+      flushMetricsRefresh();
     });
     return metricsRequest;
   }
@@ -566,17 +583,26 @@
     if (metricsVisitorId()) void recordMetrics("open");
     else void refreshMetrics();
   }
-  async function ensureDevice() { await request("/v1/devices", "POST", {}); }
+  function metricsPageShow(event) {
+    if (event && event.persisted && metricsRoot && metricsForeground()) { void refreshMetrics(true); return; }
+    startMetrics();
+  }
+  function ensureDevice() {
+    if (deviceSessionKnown) return Promise.resolve();
+    if (!pendingDeviceRegistration) {
+      var pending = request("/v1/devices", "POST", {});
+      pendingDeviceRegistration = pending;
+      function clear() { if (pendingDeviceRegistration === pending) pendingDeviceRegistration = null; }
+      pending.then(clear, clear);
+    }
+    return pendingDeviceRegistration;
+  }
   function selectedTopics() {
     if (!dialogBody) return state.topics.slice();
     return Array.from(dialogBody.querySelectorAll("input[data-reader-topic]:checked")).map(function (input) { return input.value; });
   }
   function validTopics(value) {
     return Array.isArray(value) ? value.filter(function (topic) { return topic === "review" || topic === "lecture"; }) : ["review", "lecture"];
-  }
-  function validCount(value) {
-    var count = Number(value);
-    return Number.isSafeInteger(count) && count >= 0 ? count : 0;
   }
   function updateButtons() {
     subscriptionButtons.forEach(function (element) {
@@ -585,6 +611,7 @@
     });
     if (likeButton) {
       likeButton.disabled = state.likeBusy;
+      likeButton.setAttribute("aria-busy", state.likeBusy ? "true" : "false");
       likeButton.setAttribute("aria-pressed", state.liked ? "true" : "false");
       likeButton.setAttribute("aria-label", state.liked ? text.unlike : text.like);
       likeButton.textContent = (state.liked ? "♥ " : "♡ ") + text.like + " " + (state.count === null ? "—" : new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(state.count));
@@ -917,30 +944,62 @@
     renderDialog();
   }
   async function loadLikes() {
-    if (!article || !likeButton) return;
+    if (!article || !likeButton || state.likeBusy) return;
     var revision = likeRevision;
     try {
       var result = await request("/v1/articles/" + encodeURIComponent(article.id) + "/like");
-      if (revision !== likeRevision) return;
-      state.count = validCount(result.count);
-      state.liked = result.liked === true;
+      if (revision !== likeRevision || state.likeBusy) return;
+      validateLike(result);
+      state.count = result.count;
+      state.liked = result.liked;
       updateButtons();
       if (articleStatus && articleStatus.dataset.readerStatusAction === "load-likes") articleMessage("");
     } catch (_) { if (revision === likeRevision) articleMessage(text.likeLoadFailed, "load-likes"); }
   }
-  async function like() {
+  function validateLike(result, desired) {
+    if (!result || result.ok !== true || typeof result.liked !== "boolean" || typeof result.count !== "number"
+      || !Number.isSafeInteger(result.count) || result.count < 0 || (desired !== undefined && result.liked !== desired)) throw apiError("invalid_like_response");
+  }
+  async function persistLike(desired, active) {
+    await ensureDevice();
+    if (!active()) throw apiError("like_expired");
+    if (pendingLikeWrite) {
+      var previous = pendingLikeWrite;
+      if (previous.desired === desired) return previous.promise;
+      try { await previous.promise; } catch (_) { /* Serialize a changed intent after an ambiguous earlier write. */ }
+      if (!active()) throw apiError("like_expired");
+    }
+    var pending = { desired: desired, promise: request("/v1/articles/" + encodeURIComponent(article.id) + "/like", "PUT", { liked: desired }) };
+    pendingLikeWrite = pending;
+    function clear() { if (pendingLikeWrite === pending) pendingLikeWrite = null; }
+    pending.promise.then(clear, clear);
+    return pending.promise;
+  }
+  async function like(retry) {
     if (!article || state.likeBusy) return;
+    var previous = { liked: state.liked, count: state.count };
+    var desired = retry === true && typeof state.likeRetryDesired === "boolean" ? state.likeRetryDesired : !previous.liked;
+    var active = true;
     likeRevision += 1;
     state.likeBusy = true;
+    state.likeRetryDesired = null;
+    state.liked = desired;
+    var optimisticCount = typeof previous.count === "number" ? Math.max(0, previous.count + Number(desired) - Number(previous.liked)) : null;
+    state.count = Number.isSafeInteger(optimisticCount) ? optimisticCount : null;
     updateButtons();
+    articleMessage(text.likeSaving);
     try {
-      await ensureDevice();
-      var result = await request("/v1/articles/" + encodeURIComponent(article.id) + "/like", "PUT", { liked: !state.liked });
-      state.count = validCount(result.count);
-      state.liked = result.liked === true;
+      var result = await withDeadline(persistLike(desired, function () { return active; }), 12000, "like_timeout");
+      validateLike(result, desired);
+      state.count = result.count;
+      state.liked = result.liked;
       articleMessage(state.liked ? text.likedSaved : text.unlikedSaved);
-    } catch (error) { articleMessage(error.code === "http_401" ? text.cookieFailed : text.likeFailed, "like"); }
-    finally { state.likeBusy = false; updateButtons(); }
+    } catch (error) {
+      state.liked = previous.liked;
+      state.count = previous.count;
+      state.likeRetryDesired = desired;
+      articleMessage(error.code === "http_401" ? text.cookieFailed : text.likeFailed, "retry-like");
+    } finally { active = false; state.likeBusy = false; updateButtons(); }
   }
   function shareURL() {
     var path = location.pathname.startsWith(scope) ? location.pathname : scope;
@@ -1007,6 +1066,7 @@
     else if (action === "unsubscribe") void unsubscribe();
     else if (action === "retry" || action === "recheck") { setFeedback("", false); void prepare(); }
     else if (action === "like") void like();
+    else if (action === "retry-like") void like(true);
     else if (action === "load-likes") void loadLikes();
     else if (action === "share") void share();
     else if (action === "copy") void copyLink();
@@ -1018,7 +1078,7 @@
   if (typeof window.addEventListener === "function") {
     window.addEventListener("beforeinstallprompt", offerInstall);
     window.addEventListener("appinstalled", installedApp);
-    window.addEventListener("pageshow", function () { void refreshNotificationState(false); startMetrics(); });
+    window.addEventListener("pageshow", function (event) { void refreshNotificationState(false); metricsPageShow(event); });
     window.addEventListener("focus", function () { void refreshNotificationState(false); });
     document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { void refreshNotificationState(false); startMetrics(); } });
     document.addEventListener("prerenderingchange", startMetrics);
