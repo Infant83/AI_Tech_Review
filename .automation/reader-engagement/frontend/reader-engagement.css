@@ -32,6 +32,11 @@
   outline: 3px solid var(--green, #0d7c66);
   outline-offset: 3px;
 }
+.atr-reader-dialog select:focus-visible,
+.atr-reader-dialog summary:focus-visible {
+  outline: 3px solid var(--green, #0d7c66);
+  outline-offset: 3px;
+}
 .atr-reader-button:disabled { opacity: .58; cursor: default; }
 .atr-reader-button[aria-pressed="true"],
 .atr-reader-button[data-subscribed="true"] {
@@ -83,6 +88,7 @@
   width: min(440px, calc(100% - 28px));
   max-height: calc(100dvh - 40px);
   overflow: auto;
+  scroll-padding-top: 64px;
   padding: 23px;
   border: 1px solid var(--line, #d9ded8);
   border-radius: 16px;
@@ -103,11 +109,16 @@
   z-index: 10001;
 }
 .atr-reader-dialog .atr-reader-dialog-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   align-items: start;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 15px;
+  padding: 6px 0;
+  background: var(--paper, #fff);
 }
 .atr-reader-dialog h2 {
   min-width: 0;
@@ -152,6 +163,57 @@
   cursor: pointer;
 }
 .atr-reader-dialog input { accent-color: #0d7c66; width: 18px; height: 18px; margin: 0; }
+.atr-reader-dialog .atr-reader-guide {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line, #d9ded8);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.atr-reader-dialog .atr-reader-guide summary {
+  min-height: 44px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: 650;
+}
+.atr-reader-dialog .atr-reader-guide-device {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 13px;
+  font-size: 12px;
+}
+.atr-reader-dialog .atr-reader-guide-select {
+  box-sizing: border-box;
+  flex: 1 1 160px;
+  min-width: 0;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line, #d9ded8);
+  border-radius: 7px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  font: inherit;
+}
+.atr-reader-dialog .atr-reader-guide ol { margin-bottom: 12px; }
+.atr-reader-dialog .atr-reader-recent {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line, #d9ded8);
+}
+.atr-reader-dialog .atr-reader-recent h3 {
+  margin: 0 0 9px;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: 650 15px/1.6 "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+}
+.atr-reader-dialog .atr-reader-recent-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.atr-reader-dialog .atr-reader-recent-list li { padding: 10px 0; border-bottom: 1px solid var(--line, #d9ded8); }
+.atr-reader-dialog .atr-reader-recent-list a { display: block; box-sizing: border-box; min-height: 44px; padding: 8px 0; color: var(--green, #0d7c66); font-size: 13px; line-height: 1.7; }
+.atr-reader-dialog .atr-reader-recent-list time { display: block; margin-top: 3px; color: var(--muted, #5c6670); font-size: 11px; line-height: 1.6; }
 .atr-reader-dialog .atr-reader-dialog-actions { display: flex; flex-wrap: wrap; gap: 9px; }
 .atr-reader-dialog .atr-reader-dialog-actions .atr-reader-primary { flex: 1 0 100%; }
 @media (max-width: 680px) {

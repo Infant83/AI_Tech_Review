@@ -77,13 +77,67 @@
     permissionTimeout: "알림 권한 창이 응답하지 않았어요. 열려 있는 권한 창을 확인한 뒤 다시 시도해 주세요. 창이 보이지 않으면 기본 브라우저에서 이 페이지를 열어 주세요.",
     pushTimeout: "브라우저의 알림 연결이 응답하지 않았어요. 네트워크 연결을 확인한 뒤 다시 시도해 주세요."
   };
+  var guideText = english ? {
+    title: "Installation and alert help", device: "Show instructions for", iphone: "iPhone · iPad", chrome: "Mac · Chrome", safari: "Mac · Safari", other: "Other devices",
+    iphoneReady: "You are using the Home Screen app. Manage alerts below without installing it again.",
+    macOptional: "Installing an app is optional on Mac. You can also receive alerts from a regular browser tab.",
+    macReady: "You are using the installed web app. Manage alerts below without installing it again.",
+    alreadySubscribed: "Alerts are already on for this device. Use Send a test alert to this device to check delivery.",
+    iphoneSteps: ["Open your browser’s Share menu.", "Choose Add to Home Screen, then Add. Keep Open as Web App enabled if shown.", "Open the AI Tech Review icon on your Home Screen. If you already have a web app icon for this same address, use it instead of adding another."],
+    iphoneNext: "In the app, tap Enable new article alerts → Allow, then Send a test alert to this device.",
+    iphoneAppSteps: ["Tap Enable new article alerts below and choose Allow in the iOS prompt.", "After subscribing, use Send a test alert to this device to check delivery."],
+    iphoneSettings: "If an alert does not arrive: iPhone Settings → Notifications → the AI Tech Review app → Allow Notifications. Also check Focus. Enable Badges there for an icon number. Your chosen Home Screen app name may differ.",
+    chromeSteps: ["Optional: use the install icon in Chrome’s address bar, or ⋮ → Cast, save, and share → Install page as app. Menu names vary by version.", "If you install it, open its Dock/app icon and subscribe in that window. Otherwise, subscribe in this tab. Tap Enable new article alerts and allow the Chrome or macOS prompt that appears.", "Send a test alert to this device and allow any additional macOS notification prompt."],
+    safariSteps: ["Optional: in a supported Safari/macOS version, choose File → Add to Dock.", "If you add it to the Dock, open that app and subscribe in its own window. Otherwise, subscribe in this tab. Tap Enable new article alerts and allow the prompt that appears.", "Send a test alert to this device and allow any macOS notification prompt."],
+    macAppSteps: ["Tap Enable new article alerts and allow the browser or macOS permission prompt that appears.", "Send a test alert to this device and allow any additional macOS notification prompt."],
+    existingMac: "Already installed for this address? Open its existing Dock or app icon. This browser tab cannot reliably tell whether you installed it earlier.",
+    chromeSettings: "If an alert does not arrive: Chrome Settings → Privacy and security → Site settings → Notifications. In macOS System Settings → Notifications, check the actual app entry, such as AI Tech Review Letters or Google Chrome.",
+    safariSettings: "For a Safari tab, check Safari Settings → Websites → Notifications and the Safari entry in macOS System Settings → Notifications. A Dock app has its own notification settings.",
+    appSettings: "For an installed app, check macOS System Settings → Notifications → its actual app name, such as AI Tech Review Letters. App notification settings may differ from the browser tab’s site settings. Enable Badge app icon for the icon number.",
+    macCenter: "Click the date and time at the top right of your Mac to open Notification Center. Check Focus if banners are hidden. Test from a regular browser window, not private browsing.",
+    otherSteps: ["Use a browser that supports web notifications, then tap Enable new article alerts.", "Choose Allow and send a test alert. App installation is optional when your browser supports alerts in a tab."],
+    installButton: "Install app (optional)", installBusy: "Opening install window…", installAccepted: "Continue in the browser’s install window, then open the app icon. Alert permission is a separate step.",
+    installOptional: "Installation is optional. You can keep reading and receiving alerts in this browser tab.",
+    installFailed: "The install window did not open or respond. You can use the browser menu above, or keep receiving alerts in this tab.",
+    recentTitle: "Recent new article alerts", recentEmpty: "No new article alerts are saved on this device/browser yet. New article alerts received from now on will appear here.",
+    recentNote: "These alerts belong to this device/browser. Supported installed apps can show a number when OS badge display is allowed; opening the app/site clears that number while keeping this list. Test alerts do not add to the number or list.",
+    received: "Received", more: "Show more"
+  } : {
+    title: "설치·알림 받는 방법", device: "안내할 기기", iphone: "iPhone · iPad", chrome: "Mac · Chrome", safari: "Mac · Safari", other: "그 밖의 기기",
+    iphoneReady: "홈 화면 앱으로 열었어요. 추가 설치 없이 아래에서 알림을 설정할 수 있어요.",
+    macOptional: "Mac에서는 앱 설치가 선택 사항이에요. 일반 브라우저 탭에서도 알림을 받을 수 있어요.",
+    macReady: "설치한 웹앱으로 열었어요. 추가 설치 없이 아래에서 알림을 설정할 수 있어요.",
+    alreadySubscribed: "이미 이 기기에서 새 글 알림을 받고 있어요. ‘이 기기로 테스트 알림 보내기’로 도착을 확인하세요.",
+    iphoneSteps: ["브라우저의 공유 메뉴를 여세요.", "‘홈 화면에 추가’ → ‘추가’를 누르세요. ‘웹앱으로 열기’가 보이면 켜두세요.", "홈 화면의 AI Tech Review 아이콘을 여세요. 이미 같은 주소의 웹앱 아이콘이 있으면 새로 추가하지 말고 그 아이콘을 사용하세요."],
+    iphoneNext: "앱에서 ‘새 글 알림 받기’ → iOS ‘허용’을 누르고, ‘이 기기로 테스트 알림 보내기’로 확인하세요.",
+    iphoneAppSteps: ["아래 ‘새 글 알림 받기’를 누르고 iOS 권한 창에서 ‘허용’을 선택하세요.", "구독한 뒤 ‘이 기기로 테스트 알림 보내기’로 도착을 확인하세요."],
+    iphoneSettings: "알림이 안 오면 iPhone 설정 → 알림 → 테크리뷰 앱 → 알림 허용과 집중 모드를 확인하세요. 아이콘 숫자는 같은 화면의 ‘배지’도 켜야 보여요. 홈 화면에 지정한 앱 이름에 따라 항목 이름이 다를 수 있어요.",
+    chromeSteps: ["설치는 선택입니다. Chrome 주소창의 설치 아이콘 또는 ⋮ → 전송, 저장 및 공유 → 페이지를 앱으로 설치를 이용하세요. 메뉴 이름은 버전에 따라 달라질 수 있어요.", "설치했다면 Dock·앱 아이콘을 열고 그 창에서 구독하세요. 설치하지 않았다면 이 탭에서 구독하면 됩니다. ‘새 글 알림 받기’를 누르고 표시되는 Chrome 또는 macOS 권한 창에서 허용하세요.", "‘이 기기로 테스트 알림 보내기’를 누르고 추가 macOS 권한 창이 나오면 허용하세요."],
+    safariSteps: ["설치는 선택입니다. 지원하는 Safari·macOS 버전에서는 파일 → Dock에 추가를 이용하세요.", "Dock에 추가했다면 그 앱을 열고 앱 창에서 구독하세요. 추가하지 않았다면 이 탭에서 구독하면 됩니다. ‘새 글 알림 받기’를 누르고 표시되는 권한 창에서 허용하세요.", "‘이 기기로 테스트 알림 보내기’를 누르고 macOS의 알림 허용 창이 나오면 허용하세요."],
+    macAppSteps: ["‘새 글 알림 받기’를 누르고 표시되는 브라우저 또는 macOS 권한 창에서 허용하세요.", "‘이 기기로 테스트 알림 보내기’를 누르고 추가 macOS 권한 창이 나오면 허용하세요."],
+    existingMac: "이미 이 주소의 앱을 설치했다면 기존 Dock·앱 아이콘을 여세요. 일반 브라우저 탭에서는 이전 설치 여부를 정확히 확인할 수 없어요.",
+    chromeSettings: "알림이 안 오면 Chrome 설정 → 개인정보 및 보안 → 사이트 설정 → 알림을 확인하세요. macOS 시스템 설정 → 알림에서도 AI Tech Review Letters 또는 Google Chrome 등 실제 표시된 앱 항목을 확인하세요.",
+    safariSettings: "Safari 탭은 Safari 설정 → 웹사이트 → 알림의 사이트 허용과 macOS 시스템 설정 → 알림의 Safari 항목을 확인하세요. Dock 앱의 알림 설정은 별도입니다.",
+    appSettings: "설치 앱은 macOS 시스템 설정 → 알림에서 AI Tech Review Letters 등 실제 앱 이름의 항목을 확인하세요. 앱의 알림 설정은 브라우저 탭의 사이트 설정과 다를 수 있어요. 아이콘 숫자는 ‘앱 아이콘에 배지 표시’도 켜야 보여요.",
+    macCenter: "Mac 화면 오른쪽 위 날짜·시간을 누르면 알림센터가 열려요. 배너가 안 보이면 집중 모드를 확인하세요. 비공개 탐색 대신 일반 창에서 테스트하세요.",
+    otherSteps: ["웹 알림을 지원하는 브라우저에서 ‘새 글 알림 받기’를 누르세요.", "‘허용’을 선택한 뒤 테스트 알림을 보내보세요. 브라우저 탭의 알림을 지원하는 환경에서는 앱 설치가 선택 사항입니다."],
+    installButton: "앱 설치하기 (선택)", installBusy: "설치 창 여는 중…", installAccepted: "브라우저의 설치 창에서 진행한 뒤 앱 아이콘을 열어 주세요. 알림 허용은 별도 단계입니다.",
+    installOptional: "앱 설치는 선택이에요. 이 브라우저 탭에서도 계속 읽고 알림을 받을 수 있어요.",
+    installFailed: "설치 창이 열리지 않거나 응답하지 않아요. 위의 브라우저 메뉴를 이용하거나 이 탭에서 알림을 받을 수 있어요.",
+    recentTitle: "최근 받은 새 글 알림", recentEmpty: "이 기기·브라우저에 저장된 새 글 알림이 아직 없어요. 앞으로 도착하는 새 글 알림을 여기에 모아 보여드려요.",
+    recentNote: "기기·브라우저별 알림입니다. 숫자는 지원하는 설치 앱에서 운영체제의 배지 표시를 허용해야 보여요. 앱·사이트를 열면 숫자는 0이 되고 목록은 남아요. 테스트 알림은 숫자·목록에 포함하지 않아요.",
+    received: "받은 시각", more: "더 보기"
+  };
   var state = { preparing: true, busy: false, configError: false, registrationError: false, key: "", registration: null,
     localSubscription: null, serverSubscription: null, topics: ["review", "lecture"], feedback: "", feedbackError: false,
-    liked: false, count: null, likeBusy: false, pendingServerDelete: false };
+    liked: false, count: null, likeBusy: false, pendingServerDelete: false, guideDevice: null, guideOpen: null, installBusy: false,
+    notificationHistory: [], historyReady: false, historyLimit: 5, historyCount: null };
   var subscriptionButtons = [];
   var dialog = null, dialogBody = null, dialogHeading = null, dialogFeedback = null, opener = null;
   var likeButton = null, articleStatus = null, likeRevision = 0, scrollState = null;
   var pendingPermission = null, pendingPushLookup = null, pendingPushSubscription = null;
+  var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
+  var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
 
   function node(tag, className, content) {
     var element = document.createElement(tag);
@@ -102,6 +156,167 @@
   }
   function standalone() {
     return navigator.standalone === true || (typeof window.matchMedia === "function" && (window.matchMedia("(display-mode: standalone)").matches || window.matchMedia("(display-mode: fullscreen)").matches));
+  }
+  function deviceGuide() {
+    if (isIOS()) return "iphone";
+    var agent = navigator.userAgent || "";
+    if (/Macintosh|Mac OS X/.test(agent)) return /Safari/.test(agent) && !/Chrome|Chromium|Edg|OPR/.test(agent) ? "mac-safari" : "mac-chrome";
+    return "other";
+  }
+  function guideInstalled(device) { return device === deviceGuide() && (standalone() || installedInSession); }
+  function appendGuide(defaultOpen) {
+    var device = state.guideDevice || deviceGuide();
+    var installed = guideInstalled(device);
+    var activeSubscription = device === deviceGuide() && subscribed();
+    var details = node("details", "atr-reader-guide");
+    currentGuide = details;
+    details.open = state.guideOpen === null ? defaultOpen : state.guideOpen;
+    var summary = node("summary", "", guideText.title);
+    summary.dataset.readerGuide = "summary";
+    details.appendChild(summary);
+    var label = node("label", "atr-reader-guide-device");
+    label.appendChild(node("span", "", guideText.device));
+    var select = node("select", "atr-reader-guide-select");
+    select.setAttribute("aria-label", guideText.device);
+    select.dataset.readerGuide = "device";
+    [["iphone", guideText.iphone], ["mac-chrome", guideText.chrome], ["mac-safari", guideText.safari], ["other", guideText.other]].forEach(function (item) {
+      var option = node("option", "", item[1]); option.value = item[0]; select.appendChild(option);
+    });
+    select.value = device;
+    label.appendChild(select);
+    details.appendChild(label);
+    var steps;
+    if (device === "iphone") steps = installed ? guideText.iphoneAppSteps : guideText.iphoneSteps;
+    else if (device === "mac-chrome") steps = installed ? guideText.macAppSteps : guideText.chromeSteps;
+    else if (device === "mac-safari") steps = installed ? guideText.macAppSteps : guideText.safariSteps;
+    else steps = guideText.otherSteps;
+    if (activeSubscription) {
+      steps = !installed && device === "mac-chrome" ? [guideText.chromeSteps[0], guideText.alreadySubscribed]
+        : !installed && device === "mac-safari" ? [guideText.safariSteps[0], guideText.alreadySubscribed] : [guideText.alreadySubscribed];
+    }
+    var list = node("ol");
+    steps.forEach(function (step) { list.appendChild(node("li", "", step)); });
+    details.appendChild(list);
+    if (device === "iphone") {
+      if (!installed && !activeSubscription) details.appendChild(node("p", "", guideText.iphoneNext));
+      details.appendChild(node("p", "atr-reader-note", guideText.iphoneSettings));
+      details.appendChild(node("p", "atr-reader-note", text.iosVersion));
+    } else if (device === "mac-chrome" || device === "mac-safari") {
+      if (!installed) details.appendChild(node("p", "atr-reader-note", guideText.existingMac));
+      details.appendChild(node("p", "atr-reader-note", installed ? guideText.appSettings : device === "mac-chrome" ? guideText.chromeSettings : guideText.safariSettings));
+      details.appendChild(node("p", "atr-reader-note", guideText.macCenter));
+    }
+    if (device === deviceGuide() && device !== "iphone" && !installed && (installPrompt || state.installBusy)) {
+      var install = button(state.installBusy ? guideText.installBusy : guideText.installButton, "install-app");
+      install.disabled = state.installBusy;
+      details.appendChild(install);
+    }
+    details.addEventListener("toggle", function () { if (currentGuide === details) state.guideOpen = details.open; });
+    dialogBody.appendChild(details);
+  }
+  function notificationURL(value) {
+    if (typeof value !== "string") return null;
+    try {
+      var url = new URL(value, location.origin + scope);
+      return url.origin === location.origin && url.pathname.startsWith(scope) && !url.username && !url.password ? url.href : null;
+    } catch (_) { return null; }
+  }
+  function notificationList(reply) {
+    if (!reply || typeof reply !== "object" || Array.isArray(reply) || reply.ok !== true || !Number.isSafeInteger(reply.count) || reply.count < 0 || !Array.isArray(reply.notifications)) return null;
+    var seen = new Set();
+    var result = [];
+    reply.notifications.slice(0, 20).forEach(function (item) {
+      if (!item || typeof item !== "object" || typeof item.id !== "string" || !item.id.trim() || item.id.length > 180 || seen.has(item.id)
+        || typeof item.title !== "string" || !item.title.trim() || !Number.isSafeInteger(item.receivedAt) || item.receivedAt <= 0 || !Number.isFinite(new Date(item.receivedAt).getTime())) return;
+      var url = notificationURL(item.url);
+      if (!url) return;
+      seen.add(item.id);
+      result.push({ id: item.id, title: item.title.slice(0, 240), url: url, receivedAt: item.receivedAt });
+    });
+    return result;
+  }
+  function appendRecentNotifications() {
+    if (!state.historyReady) return;
+    var recent = node("section", "atr-reader-recent");
+    recent.setAttribute("aria-labelledby", "atr-reader-recent-title");
+    var title = node("h3", "", guideText.recentTitle); title.id = "atr-reader-recent-title"; title.tabIndex = -1;
+    recentHeading = title;
+    recent.appendChild(title);
+    if (!state.notificationHistory.length) recent.appendChild(node("p", "atr-reader-note", guideText.recentEmpty));
+    else {
+      var list = node("ul", "atr-reader-recent-list");
+      state.notificationHistory.slice(0, state.historyLimit).forEach(function (item) {
+        var row = node("li");
+        var link = node("a", "", item.title); link.href = item.url;
+        row.appendChild(link);
+        var received = node("time", "", guideText.received + " · " + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(item.receivedAt));
+        received.dateTime = new Date(item.receivedAt).toISOString();
+        row.appendChild(received);
+        list.appendChild(row);
+      });
+      recent.appendChild(list);
+      if (state.historyLimit < state.notificationHistory.length) recent.appendChild(button(guideText.more + " (" + state.notificationHistory.length + ")", "recent-more"));
+    }
+    recent.appendChild(node("p", "atr-reader-note", guideText.recentNote));
+    dialogBody.appendChild(recent);
+  }
+  function notificationWorker() {
+    if (!("serviceWorker" in navigator)) return null;
+    var worker = navigator.serviceWorker.controller || (state.registration && state.registration.active);
+    return worker && typeof worker.postMessage === "function" ? worker : null;
+  }
+  function requestNotificationState(worker) {
+    return new Promise(function (resolve, reject) {
+      var channel = new window.MessageChannel();
+      var finished = false;
+      var timer = window.setTimeout(function () { finish(apiError("notification_state_timeout")); }, 4000);
+      function finish(error, reply) {
+        if (finished) return;
+        finished = true;
+        window.clearTimeout(timer);
+        channel.port1.onmessage = null;
+        channel.port1.onmessageerror = null;
+        try { if (typeof channel.port1.close === "function") channel.port1.close(); } catch (_) { /* Already detached. */ }
+        try { if (typeof channel.port2.close === "function") channel.port2.close(); } catch (_) { /* Already transferred. */ }
+        if (error) reject(error); else resolve(reply);
+      }
+      channel.port1.onmessage = function (event) { finish(null, event.data); };
+      channel.port1.onmessageerror = function () { finish(apiError("notification_state_unavailable")); };
+      if (typeof channel.port1.start === "function") channel.port1.start();
+      try { worker.postMessage({ type: "atr-reader-notification-state" }, [channel.port2]); }
+      catch (error) { finish(error); }
+    });
+  }
+  function refreshNotificationState(force) {
+    if (document.visibilityState !== "visible" || (typeof document.hasFocus === "function" && !document.hasFocus())) return Promise.resolve();
+    if (window.top && window.top !== window.self) return Promise.resolve();
+    if (historyRequest) { if (force || historyDirty) historyQueued = true; return historyRequest; }
+    if (!force && !historyDirty && Date.now() - historyLastAttempt < 750) return Promise.resolve();
+    var worker = notificationWorker();
+    if (!worker || typeof window.MessageChannel !== "function") return Promise.resolve();
+    historyLastAttempt = Date.now();
+    historyDirty = false;
+    var generation = ++historyGeneration;
+    historyRequest = requestNotificationState(worker).then(function (reply) {
+      if (generation !== historyGeneration || worker !== notificationWorker()) { historyQueued = true; return; }
+      var records = notificationList(reply);
+      if (records === null) return;
+      state.notificationHistory = records;
+      state.historyCount = reply.count;
+      state.historyReady = true;
+      if (dialog && dialog.open) renderDialog();
+    }).catch(function () { /* Old workers and unsupported browsers must not affect subscription controls. */ }).then(function () {
+      historyRequest = null;
+      if (historyQueued) { historyQueued = false; void refreshNotificationState(true); }
+    });
+    return historyRequest;
+  }
+  function notificationHint(event) {
+    if (!event || !event.data || event.data.type !== "atr-reader-notifications-changed" || !event.source || typeof event.source.scriptURL !== "string") return;
+    try { if (new URL(event.source.scriptURL).href !== new URL(scope + "sw.js", location.origin).href) return; }
+    catch (_) { return; }
+    historyDirty = true;
+    void refreshNotificationState(false);
   }
   function supported() {
     return window.isSecureContext !== false && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
@@ -285,12 +500,19 @@
     dialog.addEventListener("click", handleAction);
     dialog.addEventListener("change", function (event) {
       if (event.target.dataset && event.target.dataset.readerTopic) state.topics = selectedTopics();
+      if (event.target.dataset && event.target.dataset.readerGuide === "device" && ["iphone", "mac-chrome", "mac-safari", "other"].indexOf(event.target.value) !== -1) {
+        state.guideDevice = event.target.value;
+        state.guideOpen = true;
+        renderDialog();
+      }
     });
     dialog.addEventListener("close", function () { restorePage(); });
     dialog.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && typeof dialog.close !== "function") { event.preventDefault(); closeDialog(); }
       if (event.key !== "Tab") return;
-      var focusable = Array.from(dialog.querySelectorAll("button:not(:disabled),input:not(:disabled),a[href]"));
+      var focusable = Array.from(dialog.querySelectorAll("button:not(:disabled),input:not(:disabled),select:not(:disabled),summary,a[href]")).filter(function (element) {
+        return typeof element.getClientRects !== "function" || element.getClientRects().length > 0;
+      });
       if (!focusable.length) { event.preventDefault(); dialogHeading.focus(); return; }
       var first = focusable[0], last = focusable[focusable.length - 1];
       if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogHeading)) { event.preventDefault(); last.focus(); }
@@ -332,11 +554,17 @@
     if (typeof dialog.showModal === "function") dialog.showModal();
     else { dialog.setAttribute("open", ""); dialog.setAttribute("role", "dialog"); dialog.setAttribute("aria-modal", "true"); dialog.classList.add("atr-reader-fallback"); }
     dialogHeading.focus({ preventScroll: true });
+    void refreshNotificationState(true);
   }
   function renderDialog() {
     if (!dialog) return;
     var focused = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerAction;
     var focusedTopic = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerTopic;
+    var focusedGuide = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerGuide;
+    // Native toggle events are queued; preserve the actual disclosure state now.
+    if (currentGuide) state.guideOpen = currentGuide.open;
+    currentGuide = null;
+    recentHeading = null;
     dialogBody.replaceChildren();
     dialogBody.setAttribute("aria-busy", state.busy || state.preparing ? "true" : "false");
     dialogHeading.textContent = text.title;
@@ -344,10 +572,8 @@
     if (isIOS() && !standalone()) {
       dialogHeading.textContent = text.installTitle;
       dialogBody.appendChild(node("p", "", text.installIntro));
-      var steps = node("ol");
-      text.steps.forEach(function (step) { steps.appendChild(node("li", "", step)); });
-      dialogBody.appendChild(steps);
-      dialogBody.appendChild(node("p", "atr-reader-note", text.iosVersion));
+      appendRecentNotifications();
+      appendGuide(true);
       dialogBody.appendChild(button(text.close, "close"));
     } else if (!supported()) {
       dialogBody.appendChild(node("p", "", text.unsupported));
@@ -356,6 +582,8 @@
       dialogBody.appendChild(button(text.recheck, "recheck"));
       if (state.serverSubscription || state.localSubscription || state.pendingServerDelete) dialogBody.appendChild(button(text.unsubscribe, "unsubscribe"));
     } else {
+      if (isIOS() && standalone()) dialogBody.appendChild(node("p", "atr-reader-note", guideText.iphoneReady));
+      else if (deviceGuide() === "mac-chrome" || deviceGuide() === "mac-safari") dialogBody.appendChild(node("p", "atr-reader-note", standalone() ? guideText.macReady : guideText.macOptional));
       dialogBody.appendChild(node("p", "", subscribed() ? text.enabled : text.intro));
       if (!subscribed() && (state.serverSubscription || state.localSubscription)) dialogBody.appendChild(node("p", "atr-reader-note", text.reconnectNote));
       var fieldset = node("fieldset");
@@ -389,10 +617,13 @@
       dialogBody.appendChild(actions);
       dialogBody.appendChild(node("p", "atr-reader-note", text.device));
     }
-    if ((focused || focusedTopic) && dialog.open) {
+    if (!(isIOS() && !standalone())) { appendRecentNotifications(); appendGuide(false); }
+    if ((focused || focusedTopic || focusedGuide) && dialog.open) {
       var restore = focused ? Array.from(dialog.querySelectorAll("[data-reader-action]")).find(function (element) { return element.dataset.readerAction === focused; })
-        : Array.from(dialog.querySelectorAll("[data-reader-topic]")).find(function (element) { return element.dataset.readerTopic === focusedTopic; });
+        : focusedTopic ? Array.from(dialog.querySelectorAll("[data-reader-topic]")).find(function (element) { return element.dataset.readerTopic === focusedTopic; })
+        : Array.from(dialog.querySelectorAll("[data-reader-guide]")).find(function (element) { return element.dataset.readerGuide === focusedGuide; });
       if (restore && !restore.disabled) restore.focus({ preventScroll: true });
+      else if (focused === "recent-more" && recentHeading) recentHeading.focus({ preventScroll: true });
       else dialogHeading.focus({ preventScroll: true });
     }
   }
@@ -423,7 +654,7 @@
           worker.addEventListener("statechange", changed);
           changed();
         });
-      }).then(function (registered) { return browserSubscription(registered); })
+      }).then(function (registered) { void refreshNotificationState(true); return browserSubscription(registered); })
         .then(function (subscription) { state.localSubscription = subscription; })
         .catch(function () { state.registrationError = true; });
     }
@@ -465,6 +696,7 @@
       state.serverSubscription = result.subscription || subscription.toJSON();
       state.pendingServerDelete = false;
       setFeedback(text.enabled, false);
+      void refreshNotificationState(true);
     } catch (error) { setFeedback(error.code === "permission_timeout" ? text.permissionTimeout : error.code === "push_timeout" ? text.pushTimeout : error.code === "http_401" ? text.cookieFailed : text.failed, true); }
     finally { state.busy = false; updateButtons(); renderDialog(); }
   }
@@ -558,6 +790,31 @@
     } catch (error) { setFeedback(error.code === "http_429" ? text.testLimited : text.failed, true); }
     finally { state.busy = false; renderDialog(); }
   }
+  function offerInstall(event) {
+    if (!event || typeof event.prompt !== "function" || standalone() || installedInSession) return;
+    if (typeof event.preventDefault === "function") event.preventDefault();
+    installPrompt = event;
+    if (dialog && dialog.open) renderDialog();
+  }
+  function installedApp() {
+    installedInSession = true;
+    installPrompt = null;
+    if (dialog && dialog.open) renderDialog();
+  }
+  async function installFromGesture() {
+    if (!installPrompt || standalone() || installedInSession || state.installBusy) return;
+    var offered = installPrompt;
+    installPrompt = null;
+    state.installBusy = true;
+    try {
+      // Only the explicit install button may open the browser's real prompt.
+      var opening = offered.prompt();
+      renderDialog();
+      var choice = await withDeadline(Promise.resolve(opening).then(function () { return offered.userChoice || null; }), 30000, "install_timeout");
+      setFeedback(choice && choice.outcome === "accepted" ? guideText.installAccepted : guideText.installOptional, false);
+    } catch (_) { setFeedback(guideText.installFailed, true); }
+    finally { state.installBusy = false; renderDialog(); }
+  }
   function handleAction(event) {
     var element = event.target.closest("button[data-reader-action]");
     if (!element || element.disabled) return;
@@ -573,8 +830,21 @@
     else if (action === "share") void share();
     else if (action === "copy") void copyLink();
     else if (action === "test") void testAlert();
+    else if (action === "install-app") void installFromGesture();
+    else if (action === "recent-more") { state.historyLimit = Math.min(20, state.historyLimit + 5); renderDialog(); }
   }
   mount();
+  if (typeof window.addEventListener === "function") {
+    window.addEventListener("beforeinstallprompt", offerInstall);
+    window.addEventListener("appinstalled", installedApp);
+    window.addEventListener("pageshow", function () { void refreshNotificationState(false); });
+    window.addEventListener("focus", function () { void refreshNotificationState(false); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") void refreshNotificationState(false); });
+    if ("serviceWorker" in navigator && typeof navigator.serviceWorker.addEventListener === "function") {
+      navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); });
+      navigator.serviceWorker.addEventListener("message", notificationHint);
+    }
+  }
   void prepare();
   void loadLikes();
 })();

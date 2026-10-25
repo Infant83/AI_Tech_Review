@@ -194,7 +194,7 @@ function workerHarness() {
   return { self, handlers, shown, opened };
 }
 function frontendHarness(options = {}) {
-  const calls = [], events = [];
+  const calls = [], events = [], channels = [];
   let permission = 'default', subscribeCount = 0, unsubscribeCount = 0, resolvePermission;
   const subscriptionJSON = { endpoint: 'https://push.example/device', keys: { p256dh: 'public', auth: 'auth' } };
   const subscription = { endpoint: subscriptionJSON.endpoint, toJSON: () => subscriptionJSON, unsubscribe: async () => {
@@ -207,15 +207,39 @@ function frontendHarness(options = {}) {
     set textContent(value) { this._text = String(value); this.children = []; }
     get textContent() { return this._text + this.children.map(child => child.textContent).join(''); }
     set innerHTML(_) { throw Error('HTML injection is forbidden in reader controls'); }
-    appendChild(child) { this.children.push(child); return child; }
-    replaceChildren(...children) { this._text = ''; this.children = children; }
+    appendChild(child) { child.parentNode = this; this.children.push(child); return child; }
+    replaceChildren(...children) { this._text = ''; this.children = []; children.forEach(child => this.appendChild(child)); }
     setAttribute(name, value) { this.attributes[name] = String(value); }
     removeAttribute(name) { delete this.attributes[name]; }
     getAttribute(name) { return this.attributes[name] || null; }
     addEventListener(name, listener) { (this.listeners[name] ||= []).push(listener); }
     insertAdjacentElement(position, element) { (this.adjacent ||= []).push({ position, element }); }
     focus() { document.activeElement = this; }
-    querySelectorAll() { return []; }
+    closest() { return this.tagName === 'BUTTON' && this.dataset.readerAction ? this : this.parentNode && this.parentNode.closest ? this.parentNode.closest() : null; }
+    querySelectorAll(selector) {
+      const all = [];
+      function walk(element) { for (const child of element.children || []) { all.push(child); walk(child); } }
+      walk(this);
+      return all.filter(element => {
+        if (!element.tagName) return false;
+        if (selector === '[data-reader-action]') return Boolean(element.dataset.readerAction);
+        if (selector === '[data-reader-topic]') return Boolean(element.dataset.readerTopic);
+        if (selector === '[data-reader-guide]') return Boolean(element.dataset.readerGuide);
+        if (selector === 'input[data-reader-topic]:checked') return element.tagName === 'INPUT' && element.dataset.readerTopic && element.checked;
+        return selector.split(',').some(part => {
+          const tag = part.match(/^([a-z]+)/);
+          return tag && element.tagName === tag[1].toUpperCase() && (!part.includes(':disabled') || !element.disabled);
+        });
+      });
+    }
+    getClientRects() {
+      let ancestor = this.parentNode;
+      while (ancestor) {
+        if (ancestor.tagName === 'DETAILS' && !ancestor.open && !(this.tagName === 'SUMMARY' && this.parentNode === ancestor)) return [];
+        ancestor = ancestor.parentNode;
+      }
+      return [{}];
+    }
     showModal() { this.open = true; }
     close() { this.open = false; (this.listeners.close || []).forEach(listener => listener()); }
   }
@@ -226,11 +250,12 @@ function frontendHarness(options = {}) {
       '.topbar-links': options.noHeader || options.headerOnly ? null : topbar,
       'body > header': options.noHeader ? null : header, header: options.noHeader ? null : header })[selector] || null;
   }, getElementById: () => ({ tagName: 'SCRIPT', type: 'application/json', textContent: JSON.stringify(config) }),
-  documentElement: { lang: 'ko', style: {} }, currentScript: null, body: new MiniNode('body'), title: 'Article',
+  documentElement: { lang: options.english ? 'en' : 'ko', style: {} }, currentScript: null, body: new MiniNode('body'), title: 'Article',
+  visibilityState: options.visibility || 'visible', hasFocus() { return this.focused !== false; }, focused: options.focused !== false,
   createElement: tag => new MiniNode(tag), createTextNode: value => ({ textContent: value }), contains: () => true };
   const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error,
-    location: { protocol: 'https:', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
-    navigator: { userAgent: '', standalone: true, serviceWorker: {} },
+    location: { protocol: 'https:', origin: 'https://infant83.io', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
+    navigator: { userAgent: options.userAgent || '', standalone: options.standalone !== false, serviceWorker: {} },
     Notification: { get permission() { return permission; }, requestPermission: () => {
       events.push('permission');
       if (options.permissionPending) return new Promise(resolve => { resolvePermission = resolve; });
@@ -250,18 +275,28 @@ function frontendHarness(options = {}) {
   context.scrollY = 1780;
   context.scrollX = 0;
   context.scrollTo = (x, y) => { context.restoredScroll = [x, y]; };
+  context.self = context;
+  context.top = options.iframe ? {} : context;
+  if (options.messageChannel) context.MessageChannel = class {
+    constructor() {
+      this.port1 = { onmessage: null, onmessageerror: null, close() {}, start() {} };
+      this.port2 = { postMessage: data => queueMicrotask(() => { if (this.port1.onmessage) this.port1.onmessage({ data }); }), close() {} };
+      channels.push(this);
+    }
+  };
   if (options.unsupported) { delete context.PushManager; delete context.Notification; delete context.navigator.serviceWorker; }
   context.window = context;
-  const testSource = source.replace('  mount();\n  void prepare();\n  void loadLikes();', '  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare };');
-  assert.notEqual(testSource, source, 'test harness must suppress automatic DOM mounting');
+  const initializer = source.lastIndexOf('\n  mount();');
+  assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
   api.state.key = 'B' + 'A'.repeat(86);
   let current = options.existingSubscription ? subscription : null;
-  api.state.registration = { pushManager: { getSubscription: async () => current,
+  api.state.registration = { active: options.notificationWorker, pushManager: { getSubscription: async () => current,
     subscribe: async () => { subscribeCount++; current = subscription; return subscription; } } };
-  return { api, calls, events, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
+  return { api, calls, events, channels, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
     releasePermission: value => { permission = value; if (resolvePermission) resolvePermission(value); },
     counts: () => ({ subscribeCount, unsubscribeCount }) };
 }
@@ -280,6 +315,269 @@ function fakeClock() {
   };
 }
 const flushPromises = () => new Promise(resolve => setImmediate(resolve));
+const iphoneAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 Version/18.4 Mobile/15E148 Safari/604.1';
+const macChromeAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/152.0.0.0 Safari/537.36';
+const macSafariAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 Version/26.0 Safari/605.1.15';
+function modal(harness) { return harness.document.body.children.find(element => element.tagName === 'DIALOG'); }
+function openModal(harness) { harness.api.mount(); harness.api.open(harness.topbar.children[0]); return modal(harness); }
+function currentGuide(harness) { return modal(harness).querySelectorAll('details')[0]; }
+
+test('iPhone browser shows three required installation steps and the real subscribe/test sequence without prompting', () => {
+  const harness = frontendHarness({ userAgent: iphoneAgent, standalone: false });
+  const dialog = openModal(harness);
+  const guide = currentGuide(harness);
+  assert.equal(harness.api.deviceGuide(), 'iphone');
+  assert.equal(guide.open, true);
+  assert.equal(guide.querySelectorAll('li').length, 3);
+  assert.match(guide.textContent, /공유 메뉴/);
+  assert.match(guide.textContent, /‘홈 화면에 추가’/);
+  assert.match(guide.textContent, /이미 같은 주소의 웹앱 아이콘이 있으면/);
+  assert.match(guide.textContent, /iOS ‘허용’/);
+  assert.match(guide.textContent, /테스트 알림 보내기/);
+  assert.equal(dialog.querySelectorAll('[data-reader-action]').some(element => element.dataset.readerAction === 'subscribe'), false);
+  assert.equal(harness.events.filter(event => event === 'permission').length, 0);
+});
+test('installed iPhone web apps show subscription help without repeating installation instructions', async () => {
+  const harness = frontendHarness({ userAgent: iphoneAgent });
+  openModal(harness);
+  assert.match(modal(harness).textContent, /홈 화면 앱으로 열었어요/);
+  assert.doesNotMatch(currentGuide(harness).textContent, /‘홈 화면에 추가’/);
+  await harness.context.Notification.requestPermission();
+  harness.api.state.localSubscription = harness.subscription;
+  harness.api.state.serverSubscription = harness.subscriptionJSON;
+  harness.api.render();
+  assert.match(currentGuide(harness).textContent, /이미 이 기기에서 새 글 알림/);
+  assert.ok(currentGuide(harness).querySelectorAll('summary').length, 'subscribed readers can still discover the guide');
+});
+test('Mac Chrome and Safari default to matching optional-install and OS notification instructions', () => {
+  for (const [agent, expected, menu, application] of [[macChromeAgent, 'mac-chrome', /전송, 저장 및 공유/, /Google Chrome/], [macSafariAgent, 'mac-safari', /파일 → Dock에 추가/, /Safari/]]) {
+    const harness = frontendHarness({ userAgent: agent, standalone: false });
+    const dialog = openModal(harness);
+    assert.equal(harness.api.deviceGuide(), expected);
+    assert.match(dialog.textContent, /일반 브라우저 탭에서도 알림/);
+    assert.match(currentGuide(harness).textContent, menu);
+    assert.match(currentGuide(harness).textContent, application);
+    assert.match(currentGuide(harness).textContent, /이미 이 주소의 앱을 설치했다면 기존 Dock/);
+    assert.match(currentGuide(harness).textContent, /날짜·시간/);
+    assert.match(currentGuide(harness).textContent, /집중 모드/);
+    assert.equal(dialog.querySelectorAll('[data-reader-action]').some(element => element.dataset.readerAction === 'install-app'), false);
+    assert.equal(harness.events.length, 0);
+  }
+});
+test('installed Mac apps do not ask the reader to install again', () => {
+  const harness = frontendHarness({ userAgent: macChromeAgent });
+  openModal(harness);
+  assert.match(modal(harness).textContent, /설치한 웹앱으로 열었어요/);
+  assert.doesNotMatch(currentGuide(harness).textContent, /전송, 저장 및 공유|이전 설치 여부/);
+  assert.match(currentGuide(harness).textContent, /추가 macOS 권한/);
+});
+test('guide choice, disclosure state and select focus survive a full modal render', () => {
+  const harness = frontendHarness({ userAgent: macChromeAgent, standalone: false });
+  const dialog = openModal(harness);
+  const previous = currentGuide(harness);
+  previous.open = true;
+  previous.listeners.toggle[0]();
+  const select = previous.querySelectorAll('select')[0];
+  select.value = 'iphone'; select.focus();
+  dialog.listeners.change[0]({ target: select });
+  assert.equal(harness.api.state.guideDevice, 'iphone');
+  assert.equal(currentGuide(harness).open, true);
+  assert.equal(harness.document.activeElement.dataset.readerGuide, 'device');
+  assert.equal(harness.document.activeElement.value, 'iphone');
+  previous.open = false; previous.listeners.toggle[0]();
+  assert.equal(harness.api.state.guideOpen, true, 'removed disclosure events must not overwrite the current state');
+  harness.api.render();
+  assert.equal(currentGuide(harness).querySelectorAll('select')[0].value, 'iphone');
+  assert.equal(currentGuide(harness).open, true);
+  currentGuide(harness).open = false; currentGuide(harness).listeners.toggle[0]();
+  harness.api.render();
+  assert.equal(currentGuide(harness).open, false);
+});
+test('focus trap includes the guide summary/select and skips hidden closed-details controls', () => {
+  const harness = frontendHarness({ userAgent: macChromeAgent, standalone: false });
+  const dialog = openModal(harness);
+  const summary = currentGuide(harness).querySelectorAll('summary')[0];
+  summary.focus();
+  let prevented = false;
+  dialog.listeners.keydown[0]({ key: 'Tab', shiftKey: false, preventDefault() { prevented = true; } });
+  assert.equal(prevented, true);
+  assert.equal(harness.document.activeElement.dataset.readerAction, 'close');
+  currentGuide(harness).open = true;
+  dialog.listeners.keydown[0]({ key: 'Tab', shiftKey: true, preventDefault() {} });
+  assert.equal(harness.document.activeElement.dataset.readerGuide, 'device');
+});
+test('a disclosure opened just before an asynchronous render keeps its native open state', () => {
+  const harness = frontendHarness({ userAgent: macChromeAgent, standalone: false });
+  openModal(harness);
+  currentGuide(harness).open = true; // The browser's queued toggle event has not fired yet.
+  harness.api.render();
+  assert.equal(currentGuide(harness).open, true);
+});
+test('a real install offer is optional and prompts only after the explicit install action', async () => {
+  const harness = frontendHarness({ userAgent: macChromeAgent, standalone: false });
+  openModal(harness);
+  let prompts = 0, prevented = 0;
+  const offer = { preventDefault() { prevented++; }, prompt() { prompts++; return Promise.resolve(); }, userChoice: Promise.resolve({ outcome: 'accepted' }) };
+  harness.api.offerInstall(offer);
+  assert.equal(prevented, 1);
+  assert.equal(prompts, 0);
+  assert.ok(currentGuide(harness).querySelectorAll('[data-reader-action]').some(element => element.dataset.readerAction === 'install-app'));
+  await harness.api.install();
+  await harness.api.install();
+  assert.equal(prompts, 1);
+  assert.equal(harness.events.filter(event => event === 'permission').length, 0);
+  assert.match(harness.api.state.feedback, /알림 허용은 별도 단계/);
+  harness.api.installedApp();
+  harness.api.offerInstall(offer);
+  await harness.api.install();
+  assert.equal(prompts, 1, 'installed apps must not offer installation again');
+});
+test('English guide text uses the matching browser and preserves optional installation wording', () => {
+  const harness = frontendHarness({ userAgent: macSafariAgent, standalone: false, english: true });
+  openModal(harness);
+  assert.match(modal(harness).textContent, /Installing an app is optional/);
+  assert.match(currentGuide(harness).textContent, /File → Add to Dock/);
+  assert.match(currentGuide(harness).textContent, /Notification Center/);
+});
+function historyRecord(id, extra = {}) {
+  return { id, title: 'New article ' + id, url: 'https://infant83.io/AI_Tech_Review/reviews/' + id + '/', receivedAt: 1792893600000, ...extra };
+}
+function replyingWorker(records, count = 0) {
+  const worker = { requests: 0, postMessage(message, ports) {
+    worker.requests++;
+    assert.equal(message.type, 'atr-reader-notification-state');
+    ports[0].postMessage({ ok: true, count, notifications: records });
+  }};
+  return worker;
+}
+test('recent alert records are bounded, deduplicated and validate current-origin scoped URLs and received timestamps', () => {
+  const harness = frontendHarness();
+  const records = harness.api.sanitizeHistory({ ok: true, count: 3, notifications: [
+    historyRecord('valid', { title: '<img src=x onerror=alert(1)>', url: '/AI_Tech_Review/reviews/valid/en/?x=1#part' }),
+    historyRecord('valid', { title: 'Duplicate must not replace first' }),
+    historyRecord('foreign', { url: 'https://evil.example/article' }),
+    historyRecord('outside', { url: 'https://infant83.io/other/' }),
+    historyRecord('prefix', { url: 'https://infant83.io/AI_Tech_Review-other/' }),
+    historyRecord('script', { url: 'javascript:alert(1)' }),
+    historyRecord('userinfo', { url: 'https://user:secret@infant83.io/AI_Tech_Review/' }),
+    historyRecord('bad-time', { receivedAt: '2026-10-25' }),
+    historyRecord('negative-time', { receivedAt: -1 }),
+    historyRecord('object-title', { title: { toString: null } })
+  ] });
+  assert.equal(records.length, 1);
+  assert.equal(records[0].title, '<img src=x onerror=alert(1)>');
+  assert.equal(records[0].url, 'https://infant83.io/AI_Tech_Review/reviews/valid/en/?x=1#part');
+  assert.equal(harness.api.sanitizeHistory({ ok: true, count: -1, notifications: [] }), null);
+  assert.equal(harness.api.sanitizeHistory({ ok: true, count: 0, notifications: {} }), null);
+  assert.equal(harness.api.sanitizeHistory({ ok: false, count: 0, notifications: [] }), null);
+  assert.equal(harness.api.sanitizeHistory({ ok: true, count: 0, notifications: Array.from({ length: 30 }, (_, i) => historyRecord('a' + i)) }).length, 20);
+});
+test('recent alerts appear before help with received times, safe title text and at most twenty expandable records', async () => {
+  const worker = replyingWorker(Array.from({ length: 25 }, (_, i) => historyRecord('r' + i, i === 0 ? { title: '<script>literal title</script>' } : {})));
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: worker });
+  const dialog = openModal(harness);
+  await harness.api.refreshHistory(false);
+  const recent = dialog.querySelectorAll('section').find(element => element.className === 'atr-reader-recent');
+  assert.ok(recent);
+  assert.equal(recent.querySelectorAll('li').length, 5);
+  assert.equal(recent.querySelectorAll('a')[0].textContent, '<script>literal title</script>');
+  assert.match(recent.querySelectorAll('time')[0].textContent, /^받은 시각/);
+  assert.equal(recent.querySelectorAll('time')[0].dateTime, new Date(1792893600000).toISOString());
+  assert.ok(recent.parentNode.children.indexOf(recent) < recent.parentNode.children.indexOf(currentGuide(harness)));
+  for (let i = 0; i < 3; i++) {
+    const more = dialog.querySelectorAll('[data-reader-action]').find(element => element.dataset.readerAction === 'recent-more');
+    more.focus(); harness.api.action({ target: more });
+  }
+  const expanded = dialog.querySelectorAll('section').find(element => element.className === 'atr-reader-recent');
+  assert.equal(expanded.querySelectorAll('li').length, 20);
+  assert.equal(harness.document.activeElement.id, 'atr-reader-recent-title');
+  assert.equal(harness.api.state.notificationHistory.length, 20);
+  assert.equal(harness.api.state.historyCount, 0);
+});
+test('new subscribers receive an empty recent-alert list without fetching or inventing old publications', async () => {
+  const worker = replyingWorker([]);
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: worker });
+  openModal(harness);
+  await harness.api.refreshHistory(false);
+  assert.match(modal(harness).textContent, /저장된 새 글 알림이 아직 없어요/);
+  assert.match(modal(harness).textContent, /앞으로 도착하는 새 글 알림을 여기에/);
+  assert.equal(harness.calls.length, 0);
+  assert.equal(harness.api.state.notificationHistory.length, 0);
+});
+test('an old worker timeout preserves alert controls and a late response cannot overwrite a newer result', async () => {
+  const clock = fakeClock();
+  const oldWorker = { postMessage() {} };
+  const harness = frontendHarness({ clock, messageChannel: true, notificationWorker: oldWorker });
+  const waiting = harness.api.refreshHistory(true);
+  const late = harness.channels[0].port1.onmessage;
+  clock.advance(4000);
+  await waiting;
+  assert.equal(harness.api.state.historyReady, false);
+  assert.equal(harness.api.state.configError, false);
+  assert.equal(harness.api.state.registrationError, false);
+  assert.equal(harness.api.state.busy, false);
+  harness.api.state.registration.active = replyingWorker([historyRecord('new')]);
+  await harness.api.refreshHistory(true);
+  late({ data: { ok: true, count: 0, notifications: [historyRecord('old')] } });
+  await flushPromises();
+  assert.equal(harness.api.state.notificationHistory[0].id, 'new');
+});
+test('history requests are serialized across a controller change and stale worker data is ignored', async () => {
+  let oldPort;
+  const oldWorker = { requests: 0, postMessage(message, ports) { oldWorker.requests++; oldPort = ports[0]; } };
+  const nextWorker = replyingWorker([historyRecord('current')]);
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: oldWorker });
+  const initial = harness.api.refreshHistory(true);
+  harness.context.navigator.serviceWorker.controller = nextWorker;
+  harness.api.refreshHistory(true);
+  assert.equal(nextWorker.requests, 0, 'the replacement request must wait for the earlier request to finish');
+  oldPort.postMessage({ ok: true, count: 0, notifications: [historyRecord('stale')] });
+  await initial;
+  await flushPromises();
+  assert.equal(oldWorker.requests, 1);
+  assert.equal(nextWorker.requests, 1);
+  assert.equal(harness.api.state.notificationHistory[0].id, 'current');
+});
+test('hidden, unfocused and framed documents do not send automatic notification confirmation requests', async () => {
+  const worker = replyingWorker([historyRecord('visible')], 2);
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: worker, visibility: 'hidden' });
+  await harness.api.refreshHistory(true);
+  harness.document.visibilityState = 'visible'; harness.document.focused = false;
+  await harness.api.refreshHistory(true);
+  harness.document.focused = true; harness.context.top = {};
+  await harness.api.refreshHistory(true);
+  assert.equal(worker.requests, 0);
+  harness.context.top = harness.context.self;
+  await harness.api.refreshHistory(true);
+  assert.equal(worker.requests, 1);
+  assert.equal(harness.api.state.historyCount, 2, 'a worker may return a nonzero count while OS focus metadata catches up');
+  assert.equal(harness.api.state.notificationHistory[0].id, 'visible');
+});
+test('only the current scoped worker hint refreshes history, and hidden hints wait until foreground', async () => {
+  const worker = replyingWorker([historyRecord('hint')]);
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: worker, visibility: 'hidden' });
+  harness.api.notificationHint({ data: { type: 'atr-reader-notifications-changed' }, source: { scriptURL: 'https://evil.example/sw.js' } });
+  harness.api.notificationHint({ data: { type: 'atr-reader-notifications-changed' }, source: { scriptURL: 'https://infant83.io/AI_Tech_Review/sw.js' } });
+  assert.equal(worker.requests, 0);
+  harness.document.visibilityState = 'visible';
+  await harness.api.refreshHistory(false);
+  assert.equal(worker.requests, 1);
+  harness.api.notificationHint({ data: { type: 'atr-reader-notifications-changed' }, source: { scriptURL: 'https://infant83.io/AI_Tech_Review/sw.js' } });
+  await flushPromises();
+  assert.equal(worker.requests, 2, 'a valid new-alert hint bypasses the debounce window');
+  harness.api.notificationHint({ data: { type: 'atr-reader-notifications-changed' }, source: { scriptURL: 'https://infant83.io/elsewhere/sw.js' } });
+  assert.equal(worker.requests, 2);
+});
+test('ordinary dialog re-renders never clear notification state or bypass request debounce', async () => {
+  const worker = replyingWorker([historyRecord('kept')]);
+  const harness = frontendHarness({ messageChannel: true, notificationWorker: worker });
+  openModal(harness);
+  await harness.api.refreshHistory(false);
+  harness.api.render(); harness.api.render();
+  await harness.api.refreshHistory(false);
+  assert.equal(worker.requests, 1);
+  assert.equal(harness.api.state.notificationHistory[0].id, 'kept');
+});
 
 test('a pending permission request times out in 30 seconds and retries never duplicate the OS request', async () => {
   const clock = fakeClock();
