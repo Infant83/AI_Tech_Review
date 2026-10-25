@@ -102,6 +102,42 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-25_quantum-software-platforms-ai-agents",
+        title="양자 소프트웨어의 두 경쟁 경로: 회로 합성, AI 에이전트와 생태계의 주도권",
+        subtitle="Classiq·Qiskit·CUDA-Q가 자동화하는 일과 남는 책임, 자원 교환과 하드웨어 연동에서 읽는 조건부 전망",
+        date="2026-10-25", updated="2026-10-25", category="Quantum Computing",
+        tags=("Quantum Software", "Circuit Synthesis", "Classiq", "Qiskit", "CUDA-Q", "AI Agents", "Interoperability"),
+        summary="101을 찾으려다 111을 표시한 이상적 양자 계산에서 출발해, 고수준 모델의 합성과 에이전트의 도구 조합이 맡는 일을 설명합니다. 논문의 큐비트·CX 교환과 현행 Qiskit HLS, 하드웨어 연동과 공개성의 차이를 대조하고, 검증된 결과의 총비용에서 생태계 주도권을 읽는 세 가지 조건부 전망을 제시합니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, ecosystem analysis, Korean writing, original conceptual cover, independent exact NumPy teaching calculation and publication integration", "1차 자료 종합·생태계 분석·한국어 집필·원본 개념 표지·독립 NumPy 교육 계산 및 게시 통합"),
+            PublicAgent("academic_sources", "Qiskit released-code and documentation research, semantic/resource boundaries and independent scientific and bilingual audit", "Qiskit 릴리스 코드·문서 조사·의미와 자원 조건 대조 및 독립 과학·한영 감수"),
+            PublicAgent("academic_sources/theory_crosscheck", "independent LLM quantum-code benchmark denominator, configuration and reproducibility checks", "LLM 양자 코드 벤치마크 분모·설정과 재현 범위의 독립 교차 검토"),
+            PublicAgent("applications_sources", "Classiq papers, SDK and guarantee-scope audit, reported-data extraction and complete English translation", "Classiq 논문·SDK·보장 범위 감수·보고 데이터 추출 및 영어 전문 번역"),
+            PublicAgent("applications_sources/translation_audit", "independent bilingual semantic, numerical, equation and reference correspondence audit", "한영 의미·수치·수식과 참고문헌 대응의 독립 감수"),
+            PublicAgent("review_format", "original bilingual responsive figures, math/font typesetting, HTML/PDF production and complete output checks", "원본 한영 반응형 도표·수식과 글꼴 조판·HTML/PDF 제작 및 전체 출력 검수"),
+            PublicAgent("publish_audit", "independent cover-semantics and reader-explanation review, metadata, archive and publication audit", "표지 의미·독자 설명의 독립 검토 및 메타데이터·아카이브·출판 감사"),
+        ),
+        verification_scope=(
+            "Qmod language paper and separate synthesis preprint v2; Classiq SDK 1.33.1 static inspection and pinned public examples; Qiskit 2.6.1 released HLS/MCX/Target source, agent interfaces and service lifecycle checked against official documentation",
+            "QuantumKatas benchmark denominators, configuration selection and reproduction limits; official Classiq/CUDA-Q, Qiskit/TKET/Quantinuum, Braket and Azure/QIR interoperability documentation; no account, hosted synthesis, LLM benchmark rerun, QPU or cross-platform performance experiment",
+            "Independent exact ideal three-qubit NumPy state-vector calculation checks unitarity, normalization and 25/32 versus 1/32 after a single Grover iteration; not a device, compiler or LLM benchmark",
+            "Reported Classiq 0.60.0 Figure 3 width/CX data distinguished from current implementations; bilingual manuscripts, conceptual cover, original diagrams, full PDFs, desktop/mobile, metadata, archive hashes and live publication checked",
+        ),
+        verification_scope_ko=(
+            "Qmod 언어 논문과 별개 합성 프리프린트 v2·Classiq SDK1.33.1 정적 검토와 고정 공개 예제·Qiskit2.6.1 릴리스의 HLS/MCX/Target 코드 및 에이전트 인터페이스·서비스 이력을 공식 문서와 대조",
+            "QuantumKatas 분모·설정 선택과 재현 한계·Classiq/CUDA-Q와 Qiskit/TKET/Quantinuum 및 Braket·Azure/QIR의 공식 연결 문서 확인; 계정·서비스 합성·LLM 벤치 반복·QPU·플랫폼 간 성능 실험 없음",
+            "독립 NumPy 이상적 3큐비트 상태벡터 계산에서 유니터리성·정규화·한 Grover 반복 뒤25/32와1/32 확인; 장치·컴파일러·LLM 벤치마크가 아님",
+            "Classiq0.60.0 Fig3의 저자 보고 폭·CX 값을 현재 구현과 구별; 한영 원고·개념 표지·원본 도표·전체 PDF·PC/모바일·메타데이터·아카이브 해시와 공개 게시 확인",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-25",
+        human_review_level="topic and deeper technical review requested in the established publication workflow; no line-by-line human approval or comprehension study",
+        human_review_level_ko="기존 게시 흐름에서 주제와 기술적 심층 리뷰 요청 반영; 문장 단위 사람 승인·독자 이해도 실험 없음",
+        disclosure_note_ko="101/111 예제는 리뷰의 정확 교육 계산입니다. 합성 도표는 프리프린트의 Classiq0.60.0 컴파일 보고이며 현재 플랫폼 순위나 QPU 성능이 아닙니다. 폭 상한45/90과 실제 폭44/47을 구별합니다. 34.4%는 QuantumKatas의 한 범주55/160이며 범용LLM 정확도가 아닙니다. 공개 예제·SDK 라이선스·하드웨어 소유·이식성을 구분하고, 세 전망은 검증된 미래 성과가 아닌 조건부 해석으로 제시했습니다.",
+        disclosure_note_en="The 101/111 example is an exact teaching calculation created for this review. The synthesis figure redraws the preprint's Classiq 0.60.0 compilation results, not current platform rankings or QPU performance. Width caps 45/90 differ from actual widths 44/47. QuantumKatas' 34.4% is one category's 55/160, not general LLM accuracy. Public examples, SDK licensing, hardware ownership and portability are distinguished; three scenarios are conditional interpretations, not validated future outcomes.",
+    ),
+    PublicReview(
         folder="2026-10-23_php-ai-vulnerability-disclosure",
         title="AI 시대의 보안 전환: PHP 사태에서 새 기반의 설계까지",
         subtitle="긴급 패치에서 레거시 전환·에이전트 권한·새 보안 기준과 기업 서비스까지",

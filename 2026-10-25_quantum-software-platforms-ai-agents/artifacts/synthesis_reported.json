@@ -1,0 +1,55 @@
+{
+  "title": "Author-reported resource tradeoff in Classiq block-encoding synthesis",
+  "evidence_cutoff": "2026-10-25",
+  "evidence_type": "author-reported compilation result; not independently executed or reproduced in this review",
+  "execution_level": "classical synthesis of logical quantum circuits; not a physical-QPU experiment",
+  "source": {
+    "authors": "Tomer Goldfriend et al.",
+    "title": "Design and synthesis of scalable quantum programs",
+    "arxiv": "2412.07372v2",
+    "version_date": "2025-01-22",
+    "url": "https://arxiv.org/html/2412.07372v2",
+    "figure": "Figure 3, panels (b) and (c)",
+    "context": "Section 2.2; Methods section 4.1",
+    "publication_status_checked": "arXiv preprint; a peer-reviewed publication for this benchmark paper was not identified in this review"
+  },
+  "software": {
+    "classiq": "0.60.0",
+    "note": "This is the paper's software version, not the current Classiq SDK version at the review cutoff."
+  },
+  "model": {
+    "operation": "block encoding of matrix A defined in equation (1)",
+    "N": 20,
+    "N_definition": "The matrix A has dimensions 2^N by 2^N; N specifies the matrix-size exponent, not the total number of circuit qubits.",
+    "matrix_dimension_expression": "2^20 by 2^20",
+    "scope_note": "These two points describe the block-encoding construction in Figure 3; they are not the full polynomial-QSVT comparison in Figure 4."
+  },
+  "optimization_goal": "CX gate count",
+  "metrics": {
+    "maximum_width_qubits": "Upper bound imposed on the synthesized circuit width, not the resulting width.",
+    "actual_width_qubits": "Author-reported number of circuit qubits in the chosen implementation, including auxiliaries.",
+    "cx_count": "Author-reported logical CX gate count. The paper's comparison uses one-qubit and CX gate operations."
+  },
+  "reported_results": [
+    {
+      "panel": "Figure 3(b)",
+      "maximum_width_qubits": 45,
+      "actual_width_qubits": 44,
+      "cx_count": 1480,
+      "adder_chosen": "QFT adder"
+    },
+    {
+      "panel": "Figure 3(c)",
+      "maximum_width_qubits": 90,
+      "actual_width_qubits": 47,
+      "cx_count": 842,
+      "adder_chosen": "ripple-carry adder"
+    }
+  ],
+  "interpretation_limits": [
+    "The width constraint changes which implementation is selected; the two constraints are not actual widths.",
+    "Two reported points do not establish a complete Pareto frontier or a globally optimal circuit.",
+    "These values are not a current-version comparison against Qiskit or CUDA-Q.",
+    "Logical gate counts do not establish physical execution time, hardware fidelity, or quantum computational advantage."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "kind": "review-created exact state-vector teaching calculation",
+  "physical_execution": false,
+  "vendor_benchmark": false,
+  "intended_answer": "101",
+  "qubits": 3,
+  "basis_order": "q2 q1 q0; integer 0..7",
+  "iterations": 1,
+  "noise": "none; ideal unitary evolution",
+  "checks": "unitarity, normalization, uniform post-oracle measurement, exact 25/32 and 1/32 probabilities",
+  "cases": [
+    {
+      "case": "correct_specification",
+      "marked_basis": "101",
+      "basis": [
+        "000",
+        "001",
+        "010",
+        "011",
+        "100",
+        "101",
+        "110",
+        "111"
+      ],
+      "oracle_phases": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        1,
+        1
+      ],
+      "after_oracle_probabilities": [
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997
+      ],
+      "after_one_iteration_probabilities": [
+        0.031249999999999965,
+        0.031249999999999976,
+        0.031249999999999976,
+        0.031249999999999976,
+        0.031249999999999976,
+        0.7812499999999997,
+        0.031249999999999965,
+        0.031249999999999976
+      ],
+      "intended_answer_probability": 0.7812499999999997,
+      "oracle_unitarity_error": 0.0
+    },
+    {
+      "case": "wrong_specification",
+      "marked_basis": "111",
+      "basis": [
+        "000",
+        "001",
+        "010",
+        "011",
+        "100",
+        "101",
+        "110",
+        "111"
+      ],
+      "oracle_phases": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1
+      ],
+      "after_oracle_probabilities": [
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997,
+        0.12499999999999997
+      ],
+      "after_one_iteration_probabilities": [
+        0.031249999999999955,
+        0.031249999999999965,
+        0.031249999999999965,
+        0.031249999999999976,
+        0.031249999999999955,
+        0.031249999999999976,
+        0.031249999999999955,
+        0.7812499999999997
+      ],
+      "intended_answer_probability": 0.031249999999999976,
+      "oracle_unitarity_error": 0.0
+    }
+  ]
+}
