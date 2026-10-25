@@ -40,4 +40,16 @@ Actual Chrome QA used an explicit localhost-only fixture outside the public site
 
 Positive numeric badge appearance on a physical Home Screen/Dock icon still needs confirmation after a genuine new article alert. Unit tests exercise native count calls, but do not establish OS display. Earlier physical iPhone test-alert receipt and tap-to-open confirmation remain recorded above.
 
+## Public activity counters — 2026-10-25
+
+The existing Worker/D1 now provides visiting-browser, daily article-open, successful share/copy, active push-subscription, new subscription-registration and accepted article-notification totals. Lifetime visitors identify first-party browsers, not people; Korean/English opens share an article ID and deduplicate per Korea calendar day. New visits, opens, shares and registrations start at metrics rollout. Existing active subscriptions and real historical article-notification acceptances are included; earlier traffic is not reconstructed. Test alerts never inflate article-send totals.
+
+Atomic D1 insert triggers keep deduplication and aggregates together. Delivery counters are initialized from actual accepted article sends, then increment once per delivery without scanning historical deliveries on every page. Browser/event identifiers are salted before storage; raw IP addresses, names and emails are not written to metrics tables. Short-lived deduplication records expire after two/seven days. Lifetime visitor hashes remain for distinct-browser counting. Origin validation, catalog validation, bounded JSON, strict UUID types and browser/IP limits apply to writes. Public responses contain aggregates only, and analytics never creates an authenticated device session.
+
+Current verification: 27 backend tests; 68 frontend/badge tests passed, with eight retained browser regression cases skipped. Publisher tests: 22 passed; privacy tests: six passed. The public guard accepted 1,523 files and 50 articles, with zero full-site validation errors. All 90 original HTML bodies, existing icons, manifest and page stylesheet remain unchanged outside marked integration blocks.
+
+Actual Chrome QA confirmed public counts and count definitions, successful link copying, accessible privacy-exclusion feedback, and 320px/390px/736px layouts without horizontal overflow. The browser's enabled GPC/Do Not Track setting correctly excluded these local manual interactions; it was not changed for testing. Positive event increments, duplicate/concurrent requests, storage failure, share cancellation, subscription transitions, historical-send migration and rollback were independently exercised in automated tests. No fake article or production share/visit was inserted to inflate public totals.
+
+RSS/email delivery was researched separately; no email provider was connected, no recipients were imported, no email was sent and no paid plan was enabled by this metrics change.
+
 See the backend README for deployment, key backup, quotas, recovery and future hosting migration. Keep the existing origin, service-worker scope and VAPID key when migrating hosting to preserve existing subscriptions where the browser permits it.

@@ -138,6 +138,27 @@
   var pendingPermission = null, pendingPushLookup = null, pendingPushSubscription = null;
   var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
+  var metricsRoot = null, metricsFields = {}, metricsSince = null, metricsStatus = null, metricsParticipation = null, metricsRequest = null, metricsRefreshQueued = false, metricsGeneration = 0, metricsOpenStarted = false;
+  var metricsVisitor = null, metricsStorageChecked = false;
+  var metricsText = english ? {
+    title: "Reader activity", visitors: "Visiting browsers", today: "Today", opens: "Article opens", shares: "Shares · copies",
+    subscribers: "Alert subscriptions", registrations: "Subscription sign-ups", sent: "New article alerts sent",
+    articleOpens: "This article opened", articleShares: "Shared · copied", details: "About these counts", unavailable: "Counts temporarily unavailable",
+    since: "Counting since ", deviceUnit: " devices", criteria: "Counts cover AI Tech Review, not the personal landing page. Visiting browsers are anonymous browser/device counts, not people; another browser or cleared site storage may count separately. Article opens count a browser once per article per day in Korea time, combining Korean and English pages. Shares/copies count completed device sharing or successful link copying; they cannot confirm recipient delivery. Subscription sign-ups count new registrations since counting began; current subscribed devices include existing subscribers. Alerts sent means the push provider accepted a new article alert, not that someone received or read it. Tests are excluded.",
+    privacy: "A random identifier is saved only in this site's browser storage for duplicate counting. The server stores its hash, not your name or raw IP address. Global Privacy Control or Do Not Track disables visit/open/share counting in this browser. If browser storage is unavailable, only public totals are loaded.",
+    optedOut: "This browser's privacy preference (Global Privacy Control or Do Not Track) disables visit, open and share counting. Public totals remain available.",
+    storageOff: "This browser cannot use a stored counting identifier, so its visits, opens and shares are not counted. Public totals remain available.",
+    participating: "This browser participates in browser-based visit, open and share counting."
+  } : {
+    title: "독자 활동", visitors: "방문 브라우저", today: "오늘 방문", opens: "글 열람", shares: "공유·복사",
+    subscribers: "알림 구독", registrations: "구독 등록", sent: "새 글 알림 발송",
+    articleOpens: "이 글 열람", articleShares: "공유·복사", details: "집계 기준", unavailable: "통계를 잠시 불러올 수 없어요",
+    since: "집계 시작 · ", deviceUnit: "기기", criteria: "테크리뷰 안에서의 활동을 집계하며 개인 랜딩페이지는 포함하지 않습니다. 방문 수는 사람 수가 아닌 브라우저·기기 기준이며, 다른 브라우저를 쓰거나 사이트 저장정보를 지우면 별도로 집계될 수 있어요. 글 열람은 같은 브라우저·글을 한국 시간 하루에 한 번만 세고 한영 페이지를 합칩니다. 공유·복사는 기기 공유 완료 또는 주소 복사 성공을 세며 실제 상대방에게 전달됐는지는 확인할 수 없어요. 구독 등록은 집계 시작 뒤 새로 등록한 횟수이고, 현재 알림 구독에는 기존 구독 기기도 포함합니다. 새 글 알림 발송은 푸시 서비스의 접수 건수이며 도착·읽음 확인이 아닙니다. 테스트 알림은 제외합니다.",
+    privacy: "중복 집계를 줄이기 위해 이 사이트의 브라우저 저장소에 임의 식별자를 저장합니다. 서버에는 해시를 저장하며 이름·원문 IP는 저장하지 않아요. 브라우저의 Global Privacy Control 또는 Do Not Track을 켜면 방문·열람·공유 집계에 참여하지 않습니다. 저장소를 사용할 수 없으면 공개된 통계만 불러옵니다.",
+    optedOut: "이 브라우저는 개인정보 보호 설정(GPC·Do Not Track)에 따라 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
+    storageOff: "이 브라우저에서는 집계용 식별자를 저장해 사용할 수 없어 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
+    participating: "이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여하고 있어요."
+  };
 
   function node(tag, className, content) {
     var element = document.createElement(tag);
@@ -375,12 +396,12 @@
     }
     return withDeadline(pendingPushSubscription, 25000, "push_timeout");
   }
-  async function request(path, method, body) {
+  async function request(path, method, body, credentials) {
     var controller = typeof AbortController === "function" ? new AbortController() : null;
     var timer = controller ? window.setTimeout(function () { controller.abort(); }, 12000) : null;
     try {
       var response = await fetch(apiBase + path, {
-        method: method || "GET", mode: "cors", credentials: "include", cache: "no-store",
+        method: method || "GET", mode: "cors", credentials: credentials || "include", cache: "no-store",
         headers: body === undefined ? { Accept: "application/json" } : { Accept: "application/json", "Content-Type": "application/json" },
         body: body === undefined ? undefined : JSON.stringify(body),
         signal: controller ? controller.signal : undefined
@@ -390,6 +411,160 @@
       if (!result || typeof result !== "object" || Array.isArray(result) || result.ok === false) throw apiError("api_failed");
       return result;
     } finally { if (timer !== null) window.clearTimeout(timer); }
+  }
+  function metricsTracked() {
+    return navigator.globalPrivacyControl !== true && !/^(1|yes)$/i.test(String(navigator.doNotTrack || window.doNotTrack || ""));
+  }
+  function updateMetricsParticipation() {
+    if (!metricsParticipation) return;
+    metricsParticipation.textContent = !metricsTracked() ? metricsText.optedOut : !metricsStorageChecked ? "" : metricsVisitor ? metricsText.participating : metricsText.storageOff;
+  }
+  function metricsUUID() {
+    if (!window.crypto) return null;
+    if (typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+    if (typeof window.crypto.getRandomValues !== "function") return null;
+    var bytes = new Uint8Array(16); window.crypto.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 15) | 64; bytes[8] = (bytes[8] & 63) | 128;
+    var hex = Array.from(bytes, function (value) { return value.toString(16).padStart(2, "0"); }).join("");
+    return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" + hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
+  }
+  function metricsVisitorId() {
+    if (!metricsTracked()) { updateMetricsParticipation(); return null; }
+    if (metricsStorageChecked) { updateMetricsParticipation(); return metricsVisitor; }
+    metricsStorageChecked = true;
+    try {
+      var key = "atr-reader-metrics-visitor:" + scope;
+      var previous = window.localStorage.getItem(key);
+      var valid = /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
+      var value = valid.test(previous || "") ? previous : metricsUUID();
+      if (value && valid.test(value)) {
+        window.localStorage.setItem(key, value);
+        if (window.localStorage.getItem(key) === value) metricsVisitor = value;
+      }
+    } catch (_) { /* Do not inflate counts with a new identifier on every storage-blocked page. */ }
+    updateMetricsParticipation();
+    return metricsVisitor;
+  }
+  function metricsForeground() {
+    try { return window.self === window.top && document.visibilityState === "visible" && document.prerendering !== true; } catch (_) { return false; }
+  }
+  function metricsField(parent, key, label, suffix) {
+    var item = node("span", "atr-reader-metric");
+    item.appendChild(node("span", "atr-reader-metric-label", label));
+    var value = node("strong", "", "—"); value.dataset.readerMetric = key; metricsFields[key] = value; item.appendChild(value);
+    if (suffix) item.appendChild(node("span", "", suffix));
+    parent.appendChild(item);
+  }
+  function mountMetrics(articleActions) {
+    metricsRoot = node("section", "atr-reader-metrics" + (article ? " atr-reader-metrics-article" : ""));
+    metricsRoot.setAttribute("aria-label", metricsText.title);
+    metricsRoot.dataset.state = "loading";
+    var primary = node("div", "atr-reader-metrics-row");
+    if (article) {
+      metricsField(primary, "articleOpens", metricsText.articleOpens);
+      metricsField(primary, "articleShares", metricsText.articleShares);
+    } else {
+      metricsField(primary, "visitors", metricsText.visitors);
+      metricsField(primary, "opens", metricsText.opens);
+      metricsField(primary, "shares", metricsText.shares);
+      metricsField(primary, "activeSubscribers", metricsText.subscribers, metricsText.deviceUnit);
+    }
+    metricsRoot.appendChild(primary);
+    metricsStatus = node("p", "atr-reader-metrics-status");
+    metricsStatus.setAttribute("role", "status");
+    metricsStatus.setAttribute("aria-live", "polite");
+    metricsRoot.appendChild(metricsStatus);
+    var details = node("details", "atr-reader-metrics-details");
+    details.appendChild(node("summary", "", metricsText.details));
+    var extra = node("div", "atr-reader-metrics-row");
+    if (article) {
+      metricsField(extra, "visitors", metricsText.visitors);
+      metricsField(extra, "activeSubscribers", metricsText.subscribers, metricsText.deviceUnit);
+    }
+    metricsField(extra, "todayVisitors", metricsText.today);
+    metricsField(extra, "subscriptionRegistrations", metricsText.registrations);
+    metricsField(extra, "articleNotificationsSent", metricsText.sent);
+    details.appendChild(extra);
+    metricsSince = node("p", "atr-reader-metrics-note"); details.appendChild(metricsSince);
+    details.appendChild(node("p", "atr-reader-metrics-note", metricsText.criteria));
+    details.appendChild(node("p", "atr-reader-metrics-note", metricsText.privacy));
+    metricsParticipation = node("p", "atr-reader-metrics-note atr-reader-metrics-participation");
+    metricsParticipation.setAttribute("role", "status");
+    metricsParticipation.setAttribute("aria-live", "polite");
+    details.appendChild(metricsParticipation);
+    updateMetricsParticipation();
+    metricsRoot.appendChild(details);
+    if (articleActions) articleActions.appendChild(metricsRoot);
+    else {
+      var anchor = document.querySelector(".hero .stats");
+      if (anchor) anchor.insertAdjacentElement("afterend", metricsRoot);
+      else {
+        var target = document.querySelector("main") || document.querySelector("header");
+        if (target) target.insertAdjacentElement("afterbegin", metricsRoot);
+      }
+    }
+  }
+  function metricsValue(value) { return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null; }
+  function applyMetrics(result) {
+    if (!result || result.ok !== true || !result.site || typeof result.site !== "object" || Array.isArray(result.site)
+      || typeof result.since !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(result.since) || !Number.isFinite(Date.parse(result.since))) throw apiError("invalid_metrics");
+    var values = {}, fields = ["visitors", "todayVisitors", "opens", "shares", "copies", "activeSubscribers", "subscriptionRegistrations", "articleNotificationsSent"];
+    fields.forEach(function (key) { var value = metricsValue(result.site[key]); if (value === null) throw apiError("invalid_metrics"); values[key] = value; });
+    values.shares += values.copies;
+    if (!Number.isSafeInteger(values.shares)) throw apiError("invalid_metrics");
+    if (article) {
+      var row = result.article;
+      if (!row || row.id !== article.id) throw apiError("invalid_metrics");
+      values.articleOpens = metricsValue(row.opens);
+      var shares = metricsValue(row.shares), copies = metricsValue(row.copies);
+      if (values.articleOpens === null || shares === null || copies === null || !Number.isSafeInteger(shares + copies)) throw apiError("invalid_metrics");
+      values.articleShares = shares + copies;
+    }
+    Object.keys(metricsFields).forEach(function (key) { metricsFields[key].textContent = new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(values[key]); });
+    if (metricsSince) metricsSince.textContent = metricsText.since + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Seoul" }).format(new Date(result.since));
+    if (metricsRoot) { metricsRoot.dataset.state = "ready"; metricsRoot.removeAttribute("title"); }
+    if (metricsStatus) metricsStatus.textContent = "";
+  }
+  async function metricsCall(type) {
+    var generation;
+    try {
+      var path = "/v1/metrics" + (article ? "?articleId=" + encodeURIComponent(article.id) : "");
+      var body;
+      if (type) {
+        var visitorId = metricsVisitorId(), eventId = metricsUUID();
+        if (!visitorId || !eventId) return;
+        path = "/v1/metrics/events";
+        body = { type: type, visitorId: visitorId, eventId: eventId, articleId: article ? article.id : null };
+      }
+      generation = ++metricsGeneration;
+      var result = await withDeadline(request(path, body ? "POST" : "GET", body, "omit"), 5000, "metrics_timeout");
+      if (generation === metricsGeneration) applyMetrics(result);
+    } catch (_) {
+      if (generation === metricsGeneration && metricsRoot && metricsRoot.dataset.state !== "ready") {
+        metricsRoot.dataset.state = "error"; metricsRoot.setAttribute("title", metricsText.unavailable);
+        if (metricsStatus) metricsStatus.textContent = metricsText.unavailable;
+      }
+    }
+  }
+  function refreshMetrics(force) {
+    if (!metricsRoot) return Promise.resolve();
+    if (metricsRequest) { if (force) metricsRefreshQueued = true; return metricsRequest; }
+    metricsRequest = metricsCall().finally(function () {
+      metricsRequest = null;
+      if (metricsRefreshQueued) { metricsRefreshQueued = false; void refreshMetrics(); }
+    });
+    return metricsRequest;
+  }
+  function recordMetrics(type) {
+    if (!metricsRoot || !metricsTracked() || (!article && type !== "open")) return Promise.resolve();
+    try { if (window.self !== window.top || (type === "open" && !metricsForeground())) return Promise.resolve(); } catch (_) { return Promise.resolve(); }
+    return metricsCall(type);
+  }
+  function startMetrics() {
+    if (!metricsRoot || !metricsForeground() || metricsOpenStarted) return;
+    metricsOpenStarted = true;
+    if (metricsVisitorId()) void recordMetrics("open");
+    else void refreshMetrics();
   }
   async function ensureDevice() { await request("/v1/devices", "POST", {}); }
   function selectedTopics() {
@@ -460,6 +635,7 @@
         actions.appendChild(button(text.share, "share"));
         actions.appendChild(button(text.copy, "copy"));
         addSubscribeButton(actions);
+        mountMetrics(actions);
         articleStatus = node("p", "atr-reader-status");
         articleStatus.setAttribute("role", "status");
         articleStatus.setAttribute("aria-live", "polite");
@@ -476,6 +652,7 @@
     } else {
       var topbar = document.querySelector(".topbar-links") || document.querySelector(".topline-actions") || document.querySelector(".topbar") || document.querySelector("header nav") || document.querySelector("header");
       if (topbar) { topbar.classList.add("atr-reader-topbar"); addSubscribeButton(topbar).addEventListener("click", handleAction); }
+      mountMetrics(null);
     }
     dialog = node("dialog", "atr-reader-dialog");
     dialog.id = "atr-reader-dialog";
@@ -697,6 +874,7 @@
       state.pendingServerDelete = false;
       setFeedback(text.enabled, false);
       void refreshNotificationState(true);
+      void refreshMetrics(true);
     } catch (error) { setFeedback(error.code === "permission_timeout" ? text.permissionTimeout : error.code === "push_timeout" ? text.pushTimeout : error.code === "http_401" ? text.cookieFailed : text.failed, true); }
     finally { state.busy = false; updateButtons(); renderDialog(); }
   }
@@ -713,6 +891,7 @@
       var result = await request("/v1/subscription", "PUT", { subscription: state.localSubscription.toJSON(), topics: topics });
       state.serverSubscription = result.subscription || state.localSubscription.toJSON();
       setFeedback(text.saved, false);
+      void refreshMetrics(true);
     } catch (error) { setFeedback(error.code === "http_401" ? text.cookieFailed : text.failed, true); }
     finally { state.busy = false; updateButtons(); renderDialog(); }
   }
@@ -725,6 +904,7 @@
       await request("/v1/subscription", "DELETE");
       serverRemoved = true;
       state.serverSubscription = null;
+      void refreshMetrics(true);
     } catch (_) { /* No HTTP failure, including a missing session cookie, confirms server removal. */ }
     try {
       if (state.localSubscription) browserRemoved = await withDeadline(state.localSubscription.unsubscribe(), 25000, "push_timeout");
@@ -773,11 +953,12 @@
       if (!navigator.clipboard || typeof navigator.clipboard.writeText !== "function") throw apiError("clipboard_unavailable");
       await navigator.clipboard.writeText(url);
       articleMessage(text.copied);
+      void recordMetrics("copy");
     } catch (_) { articleMessage(text.copyFailed, "copy", url); }
   }
   async function share() {
     if (typeof navigator.share !== "function") { await copyLink(); return; }
-    try { await navigator.share({ title: String(article.title || document.title), url: shareURL() }); }
+    try { await navigator.share({ title: String(article.title || document.title), url: shareURL() }); void recordMetrics("share"); }
     catch (error) { if (!error || error.name !== "AbortError") articleMessage(text.shareFailed, "copy"); }
   }
   async function testAlert() {
@@ -837,9 +1018,10 @@
   if (typeof window.addEventListener === "function") {
     window.addEventListener("beforeinstallprompt", offerInstall);
     window.addEventListener("appinstalled", installedApp);
-    window.addEventListener("pageshow", function () { void refreshNotificationState(false); });
+    window.addEventListener("pageshow", function () { void refreshNotificationState(false); startMetrics(); });
     window.addEventListener("focus", function () { void refreshNotificationState(false); });
-    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") void refreshNotificationState(false); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { void refreshNotificationState(false); startMetrics(); } });
+    document.addEventListener("prerenderingchange", startMetrics);
     if ("serviceWorker" in navigator && typeof navigator.serviceWorker.addEventListener === "function") {
       navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); });
       navigator.serviceWorker.addEventListener("message", notificationHint);
@@ -847,4 +1029,5 @@
   }
   void prepare();
   void loadLikes();
+  startMetrics();
 })();

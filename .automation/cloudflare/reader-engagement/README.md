@@ -118,6 +118,50 @@ npx wrangler deploy
 | `DELETE /v1/subscription` | 본인 서버 구독 삭제 |
 | `POST /v1/subscription/test` `{}` | 본인 단말 한 개에 테스트 알림 접수 |
 | `POST /v1/publications/sync` `{revision,articles}` | 게시 전용 Bearer secret, 공개 feed 검증 후 동기화 |
+| `GET /v1/metrics[?articleId=...]` | 공개 집계만 조회. 세션이나 쿠키 불필요 |
+| `POST /v1/metrics/events` `{type,visitorId,eventId,articleId}` | 공개 집계 이벤트. 정확한 Origin 필수, 세션 생성 안 함 |
+
+### 방문·열람·공유·구독 통계
+
+`0002_public_metrics.sql`을 기존 DB에 적용한 뒤 새 Worker를 배포한다. migration이 기록한 `since` 시점부터 방문·열람·공유·등록 전환을 집계하며 이전 수치를 추정해 채우지 않는다. 기존 구독은 현재 활성 구독 기기 수에 포함하고, 기존의 실제 새 글 발송 기록도 발송 합계에 포함한다. 테스트 알림은 발송 합계에서 제외한다. 과거 `.automation/cloudflare/ai-tech-review-public-metrics` Worker는 이 기능에 사용하지 않으며 두 집계기를 동시에 활성화하지 않는다.
+
+이벤트 `type`은 `open`, `share`, `copy` 중 하나다. `visitorId`, `eventId`는 UUID v4 문자열이어야 한다. 브라우저는 이 사이트 전용 난수 방문 ID를 localStorage에 보관하고 성공한 사용자 동작마다 새 이벤트 ID를 만든다. 글 없는 허브 방문은 `{type:"open",articleId:null}`이다. 공유·복사는 활성 카탈로그의 글 ID가 필요하다. 알려지지 않았거나 비활성인 글은 404이며 추가 JSON 필드, 중복/미지원 query 필드, 잘못된 UUID와 512바이트 초과 본문은 거절한다.
+
+응답은 GET과 POST가 동일하다.
+
+```json
+{
+  "ok": true,
+  "since": "2026-10-25T00:00:00.000Z",
+  "site": {
+    "visitors": 0,
+    "todayVisitors": 0,
+    "opens": 0,
+    "shares": 0,
+    "copies": 0,
+    "activeSubscribers": 0,
+    "subscriptionRegistrations": 0,
+    "articleNotificationsSent": 0
+  },
+  "article": null
+}
+```
+
+글 ID가 있으면 `article`은 `{id,opens,shares,copies}`다. 모든 수치는 음수가 아닌 정수이며 응답에 방문 해시, 기기 ID, endpoint, 구독 주제나 브라우저별 이력을 포함하지 않는다.
+
+- `visitors`: 측정 시작 후 서로 다른 방문 브라우저 수다. 같은 사람의 다른 기기·브라우저나 localStorage 삭제 후 방문은 별개로 집계할 수 있으므로 사람 수나 가입 회원 수로 표현하지 않는다.
+- `todayVisitors`: 한국 시간 자정 기준 당일 방문 브라우저 수다.
+- `opens`: 같은 브라우저·글·한국 날짜별 한 번의 열람이다. 한국어와 영어는 같은 글 ID를 써 중복을 줄인다. 새로고침과 동시 탭은 그날 같은 글의 숫자를 다시 올리지 않는다. 허브 방문만으로 글 열람은 늘지 않는다.
+- `shares`, `copies`: 프런트가 native share 성공 또는 clipboard 쓰기 성공을 확인한 뒤 전송한다. 공유창 취소·실패·단순 버튼 클릭은 보내지 않는다. API는 이벤트 ID의 재전송을 중복 집계하지 않는다. 실제 수신자 전달·링크 열람 여부는 이 수치로 알 수 없다.
+- `activeSubscribers`: 만료되지 않았고 하나 이상 주제를 구독하는 현재 기기 수다. 브라우저에서 권한을 끈 사실을 서버가 즉시 알 수는 없으며, 명시적 해제·만료·푸시 제공자의 404/410을 통해 갱신된다.
+- `subscriptionRegistrations`: 측정 시작 후 비활성→활성 구독 전환 횟수다. 설정 저장·주제 변경·활성 endpoint 교체·같은 endpoint의 기기 세션 이전은 증가시키지 않는다. 해제 후 재등록이나 만료 뒤 재등록은 새 전환이다. 조건 검사와 구독 쓰기는 한 D1 batch 트랜잭션이라 동시 재전송도 한 번만 센다.
+- `articleNotificationsSent`: 푸시 제공자가 수락해 `sent`가 된 새 글·기기 조합의 수다. migration에서 기존 실제 기록을 합계로 옮기고, 이후 delivery별 중복 방지 표식과 trigger로 한 번만 누적한다. 공개 조회마다 전체 발송 이력을 스캔하지 않는다. 재시도 횟수, 테스트 알림, 단말 표시나 사용자의 읽음 수가 아니다.
+
+서버에는 `RATE_LIMIT_SALT`로 용도를 구분해 해시한 방문 식별자만 저장한다. 원본 방문·이벤트 ID, 원본 IP, User-Agent는 D1에 저장하지 않는다. lifetime 방문 해시는 누적 중복 방지용으로 유지하고, 방문·글별 일일 중복 키는 2일, 공유·복사의 해시 이벤트 중복 키는 7일 후 기존 10분 Cron에서 정리한다. 기간 집계 숫자는 유지한다. salt 변경 또는 브라우저 저장소 초기화는 같은 방문을 새 브라우저로 셀 수 있으므로 분석용 식별자의 안정성에 영향을 준다.
+
+알려진 crawler, prefetch/prerender 및 `Sec-GPC: 1`/`DNT: 1` 요청은 집계하지 않는다. 자동 트래픽의 완전한 식별이나 악의적인 수치 조작 방지를 보장하지는 않는다. 이벤트는 브라우저 해시당 시간당 120회, 회전 IP 해시당 시간당 600회이며 공유·복사는 브라우저당 하루 60회를 추가 제한한다. 거절된 이벤트는 집계 숫자를 바꾸지 않는다. 트래픽 통계 장애가 정적 글 읽기·공유·알림 구독을 막아서는 안 된다.
+
+일일·이벤트 중복 키의 INSERT trigger가 집계를 올리므로, 중복 검사와 숫자 증가는 한 트랜잭션에서 처리된다. 15초 주기 체류 시간 전송이나 별도 유료 분석 서비스는 추가하지 않는다. 일일 방문 집계, 글 집계와 lifetime 합계만 공개한다. 현재 구현 범위는 `/AI_Tech_Review/`이며 루트 개인 랜딩페이지는 별도 연동 전까지 이 통계에 포함하지 않는다.
 
 발행 API는 `https://infant83.io/AI_Tech_Review/reader-publications.json`만 직접 가져온다. 임의 URL을 받지 않는다. 서버 nonce, 캐시 우회, redirect 거부와 writer lock 안의 revision·전체 metadata 비교를 적용한다. 같은 revision의 다른 내용은 409다. 같은 내용을 재처리해도 이벤트를 중복 생성하지 않으며, 과거에 처리한 revision으로 카탈로그 상태를 되돌리지 않는다. 공개 배포가 아직 맞지 않으면 409로 실패하여 CI가 재시도한다.
 

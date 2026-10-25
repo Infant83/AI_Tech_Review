@@ -79,3 +79,17 @@ npm run test:unit
 ```
 
 The native positive badge display should be checked on an installed device after a genuine new article arrives. Test alerts intentionally leave the badge and recent-article list unchanged.
+
+## Public reader activity counters
+
+The review hub gains a small row after its existing article statistics; article pages add open and share/copy counts within the existing reader action bar. Existing content, header links, artwork, app identity and like/share controls are retained. A native, keyboard-accessible **About these counts / 집계 기준** disclosure explains totals, start date and privacy. It shows current alert-subscribed devices, sign-ups since metrics rollout and new-article push-provider acceptances separately. Tests do not count as article alerts sent. Root personal landing-page traffic is outside this integration.
+
+`GET /v1/metrics?articleId=<canonical-id>` and `POST /v1/metrics/events` use `credentials: "omit"` and never create an authentication device. POST accepts only `{type: "open" | "share" | "copy", visitorId, eventId, articleId}`. No URL query, email address, user agent or IP is supplied by this frontend. A random UUIDv4 is retained in first-party `localStorage` under `atr-reader-metrics-visitor:/AI_Tech_Review/`, separately from the API's HttpOnly authentication session. The backend hashes it for duplicate counting. Clearing site storage or using another browser can count as another visiting browser; these are not unique people.
+
+The frontend starts one open event per visible, top-level page lifecycle and ignores hidden/frame/prerendered pages until activation. The backend deduplicates lifetime visiting browsers, daily visiting browsers and daily per-article opens (Korea time); Korean/English pages retain one article ID. Do Not Track (`1` or `yes`) and Global Privacy Control disable event recording, while public aggregate totals remain readable. If storage or secure randomness is unavailable, the frontend only reads totals instead of creating a fresh visitor on each page load.
+
+The count-definition disclosure also shows this browser's current participation status: privacy opt-out, unavailable stored identifier, or active browser-based counting. Rendering that note never creates an identifier for a hidden or framed document.
+
+Native sharing counts only after `navigator.share()` resolves, and copying counts only after `clipboard.writeText()` succeeds. Cancellations, failed attempts and manual copy-address fallbacks do not count. A completed share can resolve after switching apps, so its completion is recorded even if the original page has become hidden. These actions cannot prove that another person received or opened the link. Each event uses a new UUID; metrics do not block the share/copy gesture, require notification permission or alter its feedback.
+
+Counter requests have a five-second UI deadline, do not poll, and cannot display an older response over a newer action's counts. Subscription changes queue one fresh summary read behind any older pending read. Missing/malformed/error results leave em-dash values and a small accessible availability message rather than invented zeroes. An analytics failure never prevents reading, likes, sharing, subscription or push delivery.

@@ -12,6 +12,9 @@ const chromium = unitOnly ? null : require('playwright').chromium;
 const frontend = path.resolve(__dirname, '..');
 const source = fs.readFileSync(path.join(frontend, 'reader-engagement.js'), 'utf8');
 const workerSource = fs.readFileSync(path.join(frontend, 'sw.js'), 'utf8');
+const metricsSummary = (articleId = null) => ({ ok: true, since: '2026-10-25T00:00:00.000Z',
+  site: { visitors: 42, todayVisitors: 7, opens: 98, shares: 8, copies: 4, activeSubscribers: 3, subscriptionRegistrations: 2, articleNotificationsSent: 6 },
+  article: articleId ? { id: articleId, opens: 11, shares: 3, copies: 2 } : null });
 let server, origin, browser;
 
 before(async () => {
@@ -71,7 +74,8 @@ async function setup(options = {}) {
     const headers = { 'access-control-allow-origin': origin, 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'GET,POST,PUT,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type,accept', 'content-type': 'application/json' };
     if (method === 'OPTIONS') return route.fulfill({ status: 204, headers });
     let result = { ok: true }, status = 200;
-    if (url.pathname === '/v1/config') result.vapidPublicKey = 'B' + 'A'.repeat(86);
+    if (url.pathname === '/v1/metrics' || url.pathname === '/v1/metrics/events') result = metricsSummary(url.pathname.endsWith('/events') ? request.postDataJSON().articleId : url.searchParams.get('articleId'));
+    else if (url.pathname === '/v1/config') result.vapidPublicKey = 'B' + 'A'.repeat(86);
     else if (url.pathname === '/v1/devices') result.deviceId = 'device-for-test';
     else if (url.pathname.endsWith('/like')) {
       if (method === 'PUT') { data.liked = request.postDataJSON().liked; data.count = data.liked ? 1 : 0; }
@@ -128,7 +132,7 @@ browserTest('subscribe follows a direct gesture; settings, test and unsubscribe 
   await page.getByRole('button', { name: '이 기기로 테스트 알림 보내기' }).waitFor();
   assert.equal(await page.evaluate(() => window.__events.filter(event => event.name === 'permission').length), 1);
   const calls = await page.evaluate(() => window.__calls);
-  assert.ok(calls.every(call => call.credentials === 'include'));
+  assert.ok(calls.every(call => call.credentials === (new URL(call.url).pathname.startsWith('/v1/metrics') ? 'omit' : 'include')));
   assert.ok(calls.every(call => !Object.keys(call.headers).some(key => key.toLowerCase() === 'authorization')));
   await page.getByRole('button', { name: '닫기', exact: true }).click();
   assert.equal(await page.evaluate(() => document.activeElement.dataset.readerAction), 'open');
@@ -194,7 +198,7 @@ function workerHarness() {
   return { self, handlers, shown, opened };
 }
 function frontendHarness(options = {}) {
-  const calls = [], events = [], channels = [];
+  const calls = [], events = [], channels = [], storage = options.storage || new Map();
   let permission = 'default', subscribeCount = 0, unsubscribeCount = 0, resolvePermission;
   const subscriptionJSON = { endpoint: 'https://push.example/device', keys: { p256dh: 'public', auth: 'auth' } };
   const subscription = { endpoint: subscriptionJSON.endpoint, toJSON: () => subscriptionJSON, unsubscribe: async () => {
@@ -272,6 +276,14 @@ function frontendHarness(options = {}) {
     }
   };
   context.navigator.clipboard = { writeText: async value => { context.copied = value; } };
+  if (options.metricsStorage) {
+    context.localStorage = { getItem: key => { if (options.storageBlocked) throw Error('blocked'); return storage.get(key) || null; },
+      setItem: (key, value) => { if (options.storageBlocked) throw Error('blocked'); storage.set(key, value); } };
+    let uuid = 0;
+    context.crypto = { randomUUID: () => '00000000-0000-4000-8000-' + String(++uuid).padStart(12, '0') };
+  }
+  context.navigator.globalPrivacyControl = options.gpc === true;
+  context.navigator.doNotTrack = options.dnt || null;
   context.scrollY = 1780;
   context.scrollX = 0;
   context.scrollTo = (x, y) => { context.restoredScroll = [x, y]; };
@@ -288,7 +300,7 @@ function frontendHarness(options = {}) {
   context.window = context;
   const initializer = source.lastIndexOf('\n  mount();');
   assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
-  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction };\n})();';
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
@@ -296,7 +308,7 @@ function frontendHarness(options = {}) {
   let current = options.existingSubscription ? subscription : null;
   api.state.registration = { active: options.notificationWorker, pushManager: { getSubscription: async () => current,
     subscribe: async () => { subscribeCount++; current = subscription; return subscription; } } };
-  return { api, calls, events, channels, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
+  return { api, calls, events, channels, storage, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
     releasePermission: value => { permission = value; if (resolvePermission) resolvePermission(value); },
     counts: () => ({ subscribeCount, unsubscribeCount }) };
 }
@@ -862,4 +874,167 @@ test('notification click opens the article and focuses an existing exact match',
   harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { promise = p; } });
   await promise;
   assert.equal(harness.opened.length, 2);
+});
+
+test('public metrics use browser storage separately from auth and do not create a reader session', async () => {
+  const harness = frontendHarness({ metricsStorage: true, article: { id: 'test-review' }, responseJSON: () => metricsSummary('test-review') });
+  harness.api.mount();
+  harness.api.startMetrics();
+  await flushPromises();
+  assert.equal(harness.calls.length, 1);
+  const call = harness.calls[0], body = JSON.parse(call.init.body);
+  assert.equal(call.url, 'https://api.infant83.io/v1/metrics/events');
+  assert.equal(call.init.credentials, 'omit');
+  assert.deepEqual(Object.keys(body).sort(), ['articleId', 'eventId', 'type', 'visitorId']);
+  assert.equal(body.type, 'open');
+  assert.equal(body.articleId, 'test-review');
+  assert.match(body.visitorId, /^[a-f0-9-]{36}$/);
+  assert.notEqual(body.eventId, body.visitorId);
+  assert.equal(harness.storage.size, 1);
+  assert.equal(harness.calls.some(value => value.url.includes('/v1/devices')), false);
+  assert.equal(harness.api.metricsRoot().dataset.state, 'ready');
+  assert.match(harness.api.metricsRoot().textContent, /이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여/);
+  assert.match(harness.api.metricsRoot().textContent, /이 글 열람11/);
+  assert.match(harness.api.metricsRoot().textContent, /공유·복사5/);
+  assert.match(harness.api.metricsRoot().textContent, /방문 브라우저42/);
+  harness.api.startMetrics();
+  await flushPromises();
+  assert.equal(harness.calls.length, 1, 'focus/pageshow must not count the same page again');
+});
+test('hidden and framed documents do not count or create an anonymous browser identifier', async () => {
+  for (const options of [{ visibility: 'hidden' }, { iframe: true }]) {
+    const harness = frontendHarness({ ...options, metricsStorage: true });
+    harness.api.mount(); harness.api.startMetrics();
+    await flushPromises();
+    assert.equal(harness.calls.length, 0);
+    assert.equal(harness.storage.size, 0);
+    assert.doesNotMatch(harness.api.metricsRoot().textContent, /이 브라우저에서는 집계용 식별자를/);
+    if (!options.iframe) {
+      harness.document.visibilityState = 'visible';
+      harness.api.startMetrics(); await flushPromises();
+      assert.equal(JSON.parse(harness.calls[0].init.body).type, 'open');
+    }
+  }
+});
+test('privacy preferences and blocked storage use public totals without tracking or authentication cookies', async () => {
+  for (const options of [{ gpc: true }, { dnt: '1' }, { dnt: 'yes' }, { storageBlocked: true }]) {
+    const harness = frontendHarness({ ...options, metricsStorage: true, responseJSON: () => metricsSummary() });
+    harness.api.mount(); harness.api.startMetrics();
+    await flushPromises();
+    assert.equal(harness.calls.length, 1);
+    assert.equal(harness.calls[0].init.method, 'GET');
+    assert.equal(harness.calls[0].init.credentials, 'omit');
+    assert.equal(harness.calls[0].init.body, undefined);
+    assert.equal(harness.storage.size, 0);
+    assert.equal(harness.api.metricsRoot().dataset.state, 'ready');
+    assert.match(harness.api.metricsRoot().textContent, options.storageBlocked ? /이 브라우저에서는 집계용 식별자를 저장해 사용할 수 없어/ : /이 브라우저는 개인정보 보호 설정\(GPC·Do Not Track\)에 따라/);
+  }
+});
+test('a persisted anonymous browser identifier is reused across English and Korean pages', async () => {
+  const storage = new Map([['atr-reader-metrics-visitor:/AI_Tech_Review/', '11111111-1111-4111-8111-111111111111']]);
+  for (const english of [true, false]) {
+    const harness = frontendHarness({ metricsStorage: true, storage, english, article: { id: 'same-review' } });
+    harness.api.mount(); harness.api.startMetrics(); await flushPromises();
+    const body = JSON.parse(harness.calls[0].init.body);
+    assert.equal(body.visitorId, '11111111-1111-4111-8111-111111111111');
+    assert.equal(body.articleId, 'same-review');
+  }
+});
+test('successful native sharing and link copying count separately after completion; cancel and failure do not count', async () => {
+  const harness = frontendHarness({ metricsStorage: true, article: { id: 'test-review' }, responseJSON: () => metricsSummary('test-review') });
+  harness.api.mount();
+  let releaseShare;
+  harness.context.navigator.share = () => new Promise(resolve => { releaseShare = resolve; });
+  const sharing = harness.api.share();
+  await flushPromises();
+  assert.equal(harness.calls.length, 0, 'opening the share sheet does not count');
+  harness.document.visibilityState = 'hidden';
+  releaseShare(); await sharing; await flushPromises();
+  assert.equal(JSON.parse(harness.calls[0].init.body).type, 'share', 'a completed user share can resolve while the page is backgrounded');
+  await harness.api.copy(); await flushPromises();
+  assert.equal(JSON.parse(harness.calls[1].init.body).type, 'copy');
+  assert.notEqual(JSON.parse(harness.calls[0].init.body).eventId, JSON.parse(harness.calls[1].init.body).eventId);
+  harness.context.navigator.share = async () => { const error = new Error('canceled'); error.name = 'AbortError'; throw error; };
+  await harness.api.share(); await flushPromises();
+  assert.equal(harness.calls.length, 2);
+  harness.context.navigator.share = async () => { throw Error('unavailable'); };
+  await harness.api.share();
+  harness.context.navigator.clipboard.writeText = async () => { throw Error('permission denied'); };
+  await harness.api.copy(); await flushPromises();
+  assert.equal(harness.calls.length, 2);
+});
+test('native sharing fallback records only a successful link copy', async () => {
+  const harness = frontendHarness({ metricsStorage: true, article: { id: 'test-review' }, responseJSON: () => metricsSummary('test-review') });
+  harness.api.mount(); await harness.api.share(); await flushPromises();
+  assert.equal(harness.calls.length, 1);
+  assert.equal(JSON.parse(harness.calls[0].init.body).type, 'copy');
+});
+test('analytics failures remain separate from successful sharing and never render fake zero counters', async () => {
+  const harness = frontendHarness({ metricsStorage: true, article: { id: 'test-review' }, responseStatus: () => 503 });
+  harness.api.mount(); await harness.api.copy(); await flushPromises();
+  assert.match(harness.api.metricsRoot().textContent, /이 글 열람—/);
+  assert.match(harness.articleElement.adjacent[0].element.textContent, /글 주소를 복사했어요/);
+  assert.equal(harness.api.metricsRoot().dataset.state, 'error');
+  assert.equal(harness.api.state.feedbackError, false);
+});
+test('public metrics validate every count, matching article and start date before displaying a result', () => {
+  const harness = frontendHarness({ article: { id: 'test-review' } });
+  harness.api.mount();
+  const invalid = [
+    { ...metricsSummary('test-review'), since: '<img src=x>' },
+    { ...metricsSummary('test-review'), site: { ...metricsSummary().site, visitors: '99' } },
+    { ...metricsSummary('test-review'), article: { id: 'other', opens: 3, shares: 1, copies: 1 } },
+    { ...metricsSummary('test-review'), article: { id: 'test-review', opens: -1, shares: 1, copies: 1 } }
+  ];
+  for (const data of invalid) assert.throws(() => harness.api.applyMetrics(data), /invalid_metrics/);
+  assert.match(harness.api.metricsRoot().textContent, /이 글 열람—/);
+  harness.api.applyMetrics(metricsSummary('test-review'));
+  assert.match(harness.api.metricsRoot().textContent, /한국 시간 하루에 한 번/);
+  assert.match(harness.api.metricsRoot().textContent, /Global Privacy Control/);
+  assert.match(harness.api.metricsRoot().textContent, /도착·읽음 확인이 아닙니다/);
+});
+test('a late metrics read cannot overwrite counts from a newer completed share', async () => {
+  let releaseRead;
+  const harness = frontendHarness({ metricsStorage: true, article: { id: 'test-review' }, responseJSON: (url, init) => {
+    if (init.method === 'GET') return new Promise(resolve => { releaseRead = resolve; });
+    return { ...metricsSummary('test-review'), article: { id: 'test-review', opens: 11, shares: 4, copies: 2 } };
+  }});
+  harness.api.mount();
+  const read = harness.api.refreshMetrics(); await flushPromises();
+  harness.context.navigator.share = async () => {};
+  await harness.api.share(); await flushPromises();
+  releaseRead(metricsSummary('test-review')); await read;
+  assert.match(harness.api.metricsRoot().textContent, /공유·복사6/);
+});
+test('English public metrics retain clear browser/device and sharing definitions', () => {
+  const harness = frontendHarness({ english: true });
+  harness.api.mount(); harness.api.applyMetrics(metricsSummary());
+  assert.match(harness.api.metricsRoot().textContent, /Visiting browsers42/);
+  assert.match(harness.api.metricsRoot().textContent, /Shares · copies12/);
+  assert.match(harness.api.metricsRoot().textContent, /Alert subscriptions3 devices/);
+  assert.match(harness.api.metricsRoot().textContent, /not people/);
+  assert.match(harness.api.metricsRoot().textContent, /push provider accepted/);
+});
+
+test('a storage-blocked copy cannot invalidate an in-flight public counter read', async () => {
+  let releaseRead;
+  const harness = frontendHarness({ metricsStorage: true, storageBlocked: true, article: { id: 'test-review' },
+    responseJSON: () => new Promise(resolve => { releaseRead = resolve; }) });
+  harness.api.mount(); const read = harness.api.refreshMetrics(); await flushPromises();
+  await harness.api.copy();
+  releaseRead(metricsSummary('test-review')); await read;
+  assert.equal(harness.calls.length, 1);
+  assert.equal(harness.api.metricsRoot().dataset.state, 'ready');
+});
+test('a subscription-change refresh queues one fresh read behind an older in-flight counter request', async () => {
+  let releaseRead;
+  const harness = frontendHarness({ responseJSON: () => new Promise(resolve => { releaseRead = resolve; }) });
+  harness.api.mount();
+  const initial = harness.api.refreshMetrics(); await flushPromises();
+  harness.api.refreshMetrics(true); harness.api.refreshMetrics(true);
+  assert.equal(harness.calls.length, 1);
+  releaseRead(metricsSummary()); await initial; await flushPromises();
+  assert.equal(harness.calls.length, 2);
+  releaseRead(metricsSummary()); await flushPromises();
+  assert.equal(harness.calls.length, 2);
 });

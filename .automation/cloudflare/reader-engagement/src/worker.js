@@ -4,6 +4,7 @@ import {
   responseHeaders, sessionCookie, sha256, topics, validArticleId,
 } from './security.js';
 import {webPushRequest} from './web-push.js';
+import {metricsArticleQuery,metricsSummary,pruneMetrics,recordMetrics} from './metrics.js';
 
 const PUBLIC_FEED = `${SITE_ORIGIN}${SITE_ROOT}reader-publications.json`;
 const MAX_CATALOG = 500;
@@ -123,7 +124,10 @@ async function subscriptions(request,env) {
     if (other && other.device_id !== current.id && (other.p256dh !== subscription.keys.p256dh || other.auth !== subscription.keys.auth)) throw new ApiError('endpoint_in_use',409);
     const same = previous && previous.endpoint_hash === endpointHash && previous.p256dh === subscription.keys.p256dh && previous.auth === subscription.keys.auth;
     const now = Date.now();
-    const statements = [];
+    const statements = [statement(env,`UPDATE metrics_state SET subscription_registrations=subscription_registrations+1
+      WHERE id=1 AND NOT EXISTS (SELECT 1 FROM subscriptions
+        WHERE (device_id=? OR endpoint_hash=?) AND (expiration_time IS NULL OR expiration_time>?)
+          AND (review_enabled=1 OR lecture_enabled=1))`,current.id,endpointHash,now)];
     if (other && other.device_id !== current.id) statements.push(statement(env,'DELETE FROM subscriptions WHERE device_id=? AND endpoint_hash=?',other.device_id,endpointHash));
     statements.push(statement(env,`INSERT INTO subscriptions(device_id,endpoint_hash,endpoint,p256dh,auth,expiration_time,review_enabled,lecture_enabled,version,created_at,updated_at)
       VALUES(?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(device_id) DO UPDATE SET
@@ -381,6 +385,11 @@ export default {
         return json(request,env,{ok:true,vapidPublicKey:publicKey,pushEnabled:!!publicKey && !!env.VAPID_PRIVATE_KEY && !!env.VAPID_SUBJECT,topics:TOPICS});
       }
       if (url.pathname === '/v1/devices' && request.method === 'POST') return await registerDevice(request,env);
+      if (url.pathname === '/v1/metrics' && request.method === 'GET') return json(request,env,await metricsSummary(env,metricsArticleQuery(url)));
+      if (url.pathname === '/v1/metrics/events' && request.method === 'POST') {
+        if (url.search) throw new ApiError('invalid_fields');
+        return json(request,env,await recordMetrics(request,env));
+      }
       const match = url.pathname.match(/^\/v1\/articles\/([^/]+)\/like$/);
       if (match && ['GET','PUT'].includes(request.method)) {
         let id;
@@ -417,6 +426,7 @@ export default {
       await run(env,'DELETE FROM rate_limits WHERE expires_at<?',Date.now()-DAY);
       // Test notification history is disposable; publication history remains durable.
       await run(env,"DELETE FROM publication_events WHERE kind='test' AND created_at<?",Date.now()-7*DAY);
+      await pruneMetrics(env);
     })());
   },
 };
