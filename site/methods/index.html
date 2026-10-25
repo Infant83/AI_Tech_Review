@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>작성·검증 원칙 | AI Tech Review Letters</title>
-  <meta name="description" content="AI Tech Review의 원문 검증, 에이전트 공개, TeX 안전 처리, figure·interactive·video 제작과 게시 QA 원칙">
+  <meta name="description" content="AI Tech Review의 작성·검증 원칙, AI 활용과 권리 안내, 독자 통계 집계 기준과 문의 방법">
   <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/methods/">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
   <meta property="og:title" content="AI Tech Review 작성·검증 원칙">
-  <meta property="og:description" content="사람의 책임, AI 에이전트 역할, 근거 경계와 source-to-explainer 안전 게이트를 공개합니다.">
+  <meta property="og:description" content="사람의 편집 책임, AI 활용과 자료의 권리, 독자 통계 기준과 문의 방법을 공개합니다.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/methods/">
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="../assets/public-metrics.css">
@@ -176,7 +176,7 @@
     <!-- End AI Tech Review Icons -->
 <!-- Reader Engagement Head -->
 <link rel="manifest" href="../app.webmanifest">
-<link rel="stylesheet" href="../assets/reader-engagement.css?v=a2f9ded118f8">
+<link rel="stylesheet" href="../assets/reader-engagement.css?v=edc624861eaf">
 <!-- End Reader Engagement Head -->
 </head>
 <body>
@@ -186,6 +186,8 @@
       <nav aria-label="주요 링크">
         <a href="../">리뷰 허브</a>
         <a href="../manifest.json">데이터 manifest</a>
+        <a href="#rights-ai">권리·AI 활용</a>
+        <a href="#contact">문의</a>
         <a href="https://github.com/Infant83/AI_Tech_Review/blob/main/EDITORIAL_METHOD.md">원문 방법서</a>
       </nav>
     </div>
@@ -194,7 +196,7 @@
         <p class="eyebrow">Human-owned · AI-assisted · source-audited</p>
         <h1>AI Tech Review는 어떻게 작성하고 검증하는가</h1>
         <p class="lead">논문을 쉽게 설명하는 과정과 근거를 엄격히 나누는 과정을 한 하네스 안에 둡니다. 사용한 에이전트 역할, 검증 범위, 시각자료의 출처와 알려진 한계를 글마다 공개합니다.</p>
-        <p class="version">Editorial Harness v2026.08 · 과학 표지 원칙 보완 2026-10-20</p>
+        <p class="version">Editorial Harness v2026.08 · 독자 통계·권리·AI 활용 안내 보완 2026-10-25</p>
       </div>
     </div>
   </header>
@@ -319,6 +321,53 @@
           <li><strong>사람 확인:</strong> 모바일 overflow와 최종 live URL의 실제 렌더링</li>
         </ul>
       </section>
+
+      <section id="reader-metrics">
+        <p class="kicker">08 · Reader activity</p>
+        <h2>방문·열람·공유는 이렇게 셉니다</h2>
+        <p>통계는 <strong>AI Tech Review 안에서의 활동</strong>을 보여줍니다. 개인 랜딩페이지의 방문은 포함하지 않습니다. 방문·열람·공유와 새 구독 등록은 2026-10-25 집계 도입 이후부터 기록합니다. 이전 방문이나 공유 수를 추정해 채우지 않습니다.</p>
+        <table>
+          <thead><tr><th>표시</th><th>집계하는 활동</th></tr></thead>
+          <tbody>
+            <tr><td>방문자수·오늘 방문</td><td>이 사이트 전용 임의 식별자로 구분한 브라우저 수입니다. 오늘은 한국 시간 기준입니다. 같은 사람도 다른 기기·브라우저를 쓰거나 사이트 저장정보를 지우면 별도로 셀 수 있어 사람 수·회원 수와 다릅니다.</td></tr>
+            <tr><td>글 열람</td><td>화면에 열린 글을 같은 브라우저에서 글별로 한국 시간 하루 한 번 셉니다. 같은 글의 한국어·영어판은 합칩니다. 새로고침마다 늘리지 않으며, 끝까지 읽었다는 뜻은 아닙니다.</td></tr>
+            <tr><td>좋아요</td><td>현재 남아 있는 좋아요 수입니다. 같은 글의 한영판은 합치며, 취소하면 줄어듭니다. 과거부터 보관한 좋아요도 포함합니다.</td></tr>
+            <tr><td>공유·복사</td><td>기기 공유 기능이 성공으로 응답했거나 글 주소 복사에 성공한 횟수입니다. 취소·실패는 제외합니다. 상대방에게 실제로 전달됐거나 읽혔는지는 알 수 없습니다.</td></tr>
+            <tr><td>알림 구독·구독 등록</td><td>알림 구독은 현재 유효한 구독 기기 수로, 기존 구독도 포함합니다. 구독 등록은 집계 도입 뒤 알림을 새로 켠 등록 전환을 세며, 설정 저장·주제 변경마다 늘리지 않습니다. 같은 사람이 여러 기기를 구독할 수 있습니다.</td></tr>
+            <tr><td>새 글 알림 발송</td><td>푸시 서비스가 새 글 알림을 접수한 건수입니다. 종전의 실제 발송 기록도 포함하며, 재시도·테스트 알림은 제외합니다. 기기의 도착·읽음 확인 수가 아닙니다.</td></tr>
+          </tbody>
+        </table>
+        <h3>기간을 고르면 활동이 일어난 때를 봅니다</h3>
+        <p>인기 글의 기간별 열람·좋아요 정렬은 <strong>글의 게시일이 아닌 활동일</strong>을 기준으로 합니다. 오래된 글도 선택한 기간에 열리거나 좋아요를 받으면 포함됩니다. 기간별 좋아요는 그 기간에 등록되어 현재도 남아 있는 좋아요이며, 취소된 클릭을 누적하지 않습니다. 카드의 전체 열람·좋아요 수와 기간별 정렬에 쓰는 수치는 다를 수 있습니다.</p>
+        <details>
+          <summary>집계와 브라우저 저장정보</summary>
+          <p>방문 구분에는 이 사이트만의 난수 ID를 브라우저 저장소에 보관하고, 서버에는 그 ID의 해시를 저장합니다. 이름·이메일·원 IP 주소를 방문 통계에 기록하거나 다른 사이트의 방문과 연결하지 않습니다. 남용 방지에는 주기적으로 바뀌는 IP 해시와 횟수 제한을 사용합니다. 누적 방문 브라우저의 중복 확인에는 해시를 보관하고, 글별 하루 중복 확인 기록은 약 2일, 공유·복사 이벤트의 중복 확인 기록은 약 7일 뒤 정리합니다. 공개 통계에는 개별 ID나 구독 주소를 내보내지 않습니다.</p>
+          <p>브라우저의 Do Not Track 또는 Global Privacy Control이 켜져 있거나 사이트 저장소를 사용할 수 없으면 새 방문·열람·공유 집계에 참여하지 않습니다. 알려진 자동화·미리 불러오기 요청과 반복 이벤트도 가능한 범위에서 제외합니다. 이 때문에 공개 수치는 전체 독자와 모든 공유를 빠짐없이 센 값이 아니며, 통계를 불러오지 못해도 읽기·공유·알림 기능은 계속 이용할 수 있습니다.</p>
+          <p>알림 구독과 좋아요는 사용자가 직접 요청한 기능을 유지하기 위해 별도의 브라우저 연결을 사용합니다. 통계 제외 설정이 그 구독이나 좋아요를 자동으로 해제하지는 않습니다.</p>
+        </details>
+      </section>
+
+      <section id="rights-ai">
+        <p class="kicker">09 · Rights &amp; AI disclosure</p>
+        <h2>자료의 권리와 AI 활용을 구분합니다</h2>
+        <p>글의 링크를 공유해 주시는 것을 환영합니다. 본문·그림·코드 등을 재사용할 때는 각 자료에 표시된 출처와 이용조건을 확인해 주세요. 원 논문과 제3자 자료의 권리는 해당 권리자에게 있으며, 이 사이트의 출처 표기가 원자료의 복제·상업 이용 허가를 대신하지 않습니다. 별도의 허용 표시가 없는 자료 전체에 일괄적인 자유이용 라이선스를 부여하지 않습니다.</p>
+        <p>AI는 조사·설명 초안·번역·시각자료 제작 등을 보조하며, 김현중이 편집과 발행 책임을 맡습니다. 사용한 도구, 실제 사람 검토 수준과 검증 범위는 글별 작성 기록에 따릅니다. 기록이 없는 검토를 완료했다고 표시하지 않습니다. 생성형 AI로 만든 개념 그림·음성·영상은 그 성격을 해당 자료 가까이에서 알리고, 실제 실험 사진·측정 데이터·저자 원도표와 구별하는 것을 제작 원칙으로 삼습니다.</p>
+        <p>사람의 창작적 기여, AI 산출물과 제3자 자료는 권리 판단도 구분합니다. AI를 사용했다는 이유만으로 모든 결과물에 독점적 저작권이 생긴다고 주장하지 않습니다. 한국 <a href="https://www.law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&amp;lsJoLnkSeq=1033074243">저작권법 제2조</a>는 저작물을 인간의 사상·감정을 표현한 창작물로 정의합니다.</p>
+        <details>
+          <summary>AI 활용 공개에 참고하는 법령</summary>
+          <p>한국 <a href="https://www.law.go.kr/lsLinkCommonInfo.do?chrClsCd=010202&amp;lsJoLnkSeq=1031810733">인공지능기본법 제31조</a>와 <a href="https://www.law.go.kr/lsLinkCommonInfo.do?lspttninfSeq=198075">시행령 제23조</a>는 적용 대상 사업자의 AI 활용 고지와 생성 결과물 표시를 정합니다. 실제와 혼동할 수 있는 이미지·음향·영상의 표시와 창의적 표현에 적합한 표시 방법도 구분합니다.</p>
+          <p>EU <a href="https://ai-act-service-desk.ec.europa.eu/en/ai-act/article-50">AI Act 제50조</a>도 생성·조작 콘텐츠의 투명성을 다룹니다. 공익 목적의 공개 텍스트에는 사람의 실질적인 검토 또는 편집 통제와 발행 책임에 관한 예외가 있으며, 예술적 표현인 딥페이크에는 향유를 방해하지 않는 공개 방식을 둡니다. AI 시스템 제공자의 기계 판독 표시 의무와 콘텐츠 발행자의 공개 의무는 구분합니다.</p>
+          <p>이 자료들은 공개 방식을 점검하는 참고 기준입니다. 사이트에 대한 법령 적용은 운영 주체·서비스 형태·대상 지역과 실제 사용 방식에 따라 따로 판단하며, 이 안내만으로 모든 법적 요건을 충족했다고 보증하지 않습니다. 법령 확인 기준일: 2026-10-25.</p>
+        </details>
+      </section>
+
+      <section id="contact">
+        <p class="kicker">10 · Contact &amp; corrections</p>
+        <h2>문의와 정정 요청</h2>
+        <p>내용 오류, 출처·인용, 자료 재사용이나 권리 관련 문의는 책임 편집자 김현중에게 보내 주세요. 해당 글 주소, 문제가 있는 문장·그림과 확인 가능한 근거를 함께 알려주시면 검토에 도움이 됩니다. 권리 관련 요청에는 권리 관계와 원하는 조치를 적어 주세요.</p>
+        <p><a href="mailto:hyun-jung.kim@lgdisplay.com">관리자에게 메일 보내기</a> · <a href="https://infant83.io/">김현중 소개</a></p>
+        <p>접수 내용과 근거를 확인한 뒤 필요한 정정·출처 보완·게시 조치를 검토합니다.</p>
+      </section>
     </article>
 
     <aside>
@@ -331,16 +380,20 @@
         <a href="#visuals">Figure·영상</a>
         <a href="#agents">에이전트 공개</a>
         <a href="#publish-gates">게시 차단 조건</a>
+        <a href="#reader-metrics">독자 통계 집계 기준</a>
+        <a href="#rights-ai">권리·AI 활용 공개</a>
+        <a href="#contact">문의·정정 요청</a>
       </nav>
     </aside>
   </main>
 
   <footer>
-    AI Tech Review Editorial Harness v2026.08 · Responsible editor: 김현중
+    AI Tech Review Editorial Harness v2026.08 · Responsible editor: 김현중<br>
+    <a href="#reader-metrics">독자 통계</a> · <a href="#rights-ai">권리·AI 활용</a> · <a href="#contact">문의·정정</a>
   </footer>
 <!-- Reader Engagement Controls -->
 <script type="application/json" id="reader-engagement-config">{"apiBase":"https://api.infant83.io","siteRoot":"https://infant83.io/AI_Tech_Review/","scope":"/AI_Tech_Review/","catalogUrl":"https://infant83.io/AI_Tech_Review/reader-publications.json","article":null}</script>
-<script defer src="../assets/reader-engagement.js?v=bc6e52d6438f"></script>
+<script defer src="../assets/reader-engagement.js?v=92d5dc13179b"></script>
 <!-- End Reader Engagement Controls -->
 </body>
 </html>

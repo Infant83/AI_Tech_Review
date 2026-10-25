@@ -134,33 +134,22 @@
     notificationHistory: [], historyReady: false, historyLimit: 5, historyCount: null };
   var subscriptionButtons = [];
   var dialog = null, dialogBody = null, dialogHeading = null, dialogFeedback = null, opener = null;
-  var likeButton = null, articleStatus = null, likeRevision = 0, scrollState = null;
+  var likeButton = null, likeButtons = [], articleStatus = null, articleStatuses = [], likeRevision = 0, scrollState = null;
   var pendingPermission = null, pendingPushLookup = null, pendingPushSubscription = null;
   var deviceSessionKnown = false, pendingDeviceRegistration = null, pendingLikeWrite = null;
   var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
-  var metricsRoot = null, metricsFields = {}, metricsSince = null, metricsStatus = null, metricsParticipation = null, metricsExclusionNotice = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
+  var metricsRoot = null, metricsFields = {}, metricsStatus = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
+  var reviewHub = !article && (location.pathname === scope || location.pathname === scope + "index.html" || location.pathname === scope.slice(0, -1));
   var metricsText = english ? {
-    title: "Reader activity", visitors: "Visiting browsers", today: "Today", opens: "Article opens", shares: "Shares · copies",
-    subscribers: "Alert subscriptions", registrations: "Subscription sign-ups", sent: "New article alerts sent",
-    articleOpens: "This article opened", articleShares: "Shared · copied", details: "About these counts", unavailable: "Counts temporarily unavailable",
-    since: "Counting since ", deviceUnit: " devices", criteria: "Counts cover AI Tech Review, not the personal landing page. Visiting browsers are anonymous browser/device counts, not people; another browser or cleared site storage may count separately. Article opens count a browser once per article per day in Korea time, combining Korean and English pages. Shares/copies count completed device sharing or successful link copying; they cannot confirm recipient delivery. Subscription sign-ups count new registrations since counting began; current subscribed devices include existing subscribers. Alerts sent means the push provider accepted a new article alert, not that someone received or read it. Tests are excluded.",
-    privacy: "A random identifier is saved only in this site's browser storage for duplicate counting. The server stores its hash, not your name or raw IP address. Global Privacy Control or Do Not Track disables visit/open/share counting in this browser. If browser storage is unavailable, only public totals are loaded.",
-    optedOut: "This browser's privacy preference (Global Privacy Control or Do Not Track) disables visit, open and share counting. Public totals remain available.",
-    storageOff: "This browser cannot use a stored counting identifier, so its visits, opens and shares are not counted. Public totals remain available.",
-    participating: "This browser participates in browser-based visit, open and share counting.",
-    excludedShort: "This browser is excluded from counts by its privacy preference.", storageShort: "This browser cannot save a counting identifier, so its activity is excluded."
+    title: "Reader activity", visitors: "Visitors", opens: "Article opens", shares: "Shares · copies",
+    subscribers: "Alert subscriptions", articleOpens: "This article opened", articleShares: "Shared · copied",
+    unavailable: "Counts temporarily unavailable", deviceUnit: " devices"
   } : {
-    title: "독자 활동", visitors: "방문 브라우저", today: "오늘 방문", opens: "글 열람", shares: "공유·복사",
-    subscribers: "알림 구독", registrations: "구독 등록", sent: "새 글 알림 발송",
-    articleOpens: "이 글 열람", articleShares: "공유·복사", details: "집계 기준", unavailable: "통계를 잠시 불러올 수 없어요",
-    since: "집계 시작 · ", deviceUnit: "기기", criteria: "테크리뷰 안에서의 활동을 집계하며 개인 랜딩페이지는 포함하지 않습니다. 방문 수는 사람 수가 아닌 브라우저·기기 기준이며, 다른 브라우저를 쓰거나 사이트 저장정보를 지우면 별도로 집계될 수 있어요. 글 열람은 같은 브라우저·글을 한국 시간 하루에 한 번만 세고 한영 페이지를 합칩니다. 공유·복사는 기기 공유 완료 또는 주소 복사 성공을 세며 실제 상대방에게 전달됐는지는 확인할 수 없어요. 구독 등록은 집계 시작 뒤 새로 등록한 횟수이고, 현재 알림 구독에는 기존 구독 기기도 포함합니다. 새 글 알림 발송은 푸시 서비스의 접수 건수이며 도착·읽음 확인이 아닙니다. 테스트 알림은 제외합니다.",
-    privacy: "중복 집계를 줄이기 위해 이 사이트의 브라우저 저장소에 임의 식별자를 저장합니다. 서버에는 해시를 저장하며 이름·원문 IP는 저장하지 않아요. 브라우저의 Global Privacy Control 또는 Do Not Track을 켜면 방문·열람·공유 집계에 참여하지 않습니다. 저장소를 사용할 수 없으면 공개된 통계만 불러옵니다.",
-    optedOut: "이 브라우저는 개인정보 보호 설정(GPC·Do Not Track)에 따라 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
-    storageOff: "이 브라우저에서는 집계용 식별자를 저장해 사용할 수 없어 방문·열람·공유를 집계하지 않습니다. 공개 통계는 볼 수 있어요.",
-    participating: "이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여하고 있어요.",
-    excludedShort: "이 브라우저는 개인정보 보호 설정에 따라 집계에서 제외돼요.", storageShort: "이 브라우저는 집계용 식별자를 저장할 수 없어 집계에서 제외돼요."
+    title: "독자 활동", visitors: "방문자수", opens: "글 열람", shares: "공유·복사",
+    subscribers: "알림 구독", articleOpens: "이 글 열람", articleShares: "공유·복사",
+    unavailable: "통계를 잠시 불러올 수 없어요", deviceUnit: "기기"
   };
 
   function node(tag, className, content) {
@@ -425,11 +414,7 @@
   function metricsTracked() {
     return navigator.globalPrivacyControl !== true && !/^(1|yes)$/i.test(String(navigator.doNotTrack || window.doNotTrack || ""));
   }
-  function updateMetricsParticipation() {
-    if (!metricsParticipation) return;
-    metricsParticipation.textContent = !metricsTracked() ? metricsText.optedOut : !metricsStorageChecked ? "" : metricsVisitor ? metricsText.participating : metricsText.storageOff;
-    if (metricsExclusionNotice) metricsExclusionNotice.textContent = !metricsTracked() ? metricsText.excludedShort : metricsStorageChecked && !metricsVisitor ? metricsText.storageShort : "";
-  }
+
   function metricsUUID() {
     if (!window.crypto) return null;
     if (typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
@@ -440,8 +425,8 @@
     return hex.slice(0, 8) + "-" + hex.slice(8, 12) + "-" + hex.slice(12, 16) + "-" + hex.slice(16, 20) + "-" + hex.slice(20);
   }
   function metricsVisitorId() {
-    if (!metricsTracked()) { updateMetricsParticipation(); return null; }
-    if (metricsStorageChecked) { updateMetricsParticipation(); return metricsVisitor; }
+    if (!metricsTracked()) return null;
+    if (metricsStorageChecked) return metricsVisitor;
     metricsStorageChecked = true;
     try {
       var key = "atr-reader-metrics-visitor:" + scope;
@@ -453,7 +438,6 @@
         if (window.localStorage.getItem(key) === value) metricsVisitor = value;
       }
     } catch (_) { /* Do not inflate counts with a new identifier on every storage-blocked page. */ }
-    updateMetricsParticipation();
     return metricsVisitor;
   }
   function metricsForeground() {
@@ -462,11 +446,14 @@
   function metricsField(parent, key, label, suffix) {
     var item = node("span", "atr-reader-metric");
     item.appendChild(node("span", "atr-reader-metric-label", label));
-    var value = node("strong", "", "—"); value.dataset.readerMetric = key; metricsFields[key] = value; item.appendChild(value);
+    var value = node("strong", "", "—"); value.dataset.readerMetric = key;
+    if (!metricsFields[key]) metricsFields[key] = [];
+    metricsFields[key].push(value); item.appendChild(value);
     if (suffix) item.appendChild(node("span", "", suffix));
     parent.appendChild(item);
   }
   function mountMetrics(articleActions) {
+    if (!articleActions && !reviewHub) return;
     metricsRoot = node("section", "atr-reader-metrics" + (article ? " atr-reader-metrics-article" : ""));
     metricsRoot.setAttribute("aria-label", metricsText.title);
     metricsRoot.dataset.state = "loading";
@@ -485,36 +472,15 @@
     metricsStatus.setAttribute("role", "status");
     metricsStatus.setAttribute("aria-live", "polite");
     metricsRoot.appendChild(metricsStatus);
-    metricsExclusionNotice = node("p", "atr-reader-metrics-note atr-reader-metrics-exclusion");
-    metricsExclusionNotice.setAttribute("role", "status");
-    metricsExclusionNotice.setAttribute("aria-live", "polite");
-    metricsRoot.appendChild(metricsExclusionNotice);
-    var details = node("details", "atr-reader-metrics-details");
-    details.appendChild(node("summary", "", metricsText.details));
-    var extra = node("div", "atr-reader-metrics-row");
-    if (article) {
-      metricsField(extra, "visitors", metricsText.visitors);
-      metricsField(extra, "activeSubscribers", metricsText.subscribers, metricsText.deviceUnit);
+    if (!article) {
+      var info = node("a", "atr-reader-metrics-info", english ? "About reader statistics" : "통계 안내");
+      info.href = scope + "methods/#reader-metrics";
+      metricsRoot.appendChild(info);
     }
-    metricsField(extra, "todayVisitors", metricsText.today);
-    metricsField(extra, "subscriptionRegistrations", metricsText.registrations);
-    metricsField(extra, "articleNotificationsSent", metricsText.sent);
-    details.appendChild(extra);
-    metricsSince = node("p", "atr-reader-metrics-note"); details.appendChild(metricsSince);
-    details.appendChild(node("p", "atr-reader-metrics-note", metricsText.criteria));
-    details.appendChild(node("p", "atr-reader-metrics-note", metricsText.privacy));
-    metricsParticipation = node("p", "atr-reader-metrics-note atr-reader-metrics-participation");
-    details.appendChild(metricsParticipation);
-    updateMetricsParticipation();
-    metricsRoot.appendChild(details);
     if (articleActions) articleActions.appendChild(metricsRoot);
     else {
       var anchor = document.querySelector(".hero .stats");
       if (anchor) anchor.insertAdjacentElement("afterend", metricsRoot);
-      else {
-        var target = document.querySelector("main") || document.querySelector("header");
-        if (target) target.insertAdjacentElement("afterbegin", metricsRoot);
-      }
     }
   }
   function metricsValue(value) { return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null; }
@@ -533,8 +499,8 @@
       if (values.articleOpens === null || shares === null || copies === null || !Number.isSafeInteger(shares + copies)) throw apiError("invalid_metrics");
       values.articleShares = shares + copies;
     }
-    Object.keys(metricsFields).forEach(function (key) { metricsFields[key].textContent = new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(values[key]); });
-    if (metricsSince) metricsSince.textContent = metricsText.since + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", timeZone: "Asia/Seoul" }).format(new Date(result.since));
+    Object.keys(metricsFields).forEach(function (key) { metricsFields[key].forEach(function (field) { field.textContent = new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(values[key]); }); });
+
     if (metricsRoot) { metricsRoot.dataset.state = "ready"; metricsRoot.removeAttribute("title"); }
     if (metricsStatus) metricsStatus.textContent = "";
   }
@@ -609,13 +575,13 @@
       element.textContent = subscribed() ? text.settings : text.open;
       element.dataset.subscribed = subscribed() ? "true" : "false";
     });
-    if (likeButton) {
-      likeButton.disabled = state.likeBusy;
-      likeButton.setAttribute("aria-busy", state.likeBusy ? "true" : "false");
-      likeButton.setAttribute("aria-pressed", state.liked ? "true" : "false");
-      likeButton.setAttribute("aria-label", state.liked ? text.unlike : text.like);
-      likeButton.textContent = (state.liked ? "♥ " : "♡ ") + text.like + " " + (state.count === null ? "—" : new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(state.count));
-    }
+    likeButtons.forEach(function (element) {
+      element.disabled = state.likeBusy;
+      element.setAttribute("aria-busy", state.likeBusy ? "true" : "false");
+      element.setAttribute("aria-pressed", state.liked ? "true" : "false");
+      element.setAttribute("aria-label", state.liked ? text.unlike : text.like);
+      element.textContent = (state.liked ? "♥ " : "♡ ") + text.like + " " + (state.count === null ? "—" : new Intl.NumberFormat(english ? "en-US" : "ko-KR").format(state.count));
+    });
   }
   function setFeedback(message, error) {
     state.feedback = message;
@@ -626,19 +592,18 @@
     }
   }
   function articleMessage(message, retryAction, url) {
-    if (!articleStatus) return;
-    articleStatus.dataset.readerStatusAction = retryAction || "";
-    articleStatus.replaceChildren(document.createTextNode(message));
-    if (retryAction) articleStatus.appendChild(button(retryAction === "copy" ? text.copy : text.retry, retryAction));
-    if (url) {
-      var input = node("input", "atr-reader-copy-url");
-      input.type = "text";
-      input.value = url;
-      input.readOnly = true;
-      input.setAttribute("aria-label", text.copy);
-      input.addEventListener("focus", function () { input.select(); });
-      articleStatus.appendChild(input);
-    }
+    articleStatuses.forEach(function (element) {
+      element.dataset.readerStatusAction = retryAction || "";
+      element.replaceChildren(document.createTextNode(message));
+      if (retryAction) element.appendChild(button(retryAction === "copy" ? text.copy : text.retry, retryAction));
+      if (url) {
+        var input = node("input", "atr-reader-copy-url");
+        input.type = "text"; input.value = url; input.readOnly = true;
+        input.setAttribute("aria-label", text.copy);
+        input.addEventListener("focus", function () { input.select(); });
+        element.appendChild(input);
+      }
+    });
   }
   function addSubscribeButton(target) {
     var element = button(text.open, "open");
@@ -650,6 +615,10 @@
     target.appendChild(element);
     return element;
   }
+  function layoutChildren(element) {
+    try { return element && typeof window.getComputedStyle === "function" && /^(?:inline-)?(?:grid|flex)$/.test(window.getComputedStyle(element).display); }
+    catch (_) { return false; }
+  }
   function mount() {
     if (article) {
       var articleElement = document.querySelector("main article") || document.querySelector("article:not(.review-card)") || document.querySelector("main");
@@ -657,6 +626,7 @@
         var actions = node("section", "atr-reader-actions");
         actions.setAttribute("aria-label", text.actions);
         likeButton = button(text.like + " —", "like");
+        likeButtons.push(likeButton);
         likeButton.setAttribute("aria-pressed", "false");
         actions.appendChild(likeButton);
         actions.appendChild(button(text.share, "share"));
@@ -666,10 +636,25 @@
         articleStatus = node("p", "atr-reader-status");
         articleStatus.setAttribute("role", "status");
         articleStatus.setAttribute("aria-live", "polite");
+        articleStatuses.push(articleStatus);
         actions.appendChild(articleStatus);
-        if (articleElement.tagName === "MAIN") articleElement.appendChild(actions);
+        if (articleElement.tagName === "MAIN" || layoutChildren(articleElement.parentElement)) articleElement.appendChild(actions);
         else articleElement.insertAdjacentElement("afterend", actions);
         actions.addEventListener("click", handleAction);
+        var topActions = node("div", "atr-reader-actions atr-reader-actions-top");
+        topActions.setAttribute("aria-label", text.actions);
+        metricsField(topActions, "articleOpens", english ? "Views" : "조회");
+        var topLike = button(text.like + " —", "like"); likeButtons.push(topLike); topActions.appendChild(topLike);
+        topActions.appendChild(button(text.share, "share"));
+        var topStatus = node("p", "atr-reader-status"); topStatus.setAttribute("aria-live", "off");
+        articleStatuses.push(topStatus); topActions.appendChild(topStatus);
+        var headline = (typeof articleElement.querySelector === "function" ? articleElement.querySelector("h1") : null) || document.querySelector("h1");
+        if (headline) {
+          var anchor = headline;
+          while (anchor.parentElement && anchor.parentElement.tagName !== "BODY" && layoutChildren(anchor.parentElement)) anchor = anchor.parentElement;
+          anchor.insertAdjacentElement("afterend", topActions);
+        } else articleElement.insertAdjacentElement("afterbegin", topActions);
+        topActions.addEventListener("click", handleAction);
       }
       var articleHeader = document.querySelector(".topbar-links") || document.querySelector(".topline-actions") || document.querySelector("body > header .topbar") || document.querySelector("body > header");
       if (articleHeader) {
@@ -677,7 +662,7 @@
         addSubscribeButton(articleHeader).addEventListener("click", handleAction);
       }
     } else {
-      var topbar = document.querySelector(".topbar-links") || document.querySelector(".topline-actions") || document.querySelector(".topbar") || document.querySelector("header nav") || document.querySelector("header");
+      var topbar = document.querySelector(".topbar-links") || document.querySelector(".topline-actions") || document.querySelector(".topbar nav") || document.querySelector("header nav") || document.querySelector(".topbar") || document.querySelector("header");
       if (topbar) { topbar.classList.add("atr-reader-topbar"); addSubscribeButton(topbar).addEventListener("click", handleAction); }
       mountMetrics(null);
     }

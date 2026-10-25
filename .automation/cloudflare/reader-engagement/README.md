@@ -120,6 +120,8 @@ npx wrangler deploy
 | `POST /v1/publications/sync` `{revision,articles}` | 게시 전용 Bearer secret, 공개 feed 검증 후 동기화 |
 | `GET /v1/metrics[?articleId=...]` | 공개 집계만 조회. 세션이나 쿠키 불필요 |
 | `POST /v1/metrics/events` `{type,visitorId,eventId,articleId}` | 공개 집계 이벤트. 정확한 Origin 필수, 세션 생성 안 함 |
+| `GET /v1/discovery[?period=all\|7d\|30d\|90d]` | 활성 글 최대 500개의 누적 카드 숫자와 활동 기간 정렬 숫자. 세션 불필요 |
+| `GET /v1/discovery?from=YYYY-MM-DD&to=YYYY-MM-DD` | 한국 날짜 양 끝을 포함한 사용자 지정 활동 기간 |
 
 ### 방문·열람·공유·구독 통계
 
@@ -162,6 +164,34 @@ npx wrangler deploy
 알려진 crawler, prefetch/prerender 및 `Sec-GPC: 1`/`DNT: 1` 요청은 집계하지 않는다. 자동 트래픽의 완전한 식별이나 악의적인 수치 조작 방지를 보장하지는 않는다. 이벤트는 브라우저 해시당 시간당 120회, 회전 IP 해시당 시간당 600회이며 공유·복사는 브라우저당 하루 60회를 추가 제한한다. 거절된 이벤트는 집계 숫자를 바꾸지 않는다. 트래픽 통계 장애가 정적 글 읽기·공유·알림 구독을 막아서는 안 된다.
 
 일일·이벤트 중복 키의 INSERT trigger가 집계를 올리므로, 중복 검사와 숫자 증가는 한 트랜잭션에서 처리된다. 15초 주기 체류 시간 전송이나 별도 유료 분석 서비스는 추가하지 않는다. 일일 방문 집계, 글 집계와 lifetime 합계만 공개한다. 현재 구현 범위는 `/AI_Tech_Review/`이며 루트 개인 랜딩페이지는 별도 연동 전까지 이 통계에 포함하지 않는다.
+
+### 글 카드와 기간별 인기순 탐색
+
+`0003_review_discovery.sql` 적용 후 `GET /v1/discovery`를 사용한다. 기존 글·아이콘·GitHub Pages 구성은 바꾸지 않는다. 이 경로는 공개된 활성 카탈로그의 글 ID와 집계 숫자만 반환하고, 개인별 좋아요 여부나 읽은 글 이력을 공개하지 않는다. 쿠키가 필요 없으며 기기 세션을 만들거나 갱신하지 않는다. 응답은 `Cache-Control: public, max-age=30`, `Vary: Origin`으로 최대 30초의 브라우저 캐시를 허용한다. 이는 별도 서버 캐시나 새로운 Cloudflare 유료 서비스를 추가한 것이 아니다. 클라이언트의 `no-store` 요청은 새 읽기를 수행할 수 있다.
+
+```json
+{
+  "ok": true,
+  "since": "2026-10-25T05:42:25.151Z",
+  "activitySince": "2026-10-25",
+  "range": {"from": "2026-10-19", "to": "2026-10-25", "period": "7d"},
+  "articles": [
+    {"id": "example", "opens": 12, "likes": 3, "shares": 2, "copies": 1, "periodOpens": 5, "periodLikes": 1}
+  ]
+}
+```
+
+위 값은 계약 설명용 예시다. `since`는 기존 방문 통계 시작 ISO 시각이며 `activitySince`는 빠짐없이 보존되는 일별 활동 집계의 시작 **한국 날짜**다. 카드는 누적 `opens`, `likes`를 표시하고, 기간별 인기 정렬은 `periodOpens`, `periodLikes`를 사용한다. 주제·검색 필터와 화면 페이지 분할은 동일한 글 ID 목록 위에서 클라이언트가 조합할 수 있다. API 배열은 ID 오름차순이며 인기순을 미리 적용하지 않는다. 한국어·영어는 같은 ID로 합산하고 비활성 글은 배열에서 제외한다. 500개 초과의 비정상 활성 카탈로그는 일부만 조용히 반환하는 대신 503으로 실패한다.
+
+- query가 없거나 `period=all`이면 모든 집계 기간을 사용한다. `range`는 `{from:null,to:null,period:"all"}`이며 기간 숫자는 누적 숫자와 같다.
+- `period=7d`, `30d`, `90d`는 요청 시점의 한국 날짜인 오늘을 포함한 최근 7·30·90일이다. **게시 날짜 필터가 아닌 활동 날짜 필터**다. 오래전에 게시한 글도 해당 기간에 읽히거나 좋아요를 받으면 정렬에 반영된다.
+- 사용자 지정은 `from`, `to`가 모두 필요하고 `period`와 함께 보낼 수 없다. 실제 존재하는 `YYYY-MM-DD`, `from <= to`, 양 끝 포함 3,660일 이하를 엄격히 검사한다. 초과 범위를 묵시적으로 줄이지 않는다. 같은 날짜 하루 범위도 가능하다. 응답의 `range.period`는 `"custom"`이다.
+- 잘못된 날짜·기간, 추가 query 필드나 중복 필드는 400이다. Origin 검사는 기존 API와 같으며 요청 body를 받지 않는다.
+- `periodLikes`는 **현재 취소되지 않은 좋아요 중 등록 시각이 선택 기간에 속하는 개수**다. 과거 버튼 클릭 수나 순증감 값이 아니다. 좋아요를 취소하면 원래 등록 날짜의 합계에서도 빠지고, 다시 누르면 새 등록 날짜로 센다. 무변경 저장은 한 번만 센다. `likes`는 현재 남아 있는 전체 좋아요 수다.
+
+일별 공개 합계는 `metrics_article_daily(day,article_id)`에 보존한다. 방문·공유 원본의 짧은 중복 키를 Cron이 삭제해도 일별 합계가 사라지지 않는다. 누적 좋아요는 `metrics_articles.likes`에 저장하며, 좋아요 INSERT·DELETE와 글 ID/등록 날짜 변경 trigger가 누적·일별 값을 함께 유지한다. 공개 조회마다 개별 좋아요 전체를 스캔하지 않는다. 조회는 상태 한 건과 활성 글·선택 날짜 합계를 한 D1 batch로 읽으며 글마다 별도 API/DB 요청을 만들지 않는다. 일별 테이블 기본키의 날짜 범위를 사용한다.
+
+migration은 남아 있는 실제 `metrics_daily_opens`와 `metrics_actions`만 일별로 복구하고, 기존 좋아요는 보존된 실제 `created_at`으로 복구한다. 공유 ledger의 날짜는 기존 7일 TTL에서 정확히 역산한다. 기존 누적 열람·공유 합계를 임의 날짜로 나누지 않는다. 과거 ledger가 이미 삭제된 환경에서도 누적 카드 숫자는 보존되지만 일부 오래된 기간 숫자는 알 수 없을 수 있다. 이를 숨기지 않도록 `activitySince`는 기존 통계 시작 한국 날짜와 migration 전날 한국 날짜 중 더 늦은 날로 보수적으로 기록한다. 현재 서비스는 통계 도입 당일 이 migration을 적용하므로 그 이전의 공개 방문 수치를 새로 만들지 않는다. `since` 이전이나 `activitySince`보다 이른 기간은 완전한 역사 통계로 설명하지 않는다.
 
 발행 API는 `https://infant83.io/AI_Tech_Review/reader-publications.json`만 직접 가져온다. 임의 URL을 받지 않는다. 서버 nonce, 캐시 우회, redirect 거부와 writer lock 안의 revision·전체 metadata 비교를 적용한다. 같은 revision의 다른 내용은 409다. 같은 내용을 재처리해도 이벤트를 중복 생성하지 않으며, 과거에 처리한 revision으로 카탈로그 상태를 되돌리지 않는다. 공개 배포가 아직 맞지 않으면 409로 실패하여 CI가 재시도한다.
 

@@ -210,6 +210,7 @@ function frontendHarness(options = {}) {
     constructor(tag) { this.tagName = tag.toUpperCase(); this.dataset = {}; this.style = {}; this.children = []; this.attributes = {}; this.listeners = {}; this._text = ''; this.classList = { add: (...names) => { this.className = [this.className || '', ...names].join(' '); } }; }
     set textContent(value) { this._text = String(value); this.children = []; }
     get textContent() { return this._text + this.children.map(child => child.textContent).join(''); }
+    get parentElement() { return this.parentNode && this.parentNode.tagName ? this.parentNode : null; }
     set innerHTML(_) { throw Error('HTML injection is forbidden in reader controls'); }
     appendChild(child) { child.parentNode = this; this.children.push(child); return child; }
     replaceChildren(...children) { this._text = ''; this.children = []; children.forEach(child => this.appendChild(child)); }
@@ -231,11 +232,12 @@ function frontendHarness(options = {}) {
         if (selector === '[data-reader-guide]') return Boolean(element.dataset.readerGuide);
         if (selector === 'input[data-reader-topic]:checked') return element.tagName === 'INPUT' && element.dataset.readerTopic && element.checked;
         return selector.split(',').some(part => {
-          const tag = part.match(/^([a-z]+)/);
+          const tag = part.match(/^([a-z][a-z0-9]*)/);
           return tag && element.tagName === tag[1].toUpperCase() && (!part.includes(':disabled') || !element.disabled);
         });
       });
     }
+    querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
     getClientRects() {
       let ancestor = this.parentNode;
       while (ancestor) {
@@ -248,9 +250,12 @@ function frontendHarness(options = {}) {
     close() { this.open = false; (this.listeners.close || []).forEach(listener => listener()); }
   }
   const main = new MiniNode('main'), articleElement = new MiniNode('article'), header = new MiniNode('header'), topbar = new MiniNode('span');
+  const headline = options.withHeadline || options.heroHeadline ? new MiniNode('h1') : null;
+  if (headline) (options.heroHeadline ? header : articleElement).appendChild(headline);
+  if (options.gridParent) main.appendChild(articleElement);
   document = { querySelector: selector => {
     if (selector.includes(',')) return options.article ? main : header; // CSS lists use document order, not selector order.
-    return ({ 'main article': articleElement, 'article:not(.review-card)': articleElement, main,
+    return ({ 'main article': articleElement, 'article:not(.review-card)': articleElement, main, h1: options.heroHeadline ? headline : null,
       '.topbar-links': options.noHeader || options.headerOnly ? null : topbar,
       'body > header': options.noHeader ? null : header, header: options.noHeader ? null : header })[selector] || null;
   }, getElementById: () => ({ tagName: 'SCRIPT', type: 'application/json', textContent: JSON.stringify(config) }),
@@ -276,6 +281,7 @@ function frontendHarness(options = {}) {
     }
   };
   context.navigator.clipboard = { writeText: async value => { context.copied = value; } };
+  context.getComputedStyle = element => ({ display: (options.gridParent && element === main) || (options.headlineGrid && element === header) ? 'grid' : 'block' });
   if (options.metricsStorage) {
     context.localStorage = { getItem: key => { if (options.storageBlocked) throw Error('blocked'); return storage.get(key) || null; },
       setItem: (key, value) => { if (options.storageBlocked) throw Error('blocked'); storage.set(key, value); } };
@@ -308,7 +314,7 @@ function frontendHarness(options = {}) {
   let current = options.existingSubscription ? subscription : null;
   api.state.registration = { active: options.notificationWorker, pushManager: { getSubscription: async () => current,
     subscribe: async () => { subscribeCount++; current = subscription; return subscription; } } };
-  return { api, calls, events, channels, storage, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
+  return { api, calls, events, channels, storage, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header, headline,
     releasePermission: value => { permission = value; if (resolvePermission) resolvePermission(value); },
     counts: () => ({ subscribeCount, unsubscribeCount }) };
 }
@@ -896,10 +902,9 @@ test('public metrics use browser storage separately from auth and do not create 
   assert.equal(harness.storage.size, 1);
   assert.equal(harness.calls.some(value => value.url.includes('/v1/devices')), false);
   assert.equal(harness.api.metricsRoot().dataset.state, 'ready');
-  assert.match(harness.api.metricsRoot().textContent, /이 브라우저는 브라우저 기준 방문·열람·공유 집계에 참여/);
   assert.match(harness.api.metricsRoot().textContent, /이 글 열람11/);
   assert.match(harness.api.metricsRoot().textContent, /공유·복사5/);
-  assert.match(harness.api.metricsRoot().textContent, /방문 브라우저42/);
+  assert.doesNotMatch(harness.api.metricsRoot().textContent, /방문자수/);
   harness.api.startMetrics();
   await flushPromises();
   assert.equal(harness.calls.length, 1, 'focus/pageshow must not count the same page again');
@@ -930,7 +935,7 @@ test('privacy preferences and blocked storage use public totals without tracking
     assert.equal(harness.calls[0].init.body, undefined);
     assert.equal(harness.storage.size, 0);
     assert.equal(harness.api.metricsRoot().dataset.state, 'ready');
-    assert.match(harness.api.metricsRoot().textContent, options.storageBlocked ? /이 브라우저에서는 집계용 식별자를 저장해 사용할 수 없어/ : /이 브라우저는 개인정보 보호 설정\(GPC·Do Not Track\)에 따라/);
+    assert.doesNotMatch(harness.api.metricsRoot().textContent, /이 브라우저는|이 브라우저에서는|개인정보 보호 설정/);
   }
 });
 test('a persisted anonymous browser identifier is reused across English and Korean pages', async () => {
@@ -992,9 +997,8 @@ test('public metrics validate every count, matching article and start date befor
   for (const data of invalid) assert.throws(() => harness.api.applyMetrics(data), /invalid_metrics/);
   assert.match(harness.api.metricsRoot().textContent, /이 글 열람—/);
   harness.api.applyMetrics(metricsSummary('test-review'));
-  assert.match(harness.api.metricsRoot().textContent, /한국 시간 하루에 한 번/);
-  assert.match(harness.api.metricsRoot().textContent, /Global Privacy Control/);
-  assert.match(harness.api.metricsRoot().textContent, /도착·읽음 확인이 아닙니다/);
+  assert.equal(harness.api.metricsRoot().querySelectorAll("details").length, 0);
+  assert.equal(harness.api.metricsRoot().querySelectorAll("a").length, 0, "article controls do not add a formal statistics guide");
 });
 test('a late metrics read cannot overwrite counts from a newer completed share', async () => {
   let releaseRead;
@@ -1009,14 +1013,14 @@ test('a late metrics read cannot overwrite counts from a newer completed share',
   releaseRead(metricsSummary('test-review')); await read;
   assert.match(harness.api.metricsRoot().textContent, /공유·복사6/);
 });
-test('English public metrics retain clear browser/device and sharing definitions', () => {
+test('English hub metrics keep compact labels with one separate statistics guide link', () => {
   const harness = frontendHarness({ english: true });
   harness.api.mount(); harness.api.applyMetrics(metricsSummary());
-  assert.match(harness.api.metricsRoot().textContent, /Visiting browsers42/);
+  assert.match(harness.api.metricsRoot().textContent, /Visitors42/);
   assert.match(harness.api.metricsRoot().textContent, /Shares · copies12/);
   assert.match(harness.api.metricsRoot().textContent, /Alert subscriptions3 devices/);
-  assert.match(harness.api.metricsRoot().textContent, /not people/);
-  assert.match(harness.api.metricsRoot().textContent, /push provider accepted/);
+  assert.equal(harness.api.metricsRoot().querySelectorAll("details").length, 0);
+  assert.equal(harness.api.metricsRoot().querySelectorAll("a")[0].href, "/AI_Tech_Review/methods/#reader-metrics");
 });
 
 test('a storage-blocked copy cannot invalidate an in-flight public counter read', async () => {
@@ -1189,16 +1193,13 @@ test('a malformed liked flag in an initial read leaves unknown state and exposes
   assert.match(status.textContent, /불러올 수 없어요/);
 });
 
-test('privacy and storage exclusions remain visible when count definitions are collapsed', async () => {
+test('privacy exclusions stay respected without adding a reader-facing explanation paragraph', async () => {
   for (const options of [{ gpc: true }, { dnt: '1' }, { storageBlocked: true }]) {
     const harness = frontendHarness({ ...options, metricsStorage: true, responseJSON: () => metricsSummary() });
     harness.api.mount(); harness.api.startMetrics(); await flushPromises();
-    const root = harness.api.metricsRoot();
-    const notice = root.children.find(element => String(element.className || '').includes('atr-reader-metrics-exclusion'));
-    assert.equal(notice.parentNode, root, 'exclusion is outside the closed details');
-    assert.equal(notice.getClientRects().length, 1);
-    assert.equal(notice.getAttribute('role'), 'status');
-    assert.match(notice.textContent, options.storageBlocked ? /집계용 식별자를 저장할 수 없어/ : /개인정보 보호 설정에 따라 집계에서 제외/);
+    assert.equal(harness.calls[0].init.method, 'GET');
+    assert.equal(harness.storage.size, 0);
+    assert.doesNotMatch(harness.api.metricsRoot().textContent, /이 브라우저는|개인정보 보호 설정|집계 기준/);
   }
 });
 test('a visible BFcache restore refreshes public totals without counting a second open or creating another identifier', async () => {
@@ -1236,5 +1237,90 @@ test('BFcache refresh waits for a pending metrics write and cannot replace its c
   assert.equal(harness.calls.length, 1, 'GET must wait for the in-flight open POST');
   releaseWrite(metricsSummary()); await flushPromises(); await flushPromises();
   assert.deepEqual(harness.calls.map(call => call.init.method), ['POST', 'GET']);
-  assert.match(harness.api.metricsRoot().textContent, /방문 브라우저43/);
+  assert.match(harness.api.metricsRoot().textContent, /방문자수43/);
+});
+
+
+test('supplementary grid pages never mount counters or modify their main layout', async () => {
+  for (const pathname of ['/AI_Tech_Review/methods/', '/AI_Tech_Review/lectures/', '/AI_Tech_Review/archive/', '/AI_Tech_Review/briefings/']) {
+    const harness = frontendHarness({ pathname, metricsStorage: true });
+    harness.api.mount(); harness.api.startMetrics(); await flushPromises();
+    assert.equal(harness.api.metricsRoot(), null);
+    assert.equal(harness.main.children.length, 0);
+    assert.equal(harness.main.adjacent, undefined);
+    assert.equal(harness.calls.length, 0);
+    assert.equal(harness.storage.size, 0);
+  }
+});
+test('the review hub keeps compact visitor labels while articles have only article counters', () => {
+  for (const pathname of ['/AI_Tech_Review/', '/AI_Tech_Review/index.html']) {
+    const hub = frontendHarness({ pathname }); hub.api.mount(); hub.api.applyMetrics(metricsSummary());
+    assert.match(hub.api.metricsRoot().textContent, /방문자수42/);
+    assert.equal(hub.api.metricsRoot().querySelectorAll('details').length, 0);
+  }
+  const article = frontendHarness({ article: { id: 'example' }, pathname: '/AI_Tech_Review/reviews/example/' });
+  article.api.mount(); article.api.applyMetrics(metricsSummary('example'));
+  assert.match(article.api.metricsRoot().textContent, /이 글 열람11/);
+  assert.doesNotMatch(article.api.metricsRoot().textContent, /방문자수|집계 기준|통계 안내/);
+});
+
+test('compact top controls follow an existing headline and synchronize view counters without another request', () => {
+  const harness = frontendHarness({ article: { id: 'example' }, withHeadline: true });
+  harness.api.mount(); harness.api.applyMetrics(metricsSummary('example'));
+  const top = harness.headline.adjacent[0];
+  assert.equal(top.position, 'afterend');
+  assert.match(top.element.className, /atr-reader-actions-top/);
+  assert.match(top.element.textContent, /조회11/);
+  assert.equal(top.element.children.filter(element => element.tagName === 'BUTTON').length, 2);
+  assert.match(harness.api.metricsRoot().textContent, /이 글 열람11/);
+  assert.equal(harness.calls.length, 0);
+});
+test('top and bottom like controls show the same optimistic state, then server confirmation with one mutation', async () => {
+  let release;
+  const harness = frontendHarness({ article: { id: 'example' }, responseJSON: url => url.endsWith('/like') ? new Promise(resolve => { release = resolve; }) : { ok: true, deviceId: 'device' } });
+  harness.api.mount(); harness.api.state.count = 2;
+  const bottom = harness.articleElement.adjacent.find(item => item.position === 'afterend').element;
+  const top = harness.articleElement.adjacent.find(item => item.position === 'afterbegin').element;
+  const topLike = top.children.find(element => element.dataset.readerAction === 'like');
+  const bottomLike = bottom.children.find(element => element.dataset.readerAction === 'like');
+  top.listeners.click[0]({ target: topLike });
+  bottom.listeners.click[0]({ target: bottomLike });
+  for (const element of [topLike, bottomLike]) {
+    assert.equal(element.getAttribute('aria-pressed'), 'true'); assert.equal(element.getAttribute('aria-busy'), 'true');
+    assert.match(element.textContent, /좋아요 3/); assert.equal(element.disabled, true);
+  }
+  assert.match(top.textContent, /저장 중/); assert.match(bottom.textContent, /저장 중/);
+  await flushPromises();
+  assert.equal(harness.calls.filter(call => call.url.endsWith('/like')).length, 1);
+  release({ ok: true, liked: true, count: 5 }); await flushPromises(); await flushPromises();
+  for (const element of [topLike, bottomLike]) { assert.match(element.textContent, /좋아요 5/); assert.equal(element.getAttribute('aria-busy'), 'false'); }
+});
+test('both article like controls roll back together and keep retry available after failure', async () => {
+  const harness = frontendHarness({ article: { id: 'example' }, responseStatus: url => url.endsWith('/like') ? 503 : 200, responseJSON: () => ({ ok: true, deviceId: 'device' }) });
+  harness.api.mount(); harness.api.state.count = 7;
+  await harness.api.like();
+  const actions = harness.articleElement.adjacent.map(item => item.element);
+  for (const action of actions) {
+    const like = action.children.find(element => element.dataset.readerAction === 'like');
+    assert.equal(like.getAttribute('aria-pressed'), 'false'); assert.match(like.textContent, /좋아요 7/);
+    assert.match(action.textContent, /이전 상태로 되돌렸어요/);
+    assert.equal(action.querySelectorAll('[data-reader-action]').filter(element => element.dataset.readerAction === 'retry-like').length, 1);
+  }
+});
+
+test('article controls preserve a two-column parent grid and use its separate hero headline', () => {
+  const harness = frontendHarness({ article: { id: 'example' }, gridParent: true, heroHeadline: true });
+  const before = harness.main.children.slice();
+  harness.api.mount();
+  assert.deepEqual(harness.main.children, before, 'no new grid child may displace the sidebar');
+  assert.ok(harness.articleElement.children.some(element => element.className === 'atr-reader-actions'));
+  assert.match(harness.headline.adjacent[0].element.className, /atr-reader-actions-top/);
+});
+test('a headline that is a direct grid item keeps its original grid siblings', () => {
+  const harness = frontendHarness({ article: { id: 'example' }, heroHeadline: true, headlineGrid: true });
+  const before = harness.header.children.slice();
+  harness.api.mount();
+  assert.equal(harness.headline.adjacent, undefined, 'the top row must not become another item in the title grid');
+  assert.deepEqual(harness.header.children.slice(0, before.length), before);
+  assert.match(harness.header.adjacent[0].element.className, /atr-reader-actions-top/);
 });

@@ -5,6 +5,7 @@ import {
 } from './security.js';
 import {webPushRequest} from './web-push.js';
 import {metricsArticleQuery,metricsSummary,pruneMetrics,recordMetrics} from './metrics.js';
+import {discoveryRange,reviewDiscovery} from './discovery.js';
 
 const PUBLIC_FEED = `${SITE_ORIGIN}${SITE_ROOT}reader-publications.json`;
 const MAX_CATALOG = 500;
@@ -385,6 +386,10 @@ export default {
         return json(request,env,{ok:true,vapidPublicKey:publicKey,pushEnabled:!!publicKey && !!env.VAPID_PRIVATE_KEY && !!env.VAPID_SUBJECT,topics:TOPICS});
       }
       if (url.pathname === '/v1/devices' && request.method === 'POST') return await registerDevice(request,env);
+      if (url.pathname === '/v1/discovery' && request.method === 'GET') {
+        if (request.body) throw new ApiError('invalid_body');
+        return json(request,env,await reviewDiscovery(env,discoveryRange(url)),200,{'Cache-Control':'public, max-age=30'});
+      }
       if (url.pathname === '/v1/metrics' && request.method === 'GET') return json(request,env,await metricsSummary(env,metricsArticleQuery(url)));
       if (url.pathname === '/v1/metrics/events' && request.method === 'POST') {
         if (url.search) throw new ApiError('invalid_fields');

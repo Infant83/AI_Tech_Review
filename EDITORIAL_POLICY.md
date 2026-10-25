@@ -24,7 +24,14 @@
 - 정확한 모델 식별자나 원 작성 세션의 에이전트 구성이 보존되지 않았으면 추정하지 않고 `미보존`으로 표시한다.
 - 공개 하네스에는 입력·역할·산출물·검증 gate와 prompt 요약을 포함할 수 있다. chain-of-thought, 비공개 지침, 사적 대화, 개인정보, 인증정보, 로컬 절대경로와 재배포 권한이 없는 원문은 공개하지 않는다.
 - 리뷰 배포물은 최종 본문과 명시적으로 승인한 figure·영상·스타일 자산만 allowlist로 포함한다. run log, chat capture, intake·audit 메모, 메시지 제목·시각과 기타 내부 support file은 공개하지 않는다.
-- 상세 기준은 [EDITORIAL_METHOD.md](EDITORIAL_METHOD.md)와 공개 [작성·검증 원칙](https://infant83.github.io/AI_Tech_Review/methods/)을 따른다.
+- 상세 기준은 [EDITORIAL_METHOD.md](EDITORIAL_METHOD.md)와 공개 [작성·검증 원칙](https://infant83.io/AI_Tech_Review/methods/)을 따른다.
+
+## 권리와 AI 활용 공개
+
+- 출처 표기와 재사용 허가는 구분한다. 원 논문·그림·코드의 권리와 이용조건을 따르며, 공개 배포물 전체에 승인되지 않은 일괄 자유이용 라이선스를 부여하지 않는다.
+- 사람의 창작적 기여와 AI 산출물·제3자 자료를 구분한다. AI를 사용했다는 이유만으로 모든 결과물의 독점적 저작권을 주장하지 않는다.
+- 생성형 AI로 만든 개념 그림·합성음성·영상을 실제 실험 자료와 구별하고 해당 자료 가까이에서 제작 방식을 공개한다. 실제 사람 검토와 발행 책임은 기록이 뒷받침하는 범위에서만 적는다.
+- 공개 [권리·AI 활용 안내](https://infant83.io/AI_Tech_Review/methods/#rights-ai)와 [문의·정정 절차](https://infant83.io/AI_Tech_Review/methods/#contact)를 유지한다. 한국 인공지능기본법 제31조·시행령 제23조, EU AI Act 제50조 등은 운영 형태와 적용 범위를 확인하며 참고하고, 안내문만으로 포괄적 법적 준수를 보증하지 않는다.
 
 ## TeX source와 설명형 시각자료
 

@@ -10,6 +10,7 @@ import worker,{deliver,fanout,recoverOutbox,normalizeFeed} from '../src/worker.j
 import {sha256} from '../src/security.js';
 import {webPushRequest} from '../src/web-push.js';
 import {kstDay,pruneMetrics} from '../src/metrics.js';
+import {discoveryRange,reviewDiscovery} from '../src/discovery.js';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const ORIGIN = 'https://infant83.io';
@@ -36,7 +37,7 @@ function browserSubscription(label='test-endpoint') {
     keys:{p256dh:client.getPublicKey().toString('base64url'),auth:auth.toString('base64url')}}};
 }
 
-async function fixture(t,extraBindings={},beforeMetrics=null) {
+async function fixture(t,extraBindings={},beforeMetrics=null,beforeDiscovery=null) {
   const bindings = {...keys(),RATE_LIMIT_SALT:randomBytes(32).toString('hex'),READER_PUBLISH_TOKEN:randomBytes(32).toString('hex'),...extraBindings};
   let feed = {revision:revision('a'),articles:[item()]};
   const mock = createFetchMock();
@@ -55,6 +56,7 @@ async function fixture(t,extraBindings={},beforeMetrics=null) {
   const db = await mf.getD1Database('DB');
   for (const migration of (await readdir(join(ROOT,'migrations'))).filter(name=>name.endsWith('.sql')).sort()) {
     if (migration==='0002_public_metrics.sql' && beforeMetrics) await beforeMetrics(db);
+    if (migration==='0003_review_discovery.sql' && beforeDiscovery) await beforeDiscovery(db);
     // These migrations keep complete statements, or a trigger's END;, on line boundaries.
     // D1 exec splits lines, while splitting semicolons corrupts trigger bodies.
     const statements=[];
@@ -352,11 +354,16 @@ test('full 500-article catalog updates remain one transactional SQL batch',async
   const initial=await f.sync({revision:revision('d'),articles});
   assert.equal(initial.status,200,await initial.clone().text());
   assert.equal((await f.db.prepare('SELECT count(*) n FROM articles WHERE active=1').first()).n,500);
+  const discovery=await f.request('/v1/discovery');
+  assert.equal(discovery.status,200);
+  assert.equal((await discovery.json()).articles.length,500);
   const updated=await f.sync({revision:revision('e'),articles:articles.map(article=>({...article,title:'수정 제목'}))});
   assert.equal(updated.status,200,await updated.clone().text());
   assert.equal((await updated.json()).newArticles,0);
   assert.equal((await f.db.prepare('SELECT count(*) n FROM publication_events').first()).n,0);
   assert.equal((await f.sync({revision:revision('f'),articles:[...articles,item('too-many')]})).status,400);
+  await f.db.prepare("INSERT INTO articles(id,path,title,published_at,topic,created_at,updated_at) VALUES('bypassed-limit','/AI_Tech_Review/reviews/bypassed-limit/','Limit fixture','2026-10-25','review',1,1)").run();
+  assert.equal((await f.request('/v1/discovery')).status,503);
 });
 
 test('development cookies require both explicit local settings and a loopback API host',async t => {
@@ -594,4 +601,146 @@ test('a failed counter transaction rolls back visitor and article dedupe keys wi
   const summary=await (await f.request('/v1/metrics')).json();
   assert.equal(summary.site.visitors,0);
   assert.equal(summary.site.opens,0);
+});
+
+test('discovery ranges use inclusive KST days and strict bounded custom dates',()=>{
+  const range=query=>discoveryRange(new URL(`https://api.infant83.io/v1/discovery${query}`),Date.parse('2026-10-25T15:00:00.000Z'));
+  assert.deepEqual(range(''),{from:null,to:null,period:'all'});
+  assert.deepEqual(range('?period=all'),{from:null,to:null,period:'all'});
+  assert.deepEqual(range('?period=7d'),{from:'2026-10-20',to:'2026-10-26',period:'7d'});
+  assert.deepEqual(range('?period=30d'),{from:'2026-09-27',to:'2026-10-26',period:'30d'});
+  assert.deepEqual(range('?period=90d'),{from:'2026-07-29',to:'2026-10-26',period:'90d'});
+  assert.deepEqual(range('?from=2024-02-29&to=2024-02-29'),{from:'2024-02-29',to:'2024-02-29',period:'custom'});
+  assert.deepEqual(range('?from=2016-10-18&to=2026-10-25'),{from:'2016-10-18',to:'2026-10-25',period:'custom'});
+  for(const query of ['?period=','?period=1d','?period=7d&period=30d','?from=2026-01-01','?to=2026-01-01','?from=2026-01-01&to=2026-01-02&period=all','?from=2026-02-30&to=2026-03-01','?from=2026-01-02&to=2026-01-01','?from=2026-1-01&to=2026-01-02','?from=2016-10-17&to=2026-10-25','?from=2026-01-01&from=2026-01-01&to=2026-01-02','?limit=50']) {
+    assert.throws(()=>range(query),/invalid_/);
+  }
+});
+
+test('discovery exposes only sorted active catalog totals with no session or reader identifiers',async t=>{
+  const f=await fixture(t);
+  const empty=await f.request('/v1/discovery',{origin:null});
+  assert.equal(empty.status,200);
+  assert.deepEqual((await empty.json()).articles,[]);
+  assert.equal(empty.headers.has('Set-Cookie'),false);
+  assert.equal(empty.headers.get('Cache-Control'),'public, max-age=30');
+  assert.equal(empty.headers.get('Vary'),'Origin');
+  await f.sync({revision:revision('a'),articles:[item('z-last'),item('a-first'),item('removed')]});
+  await f.sync({revision:revision('b'),articles:[item('z-last'),item('a-first')]});
+  const body=await (await f.request('/v1/discovery')).json();
+  assert.ok(Number.isFinite(Date.parse(body.since)));
+  assert.match(body.activitySince,/^\d{4}-\d{2}-\d{2}$/);
+  assert.deepEqual(body.range,{from:null,to:null,period:'all'});
+  assert.deepEqual(body.articles,[{id:'a-first',opens:0,likes:0,shares:0,copies:0,periodOpens:0,periodLikes:0},{id:'z-last',opens:0,likes:0,shares:0,copies:0,periodOpens:0,periodLikes:0}]);
+  assert.deepEqual(Object.keys(body).sort(),['activitySince','articles','ok','range','since']);
+  assert.equal((await f.db.prepare('SELECT COUNT(*) n FROM devices').first()).n,0);
+  assert.equal((await f.request('/v1/discovery',{origin:'https://evil.example'})).status,403);
+  for(const query of ['?period=100d','?from=bad&to=bad','?period=all&deviceId=private']) assert.equal((await f.request('/v1/discovery'+query)).status,400);
+  assert.equal((await f.request('/v1/discovery',{method:'POST',body:{}})).status,404);
+});
+
+test('discovery activity windows sort by daily opens while card totals remain all-time',async t=>{
+  const f=await fixture(t);
+  await f.sync({revision:revision('a'),articles:[item('article-a'),item('article-b')]});
+  const visitor=randomUUID();
+  await postMetric(f,metricEvent('article-a','open',visitor));
+  await postMetric(f,metricEvent('article-a','open',visitor));
+  await postMetric(f,metricEvent('article-a','share',visitor));
+  await postMetric(f,metricEvent('article-a','copy',visitor));
+  const today=kstDay(),oldDay=kstDay(Date.now()-10*86_400_000);
+  await f.db.prepare('INSERT INTO metrics_daily_opens(day,visitor_hash,article_id,expires_at) VALUES(?,?,?,?)').bind(oldDay,'fixture-old','article-a',Date.now()).run();
+  const all=await (await f.request('/v1/discovery')).json();
+  assert.deepEqual(all.articles[0],{id:'article-a',opens:2,likes:0,shares:1,copies:1,periodOpens:2,periodLikes:0});
+  const recent=await (await f.request('/v1/discovery?period=7d')).json();
+  assert.deepEqual(recent.articles[0],{id:'article-a',opens:2,likes:0,shares:1,copies:1,periodOpens:1,periodLikes:0});
+  const historical=await (await f.request(`/v1/discovery?from=${oldDay}&to=${oldDay}`)).json();
+  assert.equal(historical.articles[0].periodOpens,1);
+  assert.equal(historical.articles[0].opens,2);
+  const current=await f.db.prepare('SELECT * FROM metrics_article_daily WHERE day=? AND article_id=?').bind(today,'article-a').first();
+  assert.deepEqual({opens:current.opens,shares:current.shares,copies:current.copies},{opens:1,shares:1,copies:1});
+  let prepared=0;
+  const wrapped={...f.env,DB:{prepare(sql){prepared++;return f.env.DB.prepare(sql);},batch(statements){return f.env.DB.batch(statements);}}};
+  await reviewDiscovery(wrapped,{from:today,to:today,period:'custom'});
+  assert.equal(prepared,2,'one two-statement batch regardless of article count');
+});
+
+test('period likes are currently retained likes created in the selected window, not historical clicks',async t=>{
+  const f=await fixture(t);
+  await f.sync();
+  const a=await f.register(),b=await f.register();
+  const path=`/v1/articles/${item().id}/like`;
+  for(const response of await Promise.all(Array.from({length:4},()=>f.request(path,{method:'PUT',cookie:a.cookie,body:{liked:true}})))) assert.equal(response.status,200);
+  await f.db.prepare('INSERT INTO likes(article_id,device_id,created_at) VALUES(?,?,?)').bind(item().id,b.id,Date.now()-10*86_400_000).run();
+  let all=await (await f.request('/v1/discovery')).json();
+  assert.equal(all.articles[0].likes,2);
+  assert.equal(all.articles[0].periodLikes,2);
+  let recent=await (await f.request('/v1/discovery?period=7d')).json();
+  assert.equal(recent.articles[0].likes,2);
+  assert.equal(recent.articles[0].periodLikes,1);
+  await f.request(path,{method:'PUT',cookie:a.cookie,body:{liked:false}});
+  recent=await (await f.request('/v1/discovery?period=7d')).json();
+  assert.equal(recent.articles[0].likes,1);
+  assert.equal(recent.articles[0].periodLikes,0);
+  await f.request(path,{method:'PUT',cookie:a.cookie,body:{liked:true}});
+  recent=await (await f.request('/v1/discovery?period=7d')).json();
+  assert.equal(recent.articles[0].likes,2);
+  assert.equal(recent.articles[0].periodLikes,1);
+  await f.db.prepare('DELETE FROM devices WHERE id=?').bind(a.id).run();
+  all=await (await f.request('/v1/discovery')).json();
+  assert.equal(all.articles[0].likes,1,'device deletion cascades subtract the current aggregate');
+});
+
+test('like day movement uses KST midnight and maintains one current total',async t=>{
+  const f=await fixture(t);
+  await f.sync();
+  const a=await f.register();
+  await f.db.prepare('INSERT INTO likes(article_id,device_id,created_at) VALUES(?,?,?)').bind(item().id,a.id,Date.parse('2026-10-25T14:59:59.999Z')).run();
+  let before=await (await f.request('/v1/discovery?from=2026-10-25&to=2026-10-25')).json();
+  assert.equal(before.articles[0].periodLikes,1);
+  await f.db.prepare('UPDATE likes SET created_at=? WHERE article_id=? AND device_id=?').bind(Date.parse('2026-10-25T15:00:00.000Z'),item().id,a.id).run();
+  before=await (await f.request('/v1/discovery?from=2026-10-25&to=2026-10-25')).json();
+  const after=await (await f.request('/v1/discovery?from=2026-10-26&to=2026-10-26')).json();
+  assert.equal(before.articles[0].periodLikes,0);
+  assert.equal(after.articles[0].periodLikes,1);
+  assert.equal(after.articles[0].likes,1);
+});
+
+test('daily discovery totals survive private dedupe-ledger expiry without double counting',async t=>{
+  const f=await fixture(t);
+  await f.sync();
+  const event=metricEvent(item().id);
+  await postMetric(f,event);
+  await postMetric(f,{...event,type:'share',eventId:randomUUID()});
+  await postMetric(f,{...event,type:'copy',eventId:randomUUID()});
+  const before=await (await f.request('/v1/discovery?period=30d')).json();
+  for(const table of ['metrics_daily_visitors','metrics_daily_opens','metrics_actions']) await f.db.prepare(`UPDATE ${table} SET expires_at=0`).run();
+  await pruneMetrics(f.env);
+  assert.deepEqual(await (await f.request('/v1/discovery?period=30d')).json(),before);
+  assert.equal((await f.db.prepare('SELECT count(*) n FROM metrics_article_daily').first()).n,1);
+});
+
+test('discovery migration recovers retained actual days and likes without inventing missing daily history',async t=>{
+  const today=kstDay(),old='2020-01-01';
+  const f=await fixture(t,{},null,async db=>{
+    await db.batch([
+      db.prepare("INSERT INTO articles(id,path,title,published_at,topic,created_at,updated_at) VALUES('baseline','/AI_Tech_Review/reviews/baseline/','Baseline','2020-01-01','review',1,1)"),
+      db.prepare("INSERT INTO devices(id,token_hash,created_at) VALUES('before-discovery','before-discovery-hash',1)"),
+      db.prepare('INSERT INTO likes(article_id,device_id,created_at) VALUES(?,?,?)').bind('baseline','before-discovery',Date.parse(`${old}T00:00:00Z`)),
+      db.prepare('INSERT INTO metrics_daily_opens(day,visitor_hash,article_id,expires_at) VALUES(?,?,?,?)').bind(today,'existing-real-key','baseline',Date.now()+86_400_000),
+      db.prepare('INSERT INTO metrics_actions(event_hash,article_id,kind,expires_at) VALUES(?,?,?,?)').bind('existing-real-share-key','baseline','share',Date.now()+7*86_400_000),
+      db.prepare("UPDATE metrics_articles SET opens=10,shares=5 WHERE article_id='baseline'"),
+      db.prepare("UPDATE metrics_state SET since='2020-01-01T00:00:00.000Z',opens=10,shares=5 WHERE id=1"),
+    ]);
+  });
+  const all=await (await f.request('/v1/discovery')).json();
+  assert.equal(all.since,'2020-01-01T00:00:00.000Z');
+  assert.equal(all.activitySince,kstDay(Date.now()-86_400_000));
+  assert.deepEqual(all.articles[0],{id:'baseline',opens:10,likes:1,shares:5,copies:0,periodOpens:10,periodLikes:1});
+  const current=await (await f.request(`/v1/discovery?from=${today}&to=${today}`)).json();
+  assert.equal(current.articles[0].periodOpens,1);
+  assert.equal(current.articles[0].periodLikes,0);
+  const historical=await (await f.request(`/v1/discovery?from=${old}&to=${old}`)).json();
+  assert.equal(historical.articles[0].periodOpens,0,'unknown historical daily opens remain unfilled');
+  assert.equal(historical.articles[0].periodLikes,1,'existing current like has its actual creation date');
+  assert.equal((await f.db.prepare('SELECT opens FROM metrics_state').first()).opens,10,'daily baseline did not replay all-time triggers');
 });
