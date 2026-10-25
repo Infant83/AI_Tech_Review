@@ -16,6 +16,10 @@
     <!-- AI Tech Review Public Metrics Styles -->
     <link rel="stylesheet" href="../../assets/public-metrics.css">
     <!-- End AI Tech Review Public Metrics Styles -->
+<!-- Reader Engagement Head -->
+<link rel="manifest" href="../../app.webmanifest">
+<link rel="stylesheet" href="../../assets/reader-engagement.css">
+<!-- End Reader Engagement Head -->
   </head>
 <body class="public-review"><nav class="top"><a href="https://infant83.github.io/AI_Tech_Review/">AI Tech Review Letters</a><span><a lang="ko" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-19_transfer-learning-chemical-bayesian-optimization/" aria-current="page">한국어</a> · <a lang="en" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-19_transfer-learning-chemical-bayesian-optimization/en/" >English</a></span></nav><div class="wrap"><header><div class="kicker">번외 리뷰 · 방법 해설 · 공개 코드 검토</div><h1>과거 실험을 재사용하는 화학 베이지안 최적화: 전이학습의 이점과 한계</h1><p class="subtitle">Digital Discovery 게재 연구의 공개 초록·코드와 차원에 맞춘 GP 사전 설정을 읽다</p><p class="date">2026-09-19 · 김현중 책임 편집 · AI 보조</p></header><figure class="hero"><img src="transfer_hero.webp" alt="과거 실험판과 새로운 실험판 사이의 정보 공유를 빛으로 표현한 화학 최적화 개념 그림" width="1672" height="941" fetchpriority="high"><figcaption>그림 1. 과거 실험의 정보를 새 화학 후보의 탐색에 활용하는 개념 그림입니다. 실제 실험 장치나 측정 결과를 묘사하지 않습니다. OpenAI imagegen으로 제작했습니다.</figcaption></figure><p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-09-19 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main><nav class="toc" aria-label="이 글의 내용"><strong>이 글의 내용</strong><ul><li><a href="#planning">한 번의 예측보다 다음 실험의 선택이 중요한 이유</a></li><li><a href="#representation">좋은 분자 표현도 거리 척도가 어긋나면 작동하지 않습니다</a></li><li><a href="#transfer">이전 반응과 새 반응을 얼마나 같은 문제로 볼 것인가</a></li><li><a href="#evidence">공개 코드로 확인되는 실험 범위</a></li><li><a href="#materials">OLED·재료 탐색에서는 화학계와 계산 조건을 함께 분리해야 합니다</a></li><li><a href="#outlook">다음 연구는 전환 시점과 실패 사례를 더 정확히 다뤄야 합니다</a></li><li><a href="#reading">원문과 재현 자료</a></li></ul></nav><article><p class="lead">새로운 반응 조건을 찾을 때마다 실험을 처음부터 반복할 필요가 있을까요. 이전 리간드나 기질에서 얻은 수율 기록이 있다면, 새 화학종을 탐색할 때도 그 경험을 활용하고 싶어집니다. 그러나 구조가 비슷한 분자가 같은 반응성을 보장하지는 않습니다. 과거에 잘 작동하던 조건이 새 후보에서는 실패한다면, 축적한 데이터가 다음 실험의 선택을 오히려 방해할 수도 있습니다.</p>
@@ -99,4 +103,8 @@
       <!-- End AI Tech Review Authoring Disclosure -->
     </main><footer><a href="https://infant83.github.io/AI_Tech_Review/">AI Tech Review Letters</a> · <a href="https://infant83.github.io/AI_Tech_Review/methods/">작성·검증 원칙</a></footer></div>
 <section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p></section>
+<!-- Reader Engagement Controls -->
+<script type="application/json" id="reader-engagement-config">{"apiBase":"https://api.infant83.io","siteRoot":"https://infant83.io/AI_Tech_Review/","scope":"/AI_Tech_Review/","catalogUrl":"https://infant83.io/AI_Tech_Review/reader-publications.json","article":{"id":"2026-09-19_transfer-learning-chemical-bayesian-optimization","path":"/AI_Tech_Review/reviews/2026-09-19_transfer-learning-chemical-bayesian-optimization/","title":"과거 실험을 재사용하는 화학 베이지안 최적화: 전이학습의 이점과 한계","publishedAt":"2026-09-19","topic":"review"}}</script>
+<script defer src="../../assets/reader-engagement.js"></script>
+<!-- End Reader Engagement Controls -->
 </body></html>

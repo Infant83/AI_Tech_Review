@@ -1,0 +1,17 @@
+{
+  "name": "infant83-reader-engagement",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "check": "node --check src/worker.js && node --check src/security.js && node --check src/web-push.js"
+  },
+  "devDependencies": {
+    "http_ece": "1.2.1",
+    "miniflare": "4.20260730.0"
+  },
+  "overrides": {
+    "undici": "7.30.1",
+    "sharp": "0.35.5"
+  }
+}

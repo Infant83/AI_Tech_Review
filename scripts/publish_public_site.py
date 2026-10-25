@@ -20,9 +20,11 @@ from urllib.parse import unquote, urlsplit
 try:
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from .site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
+    from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 except ImportError:
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
+    from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -4865,6 +4867,9 @@ def main(argv: Iterable[str] | None = None) -> int:
     (ASSETS_DIR / "public-metrics.css").write_text(PUBLIC_METRICS_CSS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "public-metrics.js").write_text(PUBLIC_METRICS_JS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "site.js").write_text(SITE_JS.strip() + "\n", encoding="utf-8")
+
+    enrich_reader_engagement(SITE_DIR)
+    validate_reader_artifact(SITE_DIR)
 
     errors = validate_public_site(manifest)
     if errors:

@@ -1,0 +1,163 @@
+/* Only these added controls are styled; existing page structure and icons remain intact. */
+.atr-reader-button,
+.atr-reader-dialog,
+.atr-reader-actions {
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+}
+.atr-reader-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 9px 13px;
+  border: 1px solid var(--line, #d9ded8);
+  border-radius: 999px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.4;
+  text-decoration: none;
+  text-align: center;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  white-space: normal;
+}
+.atr-reader-button:hover { border-color: var(--green, #0d7c66); }
+.atr-reader-button:focus-visible,
+.atr-reader-dialog input:focus-visible,
+.atr-reader-dialog a:focus-visible {
+  outline: 3px solid var(--green, #0d7c66);
+  outline-offset: 3px;
+}
+.atr-reader-button:disabled { opacity: .58; cursor: default; }
+.atr-reader-button[aria-pressed="true"],
+.atr-reader-button[data-subscribed="true"] {
+  color: var(--green, #0d7c66);
+  border-color: var(--green, #0d7c66);
+}
+.atr-reader-button.atr-reader-primary {
+  background: var(--green, #0d7c66);
+  border-color: var(--green, #0d7c66);
+  color: #fff;
+}
+.atr-reader-button.atr-reader-quiet { border-color: transparent; background: transparent; }
+.atr-reader-header-button { flex: 0 0 auto; }
+.atr-reader-topbar { max-width: 100%; flex-wrap: wrap; row-gap: 6px; }
+.atr-reader-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 28px 0 20px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line, #d9ded8);
+  color: var(--ink, #171b1f);
+}
+.atr-reader-actions .atr-reader-status {
+  flex: 1 0 100%;
+  margin: 0;
+  color: var(--muted, #5c6670);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.atr-reader-status:empty { display: none; }
+.atr-reader-status .atr-reader-button { margin-left: 8px; }
+.atr-reader-copy-url {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin-top: 9px;
+  padding: 10px;
+  border: 1px solid var(--line, #d9ded8);
+  border-radius: 6px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  font: inherit;
+}
+.atr-reader-dialog {
+  box-sizing: border-box;
+  width: min(440px, calc(100% - 28px));
+  max-height: calc(100dvh - 40px);
+  overflow: auto;
+  padding: 23px;
+  border: 1px solid var(--line, #d9ded8);
+  border-radius: 16px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  box-shadow: 0 18px 64px #0d141b30;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.atr-reader-dialog::backdrop { background: #0d141b66; }
+.atr-reader-dialog:not([open]) { display: none; }
+.atr-reader-dialog[open].atr-reader-fallback {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 10001;
+}
+.atr-reader-dialog .atr-reader-dialog-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.atr-reader-dialog h2 {
+  min-width: 0;
+  margin: 4px 0 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  font: 750 19px/1.5 "Noto Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+}
+.atr-reader-dialog p { margin: 0 0 14px; }
+.atr-reader-dialog .atr-reader-note {
+  color: var(--muted, #5c6670);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.atr-reader-dialog .atr-reader-feedback:not(:empty) {
+  padding: 11px 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #eef6f3;
+  color: #1a5748;
+  font-size: 13px;
+}
+.atr-reader-dialog .atr-reader-feedback[data-error="true"] {
+  background: #fff2ee;
+  color: #853b2c;
+}
+.atr-reader-dialog ol { margin: 0 0 18px; padding-left: 22px; }
+.atr-reader-dialog li { padding: 3px 0; }
+.atr-reader-dialog fieldset {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.atr-reader-dialog legend { padding: 0 0 7px; font-weight: 650; }
+.atr-reader-dialog label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.atr-reader-dialog input { accent-color: #0d7c66; width: 18px; height: 18px; margin: 0; }
+.atr-reader-dialog .atr-reader-dialog-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+.atr-reader-dialog .atr-reader-dialog-actions .atr-reader-primary { flex: 1 0 100%; }
+@media (max-width: 680px) {
+  .atr-reader-header-button { padding: 8px 11px; font-size: 12px; }
+  .atr-reader-dialog { padding: 18px; }
+}
+@media print {
+  .atr-reader-actions, .atr-reader-header-button, .atr-reader-dialog { display: none !important; }
+}

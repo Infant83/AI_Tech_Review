@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "infant83-reader-engagement",
+  "account_id": "50af30da8804e3582dde98039e428153",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-08-06",
+  "workers_dev": false,
+  "routes": [{ "pattern": "api.infant83.io", "custom_domain": true }],
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "infant83-reader-engagement",
+      "database_id": "6019781d-4c24-46b4-9c4c-05dcb256c62d",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "queues": {
+    "producers": [{ "binding": "READER_QUEUE", "queue": "infant83-reader-notifications" }],
+    "consumers": [{ "queue": "infant83-reader-notifications", "max_batch_size": 1, "max_batch_timeout": 1, "max_retries": 5, "retry_delay": 60 }]
+  },
+  "triggers": { "crons": ["*/10 * * * *"] }
+}

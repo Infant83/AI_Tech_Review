@@ -2,44 +2,106 @@ name: Publish public report hub
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "site/**"
-      - ".github/workflows/pages.yml"
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: gh-pages
+  group: github-pages
   cancel-in-progress: false
 
 jobs:
-  publish:
+  build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Enrich the existing public output and stamp its source revision
+        run: python3 scripts/reader_engagement_publish.py enrich --revision "$GITHUB_SHA"
+      - name: Reject private files and validate the public publication catalog
+        run: python3 scripts/reader_engagement_publish.py validate
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Preserve the exact catalog packaged with Pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: reader-publication-catalog
+          path: site/reader-publications.json
+          retention-days: 7
 
-      - name: Publish site to gh-pages branch
+  deploy:
+    needs: build
+    outputs:
+      current: ${{ steps.guard.outputs.current }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do not redeploy an older main revision
+        id: guard
         env:
           GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
         run: |
-          set -euo pipefail
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          current="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq '.object.sha')"
+          if [ "$current" != "$GITHUB_SHA" ]; then
+            echo "::notice::This source revision has been superseded; Pages deployment and notification sync are withheld."
+            echo "current=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Deploy the verified Pages artifact
+        if: steps.guard.outputs.current == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
 
-          rm -rf /tmp/ai-tech-review-site
-          mkdir -p /tmp/ai-tech-review-site
-          cp -R site/. /tmp/ai-tech-review-site/
-
-          cd /tmp/ai-tech-review-site
-          git init
-          git checkout -b gh-pages
-          git add .
-          git commit -m "Publish public report hub"
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
-          git push --force origin gh-pages
+  notify-readers:
+    # A branch push or a green build does not prove that an article is public.
+    needs: [build, deploy]
+    if: needs.deploy.result == 'success' && needs.deploy.outputs.current == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check publication notification setup
+        id: setup
+        env:
+          ENABLED: ${{ vars.READER_NOTIFICATIONS_ENABLED }}
+          PUBLISH_TOKEN: ${{ secrets.READER_PUBLISH_TOKEN }}
+        run: |
+          if [ "$ENABLED" != "true" ]; then
+            echo "::notice::Reader sync is disabled. After backend setup, set READER_PUBLISH_TOKEN and READER_NOTIFICATIONS_ENABLED=true."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          elif [ -z "$PUBLISH_TOKEN" ]; then
+            echo "::error::READER_NOTIFICATIONS_ENABLED=true requires the READER_PUBLISH_TOKEN repository secret."
+            exit 1
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.setup.outputs.enabled == 'true'
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        if: steps.setup.outputs.enabled == 'true'
+        with:
+          name: reader-publication-catalog
+          path: .reader-publication-output
+      - name: Verify live HTTPS articles, then register publications
+        if: steps.setup.outputs.enabled == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          READER_PUBLISH_TOKEN: ${{ secrets.READER_PUBLISH_TOKEN }}
+        run: python3 scripts/reader_engagement_publish.py sync --catalog .reader-publication-output/reader-publications.json
