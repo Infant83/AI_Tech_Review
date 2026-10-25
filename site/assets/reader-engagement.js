@@ -48,7 +48,9 @@
     iosVersion: "Web alerts require iOS or iPadOS 16.4 or later.", busy: "Connecting…", actions: "Reader actions",
     test: "Send a test alert to this device", testQueued: "The test alert was accepted for sending. Check this device’s notifications; acceptance does not confirm delivery.",
     testLimited: "The test limit was reached. Wait at least a minute; up to five tests are available per device each day.",
-    cookieFailed: "The browser could not keep this device connected. Allow cookies for this site in your privacy settings, then try again."
+    cookieFailed: "The browser could not keep this device connected. Allow cookies for this site in your privacy settings, then try again.",
+    permissionTimeout: "The notification permission window has not responded. Check any open permission window, then try again. If no window appears, open this page in your regular browser.",
+    pushTimeout: "The browser’s alert connection has not responded. Check your connection, then try again."
   } : {
     open: "새 글 알림", settings: "알림 설정", close: "닫기", subscribe: "새 글 알림 받기",
     subscribed: "알림 받는 중", title: "새 글 알림", intro: "새 리뷰와 렉처 노트가 발행되면 이 기기로 알려드려요.",
@@ -71,7 +73,9 @@
     iosVersion: "웹 알림은 iOS·iPadOS 16.4 이상에서 사용할 수 있어요.", busy: "연결 중…", actions: "독자 참여",
     test: "이 기기로 테스트 알림 보내기", testQueued: "테스트 알림 발송을 접수했어요. 이 기기의 알림을 확인해 주세요. 접수는 도착 확인과 다릅니다.",
     testLimited: "테스트 횟수 제한에 도달했어요. 1분 이상 간격을 두고, 기기당 하루 5회까지 보낼 수 있어요.",
-    cookieFailed: "브라우저에서 이 기기의 연결을 유지하지 못했어요. 개인정보 설정에서 이 사이트의 쿠키를 허용한 뒤 다시 시도해 주세요."
+    cookieFailed: "브라우저에서 이 기기의 연결을 유지하지 못했어요. 개인정보 설정에서 이 사이트의 쿠키를 허용한 뒤 다시 시도해 주세요.",
+    permissionTimeout: "알림 권한 창이 응답하지 않았어요. 열려 있는 권한 창을 확인한 뒤 다시 시도해 주세요. 창이 보이지 않으면 기본 브라우저에서 이 페이지를 열어 주세요.",
+    pushTimeout: "브라우저의 알림 연결이 응답하지 않았어요. 네트워크 연결을 확인한 뒤 다시 시도해 주세요."
   };
   var state = { preparing: true, busy: false, configError: false, registrationError: false, key: "", registration: null,
     localSubscription: null, serverSubscription: null, topics: ["review", "lecture"], feedback: "", feedbackError: false,
@@ -79,6 +83,7 @@
   var subscriptionButtons = [];
   var dialog = null, dialogBody = null, dialogHeading = null, dialogFeedback = null, opener = null;
   var likeButton = null, articleStatus = null, likeRevision = 0, scrollState = null;
+  var pendingPermission = null, pendingPushLookup = null, pendingPushSubscription = null;
 
   function node(tag, className, content) {
     var element = document.createElement(tag);
@@ -106,6 +111,55 @@
     return Boolean(state.localSubscription && state.serverSubscription && state.localSubscription.endpoint === state.serverSubscription.endpoint && permission() === "granted");
   }
   function apiError(code) { var error = new Error(code); error.code = code; return error; }
+  function withDeadline(promise, milliseconds, code) {
+    return new Promise(function (resolve, reject) {
+      var settled = false;
+      var timer = window.setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        reject(apiError(code));
+      }, milliseconds);
+      Promise.resolve(promise).then(function (value) {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        resolve(value);
+      }, function (error) {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        reject(error);
+      });
+    });
+  }
+  function permissionFromGesture() {
+    if (permission() === "granted") return Promise.resolve("granted");
+    if (!pendingPermission) {
+      var requested = Promise.resolve(Notification.requestPermission());
+      pendingPermission = requested;
+      function clear() { if (pendingPermission === requested) pendingPermission = null; }
+      requested.then(clear, clear);
+    }
+    return pendingPermission;
+  }
+  function browserSubscription(registration) {
+    if (!pendingPushLookup) {
+      var requested = Promise.resolve(registration.pushManager.getSubscription());
+      pendingPushLookup = requested;
+      function clear() { if (pendingPushLookup === requested) pendingPushLookup = null; }
+      requested.then(clear, clear);
+    }
+    return withDeadline(pendingPushLookup, 25000, "push_timeout");
+  }
+  function createBrowserSubscription(registration) {
+    if (!pendingPushSubscription) {
+      var requested = Promise.resolve(registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: publicKey(state.key) }));
+      pendingPushSubscription = requested;
+      function clear() { if (pendingPushSubscription === requested) pendingPushSubscription = null; }
+      requested.then(clear, clear);
+    }
+    return withDeadline(pendingPushSubscription, 25000, "push_timeout");
+  }
   async function request(path, method, body) {
     var controller = typeof AbortController === "function" ? new AbortController() : null;
     var timer = controller ? window.setTimeout(function () { controller.abort(); }, 12000) : null;
@@ -189,6 +243,7 @@
         likeButton.setAttribute("aria-pressed", "false");
         actions.appendChild(likeButton);
         actions.appendChild(button(text.share, "share"));
+        actions.appendChild(button(text.copy, "copy"));
         addSubscribeButton(actions);
         articleStatus = node("p", "atr-reader-status");
         articleStatus.setAttribute("role", "status");
@@ -353,7 +408,7 @@
     }).catch(function () { state.configError = true; });
     var registration = Promise.resolve();
     if (supported()) {
-      registration = navigator.serviceWorker.register(scope + "sw.js", { scope: scope }).then(function (registered) {
+      registration = withDeadline(Promise.resolve().then(function () { return navigator.serviceWorker.register(scope + "sw.js", { scope: scope }); }), 25000, "push_timeout").then(function (registered) {
         // Activation is normally already complete; wait for this registration only.
         state.registration = registered;
         if (registered.active) return registered;
@@ -368,7 +423,7 @@
           worker.addEventListener("statechange", changed);
           changed();
         });
-      }).then(function (registered) { return registered.pushManager.getSubscription(); })
+      }).then(function (registered) { return browserSubscription(registered); })
         .then(function (subscription) { state.localSubscription = subscription; })
         .catch(function () { state.registrationError = true; });
     }
@@ -396,21 +451,21 @@
     // Call the real OS permission API immediately inside the reader's click.
     // Do not put device creation, a network request, or SW readiness before it.
     var granted;
-    try { granted = permission() === "granted" ? Promise.resolve("granted") : Notification.requestPermission(); }
+    try { granted = permissionFromGesture(); }
     catch (_) { setFeedback(text.failed, true); return; }
     state.busy = true;
     renderDialog();
     try {
-      if (await granted !== "granted") { setFeedback(text.installLater, false); return; }
+      if (await withDeadline(granted, 30000, "permission_timeout") !== "granted") { setFeedback(text.installLater, false); return; }
       await ensureDevice();
-      var subscription = await state.registration.pushManager.getSubscription();
-      if (!subscription) subscription = await state.registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: publicKey(state.key) });
+      var subscription = await browserSubscription(state.registration);
+      if (!subscription) subscription = await createBrowserSubscription(state.registration);
       state.localSubscription = subscription;
       var result = await request("/v1/subscription", "PUT", { subscription: subscription.toJSON(), topics: topics });
       state.serverSubscription = result.subscription || subscription.toJSON();
       state.pendingServerDelete = false;
       setFeedback(text.enabled, false);
-    } catch (error) { setFeedback(error.code === "http_401" ? text.cookieFailed : text.failed, true); }
+    } catch (error) { setFeedback(error.code === "permission_timeout" ? text.permissionTimeout : error.code === "push_timeout" ? text.pushTimeout : error.code === "http_401" ? text.cookieFailed : text.failed, true); }
     finally { state.busy = false; updateButtons(); renderDialog(); }
   }
   async function savePreferences() {
@@ -440,7 +495,7 @@
       state.serverSubscription = null;
     } catch (_) { /* No HTTP failure, including a missing session cookie, confirms server removal. */ }
     try {
-      if (state.localSubscription) browserRemoved = await state.localSubscription.unsubscribe();
+      if (state.localSubscription) browserRemoved = await withDeadline(state.localSubscription.unsubscribe(), 25000, "push_timeout");
       if (browserRemoved) state.localSubscription = null;
     } catch (_) { /* Keep a retry control when browser removal fails. */ }
     state.pendingServerDelete = !serverRemoved;

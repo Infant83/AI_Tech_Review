@@ -195,7 +195,7 @@ function workerHarness() {
 }
 function frontendHarness(options = {}) {
   const calls = [], events = [];
-  let permission = 'default', subscribeCount = 0, unsubscribeCount = 0;
+  let permission = 'default', subscribeCount = 0, unsubscribeCount = 0, resolvePermission;
   const subscriptionJSON = { endpoint: 'https://push.example/device', keys: { p256dh: 'public', auth: 'auth' } };
   const subscription = { endpoint: subscriptionJSON.endpoint, toJSON: () => subscriptionJSON, unsubscribe: async () => {
     unsubscribeCount++; if (options.browserRemovalFails) throw Error('browser removal failed'); return true;
@@ -231,10 +231,15 @@ function frontendHarness(options = {}) {
   const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error,
     location: { protocol: 'https:', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
     navigator: { userAgent: '', standalone: true, serviceWorker: {} },
-    Notification: { get permission() { return permission; }, requestPermission: () => { events.push('permission'); permission = 'granted'; return Promise.resolve('granted'); } },
+    Notification: { get permission() { return permission; }, requestPermission: () => {
+      events.push('permission');
+      if (options.permissionPending) return new Promise(resolve => { resolvePermission = resolve; });
+      permission = 'granted'; return Promise.resolve('granted');
+    } },
     PushManager: function () {}, isSecureContext: true,
     atob: value => Buffer.from(value, 'base64').toString('binary'),
-    setTimeout, clearTimeout,
+    setTimeout: options.clock ? options.clock.setTimeout : setTimeout,
+    clearTimeout: options.clock ? options.clock.clearTimeout : clearTimeout,
     fetch: async (url, init) => {
       calls.push({ url, init }); events.push(new URL(url).pathname);
       const status = options.responseStatus ? options.responseStatus(url, init, calls) : 200;
@@ -247,7 +252,7 @@ function frontendHarness(options = {}) {
   context.scrollTo = (x, y) => { context.restoredScroll = [x, y]; };
   if (options.unsupported) { delete context.PushManager; delete context.Notification; delete context.navigator.serviceWorker; }
   context.window = context;
-  const testSource = source.replace('  mount();\n  void prepare();\n  void loadLikes();', '  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, loadLikes: loadLikes, updateButtons: updateButtons };');
+  const testSource = source.replace('  mount();\n  void prepare();\n  void loadLikes();', '  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare };');
   assert.notEqual(testSource, source, 'test harness must suppress automatic DOM mounting');
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
@@ -256,8 +261,109 @@ function frontendHarness(options = {}) {
   let current = options.existingSubscription ? subscription : null;
   api.state.registration = { pushManager: { getSubscription: async () => current,
     subscribe: async () => { subscribeCount++; current = subscription; return subscription; } } };
-  return { api, calls, events, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header, counts: () => ({ subscribeCount, unsubscribeCount }) };
+  return { api, calls, events, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header,
+    releasePermission: value => { permission = value; if (resolvePermission) resolvePermission(value); },
+    counts: () => ({ subscribeCount, unsubscribeCount }) };
 }
+function fakeClock() {
+  let now = 0, next = 0;
+  const timers = new Map();
+  return {
+    setTimeout: (callback, delay) => { const id = ++next; timers.set(id, { callback, at: now + delay }); return id; },
+    clearTimeout: id => timers.delete(id),
+    advance: milliseconds => {
+      now += milliseconds;
+      for (const [id, timer] of Array.from(timers.entries())) {
+        if (timer.at <= now) { timers.delete(id); timer.callback(); }
+      }
+    }
+  };
+}
+const flushPromises = () => new Promise(resolve => setImmediate(resolve));
+
+test('a pending permission request times out in 30 seconds and retries never duplicate the OS request', async () => {
+  const clock = fakeClock();
+  const harness = frontendHarness({ clock, permissionPending: true });
+  const first = harness.api.subscribe();
+  clock.advance(29999);
+  await flushPromises();
+  assert.equal(harness.api.state.busy, true);
+  clock.advance(1);
+  await first;
+  assert.equal(harness.api.state.busy, false);
+  assert.equal(harness.api.state.feedbackError, true);
+  assert.match(harness.api.state.feedback, /권한 창이 응답하지 않았어요/);
+  const retry = harness.api.subscribe();
+  clock.advance(30000);
+  await retry;
+  assert.equal(harness.events.filter(event => event === 'permission').length, 1);
+  harness.releasePermission('granted');
+  await flushPromises();
+  assert.equal(harness.calls.length, 0, 'a late permission result must not create a device or save a subscription');
+  assert.equal(harness.api.state.serverSubscription, null);
+  await harness.api.subscribe();
+  assert.equal(harness.events.filter(event => event === 'permission').length, 1);
+  assert.equal(harness.api.state.serverSubscription.endpoint, harness.subscription.endpoint);
+});
+test('a pending PushManager lookup times out in 25 seconds and retains one in-flight lookup', async () => {
+  const clock = fakeClock();
+  const harness = frontendHarness({ clock });
+  let release, lookups = 0;
+  const pending = new Promise(resolve => { release = resolve; });
+  harness.api.state.registration.pushManager.getSubscription = () => { lookups++; return pending; };
+  const first = harness.api.subscribe();
+  await flushPromises();
+  clock.advance(25000);
+  await first;
+  assert.equal(harness.api.state.busy, false);
+  assert.match(harness.api.state.feedback, /알림 연결이 응답하지 않았어요/);
+  const retry = harness.api.subscribe();
+  await flushPromises();
+  clock.advance(25000);
+  await retry;
+  assert.equal(lookups, 1);
+  release(harness.subscription);
+  await flushPromises();
+  assert.equal(harness.api.state.localSubscription, null, 'a late lookup cannot report subscription success');
+  assert.equal(harness.calls.filter(call => call.init.method === 'PUT').length, 0);
+});
+test('a pending PushManager subscribe times out without duplicates or a late server write', async () => {
+  const clock = fakeClock();
+  const harness = frontendHarness({ clock });
+  let release, subscriptions = 0;
+  const pending = new Promise(resolve => { release = resolve; });
+  harness.api.state.registration.pushManager.subscribe = () => { subscriptions++; return pending; };
+  const first = harness.api.subscribe();
+  await flushPromises();
+  clock.advance(25000);
+  await first;
+  assert.equal(harness.api.state.busy, false);
+  const retry = harness.api.subscribe();
+  await flushPromises();
+  clock.advance(25000);
+  await retry;
+  assert.equal(subscriptions, 1);
+  release(harness.subscription);
+  await flushPromises();
+  assert.equal(harness.api.state.serverSubscription, null);
+  assert.equal(harness.calls.filter(call => call.init.method === 'PUT').length, 0);
+  harness.api.state.registration.pushManager.getSubscription = async () => harness.subscription;
+  await harness.api.subscribe();
+  assert.equal(subscriptions, 1);
+  assert.equal(harness.api.state.serverSubscription.endpoint, harness.subscription.endpoint);
+});
+test('a pending service worker registration restores preparation controls after 25 seconds', async () => {
+  const clock = fakeClock();
+  const harness = frontendHarness({ clock, responseJSON: url => url.endsWith('/v1/config')
+    ? { ok: true, vapidPublicKey: 'B' + 'A'.repeat(86) } : { ok: true, subscription: null } });
+  harness.context.navigator.serviceWorker.register = () => new Promise(() => {});
+  const preparing = harness.api.prepare();
+  await flushPromises();
+  clock.advance(25000);
+  await preparing;
+  assert.equal(harness.api.state.preparing, false);
+  assert.equal(harness.api.state.registrationError, true);
+});
 test('mount uses explicit header priority and inserts article controls immediately after the article', () => {
   const hub = frontendHarness();
   hub.api.mount();
@@ -274,7 +380,7 @@ test('mount uses explicit header priority and inserts article controls immediate
 test('article header and footer alert buttons stay synchronized; layouts without a header keep footer only', async () => {
   const harness = frontendHarness({ article: { id: 'test-review', title: 'Review' } });
   harness.api.mount();
-  const footerButton = harness.articleElement.adjacent[0].element.children[2];
+  const footerButton = harness.articleElement.adjacent[0].element.children.find(element => element.dataset && element.dataset.readerAction === 'open');
   const headerButton = harness.topbar.children[0];
   await harness.context.Notification.requestPermission();
   harness.api.state.localSubscription = harness.subscription;
@@ -294,6 +400,14 @@ test('article header and footer alert buttons stay synchronized; layouts without
   const plainHeader = frontendHarness({ article: { id: 'test-review' }, headerOnly: true });
   plainHeader.api.mount();
   assert.equal(plainHeader.header.children.length, 1);
+});
+test('article controls always include a direct copy button beside share and preserve the English URL', async () => {
+  const harness = frontendHarness({ article: { id: 'test-review', title: 'Review' }, pathname: '/AI_Tech_Review/reviews/test-review/en/' });
+  harness.api.mount();
+  const controls = harness.articleElement.adjacent[0].element.children.filter(element => element.tagName === 'BUTTON');
+  assert.deepEqual(controls.map(element => element.dataset.readerAction), ['like', 'share', 'copy', 'open']);
+  await harness.api.copy();
+  assert.equal(harness.context.copied, 'https://infant83.io/AI_Tech_Review/reviews/test-review/en/');
 });
 test('closing the modal restores original overflow, scroll position and opener focus', () => {
   const harness = frontendHarness();
@@ -340,7 +454,7 @@ test('successful like loading clears its earlier retry error and rejects nonnume
     return 200;
   }, responseJSON: () => ({ ok: true, liked: false, count: '<img src=x onerror=alert(1)>', error: '<script>bad</script>' }) });
   harness.api.mount();
-  const status = harness.articleElement.adjacent[0].element.children[3];
+  const status = harness.articleElement.adjacent[0].element.children.find(element => element.className === 'atr-reader-status');
   await harness.api.loadLikes();
   assert.match(status.textContent, /불러올 수 없어요/);
   await harness.api.loadLikes();
