@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1320" height="760" viewBox="0 0 1320 760" role="img" aria-labelledby="title desc">
+  <title id="title">AI 과학자 활용을 위한 우려와 가드레일</title>
+  <desc id="desc">가짜 지식, 보안과 IP, 연구 훈련, 벤더 종속, 자동화 실패 비용에 대응하는 검증 장치를 정리한 매트릭스</desc>
+  <defs>
+    <style>
+      .bg { fill: #faf8f2; }
+      .title { font: 700 34px "Segoe UI", "Malgun Gothic", sans-serif; fill: #121212; }
+      .sub { font: 400 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #4b4b4b; }
+      .head { fill: #263238; }
+      .headtext { font: 700 20px "Segoe UI", "Malgun Gothic", sans-serif; fill: #fff; }
+      .cell { fill: #ffffff; stroke: #d2d7cd; stroke-width: 1.5; }
+      .risk { fill: #fff0ed; }
+      .guard { fill: #edf7f0; }
+      .human { fill: #eef3fb; }
+      .label { font: 700 18px "Segoe UI", "Malgun Gothic", sans-serif; fill: #111; }
+      .text { font: 400 15px "Segoe UI", "Malgun Gothic", sans-serif; fill: #30363a; }
+      .small { font: 400 14px "Segoe UI", "Malgun Gothic", sans-serif; fill: #555; }
+      .mark { fill: #b31942; }
+    </style>
+  </defs>
+  <rect class="bg" width="1320" height="760"/>
+  <text x="64" y="70" class="title">우려를 줄이는 가장 현실적인 방법은 사람의 판단을 하네스 안에 남기는 것입니다</text>
+  <text x="64" y="106" class="sub">AI 과학자는 제안 속도를 높입니다.</text>
+  <text x="64" y="132" class="sub">그 속도가 지식 오염이나 책임 회피로 바뀌지 않도록 위험마다 대응 장치를 둡니다.</text>
+
+  <rect x="64" y="150" width="1192" height="58" class="head" rx="14"/>
+  <text x="98" y="187" class="headtext">위험</text>
+  <text x="435" y="187" class="headtext">검증 장치</text>
+  <text x="840" y="187" class="headtext">사람이 남겨야 할 판단</text>
+
+  <g>
+    <rect x="64" y="220" width="360" height="92" class="cell risk" rx="10"/>
+    <rect x="424" y="220" width="400" height="92" class="cell guard" rx="10"/>
+    <rect x="824" y="220" width="432" height="92" class="cell human" rx="10"/>
+    <circle cx="92" cy="250" r="8" class="mark"/>
+    <text x="116" y="250" class="label">가짜 지식과 인용망 오염</text>
+    <text x="116" y="282" class="text">Bixonimania처럼 없는 개념이 답변과 문헌에 남을 수 있음</text>
+    <text x="452" y="252" class="text">근거 링크 필수, 출처 등급, 원문 확인 체크</text>
+    <text x="452" y="282" class="text">모델 출력과 검증된 사실을 분리 저장</text>
+    <text x="852" y="252" class="text">채택·보류·기각 이유를 decision_log에 기록</text>
+    <text x="852" y="282" class="text">논문/보고서 반영 전 전문가 확인</text>
+  </g>
+
+  <g>
+    <rect x="64" y="324" width="360" height="92" class="cell risk" rx="10"/>
+    <rect x="424" y="324" width="400" height="92" class="cell guard" rx="10"/>
+    <rect x="824" y="324" width="432" height="92" class="cell human" rx="10"/>
+    <circle cx="92" cy="354" r="8" class="mark"/>
+    <text x="116" y="354" class="label">데이터·IP·보안 경계</text>
+    <text x="116" y="386" class="text">공정 로그와 미공개 노트가 외부 서비스로 나갈 수 있음</text>
+    <text x="452" y="356" class="text">공개/비식별/제한 자료 분리</text>
+    <text x="452" y="386" class="text">온프레미스 Cline·Qwen·MCP 우선 경로</text>
+    <text x="852" y="356" class="text">반출 허용 자료와 금지 자료를 문제 카드에 명시</text>
+    <text x="852" y="386" class="text">외부 공유 전 승인 기록</text>
+  </g>
+
+  <g>
+    <rect x="64" y="428" width="360" height="92" class="cell risk" rx="10"/>
+    <rect x="424" y="428" width="400" height="92" class="cell guard" rx="10"/>
+    <rect x="824" y="428" width="432" height="92" class="cell human" rx="10"/>
+    <circle cx="92" cy="458" r="8" class="mark"/>
+    <text x="116" y="458" class="label">연구 훈련과 암묵지 약화</text>
+    <text x="116" y="490" class="text">AI가 결론만 주면 실패를 배우는 과정이 사라질 수 있음</text>
+    <text x="452" y="460" class="text">실패 후보와 반박 근거도 산출물에 포함</text>
+    <text x="452" y="490" class="text">전문가 코멘트와 다음 실험 조건 저장</text>
+    <text x="852" y="460" class="text">왜 이 후보를 믿지 않았는지까지 남김</text>
+    <text x="852" y="490" class="text">후배 연구자가 따라 읽을 수 있는 로그 작성</text>
+  </g>
+
+  <g>
+    <rect x="64" y="532" width="360" height="92" class="cell risk" rx="10"/>
+    <rect x="424" y="532" width="400" height="92" class="cell guard" rx="10"/>
+    <rect x="824" y="532" width="432" height="92" class="cell human" rx="10"/>
+    <circle cx="92" cy="562" r="8" class="mark"/>
+    <text x="116" y="562" class="label">벤더 종속과 평가 독립성</text>
+    <text x="116" y="594" class="text">한 서비스의 답변 품질을 과학적 진전으로 착각할 수 있음</text>
+    <text x="452" y="564" class="text">서비스형·온프레미스 결과를 같은 평가 함수로 비교</text>
+    <text x="452" y="594" class="text">프롬프트와 모델 버전 기록</text>
+    <text x="852" y="564" class="text">도구 선택 이유와 한계를 리뷰에 명시</text>
+    <text x="852" y="594" class="text">교체 가능한 하네스 구조 유지</text>
+  </g>
+
+  <text x="66" y="690" class="small">이 매트릭스의 목적은 AI 사용을 막는 데 있지 않습니다.</text>
+  <text x="66" y="714" class="small">조수를 오래 쓰기 위해 책임과 검증을 업무 안에 넣자는 제안입니다.</text>
+</svg>

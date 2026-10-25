@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="2830" viewBox="0 0 620 2830" role="img" aria-labelledby="title desc">
+  <title id="title">모바일용 재료 설계 변수를 QUBO로 표현하고 QA 또는 QAOA로 푸는 과정</title>
+  <desc id="desc">재료 변수와 제약을 QUBO와 Ising 해밀토니안으로 바꾸고, 양자 어닐링과 QAOA 실행 경로를 세로로 설명한다. 임베딩과 정밀도, 회로 컴파일과 학습 비용을 표시하며, 비트열 표본을 고정밀 계산과 실험으로 검증해야 양자 이득을 판단할 수 있음을 보여준다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.2px;fill:#684790}.title{font:700 35px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.step{fill:#fff;stroke:#c8ced8;stroke-width:2.5}.stepnum{font:800 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.8px}.head{font:700 28px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.body{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.formula{font:600 17px Consolas,'Segoe UI Symbol',monospace;fill:#293548}.flow{stroke:#687386;stroke-width:5;fill:none}.qa{fill:#fff4e5;stroke:#aa681f;stroke-width:3}.qaoa{fill:#f3eef9;stroke:#74519a;stroke-width:3}.tag{font:800 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1px}.panelhead{font:700 28px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.panelbody{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#344054}.micro{fill:#fff;stroke-width:2}.microhead{font:700 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.microbody{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.overhead{fill:#fff;stroke:#a44343;stroke-width:2;stroke-dasharray:8 6}.overheadtext{font:700 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.samples{fill:#eef4fb;stroke:#416b9a;stroke-width:3}.verify{fill:#edf7f1;stroke:#28745a;stroke-width:3}.caution{fill:#fbeeee;stroke:#a44343;stroke-width:2.5}.cautionhead{font:800 22px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.cautionbody{font:600 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#653333}.footer{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#687386"/></marker>
+  </defs>
+  <rect class="bg" width="620" height="2830"/>
+
+  <text class="eyebrow" x="42" y="48">MATERIAL DECISION → QUANTUM</text>
+  <text class="title" x="42" y="94">QUBO는 문제의 문법</text>
+  <text class="title" x="42" y="136">QA·QAOA는 실행법입니다</text>
+  <text class="subtitle" x="42" y="177">모든 전처리와 검증 비용을 같은 장부에 적습니다.</text>
+
+  <rect class="step" x="42" y="215" rx="21" width="536" height="205"/>
+  <text class="stepnum" x="74" y="253" fill="#416b9a">01 · DISCRETE DESIGN</text>
+  <text class="head" x="74" y="296">재료 변수 · 제약</text>
+  <text class="body" x="74" y="335">조성 · site 점유 · 결함 · 공정 선택</text>
+  <text class="body" x="74" y="368">one-hot · cardinality · 논리 · 예산 제약</text>
+  <text class="formula" x="74" y="400">x ∈ {0,1}<tspan baseline-shift="super" font-size="12">n</tspan></text>
+  <path class="flow" d="M310 420 L310 462" marker-end="url(#arrow)"/>
+
+  <rect class="step" x="42" y="475" rx="21" width="536" height="225"/>
+  <text class="stepnum" x="74" y="513" fill="#aa681f">02 · QUBO FORMULATION</text>
+  <text class="head" x="74" y="556">목적함수 + 벌점</text>
+  <text class="formula" x="74" y="597">C(x)=xᵀQx + Σ λ<tspan baseline-shift="sub" font-size="12">m</tspan>P<tspan baseline-shift="sub" font-size="12">m</tspan>(x)</text>
+  <text class="body" x="74" y="636">물성 surrogate와 feasibility를 결합</text>
+  <text class="body" x="74" y="669">λ·계수 범위·희소성이 해 지형을 바꿉니다</text>
+  <path class="flow" d="M310 700 L310 742" marker-end="url(#arrow)"/>
+
+  <rect class="step" x="42" y="755" rx="21" width="536" height="225"/>
+  <text class="stepnum" x="74" y="793" fill="#74519a">03 · ISING MAPPING</text>
+  <text class="head" x="74" y="836">스핀 해밀토니안</text>
+  <text class="formula" x="74" y="877">x<tspan baseline-shift="sub" font-size="12">i</tspan>=(1−z<tspan baseline-shift="sub" font-size="12">i</tspan>)/2</text>
+  <text class="formula" x="74" y="910">H<tspan baseline-shift="sub" font-size="12">C</tspan>=Σ h<tspan baseline-shift="sub" font-size="12">i</tspan>Z<tspan baseline-shift="sub" font-size="12">i</tspan> + Σ J<tspan baseline-shift="sub" font-size="12">ij</tspan>Z<tspan baseline-shift="sub" font-size="12">i</tspan>Z<tspan baseline-shift="sub" font-size="12">j</tspan></text>
+  <text class="body" x="74" y="949">같은 비용함수를 하드웨어 언어로 변환</text>
+  <path class="flow" d="M310 980 L310 1022" marker-end="url(#arrow)"/>
+
+  <rect class="qa" x="42" y="1035" rx="24" width="536" height="510"/>
+  <text class="tag" x="74" y="1075" fill="#aa681f">ANALOG PATH · QA</text>
+  <text class="panelhead" x="74" y="1118">양자 어닐링 · 연속 스케줄</text>
+  <text class="panelbody" x="74" y="1157">H(s)=A(s)H<tspan baseline-shift="sub" font-size="14">D</tspan>+B(s)H<tspan baseline-shift="sub" font-size="14">C</tspan></text>
+  <rect class="micro" x="74" y="1190" rx="15" width="472" height="78" stroke="#aa681f"/>
+  <text class="microhead" x="96" y="1222">① Driver · 중첩 초기상태</text>
+  <text class="microbody" x="96" y="1252">transverse field</text>
+  <rect class="micro" x="74" y="1286" rx="15" width="472" height="92" stroke="#aa681f"/>
+  <text class="microhead" x="96" y="1318">② Schedule · A(s)↓ · B(s)↑</text>
+  <text class="microbody" x="96" y="1348">유한 온도·개방계 동역학</text>
+  <rect class="micro" x="74" y="1396" rx="15" width="472" height="78" stroke="#aa681f"/>
+  <text class="microhead" x="96" y="1428">③ 낮은 에너지 bitstring 표본</text>
+  <text class="microbody" x="96" y="1458">다회 anneal 후 빈도 계산</text>
+  <rect class="overhead" x="74" y="1478" rx="12" width="472" height="52"/>
+  <text class="overheadtext" x="91" y="1497">
+    <tspan x="91" dy="0">minor embedding · chain · coefficient precision</tspan>
+    <tspan x="91" dy="21">gauge · anneal tuning</tspan>
+  </text>
+  <path class="flow" d="M310 1545 L310 1587" marker-end="url(#arrow)"/>
+
+  <rect class="qaoa" x="42" y="1600" rx="24" width="536" height="525"/>
+  <text class="tag" x="74" y="1640" fill="#74519a">GATE PATH · QAOA</text>
+  <text class="panelhead" x="74" y="1683">비용·믹서 회로를 p번 교대</text>
+  <text class="panelbody" x="74" y="1722">|γ,β〉=∏ e<tspan baseline-shift="super" font-size="14">−iβℓHᴍ</tspan>e<tspan baseline-shift="super" font-size="14">−iγℓHᴄ</tspan>|+〉</text>
+  <rect class="micro" x="74" y="1755" rx="15" width="472" height="82" stroke="#74519a"/>
+  <text class="microhead" x="96" y="1787">① Cost gate · H<tspan baseline-shift="sub" font-size="13">C</tspan> 위상 부여</text>
+  <text class="microbody" x="96" y="1817">문제 그래프와 가중치 반영</text>
+  <rect class="micro" x="74" y="1855" rx="15" width="472" height="82" stroke="#74519a"/>
+  <text class="microhead" x="96" y="1887">② Mixer · 상태 전이</text>
+  <text class="microbody" x="96" y="1917">필요하면 제약 보존 mixer 설계</text>
+  <rect class="micro" x="74" y="1955" rx="15" width="472" height="82" stroke="#74519a"/>
+  <text class="microhead" x="96" y="1987">③ γ·β 고전 학습</text>
+  <text class="microbody" x="96" y="2017">shots × p · 수렴 · 초기화</text>
+  <rect class="overhead" x="74" y="2055" rx="12" width="472" height="50"/>
+  <text class="overheadtext" x="91" y="2077">
+    <tspan x="91" dy="0">connectivity · SWAP · depth</tspan>
+    <tspan x="91" dy="21">shots · parameter training</tspan>
+  </text>
+  <path class="flow" d="M310 2125 L310 2167" marker-end="url(#arrow)"/>
+
+  <rect class="samples" x="42" y="2180" rx="21" width="536" height="135"/>
+  <text class="tag" x="74" y="2220" fill="#416b9a">BITSTRING SAMPLES</text>
+  <text class="head" x="74" y="2263">순위 · 빈도 · feasible rate</text>
+  <text class="body" x="74" y="2297">최저값 하나보다 표본 분포를 함께 기록</text>
+  <path class="flow" d="M310 2315 L310 2357" marker-end="url(#arrow)"/>
+
+  <rect class="verify" x="42" y="2370" rx="21" width="536" height="135"/>
+  <text class="tag" x="74" y="2410" fill="#28745a">DECODE + VALIDATE</text>
+  <text class="head" x="74" y="2453">구조 복원 · DFT · 합성 · 실험</text>
+  <text class="body" x="74" y="2487">물리적으로 유효한 후보만 hit로 계산</text>
+
+  <rect class="caution" x="42" y="2535" rx="20" width="536" height="160"/>
+  <text class="cautionhead" x="72" y="2575">양자 동역학 ≠ 양자 우위</text>
+  <text class="cautionbody" x="72" y="2612">mapping·embedding·training·decode·검증을</text>
+  <text class="cautionbody" x="72" y="2642">포함한 시간–해 품질 곡선이 고전 해법보다</text>
+  <text class="cautionbody" x="72" y="2672">좋아야 비로소 이득을 주장할 수 있습니다.</text>
+  <text class="footer" x="42" y="2735">같은 QUBO · 같은 wall-clock · 같은 성공확률에서</text>
+  <text class="footer" x="42" y="2765">CP-SAT·MILP·SA·Tabu·전용 휴리스틱과 비교</text>
+</svg>

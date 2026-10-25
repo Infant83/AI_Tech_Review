@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="map-title map-desc">
+  <title id="map-title">Evidence and OLED proximity map for seven papers selected in the weekly review</title>
+  <desc id="map-desc">A qualitative editorial matrix places one direct OLED mechanism paper, four adjacent transferable-method papers, and two quantum enabling-component papers across four OLED-proximity columns. Publication status and the principal evidence type are written on each card.</desc>
+  <defs>
+    <style>
+      .bg { fill: #fbfaf6; }
+      .ink { fill: #151515; }
+      .muted { fill: #666660; }
+      .navy { fill: #344866; }
+      .rust { fill: #9a514a; }
+      .green { fill: #55765d; }
+      .purple { fill: #73657e; }
+      .grid { stroke: #ceccc5; stroke-width: 1; }
+      .grid-strong { stroke: #aaa8a1; stroke-width: 1.2; }
+      .sans { font-family: Inter, "Noto Sans", "Noto Sans KR", Arial, sans-serif; }
+      .serif { font-family: "Source Serif 4", "Noto Serif", "Noto Serif KR", Georgia, serif; }
+      .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1.7px; }
+      .title { font-size: 32px; font-weight: 600; letter-spacing: -0.3px; }
+      .subtitle { font-size: 15px; }
+      .colhead { font-size: 12px; font-weight: 750; letter-spacing: 1.25px; }
+      .colsub { font-size: 11px; }
+      .rowhead { font-size: 12px; font-weight: 750; letter-spacing: 1px; }
+      .rowsub { font-size: 11px; }
+      .card-title { font-size: 14px; font-weight: 700; }
+      .card-body { font-size: 11px; }
+      .tag { font-size: 9px; font-weight: 800; letter-spacing: 0.8px; }
+      .note { font-size: 11px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="675"/>
+
+  <g class="sans" aria-label="Header">
+    <text x="48" y="42" class="eyebrow navy">SEVEN-PAPER EVIDENCE MAP · 21–27 AUGUST 2026</text>
+    <text x="48" y="86" class="title serif ink">Where this week’s evidence sits</text>
+    <text x="48" y="116" class="subtitle muted">Evidence layer is categorical; horizontal proximity is an editorial judgment, not a performance score.</text>
+    <line x1="48" y1="142" x2="1152" y2="142" class="grid"/>
+  </g>
+
+  <g class="sans" aria-label="Qualitative evidence matrix">
+    <!-- matrix backgrounds -->
+    <rect x="180" y="184" width="972" height="112" fill="#f7f1ef"/>
+    <rect x="180" y="296" width="972" height="212" fill="#f2f5f2"/>
+    <rect x="180" y="508" width="972" height="112" fill="#f3f1f5"/>
+    <line x1="180" y1="184" x2="1152" y2="184" class="grid-strong"/>
+    <line x1="180" y1="296" x2="1152" y2="296" class="grid"/>
+    <line x1="180" y1="508" x2="1152" y2="508" class="grid"/>
+    <line x1="180" y1="620" x2="1152" y2="620" class="grid-strong"/>
+    <line x1="180" y1="184" x2="180" y2="620" class="grid-strong"/>
+    <line x1="423" y1="158" x2="423" y2="620" class="grid"/>
+    <line x1="666" y1="158" x2="666" y2="620" class="grid"/>
+    <line x1="909" y1="158" x2="909" y2="620" class="grid"/>
+    <line x1="1152" y1="158" x2="1152" y2="620" class="grid-strong"/>
+
+    <!-- column headers -->
+    <text x="301" y="166" text-anchor="middle" class="colhead muted">INDIRECT</text>
+    <text x="544" y="166" text-anchor="middle" class="colhead navy">TRANSFERABLE</text>
+    <text x="787" y="166" text-anchor="middle" class="colhead green">NEAR-TERM</text>
+    <text x="1030" y="166" text-anchor="middle" class="colhead rust">DIRECT OLED</text>
+    <text x="1152" y="136" text-anchor="end" class="colsub muted">OLED PROXIMITY →</text>
+
+    <!-- row headers -->
+    <text x="48" y="218" class="rowhead rust">OLED MECHANISM</text>
+    <text x="48" y="237" class="rowsub muted">OLED molecule</text>
+    <text x="48" y="256" class="rowsub muted">mechanistic evidence</text>
+
+    <text x="48" y="340" class="rowhead green">ADJACENT METHODS</text>
+    <text x="48" y="359" class="rowsub muted">Transferable DFT, ML,</text>
+    <text x="48" y="378" class="rowsub muted">or inverse-design layer</text>
+
+    <text x="48" y="546" class="rowhead purple">QUANTUM ENABLING</text>
+    <text x="48" y="565" class="rowsub muted">Component evidence;</text>
+    <text x="48" y="584" class="rowsub muted">not OLED advantage</text>
+
+    <!-- Karak card -->
+    <g role="group" aria-label="Karak and coauthors, direct OLED mechanism evidence">
+      <rect x="930" y="204" width="201" height="72" fill="#fffefa" stroke="#9a514a" stroke-width="1.4"/>
+      <rect x="930" y="204" width="6" height="72" class="rust"/>
+      <text x="947" y="228" class="card-title ink">Karak et al.</text>
+      <text x="947" y="247" class="card-body muted">JCP · peer reviewed · 3 isomers</text>
+      <text x="947" y="264" class="card-body rust">DSO / HT / spin–vibronic ISC</text>
+    </g>
+
+    <!-- BoMolLLM card -->
+    <g role="group" aria-label="BoMolLLM, indirect adjacent method">
+      <rect x="201" y="326" width="201" height="72" fill="#fffefa" stroke="#777772" stroke-width="1.2"/>
+      <rect x="201" y="326" width="6" height="72" fill="#777772"/>
+      <text x="218" y="350" class="card-title ink">BoMolLLM</text>
+      <text x="218" y="369" class="card-body muted">Preprint · six oracle tasks</text>
+      <text x="218" y="386" class="card-body ink">Closed-loop search pattern</text>
+    </g>
+
+    <!-- KS-FNO card -->
+    <g role="group" aria-label="Kohn-Sham neural operator, transferable adjacent method">
+      <rect x="444" y="326" width="201" height="72" fill="#fffefa" stroke="#344866" stroke-width="1.2"/>
+      <rect x="444" y="326" width="6" height="72" class="navy"/>
+      <text x="461" y="350" class="card-title ink">Kohn–Sham FNO</text>
+      <text x="461" y="369" class="card-body muted">Preprint · OOD + scale tests</text>
+      <text x="461" y="386" class="card-body navy">Ground-state SCF acceleration</text>
+    </g>
+
+    <!-- PhysECD card -->
+    <g role="group" aria-label="PhysECD, transferable adjacent method">
+      <rect x="444" y="416" width="201" height="72" fill="#fffefa" stroke="#344866" stroke-width="1.2"/>
+      <rect x="444" y="416" width="6" height="72" class="navy"/>
+      <text x="461" y="440" class="card-title ink">PhysECD</text>
+      <text x="461" y="459" class="card-body muted">Preprint · parity-constrained spectra</text>
+      <text x="461" y="476" class="card-body navy">Physical quantities → observable</text>
+    </g>
+
+    <!-- DensIP card -->
+    <g role="group" aria-label="DensIP, near-term adjacent method">
+      <rect x="687" y="326" width="201" height="72" fill="#fffefa" stroke="#55765d" stroke-width="1.4"/>
+      <rect x="687" y="326" width="6" height="72" class="green"/>
+      <text x="704" y="350" class="card-title ink">DensIP</text>
+      <text x="704" y="369" class="card-body muted">Preprint · CCSD(T)/CBS dimers</text>
+      <text x="704" y="386" class="card-body green">Host–dopant interaction layer</text>
+    </g>
+
+    <!-- explanatory empty-space note -->
+    <g aria-label="No second direct OLED paper selected">
+      <rect x="930" y="326" width="201" height="72" fill="none" stroke="#c9c7bf" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="1030" y="355" text-anchor="middle" class="tag muted">NO ADDITIONAL DIRECT ITEM</text>
+      <text x="1030" y="376" text-anchor="middle" class="card-body muted">meeting the screening bar</text>
+    </g>
+
+    <!-- PAS-VQE card -->
+    <g role="group" aria-label="PAS VQE, indirect quantum enabling component">
+      <rect x="201" y="528" width="201" height="72" fill="#fffefa" stroke="#73657e" stroke-width="1.2"/>
+      <rect x="201" y="528" width="6" height="72" class="purple"/>
+      <text x="218" y="552" class="card-title ink">PAS–VQE</text>
+      <text x="218" y="571" class="card-body muted">Preprint · 4–5 qubit simulation</text>
+      <text x="218" y="588" class="card-body purple">Optimizer shot placement</text>
+    </g>
+
+    <!-- Spin state card -->
+    <g role="group" aria-label="Deterministic spin eigenfunction preparation, transferable quantum enabling component">
+      <rect x="444" y="528" width="201" height="72" fill="#fffefa" stroke="#73657e" stroke-width="1.2"/>
+      <rect x="444" y="528" width="6" height="72" class="purple"/>
+      <text x="461" y="552" class="card-title ink">Spin eigenfunctions</text>
+      <text x="461" y="571" class="card-body muted">Preprint · theory + classical checks</text>
+      <text x="461" y="588" class="card-body purple">Spin-adapted state preparation</text>
+    </g>
+  </g>
+
+  <g class="sans" aria-label="Legend and interpretation note">
+    <text x="48" y="649" class="note muted">Publication status and test scope are shown on-card. Empty cells are deliberate. Proximity does not imply readiness, speedup, or quantum advantage.</text>
+    <rect x="1045" y="634" width="107" height="23" fill="#fffefa" stroke="#73657e" stroke-width="1"/>
+    <text x="1098" y="650" text-anchor="middle" class="tag purple">QUALITATIVE MAP</text>
+  </g>
+</svg>

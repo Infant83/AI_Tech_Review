@@ -1,0 +1,153 @@
+WEBVTT
+
+1
+00:00:00.450 --> 00:00:07.692
+A spring with no friction or external energy input should keep oscillating with the same amplitude.
+
+2
+00:00:07.872 --> 00:00:12.114
+Yet the amplitude computed by forward Euler grows with time.
+
+3
+00:00:12.294 --> 00:00:23.892
+This review starts from that discrepancy to ask how symmetry and conservation laws can guide the design and testing of scientific computations.
+
+4
+00:00:24.492 --> 00:00:29.899
+Watch the kinetic and elastic energy bars for the exact reference motion.
+
+5
+00:00:30.079 --> 00:00:34.037
+As one falls, the other rises, keeping their sum fixed.
+
+6
+00:00:34.217 --> 00:00:40.249
+The two timelines beside them show the same motion with a different choice of time origin.
+
+7
+00:00:40.429 --> 00:00:44.119
+The spring obeys the same law in either description.
+
+8
+00:00:44.299 --> 00:00:50.157
+For this spring, action is the time integral of kinetic minus elastic energy.
+
+9
+00:00:50.337 --> 00:00:53.728
+Its action is also unchanged by this shift.
+
+10
+00:00:53.908 --> 00:01:00.517
+Noether's theorem connects that time-translation symmetry to conserved energy.
+
+11
+00:01:01.117 --> 00:01:06.956
+Whether a numerical calculation retains that relationship is a separate question.
+
+12
+00:01:07.136 --> 00:01:12.465
+Normalize the spring’s position and velocity by fixed reference values.
+
+13
+00:01:12.645 --> 00:01:16.056
+Plot each pair as one point in the phase plane.
+
+14
+00:01:16.236 --> 00:01:21.026
+For this oscillator, states with the same energy lie on a circle.
+
+15
+00:01:21.206 --> 00:01:24.081
+This is not the mass's path through space.
+
+16
+00:01:24.261 --> 00:01:29.500
+Forward Euler takes a straight step along the tangent from the current state.
+
+17
+00:01:29.680 --> 00:01:33.765
+The new point falls outside the circle, at a higher energy.
+
+18
+00:01:33.945 --> 00:01:40.892
+With the time step used here, each update increases the energy by one percent.
+
+19
+00:01:41.492 --> 00:01:46.352
+The energy graph shows what happens when that small increase repeats.
+
+20
+00:01:46.532 --> 00:01:54.052
+After two thousand equal steps, Euler's energy is about 440 million times its starting value.
+
+21
+00:01:54.232 --> 00:02:02.808
+Velocity Verlet solves the same equation with the same time step, but its curve stays close to the initial energy.
+
+22
+00:02:02.988 --> 00:02:10.816
+The enlarged lower panel shows an error within a quarter of one percent of that initial value throughout this run.
+
+23
+00:02:10.996 --> 00:02:17.302
+The comparison tells us that the numerical method changes how energy error accumulates.
+
+24
+00:02:17.482 --> 00:02:24.225
+A small energy error still does not guarantee correct oscillation timing.
+
+25
+00:02:24.825 --> 00:02:29.736
+When AI predicts motion, we also need to test the model it has learned.
+
+26
+00:02:29.916 --> 00:02:34.255
+A Hamiltonian neural network learns an energy-like function.
+
+27
+00:02:34.435 --> 00:02:38.795
+Previously, q and u were normalized position and velocity.
+
+28
+00:02:38.975 --> 00:02:43.120
+Here q and p are the coordinate and canonical momentum.
+
+29
+00:02:43.300 --> 00:02:50.724
+Hamilton’s equations use derivatives of the learned function to set how those two quantities change with time.
+
+30
+00:02:50.904 --> 00:02:56.171
+In this construction, the learned function has no explicit time dependence.
+
+31
+00:02:56.351 --> 00:03:01.114
+The resulting continuous-time motion conserves that learned function.
+
+32
+00:03:01.294 --> 00:03:06.173
+Whether that function represents the actual energy still needs checking.
+
+33
+00:03:06.353 --> 00:03:12.725
+So does the error introduced by step-by-step numerical integration.
+
+34
+00:03:13.325 --> 00:03:16.447
+The spring exposes a numerical error.
+
+35
+00:03:16.627 --> 00:03:21.323
+The learning diagram explains why the learned law needs scrutiny too.
+
+36
+00:03:21.503 --> 00:03:29.346
+Symmetry supplies constraints for a model, while conserved quantities such as energy help test the calculation.
+
+37
+00:03:29.526 --> 00:03:39.083
+The review's central argument is to build those constraints into the design and then check whether the resulting predictions are physically sound.
+
+38
+00:03:39.263 --> 00:03:47.850
+If work or heat passes into or out of the system, that exchange must also be included in the model.
