@@ -3336,7 +3336,7 @@ def render_index(
         </div>
       </section>
     </main>
-    <footer class="site-footer"><a href="mailto:hyun-jung.kim@lgdisplay.com">관리자에게 메일</a><a href="methods/#reader-metrics">통계·알림 안내</a></footer>
+    <footer class="site-footer"><a href="mailto:angpangmokjang@gmail.com">관리자에게 메일</a><a href="methods/#reader-metrics">통계·알림 안내</a></footer>
     <script src="assets/site.js?v={hub_js_version}" defer></script>
   </body>
 </html>

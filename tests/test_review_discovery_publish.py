@@ -49,7 +49,7 @@ class ReviewDiscoveryPublicationTests(unittest.TestCase):
         self.assertIn("관심 집계 기간", text)
         self.assertIn('id="discovery-dates" hidden', text)
         self.assertIn('aria-label="리뷰 목록"', text)
-        self.assertIn('mailto:hyun-jung.kim@lgdisplay.com', text)
+        self.assertIn('mailto:angpangmokjang@gmail.com', text)
         self.assertIn("카드 수치는 누적값", text)
         self.assertNotIn('id="review-grid" aria-live="polite"', text)
 
