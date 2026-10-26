@@ -18,6 +18,7 @@ except ImportError:
 HUB_URL = "https://infant83.io/AI_Tech_Review/"
 EDITOR_URL = "https://infant83.io/"
 CONTACT_EMAIL = "angpangmokjang@gmail.com"
+KOREAN_LANGUAGE_MARK = (Path(__file__).parent / "public_assets/korean-language-mark.svg").read_text(encoding="utf-8").strip()
 ICONS = {
     "editor": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.7"/><path d="M6.8 18c.7-3.8 9.7-3.8 10.4 0"/>',
     "methods": '<path d="M12 5.5C8.5 3.5 5.5 3.5 3 4.5v14c3-1 6-1 9 1 3-2 6-2 9-1v-14c-2.5-1-5.5-1-9 1Z"/><path d="M12 5.5v14M6 8h3M6 11h3M15 8h3M15 11h3"/>',
@@ -191,7 +192,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
           {icon_link(EDITOR_URL, editor_label, 'editor')}
           {icon_link(prefix + 'methods/', methods_label, 'methods')}
         </span>
-        <button class="hub-toggle hub-language-toggle" type="button" role="switch" data-hub-language-toggle aria-label="{'English' if en else '영어'}" aria-checked="{'true' if en else 'false'}" title="{'Switch to Korean' if en else '영어로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice" lang="ko">한</span><span class="hub-toggle-choice" lang="en">EN</span></span></button>
+        <button class="hub-toggle hub-language-toggle" type="button" role="switch" data-hub-language-toggle aria-label="{'English' if en else '영어'}" aria-checked="{'true' if en else 'false'}" title="{'Switch to Korean' if en else '영어로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice" lang="ko">{KOREAN_LANGUAGE_MARK}</span><span class="hub-toggle-choice hub-language-en" lang="en">EN</span></span></button>
         <button class="hub-toggle hub-theme-toggle" type="button" role="switch" data-hub-theme-toggle aria-label="{'Dark theme' if en else '어두운 화면'}" aria-checked="false" title="{'Switch to dark theme' if en else '어두운 화면으로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice">{icon('sun')}</span><span class="hub-toggle-choice">{icon('moon')}</span></span></button>
         <span class="sr-only" data-hub-preference-status role="status" aria-live="polite"></span>
         <noscript><style>.hub-toggle{{display:none}}</style><a href="{'../' if en else 'en/'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
