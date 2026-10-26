@@ -1,4 +1,71 @@
 /* Only these added controls are styled; existing page structure and icons remain intact. */
+.atr-content-cue {
+  display: inline-block;
+  margin-inline-start: .7em;
+  padding: .08em .55em;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  color: var(--green, #0d6554);
+  font: 600 11px/1.55 system-ui, sans-serif;
+  letter-spacing: .015em;
+  white-space: nowrap;
+  vertical-align: .06em;
+}
+.atr-update-notice {
+  position: fixed;
+  z-index: 1500;
+  inset-inline: 16px;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+  border: 1px solid var(--line, #c9cec8);
+  border-radius: 8px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  box-shadow: 0 5px 24px #00000018;
+  font: 13px/1.5 system-ui, sans-serif;
+}
+.atr-update-notice > span { overflow-wrap: anywhere; }
+.atr-update-notice button, .atr-page-refresh {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.atr-update-close { font-size: 22px !important; text-decoration: none !important; }
+.atr-page-refresh { margin: 4px; color: var(--muted, #5c6670); }
+.atr-page-refresh svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.atr-update-notice button:focus-visible, .atr-page-refresh:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.atr-pull-status {
+  position: fixed;
+  z-index: 1500;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  padding: 10px 18px;
+  border: 1px solid var(--line, #c9cec8);
+  border-radius: 999px;
+  background: var(--paper, #fff);
+  color: var(--ink, #171b1f);
+  font: 13px/1.5 system-ui, sans-serif;
+  pointer-events: none;
+}
 .atr-reader-button,
 .atr-reader-dialog,
 .atr-reader-actions {

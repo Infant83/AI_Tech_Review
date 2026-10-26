@@ -106,7 +106,115 @@ class ReaderEnrichmentTests(unittest.TestCase):
             path = site / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("<html><head><title>Original</title></head><body>Original content</body></html>")
+        for name in ["archive/files/lecture.pdf", "archive/files/brief.pdf"]:
+            path = site / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"%PDF-1.4 fixture " + name.encode())
         return site, frontend
+
+    def test_updates_bootstrap_uses_editorial_dates_and_has_all_document_types(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            updates = json.loads((site / reader.UPDATES_NAME).read_text())
+            self.assertEqual(updates["version"], 1)
+            self.assertIn(reader.SCOPE, updates["pages"])
+            records = {item["id"]: item for item in updates["articles"]}
+            self.assertEqual(set(records), {"example", "lecture:lecture-one", "archive:brief"})
+            self.assertEqual(records["example"]["updatedAt"], "2026-10-23T00:00:00Z")
+            self.assertEqual(records["example"]["change"], "new")
+            self.assertEqual(records["example"]["paths"], [reader.SCOPE + "reviews/example/", reader.SCOPE + "reviews/example/en/"])
+            self.assertIn(reader.SCOPE + "archive/files/lecture.pdf", records["lecture:lecture-one"]["paths"])
+            original = reader.strip_engagement((site / "reviews/example/en/index.html").read_text())
+            self.assertEqual(updates["pages"][reader.SCOPE + "reviews/example/en/"], hashlib.sha256(original.encode()).hexdigest())
+            config = json.loads((site / "reviews/example/en/index.html").read_text().split('id="reader-engagement-config">')[1].split("</script>")[0])
+            self.assertEqual(config["pageVersion"], updates["pages"][reader.SCOPE + "reviews/example/en/"])
+            self.assertEqual(config["articleVersion"], records["example"]["revision"])
+            self.assertEqual(config["updatesUrl"], reader.SITE_ROOT + reader.UPDATES_NAME)
+
+    def test_updates_are_stable_across_enrichment_and_reader_ui_changes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            first = (site / reader.UPDATES_NAME).read_bytes()
+            (frontend / "reader-engagement.js").write_text("UI changed without article edits")
+            (frontend / "reader-updates.js").write_text("Updated freshness module")
+            reader.enrich_site(site, revision=NEW_REVISION, frontend_dir=frontend)
+            self.assertEqual((site / reader.UPDATES_NAME).read_bytes(), first)
+            self.assertEqual(reader.enrich_site(site, revision=NEW_REVISION, frontend_dir=frontend)["html_changed"], 0)
+
+    def test_updates_change_only_edited_article_with_one_stable_timestamp(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            previous = json.loads((site / reader.UPDATES_NAME).read_text())
+            path = site / "reviews/example/en/index.html"
+            path.write_text(path.read_text().replace("Original content", "Updated English content"))
+            updates = reader.build_updates(site, previous, now="2026-10-27T01:02:03Z")
+            before = {item["id"]: item for item in previous["articles"]}
+            after = {item["id"]: item for item in updates["articles"]}
+            self.assertNotEqual(before["example"]["revision"], after["example"]["revision"])
+            self.assertEqual(after["example"]["updatedAt"], "2026-10-27T01:02:03Z")
+            self.assertEqual(after["example"]["change"], "updated")
+            self.assertEqual(before["archive:brief"], after["archive:brief"])
+            self.assertEqual(reader.build_updates(site, updates, now="2026-10-28T00:00:00Z"), updates)
+
+    def test_archive_copies_of_review_pdfs_share_original_identity_and_asset_revision(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            manifest = json.loads((site / "manifest.json").read_text())
+            manifest[0]["assets"] = ["review.pdf"]
+            (site / "manifest.json").write_text(json.dumps(manifest))
+            pdf = site / "reviews/example/review.pdf"
+            pdf.write_bytes(b"%PDF-review revision one")
+            archive = json.loads((site / "archive-manifest.json").read_text())
+            archive["documents"].append({"id": "example-ko", "date": "2026-10-23", "series": "article", "title": "Example PDF", "href": "archive/files/example-ko.pdf"})
+            copy = site / "archive/files/example-ko.pdf"
+            copy.write_bytes(pdf.read_bytes())
+            (site / "archive-manifest.json").write_text(json.dumps(archive))
+            first = reader.build_updates(site)
+            record = next(item for item in first["articles"] if item["id"] == "example")
+            self.assertIn(reader.SCOPE + "archive/files/example-ko.pdf", record["paths"])
+            self.assertFalse(any(item["id"] == "archive:example-ko" for item in first["articles"]))
+            pdf.write_bytes(b"%PDF-review revision two")
+            copy.write_bytes(pdf.read_bytes())
+            second = reader.build_updates(site, first, now="2026-10-27T01:02:03Z")
+            changed = next(item for item in second["articles"] if item["id"] == "example")
+            self.assertNotEqual(record["revision"], changed["revision"])
+            self.assertEqual(first["pages"], second["pages"])
+            self.assertEqual(changed["updatedAt"], "2026-10-27T01:02:03Z")
+
+    def test_updated_date_bootstrap_does_not_use_deployment_time(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, _ = self.fixture(Path(temporary))
+            manifest = json.loads((site / "manifest.json").read_text())
+            manifest[0]["updated"] = "2026-10-26"
+            (site / "manifest.json").write_text(json.dumps(manifest))
+            updates = reader.build_updates(site, now="2026-12-01T01:02:03Z")
+            record = next(item for item in updates["articles"] if item["id"] == "example")
+            self.assertEqual(record["updatedAt"], "2026-10-26T00:00:00Z")
+            self.assertEqual(record["change"], "updated")
+
+    def test_update_validation_rejects_tampering_cross_scope_and_duplicate_paths(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            output = site / reader.UPDATES_NAME
+            original = json.loads(output.read_text())
+            for mutate in [
+                lambda data: data["pages"].update({"https://foreign.invalid/": "a" * 64}),
+                lambda data: data["pages"].update({reader.SCOPE: "b" * 64}),
+                lambda data: data["articles"][0]["paths"].append(data["articles"][0]["paths"][0]),
+                lambda data: data["articles"][0].update({"updatedAt": "tomorrow"}),
+                lambda data: data["articles"][0].update({"title": "Unapproved title"}),
+            ]:
+                data = copy.deepcopy(original)
+                mutate(data)
+                output.write_text(json.dumps(data))
+                with self.assertRaises(ValueError):
+                    reader.validate_public_artifact(site)
+            output.write_text(json.dumps(original))
+            reader.validate_public_artifact(site)
 
     def test_existing_output_enrichment_tracks_lecture_checksums_and_stable_ids(self):
         with tempfile.TemporaryDirectory() as temporary:

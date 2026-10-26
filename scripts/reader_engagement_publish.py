@@ -11,7 +11,7 @@ import re
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
@@ -22,19 +22,22 @@ SCOPE = "/AI_Tech_Review/"
 SITE_ROOT = "https://infant83.io" + SCOPE
 API_BASE = "https://api.infant83.io"
 CATALOG_NAME = "reader-publications.json"
+UPDATES_NAME = "reader-updates.json"
 FRONTEND_DIR = ROOT / ".automation/reader-engagement/frontend"
 ASSET_EXCEPTIONS = ROOT / ".automation/reader-engagement/public-asset-exceptions.json"
 ASSETS = {
     "reader-engagement.js": "assets/reader-engagement.js",
+    "reader-updates.js": "assets/reader-updates.js",
     "reader-engagement.css": "assets/reader-engagement.css",
     "app.webmanifest": "app.webmanifest",
     "sw.js": "sw.js",
 }
 BLOCKS = ("Reader Engagement Head", "Reader Engagement Controls")
 SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
+CONTENT_SHA_RE = re.compile(r"[0-9a-f]{64}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
-                     ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME}
+                     ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME}
 PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en"}
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
@@ -109,7 +112,7 @@ def strip_engagement(text: str) -> str:
 
 
 def enrich_html(text: str, relative_path: str, article: dict | None,
-                *, asset_versions: dict[str, str] | None = None) -> str:
+                *, asset_versions: dict[str, str] | None = None, article_version: str | None = None) -> str:
     text = strip_engagement(text)
     if not re.search(r"</head\s*>", text, re.I) or not re.search(r"</body\s*>", text, re.I):
         return text
@@ -117,7 +120,10 @@ def enrich_html(text: str, relative_path: str, article: dict | None,
     prefix = os.path.relpath(".", str(Path(relative_path).parent)).replace("\\", "/")
     prefix = "" if prefix == "." else prefix.rstrip("/") + "/"
     config = {"apiBase": API_BASE, "siteRoot": SITE_ROOT, "scope": SCOPE,
-              "catalogUrl": SITE_ROOT + CATALOG_NAME, "article": article}
+              "catalogUrl": SITE_ROOT + CATALOG_NAME, "article": article,
+              "updatesUrl": SITE_ROOT + UPDATES_NAME,
+              "pageVersion": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+              "articleVersion": article_version}
     versions = asset_versions or {}
     def asset_href(name: str) -> str:
         suffix = "?v=" + versions[name] if versions.get(name) else ""
@@ -129,6 +135,7 @@ def enrich_html(text: str, relative_path: str, article: dict | None,
     controls = (f'<!-- {BLOCKS[1]} -->\n'
                 f'<script type="application/json" id="reader-engagement-config">{json_script(config)}</script>\n'
                 f'<script defer src="{asset_href("reader-engagement.js")}"></script>\n'
+                f'<script defer src="{asset_href("reader-updates.js")}"></script>\n'
                 f'<!-- End {BLOCKS[1]} -->\n')
     return re.sub(r"[ \t]*</body\s*>", lambda m: controls.replace("\n", newline) + m.group(),
                   re.sub(r"[ \t]*</head\s*>", lambda m: head.replace("\n", newline) + m.group(), text, count=1, flags=re.I),
@@ -143,10 +150,138 @@ def write_changed(path: Path, payload: bytes) -> bool:
     return True
 
 
+def content_digest(path: Path) -> str:
+    """Hash public content, excluding the injected reader controls and metadata."""
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("Missing or symlinked update content: " + path.name)
+    payload = path.read_bytes()
+    if path.suffix == ".html":
+        payload = strip_engagement(payload.decode("utf-8")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def build_updates(site_dir: Path, previous: dict | None = None, *, now: str | None = None) -> dict:
+    """Create device-local recency metadata independently of the push catalog.
+
+    Explicit article assets determine editorial revisions. Global reader assets,
+    counters and deployment commits never make every old article look updated.
+    """
+    previous_articles = {item["id"]: item for item in (previous or {}).get("articles", [])
+                         if isinstance(item, dict) and isinstance(item.get("id"), str)}
+    timestamp = now or datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    pages = {public_path(path.relative_to(site_dir).as_posix()): content_digest(path)
+             for path in sorted(site_dir.rglob("*.html"))}
+    reviews = json.loads((site_dir / "manifest.json").read_text(encoding="utf-8"))
+    archive_file = site_dir / "archive-manifest.json"
+    documents = json.loads(archive_file.read_text(encoding="utf-8")).get("documents", []) if archive_file.exists() else []
+    records, pdf_owners, path_owners = [], {}, {}
+
+    def add(identifier: str, title: str, published: str, hrefs: list[str], assets: list[str], updated: str | None = None) -> dict:
+        paths = sorted(set(public_path(href) for href in hrefs))
+        if not ID_RE.fullmatch(identifier) or not title.strip() or date.fromisoformat(published).isoformat() != published:
+            raise ValueError("Invalid article update metadata")
+        hashes = {name: content_digest(site_dir / name) for name in sorted(set(assets))}
+        digest = hashlib.sha256(json_script({"title": title, "content": hashes}).encode("utf-8")).hexdigest()
+        old = previous_articles.get(identifier)
+        initial_day = max(published, updated or published)
+        date.fromisoformat(initial_day)
+        updated_at = initial_day + "T00:00:00Z"
+        change = "updated" if initial_day > published else "new"
+        if old:
+            unchanged = old.get("revision") == digest
+            updated_at = old.get("updatedAt", updated_at) if unchanged else timestamp
+            change = old.get("change", change) if unchanged else "updated"
+        record = {"id": identifier, "path": public_path(hrefs[0]), "paths": paths, "title": title,
+                  "publishedAt": published, "revision": digest, "updatedAt": updated_at, "change": change}
+        records.append(record)
+        for path in paths:
+            path_owners[path] = record
+        for name, checksum in hashes.items():
+            if name.endswith(".pdf"):
+                pdf_owners.setdefault(checksum, record)
+        return record
+
+    for review in reviews:
+        hrefs, assets = [], []
+        for variant in [review, *review.get("translations", [])]:
+            href = variant["href"]
+            public_path(href)
+            hrefs.append(href)
+            assets.append(href)
+            for name in variant.get("assets", []):
+                asset = (Path(href).parent / name).as_posix()
+                public_path(asset)
+                assets.append(asset)
+                if asset.endswith(".pdf"):
+                    hrefs.append(asset)
+        add(review["folder"], review["title"], review["date"], hrefs, assets, review.get("updated"))
+
+    for document in documents:
+        href = document["href"]
+        pdf_path = public_path(href)
+        checksum = content_digest(site_dir / href)
+        owner = path_owners.get(pdf_path) or pdf_owners.get(checksum)
+        if owner:
+            owner["paths"] = sorted(set([*owner["paths"], pdf_path]))
+            path_owners[pdf_path] = owner
+            continue
+        study = document.get("study_href")
+        hrefs, assets = [href], [href]
+        if study:
+            public_path(study)
+            main = study.rstrip("/") + "/index.html"
+            hrefs.insert(0, main)
+            assets.append(main)
+            for name in document.get("study_assets", {}):
+                asset = (Path(study) / name).as_posix()
+                public_path(asset)
+                assets.append(asset)
+                if asset.endswith(".html"):
+                    hrefs.append(asset)
+        identifier = ("lecture:" if document.get("series") == "lecture-notes" else "archive:") + document["id"]
+        add(identifier, document["title"], document["date"], hrefs, assets)
+    return {"version": 1, "pages": pages,
+            "articles": sorted(records, key=lambda item: (item["publishedAt"], item["id"]), reverse=True)}
+
+
+def validate_updates(updates: dict) -> dict:
+    if not isinstance(updates, dict) or set(updates) != {"version", "pages", "articles"} or updates["version"] != 1:
+        raise ValueError("Invalid update metadata version")
+    if not isinstance(updates["pages"], dict) or not isinstance(updates["articles"], list):
+        raise ValueError("Invalid update metadata collection")
+    def scoped(path: str) -> bool:
+        return isinstance(path, str) and path.startswith(SCOPE) and (path == SCOPE or public_path(path[len(SCOPE):]) == path)
+    for path, digest in updates["pages"].items():
+        if not scoped(path) or not CONTENT_SHA_RE.fullmatch(str(digest)):
+            raise ValueError("Invalid update page digest")
+    ids, paths = set(), set()
+    for item in updates["articles"]:
+        if (not isinstance(item, dict) or set(item) != {"id", "path", "paths", "title", "publishedAt", "revision", "updatedAt", "change"}
+                or not isinstance(item["id"], str) or not ID_RE.fullmatch(item["id"]) or item["id"] in ids
+                or not isinstance(item["title"], str) or not item["title"].strip()
+                or not CONTENT_SHA_RE.fullmatch(str(item["revision"])) or item["change"] not in {"new", "updated"}
+                or not isinstance(item["paths"], list) or not item["paths"]
+                or item["path"] not in item["paths"] or len(set(item["paths"])) != len(item["paths"])
+                or any(not scoped(path) or path in paths for path in item["paths"])):
+            raise ValueError("Invalid update article record")
+        if date.fromisoformat(item["publishedAt"]).isoformat() != item["publishedAt"]:
+            raise ValueError("Invalid update publication date")
+        if not isinstance(item["updatedAt"], str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", item["updatedAt"]):
+            raise ValueError("Invalid update timestamp")
+        datetime.fromisoformat(item["updatedAt"].replace("Z", "+00:00"))
+        ids.add(item["id"])
+        paths.update(item["paths"])
+    return updates
+
+
 def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Path = FRONTEND_DIR) -> dict:
     """Modify only new marked blocks, new assets and derived lecture checksums."""
     site_dir = Path(site_dir)
     articles, pages = load_publications(site_dir)
+    previous_file = site_dir / UPDATES_NAME
+    previous = validate_updates(json.loads(previous_file.read_text(encoding="utf-8"))) if previous_file.exists() else None
+    updates = build_updates(site_dir, previous)
+    validate_updates(updates)
     if revision is None:
         revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     if not SHA_RE.fullmatch(revision):
@@ -159,16 +294,18 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
             raise ValueError(f"Missing reader frontend asset: {source}")
         payloads[target] = path.read_bytes()
     asset_versions = {name: hashlib.sha256(payloads[ASSETS[name]]).hexdigest()[:12]
-                      for name in ("reader-engagement.js", "reader-engagement.css")}
+                      for name in ("reader-engagement.js", "reader-engagement.css", "reader-updates.js")}
     for target, payload in payloads.items():
         write_changed(site_dir / target, payload)
+    content_versions = {path: item["revision"] for item in updates["articles"] for path in item["paths"]}
     changed = 0
     for path in sorted(site_dir.rglob("*.html")):
         if path.is_symlink():
             raise ValueError("Reader output cannot contain symlink HTML")
         relative = path.relative_to(site_dir).as_posix()
         original = path.read_bytes().decode("utf-8")
-        enriched = enrich_html(original, relative, pages.get(relative), asset_versions=asset_versions)
+        enriched = enrich_html(original, relative, pages.get(relative), asset_versions=asset_versions,
+                               article_version=content_versions.get(public_path(relative)))
         changed += write_changed(path, enriched.encode("utf-8"))
     # Lecture bundles checksum their HTML; keep the derived registry truthful.
     archive_path = site_dir / "archive-manifest.json"
@@ -185,6 +322,7 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
                         updated = True
         if updated:
             write_changed(archive_path, (json.dumps(archive, ensure_ascii=False, indent=2) + "\n").encode())
+    write_changed(site_dir / UPDATES_NAME, (json.dumps(updates, ensure_ascii=False, indent=2) + "\n").encode())
     catalog = {"revision": revision, "articles": articles}
     write_changed(site_dir / CATALOG_NAME, (json.dumps(catalog, ensure_ascii=False, indent=2) + "\n").encode())
     return {"html_changed": changed, "articles": len(articles), "revision": revision}
@@ -200,6 +338,9 @@ def validate_public_artifact(site_dir: Path) -> dict:
     if site_dir.is_symlink():
         raise ValueError("The public output directory cannot be a symlink")
     catalog = validate_catalog(json.loads((site_dir / CATALOG_NAME).read_text(encoding="utf-8")))
+    updates = validate_updates(json.loads((site_dir / UPDATES_NAME).read_text(encoding="utf-8")))
+    if build_updates(site_dir, updates) != updates:
+        raise ValueError("Update metadata differs from public content")
     generated, _ = load_publications(site_dir)
     if catalog["articles"] != generated:
         raise ValueError("Publication catalog differs from approved public registries")

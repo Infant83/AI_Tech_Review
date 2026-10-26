@@ -877,24 +877,93 @@ test('service worker allows only same-origin in-scope notification links and alw
   assert.match(shown.at(-1).options.body, /New article published/);
   assert.equal(Object.hasOwn(handlers, 'fetch'), false, 'must not rewrite or cache article requests');
 });
-test('notification click opens the article and focuses an existing exact match', async () => {
+function assertFreshNotificationTarget(actual, expected) {
+  const fresh = new URL(actual), canonical = new URL(expected);
+  const token = fresh.searchParams.get('_atr_refresh');
+  assert.match(token, /^[a-z0-9]+-[a-z0-9]+$/);
+  assert.notEqual(token, canonical.searchParams.get('_atr_refresh'));
+  fresh.searchParams.delete('_atr_refresh'); canonical.searchParams.delete('_atr_refresh');
+  assert.equal(fresh.href, canonical.href, 'real query parameters and anchors must survive');
+  return token;
+}
+test('notification click opens a fresh article URL and navigates an existing exact match before focusing', async () => {
   const harness = workerHarness();
-  const url = 'https://infant83.io/AI_Tech_Review/reviews/example/';
+  const url = 'https://infant83.io/AI_Tech_Review/reviews/example/?view=full#section-2';
   let promise, closed = 0;
   harness.handlers.notificationclick({ notification: { data: { url }, close: () => closed++ }, waitUntil: p => { promise = p; } });
   await promise;
   assert.equal(closed, 1);
-  assert.deepEqual(harness.opened, [url]);
-  let focused = 0;
-  harness.self.clients.matchAll = async () => [{ url, focus: async () => focused++ }];
+  assert.equal(harness.opened.length, 1);
+  const firstToken = assertFreshNotificationTarget(harness.opened[0], url);
+  const actions = [];
+  harness.self.clients.matchAll = async () => [
+    { type: 'window', url: 'https://infant83.io/AI_Tech_Review/', navigate: async () => { assert.fail('prefer exact article'); } },
+    { type: 'window', url: url.replace('?view=full', '?view=full&_atr_refresh=old'), focus: async () => { assert.fail('do not focus stale DOM'); },
+      navigate: async target => { actions.push(['navigate', target]); return { focus: async () => actions.push(['focus']) }; } }
+  ];
   harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { promise = p; } });
   await promise;
-  assert.equal(focused, 1);
+  assert.deepEqual(actions.map(item => item[0]), ['navigate', 'focus']);
+  assert.notEqual(assertFreshNotificationTarget(actions[0][1], url), firstToken);
   assert.equal(harness.opened.length, 1);
   harness.self.clients.matchAll = async () => { throw Error('clients unavailable'); };
   harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { promise = p; } });
   await promise;
   assert.equal(harness.opened.length, 2);
+  assertFreshNotificationTarget(harness.opened[1], url);
+});
+test('notification click falls back from null, rejected or unavailable navigation without focusing stale pages', async () => {
+  const url = 'https://infant83.io/AI_Tech_Review/reviews/example/';
+  for (const failure of ['null', 'reject', 'unsupported', 'focus-reject']) {
+    const harness = workerHarness();
+    let staleFocus = 0, navigations = 0;
+    const exact = { type: 'window', url, focus: async () => staleFocus++ };
+    if (failure !== 'unsupported') exact.navigate = async target => {
+      navigations++; assertFreshNotificationTarget(target, url);
+      if (failure === 'reject') throw Error('closed');
+      if (failure === 'focus-reject') return { focus: async () => { throw Error('focus unavailable'); } };
+      return null;
+    };
+    harness.self.clients.matchAll = async () => [exact];
+    let pending;
+    harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { pending = p; } });
+    await pending;
+    assert.equal(staleFocus, 0, failure);
+    assert.equal(navigations, failure === 'unsupported' ? 0 : 1);
+    assert.equal(harness.opened.length, 1, failure);
+    assertFreshNotificationTarget(harness.opened[0], url);
+  }
+});
+test('notification click retries another scoped window after an exact client fails', async () => {
+  const harness = workerHarness(), url = 'https://infant83.io/AI_Tech_Review/reviews/example/';
+  const actions = [];
+  harness.self.clients.matchAll = async () => [
+    { type: 'window', url, navigate: async () => { actions.push('exact'); return null; } },
+    { type: 'window', url: 'https://infant83.io/AI_Tech_Review/en/', navigate: async target => {
+      actions.push('other'); assertFreshNotificationTarget(target, url); return { focus: async () => { actions.push('focus'); } };
+    } }
+  ];
+  let pending;
+  harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { pending = p; } });
+  await pending;
+  assert.deepEqual(actions, ['exact', 'other', 'focus']);
+  assert.equal(harness.opened.length, 0);
+});
+test('notification click rejects foreign, out-of-scope and credentialed targets and clients', async () => {
+  const harness = workerHarness(), safe = 'https://infant83.io/AI_Tech_Review/';
+  harness.self.clients.matchAll = async () => [
+    { type: 'window', url: 'https://foreign.example/AI_Tech_Review/', navigate: async () => assert.fail('foreign client') },
+    { type: 'window', url: 'https://infant83.io/outside/', navigate: async () => assert.fail('outside client') },
+    { type: 'window', url: 'https://user:pass@infant83.io/AI_Tech_Review/', navigate: async () => assert.fail('credentialed client') }
+  ];
+  for (const url of ['https://foreign.example/', 'https://infant83.io/outside/', 'https://user:pass@infant83.io/AI_Tech_Review/', 'javascript:alert(1)']) {
+    let pending;
+    harness.handlers.notificationclick({ notification: { data: { url }, close() {} }, waitUntil: p => { pending = p; } });
+    await pending;
+    assertFreshNotificationTarget(harness.opened.at(-1), safe);
+  }
+  assert.equal(harness.opened.length, 4);
+  assert.equal(Object.hasOwn(harness.handlers, 'fetch'), false);
 });
 
 test('public metrics use browser storage separately from auth and do not create a reader session', async () => {

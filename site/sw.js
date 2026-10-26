@@ -13,6 +13,7 @@ let readerStateQueue = Promise.resolve();
 let readerDesiredBadge = 0;
 let readerBadgeGeneration = 0;
 let readerBadgeReconcileScheduled = false;
+let readerNavigationGeneration = 0;
 
 function readerScopedURL(value) {
   if (typeof value !== "string" || !value) return null;
@@ -295,24 +296,31 @@ self.addEventListener("push", function (event) {
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
   const url = readerNotificationURL(event.notification.data && event.notification.data.url);
+  const fresh = new URL(url);
+  // A tap asks to see the current article. A matching open window may contain
+  // an older DOM, and the canonical URL may still be fresh in the HTTP cache.
+  // Keep real query parameters and anchors while giving this navigation its
+  // own cache key; the page removes the transient marker after it has loaded.
+  fresh.searchParams.set("_atr_refresh", Date.now().toString(36) + "-" + (++readerNavigationGeneration).toString(36));
   event.waitUntil((async function () {
     const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true }).catch(function () { return []; });
-    const exact = windows.find(function (client) { return client.url === url; });
-    if (exact && typeof exact.focus === "function") {
-      try { return await exact.focus(); } catch (_) { /* A closed window can race with the click. */ }
-    }
-    const app = windows.find(function (client) {
+    const scoped = windows.filter(readerScopedWindow);
+    const comparable = function (value) {
+      const current = new URL(value);
+      current.searchParams.delete("_atr_refresh");
+      return current.href;
+    };
+    const exact = scoped.find(function (client) { return comparable(client.url) === comparable(url); });
+    const candidates = exact ? [exact, ...scoped.filter(function (client) { return client !== exact; })] : scoped;
+    for (const app of candidates) {
+      if (typeof app.navigate !== "function") continue;
       try {
-        const current = new URL(client.url);
-        return current.origin === READER_SCOPE.origin && current.pathname.startsWith(READER_SCOPE.pathname);
-      } catch (_) { return false; }
-    });
-    if (app && typeof app.navigate === "function") {
-      try {
-        const navigated = await app.navigate(url);
-        if (navigated && typeof navigated.focus === "function") return navigated.focus();
-      } catch (_) { /* A closed window can race with the click. Open a new one. */ }
+        const navigated = await app.navigate(fresh.href);
+        if (!navigated) continue;
+        if (typeof navigated.focus === "function") return await navigated.focus();
+        return navigated;
+      } catch (_) { /* A closed window can race with the click. Try another. */ }
     }
-    if (typeof self.clients.openWindow === "function") return self.clients.openWindow(url);
+    if (typeof self.clients.openWindow === "function") return self.clients.openWindow(fresh.href);
   })());
 });

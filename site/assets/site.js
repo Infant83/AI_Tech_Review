@@ -265,6 +265,7 @@
     return true;
   }
   window.addEventListener("hub:before-language-change", saveBrowseState);
+  window.addEventListener("atr:before-refresh", saveBrowseState);
   window.addEventListener("pageshow", event => { if (event.persisted) void loadDiscovery(true); });
   from.max = to.max = todayKST();
   applyFilters(!restoreBrowseState());

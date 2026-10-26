@@ -854,7 +854,7 @@
     }).catch(function () { state.configError = true; });
     var registration = Promise.resolve();
     if (supported()) {
-      registration = withDeadline(Promise.resolve().then(function () { return navigator.serviceWorker.register(scope + "sw.js", { scope: scope }); }), 25000, "push_timeout").then(function (registered) {
+      registration = withDeadline(Promise.resolve().then(function () { return navigator.serviceWorker.register(scope + "sw.js", { scope: scope, updateViaCache: "none" }); }), 25000, "push_timeout").then(function (registered) {
         // Activation is normally already complete; wait for this registration only.
         state.registration = registered;
         if (registered.active) return registered;

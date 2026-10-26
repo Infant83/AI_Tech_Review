@@ -368,7 +368,9 @@ test('visible notification starts before slow storage/badging and click navigati
   await until(()=>h.badges.length===1);
   let closed=0;
   await h.emit('notificationclick',{notification:{data:{url:article('slow').url},close(){closed++;}}});
-  assert.equal(closed,1);assert.deepEqual(h.opened,[article('slow').url]);
+  assert.equal(closed,1);assert.equal(h.opened.length,1);
+  const fresh=new URL(h.opened[0]);assert.ok(fresh.searchParams.get('_atr_refresh'));
+  fresh.searchParams.delete('_atr_refresh');assert.equal(fresh.href,article('slow').url);
   native.resolve();await pending;
   await h.emit('install',{});await h.emit('activate',{});
   assert.deepEqual(h.counts(),{skipped:1,claimed:1});
