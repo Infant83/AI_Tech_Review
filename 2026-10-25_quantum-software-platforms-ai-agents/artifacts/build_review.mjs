@@ -74,6 +74,7 @@ function disclosure(ko){
   ['Human review','Topic, writing and public posting requested; no line-by-line human approval.'],['Evidence cutoff',cutoff]
  ];
  rows.push([ko?'문체 개정':'Prose revision',ko?"2026-10-26 문체 개정: 문체 감사 하네스의 10월 26일 보완에 따라 한국어 다섯 문단과 대응 영문을 퇴고했다. root는 편집·출력·게시 통합, english_update는 영문 대응 검토, publication_audit는 배포 정합성 검토를 맡았다. 수치·수식·도표·참고문헌과 근거 기준일은 유지했다.":"Prose revision, 2026-10-26: five Korean paragraphs and their English counterparts were edited using the October 26 prose-audit harness supplement. root handled editing, output and publication integration; english_update reviewed the English correspondence; publication_audit reviewed publication consistency. Numerical values, equations, figures, references and the evidence cutoff were retained."]);
+ rows.push([ko?'참고문헌 개정':'Reference revision',ko?"2026-10-26 참고문헌 개정: APS의 번호식 인용·서지 형식을 적용했다. root는 인용 대응·조판·게시, aps_standard_audit는 공식 지침 대조, software_credit_metadata는 개발자 크레딧, bibliography_source_index는 공식 문서 원제 확인을 맡았다.":"APS reference revision, 2026-10-26: root handled citation mapping, typesetting and publication; aps_standard_audit checked the official style; software_credit_metadata checked software attribution; bibliography_source_index verified official documentation titles."]);
  return `<!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">${ko?'작성·검증 정보':'How this review was made'}</h2><dl>${rows.map(([a,b])=>`<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl><p>${ko?'교육용 상태벡터 계산, 저자 보고 합성 수치와 개념 도식을 구분한다. AI 생성 표지는 개념 일러스트이며 실제 장치·회로·벤치마크 데이터가 아니다.':'The teaching state-vector calculation, author-reported synthesis values and conceptual diagrams are distinguished. The AI-generated cover is conceptual, not an actual device, circuit or benchmark dataset.'}</p></section><!-- End AI Tech Review Authoring Disclosure -->`;
 }
 
@@ -142,7 +143,23 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
   const heroStart=body.lastIndexOf('<figure',heroEnd);
   body=body.slice(0,heroStart)+editor+body.slice(heroStart,heroEnd+9)+tocHTML+body.slice(heroEnd+9);
  }else{body=body.replace(/<\/h1>/,'</h1>'+editor+tocHTML)}
- body=body.replace(/(<h2[^>]*>(?:참고문헌[^<]*|References[^<]*)<\/h2>)([\s\S]*?)(?=<h2|$)/,(_,heading,content)=>heading+`<div class="references">${content}</div>`);
+ const referenceStart=body.search(/<h2[^>]*>(?:참고문헌[^<]*|References[^<]*)<\/h2>/);
+ if(referenceStart>=0){
+  const main=body.slice(0,referenceStart).replace(/\[(\d+(?:[–-]\d+)?(?:,\s*\d+(?:[–-]\d+)?)*)\]/g,(label,numbers)=>{
+   const first=numbers.match(/^\d+/)[0];
+   const href=publicBase?publicBase+(ko?'':'en/')+`#ref-${first}`:`#ref-${first}`;
+   return `<a class="citation" role="doc-biblioref" href="${esc(href)}">${label}</a>`;
+  });
+  body=main+body.slice(referenceStart);
+ }
+ body=body.replace(/(<h2[^>]*>(?:참고문헌[^<]*|References[^<]*)<\/h2>)([\s\S]*?)(?=<h2|$)/,(_,heading,content)=>{
+  let reference=0;
+  const list=content.replace('<ol>','<ol class="reference-list" role="list">').replace(/<li>([\s\S]*?)<\/li>/g,(_,entry)=>{
+   const number=++reference;
+   return `<li id="ref-${number}"><span class="reference-number">[${number}]</span><span class="reference-text">${entry}</span></li>`;
+  });
+  return heading+`<div class="references">${list}</div>`;
+ });
  const dir=path.join(root,'dist',ko?'':'en');fs.mkdirSync(dir,{recursive:true});
  const other=publicBase?publicBase+(ko?'en/':''):(ko?'en/index.html':'../index.html');
  const url=publicBase?publicBase+(ko?'':'en/'):'';
