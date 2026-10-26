@@ -18,6 +18,14 @@ except ImportError:
 HUB_URL = "https://infant83.io/AI_Tech_Review/"
 EDITOR_URL = "https://infant83.io/"
 CONTACT_EMAIL = "angpangmokjang@gmail.com"
+ICONS = {
+    "editor": '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="2.7"/><path d="M6.8 18c.7-3.8 9.7-3.8 10.4 0"/>',
+    "methods": '<path d="M12 5.5C8.5 3.5 5.5 3.5 3 4.5v14c3-1 6-1 9 1 3-2 6-2 9-1v-14c-2.5-1-5.5-1-9 1Z"/><path d="M12 5.5v14M6 8h3M6 11h3M15 8h3M15 11h3"/>',
+    "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    "info": '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>',
+    "sun": '<circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    "moon": '<path d="M20.2 14.1A8.5 8.5 0 0 1 9.9 3.8 8.5 8.5 0 1 0 20.2 14.1Z"/>',
+}
 CATEGORY_KO = {
     "Quantum Computing": "양자 컴퓨팅", "Materials AI": "재료 AI", "AI Hardware": "AI 하드웨어",
     "AI Governance": "AI 거버넌스", "Quantum AI": "양자 AI", "AI for Science": "AI for Science",
@@ -28,6 +36,16 @@ CATEGORY_KO = {
 
 def escape(value: object) -> str:
     return html.escape(str(value), quote=True)
+
+
+def icon(name: str) -> str:
+    return ('<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
+            + ICONS[name] + '</svg>')
+
+
+def icon_link(href: str, label: str, symbol: str) -> str:
+    return f'<a class="hub-icon-link" href="{escape(href)}" aria-label="{escape(label)}" title="{escape(label)}">{icon(symbol)}</a>'
 
 
 def public_href(value: object, prefix: str = "") -> str:
@@ -131,9 +149,10 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     navigation = render_library_navigation(documents, "reviews", language, prefix)
     if en:
         navigation = navigation.replace('href="../index.html"', 'href="index.html"', 1)
-    locale_ko = ' selected' if not en else ''
-    locale_en = ' selected' if en else ''
     methods_label = "Editorial policy" if en else "작성·검증 원칙"
+    editor_label = "About the editor" if en else "편집자 소개"
+    mail_label = "Email the editor" if en else "편집자에게 메일 보내기"
+    data_label = "Reader statistics guide" if en else "독자 통계 안내"
     return f'''<!doctype html>
 <html lang="{language}" data-hub-language="{language}" data-theme="light">
 <head>
@@ -169,15 +188,13 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
       <div class="topbar-left">{brand}</div>
       <div class="hub-toolbar">
         <span class="topbar-links">
-          <a href="{EDITOR_URL}">{'Editor' if en else '편집자'}</a>
-          <a href="{prefix}methods/" aria-label="{methods_label}"><span class="hub-label-long">{methods_label}</span><span class="hub-label-short">{'Methods' if en else '작성원칙'}</span></a>
+          {icon_link(EDITOR_URL, editor_label, 'editor')}
+          {icon_link(prefix + 'methods/', methods_label, 'methods')}
         </span>
-        <select class="hub-locale" data-hub-language-select aria-label="{'Language' if en else '언어'}"><option value="ko"{locale_ko}>한국어</option><option value="en"{locale_en}>EN</option></select>
-        <details class="hub-appearance">
-          <summary aria-label="{'Appearance' if en else '화면 테마'}" title="{'Appearance' if en else '화면 테마'}"><span aria-hidden="true">◐</span></summary>
-          <div class="hub-theme-panel"><label><span>{'Appearance' if en else '화면 테마'}</span><select data-hub-theme aria-label="{'Appearance' if en else '화면 테마'}"><option value="light">{'Light' if en else '밝게'}</option><option value="dark">{'Dark' if en else '어둡게'}</option><option value="system">{'Device setting' if en else '기기 설정'}</option></select></label><p data-hub-preference-status role="status" aria-live="polite"></p></div>
-        </details>
-        <noscript><a href="{'../' if en else 'en/'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
+        <button class="hub-toggle hub-language-toggle" type="button" role="switch" data-hub-language-toggle aria-label="{'English' if en else '영어'}" aria-checked="{'true' if en else 'false'}" title="{'Switch to Korean' if en else '영어로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice" lang="ko">한</span><span class="hub-toggle-choice" lang="en">EN</span></span></button>
+        <button class="hub-toggle hub-theme-toggle" type="button" role="switch" data-hub-theme-toggle aria-label="{'Dark theme' if en else '어두운 화면'}" aria-checked="false" title="{'Switch to dark theme' if en else '어두운 화면으로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice">{icon('sun')}</span><span class="hub-toggle-choice">{icon('moon')}</span></span></button>
+        <span class="sr-only" data-hub-preference-status role="status" aria-live="polite"></span>
+        <noscript><style>.hub-toggle{{display:none}}</style><a href="{'../' if en else 'en/'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
       </div>
     </nav>
     <div class="hub-browse">{navigation}<label class="top-search"><span class="sr-only">{'Search reviews' if en else '리뷰 검색'}</span><input id="search" type="search" placeholder="{'Search titles or topics' if en else '제목·주제 검색'}" autocomplete="off"></label></div>
@@ -203,7 +220,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
   </main>
   <footer class="site-footer">
     <div><strong>AI Tech Review Letters</strong><p>{escape(description)}</p></div>
-    <nav aria-label="{'Information' if en else '하단 안내'}"><a href="{EDITOR_URL}">{'Editor' if en else '편집자'}</a><a href="{prefix}methods/">{methods_label}</a><a href="{prefix}methods/#reader-metrics">{'Data guide' if en else '데이터 안내'}</a><a href="mailto:{CONTACT_EMAIL}">{'Email the editor' if en else '관리자에게 메일'}</a></nav>
+    <nav class="hub-footer-links" aria-label="{'Information' if en else '하단 안내'}">{icon_link(EDITOR_URL, editor_label, 'editor')}{icon_link(prefix + 'methods/', methods_label, 'methods')}{icon_link(prefix + 'methods/#reader-metrics', data_label, 'info')}{icon_link('mailto:' + CONTACT_EMAIL, mail_label, 'mail')}</nav>
     <div data-reader-site-metrics></div>
   </footer>
   <script src="{prefix}assets/site.js?v={js_version}" defer></script>

@@ -272,7 +272,7 @@ function frontendHarness(options = {}) {
   }, getElementById: () => ({ tagName: 'SCRIPT', type: 'application/json', textContent: JSON.stringify(config) }),
   documentElement: { lang: options.english ? 'en' : 'ko', style: {} }, currentScript: null, body: new MiniNode('body'), title: 'Article',
   visibilityState: options.visibility || 'visible', hasFocus() { return this.focused !== false; }, focused: options.focused !== false,
-  createElement: tag => new MiniNode(tag), createTextNode: value => ({ textContent: value }), contains: () => true };
+  createElement: tag => new MiniNode(tag), createElementNS: (_namespace, tag) => new MiniNode(tag), createTextNode: value => ({ textContent: value }), contains: () => true };
   if (options.hubPage) document.body.className = 'hub-page';
   const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error,
     location: { protocol: 'https:', origin: 'https://infant83.io', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
@@ -1048,22 +1048,23 @@ test('English hub paths mount public statistics in the dedicated footer slot wit
   const methods = frontendHarness({ pathname: '/AI_Tech_Review/methods/', metricsSlot: true }); methods.api.mount();
   assert.equal(methods.api.metricsRoot(), null);
 });
-test('compact hub alert labels retain the original button, dialog handler and subscription state updates', async () => {
+test('hub alert icon retains its accessible name, dialog handler and subscription state updates', async () => {
   for (const english of [false, true]) {
     const harness = frontendHarness({ english, pathname: '/AI_Tech_Review/' + (english ? 'en/' : ''), hubPage: true, metricsSlot: true });
     harness.api.mount(); const opener = harness.topbar.children[0];
-    assert.equal(opener.children[0].className, 'hub-label-long');
-    assert.equal(opener.children[0].textContent, english ? 'Alerts' : '알림 설정');
-    assert.equal(opener.children[1].className, 'hub-label-short');
-    assert.equal(opener.children[1].textContent, english ? 'Alerts' : '알림');
+    assert.equal(opener.children[0].tagName, 'SVG');
+    assert.equal(opener.children[0].getAttribute('aria-hidden'), 'true');
+    assert.equal(opener.children[0].getAttribute('focusable'), 'false');
+    assert.equal(opener.textContent, '');
     assert.equal(opener.getAttribute('aria-label'), english ? 'Alerts' : '알림 설정');
+    assert.equal(opener.getAttribute('title'), english ? 'Alerts' : '알림 설정');
     assert.equal(opener.dataset.subscribed, 'false');
     await harness.context.Notification.requestPermission();
     harness.api.state.localSubscription = harness.subscription; harness.api.state.serverSubscription = harness.subscriptionJSON;
     harness.api.updateButtons();
     assert.equal(harness.topbar.children[0], opener);
     assert.equal(opener.dataset.subscribed, 'true');
-    assert.equal(opener.children.length, 2);
+    assert.equal(opener.children.length, 1);
     assert.equal(opener.getAttribute('aria-controls'), 'atr-reader-dialog');
     assert.equal(opener.listeners.click.length, 1);
   }

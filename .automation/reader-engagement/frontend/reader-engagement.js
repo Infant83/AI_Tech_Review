@@ -577,8 +577,23 @@
   function subscriptionButtonLabel(element) {
     if (element.dataset.readerHubHeader === "true") {
       var fullLabel = english ? "Alerts" : "알림 설정";
-      element.replaceChildren(node("span", "hub-label-long", fullLabel), node("span", "hub-label-short", english ? "Alerts" : "알림"));
+      var symbol = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      symbol.setAttribute("viewBox", "0 0 24 24");
+      symbol.setAttribute("width", "21");
+      symbol.setAttribute("height", "21");
+      symbol.setAttribute("fill", "none");
+      symbol.setAttribute("stroke", "currentColor");
+      symbol.setAttribute("stroke-width", "1.6");
+      symbol.setAttribute("stroke-linecap", "round");
+      symbol.setAttribute("stroke-linejoin", "round");
+      symbol.setAttribute("aria-hidden", "true");
+      symbol.setAttribute("focusable", "false");
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4");
+      symbol.appendChild(path);
+      element.replaceChildren(symbol);
       element.setAttribute("aria-label", fullLabel);
+      element.setAttribute("title", fullLabel);
     } else element.textContent = subscribed() ? text.settings : text.open;
     element.dataset.subscribed = subscribed() ? "true" : "false";
   }

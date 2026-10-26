@@ -15,37 +15,58 @@
   const paths = new Set([base.pathname, base.pathname + "index.html", base.pathname.slice(0, -1),
     base.pathname + "en", base.pathname + "en/", base.pathname + "en/index.html"]);
   if (!paths.has(location.pathname)) return;
-  const key = "atr.reader.preferences.v1";
-  const themes = new Set(["light", "dark", "system"]);
+  const languageKey = "atr.reader.language.v1";
+  const themeKey = "atr.reader.theme.v1";
+  const legacyKey = "atr.reader.preferences.v1";
   const validLanguage = value => value === "ko" || value === "en";
-  function parse(raw) {
+  const validTheme = value => value === "light" || value === "dark";
+  let storage;
+  try { storage = localStorage; } catch (_) { /* Reading still works. */ }
+  function read(key) {
+    try { return storage ? storage.getItem(key) : undefined; }
+    catch (_) { return undefined; }
+  }
+  function persist(key, value) {
+    try { if (!storage) return false; storage.setItem(key, value); return true; }
+    catch (_) { return false; }
+  }
+  function legacyPreferences(raw) {
     try {
       if (typeof raw !== "string" || raw.length > 1024) return {};
       const value = JSON.parse(raw);
-      if (!value || typeof value !== "object" || Array.isArray(value)) return {};
-      return {readerLanguage: validLanguage(value.readerLanguage) ? value.readerLanguage : null,
-        readerTheme: themes.has(value.readerTheme) ? value.readerTheme : "light"};
+      return value && typeof value === "object" && !Array.isArray(value) ? value : {};
     } catch (_) { return {}; }
   }
-  let preferences = {};
-  try { preferences = parse(localStorage.getItem(key)); } catch (_) { /* Reading still works. */ }
-  preferences.readerTheme = themes.has(preferences.readerTheme) ? preferences.readerTheme : "light";
-  function persist() {
-    try { localStorage.setItem(key, JSON.stringify(preferences)); return true; }
-    catch (_) { return false; }
+  let savedLanguage = read(languageKey), savedTheme = read(themeKey);
+  // A choice already stored under its own key always takes precedence. Migrate
+  // each missing field independently, without rewriting either setting later.
+  if (savedLanguage === null || savedTheme === null) {
+    const legacy = legacyPreferences(read(legacyKey));
+    if (savedLanguage === null && validLanguage(legacy.readerLanguage)) {
+      savedLanguage = legacy.readerLanguage;
+      persist(languageKey, savedLanguage);
+    }
+    if (savedTheme === null && (validTheme(legacy.readerTheme) || legacy.readerTheme === "system")) {
+      savedTheme = legacy.readerTheme;
+      if (savedTheme === "system") {
+        let dark = false;
+        try { dark = typeof matchMedia === "function" && matchMedia("(prefers-color-scheme: dark)").matches; } catch (_) { /* Default to light. */ }
+        savedTheme = dark ? "dark" : "light";
+      }
+      persist(themeKey, savedTheme);
+    }
   }
-  const media = typeof matchMedia === "function" ? matchMedia("(prefers-color-scheme: dark)") : null;
+  let theme = validTheme(savedTheme) ? savedTheme : "light";
   function applyTheme() {
-    const dark = preferences.readerTheme === "dark" || (preferences.readerTheme === "system" && media && media.matches);
-    root.dataset.theme = dark ? "dark" : "light";
-    root.dataset.themePreference = preferences.readerTheme;
-    root.style.colorScheme = dark ? "dark" : "light";
+    root.dataset.theme = theme;
+    root.dataset.themePreference = theme;
+    root.style.colorScheme = theme;
   }
   applyTheme();
   const current = new URL(location.href);
   const explicit = current.searchParams.get("lang");
-  if (validLanguage(explicit)) { preferences.readerLanguage = explicit; persist(); }
-  const requested = validLanguage(explicit) ? explicit : (language === "ko" && preferences.readerLanguage === "en" ? "en" : language);
+  if (validLanguage(explicit)) { savedLanguage = explicit; persist(languageKey, explicit); }
+  const requested = validLanguage(explicit) ? explicit : (language === "ko" && savedLanguage === "en" ? "en" : language);
   function destination(value) {
     const target = new URL(value === "en" ? "en/" : "./", base);
     target.search = location.search;
@@ -57,53 +78,42 @@
     location.replace(destination(requested).href);
     return;
   }
-  if (media) {
-    const changed = () => { if (preferences.readerTheme === "system") applyTheme(); };
-    if (typeof media.addEventListener === "function") media.addEventListener("change", changed);
-    else if (typeof media.addListener === "function") media.addListener(changed);
-  }
   function bind() {
     const en = language === "en";
-    const labels = en ? {light:"Light",dark:"Dark",system:"Device setting",appearance:"Appearance",saved:"Preferences saved.",temporary:"Applied for this visit."}
-      : {light:"밝게",dark:"어둡게",system:"기기 설정",appearance:"화면 테마",saved:"선택을 저장했습니다.",temporary:"이번 방문에 적용했습니다."};
-    const themeControls = document.querySelectorAll("[data-hub-theme]");
+    const labels = en ? {english:"English",dark:"Dark theme",toKorean:"Switch to Korean",toEnglish:"Switch to English",toLight:"Switch to light theme",toDark:"Switch to dark theme",saved:"Preference saved.",temporary:"Applied for this visit."}
+      : {english:"영어",dark:"어두운 화면",toKorean:"한국어로 전환",toEnglish:"영어로 전환",toLight:"밝은 화면으로 전환",toDark:"어두운 화면으로 전환",saved:"선택을 저장했습니다.",temporary:"이번 방문에 적용했습니다."};
+    const themeControls = document.querySelectorAll("[data-hub-theme-toggle]");
+    const languageControls = document.querySelectorAll("[data-hub-language-toggle]");
     function refresh() {
-      themeControls.forEach(control => { control.value = preferences.readerTheme; });
-      document.querySelectorAll(".hub-appearance summary").forEach(summary => {
-        const label = labels.appearance + ": " + labels[preferences.readerTheme];
-        summary.setAttribute("aria-label", label); summary.setAttribute("title", label);
+      themeControls.forEach(control => {
+        control.setAttribute("aria-checked", theme === "dark" ? "true" : "false");
+        control.setAttribute("aria-label", labels.dark);
+        control.setAttribute("title", theme === "dark" ? labels.toLight : labels.toDark);
+      });
+      languageControls.forEach(control => {
+        control.setAttribute("aria-checked", en ? "true" : "false");
+        control.setAttribute("aria-label", labels.english);
+        control.setAttribute("title", en ? labels.toKorean : labels.toEnglish);
       });
     }
     function notice(saved) {
       document.querySelectorAll("[data-hub-preference-status]").forEach(node => { node.textContent = saved ? labels.saved : labels.temporary; });
     }
-    document.querySelectorAll("[data-hub-language-select]").forEach(control => {
-      control.value = language;
-      control.addEventListener("change", () => {
-        if (!validLanguage(control.value)) { control.value = language; return; }
-        preferences.readerLanguage = control.value;
-        notice(persist());
-        if (control.value !== language) {
-          window.dispatchEvent(new Event("hub:before-language-change"));
-          location.assign(destination(control.value).href);
-        }
-      });
-    });
-    themeControls.forEach(control => control.addEventListener("change", () => {
-      preferences.readerTheme = themes.has(control.value) ? control.value : "light";
-      preferences.readerLanguage = language;
-      applyTheme(); refresh(); notice(persist());
+    languageControls.forEach(control => control.addEventListener("click", () => {
+      const next = en ? "ko" : "en";
+      notice(persist(languageKey, next));
+      window.dispatchEvent(new Event("hub:before-language-change"));
+      location.assign(destination(next).href);
     }));
-    document.querySelectorAll(".hub-appearance").forEach(details => {
-      document.addEventListener("click", event => { if (!details.contains(event.target)) details.open = false; });
-      details.addEventListener("keydown", event => {
-        if (event.key === "Escape") { details.open = false; details.querySelector("summary").focus(); }
-      });
-    });
+    themeControls.forEach(control => control.addEventListener("click", () => {
+      theme = theme === "dark" ? "light" : "dark";
+      const saved = persist(themeKey, theme);
+      applyTheme(); refresh(); notice(saved);
+    }));
     window.addEventListener("storage", event => {
-      if (event.key !== key) return;
-      const next = parse(event.newValue);
-      preferences = {readerLanguage: next.readerLanguage || null, readerTheme: next.readerTheme || "light"};
+      if (event.storageArea && event.storageArea !== storage) return;
+      if (event.key !== themeKey && event.key !== null) return;
+      theme = event.key === themeKey && validTheme(event.newValue) ? event.newValue : "light";
       applyTheme(); refresh();
     });
     refresh();
