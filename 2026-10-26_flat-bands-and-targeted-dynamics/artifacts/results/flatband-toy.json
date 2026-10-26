@@ -1,0 +1,57 @@
+{
+  "scope": "Independent exact two-band educational calculation; not material DFT, ED, FCI or QPU reproduction",
+  "convention": "C=sum(arg(Ux(k) Uy(k+x) conj(Ux(k+y)) conj(Uy(k))))/(2*pi), lower band",
+  "models": "trivial sigma_z and spectrally flattened QWZ d=(sin kx,sin ky,-1+cos kx+cos ky)",
+  "meshes": [
+    {
+      "mesh": 31,
+      "mass": -1,
+      "lower_chern": -1.0,
+      "unflattened_lower_chern": -1.0,
+      "conjugated_chern": 1.0,
+      "trivial_lower_chern": 0.0,
+      "lower_bandwidth": 8.881784197001252e-16,
+      "minimum_gap": 1.9999999999999991,
+      "minimum_neighbor_overlap": 0.9948695941923648,
+      "random_gauge_max_flux_change": 3.7947076036992655e-16
+    },
+    {
+      "mesh": 61,
+      "mass": -1,
+      "lower_chern": -1.0,
+      "unflattened_lower_chern": -1.0,
+      "conjugated_chern": 1.0,
+      "trivial_lower_chern": 0.0,
+      "lower_bandwidth": 1.5543122344752192e-15,
+      "minimum_gap": 1.9999999999999991,
+      "minimum_neighbor_overlap": 0.9986740945499089,
+      "random_gauge_max_flux_change": 3.975769366504345e-16
+    },
+    {
+      "mesh": 121,
+      "mass": -1,
+      "lower_chern": -1.0,
+      "unflattened_lower_chern": -1.0,
+      "conjugated_chern": 1.0,
+      "trivial_lower_chern": 0.0,
+      "lower_bandwidth": 1.3322676295501878e-15,
+      "minimum_gap": 1.9999999999999987,
+      "minimum_neighbor_overlap": 0.9996629653800939,
+      "random_gauge_max_flux_change": 4.2774486209984364e-16
+    }
+  ],
+  "scale_counterexample": {
+    "scales": [
+      1,
+      20
+    ],
+    "operator_norms": [
+      1,
+      20
+    ],
+    "bandwidths": [
+      0,
+      0
+    ]
+  }
+}

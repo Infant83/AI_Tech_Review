@@ -1,0 +1,39 @@
+{
+  "method": "Independent Bloch-vector Rodrigues rotations and 3x3/9x9 first/second moment matrices",
+  "scope": "Exact educational trajectory moments only; no StateDRIFT reproduction, molecular/QPU or shot-noise validation",
+  "T": 0.4,
+  "N": 4,
+  "M": 200,
+  "checks": [
+    {
+      "distribution": "vanilla",
+      "observable": "Z",
+      "max_absolute_difference": 1.0547118733938987e-15
+    },
+    {
+      "distribution": "vanilla",
+      "observable": "X",
+      "max_absolute_difference": 5.551115123125783e-16
+    },
+    {
+      "distribution": "toy_Z_optimized",
+      "observable": "Z",
+      "max_absolute_difference": 1.0547118733938987e-15
+    },
+    {
+      "distribution": "toy_Z_optimized",
+      "observable": "X",
+      "max_absolute_difference": 7.771561172376096e-16
+    },
+    {
+      "distribution": "toy_X_optimized",
+      "observable": "Z",
+      "max_absolute_difference": 5.551115123125783e-16
+    },
+    {
+      "distribution": "toy_X_optimized",
+      "observable": "X",
+      "max_absolute_difference": 9.43689570931383e-16
+    }
+  ]
+}

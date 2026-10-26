@@ -6,6 +6,12 @@
 
 사용자가 PDF를 제공하면 먼저 PDF 전체와 공개 제목·요약을 확인합니다. 개인 메일 주소, 수신자, 메일 시각, 비공개 링크, 로컬 경로 등 공개하면 안 되는 내용이 포함되어 있지 않은지 확인한 뒤 등록합니다. `--public-reviewed`는 이 확인을 마쳤다는 표시입니다. 스크립트의 파일 형식 검사는 PDF 내부의 모든 내용을 검토하지 않습니다.
 
+## Daily Quantum Brief와 평탄밴드 리뷰 검토 · 2026-10-26
+
+10월 26일 DQB 「평탄한 위상 밴드에서 구조를 아는 양자 알고리즘까지」를 `2026-10-26-daily-quantum-brief`로 등록했다. ReAg2Cl6의 flat Chern band·FCI/CDW 계산 예측, norm-aware 분자 전파, Mamba-QE, Fokker-Planck 생성모형과 projected quantum kernel을 다룬다. 원 DQB 4쪽에 공개 정정 기록 1쪽을 덧붙였다. 1쪽 수집 경위를 실제 삭제하고, 원본에서 깨진 화학식·지수와 참고문헌 [3]의 Mamba 저자·제목을 원문 대조해 바로잡았다. 같은 한국어 PDF를 한영 목록에서 안내한다.
+
+전체 5쪽을 렌더링하고 변경한 사각형 밖의 픽셀·원문 URI 5개·메타데이터·첨부·실행 동작·공개 문구를 점검했다. 원본과 QA 화면은 배포하지 않는다. 제작·검수 기록은 `daily_research_review/2026-10-26_dqb-archive/`에 있다. 기존 80개 PDF의 등록 정보를 유지한다. 평탄밴드와 StateDRIFT/norm-aware 후속 원고·교육 계산은 별도 주제 폴더에 보존하며, DQB 아카이빙과 새 심층 리뷰의 게재 상태를 구분한다.
+
 ## 외부 서적 개인 보관 · 2026-10-23
 
 Muhammad Faryad의 『Quantum Algorithms from First Principles』 무료 PDF판 Version 1.0(2026년 10월), 351쪽을 공식 배포 경로로 확보해 비공개 개인 아카이브에 원본 그대로 보관했다. 저자는 개인 학습·수업용 다운로드와 인쇄를 허용하지만 파일 재게시·재배포는 금지한다. 따라서 PDF는 공개 등록부·Git·사이트 배포에서 제외하며 [저자의 공식 배포 안내](https://maven.com/faryad/o/05455f)만 공유한다.

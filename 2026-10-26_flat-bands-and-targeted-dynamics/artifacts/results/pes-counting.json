@@ -1,0 +1,129 @@
+{
+  "analysis": "Recount of authors’ supplied particle-entanglement eigenvalues; no ED or PES recomputation",
+  "checked_date": "2026-10-26",
+  "source": {
+    "article_doi": "10.1038/s42005-026-02924-w",
+    "data_doi": "10.5281/zenodo.21199721",
+    "filename": "Figure 4.xlsx",
+    "download_url": "https://zenodo.org/api/records/21199721/files/Figure%204.xlsx/content",
+    "bytes": 98461,
+    "sha256": "80c91a78e5dad9691dc5a839b497ae393ba7c307f2722d7c9de8ddcbea22de1f",
+    "zenodo_published_checksum": "md5:1a8f515450eb525bbd2c72074cf43032",
+    "sheet": "Sheet1",
+    "worksheet_xml": "xl/worksheets/sheet1.xml",
+    "source_workbook_edited": false
+  },
+  "conditions": {
+    "C": -1,
+    "filling": "1/3",
+    "Nuc": 24,
+    "Ne": 8,
+    "NA": 3,
+    "NB": 5,
+    "ground_state_density_matrix": "equal mixture of three low-lying states",
+    "many_body_model": "single-band projected onsite interaction in flat-band limit"
+  },
+  "threshold_method": "Fixed thresholds inside the visible entanglement gaps of the published Fig. 4; not selected by optimizing agreement with the combinatorial count. Stability tested at plus/minus 0.1.",
+  "results": [
+    {
+      "band": "1st VB",
+      "column": "G",
+      "panel": "4b",
+      "threshold": 4.7,
+      "interpretation": "Laughlin-type FCI counting",
+      "expected": 1088,
+      "sheet": "Sheet1",
+      "range": "G3:G2026",
+      "first_row": 3,
+      "last_row": 2026,
+      "total_numeric_values": 2024,
+      "count_below_threshold": 1088,
+      "largest_value_below": 4.41856,
+      "smallest_value_above": 5.10839,
+      "entanglement_gap": 0.6898299999999997,
+      "threshold_sensitivity_counts": {
+        "4.6": 1088,
+        "4.7": 1088,
+        "4.8": 1088
+      },
+      "count_matches_closed_form": true
+    },
+    {
+      "band": "3rd CB",
+      "column": "O",
+      "panel": "4f",
+      "threshold": 5.3,
+      "interpretation": "Laughlin-type FCI counting",
+      "expected": 1088,
+      "sheet": "Sheet1",
+      "range": "O3:O2026",
+      "first_row": 3,
+      "last_row": 2026,
+      "total_numeric_values": 2024,
+      "count_below_threshold": 1088,
+      "largest_value_below": 3.72325,
+      "smallest_value_above": 6.78571,
+      "entanglement_gap": 3.0624599999999997,
+      "threshold_sensitivity_counts": {
+        "5.2": 1088,
+        "5.3": 1088,
+        "5.4": 1088
+      },
+      "count_matches_closed_form": true
+    },
+    {
+      "band": "2nd CB",
+      "column": "W",
+      "panel": "4d",
+      "threshold": 2.5,
+      "interpretation": "threefold CDW counting",
+      "expected": 168,
+      "sheet": "Sheet1",
+      "range": "W3:W2026",
+      "first_row": 3,
+      "last_row": 2026,
+      "total_numeric_values": 2024,
+      "count_below_threshold": 168,
+      "largest_value_below": 2.01692,
+      "smallest_value_above": 2.96012,
+      "entanglement_gap": 0.9432,
+      "threshold_sensitivity_counts": {
+        "2.4": 168,
+        "2.5": 168,
+        "2.6": 168
+      },
+      "count_matches_closed_form": true
+    }
+  ],
+  "closed_form": {
+    "Laughlin_1_3_torus": {
+      "formula": "24/(24-2*3) * binom(24-2*3,3)",
+      "value": 1088,
+      "independent_cyclic_minimum_spacing_enumeration": 1088
+    },
+    "threefold_CDW": {
+      "formula": "3 * binom(8,3)",
+      "value": 168,
+      "independent_three_sublattice_subset_enumeration": 168
+    },
+    "full_NA_particle_space": {
+      "formula": "binom(24,3)",
+      "value": 2024
+    }
+  },
+  "checks": {
+    "source_checksum": "pass",
+    "exact_cell_types_and_ranges": "pass",
+    "all_values_finite": "pass",
+    "total_levels": "pass",
+    "thresholds_inside_gaps": "pass",
+    "threshold_sensitivity": "pass",
+    "closed_form_arithmetic": "pass",
+    "independent_combinatorial_enumeration": "pass"
+  },
+  "limits": [
+    "This recount does not reproduce the original ED eigenstates or reduced density matrices.",
+    "PES counting is one diagnostic together with ground-state momentum and spectral flow.",
+    "These results do not establish stability with the physical band dispersion, band mixing, or at a measured transition temperature."
+  ]
+}
