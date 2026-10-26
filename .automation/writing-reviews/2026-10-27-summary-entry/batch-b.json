@@ -1,0 +1,238 @@
+[
+  {
+    "id": "2026-09-04_weekly-oled-inverse-design-excited-state-reliability",
+    "original": "LUSH가 여러 여기상태를 독립적인 scalar 대신 latent Hamiltonian의 고유값과 연산자로 학습하는 방식을 중심으로, QED-GW/BSE·AdaptNTK·reaction flow·계층형 생성 연구를 OLED 역설계 관점에서 검토합니다. 직접 OLED 논문이 없었던 주간이라는 한계와 D-Wave 고전 모사, warm-start QPU sampling의 실행 경계를 분리해 기록합니다.",
+    "ko": "분자가 변형되면서 여러 여기상태가 섞이고 순서까지 바뀌면, 에너지 값을 따로 예측하는 모델은 그 관계를 놓칠 수 있습니다. LUSH는 상태들을 하나의 학습된 해밀토니안으로 묶어 이 문제에 접근합니다. OLED 후보를 고르는 데 이 표현을 쓰려면 삼중항과 스핀–궤도 결합까지 시험해야 한다는 다음 과제도 선명해집니다.",
+    "en": "As a molecule changes shape, excited states can mix and exchange order. Predicting each energy separately can lose the relationships between them. LUSH approaches this problem through a learned Hamiltonian, suggesting a way to represent connected states while leaving OLED triplets and spin–orbit coupling to be tested.",
+    "reason": "방법·논문 목록 대신 여기상태를 함께 표현해야 하는 물리적 이유를 제시하고, OLED 검증이 남았다는 중요한 조건을 유지함.",
+    "support": [
+      "2026-09-04_weekly-oled-inverse-design-excited-state-reliability/reports/2026-09-04_weekly-oled-inverse-design-excited-state-reliability_final_review.md: 각 상태의 에너지를 서로 무관한 scalar로 회귀하지 않고, 잠재공간의 대칭 Hamiltonian을 학습한 뒤 대각화한다.",
+      "2026-09-04_weekly-oled-inverse-design-excited-state-reliability/reports/2026-09-04_weekly-oled-inverse-design-excited-state-reliability_final_review.md: 현재 실증은 singlet 중심 데이터와 random split에 머물며 TADF의 triplet·SOC·RISC와 host 환경을 검증하지 않았다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-09-03_quantum-full-stack-codesign",
+    "original": "D-Wave 분자 생성과 광섬유 기반 transmon control을 출발점으로, IBM sampling·kernel 연구, QuEra·IonQ 응용 PoC, 측정비용과 오류정정 컴파일을 연결합니다. 큐비트 수보다 상태준비·측정·고전 후처리·논리 라우팅을 함께 최적화하는 full-stack co-design이 개발 방향을 좌우한다는 관점입니다.",
+    "ko": "큐비트가 늘어나면 제어선을 연결하고 결과를 읽는 일도 함께 커집니다. 회로 안에서 아낀 연산이 측정과 고전 후처리의 비용으로 되돌아올 수도 있습니다. 광섬유 트랜스몬 제어와 분자 계산 등 서로 다른 연구를 따라가며, 쓸 만한 양자컴퓨터를 만드는 경쟁이 칩부터 응용까지 연결되는 이유를 짚습니다.",
+    "en": "Adding qubits also expands the task of wiring, controlling and reading them. Operations saved inside a circuit can reappear as measurement and classical processing costs. Optical transmon control and molecular computation help explain why building a useful quantum computer requires decisions that connect the chip to the application.",
+    "reason": "회사·기술 목록을 줄이고 배선과 측정이라는 구체적인 병목을 통해 전체 시스템 설계의 의미를 전달함.",
+    "support": [
+      "2026-09-03_quantum-full-stack-codesign/reports/2026-09-03_quantum-full-stack-codesign_final_review.md: 큐비트를 늘려도 상온에서 극저온까지 제어신호를 보내는 배선이 감당하지 못하면 시스템은 커지지 않는다.",
+      "2026-09-03_quantum-full-stack-codesign/reports/2026-09-03_quantum-full-stack-codesign_final_review.md: 좋은 상태를 만들어도 측정 샷과 고전 후처리가 폭증하면 계산은 유용해지지 않는다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-09-01_quantum-error-mitigation-net-benefit",
+    "original": "판독 반복부호가 11배 물리 큐비트와 추가 CNOT으로 얻는 수치 예측, IBM Heron 연구의 실제 작은 회로 실행과 장치 보정값 기반 ZNE 수치실험을 분리해 읽습니다. 정확도와 함께 shots·추가 회로·2Q depth·postselection·wall-clock을 기록해야 하는 이유를 설명하고, 광자회로·에너지망·AI-for-quantum·cavity 재료 연구를 각각 평가합니다.",
+    "ko": "오차를 줄이려고 보조 큐비트를 늘리고 같은 회로를 더 많이 반복하면, 정확해진 답에도 새로운 비용이 붙습니다. 판독 반복부호의 수치 연구와 IBM Heron의 작은 회로 실험은 이 교환을 서로 다른 곳에서 드러냅니다. 같은 장비와 시간으로 더 유용한 답을 얻었는지를 물어야 오류완화의 이득을 판단할 수 있습니다.",
+    "en": "A more accurate answer can require extra qubits and many more circuit repetitions. Numerical work on readout repetition codes and small-circuit experiments on IBM Heron expose different parts of this trade-off. The useful comparison is whether mitigation produces a better answer with the equipment and time available.",
+    "reason": "오류 유형·샷·후처리 목록보다 정확도와 전체 비용의 실제 교환을 중심에 두고 수치 연구와 장치 실험을 구분함.",
+    "support": [
+      "2026-09-01_quantum-error-mitigation-net-benefit/reports/2026-09-01_quantum-error-mitigation-net-benefit_final_review.md: 같은 장비와 같은 시간으로 더 유용한 답을 얻었는지까지 봐야 한다.",
+      "2026-09-01_quantum-error-mitigation-net-benefit/reports/2026-09-01_quantum-error-mitigation-net-benefit_final_review.md: 한 동료평가 논문은 데이터 큐비트마다 최대 10개의 보조 큐비트를 더 붙이고 다수결로 판독해 측정 오류를 크게 낮출 수 있는지 계산했다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-31_thermal-quantum-states-exciton-validation",
+    "original": "유한온도 Gibbs 상태를 준비하는 방법, 2D XY 시뮬레이터와 고전 계산이 같은 확산계수를 내는지, α-sexithiophene의 엑시톤이 400 fs 동안 어떻게 수축하는지 설명합니다. 이어서 하드웨어·펄스 설계와 Fourier-LCU가 회로 연결, 측정 횟수와 고전 집계 비용을 어떻게 맞바꾸는지 살펴봅니다.",
+    "ko": "열과 빛을 받은 물질에서는 여러 에너지 상태가 섞이고, 전자와 정공이 만든 엑시톤의 모양도 시간에 따라 달라집니다. 유기 반도체의 분광 자료에서 복원한 엑시톤은 400 fs 안에 수축했습니다. 이런 관측과 유한온도 양자 시뮬레이션 연구를 함께 읽으면, 계산을 검증할 기준이 에너지 한 값에서 상태의 공간적 모양과 시간 변화로 넓어집니다.",
+    "en": "Heat mixes energy states, while absorbed light can set an exciton’s shape in motion. In an organic semiconductor, spectroscopic reconstruction found that the exciton contracted within 400 fs. Read alongside finite-temperature quantum simulation research, this result expands what a calculation can be tested against: the spatial form of a state and how it changes with time.",
+    "reason": "논문·하드웨어 목록 대신 물질의 온도와 시간 변화로 관심을 잇고, 실공간 파동함수는 분광에서 복원했다는 구분을 유지함.",
+    "support": [
+      "2026-08-31_thermal-quantum-states-exciton-validation/reports/2026-08-31_thermal-quantum-states-exciton-validation_final_review.md: 열에 의해 여러 에너지 상태가 섞이고, 전자와 정공이 만든 엑시톤은 분자 사이로 퍼졌다가 격자 진동과 상호작용하며 모양을 바꾼다.",
+      "2026-08-31_thermal-quantum-states-exciton-validation/reports/2026-08-31_thermal-quantum-states-exciton-validation_final_review.md: 시간분해 측정에서는 400 fs 안에 exciton radius가 약 25% 줄었다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-30_practical-quantum-computing-stack",
+    "original": "양자컴퓨터의 실용성을 최신 고전 기준선, 회로 구현, 판독, 오류정정 메모리, 제조·배치의 다섯 검증 단계로 읽습니다. KS-FNO, Classiq challenge, PTSET, FTQC 하한과 Xanadu·Pasqal 소식을 서로 다른 증거 층에 놓고, OLED·재료 PoC에 제한된 양자 커널을 배치하는 기준을 제시합니다.",
+    "ko": "재료 연구자가 양자컴퓨터에 계산 하나를 맡기려면, 같은 문제를 푸는 최신 고전 계산부터 확인해야 합니다. 회로를 만들고 결과를 읽은 뒤에는 긴 계산을 지탱할 메모리와 반복 생산할 장치도 필요합니다. 이 과정을 따라가며 양자 계산을 연구에 넣을 위치와 조건을 찾습니다.",
+    "en": "Before assigning a materials calculation to a quantum computer, a researcher needs to know how the best current classical method performs. Building a circuit and reading its output then leads to questions of long-lived memory and reproducible hardware. Following that path reveals where a quantum calculation could fit into a working research process.",
+    "reason": "다섯 단계의 분류와 약어 목록을 연구자가 계산을 맡기는 구체적인 과정으로 풀어 읽을 용도를 전달함.",
+    "support": [
+      "2026-08-30_practical-quantum-computing-stack/reports/2026-08-30_practical-quantum-computing-stack_final_review.md: 먼저 같은 문제를 푸는 최신 고전 계산을 기준선으로 고정해야 한다.",
+      "2026-08-30_practical-quantum-computing-stack/reports/2026-08-30_practical-quantum-computing-stack_final_review.md: 긴 계산 동안 논리 정보를 보존하는 오류정정 자원과 장치를 반복 생산할 제조 기반도 필요하다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-29_quantum-simulation-vibronic-dynamics",
+    "original": "PennyLane 데모가 KDC 진동-전자 해밀토니안을 실공간 격자, QROM, 가역 산술과 2차 Trotter 전개로 옮기는 방법을 해설합니다. 23-wire CPU 상태벡터 toy simulation과 실제 QPU·분자 계산의 경계를 구분하고, TADF·OLED의 spin-vibronic 동역학으로 확장하기 위한 검증 단계를 제시합니다.",
+    "ko": "분자가 빛을 받으면 원자핵의 움직임과 전자상태의 변화가 서로 얽힙니다. PennyLane의 작은 CPU 시뮬레이션은 이 움직임을 양자회로에 옮기는 과정을 코드로 보여줍니다. 정지된 에너지 준위를 넘어 OLED 분자의 시간에 따른 변화를 계산하려면 어떤 준비가 필요한지 배울 수 있습니다.",
+    "en": "After a molecule absorbs light, nuclear motion and changing electronic states become coupled. A small CPU simulation from PennyLane shows, in code, how that motion can be translated into a quantum circuit. It offers a way to learn what is needed to move from static energy levels toward calculations of OLED molecular dynamics.",
+    "reason": "회로 구성요소의 압축 나열을 분자의 움직임으로 풀되 교육용 CPU 모형이라는 핵심 범위를 그대로 드러냄.",
+    "support": [
+      "2026-08-29_quantum-simulation-vibronic-dynamics/reports/2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md: 원자핵이 움직이고 결합이 늘어나거나 비틀리면서 전자상태의 에너지와 성격도 함께 달라진다.",
+      "2026-08-29_quantum-simulation-vibronic-dynamics/reports/2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md: 두 전자상태와 한 진동모드로 만든 작은 모형을 CPU 기반 `lightning.qubit` 상태벡터 시뮬레이터에서 실행했다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
+    "original": "이번 주 OLED 광물리 논문은 위치 이성질체별 ISC 속도를 direct SOC, Herzberg-Teller, spin-vibronic 기여로 분해했습니다. 이를 바탕으로 ΔEST 중심 데이터셋을 state character, higher triplet, SOC와 promoting mode까지 포함하는 물성 라벨로 확장할 필요성을 검토하고, DensIP·Kohn-Sham neural operator·closed-loop AI와 VQE 구성요소의 적용 범위를 정리합니다.",
+    "ko": "비슷한 속도로 전자상태가 바뀌는 분자라도, 그 전이가 일어나는 통로는 다를 수 있습니다. 위치 이성질체의 광물리 연구는 총속도 하나에 가려지는 진동과 스핀–궤도 결합의 역할을 드러냅니다. OLED 분자 역설계 모델에 어떤 물성을 가르쳐야 구조 변화의 이유까지 배울 수 있을지 살펴봅니다.",
+    "en": "Two molecules can change electronic state at similar rates through different physical pathways. Work on positional isomers reveals how an overall rate can conceal distinct contributions from molecular motion and spin–orbit coupling. The result raises a practical question for OLED inverse design: which properties should a model learn to capture why a structural change matters?",
+    "reason": "여러 계산 기법의 목록을 덜고, 같은 속도에서도 다른 기작이 숨어 있다는 연구 고유의 차이를 중심에 둠.",
+    "support": [
+      "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/reports/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels_final_review.md: 세 이성질체는 비슷한 크기의 ISC 속도를 가질 수 있지만, ortho와 para에서는 direct SOC와 Herzberg-Teller 기여가, meta에서는 Herzberg-Teller와 spin-vibronic 경로가 중심이 됐다.",
+      "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels/reports/2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels_final_review.md: 총속도 하나만 학습하면 이 차이가 사라진다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-27_classiq-ashn-circuit-compression",
+    "original": "Classiq은 기능 모델에서 함수 구현·ancilla·control pattern을 고르고, AshN은 실제 초전도 QPU의 native two-qubit gate로 논리 연산과 routing SWAP을 흡수합니다. CX count, mapped depth와 QPU fidelity를 분리해 두 접근의 공통 원리, 정량 결과, 결합 가능성과 미입증 범위를 검토합니다.",
+    "ko": "같은 양자 계산도 회로를 어떻게 구현하고 기계가 어떤 게이트를 직접 실행하느냐에 따라 오류와 연산 비용이 달라집니다. Classiq의 회로 합성과 실제 초전도 QPU에서 시험한 AshN을 통해, 자원을 아끼는 선택이 소프트웨어에서 물리 제어까지 어떻게 이어지는지 살펴봅니다.",
+    "en": "The same quantum computation can incur different errors and costs depending on how its circuit is built and which gates the machine can execute directly. Classiq’s circuit synthesis and AshN’s tests on a superconducting QPU show how resource-saving choices extend from software design to physical control.",
+    "reason": "기능·ancilla·control·지표를 나열하기보다 같은 계산의 구현 선택이라는 공통 문제를 드러내며 합성과 실제 장치 실험의 지위를 유지함.",
+    "support": [
+      "2026-08-27_classiq-ashn-circuit-compression/reports/2026-08-27_classiq-ashn-circuit-compression_final_review.md: 같은 알고리즘이라도 함수 구현, ancilla 사용, 게이트 재작성, 큐비트 배치와 native gate 선택에 따라 실제 실행 가능성이 크게 달라지는 이유입니다.",
+      "2026-08-27_classiq-ashn-circuit-compression/reports/2026-08-27_classiq-ashn-circuit-compression_final_review.md: 회로 실험은 현재 CZ 회로가 너무 깊어지는 한계 때문에 최대 7-qubit benchmark와 8-qubit Dicke-state preparation에 집중했습니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-27_dwave-molecular-inverse-design-benchmark",
+    "original": "Chemprop D-MPNN과 ExtraTrees/Morgan 예측, 세 가지 고전 분자 생성기, 18변수 BQM을 거쳐 후보 3개를 선택했습니다. D-Wave QPU 결과를 exact 기준과 비교하고 PySCF DFT로 6개 후보를 재검증했으며, 고정 후보군 replay와 실제 active-learning loop의 증거 경계를 구분합니다.",
+    "ko": "다음 분자 계산에 보낼 세 후보를 고르는 일을 고전 해법과 D-Wave QPU에 맡겼습니다. 같은 18개 후보에서 고른 분자를 DFT로 다시 계산하자, 고전 최적해의 배치는 평균적으로 나았고 QPU 배치는 목표에 가장 가까운 한 후보를 포함했습니다. 이 작은 실험은 후보를 고르는 점수와 실제 분자 계산의 결과를 따로 비교해야 하는 이유를 보여줍니다.",
+    "en": "Classical solvers and a D-Wave QPU were given the same task: choose three molecules from a fixed set of 18 for further calculation. Subsequent DFT calculations favored the exact-solver batch on average, while the QPU batch contained the single candidate closest to the target. This small experiment shows why a selection score and the resulting molecular calculations need separate comparisons.",
+    "reason": "예측기·생성기·BQM의 목록을 실제 선택 과제와 후속 계산의 결과로 바꿈. 고정 후보 비교와 한 번의 작은 실험을 양자 우위나 분자 발견으로 확대하지 않음.",
+    "support": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark/reports/2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md: 같은 18-variable BQM에서 세 후보 배치를 선택함",
+      "2026-08-27_dwave-molecular-inverse-design-benchmark/reports/2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md: downstream DFT에서는 exact batch가 평균적으로 나았고, QPU batch가 가장 좋은 한 후보를 포함했습니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-26_quantum-computing-layers",
+    "original": "8월 25일 공개된 QRAM router는 실제 초전도 QPU 실험입니다. SiC color-center 연구는 고전 HSE06/DFT, Qiskit Fermions의 depth 12는 컴파일 결과이며, PAS와 QRC+PIC는 시뮬레이션입니다. 서로 다른 증거 층을 분리해 성취와 남은 비용을 평가합니다.",
+    "ko": "양자메모리에 쓸 작은 라우터는 초전도 칩에서 작동했고, 스핀 큐비트로 쓸 SiC 결함 후보는 고전 컴퓨터에서 선별됐습니다. 두 성과를 구체적인 계산과 실험으로 따라가며, 같은 ‘양자’라는 이름 아래 어디까지 구현됐고 어떤 문제가 다음 연구로 남는지 살펴봅니다.",
+    "en": "A small router intended for quantum memory operated on a superconducting chip, while candidate SiC spin-qubit defects were screened on a classical computer. Following these distinct calculations and experiments makes it easier to see what has actually been implemented—and what the next study must address—within news carrying the same “quantum” label.",
+    "reason": "방법·실행 수준 표를 요약에 재압축하는 대신 서로 다른 두 실제 연구 장면으로 구현 수준의 의미를 전달함.",
+    "support": [
+      "2026-08-26_quantum-computing-layers/reports/2026-08-26_quantum-computing-layers_final_review.md: 4H-SiC color-center screening | 고전 HSE06/DFT",
+      "2026-08-26_quantum-computing-layers/reports/2026-08-26_quantum-computing-layers_final_review.md: QRAM router | 초전도 QPU | erasure 검출·postselection 조건에서 개별 router 평균 94.8%, 2단 network 82.4% fidelity"
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-08-24_oti-iqcc-oled-quantum-emulation",
+    "original": "OTI Lumionics와 SAIT는 양자-native iQCC를 고전 CPU에서 약 200 logical-qubit 규모로 에뮬레이션해 Ir(III)·Pt(II) 인광체의 T1−S0 갭을 계산했습니다. 실제 QPU 실행이나 양자 우위가 아니라 미래 하드웨어가 넘어야 할 정확도·규모·고전 tractability 기준선입니다.",
+    "ko": "OLED 발광분자의 전자상태를 더 정확하게 구하려는 연구에서 OTI와 SAIT는 양자회로를 고전 CPU로 에뮬레이션했습니다. 최대 규모 사례는 약 200개 스핀 오비탈에 이르고, 정확도는 별도의 인광체 14종에서 평가했습니다. 이 결과는 미래 양자장치와 비교할 정확도와 계산 규모의 기준을 제공합니다.",
+    "en": "To calculate the electronic states of OLED emitters more accurately, OTI and SAIT emulated quantum circuits on classical CPUs. Their largest scaling case reached about 200 spin orbitals; accuracy was assessed separately on 14 phosphorescent compounds. The results provide a reference for the accuracy and scale that future quantum hardware will need to be compared against.",
+    "reason": "원래 짧은 요약의 관심사는 유지하면서 최대 규모 사례와 14종 정확도 평가가 별개임을 분명히 하고 CPU 실행을 전면에 둠.",
+    "support": [
+      "2026-08-24_oti-iqcc-oled-quantum-emulation/reports/2026-08-24_oti-iqcc-oled-quantum-emulation_final_review.md: Q1의 active space를 약 200 spin-orbital qubit까지 확장한 스케일링 사례와 Ir(III)·Pt(II) 인광체 14종의 정확도 벤치마크다.",
+      "2026-08-24_oti-iqcc-oled-quantum-emulation/reports/2026-08-24_oti-iqcc-oled-quantum-emulation_final_review.md: 실제 QPU 대신 고전 CPU로 iQCC 회로를 에뮬레이션했으며, 미래 양자 하드웨어가 넘어야 할 정확도와 계산 규모의 기준선으로 읽는 편이 정확하다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-06-11_QC-based-inverse-design",
+    "original": "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 선택 가능한 전문 계산 모듈로 나눕니다. QPE·VQE, QML, QCBM·QBM, QUBO를 푸는 QA·QAOA의 역할과 성숙도를 구분하고, QAE는 장기 확장 모듈로 둡니다. 청색 OLED는 이 구조를 점검하는 첫 유즈케이스입니다.",
+    "ko": "원하는 물성을 정한 뒤 후보를 만들고, 계산과 실험으로 고르고, 실패한 이유를 다음 설계에 돌려주는 것이 재료 역설계의 일입니다. 양자컴퓨팅을 넣을 자리는 이 과정에서 비용과 불확실성이 커지는 부분에 따라 달라집니다. 청색 OLED를 사례로 어떤 계산을 맡기고 전체 연구 과정에서 그 이득을 어떻게 판단할지 살펴봅니다.",
+    "en": "Materials inverse design turns a desired property into candidates, tests them through calculation and experiment, and uses failures to guide the next design. Where quantum computing could help depends on which part of that process becomes costly or uncertain. Blue OLEDs provide a concrete case for deciding what to delegate and how to judge the benefit across the research process.",
+    "reason": "알고리즘 약어별 역할 목록을 후보 하나가 계산·실험을 도는 실제 연구 과정으로 풀어 읽을 목적을 선명하게 함.",
+    "support": [
+      "site/reviews/2026-06-11_QC-based-inverse-design/index.html: 원하는 물성을 내는 구조와 공정 조건을 어떻게 거꾸로 찾아낼 것인가?",
+      "site/reviews/2026-06-11_QC-based-inverse-design/index.html: 탈락한 후보도 버려지지 않습니다. 왜 실패했는지가 다음 후보를 만드는 정보가 됩니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
+    "original": "NPU, LPU, TPU, GPU, CPU, DPU/IPU, QPU를 새 약어 경쟁이 아니라 workload와 데이터 경로의 분화로 읽습니다. 메모리 이동, 정밀도, 지연시간, 인프라 오프로드가 왜 별도 처리장치를 낳는지 정리합니다.",
+    "ko": "많은 행렬 연산을 한꺼번에 처리하는 일과 언어모델의 다음 토큰을 빨리 내보내는 일은 서로 다른 병목을 만듭니다. CPU·GPU·NPU 같은 처리장치가 나뉘는 이유를 계산의 모양과 데이터 이동에서 찾으면, 새 칩의 이름 뒤에 있는 비용과 쓰임새를 읽을 수 있습니다.",
+    "en": "Processing many matrix operations at once and delivering the next language-model token quickly create different bottlenecks. Looking at the shape of the computation and the movement of data explains why processors such as CPUs, GPUs and NPUs specialize—and what costs and uses lie behind each new chip name.",
+    "reason": "도입의 약어 나열과 자동 대조를 줄이고 서로 다른 작업에서 병목이 생기는 이유를 요약 자체로 설명함.",
+    "support": [
+      "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/reports/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu_final_review.md: 메모리에서 데이터를 가져오는 데 시간이 많이 드는 작업, 토큰 하나의 지연시간이 서비스 품질을 좌우하는 작업은 같은 하드웨어에서 같은 효율로 처리되지 않습니다.",
+      "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu/reports/2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu_final_review.md: 처리장치가 늘어난 배경에는 계산의 모양이 갈라진 현실이 있습니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-06-05_neuromorphic-edge-ai",
+    "original": "ScienceTimes가 소개한 MoS2 인-센서 뉴로모픽 비전 논문을 출발점으로, 뉴로모픽이 스마트홈 presence sensing, 오디오 wake/event detection, 웨어러블, smart camera 같은 항상 켜진 생활형 edge AI에서 어떤 의미를 갖는지 점검합니다.",
+    "ko": "호출어를 기다리는 이어폰과 사람이 들어오는지 지켜보는 센서는 대부분의 시간을 기다리는 데 씁니다. 변화가 생긴 순간만 골라 처리할 수 있다면 배터리와 데이터 전송의 부담을 줄일 여지가 있습니다. MoS₂ 시각소자 실험을 통해 뉴로모픽 연구가 이런 생활형 AI의 감각 기능에 제안하는 방향을 살펴봅니다.",
+    "en": "Earbuds waiting for a wake word and sensors watching for someone to enter spend much of their time waiting. Processing selected changes as they occur could reduce demands on batteries and data transmission. A MoS₂ visual-device experiment offers a concrete way to examine what neuromorphic research might contribute to these everyday sensing tasks.",
+    "reason": "센서 종류 목록에서 기다림과 데이터 이동이라는 실제 사용 장면으로 관심을 옮기고 실험을 제품의 배터리 절감 실증으로 과장하지 않음.",
+    "support": [
+      "2026-06-05_neuromorphic-edge-ai/reports/2026-06-05_neuromorphic-edge-ai_final_review.md: 아무 일도 없을 때는 거의 전력을 쓰지 않고, 변화가 생기면 즉시 알아차리고, 필요한 경우에만 더 큰 모델이나 메인 프로세서를 깨워야 합니다.",
+      "2026-06-05_neuromorphic-edge-ai/reports/2026-06-05_neuromorphic-edge-ai_final_review.md: 이 연구에서는 센서가 빛의 세기와 파장을 받아 spike train을 만들고, 그 spike가 ferroelectric synapse array의 가중합 연산에 입력됩니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-05-30_shadow-ai-work-boundary-reconfiguration",
+    "original": "외부 AI 도구의 속도, 회사 내부 silo, 승인·검증 경로의 지연이 만날 때 Shadow AI는 개인의 일탈이 아니라 조직이 아직 흡수하지 못한 전환 비용으로 나타납니다.",
+    "ko": "외부 AI 도구의 속도, 회사 내부 silo, 승인·검증 경로의 지연이 만날 때 Shadow AI는 개인의 일탈이 아니라 조직이 아직 흡수하지 못한 전환 비용으로 나타납니다.",
+    "en": null,
+    "reason": "실무자가 겪는 외부 도구와 조직 지연의 관계, 저자의 해석이 이미 짧게 드러나므로 보존함.",
+    "support": [
+      "2026-05-30_shadow-ai-work-boundary-reconfiguration/reports/2026-05-30_shadow-ai-work-boundary-reconfiguration_final_review.md: 공식 도구와 승인 경로가 실제 업무 속도를 따라오지 못하는 운영 공백이 있습니다."
+    ],
+    "changed": false
+  },
+  {
+    "id": "2026-05-30_quantum-informed-ai-chaotic-processes",
+    "original": "Lev Selector의 AI Updates Weekly에서 포착한 QIML 연구를 출발점으로, 양자 생성 모델이 혼돈계의 불변 통계를 prior로 압축하고 고전 예측기의 긴 rollout을 안정화할 수 있는지 검토합니다.",
+    "ko": "물속 잉크처럼 작은 차이가 크게 번지는 흐름에서는 짧은 예측이 잘 맞아도 긴 시간 뒤에는 전혀 다른 무늬가 나타날 수 있습니다. QIML은 이런 혼돈계에서 오래 유지되는 통계를 양자 생성 모델로 배워 고전 예측기에 보태는 방법을 시험합니다. 예측을 길게 이어 갈 때 그 흐름다운 물리적 특징을 얼마나 지킬 수 있는지가 관심입니다.",
+    "en": "In a flow where small differences grow, as with ink spreading in water, an accurate short prediction can develop into a very different pattern much later. QIML tests whether statistics learned by a quantum generative model can help a classical predictor retain the long-term character of a chaotic system. The question is how well that physical character survives as the forecast continues.",
+    "reason": "발견 경로와 prior·rollout의 압축어를 덜고 본문의 잉크 장면과 장기 통계라는 실제 목표로 연결함. 양자 우위나 일반 예측 가속을 확정하지 않음.",
+    "support": [
+      "2026-05-30_quantum-informed-ai-chaotic-processes/reports/2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md: 처음 몇 step을 맞히는 것과, 긴 시간이 지난 뒤에도 그 시스템다운 분포와 물리량을 유지하는 것은 서로 다른 능력입니다.",
+      "2026-05-30_quantum-informed-ai-chaotic-processes/reports/2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md: QIML에서는 autoregressive predictor의 고전적 예측 골격으로 사용됩니다."
+    ],
+    "changed": true
+  },
+  {
+    "id": "2026-05-23_ai-scientist-execution-harness",
+    "original": "에르되시 문제 #1196에서 출발해 AI 과학자가 연구의 속도를 높이는 장면과, 그 속도를 검증 가능한 작업으로 바꾸기 위해 필요한 연구 실행 하네스를 함께 살펴봅니다.",
+    "ko": "에르되시 문제 #1196에서 출발해 AI 과학자가 연구의 속도를 높이는 장면과, 그 속도를 검증 가능한 작업으로 바꾸기 위해 필요한 연구 실행 하네스를 함께 살펴봅니다.",
+    "en": null,
+    "reason": "에르되시 문제라는 구체적인 장면과 발견의 속도를 검증 가능한 작업으로 바꾼다는 중심 관점이 함께 있어 보존함.",
+    "support": [
+      "2026-05-23_ai-scientist-execution-harness/reports/2026-05-23_ai-scientist-execution-harness_final_review.md: 그 답은 Kevin Barreto를 거쳐 수학자들에게 전달됐고, Terence Tao와 Jared Duker Lichtman은 거친 출력 속에서 익숙하지 않은 증명 경로를 발견했습니다."
+    ],
+    "changed": false
+  },
+  {
+    "id": "2026-05-07_tabpfn-oled-manufacturing-foundation-model",
+    "original": "작은 표 데이터에서 빠른 기준 모델을 세우는 TabPFN의 장점과, OLED 연구·제조 데이터에 적용할 때 함께 보아야 할 계산 조건과 실험 provenance를 살펴봅니다.",
+    "ko": "작은 표 데이터에서 빠른 기준 모델을 세우는 TabPFN의 장점과, OLED 연구·제조 데이터에 적용할 때 함께 보아야 할 계산 조건과 실험 provenance를 살펴봅니다.",
+    "en": null,
+    "reason": "작은 데이터에서 빠른 기준 모델을 세운다는 독자의 용도가 이미 분명하고 정보량이 과도하지 않아 보존함.",
+    "support": [
+      "2026-05-07_tabpfn-oled-manufacturing-foundation-model/reports/2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md: 작은 표에서도 빠르게 강한 기준을 세울 수 있고, 라벨 하나를 얻는 데 비용이 큰 후보 선별 문제에서는 다음 실험이나 계산의 순서를 줄여볼 수 있습니다."
+    ],
+    "changed": false
+  },
+  {
+    "id": "2026-05-06_gpt-5-5-family-post-release-evaluation",
+    "original": "GPT-5.5 계열 모델의 장시간 작업 수행 능력과 외부 평가를 함께 보며, 실제 업무에 맡길 수 있는 일의 조건을 점검합니다.",
+    "ko": "GPT-5.5 계열 모델의 장시간 작업 수행 능력과 외부 평가를 함께 보며, 실제 업무에 맡길 수 있는 일의 조건을 점검합니다.",
+    "en": null,
+    "reason": "긴 작업을 맡기는 능력과 사용 조건이라는 중심 주제가 간결하게 전달되어 보존함. 현재 날짜의 모델 사양이나 성능으로 새로 갱신하지 않음.",
+    "support": [
+      "2026-05-06_gpt-5-5-family-post-release-evaluation/reports/2026-05-06_gpt-5-5-family-post-release-evaluation_final_review.md: 어떤 업무를 어떤 검증과 통제 아래 맡길 수 있는가라는 실무 쟁점으로 바꾸어 보겠습니다."
+    ],
+    "changed": false
+  },
+  {
+    "id": "2026-05-09_ai-updates-weekly",
+    "original": "모델 성능만으로는 설명하기 어려운 에이전트 운영 문제를 권한, 메모리, 검증, 승인, 병합의 관점에서 따라갑니다.",
+    "ko": "AI가 코드를 고친 뒤에는 바뀐 파일을 확인하고, 테스트하고, 필요하면 되돌리는 일이 남습니다. 하네스 엔지니어링은 이런 실행과 검증을 도구·기억·권한의 설계와 연결해 여러 단계의 일을 맡길 수 있게 만드는 작업입니다.",
+    "en": "After an AI edits code, someone still needs to inspect the changed files, run tests and undo mistakes when necessary. Harness engineering connects that execution and verification process to the design of tools, memory and permissions so that multi-step work can be delegated.",
+    "reason": "짧은 요약의 초점은 유지하되 다섯 운영 항목의 목록 대신 독자가 겪는 코드 수정 이후의 일을 구체적으로 제시함.",
+    "support": [
+      "2026-05-09_ai-updates-weekly/reports/2026-05-09_ai-updates-weekly_final_review.md: 어떤 파일을 고쳤는지 봐야 하고, 테스트를 돌려야 하고, 잘못 바뀐 부분은 되돌려야 합니다.",
+      "2026-05-09_ai-updates-weekly/reports/2026-05-09_ai-updates-weekly_final_review.md: 에이전트 문맥에서 하네스는 테스트 환경의 의미를 넘어 권한, 도구, 기억, 검증, 승인, 되돌리기 절차까지 포함하는 운영 체계로 다뤄집니다."
+    ],
+    "changed": true
+  }
+]

@@ -114,7 +114,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle='ReAg₂Cl₆의 자기질서·SOC와 같은 Chern 수에서 갈리는 분수 Chern 절연체·전하밀도파',
         category='AI for Science',
         tags=('Flat Chern Bands', 'Strong Correlations', 'Quantum Geometry', 'Computational Materials', 'FCI', 'ReAg2Cl6'),
-        summary='ReAg₂Cl₆의 120° 자기질서와 SOC에서 출발해 평탄한 에너지와 밴드 고유벡터의 양자 기하를 구별합니다. 같은 Chern 수·채움의 FCI/CDW 경쟁을 읽고, 두 밴드 반례 계산과 공개 PES 원자료의 1088·168 계수 대조로 계산재료 연구에서 확인할 조건을 설명합니다.',
+        summary='전자들의 운동에너지 차이가 작아지면, 서로에게 미치는 영향이 물질의 질서를 크게 바꿀 수 있습니다. ReAg₂Cl₆를 다룬 계산에서는 같은 Chern 수를 가진 평탄밴드에서도 서로 다른 전자 상태가 나타납니다. 그 차이를 따라가면 새로운 양자 물질을 찾을 때 에너지와 함께 파동함수가 운동량에 따라 어떻게 달라지는지 살펴야 하는 이유가 보입니다.',
         agents=(
             PublicAgent('root', 'primary-source synthesis, Korean writing, independent teaching calculations and source-data recount, conceptual cover, typesetting and publication integration', '1차 출처 종합·한국어 집필·독립 교육 계산과 원자료 재계수·개념 표지·조판 및 게시 통합'),
             PublicAgent('dqb_today_materials_source', 'accepted paper, supplementary and public-review material crosscheck; PES source-data and counting audit', '채택 원고·보충자료·공개 심사자료 대조 및 PES 원자료·계수 감수'),
@@ -144,7 +144,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle='StateDRIFT의 선택 확률과 norm-aware 곱 공식의 항 배치를 오차·연산 수로 비교한다',
         category='Quantum Computing',
         tags=('Quantum Dynamics', 'Hamiltonian Simulation', 'StateDRIFT', 'Product Formulas', 'Quantum Chemistry', 'Computational Science'),
-        summary='목표 관측량에 맞춘 무작위 항 선택과 항별 노름을 이용한 결정론적 시간발전 분할을 구분합니다. 정확한 한 큐비트 계산으로 오차 차수·편향·분산과 연산 수를 비교하고, 한 관측량의 개선이 다른 관측량에는 불리할 수 있음을 보입니다. 분자 벤치마크와 교육 모형의 범위를 함께 설명합니다.',
+        summary='양자계의 변화를 계산할 때, 한 궤도에 전자가 얼마나 남는지만 알고 싶을 수 있습니다. 알고 싶은 값과 계산식에서 큰 역할을 하는 항에 맞춰 근사 방법을 고르면, 불필요한 연산을 줄일 여지가 생깁니다. 한 큐비트 모형을 직접 계산해 보면, 한 값을 더 잘 맞추는 선택이 다른 값에는 불리해질 수 있어 무엇을 정확하게 구할지부터 정해야 합니다.',
         agents=(
             PublicAgent('root', 'primary-source synthesis, Korean writing, independent SO(3) moment validation, conceptual cover, typesetting and publication integration', '1차 자료 종합·한국어 집필·SO(3) 모멘트 독립 검산·개념 표지·조판 및 게시 통합'),
             PublicAgent('dqb_today_algorithm_sources', 'primary-paper formula and benchmark crosscheck; exact teaching dynamics, stochastic moments and original diagrams', '원 논문 수식·벤치마크 조건 대조·정확 교육 동역학과 확률 모멘트 계산 및 원본 도표'),
@@ -173,7 +173,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="Classiq·Qiskit·CUDA-Q가 자동화하는 일과 남는 책임, 자원 교환과 하드웨어 연동에서 읽는 조건부 전망",
         date="2026-10-25", updated="2026-10-26", category="Quantum Computing",
         tags=("Quantum Software", "Circuit Synthesis", "Classiq", "Qiskit", "CUDA-Q", "AI Agents", "Interoperability"),
-        summary="101을 찾으려다 111을 표시한 이상적 양자 계산에서 출발해, 고수준 모델의 합성과 에이전트의 도구 조합이 맡는 일을 설명합니다. 논문의 큐비트·CX 교환과 현행 Qiskit HLS, 하드웨어 연동과 공개성의 차이를 대조하고, 검증된 결과의 총비용에서 생태계 주도권을 읽는 세 가지 조건부 전망을 제시합니다.",
+        summary='101을 찾으려는데 양자 프로그램은 111을 가리킵니다. 일부러 명세를 어긋나게 만든 작은 계산 예제는, 코드가 실행된 뒤에도 남는 설계와 검증의 일을 드러냅니다. Classiq와 Qiskit·CUDA-Q의 경쟁에서도 제대로 된 답 하나를 얻는 수고와 비용을 누가 줄이는지가 관건입니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -209,7 +209,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="긴급 패치에서 레거시 전환·에이전트 권한·새 보안 기준과 기업 서비스까지",
         date="2026-10-23", updated="2026-10-23", category="AI Security",
         tags=("AI Security", "Security Architecture", "Legacy Modernization", "Agent Authorization", "PHP2Shell", "Secure by Design"),
-        summary="PHP의 메모리 오류와 AI 보조 발견에서 출발해, 같은 기반을 계속 수리하는 능력과 더 안전하고 교체 가능한 기반으로 전환하는 능력을 함께 묻습니다. 제로 트러스트·메모리 안전 로드맵·에이전트 신원과 위임·Secure by Design 및 구매 지침을 대조하고, 이전·검증·이탈 능력을 제공하는 B2B 서비스의 방향을 제안합니다.",
+        summary='로그인 코드를 잘 짜도 그 아래의 실행 엔진에 결함이 생기면 웹사이트가 위험해질 수 있습니다. AI가 오래된 PHP 결함의 공격 가능성을 드러낸 뒤, 문제는 수많은 서버에 수정을 전달하고 적용하는 일로 이어졌습니다. 이번 사태를 통해 긴급 수리와 더 안전한 기반으로의 전환을 함께 고민하고, 그 전환을 돕는 기업 서비스의 역할을 짚습니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         ai_model="exact model identifier not retained", ai_model_ko="정확한 모델 식별자는 보존되지 않음",
@@ -248,7 +248,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="광자 간섭의 확률 규칙, 분자 생성의 성과와 고전 기준선, 단백질 설계로 넘어가기 위한 조건",
         date="2026-10-23", updated="2026-10-23", category="Quantum Computing",
         tags=("Photonic Quantum Computing", "Generative Models", "Latent Distributions", "Boson Sampling", "Molecular Design", "Proteína"),
-        summary="분자를 제안하는 생성형 AI가 무작위 숫자에서 출발한다는 질문으로 시작합니다. 두 광자의 간섭부터 잠재분포와 표현력의 조건, QM9의 품질 개선과 고전 학습 조정 뒤의 음성 결과를 설명합니다. 제한적인 CPU 예제 실행을 덧붙이고, PT-3 단백질 발표의 designability와 전체 계산비용에 남은 검증 과제를 살펴봅니다.",
+        summary='무작위 숫자 한 묶음이 신경망을 통과해 분자 후보가 됩니다. 광자 간섭으로 이 숫자들의 확률 규칙을 바꾼 연구에서는 일부 생성 모델의 품질이 좋아졌습니다. 고전 학습 조건을 달리한 별도 비교에서는 뚜렷한 차이가 확인되지 않기도 했습니다. 출발 분포가 분자 설계에 주는 힘을 이해하려면 빛의 성질과 모델의 학습을 함께 들여다봐야 합니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -283,7 +283,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="뉴런·특징·회로의 해석에서 모델 수정과 지속 감사, 신뢰의 조건까지",
         date="2026-10-23", updated="2026-10-23", category="AI Research",
         tags=("Mechanistic Interpretability", "Neural Representations", "Circuit Tracing", "Sparse Autoencoders", "Persona Vectors", "AI Auditing"),
-        summary="댈러스의 주도를 답하는 모델의 중간 계산에 개입한 사례에서 출발해 뉴런·특징·회로를 쉽게 설명합니다. 원래 뉴런의 정량 연구와 Goodfire 논쟁, 특징 조절·페르소나 벡터·AuditBench를 연결하며, 모델을 고치고 업데이트 뒤 다시 검사하는 연구가 신뢰와 독립 검증에 던지는 질문을 살펴봅니다.",
+        summary='연구진이 모델 안에서 지명에 대응하는 특징군의 활성을 바꾸자, 댈러스에 관한 질문의 답이 오스틴에서 새크라멘토로 바뀌었습니다. 이런 개입으로 연구자는 답변을 만든 내부 계산에 관한 가설을 시험합니다. 뉴런과 특징을 읽는 연구가 모델을 고치고 변화 뒤에 다시 검증하는 일로 어떻게 이어지는지 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -317,7 +317,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="희소 기준상태가 에너지 측정을 줄이는 원리와 조건, Helios 실험의 정밀도와 정확도",
         date="2026-10-21", updated="2026-10-21", category="Quantum Computing",
         tags=("Quantum Chemistry", "Sparse Reference", "Mixed Estimator", "Measurement Cost", "Helios", "Energy Estimation"),
-        summary="에너지 차이가 화학적 판단을 바꾸는 이유에서 출발해 희소 기준상태와 잔차, 혼합 추정량의 유도와 오차를 설명합니다. 독립적인 2준위 실습과 문제·풀이를 거쳐 이상적 약 400회 추정과 실제 QPU 10,000회 측정의 조건, 정밀도와 정확도, 전체 계산비용을 구분합니다.",
+        summary='분자의 두 구조 중 어느 쪽이 더 안정한지 알려면 작은 에너지 차이를 읽어야 합니다. 양자 상태를 준비하고도 그 값을 알아내려면 측정을 여러 번 반복해야 한다는 점이 계산 비용을 키웁니다. 희소한 고전 기준상태를 양자 계산과 결합하는 연구를 따라가며, 이미 아는 정보를 활용해 측정 부담을 줄이는 원리와 실제 장치에서 남는 오차를 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -351,7 +351,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="매직상태의 역할, 결맞는 오차와 누설, 45비트 부호화 레지스터와 512 TiB 메모리를 설명합니다",
         date="2026-10-20", updated="2026-10-20", category="Quantum Computing",
         tags=("JUPITER", "Magic State Cultivation", "Fault Tolerance", "GPU Simulation", "Quantum Error Correction", "Leakage"),
-        summary="JUPITER의 8,192개 GH200으로 모사한 104개 물리 위치의 매직상태 배양 절차를 살펴봅니다. 저장공간 재사용·qutrit packing·상태벡터 메모리를 설명하고, 결맞는 오차와 누설, 수락률과 비용, 소형 교차검증과 전체 실행의 공개 범위를 구분합니다.",
+        summary='믿을 수 있는 양자 계산을 설계하려면 오류가 있는 부품으로 연산에 쓸 상태를 준비하는 과정도 시험해야 합니다. JUPITER에서는 GPU 8,192개로 104개의 물리 큐비트 위치를 사용하는 매직상태 배양 절차를 고전 모사했습니다. 그 과정을 읽으면 준비된 상태의 정확도와 시도에 드는 비용을 함께 따져야 하는 이유가 드러납니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -385,7 +385,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="제타함수의 영점과 소수 개수의 오차를 잇는 원리부터 7/8·11/12 원고, 메타플렉틱 형식, Lean 검증과 알고리즘 응용의 범위까지",
         date="2026-10-20", updated="2026-10-20", category="AI for Science",
         tags=("AI Mathematics", "Number Theory", "Quasi-Riemann Hypothesis", "Prime Distribution", "L-functions", "Lean", "Formal Verification"),
-        summary="제타함수의 영점이 소수 분포의 오차를 제한하는 원리를 설명하고, 7/8·11/12 원고의 성립 범위와 증명 도구를 분석합니다. 공개 Lean 진술·정의·검증 경로와 전문가의 이해를 구분하며, 명시적 소수정리 상계·알고리즘·암호 응용의 조건을 살펴봅니다.",
+        summary='AI가 제시한 준리만가설 증명 원고 앞에서 수학자들의 기대와 비판이 교차합니다. 소수가 얼마나 고르게 나타나는지를 묻는 오래된 문제에서 기존 수학을 새롭게 연결했지만, 그 논증을 읽고 이해하는 데는 큰 어려움이 남아 있습니다. 소수 분포에 관한 이 결과의 의미와, AI의 발견이 다른 연구자가 이어 쓸 수 있는 지식이 되는 과정을 따라갑니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -417,7 +417,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="마요라나의 보호 검증과 이온·중성원자·초전도의 실현 경로를 논문·제어 성능·투자 흐름으로 비교하다",
         date="2026-10-19", updated="2026-10-19", category="Quantum Computing",
         tags=("Qubit Platforms", "Majorana", "Trapped Ions", "Neutral Atoms", "Superconducting Qubits", "Spin Qubits", "Photonics", "Quantum Error Correction"),
-        summary="각 큐비트의 상태 부호화·해밀토니안·제어·얽힘·판독을 설명하고, 마요라나의 패리티 수명·결맞음·보호 검증을 구별합니다. 이온·초전도·중성원자 등 주요 경로의 가까운 실현 가능성과 파급력을 비교하며, 운영 비용·제조 기반·투자 흐름을 함께 평가합니다.",
+        summary='많은 큐비트를 만들었어도 그 위에서 정확한 계산을 오래 이어 갈 수 있어야 합니다. 이온·초전도·중성원자는 서로 다른 물리적 장점으로 이 과제에 접근하고, 마요라나는 보호된 연산을 입증하는 과제를 안고 있습니다. 각 방식이 잘하는 일이 실제 계산 능력과 운영 비용으로 어떻게 이어지는지 비교합니다.',
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
             PublicAgent("root", "primary-source integration, Korean scientific writing, editing, figure integration and publication verification", "1차 자료 종합·한국어 과학 집필·편집·그림 통합·게시 검증"),
@@ -460,7 +460,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="회로 생성 연구와 기업별 기술 자산을 비교하고 범용 에이전트 시대의 플랫폼 경쟁력을 전망합니다",
         date="2026-10-19", updated="2026-10-19", category="Quantum Computing",
         tags=("Generative AI", "Quantum Circuit Synthesis", "Classiq", "Reinforcement Learning", "Quantum Chemistry", "FTQC", "Agentic AI"),
-        summary="확산모델·Transformer·강화학습·LLM 에이전트의 양자회로 생성과 최적화를 검토합니다. Classiq와 IBM·NVIDIA·Quantinuum 등의 기술층별 자산을 비교하고, 전문가와 범용 에이전트·공개 도구의 조합을 기준선으로 플랫폼의 방어 가능성과 전체 비용을 평가합니다.",
+        summary='같은 양자 계산도 게이트를 어떻게 배치하고 중간 결과를 얼마나 저장하는지에 따라 필요한 자원이 달라집니다. AI가 여러 구현을 제안하면 설계자는 어떤 후보가 정확하고 저렴한지 가려야 합니다. 회로 생성 연구와 개발 도구의 경쟁을 함께 읽으며, 자동화가 실제로 줄이는 수고와 그 가치를 확인하는 방법을 살펴봅니다.',
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
             PublicAgent("root", "research integration, Korean writing, strategic analysis, publication preparation and deployed-page verification", "조사 통합·한국어 집필·전략 분석·게재 준비·공개 페이지 검증"),
@@ -500,7 +500,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="원자 환경의 다양성, 예측 오차와 고정밀 기준 계산의 배분",
         date="2026-10-19", updated="2026-10-19", category="AI for Science",
         tags=("OMat24", "Dataset Redundancy", "EnvTok", "MACE", "Machine Learning Force Fields", "Materials AI", "Data Selection"),
-        summary="OMat24의 약 0.5% 원자 예산으로 학습한 힘장 연구를 검토합니다. 99% 중복 주장의 분모, 힘·형성에너지 오차 증가와 MD 안정성을 구분하고, 국소 환경을 이용한 선별과 고정밀 라벨링의 적용 조건을 설명합니다.",
+        summary='비슷한 원자 주변 환경이 데이터에 반복된다면, 다음의 비싼 재료 계산은 어디에 써야 할까요? OMat24에서 원자 수 기준 약 0.5%를 골라 힘장을 학습한 연구는 이 선택을 시험합니다. 예측할 물성과 허용 오차에 따라 남겨야 할 정보가 달라진다는 점에서, 데이터 압축은 계산 예산을 배분하는 문제이기도 합니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -531,7 +531,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="작용의 대칭에서 보존량을 유도하고, 시뮬레이션과 학습 모형을 설계하고 검사하는 기준으로 연결한다",
         date="2026-10-17", updated="2026-10-22", category="AI for Science",
         tags=("Noether’s Theorem", "Symmetry", "Conservation Laws", "Scientific Computing", "Scientific Machine Learning", "Molecular Dynamics", "Quantum Computing"),
-        summary="용수철 계산에서 에너지가 늘어나는 이유를 출발점으로 작용의 대칭과 보존량을 설명합니다. 국소 보존·우주론·구조 보존 적분·HNN/LNN·원자간 퍼텐셜·양자 대칭 검증을 연결하며, 물리 모형·학습 함수·수치 계산의 정확성을 구분합니다.",
+        summary='마찰 없는 용수철을 컴퓨터로 계산했는데 진폭이 계속 커진다면, 에너지는 어디서 생겼을까요? 이 작은 오류를 따라가면 대칭과 보존법칙이 계산을 판단하는 기준이 되는 이유가 보입니다. 노터 정리는 법칙을 지키는 모형을 만드는 일과 그 모형을 정확히 배우고 계산하는 일을 함께 생각하게 합니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
         agents=(
@@ -569,7 +569,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="다중 엑시톤의 Bethe–Salpeter 모형, 구조를 이용한 어닐링·상태준비, 그리고 공정한 검증의 조건",
         date="2026-10-06", updated="2026-10-06", category="Quantum Computing",
         tags=("Excitons", "GW/BSE", "OLED", "FTQC", "D-Wave", "State Preparation", "QML", "QEC"),
-        summary="엑시톤·GW/BSE의 물리부터 전체 해밀토니안 모형과의 자원 비교, 큐비트–게이트 절충과 상태준비 비용을 해설합니다. D-Wave의 최적해 다양성, ASPIRE, QML 정규화와 SMP 재분석을 통해 구조를 이용한 개선의 검증 조건을 짚습니다.",
+        summary='물질이 빛에 반응하는 모습을 예측하려면 모든 전자를 끝까지 계산해야 할까요? 엑시톤처럼 관심 있는 움직임을 남기는 물리 모형은 계산할 문제의 크기를 바꿉니다. 준입자 계산의 자원 추정과 양자 최적화 사례를 통해, 어떤 구조를 남기고 생략하느냐가 비용과 답의 의미를 함께 정하는 과정을 읽습니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
         agents=(
@@ -601,7 +601,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="분자와 스핀계의 바닥상태를 구하는 원리부터 DecaQ의 400스핀 사례, HI-VQE·SQD와 OLED 응용의 조건까지",
         date="2026-10-03", updated="2026-10-03", category="Quantum Computing",
         tags=("VQE", "DecaQ", "Quantum Chemistry", "HI-VQE", "SQD", "QSCI", "FTQC", "OLED"),
-        summary="VQE의 변분 원리·측정 비용·최적화와 부분공간 방법을 연결하고, DecaQ의 400스핀 사례가 검증한 범위를 분석합니다. 같은 규모 수치를 갖는 독립 설명 예제와 두 스핀 인터랙티브 계산으로 상태 표현력과 계산 난도를 구분합니다.",
+        summary='분자의 안정한 상태를 찾으려면 파동함수를 만들고 에너지를 읽고 해를 개선하는 일을 반복해야 합니다. VQE는 이 일을 양자 회로와 고전 최적화에 나누어 맡깁니다. 정답을 아는 큰 스핀계와 작은 설명용 계산을 함께 보며, 많은 상태를 표현할 수 있다는 것과 좋은 답을 적은 비용으로 찾는 것 사이의 간격을 짚습니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
         agents=(PublicAgent("Codex", "primary-source research, bilingual technical synthesis, scientific copyediting, original numerical examples, visual direction, interactive explanation and publication verification", "1차 출처 조사·한영 기술 종합·과학 감수·독립 수치 예제·표지 구성·인터랙티브 해설·게시 검증"),),
@@ -627,7 +627,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="2026년 9월 25일–10월 1일 연구 동향 | bridged resonance 소자, 마스킹 생성, 합성경로, Deep QSCI와 제약 보존 QAOA",
         date="2026-10-02", updated="2026-10-02", category="Materials AI",
         tags=("OLED", "TADF", "Triplet-State Control", "Molecular Inverse Design", "Masked Diffusion", "Synthesizability", "QSCI", "QAOA"),
-        summary="청색 OLED의 bridged resonance 설계가 삼중항 상태 제어와 최대 EQE 42.6%를 연결한 직접 근거를 중심으로, 마스킹 분자 생성·합성경로·π 적층 전자구조·제약 보존 QAOA를 하나의 검증 사슬로 읽습니다.",
+        summary='청색 OLED에서는 전기 여기로 생긴 삼중항이 어느 에너지에 머물고 빛을 내는 상태로 어떻게 돌아오는지가 중요합니다. 삼중항 준위를 조절한 분자 설계는 해당 소자에서 최대 외부양자효율 42.6%를 보고했습니다. 이 결과를 분자 생성과 합성, 고체 환경의 문제로 넓혀 보면 좋은 후보를 실제 발광재료로 만드는 데 필요한 조건이 구체화됩니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
         agents=(PublicAgent("Codex", "primary-source research, bilingual synthesis, scientific copyediting, image direction, deterministic evidence figure, PDF and publication verification", "1차 출처 조사·한영 종합·과학 감수·이미지 구성·결정론적 근거 도표·PDF 및 게시 검증"),),
@@ -653,7 +653,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="JCCM 2026년 9월 선정 논문 6편 — 새로운 위상상, 표본 복잡도와 물리적 계산의 검증 경계",
         date="2026-10-01", updated="2026-10-01", category="AI for Science",
         tags=("Condensed Matter", "Topological Order", "Fractional Quantum Hall", "Statistical Learning", "Thermodynamic Computing"),
-        summary="JCCM 9월 선정 논문 6편을 읽고 Fibonacci 위상질서와 무리수 통계각의 차이, 계층 데이터의 학습 문턱, 열잡음 생성·분류 계산을 해설합니다. 무한층 이론·합성 데이터·시뮬레이션 및 에너지 추정의 범위를 구분합니다.",
+        summary='적층 물질의 이론에서는 전자가 층을 건너지 않아도 상호작용으로 새로운 질서를 만들 수 있습니다. 계층적 데이터의 학습과 열잡음 계산에서도 복잡한 상태 속 어떤 관계를 이용하는지가 중요합니다. 서로 다른 세 분야의 연구를 통해 구조를 다르게 설계할 때 생기는 가능성과, 그것을 실제 이점으로 확인하는 조건을 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
         agents=(PublicAgent("Codex", "primary-source research, bilingual synthesis, scientific copyediting, image direction, deterministic schematics and publication verification", "1차 자료 조사·한영 종합·과학 감수·표지 구성·결정론적 설명 그림·게시 검증"),),
@@ -671,7 +671,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="2026년 9월 18–24일 연구 동향 | variable-size 3D 생성의 수정된 DFT 검증, 다중 제약 에이전트, 치환기 효과와 UCCSD-VQE trainability",
         date="2026-09-25", updated="2026-09-25", category="Materials AI",
         tags=("OLED", "Molecular Inverse Design", "Molecular Generation", "Latent Flow", "Chemical Agents", "Substituent Effects", "VQE", "Validation"),
-        summary="직접적인 TADF·PhOLED 신작이 없던 주간에 variable-size 3D 생성의 수정된 DFT 검증, 다중 제약 에이전트, 치환기 외삽과 화학적 초기화의 UCCSD-VQE trainability를 함께 읽고, 광전자 분자 역설계의 독립 검증 gate를 제안합니다.",
+        summary='분자를 많이 생성할수록 어떤 후보를 믿고 고를지가 중요해집니다. 한 3D 생성 연구에서는 공개 뒤 DFT 검증 수치가 수정됐고, 분자 설계 에이전트는 여러 조건을 동시에 맞추는 데 어려움을 보였습니다. 이런 인접 연구를 발광재료 탐색에 가져가면, 후보를 늘리는 일과 그 후보를 믿을 근거를 쌓는 일을 함께 설계해야 한다는 과제가 남습니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex",
         ai_system_ko="OpenAI Codex",
@@ -691,7 +691,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         subtitle="System One 모델의 인터페이스·확률 보정·초기 평가를 읽고 연구 하네스의 적용 조건을 살피다",
         date="2026-09-21", updated="2026-09-21", category="Agent Systems",
         tags=("Jev", "TypeSafe", "Agent Harness", "Calibration", "Evaluation", "Structured Decisions"),
-        summary="Jev의 판단 인터페이스와 초기 평가를 살피고, 7초 항공편 검색의 혼합 모델 구조·요금 계산과 주행 시뮬레이터의 코드 검사를 분석합니다. 빠른 판단을 실제 행동으로 연결하는 조건과 시연의 한계를 설명합니다.",
+        summary='에이전트가 검색 결과를 고르고 실패한 작업을 재시도할 때마다 긴 답변을 생성한다면, 작은 판단이 전체 작업을 늦출 수 있습니다. Jev는 그 판단을 짧은 함수 호출처럼 돌려주려는 접근입니다. 공개 초기 실험과 시연을 읽으며 모델의 응답 속도가 실제 작업 한 건의 속도와 비용으로 이어지는 조건을 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode", ai_system_ko="OpenAI Codex Work Mode",
         agents=(PublicAgent("Codex", "primary-source review, bilingual writing, scientific copyediting, original figures, aggregate arithmetic and publication checks", "1차 자료 대조·한영 집필·과학 감수·그림 제작·집계값 산술과 게시 검사"),),
@@ -711,7 +711,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-19",
         category="Materials AI",
         tags=("Bayesian Optimization", "Transfer Learning", "Gaussian Process", "Molecular Representation", "Negative Transfer", "OLED"),
-        summary="과거 반응 데이터를 새 화학 후보 탐색에 재사용하는 두 단계 전이를 해설합니다. 차원에 맞춘 GP 하이퍼프라이어, 공개 코드의 A–B–C 단계 구분과 음의 전이, OLED 평가 조건을 살피며 본문 미열람에 따른 검토 범위를 명시합니다.",
+        summary='새로운 반응 조건을 찾을 때 이전 실험의 경험을 어디까지 빌려 쓸 수 있을까요? 과거 데이터는 탐색을 도울 수도 있지만, 새 화학종의 반응성이 다르면 다음 실험의 선택을 오히려 방해할 수도 있습니다. 공개 초록과 코드를 바탕으로 정보를 공유하는 범위와 방식을 탐색 과정에 맞춰 바꾸는 전이학습 접근을 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
         ai_system_ko="OpenAI Codex Work Mode",
@@ -733,7 +733,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-18",
         category="Materials AI",
         tags=("OLED", "Excited States", "Molecular Inverse Design", "Singlet Fission", "DMRG", "Active Learning", "VQE", "Validation"),
-        summary="직접적인 TADF·PhOLED 신작이 없던 주간에 약 1억 개 생성 구조의 여기상태 선별, 호스트가 지배하는 삼중항 스핀 결맞음, DMRG·에이전트 검증과 대칭 누설 VQE를 함께 읽고 OLED 역설계로 옮길 때 필요한 검증 계층을 제안합니다.",
+        summary='원하는 여기상태를 가진 분자는 거대한 화학공간에서도 드뭅니다. 약 1억 개 생성 구조를 계산으로 선별한 단일항 분열 연구는 그 조건을 생성 과정에 넣는 방법을 보여 줍니다. 계산상 유망한 후보를 OLED 재료로 옮기려면 주변 분자와의 상호작용과 합성 가능성까지 확인해야 하므로, 후보를 찾은 다음 어떤 순서로 검증할지도 역설계의 중요한 문제가 됩니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex",
         ai_system_ko="OpenAI Codex",
@@ -777,7 +777,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-13",
         category="Quantum Computing",
         tags=("Photonic Computing", "Quantum Reservoir", "Classical Light", "Photon Counting", "OAM", "Classical Simulation", "Measurement Cost"),
-        summary="고전광과 광자 계수로 만든 저장소의 원리를 설명하고, 보충자료의 함수별 성능·유효차원·약 32분 취득시간을 검토합니다. 검출기 교정과 고전 표본화 조건을 살피며 센싱·재료 응용의 다음 실험을 제안합니다.",
+        summary='같은 빛을 보더라도 평균적인 밝기만 읽을 때와 광자 수의 분포까지 읽을 때 얻는 정보는 달라집니다. 상온 광학 실험은 이 분포를 학습의 특징으로 삼아 일부 함수 복원 성능을 높였습니다. 빛의 빠른 전파를 유용한 계산 속도로 이어 가려면 광자를 세고 데이터를 모으는 시간도 함께 살펴야 합니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
         ai_system_ko="OpenAI Codex Work Mode",
@@ -799,7 +799,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-11",
         category="Materials AI",
         tags=("OLED", "Exciton Dephasing", "Molecular Inverse Design", "3D Generation", "MLIP Validation", "Nonadiabatic Dynamics", "VQE", "Quantum Error Mitigation"),
-        summary="직접적인 TADF·PhOLED 신작이 없던 주간에, 공액고분자의 집단 엑시톤 탈위상 실험을 핵심으로 3D 분자 생성, MLIP 실패 탐지, 비단열 결합, 유효 퍼텐셜, OOD 역설계와 양자 계산의 오차·샷 비용을 함께 평가합니다.",
+        summary='여러 분자가 모여 빛을 흡수하고 에너지를 나눌 때는 분자 하나의 값으로 담기 어려운 집단적 거동이 나타납니다. 공액고분자의 분광 실험에서는 검출 방식에 따라 분광선의 폭도 다르게 읽혔습니다. 발광분자 역설계를 실제 재료에 가까이 옮기려면 이런 집단상태와 관측 조건을 예측의 오차에 어떻게 반영할지 살펴야 합니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
         ai_system_ko="OpenAI Codex Work Mode",
@@ -821,7 +821,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-11",
         category="AI for Science",
         tags=("Quantum Vacuum", "Collider Physics", "Quantum Information", "AI Mathematics", "Navier-Stokes", "Neuroscience", "Memory", "El Nino"),
-        summary="진공 복굴절, 충돌의 양자 상관관계, AI가 공개한 유체방정식 증명, 말초 신경 자극과 기억을 깊게 읽습니다. 일러스트 5장·도표 6개·편광 조작 예제로 원리를 설명하고, 확인된 결과와 미검증 주장 및 짧은 엘니뇨 전망을 구분합니다.",
+        summary='빛의 편광이 조금 바뀌는 현상과 충돌 뒤 입자들의 방향에는 직접 보기 어려운 양자세계의 정보가 담길 수 있습니다. 관측의 문제에서 AI가 제시한 유체방정식의 증명 원고, 감각 신경과 기억을 연구하는 방법으로 시야를 옮깁니다. 서로 다른 분야에서 보이지 않는 대상을 어떤 측정과 수학으로 이해하는지 읽는 과학 해설입니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
         ai_system_ko="OpenAI Codex Work Mode",
@@ -843,7 +843,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-10",
         category="Quantum Computing",
         tags=("CASH-QSE", "Quantum Chemistry", "CASSCF", "Active Space", "VQE", "Measurement", "OLED"),
-        summary="전자상관과 활성공간의 배경부터 고전 기준상태와 양자 보정을 결합하는 원리를 설명합니다. 두 상태 조작 예제, 물·질소의 샷 비교, 불리한 사례와 FCI 의존성을 검토하고 DFT·OLED 연구로의 확장 조건을 살펴봅니다.",
+        summary='분자의 안정한 상태를 계산할 때 고전 컴퓨터가 이미 잘 설명한 부분을 양자 계산에서 처음부터 다시 구해야 할까요? CASH-QSE는 고전 기준상태에 양자 보정을 결합해 측정에 드는 일을 나누려는 방법입니다. 고전 모의계산의 유리한 사례와 불리한 사례를 함께 보며 좋은 기준상태가 언제 측정비용의 절감으로 이어지는지 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
         ai_system_ko="OpenAI Codex Work Mode",
@@ -865,7 +865,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         updated="2026-09-09",
         category="Quantum Computing",
         tags=("Resource Estimation", "Fermi-Hubbard", "QPE", "QCBM", "Quantum Machine Learning", "DS-NOCI", "IonQ", "D-Wave"),
-        summary="Fermi–Hubbard 컴파일의 active volume, 실제 IonQ SAR 학습, 전력망 QML의 입력 병목과 DS-NOCI 기준 상태를 분석합니다. Superion 256과 Qubits Asia는 제작·행사 단계로 구분하고, 재료·OLED·최적화 연구에서 전체 비용을 비교하는 기준을 제안합니다.",
+        summary='양자회로가 짧아졌는데도 전체 계산은 더 비싸질 수 있습니다. 입력 준비와 반복 측정, 오류정정 장치에서 기다리는 큐비트가 각기 비용을 차지하기 때문입니다. 컴파일 연구와 실제 양자장치의 학습 사례를 따라가며 한 자원의 절약을 쓸모있는 작업 전체의 이득으로 만들려면 무엇을 함께 설계해야 하는지 살펴봅니다.',
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
         ai_system_ko="OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
@@ -896,9 +896,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="AI for Science",
         tags=("Agentic Programs", "Materials Science", "DeMARS", "Disordered Crystals", "CIF", "MLIP", "Scientific Software", "Verification"),
         summary=(
-            "DeMARS가 무질서 결정의 부분 점유 CIF를 계산 가능한 원자 모델로 바꾸면서, LLM 판단을 결정론적 코드와 "
-            "물리 검증 사이에 제한하는 방식을 분석합니다. 약 800개 성숙 사례와 100개 외부 테스트가 보여주는 진전, "
-            "그리고 코드 비공개·인증/거절 분모 미공개가 남기는 검증 공백을 함께 짚습니다."
+            '결정구조 파일의 부분 점유를 실제 원자 배열로 옮길 때는 과학적 판단이 필요합니다. DeMARS는 이 좁은 업무에서 AI의 선택을 규칙과 물리 검사 사이에 넣어 연구자가 반복해 온 일을 소프트웨어의 책임으로 옮기려 합니다. 코드가 공개되지 않은 프리프린트의 사례를 따라가며 자동처리의 성과를 신뢰할 수 있는 연구 도구로 이어 가는 데 필요한 검증을 살펴봅니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -942,9 +940,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum Computing",
         tags=("Quantum Advantage", "D-Wave", "Error Mitigation", "QuanONet", "Quantum MeanFlow", "Protein VQE", "Bosonic QSP", "Resource Accounting"),
         summary=(
-            "D-Wave annealing의 고전 t-VMC 재현, self-consistent Pauli noise와 PEC, QuanONet·Quantum MeanFlow, "
-            "torsion-space 단백질 VQE, oscillator–transmon potential gate를 같은 증거 장부에 놓습니다. 관측량의 분모, "
-            "실행 위치, 회로·shots, 고전 전후처리와 matched baseline을 함께 기록해야 양자 우위와 실용성을 구분할 수 있습니다."
+            '양자장치가 내놓은 결과를 고전 계산이 어디까지 따라갈 수 있는지에 따라 양자 우위의 기준도 계속 달라집니다. 큰 고전 계산비용을 들여 D-Wave의 일부 관측량을 재현한 연구를 시작으로 빠른 계산과 좋은 예측, 새로운 표현 능력이 각각 무엇을 입증하는지 살펴봅니다. 어디까지 실행했고 어떤 비용을 셌는지를 알아야 다음 양자 계산의 실질적인 진전을 읽을 수 있습니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -982,9 +978,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("OLED", "Molecular Inverse Design", "Excited-State ML", "GW-BSE", "Active Learning", "Reaction Prediction", "Quantum Annealing", "VQE"),
         summary=(
-            "LUSH가 여러 여기상태를 독립적인 scalar 대신 latent Hamiltonian의 고유값과 연산자로 학습하는 방식을 중심으로, "
-            "QED-GW/BSE·AdaptNTK·reaction flow·계층형 생성 연구를 OLED 역설계 관점에서 검토합니다. 직접 OLED 논문이 없었던 "
-            "주간이라는 한계와 D-Wave 고전 모사, warm-start QPU sampling의 실행 경계를 분리해 기록합니다."
+            '분자가 변형되면서 여러 여기상태가 섞이고 순서까지 바뀌면, 에너지 값을 따로 예측하는 모델은 그 관계를 놓칠 수 있습니다. LUSH는 상태들을 하나의 학습된 해밀토니안으로 묶어 이 문제에 접근합니다. OLED 후보를 고르는 데 이 표현을 쓰려면 삼중항과 스핀–궤도 결합까지 시험해야 한다는 다음 과제도 선명해집니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -1018,9 +1012,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum Computing",
         tags=("Full-Stack Co-Design", "D-Wave", "Transmon", "IBM Quantum", "QuEra", "IonQ", "Quantum Chemistry", "Fault-Tolerant Compilation"),
         summary=(
-            "D-Wave 분자 생성과 광섬유 기반 transmon control을 출발점으로, IBM sampling·kernel 연구, "
-            "QuEra·IonQ 응용 PoC, 측정비용과 오류정정 컴파일을 연결합니다. 큐비트 수보다 상태준비·측정·고전 후처리·"
-            "논리 라우팅을 함께 최적화하는 full-stack co-design이 개발 방향을 좌우한다는 관점입니다."
+            '큐비트가 늘어나면 제어선을 연결하고 결과를 읽는 일도 함께 커집니다. 회로 안에서 아낀 연산이 측정과 고전 후처리의 비용으로 되돌아올 수도 있습니다. 광섬유 트랜스몬 제어와 분자 계산 등 서로 다른 연구를 따라가며, 쓸 만한 양자컴퓨터를 만드는 경쟁이 칩부터 응용까지 연결되는 이유를 짚습니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -1068,9 +1060,7 @@ REVIEWS: tuple[PublicReview, ...] = (
             "OLED",
         ),
         summary=(
-            "판독 반복부호가 11배 물리 큐비트와 추가 CNOT으로 얻는 수치 예측, IBM Heron 연구의 실제 작은 회로 실행과 "
-            "장치 보정값 기반 ZNE 수치실험을 분리해 읽습니다. 정확도와 함께 shots·추가 회로·2Q depth·postselection·"
-            "wall-clock을 기록해야 하는 이유를 설명하고, 광자회로·에너지망·AI-for-quantum·cavity 재료 연구를 각각 평가합니다."
+            '오차를 줄이려고 보조 큐비트를 늘리고 같은 회로를 더 많이 반복하면, 정확해진 답에도 새로운 비용이 붙습니다. 판독 반복부호의 수치 연구와 IBM Heron의 작은 회로 실험은 이 교환을 서로 다른 곳에서 드러냅니다. 같은 장비와 시간으로 더 유용한 답을 얻었는지를 물어야 오류완화의 이득을 판단할 수 있습니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -1126,9 +1116,7 @@ REVIEWS: tuple[PublicReview, ...] = (
             "Fourier LCU",
         ),
         summary=(
-            "유한온도 Gibbs 상태를 준비하는 방법, 2D XY 시뮬레이터와 고전 계산이 같은 확산계수를 내는지, "
-            "α-sexithiophene의 엑시톤이 400 fs 동안 어떻게 수축하는지 설명합니다. 이어서 하드웨어·펄스 설계와 "
-            "Fourier-LCU가 회로 연결, 측정 횟수와 고전 집계 비용을 어떻게 맞바꾸는지 살펴봅니다."
+            '열과 빛을 받은 물질에서는 여러 에너지 상태가 섞이고, 전자와 정공이 만든 엑시톤의 모양도 시간에 따라 달라집니다. 유기 반도체의 분광 자료에서 복원한 엑시톤은 400 fs 안에 수축했습니다. 이런 관측과 유한온도 양자 시뮬레이션 연구를 함께 읽으면, 계산을 검증할 기준이 에너지 한 값에서 상태의 공간적 모양과 시간 변화로 넓어집니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -1183,9 +1171,7 @@ REVIEWS: tuple[PublicReview, ...] = (
             "OLED",
         ),
         summary=(
-            "양자컴퓨터의 실용성을 최신 고전 기준선, 회로 구현, 판독, 오류정정 메모리, 제조·배치의 "
-            "다섯 검증 단계로 읽습니다. KS-FNO, Classiq challenge, PTSET, FTQC 하한과 Xanadu·Pasqal "
-            "소식을 서로 다른 증거 층에 놓고, OLED·재료 PoC에 제한된 양자 커널을 배치하는 기준을 제시합니다."
+            '재료 연구자가 양자컴퓨터에 계산 하나를 맡기려면, 같은 문제를 푸는 최신 고전 계산부터 확인해야 합니다. 회로를 만들고 결과를 읽은 뒤에는 긴 계산을 지탱할 메모리와 반복 생산할 장치도 필요합니다. 이 과정을 따라가며 양자 계산을 연구에 넣을 위치와 조건을 찾습니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
@@ -1234,9 +1220,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum Computing",
         tags=("Vibronic Dynamics", "Nonadiabatic Dynamics", "Quantum Simulation", "PennyLane", "Quantum Chemistry", "OLED"),
         summary=(
-            "PennyLane 데모가 KDC 진동-전자 해밀토니안을 실공간 격자, QROM, 가역 산술과 2차 Trotter 전개로 "
-            "옮기는 방법을 해설합니다. 23-wire CPU 상태벡터 toy simulation과 실제 QPU·분자 계산의 경계를 구분하고, "
-            "TADF·OLED의 spin-vibronic 동역학으로 확장하기 위한 검증 단계를 제시합니다."
+            '분자가 빛을 받으면 원자핵의 움직임과 전자상태의 변화가 서로 얽힙니다. PennyLane의 작은 CPU 시뮬레이션은 이 움직임을 양자회로에 옮기는 과정을 코드로 보여줍니다. 정지된 에너지 준위를 넘어 OLED 분자의 시간에 따른 변화를 계산하려면 어떤 준비가 필요한지 배울 수 있습니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="OpenAI Codex Work Mode",
@@ -1282,10 +1266,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("OLED", "TADF", "Molecular Inverse Design", "Spin-Vibronic Coupling", "DFT/ML", "VQE"),
         summary=(
-            "이번 주 OLED 광물리 논문은 위치 이성질체별 ISC 속도를 direct SOC, Herzberg-Teller, "
-            "spin-vibronic 기여로 분해했습니다. 이를 바탕으로 ΔEST 중심 데이터셋을 state character, "
-            "higher triplet, SOC와 promoting mode까지 포함하는 물성 라벨로 확장할 필요성을 검토하고, "
-            "DensIP·Kohn-Sham neural operator·closed-loop AI와 VQE 구성요소의 적용 범위를 정리합니다."
+            '비슷한 속도로 전자상태가 바뀌는 분자라도, 그 전이가 일어나는 통로는 다를 수 있습니다. 위치 이성질체의 광물리 연구는 총속도 하나에 가려지는 진동과 스핀–궤도 결합의 역할을 드러냅니다. OLED 분자 역설계 모델에 어떤 물성을 가르쳐야 구조 변화의 이유까지 배울 수 있을지 살펴봅니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="Codex-based GPT-5-family agent harness",
@@ -1301,9 +1282,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum Computing",
         tags=("Quantum Compilation", "Classiq", "Qmod", "AshN", "Native Gates", "Circuit Depth"),
         summary=(
-            "Classiq은 기능 모델에서 함수 구현·ancilla·control pattern을 고르고, AshN은 실제 초전도 QPU의 "
-            "native two-qubit gate로 논리 연산과 routing SWAP을 흡수합니다. CX count, mapped depth와 "
-            "QPU fidelity를 분리해 두 접근의 공통 원리, 정량 결과, 결합 가능성과 미입증 범위를 검토합니다."
+            '같은 양자 계산도 회로를 어떻게 구현하고 기계가 어떤 게이트를 직접 실행하느냐에 따라 오류와 연산 비용이 달라집니다. Classiq의 회로 합성과 실제 초전도 QPU에서 시험한 AshN을 통해, 자원을 아끼는 선택이 소프트웨어에서 물리 제어까지 어떻게 이어지는지 살펴봅니다.'
         ),
         ai_system="Codex-based GPT-5-family agent harness",
         ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
@@ -1318,9 +1297,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("Molecular Inverse Design", "D-Wave", "QUBO", "Chemprop", "PySCF", "Active Learning"),
         summary=(
-            "Chemprop D-MPNN과 ExtraTrees/Morgan 예측, 세 가지 고전 분자 생성기, 18변수 BQM을 "
-            "거쳐 후보 3개를 선택했습니다. D-Wave QPU 결과를 exact 기준과 비교하고 PySCF DFT로 "
-            "6개 후보를 재검증했으며, 고정 후보군 replay와 실제 active-learning loop의 증거 경계를 구분합니다."
+            '다음 분자 계산에 보낼 세 후보를 고르는 일을 고전 해법과 D-Wave QPU에 맡겼습니다. 같은 18개 후보에서 고른 분자를 DFT로 다시 계산하자, 고전 최적해의 배치는 평균적으로 나았고 QPU 배치는 목표에 가장 가까운 한 후보를 포함했습니다. 이 작은 실험은 후보를 고르는 점수와 실제 분자 계산의 결과를 따로 비교해야 하는 이유를 보여줍니다.'
         ),
         translations=(PublicTranslation(language="en", subdir="en", label="English"),),
         ai_system="Codex-based GPT-5-family agent harness",
@@ -1336,9 +1313,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum Computing",
         tags=("Quantum Computing", "Materials Science", "QRAM", "Qiskit Fermions", "VQE", "QML"),
         summary=(
-            "8월 25일 공개된 QRAM router는 실제 초전도 QPU 실험입니다. SiC color-center 연구는 "
-            "고전 HSE06/DFT, Qiskit Fermions의 depth 12는 컴파일 결과이며, PAS와 QRC+PIC는 "
-            "시뮬레이션입니다. 서로 다른 증거 층을 분리해 성취와 남은 비용을 평가합니다."
+            '양자메모리에 쓸 작은 라우터는 초전도 칩에서 작동했고, 스핀 큐비트로 쓸 SiC 결함 후보는 고전 컴퓨터에서 선별됐습니다. 두 성과를 구체적인 계산과 실험으로 따라가며, 같은 ‘양자’라는 이름 아래 어디까지 구현됐고 어떤 문제가 다음 연구로 남는지 살펴봅니다.'
         ),
         ai_system="Codex-based GPT-5-family agent harness",
         ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
@@ -1352,9 +1327,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("Quantum Chemistry", "OLED", "iQCC", "Classical Emulation", "Ir/Pt Phosphors"),
         summary=(
-            "OTI Lumionics와 SAIT는 양자-native iQCC를 고전 CPU에서 약 200 logical-qubit 규모로 "
-            "에뮬레이션해 Ir(III)·Pt(II) 인광체의 T1−S0 갭을 계산했습니다. 실제 QPU 실행이나 "
-            "양자 우위가 아니라 미래 하드웨어가 넘어야 할 정확도·규모·고전 tractability 기준선입니다."
+            'OLED 발광분자의 전자상태를 더 정확하게 구하려는 연구에서 OTI와 SAIT는 양자회로를 고전 CPU로 에뮬레이션했습니다. 최대 규모 사례는 약 200개 스핀 오비탈에 이르고, 정확도는 별도의 인광체 14종에서 평가했습니다. 이 결과는 미래 양자장치와 비교할 정확도와 계산 규모의 기준을 제공합니다.'
         ),
         ai_system="Codex-based GPT-5-family agent harness",
         ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
@@ -1368,9 +1341,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Materials AI",
         tags=("Materials Informatics", "Quantum-Classical", "Inverse Design", "Quantum Chemistry", "QML"),
         summary=(
-            "재료 역설계를 전자구조·학습·생성·표본추출·최적화의 선택 가능한 전문 계산 모듈로 나눕니다. "
-            "QPE·VQE, QML, QCBM·QBM, QUBO를 푸는 QA·QAOA의 역할과 성숙도를 구분하고, "
-            "QAE는 장기 확장 모듈로 둡니다. 청색 OLED는 이 구조를 점검하는 첫 유즈케이스입니다."
+            '원하는 물성을 정한 뒤 후보를 만들고, 계산과 실험으로 고르고, 실패한 이유를 다음 설계에 돌려주는 것이 재료 역설계의 일입니다. 양자컴퓨팅을 넣을 자리는 이 과정에서 비용과 불확실성이 커지는 부분에 따라 달라집니다. 청색 OLED를 사례로 어떤 계산을 맡기고 전체 연구 과정에서 그 이득을 어떻게 판단할지 살펴봅니다.'
         ),
     ),
     PublicReview(
@@ -1382,9 +1353,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="AI Hardware",
         tags=("AI Hardware", "AI Accelerators", "GPU/TPU", "NPU/LPU"),
         summary=(
-            "NPU, LPU, TPU, GPU, CPU, DPU/IPU, QPU를 새 약어 경쟁이 아니라 workload와 "
-            "데이터 경로의 분화로 읽습니다. 메모리 이동, 정밀도, 지연시간, 인프라 오프로드가 "
-            "왜 별도 처리장치를 낳는지 정리합니다."
+            '많은 행렬 연산을 한꺼번에 처리하는 일과 언어모델의 다음 토큰을 빨리 내보내는 일은 서로 다른 병목을 만듭니다. CPU·GPU·NPU 같은 처리장치가 나뉘는 이유를 계산의 모양과 데이터 이동에서 찾으면, 새 칩의 이름 뒤에 있는 비용과 쓰임새를 읽을 수 있습니다.'
         ),
     ),
     PublicReview(
@@ -1396,9 +1365,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="AI Hardware",
         tags=("Neuromorphic AI", "Edge AI", "Always-on AI", "AIoT"),
         summary=(
-            "ScienceTimes가 소개한 MoS2 인-센서 뉴로모픽 비전 논문을 출발점으로, "
-            "뉴로모픽이 스마트홈 presence sensing, 오디오 wake/event detection, 웨어러블, "
-            "smart camera 같은 항상 켜진 생활형 edge AI에서 어떤 의미를 갖는지 점검합니다."
+            '호출어를 기다리는 이어폰과 사람이 들어오는지 지켜보는 센서는 대부분의 시간을 기다리는 데 씁니다. 변화가 생긴 순간만 골라 처리할 수 있다면 배터리와 데이터 전송의 부담을 줄일 여지가 있습니다. MoS₂ 시각소자 실험을 통해 뉴로모픽 연구가 이런 생활형 AI의 감각 기능에 제안하는 방향을 살펴봅니다.'
         ),
         ai_system="Codex Agent",
         ai_system_ko="Codex Agent",
@@ -1427,8 +1394,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Quantum AI",
         tags=("Quantum AI", "Scientific ML", "Chaotic Systems", "QIML"),
         summary=(
-            "Lev Selector의 AI Updates Weekly에서 포착한 QIML 연구를 출발점으로, 양자 생성 모델이 "
-            "혼돈계의 불변 통계를 prior로 압축하고 고전 예측기의 긴 rollout을 안정화할 수 있는지 검토합니다."
+            '물속 잉크처럼 작은 차이가 크게 번지는 흐름에서는 짧은 예측이 잘 맞아도 긴 시간 뒤에는 전혀 다른 무늬가 나타날 수 있습니다. QIML은 이런 혼돈계에서 오래 유지되는 통계를 양자 생성 모델로 배워 고전 예측기에 보태는 방법을 시험합니다. 예측을 길게 이어 갈 때 그 흐름다운 물리적 특징을 얼마나 지킬 수 있는지가 관심입니다.'
         ),
     ),
     PublicReview(
@@ -1470,8 +1436,7 @@ REVIEWS: tuple[PublicReview, ...] = (
         category="Agent Systems",
         tags=("AI Agents", "Harness Engineering", "Developer Tools", "Governance"),
         summary=(
-            "모델 성능만으로는 설명하기 어려운 에이전트 운영 문제를 권한, 메모리, 검증, 승인, "
-            "병합의 관점에서 따라갑니다."
+            'AI가 코드를 고친 뒤에는 바뀐 파일을 확인하고, 테스트하고, 필요하면 되돌리는 일이 남습니다. 하네스 엔지니어링은 이런 실행과 검증을 도구·기억·권한의 설계와 연결해 여러 단계의 일을 맡길 수 있게 만드는 작업입니다.'
         ),
         ai_system="Codex-based GPT-5-family agent harness",
         ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
@@ -4118,6 +4083,18 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def refresh_hub_summaries(manifest: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Use reviewed publishing copy even when rebuilding only the hub.
+
+    Preserve publication dates, article revisions, assets and disclosures;
+    editing a hub introduction does not republish the scientific article.
+    """
+    reviews = {review.folder: review for review in REVIEWS}
+    return [{**item, "summary": reviews[str(item["folder"])].summary}
+            if str(item.get("folder", "")) in reviews else dict(item)
+            for item in manifest]
+
+
 def main(argv: Iterable[str] | None = None) -> int:
     args = parse_args(argv)
     if args.hub_only and args.review:
@@ -4151,6 +4128,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         manifest.append(
             preserve_published_review(review, existing_manifest.get(review.folder))
         )
+    manifest = refresh_hub_summaries(manifest)
     manifest.sort(key=lambda item: str(item["date"]), reverse=True)
 
     def decorate_archive(text: str, prefix: str) -> str:

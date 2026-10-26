@@ -27,6 +27,18 @@ class Cards(HTMLParser):
 
 
 class ReviewDiscoveryPublicationTests(unittest.TestCase):
+    def test_hub_only_summary_refresh_keeps_article_dates_assets_and_identity(self):
+        registered = publisher.REVIEWS[0]
+        existing = review(folder=registered.folder, summary="An earlier introduction.",
+                          assets=["original.pdf"], disclosure={"version": "original"})
+        unknown = review(folder="unregistered-preserved-review")
+        refreshed = publisher.refresh_hub_summaries([existing, unknown])
+        self.assertEqual(refreshed[0]["summary"], registered.summary)
+        self.assertEqual({k: v for k, v in refreshed[0].items() if k != "summary"},
+                         {k: v for k, v in existing.items() if k != "summary"})
+        self.assertEqual(existing["summary"], "An earlier introduction.")
+        self.assertEqual(refreshed[1], unknown)
+
     def test_cards_use_stable_identity_original_publication_date_and_escaped_content_search(self):
         item = review(title='A "quoted" <term>', summary="A <script> term and test")
         text = publisher.render_review_card(item)

@@ -68,6 +68,37 @@ class HubLocalizationTests(unittest.TestCase):
         value = extract_english_text('<h1>Title</h1><p class="standfirst">Published overview.</p>')
         self.assertEqual(value, {"title": "Title", "subtitle": "", "summary": "Published overview."})
 
+    def test_reviewed_summary_uses_current_korean_source_and_preserves_published_title_and_link(self):
+        self.write_article()
+        mapping = {"sample-review": {"source": self.item["summary"], "text": "Why the actual result matters to a reader."}}
+        with patch("scripts.hub_localization.HUB_SUMMARIES_EN", mapping):
+            english = localize_manifest([self.item], self.root, "en")[0]
+            korean = localize_manifest([self.item], self.root, "ko")[0]
+        self.assertEqual(english["summary"], mapping["sample-review"]["text"])
+        self.assertEqual(english["title"], "A published English title")
+        self.assertEqual(english["href"], self.item["translations"][0]["href"])
+        self.assertEqual(korean["summary"], self.item["summary"])
+        self.assertIn(mapping["sample-review"]["text"], korean["search_text"])
+        self.assertEqual(english["metric_path"], self.item["metric_path"])
+
+    def test_changed_korean_summary_does_not_reuse_a_stale_english_introduction(self):
+        self.write_article()
+        mapping = {"sample-review": {"source": self.item["summary"], "text": "Earlier reviewed introduction."}}
+        changed = deepcopy(self.item)
+        changed["summary"] += " Updated scientific scope."
+        with patch("scripts.hub_localization.HUB_SUMMARIES_EN", mapping):
+            value = localize_manifest([changed], self.root, "en")[0]
+        self.assertEqual(value["summary"], "The published English summary.")
+        self.assertNotIn("Earlier reviewed introduction.", value["search_text"])
+
+    def test_reviewed_copy_does_not_imply_that_an_english_article_exists(self):
+        mapping = {"sample-review": {"source": self.item["summary"], "text": "Reviewed English copy."}}
+        with patch("scripts.hub_localization.HUB_SUMMARIES_EN", mapping):
+            value = localize_manifest([self.item], self.root, "en")[0]
+        self.assertFalse(value["english_available"])
+        self.assertEqual(value["summary"], self.item["summary"])
+        self.assertEqual(value["href"], self.item["href"])
+
     def test_source_matched_hub_subtitle_fills_a_duplicate_published_intro(self):
         self.write_article('<meta name="description" content="Published summary."><h1>English title</h1><p class="dek">Published summary.</p>')
         mapping = {"sample-review": {"source": self.item["subtitle"], "text": "A faithful translated subtitle."}}

@@ -8,6 +8,9 @@ together rather than mixing languages or inventing scientific copy.
 When a published English intro merely repeats its summary, an approved hub
 subtitle may translate the existing Korean subtitle. That fallback applies
 only while its recorded Korean source matches the current entry exactly.
+Reviewed hub summaries may also be translated independently of an article's
+meta description. They require a published English article and an exact match
+to the current Korean summary, so a later source edit cannot reuse stale copy.
 """
 from __future__ import annotations
 
@@ -28,6 +31,7 @@ _VOID_TAGS = frozenset({
 _IGNORED_TAGS = frozenset({"script", "style", "template"})
 _INTRO_CLASSES = ("dek", "subtitle", "standfirst")
 HUB_SUBTITLES_EN = json.loads(Path(__file__).with_name("hub_subtitles_en.json").read_text(encoding="utf-8"))
+HUB_SUMMARIES_EN = json.loads(Path(__file__).with_name("hub_summaries_en.json").read_text(encoding="utf-8"))
 
 
 def _plain_text(value: str) -> str:
@@ -171,6 +175,10 @@ def _published_english(item: Mapping, site_root: Path) -> tuple[dict[str, str], 
                     and _comparison_key(translated["text"]) != _comparison_key(text["summary"])
                 ):
                     text["subtitle"] = translated["text"]
+            summary = HUB_SUMMARIES_EN.get(str(item.get("folder", "")), {})
+            if (summary.get("source") == item.get("summary")
+                    and isinstance(summary.get("text"), str) and summary["text"].strip()):
+                text["summary"] = _plain_text(summary["text"])
             return text, href
     return None
 
