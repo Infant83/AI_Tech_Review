@@ -19,10 +19,12 @@ from typing import Iterable
 from urllib.parse import unquote, urlsplit
 
 try:
+    from .hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from .site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
     from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 except ImportError:
+    from hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
     from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
@@ -32,6 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 REVIEWS_DIR = SITE_DIR / "reviews"
 ASSETS_DIR = SITE_DIR / "assets"
+HUB_ASSET_SOURCE_DIR = Path(__file__).resolve().parent / "public_assets"
+HUB_PREFERENCES_JS = (HUB_ASSET_SOURCE_DIR / "preferences.js").read_text(encoding="utf-8")
 ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "ai-tech-review-icon" / "generated"
 EDITORIAL_HARNESS_NAME = "AI Tech Review Editorial Harness"
 EDITORIAL_HARNESS_VERSION = "2026.08"
@@ -3105,64 +3109,13 @@ def render_translation_badges(item: dict[str, object]) -> str:
 
 
 def render_review_card(item: dict[str, object]) -> str:
-    tags = "".join(f"<span>{html.escape(tag)}</span>" for tag in item["tags"])
-    search_text = " ".join(str(item.get(key) or "") for key in ("title", "subtitle", "summary", "category")) + " " + " ".join(str(tag) for tag in item["tags"])
-    translation_badges = render_translation_badges(item)
-    thumbnail = item.get("thumbnail") or ""
-    image_html = (
-        f'<img src="{html.escape(str(thumbnail), quote=True)}" alt="{html.escape(str(item["title"]), quote=True)} 대표 이미지" loading="lazy">'
-        if thumbnail
-        else '<div class="thumb-placeholder" aria-hidden="true"></div>'
-    )
-    metrics_html = '''            <p class="card-reader-counts" aria-label="누적 독자 활동">
-              <span>조회 <strong data-discovery-field="opens">—</strong></span><span aria-hidden="true">·</span><span>좋아요 <strong data-discovery-field="likes">—</strong></span>
-            </p>'''
-    return f"""
-        <article class="review-card" data-article-id="{html.escape(str(item["folder"]), quote=True)}" data-published="{html.escape(str(item["date"]), quote=True)}" data-search="{html.escape(search_text, quote=True)}" data-category="{html.escape(str(item["category"]), quote=True)}" data-tags="{html.escape(" ".join(item["tags"]), quote=True)}" data-title="{html.escape(str(item["title"]), quote=True)}" data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
-          <a class="thumb" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
-          <div class="review-card-body">
-            <p class="meta">{html.escape(str(item["category"]))} · {html.escape(str(item["updated"]))}{translation_badges}</p>
-            <h3><a href="{html.escape(str(item["href"]), quote=True)}">{html.escape(str(item["title"]))}</a></h3>
-            <p class="subtitle">{html.escape(str(item["subtitle"]))}</p>
-{metrics_html}
-            <p>{html.escape(str(item["summary"]))}</p>
-            <div class="tags">{tags}</div>
-          </div>
-        </article>
-    """.rstrip()
+    return render_hub_card(item)
+
 
 
 def render_latest_update(item: dict[str, object]) -> str:
-    tags = "".join(f"<span>{html.escape(tag)}</span>" for tag in item["tags"][:4])
-    translation_badges = render_translation_badges(item)
-    thumbnail = item.get("thumbnail") or ""
-    image_html = (
-        f'<img src="{html.escape(str(thumbnail), quote=True)}" alt="{html.escape(str(item["title"]), quote=True)} 대표 이미지" loading="eager">'
-        if thumbnail
-        else '<div class="thumb-placeholder" aria-hidden="true"></div>'
-    )
-    metrics_html = (
-        f'''          <p class="latest-metrics" data-inline-metrics data-metric-path="{html.escape(str(item["metric_path"]), quote=True)}">
-            <span><strong data-metric-field="views">-</strong> 조회</span>
-            <span>평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-          </p>'''
-        if public_metrics_endpoint()
-        else ""
-    )
-    return f"""
-      <section class="latest-update" aria-labelledby="latest-heading">
-        <div class="latest-copy">
-          <p class="section-kicker">Latest update</p>
-          <h2 id="latest-heading">{html.escape(str(item["title"]))}</h2>
-          <p class="latest-subtitle">{html.escape(str(item["subtitle"]))}</p>
-          <p>{html.escape(str(item["summary"]))}</p>
-{metrics_html}
-          <div class="tags">{tags}</div>
-          <a class="text-link" href="{html.escape(str(item["href"]), quote=True)}">최신 리뷰 읽기</a>{translation_badges}
-        </div>
-        <a class="latest-media" href="{html.escape(str(item["href"]), quote=True)}">{image_html}</a>
-      </section>
-    """.rstrip()
+    return render_hub_latest(item)
+
 
 
 def render_category_chips(categories: list[str]) -> str:
@@ -3178,169 +3131,17 @@ def render_index(
     manifest: list[dict[str, object]],
     preferred_category_order: list[str] | None = None,
     documents: list[dict] | None = None,
+    language: str = "ko",
 ) -> str:
-    documents = documents or []
-    updated = date.today().isoformat()
-    available_categories = {str(item["category"]) for item in manifest}
-    categories = [
-        category
-        for category in (preferred_category_order or [])
-        if category in available_categories
-    ]
-    categories.extend(sorted(available_categories - set(categories)))
-    category_options = "\n".join(f'<option value="{html.escape(category)}">{html.escape(category)}</option>' for category in categories)
-    category_chips = render_category_chips(categories)
-    cards = "\n".join(render_review_card(item) for item in manifest)
-    latest = render_latest_update(manifest[0]) if manifest else ""
-    home_description = "AI, 과학, 에이전트, 제조 데이터, 거버넌스를 원문과 근거 경계로 검증하는 공개 기술 리뷰 허브"
-    latest_thumbnail = str(manifest[0].get("thumbnail") or "") if manifest else ""
-    home_image = f"{PUBLIC_BASE_URL}{latest_thumbnail}" if latest_thumbnail else ""
-    home_image_meta = (
-        f'\n    <meta property="og:image" content="{html.escape(home_image, quote=True)}">'
-        f'\n    <meta property="og:image:alt" content="AI Tech Review Letters 최신 리뷰 대표 이미지">'
-        f'\n    <meta name="twitter:image" content="{html.escape(home_image, quote=True)}">'
-        if home_image
-        else ""
+    return render_hub(
+        manifest, preferred_category_order, documents,
+        site_dir=SITE_DIR, language=language,
+        css_version=hashlib.sha256(SITE_CSS.encode("utf-8")).hexdigest()[:12],
+        js_version=hashlib.sha256(SITE_JS.encode("utf-8")).hexdigest()[:12],
+        preferences_version=hashlib.sha256(HUB_PREFERENCES_JS.encode("utf-8")).hexdigest()[:12],
+        library_version=LIBRARY_ASSET_VERSION,
     )
-    topbar_metrics = (
-        '''          <aside class="public-metrics topbar-metrics" data-public-metrics-widget data-state="loading" aria-live="polite" aria-label="허브 조회 통계">
-            <span class="public-metrics-pill"><strong data-metric-field="page">-</strong> 허브 조회</span>
-            <span class="public-metrics-pill">평균 읽은 시간 <strong data-metric-field="average">-</strong></span>
-          </aside>'''
-        if public_metrics_endpoint()
-        else ""
-    )
-    metrics_disclosure = (
-        '<li class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</li>'
-        if public_metrics_endpoint()
-        else ""
-    )
-    hub_css_version = hashlib.sha256(SITE_CSS.encode("utf-8")).hexdigest()[:12]
-    hub_js_version = hashlib.sha256(SITE_JS.encode("utf-8")).hexdigest()[:12]
 
-    return f"""<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AI Tech Review Letters</title>
-    <meta name="description" content="{html.escape(home_description, quote=True)}">
-    <link rel="canonical" href="{PUBLIC_BASE_URL}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="AI Tech Review Letters">
-    <meta property="og:title" content="AI Tech Review Letters">
-    <meta property="og:description" content="{html.escape(home_description, quote=True)}">
-    <meta property="og:url" content="{PUBLIC_BASE_URL}">{home_image_meta}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AI Tech Review Letters">
-    <meta name="twitter:description" content="{html.escape(home_description, quote=True)}">
-    <link rel="stylesheet" href="assets/site.css?v={hub_css_version}">
-    <link rel="stylesheet" href="assets/archive.css?v={LIBRARY_ASSET_VERSION}">
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="topbar" aria-label="주요 링크">
-        <div class="topbar-left">
-          {render_brand_link()}
-          <label class="top-search">
-            <span class="sr-only">리뷰 검색</span>
-            <input id="search" type="search" placeholder="검색: AI scientist, TabPFN, agent..." autocomplete="off">
-          </label>
-{topbar_metrics}
-        </div>
-        <span class="topbar-links">
-          <a href="https://infant83.github.io/">김현중</a>
-          <a href="methods/">작성·검증 원칙</a>
-          <a href="manifest.json">데이터</a>
-        </span>
-      </nav>
-      {render_library_navigation(documents, "reviews")}
-      <section class="hero">
-        <p class="eyebrow">Public report hub · {updated}</p>
-        <h1>Enlighten your AI Technology Insight.</h1>
-        <p class="lead">AI for Science, frontier models, agent systems, materials AI를 원문 링크와 함께 다시 읽습니다. 심층 리뷰와 매일의 양자 브리핑, 주간·수시 PDF와 렉처 노트를 한곳에 모았습니다.</p>
-        <div class="stats" aria-label="허브 요약">
-          <a href="#review-grid" class="stat-link" data-category-filter=""><strong>{len(manifest)}</strong> 공개 리뷰</a>
-          <a href="#topic-filter" class="stat-link"><strong>{len(categories)}</strong> 주제 묶음</a>
-          <a href="lectures/" class="stat-link"><strong>{sum(doc['series'] == 'lecture-notes' for doc in documents)}</strong> 렉처 노트</a>
-          <a href="briefings/" class="stat-link"><strong>{sum(doc['series'] in {'daily-quantum', 'weekly-review'} for doc in documents)}</strong> 브리핑</a>
-        </div>
-      </section>
-    </header>
-
-    <main>
-{latest}
-
-      {render_learning_teaser(documents)}
-
-      <section class="topic-filter" id="topic-filter" aria-label="주제별 리뷰 찾기">
-        <div class="filter-heading">
-          <div>
-            <p class="section-kicker">Browse by topic</p>
-            <h2>주제별 리뷰</h2>
-          </div>
-          <div class="discovery-controls">
-            <label class="category-select"><span>주제 선택</span><select id="category"><option value="">전체</option>{category_options}</select></label>
-            <label class="discovery-select"><span>정렬</span><select id="review-sort"><option value="latest">최신순</option><option value="views" disabled>조회순</option><option value="likes" disabled>좋아요순</option></select></label>
-            <label class="discovery-select"><span>관심 집계 기간</span><select id="review-period"><option value="all">전체</option><option value="7d">최근 7일</option><option value="30d">최근 30일</option><option value="90d">최근 90일</option><option value="custom">기간 지정</option></select></label>
-          </div>
-        </div>
-        <div class="discovery-dates" id="discovery-dates" hidden><label><span>시작일</span><input id="discovery-from" type="date"></label><span aria-hidden="true">~</span><label><span>종료일</span><input id="discovery-to" type="date"></label></div>
-        <p class="discovery-hint" id="discovery-hint">기간은 글 발행일이 아닌 조회·좋아요 활동 기준이며, 카드 수치는 누적값입니다.</p>
-        <div class="category-chips" aria-label="주제 빠른 선택">
-          {category_chips}
-        </div>
-        <div class="discovery-feedback"><p id="discovery-status" role="status" aria-live="polite"></p><button class="discovery-retry" id="discovery-retry" type="button" hidden>통계 다시 불러오기</button></div>
-      </section>
-
-      <p class="discovery-results" id="review-results" role="status" aria-live="polite"></p>
-      <section class="review-grid" id="review-grid" aria-label="리뷰 목록">
-{cards}
-      </section>
-      <p class="discovery-empty" id="review-empty" hidden>검색 조건에 맞는 리뷰가 없어요. 검색어 또는 주제를 바꿔 주세요.</p>
-      <div class="discovery-more-wrap"><button class="discovery-more" id="review-more" type="button" hidden>더 보기</button></div>
-
-      <section class="transparency-notice" aria-labelledby="transparency-heading">
-        <div>
-          <p class="section-kicker">Human-owned · AI-assisted · source-audited</p>
-          <h2 id="transparency-heading">작성·검증 공개</h2>
-          <p class="operator"><a href="methods/">전체 작성 원칙과 하네스 보기</a></p>
-        </div>
-        <div class="notice-body">
-          <dl class="credit-list">
-            <div>
-              <dt>책임 편집자</dt>
-              <dd>
-                <a href="https://infant83.github.io/">김현중</a>
-                <span class="credit-links">
-                  <a href="https://infant83.github.io/">Profile</a>
-                  <a href="https://github.com/Infant83">GitHub</a>
-                  <a href="https://www.linkedin.com/in/hyun-jung-kim-8126a7236/">LinkedIn</a>
-                  <a href="https://scholar.google.com/citations?user=FtSLeT4AAAAJ&hl=en">Google Scholar</a>
-                </span>
-              </dd>
-            </div>
-            <div>
-              <dt>AI 지원</dt>
-              <dd>AI 시스템은 글별 공개 기록에 따릅니다. 이번 공개 보완은 OpenAI Codex Work Mode를 사용했으며, 미보존 역할·모델 정보는 추정하지 않습니다.</dd>
-            </div>
-          </dl>
-          <ul>
-            <li>사람이 연구 질문, 과학적 해석과 발행 책임을 맡고 AI 에이전트는 조사, 대조, 초안, 번역, 시각자료 설계와 게시 검사를 지원합니다.</li>
-            <li>글마다 사용한 에이전트 역할, 검증 범위, 근거 기준일과 하네스 버전을 공개합니다. 기록이 남지 않은 세부 모델·에이전트 구성은 ‘미보존’으로 표시합니다.</li>
-            <li>논문 보고 결과, 독립 검증, 리뷰 해석, 후속 제안을 구분하고 QPU·실험, 고전 시뮬레이션, 컴파일, 논리 자원 추정을 같은 증거 수준으로 섞지 않습니다.</li>
-            <li>외부 출처의 저작권/라이선스는 원 저작권자에게 있으며, 재배포 전 원문 정책 확인이 필요합니다.</li>
-            <li>고위험 의사결정(법률·의료·재무·규제)에는 원문 대조와 추가 검증 절차를 수행하세요.</li>
-{metrics_disclosure}
-          </ul>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer"><a href="mailto:angpangmokjang@gmail.com">관리자에게 메일</a><a href="methods/#reader-metrics">통계·알림 안내</a></footer>
-    <script src="assets/site.js?v={hub_js_version}" defer></script>
-  </body>
-</html>
-"""
 
 
 def copy_icon_assets() -> None:
@@ -3359,560 +3160,7 @@ def copy_icon_assets() -> None:
         shutil.copy2(ICON_SOURCE_DIR / name, dest)
 
 
-SITE_CSS = """
-:root {
-  --bg: #f6f7f4;
-  --paper: #ffffff;
-  --ink: #171b1f;
-  --muted: #5c6670;
-  --line: #d9ded8;
-  --green: #0d7c66;
-  --blue: #2357a5;
-  --red: #a23645;
-  --deep: #0d141b;
-  --shadow: 0 18px 48px rgba(27, 36, 45, 0.10);
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  line-height: 1.6;
-}
-h1, h2, h3, .lead, .subtitle, .review-card p, .latest-update p, .transparency-notice li {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-a { color: inherit; }
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-.site-header, main {
-  width: min(1180px, calc(100% - 36px));
-  margin: 0 auto;
-}
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 22px;
-  padding: 24px 0 18px;
-  font-size: 14px;
-  color: var(--muted);
-}
-.topbar-left {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  min-width: 0;
-  flex: 1;
-}
-.topbar-links {
-  display: inline-flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
-}
-.brand {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  flex: 0 0 auto;
-  gap: 10px;
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1.25;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.brand-icon {
-  display: block;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-  border-radius: 10px;
-}
-.top-search {
-  width: min(360px, 42vw);
-}
-.topbar-left .public-metrics {
-  flex: 0 0 auto;
-  min-width: 0;
-  margin: 0;
-}
-.topbar-left .public-metrics-pill {
-  background: rgba(255, 255, 255, 0.72);
-  min-height: 34px;
-  padding: 7px 10px;
-  white-space: nowrap;
-}
-.top-search input {
-  padding: 10px 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-}
-.hero {
-  border-top: 5px solid var(--green);
-  border-bottom: 1px solid var(--line);
-  padding: 52px 0 34px;
-}
-.eyebrow {
-  margin: 0 0 14px;
-  color: var(--green);
-  font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-h1 {
-  max-width: 860px;
-  margin: 0;
-  font-size: clamp(34px, 6vw, 64px);
-  line-height: 1.08;
-  letter-spacing: 0;
-}
-.lead {
-  max-width: 780px;
-  margin: 22px 0 0;
-  color: var(--muted);
-  font-size: 18px;
-}
-.section-kicker {
-  margin: 0 0 8px;
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-}
-.stat-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.65);
-  padding: 10px 13px;
-  font-size: 14px;
-  text-decoration: none;
-  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
-}
-.stat-link:hover,
-.stat-link:focus-visible {
-  border-color: rgba(13, 124, 102, 0.55);
-  background: #ffffff;
-  color: var(--green);
-}
-.latest-update {
-  display: grid;
-  grid-template-columns: minmax(340px, 0.92fr) minmax(460px, 1.08fr);
-  gap: 0;
-  align-items: stretch;
-  margin: 30px 0 26px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--paper);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-.latest-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(24px, 4vw, 38px);
-}
-.latest-copy h2 {
-  margin: 0 0 12px;
-  max-width: 12.5em;
-  font-size: 42px;
-  line-height: 1.12;
-  text-wrap: balance;
-}
-.latest-copy p {
-  color: var(--muted);
-}
-.latest-subtitle {
-  color: var(--ink) !important;
-  font-weight: 800;
-  max-width: 38em;
-}
-.latest-media {
-  display: grid;
-  min-height: 100%;
-  background: #eef1ed;
-  border-left: 1px solid var(--line);
-}
-.latest-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 320px;
-  object-fit: cover;
-  object-position: center;
-}
-.latest-media img[src$=".svg"] {
-  object-fit: contain;
-  padding: clamp(12px, 2vw, 22px);
-  background: #f8faf8;
-}
-.latest-media img[src$="circuit_design_researcher_agent_hero_v4.webp"],
-.latest-media img[src$="2026-10-20_jupiter-fault-tolerant-simulation/hero-v2.webp"] {
-  object-fit: contain;
-  background: #f3efe8;
-}
-.text-link {
-  display: inline-flex;
-  margin-top: 22px;
-  color: var(--green);
-  font-weight: 900;
-  text-decoration: none;
-}
-.text-link:hover {
-  color: var(--blue);
-}
-.topic-filter {
-  display: grid;
-  gap: 12px;
-  margin: 30px 0 18px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.58);
-}
-.filter-heading {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  align-items: end;
-}
-.filter-heading h2 {
-  margin: 0;
-  font-size: clamp(22px, 3vw, 32px);
-}
-.category-select {
-  display: grid;
-  gap: 6px;
-  min-width: min(155px, 100%);
-}
-.discovery-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; min-width: 0; max-width: 100%; }
-.discovery-select, .discovery-dates label { display: grid; gap: 6px; min-width: 0; }
-.discovery-select span, .discovery-dates label span { color: var(--muted); font-size: 12px; font-weight: 700; }
-.discovery-controls select { min-height: 44px; padding: 9px 11px; font-size: 13px; }
-.discovery-controls .category-select { flex: 1 1 155px; }
-.discovery-dates { display: flex; align-items: end; flex-wrap: wrap; gap: 8px; }
-.discovery-dates[hidden] { display: none; }
-.discovery-dates > span { padding-bottom: 11px; color: var(--muted); }
-.discovery-dates input { min-height: 44px; max-width: 100%; padding: 8px 10px; font-size: 13px; }
-.discovery-hint, .discovery-feedback p, .discovery-results { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
-.discovery-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.discovery-feedback:has(p:empty):not(:has(button:not([hidden]))) { display: none; }
-.discovery-results { margin: 0 0 10px; }
-.discovery-empty { padding: 32px 12px; color: var(--muted); text-align: center; }
-.discovery-more-wrap { display: flex; justify-content: center; margin: 24px 0 34px; }
-.discovery-more, .discovery-retry { min-height: 44px; padding: 10px 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; font-weight: 700; line-height: 1.5; cursor: pointer; }
-.discovery-retry { padding: 8px 12px; }
-.discovery-more:hover, .discovery-retry:hover { border-color: var(--green); color: var(--green); }
-.discovery-more:focus-visible, .discovery-retry:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
-.discovery-more[hidden], .discovery-retry[hidden], .discovery-empty[hidden], .review-card[hidden] { display: none; }
-.card-reader-counts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 9px 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
-.card-reader-counts strong { color: inherit; font-weight: 650; font-variant-numeric: tabular-nums; }
-.site-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; width: min(100% - 48px, 1180px); margin: 0 auto 30px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; }
-.site-footer a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-underline-offset: 4px; }
-.category-select span,
-.top-search span {
-  font-size: 13px;
-}
-.category-select span {
-  display: grid;
-  gap: 6px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-.category-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.category-chip {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #ffffff;
-  color: var(--muted);
-  padding: 8px 12px;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 800;
-  cursor: pointer;
-  min-height: 44px;
-}
-.category-chip:hover,
-.category-chip:focus-visible,
-.category-chip.active {
-  border-color: rgba(13, 124, 102, 0.55);
-  background: rgba(13, 124, 102, 0.08);
-  color: var(--green);
-}
-input, select {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--paper);
-  color: var(--ink);
-  padding: 12px 13px;
-  font: inherit;
-}
-input:focus, select:focus {
-  outline: 3px solid rgba(13, 124, 102, 0.18);
-  border-color: var(--green);
-}
-.review-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-.review-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  min-height: 0;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-.thumb {
-  display: block;
-  aspect-ratio: 16 / 10;
-  background: #e8ece8;
-}
-.thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.thumb-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, rgba(13,124,102,0.24), rgba(35,87,165,0.18));
-}
-.review-card-body {
-  padding: 22px;
-}
-.meta {
-  margin: 0 0 10px;
-  color: var(--green);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.translation-badge {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 9px;
-  padding: 3px 8px;
-  border: 1px solid rgba(35, 87, 165, 0.34);
-  border-radius: 999px;
-  color: var(--blue);
-  background: rgba(35, 87, 165, 0.06);
-  font-size: 11px;
-  font-weight: 800;
-  line-height: 1.3;
-  text-decoration: none;
-  text-transform: none;
-  letter-spacing: 0;
-  vertical-align: middle;
-}
-.translation-badge:hover {
-  border-color: var(--blue);
-  background: rgba(35, 87, 165, 0.12);
-}
-.latest-copy > .translation-badge { align-self: flex-start; margin-left: 0; margin-top: 8px; }
-h3 {
-  margin: 0 0 10px;
-  font-size: 21px;
-  line-height: 1.25;
-}
-h3 a {
-  text-decoration: none;
-}
-h3 a:hover {
-  color: var(--blue);
-}
-.subtitle {
-  color: var(--muted);
-  font-weight: 700;
-}
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 18px;
-}
-.tags span {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--muted);
-  padding: 4px 9px;
-  font-size: 12px;
-}
-.transparency-notice {
-  display: grid;
-  grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.4fr);
-  gap: 24px;
-  margin: 46px 0 76px;
-  padding: clamp(22px, 4vw, 34px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-  background: var(--deep);
-  color: #eaf0f3;
-}
-.transparency-notice h2 {
-  margin: 0 0 14px;
-  font-size: 24px;
-}
-.transparency-notice .operator {
-  margin: 0;
-  color: rgba(234, 240, 243, 0.72);
-}
-.transparency-notice a {
-  color: #8bd8c6;
-  font-weight: 800;
-}
-.transparency-notice ul {
-  margin: 0;
-  padding-left: 20px;
-  color: rgba(234, 240, 243, 0.82);
-}
-.notice-body {
-  display: grid;
-  gap: 22px;
-}
-.credit-list {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  color: rgba(234, 240, 243, 0.86);
-}
-.credit-list div {
-  display: grid;
-  grid-template-columns: 132px minmax(0, 1fr);
-  gap: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(234, 240, 243, 0.14);
-}
-.credit-list dt {
-  color: rgba(234, 240, 243, 0.62);
-  font-weight: 800;
-}
-.credit-list dd {
-  margin: 0;
-}
-.credit-links {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-left: 8px;
-}
-.credit-links a {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.transparency-notice li + li {
-  margin-top: 8px;
-}
-.public-note {
-  max-width: 980px;
-  margin: 52px auto 0;
-  padding: 18px 24px;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  color: #5c6670;
-  font-size: 14px;
-}
-.metrics-disclosure {
-  font-size: 12px;
-  color: rgba(234, 240, 243, 0.66);
-}
-.public-note .metrics-disclosure {
-  margin-top: 8px;
-  color: #747e87;
-}
-a:not([href]) {
-  color: inherit;
-  text-decoration: none;
-  cursor: default;
-}
-.hidden { display: none !important; }
-@media (max-width: 900px) {
-  .topbar,
-  .topbar-left {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .top-search {
-    width: 100%;
-  }
-  .topbar-left .public-metrics {
-    width: 100%;
-  }
-  .topbar-links {
-    align-self: flex-start;
-  }
-  .latest-update,
-  .transparency-notice {
-    grid-template-columns: 1fr;
-  }
-  .latest-copy h2 {
-    font-size: 38px;
-  }
-  .latest-media {
-    border-left: 0;
-    border-top: 1px solid var(--line);
-  }
-  .filter-heading,
-  .credit-list div {
-    grid-template-columns: 1fr;
-  }
-  .filter-heading {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 680px) {
-  .site-header, main { width: min(100% - 24px, 1180px); }
-  .brand { font-size: 15px; }
-  .brand-icon { width: 40px; height: 40px; flex-basis: 40px; border-radius: 9px; }
-  .review-grid { grid-template-columns: 1fr; }
-  .latest-copy h2 { font-size: 32px; }
-  .thumb { aspect-ratio: 16 / 9; }
-  .latest-media img { min-height: 220px; }
-  .hero { padding-top: 36px; }
-  .discovery-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .discovery-controls .category-select { grid-column: 1 / -1; }
-  .discovery-dates label { flex: 1 1 125px; }
-  .site-footer { width: calc(100% - 24px); }
-}
-"""
+SITE_CSS = (HUB_ASSET_SOURCE_DIR / "hub.css").read_text(encoding="utf-8")
 
 
 PUBLIC_METRICS_CSS = """
@@ -4373,197 +3621,7 @@ PUBLIC_METRICS_JS = """
 """
 
 
-SITE_JS = r"""
-(function () {
-  "use strict";
-  const search = document.querySelector("#search"), category = document.querySelector("#category");
-  const reviewGrid = document.querySelector("#review-grid"), topicFilter = document.querySelector("#topic-filter");
-  const sort = document.querySelector("#review-sort"), period = document.querySelector("#review-period");
-  const from = document.querySelector("#discovery-from"), to = document.querySelector("#discovery-to"), dates = document.querySelector("#discovery-dates");
-  const hint = document.querySelector("#discovery-hint"), status = document.querySelector("#discovery-status"), retry = document.querySelector("#discovery-retry");
-  const results = document.querySelector("#review-results"), empty = document.querySelector("#review-empty"), more = document.querySelector("#review-more");
-  if (!search || !category || !reviewGrid || !sort || !period || !from || !to || !dates || !hint || !status || !retry || !results || !empty || !more) return;
-  const cards = Array.from(reviewGrid.querySelectorAll(".review-card"));
-  const categoryTriggers = Array.from(document.querySelectorAll("[data-category-filter]"));
-  const originalOptions = Array.from(category.options);
-  const originalOrder = new Map(cards.map((card, index) => [card, index]));
-  const searchText = new Map(cards.map(card => [card, normalize(card.dataset.search || `${card.dataset.title} ${card.dataset.tags}`)]));
-  const cache = new Map();
-  const pageSize = 12;
-  let visibleLimit = pageSize, matched = [], discovery = null, ready = false, generation = 0, pending = null;
-  let renderedOrder = cards.map(card => card.dataset.articleId).join("|");
-  let apiBase = "https://api.infant83.io";
-  try {
-    const config = document.querySelector("#reader-engagement-config");
-    const value = config ? JSON.parse(config.textContent) : {};
-    const requested = new URL(String(value.apiBase || apiBase));
-    const local = /^(localhost|127\.0\.0\.1|\[::1\])$/;
-    if (requested.origin === apiBase || (value.allowLocalApi === true && local.test(location.hostname) && local.test(requested.hostname) && ["http:", "https:"].includes(requested.protocol))) apiBase = requested.origin;
-  } catch (_) { /* A configured host cannot redirect public requests elsewhere. */ }
-
-  function normalize(value) { return String(value || "").toLocaleLowerCase("ko-KR").trim(); }
-  function todayKST() { return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10); }
-  function validDay(value) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-    const date = new Date(value + "T00:00:00Z");
-    return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
-  }
-  function selectedRange() {
-    if (period.value !== "custom") {
-      if (!["all", "7d", "30d", "90d"].includes(period.value)) throw Error("기간을 다시 선택해 주세요.");
-      return { key: "period=" + period.value, period: period.value };
-    }
-    if (!validDay(from.value) || !validDay(to.value)) throw Error("시작일과 종료일을 모두 선택해 주세요.");
-    if (from.value > to.value) throw Error("종료일은 시작일 이후로 선택해 주세요.");
-    if (to.value > todayKST()) throw Error("오늘 이후의 날짜는 선택할 수 없어요.");
-    if ((Date.parse(to.value) - Date.parse(from.value)) / 86400000 + 1 > 3660) throw Error("집계 기간은 3,660일 이내로 선택해 주세요.");
-    return { key: "from=" + from.value + "&to=" + to.value, period: "custom", from: from.value, to: to.value };
-  }
-  function setPopularityAvailable(value, reset) {
-    ready = value;
-    for (const option of Array.from(sort.options)) option.disabled = option.value !== "latest" && !value;
-    if (!value && reset !== false && sort.value !== "latest") sort.value = "latest";
-  }
-  function updateHint() {
-    let value = "기간은 글 발행일이 아닌 조회·좋아요 활동 기준이며, 카드 수치는 누적값입니다.";
-    if (sort.value !== "latest" && ready) value += " 주제 선택도 같은 기간의 활동 합계순입니다.";
-    if (discovery && discovery.range.period !== "all" && validDay(discovery.activitySince || "") && discovery.range.from < discovery.activitySince) value += " 이 기간의 활동 통계는 " + discovery.activitySince + "부터 제공됩니다.";
-    hint.textContent = value;
-  }
-  function activity(card, kind) {
-    const row = discovery && discovery.rows.get(card.dataset.articleId);
-    return row ? row[kind === "views" ? "periodOpens" : "periodLikes"] : -1;
-  }
-  function newest(a, b) {
-    const byDate = String(b.dataset.published || "").localeCompare(String(a.dataset.published || ""));
-    return byDate || originalOrder.get(a) - originalOrder.get(b);
-  }
-  function orderTopics() {
-    const selected = category.value;
-    const totals = new Map();
-    if (ready && sort.value !== "latest") {
-      for (const card of cards) totals.set(card.dataset.category, (totals.get(card.dataset.category) || 0) + Math.max(0, activity(card, sort.value)));
-    }
-    const ordered = originalOptions.slice().sort((a, b) => {
-      if (!a.value || !b.value) return a.value ? 1 : b.value ? -1 : 0;
-      return (totals.get(b.value) || 0) - (totals.get(a.value) || 0) || originalOptions.indexOf(a) - originalOptions.indexOf(b);
-    });
-    const before = Array.from(category.options).map(option => option.value).join("|");
-    if (before !== ordered.map(option => option.value).join("|")) for (const option of ordered) category.appendChild(option);
-    category.value = selected;
-  }
-  function applyFilters(reset) {
-    if (reset) visibleLimit = pageSize;
-    const q = normalize(search.value), selected = category.value;
-    matched = cards.filter(card => (!selected || card.dataset.category === selected) && (!q || searchText.get(card).includes(q)));
-    matched.sort((a, b) => ready && sort.value !== "latest" ? activity(b, sort.value) - activity(a, sort.value) || newest(a, b) : newest(a, b));
-    const focused = document.activeElement, focusedCard = focused && typeof focused.closest === "function" ? focused.closest(".review-card") : null;
-    const focusedIndex = matched.indexOf(focusedCard);
-    if (!reset && focusedIndex >= visibleLimit) visibleLimit = focusedIndex + 1;
-    const shown = new Set(matched.slice(0, visibleLimit));
-    const ordered = matched.concat(cards.filter(card => !matched.includes(card)));
-    const orderKey = ordered.map(card => card.dataset.articleId).join("|");
-    if (orderKey !== renderedOrder) {
-      for (const card of ordered) reviewGrid.appendChild(card);
-      renderedOrder = orderKey;
-    }
-    for (const card of cards) { card.hidden = !shown.has(card); card.classList.toggle("hidden", card.hidden); }
-    for (const trigger of categoryTriggers) {
-      trigger.classList.toggle("active", trigger.dataset.categoryFilter === selected);
-      if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-pressed", trigger.dataset.categoryFilter === selected ? "true" : "false");
-    }
-    orderTopics(); updateHint();
-    const shownCount = Math.min(visibleLimit, matched.length);
-    results.textContent = matched.length ? `${matched.length}개 리뷰 중 ${shownCount}개 표시` : "0개 리뷰";
-    empty.hidden = matched.length !== 0;
-    more.hidden = shownCount >= matched.length;
-    more.textContent = `더 보기 (${Math.min(pageSize, matched.length - shownCount)}개)`;
-    if (focusedCard && shown.has(focusedCard) && typeof focused.focus === "function") focused.focus({ preventScroll: true });
-  }
-  function validateDiscovery(value, requested) {
-    if (!value || value.ok !== true || !Array.isArray(value.articles) || value.articles.length > 500 || typeof value.since !== "string" || !Number.isFinite(Date.parse(value.since)) || !value.range || value.range.period !== requested.period) throw Error("invalid_discovery");
-    if (requested.period === "all" ? value.range.from !== null || value.range.to !== null : !validDay(value.range.from || "") || !validDay(value.range.to || "")) throw Error("invalid_range");
-    if (requested.period === "custom" && (value.range.from !== requested.from || value.range.to !== requested.to)) throw Error("invalid_range");
-    const rows = new Map();
-    for (const row of value.articles) {
-      if (!row || typeof row.id !== "string" || !/^(?:lecture:)?[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(row.id) || rows.has(row.id)) throw Error("invalid_article");
-      for (const key of ["opens", "likes", "shares", "copies", "periodOpens", "periodLikes"]) if (typeof row[key] !== "number" || !Number.isSafeInteger(row[key]) || row[key] < 0) throw Error("invalid_count");
-      rows.set(row.id, row);
-    }
-    return { rows, range: value.range, activitySince: value.activitySince || null };
-  }
-  function showCounts(value) {
-    const formatter = new Intl.NumberFormat("ko-KR");
-    for (const card of cards) {
-      const row = value.rows.get(card.dataset.articleId);
-      for (const kind of ["opens", "likes"]) {
-        const field = card.querySelector('[data-discovery-field="' + kind + '"]');
-        if (field) field.textContent = row ? formatter.format(row[kind]) : "—";
-      }
-    }
-  }
-  async function loadDiscovery(force) {
-    let selected;
-    try { selected = selectedRange(); }
-    catch (error) { generation += 1; if (pending) pending.abort(); setPopularityAvailable(false); status.textContent = error.message; retry.hidden = true; applyFilters(true); return; }
-    const current = ++generation;
-    if (pending) pending.abort();
-    pending = null;
-    const previous = cache.get(selected.key);
-    if (!force && previous && Date.now() - previous.time < 30000) {
-      discovery = previous.value; setPopularityAvailable(true); showCounts(discovery); status.textContent = ""; retry.hidden = true; applyFilters(false); return;
-    }
-    setPopularityAvailable(false, false); status.textContent = "조회·좋아요 통계를 불러오는 중…"; retry.hidden = true;
-    const controller = typeof AbortController === "function" ? new AbortController() : null;
-    let deadline;
-    pending = controller;
-    try {
-      const response = await Promise.race([
-        fetch(apiBase + "/v1/discovery?" + selected.key, { credentials: "omit", mode: "cors", cache: "no-store", headers: { Accept: "application/json" }, signal: controller ? controller.signal : undefined }).then(async response => {
-          if (!response.ok) throw Error("discovery_unavailable");
-          return response.json();
-        }),
-        new Promise((_, reject) => { deadline = setTimeout(() => { if (controller) controller.abort(); reject(Error("discovery_timeout")); }, 8000); })
-      ]);
-      if (current !== generation) return;
-      discovery = validateDiscovery(response, selected);
-      cache.set(selected.key, { time: Date.now(), value: discovery });
-      if (cache.size > 8) cache.delete(cache.keys().next().value);
-      setPopularityAvailable(true); showCounts(discovery); status.textContent = ""; retry.hidden = true; applyFilters(false);
-    } catch (_) {
-      if (current !== generation) return;
-      setPopularityAvailable(false);
-      status.textContent = "조회·좋아요 통계에 연결할 수 없어 최신순으로 보여드려요.";
-      retry.hidden = false; applyFilters(false);
-    } finally { if (deadline !== undefined) clearTimeout(deadline); if (current === generation) pending = null; }
-  }
-  search.addEventListener("input", () => applyFilters(true));
-  category.addEventListener("change", () => applyFilters(true));
-  sort.addEventListener("change", () => { if (!ready) sort.value = "latest"; applyFilters(true); });
-  period.addEventListener("change", () => {
-    dates.hidden = period.value !== "custom";
-    if (period.value === "custom" && !from.value && !to.value) {
-      to.value = todayKST(); from.value = new Date(Date.parse(to.value) - 29 * 86400000).toISOString().slice(0, 10);
-    }
-    visibleLimit = pageSize; void loadDiscovery(false);
-  });
-  for (const field of [from, to]) field.addEventListener("change", () => { visibleLimit = pageSize; void loadDiscovery(false); });
-  for (const trigger of categoryTriggers) trigger.addEventListener("click", event => {
-    event.preventDefault(); category.value = trigger.dataset.categoryFilter || ""; applyFilters(true);
-    if (trigger.tagName === "A") reviewGrid.scrollIntoView({ behavior: window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  });
-  document.querySelector('a[href="#topic-filter"]')?.addEventListener("click", event => { event.preventDefault(); if (topicFilter) topicFilter.scrollIntoView({ behavior: "smooth", block: "start" }); });
-  more.addEventListener("click", () => {
-    const previous = Math.min(visibleLimit, matched.length); visibleLimit += pageSize; applyFilters(false);
-    const next = matched[previous]?.querySelector("h3 a"); if (next) next.focus({ preventScroll: true });
-  });
-  retry.addEventListener("click", () => { void loadDiscovery(true); });
-  window.addEventListener("pageshow", event => { if (event.persisted) void loadDiscovery(true); });
-  from.max = to.max = todayKST();
-  applyFilters(true);
-  void loadDiscovery(false);
-})();
-"""
+SITE_JS = (HUB_ASSET_SOURCE_DIR / "hub.js").read_text(encoding="utf-8")
 
 
 def load_existing_manifest() -> dict[str, dict[str, object]]:
@@ -4959,13 +4017,23 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
             f"script={metrics_script_count}, config={metrics_config_count}"
         )
     for required in (
-        '<link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/">',
+        f'<link rel="canonical" href="{HUB_PUBLIC_URL}">',
         '<meta property="og:title" content="AI Tech Review Letters">',
         '<meta name="twitter:card" content="summary_large_image">',
         'href="methods/"',
     ):
         if required not in index_text:
             errors.append(f"missing homepage metadata or methods link: {required}")
+    english_index = SITE_DIR / "en/index.html"
+    if not english_index.exists():
+        errors.append("missing English homepage")
+    else:
+        english_text = english_index.read_text(encoding="utf-8")
+        errors.extend(validate_local_references(english_index, english_text, sparse_tracked_paths))
+        errors.extend(f"{risk} left in {english_index}" for risk in public_text_risks(english_text))
+        for required in ('<html lang="en"', f'<link rel="canonical" href="{HUB_PUBLIC_URL}en/">', 'hreflang="ko"', 'hreflang="en"'):
+            if required not in english_text:
+                errors.append(f"missing English homepage metadata: {required}")
     return errors
 
 
@@ -5030,15 +4098,18 @@ def main(argv: Iterable[str] | None = None) -> int:
         return inject_cloudflare_web_analytics(inject_public_metrics(inject_public_icons(text, prefix), prefix))
 
     documents = publish_archive(ROOT / "archive", SITE_DIR, PUBLIC_BASE_URL, decorate_archive)
-    index_html = inject_public_icons(render_index(manifest, preferred_category_order, documents))
-    index_html = inject_public_metrics(index_html)
-    (SITE_DIR / "index.html").write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
+    for language, target, prefix in (("ko", SITE_DIR / "index.html", ""), ("en", SITE_DIR / "en/index.html", "../")):
+        index_html = inject_public_icons(render_index(manifest, preferred_category_order, documents, language), prefix)
+        index_html = inject_public_metrics(index_html, prefix)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     (ASSETS_DIR / "site.css").write_text(SITE_CSS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "public-metrics.css").write_text(PUBLIC_METRICS_CSS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "public-metrics.js").write_text(PUBLIC_METRICS_JS.strip() + "\n", encoding="utf-8")
     (ASSETS_DIR / "site.js").write_text(SITE_JS.strip() + "\n", encoding="utf-8")
+    (ASSETS_DIR / "hub-preferences.js").write_text(HUB_PREFERENCES_JS.strip() + "\n", encoding="utf-8")
 
     enrich_reader_engagement(SITE_DIR)
     validate_reader_artifact(SITE_DIR)

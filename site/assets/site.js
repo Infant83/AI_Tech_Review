@@ -11,9 +11,30 @@
   const categoryTriggers = Array.from(document.querySelectorAll("[data-category-filter]"));
   const originalOptions = Array.from(category.options);
   const originalOrder = new Map(cards.map((card, index) => [card, index]));
+  const english = String(document.documentElement && document.documentElement.lang || "ko").toLowerCase().startsWith("en");
   const searchText = new Map(cards.map(card => [card, normalize(card.dataset.search || `${card.dataset.title} ${card.dataset.tags}`)]));
   const cache = new Map();
-  const pageSize = 12;
+  const pageSize = 6;
+  const viewButtons = [document.querySelector("#hub-view-covers"), document.querySelector("#hub-view-list")].filter(Boolean);
+  const browseStateKey = "atr.hub.browse.v1";
+  const expandedSummaries = new Set();
+  const summaryRecords = cards.map(card => ({card, summary: card.querySelector(".review-summary"), button: card.querySelector("[data-summary-toggle]")})).filter(record => record.summary && record.button);
+  const text = english ? {
+    invalidPeriod: "Choose an activity period again.", invalidDates: "Choose both a start date and an end date.",
+    reversedDates: "The end date must be on or after the start date.", futureDate: "Choose a date no later than today.",
+    longRange: "Choose an activity period of no more than 3,660 days.",
+    hint: "Periods use view and like activity dates, not publication dates. Card counts are lifetime totals.",
+    topicHint: " Topics use activity totals from the same period.", loading: "Loading views and likes…",
+    unavailable: "View and like statistics are unavailable. Showing newest reviews."
+  } : {
+    invalidPeriod: "기간을 다시 선택해 주세요.", invalidDates: "시작일과 종료일을 모두 선택해 주세요.",
+    reversedDates: "종료일은 시작일 이후로 선택해 주세요.", futureDate: "오늘 이후의 날짜는 선택할 수 없어요.",
+    longRange: "집계 기간은 3,660일 이내로 선택해 주세요.",
+    hint: "기간은 글 발행일이 아닌 조회·좋아요 활동 기준이며, 카드 수치는 누적값입니다.",
+    topicHint: " 주제 선택도 같은 기간의 활동 합계순입니다.", loading: "조회·좋아요 통계를 불러오는 중…",
+    unavailable: "조회·좋아요 통계에 연결할 수 없어 최신순으로 보여드려요."
+  };
+  let view = "gallery";
   let visibleLimit = pageSize, matched = [], discovery = null, ready = false, generation = 0, pending = null;
   let renderedOrder = cards.map(card => card.dataset.articleId).join("|");
   let apiBase = "https://api.infant83.io";
@@ -25,7 +46,35 @@
     if (requested.origin === apiBase || (value.allowLocalApi === true && local.test(location.hostname) && local.test(requested.hostname) && ["http:", "https:"].includes(requested.protocol))) apiBase = requested.origin;
   } catch (_) { /* A configured host cannot redirect public requests elsewhere. */ }
 
-  function normalize(value) { return String(value || "").toLocaleLowerCase("ko-KR").trim(); }
+  function normalize(value) { return String(value || "").toLocaleLowerCase(english ? "en-US" : "ko-KR").trim(); }
+  function refreshSummaries() {
+    for (const {card, summary, button} of summaryRecords) {
+      if (card.hidden) continue;
+      // Measure the same three-line layout in both views, even after expansion.
+      summary.dataset.summaryCollapsed = "true";
+      const long = summary.clientHeight > 0 && summary.scrollHeight > summary.clientHeight + 1;
+      const expanded = expandedSummaries.has(card.dataset.articleId);
+      summary.dataset.summaryCollapsed = long && !expanded ? "true" : "false";
+      button.hidden = !long;
+      button.setAttribute("aria-expanded", expanded ? "true" : "false");
+      button.textContent = english ? (expanded ? "Show less" : "Read full summary") : (expanded ? "요약 접기" : "요약 더 보기");
+    }
+  }
+  for (const {card, button} of summaryRecords) button.addEventListener("click", () => {
+    const id = card.dataset.articleId;
+    if (expandedSummaries.has(id)) expandedSummaries.delete(id);
+    else expandedSummaries.add(id);
+    refreshSummaries();
+  });
+  let summaryRefreshPending = false;
+  function scheduleSummaryRefresh() {
+    if (summaryRefreshPending) return;
+    summaryRefreshPending = true;
+    const schedule = typeof window.requestAnimationFrame === "function" ? window.requestAnimationFrame.bind(window) : callback => setTimeout(callback, 0);
+    schedule(() => { summaryRefreshPending = false; refreshSummaries(); });
+  }
+  window.addEventListener("resize", scheduleSummaryRefresh);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleSummaryRefresh, () => {});
   function todayKST() { return new Date(Date.now() + 9 * 3600000).toISOString().slice(0, 10); }
   function validDay(value) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -34,13 +83,13 @@
   }
   function selectedRange() {
     if (period.value !== "custom") {
-      if (!["all", "7d", "30d", "90d"].includes(period.value)) throw Error("기간을 다시 선택해 주세요.");
+      if (!["all", "7d", "30d", "90d"].includes(period.value)) throw Error(text.invalidPeriod);
       return { key: "period=" + period.value, period: period.value };
     }
-    if (!validDay(from.value) || !validDay(to.value)) throw Error("시작일과 종료일을 모두 선택해 주세요.");
-    if (from.value > to.value) throw Error("종료일은 시작일 이후로 선택해 주세요.");
-    if (to.value > todayKST()) throw Error("오늘 이후의 날짜는 선택할 수 없어요.");
-    if ((Date.parse(to.value) - Date.parse(from.value)) / 86400000 + 1 > 3660) throw Error("집계 기간은 3,660일 이내로 선택해 주세요.");
+    if (!validDay(from.value) || !validDay(to.value)) throw Error(text.invalidDates);
+    if (from.value > to.value) throw Error(text.reversedDates);
+    if (to.value > todayKST()) throw Error(text.futureDate);
+    if ((Date.parse(to.value) - Date.parse(from.value)) / 86400000 + 1 > 3660) throw Error(text.longRange);
     return { key: "from=" + from.value + "&to=" + to.value, period: "custom", from: from.value, to: to.value };
   }
   function setPopularityAvailable(value, reset) {
@@ -49,9 +98,9 @@
     if (!value && reset !== false && sort.value !== "latest") sort.value = "latest";
   }
   function updateHint() {
-    let value = "기간은 글 발행일이 아닌 조회·좋아요 활동 기준이며, 카드 수치는 누적값입니다.";
-    if (sort.value !== "latest" && ready) value += " 주제 선택도 같은 기간의 활동 합계순입니다.";
-    if (discovery && discovery.range.period !== "all" && validDay(discovery.activitySince || "") && discovery.range.from < discovery.activitySince) value += " 이 기간의 활동 통계는 " + discovery.activitySince + "부터 제공됩니다.";
+    let value = text.hint;
+    if (sort.value !== "latest" && ready) value += text.topicHint;
+    if (discovery && discovery.range.period !== "all" && validDay(discovery.activitySince || "") && discovery.range.from < discovery.activitySince) value += english ? " Activity statistics for this period are available from " + discovery.activitySince + "." : " 이 기간의 활동 통계는 " + discovery.activitySince + "부터 제공됩니다.";
     hint.textContent = value;
   }
   function activity(card, kind) {
@@ -83,8 +132,8 @@
     matched.sort((a, b) => ready && sort.value !== "latest" ? activity(b, sort.value) - activity(a, sort.value) || newest(a, b) : newest(a, b));
     const focused = document.activeElement, focusedCard = focused && typeof focused.closest === "function" ? focused.closest(".review-card") : null;
     const focusedIndex = matched.indexOf(focusedCard);
-    if (!reset && focusedIndex >= visibleLimit) visibleLimit = focusedIndex + 1;
-    const shown = new Set(matched.slice(0, visibleLimit));
+    if (view === "gallery" && !reset && focusedIndex >= visibleLimit) visibleLimit = focusedIndex + 1;
+    const shown = new Set(view === "list" ? matched : matched.slice(0, visibleLimit));
     const ordered = matched.concat(cards.filter(card => !matched.includes(card)));
     const orderKey = ordered.map(card => card.dataset.articleId).join("|");
     if (orderKey !== renderedOrder) {
@@ -97,11 +146,17 @@
       if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-pressed", trigger.dataset.categoryFilter === selected ? "true" : "false");
     }
     orderTopics(); updateHint();
-    const shownCount = Math.min(visibleLimit, matched.length);
-    results.textContent = matched.length ? `${matched.length}개 리뷰 중 ${shownCount}개 표시` : "0개 리뷰";
+    reviewGrid.dataset.view = view;
+    for (const button of viewButtons) {
+      const selectedView = button.dataset.view || (button.id === "hub-view-list" ? "list" : "gallery");
+      button.setAttribute("aria-pressed", selectedView === view ? "true" : "false");
+    }
+    const shownCount = view === "list" ? matched.length : Math.min(visibleLimit, matched.length);
+    results.textContent = english ? (view === "list" ? `${matched.length} ${matched.length === 1 ? "review" : "reviews"}` : `${shownCount} of ${matched.length} reviews`) : (view === "list" ? `${matched.length}편 전체 목록` : `${matched.length}편 중 ${shownCount}편`);
     empty.hidden = matched.length !== 0;
-    more.hidden = shownCount >= matched.length;
-    more.textContent = `더 보기 (${Math.min(pageSize, matched.length - shownCount)}개)`;
+    more.hidden = view === "list" || shownCount >= matched.length;
+    more.textContent = english ? `Show ${Math.min(pageSize, matched.length - shownCount)} more` : `더 보기 (${Math.min(pageSize, matched.length - shownCount)}편)`;
+    refreshSummaries();
     if (focusedCard && shown.has(focusedCard) && typeof focused.focus === "function") focused.focus({ preventScroll: true });
   }
   function validateDiscovery(value, requested) {
@@ -117,7 +172,7 @@
     return { rows, range: value.range, activitySince: value.activitySince || null };
   }
   function showCounts(value) {
-    const formatter = new Intl.NumberFormat("ko-KR");
+    const formatter = new Intl.NumberFormat(english ? "en-US" : "ko-KR");
     for (const card of cards) {
       const row = value.rows.get(card.dataset.articleId);
       for (const kind of ["opens", "likes"]) {
@@ -137,7 +192,7 @@
     if (!force && previous && Date.now() - previous.time < 30000) {
       discovery = previous.value; setPopularityAvailable(true); showCounts(discovery); status.textContent = ""; retry.hidden = true; applyFilters(false); return;
     }
-    setPopularityAvailable(false, false); status.textContent = "조회·좋아요 통계를 불러오는 중…"; retry.hidden = true;
+    setPopularityAvailable(false, false); status.textContent = text.loading; retry.hidden = true;
     const controller = typeof AbortController === "function" ? new AbortController() : null;
     let deadline;
     pending = controller;
@@ -157,7 +212,7 @@
     } catch (_) {
       if (current !== generation) return;
       setPopularityAvailable(false);
-      status.textContent = "조회·좋아요 통계에 연결할 수 없어 최신순으로 보여드려요.";
+      status.textContent = text.unavailable;
       retry.hidden = false; applyFilters(false);
     } finally { if (deadline !== undefined) clearTimeout(deadline); if (current === generation) pending = null; }
   }
@@ -182,8 +237,36 @@
     const next = matched[previous]?.querySelector("h3 a"); if (next) next.focus({ preventScroll: true });
   });
   retry.addEventListener("click", () => { void loadDiscovery(true); });
+  for (const button of viewButtons) button.addEventListener("click", () => {
+    view = (button.dataset.view || (button.id === "hub-view-list" ? "list" : "gallery")) === "list" ? "list" : "gallery";
+    applyFilters(false);
+  });
+  function saveBrowseState() {
+    const state = { version: 1, time: Date.now(), search: String(search.value || "").slice(0, 1000), category: category.value, sort: sort.value, period: period.value, from: from.value, to: to.value, view, limit: Math.min(Math.max(pageSize, cards.length), Math.max(pageSize, visibleLimit)), expandedSummaries: Array.from(expandedSummaries) };
+    try { window.sessionStorage.setItem(browseStateKey, JSON.stringify(state)); } catch (_) { /* Navigation remains usable when storage is blocked. */ }
+  }
+  function restoreBrowseState() {
+    let state;
+    try {
+      const stored = window.sessionStorage.getItem(browseStateKey);
+      window.sessionStorage.removeItem(browseStateKey);
+      if (!stored || stored.length > 131072) return false;
+      state = JSON.parse(stored);
+    } catch (_) { return false; }
+    if (!state || state.version !== 1 || !Number.isFinite(state.time) || state.time > Date.now() || Date.now() - state.time > 600000 || typeof state.search !== "string" || state.search.length > 1000 || !originalOptions.some(option => option.value === state.category) || !["latest", "views", "likes"].includes(state.sort) || !["all", "7d", "30d", "90d", "custom"].includes(state.period) || !["gallery", "list"].includes(state.view) || !Number.isSafeInteger(state.limit) || state.limit < pageSize || state.limit > Math.max(pageSize, cards.length)) return false;
+    if (typeof state.from !== "string" || typeof state.to !== "string" || (state.from && !validDay(state.from)) || (state.to && !validDay(state.to))) return false;
+    const expanded = state.expandedSummaries === undefined ? [] : state.expandedSummaries;
+    const knownIds = new Set(cards.map(card => card.dataset.articleId));
+    if (!Array.isArray(expanded) || expanded.length > cards.length || expanded.some(id => typeof id !== "string" || !knownIds.has(id))) return false;
+    for (const id of expanded) expandedSummaries.add(id);
+    search.value = state.search; category.value = state.category; sort.value = state.sort; period.value = state.period;
+    from.value = state.from; to.value = state.to; view = state.view; visibleLimit = state.limit;
+    dates.hidden = period.value !== "custom";
+    return true;
+  }
+  window.addEventListener("hub:before-language-change", saveBrowseState);
   window.addEventListener("pageshow", event => { if (event.persisted) void loadDiscovery(true); });
   from.max = to.max = todayKST();
-  applyFilters(true);
+  applyFilters(!restoreBrowseState());
   void loadDiscovery(false);
 })();

@@ -141,7 +141,7 @@
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
   var metricsRoot = null, metricsFields = {}, metricsStatus = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
-  var reviewHub = !article && (location.pathname === scope || location.pathname === scope + "index.html" || location.pathname === scope.slice(0, -1));
+  var reviewHub = !article && (location.pathname === scope || location.pathname === scope + "index.html" || location.pathname === scope.slice(0, -1) || location.pathname === scope + "en/" || location.pathname === scope + "en/index.html");
   var metricsText = english ? {
     title: "Reader activity", visitors: "Visitors", opens: "Article opens", shares: "Shares · copies",
     subscribers: "Alert subscriptions", articleOpens: "This article opened", articleShares: "Shared · copied",
@@ -479,8 +479,12 @@
     }
     if (articleActions) articleActions.appendChild(metricsRoot);
     else {
-      var anchor = document.querySelector(".hero .stats");
-      if (anchor) anchor.insertAdjacentElement("afterend", metricsRoot);
+      var slot = document.querySelector("[data-reader-site-metrics]");
+      if (slot) slot.appendChild(metricsRoot);
+      else {
+        var anchor = document.querySelector(".hero .stats");
+        if (anchor) anchor.insertAdjacentElement("afterend", metricsRoot);
+      }
     }
   }
   function metricsValue(value) { return typeof value === "number" && Number.isSafeInteger(value) && value >= 0 ? value : null; }
@@ -570,11 +574,16 @@
   function validTopics(value) {
     return Array.isArray(value) ? value.filter(function (topic) { return topic === "review" || topic === "lecture"; }) : ["review", "lecture"];
   }
+  function subscriptionButtonLabel(element) {
+    if (element.dataset.readerHubHeader === "true") {
+      var fullLabel = english ? "Alerts" : "알림 설정";
+      element.replaceChildren(node("span", "hub-label-long", fullLabel), node("span", "hub-label-short", english ? "Alerts" : "알림"));
+      element.setAttribute("aria-label", fullLabel);
+    } else element.textContent = subscribed() ? text.settings : text.open;
+    element.dataset.subscribed = subscribed() ? "true" : "false";
+  }
   function updateButtons() {
-    subscriptionButtons.forEach(function (element) {
-      element.textContent = subscribed() ? text.settings : text.open;
-      element.dataset.subscribed = subscribed() ? "true" : "false";
-    });
+    subscriptionButtons.forEach(subscriptionButtonLabel);
     likeButtons.forEach(function (element) {
       element.disabled = state.likeBusy;
       element.setAttribute("aria-busy", state.likeBusy ? "true" : "false");
@@ -611,6 +620,8 @@
     element.setAttribute("aria-haspopup", "dialog");
     element.setAttribute("aria-controls", "atr-reader-dialog");
     element.setAttribute("aria-expanded", "false");
+    if (!article && /(?:^|\s)hub-page(?:\s|$)/.test(String(document.body && document.body.className || ""))) element.dataset.readerHubHeader = "true";
+    subscriptionButtonLabel(element);
     subscriptionButtons.push(element);
     target.appendChild(element);
     return element;

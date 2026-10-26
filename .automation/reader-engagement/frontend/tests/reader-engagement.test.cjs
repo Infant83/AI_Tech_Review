@@ -68,7 +68,7 @@ async function setup(options = {}) {
     Object.defineProperty(navigator, 'clipboard', { value: { writeText: async value => { window.__copied = value; } } });
     Object.defineProperty(navigator, 'share', { value: shareMode === 'cancel' ? async () => { throw new DOMException('Canceled', 'AbortError'); } : undefined });
   }, { standalone: options.standalone !== false, permissionResult: options.permissionResult || 'granted', shareMode: options.shareMode });
-  const data = { subscription: null, topics: ['review', 'lecture'], liked: false, count: 0, testCount: 0 };
+  const data = { subscription: null, topics: ['review', 'lecture'], liked: false, count: 0, testCount: 0, registered: !options.unknownSession };
   await context.route('https://api.infant83.io/**', async route => {
     const request = route.request(), url = new URL(request.url()), method = request.method();
     const headers = { 'access-control-allow-origin': origin, 'access-control-allow-credentials': 'true', 'access-control-allow-methods': 'GET,POST,PUT,DELETE,OPTIONS', 'access-control-allow-headers': 'content-type,accept', 'content-type': 'application/json' };
@@ -76,15 +76,18 @@ async function setup(options = {}) {
     let result = { ok: true }, status = 200;
     if (url.pathname === '/v1/metrics' || url.pathname === '/v1/metrics/events') result = metricsSummary(url.pathname.endsWith('/events') ? request.postDataJSON().articleId : url.searchParams.get('articleId'));
     else if (url.pathname === '/v1/config') result.vapidPublicKey = 'B' + 'A'.repeat(86);
-    else if (url.pathname === '/v1/devices') result.deviceId = 'device-for-test';
+    else if (url.pathname === '/v1/devices') { data.registered = true; result.deviceId = 'device-for-test'; }
     else if (url.pathname.endsWith('/like')) {
       if (method === 'PUT') { data.liked = request.postDataJSON().liked; data.count = data.liked ? 1 : 0; }
       result = { ok: true, count: data.count, liked: data.liked };
     } else if (url.pathname === '/v1/subscription/test') { data.testCount += 1; result.queued = true; }
     else if (url.pathname === '/v1/subscription') {
-      if (method === 'PUT') { const body = request.postDataJSON(); data.subscription = body.subscription; data.topics = body.topics; }
-      if (method === 'DELETE') data.subscription = null;
-      result = { ok: true, subscribed: Boolean(data.subscription), subscription: data.subscription, topics: data.topics };
+      if (!data.registered) { status = 401; result = { ok: false, error: 'missing_device' }; }
+      else {
+        if (method === 'PUT') { const body = request.postDataJSON(); data.subscription = body.subscription; data.topics = body.topics; }
+        if (method === 'DELETE') data.subscription = null;
+        result = { ok: true, subscribed: Boolean(data.subscription), subscription: data.subscription, topics: data.topics };
+      }
     } else { status = 404; result = { ok: false, error: 'missing' }; }
     await route.fulfill({ status, headers, body: JSON.stringify(result) });
   });
@@ -107,7 +110,7 @@ browserTest('iPhone browser gives real installation instructions and never reque
 });
 
 browserTest('subscribe follows a direct gesture; settings, test and unsubscribe work; resubscribe preserves granted permission', async () => {
-  const { page, context, data, errors } = await setup({ ios: true });
+  const { page, context, data, errors } = await setup({ ios: true, unknownSession: true });
   const opener = page.getByRole('button', { name: '새 글 알림', exact: true }).first();
   await opener.click();
   const subscribe = page.getByRole('button', { name: '새 글 알림 받기', exact: true });
@@ -132,6 +135,7 @@ browserTest('subscribe follows a direct gesture; settings, test and unsubscribe 
   await page.getByRole('button', { name: '이 기기로 테스트 알림 보내기' }).waitFor();
   assert.equal(await page.evaluate(() => window.__events.filter(event => event.name === 'permission').length), 1);
   const calls = await page.evaluate(() => window.__calls);
+  assert.equal(calls.filter(call => new URL(call.url).pathname === '/v1/devices').length, 1);
   assert.ok(calls.every(call => call.credentials === (new URL(call.url).pathname.startsWith('/v1/metrics') ? 'omit' : 'include')));
   assert.ok(calls.every(call => !Object.keys(call.headers).some(key => key.toLowerCase() === 'authorization')));
   await page.getByRole('button', { name: '닫기', exact: true }).click();
@@ -145,7 +149,7 @@ browserTest('denied permission shows settings and never creates a subscription',
   await page.getByRole('button', { name: '새 글 알림', exact: true }).first().click();
   await page.waitForFunction(() => !document.querySelector('[data-reader-action="subscribe"]').disabled);
   await page.getByRole('button', { name: '새 글 알림 받기', exact: true }).click();
-  await page.getByText(/iPhone 설정 → 알림/).waitFor();
+  await page.getByText(/^알림이 꺼져 있어요\. iPhone 설정 → 알림/).waitFor();
   assert.equal(data.subscription, null);
   assert.equal(await page.evaluate(() => window.__calls.filter(call => call.url.endsWith('/v1/devices')).length), 0);
   await page.getByRole('button', { name: '다시 확인' }).click();
@@ -155,19 +159,24 @@ browserTest('denied permission shows settings and never creates a subscription',
 
 browserTest('likes toggle from server response; share fallback keeps the English article path; cancel is silent', async () => {
   const { page, context, data } = await setup({ english: true });
-  await page.getByRole('button', { name: 'Like', exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('[data-reader-action="like"]').getAttribute('aria-pressed') === 'true');
+  const top = page.locator('.atr-reader-actions-top');
+  const bottom = page.getByRole('region', { name: 'Reader actions', exact: true });
+  assert.equal(await page.getByRole('button', { name: 'Like', exact: true }).count(), 2);
+  await top.getByRole('button', { name: 'Like', exact: true }).click();
+  await page.waitForFunction(() => Array.from(document.querySelectorAll('[data-reader-action="like"]')).every(button => button.getAttribute('aria-pressed') === 'true' && button.getAttribute('aria-busy') === 'false'));
   assert.equal(data.count, 1);
-  await page.getByRole('button', { name: 'Unlike', exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('[data-reader-action="like"]').getAttribute('aria-pressed') === 'false');
+  await bottom.getByRole('button', { name: 'Unlike', exact: true }).click();
+  await page.waitForFunction(() => Array.from(document.querySelectorAll('[data-reader-action="like"]')).every(button => button.getAttribute('aria-pressed') === 'false' && button.getAttribute('aria-busy') === 'false'));
   assert.equal(data.count, 0);
-  await page.getByRole('button', { name: 'Share', exact: true }).click();
-  await page.getByText('Article link copied.', { exact: true }).waitFor();
+  assert.equal(await page.evaluate(() => window.__calls.filter(call => new URL(call.url).pathname === '/v1/devices').length), 0);
+  assert.equal(await page.evaluate(() => window.__calls.filter(call => call.url.endsWith('/like') && call.method === 'PUT').length), 2);
+  await bottom.getByRole('button', { name: 'Share', exact: true }).click();
+  await bottom.getByText('Article link copied.', { exact: true }).waitFor();
   assert.equal(await page.evaluate(() => window.__copied), 'https://infant83.io/AI_Tech_Review/reviews/2026-10-23_test/en/');
   await context.close();
   const canceled = await setup({ english: true, shareMode: 'cancel' });
-  await canceled.page.getByRole('button', { name: 'Share', exact: true }).click();
-  assert.equal(await canceled.page.locator('.atr-reader-status').textContent(), '');
+  await canceled.page.getByRole('region', { name: 'Reader actions', exact: true }).getByRole('button', { name: 'Share', exact: true }).click();
+  assert.deepEqual(await canceled.page.locator('.atr-reader-status').allTextContents(), ['', '']);
   await canceled.context.close();
 });
 
@@ -250,6 +259,7 @@ function frontendHarness(options = {}) {
     close() { this.open = false; (this.listeners.close || []).forEach(listener => listener()); }
   }
   const main = new MiniNode('main'), articleElement = new MiniNode('article'), header = new MiniNode('header'), topbar = new MiniNode('span');
+  const metricsSlot = options.metricsSlot ? new MiniNode('div') : null, legacyMetricsAnchor = options.legacyMetricsAnchor ? new MiniNode('div') : null;
   const headline = options.withHeadline || options.heroHeadline ? new MiniNode('h1') : null;
   if (headline) (options.heroHeadline ? header : articleElement).appendChild(headline);
   if (options.gridParent) main.appendChild(articleElement);
@@ -257,11 +267,13 @@ function frontendHarness(options = {}) {
     if (selector.includes(',')) return options.article ? main : header; // CSS lists use document order, not selector order.
     return ({ 'main article': articleElement, 'article:not(.review-card)': articleElement, main, h1: options.heroHeadline ? headline : null,
       '.topbar-links': options.noHeader || options.headerOnly ? null : topbar,
+      '[data-reader-site-metrics]': metricsSlot, '.hero .stats': legacyMetricsAnchor,
       'body > header': options.noHeader ? null : header, header: options.noHeader ? null : header })[selector] || null;
   }, getElementById: () => ({ tagName: 'SCRIPT', type: 'application/json', textContent: JSON.stringify(config) }),
   documentElement: { lang: options.english ? 'en' : 'ko', style: {} }, currentScript: null, body: new MiniNode('body'), title: 'Article',
   visibilityState: options.visibility || 'visible', hasFocus() { return this.focused !== false; }, focused: options.focused !== false,
   createElement: tag => new MiniNode(tag), createTextNode: value => ({ textContent: value }), contains: () => true };
+  if (options.hubPage) document.body.className = 'hub-page';
   const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error,
     location: { protocol: 'https:', origin: 'https://infant83.io', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
     navigator: { userAgent: options.userAgent || '', standalone: options.standalone !== false, serviceWorker: {} },
@@ -314,7 +326,7 @@ function frontendHarness(options = {}) {
   let current = options.existingSubscription ? subscription : null;
   api.state.registration = { active: options.notificationWorker, pushManager: { getSubscription: async () => current,
     subscribe: async () => { subscribeCount++; current = subscription; return subscription; } } };
-  return { api, calls, events, channels, storage, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header, headline,
+  return { api, calls, events, channels, storage, subscription, subscriptionJSON, context, document, main, articleElement, topbar, header, headline, metricsSlot, legacyMetricsAnchor,
     releasePermission: value => { permission = value; if (resolvePermission) resolvePermission(value); },
     counts: () => ({ subscribeCount, unsubscribeCount }) };
 }
@@ -1021,6 +1033,45 @@ test('English hub metrics keep compact labels with one separate statistics guide
   assert.match(harness.api.metricsRoot().textContent, /Alert subscriptions3 devices/);
   assert.equal(harness.api.metricsRoot().querySelectorAll("details").length, 0);
   assert.equal(harness.api.metricsRoot().querySelectorAll("a")[0].href, "/AI_Tech_Review/methods/#reader-metrics");
+});
+test('English hub paths mount public statistics in the dedicated footer slot with legacy fallback intact', () => {
+  for (const pathname of ['/AI_Tech_Review/en/', '/AI_Tech_Review/en/index.html']) {
+    const harness = frontendHarness({ english: true, pathname, hubPage: true, metricsSlot: true, legacyMetricsAnchor: true });
+    harness.api.mount(); harness.api.applyMetrics(metricsSummary());
+    assert.equal(harness.api.metricsRoot().parentNode, harness.metricsSlot);
+    assert.match(harness.metricsSlot.textContent, /Visitors42/);
+    assert.equal(harness.legacyMetricsAnchor.adjacent, undefined, 'dedicated placement wins over the legacy hero anchor');
+  }
+  const legacy = frontendHarness({ legacyMetricsAnchor: true }); legacy.api.mount();
+  assert.equal(legacy.legacyMetricsAnchor.adjacent[0].position, 'afterend');
+  assert.equal(legacy.legacyMetricsAnchor.adjacent[0].element, legacy.api.metricsRoot());
+  const methods = frontendHarness({ pathname: '/AI_Tech_Review/methods/', metricsSlot: true }); methods.api.mount();
+  assert.equal(methods.api.metricsRoot(), null);
+});
+test('compact hub alert labels retain the original button, dialog handler and subscription state updates', async () => {
+  for (const english of [false, true]) {
+    const harness = frontendHarness({ english, pathname: '/AI_Tech_Review/' + (english ? 'en/' : ''), hubPage: true, metricsSlot: true });
+    harness.api.mount(); const opener = harness.topbar.children[0];
+    assert.equal(opener.children[0].className, 'hub-label-long');
+    assert.equal(opener.children[0].textContent, english ? 'Alerts' : '알림 설정');
+    assert.equal(opener.children[1].className, 'hub-label-short');
+    assert.equal(opener.children[1].textContent, english ? 'Alerts' : '알림');
+    assert.equal(opener.getAttribute('aria-label'), english ? 'Alerts' : '알림 설정');
+    assert.equal(opener.dataset.subscribed, 'false');
+    await harness.context.Notification.requestPermission();
+    harness.api.state.localSubscription = harness.subscription; harness.api.state.serverSubscription = harness.subscriptionJSON;
+    harness.api.updateButtons();
+    assert.equal(harness.topbar.children[0], opener);
+    assert.equal(opener.dataset.subscribed, 'true');
+    assert.equal(opener.children.length, 2);
+    assert.equal(opener.getAttribute('aria-controls'), 'atr-reader-dialog');
+    assert.equal(opener.listeners.click.length, 1);
+  }
+  const plain = frontendHarness(); plain.api.mount();
+  assert.equal(plain.topbar.children[0].textContent, '새 글 알림');
+  assert.equal(plain.topbar.children[0].children.length, 0, 'unchanged pages keep their original visible label');
+  const article = frontendHarness({ article: { id: 'same-article' }, hubPage: true }); article.api.mount();
+  assert.equal(article.topbar.children[0].textContent, '새 글 알림');
 });
 
 test('a storage-blocked copy cannot invalidate an in-flight public counter read', async () => {

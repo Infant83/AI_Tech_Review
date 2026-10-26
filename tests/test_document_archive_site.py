@@ -17,12 +17,13 @@ from urllib.parse import urlsplit
 from scripts import publish_public_site as publisher
 from scripts import document_archive_site as archive_site
 from scripts.document_archive_site import publish_archive, validate_archive
+from scripts.reader_engagement_publish import strip_engagement
 
 
 PDF_BYTES = b"%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\ntrailer\n<< /Root 1 0 R >>\n%%EOF\n"
 BASE_URL = "https://infant83.github.io/AI_Tech_Review/"
 METRICS_ENDPOINT = "https://published-metrics.example.com"
-BEACON_TOKEN = "published-public-token"
+BEACON_TOKEN = "published-example-public-token"
 
 
 class LinkParser(HTMLParser):
@@ -832,8 +833,14 @@ process.stdout.write(JSON.stringify(results));
             folder = f"2026-10-16-review-{number:02d}"
             review_dir = self.site / "reviews" / folder
             (review_dir / "en").mkdir(parents=True)
-            (review_dir / "index.html").write_bytes(f"Korean review {number}".encode())
-            (review_dir / "en/index.html").write_bytes(f"English review {number}".encode())
+            for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+                figure = "../figure.svg" if language == "en" else "figure.svg"
+                (review_dir / relative).write_text(
+                    f'<!doctype html><html lang="{language}"><head><title>Review {number}</title></head>'
+                    f'<body><article><h1>{language} review {number}</h1><p>Original scientific text.</p>'
+                    f'<img src="{figure}" alt="Original figure"></article></body></html>',
+                    encoding="utf-8",
+                )
             (review_dir / "figure.svg").write_bytes(f"<svg>{number}</svg>".encode())
             reviews.append({
                 "folder": folder, "title": f"Review {number}", "subtitle": "Review subtitle",
@@ -864,8 +871,17 @@ process.stdout.write(JSON.stringify(results));
         self.assertEqual(validate.call_args.args[0], reviews)
         self.assertEqual(manifest_path.read_bytes(), manifest_before)
         after = {path.relative_to(self.site).as_posix(): path.read_bytes() for path in (self.site / "reviews").rglob("*") if path.is_file()}
-        self.assertEqual(after, before)
-        for relative, asset_prefix in (("index.html", ""), ("archive/index.html", "../"), ("archive/en/index.html", "../../"), ("lectures/index.html", "../"), ("lectures/en/index.html", "../../"), ("briefings/index.html", "../"), ("briefings/en/index.html", "../../")):
+        self.assertEqual(after.keys(), before.keys())
+        for relative, original in before.items():
+            with self.subTest(review_file=relative):
+                if relative.endswith(".html"):
+                    updated = after[relative].decode("utf-8")
+                    self.assertEqual(strip_engagement(updated).encode("utf-8"), original)
+                    self.assertEqual(updated.count('id="reader-engagement-config"'), 1)
+                    self.assertEqual(updated.count("<!-- Reader Engagement Controls -->"), 1)
+                else:
+                    self.assertEqual(after[relative], original)
+        for relative, asset_prefix in (("index.html", ""), ("en/index.html", "../"), ("archive/index.html", "../"), ("archive/en/index.html", "../../"), ("lectures/index.html", "../"), ("lectures/en/index.html", "../../"), ("briefings/index.html", "../"), ("briefings/en/index.html", "../../")):
             with self.subTest(page=relative):
                 page = (self.site / relative).read_text(encoding="utf-8")
                 self.assertEqual(page.count("window.AI_TECH_REVIEW_METRICS="), 1)

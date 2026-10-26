@@ -35,7 +35,7 @@ SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
                      ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME}
-PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods"}
+PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en"}
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
                      ".py", ".csv", ".mp4", ".vtt"}
@@ -249,6 +249,8 @@ def validate_public_artifact(site_dir: Path) -> dict:
                 raise ValueError(f"Unapproved public root file: {relative}")
         elif relative.parts[0] not in PUBLIC_DIRECTORIES:
             raise ValueError(f"Unapproved public directory: {relative}")
+        if relative.parts[0] == "en" and name != "en/index.html":
+            raise ValueError(f"Unapproved English hub file: {relative}")
         if name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS:
             raise ValueError(f"Unapproved public file type: {relative}")
         if ((relative.parts[0] == "reviews" or name.startswith("archive/files/")
