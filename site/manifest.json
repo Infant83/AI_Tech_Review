@@ -6138,7 +6138,7 @@
     "title": "AI 에이전트를 일하게 하는 기술: 하네스 엔지니어링",
     "subtitle": "도구 호출, 권한, 기억, 검증, 병합이 에이전트 운영의 기본 조건이 되는 이유",
     "date": "2026-05-09",
-    "updated": "2026-05-13",
+    "updated": "2026-10-27",
     "category": "Agent Systems",
     "tags": [
       "AI Agents",
@@ -6168,17 +6168,37 @@
         "name_en": "Hyun-Jung Kim"
       },
       "ai_assistance": {
-        "system": "Codex-based GPT-5-family agent harness",
-        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "system": "Original edition: Codex-based GPT-5-family agent harness; October 27 revision: OpenAI Codex",
+        "system_ko": "원 작성: Codex 기반 GPT-5 계열 에이전트 하네스; 2026-10-27 편집 개정: OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": null,
-        "agents": [],
+        "agent_count": 3,
+        "agents": [
+          {
+            "name": "root",
+            "role": "October 27 editorial revision, citation integration, rendering and publication checks",
+            "role_ko": "2026-10-27 편집 개정·인용 통합·렌더링과 공개 게시 확인"
+          },
+          {
+            "name": "legacy_harness_prose",
+            "role": "October 27 Korean prose revision preserving the original argument and figures",
+            "role_ko": "2026-10-27 원 논지와 그림을 보존한 국문 문체 개정"
+          },
+          {
+            "name": "legacy_harness_sources",
+            "role": "October 27 independent primary-source, historical-version and APS reference audit",
+            "role_ko": "2026-10-27 독립 원문·당시 판본·APS 참고문헌 감사"
+          }
+        ],
         "agent_roles": [
-          "individual agent-role roster not retained"
+          "root — October 27 editorial revision, citation integration, rendering and publication checks",
+          "legacy_harness_prose — October 27 Korean prose revision preserving the original argument and figures",
+          "legacy_harness_sources — October 27 independent primary-source, historical-version and APS reference audit"
         ],
         "agent_roles_ko": [
-          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+          "root — 2026-10-27 편집 개정·인용 통합·렌더링과 공개 게시 확인",
+          "legacy_harness_prose — 2026-10-27 원 논지와 그림을 보존한 국문 문체 개정",
+          "legacy_harness_sources — 2026-10-27 독립 원문·당시 판본·APS 참고문헌 감사"
         ]
       },
       "harness": {
@@ -6188,23 +6208,25 @@
       },
       "verification": {
         "evidence_cutoff": "2026-05-13",
-        "primary_source_check": null,
+        "primary_source_check": true,
         "scope": [
-          "original source-verification record not retained",
-          "current public links and final HTML checked"
+          "October 27 source and historical-version audit of the May article; announcement and availability distinguished",
+          "Korean prose and APS first-citation order revised; original nine figure assets retained",
+          "No independent benchmark reproduction or deployment of the software discussed in the article"
         ],
         "scope_ko": [
-          "원 작성 세션의 출처 검증 기록 미보존",
-          "현재 공개 링크와 최종 HTML 확인"
+          "2026-10-27에 5월 글의 원문·당시 판본을 대조하고 발표와 실제 제공 상태를 구별",
+          "국문 문체와 APS 최초 인용 순서를 개정하고 기존 그림 자산 9개 보존",
+          "논문 벤치마크의 독립 재현이나 소개한 소프트웨어의 실제 운영 시험은 수행하지 않음"
         ],
         "human_review_level": {
-          "ko": "세부 검토 수준은 별도 기록되지 않음",
-          "en": "review level not separately retained"
+          "ko": "기존 글의 순차 개편·공개 게시 승인 반영; 문장 단위 사람 심사·독자 이해도 시험 없음",
+          "en": "Sequential revision and public posting authorized; no line-by-line human review or reader study"
         }
       },
       "note": {
-        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
-        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+        "ko": "원 발행일 2026-05-09와 기존 퇴고일 2026-05-13을 보존하고, 이번 편집 개정일을 2026-10-27로 구분했다. 원 작성 세션의 개별 에이전트 명단은 미보존이며 위 역할은 이번 개정에 참여한 역할이다. 이번 개정의 AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 반복되는 안내와 제품 목록을 다듬고 출처·판본·원저자 크레딧을 보완했다. 기억·평가의 설계 예시는 당시 5월 8일 발표자료에 귀속하며, 현재 문서의 제품 기능·출시 시점을 과거에 소급하지 않는다. 본문 주제와 원 그림·표·원 발행 이력은 유지한다.",
+        "en": "Original publication on May 9 and prior editing on May 13 are retained; this editorial revision is dated October 27, 2026. The original agent roster was not retained; the listed roles belong to this revision. Revision assistance used OpenAI Codex; its exact model identifier was not retained. Repetitive signposting and product inventories were edited, and source versions and original-author credit were audited. Memory-selection and evaluation examples are attributed to the May 8 presentation rather than retrospectively treating current product documentation as a May launch record. The topic, original figures, tables and publication history are retained."
       }
     }
   }

@@ -1432,14 +1432,35 @@ REVIEWS: tuple[PublicReview, ...] = (
         title="AI 에이전트를 일하게 하는 기술: 하네스 엔지니어링",
         subtitle="도구 호출, 권한, 기억, 검증, 병합이 에이전트 운영의 기본 조건이 되는 이유",
         date="2026-05-09",
-        updated="2026-05-13",
+        updated="2026-10-27",
         category="Agent Systems",
         tags=("AI Agents", "Harness Engineering", "Developer Tools", "Governance"),
         summary=(
             'AI가 코드를 고친 뒤에는 바뀐 파일을 확인하고, 테스트하고, 필요하면 되돌리는 일이 남습니다. 하네스 엔지니어링은 이런 실행과 검증을 도구·기억·권한의 설계와 연결해 여러 단계의 일을 맡길 수 있게 만드는 작업입니다.'
         ),
-        ai_system="Codex-based GPT-5-family agent harness",
-        ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
+        ai_system="Original edition: Codex-based GPT-5-family agent harness; October 27 revision: OpenAI Codex",
+        ai_system_ko="원 작성: Codex 기반 GPT-5 계열 에이전트 하네스; 2026-10-27 편집 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "October 27 editorial revision, citation integration, rendering and publication checks", "2026-10-27 편집 개정·인용 통합·렌더링과 공개 게시 확인"),
+            PublicAgent("legacy_harness_prose", "October 27 Korean prose revision preserving the original argument and figures", "2026-10-27 원 논지와 그림을 보존한 국문 문체 개정"),
+            PublicAgent("legacy_harness_sources", "October 27 independent primary-source, historical-version and APS reference audit", "2026-10-27 독립 원문·당시 판본·APS 참고문헌 감사"),
+        ),
+        verification_scope=(
+            "October 27 source and historical-version audit of the May article; announcement and availability distinguished",
+            "Korean prose and APS first-citation order revised; original nine figure assets retained",
+            "No independent benchmark reproduction or deployment of the software discussed in the article",
+        ),
+        verification_scope_ko=(
+            "2026-10-27에 5월 글의 원문·당시 판본을 대조하고 발표와 실제 제공 상태를 구별",
+            "국문 문체와 APS 최초 인용 순서를 개정하고 기존 그림 자산 9개 보존",
+            "논문 벤치마크의 독립 재현이나 소개한 소프트웨어의 실제 운영 시험은 수행하지 않음",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-05-13",
+        human_review_level="Sequential revision and public posting authorized; no line-by-line human review or reader study",
+        human_review_level_ko="기존 글의 순차 개편·공개 게시 승인 반영; 문장 단위 사람 심사·독자 이해도 시험 없음",
+        disclosure_note_ko="원 발행일 2026-05-09와 기존 퇴고일 2026-05-13을 보존하고, 이번 편집 개정일을 2026-10-27로 구분했다. 원 작성 세션의 개별 에이전트 명단은 미보존이며 위 역할은 이번 개정에 참여한 역할이다. 이번 개정의 AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 반복되는 안내와 제품 목록을 다듬고 출처·판본·원저자 크레딧을 보완했다. 기억·평가의 설계 예시는 당시 5월 8일 발표자료에 귀속하며, 현재 문서의 제품 기능·출시 시점을 과거에 소급하지 않는다. 본문 주제와 원 그림·표·원 발행 이력은 유지한다.",
+        disclosure_note_en="Original publication on May 9 and prior editing on May 13 are retained; this editorial revision is dated October 27, 2026. The original agent roster was not retained; the listed roles belong to this revision. Revision assistance used OpenAI Codex; its exact model identifier was not retained. Repetitive signposting and product inventories were edited, and source versions and original-author credit were audited. Memory-selection and evaluation examples are attributed to the May 8 presentation rather than retrospectively treating current product documentation as a May launch record. The topic, original figures, tables and publication history are retained.",
     ),
     PublicReview(
         folder="2026-05-06_gpt-5-5-family-post-release-evaluation",
