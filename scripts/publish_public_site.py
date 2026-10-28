@@ -1464,18 +1464,43 @@ REVIEWS: tuple[PublicReview, ...] = (
     ),
     PublicReview(
         folder="2026-05-06_gpt-5-5-family-post-release-evaluation",
-        title="GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건",
-        subtitle="긴 작업 수행 능력, Hallucination 평가, Claude Opus 4.7 비교, 안전한 활용 조건",
+        title="긴 작업을 맡기는 AI: GPT-5.5 이후의 모델과 검증",
+        subtitle="GPT-6·Claude 5.5·Gemini 4의 작업 조건과 신뢰할 수 있는 위임",
         date="2026-05-10",
-        updated="2026-05-10",
+        updated="2026-10-28",
         category="Frontier Models",
-        tags=("GPT-5.5", "Claude Opus", "Agentic AI", "Trust and Safety"),
+        tags=("GPT-5.5", "GPT-6", "Claude", "Gemini", "Agentic AI", "Trust and Safety"),
         summary=(
-            "GPT-5.5 계열 모델의 장시간 작업 수행 능력과 외부 평가를 함께 보며, 실제 업무에 "
-            "맡길 수 있는 일의 조건을 점검합니다."
+            "Anthropic은 Sonnet 5.5 평가에서 코드 리뷰와 하위 에이전트를 더 많이 쓴 설정이 "
+            "시간 초과·범위 밖 수정으로 감점된 두 사례를 소개했습니다. GPT-5.5 이후의 최근 모델을 "
+            "살펴보며, 긴 일을 끝냈다고 판단할 기준과 검증·비용이 모델 선택을 어떻게 바꾸는지 짚습니다."
         ),
-        ai_system="Codex Agent",
-        ai_system_ko="Codex Agent",
+        ai_system="Original edition: Codex Agent; October 28 revision: OpenAI Codex",
+        ai_system_ko="초판: Codex Agent; 10월 28일 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "October 28 source synthesis, Korean revision, price arithmetic and publication integration", "10월 28일 출처 종합·국문 개정·단가 산술·게시 통합"),
+            PublicAgent("gpt55_historical_audit", "October 28 historical-source, reference and independent prose audit", "10월 28일 역사적 출처·서지·독립 문체 감수"),
+            PublicAgent("models_claude_20261028", "October 28 Claude official-source and comparison-condition audit", "10월 28일 Claude 공식 원문·비교 조건 감수"),
+            PublicAgent("models_gemini_20261028", "October 28 Gemini official-source and evaluation-method audit", "10월 28일 Gemini 공식 원문·평가 방법 감수"),
+        ),
+        verification_scope=(
+            "Dated GPT-5.5 release and retained system-card sections separated from October 28 official model, API, pricing and evaluation documents",
+            "AA-Omniscience metric denominators, API identifiers, benchmark versions and conditions, and nominal token-price arithmetic checked",
+            "Existing six-figure scope retained; comparison diagram revised to explain evaluation tasks; Korean source and public output synchronized",
+            "No direct model execution, paid API calls, benchmark reproduction or human reader study",
+        ),
+        verification_scope_ko=(
+            "날짜 있는 GPT-5.5 발표·보존 시스템 카드 관련 절과 10월 28일 공식 모델·API·가격·평가 문서를 구별",
+            "AA-Omniscience 분모·API 식별자·평가 버전과 조건·가정한 토큰 수의 단가 산술 확인",
+            "기존 그림 6개 범위 유지·비교 그림을 평가 대상 설명으로 개편하고 국문 정본·공개 출력을 동기화",
+            "모델 직접 실행·유료 API 호출·벤치마크 재현·사람 독자 평가는 수행하지 않음",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-10-28",
+        human_review_level="Recent-model expansion and public posting explicitly authorized; no line-by-line human review or reader study",
+        human_review_level_ko="최근 모델 비교를 포함한 내용 확장·공개 게시 승인 반영; 문장 단위 사람 심사·독자 평가 없음",
+        disclosure_note_ko="원 발행일과 초판 근거 기준일 2026-05-10을 보존하고 2026-10-28의 최근 모델 조사를 구별했다. 위 에이전트 역할은 이번 개정의 실제 수행 범위이며 원 작성 세션의 개별 구성과 정확한 실행 모델 식별자는 미보존이다. AA 환각 지표의 분모를 명시하고 당시 조회 판본이 보존되지 않은 MCP Atlas 두 점수는 역사표에서 덜어냈다. 모델·하네스·추론 예산과 서로 다른 시험 버전을 구별했다. Claude 시스템 카드와 Google 방법론의 관련 절·표를 대조했으며 전체 카드 PDF를 검수한 것으로 표시하지 않는다. 기존 ID·URL·표지를 유지하고 제목·소개·본문을 확장했다. 기존 영문판·등록 기사 PDF가 없어 새 번역·PDF·영상은 추가하지 않았다.",
+        disclosure_note_en="The original publication and historical evidence date of May 10 are preserved separately from the October 28 recent-model survey. Listed agent roles describe work on this revision; the original roster and exact execution model identifiers were not retained. AA hallucination denominators were clarified, and two MCP Atlas scores were omitted from the historical comparison because its dated response was not retained. Models, harnesses, inference budgets and benchmark versions are distinguished. Relevant system-card sections and evaluation tables were checked without claiming complete PDF-card review. The existing ID, URL and cover are preserved; the title, introduction and body were expanded. No existing English edition or registered article PDF was present, so no translation, PDF or video was added.",
     ),
 )
 

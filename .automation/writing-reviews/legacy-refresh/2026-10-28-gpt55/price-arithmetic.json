@@ -1,0 +1,56 @@
+{
+  "checked_on": "2026-10-28",
+  "input_tokens": 20000,
+  "billable_output_tokens_including_reasoning": 5000,
+  "assumptions": "Standard paid, non-cached token arithmetic with the same assumed billable counts; no model calls, tools, retries, latency or task success measured.",
+  "rows": [
+    {
+      "model": "GPT-6 Astra",
+      "input_usd_per_million": "10",
+      "output_usd_per_million": "50",
+      "nominal_usd": "0.450"
+    },
+    {
+      "model": "GPT-6.1 Sol",
+      "input_usd_per_million": "2",
+      "output_usd_per_million": "10",
+      "nominal_usd": "0.090"
+    },
+    {
+      "model": "Claude Opus 5.5",
+      "input_usd_per_million": "4",
+      "output_usd_per_million": "20",
+      "nominal_usd": "0.180"
+    },
+    {
+      "model": "Claude Sonnet 5.5",
+      "input_usd_per_million": "2",
+      "output_usd_per_million": "10",
+      "nominal_usd": "0.090"
+    },
+    {
+      "model": "Gemini 4 Argon",
+      "input_usd_per_million": "2",
+      "output_usd_per_million": "10",
+      "nominal_usd": "0.090"
+    },
+    {
+      "model": "Gemini 3.8 Flash",
+      "input_usd_per_million": "0.75",
+      "output_usd_per_million": "3.75",
+      "nominal_usd": "0.03375"
+    }
+  ],
+  "promotional_rates": {
+    "Gemini 4 Argon": {
+      "until": "2026-11-30",
+      "later_input_usd_per_million": 4,
+      "later_output_usd_per_million": 20
+    },
+    "Gemini 3.8 Flash": {
+      "until": "2026-12-31",
+      "later_input_usd_per_million": 1.5,
+      "later_output_usd_per_million": 7.5
+    }
+  }
+}

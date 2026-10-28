@@ -1945,12 +1945,15 @@ def render_final_review_template(context: RenderContext) -> str:
       }}
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {{
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {{
         width: 680px;
         max-width: none;
       }}
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {{
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {{
         width: 100%;
         max-width: 100%;
       }}

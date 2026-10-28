@@ -1,175 +1,199 @@
 ---
-title: GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건
-subtitle: GPT-5.5는 코드 수정, 도구 호출, 긴 문맥 조사처럼 여러 단계를 이어 가는 작업에서 개선을 강조합니다. 이 글은 Claude Opus 4.7과의 차이, Hallucination 평가가 엇갈리는 이유, 하네스 설계와 검증 절차가 실제 활용 신뢰를 어떻게 바꾸는지 살펴봅니다.
+title: 긴 작업을 맡기는 AI: GPT-5.5 이후의 모델과 검증
+subtitle: GPT-6·Claude 5.5·Gemini 4의 작업 조건과 신뢰할 수 있는 위임
 date: 2026-05-10
-author: 김현중 with Codex Agent | AI Governance Team
-status: final-review-v4
+updated: 2026-10-28
+date modified: 2026-10-28
+author: 김현중
+status: final-review-revised-20261028
 language: ko
 tags:
   - ai-tech-review
-  - openai
+  - frontier-models
   - gpt-5-5
-  - claude-opus
-  - hallucination
+  - claude
+  - gemini
   - agentic-ai
   - trust-and-safety
 ---
 
-# GPT-5.5 기술동향 리포트: 긴 작업 수행 능력과 안전한 활용 조건
+# 긴 작업을 맡기는 AI: GPT-5.5 이후의 모델과 검증
 
-최근 GPT-5.5 업데이트를 직접 써보셨다면, 한 번의 답변 품질과 함께 코드 수정, 자료 조사, 도구 호출이 여러 단계로 이어질 때의 안정감을 보셨을 겁니다. 이 모델은 긴 작업을 얼마나 오래 유지할 수 있을까요? 사람이 중간에 확인해야 하는 지점은 어디일까요? Terminal-Bench, SWE-Bench Pro, BrowseComp, MCP Atlas 같은 벤치마크 이름도 결국 이 질문과 연결되어 있습니다.
+코드 수정을 맡겨두었다가 돌아오면 요청한 문제를 해결했는지, 테스트가 통과했는지, 다른 기능까지 건드리지는 않았는지 살펴보게 됩니다. 자료 조사에서도 비슷합니다. 읽기 좋은 보고서가 도착한 다음에는 인용한 논문이 실제 주장을 뒷받침하는지 확인해야 합니다. AI가 여러 단계를 이어서 수행할수록 작업을 맡기는 사람의 판단도 그 과정 전체를 향합니다.
 
-[OpenAI 발표](https://openai.com/index/introducing-gpt-5-5/)는 GPT-5.5를 코드 작성, 온라인 조사, 데이터 분석, 문서와 스프레드시트 작성, 소프트웨어 조작, 도구 이동을 오래 지속하는 모델로 설명합니다. 같은 발표에서 GPT-5.5 Pro는 연구 파트너처럼 여러 차례 원고를 비평하고, 기술적 주장을 점검하고, 코드와 PDF 맥락을 동시에 다루는 사례로 소개됩니다. 여기서 중요한 변화는 지식 증가를 넘어 **모델이 작업의 시간을 견디는 방식**에 닿아 있습니다.
-
-이 리뷰는 그래서 GPT-5.5의 성능 평가에서 끝나지 않습니다. GPT-5.5가 가리키는 발전 방향은 무엇인지, Opus 4.7과 비교하면 어떤 작업에서 차이가 나는지, Hallucination이 많아 보이는 결과는 어떻게 읽어야 하는지, 실제 업무에서는 모델 자체와 엔지니어링 하네스가 어떻게 성능을 만드는지 살펴보겠습니다. 마지막에는 AI를 얼마나 신뢰할 수 있는가라는 논의를, 어떤 업무를 어떤 검증과 통제 아래 맡길 수 있는가라는 실무 쟁점으로 바꾸어 보겠습니다.
+2026년 5월 GPT-5.5를 검토할 때 주목했던 변화가 바로 이 작업 지속성이었습니다. 10월에는 GPT-6 Astra와 GPT-6.1 Sol, Claude Opus·Sonnet 5.5, Gemini 4 Argon과 3.8 Flash까지 선택지가 넓어졌습니다. 새 모델의 점수와 가격을 읽다 보면, 어떤 일을 더 맡길 수 있게 되었는지와 그 일을 어떤 조건에서 끝내는지를 함께 묻게 됩니다.
 
 <figure class="article-hero-figure">
-  <img src="../artifacts/final_review/figures/gpt55_agent_workbench_hero-web.png" alt="문서, 체크리스트, 권한 장치, 되돌리기 레일이 둘러싼 AI 작업대 일러스트레이션">
-  <figcaption>그림 1. GPT-5.5를 업무에 적용하면 모델, 도구, 권한, 검증, 되돌리기 절차가 한 작업대 위에서 함께 움직입니다. 신뢰는 이 작업대 전체의 설계에서 만들어집니다.</figcaption>
+  <img src="../artifacts/final_review/figures/gpt55_agent_workbench_hero-web.png" alt="문서, 체크리스트, 권한 장치와 되돌리기 절차가 함께 놓인 AI 작업대 개념 일러스트레이션">
+  <figcaption>그림 1. 초판의 AI 작업대 개념 일러스트레이션. 모델이 읽을 자료, 사용할 도구, 남길 검증 기록과 되돌리기 절차가 하나의 작업 환경을 이룹니다. 새 모델을 도입할 때도 이 관계를 함께 살펴봅니다.</figcaption>
 </figure>
 
-## GPT-5.5 평가는 작업 지속성과 검증 절차를 함께 봅니다
-
-- GPT-5.5의 핵심 변화는 모델이 한 번에 답을 잘 쓰는 능력에서, 여러 단계를 가진 일을 오래 지속하는 능력으로 평가 초점을 옮기게 한다는 점입니다.
-- Claude Opus 4.7과 비교하면 GPT-5.5는 OpenAI 발표 기준 Terminal-Bench, BrowseComp, 전문 업무 일부에서 강하게 보이고, Opus 4.7은 SWE-Bench Pro와 Scale MCP Atlas 같은 외부 도구·코딩 평가에서 앞서는 지점이 있습니다.
-- GPT-5.5의 Hallucination 수치가 높아 보이는 이유는 평가가 서로 다른 행동을 보기 때문입니다. 많은 사실을 맞히는 능력과 모를 때 멈추는 능력은 서로 다른 능력입니다.
-- 실제 도입에서는 모델명과 하네스를 같이 봐야 합니다. 검색과 인용, 도구 권한, reasoning effort, 중단 규칙, 테스트, 사람 검토가 모델의 실제 행동을 바꿉니다.
-- AI 신뢰는 어떤 업무에서 어떤 근거를 남기고, 어떤 권한을 제한하고, 어떤 결과를 사람이 확인할지 정하는 일입니다.
-
-::: highlight 이 리뷰의 한 줄 판단
-GPT-5.5의 기술적 의미는 긴 작업 수행 능력이 강화된 만큼, 검증과 권한 설계가 도입 조건으로 동시에 중요해졌다는 데 있습니다.
+::: highlight 이번 개정의 범위
+원 발행일은 2026년 5월 10일입니다. 당시 GPT-5.5 평가와 근거를 구별해 남기고, 2026년 10월 28일 확인한 최근 모델의 공식 문서·평가 자료를 추가한 문헌 기반 리뷰입니다.
 :::
 
-## GPT-5.5는 긴 작업 수행을 성능 평가의 전면에 둡니다
+## 5월의 GPT-5.5 평가에서 남은 질문
 
-[OpenAI 발표](https://openai.com/index/introducing-gpt-5-5/)가 GPT-5.5에서 가장 앞에 놓은 메시지는 agentic AI 인프라입니다. OpenAI는 소프트웨어 엔지니어링에서 출발한 변화가 과학 연구와 일반 컴퓨터 업무에도 적용된다고 설명합니다. [OpenAI API 문서](https://developers.openai.com/api/docs/guides/latest-model)도 GPT-5.5를 복잡한 생산 워크플로, 도구가 많은 에이전트, 긴 문맥 검색, 고객 대면 워크플로에 맞춘 모델 패밀리로 안내합니다.
+GPT-5.5 출시 발표는 코드 작성, 온라인 조사, 데이터 분석과 문서 작업을 여러 도구에 걸쳐 이어 가는 능력을 강조했습니다. <a class="citation" href="#ref-1">[1]</a> 시스템 카드는 GPT-5.5 Pro를 같은 기반 모델에 병렬 test-time compute를 더하는 실행 방식으로 설명했습니다. <a class="citation" href="#ref-2">[2]</a> 같은 이름 아래서도 모델과 계산 예산, 제품의 사용 방식이 서로 다른 평가 대상을 만들었습니다.
 
-이 흐름은 모델 평가의 단위를 바꿉니다. 예전에는 “단일 문답에 잘 답했는가”가 중심이었습니다. 이제는 “작업 목표를 이해했는가”, “필요한 도구를 골랐는가”, “실패 후 상태를 다시 읽었는가”, “출처와 검증 흔적을 남겼는가”, “멈춰야 할 때 멈췄는가”가 평가 항목에 포함됩니다. 같은 모델이라도 도구 설명, 권한 범위, 검색 방식, 출력 형식, reasoning effort가 달라지면 전혀 다른 작업자로 보일 수 있습니다.
+5월 5일 발표된 GPT-5.5 Instant는 ChatGPT의 기본 대화 경험과 사실성 개선을 다뤘습니다. <a class="citation" href="#ref-3">[3]</a> 긴 저장소 작업을 수행하는 설정, 어려운 문제에 계산을 더 쓰는 Pro, 일상 대화를 위한 Instant를 구별하면 각 발표가 개선했다고 말하는 대상도 분명해집니다. 당시 발표에 실린 표준 API 입력·출력 단가는 GPT-5.5가 100만 토큰당 5·30달러, Pro가 30·180달러였습니다. <a class="citation" href="#ref-1">[1]</a> 이 가격은 초판의 도입 판단을 읽기 위한 당시 정보입니다.
 
-<figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/gpt55_development_arc.svg" alt="AI 모델 평가가 답변, 추론, 도구 사용, 긴 작업, 통제된 위임으로 이동하는 흐름도">
-  <figcaption>그림 2. GPT-5.5의 발전 방향은 답변 품질, 긴 작업 수행, 통제된 위임을 차례로 다룹니다. 각 단계가 올라갈수록 모델 능력, 검증, 권한 설계가 동시에 필요해집니다.</figcaption>
-</figure>
+OpenAI의 GPT-5.5 발표에 실린 비교표에서는 터미널 과제와 저장소 이슈의 결과가 엇갈렸습니다. 아래는 그 발표가 보고한 비교값입니다. <a class="citation" href="#ref-1">[1]</a>
 
-이 점에서 GPT-5.5는 모델 소식이면서 동시에 사용 방식의 소식입니다. 더 많은 일을 맡길 수 있는 모델은 더 많은 검증을 요구합니다. 모델 선택과 작업 환경 설계가 점점 같은 평가 안으로 들어옵니다.
+| 5월 초판이 인용한 평가 | GPT-5.5 | Claude Opus 4.7 | 평가에서 읽을 대상 |
+|---|---:|---:|---|
+| Terminal-Bench 2.0 | 82.7% | 69.4% | 터미널 환경에서 과제를 수행하는 능력 |
+| BrowseComp | 84.4% | 79.3% | 웹에서 단서를 찾고 답을 구성하는 능력 |
+| SWE-Bench Pro | 58.6% | 64.3% | 저장소 이슈에 맞는 코드 변경을 만드는 능력 |
 
-## GPT-5.5, Pro, Instant는 같은 이름 아래 다른 평가 항목을 만듭니다
+표의 GPT-5.5 값은 xhigh 설정의 연구 환경 보고치입니다. 시스템 지시와 도구 구성은 생산 제품과 다를 수 있으며, 비교 열도 발표가 설명한 각 평가의 조건에 따라 읽어야 합니다. <a class="citation" href="#ref-1">[1]</a>
 
-GPT-5.5 계열은 여러 층으로 나누어 읽어야 합니다. GPT-5.5 Thinking은 코드 수정, 긴 조사, 도구 호출처럼 여러 단계를 지속하는 작업 모델입니다. GPT-5.5 Pro는 [OpenAI 시스템 카드](https://deploymentsafety.openai.com/gpt-5-5) 기준 같은 기반 모델에 더 많은 계산 시간을 배정하는 고정확도 실행 방식으로 설명됩니다. GPT-5.5 Instant는 [OpenAI Instant 발표](https://openai.com/index/gpt-5-5-instant/)에서 ChatGPT 기본 경험을 더 간결하고 개인화되고 사실성 높은 방향으로 조정한 모델입니다.
-
-이 구분은 평가 결과를 읽을 때 중요합니다. Thinking의 Terminal-Bench 개선은 장기 작업 수행 능력에 관한 이야기입니다. Pro의 개선은 지연 시간과 비용을 더 쓰는 실행 방식이 어려운 과제에서 얼마나 값을 하는지 묻습니다. Instant의 사실성 개선은 기본 대화 경험에서 특정 오류 유형이 줄었는지를 봅니다. 세 결과를 하나로 섞으면 도입 판단이 흐려집니다.
-
-[OpenAI 가격표](https://developers.openai.com/api/docs/pricing)에서도 이 차이가 확인됩니다. 2026년 5월 10일 접근 기준 `gpt-5.5`는 표준 short-context에서 100만 토큰당 입력 5달러, 출력 30달러이고, `gpt-5.5-pro`는 입력 30달러, 출력 180달러입니다. 비용이 높아진 만큼 운영팀은 성공한 작업당 총비용, 재시도율, 사람 검토 시간, 오류 복구 가능성을 같이 봐야 합니다.
-
-## Opus 4.7과의 비교는 작업 성격에서 드러납니다
-
-GPT-5.5와 Claude Opus 4.7을 비교할 때 가장 먼저 조심해야 할 점은 벤치마크마다 평가 항목이 다르다는 것입니다. [OpenAI 발표](https://openai.com/index/introducing-gpt-5-5/) 표에서는 GPT-5.5가 Terminal-Bench 2.0에서 82.7%로 Opus 4.7의 69.4%를 앞섭니다. BrowseComp도 GPT-5.5 84.4%, GPT-5.5 Pro 90.1%로 Opus 4.7의 79.3%를 앞섭니다. 같은 OpenAI 표에서 SWE-Bench Pro는 GPT-5.5가 58.6%, Opus 4.7이 64.3%입니다. [Scale MCP Atlas](https://labs.scale.com/leaderboard/mcp_atlas)도 2026년 5월 10일 접근 기준 Opus 4.7 max 79.1%, GPT-5.5 xhigh 75.3%로 Opus가 앞섭니다.
-
-이 차이는 모델을 고르기 전에 작업 조건을 먼저 보게 만듭니다. Terminal-Bench는 터미널 환경에서 작업을 풀어가는 능력을 강하게 봅니다. SWE-Bench Pro는 실제 저장소 이슈를 해결하는 장기 소프트웨어 작업을 묻습니다. MCP Atlas는 여러 MCP 서버와 도구가 열린 상태에서 적절한 도구를 고르고, 인자를 넣고, 중간 결과를 합치는 능력을 봅니다. 같은 “코딩”이나 “도구 사용”이라고 불러도 실제 시험지는 서로 다릅니다.
-
-[Anthropic의 Opus 4.7 발표](https://www.anthropic.com/news/claude-opus-4-7)는 기업 고객 사례에서 역할 유지, 지시 따르기, 도구 실패 후 지속 수행, 문서 추론을 강조합니다. [Artificial Analysis](https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/)는 GPT-5.5가 Intelligence Index에서 1위를 기록했고, medium effort가 Opus 4.7 max와 같은 지표 점수를 더 낮은 비용으로 냈다고 평가했습니다. 이 자료들을 같이 읽으면 GPT-5.5는 토큰 효율, 검색·브라우징, 터미널형 실행, OpenAI 생태계의 Codex/Responses API 결합에서 강한 신호가 있고, Opus 4.7은 긴 소프트웨어 이슈, 도구 오케스트레이션, 문서 기반 엔터프라이즈 작업에서 강한 비교 신호가 있습니다.
+이 결과를 읽으며 초판에서 중요하게 본 것은 작업별 차이였습니다. Anthropic의 Opus 4.7 발표도 소프트웨어 작업과 문서 추론, 지시를 유지하는 사용 사례를 소개했습니다. <a class="citation" href="#ref-4">[4]</a> 터미널에서 빠르게 수정하고 시험하는 일과 큰 저장소의 이슈를 추적하는 일은 관련되어 있지만, 평가가 요구하는 행동과 완료 조건은 다릅니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/gpt55_opus_comparison.svg" alt="GPT-5.5와 Claude Opus 4.7의 강점과 평가 항목을 비교한 도식">
-  <figcaption>그림 3. GPT-5.5와 Opus 4.7의 차이는 작업 조건에서 잘 드러납니다. 어떤 도구, 어떤 저장소, 어떤 비용 조건, 어떤 검증 하네스에서 평가했는지가 결과를 바꿉니다.</figcaption>
+  <img src="../artifacts/final_review/figures/gpt55_development_arc.svg" alt="답변, 추론, 도구 사용, 긴 작업, 통제된 위임으로 평가 관심이 이어지는 개념도">
+  <figcaption>그림 2. 초판의 평가 관점 개념도. 작업을 오래 이어 가는 능력을 볼 때에는 답변 품질과 함께 도구 사용, 결과 검증과 위임 범위를 확인하게 됩니다.</figcaption>
 </figure>
 
-모델을 고를 때는 먼저 우리 업무의 실패 형태를 적어보는 편이 좋습니다. 터미널에서 테스트를 돌리고 빠르게 고쳐야 하는지, 큰 저장소의 이슈를 장시간 추적해야 하는지, 많은 도구 중 적절한 API를 찾아야 하는지, 문서 근거를 정교하게 다뤄야 하는지에 따라 답이 달라집니다.
-
-## Hallucination이 많아 보이는 이유는 평가가 다른 능력을 재기 때문입니다
-
-GPT-5.5에서 가장 흥미로운 대목은 사실성과 Hallucination입니다. [OpenAI Instant 발표](https://openai.com/index/gpt-5-5-instant/)는 GPT-5.5 Instant가 GPT-5.3 Instant 대비 의학, 법률, 금융 같은 고위험 문항에서 hallucinated claims를 52.5% 줄였고, 사용자가 사실 오류로 신고했던 어려운 대화에서 부정확한 주장을 37.3% 줄였다고 설명합니다. 이 숫자만 보면 사실성 문제가 크게 개선된 것처럼 보입니다.
-
-한편 [Artificial Analysis](https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/)는 GPT-5.5 xhigh가 AA-Omniscience에서 정확도 57%로 가장 높은 값을 보였지만 Hallucination 비율은 86%였다고 보고했습니다. 같은 자료에서 Opus 4.7 max는 36%, Gemini 3.1 Pro Preview는 50%로 제시됩니다. 두 결과가 다르게 보이는 이유는 평가 단위가 다르기 때문입니다.
-
-OpenAI의 Instant 평가는 특정 고위험 문항 묶음이나 사용자 신고 기반 오류 대화에서 이전 Instant 모델과 비교한 개선입니다. Artificial Analysis의 AA-Omniscience는 모델이 다양한 사실 문항에 답할 때 얼마나 많이 맞히는지와, 모르는 문항에서도 답을 시도하는지를 동시에 봅니다. GPT-5.5가 더 많은 사실을 알고 더 많은 문제를 맞히면서도, 불확실할 때 답을 보류하는 능력에서는 불리하게 보일 수 있습니다.
+SWE-Bench Pro는 실제 저장소의 장기 소프트웨어 과제를 다루며, MCP Atlas는 여러 서버의 도구를 사용해 목표를 수행하는 과제를 다룹니다. <a class="citation" href="#ref-5">[5]</a> <a class="citation" href="#ref-6">[6]</a> 같은 ‘코딩’이나 ‘도구 사용’이라는 이름 안에도 이슈 이해, 도구 선택, 인자 작성, 중간 결과 활용과 검증이 서로 다른 비중으로 들어갑니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/gpt55_hallucination_lens.svg" alt="사실성, 근거 연결, 불확실성 보류, 운영 신뢰가 서로 다른 평가 층위라는 도식">
-  <figcaption>그림 4. Hallucination 평가는 사실을 많이 맞히는 능력, 근거를 연결하는 능력, 모를 때 멈추는 능력, 운영 환경에서 사고를 줄이는 능력을 나누어 봅니다.</figcaption>
+  <img src="../artifacts/final_review/figures/gpt55_opus_comparison.svg" alt="초판에서 참조한 Terminal-Bench 2.0, SWE-Bench Pro, MCP Atlas의 평가 대상을 설명하는 세 패널 개념도">
+  <figcaption>그림 3. 5월 초판에서 참조한 평가의 대상을 설명하도록 개편한 도식. 터미널 과제, 저장소 이슈, 여러 서버의 도구 호출은 서로 다른 행동을 요구합니다. 최초 발표와 평가 원문·설명을 바탕으로 재구성했습니다. <a class="citation" href="#ref-1">[1]</a> <a class="citation" href="#ref-5">[5]</a> <a class="citation" href="#ref-6">[6]</a></figcaption>
 </figure>
 
-이 구분은 사용자의 신뢰 문제와 바로 연결됩니다. 지식이 많은 모델은 틀릴 때도 더 설득력 있게 틀릴 수 있습니다. 긴 작업을 잘 수행하는 모델은 잘못된 중간 가정도 더 오래 끌고 갈 수 있습니다. 그래서 신뢰할 수 있는 AI 활용은 “모델이 사실을 많이 안다”에서 출발하되, “모를 때 어떻게 행동하는가”와 “근거를 어떻게 남기는가”까지 확인해야 합니다.
+## 사실을 맞히는 능력과 모를 때의 행동
 
-## 엔지니어링은 모델의 실제 성격을 바꿉니다
+초판에서 독자의 판단에 특히 중요했던 대목은 서로 달라 보이는 사실성 평가였습니다. OpenAI는 GPT-5.5 Instant가 GPT-5.3 Instant보다 특정 고위험 문항의 허위 주장을 52.5%, 사용자가 오류를 신고했던 어려운 대화의 부정확한 주장을 37.3% 줄였다고 보고했습니다. 이는 각각의 내부 평가 표본에서 이전 Instant와 비교한 상대 감소율입니다. <a class="citation" href="#ref-3">[3]</a>
 
-GPT-5.5 같은 모델을 써보면 모델의 특성이 고정된 것처럼 느껴질 때가 있습니다. 어떤 날은 빠르고 간결하고, 어떤 작업에서는 지나치게 오래 탐색하고, 또 어떤 상황에서는 확신 있게 틀립니다. 이 차이의 일부는 모델 자체에서 오지만, 상당 부분은 엔지니어링 조건에서 옵니다.
+Artificial Analysis의 4월 23일 GPT-5.5 분석은 AA-Omniscience에서 정확도 57%와 hallucination 지표 86%를 함께 제시했습니다. <a class="citation" href="#ref-7">[7]</a> 여기서 **86%의 분모는 전체 응답이 아닙니다.** AA-Omniscience v1의 정의에서 정답을 C, 부분정답을 P, 오답을 I, 답변 보류를 A라 하면 정확도는 C/(C+P+I+A), hallucination 지표는 I/(P+I+A)입니다. <a class="citation" href="#ref-8">[8]</a> 정답을 제외한 나머지 문항에서 얼마나 자주 오답을 내는지를 보는 값이므로, 이를 ‘답변 열 개 중 여덟 개 이상이 틀린다’는 뜻으로 읽으면 평가를 잘못 이해하게 됩니다.
 
-[OpenAI API 문서](https://developers.openai.com/api/docs/guides/latest-model)는 GPT-5.5를 이전 모델의 drop-in replacement처럼 다루지 말고 새 기준선에서 조정하라고 안내합니다. `reasoning.effort`는 기본값이 `medium`이며, `low`, `high`, `xhigh`를 업무에 맞춰 평가하라고 합니다. 같은 문서는 higher reasoning effort를 항상 품질 개선으로 취급하지 말라고 설명합니다. 중단 기준이 약하거나 도구 접근이 넓거나 지시가 충돌하면 더 오래 생각하는 설정이 과도한 검색, 과잉 추론, 품질 저하를 만들 수 있습니다.
-
-모델의 실제 성격은 다음 요소에서 만들어집니다. 어떤 문서를 검색하게 하는가. 검색 결과를 어떻게 인용하게 하는가. 도구 이름과 인자를 얼마나 명확하게 설명하는가. 파일 쓰기나 외부 요청 권한을 어디까지 줄 것인가. 실패했을 때 재시도할지 멈출지 어떻게 알려줄 것인가. 결과물을 어떤 테스트와 사람 검토에 통과시킬 것인가. 이 모든 것이 합쳐져 우리가 체감하는 “모델의 신뢰성”이 됩니다.
+이 지식 평가에는 도구나 추가 문맥 없이 답하는 조건과 보류 지시가 들어갑니다. 검색된 문서를 충실하게 인용하는 능력, 코드를 실행해 결과를 검증하는 능력은 다시 살펴야 할 대상입니다. <a class="citation" href="#ref-8">[8]</a> 최신 Opus 5.5 시스템 카드도 AA-Omniscience의 closed-book 평가에서 정답·오답·보류를 나누어 보고합니다. <a class="citation" href="#ref-9">[9]</a> 모델이 아는 지식, 모르는 상황의 행동, 근거를 찾는 과정과 실제 실행의 신뢰성을 구별하는 초판의 관점은 최근 모델을 읽을 때도 유효합니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/gpt55_engineering_harness.svg" alt="모델, 검색, 도구 권한, 평가, 사람 검토, 롤백이 신뢰를 만드는 하네스 도식">
-  <figcaption>그림 5. 모델은 하네스 안에서 실제 작업자가 됩니다. 검색, 도구 권한, 평가, 승인, 롤백이 설계되어야 같은 모델도 더 예측 가능한 방식으로 움직입니다.</figcaption>
+  <img src="../artifacts/final_review/figures/gpt55_hallucination_lens.svg" alt="사실 정확도, 근거 연결, 불확실성 보류와 운영 신뢰를 구별하는 개념도">
+  <figcaption>그림 4. 사실을 맞히는 능력, 출처와 주장을 연결하는 능력, 모를 때 답을 보류하는 행동, 실행 사고를 줄이는 운영 조건은 각각 확인할 대상입니다. 초판의 개념도를 유지했습니다.</figcaption>
 </figure>
 
-이 지점에서 “모델의 특성”과 “제품의 특성”도 나뉩니다. GPT-5.5 Instant가 더 간결하게 답하고, 필요 없는 후속 요청을 줄이고, 개인화 맥락을 더 잘 쓰는 것은 모델 성능과 제품 경험이 같이 만든 결과입니다. 기업이나 연구팀이 API로 GPT-5.5를 적용할 때도 비슷합니다. 모델을 바꾸는 것만으로 원하는 행동이 나오지 않습니다. 업무별 하네스를 같이 바꿔야 합니다.
+## 10월 28일에 다시 고르는 모델
 
-## AI를 얼마나 신뢰할 수 있는가는 업무의 모양에 따라 달라집니다
+이번에 살펴본 대표 모델은 아래 여섯 가지입니다. OpenAI의 출시 이력과 모델 문서, Anthropic의 출시 발표·API 문서, Google의 모델카드·API 문서에서 식별자와 제공 상태를 확인했습니다. <a class="citation" href="#ref-10">[10]</a> <a class="citation" href="#ref-11">[11]</a> <a class="citation" href="#ref-12">[12]</a> 전체 모델을 나열하거나 용도별 우승자를 정하기보다, 긴 작업을 맡길 때 실제로 달라지는 선택을 살펴보기 위한 범위입니다.
 
-AI를 믿을 수 있느냐는 질문은 업무의 조건을 함께 물을 때 답할 수 있습니다. 조금 더 좁혀 말하면, 어떤 업무에서 어떤 실패가 허용되는지, 실패했을 때 되돌릴 수 있는지, 결과를 검증할 수 있는지의 문제입니다. 회의록 초안을 쓰는 일과 법률 판단을 내리는 일은 같은 신뢰 기준을 가질 수 없습니다. 코드 리팩터링 제안과 프로덕션 DB 수정도 같은 권한을 줄 수 없습니다.
+| 모델·공개일 | 확인한 API 모델 ID | 작업을 맡길 때 읽을 조건 |
+|---|---|---|
+| GPT-6 Astra · 9월 3일 | `gpt-6-astra` | 복잡한 추론·코딩·컴퓨터 조작을 이어 가는 작업. 도구 호출은 Responses API 조건을 확인 |
+| GPT-6.1 Sol · 9월 29일 | `gpt-6.1-sol` | 복잡한 코딩·업무의 비용을 함께 고려하는 선택. 같은 작업에서 effort와 검토 부담을 확인 |
+| Claude Opus 5.5 · 9월 22일 | `claude-opus-5-5` | adaptive thinking과 장기 작업. 모델·제품의 안전장치 및 fallback 조건을 확인 |
+| Claude Sonnet 5.5 · 9월 28일 | `claude-sonnet-5-5` | 반복 소프트웨어 업무와 비용을 함께 검토. API 기본 effort와 앱·Code 기본값을 구별 |
+| Gemini 4 Argon · 10월 13일 | `gemini-4-argon` | 복잡한 코딩·다단계 작업. 공유 문맥 예산과 긴 생성의 continuation을 확인 |
+| Gemini 3.8 Flash · 9월 2일 | `gemini-3.8-flash` | 효율 계열의 장기 소프트웨어·도구 작업. 반복 검증에 쓰는 추론·출력량을 함께 확인 |
 
-신뢰는 네 가지 층위로 나눠볼 수 있습니다. 첫째, 결과가 사실과 맞는가. 둘째, 그 결과가 어떤 근거에서 왔는가. 셋째, 모델이 모르는 상황에서 멈출 수 있는가. 넷째, 실행 결과를 되돌릴 수 있는가. GPT-5.5가 더 긴 작업을 할 수 있게 될수록 네 번째 검토 항목이 더 중요해집니다. 답변이 틀린 문제와 실행이 잘못된 문제는 복구 비용이 다릅니다.
+비교 시점은 2026년 10월 28일이고, 표의 날짜는 각 제공자의 공개 이력입니다. 제공 상태는 공식 API 문서를 기준으로 읽었습니다. <a class="citation" href="#ref-10">[10]</a> <a class="citation" href="#ref-11">[11]</a> <a class="citation" href="#ref-12">[12]</a>
 
-사이버보안 영역에서 이 차이가 잘 드러납니다. [OpenAI 시스템 카드](https://deploymentsafety.openai.com/gpt-5-5)는 GPT-5.5를 생물·화학과 사이버보안 영역에서 높은 능력 수준으로 취급합니다. [UK AISI 평가](https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities)는 GPT-5.5가 역공학과 사이버 훈련장 작업에서 여러 단계를 묶어 수행하는 사례를 공개했습니다. 방어 업무에서는 유용한 능력입니다. 동시에 넓은 실행 권한과 만나면 조직이 감당해야 할 위험도 커집니다.
+평가표도 새로 읽어야 합니다. GPT-6 Astra 발표는 Terminal-Bench 4.0에서 57.9%를 보고하며, 표의 점수는 여러 effort 중 최대값이라고 밝힙니다. <a class="citation" href="#ref-13">[13]</a> 이 값을 앞의 GPT-5.5 2.0 점수 82.7%와 이어 붙이면 시험이 바뀐 사실이 사라집니다. Google의 Argon 평가 방법론도 기본 pass@1·최고 thinking 설정을 설명하면서, 다른 회사의 비교값은 대체로 각사 보고나 공개 리더보드에서 가져왔다고 명시합니다. <a class="citation" href="#ref-14">[14]</a> 한 표에 들어 있는 값들의 하네스와 계산 예산까지 같아지는 것은 아닙니다.
 
-## 안전한 활용은 제한된 위임에서 시작합니다
+Opus 5.5의 Terminal-Bench 4.0 평가에는 Claude Code `--bare`, xhigh effort, 과제당 다섯 번 실행이라는 조건이 있습니다. 일부 실행에는 서버의 안전 fallback도 개입했습니다. <a class="citation" href="#ref-9">[9]</a> 비교할 때에는 모델 이름 다음에 이런 설정을 붙여 읽어야 합니다. 모델과 에이전트 제품, 서버의 실행 정책이 함께 만든 결과를 확인하는 일입니다.
 
-GPT-5.5를 도입하려는 팀은 모델 선택 전에 업무를 네 칸으로 나눠볼 수 있습니다. 위험이 낮고 되돌릴 수 있는 일은 빠르게 자동화해도 됩니다. 위험은 낮지만 규모가 큰 일은 샘플링 검수와 비용 관리를 더해야 합니다. 위험이 높지만 근거 검증이 가능한 일은 검색, 인용, 사람 검토를 필수로 둡니다. 위험이 높고 되돌리기 어려운 일은 승인 없는 자동 실행을 피해야 합니다.
+## 긴 문맥과 긴 작업 사이의 상태 관리
+
+최근 모델의 문맥 창은 큰 저장소와 여러 문서를 함께 다루기 쉽게 만듭니다. GPT-6 Astra와 Sol 문서는 1,050,000 토큰의 문맥 창과 최대 입력 922,000, 최대 출력 128,000을 구별합니다. <a class="citation" href="#ref-10">[10]</a> Claude Opus·Sonnet 5.5의 1M 창에도 입력뿐 아니라 새 출력과 추론이 들어갑니다. <a class="citation" href="#ref-15">[15]</a> ‘1M’이라는 숫자를 입력 문서의 분량과 그대로 같게 두기보다 지시·도구 정의·도구 결과·추론·최종 답변이 그 안에서 차지하는 자리를 살펴야 합니다.
+
+Gemini 4 Argon은 입력·thinking·출력이 공유하는 1,048,576 토큰 창을 설명합니다. 긴 생성은 지원되는 최신 SDK가 여러 요청을 continuation으로 이어 붙이는 방식과 연결됩니다. <a class="citation" href="#ref-16">[16]</a> 단일 요청의 출력 예산과 SDK의 이어 쓰기, 실제 업무의 종료 조건은 각각의 역할을 갖습니다. 앞 단계에서 찾은 논문의 판본, 수정한 파일과 실패한 테스트를 다음 단계에서도 정확하게 이어받을 수 있어야 긴 작업이 하나의 결과로 남습니다.
+
+OpenAI의 현재 가이드는 비동기 도구 호출과 작업 도중의 지시 변경을 설명합니다. 도구가 실행되는 동안 다른 일을 진행할 수 있어도, 애플리케이션이 도구를 실행하고 대기 중인 결과를 관리하는 역할은 남습니다. <a class="citation" href="#ref-17">[17]</a> 여기에는 모델의 추론과 별개로 설계해야 할 실행 상태가 있습니다. 도구 결과의 순서, 재시도와 중복 실행, 실패 뒤 재개 위치를 정하는 하네스가 그 상태를 다룹니다.
 
 <figure class="figure-panel">
-  <img src="../artifacts/final_review/figures/gpt55_safe_delegation_matrix.svg" alt="업무 위험과 되돌리기 가능성에 따라 AI 위임 방식을 나눈 매트릭스">
-  <figcaption>그림 6. 신뢰할 수 있는 활용은 위임 범위를 정하는 방식에서 시작합니다. 위험과 되돌리기 가능성을 먼저 나누면 필요한 통제도 자연스럽게 달라집니다.</figcaption>
+  <img src="../artifacts/final_review/figures/gpt55_engineering_harness.svg" alt="모델, 검색, 도구 권한, 평가, 사람 검토와 롤백이 함께 연결된 작업 환경 개념도">
+  <figcaption>그림 5. 초판에서 제시한 하네스 개념도. 최근 모델의 긴 문맥과 비동기 실행도 검색, 도구 권한, 상태 관리, 검증과 복구가 갖춰진 환경에서 사용하게 됩니다.</figcaption>
 </figure>
 
-실무 체크리스트는 복잡할 필요가 없습니다. 대표 업무 20개 정도를 골라 내부 평가 세트를 만들고, 모델명과 reasoning effort, 도구 목록, 검색 방식, 출력 형식, 검토 기준을 같이 기록합니다. 답변 정확도만 보지 말고 근거 누락, 출처 오류, 불확실성 보류, 잘못된 도구 호출, 재시도 횟수, 사람 검토 시간도 봅니다. 성공한 작업당 총비용을 계산하고, 높은 effort가 실제로 품질을 올렸는지 확인합니다.
+## 더 많이 생각한 결과도 검토해야 합니다
 
-승인 경계도 필요합니다. 파일 삭제, 배포, 결제, 고객 발송, 권한 변경, 보안 스캔 결과 조치처럼 되돌리기 어려운 작업에는 사람 승인과 감사 로그를 남겨야 합니다. GPT-5.5의 강점이 긴 작업 수행이라면, 운영팀의 강점은 그 긴 작업이 잘못된 방향으로 오래 진행되지 않게 막는 구조를 만드는 것입니다.
+높은 effort가 어떤 행동으로 이어지는지 보여주는 구체적인 사례가 있습니다. Sonnet 5.5 발표의 각주 2는 FrontierCode에서 Max 점수가 Xhigh보다 낮았던 이유를 설명합니다. Max 설정에서 코드 리뷰 스킬과 여러 하위 에이전트를 더 자주 사용했고, Cognition이 살핀 두 사례에서는 시간 초과 또는 요청 범위를 넘는 추가 수정으로 감점됐다고 합니다. <a class="citation" href="#ref-11">[11]</a>
 
-## GPT-5.5 이후에는 모델 선택과 운영 설계를 함께 봐야 합니다
+이 평가는 사람의 추가 수정 없이 병합할 수 있는 변경을 봅니다. 다른 기능까지 손보는 일이 유용해 보이더라도, 맡긴 과제의 범위를 넘어가면 검토할 내용과 위험이 함께 늘어납니다. 두 사례는 추론 예산과 에이전트 수를 늘릴 때 완료 시간과 범위 준수를 함께 살펴야 하는 상황을 보여줍니다.
 
-GPT-5.5 이후의 AI 경쟁에서는 모델 점수와 작업 환경을 함께 보는 평가가 늘어날 가능성이 큽니다. 어떤 모델을 쓰는가 못지않게 어떤 도구를 연결하는가, 어떤 권한을 주는가, 어떤 평가를 통과시키는가, 어떤 사람이 마지막 책임을 지는가가 중요해집니다.
+실행 설정의 기본값도 제품에 따라 다릅니다. Sonnet 5.5는 API 기본 effort가 high인 반면 출시 발표의 앱·Claude Code 기본값은 medium입니다. <a class="citation" href="#ref-11">[11]</a> 같은 이름의 모델을 썼다는 기록만으로 두 실행의 차이를 설명하기 어렵습니다. 모델 ID와 실행일, effort, 도구와 지시, 남긴 결과를 함께 기록하면 어떤 변경이 실제로 도움이 되었는지 다시 확인할 수 있습니다.
 
-Opus 4.7과의 비교도 같은 판단을 요구합니다. 두 모델은 모두 장기 작업, 도구 사용, 엔터프라이즈 문서 처리, 코딩 에이전트에서 강해지고 있습니다. 두 모델을 비교할수록 질문은 어느 모델이 절대적으로 우수한가에서 어떤 업무 조건에서 안정적인가로 구체화됩니다. 조직 입장에서는 업무별 모델 포트폴리오와 평가 체계를 만드는 편이 더 현실적입니다.
+## 성공한 작업 한 건의 비용
 
-Hallucination을 다룰 때도 검증 절차가 필요합니다. GPT-5.5는 더 많은 사실을 맞히면서도, 모르는 것을 멈추는 능력은 별도로 확인해야 함을 알려줍니다. 앞으로의 AI 활용에서는 검색과 인용, 불확실성 표시, 답변 보류, 사람 검토, 실행 권한 제한이 모델 성능만큼 중요한 기술 요소가 됩니다.
+긴 작업에서는 토큰 단가가 중요하고, 작업을 마치는 데 소비한 양도 중요합니다. 아래는 10월 28일 확인한 표준 유료 API의 비캐시 입력·출력 단가입니다. ChatGPT·Claude·Gemini 앱의 구독료와 구별합니다. <a class="citation" href="#ref-10">[10]</a> <a class="citation" href="#ref-18">[18]</a> <a class="citation" href="#ref-19">[19]</a>
 
-우리는 AI를 얼마나 신뢰할 수 있을까요? GPT-5.5 이후의 신뢰는 모델이 틀릴 수 있는 지점을 드러내고 제한하는 능력에서 만들어집니다. GPT-5.5는 더 많은 일을 맡길 수 있는 모델입니다. 그만큼 더 정교한 위임 설계가 필요해집니다.
+| 모델 | 입력 / 출력: USD·100만 토큰 | 입력 2만 + 과금 출력 5천 토큰의 단가 산술 |
+|---|---:|---:|
+| GPT-6 Astra | 10 / 50 | $0.45000 |
+| GPT-6.1 Sol | 2 / 10 | $0.09000 |
+| Claude Opus 5.5 | 4 / 20 | $0.18000 |
+| Claude Sonnet 5.5 | 2 / 10 | $0.09000 |
+| Gemini 4 Argon | 2 / 10 | $0.09000 |
+| Gemini 3.8 Flash | 0.75 / 3.75 | $0.03375 |
 
-::: operator 실무 적용 메모
-- 모델 비교는 벤치마크 표에서 시작하되, 내부 대표 업무 평가로 끝냅니다.
-- GPT-5.5와 Opus 4.7은 단일 순위로 고정하지 말고 업무별 후보로 둡니다.
-- Hallucination 평가는 사실 정확도, 근거 연결, 불확실성 보류, 운영 사고 가능성을 나누어 봅니다.
-- reasoning effort는 업무별로 비용과 품질 상승을 확인해야 하는 실행 설정입니다.
-- 되돌리기 어려운 작업은 사람 승인, 감사 로그, 롤백 경로가 준비된 뒤에 자동화합니다.
-:::
+오른쪽은 입력 단가×0.02 + 출력 단가×0.005를 계산한 가상의 과금 예제입니다. 가정한 과금 출력 5천 토큰에는 추론도 포함합니다. 각 모델에서 같은 토큰 수가 발생한다고 가정한 단가 산술이며, 같은 문서의 실제 토큰 수나 작업 성공 비용을 측정한 결과는 아닙니다. 실제 업무에서는 과금 대상 추론·출력량으로 다시 계산하고 도구 요금, 캐시, 재시도와 사람 검토를 반영해야 합니다.
 
-[^hallucination]: Hallucination은 생성형 AI가 실제 근거가 없거나 틀린 정보를 그럴듯하게 답하는 현상을 뜻합니다. 한국어로는 `허위 생성`, `환각`, `사실 오류` 등으로 옮겨 쓰지만, 평가 문맥에서는 Hallucination이라는 용어가 더 넓게 통용됩니다.
+가격의 조건도 함께 남겨야 합니다. Astra와 Sol은 입력이 272K 토큰을 넘으면 해당 요청 전체에 입력·캐시 2배, 출력 1.5배 단가를 적용합니다. <a class="citation" href="#ref-10">[10]</a> Opus·Sonnet 5.5는 전체 1M 문맥에 표준 단가를 적용합니다. <a class="citation" href="#ref-18">[18]</a> 표의 Argon 가격은 11월 30일까지의 프로모션이며 이후 4·20달러, Flash는 12월 31일까지이며 이후 1.50·7.50달러로 안내돼 있습니다. Google의 출력 과금에는 thinking이 포함됩니다. <a class="citation" href="#ref-19">[19]</a>
 
-[^mcp]: MCP는 Model Context Protocol의 약자로, 모델이 여러 도구와 데이터 원천에 일관된 방식으로 접근하도록 돕는 프로토콜입니다. MCP Atlas는 실제 MCP 서버와 도구를 사용해 모델의 도구 선택, 인자 입력, 오류 복구, 최종 답변 품질을 평가합니다.
+프로젝트에서는 성공한 작업 한 건에 든 총비용을 따로 계산하는 편이 유용합니다. 낮은 단가로 여러 번 다시 시도한 결과와 한 번에 검토 가능한 결과를 받았을 때의 차이는 과금표만으로 알 수 없습니다. 코드 변경의 테스트와 되돌리기, 보고서의 출처 대조에 걸린 시간을 함께 기록하면, 모델을 바꿔 줄어든 일과 새로 생긴 일을 구별할 수 있습니다.
 
-[^reasoning-effort]: reasoning effort는 추론 모델이 답변을 만들기 전에 더 많은 계산 시간과 추론 토큰을 쓰도록 조정하는 실행 설정입니다. GPT-5.5 API 문서는 `low`, `medium`, `high`, `xhigh`를 업무 성격과 비용에 맞춰 평가하라고 안내합니다.
+## 위임을 넓히는 순서
 
-## 작성 정보
+초판은 GPT-5.5의 긴 작업 능력을 도입하면서 검증과 권한 설계를 함께 보아야 한다고 판단했습니다. 당시 시스템 카드의 생물·화학 및 사이버보안 능력 분류도 모델이 수행할 수 있는 일과 조직이 허용할 일을 구별할 필요를 보여주었습니다. <a class="citation" href="#ref-2">[2]</a> 최근 모델의 성적과 새로운 실행 기능은 그 판단을 더 구체적인 업무 조건으로 옮기게 합니다.
 
-- 작성자: 김현중 with Codex Agent | AI Governance Team
-- 검토 기준일: 2026-05-10
-- 원 패키지: `2026-05-06_gpt-5-5-family-post-release-evaluation`
-- 문체 기준: reader-experience opening, 단계적 주제의식, AI식 대비 문장 제거
-- 시각자료: 히어로 이미지 1개, 새 SVG 도식 5개
+회의록 초안을 쓰는 일과 원자료를 바꾸는 일, 코드 수정안을 만드는 일과 운영 서비스를 배포하는 일에는 서로 다른 검토가 필요합니다. 결과를 확인할 수 있고 실패를 되돌릴 수 있는 범위부터 맡긴 뒤, 그 작업에서 빠뜨린 근거와 잘못된 호출, 재시도와 검토 부담을 살펴볼 수 있습니다.
 
-## References
+<figure class="figure-panel">
+  <img src="../artifacts/final_review/figures/gpt55_safe_delegation_matrix.svg" alt="업무 위험과 되돌리기 가능성을 기준으로 위임과 검토 방식을 나눈 개념 매트릭스">
+  <figcaption>그림 6. 초판의 위임 설계 개념도. 위험과 되돌리기 가능성에 따라 필요한 승인, 검토와 복구 경로를 정합니다.</figcaption>
+</figure>
 
-- OpenAI, `Introducing GPT-5.5`, 2026-04-23, updated 2026-04-24. https://openai.com/index/introducing-gpt-5-5/
-- OpenAI Deployment Safety Hub, `GPT-5.5 System Card`, 2026-04-23, updated 2026-04-24. https://deploymentsafety.openai.com/gpt-5-5
-- OpenAI, `GPT-5.5 Instant: smarter, clearer, and more personalized`, 2026-05-05. https://openai.com/index/gpt-5-5-instant/
-- OpenAI Deployment Safety Hub, `GPT-5.5 Instant System Card`, 2026-05-05. https://deploymentsafety.openai.com/gpt-5-5-instant
-- OpenAI API docs, `Using GPT-5.5`, accessed 2026-05-10. https://developers.openai.com/api/docs/guides/latest-model
-- OpenAI API docs, `Pricing`, accessed 2026-05-10. https://developers.openai.com/api/docs/pricing
-- Anthropic, `Introducing Claude Opus 4.7`, accessed 2026-05-10. https://www.anthropic.com/news/claude-opus-4-7
-- Artificial Analysis, `OpenAI's GPT-5.5 is the new leading AI model`, 2026-04-23. https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/
-- Scale Labs, `MCP Atlas`, accessed 2026-05-10. https://labs.scale.com/leaderboard/mcp_atlas
-- Scale Labs, `SWE-Bench Pro (Public Dataset)`, accessed 2026-05-10. https://labs.scale.com/leaderboard/swe_bench_pro_public
-- Xiang Deng et al., `SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?`, arXiv:2509.16941, revised 2025-11-14. https://arxiv.org/abs/2509.16941
-- UK AI Security Institute, `Our evaluation of OpenAI's GPT-5.5 cyber capabilities`, 2026-04-30. https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities
+초판에서 제안한 대표 업무 20개 안팎의 내부 평가 세트도 이런 용도로 사용할 수 있습니다. 이 리뷰에서 그 평가를 실행한 것은 아닙니다. 실제로 구성한다면 업무의 완료 기준을 먼저 정하고 모델·effort·도구·검색 방식·권한을 기록합니다. 정답률에 더해 출처 오류, 범위 밖 변경, 잘못된 호출과 사람의 수정 시간을 함께 남겨야 도입 판단으로 이어집니다.
+
+모델 선택은 그 결과를 보고 바꿀 수 있습니다. 반복 작업은 비용과 지연을 관리하기 쉬운 설정에서 시작하고, 어려운 판단이 남는 과제에는 더 큰 계산 예산을 검토할 수 있습니다. 배포·고객 발송·권한 변경처럼 결과가 외부로 이어지는 단계에는 검토와 승인 경계를 둡니다. 긴 작업을 끝낸다는 것은 생성이 멈췄다는 뜻을 넘어, 요청한 결과를 확인 가능한 상태로 넘긴다는 뜻이어야 합니다.
+
+## 작성·개정과 검증 정보
+
+- 책임 편집자: 김현중. 원 발행 2026-05-10, 이번 개정 2026-10-28. 초판의 5월 근거와 이번 최근 모델 조사 기준일을 구별했습니다.
+- 이번 AI 보조: OpenAI Codex. 원 작성의 Codex Agent 표기는 보존하되 원 세션의 정확한 모델·개별 에이전트 구성은 미보존입니다. 이번 통합·단가 산술·출력은 `root`, 역사적 근거와 문체 대조는 `gpt55_historical_audit`, Claude 조사는 `models_claude_20261028`, Gemini 조사는 `models_gemini_20261028`이 맡았습니다.
+- AI Tech Review Editorial Harness 2026.08과 현행 과학 설명·문체·APS 감사 기준을 적용했습니다. 모델 직접 비교, 유료 API 호출, 벤치마크 재현과 사람 독자 평가는 수행하지 않았습니다.
+- 원 시스템 카드의 관련 절과 공식 발표·API·가격·평가 방법을 대조했습니다. Claude Opus 5.5 카드 전체나 Google 모델카드 전체 PDF를 검수한 것으로 표시하지 않습니다. 공개 웹·일부 카드/방법론의 실제 읽은 범위로 검증을 제한합니다.
+- 이번 수정에서는 AA-Omniscience 지표의 분모를 명시했습니다. 초판 MCP Atlas의 5월 10일 조회 판본이 보존되지 않아 두 모델의 당시 점수는 역사표에서 덜어냈으며, 현재 표를 과거 확인 자료로 소급하지 않았습니다. 기존 비교 그림은 평가 대상 설명으로 개편했습니다.
+- 기존 글 ID·URL, 원 발행일과 표지를 유지했습니다. 이번 확장에 맞춰 제목·부제·소개와 본문을 개정했으며 새 표지·영문판·PDF·영상은 일괄 제작하지 않았습니다.
+
+## 참고문헌
+
+<span id="ref-1"></span>[1] OpenAI, [Introducing GPT-5.5](https://openai.com/index/introducing-gpt-5-5/) (23 April 2026; updated 24 April 2026).
+
+<span id="ref-2"></span>[2] OpenAI, [GPT-5.5 System Card](https://deploymentsafety.openai.com/gpt-5-5/gpt-5-5.pdf) (23 April 2026; updated 24 April 2026).
+
+<span id="ref-3"></span>[3] OpenAI, [GPT-5.5 Instant: Smarter, clearer, and more personalized](https://openai.com/index/gpt-5-5-instant/) (5 May 2026).
+
+<span id="ref-4"></span>[4] Anthropic, [Introducing Claude Opus 4.7](https://www.anthropic.com/news/claude-opus-4-7) (16 April 2026).
+
+<span id="ref-5"></span>[5] X. Deng et al., [SWE-Bench Pro: Can AI agents solve long-horizon software engineering tasks?](https://arxiv.org/abs/2509.16941v2), arXiv:2509.16941v2 (2025).
+
+<span id="ref-6"></span>[6] Scale AI, [MCP Atlas](https://labs.scale.com/leaderboard/mcp_atlas) (accessed 28 October 2026).
+
+<span id="ref-7"></span>[7] Artificial Analysis, [OpenAI’s GPT-5.5 is the new leading AI model](https://artificialanalysis.ai/articles/openai-gpt5-5-is-the-new-leading-AI-model/) (23 April 2026).
+
+<span id="ref-8"></span>[8] D. Jackson, W. Keating, G. Cameron, and M. Hill-Smith, [AA-Omniscience: Evaluating cross-domain knowledge reliability in large language models](https://arxiv.org/abs/2511.13029v1), arXiv:2511.13029v1 (2025).
+
+<span id="ref-9"></span>[9] Anthropic, [System Card: Claude Opus 5.5](https://anthropic.com/claude-opus-5-5-system-card) (22 September 2026).
+
+<span id="ref-10"></span>[10] OpenAI, [Changelog](https://developers.openai.com/api/docs/changelog) (accessed 28 October 2026); OpenAI, [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) (accessed 28 October 2026); OpenAI, [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) (accessed 28 October 2026).
+
+<span id="ref-11"></span>[11] Anthropic, [Introducing Claude Opus 5.5](https://www.anthropic.com/claude-opus-5-5) (22 September 2026); Anthropic, [Introducing Claude Sonnet 5.5](https://www.anthropic.com/claude-sonnet-5-5) (28 September 2026); Anthropic, [Claude Opus 5.5](https://platform.claude.com/docs/en/models/opus-5-5/overview) (accessed 28 October 2026); Anthropic, [Claude Sonnet 5.5](https://platform.claude.com/docs/en/models/sonnet-5-5/overview) (accessed 28 October 2026).
+
+<span id="ref-12"></span>[12] Google DeepMind, [Gemini 4 Argon model card](https://deepmind.google/models/model-cards/gemini-4-argon/) (October 2026); Google DeepMind, [Gemini 3.8 Flash model card](https://deepmind.google/models/model-cards/gemini-3-8-flash/) (September 2026); Google AI for Developers, [Gemini 4 Argon](https://ai.google.dev/gemini-api/docs/models/gemini-4-argon) (accessed 28 October 2026); Google AI for Developers, [Gemini 3.8 Flash](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash) (accessed 28 October 2026).
+
+<span id="ref-13"></span>[13] OpenAI, [GPT-6 Astra: A new generation of intelligence](https://openai.com/index/gpt-6-astra/) (3 September 2026).
+
+<span id="ref-14"></span>[14] Google DeepMind, [Gemini 4 Argon model evaluation: Approach, methodology & results](https://deepmind.google/models/evals-methodology/gemini-4-argon) (accessed 28 October 2026).
+
+<span id="ref-15"></span>[15] Anthropic, [Context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows) (accessed 28 October 2026).
+
+<span id="ref-16"></span>[16] Google AI for Developers, [What's new in Gemini 4 Argon](https://ai.google.dev/gemini-api/docs/generate-content/latest-model) (accessed 28 October 2026).
+
+<span id="ref-17"></span>[17] OpenAI, [Using GPT-6](https://developers.openai.com/api/docs/guides/latest-model) (accessed 28 October 2026).
+
+<span id="ref-18"></span>[18] Anthropic, [Pricing](https://platform.claude.com/docs/en/about-claude/pricing) (accessed 28 October 2026).
+
+<span id="ref-19"></span>[19] Google AI for Developers, [Gemini Developer API pricing](https://ai.google.dev/gemini-api/docs/pricing) (accessed 28 October 2026).
