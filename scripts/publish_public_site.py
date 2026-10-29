@@ -109,6 +109,38 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-10-30_brain-neurogenesis-rehabilitation",
+        title="뇌의 회복을 다시 묻다: 성인 신경세포 생성과 재활의 과학",
+        subtitle="해마의 새 세포가 기능 회복으로 이어지는 조건과 재활·세포치료의 임상 근거",
+        date="2026-10-30", updated="2026-10-30", category="AI for Science",
+        tags=("Neuroscience", "Adult Neurogenesis", "Brain Injury", "Rehabilitation", "Memory", "Cell Therapy"),
+        summary='핵실험의 탄소 흔적으로 뇌세포의 생일을 읽은 뒤, 연구자들은 그 세포가 어떻게 기억 회로에 참여하는지 묻고 있습니다. 최근 인간 해마 연구는 새 세포의 단서를 보강했고, 재활과 세포치료 임상시험은 사람이 다시 할 수 있는 일을 측정합니다. 세포의 탄생과 일상 기능을 함께 보면, 뇌 회복의 가능성과 다음 연구 과제가 구체적으로 드러납니다.',
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, Korean writing, original conceptual cover, editorial integration and publication", "1차 출처 종합·한국어 집필·원본 개념 표지·편집 통합 및 게시"),
+            PublicAgent("academic_sources", "human hippocampal neurogenesis papers, assay and denominator crosschecks, independent scientific and bilingual review", "인간 해마 신경세포 생성 논문·관찰법·분모 대조 및 독립 과학·한영 감수"),
+            PublicAgent("rehab_evidence", "clinical rehabilitation and cell-therapy source research, outcome and safety audit, complete English translation", "재활·세포치료 임상 출처 조사·결과와 안전성 감수 및 영어 전문 번역"),
+            PublicAgent("review_format", "original bilingual responsive figures, font typesetting, HTML/PDF production and complete output checks", "원본 한영 반응형 도표·글꼴 조판·HTML/PDF 제작 및 전체 출력 검사"),
+            PublicAgent("publish_audit", "independent conceptual-cover, reader-explanation, clinical-source, APS-reference and publication audit", "개념 표지·독자 설명·임상 출처·APS 서지 및 게시의 독립 감사"),
+        ),
+        verification_scope=(
+            "Human hippocampal birth-label, radiocarbon, histology and single-nucleus studies; assay-specific sample denominators and computational inference boundaries; the 2026 Nature funding-only update",
+            "INCOG 2.0 memory rehabilitation, TBI-MEM and ReMemBrIn, STEMTRA reports and Japanese PMDA review/current labeling, official first postmarketing-use disclosure and human exercise studies; reported values only, no participant-level reanalysis",
+            "Bilingual original explanatory figures, generated conceptual cover, complete HTML/PDF output, metadata, archive hashes and live links; the New Scientist feature was read only through its public introduction, the 2026 killifish paper only through its public abstract, and the 2019 fixation study through its abstract and extended-data material",
+        ),
+        verification_scope_ko=(
+            "인간 해마의 출생 표지·탄소 연대·조직·단일핵 논문, 관찰법별 표본 분모와 계산 추정 범위, 2026 Nature의 지원금 사사 보완 이력 대조",
+            "INCOG 2.0 기억 재활·TBI-MEM·ReMemBrIn·STEMTRA 보고와 일본 PMDA 심사 및 최신 첨부문서, 공식 첫 시판 후 사용 공시와 인간 운동 연구 대조; 저자 보고값이며 참가자 원자료 재분석 없음",
+            "한영 원본 설명 도표·생성 개념 표지·전체 HTML/PDF 출력·메타데이터·아카이브 해시와 공개 링크 검사; New Scientist는 공개 도입, 2026 킬리피시 논문은 공개 초록, 2019 고정 연구는 초록·확장 도표 범위로 확인",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-10-30",
+        human_review_level="Topic, writing and public posting requested; no line-by-line human approval or reader-comprehension study.",
+        human_review_level_ko="주제·작성·공개 게시 요청 확인; 문장 단위 사람 승인·독자 이해도 실험 없음.",
+        disclosure_note_ko="세포 출생·분자 상태·회로 기능·임상 이득을 구별하며 신경세포 생성도 신경가소성에 포함됩니다. 임상·조직·단일세포 실험을 독립 수행하지 않았습니다. AI 생성 표지는 단순화한 해마의 개념 장면이며 실제 해부·현미경·환자 영상이나 치료 결과가 아닙니다.",
+        disclosure_note_en="Cell birth, molecular state, circuit function and clinical benefit are distinguished; neurogenesis is itself a form of neuroplasticity. No independent clinical, tissue or single-cell experiment was performed. The AI-generated cover is a simplified hippocampal concept, not anatomical, microscopic or patient imaging or a treatment result.",
+    ),
+    PublicReview(
         folder='2026-10-26_flat-chern-bands-correlations',
         title='평탄한 Chern 밴드의 상관 상태: 에너지 분산에서 양자 기하까지',
         subtitle='ReAg₂Cl₆의 자기질서·SOC와 같은 Chern 수에서 갈리는 분수 Chern 절연체·전하밀도파',
