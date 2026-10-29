@@ -4,7 +4,7 @@ A bilingual AI Tech Review developed and expanded with AI/quantum approaches on 
 
 - Korean title: **뇌의 회복을 다시 묻다: 성인 신경세포 생성과 재활의 과학**
 - English title: **How the Brain Recovers: Adult Neurogenesis and the Science of Rehabilitation**
-- Publication status: AI/quantum extension passed final local verification; deployment verification pending.
+- Publication status: expanded article published; complete output, deployment and live-browser verification passed.
 - Intended reading destinations: [한국어](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/), [English](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/en/).
 
 ## Editorial question
@@ -97,3 +97,12 @@ The Korean PDF has 14 pages and 4,729,677 bytes (SHA256: 3582f100e84ebde092aff65
 All sixteen outlined SVGs and four font subsets reproduced byte-for-byte in isolated rebuilds. The original twelve SVGs and cover are unchanged. New figure 4 was independently inspected in both languages, desktop/mobile and the final PDF. It compares different studies without implying a combined treatment experiment. Local Chrome at 1440px/390px loaded nine images and four fonts per language, 31 references and the correct responsive figures, with no page error, missing asset or overflow.
 
 Package and reading-copy allowlists passed. Public-site validation returned no errors; reader-artifact validation passed 1,653 files and 53 articles. The repository suite ran 144 tests: 143 passed, one optional Python-Markdown test skipped. Catalog counts remain 50 reviews and 93 archive documents. The other 49 review records, 91 archive records and 84 reading-copy HTML files are unchanged, as are all 53 reader-identity records. Each new PDF has four identical copies, and the public archive sizes and hashes match. No domain or workflow configuration changed. Live deployment and browser checks are recorded separately after completion.
+
+
+## AI/quantum extension: live publication, 2026-10-30
+
+Publication source: `2229a01d0e4f087afc8a7118e5eb427b38f07687`. The [Pages artifact workflow](https://github.com/Infant83/AI_Tech_Review/actions/runs/40967169267) completed successfully. The expanded review retains its [Korean](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/) and [English](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/en/) addresses.
+
+All 34 checked public files and both canonical redirects passed. Twenty-seven files matched local bytes literally; six HTML files matched after reversing only the previously identified Cloudflare analytics/public-contact transformations; the reader catalog matched the deployed source revision and all other JSON values. Both canonical URLs returned HTTP 200 at the service domain with matching normalized content. All PDF, CSS, SVG and cover bytes matched.
+
+Actual Chrome passed both languages at 1440px and 390px: 31 references, nine images, five visible figures, four loaded font faces, four review-language clicks, two hub-language clicks, updated titles/subtitles/summaries, thumbnail display and summary expansion/collapse. Both canonical redirects and PDF paths passed. Page errors, overflow and unresolved asset/HTTP/console failures were zero. Nine anonymous subscription-state GETs returned HTTP 401; the same response occurred on the preexisting comparison article. One preliminary unversioned SVG request was canceled, while the final versioned asset loaded and rendered at both widths. These resolved/expected events are distinct from unresolved reading failures. No engagement action was taken. The isolated QA browser was closed, and original screenshots remain excluded from publication.
