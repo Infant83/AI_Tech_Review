@@ -1,6 +1,6 @@
 # 뇌의 회복을 다시 묻다: 성인 신경세포 생성과 재활의 과학
 
-<p class="dek">해마에서 발견된 새 세포는 어떻게 기능 회복의 가능성이 되는가—사람의 뇌 조직, 재활 임상시험과 세포치료가 밝힌 서로 다른 단계</p>
+<p class="dek">새 신경세포의 탄생에서 올바른 연결과 기능 회복까지—인간 조직·재활 임상 근거와 AI·양자센서가 풀려는 병목</p>
 
 <p class="kicker">RESEARCH REVIEW · 2026년 10월 30일 · 신경생물학·뇌손상·재활</p>
 
@@ -102,20 +102,65 @@ Laura Villasana와 동료들의 생쥐 피질충격 손상 모형 연구는 이 
 
 이처럼 운동의 여러 이득, 특정 인지 과제의 변화, 혈청에 반응한 배양 세포의 변화는 관련성을 탐색할 수 있으면서도 같은 측정값은 아니다. 특히 뇌손상 뒤에는 운동의 종류와 강도를 개인의 상태에 맞춰 정한다. 일반적인 건강 연구의 자극적인 문구만으로 재활 프로그램이나 자가 치료 방법을 정하기 어렵다. 도움이 되는 임상 정보는 무엇을 했을 때 누구의 어떤 기능이 얼마나 달라졌는지를 함께 알려준다.
 
-## 8. 다음 돌파구는 탄생과 사용을 함께 측정할 때
+## 8. AI가 찾는 것은 세포의 수를 넘어 연결의 조건이다
+
+새 신경세포가 생겼다는 관찰 뒤에는 그 세포를 어떤 종류로 만들고 어느 곳에 연결할 것인지가 남는다. AI가 재생 연구에 기여하는 구체적인 자리는 수많은 세포의 유전자 발현과 연결 양상을 비교해, 실험으로 시험할 조건을 좁히는 데 있다. 앞서 본 희귀 전구세포의 분류에서 한 걸음 더 나아가, 연결을 만드는 생물학적 규칙을 찾는 것이다.
+
+2026년 Duke-NUS와 Sanford Burnham Prebys의 Zhifu Wang·Su-Chun Zhang 연구진은 인간 피질 전구세포를 허혈성 손상을 입은 생쥐 운동피질에 이식했다. 이 세포들은 성숙하며 피질·피질하 영역과 피질척수로를 포함한 회로에 편입되었다. 연구진은 축삭이 도달한 곳을 추적하고 단일핵 RNA를 읽어, 투사 목적지와 유전자 발현의 관계를 기계학습 회귀로 분석했다. 연구 대상은 외부에서 이식한 인간 유래 세포이며, 성인의 해마에서 내인성 신경 생성이 늘어났다는 결과와는 구분한다. [21]
+
+저자들이 공개한 연구와 자료에는 CTIP2라는 전사인자의 발현을 낮췄을 때 이식 뉴런의 투사 양상이 달라진 실험도 담겼다. 전사인자는 다른 유전자들의 작동을 조절하는 단백질이다. 이 결과는 ‘신경세포를 넣는다’는 목표를 넘어, 세포의 정체와 출력 목적지를 함께 설계해야 한다는 질문을 구체화한다. 다만 AI가 추천한 치료를 독립 환자군에서 검증한 연구는 아니며, 생쥐 안의 인간 세포에서 관찰한 통합이 사람의 회복 효과를 보증하지 않는다. [21,22]
+
+세포가 살아갈 손상 환경을 겨냥하는 접근도 있다. Karolinska 연구진의 Margherita Zamboni와 동료들은 생쥐 척수손상에서 유전자 발현과 염색질 접근성을 함께 분석하고, DNA 서열에서 접근성을 예측하는 딥러닝 모형을 만들었다. 여기서 찾은 인핸서(enhancer)는 특정 조건에서 유전자 발현을 조절하는 DNA 서열이다. 연구진은 손상 반응과 세포 종류의 정보를 함께 읽는 서열을 찾아, 유전자 전달 벡터가 반응성 성상세포에서 선택적으로 작동하도록 했다. 성상세포는 뉴런 주변의 환경과 손상 반응에 관여하는 교세포다. [23]
+
+선택한 IREN5 서열은 피질의 찔림 손상 모형에서도 작동했다. 표지된 세포 가운데 성상세포의 비율이 98%였다는 결과는 네 마리에서 얻은 **표적 선택성**의 지표다. 전체 성상세포의 98%를 표지했다거나 손상이 98% 회복되었다는 뜻이 아니다. 벡터는 손상 전에 투여되었고, 실제 치료 물질을 전달해 축삭 재생이나 행동 회복을 입증하지는 않았다. 그 성과는 손상 뒤 특정 상태에 놓인 세포에 작용을 집중시킬 분자 도구를 만든 데 있다. [23]
+
+올바른 목적지의 중요성은 EPFL·NeuroRestore, UCLA, Harvard 협력팀의 2023년 척수손상 생쥐 연구에서도 드러났다. 연구진은 단일세포 자료의 기계학습 분석으로 회복에 관련된 뉴런 집단을 좁히고, 유전적 성장 촉진과 유인 신호를 결합했다. 축삭이 손상부를 넘어가는 것만으로는 보행 회복이 충분하지 않았고, 자연적인 표적 영역으로 다시 유도했을 때 기능적 이득이 나타났다. 성장 촉진 벡터의 손상 전 투여를 포함한 전임상 설계이며, 뇌손상 환자에게 적용한 치료나 새 뉴런의 탄생을 늘린 실험은 아니다. 기존 뉴런의 축삭 재성장이라는 다른 모형에서, **연결의 양과 연결의 적절함을 함께 시험해야 한다**는 원리를 보여준다. [24]
+
+이 연구들에서 계산은 생물학적 실험의 후보를 고른다. 이어지는 유전자 조작, 세포 표적화, 연결 추적과 기능 검사가 후보의 의미를 가린다. 앞으로 중요한 것은 AI가 찾아낸 패턴이 다른 실험실·종·손상 조건에서도 같은 조작 결과를 내는지, 그리고 사람에게 허용되는 개입으로 옮겼을 때 지속적인 이득을 주는지다.
+
+## 9. 율리히의 지도와 모형은 손상된 회로를 어떻게 읽는가
+
+세포 하나의 출력 목적지를 알아도, 그 세포가 들어갈 뇌 전체의 연결 상태는 사람마다 다르다. 같은 부위가 손상되어도 남은 경로와 먼 영역의 활동이 달라질 수 있다. 율리히 연구소의 강점은 이 문제를 해부학적 지도, 영상 분석과 대규모 계산으로 연결하는 데 있다.
+
+Julich-Brain은 세포의 배치로 구분한 인간 뇌 영역을 확률 지도로 정리한다. 여러 사람의 해부학적 차이를 보존하면서 ‘어느 영역을 이야기하는가’를 맞추는 공통 좌표다. 여기에 율리히 INM-1의 AI 영상 분석과 EBRAINS, Jülich Supercomputing Centre의 계산·모형 지원이 결합된다. 현재 INM-1은 JUPITER를 활용한 미세구조 영상 모형 개발도 추진한다. 이런 기반은 조직과 회로 자료를 연결하는 데 쓰이지만, 지도가 특정 환자의 새 뉴런 생성 이력까지 알려주는 것은 아니다. [25,26]
+
+회복과 직접 연결된 예는 율리히 INM-3가 참여한 Anna Bonkhoff 연구진의 2021년 논문이다. 급성 허혈성 뇌졸중 54명의 MRI를 분석했고, 6개월 운동 회복 분석은 추적 가능한 30명을 대상으로 했다. 무작위 숲(random forest) 모형은 뇌 영역 사이 연결이 시간에 따라 어떤 상태에 머물고 전환되는지에 관한 정보와 초기 운동장애를 사용했다. 세 수준의 회복을 분류한 내부 교차검증 AUC는 초기 임상 점수만 썼을 때 0.84, 동적 연결 정보를 더했을 때 0.89였다. AUC는 분류의 구별 능력을 평가하는 지표이며, ‘환자 89%가 회복했다’는 뜻이 아니다. [27]
+
+이 연구가 보인 가능성은 남아 있는 회로의 작동 방식이 예후에 정보를 보탠다는 것이다. 다만 독립 병원·환자군에서의 외부 검증은 남아 있고, AI가 고른 재활이 더 효과적인지도 시험하지 않았다. 이미 관찰한 회복을 예측하는 일과 어떤 치료를 선택하면 회복을 바꿀 수 있는지 판단하는 일에는 다른 근거가 필요하다. [27]
+
+기전을 설명하는 계산 모형은 또 다른 역할을 맡는다. Marseille·Toronto·UC Irvine 협력팀은 2016년 만성 뇌졸중 20명과 대조군 11명의 영상으로 개인별 The Virtual Brain 모형을 구성했다. 영역 사이 연결과 신경세포 집단의 동역학을 방정식으로 표현하고, 영상 신호에 맞춘 매개변수와 이후 운동 점수 변화의 관계를 살폈다. 이 모형은 새 뉴런을 직접 세거나 치료를 임상 검증한 것이 아니며, 그 자체를 기계학습 AI라고 부를 수도 없다. 율리히의 현재 기반과 연결해 생각할 수 있는 별도 연구 사례로, 국소적인 세포 변화가 넓은 회로에 어떤 영향을 줄지 가설을 세우는 데 의미가 있다. [28]
+
+율리히가 참여하는 현재 Virtual Brain Twin 프로젝트 역시 개인별 모형을 위한 계산 구조와 운영 기반을 개발하지만, 공식 목표는 정신질환의 개인화 치료 생태계다. 이를 뇌손상 재생의 임상 성과로 옮겨 적을 수는 없다. 여기까지의 영상 분석·무작위 숲·가상뇌 계산은 고전 컴퓨팅의 사례다. 대형 슈퍼컴퓨터를 사용한다는 사실이 양자 프로세서를 사용했다는 뜻은 아니다. [26]
+
+## 10. 양자 기술은 먼저 회복을 관찰하는 방법에 들어온다
+
+양자 기술 가운데 이 질문에 가장 구체적으로 닿아 있는 것은 뇌 활동을 읽는 자기센서다. 광펌핑 자력계(optically pumped magnetometer, OPM)는 빛으로 원자 스핀을 준비하고, 자기장에 따라 달라지는 광학 신호를 읽는다. 이를 이용한 뇌자도(OPM-MEG)는 뉴런 집단의 전류가 만드는 미약한 자기장을 측정한다. 양자 프로세서로 뇌를 계산하는 것과는 물리적 역할이 다르다. [29]
+
+UCL 등의 2025년 연구는 건강한 남성 세 명에게 착용형 OPM-MEG를 적용해 약 0.5m의 발걸음 과제 중 감각운동 피질의 15–30Hz 베타 활동 변화를 검출했다. 머리가 움직이는 동안에도 회로의 활동을 읽으려는 진전이다. 재활 중 실제 동작과 뇌 신호를 함께 측정할 가능성을 보여주지만, 자기 차폐와 움직임에 따른 잡음 처리가 필요하며 환자의 치료 효과를 시험한 결과는 아니다. 베타 활동 변화에서 새 뉴런의 수나 재생 정도를 계산할 수도 없다. [29]
+
+뇌 신호를 피드백으로 쓰는 환자 연구 자체는 더 오래되었다. NIH·Tübingen 등이 참여한 2008년 연구에서는 초전도 양자간섭계(SQUID)를 사용하는 기존 MEG로 만성 중증 뇌졸중 환자 여덟 명의 신호를 읽어 손 보조기를 제어했다. 여섯 명이 제어를 학습했지만, 손 기능 임상척도의 유의한 개선은 없었다. 최신 착용형 OPM을 사용한 연구와 구분해야 하며, 장치를 움직이는 데 성공한 결과와 치료 뒤 장치 없이 기능이 좋아진 결과도 각각 확인해야 한다. [30]
+
+양자 컴퓨팅 쪽은 검증 질문이 한 단계 더 남아 있다. 예를 들어 Paris Brain Institute와 Leibniz Supercomputing Centre 등이 참여하는 CLARA는 AI와 양자 컴퓨팅을 뇌 연구에 결합하려는 연구 프로그램이다. 단백질의 동역학과 분자 특성을 양자–고전 혼합 계산으로 연구하려는 계획으로, 알츠하이머병의 APOE·아밀로이드β·타우가 주요 대상이다. 뇌손상에서 새 뉴런의 통합이나 재활 효과를 개선했다는 임상 결과를 제시한 것은 아니다. 율리히의 고전 신경과학 계산과 이 별도 프로그램의 계획은 각각의 실행 수준에서 평가해야 한다. [31]
+
+앞으로 QPU가 이 분야의 실질적인 도구가 되려면 어떤 분자·회로 계산을 수행했는지, 최선의 고전 방법과 같은 조건에서 정확도와 전체 비용을 어떻게 비교했는지부터 보여야 한다. 그 계산의 이득이 생물학적 개입과 기능 회복으로 이어지는지도 다시 시험해야 한다. 이 리뷰의 전망으로는, 양자센서를 이용한 활동 측정은 이미 실험 단계의 구체적인 역할이 있고, QPU를 통한 재생 치료의 이득은 별도로 입증해야 할 연구 과제다.
+
+<figure><img src="research_roles_ko.svg" alt="분자 AI, 연결망 모형, 양자센서와 양자 프로세서가 맡는 질문과 서로 다른 검증 대상을 비교한 도식"><figcaption>그림 4. AI·양자 기술의 역할을 같은 회복 질문에 비추어 비교했다. 세포 표적·투사 양상을 다룬 생쥐 실험, 환자 예후 모형, 건강 참가자의 활동 측정과 계산 연구 계획은 각각 다른 검증 단계다. 이들을 하나의 시험에서 연결한 결과나 치료 효과의 순위를 뜻하지 않는다. 공개 원전과 공식 연구 계획에 근거한 리뷰의 설명 도식. [21,23,27,28,29,31]</figcaption></figure>
+
+그림 4에서 분자 AI는 ‘무엇을 바꿀 것인가’를, 연결망 분석은 ‘어떤 회로가 남아 있는가’를, 센서는 ‘과제를 할 때 어떻게 작동하는가’를 묻는다. 이 정보가 함께 쌓여야 재생과 재활을 연결하는 실험이 구체화된다. 도구마다 얻은 값을 같은 ‘회복률’로 부르지 않고, 다음 실험이 실제로 무엇을 검증해야 하는지 확인하는 것이 필요하다.
+
+## 11. 다음 돌파구는 탄생과 사용을 함께 측정할 때
 
 앞으로의 연구에서 첫 번째 어려움은 살아 있는 인간 뇌의 신경 생성을 얼마나 특이적으로 측정할 수 있는가다. 혈액 표지와 영상, 분자 분석은 반복 관찰의 가능성을 제공하지만, 각각이 세포 출생·생존·성숙 중 어느 과정에 대응하는지 먼저 검증해야 한다. 사후 조직에서 찾은 분자 상태를 살아 있는 사람의 경과와 연결할 수 있다면, 재활이나 치료가 작동하는 시기와 대상을 더 잘 구분할 수 있을 것이다.
 
-두 번째는 기능적 편입의 질이다. 동물 연구에서는 새 세포를 표시하고 전기적 특성과 행동을 함께 측정하거나, 그 활동을 선택적으로 조절해 기능의 원인인지 시험할 수 있다. 인간에서는 직접 허용되는 관찰이 제한되므로 조직·영상·생리·임상 결과가 서로 보완해야 한다. 세포 수, 축삭의 방향, 흥분·억제 조절, 실제 학습의 변화를 연결하는 연구가 단순한 증식 촉진보다 유용한 치료 조건을 제시할 수 있다.
+두 번째는 기능적 편입의 질이다. 동물 연구에서는 새 세포를 표시하고 전기적 특성과 행동을 함께 측정하거나, 그 활동을 선택적으로 조절해 기능의 원인인지 시험할 수 있다. 인간에서는 직접 허용되는 관찰이 제한되므로 조직·영상·생리·임상 결과가 서로 보완해야 한다. 세포 수, 축삭의 방향, 흥분·억제 조절, 실제 학습의 변화를 연결하는 연구가 단순한 증식 촉진보다 유용한 치료 조건을 제시할 수 있다. 분자 AI가 찾은 표적과 뇌 모형의 예측, 자기센서의 집단 활동은 관찰 규모가 다르다. 같은 개입 전후의 세포·회로·행동을 대조해 이들 사이의 관계를 검증해야 한다.
 
-세 번째는 생물학적 개입이 재활에 더하는 이득이다. 앞으로 세포치료나 재생 촉진 방법을 시험할 때, 두 군 모두 받는 재활의 내용과 양, 손상 후 경과와 기능 수준을 기록해야 한다. 효과를 보여주는 검사 외에 일상의 과제와 참여, 지속성, 피로와 부작용까지 평가하면 어떤 변화가 삶에 남는지 알 수 있다. 새로운 세포와 학습 경험의 결합은 유망한 연구 방향이지만, 그 조합의 우월성은 같은 조건에서 비교해야 한다.
+세 번째는 생물학적 개입이 재활에 더하는 이득이다. 앞으로 세포치료나 재생 촉진 방법을 시험할 때, 두 군 모두 받는 재활의 내용과 양, 손상 후 경과와 기능 수준을 기록해야 한다. 효과를 보여주는 검사 외에 일상의 과제와 참여, 지속성, 피로와 부작용까지 평가하면 어떤 변화가 삶에 남는지 알 수 있다. 새로운 세포와 학습 경험의 결합은 유망한 연구 방향이지만, 그 조합의 우월성은 같은 조건에서 비교해야 한다. 모형을 활용하는 재활군과 활용하지 않는 재활군을 비교하는 전향 시험도 한 방법이다. 예후를 잘 맞히는 모형이 치료 선택에 도움이 되는지까지 확인하는 것이다.
 
 현재의 자료를 종합하면, 가까운 발전은 ‘뇌 전체를 다시 만드는’ 단일 기술보다 **남아 있는 회로를 사용하는 재활과, 특정 생물학적 병목을 겨냥하는 치료를 더 정확히 맞추는 일**에서 나올 가능성이 크다. 이는 이 리뷰의 전망이다. 세포를 보존하고 적절한 연결을 돕는 개입이 통상 재활에 지속적인 기능 이득을 더한다는 독립 임상 결과가 쌓이면, 그 전망은 더 구체적인 치료 전략으로 바뀔 수 있다.
 
 대기 속 탄소는 세포가 태어난 시간을 알려주었다. 뇌가 다시 배우는 시간을 이해하려면, 그 세포가 누구와 연결되고 무엇을 하며 어떤 생활의 변화를 가능하게 하는지까지 물어야 한다. 성인 신경세포 생성의 발견은 그 긴 질문을 연구할 실제 대상을 주었다. 재활은 오늘도 그 질문의 다른 끝에서, 사람이 다시 할 수 있게 되는 일을 하나씩 확인하고 있다.
 
 <p class="clinical-scope">이 글은 공개 연구와 임상 근거를 설명하는 과학 리뷰다. 개인의 예후 판단이나 치료 처방은 다루지 않는다.</p>
-
 
 ## 참고문헌
 
@@ -139,3 +184,14 @@ Laura Villasana와 동료들의 생쥐 피질충격 손상 모형 연구는 이 
 18. D. O. Okonkwo *et al.*, [Mesenchymal stromal cell implants for chronic motor deficits after traumatic brain injury: Post hoc analysis of a randomized trial](https://doi.org/10.1212/WNL.0000000000209797), Neurology **103**, e209797 (2024).
 19. K. I. Erickson, M. W. Voss, R. S. Prakash, C. Basak, A. Szabo, L. Chaddock, J. S. Kim, S. Heo, H. Alves, S. M. White, T. R. Wojcicki, E. Mailey, V. J. Vieira, S. A. Martin, B. D. Pence, J. A. Woods, E. McAuley, and A. F. Kramer, [Exercise training increases size of hippocampus and improves memory](https://doi.org/10.1073/pnas.1015950108), Proc. Natl. Acad. Sci. U.S.A. **108**, 3017 (2011).
 20. S. Farmand, C. Kim, A. Du Preez, A. O. Werneck, L. Batzu, D. Pearce, K. Brady, M. Khir, S. Nicolas, J. F. Cryan, Y. M. Nolan, B. Stubbs, and S. Thuret, [Effects of a three-month exercise programme on cognition, mood and neurogenesis: The NeuroFit randomised controlled trial](https://doi.org/10.1038/s41514-026-00439-w), npj Aging **12**, 124 (2026).
+21. Z. Wang, D. Zheng, S.-M. Chou, P. J. Kang, F. Ye, and S.-C. Zhang, [Transcriptional code for circuit integration in the injured brain by transplanted human neurons](https://doi.org/10.1016/j.stem.2025.12.008), Cell Stem Cell **33**, 44 (2026).
+22. Z. Wang, D. Zheng, S.-M. Chou, P. J. Kang, F. Ye, and S.-C. Zhang, [Data and code from: Transcriptional code for circuit integration in the injured brain by transplanted human neurons](https://doi.org/10.5061/dryad.4j0zpc8qd), Dryad, Version 5 (30 September 2026); Z. Wang, D. Zheng, S.-M. Chou, P. J. Kang, F. Ye, and S.-C. Zhang, [Coding for Circuit Integration in the Injured Brain by Transplanted Human Neurons](https://www.biorxiv.org/content/10.1101/2025.08.14.670350v2.full), bioRxiv:2025.08.14.670350v2 (2025).
+23. M. Zamboni, A. Martínez-Martín, G. Rydholm, T. Häneke, L. Pintado Almeida, D. Seçilmiş, C. Ziegenhain, and E. Llorens-Bobadilla, [The regulatory code of injury-responsive enhancers enables precision cell-state targeting in the CNS](https://doi.org/10.1038/s41593-025-02131-w), Nat. Neurosci. **29**, 337 (2026).
+24. J. W. Squair *et al.*, [Recovery of walking after paralysis by regenerating characterized neurons to their natural target region](https://doi.org/10.1126/science.adi6412), Science **381**, 1338 (2023).
+25. K. Amunts, H. Mohlberg, S. Bludau, and K. Zilles, [Julich-Brain: A 3D probabilistic atlas of the human brain’s cytoarchitecture](https://doi.org/10.1126/science.abb4588), Science **369**, 988 (2020).
+26. Forschungszentrum Jülich, [Large-scale Artificial Intelligence for Brain Mapping](https://www.fz-juelich.de/en/inm/inm-1/research/big-data-analytics/large-scale-artificial-intelligence-for-brain-mapping) (accessed 30 October 2026); Forschungszentrum Jülich, [Simulation and Data Lab Neuroscience](https://www.fz-juelich.de/en/jsc/about-us/structure/simulation-and-data-labs/sdl-neuroscience) (accessed 30 October 2026).
+27. A. K. Bonkhoff, A. K. Rehme, L. Hensel, C. Tscherpel, L. J. Volz, F. A. Espinoza, H. Gazula, V. M. Vergara, G. R. Fink, V. D. Calhoun, N. S. Rost, and C. Grefkes, [Dynamic connectivity predicts acute motor impairment and recovery post-stroke](https://doi.org/10.1093/braincomms/fcab227), Brain Commun. **3**, fcab227 (2021).
+28. M. I. Falcon, J. D. Riley, V. Jirsa, A. R. McIntosh, E. E. Chen, and A. Solodkin, [Functional mechanisms of recovery after chronic stroke: Modeling with the Virtual Brain](https://doi.org/10.1523/ENEURO.0158-15.2016), eNeuro **3**, ENEURO.0158-15.2016 (2016).
+29. M. E. Spedden, G. C. O’Neill, T. O. West, T. M. Tierney, S. Mellor, N. A. Alexander, R. Seymour, J. Lundbye-Jensen, J. B. Nielsen, S. F. Farmer, S. Bestmann, and G. R. Barnes, [Using wearable MEG to study the neural control of human stepping](https://doi.org/10.3390/s25134160), Sensors **25**, 4160 (2025).
+30. E. Buch, C. Weber, L. G. Cohen, C. Braun, M. A. Dimyan, T. Ard, J. Mellinger, A. Caria, S. Soekadar, A. Fourkas, and N. Birbaumer, [Think to move: A neuromagnetic brain-computer interface (BCI) system for chronic stroke](https://doi.org/10.1161/STROKEAHA.107.505313), Stroke **39**, 910 (2008); NIH MEG Core Facility, [Facility Description](https://megcore.nih.gov/index.php/Facility_Description) (accessed 30 October 2026).
+31. CLARA, [Partners](https://www.clara-center.eu/about-clara/partners); [Quantum-Accelerated Protein Dynamics (RP1)](https://www.clara-center.eu/research/research-programs/RP1); [Leveraging Quantum Computing Acceleration](https://www.clara-center.eu/infrastructure/CLARA-testbed/leveraging-quantum-computing-acceleration) (accessed 30 October 2026).

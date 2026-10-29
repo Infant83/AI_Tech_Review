@@ -71,5 +71,101 @@
       "Dentate-gyrus findings are not generalized to all injured brain regions",
       "Improved task performance alone does not identify a cellular mechanism"
     ]
+  },
+  "research_roles": {
+    "layout": "Four parallel roles from distinct studies and validation targets; no shared causal or treatment pipeline",
+    "future_question": {
+      "ko": "같은 재활 조건에서 지속적인 기능 이득을 더하는가?",
+      "en": "Under matched rehabilitation conditions, does it add lasting functional benefit?"
+    },
+    "roles": [
+      {
+        "id": "molecular_ai",
+        "ko": {
+          "heading": "분자 AI",
+          "body": "발현에서 이식 뉴런의 투사 분류\n손상 반응 세포의 발현 스위치 설계",
+          "scope": "생쥐 뇌·척수 손상 모형\n인간의 기능 회복은 미검증"
+        },
+        "en": {
+          "heading": "Molecular AI",
+          "body": "Classify graft projections from expression\nDesign injury-targeted expression switches",
+          "scope": "Mouse brain / spinal injury models\nHuman functional recovery untested"
+        },
+        "source_studies": [
+          "Wang et al.",
+          "Zamboni et al."
+        ],
+        "validation_target": "Molecular identity/projection relationships and injury-targeted expression; distinct mouse studies, not demonstrated human recovery",
+        "source_dois": [
+          "10.1016/j.stem.2025.12.008",
+          "10.1038/s41593-025-02131-w"
+        ],
+        "source_scope": {
+          "Wang": "Final abstract and institutional report; detailed public bioRxiv v2 methods, not final publisher full text. Human-derived graft cells in mouse ischemic cortex; expression/projection classification, not a human trial.",
+          "Zamboni": "Final full text. Injury-responsive enhancers tested in mouse spinal/cortical injury models; reporter cargo, not a functional recovery treatment."
+        }
+      },
+      {
+        "id": "network_ai_models",
+        "ko": {
+          "heading": "연결망 AI · 개별 뇌 모형",
+          "body": "AI: 관찰된 회복의 예후 분류\n개별 뇌 모형: 회로 동역학 계산",
+          "scope": "사람의 영상·관찰 자료\n모형 기반 치료의 효능은 미검증"
+        },
+        "en": {
+          "heading": "Network AI / individual brain models",
+          "body": "AI: classify observed recovery prognosis\nIndividual models: simulate circuit dynamics",
+          "scope": "Human imaging / observational data\nModel-guided treatment efficacy untested"
+        },
+        "source_dois": [
+          "10.1093/braincomms/fcab227",
+          "10.1523/ENEURO.0158-15.2016"
+        ],
+        "validation_target": "Observed stroke outcomes and individualized model fitting; TVB is not relabeled as machine learning, and prediction is not treatment efficacy"
+      },
+      {
+        "id": "quantum_sensing",
+        "ko": {
+          "heading": "양자 센서 · OPM",
+          "body": "원자 스핀으로 뇌 자기장을 측정\n걸음 중 베타 리듬 변화 관찰",
+          "scope": "건강한 사람의 한 발 내딛기\n세포 탄생·환자 효능은 미측정"
+        },
+        "en": {
+          "heading": "Quantum sensing / OPM",
+          "body": "Atomic spins sense brain magnetic fields\nObserve beta rhythms during a step",
+          "scope": "Healthy participants taking single steps\nNo cell-birth or patient-efficacy measure"
+        },
+        "validation_target": "Brain magnetic activity during walking in healthy participants; not neuron-birth measurement or patient rehabilitation efficacy",
+        "source_dois": [
+          "10.3390/s25134160",
+          "10.3389/fnins.2023.1190310"
+        ],
+        "source_scope": "Spedden 2025: three healthy men performing single steps in a shielded room; not free everyday walking, cell-birth imaging or a patient efficacy trial. Borna 2023 supports the atomic-spin sensing mechanism."
+      },
+      {
+        "id": "qpu_computing",
+        "ko": {
+          "heading": "QPU 계산",
+          "body": "분자 성질·후보 물질 계산에 QPU 활용\nCLARA 등은 연구 계획",
+          "scope": "제안·개발 계획\n뇌 재생의 임상 검증 아님"
+        },
+        "en": {
+          "heading": "QPU computing",
+          "body": "Explore QPUs for molecular calculations\nCLARA: research plans",
+          "scope": "Proposals / development plans\nNo clinical brain-regeneration evidence"
+        },
+        "validation_target": "Research plans for quantum molecular calculations; not clinical evidence of human brain regeneration",
+        "source_urls": [
+          "https://www.clara-center.eu/research/research-programs/RP1",
+          "https://www.clara-center.eu/infrastructure/CLARA-testbed/leveraging-quantum-computing-acceleration"
+        ],
+        "source_scope": "Official research programme and quantum-testbed task. Molecular properties and hybrid workflows are proposed research tasks; no QPU-induced regeneration or rehabilitation effect is claimed."
+      }
+    ],
+    "limits": [
+      "Distinct species, cohorts and endpoints are explicit; roles are not stages executed in one study",
+      "No efficacy percentages, common performance axis or cross-role arrows",
+      "The last question is prospective clinical validation, not an observed benefit"
+    ]
   }
 }

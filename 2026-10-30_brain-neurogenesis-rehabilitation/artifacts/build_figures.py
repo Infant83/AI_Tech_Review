@@ -268,10 +268,59 @@ def stemtra_results(lang, mobile, data):
     save(fig, 'stemtra_results', lang, mobile)
 
 
+def research_roles(lang, mobile, data):
+    """Parallel study roles; no arrow implies a demonstrated treatment chain."""
+    ko = lang == 'ko'
+    record = data['research_roles']
+    assert len(record['roles']) == 4
+    colors = [TEAL, PURPLE, OCHRE, '#537780']
+    if mobile:
+        fig, ax = canvas(342, 1030)
+        text(ax, 20, 1008, 'AI·양자 기술은 회복의\n어느 질문을 푸는가' if ko else
+             'Where do AI and quantum tools\ncontribute to recovery?', 17, weight='bold')
+        text(ax, 20, 945, '서로 다른 연구·대상·검증 질문' if ko else
+             'Distinct studies, subjects and validation targets', 11.2, MUTED)
+    else:
+        fig, ax = canvas(864, 600)
+        text(ax, 30, 578, 'AI·양자 기술은 회복의 어느 질문을 푸는가' if ko else
+             'Where do AI and quantum tools contribute to recovery?', 22, weight='bold')
+        text(ax, 30, 540, '각 칸은 다른 연구다. 하나의 치료 경로나 공동 실험을 뜻하지 않는다.' if ko else
+             'Each panel describes different studies, not a shared treatment pathway or experiment.', 12.6, MUTED)
+    for index, role in enumerate(record['roles']):
+        labels = role[lang]
+        x, y, w, h = (20, 728 - index * 198, 302, 178) if mobile else (30 + (index % 2) * 410, 324 if index < 2 else 134, 394, 168)
+        color = colors[index]
+        rect(ax, x, y, w, h, color)
+        text(ax, x + 14, y + h - 15, labels['heading'], 13.4 if mobile else 15.4, color, weight='bold')
+        body = labels['body']
+        if mobile and not ko:
+            body = {
+                'molecular_ai':'Classify graft projections from expression\nDesign injury-targeted expression switches',
+                'network_ai_models':'AI: classify observed recovery prognosis\nIndividual models: circuit dynamics',
+                'quantum_sensing':'Atomic spins sense brain magnetic fields\nObserve beta rhythms during a step',
+                'qpu_computing':'Explore QPUs for molecular calculations\nCLARA: research plans'
+            }[role['id']]
+        text(ax, x + 14, y + h - (51 if mobile else 50), body, 11.7 if mobile else 13.0)
+        scope_h = 58 if mobile else 49
+        rect(ax, x + 12, y + 12, w - 24, scope_h, color, PAPER, .65)
+        text(ax, x + 22, y + 12 + scope_h - 9, labels['scope'], 11.2 if mobile else 12.0, MUTED)
+    if mobile:
+        rect(ax, 20, 20, 302, 96, TEAL, '#edf2ed')
+        text(ax, 32, 103, '향후 임상 검증 질문' if ko else 'Question for future clinical testing', 10.9, TEAL, weight='bold')
+        text(ax, 32, 77, '같은 재활 조건에서\n지속적인 기능 이득을 더하는가?' if ko else
+             'Under matched rehabilitation conditions,\ndoes it add lasting functional benefit?', 13.0 if ko else 12.0, weight='bold')
+    else:
+        rect(ax, 30, 23, 804, 85, TEAL, '#edf2ed')
+        text(ax, 46, 94, '향후 임상 검증 질문' if ko else 'Question for future clinical testing', 11.5, TEAL, weight='bold')
+        text(ax, 46, 68, record['future_question'][lang], 17 if ko else 15.6, weight='bold')
+    save(fig, 'research_roles', lang, mobile)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--font', type=Path, required=True)
     parser.add_argument('--bold', type=Path, required=True)
+    parser.add_argument('--figure', action='append', choices=['evidence_steps', 'recovery_mechanisms', 'stemtra_results', 'research_roles'], help='Render selected families only; repeat for multiple families')
     args = parser.parse_args()
     for font in [args.font, args.bold]:
         font_manager.fontManager.addfont(str(font))
@@ -282,12 +331,15 @@ def main():
     PREVIEW.mkdir(parents=True, exist_ok=True)
     data = json.loads((ART / 'figure_data.json').read_text())
     clinical = json.loads((ART / 'stemtra_reported.json').read_text())
+    selected = args.figure or ['evidence_steps', 'recovery_mechanisms', 'stemtra_results', 'research_roles']
+    builders = {'evidence_steps':evidence_steps, 'recovery_mechanisms':recovery_mechanisms,
+                'stemtra_results':stemtra_results, 'research_roles':research_roles}
     for lang in ['ko', 'en']:
         for mobile in [False, True]:
-            evidence_steps(lang, mobile, data)
-            recovery_mechanisms(lang, mobile, data)
-            stemtra_results(lang, mobile, clinical)
-    print('Created 12 original outlined SVGs and local PNG previews.')
+            for stem in selected:
+                builders[stem](lang, mobile, clinical if stem == 'stemtra_results' else data)
+    print(f'Created {len(selected) * 4} original outlined SVGs and local PNG previews.')
+
 
 
 if __name__ == '__main__':

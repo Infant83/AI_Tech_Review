@@ -54,7 +54,7 @@ if(process.argv.includes('--check-math-stability')){
 }
 // Embed openly licensed subsets so the public stylesheet has no sibling-font dependency.
 let stylesheet=fs.readFileSync(path.join(artifacts,'review.css'),'utf8');
-for(const weight of ['regular','bold','fallback']){
+for(const weight of ['regular','bold','fallback','latin']){
  const file=`review-${weight}.woff2`;
  const encoded=fs.readFileSync(path.join(artifacts,file)).toString('base64');
  stylesheet=stylesheet.replaceAll(`url('${file}')`,`url('data:font/woff2;base64,${encoded}')`);

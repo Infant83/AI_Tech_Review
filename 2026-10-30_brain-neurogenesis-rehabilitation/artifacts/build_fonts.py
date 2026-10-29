@@ -12,6 +12,8 @@ def main():
     parser.add_argument('--regular', type=Path, required=True)
     parser.add_argument('--bold', type=Path, required=True)
     parser.add_argument('--fallback', type=Path, required=True, help='OFL font covering Japanese and accented reference names')
+    parser.add_argument('--latin-fallback', type=Path, required=True, help='OFL variable Latin font for characters outside the Korean/Japanese fonts')
+    parser.add_argument('--latin-license', type=Path, default=ROOT / 'artifacts' / 'latin-font-OFL.txt')
     parser.add_argument('--fallback-license', type=Path, default=ROOT / 'artifacts' / 'fallback-font-OFL.txt')
     parser.add_argument('--license', type=Path, default=ROOT / 'artifacts' / 'font-OFL.txt')
     args = parser.parse_args()
@@ -24,19 +26,20 @@ def main():
     license_parts = []
     primary_coverage = set(TTFont(args.regular).getBestCmap())
     fallback_coverage = set(TTFont(args.fallback).getBestCmap())
-    missing = sorted({c for c in text if c.isprintable() and ord(c) not in primary_coverage | fallback_coverage})
+    latin_coverage = set(TTFont(args.latin_fallback).getBestCmap())
+    missing = sorted({c for c in text if c.isprintable() and ord(c) not in primary_coverage | fallback_coverage | latin_coverage})
     if missing:
         raise ValueError(f'Uncovered characters: {missing}')
-    for label, source in [('regular', args.regular), ('bold', args.bold), ('fallback', args.fallback)]:
+    for label, source in [('regular', args.regular), ('bold', args.bold), ('fallback', args.fallback), ('latin', args.latin_fallback)]:
         font = TTFont(source, recalcTimestamp=False)
         for name_id in [0, 13, 14]:
             values = {n.toUnicode() for n in font['name'].names if n.nameID == name_id}
             license_parts.extend(sorted(values))
         # Subsetting makes a derivative. Give it a new primary name instead of
         # retaining the source font's Reserved Font Name.
-        family = 'Review Sans Fallback' if label == 'fallback' else 'Review Sans Subset'
+        family = {'fallback':'Review Sans Fallback', 'latin':'Review Sans Latin Fallback'}.get(label, 'Review Sans Subset')
         style = 'Bold' if label == 'bold' else 'Regular'
-        postscript = 'ReviewSansFallback' if label == 'fallback' else 'ReviewSansSubset'
+        postscript = {'fallback':'ReviewSansFallback', 'latin':'ReviewSansLatinFallback'}.get(label, 'ReviewSansSubset')
         renamed = {1:family,2:style,3:f'{postscript}-{style}',4:f'{family} {style}',6:f'{postscript}-{style}',16:family,17:style}
         for record in font['name'].names:
             if record.nameID in renamed:
@@ -47,15 +50,21 @@ def main():
         options.recalc_timestamp = False
         options.name_IDs = ['*']
         sub = subset.Subsetter(options=options)
-        sub.populate(text=''.join(c for c in text if ord(c) not in primary_coverage) if label == 'fallback' else text)
+        if label == 'fallback':
+            selected_text = ''.join(c for c in text if ord(c) not in primary_coverage and ord(c) in fallback_coverage)
+        elif label == 'latin':
+            selected_text = ''.join(c for c in text if ord(c) not in primary_coverage | fallback_coverage and ord(c) in latin_coverage)
+        else:
+            selected_text = text
+        sub.populate(text=selected_text)
         sub.subset(font)
         font.flavor = 'woff2'
         font.save(ROOT / 'artifacts' / f'review-{label}.woff2')
-    if not args.license.exists() or not args.fallback_license.exists():
-        raise FileNotFoundError('Complete source-font licenses are required; pass --license and --fallback-license.')
-    license_text = '\n\n'.join(dict.fromkeys(license_parts)).strip() + '\n\n' + args.license.read_text(encoding='utf-8') + '\n\n' + args.fallback_license.read_text(encoding='utf-8')
+    if not args.license.exists() or not args.fallback_license.exists() or not args.latin_license.exists():
+        raise FileNotFoundError('Complete source-font licenses are required; pass --license, --fallback-license and --latin-license.')
+    license_text = '\n\n'.join(dict.fromkeys(license_parts)).strip() + '\n\n' + args.license.read_text(encoding='utf-8') + '\n\n' + args.fallback_license.read_text(encoding='utf-8') + '\n\n' + args.latin_license.read_text(encoding='utf-8')
     (ROOT / 'artifacts' / 'font-license.txt').write_text('\n'.join(line.rstrip() for line in license_text.splitlines()) + '\n', encoding='utf-8')
-    print('Created three local font subsets and retained font licensing records.')
+    print('Created four local font subsets and retained font licensing records.')
 
 if __name__ == '__main__':
     main()

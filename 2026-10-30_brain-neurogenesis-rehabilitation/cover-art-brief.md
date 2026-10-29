@@ -47,3 +47,7 @@
 - English caption: A young neuron within a curved cell layer and the larger surrounding branches suggest local neurogenesis and the challenge of joining an existing circuit. AI-generated conceptual illustration with simplified hippocampal geometry.
 - 한국어 대체 텍스트: 좁게 굽은 세포 층 안의 작은 새 신경세포가 주변의 성숙한 신경 가지 사이로 뻗는 종이 절개풍 그림.
 - English alt text: A small young neuron in a curved cell layer extends branches among larger mature neurons in a layered paper illustration.
+
+## AI·양자 접근 확장판 · 2026-10-30
+
+확장판도 세포의 탄생에서 적절한 회로 연결과 기능 회복으로 이어지는 조건을 묻는다. AI의 분자 표적·예후 모형과 양자센서의 측정은 이 질문을 연구하는 도구이므로 기존 표지를 유지한다. 새로운 장치나 실제 이식 결과를 표지에 합성하지 않았다. publish_audit의 별도 검토도 주제와 개념 표지의 대응을 확인했다. 추가 기술의 실제 역할과 검증 대상은 새 설명 그림 4에서 구분한다.
