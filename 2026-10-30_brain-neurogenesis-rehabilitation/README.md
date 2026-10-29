@@ -4,7 +4,7 @@ A bilingual AI Tech Review developed on 2026-10-30. Korean is canonical; the Eng
 
 - Korean title: **뇌의 회복을 다시 묻다: 성인 신경세포 생성과 재활의 과학**
 - English title: **How the Brain Recovers: Adult Neurogenesis and the Science of Rehabilitation**
-- Publication status: final manuscripts, full output QA and local publication checks complete; live-publication verification pending.
+- Publication status: published; final manuscripts, complete output QA and live verification passed.
 - Intended reading destinations: [한국어](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/), [English](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/en/).
 
 ## Editorial question
@@ -75,3 +75,11 @@ The Korean PDF has 10 pages and 4,460,002 bytes (SHA256: 40a0ac93a12c246b30c851a
 The complete local site validator returned no errors. Reader-artifact validation passed 1,649 files and 53 articles. The repository suite ran 144 tests: 143 passed and one optional Python-Markdown dependency test was skipped. The catalogs now contain 50 reviews and 93 archive documents; all 49 previous review and 91 archive records are unchanged. All 84 preexisting reading-copy HTML files remain byte-identical to the baseline after excluding generated formatting churn. The new PDFs have four byte-identical copies each, and archive sizes/hashes match. Only final allowlisted article assets enter reading copies.
 
 Canonical/alternate links in final HTML follow the existing central publisher's GitHub Pages addresses, which resolve through the existing service domain. The frozen PDFs retain working service-domain links. HTML-only metadata normalization did not reprint or change the reviewed PDFs. The existing artifact-based Pages workflow and reader features are preserved. No domain settings changed.
+
+## Live publication: 2026-10-30
+
+The [Korean review](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/) and [English edition](https://infant83.io/AI_Tech_Review/reviews/2026-10-30_brain-neurogenesis-rehabilitation/en/) are public, with both PDFs registered in the review and document-archive catalogs. Publication source commit: `313ab56c3df52c73a942bf556e2ebe849723d672`. The [Pages artifact workflow](https://github.com/Infant83/AI_Tech_Review/actions/runs/40960045250) completed successfully, including deployment and its existing reader-publication synchronization.
+
+The live check passed 30 files and both original canonical URLs. Twenty-three files matched their local bytes exactly. Six HTML documents matched after reversing only independently identified Cloudflare analytics/public-contact transformations; the public reader catalog matched the expected deployment revision and all other JSON values. Unrecognized scripts or other content differences were not excluded. Both canonical URLs resolved to the service-domain article with HTTP 200 and the same normalized content. The PDF, CSS, SVG and cover bytes matched the reviewed files.
+
+Actual Chrome checks passed for both languages at 1440px and 390px, including seven loaded images per language, three embedded fonts, all responsive figures, actual Korean-to-English-to-Korean navigation, PDF paths, and both hub cards and expanded summaries. Document overflow, page exceptions and failed requests were zero. Anonymous subscription-state requests returned HTTP 401 in eight console entries across the full route; the same behavior was confirmed on a preexisting article and hub. It did not affect public reading or language/PDF navigation. No subscription or reaction action was taken. Screenshots and detailed checks remain outside public distribution.
