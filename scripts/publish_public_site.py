@@ -1417,15 +1417,39 @@ REVIEWS: tuple[PublicReview, ...] = (
         title="TabPFN: Foundation model for Tabular inference",
         subtitle="OLED 분자 계산, 공정, SCM, 검사 데이터에서 표 기반 Foundation 모델을 어떻게 읽을 것인가",
         date="2026-05-17",
-        updated="2026-05-21",
+        updated="2026-10-29",
         category="Materials AI",
         tags=("TabPFN", "OLED", "Materials Informatics", "Data Provenance"),
         summary=(
             "작은 표 데이터에서 빠른 기준 모델을 세우는 TabPFN의 장점과, OLED 연구·제조 데이터에 "
             "적용할 때 함께 보아야 할 계산 조건과 실험 provenance를 살펴봅니다."
         ),
-        ai_system="Codex-based GPT-5-family agent harness",
-        ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
+        ai_system="Original edition: Codex-based GPT-5-family harness; October 29 revision: OpenAI Codex",
+        ai_system_ko="원 작성: Codex 기반 GPT-5 계열 하네스; 10월 29일 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "October 29 source integration, Korean revision, rendering and publication checks", "10월 29일 원출처 통합·국문 개정·렌더링과 공개 게시 확인"),
+            PublicAgent("legacy_tabpfn_sources", "Historical model, package, license and evaluation-condition audit", "역사적 모델·패키지·라이선스 판본과 평가 조건 감수"),
+            PublicAgent("legacy_tabpfn_materials", "Materials and provenance literature, original-author credit and citation audit", "재료·데이터 생성 이력 문헌·원저자 크레딧과 서지 감수"),
+            PublicAgent("legacy_tabpfn_prose", "Independent Korean prose and argument-flow review", "국문 문체와 논지 전개의 독립 감수"),
+        ),
+        verification_scope=(
+            "Dated pre-May-21 TabPFN papers, model card, weight license and package 8.0.3 sources checked",
+            "Timing hardware, individual-baseline versus ensemble comparisons, regime bounds and API/local conditions distinguished",
+            "Relevant materials-paper passages and bibliographic records checked; full subscription articles and all supplements not claimed",
+            "Original three figures retained; no TabPFN execution, OLED or DFT experiment, benchmark reproduction or human reader study",
+        ),
+        verification_scope_ko=(
+            "5월 21일 이전 TabPFN 논문·모델 카드·가중치 라이선스·패키지 8.0.3 원출처 대조",
+            "시간 측정 하드웨어·개별 기준 모델과 앙상블·행/특징 평가 범위와 로컬/API 조건 구분",
+            "재료 문헌의 관련 공개 본문과 정식 서지 확인; 구독 본문·보충자료 전체 대조로 확대하지 않음",
+            "원 그림 3개 유지; TabPFN 실행·OLED/DFT 실험·벤치마크 재현·사람 독자 평가 없음",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-05-21",
+        human_review_level="Sequential editorial revision and public posting authorized; no line-by-line human review or reader study",
+        human_review_level_ko="기존 글의 순차 개편·공개 게시 승인 반영; 문장 단위 사람 심사·독자 평가 없음",
+        disclosure_note_ko="원 발행일 2026-05-17과 기존 개정·근거 기준일 2026-05-21을 유지하고 이번 편집 개정일을 2026-10-29로 구분했다. 위 에이전트는 이번 개정 역할이며 원 작성 세션 구성과 정확한 실행 모델 식별자는 미보존이다. 반복되는 도입·활용 목록을 정리하고 가상 표·예제 코드의 범위를 명시했다. Nature의 GPU 시간과 AutoGluon 비교 조건을 구별하고, TabPFN-3의 보고서 v1·5월 모델/라이선스·8.0.3 판본에 역사적 설명을 연결했다. 일부 재료 논문은 공개 초록·원문 관련 절과 서지 범위에서 대조했다. 제목·ID·URL·허브 요약과 원 그림을 유지하며, 기존 영문판·등록 기사 PDF가 없어 새 번역·PDF·영상은 추가하지 않았다.",
+        disclosure_note_en="Original publication on May 17 and the May 21 prior revision/evidence cutoff are retained separately from the October 29 editorial revision. Listed roles belong to this revision; the original roster and exact model identifiers were not retained. Repetitive openings and application inventories were edited, and illustrative data and code were labeled. Nature GPU timings and AutoGluon comparison conditions were separated. Historical TabPFN-3 descriptions use its v1 report, May model/license revisions and package 8.0.3. Some materials sources were checked through public abstracts, relevant passages and bibliographic records. The title, ID, URL, hub summary and three figures are retained. No existing English edition or registered article PDF was present, so no translation, PDF or video was added.",
     ),
     PublicReview(
         folder="2026-05-09_ai-updates-weekly",
