@@ -1436,15 +1436,39 @@ REVIEWS: tuple[PublicReview, ...] = (
         title="AI 과학자, 시작의 끝에서",
         subtitle="에르되시 문제 #1196에서 연구 실행 하네스까지, 우리가 이미 기대기 시작한 AI 과학자를 어떻게 준비할 것인가",
         date="2026-05-23",
-        updated="2026-05-25",
+        updated="2026-10-30",
         category="AI for Science",
         tags=("AI for Science", "AI Scientist", "AI Co-Scientist", "Research Harness"),
         summary=(
             "에르되시 문제 #1196에서 출발해 AI 과학자가 연구의 속도를 높이는 장면과, 그 속도를 "
             "검증 가능한 작업으로 바꾸기 위해 필요한 연구 실행 하네스를 함께 살펴봅니다."
         ),
-        ai_system="Codex-based GPT-5-family agent harness",
-        ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
+        ai_system="Original edition: Codex-based GPT-5-family harness; October 30 revision: OpenAI Codex",
+        ai_system_ko="원 작성: Codex 기반 GPT-5 계열 하네스; 10월 30일 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "October 30 integration, Korean revision, output and publication checks", "10월 30일 원고 통합·국문 퇴고·출력과 공개 게시 확인"),
+            PublicAgent("legacy1030_science", "Primary-result, execution-role and mathematical-condition audit", "원 논문 결과·실행 주체·수학적 조건 감수"),
+            PublicAgent("legacy1030_references", "Original-author credit, dated sources and APS citation audit", "원저자 크레딧·자료 판본과 APS 인용 감수"),
+            PublicAgent("legacy1030_prose", "Independent prose, argument-flow and example-scope review", "문체·논지 전개·예제 범위의 독립 감수"),
+        ),
+        verification_scope=(
+            "May 1 primitive-set preprint, prior-bound source, selected formalization code and official problem record",
+            "Relevant original Nature result and methods sections, reported denominators, human/agent roles and official historical announcements",
+            "Original titles, authors, journal metadata and selected official tool documentation; no claim of reading every supplement",
+            "Canonical Markdown, HTML/dist, seven existing figures, local/mobile output, references, privacy and live HTTPS checks",
+        ),
+        verification_scope_ko=(
+            "5월 1일 원시 집합 논문·기존 상한 원전·형식화 코드의 선택 부분과 공식 문제 기록",
+            "Nature 원 논문의 관련 결과·방법·수치 분모와 사람/에이전트 역할, 당시 공식 발표",
+            "원제·저자·정식 출판 정보와 선택한 공식 도구 문서; 모든 보충자료 완독으로 확대하지 않음",
+            "canonical Markdown·HTML/dist·기존 그림 7개·모바일 출력·인용·개인정보와 실제 HTTPS 페이지",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-05-25",
+        human_review_level="Sequential editorial refresh and publication authorized; no line-by-line human review or reader study in this run",
+        human_review_level_ko="순차 편집 개편과 공개 게시 승인 범위; 이번 실행에서 문장 단위 사람 심사·독자 이해도 평가는 수행하지 않음",
+        disclosure_note_ko="원 발행일 2026-05-23과 당시 5월 25일까지의 논의를 보존했다. 2026-10-30 감수에서 중복 설명·예상 반박을 다듬고, The AI Scientist의 워크숍 평가·철회·사람의 선별과 Robin의 약물별 실험을 정정했다. 원시 집합의 일양 상계와 그림 2의 설명을 맞추고 APS 원저자·원제·출판 서지를 보완했다. 현재 서지 확인일과 당시 과학적 근거 기준일을 구별한다. 나머지 기존 그림과 제목·URL·허브 요약은 유지했다. 정확한 실행 모델과 원 작성 세션의 세부 기록은 미보존이다. 원 연구·Lean 커널·OLED 실험·사내망 구축을 독립 재현한 작업이 아니며 가상 실행 예시의 용도를 명시했다.",
+        disclosure_note_en="The original May 23 publication and discussion through May 25 are retained. The October 30 audit revised repetitive prose and anticipatory rebuttals, corrected The AI Scientist workshop evaluation, withdrawals and human selection, and separated Robin's drug experiments. The primitive-set uniform bound and Figure 2 labels were aligned with the primary sources; APS original-author credit, titles and publication metadata were added. The current bibliographic check date is distinct from the historical scientific cutoff. The remaining figures, title, URL and hub summary are retained. Exact execution-model and original-session details were not retained. Original research, the Lean kernel, OLED experiments and an enterprise deployment were not reproduced; fictional workflow examples are identified.",
     ),
     PublicReview(
         folder="2026-05-07_tabpfn-oled-manufacturing-foundation-model",

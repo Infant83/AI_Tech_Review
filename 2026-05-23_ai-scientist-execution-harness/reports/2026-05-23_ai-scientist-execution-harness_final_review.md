@@ -13,7 +13,7 @@ author: "김현중"
 date: 2026-05-23
 issue date: 2026-05-23
 date created: 2026-05-23
-date modified: 2026-05-25
+date modified: 2026-10-30
 slug: ai-scientist-execution-harness
 language: ko
 status: revised-letter
@@ -27,96 +27,87 @@ tags:
   - research-harness
   - scientific-ai
   - governance
-source: "C:\\Users\\angpa\\myProjects\\Daily_Work\\AI_Tech_Review\\2026-05-23_ai-scientist-execution-harness\\reports\\2026-05-23_ai-scientist-execution-harness_final_review.md"
 ---
 
 # AI 과학자, 시작의 끝에서
 
 <figure class="article-hero-figure">
   <img src="../artifacts/final_review/figures/imagegen/ai_scientist_erdos_blackboard.png" alt="밤의 수학 연구실에서 인간 수학자와 AI 에이전트 콘솔이 primitive set 약수 격자, Markov chain 경로, 검증 문서를 살피는 장면형 일러스트레이션">
-  <figcaption><strong>그림 1.</strong> 칠판 앞의 수학자는 그동안 오래된 문제를 풀기 위해 질문을 고쳐 쓰고, 막힌 길을 되짚고, 새로운 증명 경로를 찾아왔습니다. 이제는 AI 수학자가 낯선 조합을 먼저 제안하기 시작하면서, 그동안의 수학자의 문제풀이의 방식 자체도 다음 세대에겐 레거시가 될 수 있습니다.</figcaption>
+  <figcaption><strong>그림 1.</strong> 수학자는 질문을 고쳐 쓰고 막힌 길을 되짚으며 증명 경로를 찾습니다. AI가 제안한 낯선 조합도 이 작업의 재료가 됩니다. 에르되시 #1196의 약수 관계와 증명 탐색을 떠올리게 한 AI 생성 개념 일러스트입니다.</figcaption>
 </figure>
 
-2026년 4월, 수학계를 들썩인 소식이 있었습니다. GPT-5.4 Pro가 에르되시 문제 #1196의 풀이에 증명법을 제안했다는 이야기였습니다.[^erdos-ai-claim-caution] 수학이 기계의 도움을 받아 증명되는 장면은 완전히 처음은 아닙니다. 1976년 Appel과 Haken이 4색정리를 컴퓨터 보조 증명으로 풀었을 때도, 많은 수학자는 “사람이 끝까지 읽고 확인할 수 없는 증명을 받아들일 수 있는가”를 두고 오래 논쟁했습니다. 1976년의 질문이 “컴퓨터의 계산을 신뢰할 수 있는가”였다면, 이번의 질문은 “AI가 제안한 증명 절차를 우리는 어떻게 받아들여야 하는가”라고 할 수 있습니다. [뉴스스페이스](https://www.newsspace.kr/news/article.html?no=13494)는 이 사건을 국내 독자에게 소개했고, [Scientific American](https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/)은 Liam Price라는 23세 사용자의 장면을 더 자세히 따라갔습니다. 어느 월요일 오후, Price는 문제의 긴 역사도 깊이 알지 못한 채 GPT-5.4 Pro에 #1196을 던졌습니다. 그 답은 Kevin Barreto를 거쳐 수학자들에게 전달됐고, Terence Tao와 Jared Duker Lichtman은 거친 출력 속에서 익숙하지 않은 증명 경로를 발견했습니다.
+2026년 4월, GPT-5.4 Pro의 출력에서 에르되시 문제 #1196을 푸는 증명 전략이 발견됐다는 소식이 전해졌습니다. 뉴스스페이스 <a class="citation" href="#ref-1">[1]</a>는 이 사건을 국내 독자에게 소개했고, Scientific American <a class="citation" href="#ref-2">[2]</a>은 Liam Price라는 23세 사용자의 장면을 따라갔습니다. Price가 문제를 입력해 얻은 답은 Kevin Barreto를 거쳐 수학자들에게 전달됐습니다. Terence Tao와 Jared Duker Lichtman은 거친 출력 속에서 새로운 증명 경로를 알아봤습니다.
+
+컴퓨터와 증명의 관계에는 긴 역사가 있습니다. Appel과 Haken은 1976년 4색정리의 컴퓨터 보조 증명 <a class="citation" href="#ref-3">[3]</a>을 발표했습니다. 사람이 계산 전체를 직접 따라가지 않고도 증명을 받아들일 수 있는지가 논쟁이 됐습니다. 이번에는 AI가 제안한 전략을 수학자가 읽고 논증으로 완성하는 과정이 관심을 끕니다.
 
 수학계 바깥의 독자에게는 이름부터 낯설 수 있습니다. 에르되시 문제란 무엇이고, 왜 이렇게 번호로 붙여진 문제가 사람들을 들뜨게 만들었을까요?
 
 폴 에르되시(Paul Erdős)는 20세기 수학에서 가장 많은 문제를 남긴 사람 중 한 명입니다. 그의 힘은 정답보다 날카로운 물음에 있었습니다. 그가 남긴 문제들은 정수론, 조합론, 그래프 이론 곳곳에 흩어져 있습니다. 어떤 문제는 금방 풀렸고, 어떤 문제는 수십 년 동안 사람을 기다렸습니다. #1196은 그 긴 기다림 쪽에 있었습니다.
 
-문제는 `원시 집합(primitive set)`에 관한 것 입니다. [^primitive-set] 집합 안의 어떤 수가 다른 수의 약수가 되지 않도록 고른 정수 집합입니다. 작은 칠판을 하나 떠올려보면 쉽습니다. 6, 10, 15를 써 놓으면 어느 수로도 다른 수를 딱 나눌 수 없습니다. 이 셋만 보면 원시 집합의 작은 예입니다. 반대로 6과 12를 나란히 넣으면 6이 12를 나누기 때문에 조건이 깨집니다. 겉보기에는 단순한 약수 놀이처럼 보일 수 있습니다.
+문제는 원시 집합(primitive set)에 관한 것입니다. 집합 안의 서로 다른 두 수 중 어느 하나도 다른 하나의 약수가 되지 않도록 고른 정수 집합입니다. 작은 칠판을 하나 떠올려보면 쉽습니다. 6, 10, 15를 써 놓으면 어느 수로도 다른 수를 딱 나눌 수 없습니다. 이 셋은 원시 집합의 작은 예입니다. 반대로 6과 12를 나란히 넣으면 6이 12를 나누기 때문에 조건이 깨집니다.
 
-여기서 에르되시, 사르쾨지, 세메레디는 더 섬세한 물음을 던졌습니다. 원시 집합 A의 원소 a마다 `1 / (a log a)`라는 작은 가중치를 얹어 모두 더합니다. 수가 커질수록 가중치는 작아집니다. 문제 #1196은 충분히 큰 수들만 모은 어떤 원시 집합을 가져와도 이 합이 점점 1을 넘지 않는 쪽으로 간다고 말할 수 있는지 묻습니다. [Erdős Problems 공식 페이지](https://www.erdosproblems.com/1196)는 이 명제를 “PROVED (LEAN)”로 표시하고, GPT-5.4 Pro가 Liam Price의 프롬프트를 받아 `1 + O(1 / log x)` 상한을 증명했다고 정리합니다.[^big-o]
+여기서 에르되시, 사르쾨지, 세메레디는 더 섬세한 물음을 던졌습니다. 원시 집합 A의 원소 a마다 `1 / (a log a)`라는 작은 가중치를 얹어 모두 더합니다. 수가 커질수록 가중치는 작아집니다. 문제 #1196은 x ≥ 2일 때 x 이상의 정수들로 이루어진 원시 집합 A를 어떻게 골라도 이 합을 `1 + o(1)`로 제한할 수 있는지 묻습니다. x가 커질수록 1을 초과할 수 있는 양이 0으로 줄어드는 상계입니다. Erdős Problems 공식 페이지 <a class="citation" href="#ref-4">[4]</a>는 GPT-5.4 Pro와 Liam Price의 프롬프트에서 나온 `1 + O(1 / log x)` 상한을 기록합니다. 여기서 대문자 `O`는 오차항이 A와 무관한 어떤 상수배의 `1 / log x` 이내임을 뜻합니다. 이 결과는 상계가 1에 가까워지는 속도도 함께 줍니다.
 
 <figure class="figure-panel">
   <img src="../artifacts/final_review/figures/ai_scientist_erdos_1196_explainer.svg" alt="원시 집합, 에르되시 합, 기존 1.399 상한, GPT-5.4 Pro와 Liam Price의 프롬프트에서 나온 Markov chain 및 von Mangoldt weights 방법, 인간 수학자와 Lean 검증으로 이어지는 흐름">
-  <figcaption><strong>그림 2.</strong> #1196의 어려움은 특정 집합 하나를 계산하는 데 있지 않았습니다. 모든 원시 집합을 상대해야 했고, 약수 격자와 소수 분포와 점근 부등식이 동시에 움직였습니다. AI가 제안한 경로는 Markov chain과 von Mangoldt weights를 결합해 이 복잡한 흐름을 다르게 보게 만들었습니다.</figcaption>
+  <figcaption><strong>그림 2.</strong> #1196의 어려움은 특정 집합 하나를 계산하는 데 있지 않았습니다. 모든 원시 집합을 상대해야 했고, 약수 격자와 소수 분포와 점근 부등식이 동시에 움직였습니다. AI가 제안한 경로는 Markov chain과 von Mangoldt weights를 결합해 이 복잡한 흐름을 다르게 보게 만들었습니다. 원 논문 <a class="citation" href="#ref-5">[5]</a>을 바탕으로 리뷰가 작성한 설명용 도해입니다.</figcaption>
 </figure>
 
-이 문제가 오래 남은 이유도 여기서 드러납니다. 하나의 예쁜 집합을 골라 합을 계산하는 일이라면 그 집합을 차근히 해부하면 됩니다. #1196은 훨씬 넓습니다. 가능한 모든 원시 집합을 상대로 상한을 잡아야 합니다. 약수 관계가 만든 거대한 격자에서, 어떤 길로 수를 따라 내려가야 전체 합을 제어할 수 있을지 찾아야 합니다. Jared Duker Lichtman은 기존 연구에서 일반 상한을 약 `1.399 + o(1)`까지 낮췄지만, 에르되시가 바라본 `1 + o(1)`에는 닿지 못했습니다.
+이 문제가 오래 남은 이유도 여기서 드러납니다. 하나의 예쁜 집합을 골라 합을 계산하는 일이라면 그 집합을 차근히 해부하면 됩니다. #1196은 훨씬 넓습니다. 가능한 모든 원시 집합을 상대로 상한을 잡아야 합니다. 약수 관계가 만든 거대한 격자에서, 어떤 길로 수를 따라 내려가야 전체 합을 제어할 수 있을지 찾아야 합니다. Jared Duker Lichtman은 기존 연구에서 일반 상한을 약 `1.399 + o(1)`까지 낮췄지만 <a class="citation" href="#ref-6">[6]</a>, 에르되시가 바라본 `1 + o(1)`에는 닿지 못했습니다.
 
-이번 이야기의 흥미는 AI가 논문을 혼자 완성했다는 데 있지 않습니다. [Scientific American](https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/)에서 Lichtman은 GPT 출력 자체가 꽤 거칠었고, 전문가가 그 안에서 무엇을 말하려는지 걸러내야 했다고 설명합니다. [arXiv에 올라온 Alexeev, Barreto, Li, Lichtman, Price, Shah, Tang, Tao의 논문](https://arxiv.org/abs/2605.00301)은 GPT-5.4 Pro 출력에서 Markov chain과 von Mangoldt weights를 결합하는 방법이 제안됐고, 그 방법이 #1196과 #1217, 그리고 관련 원시 집합 문제들로 확장됐다고 정리합니다. AI는 낯선 길을 비췄고, 사람들은 그 길을 수학의 언어로 다시 포장했습니다. 문제 페이지에는 Lean 형식 검증도 더해졌습니다.
+증명 전략은 AI 출력에서 논문으로 옮겨지는 동안 여러 사람의 손을 거쳤습니다. Scientific American <a class="citation" href="#ref-2">[2]</a>에서 Lichtman은 GPT 출력이 꽤 거칠었고, 전문가가 그 안의 의미를 읽어내야 했다고 설명합니다. Alexeev, Barreto, Li, Lichtman, Price, Shah, Tang, Tao의 논문 <a class="citation" href="#ref-5">[5]</a>은 GPT-5.4 Pro 출력에서 Markov chain과 von Mangoldt weights를 결합하는 방법이 제안됐고, 그 방법이 #1196과 #1217, 관련 원시 집합 문제들로 확장됐다고 정리합니다. 수학자들은 출력에서 유효한 아이디어를 골라 논증과 적용 범위를 정리했습니다. 5월 1일 공개된 이 판본은 Math Inc의 Lean 형식화 <a class="citation" href="#ref-7">[7]</a>도 보고합니다.
 
-이 장면은 수학자에게만 흥미로운 이야기가 아닙니다. 사람이 문제를 고르고, AI가 낯선 조합을 던지고, 전문가가 그 조합의 의미를 알아보고, 논문과 형식 검증이 뒤따릅니다. 이 순서 안에 “AI가 어떤 방식으로 새 길을 낼 수 있는가”라는 물음이 들어 있습니다. [Quanta Magazine](https://www.quantamagazine.org/the-ai-revolution-in-math-has-arrived-20260413/)은 2025년 여름 이후 수학자들이 AI를 계산 보조를 넘어 증명 전략을 같이 탐색하는 파트너로 다루기 시작했다고 전했습니다. 한국어로 이 흐름을 더 차분히 따라가고 싶다면, [KIAS Horizon의 「수학, 인공지능, 그리고 형식화」](https://horizon.kias.re.kr/wp-content/uploads/2026/04/Horizon_%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC-%E1%84%80%E1%85%B3%E1%84%85%E1%85%B5%E1%84%80%E1%85%A9-%E1%84%92%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%92%E1%85%AA_1_%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%84%8B%E1%85%AE.pdf)가 도움이 됩니다. 카페에서 ChatGPT와 Codex를 쓰는 학생들의 장면에서 시작해, AI 수학 연구와 형식화 문제로 천천히 들어갑니다. 놀라움, 흥분, 조심스러움이 동시에 있습니다. 바로 그 복합적인 감정이 지금 과학계 전체로 번지고 있습니다.
+이 장면은 수학자에게만 흥미로운 이야기가 아닙니다. 사람이 문제를 고르고, AI가 낯선 조합을 던지고, 전문가가 그 조합의 의미를 알아보고, 논문과 형식 검증이 뒤따릅니다. 이 순서 안에 “AI가 어떤 방식으로 새 길을 낼 수 있는가”라는 물음이 들어 있습니다. Quanta Magazine <a class="citation" href="#ref-8">[8]</a>은 2025년 여름 이후 수학자들이 AI를 계산 보조를 넘어 증명 전략을 같이 탐색하는 파트너로 다루기 시작했다고 전했습니다. 한국어로 이 흐름을 더 차분히 따라가고 싶다면, KIAS Horizon의 「수학, 인공지능, 그리고 형식화」 <a class="citation" href="#ref-9">[9]</a>가 도움이 됩니다. 카페에서 ChatGPT와 Codex를 쓰는 학생들의 장면에서 시작해, AI 수학 연구와 형식화 문제로 천천히 들어갑니다. 놀라움, 흥분, 조심스러움이 동시에 있습니다. 바로 그 복합적인 감정이 지금 과학계 전체로 번지고 있습니다.
 
 ::: highlight
-AI 과학자의 출현이 의미하는 바를 “기계가 연구자를 대체한다”는 디스토피아적 내러티브로 읽기보다 **사람이 문제를 고르고, AI가 후보 경로를 넓히고, 다시 사람이 검증 가능한 지식으로 다듬는 새로운 형태의 협업의 단위**가 생긴 것에서 찾는 것이 합리적입니다.
+**사람이 문제를 고르고, AI가 후보 경로를 제안하고, 전문가가 검증 가능한 논증으로 다듬습니다.** #1196에서 눈여겨볼 변화는 이 협업으로 이전에 찾지 못한 증명 전략을 얻었다는 점입니다.
 :::
-
-[^primitive-set]: 원시 집합은 집합 안의 서로 다른 두 원소 a, b에 대해 a가 b를 나누지 않고 b도 a를 나누지 않는 정수 집합입니다. 정수론에서는 약수 관계가 만든 부분순서(poset)에서 서로 비교되지 않는 원소들의 모임, 즉 antichain처럼 볼 수 있습니다.
-
-[^erdos-ai-claim-caution]: 여기서 “증명법을 제안했다”는 표현은 AI 단독 해결이라는 뜻은 아닙니다. [Erdős Problems #1196](https://www.erdosproblems.com/1196)은 이 문제를 `PROVED (LEAN)`으로 표시하지만, 실제 과정에는 Liam Price의 프롬프트에서 나온 GPT 출력, Kevin Barreto의 전달, Terence Tao와 Jared Duker Lichtman 등 수학자의 정리, 논문 작성, Lean 검증이 함께 들어 있습니다. 또한 AI 수학 성과 보도에는 공로와 독창성을 둘러싼 논쟁이 따라붙습니다. [AI타임스](https://www.aitimes.com/news/articleView.html?idxno=210785)가 다룬 2026년 5월 오픈AI 발표는 2026년 4월의 #1196과 별개의 사례로, 1946년 에르되시가 제기한 평면 단위거리 문제에 관한 것입니다. 이 기사도 과거 “GPT-5가 에르되시 문제 10개를 해결했다”는 식의 주장이 이미 알려진 문헌과 겹친다는 비판을 받아 철회됐던 일을 함께 소개합니다. 그래서 이 글은 #1196 사례를 “AI가 혼자 오래된 난제를 끝냈다”는 문장보다, AI가 낸 후보 경로를 사람이 검증 가능한 수학으로 다듬은 장면으로 다룹니다.
-
-[^big-o]: 여기서 `O`는 숫자 0이 아니라 영문 대문자 O입니다. 수학에서는 이런 표기를 Big-O notation이라고 부르며, 뒤에 붙은 항이 얼마나 큰 오차까지 허용하는지를 나타냅니다. `O(1 / log x)`는 x가 커질수록 1 위에 남는 오차가 어떤 상수배의 `1 / log x`보다 크게 자라지 않는다는 뜻입니다. 쉽게 말하면 큰 수 쪽으로 갈수록 상한이 1에 가까워진다는 의미입니다.
 
 ## 수학에서 과학으로
 
-AI 수학자의 등장이 가져오는 위와 같은 극적인 변화는 생명과학, 재료, 기후, 에너지 연구 분야로 넘어오면 훨씬 복잡한 상황을 상상하게 합니다. 수학에서는 증명을 한 줄씩 대조할 수 있습니다. 그러나 실험과 산업 문제에서는 문헌, 데이터, 코드, 장비, 비용, 안전, 책임을 함께 봐야 합니다. 그래서 AI 과학자가 보여주는 변화는 정교한 모델이 내놓은 결과의 합리성만으로 생명력을 얻지 않습니다. 그보다는 연구자가 수행하는 연구 프로세스 자체를 바꿀 때 의미가 생깁니다.
+생명과학이나 재료 연구에서 AI가 낸 아이디어를 받아들이려면 문헌의 설명을 실험 조건과 측정값에 연결해야 합니다. 후보 물질을 고른 뒤에도 세포에서 효과가 나타나는지, 다른 조건에서 재현되는지 확인하는 일이 남습니다. AI가 그 과정의 어디에 참여하고 다음 판단을 어떻게 바꾸는지에 따라 연구자의 일도 달라집니다.
 
-[Nature의 Co-Scientist 논문](https://www.nature.com/articles/s41586-026-10644-y)에서 먼저 Gemini 기반 멀티 에이전트 시스템을 살펴볼 수 있습니다. 여기서 제안하는 AI Co-Scientist는 여러 인공지능 에이전트가 역할을 나누어 일하는 구조입니다. 어떤 에이전트는 가설을 만들고, 어떤 에이전트는 비판하고, 어떤 에이전트는 순위를 매기고, 어떤 에이전트는 다시 개선합니다.[^co-scientist] 논문 초록은 이 시스템이 약물 재창출, 신규 표적 탐색, 항생제 내성 기전 설명에 쓰였고, 급성 골수성 백혈병의 후보 조합 치료는 시험관 실험으로 확인됐다고 보고합니다.
+Nature의 Co-Scientist 논문 <a class="citation" href="#ref-10">[10]</a>은 Gemini 기반 멀티 에이전트 시스템을 다룹니다. AI Co-Scientist에서는 여러 인공지능 에이전트가 가설 생성, 비판, 순위화, 개선을 나누어 맡습니다. 논문은 이 시스템이 약물 재창출, 신규 표적 탐색, 항생제 내성 기전 설명에 쓰였고, 급성 골수성 백혈병의 후보 조합 치료를 시험관 실험으로 평가했다고 보고합니다.
 
 <figure class="figure-panel">
   <img src="../artifacts/final_review/figures/imagegen/ai_scientist_coscientist_lab.png" alt="문헌 카드, dAMD 후보 실험 접시, 현미경, assay plate, 노트북 도구, AI Co-Scientist 에이전트 후보 카드가 연결되는 연구실 장면">
-  <figcaption><strong>그림 3.</strong> AI Co-Scientist의 매력은 긴 대화 자체보다, 문헌, 가설, 코드 도구, 실험, 검토가 같은 작업면 위에서 안정적으로 왕복하며 결과를 만들어내는 데 있습니다. 사람은 그 왕복 속에서 “다음 실험으로 보낼 만한 후보”를 고릅니다.</figcaption>
+  <figcaption><strong>그림 3.</strong> 문헌에서 만든 가설이 실험을 거쳐 다시 검토로 돌아옵니다. AI Co-Scientist와 Robin의 연구 과정을 떠올리게 한 AI 생성 개념 일러스트이며, 실제 실험 자료를 재현한 그림은 아닙니다.</figcaption>
 </figure>
 
-FutureHouse의 [Robin 논문](https://www.nature.com/articles/s41586-026-10652-y)은 실험실의 반복 작업을 전면에 둡니다. Robin은 건성 연령관련 황반변성(dry age-related macular degeneration, dAMD) 치료 후보를 찾는 과정에서 문헌을 읽고, 후보를 제안하고, 실험 결과를 해석하고, 후속 RNA-seq 분석까지 다뤘습니다. 논문은 ripasudil과 KL001의 효과를 시험관에서 확인했고, ripasudil이 망막색소상피세포의 phagocytosis, 즉 세포가 불필요한 물질을 먹어 치우는 기능을 높이는 과정에서 ABCA1이 관련될 수 있다는 후속 가설을 냈다고 보고합니다.
+FutureHouse의 Robin 논문 <a class="citation" href="#ref-11">[11]</a>은 실험실의 반복 작업을 전면에 둡니다. Robin은 건성 연령관련 황반변성(dry age-related macular degeneration, dAMD) 치료 후보를 찾는 과정에서 문헌을 읽고 후보와 후속 실험을 제안했습니다. 사람이 그 실험 개요를 구체적인 프로토콜로 옮겨 세포 시험을 수행했고, RNA-seq의 후속 차등발현 분석에는 FutureHouse의 분석 에이전트 Finch를 썼습니다. 연구진은 ROCK 억제제 Y-27632를 처리한 망막색소상피세포의 RNA-seq 자료에서 ABCA1 발현 증가를 찾아 후속 기전을 제안했습니다. 이후 후보인 ripasudil과 KL001은 세포의 phagocytosis를 높이는지 시험관에서 평가했습니다. 이 기능은 망막색소상피세포가 광수용체 외절 등을 받아들여 처리하는 과정으로, 여기서의 세포 기능 평가와 환자의 치료 효과는 검증 단계가 다릅니다.
 
-[ERA 논문](https://www.nature.com/articles/s41586-026-10658-6)은 연구 소프트웨어를 겨냥합니다. 아이디어가 있어도 분석 코드를 만들고, 품질 지표를 최적화하고, 결과를 비교하는 데 시간이 갑니다. ERA는 LLM과 tree search를 결합해 과학 소프트웨어를 반복적으로 생성했습니다. Nature 초록에는 단일세포 데이터 분석에서 공개 leaderboard 상위 인간 개발 방법보다 나은 신규 방법 40개, COVID-19 입원 예측에서 CDC ensemble보다 나은 모델 14개가 등장합니다.
+ERA 논문 <a class="citation" href="#ref-12">[12]</a>은 연구 소프트웨어를 겨냥합니다. 아이디어가 있어도 분석 코드를 만들고, 품질 지표를 최적화하고, 결과를 비교하는 데 시간이 갑니다. ERA는 LLM과 tree search를 결합해 과학 소프트웨어를 반복적으로 생성했습니다. 단일세포 데이터의 batch integration에서는 생성한 87개 변형 중 40개가 공개 OpenProblems 보드의 상위 인간 개발 방법을 능가했다고 보고합니다. COVID-19 입원 예측의 14개 전략은 세 기준일에서 시작한 후향적 평가에서 CDC ensemble보다 나은 성적을 냈습니다. 서로 다른 문제와 평가 기간에서 얻은 결과입니다.
 
-Google DeepMind의 [AlphaEvolve](https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/)는 알고리즘 설계 쪽에서 비슷한 구조로 작동합니다. Gemini가 프로그램을 제안하고, 자동 평가자가 후보를 시험하고, 진화 알고리즘이 더 나은 후보를 다음 세대로 넘깁니다. Google DeepMind는 이 방법이 데이터센터, 칩 설계, AI 학습, 행렬곱 알고리즘, 수학 문제에 영향을 주었다고 밝혔습니다.
+Google DeepMind의 AlphaEvolve <a class="citation" href="#ref-13">[13]</a>는 알고리즘 설계 쪽에서 비슷한 구조로 작동합니다. Gemini가 프로그램을 제안하고, 자동 평가자가 후보를 시험하고, 진화 알고리즘이 더 나은 후보를 다음 세대로 넘깁니다. Google DeepMind는 이 방법이 데이터센터, 칩 설계, AI 학습, 행렬곱 알고리즘, 수학 문제에 영향을 주었다고 밝혔습니다.
 
-[Nature의 The AI Scientist 논문](https://www.nature.com/articles/s41586-026-10265-5)은 기계학습 연구의 전체 주기를 겨냥합니다. 이 시스템은 아이디어 생성, 문헌 검색, 실험 코드 작성, 결과 분석, 논문 작성, 자체 리뷰까지 한 흐름으로 통합합니다. 논문은 한 AI 생성 논문이 ICLR 2025 학술대회 동료평가에서 수락권 점수를 받았다고 보고합니다. 동시에 한계도 분명합니다. 세 편 중 한 편만 학회 기준에 닿았고, 최상위 논문 수준에는 이르지 못했으며, 부정확한 구현과 존재하지 않는 논문을 인용하는 할루시네이션 양상도 아직 남아 있습니다.
+Nature의 The AI Scientist 논문 <a class="citation" href="#ref-14">[14]</a>은 기계학습 연구의 전체 주기를 겨냥합니다. 이 시스템은 아이디어 생성, 문헌 검색, 실험 코드 작성, 결과 분석, 논문 작성, 자체 리뷰까지 한 흐름으로 통합합니다. 연구진은 생성한 세 편을 ICLR 2025의 ICBINB 워크숍 심사에 제출했고, 한 편이 평균 6.33점으로 워크숍 수락 기준을 넘었다고 보고합니다. 세 편 모두 사전에 정한 절차에 따라 심사 뒤 철회했습니다. 연구 내용은 사람이 고치지 않았지만, 각 단계의 유망한 출력을 골라 다음 단계로 보내는 일에는 사람이 참여했습니다. 논문은 부정확한 구현과 인용도 보고해, 코드 실행과 원문 대조를 연구 주기의 일부로 다룹니다.
 
-여기서 언급한 Co-Scientist, Robin, ERA, AlphaEvolve, The AI Scientist는 서로 다른 분야의 사례입니다. 그래도 일관적으로 보이는 변화가 있습니다. AI가 “정답”을 한 번 말하고 끝내지 않고, 가설, 비판, 코드, 평가, 실험, 다시 가설로 이어지는 연구 주기를 반복한다는 점입니다. 이제 연구의 작은 단위들이 **더 자주** 돌기 시작합니다. 과학자가 하루에 읽을 수 있는 문헌, 확인할 수 있는 후보, 고칠 수 있는 코드, 비교할 수 있는 변형이 늘어납니다. 기대가 커지는 이유도 이 반복 속도에 있습니다.
-
-[^co-scientist]: AI Co-Scientist는 Google Research가 2025년 공개하고 Nature 2026 논문으로 확장한 Gemini 기반 과학 가설 생성 시스템입니다. 여기서 “코사이언티스트”는 완전 자율 연구자 한 명보다, 생성·비판·순위화·개선 역할을 나눈 에이전트 묶음으로 이해하면 정확합니다.
+이 사례들은 가설 생성, 세포 실험, 분석 소프트웨어, 알고리즘 탐색처럼 서로 다른 일을 다룹니다. 공통으로 AI의 출력을 다음 실행의 입력으로 되돌립니다. 코드를 시험한 점수나 실험 결과를 받아 후보를 고치고 다시 비교합니다. 한 연구자가 검토할 수 있는 후보와 변형을 늘리는 이 반복 방식이 AI 과학자에 대한 기대를 키웁니다.
 
 ## 국가와 기업의 속도
 
-AI for Science는 연구실 안의 흥미로운 실험에만 머물지 않습니다. [구글 딥마인드와 과학기술정보통신부의 2026년 4월 27일 발표](https://blog.google/intl/ko-kr/company-news/inside-google/announcing-our-partnership-with-the-republic-of-korea/)에는 K-문샷 미션, AI Campus, 생명과학·에너지·기상·기후 분야 협력, AlphaEvolve, AlphaGenome, AlphaFold, AI co-scientist, WeatherNext가 한꺼번에 언급되었습니다. 발표문에는 AI co-scientist가 과학기술정보통신부의 AI 과학자 프로젝트에 통합될 수 있도록 공동 연구와 기술 자문을 추진한다는 내용도 들어 있습니다.
+AI for Science는 연구실 안의 흥미로운 실험에만 머물지 않습니다. 구글 딥마인드와 과학기술정보통신부의 2026년 4월 27일 발표 <a class="citation" href="#ref-15">[15]</a>에는 K-문샷 미션, AI Campus, 생명과학·에너지·기상·기후 분야 협력, AlphaEvolve, AlphaGenome, AlphaFold, AI co-scientist, WeatherNext가 한꺼번에 언급되었습니다. 발표문에는 AI co-scientist가 과학기술정보통신부의 AI 과학자 프로젝트에 통합될 수 있도록 공동 연구와 기술 자문을 추진한다는 내용도 들어 있습니다.
 
-발표문을 보면 AI for Science는 더 이상 “언젠가 좋아질 도구”로만 취급되지 않습니다. 국가 연구 인프라, 대학과 연구기관, 대형 기술기업, AI 안전, 인재 육성의 언어가 같은 문단에 놓입니다. 수학에서 보였던 변화가 생명과학, 에너지, 기후, 제조 문제로 번지고 있는 상황입니다.
+이 발표는 AI 과학자를 연구기관의 과제와 인재 양성, 공동 연구 계획 안에 놓습니다. 개별 연구자가 도구를 시험하는 데서 더 나아가, 어떤 자료와 계산 환경을 함께 마련할지 논의하는 단계입니다.
 
 우리가 몸담고 있는 회사 입장에서 이 흐름은 조금 다르게 다가옵니다. 우리에게는 논문 속 benchmark보다 더 복잡한 문제가 많습니다. 실패한 실험 기록, 품질 이슈의 맥락, 장비와 recipe 변경 이력, 고객 불만의 실제 원인, 숙련자의 경험, 승인과 책임의 경계가 뒤엉켜 있습니다. 바로 그 복잡함 때문에 AI 과학자가 쓸모 있어질 여지가 생깁니다.
 
-예를 들어 “AI로 소재 개발을 가속화하자”는 말은 우리를 문제의 한복판으로 끌고 들어갑니다. 그리고 현업에서 던지는 질문, “특정 host-dopant 조합에서 lifetime을 떨어뜨리는 조건을 찾고, 다음 실험 후보 20개를 5개로 줄이자”는 요구를 담은 문장은 AI와의 협업을 통해 바로 작업으로 바뀝니다. 문헌을 찾을 수 있고, 익명화된 실험표를 연결할 수 있고, 후보 가설을 JSON으로 남길 수 있고, 다음 실험 조건을 사람이 고를 수 있습니다. AI 과학자는 이렇게 좁혀진 문제에서 실제 도구가 됩니다.
+예를 들어 “AI로 소재 개발을 가속화하자”는 말에는 할 일이 너무 많이 담겨 있습니다. “특정 host-dopant 조합에서 lifetime을 떨어뜨리는 조건을 찾고, 다음 실험 후보 20개를 5개로 줄이자”라고 좁히면 필요한 자료와 산출물을 정할 수 있습니다. 문헌을 찾고, 익명화된 실험표를 연결하고, 후보 가설을 JSON으로 남긴 뒤 사람이 다음 실험 조건을 고르는 작업입니다.
 
 ## 기대가 커질수록 생기는 물음
 
-잠깐 멈춰서 생각을 한번 해 봅시다. 수학자는 AI가 만든 새로운 증명 방법을 받아 적고, 생명과학자는 AI가 낸 가설을 실험대에 올리고, 정부와 기업은 AI 과학자를 국가 전략과 산업 인프라 안에서 유의미하게 취급합니다. 그런데 이렇게 빨리 괜찮을까요? 누가 틀린 지식을 감수하고, 누가 정교한 물음을 할 것이며, 누가 실패한 결정의 책임을 질까요?
+잠깐 멈춰서 생각을 한번 해 봅시다. 수학자는 AI가 제안한 전략을 논증으로 다듬고, 생명과학자는 AI가 낸 가설을 실험대에 올리고, 정부와 기업은 AI 과학자를 국가 전략과 산업 인프라 안에서 유의미하게 취급합니다. 그런데 이렇게 빨리 괜찮을까요? 누가 틀린 지식을 감수하고, 누가 정교한 물음을 할 것이며, 누가 실패한 결정의 책임을 질까요?
 
-이때 `Bixonimania` 사례를 살펴보면 어떨까 싶습니다. 스웨덴 연구진은 AI의 능력을 시험하려 일부러 가짜 질병 이름을 만들었습니다. 그리고 그 이름은 AI 챗봇의 답변에 등장했고, 이후 학술 인용망 안으로도 흘러 들어갔습니다. [Nature News Feature](https://www.nature.com/articles/d41586-026-01100-y)는 이 가짜 질병이 허술한 조작 논문과 글에서 출발했는데도 AI가 실제 의학 지식처럼 다루었다고 보도했습니다. [한겨레](https://www.hani.co.kr/arti/science/science_general/1253718.html)는 이 사건을 국내 독자에게 전하며, 그럴듯한 말투와 형식적 출처 만으로도 어떻게 사람의 경계를 낮추는지 전했습니다.
+이때 `Bixonimania` 사례를 살펴보면 어떨까 싶습니다. 스웨덴 연구진은 AI의 능력을 시험하려 일부러 가짜 질병 이름을 만들었습니다. 그리고 그 이름은 AI 챗봇의 답변에 등장했고, 이후 학술 인용망 안으로도 흘러 들어갔습니다. Nature News Feature <a class="citation" href="#ref-16">[16]</a>는 이 가짜 질병이 허술한 조작 논문과 글에서 출발했는데도 AI가 실제 의학 지식처럼 다루었다고 보도했습니다. 한겨레 <a class="citation" href="#ref-17">[17]</a>는 이 사건을 국내 독자에게 전하며, 그럴듯한 말투와 형식적 출처 만으로도 어떻게 사람의 경계를 낮추는지 전했습니다.
 
 <figure class="figure-panel">
   <img src="../artifacts/final_review/figures/imagegen/ai_scientist_guarded_library.png" alt="Bixonimania 같은 지식 오염을 떠올리게 하는 불확실한 문서와 검증 도구, 원문, 출처 등급, citation trail을 비교하는 도서관-실험실 장면">
-  <figcaption><strong>그림 4.</strong> AI가 과학 문장을 빠르게 만들수록 사람들은 더 많은 경로로 지식을 접하게 됩니다. 동시에, Bixonimania처럼 떠다니는 유령 이름이 지식이 되지 않으려면 누군가 원문, 출처 등급, citation trail, 실험 기록을 철저한 검증대 위에 올려놓아야 합니다.</figcaption>
+  <figcaption><strong>그림 4.</strong> AI가 과학 문장을 빠르게 만들수록 사람들은 더 많은 경로로 지식을 접하게 됩니다. 동시에, Bixonimania처럼 떠다니는 유령 이름이 지식이 되지 않으려면 누군가 원문, 출처 등급, citation trail, 실험 기록을 철저한 검증대 위에 올려놓아야 합니다. AI 생성 개념 일러스트입니다.</figcaption>
 </figure>
 
-Quanta의 수학 기사에도 비슷한 불안이 남아 있습니다. AI가 만든 수학적 쓰레기가 공용 지식의 장을 오염시킨다는 걱정, 학생들이 손으로 훈련하던 수학 근육을 잃을 수 있다는 걱정, 형식 검증이 없으면 진지한 응용에서 AI를 믿기 어렵다는 말이 같이 나옵니다. Nature의 [사설](https://www.nature.com/articles/d41586-026-01551-3)과 [Comment](https://www.nature.com/articles/d41586-026-01557-x)도 같은 문제를 다룹니다. 과학은 빨라지고 있지만, 빠른 문장이 곧 믿을 만한 지식은 아닙니다.
+Quanta의 수학 기사에도 비슷한 불안이 남아 있습니다. AI가 만든 수학적 쓰레기가 공용 지식의 장을 오염시킨다는 걱정, 학생들이 손으로 훈련하던 수학 근육을 잃을 수 있다는 걱정, 형식 검증이 없으면 진지한 응용에서 AI를 믿기 어렵다는 말이 같이 나옵니다. Nature의 사설 <a class="citation" href="#ref-18">[18]</a>과 Comment <a class="citation" href="#ref-19">[19]</a>도 같은 문제를 다룹니다. 과학은 빨라지고 있지만, 빠른 문장이 곧 믿을 만한 지식은 아닙니다.
 
-그렇다고 이런 사례로 AI와의 협업을 멈추자는 이야기는 설득력이 없습니다. 이미 도구는 연구실과 사무실 안으로 들어왔고, 사람들은 쓰고 싶어 합니다. 논점은 사용 금지보다 사용 방식 쪽에 놓입니다. 무엇을 AI에게 맡기고, 무엇을 사람이 쥐고, 어떤 결과를 다음 실험이나 코드 검토로 넘길 것인가. 최근의 논의는 이 물음에 답하기 위해 결국 AI 에이전트를 제어할 고삐가 필요하다는 결론에 도달하고 있는 것 같습니다. 영어권에서는 harness라는 말도 씁니다.[^harness]
-
-[^harness]: 여기서 하네스는 AI 모델을 억지로 묶는 장치라기보다, 문제 카드, 자료, 도구, 평가 기준, 결과 로그를 한 곳에 모아 반복 작업을 가능하게 하는 실행 환경을 뜻합니다.
+가짜 질병 사례를 회사의 연구 과정에 대입하면 점검할 위치가 구체적으로 보입니다. 후보 가설이 인용한 문헌을 열어 실제 내용을 대조하고, 채택한 이유와 검토자를 남겨야 다음 실험이 잘못된 지식에서 출발하는 일을 줄일 수 있습니다. 문제 카드, 자료, 도구, 평가 기준, 결과 로그를 모아 이런 반복 작업을 가능하게 하는 실행 환경을 하네스(harness)라고 부릅니다.
 
 ## 회사 문제를 작업대에 올리기
 
@@ -141,11 +132,11 @@ AI 과학자형 업무는 막연한 요청을 실행 큐에 올릴 수 있는 �
 
 ## AI 과학자와 일하기
 
-첫 단계는 공개 자료 기반 가설 탐색입니다. 논문, 특허, 제품 문서, 공개 benchmark처럼 외부 서비스에 올려도 되는 자료가 중심일 때는 Codex, Gemini CLI, Claude Code 같은 서비스형 에이전트로 낮은 비용의 심층 리서치를 시작할 수 있습니다. [OpenAI Codex](https://openai.com/codex/)는 로컬과 클라우드 작업공간에서 코드를 읽고 수정하며 테스트와 리뷰를 돕는 개발 에이전트입니다. [Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/)에는 사용자 입력, 모델 추론, 도구 호출, 관찰, 다음 계획이 반복되는 흐름이 담겨 있습니다. [Gemini CLI](https://developers.google.com/gemini-code-assist/docs/gemini-cli)와 [Claude Code CLI](https://code.claude.com/docs/en/cli-reference)는 터미널과 자동화 작업에 연결하기 좋습니다. 여기서 중요한 것은 특정 도구 이름보다, 문제 카드와 자료 목록, 출력 형식을 함께 읽게 만드는 작업 방식입니다.
+첫 단계는 공개 자료 기반 가설 탐색입니다. 논문, 특허, 제품 문서, 공개 benchmark처럼 외부 서비스에 올려도 되는 자료가 중심일 때는 Codex, Gemini CLI, Claude Code 같은 서비스형 에이전트로 낮은 비용의 심층 리서치를 시작할 수 있습니다. Codex는 로컬과 클라우드 작업공간에서 코드를 읽고 수정하며 테스트와 리뷰를 돕는 개발 에이전트입니다. Codex agent loop <a class="citation" href="#ref-20">[20]</a>에는 사용자 입력, 모델 추론, 도구 호출, 관찰, 다음 계획이 반복되는 흐름이 담겨 있습니다. Gemini CLI <a class="citation" href="#ref-21">[21]</a>와 Claude Code CLI <a class="citation" href="#ref-22">[22]</a>는 터미널과 자동화 작업에 연결하기 좋습니다. 여기서 중요한 것은 특정 도구 이름보다, 문제 카드와 자료 목록, 출력 형식을 함께 읽게 만드는 작업 방식입니다.
 
 예를 들어 OLED 수명 저하 원인을 좁히는 문제라면 공개 논문과 익명화 통계만 올려 원인 후보를 뽑게 할 수 있습니다. 재료 조합, 공정 조건, 측정 조건별로 후보 가설을 만들고, 근거 문헌과 반례 후보를 같이 남기는 식입니다. 민감한 lot, 고객사, 장비 원본 로그는 이 작업에 섞지 않습니다.
 
-공개 자료로 어느 정도 원인을 좁혔다면 온프레미스 자료를 통한 상세 분석으로 넘어갑니다. 사내 로그, 실험 원본, 고객 이슈, 설비 조건처럼 외부 반출이 어려운 자료는 로컬 또는 사내망 기반으로 다룹니다. 이를 위해 예를 들어, [Cline 문서](https://docs.cline.bot/running-models-locally/overview)가 안내하는 방식처럼 VS Code 안에서 로컬 모델이나 사내망 모델을 연결할 수 있습니다. [Qwen3-Coder](https://qwenlm.github.io/blog/qwen3-coder/)는 Qwen Code라는 agentic coding용 command-line 도구를 같이 내놓았습니다. Cline과 Qwen 계열 모델을 사내 문서 검색, 실험 DB 조회, 파일 시스템 도구와 연결하면 외부 서비스로 자료를 보내지 않고도 반복 분석을 시작할 수 있습니다.
+공개 자료로 어느 정도 원인을 좁혔다면 온프레미스 자료를 통한 상세 분석으로 넘어갑니다. 사내 로그, 실험 원본, 고객 이슈, 설비 조건처럼 외부 반출이 어려운 자료는 로컬 또는 사내망 기반으로 다룹니다. 이를 위해 예를 들어, Cline 문서 <a class="citation" href="#ref-23">[23]</a>가 안내하는 방식처럼 VS Code 안에서 로컬 모델이나 사내망 모델을 연결할 수 있습니다. Qwen3-Coder <a class="citation" href="#ref-24">[24]</a>는 Qwen Code라는 agentic coding용 command-line 도구를 같이 내놓았습니다. Cline과 Qwen 계열 모델을 사내 문서 검색, 실험 DB 조회, 파일 시스템 도구와 연결하는 구성을 생각할 수 있습니다. 모델 실행뿐 아니라 검색·로그·telemetry·각 도구의 통신 경로도 사내에 머무는지 확인해야 외부 반출을 제한할 수 있습니다.
 
 결과를 어느 정도 얻었다면 그다음은 반복 평가와 보고 자동화입니다. 이미 평가 기준이 정해진 문제라면 에이전트가 매번 같은 형식으로 후보를 만들고, 테스트를 돌리고, 결과표를 쌓게 할 수 있습니다. VS Code에서 Cline을 쓴다면 명령어 한 줄보다 작업 폴더의 규칙과 스킬 문서를 먼저 읽게 하는 방식이 자연스럽습니다. 예를 들어 `.clinerules`에는 반출 금지 자료, 출력 형식, 검토 기준을 적고, `skills/oled_hypothesis_review/SKILL.md`에는 후보 생성, 반례 점검, 점수화, 보고서 작성 순서를 둡니다. Codex도 같은 폴더의 `AGENTS.md`와 스킬 문서를 읽고 저장소 안의 평가 스크립트와 HTML 보고서 생성을 이어갈 수 있습니다.
 
@@ -272,7 +263,7 @@ You are assisting a scientific review team.
 Use only sources listed in source_manifest.json.
 Do not infer from blocked sources.
 
-Return 10 candidate hypotheses as JSON.
+Return 20 candidate hypotheses as JSON.
 Each item must include:
 - hypothesis
 - mechanism
@@ -285,7 +276,7 @@ Each item must include:
 Prefer hypotheses that can change the next experiment candidate list.
 ```
 
-결과는 문단으로 흘려보내기보다 파일로 남겨야 다음 사람과 에이전트가 같은 작업 맥락을 확인하기 쉽습니다. 일종의 인수인계 파일이자 업무일지입니다.
+결과는 파일로 남겨야 다음 사람과 에이전트가 같은 작업 맥락을 확인하기 쉽습니다. 일종의 인수인계 파일이자 업무일지입니다. 아래 JSON의 문헌 파일명·실험 그룹·관측 내용은 모두 가상 예시이며 실제 OLED 연구 결과가 아닙니다.
 
 ```json
 [
@@ -305,18 +296,17 @@ Prefer hypotheses that can change the next experiment candidate list.
 ]
 ```
 
-평가 함수는 처음부터 거창할 필요가 없습니다. 근거 수, 반례 여부, 다음 실험 가능성, 민감 자료 포함 여부만 봐도 후보의 질이 달라집니다.
+아래 평가는 제출 형식을 살피는 개념 예시입니다. 근거 경로와 반례, 다음 실험 제안이 채워져 있는지 확인해 검토할 순서를 정합니다. 근거의 실재와 내용, 기전의 타당성은 원문과 실험 자료를 읽는 검토자가 확인합니다.
 
 ```python
 import json
 from pathlib import Path
 
-
 def score(item: dict) -> dict:
     evidence = len(item.get("supporting_sources", []))
     has_counterexample = bool(item.get("possible_counterexample"))
     has_next_test = bool(item.get("needed_next_test"))
-    sensitivity_ok = item.get("data_sensitivity") != "raw_sensitive"
+    sensitivity_ok = item.get("data_sensitivity") in {"public", "internal_summary_only"}
 
     score_value = 0
     score_value += min(evidence, 3) * 2
@@ -334,7 +324,6 @@ def score(item: dict) -> dict:
         },
     }
 
-
 items = json.loads(Path("runs/2026-05-23/hypothesis_candidates.json").read_text(encoding="utf-8"))
 Path("runs/2026-05-23/evaluation.json").write_text(
     json.dumps([score(item) for item in items], ensure_ascii=False, indent=2),
@@ -351,87 +340,58 @@ AI 작업 결과물의 위험이 암묵적인 주의사항으로만 남으면 �
   <figcaption><strong>그림 7.</strong> 위험 평가는 결과물 안에 남겨야 할 항목입니다. 출처 등급, 자료 반출 경계, 실패 후보, 실행 모델 버전, 검토 기록이 쌓이면 AI가 빠르게 만든 문장도 나중에 다시 대조할 수 있습니다.</figcaption>
 </figure>
 
-이 방식은 AI를 너무 통제하는 절차처럼 보일 수 있습니다. 목표는 이 도구의 능력을 줄이는 데 있지 않습니다. 공개 문헌을 깊이 읽고, 사내 데이터를 조심스럽게 연결하고, 후보 가설을 많이 만들고, 자동 평가를 돌리고, 전문가가 다음 실험을 고르는 과정을 다시 확인할 수 있게 남기는 데 있습니다. 기록이 남으면 팀은 AI의 쓸 만한 제안을 재사용하고, 틀린 제안은 검수해 반려하거나 개선된 형태로 바꿀 수 있습니다.
+자료를 읽고 후보를 만들고 평가한 기록은 다음 실험을 고르는 근거가 됩니다. 팀은 그 기록에서 쓸 만한 제안을 다시 찾고, 잘못된 근거나 실패한 조건을 확인해 후보를 고칠 수 있습니다. 연구가 빨라질수록 이 인수인계의 가치도 커집니다.
 
 ## AI 과학자의 시대, 우리의 역할
 
-아직 AI 과학자를 학교에서 만난 교수님처럼 떠올리기는 어렵습니다. 에르되시 문제 #1196 사례를 보면 그 판단이 잠시 흔들리기도 합니다. 그래도 지금은 동료보다 조수라는 말이 더 정확해 보입니다. 조수라는 말에는 단순한 능력만 들어 있지 않습니다. 책임, 신뢰, 서로 배우는 시간, 공동의 목적이 함께 들어 있습니다. 지금의 AI 과학자는 그 모든 것을 갖춘 동료라기보다, 엄청난 속도로 후보를 넓혀주는 유능한 조수입니다. 그리고 유능한 조수는 연구자의 하루를 실제로 바꿉니다.
+에르되시 문제 #1196에서 AI는 수학자들이 검토할 새로운 증명 전략을 내놓았습니다. 생명과학의 사례에서는 후보를 제안하고 실험 결과에 따라 다음 분석을 바꿨습니다. 이런 조수가 곁에 있을 때 연구자는 아이디어를 찾는 시간과 그 의미를 판단하는 시간을 다르게 쓸 수 있습니다.
 
 수학자는 AI가 비춘 길을 따라가며 새로운 증명 전략을 얻었습니다. 생명과학자는 AI가 만든 후보를 실험대에 올렸습니다. 정부와 기업은 AI 과학자를 국가 연구 인프라와 산업 문제 안으로 부르고 있습니다. 회사의 연구자와 엔지니어도 같은 물음 앞에 섭니다. 지금 풀고 싶은 문제가 있다면, 그것을 AI가 만질 수 있는 크기의 과제로 바꾸고, 결과가 다시 사람의 판단으로 돌아오게 만들 수 있을까요?
 
-그 첫 답은 거대한 플랫폼보다 작고 선명한 작업 폴더에서 시작할 수 있습니다. 잘 정의된 질문, 명확한 검증 규칙, 성공 조건이 먼저 필요합니다. 문제 카드 하나, 자료 목록 하나, 후보 JSON 하나, 작은 평가 코드 하나가 있으면 Codex, Gemini CLI, Claude Code, Cline, Qwen 같은 도구는 밤새 후보를 만들고 근거를 대조하고 다음 실험의 선택지를 좁힐 수 있습니다. 도구의 순위보다 먼저 볼 것은 문제의 형식입니다.
+앞서의 작업 폴더는 그 준비를 작게 시작하는 예입니다. 질문과 성공 조건을 정하고, 허용한 자료를 연결하고, 후보와 평가 결과를 저장합니다. 도구를 바꾸거나 담당자가 교대해도 같은 자료에서 검토를 이어갈 수 있습니다.
 
 아마추어 수학자가 던진 프롬프트는 왜 그렇게 강력했을까요? 에르되시 문제는 이미 오래 다듬어진 질문이었고, 문제 번호와 키워드만으로도 수학자들이 공유하는 깊은 맥락을 불러올 수 있었습니다. 회사의 문제는 보통 그렇게 정리되어 있지 않습니다. 그래서 더 넓게 보고, 더 빨리 시험하고, 더 나은 다음 문제로 옮기려면 우리가 먼저 질문을 AI 과학자가 만질 수 있는 형식으로 바꿔주어야 합니다.
 
-AI 과학자의 시대가 온다면, 사람의 일은 사라지기보다 조금 달라질 가능성이 큽니다. 혼자 모든 문헌을 뒤지고 모든 후보를 손으로 쓰는 시간은 줄어듭니다. 대신 어떤 물음을 남길지, 어떤 후보를 실험대로 보낼지, 어떤 근거를 조직의 지식으로 받아들일지 고르는 시간이 더 중요해집니다. 그 변화는 낯설지만 매력적입니다. 이제 필요한 준비는 거창한 선언보다 작고 정확한 작업대입니다. 무엇을 맡길지, 어떤 자료를 허용할지, 어떤 기록을 남길지 정하는 일부터 시작할 수 있습니다.
+AI 과학자의 시대가 온다면, 사람의 일은 사라지기보다 조금 달라질 가능성이 큽니다. 문헌 탐색과 후보 작성에 드는 시간을 줄일 수 있다면, 어떤 물음을 남길지, 어떤 후보를 실험대로 보낼지, 어떤 근거를 조직의 지식으로 받아들일지 더 깊이 검토할 여지가 생깁니다. 그 변화는 낯설지만 매력적입니다. 이제 필요한 준비는 거창한 선언보다 작고 정확한 작업대입니다. 무엇을 맡길지, 어떤 자료를 허용할지, 어떤 기록을 남길지 정하는 일부터 시작할 수 있습니다.
 
-## 작성 정보
+## 작성·검증과 수정 이력
 
-- 작성자: 김현중
-- 작성 보조 및 퇴고: Codex 기반 GPT-5 계열 에이전트 하네스
-- 최초 작성일: 2026-05-23
-- 도입부·문체·시각자료 재작성: 2026-05-23
-- KIAS Horizon, Quanta Magazine, Scientific American, Nature `The AI Scientist` 보강 반영: 2026-05-23
-- 섹션 단위 공동 퇴고: 2026-05-25
-- 2026-05-25 반영 내용: 제목·부제 재정리, 4색정리와 Big-O footnote 보강, 에르되시 문제 관련 AI 수학 성과 논쟁 각주 추가, 그림 1·3·4·7 캡션 재작성, Co-Scientist와 AI 과학자 활용 섹션 문체 정리, Cline·Codex 스킬 기반 작업 지시 예시, `tool_allowlist.yaml` 기반 검증 규칙 설명, 결론 제목과 마지막 문단 재정리.
-- 최종 수정: 2026-05-25
-- 작성 형식: `AI Tech Review Letters`
-- 발행 라벨: AI Tech Review Letters: Week 21 (2026-05-23)
-- 주제 탐색 참고자료: 2026-05-22 16:52 KST에 확인한 Gmail 제목 `ai for sci` 메일의 Sergei Kalinin LinkedIn 공유 링크, 사용자가 제공한 Google Korea 파트너십 발표, AlphaEvolve, Google Research AI co-scientist, 뉴스스페이스, Quanta Magazine, 한겨레 기사 링크를 출발점으로 삼았습니다. 메일과 LinkedIn 공유 글은 주제 탐색 신호로만 두었고, 본문 결론은 논문, 공식 발표, 공식 문서, 공개 보도 원문을 다시 확인해 정리했습니다.
-- 주요 검증 참고자료: Erdős Problems #1196 공식 페이지와 discussion thread, arXiv `Primitive sets and von Mangoldt chains`, Scientific American, Quanta Magazine, KIAS Horizon, Nature Co-Scientist·Robin·ERA·The AI Scientist 논문, Nature Bixonimania News Feature, Nature 사설과 Comment, Google Korea·Google Research·Google DeepMind 공식 발표, OpenAI Codex 공식 자료, Gemini CLI·Claude Code·Cline·Qwen 공식 문서.
-- 작성 및 검토 방식: 도입부, 섹션 제목, 캡션, 작업 폴더 예시, 검증 규칙, 결론 문단에서 AI식 관용 표현, 번역체, 과한 대비 구조, 독자 해석을 앞서 정해버리는 문장, 모호한 주어를 점검했습니다. 문체 기준은 [writing-style-audit-harness](../../.automation/writing-style-audit-harness.md), [writing-harness](../../.codex/rules/writing-harness.md), [horizon-style-patterns](../../.automation/horizon-style-patterns.md), [editorial-reference-pool](../../.automation/editorial-reference-pool.md), `ai-tech-review-editorial-harness`를 참고했습니다.
-- 시각 자료 작성 방식: 본문 figure는 [FIGURE_MANIFEST.md](../artifacts/final_review/figures/FIGURE_MANIFEST.md)와 [IMAGEGEN_MANIFEST.md](../artifacts/final_review/figures/imagegen/IMAGEGEN_MANIFEST.md)에 기록했습니다. Imagegen은 에르되시 도입부, AI Co-Scientist 연구실 장면, Bixonimania/지식 오염 섹션 opener에 사용했습니다. 정확한 한국어 라벨과 흐름이 필요한 원시 집합 설명, 실행 루프, 작업 폴더, 위험 매트릭스는 SVG로 작성했습니다.
-- 이전 리뷰 참고: [AI Updates Weekly final review](../../2026-05-09_ai-updates-weekly/reports/2026-05-09_ai-updates-weekly_final_review.md)의 작성 정보와 계층형 References, [TabPFN OLED Manufacturing Foundation Model final review](../../2026-05-07_tabpfn-oled-manufacturing-foundation-model/reports/2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md)의 촘촘한 provenance와 figure 기록 방식을 참고했습니다.
-- HTML 작성 방식: [markdown_to_html.py](../../scripts/markdown_to_html.py)의 `final-review` 모드로 HTML companion을 생성했습니다. 2026-05-25 섹션 단위 퇴고 이후에는 markdown 원고가 최신이며, HTML companion과 배포용 `dist` 패키지는 최종 문안 확정 뒤 다시 생성할 예정입니다.
+- 책임 편집: 김현중
+- 원 작성: Codex 기반 GPT-5 계열 에이전트 하네스. 정확한 모델 식별자와 원 작성 세션의 개별 에이전트 명단은 미보존입니다.
+- 최초 발행: 2026-05-23. 당시 원고는 2026-05-25까지 도입·문체·캡션·실행 예시를 공동 퇴고했습니다. 이번 개편에서도 이 시점의 논의와 근거 범위를 유지합니다.
+- 2026-10-30 개편: 반복적인 예상 반박과 설명을 다듬고, The AI Scientist의 워크숍 평가·철회·사람의 선별, Robin의 약물별 실험 연결을 정정했습니다. 원제·전 저자·출판 정보와 최초 인용순을 APS 기준으로 대조했습니다. 정식 서지 보완일은 이번 검토일이며 새 연구 동향을 과거 원고에 소급한 것이 아닙니다.
+- 이번 AI 보조: OpenAI Codex. `root`는 원고 통합·퇴고·출력·게시, `legacy1030_science`는 원 논문의 결과와 과학적 조건, `legacy1030_references`는 원제·저자 크레딧·APS 서지와 근거 대응, `legacy1030_prose`는 논지 전개와 문체를 독립 감수했습니다. 정확한 실행 모델 식별자는 미보존입니다.
+- 적용 기준: AI Tech Review Editorial Harness 2026.08과 현행 문체·과학 설명·APS 기준. 원 작성 당시의 미보존 검증 기록을 이번 감수로 재구성하지 않습니다.
+- 이번 원문 대조: 원시 집합 논문의 서론·정리·#1196 증명·AI 기여 공개와 기존 상한 원전의 관련 절, Nature 네 연구 논문의 관련 결과·방법·한계와 도판 캡션을 읽었습니다. Lean 저장소는 명시한 커밋의 정리·도구 버전·연결 파일을 정적으로 대조했습니다. 별도 보충자료 전체나 Lean 커널 실행을 검토 범위에 넣지 않았습니다. 제한된 Bixonimania 기사 전문을 읽었다고 주장하지 않으며 보도에 귀속합니다.
+- 실행 예시: 문제 카드·파일 구조·YAML·JSON·평가 코드는 회사의 연구 작업을 설계하기 위한 개념 예시입니다. 점수는 입력 항목의 유무를 정리하며 가설의 과학적 타당성이나 자료 반출 권한을 보증하지 않습니다. 원 논문의 연구·모델·세포 실험이나 실제 OLED 평가·사내망 구축을 독립 재현한 작업은 아닙니다.
+- 시각자료: 기존 7개 그림을 유지했습니다. 그림 1·3·4는 AI 생성 개념 일러스트, 그림 2·5·6·7은 리뷰가 작성한 설명용 SVG입니다. 그림 2의 상계 설명을 원 논문의 양화 조건에 맞춰 정정했습니다. 원 논문의 측정 도표·실제 연구 장면과 구별합니다.
+- 사용자가 허용한 순차 개편 범위에서 게시하며, 이번 실행에서 사람의 문장별 심사나 독자 이해도 실험을 수행했다고 표시하지 않습니다.
 
 ## References
 
-### 직접 검증 참고자료
-
-- [Erdős Problems #1196](https://www.erdosproblems.com/1196) - primitive set에 대한 에르되시 문제 #1196, `PROVED (LEAN)` 표시, GPT-5.4 Pro와 Liam Price 프롬프트 관련 설명 확인.
-- [Erdős Problems #1196 Discussion Thread](https://www.erdosproblems.com/forum/thread/1196) - 문제 풀이 경로와 후속 논의 확인.
-- [Primitive sets and von Mangoldt chains: Erdős Problem #1196 and beyond](https://arxiv.org/abs/2605.00301) - Markov chain, von Mangoldt weights, #1196/#1217 확장 설명 확인.
-- [OpenAI: An OpenAI model has disproved a central conjecture in discrete geometry](https://openai.com/index/model-disproves-discrete-geometry-conjecture/) - 1946년 에르되시의 평면 단위거리 문제, 오픈AI 내부 추론 모델의 반례 구성, 외부 수학자 검증 설명 확인.
-- [arXiv: Remarks on the disproof of the unit distance conjecture](https://arxiv.org/abs/2605.20695) - 평면 단위거리 문제 반례에 대한 외부 수학자들의 human-verified 설명과 해석 확인.
-- [Scientific American: An amateur just solved a 60-year-old math problem-by asking AI](https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/) - Liam Price, Kevin Barreto, Terence Tao, Jared Duker Lichtman으로 이어지는 발견 경로와 GPT 출력의 거친 성격 확인.
-- [AI타임스: 오픈AI, 추론 모델로 80년 된 기하학 난제 해결..."수학계 검증 거쳐"](https://www.aitimes.com/news/articleView.html?idxno=210785) - #1196과 다른 에르되시 평면 단위거리 문제 보도, 오픈AI 발표와 이전 AI 수학 성과 주장 논쟁 맥락 확인.
-- [Quanta Magazine: The AI Revolution in Math Has Arrived](https://www.quantamagazine.org/the-ai-revolution-in-math-has-arrived-20260413/) - 수학계의 AI 활용 분위기, 기대와 우려, 형식 검증 논의 참고.
-- [KIAS Horizon: 수학, 인공지능, 그리고 형식화 1 - 수학을 위한 인공지능](https://horizon.kias.re.kr/wp-content/uploads/2026/04/Horizon_%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC-%E1%84%80%E1%85%B3%E1%84%85%E1%85%B5%E1%84%80%E1%85%A9-%E1%84%92%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%92%E1%85%AA_1_%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%84%8B%E1%85%AE.pdf) - 한국어 과학 설명, AI 수학 연구, 형식화의 독자 친화적 전개 참고.
-- [뉴스스페이스: AI, 인간 수학자의 '성역' 넘봤나... GPT-5.4의 '에르되시 난제' 해결 주장의 실체](https://www.newsspace.kr/news/article.html?no=13494) - 국내 독자용 에르되시 #1196 소식 도입 참고.
-- [Nature: Accelerating scientific discovery with Co-Scientist](https://www.nature.com/articles/s41586-026-10644-y) - Gemini 기반 multi-agent AI Co-Scientist, 가설 생성·비판·개선 구조, biomedical validation 확인.
-- [Nature: A multi-agent system for automating scientific discovery](https://www.nature.com/articles/s41586-026-10652-y) - Robin, dAMD 후보 발굴, ripasudil/KL001 실험 확인.
-- [Nature: An AI system to help scientists write expert-level empirical software](https://www.nature.com/articles/s41586-026-10658-6) - ERA, LLM과 tree search 기반 과학 소프트웨어 생성, leaderboard 성능 확인.
-- [Nature: Towards end-to-end automation of AI research](https://www.nature.com/articles/s41586-026-10265-5) - The AI Scientist, 아이디어 생성부터 논문 작성과 자체 리뷰까지의 자동화 흐름, 워크숍 peer review 통과 사례와 한계 확인.
-- [Nature News Feature: Scientists invented a fake disease. AI told people it was real](https://www.nature.com/articles/d41586-026-01100-y) - Bixonimania 사례, 지식 오염과 citation trail 위험 확인.
-- [한겨레: 가짜 질병 던졌더니 덥석 문 AI, 퍼나르고 학술지 인용까지](https://www.hani.co.kr/arti/science/science_general/1253718.html) - Bixonimania 사례의 국내 보도와 독자 친화적 맥락 확인.
-- [Nature Editorial: Why AI cannot do good science without humans](https://www.nature.com/articles/d41586-026-01551-3) - AI 과학 활용에서 인간 연구자, 투명성, 재현성 요구 확인.
-- [Nature Comment: The uncritical adoption of AI in science is alarming - we urgently need guard rails](https://www.nature.com/articles/d41586-026-01557-x) - 과학계 AI 도입의 비판적 수용과 guardrail 논의 확인.
-- [Google Korea: 구글 딥마인드와 과학기술정보통신부, 국가 AI 파트너십 발표](https://blog.google/intl/ko-kr/company-news/inside-google/announcing-our-partnership-with-the-republic-of-korea/) - K-문샷, AI Campus, AI co-scientist 통합 가능성, 생명과학·에너지·기상·기후 협력 방향 확인.
-- [Google Research: Accelerating scientific breakthroughs with an AI co-scientist](https://research.google/blog/accelerating-scientific-breakthroughs-with-an-ai-co-scientist/) - Nature 논문 이전의 Google Research AI co-scientist 공개 설명 확인.
-- [Google DeepMind: AlphaEvolve](https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/) - Gemini 기반 coding agent, 자동 평가와 진화 알고리즘, 데이터센터·칩 설계·수학 적용 주장 확인.
-- [OpenAI: Codex](https://openai.com/codex/) - Codex의 코드 읽기, 수정, 테스트, 리뷰 보조 경로 확인.
-- [OpenAI: Unrolling the Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/) - 사용자 입력, 모델 추론, 도구 호출, 관찰, 계획 반복 구조 확인.
-- [Google Developers: Gemini CLI](https://developers.google.com/gemini-code-assist/docs/gemini-cli) - Gemini CLI 사용 경로 확인.
-- [Gemini CLI Docs](https://developers.google.com/gemini-code-assist/docs/gemini-cli) - 터미널 기반 에이전트 작업과 자동화 연결 경로 확인.
-- [Anthropic: Claude Code CLI reference](https://code.claude.com/docs/en/cli-reference) - Claude Code CLI와 print mode 자동화 경로 확인.
-- [Cline Docs: Local models](https://docs.cline.bot/running-models-locally/overview) - Ollama, LM Studio 기반 로컬 모델 사용 경로 확인.
-- [Qwen: Qwen3-Coder](https://qwenlm.github.io/blog/qwen3-coder/) - Qwen3-Coder와 Qwen Code command-line tool 확인.
-
-### 처음 참고한 자료
-
-- Gmail 제목 `ai for sci` 메일 - 2026-05-22 16:52 KST 확인. 본문은 Sergei Kalinin의 `The end of the beginning for AI for Science` LinkedIn 공유 링크로 구성되어 있었고, 이 리뷰에서는 Nature 2026 AI for Science 논문 묶음과 “실험 세계로 연결되는 AI 과학자” 문제의식으로 확장했습니다.
-- 사용자 제공 링크 묶음 - Google Korea 국가 AI 파트너십 발표, AlphaEvolve, Google Research AI co-scientist, 뉴스스페이스, Quanta Magazine, 한겨레 Bixonimania 기사.
-- [source intake bridge](../sources/2026-05-23_ai-scientist-execution-harness_intake_bridge.md) - 초기 문제의식, seed source, 작성 방향 연결 메모.
-- [review flow note](../notes/2026-05-23_ai-scientist-execution-harness_review_flow.md) - 섹션 구성과 활용 시나리오 설계 메모.
-- [reader audit v2](../notes/2026-05-23_ai-scientist-execution-harness_reader_audit_v2.md) - 도입부, 문체, 그림 배치, 대중강연식 리듬 점검 메모.
-
-### 문체와 시각자료 참고
-
-- [KIAS Horizon](https://horizon.kias.re.kr/) - 한국어 과학 설명에서 장면, 질문, 개념을 천천히 좁혀가는 리듬 참고.
-- [Quanta Magazine](https://www.quantamagazine.org/) - 과학 기사형 hero illustration, figure, caption 배치 참고.
-- [AI Updates Weekly final review](../../2026-05-09_ai-updates-weekly/reports/2026-05-09_ai-updates-weekly_final_review.md) - `작성 정보`, `직접 검증 참고자료`, `처음 참고한 자료`, `문체와 시각자료 참고` 형식 참고.
-- [TabPFN OLED Manufacturing Foundation Model final review](../../2026-05-07_tabpfn-oled-manufacturing-foundation-model/reports/2026-05-07_tabpfn-oled-manufacturing-foundation-model_final_review.md) - 업데이트 provenance, 검증 메모 연결, figure manifest 기록 방식 참고.
-- [writing-style-audit-harness](../../.automation/writing-style-audit-harness.md), [writing-harness](../../.codex/rules/writing-harness.md), [horizon-style-patterns](../../.automation/horizon-style-patterns.md), [editorial-reference-pool](../../.automation/editorial-reference-pool.md) - AI식 표현, 번역체, 과한 대비 구조, 독자 경험 중심 도입부 점검 기준.
-- [editorial-graphics-audit-harness](../../.automation/editorial-graphics-audit-harness.md), [visuals-and-image-generation](../../.codex/rules/visuals-and-image-generation.md) - article-grade figure 배치, imagegen/SVG 역할 분리, caption 기준.
-- [FIGURE_MANIFEST.md](../artifacts/final_review/figures/FIGURE_MANIFEST.md) - 본문 7개 figure의 목적, 도구, 채택 이유, 검토 기록.
-- [IMAGEGEN_MANIFEST.md](../artifacts/final_review/figures/imagegen/IMAGEGEN_MANIFEST.md) - imagegen으로 만든 3개 장면형 illustration의 prompt 요약과 채택 기록.
+<ol class="references">
+<li id="ref-1" value="1"><a href="https://www.newsspace.kr/news/article.html?no=13494" target="_blank" rel="noopener">이종화, [빅테크칼럼] AI, 인간 수학자의 ‘성역’ 넘봤나… GPT-5.4의 &#x27;에르되시 난제&#x27; 해결 주장의 실체, 뉴스스페이스 (16 April 2026), https://www.newsspace.kr/news/article.html?no=13494 (accessed 2026-10-30).</a></li>
+<li id="ref-2" value="2"><a href="https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/" target="_blank" rel="noopener">J. Howlett, An amateur just solved a 60-year-old math problem—by asking AI, Scientific American (24 April 2026), https://www.scientificamerican.com/article/amateur-armed-with-chatgpt-vibe-maths-a-60-year-old-problem/ (accessed 2026-10-30).</a></li>
+<li id="ref-3" value="3"><a href="https://doi.org/10.1090/S0002-9904-1976-14122-5" target="_blank" rel="noopener">K. Appel and W. Haken, Every planar map is four colorable, Bull. Am. Math. Soc. 82, 711 (1976).</a></li>
+<li id="ref-4" value="4"><a href="https://www.erdosproblems.com/1196" target="_blank" rel="noopener">T. F. Bloom, Erdős Problem #1196, https://www.erdosproblems.com/1196 (accessed 2026-10-30).</a></li>
+<li id="ref-5" value="5"><a href="https://arxiv.org/abs/2605.00301v1" target="_blank" rel="noopener">B. Alexeev, K. Barreto, Y. Li, J. D. Lichtman, L. Price, J. I. Shah, Q. Tang, and T. Tao, Primitive sets and von Mangoldt chains: Erdős Problem #1196 and beyond, arXiv:2605.00301v1 (2026).</a></li>
+<li id="ref-6" value="6"><a href="https://doi.org/10.1017/fmp.2023.16" target="_blank" rel="noopener">J. D. Lichtman, A proof of the Erdős primitive set conjecture, Forum Math. Pi 11, e18 (2023).</a></li>
+<li id="ref-7" value="7"><a href="https://github.com/math-inc/Erdos1196/tree/02fba13be7487cc51315f68d8fa7ef277633d3c8" target="_blank" rel="noopener">Math Inc., Primitive Sets Above x in Lean, Lean v4.30.0-rc1, commit 02fba13be7487cc51315f68d8fa7ef277633d3c8 (2026), https://github.com/math-inc/Erdos1196/tree/02fba13be7487cc51315f68d8fa7ef277633d3c8 (accessed 2026-10-30).</a></li>
+<li id="ref-8" value="8"><a href="https://www.quantamagazine.org/the-ai-revolution-in-math-has-arrived-20260413/" target="_blank" rel="noopener">K. Kakaes, The AI revolution in math has arrived, Quanta Magazine (13 April 2026), https://www.quantamagazine.org/the-ai-revolution-in-math-has-arrived-20260413/ (accessed 2026-10-30).</a></li>
+<li id="ref-9" value="9"><a href="https://horizon.kias.re.kr/wp-content/uploads/2026/04/Horizon_%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC-%E1%84%80%E1%85%B3%E1%84%85%E1%85%B5%E1%84%80%E1%85%A9-%E1%84%92%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%92%E1%85%AA_1_%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%84%8B%E1%85%AE.pdf" target="_blank" rel="noopener">이시우, 수학, 인공지능, 그리고 형식화 1 – 수학을 위한 인공지능, HORIZON, https://horizon.kias.re.kr/wp-content/uploads/2026/04/Horizon_%E1%84%89%E1%85%AE%E1%84%92%E1%85%A1%E1%86%A8-%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%80%E1%85%A9%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC-%E1%84%80%E1%85%B3%E1%84%85%E1%85%B5%E1%84%80%E1%85%A9-%E1%84%92%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%92%E1%85%AA_1_%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B5%E1%84%8B%E1%85%AE.pdf (accessed 2026-10-30).</a></li>
+<li id="ref-10" value="10"><a href="https://doi.org/10.1038/s41586-026-10644-y" target="_blank" rel="noopener">J. Gottweis et al., Accelerating scientific discovery with Co-Scientist, Nature 655, 487 (2026).</a></li>
+<li id="ref-11" value="11"><a href="https://doi.org/10.1038/s41586-026-10652-y" target="_blank" rel="noopener">A. E. Ghareeb, B. Chang, L. Mitchener, A. Yiu, C. J. Szostkiewicz, D. Shved, G. J. Gyimesi, J. M. Laurent, S. M. Wright, M. T. Razzak, A. D. White, S. C. Finnemann, M. M. Hinks, and S. G. Rodriques, A multi-agent system for automating scientific discovery, Nature 655, 497 (2026).</a></li>
+<li id="ref-12" value="12"><a href="https://doi.org/10.1038/s41586-026-10658-6" target="_blank" rel="noopener">E. Aygün et al., An AI system to help scientists write expert-level empirical software, Nature 654, 909 (2026).</a></li>
+<li id="ref-13" value="13"><a href="https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/" target="_blank" rel="noopener">AlphaEvolve team, AlphaEvolve: A Gemini-powered coding agent for designing advanced algorithms, Google DeepMind (14 May 2025), https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/ (accessed 2026-10-30).</a></li>
+<li id="ref-14" value="14"><a href="https://doi.org/10.1038/s41586-026-10265-5" target="_blank" rel="noopener">C. Lu, C. Lu, R. T. Lange, Y. Yamada, S. Hu, J. Foerster, D. Ha, and J. Clune, Towards end-to-end automation of AI research, Nature 651, 914 (2026).</a></li>
+<li id="ref-15" value="15"><a href="https://blog.google/intl/ko-kr/company-news/inside-google/announcing-our-partnership-with-the-republic-of-korea/" target="_blank" rel="noopener">구글 딥마인드 팀, 구글 딥마인드와 과학기술정보통신부, 국가 AI 파트너십 발표, Google Korea (27 April 2026), https://blog.google/intl/ko-kr/company-news/inside-google/announcing-our-partnership-with-the-republic-of-korea/ (accessed 2026-10-30).</a></li>
+<li id="ref-16" value="16"><a href="https://doi.org/10.1038/d41586-026-01100-y" target="_blank" rel="noopener">C. Stokel-Walker, Scientists invented a fake disease. AI told people it was real, Nature 652, 559 (2026).</a></li>
+<li id="ref-17" value="17"><a href="https://www.hani.co.kr/arti/science/science_general/1253718.html" target="_blank" rel="noopener">최원형, ‘가짜 질병’ 던졌더니 덥석 문 AI, 퍼나르고 학술지 인용까지, 한겨레 (11 April 2026), https://www.hani.co.kr/arti/science/science_general/1253718.html (accessed 2026-10-30).</a></li>
+<li id="ref-18" value="18"><a href="https://doi.org/10.1038/d41586-026-01551-3" target="_blank" rel="noopener">Why AI cannot do good science without humans, Nature 653, 650 (2026).</a></li>
+<li id="ref-19" value="19"><a href="https://doi.org/10.1038/d41586-026-01557-x" target="_blank" rel="noopener">L. Messeri and M. J. Crockett, The uncritical adoption of AI in science is alarming — we urgently need guard rails, Nature 653, 675 (2026).</a></li>
+<li id="ref-20" value="20"><a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener">M. Bolin, Unrolling the Codex agent loop, OpenAI (23 January 2026), https://openai.com/index/unrolling-the-codex-agent-loop/ (accessed 2026-10-30).</a></li>
+<li id="ref-21" value="21"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/" target="_blank" rel="noopener">T. Mullen and R. J. Salva, Gemini CLI: your open-source AI agent, Google (25 June 2025), https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/ (accessed 2026-10-30).</a></li>
+<li id="ref-22" value="22"><a href="https://code.claude.com/docs/en/cli-reference" target="_blank" rel="noopener">Anthropic, CLI reference, Claude Code Docs, https://code.claude.com/docs/en/cli-reference (accessed 2026-10-30).</a></li>
+<li id="ref-23" value="23"><a href="https://docs.cline.bot/running-models-locally/overview" target="_blank" rel="noopener">Cline, Local models, https://docs.cline.bot/running-models-locally/overview (accessed 2026-10-30).</a></li>
+<li id="ref-24" value="24"><a href="https://qwenlm.github.io/blog/qwen3-coder/" target="_blank" rel="noopener">Qwen Team, Qwen3-Coder: Agentic Coding in the World (22 July 2025), https://qwenlm.github.io/blog/qwen3-coder/ (accessed 2026-10-30).</a></li>
+</ol>
