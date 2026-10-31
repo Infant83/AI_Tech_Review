@@ -1424,12 +1424,36 @@ REVIEWS: tuple[PublicReview, ...] = (
         title="혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까",
         subtitle="난류와 같은 chaotic process에서 장기 통계를 유지하는 예측을 위해 QIML이 제안한 양자 prior 접근을 살펴봅니다",
         date="2026-05-30",
-        updated="2026-05-30",
+        updated="2026-10-31",
         category="Quantum AI",
         tags=("Quantum AI", "Scientific ML", "Chaotic Systems", "QIML"),
         summary=(
             '물속 잉크처럼 작은 차이가 크게 번지는 흐름에서는 짧은 예측이 잘 맞아도 긴 시간 뒤에는 전혀 다른 무늬가 나타날 수 있습니다. QIML은 이런 혼돈계에서 오래 유지되는 통계를 양자 생성 모델로 배워 고전 예측기에 보태는 방법을 시험합니다. 예측을 길게 이어 갈 때 그 흐름다운 물리적 특징을 얼마나 지킬 수 있는지가 관심입니다.'
         ),
+        ai_system="Original edition: Codex Agent; October 31 revision: OpenAI Codex",
+        ai_system_ko="원 작성: Codex Agent; 10월 31일 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "October 31 integration, prose revision, output and publication checks", "10월 31일 원고 통합·퇴고·출력과 공개 게시 확인"),
+            PublicAgent("legacy1031_qiml_science", "Primary QIML paper, integrated supplement and selected static code audit", "QIML 원문·통합 SI와 선택한 코드의 정적 대조"),
+            PublicAgent("legacy1031_refs", "Adjacent-paper author credit, APS references and claim correspondence", "인접 문헌 원저자·APS 서지와 주장 대응 감수"),
+            PublicAgent("legacy1031_prose", "Independent prose, explanatory flow and caption review", "문체·설명 전개·캡션의 독립 감수"),
+        ),
+        verification_scope=(
+            "QIML preprint v5: all 95 pages including integrated SI; published article key passages",
+            "Adjacent-paper metadata and selected passages; historical QIML code and archive selected static checks",
+            "Dataset metadata only; no model training, CFD, QPU experiment or human-reader evaluation reproduced",
+        ),
+        verification_scope_ko=(
+            "QIML v5 통합 SI 포함 95쪽 전체와 정식 출판본의 관련 대목 대조",
+            "인접 문헌 서지·선택한 본문과 당시 QIML 코드·보관본의 선택 정적 대조",
+            "데이터는 메타데이터만 확인; 모델 학습·유체 계산·QPU·사람 독자 평가 미재현",
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-05-30",
+        human_review_level="Original detailed human-review record not retained; October revision used independent AI review, without a human-reader evaluation",
+        human_review_level_ko="원 작성의 세부 사람 검토 기록 미보존; 이번 개편은 독립 AI 감수이며 사람 독자 평가는 수행하지 않음",
+        disclosure_note_ko="원 발행일·당시 근거 범위를 유지하며 10월 31일에 지표·크레딧·코드와 원문의 대응 및 문체를 정정했습니다. 원 작성의 미보존 모델·에이전트 기록은 추정하지 않습니다.",
+        disclosure_note_en="The May publication date and evidence cutoff are retained. The October 31 revision corrects metrics, credit, code-to-paper correspondence and prose; missing original model and agent records are not inferred.",
     ),
     PublicReview(
         folder="2026-05-23_ai-scientist-execution-harness",

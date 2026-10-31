@@ -5977,7 +5977,7 @@
     "title": "혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까",
     "subtitle": "난류와 같은 chaotic process에서 장기 통계를 유지하는 예측을 위해 QIML이 제안한 양자 prior 접근을 살펴봅니다",
     "date": "2026-05-30",
-    "updated": "2026-05-30",
+    "updated": "2026-10-31",
     "category": "Quantum AI",
     "tags": [
       "Quantum AI",
@@ -5997,8 +5997,7 @@
       "long_rollout_physics_check-web.png",
       "qiml_hero_quantum_prior-web.png",
       "qprior_compact_memory_explainer-web.png",
-      "qprior_pipeline.svg",
-      "quantum_chaos_hero.svg"
+      "qprior_pipeline.svg"
     ],
     "translations": [],
     "disclosure": {
@@ -6007,17 +6006,44 @@
         "name_en": "Hyun-Jung Kim"
       },
       "ai_assistance": {
-        "system": "AI-assisted workflow; exact system record not retained",
-        "system_ko": "AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음",
+        "system": "Original edition: Codex Agent; October 31 revision: OpenAI Codex",
+        "system_ko": "원 작성: Codex Agent; 10월 31일 개정: OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": null,
-        "agents": [],
+        "agent_count": 4,
+        "agents": [
+          {
+            "name": "root",
+            "role": "October 31 integration, prose revision, output and publication checks",
+            "role_ko": "10월 31일 원고 통합·퇴고·출력과 공개 게시 확인"
+          },
+          {
+            "name": "legacy1031_qiml_science",
+            "role": "Primary QIML paper, integrated supplement and selected static code audit",
+            "role_ko": "QIML 원문·통합 SI와 선택한 코드의 정적 대조"
+          },
+          {
+            "name": "legacy1031_refs",
+            "role": "Adjacent-paper author credit, APS references and claim correspondence",
+            "role_ko": "인접 문헌 원저자·APS 서지와 주장 대응 감수"
+          },
+          {
+            "name": "legacy1031_prose",
+            "role": "Independent prose, explanatory flow and caption review",
+            "role_ko": "문체·설명 전개·캡션의 독립 감수"
+          }
+        ],
         "agent_roles": [
-          "individual agent-role roster not retained"
+          "root — October 31 integration, prose revision, output and publication checks",
+          "legacy1031_qiml_science — Primary QIML paper, integrated supplement and selected static code audit",
+          "legacy1031_refs — Adjacent-paper author credit, APS references and claim correspondence",
+          "legacy1031_prose — Independent prose, explanatory flow and caption review"
         ],
         "agent_roles_ko": [
-          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+          "root — 10월 31일 원고 통합·퇴고·출력과 공개 게시 확인",
+          "legacy1031_qiml_science — QIML 원문·통합 SI와 선택한 코드의 정적 대조",
+          "legacy1031_refs — 인접 문헌 원저자·APS 서지와 주장 대응 감수",
+          "legacy1031_prose — 문체·설명 전개·캡션의 독립 감수"
         ]
       },
       "harness": {
@@ -6027,23 +6053,25 @@
       },
       "verification": {
         "evidence_cutoff": "2026-05-30",
-        "primary_source_check": null,
+        "primary_source_check": true,
         "scope": [
-          "original source-verification record not retained",
-          "current public links and final HTML checked"
+          "QIML preprint v5: all 95 pages including integrated SI; published article key passages",
+          "Adjacent-paper metadata and selected passages; historical QIML code and archive selected static checks",
+          "Dataset metadata only; no model training, CFD, QPU experiment or human-reader evaluation reproduced"
         ],
         "scope_ko": [
-          "원 작성 세션의 출처 검증 기록 미보존",
-          "현재 공개 링크와 최종 HTML 확인"
+          "QIML v5 통합 SI 포함 95쪽 전체와 정식 출판본의 관련 대목 대조",
+          "인접 문헌 서지·선택한 본문과 당시 QIML 코드·보관본의 선택 정적 대조",
+          "데이터는 메타데이터만 확인; 모델 학습·유체 계산·QPU·사람 독자 평가 미재현"
         ],
         "human_review_level": {
-          "ko": "세부 검토 수준은 별도 기록되지 않음",
-          "en": "review level not separately retained"
+          "ko": "원 작성의 세부 사람 검토 기록 미보존; 이번 개편은 독립 AI 감수이며 사람 독자 평가는 수행하지 않음",
+          "en": "Original detailed human-review record not retained; October revision used independent AI review, without a human-reader evaluation"
         }
       },
       "note": {
-        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
-        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+        "ko": "원 발행일·당시 근거 범위를 유지하며 10월 31일에 지표·크레딧·코드와 원문의 대응 및 문체를 정정했습니다. 원 작성의 미보존 모델·에이전트 기록은 추정하지 않습니다.",
+        "en": "The May publication date and evidence cutoff are retained. The October 31 revision corrects metrics, credit, code-to-paper correspondence and prose; missing original model and agent records are not inferred."
       }
     }
   },

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="470" viewBox="-150 -55 1280 470" role="img" aria-labelledby="title desc">
   <title id="title">Q-Prior pipeline</title>
-  <desc id="desc">Quantum generator learns invariant statistics from chaotic flow data and provides a reusable prior to a classical autoregressive predictor.</desc>
+  <desc id="desc">A quantum generator learns a statistical distribution offline. A classical predictor uses the fixed prior in training and feeds its output back as its next prediction input.</desc>
   <rect width="980" height="360" fill="#f8fafc"/>
   <text x="42" y="52" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#111827">QIML pipeline: quantum prior, classical rollout</text>
   <g font-family="Arial, sans-serif" font-size="18" fill="#111827">
@@ -22,13 +22,14 @@
     <path d="M236 157 H282"/>
     <path d="M494 157 H540"/>
     <path d="M696 157 H742"/>
-    <path d="M841 214 C835 265 732 291 602 292 C431 293 310 265 264 219"/>
+    <path d="M841 214 V242 H964 V88 H841 V100"/>
   </g>
   <defs>
     <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
       <path d="M2,2 L10,6 L2,10 Z" fill="#334155"/>
     </marker>
   </defs>
+  <text x="755" y="273" font-family="Arial, sans-serif" font-size="16" fill="#475569">Next classical step</text>
   <text x="93" y="270" font-family="Arial, sans-serif" font-size="17" fill="#475569">Offline Q-Prior</text>
   <text x="93" y="301" font-family="Arial, sans-serif" font-size="17" fill="#475569">Classical long rollout</text>
 </svg>

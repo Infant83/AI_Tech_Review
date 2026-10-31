@@ -4,8 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까</title>
+  <meta name="description" content="물속 잉크 한 방울이 순식간에 복잡한 무늬로 퍼지듯, chaotic process에서는 작은 차이가 빠르게 커집니다. QIML 연구는 이 어려운 예측 문제에서 양자 생성 모델을 장기 통계 prior로 쓰는 방법을 제안합니다.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까">
+  <meta property="og:description" content="물속 잉크 한 방울이 순식간에 복잡한 무늬로 퍼지듯, chaotic process에서는 작은 차이가 빠르게 커집니다. QIML 연구는 이 어려운 예측 문제에서 양자 생성 모델을 장기 통계 prior로 쓰는 방법을 제안합니다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="article:published_time" content="2026-05-30">
+  <meta property="article:modified_time" content="2026-10-31">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까">
+  <meta name="twitter:description" content="물속 잉크 한 방울이 순식간에 복잡한 무늬로 퍼지듯, chaotic process에서는 작은 차이가 빠르게 커집니다. QIML 연구는 이 어려운 예측 문제에서 양자 생성 모델을 장기 통계 prior로 쓰는 방법을 제안합니다.">
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
   <style>
     :root {
       --paper: #fbfaf7;
@@ -74,6 +102,24 @@
       color: var(--blue);
       font-weight: 650;
       text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
     }
 
     .hero {
@@ -240,6 +286,165 @@
       background: transparent;
     }
 
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display {
+      margin: 18px 0 20px;
+      padding: 18px 22px;
+      overflow-x: auto;
+      border: 1px solid #d2cdc1;
+      border-radius: 10px;
+      background: #fbfaf6;
+      color: #101a24;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.7;
+      text-align: center;
+      font-variant-numeric: lining-nums;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .math-display .math-row {
+      min-width: max-content;
+      white-space: nowrap;
+    }
+
+    .math-display .math-row + .math-row {
+      margin-top: 2px;
+    }
+
+    .math-display .math-indent {
+      padding-left: 2.4em;
+    }
+
+    .math-display var {
+      font-family: inherit;
+      font-style: italic;
+    }
+
+    .math-display .roman {
+      font-style: normal;
+    }
+
+    .math-display sub,
+    .math-display sup {
+      font-size: 0.68em;
+      line-height: 0;
+    }
+
+    .math-display .sum {
+      display: inline-block;
+      margin: 0 0.08em;
+      font-size: 1.28em;
+      line-height: 0.8;
+      vertical-align: -0.06em;
+    }
+
+    .math-display .frac {
+      display: inline-grid;
+      grid-template-rows: auto auto;
+      margin: 0 0.14em;
+      vertical-align: -0.46em;
+      text-align: center;
+      line-height: 1.08;
+    }
+
+    .math-display .frac > span:first-child {
+      padding: 0 0.22em 0.06em;
+      border-bottom: 1px solid currentColor;
+    }
+
+    .math-display .frac > span:last-child {
+      padding: 0.06em 0.22em 0;
+    }
+
+    .math-display .condition {
+      margin-left: 1.2em;
+      color: #5e5a52;
+      font-size: 0.88em;
+      font-style: normal;
+    }
+
+    .math-inline {
+      white-space: nowrap;
+      font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+      font-size: 1.02em;
+    }
+
+    .reader-layers {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 24px 0 30px;
+    }
+
+    .reader-layer {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .reader-layer strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--blue);
+      font-size: 0.88rem;
+    }
+
+    .reader-layer span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.62;
+    }
+
+    details.deep-dive {
+      margin: 24px 0;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    details.deep-dive > summary {
+      padding: 15px 18px;
+      cursor: pointer;
+      color: var(--blue);
+      font-weight: 760;
+      line-height: 1.5;
+    }
+
+    details.deep-dive[open] > summary {
+      border-bottom: 1px solid var(--line);
+      background: var(--blue-soft);
+    }
+
+    details.deep-dive > :not(summary) {
+      margin-left: 18px;
+      margin-right: 18px;
+    }
+
+    details.deep-dive > :last-child {
+      margin-bottom: 18px;
+    }
+
+    details.deep-dive > table {
+      display: block;
+      width: auto;
+      max-width: calc(100% - 36px);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .final-article img,
     .final-article svg,
     .final-article video,
@@ -258,6 +463,10 @@
       width: 100%;
       border: 1px solid var(--line);
       background: #ffffff;
+    }
+
+    .diagram-mobile {
+      display: none !important;
     }
 
     .article-hero-figure figcaption {
@@ -401,10 +610,44 @@
     }
 
     @media (max-width: 760px) {
+      .reader-layers {
+        grid-template-columns: 1fr;
+      }
+
+      .math-display {
+        padding: 15px 16px;
+        font-size: 1rem;
+        line-height: 1.65;
+        text-align: left;
+      }
+
+      .math-display .math-indent {
+        padding-left: 1.1em;
+      }
+
+      .diagram-desktop {
+        display: none !important;
+      }
+
+      .diagram-mobile {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
+      }
+
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
+        width: 100%;
+        max-width: 100%;
       }
     }
 
@@ -513,7 +756,11 @@
   <div class="topline">
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 22 (2026-05-30)</span>
-      <span><a href="2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md">2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md</a></span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+
+        <a href="2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md">2026-05-30_quantum-informed-ai-chaotic-processes_final_review.md</a>
+      </div>
     </div>
   </div>
 
@@ -524,7 +771,7 @@
         <h1>혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까</h1>
         <p class="dek">물속 잉크 한 방울이 순식간에 복잡한 무늬로 퍼지듯, chaotic process에서는 작은 차이가 빠르게 커집니다. QIML 연구는 이 어려운 예측 문제에서 양자 생성 모델을 장기 통계 prior로 쓰는 방법을 제안합니다.</p>
       </section>
-      
+
     </div>
   </header>
 
@@ -532,47 +779,51 @@
     <article class="final-article">
       <figure class="article-hero-figure">
   <img src="qiml_hero_quantum_prior-web.png" alt="QIML의 혼돈 유동 예측 장면: 거대한 turbulent flow, 작은 Q-Prior 장치, 긴 rollout을 보여주는 scientific ML 대시보드가 함께 놓인 기사형 일러스트레이션">
-  <figcaption><strong>그림 1.</strong> QIML이 다루는 장면을 한 화면에 묶었습니다. 왼쪽의 turbulent flow는 작은 오차가 커지는 혼돈계를, 가운데의 Q-Prior 장치는 양자 생성 모델이 압축한 장기 통계를, 오른쪽의 scientific ML 대시보드는 그 prior를 이용한 long rollout 검증 도구를 나타냅니다.</figcaption>
+  <figcaption><strong>그림 1.</strong> QIML이 다루는 장면을 한 화면에 묶었습니다. 왼쪽의 난류는 작은 오차가 커지는 혼돈계를, 가운데의 Q-Prior 토큰은 학습한 통계분포를, 오른쪽 대시보드는 긴 예측의 평가를 나타냅니다. 원 논문<a href="#ref-1">[1]</a>의 역할 분담을 해석한 AI 생성 개념 그림입니다.</figcaption>
 </figure>
 
-<p>먼저 아주 작은 실험을 떠올려보겠습니다. 투명한 물통에 잉크 한 방울을 떨어뜨리면 처음에는 어디서 시작했는지 보입니다. 몇 초가 지나면 잉크는 가느다란 실처럼 휘고, 갈라지고, 서로 말려 들어갑니다. 처음 위치가 아주 조금 달랐다면 나중의 무늬도 달라집니다. 그런데 멀리서 보면 여전히 비슷한 점도 있습니다. 잉크가 퍼지는 속도, 소용돌이의 크기, 진해지는 구역과 옅어지는 구역의 분포는 완전히 아무렇게나 움직이지 않습니다.</p>
-<p>혼돈계 예측도 이 장면과 닮았습니다. 여기서 혼돈은 &ldquo;아무 규칙도 없다&rdquo;는 뜻이 아닙니다. 규칙은 있지만, 시작점의 작은 차이가 시간이 지나며 크게 벌어지는 동역학계를 말합니다. 그래서 모델이 처음 몇 step을 맞히는 것과, 긴 시간이 지난 뒤에도 그 시스템다운 분포와 물리량을 유지하는 것은 서로 다른 능력입니다.</p>
+<p>먼저 아주 작은 실험을 떠올려보겠습니다. 물이 소용돌이치는 투명한 물통에 잉크 한 방울을 떨어뜨리면 처음에는 어디서 시작했는지 보입니다. 몇 초가 지나면 잉크는 가느다란 실처럼 휘고, 갈라지고, 서로 말려 들어갑니다. 처음 위치가 아주 조금 달랐다면 나중의 무늬도 달라집니다. 그런데 멀리서 보면 여전히 비슷한 점도 있습니다. 잉크가 퍼지는 속도, 소용돌이의 크기, 진해지는 구역과 옅어지는 구역의 분포는 완전히 아무렇게나 움직이지 않습니다.</p>
+<p>혼돈계 예측도 이 장면과 닮았습니다. 혼돈계에서는 같은 규칙을 따르더라도 시작점의 작은 차이가 시간이 지나며 크게 벌어집니다. 그래서 모델이 처음 몇 step을 맞히는 것과, 긴 시간이 지난 뒤에도 그 시스템다운 분포와 물리량을 유지하는 것은 서로 다른 능력입니다.</p>
 <figure class="figure-panel">
   <img src="feynman_chaos_drop_analogy-web.png" alt="Chaotic process의 sensitivity to initial conditions를 설명하는 물통 비유: 잉크 소용돌이와 점점 벌어지는 두 색 실">
-  <figcaption><strong>그림 2.</strong> 물속 잉크 한 방울은 sensitivity to initial conditions를 설명하기 좋은 도구입니다. 자세한 무늬는 조금만 지나도 달라지지만, probability density나 소용돌이 scale처럼 장기 통계 검증에 쓰이는 특징은 남습니다.</figcaption>
+  <figcaption><strong>그림 2.</strong> 흐르는 물속의 잉크를 빌려 초기 조건에 대한 민감도를 표현한 AI 생성 개념 그림입니다. 두 색 실의 벌어짐과 남아 있는 소용돌이를 통해 개별 무늬와 통계적 특징을 구별합니다.</figcaption>
 </figure>
 
 <p>난류, 유체 흐름, 플라즈마, 일부 화학 반응을 예측할 때도 같은 문제가 나타납니다. 처음에는 그럴듯한 예측이 나옵니다. 하지만 예측을 길게 굴리면 에너지 분포가 흐려지고, 작은 스케일의 움직임이 사라지거나 과장되고, 결국 실제 시스템과 다른 상태로 갑니다. 이때 연구자가 묻는 질문은 단순한 정확도 하나로 끝나지 않습니다. &ldquo;얼마나 오래 비슷한 장면을 따라갔는가&rdquo;와 함께 &ldquo;나중에도 같은 물리계처럼 보이는가&rdquo;를 봐야 합니다.</p>
-<p><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc">Lev Selector의 2026년 5월 29일 AI Updates Weekly</a>에서 눈에 들어온 대목도 여기에 있습니다. 영상의 <code>Quantum-informed AI for Chaotic Processes</code> 장은 University College London 쪽 연구를 소개하며, 양자 계산이 chaotic/complex system 예측에 도움을 줄 수 있다는 신호를 짧게 다룹니다. 중심 논문은 Wang, Xue, Gao, Coveney의 <a href="https://arxiv.org/abs/2507.19861">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a>입니다. 이 논문은 2026년 <em>Science Advances</em>에 실렸고 DOI는 <a href="https://doi.org/10.1126/sciadv.aec5049">10.1126/sciadv.aec5049</a>입니다.</p>
+<p>Lev Selector의 2026년 5월 29일 AI Updates Weekly에서 눈에 들어온 대목도 여기에 있습니다<a href="#ref-2">[2]</a>. 영상이 소개한 중심 연구는 Wang, Xue, Gao, Coveney가 Science Advances에 발표한 Quantum-informed machine learning for predicting spatiotemporal chaos with practical quantum advantage입니다<a href="#ref-1">[1]</a>. 연구진은 긴 예측에서 잃기 쉬운 통계분포를 양자 생성 모델로 학습하고, 그 분포를 고전 예측기의 학습에 보탭니다.</p>
 <aside class="callout callout-highlight">
 <p class="callout-label">Highlight</p>
-<p>이 논문의 목표는 양자컴퓨터로 유체 시뮬레이션 전체를 대신하겠다는 데 있지 않습니다. 더 현실적인 목표는 <strong>양자 생성 모델이 혼돈계의 장기 통계 구조를 작은 prior로 압축하고, 고전적 scientific ML 예측기가 그 prior를 재사용할 수 있는지</strong> 확인하는 것입니다.</p>
+<p><strong>QIML은 양자 생성 모델이 배운 통계분포를 고전 예측기의 학습 기준으로 사용합니다.</strong> 같은 초기 상태를 한동안 잘 따라가는 능력과, 긴 시간이 지나도 그 유동의 통계적 특징을 유지하는 능력을 함께 살피는 설계입니다.</p>
 </aside>
 <h2 id="q-prior">Q-Prior가 맡는 일</h2>
 <p><code>prior</code>라는 말부터 풀어보겠습니다. prior는 모델이 예측을 시작하기 전에 가지고 들어가는 배경 지식입니다. 숙련된 연구자가 난류 화면을 볼 때 모든 픽셀을 외우지는 않습니다. 대신 &ldquo;이 정도 스케일의 소용돌이가 생긴다&rdquo;, &ldquo;에너지가 이런 식으로 분포한다&rdquo;, &ldquo;시간 상관은 이 정도로 줄어든다&rdquo; 같은 감각을 가지고 봅니다. QIML 논문은 이런 감각의 일부를 양자 생성 모델로 배워보려 합니다.</p>
-<p>Wang et al. 논문에서 양자 구성요소가 맡는 일은 예측 전체를 실행하는 것이 아닙니다. 먼저 chaotic flow 데이터에서 장기적으로 유지되는 통계 구조를 양자 생성 모델이 학습합니다. 논문은 이 결과를 <strong>Q-Prior</strong>라고 부릅니다. 그다음 Koopman-style 고전 autoregressive predictor가 이 Q-Prior를 loss에 넣어 학습합니다.</p>
+<p>논문이 설계한 QIML은 유동 데이터의 속도값 분포를 양자 생성 모델로 학습합니다. 이 통계적 기준이 <strong>Q-Prior</strong>입니다. 고전 예측기가 내놓은 유동장도 미분 가능한 히스토그램으로 바꾸고, 그 분포가 Q-Prior와 얼마나 다른지를 KL 발산이나 최대 평균 차이(MMD)로 계산해 학습 손실에 더합니다. 데이터의 장면을 맞추는 손실에 통계분포를 맞추는 기준을 함께 주는 것입니다<a href="#ref-1">[1]</a>.</p>
 <figure class="figure-panel">
   <img src="qprior_compact_memory_explainer-web.png" alt="Q-Prior 설명도: 복잡한 chaotic flow가 invariant statistics를 담은 작은 prior 토큰으로 압축되고 Koopman-style predictor 작업대로 전달되는 장면">
-  <figcaption><strong>그림 3.</strong> Q-Prior는 복잡한 유동장 전체를 저장하는 장치가 아닙니다. 긴 예측에서 잃기 쉬운 invariant statistics를 작은 형태로 보존하고, Koopman-style predictor가 학습과 검증 과정에서 다시 참고하는 도구 역할을 맡습니다.</figcaption>
+  <figcaption><strong>그림 3.</strong> 복잡한 유동에서 학습한 통계분포를 고전 예측기의 학습에 전달하는 역할을 토큰으로 표현했습니다<a href="#ref-1">[1]</a>. 토큰과 작업대는 이 전달 관계를 표현한 AI 생성 개념 그림입니다.</figcaption>
 </figure>
 
 <figure class="figure-panel">
+  <div class="figure-graphic-scroll" style="max-width:100%;overflow-x:auto;" tabindex="0" role="region" aria-label="그림 4 도식 가로 스크롤">
   <img src="qprior_pipeline.svg" alt="혼돈 유동 데이터에서 양자 생성 모델이 불변 통계를 학습하고 Q-Prior를 만든 뒤 고전 예측기가 긴 rollout에 사용하는 파이프라인">
-  <figcaption><strong>그림 4.</strong> QIML은 양자 생성 모델이 혼돈계의 불변 통계를 Q-Prior로 압축하고, 고전 예측기가 이를 재사용하는 구조입니다. 양자 하드웨어는 prior 학습 단계에 집중됩니다.</figcaption>
+  </div>
+  <figcaption><strong>그림 4.</strong> 원 논문<a href="#ref-1">[1]</a>의 역할 분담을 재구성한 리뷰 제작 SVG입니다. 오프라인으로 학습한 Q-Prior를 고전 예측기의 학습에 사용하고, 예측 단계에서는 고전 모델이 자신의 출력을 다음 입력으로 받아 긴 rollout을 만듭니다. 오른쪽의 자체 루프가 이 자기회귀를 뜻합니다.</figcaption>
 </figure>
 
-<p>이 설계는 현재 양자 하드웨어의 제약과도 맞물립니다. NISQ 장비는 잡음, 보정, 샷 수, 대기열, 측정 비용이 모두 부담입니다. QIML은 양자 하드웨어를 매 예측 단계마다 쓰지 않고, 한 번 오프라인으로 prior를 만든 뒤 고전 모델이 그 prior를 계속 사용하게 합니다. 양자가 과학 AI 파이프라인 안에서 좁지만 유용한 역할을 맡을 수 있는지 보는 접근입니다.</p>
-<p>논문이 직접 평가한 대상은 세 가지입니다. Kuramoto-Sivashinsky equation, 2D Kolmogorov flow, 3D turbulent channel flow입니다. 영상에서는 weather나 disease spread 같은 응용 가능성도 언급되지만, 이 논문의 직접 benchmark는 위 세 시스템입니다. 보고된 수치도 둥글게 &ldquo;20% 정도&rdquo;로 받아들이기보다 정확히 읽는 편이 좋습니다. 논문은 classical baseline 대비 predictive distribution accuracy를 최대 17.25%, full-spectrum fidelity를 최대 29.36% 개선했다고 보고합니다.</p>
+<p>이 설계에서는 양자 생성 모델을 오프라인으로 학습한 뒤 그 분포를 고정합니다. 이후 고전 모델의 학습과 예측 단계에서는 양자 회로를 다시 호출하지 않습니다. 잡음·샷 수·보정과 장치 대기시간의 부담을 prior를 만드는 단계에 모아 두는 구조입니다. 논문의 KS·Kolmogorov flow 결과는 고전 양자회로 모사에서 얻었고, 채널 유동 사례에서는 초전도 양자 프로세서 IQM Garnet을 사용한 오프라인 학습도 보고했습니다<a href="#ref-1">[1]</a>.</p>
+<p>논문이 직접 평가한 대상은 Kuramoto–Sivashinsky(KS) 방정식, 2차원 Kolmogorov flow, 3차원 난류 채널 유동의 2차원 단면을 이용한 유입 조건 생성입니다. 동일한 Koopman 계열 예측기에서 Q-Prior를 뺀 구성과 비교하면, KS의 첫 100 step에서 예측장 평균제곱오차(MSE)는 17.25±5.25% 감소했습니다. 에너지 스펙트럼 MSE의 감소는 29.36±9.01%로 보고했습니다<a href="#ref-1">[1]</a>. 이 수치는 세 시스템 전체나 모든 고전 예측기에 대한 공통 우위가 아니라, 해당 KS 비교에서 얻은 상대 감소율입니다. 영상에서 언급한 날씨·질병 확산은 응용 가능성에 대한 소개로 구분합니다<a href="#ref-2">[2]</a>.</p>
 <h2 id="_1">긴 예측에서 남아야 할 물리량</h2>
 <p>혼돈계 예측을 평가할 때 one-step MSE만 보면 놓치는 부분이 많습니다. 한 장면의 픽셀이나 상태 벡터가 잠깐 맞는 것과, 긴 rollout 뒤에도 실제 시스템의 분포와 스펙트럼을 유지하는 것은 다른 문제입니다. 쉽게 말하면, &ldquo;다음 사진 한 장&rdquo;을 맞히는 시험과 &ldquo;오래 지나도 같은 종류의 물리 현상을 만들고 있는지&rdquo;를 보는 시험은 다릅니다.</p>
 <figure class="figure-panel">
   <img src="long_rollout_physics_check-web.png" alt="Long rollout 평가 장면: 하나의 turbulent flow 예측은 probability density와 energy spectrum이 무너지고, 다른 예측은 안정적인 통계 패턴을 유지한다">
-  <figcaption><strong>그림 5.</strong> 긴 예측에서는 화면이 그럴듯해 보이는지와 함께 probability density, energy spectrum, autocorrelation이 실제 물리계의 범위 안에 남아 있는지를 검증해야 합니다. 이때 대시보드와 비교 도구는 예측의 물리적 일관성을 보는 데 쓰입니다.</figcaption>
+  <figcaption><strong>그림 5.</strong> 긴 예측에서 분포와 에너지 스펙트럼이 달라지는 상황을 보여주는 AI 생성 개념 그림입니다. 대시보드의 두 화면은 예측의 통계적 특징이 유지되거나 흐트러지는 상황을 나타내는 은유입니다.</figcaption>
 </figure>
 
 <figure class="figure-panel">
+  <div class="figure-graphic-scroll" style="max-width:100%;overflow-x:auto;" tabindex="0" role="region" aria-label="그림 6 도식 가로 스크롤">
   <img src="chaos_metrics.svg" alt="혼돈계 예측 평가에서 Lyapunov horizon, 상태 분포, 에너지 스펙트럼, 자기상관, attractor statistics를 함께 보아야 함을 보여주는 도식">
-  <figcaption><strong>그림 6.</strong> 혼돈계 예측에서는 단기 오차와 함께 상태 분포, 에너지 스펙트럼, 자기상관, attractor statistics를 확인해야 합니다. 긴 시간 뒤에도 같은 물리계처럼 보이는지가 평가의 핵심입니다.</figcaption>
+  </div>
+  <figcaption><strong>그림 6.</strong> 혼돈계 예측 전반에서 사용할 평가 관점을 정리한 리뷰 제작 SVG입니다. 단기 궤적 오차와 장기 통계가 각각 어떤 질문에 답하는지 보여줍니다.</figcaption>
 </figure>
 
 <table>
@@ -605,23 +856,27 @@
 </tr>
 </tbody>
 </table>
-<p>QIML 논문이 흥미로운 이유는 이런 장기 통계 평가를 전면에 놓기 때문입니다. 특히 turbulent channel inflow 사례에서는 Q-Prior가 빠졌을 때 예측이 불안정해지고, Q-Prior가 들어간 모델은 더 물리적으로 일관된 장기 예측을 보였다고 설명합니다.</p>
-<p>이 지점은 제조, 소재, 공정 데이터에서도 의미가 있습니다. 많은 공정 데이터와 물리 시뮬레이션은 시간이 길어질수록 분포가 무너지는 문제를 겪습니다. OLED 소재 계산, 열 공정, plasma, chemical kinetics, biofluid, 일부 이상징후 예측도 모두 &ldquo;긴 시간 뒤의 평균적인 모양&rdquo;이 중요해지는 순간을 가질 수 있습니다. Q-Prior가 정말로 invariant statistical property를 작게 보존한다면, 양자 AI의 실용성은 &ldquo;멋진 가속&rdquo;보다 &ldquo;긴 예측에서 분포가 덜 무너지는가&rdquo;라는 질문으로 평가해야 합니다.</p>
+<p>채널 유동의 유입 조건을 생성한 사례에서 이 구별이 중요해집니다. 저자들은 Q-Prior를 뺀 예측이 불안정해지는 동안, Q-Prior를 포함한 모델은 긴 예측에서도 더 일관된 분포와 스펙트럼을 유지했다고 보고했습니다<a href="#ref-1">[1]</a>. 한 순간의 오차뿐 아니라 생성한 유동이 장기적으로 어떤 상태를 만드는지를 평가한 결과입니다.</p>
+<p>이 지점은 제조, 소재, 공정 데이터에서도 의미가 있습니다. 많은 공정 데이터와 물리 시뮬레이션은 시간이 길어질수록 분포가 무너지는 문제를 겪습니다. OLED 소재 계산, 열 공정, plasma, chemical kinetics, biofluid, 일부 이상징후 예측도 모두 &ldquo;긴 시간 뒤의 평균적인 모양&rdquo;이 중요해지는 순간을 가질 수 있습니다. 이런 용도로 Q-Prior를 활용하려면 실제 공정의 관측 변수와 시간척도에 맞춰 분포가 유지되는지 시험해야 합니다. 이 논문이 OLED나 공정 데이터를 평가한 것은 아니며, 여기의 연결은 그 평가에서 이어 생각해 볼 연구 방향입니다.</p>
 <h2 id="_2">같이 읽어야 하는 세 갈래</h2>
-<p>QIML 논문 하나만 읽으면 이 분야를 과대평가하거나 과소평가하기 쉽습니다. 최소한 세 갈래를 같이 놓고 봐야 합니다.</p>
+<p>긴 예측의 통계를 다루는 일에는 고전 reservoir computing, 양자 reservoir computing(QRC), QIML처럼 양자 prior를 쓰는 설계가 서로 다른 해법을 제공합니다. 무엇을 학습하고 어디에서 양자 동역학을 쓰는지 비교하면 QIML의 위치도 구체적으로 보입니다.</p>
 <figure class="figure-panel">
+  <div class="figure-graphic-scroll" style="max-width:100%;overflow-x:auto;" tabindex="0" role="region" aria-label="그림 7 도식 가로 스크롤">
   <img src="literature_map.svg" alt="Classical reservoir computing, quantum reservoir computing, quantum-informed AI 논문 계보를 연결한 문헌 지도">
-  <figcaption><strong>그림 7.</strong> QIML의 의미는 classical reservoir computing, quantum reservoir computing, quantum-informed prior 설계를 함께 비교할 때 선명해집니다. 특히 강한 고전 baseline과 비용 포함 비교가 중요합니다.</figcaption>
+  </div>
+  <figcaption><strong>그림 7.</strong> 고전 reservoir computing, QRC와 QIML을 연결한 리뷰 제작 문헌 지도입니다. 화살표는 함께 읽을 논의를 연결합니다.</figcaption>
 </figure>
 
-<p>첫째, classical reservoir computing입니다. Pathak et al.의 <a href="https://doi.org/10.1103/PhysRevLett.120.024102">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a>는 chaotic forecasting에서 reservoir computing이 왜 강한 baseline인지 보여준 논문입니다. 이어지는 <a href="https://doi.org/10.1063/1.5028373">Hybrid Forecasting of Chaotic Processes</a>는 물리 모델과 ML을 섞는 관점을 제공합니다. QIML을 읽을 때도 이 계열과 비교하지 않으면 양자 구성요소의 실제 기여를 분리하기 어렵습니다.</p>
-<p>둘째, quantum reservoir computing입니다. Fujii and Nakajima의 <a href="https://doi.org/10.1103/PhysRevApplied.8.024030">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a>은 QRC의 초기 핵심 논문입니다. 이후 <a href="https://www.nature.com/articles/s41598-022-05061-w">Natural quantum reservoir computing</a>, <a href="https://www.nature.com/articles/s41534-023-00682-z">Time-series QRC with weak and projective measurements</a>, <a href="https://www.nature.com/articles/s41534-023-00734-4">QRC with coherently coupled quantum oscillators</a>는 실제 하드웨어, 측정 방식, oscillator 기반 구현 문제를 넓혔습니다.</p>
-<p>셋째, chaotic process에 직접 붙은 최신 QRC 연구입니다. Ahmed, Tennie, Magri의 <a href="https://arxiv.org/abs/2405.03390">recurrence-free quantum reservoir computing</a>은 Lorenz-63, Lorenz-96, MFE turbulent shear flow의 extreme event 예측을 다룹니다. Steinegger and Raeth의 <a href="https://www.nature.com/articles/s41598-025-87768-0">four-qubit QRC</a>는 작은 qubit system으로 3D chaotic systems의 short-term forecast와 long-term climate를 평가합니다. Kobayashi and Motome의 <a href="https://arxiv.org/abs/2506.17547">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a>는 classical reservoir의 edge-of-chaos 직관을 quantum many-body system으로 확장하려는 설계 원리입니다.</p>
-<h2 id="quantum-advantage">Quantum advantage라는 말을 분해해서 읽기</h2>
-<p>이 분야에서는 <code>quantum advantage</code>라는 표현이 자주 나옵니다. 좋은 연구 신호와 홍보성 표현이 함께 섞이기 쉬운 단어입니다. 그래서 주장을 볼 때는 먼저 metric, baseline, 비용, 하드웨어 조건을 나누어야 합니다.</p>
+<p>첫째, 고전 reservoir computing입니다. Pathak 등의 연구는 공간적으로 큰 혼돈계의 데이터를 병렬 reservoir로 예측하는 방법을 보여줬습니다<a href="#ref-3">[3]</a>. 물리 기반 모형과 reservoir 학습을 결합한 후속 연구는 불완전한 물리 모형의 정보를 활용하는 방법을 제시했습니다<a href="#ref-4">[4]</a>. QIML과 같은 문제를 바라보되, 어떤 물리적 기준을 학습기에 제공할지 다른 선택을 한 사례들입니다.</p>
+<p>둘째, 양자 동역학을 reservoir로 쓰는 QRC입니다. Fujii와 Nakajima는 고정된 양자계의 동역학과 학습하는 readout을 결합하는 틀을 제안했습니다<a href="#ref-5">[5]</a>. Suzuki 등의 natural QRC는 IBM 초전도 장치에서 시간 정보 처리와 분류를 시험했습니다<a href="#ref-6">[6]</a>. Mujal 등의 약한 측정·사영 측정 연구는 측정이 메모리와 자원에 미치는 영향을 수치적으로 분석했고<a href="#ref-7">[7]</a>, Dudas 등의 결합 진동자 연구는 실험으로 뒷받침된 모형을 이용해 양자 reservoir를 모사했습니다<a href="#ref-8">[8]</a>. 실제 장치 실험과 구현을 위한 모형 연구가 각기 다른 질문을 다룹니다.</p>
+<p>셋째, 혼돈계 예측에 QRC를 적용한 연구입니다. Ahmed, Tennie, Magri의 recurrence-free QRC는 Lorenz-63·Lorenz-96와 저차 난류 전단 유동 모형의 극단 사건을 고전 양자회로 모사로 평가했습니다<a href="#ref-9">[9]</a>. Steinegger와 Räth도 네 큐비트 reservoir를 수치 모사해 3차원 혼돈계의 단기 예측과 장기 통계를 살폈습니다<a href="#ref-10">[10]</a>. Kobayashi와 Motome는 다체 양자계가 적분 가능성과 혼돈 사이에서 보이는 동역학을 QRC의 설계 원리와 연결했습니다<a href="#ref-11">[11]</a>. 이 결과들을 QIML과 읽으면, 매 예측 단계에서 양자 reservoir를 사용하는 방식과 오프라인에서 배운 prior를 고전 모델에 제공하는 방식의 차이가 드러납니다.</p>
+<h2 id="_3">정확도와 계산비용을 함께 읽기</h2>
+<p>QIML의 제목에 쓰인 practical quantum advantage를 평가하려면 정확도의 개선과 계산에 든 자원을 함께 읽어야 합니다. 같은 예측기에서 prior를 제거한 비교는 그 기준이 결과에 보탠 효과를 보여줍니다. 논문은 같은 채널 유동 데이터로 약 300개와 124,418개 파라미터를 가진 고전 VAE prior도 비교했습니다. 큰 VAE는 큰 스케일의 구조를 근사했지만 유동의 시간 변화가 줄어 거의 정지한 무늬에 머무는 locking 현상과 고파수 영역의 편차가 남았다고 보고했습니다<a href="#ref-1">[1]</a>. 이 비교를 같은 학습 예산의 다른 생성 모델과 전체 계산비용으로 넓히는 일은 계속 남아 있습니다.</p>
 <figure class="figure-panel">
+  <div class="figure-graphic-scroll" style="max-width:100%;overflow-x:auto;" tabindex="0" role="region" aria-label="그림 8 도식 가로 스크롤">
   <img src="claim_check.svg" alt="Practical quantum advantage 주장을 metric, baseline, cost, scaling 기준으로 점검하는 체크리스트">
-  <figcaption><strong>그림 8.</strong> `practical quantum advantage`는 정확도 개선만으로 충분하지 않습니다. 어떤 metric에서 좋아졌는지, 어떤 고전 baseline과 비교했는지, QPU shot과 보정 비용까지 고려했는지 확인해야 합니다.</figcaption>
+  </div>
+  <figcaption><strong>그림 8.</strong> 정확도·기준법·자원·확장성을 함께 읽기 위한 리뷰 제작 SVG입니다. practical quantum advantage 주장을 검토하는 항목을 정리한 개념 도식입니다.</figcaption>
 </figure>
 
 <table>
@@ -654,8 +909,9 @@
 </tr>
 </tbody>
 </table>
-<p>Wang et al. 논문은 이 중 일부를 꽤 진지하게 다룹니다. <a href="https://github.com/UCL-CCS/QIML">공식 GitHub 저장소</a>와 <a href="https://doi.org/10.5281/zenodo.16419085">Zenodo 데이터</a>가 공개되어 있어 재현 검토의 출발점도 있습니다. 다만 저장소 README를 보면 training script 경로와 hard-coded data path 같은 실무적 caveat가 보입니다. 재현 가능성은 &ldquo;코드가 있다&rdquo;에서 끝나지 않고, 데이터 경로, QPU 조건, classical baseline 재학습, 비용 산정까지 따라가야 합니다.</p>
-<h2 id="_3">용어 정리</h2>
+<p>저장공간의 주장도 그 대상을 확인해야 합니다. 논문의 압축 비교는 학습 데이터를 표현하는 양자 회로 파라미터의 checkpoint 크기를 다룹니다. 원래의 모든 유동장을 손실 없이 되살리는 압축이나 고전 예측기 전체의 메모리 감소와는 구별됩니다<a href="#ref-1">[1]</a>. 학습한 속도 분포가 긴 예측에서 어떤 물리량을 지키는지와, 그 분포를 얻는 데 든 자원을 함께 볼 필요가 있습니다.</p>
+<p>정식 코드 보관본<a href="#ref-12">[12]</a>과 데이터<a href="#ref-13">[13]</a>는 그 비교를 확인할 자료를 제공합니다. 다만 선택한 TCF 학습 스크립트에는 원문의 설계 설명과 맞춰 볼 부분이 있습니다. 예측 속도를 펼쳐 softmax 분포로 만드는 경로는 보충자료가 설명한 속도값 히스토그램과 다르고, 그 앞에서 적용한 detach()는 prior 손실의 기울기가 예측기 파라미터로 전달되는 연결을 끊습니다<a href="#ref-12">[12]</a>. 이 정적 대조를 바탕으로, 보고된 결과가 어느 코드·설정에서 나왔는지 확인할 필요가 있습니다. 이번 개편에서는 학습과 QPU 실행을 재현하지 않았습니다.</p>
+<h2 id="_4">용어 정리</h2>
 <table>
 <thead>
 <tr>
@@ -668,17 +924,17 @@
 <tr>
 <td>Chaotic process</td>
 <td>초기 조건의 작은 차이가 시간이 지나며 크게 벌어지는 동역학계입니다.</td>
-<td>한 궤적을 오래 맞히기보다 장기 통계를 유지하는 평가가 중요합니다.</td>
+<td>단기 궤적의 정확도와 장기 통계를 함께 평가합니다.</td>
 </tr>
 <tr>
 <td>Q-Prior</td>
 <td>QIML 논문에서 양자 생성 모델이 학습한 통계적 prior입니다.</td>
-<td>고전 예측기의 loss에 들어가 장기 통계 일관성을 보완합니다.</td>
+<td>예측장이 만드는 속도 분포와의 차이를 학습 손실에 더해 장기 통계를 제약합니다.</td>
 </tr>
 <tr>
 <td>Koopman-style predictor</td>
 <td>비선형 동역학을 더 다루기 쉬운 표현 공간에서 예측하려는 계열의 모델입니다.</td>
-<td>QIML에서는 autoregressive predictor의 고전적 예측 골격으로 사용됩니다.</td>
+<td>QIML에서는 고전 예측기의 골격이며, 자신의 예측을 다음 입력으로 쓰는 자기회귀를 수행합니다.</td>
 </tr>
 <tr>
 <td>Reservoir computing</td>
@@ -691,54 +947,55 @@
 <td>QIML과 직접 같은 구조는 아니지만 비교해야 할 인접 계열입니다.</td>
 </tr>
 <tr>
-<td>Full-spectrum fidelity</td>
-<td>예측된 에너지 스펙트럼이 실제 시스템의 스펙트럼을 얼마나 잘 유지하는지 보는 평가입니다.</td>
-<td>난류와 유동 예측에서 long rollout 품질을 읽는 중요한 지표입니다.</td>
+<td>Energy-spectrum MSE</td>
+<td>파수별 에너지 스펙트럼의 예측값과 기준값 차이를 제곱해 평균한 오차입니다.</td>
+<td>본문의 29.36% 감소가 가리키는 지표로, 양자 상태의 fidelity와 구별합니다.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="_4">리뷰 결론</h2>
-<p>이 주제는 AI_Tech_Review Letters로 다룰 만한 가치가 있습니다. 지금 단계에서 가장 생산적인 결론은 양자 AI가 고전 ML을 대체한다는 선언이 아닙니다. QIML은 고전 모델이 긴 rollout에서 잃어버리기 쉬운 장기 통계 감각을 양자 생성 prior가 보완할 수 있는지 보여준 초기 강한 신호입니다.</p>
-<p>다음 리뷰에서는 세 가지를 더 확인하면 좋겠습니다.</p>
+<h2 id="_5">리뷰 결론</h2>
+<p>QIML은 고전 예측기가 다음 장면을 만들도록 두면서, 양자 생성 모델이 배운 분포를 학습의 기준으로 보탰습니다. 혼돈 때문에 개별 궤적이 갈라진 뒤에도 그 유동다운 통계가 남도록 하려는 설계입니다. KS에서의 오차 감소와 채널 유동의 장기 안정성은 이 역할 분담을 구체적인 비교로 보여줍니다<a href="#ref-1">[1]</a>.</p>
+<p>이 설계를 다른 문제에 활용할 때에는 세 질문이 남습니다.</p>
 <ol>
-<li>Q-Prior는 classical VAE, diffusion prior, tensor-network prior보다 어떤 조건에서 실제로 낫습니까?</li>
+<li>논문이 시험한 VAE에 이어 diffusion·tensor-network prior와도 학습 예산을 맞추면 Q-Prior의 이점은 어떻게 달라집니까?</li>
 <li>QPU shot 수, calibration, queue, 데이터 전처리 비용을 포함해도 memory/accuracy 이득이 유지됩니까?</li>
 <li>noisy measurement와 partial observation이 있는 실제 공정 데이터에서도 invariant measure를 배울 수 있습니까?</li>
 </ol>
-<p>논문이 제시한 개선 수치만 보면 매력적입니다. 하지만 이 분야의 가치는 benchmark 숫자보다 조금 더 깊은 곳에 있습니다. 양자 하드웨어가 과학 AI 파이프라인에서 맡을 수 있는 역할을 &ldquo;장기 통계 prior&rdquo;로 좁혀 본 점, 그리고 그 prior가 실제 난류 예측에서 물리적 일관성을 얼마나 보존하는지 검토한 점이 중요합니다.</p>
-<h2 id="_5">참고자료</h2>
+<p>처음의 잉크 무늬로 돌아가 보면, 모든 선을 끝까지 같은 자리로 보내는 예측과 소용돌이의 통계적 특징을 유지하는 예측 사이에는 넓은 공간이 있습니다. QIML은 그 공간에서 양자 생성 모델의 역할을 찾습니다. 그 역할의 효용은 예측 품질과 prior를 만드는 비용, 고전 대안과의 비교를 함께 쌓아 가며 판단할 수 있습니다.</p>
+<h2 id="_6">참고문헌</h2>
+<ol class="references">
+<li id="ref-1" value="1"><a href="https://doi.org/10.1126/sciadv.aec5049" target="_blank" rel="noopener">M. Wang, X. Xue, M. Gao, and P. V. Coveney, Quantum-informed machine learning for predicting spatiotemporal chaos with practical quantum advantage, Sci. Adv. 12, eaec5049 (2026).</a></li>
+<li id="ref-2" value="2"><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc" target="_blank" rel="noopener">L. Selector, Exciting AI Updates Weekly - May 29, 2026 (2026), https://www.youtube.com/watch?v=na-sQ-g2MAc.</a></li>
+<li id="ref-3" value="3"><a href="https://doi.org/10.1103/PhysRevLett.120.024102" target="_blank" rel="noopener">J. Pathak, B. Hunt, M. Girvan, Z. Lu, and E. Ott, Model-free prediction of large spatiotemporally chaotic systems from data: A reservoir computing approach, Phys. Rev. Lett. 120, 024102 (2018).</a></li>
+<li id="ref-4" value="4"><a href="https://doi.org/10.1063/1.5028373" target="_blank" rel="noopener">J. Pathak, A. Wikner, R. Fussell, S. Chandra, B. R. Hunt, M. Girvan, and E. Ott, Hybrid forecasting of chaotic processes: Using machine learning in conjunction with a knowledge-based model, Chaos 28, 041101 (2018).</a></li>
+<li id="ref-5" value="5"><a href="https://doi.org/10.1103/PhysRevApplied.8.024030" target="_blank" rel="noopener">K. Fujii and K. Nakajima, Harnessing disordered-ensemble quantum dynamics for machine learning, Phys. Rev. Applied 8, 024030 (2017).</a></li>
+<li id="ref-6" value="6"><a href="https://doi.org/10.1038/s41598-022-05061-w" target="_blank" rel="noopener">Y. Suzuki, Q. Gao, K. C. Pradel, K. Yasuoka, and N. Yamamoto, Natural quantum reservoir computing for temporal information processing, Sci. Rep. 12, 1353 (2022).</a></li>
+<li id="ref-7" value="7"><a href="https://doi.org/10.1038/s41534-023-00682-z" target="_blank" rel="noopener">P. Mujal, R. Martínez-Peña, G. L. Giorgi, M. C. Soriano, and R. Zambrini, Time-series quantum reservoir computing with weak and projective measurements, npj Quantum Inf. 9, 16 (2023).</a></li>
+<li id="ref-8" value="8"><a href="https://doi.org/10.1038/s41534-023-00734-4" target="_blank" rel="noopener">J. Dudas, B. Carles, E. Plouet, F. A. Mizrahi, J. Grollier, and D. Marković, Quantum reservoir computing implementation on coherently coupled quantum oscillators, npj Quantum Inf. 9, 64 (2023).</a></li>
+<li id="ref-9" value="9"><a href="https://doi.org/10.1103/PhysRevResearch.6.043082" target="_blank" rel="noopener">O. Ahmed, F. Tennie, and L. Magri, Prediction of chaotic dynamics and extreme events: A recurrence-free quantum reservoir computing approach, Phys. Rev. Research 6, 043082 (2024).</a></li>
+<li id="ref-10" value="10"><a href="https://doi.org/10.1038/s41598-025-87768-0" target="_blank" rel="noopener">J. Steinegger and C. Räth, Predicting three-dimensional chaotic systems with four qubit quantum systems, Sci. Rep. 15, 6201 (2025).</a></li>
+<li id="ref-11" value="11"><a href="https://doi.org/10.1103/j2qj-vwcl" target="_blank" rel="noopener">K. Kobayashi and Y. Motome, Edge of many-body quantum chaos in quantum reservoir computing, Phys. Rev. Lett. 136, 040602 (2026).</a></li>
+<li id="ref-12" value="12"><a href="https://doi.org/10.5281/zenodo.19069313" target="_blank" rel="noopener">M. Wang, Quantum_Informed_Machine_Learning_for_Chaotic_Systems_with_Practical_Advantage_Code (Zenodo, 2026), doi:10.5281/zenodo.19069313.</a></li>
+<li id="ref-13" value="13"><a href="https://doi.org/10.5281/zenodo.16994052" target="_blank" rel="noopener">X. Xue, Quantum_Informed_Machine_Learning_for_Chaotic_Systems_Datasets (Zenodo, 2025), doi:10.5281/zenodo.16994052.</a></li>
+</ol>
+
+<h2 id="_7">작성·검증 정보</h2>
 <ul>
-<li>Lev Selector, <a href="https://www.youtube.com/watch?v=na-sQ-g2MAc">Exciting AI Updates Weekly - May 29, 2026</a></li>
-<li>Wang et al., <a href="https://arxiv.org/abs/2507.19861">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a></li>
-<li>Wang et al., <a href="https://doi.org/10.1126/sciadv.aec5049">Science Advances DOI 10.1126/sciadv.aec5049</a></li>
-<li>UCL CCS, <a href="https://github.com/UCL-CCS/QIML">QIML official implementation</a></li>
-<li>Wang et al., <a href="https://doi.org/10.5281/zenodo.16419085">QIML dataset on Zenodo</a></li>
-<li>Pathak et al., <a href="https://doi.org/10.1103/PhysRevLett.120.024102">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a></li>
-<li>Pathak et al., <a href="https://doi.org/10.1063/1.5028373">Hybrid Forecasting of Chaotic Processes</a></li>
-<li>Fujii and Nakajima, <a href="https://doi.org/10.1103/PhysRevApplied.8.024030">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a></li>
-<li>Negoro et al., <a href="https://www.nature.com/articles/s41598-022-05061-w">Natural quantum reservoir computing</a></li>
-<li>Mujal et al., <a href="https://www.nature.com/articles/s41534-023-00682-z">Time-series quantum reservoir computing with weak and projective measurements</a></li>
-<li>Ghosh et al., <a href="https://www.nature.com/articles/s41534-023-00734-4">Quantum reservoir processing with coherently coupled quantum oscillators</a></li>
-<li>Ahmed, Tennie, Magri, <a href="https://arxiv.org/abs/2405.03390">Prediction of chaotic dynamics and extreme events: RF-QRC</a></li>
-<li>Steinegger and Raeth, <a href="https://www.nature.com/articles/s41598-025-87768-0">Predicting three-dimensional chaotic systems with four qubit quantum systems</a></li>
-<li>Kobayashi and Motome, <a href="https://arxiv.org/abs/2506.17547">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a></li>
-</ul>
-<h2 id="article-metadata">Article Metadata</h2>
-<ul>
-<li>작성 형식: <code>AI Tech Review Letters</code></li>
-<li>발행 라벨: AI Tech Review Letters: Week 22 (2026-05-30)</li>
-<li>영상 intake: <code>Exciting AI Updates Weekly - May 29, 2026</code></li>
-<li>원고 생성: 2026-05-30</li>
-<li>그림 manifest: <code>artifacts/final_review/figure_manifest.md</code></li>
+<li>책임 편집: 김현중. 원 작성·발행일과 근거 기준일은 2026-05-30이며, 이번 편집·원문 대조 수정일은 2026-10-31입니다.</li>
+<li>원 작성 보조는 보존된 기록의 Codex Agent입니다. 정확한 실행 모델과 원 작성 세션의 개별 에이전트 구성·검수 범위는 미보존입니다.</li>
+<li>이번 개편은 OpenAI Codex의 root(통합·퇴고·출력·게시), legacy1031_qiml_science(QIML 원문·통합 SI·코드 선택 대조), legacy1031_refs(인접 문헌 원저자·서지·근거), legacy1031_prose(독립 문체·설명 감수)가 맡았습니다. 정확한 실행 모델 식별자는 미보존입니다.</li>
+<li>현행 AI Tech Review Editorial Harness 2026.08과 10월 보완 문체·과학 설명·APS 기준을 적용했습니다. QIML 전체 논문·통합 SI와 인접 문헌의 실제 열람 범위는 개정 기록에 구분합니다. 코드의 정적 대조는 학습·유체 계산·QPU 실험의 재현과 다릅니다. 실제 공정·OLED 성능과 사람 독자 평가는 수행하지 않았습니다.</li>
+<li>그림 1·2·3·5는 기존 OpenAI imagegen 개념 그림이며, 제작 기록의 모델은 gpt-image-1.5입니다. 그림 4·6·7·8은 리뷰 제작 SVG입니다. 원 논문 도판과 실험 자료를 재배포하지 않으며 각 원 자료의 권리는 원저자·권리자에게 있습니다.</li>
+<li>이번에는 성능 지표의 비교 대상·오차 종류, 원저자 크레딧과 QRC의 실행 수준을 정정하고 공개 코드와 원문의 차이를 보완했습니다. 또한 그림 4의 자기회귀 화살표·그림 7의 진동자 라벨을 맞췄습니다. 원 발행일·제목·ID·표지와 여덟 그림을 유지했습니다.</li>
 </ul>
       <div class="footer">
-        생성 시각: 2026-05-30 13:20:51<br>
-        원본 파일 최종 수정 시각: 2026-05-30 13:20:33
+        생성 시각: 2026-10-31 10:21:28<br>
+        원본 파일 최종 수정 시각: 2026-10-31 10:21:27
       </div>
     </article>
 
     <aside class="sidebar">
-      
+
         <section class="side-section toc-panel" aria-labelledby="toc-heading">
           <h2 id="toc-heading">섹션 맵</h2>
           <div class="toc">
@@ -746,33 +1003,33 @@
 <li><a href="#q-prior">Q-Prior가 맡는 일</a></li>
 <li><a href="#_1">긴 예측에서 남아야 할 물리량</a></li>
 <li><a href="#_2">같이 읽어야 하는 세 갈래</a></li>
-<li><a href="#quantum-advantage">Quantum advantage라는 말을 분해해서 읽기</a></li>
-<li><a href="#_3">용어 정리</a></li>
-<li><a href="#_4">리뷰 결론</a></li>
-<li><a href="#_5">참고자료</a></li>
-<li><a href="#article-metadata">Article Metadata</a></li>
+<li><a href="#_3">정확도와 계산비용을 함께 읽기</a></li>
+<li><a href="#_4">용어 정리</a></li>
+<li><a href="#_5">리뷰 결론</a></li>
+<li><a href="#_6">참고문헌</a></li>
+<li><a href="#_7">작성·검증 정보</a></li>
 </ul>
 </div>
 
         </section>
-        
+
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
-          <li><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc" target="_blank" rel="noreferrer">Lev Selector의 2026년 5월 29일 AI Updates Weekly</a></li>
-<li><a href="https://arxiv.org/abs/2507.19861" target="_blank" rel="noreferrer">Quantum-Informed Machine Learning for Predicting Spatiotemporal Chaos with Practical Quantum Advantage</a></li>
-<li><a href="https://doi.org/10.1126/sciadv.aec5049" target="_blank" rel="noreferrer">10.1126/sciadv.aec5049</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevLett.120.024102" target="_blank" rel="noreferrer">Model-Free Prediction of Large Spatiotemporally Chaotic Systems from Data</a></li>
-<li><a href="https://doi.org/10.1063/1.5028373" target="_blank" rel="noreferrer">Hybrid Forecasting of Chaotic Processes</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevApplied.8.024030" target="_blank" rel="noreferrer">Harnessing Disordered-Ensemble Quantum Dynamics for Machine Learning</a></li>
-<li><a href="https://www.nature.com/articles/s41598-022-05061-w" target="_blank" rel="noreferrer">Natural quantum reservoir computing</a></li>
-<li><a href="https://www.nature.com/articles/s41534-023-00682-z" target="_blank" rel="noreferrer">Time-series QRC with weak and projective measurements</a></li>
-<li><a href="https://www.nature.com/articles/s41534-023-00734-4" target="_blank" rel="noreferrer">QRC with coherently coupled quantum oscillators</a></li>
-<li><a href="https://arxiv.org/abs/2405.03390" target="_blank" rel="noreferrer">recurrence-free quantum reservoir computing</a></li>
-<li><a href="https://www.nature.com/articles/s41598-025-87768-0" target="_blank" rel="noreferrer">four-qubit QRC</a></li>
-<li><a href="https://arxiv.org/abs/2506.17547" target="_blank" rel="noreferrer">Edge of Many-Body Quantum Chaos in Quantum Reservoir Computing</a></li>
-<li><a href="https://github.com/UCL-CCS/QIML" target="_blank" rel="noreferrer">공식 GitHub 저장소</a></li>
-<li><a href="https://doi.org/10.5281/zenodo.16419085" target="_blank" rel="noreferrer">Zenodo 데이터</a></li>
+          <li><a href="https://doi.org/10.1126/sciadv.aec5049&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc&quot;" target="_blank" rel="noreferrer">www.youtube.com</a></li>
+<li><a href="https://www.youtube.com/watch?v=na-sQ-g2MAc." target="_blank" rel="noreferrer">www.youtube.com</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevLett.120.024102&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1063/1.5028373&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevApplied.8.024030&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41598-022-05061-w&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41534-023-00682-z&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41534-023-00734-4&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1103/PhysRevResearch.6.043082&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41598-025-87768-0&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1103/j2qj-vwcl&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.19069313&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.16994052&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
         </ul>
       </section>
     </aside>
