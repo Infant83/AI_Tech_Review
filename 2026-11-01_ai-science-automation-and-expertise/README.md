@@ -9,7 +9,7 @@
 - 한국어: [원고](reports/review_ko.md), [웹](dist/index.html), [PDF](dist/review_ko.pdf)
 - English: [Manuscript](reports/review_en.md), [Article](dist/en/index.html), [PDF](dist/en/review_en.pdf)
 - [표지 기획](cover-art-brief.md), [설명 설계](review-explanation-brief.md), [표지 프롬프트](artifacts/hero-prompt.txt)
-- 상태: 한영 전문·캡션·그림 설명의 문맥 퇴고와 과학·영문 재독해를 마친 뒤, 한국어 11쪽·영어 13쪽 전체를 출력 검수했다. 이번 교정본의 공개 배포 확인을 진행한다.
+- 상태: 한영 전문·캡션·그림 설명의 문맥 퇴고와 과학·영문 재독해를 마친 뒤, 한국어 11쪽·영어 13쪽 전체를 출력 검수했다. 교정본을 공개 배포하고 32개 HTTPS 주소와 PDF·아카이브의 반영을 대조했다.
 - 공개 주소: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/
 - English: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/en/
 
@@ -63,3 +63,5 @@ FermiScope의 Table 1·7·12는 PDF와 HTML을 대조했다. 50개 분자의 SCF
 ## 문단의 주장과 비교 대상 퇴고
 
 각 문단이 실제로 제기한 질문과 비교 대상을 읽고, 새로 도입한 보편적 보증이나 실험 성과를 반박하던 대목을 정리했다. 필요한 비교 조건·분모·감사 대상은 해당 주장의 정의에 합치고, 연구가 실제로 보여준 실패·반례를 유지했다. 한영 전문·표지/본문 캡션·12SVG footer/desc·작성과 검증 공개를 함께 반영했다. 참고문헌13개와29인용그룹은 유지됐고, 그림12개의476도형 속성은 기준본과 정확히 같다. 공통 문체 하네스·작성 방법·설명 준칙·기획 양식의 실제 수정은 [교정 기록](../.automation/writing-reviews/2026-11-01-paragraph-context/README.md)에 남겼다. 기존 발행본의 해시와 검증은 manifest의 revision_history에 보존한다.
+
+교정 배포 [Pages 41273084596](https://github.com/Infant83/AI_Tech_Review/actions/runs/41273084596)가 성공했다. 실제 32개 HTTPS 주소 중 24개는 파일 바이트 또는 배포 판본을 넣은 카탈로그가 일치했고, 8개 HTML은 식별한 Cloudflare 변환만 제외하면 일치했다. 한영 기사와 아카이브의 PDF는 출력 검수본과 해시까지 같다. 중앙 작성·검증 정보의 영문 공백과 항목 연결부 문장부호도 정리했다.
