@@ -3,7 +3,7 @@
 - 리뷰: 양자와 재료 연구의 AI 자동화와 과학적 판단
 - 슬러그: 2026-11-01_ai-science-automation-and-expertise
 - 날짜: 2026-11-01
-- 상태: 제작·출력 검수 완료; 배포 확인 대기
+- 상태: 제작·출력·공개 배포 검수 완료
 - 담당: root 기획·생성·의미 검토, agent_standards 한영 HTML/PDF 출력 검토
 
 ## 전달할 사건
@@ -45,3 +45,5 @@
 - English caption: Separating information that looks uniform when combined. This AI-generated conceptual illustration represents choosing observations that answer a physical question; it is not an actual apparatus or electronic density-of-states dataset.
 - 한국어 대체 텍스트: 하나의 넓은 빛을 여러 색으로 펼쳐 살펴보는 프리즘과 좁은 관찰 틈을 표현한 개념 일러스트.
 - English alt: A conceptual prism spreads a broad band of light into colours beside a narrow observation slit.
+
+실제 공개 서비스의 양언어 표지 파일이 원본 WebP와 SHA256까지 정확히 일치함을 확인했다. Pages배포41263176124 성공,2026-11-01 확인.

@@ -9,7 +9,7 @@
 - 한국어: [원고](reports/review_ko.md), [웹](dist/index.html), [PDF](dist/review_ko.pdf)
 - English: [Manuscript](reports/review_en.md), [Article](dist/en/index.html), [PDF](dist/en/review_en.pdf)
 - [표지 기획](cover-art-brief.md), [설명 설계](review-explanation-brief.md), [표지 프롬프트](artifacts/hero-prompt.txt)
-- 상태: 한영 원고·독립 과학·설명 감수와 HTML/PDF 출력 검수를 완료했다. 한국어9쪽·영어11쪽의 전 페이지, 모바일390px, 출처·글꼴·링크를 확인했으며 공개 배포 검증을 진행한다.
+- 상태: 한영 원고·독립 과학·설명 감수와 HTML/PDF 출력 검수를 완료했다. 한국어9쪽·영어11쪽의 전 페이지, 모바일390px, 출처·글꼴·링크를 확인했으며 공개 페이지와 PDF·그림·표지의 실제 HTTPS 배포 검증도 완료했다.
 - 공개 주소: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/
 - English: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/en/
 
@@ -50,4 +50,6 @@ FermiScope의 Table 1·7·12는 PDF와 HTML을 대조했다. 50개 분자의 SCF
 
 ## 출판 검증
 
-공개 사이트 검사 오류0, 관련87개 회귀검사 통과. 기존 리뷰1469개 파일·50개 리뷰 기록·96개 아카이브 기록과 기존 독자용 기사 수정 이력을 보존했다. 등록 후51개 리뷰·98개 PDF이며, 각 언어 PDF의 제작본·원본 아카이브·공개 기사·공개 아카이브4사본이 같은 SHA256이다. 정확한 값과 출력 범위는 [제작 manifest](figure-manifest.json)에 기록한다. 실제 HTTPS 배포 확인은 게시 후 별도로 남긴다.
+공개 사이트 검사 오류0, 관련87개 회귀검사 통과. 기존 리뷰1469개 파일·50개 리뷰 기록·96개 아카이브 기록과 기존 독자용 기사 수정 이력을 보존했다. 등록 후51개 리뷰·98개 PDF이며, 각 언어 PDF의 제작본·원본 아카이브·공개 기사·공개 아카이브4사본이 같은 SHA256이다. 정확한 값과 출력 범위는 [제작 manifest](figure-manifest.json)에 기록한다. [Pages배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/41263176124)가 성공했고 실제32개 URL을 확인했다. 바이너리 자산은 모두 정확히 일치했고,8개HTML은 식별한 Cloudflare 분석 스크립트 삽입·기존 공개 연락 링크 보호만 제외하면 일치했다. 한영 기존 canonical 주소도 실제 서비스 도메인으로 정상 연결된다.
+
+실제 서비스의 한영1440/390px 화면·도식·공개 정보와 KO→EN→KO 전환도 확인했다. 초기 공용 갱신 처리가 끝난 뒤 글꼴과 이미지를 다시 확인했다. 본문·자산 오류0이며, 익명 구독 조회401은 기존 기사에서도 같은 동작이었다. 읽기전용 QA는 통계 POST를 차단했고 구독·반응·메시지를 작성하지 않았다.
