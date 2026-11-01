@@ -9,7 +9,7 @@
 - 한국어: [원고](reports/review_ko.md), [웹](dist/index.html), [PDF](dist/review_ko.pdf)
 - English: [Manuscript](reports/review_en.md), [Article](dist/en/index.html), [PDF](dist/en/review_en.pdf)
 - [표지 기획](cover-art-brief.md), [설명 설계](review-explanation-brief.md), [표지 프롬프트](artifacts/hero-prompt.txt)
-- 상태: 한영 원고·독립 과학·설명 감수와 HTML/PDF 출력 검수를 완료했다. 한국어9쪽·영어11쪽의 전 페이지, 모바일390px, 출처·글꼴·링크를 확인했으며 공개 페이지와 PDF·그림·표지의 실제 HTTPS 배포 검증도 완료했다.
+- 상태: 검증 방법 확장 개정본의 한영 원고·과학 감수·출력 검수 완료. 한국어11쪽·영어13쪽의24페이지를 모두 확인했다. 개정본 공개 배포 검증을 진행한다.
 - 공개 주소: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/
 - English: https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/en/
 
@@ -42,14 +42,18 @@ FermiScope의 Table 1·7·12는 PDF와 HTML을 대조했다. 50개 분자의 SCF
 ## 다시 만들기
 
 1. `python3 artifacts/build_figures.py`로 원본 한영 SVG를 만든다.
-2. NanumGothic Regular·Bold와 Noto Sans 보완 글꼴의 OFL 원본을 사용해 `python3 artifacts/build_fonts.py --regular FONT_REGULAR --bold FONT_BOLD`를 실행한다.
+2. NanumGothic Regular·Bold와 Noto Sans·Noto Sans Math 보완 글꼴의 OFL 원본을 사용해 `python3 artifacts/build_fonts.py --regular FONT_REGULAR --bold FONT_BOLD`를 실행한다.
 3. 설치된 Node 모듈의 경로를 `REVIEW_NODE_MODULES` 등 builder의 의존성 경로에 제공하고 `node artifacts/build_review.mjs`를 실행한다. `marked`·`mathjax-full`이 필요하다.
 4. PDF 새 제작·편집의 적용 가능한 도구 계약을 따른 뒤 `python3 artifacts/build_pdf.py --node NODE_BINARY --modules NODE_MODULES`로 Chrome·Playwright 출력을 만든다.
 
 원 논문 PDF·수집 원문·개인 메일·QA 화면과 상세 감사는 `notes/`·`tmp/`에만 보존하고 Git과 공개 배포에서 제외한다. 웹 배포는 dist의 최종 HTML·CSS·표지·명시된 도식·PDF만 허용한다. 중앙 등록은 scripts/publish_public_site.py와 scripts/hub_summaries_en.json으로 관리한다.
 
-## 출판 검증
+## 초판 출판 검증
 
 공개 사이트 검사 오류0, 관련87개 회귀검사 통과. 기존 리뷰1469개 파일·50개 리뷰 기록·96개 아카이브 기록과 기존 독자용 기사 수정 이력을 보존했다. 등록 후51개 리뷰·98개 PDF이며, 각 언어 PDF의 제작본·원본 아카이브·공개 기사·공개 아카이브4사본이 같은 SHA256이다. 정확한 값과 출력 범위는 [제작 manifest](figure-manifest.json)에 기록한다. [Pages배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/41263176124)가 성공했고 실제32개 URL을 확인했다. 바이너리 자산은 모두 정확히 일치했고,8개HTML은 식별한 Cloudflare 분석 스크립트 삽입·기존 공개 연락 링크 보호만 제외하면 일치했다. 한영 기존 canonical 주소도 실제 서비스 도메인으로 정상 연결된다.
 
 실제 서비스의 한영1440/390px 화면·도식·공개 정보와 KO→EN→KO 전환도 확인했다. 초기 공용 갱신 처리가 끝난 뒤 글꼴과 이미지를 다시 확인했다. 본문·자산 오류0이며, 익명 구독 조회401은 기존 기사에서도 같은 동작이었다. 읽기전용 QA는 통계 POST를 차단했고 구독·반응·메시지를 작성하지 않았다.
+
+## 검증 방법 확장 개정
+
+연구자가 무엇을 어떻게 검증할지 설계하는 절을 추가했다. V&V 권고·DFT 독립 구현 참조·PPI·능동 통계 추론4편을 보완해 하단13개 참고문헌으로 정리했다. 별도 Pauli 검사 입력·관심 물리량의 수렴·위험 사례와 무작위 표본·선택 확률 가중·검사자체의 감도/오탐/시간 평가를 구체화했다. 모두 에이전트에 적용해 시간 절약을 실증했다는 뜻은 아니며, 원 연구의 범위와 리뷰의 연구실 적용 제안을 구별했다. 한영29인용 그룹·전24PDF페이지·모바일390px검수를 완료했다. 초판 수치와 배포 검증은 manifest의 revision_history에 보존한다.

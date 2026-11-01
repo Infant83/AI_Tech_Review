@@ -1,7 +1,7 @@
 {
   "review": "2026-11-01_ai-science-automation-and-expertise",
   "date": "2026-11-01",
-  "status": "published",
+  "status": "verification-methods revision produced; publication pending",
   "cover": {
     "tool": "built-in image_gen",
     "model_id": "not retained",
@@ -51,7 +51,11 @@
     "INCARBench": "arXiv2606.23571v2; configuration-reference evaluation, no executed VASP convergence/property result",
     "AutoMat": "arXiv2605.00803v2; 85claims/10papers; AI evaluator threshold4of5; separate 40-run expert calibration",
     "JCCM": "Public methods and aggregates plus landing page; restricted commentary full PDF not accessed",
-    "Human-AI studies": "2024 meta-analysis covers2020–2023 experiments; Nature Perspective is conceptual, not an experiment"
+    "Human-AI studies": "2024 meta-analysis covers2020–2023 experiments; Nature Perspective is conceptual, not an experiment",
+    "SciML_VV": "Jakemanet al.,MachLearnSciTechnol7,025055(2026),DOI10.1088/2632-2153/ae59ec;publisher recommendations,not a new efficiency experiment",
+    "DFT_verification": "Bosoniet al.,NatRevPhys6,45(2024),DOI10.1038/s42254-023-00655-3;public author manuscript2305.17274v1 checked;implementation precision under specified theory,not experimental accuracy",
+    "PPI": "Angelopouloset al.,Science382,669(2023);technical assumptions checked in2301.09633v4;no PPI execution",
+    "Active_inference": "ZrnicandCandes,ICML2024,PMLR235,62993;uniform-mixture and inverse-probability residual weighting also verified in2024v2 of2403.03208;no active-inference execution"
   },
   "roles": {
     "root": "Primary-source synthesis, Korean writing, conceptual cover, editorial integration and publication",
@@ -63,39 +67,33 @@
   "authoring_system": "OpenAI Codex; exact model identifier not retained",
   "human_review": "Editorial direction incorporated; no line-by-line human approval or reader-comprehension study",
   "verification": {
-    "manuscripts": "Independent scientific, numerical, explanation and bilingual audits completed; 9 numbered sources; 25 matching citation groups",
+    "manuscripts": "Expanded bilingual section independently audited:13numbered references and29matching citationgroups;Pauli test input, code/model/statistical validation distinctions and statistical sampling assumptions checked.",
     "output": {
-      "korean_pages": 9,
-      "english_pages": 11,
-      "visual_inspection": "All20 final PDF pages individually inspected after font update; root independently checked KO1/4/5/9 and EN3/11; bilingual desktop1440/mobile390 output and all12 SVGs checked",
-      "fonts": "OFL NanumGothic regular/bold and Noto Sans fallback subsets; all scientific glyphs included without Apple fallback",
-      "links": "35HTTPS links per PDF; attachments0, fileURI0; 9references and25matching citationgroups",
-      "web": "Zero overflow, image failures, missing fragments, page errors or external requests in local self-contained article; all fonts loaded"
+      "korean_pages": 11,
+      "english_pages": 13,
+      "visual_inspection": "All24 revised PDF pages individually inspected;root independently checkedKO8/9andEN9/10;no clipped labels,missing glyphs or overlaps",
+      "fonts": "OFL NanumGothic,NotoSans symbol and NotoSansMath U+27E9 subsets embedded;coverage complete",
+      "links": "43HTTPS annotations perPDF;attachments0;fileURI0;13references and29matching citationgroups",
+      "web": "1440/390 bilingual metadata and font/image loading,7imageassets,4semanticfigures,12SVG text bounds passed;externalrequests0;separate final HTML-manuscript correspondence check passed",
+      "preservation": "Concept cover and12originalSVG source files byte-identical;publicSVG payload differences restricted to embedded font style and alias"
     },
-    "publication": "Published and live HTTPS content verified on2026-11-01",
+    "publication": "Revised publication pending; previous publication evidence retained under revision_history",
+    "pauli_test": {
+      "input": "separate verification input |0> in the Z basis, not the original agent task input",
+      "Pauli_Z_initial_expectation": 1,
+      "Pauli_Y_initial_expectation": 0,
+      "verification": "independently evaluated2x2matrices",
+      "scope": "formal test-case check only; no agent experiment, measured error reduction or time saving"
+    },
     "publication_local": {
+      "relevant_tests_passed": 87,
       "reviews": 51,
       "archive_documents": 98,
       "reader_articles": 54,
       "validated_public_files": 1665,
-      "public_site_errors": 0,
-      "relevant_tests_passed": 87,
-      "preservation": "All1469 existing review files byte-identical;50 existing review records,96 archive records and existing reader article records unchanged",
-      "pdf_copies": "Source dist, source archive, public article and public archive are byte-identical per language",
-      "public_scope": "20 article files only; personal mail, raw source papers, notes/tmp, QA screenshots and absolute internal paths excluded",
-      "browser": "Final public HTML KO/EN1440/390px,9refs,7disclosurefields,7loaded images;zero browser/asset failures. Actual language clicks and2PDF GET200 signatures/exactsizes passed."
-    },
-    "live": {
-      "date": "2026-11-01",
-      "publication_source": "109f9b49d4a95e4d15a797ae5e56ce3f58a7a854",
-      "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41263176124",
-      "workflow_result": "success",
-      "checked_urls": 32,
-      "failures": 0,
-      "comparison": "24 literal-byte or exact revision-stamped catalog matches;8 HTML matches after only the identified Cloudflare beacon insertion and, on hub pages, existing public contact-link protection/decoder. All binary PDFs, SVGs, CSS and cover files matched exactly. Both legacy language URLs redirected to infant83.io with HTTP200.",
-      "canonical_domain": "https://infant83.io/AI_Tech_Review/",
-      "browser": "Actual service KO/EN at1440/390px, title/language/width/7images/9references/disclosure/figures and two PDF GET200 exactsizes passed. Actual KO-to-EN-to-KO navigation passed. Root independently inspected final live KOmobile and ENdesktop. Screens were recaptured after the shared reader freshness update and font/image completion.",
-      "browser_limit": "Anonymous subscription GET401 also occurred on the existing25October article. Read-only QA intentionally blocked metrics and Cloudflare RUM POSTs; no engagement, subscription or message write was performed. Article assets and browser page exceptions had zero unresolved failures."
+      "preservation": "50other review records,96other archive records,all1469other review files and all other reader article records preserved",
+      "pdf_copies": "Four byte-identical latest copies per language:source dist,source archive,public article,public archive",
+      "public_payload": "20article files;no notes,tmp,raw papers,private messages or QA screenshots"
     }
   },
   "files": {
@@ -152,20 +150,57 @@
       "bytes": 4853
     },
     "dist/en/review_en.pdf": {
-      "sha256": "27063902173efbb0d7e2d42e558dff64d205dcf123175871d48a1a4c51a8ac15",
-      "bytes": 3588987
+      "sha256": "02e5ce407a25befbbd88e901249486fa8ef692c7cbab69ea0e6c37bdc82fd995",
+      "bytes": 3620035
     },
     "dist/review_ko.pdf": {
-      "sha256": "3f1387f7fbf5d051a7c7a1f3ad531bf4268f55c9adf44414ac68ecc18c439fed",
-      "bytes": 3685317
+      "sha256": "7ffc91a6a26b00e4a9dd0551727328d191c9b898a122bf17955c938408a38a35",
+      "bytes": 3716523
     },
     "reports/review_en.md": {
-      "sha256": "9a603983518925a012c4d58470ae2bb80ff107396bedff7f26e388845be564c3",
-      "bytes": 25657
+      "sha256": "37da6321fb21ff551c26e53ab08c8a916701812f5e03b6f416cd1564686c4c5e",
+      "bytes": 33775
     },
     "reports/review_ko.md": {
-      "sha256": "b82834edd6ecf398b76db4ef58201e897d24ef0e19dfe9eb68c079109bf76187",
-      "bytes": 25923
+      "sha256": "d0bf7be6cb6345ebcc03244a59359eb7db9eda1c3fcfe85d338922bbb50479c6",
+      "bytes": 33899
     }
-  }
+  },
+  "revision_history": [
+    {
+      "revision": "initial publication",
+      "source_commit": "109f9b49d4a95e4d15a797ae5e56ce3f58a7a854",
+      "documentation_commit": "b177c89e972810406d1c5ca9eee460466648c7c3",
+      "outputs": {
+        "korean_pages": 9,
+        "english_pages": 11,
+        "visual_inspection": "All20 final PDF pages individually inspected after font update; root independently checked KO1/4/5/9 and EN3/11; bilingual desktop1440/mobile390 output and all12 SVGs checked",
+        "fonts": "OFL NanumGothic regular/bold and Noto Sans fallback subsets; all scientific glyphs included without Apple fallback",
+        "links": "35HTTPS links per PDF; attachments0, fileURI0; 9references and25matching citationgroups",
+        "web": "Zero overflow, image failures, missing fragments, page errors or external requests in local self-contained article; all fonts loaded"
+      },
+      "live": {
+        "date": "2026-11-01",
+        "publication_source": "109f9b49d4a95e4d15a797ae5e56ce3f58a7a854",
+        "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41263176124",
+        "workflow_result": "success",
+        "checked_urls": 32,
+        "failures": 0,
+        "comparison": "24 literal-byte or exact revision-stamped catalog matches;8 HTML matches after only the identified Cloudflare beacon insertion and, on hub pages, existing public contact-link protection/decoder. All binary PDFs, SVGs, CSS and cover files matched exactly. Both legacy language URLs redirected to infant83.io with HTTP200.",
+        "canonical_domain": "https://infant83.io/AI_Tech_Review/",
+        "browser": "Actual service KO/EN at1440/390px, title/language/width/7images/9references/disclosure/figures and two PDF GET200 exactsizes passed. Actual KO-to-EN-to-KO navigation passed. Root independently inspected final live KOmobile and ENdesktop. Screens were recaptured after the shared reader freshness update and font/image completion.",
+        "browser_limit": "Anonymous subscription GET401 also occurred on the existing25October article. Read-only QA intentionally blocked metrics and Cloudflare RUM POSTs; no engagement, subscription or message write was performed. Article assets and browser page exceptions had zero unresolved failures."
+      },
+      "pdf_files": {
+        "dist/en/review_en.pdf": {
+          "sha256": "27063902173efbb0d7e2d42e558dff64d205dcf123175871d48a1a4c51a8ac15",
+          "bytes": 3588987
+        },
+        "dist/review_ko.pdf": {
+          "sha256": "3f1387f7fbf5d051a7c7a1f3ad531bf4268f55c9adf44414ac68ecc18c439fed",
+          "bytes": 3685317
+        }
+      }
+    }
+  ]
 }

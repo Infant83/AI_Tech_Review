@@ -6,7 +6,10 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(path.join(process.env.REVIEW_NODE_MODULES,'_qa.cjs'));
 const {chromium}=require('playwright');
-const qa=path.join(root,'tmp/pdfs');fs.mkdirSync(qa,{recursive:true});
+const qa=path.resolve(process.argv.find(a=>a.startsWith('--qa-dir='))?.slice('--qa-dir='.length)||path.join(root,'tmp/pdfs'));
+const expectedRefs=Number(process.argv.find(a=>a.startsWith('--expected-refs='))?.split('=')[1]||13);
+const expectedCitations=Number(process.argv.find(a=>a.startsWith('--expected-citations='))?.split('=')[1]||29);
+fs.mkdirSync(qa,{recursive:true});
 const browser=await chromium.launch({channel:'chrome',headless:true});const records=[];
 try{
  for(const lang of ['ko','en']){
@@ -17,7 +20,7 @@ try{
   await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto'});
   await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
   const info=await page.evaluate(()=>({
-   title:document.title,h1:document.querySelector('h1').textContent,lang:document.documentElement.lang,
+   title:document.title,h1:document.querySelector('h1').textContent,og:document.querySelector('meta[property="og:title"]').content,lang:document.documentElement.lang,
    canonical:document.querySelector('link[rel=canonical]').href,
    alternate:[...document.querySelectorAll('link[rel=alternate]')].map(x=>[x.hreflang,x.href]),
    fonts:[...document.fonts].map(x=>({family:x.family,weight:x.weight,status:x.status})),
@@ -27,17 +30,25 @@ try{
    disclosureCount:document.querySelectorAll('#authoring-disclosure').length,
    disclosureFields:[...document.querySelectorAll('#authoring-disclosure dt')].map(x=>x.textContent),
    mathImages:document.querySelectorAll('img[src^="math_"]').length,
+   desktop:{viewport:innerWidth,width:document.documentElement.scrollWidth},
+   verificationSection:[...document.querySelectorAll('h2')].some(h=>/연구자가 검증을 설계하는 방법|How researchers can design verification/.test(h.textContent)),
+   pauliTest:['|0⟩','Pauli Z','Pauli Y'].map(s=>({text:s,present:document.body.textContent.includes(s)})),
    rawBold:document.body.textContent.includes('**'),replacement:document.body.textContent.includes('\uFFFD'),
    privateStrings:['/Users/','file://','localhost','127.0.0.1','chain-of-thought'].filter(s=>document.documentElement.outerHTML.includes(s)),
    missingFragments:[...document.querySelectorAll('a[href^="#"]')].map(a=>a.getAttribute('href').slice(1)).filter(id=>!document.getElementById(id))
   }));
   const base='https://infant83.io/AI_Tech_Review/reviews/2026-11-01_ai-science-automation-and-expertise/';
-  if(info.title!==info.h1||info.lang!==lang||info.canonical!==base+(lang==='ko'?'':'en/'))throw Error('metadata mismatch');
+  if(info.title!==info.h1||info.og!==info.h1||info.lang!==lang||info.canonical!==base+(lang==='ko'?'':'en/'))throw Error('metadata mismatch');
+  if(info.references.length!==expectedRefs||info.citationTargets.length!==expectedCitations||!info.verificationSection||info.pauliTest.some(t=>!t.present))throw Error('Revision contents or counts mismatch: '+JSON.stringify(info));
+  if(info.desktop.width!==info.desktop.viewport)throw Error('Desktop overflow');
   if(info.figures.length!==4||info.figures[0].src[0]!=='hero.webp'||info.figures.some(f=>!f.caption||f.alt.some(a=>!a))||info.disclosureCount!==1||info.disclosureFields.length!==7||info.rawBold||info.replacement||info.privateStrings.length||info.missingFragments.length||info.fonts.some(f=>f.status!=='loaded'))throw Error(JSON.stringify(info));
   for(const c of info.citationTargets){const target=c.href.match(/#(ref-\d+)$/)?.[1];if(!target||!info.references.includes(target))throw Error('citation has no reference '+JSON.stringify(c))}
+  await page.screenshot({path:path.join(qa,`${lang}-desktop-final.png`)});
+  await page.locator('p').filter({hasText:'Pauli Z'}).screenshot({path:path.join(qa,`${lang}-pauli-desktop.png`)});
   await page.locator('#authoring-disclosure').screenshot({path:path.join(qa,`${lang}-disclosure-desktop.png`)});
   await page.setViewportSize({width:390,height:844});await page.goto(pathToFileURL(path.join(dir,'index.html')).href);await page.evaluate(async()=>{await document.fonts.ready;await Promise.all([...document.fonts].map(f=>f.load()))});await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0)});
   await page.screenshot({path:path.join(qa,`${lang}-mobile-fresh.png`)});
+  await page.locator('p').filter({hasText:'Pauli Z'}).screenshot({path:path.join(qa,`${lang}-pauli-mobile.png`)});
   for(const [i,f] of (await page.locator('figure').all()).entries())await f.screenshot({path:path.join(qa,`${lang}-mobile-final-figure-${i+1}.png`)});
   await page.locator('#authoring-disclosure').screenshot({path:path.join(qa,`${lang}-disclosure-mobile.png`)});
   info.mobile=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,visibleFigures:[...document.querySelectorAll('figure')].map(f=>[...f.querySelectorAll('img')].filter(i=>getComputedStyle(i).display!=='none').map(i=>i.getAttribute('src'))),badImages:[...document.images].filter(i=>!i.complete||!i.naturalWidth).length}));

@@ -66,9 +66,15 @@ def main():
     if not fallback_source.is_file() or not fallback_license.is_file():
         raise ValueError('The licensed Noto Sans source and OFL are required for scientific glyph coverage.')
     fallback_cmap=TTFont(fallback_source).getBestCmap()
-    missing=sorted(needed-set(fallback_cmap))
+    math_needed=needed-set(fallback_cmap)
+    math_source=ROOT/'artifacts'/'noto-sans-math-source.ttf'
+    math_license=ROOT/'artifacts'/'noto-math-OFL.txt'
+    if not math_source.is_file() or not math_license.is_file():
+        raise ValueError('The licensed Noto Sans Math source and OFL are required for mathematical brackets.')
+    missing=sorted(math_needed-set(TTFont(math_source).getBestCmap()))
     if missing:
-        raise ValueError(f'Glyphs missing from both licensed fonts: {missing}')
+        raise ValueError(f'Glyphs missing from all licensed fonts: {missing}')
+    needed-=math_needed
     for label,weight in [('regular',400),('bold',700)]:
         font=instantiateVariableFont(TTFont(fallback_source),{'wght':weight,'wdth':100},inplace=True)
         style='Bold' if label=='bold' else 'Regular'
@@ -80,7 +86,17 @@ def main():
         font.flavor='woff2';target=ROOT/'artifacts'/f'review-symbols-{label}.woff2';font.save(target)
         assert needed <= set(TTFont(target).getBestCmap())
         coverage[f'symbols_{label}']={'bytes':target.stat().st_size,'covered_codepoints':sorted(needed)}
+    font=TTFont(math_source)
+    renamed={1:'Review Math Subset',2:'Regular',3:'ReviewMathSubset-Regular',4:'Review Math Subset Regular',6:'ReviewMathSubset-Regular',16:'Review Math Subset',17:'Regular'}
+    for record in font['name'].names:
+        if record.nameID in renamed:record.string=renamed[record.nameID].encode(record.getEncoding())
+    options=subset.Options();options.flavor='woff2';options.recalc_timestamp=False;options.name_IDs=['*']
+    worker=subset.Subsetter(options=options);worker.populate(unicodes=math_needed|{32});worker.subset(font)
+    font.flavor='woff2';target=ROOT/'artifacts'/'review-math.woff2';font.save(target)
+    assert math_needed <= set(TTFont(target).getBestCmap())
+    coverage['math']={'bytes':target.stat().st_size,'covered_codepoints':sorted(math_needed)}
     license_parts.append(fallback_license.read_text(encoding='utf-8'))
+    license_parts.append(math_license.read_text(encoding='utf-8'))
     license_text = '\n\n'.join(dict.fromkeys(license_parts)).strip() + '\n\n' + args.license.read_text(encoding='utf-8')
     (ROOT / 'artifacts' / 'font-license.txt').write_text(license_text.rstrip() + '\n', encoding='utf-8')
     print(json.dumps(coverage, ensure_ascii=False))
