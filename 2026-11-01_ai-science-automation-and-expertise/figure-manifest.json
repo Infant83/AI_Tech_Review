@@ -1,7 +1,7 @@
 {
   "review": "2026-11-01_ai-science-automation-and-expertise",
   "date": "2026-11-01",
-  "status": "published: verification-methods revision",
+  "status": "paragraph-context prose revision produced; publication pending",
   "cover": {
     "tool": "built-in image_gen",
     "model_id": "not retained",
@@ -30,19 +30,19 @@
       "kind": "Redraw of 19 publicly reported results",
       "source": "Borealis V6, doi:10.5683/SP3/UAKARI; CC0-1.0",
       "data": "artifacts/data/borealis-h2-dissociation-data.csv",
-      "scope": "CPU STO-3G VQE against the same finite-model exact reference; reported error column converted mHa to microHa; not VQE rerun, QPU or experimental molecular error"
+      "scope": "Nineteen author-reported CPU-simulator results in the STO-3G model;VQE energy against direct diagonalization of the same Hamiltonian;reported-error column converted frommHa tomicroHa."
     },
     {
       "stem": "density_gap",
       "kind": "Original two-level teaching model",
       "source": "Physical distinction motivated by FermiScope arXiv:2610.37843v1",
-      "scope": "Fixed orthonormal basis, two noninteracting opposite-spin electrons occupy the same lower spatial orbital; empty level changes the gap from 2 to 3 eV at constant density. Not independent self-consistent DFT solutions or a Hohenberg-Kohn counterexample"
+      "scope": "Two predicted matrices in the same fixed orthonormal spatial basis;two opposite-spin electrons occupy the lower orbital;changing the empty level gives2and3eVgaps at identical occupied density."
     },
     {
       "stem": "referee_controls",
       "kind": "Redraw of public aggregate estimates and intervals",
       "source": "papers-to-end-all-papers commit 0b55e3424559c12f98718185cca87ba42424ddbd",
-      "scope": "Same-field AI n130, 84% [78,90]; control n50, 76% [64,88]; reported bootstrap95% intervals, rounded. AI-referee major-issue judgments, not human-confirmed errors or causal estimates"
+      "scope": "Published AI-referee major-issue judgments:matched-field AI n130,84%[78,90],controls n50,76%[64,88];rounded reported estimates and95%bootstrap intervals."
     }
   ],
   "source_versions": {
@@ -67,17 +67,17 @@
   "authoring_system": "OpenAI Codex; exact model identifier not retained",
   "human_review": "Editorial direction incorporated; no line-by-line human approval or reader-comprehension study",
   "verification": {
-    "manuscripts": "Expanded bilingual section independently audited:13numbered references and29matching citationgroups;Pauli test input, code/model/statistical validation distinctions and statistical sampling assumptions checked.",
+    "manuscripts": "Both complete manuscripts were reread for paragraph claims, sources of comparisons and scientific meaning after deletion/reconstruction. Independent Korean science/context reviews and a separate English reading passed;13reference entries are unchanged and29citationgroups retain their sequence.",
     "output": {
       "korean_pages": 11,
       "english_pages": 13,
-      "visual_inspection": "All24 revised PDF pages individually inspected;root independently checkedKO8/9andEN9/10;no clipped labels,missing glyphs or overlaps",
-      "fonts": "OFL NanumGothic,NotoSans symbol and NotoSansMath U+27E9 subsets embedded;coverage complete",
-      "links": "43HTTPS annotations perPDF;attachments0;fileURI0;13references and29matching citationgroups",
-      "web": "1440/390 bilingual metadata and font/image loading,7imageassets,4semanticfigures,12SVG text bounds passed;externalrequests0;separate final HTML-manuscript correspondence check passed",
-      "preservation": "Concept cover and12originalSVG source files byte-identical;publicSVG payload differences restricted to embedded font style and alias"
+      "visual_inspection": "All24final pages individually inspected;root independently checkedKO2/5/11 andEN2. Both languages at1440/390px,all12SVGs and mobile explanatory footers passed.",
+      "figures": "12of12geometry comparisons matched exactly:476shape-attribute records unchanged. Captions,visible explanation,SVGdesc and metadata were revised to state actual objects and source identities.",
+      "links": "43HTTPS PDF annotations per language;attachments0;fileURI0;13references and29citationgroups.",
+      "bilingual": "63manuscript blocks per language,all citations,reference URLs,7disclosurefields and12SVG text inventories correspond to final outputs.",
+      "cover": "Original generated WebP unchanged;conceptual-image caption updated in both languages."
     },
-    "publication": "Revised article, bilingual PDFs and archives published and verified over HTTPS on 2026-11-01.",
+    "publication": "Current revision awaiting publication;previous verified releases retained in revision_history.",
     "pauli_test": {
       "input": "separate verification input |0> in the Z basis, not the original agent task input",
       "Pauli_Z_initial_expectation": 1,
@@ -85,97 +85,103 @@
       "verification": "independently evaluated2x2matrices",
       "scope": "formal test-case check only; no agent experiment, measured error reduction or time saving"
     },
-    "publication_local": {
-      "relevant_tests_passed": 87,
-      "reviews": 51,
-      "archive_documents": 98,
-      "reader_articles": 54,
-      "validated_public_files": 1665,
-      "preservation": "50other review records,96other archive records,all1469other review files and all other reader article records preserved",
-      "pdf_copies": "Four byte-identical latest copies per language:source dist,source archive,public article,public archive",
-      "public_payload": "20article files;no notes,tmp,raw papers,private messages or QA screenshots",
-      "public_site_errors": 0
-    },
-    "live": {
+    "contextual_prose": {
       "date": "2026-11-01",
-      "publication_source": "86271d6887bec148afcd91c066300ab4f134beec",
-      "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41265155847",
-      "workflow_result": "success",
-      "checked_urls": 32,
-      "failures": 0,
-      "comparison": "24 literal-byte or exact revision-stamped catalog matches; 8 HTML matches after only the identified Cloudflare beacon insertion and existing public contact-link protection/decoder. Both legacy language URLs redirected to infant83.io with HTTP 200.",
-      "browser": "Actual service KO/EN at 1440/390px: 13 references, 29 citation groups, 7 images, new Pauli section, 7 disclosure fields, freshness revisions and actual KO-to-EN-to-KO navigation passed. Both revision-query PDFs returned HTTP200 and exact final SHA256/size. No unresolved article-asset or page exceptions.",
-      "browser_limit": "Anonymous subscription GET401 also occurred on the existing 25October article. Read-only QA intentionally blocked metrics and Cloudflare RUM POSTs; no engagement, subscription or message write was performed."
+      "focus": "Establish the paragraph claim and the source of a contrast;test whether deleting a qualification changes scientific meaning;integrate necessary conditions and reread the resulting argument.",
+      "applied_tools": [
+        ".automation/writing-style-audit-harness.md",
+        "EDITORIAL_METHOD.md",
+        "SCIENTIFIC_EXPLANATION_DIRECTION.md",
+        "templates/review-explanation-brief.md",
+        "artifacts/build_figures.py",
+        "artifacts/build_review.mjs",
+        "current review publication metadata"
+      ],
+      "scope": "Korean and English article prose,hero and figure captions,12localized SVG explanations and authorship disclosures. Technical publication validation is recorded separately.",
+      "readers": "cuantico_source and dqb_fermiscope reviewed Korean science and argument context;journal_dataset rewrote English;agent_standards separately read English and verified output.",
+      "human_review": "Specific editorial prose criticism incorporated;no whole-text human approval or reader-comprehension experiment."
+    },
+    "publication_local": {
+      "reviews": 51,
+      "archive_documents": 100,
+      "reader_articles": 56,
+      "validated_public_files": 1667,
+      "relevant_regression_tests_passed": 87,
+      "public_site_errors": 0,
+      "preservation": "All1469other review files,50other review records,98other archive records and all other reader article histories retained,including both concurrently added D-Wave documents.",
+      "base_main": "dd20036570bf3c885b485f2141c1d9b37d196ed4",
+      "pdf_copies": "Four exact copies per language:source dist,source archive,public article,public archive.",
+      "scope": "20public article files;private notes,raw source papers,mail andQAimages excluded."
     }
   },
   "files": {
     "artifacts/density_gap_en.svg": {
-      "sha256": "03b1f18b72f88f93d71d7c37f8dc202bc0d8d6357948630f2b650b53e049bd15",
-      "bytes": 5372
+      "sha256": "df127f0341bd85582473d958eea7ce260820948e3870f4242f790e7425d76d94",
+      "bytes": 5530
     },
     "artifacts/density_gap_ko.svg": {
-      "sha256": "de97e48dddd4d67c3b524cb159f56448cb51c6767855bf176a3aa86dad1687cc",
-      "bytes": 5380
+      "sha256": "8d178eaad041dacff127917da05c339c313257443bbccc14fbed9dd6ebe140a3",
+      "bytes": 5571
     },
     "artifacts/density_gap_mobile_en.svg": {
-      "sha256": "6bb053ea2084d6568fac5326ea08560835951c5031e40babf76f131e52c0a106",
-      "bytes": 5444
+      "sha256": "3a2e0675fddf1afc61307825c7a663a3ad8bfa0a182326459d6d83923e8a1c77",
+      "bytes": 5623
     },
     "artifacts/density_gap_mobile_ko.svg": {
-      "sha256": "dd757ebcea652da1cdff301705937dfc8c77fe72ab2c64c1c02333ea8b6eb91e",
-      "bytes": 5460
+      "sha256": "0bb4a686635ae8c38af3036ef88a068f33953eebe3b1cb0118a15a96dbe60a39",
+      "bytes": 5648
     },
     "artifacts/h2_energy_en.svg": {
-      "sha256": "685333c4d99a0f96b763ce4bb7ba1effa0013002fe77b0da2d17b9a7efa69532",
-      "bytes": 13202
+      "sha256": "5916ce06c2670bd681b616e055dc61f1d994b9824b55562e7c207c3458873793",
+      "bytes": 13350
     },
     "artifacts/h2_energy_ko.svg": {
-      "sha256": "18fc9d74b08da7b120a507467120e257b8c99562a5d69aec22b729eaa8c5a9fa",
-      "bytes": 13241
+      "sha256": "d76670091173c2fb27c8831a5c201b3a67d6e92cc17d02fa2d80a6cb675cf6cc",
+      "bytes": 13381
     },
     "artifacts/h2_energy_mobile_en.svg": {
-      "sha256": "5ad7e276784db34938a8b5ad0702acac8f12a03e33baa3092eae48598354ef54",
-      "bytes": 12595
+      "sha256": "d8fbb4b849569199101a342ba908b8b01378f017811b274d95d2111f72541032",
+      "bytes": 12777
     },
     "artifacts/h2_energy_mobile_ko.svg": {
-      "sha256": "a8662c1037f4331546107c6fa668aee0e49ee34abe4f187b75e411c26e36399a",
-      "bytes": 12621
+      "sha256": "fb3ffda74c5d45b967a7a55e1a7b4db98cb2ec49f83894f19bbd176dadfd2771",
+      "bytes": 12780
     },
     "artifacts/hero.webp": {
       "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
       "bytes": 392796
     },
     "artifacts/referee_controls_en.svg": {
-      "sha256": "17af6381424c8210bfcafff9740a56fea4f6253568e66202f8785b099f337927",
-      "bytes": 4680
+      "sha256": "9a59d95c45075dbcccd24629f9d7c6d8ed3922398a74b46d69015d5ba3d62ff9",
+      "bytes": 4691
     },
     "artifacts/referee_controls_ko.svg": {
-      "sha256": "1127a14a87c5a6981bb9ec4d3b56bb66412cf8a2d54814ae179c6119ec67fc72",
-      "bytes": 4699
+      "sha256": "59e7039f7ce85d5f59e99aff4be18580a15a47dfb19a6b4a39eb7fec2b6f47fb",
+      "bytes": 4707
     },
     "artifacts/referee_controls_mobile_en.svg": {
-      "sha256": "59ae3744a301c2d7d21390b33f522077a93044cdd1f6e757ce783b0d75b1c664",
-      "bytes": 4823
+      "sha256": "191f1ef99c22fff5cac7ad49a7ae9dfc9db1bb84b589e54950767693c6fb4ea6",
+      "bytes": 4850
     },
     "artifacts/referee_controls_mobile_ko.svg": {
-      "sha256": "d793612eda558528e33503417d7aea0d528fcccba368bfdbf6211f882f22f3c8",
-      "bytes": 4853
+      "sha256": "425614185a16e53fbb0b04b52270072b3cc571f125444c5ca053927f6faddb59",
+      "bytes": 4873
     },
     "dist/en/review_en.pdf": {
-      "sha256": "02e5ce407a25befbbd88e901249486fa8ef692c7cbab69ea0e6c37bdc82fd995",
-      "bytes": 3620035
+      "sha256": "46552ff7cc7896d7f227e27acaf479405ec6cfc1a94b49e5a0728ce890294aad",
+      "bytes": 3615803
     },
     "dist/review_ko.pdf": {
-      "sha256": "7ffc91a6a26b00e4a9dd0551727328d191c9b898a122bf17955c938408a38a35",
-      "bytes": 3716523
+      "sha256": "97ca1bbcac89538c69dca62774106c91cf8c04abba49cd3c5d489ad0f776e9d2",
+      "bytes": 3710883
     },
     "reports/review_en.md": {
-      "sha256": "37da6321fb21ff551c26e53ab08c8a916701812f5e03b6f416cd1564686c4c5e",
-      "bytes": 33775
+      "sha256": "ab6e2f5a3d474c84e2f3591f8da1151c0d99097bf6799c611fb15eca668a1639",
+      "bytes": 32074
     },
     "reports/review_ko.md": {
-      "sha256": "d0bf7be6cb6345ebcc03244a59359eb7db9eda1c3fcfe85d338922bbb50479c6",
-      "bytes": 33899
+      "sha256": "32708e57c4775847c0cf85d3e7c278c5da329b05c64c05a7d5c4aa656b8a522b",
+      "bytes": 32309
     }
   },
   "revision_history": [
@@ -211,6 +217,41 @@
         "dist/review_ko.pdf": {
           "sha256": "3f1387f7fbf5d051a7c7a1f3ad531bf4268f55c9adf44414ac68ecc18c439fed",
           "bytes": 3685317
+        }
+      }
+    },
+    {
+      "revision": "researcher verification methods expansion",
+      "source_commit": "86271d6887bec148afcd91c066300ab4f134beec",
+      "documentation_commit": "6e9d2a373be502ba6d1bc85511062c3547e4bd21",
+      "outputs": {
+        "korean_pages": 11,
+        "english_pages": 13,
+        "visual_inspection": "All24 revised PDF pages individually inspected;root independently checkedKO8/9andEN9/10;no clipped labels,missing glyphs or overlaps",
+        "fonts": "OFL NanumGothic,NotoSans symbol and NotoSansMath U+27E9 subsets embedded;coverage complete",
+        "links": "43HTTPS annotations perPDF;attachments0;fileURI0;13references and29matching citationgroups",
+        "web": "1440/390 bilingual metadata and font/image loading,7imageassets,4semanticfigures,12SVG text bounds passed;externalrequests0;separate final HTML-manuscript correspondence check passed",
+        "preservation": "Concept cover and12originalSVG source files byte-identical;publicSVG payload differences restricted to embedded font style and alias"
+      },
+      "live": {
+        "date": "2026-11-01",
+        "publication_source": "86271d6887bec148afcd91c066300ab4f134beec",
+        "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41265155847",
+        "workflow_result": "success",
+        "checked_urls": 32,
+        "failures": 0,
+        "comparison": "24 literal-byte or exact revision-stamped catalog matches; 8 HTML matches after only the identified Cloudflare beacon insertion and existing public contact-link protection/decoder. Both legacy language URLs redirected to infant83.io with HTTP 200.",
+        "browser": "Actual service KO/EN at 1440/390px: 13 references, 29 citation groups, 7 images, new Pauli section, 7 disclosure fields, freshness revisions and actual KO-to-EN-to-KO navigation passed. Both revision-query PDFs returned HTTP200 and exact final SHA256/size. No unresolved article-asset or page exceptions.",
+        "browser_limit": "Anonymous subscription GET401 also occurred on the existing 25October article. Read-only QA intentionally blocked metrics and Cloudflare RUM POSTs; no engagement, subscription or message write was performed."
+      },
+      "pdf_files": {
+        "dist/en/review_en.pdf": {
+          "sha256": "02e5ce407a25befbbd88e901249486fa8ef692c7cbab69ea0e6c37bdc82fd995",
+          "bytes": 3620035
+        },
+        "dist/review_ko.pdf": {
+          "sha256": "7ffc91a6a26b00e4a9dd0551727328d191c9b898a122bf17955c938408a38a35",
+          "bytes": 3716523
         }
       }
     }

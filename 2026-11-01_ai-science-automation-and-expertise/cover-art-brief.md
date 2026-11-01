@@ -12,7 +12,7 @@
 
 - 독자에게 전달할 사건: 하나로 합쳐 보면 숨는 차이를 펼쳐, 필요한 부분을 관찰한다.
 - 분야 / 표현 유형 / 매체: 계산물리·AI 학습 / 척도와 대응·선택 / 과슈와 투명 수채를 결합한 원본 개념 일러스트
-- 실행 수준: 예술적 비유. 실제 광학 장치·전자구조·LDOS 측정·벤치마크가 아니다.
+- 실행 수준: 정보의 구분과 관찰 선택을 표현한 AI 생성 개념 일러스트.
 
 | 요소 | 지시 대상 | 보존할 관계 | 허용할 추상화 | 피할 해석 |
 |---|---|---|---|---|
@@ -41,8 +41,8 @@
 
 ## 공개 문구
 
-- 한국어 캡션: 하나의 밝기로 합쳐 보면 놓치는 차이를 펼쳐 살펴보는 장면. 물리적 질문에 맞는 관찰 대상을 선택한다는 뜻의 AI 생성 개념 일러스트이며, 실제 실험 장치나 전자 상태밀도 데이터가 아니다.
-- English caption: Separating information that looks uniform when combined. This AI-generated conceptual illustration represents choosing observations that answer a physical question; it is not an actual apparatus or electronic density-of-states dataset.
+- 한국어 캡션: 하나의 빛을 여러 색으로 펼쳐 관찰하는 프리즘과 좁은 틈. 물리적 질문에 맞는 정보를 구별해 살피는 과정을 비유한 AI 생성 개념 일러스트다.
+- English caption: A prism spreads light into colours for observation through a narrow opening. This AI-generated conceptual illustration evokes the process of distinguishing information relevant to a physical question.
 - 한국어 대체 텍스트: 하나의 넓은 빛을 여러 색으로 펼쳐 살펴보는 프리즘과 좁은 관찰 틈을 표현한 개념 일러스트.
 - English alt: A conceptual prism spreads a broad band of light into colours beside a narrow observation slit.
 

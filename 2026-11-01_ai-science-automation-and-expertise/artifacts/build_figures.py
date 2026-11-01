@@ -50,9 +50,9 @@ assert abs(max(r['reported_error_microHa'] for r in rows)-1.19)<1e-12
 
 def h2(lang,mobile):
  ko=lang=='ko';w,h=(680,950) if mobile else (1120,820)
- s=SVG(w,h,'H₂: 에너지와 오차를 함께 읽기' if ko else 'H₂: read the energy and the error', '19 public H2 dissociation data points; VQE and exact energy reference in hartree, reported absolute error converted from millihartree to microhartree.',{'data':DATA_URL,'dataset':BOREALIS,'licence':'CC0-1.0','type':'redraw of reported public data, no independent VQE execution'})
+ s=SVG(w,h,'H₂: 에너지와 오차를 함께 읽기' if ko else 'H₂: read the energy and the error', '19 author-reported H2 dissociation results from a CPU simulator. VQE energies are compared with direct diagonalization of the same STO-3G Hamiltonian, in hartree. The reported absolute-error column is converted from millihartree to microhartree.',{'data':DATA_URL,'dataset':BOREALIS,'licence':'CC0-1.0','type':'redraw of author-reported CPU-simulator data','reference':'direct diagonalization of the same STO-3G Hamiltonian'})
  s.text(30,45,('H₂: 겹치는 에너지와 작은 오차' if ko else 'H₂: energies and small errors') if mobile else ('H₂: 겹치는 에너지 곡선, 따로 읽어야 할 오차' if ko else 'H₂: overlapping energies, a separate error scale'),26,weight=700)
- s.text(30,77,('공개 19점 재도표 · VQE 재실행 없음' if ko else '19 reported points · no new VQE run') if mobile else ('공개 데이터 19점 · 계산 재실행 없이 재도표' if ko else '19 public data points · redrawn without rerunning the calculation'),18,GRAY)
+ s.text(30,77,('공개 CPU 계산 결과 19점 재도표' if ko else '19 published CPU-simulator results redrawn') if mobile else ('Borealis V6 공개 CPU 계산 결과 19점 재도표' if ko else '19 published CPU-simulator results · redrawn from Borealis V6'),18,GRAY)
  x,y,pw,ph=(98,182,540,280) if mobile else (105,145,660,270)
  s.text(x,y-28,'총에너지 (Ha)' if ko else 'Total energy (Ha)',19,weight=700)
  fx,fy=axes(s,x,y,pw,ph,.4,2.2,-1.16,-.9,[(v,str(v)) for v in [.4,.8,1.2,1.6,2.2]],[(v,f'{v:.2f}') for v in [-1.15,-1.10,-1.05,-1.00,-.95,-.90]])
@@ -71,16 +71,16 @@ def h2(lang,mobile):
  if mobile:
   s.text(30,h-78,'최대 오차: 1.19 µHa, R = 0.4 Å' if ko else 'Maximum error: 1.19 µHa at R = 0.4 Å',19,weight=700)
   s.text(30,h-48,'1 µHa = 10⁻⁶ Ha · 보고 오차의 단위 변환' if ko else '1 µHa = 10⁻⁶ Ha · reported errors converted',17,GRAY)
-  s.text(30,h-20,'Borealis V6 · CC0 1.0 · QPU 측정 아님' if ko else 'Borealis V6 · CC0 1.0 · not a QPU run',16,GRAY)
+  s.text(30,h-20,'Borealis V6 · CC0 1.0 · CPU 보고값' if ko else 'Borealis V6 · CC0 1.0 · reported CPU results',16,GRAY)
  else:
   s.lines(810,300,['최대 보고 오차','1.19 µHa','R = 0.4 Å'] if ko else ['Maximum reported error','1.19 µHa','R = 0.4 Å'],20,32,weight=700)
   s.lines(810,433,['같은 에너지 축에서는','오차가 거의 보이지 않는다.','아래 축은 오차만 확대한다.'] if ko else ['The energy plot nearly','hides the discrepancy.','The lower plot isolates it.'],18,29,color=GRAY)
-  s.text(30,h-22,'Borealis V6 · CC0 1.0 · 1 µHa = 10⁻⁶ Ha · 공개 보고값 재도표, 실제 QPU 측정 아님' if ko else 'Borealis V6 · CC0 1.0 · 1 µHa = 10⁻⁶ Ha · reported values redrawn, not QPU measurements',16,GRAY)
+  s.text(30,h-22,'Borealis V6 · CC0 1.0 · 1 µHa = 10⁻⁶ Ha · 공개 CPU 보고값 재도표' if ko else 'Borealis V6 · CC0 1.0 · 1 µHa = 10⁻⁶ Ha · reported CPU results redrawn',16,GRAY)
  s.save(f'h2_energy_{"mobile_" if mobile else ""}{lang}.svg')
 
 def density(lang,mobile):
  ko=lang=='ko';w,h=(680,1040) if mobile else (1120,740)
- s=SVG(w,h,'같은 점유 상태, 다른 빈 준위' if ko else 'Same occupied state, different empty level','A fixed orthonormal two-orbital basis with two noninteracting electrons. H0 diag(-1,+1) eV, H1 diag(-1,+2) eV. The occupied orbital and density remain identical while the one-particle level gap changes from 2 to 3 eV. Not independent self-consistent DFT solutions or a Hohenberg-Kohn counterexample.',{'type':'review teaching model','basis':'fixed orthonormal phi0, phi1','electrons':2,'H0_eV':[[-1,0],[0,1]],'H1_eV':[[-1,0],[0,2]],'warning':'not independent self-consistent DFT solutions or a Hohenberg-Kohn counterexample'})
+ s=SVG(w,h,'같은 점유 상태, 다른 빈 준위' if ko else 'Same occupied state, different empty level','A teaching comparison of two predicted matrices in a fixed orthonormal basis of two spatial orbitals. Two noninteracting electrons of opposite spin occupy the lower spatial orbital. H0 diag(-1,+1) eV, H1 diag(-1,+2) eV. Holding the occupied orbital and its occupation fixed preserves the density while changing the empty level changes the one-particle gap from 2 to 3 eV.',{'type':'review teaching model','basis':'fixed orthonormal spatial orbitals phi0, phi1','electrons':2,'spin':'opposite spins in the same lower spatial orbital','H0_eV':[[-1,0],[0,1]],'H1_eV':[[-1,0],[0,2]],'construction':'two predicted fixed-basis matrices; occupied orbital and occupation held fixed'})
  s.text(30,45,'같은 점유 상태, 다른 빈 준위' if ko else 'Same occupied state, different empty level',28,weight=700)
  s.text(30,79,('직교 기저 φ₀, φ₁ 고정 · 비상호작용 전자 2개' if ko else 'Fixed basis φ₀, φ₁ · 2 noninteracting electrons') if mobile else ('고정된 직교 기저 φ₀, φ₁ · 상호작용 없는 전자 2개' if ko else 'Fixed orthonormal basis φ₀, φ₁ · two noninteracting electrons'),19,GRAY)
  cards=[(30,115,620,280),(30,420,620,280)] if mobile else [(30,120,510,340),(580,120,510,340)]
@@ -100,13 +100,13 @@ def density(lang,mobile):
  s.rect(30,by,w-60,118,'#e6f0ed',TEAL)
  s.text(w/2,by+36,'점유 궤도는 그대로 → 밀도도 그대로' if ko else 'Same occupied orbital → same density',23,TEAL,700,'middle')
  s.text(w/2,by+81,'n₀(r) = n₁(r) = 2 |φ₀(r)|²',28,TEAL,700,'middle')
- if mobile:s.lines(30,h-115,['고정 기저의 단일입자 교육 모형.','독립 SCF 해나 Hohenberg–Kohn 정리의','반례를 제시하는 그림이 아니다.'] if ko else ['An idealized one-particle teaching model.', 'Not independent self-consistent DFT solutions;', 'not a Hohenberg–Kohn counterexample.'],17,35,color=GRAY)
- else:s.lines(30,h-80,['이상화된 단일입자 모형: 독립적인 자기일관 DFT 해나','Hohenberg–Kohn 정리의 반례를 제시하는 그림이 아니다.'] if ko else ['An idealized one-particle model: not independent self-consistent DFT solutions', 'and not a counterexample to the Hohenberg–Kohn theorem.'],17,29,color=GRAY)
+ if mobile:s.lines(30,h-115,['고정된 기저와 점유를 유지한 예측 행렬.','비점유 준위의 에너지만 바꾸어','밀도와 궤도 간격을 비교한 교육 모형.'] if ko else ['Predicted matrices in a fixed orthonormal basis.', 'Occupied orbital and occupation held fixed.', 'Only the unoccupied level energy changes.'],17,35,color=GRAY)
+ else:s.lines(30,h-80,['고정된 기저와 점유를 유지한 두 예측 행렬의 비교.','비점유 준위의 에너지만 바꾸어 밀도와 궤도 간격을 살핀 교육 모형.'] if ko else ['A teaching comparison of two predicted matrices with basis and occupation fixed.', 'Only the unoccupied level energy changes.'],17,29,color=GRAY)
  s.save(f'density_gap_{"mobile_" if mobile else ""}{lang}.svg')
 
 def referee(lang,mobile):
  ko=lang=='ko';w,h=(680,800) if mobile else (1120,700)
- s=SVG(w,h,'AI 심사자가 지적한 주요 문제' if ko else 'Major issues flagged by an AI referee','Matched-field comparison: 130 AI papers, rounded 84 percent with 95 percent bootstrap CI 78-90; 50 control papers, 76 percent, CI 64-88. AI referee judgments, not independent human verdicts. Selected sample, not all scientific work.',{'source':JCCM,'type':'reported data redraw','AI_n':130,'AI_percent':83.8,'AI_95CI':[77.7,90.0],'control_n':50,'control_percent':76,'control_95CI':[64,88],'display':'whole-percent rounding','difference_control_minus_AI_percentage_points':-7.8,'difference_95CI':[-21.5,4.9]})
+ s=SVG(w,h,'AI 심사자가 지적한 주요 문제' if ko else 'Major issues flagged by an AI referee','Published AI-referee judgments for papers matched by primary field: 130 AI papers, rounded 84 percent with 95 percent bootstrap CI 78-90; 50 control papers, 76 percent, CI 64-88. The plotted denominators are the sizes of these two samples.',{'source':JCCM,'type':'reported data redraw','AI_n':130,'AI_percent':83.8,'AI_95CI':[77.7,90.0],'control_n':50,'control_percent':76,'control_95CI':[64,88],'display':'whole-percent rounding','difference_control_minus_AI_percentage_points':-7.8,'difference_95CI':[-21.5,4.9]})
  s.text(30,45,'AI 심사자가 지적한 주요 문제' if ko else 'Major issues flagged by an AI referee',28,weight=700)
  s.lines(30,80,(['같은 주분야: cond-mat/quant-ph','적어도 하나의 major issue를 지적한 비율'] if ko else ['Matched primary fields: cond-mat/quant-ph', 'Share with at least one major issue']) if mobile else (['같은 주분야(cond-mat/quant-ph)의 논문을 비교','적어도 하나의 major issue를 지적한 비율'] if ko else ['Papers matched on primary field (cond-mat/quant-ph)', 'Share flagged with at least one major issue']),19,30,color=GRAY)
  x=90 if mobile else 315;y=220 if mobile else 200;pw=w-x-55
@@ -127,14 +127,14 @@ def referee(lang,mobile):
  fy=560 if mobile else 500
  s.rect(30,fy,w-60,112)
  if mobile:
-  s.lines(50,fy+34,['점: 보고 비율 · 선: 95% bootstrap 구간','AI 심사자의 판단이며','사람이 확정한 오류율은 아니다.'] if ko else ['Dot: reported share · line: 95% bootstrap CI', 'AI-referee judgments,', 'not human-confirmed error rates.'],18,32,color=GRAY)
+  s.lines(50,fy+34,['점: 보고 비율 · 선: 95% bootstrap 구간','AI 심사자가 중대한 문제를 지적한 비율','분모: 각 표본의 논문 수'] if ko else ['Dot: reported share · line: 95% bootstrap CI', 'Major-issue judgments by the AI referee', 'Denominator: papers in each sample'],18,32,color=GRAY)
   s.lines(30,h-70,['출처: JCCM 동결 공개 집계','표시값은 정수로 반올림'] if ko else ['Source: frozen JCCM public aggregates', 'Values rounded to whole percent'],16,32,color=GRAY)
  else:
-  s.lines(50,fy+34,['점: 보고 비율 · 선: 95% bootstrap 신뢰구간','이 비율은 AI 심사자의 판단이며 사람의 확정 오류율이 아니다.'] if ko else ['Dot: reported share · line: 95% bootstrap confidence interval', 'These are AI-referee judgments, not human-confirmed error rates.'],18,31,color=GRAY)
+  s.lines(50,fy+34,['점: 보고 비율 · 선: 95% bootstrap 신뢰구간','AI 심사자의 중대한 문제 지적 비율 · 분모는 각 표본의 논문 수'] if ko else ['Dot: reported share · line: 95% bootstrap confidence interval', 'AI-referee major-issue judgments; denominator: papers in each sample'],18,31,color=GRAY)
   s.text(30,h-24,'출처: JCCM 동결 공개 집계 · 표시값은 정수로 반올림' if ko else 'Source: frozen JCCM public aggregates · plotted values rounded to integers',16,GRAY)
  s.save(f'referee_controls_{"mobile_" if mobile else ""}{lang}.svg')
 
 for lang in ['ko','en']:
  for mobile in [False,True]:h2(lang,mobile);density(lang,mobile);referee(lang,mobile)
-(data_dir/'figure-provenance.json').write_text(json.dumps({'cutoff':'2026-11-01','h2':{'source':DATA_URL,'doi':BOREALIS,'licence':'CC0-1.0','original_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'data_points':len(rows),'maximum_reported_error_microHa':1.19},'density_model':{'basis':'fixed orthonormal two orbitals','electrons':2,'H0_eV':[-1,1],'H1_eV':[-1,2],'occupied_orbital':'phi0','density_both':'2|phi0(r)|^2','gaps_eV':[2,3],'not':'independent self-consistent DFT solutions or Hohenberg-Kohn counterexample'},'referee':{'source':JCCM,'AI':{'n':130,'percent':83.8,'CI95':[77.7,90.0]},'control':{'n':50,'percent':76,'CI95':[64,88]},'display_rounding':'nearest integer percent','judgment':'AI referee, not human ground truth'}},ensure_ascii=False,indent=2)+'\n')
+(data_dir/'figure-provenance.json').write_text(json.dumps({'cutoff':'2026-11-01','h2':{'source':DATA_URL,'doi':BOREALIS,'licence':'CC0-1.0','original_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'data_points':len(rows),'maximum_reported_error_microHa':1.19},'density_model':{'basis':'fixed orthonormal two orbitals','electrons':2,'H0_eV':[-1,1],'H1_eV':[-1,2],'occupied_orbital':'phi0','density_both':'2|phi0(r)|^2','gaps_eV':[2,3],'construction':'two predicted matrices in a fixed orthonormal basis with occupied orbital and occupation held fixed'},'referee':{'source':JCCM,'AI':{'n':130,'percent':83.8,'CI95':[77.7,90.0]},'control':{'n':50,'percent':76,'CI95':[64,88]},'display_rounding':'nearest integer percent','judgment':'major issues flagged by the AI referee in the two defined paper samples'}},ensure_ascii=False,indent=2)+'\n')
 print('Created 12 bilingual desktop/mobile SVGs and traceable figure data; no original research code executed.')
