@@ -1,0 +1,158 @@
+{
+  "review": "2026-11-01_ai-science-automation-and-expertise",
+  "date": "2026-11-01",
+  "status": "production complete; publication verification pending",
+  "cover": {
+    "tool": "built-in image_gen",
+    "model_id": "not retained",
+    "source_image_input": "none",
+    "prompt_file": "artifacts/hero-prompt.txt",
+    "original_size": [
+      1672,
+      941
+    ],
+    "final_size": [
+      1664,
+      936
+    ],
+    "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
+    "postprocessing": "Minor edge fit to exact 16:9 and WebP encoding; semantic content unchanged; no source metadata copied",
+    "review": "Root inspected original, 320x180 thumbnail, grayscale and recent-four montage; final bilingual desktop/mobile and PDF output inspected. Conceptual limits stated in caption; grayscale requires caption to explain energy separation.",
+    "file": "artifacts/hero.webp",
+    "kind": "AI-generated conceptual illustration",
+    "meaning": "Separation of combined information and selection of observations relevant to a physical question",
+    "scope": "Not an actual optical instrument, electronic spectrum or LDOS measurement",
+    "prompt": "Use case: stylized-concept\nAsset type: original 16:9 editorial cover for an accessible science review about AI automation in quantum and materials research, and the choice of physical validation criteria.\nPrimary request: one broad milky-white band of light meets a simple translucent triangular prism and spreads into distinguishable soft colour bands beyond it. A small restrained brass observation slit beside the spread makes the act of selecting what to inspect legible. Keep the incoming band, prism and spread visibly connected. The scientific idea is that information combined into one impression can conceal differences that a more discriminating observation reveals. This is a conceptual material metaphor, not a real instrument, data plot or electronic spectrum.\nStyle and medium: carefully hand-painted gouache and translucent watercolour on warm rough cotton paper. Quiet editorial illustration with tactile brush edges, a clear sculptural focal form and spacious composition; avoid photorealistic product advertising and glossy sci-fi renderings.\nComposition: wide landscape 16:9, one coherent scene on a spare matte work surface, all important relationships inside the central safe area for thumbnails and mobile. Soft shadows and tonal separation should preserve the main relationship in grayscale. The prism is the focal point; the slit is a small secondary element.\nPalette: warm ivory, deep muted indigo, restrained teal, ochre and terracotta colour separation; no neon glow. Band count and width have no numerical meaning.\nConstraints: no text, letters, numerals, equations, axis marks, charts, logos or watermark. No robot, brain, computer circuitry, people, padlock or shields. No invented measured results, no actual molecular structure or apparatus claim. No imitation of a named artist or publication's distinctive artwork. Opaque background.\n"
+  },
+  "figures": [
+    {
+      "stem": "h2_energy",
+      "kind": "Redraw of 19 publicly reported results",
+      "source": "Borealis V6, doi:10.5683/SP3/UAKARI; CC0-1.0",
+      "data": "artifacts/data/borealis-h2-dissociation-data.csv",
+      "scope": "CPU STO-3G VQE against the same finite-model exact reference; reported error column converted mHa to microHa; not VQE rerun, QPU or experimental molecular error"
+    },
+    {
+      "stem": "density_gap",
+      "kind": "Original two-level teaching model",
+      "source": "Physical distinction motivated by FermiScope arXiv:2610.37843v1",
+      "scope": "Fixed orthonormal basis, two noninteracting opposite-spin electrons occupy the same lower spatial orbital; empty level changes the gap from 2 to 3 eV at constant density. Not independent self-consistent DFT solutions or a Hohenberg-Kohn counterexample"
+    },
+    {
+      "stem": "referee_controls",
+      "kind": "Redraw of public aggregate estimates and intervals",
+      "source": "papers-to-end-all-papers commit 0b55e3424559c12f98718185cca87ba42424ddbd",
+      "scope": "Same-field AI n130, 84% [78,90]; control n50, 76% [64,88]; reported bootstrap95% intervals, rounded. AI-referee major-issue judgments, not human-confirmed errors or causal estimates"
+    }
+  ],
+  "source_versions": {
+    "El Agente": "arXiv2512.18847v3 80-page PDF accessed2026-11-01; metadata/HTML/final-journal equivalence not assumed. Failures attributed to paper; public code not independently rerun.",
+    "FermiScope": "arXiv2610.37843v1 PDF and HTML Tables1,7,12 checked; 50-molecule SCF timing is not an extra speedup unique to cumulative-LDOS training",
+    "INCARBench": "arXiv2606.23571v2; configuration-reference evaluation, no executed VASP convergence/property result",
+    "AutoMat": "arXiv2605.00803v2; 85claims/10papers; AI evaluator threshold4of5; separate 40-run expert calibration",
+    "JCCM": "Public methods and aggregates plus landing page; restricted commentary full PDF not accessed",
+    "Human-AI studies": "2024 meta-analysis covers2020–2023 experiments; Nature Perspective is conceptual, not an experiment"
+  },
+  "roles": {
+    "root": "Primary-source synthesis, Korean writing, conceptual cover, editorial integration and publication",
+    "cuantico_source": "El Agente and AutoMat source/version audit; independent manuscript scientific and explanation review",
+    "dqb_fermiscope": "FermiScope and INCARBench source and manuscript audit; independent toy-model and figure checks",
+    "journal_dataset": "JCCM data, meta-analysis and Perspective audit; complete English translation and correspondence review",
+    "agent_standards": "Original bilingual PC/mobile scientific SVGs, fonts and HTML/PDF production and full output inspection"
+  },
+  "authoring_system": "OpenAI Codex; exact model identifier not retained",
+  "human_review": "Editorial direction incorporated; no line-by-line human approval or reader-comprehension study",
+  "verification": {
+    "manuscripts": "Independent scientific, numerical, explanation and bilingual audits completed; 9 numbered sources; 25 matching citation groups",
+    "output": {
+      "korean_pages": 9,
+      "english_pages": 11,
+      "visual_inspection": "All20 final PDF pages individually inspected after font update; root independently checked KO1/4/5/9 and EN3/11; bilingual desktop1440/mobile390 output and all12 SVGs checked",
+      "fonts": "OFL NanumGothic regular/bold and Noto Sans fallback subsets; all scientific glyphs included without Apple fallback",
+      "links": "35HTTPS links per PDF; attachments0, fileURI0; 9references and25matching citationgroups",
+      "web": "Zero overflow, image failures, missing fragments, page errors or external requests in local self-contained article; all fonts loaded"
+    },
+    "publication": "Not yet deployed",
+    "publication_local": {
+      "reviews": 51,
+      "archive_documents": 98,
+      "reader_articles": 54,
+      "validated_public_files": 1665,
+      "public_site_errors": 0,
+      "relevant_tests_passed": 87,
+      "preservation": "All1469 existing review files byte-identical;50 existing review records,96 archive records and existing reader article records unchanged",
+      "pdf_copies": "Source dist, source archive, public article and public archive are byte-identical per language",
+      "public_scope": "20 article files only; personal mail, raw source papers, notes/tmp, QA screenshots and absolute internal paths excluded"
+    }
+  },
+  "files": {
+    "artifacts/density_gap_en.svg": {
+      "sha256": "03b1f18b72f88f93d71d7c37f8dc202bc0d8d6357948630f2b650b53e049bd15",
+      "bytes": 5372
+    },
+    "artifacts/density_gap_ko.svg": {
+      "sha256": "de97e48dddd4d67c3b524cb159f56448cb51c6767855bf176a3aa86dad1687cc",
+      "bytes": 5380
+    },
+    "artifacts/density_gap_mobile_en.svg": {
+      "sha256": "6bb053ea2084d6568fac5326ea08560835951c5031e40babf76f131e52c0a106",
+      "bytes": 5444
+    },
+    "artifacts/density_gap_mobile_ko.svg": {
+      "sha256": "dd757ebcea652da1cdff301705937dfc8c77fe72ab2c64c1c02333ea8b6eb91e",
+      "bytes": 5460
+    },
+    "artifacts/h2_energy_en.svg": {
+      "sha256": "685333c4d99a0f96b763ce4bb7ba1effa0013002fe77b0da2d17b9a7efa69532",
+      "bytes": 13202
+    },
+    "artifacts/h2_energy_ko.svg": {
+      "sha256": "18fc9d74b08da7b120a507467120e257b8c99562a5d69aec22b729eaa8c5a9fa",
+      "bytes": 13241
+    },
+    "artifacts/h2_energy_mobile_en.svg": {
+      "sha256": "5ad7e276784db34938a8b5ad0702acac8f12a03e33baa3092eae48598354ef54",
+      "bytes": 12595
+    },
+    "artifacts/h2_energy_mobile_ko.svg": {
+      "sha256": "a8662c1037f4331546107c6fa668aee0e49ee34abe4f187b75e411c26e36399a",
+      "bytes": 12621
+    },
+    "artifacts/hero.webp": {
+      "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
+      "bytes": 392796
+    },
+    "artifacts/referee_controls_en.svg": {
+      "sha256": "17af6381424c8210bfcafff9740a56fea4f6253568e66202f8785b099f337927",
+      "bytes": 4680
+    },
+    "artifacts/referee_controls_ko.svg": {
+      "sha256": "1127a14a87c5a6981bb9ec4d3b56bb66412cf8a2d54814ae179c6119ec67fc72",
+      "bytes": 4699
+    },
+    "artifacts/referee_controls_mobile_en.svg": {
+      "sha256": "59ae3744a301c2d7d21390b33f522077a93044cdd1f6e757ce783b0d75b1c664",
+      "bytes": 4823
+    },
+    "artifacts/referee_controls_mobile_ko.svg": {
+      "sha256": "d793612eda558528e33503417d7aea0d528fcccba368bfdbf6211f882f22f3c8",
+      "bytes": 4853
+    },
+    "dist/en/review_en.pdf": {
+      "sha256": "27063902173efbb0d7e2d42e558dff64d205dcf123175871d48a1a4c51a8ac15",
+      "bytes": 3588987
+    },
+    "dist/review_ko.pdf": {
+      "sha256": "3f1387f7fbf5d051a7c7a1f3ad531bf4268f55c9adf44414ac68ecc18c439fed",
+      "bytes": 3685317
+    },
+    "reports/review_en.md": {
+      "sha256": "9a603983518925a012c4d58470ae2bb80ff107396bedff7f26e388845be564c3",
+      "bytes": 25657
+    },
+    "reports/review_ko.md": {
+      "sha256": "b82834edd6ecf398b76db4ef58201e897d24ef0e19dfe9eb68c079109bf76187",
+      "bytes": 25923
+    }
+  }
+}

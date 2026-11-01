@@ -109,6 +109,40 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-11-01_ai-science-automation-and-expertise",
+        title="양자와 재료 연구의 AI 자동화와 과학적 판단",
+        subtitle="계산을 실행하는 에이전트와 물리량을 학습하는 모형에서 재현 가능한 지식까지",
+        date="2026-11-01", updated="2026-11-01", category="AI for Science",
+        tags=("Agentic AI", "Quantum Simulation", "Computational Materials", "Scientific Expertise", "Reproducibility", "FermiScope"),
+        summary="수소 원자 사이의 거리를 바꾸는 계산을 AI가 프로그램 문서부터 찾아 수행합니다. 재료 예측에서는 같은 전자밀도를 맞춰도 에너지 간격을 놓칠 수 있어, 무엇을 학습시킬지부터 다시 설계합니다. 두 연구를 따라가며 AI가 맡는 일과 전문가가 질문·조건·검증 기준을 발전시키는 방식을 살핍니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "primary-source synthesis, Korean writing, conceptual cover, editorial integration and publication", "1차 출처 종합·한국어 집필·개념 표지·편집 통합 및 게시"),
+            PublicAgent("cuantico_source", "El Agente and AutoMat PDF/version and artifact audit; independent scientific and explanation review", "El Agente·AutoMat PDF 판본·공개 산출물 대조 및 독립 과학·설명 감수"),
+            PublicAgent("dqb_fermiscope", "FermiScope and INCARBench source audit; independent two-level model, figure and manuscript review", "FermiScope·INCARBench 원문과 두 수준 모형·도식·원고의 독립 과학 감수"),
+            PublicAgent("journal_dataset", "JCCM data, meta-analysis and perspective audit; complete English translation and correspondence checks", "JCCM 데이터·메타분석·관점 논문 대조 및 영어 전문 번역·대응 검토"),
+            PublicAgent("agent_standards", "original bilingual explanatory figures, font and HTML/PDF production and complete output checks", "원본 한영 설명 도식·글꼴·HTML/PDF 제작 및 전체 출력 검사"),
+        ),
+        verification_scope=(
+            "El Agente Cuantico arXiv v3 PDF, selected Borealis V6 artifacts and H2 data; AutoMat v2 PDF; FermiScope v1 PDF and tables; INCARBench v2 evaluation definitions",
+            "JCCM public methods and aggregate data at commit 0b55e3424559c12f98718185cca87ba42424ddbd; the commentary landing page, not its restricted full PDF; published human-AI meta-analysis and scientific-understanding Perspective",
+            "Redraw of 19 published H2 results, independent two-level teaching-model checks, and redraw of published referee/control intervals; reported study outputs, teaching reconstruction and proposed research directions distinguished",
+            "Bilingual claims and APS references, original explanatory SVGs, generated conceptual cover, HTML/PDF metadata and output, archive hashes and live links; no independent agent, VQE, DFT, model-training or QPU reproduction",
+        ),
+        verification_scope_ko=(
+            "El Agente Cuantico arXiv v3 PDF·일부 Borealis V6 산출물과 H2 데이터, AutoMat v2 PDF, FermiScope v1 PDF·표와 INCARBench v2의 평가 정의 대조",
+            "JCCM commit 0b55e3424559c12f98718185cca87ba42424ddbd의 공개 방법·집계와 코멘터리 소개 확인; 제한된 코멘터리 PDF 전문은 미열람. 인간·AI 메타분석과 과학 이해에 관한 Perspective 대조",
+            "공개 H2 결과 19점 재도식·두 수준 교육 모형의 독립 검산·공개 평가 집계와 구간 재도식; 원 연구 보고값·교육 재구성·후속 제안 구별",
+            "한영 주장·APS 참고문헌·원본 설명 SVG·생성 개념 표지·HTML/PDF 메타데이터와 출력·아카이브 해시·공개 링크 확인; 에이전트·VQE·DFT·모델 학습·QPU 독립 재현은 수행하지 않음",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-11-01",
+        human_review_level="Editorial direction on research fields, critical AI use and expertise incorporated; no line-by-line human approval or reader-comprehension study.",
+        human_review_level_ko="연구 분야의 맥락·비판적 AI 활용·전문성에 대한 편집 방향 반영; 문장 단위 사람 승인·독자 이해도 실험 없음.",
+        disclosure_note_ko="El Agente의 기술 근거는 2026-11-01에 확인한 arXiv v3 PDF이며 메타데이터·HTML 및 저널 최종판과 동일하다고 가정하지 않습니다. 실패 사례는 논문이 보고한 것으로 귀속하며 공개 코드로 독립 재현했다고 쓰지 않습니다. 97–100점, AutoMat 53%, JCCM 88%는 서로 다른 평가입니다. FermiScope의 SCF 시간 비교는 50개 분자 범위이고 누적 LDOS만의 추가 가속으로 확대하지 않습니다. 표지는 관찰의 선택을 표현한 개념 일러스트이며 실제 장치·스펙트럼이 아닙니다.",
+        disclosure_note_en="Technical claims about El Agente use the arXiv v3 PDF accessed on 1 November 2026; equivalence with the metadata, HTML or final journal text is not assumed. Failures are attributed to the paper, not independently reproduced from the public code. The 97-100 scores, AutoMat's 53% and JCCM's 88% measure different things. FermiScope's SCF timing comparison covers 50 molecules and does not establish an additional speedup unique to cumulative-LDOS training. The cover is a conceptual illustration of observational choice, not an actual apparatus or spectrum.",
+    ),
+    PublicReview(
         folder="2026-10-30_brain-neurogenesis-rehabilitation",
         title="뇌의 회복을 다시 묻다: 성인 신경세포 생성과 재활의 과학",
         subtitle="새 세포의 회로 통합과 재활·세포치료, AI·양자 기술이 겨냥하는 회복의 조건",
@@ -2527,6 +2561,15 @@ def public_url_for_href(href: str) -> str:
     return f"{PUBLIC_BASE_URL}{relative}"
 
 
+def public_url_aliases(url: str) -> set[str]:
+    """Accept only the same path on our legacy and current public domains."""
+    aliases = {url}
+    for source, target in ((PUBLIC_BASE_URL, HUB_PUBLIC_URL), (HUB_PUBLIC_URL, PUBLIC_BASE_URL)):
+        if url.startswith(source):
+            aliases.add(target + url[len(source):])
+    return aliases
+
+
 def asset_prefix_for_public_dir(public_dir: Path) -> str:
     relative = os.path.relpath(SITE_DIR, public_dir).replace("\\", "/")
     return "" if relative == "." else f"{relative.rstrip('/')}/"
@@ -3928,10 +3971,14 @@ def validate_disclosure(review_index: Path, text: str) -> list[str]:
 
     harness_label = observed["editorial harness"][0]
     methods_index = (SITE_DIR / EDITORIAL_METHODS_HREF / "index.html").resolve()
+    public_methods_urls = {
+        f"{base}{EDITORIAL_METHODS_HREF}".rstrip("/")
+        for base in (PUBLIC_BASE_URL, HUB_PUBLIC_URL)
+    }
     method_link_found = False
     for href in disclosure.field_links.get(harness_label, []):
         if is_external_or_anchor(href):
-            if href.rstrip("/") == f"{PUBLIC_BASE_URL}{EDITORIAL_METHODS_HREF}".rstrip("/"):
+            if href.rstrip("/") in public_methods_urls:
                 method_link_found = True
             continue
         local_path = split_local_url(href)[0]
@@ -4057,14 +4104,14 @@ def validate_public_page(
         errors.append(f"broken table cell containing only a dollar sign in {review_index}")
 
     expected_canonical = public_url_for_href(href)
-    if metadata.canonical_urls != [expected_canonical]:
+    if len(metadata.canonical_urls) != 1 or metadata.canonical_urls[0] not in public_url_aliases(expected_canonical):
         errors.append(
             f"unexpected canonical in {review_index}: "
             f"{metadata.canonical_urls!r} != {[expected_canonical]!r}"
         )
     if expected_alternates:
         for language, expected_url in expected_alternates.items():
-            if metadata.alternates.get(language) != expected_url:
+            if metadata.alternates.get(language) not in public_url_aliases(expected_url):
                 errors.append(
                     f"unexpected hreflang {language} in {review_index}: "
                     f"{metadata.alternates.get(language)!r} != {expected_url!r}"
@@ -4074,7 +4121,7 @@ def validate_public_page(
         for language, expected_url in expected_alternates.items():
             if language in {"x-default", expected_language}:
                 continue
-            if metadata.language_links.get(language) != expected_url:
+            if metadata.language_links.get(language) not in public_url_aliases(expected_url):
                 errors.append(
                     f"missing visible {language} language switch in {review_index}: {expected_url}"
                 )

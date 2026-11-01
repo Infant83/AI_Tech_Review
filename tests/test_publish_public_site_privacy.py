@@ -1,16 +1,63 @@
 from __future__ import annotations
 
 import unittest
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+from scripts import publish_public_site as publisher
 
 from scripts.publish_public_site import (
     inject_public_local_note,
     public_asset_names,
     public_text_risks,
     strip_private_public_material,
+    validate_disclosure,
 )
 
 
 class PublicSitePrivacyTests(unittest.TestCase):
+    def test_current_domain_language_links_keep_exact_language_paths(self) -> None:
+        legacy = "https://infant83.github.io/AI_Tech_Review/"
+        current = "https://infant83.io/AI_Tech_Review/"
+        source = '''<html lang="ko"><head><title>Title</title>
+        <meta property="og:title" content="Title">
+        <link rel="canonical" href="{base}reviews/example/">
+        <link rel="alternate" hreflang="ko" href="{base}reviews/example/">
+        <link rel="alternate" hreflang="en" href="{alternate}"></head><body>
+        <h1>Title</h1><a href="{legacy}">Hub</a>
+        <span aria-current="page" lang="ko">한국어</span>
+        <a hreflang="en" href="{alternate}">English</a>
+        <section class="authoring-disclosure"><dl>
+        <dt>Responsible editor</dt><dd>Editor</dd><dt>AI system</dt><dd>Codex</dd>
+        <dt>Editorial harness</dt><dd><a href="{base}methods/">Methods</a></dd>
+        <dt>Evidence cutoff</dt><dd>2026-11-01</dd></dl></section></body></html>'''
+        expected = {"ko": legacy + "reviews/example/", "en": legacy + "reviews/example/en/"}
+        with tempfile.TemporaryDirectory() as directory, patch.object(publisher, "SITE_DIR", Path(directory)):
+            page = Path(directory) / "reviews/example/index.html"
+            page.parent.mkdir(parents=True)
+            for base in (legacy, current):
+                with self.subTest(base=base):
+                    page.write_text(source.format(base=base, legacy=legacy, alternate=base + "reviews/example/en/"))
+                    self.assertEqual(publisher.validate_public_page("reviews/example/index.html", "ko", expected, "Title"), [])
+            for alternate in (current + "reviews/other/en/", "https://example.com/reviews/example/en/"):
+                with self.subTest(alternate=alternate):
+                    page.write_text(source.format(base=current, legacy=legacy, alternate=alternate))
+                    self.assertTrue(publisher.validate_public_page("reviews/example/index.html", "ko", expected, "Title"))
+
+    def test_disclosure_accepts_canonical_and_legacy_methods_urls_only(self) -> None:
+        template = '''<section class="authoring-disclosure"><dl>
+        <dt>Responsible editor</dt><dd>Editor</dd>
+        <dt>AI system</dt><dd>Codex</dd>
+        <dt>Editorial harness</dt><dd><a href="{url}">Methods</a></dd>
+        <dt>Evidence cutoff</dt><dd>2026-11-01</dd>
+        </dl></section>'''
+        page = Path("site/reviews/example/index.html")
+        for base in ("https://infant83.io/AI_Tech_Review/", "https://infant83.github.io/AI_Tech_Review/"):
+            with self.subTest(base=base):
+                self.assertEqual(validate_disclosure(page, template.format(url=base + "methods/")), [])
+        self.assertTrue(validate_disclosure(page, template.format(url="https://example.com/methods/")))
+
     def test_private_message_metadata_and_working_links_are_removed(self) -> None:
         source = """
         <ul>
