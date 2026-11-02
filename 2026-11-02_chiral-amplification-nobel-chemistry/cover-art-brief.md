@@ -3,7 +3,7 @@
 - 제목: 거울상 분자의 작은 불균형을 키우는 화학
 - 슬러그:2026-11-02_chiral-amplification-nobel-chemistry
 - 작성일:2026-11-02
-- 상태:제작·검토 완료, 발행 전
+- 상태:발행 완료
 - 담당:root 기획·생성·통합,별도과학검토agent_standards
 
 ## 전달할 사건
@@ -44,3 +44,5 @@ English alt text:Two oppositely winding sculptural ribbons within a feedback loo
 - 공개 자산은 artifacts/hero.webp이며 원본·축소·흑백·비교 QA는 비공개 tmp에 보존한다. 최종 이미지의 EXIF·위치정보·내부경로를 검사했다.
 
 최종 공개 캡션은 reports/review_ko.md·review_en.md의 hero figcaption을 따른다. 기사·모바일·PDF에서의 표지 크롭은 출력 검수에 기록한다.
+
+최종 표지를 한영 본문·허브 썸네일·9쪽/10쪽 PDF·아카이브에 반영했다. 34개 HTTPS 주소를 대조한 공개 배포 검증에서 표지의 원본과 영문 사본은 모두 제작 WebP와 바이트까지 일치했다.
