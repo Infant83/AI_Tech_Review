@@ -1,26 +1,66 @@
 {
   "review": "2026-11-02_chiral-amplification-nobel-chemistry",
   "date": "2026-11-02",
-  "status": "published and verified in the live browser",
+  "status": "cover v2 local output and public-site validation passed",
   "cover": {
+    "revision": "v2",
     "file": "artifacts/hero.webp",
-    "kind": "AI-generated conceptual illustration",
+    "versioned_file": "artifacts/hero-v2.webp",
+    "kind": "AI-generated conceptual illustration with a deterministic 3D geometry reference",
     "tool": "built-in image_gen",
     "exact_model_id": "not retained",
-    "referenced_input_images": 0,
     "source_size": [
       1672,
       941
     ],
     "publication_size": [
-      1664,
-      936
+      1672,
+      941
     ],
+    "sha256": "66bd13772679fecb8f0c086f10bdc06eccae6e214dae83b52c8af43979fd4173",
     "prompt_file": "artifacts/hero-prompt.txt",
-    "prompt": "Use case: stylized-concept\nAsset type: original 16:9 editorial cover for an accessible science review of chiral amplification, the nonlinear effects of Kagan and asymmetric autocatalysis of Soai.\nPrimary request: create a striking sculptural woodcut and embossed-paper still life of handedness becoming predominant through feedback. Two small three-dimensional ribbon helices of the same material wind in opposite handed directions near the start of a single broad curving stream. Along the stream one winding form becomes visibly predominant through repeated sculptural motifs. The stream bends back toward the source in a large open return curve, suggesting a product helping to create more of its own form. The two initial helices must read as opposite windings, not just different colours. Keep this one coherent scene with a clear focal event and generous uncluttered space.\nStyle and medium: tactile hand-cut woodblock print combined with low embossed-paper relief, crisp expressive cuts, restrained rough ink grain and physical shadows. A quiet but dramatic editorial artwork. Deep midnight-blue ground, ivory relief, copper-rust accents and a little muted sage. Distinguish the two handed forms through their winding geometry and shadow as well as colour.\nComposition: wide landscape 16:9. Keep the paired helices, returning stream and the emergence of the predominant form within the central safe area, readable as a 320x180 thumbnail. The repeated modules are abstract geometric sculptures; they do not encode a measured population, a chemical bond structure or an actual reaction vessel.\nConstraints: no letters, numbers, equations, labels, axes, logos or watermarks. No human hands, portraits, Nobel medal, robot, brain, circuit board or sci-fi glow. No atom-ball molecular model, no laboratory apparatus, no imitation of a named artist or publication. Opaque background.\n",
-    "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb",
-    "processing": "Minor edge fit and WebP encoding; EXIF, location and source metadata omitted.",
-    "review": "Original, 320 × 180 thumbnail, grayscale, recent-four montage and bilingual article/PDF views inspected. Opposed initial ribbon turns and one-handed repetition depict amplification; the caption explains size and repetition as a metaphor for composition."
+    "prompt": "Final cover v2 was made with built-in image_gen. The exact model identifier was not retained.\n\nGeometry references: cover-geometry/scene-reference.png and cover-geometry/module-pair.png.\nMaterial study: cover-history/material-study-d.png.\n\nStage E (three references in the order above):\nUse case: stylized-concept. Finish an exceptionally well art-directed 16:9 editorial cover for a serious accessible science review, using the attached deterministic geometric studies.\nREFERENCE ROLES: image 1 is the verified spatial layout and identical-unit geometry; image 2 shows the ONE right-handed three-dimensional helical ribbon and its exact reflected left-handed counterpart, enlarged; image 3 is an earlier material/composition study ONLY. Preserve the complete helical ribbon geometry from images 1 and 2, never the inconsistent C-shaped units in image 3.\n\nSCIENTIFIC VISUAL IDEA: a large, quiet reservoir of opposite-handed PAIRS and a small, strongly copper-biased free working population. The viewer first sees a dense, balanced copper-and-graphite whole, then discovers the strongly biased open fringe. An insightful image about the difference between the composition of a whole and the composition of the part that acts. Each core pair retains one copper helix and one exact opposite-handed graphite helix intact. The free fringe has seven copper helices and one graphite helix. All individual helices have the same physical dimensions, pitch, ribbon width and complete single turn, like the prototype pair. Only rigid rotation, perspective and occlusion may change their appearance. Copper and graphite must show opposite spatial winding, not merely different colours. Keep at least one complete boundary pair readable. No growing molecules, no missing or shortened half-turns.\n\nDESIGN: sculptural low relief on a warm bone-white, fine cotton-paper ground; burnished matte copper and charcoal graphite, subtle tactile grain, precise thin edges, coherent soft raking light, deep occlusion at pairs, delicate long shadows. Compose a dense asymmetrical reservoir occupying the left two thirds, with an elegant curved open boundary and a sparse free fringe in the right third. Let the paired units nest closely enough to read as one rich sculptural field. The free units remain clearly separated with airy negative space; same size as core units. Refine the flat technical lighting and basic layout of reference 1 into a distinctive, high-end conceptual artwork, informed by the density, relief and material quality of reference 3. Maintain generous outer margins and a striking silhouette at thumbnail scale. The white surface is a visual separation of populations; keep it as a paper relief, not a literal sorting machine, hole in a laboratory vessel or drainage channel. No external device, arrows or connecting roads.\nUse a restrained palette and fine material detail. No text, labels, numbers, formulae, logo, frame, watermark, scientific ball-and-stick structure, medals, human hands or imitation of a named artist. Opaque background.\n\nStage F (finish-e.png followed by the same module-pair.png):\nEdit the supplied editorial cover with ONE precise geometric correction. Preserve its paired-reservoir composition, all the copper forms, dense left field, shadows, paper, palette, material, framing and negative space.\nThe single isolated CHARCOAL-GREY helix in the open right-hand group (about x=1195,y=525 on the 1672x941 first image) currently winds the same way as the copper helices. Replace ONLY that isolated grey helix with the EXACT OPPOSITE-HANDED grey counterpart shown on the RIGHT in reference image 2. Match the grey units in the paired left field. Reflect the complete copper prototype through a vertical plane: the top sweep must bow toward image-right, the lower sweep toward image-left, as in the right-hand grey reference. Preserve the complete three-dimensional helical turn and length; no change of size, no shortened C or flat curve. Re-render its contact shadow coherently. All other elements stay as they are. No text or marks. Opaque background. This is a conceptual scientific artwork whose meaningful geometry must retain opposite spatial windings.\n",
+    "stages": [
+      {
+        "name": "E",
+        "inputs": [
+          "artifacts/cover-geometry/scene-reference.png",
+          "artifacts/cover-geometry/module-pair.png",
+          "artifacts/cover-history/material-study-d.png"
+        ],
+        "prompt": "artifacts/cover-history/redesign-finish-prompt-e.txt"
+      },
+      {
+        "name": "F",
+        "inputs": [
+          "artifacts/cover-history/finish-e.png",
+          "artifacts/cover-geometry/module-pair.png"
+        ],
+        "prompt": "artifacts/cover-history/redesign-edit-e-to-f.txt"
+      }
+    ],
+    "input_identities": [
+      {
+        "file": "artifacts/cover-geometry/scene-reference.png",
+        "sha256": "ba6e72b3b46d8787807b5a6eca1819e0bf6d03be139452aa19c41c730225e7b3"
+      },
+      {
+        "file": "artifacts/cover-geometry/module-pair.png",
+        "sha256": "62b49802be44409df4e57ec96410574358505f505134c40e6d6302c750b633f9"
+      },
+      {
+        "file": "artifacts/cover-history/material-study-d.png",
+        "sha256": "301cd90fdc931a46e2f008d723bc52164fc87fd28749ab1f90767c17bfbcd6c1"
+      },
+      {
+        "file": "artifacts/cover-history/finish-e.png",
+        "sha256": "d3e4859112750bf37a704ed6742fbbfc403efd0636f3e2e7f5dbab2f59f632ff"
+      }
+    ],
+    "geometry_reference": "artifacts/cover-geometry/geometry-manifest.json",
+    "processing": "RGB WebP encoding at original dimensions, quality 95; no crop, compositing or geometric retouch after image_gen. EXIF/location/source metadata omitted.",
+    "concept": "A large paired reservoir of opposite-handed forms and a smaller, strongly biased working population; whole-mixture and active-population compositions have different denominators.",
+    "review": "Independent scientific review found no critical error within the qualitative conceptual caption. Opposed winding, repeated units and paired/free population relationships were inspected. Exact vertex reflection, rigid placements and numeric counts are verified properties of the code reference; exact congruence and counts are not certified for the generated raster. Original, 320x180, grayscale, recent-cover comparison and bilingual screen/PDF outputs were inspected."
   },
   "figures": [
     {
@@ -32,7 +72,7 @@
       "title": "A small mixture bias and its active pool",
       "description": "Educational independent two-site pairing: R:S=75:25; RR=56.25%, RS+SR=37.5%, SS=6.25%. With inactive heterochiral pairs and equally active homochiral pairs, the active fraction is62.5%; its RR:SS composition is90:10 and ee80%. The curve is active-pool ee, E(e)=2e/(1+e^2).",
       "source_sha256": "af12ce9ff01f47890c7a758c5d1b6ab57156b4498d1b39c40d7bbadcdc8e6612",
-      "public_sha256": "9451c0d1285c20f00fccb10c22363c20de8d93dc96b497e2bccae2fe2a15667c",
+      "public_sha256": "49565811a9667184eabf15d8d9cd796eb600b1687180552c02140103fe163f68",
       "public_file": "dist/en/chiral_pool_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -45,7 +85,7 @@
       "title": "작은 혼합 차이와 활성 집단",
       "description": "Educational independent two-site pairing: R:S=75:25; RR=56.25%, RS+SR=37.5%, SS=6.25%. With inactive heterochiral pairs and equally active homochiral pairs, the active fraction is62.5%; its RR:SS composition is90:10 and ee80%. The curve is active-pool ee, E(e)=2e/(1+e^2).",
       "source_sha256": "2ea463e10a74056195db338e56b9ee9e8d83c204eff40491e87d2b3fa82a1735",
-      "public_sha256": "8bb69017745748a5561e18c209002fd36f31be19fab063eb29598edcfbaa6dfe",
+      "public_sha256": "fb8cb2e60e28c1fe9f7b7db04401f7ad4ca0cb53a048aa4c860333f65188d43b",
       "public_file": "dist/chiral_pool_ko.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -58,7 +98,7 @@
       "title": "A small mixture bias and its active pool",
       "description": "Educational independent two-site pairing: R:S=75:25; RR=56.25%, RS+SR=37.5%, SS=6.25%. With inactive heterochiral pairs and equally active homochiral pairs, the active fraction is62.5%; its RR:SS composition is90:10 and ee80%. The curve is active-pool ee, E(e)=2e/(1+e^2).",
       "source_sha256": "9768084474361f86cb9b10f3231e0638861a22208e61babcb0da38197ce66e23",
-      "public_sha256": "7e19215c92e8e0db1531e199fd972fd04de0eeb3556620b7919c68db95cab112",
+      "public_sha256": "0b1a0f9bc99f615d74a93bc0013b966c1aab1632e2fa31e4cfa76d8741d9fdb3",
       "public_file": "dist/en/chiral_pool_mobile_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -71,7 +111,7 @@
       "title": "작은 혼합 차이와 활성 집단",
       "description": "Educational independent two-site pairing: R:S=75:25; RR=56.25%, RS+SR=37.5%, SS=6.25%. With inactive heterochiral pairs and equally active homochiral pairs, the active fraction is62.5%; its RR:SS composition is90:10 and ee80%. The curve is active-pool ee, E(e)=2e/(1+e^2).",
       "source_sha256": "0abcfa779a329b75006c58a67251810526abe01ffad33505b3751b2765434ddf",
-      "public_sha256": "6a90db5259808fc4ce155119641d00ce0d30d10c9efbf4e963e50f516acc8fbd",
+      "public_sha256": "48e4be3ff9dadca26ea32a562455d9c151b0779cda876e83b497705e2f4ee2d6",
       "public_file": "dist/chiral_pool_mobile_ko.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -84,7 +124,7 @@
       "title": "Autocatalytic growth and compositional amplification",
       "description": "A dimensionless Frank-type closed-batch educational model compares kappa0 and4 from a=1,r=.0505,s=.0495,d=0. Autocatalysis alone preserves initial ee1%; mutual inhibition amplifies the free active-pool imbalance. The lower plot records free r+s. Exactly symmetric deterministic input retains ee0.",
       "source_sha256": "f758ebe64b2cbd5ae79392acfe67bce41e633007c4dc1fe5c6d587c60600c0fc",
-      "public_sha256": "f057fd536acc8d72c2f9eb0682071cfffbd54ee7e662676b278a0afc4ef44fee",
+      "public_sha256": "48ed026ca165257f5e1360c2cd9611f14a28aeca95c38db0b09930c160a12c2a",
       "public_file": "dist/en/frank_feedback_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -97,7 +137,7 @@
       "title": "자가촉매의 증가와 조성 증폭",
       "description": "A dimensionless Frank-type closed-batch educational model compares kappa0 and4 from a=1,r=.0505,s=.0495,d=0. Autocatalysis alone preserves initial ee1%; mutual inhibition amplifies the free active-pool imbalance. The lower plot records free r+s. Exactly symmetric deterministic input retains ee0.",
       "source_sha256": "44b20998d724197973eeb97b8d1a0591b59044b8f57f56b9f9cbd8303a096450",
-      "public_sha256": "ace0904eddb9fa018eba24354a4bd1c6ecdb892b218dd3379586f387a509e609",
+      "public_sha256": "42af37f6644c8d33774a386ba12cf7ca168a5b979950471937b7cd5012f8becf",
       "public_file": "dist/frank_feedback_ko.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -110,7 +150,7 @@
       "title": "Autocatalytic growth and compositional amplification",
       "description": "A dimensionless Frank-type closed-batch educational model compares kappa0 and4 from a=1,r=.0505,s=.0495,d=0. Autocatalysis alone preserves initial ee1%; mutual inhibition amplifies the free active-pool imbalance. The lower plot records free r+s. Exactly symmetric deterministic input retains ee0.",
       "source_sha256": "7e4129696c6cdfa341ce7d2e0f2ac2cf0465b55d44dfc443e84d956ef4d6f9f1",
-      "public_sha256": "9352c8cdf5e36a51a1a71ebe575de38ff80d24fc46dd7b5a4944b4b173e28b1c",
+      "public_sha256": "63b3e5a443b4296642f62479c904542656b98ff9a18718b8338cc11d228d95e3",
       "public_file": "dist/en/frank_feedback_mobile_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -123,7 +163,7 @@
       "title": "자가촉매의 증가와 조성 증폭",
       "description": "A dimensionless Frank-type closed-batch educational model compares kappa0 and4 from a=1,r=.0505,s=.0495,d=0. Autocatalysis alone preserves initial ee1%; mutual inhibition amplifies the free active-pool imbalance. The lower plot records free r+s. Exactly symmetric deterministic input retains ee0.",
       "source_sha256": "fd3f85be91ff613945ee1842c72fe9c21d42ac24552b50c2f45ff9499c6dde6a",
-      "public_sha256": "3157ba8e20ce5ba6645b90926dcc9d2cd021dcd0077f837e6681ef92b8d15d7f",
+      "public_sha256": "7b0a29d8839a3aea939c5b31694e932269ed808d013f091f748caad9fc912940",
       "public_file": "dist/frank_feedback_mobile_ko.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -136,7 +176,7 @@
       "title": "From chain ordering to circular optical transitions",
       "description": "Conceptual chain arrangement and computational workflow based on PRL128,046401(2022): collective CDW ordering, a glide operation consisting of reflection plus translation, momentum matrix elements Pplus/minus=<psi_nk|px plus/minus i py|psi_mk>, and the normalized difference of their squared magnitudes for a chosen valence-to-conduction transition.",
       "source_sha256": "916df746c1b2445f8aff8aa3503d3b9f43e1ecedeffd8ad81d3a6b00d9b1a18b",
-      "public_sha256": "8d0f6ca0f7ff6ced3ada7b456a0d8285f3802784a7ff91cff5f72c281f314e6f",
+      "public_sha256": "019c66449a0335128f759e9c63fd3a485aadff9d29b6424ba17d74e3f03a75b7",
       "public_file": "dist/en/optical_selectivity_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -149,7 +189,7 @@
       "title": "사슬의 배열에서 원편광 전이로",
       "description": "Conceptual chain arrangement and computational workflow based on PRL128,046401(2022): collective CDW ordering, a glide operation consisting of reflection plus translation, momentum matrix elements Pplus/minus=<psi_nk|px plus/minus i py|psi_mk>, and the normalized difference of their squared magnitudes for a chosen valence-to-conduction transition.",
       "source_sha256": "0e3f0eb40e5d7009708dbb2f60ce0baf566fdd1250f3f99072e2fd061f425b01",
-      "public_sha256": "7e682c1d8f8fcc1c93c1aa19e47cdb3f3e186983ee46c47d4f222d3238d42dec",
+      "public_sha256": "51f3d1fe759a1b2e69da2109fb88028e426140a3cca5bcb1fe5f783ec9868efe",
       "public_file": "dist/optical_selectivity_ko.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -162,7 +202,7 @@
       "title": "From chain ordering to circular optical transitions",
       "description": "Conceptual chain arrangement and computational workflow based on PRL128,046401(2022): collective CDW ordering, a glide operation consisting of reflection plus translation, momentum matrix elements Pplus/minus=<psi_nk|px plus/minus i py|psi_mk>, and the normalized difference of their squared magnitudes for a chosen valence-to-conduction transition.",
       "source_sha256": "ee94a4415318024184470e4629caabf877e76fc2f6e479fc16afd127e1a1c946",
-      "public_sha256": "69a2aa5128f9a8aee794159addbdeb2e1c1cb1403249f24c14ddc114e3366d6d",
+      "public_sha256": "51bdccba4d6ec87170b7e6e9e7aced9a0b5b741bcbb8ebd44d28ebefc0fa6e22",
       "public_file": "dist/en/optical_selectivity_mobile_en.svg",
       "source_public_nonstyle_xml_identical": true
     },
@@ -175,7 +215,7 @@
       "title": "사슬의 배열에서 원편광 전이로",
       "description": "Conceptual chain arrangement and computational workflow based on PRL128,046401(2022): collective CDW ordering, a glide operation consisting of reflection plus translation, momentum matrix elements Pplus/minus=<psi_nk|px plus/minus i py|psi_mk>, and the normalized difference of their squared magnitudes for a chosen valence-to-conduction transition.",
       "source_sha256": "5a59a6aed878fbb445856988b5d8b48255505d538500db0a52952293d852515a",
-      "public_sha256": "42d6003c2bace4e0facd6dbbcd48e61db4bcc9887c661965cd135f26b097d473",
+      "public_sha256": "4dca4743d75f7480c446412a4c371c1cb7a09b67601e6b41f4dd632f9794d4c0",
       "public_file": "dist/optical_selectivity_mobile_ko.svg",
       "source_public_nonstyle_xml_identical": true
     }
@@ -192,147 +232,143 @@
     "dqb_fermiscope": "Chemistry primary-source, metric, reference and independent Korean/English science/context audit",
     "cuantico_source": "Public career, CDW optics, VASPBERRY attribution and independent solid-state manuscript audit",
     "journal_dataset": "Complete English translation and bilingual argument/condition/reference correspondence",
-    "agent_standards": "Educational diagrams, numerical checks, fonts, HTML/PDF and complete output QA"
+    "agent_standards": "Educational diagrams, numerical checks, fonts, HTML/PDF and complete output QA; exact mirrored 3D cover reference and geometric checks; revised full-output QA"
   },
-  "human_review": "Editor selected the subject and connection to his published work; scientific,contextual,bilingual and output reviews were performed by AI agents. No line-by-line human approval or reader-comprehension study was performed.",
+  "human_review": "Editor selected the subject and connection to his published work; scientific,contextual,bilingual and output reviews were performed by AI agents. No line-by-line human approval or reader-comprehension study was performed. The editor requested a more insightful, more highly designed cover; the revision was generated and reviewed by AI agents.",
   "verification": {
+    "cover_v2": {
+      "body_after_cover_unchanged": true,
+      "source_scientific_svgs_byte_identical": 12,
+      "references_preserved": 14,
+      "citation_groups_preserved": 22,
+      "new_cover_caption_and_alt": "KO/EN synchronized with the paired-reservoir/active-population concept",
+      "geometry_scope": "Code-reference mesh and placements checked numerically; generated raster checked qualitatively."
+    },
     "output": {
       "korean_pages": 9,
       "english_pages": 10,
-      "visual": "All 19 PDF pages, 12 SVGs and both languages at 1440/390px inspected; root separately viewed KO 1/3/7 and EN 03/05/08.",
-      "bilingual": "Complete manuscript-to-HTML correspondence; 14 identical references, 22 citation groups, 1 displayed equation, 4 captions and 7 disclosure fields per language.",
-      "fonts_accessibility_privacy": "Embedded text fonts and Type3 CharProcs; 5 PDF tag Alt values match print-visible HTML; 38 HTTPS annotations per PDF; zero attachments, private paths or old-article text.",
-      "repairs": "Wrapped long English mobile labels; increased pairing-figure footer margin; moved the 50→80 callout above and left of its marker; connected the optical workflow in 1→2→3→4 order; removed one redundant negative SVG description sentence.",
-      "scope": "Research experiments and DFT results are author-reported; the review ran only the stated pairing and minimal-network teaching calculations."
+      "visual": "All 19 final TTF-based PDF pages and bilingual 1440/390px outputs inspected. Root separately checked both cover pages, cover figure views, 320x180, grayscale and comparison with three recent covers.",
+      "bilingual": "Complete manuscript/HTML correspondence and unchanged body after the cover; 14 references, 22 citation groups, one displayed equation and seven disclosure fields preserved.",
+      "fonts": "Original TTF-based Nanum text source restored; embedded CIDFontType2 text and correct en-dash extraction verified. No soft hyphens; normalized text after the cover matches v1.",
+      "scientific_figures": "All 12 source SVG files retain exact v1 hashes; public nonstyle XML is identical to source. Embedded font bytes were refreshed for the new caption glyphs.",
+      "scope": "Cover-only revision: final conceptual raster and caption/alt changed. Research claims, references and educational-model source figures preserved."
     },
     "publication_local": {
       "reviews": 52,
       "archive_documents": 103,
       "other_review_files_preserved": 1489,
       "other_review_records_preserved": 51,
+      "other_archive_files_preserved": 101,
+      "archive_metadata_preserved": true,
+      "pdf_four_copies_identical": true,
+      "reader_catalog_articles_preserved": 57,
+      "other_reader_update_records_preserved": 123,
       "reader": {
         "html_changed": 12,
         "articles": 57,
-        "revision": "9a03a2dfda9b0bed7de3c0f442c787d244d7bb36"
+        "revision": "2880e51f826533053f32944e462fc792d8025ae0"
       },
       "artifact": {
         "validated_files": 1692,
         "articles": 57
       },
       "public_site_errors": 0,
-      "regression_tests_passed": 87,
-      "other_archive_records_preserved": 101,
-      "pdf_copies": "Four exact copies per language: dist, source archive, public article and public archive.",
-      "base_main": "9a03a2dfda9b0bed7de3c0f442c787d244d7bb36"
-    },
-    "live": {
-      "date": "2026-11-02",
-      "publication_source": "759fcbaa243376539b0ee42e3ee891f32baf702b",
-      "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41393501669",
-      "workflow_result": "success",
-      "checked_urls": 34,
-      "literal_or_catalog_matches": 26,
-      "html_matches_after_identified_edge_transformations": 8,
-      "failures": 0,
-      "comparison": "All PDF, SVG, equation, stylesheet and cover responses matched exact bytes. HTML matched after only the identified Cloudflare module beacon and existing public contact-link protection/decoder. Both legacy canonical language URLs redirected to infant83.io with HTTP 200.",
-      "local_browser": "Public-site KO/EN at 1440/390px, actual language-link clicks, seven disclosure fields, all image/font assets and revision-query PDF GET hashes passed. Metrics POSTs were blocked before transmission.",
-      "browser": "Actual service KO/EN at 1440/390px: 14 references, 22 citation groups, 8 loaded image assets with 5 visible per layout, 7 disclosure fields and fresh fonts/styles passed. Actual KO→EN→KO navigation succeeded at both widths. Revision-query PDFs returned HTTP 200 and exact frozen hashes; all 12 SVG payloads matched. No unresolved article-asset or page errors.",
-      "browser_scope": "Read-only QA blocked metrics POSTs before transmission. The new article’s Like 0 displayed normally after deployment; anonymous subscription GET 401 is shared baseline behaviour. No engagement, subscription or message was written."
+      "base_main": "2880e51f826533053f32944e462fc792d8025ae0"
     }
   },
   "files": {
     "dist/chiral_pool_ko.svg": {
-      "bytes": 226827,
-      "sha256": "8bb69017745748a5561e18c209002fd36f31be19fab063eb29598edcfbaa6dfe"
+      "bytes": 227127,
+      "sha256": "fb8cb2e60e28c1fe9f7b7db04401f7ad4ca0cb53a048aa4c860333f65188d43b"
     },
     "dist/chiral_pool_mobile_ko.svg": {
-      "bytes": 225605,
-      "sha256": "6a90db5259808fc4ce155119641d00ce0d30d10c9efbf4e963e50f516acc8fbd"
+      "bytes": 225905,
+      "sha256": "48e4be3ff9dadca26ea32a562455d9c151b0779cda876e83b497705e2f4ee2d6"
     },
     "dist/en/chiral_pool_en.svg": {
-      "bytes": 226804,
-      "sha256": "9451c0d1285c20f00fccb10c22363c20de8d93dc96b497e2bccae2fe2a15667c"
+      "bytes": 227104,
+      "sha256": "49565811a9667184eabf15d8d9cd796eb600b1687180552c02140103fe163f68"
     },
     "dist/en/chiral_pool_mobile_en.svg": {
-      "bytes": 225578,
-      "sha256": "7e19215c92e8e0db1531e199fd972fd04de0eeb3556620b7919c68db95cab112"
+      "bytes": 225878,
+      "sha256": "0b1a0f9bc99f615d74a93bc0013b966c1aab1632e2fa31e4cfa76d8741d9fdb3"
     },
     "dist/en/frank_feedback_en.svg": {
-      "bytes": 228781,
-      "sha256": "f057fd536acc8d72c2f9eb0682071cfffbd54ee7e662676b278a0afc4ef44fee"
+      "bytes": 229081,
+      "sha256": "48ed026ca165257f5e1360c2cd9611f14a28aeca95c38db0b09930c160a12c2a"
     },
     "dist/en/frank_feedback_mobile_en.svg": {
-      "bytes": 228417,
-      "sha256": "9352c8cdf5e36a51a1a71ebe575de38ff80d24fc46dd7b5a4944b4b173e28b1c"
+      "bytes": 228717,
+      "sha256": "63b3e5a443b4296642f62479c904542656b98ff9a18718b8338cc11d228d95e3"
     },
     "dist/en/hero.webp": {
-      "bytes": 592178,
-      "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb"
+      "bytes": 235120,
+      "sha256": "66bd13772679fecb8f0c086f10bdc06eccae6e214dae83b52c8af43979fd4173"
     },
     "dist/en/index.html": {
-      "bytes": 35107,
-      "sha256": "687516f1ed048fd5b512ac790357e80c2c9e2b9a1ad00465de2839b6b907a290"
+      "bytes": 35076,
+      "sha256": "67483ed45966be92f21e1e4026dba1b4693e097282de0fef00e53e60ca98ae58"
     },
     "dist/en/math_f7f44a1aaa06bf.svg": {
       "bytes": 8806,
       "sha256": "330f7d993657d1cbe84d9bceb4035fb7f203a85a3a7b06f7cd9b185b4f0f34e8"
     },
     "dist/en/optical_selectivity_en.svg": {
-      "bytes": 223995,
-      "sha256": "8d0f6ca0f7ff6ced3ada7b456a0d8285f3802784a7ff91cff5f72c281f314e6f"
+      "bytes": 224295,
+      "sha256": "019c66449a0335128f759e9c63fd3a485aadff9d29b6424ba17d74e3f03a75b7"
     },
     "dist/en/optical_selectivity_mobile_en.svg": {
-      "bytes": 224093,
-      "sha256": "69a2aa5128f9a8aee794159addbdeb2e1c1cb1403249f24c14ddc114e3366d6d"
+      "bytes": 224393,
+      "sha256": "51bdccba4d6ec87170b7e6e9e7aced9a0b5b741bcbb8ebd44d28ebefc0fa6e22"
     },
     "dist/en/review.css": {
-      "bytes": 222971,
-      "sha256": "abddcf9d0e631895dd04586f88520bf12233f23b27794d100e00a360e7c9d464"
+      "bytes": 223271,
+      "sha256": "8e9ce256243273149753f5c0b9f49364ae1f1581c160a0263e0fed71a9f548cc"
     },
     "dist/en/review_en.pdf": {
-      "bytes": 3666596,
-      "sha256": "f018e7e30f9dc2924aec13bbaf8fdcca154e286f9ce0b69cd3c43dfc21f77f1f"
+      "bytes": 1899928,
+      "sha256": "c64df8328be405243a3a6756cba5cf10bd6d3739499a8fb7e37c6b71bf11d229"
     },
     "dist/frank_feedback_ko.svg": {
-      "bytes": 228777,
-      "sha256": "ace0904eddb9fa018eba24354a4bd1c6ecdb892b218dd3379586f387a509e609"
+      "bytes": 229077,
+      "sha256": "42af37f6644c8d33774a386ba12cf7ca168a5b979950471937b7cd5012f8becf"
     },
     "dist/frank_feedback_mobile_ko.svg": {
-      "bytes": 228433,
-      "sha256": "3157ba8e20ce5ba6645b90926dcc9d2cd021dcd0077f837e6681ef92b8d15d7f"
+      "bytes": 228733,
+      "sha256": "7b0a29d8839a3aea939c5b31694e932269ed808d013f091f748caad9fc912940"
     },
     "dist/hero.webp": {
-      "bytes": 592178,
-      "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb"
+      "bytes": 235120,
+      "sha256": "66bd13772679fecb8f0c086f10bdc06eccae6e214dae83b52c8af43979fd4173"
     },
     "dist/index.html": {
-      "bytes": 34702,
-      "sha256": "20eca369850125a269e0503162bd6e151ce0b2d0e3e8c765ccd9d758e889c79e"
+      "bytes": 34725,
+      "sha256": "cf126b9ba4a088209eac54ca4d2e3f25a61266eb1ed92f240f8ceab0ed203ed7"
     },
     "dist/math_f7f44a1aaa06bf.svg": {
       "bytes": 8806,
       "sha256": "330f7d993657d1cbe84d9bceb4035fb7f203a85a3a7b06f7cd9b185b4f0f34e8"
     },
     "dist/optical_selectivity_ko.svg": {
-      "bytes": 224008,
-      "sha256": "7e682c1d8f8fcc1c93c1aa19e47cdb3f3e186983ee46c47d4f222d3238d42dec"
+      "bytes": 224308,
+      "sha256": "51f3d1fe759a1b2e69da2109fb88028e426140a3cca5bcb1fe5f783ec9868efe"
     },
     "dist/optical_selectivity_mobile_ko.svg": {
-      "bytes": 223925,
-      "sha256": "42d6003c2bace4e0facd6dbbcd48e61db4bcc9887c661965cd135f26b097d473"
+      "bytes": 224225,
+      "sha256": "4dca4743d75f7480c446412a4c371c1cb7a09b67601e6b41f4dd632f9794d4c0"
     },
     "dist/review.css": {
-      "bytes": 222971,
-      "sha256": "abddcf9d0e631895dd04586f88520bf12233f23b27794d100e00a360e7c9d464"
+      "bytes": 223271,
+      "sha256": "8e9ce256243273149753f5c0b9f49364ae1f1581c160a0263e0fed71a9f548cc"
     },
     "dist/review_ko.pdf": {
-      "bytes": 3771640,
-      "sha256": "7578c18f35cf82642220e3e64f46fa226ed8ebd0f2bc06bda336695c95c3be12"
+      "bytes": 2007171,
+      "sha256": "0be45ecb3d682870cdb3a8cad8bd87974027fe80bddc9cc5320a733510da5940"
     }
   },
   "manuscripts": {
-    "reports/review_en.md": "9938e70eb3c52ab1014525381fabc2cb900c92c1304af308f656f93c44be505e",
-    "reports/review_ko.md": "c7dca748131a8b71085583403cbfa20aa7a5b0eaad64dd17b97b1b12a343baa5"
+    "reports/review_ko.md": "e8d87bd71c41df5edb66730c9c9754617cdeabc2e4b340b42abaa43e28a6c38a",
+    "reports/review_en.md": "cd7bff76ab382a3653e79fe4e1ef111972d5999a28a33610154a559ad1de0d9e"
   },
   "model_data": [
     {
@@ -342,6 +378,171 @@
     {
       "file": "artifacts/data/pairing-model.json",
       "sha256": "ff8cd34ffdef081ced4795d59704f851ae5bfac99a956f50acf9b763d333754f"
+    }
+  ],
+  "revision_history": [
+    {
+      "revision": "v1",
+      "source_commit": "2880e51f826533053f32944e462fc792d8025ae0",
+      "cover": {
+        "file": "artifacts/hero.webp",
+        "kind": "AI-generated conceptual illustration",
+        "tool": "built-in image_gen",
+        "exact_model_id": "not retained",
+        "referenced_input_images": 0,
+        "source_size": [
+          1672,
+          941
+        ],
+        "publication_size": [
+          1664,
+          936
+        ],
+        "prompt_file": "artifacts/hero-prompt.txt",
+        "prompt": "Use case: stylized-concept\nAsset type: original 16:9 editorial cover for an accessible science review of chiral amplification, the nonlinear effects of Kagan and asymmetric autocatalysis of Soai.\nPrimary request: create a striking sculptural woodcut and embossed-paper still life of handedness becoming predominant through feedback. Two small three-dimensional ribbon helices of the same material wind in opposite handed directions near the start of a single broad curving stream. Along the stream one winding form becomes visibly predominant through repeated sculptural motifs. The stream bends back toward the source in a large open return curve, suggesting a product helping to create more of its own form. The two initial helices must read as opposite windings, not just different colours. Keep this one coherent scene with a clear focal event and generous uncluttered space.\nStyle and medium: tactile hand-cut woodblock print combined with low embossed-paper relief, crisp expressive cuts, restrained rough ink grain and physical shadows. A quiet but dramatic editorial artwork. Deep midnight-blue ground, ivory relief, copper-rust accents and a little muted sage. Distinguish the two handed forms through their winding geometry and shadow as well as colour.\nComposition: wide landscape 16:9. Keep the paired helices, returning stream and the emergence of the predominant form within the central safe area, readable as a 320x180 thumbnail. The repeated modules are abstract geometric sculptures; they do not encode a measured population, a chemical bond structure or an actual reaction vessel.\nConstraints: no letters, numbers, equations, labels, axes, logos or watermarks. No human hands, portraits, Nobel medal, robot, brain, circuit board or sci-fi glow. No atom-ball molecular model, no laboratory apparatus, no imitation of a named artist or publication. Opaque background.\n",
+        "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb",
+        "processing": "Minor edge fit and WebP encoding; EXIF, location and source metadata omitted.",
+        "review": "Original, 320 × 180 thumbnail, grayscale, recent-four montage and bilingual article/PDF views inspected. Opposed initial ribbon turns and one-handed repetition depict amplification; the caption explains size and repetition as a metaphor for composition."
+      },
+      "verification": {
+        "output": {
+          "korean_pages": 9,
+          "english_pages": 10,
+          "visual": "All 19 PDF pages, 12 SVGs and both languages at 1440/390px inspected; root separately viewed KO 1/3/7 and EN 03/05/08.",
+          "bilingual": "Complete manuscript-to-HTML correspondence; 14 identical references, 22 citation groups, 1 displayed equation, 4 captions and 7 disclosure fields per language.",
+          "fonts_accessibility_privacy": "Embedded text fonts and Type3 CharProcs; 5 PDF tag Alt values match print-visible HTML; 38 HTTPS annotations per PDF; zero attachments, private paths or old-article text.",
+          "repairs": "Wrapped long English mobile labels; increased pairing-figure footer margin; moved the 50→80 callout above and left of its marker; connected the optical workflow in 1→2→3→4 order; removed one redundant negative SVG description sentence.",
+          "scope": "Research experiments and DFT results are author-reported; the review ran only the stated pairing and minimal-network teaching calculations."
+        },
+        "publication_local": {
+          "reviews": 52,
+          "archive_documents": 103,
+          "other_review_files_preserved": 1489,
+          "other_review_records_preserved": 51,
+          "reader": {
+            "html_changed": 12,
+            "articles": 57,
+            "revision": "9a03a2dfda9b0bed7de3c0f442c787d244d7bb36"
+          },
+          "artifact": {
+            "validated_files": 1692,
+            "articles": 57
+          },
+          "public_site_errors": 0,
+          "regression_tests_passed": 87,
+          "other_archive_records_preserved": 101,
+          "pdf_copies": "Four exact copies per language: dist, source archive, public article and public archive.",
+          "base_main": "9a03a2dfda9b0bed7de3c0f442c787d244d7bb36"
+        },
+        "live": {
+          "date": "2026-11-02",
+          "publication_source": "759fcbaa243376539b0ee42e3ee891f32baf702b",
+          "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41393501669",
+          "workflow_result": "success",
+          "checked_urls": 34,
+          "literal_or_catalog_matches": 26,
+          "html_matches_after_identified_edge_transformations": 8,
+          "failures": 0,
+          "comparison": "All PDF, SVG, equation, stylesheet and cover responses matched exact bytes. HTML matched after only the identified Cloudflare module beacon and existing public contact-link protection/decoder. Both legacy canonical language URLs redirected to infant83.io with HTTP 200.",
+          "local_browser": "Public-site KO/EN at 1440/390px, actual language-link clicks, seven disclosure fields, all image/font assets and revision-query PDF GET hashes passed. Metrics POSTs were blocked before transmission.",
+          "browser": "Actual service KO/EN at 1440/390px: 14 references, 22 citation groups, 8 loaded image assets with 5 visible per layout, 7 disclosure fields and fresh fonts/styles passed. Actual KO→EN→KO navigation succeeded at both widths. Revision-query PDFs returned HTTP 200 and exact frozen hashes; all 12 SVG payloads matched. No unresolved article-asset or page errors.",
+          "browser_scope": "Read-only QA blocked metrics POSTs before transmission. The new article’s Like 0 displayed normally after deployment; anonymous subscription GET 401 is shared baseline behaviour. No engagement, subscription or message was written."
+        }
+      },
+      "files": {
+        "dist/chiral_pool_ko.svg": {
+          "bytes": 226827,
+          "sha256": "8bb69017745748a5561e18c209002fd36f31be19fab063eb29598edcfbaa6dfe"
+        },
+        "dist/chiral_pool_mobile_ko.svg": {
+          "bytes": 225605,
+          "sha256": "6a90db5259808fc4ce155119641d00ce0d30d10c9efbf4e963e50f516acc8fbd"
+        },
+        "dist/en/chiral_pool_en.svg": {
+          "bytes": 226804,
+          "sha256": "9451c0d1285c20f00fccb10c22363c20de8d93dc96b497e2bccae2fe2a15667c"
+        },
+        "dist/en/chiral_pool_mobile_en.svg": {
+          "bytes": 225578,
+          "sha256": "7e19215c92e8e0db1531e199fd972fd04de0eeb3556620b7919c68db95cab112"
+        },
+        "dist/en/frank_feedback_en.svg": {
+          "bytes": 228781,
+          "sha256": "f057fd536acc8d72c2f9eb0682071cfffbd54ee7e662676b278a0afc4ef44fee"
+        },
+        "dist/en/frank_feedback_mobile_en.svg": {
+          "bytes": 228417,
+          "sha256": "9352c8cdf5e36a51a1a71ebe575de38ff80d24fc46dd7b5a4944b4b173e28b1c"
+        },
+        "dist/en/hero.webp": {
+          "bytes": 592178,
+          "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb"
+        },
+        "dist/en/index.html": {
+          "bytes": 35107,
+          "sha256": "687516f1ed048fd5b512ac790357e80c2c9e2b9a1ad00465de2839b6b907a290"
+        },
+        "dist/en/math_f7f44a1aaa06bf.svg": {
+          "bytes": 8806,
+          "sha256": "330f7d993657d1cbe84d9bceb4035fb7f203a85a3a7b06f7cd9b185b4f0f34e8"
+        },
+        "dist/en/optical_selectivity_en.svg": {
+          "bytes": 223995,
+          "sha256": "8d0f6ca0f7ff6ced3ada7b456a0d8285f3802784a7ff91cff5f72c281f314e6f"
+        },
+        "dist/en/optical_selectivity_mobile_en.svg": {
+          "bytes": 224093,
+          "sha256": "69a2aa5128f9a8aee794159addbdeb2e1c1cb1403249f24c14ddc114e3366d6d"
+        },
+        "dist/en/review.css": {
+          "bytes": 222971,
+          "sha256": "abddcf9d0e631895dd04586f88520bf12233f23b27794d100e00a360e7c9d464"
+        },
+        "dist/en/review_en.pdf": {
+          "bytes": 3666596,
+          "sha256": "f018e7e30f9dc2924aec13bbaf8fdcca154e286f9ce0b69cd3c43dfc21f77f1f"
+        },
+        "dist/frank_feedback_ko.svg": {
+          "bytes": 228777,
+          "sha256": "ace0904eddb9fa018eba24354a4bd1c6ecdb892b218dd3379586f387a509e609"
+        },
+        "dist/frank_feedback_mobile_ko.svg": {
+          "bytes": 228433,
+          "sha256": "3157ba8e20ce5ba6645b90926dcc9d2cd021dcd0077f837e6681ef92b8d15d7f"
+        },
+        "dist/hero.webp": {
+          "bytes": 592178,
+          "sha256": "6853dacfeb74deea6c0f0e57b4b6c7b2e45734bc28701f5e8ca302ca684df6cb"
+        },
+        "dist/index.html": {
+          "bytes": 34702,
+          "sha256": "20eca369850125a269e0503162bd6e151ce0b2d0e3e8c765ccd9d758e889c79e"
+        },
+        "dist/math_f7f44a1aaa06bf.svg": {
+          "bytes": 8806,
+          "sha256": "330f7d993657d1cbe84d9bceb4035fb7f203a85a3a7b06f7cd9b185b4f0f34e8"
+        },
+        "dist/optical_selectivity_ko.svg": {
+          "bytes": 224008,
+          "sha256": "7e682c1d8f8fcc1c93c1aa19e47cdb3f3e186983ee46c47d4f222d3238d42dec"
+        },
+        "dist/optical_selectivity_mobile_ko.svg": {
+          "bytes": 223925,
+          "sha256": "42d6003c2bace4e0facd6dbbcd48e61db4bcc9887c661965cd135f26b097d473"
+        },
+        "dist/review.css": {
+          "bytes": 222971,
+          "sha256": "abddcf9d0e631895dd04586f88520bf12233f23b27794d100e00a360e7c9d464"
+        },
+        "dist/review_ko.pdf": {
+          "bytes": 3771640,
+          "sha256": "7578c18f35cf82642220e3e64f46fa226ed8ebd0f2bc06bda336695c95c3be12"
+        }
+      },
+      "manuscripts": {
+        "reports/review_en.md": "9938e70eb3c52ab1014525381fabc2cb900c92c1304af308f656f93c44be505e",
+        "reports/review_ko.md": "c7dca748131a8b71085583403cbfa20aa7a5b0eaad64dd17b97b1b12a343baa5"
+      }
     }
   ]
 }

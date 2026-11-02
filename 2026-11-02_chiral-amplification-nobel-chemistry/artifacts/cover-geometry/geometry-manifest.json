@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-02",
+  "kind": "new deterministic 3D reference scene and separate prototype/mirror view",
+  "package": {
+    "name": "three",
+    "version": "0.187.0",
+    "official_registry_tarball": "https://registry.npmjs.org/three/-/three-0.187.0.tgz",
+    "integrity": "sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA==",
+    "documentation": "https://threejs.org/docs/"
+  },
+  "geometry_checks": {
+    "single_full_turn": true,
+    "x_reflection_vertex_max_error": 0,
+    "identical_mirror_surface_area": true,
+    "uniform_scale_1": true,
+    "rigid_rotation_translation_only": true,
+    "max_inverse_vertex_error": 1.1102230246251565e-16,
+    "core_pairs": 16,
+    "core_types": [
+      16,
+      16
+    ],
+    "fringe_types": [
+      7,
+      1
+    ],
+    "total_types": [
+      23,
+      17
+    ],
+    "R_S_labels": "geometric visual type labels, no chemical CIP assignment"
+  },
+  "independent_reading": "helix_geometry_audit independently read the actual source and audit JSON; implementation matches single-turn, x reflection, unit-scale rigid placement. Mesh is a triangulated approximation to the analytic ribbon.",
+  "files": [
+    {
+      "file": "source.mjs",
+      "bytes": 7843,
+      "sha256": "43e0f36d6656fdec89807d184f0dbdfe0659ceb54dec1d12a3c6c9882d4b56e1"
+    },
+    {
+      "file": "render.mjs",
+      "bytes": 1827,
+      "sha256": "727ee3b38ec7fdca5efb3d39ee55ea3fed6ec7351c7ce8654426e26768c710e7"
+    },
+    {
+      "file": "index.html",
+      "bytes": 196,
+      "sha256": "4f7ed507a446283646c2fb141f095759573b0bbd9898fa4f472b11bcc14a1c03"
+    },
+    {
+      "file": "scene-reference.png",
+      "bytes": 180005,
+      "sha256": "ba6e72b3b46d8787807b5a6eca1819e0bf6d03be139452aa19c41c730225e7b3"
+    },
+    {
+      "file": "module-pair.png",
+      "bytes": 33960,
+      "sha256": "62b49802be44409df4e57ec96410574358505f505134c40e6d6302c750b633f9"
+    },
+    {
+      "file": "scene-reference-audit.json",
+      "bytes": 17708,
+      "sha256": "68c68836e85e897e62cb28faee134b9db55cee0f7a9fcbf6a019fb2122e65d4c"
+    },
+    {
+      "file": "module-pair-audit.json",
+      "bytes": 2858,
+      "sha256": "9db5349b2a727448f58fc9d776d1c0b2c7f0b5e3ee94a700f9e734d73188b6b2"
+    },
+    {
+      "file": "package.json",
+      "bytes": 51,
+      "sha256": "a335feb080d7ea1895349c7ec5ade6341380a82986112c30f97ed7f6a89719e4"
+    },
+    {
+      "file": "package-lock.json",
+      "bytes": 453,
+      "sha256": "9341ee143a3c8b822fa5d70542d7e30d2df13aa34d4fff5266fde4d9af89f977"
+    }
+  ]
+}
