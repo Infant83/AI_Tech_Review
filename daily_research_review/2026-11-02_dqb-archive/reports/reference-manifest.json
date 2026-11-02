@@ -1,0 +1,354 @@
+{
+  "date": "2026-11-02",
+  "style": "APS numbered first-use order; original titles and full author credits; sentence-case typesetting",
+  "references": [
+    {
+      "number": 1,
+      "title_original": "A Quantum-HPC Hybrid Workflow for Reaction-Center Electronic Dynamics: Application to a Cytochrome P450-Inspired Iron-Complex Model",
+      "authors": [
+        "Shintaro Maekawa",
+        "Takao Otsuka",
+        "Riku Masui",
+        "Juan W. Pedersen",
+        "David Muñoz Ramo",
+        "Yasushi Okuno",
+        "Kentaro Yamamoto"
+      ],
+      "citation": "S. Maekawa, T. Otsuka, R. Masui, J. W. Pedersen, D. Muñoz Ramo, Y. Okuno, and K. Yamamoto, A quantum-HPC hybrid workflow for reaction-center electronic dynamics: Application to a cytochrome P450-inspired iron-complex model, J. Chem. Theory Comput. (2026), doi:10.1021/acs.jctc.6c01410.",
+      "url": "https://doi.org/10.1021/acs.jctc.6c01410",
+      "published_online": "2026-10-31",
+      "checked_version": "arXiv:2607.05786v2",
+      "checked_url": "https://arxiv.org/abs/2607.05786v2",
+      "checked_pdf_sha256": "92f7865068655f1c345aed69d76d9ad317bd06fedfaf9170dcfe11bbfd85cbd5",
+      "read_scope": "Root full15p extraction and p6,10,12 renders; independent PDF producer p6,10,12 text/table/captions/renders. Crossref full metadata confirms journal online publication and title/all7authors. ACS primary landing403, no journal PDF read. No separate SI/code payload obtained.",
+      "availability": "Additional data from corresponding authors upon reasonable request. No independent experiment reproduction.",
+      "important_conditions": [
+        "21 fixed geometries;11 hardware coordinates, not moving nuclei or minimum-energy pathway.",
+        "SA-CASSCF15 states CAS(8e,6o);14-state fitted quasi-diabatic H,12-state onehot after isolated states excluded. Couplings eigenvalue-fit, nonunique; comparison within reduced H is not independent abinitio dynamic validation.",
+        "10fs, cutoff.02eV,32to7couplings,firstorderM30/332twoqubitgates. M40 has lower emulator mean error but higher gate count;M30 practical tradeoff.",
+        "Hardware1x4000 vs emulator10x4000 shots/coordinate;Hamming1postselection. Atx.3 hardware.418+-.0171CI95,Neff3185,20.4%leak;emulator.432+-.0059. EnergyfitRMS.030/max.143eV covers21x14 energies."
+      ]
+    },
+    {
+      "number": 2,
+      "title_original": "Ultra-large-scale compilation and manipulation of quantum circuits with Pandora",
+      "authors": [
+        "Ioana Moflic",
+        "Alexandru Paler"
+      ],
+      "citation": "I. Moflic and A. Paler, Ultra-large-scale compilation and manipulation of quantum circuits with Pandora, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01402-z.",
+      "url": "https://doi.org/10.1038/s41534-026-01402-z",
+      "publication_status": "Article in Press; peer-reviewed accepted early shared version; final edited Version of Record pending",
+      "published_online": "2026-10-30",
+      "checked_pdf_sha256": "e342050e579b5d6210798fa69218286d48afa1326f83a5a8ec97b2b4bcc9f525",
+      "license": "CC BY 4.0",
+      "read_scope": "Full 9-page text incl. methods, figure captions, reference list and disclosures; visual pages 2,3,4,5 (Figs.1-6); no paper experiment reproduced.",
+      "supplement": {
+        "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41534-026-01402-z/MediaObjects/41534_2026_1402_MOESM1_ESM.pdf",
+        "pages": 4,
+        "pdf_sha256": "d205e4c952a48bb680949ccd3efcbad0e6356506ab2e990b55a2502ad9211288",
+        "read_scope": "All four pages extracted text read; page3 visual inspected (Supplementary Fig.4 and disk/batching description). Other SI diagram pages extracted-text/captions only."
+      },
+      "preprint": {
+        "id": "2508.05608",
+        "version": "v1",
+        "url": "https://arxiv.org/abs/2508.05608v1",
+        "submitted": "2025-08-07T17:48:17Z",
+        "scope": "Official abstract/metadata/history read. Full preprint PDF not read; journal AIP and SI used for scientific claims."
+      },
+      "code": {
+        "repository": "https://github.com/ioanamoflic/pandora",
+        "commit": "51b21d62b9199275e214684896a908d1584a8442",
+        "commit_date": "2026-10-30T11:06:33Z",
+        "url": "https://github.com/ioanamoflic/pandora/tree/51b21d62b9199275e214684896a908d1584a8442",
+        "title": "Pandora: Ultra-Large-Scale Quantum Circuit Design Automation",
+        "pyproject_version": "0.1.0",
+        "license": "MIT",
+        "citation_cff_or_bib_in_current_tree": false,
+        "readme_recommended_credit": {
+          "authors": [
+            "Ioana Moflic",
+            "Alexandru Paler"
+          ],
+          "title": "Ultra-Large-Scale Compilation and Manipulation of Quantum Circuits with Pandora",
+          "journal": "arXiv preprint arXiv:2508.05608",
+          "year": 2025
+        },
+        "credit_note": "Use the now-published paper by both authors for scientific/software-method credit, plus exact repository and inspected commit in reproducibility disclosure. Do not infer sole code developer from repository owner or copyright.",
+        "static_read_files": [
+          "README.md (About, interoperability, container/db setup, Benchmarks, Issues, Citing, selected sections)",
+          "LICENSE",
+          "pyproject.toml",
+          "examples/equivalence.md",
+          "examples/speed_benchmark.md",
+          "benchmarking/benchmark_mqt.py",
+          "benchmarking/benchmark_qiskit.py",
+          "benchmarking/benchmark_tket.py",
+          "benchmarking/benchmark_pandora.py"
+        ],
+        "execution": "No repository code, database, benchmark, circuit simulator, QPU or HPC job executed."
+      },
+      "important_conditions": {
+        "small_bench_hardware": "Threadripper 7960X,24 cores,256GB RAM",
+        "large_hardware": "LUMI nodes (Figs.3,4); paper9p/SI4p do not fully specify per-job node count/storage/media/peak RAM",
+        "paper_versions": {
+          "PostgreSQL": "14,PL/pgSQL,read committed",
+          "Qiskit": "2.4",
+          "pytket": "2.16",
+          "mqt.qcec": "3.5",
+          "Qualtran_RSA": "0.6.1",
+          "pyLIQTR_FH": "1.4.1",
+          "Qualtran_FH": "0.4"
+        },
+        "rewrite_task": "Random CNOT N=10^4..10^5, fixed qubit size, HH-CNOT-HH reversal with pattern probabilities0.1%,1%,10%; reported advantage especially rare pattern0.1%/1%; Fig1 single threaded.",
+        "full_FH": "100x100 around7.7e9 Clifford+T;50x50 around514e6;up to270e3 gates/s with16cores (AIP2)",
+        "Shor": "High-level complete circuit + cached/decomposed single CtrlScaleModAdd to at-most3qubit primitive set; Fig3 distinguishes these and max arithmetic case1024bits.",
+        "partition": "Union-find on memory DAG batches extracted from persisted database; example batch1e6 gates; Fig4 partitioning approx5x faster than source pyLIQTR decomposition after already compiled/stored; decomposition/insertion main bottleneck.",
+        "equivalence": "10 random32q CNOT circuits,identical-copy vs randomsinglemissinggate,timeout1000s; Figure5 caption27000gates; bodyq^3; benchmarkcurrent32^3=32768; do not average as general verification result.",
+        "adder": "18threads30s,16..2048bit adders,reported14.28%Tcount reduction from naive rules; not broad optimized-circuit performance."
+      },
+      "unresolved_source_discrepancies": [
+        "Figure5 caption27000CNOT vs bodyq^3 and currentscript32768 at32qubits.",
+        "AIP3 says nonprobabilistic checker while Fig5 caption calls non-equivalence probabilistic; do not claim complete certified arbitrary-circuit decision procedure.",
+        "Current pyprojectQiskit1.4.4 differs paper2.4; current READMEPostgres17 differs paper14. Current commit is not demonstrated to exactly reproduce publication measurements.",
+        "Static scripts have different width/default/direction details: Pandora pattern generator3qubits vs Qiskit/TKET50; Tket script visibly CX-to-HHCXHH while other files also contain reverse path. Timing excludes Pandora circuit generation and DB import for pattern rewrite. Therefore do not infer controlled end-to-end equality or invalidate paper solely from current scripts.",
+        "No raw benchmark data retrieval/re-execution, SSD/storage profiling,peakRAM accounting, QPU,HPC reproduction or full preprint text comparison."
+      ]
+    },
+    {
+      "number": 3,
+      "title_original": "Scalable neural decoders for practical real-time quantum error correction",
+      "authors": [
+        "Changwon Lee",
+        "Tak Hur",
+        "Daniel K. Park"
+      ],
+      "citation": "C. Lee, T. Hur, and D. K. Park, Scalable neural decoders for practical real-time quantum error correction, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01403-y.",
+      "url": "https://doi.org/10.1038/s41534-026-01403-y",
+      "publication_status": "Peer-reviewed accepted manuscript / Article in Press, citable permanent DOI; publisher states final edited Version of Record will replace it. No volume/article number assigned on audited page or PDF.",
+      "published_online": "2026-10-28",
+      "license": "CC BY 4.0",
+      "preprint": {
+        "id": "2510.22724v1",
+        "first_submitted": "2025-10-26",
+        "latest_audited_revision": "2025-10-26",
+        "url": "https://arxiv.org/abs/2510.22724v1",
+        "public_bibliography_uses_published_version": true
+      },
+      "read_scope": {
+        "accepted_pdf_all_pages_text_read": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "supplement_all_pages_text_read": [
+          1,
+          2
+        ],
+        "source_figures_and_equations_rendered_inspected": [
+          "main p4 Fig3, p5 Fig4 and Nstab=d^2-1 model; SI p2 Supplementary Fig2"
+        ],
+        "preprint_scope": "qec v1 abstract and threshold section/figure checked against accepted manuscript",
+        "independent_experiments_or_author_code_executed": false,
+        "independent_security_proof_or_numerical_replication": false
+      },
+      "source_assets": [
+        {
+          "source_url": "https://www.nature.com/articles/s41534-026-01403-y_reference.pdf",
+          "bytes": 1110417,
+          "sha256": "5792030fb400d82c41a9042c450aa1d7200244a9520b90d19ad8e29667b6fcb5"
+        },
+        {
+          "source_url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41534-026-01403-y/MediaObjects/41534_2026_1403_MOESM1_ESM.pdf",
+          "bytes": 110872,
+          "sha256": "74c6c785179832d0ed3f115aaabcb499dba18960f18995650152ae44a7efd36c"
+        },
+        {
+          "source_url": "https://arxiv.org/pdf/2510.22724v1",
+          "bytes": 1442387,
+          "sha256": "c0dc2417de1cb218fa0fe74795a10537bc2e11c61048c770ec71ad3a6cd2be12"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title_original": "Unifying quantum smoothing theories with extended retrodiction",
+      "authors": [
+        "Mingxuan Liu",
+        "Ge Bai",
+        "Valerio Scarani"
+      ],
+      "citation": "M. Liu, G. Bai, and V. Scarani, Unifying quantum smoothing theories with extended retrodiction, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01379-9.",
+      "url": "https://doi.org/10.1038/s41534-026-01379-9",
+      "publication_status": "Peer-reviewed accepted manuscript / Article in Press, citable permanent DOI; publisher states final edited Version of Record will replace it. No volume/article number assigned on audited page or PDF.",
+      "published_online": "2026-11-01",
+      "license": "CC BY-NC-ND 4.0",
+      "preprint": {
+        "id": "2510.08447v2",
+        "first_submitted": "2025-10-09",
+        "latest_audited_revision": "2026-06-10",
+        "url": "https://arxiv.org/abs/2510.08447v2",
+        "public_bibliography_uses_published_version": true
+      },
+      "read_scope": {
+        "accepted_pdf_all_pages_text_read": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "supplement_all_pages_text_read": [
+          1,
+          2,
+          3
+        ],
+        "source_figures_and_equations_rendered_inspected": [
+          "main p3 Fig1/Eqs5-9; p5 Eqs18-23"
+        ],
+        "preprint_scope": "abstract/version history and selected formalism/security passages checked; accepted manuscript and SI are controlling sources",
+        "independent_experiments_or_author_code_executed": false,
+        "independent_security_proof_or_numerical_replication": false
+      },
+      "source_assets": [
+        {
+          "source_url": "https://www.nature.com/articles/s41534-026-01379-9_reference.pdf",
+          "bytes": 673587,
+          "sha256": "6e650c94d48fdf9a2a1b0a9eff10f332d08eeea960cb0c5160249635b4c6bc96"
+        },
+        {
+          "source_url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41534-026-01379-9/MediaObjects/41534_2026_1379_MOESM1_ESM.pdf",
+          "bytes": 245547,
+          "sha256": "3709141dbe2a250a409b77cd1c7e9d95ba93e7ba25b46b3e58b4ea302bfb8ecb"
+        },
+        {
+          "source_url": "https://arxiv.org/pdf/2510.08447v2",
+          "bytes": 690800,
+          "sha256": "3340d2b93d78ced115bdbf07e753660537ccbc56bb85a9582108f9bbb2f6ae40"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title_original": "Efficient multi-basis quantum position verification secure against generalized adversaries",
+      "authors": [
+        "Wen Yu Kon",
+        "Ignatius William Primaatmaja",
+        "Kaushik Chakraborty",
+        "Charles Lim"
+      ],
+      "citation": "W. Y. Kon, I. W. Primaatmaja, K. Chakraborty, and C. Lim, Efficient multi-basis quantum position verification secure against generalized adversaries, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01325-9.",
+      "url": "https://doi.org/10.1038/s41534-026-01325-9",
+      "publication_status": "Peer-reviewed accepted manuscript / Article in Press, citable permanent DOI; publisher states final edited Version of Record will replace it. No volume/article number assigned on audited page or PDF.",
+      "published_online": "2026-10-31",
+      "license": "CC BY 4.0",
+      "preprint": {
+        "id": "2506.03549v2",
+        "first_submitted": "2025-06-04",
+        "latest_audited_revision": "2026-07-16",
+        "url": "https://arxiv.org/abs/2506.03549v2",
+        "public_bibliography_uses_published_version": true
+      },
+      "read_scope": {
+        "accepted_pdf_all_pages_text_read": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "supplement_all_pages_text_read": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "source_figures_and_equations_rendered_inspected": [
+          "main p3 Table1/Eqs1-6; p10 Fig6/Eqs30-31/Corollary14"
+        ],
+        "preprint_scope": "abstract/version history and selected formalism/security passages checked; accepted manuscript and SI are controlling sources",
+        "independent_experiments_or_author_code_executed": false,
+        "independent_security_proof_or_numerical_replication": false
+      },
+      "source_assets": [
+        {
+          "source_url": "https://www.nature.com/articles/s41534-026-01325-9_reference.pdf",
+          "bytes": 1175683,
+          "sha256": "7fad26725f2af36285bd0f5973d1f8689d9c5ee595fec2c36aa0491c7f023842"
+        },
+        {
+          "source_url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41534-026-01325-9/MediaObjects/41534_2026_1325_MOESM1_ESM.pdf",
+          "bytes": 355664,
+          "sha256": "0556aa97a838369e48fbd60f1361923ceca3b18420e5f6699724fbd6ac115de9"
+        },
+        {
+          "source_url": "https://arxiv.org/pdf/2506.03549v2",
+          "bytes": 1455960,
+          "sha256": "3fa061a753e721c89903cdc5b137abf19d1fa1dde4550419440b0e5cfafd3e38"
+        }
+      ]
+    }
+  ],
+  "edition_notes": [
+    "수집·메일·소셜 경위와 내부 메모를 삭제했다. 원 5쪽의 과학 구성과 표를 보존하며 원출처 대조로 정정했다. 원 논문 PDF·도판·코드는 재배포하지 않는다.",
+    "[1] 핵 위치를 고정한 10 fs 동역학의 Hamming-weight 1 후선택 population이다. hardware는 좌표당 1×4,000 shots, emulator는 10×4,000 shots이다. x=0.3에서 hardware 0.418±0.0171(95% CI), 유효 3,185 shots·leakage 20.4%였다. 실제 읽은 본문은 arXiv v2이며 JCTC 출판 메타데이터와 구별한다.",
+    "[2]-[5]는 동료평가를 거친 Article in Press의 early shared 판본이다. 최종 편집된 Version of Record로 바뀔 예정이며, 확인되지 않은 권·논문번호를 서지에 추정하지 않았다.",
+    "[2] 100×100 Fermi–Hubbard는 약 77억 Clifford+T gate다. 1024-bit Shor는 고수준 회로와 CtrlScaleModAdd 한 개의 분해·캐싱이다. 특정 CNOT pattern rewrite 비교는 10⁴–10⁵ gate와 희소 패턴을 썼다. 동등성 검사는 32큐비트 회로 10개·1,000초 제한이었다. 10억 gate당 약 100 GB는 디스크 표현량이다. 코드는 저자의 공개 Pandora 저장소를 확인했다.",
+    "[3] arXiv v1의 단일 threshold를 출판판 교점으로 정정했다. 출판판 SI1000 모사에서 인접 거리 d=3·5, 5·7, 7·9의 LER 교점은 Mamba 0.0095·0.0085·0.0067, Transformer 0.0095·0.0063·0.0043이다. O(d²)는 고정 모델 크기의 Nstab=d²-1 처리 비용이다. SI의 H100·TPU v6e 블록 지연은 batch=8·BF16·d=3–61이며 컴파일·전송·전체 제어 루프를 포함한 시간이 아니다.",
+    "[4] 평균 entropy는 prior 상관관계와 미래 측정에 따른 상·하한으로 해석한다. [5] 입력·공유 난수에 따른 손실 선택을 허용한 공격자는 증명상 손실 허용 범위를 좁힌다. 유한 양자 기억·결합 출력 차원의 보안 조건을 명시했다."
+  ],
+  "production_disclosure": "책임 편집 김현중 · AI 보조 OpenAI Codex · 근거 기준일2026-11-02. root:[1]15쪽, dqb1102_compiler:[2]9쪽+SI4쪽·선택 코드, dqb1102_qec_theory:[3]-[5]34쪽+SI15쪽, dqb1102_pdf:원5쪽·공개6쪽 구조·렌더/[1]3쪽 대조. 정확한 실행 모델과 원 작성 세션 구성은 미보존이다. 원 연구·코드를 독립 재현하거나 사람 독자 평가를 수행하지 않았다.",
+  "inspection_scope": {
+    "producer_reaction_independent": "arXiv2607.05786v2 pp6,10,12 full text, equations, figures, TableI and captions; all three pages rendered and visually inspected. No full-paper read by PDF producer; root read all15p.",
+    "producer_source_original": "All original5p text and rendered pages; metadata,8URI annotations,XML,attachments,widgets,actions,private fields and redistribution boundary inspected.",
+    "independent_reproduction": false
+  },
+  "reproduction": false,
+  "edition_note_links": {
+    "1": [
+      {
+        "text": "arXiv v2",
+        "url": "https://arxiv.org/abs/2607.05786v2"
+      }
+    ],
+    "3": [
+      {
+        "text": "공개 Pandora 저장소",
+        "url": "https://github.com/ioanamoflic/pandora"
+      }
+    ],
+    "4": [
+      {
+        "text": "arXiv v1",
+        "url": "https://arxiv.org/abs/2510.22724v1"
+      }
+    ]
+  }
+}
