@@ -1,0 +1,223 @@
+{
+  "date": "2026-11-03",
+  "role": "legacy1103_sources_a",
+  "original_article_date": "2026-06-17",
+  "original_evidence_cutoff": "2026-06-17",
+  "numbering": "Keys are unnumbered; root assigns final first-citation order after prose edit.",
+  "references": [
+    {
+      "key": "google-tpu-architecture",
+      "url": "https://docs.cloud.google.com/tpu/docs/system-architecture-tpu-vm",
+      "title_original": "TPU architecture",
+      "institution": "Google Cloud",
+      "citation": "Google Cloud, TPU architecture (accessed 3 November 2026).",
+      "last_updated": "2026-10-26",
+      "read_scope": "Full main document from How do TPUs work through TPU cloud architecture; navigation excluded.",
+      "important_conditions": [
+        "MXU systolic data reuse is a stable mechanism also checked in the 2017 paper.",
+        "This current page is not a preserved June 17 snapshot; no later generation numbers or document state are retroactively imported."
+      ]
+    },
+    {
+      "key": "nvidia-gb200-tuning",
+      "url": "https://docs.nvidia.com/multi-node-nvlink-systems/multi-node-tuning-guide/overview.html",
+      "title_original": "The NVIDIA Grace Blackwell Superchip",
+      "institution": "NVIDIA",
+      "citation": "NVIDIA, The NVIDIA Grace Blackwell Superchip, NVIDIA GB200 NVL Multi-Node Tuning Guide (21 April 2025; accessed 3 November 2026).",
+      "last_updated": "2025-04-21",
+      "read_scope": "Full overview page including Second Generation Transformer Engine and Fifth-Generation NVLink.",
+      "important_conditions": [
+        "FP4 enablement uses micro-tensor scaling; useful accuracy and model/operator support remain workload conditions.",
+        "GB200 NVL72 has a 72-GPU NVLink domain. Vendor end-to-end speedup slogans were not adopted as measured universal rankings."
+      ]
+    },
+    {
+      "key": "google-tpu8-deep-dive",
+      "url": "https://cloud.google.com/blog/products/compute/tpu-8t-and-tpu-8i-technical-deep-dive",
+      "title_original": "Inside the eighth-generation TPU: An architecture deep dive",
+      "authors": [
+        "Diwakar Gupta",
+        "Sabastian Mugazambi"
+      ],
+      "institution": "Google Cloud",
+      "citation": "D. Gupta and S. Mugazambi, Inside the eighth-generation TPU: An architecture deep dive, Google Cloud Blog (22 April 2026).",
+      "published": "2026-04-22",
+      "read_scope": "Full main article including all six figure captions, comparison table and software section.",
+      "important_conditions": [
+        "Both systems support the full AI lifecycle while emphasizing different bottlenecks.",
+        "8t emphasizes pretraining/embeddings, SparseCore and 3D torus; 8i emphasizes post-training/sampling/serving, SRAM, CAE and Boardfly.",
+        "Native PyTorch support is explicitly preview in this source; do not silently elevate it to general availability.",
+        "Original source note date April23 differs by one day from page date April22; use page date."
+      ]
+    },
+    {
+      "key": "hennessy-patterson-golden-age",
+      "url": "https://doi.org/10.1145/3282307",
+      "title_original": "A New Golden Age for Computer Architecture",
+      "authors": [
+        "John L. Hennessy",
+        "David A. Patterson"
+      ],
+      "citation": "J. L. Hennessy and D. A. Patterson, A new golden age for computer architecture, Commun. ACM 62, 48 (2019).",
+      "doi": "10.1145/3282307",
+      "volume": "62",
+      "issue": "2",
+      "pages": "48-60",
+      "issue_date": "February 2019",
+      "online_date": "2019-01-28",
+      "checked_version": "Published Communications of the ACM PDF, institutional mirror",
+      "checked_url": "https://www.doc.ic.ac.uk/~wl/teachlocal/arch/papers/cacm19golden-age.pdf",
+      "checked_pages": 13,
+      "checked_pdf_sha256": "a65ddd6bcd9c44a16bfcaba364b31c56ce75f7c868857c957988323528f498e9",
+      "read_scope": "All13 pages of published text, tables, captions and references; visual p56/Fig8 inspected.",
+      "important_conditions": [
+        "Domain-specific parallelism, software-managed memory, reduced precision and DSL/compiler co-design motivate specialization.",
+        "The paper argues domain-specific gains, not a universal CPU-to-QPU performance ordering.",
+        "The CPU/generic scaling discussion is historical analysis, not a quantitative forecast newly tested by this review."
+      ]
+    },
+    {
+      "key": "nvidia-blackwell-architecture",
+      "url": "https://www.nvidia.com/en-us/data-center/technologies/blackwell-architecture/",
+      "title_original": "NVIDIA Blackwell Architecture",
+      "institution": "NVIDIA",
+      "citation": "NVIDIA, NVIDIA Blackwell architecture (accessed 3 November 2026).",
+      "read_scope": "Full current main architecture/product page; original body uses only Blackwell/FP4/NVLink architecture claims.",
+      "important_conditions": [
+        "The current page contains newer Ultra and up-to576-GPU statements; those are not imported into the June article.",
+        "Use the dated April2025 GB200 guide for the preserved72-GPU example."
+      ]
+    },
+    {
+      "key": "aws-trainium-product",
+      "url": "https://aws.amazon.com/ai/machine-learning/trainium/",
+      "title_original": "AWS Trainium",
+      "institution": "Amazon Web Services",
+      "citation": "Amazon Web Services, AWS Trainium (accessed 3 November 2026).",
+      "read_scope": "Full current main product page including Features and Neuron SDK sections.",
+      "important_conditions": [
+        "Current page supports eight-core Trainium3 with Tensor/Vector/Scalar/GPSIMD engines, HBM3e, W4A8, collective cores and NeuronLink/NeuronSwitch.",
+        "Original notes recorded these architectural claims, but no original dated HTML snapshot was preserved; do not claim current product page is byte-identical to June's page.",
+        "The dated December2025 announcement independently establishes Trainium3 availability before original publication."
+      ]
+    },
+    {
+      "key": "jouppi-tpu2017",
+      "url": "https://doi.org/10.1145/3079856.3080246",
+      "title_original": "In-Datacenter Performance Analysis of a Tensor Processing Unit",
+      "authors": [
+        "Norman P. Jouppi",
+        "Cliff Young",
+        "Nishant Patil",
+        "David Patterson",
+        "Gaurav Agrawal",
+        "Raminder Bajwa",
+        "Sarah Bates",
+        "Suresh Bhatia",
+        "Nan Boden",
+        "Al Borchers",
+        "Rick Boyle",
+        "Pierre-luc Cantin",
+        "Clifford Chao",
+        "Chris Clark",
+        "Jeremy Coriell",
+        "Mike Daley",
+        "Matt Dau",
+        "Jeffrey Dean",
+        "Ben Gelb",
+        "Tara Vazir Ghaemmaghami",
+        "Rajendra Gottipati",
+        "William Gulland",
+        "Robert Hagmann",
+        "C. Richard Ho",
+        "Doug Hogberg",
+        "John Hu",
+        "Robert Hundt",
+        "Dan Hurt",
+        "Julian Ibarz",
+        "Aaron Jaffey",
+        "Alek Jaworski",
+        "Alexander Kaplan",
+        "Harshit Khaitan",
+        "Daniel Killebrew",
+        "Andy Koch",
+        "Naveen Kumar",
+        "Steve Lacy",
+        "James Laudon",
+        "James Law",
+        "Diemthu Le",
+        "Chris Leary",
+        "Zhuyuan Liu",
+        "Kyle Lucke",
+        "Alan Lundin",
+        "Gordon MacKean",
+        "Adriana Maggiore",
+        "Maire Mahony",
+        "Kieran Miller",
+        "Rahul Nagarajan",
+        "Ravi Narayanaswami",
+        "Ray Ni",
+        "Kathy Nix",
+        "Thomas Norrie",
+        "Mark Omernick",
+        "Narayana Penukonda",
+        "Andy Phelps",
+        "Jonathan Ross",
+        "Matt Ross",
+        "Amir Salek",
+        "Emad Samadiani",
+        "Chris Severn",
+        "Gregory Sizikov",
+        "Matthew Snelham",
+        "Jed Souter",
+        "Dan Steinberg",
+        "Andy Swing",
+        "Mercedes Tan",
+        "Gregory Thorson",
+        "Bo Tian",
+        "Horia Toma",
+        "Erick Tuttle",
+        "Vijay Vasudevan",
+        "Richard Walter",
+        "Walter Wang",
+        "Eric Wilcox",
+        "Doe Hyun Yoon"
+      ],
+      "author_count": 76,
+      "citation": "N. P. Jouppi et al., In-datacenter performance analysis of a tensor processing unit, in Proceedings of the 44th Annual International Symposium on Computer Architecture (ACM, New York, 2017), pp. 1-12.",
+      "doi": "10.1145/3079856.3080246",
+      "published": "2017-06-24",
+      "pages": "1-12",
+      "checked_version": "arXiv:1704.04760v1",
+      "checked_url": "https://arxiv.org/abs/1704.04760v1",
+      "checked_pages": 17,
+      "checked_pdf_sha256": "19793e4ae1486630ac45a12facabc0e80609dd679db8ca7a3a040f8bf0d8e0be",
+      "read_scope": "Full17-page preprint, methods, tables, captions, discussion and references; actual p4 systolic-layout render inspected. Published12-page metadata checked through Crossref and publisher search result; publisher PDF not read.",
+      "important_conditions": [
+        "2015 contemporary Haswell/K80 versus 8-bit TPUv1, six production inference applications, response-time limits and host accounting.",
+        "No current GPU/TPU ranking inferred from the 2017 ratios.",
+        "Crossref and checked PDF contain76 authors including DanielKillebrew; arXiv abstract lists75. APS uses first author et al. under the >20 rule."
+      ]
+    },
+    {
+      "key": "aws-trainium3-launch",
+      "url": "https://aws.amazon.com/about-aws/whats-new/2025/12/amazon-ec2-trn3-ultraservers/",
+      "title_original": "Announcing Amazon EC2 Trn3 UltraServers for faster, lower-cost generative AI training",
+      "institution": "Amazon Web Services",
+      "citation": "Amazon Web Services, Announcing Amazon EC2 Trn3 UltraServers for faster, lower-cost generative AI training (2 December 2025).",
+      "published": "2025-12-02",
+      "read_scope": "Full dated announcement.",
+      "important_conditions": [
+        "General availability of Trn3 UltraServers is explicit.",
+        "144GB HBM3e/4.9TBps and NeuronSwitch/NeuronSDK stated; no new numerical product comparison added to the June article."
+      ]
+    }
+  ],
+  "additional_document_checked": {
+    "title": "Trainium3 Architecture",
+    "url": "https://awsdocs-neuron.readthedocs-hosted.com/en/v2.27.0/about-neuron/arch/neuron-hardware/trainium3.html",
+    "scope": "Architecture body/table checked, confirms eightNeuronCorev4/GPSIMD/144GiB/16CCcores. Release date not established, not used to assert June software state."
+  },
+  "independent_hardware_benchmark": false,
+  "numerical_experiment_reproduction": false
+}

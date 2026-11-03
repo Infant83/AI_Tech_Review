@@ -6023,7 +6023,7 @@
     "title": "AI 처리장치 스택: CPU, GPU, TPU, NPU, LPU는 왜 나뉘는가",
     "subtitle": "병렬성, 데이터 이동, 지연시간, 전력, 소프트웨어 스택으로 AI 칩의 역할을 다시 읽습니다",
     "date": "2026-06-17",
-    "updated": "2026-06-17",
+    "updated": "2026-11-03",
     "category": "AI Hardware",
     "tags": [
       "AI Hardware",
@@ -6055,13 +6055,47 @@
         "system_ko": "AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": null,
-        "agents": [],
+        "agent_count": 5,
+        "agents": [
+          {
+            "name": "root",
+            "role": "November 3 integration, figures, APS citations, output and publication verification",
+            "role_ko": "11월 3일 통합·도식·APS 인용·출력과 공개 게시 확인"
+          },
+          {
+            "name": "legacy1103_prose",
+            "role": "Korean argument, paragraph context and final manuscript reading",
+            "role_ko": "국문 논지·문단 문맥·문체와 최종 원고 재독"
+          },
+          {
+            "name": "legacy1103_sources_a",
+            "role": "TPU, Blackwell, Trainium and computer-architecture papers; historical evidence and bibliography audit",
+            "role_ko": "TPU·Blackwell·Trainium과 컴퓨터 구조 논문의 당시 근거·서지 감수"
+          },
+          {
+            "name": "legacy1103_sources_b",
+            "role": "NPU, LPU, infrastructure and emerging-compute sources; dated availability and original credit",
+            "role_ko": "NPU·LPU·인프라·차세대 계산의 출처·공급 시점·원저자 감수"
+          },
+          {
+            "name": "legacy1103_output",
+            "role": "Independent figure semantics, layout, legibility and keyboard-scroll review",
+            "role_ko": "독립 도식 의미·배치·가독성·키보드 스크롤 감수"
+          }
+        ],
         "agent_roles": [
-          "individual agent-role roster not retained"
+          "root — November 3 integration, figures, APS citations, output and publication verification",
+          "legacy1103_prose — Korean argument, paragraph context and final manuscript reading",
+          "legacy1103_sources_a — TPU, Blackwell, Trainium and computer-architecture papers; historical evidence and bibliography audit",
+          "legacy1103_sources_b — NPU, LPU, infrastructure and emerging-compute sources; dated availability and original credit",
+          "legacy1103_output — Independent figure semantics, layout, legibility and keyboard-scroll review"
         ],
         "agent_roles_ko": [
-          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+          "root — 11월 3일 통합·도식·APS 인용·출력과 공개 게시 확인",
+          "legacy1103_prose — 국문 논지·문단 문맥·문체와 최종 원고 재독",
+          "legacy1103_sources_a — TPU·Blackwell·Trainium과 컴퓨터 구조 논문의 당시 근거·서지 감수",
+          "legacy1103_sources_b — NPU·LPU·인프라·차세대 계산의 출처·공급 시점·원저자 감수",
+          "legacy1103_output — 독립 도식 의미·배치·가독성·키보드 스크롤 감수"
         ]
       },
       "harness": {
@@ -6071,23 +6105,27 @@
       },
       "verification": {
         "evidence_cutoff": "2026-06-17",
-        "primary_source_check": null,
+        "primary_source_check": true,
         "scope": [
-          "original source-verification record not retained",
-          "current public links and final HTML checked"
+          "Full TPU 2017 preprint and Golden Age published paper; official architecture documents and dated product announcements within recorded reading scopes",
+          "June 2026 evidence separated from current bibliographic checks and mutable product pages; announced availability and measured performance distinguished",
+          "Canonical Markdown, 22 APS sources, seven existing figures, responsive output, citation links and actual HTTPS publication",
+          "No hardware/runtime benchmark, chip fabrication or human-reader evaluation reproduced"
         ],
         "scope_ko": [
-          "원 작성 세션의 출처 검증 기록 미보존",
-          "현재 공개 링크와 최종 HTML 확인"
+          "TPU 2017 프리프린트·Golden Age 출판 논문 전체와 기록한 열람 범위의 공식 구조 문서·당시 제품 발표 대조",
+          "6월 근거와 현재 서지 확인·변하는 제품 페이지 구분; 발표된 공급 계획과 측정 성능 구별",
+          "정본 Markdown·APS 출처 22건·기존 그림 7개·모바일 출력·인용 연결과 실제 HTTPS 게시 확인",
+          "하드웨어·runtime 벤치마크·칩 제작·사람 독자 평가 미수행"
         ],
         "human_review_level": {
-          "ko": "세부 검토 수준은 별도 기록되지 않음",
-          "en": "review level not separately retained"
+          "ko": "순차 개편과 공개 게시 승인; 사람의 문장별 감수·독자 평가 미수행",
+          "en": "Sequential refresh and publication authorized; no line-by-line human review or reader study"
         }
       },
       "note": {
-        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
-        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+        "ko": "원 발행일·근거 범위 2026-06-17을 유지한다. 2026-11-03에는 반복 설명을 다듬고 APS 원저자·원제·정식 서지, 제품 발표와 공급 계획, 실행 조건을 대조했다. 그림 2·7의 근거 없는 공통 좌표·효율 순위를 역할과 설계 조건의 개념 도식으로 정정했다. 현재 열람한 문서를 과거의 보존 판본으로 간주하지 않으며 정확한 원 작성 모델·역할은 미보존이다. 기존 영문판·등록 PDF가 없어 새 번역·PDF·영상·표지를 추가하지 않았다.",
+        "en": "The original June 17, 2026 publication date and evidence scope are retained. The November 3 revision edits repeated prose, audits APS credit and bibliographic metadata, separates announcement and availability conditions, and corrects Figures 2 and 7 into qualitative role/design diagrams. Current mutable pages are not treated as preserved June snapshots. Original model and role details were not retained. No new translation, PDF, video or cover was added."
       }
     }
   },

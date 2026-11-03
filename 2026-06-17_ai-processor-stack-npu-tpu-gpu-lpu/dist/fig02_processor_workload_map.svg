@@ -1,106 +1,78 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
-  <title id="title">AI 처리장치 역할 지도</title>
-  <desc id="desc">CPU, GPU, TPU, NPU, LPU, DPU, QPU, FPGA/Adaptive Compute를 병렬성, 지연시간, 데이터 이동 관점에서 배치한 지도</desc>
-  <defs>
-    <style>
-      .bg { fill: #fbfcfd; }
-      .panel { fill: #ffffff; stroke: #d8e0e6; stroke-width: 2; }
-      .grid { stroke: #e7edf2; stroke-width: 1; }
-      .axis { stroke: #343a40; stroke-width: 3; }
-      .axis-label { font: 700 24px Arial, sans-serif; fill: #30363d; letter-spacing: 0; }
-      .small { font: 400 19px Arial, sans-serif; fill: #66717d; letter-spacing: 0; }
-      .chip { fill: #ffffff; stroke: #30363d; stroke-width: 2.2; }
-      .chip-title { font: 800 34px Arial, sans-serif; fill: #20252b; letter-spacing: 0; }
-      .chip-sub { font: 400 18px Arial, sans-serif; fill: #56616d; letter-spacing: 0; }
-      .accent { fill: #a50034; }
-      .blue { fill: #6ca7c8; }
-      .note { fill: #f8fafc; stroke: #d8e0e6; stroke-width: 1.5; }
-      .note-text { font: 400 18px Arial, sans-serif; fill: #46515d; letter-spacing: 0; }
-    </style>
-    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto">
-      <path d="M0,0 L0,10 L12,5 z" fill="#30363d"/>
-    </marker>
-  </defs>
-  <rect class="bg" width="1600" height="980"/>
-  <rect class="panel" x="70" y="58" width="1460" height="850" rx="26"/>
-  <text x="110" y="120" class="axis-label" style="font-size:38px">AI 처리장치는 이름보다 병목으로 구분합니다</text>
-  <text x="110" y="160" class="small">제어, 행렬 연산, 메모리 이동, 토큰 지연시간, 네트워크 처리는 서로 다른 병목을 만듭니다.</text>
-
-  <g opacity="0.72">
-    <line class="grid" x1="210" y1="245" x2="1390" y2="245"/>
-    <line class="grid" x1="210" y1="395" x2="1390" y2="395"/>
-    <line class="grid" x1="210" y1="545" x2="1390" y2="545"/>
-    <line class="grid" x1="210" y1="695" x2="1390" y2="695"/>
-    <line class="grid" x1="430" y1="205" x2="430" y2="760"/>
-    <line class="grid" x1="660" y1="205" x2="660" y2="760"/>
-    <line class="grid" x1="890" y1="205" x2="890" y2="760"/>
-    <line class="grid" x1="1120" y1="205" x2="1120" y2="760"/>
-  </g>
-  <line class="axis" x1="210" y1="760" x2="1390" y2="760" marker-end="url(#arrow)"/>
-  <line class="axis" x1="210" y1="760" x2="210" y2="205" marker-end="url(#arrow)"/>
-  <text x="198" y="815" class="axis-label">범용성·제어 유연성</text>
-  <text x="1030" y="815" class="axis-label">효율·예측성·전력 최적화</text>
-  <text x="88" y="725" class="axis-label" transform="rotate(-90 88 725)">작은 분기 작업</text>
-  <text x="88" y="392" class="axis-label" transform="rotate(-90 88 392)">반복 연산·통신 집약</text>
-
-  <g transform="translate(278 252)">
-    <rect class="chip" width="190" height="98" rx="11"/>
-    <rect class="accent" x="24" y="88" width="64" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="86" y="88" width="70" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="43">CPU</text>
-    <text class="chip-sub" x="24" y="72">OS, 분기, 오케스트레이션</text>
-  </g>
-  <g transform="translate(585 345)">
-    <rect class="chip" width="210" height="104" rx="11"/>
-    <rect class="accent" x="24" y="94" width="82" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="104" y="94" width="70" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">GPU</text>
-    <text class="chip-sub" x="24" y="74">대량 병렬, 학습·추론 범용</text>
-  </g>
-  <g transform="translate(905 340)">
-    <rect class="chip" width="225" height="108" rx="11"/>
-    <rect class="accent" x="24" y="98" width="92" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="114" y="98" width="78" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">TPU</text>
-    <text class="chip-sub" x="24" y="74">행렬·systolic 데이터플로</text>
-  </g>
-  <g transform="translate(1165 250)">
-    <rect class="chip" width="210" height="104" rx="11"/>
-    <rect class="accent" x="24" y="94" width="72" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="94" y="94" width="70" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">NPU</text>
-    <text class="chip-sub" x="24" y="74">저전력 엣지 추론</text>
-  </g>
-  <g transform="translate(1130 515)">
-    <rect class="chip" width="230" height="108" rx="11"/>
-    <rect class="accent" x="24" y="98" width="84" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="106" y="98" width="76" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">LPU</text>
-    <text class="chip-sub" x="24" y="74">언어 추론 지연시간 최적화</text>
-  </g>
-  <g transform="translate(435 650)">
-    <rect class="chip" width="245" height="104" rx="11"/>
-    <rect class="accent" x="24" y="94" width="90" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="112" y="94" width="82" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">DPU/IPU</text>
-    <text class="chip-sub" x="24" y="74">네트워크·스토리지·보안 오프로드</text>
-  </g>
-  <g transform="translate(755 650)">
-    <rect class="chip" width="250" height="104" rx="11"/>
-    <rect class="accent" x="24" y="94" width="90" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="112" y="94" width="82" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="45">FPGA / Adaptive</text>
-    <text class="chip-sub" x="24" y="74">재구성 가능, 특수 신호처리</text>
-  </g>
-  <g transform="translate(1185 670)">
-    <rect class="chip" width="205" height="98" rx="11"/>
-    <rect class="accent" x="24" y="88" width="68" height="10" rx="5"/>
-    <rect fill="#f2a2b7" x="90" y="88" width="66" height="10" rx="5"/>
-    <text class="chip-title" x="24" y="43">QPU</text>
-    <text class="chip-sub" x="24" y="72">양자 샘플링·실험</text>
-  </g>
-
-  <rect class="note" x="110" y="842" width="1380" height="44" rx="10"/>
-  <text x="132" y="861" class="note-text">오른쪽으로 갈수록 특정 계산 패턴에 더 맞춘 설계입니다.</text>
-  <text x="132" y="884" class="note-text">위쪽은 계산·통신 집약, 아래쪽은 인프라·실험·재구성 영역입니다.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1080" viewBox="0 0 1600 1080" role="img" aria-labelledby="title desc">
+<title id="title">AI 처리장치의 역할과 검토 조건</title><desc id="desc">여덟 처리장치의 역할을 같은 크기의 카드로 병치한다. 배치에는 성능 순위나 수치 축이 없다.</desc>
+<defs><style>
+.bg{fill:#fbfcfd}.panel{fill:#fff;stroke:#d8e0e6;stroke-width:2}
+.title{font:700 40px Arial,sans-serif;fill:#20252b}.deck{font:400 27px Arial,sans-serif;fill:#56616d}
+.name{font:700 36px Arial,sans-serif;fill:#20252b}.body{font:400 26px Arial,sans-serif;fill:#30363d}
+.label{font:700 23px Arial,sans-serif;fill:#a50034}.note{font:400 25px Arial,sans-serif;fill:#56616d}
+.rule{stroke:#d8e0e6;stroke-width:2}.accent{fill:#a50034}
+</style></defs>
+<rect class="bg" width="1600" height="1080"/>
+<text x="70" y="95" class="title">계산과 데이터의 경로에 맞춰 역할이 나뉩니다</text>
+<text x="70" y="145" class="deck">한 시스템이 여러 역할을 조합합니다. 카드의 위치와 크기는 성능을 나타내지 않습니다.</text>
+<rect class="panel" x="70" y="200" width="345" height="350" rx="18"/>
+<rect class="accent" x="94" y="228" width="42" height="5" rx="2"/>
+<text x="94" y="284" class="name">CPU</text>
+<text x="94" y="340" class="body">분기·예외·운영체제</text>
+<text x="94" y="382" class="body">데이터 준비와 작업 조율</text>
+<line class="rule" x1="94" y1="420" x2="391" y2="420"/>
+<text x="94" y="464" class="label">함께 살필 조건</text>
+<text x="94" y="508" class="note">제어 흐름과 데이터 위치</text>
+<rect class="panel" x="445" y="200" width="345" height="350" rx="18"/>
+<rect class="accent" x="469" y="228" width="42" height="5" rx="2"/>
+<text x="469" y="284" class="name">GPU</text>
+<text x="469" y="340" class="body">행렬·텐서 대량 병렬</text>
+<text x="469" y="382" class="body">학습·추론·과학 계산</text>
+<line class="rule" x1="469" y1="420" x2="766" y2="420"/>
+<text x="469" y="464" class="label">함께 살필 조건</text>
+<text x="469" y="508" class="note">사용률·메모리·통신</text>
+<rect class="panel" x="820" y="200" width="345" height="350" rx="18"/>
+<rect class="accent" x="844" y="228" width="42" height="5" rx="2"/>
+<text x="844" y="284" class="name">TPU</text>
+<text x="844" y="340" class="body">행렬 데이터플로</text>
+<text x="844" y="382" class="body">클라우드 ML 학습·추론</text>
+<line class="rule" x1="844" y1="420" x2="1141" y2="420"/>
+<text x="844" y="464" class="label">함께 살필 조건</text>
+<text x="844" y="508" class="note">모델 연산과 컴파일 경로</text>
+<rect class="panel" x="1195" y="200" width="345" height="350" rx="18"/>
+<rect class="accent" x="1219" y="228" width="42" height="5" rx="2"/>
+<text x="1219" y="284" class="name">NPU</text>
+<text x="1219" y="340" class="body">작은 전력 예산의 추론</text>
+<text x="1219" y="382" class="body">센서·모바일·PC의 로컬 AI</text>
+<line class="rule" x1="1219" y1="420" x2="1516" y2="420"/>
+<text x="1219" y="464" class="label">함께 살필 조건</text>
+<text x="1219" y="508" class="note">지원 연산·전력·발열</text>
+<rect class="panel" x="70" y="590" width="345" height="350" rx="18"/>
+<rect class="accent" x="94" y="618" width="42" height="5" rx="2"/>
+<text x="94" y="674" class="name">LPU</text>
+<text x="94" y="730" class="body">언어모델 토큰 처리</text>
+<text x="94" y="772" class="body">정적 스케줄·SRAM</text>
+<line class="rule" x1="94" y1="810" x2="391" y2="810"/>
+<text x="94" y="854" class="label">함께 살필 조건</text>
+<text x="94" y="898" class="note">모델 적합성·서비스 지연</text>
+<rect class="panel" x="445" y="590" width="345" height="350" rx="18"/>
+<rect class="accent" x="469" y="618" width="42" height="5" rx="2"/>
+<text x="469" y="674" class="name">DPU</text>
+<text x="469" y="730" class="body">네트워크·스토리지</text>
+<text x="469" y="772" class="body">보안·가상화 오프로드</text>
+<line class="rule" x1="469" y1="810" x2="766" y2="810"/>
+<text x="469" y="854" class="label">함께 살필 조건</text>
+<text x="469" y="898" class="note">호스트 연결·격리</text>
+<rect class="panel" x="820" y="590" width="345" height="350" rx="18"/>
+<rect class="accent" x="844" y="618" width="42" height="5" rx="2"/>
+<text x="844" y="674" class="name">FPGA</text>
+<text x="844" y="730" class="body">재구성 가능한 회로</text>
+<text x="844" y="772" class="body">신호처리·ML 연산</text>
+<line class="rule" x1="844" y1="810" x2="1141" y2="810"/>
+<text x="844" y="854" class="label">함께 살필 조건</text>
+<text x="844" y="898" class="note">설계·타이밍·재구성 비용</text>
+<rect class="panel" x="1195" y="590" width="345" height="350" rx="18"/>
+<rect class="accent" x="1219" y="618" width="42" height="5" rx="2"/>
+<text x="1219" y="674" class="name">QPU</text>
+<text x="1219" y="730" class="body">양자 상태·측정</text>
+<text x="1219" y="772" class="body">알고리즘·오류정정</text>
+<line class="rule" x1="1219" y1="810" x2="1516" y2="810"/>
+<text x="1219" y="854" class="label">함께 살필 조건</text>
+<text x="1219" y="898" class="note">논리·물리 자원·검증 비용</text>
+<text x="70" y="1010" class="note">개념 도식 · 실제 효율·지연은 모델·정밀도·데이터 위치와 소프트웨어 조건에서 평가합니다.</text>
 </svg>

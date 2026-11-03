@@ -1,0 +1,300 @@
+{
+  "article": "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
+  "reviewer": "legacy1103_sources_b",
+  "checked_at": "2026-11-03",
+  "original_evidence_cutoff": "2026-06-17",
+  "style": "APS numbered citations; root assigns final first-use numbering",
+  "references": [
+    {
+      "id": "intel-amx",
+      "authors": [
+        "Intel"
+      ],
+      "title_original": "What Is Intel® Advanced Matrix Extensions (Intel® AMX)?",
+      "url": "https://www.intel.com/content/www/us/en/products/docs/accelerator-engines/what-is-intel-amx.html",
+      "citation": "Intel, What is Intel® Advanced Matrix Extensions (Intel® AMX)? (accessed November 3, 2026).",
+      "published_date": null,
+      "read_scope": "Official HTML architecture section and BF16/INT8 support; source is undated and mutable.",
+      "supports": [
+        "Matrix hardware resides in CPU cores; BF16/INT8 support."
+      ],
+      "historical_condition": "Original June source note already identifies this URI; current full-page wording is not asserted to be an archived June snapshot.",
+      "checked_payload_sha256": "0c93970a0b60c17eda7f2083c484b22ef6532c270114a3b04215f62019debfbe"
+    },
+    {
+      "id": "arm-sme",
+      "authors": [
+        "Arm Editorial Team"
+      ],
+      "title_original": "Scalable Matrix Extension (SME) for Armv9 Architecture Enables AI Innovation on the Arm CPU",
+      "url": "https://newsroom.arm.com/blog/scalable-matrix-extension",
+      "citation": "Arm Editorial Team, Scalable Matrix Extension (SME) for Armv9 architecture enables AI innovation on the Arm CPU (May 23, 2024).",
+      "published_date": "2024-05-23",
+      "read_scope": "Dated official blog, SME/SME2 architecture and use-case sections read.",
+      "supports": [
+        "ISA matrix/vector extension; SME2 multi-vector operations and low-bit dequantization."
+      ],
+      "replacement_for": "https://www.arm.com/technologies/sme2",
+      "historical_condition": "Dated pre-cutoff article replaces undated current C2-platform landing page.",
+      "checked_payload_sha256": "7d13da8b97a2f37ee992f1218e3917556b7adbe1e6deba72aa31d99d77093bee"
+    },
+    {
+      "id": "microsoft-npu",
+      "authors": [
+        "Microsoft"
+      ],
+      "title_original": "Develop AI applications for Copilot+ PCs",
+      "url": "https://learn.microsoft.com/en-us/windows/ai/npu-devices/",
+      "citation": "Microsoft, Develop AI applications for Copilot+ PCs (accessed November 3, 2026).",
+      "published_date": null,
+      "read_scope": "Official guide prerequisites and NPU programming/API sections read.",
+      "supports": [
+        "Many Copilot+ Windows AI features require 40+ TOPS NPU.",
+        "NPU requires software explicitly targeting it."
+      ],
+      "historical_condition": "Do not retroactively add current Windows ML migration details to June article; architecture/prerequisite claims only.",
+      "checked_payload_sha256": "23c341bad0172585d229ac2bc19e8108fdfeed831b188557fce8dcd822ade5b6"
+    },
+    {
+      "id": "apple-m4",
+      "authors": [
+        "Apple"
+      ],
+      "title_original": "Apple introduces M4 chip",
+      "url": "https://www.apple.com/newsroom/2024/05/apple-introduces-m4-chip/",
+      "citation": "Apple, Apple introduces M4 chip (May 7, 2024).",
+      "published_date": "2024-05-07",
+      "read_scope": "Dated full announcement read, Neural Engine and feature sections.",
+      "supports": [
+        "Neural Engine vendor peak 38 trillion operations/s."
+      ],
+      "historical_condition": "This release does not specify precision or sparsity for the 38 TOPS figure; no direct equivalence to Microsoft's requirement or application benchmark.",
+      "checked_payload_sha256": "de361ae1e040183c4fecf8b5d69355a5d948ff223738aab45a653a97ab730df3"
+    },
+    {
+      "id": "groq-lpu",
+      "authors": [
+        "Groq"
+      ],
+      "title_original": "What is a Language Processing Unit?",
+      "url": "https://groq.com/blog/the-groq-lpu-explained",
+      "citation": "Groq, What is a Language Processing Unit? (March 7, 2025).",
+      "published_date": "2025-03-07",
+      "read_scope": "Entire official blog, all four design principles read.",
+      "supports": [
+        "Compiler-scheduled data flow; deterministic compute/networking; on-chip SRAM."
+      ],
+      "historical_condition": "Vendor architectural description, not independently measured cross-model tail-latency or cost superiority.",
+      "checked_payload_sha256": "072f4c2376dd0bcbb844d17e111aceae67a8ec47543d46a863dad6f11532f977"
+    },
+    {
+      "id": "bluefield3",
+      "authors": [
+        "NVIDIA"
+      ],
+      "title_original": "NVIDIA Extends Data Center Infrastructure Processing Roadmap with BlueField-3",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-extends-data-center-infrastructure-processing-roadmap-with-bluefield-3",
+      "citation": "NVIDIA, NVIDIA extends data center infrastructure processing roadmap with BlueField-3 (April 12, 2021).",
+      "published_date": "2021-04-12",
+      "read_scope": "Official dated announcement and current BlueField portfolio were checked; 400Gb/s and infrastructure-role passages.",
+      "supports": [
+        "400Gb/s infrastructure acceleration for networking, storage and security."
+      ],
+      "historical_condition": "Prefer dated announcement for June discussion to mutable BlueField portfolio.",
+      "checked_payload_sha256": "59f7721663127c71565589517b8c7ad557ffae41d1d9885d03c28cbac2cbae91"
+    },
+    {
+      "id": "bluefield4",
+      "authors": [
+        "Itay Ozery"
+      ],
+      "title_original": "NVIDIA Launches BlueField-4: The Processor Powering the Operating System of AI Factories",
+      "url": "https://blogs.nvidia.com/blog/bluefield-4-ai-factory/",
+      "citation": "I. Ozery, NVIDIA launches BlueField-4: The processor powering the operating system of AI factories (October 28, 2025).",
+      "published_date": "2025-10-28",
+      "read_scope": "Full dated official blog read, including planned availability.",
+      "supports": [
+        "Announced 800Gb/s platform; early availability expected in 2026."
+      ],
+      "historical_condition": "June treatment is announced design/availability expectation, not verified widespread deployment.",
+      "checked_payload_sha256": "03ab790b0356b470385b94c7838249cb363c47822262b4df1262a426160361e3"
+    },
+    {
+      "id": "bluefield4-availability",
+      "authors": [
+        "NVIDIA"
+      ],
+      "title_original": "NVIDIA BlueField-4 Powers New Class of AI-Native Storage Infrastructure for the Next Frontier of AI",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-bluefield-4-powers-new-class-of-ai-native-storage-infrastructure-for-the-next-frontier-of-ai",
+      "citation": "NVIDIA, NVIDIA BlueField-4 powers new class of AI-native storage infrastructure for the next frontier of AI (January 5, 2026).",
+      "published_date": "2026-01-05",
+      "read_scope": "Full announcement science/product text and availability clause read.",
+      "supports": [
+        "Partner storage platforms announced as available in second half of 2026."
+      ],
+      "historical_condition": "Optional extra source if body specifies second-half availability; no need to append if only 'announced'.",
+      "checked_payload_sha256": "40db1ba7cf2cc37c9988e61bb98f6b021e9f089df0f403bd4005bcdd0b8d839b"
+    },
+    {
+      "id": "intel-ipu",
+      "authors": [
+        "Intel"
+      ],
+      "title_original": "Intel Unveils Infrastructure Processing Unit",
+      "url": "https://download.intel.com/newsroom/archive/2025/en-us-2021-06-14-intel-unveils-infrastructure-processing-unit.pdf",
+      "citation": "Intel, Intel unveils infrastructure processing unit (June 14, 2021).",
+      "published_date": "2021-06-14",
+      "read_scope": "Full six-page official archived press release extracted text read.",
+      "supports": [
+        "Infrastructure Processing Unit denotes programmable infrastructure offload."
+      ],
+      "historical_condition": "Explicitly define IPU here. Graphcore uses the same acronym for Intelligence Processing Unit; that separate architecture is not covered by this offload category.",
+      "checked_payload_sha256": "960f735072883f38086a6ac964b5e154d0f4fb0932d86e2b266994bd33e51f06"
+    },
+    {
+      "id": "willow",
+      "authors": [
+        "Hartmut Neven"
+      ],
+      "title_original": "Meet Willow, our state-of-the-art quantum chip",
+      "url": "https://blog.google/innovation-and-ai/technology/research/google-willow-quantum-chip/",
+      "citation": "H. Neven, Meet Willow, our state-of-the-art quantum chip (December 9, 2024).",
+      "published_date": "2024-12-09",
+      "read_scope": "Official blog main article and quantum-error-correction/RCS/useful-computation sections read; updated June 12, 2025 is shown separately.",
+      "supports": [
+        "Below-threshold error-correction progress; useful beyond-classical computation remains future goal in cited announcement."
+      ],
+      "historical_condition": "No general AI acceleration or compute-per-watt ordering inferred from RCS/QEC.",
+      "checked_payload_sha256": "aeb6d856dd5bf83e84791f60a82076a7e84302539f45dbc9e33b41e85404853e"
+    },
+    {
+      "id": "amd-ai-engine",
+      "authors": [
+        "AMD"
+      ],
+      "title_original": "AI Engine Technology",
+      "url": "https://www.amd.com/en/products/adaptive-socs-and-fpgas/technologies/ai-engine.html",
+      "citation": "AMD, AI Engine technology (accessed November 3, 2026).",
+      "published_date": null,
+      "read_scope": "Official AI Engine architecture/tile/heterogeneous-platform/application sections read.",
+      "supports": [
+        "VLIW/SIMD tiles, local memory, scalar processors and programmable logic/processing-system integration."
+      ],
+      "historical_condition": "Use stable architecture descriptions, not current additional-generation numerical tables as June measurements."
+    },
+    {
+      "id": "cerebras-wse3",
+      "authors": [
+        "Julie Choi"
+      ],
+      "institution": "Cerebras Systems",
+      "title_original": "Cerebras Systems Unveils World’s Fastest AI Chip with Whopping 4 Trillion Transistors",
+      "url": "https://www.cerebras.ai/press-release/cerebras-announces-third-generation-wafer-scale-engine",
+      "citation": "J. Choi, Cerebras Systems unveils world’s fastest AI chip with whopping 4 trillion transistors (Cerebras Systems, 2024).",
+      "published_date": "2024",
+      "date_note": "Press-release dateline March13; current page header March11. Citation uses year only; date discrepancy not silently resolved.",
+      "read_scope": "Full official release main text read; current /chip page compared and found to cover WSE-3 Turbo/CS-4.",
+      "supports": [
+        "WSE-3 and on-chip-memory wafer-scale design existed before cutoff."
+      ],
+      "historical_condition": "Do not substitute WSE-3T/CS-4 specifications or current performance claims.",
+      "checked_payload_sha256": "7486a8c3ba36b65cda00a080e7cbb4866e3f1665671426803b87157ceeb842c3",
+      "press_release_dateline": "2024-03-13",
+      "current_page_header_date": "2024-03-11"
+    },
+    {
+      "id": "qualcomm-ai250",
+      "authors": [
+        "Qualcomm Technologies"
+      ],
+      "title_original": "Qualcomm Unveils AI200 and AI250—Redefining Rack-Scale Data Center Inference Performance for the AI Era",
+      "url": "https://www.qualcomm.com/news/releases/2025/10/qualcomm-unveils-ai200-and-ai250-redefining-rack-scale-data-cent",
+      "citation": "Qualcomm Technologies, Qualcomm unveils AI200 and AI250—Redefining rack-scale data center inference performance for the AI era (October 28, 2025).",
+      "published_date": "2025-10-28",
+      "read_scope": "Full official release main text, roadmap and commercial availability read.",
+      "supports": [
+        "AI250 planned near-memory architecture; AI200/AI250 commercial availability expected in 2026/2027."
+      ],
+      "historical_condition": "Near-memory bandwidth improvement is vendor roadmap claim, not an already measured June product result.",
+      "checked_payload_sha256": "34271c7a34f3e5a77d9cbe3ea199444dddaa5dac8386bffd17ff8e37c4c05e8a"
+    },
+    {
+      "id": "lightmatter-guide",
+      "authors": [
+        "Lightmatter"
+      ],
+      "title_original": "Lightmatter Introduces Guide Light Engine for AI, Featuring VLSP Technology",
+      "url": "https://lightmatter.co/press-release/lightmatter-introduces-guide-light-engine-for-ai-featuring-vlsp-technology/",
+      "citation": "Lightmatter, Lightmatter introduces Guide light engine for AI, featuring VLSP technology (January 26, 2026).",
+      "published_date": "2026-01-26",
+      "read_scope": "Full official release main text, Passage relationship, technical-validation and availability paragraphs read.",
+      "supports": [
+        "Passage photonic interconnect uses Guide light source; sampling validation platforms and selected-partner EVKs."
+      ],
+      "historical_condition": "Optical interconnect example, not proof all communication in every AI system dominates compute or measured whole-cluster efficiency.",
+      "checked_payload_sha256": "7f2040498412db5c24ec916ba4838a2de194b864d47cb65ca3d146998ee16b06"
+    },
+    {
+      "id": "intel-neuromorphic",
+      "authors": [
+        "Intel"
+      ],
+      "title_original": "Neuromorphic Computing and Engineering, Next Wave of AI Capabilities",
+      "url": "https://www.intel.com/content/www/us/en/research/neuromorphic-computing.html",
+      "citation": "Intel, Neuromorphic computing and engineering, next wave of AI capabilities (accessed November 3, 2026).",
+      "published_date": null,
+      "read_scope": "Current official overview read in full; Loihi2 claim compared to original 2021 seven-page technical brief.",
+      "supports": [
+        "Sparse event-driven asynchronous spiking and integrated memory/compute."
+      ],
+      "historical_condition": "Keeps original architectural example; no current Hala Point statistics retrofitted.",
+      "checked_payload_sha256": "440a2a3e7e00eb1ef02ea117e84e4ccf1e7b2d0ead60d2f6a65f8b52d96e7aeb"
+    },
+    {
+      "id": "loihi2-brief",
+      "authors": [
+        "Intel Labs"
+      ],
+      "title_original": "Taking Neuromorphic Computing to the Next Level with Loihi 2",
+      "url": "https://download.intel.com/newsroom/2021/new-technologies/neuromorphic-computing-loihi-2-brief.pdf",
+      "citation": "Intel Labs, Taking neuromorphic computing to the next level with Loihi 2 (2021).",
+      "published_date": "2021-09",
+      "read_scope": "Full seven-page technical brief text/captions/table2/footnotes read. No independent benchmark rerun.",
+      "supports": [
+        "Event-based messages, asynchronous neuron cores, local synaptic memories, embedded CPU/I/O integration."
+      ],
+      "historical_condition": "Optional dated replacement for undated overview; speed/energy claims have silicon/simulation-specific denominators, not a single whole-product gain.",
+      "checked_payload_sha256": "13a07512031d9168076498f611fbb4bc1c8eb1e78891a5002315970b3cfc4472"
+    }
+  ],
+  "retired_or_replaced": [
+    {
+      "url": "https://groq.com/lpu-architecture",
+      "current_destination": "https://groq.com/platform",
+      "action": "Merge static scheduling/SRAM claims into dated2025blog; do not cite currentGroq3LPX page asJuneevidence."
+    },
+    {
+      "url": "https://www.cerebras.ai/chip",
+      "action": "Replace with originalWSE3datedrelease; currentpageisWSE3T/CS4."
+    },
+    {
+      "url": "https://www.arm.com/technologies/sme2",
+      "action": "Prefer dated2024SME/SME2blog."
+    },
+    {
+      "url": "https://lightmatter.co/",
+      "current_destination": "https://lightmatter.com/",
+      "action": "Prefer datedGuideannouncement tosupport existingPassage/Guidecase."
+    }
+  ],
+  "not_performed": [
+    "Independent chip/runtime/model benchmark",
+    "Retrospective June web snapshot verification",
+    "Physical device measurement",
+    "Figure numerical data generation"
+  ],
+  "figure_findings": [
+    "Figure2 axis meanings conflict with CPU placement and bottom note; qualitative role map should not imply measured common optimization ranking.",
+    "Figure7 incorrectly implies wafer-scale/analog/QPU uniformly outperform CPU/GPU in computation per watt and have less generality in a common quantitative order. These are orthogonal choices, not one verified efficiency ladder."
+  ]
+}
