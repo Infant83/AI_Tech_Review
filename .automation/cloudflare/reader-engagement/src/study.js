@@ -134,7 +134,14 @@ function id(value) {
 }
 function notebookView(row) {
   return {id:row.id,title:row.title,fingerprint:row.fingerprint,pageCount:row.page_count,publicId:row.public_id,
-    ownerId:row.owner_id,role:row.role,revision:row.revision,updatedAt:row.updated_at};
+    ownerId:row.owner_id,role:row.role,revision:row.revision,updatedAt:row.updated_at,
+    capabilities:{canRead:true,canAdd:['owner','editor','contributor'].includes(row.role),
+      canDeleteOwn:['owner','editor','contributor'].includes(row.role),canEditAll:['owner','editor'].includes(row.role),canManageMembers:row.role==='owner'}};
+}
+function shareRole(value,fallback=null) {
+  const role=value===undefined?fallback:value;
+  if(!['viewer','contributor','editor'].includes(role)) throw new ApiError('invalid_notebook_role');
+  return role;
 }
 async function member(env,notebookId,accountId,ownerOnly=false) {
   id(notebookId);
@@ -194,32 +201,54 @@ async function operations(request,env,current,notebookId) {
   await limit(request,env,'note-write',1200,HOUR,current.id);
   const body=object(await readJson(request,1_000_000),['operations','position','bookmarks'],['operations']);
   if(!Array.isArray(body.operations)||body.operations.length>100) throw new ApiError('invalid_operations');
+  if(body.operations.length&&row.role==='viewer') throw new ApiError('notebook_read_only',403);
   const commands=[],now=Date.now();
   let extraBytes=0,extraRows=0;
-  const known=new Map();
-  for(const operation of body.operations) {
+  const normalized=body.operations.map(operation=>{
     object(operation,operation?.type==='put'?['type','page','stroke']:['type','page','id']);
     const page=pageNumber(operation.page,row);
+    if(operation.type==='put') return {type:'put',page,stroke:validateStroke(operation.stroke)};
+    if(operation.type==='delete') return {type:'delete',page,id:strokeId(operation.id)};
+    throw new ApiError('invalid_operation');
+  });
+  const requested=new Map();
+  for(const operation of normalized) {
+    const stroke=operation.type==='put'?operation.stroke.id:operation.id;
+    requested.set(`${operation.page}:${stroke}`,{page:operation.page,id:stroke});
+  }
+  const known=new Map([...requested.keys()].map(key=>[key,null]));
+  if(requested.size) {
+    // One binding read for the whole request, with one bound JSON value instead
+    // of up to 200 tuple parameters. CROSS JOIN keeps json_each's <=100 keys
+    // outside indexed (notebook_id,page,id) lookups, never a notebook scan.
+    const stored=await all(env,`SELECT s.page,s.id,s.deleted,s.data,s.author_id
+      FROM json_each(?) AS requested CROSS JOIN study_strokes AS s
+      WHERE s.notebook_id=? AND s.page=json_extract(requested.value,'$.page') AND s.id=json_extract(requested.value,'$.id')`,
+      JSON.stringify([...requested.values()]),notebookId);
+    for(const value of stored) known.set(`${value.page}:${value.id}`,value);
+  }
+  for(const operation of normalized) {
+    const page=operation.page;
     if(operation.type==='put') {
-      const value=validateStroke(operation.stroke),data=JSON.stringify(value);
+      const value=operation.stroke,data=JSON.stringify(value);
       const key=`${page}:${value.id}`;
-      if(!known.has(key)) known.set(key,await first(env,'SELECT deleted,data FROM study_strokes WHERE notebook_id=? AND page=? AND id=?',notebookId,page,value.id));
-      if(!known.get(key)) {extraBytes+=data.length;extraRows++;known.set(key,{deleted:0,data});}
+      if(row.role==='contributor'&&known.get(key)&&known.get(key).author_id!==current.id) throw new ApiError('notebook_add_only',403);
+      if(!known.get(key)) {extraBytes+=data.length;extraRows++;known.set(key,{deleted:0,data,author_id:current.id});}
       // Immutable ids and permanent tombstones make retries and stale offline writes safe.
-      commands.push(stmt(env,`INSERT OR IGNORE INTO study_strokes(notebook_id,page,id,data,deleted,updated_at)
-        SELECT ?,?,?,?,0,? WHERE EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?)`,notebookId,page,value.id,data,now,notebookId,current.id));
+      commands.push(stmt(env,`INSERT OR IGNORE INTO study_strokes(notebook_id,page,id,data,deleted,updated_at,author_id,actor_id)
+        VALUES(?,?,?,?,0,?,?,?)`,notebookId,page,value.id,data,now,current.id,current.id));
     } else if(operation.type==='delete') {
-      const key=`${page}:${strokeId(operation.id)}`;
-      if(!known.has(key)) known.set(key,await first(env,'SELECT deleted,data FROM study_strokes WHERE notebook_id=? AND page=? AND id=?',notebookId,page,operation.id));
+      const key=`${page}:${operation.id}`;
+      if(row.role==='contributor'&&known.get(key)?.author_id!==current.id) throw new ApiError('notebook_add_only',403);
       if(!known.get(key)) extraRows++;
       else if(known.get(key).data) extraBytes-=known.get(key).data.length;
-      known.set(key,{deleted:1,data:null});
-      commands.push(stmt(env,`INSERT INTO study_strokes(notebook_id,page,id,data,deleted,updated_at)
-        SELECT ?,?,?,NULL,1,? WHERE EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?)
-        ON CONFLICT(notebook_id,page,id) DO UPDATE SET data=NULL,deleted=1,updated_at=excluded.updated_at WHERE study_strokes.deleted=0`,notebookId,page,strokeId(operation.id),now,notebookId,current.id));
-    } else throw new ApiError('invalid_operation');
+      known.set(key,{deleted:1,data:null,author_id:known.get(key)?.author_id||null});
+      commands.push(stmt(env,`INSERT INTO study_strokes(notebook_id,page,id,data,deleted,updated_at,author_id,actor_id)
+        VALUES(?,?,?,NULL,1,?,NULL,?)
+        ON CONFLICT(notebook_id,page,id) DO UPDATE SET data=NULL,deleted=1,updated_at=excluded.updated_at,actor_id=excluded.actor_id WHERE study_strokes.deleted=0`,notebookId,page,operation.id,now,current.id));
+    }
   }
-  const capacity=await first(env,'SELECT count(*) n,COALESCE(sum(length(data)),0) bytes FROM study_strokes WHERE notebook_id=?',notebookId);
+  const capacity=await first(env,'SELECT stroke_count n,ink_bytes bytes FROM study_notebooks WHERE id=?',notebookId);
   // Existing erasures/replays and reading-position saves must remain possible
   // even if simultaneous prior batches put a notebook slightly over its limit.
   if((extraRows>0&&capacity.n+extraRows>MAX_STROKES)||(extraBytes>0&&capacity.bytes+extraBytes>MAX_NOTE_BYTES)) throw new ApiError('notebook_storage_limit',413);
@@ -230,38 +259,54 @@ async function operations(request,env,current,notebookId) {
     bookmarks=JSON.stringify([...new Set(body.bookmarks.map(p=>pageNumber(p,row)))].sort((a,b)=>a-b));
   }
   if(body.position!==undefined||body.bookmarks!==undefined) commands.push(stmt(env,'UPDATE study_members SET position=?,bookmarks=? WHERE notebook_id=? AND account_id=?',position,bookmarks,notebookId,current.id));
-  if(commands.length) await env.DB.batch(commands);
+  if(commands.length) {
+    try {await env.DB.batch(commands);}
+    catch(error) {
+      if(String(error?.message||error).includes('study_permission_denied')) throw new ApiError('notebook_permission_changed',403);
+      throw error;
+    }
+  }
   const latest=await member(env,notebookId,current.id);
   return json(request,env,{revision:latest.revision});
 }
 async function snapshot(request,env,current,notebookId) {
   const row=await member(env,notebookId,current.id);
-  const strokes=await all(env,`SELECT page,id,data,deleted FROM study_strokes WHERE notebook_id=? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?) ORDER BY page,id`,notebookId,notebookId,current.id);
+  const strokes=await all(env,`SELECT page,id,data,deleted,author_id FROM study_strokes WHERE notebook_id=? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?) ORDER BY page,id`,notebookId,notebookId,current.id);
   const pages=new Map(),deleted=[];
   for(const s of strokes) {
     if(s.deleted) {deleted.push({page:s.page,id:s.id});continue;}
     if(!pages.has(s.page)) pages.set(s.page,[]);
     pages.get(s.page).push(JSON.parse(s.data));
   }
-  return json(request,env,{notebook:notebookView(row),pages:[...pages].map(([number,values])=>({number,strokes:values})),deleted,position:{page:row.position},bookmarks:JSON.parse(row.bookmarks)});
+  return json(request,env,{notebook:notebookView(row),pages:[...pages].map(([number,values])=>({number,strokes:values})),deleted,
+    strokeAuthors:strokes.map(s=>({page:s.page,id:s.id,accountId:s.author_id||null})),position:{page:row.position},bookmarks:JSON.parse(row.bookmarks)});
 }
 async function changes(request,env,current,notebookId,url) {
   const row=await member(env,notebookId,current.id);
   if([...url.searchParams.keys()].some(k=>k!=='since')) throw new ApiError('invalid_fields');
   const since=Number(url.searchParams.get('since')||0);
   if(!Number.isSafeInteger(since)||since<0) throw new ApiError('invalid_revision');
-  const rows=await all(env,`SELECT revision,page,stroke_id,kind,data FROM study_changes WHERE notebook_id=? AND revision>? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?) ORDER BY revision LIMIT 101`,notebookId,since,notebookId,current.id);
+  const rows=await all(env,`SELECT revision,page,stroke_id,kind,data,author_id FROM study_changes WHERE notebook_id=? AND revision>? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?) ORDER BY revision LIMIT 101`,notebookId,since,notebookId,current.id);
   const more=rows.length>100,selected=rows.slice(0,100);
   const revision=selected.length?selected[selected.length-1].revision:row.revision;
-  return json(request,env,{changes:selected.map(r=>({revision:r.revision,type:r.kind,page:r.page,id:r.stroke_id,stroke:r.data?JSON.parse(r.data):null})),revision,more,notebookRevision:row.revision});
+  return json(request,env,{notebook:notebookView(row),changes:selected.map(r=>({revision:r.revision,type:r.kind,page:r.page,id:r.stroke_id,stroke:r.data?JSON.parse(r.data):null,authorId:r.author_id||null})),revision,more,notebookRevision:row.revision});
 }
 async function createInvite(request,env,current,notebookId) {
   await member(env,notebookId,current.id,true);
-  object(await readJson(request,256),[]);
+  const body=object(await readJson(request,256),['role'],[]),role=shareRole(body.role,'viewer');
   await limit(request,env,'invite-create',30,HOUR,current.id);
   const value=randomToken(),expiresAt=Date.now()+DAY;
-  await run(env,'INSERT INTO study_invites(token_hash,notebook_id,created_by,expires_at) VALUES(?,?,?,?)',await sha256(value),notebookId,current.id,expiresAt);
-  return json(request,env,{token:value,expiresAt},201);
+  await run(env,'INSERT INTO study_invites(token_hash,notebook_id,created_by,expires_at,role) VALUES(?,?,?,?,?)',await sha256(value),notebookId,current.id,expiresAt,role);
+  return json(request,env,{token:value,expiresAt,role},201);
+}
+async function invitation(request,env,current) {
+  const body=object(await readJson(request,256),['token']);
+  if(typeof body.token!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(body.token)) throw new ApiError('invalid_invite');
+  await limit(request,env,'invite-preview',120,HOUR,current.id);
+  const row=await first(env,`SELECT i.role,i.expires_at,n.title,n.fingerprint,n.page_count,n.public_id FROM study_invites i
+    JOIN study_notebooks n ON n.id=i.notebook_id WHERE i.token_hash=? AND i.expires_at>? AND i.used_by IS NULL`,await sha256(body.token),Date.now());
+  if(!row) throw new ApiError('invite_expired',410);
+  return json(request,env,{invitation:{role:row.role,title:row.title,fingerprint:row.fingerprint,pageCount:row.page_count,publicId:row.public_id,expiresAt:row.expires_at}});
 }
 async function acceptInvite(request,env,current) {
   const body=object(await readJson(request,256),['token']);
@@ -273,7 +318,7 @@ async function acceptInvite(request,env,current) {
   await env.DB.batch([
     stmt(env,'UPDATE study_invites SET used_by=? WHERE token_hash=? AND used_by IS NULL AND expires_at>?',current.id,hash,now),
     stmt(env,`INSERT OR IGNORE INTO study_members(notebook_id,account_id,role,joined_at)
-      SELECT notebook_id,?,'editor',? FROM study_invites WHERE token_hash=? AND used_by=? AND expires_at>?`,current.id,now,hash,current.id,now),
+      SELECT notebook_id,?,role,? FROM study_invites WHERE token_hash=? AND used_by=? AND expires_at>?`,current.id,now,hash,current.id,now),
   ]);
   const claimed=await first(env,'SELECT used_by FROM study_invites WHERE token_hash=?',hash);
   if(claimed.used_by!==current.id) throw new ApiError('invite_expired',410);
@@ -299,6 +344,7 @@ export async function studyRoute(request,env,url=new URL(request.url)) {
     return json(request,env,{notebooks:rows.map(notebookView)});
   }
   if(route==='notebooks'&&method==='POST') return createNotebook(request,env,current);
+  if(route==='invites/preview'&&method==='POST') return invitation(request,env,current);
   if(route==='invites/accept'&&method==='POST') return acceptInvite(request,env,current);
   const match=route.match(/^notebooks\/([A-Za-z0-9_-]+)(?:\/(operations|pages|invites|members)(?:\/([A-Za-z0-9_-]+))?)?$/);
   if(match) {
@@ -310,13 +356,20 @@ export async function studyRoute(request,env,url=new URL(request.url)) {
     if(action==='members') {
       await member(env,notebookId,current.id,true);
       if(method==='GET'&&!memberId) {
-        const rows=await all(env,'SELECT a.id,a.display_name,m.role FROM study_members m JOIN study_accounts a ON a.id=m.account_id WHERE m.notebook_id=? ORDER BY m.role DESC,m.joined_at',notebookId);
+        const rows=await all(env,"SELECT a.id,a.display_name,m.role FROM study_members m JOIN study_accounts a ON a.id=m.account_id WHERE m.notebook_id=? ORDER BY CASE m.role WHEN 'owner' THEN 0 ELSE 1 END,m.joined_at",notebookId);
         return json(request,env,{members:rows.map(r=>({accountId:r.id,displayName:r.display_name,role:r.role}))});
       }
       if(method==='DELETE'&&memberId) {
         if(memberId===current.id) throw new ApiError('cannot_revoke_owner');
-        await run(env,"DELETE FROM study_members WHERE notebook_id=? AND account_id=? AND role='editor'",notebookId,id(memberId));
+        await run(env,"DELETE FROM study_members WHERE notebook_id=? AND account_id=? AND role!='owner'",notebookId,id(memberId));
         return json(request,env,{});
+      }
+      if(method==='PATCH'&&memberId) {
+        if(memberId===current.id) throw new ApiError('cannot_change_owner');
+        const body=object(await readJson(request,256),['role']),role=shareRole(body.role);
+        const result=await run(env,"UPDATE study_members SET role=? WHERE notebook_id=? AND account_id=? AND role!='owner'",role,notebookId,id(memberId));
+        if(!changed(result)) throw new ApiError('notebook_member_not_found',404);
+        return json(request,env,{member:{accountId:memberId,role}});
       }
     }
   }

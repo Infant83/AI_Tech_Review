@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
+import { eraseStrokes } from './ink-core.mjs';
 
 // Exercise the actual browser functions with delayed storage, without publishing
 // test hooks or replacing the production implementation with a test copy.
@@ -16,6 +18,10 @@ const functions = {
   applyNotebook: section('async function applyNotebook(', 'async function exportPDF('),
   ensurePage: section('async function ensurePage(', 'async function goPage('),
   goPage: section('async function goPage(', 'function renderBookmarks('),
+  permissions: section('function canAddInk(', 'function state('),
+  eraseAt: section('function eraseAt(', "inkCanvas.addEventListener('pointerover'"),
+  undo: section('function undo(', "document.querySelectorAll('button[data-tool]')"),
+  historyEntry: section('function historyEntry(', 'function finishStroke('),
 };
 const pointerDown = section("inkCanvas.addEventListener('pointerdown'", "inkCanvas.addEventListener('pointermove'");
 const document = { fingerprint: 'a'.repeat(64), title: 'Lecture', pageCount: 2 };
@@ -29,12 +35,18 @@ function context(names) {
   const listeners = {};
   const ctx = {
     current: { ...document, bookmarks: [] }, active: null, busy: false, tool: 'pen', pageNumber: 1,
+    permissions: { role: 'local', accountId: null, notebookId: null }, strokeAuthors: new Map(), suspendedTool: null,
+    roleCapabilities, strokeAuthorMap, strokeKey, eraseStrokes, cssWidth: 600, cssHeight: 800,
     pages: new Map([[1, [stroke('existing')]]]), histories: new Map(), dirty: new Map(),
     metaSaved: 0, metaVersion: 0, mutationRevision: 0,
     NOTEBOOK_FORMAT: 'ai-tech-review-notebook', clone: structuredClone,
     validateNotebook: value => value, uid: () => 'new-stroke', confirm: () => true, t: value => value,
     clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
     controls: () => {}, finishStroke: () => {}, renderBookmarks: () => {},
+    chooseTool: next => { ctx.tool = next; }, sheet: { dataset: {} }, markDirty() {}, requestInk() {}, drawInk() {},
+    retiredIds: new Set(), state: () => ctx.pages.get(ctx.pageNumber) || [],
+    history: () => { if (!ctx.histories.has(ctx.pageNumber)) ctx.histories.set(ctx.pageNumber, { undo: [], redo: [] }); return ctx.histories.get(ctx.pageNumber); },
+    canAddInk: () => true, canEditAllInk: () => true, ownStroke() {},
     ensurePage: async () => {}, renderPage: async () => { ctx.busy = false; },
     flush: async () => true, status: () => {}, signal: () => {}, currentInfo: () => ({ ...document }), storageFailure: () => {},
     showError: () => { ctx.busy = false; }, markMeta: () => { ctx.mutationRevision++; },
@@ -136,3 +148,81 @@ for (const selection of ['importing', 'opened']) {
     assert.equal(restores, 0);
   });
 }
+
+test('viewer guards reject drawing, undo and destructive backup replacement',async()=>{
+  const ctx=context(['permissions','undo','applyNotebook']);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'viewer',accountId:'member-a',strokeAuthors:[]});
+  assert.equal(ctx.canAddInk(),false);ctx.tool='pen';ctx.pointerDown();assert.equal(ctx.active,null);
+  ctx.undo();assert.deepEqual(ctx.pages.get(1).map(s=>s.id),['existing']);
+  await assert.rejects(ctx.applyNotebook({document,pages:[],position:1,bookmarks:[]},{confirmReplace:true}),/NOTEBOOK_READ_ONLY/);
+});
+
+test('contributor swept erasure and undo preserve owner and legacy ink',()=>{
+  const ctx=context(['permissions','eraseAt','undo']);
+  const owned=stroke('mine'),owner=stroke('owner'),legacy=stroke('legacy');
+  ctx.pages.set(1,[owner,legacy,owned]);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'contributor',accountId:'member-a',
+    strokeAuthors:[{page:1,id:'owner',accountId:'member-b'},{page:1,id:'legacy',accountId:null},{page:1,id:'mine',accountId:'member-a'}]});
+  ctx.eraseAt({x:.1,y:.1},{x:.1,y:.3});
+  assert.deepEqual(ctx.pages.get(1).map(s=>s.id),['owner','legacy']);
+  const h={undo:[{added:[],removed:[owned]}],redo:[]};ctx.history=()=>h;
+  ctx.undo();
+  assert.deepEqual(Array.from(ctx.pages.get(1),s=>s.id),['owner','legacy','new-stroke']);
+  assert.equal(ctx.strokeAuthors.get('1:new-stroke'),'member-a');
+});
+
+test('same PDF notebook changes cannot carry an ownership grant into another notebook',()=>{
+  const ctx=context(['permissions']);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'A',role:'contributor',accountId:'member-a',strokeAuthors:[{page:1,id:'existing',accountId:'member-a'}]});
+  assert.equal(ctx.canEraseStroke(stroke('existing')),true);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'B',role:'contributor',accountId:'member-a',strokeAuthors:[{page:1,id:'existing',accountId:null}]});
+  assert.equal(ctx.canEraseStroke(stroke('existing')),false);
+  assert.equal(ctx.canEditAllInk(),false);
+});
+
+test('an own erasure remains undoable after authoritative same-notebook sync',async()=>{
+  const ctx=context(['permissions','historyEntry','eraseAt','undo','applyNotebook']);
+  const own=stroke('mine'),owner=stroke('owner'),remote=stroke('remote-new');let serial=0;ctx.uid=()=>`restored-${++serial}`;
+  ctx.pages.set(1,[owner,own]);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'contributor',accountId:'member-a',
+    strokeAuthors:[{page:1,id:'owner',accountId:'member-b'},{page:1,id:'mine',accountId:'member-a'}]});
+  const before=structuredClone(ctx.state());ctx.eraseAt({x:.1,y:.1},{x:.1,y:.3});ctx.historyEntry(before,ctx.state());
+  assert.equal(ctx.history().undo.length,1);
+  await ctx.applyNotebook({document,pages:[{number:1,strokes:[owner,remote]}],bookmarks:[],position:1},{silent:true,preserveHistory:true});
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'contributor',accountId:'member-a',
+    strokeAuthors:[{page:1,id:'owner',accountId:'member-b'},{page:1,id:'mine',accountId:'member-a'},{page:1,id:'remote-new',accountId:'member-b'}]});
+  assert.equal(ctx.history().undo.length,1);ctx.undo();
+  assert.deepEqual(Array.from(ctx.state(),s=>s.id),['owner','remote-new','restored-1']);
+  assert.deepEqual(ctx.pages.get(1).find(s=>s.id==='restored-1').points,own.points);
+  ctx.undo(true);assert.deepEqual(Array.from(ctx.state(),s=>s.id),['owner','remote-new']);
+  ctx.undo();assert.deepEqual(Array.from(ctx.state(),s=>s.id),['owner','remote-new','restored-2']);
+});
+
+test('delta undo and redo preserve unseen remote ink and never resurrect its later erasure',async()=>{
+  const ctx=context(['permissions','historyEntry','undo','applyNotebook']);
+  const old=stroke('old-remote'),mine=stroke('local-addition'),remote=stroke('unseen-remote');let serial=0;ctx.uid=()=>`redo-${++serial}`;
+  ctx.pages.set(1,[old,mine]);ctx.historyEntry([old],[old,mine]);
+  await ctx.applyNotebook({document,pages:[{number:1,strokes:[old,mine,remote]}],bookmarks:[],position:1},{silent:true,preserveHistory:true});
+  ctx.undo();assert.deepEqual(Array.from(ctx.state(),s=>s.id),['old-remote','unseen-remote']);
+  ctx.undo(true);assert.deepEqual(Array.from(ctx.state(),s=>s.id),['old-remote','unseen-remote','redo-1']);
+  await ctx.applyNotebook({document,pages:[{number:1,strokes:[remote,ctx.state().find(s=>s.id==='redo-1')]}],bookmarks:[],position:1},{silent:true,preserveHistory:true});
+  ctx.undo();assert.deepEqual(Array.from(ctx.state(),s=>s.id),['unseen-remote']);
+});
+
+test('contributor inverse history cannot remove or restore a nonowned stroke',()=>{
+  const ctx=context(['permissions','undo']);
+  const present=stroke('other-present'),absent=stroke('other-erased');ctx.pages.set(1,[present]);
+  ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'contributor',accountId:'member-a',
+    strokeAuthors:[{page:1,id:'other-present',accountId:'member-b'},{page:1,id:'other-erased',accountId:null}]});
+  ctx.history().undo.push({added:[present],removed:[absent]});ctx.undo();
+  assert.deepEqual(Array.from(ctx.state(),s=>s.id),['other-present']);assert.equal(ctx.history().redo.length,0);
+});
+
+test('explicit replacement and role changes clear local inverse history',async()=>{
+  const ctx=context(['permissions','historyEntry','applyNotebook']);
+  const own=stroke('local');ctx.historyEntry([],[own]);
+  await ctx.applyNotebook({document,pages:[],bookmarks:[],position:1},{confirmReplace:true,preserveHistory:true});
+  assert.equal(ctx.histories.size,0);
+  ctx.historyEntry([],[own]);ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'viewer',accountId:'member-a',strokeAuthors:[]});
+  assert.equal(ctx.histories.size,0);
+});

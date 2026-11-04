@@ -2,11 +2,11 @@
   "date": "2026-11-04",
   "scope": "Shared lecture PDF study reader; explicit private passkey accounts and owner/editor notebooks",
   "unit_and_regression_checks": {
-    "reader_and_cloud_node_tests": 35,
+    "reader_and_cloud_node_tests": 57,
     "archive_python_tests": 33,
     "reader_publication_python_tests": 31,
     "publication_privacy_python_tests": 8,
-    "backend_tests": 39
+    "backend_tests": 45
   },
   "public_build": {
     "status": "passed",
@@ -39,7 +39,8 @@
     "api": "https://api.infant83.io",
     "version": "383eed79-3296-4ba3-835a-2c8042467f5f",
     "migration": "0004_study_notebooks.sql",
-    "existing_push_config_and_origin_rejection": "passed"
+    "existing_push_config_and_origin_rejection": "passed",
+    "next_migration": "0005_study_permissions.sql"
   },
   "privacy": {
     "pdf_bytes_uploaded": false,
@@ -86,5 +87,32 @@
     "noPDFBytesUploaded": true,
     "pages": 2
   },
-  "publication_status": "source ready; live Pages verification recorded separately after deployment"
+  "publication_status": "permission sources verified; live deployment verification retained separately",
+  "sharing_permissions": {
+    "roles": [
+      "viewer",
+      "contributor",
+      "editor"
+    ],
+    "default_new_invite": "viewer",
+    "existing_editor_grants_preserved": true,
+    "server_owned_stroke_authorship": true,
+    "transactional_guards": true,
+    "role_changes_without_ink_revision": true,
+    "pending_downgraded_ink_preserved_as_device_backup": true,
+    "contributor_other_ink_protected": true,
+    "undo_after_sync_preserves_other_ink": true,
+    "cors_member_patch_preflight": true,
+    "browser_two_account_acceptance": "passed",
+    "mobile_390_controls": "passed"
+  },
+  "hosting_efficiency": {
+    "capacity_counters_replace_full_scan": true,
+    "cost_model_tests": 12,
+    "cost_report": "cloudflare-cost-estimate.md",
+    "paid_plan_enabled_by_this_change": false,
+    "live_billing_plan_confirmed": false,
+    "max_100_operations_uses_bounded_binding_calls": true,
+    "key_prefetch_query_plan": "indexed composite key lookup; no notebook scan"
+  }
 }

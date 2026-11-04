@@ -3,6 +3,35 @@ const FORMAT = 'ai-tech-review-notebook';
 const ID = /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/;
 const fail = code => { throw new Error(code); };
 export const strokeKey = (page, id) => page + ':' + id;
+export const NOTEBOOK_ROLES = ['owner','editor','contributor','viewer'];
+export function roleCapabilities(role) {
+  if(!NOTEBOOK_ROLES.includes(role))fail('INVALID_ROLE');
+  return {canRead:true,canAdd:role!=='viewer',canDeleteOwn:role!=='viewer',
+    canEditAll:role==='owner'||role==='editor',canManageMembers:role==='owner'};
+}
+export function strokeAuthorMap(authors=[],pageCount=10000) {
+  if(!Array.isArray(authors)||authors.length>1000000)fail('INVALID_REMOTE_NOTEBOOK');
+  return new Map(authors.map(item=>{
+    if(!Number.isInteger(item?.page)||item.page<1||item.page>pageCount||!ID.test(item.id)||
+      (item.accountId!==null&&!ID.test(item.accountId)))fail('INVALID_REMOTE_NOTEBOOK');
+    return [strokeKey(item.page,item.id),item.accountId];
+  }));
+}
+/** Recheck queued offline edits against the latest server role and attribution. */
+export function partitionOperations(operations,role,accountId,authors=[],remotePages=[]) {
+  const capabilities=roleCapabilities(role),known=strokeAuthorMap(authors),remote=new Set(remotePages.flatMap(p=>p.strokes.map(s=>strokeKey(p.number,s.id))));
+  const allowed=[],blocked=[];
+  for(const operation of operations){
+    const key=strokeKey(operation.page,operation.type==='put'?operation.stroke.id:operation.id);
+    let permitted=capabilities.canEditAll;
+    if(role==='contributor'){
+      permitted=operation.type==='put'?(!remote.has(key)||known.get(key)===accountId):known.get(key)===accountId;
+      if(permitted&&operation.type==='put')known.set(key,accountId);
+    }
+    (permitted?allowed:blocked).push(operation);
+  }
+  return {allowed,blocked};
+}
 export function positionPage(value) { return Number.isInteger(value) ? value : value?.page; }
 
 /** The reader acquires its edit lock synchronously when apply is invoked. */
@@ -101,11 +130,13 @@ export function applyRemoteChanges(snapshot, delta, since) {
       typeof delta.more!=='boolean'||!Number.isSafeInteger(delta.notebookRevision)||delta.notebookRevision<delta.revision)fail('INVALID_REMOTE_NOTEBOOK');
   let cursor=since;
   const tombstones=new Map((snapshot.deleted||[]).map(item=>[strokeKey(item.page,item.id),item]));
+  const authors=strokeAuthorMap(snapshot.strokeAuthors||[],notebook.document.pageCount);
   for(const change of delta.changes){
     if(!Number.isSafeInteger(change?.revision)||change.revision<=cursor||change.revision>delta.revision||
         !Number.isInteger(change.page)||change.page<1||change.page>notebook.document.pageCount||!ID.test(change.id)||
         !['put','delete'].includes(change.type))fail('INVALID_REMOTE_NOTEBOOK');
     cursor=change.revision;const key=strokeKey(change.page,change.id);
+    if(change.authorId!==undefined){if(change.authorId!==null&&!ID.test(change.authorId))fail('INVALID_REMOTE_NOTEBOOK');authors.set(key,change.authorId);}
     if(change.type==='delete'){deleted.add(key);tombstones.set(key,{page:change.page,id:change.id});strokes.delete(key);}
     else if(!deleted.has(key)){
       const checked=normalizeNotebook({...emptyNotebook(notebook.document),pages:[{number:change.page,strokes:[change.stroke]}]});
@@ -117,7 +148,8 @@ export function applyRemoteChanges(snapshot, delta, since) {
   const pages=new Map();
   for(const item of strokes.values()){if(!pages.has(item.page))pages.set(item.page,[]);pages.get(item.page).push(item.stroke);}
   const merged=normalizeNotebook({...notebook,pages:[...pages].map(([number,items])=>({number,strokes:items}))});
-  return {...snapshot,notebook:{...snapshot.notebook,revision:delta.notebookRevision},pages:merged.pages,
+  return {...snapshot,notebook:{...snapshot.notebook,...(delta.notebook||{}),revision:delta.notebookRevision},pages:merged.pages,
+    strokeAuthors:[...authors].map(([key,accountId])=>{const colon=key.indexOf(':');return{page:Number(key.slice(0,colon)),id:key.slice(colon+1),accountId};}),
     deleted:[...tombstones.values()],position:merged.position,bookmarks:merged.bookmarks};
 }
 

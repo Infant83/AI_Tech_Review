@@ -6,13 +6,21 @@
 
 등록·로그인 challenge는 API 호스트의 HttpOnly 쿠키에 연결하고 D1에서 5분 만료와 1회 사용을 강제한다. 등록 응답은 attestation `none`, resident credential과 사용자 확인을 요청한다. 로그인은 서명·challenge·RP·Origin·사용자 확인·credential counter를 검증한다. iframe 로그인은 지원하지 않는다. 인증 성공 시 256비트 난수 세션의 SHA-256 해시만 D1에 기록하며 원본은 `__Host-study_session` HttpOnly·Secure·SameSite=Strict 쿠키에 둔다. 세션은 30일 후 만료되며 로그아웃하면 서버 세션도 제거한다. 패스키 자체의 기기 간 전달·복구는 사용자의 플랫폼 패스키 관리자에 따른다. 이 서버가 패스키 개인키나 복구 비밀을 보관하지 않는다.
 
-노트의 소유자는 계정이고, `owner` 또는 `editor` 멤버십이 있는 계정만 조회·수정할 수 있다. 소유자가 발행하는 256비트 편집 초대는 24시간·1회용이며 서버에는 토큰 해시만 보관한다. 소유자는 편집자 계정의 권한을 회수할 수 있다. 새 요청마다 멤버십을 확인하며 다른 노트 ID를 추측해도 필기나 사용자 목록을 반환하지 않는다. 공유 링크는 초대받을 사람에게 사용자가 전달하는 방식이며 서버가 메일을 발송하지 않는다.
+노트의 소유자는 계정이며 `0005_study_permissions.sql`부터 공유 권한을 구분한다. `viewer`는 필기를 읽고 자신의 읽던 위치·책갈피만 저장한다. `contributor`는 새 필기를 더하고 자신이 작성한 필기만 지울 수 있으며, 기존 필기·다른 작성자의 필기와 작성자가 미기록인 이전 필기를 지울 수 없다. `editor`와 `owner`는 기존 필기를 포함해 함께 추가·삭제할 수 있다. 소유자만 공유 권한을 발급·변경·회수한다. 모든 획 ID는 불변이므로 수정은 지우기와 새 ID 추가로 표현한다.
+
+256비트 초대는 선택한 권한으로 24시간·1회 사용하며 서버에는 토큰 해시만 보관한다. 새 초대에서 권한을 생략하면 `viewer`가 기본값이다. 기존에 발급한 편집 초대와 기존 `owner`·`editor` 멤버십은 migration이 보존한다. 이미 참여한 계정이 다른 초대를 수락해도 기존 권한을 조용히 올리거나 낮추지 않는다. 기존 구성원의 권한은 소유자의 명시적 변경으로만 바뀐다. 로그인한 수신자는 유효한 초대의 권한·문서 제목을 수락 전에 확인할 수 있으며, 미리보기 자체는 노트 열람 권한을 만들지 않는다. 공유 링크는 사용자가 전달하며 서버가 메일을 발송하지 않는다.
+
+획의 `author_id`와 쓰기 요청의 `actor_id`는 서버가 세션 계정으로 기록하며 클라이언트 JSON에서 받지 않는다. SQLite의 INSERT·UPDATE 권한 trigger가 실제 쓰기 트랜잭션 안에서 현재 멤버십과 작성자를 다시 검사한다. 애플리케이션 검사 이후 권한이 바뀌거나 한 요청의 나중 작업이 금지되어도 전체 D1 batch가 취소된다. 일부 허용된 획만 저장하거나 다른 사람의 필기를 지우는 tombstone을 남기지 않는다. 새 요청마다 멤버십을 확인하며 다른 노트 ID를 추측해도 필기나 구성원 목록을 반환하지 않는다.
 
 필기는 페이지별 정규화 좌표와 고유 stroke ID로 저장한다. 새 stroke의 ID는 불변이며 지우개는 영구 tombstone을 기록한다. 두 기기의 추가 필기를 합치고 재전송은 중복으로 저장하지 않는다. 늦게 접속한 기기가 지운 stroke를 다시 보내도 되살리지 않는다. 실행 취소로 지운 필기를 복원할 때 클라이언트는 새 ID를 생성해야 한다. SQLite trigger가 변경 순서를 부여하므로 `pages?since=...`로 공유 변경을 순차 수신할 수 있다. 현재 프런트의 주기적 동기화를 위한 계약이며 WebSocket 수업 모드를 구현했다고 표시하지 않는다. 읽던 페이지와 책갈피는 공유 필기와 달리 각 계정의 멤버십에 따로 보관한다.
 
 공개 렉처는 현재 게시 카탈로그의 `lecture:` ID만 연결한다. 개인 PDF는 `publicId:null`과 SHA-256 fingerprint·제목·쪽수만 저장하며 PDF 바이트나 임의 URL을 받지 않는다. 다른 기기·공유 계정에서 개인 PDF를 읽으려면 같은 원본 파일을 가져와 fingerprint가 일치해야 한다. 개인 필기·계정·초대·원본 파일은 공개 발행 카탈로그나 정적 자산에 포함하지 않는다. 서버의 요청 오류 로그에는 원문 필기나 이름·초대 토큰을 출력하지 않는다.
 
 요청 한도는 JSON 1 MB, 한 번에 stroke 작업 100건, stroke당 점 5,000개, 계정당 소유 노트 100권, 노트당 stroke/tombstone 25,000개와 활성 필기 JSON 약 12 MB다. 로그인·등록·노트 생성·수정·초대는 기존 회전 IP 해시 또는 계정 해시를 이용해 별도로 제한한다. 만료된 세션·challenge·초대는 기존 정리 Cron에서 제거한다.
+
+노트별 `stroke_count`는 tombstone을 포함한 고유 ID 수, `ink_bytes`는 활성 stroke JSON 크기다. migration이 기존 값을 한 번 채우고 기존 변경 trigger의 노트 UPDATE 안에서 함께 갱신한다. 각 저장에서 전체 노트의 `COUNT/SUM`을 반복하지 않고 노트 기본키 한 건으로 용량을 확인한다. 추가·삭제·재전송·권한 오류의 트랜잭션 취소 때 카운터가 실제 행과 일치하는지 검사한다. 이 카운터는 실제 D1 저장 공간 과금 수치가 아니며 변경 이력·인덱스·행 메타데이터 공간은 별도로 든다.
+
+최대 100건 저장 요청은 필요한 `(page,id)` 키를 한 JSON 매개변수에 담아 한 번에 미리 읽는다. `json_each`를 바깥 루프로 두고 stroke의 `(notebook_id,page,id)` 복합 기본키를 조회하므로 전체 노트를 스캔하지 않는다. 실제 query plan과 100건 요청의 D1 binding 호출 수를 검사한다. 인증·권한·rate limit·용량·실제 batch 저장·최신 권한 확인을 포함해 약 7회로 유지하며 획 수만큼 별도 binding 왕복을 만들지 않는다. 위치·책갈피만 저장하는 빈 작업 요청은 필기 미리 읽기를 건너뛴다.
 
 | 경로 (`/v1/study/` 아래) | 동작 |
 | --- | --- |
@@ -24,17 +32,19 @@
 | `POST logout` `{}` | 현재 세션 폐기 |
 | `GET notebooks` | 본인에게 허용된 노트 목록 |
 | `POST notebooks` `{publicId,title,fingerprint,pageCount}` | 소유 노트 생성 또는 같은 fingerprint의 기존 소유 노트 반환 |
-| `GET notebooks/:id` | 메타데이터·페이지별 stroke·삭제 ID·본인 위치·책갈피 |
+| `GET notebooks/:id` | 현재 권한·capabilities·페이지별 stroke·작성자·삭제 ID·본인 위치·책갈피 |
 | `POST notebooks/:id/operations` `{operations,position?,bookmarks?}` | 추가·삭제와 본인 학습 위치 저장. 빈 작업 배열 허용 |
-| `GET notebooks/:id/pages?since=N` | 변경 최대 100건, 이어받을 `revision`·`more` |
-| `POST notebooks/:id/invites` `{}` | 소유자가 24시간·1회용 편집 초대 발급 |
-| `POST invites/accept` `{token}` | 로그인 계정에 편집 권한 부여 |
+| `GET notebooks/:id/pages?since=N` | 변경 최대 100건과 작성자, `revision`·`more` 및 현재 노트 권한. 필기 변경 없이도 권한 변경 반영 |
+| `POST notebooks/:id/invites` `{role}` | 소유자가 `viewer`·`contributor`·`editor` 중 선택한 24시간·1회용 초대 발급 |
+| `POST invites/preview` `{token}` | 로그인한 수신자에게 초대의 권한·제목·문서 식별정보 확인. 멤버십을 부여하지 않음 |
+| `POST invites/accept` `{token}` | 처음 참여하는 로그인 계정에 초대 권한 부여. 기존 구성원 권한은 유지 |
 | `GET notebooks/:id/members` | 소유자에게 `{accountId,displayName,role}` 목록 |
-| `DELETE notebooks/:id/members/:accountId` | 소유자가 편집자 권한 회수 |
+| `PATCH notebooks/:id/members/:accountId` `{role}` | 소유자가 기존 비소유자 구성원 권한 변경 |
+| `DELETE notebooks/:id/members/:accountId` | 소유자가 비소유자 구성원 권한 회수 |
 
-작업의 JSON 형태는 `{type:'put',page,stroke:{id,color,width,points:[{x,y,p}]}}` 또는 `{type:'delete',page,id}`다. `x,y,p`는 0–1, `width`는 페이지 너비의 0–0.1 범위 양수다. 노트 생성 응답의 `revision`과 변경 응답의 `revision`은 정수이며, 변경 페이지 응답에는 실제 마지막 수신 순서와 `notebookRevision`이 별도로 있다. 전체 snapshot은 `{notebook,pages:[{number,strokes}],deleted:[{page,id}],position:{page},bookmarks}` 형태다.
+작업의 JSON 형태는 `{type:'put',page,stroke:{id,color,width,points:[{x,y,p}]}}` 또는 `{type:'delete',page,id}`다. `x,y,p`는 0–1, `width`는 페이지 너비의 0–0.1 범위 양수다. 노트 메타데이터에는 `capabilities:{canRead,canAdd,canDeleteOwn,canEditAll,canManageMembers}`가 있다. 노트 생성 응답의 `revision`과 변경 응답의 `revision`은 정수이며, 변경 페이지 응답에는 실제 마지막 수신 순서와 `notebookRevision`이 별도로 있다. 전체 snapshot은 `{notebook,pages:[{number,strokes}],deleted:[{page,id}],strokeAuthors:[{page,id,accountId}],position:{page},bookmarks}` 형태다. 이전 필기의 `accountId`는 `null`이며 변경 피드에서는 `authorId`로 전달한다.
 
-신규 migration 적용 후 기존 Worker를 배포한다. 기존 알림과 pub/sub 키를 교체하거나 기기별 구독을 자동 변경하지 않는다. `npm test`는 pinned esbuild로 테스트 Worker를 묶은 뒤 기존 Miniflare 검사와 독립 서명 생성기를 이용한 패스키·권한·공유 동시 필기 검사를 실행한다. 실제 iPad 생체인증·플랫폼 패스키 복구 테스트를 대신한 것으로 표시하지 않는다.
+신규 migration 적용 후 Worker를 바로 배포한다. `0005`의 엄격한 쓰기 trigger는 새 서버 작성자 필드를 요구하므로 이전 Worker가 계속 실행되는 사이의 저장 요청은 재시도가 필요할 수 있다. 기존 알림과 pub/sub 키를 교체하거나 기기별 구독을 자동 변경하지 않는다. `npm test`는 pinned esbuild로 테스트 Worker를 묶은 뒤 기존 Miniflare 검사와 독립 서명 생성기를 이용한 패스키·권한별 직접 API·권한 변경 경합·혼합 batch 취소·공유 동시 필기 검사를 실행한다. 실제 iPad 생체인증·플랫폼 패스키 복구 테스트를 대신한 것으로 표시하지 않는다.
 
 기존 GitHub Pages HTML·아이콘·URL을 유지하고, 좋아요와 새 글 알림에 필요한 API만 Cloudflare Worker에 둔다. Worker는 `api.infant83.io`, 웹페이지는 `https://infant83.io/AI_Tech_Review/`를 사용한다. API·DB 장애가 나도 원래 정적 글을 읽을 수 있다.
 

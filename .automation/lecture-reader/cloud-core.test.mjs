@@ -70,3 +70,24 @@ test('only unbound device ink can be explicitly merged, without deleting existin
   const plan=switchNotebookView({current:notes('local'),currentKey:null,targetKey:'B',target:notes('remote'),allowUpload:true});
   assert.deepEqual(ids(plan.notebook),['local','remote']);assert.deepEqual(plan.added.map(op=>op.type),['put']);
 });
+
+test('viewer queued ink is isolated while contributor may change only attributed own strokes',async()=>{
+  const {partitionOperations,roleCapabilities}=await import('./cloud-core.mjs');
+  const operations=[{type:'put',page:1,stroke:stroke('new')},{type:'delete',page:1,id:'mine'},
+    {type:'delete',page:1,id:'other'},{type:'delete',page:1,id:'legacy'}];
+  const authors=[{page:1,id:'mine',accountId:'member-a'},{page:1,id:'other',accountId:'member-b'},{page:1,id:'legacy',accountId:null}];
+  const pages=notes('mine','other','legacy').pages;
+  assert.equal(partitionOperations(operations,'viewer','member-a',authors,pages).allowed.length,0);
+  assert.deepEqual(partitionOperations(operations,'contributor','member-a',authors,pages).allowed.map(op=>op.type==='put'?op.stroke.id:op.id),['new','mine']);
+  assert.equal(partitionOperations(operations,'editor','member-a',authors,pages).allowed.length,4);
+  assert.equal(roleCapabilities('viewer').canAdd,false);assert.equal(roleCapabilities('contributor').canEditAll,false);
+});
+
+test('same-revision permission deltas update roles and stroke authors without losing unknown ink',()=>{
+  const snapshot={...remote(['old']),notebook:{...remote().notebook,role:'editor',revision:5},strokeAuthors:[{page:1,id:'old',accountId:'owner'}]};
+  const changed=applyRemoteChanges(snapshot,{notebook:{...snapshot.notebook,role:'viewer'},changes:[],revision:5,more:false,notebookRevision:5},5);
+  assert.equal(changed.notebook.role,'viewer');assert.deepEqual(ids({pages:changed.pages}),['old']);
+  const added=applyRemoteChanges(changed,{notebook:{...snapshot.notebook,role:'contributor'},changes:[{revision:6,page:1,id:'new',type:'put',stroke:stroke('new'),authorId:'member-a'}],revision:6,more:false,notebookRevision:6},5);
+  assert.equal(added.strokeAuthors.find(item=>item.id==='new').accountId,'member-a');
+  assert.equal(added.strokeAuthors.find(item=>item.id==='old').accountId,'owner');
+});

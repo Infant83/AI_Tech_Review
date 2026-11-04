@@ -1,6 +1,7 @@
 import * as pdfjs from './vendor/pdf.mjs';
 import { clamp, normalizedPoint, eraseStrokes, splitStroke, STROKE_CHUNK_POINTS, pdfPoint, validateNotebook, NOTEBOOK_FORMAT, MAX_PAGES } from './ink-core.mjs';
 import * as storage from './storage.mjs';
+import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
 
 const $ = id => document.getElementById(id);
 const rootURL = new URL('../../', import.meta.url);
@@ -48,6 +49,7 @@ let catalog = [], pdf = null, pdfLoadingTask = null, pdfBytes = null, current = 
 let tool = 'pen', color = '#243746', active = null, busy = false, renderSequence = 0, renderTask = null, saveTimer = null, toastTimer;
 let writeQueue = Promise.resolve(true), metaVersion = 0, metaSaved = 0, drawingFrame = 0, lastStorageError = 0, mutationRevision = 0;
 let explicitSelection = false;
+let permissions = { role: 'local', accountId: null, notebookId: null }, strokeAuthors = new Map(), suspendedTool = null;
 const pages = new Map(), dirty = new Map(), versions = new Map(), histories = new Map(), retiredIds = new Set();
 const pdfCanvas = $('pdf-canvas'), inkCanvas = $('ink-canvas'), sheet = $('page-sheet');
 let cssWidth = 595, cssHeight = 842, pixelRatio = 1, retry = null;
@@ -57,15 +59,40 @@ function signal(name, detail) { window.dispatchEvent(new CustomEvent(name, { det
 function status(kind) { const e = $('save-state'); e.dataset.state = kind; e.textContent = t({ pending: 'saving', saved: 'saved', error: 'saveFailed', ready: 'ready' }[kind]); }
 function toast(message, duration = 5000) { clearTimeout(toastTimer); $('toast').textContent = message; $('toast').hidden = false; toastTimer = setTimeout(() => { $('toast').hidden = true; }, duration); }
 function storageFailure() { status('error'); if (Date.now() - lastStorageError > 12000) { toast(t('storageError'), 10000); lastStorageError = Date.now(); } }
-function currentInfo() { return current ? { fingerprint: current.fingerprint, title: current.title, pageCount: current.pageCount, publicId: current.publicId || null, isLocal: !current.publicId, drawing: Boolean(active), busy, mutationRevision } : null; }
+function currentInfo() { return current ? { fingerprint: current.fingerprint, title: current.title, pageCount: current.pageCount, publicId: current.publicId || null, isLocal: !current.publicId, drawing: Boolean(active), busy, mutationRevision, role: permissions.role } : null; }
+function canAddInk() { return permissions.role === 'local' || roleCapabilities(permissions.role).canAdd; }
+function canEditAllInk() { return permissions.role === 'local' || roleCapabilities(permissions.role).canEditAll; }
+function canEraseStroke(stroke, number = pageNumber) { return canEditAllInk() || (permissions.role === 'contributor' && strokeAuthors.get(strokeKey(number, stroke.id)) === permissions.accountId); }
+function ownStroke(stroke, number = pageNumber) { if (permissions.accountId) strokeAuthors.set(strokeKey(number, stroke.id), permissions.accountId); }
+function setPermissions(value = {}) {
+  if (!current || (value.fingerprint && value.fingerprint !== current.fingerprint)) return false;
+  const role = value.role || 'viewer'; if (role !== 'local') roleCapabilities(role);
+  if (role === 'contributor' && (typeof value.accountId !== 'string' || !value.accountId)) throw new Error('INVALID_ROLE');
+  finishStroke();
+  const newView = permissions.accountId !== (value.accountId || null) || permissions.notebookId !== (value.notebookId || null);
+  const changed = permissions.role !== role || newView;
+  permissions = { role, accountId: value.accountId || null, notebookId: value.notebookId || null };
+  if (value.strokeAuthors) {
+    const incoming = strokeAuthorMap(value.strokeAuthors, current.pageCount);
+    if (!newView) for (const [key, owner] of strokeAuthors) if (!incoming.has(key) && owner === permissions.accountId) incoming.set(key, owner);
+    strokeAuthors = incoming;
+  } else if (changed) strokeAuthors.clear();
+  if (changed) { mutationRevision++; histories.clear(); }
+  if (!canAddInk()) { if (tool !== 'read') suspendedTool = tool; chooseTool('read'); }
+  else if (suspendedTool) { const restored = suspendedTool; suspendedTool = null; chooseTool(restored); }
+  sheet.dataset.permission = role; controls(); return true;
+}
 function state() { return pages.get(pageNumber) || []; }
 function history() { if (!histories.has(pageNumber)) histories.set(pageNumber, { undo: [], redo: [] }); return histories.get(pageNumber); }
 function controls() {
-  $('undo').disabled = !current || !history().undo.length || busy;
-  $('redo').disabled = !current || !history().redo.length || busy;
+  $('undo').disabled = !current || !canAddInk() || !history().undo.length || busy;
+  $('redo').disabled = !current || !canAddInk() || !history().redo.length || busy;
   $('previous-page').disabled = !current || pageNumber <= 1 || busy;
   $('next-page').disabled = !current || pageNumber >= current.pageCount || busy;
   ['export-pdf', 'export-backup', 'import-backup', 'clear-page', 'bookmark'].forEach(id => { $(id).disabled = !current || busy; });
+  ['import-backup', 'clear-page'].forEach(id => { $(id).disabled ||= !canEditAllInk(); });
+  document.querySelectorAll('[data-tool="pen"],[data-tool="eraser"],[data-color]').forEach(node => { node.disabled = !current || busy || !canAddInk(); });
+  $('finger-draw').disabled = $('pen-width').disabled = !current || busy || !canAddInk();
   $('page-number').disabled = !current || busy;
   $('page-number').value = pageNumber;
   $('page-count').textContent = current?.pageCount || '—';
@@ -120,8 +147,10 @@ function drawInk() {
 }
 function requestInk() { if (!drawingFrame) drawingFrame = requestAnimationFrame(drawInk); }
 function historyEntry(before, after) {
-  if (JSON.stringify(before) === JSON.stringify(after)) return;
-  const h = history(); h.undo.push({ before, after: clone(after) }); if (h.undo.length > 80) h.undo.shift(); h.redo.length = 0; controls();
+  const beforeIds = new Set(before.map(stroke => stroke.id)), afterIds = new Set(after.map(stroke => stroke.id));
+  const action = { added: clone(after.filter(stroke => !beforeIds.has(stroke.id))), removed: clone(before.filter(stroke => !afterIds.has(stroke.id))) };
+  if (!action.added.length && !action.removed.length) return;
+  const h = history(); h.undo.push(action); if (h.undo.length > 80) h.undo.shift(); h.redo.length = 0; controls();
 }
 function finishStroke() {
   if (!active) return;
@@ -133,14 +162,16 @@ function finishStroke() {
   requestInk();
 }
 function chooseTool(next) {
-  finishStroke(); tool = next; sheet.dataset.tool = next;
+  finishStroke(); tool = canAddInk() ? next : 'read'; next = tool; sheet.dataset.tool = next;
   document.querySelectorAll('[data-tool]').forEach(e => { if (e.tagName === 'BUTTON') { e.classList.toggle('active', e.dataset.tool === next); e.setAttribute('aria-pressed', String(e.dataset.tool === next)); } });
   sheet.classList.toggle('finger-drawing', $('finger-draw').checked && tool !== 'read');
   inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'pan-x pan-y pinch-zoom';
 }
 function pointerPoint(event) { return normalizedPoint(event.clientX, event.clientY, inkCanvas.getBoundingClientRect(), event.pressure); }
 function eraseAt(from, to) {
-  const before = state(); const after = eraseStrokes(before, from, to, 10, cssWidth, cssHeight);
+  const before = state(), editable = before.filter(stroke => canEraseStroke(stroke));
+  const retained = new Set(eraseStrokes(editable, from, to, 10, cssWidth, cssHeight).map(stroke => stroke.id));
+  const after = before.filter(stroke => !canEraseStroke(stroke) || retained.has(stroke.id));
   if (after.length !== before.length) {
     const kept = new Set(after.map(s => s.id)); before.forEach(s => { if (!kept.has(s.id)) retiredIds.add(s.id); });
     pages.set(pageNumber, after); markDirty(); requestInk();
@@ -154,17 +185,18 @@ function appendActivePoint(point) {
   if (active.stroke.points.length >= STROKE_CHUNK_POINTS) {
     const previous = active.stroke;
     active.stroke = { ...previous, id: uid(), points: [previous.points[previous.points.length - 1]] };
+    ownStroke(active.stroke);
     state().push(active.stroke);
   }
   active.stroke.points.push(point); markDirty(); requestInk();
 }
 inkCanvas.addEventListener('pointerdown', event => {
-  if (!current || busy || tool === 'read' || active || (event.pointerType === 'mouse' && event.button !== 0) ||
+  if (!current || busy || !canAddInk() || tool === 'read' || active || (event.pointerType === 'mouse' && event.button !== 0) ||
       (event.pointerType === 'touch' && !$('finger-draw').checked)) return;
   event.preventDefault(); inkCanvas.setPointerCapture(event.pointerId); inkCanvas.style.touchAction = 'none';
   const point = pointerPoint(event), kind = event.button === 5 || event.buttons === 32 ? 'eraser' : tool;
   active = { id: event.pointerId, type: event.pointerType, page: pageNumber, before: clone(state()), point, kind };
-  if (kind === 'pen') { active.stroke = { id: uid(), color, width: Number($('pen-width').value) / baseWidth, points: [point] }; state().push(active.stroke); markDirty(); requestInk(); }
+  if (kind === 'pen') { active.stroke = { id: uid(), color, width: Number($('pen-width').value) / baseWidth, points: [point] }; ownStroke(active.stroke); state().push(active.stroke); markDirty(); requestInk(); }
   else eraseAt(point, point);
 });
 inkCanvas.addEventListener('pointermove', event => {
@@ -264,6 +296,7 @@ async function openBytes(bytes, metadata) {
     current = { ...previous, fingerprint, title: metadata.title, publicId: metadata.publicId || null,
       pageCount: pdf.numPages, pdf: new Blob([pdfBytes], { type: 'application/pdf' }), position: previous?.position || 1,
       bookmarks: previous?.bookmarks || [], annotatedPages: previous?.annotatedPages || [], updatedAt: Date.now() };
+    permissions = { role: 'local', accountId: null }; strokeAuthors.clear(); sheet.dataset.permission = 'local';
     pages.clear(); histories.clear(); dirty.clear(); versions.clear(); retiredIds.clear(); metaVersion = 0; metaSaved = 0;
     pageNumber = clamp(current.position, 1, current.pageCount); await ensurePage(pageNumber);
     let saved = true; try { await storage.putDocument(current); } catch { saved = false; storageFailure(); }
@@ -350,6 +383,7 @@ async function notebook() {
 async function applyNotebook(value, options = {}) {
   if (!current) throw new Error('NO_DOCUMENT');
   if (active || busy) throw new Error('READER_BUSY');
+  if (options.confirmReplace && !canEditAllInk()) throw new Error('NOTEBOOK_READ_ONLY');
   const backup = validateNotebook(value, current.fingerprint);
   if (backup.document.pageCount !== current.pageCount) throw new Error('FINGERPRINT_MISMATCH');
   if (options.confirmReplace && !confirm(t('replaceConfirm'))) return false;
@@ -368,7 +402,8 @@ async function applyNotebook(value, options = {}) {
     await storage.importPages(current.fingerprint, importedPages, backup.bookmarks, position);
     mutationRevision++;
     pages.clear(); importedPages.forEach(p => pages.set(p.number, p.strokes));
-    histories.clear(); dirty.clear(); current.bookmarks = backup.bookmarks; pageNumber = position; await ensurePage(pageNumber);
+    if (!options.preserveHistory || options.confirmReplace) histories.clear();
+    dirty.clear(); current.bookmarks = backup.bookmarks; pageNumber = position; await ensurePage(pageNumber);
     renderBookmarks(); await renderPage(!options.silent); status('saved');
     if (!options.silent) signal('atr:notes-saved', { ...currentInfo(), page: pageNumber });
     return true;
@@ -404,12 +439,24 @@ async function exportPDF() {
   finally { busy = false; controls(); }
 }
 function undo(redo = false) {
-  if (!current || busy) return; finishStroke(); const h = history(); const source = redo ? h.redo : h.undo, destination = redo ? h.undo : h.redo;
+  if (!current || busy || !canAddInk()) return; finishStroke(); const h = history(); const source = redo ? h.redo : h.undo, destination = redo ? h.undo : h.redo;
   const item = source.pop(); if (!item) return;
-  const previous = state(), next = clone(redo ? item.after : item.before), nextIds = new Set(next.map(s => s.id));
-  previous.forEach(s => { if (!nextIds.has(s.id)) retiredIds.add(s.id); });
-  const currentIds = new Set(previous.map(s => s.id)); next.forEach(s => { if (retiredIds.has(s.id) && !currentIds.has(s.id)) s.id = uid(); });
-  destination.push(item); pages.set(pageNumber, next); markDirty(); drawInk(); controls();
+  // Invert only this local action. A complete historical page snapshot would
+  // erase unseen remote additions or resurrect somebody else's later erasure.
+  const next = new Map(state().map(stroke => [stroke.id, stroke])), inverse = { added: [], removed: [] };
+  for (const original of item.added) {
+    const present = next.get(original.id);
+    if (present && canEraseStroke(present)) { next.delete(original.id); retiredIds.add(original.id); inverse.removed.push(clone(present)); }
+  }
+  for (const original of item.removed) {
+    if (next.has(original.id) || !canEraseStroke(original)) continue;
+    const restored = { ...clone(original), id: uid() }; ownStroke(restored); next.set(restored.id, restored); inverse.added.push(clone(restored));
+  }
+  if (inverse.added.length || inverse.removed.length) {
+    // Redo inverts what this undo actually changed, including its fresh IDs.
+    destination.push(inverse); pages.set(pageNumber, [...next.values()]); markDirty(); drawInk();
+  }
+  controls();
 }
 
 document.querySelectorAll('button[data-tool]').forEach(button => button.addEventListener('click', () => chooseTool(button.dataset.tool)));
@@ -445,15 +492,15 @@ $('export-backup').addEventListener('click', async () => {
   try { download(JSON.stringify(await notebook()), safeName(current.title) + '-notes.json', 'application/json'); toast(t('backupReady')); }
   catch { toast(t('exportFailed'), 10000); }
 });
-$('import-backup').addEventListener('click', () => { if (current) $('backup-input').click(); else toast(t('openFirst')); });
+$('import-backup').addEventListener('click', () => { if (current && canEditAllInk()) $('backup-input').click(); else toast(t(current ? 'busy' : 'openFirst')); });
 $('backup-input').addEventListener('change', async event => {
-  const file = event.target.files[0]; event.target.value = ''; if (!file || !current) return;
+  const file = event.target.files[0]; event.target.value = ''; if (!file || !current || !canEditAllInk()) return;
   try { if (file.size > 30 * 1024 * 1024) throw new Error('INVALID'); const value = JSON.parse(await file.text()); if (await applyNotebook(value, { confirmReplace: true })) { closeDialogs(); toast(t('imported')); } }
   catch (error) { toast(t(error.message === 'FINGERPRINT_MISMATCH' ? 'fingerprintMismatch' : 'backupInvalid'), 9000); }
 });
 $('export-pdf').addEventListener('click', exportPDF);
 $('clear-page').addEventListener('click', () => {
-  if (!current || !state().length || !confirm(t('clearConfirm'))) return;
+  if (!current || !canEditAllInk() || !state().length || !confirm(t('clearConfirm'))) return;
   finishStroke(); const before = clone(state()); before.forEach(s => retiredIds.add(s.id)); pages.set(pageNumber, []); historyEntry(before, []); markDirty(); drawInk(); closeDialogs();
 });
 $('persistent-storage').addEventListener('click', async () => { try { toast(t(await navigator.storage?.persist?.() ? 'persistentYes' : 'persistentNo'), 8000); } catch { toast(t('persistentNo')); } });
@@ -470,7 +517,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 window.addEventListener('pagehide', () => { finishStroke(); flush(); });
 window.addEventListener('beforeunload', event => { if (dirty.size) { finishStroke(); flush(); event.preventDefault(); event.returnValue = ''; } });
 let resizeTimer; window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (pdf && !active && !busy) renderPage(false).catch(() => {}); }, 180); });
-window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: notebook, applyNotebook, openPublic: openPublished, openStored,
+window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: notebook, applyNotebook, setPermissions, openPublic: openPublished, openStored,
   pdfBlob: () => current?.pdf || null, flush, language: en ? 'en' : 'ko' });
 
 async function init() {

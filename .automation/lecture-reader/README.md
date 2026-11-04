@@ -18,11 +18,28 @@ The independent `atr-study-cloud-sync` database retains pending operations and n
 
 Each stroke has an immutable ID. A first connection obtains a full snapshot; subsequent visible, active sessions check the incremental revision feed about every four seconds. Idle checks do not export, rewrite or retransmit the full notebook. Added strokes merge by ID. Deletes create permanent tombstones, so stale offline clients cannot resurrect erased strokes. The reader assigns new IDs when restoring erased ink through undo. An explicitly confirmed backup restore also creates fresh stroke IDs so earlier cloud tombstones cannot erase the restored copy; silent remote snapshots retain their existing IDs.
 
+Undo and redo store inverse deltas for each local action. Ordinary synchronization retains this history and applies an inverse only to the IDs that action changed, preserving unseen remote additions and erasures. Restorations receive fresh IDs and still obey the current role and stroke ownership. Notebook, account and role changes, document reopening and explicit backup replacement clear the history.
+
 Operations are saved durably before transmission and sent in bounded batches. Ambiguous network failures retain the pending operations for idempotent retry. A reload compares the saved working baseline with the independently saved device notebook to recover edits made before a queue checkpoint. Drawing and PDF import/export operations defer synchronization; incoming changes preserve the current reading position. The initial explicit cloud opening can restore the account’s remote reading position. Positions and bookmarks belong to the signed-in member rather than all notebook editors collectively.
 
 The interface distinguishes device saving, pending cloud work and confirmed synchronization. It describes periodic synchronization; it does not promise instantaneous classroom updates or WebSocket delivery.
 
 Owners create time-limited private invitation links and can remove member access. The token stays in the URL fragment, which is not sent in the initial page request. A recipient signs in and explicitly accepts before gaining access. Acceptance removes the fragment. Notebook titles and display names are rendered as text. Personal notes never enter the public publication catalog, repository, analytics or service-worker notification state.
+
+### Sharing permissions
+
+Every new invitation selects one explicit permission; the default is **View only**. An authenticated preview shows the permission before acceptance. An invitation does not change an existing member’s permission. The owner changes an existing member through **Save permission**, or removes access.
+
+| Permission | Read/export | Add shared ink | Erase own additions | Erase existing/other ink | Manage members |
+| --- | --- | --- | --- | --- | --- |
+| View only (`viewer`) | Yes | No | No | No | No |
+| Add own notes (`contributor`) | Yes | Yes | Yes | No | No |
+| Co-edit (`editor`) | Yes | Yes | Yes | Yes | No |
+| Owner (`owner`) | Yes | Yes | Yes | Yes | Yes |
+
+Contributed ink is visible to every member. Server-authored ownership metadata determines which strokes a contributor may erase; existing unattributed strokes remain protected. The reader disables ink tools for viewers and limits contributor eraser/undo to their own strokes. Destructive whole-page clearing and backup replacement are unavailable to viewers and contributors. Reading position and bookmarks remain personal and editable in every role.
+
+The server remains authoritative. Every incremental poll returns the current role even when no stroke changed. Before uploading queued offline edits, the client rechecks them against that role and stroke authorship. Disallowed changes are retained in a private device-only backup available from the sync panel, then the permitted shared view is restored. This avoids an unauthorized retry loop or silently discarding unsent ink. Edit permissions are bound to the account and notebook; a same-PDF switch cannot carry a stroke ownership grant across notebook boundaries.
 
 The reader page is excluded from the site’s reader-engagement injection, automatic refresh and standalone pull-to-refresh behavior. It creates no additional service worker. The existing push-only worker is retained.
 
@@ -35,6 +52,6 @@ python3 -m unittest discover -s tests -p test_reader_engagement_publish.py
 python3 -m unittest discover -s tests -p test_publish_public_site_privacy.py
 ```
 
-The cloud-core cases cover two-writer additions, unseen remote strokes, offline stale writes, tombstones, immutable ID conflicts, operation limits, incremental feeds, same-PDF notebook/account switching and explicit unbound-note consent. The race harness executes the actual cloud orchestration functions with delayed durable writes: a reader mutation revision prevents an exported snapshot from replacing a stroke completed during an await, including before its save event, and a stale notebook switch restores the previous working binding. Browser/API acceptance must additionally exercise passkey registration/sign-in, persistent retry, two editor contexts, invitation acceptance and access removal. Synthetic browser passkeys do not establish physical iPad Face ID or Apple Pencil acceptance.
+The cloud-core cases cover two-writer additions, unseen remote strokes, offline stale writes, tombstones, immutable ID conflicts, operation limits, incremental feeds, same-PDF notebook/account switching, explicit unbound-note consent and operation filtering across the three sharing permissions. The race harness executes the actual cloud orchestration functions with delayed durable writes: a reader mutation revision prevents an exported snapshot from replacing a stroke completed during an await, including before its save event, and a stale notebook switch restores the previous working binding. Reader guards cover view-only drawing/import, contributor erasing/undo, legacy-ink protection and cross-notebook attribution. A role-downgrade case confirms no blocked ink is uploaded and its device backup is retained. Browser/API acceptance must additionally exercise passkey registration/sign-in, persistent retry, two editor contexts, invitation acceptance and access removal. Synthetic browser passkeys do not establish physical iPad Face ID or Apple Pencil acceptance.
 
 For loopback QA only, a reader served on `localhost`, `127.0.0.1` or `[::1]` can select another loopback API origin using the `api` query parameter. Public pages always use `https://api.infant83.io`; credentials, user info, non-root paths and arbitrary origins are rejected as overrides.

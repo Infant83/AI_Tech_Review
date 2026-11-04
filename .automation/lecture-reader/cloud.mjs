@@ -1,6 +1,7 @@
 /** Explicit passkey sign-in and private notebook synchronization. PDF bytes stay on the device. */
 import {normalizeNotebook,diffOperations,compactOperations,pendingAfterSnapshot,
-  mergeNotebook,remoteNotebook,operationBatches,applyRemoteChanges,switchNotebookView,applyNotebookIfCurrent} from './cloud-core.mjs';
+  mergeNotebook,remoteNotebook,operationBatches,applyRemoteChanges,switchNotebookView,applyNotebookIfCurrent,
+  NOTEBOOK_ROLES,roleCapabilities,partitionOperations,strokeKey} from './cloud-core.mjs';
 
 const en = new URL(location.href).searchParams.get('lang') === 'en';
 const t = (ko,english) => en ? english : ko;
@@ -30,6 +31,7 @@ function readInviteFragment(){
   }catch{return null;}
 }
 let inviteToken=readInviteFragment();
+let invitePreview=null;
 
 function error(code,status = 0) { const value = new Error(code); value.status = status; return value; }
 async function api(endpoint,{method='GET',body}={}) {
@@ -58,9 +60,45 @@ function safeAccount(value) {
 function safeMetadata(value) {
   if (!value || !idPattern.test(value.id) || !/^[a-f0-9]{64}$/.test(value.fingerprint) ||
       typeof value.title !== 'string' || value.title.length > 500 || !Number.isInteger(value.pageCount) ||
-      value.pageCount < 1 || value.pageCount > 10000 || !['owner','editor'].includes(value.role)) throw error('INVALID_RESPONSE');
+      value.pageCount < 1 || value.pageCount > 10000 || !NOTEBOOK_ROLES.includes(value.role)) throw error('INVALID_RESPONSE');
   if (value.publicId != null && !/^[A-Za-z0-9][A-Za-z0-9_-]{0,179}$/.test(value.publicId)) throw error('INVALID_RESPONSE');
   return {...value,publicId:value.publicId || null};
+}
+function roleLabel(role){return {owner:t('내 노트','Owner'),editor:t('공동 편집','Co-edit'),contributor:t('내 필기 추가','Add own notes'),viewer:t('보기만','View only')}[role]||'';}
+function roleDescription(role){return {
+  owner:t('모든 필기와 공유 권한을 관리합니다.','Manage all ink and sharing permissions.'),
+  editor:t('새 필기를 추가하고 기존 필기도 지울 수 있습니다. 변경은 참여자 모두에게 보입니다.','Add ink and erase existing ink. Changes are visible to every member.'),
+  contributor:t('새 필기는 모두에게 보입니다. 내가 추가한 필기만 지울 수 있고 기존 필기와 다른 사람의 필기는 보호됩니다.','New ink is visible to every member. Erase only your own additions; existing and other members’ ink is protected.'),
+  viewer:t('공유된 필기를 읽을 수 있습니다. 필기를 추가하거나 지울 수 없습니다.','Read the shared notes. Adding or erasing ink is unavailable.')
+}[role]||'';}
+function roleSelect(selected='viewer',label=t('공유 권한','Sharing permission')){
+  const select=el('select',undefined,'cloud-role-select');select.setAttribute('aria-label',label);
+  for(const role of ['viewer','contributor','editor']){const option=el('option',roleLabel(role));option.value=role;select.append(option);}
+  select.value=selected;return select;
+}
+function setReaderRole(metadata,snapshot=null,pending=[]){
+  if(!current()?.fingerprint||metadata.fingerprint!==current().fingerprint)return;
+  const authors=new Map((snapshot?.strokeAuthors||[]).map(item=>[strokeKey(item.page,item.id),item]));
+  for(const operation of pending)if(operation.type==='put'){
+    const key=strokeKey(operation.page,operation.stroke.id);
+    if(!authors.has(key))authors.set(key,{page:operation.page,id:operation.stroke.id,accountId:account?.id||null});
+  }
+  window.ATRNotebook?.setPermissions?.({fingerprint:metadata.fingerprint,notebookId:metadata.id,role:metadata.role,
+    accountId:account?.id||null,strokeAuthors:[...authors.values()]});
+  const permissionNode=dialog?.querySelector('[data-cloud-permission]');if(permissionNode)permissionNode.textContent=roleLabel(metadata.role)+' · '+roleDescription(metadata.role);
+}
+function lockReader(){const view=current();if(view)window.ATRNotebook?.setPermissions?.({fingerprint:view.fingerprint,role:'viewer'});}
+async function restoreDisplayedPermissions(){
+  const view=current(),attempt=activationGeneration,generation=workingGeneration;if(!view)return;
+  const sameView=()=>current()?.fingerprint===view.fingerprint&&attempt===activationGeneration&&generation===workingGeneration;
+  const marker=await readStore('links',workingKey(view.fingerprint));
+  if(!sameView())return;
+  if(matches(active)){setReaderRole(active.state.metadata,active.state.remote,active.state.pending);return;}
+  if(!marker){window.ATRNotebook?.setPermissions?.({fingerprint:view.fingerprint,role:'local'});return;}
+  const state=marker.stateKey?await readStore('states',marker.stateKey):null;
+  if(!sameView())return;
+  if(state&&account?.id===state.accountId&&!marker.transition)setReaderRole(safeMetadata(state.metadata),state.remote,state.pending);
+  else lockReader();
 }
 function current() { return window.ATRNotebook?.current?.() || null; }
 function matches(session) { return session && active === session && session.epoch === epoch && account?.id === session.accountId && current()?.fingerprint === session.state.fingerprint; }
@@ -122,6 +160,17 @@ async function applyWorking(notebook,options={}){
   // Reader backups use a numeric position; the network uses {page}.
   return window.ATRNotebook.applyNotebook({...notebook,position:notebook.position.page},options);
 }
+function downloadBlocked(state){
+  if(!state.blockedLocal)return;
+  const notebook=normalizeNotebook(state.blockedLocal),blob=new Blob([JSON.stringify({...notebook,position:notebook.position.page})],{type:'application/json'});
+  const url=URL.createObjectURL(blob),link=el('a');link.href=url;link.download='unsent-device-notes.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function restrictPending(state,snapshot,local=state.localBase){
+  const metadata=safeMetadata(snapshot.notebook),partition=partitionOperations(state.pending,metadata.role,state.accountId,snapshot.strokeAuthors||[],snapshot.pages);
+  state.metadata=metadata;
+  if(partition.blocked.length){state.blockedLocal=normalizeNotebook(local);state.pending=partition.allowed;}
+  return partition.blocked.length>0;
+}
 
 function status(kind,message) {
   const label = kind === 'synced' ? t('연결됨','Connected') : kind === 'pending' ? t('저장 대기','Pending') :
@@ -155,7 +204,7 @@ function action(text,handler,className='cloud-action') {
 }
 async function runUI(handler) {
   if(busyUI)return;busyUI=true;dialog?.setAttribute('aria-busy','true');
-  const controls=[...dialog?.querySelectorAll('button') || []];controls.forEach(node=>node.disabled=true);feedbackText('');
+  const controls=[...dialog?.querySelectorAll('button,select') || []];controls.forEach(node=>node.disabled=true);feedbackText('');
   try {await handler();}catch(cause){feedbackText(help(cause),true);}
   finally {busyUI=false;dialog?.removeAttribute('aria-busy');controls.forEach(node=>{if(node.isConnected)node.disabled=false;});}
 }
@@ -170,7 +219,7 @@ function ensureDialog() {
   dialog.addEventListener('click',event=>{if(event.target===dialog){const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}});
   dialog.addEventListener('keydown',event=>{
     if(event.key!=='Tab')return;
-    const controls=[...dialog.querySelectorAll('button:not(:disabled),input:not(:disabled),a[href]')].filter(node=>!node.hidden);
+    const controls=[...dialog.querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),a[href]')].filter(node=>!node.hidden);
     if(!controls.length){event.preventDefault();return;}
     if(event.shiftKey&&document.activeElement===controls[0]){event.preventDefault();controls.at(-1).focus();}
     else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0].focus();}
@@ -197,8 +246,16 @@ async function render() {
   }
   const accountRow=el('div',undefined,'cloud-account');accountRow.append(el('strong',account.displayName),action(t('로그아웃','Sign out'),logout,'cloud-text-button'));content.append(accountRow);
   if(inviteToken){
+    const previewFor=inviteToken;
+    if(invitePreview?.for!==previewFor){
+      const preview=await api(path+'/invites/preview',{method:'POST',body: { token: previewFor }});
+      if(inviteToken!==previewFor||generation!==renderGeneration||account?.id!==renderedAccount)return;
+      if(!preview.invitation||!['viewer','contributor','editor'].includes(preview.invitation.role)||typeof preview.invitation.title!=='string')throw error('INVALID_RESPONSE');
+      invitePreview={...preview.invitation,for:previewFor};
+    }
     const invitation=el('section',undefined,'cloud-section');invitation.append(el('h3',t('공유 노트 초대','Notebook invitation')),
-      el('p',t('초대를 수락하면 이 노트를 함께 편집할 수 있습니다.','Accept to edit this notebook with its members.')),
+      el('strong',invitePreview.title),el('p',roleLabel(invitePreview.role)+' · '+roleDescription(invitePreview.role)),
+      el('p',t('이미 참여한 노트라면 현재 권한을 유지합니다. 권한 변경은 소유자가 설정합니다.','If you already belong to this notebook, your current permission stays unchanged. Its owner controls permission changes.'),'cloud-muted'),
       action(t('초대 수락','Accept invitation'),acceptInvite,'cloud-action cloud-primary'));content.append(invitation);
   }
   const document=current();
@@ -206,9 +263,11 @@ async function render() {
     const section=el('section',undefined,'cloud-section');section.append(el('h3',document.title));
     const summary=el('p',matches(active)?lastStatus:t('기기 필기를 클라우드 노트와 연결합니다. PDF 파일은 전송하지 않습니다.','Connect the device notes to your cloud notebook. The PDF file is not uploaded.'),'cloud-muted');summary.dataset.cloudStatus='';section.append(summary);
     if(matches(active)){
+      const permissionNode=el('p',roleLabel(active.state.metadata.role)+' · '+roleDescription(active.state.metadata.role),'cloud-permission-note');permissionNode.dataset.cloudPermission='';section.append(permissionNode);
       const actions=el('div',undefined,'cloud-actions');actions.append(action(t('지금 동기화','Sync now'),()=>syncNow()));
       if(active.state.metadata.role==='owner')actions.append(action(t('공유·구성원','Share & members'),()=>sharing(active.state.metadata)));
       actions.append(action(t('이 기기 연결 해제','Disconnect this device'),disconnect,'cloud-text-button'));section.append(actions);
+      if(active.state.blockedLocal)section.append(action(t('전송되지 않은 기기 필기 백업','Export unsent device notes'),()=>downloadBlocked(active.state),'cloud-text-button'));
     }else section.append(action(t('이 노트 동기화','Sync this notebook'),enableCurrent,'cloud-action cloud-primary'));
     content.append(section);
   }
@@ -220,7 +279,7 @@ async function render() {
   if(!notebooks.length)library.append(el('p',t('PDF를 연 뒤 ‘이 노트 동기화’를 누르세요.','Open a PDF, then choose “Sync this notebook”.'),'cloud-muted'));
   const list=el('ul',undefined,'cloud-notebooks');
   for(const notebook of notebooks){
-    const row=el('li');const text=el('div');text.append(el('strong',notebook.title),el('small',notebook.pageCount+t('쪽 · ',' pages · ')+(notebook.role==='owner'?t('내 노트','Owner'):t('함께 편집','Shared editor'))));
+    const row=el('li');const text=el('div');text.append(el('strong',notebook.title),el('small',notebook.pageCount+t('쪽 · ',' pages · ')+roleLabel(notebook.role)));
     const actions=el('div',undefined,'cloud-row-actions');actions.append(action(t('열기','Open'),()=>openNotebook(notebook)));
     if(notebook.role==='owner')actions.append(action(t('공유','Share'),()=>sharing(notebook),'cloud-text-button'));
     row.append(text,actions);list.append(row);
@@ -245,6 +304,7 @@ async function logout(){
     const local=await exported();await preserveDisplayed(await readStore('links',workingKey(local.document.fingerprint)),local);
   }
   await api(path+'/logout',{method:'POST',body:{}});authGeneration++;account=null;
+  lockReader();
   status('idle',t('로그아웃했습니다. 기기 필기는 유지됩니다.','Signed out. Device notes are retained.'));await render();
 }
 
@@ -285,10 +345,9 @@ async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
   let state=await readStore('states',key),snapshot=null;
   const existingState=Boolean(state);
   if(state&&(state.accountId!==owner||state.fingerprint!==notebook.fingerprint))throw error('INVALID_NOTEBOOK');
-  if(!state){
-    snapshot=await api(path+'/notebooks/'+encodeURIComponent(notebook.id));remoteNotebook(snapshot);
-    if(snapshot.notebook.fingerprint!==notebook.fingerprint)throw error('FINGERPRINT_MISMATCH');
-  }
+  snapshot=await api(path+'/notebooks/'+encodeURIComponent(notebook.id));remoteNotebook(snapshot);
+  if(snapshot.notebook.fingerprint!==notebook.fingerprint)throw error('FINGERPRINT_MISMATCH');
+  notebook=safeMetadata(snapshot.notebook);
   const target=state?normalizeNotebook(state.localBase,local.document):remoteNotebook(snapshot).notebook;
   const currentKey=displayed?.transition?'interrupted-switch':displayed?.stateKey || (state&&!allowUpload?'unattributed-working-ink':null);
   let plan;
@@ -306,19 +365,23 @@ async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
   state.metadata=notebook;normalizeNotebook(state.localBase,local.document);
   if(!Array.isArray(state.pending))throw error('INVALID_NOTEBOOK');
   state.pending=compactOperations([...state.pending,...plan.added]);state.localBase=plan.notebook;
+  state.remote=snapshot;state.remoteCursor=snapshot.notebook.revision;
+  if(restrictPending(state,snapshot,plan.notebook)){
+    plan.notebook=mergeNotebook(snapshot,plan.notebook,state.pending);state.localBase=plan.notebook;
+  }
   await writeStore('states',state);
   const displayedNext={key:workingKey(notebook.fingerprint),stateKey:key,accountId:owner,notebookId:notebook.id,transition:true,attempt};
   // Persist the target before replacing the fingerprint-indexed reader view.
   // An interrupted switch restores this target before any local diff is made.
   await writeStore('links',displayedNext);
-  let applied=false,applyStarted=false;
+  let applied=false,applyStarted=false,applyRevision=viewStamp.mutationRevision;
   try{
     applied=await applyNotebookIfCurrent(viewStamp,()=>attempt===activationGeneration?workingToken():null,
-      ()=>{applyStarted=true;return applyWorking(plan.notebook,{silent:true,preservePosition:currentKey===key});});
+      ()=>{applyStarted=true;lockReader();applyRevision=current()?.mutationRevision;return applyWorking(plan.notebook,{silent:true,preservePosition:currentKey===key});});
   }catch(cause){
     // A rendering failure can follow a successful transactional import. Keep
     // the target marker in that case; relabeling imported B ink as A is unsafe.
-    const imported=applyStarted&&current()?.fingerprint===notebook.fingerprint&&current()?.mutationRevision!==viewStamp.mutationRevision;
+    const imported=applyStarted&&current()?.fingerprint===notebook.fingerprint&&current()?.mutationRevision!==applyRevision;
     if(attempt===activationGeneration&&!imported)await rollbackActivation(displayed,displayedNext,key,existingState,previousSession);
     throw cause;
   }
@@ -328,6 +391,7 @@ async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
   }
   await writeStore('links',{...displayedNext,transition:false});
   const session={accountId:owner,state,epoch:++epoch,restorePosition:restorePosition&&!state.lastSent,dirty:false,localGeneration:0};active=session;
+  setReaderRole(state.metadata,state.remote,state.pending);
   await writeStore('links',{key:linkKey(owner,notebook.fingerprint),notebookId:notebook.id});
   selection=null;requestedId=null;status('syncing',t('클라우드 노트를 연결하는 중…','Connecting the cloud notebook…'));
   await syncNow();
@@ -336,6 +400,7 @@ async function restoreBinding(previousSession){
   if(previousSession&&account?.id===previousSession.accountId&&current()?.fingerprint===previousSession.state.fingerprint){
     const saved=await readStore('states',previousSession.state.key);if(saved)previousSession.state=saved;
     previousSession.epoch=++epoch;previousSession.dirty=true;active=previousSession;schedule(500);
+    setReaderRole(previousSession.state.metadata,previousSession.state.remote,previousSession.state.pending);
   }
 }
 async function rollbackActivation(displayed,next,key,existingState,previousSession){
@@ -345,19 +410,23 @@ async function rollbackActivation(displayed,next,key,existingState,previousSessi
     if(!existingState)await writeStore('states',{key},true);
   }
   await restoreBinding(previousSession);
+  if(!active)await restoreDisplayedPermissions();
 }
 async function disconnect(){
   if(!active)return;const session=active;await stopSession();
   const local=await exported();await preserveDisplayed(await readStore('links',workingKey(local.document.fingerprint)),local);
   await writeStore('links',{key:linkKey(session.accountId,session.state.fingerprint)},true);
   active=null;epoch++;clearTimeout(timer);status('idle',t('이 기기 연결을 해제했습니다. 필기는 그대로 보관됩니다.','This device is disconnected. Notes are retained.'));await render();
+  lockReader();
 }
 async function capture(session){
   if(!matches(session))throw error('READER_BUSY');const viewStamp=workingToken(session);if(!viewStamp)throw error('READER_BUSY');
   const local=await exported();
   if(!matches(session))throw error('READER_BUSY');
   session.state.pending=compactOperations([...session.state.pending,...diffOperations(session.state.localBase,local)]);
-  session.state.localBase=local;await saveState(session);session.captureToken=viewStamp;session.dirty=!unchanged(viewStamp,session);return local;
+  session.state.localBase=local;
+  if(session.state.remote&&restrictPending(session.state,session.state.remote,local))session.reconcile=true;
+  await saveState(session);session.captureToken=viewStamp;session.dirty=!unchanged(viewStamp,session);return local;
 }
 function schedule(delay=4000){
   clearTimeout(timer);if(active&&account&&document.visibilityState==='visible')timer=setTimeout(()=>void syncNow(),delay);
@@ -372,12 +441,21 @@ async function syncNow(){
     if(session.state.pending.length||!session.state.remote)status('syncing',t('기기에 저장됨 · 클라우드 확인 중…','Saved on device · checking cloud…'));
     let remote=await refreshRemote(session),snapshot=remote.snapshot;
     if(!matches(session))return;const metadata=safeMetadata(snapshot.notebook);
+    const roleChanged=session.state.metadata.role!==metadata.role;
+    const blocked=restrictPending(session.state,snapshot);
+    setReaderRole(metadata,snapshot,session.state.pending);
+    if(roleChanged||blocked){remote.changed=true;await saveState(session);}
     const remaining=pendingAfterSnapshot(session.state.pending,snapshot);
     if(remaining.length!==session.state.pending.length){session.state.pending=remaining;await saveState(session);}
     let sent=false;
     for(const batch of operationBatches(session.state.pending)){
       if(!matches(session))return;
-      await api(path+'/notebooks/'+encodeURIComponent(metadata.id)+'/operations',{method:'POST',body:{operations:batch}});
+      try{await api(path+'/notebooks/'+encodeURIComponent(metadata.id)+'/operations',{method:'POST',body:{operations:batch}});}
+      catch(cause){
+        if(cause.status!==403)throw cause;
+        session.state.blockedLocal=await exported();session.state.pending=[];
+        session.state.remote=null;session.state.remoteCursor=null;await saveState(session);lockReader();needSync=true;return;
+      }
       const done=new Set(batch.map(operation=>operation.page+':'+(operation.type==='put'?operation.stroke.id:operation.id)));
       session.state.pending=session.state.pending.filter(operation=>!done.has(operation.page+':'+(operation.type==='put'?operation.stroke.id:operation.id)));
       await saveState(session);sent=true;
@@ -392,26 +470,30 @@ async function syncNow(){
     }
     if(sent){const latest=await refreshRemote(session);snapshot=latest.snapshot;remote.changed ||= latest.changed;}
     if(!matches(session)||current()?.drawing||current()?.busy){needSync=true;return;}
-    if(remote.changed||sent||session.restorePosition){
+    if(remote.changed||sent||session.restorePosition||session.reconcile){
       // Capture after network waits only when applying incoming changes. Idle
       // polling never reexports or rewrites a potentially large local notebook.
       local=await capture(session);let merged=mergeNotebook(snapshot,local,session.state.pending);
       if(session.restorePosition){const previous=remoteNotebook(snapshot).notebook;merged={...merged,position:previous.position,bookmarks:previous.bookmarks};}
       const applied=await applyNotebookIfCurrent(session.captureToken,()=>workingToken(session),
-        ()=>applyWorking(merged,{silent:true,preservePosition:!session.restorePosition}));
+        ()=>applyWorking(merged,{silent:true,preservePosition:!session.restorePosition,preserveHistory:true}));
       if(!applied){session.dirty=true;needSync=true;return;}
       if(!matches(session))return;
       session.state.localBase=normalizeNotebook(merged);session.state.metadata=safeMetadata(snapshot.notebook);
+      session.reconcile=false;
+      setReaderRole(session.state.metadata,snapshot,session.state.pending);
       if(session.restorePosition)session.state.lastSent={position:merged.position,bookmarks:merged.bookmarks};session.restorePosition=false;
       await saveState(session);
     }
     status(session.state.pending.length?'pending':'synced',session.state.pending.length?
       t('기기에 저장됨 · 클라우드 저장 대기','Saved on device · cloud save pending'):
-      t('기기·클라우드에 저장됨 · 주기적으로 동기화','Saved on device and cloud · periodically synchronized'));
+      roleLabel(session.state.metadata.role)+' · '+(session.state.blockedLocal?
+        t('전송되지 않은 필기는 동기화 화면에서 백업할 수 있습니다.','Export unsent device notes from the sync panel.'):
+        t('기기·클라우드에 저장됨 · 주기적으로 동기화','Saved on device and cloud · periodically synchronized')));
   }catch(cause){
     if(matches(session)){
-      if(cause.status===401){account=null;active=null;epoch++;}
-      else if(cause.status===403||cause.status===404){active=null;epoch++;}
+      if(cause.status===401){account=null;active=null;epoch++;lockReader();}
+      else if(cause.status===403||cause.status===404){active=null;epoch++;lockReader();}
       status('error',help(cause));
     }
   }finally{running=false;idleWaiters.splice(0).forEach(resolve=>resolve());if(active)schedule(needSync?500:4000);}
@@ -431,7 +513,8 @@ async function refreshRemote(session){
       if(!matches(session))throw error('READER_BUSY');
       const previous=session.state.remoteCursor;
       session.state.remote=applyRemoteChanges(session.state.remote,delta,previous);session.state.remoteCursor=delta.revision;
-      changed ||= delta.changes.length>0;save ||= delta.revision!==previous;
+      changed ||= delta.changes.length>0||delta.notebook?.role!==session.state.metadata.role;
+      save ||= delta.revision!==previous||delta.notebook?.role!==session.state.metadata.role;
       if(!delta.more)break;
       if(delta.revision===previous)throw error('INVALID_REMOTE_NOTEBOOK');
       if(page===3)needSync=true;
@@ -442,13 +525,19 @@ async function refreshRemote(session){
 
 async function sharing(notebook){
   if(notebook.role!=='owner')return;ensureDialog();if(!dialog.open)dialog.showModal();content.replaceChildren();feedbackText('');
-  content.append(el('h3',notebook.title),el('p',t('초대한 사람은 로그인 후 이 노트를 함께 편집합니다.','Invited people sign in to edit this notebook with you.'),'cloud-muted'));
+  content.append(el('h3',notebook.title));
+  const field=el('label',t('공유 권한','Sharing permission'),'cloud-field'),permission=roleSelect();field.append(permission);content.append(field);
+  const description=el('p',roleDescription(permission.value),'cloud-permission-note');content.append(description);
+  permission.addEventListener('change',()=>{description.textContent=roleDescription(permission.value);content.querySelectorAll('.cloud-invite-link').forEach(node=>node.remove());});
   const tools=el('div',undefined,'cloud-actions');tools.append(action(t('초대 링크 만들기','Create invite link'),async()=>{
-    const invitation=await api(path+'/notebooks/'+encodeURIComponent(notebook.id)+'/invites',{method:'POST',body:{}});
+    const role=permission.value;
+    const invitation=await api(path+'/notebooks/'+encodeURIComponent(notebook.id)+'/invites',{method:'POST',body:{role}});
     if(typeof invitation.token!=='string'||!/^[A-Za-z0-9_-]{20,512}$/.test(invitation.token))throw error('INVALID_RESPONSE');
+    if(invitation.role!==role)throw error('INVALID_RESPONSE');
     const url=new URL(location.href);url.search='';url.hash='invite='+invitation.token;if(en)url.searchParams.set('lang','en');
     if(loopback(location.hostname)&&apiBase!=='https://api.infant83.io')url.searchParams.set('api',apiBase);
-    const area=el('div',undefined,'cloud-invite-link');const input=el('input');input.readOnly=true;input.value=url.href;input.setAttribute('aria-label',t('비공개 초대 링크','Private invitation link'));
+    content.querySelectorAll('.cloud-invite-link').forEach(node=>node.remove());
+    const area=el('div',undefined,'cloud-invite-link');area.append(el('strong',roleLabel(role)));const input=el('input');input.readOnly=true;input.value=url.href;input.setAttribute('aria-label',t('비공개 초대 링크','Private invitation link'));
     const copy=action(t('링크 복사','Copy link'),async()=>{
       try{await navigator.clipboard.writeText(url.href);feedbackText(t('초대 링크를 복사했습니다.','Invitation link copied.'));}catch{input.focus();input.select();feedbackText(t('선택한 링크를 복사해 주세요.','Copy the selected link.'));}
     });area.append(input,copy);content.append(area);
@@ -460,10 +549,16 @@ async function sharing(notebook){
   for(const member of result.members){
     const memberId=member.accountId||member.id;
     if(!idPattern.test(memberId)||typeof member.displayName!=='string'||member.displayName.length>120)throw error('INVALID_RESPONSE');
+    if(!NOTEBOOK_ROLES.includes(member.role))throw error('INVALID_RESPONSE');
     const row=el('li');row.append(el('span',member.displayName));
-    if(memberId!==account.id&&member.role!=='owner')row.append(action(t('접근 해제','Remove access'),async()=>{
+    if(memberId!==account.id&&member.role!=='owner'){
+      const actions=el('div',undefined,'cloud-member-actions'),select=roleSelect(member.role,member.displayName+' '+t('권한','permission'));
+      actions.append(select,action(t('권한 저장','Save permission'),async()=>{
+        await api(path+'/notebooks/'+encodeURIComponent(notebook.id)+'/members/'+encodeURIComponent(memberId),{method:'PATCH',body:{role:select.value}});await sharing(notebook);
+      }),action(t('접근 해제','Remove access'),async()=>{
       await api(path+'/notebooks/'+encodeURIComponent(notebook.id)+'/members/'+encodeURIComponent(memberId),{method:'DELETE'});await sharing(notebook);
-    },'cloud-text-button'));else row.append(el('small',t('소유자','Owner')));list.append(row);
+      },'cloud-text-button'));row.append(actions);
+    }else row.append(el('small',t('소유자','Owner')));list.append(row);
   }
   content.append(el('h3',t('구성원','Members')),list);
 }
@@ -472,7 +567,7 @@ async function acceptInvite(){
   const acceptedInvitation=inviteToken;
   const result=await api(path+'/invites/accept',{method:'POST',body: { token: acceptedInvitation }});const notebook=safeMetadata(result.notebook);
   if(inviteToken!==acceptedInvitation){await render();return;}
-  inviteToken=null;const clean=new URL(location.href);clean.hash='';history.replaceState(history.state,'',clean.href);
+  inviteToken=null;invitePreview=null;const clean=new URL(location.href);clean.hash='';history.replaceState(history.state,'',clean.href);
   feedbackText(t('공유 노트에 참여했습니다.','You joined the notebook.'));await openNotebook(notebook);
 }
 async function resume(){
@@ -490,13 +585,13 @@ async function resume(){
 }
 async function documentOpened(){
   workingGeneration++;epoch++;active=null;clearTimeout(timer);status('idle','');
-  if(!initialized)return;
-  try{await resume();}catch(cause){status('error',help(cause));}
+  lockReader();
+  try{await restoreDisplayedPermissions();if(initialized)await resume();}catch(cause){status('error',help(cause));}
 }
 async function inviteFragmentChanged(){
   const candidate=readInviteFragment();
   if(!candidate){
-    const previous=inviteToken;inviteToken=null;
+    const previous=inviteToken;inviteToken=null;invitePreview=null;
     if(previous&&initialized){
       if(dialog?.open)try{await render();}catch(cause){feedbackText(help(cause),true);}
       try{await resume();}catch(cause){status('error',help(cause));}
@@ -504,6 +599,7 @@ async function inviteFragmentChanged(){
     return;
   }
   inviteToken=candidate;
+  invitePreview=null;
   // A browser can reuse this document when only #invite changes. Module
   // initialization does not run again, so consent must follow fragment changes.
   if(initialized)try{await show();}catch(cause){feedbackText(help(cause),true);}
@@ -524,10 +620,12 @@ document.addEventListener('visibilitychange',()=>{
 window.addEventListener('online',()=>{if(active)schedule(50);});
 window.addEventListener('pagehide',()=>{clearTimeout(timer);if(active&&!running&&!current()?.drawing&&!current()?.busy)void capture(active).catch(()=>{});});
 async function initializeCloud(){
+  lockReader();try{await restoreDisplayedPermissions();}catch(cause){status('error',help(cause));}
   const initialAuth=authGeneration;
   try{const me=await api(path+'/me');if(initialAuth===authGeneration)account=safeAccount(me.account);}
   catch{if(initialAuth===authGeneration)status('idle',t('기기에서 계속 읽을 수 있습니다. 동기화에서 로그인해 주세요.','Continue reading on this device. Open Sync to sign in.'));}
   initialized=true;
+  try{await restoreDisplayedPermissions();}catch(cause){status('error',help(cause));}
   // Invitation consent must not wait behind an unrelated notebook resume, or
   // disappear if that resume is temporarily busy while the PDF is rendering.
   if(inviteToken){try{await show();}catch(cause){feedbackText(help(cause),true);}return;}

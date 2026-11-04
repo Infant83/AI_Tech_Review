@@ -24,6 +24,10 @@ function baseContext(extra={}){
     active:null,running:false,needSync:false,timer:null,idleWaiters:[],status(){},schedule(){},setTimeout(){return 0;},clearTimeout(){},t:(_,english)=>english,
     document:{visibilityState:'visible'},error:code=>new Error(code),help:cause=>{throw cause;},stateKey:(a,b)=>a+':'+b,
     linkKey:(a,b)=>a+':'+b,workingKey:fp=>'working:'+fp,...extra};
+  context.lockReader ||= ()=>{};context.restoreDisplayedPermissions ||= async()=>{};
+  context.roleLabel ||= value=>value;
+  context.safeMetadata ||= value=>value;
+  context.setReaderRole ||= ()=>{};context.restrictPending ||= (state,snapshot)=>{state.metadata=snapshot.notebook;return false;};
   context.matches=session=>context.active===session&&context.epoch===session.epoch&&context.account?.id===session.accountId&&context.current()?.fingerprint===session.state.fingerprint;
   return vm.createContext(context);
 }
@@ -34,7 +38,7 @@ for(const dispatchSaved of [true,false])test(`incoming apply preserves a stroke 
   const metadata={id:'book',role:'owner',...doc,revision:0};
   let remote={notebook:metadata,pages:notebook('base','remote').pages,deleted:[],position:{page:1},bookmarks:[]};
   const session={accountId:'owner',epoch:0,localGeneration:0,dirty:false,state:{key:'owner:book',notebookId:'book',fingerprint:doc.fingerprint,
-    localBase:structuredClone(view),pending:[],lastSent:{position:{page:1},bookmarks:[]}}};
+    localBase:structuredClone(view),metadata,pending:[],lastSent:{position:{page:1},bookmarks:[]}}};
   const context=baseContext({active:session,current:()=>({...doc,drawing:false,busy:false,mutationRevision:revision}),exported:async()=>structuredClone(view),
     saveState:async()=>{if(delay){delay=false;reached.resolve();await release.promise;}},
     refreshRemote:async()=>({snapshot:structuredClone(remote),changed:true}),safeMetadata:value=>value,
@@ -66,6 +70,7 @@ test('activation rolls back the target marker and retains the old binding if ink
       if(store==='links'&&value.transition){reached.resolve();await release.promise;}
     },
     stopSession:async()=>{context.active=null;context.epoch++;},
+    api:async()=>({notebook:b.metadata,pages:notebook('B').pages,deleted:[],position:{page:1},bookmarks:[]}),
     preserveDisplayed:async()=>{},applyWorking:async value=>{applies++;view=structuredClone(value);},
     syncNow:async()=>{throw Error('Switch should not reach network synchronization');}});
   vm.runInContext(tokenFunctions+activation,context);
@@ -116,4 +121,21 @@ test('an invitation arriving during the initial account request remains pending 
     show:async()=>{shown++;},feedbackText(){}});
   vm.runInContext(invitationParser+invitationChange,context);await vm.runInContext('inviteFragmentChanged()',context);
   assert.equal(context.inviteToken,'b'.repeat(43));assert.equal(shown,0);
+});
+
+test('a role downgrade rejects offline ink before upload and retains its device backup',async()=>{
+  let view=notebook('offline-new'),sentInk=0,permission=null;
+  const metadata={id:'book',role:'editor',...doc,revision:5};
+  const remote={notebook:{...metadata,role:'viewer'},pages:notebook('owner-ink').pages,
+    strokeAuthors:[{page:1,id:'owner-ink',accountId:'owner-account'}],deleted:[],position:{page:1},bookmarks:[]};
+  const session={accountId:'owner',epoch:0,localGeneration:0,dirty:false,state:{key:'owner:book',accountId:'owner',notebookId:'book',fingerprint:doc.fingerprint,
+    metadata,localBase:structuredClone(view),pending:[{type:'delete',page:1,id:'owner-ink'},{type:'put',page:1,stroke:stroke('offline-new')}],lastSent:{position:{page:1},bookmarks:[]}}};
+  const context=baseContext({active:session,current:()=>({...doc,drawing:false,busy:false,mutationRevision:0}),exported:async()=>structuredClone(view),
+    saveState:async()=>{},refreshRemote:async()=>({snapshot:structuredClone(remote),changed:false}),
+    setReaderRole:meta=>{permission=meta.role;},api:async(_,{body})=>{sentInk+=body.operations.length;return{ok:true};},
+    applyWorking:async value=>{view=structuredClone(value);}});
+  const restriction=section('function restrictPending(','function status(');
+  vm.runInContext(tokenFunctions+restriction+captureAndSync,context);await vm.runInContext('syncNow()',context);
+  assert.equal(sentInk,0);assert.equal(permission,'viewer');assert.equal(session.state.pending.length,0);
+  assert.deepEqual(ids(view),['owner-ink']);assert.deepEqual(ids(session.state.blockedLocal),['offline-new']);
 });

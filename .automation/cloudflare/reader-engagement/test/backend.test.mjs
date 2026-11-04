@@ -138,7 +138,9 @@ test('device sessions are HttpOnly, hashed in D1, reused, and protected by exact
   const reused=await f.request('/v1/devices',{method:'POST',body:{},cookie:current.cookie});
   assert.equal((await reused.json()).deviceId,current.id);
   assert.equal((await f.db.prepare('SELECT count(*) n FROM devices').first()).n,1);
-  assert.equal((await f.request('/v1/config',{method:'OPTIONS',origin:ORIGIN})).status,204);
+  const preflight=await f.request('/v1/config',{method:'OPTIONS',origin:ORIGIN});
+  assert.equal(preflight.status,204);
+  assert.ok(preflight.headers.get('Access-Control-Allow-Methods').split(',').includes('PATCH'));
   const bad=await f.request('/v1/config',{origin:'https://example.com'});
   assert.equal(bad.status,403);
   assert.equal(bad.headers.has('Access-Control-Allow-Origin'),false);
