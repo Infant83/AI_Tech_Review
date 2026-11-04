@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="2210" viewBox="0 0 620 2210" role="img" aria-labelledby="title desc">
+  <title id="title">모바일용 같은 QUBO 채점표를 사용하는 QA와 QAOA의 서로 다른 탐색 원리</title>
+  <desc id="desc">같은 QUBO 채점표 아래에 양자 어닐링의 transverse-field 스케줄, 개방계 진화, 낮은 에너지 표본과 QAOA의 비용 위상, mixer, 간섭, 측정분포 변화를 세로로 비교한다. 비용 지형과 터널링은 제한된 비유이며 QAOA는 후보의 이동 궤적이 아니다. 두 방법은 같은 강한 고전 비교군과 종단 검증을 거쳐야 한다.</desc>
+  <defs>
+    <style>
+      .bg{fill:#faf8f2}.eyebrow{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:1.1px;fill:#684790}.title{font:700 35px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.subtitle{font:400 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#566172}.common{fill:#fff;stroke:#c8ced8;stroke-width:2.5}.commonhead{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.9px;fill:#5b6473}.commonbody{font:700 19px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.chip{fill:#edf0f4;stroke:#b9c1cd;stroke-width:1.5}.chiptext{font:700 15px Consolas,'Segoe UI Symbol',monospace;fill:#354052}.panel{stroke-width:3}.qa{fill:#fff7ec;stroke:#aa681f}.qaoa{fill:#f5f0fa;stroke:#74519a}.tag{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;letter-spacing:.8px}.panelhead{font:700 28px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.panelbody{font:400 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.step{fill:#fff;stroke-width:2}.stepnum{font:800 15px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.stephead{font:700 18px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#172033}.stepbody{font:400 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#4b5565}.analogy{fill:#fff;stroke-width:2}.analogyhead{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.analogybody{font:600 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.caution{fill:#fbeeee;stroke:#a44343;stroke-width:2}.cautionhead{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.cautionbody{font:600 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#653333}.gate{fill:#edf7f1;stroke:#28745a;stroke-width:3}.gatehead{font:800 21px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#1f654d}.gatesub{font:800 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif}.gatebody{font:600 16px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}.verdict{font:800 20px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#a44343}.footer{font:700 17px 'Segoe UI','Noto Sans KR',Arial,sans-serif;fill:#354052}
+    </style>
+  </defs>
+  <rect class="bg" width="620" height="2210"/>
+
+  <text class="eyebrow" x="42" y="48">QA vs QAOA · SAME QUBO</text>
+  <text class="title" x="42" y="94">같은 QUBO 채점표,</text>
+  <text class="title" x="42" y="136">다른 탐색 원리</text>
+  <text class="subtitle" x="42" y="176">QA는 아날로그 스케줄, QAOA는 위상·믹서·간섭으로</text>
+  <text class="subtitle" x="42" y="205">서로 다른 bitstring 표본 분포를 만듭니다.</text>
+
+  <rect class="common" x="42" y="240" rx="22" width="536" height="210"/>
+  <text class="commonhead" x="72" y="278">COMMON INPUT · SAME QUBO SCORECARD</text>
+  <text class="commonbody" x="72" y="315">같은 비용 · 같은 제약 · 같은 평가 예산</text>
+  <rect class="chip" x="72" y="340" rx="10" width="215" height="35"/>
+  <text class="chiptext" x="90" y="363">0010 · 낮은 비용</text>
+  <rect class="chip" x="303" y="340" rx="10" width="215" height="35"/>
+  <text class="chiptext" x="321" y="363">1011 · 높은 비용</text>
+  <rect class="chip" x="72" y="390" rx="10" width="215" height="35"/>
+  <text class="chiptext" x="90" y="413">0101 · 제약 위반</text>
+  <rect class="chip" x="303" y="390" rx="10" width="215" height="35"/>
+  <text class="chiptext" x="321" y="413">1100 · feasible</text>
+
+  <rect class="panel qa" x="42" y="485" rx="24" width="536" height="650"/>
+  <text class="tag" x="72" y="525" fill="#aa681f">ANALOG · QUANTUM ANNEALING</text>
+  <text class="panelhead" x="72" y="567">QA · 스케줄을 천천히 바꿉니다</text>
+  <text class="panelbody" x="72" y="601">유한 온도의 open-system 동역학</text>
+
+  <rect class="step" x="72" y="635" rx="15" width="224" height="125" stroke="#aa681f"/>
+  <text class="stepnum" x="92" y="666" fill="#aa681f">01</text>
+  <text class="stephead" x="92" y="694">transverse-field driver</text>
+  <text class="stepbody" x="92" y="726">중첩에서 시작</text>
+  <rect class="step" x="314" y="635" rx="15" width="224" height="125" stroke="#aa681f"/>
+  <text class="stepnum" x="334" y="666" fill="#aa681f">02</text>
+  <text class="stephead" x="334" y="694">anneal schedule</text>
+  <text class="stepbody" x="334" y="726">driver ↓ · cost ↑</text>
+
+  <rect class="step" x="72" y="780" rx="15" width="224" height="125" stroke="#aa681f"/>
+  <text class="stepnum" x="92" y="811" fill="#aa681f">03</text>
+  <text class="stephead" x="92" y="839">open-system</text>
+  <text class="stepbody" x="92" y="871">열 · 환경 · 제어오차</text>
+  <rect class="step" x="314" y="780" rx="15" width="224" height="125" stroke="#aa681f"/>
+  <text class="stepnum" x="334" y="811" fill="#aa681f">04</text>
+  <text class="stephead" x="334" y="839">낮은 energy samples</text>
+  <text class="stepbody" x="334" y="871">여러 번 anneal 후 표본</text>
+
+  <rect class="analogy" x="72" y="930" rx="15" width="466" height="72" stroke="#aa681f"/>
+  <text class="analogyhead" x="92" y="958" fill="#aa681f">한 줄 비유</text>
+  <text class="analogybody" x="190" y="958">흔들리던 지형이 굳으며 낮은 골짜기 표본을 남김</text>
+  <rect class="caution" x="72" y="1018" rx="15" width="466" height="94"/>
+  <text class="cautionhead" x="92" y="1046">비용 지형·tunneling은 제한된 비유</text>
+  <text class="cautionbody" x="92" y="1074">실제 QUBO는 그래프 해밀토니안이며</text>
+  <text class="cautionbody" x="92" y="1098">열·환경·제어오차와 함께 진화합니다.</text>
+
+  <rect class="panel qaoa" x="42" y="1170" rx="24" width="536" height="650"/>
+  <text class="tag" x="72" y="1210" fill="#74519a">GATE · QUANTUM APPROXIMATE OPTIMIZATION</text>
+  <text class="panelhead" x="72" y="1252">QAOA · 위상과 mixer를 교대합니다</text>
+  <text class="panelbody" x="72" y="1286">bitstring 하나의 trajectory가 아닙니다</text>
+
+  <rect class="step" x="72" y="1320" rx="15" width="224" height="125" stroke="#74519a"/>
+  <text class="stepnum" x="92" y="1351" fill="#74519a">01</text>
+  <text class="stephead" x="92" y="1379">cost phase</text>
+  <text class="stepbody" x="92" y="1411">비용으로 위상을 태그</text>
+  <rect class="step" x="314" y="1320" rx="15" width="224" height="125" stroke="#74519a"/>
+  <text class="stepnum" x="334" y="1351" fill="#74519a">02</text>
+  <text class="stephead" x="334" y="1379">mixer</text>
+  <text class="stepbody" x="334" y="1411">진폭을 다시 섞음</text>
+
+  <rect class="step" x="72" y="1465" rx="15" width="224" height="125" stroke="#74519a"/>
+  <text class="stepnum" x="92" y="1496" fill="#74519a">03</text>
+  <text class="stephead" x="92" y="1524">interference</text>
+  <text class="stepbody" x="92" y="1556">측정분포를 변화</text>
+  <rect class="step" x="314" y="1465" rx="15" width="224" height="125" stroke="#74519a"/>
+  <text class="stepnum" x="334" y="1496" fill="#74519a">04</text>
+  <text class="stephead" x="334" y="1524">measure</text>
+  <text class="stepbody" x="334" y="1556">확률이 바뀐 bitstring</text>
+
+  <rect class="analogy" x="72" y="1615" rx="15" width="466" height="72" stroke="#74519a"/>
+  <text class="analogyhead" x="92" y="1643" fill="#74519a">한 줄 비유</text>
+  <text class="analogybody" x="190" y="1643">점수별 박자를 붙이고 섞어 좋은 답의 확률을 키움</text>
+  <rect class="caution" x="72" y="1703" rx="15" width="466" height="94"/>
+  <text class="cautionhead" x="92" y="1731">trajectory가 아닙니다</text>
+  <text class="cautionbody" x="92" y="1759">전체 양자상태의 진폭과 위상이</text>
+  <text class="cautionbody" x="92" y="1783">측정분포를 바꿉니다.</text>
+
+  <rect class="gate" x="42" y="1855" rx="22" width="536" height="290"/>
+  <text class="gatehead" x="72" y="1897">COMMON EVIDENCE GATE</text>
+  <text class="verdict" x="72" y="1932">양자 동역학 ≠ 양자 우위</text>
+  <line x1="72" y1="1955" x2="548" y2="1955" stroke="#bdd8ca" stroke-width="2"/>
+  <text class="gatesub" x="72" y="1988" fill="#416b9a">STRONG CLASSICAL COMPARATOR</text>
+  <text class="gatebody" x="72" y="2018">같은 QUBO · 같은 tuning 예산</text>
+  <text class="gatebody" x="72" y="2044">CP-SAT · SA/Tabu · PT · 전용 휴리스틱</text>
+  <text class="gatesub" x="72" y="2082" fill="#28745a">END-TO-END VALIDATION</text>
+  <text class="gatebody" x="72" y="2112">mapping · embedding · training · decoding</text>
+  <text class="gatebody" x="72" y="2138">고정밀 계산 · 합성 · 실험까지 포함</text>
+  <text class="footer" x="42" y="2192">판정 · time-to-target · 검증 통과 후보 · 총 wall-clock</text>
+</svg>

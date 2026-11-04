@@ -4,7 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가</title>
+  <meta name="description" content="DFT·양자화학의 기존 계산 폐루프를 펼쳐 VQE·QPE, QML·양자 표본추출, QUBO·QA·QAOA가 들어갈 위치와 단계적 전환 조건을 검토합니다. 청색 OLED는 이를 시험하는 첫 유즈케이스입니다.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+
+  <meta property="og:description" content="DFT·양자화학의 기존 계산 폐루프를 펼쳐 VQE·QPE, QML·양자 표본추출, QUBO·QA·QAOA가 들어갈 위치와 단계적 전환 조건을 검토합니다. 청색 OLED는 이를 시험하는 첫 유즈케이스입니다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="article:published_time" content="2026-07-11">
+  <meta property="article:modified_time" content="2026-11-04">
+  <meta name="author" content="김현중">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가">
+  <meta name="twitter:description" content="DFT·양자화학의 기존 계산 폐루프를 펼쳐 VQE·QPE, QML·양자 표본추출, QUBO·QA·QAOA가 들어갈 위치와 단계적 전환 조건을 검토합니다. 청색 OLED는 이를 시험하는 첫 유즈케이스입니다.">
   <meta name="color-scheme" content="light">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
+      }
+    };
+  </script>
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"
+    integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4"
+    crossorigin="anonymous"></script>
   <style>
     :root {
       --paper: #fbfaf7;
@@ -73,6 +101,24 @@
       color: var(--blue);
       font-weight: 650;
       text-decoration: none;
+    }
+
+    .topline-actions,
+    .language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switch {
+      padding-right: 10px;
+      border-right: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .language-switch span[aria-current="page"] {
+      color: var(--ink);
+      font-weight: 760;
     }
 
     .hero {
@@ -237,6 +283,14 @@
     .final-article pre code {
       padding: 0;
       background: transparent;
+    }
+
+    .final-article mjx-container[display="true"] {
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .math-display {
@@ -582,12 +636,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -692,7 +749,14 @@
         position: static;
       }
     }
-  </style><link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-06-11_QC-based-inverse-design/">
+  </style>
+<style id="inverse-design-reference-style">
+    .final-article ol.references { list-style:none; padding-left:0; }
+    .final-article ol.references li { padding-left:2.6em; text-indent:-2.6em; overflow-wrap:anywhere; scroll-margin-top:28px; }
+    .final-article .reference-number { font-variant-numeric:tabular-nums; }
+    .final-article .citation { white-space:nowrap; }
+    </style>
+    <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-06-11_QC-based-inverse-design/">
     <meta property="og:title" content="양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가">
     <!-- AI Tech Review Icons -->
     <link rel="icon" href="../../favicon.ico?v=20261022-prompt-brace" sizes="any">
@@ -708,11 +772,14 @@
 <!-- End Reader Engagement Head -->
   </head>
 <body class="public-review">
-  <nav class="public-fallback-nav" aria-label="AI Tech Review"><a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a></nav>
   <div class="topline">
     <div class="topline-inner">
       <span>AI Tech Review Letters: Week 28 (2026-07-12)</span>
-      <span><span class="private-source-omitted">비공개 작업 파일 생략</span></span>
+      <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
+
+
+      </div>
     </div>
   </div>
 
@@ -726,21 +793,22 @@
 
     </div>
   </header>
-<p class="byline-disclosure">김현중 · AI 보조 · 원 작성 세션 검증 기록 미보존 · 근거 기준일 2026-07-12 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
+
+  <p class="byline-disclosure">김현중 · AI 보조 · 원문 우선 검증 · 근거 기준일 2026-07-12 · <a href="../../methods/">작성 방법·에이전트 공개</a></p>
   <main class="content-grid">
     <article class="final-article">
       <figure class="article-hero-figure">
   <img class="diagram-desktop" src="candidate_journey_quantum_specialists.svg" alt="구조와 조건, 예측값, 불확실성, 탈락 이유를 담은 재료 후보 작업지시서가 생성, 빠른 예측, 고정밀 계산, 선택, 실험 공정을 순환하며 각 병목에서 선택적 양자 전문 모듈을 만나는 과정">
   <img class="diagram-mobile" src="candidate_journey_quantum_specialists_mobile.svg" alt="모바일 화면용 세로 배열로 재구성한 재료 후보 작업지시서의 폐루프 여정과 선택적 양자 전문 모듈">
-  <figcaption><strong>그림 1.</strong> 후보 하나는 분자식만 적힌 카드가 아니라 구조·조건·예측·불확실성·탈락 이유를 함께 싣고 공정을 도는 작업지시서에 가깝습니다. 양자컴퓨터는 공장 전체를 바꾸는 장비가 아니라, 전자구조·학습·표본추출·이산 선택의 특정 병목에 연결하는 전문 공정입니다.</figcaption>
+  <figcaption><strong>그림 1.</strong> 후보 하나는 분자식만 적힌 카드가 아니라 구조·조건·예측·불확실성·탈락 이유를 함께 싣고 공정을 도는 작업지시서에 가깝습니다. 양자컴퓨터는 전자구조·학습·표본추출·이산 선택의 특정 병목에 연결하는 전문 공정입니다.</figcaption>
 </figure>
 
 <p>재료 역설계의 출발 질문은 간단합니다. <strong>원하는 물성을 내는 구조와 공정 조건을 어떻게 거꾸로 찾아낼 것인가?</strong> 실제 답을 찾는 과정은 목표와 제약을 정하고, 후보를 만들고, 빠르게 거른 뒤, DFT·양자화학·분자동역학 계산과 실험으로 확인하는 폐루프입니다. 탈락한 후보도 버려지지 않습니다. 왜 실패했는지가 다음 후보를 만드는 정보가 됩니다.</p>
-<p>이 흐름을 하나의 작업지시서가 여러 전문 공정을 오가는 과정으로 생각하면 양자컴퓨팅의 위치가 선명해집니다. QPU가 전체 공정을 한 번에 대신하는 것은 아닙니다. 강한 상관 전자상태를 풀거나, 작은 자료에서 새로운 유사도 표현을 시험하거나, 복잡한 후보 분포를 표본화하거나, 제약이 많은 조합을 고르는 지점에 선택적으로 들어갑니다. 따라서 핵심 질문도 “양자컴퓨터를 쓸 것인가”가 아니라 <strong>어느 계산을, 어떤 입력과 출력으로, 전체 비용까지 포함해 더 낫게 만들 수 있는가</strong>입니다.</p>
+<p>하나의 작업지시서가 여러 전문 공정을 오가듯, 재료 후보도 서로 다른 계산과 검증을 거칩니다. 양자컴퓨팅을 연결할 자리도 그 과정에서 찾을 수 있습니다. 강한 상관 전자상태를 풀거나, 작은 자료에서 새로운 유사도 표현을 시험하거나, 복잡한 후보 분포를 표본화하거나, 제약이 많은 조합을 고르는 지점입니다. <strong>어느 계산을, 어떤 입력과 출력으로, 전체 비용까지 포함해 더 낫게 만들 수 있는가</strong>를 따라가 보겠습니다.</p>
 <div class="reader-layers" aria-label="이 리뷰를 읽는 세 단계">
   <div class="reader-layer"><strong>1 · 기본 지도</strong><span>기존 재료정보학 폐루프의 어디에서 계산비용과 불확실성이 커지는지 먼저 봅니다.</span></div>
   <div class="reader-layer"><strong>2 · 작동 원리</strong><span>VQE·QPE·QML·표본추출·QA·QAOA가 무엇을 입력받아 어떤 방식으로 답을 만드는지 연결합니다.</span></div>
-  <div class="reader-layer"><strong>3 · 채택 판단</strong><span>표현력이 아니라 같은 예산에서 검증을 통과한 후보가 늘었는지로 양자 이득을 판정합니다.</span></div>
+  <div class="reader-layer"><strong>3 · 채택 판단</strong><span>같은 예산에서 검증을 통과한 후보가 늘었는지로 양자 이득을 판정합니다.</span></div>
 </div>
 
 <h2 id="_1">현재의 재료 역설계는 강한 고전 폐루프에서 출발합니다</h2>
@@ -797,9 +865,9 @@
 <p>전자구조 문제는 원래 양자 상태이므로, qubit의 중첩과 얽힘을 이용해 determinant coefficient를 하나씩 저장하지 않고 correlated state를 준비할 수 있습니다. QPE는 Hamiltonian evolution에서 누적된 위상을 읽어 에너지를 추정하고, 이상적인 조건에서는 독립 표본평균과 다른 정밀도 의존성을 가집니다. 이 힘은 좋은 초기상태와 Hamiltonian simulation을 효율적으로 구현할 수 있을 때 나타납니다.</p>
 <p>QML과 양자 생성모델은 회로가 만드는 feature space와 확률분포를 사용합니다. 재료 자료에서 고전 모델이 쉽게 모사하지 못하는 표현이나 분포를 만들 수 있다는 가설이 출발점이며, qubit 수나 Hilbert space의 크기만으로 예측 이득이 생기지는 않습니다. QA와 QAOA도 같은 원칙을 따릅니다. 터널링 또는 cost·mixer 간섭이 해당 문제의 장벽과 제약 구조에 맞을 때 좋은 해의 확률이 높아질 수 있으며, 모든 조합최적화에 공통인 우위는 아닙니다.</p>
 <h3 id="_4">현재 공개 연구는 소형 문제와 인터페이스를 검증하고 있습니다</h3>
-<p>기존 파이프라인을 당장 걷어낼 수 없는 이유는 큐비트 수 하나로 설명되지 않습니다. 전자구조에서는 basis·embedding·active-space 편향과 필요한 관측량의 측정비용이 남습니다. QML과 생성모델에는 고전 자료를 양자상태로 넣는 비용, 학습성, 유효한 분자·구조로 되돌리는 decoder가 필요합니다. QA·QAOA는 원래 목적함수와 제약을 QUBO로 옮기는 동안 순위가 왜곡될 수 있고, embedding·routing·후처리가 solver 이득을 소모합니다. 모든 트랙에서 고전 알고리즘도 계속 개선되며, 합성·소자·공정 실험은 양자 결과를 자동으로 신뢰하지 않습니다.</p>
+<p>각 양자 모듈의 효용은 주변 계산과 연결할 때 드러납니다. 전자구조에서는 basis·embedding·active-space 편향과 필요한 관측량의 측정비용을 함께 봐야 합니다. QML과 생성모델에는 고전 자료를 양자상태로 넣는 비용, 학습성, 유효한 분자·구조로 되돌리는 decoder가 필요합니다. QA·QAOA는 원래 목적함수와 제약을 QUBO로 옮기는 동안 순위가 왜곡될 수 있고, embedding·routing·후처리가 solver 이득을 소모합니다. 비교하는 고전 알고리즘도 계속 개선됩니다. 계산이 내놓은 후보는 같은 합성·소자·공정 기준으로 검증해야 합니다.</p>
 <p>현재 증거로 주장할 수 있는 범위는 <code>고정된 계산 경계에서의 재현 가능한 국소 이득</code>입니다. 재료 역설계 전체의 양자우위는 아직 종단 검증이 필요한 가설입니다. 뒤의 VQE·QPE, QML, 표본추출, QA·QAOA 절은 각각 입력과 출력, 힘의 원천, 이득을 소모하는 비용, 첫 검증 문제를 같은 기준으로 살펴봅니다.</p>
-<p><strong>양자 파이프라인</strong>은 각 양자 계산에 맞는 입력을 만들고 QPU 작업·측정·오류제어·후처리·재료 검증을 연결하는 실행 계층입니다. 결과가 기준을 넘지 못하면 기존 고전 해법으로 복귀하는 경로도 여기에 포함됩니다. 하나의 QPU가 네 계산을 모두 맡는 구조를 뜻하지 않습니다.</p>
+<p><strong>양자 파이프라인</strong>은 각 양자 계산에 맞는 입력을 만들고 QPU 작업·측정·오류제어·후처리·재료 검증을 연결하는 실행 계층입니다. 계산의 성격에 맞는 장치와 알고리즘을 선택하며, 결과가 기준을 넘지 못하면 기존 고전 해법으로 복귀하는 경로도 여기에 포함됩니다.</p>
 <blockquote>
 <p><strong>양자 모듈의 채택 조건</strong> — 같은 입력, 정확도와 전체 검증 예산을 받은 강한 고전 방법보다 재검증 통과 후보를 더 많이 남기거나, 같은 품질에 필요한 시간·비용을 낮출 때만 기존 모듈을 교체합니다.</p>
 </blockquote>
@@ -811,13 +879,13 @@
 </ol>
 <h3 id="_6">오류보정 이후에는 계산 가능한 설계공간의 경계가 달라질 수 있습니다</h3>
 <p>이 단계들이 완성될 경우 장기적으로 가장 큰 변화는 연구 가능한 문제의 범위에서 나타납니다. 현재 비용 때문에 소수 후보에만 적용하는 상관 전자·여기상태 계산을 더 넓은 후보군의 고정밀 판정에 사용하고, 다봉 후보 분포와 불확실성을 유지한 채 다음 계산과 실험을 선택하며, 실패 자료를 즉시 다음 탐색에 반영하는 폐루프를 만들 수 있습니다. 같은 계산·합성·소자 예산에서 더 다양하고 검증된 후보를 남기고, 지금은 계산비용 때문에 일찍 제외하는 설계공간을 탐색 대상으로 되돌리는 것이 종단 목표입니다.</p>
-<p>이 목표는 현재 달성된 성과가 아닙니다. 오류보정 하드웨어, 효율적인 상태·oracle 준비, 반복 가능한 문제군 scaling과 전향적 재료 검증이 함께 성립해야 합니다. 첫 전환 대상은 실패해도 기존 자료·모델·검증법이 남는 작은 계산 경계입니다.</p>
+<p>이 설계공간을 열려면 오류보정 하드웨어, 효율적인 상태·oracle 준비, 반복 가능한 문제군 scaling과 전향적 재료 검증이 함께 성립해야 합니다. 그 가능성을 시험할 첫 대상은 실패해도 기존 자료·모델·검증법이 남는 작은 계산 경계입니다.</p>
 <h2 id="dftqpu-active-space-solver">DFT–QPU 전환은 active-space solver의 경계에서 시작합니다</h2>
 <aside class="callout callout-thinking">
 <p class="callout-label">직관으로 먼저 보기</p>
 <p>후보 작업지시서가 고정밀 검사 공정에 도착했다고 생각해 보겠습니다. DFT·HF와 orbital 분석은 전체 구조와 주변 환경을 살펴 강한 상관·결함·전하이동이 예상되는 후보 영역을 제안합니다. 연구자는 orbital localization, 자연점유수, entanglement 지표와 화학적 판단을 함께 보고 active space를 고정합니다. QPU는 이렇게 정한 작은 영역의 상관 전자상태를 맡는 전문 장비입니다. 검사 결과인 에너지와 필요한 관측량은 다시 고전 계산과 다음 후보 선택으로 돌아갑니다.</p>
 </aside>
-<p>DFT와 양자컴퓨팅 사이의 전환은 <code>DFT 코드를 QFT로 바꾸는 일</code>이 아닙니다. DFT는 전자밀도와 교환–상관 범함수로 바닥상태 문제를 근사하는 전자구조 방법입니다. QFT(Quantum Fourier Transform)는 양자 레지스터의 basis를 바꾸는 회로 연산이며, <a href="https://quantum.cloud.ibm.com/learning/modules/computer-science/qft">표준 QPE에서 누적된 고유위상을 이진수로 읽는 데</a> 쓰입니다. 분자와 재료의 에너지를 계산하는 알고리즘은 VQE·QPE이고, QFT는 그중 QPE 내부의 판독 서브루틴입니다.</p>
+<p>DFT에서 양자 solver로 넘기는 것은 선택한 전자 영역의 Hamiltonian입니다. DFT는 전자밀도와 교환–상관 범함수로 바닥상태 문제를 근사하는 전자구조 방법입니다. <a class="citation" href="#ref-1" aria-label="참고문헌 1">[1]</a> 이름이 비슷한 QFT(Quantum Fourier Transform)는 양자 레지스터의 basis를 바꾸는 회로 연산으로, 표준 QPE에서 누적된 고유위상을 이진수로 읽는 데 쓰입니다.<a class="citation" href="#ref-2" aria-label="참고문헌 2">[2]</a> 분자와 재료의 에너지를 계산하는 알고리즘은 VQE·QPE이고, QFT는 그중 QPE 내부의 판독 서브루틴입니다.</p>
 <p>계산화학자가 먼저 정해야 할 것은 알고리즘보다 <strong>계산 경계</strong>입니다. 구조 최적화, Kohn–Sham SCF, 주기 경계조건, pseudopotential, orbital localization과 embedding 환경은 고전 코드에 남깁니다. 그 결과에서 강한 상관, 결함 준위, 전하이동 또는 여기상태에 중요한 orbital만 골라 finite-basis active-space Hamiltonian을 만듭니다. QPU는 보통 DFT 전체가 아니라 CASSCF·CASCI·DMRG·selected CI가 맡던 상관 전자 solver 자리에 들어갑니다.</p>
 <table>
 <thead>
@@ -880,7 +948,7 @@
 
 <h3 id="2-fermion-qubit">2. Fermion 문제를 qubit 연산으로 번역합니다</h3>
 <p>전자 점유수는 0과 1이므로 qubit에 바로 적을 수 있어 보입니다. 그러나 전자는 서로 자리를 바꿀 때 부호가 달라지는 fermion입니다. 단순한 점유 장부만 옮겨 적으면 이 규칙을 잃습니다. Fermion-to-qubit mapping은 <strong>어느 orbital이 찼는지와 앞선 orbital들의 parity를 함께 기록하는 새 장부 양식</strong>입니다.</p>
-<p>Jordan–Wigner mapping은 앞선 orbital의 parity를 <code>Z</code> string에 기록합니다. Bravyi–Kitaev mapping은 점유수와 parity 정보를 tree 구조로 나누어 spin-orbital 수 <code>n</code>에 대한 한 fermion 연산자의 최악 locality를 <code>O(n)</code>에서 <code>O(log n)</code>로 낮춥니다. 다만 실제 gate 수는 orbital ordering, symmetry tapering, hardware connectivity와 compiler에 달려 있으므로 작은 문제에서 어느 mapping이 항상 짧다고 말할 수는 없습니다. <a href="https://doi.org/10.1063/1.4768229">Seeley·Richard·Love의 원 연구</a>는 이 변환을 전자구조 Hamiltonian에 구체적으로 적용했습니다.</p>
+<p>Jordan–Wigner mapping은 앞선 orbital의 parity를 <code>Z</code> string에 기록합니다. Bravyi–Kitaev mapping은 점유수와 parity 정보를 tree 구조로 나누어 spin-orbital 수 <code>n</code>에 대한 한 fermion 연산자의 최악 locality를 <code>O(n)</code>에서 <code>O(log n)</code>로 낮춥니다. 다만 실제 gate 수는 orbital ordering, symmetry tapering, hardware connectivity와 compiler에 달려 있으므로 작은 문제에서 어느 mapping이 항상 짧다고 말할 수는 없습니다. Seeley·Richard·Love의 원 연구<a class="citation" href="#ref-3" aria-label="참고문헌 3">[3]</a>는 이 변환을 전자구조 Hamiltonian에 구체적으로 적용했습니다.</p>
 <p>Mapping 뒤에는 서로 교환하지 않는 Pauli string의 합이 남습니다.</p>
 <aside class="callout callout-evidence">
 <p class="callout-label">Qubit Hamiltonian</p>
@@ -902,9 +970,9 @@
 </div>
 <p>마지막 부등식은 noise가 없고 expectation value를 정확히 구한 이상적인 경우의 Rayleigh–Ritz 상한입니다. Finite-shot 추정값과 오류완화 결과가 매 iteration에서 이를 보장하는 것은 아닙니다.</p>
 </aside>
-<p><a href="https://www.nature.com/articles/ncomms5213">VQE 최초 실험</a>의 중요한 전환은 긴 coherent time evolution을 비교적 짧은 상태 준비 회로와 반복 측정으로 바꾼 데 있습니다. UCC 계열 ansatz는 전자 excitation 구조를 보존하지만 orbital 수와 excitation rank에 따라 gate 수가 빠르게 늘어납니다. Hardware-efficient ansatz는 회로를 줄일 수 있지만 전자수·spin·size consistency와 화학적 해석성을 잃을 수 있습니다. ADAPT-VQE는 필요한 operator를 순차적으로 고르는 대신 후보 gradient를 측정하는 비용을 더 냅니다.</p>
-<p>Energy 측정도 한 번의 readout이 아닙니다. 동일한 회로를 반복 실행하는 횟수를 shots라고 부릅니다. Pauli 항을 독립 표본화하는 기본 구조에서는 목표 표준오차 <code>ε</code>에 필요한 shots가 대체로 <code>1/ε²</code>에 비례합니다. <a href="https://www.nature.com/articles/s41534-020-00341-7">Huggins 등의 측정 연구</a>는 low-rank factorization과 basis rotation grouping으로 조사한 계에서 측정 횟수를 크게 낮췄지만, 회로 반복·분산·정밀도의 거래관계는 남았습니다. Geometry마다 수십·수백 번 optimizer가 에너지를 다시 요청한다면 단일-point 데모의 비용을 그대로 해석할 수 없습니다.</p>
-<p>VQE의 잠재적 이득은 QPU가 고전 tensor network나 state-vector 방법으로 contraction하기 어려운 entangled circuit state를 준비하고 그 관측량을 직접 표본화하는 데 있습니다. 그러나 회로는 고전적으로 어렵게 모사될 만큼 복잡하면서도 실제 장치의 noise를 견딜 만큼 얕아야 합니다. 이 두 조건은 서로 반대 방향으로 작용합니다. VQE에는 일반적인 지수 speedup 보장이 없으며, ansatz bias·optimizer·shots·오류완화를 포함한 문제별 비교로 이득을 확인해야 합니다.</p>
+<p>VQE 최초 실험<a class="citation" href="#ref-4" aria-label="참고문헌 4">[4]</a>의 중요한 전환은 긴 coherent time evolution을 비교적 짧은 상태 준비 회로와 반복 측정으로 바꾼 데 있습니다. UCC 계열 ansatz는 전자 excitation 구조를 보존하지만 orbital 수와 excitation rank에 따라 gate 수가 빠르게 늘어납니다. <a class="citation" href="#ref-5" aria-label="참고문헌 5">[5]</a> Hardware-efficient ansatz는 회로를 줄일 수 있지만 전자수·spin·size consistency와 화학적 해석성을 잃을 수 있습니다. ADAPT-VQE는 필요한 operator를 순차적으로 고르는 대신 후보 gradient를 측정하는 비용을 더 냅니다.</p>
+<p>Energy 측정도 한 번의 readout이 아닙니다. 동일한 회로를 반복 실행하는 횟수를 shots라고 부릅니다. Pauli 항을 독립 표본화하는 기본 구조에서는 목표 표준오차 <code>ε</code>에 필요한 shots가 대체로 <code>1/ε²</code>에 비례합니다. Huggins 등의 측정 연구<a class="citation" href="#ref-6" aria-label="참고문헌 6">[6]</a>는 low-rank factorization과 basis rotation grouping으로 조사한 계에서 측정 횟수를 크게 낮췄지만, 회로 반복·분산·정밀도의 거래관계는 남았습니다. Geometry마다 수십·수백 번 optimizer가 에너지를 다시 요청한다면 단일-point 데모의 비용을 그대로 해석할 수 없습니다.</p>
+<p>VQE의 잠재적 이득은 QPU가 고전 tensor network나 state-vector 방법으로 contraction하기 어려운 entangled circuit state를 준비하고 그 관측량을 직접 표본화하는 데 있습니다. 그러나 회로는 고전적으로 어렵게 모사될 만큼 복잡하면서도 실제 장치의 noise를 견딜 만큼 얕아야 합니다. 이 두 조건은 서로 반대 방향으로 작용합니다. <a class="citation" href="#ref-7" aria-label="참고문헌 7">[7]</a> VQE에는 일반적인 지수 speedup 보장이 없으며, ansatz bias·optimizer·shots·오류완화를 포함한 문제별 비교로 이득을 확인해야 합니다.</p>
 <h3 id="4-qpe">4. QPE는 준비된 상태의 에너지를 위상으로 읽습니다</h3>
 <p>QPE는 에너지 고유상태를 찾아 헤매는 optimizer가 아니라 <strong>위상에 새겨진 주파수를 읽는 디지털 분석기</strong>에 가깝습니다. 여러 주파수가 섞인 신호에서 특정 성분을 읽듯, 초기상태에 포함된 각 고유상태는 시간에 따라 <span class="math-inline"><var>E</var><sub>k</sub>/ℏ</span>의 각주파수로 위상을 누적합니다. QPE는 이 위상을 이진수로 판독합니다. 실제 분광 실험을 모사한다는 뜻은 아니며, 목표 고유상태와 충분히 겹치는 초기상태가 먼저 필요합니다.</p>
 <aside class="callout callout-evidence">
@@ -917,14 +985,14 @@
 <p><span class="math-inline">|<var>α</var><sub>k</sub>|<sup>2</sup></span>는 초기상태가 고유상태 <code>k</code>를 포함하는 비중입니다. 유한 phase register에서 해당 에너지를 목표 구간 안에 맞게 판독할 조건부 성공확률은 별도로 곱해집니다.</p>
 </aside>
 <p>실제 구현은 <span class="math-inline">Û=exp[−<var>i</var>(Ĥ−<var>E</var><sub>ref</sub>)<var>t</var>/ℏ]</span>처럼 energy shift와 evolution time을 정해 목표 spectrum이 하나의 <code>2π</code> phase 구간에 들어가도록 합니다. 이 범위를 잡지 않으면 서로 다른 에너지가 같은 phase로 접히는 aliasing이 생길 수 있습니다. 표준 QPE에서는 controlled-Û, controlled-Û², controlled-Û⁴처럼 더 긴 진화를 적용하고 inverse QFT로 누적 위상을 이진수로 읽습니다. QFT가 분자 Hamiltonian을 푸는 것이 아니라, 이미 기록된 phase를 판독합니다.</p>
-<p>이상적인 QPE는 에너지 정밀도 <code>ε</code>에 대해 coherent evolution 또는 query가 <code>O(1/ε)</code>로 증가합니다. 독립 Pauli 표본평균의 <code>O(1/ε²)</code>와 다른 지점입니다. 이는 상태 준비와 Hamiltonian simulation 구현비용, 오류보정 비용을 제외한 정밀도 의존성 비교입니다. 또한 FCI coefficient vector를 모두 저장하고 대각화하지 않고도 determinant 중첩에 Hamiltonian evolution을 적용할 수 있습니다. <a href="https://doi.org/10.1126/science.1113479">Aspuru-Guzik 등의 초기 분자 QPE 연구</a>는 이 경로를 물과 LiH에 대해 구성했습니다.</p>
+<p>이상적인 QPE는 에너지 정밀도 <code>ε</code>에 대해 coherent evolution 또는 query가 <code>O(1/ε)</code>로 증가합니다. 독립 Pauli 표본평균의 <code>O(1/ε²)</code>와 다른 지점입니다. 이는 상태 준비와 Hamiltonian simulation 구현비용, 오류보정 비용을 제외한 정밀도 의존성 비교입니다. 또한 FCI coefficient vector를 모두 저장하고 대각화하지 않고도 determinant 중첩에 Hamiltonian evolution을 적용할 수 있습니다. Aspuru-Guzik 등의 초기 분자 QPE 연구<a class="citation" href="#ref-8" aria-label="참고문헌 8">[8]</a>는 이 경로를 물과 LiH에 대해 구성했습니다.</p>
 <details class="deep-dive">
 <summary>심화 · QPE의 비용을 좌우하는 Hamiltonian simulation</summary>
 <p>실제 자원은 QFT보다 Hamiltonian simulation이 좌우합니다. Product formula(Trotterization), linear-combination-of-unitaries, qubitization 가운데 무엇을 쓰는지, 적분을 어떻게 factorize하는지에 따라 gate 수가 달라집니다. Block encoding은 정규화한 Hamiltonian <code>H/λ</code>를 더 큰 unitary 행렬의 한 block으로 구현하는 방법입니다. Qubitization은 각 고유값을 quantum walk의 회전 위상으로 바꾸며, QSP(Quantum Signal Processing)는 위상각의 연속을 조절해 시간진화나 spectral filter에 필요한 다항함수를 구현할 수 있습니다.</p>
-<p>QPE는 선택한 Hamiltonian simulation 또는 quantum walk가 만든 고유위상을 에너지로 읽습니다. 대표적인 qubitization 기반 경로는 <code>integral → block encoding → qubitization → QPE</code>이며, 필요한 변환에 QSP를 결합할 수 있습니다. QSP와 qubitization은 VQE·QPE와 경쟁하는 별도 전자구조 solver가 아닙니다. <a href="https://doi.org/10.22331/q-2019-07-12-163">Low와 Chuang의 qubitization 연구</a>는 이 oracle model의 대표 경로를 제시합니다. 이 경로의 실제 자원에는 normalization <code>λ</code>, PREPARE·SELECT, 초기상태 overlap과 오류보정 비용이 들어갑니다.</p>
+<p>QPE는 선택한 Hamiltonian simulation 또는 quantum walk가 만든 고유위상을 에너지로 읽습니다. 대표적인 qubitization 기반 경로는 <code>integral → block encoding → qubitization → QPE</code>이며, 필요한 변환에 QSP를 결합할 수 있습니다. QSP와 qubitization은 VQE·QPE와 경쟁하는 별도 전자구조 solver가 아닙니다. Low와 Chuang의 qubitization 연구<a class="citation" href="#ref-9" aria-label="참고문헌 9">[9]</a>는 이 oracle model의 대표 경로를 제시합니다. 이 경로의 실제 자원에는 normalization <code>λ</code>, PREPARE·SELECT, 초기상태 overlap과 오류보정 비용이 들어갑니다.</p>
 </details>
-<p><a href="https://doi.org/10.1103/m7j3-5sk6">2026년 PRX Quantum의 H₂ 실증</a>은 <code>[[7,1,3]]</code> color code와 실시간 오류정정 절차를 QPE 전자구조 계산에 연결해 계산 fidelity가 개선될 수 있음을 보였습니다. QPE가 자원추정에만 머문 것은 아니지만, 최소 basis의 H₂를 다룬 method demonstration이며 재료 규모의 정확도·비용 우위를 입증한 결과는 아닙니다. 깊은 controlled evolution과 반복 가능한 논리 연산이 필요하다는 장기 하드웨어 조건도 그대로 남습니다.</p>
-<p>상태 overlap은 별도의 병목입니다. 바닥상태 weight가 <code>p₀=|α₀|²</code>이면 원하는 결과를 얻기 위한 반복은 대략 <code>1/p₀</code>에 비례합니다. 강상관계에서 Hartree–Fock determinant의 overlap이 지수적으로 작아지면 Hamiltonian simulation의 다항식 scaling만으로는 전체 이득을 설명할 수 없습니다. <a href="https://www.nature.com/articles/s41467-023-37587-6">2023년 ground-state quantum advantage 분석</a>은 좋은 초기상태를 만들 수 있는 구조가 DMRG·selected CI 같은 고전 방법에도 유리할 수 있어, 일반적인 바닥상태 양자화학의 지수 우위는 아직 입증되지 않았다고 평가했습니다.</p>
+<p>2026년 PRX Quantum의 H₂ 실증<a class="citation" href="#ref-10" aria-label="참고문헌 10">[10]</a>은 <code>[[7,1,3]]</code> color code와 실시간 오류정정 절차를 QPE 전자구조 계산에 연결해 계산 fidelity가 개선될 수 있음을 보였습니다. QPE가 자원추정에만 머문 것은 아니지만, 최소 basis의 H₂를 다룬 method demonstration이며 재료 규모의 정확도·비용 우위를 입증한 결과는 아닙니다. 깊은 controlled evolution과 반복 가능한 논리 연산이 필요하다는 장기 하드웨어 조건도 그대로 남습니다.</p>
+<p>상태 overlap은 별도의 병목입니다. 바닥상태 weight가 <code>p₀=|α₀|²</code>이면 원하는 결과를 얻기 위한 반복은 대략 <code>1/p₀</code>에 비례합니다. 강상관계에서 Hartree–Fock determinant의 overlap이 지수적으로 작아지면 Hamiltonian simulation의 다항식 scaling만으로는 전체 이득을 설명할 수 없습니다. 2023년 ground-state quantum advantage 분석<a class="citation" href="#ref-11" aria-label="참고문헌 11">[11]</a>은 좋은 초기상태를 만들 수 있는 구조가 DMRG·selected CI 같은 고전 방법에도 유리할 수 있어, 일반적인 바닥상태 양자화학의 지수 우위는 아직 입증되지 않았다고 평가했습니다.</p>
 <figure class="figure-panel">
   <img class="diagram-desktop" src="vqe_qpe_mechanism_comparison.svg" alt="VQE의 짧은 매개변수 회로와 반복 Pauli 측정 및 고전 최적화 루프를 QPE의 초기상태 준비, 긴 controlled Hamiltonian evolution, inverse QFT 위상 판독과 비교한 도식">
   <img class="diagram-mobile" src="vqe_qpe_mechanism_comparison_mobile.svg" alt="모바일 화면용 세로 배열로 재구성한 VQE와 QPE의 작동 원리 및 비용 비교 도식">
@@ -935,22 +1003,22 @@
 <h3 id="5-outer-loop">5. 에너지와 필요한 관측량만 고전 outer loop로 돌려보냅니다</h3>
 <p>정밀 검사 장비의 내부 상태를 모두 복사할 필요는 없습니다. 다음 공정이 판정에 쓸 검사 결과만 꺼내야 합니다. QPU의 상태 amplitude를 모두 내려받는 tomography는 지수적으로 비싸므로, 재료 계산은 다음 의사결정에 필요한 관측량을 먼저 정합니다. 1-RDM <span class="math-inline"><var>γ</var><sub>pq</sub>=⟨â<sup>†</sup><sub>p</sub>â<sub>q</sub>⟩</span>와 2-RDM <span class="math-inline"><var>Γ</var><sub>pqrs</sub>=⟨â<sup>†</sup><sub>p</sub>â<sup>†</sup><sub>q</sub>â<sub>s</sub>â<sub>r</sub>⟩</span>으로 one·two-body energy, 전자·spin density, dipole, orbital gradient와 embedding quantity를 구성할 수 있습니다. 다만 전체 2-RDM 원소 수도 <code>O(K⁴)</code>이므로 모든 것을 읽으면 측정 이득이 사라질 수 있습니다.</p>
 <p>실무 흐름은 CASSCF의 macro/micro iteration과 닮습니다. DFT/HF가 geometry·environment·orbital을 만들고, VQE 또는 QPE가 active-space energy와 필요한 RDM을 냅니다. 고전 코드가 orbital rotation, embedding potential, force와 response를 갱신하고 수렴할 때까지 반복합니다. 여기상태에는 vanilla VQE 대신 VQD(Variational Quantum Deflation), qEOM(quantum Equation-of-Motion), multistate VQE 같은 확장이 필요합니다. 상태 순서, transition dipole·oscillator strength, singlet–triplet gap과 geometry dependence가 검증 항목입니다.</p>
-<p><a href="https://www.nature.com/articles/s41524-024-01477-2">2024년 MgO 결함 연구</a>는 periodic range-separated DFT 환경 안의 2전자·5-orbital fragment를 VQE와 qEOM으로 풀었습니다. 원자 배치와 장거리 환경은 고전 계산이, 국소 결함 상태는 작은 양자 회로가 맡았습니다. 고전 FCI로 전 범위를 확인할 수 있는 크기였으며, 이 결과가 입증한 범위는 <strong>DFT–QPU 인터페이스의 동작</strong>입니다. 문제 크기에 따른 우위는 시험하지 않았습니다.</p>
+<p>2024년 MgO 결함 연구<a class="citation" href="#ref-12" aria-label="참고문헌 12">[12]</a>는 periodic range-separated DFT 환경 안의 2전자·5-orbital fragment를 VQE와 qEOM으로 풀었습니다. 원자 배치와 장거리 환경은 고전 전자구조 계산에 두고, 국소 결함 상태는 고전 컴퓨터에서 모사한 VQE·qEOM 회로로 풀었습니다. 고전 FCI로 전 범위를 확인할 수 있는 크기에서 <strong>DFT와 양자 solver 소프트웨어의 연결</strong>을 검증한 사례입니다.</p>
 <p>전자구조 benchmark에는 energy error와 함께 basis·active space, 상태 overlap, 물리·논리 qubit, Pauli term과 shots, circuit depth와 two-qubit gate, 오류완화·오류보정, 전체 wall-clock을 남깁니다. 비교군에는 DMRG·selected CI·CC·FCIQMC처럼 문제 구조를 활용하는 강한 고전 방법을 포함합니다.</p>
 <p>전자구조 경로가 내놓은 energy·RDM·transition property는 두 방향으로 사용됩니다. 하나는 대리모델이 학습할 물성값이고, 다른 하나는 선택된 후보를 판정하는 고정밀 기준입니다. 다음 절의 QML이 첫 방향을 맡고, QUBO·QA·QAOA는 그 예측값으로 후보를 고릅니다. 선택된 후보는 다시 두 번째 방향의 전자구조 계산과 실험으로 돌아옵니다.</p>
 <h2 id="qml">QML은 전자구조 출력을 학습하며 입력비용과 일반화로 평가합니다</h2>
 <p>전자 Hamiltonian을 매 후보마다 풀 수 없기 때문에, DFT·post-HF·VQE·QPE에서 얻은 에너지와 관측량은 대리모델의 label로 넘어갑니다. 이 학습 단계가 전자상태 문제와 뒤의 설계 비용함수를 잇습니다. QML은 GNN·GP·kernel과 같은 입력·출력에서 비교하는 선택적 대리모델 후보입니다.</p>
-<p>직관적으로 quantum kernel은 후보를 <strong>새 좌표계에 펼쳐 유사도를 다시 재는 방법</strong>입니다. 기존 표현에서는 멀리 떨어져 보이던 두 후보가 양자 feature map에서는 비슷한 패턴을 보일 수 있습니다. 그러나 좌표계가 복잡하다는 사실만으로 좋은 지도가 되지는 않습니다. 미학습 계열의 예측과 불확실성 보정이 실제로 좋아져야 의미가 있습니다.</p>
-<p>Quantum kernel 가운데 대표적인 fidelity kernel은 고전 descriptor를 양자상태로 인코딩하고 두 상태의 fidelity를 kernel 값으로 사용합니다. Projected kernel은 국소 관측량 등으로 낮은 차원의 특징을 만든 뒤 고전 kernel을 구성합니다. QNN은 parameterized quantum circuit의 측정값을 예측 함수로 학습합니다. 이 방법들은 작은 자료에서 새로운 표현을 제공할 가능성이 있지만, Hilbert space가 지수적으로 크다는 사실만으로 예측 우위가 생기지는 않습니다.</p>
-<p><a href="https://www.nature.com/articles/s41586-019-0980-2">Havlíček 등의 2019년 실험</a>은 양자 feature space를 이용한 분류를 보였지만 실용 재료 자료에서의 우위 증명은 아니었습니다. <a href="https://www.nature.com/articles/s41467-021-22539-9">2021년 Power of Data 연구</a>는 주어진 자료에서 고전 모델이 양자 모델의 예측을 배울 수 있는지까지 봐야 한다고 설명합니다. 회로가 고전적으로 시뮬레이션하기 어렵다는 사실과 실제 예측 이득은 서로 다른 주장입니다.</p>
-<p>입력 비용도 빠뜨릴 수 없습니다. 고전 벡터를 amplitude나 angle로 인코딩하는 회로, N개 표본의 kernel matrix를 측정하는 횟수, 유한 shots의 통계오차가 전체 비용에 들어갑니다. 표현력이 높은 회로가 항상 유리한 것도 아닙니다. <a href="https://www.nature.com/articles/s41467-018-07090-4">2018년 barren plateau 연구</a>는 무작위 변분 회로에서 gradient가 qubit 수에 따라 지수적으로 작아질 수 있음을 보였고, <a href="https://www.nature.com/articles/s41467-024-49287-w">2024년 quantum kernel 집중 연구</a>는 embedding, entanglement, global measurement와 noise가 서로 다른 입력의 kernel 값을 구분하기 어렵게 만들 수 있음을 보였습니다.</p>
+<p>직관적으로 quantum kernel은 후보를 <strong>새 좌표계에 펼쳐 유사도를 다시 재는 방법</strong>입니다. 기존 표현에서는 멀리 떨어져 보이던 두 후보가 양자 feature map에서는 비슷한 패턴을 보일 수 있습니다. 그 유사도가 유용한지는 학습하지 않은 계열의 예측과 불확실성 보정에서 확인할 수 있습니다.</p>
+<p>Quantum kernel 가운데 대표적인 fidelity kernel은 고전 descriptor를 양자상태로 인코딩하고 두 상태의 fidelity를 kernel 값으로 사용합니다. Projected kernel은 국소 관측량 등으로 낮은 차원의 특징을 만든 뒤 고전 kernel을 구성합니다. QNN은 parameterized quantum circuit의 측정값을 예측 함수로 학습합니다. 재료 대리모델에서는 이 표현이 같은 자료를 학습한 고전 모델과 어떻게 다른 예측을 내는지가 관심사입니다.</p>
+<p>Havlíček 등의 2019년 실험<a class="citation" href="#ref-13" aria-label="참고문헌 13">[13]</a>은 양자 feature space를 이용한 분류를 보였지만 실용 재료 자료에서의 우위 증명은 아니었습니다. 2021년 Power of Data 연구<a class="citation" href="#ref-14" aria-label="참고문헌 14">[14]</a>는 주어진 자료에서 고전 모델이 양자 모델의 예측을 배울 수 있는지까지 봐야 한다고 설명합니다. 회로가 고전적으로 시뮬레이션하기 어렵다는 사실과 실제 예측 이득은 서로 다른 주장입니다.</p>
+<p>입력 비용도 빠뜨릴 수 없습니다. 고전 벡터를 amplitude나 angle로 인코딩하는 회로, N개 표본의 kernel matrix를 측정하는 횟수, 유한 shots의 통계오차가 전체 비용에 들어갑니다. 표현력이 높은 회로가 항상 유리한 것도 아닙니다. 2018년 barren plateau 연구<a class="citation" href="#ref-15" aria-label="참고문헌 15">[15]</a>는 무작위 변분 회로에서 gradient가 qubit 수에 따라 지수적으로 작아질 수 있음을 보였고, 2024년 quantum kernel 집중 연구<a class="citation" href="#ref-16" aria-label="참고문헌 16">[16]</a>는 embedding, entanglement, global measurement와 noise가 서로 다른 입력의 kernel 값을 구분하기 어렵게 만들 수 있음을 보였습니다.</p>
 <p>재료 대리모델에 QML을 넣는다면 같은 scaffold 또는 composition split을 사용해야 합니다. GNN, Gaussian process, boosting, classical kernel에 같은 자료 수와 hyperparameter budget을 주고, 평균오차와 함께 계열 밖 예측과 불확실성 보정을 비교합니다. QPU 호출과 encoding을 포함한 비용에서 이득이 남지 않으면 고전 모델이 기준 모듈로 남습니다.</p>
 <h2 id="_7">후보를 만드는 표본추출과 고르는 최적화는 다른 문제입니다</h2>
 <p>생성·표본추출과 최적화는 모두 여러 bitstring을 내놓을 수 있지만 목적이 다릅니다. 생성모델은 목표 자료의 분포를 배우거나 다양한 후보를 표본화합니다. 최적화는 주어진 비용함수를 낮추는 제약 만족 해를 찾습니다. 낮은 에너지 표본이 많이 나왔다는 사실만으로 목표 분포를 잘 학습했다고 말할 수 없습니다.</p>
 <h3 id="_8">생성·표본추출은 분포 충실도를 묻습니다</h3>
 <p>표본추출기는 정답 하나를 찍는 장치보다 <strong>확률이 설계된 주사위</strong>에 가깝습니다. 좋은 주사위는 인기 있는 후보만 되풀이하지 않고, 목표 분포의 여러 mode를 적절한 비율로 보여주며, 유효하고 다양한 후보를 냅니다. 최저 비용 후보 하나를 찾는 최적화와 평가 기준이 다른 이유입니다.</p>
-<p>QCBM은 회로가 만든 Born probability를 학습하고, QBM은 Hamiltonian의 Gibbs 분포를 모델링합니다. 고전 RBM의 표본추출을 양자 어닐러에 맡기는 방식은 또 다른 범주입니다. 세 방법을 모두 “양자 생성모델”로 뭉치면 무엇이 개선됐는지 알기 어렵습니다. 특히 실제 annealer가 목표 Gibbs 분포를 그대로 낸다고 가정해서는 안 됩니다.</p>
-<p><a href="https://www.nature.com/articles/s41534-019-0157-8">2019년 QCBM 연구</a>는 작은 합성 분포에서 shallow circuit의 생성 학습을 실증했습니다. 분자 설계에서는 양자 회로가 latent prior 일부를 맡고 encoder, decoder, validity 검사와 property model은 고전적으로 남는 경우가 많습니다. <a href="https://www.nature.com/articles/s41598-023-32703-4">2023년 annealer-assisted 분자 생성 연구</a>도 이런 hybrid 구조를 보였지만, 유효성 손실과 접근·학습비용 때문에 양자 생성 우위를 입증한 결과로 읽을 수는 없습니다.</p>
+<p>QCBM은 회로가 만든 Born probability를 학습하고, QBM은 Hamiltonian의 Gibbs 분포를 모델링합니다. 고전 RBM의 표본추출을 양자 어닐러에 맡기는 방식은 또 다른 범주입니다. 세 방법을 모두 “양자 생성모델”로 뭉치면 무엇이 개선됐는지 알기 어렵습니다. 특히 실제 annealer가 목표 Gibbs 분포를 그대로 낸다고 가정해서는 안 됩니다. <a class="citation" href="#ref-17" aria-label="참고문헌 17">[17]</a></p>
+<p>2019년 QCBM 연구<a class="citation" href="#ref-18" aria-label="참고문헌 18">[18]</a>는 작은 합성 분포에서 shallow circuit의 생성 학습을 실증했습니다. 분자 설계에서는 양자 회로가 latent prior 일부를 맡고 encoder, decoder, validity 검사와 property model은 고전적으로 남는 경우가 많습니다. 2023년 annealer-assisted 분자 생성 연구<a class="citation" href="#ref-19" aria-label="참고문헌 19">[19]</a>도 이런 hybrid 구조를 보였지만, 유효성 손실과 접근·학습비용 때문에 양자 생성 우위를 입증한 결과로 읽을 수는 없습니다.</p>
 <p>평가 지표는 분포 수준에 둡니다. objective의 최솟값만으로는 충분하지 않습니다. held-out likelihood 또는 적절한 divergence, mode coverage, 유효·고유·합성 가능 후보 비율, effective sample size와 property-conditioned hit를 함께 봅니다. 양자 sampler의 표본이 정확한 Boltzmann 분포라는 가정도 effective temperature와 freeze-out 조건 아래에서 따로 검증해야 합니다.</p>
 <p>여기까지는 어떤 후보 분포를 만들 것인가의 문제입니다. 이제 생성모델이나 데이터베이스가 만든 후보 집합을 고정하고, 제한된 계산·실험 예산으로 무엇을 먼저 검증할지 고르는 이산 최적화로 넘어갑니다.</p>
 <h2 id="hamiltonian">설계 선택은 물성값과 제약을 비용 Hamiltonian으로 바꿉니다</h2>
@@ -966,7 +1034,7 @@
 </aside>
 <h3 id="qubo">QUBO는 물성 대리모델과 제약을 하나의 비용함수로 묶습니다</h3>
 <p>QUBO는 후보를 평가하는 <strong>점수표</strong>로 생각하면 쉽습니다. 대각 성분은 치환기나 공정 조건 하나를 골랐을 때의 개별 점수이고, 비대각 성분은 둘을 함께 골랐을 때 생기는 상승효과나 충돌을 적습니다. 제약 위반에는 벌점을 더합니다. 이 점수표가 원래 물성과 제약을 충실히 옮겼는지가 solver보다 먼저 검증돼야 합니다.</p>
-<p>QUBO(Quadratic Unconstrained Binary Optimization)는 이진 변수의 선형·이차 항으로 목적함수를 쓰는 형식입니다. 양자 알고리즘이 아닙니다. 같은 QUBO를 exact enumeration, branch-and-bound, CP-SAT·MILP, simulated annealing, tabu search, parallel tempering, GPU Ising solver, QA와 QAOA가 풀 수 있습니다.</p>
+<p>QUBO(Quadratic Unconstrained Binary Optimization)는 이진 변수의 선형·이차 항으로 목적함수를 쓰는 형식입니다. <a class="citation" href="#ref-20" aria-label="참고문헌 20">[20]</a> 양자 알고리즘이 아닙니다. 같은 QUBO를 exact enumeration, branch-and-bound, CP-SAT·MILP, simulated annealing, tabu search, parallel tempering, GPU Ising solver, QA와 QAOA가 풀 수 있습니다.</p>
 <aside class="callout callout-evidence">
 <p class="callout-label">설계 문제의 QUBO 정식화</p>
 <div aria-label="QUBO 목적함수는 이차 점수와 제약 위반 벌점의 합입니다" class="math-display" role="math">
@@ -1005,10 +1073,10 @@
 </div>
 <p>이상적 시작 한계 <code>B(0)=0</code>에서 바닥상태는 모든 bitstring에 퍼진 <span class="math-inline">|+⟩<sup>⊗n</sup></span>입니다. 닫힌 계에서 충분히 천천히 변화하면 바닥상태를 따라가지만, 필요한 시간은 경로의 최소 energy gap에 민감합니다.</p>
 </aside>
-<p>Transverse field가 만드는 quantum fluctuation과 tunneling은 높고 폭이 좁은 장벽에 갇힌 상태가 다른 basin으로 이동하도록 도울 수 있습니다. <a href="https://doi.org/10.1103/PhysRevE.58.5355">Kadowaki와 Nishimori의 원 연구</a>는 transverse Ising model로 이 생각을 제시했고, <a href="https://www.nature.com/articles/ncomms10327">2016년 multiqubit tunneling 실험</a>은 의도적으로 만든 문제에서 여러 qubit의 collective tunneling이 계산 과정에 참여함을 보였습니다. 그 논문 자체도 quantum speedup을 확립한 것은 아니라고 선을 그었습니다. 터널링은 메커니즘의 증거이지 종단 이득의 증거가 아닙니다.</p>
-<p>실제 annealer는 유한 온도와 잡음에 결합된 open system입니다. Thermal excitation·relaxation이 일어나며, 어닐링 후반에는 분포가 사실상 고정되는 freeze-out도 생깁니다. 한 번의 read는 정답이 아니라 낮은 에너지 표본 하나를 냅니다. 논리 QUBO graph가 QPU topology와 맞지 않으면 변수 하나를 physical-qubit chain으로 만드는 minor embedding이 필요합니다. Chain strength가 약하면 chain break가 늘고, 너무 강하면 계수를 rescale하면서 작은 물성 차이가 analog control error에 묻힙니다. 조밀한 pair model에서는 수천 physical qubit이 수십 개 논리 변수로 줄어들 수도 있습니다.</p>
+<p>Transverse field가 만드는 quantum fluctuation과 tunneling은 높고 폭이 좁은 장벽에 갇힌 상태가 다른 basin으로 이동하도록 도울 수 있습니다. Kadowaki와 Nishimori의 원 연구<a class="citation" href="#ref-21" aria-label="참고문헌 21">[21]</a>는 transverse Ising model로 이 생각을 제시했고, 2016년 multiqubit tunneling 실험<a class="citation" href="#ref-22" aria-label="참고문헌 22">[22]</a>은 의도적으로 만든 문제에서 여러 qubit의 collective tunneling이 계산 과정에 참여함을 보였습니다. 그 논문 자체도 quantum speedup을 확립한 것은 아니라고 선을 그었습니다. 터널링은 메커니즘의 증거이지 종단 이득의 증거가 아닙니다.</p>
+<p>실제 annealer는 유한 온도와 잡음에 결합된 open system입니다. Thermal excitation·relaxation이 일어나며, 어닐링 후반에는 분포가 사실상 고정되는 freeze-out도 생깁니다. 한 번의 read는 정답이 아니라 낮은 에너지 표본 하나를 냅니다. 논리 QUBO graph가 QPU topology와 맞지 않으면 변수 하나를 physical-qubit chain으로 만드는 minor embedding이 필요합니다. <a class="citation" href="#ref-23" aria-label="참고문헌 23">[23]</a> Chain strength가 약하면 chain break가 늘고, 너무 강하면 계수를 rescale하면서 작은 물성 차이가 analog control error에 묻힙니다. 조밀한 pair model에서는 수천 physical qubit이 수십 개 논리 변수로 줄어들 수도 있습니다.</p>
 <h3 id="qaoa-mixer">QAOA는 비용 위상과 mixer의 간섭으로 확률분포를 바꿉니다</h3>
-<p>QAOA는 공이 비용 지형 위를 지나가는 경로로 그리면 오해하기 쉽습니다. 먼저 cost 연산이 각 bitstring에 비용에 따른 <strong>위상표식</strong>을 붙입니다. 이때 측정확률은 아직 바뀌지 않습니다. 이어 mixer가 후보들의 amplitude를 다시 섞으면 위상 차이가 간섭으로 바뀌고, 일부 좋은 후보의 최종 표본확률이 커질 수 있습니다. 이 <code>cost → mixer</code> 교대를 <code>p</code>회 적용하고, 고전 optimizer가 <code>2p</code>개의 각도를 조정합니다.</p>
+<p>QAOA는 공이 비용 지형 위를 지나가는 경로로 그리면 오해하기 쉽습니다. 먼저 cost 연산이 각 bitstring에 비용에 따른 <strong>위상표식</strong>을 붙입니다. 이때 측정확률은 아직 바뀌지 않습니다. 이어 mixer가 후보들의 amplitude를 다시 섞으면 위상 차이가 간섭으로 바뀌고, 일부 좋은 후보의 최종 표본확률이 커질 수 있습니다. 이 <code>cost → mixer</code> 교대를 <code>p</code>회 적용하고, 고전 optimizer가 <code>2p</code>개의 각도를 조정합니다. <a class="citation" href="#ref-24" aria-label="참고문헌 24">[24]</a></p>
 <aside class="callout callout-evidence">
 <p class="callout-label">깊이 p의 QAOA 상태</p>
 <div aria-label="깊이 p의 QAOA 상태와 비용 및 믹서 유니터리" class="math-display" role="math">
@@ -1019,8 +1087,8 @@
 </div>
 <p>Cost 연산만 적용하면 각 bitstring에는 에너지별 phase만 붙고 측정확률은 그대로입니다. Mixer가 bitstring 사이를 섞을 때 phase 차이가 interference로 바뀌면서 좋은 해의 amplitude가 커질 수 있습니다.</p>
 </aside>
-<p><a href="https://arxiv.org/abs/1411.4028">Farhi·Goldstone·Gutmann의 원 논문</a>에서 approximation quality는 depth <code>p</code>에 따라 개선될 수 있지만 회로 깊이도 함께 증가합니다. 각 QUBO edge의 <code>ZZ</code> evolution에는 entangling gate가 필요하고, hardware에 없는 연결에는 SWAP routing이 더해집니다. <code>p</code>가 커지면 표현력과 함께 two-qubit error, shots, parameter optimization과 compilation 비용도 증가합니다. 낮은 <code>p</code>에서는 회로의 국소성 때문에 멀리 떨어진 제약 구조를 충분히 반영하지 못할 수 있습니다. 실제로 <a href="https://doi.org/10.1103/PhysRevLett.125.260505">Bravyi 등의 연구</a>는 특정 MaxCut 계열에서 모든 constant-depth 표준 QAOA보다 강한 고전 알고리즘이 나은 한계를 보였습니다.</p>
-<p>제약은 큰 penalty로 넣는 방법 외에 feasible subspace를 보존하는 mixer로 처리할 수도 있습니다. Hamming weight나 one-hot 조건을 보존하는 XY·swap mixer는 무효 공간을 줄이는 대신 회로와 routing을 복잡하게 만듭니다. QAOA의 장점은 superposition 자체가 아니라 문제 구조와 mixer가 맞을 때 constructive interference로 유용한 해의 확률을 집중시킬 가능성에 있습니다.</p>
+<p>Farhi·Goldstone·Gutmann의 원 논문<a class="citation" href="#ref-25" aria-label="참고문헌 25">[25]</a>에서 approximation quality는 depth <code>p</code>에 따라 개선될 수 있지만 회로 깊이도 함께 증가합니다. 각 QUBO edge의 <code>ZZ</code> evolution에는 entangling gate가 필요하고, hardware에 없는 연결에는 SWAP routing이 더해집니다. <code>p</code>가 커지면 표현력과 함께 two-qubit error, shots, parameter optimization과 compilation 비용도 증가합니다. 낮은 <code>p</code>에서는 회로의 국소성 때문에 멀리 떨어진 제약 구조를 충분히 반영하지 못할 수 있습니다. 실제로 Bravyi 등의 연구<a class="citation" href="#ref-26" aria-label="참고문헌 26">[26]</a>는 특정 MaxCut 계열에서 모든 constant-depth 표준 QAOA보다 강한 고전 알고리즘이 나은 한계를 보였습니다.</p>
+<p>제약은 큰 penalty로 넣는 방법 외에 feasible subspace를 보존하는 mixer로 처리할 수도 있습니다. Hamming weight나 one-hot 조건을 보존하는 XY·swap mixer는 무효 공간을 줄이는 대신 회로와 routing을 복잡하게 만듭니다. 문제 구조에 맞는 mixer를 고르는 일은 유용한 해에 간섭을 집중시키는 설계와 연결됩니다.</p>
 <h3 id="_9">양자 동역학이 보였다는 것과 양자 이득은 다른 주장입니다</h3>
 <figure class="figure-panel">
   <img class="diagram-desktop" src="qa_qaoa_search_intuition.svg" alt="같은 QUBO 비용과 제약에서 양자 어닐링은 transverse-field schedule과 open-system 동역학으로, QAOA는 cost phase와 mixer 간섭으로 낮은 비용 bitstring 표본을 만들고 둘 다 고전 비교군과 종단 검증을 거치는 비교 도식">
@@ -1030,14 +1098,14 @@
 
 <p>QA·QAOA에는 두 가지 검증이 필요합니다. 먼저 tunneling이나 interference가 실제 동역학에 참여했는지 확인하고, 이어 같은 QUBO 문제군에서 최선의 고전 solver와 time-to-target scaling을 비교합니다. 전처리와 재료 검증까지 포함하는 판단은 다음 절의 양자 이득 장부에서 다룹니다.</p>
 <p>비교는 한 개의 작은 QUBO가 아니라 크기, graph density, frustration, constraint ratio가 증가하는 문제군에서 해야 합니다. Exact enumeration이 가능한 크기에서는 optimum과 degeneracy를 확인하고, CP-SAT·MILP·branch-and-bound·SA·Tabu·parallel tempering과 전문 heuristic을 함께 둡니다. QA에는 embedding·programming·reads·decoding·chain repair를, QAOA에는 transpilation·모든 optimizer evaluation·shots·오류완화를 포함합니다.</p>
-<p>QA의 scaling 근거도 comparator가 바뀌면 판정이 달라집니다. <a href="https://doi.org/10.1103/PhysRevLett.134.160601">2025년 PRL 연구</a>는 quantum annealing correction을 사용한 특정 2차원 spin-glass 문제군에서 PT-ICM보다 <code>1%</code> 이상 optimality gap의 저에너지 표본을 얻는 scaling advantage를 보고했습니다. 그러나 <a href="https://doi.org/10.1103/PhysRevApplied.26.014024">2026년 7월 Physical Review Applied의 재검토</a>는 GPU simulated bifurcation machine이 그 scaling gap을 닫으며 기존 문제 크기로는 robust advantage를 확정하기 어렵다고 분석했습니다. 이 논쟁을 근거로 <code>QA에 어떤 scaling evidence도 없다</code>거나 <code>QA의 우위가 확정됐다</code>고 결론 내릴 수 없습니다. 재료 QUBO에서는 별도의 문제군과 최신 고전 해법으로 다시 검증해야 합니다.</p>
+<p>QA의 scaling 근거도 comparator가 바뀌면 판정이 달라집니다. 2025년 PRL 연구<a class="citation" href="#ref-27" aria-label="참고문헌 27">[27]</a>는 quantum annealing correction을 사용한 특정 2차원 spin-glass 문제군에서 허용 optimality gap <code>ε≳1%</code>인 목표 <code>E≤E₀+ε|E₀|</code>에 도달하는 scaling advantage를 PT-ICM과 비교해 보고했습니다. 시간은 programming·readout을 제외한 algorithmic 실행시간 기준입니다. 2026년 7월 Physical Review Applied의 재검토<a class="citation" href="#ref-28" aria-label="참고문헌 28">[28]</a>는 GPU simulated bifurcation machine이 그 scaling gap을 닫으며 기존 문제 크기로는 robust advantage를 확정하기 어렵다고 분석했습니다. 이 비교를 재료 QUBO로 이어가려면 재료의 제약과 비용 구조를 가진 문제군에서 강한 고전 해법과 다시 검증해야 합니다.</p>
 <p>서로 독립인 각 실행이 성공확률 <span class="math-inline"><var>p</var><sub>s</sub></span>를 갖고 <span class="math-inline">0&lt;<var>p</var><sub>s</sub>&lt;1</span>이라고 가정하면, 99% 확률로 한 번 이상 목표 품질의 해를 얻는 데 필요한 실행 횟수는 다음과 같습니다.</p>
 <div class="math-display" role="math" aria-label="99 퍼센트 성공확률에 필요한 독립 실행 횟수">
   <div class="math-row"><var>N</var><sub>99</sub> = ⌈ <span class="frac"><span>ln(0.01)</span><span>ln(1 − <var>p</var><sub>s</sub>)</span></span> ⌉</div>
 </div>
 
 <p>경계에서는 <span class="math-inline"><var>p</var><sub>s</sub>=0</span>이면 필요한 횟수가 무한대이고, <span class="math-inline"><var>p</var><sub>s</sub>=1</span>이면 한 번입니다. 실행들이 상관돼 있거나 장치 분포가 시간에 따라 변하면 이 식을 그대로 적용할 수 없습니다.</p>
-<p>그러나 실행시간만 빠른 QUBO 최저점이 실제 물성에서 실패하면 의미가 없습니다. 재료 파이프라인에서는 <code>고정밀 검증 1회당 통과한 고유 후보 수</code>와 전체 wall-clock·비용을 함께 보는 편이 더 직접적입니다. <a href="https://doi.org/10.1126/science.1252319">Rønnow 등의 speedup 판정 연구</a>는 comparator 선택과 scaling을 잘못 잡으면 speedup 결론이 바뀔 수 있음을 정리했습니다.</p>
+<p>그러나 실행시간만 빠른 QUBO 최저점이 실제 물성에서 실패하면 의미가 없습니다. 재료 파이프라인에서는 <code>고정밀 검증 1회당 통과한 고유 후보 수</code>와 전체 wall-clock·비용을 함께 보는 편이 더 직접적입니다. Rønnow 등의 speedup 판정 연구<a class="citation" href="#ref-29" aria-label="참고문헌 29">[29]</a>는 comparator 선택과 scaling을 잘못 잡으면 speedup 결론이 바뀔 수 있음을 정리했습니다.</p>
 <h3 id="solver">정식화 오차, solver 오차와 재료 오차를 분리합니다</h3>
 <p>여기서는 비용을 <strong>최소화</strong>한다고 두겠습니다. 고정밀 평가함수를 <span class="math-inline"><var>F</var>(<var>x</var>)</span>, QUBO 대리함수를 <span class="math-inline"><var>E</var><sub>Q</sub>(<var>x</var>)</span>라고 하겠습니다. <span class="math-inline"><var>x</var><sup>★</sup></span>는 실제 평가의 최적해, <span class="math-inline"><var>x</var><sub>Q</sub><sup>★</sup></span>는 QUBO 최적해, <span class="math-inline"><var>x</var><sub>sol</sub></span>은 solver가 찾은 해입니다.</p>
 <div class="math-display" role="math" aria-label="QUBO 정식화 오차와 솔버 오차 및 종단 오차의 정의">
@@ -1071,8 +1139,8 @@
 </tbody>
 </table>
 <p><span class="math-inline"><var>x</var><sup>★</sup></span>는 정의상 원래 문제의 feasible domain 안에 있습니다. 반면 QUBO가 고른 <span class="math-inline"><var>x</var><sub>Q</sub><sup>★</sup></span>와 solver 출력 <span class="math-inline"><var>x</var><sub>sol</sub></span>은 제약을 위반할 수 있으며, 이때 원래 평가에서는 <span class="math-inline"><var>F</var>=∞</span> 또는 사전에 정한 infeasibility penalty를 적용합니다. 정식화 regret가 크면 QA나 QAOA가 QUBO를 정확히 풀어도 좋은 물질을 얻지 못합니다. 다만 <span class="math-inline"><var>R</var><sub>form</sub></span>은 최적해 하나의 이전 품질을 볼 뿐 전체 후보 순위를 측정하지 않습니다. 원래 평가함수와 QUBO가 후보 순서를 얼마나 보존하는지는 Kendall <code>τ</code>, Spearman <code>ρ</code>, top-k overlap도 함께 봐야 합니다. 계산화학자와 재료전문가가 양자 최적화 연구에서 맡을 가장 중요한 역할은 이 경계를 검증하는 일입니다.</p>
-<p>분자 설계의 선행 사례에도 이 구분이 필요합니다. <a href="https://www.nature.com/articles/s41524-023-01099-0">Ajagekar와 You의 2023년 연구</a>는 GraphConv fingerprint, conditional RBM, QUBO와 D-Wave를 연결했습니다. <a href="https://doi.org/10.1039/D6DD00012F">2026년 Digital Discovery 연구</a>는 고정 CDDD 표현과 선형 예측기를 QUBO에 연결하고 hybrid BQM 해법과 SA를 비교했습니다. 일부 다목적 조건에서 hybrid 해법의 공동 목표 충족률이 높았지만, 문제 분해와 고전 heuristic을 포함하므로 QPU 단독의 우위로 해석할 수 없습니다. 해독 분자의 validity도 51.9–54.1%였고 latent objective와 실제 물성의 차이가 남았습니다.</p>
-<p>OLED와 맞닿은 <a href="https://spj.science.org/doi/10.34133/icomputing.0037">2023년 Alq₃ 중수소 치환 연구</a>는 6개 위치를 6 bit, 즉 64개 조합으로 표현하고 고전 양자화학·factorization machine·Ising cost Hamiltonian·VQE/QAOA를 연결했습니다. 여기서 VQE는 전자구조 Hamiltonian이 아니라 6-qubit 대각 비용 Hamiltonian의 바닥상태를 찾았습니다. 실제 장치의 초기 성공확률은 VQE 0.83, QAOA 0.075였고, QAOA는 측정확률을 이용한 재귀적 변수 제거와 고전 후처리 뒤 약 0.97까지 올라갔습니다. 따라서 이 연구는 계산 단계의 연결 방법과 hybrid reduction의 효과를 보여주는 좋은 PoC이지만 scaling advantage의 증거는 아닙니다.</p>
+<p>분자 설계의 선행 사례에도 이 구분이 필요합니다. Ajagekar와 You의 2023년 연구<a class="citation" href="#ref-30" aria-label="참고문헌 30">[30]</a>는 GraphConv fingerprint, conditional RBM, QUBO와 D-Wave를 연결했습니다. 2026년 Digital Discovery 연구<a class="citation" href="#ref-31" aria-label="참고문헌 31">[31]</a>는 고정 CDDD 표현과 선형 예측기를 QUBO에 연결하고 hybrid BQM 해법과 SA를 비교했습니다. 일부 다목적 조건에서 hybrid 해법의 공동 목표 충족률이 높았지만, 문제 분해와 고전 heuristic을 포함하므로 QPU 단독의 우위로 해석할 수 없습니다. 해독 분자의 validity도 51.9–54.1%였고 latent objective와 실제 물성의 차이가 남았습니다.</p>
+<p>OLED와 맞닿은 2023년 Alq₃ 중수소 치환 연구<a class="citation" href="#ref-32" aria-label="참고문헌 32">[32]</a>는 세 리간드에 같은 치환 패턴을 적용한다는 가정 아래, 한 리간드의 여섯 수소 위치를 6 bit, 즉 64개 조합으로 표현했습니다. 여기에 고전 양자화학·factorization machine·Ising cost Hamiltonian·VQE/QAOA를 연결했습니다. 여기서 VQE는 전자구조 Hamiltonian이 아니라 6-qubit 대각 비용 Hamiltonian의 바닥상태를 찾았습니다. 실제 장치의 초기 성공확률은 VQE 0.83, QAOA 0.075였고, QAOA는 측정확률을 이용한 재귀적 변수 제거와 고전 후처리 뒤 약 0.97까지 올라갔습니다. 이 작은 문제에서 계산 단계의 연결과 hybrid reduction의 효과를 확인했으며, 문제 크기를 늘린 scaling은 후속 검증으로 남습니다.</p>
 <h2 id="_10">양자 이득은 표현, 알고리즘, 종단 가치의 세 층을 통과해야 합니다</h2>
 <p>양자 이득은 세 주장으로 나눠 기록해야 합니다. 큰 상태공간을 표현했다는 것, 명시한 계산모델에서 복잡도가 줄었다는 것, 실제 재료 연구의 시간·비용·성공률이 개선됐다는 것은 각각 별도의 증거를 요구합니다.</p>
 <ol>
@@ -1081,8 +1149,8 @@
 <li><strong>종단 이득</strong>은 basis·active space, encoding, compilation, QPU 실행, shots, 오류제어, queue, decoding과 고정밀 검증을 모두 포함해 시간·비용 또는 검증 성공률이 개선됐다는 뜻입니다.</li>
 </ol>
 <figure class="figure-panel">
-  <img class="diagram-desktop" src="quantum_advantage_ledger.svg" alt="큰 양자 상태공간의 표현 이득에서 알고리즘 복잡도 이득을 거쳐 실제 재료 검증의 종단 이득으로 나아가며 상태 준비, 측정, 오류보정, 임베딩과 검증에서 이득이 사라질 수 있음을 보여주는 도식">
-  <img class="diagram-mobile" src="quantum_advantage_ledger_mobile.svg" alt="모바일 화면용 세로 배열로 재구성한 양자 표현, 알고리즘, 종단 이득의 세 단계와 비용 누수 지점">
+  <img class="diagram-desktop" src="quantum_advantage_ledger.svg?v=fd5701de6ee4" alt="큰 양자 상태공간의 표현 이득에서 알고리즘 복잡도 이득을 거쳐 실제 재료 검증의 종단 이득으로 나아가며 상태 준비, 측정, 오류보정, 임베딩과 검증에서 이득이 사라질 수 있음을 보여주는 도식">
+  <img class="diagram-mobile" src="quantum_advantage_ledger_mobile.svg?v=21bd8d66b6e6" alt="모바일 화면용 세로 배열로 재구성한 양자 표현, 알고리즘, 종단 이득의 세 단계와 비용 누수 지점">
   <figcaption><strong>그림 7.</strong> 표현 용량은 출발점이고 알고리즘 이득은 조건부 약속입니다. 전처리와 관측량 readout, 오류제어 및 재료 검증을 통과해 동일 예산에서 가치가 남아야 종단 양자 이득입니다.</figcaption>
 </figure>
 
@@ -1106,7 +1174,7 @@
 <p><span class="math-inline"><var>T</var><sub>optimizer</sub><sup>(r)</sup></span>에는 목적함수 집계와 다음 회로 매개변수 업데이트처럼 job 사이에서 수행되는 고전 최적화 시간을 넣습니다. 여러 job이 병렬로 실행된다면 단순 합이 아니라 의사결정이 끝날 때까지의 critical-path wall time을 별도로 보고합니다. 금액, 에너지 사용량과 인력비도 시간과 섞지 않고 독립된 비용 장부에 기록해야 합니다.</p>
 <p>전자구조에서는 같은 정확도의 DMRG·selected CI·CC·FCIQMC와, 최적화에서는 CP-SAT·MILP·SA·Tabu·parallel tempering과 비교합니다. 문제 크기에 따른 scaling과 동일 검증예산당 통과 후보에서 교차가 확인돼야 양자 이득이라는 결론에 가까워집니다.</p>
 <h2 id="_11">오류보정 이후의 장기 확장: 불확실성 계산</h2>
-<p>후보를 고를 때 평균 물성만큼 실패확률도 중요합니다. 고전 Monte Carlo가 많은 표본을 뽑아 위험과 기대효용의 평균을 추정한다면, Quantum Amplitude Estimation(QAE)은 그 확률분포와 utility를 coherent amplitude로 준비할 수 있을 때 더 적은 oracle 호출로 평균을 추정하려는 방법입니다. 이론적으로 query 수를 거의 제곱근 수준으로 줄일 가능성이 있으며, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4614442/">Montanaro의 2015년 연구</a>는 이 일반적인 quantum Monte Carlo 경로를 제시했습니다.</p>
+<p>후보를 고를 때 평균 물성만큼 실패확률도 중요합니다. 고전 Monte Carlo가 많은 표본을 뽑아 위험과 기대효용의 평균을 추정한다면, Quantum Amplitude Estimation(QAE)은 그 확률분포와 utility를 coherent amplitude로 준비할 수 있을 때 더 적은 oracle 호출로 평균을 추정하려는 방법입니다. 이론적으로 query 수를 거의 제곱근 수준으로 줄일 가능성이 있으며, Montanaro의 2015년 연구<a class="citation" href="#ref-33" aria-label="참고문헌 33">[33]</a>는 이 일반적인 quantum Monte Carlo 경로를 제시했습니다.</p>
 <p>그러나 이 이득은 oracle model 안의 이야기입니다. 고전 DFT, 복잡한 neural surrogate나 실제 실험을 coherent reversible oracle로 바꾸는 비용이 크면 장점이 사라집니다. 긴 Grover power와 오류보정도 필요합니다. 따라서 QAE는 현재 PoC의 중심보다, 이미 빠른 확률모형을 양자회로로 준비할 수 있는 fault-tolerant 시기의 불확실성 엔진으로 두는 편이 정확합니다.</p>
 <h2 id="_12">성숙도는 증거 단계와 하드웨어 시기를 함께 봐야 합니다</h2>
 <p>양자 알고리즘을 한 줄의 순위로 놓을 수는 없습니다. VQE·QML·QAOA는 현재 장치에서 작은 실험을 할 수 있지만 noise와 학습성 문제가 큽니다. QPE는 오류정정된 초소형 분자 method demonstration까지 진행됐으나 재료 규모의 실행은 오류보정 하드웨어와 큰 논리 자원에 의존합니다. QAE는 reversible oracle을 포함한 장기 알고리즘입니다. 따라서 알고리즘의 약속과 end-to-end 검증 수준을 분리해야 합니다.</p>
@@ -1173,7 +1241,7 @@
 </tbody>
 </table>
 </details>
-<p>이 리뷰에서 확인한 공개 근거만 보면, 어느 모듈도 재료 역설계 전반의 양자우위를 입증했다고 보기 어렵습니다. 모듈별 증거 수준은 서로 다르므로, 작은 입력·출력·오차 조건을 고정하고 증거 사다리의 다음 한 칸을 목표로 삼아야 합니다.</p>
+<p>이 차이를 바탕으로 다음 실험을 정할 수 있습니다. 각 모듈의 입력·출력·오차 조건을 고정하고, 지금 확보한 증거에서 무엇을 더 확인할지 고르는 것입니다.</p>
 <p>여기서 <code>E0–E4</code>는 공개 연구가 어디까지 입증했는지를 나타내는 <strong>외부 증거 수준</strong>입니다. 뒤의 <code>B0–B5</code>는 한 연구팀이 검증을 어떤 순서로 수행할지를 나타내는 <strong>내부 벤치마크 순서</strong>입니다.</p>
 <h2 id="oled">청색 OLED는 네 계산 모듈의 경계를 한 사례에서 드러냅니다</h2>
 <figure class="figure-panel">
@@ -1183,7 +1251,7 @@
 
 <p>청색 OLED는 높은 여기 에너지, 전하 균형, 에너지 전달, 박막 배열과 열화가 얽혀 있습니다. 계산 화면에서 좋아 보이는 분자도 이웃 분자와 전하를 주고받는 방식이 달라지거나, 여기상태와 packing이 예상과 어긋나면 소자에서 빛을 잃습니다. 높은 T₁이나 적절한 HOMO/LUMO만으로 효율과 수명을 함께 설명하기 어렵습니다.</p>
 <p>이 사례에서 후보 작업지시서에는 단일 분자만 적히지 않습니다. Donor·acceptor·dopant의 조합, 분자쌍의 거리와 배향, 박막 조건, 소자 recipe와 예상 불확실성이 함께 들어갑니다. 전자구조·대리모델·표본추출·조합선택 모듈은 이 작업지시서의 서로 다른 항목을 다루고, 최종 출하 판정은 박막과 소자 실험이 맡습니다.</p>
-<p>Exciplex-forming co-host형 PhOLED에서는 donor와 acceptor host가 만날 때 charge-transfer 여기상태가 생기고, 그 에너지가 별도의 phosphorescent dopant로 전달됩니다. <a href="https://www.nature.com/articles/s41566-022-00958-4">2022년 Nature Photonics 연구</a>처럼 이 구조의 실제 소자는 세 구성요소와 계면, 전하 균형을 함께 다룹니다. host와 dopant 두 항목만 적은 표현으로는 이 유즈케이스의 설계 대상을 정확히 담기 어렵습니다.</p>
+<p>Exciplex-forming co-host형 PhOLED에서는 donor와 acceptor host가 만날 때 charge-transfer 여기상태가 생기고, 그 에너지가 별도의 phosphorescent dopant로 전달됩니다. 2022년 Nature Photonics 연구<a class="citation" href="#ref-34" aria-label="참고문헌 34">[34]</a>처럼 이 구조의 실제 소자는 세 구성요소와 계면, 전하 균형을 함께 다룹니다. host와 dopant 두 항목만 적은 표현으로는 이 유즈케이스의 설계 대상을 정확히 담기 어렵습니다.</p>
 <figure class="figure-panel">
   <img src="exciplex_cohost_dopant_context.png" alt="공여체와 수용체 host의 거리와 박막 배열에 따라 전하이동 exciplex와 별도 dopant로의 에너지 전달이 달라지는 편집 일러스트레이션">
   <figcaption><strong>그림 10.</strong> 같은 donor–acceptor 조합도 거리, 배향과 주변 packing에 따라 전하이동 상태와 dopant로의 에너지 전달이 달라집니다. 따라서 개별 분자, pair geometry, 계면과 소자 조건을 하나의 일관된 자료 묶음으로 관리해야 합니다.</figcaption>
@@ -1226,9 +1294,9 @@
 </tr>
 </tbody>
 </table>
-<p><a href="https://www.nature.com/articles/s41524-021-00540-6">2021년 TADF 양자계산 연구</a>는 이 분업을 일찍 보여줬습니다. 구조와 큰 환경은 고전 TDDFT/TDA가 맡고, HOMO–LUMO의 매우 작은 active space에서 qEOM-VQE와 VQD로 S₁·T₁을 계산했습니다. 의미 있는 방법 실증이지만 전체 OLED 전자구조나 소자 계산을 대체한 것은 아닙니다.</p>
-<p>고전 역설계도 이미 높은 기준선을 세웠습니다. <a href="https://www.nature.com/articles/s41524-018-0128-1">2018년 blue PhOLED host 연구</a>는 약 6,000개의 DFT 자료에서 생성모델을 학습하고, 생성 후보를 DFT로 다시 계산한 뒤 세 물질을 합성·측정했습니다. <a href="https://doi.org/10.1126/sciadv.adr1326">2025년 MR-TADF 연구</a>와 <a href="https://doi.org/10.1016/j.cej.2025.159697">blue TADF host 가상선별 연구</a>는 후보 선별을 합성 또는 소자 제작으로 연결했습니다. <a href="https://doi.org/10.1021/jacs.5c16369">2026년 JACS 연구</a>는 green PSF OLED용 exciplex host를 다뤘습니다. 청색 OLED와 인접한 이 연구는 ML 선별을 host 합성과 소자 검증까지 연결한 비교 기준입니다.</p>
-<p>이 연구들의 발광 구조, 색, 소자 조건과 평가 지표는 서로 다르므로 최고 EQE만 한 줄에 놓고 비교해서는 안 됩니다. 양자 모듈이 겨뤄야 할 상대도 논문 사이의 최고 수치가 아닙니다. 같은 설계공간, 목적함수와 검증 예산을 받은 강한 고전 모듈입니다.</p>
+<p>2021년 TADF 양자계산 연구<a class="citation" href="#ref-35" aria-label="참고문헌 35">[35]</a>는 이 분업을 일찍 보여줬습니다. 분자 구조는 고전 TDDFT/TDA로 정하고, HOMO–LUMO active space에서 qEOM-VQE와 VQD로 S₁·T₁을 계산했습니다. 검증 대상은 선택한 분자와 active space의 여기상태였습니다.</p>
+<p>고전 역설계도 이미 높은 기준선을 세웠습니다. 2018년 blue PhOLED host 연구<a class="citation" href="#ref-36" aria-label="참고문헌 36">[36]</a>는 약 6,000개의 DFT 자료에서 생성모델을 학습하고, 생성 후보를 DFT로 다시 계산한 뒤 세 물질을 합성·측정했습니다. 2025년 MR-TADF 연구<a class="citation" href="#ref-37" aria-label="참고문헌 37">[37]</a>와 blue TADF host 가상선별 연구<a class="citation" href="#ref-38" aria-label="참고문헌 38">[38]</a>는 후보 선별을 합성 또는 소자 제작으로 연결했습니다. 2026년 JACS 연구<a class="citation" href="#ref-39" aria-label="참고문헌 39">[39]</a>는 green PSF OLED용 exciplex host를 다뤘습니다. 청색 OLED와 인접한 이 연구는 ML 선별을 host 합성과 소자 검증까지 연결한 비교 기준입니다.</p>
+<p>이 연구들은 서로 다른 발광 구조와 색, 소자 조건에서 후보를 실제 검증까지 이어갔습니다. 양자 모듈을 시험할 때도 같은 설계공간, 목적함수와 검증 예산을 받은 강한 고전 모듈을 두고, 어느 단계에서 더 나은 후보를 남기는지 비교할 수 있습니다.</p>
 <h2 id="scaling-blind-test">벤치마크는 변환 정확성, scaling, blind test, 폐루프 반복으로 올라갑니다</h2>
 <p>네 양자 모듈을 동시에 넣으면 결과가 좋아져도 원인을 알 수 없습니다. 첫 PoC는 한 모듈의 입력·출력·허용오차를 고정하고 나머지는 같은 고전 파이프라인으로 유지해야 합니다.</p>
 <p>검증된 geometry와 basis, SCF checkpoint, localized orbital, FCIDUMP 형식 적분, DMRG·selected CI 기준값, 물성 DB와 실험 검증 기준은 그대로 재사용합니다. 새로 필요한 역량은 이 객체를 qubit Hamiltonian 또는 QUBO로 변환하고, 회로·측정·solver 비용을 같은 오차 예산에서 기록하는 일입니다.</p>
@@ -1313,68 +1381,70 @@
 
 <p>모든 트랙의 공통 지표는 <strong>고정밀 평가 또는 실험 1회당 재검증 통과 후보 수</strong>입니다. 보조 지표로 전체 경과시간, 비용, 제약 만족률, 다양성, 불확실성 보정과 반복 안정성을 둡니다. QPU 실행시간만 따로 떼어 speedup을 말하지 않으며, 자료 준비, encoding, active-space 선택, embedding·compilation, shots, queue, decoding과 고전 후처리를 포함합니다.</p>
 <p>중단 조건도 먼저 정할 수 있습니다. active-space·surrogate·QUBO 근사 오차가 해법 차이보다 크거나, encoding과 측정비용을 포함하면 고전 기준선이 일관되게 우수하거나, 재검증에서 차이가 사라지면 해당 양자 모듈을 제거합니다. 이때 남는 고전 파이프라인과 실패 원인도 완전한 연구 결과입니다.</p>
-<p>반대로 여러 seed와 문제 크기에서 개선이 반복되고, 같은 검증 예산으로 더 많은 유효 후보를 남기며, 전체 비용에서도 이득이 유지된다면 증거 사다리의 다음 단계로 이동할 수 있습니다. 결론의 범위는 “이렇게 고정한 입력·출력·오차 조건에서 이 양자 서브루틴이 유효했다”로 제한합니다. 이를 양자 파이프라인 전체의 승리로 넓히지는 않습니다.</p>
+<p>반대로 여러 seed와 문제 크기에서 개선이 반복되고, 같은 검증 예산으로 더 많은 유효 후보를 남기며, 전체 비용에서도 이득이 유지된다면 증거 사다리의 다음 단계로 이동할 수 있습니다. 어떤 입력·출력·오차 조건에서 양자 서브루틴이 유효했는지를 남기면, 다른 연구팀도 같은 경계에서 결과를 비교하고 다음 적용 범위를 찾을 수 있습니다.</p>
 <aside class="callout callout-thinking">
 <p class="callout-label">이 전환이 만들 수 있는 가장 큰 변화</p>
-<p>장기적 가치의 핵심은 DFT 계산 한 건을 단순히 더 빨리 끝내는 데 있지 않습니다. 지금은 비용 때문에 설계 후반의 소수 후보에만 적용하는 상관 전자·여기상태 판정을 더 앞 단계와 더 넓은 후보군에 되돌려 놓는 데 있습니다. 여기에 분포를 보존하는 표본추출과 제약을 반영한 선택이 연결되면, 파이프라인은 “많이 만들고 뒤늦게 탈락시키는” 방식에서 “불확실성을 보면서 다음 계산과 실험을 고르는” 방식으로 바뀔 수 있습니다.</p>
-<p>그때의 가장 큰 연구적 이득은 지금 계산비용 때문에 일찍 닫아 둔 설계공간을 다시 여는 것입니다. 다만 그 미래를 증명하는 단위는 큐비트 수나 한 번의 QPU 실행시간이 아닙니다. <strong>같은 전체 예산에서 더 다양하고, 실제 검증을 통과한 후보를 반복해서 남기는가</strong>가 마지막 기준입니다.</p>
+<p>상관 전자·여기상태 판정을 더 앞 단계와 더 넓은 후보군에 되돌려 놓을 수 있다면 설계의 흐름이 달라집니다. 지금은 비용 때문에 후반의 소수 후보에만 적용하는 계산입니다. 여기에 분포를 보존하는 표본추출과 제약을 반영한 선택이 연결되면, 파이프라인은 “많이 만들고 뒤늦게 탈락시키는” 방식에서 “불확실성을 보면서 다음 계산과 실험을 고르는” 방식으로 바뀔 수 있습니다.</p>
+<p>그때의 가장 큰 연구적 이득은 지금 계산비용 때문에 일찍 닫아 둔 설계공간을 다시 여는 것입니다. <strong>같은 전체 예산에서 더 다양하고, 실제 검증을 통과한 후보를 반복해서 남기는가</strong>가 마지막 기준입니다.</p>
 </aside>
 <h2 id="_15">연구 맥락과 공개 경계</h2>
-<p><a href="https://doi.org/10.1002/sdtp.17753">김현중 외 SID 2024 논문</a>은 DFT로 만든 blue TADF 여기상태 자료를 GNN이 학습해 물성을 예측하고 역설계 전략을 뒷받침한 연구입니다. 생성 후보의 합성이나 PhOLED 소자 검증까지 수행한 결과는 아닙니다. DFT·excited-state analysis와 GNN 연구 경험은 이 하이브리드 파이프라인의 데이터·전자구조·학습 모듈을 설계할 기반이 됩니다.</p>
+<p>김현중 외 SID 2024 논문<a class="citation" href="#ref-40" aria-label="참고문헌 40">[40]</a>은 DFT로 만든 blue TADF 여기상태 자료를 GNN이 학습해 물성을 예측하고 역설계 전략을 뒷받침한 연구입니다. 생성 후보의 합성이나 PhOLED 소자 검증까지 수행한 결과는 아닙니다. DFT·excited-state analysis와 GNN 연구 경험은 이 하이브리드 파이프라인의 데이터·전자구조·학습 모듈을 설계할 기반이 됩니다.</p>
 <p>현재 공개 근거에 맞는 제안은 다음 정도입니다.</p>
 <blockquote>
 <p>DFT·양자화학과 GNN 기반 OLED 물성예측 경험을 바탕으로, 재료 역설계의 전자구조·대리모델·생성·이산 최적화 단계를 분리하고 각 단계에서 양자 후보 서브루틴을 강한 고전 기준선과 비교하는 검증형 파이프라인을 설계합니다. 청색 OLED는 여기상태, 분자쌍, 박막과 소자 조건을 함께 요구하는 첫 유즈케이스이며, 양자 모듈의 채택은 고정밀 계산과 실험 검증 뒤에 결정합니다.</p>
 </blockquote>
 <p>공개본에는 연구 질문, 공개 논문, 모듈 인터페이스, 비교 방법과 중단 규칙을 남길 수 있습니다. 회사 내부 분자 구조, 물성 DB, 합성경로, 소자 recipe, 공급사, aging 결과와 미공개 IP는 분리해야 합니다. VQE label, QML advantage, QA·QAOA의 재검증 통과 후보 개선, 생성 후보와 자동 합성 폐루프는 아직 검증된 성과가 아닙니다.</p>
 <p>가까운 시기의 공개 제안은 작은 active space, 제한된 학습 자료와 QUBO형 선택 문제의 hybrid PoC에 맞춰집니다. 데이터 계보, 강한 고전 기준선과 실험 검증은 각 양자 모듈의 채택 여부를 판단하는 공통 기준으로 유지합니다.</p>
-<h2 id="_16">참고문헌</h2>
-<ol>
-<li><a href="https://doi.org/10.1103/PhysRev.140.A1133">Kohn and Sham, Self-Consistent Equations Including Exchange and Correlation Effects</a></li>
-<li><a href="https://www.nature.com/articles/ncomms5213">Peruzzo et al., A variational eigenvalue solver on a photonic quantum processor</a></li>
-<li><a href="https://www.nature.com/articles/s41467-023-37587-6">Lee et al., Evaluating the evidence for exponential quantum advantage in ground-state quantum chemistry</a></li>
-<li><a href="https://www.nature.com/articles/s41524-024-01477-2">Battaglia et al., Active space embedding with applications in quantum computing</a></li>
-<li><a href="https://doi.org/10.22331/q-2019-07-12-163">Low and Chuang, Hamiltonian Simulation by Qubitization</a></li>
-<li><a href="https://www.nature.com/articles/s41567-024-02530-z">Zhao et al., Experimental quantum computational chemistry with optimized UCC ansatz</a></li>
-<li><a href="https://www.nature.com/articles/s41534-024-00808-x">Dalton et al., Gate errors in VQE for quantum chemistry</a></li>
-<li><a href="https://www.nature.com/articles/s41524-021-00540-6">Gao et al., Quantum computing for electronic transitions in TADF emitters</a></li>
-<li><a href="https://www.nature.com/articles/s41586-019-0980-2">Havlíček et al., Supervised learning with quantum-enhanced feature spaces</a></li>
-<li><a href="https://www.nature.com/articles/s41467-021-22539-9">Huang et al., Power of data in quantum machine learning</a></li>
-<li><a href="https://www.nature.com/articles/s41467-018-07090-4">McClean et al., Barren plateaus in quantum neural network training landscapes</a></li>
-<li><a href="https://www.nature.com/articles/s41467-024-49287-w">Thanasilp et al., Exponential concentration in quantum kernel methods</a></li>
-<li><a href="https://www.nature.com/articles/s41534-019-0157-8">Benedetti et al., A generative modeling approach for shallow quantum circuits</a></li>
-<li><a href="https://www.nature.com/articles/s41598-023-32703-4">Gircha et al., Hybrid quantum-classical machine learning for generative chemistry</a></li>
-<li><a href="https://arxiv.org/abs/1411.4028">Farhi et al., A Quantum Approximate Optimization Algorithm</a></li>
-<li><a href="https://spj.science.org/doi/10.34133/icomputing.0037">Gao et al., Quantum-Classical Computational Molecular Design of Deuterated OLED Emitters</a></li>
-<li><a href="https://www.nature.com/articles/s41524-023-01099-0">Ajagekar and You, Molecular design with QC-based deep learning and optimization</a></li>
-<li><a href="https://doi.org/10.1039/D6DD00012F">Deguchi and Taki, Property-agnostic molecular inverse design via quantum annealing</a></li>
-<li><a href="https://doi.org/10.1103/PRXQuantum.3.020317">Vuffray et al., Programmable Quantum Annealers as Noisy Gibbs Samplers</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/concepts/models.html">D-Wave binary quadratic and QUBO model documentation</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/embedding_intro.html">D-Wave minor-embedding documentation</a></li>
-<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4614442/">Montanaro, Quantum speedup of Monte Carlo methods</a></li>
-<li><a href="https://www.nature.com/articles/s41524-018-0128-1">Kim et al., Deep-learning-based inverse design of blue OLED molecules</a></li>
-<li><a href="https://www.nature.com/articles/s41566-022-00958-4">Sun et al., Exceptionally stable blue phosphorescent OLEDs</a></li>
-<li><a href="https://doi.org/10.1126/sciadv.adr1326">Kim et al., Machine learning-driven deep-blue MR-TADF molecular design</a></li>
-<li><a href="https://doi.org/10.1016/j.cej.2025.159697">An et al., Blue OLED hosts via deep learning and high-throughput screening</a></li>
-<li><a href="https://doi.org/10.1021/jacs.5c16369">An et al., Machine Learning-Guided Discovery of Sterically Protected High Triplet Exciplex Hosts for Ultra-Bright Green OLEDs</a></li>
-<li><a href="https://doi.org/10.1002/sdtp.17753">Kim et al., Machine Learning Strategy Towards Inverse Design of Blue TADF Emitter</a></li>
-<li><a href="https://quantum.cloud.ibm.com/learning/modules/computer-science/qft">IBM Quantum, Quantum Fourier transform</a></li>
-<li><a href="https://doi.org/10.1063/1.4768229">Seeley et al., The Bravyi–Kitaev transformation for quantum computation of electronic structure</a></li>
-<li><a href="https://www.nature.com/articles/s41534-020-00341-7">Huggins et al., Efficient and noise resilient measurements for quantum chemistry</a></li>
-<li><a href="https://doi.org/10.1126/science.1113479">Aspuru-Guzik et al., Simulated Quantum Computation of Molecular Energies</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevE.58.5355">Kadowaki and Nishimori, Quantum Annealing in the Transverse Ising Model</a></li>
-<li><a href="https://www.nature.com/articles/ncomms10327">Boixo et al., Computational multiqubit tunnelling in programmable quantum annealers</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevLett.125.260505">Bravyi et al., Obstacles to Variational Quantum Optimization from Symmetry Protection</a></li>
-<li><a href="https://doi.org/10.1126/science.1252319">Rønnow et al., Defining and detecting quantum speedup</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevX.10.021067">Zhou et al., QAOA: Performance, Mechanism, and Implementation on Near-Term Devices</a></li>
-<li><a href="https://doi.org/10.1103/m7j3-5sk6">Yamamoto et al., Quantum Error-Corrected Computation of Molecular Energies</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevLett.134.160601">Munoz-Bauza and Lidar, Scaling Advantage in Approximate Optimization with Quantum Annealing</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevApplied.26.014024">Pawłowski et al., Toward quantum scaling advantage in approximate optimization</a></li>
+<h2 id="references"><span id="_16" aria-hidden="true"></span>참고문헌</h2>
+<ol class="references">
+<li id="ref-1"><span class="reference-number">[1]</span> W. Kohn and L. J. Sham, Self-consistent equations including exchange and correlation effects, Phys. Rev. <strong>140</strong>, A1133 (1965). <a href="https://doi.org/10.1103/PhysRev.140.A1133">doi:10.1103/PhysRev.140.A1133</a></li>
+<li id="ref-2"><span class="reference-number">[2]</span> IBM Quantum, Quantum Fourier transform, IBM Quantum Learning, <a href="https://quantum.cloud.ibm.com/learning/modules/computer-science/qft">https://quantum.cloud.ibm.com/learning/modules/computer-science/qft</a> (accessed November 4, 2026).</li>
+<li id="ref-3"><span class="reference-number">[3]</span> J. T. Seeley, M. J. Richard, and P. J. Love, The Bravyi-Kitaev transformation for quantum computation of electronic structure, J. Chem. Phys. <strong>137</strong>, 224109 (2012). <a href="https://doi.org/10.1063/1.4768229">doi:10.1063/1.4768229</a></li>
+<li id="ref-4"><span class="reference-number">[4]</span> A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung, X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, and J. L. O’Brien, A variational eigenvalue solver on a photonic quantum processor, Nat. Commun. <strong>5</strong>, 4213 (2014). <a href="https://doi.org/10.1038/ncomms5213">doi:10.1038/ncomms5213</a></li>
+<li id="ref-5"><span class="reference-number">[5]</span> S. Guo et al., Experimental quantum computational chemistry with optimized unitary coupled cluster ansatz, Nat. Phys. <strong>20</strong>, 1240 (2024). <a href="https://doi.org/10.1038/s41567-024-02530-z">doi:10.1038/s41567-024-02530-z</a></li>
+<li id="ref-6"><span class="reference-number">[6]</span> W. J. Huggins, J. R. McClean, N. C. Rubin, Z. Jiang, N. Wiebe, K. B. Whaley, and R. Babbush, Efficient and noise resilient measurements for quantum chemistry on near-term quantum computers, npj Quantum Inf. <strong>7</strong>, 23 (2021). <a href="https://doi.org/10.1038/s41534-020-00341-7">doi:10.1038/s41534-020-00341-7</a></li>
+<li id="ref-7"><span class="reference-number">[7]</span> K. Dalton, C. K. Long, Y. S. Yordanov, C. G. Smith, C. H. W. Barnes, N. Mertig, and D. R. M. Arvidsson-Shukur, Quantifying the effect of gate errors on variational quantum eigensolvers for quantum chemistry, npj Quantum Inf. <strong>10</strong>, 18 (2024). <a href="https://doi.org/10.1038/s41534-024-00808-x">doi:10.1038/s41534-024-00808-x</a></li>
+<li id="ref-8"><span class="reference-number">[8]</span> A. Aspuru-Guzik, A. D. Dutoi, P. J. Love, and M. Head-Gordon, Simulated quantum computation of molecular energies, Science <strong>309</strong>, 1704 (2005). <a href="https://doi.org/10.1126/science.1113479">doi:10.1126/science.1113479</a></li>
+<li id="ref-9"><span class="reference-number">[9]</span> G. H. Low and I. L. Chuang, Hamiltonian simulation by qubitization, Quantum <strong>3</strong>, 163 (2019). <a href="https://doi.org/10.22331/q-2019-07-12-163">doi:10.22331/q-2019-07-12-163</a></li>
+<li id="ref-10"><span class="reference-number">[10]</span> K. Yamamoto et al., Quantum error-corrected computation of molecular energies, PRX Quantum <strong>7</strong>, 020319 (2026). <a href="https://doi.org/10.1103/m7j3-5sk6">doi:10.1103/m7j3-5sk6</a></li>
+<li id="ref-11"><span class="reference-number">[11]</span> S. Lee, J. Lee, H. Zhai, Y. Tong, A. M. Dalzell, A. Kumar, P. Helms, J. Gray, Z.-H. Cui, W. Liu, M. Kastoryano, R. Babbush, J. Preskill, D. R. Reichman, E. T. Campbell, E. F. Valeev, L. Lin, and G. K.-L. Chan, Evaluating the evidence for exponential quantum advantage in ground-state quantum chemistry, Nat. Commun. <strong>14</strong>, 1952 (2023). <a href="https://doi.org/10.1038/s41467-023-37587-6">doi:10.1038/s41467-023-37587-6</a></li>
+<li id="ref-12"><span class="reference-number">[12]</span> S. Battaglia, M. Rossmannek, V. V. Rybkin, I. Tavernelli, and J. Hutter, A general framework for active space embedding methods with applications in quantum computing, npj Comput. Mater. <strong>10</strong>, 297 (2024). <a href="https://doi.org/10.1038/s41524-024-01477-2">doi:10.1038/s41524-024-01477-2</a></li>
+<li id="ref-13"><span class="reference-number">[13]</span> V. Havlíček, A. D. Córcoles, K. Temme, A. W. Harrow, A. Kandala, J. M. Chow, and J. M. Gambetta, Supervised learning with quantum-enhanced feature spaces, Nature <strong>567</strong>, 209 (2019). <a href="https://doi.org/10.1038/s41586-019-0980-2">doi:10.1038/s41586-019-0980-2</a></li>
+<li id="ref-14"><span class="reference-number">[14]</span> H.-Y. Huang, M. Broughton, M. Mohseni, R. Babbush, S. Boixo, H. Neven, and J. R. McClean, Power of data in quantum machine learning, Nat. Commun. <strong>12</strong>, 2631 (2021). <a href="https://doi.org/10.1038/s41467-021-22539-9">doi:10.1038/s41467-021-22539-9</a></li>
+<li id="ref-15"><span class="reference-number">[15]</span> J. R. McClean, S. Boixo, V. N. Smelyanskiy, R. Babbush, and H. Neven, Barren plateaus in quantum neural network training landscapes, Nat. Commun. <strong>9</strong>, 4812 (2018). <a href="https://doi.org/10.1038/s41467-018-07090-4">doi:10.1038/s41467-018-07090-4</a></li>
+<li id="ref-16"><span class="reference-number">[16]</span> S. Thanasilp, S. Wang, M. Cerezo, and Z. Holmes, Exponential concentration in quantum kernel methods, Nat. Commun. <strong>15</strong>, 5200 (2024). <a href="https://doi.org/10.1038/s41467-024-49287-w">doi:10.1038/s41467-024-49287-w</a></li>
+<li id="ref-17"><span class="reference-number">[17]</span> M. Vuffray, C. Coffrin, Y. A. Kharkov, and A. Y. Lokhov, Programmable quantum annealers as noisy Gibbs samplers, PRX Quantum <strong>3</strong>, 020317 (2022). <a href="https://doi.org/10.1103/PRXQuantum.3.020317">doi:10.1103/PRXQuantum.3.020317</a></li>
+<li id="ref-18"><span class="reference-number">[18]</span> M. Benedetti, D. Garcia-Pintos, O. Perdomo, V. Leyton-Ortega, Y. Nam, and A. Perdomo-Ortiz, A generative modeling approach for benchmarking and training shallow quantum circuits, npj Quantum Inf. <strong>5</strong>, 45 (2019). <a href="https://doi.org/10.1038/s41534-019-0157-8">doi:10.1038/s41534-019-0157-8</a></li>
+<li id="ref-19"><span class="reference-number">[19]</span> A. I. Gircha, A. S. Boev, K. Avchaciov, P. O. Fedichev, and A. K. Fedorov, Hybrid quantum-classical machine learning for generative chemistry and drug design, Sci. Rep. <strong>13</strong>, 8250 (2023). <a href="https://doi.org/10.1038/s41598-023-32703-4">doi:10.1038/s41598-023-32703-4</a></li>
+<li id="ref-20"><span class="reference-number">[20]</span> D-Wave Quantum Inc., Models, D-Wave Quantum Computing Products documentation (accessed November 4, 2026). <a href="https://docs.dwavequantum.com/en/latest/concepts/models.html">https://docs.dwavequantum.com/en/latest/concepts/models.html</a></li>
+<li id="ref-21"><span class="reference-number">[21]</span> T. Kadowaki and H. Nishimori, Quantum annealing in the transverse Ising model, Phys. Rev. E <strong>58</strong>, 5355 (1998). <a href="https://doi.org/10.1103/PhysRevE.58.5355">doi:10.1103/PhysRevE.58.5355</a></li>
+<li id="ref-22"><span class="reference-number">[22]</span> S. Boixo, V. N. Smelyanskiy, A. Shabani, S. V. Isakov, M. Dykman, V. S. Denchev, M. H. Amin, A. Yu. Smirnov, M. Mohseni, and H. Neven, Computational multiqubit tunnelling in programmable quantum annealers, Nat. Commun. <strong>7</strong>, 10327 (2016). <a href="https://doi.org/10.1038/ncomms10327">doi:10.1038/ncomms10327</a></li>
+<li id="ref-23"><span class="reference-number">[23]</span> D-Wave Quantum Inc., Minor embedding, D-Wave Quantum Computing Products documentation (accessed November 4, 2026). <a href="https://docs.dwavequantum.com/en/latest/quantum_research/embedding_intro.html">https://docs.dwavequantum.com/en/latest/quantum_research/embedding_intro.html</a></li>
+<li id="ref-24"><span class="reference-number">[24]</span> L. Zhou, S.-T. Wang, S. Choi, H. Pichler, and M. D. Lukin, Quantum approximate optimization algorithm: Performance, mechanism, and implementation on near-term devices, Phys. Rev. X <strong>10</strong>, 021067 (2020). <a href="https://doi.org/10.1103/PhysRevX.10.021067">doi:10.1103/PhysRevX.10.021067</a></li>
+<li id="ref-25"><span class="reference-number">[25]</span> E. Farhi, J. Goldstone, and S. Gutmann, A quantum approximate optimization algorithm, <a href="https://arxiv.org/abs/1411.4028v1">arXiv:1411.4028v1</a> (2014).</li>
+<li id="ref-26"><span class="reference-number">[26]</span> S. Bravyi, A. Kliesch, R. Koenig, and E. Tang, Obstacles to variational quantum optimization from symmetry protection, Phys. Rev. Lett. <strong>125</strong>, 260505 (2020). <a href="https://doi.org/10.1103/PhysRevLett.125.260505">doi:10.1103/PhysRevLett.125.260505</a></li>
+<li id="ref-27"><span class="reference-number">[27]</span> H. Munoz-Bauza and D. Lidar, Scaling advantage in approximate optimization with quantum annealing, Phys. Rev. Lett. <strong>134</strong>, 160601 (2025). <a href="https://doi.org/10.1103/PhysRevLett.134.160601">doi:10.1103/PhysRevLett.134.160601</a></li>
+<li id="ref-28"><span class="reference-number">[28]</span> J. Pawłowski, P. Tarasiuk, J. Tuziemski, Ł. Pawela, and B. Gardas, Toward quantum scaling advantage in approximate optimization, Phys. Rev. Applied <strong>26</strong>, 014024 (2026). <a href="https://doi.org/10.1103/qcws-8kgm">doi:10.1103/qcws-8kgm</a></li>
+<li id="ref-29"><span class="reference-number">[29]</span> T. F. Rønnow, Z. Wang, J. Job, S. Boixo, S. V. Isakov, D. Wecker, J. M. Martinis, D. A. Lidar, and M. Troyer, Defining and detecting quantum speedup, Science <strong>345</strong>, 420 (2014). <a href="https://doi.org/10.1126/science.1252319">doi:10.1126/science.1252319</a></li>
+<li id="ref-30"><span class="reference-number">[30]</span> A. Ajagekar and F. You, Molecular design with automated quantum computing-based deep learning and optimization, npj Comput. Mater. <strong>9</strong>, 143 (2023). <a href="https://doi.org/10.1038/s41524-023-01099-0">doi:10.1038/s41524-023-01099-0</a></li>
+<li id="ref-31"><span class="reference-number">[31]</span> Y. Deguchi and M. Taki, A property–agnostic framework for scalable molecular inverse design via quantum annealing, Digital Discovery <strong>5</strong>, 2861 (2026). <a href="https://doi.org/10.1039/D6DD00012F">doi:10.1039/D6DD00012F</a></li>
+<li id="ref-32"><span class="reference-number">[32]</span> Q. Gao, G. O. Jones, T. Kobayashi, M. Sugawara, H. Yamashita, H. Kawaguchi, S. Tanaka, and N. Yamamoto, Quantum-classical computational molecular design of deuterated high-efficiency OLED emitters, Intell. Comput. <strong>2</strong>, 0037 (2023). <a href="https://doi.org/10.34133/icomputing.0037">doi:10.34133/icomputing.0037</a></li>
+<li id="ref-33"><span class="reference-number">[33]</span> A. Montanaro, Quantum speedup of Monte Carlo methods, Proc. R. Soc. A <strong>471</strong>, 20150301 (2015). <a href="https://doi.org/10.1098/rspa.2015.0301">doi:10.1098/rspa.2015.0301</a></li>
+<li id="ref-34"><span class="reference-number">[34]</span> J. Sun, H. Ahn, S. Kang, S.-B. Ko, D. Song, H. A. Um, S. Kim, Y. Lee, P. Jeon, S.-H. Hwang, Y. You, C. Chu, and S. Kim, Exceptionally stable blue phosphorescent organic light-emitting diodes, Nat. Photonics <strong>16</strong>, 212 (2022). <a href="https://doi.org/10.1038/s41566-022-00958-4">doi:10.1038/s41566-022-00958-4</a></li>
+<li id="ref-35"><span class="reference-number">[35]</span> Q. Gao, G. O. Jones, M. Motta, M. Sugawara, H. C. Watanabe, T. Kobayashi, E. Watanabe, Y.-Y. Ohnishi, H. Nakamura, and N. Yamamoto, Applications of quantum computing for investigations of electronic transitions in phenylsulfonyl-carbazole TADF emitters, npj Comput. Mater. <strong>7</strong>, 70 (2021). <a href="https://doi.org/10.1038/s41524-021-00540-6">doi:10.1038/s41524-021-00540-6</a></li>
+<li id="ref-36"><span class="reference-number">[36]</span> K. Kim, S. Kang, J. Yoo, Y. Kwon, Y. Nam, D. Lee, I. Kim, Y.-S. Choi, Y. Jung, S. Kim, W.-J. Son, J. Son, H. S. Lee, S. Kim, J. Shin, and S. Hwang, Deep-learning-based inverse design model for intelligent discovery of organic molecules, npj Comput. Mater. <strong>4</strong>, 67 (2018). <a href="https://doi.org/10.1038/s41524-018-0128-1">doi:10.1038/s41524-018-0128-1</a></li>
+<li id="ref-37"><span class="reference-number">[37]</span> H. S. Kim, H. J. Cheon, S. H. Lee, J. Kim, S. Yoo, Y.-H. Kim, and C. Adachi, Advancing efficiency in deep-blue OLEDs: Exploring a machine learning–driven multiresonance TADF molecular design, Sci. Adv. <strong>11</strong>, eadr1326 (2025). <a href="https://doi.org/10.1126/sciadv.adr1326">doi:10.1126/sciadv.adr1326</a></li>
+<li id="ref-38"><span class="reference-number">[38]</span> S. An, Y. H. Jung, G. Nam, E. Jeon, J. H. Ham, S. C. Cha, M. Y. Chae, J. H. Kwon, and Y. Jung, Unveiling high-performance hosts for blue OLEDs via deep learning and high-throughput virtual screening, Chem. Eng. J. <strong>505</strong>, 159697 (2025). <a href="https://doi.org/10.1016/j.cej.2025.159697">doi:10.1016/j.cej.2025.159697</a></li>
+<li id="ref-39"><span class="reference-number">[39]</span> S. An, T. T. Thuy, E. Jeon, Y. H. Jung, G. Nam, H. Park, M. Y. Chae, J. H. Kwon, and Y. Jung, Machine learning-guided discovery of sterically protected high triplet exciplex hosts for ultra-bright green OLEDs, J. Am. Chem. Soc. <strong>148</strong>, 944 (2026). <a href="https://doi.org/10.1021/jacs.5c16369">doi:10.1021/jacs.5c16369</a></li>
+<li id="ref-40"><span class="reference-number">[40]</span> H.-J. Kim, J. Lee, Y. K. Choi, T. Lee, J.-H. Yang, S. M. Ko, D.-W. Jeong, S. Han, J. Min, J.-H. Baek, S.-W. Lee, J.-Y. Yang, and S.-Y. Yoon, 85-3: Machine learning strategy towards inverse design of blue TADF emitter: Training excited state properties based on density functional theory calculations, SID Symp. Dig. Tech. Pap. <strong>55</strong>, 1183 (2024). <a href="https://doi.org/10.1002/sdtp.17753">doi:10.1002/sdtp.17753</a></li>
 </ol>
+
 <h2 id="_17">작성 정보</h2>
 <ul>
 <li>작성자: 김현중</li>
 <li>최초 작성: 2026-07-11 · 구조·근거·시각 전면 개정: 2026-07-12</li>
-<li>출발 자료: 개인 CV와 공개 논문, 청색 PhOLED 역설계 PPTX·기술수요 제안, 기존 Deep Research 산출물</li>
+<li>근거 범위: 2026-07-12까지의 공개 전자구조·양자 알고리즘·OLED 역설계 문헌. 현재 서지 확인과 이번 편집일은 당시 근거 범위와 구분합니다.</li>
+<li>문체·인용 개정: 2026-11-04. 반복된 선제 반박을 정리하고 원제·원저자·인용 순서와 실제 계산 범위를 대조했습니다. MgO embedding 사례는 실제 QPU 실행이 아닌 고전 회로 모사로 정정했습니다.</li>
 <li>근거 원칙: peer-reviewed 1차 논문과 공식 기술 문서를 우선하고, 이론·소형 실증·도메인 검증·종단 가치를 분리</li>
 <li>시각 자료: 사례 장면을 설명하는 원본 편집 일러스트레이션 3종과 desktop/mobile 결정론적 SVG 도식 8종</li>
 </ul>
@@ -1385,19 +1455,19 @@
         <h2 id="authoring-disclosure-heading">작성·검증 정보</h2>
         <dl>
           <div><dt>책임 편집자</dt><dd>김현중</dd></div>
-          <div><dt>AI 시스템</dt><dd>AI 보조 워크플로; 정확한 시스템 기록은 보존되지 않음; 정확한 모델 식별자는 보존되지 않음</dd></div>
-          <div><dt>확인 가능한 에이전트 역할</dt><dd>원 작성 세션의 개별 에이전트 역할 기록 미보존</dd></div>
+          <div><dt>AI 시스템</dt><dd>원 작성: 정확한 시스템 기록 미보존; 11월 4일 개정: OpenAI Codex; 정확한 모델 식별자는 보존되지 않음</dd></div>
+          <div><dt>확인 가능한 에이전트 역할</dt><dd>root — 11월 4일 정본 복원·문체·APS 통합과 공개 게시 확인; legacy1104_source_recovery — Git 원고·그림 회복 대조 및 독립 문맥·문체 감수; legacy1104_science_a — 전자구조·VQE/QPE·QML·생성 원전과 실행 범위·원저자 감수; legacy1104_science_b — 어닐링·QAOA·최적화 비용·OLED 원전 및 서지 감수; legacy1104_output — 독립 과학 도식·글꼴·모바일 배치·키보드 출력 감수</dd></div>
           <div><dt>편집 하네스</dt><dd>AI Tech Review Editorial Harness v2026.08 · <a href="../../methods/">공개 방법서</a></dd></div>
-          <div><dt>검증 범위</dt><dd>원 작성 세션의 출처 검증 기록 미보존; 현재 공개 링크와 최종 HTML 확인</dd></div>
-          <div><dt>사람 검토 기록</dt><dd>세부 검토 수준은 별도 기록되지 않음</dd></div>
+          <div><dt>검증 범위</dt><dd>출처 40건의 서지·기록한 원문 관련 절과 공식 문서 열람 범위, 원제·공저자 순서·APS 최초 인용순 대조; 7월 12일 당시 근거와 현재 서지 확인·현재 문서 열람을 구별; 복원 정본 Markdown·기존 자산 19개·수식·표·반응형 출력과 실제 HTTPS 게시 확인; QPU·모델 벤치마크·논문 코드 재현·합성·소자 제작·사람 독자 평가 미수행</dd></div>
+          <div><dt>사람 검토 기록</dt><dd>순차 편집·공개 게시 승인 범위 반영; 문장 단위 사람 심사·독자 평가 없음</dd></div>
           <div><dt>근거 기준일</dt><dd>2026-07-12</dd></div>
         </dl>
-        <p class="disclosure-note">보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.</p>
+        <p class="disclosure-note">원 발행일 2026-07-11과 7월 12일 구조·근거 개정 이력을 유지했다. 11월 4일 개정에서 Git의 원고와 기존 그림을 회복하고 문체·APS 서지를 정리했다. MgO embedding의 고전 회로 모사, TADF의 분자 구조 최적화, Alq₃의 리간드 공통 치환 패턴과 어닐링의 허용 오차·시간 범위를 정정·보완했다. 이득의 세 근거를 엄밀한 필요조건 사슬로 표현한 도식 문구도 바로잡았다. 실제 원문을 읽은 범위는 관련 절·초록·공식 문서 및 출판 기록으로 구분하며 모든 논문·보충자료 전체를 읽거나 재현했다고 표시하지 않는다. 위 역할은 이번 개정이며 원 작성 세션의 모델·개별 에이전트 구성은 미보존이다.</p>
       </section>
       <!-- End AI Tech Review Authoring Disclosure -->
       <div class="footer">
-        생성 시각: 2026-07-12 16:05:06<br>
-        원본 파일 최종 수정 시각: 2026-07-12 16:04:52
+        생성 시각: 2026-11-04 10:30:19<br>
+        원본 파일 최종 수정 시각: 2026-11-04 10:30:19
       </div>
     </article>
 
@@ -1450,7 +1520,6 @@
 </ul>
 </li>
 <li><a href="#_15">연구 맥락과 공개 경계</a></li>
-<li><a href="#_16">참고문헌</a></li>
 <li><a href="#_17">작성 정보</a></li>
 </ul>
 </div>
@@ -1460,56 +1529,19 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
-          <li><a href="https://quantum.cloud.ibm.com/learning/modules/computer-science/qft" target="_blank" rel="noreferrer">표준 QPE에서 누적된 고유위상을 이진수로 읽는 데</a></li>
-<li><a href="https://doi.org/10.1063/1.4768229" target="_blank" rel="noreferrer">Seeley·Richard·Love의 원 연구</a></li>
-<li><a href="https://www.nature.com/articles/ncomms5213" target="_blank" rel="noreferrer">VQE 최초 실험</a></li>
-<li><a href="https://www.nature.com/articles/s41534-020-00341-7" target="_blank" rel="noreferrer">Huggins 등의 측정 연구</a></li>
-<li><a href="https://doi.org/10.1126/science.1113479" target="_blank" rel="noreferrer">Aspuru-Guzik 등의 초기 분자 QPE 연구</a></li>
-<li><a href="https://doi.org/10.22331/q-2019-07-12-163" target="_blank" rel="noreferrer">Low와 Chuang의 qubitization 연구</a></li>
-<li><a href="https://doi.org/10.1103/m7j3-5sk6" target="_blank" rel="noreferrer">2026년 PRX Quantum의 H₂ 실증</a></li>
-<li><a href="https://www.nature.com/articles/s41467-023-37587-6" target="_blank" rel="noreferrer">2023년 ground-state quantum advantage 분석</a></li>
-<li><a href="https://www.nature.com/articles/s41524-024-01477-2" target="_blank" rel="noreferrer">2024년 MgO 결함 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41586-019-0980-2" target="_blank" rel="noreferrer">Havlíček 등의 2019년 실험</a></li>
-<li><a href="https://www.nature.com/articles/s41467-021-22539-9" target="_blank" rel="noreferrer">2021년 Power of Data 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41467-018-07090-4" target="_blank" rel="noreferrer">2018년 barren plateau 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41467-024-49287-w" target="_blank" rel="noreferrer">2024년 quantum kernel 집중 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41534-019-0157-8" target="_blank" rel="noreferrer">2019년 QCBM 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41598-023-32703-4" target="_blank" rel="noreferrer">2023년 annealer-assisted 분자 생성 연구</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevE.58.5355" target="_blank" rel="noreferrer">Kadowaki와 Nishimori의 원 연구</a></li>
-<li><a href="https://www.nature.com/articles/ncomms10327" target="_blank" rel="noreferrer">2016년 multiqubit tunneling 실험</a></li>
-<li><a href="https://arxiv.org/abs/1411.4028" target="_blank" rel="noreferrer">Farhi·Goldstone·Gutmann의 원 논문</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevLett.125.260505" target="_blank" rel="noreferrer">Bravyi 등의 연구</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevLett.134.160601" target="_blank" rel="noreferrer">2025년 PRL 연구</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevApplied.26.014024" target="_blank" rel="noreferrer">2026년 7월 Physical Review Applied의 재검토</a></li>
-<li><a href="https://doi.org/10.1126/science.1252319" target="_blank" rel="noreferrer">Rønnow 등의 speedup 판정 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41524-023-01099-0" target="_blank" rel="noreferrer">Ajagekar와 You의 2023년 연구</a></li>
-<li><a href="https://doi.org/10.1039/D6DD00012F" target="_blank" rel="noreferrer">2026년 Digital Discovery 연구</a></li>
-<li><a href="https://spj.science.org/doi/10.34133/icomputing.0037" target="_blank" rel="noreferrer">2023년 Alq₃ 중수소 치환 연구</a></li>
-<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4614442/" target="_blank" rel="noreferrer">Montanaro의 2015년 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41566-022-00958-4" target="_blank" rel="noreferrer">2022년 Nature Photonics 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41524-021-00540-6" target="_blank" rel="noreferrer">2021년 TADF 양자계산 연구</a></li>
-<li><a href="https://www.nature.com/articles/s41524-018-0128-1" target="_blank" rel="noreferrer">2018년 blue PhOLED host 연구</a></li>
-<li><a href="https://doi.org/10.1126/sciadv.adr1326" target="_blank" rel="noreferrer">2025년 MR-TADF 연구</a></li>
-<li><a href="https://doi.org/10.1016/j.cej.2025.159697" target="_blank" rel="noreferrer">blue TADF host 가상선별 연구</a></li>
-<li><a href="https://doi.org/10.1021/jacs.5c16369" target="_blank" rel="noreferrer">2026년 JACS 연구</a></li>
-<li><a href="https://doi.org/10.1002/sdtp.17753" target="_blank" rel="noreferrer">김현중 외 SID 2024 논문</a></li>
-<li><a href="https://doi.org/10.1103/PhysRev.140.A1133" target="_blank" rel="noreferrer">Kohn and Sham, Self-Consistent Equations Including Exchange and Correlation Effects</a></li>
-<li><a href="https://www.nature.com/articles/s41567-024-02530-z" target="_blank" rel="noreferrer">Zhao et al., Experimental quantum computational chemistry with optimized UCC ansatz</a></li>
-<li><a href="https://www.nature.com/articles/s41534-024-00808-x" target="_blank" rel="noreferrer">Dalton et al., Gate errors in VQE for quantum chemistry</a></li>
-<li><a href="https://doi.org/10.1103/PRXQuantum.3.020317" target="_blank" rel="noreferrer">Vuffray et al., Programmable Quantum Annealers as Noisy Gibbs Samplers</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/concepts/models.html" target="_blank" rel="noreferrer">D-Wave binary quadratic and QUBO model documentation</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/embedding_intro.html" target="_blank" rel="noreferrer">D-Wave minor-embedding documentation</a></li>
-<li><a href="https://doi.org/10.1103/PhysRevX.10.021067" target="_blank" rel="noreferrer">Zhou et al., QAOA: Performance, Mechanism, and Implementation on Near-Term Devices</a></li>
+          <li><a href="#references">참고문헌</a></li>
         </ul>
       </section>
     </aside>
-  </main><section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
+  </main>
+
+<section id="public-local-references" class="public-note"><p>공개 HTML에는 본문, 그림과 공개 외부 참고 링크만 포함합니다. 비공개 작업 메모와 메시지 메타데이터는 게시하지 않습니다.</p><p class="metrics-disclosure">공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위의 집계값으로만 기록합니다.</p></section>
     <!-- AI Tech Review Public Metrics -->
     <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
     <script defer src="../../assets/public-metrics.js"></script>
     <!-- End AI Tech Review Public Metrics -->
 <!-- Reader Engagement Controls -->
-<script type="application/json" id="reader-engagement-config">{"apiBase":"https://api.infant83.io","siteRoot":"https://infant83.io/AI_Tech_Review/","scope":"/AI_Tech_Review/","catalogUrl":"https://infant83.io/AI_Tech_Review/reader-publications.json","article":{"id":"2026-06-11_QC-based-inverse-design","path":"/AI_Tech_Review/reviews/2026-06-11_QC-based-inverse-design/","title":"양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가","publishedAt":"2026-07-11","topic":"review"},"updatesUrl":"https://infant83.io/AI_Tech_Review/reader-updates.json","pageVersion":"00d8142e105ae9c248d2219842fdf039107171f2bf90e79c8acb69b2bf7585eb","articleVersion":"641ce24c51c002f47d3af259c7bee6ea6fbd1c2db4ada5da45642093a8ba4ab8"}</script>
+<script type="application/json" id="reader-engagement-config">{"apiBase":"https://api.infant83.io","siteRoot":"https://infant83.io/AI_Tech_Review/","scope":"/AI_Tech_Review/","catalogUrl":"https://infant83.io/AI_Tech_Review/reader-publications.json","article":{"id":"2026-06-11_QC-based-inverse-design","path":"/AI_Tech_Review/reviews/2026-06-11_QC-based-inverse-design/","title":"양자컴퓨팅은 재료 역설계의 어디를 바꿀 수 있는가","publishedAt":"2026-07-11","topic":"review"},"updatesUrl":"https://infant83.io/AI_Tech_Review/reader-updates.json","pageVersion":"bf97112d55a70d2727039ba1e19b5ea028284e254852bcfb03b15cae3437fb85","articleVersion":"c2dc16b130749792199431b42a7595439033c2c8c1f2591764edeff16e2bc074"}</script>
 <script defer src="../../assets/reader-engagement.js?v=e0ffc945940f"></script>
 <script defer src="../../assets/reader-updates.js?v=5032409ec3ce"></script>
 <!-- End Reader Engagement Controls -->
