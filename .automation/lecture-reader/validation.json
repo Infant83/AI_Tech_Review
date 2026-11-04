@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-04",
+  "scope": "Shared lecture PDF study reader; explicit private passkey accounts and owner/editor notebooks",
+  "unit_and_regression_checks": {
+    "reader_and_cloud_node_tests": 35,
+    "archive_python_tests": 33,
+    "reader_publication_python_tests": 31,
+    "publication_privacy_python_tests": 8,
+    "backend_tests": 39
+  },
+  "public_build": {
+    "status": "passed",
+    "archive_documents": 106,
+    "prior_archive_entries_unchanged": 105,
+    "validated_files": 1909,
+    "catalog_articles": 58,
+    "exact_vendor_assets": 203
+  },
+  "pdf": {
+    "pages": 114,
+    "public_sha256": "e28da004a6ea999161fb2d83c8ca73724504fe5e6824b7b469a2998ca34e3253",
+    "original_source_private": true,
+    "all_pages_pixels_unchanged_outside_declared_edits": true
+  },
+  "browser_local_acceptance": {
+    "chromium": "passed",
+    "webkit_27_2": "passed",
+    "ink_save_reload": true,
+    "eraser_undo": true,
+    "reading_position_bookmarks": true,
+    "editable_backup_export": true,
+    "annotated_pdf_export": true
+  },
+  "independent_review": {
+    "frontend_data_loss_races": "passed; actual production functions tested with deferred storage",
+    "backend_access_and_membership": "no concrete blockers found"
+  },
+  "backend_deployment": {
+    "api": "https://api.infant83.io",
+    "version": "383eed79-3296-4ba3-835a-2c8042467f5f",
+    "migration": "0004_study_notebooks.sql",
+    "existing_push_config_and_origin_rejection": "passed"
+  },
+  "privacy": {
+    "pdf_bytes_uploaded": false,
+    "public_notebook_data": false,
+    "raw_email_or_intake_in_public_output": false,
+    "client_bearer_tokens": false
+  },
+  "limitations": {
+    "physical_ipad_or_apple_pencil_tested": false,
+    "physical_face_id_tested": false,
+    "passkey_browser_qa": "synthetic virtual authenticators on local API; real WebAuthn verification",
+    "sync": "incremental polling around four seconds; no realtime classroom channel"
+  },
+  "shared_browser_acceptance": {
+    "virtual_passkey_registration": true,
+    "virtual_passkey_other_device_login": true,
+    "hash_only_invitation_acceptance": true,
+    "same_pdf_private_shared_isolation": true,
+    "two_writer_union": true,
+    "offline_reload_queue": true,
+    "reading_position_restored": true,
+    "owner_revocation": true,
+    "restored_page": 12
+  },
+  "private_pdf_browser_acceptance": {
+    "passed": true,
+    "engine": "Chromium",
+    "freshContext": true,
+    "privatePDFImport": true,
+    "startupSelectionGuard": true,
+    "publicId": null,
+    "deviceOnlyURL": true,
+    "genericBrowserTitle": true,
+    "localInkAutosave": true,
+    "editableBackupExport": true,
+    "confirmedBackupRestore": true,
+    "wrongFingerprintRejected": true,
+    "wrongImportLeavesInkUnchanged": true,
+    "libraryReopen": true,
+    "privatePDFSwitch": true,
+    "backupRestoreUsesFreshIds": true,
+    "reload": true,
+    "networkWrites": [],
+    "noPDFBytesUploaded": true,
+    "pages": 2
+  },
+  "publication_status": "source ready; live Pages verification recorded separately after deployment"
+}

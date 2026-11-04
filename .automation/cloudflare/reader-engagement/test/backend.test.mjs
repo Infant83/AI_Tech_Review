@@ -48,7 +48,7 @@ async function fixture(t,extraBindings={},beforeMetrics=null,beforeDiscovery=nul
   },method:'GET'})
     .reply(200,() => JSON.stringify(feed),{headers:{'Content-Type':'application/json'}}).persist();
   const mf = new Miniflare({
-    modules:true,scriptPath:join(ROOT,'src/worker.js'),modulesRules:[{type:'ESModule',include:['**/*.js']}],compatibilityDate:'2026-08-06',
+    modules:true,scriptPath:join(ROOT,'.wrangler/test-worker.mjs'),modulesRules:[{type:'ESModule',include:['**/*.js','**/*.mjs']}],compatibilityDate:'2026-08-06',
     d1Databases:['DB'],queueProducers:{READER_QUEUE:'test-reader-notifications'},bindings,fetchMock:mock,
     log:new Log(LogLevel.ERROR),
   });

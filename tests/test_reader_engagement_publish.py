@@ -4,6 +4,7 @@ import copy
 import base64
 import hashlib
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,6 +12,7 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 
 from scripts import reader_engagement_publish as reader
+from scripts import document_archive_site as archive_site
 
 REVISION = "a" * 40
 NEW_REVISION = "b" * 40
@@ -35,6 +37,13 @@ class ReaderEnrichmentTests(unittest.TestCase):
         config = output.split('id="reader-engagement-config">')[1].split("</script>")[0]
         self.assertNotIn("<", config)
         self.assertEqual(json.loads(config)["article"]["title"], article["title"])
+
+    def test_personal_reader_never_gets_article_controls_telemetry_or_automatic_refresh(self):
+        original = '<html><head><title>Study</title></head><body><canvas></canvas></body></html>'
+        for article in (None, ARTICLE):
+            self.assertEqual(reader.enrich_html(original, reader.LECTURE_READER_PAGE, article), original)
+        accidentally_enriched = reader.enrich_html(original, "lectures/course/index.html", ARTICLE)
+        self.assertEqual(reader.enrich_html(accidentally_enriched, reader.LECTURE_READER_PAGE, None), original)
 
     def test_optional_asset_versions_change_only_reader_asset_links(self):
         original = '<html><head><link rel="icon" href="old.ico"></head><body>Original</body></html>'
@@ -111,6 +120,77 @@ class ReaderEnrichmentTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(b"%PDF-1.4 fixture " + name.encode())
         return site, frontend
+
+    def shared_reader_fixture(self, root: Path, site: Path, names=None):
+        names = tuple(names or archive_site.LECTURE_READER_FILES)
+        source = root / "shared-reader-source"
+        for name in names:
+            payload = (b"<html><head><title>Personal study</title></head><body><canvas></canvas></body></html>"
+                       if name == "index.html" else b"Reviewed shared-reader fixture")
+            for folder in (source, site / archive_site.LECTURE_READER_HREF):
+                target = folder / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(payload)
+        vendor_payload = b"Reviewed CMap fixture"
+        vendor_module = ("/* /tmp/upstream-public-example ghp_" + "A" * 36 + " */").encode()
+        manifest = {
+            "pdfjs_dist": "6.5.438", "pdf_lib": "1.17.1", "simplewebauthn_browser": "14.0.0", "source_registry": "https://registry.npmjs.org/",
+            "integrity": "Test fixture", "files": {
+                "fixture.bcmap": hashlib.sha256(vendor_payload).hexdigest(),
+                "fixture.mjs": hashlib.sha256(vendor_module).hexdigest(),
+            },
+        }
+        for folder in (source, site / archive_site.LECTURE_READER_HREF):
+            (folder / "vendor").mkdir(exist_ok=True)
+            (folder / "vendor/fixture.bcmap").write_bytes(vendor_payload)
+            (folder / "vendor/fixture.mjs").write_bytes(vendor_module)
+            (folder / "vendor/manifest.json").write_text(json.dumps(manifest))
+        return source
+
+    def test_shared_reader_does_not_create_publications_or_change_article_revisions(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            site, frontend = self.fixture(root)
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            updates = (site / reader.UPDATES_NAME).read_bytes()
+            catalog = (site / reader.CATALOG_NAME).read_bytes()
+            source = self.shared_reader_fixture(root, site)
+            original = (source / "index.html").read_bytes()
+            with patch.object(archive_site, "LECTURE_READER_SOURCE", source):
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                reader.validate_public_artifact(site)
+                protected = (source / "vendor/fixture.mjs").read_text()
+                with patch.dict(os.environ, {"READER_PUBLISH_TOKEN": protected}):
+                    with self.assertRaisesRegex(ValueError, "Sensitive content") as error:
+                        reader.validate_public_artifact(site)
+                    self.assertNotIn(protected, str(error.exception))
+            self.assertEqual((site / reader.LECTURE_READER_PAGE).read_bytes(), original)
+            self.assertEqual((site / reader.UPDATES_NAME).read_bytes(), updates)
+            self.assertEqual((site / reader.CATALOG_NAME).read_bytes(), catalog)
+
+    def test_shared_reader_allows_exact_vendor_assets_and_rejects_unlisted_or_modified_files(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            site, frontend = self.fixture(root)
+            names = (*archive_site.LECTURE_READER_FILES, "vendor/test-font.bin", "vendor/test-map.bcmap")
+            source = self.shared_reader_fixture(root, site, names)
+            with patch.object(archive_site, "LECTURE_READER_SOURCE", source), patch.object(archive_site, "LECTURE_READER_FILES", names):
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                reader.validate_public_artifact(site)
+                target = site / archive_site.LECTURE_READER_HREF / "reader.mjs"
+                original = target.read_bytes()
+                target.write_bytes(b"unapproved application replacement")
+                with self.assertRaisesRegex(ValueError, "approved source"):
+                    reader.validate_public_artifact(site)
+                target.write_bytes(original)
+                for name in ("lectures/reader/personal-notes.json", "lectures/reader/vendor/unlisted.bin", "assets/unlisted.mjs", "assets/unlisted.bcmap"):
+                    with self.subTest(name=name):
+                        extra = site / name
+                        extra.parent.mkdir(parents=True, exist_ok=True)
+                        extra.write_bytes(b"unapproved data")
+                        with self.assertRaises(ValueError):
+                            reader.validate_public_artifact(site)
+                        extra.unlink()
 
     def test_updates_bootstrap_uses_editorial_dates_and_has_all_document_types(self):
         with tempfile.TemporaryDirectory() as temporary:

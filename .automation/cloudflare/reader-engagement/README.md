@@ -1,5 +1,41 @@
 # Reader engagement 운영 안내
 
+## 개인 학습 노트와 공유 계정 · 2026-11-04
+
+`migrations/0004_study_notebooks.sql`과 `src/study.js`는 기존 기기별 좋아요·알림과 별도로 패스키 계정과 비공개 필기 저장소를 제공한다. 로그인은 `@simplewebauthn/server` 14.0.3으로 WebAuthn 등록·인증 응답을 검증한다. Face ID·Touch ID·보안 키 등 인증기의 사용자 확인이 필수이며, 사이트 RP ID는 `infant83.io`, 허용 브라우저 Origin은 `https://infant83.io`다. 개발 모드는 기존의 명시적 loopback Origin 설정만 따른다. 새 OAuth 앱이나 이메일·비밀번호·서버 비밀값은 요구하지 않는다.
+
+등록·로그인 challenge는 API 호스트의 HttpOnly 쿠키에 연결하고 D1에서 5분 만료와 1회 사용을 강제한다. 등록 응답은 attestation `none`, resident credential과 사용자 확인을 요청한다. 로그인은 서명·challenge·RP·Origin·사용자 확인·credential counter를 검증한다. iframe 로그인은 지원하지 않는다. 인증 성공 시 256비트 난수 세션의 SHA-256 해시만 D1에 기록하며 원본은 `__Host-study_session` HttpOnly·Secure·SameSite=Strict 쿠키에 둔다. 세션은 30일 후 만료되며 로그아웃하면 서버 세션도 제거한다. 패스키 자체의 기기 간 전달·복구는 사용자의 플랫폼 패스키 관리자에 따른다. 이 서버가 패스키 개인키나 복구 비밀을 보관하지 않는다.
+
+노트의 소유자는 계정이고, `owner` 또는 `editor` 멤버십이 있는 계정만 조회·수정할 수 있다. 소유자가 발행하는 256비트 편집 초대는 24시간·1회용이며 서버에는 토큰 해시만 보관한다. 소유자는 편집자 계정의 권한을 회수할 수 있다. 새 요청마다 멤버십을 확인하며 다른 노트 ID를 추측해도 필기나 사용자 목록을 반환하지 않는다. 공유 링크는 초대받을 사람에게 사용자가 전달하는 방식이며 서버가 메일을 발송하지 않는다.
+
+필기는 페이지별 정규화 좌표와 고유 stroke ID로 저장한다. 새 stroke의 ID는 불변이며 지우개는 영구 tombstone을 기록한다. 두 기기의 추가 필기를 합치고 재전송은 중복으로 저장하지 않는다. 늦게 접속한 기기가 지운 stroke를 다시 보내도 되살리지 않는다. 실행 취소로 지운 필기를 복원할 때 클라이언트는 새 ID를 생성해야 한다. SQLite trigger가 변경 순서를 부여하므로 `pages?since=...`로 공유 변경을 순차 수신할 수 있다. 현재 프런트의 주기적 동기화를 위한 계약이며 WebSocket 수업 모드를 구현했다고 표시하지 않는다. 읽던 페이지와 책갈피는 공유 필기와 달리 각 계정의 멤버십에 따로 보관한다.
+
+공개 렉처는 현재 게시 카탈로그의 `lecture:` ID만 연결한다. 개인 PDF는 `publicId:null`과 SHA-256 fingerprint·제목·쪽수만 저장하며 PDF 바이트나 임의 URL을 받지 않는다. 다른 기기·공유 계정에서 개인 PDF를 읽으려면 같은 원본 파일을 가져와 fingerprint가 일치해야 한다. 개인 필기·계정·초대·원본 파일은 공개 발행 카탈로그나 정적 자산에 포함하지 않는다. 서버의 요청 오류 로그에는 원문 필기나 이름·초대 토큰을 출력하지 않는다.
+
+요청 한도는 JSON 1 MB, 한 번에 stroke 작업 100건, stroke당 점 5,000개, 계정당 소유 노트 100권, 노트당 stroke/tombstone 25,000개와 활성 필기 JSON 약 12 MB다. 로그인·등록·노트 생성·수정·초대는 기존 회전 IP 해시 또는 계정 해시를 이용해 별도로 제한한다. 만료된 세션·challenge·초대는 기존 정리 Cron에서 제거한다.
+
+| 경로 (`/v1/study/` 아래) | 동작 |
+| --- | --- |
+| `POST auth/register/options` `{displayName}` | 새 계정의 패스키 등록 옵션·challenge 쿠키 |
+| `POST auth/register/verify` `{response}` | 등록 검증 후 `{account}`와 세션 쿠키 |
+| `POST auth/login/options` `{}` | discoverable 패스키 로그인 옵션·challenge 쿠키 |
+| `POST auth/login/verify` `{response}` | 실제 assertion 서명 검증 후 `{account}`와 세션 쿠키 |
+| `GET me` | 로그인 계정 `{id,displayName}` 또는 `null` |
+| `POST logout` `{}` | 현재 세션 폐기 |
+| `GET notebooks` | 본인에게 허용된 노트 목록 |
+| `POST notebooks` `{publicId,title,fingerprint,pageCount}` | 소유 노트 생성 또는 같은 fingerprint의 기존 소유 노트 반환 |
+| `GET notebooks/:id` | 메타데이터·페이지별 stroke·삭제 ID·본인 위치·책갈피 |
+| `POST notebooks/:id/operations` `{operations,position?,bookmarks?}` | 추가·삭제와 본인 학습 위치 저장. 빈 작업 배열 허용 |
+| `GET notebooks/:id/pages?since=N` | 변경 최대 100건, 이어받을 `revision`·`more` |
+| `POST notebooks/:id/invites` `{}` | 소유자가 24시간·1회용 편집 초대 발급 |
+| `POST invites/accept` `{token}` | 로그인 계정에 편집 권한 부여 |
+| `GET notebooks/:id/members` | 소유자에게 `{accountId,displayName,role}` 목록 |
+| `DELETE notebooks/:id/members/:accountId` | 소유자가 편집자 권한 회수 |
+
+작업의 JSON 형태는 `{type:'put',page,stroke:{id,color,width,points:[{x,y,p}]}}` 또는 `{type:'delete',page,id}`다. `x,y,p`는 0–1, `width`는 페이지 너비의 0–0.1 범위 양수다. 노트 생성 응답의 `revision`과 변경 응답의 `revision`은 정수이며, 변경 페이지 응답에는 실제 마지막 수신 순서와 `notebookRevision`이 별도로 있다. 전체 snapshot은 `{notebook,pages:[{number,strokes}],deleted:[{page,id}],position:{page},bookmarks}` 형태다.
+
+신규 migration 적용 후 기존 Worker를 배포한다. 기존 알림과 pub/sub 키를 교체하거나 기기별 구독을 자동 변경하지 않는다. `npm test`는 pinned esbuild로 테스트 Worker를 묶은 뒤 기존 Miniflare 검사와 독립 서명 생성기를 이용한 패스키·권한·공유 동시 필기 검사를 실행한다. 실제 iPad 생체인증·플랫폼 패스키 복구 테스트를 대신한 것으로 표시하지 않는다.
+
 기존 GitHub Pages HTML·아이콘·URL을 유지하고, 좋아요와 새 글 알림에 필요한 API만 Cloudflare Worker에 둔다. Worker는 `api.infant83.io`, 웹페이지는 `https://infant83.io/AI_Tech_Review/`를 사용한다. API·DB 장애가 나도 원래 정적 글을 읽을 수 있다.
 
 ```text

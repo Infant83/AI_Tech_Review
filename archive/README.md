@@ -78,6 +78,12 @@ DeepH-Polar의 계산 시간이 미공개라는 원문 요약을 바로잡았다
 
 최종 20쪽을 렌더링해 검수하고 본문·메타데이터·원문 URI·첨부·실행 동작을 점검했다. 이는 원 논문의 실험·대규모 학습 재현이나 사람의 문장별 심사를 뜻하지 않는다. 원본·메일 정보·수집 기록·QA 화면은 배포하지 않는다. 제작·검수 기록은 `daily_research_review/2026-10-27_dqb-backfill/`과 `daily_research_review/2026-10-27_dqb-archive/`에 있다. VQE 후속 리뷰는 별도 기획·승인 대상으로 관리한다.
 
+## 양자컴퓨팅 응용 렉처노트 완결본 · 2026-11-04 등록
+
+01–08회 시즌 1 완결본 v1.0의 한국어 114쪽 PDF와 웹판을 `lecture-notes`로 등록했다. TADF의 모델·솔버 오차에서 VQE·VQD·활성공간·QUBO·QAOA·측정 비용과 PoC 판단으로 이어지며 회차별 문제·모범 해설·채점 기준을 포함한다. 내부 대화 링크·전달 경위를 공개판에서 제거하고 공식 출처·과학 내용·수식·그림·쪽번호를 보존했다. 원판의 188개 조건 전체를 이번 등록에서 재실행한 자료로 표시하지 않는다.
+
+등록 ID는 `2026-11-04-quantum-computing-applications-lecture-notes-ko`, 웹판은 `lectures/quantum-computing-applications/`다. 한영 목록은 같은 한국어 자료를 안내한다. 원본과 QA 화면을 배포하지 않으며 제작·검수 기록은 `2026-11-04_quantum-computing-applications-lecture/`에 있다. 기존 등록 자료를 유지한다.
+
 ## D-Wave 정부 과제 최적화 렉처 자료 · 2026-11-01 등록
 
 공식 웨비나 「Quantum Optimization for Mission-Critical Government Challenges」의 한국어 상세 노트 13쪽과 학술 검토 8쪽을 `lecture-notes`로 등록했다. 두 편은 2026-11-01 작성·편집된 v3 공개 보관본이며 한영 렉처 목록과 전체 아카이브에서 같은 한국어 PDF를 안내한다. 상세 노트에는 실제 문답 13건과 수학 보충 3개가, 학술 검토에는 Stride의 모형 크기·MILP·QPU 시간·초기해와 최적성 인증의 검토가 있다. 독립 성능 재현이나 원음·전체 화면 대조를 수행한 자료로 표시하지 않는다.

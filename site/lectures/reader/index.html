@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light"><meta name="robots" content="noindex,follow">
+  <title>PDF 학습 노트 | AI Tech Review Letters</title>
+  <meta name="description" content="PDF를 읽고 펜으로 필기하며 공부합니다. 필기와 읽던 위치를 이 기기에 자동 저장합니다.">
+  <link rel="icon" href="../../favicon.ico"><link rel="stylesheet" href="./reader.css"><link rel="stylesheet" href="./cloud.css">
+  <script src="./vendor/pdf-lib.min.js" defer></script><script src="./vendor/webauthn.min.js" defer></script><script type="module" src="./reader.mjs"></script><script type="module" src="./cloud.mjs"></script>
+</head><body>
+  <svg class="icon-definitions" aria-hidden="true"><defs>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l5-1L20 8a2.8 2.8 0 0 0-4-4L5 15l-1 5Z"/></symbol>
+    <symbol id="i-erase" viewBox="0 0 24 24"><path d="m14 4 6 6a2 2 0 0 1 0 3l-6 7H8l-5-5a2 2 0 0 1 0-3l8-8a2 2 0 0 1 3 0ZM7 8l10 9M8 20h13"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V5a1.5 1.5 0 0 1 3 0v6-8a1.5 1.5 0 0 1 3 0v8-6a1.5 1.5 0 0 1 3 0v7-4a1.5 1.5 0 0 1 3 0v6c0 5-3 8-7 8-3 0-5-2-7-4l-3-4a1.7 1.7 0 0 1 2.5-2L8 12Z"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="m8 4-5 5 5 5M3 9h11a6 6 0 0 1 0 12h-3"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m16 4 5 5-5 5M21 9H10a6 6 0 0 0 0 12h3"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 3h6a3 3 0 0 1 3 3v15a4 4 0 0 0-4-3H4V3Zm9 3a3 3 0 0 1 3-3h5v15h-4a4 4 0 0 0-4 3"/></symbol>
+    <symbol id="i-mark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3Z"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 5-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m10 5 7 7-7 7"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m5 5 14 14M19 5 5 19"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18H6a4 4 0 0 1-1-8 7 7 0 0 1 13-2 5 5 0 0 1 0 10h-1M12 22V12m-4 4 4-4 4 4"/></symbol>
+  </defs></svg>
+  <header class="reader-header">
+    <div class="document-bar">
+      <a class="back-link" id="lecture-link" href="../"><svg aria-hidden="true"><use href="#i-left"/></svg><span data-i18n="lectures">렉처 노트</span></a>
+      <div class="document-heading"><span class="eyebrow" data-i18n="studyNotebook">PDF 학습 노트</span><h1 id="document-title" data-i18n="choosePDF">공부할 PDF를 열어주세요</h1></div>
+      <div class="document-actions"><span id="save-state" class="save-state" role="status" aria-live="polite" data-state="ready" data-i18n="ready">준비됨</span>
+        <button id="cloud-sync" class="icon-button cloud-button" type="button" data-i18n-title="cloud" title="로그인·동기화"><svg aria-hidden="true"><use href="#i-cloud"/></svg><span data-i18n="sync">동기화</span></button>
+        <button id="open-library" class="icon-button" type="button" data-i18n-title="myLibrary" title="내 보관함"><svg aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="library">보관함</span></button>
+      </div>
+    </div>
+    <div class="ink-toolbar" role="toolbar" aria-label="필기 도구" data-i18n-aria="inkTools">
+      <div class="tool-group modes"><button id="tool-pen" class="tool-button active" type="button" aria-pressed="true" data-tool="pen" data-i18n-title="pen"><svg aria-hidden="true"><use href="#i-pen"/></svg><span data-i18n="pen">펜</span></button>
+        <button id="tool-eraser" class="tool-button" type="button" aria-pressed="false" data-tool="eraser" data-i18n-title="eraser"><svg aria-hidden="true"><use href="#i-erase"/></svg><span data-i18n="eraser">지우개</span></button>
+        <button id="tool-read" class="tool-button" type="button" aria-pressed="false" data-tool="read" data-i18n-title="move"><svg aria-hidden="true"><use href="#i-hand"/></svg><span data-i18n="move">읽기</span></button></div>
+      <div class="tool-group colors" role="group" aria-label="펜 색상" data-i18n-aria="penColor">
+        <button type="button" class="color active" data-color="#243746" style="--ink:#243746" aria-label="검정" data-i18n-aria="black" aria-pressed="true"></button>
+        <button type="button" class="color" data-color="#286f67" style="--ink:#286f67" aria-label="초록" data-i18n-aria="green" aria-pressed="false"></button>
+        <button type="button" class="color" data-color="#c45144" style="--ink:#c45144" aria-label="빨강" data-i18n-aria="red" aria-pressed="false"></button>
+        <button type="button" class="color" data-color="#3568ad" style="--ink:#3568ad" aria-label="파랑" data-i18n-aria="blue" aria-pressed="false"></button>
+      </div>
+      <div class="tool-group width-group"><label for="pen-width" data-i18n="width">굵기</label><input id="pen-width" type="range" min="0.8" max="5" step="0.2" value="2" aria-label="펜 굵기" data-i18n-aria="penWidth"><output id="width-value" for="pen-width">2</output></div>
+      <div class="tool-group history-group"><button id="undo" class="icon-button" type="button" disabled data-i18n-title="undo" title="실행 취소"><svg aria-hidden="true"><use href="#i-undo"/></svg></button><button id="redo" class="icon-button" type="button" disabled data-i18n-title="redo" title="다시 실행"><svg aria-hidden="true"><use href="#i-redo"/></svg></button></div>
+      <div class="tool-group toolbar-end"><label class="touch-toggle"><input id="finger-draw" type="checkbox"><span data-i18n="finger">손가락 필기</span></label><button id="open-options" class="icon-button" type="button" data-i18n-title="options" title="저장·가져오기·도움말"><svg aria-hidden="true"><use href="#i-more"/></svg></button></div>
+    </div>
+  </header>
+  <main id="reader-main">
+    <section id="empty-state" class="empty-state"><span class="empty-icon"><svg aria-hidden="true"><use href="#i-pen"/></svg></span><h2 data-i18n="welcome">읽던 곳에서, 쓰던 필기 그대로.</h2><p data-i18n="welcomeBody">렉처 PDF를 열거나 내 PDF를 가져와 공부하세요. 펜 필기와 읽던 위치를 이 기기에 자동 저장합니다.</p><button class="primary-button" id="choose-document" type="button" data-i18n="openPDF">PDF 열기</button><p class="small-note" data-i18n="privateFiles">내 PDF는 업로드 없이 이 브라우저에서 열립니다.</p></section>
+    <div id="loading-state" class="loading-state" hidden role="status"><span class="spinner"></span><span data-i18n="loading">PDF를 여는 중입니다…</span></div>
+    <section id="page-area" class="page-area" hidden aria-label="PDF 페이지" data-i18n-aria="pdfPage">
+      <div id="page-sheet" class="page-sheet"><canvas id="pdf-canvas" aria-label="PDF 본문" data-i18n-aria="pdfContent"></canvas><canvas id="ink-canvas" aria-label="펜 필기 영역" data-i18n-aria="inkCanvas" tabindex="0"></canvas></div>
+    </section>
+    <div id="error-state" class="error-state" hidden role="alert"><h2 data-i18n="cannotOpen">PDF를 열지 못했습니다</h2><p id="error-message"></p><button id="retry-open" class="primary-button" type="button" data-i18n="retry">다시 열기</button><a id="original-link" href="../" data-i18n="openOriginal">원본 PDF 열기</a></div>
+  </main>
+  <footer class="page-controls" id="page-controls" hidden>
+    <div class="navigation"><button id="previous-page" class="icon-button" type="button" data-i18n-title="previous" title="이전 페이지"><svg aria-hidden="true"><use href="#i-left"/></svg></button><label class="page-counter"><input id="page-number" type="number" min="1" value="1" inputmode="numeric" aria-label="페이지 번호" data-i18n-aria="pageNumber"><span aria-hidden="true">/</span><span id="page-count">—</span></label><button id="next-page" class="icon-button" type="button" data-i18n-title="next" title="다음 페이지"><svg aria-hidden="true"><use href="#i-right"/></svg></button></div>
+    <div class="page-middle"><button id="bookmark" class="icon-button" type="button" aria-pressed="false" data-i18n-title="bookmark" title="이 페이지 책갈피"><svg aria-hidden="true"><use href="#i-mark"/></svg></button><select id="bookmarks" aria-label="책갈피 이동" data-i18n-aria="goBookmark"><option value="" data-i18n="bookmarks">책갈피</option></select></div>
+    <label class="zoom-control"><span data-i18n="zoom">확대</span><select id="zoom" aria-label="페이지 확대" data-i18n-aria="zoom"><option value="1" data-i18n="fitWidth">너비 맞춤</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="library-dialog" class="library-dialog"><div class="dialog-heading"><div><span class="eyebrow" data-i18n="personalLearning">나의 학습</span><h2 data-i18n="myLibrary">내 보관함</h2></div><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <p class="library-intro" data-i18n="libraryBody">읽던 페이지와 필기가 이 브라우저에 보관됩니다. 중요한 필기는 백업 파일로도 보관하세요.</p><button class="import-pdf-button" id="import-pdf" type="button"><span aria-hidden="true">＋</span><span data-i18n="importPDF">내 PDF 가져오기</span><small data-i18n="localOnly">업로드 없이 이 기기에 보관</small></button>
+    <h3 data-i18n="recent">이어서 공부하기</h3><div id="saved-documents" class="document-list"></div><h3 data-i18n="publishedLectures">렉처 자료</h3><div id="published-documents" class="document-list"></div>
+  </dialog>
+  <dialog id="options-dialog" class="options-dialog"><div class="dialog-heading"><h2 data-i18n="options">저장·가져오기·도움말</h2><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <div class="export-actions"><button id="export-pdf" type="button" data-i18n="exportPDF">필기한 PDF 내보내기</button><button id="export-backup" type="button" data-i18n="exportBackup">수정 가능한 필기 백업</button><button id="import-backup" type="button" data-i18n="importBackup">필기 백업 가져오기</button></div>
+    <h3 data-i18n="drawingHelp">펜으로 쓰고, 손가락으로 넘기세요</h3><p data-i18n="drawingHelpBody">Apple Pencil은 바로 필기할 수 있습니다. 손가락으로 화면을 움직이고 두 손가락으로 확대할 수 있습니다. 마우스로도 쓸 수 있으며 손가락 필기는 도구에서 켤 수 있습니다. 지우개는 닿은 획을 지웁니다.</p>
+    <h3 data-i18n="savingHelp">필기는 자동 저장됩니다</h3><p data-i18n="savingHelpBody">이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 브라우저 데이터를 지우거나 비공개 모드를 종료하면 사라질 수 있습니다. 로그인 동기화는 선택한 노트에 적용됩니다. 기기를 옮길 때에는 원본 PDF와 필기 백업을 함께 가져가세요.</p><p data-i18n="exportHelp">필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.</p>
+    <button id="persistent-storage" class="secondary-button" type="button" data-i18n="retainStorage">이 기기에 보관 유지 요청</button><button id="clear-page" class="danger-button" type="button" data-i18n="clearPage">현재 페이지의 필기 지우기</button><p class="shortcut-note" data-i18n="shortcuts">단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소</p>
+  </dialog>
+  <input id="pdf-input" type="file" accept="application/pdf,.pdf" hidden><input id="backup-input" type="file" accept="application/json,.json" hidden>
+  <noscript><p class="error-state">PDF 필기에는 JavaScript가 필요합니다. <a href="../">렉처 목록에서 원본 PDF를 열 수 있습니다.</a></p></noscript>
+</body></html>

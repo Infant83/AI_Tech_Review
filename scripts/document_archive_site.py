@@ -9,6 +9,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
+from urllib.parse import urlencode
 
 try:
     from .briefing_site import render_briefings, validate_briefings
@@ -26,8 +27,32 @@ SERIES = {
 }
 LIBRARY_ASSET_VERSION = "20261023-books"
 
+# The shared reader is application code, not a course or an article. Never copy
+# a source directory recursively: it may also contain tests or private notes.
+LECTURE_READER_SOURCE = Path(__file__).resolve().parents[1] / ".automation/lecture-reader"
+LECTURE_READER_HREF = "lectures/reader/"
+LECTURE_READER_FILES = (
+    "index.html", "reader.css", "reader.mjs", "ink-core.mjs", "storage.mjs",
+    "cloud.mjs", "cloud-core.mjs", "cloud.css",
+)
+
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
+    "2026-11-04-quantum-computing-applications-lecture-notes-ko": {
+        "source": "2026-11-04_quantum-computing-applications-lecture/dist",
+        "href": "lectures/quantum-computing-applications/",
+        "start_anchor": "book-toc",
+        "navigation": (("book-toc", "목차"), ("answers", "문제 해설"), ("references", "출처")),
+        "publication_note": (
+            "2026-11-04 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "root가 공개판 정제·게재를, public_pdf_qa가 별도의 원본 114쪽 출력·출처·대표 식 검토를 담당했다. "
+            "내부 대화와 전달 경위를 제외하고 과학 내용·수식·문제·해설을 보존했다. "
+            "원판의 소스 ZIP 전체와 188개 검증 조건을 이번 등록에서 독립 재실행한 것은 아니다. "
+            "실제 QPU·분자 실험이나 사람의 문장별 심사를 수행한 것으로 표시하지 않는다. "
+            "영문 목록은 이 한국어 자료의 안내다."
+        ),
+        "files": ("index.html", "notes.pdf"),
+    },
     "2026-10-20-quantum-machine-learning-lecture-notes-ko": {
         "source": "2026-10-20_quantum-machine-learning-lecture-series/dist",
         "href": "lectures/quantum-machine-learning/",
@@ -88,6 +113,85 @@ LECTURE_BUNDLES = {
 
 def escape(value: object) -> str:
     return html.escape(str(value), quote=True)
+
+
+def lecture_reader_href(document_id: str | None = None, *, prefix: str = "", language: str = "ko") -> str:
+    query = {"id": document_id} if document_id else {"library": "1"}
+    if language == "en":
+        query["lang"] = "en"
+    return prefix + LECTURE_READER_HREF + "?" + urlencode(query)
+
+
+def lecture_reader_asset_hashes() -> dict[str, str | None]:
+    """Return application paths and the exact, checksum-pinned vendor map."""
+    manifest_path = LECTURE_READER_SOURCE / "vendor/manifest.json"
+    if manifest_path.is_symlink() or not manifest_path.is_file():
+        raise ValueError("Missing or symlinked lecture reader vendor manifest")
+    try:
+        payload = manifest_path.read_bytes()
+        manifest = json.loads(payload)
+    except (OSError, ValueError) as exc:
+        raise ValueError("Invalid lecture reader vendor manifest") from exc
+    if (not isinstance(manifest, dict) or set(manifest) != {"pdfjs_dist", "pdf_lib", "simplewebauthn_browser", "source_registry", "integrity", "files"}
+            or any(not isinstance(manifest.get(key), str) or not manifest[key].strip()
+                   for key in ("pdfjs_dist", "pdf_lib", "simplewebauthn_browser", "source_registry", "integrity"))
+            or manifest["source_registry"] != "https://registry.npmjs.org/"
+            or not isinstance(manifest["files"], dict) or not 1 <= len(manifest["files"]) <= 400):
+        raise ValueError("Invalid lecture reader vendor manifest")
+    assets = {name: None for name in LECTURE_READER_FILES}
+    assets["vendor/manifest.json"] = hashlib.sha256(payload).hexdigest()
+    for name, checksum in manifest["files"].items():
+        if (not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9_-]+(?:[./-][A-Za-z0-9_-]+)*", name)
+                or any(part in {".", ".."} for part in name.split("/"))
+                or Path(name).suffix not in {".mjs", ".js", ".txt", ".bcmap", ".bin", ".pfb", ".ttf", ".wasm"}
+                or not isinstance(checksum, str) or not re.fullmatch(r"[0-9a-f]{64}", checksum)):
+            raise ValueError("Invalid lecture reader vendor path or checksum")
+        assets["vendor/" + name] = checksum
+    return assets
+
+
+def stage_lecture_reader(staging: Path) -> Path:
+    source = LECTURE_READER_SOURCE
+    destination = staging / LECTURE_READER_HREF
+    if source.is_symlink() or not source.is_dir():
+        raise ValueError("Missing or symlinked lecture reader source")
+    for name, checksum in lecture_reader_asset_hashes().items():
+        path = source / name
+        if (path.is_symlink() or not path.is_file()
+                or any(parent.is_symlink() for parent in path.parents if parent != source and source in parent.parents)
+                or not path.resolve().is_relative_to(source.resolve())):
+            raise ValueError(f"Missing or symlinked lecture reader asset: {name}")
+        if checksum and hashlib.sha256(path.read_bytes()).hexdigest() != checksum:
+            raise ValueError(f"Lecture reader vendor checksum mismatch: {name}")
+        target = destination / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
+    return destination
+
+
+def validate_lecture_reader(site_dir: Path, *, required: bool = True) -> list[str]:
+    root = site_dir / LECTURE_READER_HREF
+    if not root.exists():
+        return ["missing shared lecture reader"] if required else []
+    if root.is_symlink():
+        return ["symlinked shared lecture reader"]
+    try:
+        assets = lecture_reader_asset_hashes()
+    except ValueError as exc:
+        return [str(exc)]
+    actual = {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()}
+    errors = []
+    if actual != set(assets):
+        errors.append("shared lecture reader output differs from allowlist")
+    for name in actual & set(assets):
+        path, source = root / name, LECTURE_READER_SOURCE / name
+        if path.is_symlink() or any(parent.is_symlink() for parent in path.parents if parent != root and root in parent.parents):
+            errors.append(f"symlinked lecture reader asset: {name}")
+        elif not source.is_file() or path.read_bytes() != source.read_bytes():
+            errors.append(f"lecture reader asset differs from approved source: {name}")
+        elif assets[name] and hashlib.sha256(path.read_bytes()).hexdigest() != assets[name]:
+            errors.append(f"lecture reader vendor checksum mismatch: {name}")
+    return errors
 
 
 def render_library_navigation(documents: list[dict], area: str, language: str = "ko", prefix: str = "") -> str:
@@ -167,6 +271,8 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
         study = f'{prefix}{escape(doc["study_href"])}' if doc.get("study_href") else ""
         title_link = f'<a href="{study}">{escape(doc_title)}</a>' if study else f'<a href="{pdf}" target="_blank" rel="noopener">{escape(doc_title)}</a>'
         study_link = f'<a href="{study}">{"Korean study notes" if en else "강의 노트 읽기"} →</a>' if study else ""
+        annotate_link = (f'<a href="{escape(lecture_reader_href(doc["id"], prefix=prefix, language=language))}">'
+                         f'{"Read &amp; annotate" if en else "필기하며 읽기"} →</a>') if doc["series"] == "lecture-notes" else ""
         native_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         cards.append(f'''<article class="document-card" data-series="{escape(doc['series'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
           <div class="document-meta"><span>{SERIES[doc['series']][int(en)]}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
@@ -174,7 +280,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
           <p class="document-summary" lang="{summary_language}">{escape(doc_summary)}</p>
           <div class="tags">{tags}</div>
           <div class="document-footer"><span>{native_language} · {doc['size_bytes'] / 1024:.0f} KB</span>
-          <div>{study_link}<a href="{pdf}" target="_blank" rel="noopener">{'Open PDF' if en else 'PDF 열기'} ↗</a><a href="{pdf}" download>{'Download' if en else '다운로드'} ↓</a></div></div>
+          <div>{annotate_link}{study_link}<a href="{pdf}" target="_blank" rel="noopener">{'Open PDF' if en else 'PDF 열기'} ↗</a><a href="{pdf}" download>{'Download' if en else '다운로드'} ↓</a></div></div>
         </article>''')
     latest = catalog[0]["date"] if catalog else "—"
     return f'''<!doctype html>
@@ -245,6 +351,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
     for doc in lectures:
         study = prefix + doc["study_href"] if doc.get("study_href") else ""
         pdf = prefix + doc["href"]
+        reader = escape(lecture_reader_href(doc["id"], prefix=prefix, language=language))
         doc_title = doc.get("title_en") if en else doc["title"]
         doc_title = doc_title or doc["title"]
         summary = intros.get(doc["id"], (doc["summary"], doc.get("summary_en") or doc["summary"]))[int(en)]
@@ -275,16 +382,15 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
                                           ("chapter-3", "AI agents" if en else "AI 에이전트"),
                                           ("chapter-4", "Finance foundations" if en else "금융 기초"),
                                           ("chapter-7", "Review questions and solutions" if en else "복습 질문과 풀이")]) + '</div>'
+        actions = f'<a class="lecture-primary" href="{reader}">{"Read &amp; annotate" if en else "필기하며 읽기"} →</a>'
         if study:
             start_anchor = LECTURE_BUNDLES.get(doc["id"], {}).get("start_anchor", "doc-study-guide")
-            actions = (f'<a class="lecture-primary" href="{escape(study)}#{escape(start_anchor)}">{"Start learning" if en else "학습 시작"} →</a>'
-                       f'<a class="lecture-secondary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>')
-        else:
-            actions = (f'<a class="lecture-primary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>'
-                       f'<a class="lecture-secondary" href="{escape(pdf)}" download>{"Download" if en else "다운로드"} ↓</a>')
+            actions += f'<a class="lecture-secondary" href="{escape(study)}#{escape(start_anchor)}">{"Online notes" if en else "온라인 노트"} →</a>'
+        actions += (f'<a class="lecture-secondary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>'
+                    f'<a class="lecture-secondary" href="{escape(pdf)}" download>{"Download" if en else "다운로드"} ↓</a>')
         cards.append(f'''<article class="lecture-card{' lecture-featured' if study else ''}">
           <div class="lecture-meta"><span class="lecture-format">{format_label}</span><span>{native}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
-          <h2 lang="{title_language}"><a href="{escape(study or pdf)}">{escape(doc_title)}</a></h2>
+          <h2 lang="{title_language}"><a href="{reader}">{escape(doc_title)}</a></h2>
           <p class="lecture-summary" lang="{summary_language}">{escape(summary)}</p>
           {stats}<div class="lecture-actions">{actions}</div>{quick_links}
         </article>''')
@@ -304,7 +410,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
       <header class="site-header">
         <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
           {render_brand_link(prefix)}
-          <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
+          <span class="topbar-links"><a href="{escape(lecture_reader_href(prefix=prefix, language=language))}">{'My study notes' if en else '내 학습 노트'}</a><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
         </nav>
         {render_library_navigation(documents, 'lectures', language, prefix)}
         <section class="lecture-hero"><p class="section-kicker">Study &amp; practice</p><h1>{title}</h1><p>{description}</p>
@@ -407,7 +513,7 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
     # Stage the complete allowlist before replacing the generated archive.
     with tempfile.TemporaryDirectory(prefix="document-archive-", dir=site_dir.parent) as temporary:
         temporary_root = Path(temporary)
-        lecture_outputs = []
+        lecture_outputs = [(stage_lecture_reader(temporary_root), site_dir / LECTURE_READER_HREF)]
         for source, document in zip(source_documents, documents):
             spec = LECTURE_BUNDLES.get(source["id"])
             if spec:
@@ -494,7 +600,7 @@ def validate_archive(site_dir: Path) -> list[str]:
         from .external_resources import validate_resources
     except ImportError:
         from external_resources import validate_resources
-    errors = []
+    errors = validate_lecture_reader(site_dir)
     manifest_path = site_dir / "archive-manifest.json"
     if not manifest_path.exists():
         return ["missing public archive manifest"]

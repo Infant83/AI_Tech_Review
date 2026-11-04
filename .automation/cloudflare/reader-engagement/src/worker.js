@@ -6,6 +6,7 @@ import {
 import {webPushRequest} from './web-push.js';
 import {metricsArticleQuery,metricsSummary,pruneMetrics,recordMetrics} from './metrics.js';
 import {discoveryRange,reviewDiscovery} from './discovery.js';
+import {studyRoute,pruneStudy} from './study.js';
 
 const PUBLIC_FEED = `${SITE_ORIGIN}${SITE_ROOT}reader-publications.json`;
 const MAX_CATALOG = 500;
@@ -380,6 +381,8 @@ export default {
         assertOrigin(request,env,true);
         return new Response(null,{status:204,headers:responseHeaders(request,env)});
       }
+      const study=await studyRoute(request,env,url);
+      if(study) return study;
       if (url.pathname === '/v1/config' && request.method === 'GET') {
         let publicKey = null;
         try { if (decode64(env.VAPID_PUBLIC_KEY,65)[0] === 4) publicKey = env.VAPID_PUBLIC_KEY; } catch {}
@@ -432,6 +435,7 @@ export default {
       // Test notification history is disposable; publication history remains durable.
       await run(env,"DELETE FROM publication_events WHERE kind='test' AND created_at<?",Date.now()-7*DAY);
       await pruneMetrics(env);
+      await pruneStudy(env);
     })());
   },
 };

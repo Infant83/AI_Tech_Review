@@ -23,6 +23,7 @@ SITE_ROOT = "https://infant83.io" + SCOPE
 API_BASE = "https://api.infant83.io"
 CATALOG_NAME = "reader-publications.json"
 UPDATES_NAME = "reader-updates.json"
+LECTURE_READER_PAGE = "lectures/reader/index.html"
 FRONTEND_DIR = ROOT / ".automation/reader-engagement/frontend"
 ASSET_EXCEPTIONS = ROOT / ".automation/reader-engagement/public-asset-exceptions.json"
 ASSETS = {
@@ -114,6 +115,10 @@ def strip_engagement(text: str) -> str:
 def enrich_html(text: str, relative_path: str, article: dict | None,
                 *, asset_versions: dict[str, str] | None = None, article_version: str | None = None) -> str:
     text = strip_engagement(text)
+    # Personal/local documents must never gain telemetry, a publication identity,
+    # automatic navigation, or the standalone pull-to-refresh gesture.
+    if relative_path == LECTURE_READER_PAGE:
+        return text
     if not re.search(r"</head\s*>", text, re.I) or not re.search(r"</body\s*>", text, re.I):
         return text
     newline = "\r\n" if "\r\n" in text else "\n"
@@ -170,7 +175,8 @@ def build_updates(site_dir: Path, previous: dict | None = None, *, now: str | No
                          if isinstance(item, dict) and isinstance(item.get("id"), str)}
     timestamp = now or datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     pages = {public_path(path.relative_to(site_dir).as_posix()): content_digest(path)
-             for path in sorted(site_dir.rglob("*.html"))}
+             for path in sorted(site_dir.rglob("*.html"))
+             if path.relative_to(site_dir).as_posix() != LECTURE_READER_PAGE}
     reviews = json.loads((site_dir / "manifest.json").read_text(encoding="utf-8"))
     archive_file = site_dir / "archive-manifest.json"
     documents = json.loads(archive_file.read_text(encoding="utf-8")).get("documents", []) if archive_file.exists() else []
@@ -332,8 +338,10 @@ def validate_public_artifact(site_dir: Path) -> dict:
     """Fail before artifact upload on private files, links, or unregistered article assets."""
     try:
         from .publish_public_site import public_text_risks
+        from . import document_archive_site as archive_site
     except ImportError:
         from publish_public_site import public_text_risks
+        import document_archive_site as archive_site
     site_dir = Path(site_dir)
     if site_dir.is_symlink():
         raise ValueError("The public output directory cannot be a symlink")
@@ -364,6 +372,15 @@ def validate_public_artifact(site_dir: Path) -> dict:
             path = (Path(document["study_href"]) / asset).as_posix()
             public_path(path)
             registered.add(path)
+    reader_errors = archive_site.validate_lecture_reader(site_dir, required=False)
+    if reader_errors:
+        raise ValueError("; ".join(reader_errors))
+    shared_reader_pins = (archive_site.lecture_reader_asset_hashes()
+                          if (site_dir / archive_site.LECTURE_READER_HREF).exists() else {})
+    shared_reader_assets = {archive_site.LECTURE_READER_HREF + name for name in shared_reader_pins}
+    pinned_vendor_assets = {archive_site.LECTURE_READER_HREF + name for name, checksum in shared_reader_pins.items()
+                            if checksum and name.startswith("vendor/") and name != "vendor/manifest.json"}
+    registered.update(shared_reader_assets)
     # Four already published alternate cover images predate the registry. Pin their
     # exact bytes rather than deleting covers or silently allowing new unlisted files.
     exceptions = json.loads(ASSET_EXCEPTIONS.read_text(encoding="utf-8"))
@@ -392,14 +409,15 @@ def validate_public_artifact(site_dir: Path) -> dict:
             raise ValueError(f"Unapproved public directory: {relative}")
         if relative.parts[0] == "en" and name != "en/index.html":
             raise ValueError(f"Unapproved English hub file: {relative}")
-        if name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS:
+        if (name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS
+                and name not in shared_reader_assets):
             raise ValueError(f"Unapproved public file type: {relative}")
         if ((relative.parts[0] == "reviews" or name.startswith("archive/files/")
              or (relative.parts[0] == "lectures" and name not in {"lectures/index.html", "lectures/en/index.html"}))
                 and name not in registered):
             if exceptions.get(name) != hashlib.sha256(path.read_bytes()).hexdigest():
                 raise ValueError(f"Unregistered public article asset: {relative}")
-        if path.suffix.lower() in PUBLIC_TEXT_EXTENSIONS:
+        if path.suffix.lower() in PUBLIC_TEXT_EXTENSIONS or (name in shared_reader_assets and path.suffix.lower() == ".mjs"):
             text = path.read_bytes().decode("utf-8")
             # Raster bytes can coincidentally contain /srv/, /tmp/, or credential-like
             # strings in base64. Inspect the surrounding SVG/HTML, not encoded pixels.
@@ -415,7 +433,11 @@ def validate_public_artifact(site_dir: Path) -> dict:
                            or (kind == "webp" and raster.startswith(b"RIFF") and raster[8:12] == b"WEBP"))
                 return "[embedded raster image]" if correct else match[0]
             inspected = RASTER_DATA_URI.sub(raster_placeholder, text)
-            if any(secret in text for secret in protected) or public_text_risks(html.unescape(inspected)):
+            # Reviewed upstream parser/font code can contain sample paths and
+            # credential-shaped data. Its exact manifest pins were checked above;
+            # actual deployment-secret matches are still rejected in every file.
+            if (any(secret in text for secret in protected)
+                    or (name not in pinned_vendor_assets and public_text_risks(html.unescape(inspected)))):
                 # Report the filename only, never the matching secret or its surrounding text.
                 raise ValueError(f"Sensitive content detected in public output: {relative}")
         checked += 1

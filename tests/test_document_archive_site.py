@@ -12,7 +12,7 @@ import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 from scripts import publish_public_site as publisher
 from scripts import document_archive_site as archive_site
@@ -92,6 +92,23 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.site = self.root / "site"
         (self.archive / "files").mkdir(parents=True)
         (self.site / "assets").mkdir(parents=True)
+        self.reader_source = self.root / "reader-source"
+        for name in archive_site.LECTURE_READER_FILES:
+            target = self.reader_source / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(("<html><head></head><body>Private study reader</body></html>"
+                                if name == "index.html" else "Reviewed application asset: " + name).encode())
+        vendor = self.reader_source / "vendor"
+        vendor.mkdir()
+        vendor_bytes = b"Reviewed CMap fixture"
+        (vendor / "fixture.bcmap").write_bytes(vendor_bytes)
+        (vendor / "manifest.json").write_text(json.dumps({
+            "pdfjs_dist": "6.5.438", "pdf_lib": "1.17.1", "simplewebauthn_browser": "14.0.0", "source_registry": "https://registry.npmjs.org/",
+            "integrity": "Test fixture", "files": {"fixture.bcmap": hashlib.sha256(vendor_bytes).hexdigest()},
+        }))
+        source_patch = patch.object(archive_site, "LECTURE_READER_SOURCE", self.reader_source)
+        source_patch.start()
+        self.addCleanup(source_patch.stop)
 
     def registry(self, documents: list[dict]) -> None:
         for document in documents:
@@ -453,7 +470,9 @@ class DocumentArchiveSiteTests(unittest.TestCase):
                 for metric in (["4 replays", "61-page PDF", "19 figures"] if language == "en" else ["다시보기 4회", "PDF 61쪽", "그림 19개"]):
                     self.assertIn(metric, page)
                 primary = next(anchor for anchor in parser.anchors if "lecture-primary" in anchor.get("class", "").split())
-                self.assertEqual(urlsplit(primary["href"]).fragment, "chapter-0")
+                primary_url = urlsplit(primary["href"])
+                self.assertEqual(parse_qs(primary_url.query)["id"], [document["id"]])
+                self.assertEqual((path.parent / primary_url.path / "index.html").resolve(), self.site / "lectures/reader/index.html")
                 chapter_links = [anchor for anchor in parser.anchors if urlsplit(anchor.get("href", "")).fragment.startswith("chapter-")]
                 self.assertEqual({urlsplit(anchor["href"]).fragment for anchor in chapter_links},
                                  {"chapter-0", "chapter-1", "chapter-2", "chapter-3", "chapter-4", "chapter-7"})
@@ -619,25 +638,38 @@ class DocumentArchiveSiteTests(unittest.TestCase):
                 page_path = self.site / "lectures" / relative
                 parser = NavigationParser()
                 parser.feed(page_path.read_text(encoding="utf-8"))
-                start = [anchor for anchor in parser.anchors if anchor["text"].startswith("Start learning" if language == "en" else "학습 시작")]
-                pdf_start = [anchor for anchor in parser.anchors if "lecture-primary" in anchor.get("class", "").split() and anchor["text"].startswith("Read PDF" if language == "en" else "PDF 읽기")]
+                start = [anchor for anchor in parser.anchors if anchor["text"].startswith("Online notes" if language == "en" else "온라인 노트")]
+                readers = [anchor for anchor in parser.anchors if "lecture-primary" in anchor.get("class", "").split()]
                 self.assertEqual(len(start), 1)
-                self.assertEqual(len(pdf_start), 1)
+                self.assertEqual(len(readers), 2)
+                reader_ids = set()
+                for anchor in readers:
+                    url = urlsplit(anchor["href"])
+                    self.assertEqual((page_path.parent / url.path / "index.html").resolve(), self.site / "lectures/reader/index.html")
+                    params = parse_qs(url.query)
+                    reader_ids.update(params["id"])
+                    self.assertEqual(params.get("lang"), ["en"] if language == "en" else None)
+                    self.assertTrue(anchor["text"].startswith("Read & annotate" if language == "en" else "필기하며 읽기"))
+                self.assertEqual(reader_ids, {study["id"], pdf_only["id"]})
                 study_url = urlsplit(start[0]["href"])
                 study_path = (page_path.parent / study_url.path / "index.html").resolve()
                 self.assertEqual(study_path, self.site / "lectures/quantum-machine-learning/index.html")
                 self.assertEqual(study_url.fragment, "doc-study-guide")
                 self.assertIn(f'id="{study_url.fragment}"', study_path.read_text(encoding="utf-8"))
-                self.assertEqual((page_path.parent / pdf_start[0]["href"]).resolve(), self.site / "archive" / pdf_only["file"])
                 pdf_links = [anchor for anchor in parser.anchors if str(anchor.get("href", "")).endswith(".pdf")]
                 self.assertGreaterEqual(len(pdf_links), 4)
                 downloads = [anchor for anchor in pdf_links if "download" in anchor]
-                self.assertEqual(len(downloads), 1)
-                self.assertEqual((page_path.parent / downloads[0]["href"]).resolve(), self.site / "archive" / pdf_only["file"])
+                self.assertEqual(len(downloads), 2)
+                self.assertEqual({(page_path.parent / anchor["href"]).resolve() for anchor in downloads},
+                                 {self.site / "archive" / doc["file"] for doc in (study, pdf_only)})
                 for anchor in pdf_links:
                     target = (page_path.parent / anchor["href"]).resolve()
                     self.assertTrue(target.is_relative_to(self.site))
                     self.assertEqual(target.read_bytes(), PDF_BYTES)
+                library = next(anchor for anchor in parser.anchors if anchor["text"] == ("My study notes" if language == "en" else "내 학습 노트"))
+                library_url = urlsplit(library["href"])
+                self.assertEqual(parse_qs(library_url.query).get("library"), ["1"])
+                self.assertEqual((page_path.parent / library_url.path / "index.html").resolve(), self.site / "lectures/reader/index.html")
 
     def test_lecture_landing_escapes_registry_content_and_handles_an_empty_catalog(self) -> None:
         document = archive_document()
@@ -653,6 +685,70 @@ class DocumentArchiveSiteTests(unittest.TestCase):
                 parser.feed(archive_site.render_lectures([], BASE_URL, language))
                 self.assertEqual(sum(anchor.get("aria-current") == "page" for anchor in parser.anchors), 1)
                 self.assertFalse(any(str(anchor.get("href", "")).endswith(".pdf") for anchor in parser.anchors))
+
+    def test_shared_reader_copies_only_approved_application_and_never_private_notes(self) -> None:
+        lecture = archive_document("2026-11-04-quantum-lecture")
+        lecture["series"] = "lecture-notes"
+        other = archive_document("2026-11-03-daily-research")
+        self.registry([lecture, other])
+        (self.reader_source / "private-notes.json").write_text('{"handwriting":"PRIVATE"}')
+        self.publish()
+        reader_root = self.site / archive_site.LECTURE_READER_HREF
+        actual = {path.relative_to(reader_root).as_posix() for path in reader_root.rglob("*") if path.is_file()}
+        self.assertEqual(actual, set(archive_site.lecture_reader_asset_hashes()))
+        self.assertEqual(archive_site.validate_lecture_reader(self.site), [])
+        for name in actual:
+            self.assertEqual((reader_root / name).read_bytes(), (self.reader_source / name).read_bytes())
+        for language, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            path = self.site / "archive" / relative
+            parser = NavigationParser()
+            parser.feed(path.read_text())
+            actions = [anchor for anchor in parser.anchors if anchor["text"].startswith("Read & annotate" if language == "en" else "필기하며 읽기")]
+            self.assertEqual(len(actions), 1)
+            action = urlsplit(actions[0]["href"])
+            self.assertEqual(parse_qs(action.query)["id"], [lecture["id"]])
+            self.assertEqual((path.parent / action.path / "index.html").resolve(), reader_root / "index.html")
+        extra = reader_root / "notes.json"
+        extra.write_text('{"private":"notes"}')
+        self.assertTrue(archive_site.validate_lecture_reader(self.site))
+        extra.unlink()
+        (reader_root / "reader.mjs").write_text("unapproved replacement")
+        self.assertTrue(archive_site.validate_lecture_reader(self.site))
+
+    def test_missing_or_symlinked_reader_asset_preserves_previous_public_archive(self) -> None:
+        document = archive_document()
+        self.registry([document])
+        self.publish()
+        previous = (self.site / "archive/index.html").read_bytes()
+        asset = self.reader_source / "reader.mjs"
+        original = asset.read_bytes()
+        asset.unlink()
+        with self.assertRaisesRegex(ValueError, "lecture reader asset"):
+            self.publish()
+        self.assertEqual((self.site / "archive/index.html").read_bytes(), previous)
+        external = self.root / "external-reader.mjs"
+        external.write_bytes(original)
+        asset.symlink_to(external)
+        with self.assertRaisesRegex(ValueError, "lecture reader asset"):
+            self.publish()
+        self.assertEqual((self.site / "archive/index.html").read_bytes(), previous)
+
+    def test_vendor_pin_and_path_validation_precede_public_output_replacement(self) -> None:
+        self.registry([archive_document()])
+        self.publish()
+        previous = (self.site / "archive/index.html").read_bytes()
+        vendor = self.reader_source / "vendor/fixture.bcmap"
+        vendor.write_bytes(b"modified after integrity review")
+        with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+            self.publish()
+        self.assertEqual((self.site / "archive/index.html").read_bytes(), previous)
+        manifest_path = self.reader_source / "vendor/manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["files"] = {"../private.json": "a" * 64}
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "vendor path"):
+            self.publish()
+        self.assertEqual((self.site / "archive/index.html").read_bytes(), previous)
 
     def test_briefing_landing_is_bilingual_and_lists_only_published_briefing_series(self) -> None:
         daily = archive_document("2026-10-20-daily-briefing")
