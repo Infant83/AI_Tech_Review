@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-06",
+  "assets": [
+    {
+      "asset": "hero.webp",
+      "role": "AI-generated conceptual cover",
+      "meaning_and_conditions": "Configuration–energy/force–motion relationship; no physical-space topography or actual trajectory.",
+      "sha256": "c7ab109a0fb1592701739948cee5dd7a3f5c28addfef0779adfca9a9d87dd58c"
+    },
+    {
+      "asset": "lj_energy_force.svg",
+      "role": "Review analytic calculation",
+      "meaning_and_conditions": "Lennard-Jones pair energy and its negative radial derivative; reduced units; Ref. [3].",
+      "sha256": "268f29508db12f97e3f829b4aa72f0309400b6ce3106c44a8cd965fa612f2e66"
+    },
+    {
+      "asset": "lj_md_energy.svg",
+      "role": "Review educational MD calculation",
+      "meaning_and_conditions": "Isolated equal-mass pair; velocity Verlet; no thermostat; force and timestep-convergence checks.",
+      "sha256": "c84d5cf2236a26cb5f0b510ad97671a1975ac817b4a2809d7df329ab2a15bd82"
+    },
+    {
+      "asset": "simulation_workflow.svg",
+      "role": "Review explanatory schematic",
+      "meaning_and_conditions": "Electronic reference → training configurations → learned energy → forces → MD/sampling → observable; Refs. [9,12,13].",
+      "sha256": "344ea99887f007047f7d1b8a46eb9f3813546e1545eed1d371b7ae78f347ded4"
+    },
+    {
+      "asset": "barrier_accuracy.svg",
+      "role": "Review analytic sensitivity calculation",
+      "meaning_and_conditions": "exp(|δΔG‡|/RT), same prefactor, 300/600/1000 K; no MLFF benchmark.",
+      "sha256": "4065c39d30fcba2d22354b29a88d4a1c65d45af4d7fabf97a8000d489bcdb792"
+    }
+  ],
+  "scientific_code": [
+    "build_intro_figures.py",
+    "build_figures.py"
+  ],
+  "calculation_data": [
+    "intro-calculation-checks.json",
+    "lj_md_trace.csv",
+    "analytic-values.json"
+  ],
+  "source_versions": {
+    "SO3LR_Tauri": "arXiv:2611.06237v1 and Supporting Information",
+    "data": "Zenodo 1.0.0, doi:10.5281/zenodo.22920714",
+    "code": "70707f5bb0c333ecec707e5a12b1efdf1c83603a"
+  },
+  "rights": "Original review calculations and schematics; cover generated with image_gen. Referenced papers, third-party code, dataset and model weights retain their own terms. No dataset body or model weights are redistributed.",
+  "fonts": "SIL Open Font License 1.1; complete notices in font-license.txt."
+}

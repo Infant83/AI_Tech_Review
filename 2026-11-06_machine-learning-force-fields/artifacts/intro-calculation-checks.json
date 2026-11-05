@@ -1,0 +1,45 @@
+{
+  "model": "isolated LJ pair in reduced units",
+  "reference": "LAMMPS lj/cut formula without a cutoff",
+  "force_gradient_checks": [
+    {
+      "r_over_sigma": 0.98,
+      "U_over_epsilon": 0.5819048616304521,
+      "F_over_epsilon_per_sigma": 34.771137008105875,
+      "force_fd_residual": 2.8967761522835644e-09
+    },
+    {
+      "r_over_sigma": 1.0,
+      "U_over_epsilon": 0.0,
+      "F_over_epsilon_per_sigma": 24.0,
+      "force_fd_residual": 4.680913434640388e-10
+    },
+    {
+      "r_over_sigma": 1.15,
+      "U_over_epsilon": -0.9816817828995618,
+      "F_over_epsilon_per_sigma": -1.2211470373194642,
+      "force_fd_residual": 2.1905233182906159e-10
+    },
+    {
+      "r_over_sigma": 1.5,
+      "U_over_epsilon": -0.32033659427857464,
+      "F_over_epsilon_per_sigma": -1.1580288310461555,
+      "force_fd_residual": 7.966005632908946e-11
+    },
+    {
+      "r_over_sigma": 2.2,
+      "U_over_epsilon": -0.0349684577204408,
+      "F_over_epsilon_per_sigma": -0.0945198949432378,
+      "force_fd_residual": -1.627271928317242e-11
+    }
+  ],
+  "minimum_r": 1.122462048309373,
+  "timestep": 0.001,
+  "max_absolute_total_energy_error": 1.8782751944612652e-05,
+  "half_timestep_max_error": 4.6956169699186034e-06,
+  "error_reduction_factor": 4.000060495764467,
+  "r_range": [
+    1.0240328121937585,
+    1.4
+  ]
+}

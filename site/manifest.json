@@ -1,5 +1,191 @@
 [
   {
+    "folder": "2026-11-06_machine-learning-force-fields",
+    "title": "머신러닝 포스필드: 원자 사이의 힘에서 물질의 성질까지",
+    "subtitle": "분자동역학의 기초에서 모델의 표현·학습 데이터·정확도와 계산 비용의 선택까지",
+    "date": "2026-11-06",
+    "updated": "2026-11-06",
+    "category": "AI for Science",
+    "tags": [
+      "Molecular Dynamics",
+      "Machine Learning Force Fields",
+      "Interatomic Potentials",
+      "DFT",
+      "Computational Chemistry",
+      "Materials Simulation",
+      "Scientific Computing"
+    ],
+    "summary": "배터리 속 이온의 이동과 단백질의 접힘을 계산하려면 원자 사이의 힘을 알아야 한다. 전자계산 데이터를 학습한 머신러닝 포스필드는 더 많은 배치를 탐색하게 해 주지만, 확산계수나 반응 속도를 정확히 구하려면 그 물성에 필요한 정확도와 시간을 따져야 한다. 2026년 11월 4일 공개된 Kabylda와 공동연구진의 SO3LR Tauri 프리프린트를 최근 사례로 삼아, 에너지의 기울기가 힘이 되고 원자들의 운동이 물성으로 이어지는 과정을 따라간다.",
+    "href": "reviews/2026-11-06_machine-learning-force-fields/index.html",
+    "metric_path": "/AI_Tech_Review/reviews/2026-11-06_machine-learning-force-fields/",
+    "thumbnail": "reviews/2026-11-06_machine-learning-force-fields/hero.webp",
+    "assets": [
+      "barrier_accuracy.svg",
+      "hero.webp",
+      "lj_energy_force.svg",
+      "lj_md_energy.svg",
+      "math_46ecbb225fe8cd.svg",
+      "math_6c759ef5c522d7.svg",
+      "math_870ea54d308e84.svg",
+      "math_9ed846d8a7d4d0.svg",
+      "math_b0c4a359dbb705.svg",
+      "math_bf6f9e71bb6c64.svg",
+      "math_db649bdf78f869.svg",
+      "math_eac5a921b0ce07.svg",
+      "review.css",
+      "review_ko.pdf",
+      "simulation_workflow.svg"
+    ],
+    "translations": [
+      {
+        "language": "en",
+        "label": "English",
+        "href": "reviews/2026-11-06_machine-learning-force-fields/en/index.html",
+        "metric_path": "/AI_Tech_Review/reviews/2026-11-06_machine-learning-force-fields/en/",
+        "assets": [
+          "barrier_accuracy.svg",
+          "hero.webp",
+          "lj_energy_force.svg",
+          "lj_md_energy.svg",
+          "math_46ecbb225fe8cd.svg",
+          "math_6c759ef5c522d7.svg",
+          "math_870ea54d308e84.svg",
+          "math_9ed846d8a7d4d0.svg",
+          "math_b0c4a359dbb705.svg",
+          "math_bf6f9e71bb6c64.svg",
+          "math_db649bdf78f869.svg",
+          "math_eac5a921b0ce07.svg",
+          "review.css",
+          "review_en.pdf",
+          "simulation_workflow.svg"
+        ]
+      }
+    ],
+    "disclosure": {
+      "responsible_editor": {
+        "name_ko": "김현중",
+        "name_en": "Hyun-Jung Kim"
+      },
+      "ai_assistance": {
+        "system": "OpenAI Codex",
+        "system_ko": "OpenAI Codex",
+        "model": "exact model identifier not retained",
+        "model_ko": "정확한 모델 식별자는 보존되지 않음",
+        "agent_count": 11,
+        "agents": [
+          {
+            "name": "root",
+            "role": "research integration, Korean writing, educational calculations, conceptual cover and publication",
+            "role_ko": "조사 통합·한국어 집필·교육 계산·개념 표지·게재"
+          },
+          {
+            "name": "mlff_data",
+            "role": "training-data provenance, split and bibliographic audit",
+            "role_ko": "학습 데이터·분할·서지 감수"
+          },
+          {
+            "name": "mlff_physics",
+            "role": "reference physics, accuracy and methodology audit",
+            "role_ko": "물리 기준·정확도·방법론 감수"
+          },
+          {
+            "name": "mlff_benchmarks",
+            "role": "benchmark conditions and computational-cost audit",
+            "role_ko": "벤치마크 조건·계산 비용 감수"
+          },
+          {
+            "name": "intro_forcefield",
+            "role": "independent interaction-energy, force and MD implementation review",
+            "role_ko": "상호작용 에너지·힘·MD 구현의 독립 감수"
+          },
+          {
+            "name": "mlff_taxonomy",
+            "role": "model representations, learned parameters and reference audit",
+            "role_ko": "모델 표현·학습 매개변수·문헌 감수"
+          },
+          {
+            "name": "mlff_cover_brief",
+            "role": "cover concepts and independent introduction and visual review",
+            "role_ko": "표지 기획·도입과 시각 전달의 독립 검토"
+          },
+          {
+            "name": "review_format",
+            "role": "initial Korean PDF and mobile-output verification",
+            "role_ko": "초기 한국어 PDF·모바일 출력 검수"
+          },
+          {
+            "name": "mlff_publication_english",
+            "role": "complete English translation and bilingual correspondence review",
+            "role_ko": "영어 전문 번역·한영 대응 감수"
+          },
+          {
+            "name": "mlff_publication_adapter",
+            "role": "public manuscripts, math, figures, fonts and HTML/PDF production",
+            "role_ko": "공개 원고·수식·도표·글꼴·HTML/PDF 제작"
+          },
+          {
+            "name": "mlff_publication_check",
+            "role": "independent whole-manuscript, contextual, bilingual and cover review",
+            "role_ko": "전체 원고·문맥·한영·표지의 독립 감수"
+          }
+        ],
+        "agent_roles": [
+          "root — research integration, Korean writing, educational calculations, conceptual cover and publication",
+          "mlff_data — training-data provenance, split and bibliographic audit",
+          "mlff_physics — reference physics, accuracy and methodology audit",
+          "mlff_benchmarks — benchmark conditions and computational-cost audit",
+          "intro_forcefield — independent interaction-energy, force and MD implementation review",
+          "mlff_taxonomy — model representations, learned parameters and reference audit",
+          "mlff_cover_brief — cover concepts and independent introduction and visual review",
+          "review_format — initial Korean PDF and mobile-output verification",
+          "mlff_publication_english — complete English translation and bilingual correspondence review",
+          "mlff_publication_adapter — public manuscripts, math, figures, fonts and HTML/PDF production",
+          "mlff_publication_check — independent whole-manuscript, contextual, bilingual and cover review"
+        ],
+        "agent_roles_ko": [
+          "root — 조사 통합·한국어 집필·교육 계산·개념 표지·게재",
+          "mlff_data — 학습 데이터·분할·서지 감수",
+          "mlff_physics — 물리 기준·정확도·방법론 감수",
+          "mlff_benchmarks — 벤치마크 조건·계산 비용 감수",
+          "intro_forcefield — 상호작용 에너지·힘·MD 구현의 독립 감수",
+          "mlff_taxonomy — 모델 표현·학습 매개변수·문헌 감수",
+          "mlff_cover_brief — 표지 기획·도입과 시각 전달의 독립 검토",
+          "review_format — 초기 한국어 PDF·모바일 출력 검수",
+          "mlff_publication_english — 영어 전문 번역·한영 대응 감수",
+          "mlff_publication_adapter — 공개 원고·수식·도표·글꼴·HTML/PDF 제작",
+          "mlff_publication_check — 전체 원고·문맥·한영·표지의 독립 감수"
+        ]
+      },
+      "harness": {
+        "name": "AI Tech Review Editorial Harness",
+        "version": "2026.08",
+        "methods": "methods/"
+      },
+      "verification": {
+        "evidence_cutoff": "2026-11-06",
+        "primary_source_check": true,
+        "scope": [
+          "Primary research and official LAMMPS release30Sep2026, OpenMM8.6 and i-PI documentation; 30 APS references; SO3LR Tauri arXiv2611.06237v1 and supporting information, data release1.0.0, source commit70707f5bb0c333ecec707e5a12b1efdf1c83603a",
+          "Independent educational checks: LJ analytic and finite-difference forces; equal-mass relative-coordinate velocity Verlet, total-energy error and timestep halving; analytic barrier-rate sensitivity with an unchanged prefactor",
+          "Complete Korean and English argument, citation and condition correspondence; conceptual-cover identity and latest-cover comparison; five figures, typeset formulas, embedded fonts, HTML/PDF, mobile layout and archive copies"
+        ],
+        "scope_ko": [
+          "원저와 LAMMPS release30Sep2026·OpenMM8.6·i-PI 공식 문서, APS 참고문헌30개, SO3LR Tauri arXiv2611.06237v1·보충자료·데이터1.0.0·공식 코드 commit70707f5bb0c333ecec707e5a12b1efdf1c83603a 대조",
+          "독립 교육 검산: LJ 해석식·수치 미분 힘, 동일 질량 상대좌표 velocity Verlet·총에너지 오차·시간 간격 절반 검사, 같은 앞인자를 가정한 장벽·속도 민감도",
+          "전체 한영 논증·인용·조건 대응, 개념 표지의 관계·최근 표지와의 비교, 그림5개·수식·내장 글꼴·HTML/PDF·모바일·아카이브 사본 검사"
+        ],
+        "human_review_level": {
+          "ko": "편집자가 주제·기초 및 방법론 설명의 범위·정확도와 비용의 질문을 지정하고 게재를 요청했다. 과학·문맥·한영·출력 감수는 AI 에이전트가 수행했으며 문장 단위 사람 승인과 독자 이해도 실험은 수행하지 않았다.",
+          "en": "The editor specified the topic, introductory and methodological scope, accuracy and cost questions, and requested publication. Scientific, contextual, bilingual and output reviews were performed by AI agents; line-by-line human approval and reader-comprehension testing were not performed."
+        }
+      },
+      "note": {
+        "ko": "표지는 AI 생성 개념 일러스트다. LJ 에너지·힘·두 입자 MD와 자유에너지 장벽 민감도는 리뷰의 교육 계산이며, SO3LR Tauri 등의 물성·성능 수치는 저자 보고값이다. 원저자의 모델 학습·MD 벤치마크를 독립 재실행하지 않았다.",
+        "en": "The cover is an AI-generated conceptual illustration. LJ energy, forces, two-particle MD and free-energy-barrier sensitivity are educational calculations for this review; property and performance figures for SO3LR Tauri and other models are attributed to their authors. Their training and MD benchmarks were not independently rerun."
+      }
+    }
+  },
+  {
     "folder": "2026-11-04_quantum-gates-phase-and-interaction",
     "title": "양자 회로를 읽는 물리학",
     "subtitle": "단일 큐비트 회전에서 상호작용과 답의 확률까지",
