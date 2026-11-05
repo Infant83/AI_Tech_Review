@@ -1,0 +1,91 @@
+# -*- coding: utf-8 -*-
+"""Build the explicit public unit registry and Korean/English course entrances."""
+import hashlib
+import html
+import json
+from pathlib import Path
+import re
+import shutil
+
+ROOT=Path(__file__).resolve().parents[1]
+BASE='https://infant83.io/AI_Tech_Review/'
+TITLE='Classiq QAE 온보딩: 관측량에서 시간발전으로'
+EN_TITLE='Classiq QAE Onboarding: From Observables to Time Evolution'
+SUMMARY='고객의 질문을 문제 명세로 바꾸고, 복소 벡터와 기저를 익힌 뒤 에너지 행렬에서 측정과 시간발전을 유도하는 한국어 독립 학습 과정입니다. 3회차 PDF에 문제·해설·용어색인을 수록했으며, 작은 고전 계산으로 정확한 기준값을 확인합니다.'
+EN_SUMMARY='An independent Korean study course develops problem specifications, complex vectors and bases, then derives measurement and time evolution from an energy matrix. Three PDFs contain exercises, worked answers and glossaries, with small classical calculations providing exact reference values.'
+DETAILS={
+ 'L001':dict(short='문제 명세와 첫 검산',en='Problem specifications and first checks',topics=['문제 명세','고전 기준선','Hamiltonian','VQE','제약·벌점','금융·전자구조'],exercise_count=6,exercise_page=20,answer_page=21,glossary_page=22,reference_page=23,
+ intro='고객이 원하는 물성이나 비용을 먼저 입력·출력·허용오차로 적는다. 두 준위 Hamiltonian의 정확 고유값과 변분 상태의 기댓값을 비교한 뒤, 같은 비교 조건을 최적화·금융·AMS/ADF·OLED 사례에 적용한다.',
+ equation='A = −Z + 0.2X = [[−1, 0.2], [0.2, 1]],   H = (1 Ha) A',
+ text='A² = 1.04 I이므로 에너지는 ±√1.04 Ha다. 상태 |ψ(θ)⟩ = cos θ |0⟩ + sin θ |1⟩의 기댓값은 E(θ)/Ha = −cos 2θ + 0.2 sin 2θ이며, θ = −½ arctan(0.2)에서 같은 최소값에 도달한다. 이 모형의 계수와 Ha 단위는 교육용으로 정한 입력이다.',
+ questions=[('최소 에너지를 두 방법으로 구하면?', '특성방정식과 상태 기댓값 최소화가 모두 −√1.04 ≈ −1.0198039027 Ha를 준다. 두 계산에서 같은 행렬·기저·상수항을 써야 한다.'),('4096 shots를 네 배로 늘리면 무엇이 달라지는가?', '독립 표본 모형에서 표준오차는 대략 1/√N에 비례해 절반이 된다. 실제 장치 잡음이나 물리 모형 오차가 함께 절반이 된다는 뜻은 아니다.')]),
+ 'L002':dict(short='복소 벡터·기저·텐서곱',en='Complex vectors, bases and tensor products',topics=['복소 내적','정규화','상대 위상','기저 변환','텐서곱','AO 중첩 행렬'],exercise_count=8,exercise_page=16,answer_page=16,glossary_page=18,reference_page=19,
+ intro='복소 내적의 켤레와 정규화에서 출발해 같은 상태의 좌표를 바꾸는 일과 상태 자체를 바꾸는 일을 구별한다. 두 큐비트의 계 순서와 텐서곱을 계산하고, 비직교 AO 기저의 겹침 행렬을 선택 읽기로 연결한다.',
+ equation='⟨u|v⟩ = u†v,   ‖v‖² = v†v,   |a⟩ ⊗ |b⟩ = (a₀b₀, a₀b₁, a₁b₀, a₁b₁)ᵀ',
+ text='v = (1+i, 2i)ᵀ의 노름 제곱은 6이므로 v/√6으로 정규화한다. |+⟩와 |−⟩는 계산 기저에서 같은 확률을 주지만 X 측정에서는 서로 다른 고유값을 준다. 확률 배열이 같다는 검사만으로 상대 위상의 일치를 확인할 수 없는 이유다. 정규직교 기저 B의 좌표 변환은 c′ = B†c로 쓴다.[5,6]',
+ questions=[('복소 내적에서 일반 전치만 쓰면 생기는 문제는?', 'v†v는 6이지만 vᵀv는 −4+2i다. 내적의 켤레를 생략하면 정규화와 직교성 검사가 바뀐다.'),('Bell 상태의 계수 행렬로 곱상태 여부를 판정하면?', '정규화된 순수 두 큐비트 상태에 대해 계수 행렬의 행렬식이 0이면 곱상태다. (|00⟩+|11⟩)/√2의 행렬식 크기는 1/2여서 이 조건을 만족하지 않는다. 이 판정의 범위는 순수 두 큐비트 상태다.')]),
+ 'L003':dict(short='관측량·Pauli·유니터리',en='Observables, Pauli operators and unitaries',topics=['선형 연산자','Hermitian','고유값','Pauli 전개','시간발전','Euler·Trotter'],exercise_count=8,exercise_page=15,answer_page=15,glossary_page=17,reference_page=18,
+ intro='같은 에너지 행렬을 관측량으로 읽을 때와 게이트로 구현할 때 필요한 검사를 나눈다. 고유공간의 측정 확률, Pauli 전개, 정확한 시간발전과 세 회전 분해를 유도한 뒤 Euler 근사와 Trotter 곱공식의 오차를 비교한다.',
+ equation='U(τ) = exp(−iτA) = cos(ρτ) I − i sin(ρτ) A/ρ,   ρ = √1.04,   τ = εt/ℏ',
+ text='A는 Hermitian이지만 A†A = 1.04 I여서 유니터리가 아니다. 반면 그 지수함수 U는 유니터리다. τ = 1에서 |0⟩가 |1⟩로 전이할 확률은 약 0.0279197369다. 전진 Euler인 I−iτA는 노름을 보존하지 않으며, Trotter 근사는 유니터리여도 목표 U와의 차이가 남을 수 있다. Classiq observe는 준비한 상태에 대한 관측량 기댓값을 반환한다.[4,7,8]',
+ questions=[('τ = 1에서 Euler 출력의 노름 제곱은?', '입력이 |0⟩이면 ‖(I−iA)|0⟩‖² = 1+⟨0|A²|0⟩ = 2.04다. 정확한 유니터리 시간발전의 값 1과 다르다.'),('유니터리 검사에 통과하면 목표 게이트도 맞는가?', '목표 연산자와의 차이도 따로 확인해야 한다. 곱공식의 각 인자는 유니터리지만, 비가환 항의 유한 단계 곱은 정확 지수함수와 다를 수 있다. 여기서 제공하는 코드는 8·16·32단계의 작은 예만 확인한다.')]),
+}
+REFERENCES=[
+ ('Classiq, Quantum Application Engineer (accessed 5 November 2026).','https://www.classiq.io/positions/position-84_27e'),
+ ('Classiq, Qmod Tutorial - Part I (accessed 5 November 2026).','https://docs.classiq.io/getting-started/classiq_tutorial/Qmod_tutorial_part1'),
+ ('Classiq, Quantum Types (accessed 5 November 2026).','https://docs.classiq.io/qmod-reference/language-reference/quantum-types'),
+ ('Classiq, Observe (accessed 5 November 2026).','https://docs.classiq.io/user-guide/execution/observe'),
+ ('IBM Quantum Learning, Quantum information, Basics of Quantum Information: Single systems (accessed 5 November 2026).','https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information'),
+ ('J. Watrous, The Theory of Quantum Information (Cambridge University Press, Cambridge, 2018).','https://cs.uwaterloo.ca/~watrous/TQI/'),
+ ('J. Preskill, Lecture Notes for Ph219/CS219: Quantum Information, Chapter 2: Foundations I: States and Ensembles (July 2015).','https://www.preskill.caltech.edu/ph219/chap2_15.pdf'),
+ ('A. M. Childs, Y. Su, M. C. Tran, N. Wiebe, and S. Zhu, Theory of Trotter error with commutator scaling, Phys. Rev. X 11, 011020 (2021).','https://doi.org/10.1103/PhysRevX.11.011020'),
+]
+CSS='''*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f6;color:#20313c;font:17px/1.85 system-ui,-apple-system,sans-serif}header,main,footer{max-width:1050px;margin:auto;padding:32px 28px}header{padding-top:48px;border-bottom:1px solid #d9dedc}h1{font:700 clamp(30px,5vw,45px)/1.3 Georgia,serif;max-width:850px}h2{font-size:27px;line-height:1.4;margin-top:0}h3{font-size:20px}a{color:#096e6b;text-underline-offset:3px}nav,.actions{display:flex;flex-wrap:wrap;gap:12px 22px}.eyebrow{color:#69776e;font-size:13px;letter-spacing:.08em}section{margin:0 0 50px;padding-top:20px}article,.note{background:white;border:1px solid #d9dedc;padding:25px;margin:25px 0;border-radius:10px}.note{background:#eef5f2}.unit-title{color:#176b68}.meta{color:#5c6c70;font-size:14px}.equation,pre{overflow:auto;background:#edf2f0;padding:18px;font:15px/1.8 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}details{padding:16px 0;border-top:1px solid #d9dedc}summary{cursor:pointer;font-weight:650}table{border-collapse:collapse;width:100%;font-size:15px}td,th{padding:12px;text-align:left;border-bottom:1px solid #dde2df}ol.references{padding-left:24px;font-size:14px}.references li{padding:7px 0;overflow-wrap:anywhere}code{overflow-wrap:anywhere}.pill{font-size:13px;background:#edf2f0;padding:3px 8px;margin-right:7px;display:inline-block}.actions a{font-weight:650}@media(max-width:600px){body{font-size:16px}header,main,footer{padding:24px 18px}article,.note{padding:18px}table{font-size:13px}td,th{padding:9px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}'''
+
+
+def escape(s):return html.escape(str(s),quote=True)
+
+
+def main():
+    dist=ROOT/'dist';dist.mkdir(exist_ok=True)
+    reports=json.loads((ROOT/'reports/pdf-production-qa.json').read_text())
+    units=[]
+    for record in reports['units']:
+        unit=record['unit'];detail=DETAILS[unit];document_id=Path(record['file']).stem
+        units.append(dict(id=unit,date=record['date'],title=record['title'],title_en=detail['en'],archive_id=document_id,
+                          status='available',language='ko',pdf=record['file'],public_pages=record['public_pages'],
+                          original_pages=record['source_pages'],sha256=record['public_sha256'],topics=detail['topics'],
+                          exercises=detail['exercise_count'],exercise_pdf_page=detail['exercise_page'],answer_pdf_page=detail['answer_page'],
+                          glossary_pdf_page=detail['glossary_page'],reference_pdf_page=detail['reference_page']))
+    registry=dict(format='ai-tech-review-course-registry',version=1,series_id='classiq-qae-onboarding',updated='2026-11-05',
+                  title='Classiq QAE 온보딩·전문가 양성 과정',official_Classiq_course=False,latest_unit='L003',units=units,
+                  planned_next=dict(id='L004',status='planned-not-published',topic='상태·측정·얽힘·밀도행렬'),
+                  source_zip_available=False,original_validation_suite_independently_rerun=False)
+    (ROOT/'unit-registry.json').write_text(json.dumps(registry,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    shutil.copyfile(ROOT/'unit-registry.json',dist/'unit-registry.json')
+    (dist/'notes.css').write_text(CSS,encoding='utf-8')
+    for name in ['reference_checks.py','results/reference-checks.json']:
+        target=dist/'labs'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/'labs'/name,target)
+    refs=''.join(f'<li id="ref-{i}"><a href="{escape(url)}">{escape(text)}</a></li>' for i,(text,url) in enumerate(REFERENCES,1))
+    table=''.join(f'<tr><td><a href="#unit-{u["id"].lower()}">{u["id"]}</a></td><td>{escape(u["date"])}</td><td>{escape(u["title"])}</td><td>{u["public_pages"]}쪽</td></tr>' for u in units)
+    chapters=[]
+    for u in units:
+        d=DETAILS[u['id']]
+        questions=''.join(f'<details><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q,a in d['questions'])
+        chapters.append(f'''<article id="unit-{u['id'].lower()}"><p class="eyebrow">{u['id']} · {u['date']} · {u['public_pages']}쪽 공개판</p><h3 class="unit-title">{escape(u['title'])}</h3><p>{d['intro']}</p><div class="equation" role="math">{escape(d['equation'])}</div><p>{d['text']}</p><p>{''.join('<span class="pill">'+escape(t)+'</span>' for t in d['topics'])}</p><div class="actions"><a href="../reader/?id={u['archive_id']}">필기하며 읽기</a><a href="{u['pdf']}">PDF 열기</a><a href="{u['pdf']}" download>PDF 다운로드</a><a href="{u['pdf']}#page={u['exercise_pdf_page']}">문제 {u['exercises']}개</a><a href="{u['pdf']}#page={u['answer_pdf_page']}">해설</a><a href="{u['pdf']}#page={u['glossary_pdf_page']}">용어색인</a></div><h4>짧은 복습과 해설</h4><p class="meta">PDF의 유도에 근거해 웹 입구에서 재구성한 복습이다. 실제 강의 문답을 옮긴 자료가 아니다.</p>{questions}</article>''')
+    ko=f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{TITLE} | AI Tech Review Letters</title><meta name="description" content="{SUMMARY}"><link rel="alternate" hreflang="ko" href="{BASE}lectures/classiq-qae-onboarding/"><link rel="alternate" hreflang="en" href="{BASE}lectures/classiq-qae-onboarding/en/"><link rel="alternate" hreflang="x-default" href="{BASE}lectures/classiq-qae-onboarding/"><link rel="stylesheet" href="notes.css"></head><body><header><nav><a href="../">렉처 노트</a><a href="en/" lang="en">English guide</a></nav><p class="eyebrow">INDEPENDENT STUDY · QUANTUM APPLICATION ENGINEERING</p><h1>{TITLE}</h1><p>{SUMMARY}</p><p class="meta">책임 편집자 김현중 · AI 보조 OpenAI Codex · 공개판 2026-11-05</p></header><main><section id="study-guide"><h2>하나의 작은 계산을 끝까지 확인하기</h2><p>QAE는 Quantum Application Engineer를 뜻한다. 고객의 계산 문제를 명세하고 구현·결과를 설명하는 역할에서 공부를 시작한다.[1] 이 과정은 공식 Classiq 강의와 별개로 집필한 한국어 학습 노트다. <a href="../classiq-talk-series/">기존 Classiq 웨비나 다시보기 노트</a>는 다른 시리즈다.</p><p>L001 → L002 → L003 순서로 읽으면 문제 명세에서 상태 표현, 관측량과 시간발전으로 같은 두 준위 예제가 이어진다. PDF의 표지 다음 읽기 지도와 마지막 용어색인을 활용하고, 회차별 문제를 푼 뒤 해설과 비교한다. AO 중첩 행렬·일반화 고유값의 화학 연결은 L002의 선택 읽기다.</p><p>Qmod의 모델·합성·실행 흐름과 양자 자료형은 공식 문서로 대조한다.[2,3] 관측량의 기댓값은 observe의 반환값과 연결해 읽는다.[4] QAE 직무명은 진폭 추정 알고리즘 AE/IQAE와 구별한다. 마지막에 표시한 PDF 쪽수에는 공개판 안내 한 쪽이 포함된다.</p><table><thead><tr><th>회차</th><th>원판 발행일</th><th>학습 주제</th><th>PDF</th></tr></thead><tbody>{table}</tbody></table></section><section id="units"><h2>회차별 학습</h2>{''.join(chapters)}</section><section id="practice"><h2>공개된 식으로 별도 재계산하기</h2><p>Python 표준 라이브러리만 사용하는 <a href="labs/reference_checks.py" download>reference_checks.py</a>는 작은 행렬의 고유값·복소 내적·Bell 계수 행렬·정확 시간발전·세 회전 분해·Euler 노름·Trotter 오차를 20개 조건으로 확인한다. 원판 ZIP을 복원한 코드가 아니라 PDF에 보이는 식에 대해 이번에 별도로 작성한 재계산이다.</p><pre>python3 reference_checks.py</pre><p><a href="labs/results/reference-checks.json">실제 실행 결과</a>에는 Python 판본과 잔차·허용오차가 있다. Trotter 비교에는 행렬 Frobenius 노름을 사용했고 원판 표의 연산자 노름과 같은 수치라고 제시하지 않는다. Classiq 계정·SDK·네트워크·QPU가 필요하지 않다.</p></section><section id="publication"><h2>자료와 검수 범위</h2><div class="note"><p>공식 Classiq 문서와 1차 교재를 바탕으로 자체 집필한 과정이다. Classiq 인증 과정이나 강사 감수본으로 표시하지 않는다. 원판의 소스 ZIP은 이번 공개본에 포함하지 않았다. PDF에 적힌 원판의 32·41개 검사 및 전체 제작 검산을 이번에 독립 재실행한 것은 아니다.</p><p>이번 공개판은 원판 61쪽의 교육 내용·수식·문제·도표와 원래 쪽번호를 보존하고, 개인화 표현·메타데이터·파일 실행 링크를 정리했다. 각 회차에 공개판 안내 한 쪽을 추가해 총64쪽이다. 원판 참고문헌의 읽은 위치·판본 기록과 이번에 다시 연 공식 자료를 구분한다.</p></div><p>공개판 정제·웹 안내·20개 부분검산은 OpenAI Codex의 public_pdf_qa/auth_audit가 수행했고 root가 최종 통합·게시를 담당한다. 원 작성 세션의 정확한 모델·에이전트 식별자는 미보존이다. 사람의 문장별 감수, 실제 Classiq 합성·SDK·QPU 실행이나 분자·DFT 실험을 수행한 것으로 표시하지 않는다.</p><p>적용 원칙: <a href="../../methods/">AI Tech Review Editorial Harness 2026.08</a> · 과학 설명 준칙1.0. 후속 회차를 위한 <a href="unit-registry.json">회차 등록부</a>를 유지한다. L004는 계획 단계이며 아직 학습 자료나 링크를 발행하지 않았다.</p></section><section id="references"><h2>참고문헌</h2><p class="meta">아래는 웹 입구에서 인용한 자료다. 회차별 상세 서지·원판의 실제 읽은 위치는 각 PDF의 참고문헌에 보존했다. 공식 웹 문서와 서지·판본 정보는 2026-11-05 확인했으며 교재 전체를 새로 정독한 것으로 표시하지 않는다.</p><ol class="references">{refs}</ol></section></main><footer><a href="../">렉처 노트 목록</a> · <a href="en/">English guide</a></footer></body></html>'''
+    ko=re.sub(r'\[([1-8](?:,[1-8])*)\]',lambda m:'['+','.join(f'<a href="#ref-{n}">{n}</a>' for n in m[1].split(','))+']',ko)
+    (dist/'index.html').write_text(ko,encoding='utf-8')
+    en_units=''.join(f'<article><p class="eyebrow">{u["id"]} · {u["date"]} · {u["public_pages"]} pages · Korean</p><h2>{escape(u["title_en"])}</h2><p><a href="../#unit-{u["id"].lower()}">Study overview and worked review questions</a></p><div class="actions"><a href="../../reader/?id={u["archive_id"]}&amp;lang=en">Read &amp; annotate</a><a href="../{u["pdf"]}">Open PDF</a><a href="../{u["pdf"]}#page={u["exercise_pdf_page"]}">{u["exercises"]} exercises and answers</a></div></article>' for u in units)
+    en=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{EN_TITLE} | AI Tech Review Letters</title><meta name="description" content="{EN_SUMMARY}"><link rel="canonical" href="{BASE}lectures/classiq-qae-onboarding/en/"><link rel="alternate" hreflang="ko" href="{BASE}lectures/classiq-qae-onboarding/"><link rel="alternate" hreflang="en" href="{BASE}lectures/classiq-qae-onboarding/en/"><link rel="alternate" hreflang="x-default" href="{BASE}lectures/classiq-qae-onboarding/"><meta property="og:title" content="{EN_TITLE}"><meta property="og:description" content="{EN_SUMMARY}"><meta property="og:url" content="{BASE}lectures/classiq-qae-onboarding/en/"><link rel="stylesheet" href="../notes.css"></head><body><header><nav><a href="../../en/">Lecture notes</a><a href="../" lang="ko">한국어 학습 노트</a></nav><p class="eyebrow">INDEPENDENT STUDY · KOREAN COURSE</p><h1>{EN_TITLE}</h1><p>{EN_SUMMARY}</p><p class="meta">Responsible editor: Hyun-Jung Kim · AI assistance: OpenAI Codex · Public edition: 5 November 2026</p></header><main><section><h2>Three connected units</h2><p>QAE means Quantum Application Engineer, distinct from amplitude-estimation algorithms AE/IQAE. This independently written course uses public primary teaching material and official Classiq documentation; it is not an official Classiq training or certification course. This English page is an entrance to the Korean material, not a translation of all three PDFs.</p><p>Read L001, L002 and L003 in order. Each PDF includes derivations, exercises, worked answers and a bilingual glossary. The separate <a href="../../classiq-talk-series/">Classiq webinar replay notes</a> retain their own series.</p>{en_units}</section><section><h2>Recalculation and publication scope</h2><p>The <a href="../labs/reference_checks.py">Python standard-library script</a> independently checks 20 finite-matrix conditions from formulas visible in the PDFs. <a href="../labs/results/reference-checks.json">Recorded results</a> identify the environment and numerical residuals. These checks do not reproduce the unavailable original source ZIP or its original validation suites. The Trotter comparison here uses the Frobenius norm, unlike the original operator-norm table.</p><p>The public editions preserve 61 original educational pages and add one disclosure page per unit, giving 64 pages. Personalized context and file-launch actions were removed. No original email, source ZIP or third-party textbook was republished. No Classiq synthesis, SDK call, QPU execution or real molecular/DFT calculation was performed in this publication work.</p><p>OpenAI Codex agent public_pdf_qa/auth_audit handled source identification, public preparation, the partial recalculation and this study entrance. root handles integration and publication. Exact original model/agent identifiers were not retained. Human line-by-line review or Classiq approval is not claimed.</p><p><a href="../#references">References and source scope</a> · <a href="../../../methods/">Editorial methods</a> · <a href="../unit-registry.json">Unit registry</a>. L004 remains planned and has no published lesson link.</p></section></main><footer><a href="../../en/">Lecture notes</a> · <a href="../">Korean course</a></footer></body></html>'''
+    (dist/'en').mkdir(exist_ok=True);(dist/'en/index.html').write_text(en,encoding='utf-8')
+    (ROOT/'reports/source-checks.json').write_text(json.dumps(dict(checked='2026-11-05',scope='Official HTML and source metadata; original book/paper full text not independently reread in full',references=[dict(number=i,title=t,url=u) for i,(t,u) in enumerate(REFERENCES,1)]),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    entries=[]
+    for u in units:
+        latest=u['id']=='L003';d=DETAILS[u['id']]
+        entries.append(dict(id=u['archive_id'],date=u['date'],series='lecture-notes',title=TITLE if latest else 'Classiq QAE '+u['id']+': '+u['title'],summary=SUMMARY if latest else d['intro']+f' {u["exercises"]}개 문제와 해설·용어색인, 공개판 안내를 포함한 {u["public_pages"]}쪽 한국어 독립 학습 노트입니다.',language='ko',file='files/'+u['pdf'],tags=['양자컴퓨팅','Classiq','QAE','선형대수','렉처 노트'],public_reviewed=True,title_en=EN_TITLE if latest else 'Classiq QAE '+u['id']+': '+u['title_en'],summary_en=EN_SUMMARY if latest else f'Independent Korean study notes on {u["title_en"].lower()}, with {u["exercises"]} exercises, worked answers and a glossary. Public edition: {u["public_pages"]} pages.',source_title='Classiq QAE 독립 학습 과정 · '+u['id']+' v1.0'))
+    (ROOT/'reports/archive-entries.json').write_text(json.dumps(entries,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print('Built course entrance and registry for',len(units),'units')
+
+
+if __name__=='__main__':main()

@@ -92,6 +92,16 @@ DeepH-Polar의 계산 시간이 미공개라는 원문 요약을 바로잡았다
 
 등록 ID는 `2026-11-04-quantum-computing-applications-lecture-notes-ko`, 웹판은 `lectures/quantum-computing-applications/`다. 한영 목록은 같은 한국어 자료를 안내한다. 원본과 QA 화면을 배포하지 않으며 제작·검수 기록은 `2026-11-04_quantum-computing-applications-lecture/`에 있다. 기존 등록 자료를 유지한다.
 
+## Classiq QAE 온보딩 독립 학습 과정 · 2026-11-05 등록
+
+Quantum Application Engineer(QAE) 온보딩·전문가 양성을 위한 자체 집필 한국어 과정 L001–L003을 회차별 `lecture-notes`로 등록한다. 11월 1일의 문제 명세·두 준위 검산, 11월 3일의 복소 벡터·내적·기저·텐서곱, 11월 5일의 관측량·Pauli·유니터리 시간발전을 연결한다. 공식 Classiq 강의나 인증 과정은 아니며, 기존 Classiq Office Hours/NVIDIA 웨비나 노트와 별도 시리즈다.
+
+원판 교육 내용 61쪽을 보존하고 공개판 안내를 각 한 쪽씩 추가한 25·20·19쪽 PDF다. 개인화 배경 표현·메타데이터를 정리하고 이전 회차 파일 실행 동작 세 개를 공개 HTTPS 링크로 바꾸었다. 61쪽 전체의 수정 영역 밖 1.5배 렌더링 동일성과 원 교육 텍스트의 문자 보존, 내부 named destination 580개와 공개 원문 URI 보존을 대조했다. 61쪽 전체 contact sheet와 추가 안내·수정 영역을 확인했으며, 원본·메일·검수 화면·소스 ZIP은 배포하지 않는다.
+
+원판 소스 ZIP은 연결 경로에서 지원하지 않아 수집하지 못했다. 원판에 적힌 32·41개 검사와 전체 제작 검산을 이번에 독립 재실행한 것으로 표시하지 않는다. 웹 입구에서 제공하는 Python 표준 라이브러리 코드는 PDF에 공개된 식의 별도 20조건 재계산이며 작은 고전 행렬만 다룬다. Classiq 합성·SDK·QPU, 실제 분자·DFT 실행이나 사람의 문장별 감수를 수행했다고 주장하지 않는다.
+
+등록 ID는 `2026-11-01-classiq-qae-l001-notes-ko`, `2026-11-03-classiq-qae-l002-notes-ko`, `2026-11-05-classiq-qae-l003-notes-ko`다. 최신 L003을 안정적 웹 주소 `lectures/classiq-qae-onboarding/`에 연결하고 한국어 학습 순서·회차별 문제/해설/용어 위치·필기 reader와 영어 안내를 제공한다. 회차 등록부는 L001–L003만 학습 자료로 연결하며 L004는 계획·미발행으로 유지한다. 제작·검수 기록과 후속 추가 절차는 `2026-11-05_classiq-qae-onboarding/`에 있다.
+
 ## D-Wave 정부 과제 최적화 렉처 자료 · 2026-11-01 등록
 
 공식 웨비나 「Quantum Optimization for Mission-Critical Government Challenges」의 한국어 상세 노트 13쪽과 학술 검토 8쪽을 `lecture-notes`로 등록했다. 두 편은 2026-11-01 작성·편집된 v3 공개 보관본이며 한영 렉처 목록과 전체 아카이브에서 같은 한국어 PDF를 안내한다. 상세 노트에는 실제 문답 13건과 수학 보충 3개가, 학술 검토에는 Stride의 모형 크기·MILP·QPU 시간·초기해와 최적성 인증의 검토가 있다. 독립 성능 재현이나 원음·전체 화면 대조를 수행한 자료로 표시하지 않는다.

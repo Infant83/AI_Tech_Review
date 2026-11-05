@@ -456,6 +456,40 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         for private in (str(self.root), "PRIVATE_", "research/", "unreviewed.png", "private-intake"):
             self.assertNotIn(private, public_manifest)
 
+    def test_classiq_qae_course_keeps_three_reader_targets_and_only_reviewed_public_assets(self) -> None:
+        topic = Path(__file__).resolve().parents[1] / "2026-11-05_classiq-qae-onboarding"
+        documents = json.loads((topic / "reports/archive-entries.json").read_text(encoding="utf-8"))
+        latest_id = "2026-11-05-classiq-qae-l003-notes-ko"
+        spec = dict(archive_site.LECTURE_BUNDLES[latest_id])
+        source = self.root / "qae-course/dist"
+        for name in spec["files"]:
+            target = source / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(PDF_BYTES if name.endswith(".pdf") else (topic / "dist" / name).read_bytes())
+        (source / "private-intake.json").write_text("PRIVATE_MAIL_METADATA")
+        spec["source"] = str(source)
+        self.registry(documents)
+        with patch.dict(archive_site.LECTURE_BUNDLES, {latest_id: spec}, clear=True):
+            published = self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+        destination = self.site / spec["href"]
+        self.assertEqual({p.relative_to(destination).as_posix() for p in destination.rglob("*") if p.is_file()}, set(spec["files"]))
+        self.assertEqual((destination / "notes.pdf").read_bytes(), (self.archive / next(d["file"] for d in documents if d["id"] == latest_id)).read_bytes())
+        page = (destination / "index.html").read_text(encoding="utf-8")
+        english = (destination / "en/index.html").read_text(encoding="utf-8")
+        for document in documents:
+            self.assertIn("../reader/?id=" + document["id"], page)
+            self.assertIn("../../reader/?id=" + document["id"], english)
+            self.assertTrue((destination / Path(document["file"]).name).is_file())
+        self.assertEqual(sum(bool(d.get("study_href")) for d in published), 1)
+        registry = json.loads((destination / "unit-registry.json").read_text(encoding="utf-8"))
+        self.assertEqual([u["id"] for u in registry["units"]], ["L001", "L002", "L003"])
+        self.assertFalse(registry["official_Classiq_course"])
+        self.assertFalse(registry["source_zip_available"])
+        self.assertFalse(registry["original_validation_suite_independently_rerun"])
+        self.assertEqual(registry["planned_next"]["status"], "planned-not-published")
+        self.assertNotIn("PRIVATE_MAIL_METADATA", page + english)
+
     def test_classiq_catalog_uses_real_chapters_and_describes_illustrated_notes(self) -> None:
         document, bundles, _source = self.classiq_fixture()
         self.registry([document])

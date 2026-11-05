@@ -1,0 +1,124 @@
+{
+  "format": "classiq-qae-public-reference-checks-v1",
+  "date": "2026-11-05",
+  "execution": "classical Python standard-library finite matrices",
+  "python": "3.9.6",
+  "original_source_zip_available": false,
+  "original_check_counts_independently_rerun": false,
+  "quantum_hardware_or_Classiq_executed": false,
+  "checks": [
+    {
+      "name": "A squared equals 1.04 identity",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "A is Hermitian",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "variational minimum equals exact lower eigenvalue",
+      "residual": 2.220446049250313e-16,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "complex inner product norm squared",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "orthonormal plus and minus states",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "Bell determinant is one half in magnitude",
+      "residual": 1.1102230246251565e-16,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "energy projector probability sums to one",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "energy variance in zero state",
+      "residual": 3.469446951953614e-17,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "unitarity tau=0",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "three rotation identity tau=0",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "unitarity tau=0.3",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "three rotation identity tau=0.3",
+      "residual": 1.7799311106099032e-16,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "unitarity tau=1",
+      "residual": 1.5700924586837752e-16,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "three rotation identity tau=1",
+      "residual": 1.6184142622847344e-16,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "unitarity tau=2.4",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "three rotation identity tau=2.4",
+      "residual": 1.962615573354719e-17,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "Euler norm drift identity",
+      "residual": 0.0,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "Trotter remains unitary",
+      "residual": 1.5700924586837751e-15,
+      "tolerance": 2e-12
+    },
+    {
+      "name": "Trotter error decreases for the three tested step counts",
+      "values": {
+        "8": 0.02956533546486706,
+        "16": 0.014772402746293607,
+        "32": 0.007384919941484714
+      }
+    },
+    {
+      "name": "published transition probability at tau one",
+      "residual": 1.9107698062681422e-11,
+      "tolerance": 5e-11
+    }
+  ],
+  "check_count": 20,
+  "values": {
+    "lower_energy_hartree": -1.019803902718557,
+    "transition_probability_tau_1": 0.0279197368808923,
+    "trotter_frobenius_errors": {
+      "8": 0.02956533546486706,
+      "16": 0.014772402746293607,
+      "32": 0.007384919941484714
+    }
+  }
+}

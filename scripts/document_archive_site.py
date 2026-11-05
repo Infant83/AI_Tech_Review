@@ -38,6 +38,25 @@ LECTURE_READER_FILES = (
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
+    "2026-11-05-classiq-qae-l003-notes-ko": {
+        "source": "2026-11-05_classiq-qae-onboarding/dist",
+        "href": "lectures/classiq-qae-onboarding/",
+        "start_anchor": "study-guide",
+        "navigation": (("study-guide", "학습 안내"), ("units", "회차별 학습"), ("practice", "별도 재계산"), ("references", "출처")),
+        "publication_note": (
+            "2026-11-05 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "public_pdf_qa/auth_audit가 세 회차의 자료 확인·공개판 정제·웹 학습 입구·20개 부분검산을 담당하고 root가 통합·게재한다. "
+            "Classiq 공식 강의가 아닌 자체 집필 과정이며, 원판 ZIP과 원판의 검증 전체를 이번에 재실행한 자료가 아니다. "
+            "영문 입구는 한국어 PDF 세 회차의 안내다."
+        ),
+        "files": (
+            "index.html", "en/index.html", "notes.css", "notes.pdf", "unit-registry.json",
+            "2026-11-01-classiq-qae-l001-notes-ko.pdf",
+            "2026-11-03-classiq-qae-l002-notes-ko.pdf",
+            "2026-11-05-classiq-qae-l003-notes-ko.pdf",
+            "labs/reference_checks.py", "labs/results/reference-checks.json",
+        ),
+    },
     "2026-11-04-quantum-computing-applications-lecture-notes-ko": {
         "source": "2026-11-04_quantum-computing-applications-lecture/dist",
         "href": "lectures/quantum-computing-applications/",
