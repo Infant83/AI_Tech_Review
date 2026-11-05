@@ -5865,9 +5865,9 @@
   {
     "folder": "2026-08-24_oti-iqcc-oled-quantum-emulation",
     "title": "200 논리 큐비트 OLED 계산, 양자컴퓨터였나?",
-    "subtitle": "OTI Lumionics·SAIT의 JACS iQCC 연구가 입증한 것과 실제 QPU가 아직 입증하지 못한 것을 구분합니다",
+    "subtitle": "고전 iQCC 에뮬레이션으로 계산한 Ir·Pt 인광체의 삼중항 에너지와 여기 성격",
     "date": "2026-08-24",
-    "updated": "2026-08-24",
+    "updated": "2026-11-05",
     "category": "Materials AI",
     "tags": [
       "Quantum Chemistry",
@@ -5892,17 +5892,44 @@
         "name_en": "Hyun-Jung Kim"
       },
       "ai_assistance": {
-        "system": "Codex-based GPT-5-family agent harness",
-        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "system": "Original edition: Codex-based GPT-5-family harness; November 5 revision: OpenAI Codex",
+        "system_ko": "원 작성: Codex 기반 GPT-5 계열 하네스; 11월 5일 개정: OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": null,
-        "agents": [],
+        "agent_count": 4,
+        "agents": [
+          {
+            "name": "root",
+            "role": "Complete manuscript recovery, prose and APS integration, build and publication verification",
+            "role_ko": "전체 원고 회복·문체·APS 통합·빌드와 공개 게시 확인"
+          },
+          {
+            "name": "legacy1105_science",
+            "role": "Independent main-paper and supporting-information audit, final scientific review",
+            "role_ko": "원 논문·보충자료 대조와 최종 독립 과학 감수"
+          },
+          {
+            "name": "legacy1105_prose",
+            "role": "Independent contextual prose review before and after revision",
+            "role_ko": "개정 전후 독립 문맥·문체 감수"
+          },
+          {
+            "name": "legacy1105_refs_output",
+            "role": "Bibliographic and social-source audit, figure and responsive-output review",
+            "role_ko": "서지·공개 연구자 게시물 대조와 도식·반응형 출력 감수"
+          }
+        ],
         "agent_roles": [
-          "individual agent-role roster not retained"
+          "root — Complete manuscript recovery, prose and APS integration, build and publication verification",
+          "legacy1105_science — Independent main-paper and supporting-information audit, final scientific review",
+          "legacy1105_prose — Independent contextual prose review before and after revision",
+          "legacy1105_refs_output — Bibliographic and social-source audit, figure and responsive-output review"
         ],
         "agent_roles_ko": [
-          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+          "root — 전체 원고 회복·문체·APS 통합·빌드와 공개 게시 확인",
+          "legacy1105_science — 원 논문·보충자료 대조와 최종 독립 과학 감수",
+          "legacy1105_prose — 개정 전후 독립 문맥·문체 감수",
+          "legacy1105_refs_output — 서지·공개 연구자 게시물 대조와 도식·반응형 출력 감수"
         ]
       },
       "harness": {
@@ -5912,23 +5939,27 @@
       },
       "verification": {
         "evidence_cutoff": "2026-08-24",
-        "primary_source_check": null,
+        "primary_source_check": true,
         "scope": [
-          "original source-verification record not retained",
-          "current public links and final HTML checked"
+          "Full primary main text via PMC/EuropePMC and all twenty SI pages; key SI and paper figures visually checked; publisher main PDF not obtained",
+          "Original August 24 evidence cutoff retained; APS first-use citations, original titles, ten-author credit and source editions checked on November 5",
+          "Recovered complete source, six-method results table, three figures, metrics configuration and actual responsive/public output checked",
+          "No iQCC, DFT, QPU, device experiment, paper-code reproduction or human-reader evaluation performed"
         ],
         "scope_ko": [
-          "원 작성 세션의 출처 검증 기록 미보존",
-          "현재 공개 링크와 최종 HTML 확인"
+          "PMC·EuropePMC의 원 논문 본문 전체와 보충자료 20쪽, 주요 보충 쪽·논문 그림 대조; 출판사 본문 PDF는 미확보",
+          "8월 24일 근거 기준일 유지, 11월 5일 APS 최초 인용순·원제·10명 공저자·자료 판본 확인",
+          "회복한 전체 원고·6개 방법의 표·그림 3개·집계 설정과 실제 반응형·공개 출력 확인",
+          "iQCC·DFT·QPU·소자 실험, 논문 코드 재현과 사람 독자 평가 미수행"
         ],
         "human_review_level": {
-          "ko": "세부 검토 수준은 별도 기록되지 않음",
-          "en": "review level not separately retained"
+          "ko": "순차 편집·공개 게시 승인 반영; 문장 단위 사람 심사·독자 평가 없음",
+          "en": "Sequential editorial refresh and publication authorized; no line-by-line human review or reader study"
         }
       },
       "note": {
-        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
-        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+        "ko": "원 발행일과 근거 기준일 2026-08-24를 보존하고 이번 개정일을 2026-11-05로 구별했다. 당시 공개 본문에서 전체 원고와 기존 레이아웃을 회복해 설명·표를 유지하고 중복 방어와 APS 인용을 정리했다. iQCC와 TDDFT의 구조 조건, 금속에 할당된 전자수 변화의 부호를 명료화했다. 도식에서는 Q1 규모 평가와 별도 14종 정확도 평가를 구별했다. 논문의 8월 13일 온라인 공개와 현재 확인한 정식 서지는 구별한다. 위 에이전트는 이번 개정의 역할이며 원 작성 세션의 정확한 모델·개별 역할은 미보존이다.",
+        "en": "Original publication and evidence cutoff on August 24 are retained; this revision is dated November 5. The complete manuscript and established layout were restored without dropping the original explanations or table. Repetition and APS citations were revised, with geometry conditions and the sign of metal-localized electron-population changes clarified. The diagram separates Q1 scaling from the fourteen-emitter accuracy benchmark. The August 13 online release is distinguished from current formal bibliographic checks. Listed agents belong to this revision; original exact model and agent-role details were not retained."
       }
     }
   },

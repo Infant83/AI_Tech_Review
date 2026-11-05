@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="고전 iQCC 에뮬레이션으로 계산한 Ir·Pt 인광체의 삼중항 에너지와 여기 성격">
+  <title>200 논리 큐비트 OLED 계산, 양자컴퓨터였나?</title>
+  <style>
+    :root {
+      --paper:#fbfaf7; --paper2:#f2f0ea; --ink:#17211d; --muted:#5f6b65;
+      --line:#d8d5cb; --teal:#0f766e; --blue:#25456f; --amber:#a35a16;
+      --rose:#8b3a3a; --green:#e9f3ef; --blue-soft:#e9eef5; --amber-soft:#f6eee2;
+      --wrap:1180px; --article:790px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Noto Sans KR",Arial,sans-serif;text-rendering:optimizeLegibility}
+    a{color:var(--teal);text-underline-offset:3px}.topline{border-bottom:1px solid var(--line);background:#fff}
+    .topline-inner,.hero-inner,.content-grid{width:min(var(--wrap),calc(100% - 40px));margin:0 auto}
+    .topline-inner{display:flex;justify-content:space-between;gap:18px;padding:14px 0;color:var(--muted);font-size:.9rem}
+    .topline a{font-weight:700;text-decoration:none;color:var(--blue)}
+    .hero{border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(15,118,110,.12),transparent 46%),linear-gradient(180deg,#fff 0%,var(--paper) 100%)}
+    .hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:40px;align-items:center;padding:46px 0 36px}
+    .eyebrow{margin:0 0 16px;color:var(--teal);font-size:.82rem;font-weight:800;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(2.2rem,5vw,4.1rem);line-height:1.04;letter-spacing:-.035em;word-break:keep-all}
+    .dek{margin:22px 0 0;color:var(--muted);font-size:1.08rem;line-height:1.75;word-break:keep-all}
+    .hero-figure{margin:0;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}
+    .hero-figure img{display:block;width:100%;height:auto}.hero-figure figcaption{padding:9px 5px 2px;color:var(--muted);font-size:.78rem;line-height:1.55}
+    .figure-panel{margin:28px 0 34px;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}
+    .figure-open{display:inline-block;padding:8px 0;margin-top:4px}
+    .figure-panel img{display:block;width:100%;height:auto;border-radius:6px}.figure-panel figcaption{padding:10px 5px 2px;color:var(--muted);font-size:.82rem;line-height:1.6}
+    .content-grid{display:grid;grid-template-columns:minmax(0,var(--article)) minmax(250px,310px);gap:52px;align-items:start;padding:40px 0 62px}
+    article{min-width:0}.lead{font-size:1.16rem;line-height:1.82;color:#20302a}
+    article h2{margin:48px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:1.7rem;line-height:1.3;word-break:keep-all}
+    article h3{margin:30px 0 12px;color:var(--blue);font-size:1.18rem;line-height:1.4}
+    article p,article li{font-size:1.01rem;line-height:1.86}article p{margin:0 0 18px}article ul,article ol{padding-left:24px;margin:0 0 22px}article li+li{margin-top:8px}
+    blockquote{margin:28px 0;padding:18px 22px;border-left:4px solid var(--teal);background:var(--green);font-size:1.08rem;line-height:1.75}
+    .verdict{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+    .verdict div{padding:17px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .verdict strong{display:block;margin-bottom:8px;color:var(--blue);font-size:.9rem}.verdict span{color:var(--muted);line-height:1.6}
+    .callout{margin:26px 0;padding:18px 20px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .callout.evidence{border-color:#9fc3be;background:var(--green)}.callout.caution{border-color:#d6b17d;background:var(--amber-soft)}
+    .callout-label{margin:0 0 7px!important;color:var(--teal);font-size:.8rem!important;font-weight:800;text-transform:uppercase}
+    .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:25px 0}.flow div{position:relative;padding:15px 10px;text-align:center;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:.87rem;line-height:1.5}.flow div:not(:last-child)::after{content:"→";position:absolute;right:-10px;top:50%;z-index:2;color:var(--teal);font-weight:900;transform:translateY(-50%)}
+    .table-wrap{overflow-x:auto;margin:20px 0 27px}.table-wrap:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.9rem}caption{padding:0 0 10px;text-align:left;color:var(--muted);font-weight:700}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.55}th{background:var(--blue-soft);color:var(--blue)}tr.highlight td{background:#eef7f4;font-weight:700}
+    .metric-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}.metric{padding:15px;border:1px solid var(--line);background:#fff;text-align:center}.metric strong{display:block;color:var(--teal);font-size:1.45rem}.metric span{display:block;margin-top:5px;color:var(--muted);font-size:.82rem;line-height:1.4}
+    .sidebar{position:sticky;top:20px}.side-section{margin-bottom:18px;padding:18px 19px;border:1px solid var(--line);background:#fff}.side-section h2{margin:0 0 12px;color:var(--blue);font-size:.88rem;text-transform:uppercase}.side-section ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.65}.side-section li+li{margin-top:7px}.side-section p{color:var(--muted);font-size:.9rem;line-height:1.65}.tag{display:inline-block;margin:0 5px 6px 0;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700}
+    .refs{font-size:.92rem;list-style:none;padding-left:0}.refs li{padding-left:2.3em;text-indent:-2.3em;scroll-margin-top:24px}.citation{white-space:nowrap}.refs li{overflow-wrap:anywhere}.public-note{width:min(var(--wrap),calc(100% - 40px));margin:0 auto 50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.87rem;line-height:1.65}
+    code{padding:.12em .35em;background:var(--paper2);border-radius:4px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:1fr}.hero-figure{max-width:620px}.sidebar{position:static}.verdict{grid-template-columns:1fr}.flow{grid-template-columns:1fr;row-gap:24px}.flow div:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-22px;transform:translateX(-50%)}.metric-strip{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.35rem}.metric-strip{grid-template-columns:1fr 1fr}article h2{font-size:1.42rem}th,td{min-width:112px}}
+  </style>
+</head>
+<body class="public-review">
+<!-- ARTICLE_BODY -->
+</body>
+</html>
