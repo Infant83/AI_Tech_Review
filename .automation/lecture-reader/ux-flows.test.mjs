@@ -18,7 +18,7 @@ for (const bound of [false, true]) test(`logout ${bound ? 'keeps account-bound i
   const view = { fingerprint, busy: false, drawing: false, role: 'local' };
   const marker = bound ? { stateKey: 'member:book', accountId: 'member', transition: false } : null;
   const ctx = { path: '/v1/study', account: { id: 'member' }, active: null, epoch: 0, authGeneration: 0, activationGeneration: 0, workingGeneration: 0,
-    window: { ATRNotebook: { current: () => view, setPermissions: value => { view.role = value.role; } } },
+    window: { ATRNotebook: { current: () => view, setPermissions: value => { view.role = value.role; } } }, document: { getElementById: () => null },
     workingKey: value => value, readStore: async store => store === 'links' ? marker : { accountId: 'member', metadata: { role: 'owner' } },
     stopSession: async () => {}, exported: async () => ({ document: { fingerprint } }), preserveDisplayed: async () => {},
     api: async () => ({ ok: true }), status() {}, render: async () => {}, t: key => key,
@@ -103,7 +103,7 @@ test('the personal-library route opens its visible library without a PDF id', as
   let opened = 0;
   const ctx = vm.createContext({ controls() {}, chooseTool() {}, rootURL: new URL('https://example.test/'), URL,
     params: new URLSearchParams('library=1'), initialLocal: null, current: null, busy: false, explicitSelection: false, catalog: [],
-    fetch: async () => ({ ok: true, json: async () => ({ documents: [] }) }), showLibrary: async () => { opened++; }, signal() {}, currentInfo() {},
+    fetch: async () => ({ ok: true, json: async () => ({ documents: [] }) }), openWorkspace: async () => { opened++; }, signal() {}, currentInfo() {},
   });
   vm.runInContext(section(reader, 'async function init()', 'init().catch('), ctx); await ctx.init();
   assert.equal(opened, 1);
@@ -150,12 +150,12 @@ for (const failure of [{ status: 410, message: 'invite_expired' }, { status: 404
   test(`invitation preview ${failure.status || 'network'} failure offers dismissal without consent and still renders personal notebooks`, async () => {
     const content = fakeElement('content');
     const ctx = vm.createContext({ content, dialog: { open: true }, renderGeneration: 0, account: { id: 'member', displayName: 'Member' },
-      inviteToken: 'a'.repeat(43), invitePreview: null, path: '/v1/study', t: key => key, current: () => null,
+      inviteToken: 'a'.repeat(43), invitePreview: null, path: '/v1/study', t: key => key, current: () => null,URLSearchParams,error:code=>new Error(code),
       feedbackText() {}, el: fakeElement, action: (text, handler) => ({ ...fakeElement('button', text), handler }),
-      logout() {}, dismissInvitation() {}, safeMetadata: value => value,
+      logout() {}, dismissInvitation() {}, accountSettings() {}, appendDeviceLibrary: async()=>{}, features:{drafts:false}, safeMetadata: value => value,
       api: async endpoint => { if (endpoint.endsWith('/invites/preview')) throw failure; return { ok: true, notebooks: [] }; },
     });
-    vm.runInContext(section(cloud, 'function help(', 'function feedbackText(') + section(cloud, 'async function render()', 'async function authenticate('), ctx);
+    vm.runInContext(section(cloud,'async function allNotebookMetadata(','function roleLabel(')+section(cloud, 'function help(', 'function feedbackText(') + section(cloud, 'async function render()', 'async function authenticate('), ctx);
     await ctx.render();
     const nodes = descendants(content), text = nodes.map(node => node.text).join('\n');
     assert.ok(nodes.some(node => node.text === '초대 닫고 내 노트 보기'));

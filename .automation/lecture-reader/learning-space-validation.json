@@ -1,0 +1,76 @@
+{
+  "date": "2026-11-05",
+  "scope": "Personal learning space, local storage v2, notebook lifecycle, passkey management, publication drafts and presenter following",
+  "tests": {
+    "frontend_node": 115,
+    "backend_node": 56,
+    "browser_storage_engines": [
+      "Chrome",
+      "WebKit"
+    ],
+    "integrated_chrome_flow": "passed"
+  },
+  "browser_acceptance": {
+    "explicitPrivateR2Upload": true,
+    "recipientAutomaticallyObtainsPrivateOriginal": true,
+    "viewerPermissionRetained": true,
+    "viewerCanCreateIndependentCopy": true,
+    "resetIsFreshIdAndKeepsPriorInk": true,
+    "cloudTrashAndRestore": true,
+    "privateDraftSubmissionAndWithdrawal": true,
+    "submissionDoesNotPublish": true,
+    "presenterPageOptIn": true,
+    "additionalPasskeySameAccountAndOtherDevice": true,
+    "sourceFingerprint": "95d616b131447c3e9e71d29e41b71485eb8deaea4045399504f113f23cbeafb3",
+    "pageErrors": [],
+    "productionAccountsCreated": 0
+  },
+  "storage_upgrade": {
+    "from": 1,
+    "to": 2,
+    "legacy_originals_and_ink_preserved": true,
+    "normal_save_and_library_listing_pdf_io": 0,
+    "new_pdf_immutable_and_transactional": true,
+    "trash_restore": true,
+    "old_v1_code_rollback_compatible": false,
+    "rollback_requirement": "Keep the v2 storage adapter; do not downgrade the database or delete it"
+  },
+  "cloud_migration": {
+    "file": "0006_study_library.sql",
+    "remote_applied": true,
+    "remote_backup_before_migration": true,
+    "backup_private_and_gitignored": true,
+    "populated_legacy_preservation_and_rollback_tested": true
+  },
+  "production_backend": {
+    "version": "b0940f9f-f8bb-4074-99d3-b11d64c10dad",
+    "deployed": true,
+    "private_r2_binding_enabled": false,
+    "r2_remaining_step": "Cloudflare account sign-in and private bucket provisioning/authorization; no subscription or paid-plan change was made"
+  },
+  "review_workflow": {
+    "private_drafts": true,
+    "rights_confirmation_required": true,
+    "submitted_snapshot_locked": true,
+    "withdrawal": true,
+    "reviewer_account_allowlist_required": true,
+    "approval_automatically_publishes": false
+  },
+  "limits": {
+    "active_owned_notebooks": 100,
+    "retained_owned_notebooks_including_trash": 200,
+    "pdf_file_bytes": 52428800,
+    "account_uploaded_pdf_bytes": 524288000,
+    "retained_trash_files_count_toward_quota": true
+  },
+  "remaining_limits": [
+    "No recovery after every registered passkey is lost",
+    "No permanent deletion or full version-history UI",
+    "Presenter following uses periodic updates; no audio/video or pen-gesture streaming",
+    "Maximum-file Workers Free CPU acceptance and classroom-scale onboarding are unmeasured",
+    "Production R2 file hosting awaits provider connection"
+  ],
+  "physical_ipad_apple_pencil_face_id_tested": false,
+  "production_test_accounts_created": 0,
+  "live_publication_proof": "Retained separately outside the public application allowlist"
+}

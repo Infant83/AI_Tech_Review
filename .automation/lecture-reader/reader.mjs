@@ -10,19 +10,19 @@ const initialLocal = new URLSearchParams(location.hash.slice(1)).get('local');
 const en = params.get('lang') === 'en';
 const strings = {
   lectures: ['렉처 노트', 'Lecture notes'], studyNotebook: ['PDF 학습 노트', 'PDF study notebook'], choosePDF: ['공부할 PDF를 열어주세요', 'Open a PDF to begin'],
-  ready: ['준비됨', 'Ready'], cloud: ['로그인·동기화', 'Sign in and sync'], sync: ['동기화', 'Sync'], library: ['보관함', 'Library'], myLibrary: ['내 보관함', 'My library'],
+  ready: ['준비됨', 'Ready'], cloud: ['로그인·동기화', 'Sign in and sync'], sync: ['로그인', 'Sign in'], library: ['내 학습 공간', 'My study space'], myLibrary: ['내 학습 공간', 'My study space'],
   inkTools: ['필기 도구', 'Writing tools'], pen: ['펜', 'Pen'], eraser: ['지우개', 'Eraser'], move: ['읽기', 'Read'], penColor: ['펜 색상', 'Pen color'],
   black: ['검정', 'Black'], green: ['초록', 'Green'], red: ['빨강', 'Red'], blue: ['파랑', 'Blue'], width: ['굵기', 'Width'], penWidth: ['펜 굵기', 'Pen width'],
   undo: ['실행 취소', 'Undo'], redo: ['다시 실행', 'Redo'], finger: ['손가락 필기', 'Finger ink'], options: ['저장·가져오기·도움말', 'Export, import and help'],
-  welcome: ['읽던 곳에서, 쓰던 필기 그대로.', 'Pick up where you left off.'], welcomeBody: ['렉처 PDF를 열거나 내 PDF를 가져와 공부하세요. 펜 필기와 읽던 위치를 이 기기에 자동 저장합니다.', 'Open lecture notes or bring your own PDF. Ink and your reading position are saved automatically on this device.'],
-  openPDF: ['PDF 열기', 'Open a PDF'], privateFiles: ['내 PDF는 업로드 없이 이 브라우저에서 열립니다.', 'Your own PDFs open in this browser without an upload.'], loading: ['PDF를 여는 중입니다…', 'Opening your PDF…'],
+  welcome: ['PDF와 나의 학습 노트', 'PDFs and my study notes'], welcomeBody: ['렉처를 읽거나 내 PDF를 가져와 공부하세요. 필기와 읽던 위치를 기기에 저장하고, 로그인 후 선택한 노트를 동기화합니다.', 'Read lecture notes or bring your own PDF. Save ink and your place on this device, and sync selected notebooks after signing in.'],
+  openPDF: ['자료 선택', 'Choose study material'], privateFiles: ['PDF 가져오기는 기기에서 열기입니다. 클라우드 보관은 별도로 선택합니다.', 'Import opens a PDF on this device. Cloud file storage is a separate choice.'], loading: ['PDF를 여는 중입니다…', 'Opening your PDF…'],
   pdfPage: ['PDF 페이지', 'PDF page'], pdfContent: ['PDF 본문', 'PDF content'], inkCanvas: ['펜 필기 영역', 'Handwriting canvas'], cannotOpen: ['PDF를 열지 못했습니다', 'Could not open this PDF'], retry: ['다시 열기', 'Try again'], openOriginal: ['원본 PDF 열기', 'Open original PDF'],
   previous: ['이전 페이지', 'Previous page'], next: ['다음 페이지', 'Next page'], pageNumber: ['페이지 번호', 'Page number'], bookmark: ['이 페이지 책갈피', 'Bookmark this page'], goBookmark: ['책갈피 이동', 'Go to bookmark'], bookmarks: ['책갈피', 'Bookmarks'], zoom: ['확대', 'Zoom'], fitWidth: ['너비 맞춤', 'Fit width'],
   personalLearning: ['나의 학습', 'Personal study'], libraryBody: ['읽던 페이지와 필기가 이 브라우저에 보관됩니다. 중요한 필기는 백업 파일로도 보관하세요.', 'Your place and notes stay in this browser. Keep a backup of important notes too.'], importPDF: ['내 PDF 가져오기', 'Bring your own PDF'], localOnly: ['업로드 없이 이 기기에 보관', 'Keep on this device without uploading'], recent: ['이어서 공부하기', 'Continue studying'], publishedLectures: ['렉처 자료', 'Published lectures'], close: ['닫기', 'Close'],
   exportPDF: ['필기한 PDF 내보내기', 'Export PDF with ink'], exportBackup: ['수정 가능한 필기 백업', 'Export editable notes backup'], importBackup: ['필기 백업 가져오기', 'Import notes backup'],
   exportOriginal: ['원본 PDF 내보내기', 'Export original PDF'], sourceHelp: ['PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.', 'The original PDF stays unchanged; ink is stored separately. Export either the original PDF or a copy with ink.'], originalReady: ['필기 없는 원본 PDF를 저장했습니다.', 'The original PDF without ink is ready.'],
   drawingHelp: ['펜으로 쓰고, 손가락으로 넘기세요', 'Write with Pencil, scroll with a finger'], drawingHelpBody: ['Apple Pencil은 바로 필기할 수 있습니다. 손가락으로 화면을 움직이고 두 손가락으로 확대할 수 있습니다. 마우스로도 쓸 수 있으며 손가락 필기는 도구에서 켤 수 있습니다. 지우개는 닿은 획을 지웁니다.', 'Write with Apple Pencil, scroll with a finger, and pinch to zoom. A mouse works too. Enable Finger ink to draw with a finger. The eraser removes strokes it touches.'],
-  savingHelp: ['필기는 자동 저장됩니다', 'Your notes save automatically'], savingHelpBody: ['이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 브라우저 데이터를 지우거나 비공개 모드를 종료하면 사라질 수 있습니다. 로그인 동기화는 선택한 노트에 적용됩니다. 기기를 옮길 때에는 원본 PDF와 필기 백업을 함께 가져가세요.', 'Ink and your place are saved in this device and browser. Clearing browser data or ending a private session may remove them. Signed-in sync applies to notebooks you choose. To move devices, take the original PDF and a notes backup together.'],
+  savingHelp: ['필기는 자동 저장됩니다', 'Your notes save automatically'], savingHelpBody: ['이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 로그인하면 선택한 노트를 동기화합니다. 개인 PDF 원본까지 클라우드 보관한 경우 다른 기기에서도 파일을 열 수 있고, 기기에만 둔 PDF는 같은 원본 파일을 다시 가져와야 합니다. 중요한 필기는 백업 파일로도 보관하세요.', 'Ink and your place are saved on this device. Sign in to sync selected notebooks. A private PDF stored in the cloud can also open on other devices; a device-only PDF needs the identical original file there. Keep a backup of important notes.'],
   exportHelp: ['필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.', 'The inked PDF is a copy for reading and sharing in other apps. Keep the editable backup to continue editing strokes.'], retainStorage: ['이 기기에 보관 유지 요청', 'Request persistent device storage'], clearPage: ['현재 페이지의 필기 지우기', 'Clear ink on this page'], shortcuts: ['단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소', 'Keys: P pen · E eraser · H read · ← → pages · ⌘/Ctrl+Z undo'],
   saving: ['저장 중…', 'Saving…'], saved: ['이 기기에 저장됨', 'Saved on this device'], saveFailed: ['저장 실패 · 백업 필요', 'Save failed · back up'],
   storageError: ['이 브라우저에서 저장하지 못했습니다. 필기를 백업해 주세요. 저장이 복구될 때까지 현재 PDF를 유지합니다.', 'This browser could not save your notes. Export a backup. Keep this PDF open until saving is restored.'],
@@ -71,7 +71,7 @@ function isCurrentDocumentOpen(intent) { return intent === documentOpenGeneratio
 function status(kind) { const e = $('save-state'); e.dataset.state = kind; e.textContent = t({ pending: 'saving', saved: 'saved', error: 'saveFailed', ready: 'ready' }[kind]); }
 function toast(message, duration = 5000) { clearTimeout(toastTimer); $('toast').textContent = message; $('toast').hidden = false; toastTimer = setTimeout(() => { $('toast').hidden = true; }, duration); }
 function storageFailure() { status('error'); if (Date.now() - lastStorageError > 12000) { toast(t('storageError'), 10000); lastStorageError = Date.now(); } }
-function currentInfo() { return current ? { fingerprint: current.fingerprint, title: current.title, pageCount: current.pageCount, publicId: current.publicId || null, isLocal: !current.publicId, drawing: Boolean(active), busy, mutationRevision, role: permissions.role } : null; }
+function currentInfo() { return current ? { fingerprint: current.fingerprint, title: current.title, pageCount: current.pageCount, page: pageNumber, publicId: current.publicId || null, isLocal: !current.publicId, drawing: Boolean(active), busy, mutationRevision, role: permissions.role } : null; }
 function canAddInk() { return permissions.role === 'local' || roleCapabilities(permissions.role).canAdd; }
 function canEditAllInk() { return permissions.role === 'local' || roleCapabilities(permissions.role).canEditAll; }
 function canEraseStroke(stroke, number = pageNumber) { return canEditAllInk() || (permissions.role === 'contributor' && strokeAuthors.get(strokeKey(number, stroke.id)) === permissions.accountId); }
@@ -349,7 +349,7 @@ async function openPublished(id, { intent = null } = {}) {
   } catch {
     if (!isCurrentDocumentOpen(intent)) return false;
     try {
-      const cached = (await storage.listDocuments()).find(d => d.publicId === id && d.pdf);
+      const cached = (await storage.listDocuments()).find(d => d.publicId === id && (d.hasPDF || d.pdf));
       if (!isCurrentDocumentOpen(intent)) return false;
       if (cached) return openStored(cached.fingerprint, { intent });
     } catch {}
@@ -370,6 +370,32 @@ async function openStored(fingerprint, { quietMissing = false, intent = null } =
   } catch { if (!isCurrentDocumentOpen(intent)) return false; if (!quietMissing) showError(t('loadError')); return false; }
 }
 function closeDialogs() { document.querySelectorAll('dialog[open]').forEach(d => d.close()); }
+function openWorkspace() {
+  finishStroke();const event=new CustomEvent('atr:workspace-request',{cancelable:true});
+  if(window.dispatchEvent(event))return showLibrary();
+}
+async function libraryData() {
+  const saved=await storage.listDocuments({includeTrash:true});
+  return {local:saved.map(({pdf,...metadata})=>metadata),published:catalog.map(doc=>({...doc}))};
+}
+async function trashLocal(fingerprint) { if(!(await flush()))throw new Error('SAVE_FAILED');await storage.trashDocument(fingerprint); }
+async function restoreLocal(fingerprint) { await storage.restoreDocument(fingerprint); }
+function chooseLocalPDF() { finishStroke();$('pdf-input').click(); }
+async function chooseStored(fingerprint) {
+  if(busy)return false;const intent=beginDocumentOpen({explicit:true,fingerprint});
+  clearLocalPDFRequest(requestedLocalPDF!==fingerprint);closeDialogs();return openStored(fingerprint,{intent});
+}
+async function choosePublished(id) {
+  if(busy)return false;const doc=catalog.find(item=>item.id===id);if(!doc)return false;
+  const intent=beginDocumentOpen({explicit:true,fingerprint:doc.sha256});
+  clearLocalPDFRequest(requestedLocalPDF!==doc.sha256);closeDialogs();return openPublished(id,{intent});
+}
+async function openCloudPDF(blob,metadata) {
+  if(busy)return false;
+  const intent=beginDocumentOpen();const bytes=await blob.arrayBuffer();
+  if(!isCurrentDocumentOpen(intent))return false;
+  return openBytes(bytes,metadata);
+}
 function clearLocalPDFRequest(cancel = false) {
   const fingerprint = requestedLocalPDF; requestedLocalPDF = null;
   $('local-pdf-request')?.remove(); $('import-pdf').removeAttribute('aria-describedby');
@@ -382,7 +408,7 @@ async function requestLocalPDF(detail) {
   let note = $('local-pdf-request');
   if (!note) { note = document.createElement('p'); note.id = 'local-pdf-request'; note.className = 'library-intro'; note.setAttribute('role', 'status'); $('import-pdf').before(note); }
   const title = typeof detail.title === 'string' ? detail.title.slice(0, 240) : '';
-  note.textContent = en ? `Choose the original PDF for “${title}” with “Bring your own PDF” below. The identical file is needed on this device because PDF files are not uploaded.` : `“${title}”의 원본 PDF가 이 기기에 필요합니다. 아래 ‘내 PDF 가져오기’에서 같은 파일을 선택해 주세요. PDF 파일은 서버에 업로드하지 않습니다.`;
+  note.textContent = en ? `Choose the original PDF for “${title}” with “Bring your own PDF” below. This opens the identical file on this device; cloud file storage is a separate choice.` : `“${title}”의 원본 PDF가 이 기기에 필요합니다. 아래 ‘내 PDF 가져오기’에서 같은 파일을 선택해 주세요. 이 선택은 기기에서 열기이며 클라우드 보관은 별도로 선택합니다.`;
   $('import-pdf').setAttribute('aria-describedby', note.id); $('import-pdf').focus();
 }
 async function importPDFFile(file) {
@@ -560,7 +586,8 @@ $('bookmark').addEventListener('click', () => {
   current.bookmarks = [...marks].sort((a, b) => a - b); renderBookmarks(); markMeta();
 });
 $('bookmarks').addEventListener('change', event => { if (event.target.value) goPage(Number(event.target.value)); event.target.value = ''; });
-$('open-library').addEventListener('click', showLibrary); $('choose-document').addEventListener('click', showLibrary);
+$('open-library').addEventListener('click', openWorkspace); $('choose-document').addEventListener('click', openWorkspace);
+$('presentation-action').addEventListener('click',()=>window.dispatchEvent(new CustomEvent('atr:presentation-action')));
 window.addEventListener('atr:cloud-open-local', event => { void requestLocalPDF(event.detail).catch(() => toast(t('storageError'))); });
 window.addEventListener('atr:cloud-document-request', () => beginDocumentOpen());
 $('library-dialog').addEventListener('close', () => clearLocalPDFRequest(true));
@@ -604,6 +631,7 @@ window.addEventListener('pagehide', () => { finishStroke(); flush(); });
 window.addEventListener('beforeunload', event => { if (dirty.size) { finishStroke(); flush(); event.preventDefault(); event.returnValue = ''; } });
 let resizeTimer; window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (pdf && !active && !busy) renderPage(false).catch(() => {}); }, 180); });
 window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: notebook, applyNotebook, setPermissions, openPublic: openPublished, openStored,
+  libraryData,chooseLocalPDF,chooseStored,choosePublished,openCloudPDF,goPage,trashLocal,restoreLocal,
   pdfBlob: () => current?.pdf || null, flush, language: en ? 'en' : 'ko' });
 
 async function init() {
@@ -619,7 +647,7 @@ async function init() {
   if (!explicitSelection && !current && !busy) {
     if (id) await openPublished(id);
     else if (/^[a-f0-9]{64}$/.test(initialLocal || '')) await openStored(initialLocal);
-    else if (params.get('library') === '1') await showLibrary();
+    else if (params.get('library') === '1') await openWorkspace();
   }
   signal('atr:reader-ready', currentInfo());
 }

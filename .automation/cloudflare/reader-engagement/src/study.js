@@ -3,6 +3,7 @@ import {
   generateAuthenticationOptions, verifyAuthenticationResponse,
 } from '@simplewebauthn/server';
 import {ApiError,SITE_ORIGIN,assertOrigin,base64url,object,randomToken,readJson,sha256,responseHeaders} from './security.js';
+import {libraryRoute,pruneLibrary,studyFeatures,studyUsage,notebookPresentation,DOCUMENT_LIMIT,ACCOUNT_DOCUMENT_LIMIT} from './study-library.js';
 
 const DAY=86_400_000;
 const HOUR=3_600_000;
@@ -65,19 +66,31 @@ function decode(value) {
 }
 async function authOptions(request,env,kind) {
   await limit(request,env,`auth-${kind}`,kind==='register'?12:40);
-  const body=object(await readJson(request,1024),kind==='register'?['displayName']:[]);
+  const body=object(await readJson(request,1024),kind==='register'?['displayName']:kind==='add'?['label']:[],kind==='add'?[]:undefined);
   const {origin,rpID}=rp(request,env);
-  const next=kind==='register'?{id:crypto.randomUUID(),displayName:displayName(body.displayName),userID:crypto.getRandomValues(new Uint8Array(32))}:null;
-  const options=kind==='register'?await generateRegistrationOptions({
+  const current=await account(request,env,kind==='add'||kind==='reauth');
+  if(kind==='register'&&current)throw new ApiError('already_signed_in_use_add_passkey',409);
+  const credentials=current?await all(env,'SELECT id,transports,user_handle FROM study_credentials WHERE account_id=?',current.id):[];
+  if(kind==='add'){
+    if(credentials.length>=10)throw new ApiError('credential_limit',413);
+    await recentVerification(request,env,current);
+  }
+  const registering=kind==='register'||kind==='add';
+  const next=kind==='register'?{id:crypto.randomUUID(),displayName:displayName(body.displayName),userID:crypto.getRandomValues(new Uint8Array(32))}:
+    kind==='add'?{id:current.id,displayName:current.displayName,userID:decode(credentials[0].user_handle)}:null;
+  const label=kind==='add'?displayName(body.label||'Passkey'):next?.displayName||null;
+  const options=registering?await generateRegistrationOptions({
     rpName:'AI Tech Review',rpID,userID:next.userID,userName:next.id,userDisplayName:next.displayName,
     attestationType:'none',timeout:120_000,supportedAlgorithmIDs:[-7,-257],
     authenticatorSelection:{residentKey:'required',userVerification:'required'},
-  }):await generateAuthenticationOptions({rpID,userVerification:'required',timeout:120_000});
+    ...(kind==='add'?{excludeCredentials:credentials.map(value=>({id:value.id,transports:JSON.parse(value.transports)}))}:{}),
+  }):await generateAuthenticationOptions({rpID,userVerification:'required',timeout:120_000,
+    ...(kind==='reauth'?{allowCredentials:credentials.map(value=>({id:value.id,transports:JSON.parse(value.transports)}))}:{})});
   const bind=randomToken();
   const previous=token(request,env,'challenge');
   if(previous) await run(env,'DELETE FROM study_challenges WHERE token_hash=?',await sha256(previous));
   await run(env,`INSERT INTO study_challenges(token_hash,kind,challenge,origin,rp_id,account_id,display_name,user_handle,expires_at) VALUES(?,?,?,?,?,?,?,?,?)`,
-    await sha256(bind),kind,options.challenge,origin,rpID,next?.id||null,next?.displayName||null,next?base64url(next.userID):null,Date.now()+5*60_000);
+    await sha256(bind),kind,options.challenge,origin,rpID,next?.id||current?.id||null,label,next?base64url(next.userID):null,Date.now()+5*60_000);
   return json(request,env,{options},200,cookie(request,env,bind,'challenge',300));
 }
 async function authVerify(request,env,kind) {
@@ -87,6 +100,8 @@ async function authVerify(request,env,kind) {
   if(!bind) throw new ApiError('challenge_expired',401);
   const expected=await first(env,'DELETE FROM study_challenges WHERE token_hash=? AND kind=? AND expires_at>? RETURNING *',await sha256(bind),kind,Date.now());
   if(!expected || expected.origin!==assertOrigin(request,env,true)) throw new ApiError('challenge_expired',401);
+  const existing=kind==='add'||kind==='reauth'?await account(request,env):null;
+  if(existing&&expected.account_id!==existing.id)throw new ApiError('passkey_verification_failed',401);
   // This application has no embedded login flow. Reject cross-origin frames
   // even on browsers that omit WebAuthn's newer topOrigin field.
   try {
@@ -94,31 +109,37 @@ async function authVerify(request,env,kind) {
     if(client.crossOrigin===true||client.topOrigin) throw new Error('embedded_authentication');
   } catch {throw new ApiError('passkey_verification_failed',401);}
   let owner;
-  if(kind==='register') {
+  if(kind==='register'||kind==='add') {
     let result;
     try {result=await verifyRegistrationResponse({response:body.response,expectedChallenge:expected.challenge,expectedOrigin:expected.origin,expectedRPID:expected.rp_id,requireUserVerification:true,supportedAlgorithmIDs:[-7,-257]});}
     catch {throw new ApiError('passkey_verification_failed',401);}
     if(!result.verified||!result.registrationInfo) throw new ApiError('passkey_verification_failed',401);
     const credential=result.registrationInfo.credential;
     const transports=Array.isArray(credential.transports)?credential.transports.filter(v=>typeof v==='string').slice(0,8):[];
-    owner={id:expected.account_id,displayName:expected.display_name};
-    try {await env.DB.batch([
-      stmt(env,'INSERT INTO study_accounts(id,display_name,created_at) VALUES(?,?,?)',owner.id,owner.displayName,Date.now()),
-      stmt(env,'INSERT INTO study_credentials(id,account_id,public_key,counter,user_handle,transports,created_at) VALUES(?,?,?,?,?,?,?)',credential.id,owner.id,base64url(credential.publicKey),credential.counter,expected.user_handle,JSON.stringify(transports),Date.now()),
-    ]);}catch {throw new ApiError('credential_already_registered',409);}
+    owner=existing||{id:expected.account_id,displayName:expected.display_name};
+    const now=Date.now(),commands=[];
+    if(kind==='register')commands.push(stmt(env,'INSERT INTO study_accounts(id,display_name,created_at) VALUES(?,?,?)',owner.id,owner.displayName,now));
+    commands.push(stmt(env,'INSERT INTO study_credentials(id,account_id,public_key,counter,user_handle,transports,created_at,label,last_used_at) VALUES(?,?,?,?,?,?,?,?,?)',credential.id,owner.id,base64url(credential.publicKey),credential.counter,expected.user_handle,JSON.stringify(transports),now,kind==='add'?expected.display_name:'Passkey',now));
+    try {await env.DB.batch(commands);}catch {throw new ApiError('credential_already_registered',409);}
+    if(kind==='add')return json(request,env,{account:owner,credential:{id:credential.id,label:expected.display_name,createdAt:now,lastUsedAt:now}});
   } else {
     const id=body.response?.id;
     if(typeof id!=='string'||id.length>2048) throw new ApiError('passkey_verification_failed',401);
     const credential=await first(env,'SELECT c.*,a.display_name FROM study_credentials c JOIN study_accounts a ON a.id=c.account_id WHERE c.id=?',id);
     if(!credential) throw new ApiError('passkey_verification_failed',401);
+    if(existing&&credential.account_id!==existing.id)throw new ApiError('passkey_verification_failed',401);
     if(body.response?.response?.userHandle && body.response.response.userHandle!==credential.user_handle) throw new ApiError('passkey_verification_failed',401);
     let result;
     try {result=await verifyAuthenticationResponse({response:body.response,expectedChallenge:expected.challenge,expectedOrigin:expected.origin,expectedRPID:expected.rp_id,requireUserVerification:true,
       credential:{id:credential.id,publicKey:decode(credential.public_key),counter:credential.counter,transports:JSON.parse(credential.transports)}});}
     catch {throw new ApiError('passkey_verification_failed',401);}
     if(!result.verified) throw new ApiError('passkey_verification_failed',401);
-    await run(env,'UPDATE study_credentials SET counter=? WHERE id=? AND counter<=?',result.authenticationInfo.newCounter,id,result.authenticationInfo.newCounter);
+    await run(env,'UPDATE study_credentials SET counter=?,last_used_at=? WHERE id=? AND counter<=?',result.authenticationInfo.newCounter,Date.now(),id,result.authenticationInfo.newCounter);
     owner={id:credential.account_id,displayName:credential.display_name};
+    if(kind==='reauth'){
+      const verifiedAt=Date.now();await run(env,'UPDATE study_sessions SET verified_at=? WHERE token_hash=? AND account_id=?',verifiedAt,await sha256(token(request,env)),existing.id);
+      return json(request,env,{verifiedUntil:verifiedAt+5*60_000,account:owner});
+    }
   }
   const session=randomToken();
   const old=token(request,env);
@@ -128,13 +149,36 @@ async function authVerify(request,env,kind) {
   await env.DB.batch(commands);
   return json(request,env,{account:owner},200,cookie(request,env,session));
 }
+async function recentVerification(request,env,current){
+  const row=await first(env,'UPDATE study_sessions SET verified_at=0 WHERE token_hash=? AND account_id=? AND verified_at>? RETURNING account_id',await sha256(token(request,env)),current.id,Date.now()-5*60_000);
+  if(!row)throw new ApiError('passkey_reauthentication_required',403);
+}
+async function credentialsRoute(request,env,current,route){
+  if(route==='credentials'&&request.method==='GET'){
+    const rows=await all(env,'SELECT id,label,created_at,last_used_at FROM study_credentials WHERE account_id=? ORDER BY created_at',current.id);
+    return json(request,env,{credentials:rows.map(row=>({id:row.id,label:row.label,createdAt:row.created_at,lastUsedAt:row.last_used_at}))});
+  }
+  const match=route.match(/^credentials\/([A-Za-z0-9_-]+)$/);
+  if(match&&request.method==='DELETE'){
+    object(await readJson(request,256),[]);await recentVerification(request,env,current);
+    const row=await first(env,'SELECT id FROM study_credentials WHERE id=? AND account_id=?',match[1],current.id);
+    if(!row)throw new ApiError('credential_not_found',404);
+    try{await run(env,'DELETE FROM study_credentials WHERE id=? AND account_id=?',row.id,current.id);}catch(error){
+      if(String(error?.message||error).includes('last_credential_required'))throw new ApiError('last_credential_required',409);throw error;
+    }
+    return json(request,env,{});
+  }
+  return null;
+}
 function id(value) {
   if(typeof value!=='string'||!/^[A-Za-z0-9_-]{8,100}$/.test(value)) throw new ApiError('invalid_study_id');
   return value;
 }
 function notebookView(row) {
   return {id:row.id,title:row.title,fingerprint:row.fingerprint,pageCount:row.page_count,publicId:row.public_id,
-    ownerId:row.owner_id,role:row.role,revision:row.revision,updatedAt:row.updated_at,
+    ownerId:row.owner_id,ownerName:row.owner_name||'',role:row.role,revision:row.revision,updatedAt:row.updated_at,
+    deletedAt:row.deleted_at||null,sourceNotebookId:row.source_notebook_id||null,createdFrom:row.created_from||'original',
+    documentAvailable:Boolean(row.document_id),documentBytes:row.document_bytes||0,
     capabilities:{canRead:true,canAdd:['owner','editor','contributor'].includes(row.role),
       canDeleteOwn:['owner','editor','contributor'].includes(row.role),canEditAll:['owner','editor'].includes(row.role),canManageMembers:row.role==='owner'}};
 }
@@ -143,10 +187,10 @@ function shareRole(value,fallback=null) {
   if(!['viewer','contributor','editor'].includes(role)) throw new ApiError('invalid_notebook_role');
   return role;
 }
-async function member(env,notebookId,accountId,ownerOnly=false) {
+async function member(env,notebookId,accountId,ownerOnly=false,includeDeleted=false) {
   id(notebookId);
-  const row=await first(env,`SELECT n.*,m.role,m.position,m.bookmarks FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id WHERE n.id=? AND m.account_id=?`,notebookId,accountId);
-  if(!row) throw new ApiError('notebook_not_found',404);
+  const row=await first(env,`SELECT n.*,m.role,m.position,m.bookmarks,a.display_name owner_name FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id JOIN study_accounts a ON a.id=n.owner_id WHERE n.id=? AND m.account_id=?`,notebookId,accountId);
+  if(!row||(!includeDeleted&&row.deleted_at)) throw new ApiError('notebook_not_found',404);
   if(ownerOnly&&row.role!=='owner') throw new ApiError('notebook_owner_required',403);
   return row;
 }
@@ -162,9 +206,9 @@ async function createNotebook(request,env,current) {
     const article=await first(env,"SELECT id FROM articles WHERE id=? AND topic='lecture' AND active=1",`lecture:${publicId}`);
     if(!article) throw new ApiError('public_document_not_found',404);
   }
-  const previous=await first(env,`SELECT n.*,m.role FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id AND m.account_id=? WHERE n.owner_id=? AND n.fingerprint=?`,current.id,current.id,body.fingerprint);
+  const previous=await first(env,`SELECT n.*,m.role,a.display_name owner_name FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id AND m.account_id=? JOIN study_accounts a ON a.id=n.owner_id WHERE n.owner_id=? AND n.fingerprint=? AND n.deleted_at IS NULL ORDER BY n.updated_at DESC LIMIT 1`,current.id,current.id,body.fingerprint);
   if(previous) return json(request,env,{notebook:notebookView(previous)});
-  if((await first(env,'SELECT count(*) n FROM study_notebooks WHERE owner_id=?',current.id)).n>=100) throw new ApiError('notebook_limit',413);
+  if((await first(env,'SELECT count(*) n FROM study_notebooks WHERE owner_id=? AND deleted_at IS NULL',current.id)).n>=100) throw new ApiError('notebook_limit',413);
   const notebookId=crypto.randomUUID(),now=Date.now();
   await env.DB.batch([
     stmt(env,'INSERT INTO study_notebooks(id,owner_id,public_id,title,fingerprint,page_count,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)',notebookId,current.id,publicId,title,body.fingerprint,body.pageCount,now,now),
@@ -283,7 +327,7 @@ async function snapshot(request,env,current,notebookId) {
 }
 async function changes(request,env,current,notebookId,url) {
   const row=await member(env,notebookId,current.id);
-  if([...url.searchParams.keys()].some(k=>k!=='since')) throw new ApiError('invalid_fields');
+  if([...url.searchParams.keys()].some(k=>!['since','follow'].includes(k))||(url.searchParams.has('follow')&&url.searchParams.get('follow')!=='1')) throw new ApiError('invalid_fields');
   const since=Number(url.searchParams.get('since')||0);
   if(!Number.isSafeInteger(since)||since<0) throw new ApiError('invalid_revision');
   // A new member may request the feed from revision zero. Do not expose the
@@ -298,7 +342,8 @@ async function changes(request,env,current,notebookId,url) {
     ORDER BY c.revision LIMIT 101`,notebookId,since,notebookId,current.id);
   const more=rows.length>100,selected=rows.slice(0,100);
   const revision=selected.length?selected[selected.length-1].revision:row.revision;
-  return json(request,env,{notebook:notebookView(row),changes:selected.map(r=>({revision:r.revision,type:r.kind,page:r.page,id:r.stroke_id,stroke:r.data?JSON.parse(r.data):null,authorId:r.author_id||null})),revision,more,notebookRevision:row.revision});
+  return json(request,env,{notebook:notebookView(row),changes:selected.map(r=>({revision:r.revision,type:r.kind,page:r.page,id:r.stroke_id,stroke:r.data?JSON.parse(r.data):null,authorId:r.author_id||null})),revision,more,notebookRevision:row.revision,
+    ...(url.searchParams.get('follow')==='1'?{presentation:await notebookPresentation(env,notebookId)}:{})});
 }
 async function createInvite(request,env,current,notebookId) {
   await member(env,notebookId,current.id,true);
@@ -313,7 +358,7 @@ async function invitation(request,env,current) {
   if(typeof body.token!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(body.token)) throw new ApiError('invalid_invite');
   await limit(request,env,'invite-preview',120,HOUR,current.id);
   const row=await first(env,`SELECT i.role,i.expires_at,n.title,n.fingerprint,n.page_count,n.public_id FROM study_invites i
-    JOIN study_notebooks n ON n.id=i.notebook_id WHERE i.token_hash=? AND i.expires_at>? AND i.used_by IS NULL`,await sha256(body.token),Date.now());
+    JOIN study_notebooks n ON n.id=i.notebook_id WHERE i.token_hash=? AND i.expires_at>? AND i.used_by IS NULL AND n.deleted_at IS NULL`,await sha256(body.token),Date.now());
   if(!row) throw new ApiError('invite_expired',410);
   return json(request,env,{invitation:{role:row.role,title:row.title,fingerprint:row.fingerprint,pageCount:row.page_count,publicId:row.public_id,expiresAt:row.expires_at}});
 }
@@ -322,12 +367,13 @@ async function acceptInvite(request,env,current) {
   if(typeof body.token!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(body.token)) throw new ApiError('invalid_invite');
   await limit(request,env,'invite-accept',60,HOUR,current.id);
   const hash=await sha256(body.token),now=Date.now();
-  const invitation=await first(env,'SELECT * FROM study_invites WHERE token_hash=? AND expires_at>?',hash,now);
+  const invitation=await first(env,'SELECT i.* FROM study_invites i JOIN study_notebooks n ON n.id=i.notebook_id WHERE i.token_hash=? AND i.expires_at>? AND n.deleted_at IS NULL',hash,now);
   if(!invitation||invitation.used_by) throw new ApiError('invite_expired',410);
   await env.DB.batch([
-    stmt(env,'UPDATE study_invites SET used_by=? WHERE token_hash=? AND used_by IS NULL AND expires_at>?',current.id,hash,now),
+    stmt(env,'UPDATE study_invites SET used_by=? WHERE token_hash=? AND used_by IS NULL AND expires_at>? AND EXISTS(SELECT 1 FROM study_notebooks WHERE id=study_invites.notebook_id AND deleted_at IS NULL)',current.id,hash,now),
     stmt(env,`INSERT OR IGNORE INTO study_members(notebook_id,account_id,role,joined_at)
-      SELECT notebook_id,?,role,? FROM study_invites WHERE token_hash=? AND used_by=? AND expires_at>?`,current.id,now,hash,current.id,now),
+      SELECT notebook_id,?,role,? FROM study_invites WHERE token_hash=? AND used_by=? AND expires_at>?
+        AND EXISTS(SELECT 1 FROM study_notebooks WHERE id=study_invites.notebook_id AND deleted_at IS NULL)`,current.id,now,hash,current.id,now),
   ]);
   const claimed=await first(env,'SELECT used_by FROM study_invites WHERE token_hash=?',hash);
   if(claimed.used_by!==current.id) throw new ApiError('invite_expired',410);
@@ -338,9 +384,12 @@ export async function studyRoute(request,env,url=new URL(request.url)) {
   if(!url.pathname.startsWith('/v1/study/')) return null;
   assertOrigin(request,env,true);
   const route=url.pathname.slice('/v1/study/'.length),method=request.method;
-  if(route==='me'&&method==='GET') return json(request,env,{account:await account(request,env,false)});
-  const auth=route.match(/^auth\/(register|login)\/(options|verify)$/);
-  if(auth&&method==='POST') return auth[2]==='options'?authOptions(request,env,auth[1]):authVerify(request,env,auth[1]);
+  if(route==='me'&&method==='GET') {
+    const current=await account(request,env,false);
+    return json(request,env,{account:current,features:studyFeatures(env),limits:{documentBytes:DOCUMENT_LIMIT,accountDocumentBytes:ACCOUNT_DOCUMENT_LIMIT},usage:await studyUsage(env,current?.id)});
+  }
+  const auth=route.match(/^auth\/(register|login|reauth|credential)\/(options|verify)$/);
+  if(auth&&method==='POST') {const kind=auth[1]==='credential'?'add':auth[1];return auth[2]==='options'?authOptions(request,env,kind):authVerify(request,env,kind);}
   if(route==='logout'&&method==='POST') {
     object(await readJson(request,256),[]);
     const current=token(request,env);
@@ -348,9 +397,15 @@ export async function studyRoute(request,env,url=new URL(request.url)) {
     return json(request,env,{},200,cookie(request,env,'','session',0));
   }
   const current=await account(request,env);
+  if(route==='credentials'||route.startsWith('credentials/')){const response=await credentialsRoute(request,env,current,route);if(response)return response;}
+  const library=await libraryRoute(request,env,current,route,url,{json,member,notebookView,limit,pageNumber});if(library)return library;
   if(route==='notebooks'&&method==='GET') {
-    const rows=await all(env,`SELECT n.*,m.role FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id WHERE m.account_id=? ORDER BY n.updated_at DESC LIMIT 200`,current.id);
-    return json(request,env,{notebooks:rows.map(notebookView)});
+    if([...url.searchParams.keys()].some(key=>!['includeDeleted','cursor','limit'].includes(key)))throw new ApiError('invalid_fields');
+    const includeDeleted=url.searchParams.get('includeDeleted')==='1',cursor=Number(url.searchParams.get('cursor')||0),size=Number(url.searchParams.get('limit')||200);
+    if(!Number.isInteger(cursor)||cursor<0||cursor>10000||!Number.isInteger(size)||size<1||size>200)throw new ApiError('invalid_fields');
+    const rows=await all(env,`SELECT n.*,m.role,a.display_name owner_name FROM study_notebooks n JOIN study_members m ON m.notebook_id=n.id JOIN study_accounts a ON a.id=n.owner_id
+      WHERE m.account_id=? AND (n.deleted_at IS NULL OR (?=1 AND n.owner_id=?)) ORDER BY n.updated_at DESC,n.id LIMIT ? OFFSET ?`,current.id,Number(includeDeleted),current.id,size+1,cursor);
+    return json(request,env,{notebooks:rows.slice(0,size).map(notebookView),nextCursor:rows.length>size?cursor+size:null});
   }
   if(route==='notebooks'&&method==='POST') return createNotebook(request,env,current);
   if(route==='invites/preview'&&method==='POST') return invitation(request,env,current);
@@ -392,4 +447,5 @@ export async function pruneStudy(env) {
     stmt(env,'DELETE FROM study_challenges WHERE expires_at<?',now),
     stmt(env,'DELETE FROM study_invites WHERE expires_at<?',now),
   ]);
+  await pruneLibrary(env);
 }

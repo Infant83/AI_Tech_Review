@@ -150,6 +150,7 @@ export function applyRemoteChanges(snapshot, delta, since) {
   const merged=normalizeNotebook({...notebook,pages:[...pages].map(([number,items])=>({number,strokes:items}))});
   return {...snapshot,notebook:{...snapshot.notebook,...(delta.notebook||{}),revision:delta.notebookRevision},pages:merged.pages,
     strokeAuthors:[...authors].map(([key,accountId])=>{const colon=key.indexOf(':');return{page:Number(key.slice(0,colon)),id:key.slice(colon+1),accountId};}),
+    ...(Object.hasOwn(delta,'presentation')?{presentation:delta.presentation}:{}),
     deleted:[...tombstones.values()],position:merged.position,bookmarks:merged.bookmarks};
 }
 

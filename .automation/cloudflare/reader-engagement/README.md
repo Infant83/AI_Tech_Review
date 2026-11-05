@@ -1,6 +1,6 @@
 # Reader engagement 운영 안내
 
-## 개인 학습 노트와 공유 계정 · 2026-11-04
+## 개인 학습 노트와 공유 계정 · 2026-11-05
 
 `migrations/0004_study_notebooks.sql`과 `src/study.js`는 기존 기기별 좋아요·알림과 별도로 패스키 계정과 비공개 필기 저장소를 제공한다. 로그인은 `@simplewebauthn/server` 14.0.3으로 WebAuthn 등록·인증 응답을 검증한다. Face ID·Touch ID·보안 키 등 인증기의 사용자 확인이 필수이며, 사이트 RP ID는 `infant83.io`, 허용 브라우저 Origin은 `https://infant83.io`다. 개발 모드는 기존의 명시적 loopback Origin 설정만 따른다. 새 OAuth 앱이나 이메일·비밀번호·서버 비밀값은 요구하지 않는다.
 
@@ -16,9 +16,9 @@
 
 변경 피드는 현재 stroke 상태를 기본키로 함께 조회한다. 현재 지워진 획의 과거 `put`도 좌표 없이 `delete`로 반환하므로, 나중에 초대된 보기 전용 계정이 `since=0`으로 요청해도 지우기 전 필기를 복구할 수 없다. 원래 revision·순서는 유지해 페이지 나눔과 오프라인 삭제 전파를 보존한다. 이는 API 응답의 비노출 처리이며 저장된 변경 원장의 물리적 영구 삭제 기능은 아니다. 이미 다른 기기로 전달·내보낸 사본을 회수하지도 않는다.
 
-공개 렉처는 현재 게시 카탈로그의 `lecture:` ID만 연결한다. 개인 PDF는 `publicId:null`과 SHA-256 fingerprint·제목·쪽수만 저장하며 PDF 바이트나 임의 URL을 받지 않는다. 다른 기기·공유 계정에서 개인 PDF를 읽으려면 같은 원본 파일을 가져와 fingerprint가 일치해야 한다. 개인 필기·계정·초대·원본 파일은 공개 발행 카탈로그나 정적 자산에 포함하지 않는다. 서버의 요청 오류 로그에는 원문 필기나 이름·초대 토큰을 출력하지 않는다.
+공개 렉처는 현재 게시 카탈로그의 `lecture:` ID만 연결한다. 개인 PDF는 `publicId:null`과 SHA-256 fingerprint·제목·쪽수로 식별한다. `0006_study_library.sql`부터 소유자가 명시적으로 선택하면 원본 PDF를 비공개 R2에 보관할 수 있다. R2가 연결되지 않았거나 원본을 올리지 않았다면 다른 기기에서 같은 파일을 가져와 fingerprint를 확인한다. 개인 필기·계정·초대·원본 파일은 공개 발행 카탈로그나 정적 자산에 포함하지 않는다. 서버의 요청 오류 로그에는 원문 필기나 이름·초대 토큰을 출력하지 않는다.
 
-요청 한도는 JSON 1 MB, 한 번에 stroke 작업 100건, stroke당 점 5,000개, 계정당 소유 노트 100권, 노트당 stroke/tombstone 25,000개와 활성 필기 JSON 약 12 MB다. 로그인·등록·노트 생성·수정·초대는 기존 회전 IP 해시 또는 계정 해시를 이용해 별도로 제한한다. 만료된 세션·challenge·초대는 기존 정리 Cron에서 제거한다.
+요청 한도는 JSON 1 MB, 한 번에 stroke 작업 100건, stroke당 점 5,000개, 계정당 활성 소유 노트 100권·휴지통 포함 보관 노트 200권, 노트당 stroke/tombstone 25,000개와 활성 필기 JSON 약 12 MB다. 로그인·등록·노트 생성·수정·초대는 기존 회전 IP 해시 또는 계정 해시를 이용해 별도로 제한한다. 만료된 세션·challenge·초대는 기존 정리 Cron에서 제거한다.
 
 노트별 `stroke_count`는 tombstone을 포함한 고유 ID 수, `ink_bytes`는 활성 stroke JSON 크기다. migration이 기존 값을 한 번 채우고 기존 변경 trigger의 노트 UPDATE 안에서 함께 갱신한다. 각 저장에서 전체 노트의 `COUNT/SUM`을 반복하지 않고 노트 기본키 한 건으로 용량을 확인한다. 추가·삭제·재전송·권한 오류의 트랜잭션 취소 때 카운터가 실제 행과 일치하는지 검사한다. 이 카운터는 실제 D1 저장 공간 과금 수치가 아니며 변경 이력·인덱스·행 메타데이터 공간은 별도로 든다.
 
@@ -30,9 +30,9 @@
 | `POST auth/register/verify` `{response}` | 등록 검증 후 `{account}`와 세션 쿠키 |
 | `POST auth/login/options` `{}` | discoverable 패스키 로그인 옵션·challenge 쿠키 |
 | `POST auth/login/verify` `{response}` | 실제 assertion 서명 검증 후 `{account}`와 세션 쿠키 |
-| `GET me` | 로그인 계정 `{id,displayName}` 또는 `null` |
+| `GET me` | `{account,features,limits,usage}`; 미로그인 account/usage는 `null` |
 | `POST logout` `{}` | 현재 세션 폐기 |
-| `GET notebooks` | 본인에게 허용된 노트 목록 |
+| `GET notebooks?includeDeleted=1&cursor=0&limit=200` | 허용 노트 목록·`nextCursor`; 휴지통은 소유자만 포함 |
 | `POST notebooks` `{publicId,title,fingerprint,pageCount}` | 소유 노트 생성 또는 같은 fingerprint의 기존 소유 노트 반환 |
 | `GET notebooks/:id` | 현재 권한·capabilities·페이지별 stroke·작성자·삭제 ID·본인 위치·책갈피 |
 | `POST notebooks/:id/operations` `{operations,position?,bookmarks?}` | 추가·삭제와 본인 학습 위치 저장. 빈 작업 배열 허용 |
@@ -48,7 +48,57 @@
 
 신규 migration 적용 후 Worker를 바로 배포한다. `0005`의 엄격한 쓰기 trigger는 새 서버 작성자 필드를 요구하므로 이전 Worker가 계속 실행되는 사이의 저장 요청은 재시도가 필요할 수 있다. 기존 알림과 pub/sub 키를 교체하거나 기기별 구독을 자동 변경하지 않는다. `npm test`는 pinned esbuild로 테스트 Worker를 묶은 뒤 기존 Miniflare 검사와 독립 서명 생성기를 이용한 패스키·권한별 직접 API·권한 변경 경합·혼합 batch 취소·공유 동시 필기 검사를 실행한다. 실제 iPad 생체인증·플랫폼 패스키 복구 테스트를 대신한 것으로 표시하지 않는다.
 
-기존 GitHub Pages HTML·아이콘·URL을 유지하고, 좋아요와 새 글 알림에 필요한 API만 Cloudflare Worker에 둔다. Worker는 `api.infant83.io`, 웹페이지는 `https://infant83.io/AI_Tech_Review/`를 사용한다. API·DB 장애가 나도 원래 정적 글을 읽을 수 있다.
+## 개인 원본·학습본·초안 · 0006
+
+`0006_study_library.sql`은 같은 PDF에서 여러 학습본을 만들 수 있도록 기존 노트 테이블을 재구성한다. 부모를 지우기 전에 자식 테이블을 백업·분리하고 기존 ID, 권한 네 종류, 획·삭제 이력, revision, 카운터, 초대, 계정·기존 인증 정보를 보존한다. 채워진 이전 스키마에서 원형 보존과 실패 트랜잭션 rollback을 검사한다. 운영 적용 전 보호된 D1 백업을 확보하고 migration과 새 Worker를 함께 적용한다.
+
+`copy`는 읽을 수 있는 노트의 활성 필기를 새 획 ID로 복제하여 요청한 계정이 소유하는 개인 학습본을 만든다. 공유 구성원은 복사하지 않는다. `reset`은 같은 원본의 필기 없는 새 학습본을 만들며 기존 공유 노트·필기·학습 위치를 지우지 않는다. 같은 소유자의 사본은 이미 보관한 원본을 재사용한다. 다른 소유자의 사본에는 원본 R2 참조를 넘기지 않으므로 현재 기기에 있는 동일 PDF를 활용하거나 새 소유자가 자신의 저장 한도에서 원본을 별도로 올린다.
+
+휴지통 이동·복원은 소유자만 가능하다. 휴지통에서는 구성원 열람·필기·초대 수락을 중지하며, 소유자가 복원하면 기존 ID·권한·필기를 유지한다. 휴지통 이동은 발표를 종료하고 그 노트의 검토 중/승인된 공개 신청을 철회한다. 휴지통이나 원본을 자동 영구 삭제하지 않으며 보관된 원본도 500MiB 한도에 포함된다. 영구 삭제·계정 삭제·잃어버린 모든 패스키의 관리자 복구 기능은 아직 없다. 사용자가 내보낸 사본이나 이미 받은 다른 기기의 자료를 회수하지 않는다.
+
+### 선택적 R2 연결
+
+기본 `wrangler.jsonc`에는 R2 binding이 없다. 버킷이 준비되지 않아도 나머지 개인 학습 기능을 배포할 수 있으며 `GET me`의 `features.documentStorage`가 `false`가 된다. 업로드/다운로드는 기다리지 않고 `document_storage_unavailable` 503을 반환한다. `wrangler.r2.example.jsonc`에 `STUDY_DOCUMENTS` → `infant83-study-documents` 예제를 둔다. 운영자가 올바른 계정의 R2 이용 가능 상태·권한을 확인하고 비공개 버킷을 만든 후 정식 설정에 binding을 추가한다. `r2.dev`나 공개 custom domain을 켜지 않는다. 계정·가입·과금 설정을 이 코드가 자동으로 변경하지 않는다.
+
+원본은 파일당 50MiB, 업로더 계정당 합계 500MiB까지 보관한다. 진행 중 업로드 예약도 합계에 포함하여 동시 업로드가 한도를 넘지 않게 한다. `GET me`와 `GET usage`에서 실제 보관 바이트·한도·노트 수를 표시한다. 원본은 `%PDF-` magic, 실제 바이트 수와 SHA-256을 확인하고 업로더/fingerprint 키에 조건부 생성한다. 새 내용은 새 fingerprint/학습본으로 저장하며 기존 원본을 덮지 않는다. 동일 계정의 같은 원본은 중복 보관하지 않는다. nonce 임시 객체는 검증 후 제거하고 실패/만료 예약은 정리한다. 원본 GET은 매 요청마다 현재 멤버십을 확인하고 R2 응답을 기다린 뒤에도 회수 여부를 다시 확인한다. 응답은 `private, no-store`다.
+
+업로드는 native `crypto.DigestStream`과 `FixedLengthStream`으로 읽으므로 50MiB 파일 전체를 JavaScript 메모리에 모으지 않는다. 최대 파일의 실제 production CPU는 아직 측정하지 않았으며 Workers Free의 요청당 CPU 10ms에서 50MiB 전량 처리를 보장하지 않는다. 실제 invocation CPU/실패율을 확인한 뒤 필요하면 R2 native checksum 검증이나 실행 요금제를 별도로 검토한다. 로컬 wall time을 production CPU 측정으로 표시하지 않는다.
+
+2026-11-05 [R2 Standard 요금](https://developers.cloudflare.com/r2/pricing/)은 월 저장 10GB·Class A 100만 회·Class B 1,000만 회가 무료 구간이며 초과분은 각각 $0.015/GB-month, $4.50/100만 회, $0.36/100만 회다. egress는 무료다. 신규 업로드는 임시/최종 PUT과 검증 GET을 사용하므로 원본 하나당 정확히 한 연산으로 계산하지 않는다. 필기 D1, Worker 요청·CPU, 기타 기존 구독 비용은 별도다.
+
+### 기존 계정에 패스키 추가
+
+새 계정 등록과 기존 계정의 인증 수단 추가를 분리한다. 로그인 상태의 `auth/register/options`는 거절한다. 추가·삭제 전 현재 계정의 기존 패스키로 `auth/reauth/*` 사용자 확인을 다시 받고, 같은 세션의 5분 이내 1회 승인으로 `auth/credential/options` 또는 credential 삭제를 진행한다. 새 credential은 기존 account/user handle에 연결하며 계정을 새로 만들지 않는다. 최대 10개이고 마지막 하나는 DB trigger로 삭제를 막는다. 플랫폼 패스키 관리자에서 동기화된 키나 다른 기기·보안 키를 사용할 수 있지만 서버가 개인키나 이메일 복구 코드를 대신 만들지는 않는다.
+
+### 비공개 초안과 공개 신청
+
+초안은 작성자 계정만 읽는다. 직접 쓴 제목·요약·본문과 선택적으로 연결한 본인 원본 PDF를 공개 신청에 담을 수 있으며 개인 필기는 자동 포함하지 않는다. 제출 시 공개 권리 확인이 필수다. 심사 중 초안은 잠기고 제출 텍스트와 원본 참조는 snapshot으로 유지한다. 승인/반려 후 수정하면 별도 새 신청이 되며 이전 심사 snapshot은 바뀌지 않는다. 철회된 신청은 심사자에게도 열리지 않으며 R2를 읽는 도중 철회되어도 반환 직전에 다시 확인한다.
+
+심사 API는 운영 환경의 `STUDY_REVIEWER_ACCOUNT_IDS` 허용 목록에 든 계정만 사용할 수 있다. 빈 목록은 심사자 없음이다. 일반 owner/editor 공유 권한은 이 권한을 주지 않는다. 승인 응답도 `published:false, editorialExportRequired:true`이며 공개 카탈로그·게시물·알림을 자동 생성하지 않는다. 실제 발행은 기존 편집/게시 절차에서 별도 수행한다. 심사 이력의 영구 삭제·발행 후 철회 자동화는 이번 API 범위에 없다.
+
+### 선택적 발표 페이지 따라가기
+
+owner/editor가 4시간짜리 발표 세션을 시작하고 발표자 또는 owner가 쪽을 바꾸거나 종료한다. 다른 유효 발표자가 쓰는 세션은 editor가 빼앗지 못한다. 현재 권한·발표 ID는 실제 SQL 쓰기 시점에 확인하므로 요청 도중 권한 회수나 발표자 교체가 일어나도 이전 요청이 새 발표를 덮지 못한다. 만료/권한 회수된 발표는 새 editor가 시작할 수 있다. 독자가 따라가기를 켠 경우 기존 delta polling에 `follow=1`을 붙여 쪽 metadata를 받는다. 다른 계정의 개인 학습 위치를 덮지 않으며 WebSocket/음성·영상 강의가 아니다.
+
+| 경로 (`/v1/study/` 아래) | 동작 |
+| --- | --- |
+| `GET usage` | `{usage,limits}`; 원본 바이트·개수·노트/휴지통 수 |
+| `POST notebooks/:id/copy` `{title?,includeInk?}` | 읽기 권한으로 본인 소유의 독립 사본 생성 |
+| `POST notebooks/:id/reset` `{title?}` | 기존 노트를 보존하고 빈 개인 학습본 생성 |
+| `DELETE notebooks/:id` `{}` / `POST notebooks/:id/restore` `{}` | owner 휴지통 이동/복원 |
+| `POST notebooks/:id/document?size=N` | owner의 `application/pdf` 원본 업로드; 실제 길이·해시 검증 |
+| `GET notebooks/:id/document` | 현재 읽기 구성원에게 비공개 원본 스트림 |
+| `POST auth/reauth/options` `{}` / `POST auth/reauth/verify` `{response}` | 기존 계정 패스키 사용자 확인 |
+| `GET credentials` | 본인 `{credentials:[{id,label,createdAt,lastUsedAt}]}` |
+| `POST auth/credential/options` `{label}` / `POST auth/credential/verify` `{response}` | 본인 계정에 추가 패스키 바인딩 |
+| `DELETE credentials/:id` `{}` | 최근 재확인 후 본인 패스키 삭제; 마지막 키 제외 |
+| `GET/POST drafts`, `GET/PATCH drafts/:id` | 개인 초안 목록/저장/수정; `title,summary,body,notebookId` |
+| `POST drafts/:id/submit` `{rightsConfirmed:true}` / `POST drafts/:id/withdraw` `{}` | 비공개 검토 신청/철회 |
+| `GET review/submissions`, `GET review/submissions/:id[/document]` | 지정 심사자에게 신청/snapshot/선택 원본 확인 |
+| `POST review/submissions/:id` `{decision,note?}` | 지정 심사자 승인/반려; 자동 발행 없음 |
+| `GET/POST/PATCH/DELETE notebooks/:id/presentation` | 발표 상태/시작/쪽 변경/종료; POST/PATCH `{page}` |
+
+기존 GitHub Pages HTML·아이콘·URL을 유지하고, 좋아요·새 글 알림·개인 학습에 필요한 API를 Cloudflare Worker에 둔다. Worker는 `api.infant83.io`, 웹페이지는 `https://infant83.io/AI_Tech_Review/`를 사용한다. API·DB 장애가 나도 원래 정적 글을 읽을 수 있다.
 
 ```text
 GitHub main → 기존 Pages 빌드·배포 → 기존 페이지 + reader-publications.json

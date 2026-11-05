@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "npm run build:test && node --test --test-concurrency=1 test/*.test.mjs",
-    "check": "node --check src/worker.js && node --check src/security.js && node --check src/web-push.js && node --check src/metrics.js && node --check src/discovery.js && node --check src/study.js",
+    "check": "node --check src/worker.js && node --check src/security.js && node --check src/web-push.js && node --check src/metrics.js && node --check src/discovery.js && node --check src/study.js && node --check src/study-library.js",
     "build:test": "esbuild src/worker.js --bundle --platform=browser --format=esm --target=es2022 --outfile=.wrangler/test-worker.mjs"
   },
   "devDependencies": {

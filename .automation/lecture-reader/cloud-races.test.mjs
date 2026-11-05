@@ -25,6 +25,9 @@ function baseContext(extra={}){
     document:{visibilityState:'visible'},error:code=>new Error(code),help:cause=>{throw cause;},stateKey:(a,b)=>a+':'+b,
     linkKey:(a,b)=>a+':'+b,workingKey:fp=>'working:'+fp,...extra};
   context.lockReader ||= ()=>{};context.restoreDisplayedPermissions ||= async()=>{};
+  context.updatePresenterPage ||= async()=>{};context.followPresentation ||= async()=>{};
+  context.presentationIndicator ||= ()=>{};context.checkedPresentation ||= value=>value;
+  context.presentation ??= null;context.presentationPoll ??= false;context.followPresenter ??= false;
   context.roleLabel ||= value=>value;
   context.safeMetadata ||= value=>value;
   context.setReaderRole ||= ()=>{};context.restrictPending ||= (state,snapshot)=>{state.metadata=snapshot.notebook;return false;};

@@ -23,6 +23,14 @@ Workers 단가·CPU와 egress 조건은 [Workers 가격](https://developers.clou
 
 [Workers Static Assets](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/)와 [Cloudflare Pages의 정적 파일](https://developers.cloudflare.com/pages/functions/pricing/)은 해당 제품에서 정적 처리하면 요청이 무료·무제한이고 함수 실행은 별도다. 이 사실을 현재 GitHub Pages 트래픽의 Cloudflare Workers 무료 처리량으로 합산하지 않는다. Workers Static Assets에는 파일당 25 MiB 한도도 있어 PDF 배포 경로 변경 시 별도 검토가 필요하다.
 
+## 2026-11-05 학습 공간 개선의 비용 범위
+
+아래 DAU 표는 기존 필기 동기화 부하에 대한 모형이다. 새 학습 공간은 원본 PDF의 명시적 R2 보관, 사본·휴지통, 추가 패스키·초안 심사, 선택한 발표 페이지 따라가기를 추가했다. 파일 업로드·다운로드와 이 관리 동작의 빈도, 발표용 추가 조회·쓰기는 기존 표에 포함하지 않았다. 브라우저 저장은 PDF 바이트와 가변 metadata를 분리해 매 획의 원본 재기록을 없앴다. 이 기기 I/O 개선을 Cloudflare 과금 할인으로 계산하지 않는다.
+
+원본 파일은 50 MiB/개, 업로더 총 500 MiB로 제한하고 휴지통의 원본도 보관량에 포함한다. [R2 Standard 요금](https://developers.cloudflare.com/r2/pricing/)은 월 10 GB-month·Class A 100만 회·Class B 1,000만 회 무료 포함 후 $0.015/GB-month, $4.50/백만 A, $0.36/백만 B이며 전송 egress는 무료다. 다른 앱의 계정 사용량과 합산되므로 이 앱의 무제한 무료 보관을 약속하지 않는다. R2 연결·구독의 실제 상태는 운영 계정에서 확인해야 하며, 현재 기본 배포 설정에는 파일 보관 binding을 넣지 않았다.
+
+임시 객체에 스트리밍·해시 검증한 뒤 불변 원본을 확정하므로 파일 한 번의 업로드는 단순 PUT 한 번과 같은 연산 수가 아니다. 50 MiB 업로드의 실제 Worker CPU는 미측정이며 Free의 10 ms 충족을 보장하지 않는다. 원본·변경 로그는 자동 만료하지 않으며, 사본/새 학습본은 기존 노트를 남기므로 D1 보관량도 증가할 수 있다. 현재 한 DB의 10 GB 한도와 아래 용량 경고는 계속 적용된다.
+
 ## 계산 입력
 
 동일한 100·1,000·10,000명이 매일 30분씩 30일 사용하고, 각자 노트 한 권에 하루 새 획 500개와 그중 20%인 지우기 100개를 만든다. 저장되는 획 JSON은 평균 **1 KB = 1,000 bytes**로 가정했다. 합성 입력이며 실제 필기에서 측정하지 않았다.

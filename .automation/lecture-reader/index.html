@@ -24,13 +24,14 @@
   <header class="reader-header">
     <div class="document-bar">
       <a class="back-link" id="lecture-link" href="../"><svg aria-hidden="true"><use href="#i-left"/></svg><span data-i18n="lectures">렉처 노트</span></a>
-      <div class="document-heading"><span class="eyebrow" data-i18n="studyNotebook">PDF 학습 노트</span><h1 id="document-title" data-i18n="choosePDF">공부할 PDF를 열어주세요</h1></div>
+      <div class="document-heading"><span class="eyebrow" data-i18n="studyNotebook">PDF 학습 노트</span><h1 id="document-title" data-i18n="choosePDF">공부할 PDF를 열어주세요</h1><p id="notebook-context" class="notebook-context" aria-live="polite"></p></div>
       <div class="document-actions"><span id="save-state" class="save-state" role="status" aria-live="polite" data-state="ready" data-i18n="ready">준비됨</span>
-        <button id="cloud-sync" class="icon-button cloud-button" type="button" data-i18n-title="cloud" title="로그인·동기화"><svg aria-hidden="true"><use href="#i-cloud"/></svg><span data-i18n="sync">동기화</span></button>
-        <button id="open-library" class="icon-button" type="button" data-i18n-title="myLibrary" title="내 보관함"><svg aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="library">보관함</span></button>
+        <button id="cloud-sync" class="icon-button cloud-button" type="button" data-i18n-title="cloud" title="로그인·동기화"><svg aria-hidden="true"><use href="#i-cloud"/></svg><span data-i18n="sync">로그인</span></button>
+        <button id="open-library" class="icon-button" type="button" data-i18n-title="myLibrary" title="내 학습 공간"><svg aria-hidden="true"><use href="#i-book"/></svg><span data-i18n="library">내 학습 공간</span></button>
         <button id="open-options" class="icon-button" type="button" data-i18n-title="options" title="저장·가져오기·도움말"><svg aria-hidden="true"><use href="#i-more"/></svg></button>
       </div>
     </div>
+    <div id="presentation-bar" class="presentation-bar" hidden aria-live="polite"><span id="presentation-description"></span><button id="presentation-action" type="button">발표 페이지</button></div>
     <div class="ink-toolbar" role="toolbar" aria-label="필기 도구" data-i18n-aria="inkTools">
       <div class="tool-group modes"><button id="tool-pen" class="tool-button active" type="button" aria-pressed="true" data-tool="pen" data-i18n-title="pen"><svg aria-hidden="true"><use href="#i-pen"/></svg><span data-i18n="pen">펜</span></button>
         <button id="tool-eraser" class="tool-button" type="button" aria-pressed="false" data-tool="eraser" data-i18n-title="eraser"><svg aria-hidden="true"><use href="#i-erase"/></svg><span data-i18n="eraser">지우개</span></button>
@@ -47,7 +48,7 @@
     </div>
   </header>
   <main id="reader-main">
-    <section id="empty-state" class="empty-state"><span class="empty-icon"><svg aria-hidden="true"><use href="#i-pen"/></svg></span><h2 data-i18n="welcome">읽던 곳에서, 쓰던 필기 그대로.</h2><p data-i18n="welcomeBody">렉처 PDF를 열거나 내 PDF를 가져와 공부하세요. 펜 필기와 읽던 위치를 이 기기에 자동 저장합니다.</p><button class="primary-button" id="choose-document" type="button" data-i18n="openPDF">PDF 열기</button><p class="small-note" data-i18n="privateFiles">내 PDF는 업로드 없이 이 브라우저에서 열립니다.</p></section>
+    <section id="empty-state" class="empty-state"><span class="empty-icon"><svg aria-hidden="true"><use href="#i-pen"/></svg></span><h2 data-i18n="welcome">PDF와 나의 학습 노트</h2><p data-i18n="welcomeBody">렉처를 읽거나 내 PDF를 가져와 공부하세요. 필기와 읽던 위치를 기기에 저장하고, 로그인 후 선택한 노트를 동기화합니다.</p><button class="primary-button" id="choose-document" type="button" data-i18n="openPDF">자료 선택</button><p class="small-note" data-i18n="privateFiles">PDF 가져오기는 기기에서 열기입니다. 클라우드 보관은 별도로 선택합니다.</p></section>
     <div id="loading-state" class="loading-state" hidden role="status"><span class="spinner"></span><span data-i18n="loading">PDF를 여는 중입니다…</span></div>
     <section id="page-area" class="page-area" hidden aria-label="PDF 페이지" data-i18n-aria="pdfPage">
       <div id="page-sheet" class="page-sheet"><canvas id="pdf-canvas" aria-label="PDF 본문" data-i18n-aria="pdfContent"></canvas><canvas id="ink-canvas" aria-label="펜 필기 영역" data-i18n-aria="inkCanvas" tabindex="0"></canvas></div>
@@ -66,9 +67,9 @@
   </dialog>
   <dialog id="options-dialog" class="options-dialog"><div class="dialog-heading"><h2 data-i18n="options">저장·가져오기·도움말</h2><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
     <p data-i18n="sourceHelp">PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.</p>
-    <div class="export-actions"><button id="export-original" type="button" data-i18n="exportOriginal">원본 PDF 내보내기</button><button id="export-pdf" type="button" data-i18n="exportPDF">필기한 PDF 내보내기</button><button id="export-backup" type="button" data-i18n="exportBackup">수정 가능한 필기 백업</button><button id="import-backup" type="button" data-i18n="importBackup">필기 백업 가져오기</button></div>
+    <div class="export-actions"><button id="export-pdf" type="button" data-i18n="exportPDF">필기한 PDF 내보내기</button><button id="export-original" type="button" data-i18n="exportOriginal">원본 PDF 내보내기</button><button id="export-backup" type="button" data-i18n="exportBackup">수정 가능한 필기 백업</button><button id="import-backup" type="button" data-i18n="importBackup">필기 백업 가져오기</button></div>
     <h3 data-i18n="drawingHelp">펜으로 쓰고, 손가락으로 넘기세요</h3><p data-i18n="drawingHelpBody">Apple Pencil은 바로 필기할 수 있습니다. 손가락으로 화면을 움직이고 두 손가락으로 확대할 수 있습니다. 마우스로도 쓸 수 있으며 손가락 필기는 도구에서 켤 수 있습니다. 지우개는 닿은 획을 지웁니다.</p>
-    <h3 data-i18n="savingHelp">필기는 자동 저장됩니다</h3><p data-i18n="savingHelpBody">이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 브라우저 데이터를 지우거나 비공개 모드를 종료하면 사라질 수 있습니다. 로그인 동기화는 선택한 노트에 적용됩니다. 기기를 옮길 때에는 원본 PDF와 필기 백업을 함께 가져가세요.</p><p data-i18n="exportHelp">필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.</p>
+    <h3 data-i18n="savingHelp">필기는 자동 저장됩니다</h3><p data-i18n="savingHelpBody">이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 로그인하면 선택한 노트를 동기화합니다. 개인 PDF 원본까지 클라우드 보관한 경우 다른 기기에서도 파일을 열 수 있고, 기기에만 둔 PDF는 같은 원본 파일을 다시 가져와야 합니다. 중요한 필기는 백업 파일로도 보관하세요.</p><p data-i18n="exportHelp">필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.</p>
     <button id="persistent-storage" class="secondary-button" type="button" data-i18n="retainStorage">이 기기에 보관 유지 요청</button><button id="clear-page" class="danger-button" type="button" data-i18n="clearPage">현재 페이지의 필기 지우기</button><p class="shortcut-note" data-i18n="shortcuts">단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소</p>
   </dialog>
   <input id="pdf-input" type="file" accept="application/pdf,.pdf" hidden><input id="backup-input" type="file" accept="application/json,.json" hidden>
