@@ -1,0 +1,161 @@
+{
+  "date": "2026-11-05",
+  "baseline_revision": "0089b5e0145577e06f86cb33bc4f804f57683241",
+  "method": {
+    "production": "Public HTTPS navigation and anonymous device notebook flows; no test accounts created in production",
+    "accounts": "Isolated loopback Worker and D1 with real WebAuthn verification and virtual browser authenticators",
+    "viewports": [
+      [
+        820,
+        1180
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "physical_ipad_pencil_or_face_id_tested": false
+  },
+  "observed_defects_fixed": [
+    "Cached device reopened old ink while reporting synchronized; latest snapshot now merges with pending offline edits before the cursor advances",
+    "Sign-out disabled anonymous device notebooks; only account-bound notebooks now stay locked",
+    "Private cloud notebook Open showed neither the cached PDF nor an actionable file selection; cached originals reopen and missing originals get a visible prompt",
+    "A mismatched private PDF must leave the current document and ink unchanged",
+    "Personal library entry did not display its library; library=1 now opens it",
+    "Export and help were hidden beyond horizontal phone toolbar scrolling; the menu stays in the header",
+    "Original PDF export and shared-page erasure scope were hard to identify; source export and shared-edit confirmation were added",
+    "Expired or consumed invitations looked like network failures and blocked personal resume; preview errors now retain the notebook list and offer dismissal",
+    "Historical delta payloads exposed erased ink to newly invited members; responses now redact currently erased stroke geometry while retaining revisions and erasures",
+    "Late cache/network/file reads could reopen a superseded document; document selection generations now guard pending opens and stale notebook queries",
+    "Wrong-file feedback now appears inside the active file-selection dialog rather than behind its top-layer backdrop",
+    "Newly rendered cloud controls could look enabled during an unfinished operation and ignore quick clicks; busy state now covers replacement controls"
+  ],
+  "browser_verified": {
+    "local_ink_save_and_reload": true,
+    "reading_position_and_bookmarks": true,
+    "editable_backup_export_and_restore": true,
+    "wrong_backup_preserves_ink": true,
+    "page_clear_cancel_confirm_and_undo": true,
+    "original_export_matches_original_hash": true,
+    "annotated_export_114_pages": true,
+    "annotated_export_only_inked_page_visually_changed": true,
+    "all_183_pdf_links_retained": true,
+    "passkey_registration_and_new_browser_login": true,
+    "cached_browser_sees_peer_ink_after_reload": true,
+    "viewer_contributor_editor_and_owner_permissions": true,
+    "contributor_can_erase_only_own_ink": true,
+    "owner_role_change_and_revoke": true,
+    "offline_role_downgrade_does_not_upload_disallowed_ink": true,
+    "private_shared_notebook_isolation": "covered by core orchestration and prior two-writer browser suite",
+    "fresh_device_private_pdf_prompt_and_matching_file_restore": true,
+    "wrong_private_pdf_preserves_document": true,
+    "teacher_page_independent_from_student_page": true,
+    "student_position_and_bookmark_restored": true,
+    "single_local_polling_observation": {
+      "after_pen_up_ms": 953,
+      "ink_streamed_mid_gesture": false,
+      "production_latency_guarantee": false
+    },
+    "expired_invitation_recovery": true
+  },
+  "scope_matrix": [
+    {
+      "feature": "Personal PDF import",
+      "status": "available",
+      "detail": "Device-local PDF, not a cloud file upload; no GitHub publishing permission is required"
+    },
+    {
+      "feature": "Signed-in ink and progress sync",
+      "status": "available",
+      "detail": "Explicit notebook connection; private PDF originals must be supplied on each device"
+    },
+    {
+      "feature": "Sharing and collaboration",
+      "status": "available",
+      "detail": "View only, add own shared ink, or co-edit; each invitation is one use and expires after 24 hours"
+    },
+    {
+      "feature": "Personal PDF cloud library and automatic file download",
+      "status": "not_implemented"
+    },
+    {
+      "feature": "Member-created public lecture or post submission",
+      "status": "not_implemented",
+      "detail": "Public articles and lecture registrations still use the administrator GitHub publication workflow"
+    },
+    {
+      "feature": "Presenter following, classroom groups, live presence and streamed ink",
+      "status": "not_implemented",
+      "detail": "Visible sessions poll approximately every four seconds; page and bookmark state belong to each member"
+    },
+    {
+      "feature": "Whole-notebook reset, delete, duplicate, trash or version history UI",
+      "status": "not_implemented",
+      "detail": "Current-page erasure, inverse undo and editable backups are available; erasure is not account/notebook deletion"
+    },
+    {
+      "feature": "Account recovery and additional passkey management",
+      "status": "not_implemented",
+      "detail": "Platform passkey availability controls cross-device sign-in; creating a passkey here creates a new account"
+    }
+  ],
+  "remaining_priorities": [
+    {
+      "priority": 1,
+      "work": "Unify device and cloud learning libraries; show account, notebook owner and current sharing permission beside the document"
+    },
+    {
+      "priority": 1,
+      "work": "Add private cloud PDF storage with immutable file versions and per-file access controls before promising automatic cross-device personal archiving"
+    },
+    {
+      "priority": 1,
+      "work": "Add additional passkeys, recovery, safe notebook duplication/deletion/reset and visible restoration controls"
+    },
+    {
+      "priority": 2,
+      "work": "Separate browser PDF bytes from mutable ink/metadata and avoid loading every PDF into library memory"
+    },
+    {
+      "priority": 2,
+      "work": "Add member drafts and an explicit publication/review workflow for public lecture submissions"
+    },
+    {
+      "priority": 2,
+      "work": "Implement presenter page following and classroom sessions as a distinct feature, then evaluate realtime transport"
+    }
+  ],
+  "storage_limits_to_explain": {
+    "private_pdf_max_bytes": 52428800,
+    "owned_notebooks": 100,
+    "stroke_ids_per_notebook_including_tombstones": 25000,
+    "active_ink_json_bytes_per_notebook": 12000000,
+    "sign_out_erases_local_copies": false,
+    "revocation_erases_previous_exports": false,
+    "physical_change_log_purge_implemented": false
+  },
+  "backend_fix_deployed_version": "c23c3f12-29bb-4688-9c21-41ae0e567fd9",
+  "verification_artifacts": "Ignored output/playwright/study-reader; not copied to the public reader application",
+  "classroom_capacity_limit": {
+    "registration_per_ip_per_hour": 12,
+    "classroom_scale_tested": false,
+    "detail": "A large class registering from one network needs an explicit anti-abuse and onboarding design; no production rate limit was weakened"
+  },
+  "synthetic_account_note": "All synthetic passkeys, accounts and API rate-limit resets were confined to the isolated local test database; production account and notebook data were not modified",
+  "checks": {
+    "reader_cloud_and_cost_tests": 91,
+    "backend_tests": 46,
+    "public_artifact_validation": {
+      "status": "passed",
+      "files": 1910,
+      "articles": 58,
+      "archive_documents": 107
+    },
+    "production_account_writes": 0,
+    "publication_python_tests": {
+      "archive": 33,
+      "reader_publications": 31,
+      "privacy": 8
+    }
+  }
+}

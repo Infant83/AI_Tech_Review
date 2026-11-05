@@ -26,6 +26,8 @@ The interface distinguishes device saving, pending cloud work and confirmed sync
 
 Owners create time-limited private invitation links and can remove member access. The token stays in the URL fragment, which is not sent in the initial page request. A recipient signs in and explicitly accepts before gaining access. Acceptance removes the fragment. Notebook titles and display names are rendered as text. Personal notes never enter the public publication catalog, repository, analytics or service-worker notification state.
 
+Invitations are single-use and expire after 24 hours. A failed invitation preview keeps the member's notebook list available and offers an explicit dismissal; it never offers acceptance for an invalid preview. Closing the invitation removes only its fragment parameter and permits the normal personal notebook to resume.
+
 ### Sharing permissions
 
 Every new invitation selects one explicit permission; the default is **View only**. An authenticated preview shows the permission before acceptance. An invitation does not change an existing member’s permission. The owner changes an existing member through **Save permission**, or removes access.
@@ -41,7 +43,15 @@ Contributed ink is visible to every member. Server-authored ownership metadata d
 
 The server remains authoritative. Every incremental poll returns the current role even when no stroke changed. Before uploading queued offline edits, the client rechecks them against that role and stroke authorship. Disallowed changes are retained in a private device-only backup available from the sync panel, then the permitted shared view is restored. This avoids an unauthorized retry loop or silently discarding unsent ink. Edit permissions are bound to the account and notebook; a same-PDF switch cannot carry a stroke ownership grant across notebook boundaries.
 
+Reopening a cached notebook reconciles the latest snapshot and durable pending ink before advancing its remote cursor. Explicit cloud notebook opening restores that member's remote progress; automatic resume retains device progress so offline reading is not silently replaced. Historical delta events for currently erased strokes return deletion markers without old coordinates. This redacts API responses; it does not physically purge the stored change log or remove earlier exports.
+
 The reader page is excluded from the site’s reader-engagement injection, automatic refresh and standalone pull-to-refresh behavior. It creates no additional service worker. The existing push-only worker is retained.
+
+## Product scope and UX audit
+
+`ux-audit.json` records the November 5 browser acceptance, fixed defects and remaining product gaps. The personal-library entry opens its device library. A private cloud notebook first tries its cached original, then opens visible guidance for selecting the identical file; a mismatched file preserves the document and ink already displayed. Sign-out restores anonymous writing only for unbound device documents and keeps account-bound copies locked. Export/help stays visible in the phone header, original PDF export preserves source bytes, and shared-page erasure explicitly describes its effect on other members.
+
+Importing a PDF is device-local and does not publish it. Signed-in cloud storage currently carries ink and progress rather than PDF bytes. Member file hosting, public post submission, whole-notebook deletion/reset/duplication, account recovery and additional passkey management are not implemented. Public lecture registration still follows the administrator GitHub workflow. The current polling collaboration is not a classroom session with presenter following or streamed pen gestures. Browser PDF bytes and mutable metadata also share a storage record; separating them and paginating the library are needed before claiming large personal-archive performance.
 
 ## Verification
 

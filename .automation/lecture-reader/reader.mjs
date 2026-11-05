@@ -20,6 +20,7 @@ const strings = {
   previous: ['이전 페이지', 'Previous page'], next: ['다음 페이지', 'Next page'], pageNumber: ['페이지 번호', 'Page number'], bookmark: ['이 페이지 책갈피', 'Bookmark this page'], goBookmark: ['책갈피 이동', 'Go to bookmark'], bookmarks: ['책갈피', 'Bookmarks'], zoom: ['확대', 'Zoom'], fitWidth: ['너비 맞춤', 'Fit width'],
   personalLearning: ['나의 학습', 'Personal study'], libraryBody: ['읽던 페이지와 필기가 이 브라우저에 보관됩니다. 중요한 필기는 백업 파일로도 보관하세요.', 'Your place and notes stay in this browser. Keep a backup of important notes too.'], importPDF: ['내 PDF 가져오기', 'Bring your own PDF'], localOnly: ['업로드 없이 이 기기에 보관', 'Keep on this device without uploading'], recent: ['이어서 공부하기', 'Continue studying'], publishedLectures: ['렉처 자료', 'Published lectures'], close: ['닫기', 'Close'],
   exportPDF: ['필기한 PDF 내보내기', 'Export PDF with ink'], exportBackup: ['수정 가능한 필기 백업', 'Export editable notes backup'], importBackup: ['필기 백업 가져오기', 'Import notes backup'],
+  exportOriginal: ['원본 PDF 내보내기', 'Export original PDF'], sourceHelp: ['PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.', 'The original PDF stays unchanged; ink is stored separately. Export either the original PDF or a copy with ink.'], originalReady: ['필기 없는 원본 PDF를 저장했습니다.', 'The original PDF without ink is ready.'],
   drawingHelp: ['펜으로 쓰고, 손가락으로 넘기세요', 'Write with Pencil, scroll with a finger'], drawingHelpBody: ['Apple Pencil은 바로 필기할 수 있습니다. 손가락으로 화면을 움직이고 두 손가락으로 확대할 수 있습니다. 마우스로도 쓸 수 있으며 손가락 필기는 도구에서 켤 수 있습니다. 지우개는 닿은 획을 지웁니다.', 'Write with Apple Pencil, scroll with a finger, and pinch to zoom. A mouse works too. Enable Finger ink to draw with a finger. The eraser removes strokes it touches.'],
   savingHelp: ['필기는 자동 저장됩니다', 'Your notes save automatically'], savingHelpBody: ['이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 브라우저 데이터를 지우거나 비공개 모드를 종료하면 사라질 수 있습니다. 로그인 동기화는 선택한 노트에 적용됩니다. 기기를 옮길 때에는 원본 PDF와 필기 백업을 함께 가져가세요.', 'Ink and your place are saved in this device and browser. Clearing browser data or ending a private session may remove them. Signed-in sync applies to notebooks you choose. To move devices, take the original PDF and a notes backup together.'],
   exportHelp: ['필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.', 'The inked PDF is a copy for reading and sharing in other apps. Keep the editable backup to continue editing strokes.'], retainStorage: ['이 기기에 보관 유지 요청', 'Request persistent device storage'], clearPage: ['현재 페이지의 필기 지우기', 'Clear ink on this page'], shortcuts: ['단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소', 'Keys: P pen · E eraser · H read · ← → pages · ⌘/Ctrl+Z undo'],
@@ -33,7 +34,9 @@ const strings = {
   backupReady: ['수정 가능한 필기 백업을 저장했습니다.', 'Your editable notes backup is ready.'], exported: ['필기한 PDF를 저장했습니다.', 'Your PDF with ink is ready.'], exporting: ['PDF에 필기를 옮기는 중…', 'Preparing your inked PDF…'],
   exportFailed: ['PDF를 내보내지 못했습니다. 암호화된 PDF라면 원본 잠금을 해제한 뒤 다시 시도해 주세요. 필기 백업은 사용할 수 있습니다.', 'Could not export this PDF. If it is encrypted, unlock the original and try again. The editable notes backup remains available.'],
   backupInvalid: ['이 필기 백업을 읽을 수 없습니다. 지원하는 백업 파일인지 확인해 주세요.', 'This is not a valid supported notes backup.'], fingerprintMismatch: ['다른 PDF의 필기입니다. 백업을 만든 것과 같은 원본 PDF를 먼저 열어주세요.', 'These notes belong to a different PDF. Open the exact original PDF used for this backup first.'],
+  requestedPDFMismatch: ['이 노트의 원본 PDF와 다른 파일입니다. 같은 원본 파일을 다시 선택해 주세요.', 'This file differs from this notebook’s original PDF. Choose the identical original file.'],
   replaceConfirm: ['백업으로 이 PDF의 현재 필기를 바꿀까요? 기존 필기는 먼저 백업해 주세요.', 'Replace this PDF’s current notes with the backup? Export your current notes first.'], imported: ['필기를 가져왔습니다.', 'Notes imported.'], clearConfirm: ['현재 페이지의 필기를 모두 지울까요? 실행 취소로 되돌릴 수 있습니다.', 'Clear all ink on this page? You can undo this.'],
+  clearSharedConfirm: ['이 노트의 현재 페이지 필기를 모두 지울까요? 공유 중이면 다른 사람의 필기도 함께 지워지고 모두에게 반영됩니다. 지운 직후에는 실행 취소로 되돌릴 수 있습니다.', 'Clear all ink on this notebook’s current page? If shared, other members’ ink is erased too and everyone sees the change. You can undo immediately afterward.'],
   persistentYes: ['이 브라우저가 보관 유지 요청을 허용했습니다. 백업도 함께 보관하세요.', 'This browser granted persistent storage. Keep backups too.'], persistentNo: ['이 브라우저에서는 보관 유지를 보장할 수 없습니다. 중요한 필기는 백업해 주세요.', 'This browser cannot guarantee persistent storage. Back up important notes.'],
   password: ['PDF 암호를 입력하세요. 암호는 저장하지 않습니다.', 'Enter the PDF password. It will not be saved.'], openFirst: ['먼저 PDF를 열어주세요.', 'Open a PDF first.'], busy: ['현재 작업이 끝난 뒤 다시 시도해 주세요.', 'Please wait for the current operation.'], cloudSetup: ['로그인·동기화 화면을 준비하지 못했습니다. 이 기기 자동 저장은 계속 사용할 수 있습니다.', 'Sign-in and sync are unavailable. Device autosave still works.']
 };
@@ -49,6 +52,8 @@ let catalog = [], pdf = null, pdfLoadingTask = null, pdfBytes = null, current = 
 let tool = 'pen', color = '#243746', active = null, busy = false, renderSequence = 0, renderTask = null, saveTimer = null, toastTimer;
 let writeQueue = Promise.resolve(true), metaVersion = 0, metaSaved = 0, drawingFrame = 0, lastStorageError = 0, mutationRevision = 0;
 let explicitSelection = false;
+let requestedLocalPDF = null;
+let documentOpenGeneration = 0;
 let permissions = { role: 'local', accountId: null, notebookId: null }, strokeAuthors = new Map(), suspendedTool = null;
 const pages = new Map(), dirty = new Map(), versions = new Map(), histories = new Map(), retiredIds = new Set();
 const pdfCanvas = $('pdf-canvas'), inkCanvas = $('ink-canvas'), sheet = $('page-sheet');
@@ -56,6 +61,13 @@ let cssWidth = 595, cssHeight = 842, pixelRatio = 1, retry = null;
 const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 const clone = value => JSON.parse(JSON.stringify(value));
 function signal(name, detail) { window.dispatchEvent(new CustomEvent(name, { detail })); }
+// Cache, network and file reads can finish after the user chooses another PDF.
+function beginDocumentOpen({ explicit = false, fingerprint = null } = {}) {
+  const intent = ++documentOpenGeneration;
+  if (explicit) { explicitSelection = true; signal('atr:document-selection', { fingerprint }); }
+  return intent;
+}
+function isCurrentDocumentOpen(intent) { return intent === documentOpenGeneration; }
 function status(kind) { const e = $('save-state'); e.dataset.state = kind; e.textContent = t({ pending: 'saving', saved: 'saved', error: 'saveFailed', ready: 'ready' }[kind]); }
 function toast(message, duration = 5000) { clearTimeout(toastTimer); $('toast').textContent = message; $('toast').hidden = false; toastTimer = setTimeout(() => { $('toast').hidden = true; }, duration); }
 function storageFailure() { status('error'); if (Date.now() - lastStorageError > 12000) { toast(t('storageError'), 10000); lastStorageError = Date.now(); } }
@@ -89,7 +101,7 @@ function controls() {
   $('redo').disabled = !current || !canAddInk() || !history().redo.length || busy;
   $('previous-page').disabled = !current || pageNumber <= 1 || busy;
   $('next-page').disabled = !current || pageNumber >= current.pageCount || busy;
-  ['export-pdf', 'export-backup', 'import-backup', 'clear-page', 'bookmark'].forEach(id => { $(id).disabled = !current || busy; });
+  ['export-original', 'export-pdf', 'export-backup', 'import-backup', 'clear-page', 'bookmark'].forEach(id => { $(id).disabled = !current || busy; });
   ['import-backup', 'clear-page'].forEach(id => { $(id).disabled ||= !canEditAllInk(); });
   document.querySelectorAll('[data-tool="pen"],[data-tool="eraser"],[data-color]').forEach(node => { node.disabled = !current || busy || !canAddInk(); });
   $('finger-draw').disabled = $('pen-width').disabled = !current || busy || !canAddInk();
@@ -321,24 +333,87 @@ async function openBytes(bytes, metadata) {
 }
 function historyReplace(url) { try { window.history.replaceState(null, '', url); } catch {} }
 function showError(message) { $('loading-state').hidden = true; $('error-state').hidden = false; $('error-message').textContent = message; busy = false; controls(); }
-async function openPublished(id) {
+async function openPublished(id, { intent = null } = {}) {
+  if (busy) return false;
+  intent ??= beginDocumentOpen();
   const doc = catalog.find(d => d.id === id);
   if (!doc) { showError(t('unknownPDF')); return false; }
   retry = () => openPublished(id); $('original-link').href = new URL(doc.href, rootURL).href;
   try {
     const response = await fetch(new URL(doc.href, rootURL), { credentials: 'omit' });
+    if (!isCurrentDocumentOpen(intent)) return false;
     if (!response.ok) throw new Error('NETWORK');
-    return await openBytes(await response.arrayBuffer(), { title: en && doc.title_en ? doc.title_en : doc.title, publicId: doc.id, sha256: doc.sha256 });
+    const bytes = await response.arrayBuffer();
+    if (!isCurrentDocumentOpen(intent)) return false;
+    return await openBytes(bytes, { title: en && doc.title_en ? doc.title_en : doc.title, publicId: doc.id, sha256: doc.sha256 });
   } catch {
-    try { const cached = (await storage.listDocuments()).find(d => d.publicId === id && d.pdf); if (cached) return openStored(cached.fingerprint); } catch {}
+    if (!isCurrentDocumentOpen(intent)) return false;
+    try {
+      const cached = (await storage.listDocuments()).find(d => d.publicId === id && d.pdf);
+      if (!isCurrentDocumentOpen(intent)) return false;
+      if (cached) return openStored(cached.fingerprint, { intent });
+    } catch {}
+    if (!isCurrentDocumentOpen(intent)) return false;
     showError(t('loadError')); return false;
   }
 }
-async function openStored(fingerprint) {
-  try { const doc = await storage.getDocument(fingerprint); if (!doc?.pdf) throw new Error('MISSING'); return openBytes(await doc.pdf.arrayBuffer(), { title: doc.title, publicId: doc.publicId, sha256: doc.fingerprint }); }
-  catch { showError(t('loadError')); return false; }
+async function openStored(fingerprint, { quietMissing = false, intent = null } = {}) {
+  if (busy) return false;
+  intent ??= beginDocumentOpen();
+  try {
+    const doc = await storage.getDocument(fingerprint);
+    if (!isCurrentDocumentOpen(intent)) return false;
+    if (!doc?.pdf) throw new Error('MISSING');
+    const bytes = await doc.pdf.arrayBuffer();
+    if (!isCurrentDocumentOpen(intent)) return false;
+    return openBytes(bytes, { title: doc.title, publicId: doc.publicId, sha256: doc.fingerprint });
+  } catch { if (!isCurrentDocumentOpen(intent)) return false; if (!quietMissing) showError(t('loadError')); return false; }
 }
 function closeDialogs() { document.querySelectorAll('dialog[open]').forEach(d => d.close()); }
+function clearLocalPDFRequest(cancel = false) {
+  const fingerprint = requestedLocalPDF; requestedLocalPDF = null;
+  $('local-pdf-request')?.remove(); $('import-pdf').removeAttribute('aria-describedby');
+  if (cancel && fingerprint) signal('atr:cloud-local-cancel', { fingerprint });
+}
+async function requestLocalPDF(detail) {
+  if (!/^[a-f0-9]{64}$/.test(detail?.fingerprint || '')) return;
+  requestedLocalPDF = detail.fingerprint; await showLibrary();
+  if (requestedLocalPDF !== detail.fingerprint) return;
+  let note = $('local-pdf-request');
+  if (!note) { note = document.createElement('p'); note.id = 'local-pdf-request'; note.className = 'library-intro'; note.setAttribute('role', 'status'); $('import-pdf').before(note); }
+  const title = typeof detail.title === 'string' ? detail.title.slice(0, 240) : '';
+  note.textContent = en ? `Choose the original PDF for “${title}” with “Bring your own PDF” below. The identical file is needed on this device because PDF files are not uploaded.` : `“${title}”의 원본 PDF가 이 기기에 필요합니다. 아래 ‘내 PDF 가져오기’에서 같은 파일을 선택해 주세요. PDF 파일은 서버에 업로드하지 않습니다.`;
+  $('import-pdf').setAttribute('aria-describedby', note.id); $('import-pdf').focus();
+}
+async function importPDFFile(file) {
+  if (!file) return;
+  if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') return toast(t('notPDF'));
+  if (file.size > 50 * 1024 * 1024) return toast(t('pdfLimit'));
+  if (busy) return toast(t('busy'));
+  const expected = requestedLocalPDF;
+  const intent = beginDocumentOpen({ explicit: true, fingerprint: expected });
+  let bytes;
+  try {
+    bytes = await file.arrayBuffer();
+    if (!isCurrentDocumentOpen(intent)) return;
+    if (expected) {
+      const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(value => value.toString(16).padStart(2, '0')).join('');
+      if (!isCurrentDocumentOpen(intent) || requestedLocalPDF !== expected) return;
+      if (digest !== expected) {
+        const note = $('local-pdf-request');
+        if (note) { note.textContent = t('requestedPDFMismatch'); note.setAttribute('role', 'alert'); }
+        toast(t('requestedPDFMismatch'), 9000); return;
+      }
+    }
+  } catch { if (isCurrentDocumentOpen(intent)) toast(t('loadError'), 9000); return; }
+  clearLocalPDFRequest(); closeDialogs();
+  const open = () => openBytes(bytes.slice(0), { title: file.name.replace(/\.pdf$/i, ''), ...(expected ? { sha256: expected } : {}) });
+  retry = () => {
+    if (busy) return false;
+    beginDocumentOpen({ explicit: true, fingerprint: expected }); return open();
+  };
+  $('original-link').hidden = true; await open();
+}
 async function showLibrary() {
   finishStroke(); $('library-dialog').showModal();
   const saved = $('saved-documents'); saved.replaceChildren();
@@ -350,7 +425,11 @@ async function showLibrary() {
       const title = document.createElement('strong'); title.textContent = doc.title;
       const detail = document.createElement('span'); const notes = doc.annotatedPages?.length || 0;
       detail.textContent = en ? `Page ${doc.position || 1} / ${doc.pageCount} · ${notes} annotated pages${doc.publicId ? '' : ' · Personal PDF'}` : `${doc.position || 1} / ${doc.pageCount}쪽 · 필기 ${notes}쪽${doc.publicId ? '' : ' · 내 PDF'}`;
-      button.append(title, detail); button.addEventListener('click', () => { explicitSelection = true; closeDialogs(); openStored(doc.fingerprint); }); saved.append(button);
+      button.append(title, detail); button.addEventListener('click', () => {
+        if (busy) return toast(t('busy'));
+        const intent = beginDocumentOpen({ explicit: true, fingerprint: doc.fingerprint });
+        clearLocalPDFRequest(requestedLocalPDF !== doc.fingerprint); closeDialogs(); openStored(doc.fingerprint, { intent });
+      }); saved.append(button);
     });
   } catch { const p = document.createElement('p'); p.className = 'empty-list'; p.textContent = t('storageError'); saved.append(p); }
   const published = $('published-documents'); published.replaceChildren();
@@ -359,12 +438,20 @@ async function showLibrary() {
     const button = document.createElement('button'); button.className = 'library-document'; button.type = 'button';
     const title = document.createElement('strong'); title.textContent = en && doc.title_en ? doc.title_en : doc.title;
     const detail = document.createElement('span'); detail.textContent = doc.date + ' · PDF'; button.append(title, detail);
-    button.addEventListener('click', () => { explicitSelection = true; closeDialogs(); openPublished(doc.id); }); published.append(button);
+    button.addEventListener('click', () => {
+      if (busy) return toast(t('busy'));
+      const intent = beginDocumentOpen({ explicit: true, fingerprint: doc.sha256 });
+      clearLocalPDFRequest(requestedLocalPDF !== doc.sha256); closeDialogs(); openPublished(doc.id, { intent });
+    }); published.append(button);
   }
 }
 function download(data, filename, type) {
   const blob = data instanceof Blob ? data : new Blob([data], { type });
   const url = URL.createObjectURL(blob), link = document.createElement('a'); link.href = url; link.download = filename; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+function exportOriginalPDF() {
+  if (!current || busy || !pdfBytes) return;
+  download(pdfBytes.slice(), safeName(current.title) + '.pdf', 'application/pdf'); toast(t('originalReady'));
 }
 function safeName(title) { return title.replace(/[\\/:*?"<>|\u0000-\u001f]/g, '-').slice(0, 100) || 'study-notes'; }
 async function notebook() {
@@ -474,17 +561,15 @@ $('bookmark').addEventListener('click', () => {
 });
 $('bookmarks').addEventListener('change', event => { if (event.target.value) goPage(Number(event.target.value)); event.target.value = ''; });
 $('open-library').addEventListener('click', showLibrary); $('choose-document').addEventListener('click', showLibrary);
+window.addEventListener('atr:cloud-open-local', event => { void requestLocalPDF(event.detail).catch(() => toast(t('storageError'))); });
+window.addEventListener('atr:cloud-document-request', () => beginDocumentOpen());
+$('library-dialog').addEventListener('close', () => clearLocalPDFRequest(true));
 $('open-options').addEventListener('click', () => { finishStroke(); controls(); $('options-dialog').showModal(); });
 document.querySelectorAll('.close-dialog').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } }));
 $('import-pdf').addEventListener('click', () => $('pdf-input').click());
 $('pdf-input').addEventListener('change', async event => {
-  const file = event.target.files[0]; event.target.value = ''; if (!file) return;
-  if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') return toast(t('notPDF'));
-  if (file.size > 50 * 1024 * 1024) return toast(t('pdfLimit'));
-  explicitSelection = true;
-  closeDialogs(); const bytes = await file.arrayBuffer(); retry = () => openBytes(bytes.slice(0), { title: file.name.replace(/\.pdf$/i, '') });
-  $('original-link').hidden = true; await retry();
+  const file = event.target.files[0]; event.target.value = ''; await importPDFFile(file);
 });
 $('retry-open').addEventListener('click', () => retry ? retry() : showLibrary());
 $('export-backup').addEventListener('click', async () => {
@@ -499,8 +584,9 @@ $('backup-input').addEventListener('change', async event => {
   catch (error) { toast(t(error.message === 'FINGERPRINT_MISMATCH' ? 'fingerprintMismatch' : 'backupInvalid'), 9000); }
 });
 $('export-pdf').addEventListener('click', exportPDF);
+$('export-original').addEventListener('click', exportOriginalPDF);
 $('clear-page').addEventListener('click', () => {
-  if (!current || !canEditAllInk() || !state().length || !confirm(t('clearConfirm'))) return;
+  if (!current || !canEditAllInk() || !state().length || !confirm(t(permissions.notebookId ? 'clearSharedConfirm' : 'clearConfirm'))) return;
   finishStroke(); const before = clone(state()); before.forEach(s => retiredIds.add(s.id)); pages.set(pageNumber, []); historyEntry(before, []); markDirty(); drawInk(); closeDialogs();
 });
 $('persistent-storage').addEventListener('click', async () => { try { toast(t(await navigator.storage?.persist?.() ? 'persistentYes' : 'persistentNo'), 8000); } catch { toast(t('persistentNo')); } });
@@ -533,6 +619,7 @@ async function init() {
   if (!explicitSelection && !current && !busy) {
     if (id) await openPublished(id);
     else if (/^[a-f0-9]{64}$/.test(initialLocal || '')) await openStored(initialLocal);
+    else if (params.get('library') === '1') await showLibrary();
   }
   signal('atr:reader-ready', currentInfo());
 }

@@ -286,7 +286,16 @@ async function changes(request,env,current,notebookId,url) {
   if([...url.searchParams.keys()].some(k=>k!=='since')) throw new ApiError('invalid_fields');
   const since=Number(url.searchParams.get('since')||0);
   if(!Number.isSafeInteger(since)||since<0) throw new ApiError('invalid_revision');
-  const rows=await all(env,`SELECT revision,page,stroke_id,kind,data,author_id FROM study_changes WHERE notebook_id=? AND revision>? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?) ORDER BY revision LIMIT 101`,notebookId,since,notebookId,current.id);
+  // A new member may request the feed from revision zero. Do not expose the
+  // coordinates of ink erased before that request, even in old put events.
+  // Keep each revision as a delete event so existing offline clients still
+  // advance their cursors and discard stale copies of the erased stroke.
+  const rows=await all(env,`SELECT c.revision,c.page,c.stroke_id,c.author_id,
+      CASE WHEN s.deleted=0 THEN c.kind ELSE 'delete' END kind,
+      CASE WHEN s.deleted=0 THEN c.data ELSE NULL END data
+    FROM study_changes c LEFT JOIN study_strokes s ON s.notebook_id=c.notebook_id AND s.page=c.page AND s.id=c.stroke_id
+    WHERE c.notebook_id=? AND c.revision>? AND EXISTS(SELECT 1 FROM study_members WHERE notebook_id=? AND account_id=?)
+    ORDER BY c.revision LIMIT 101`,notebookId,since,notebookId,current.id);
   const more=rows.length>100,selected=rows.slice(0,100);
   const revision=selected.length?selected[selected.length-1].revision:row.revision;
   return json(request,env,{notebook:notebookView(row),changes:selected.map(r=>({revision:r.revision,type:r.kind,page:r.page,id:r.stroke_id,stroke:r.data?JSON.parse(r.data):null,authorId:r.author_id||null})),revision,more,notebookRevision:row.revision});

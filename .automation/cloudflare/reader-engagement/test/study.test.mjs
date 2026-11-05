@@ -372,3 +372,38 @@ test('a 100-operation sync uses bounded D1 calls and indexed JSON-key prefetch w
   const tombstone=await f.db.prepare("SELECT deleted FROM study_strokes WHERE notebook_id=? AND id='within-batch'").bind(n.id).first();assert.equal(tombstone.deleted,1);
   await counters(f,n.id);
 });
+
+test('delta feeds redact erased historical ink for newly invited readers while preserving live ink, pagination and offline erasures',async t=>{
+  const f=await fixture(t),owner=await f.register('Owner'),viewer=await f.register('New reader'),n=await create(f,owner),path=`notebooks/${n.id}`;
+  const additions=Array.from({length:99},(_,index)=>{
+    const operation=put(`erased-${index}`);operation.stroke.color='#abcdef';return operation;
+  });
+  const visible=put('still-visible');visible.stroke.color='#2468ab';additions.push(visible);
+  assert.equal((await f.request(path+'/operations',{method:'POST',cookie:owner.cookie,body:{operations:additions}})).status,200);
+  const offline=await (await f.request(path,{cookie:owner.cookie})).json();
+  assert.equal(offline.pages[0].strokes.length,100);
+  assert.equal((await f.request(path+'/operations',{method:'POST',cookie:owner.cookie,body:{operations:additions.slice(0,99).map(item=>erase(item.stroke.id))}})).status,200);
+  await share(f,owner,n,viewer,'viewer');
+  const current=await (await f.request(path,{cookie:viewer.cookie})).json();
+  assert.deepEqual(current.pages[0].strokes.map(item=>item.id),['still-visible']);
+  const first=await (await f.request(path+'/pages?since=0',{cookie:viewer.cookie})).json();
+  assert.equal(first.more,true);assert.equal(first.changes.length,100);
+  assert.equal(first.changes.filter(item=>item.type==='put').length,1);
+  assert.deepEqual(first.changes.find(item=>item.type==='put').stroke,visible.stroke);
+  for(const change of first.changes.filter(item=>item.id.startsWith('erased-'))){assert.equal(change.type,'delete');assert.equal(change.stroke,null);}
+  assert.equal(JSON.stringify(first).includes('#abcdef'),false,'Deleted geometry must not leak through old put payloads');
+  const second=await (await f.request(path+`/pages?since=${first.revision}`,{cookie:viewer.cookie})).json();
+  assert.equal(second.more,false);assert.equal(second.changes.length,99);
+  assert.ok(second.changes.every(item=>item.type==='delete'&&item.stroke===null));
+  assert.equal(second.revision,current.notebook.revision);
+  const end=await (await f.request(path+`/pages?since=${second.revision}`,{cookie:viewer.cookie})).json();assert.deepEqual(end.changes,[]);assert.equal(end.revision,second.revision);
+  const delta=await (await f.request(path+`/pages?since=${offline.notebook.revision}`,{cookie:owner.cookie})).json();
+  const {applyRemoteChanges}=await import('../../../lecture-reader/cloud-core.mjs');
+  const recovered=applyRemoteChanges(offline,delta,offline.notebook.revision);
+  assert.deepEqual(recovered.pages[0].strokes.map(item=>item.id),['still-visible']);
+  assert.equal(recovered.deleted.length,99,'A client that was offline still receives every erasure');
+  const source=await readFile(join(ROOT,'src/study.js'),'utf8'),section=source.slice(source.indexOf('async function changes('),source.indexOf('async function createInvite('));
+  const sql=section.match(/const rows=await all\(env,`([^`]+)`/)[1];
+  const plan=await f.db.prepare('EXPLAIN QUERY PLAN '+sql).bind(n.id,0,n.id,viewer.account.id).all();
+  assert.match(plan.results.map(row=>row.detail).join('\n'),/SEARCH s USING INDEX .*\(notebook_id=\? AND page=\? AND id=\?\)/);
+});

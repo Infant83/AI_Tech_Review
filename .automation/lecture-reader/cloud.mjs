@@ -20,6 +20,7 @@ let account = null, active = null, timer = null, running = false, needSync = fal
 let dialog, content, feedback, opener, busyUI = false, requestedId = new URL(location.href).searchParams.get('notebook');
 let lastStatus = '', dbPromise, selection = null, initialized = false, renderGeneration = 0, authGeneration = 0;
 let workingGeneration=0,activationGeneration=0;
+let notebookOpenGeneration=0;
 const idleWaiters=[];
 const button = document.getElementById('cloud-sync');
 const live = document.createElement('span'); live.className = 'cloud-live'; live.setAttribute('role','status');
@@ -74,7 +75,7 @@ function roleDescription(role){return {
 function roleSelect(selected='viewer',label=t('공유 권한','Sharing permission')){
   const select=el('select',undefined,'cloud-role-select');select.setAttribute('aria-label',label);
   for(const role of ['viewer','contributor','editor']){const option=el('option',roleLabel(role));option.value=role;select.append(option);}
-  select.value=selected;return select;
+  select.value=selected;select.disabled=busyUI;return select;
 }
 function setReaderRole(metadata,snapshot=null,pending=[]){
   if(!current()?.fingerprint||metadata.fingerprint!==current().fingerprint)return;
@@ -186,6 +187,7 @@ function status(kind,message) {
 function help(cause) {
   if (cause?.name === 'NotAllowedError' || cause?.name === 'AbortError') return t('패스키 확인을 취소했습니다. 다시 시도할 수 있습니다.','Passkey confirmation was cancelled. You can try again.');
   if (cause.status === 401) return t('다시 로그인해 주세요. 기기 필기는 보관되어 있습니다.','Sign in again. Your device notes are retained.');
+  if (cause.status === 410) return t('초대 링크가 만료되었거나 이미 사용되었습니다. 소유자에게 새 초대 링크를 요청해 주세요.','This invitation has expired or was already used. Ask the owner for a new invitation link.');
   if (cause.status === 403 || cause.status === 404) return t('이 노트에 접근할 수 없습니다. 기기 필기는 보관되어 있습니다.','This notebook is unavailable to your account. Device notes are retained.');
   if (cause.message === 'PASSKEY_UNAVAILABLE') return t('이 브라우저에서 패스키를 사용할 수 없습니다. Safari나 최신 브라우저에서 열어 주세요.','Passkeys are unavailable in this browser. Open Safari or another current browser.');
   if (cause.message === 'SYNC_STORAGE_UNAVAILABLE') return t('동기화 대기열을 저장할 수 없습니다. 기기 저장 상태를 확인해 주세요.','The sync queue could not be saved. Check this browser’s storage.');
@@ -199,14 +201,20 @@ function help(cause) {
 function feedbackText(message,isError=false) { if(feedback){feedback.textContent=message;feedback.classList.toggle('cloud-error',isError);} }
 function el(tag,text,className) {const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(className)node.className=className;return node;}
 function action(text,handler,className='cloud-action') {
-  const control=el('button',text,className);control.type='button';
+  const control=el('button',text,className);control.type='button';control.disabled=busyUI;
   control.addEventListener('click',()=>void runUI(handler));return control;
 }
 async function runUI(handler) {
   if(busyUI)return;busyUI=true;dialog?.setAttribute('aria-busy','true');
   const controls=[...dialog?.querySelectorAll('button,select') || []];controls.forEach(node=>node.disabled=true);feedbackText('');
   try {await handler();}catch(cause){feedbackText(help(cause),true);}
-  finally {busyUI=false;dialog?.removeAttribute('aria-busy');controls.forEach(node=>{if(node.isConnected)node.disabled=false;});}
+  finally {
+    busyUI=false;dialog?.removeAttribute('aria-busy');
+    // Rendering can replace the original controls while an async action runs.
+    // Cloud buttons/selects have no permanent disabled policy; unlock the
+    // currently displayed controls too, rather than only detached old nodes.
+    new Set([...controls,...dialog?.querySelectorAll('button,select') || []]).forEach(node=>{if(node.isConnected)node.disabled=false;});
+  }
 }
 function ensureDialog() {
   if(dialog)return;
@@ -247,16 +255,27 @@ async function render() {
   const accountRow=el('div',undefined,'cloud-account');accountRow.append(el('strong',account.displayName),action(t('로그아웃','Sign out'),logout,'cloud-text-button'));content.append(accountRow);
   if(inviteToken){
     const previewFor=inviteToken;
+    let previewFailure=null;
     if(invitePreview?.for!==previewFor){
-      const preview=await api(path+'/invites/preview',{method:'POST',body: { token: previewFor }});
-      if(inviteToken!==previewFor||generation!==renderGeneration||account?.id!==renderedAccount)return;
-      if(!preview.invitation||!['viewer','contributor','editor'].includes(preview.invitation.role)||typeof preview.invitation.title!=='string')throw error('INVALID_RESPONSE');
-      invitePreview={...preview.invitation,for:previewFor};
+      try{
+        const preview=await api(path+'/invites/preview',{method:'POST',body: { token: previewFor }});
+        if(inviteToken!==previewFor||generation!==renderGeneration||account?.id!==renderedAccount)return;
+        if(!preview.invitation||!['viewer','contributor','editor'].includes(preview.invitation.role)||typeof preview.invitation.title!=='string')throw error('INVALID_RESPONSE');
+        invitePreview={...preview.invitation,for:previewFor};
+      }catch(cause){
+        if(inviteToken!==previewFor||generation!==renderGeneration||account?.id!==renderedAccount)return;
+        previewFailure=cause;
+      }
     }
-    const invitation=el('section',undefined,'cloud-section');invitation.append(el('h3',t('공유 노트 초대','Notebook invitation')),
-      el('strong',invitePreview.title),el('p',roleLabel(invitePreview.role)+' · '+roleDescription(invitePreview.role)),
+    const invitation=el('section',undefined,'cloud-section');invitation.append(el('h3',t('공유 노트 초대','Notebook invitation')));
+    if(previewFailure){
+      const message=previewFailure.status===404?t('초대 링크를 찾을 수 없습니다. 소유자에게 새 초대 링크를 요청해 주세요.','This invitation could not be found. Ask the owner for a new invitation link.'):help(previewFailure);
+      const notice=el('p',message,'cloud-error');notice.setAttribute('role','alert');invitation.append(notice,
+        action(t('다시 확인','Try again'),render));
+    }else invitation.append(el('strong',invitePreview.title),el('p',roleLabel(invitePreview.role)+' · '+roleDescription(invitePreview.role)),
       el('p',t('이미 참여한 노트라면 현재 권한을 유지합니다. 권한 변경은 소유자가 설정합니다.','If you already belong to this notebook, your current permission stays unchanged. Its owner controls permission changes.'),'cloud-muted'),
-      action(t('초대 수락','Accept invitation'),acceptInvite,'cloud-action cloud-primary'));content.append(invitation);
+      action(t('초대 수락','Accept invitation'),acceptInvite,'cloud-action cloud-primary'));
+    invitation.append(action(t('초대 닫고 내 노트 보기','Dismiss invitation and view my notes'),dismissInvitation,'cloud-text-button'));content.append(invitation);
   }
   const document=current();
   if(document?.fingerprint){
@@ -305,6 +324,9 @@ async function logout(){
   }
   await api(path+'/logout',{method:'POST',body:{}});authGeneration++;account=null;
   lockReader();
+  // Anonymous writing remains available for documents without an account
+  // binding. Previously connected notebooks stay read-only after sign-out.
+  try{await restoreDisplayedPermissions();}catch{lockReader();}
   status('idle',t('로그아웃했습니다. 기기 필기는 유지됩니다.','Signed out. Device notes are retained.'));await render();
 }
 
@@ -325,14 +347,32 @@ function notebookURL(notebook){
   return url;
 }
 async function openNotebook(notebook){
+  if(current()?.busy||current()?.drawing)throw error('READER_BUSY');
+  const attempt=++notebookOpenGeneration,owner=account?.id;
   requestedId=notebook.id;selection=notebook;
-  if(current()?.fingerprint===notebook.fingerprint){await activate(notebook,{allowUpload:false,restorePosition:true});return;}
+  window.dispatchEvent(new CustomEvent('atr:cloud-document-request'));
+  if(current()?.fingerprint===notebook.fingerprint){await activate(notebook,{allowUpload:false,restorePosition:true});if(matches(active)&&active.state.notebookId===notebook.id&&dialog.open)dialog.close();return;}
   if(notebook.publicId){location.assign(notebookURL(notebook).href);return;}
-  feedbackText(t('‘PDF 열기’에서 같은 PDF를 선택하면 이 노트를 열 수 있습니다.','Choose the identical PDF with “Open PDF” to open this notebook.'));
+  const opened=await window.ATRNotebook?.openStored?.(notebook.fingerprint,{quietMissing:true});
+  // A newer PDF choice also cancels the pending notebook and its missing-file prompt.
+  if(attempt!==notebookOpenGeneration||selection!==notebook||account?.id!==owner)return;
+  if(opened){if(dialog.open)dialog.close();return;}
   if(dialog.open)dialog.close();
-  window.dispatchEvent(new CustomEvent('atr:cloud-open-local',{detail:{fingerprint:notebook.fingerprint}}));
-  status('pending',t('‘PDF 열기’에서 같은 PDF를 선택해 주세요. 파일은 업로드하지 않습니다.','Choose the identical PDF with “Open PDF”. The file is not uploaded.'));
+  window.dispatchEvent(new CustomEvent('atr:cloud-open-local',{detail:{fingerprint:notebook.fingerprint,title:notebook.title}}));
+  status('pending',t('보관함에서 같은 원본 PDF 파일을 선택해 주세요. 파일은 업로드하지 않습니다.','Choose the identical original PDF from the library. The file is not uploaded.'));
 }
+window.addEventListener('atr:document-selection',event=>{
+  notebookOpenGeneration++;
+  if(selection?.fingerprint&&selection.fingerprint===event.detail?.fingerprint)return;
+  selection=null;requestedId=null;
+  const clean=new URL(location.href);clean.searchParams.delete('notebook');
+  history.replaceState(history.state,'',clean.href);
+});
+window.addEventListener('atr:cloud-local-cancel',event=>{
+  if(selection?.fingerprint!==event.detail?.fingerprint)return;
+  notebookOpenGeneration++;selection=null;requestedId=null;
+  status(matches(active)?'synced':'idle',t('원본 PDF 선택을 취소했습니다. 보관된 필기는 유지됩니다.','Original PDF selection cancelled. Saved notes are retained.'));
+});
 async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
   if(!account)throw error('SIGN_IN_REQUIRED');
   const previousSession=active,attempt=++activationGeneration;
@@ -366,9 +406,11 @@ async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
   if(!Array.isArray(state.pending))throw error('INVALID_NOTEBOOK');
   state.pending=compactOperations([...state.pending,...plan.added]);state.localBase=plan.notebook;
   state.remote=snapshot;state.remoteCursor=snapshot.notebook.revision;
-  if(restrictPending(state,snapshot,plan.notebook)){
-    plan.notebook=mergeNotebook(snapshot,plan.notebook,state.pending);state.localBase=plan.notebook;
-  }
+  restrictPending(state,snapshot,plan.notebook);
+  // A cached working view may predate the snapshot just fetched. Reconcile it
+  // before advancing its remote cursor; an empty next delta cannot replay
+  // changes already included in that snapshot. Durable pending edits still win.
+  plan.notebook=mergeNotebook(snapshot,plan.notebook,state.pending);state.localBase=plan.notebook;
   await writeStore('states',state);
   const displayedNext={key:workingKey(notebook.fingerprint),stateKey:key,accountId:owner,notebookId:notebook.id,transition:true,attempt};
   // Persist the target before replacing the fingerprint-indexed reader view.
@@ -390,7 +432,7 @@ async function activate(notebook,{allowUpload=false,restorePosition=false}={}){
     throw error('READER_BUSY');
   }
   await writeStore('links',{...displayedNext,transition:false});
-  const session={accountId:owner,state,epoch:++epoch,restorePosition:restorePosition&&!state.lastSent,dirty:false,localGeneration:0};active=session;
+  const session={accountId:owner,state,epoch:++epoch,restorePosition,dirty:false,localGeneration:0};active=session;
   setReaderRole(state.metadata,state.remote,state.pending);
   await writeStore('links',{key:linkKey(owner,notebook.fingerprint),notebookId:notebook.id});
   selection=null;requestedId=null;status('syncing',t('클라우드 노트를 연결하는 중…','Connecting the cloud notebook…'));
@@ -526,6 +568,7 @@ async function refreshRemote(session){
 async function sharing(notebook){
   if(notebook.role!=='owner')return;ensureDialog();if(!dialog.open)dialog.showModal();content.replaceChildren();feedbackText('');
   content.append(el('h3',notebook.title));
+  content.append(el('p',t('초대 링크는 한 사람이 한 번 사용하며, 24시간 후 만료됩니다.','Each invitation link can be used once by one person and expires after 24 hours.'),'cloud-muted'));
   const field=el('label',t('공유 권한','Sharing permission'),'cloud-field'),permission=roleSelect();field.append(permission);content.append(field);
   const description=el('p',roleDescription(permission.value),'cloud-permission-note');content.append(description);
   permission.addEventListener('change',()=>{description.textContent=roleDescription(permission.value);content.querySelectorAll('.cloud-invite-link').forEach(node=>node.remove());});
@@ -562,6 +605,15 @@ async function sharing(notebook){
   }
   content.append(el('h3',t('구성원','Members')),list);
 }
+async function dismissInvitation(){
+  inviteToken=null;invitePreview=null;
+  const clean=new URL(location.href),fragment=new URLSearchParams(clean.hash.slice(1));fragment.delete('invite');clean.hash=fragment.toString();
+  history.replaceState(history.state,'',clean.href);
+  // An unavailable invitation must not hold the personal library or automatic
+  // notebook resume hostage to the same failed request.
+  try{await render();}catch(cause){feedbackText(help(cause),true);}
+  try{await resume();}catch(cause){status('error',help(cause));}
+}
 async function acceptInvite(){
   if(!account||!inviteToken)return;
   const acceptedInvitation=inviteToken;
@@ -573,13 +625,19 @@ async function acceptInvite(){
 async function resume(){
   if(!account||inviteToken)return;
   const document=current();if(!document?.fingerprint)return;
+  const attempt=notebookOpenGeneration,owner=account.id;
+  const stillRequested=()=>attempt===notebookOpenGeneration&&account?.id===owner&&current()?.fingerprint===document.fingerprint;
   if(requestedId&&idPattern.test(requestedId)){
-    const result=await api(path+'/notebooks/'+encodeURIComponent(requestedId));await openNotebook(safeMetadata(result.notebook));return;
+    const target=requestedId,result=await api(path+'/notebooks/'+encodeURIComponent(target));
+    if(!stillRequested()||requestedId!==target)return;
+    await openNotebook(safeMetadata(result.notebook));return;
   }
   if(selection){await openNotebook(selection);return;}
   const link=await readStore('links',linkKey(account.id,document.fingerprint));
+  if(!stillRequested())return;
   if(link&&idPattern.test(link.notebookId)){
     const state=await readStore('states',stateKey(account.id,link.notebookId));
+    if(!stillRequested())return;
     if(state?.metadata)await activate(safeMetadata(state.metadata),{allowUpload:false,restorePosition:false});
   }
 }

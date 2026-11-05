@@ -1,18 +1,18 @@
 {
-  "date": "2026-11-04",
-  "scope": "Shared lecture PDF study reader; explicit private passkey accounts and owner/editor notebooks",
+  "date": "2026-11-05",
+  "scope": "Shared lecture PDF study reader, passkey accounts, differentiated sharing permissions and verified resume flows",
   "unit_and_regression_checks": {
-    "reader_and_cloud_node_tests": 57,
+    "reader_and_cloud_node_tests": 91,
     "archive_python_tests": 33,
     "reader_publication_python_tests": 31,
     "publication_privacy_python_tests": 8,
-    "backend_tests": 45
+    "backend_tests": 46
   },
   "public_build": {
     "status": "passed",
-    "archive_documents": 106,
-    "prior_archive_entries_unchanged": 105,
-    "validated_files": 1909,
+    "archive_documents": 107,
+    "prior_archive_entries_unchanged": 107,
+    "validated_files": 1910,
     "catalog_articles": 58,
     "exact_vendor_assets": 203
   },
@@ -37,10 +37,9 @@
   },
   "backend_deployment": {
     "api": "https://api.infant83.io",
-    "version": "383eed79-3296-4ba3-835a-2c8042467f5f",
-    "migration": "0004_study_notebooks.sql",
-    "existing_push_config_and_origin_rejection": "passed",
-    "next_migration": "0005_study_permissions.sql"
+    "version": "c23c3f12-29bb-4688-9c21-41ae0e567fd9",
+    "migration": "0005_study_permissions.sql",
+    "existing_push_config_and_origin_rejection": "passed"
   },
   "privacy": {
     "pdf_bytes_uploaded": false,
@@ -87,7 +86,7 @@
     "noPDFBytesUploaded": true,
     "pages": 2
   },
-  "publication_status": "permission sources verified; live deployment verification retained separately",
+  "publication_status": "UX repair sources and public artifact verified; live deployment verification retained separately",
   "sharing_permissions": {
     "roles": [
       "viewer",
@@ -114,5 +113,19 @@
     "live_billing_plan_confirmed": false,
     "max_100_operations_uses_bounded_binding_calls": true,
     "key_prefetch_query_plan": "indexed composite key lookup; no notebook scan"
+  },
+  "ux_audit": {
+    "report": "ux-audit.json",
+    "date": "2026-11-05",
+    "reopening_latest_snapshot": true,
+    "private_original_selection_and_mismatch": true,
+    "document_selection_races": true,
+    "local_writing_after_signout": true,
+    "expired_invitation_recovery": true,
+    "phone_export_discoverability": true,
+    "original_bytes_preserved": true,
+    "deleted_ink_payloads_redacted": true,
+    "classroom_and_member_publication_gaps_explicit": true,
+    "production_test_accounts_created": 0
   }
 }

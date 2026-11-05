@@ -32,6 +32,72 @@ function baseContext(extra={}){
   return vm.createContext(context);
 }
 
+function cachedActivation({remoteIds=['base','peer-new'],localIds=['base'],pending=[],lastPage=1}={}){
+  let view=notebook(...localIds),mutationRevision=0,lastStatus;
+  const metadata={id:'book',role:'owner',...doc,revision:2};
+  const remote={notebook:metadata,pages:notebook(...remoteIds).pages,deleted:remoteIds.includes('base')?[]:[{page:1,id:'base'}],position:{page:2},bookmarks:[2]};
+  const state={key:'owner:book',accountId:'owner',notebookId:'book',fingerprint:doc.fingerprint,
+    metadata:{...metadata,revision:1},localBase:structuredClone(view),pending:structuredClone(pending),lastSent:{position:{page:lastPage},bookmarks:[]}};
+  const marker={key:'working:'+doc.fingerprint,stateKey:state.key,accountId:'owner',notebookId:'book',transition:false};
+  const stored=new Map([['states:'+state.key,state],['links:'+marker.key,marker]]),changes=[];
+  const context=baseContext({current:()=>({...doc,drawing:false,busy:false,mutationRevision}),exported:async()=>structuredClone(view),
+    readStore:async(store,key)=>structuredClone(stored.get(store+':'+key)||null),
+    writeStore:async(store,value,remove=false)=>{if(remove)stored.delete(store+':'+value.key);else stored.set(store+':'+value.key,structuredClone(value));},
+    stopSession:async()=>{context.active=null;context.epoch++;},preserveDisplayed:async()=>{},
+    applyWorking:async value=>{view=structuredClone(value);mutationRevision++;},status:kind=>{lastStatus=kind;},
+    api:async(url,options={})=>{
+      if(options.method==='POST'){
+        for(const operation of options.body.operations){
+          const id=operation.type==='put'?operation.stroke.id:operation.id;
+          if(operation.type==='put'){
+            let page=remote.pages.find(page=>page.number===operation.page);
+            if(!page){page={number:operation.page,strokes:[]};remote.pages.push(page);}
+            page.strokes.push(structuredClone(operation.stroke));
+          }else{
+            for(const page of remote.pages)if(page.number===operation.page)page.strokes=page.strokes.filter(stroke=>stroke.id!==id);
+            remote.deleted.push({page:operation.page,id});
+          }
+          changes.push({revision:++metadata.revision,type:operation.type,page:operation.page,id,stroke:operation.stroke||null});
+        }
+        if(options.body.position)remote.position=structuredClone(options.body.position);
+        if(options.body.bookmarks)remote.bookmarks=structuredClone(options.body.bookmarks);
+        return{ok:true};
+      }
+      if(url.includes('/pages?'))return{notebook:structuredClone(metadata),changes:structuredClone(changes.filter(change=>change.revision>Number(url.split('since=')[1]))),revision:metadata.revision,notebookRevision:metadata.revision,more:false};
+      return structuredClone(remote);
+    }});
+  context.saveState=async session=>context.writeStore('states',session.state);
+  vm.runInContext(tokenFunctions+activation+captureAndSync+section('async function refreshRemote(','async function sharing('),context);
+  context.target=metadata;
+  return{context,view:()=>view,remote:()=>remote,status:()=>lastStatus};
+}
+
+test('cached reopening merges peer additions and erasures before advancing the snapshot cursor',async()=>{
+  for(const remoteIds of [['base','peer-new'],[]]){
+    const run=cachedActivation({remoteIds});
+    await vm.runInContext('activate(target)',run.context);await vm.runInContext('syncNow()',run.context);
+    assert.deepEqual(ids(run.view()),remoteIds);
+    assert.equal(run.view().position.page,1,'Automatic resume retains local progress');
+    assert.equal(run.context.active.state.remoteCursor,2);assert.equal(run.status(),'synced');
+  }
+});
+
+test('explicit reopening restores remote progress even when this device already sent an earlier position',async()=>{
+  const run=cachedActivation();await vm.runInContext('activate(target,{restorePosition:true})',run.context);
+  assert.deepEqual(ids(run.view()),['base','peer-new']);assert.equal(run.view().position.page,2);
+  assert.deepEqual(run.view().bookmarks,[2]);assert.equal(run.context.active.state.lastSent.position.page,2);
+});
+
+test('cached reopening preserves pending offline ink and progress while incorporating the latest remote snapshot',async()=>{
+  const run=cachedActivation({localIds:['base','offline-new'],pending:[{type:'put',page:1,stroke:stroke('offline-new')}],lastPage:2});
+  await vm.runInContext('activate(target)',run.context);
+  assert.deepEqual(ids(run.view()),['base','offline-new','peer-new']);
+  assert.deepEqual(ids(remoteNotebookForTest(run.remote())),['base','offline-new','peer-new']);
+  assert.equal(run.view().position.page,1);assert.equal(run.remote().position.page,1);
+  assert.equal(run.context.active.state.pending.length,0);assert.equal(run.status(),'synced');
+});
+function remoteNotebookForTest(snapshot){return core.remoteNotebook(snapshot).notebook;}
+
 for(const dispatchSaved of [true,false])test(`incoming apply preserves a stroke completed during IDB save (${dispatchSaved?'save event':'not yet flushed'})`,async()=>{
   let view=notebook('base'),revision=0,applies=0;
   const reached=deferred(),release=deferred();let delay=true;
