@@ -1,0 +1,1026 @@
+{
+  "review": "2026-11-04_quantum-gates-phase-and-interaction",
+  "evidence_cutoff": "2026-11-05",
+  "cover": {
+    "title_ko": "양자 회로를 읽는 물리학",
+    "title_en": "The Physics Behind Quantum Circuits",
+    "method": "Built-in image_gen; original conceptual illustration; final PNG encoded as RGB WebP without crop or pixel retouch",
+    "file": "hero.webp",
+    "versioned_file": "hero-v1.webp",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "sha256": "163755573a5ba9aef49af8e0a6b2450b01be145d6f8c652eedeba031101d93dc",
+    "prompt_file": "artifacts/hero-prompt.txt",
+    "caption": {
+      "ko": "어긋난 두 파동형 종이 띠가 한 굽이에서 만나 밝은 마루와 깊은 골로 펼쳐진다. 상대위상의 차이가 후속 간섭에서 결과에 영향을 주는 관계를 비유한 AI 생성 개념 일러스트.",
+      "en": "Two offset wave-like paper ribbons meet at a bend and open into bright ridges and deep troughs. An AI-generated conceptual metaphor for relative phase shaping the outcomes of subsequent interference."
+    },
+    "alt": {
+      "ko": "어긋난 두 파동형 종이 띠가 한 굽이에서 만나 밝은 마루와 깊은 골로 펼쳐지는 개념 장면.",
+      "en": "Two offset wave-like paper ribbons meet at a bend and open into bright ridges and deep troughs."
+    },
+    "scientific_identity": "Conceptual paper-relief metaphor for relative phase and subsequent interference; exact quantum operations and probabilities are provided by deterministic article figures",
+    "qa": {
+      "full_image": "visually inspected",
+      "thumbnail_and_grayscale": "visually inspected; both inputs, meeting point and fan retained",
+      "image_metadata": "no EXIF/GPS/XMP in final WebP"
+    },
+    "prompt": "Use case: stylized-concept.\nAsset type: original 16:9 cover illustration for an accessible physics article about quantum circuit rotations, relative phase, two-qubit interactions, and interference turning phase information into outcome probabilities.\n\nCreate a beautifully resolved, tactile editorial artwork, with the compositional restraint of an art print and the spatial depth of a small sculptural paper relief. No words, equations, diagrams, labels, logos or circuit symbols.\n\nOne clear event: two equal-width, softly luminous ivory paper wave-ribbons enter from separate gentle bends in the left half and join at one broad elegant bend near the center-right. Each ribbon carries a restrained regular succession of shallow crests, as though a thin sheet has been pressed into a smooth sinusoidal corrugation. The two rhythms are visibly offset relative to one another before they meet. At their meeting, the flowing paper relief opens into one striking fan of alternating bright sculpted ridges and deep quiet indigo troughs. Let the contact/join itself be legible, so the eye follows two rhythms into the new shared pattern. These are conceptual wave forms, not a machine or actual quantum apparatus. Do not add sharp spikes, twisting DNA helices, checkerboards, extraneous ribbons or scattered particles.\n\nStrong silhouette: a single spacious S-shaped ivory sculptural flow crossing the landscape diagonally, with two distinctly separated feeder paths and one shared emerging fan. Keep the image composition asymmetric and poised; leave the upper-left quarter and far-right edge as meaningful quiet negative space. Main focus is where the rhythms meet, not a row of equally important objects. Broad continuous shapes should read at small thumbnail size. Fine ripples remain subordinate.\n\nMedium: hand-shaped cotton paper relief with matte chalk and gouache, subtle fibrous torn edges, softly painted shadow gradients, modest translucent edges. Color: pale warm ivory with a whisper of soft apricot inside the folds, against a deep muted ultramarine/ink-blue ground. Color and sculptural depth should feel intentional and calm. The ridges catch soft grazing light; troughs retain depth. Avoid glossy plastic, chrome, neon, lens flares, cosmic backgrounds, generic sci-fi beams and infographic aesthetics. No text anywhere. High artistic finish, exquisite edge control, generous breathing room, genuinely coherent materials and lighting. Wide 16:9 landscape.\n"
+  },
+  "figures": [
+    {
+      "file": "artifacts/phase_readout_ko.svg",
+      "language": "ko",
+      "layout": "desktop",
+      "meaning": "H–Rz–H single-qubit relative phase and Z readout at phi=pi",
+      "source_sha256": "e459d9ff0670d06617fa1fb250dbaf5b090b95b100ded9d2b60cea05332de620",
+      "public_sha256": "802804557bb88592e816d51a6d9a5c426e9b7f22278a90536244816b2c25253f",
+      "public_file": "dist/phase_readout_ko.svg"
+    },
+    {
+      "file": "artifacts/phase_readout_mobile_ko.svg",
+      "language": "ko",
+      "layout": "mobile",
+      "meaning": "H–Rz–H single-qubit relative phase and Z readout at phi=pi",
+      "source_sha256": "72e4d6c07e6310c97130e1c8c542a9c6bb1cd0fe7e5e1df26c5da3edb9fffcde",
+      "public_sha256": "a6eab30324cecc01dde161dc416d85f44e97bfed0d8e9d4155ff4589c89c8cd2",
+      "public_file": "dist/phase_readout_mobile_ko.svg"
+    },
+    {
+      "file": "artifacts/phase_readout_en.svg",
+      "language": "en",
+      "layout": "desktop",
+      "meaning": "H–Rz–H single-qubit relative phase and Z readout at phi=pi",
+      "source_sha256": "940103b43b159ac8ceb3f0f9036dd902ecfdd66727aca01722b58518681045ad",
+      "public_sha256": "f937aee7e8bae23300fae43af8d528bc80b94d05b64f9fce272361188ded25b8",
+      "public_file": "dist/en/phase_readout_en.svg"
+    },
+    {
+      "file": "artifacts/phase_readout_mobile_en.svg",
+      "language": "en",
+      "layout": "mobile",
+      "meaning": "H–Rz–H single-qubit relative phase and Z readout at phi=pi",
+      "source_sha256": "d8cde8f2b216022521ddde992cd2375cc26b5af0edbd66e642e435ff931ca73b",
+      "public_sha256": "1f3c25ccd111561c3ecc151d86d2e5b0ecf1e26d7ac6b3135b9d8e8edfd3579e",
+      "public_file": "dist/en/phase_readout_mobile_en.svg"
+    },
+    {
+      "file": "artifacts/parity_interaction_ko.svg",
+      "language": "ko",
+      "layout": "desktop",
+      "meaning": "Coherent parity computation and uncomputation, a control and b target",
+      "source_sha256": "3922461e9bdfa0779636e488a549e8c0bf5ca438b705714014b096711c0fdcde",
+      "public_sha256": "3d5ced8ffad363e4f286ea1393cefc13e013219d9d9438b92677f1ec3769e6df",
+      "public_file": "dist/parity_interaction_ko.svg"
+    },
+    {
+      "file": "artifacts/parity_interaction_mobile_ko.svg",
+      "language": "ko",
+      "layout": "mobile",
+      "meaning": "Coherent parity computation and uncomputation, a control and b target",
+      "source_sha256": "f520ab5ae61ae29573159d2d43f39f7fc401a3585d4ff7491bcdf334343468ff",
+      "public_sha256": "8c92f4da9199e445307d03b48ec5a00e91cca0bf0fe076b33778ab114e7916bc",
+      "public_file": "dist/parity_interaction_mobile_ko.svg"
+    },
+    {
+      "file": "artifacts/parity_interaction_en.svg",
+      "language": "en",
+      "layout": "desktop",
+      "meaning": "Coherent parity computation and uncomputation, a control and b target",
+      "source_sha256": "d78d92043506526cb81560464a975d565f5a83c77c89ccb8807750f3c77d2c29",
+      "public_sha256": "2ddbba73f159cba22f4bc5ab3e74e9631b282f36e03cf4af6c6c264239e4165d",
+      "public_file": "dist/en/parity_interaction_en.svg"
+    },
+    {
+      "file": "artifacts/parity_interaction_mobile_en.svg",
+      "language": "en",
+      "layout": "mobile",
+      "meaning": "Coherent parity computation and uncomputation, a control and b target",
+      "source_sha256": "0385fd940a41fbf9f191fe82ee39aa8467fe4b1de89726a3453f89530c2738a1",
+      "public_sha256": "d79b51ed3af3644b7b2efd4b55a74f4206e5f294a5497775d308ae5b9de407b9",
+      "public_file": "dist/en/parity_interaction_mobile_en.svg"
+    },
+    {
+      "file": "artifacts/problem_to_probability_ko.svg",
+      "language": "ko",
+      "layout": "desktop",
+      "meaning": "Single-edge MaxCut from uniform amplitudes through cost phases to X mixing at gamma=pi/2, beta=pi/8",
+      "source_sha256": "e36d3d0b5a59d1244773061d924811f1b8910411a583c044f2a2e2312a240348",
+      "public_sha256": "4aaff4911ef2780bbb0b697a39963a0b4d466f6f4853a2ded41db534db50bec8",
+      "public_file": "dist/problem_to_probability_ko.svg"
+    },
+    {
+      "file": "artifacts/problem_to_probability_mobile_ko.svg",
+      "language": "ko",
+      "layout": "mobile",
+      "meaning": "Single-edge MaxCut from uniform amplitudes through cost phases to X mixing at gamma=pi/2, beta=pi/8",
+      "source_sha256": "28430d3674339271ac8e3f18bde826af95332c8e630779d36bb0b7480b96238e",
+      "public_sha256": "125282b63b6346653eb20bbf1a3bf273b7382537669bb14a473ff9de98dc2cca",
+      "public_file": "dist/problem_to_probability_mobile_ko.svg"
+    },
+    {
+      "file": "artifacts/problem_to_probability_en.svg",
+      "language": "en",
+      "layout": "desktop",
+      "meaning": "Single-edge MaxCut from uniform amplitudes through cost phases to X mixing at gamma=pi/2, beta=pi/8",
+      "source_sha256": "1906b39e13c579987d2152a289103c7a3e70d7db495a636bdecadd59a1f953b1",
+      "public_sha256": "08c886db255ab63b1be6fb655b4430c7671164f9993029f2ceb8eac941139872",
+      "public_file": "dist/en/problem_to_probability_en.svg"
+    },
+    {
+      "file": "artifacts/problem_to_probability_mobile_en.svg",
+      "language": "en",
+      "layout": "mobile",
+      "meaning": "Single-edge MaxCut from uniform amplitudes through cost phases to X mixing at gamma=pi/2, beta=pi/8",
+      "source_sha256": "232f5739e9a8565485cc3ae2f8cbaa4ae57ae65c8c630e0a18eb14e890ba4638",
+      "public_sha256": "014ee4e37d3c68aa6ada92b0280ce738d68dbba88399797595ce98d9c9a39271",
+      "public_file": "dist/en/problem_to_probability_mobile_en.svg"
+    }
+  ],
+  "calculation": {
+    "method": "Review ideal-statevector educational calculation",
+    "python_code": "artifacts/check_examples.py",
+    "python_code_sha256": "ef9b28fd1a20ce5062506a72a4d34fbf2a9f4f171bb03664f56cdfcff9fe58de",
+    "python_results": "artifacts/example-checks.json",
+    "python_results_sha256": "16ce642e632e8676c0b72465d9681d37f389aeb843f1d3d68fd8d2f18b63f37a",
+    "numpy_version": "2.0.2",
+    "widget": "artifacts/phase-widget.js",
+    "widget_sha256": "7997348719375101b0fe760d5d4621b1bbb793e751f4fcfb64ed77585ae1de80",
+    "independent_comparison": "86 angle/graph settings, all three stages; maximum absolute discrepancy below 4.3e-15"
+  },
+  "figure_generation": {
+    "code": "artifacts/build_figures.py",
+    "sha256": "259833d37a0e695a8602db74ede68dd0bc67b1b9e4908b786ebb4a1cb4713abb",
+    "data": "artifacts/figure-calculations.json",
+    "data_sha256": "9e3394eeb581b6560f9964e32a77db4e71b441bf30157b203dc7b74b4784c205"
+  },
+  "outputs": {
+    "ko": {
+      "manuscript_sha256": "1de859770a2aa241ab282c8a5be74bccde4bfe3e088f27ca5beb2da9deff7179",
+      "allowed_files": [
+        {
+          "file": "dist/hero.webp",
+          "sha256": "163755573a5ba9aef49af8e0a6b2450b01be145d6f8c652eedeba031101d93dc",
+          "bytes": 451684
+        },
+        {
+          "file": "dist/index.html",
+          "sha256": "342f885fd92aedf36ec04bb3d715b2499dba6aa0912fdd12b1079446ce0792a4",
+          "bytes": 44439
+        },
+        {
+          "file": "dist/math_04df20610c1ad2.svg",
+          "sha256": "1d08447ac4ea137ee7a2b68b08c80fb030e4e12e370170ef3c0bb4dca5386228",
+          "bytes": 4329
+        },
+        {
+          "file": "dist/math_09543b7fc6c07e.svg",
+          "sha256": "39736f9f531bd8f122ec34b9c830b918f2289c1ea0c8c48a83bf5a14bd83c044",
+          "bytes": 882
+        },
+        {
+          "file": "dist/math_0b64aebfbb6adf.svg",
+          "sha256": "483403232d452e13bc862cd562d36e038612aa5639167dcf7e1defa64df841dc",
+          "bytes": 4319
+        },
+        {
+          "file": "dist/math_0d8aa5d1624325.svg",
+          "sha256": "4d20d618ffa9cde6206500fa0d6292600318a38727e800feb0ccd0c92f32cfbb",
+          "bytes": 15822
+        },
+        {
+          "file": "dist/math_10e36d9b3f5400.svg",
+          "sha256": "a578843bd338427568a8dd11fdcade67d495303a74db4448f877f7e5789df4e0",
+          "bytes": 2170
+        },
+        {
+          "file": "dist/math_13bc3652928d2f.svg",
+          "sha256": "6dfd1c8e7f6fa77e1a75152ab2106c71083045528f18ae3e37d15f06ce5f8971",
+          "bytes": 6726
+        },
+        {
+          "file": "dist/math_17c0b9f56f0d5b.svg",
+          "sha256": "b0e0a22e5ae12bba38d01edb72b437974a1759f1b19c12d85fc1e6a97bcbfa50",
+          "bytes": 9859
+        },
+        {
+          "file": "dist/math_1a3501616587a0.svg",
+          "sha256": "dfce11239c24324626393539673134931085663a4ae1c6e934293faddf70dafc",
+          "bytes": 12241
+        },
+        {
+          "file": "dist/math_1ca56d68eceebc.svg",
+          "sha256": "afded2b073c3f7bb8d22d75cb76a749bb3fe809e30dbf0c75c5ab0b6d3026176",
+          "bytes": 4822
+        },
+        {
+          "file": "dist/math_1e1b22c0734c25.svg",
+          "sha256": "e674e03265b5bd38fd42324e58e8c9d87a4be9e339b82881515f2f89375159e3",
+          "bytes": 3823
+        },
+        {
+          "file": "dist/math_201d5aca3b1b0b.svg",
+          "sha256": "d2c6ae40fa06ed315afc0a9bfb5bbb6eb1d3b1ac58d42d49f831b714bd732b0c",
+          "bytes": 4279
+        },
+        {
+          "file": "dist/math_25a61c59cd3b2c.svg",
+          "sha256": "ac57c26b4faaf0c30b6aab7925d882e68457c4296f7eb724d8430910f971de5e",
+          "bytes": 15369
+        },
+        {
+          "file": "dist/math_2855fd131d4f0e.svg",
+          "sha256": "04a3af98e39e5168683b5d82e4c5c76d673b72869a107b7d9246fea335a7eac3",
+          "bytes": 1997
+        },
+        {
+          "file": "dist/math_2dbfd30971624c.svg",
+          "sha256": "7e56467eea461303333cf1a56fc3b138b6d7b04faaa379baae0bc393bf72a982",
+          "bytes": 1357
+        },
+        {
+          "file": "dist/math_35f0e357e9ee36.svg",
+          "sha256": "08bf07868cca139bb6583cce89da12d985c4b4d4e83837caf075b2f9c5036a36",
+          "bytes": 8202
+        },
+        {
+          "file": "dist/math_3649821e5a50ad.svg",
+          "sha256": "368839370546075c360a9b08e391b5ded2b5646c2fb5ad5aab6a17df497d8afa",
+          "bytes": 1773
+        },
+        {
+          "file": "dist/math_38e7896d162ea5.svg",
+          "sha256": "3b6d15f57ea758dbfd94c671cffa07a7f87190d09566d0eb9a9f143055fe6107",
+          "bytes": 5651
+        },
+        {
+          "file": "dist/math_3b77a24b9b5dc5.svg",
+          "sha256": "5a2fb50b8b51c147891e36f6349fc56daa008ef7cdaac64c630fe96783592865",
+          "bytes": 2134
+        },
+        {
+          "file": "dist/math_46faa2754eeadf.svg",
+          "sha256": "06868e98faa2db353c80ff82499342ab4a6253041946fdcf1e8321ae987a9a81",
+          "bytes": 8559
+        },
+        {
+          "file": "dist/math_587b01fe62d17a.svg",
+          "sha256": "483cbaefb32e33ae356fc1f835278ac3e638455c5749e0c86d622b99de7ed269",
+          "bytes": 2477
+        },
+        {
+          "file": "dist/math_599b3df94c7282.svg",
+          "sha256": "4fdf9d1097a91ae80ae5fb7475977cc4f4fb58a0bdad78cb0e24e1575a6a00c2",
+          "bytes": 5365
+        },
+        {
+          "file": "dist/math_5ecda9873e43dc.svg",
+          "sha256": "753d11879eed196f3e24a31a90b9b7a9878d880441676464e015b92ebc28c1cf",
+          "bytes": 3382
+        },
+        {
+          "file": "dist/math_67b5f748c18777.svg",
+          "sha256": "58e4d48977f83858464baaa7d9cffd0f28a2f33491a8581328809a8c02720b72",
+          "bytes": 2491
+        },
+        {
+          "file": "dist/math_6bd5fd61ff6323.svg",
+          "sha256": "be4d2db0957b9a646c52d4ed91604d7699abe614629d8587d653b250e3b0fab4",
+          "bytes": 6401
+        },
+        {
+          "file": "dist/math_6eb62f16b50372.svg",
+          "sha256": "7013f63ac66c830723ffc86cf7dc15228f4f22c55f106435239ea0d6679d4a3b",
+          "bytes": 2839
+        },
+        {
+          "file": "dist/math_70d56cfcf3ef16.svg",
+          "sha256": "c707d8c81246b0340c8841748aaa6b25a3fe8a9e3e650a2124be48228ca4a56b",
+          "bytes": 3619
+        },
+        {
+          "file": "dist/math_7991a88e27095e.svg",
+          "sha256": "74318faa6f698d2df14a4c2af1621fac06fd5b01d53574a4c0602d30f8fc03a7",
+          "bytes": 2489
+        },
+        {
+          "file": "dist/math_7d38c82d984061.svg",
+          "sha256": "5aacef0b98fb23e40cb96fb22fd0f8f9b5283d003c5b09f8e2b65b3938006547",
+          "bytes": 910
+        },
+        {
+          "file": "dist/math_7df776cf4b685c.svg",
+          "sha256": "3efc1da5eae1e7a59390eed27999fdc96e4d8a752a8c077e1f4defba8f73343f",
+          "bytes": 4768
+        },
+        {
+          "file": "dist/math_820530c82673a0.svg",
+          "sha256": "b67ceb9748ce335d2c8c8af5227d58286ab0b083d396b5d2caedee36d443fa03",
+          "bytes": 5417
+        },
+        {
+          "file": "dist/math_86beb1cf9f3bdc.svg",
+          "sha256": "3520f690a095d0239527209f4c941326daddf8eb138ec1ade6c2e2600e761c26",
+          "bytes": 10869
+        },
+        {
+          "file": "dist/math_8b9dd8aea61677.svg",
+          "sha256": "1161e8df29568a10cc8bde5fcdcfc74ce5d991a7f098b789c445bdd34fe9abe8",
+          "bytes": 3186
+        },
+        {
+          "file": "dist/math_90aaf09217d413.svg",
+          "sha256": "3f7d32ea090b03fbeaeb66c09042277fc319f5925238f214c110882ffb0f831f",
+          "bytes": 6747
+        },
+        {
+          "file": "dist/math_94001b306cae42.svg",
+          "sha256": "ff3c5260d4d24952768572472b7eb6c5f63985f951c755b0f0d8f20e55724610",
+          "bytes": 3152
+        },
+        {
+          "file": "dist/math_9ba3656f999d94.svg",
+          "sha256": "c2185162939e8df94d113fddaeb09131eef1b8086cb80b547b19083cde5f199f",
+          "bytes": 837
+        },
+        {
+          "file": "dist/math_a0c067a99b937e.svg",
+          "sha256": "2117d2cef60b717b11392f926bb1adc154b23d49c360839fa46cacc00145c96c",
+          "bytes": 3220
+        },
+        {
+          "file": "dist/math_a3d8c44d455058.svg",
+          "sha256": "3beecf086761431ffbe461662a5a97fc8020a5ec32b5da00c5f573f51e6d0e80",
+          "bytes": 1180
+        },
+        {
+          "file": "dist/math_a93178df3bf9a4.svg",
+          "sha256": "647e84d3c38bc4408ef3a94fe6d820678652f2a5703d841c73d83ef9a9106d0c",
+          "bytes": 3717
+        },
+        {
+          "file": "dist/math_ac03eb07e56098.svg",
+          "sha256": "bbdb95b9d878fb508c54d4950c5dcd92b7f81508662733aabbaede10c5ab7138",
+          "bytes": 7012
+        },
+        {
+          "file": "dist/math_ad5aaeafda8c4d.svg",
+          "sha256": "25a5a13e183051630132ee6e7a0a126e54e2eea53da97b0f0bf5227519a916b3",
+          "bytes": 1402
+        },
+        {
+          "file": "dist/math_ad8694275f4b41.svg",
+          "sha256": "8015cf602c7010672741d43e8f1be0926d6a3c033303b08fb2294011bf2d84a1",
+          "bytes": 3710
+        },
+        {
+          "file": "dist/math_b18acacc8f426b.svg",
+          "sha256": "8b0f06b9be449b8b21527232dd18ca111b9c8d8168112fac6ffb549ca5d7bb77",
+          "bytes": 1819
+        },
+        {
+          "file": "dist/math_b203148b333faa.svg",
+          "sha256": "ad8ed60a5086c211c575fe430febdb45be17301a5bffb6ea7348c2a07b6710ad",
+          "bytes": 963
+        },
+        {
+          "file": "dist/math_b736817d8b156a.svg",
+          "sha256": "5cad02e0a5cce2daa2af65e7f437bc4940c957d81e66fdfbc67fd7e048f5dfb5",
+          "bytes": 11320
+        },
+        {
+          "file": "dist/math_bb492fe1157667.svg",
+          "sha256": "dfeb692e961465617de0279a5d3706bf47b01895d7cb5359ac753a798744cc46",
+          "bytes": 10324
+        },
+        {
+          "file": "dist/math_bcbeef854f8a0e.svg",
+          "sha256": "4cb447139fa9479faa64f4e271c481ee519957a7e77ab626a613ef1308ccea9c",
+          "bytes": 2793
+        },
+        {
+          "file": "dist/math_c2ef2471e546da.svg",
+          "sha256": "60400918295902340cfbec0ac5ac85b44bed7ab6c8a35005ffceecfc4e95d8d2",
+          "bytes": 3882
+        },
+        {
+          "file": "dist/math_c324167692243d.svg",
+          "sha256": "ef18631a136b349b6b0d2baf5abad481d8f37ecf78e29d4e599e8ea55d6cbc82",
+          "bytes": 8661
+        },
+        {
+          "file": "dist/math_c4d507bcd31c62.svg",
+          "sha256": "a48f37bb60bc311ee0cc6c89a6a2ed25b5afd24f9066e83efad0c6d28b45c983",
+          "bytes": 7867
+        },
+        {
+          "file": "dist/math_c703ea3ca8f376.svg",
+          "sha256": "15c49d7de53bb10b6e3aa9f4fa4a9d87156fff7687e4f376ab869806a21896f1",
+          "bytes": 4837
+        },
+        {
+          "file": "dist/math_c866590208e79b.svg",
+          "sha256": "458d4765371cdcdb3ee1e2403bf437498feeb90973eeb3262f74c9a8d602b279",
+          "bytes": 3909
+        },
+        {
+          "file": "dist/math_cb44f733dd43b3.svg",
+          "sha256": "38824dd2f888cd13555c0b57df97a152deebaea76b03caaec91928644cee8635",
+          "bytes": 4470
+        },
+        {
+          "file": "dist/math_cd0eb1f203f2aa.svg",
+          "sha256": "30ef5122f3136e162fb8ec1a298d5783043cef7e6dbd2346014d72dd5f01cc90",
+          "bytes": 2713
+        },
+        {
+          "file": "dist/math_d0b64abc19a5de.svg",
+          "sha256": "2ef2acf266f5a518c8485349902af6c1b0252079406efa32c0d0e41ae44bb913",
+          "bytes": 1110
+        },
+        {
+          "file": "dist/math_d0bb3b13ce91f2.svg",
+          "sha256": "b62355de3b9a37bcf031b1810136ef7c6ab6661669d319599dd827d9e0cf9ec2",
+          "bytes": 1012
+        },
+        {
+          "file": "dist/math_d1f88545b2ae01.svg",
+          "sha256": "91ab6d24a34e9adbc456a3c025eafaf7c18e621e561a9b123480d2acba33686c",
+          "bytes": 6552
+        },
+        {
+          "file": "dist/math_d5445e8ce3d553.svg",
+          "sha256": "33b50f70638f10ca9e77986d67adff43496229d8226606f3450ede617786241b",
+          "bytes": 5232
+        },
+        {
+          "file": "dist/math_d6937e4e5d36e8.svg",
+          "sha256": "ff53cdfadfa9aab37678ca7281121839500521cfe1306e20a6b249f1de552bc9",
+          "bytes": 4250
+        },
+        {
+          "file": "dist/math_d87dcb23a1d1b6.svg",
+          "sha256": "6136954877d777e3dabc51e64ecbe11db1aa3724c9f2f6e68d68e5312f7fe3a6",
+          "bytes": 3463
+        },
+        {
+          "file": "dist/math_e2f7e54e6d7e95.svg",
+          "sha256": "811030b518289b9b39b6dd2523c7bcd5244c6c54b042e4a5059c2950c417fe66",
+          "bytes": 1434
+        },
+        {
+          "file": "dist/math_e49e724b2b335c.svg",
+          "sha256": "6529d1157ea47a823eb8eec1c3a751adc8e93d15314887b046f4c77ba4292735",
+          "bytes": 1764
+        },
+        {
+          "file": "dist/math_e6159e3f972b0d.svg",
+          "sha256": "11392cc2a80e2e9ada3954d5d201de895629c8b2ba3f6be5dc93e72cced72d8a",
+          "bytes": 9127
+        },
+        {
+          "file": "dist/math_e64a6c27916be2.svg",
+          "sha256": "9d964a39f1b3b2dae7cc07682beb5134020ffe913dd3ca944220c025878d46bb",
+          "bytes": 5300
+        },
+        {
+          "file": "dist/math_e8e35284736f26.svg",
+          "sha256": "90c76352e2ec2ca1e9154d48b0217cc887e998f17e04d220771d2ddb34987a0b",
+          "bytes": 3418
+        },
+        {
+          "file": "dist/math_ebced0266cb703.svg",
+          "sha256": "bd8b1db00dfd9a51623bc6129831704b34a476bf74b3f40f3d0444f75eecfc82",
+          "bytes": 6720
+        },
+        {
+          "file": "dist/math_eda60425bad4c5.svg",
+          "sha256": "3146eb737154834cce8a55c791e6f84fe436d14e5263d8997622432fc7cf3378",
+          "bytes": 5385
+        },
+        {
+          "file": "dist/math_f1a136692aac49.svg",
+          "sha256": "9b47f2f5bf78bc534b04ae5bd698a5a730f322afec7eb47249da9939f5b3d8a8",
+          "bytes": 14255
+        },
+        {
+          "file": "dist/math_f4b7f61447ae8d.svg",
+          "sha256": "fe818ac0ecfd6aeba4912b749b560ec727cab41c3d200deae8aef8e16e483ec2",
+          "bytes": 3498
+        },
+        {
+          "file": "dist/math_f8c820971d545c.svg",
+          "sha256": "62b906da9cb9663358f5079808da772ecdba3a9b7bcc696b6bca6f7aa70ba620",
+          "bytes": 13885
+        },
+        {
+          "file": "dist/math_ff6c03bdcfe586.svg",
+          "sha256": "8015c723946114c49f323a4db8d560ec4551e572c7f915397a2ff0a9172bd053",
+          "bytes": 2291
+        },
+        {
+          "file": "dist/math_fffacddf173d26.svg",
+          "sha256": "192194037e049700b6f3cd9b85c4acd153c8a9894fd4d4644aba0e1bc3af1f27",
+          "bytes": 4697
+        },
+        {
+          "file": "dist/parity_interaction_ko.svg",
+          "sha256": "3d5ced8ffad363e4f286ea1393cefc13e013219d9d9438b92677f1ec3769e6df",
+          "bytes": 210122
+        },
+        {
+          "file": "dist/parity_interaction_mobile_ko.svg",
+          "sha256": "8c92f4da9199e445307d03b48ec5a00e91cca0bf0fe076b33778ab114e7916bc",
+          "bytes": 210402
+        },
+        {
+          "file": "dist/phase-widget.js",
+          "sha256": "7997348719375101b0fe760d5d4621b1bbb793e751f4fcfb64ed77585ae1de80",
+          "bytes": 11360
+        },
+        {
+          "file": "dist/phase_readout_ko.svg",
+          "sha256": "802804557bb88592e816d51a6d9a5c426e9b7f22278a90536244816b2c25253f",
+          "bytes": 214353
+        },
+        {
+          "file": "dist/phase_readout_mobile_ko.svg",
+          "sha256": "a6eab30324cecc01dde161dc416d85f44e97bfed0d8e9d4155ff4589c89c8cd2",
+          "bytes": 214335
+        },
+        {
+          "file": "dist/problem_to_probability_ko.svg",
+          "sha256": "4aaff4911ef2780bbb0b697a39963a0b4d466f6f4853a2ded41db534db50bec8",
+          "bytes": 216422
+        },
+        {
+          "file": "dist/problem_to_probability_mobile_ko.svg",
+          "sha256": "125282b63b6346653eb20bbf1a3bf273b7382537669bb14a473ff9de98dc2cca",
+          "bytes": 216440
+        },
+        {
+          "file": "dist/review.css",
+          "sha256": "ec1dda81a3b02a8724cfca1de663ce137070ecf0b6aa6a6576a88d8e44b4eee4",
+          "bytes": 218103
+        },
+        {
+          "file": "dist/review_ko.pdf",
+          "sha256": "dc481929c6e589a549402eda9f6edf49587e02f6ec586dd85aad13d6b2d8e08e",
+          "bytes": 3446989
+        }
+      ]
+    },
+    "en": {
+      "manuscript_sha256": "317ac27eaa8ae1644319af7e3c40bf3c975c98e48804252ce33923eedc424f5c",
+      "allowed_files": [
+        {
+          "file": "dist/en/hero.webp",
+          "sha256": "163755573a5ba9aef49af8e0a6b2450b01be145d6f8c652eedeba031101d93dc",
+          "bytes": 451684
+        },
+        {
+          "file": "dist/en/index.html",
+          "sha256": "c8ab04232fef9d8d8f93dbf2fc19dc179313b6519e9f5abfc25749c88eac9af2",
+          "bytes": 44232
+        },
+        {
+          "file": "dist/en/math_04df20610c1ad2.svg",
+          "sha256": "1d08447ac4ea137ee7a2b68b08c80fb030e4e12e370170ef3c0bb4dca5386228",
+          "bytes": 4329
+        },
+        {
+          "file": "dist/en/math_09543b7fc6c07e.svg",
+          "sha256": "39736f9f531bd8f122ec34b9c830b918f2289c1ea0c8c48a83bf5a14bd83c044",
+          "bytes": 882
+        },
+        {
+          "file": "dist/en/math_0b64aebfbb6adf.svg",
+          "sha256": "483403232d452e13bc862cd562d36e038612aa5639167dcf7e1defa64df841dc",
+          "bytes": 4319
+        },
+        {
+          "file": "dist/en/math_0d8aa5d1624325.svg",
+          "sha256": "4d20d618ffa9cde6206500fa0d6292600318a38727e800feb0ccd0c92f32cfbb",
+          "bytes": 15822
+        },
+        {
+          "file": "dist/en/math_10e36d9b3f5400.svg",
+          "sha256": "a578843bd338427568a8dd11fdcade67d495303a74db4448f877f7e5789df4e0",
+          "bytes": 2170
+        },
+        {
+          "file": "dist/en/math_13bc3652928d2f.svg",
+          "sha256": "6dfd1c8e7f6fa77e1a75152ab2106c71083045528f18ae3e37d15f06ce5f8971",
+          "bytes": 6726
+        },
+        {
+          "file": "dist/en/math_17c0b9f56f0d5b.svg",
+          "sha256": "b0e0a22e5ae12bba38d01edb72b437974a1759f1b19c12d85fc1e6a97bcbfa50",
+          "bytes": 9859
+        },
+        {
+          "file": "dist/en/math_1a3501616587a0.svg",
+          "sha256": "dfce11239c24324626393539673134931085663a4ae1c6e934293faddf70dafc",
+          "bytes": 12241
+        },
+        {
+          "file": "dist/en/math_1ca56d68eceebc.svg",
+          "sha256": "afded2b073c3f7bb8d22d75cb76a749bb3fe809e30dbf0c75c5ab0b6d3026176",
+          "bytes": 4822
+        },
+        {
+          "file": "dist/en/math_1e1b22c0734c25.svg",
+          "sha256": "e674e03265b5bd38fd42324e58e8c9d87a4be9e339b82881515f2f89375159e3",
+          "bytes": 3823
+        },
+        {
+          "file": "dist/en/math_201d5aca3b1b0b.svg",
+          "sha256": "d2c6ae40fa06ed315afc0a9bfb5bbb6eb1d3b1ac58d42d49f831b714bd732b0c",
+          "bytes": 4279
+        },
+        {
+          "file": "dist/en/math_25a61c59cd3b2c.svg",
+          "sha256": "ac57c26b4faaf0c30b6aab7925d882e68457c4296f7eb724d8430910f971de5e",
+          "bytes": 15369
+        },
+        {
+          "file": "dist/en/math_2855fd131d4f0e.svg",
+          "sha256": "04a3af98e39e5168683b5d82e4c5c76d673b72869a107b7d9246fea335a7eac3",
+          "bytes": 1997
+        },
+        {
+          "file": "dist/en/math_2dbfd30971624c.svg",
+          "sha256": "7e56467eea461303333cf1a56fc3b138b6d7b04faaa379baae0bc393bf72a982",
+          "bytes": 1357
+        },
+        {
+          "file": "dist/en/math_35f0e357e9ee36.svg",
+          "sha256": "08bf07868cca139bb6583cce89da12d985c4b4d4e83837caf075b2f9c5036a36",
+          "bytes": 8202
+        },
+        {
+          "file": "dist/en/math_3649821e5a50ad.svg",
+          "sha256": "368839370546075c360a9b08e391b5ded2b5646c2fb5ad5aab6a17df497d8afa",
+          "bytes": 1773
+        },
+        {
+          "file": "dist/en/math_38e7896d162ea5.svg",
+          "sha256": "3b6d15f57ea758dbfd94c671cffa07a7f87190d09566d0eb9a9f143055fe6107",
+          "bytes": 5651
+        },
+        {
+          "file": "dist/en/math_3b77a24b9b5dc5.svg",
+          "sha256": "5a2fb50b8b51c147891e36f6349fc56daa008ef7cdaac64c630fe96783592865",
+          "bytes": 2134
+        },
+        {
+          "file": "dist/en/math_46faa2754eeadf.svg",
+          "sha256": "06868e98faa2db353c80ff82499342ab4a6253041946fdcf1e8321ae987a9a81",
+          "bytes": 8559
+        },
+        {
+          "file": "dist/en/math_587b01fe62d17a.svg",
+          "sha256": "483cbaefb32e33ae356fc1f835278ac3e638455c5749e0c86d622b99de7ed269",
+          "bytes": 2477
+        },
+        {
+          "file": "dist/en/math_599b3df94c7282.svg",
+          "sha256": "4fdf9d1097a91ae80ae5fb7475977cc4f4fb58a0bdad78cb0e24e1575a6a00c2",
+          "bytes": 5365
+        },
+        {
+          "file": "dist/en/math_5ecda9873e43dc.svg",
+          "sha256": "753d11879eed196f3e24a31a90b9b7a9878d880441676464e015b92ebc28c1cf",
+          "bytes": 3382
+        },
+        {
+          "file": "dist/en/math_67b5f748c18777.svg",
+          "sha256": "58e4d48977f83858464baaa7d9cffd0f28a2f33491a8581328809a8c02720b72",
+          "bytes": 2491
+        },
+        {
+          "file": "dist/en/math_6bd5fd61ff6323.svg",
+          "sha256": "be4d2db0957b9a646c52d4ed91604d7699abe614629d8587d653b250e3b0fab4",
+          "bytes": 6401
+        },
+        {
+          "file": "dist/en/math_6eb62f16b50372.svg",
+          "sha256": "7013f63ac66c830723ffc86cf7dc15228f4f22c55f106435239ea0d6679d4a3b",
+          "bytes": 2839
+        },
+        {
+          "file": "dist/en/math_70d56cfcf3ef16.svg",
+          "sha256": "c707d8c81246b0340c8841748aaa6b25a3fe8a9e3e650a2124be48228ca4a56b",
+          "bytes": 3619
+        },
+        {
+          "file": "dist/en/math_7991a88e27095e.svg",
+          "sha256": "74318faa6f698d2df14a4c2af1621fac06fd5b01d53574a4c0602d30f8fc03a7",
+          "bytes": 2489
+        },
+        {
+          "file": "dist/en/math_7d38c82d984061.svg",
+          "sha256": "5aacef0b98fb23e40cb96fb22fd0f8f9b5283d003c5b09f8e2b65b3938006547",
+          "bytes": 910
+        },
+        {
+          "file": "dist/en/math_7df776cf4b685c.svg",
+          "sha256": "3efc1da5eae1e7a59390eed27999fdc96e4d8a752a8c077e1f4defba8f73343f",
+          "bytes": 4768
+        },
+        {
+          "file": "dist/en/math_820530c82673a0.svg",
+          "sha256": "b67ceb9748ce335d2c8c8af5227d58286ab0b083d396b5d2caedee36d443fa03",
+          "bytes": 5417
+        },
+        {
+          "file": "dist/en/math_86beb1cf9f3bdc.svg",
+          "sha256": "3520f690a095d0239527209f4c941326daddf8eb138ec1ade6c2e2600e761c26",
+          "bytes": 10869
+        },
+        {
+          "file": "dist/en/math_8b9dd8aea61677.svg",
+          "sha256": "1161e8df29568a10cc8bde5fcdcfc74ce5d991a7f098b789c445bdd34fe9abe8",
+          "bytes": 3186
+        },
+        {
+          "file": "dist/en/math_90aaf09217d413.svg",
+          "sha256": "3f7d32ea090b03fbeaeb66c09042277fc319f5925238f214c110882ffb0f831f",
+          "bytes": 6747
+        },
+        {
+          "file": "dist/en/math_94001b306cae42.svg",
+          "sha256": "ff3c5260d4d24952768572472b7eb6c5f63985f951c755b0f0d8f20e55724610",
+          "bytes": 3152
+        },
+        {
+          "file": "dist/en/math_9ba3656f999d94.svg",
+          "sha256": "c2185162939e8df94d113fddaeb09131eef1b8086cb80b547b19083cde5f199f",
+          "bytes": 837
+        },
+        {
+          "file": "dist/en/math_a0c067a99b937e.svg",
+          "sha256": "2117d2cef60b717b11392f926bb1adc154b23d49c360839fa46cacc00145c96c",
+          "bytes": 3220
+        },
+        {
+          "file": "dist/en/math_a3d8c44d455058.svg",
+          "sha256": "3beecf086761431ffbe461662a5a97fc8020a5ec32b5da00c5f573f51e6d0e80",
+          "bytes": 1180
+        },
+        {
+          "file": "dist/en/math_a93178df3bf9a4.svg",
+          "sha256": "647e84d3c38bc4408ef3a94fe6d820678652f2a5703d841c73d83ef9a9106d0c",
+          "bytes": 3717
+        },
+        {
+          "file": "dist/en/math_ac03eb07e56098.svg",
+          "sha256": "bbdb95b9d878fb508c54d4950c5dcd92b7f81508662733aabbaede10c5ab7138",
+          "bytes": 7012
+        },
+        {
+          "file": "dist/en/math_ad5aaeafda8c4d.svg",
+          "sha256": "25a5a13e183051630132ee6e7a0a126e54e2eea53da97b0f0bf5227519a916b3",
+          "bytes": 1402
+        },
+        {
+          "file": "dist/en/math_ad8694275f4b41.svg",
+          "sha256": "8015cf602c7010672741d43e8f1be0926d6a3c033303b08fb2294011bf2d84a1",
+          "bytes": 3710
+        },
+        {
+          "file": "dist/en/math_b18acacc8f426b.svg",
+          "sha256": "8b0f06b9be449b8b21527232dd18ca111b9c8d8168112fac6ffb549ca5d7bb77",
+          "bytes": 1819
+        },
+        {
+          "file": "dist/en/math_b203148b333faa.svg",
+          "sha256": "ad8ed60a5086c211c575fe430febdb45be17301a5bffb6ea7348c2a07b6710ad",
+          "bytes": 963
+        },
+        {
+          "file": "dist/en/math_b736817d8b156a.svg",
+          "sha256": "5cad02e0a5cce2daa2af65e7f437bc4940c957d81e66fdfbc67fd7e048f5dfb5",
+          "bytes": 11320
+        },
+        {
+          "file": "dist/en/math_bb492fe1157667.svg",
+          "sha256": "dfeb692e961465617de0279a5d3706bf47b01895d7cb5359ac753a798744cc46",
+          "bytes": 10324
+        },
+        {
+          "file": "dist/en/math_bcbeef854f8a0e.svg",
+          "sha256": "4cb447139fa9479faa64f4e271c481ee519957a7e77ab626a613ef1308ccea9c",
+          "bytes": 2793
+        },
+        {
+          "file": "dist/en/math_c2ef2471e546da.svg",
+          "sha256": "60400918295902340cfbec0ac5ac85b44bed7ab6c8a35005ffceecfc4e95d8d2",
+          "bytes": 3882
+        },
+        {
+          "file": "dist/en/math_c324167692243d.svg",
+          "sha256": "ef18631a136b349b6b0d2baf5abad481d8f37ecf78e29d4e599e8ea55d6cbc82",
+          "bytes": 8661
+        },
+        {
+          "file": "dist/en/math_c4d507bcd31c62.svg",
+          "sha256": "a48f37bb60bc311ee0cc6c89a6a2ed25b5afd24f9066e83efad0c6d28b45c983",
+          "bytes": 7867
+        },
+        {
+          "file": "dist/en/math_c703ea3ca8f376.svg",
+          "sha256": "15c49d7de53bb10b6e3aa9f4fa4a9d87156fff7687e4f376ab869806a21896f1",
+          "bytes": 4837
+        },
+        {
+          "file": "dist/en/math_c866590208e79b.svg",
+          "sha256": "458d4765371cdcdb3ee1e2403bf437498feeb90973eeb3262f74c9a8d602b279",
+          "bytes": 3909
+        },
+        {
+          "file": "dist/en/math_cb44f733dd43b3.svg",
+          "sha256": "38824dd2f888cd13555c0b57df97a152deebaea76b03caaec91928644cee8635",
+          "bytes": 4470
+        },
+        {
+          "file": "dist/en/math_cd0eb1f203f2aa.svg",
+          "sha256": "30ef5122f3136e162fb8ec1a298d5783043cef7e6dbd2346014d72dd5f01cc90",
+          "bytes": 2713
+        },
+        {
+          "file": "dist/en/math_d0b64abc19a5de.svg",
+          "sha256": "2ef2acf266f5a518c8485349902af6c1b0252079406efa32c0d0e41ae44bb913",
+          "bytes": 1110
+        },
+        {
+          "file": "dist/en/math_d0bb3b13ce91f2.svg",
+          "sha256": "b62355de3b9a37bcf031b1810136ef7c6ab6661669d319599dd827d9e0cf9ec2",
+          "bytes": 1012
+        },
+        {
+          "file": "dist/en/math_d1f88545b2ae01.svg",
+          "sha256": "91ab6d24a34e9adbc456a3c025eafaf7c18e621e561a9b123480d2acba33686c",
+          "bytes": 6552
+        },
+        {
+          "file": "dist/en/math_d5445e8ce3d553.svg",
+          "sha256": "33b50f70638f10ca9e77986d67adff43496229d8226606f3450ede617786241b",
+          "bytes": 5232
+        },
+        {
+          "file": "dist/en/math_d6937e4e5d36e8.svg",
+          "sha256": "ff53cdfadfa9aab37678ca7281121839500521cfe1306e20a6b249f1de552bc9",
+          "bytes": 4250
+        },
+        {
+          "file": "dist/en/math_d87dcb23a1d1b6.svg",
+          "sha256": "6136954877d777e3dabc51e64ecbe11db1aa3724c9f2f6e68d68e5312f7fe3a6",
+          "bytes": 3463
+        },
+        {
+          "file": "dist/en/math_e2f7e54e6d7e95.svg",
+          "sha256": "811030b518289b9b39b6dd2523c7bcd5244c6c54b042e4a5059c2950c417fe66",
+          "bytes": 1434
+        },
+        {
+          "file": "dist/en/math_e49e724b2b335c.svg",
+          "sha256": "6529d1157ea47a823eb8eec1c3a751adc8e93d15314887b046f4c77ba4292735",
+          "bytes": 1764
+        },
+        {
+          "file": "dist/en/math_e6159e3f972b0d.svg",
+          "sha256": "11392cc2a80e2e9ada3954d5d201de895629c8b2ba3f6be5dc93e72cced72d8a",
+          "bytes": 9127
+        },
+        {
+          "file": "dist/en/math_e64a6c27916be2.svg",
+          "sha256": "9d964a39f1b3b2dae7cc07682beb5134020ffe913dd3ca944220c025878d46bb",
+          "bytes": 5300
+        },
+        {
+          "file": "dist/en/math_e8e35284736f26.svg",
+          "sha256": "90c76352e2ec2ca1e9154d48b0217cc887e998f17e04d220771d2ddb34987a0b",
+          "bytes": 3418
+        },
+        {
+          "file": "dist/en/math_ebced0266cb703.svg",
+          "sha256": "bd8b1db00dfd9a51623bc6129831704b34a476bf74b3f40f3d0444f75eecfc82",
+          "bytes": 6720
+        },
+        {
+          "file": "dist/en/math_eda60425bad4c5.svg",
+          "sha256": "3146eb737154834cce8a55c791e6f84fe436d14e5263d8997622432fc7cf3378",
+          "bytes": 5385
+        },
+        {
+          "file": "dist/en/math_f1a136692aac49.svg",
+          "sha256": "9b47f2f5bf78bc534b04ae5bd698a5a730f322afec7eb47249da9939f5b3d8a8",
+          "bytes": 14255
+        },
+        {
+          "file": "dist/en/math_f4b7f61447ae8d.svg",
+          "sha256": "fe818ac0ecfd6aeba4912b749b560ec727cab41c3d200deae8aef8e16e483ec2",
+          "bytes": 3498
+        },
+        {
+          "file": "dist/en/math_f8c820971d545c.svg",
+          "sha256": "62b906da9cb9663358f5079808da772ecdba3a9b7bcc696b6bca6f7aa70ba620",
+          "bytes": 13885
+        },
+        {
+          "file": "dist/en/math_ff6c03bdcfe586.svg",
+          "sha256": "8015c723946114c49f323a4db8d560ec4551e572c7f915397a2ff0a9172bd053",
+          "bytes": 2291
+        },
+        {
+          "file": "dist/en/math_fffacddf173d26.svg",
+          "sha256": "192194037e049700b6f3cd9b85c4acd153c8a9894fd4d4644aba0e1bc3af1f27",
+          "bytes": 4697
+        },
+        {
+          "file": "dist/en/parity_interaction_en.svg",
+          "sha256": "2ddbba73f159cba22f4bc5ab3e74e9631b282f36e03cf4af6c6c264239e4165d",
+          "bytes": 210110
+        },
+        {
+          "file": "dist/en/parity_interaction_mobile_en.svg",
+          "sha256": "d79b51ed3af3644b7b2efd4b55a74f4206e5f294a5497775d308ae5b9de407b9",
+          "bytes": 210354
+        },
+        {
+          "file": "dist/en/phase-widget.js",
+          "sha256": "7997348719375101b0fe760d5d4621b1bbb793e751f4fcfb64ed77585ae1de80",
+          "bytes": 11360
+        },
+        {
+          "file": "dist/en/phase_readout_en.svg",
+          "sha256": "f937aee7e8bae23300fae43af8d528bc80b94d05b64f9fce272361188ded25b8",
+          "bytes": 214368
+        },
+        {
+          "file": "dist/en/phase_readout_mobile_en.svg",
+          "sha256": "1f3c25ccd111561c3ecc151d86d2e5b0ecf1e26d7ac6b3135b9d8e8edfd3579e",
+          "bytes": 214350
+        },
+        {
+          "file": "dist/en/problem_to_probability_en.svg",
+          "sha256": "08c886db255ab63b1be6fb655b4430c7671164f9993029f2ceb8eac941139872",
+          "bytes": 216418
+        },
+        {
+          "file": "dist/en/problem_to_probability_mobile_en.svg",
+          "sha256": "014ee4e37d3c68aa6ada92b0280ce738d68dbba88399797595ce98d9c9a39271",
+          "bytes": 216436
+        },
+        {
+          "file": "dist/en/review.css",
+          "sha256": "ec1dda81a3b02a8724cfca1de663ce137070ecf0b6aa6a6576a88d8e44b4eee4",
+          "bytes": 218103
+        },
+        {
+          "file": "dist/en/review_en.pdf",
+          "sha256": "0212c8d33ec6e1eb5acfe3080ffb71f72324b0177b5eee0d6f8d7a1a6463ca30",
+          "bytes": 3367770
+        }
+      ]
+    }
+  },
+  "publication_status": "Bilingual local publication package passed complete output inspection; actual deployment is verified separately.",
+  "verification": {
+    "bilingual_source_and_html": "14 display formulas, 67 inline formulas, 8 references, 13 body citation groups, exact phase-stage control labels",
+    "figures": "12 original responsive SVGs visually inspected; numerical and phase conventions independently verified",
+    "interactive": "Four language/viewport configurations; analytic preset values retained to 1e-14; graph and stage changes, zero angles, reset and keyboard passed",
+    "pdf": "All 11 Korean and 12 English pages individually rendered and visually inspected; embedded fonts, text, HTTPS annotations and no attachments/private paths checked",
+    "cover": "Full, 320x180, 390px and grayscale inspected; one frame, no EXIF/GPS/XMP"
+  },
+  "publication_local": {
+    "reviews": 53,
+    "archive_documents": 109,
+    "other_files_preserved_exactly": 1876,
+    "derived_lecture_hubs_verified": "Only archive count 107 to 109 and the corresponding pageVersion changed",
+    "other_review_records_preserved": 52,
+    "other_reader_records_preserved": 58,
+    "other_update_records_preserved": 128,
+    "other_archive_documents_preserved": 107,
+    "pdfs": {
+      "ko": {
+        "bytes": 3446989,
+        "sha256": "dc481929c6e589a549402eda9f6edf49587e02f6ec586dd85aad13d6b2d8e08e",
+        "four_copies_equal": true
+      },
+      "en": {
+        "bytes": 3367770,
+        "sha256": "0212c8d33ec6e1eb5acfe3080ffb71f72324b0177b5eee0d6f8d7a1a6463ca30",
+        "four_copies_equal": true
+      }
+    },
+    "artifact": {
+      "validated_files": 2076,
+      "articles": 59
+    },
+    "public_site_errors": 0
+  }
+}

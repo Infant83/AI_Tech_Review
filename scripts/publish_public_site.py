@@ -109,6 +109,37 @@ class PublicReview:
 
 REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
+        folder="2026-11-04_quantum-gates-phase-and-interaction",
+        title="양자 회로를 읽는 물리학",
+        subtitle="단일 큐비트 회전에서 상호작용과 답의 확률까지",
+        date="2026-11-05", updated="2026-11-05", category="Quantum Computing",
+        tags=("Quantum Gates", "Relative Phase", "Interference", "Ising Model", "QAOA", "VQE", "Quantum Circuits"),
+        summary="두 큐비트의 값이 같고 다른지를 구별해 위상을 주면, 간단한 회전이 문제의 조건을 담게 됩니다. 두 스핀의 결합과 작은 최적화 문제를 따라가며, 그 위상차가 간섭을 거쳐 답의 확률을 바꾸는 과정을 직접 계산합니다. 에너지·상태·관측량의 연결은 회로를 설계하고 검증하는 기준이 됩니다.",
+        translations=(PublicTranslation(language="en", subdir="en", label="English"),),
+        ai_system="OpenAI Codex", ai_system_ko="OpenAI Codex",
+        agents=(
+            PublicAgent("root", "Korean writing, conceptual cover, editorial and publication integration", "한국어 집필·개념 표지·편집 및 게시 통합"),
+            PublicAgent("gate_article_physics", "primary-source and APS-reference audit, independent statevector, manuscript, figure and interactive-computation review", "원전·APS 서지 대조와 상태벡터·원고·도식·대화형 계산의 독립 과학 감수"),
+            PublicAgent("gate_article_editorial", "complete English translation, Korean explanation review and bilingual correspondence audit", "영어 전문 번역·한국어 설명 감수·한영 대응 대조"),
+            PublicAgent("agent_standards", "original bilingual responsive figures and interactive calculation, font and HTML/PDF production and output inspection", "원본 한영 반응형 도식·대화형 계산·글꼴 및 HTML/PDF 제작·출력 검사"),
+        ),
+        verification_scope=(
+            "Buchta public post; current official IBM RZ, RX and RZZ definitions; Farhi, Goldstone and Gutmann arXiv:1411.4028v1 full text; Peruzzo and Barenco author manuscripts and published bibliographic records; NumPy citation",
+            "Independent ideal-statevector checks: conjugation identity, single-qubit phase readout, one-edge MaxCut probability formula, layer order and triangle angle retuning; responsive SVG and browser-computation correspondence",
+            "Complete bilingual manuscript and APS-reference correspondence; cover identity, embedded fonts, HTML/PDF and mobile output, archive copies and live HTTPS links",
+        ),
+        verification_scope_ko=(
+            "Buchta 공개 게시물, IBM RZ·RX·RZZ 공식 정의, Farhi·Goldstone·Gutmann arXiv:1411.4028v1 전문, Peruzzo·Barenco 저자 원고와 출판 서지, NumPy 권장 인용 대조",
+            "독립 이상적 상태벡터 검산: 켤레변환 항등식·단일 큐비트 위상 판독·한 간선 MaxCut 확률식·층 순서·삼각형 각도 재조정, 반응형 SVG·브라우저 계산 대응",
+            "전체 한영 원고·APS 참고문헌 대응, 표지 정체·내장 글꼴·HTML/PDF·모바일 출력·아카이브 사본·공개 HTTPS 링크 검사",
+        ),
+        primary_sources_checked=True, evidence_cutoff="2026-11-05",
+        human_review_level="The editor approved the article plan and requested publication. Whole-manuscript scientific, explanation, bilingual and output reviews were performed by AI agents; line-by-line human approval and reader-comprehension testing were not performed.",
+        human_review_level_ko="편집자가 기사 기획을 승인하고 게시를 요청했다. 전체 과학·설명·한영·출력 감수는 AI 에이전트가 수행했으며, 문장 단위 사람 승인과 독자 이해도 실험은 수행하지 않았다.",
+        disclosure_note_ko="본문 수치와 대화형 계산은 이상적 상태벡터 교육 모형이다. 원문과 공식 게이트 정의를 바탕으로 회로·도식을 재구성했으며, 표지는 AI 생성 종이 부조 개념 그림이다.",
+        disclosure_note_en="Article values and the interactive calculation use ideal educational statevector models. Circuits and figures are reconstructed from primary texts and official gate definitions; the cover is an AI-generated conceptual paper relief.",
+    ),
+    PublicReview(
         folder="2026-11-02_chiral-amplification-nobel-chemistry",
         title="거울상 분자의 작은 불균형을 키우는 화학",
         subtitle="2026년 노벨 화학상의 비선형 효과와 비대칭 자가촉매에서, 카이랄 전하밀도파의 원편광 응답까지",

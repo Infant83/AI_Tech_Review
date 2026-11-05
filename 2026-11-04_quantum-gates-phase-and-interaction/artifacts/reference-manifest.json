@@ -1,0 +1,120 @@
+{
+  "style": "APS Journals Style Guide for Authors, February 2026, non-RMP numbered style",
+  "checked_on": "2026-11-05",
+  "status": "Bilingual numbered references, first-citation order and HTML reference anchors verified. Actual source-access scope is recorded per entry; complete output inspection is recorded separately.",
+  "groups": [
+    {
+      "number": 1,
+      "key": "buchta-2026",
+      "entries": [
+        "D. Buchta, [A small identity in quantum computing can tell a surprisingly big story](https://www.linkedin.com/posts/daniel-buchta-4355b1b6_quantumcomputing-qiskit-vqe-activity-7523623075221757952-uFeg), LinkedIn (4 November 2026) (accessed 5 November 2026)"
+      ],
+      "url": "https://www.linkedin.com/posts/daniel-buchta-4355b1b6_quantumcomputing-qiskit-vqe-activity-7523623075221757952-uFeg",
+      "access_scope": "Public post body and JSON-LD publication date; an introductory source for the circuit identity and links to Hamiltonian simulation, VQE and QAOA."
+    },
+    {
+      "number": 2,
+      "key": "ibm-rz",
+      "entries": [
+        "IBM Quantum, [RZGate](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RZGate) (accessed 5 November 2026)"
+      ],
+      "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RZGate",
+      "access_scope": "Current official API page, gate definition and matrix. The page labels itself latest version; no numerical SDK version is inferred."
+    },
+    {
+      "number": 3,
+      "key": "ibm-rzz",
+      "entries": [
+        "IBM Quantum, [RZZGate](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RZZGate) (accessed 5 November 2026)"
+      ],
+      "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RZZGate",
+      "access_scope": "Current official API page, ZZ generator, diagonal matrix and special-angle cases."
+    },
+    {
+      "number": 4,
+      "key": "farhi-2014",
+      "entries": [
+        "E. Farhi, J. Goldstone, and S. Gutmann, A quantum approximate optimization algorithm, [arXiv:1411.4028v1](https://arxiv.org/abs/1411.4028v1) (2014)"
+      ],
+      "url": "https://arxiv.org/abs/1411.4028v1",
+      "access_scope": "Author full text HTML, especially Eqs. (2)-(8) and (11)-(12), maximizing C with exp(-i gamma C), exp(-i beta sum X), and uniform-superposition initial state."
+    },
+    {
+      "number": 5,
+      "key": "ibm-rx",
+      "entries": [
+        "IBM Quantum, [RXGate](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RXGate) (accessed 5 November 2026)"
+      ],
+      "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.RXGate",
+      "access_scope": "Current official API page, X generator, angle convention and matrix."
+    },
+    {
+      "number": 6,
+      "key": "peruzzo-2014",
+      "entries": [
+        "A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung, X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, and J. L. O’Brien, A variational eigenvalue solver on a photonic quantum processor, [Nat. Commun. **5**, 4213 (2014)](https://doi.org/10.1038/ncomms5213)"
+      ],
+      "url": "https://doi.org/10.1038/ncomms5213",
+      "access_scope": "Published title, all eight authors, volume, article number and date checked against Crossref and arXiv journal reference. Publisher DOI path failed through Nature idp; author manuscript arXiv:1304.3061v1 PDF read, Algorithm 2, Fig. 1 and Eq. (3), for variational state preparation and energy minimization."
+    },
+    {
+      "number": 7,
+      "key": "barenco-1995",
+      "entries": [
+        "A. Barenco, C. H. Bennett, R. Cleve, D. P. DiVincenzo, N. Margolus, P. Shor, T. Sleator, J. A. Smolin, and H. Weinfurter, Elementary gates for quantum computation, [Phys. Rev. A **52**, 3457 (1995)](https://doi.org/10.1103/PhysRevA.52.3457)"
+      ],
+      "url": "https://doi.org/10.1103/PhysRevA.52.3457",
+      "access_scope": "APS publisher metadata and abstract, Crossref metadata, and author manuscript arXiv:quant-ph/9503016v1 PDF. Universal repertoire includes all one-qubit U(2) operations and controlled-X."
+    },
+    {
+      "number": 8,
+      "key": "numpy-2020",
+      "entries": [
+        "C. R. Harris *et al.*, Array programming with NumPy, [Nature **585**, 357 (2020)](https://doi.org/10.1038/s41586-020-2649-2)"
+      ],
+      "url": "https://doi.org/10.1038/s41586-020-2649-2",
+      "access_scope": "Official NumPy citation recommendation and Crossref metadata. More than 20 authors: et al. follows project reference policy. Actual calculation environment records NumPy 2.0.2 separately."
+    }
+  ],
+  "consulted_sources": [
+    {
+      "key": "ibm-cx",
+      "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.CXGate",
+      "access_scope": "Current official API page including little-endian matrix note. Article uses |ab> with a as left tensor factor; in Qiskit basis |q1 q0>, map q1=a and q0=b for direct matrix comparison."
+    },
+    {
+      "key": "mckay-2017",
+      "url": "https://doi.org/10.1103/PhysRevA.96.022330",
+      "author_manuscript": "https://arxiv.org/abs/1612.00858v2",
+      "access_scope": "Crossref published metadata and author full-text HTML introduction/theory; virtual Z is a phase-reference update for subsequent drives. Optional supporting source if a hardware implementation sentence is used.",
+      "optional_entry": "D. C. McKay, C. J. Wood, S. Sheldon, J. M. Chow, and J. M. Gambetta, Efficient Z gates for quantum computing, [Phys. Rev. A **96**, 022330 (2017)](https://doi.org/10.1103/PhysRevA.96.022330)"
+    }
+  ],
+  "review_derived_material": "The one-edge probability formula, chosen-angle intermediate states, triangle transfer/reoptimization examples and numerical results are the review’s independent ideal educational calculations, based on the definitions above. They are not numerical claims attributed to the source papers.",
+  "software_used": {
+    "name": "NumPy",
+    "version": "2.0.2",
+    "version_source": "example-checks.json records the actual executing NumPy version"
+  },
+  "rights": "References link to the source publications and official documentation. No third-party full text or original figures are included in this manifest.",
+  "first_citation_order_ko": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "first_citation_order_en": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}
