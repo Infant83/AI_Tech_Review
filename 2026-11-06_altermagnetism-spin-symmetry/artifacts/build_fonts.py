@@ -91,10 +91,12 @@ def main():
     for record in font['name'].names:
         if record.nameID in renamed:record.string=renamed[record.nameID].encode(record.getEncoding())
     options=subset.Options();options.flavor='woff2';options.recalc_timestamp=False;options.name_IDs=['*']
-    worker=subset.Subsetter(options=options);worker.populate(unicodes=math_needed|{32});worker.subset(font)
+    # Keep one outlined glyph when no exclusive mathematical characters are
+    # needed: a space-only TrueType subset has an empty glyf table rejected by OTS.
+    worker=subset.Subsetter(options=options);worker.populate(unicodes=math_needed|{32,48});worker.subset(font)
     font.flavor='woff2';target=ROOT/'artifacts'/'review-math.woff2';font.save(target)
     assert math_needed <= set(TTFont(target).getBestCmap())
-    coverage['math']={'bytes':target.stat().st_size,'covered_codepoints':sorted(math_needed)}
+    coverage['math']={'bytes':target.stat().st_size,'covered_codepoints':sorted(math_needed),'retained_outline_codepoints':[48]}
     license_parts.append(fallback_license.read_text(encoding='utf-8'))
     license_parts.append(math_license.read_text(encoding='utf-8'))
     license_text = '\n\n'.join(dict.fromkeys(license_parts)).strip() + '\n\n' + args.license.read_text(encoding='utf-8')
