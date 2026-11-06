@@ -25,7 +25,7 @@ SERIES = {
     "lecture-notes": ("렉처 노트", "Lecture notes"),
     "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261106-series"
+LIBRARY_ASSET_VERSION = "20261106-compact-series"
 
 # The shared reader is application code, not a course or an article. Never copy
 # a source directory recursively: it may also contain tests or private notes.
@@ -395,17 +395,20 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
         units.append(f'''<li data-lecture-unit="{number}">
           <h3><span>{number}</span> {escape(unit['title_en' if en else 'title'])}</h3>
           <p class="lecture-unit-meta"><time datetime="{escape(unit['date'])}">{escape(unit['date'])}</time> · PDF {pages_label}</p>
-          <div class="lecture-actions"><a class="lecture-primary" href="{reader}" aria-label="{number} {'Read and annotate' if en else '필기하며 읽기'}">{'Read &amp; annotate' if en else '필기하며 읽기'} →</a>
-          <a class="lecture-secondary" href="{pdf}" target="_blank" rel="noopener" aria-label="{number} {'Open PDF' if en else 'PDF 열기'}">{'Open PDF' if en else 'PDF 열기'} ↗</a>
+          <div class="lecture-actions"><a class="lecture-primary" href="{reader}" aria-label="{number} {'Read and annotate' if en else '필기하며 읽기'}">{'Annotate' if en else '필기'} →</a>
+          <a class="lecture-secondary" href="{pdf}" target="_blank" rel="noopener" aria-label="{number} {'Open PDF' if en else 'PDF 열기'}">PDF ↗</a>
           <a class="lecture-secondary" href="{pdf}" download aria-label="{number} {'Download PDF' if en else 'PDF 다운로드'}">{'Download' if en else '다운로드'} ↓</a></div>
         </li>''')
     page_count = sum(u['pages'] for u in series['units'])
     facts = f"{len(units)} units · PDF {page_count} pages" if en else f"{len(units)}회차 · PDF {page_count}쪽"
     return f'''<article class="lecture-card lecture-featured lecture-series" data-lecture-series="{escape(series['series_id'])}">
+      <details class="lecture-series-disclosure"><summary>
       <div class="lecture-meta"><span class="lecture-format">{'PDF lecture series' if en else 'PDF 강의 시리즈'}</span><span>{'Korean' if en else '한국어'}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
-      <h2><a href="{escape(course)}">{escape(title)}</a></h2><p class="lecture-summary">{escape(summary)}</p>
-      <p class="lecture-facts">{facts}</p>
+      <h2>{escape(title)}</h2>
+      <div class="lecture-series-summary"><span class="lecture-facts">{facts}</span><span class="lecture-series-toggle"><span class="series-show">{'View units' if en else '회차 보기'}</span><span class="series-hide">{'Hide units' if en else '회차 접기'}</span><span class="series-chevron" aria-hidden="true"></span></span></div>
+      </summary><p class="lecture-summary">{escape(summary)}</p>
       <ol class="lecture-units" aria-label="{'Series units' if en else '시리즈 회차'}">{''.join(units)}</ol>
+      <a class="lecture-series-index" href="{escape(course)}">{'Series guide' if en else '자료 안내'} →</a></details>
     </article>'''
 
 
@@ -790,25 +793,36 @@ ARCHIVE_CSS = '''
 .lecture-summary { max-width:820px; color:var(--muted); font-size:15px; line-height:1.8; margin:0 0 18px; word-break:keep-all; overflow-wrap:anywhere; }
 .lecture-facts { display:flex; flex-wrap:wrap; list-style:none; gap:8px 18px; padding:0; margin:0 0 20px; color:var(--ink); font-size:13px; font-weight:650; }
 .lecture-units { list-style:none; padding:0; margin:0; }
-.lecture-units>li { border-top:1px solid var(--line); padding:18px 0; }
+.lecture-units>li { border-top:1px solid var(--line); padding:12px 0; }
 .lecture-units>li:last-child { padding-bottom:0; }
-.lecture-units h3 { margin:0 0 6px; font-size:18px; line-height:1.55; overflow-wrap:anywhere; }
+.lecture-units h3 { margin:0 0 3px; font-size:16px; line-height:1.55; overflow-wrap:anywhere; }
 .lecture-units h3 span { color:var(--green); margin-right:7px; font-size:14px; }
-.lecture-unit-meta { margin:0 0 12px; color:var(--muted); font-size:12px; }
-.lecture-units .lecture-actions { gap:8px; }
-.lecture-units .lecture-actions a { font-size:13px; padding:9px 11px; }
-.lecture-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
-.lecture-actions a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 17px; border-radius:7px; text-decoration:none; font-size:14px; font-weight:700; }
-.lecture-primary { background:var(--green); color:white; }
-.lecture-primary:hover { background:var(--deep); color:white; }
-.lecture-secondary { border:1px solid var(--line); color:var(--ink); }
+.lecture-unit-meta { margin:0 0 3px; color:var(--muted); font-size:11px; }
+.lecture-actions { display:flex; flex-wrap:wrap; align-items:center; gap:0 16px; }
+.lecture-actions a { display:inline-flex; align-items:center; justify-content:flex-start; min-height:44px; min-width:44px; padding:2px 0; text-decoration:none; font-size:13px; font-weight:650; }
+.lecture-primary { background:transparent; color:var(--green); }
+.lecture-primary:hover { background:transparent; color:var(--deep); text-decoration:underline; text-underline-offset:4px; }
+.lecture-secondary { border:0; color:var(--ink); }
+.lecture-secondary:hover { color:var(--green); text-decoration:underline; text-underline-offset:4px; }
+.lecture-series-disclosure>summary { cursor:pointer; list-style:none; border-radius:4px; }
+.lecture-series-disclosure>summary::-webkit-details-marker { display:none; }
+.lecture-series-disclosure>summary::marker { content:""; }
+.lecture-series-summary { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.lecture-series-summary .lecture-facts { margin:0; }
+.lecture-series-toggle { display:inline-flex; align-items:center; gap:10px; color:var(--green); font-size:12px; white-space:nowrap; }
+.series-chevron { width:7px; height:7px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); margin:0 2px 4px; }
+.series-hide,.lecture-series-disclosure[open] .series-show { display:none; }
+.lecture-series-disclosure[open] .series-hide { display:inline; }
+.lecture-series-disclosure[open] .series-chevron { transform:rotate(225deg); margin-top:6px; }
+.lecture-series-disclosure[open]>summary { margin-bottom:16px; }
+.lecture-series-index { display:inline-flex; align-items:center; min-height:44px; margin-top:5px; font-size:12px; color:var(--muted); text-decoration:none; }
 .lecture-resources { display:flex; flex-wrap:wrap; gap:2px 22px; margin-top:15px; padding-top:12px; border-top:1px solid #edf0eb; }
 .lecture-resources a { display:inline-flex; align-items:center; min-height:44px; font-size:13px; color:var(--muted); text-decoration:none; }
 .lecture-resources a:hover { color:var(--green); text-decoration:underline; }
 .lecture-note { border-top:1px solid var(--line); padding:20px 0 36px; color:var(--muted); font-size:12px; line-height:1.8; }
 .lecture-note p { max-width:800px; }
 .lecture-note a { display:inline-flex; align-items:center; min-height:44px; }
-.lectures-page :is(a,button):focus-visible { outline:3px solid #86b6a8; outline-offset:4px; }
+.lectures-page :is(a,button,summary):focus-visible { outline:3px solid #86b6a8; outline-offset:4px; }
 .lectures-page .topbar { min-height:76px; }
 .collection-filters { display:flex; gap:10px; flex-wrap:wrap; }
 .collection-button { display:inline-flex; align-items:center; gap:10px; cursor:pointer; font:inherit; font-size:14px; font-weight:700; color:var(--muted); border:1px solid var(--line); border-radius:10px; background:white; padding:12px 17px; }
@@ -845,7 +859,7 @@ ARCHIVE_CSS = '''
 .archive-note { padding:24px 0 48px; margin-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
 .archive-note p { max-width:800px; }
 @media(max-width:760px) { .archive-preview { grid-template-columns:1fr; gap:20px; padding:24px; } .archive-controls { grid-template-columns:1fr 1fr; padding:16px; gap:12px; } .archive-search { grid-column:1 / -1; } .document-grid { grid-template-columns:1fr; } .document-card { padding:22px; } .collection-button { padding:10px 12px; font-size:13px; } .archive-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; } .archive-page .topbar-links { font-size:12px; } }
-@media(max-width:600px) { .hub-nav { gap:4px 10px; padding:8px 0 12px; } .hub-primary { gap:4px; width:100%; } .hub-primary a { padding:10px 11px; font-size:14px; } .hub-primary span { font-size:11px; margin-left:5px; } .hub-nav .hub-utility { border-left:0; font-size:11px; padding:6px 0; } .lecture-hero { padding:22px 0 18px; } .lecture-hero h1 { font-size:32px; margin-bottom:10px; } .lecture-hero>p:not(.section-kicker) { font-size:14px; line-height:1.7; } .lecture-list { gap:16px; } .lecture-card { padding:22px; border-radius:11px; } .lecture-card h2 { font-size:21px; line-height:1.45; margin:13px 0 10px; } .lecture-summary { font-size:14px; line-height:1.75; margin-bottom:14px; } .lecture-facts { gap:7px 14px; font-size:12px; margin-bottom:17px; } .lecture-actions a { font-size:13px; padding:10px 14px; } .lecture-resources { gap:0 18px; margin-top:12px; padding-top:8px; } .lecture-resources a { font-size:12px; } .lectures-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; padding-top:20px; padding-bottom:15px; min-height:0; } .lectures-page .topbar-links { font-size:12px; } }
+@media(max-width:600px) { .hub-nav { gap:4px 10px; padding:8px 0 12px; } .hub-primary { gap:4px; width:100%; } .hub-primary a { padding:10px 11px; font-size:14px; } .hub-primary span { font-size:11px; margin-left:5px; } .hub-nav .hub-utility { border-left:0; font-size:11px; padding:6px 0; } .lecture-hero { padding:22px 0 18px; } .lecture-hero h1 { font-size:32px; margin-bottom:10px; } .lecture-hero>p:not(.section-kicker) { font-size:14px; line-height:1.7; } .lecture-list { gap:16px; } .lecture-card { padding:22px; border-radius:11px; } .lecture-card h2 { font-size:21px; line-height:1.45; margin:13px 0 10px; } .lecture-summary { font-size:14px; line-height:1.75; margin-bottom:14px; } .lecture-facts { gap:7px 14px; font-size:12px; margin-bottom:17px; } .lecture-actions a { font-size:13px; padding:2px 0; } .lecture-resources { gap:0 18px; margin-top:12px; padding-top:8px; } .lecture-resources a { font-size:12px; } .lectures-page .topbar { align-items:flex-start; flex-wrap:wrap; gap:10px; padding-top:20px; padding-bottom:15px; min-height:0; } .lectures-page .topbar-links { font-size:12px; } }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 '''
 
