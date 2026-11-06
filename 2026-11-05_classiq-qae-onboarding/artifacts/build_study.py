@@ -116,7 +116,7 @@ def course_page(units, english=False):
 <link rel="alternate" hreflang="ko" href="{BASE}lectures/classiq-qae-onboarding/">
 <link rel="alternate" hreflang="en" href="{BASE}lectures/classiq-qae-onboarding/en/">
 <link rel="alternate" hreflang="x-default" href="{BASE}lectures/classiq-qae-onboarding/">
-<link rel="stylesheet" href="{prefix}notes.css">
+<link rel="stylesheet" href="{prefix}notes.css?v=20261106-compact">
 </head><body>
 <header><nav><a href="{home}">{'Lecture notes' if english else '렉처 노트'}</a><a href="{alternate}" lang="{'ko' if english else 'en'}">{'한국어' if english else 'English'}</a></nav>
 <p class="eyebrow">{'INDEPENDENT STUDY · KOREAN PDFs' if english else '독립 학습 과정 · 한국어 PDF'}</p>
