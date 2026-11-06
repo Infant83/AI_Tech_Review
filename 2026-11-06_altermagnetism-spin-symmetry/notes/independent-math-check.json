@@ -1,0 +1,64 @@
+{
+  "checked_on": "2026-11-06",
+  "independence": "Python standard library only; no project builder imported; 2x2 block roots derived from direct 4x4 matrix trace/determinant, not numerical package eigenvalues.",
+  "analytic": {
+    "effective_C4": "f(-ky,kx)=-f(kx,ky), epsilon0(-ky,kx)=epsilon0(kx,ky); hence E_up(Rk)=E_down(k).",
+    "inversion": "f(-k)=f(k); each spin energy is even in momentum.",
+    "occupation": "The C4 change of integration variable maps the entire periodic BZ onto itself, so equal Fermi functions at common mu and T give exactly equal up/down occupations analytically.",
+    "signed_splitting": "E_up-E_down=2 Delta0 f; f in [-2,2], hence [-4 Delta0,+4 Delta0]=[-1.4t,+1.4t].",
+    "nodes": "cos(kx)=cos(ky), including kx=+/-ky modulo reciprocal periods.",
+    "Hsub": "For spin s the direct sublattice block is [[epsilon+df+sJ,t0],[t0,epsilon-df-sJ]]. Its determinant gives E=epsilon+eta sqrt(t0^2+(df+sJ)^2).",
+    "Hsub_symmetry": "U=tau_x sigma_x maps H(k) to H(Rk); the spin-flipped rotated roots agree.",
+    "Hsub_limits": "d=0, J=0, or f=0 makes paired spin roots identical; for d*J*f nonzero and t0=.8 they split. The upper-branch up-minus-down sign is sign(d*J*f); lower branch has opposite sign.",
+    "Berry": "A globally fixed spin basis gives no intrinsic charge Hall response in this ideal real diagonal model. Separate isolated-band Berry curvatures are undefined at degeneracies; the fixed-sector interpretation is sound.",
+    "finite_temperature_scope": "The chosen kBT is an occupation parameter with imposed order, not evidence for self-consistent finite-temperature order or a material transition temperature."
+  },
+  "effective_stdlib_grids": [
+    {
+      "N": 64,
+      "n_up": 0.32204416845890077,
+      "n_down": 0.32204416845890077,
+      "occupation_difference": 0.0,
+      "max_C4_residual": 0.0,
+      "max_inversion_residual": 0.0,
+      "max_node_splitting": 0.0,
+      "splitting_min": -1.4,
+      "splitting_max": 1.4
+    },
+    {
+      "N": 128,
+      "n_up": 0.3220506743733608,
+      "n_down": 0.3220506743733608,
+      "occupation_difference": 0.0,
+      "max_C4_residual": 0.0,
+      "max_inversion_residual": 0.0,
+      "max_node_splitting": 0.0,
+      "splitting_min": -1.4,
+      "splitting_max": 1.4
+    },
+    {
+      "N": 256,
+      "n_up": 0.3220506755991258,
+      "n_down": 0.3220506755991258,
+      "occupation_difference": 0.0,
+      "max_C4_residual": 0.0,
+      "max_inversion_residual": 0.0,
+      "max_node_splitting": 0.0,
+      "splitting_min": -1.4,
+      "splitting_max": 1.4
+    }
+  ],
+  "Hsub_checks": {
+    "sample_count": 257,
+    "random_seed": 291106,
+    "max_formula_vs_quadratic_root_error": 1.7763568394002505e-15,
+    "max_C4_matrix_covariance_error": 0.0,
+    "max_C4_spin_pair_error": 0.0,
+    "max_d_zero_splitting": 0.0,
+    "max_J_zero_splitting": 0.0,
+    "max_nodal_splitting": 0.0,
+    "max_upper_sign_violation": 0.0
+  },
+  "reported_128_and_256_occupations_match_tolerance": 1e-14,
+  "result": "PASS; manuscript signs and formulas agree with independent analytic and numerical checks."
+}

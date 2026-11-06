@@ -1,0 +1,53 @@
+{
+  "created": "2026-11-06",
+  "version": 2,
+  "status": "Watercolor B selected; bilingual article, PDF, caption, spin colors and output checks updated.",
+  "tool": "Built-in image_gen",
+  "model_identifier": "not retained",
+  "source_asset": "hero-watercolor-v2.png",
+  "final_asset": "hero.webp",
+  "native_dimensions": [
+    1672,
+    941
+  ],
+  "method": "Original watercolor generation from a verified CrSb/g-wave geometry reference, followed by a focused composition edit; WebP format conversion.",
+  "input_references": [
+    "cover-geometry-v2.png",
+    "cover-candidates/watercolor-a.png"
+  ],
+  "generation_prompt": "Create an original, beautiful WATERCOLOR scientific editorial illustration for an in-depth article on altermagnetism, landscape 16:9. The supplied image is a verified STRUCTURE AND SYMMETRY reference, not a style reference and not a layout to trace. Recompose it into one immersive diagonal scene with substantial scientific detail and depth. On warm ivory cotton paper, an opened hexagonal CrSb crystal recedes into the upper left, with four alternating magnetic layers, fine mineral planes and translucent lattice depth. At the forward cut edge, make TWO face-sharing CrSb6 coordination octahedra the large, compelling focal subject: two chromium centers stacked vertically, nine small ochre antimony ligand vertices arranged in three triangles, the middle triangle shared. Preserve the 60-degree rotation of the two local environments shown by the reference. The two Cr moments are collinear and opposite: a clear short blue upward arrow at the lower Cr center and a clear short terracotta downward arrow at the adjacent upper Cr center; leave a gap between arrowheads. In the receding crystal, show repeated counterparts of these real structural elements with fine pencil/ink edges and softer transparent paint, not a generic pile of decorative gems. The eye should discover atom sites, triangular ligand planes, shared faces, repeated layers and the opposite moments when looking closely. Above and to the right, integrate a large but secondary three-dimensional g-wave angular sign form, following the reference's blue/terracotta alternating lobes above and below an equatorial nodal cut. Upper and lower angular sectors reverse sign across the equator; keep the multiple vertical nodal divisions. This is a separate reciprocal-space representation, not an object inside the crystal. Compose the crystal and the angular form as a single scientific natural-history plate, using a rising diagonal, overlapping atmospheric washes and pencil construction rather than two isolated panels. Medium: genuinely transparent watercolor, visible wet-on-wet washes, granulating ultramarine, earthy burnt-sienna/terracotta, pale yellow ochre ligands, subtle slate-green structure shadows, restrained graphite or sepia details, varied soft and crisp edges, paper-white channels of light. Rich, lucid, hand-painted, refined and spacious yet structurally informative. The strongest edge contrast belongs to the foreground shared coordination environment, with the surrounding crystal giving context and depth. No dark purple field, neon glow, polished glass rendering, synthetic laser lines, rings/electron orbits, generic sci-fi background, text, labels, logos, numbers, or invented measured graphs. The only arrows are the verified magnetic moment vectors. Keep the essential crystal coordination and alternating g-wave sign geometry, and develop the composition, pigment and light artistically.",
+  "focused_edit_prompt": "Make one focused editorial-composition revision to this watercolor altermagnetism illustration. PRESERVE the beautiful ivory-paper watercolor palette, crystal cutaway, all foreground chromium/antimony coordination geometry and atom counts, the two opposite short collinear arrows, layered lattice detail, pigment granulation, lighting and precise foreground drawing. Change ONLY the upper-right reciprocal-space g-wave illustration and its immediate paper surroundings. Reduce that angular form by about 15–20 percent and move it slightly down and left so it joins the rising diagonal composition rather than floating as a detached logo. Situate the form on a very faint oblique graphite-and-wash construction sketch plane, like a mathematical study drawn on a lightly indicated translucent paper sheet, with a corner visually overlapping the crystal's cut-edge area. Keep this sketch-plane visibly a separate representation on the page, never a real atomic layer in the crystal. Use only a few delicate graphite construction arcs and traces to clarify the equatorial nodal plane and the three differently oriented vertical nodal planes; avoid a thick white plus-sign that makes the angular form read as four petals. Preserve the existing alternating blue/terracotta sign ordering in both hemispheres, with opposite signs above and below the equator and a fully three-dimensional multi-lobed form; do not flatten it into a six-petal flower. Let paper-white breathing spaces and fine faint projection marks integrate the drawing, not literal light rays, beams, material growing out of the crystal, or trajectories. No text, numbers, labels, logos or extra devices. All crystal atoms, coordination relationships, arrows, watercolor colors and the rest of the image must stay unchanged. Finished 16:9 landscape scientific watercolor, refined and informative.",
+  "scientific_geometry": {
+    "source_code": "artifacts/build_cover_seed_v2.py",
+    "checks": "artifacts/cover-geometry-v2-checks.json",
+    "crystal": "CrSb-inspired face-sharing coordination and opposite collinear moments",
+    "momentum": "g-wave angular sign model kz*ky*(3*kx^2-ky^2)",
+    "scope": "The generated watercolor is a conceptual projection, not a metric crystal model or a measured Fermi surface."
+  },
+  "palette": {
+    "paper": "warm ivory",
+    "spin_up": "blue",
+    "spin_down": "terracotta",
+    "ligands": "yellow ochre"
+  },
+  "expert_roles": {
+    "altermagnet_watercolor_art_director": "palette, watercolor medium, hierarchy and compositional integration",
+    "altermagnet_visual_physics": "coordination, shared ligand face, opposing moments and reciprocal-space interpretation",
+    "altermagnet_visual_story_editor": "scientific information, reading order and caption"
+  },
+  "expert_status": "AI specialist review roles, not external human expert review.",
+  "selection": {
+    "candidate_a": "Substantial information and watercolor improvement; reciprocal form remained visually detached.",
+    "candidate_b": "Selected after reducing the reciprocal form and placing it on a faint construction sheet, restoring foreground focus."
+  },
+  "checks": {
+    "foreground": "Two Cr centers, nine ochre ligand vertices, a shared triangular environment and opposing collinear arrows are visibly retained.",
+    "momentum": "Three-dimensional hemispheres and color reversal across the equator are retained; every occluded generated sector is not independently counted.",
+    "representation": "The separate sketch sheet distinguishes momentum-space symmetry from the real-space crystal.",
+    "thumbnail": "320 by 180 viewed; focal pair and crystal/sketch hierarchy remain visible.",
+    "grayscale": "Viewed; arrow direction and coordination edges retain structure, while sign color is supported by the caption.",
+    "full_size": "Layer repetition, ligand planes, fine coordination lines and reciprocal construction traces provide additional information at article size.",
+    "article_output": "Korean and English cover pages, mobile cover/caption, plot color convention and final disclosure pages visually checked; structural validation passed."
+  },
+  "sha256": "adb4df65edd84245c2603208dd9ac4ff99a87ba3ee62927285a7a4354d3dcee3"
+}

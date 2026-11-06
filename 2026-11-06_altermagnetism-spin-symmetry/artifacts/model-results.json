@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-06",
+  "kind": "Original idealized pedagogical calculation; no material-specific fit.",
+  "effective_model": {
+    "hamiltonian": "epsilon(k) I + Delta0 (cos(kx)-cos(ky)) sigma_z",
+    "epsilon": "-2 t (cos(kx)+cos(ky))",
+    "t": 1.0,
+    "Delta0": 0.35,
+    "chemical_potential": -1.0,
+    "kBT": 0.08,
+    "k_units": "inverse lattice constant; lattice constant=1",
+    "energy_units": "t",
+    "integration": "Uniform periodic BZ grid [-pi,pi)^2; occupation is mean Fermi occupation per spin and cell.",
+    "checks": [
+      {
+        "periodic_grid_N_per_axis": 128,
+        "sample_count": 16384,
+        "occupation_per_spin_per_cell": {
+          "up": 0.3220506743733608,
+          "down": 0.3220506743733609
+        },
+        "occupation_difference_up_minus_down": -5.551115123125783e-17,
+        "max_C4_spin_exchange_residual": 0.0,
+        "max_inversion_residual": 0.0,
+        "max_diagonal_node_splitting": 0.0,
+        "signed_splitting_min": -1.4,
+        "signed_splitting_max": 1.4
+      },
+      {
+        "periodic_grid_N_per_axis": 256,
+        "sample_count": 65536,
+        "occupation_per_spin_per_cell": {
+          "up": 0.32205067559912576,
+          "down": 0.3220506755991258
+        },
+        "occupation_difference_up_minus_down": -5.551115123125783e-17,
+        "max_C4_spin_exchange_residual": 0.0,
+        "max_inversion_residual": 0.0,
+        "max_diagonal_node_splitting": 0.0,
+        "signed_splitting_min": -1.4,
+        "signed_splitting_max": 1.4
+      },
+      {
+        "periodic_grid_N_per_axis": 512,
+        "sample_count": 262144,
+        "occupation_per_spin_per_cell": {
+          "up": 0.322050675599124,
+          "down": 0.322050675599124
+        },
+        "occupation_difference_up_minus_down": 0.0,
+        "max_C4_spin_exchange_residual": 0.0,
+        "max_inversion_residual": 0.0,
+        "max_diagonal_node_splitting": 0.0,
+        "signed_splitting_min": -1.4,
+        "signed_splitting_max": 1.4
+      }
+    ],
+    "absolute_occupation_changes_on_refinement": [
+      {
+        "from_N": 128,
+        "to_N": 256,
+        "up": 1.2257649339986187e-09
+      },
+      {
+        "from_N": 256,
+        "to_N": 512,
+        "up": 1.7763568394002505e-15
+      }
+    ],
+    "analytic_Berry_statement": "A globally fixed spin basis has constant eigenvectors within each spin sector, so this model has no intrinsic charge Hall response. No unique isolated energy-band Berry curvature is asserted at spin-degenerate crossings."
+  },
+  "two_sublattice_extension": {
+    "parameters_in_units_of_t": {
+      "d": 0.45,
+      "J": 0.7,
+      "t0": 0.8
+    },
+    "basis": "A-up, A-down, B-up, B-down",
+    "hamiltonian": "epsilon I + t0 tau_x + d (cos(kx)-cos(ky)) tau_z + J tau_z sigma_z",
+    "analytic_eigenvalues": "epsilon + eta sqrt(t0^2 + (d f + s J)^2), eta=+/-1, s=+/-1",
+    "sample_count": 1024,
+    "random_seed": 20261106,
+    "max_exact_eigenvalue_residual": 1.7763568394002505e-15,
+    "max_C4_matrix_covariance_residual": 0.0,
+    "max_C4_spin_exchange_residual": 0.0,
+    "max_spin_splitting_when_d_zero": 0.0,
+    "max_spin_splitting_when_J_zero": 0.0
+  },
+  "limits": [
+    "No magnetic ground-state selection or self-consistent order parameter.",
+    "No material structure, SOC, interactions, defects, lifetime or instrument model.",
+    "The finite kBT is an occupation-broadening parameter, not a prediction of finite-temperature magnetic order.",
+    "No inference of spin-injection efficiency, switching time or device gain."
+  ],
+  "reproduction": {
+    "packages": {
+      "numpy": "2.5.4",
+      "matplotlib": "3.11.2"
+    },
+    "text": "SVG text converted to font outlines with NanumGothic and STIX math."
+  }
+}
