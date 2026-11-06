@@ -1,4 +1,4 @@
-# Classiq QAE 온보딩·전문가 양성 과정
+# Classiq QAE 온보딩 시리즈
 
 책임 편집자 김현중 · AI 보조 OpenAI Codex · 공개판 기준일 2026-11-05
 
@@ -23,7 +23,13 @@
 - `reports/source-checks.json`: 웹 입구에서 인용한 공식 자료와 실제 확인 범위.
 - `reports/archive-entries.json`: 회차별 공개 등록 항목의 제작 기록.
 
-회차별 아카이브 ID는 `2026-11-01-classiq-qae-l001-notes-ko`, `2026-11-03-classiq-qae-l002-notes-ko`, `2026-11-05-classiq-qae-l003-notes-ko`다. 최신 L003을 `LECTURE_BUNDLES`의 안정적 웹 주소 `lectures/classiq-qae-onboarding/`에 연결한다. 한국어 입구는 학습 순서·유도 요약·재구성한 복습 문제·PDF의 전체 문제와 해설·필기 reader로 연결한다. 영어 입구는 한국어 자료에 대한 안내이며 전체 번역본이 아니다.
+회차별 아카이브 ID는 `2026-11-01-classiq-qae-l001-notes-ko`, `2026-11-03-classiq-qae-l002-notes-ko`, `2026-11-05-classiq-qae-l003-notes-ko`다. 최신 L003을 `LECTURE_BUNDLES`의 안정적 웹 주소 `lectures/classiq-qae-onboarding/`에 연결한다. 한국어 입구는 세 회차를 순서대로 보여주고 각 PDF·문제·해설·용어색인·필기 reader로 연결한다. 유도와 복습 본문은 PDF에서 읽는다. 영어 입구는 한국어 자료에 대한 안내이며 전체 번역본이 아니다.
+
+## 2026-11-06 회차 선택 화면 개편
+
+L003이 시리즈 전체를 대표하는 것처럼 보이던 웹 제목을 `Classiq QAE 온보딩 시리즈`로 바꿨다. `unit-registry.json`의 시리즈 제목·한영 소개와 회차 ID를 이용해 한 묶음으로 표시할 수 있게 했다. L003의 아카이브 제목은 해당 회차의 실제 주제로 바로잡았다.
+
+PDF와 중복되던 유도 요약·웹 복습·일반 문자열 수식을 덜어내고, L001→L003의 필기·PDF 열기·다운로드와 문제·해설·용어색인 쪽 바로가기를 남겼다. 기존 시리즈 주소와 단원 앵커를 유지한다. 별도 보충 코드·결과와 출처·작성 범위는 계속 제공하며, 공개판 PDF 25·20·19쪽의 바이트·해시는 바꾸지 않았다. 이 개편에서 원판 전체 계산이나 자료 대조를 새로 수행한 것으로 표시하지 않는다.
 
 ## 검산과 한계
 

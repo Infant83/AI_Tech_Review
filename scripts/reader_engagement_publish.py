@@ -93,7 +93,8 @@ def load_publications(site_dir: Path) -> tuple[list[dict], dict[str, dict]]:
         if document.get("series") != "lecture-notes":
             continue
         href = document.get("study_href") or document["href"]
-        article = publication("lecture:" + document["id"], href, document["title"], document["date"], "lecture")
+        title = document.get("study_series", {}).get("title") or document["title"]
+        article = publication("lecture:" + document["id"], href, title, document["date"], "lecture")
         articles.append(article)
         if document.get("study_href"):
             pages[href.rstrip("/") + "/index.html"] = article

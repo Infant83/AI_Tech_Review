@@ -96,6 +96,18 @@ class ReaderEnrichmentTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reader.validate_catalog({"revision": REVISION, "articles": oversized})
 
+    def test_grouped_lecture_uses_series_title_without_changing_publication_identity(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, _frontend = self.fixture(Path(temporary))
+            path = site / "archive-manifest.json"
+            archive = json.loads(path.read_text())
+            archive["documents"][0]["study_series"] = {"title": "Connected lecture series"}
+            path.write_text(json.dumps(archive))
+            articles, _pages = reader.load_publications(site)
+            lecture = next(article for article in articles if article["id"] == "lecture:lecture-one")
+            self.assertEqual(lecture["title"], "Connected lecture series")
+            self.assertEqual(lecture["path"], "/AI_Tech_Review/lectures/course/")
+
     def fixture(self, root: Path):
         site, frontend = root / "site", root / "frontend"
         site.mkdir()

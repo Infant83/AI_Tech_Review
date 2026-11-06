@@ -134,8 +134,8 @@
       "id": "2026-11-05-classiq-qae-l003-notes-ko",
       "date": "2026-11-05",
       "series": "lecture-notes",
-      "title": "Classiq QAE 온보딩: 관측량에서 시간발전으로",
-      "summary": "고객의 질문을 문제 명세로 바꾸고, 복소 벡터와 기저를 익힌 뒤 에너지 행렬에서 측정과 시간발전을 유도하는 한국어 독립 학습 과정입니다. 3회차 PDF에 문제·해설·용어색인을 수록했으며, 작은 고전 계산으로 정확한 기준값을 확인합니다.",
+      "title": "Classiq QAE L003: 에너지를 재는 행렬은 어떻게 게이트가 되는가",
+      "summary": "같은 에너지 행렬을 관측량으로 읽을 때와 게이트로 구현할 때 필요한 검사를 나눈다. 고유공간의 측정 확률, Pauli 전개, 정확한 시간발전과 세 회전 분해를 유도한 뒤 Euler 근사와 Trotter 곱공식의 오차를 비교한다. 8개 문제와 해설·용어색인, 공개판 안내를 포함한 19쪽 한국어 독립 학습 노트입니다.",
       "language": "ko",
       "tags": [
         "양자컴퓨팅",
@@ -144,24 +144,60 @@
         "선형대수",
         "렉처 노트"
       ],
-      "title_en": "Classiq QAE Onboarding: From Observables to Time Evolution",
-      "summary_en": "An independent Korean study course develops problem specifications, complex vectors and bases, then derives measurement and time evolution from an energy matrix. Three PDFs contain exercises, worked answers and glossaries, with small classical calculations providing exact reference values.",
+      "title_en": "Classiq QAE L003: Observables, Pauli operators and unitaries",
+      "summary_en": "Independent Korean study notes on observables, pauli operators and unitaries, with 8 exercises, worked answers and a glossary. Public edition: 19 pages.",
       "source_title": "Classiq QAE 독립 학습 과정 · L003 v1.0",
       "href": "archive/files/2026-11-05-classiq-qae-l003-notes-ko.pdf",
       "size_bytes": 419471,
       "sha256": "95d616b131447c3e9e71d29e41b71485eb8deaea4045399504f113f23cbeafb3",
       "study_href": "lectures/classiq-qae-onboarding/",
       "study_assets": {
-        "index.html": "1de0c9e2681306e25886ae0f79d59f32f4abb17ad2a458cf3bd417a993fa73e9",
-        "en/index.html": "9186d1744c81d0a7685f19d2e3466dbc06860e508537c0a101f01a4baedcf3a2",
-        "notes.css": "60e7a9d3b7df10bbb29155b1a3feb079d32583b375e181500ca1a77e22fd21b5",
+        "index.html": "a7b921529ee3fd13d08cae40aa5b9094d0592561b887acdfb0cd80e4df8183ad",
+        "en/index.html": "25086a466ce5a1627a4ccbcb14a347b1e0dd076d4885297bae1233dcb1a844ce",
+        "notes.css": "f2cb92c362346437ae652bb4e9606277541e0c71357ec93b618d755340e59134",
         "notes.pdf": "95d616b131447c3e9e71d29e41b71485eb8deaea4045399504f113f23cbeafb3",
-        "unit-registry.json": "adc28feb65df725df2eec1e2d402e685f7208ed130b252ac59ff3723acb7904c",
+        "unit-registry.json": "cde1c6213610798b205439cb143854880011637e67c0ae8a35854fe45e3a61c9",
         "2026-11-01-classiq-qae-l001-notes-ko.pdf": "00ea03ad83901393ad44491b6de484ec2ba5b3d0ad67b6a95032e0a2a4481f24",
         "2026-11-03-classiq-qae-l002-notes-ko.pdf": "251cae56b7143d302903076011a695101df35a9cf71d43ef4806e5459db0ebf4",
         "2026-11-05-classiq-qae-l003-notes-ko.pdf": "95d616b131447c3e9e71d29e41b71485eb8deaea4045399504f113f23cbeafb3",
         "labs/reference_checks.py": "0c6ab2b406e5703eb3816acbdad35b3abac302462e626d563b723b6cea5802e6",
         "labs/results/reference-checks.json": "44e1eaf3556c5903dd605052eff1c0ab592884f647fa4a0270a192e3f6b7ab5a"
+      },
+      "study_series": {
+        "series_id": "classiq-qae-onboarding",
+        "title": "Classiq QAE 온보딩 시리즈",
+        "title_en": "Classiq QAE Onboarding Series",
+        "summary": "문제 명세에서 복소 벡터·텐서곱, 관측량·시간발전으로 이어지는 3회차 독립 학습 과정입니다. 각 회차 PDF에서 유도·문제·해설을 읽고 필기할 수 있습니다.",
+        "summary_en": "Three independent Korean study units connect problem specifications, complex vectors and tensor products, then observables and time evolution. Read derivations, exercises and worked answers in each PDF and annotate it.",
+        "units": [
+          {
+            "number": "L001",
+            "document_id": "2026-11-01-classiq-qae-l001-notes-ko",
+            "title": "고객의 질문을 계산 가능한 문제로",
+            "title_en": "Problem specifications and first checks",
+            "date": "2026-11-01",
+            "pages": 25,
+            "href": "archive/files/2026-11-01-classiq-qae-l001-notes-ko.pdf"
+          },
+          {
+            "number": "L002",
+            "document_id": "2026-11-03-classiq-qae-l002-notes-ko",
+            "title": "복소 벡터에서 두 큐비트까지",
+            "title_en": "Complex vectors, bases and tensor products",
+            "date": "2026-11-03",
+            "pages": 20,
+            "href": "archive/files/2026-11-03-classiq-qae-l002-notes-ko.pdf"
+          },
+          {
+            "number": "L003",
+            "document_id": "2026-11-05-classiq-qae-l003-notes-ko",
+            "title": "에너지를 재는 행렬은 어떻게 게이트가 되는가",
+            "title_en": "Observables, Pauli operators and unitaries",
+            "date": "2026-11-05",
+            "pages": 19,
+            "href": "archive/files/2026-11-05-classiq-qae-l003-notes-ko.pdf"
+          }
+        ]
       }
     },
     {

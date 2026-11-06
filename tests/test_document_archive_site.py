@@ -466,6 +466,11 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             target = source / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(PDF_BYTES if name.endswith(".pdf") else (topic / "dist" / name).read_bytes())
+        registry_path = source / spec["unit_registry"]
+        fixture_registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        for unit in fixture_registry["units"]:
+            unit["sha256"] = hashlib.sha256(PDF_BYTES).hexdigest()
+        registry_path.write_text(json.dumps(fixture_registry), encoding="utf-8")
         (source / "private-intake.json").write_text("PRIVATE_MAIL_METADATA")
         spec["source"] = str(source)
         self.registry(documents)
@@ -489,6 +494,38 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertFalse(registry["original_validation_suite_independently_rerun"])
         self.assertEqual(registry["planned_next"]["status"], "planned-not-published")
         self.assertNotIn("PRIVATE_MAIL_METADATA", page + english)
+        self.assertNotIn('class="equation"', page + english)
+        self.assertNotIn('role="math"', page + english)
+        for lang, relative in (("ko", "index.html"), ("en", "en/index.html")):
+            catalog = (self.site / "lectures" / relative).read_text(encoding="utf-8")
+            self.assertEqual(catalog.count('class="lecture-card'), 1)
+            self.assertEqual(catalog.count('data-lecture-unit='), 3)
+            self.assertIn('data-lecture-series="classiq-qae-onboarding"', catalog)
+            self.assertIn("1 resources · 3 PDFs" if lang == "en" else "1개 자료 · PDF 3편", catalog)
+            self.assertNotIn("Online notes" if lang == "en" else "온라인 노트", catalog)
+            self.assertLess(catalog.index('data-lecture-unit="L001"'), catalog.index('data-lecture-unit="L002"'))
+            self.assertLess(catalog.index('data-lecture-unit="L002"'), catalog.index('data-lecture-unit="L003"'))
+            for document in documents:
+                self.assertIn("reader/?id=" + document["id"], catalog)
+                self.assertIn(document["file"], catalog)
+            parser = NavigationParser()
+            parser.feed(catalog)
+            current = next(a for a in parser.anchors if a.get("aria-current") == "page")
+            self.assertEqual(current["text"], "Lecture notes1" if lang == "en" else "렉처 노트1")
+        teaser = archive_site.render_learning_teaser(published)
+        self.assertIn(fixture_registry["title"], teaser)
+        self.assertIn("1개 자료", teaser)
+
+    def test_pdf_focused_catalog_retains_reader_and_source_without_duplicate_online_action(self) -> None:
+        document = archive_document("2026-11-04-quantum-computing-applications-lecture-notes-ko")
+        document.update(series="lecture-notes", href="archive/files/applications.pdf",
+                        study_href="lectures/quantum-computing-applications/")
+        for language in ("ko", "en"):
+            page = archive_site.render_lectures([document], BASE_URL, language)
+            self.assertNotIn("Online notes" if language == "en" else "온라인 노트", page)
+            self.assertIn("reader/?id=" + document["id"], page)
+            self.assertIn("archive/files/applications.pdf", page)
+            self.assertIn("PDF lecture notes" if language == "en" else "PDF 강의 노트", page)
 
     def test_classiq_catalog_uses_real_chapters_and_describes_illustrated_notes(self) -> None:
         document, bundles, _source = self.classiq_fixture()

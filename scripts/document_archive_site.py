@@ -25,7 +25,7 @@ SERIES = {
     "lecture-notes": ("렉처 노트", "Lecture notes"),
     "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261023-books"
+LIBRARY_ASSET_VERSION = "20261106-series"
 
 # The shared reader is application code, not a course or an article. Never copy
 # a source directory recursively: it may also contain tests or private notes.
@@ -41,6 +41,7 @@ LECTURE_BUNDLES = {
     "2026-11-05-classiq-qae-l003-notes-ko": {
         "source": "2026-11-05_classiq-qae-onboarding/dist",
         "href": "lectures/classiq-qae-onboarding/",
+        "unit_registry": "unit-registry.json",
         "start_anchor": "study-guide",
         "navigation": (("study-guide", "학습 안내"), ("units", "회차별 학습"), ("practice", "별도 재계산"), ("references", "출처")),
         "publication_note": (
@@ -60,6 +61,7 @@ LECTURE_BUNDLES = {
     "2026-11-04-quantum-computing-applications-lecture-notes-ko": {
         "source": "2026-11-04_quantum-computing-applications-lecture/dist",
         "href": "lectures/quantum-computing-applications/",
+        "catalog_online": False,
         "start_anchor": "book-toc",
         "navigation": (("book-toc", "목차"), ("answers", "문제 해설"), ("references", "출처")),
         "publication_note": (
@@ -213,9 +215,41 @@ def validate_lecture_reader(site_dir: Path, *, required: bool = True) -> list[st
     return errors
 
 
+def lecture_series_metadata(registry: dict, documents: list[dict], primary_id: str) -> dict:
+    """Derive a series display without changing PDF or publication identities."""
+    if registry.get("format") != "ai-tech-review-course-registry":
+        raise ValueError("Invalid lecture unit registry")
+    fields = ("series_id", "title", "title_en", "summary", "summary_en")
+    if not all(isinstance(registry.get(key), str) and registry[key].strip() for key in fields):
+        raise ValueError("Missing lecture series display metadata")
+    indexed = {doc["id"]: doc for doc in documents if doc["series"] == "lecture-notes"}
+    units, seen = [], set()
+    for unit in registry.get("units", []):
+        identifier = unit.get("archive_id")
+        document = indexed.get(identifier)
+        if (not document or identifier in seen or unit.get("sha256") != document["sha256"]
+                or unit.get("pdf") != Path(document["href"]).name
+                or not re.fullmatch(r"L[0-9]+", unit.get("id", ""))
+                or not isinstance(unit.get("public_pages"), int) or unit["public_pages"] < 1):
+            raise ValueError("Lecture series unit differs from its registered PDF")
+        seen.add(identifier)
+        units.append({"number": unit["id"], "document_id": identifier, "title": unit["title"],
+                      "title_en": unit["title_en"], "date": document["date"],
+                      "pages": unit["public_pages"], "href": document["href"]})
+    if primary_id not in seen or not units:
+        raise ValueError("Lecture series is missing its registered primary PDF")
+    return {**{key: registry[key] for key in fields}, "units": units}
+
+
+def grouped_lectures(documents: list[dict]) -> list[dict]:
+    lectures = [doc for doc in documents if doc["series"] == "lecture-notes"]
+    members = {unit["document_id"] for doc in lectures for unit in doc.get("study_series", {}).get("units", [])}
+    return [doc for doc in lectures if doc.get("study_series") or doc["id"] not in members]
+
+
 def render_library_navigation(documents: list[dict], area: str, language: str = "ko", prefix: str = "") -> str:
     en = language == "en"
-    count = sum(doc["series"] == "lecture-notes" for doc in documents)
+    count = len(grouped_lectures(documents))
     briefing_count = sum(doc["series"] in {"daily-quantum", "weekly-review"} for doc in documents)
     current = lambda key: ' aria-current="page"' if area == key else ""
     return (f'<nav class="hub-nav" aria-label="{"Site sections" if en else "콘텐츠 메뉴"}">'
@@ -229,11 +263,11 @@ def render_library_navigation(documents: list[dict], area: str, language: str = 
 
 
 def render_learning_teaser(documents: list[dict]) -> str:
-    lectures = [doc for doc in documents if doc["series"] == "lecture-notes"]
+    lectures = grouped_lectures(documents)
     recent = "".join(
         f'<li><time datetime="{escape(doc["date"])}">{escape(doc["date"])}</time>'
         f'<a href="{escape(doc.get("study_href") or doc["href"])}">'
-        f'{escape(doc["title"])}</a></li>'
+        f'{escape(doc.get("study_series", {}).get("title") or doc["title"])}</a></li>'
         for doc in lectures[:2]
     )
     return f'''<section class="archive-preview" aria-labelledby="learning-preview-title">
@@ -346,15 +380,46 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
 </body></html>'''
 
 
+def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
+    en = language == "en"
+    series = doc["study_series"]
+    title = series["title_en" if en else "title"]
+    summary = series["summary_en" if en else "summary"]
+    course = prefix + doc["study_href"] + ("en/" if en else "")
+    units = []
+    for unit in series["units"]:
+        number = escape(unit["number"])
+        reader = escape(lecture_reader_href(unit["document_id"], prefix=prefix, language=language))
+        pdf = escape(prefix + unit["href"])
+        pages_label = f"{unit['pages']} pages" if en else f"{unit['pages']}쪽"
+        units.append(f'''<li data-lecture-unit="{number}">
+          <h3><span>{number}</span> {escape(unit['title_en' if en else 'title'])}</h3>
+          <p class="lecture-unit-meta"><time datetime="{escape(unit['date'])}">{escape(unit['date'])}</time> · PDF {pages_label}</p>
+          <div class="lecture-actions"><a class="lecture-primary" href="{reader}" aria-label="{number} {'Read and annotate' if en else '필기하며 읽기'}">{'Read &amp; annotate' if en else '필기하며 읽기'} →</a>
+          <a class="lecture-secondary" href="{pdf}" target="_blank" rel="noopener" aria-label="{number} {'Open PDF' if en else 'PDF 열기'}">{'Open PDF' if en else 'PDF 열기'} ↗</a>
+          <a class="lecture-secondary" href="{pdf}" download aria-label="{number} {'Download PDF' if en else 'PDF 다운로드'}">{'Download' if en else '다운로드'} ↓</a></div>
+        </li>''')
+    page_count = sum(u['pages'] for u in series['units'])
+    facts = f"{len(units)} units · PDF {page_count} pages" if en else f"{len(units)}회차 · PDF {page_count}쪽"
+    return f'''<article class="lecture-card lecture-featured lecture-series" data-lecture-series="{escape(series['series_id'])}">
+      <div class="lecture-meta"><span class="lecture-format">{'PDF lecture series' if en else 'PDF 강의 시리즈'}</span><span>{'Korean' if en else '한국어'}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
+      <h2><a href="{escape(course)}">{escape(title)}</a></h2><p class="lecture-summary">{escape(summary)}</p>
+      <p class="lecture-facts">{facts}</p>
+      <ol class="lecture-units" aria-label="{'Series units' if en else '시리즈 회차'}">{''.join(units)}</ol>
+    </article>'''
+
+
 def render_lectures(documents: list[dict], base_url: str, language: str = "ko") -> str:
     en = language == "en"
     prefix = "../../" if en else "../"
-    lectures = [doc for doc in documents if doc["series"] == "lecture-notes"]
+    lectures = grouped_lectures(documents)
+    pdf_count = sum(doc["series"] == "lecture-notes" for doc in documents)
     title = "Lecture notes" if en else "렉처 노트"
     description = ("Study concepts, work through derivations and practice with examples. Choose a series to begin."
                    if en else "개념을 읽고, 수식을 풀고, 예제와 실습으로 이해를 확인합니다. 공부할 주제를 골라 시작하세요.")
     canonical = base_url + "lectures/" + ("en/" if en else "")
-    count_label = f"{len(lectures)} learning resources" if en else f"{len(lectures)}개 학습 자료"
+    count_label = (f"{len(lectures)} resources · {pdf_count} PDFs" if en
+                   else f"{len(lectures)}개 자료 · PDF {pdf_count}편")
     intros = {
         "2026-10-22-classiq-talk-series-notes-ko": (
             "Classiq의 다시보기 네 회를 따라 모델링·회로 합성·실행·결과 해석을 공부합니다. 실제 질의응답과 복습 풀이, 발표 화면과 개념 도식을 함께 수록했습니다.",
@@ -368,7 +433,11 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
     }
     cards = []
     for doc in lectures:
+        if doc.get("study_series"):
+            cards.append(render_lecture_series(doc, prefix, language))
+            continue
         study = prefix + doc["study_href"] if doc.get("study_href") else ""
+        online = bool(study) and LECTURE_BUNDLES.get(doc["id"], {}).get("catalog_online", True)
         pdf = prefix + doc["href"]
         reader = escape(lecture_reader_href(doc["id"], prefix=prefix, language=language))
         doc_title = doc.get("title_en") if en else doc["title"]
@@ -376,7 +445,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
         summary = intros.get(doc["id"], (doc["summary"], doc.get("summary_en") or doc["summary"]))[int(en)]
         title_language = "en" if en and doc.get("title_en") else doc["language"]
         summary_language = "en" if en and (doc.get("summary_en") or doc["id"] in intros) else doc["language"]
-        format_label = ("Online notes + labs" if en else "온라인 노트 · 실습") if study else ("PDF lecture notes" if en else "PDF 강의 노트")
+        format_label = ("Online notes + labs" if en else "온라인 노트 · 실습") if online else ("PDF lecture notes" if en else "PDF 강의 노트")
         if doc["id"] == "2026-10-22-classiq-talk-series-notes-ko" and study:
             format_label = "Illustrated online notes" if en else "온라인 노트 · 그림 해설"
         native = ({"ko": "Korean", "en": "English"} if en else {"ko": "한국어", "en": "영어"})[doc["language"]]
@@ -402,12 +471,12 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
                                           ("chapter-4", "Finance foundations" if en else "금융 기초"),
                                           ("chapter-7", "Review questions and solutions" if en else "복습 질문과 풀이")]) + '</div>'
         actions = f'<a class="lecture-primary" href="{reader}">{"Read &amp; annotate" if en else "필기하며 읽기"} →</a>'
-        if study:
+        if online:
             start_anchor = LECTURE_BUNDLES.get(doc["id"], {}).get("start_anchor", "doc-study-guide")
             actions += f'<a class="lecture-secondary" href="{escape(study)}#{escape(start_anchor)}">{"Online notes" if en else "온라인 노트"} →</a>'
         actions += (f'<a class="lecture-secondary" href="{escape(pdf)}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a>'
                     f'<a class="lecture-secondary" href="{escape(pdf)}" download>{"Download" if en else "다운로드"} ↓</a>')
-        cards.append(f'''<article class="lecture-card{' lecture-featured' if study else ''}">
+        cards.append(f'''<article class="lecture-card{' lecture-featured' if online else ''}">
           <div class="lecture-meta"><span class="lecture-format">{format_label}</span><span>{native}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
           <h2 lang="{title_language}"><a href="{reader}">{escape(doc_title)}</a></h2>
           <p class="lecture-summary" lang="{summary_language}">{escape(summary)}</p>
@@ -437,7 +506,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
         </section>
       </header>
       <main><section class="lecture-list" aria-label="{'Choose learning material' if en else '학습 자료 선택'}">{''.join(cards)}</section>
-        <footer class="lecture-note"><p>{'Each series retains its original language. The English catalog is a guide to the Korean notes.' if en else '온라인 노트는 본문에서 공부하고, PDF 강의 노트는 파일을 열어 읽습니다. 각 자료의 작성 범위와 한계는 본문에서 확인할 수 있습니다.'}</p>
+        <footer class="lecture-note"><p>{'Each series retains its original language. The English catalog is a guide to the Korean notes.' if en else '회차별 PDF를 읽거나 필기하며 공부할 수 있습니다. 각 자료의 작성 범위와 출처는 PDF와 자료 안내에 남깁니다.'}</p>
         <a href="{prefix}archive/{'en/' if en else ''}">{'Find all preserved PDFs in the archive' if en else '전체 PDF 보관본 찾기'} →</a></footer>
       </main></body></html>'''
 
@@ -472,10 +541,13 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
     index = destination / "index.html"
     text = index.read_text(encoding="utf-8")
     canonical = base_url + href
+    series = json.loads((destination / spec["unit_registry"]).read_text(encoding="utf-8")) if spec.get("unit_registry") else {}
+    display_title = series.get("title") or document["title"]
+    display_summary = series.get("summary") or document["summary"]
     metadata = (f'<link rel="canonical" href="{escape(canonical)}">'
                 f'<meta property="og:type" content="article">'
-                f'<meta property="og:title" content="{escape(document["title"])}">'
-                f'<meta property="og:description" content="{escape(document["summary"])}">'
+                f'<meta property="og:title" content="{escape(display_title)}">'
+                f'<meta property="og:description" content="{escape(display_summary)}">'
                 f'<meta property="og:url" content="{escape(canonical)}">')
     prefix = posixpath.relpath(".", href.rstrip("/")) + "/"
     navigation_links = spec.get("navigation", (
@@ -542,6 +614,9 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
                 # Only derived, public fields leave the source registry.
                 document["study_href"] = spec["href"]
                 document["study_assets"] = {name: hashlib.sha256((staged / name).read_bytes()).hexdigest() for name in spec["files"]}
+                if spec.get("unit_registry"):
+                    registry = json.loads((staged / spec["unit_registry"]).read_text(encoding="utf-8"))
+                    document["study_series"] = lecture_series_metadata(registry, documents, source["id"])
                 lecture_outputs.append((staged, site_dir / spec["href"]))
         for lang, prefix in (("ko", "../"), ("en", "../../")):
             page = temporary_root / "lectures" / ("en/index.html" if lang == "en" else "index.html")
@@ -611,6 +686,13 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
                 errors.append(f"lecture asset checksum mismatch: {name}")
         if (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
             errors.append(f"lecture PDF differs from archive: {document['id']}")
+        if spec.get("unit_registry"):
+            try:
+                registry = json.loads((root / spec["unit_registry"]).read_text(encoding="utf-8"))
+                if document.get("study_series") != lecture_series_metadata(registry, documents, document["id"]):
+                    errors.append(f"lecture series metadata differs from registry: {document['id']}")
+            except (OSError, ValueError, KeyError, TypeError):
+                errors.append(f"invalid lecture series registry: {document['id']}")
     return errors
 
 
@@ -707,6 +789,14 @@ ARCHIVE_CSS = '''
 .lecture-card h2 a:hover { color:var(--green); text-decoration:underline; text-underline-offset:4px; }
 .lecture-summary { max-width:820px; color:var(--muted); font-size:15px; line-height:1.8; margin:0 0 18px; word-break:keep-all; overflow-wrap:anywhere; }
 .lecture-facts { display:flex; flex-wrap:wrap; list-style:none; gap:8px 18px; padding:0; margin:0 0 20px; color:var(--ink); font-size:13px; font-weight:650; }
+.lecture-units { list-style:none; padding:0; margin:0; }
+.lecture-units>li { border-top:1px solid var(--line); padding:18px 0; }
+.lecture-units>li:last-child { padding-bottom:0; }
+.lecture-units h3 { margin:0 0 6px; font-size:18px; line-height:1.55; overflow-wrap:anywhere; }
+.lecture-units h3 span { color:var(--green); margin-right:7px; font-size:14px; }
+.lecture-unit-meta { margin:0 0 12px; color:var(--muted); font-size:12px; }
+.lecture-units .lecture-actions { gap:8px; }
+.lecture-units .lecture-actions a { font-size:13px; padding:9px 11px; }
 .lecture-actions { display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
 .lecture-actions a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 17px; border-radius:7px; text-decoration:none; font-size:14px; font-weight:700; }
 .lecture-primary { background:var(--green); color:white; }
