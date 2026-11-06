@@ -25,7 +25,7 @@ SERIES = {
     "lecture-notes": ("렉처 노트", "Lecture notes"),
     "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261106-compact-series"
+LIBRARY_ASSET_VERSION = "20261106-series-summaries"
 
 # The shared reader is application code, not a course or an article. Never copy
 # a source directory recursively: it may also contain tests or private notes.
@@ -235,6 +235,8 @@ def lecture_series_metadata(registry: dict, documents: list[dict], primary_id: s
         seen.add(identifier)
         units.append({"number": unit["id"], "document_id": identifier, "title": unit["title"],
                       "title_en": unit["title_en"], "date": document["date"],
+                      "summary": unit.get("summary") or document["summary"],
+                      "summary_en": unit.get("summary_en") or document.get("summary_en") or document["summary"],
                       "pages": unit["public_pages"], "href": document["href"]})
     if primary_id not in seen or not units:
         raise ValueError("Lecture series is missing its registered primary PDF")
@@ -395,6 +397,7 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
         units.append(f'''<li data-lecture-unit="{number}">
           <h3><span>{number}</span> {escape(unit['title_en' if en else 'title'])}</h3>
           <p class="lecture-unit-meta"><time datetime="{escape(unit['date'])}">{escape(unit['date'])}</time> · PDF {pages_label}</p>
+          <p class="lecture-unit-summary">{escape(unit['summary_en' if en else 'summary'])}</p>
           <div class="lecture-actions"><a class="lecture-primary" href="{reader}" aria-label="{number} {'Read and annotate' if en else '필기하며 읽기'}">{'Annotate' if en else '필기'} →</a>
           <a class="lecture-secondary" href="{pdf}" target="_blank" rel="noopener" aria-label="{number} {'Open PDF' if en else 'PDF 열기'}">PDF ↗</a>
           <a class="lecture-secondary" href="{pdf}" download aria-label="{number} {'Download PDF' if en else 'PDF 다운로드'}">{'Download' if en else '다운로드'} ↓</a></div>
@@ -405,8 +408,9 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
       <details class="lecture-series-disclosure"><summary>
       <div class="lecture-meta"><span class="lecture-format">{'PDF lecture series' if en else 'PDF 강의 시리즈'}</span><span>{'Korean' if en else '한국어'}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
       <h2>{escape(title)}</h2>
+      <p class="lecture-summary">{escape(summary)}</p>
       <div class="lecture-series-summary"><span class="lecture-facts">{facts}</span><span class="lecture-series-toggle"><span class="series-show">{'View units' if en else '회차 보기'}</span><span class="series-hide">{'Hide units' if en else '회차 접기'}</span><span class="series-chevron" aria-hidden="true"></span></span></div>
-      </summary><p class="lecture-summary">{escape(summary)}</p>
+      </summary>
       <ol class="lecture-units" aria-label="{'Series units' if en else '시리즈 회차'}">{''.join(units)}</ol>
       <a class="lecture-series-index" href="{escape(course)}">{'Series guide' if en else '자료 안내'} →</a></details>
     </article>'''
@@ -798,6 +802,7 @@ ARCHIVE_CSS = '''
 .lecture-units h3 { margin:0 0 3px; font-size:16px; line-height:1.55; overflow-wrap:anywhere; }
 .lecture-units h3 span { color:var(--green); margin-right:7px; font-size:14px; }
 .lecture-unit-meta { margin:0 0 3px; color:var(--muted); font-size:11px; }
+.lecture-unit-summary { max-width:760px; margin:6px 0 4px; color:var(--muted); font-size:13px; line-height:1.75; word-break:keep-all; overflow-wrap:anywhere; }
 .lecture-actions { display:flex; flex-wrap:wrap; align-items:center; gap:0 16px; }
 .lecture-actions a { display:inline-flex; align-items:center; justify-content:flex-start; min-height:44px; min-width:44px; padding:2px 0; text-decoration:none; font-size:13px; font-weight:650; }
 .lecture-primary { background:transparent; color:var(--green); }

@@ -12,21 +12,27 @@ TITLE = 'Classiq QAE 온보딩 시리즈'
 EN_TITLE = 'Classiq QAE Onboarding Series'
 SUMMARY = ('문제 명세에서 복소 벡터·텐서곱, 관측량·시간발전으로 이어지는 3회차 독립 학습 과정입니다. '
            '각 회차 PDF에서 유도·문제·해설을 읽고 필기할 수 있습니다.')
-EN_SUMMARY = ('Three independent Korean study units connect problem specifications, complex vectors and tensor products, '
+EN_SUMMARY = ('This independent Korean study series connects problem specifications, complex vectors and tensor products, '
               'then observables and time evolution. Read derivations, exercises and worked answers in each PDF and annotate it.')
 DETAILS = {
     'L001': dict(
         short='문제 명세와 첫 검산', en='Problem specifications and first checks',
+        summary='고객이 원하는 결과를 입력·출력·허용오차로 명세하고, 두 준위 모형의 고유값과 변분 상태의 에너지 기댓값을 비교합니다.',
+        summary_en='Specify the desired result through inputs, outputs and tolerances, then compare the eigenvalues of a two-level model with the energy expectation of a variational state.',
         topics=['문제 명세', '고전 기준선', 'Hamiltonian', 'VQE', '제약·벌점', '금융·전자구조'],
         exercise_count=6, exercise_page=20, answer_page=21, glossary_page=22, reference_page=23,
         intro='고객이 원하는 물성이나 비용을 먼저 입력·출력·허용오차로 적는다. 두 준위 Hamiltonian의 정확 고유값과 변분 상태의 기댓값을 비교한 뒤, 같은 비교 조건을 최적화·금융·AMS/ADF·OLED 사례에 적용한다.'),
     'L002': dict(
         short='복소 벡터·기저·텐서곱', en='Complex vectors, bases and tensor products',
+        summary='복소 내적과 기저 변환을 익히고, 텐서곱으로 두 큐비트 상태를 구성합니다. 기저를 바꾼 좌표와 실제 상태의 변화를 구별합니다.',
+        summary_en='Learn complex inner products and changes of basis, then construct two-qubit states with tensor products. Distinguish a change of coordinates from a change of state.',
         topics=['복소 내적', '정규화', '상대 위상', '기저 변환', '텐서곱', 'AO 중첩 행렬'],
         exercise_count=8, exercise_page=16, answer_page=16, glossary_page=18, reference_page=19,
         intro='복소 내적의 켤레와 정규화에서 출발해 같은 상태의 좌표를 바꾸는 일과 상태 자체를 바꾸는 일을 구별한다. 두 큐비트의 계 순서와 텐서곱을 계산하고, 비직교 AO 기저의 겹침 행렬을 선택 읽기로 연결한다.'),
     'L003': dict(
         short='관측량·Pauli·유니터리', en='Observables, Pauli operators and unitaries',
+        summary='에너지 행렬을 관측량으로 읽고 유니터리 시간발전으로 옮기는 과정을 다룹니다. Euler·Trotter 근사의 오차를 작은 행렬로 확인합니다.',
+        summary_en='Study an energy matrix as an observable and use it to construct unitary time evolution. Examine Euler and Trotter approximation errors with small matrices.',
         topics=['선형 연산자', 'Hermitian', '고유값', 'Pauli 전개', '시간발전', 'Euler·Trotter'],
         exercise_count=8, exercise_page=15, answer_page=15, glossary_page=17, reference_page=18,
         intro='같은 에너지 행렬을 관측량으로 읽을 때와 게이트로 구현할 때 필요한 검사를 나눈다. 고유공간의 측정 확률, Pauli 전개, 정확한 시간발전과 세 회전 분해를 유도한 뒤 Euler 근사와 Trotter 곱공식의 오차를 비교한다.'),
@@ -41,7 +47,7 @@ REFERENCES = [
     ('J. Preskill, Lecture Notes for Ph219/CS219: Quantum Information, Chapter 2: Foundations I: States and Ensembles (July 2015).', 'https://www.preskill.caltech.edu/ph219/chap2_15.pdf'),
     ('A. M. Childs, Y. Su, M. C. Tran, N. Wiebe, and S. Zhu, Theory of Trotter error with commutator scaling, Phys. Rev. X 11, 011020 (2021).', 'https://doi.org/10.1103/PhysRevX.11.011020'),
 ]
-CSS = '''*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f6;color:#20313c;font:17px/1.8 system-ui,-apple-system,sans-serif}header,main,footer{max-width:980px;margin:auto;padding:28px}header{padding-top:42px;border-bottom:1px solid #d9dedc}h1{font:700 clamp(29px,5vw,43px)/1.3 Georgia,serif;margin:16px 0}h2{font-size:25px;line-height:1.4;margin-top:0}h3{font-size:21px;line-height:1.5;margin:10px 0 16px}a{color:#096e6b;text-underline-offset:3px}nav,.actions,.pdf-sections{display:flex;flex-wrap:wrap;gap:8px 12px}.eyebrow{color:#69776e;font-size:13px;letter-spacing:.06em}.meta,.pdf-sections{color:#5c6c70;font-size:14px}section{margin-bottom:38px;scroll-margin-top:24px}article{background:white;border:1px solid #d9dedc;padding:24px;margin:16px 0;border-radius:10px;scroll-margin-top:24px}.actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:2px 0;border:0;text-decoration:none;font-size:13px;font-weight:650}.actions .primary{color:#096e6b}.actions a:hover{text-decoration:underline;text-underline-offset:4px}.pdf-sections{margin-top:12px;gap:4px 20px}.pdf-sections a{display:inline-flex;align-items:center;min-height:44px}details{border-top:1px solid #d9dedc;padding-top:16px}summary{cursor:pointer;font-weight:650;min-height:44px}details p{font-size:14px;color:#5c6c70}ol.references{padding-left:24px;font-size:14px}.references li{padding:6px 0;overflow-wrap:anywhere}code{overflow-wrap:anywhere}footer{border-top:1px solid #d9dedc;font-size:14px}header p,article p,footer{word-break:keep-all;overflow-wrap:anywhere}@media(max-width:600px){body{font-size:16px}header,main,footer{padding:24px 18px}header{padding-top:28px}article{padding:18px}h2{font-size:23px}h3{font-size:20px}.actions{gap:0 16px}.actions a{font-size:13px;padding:2px 0}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}'''
+CSS = '''*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f6;color:#20313c;font:17px/1.8 system-ui,-apple-system,sans-serif}header,main,footer{max-width:980px;margin:auto;padding:28px}header{padding-top:42px;border-bottom:1px solid #d9dedc}h1{font:700 clamp(29px,5vw,43px)/1.3 Georgia,serif;margin:16px 0}h2{font-size:25px;line-height:1.4;margin-top:0}h3{font-size:21px;line-height:1.5;margin:10px 0 16px}a{color:#096e6b;text-underline-offset:3px}nav,.actions,.pdf-sections{display:flex;flex-wrap:wrap;gap:8px 12px}.eyebrow{color:#69776e;font-size:13px;letter-spacing:.06em}.meta,.pdf-sections{color:#5c6c70;font-size:14px}section{margin-bottom:38px;scroll-margin-top:24px}article{background:white;border:1px solid #d9dedc;padding:24px;margin:16px 0;border-radius:10px;scroll-margin-top:24px}.unit-summary{font-size:15px;line-height:1.75;color:#5c6c70;margin:0 0 12px}.actions a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:2px 0;border:0;text-decoration:none;font-size:13px;font-weight:650}.actions .primary{color:#096e6b}.actions a:hover{text-decoration:underline;text-underline-offset:4px}.pdf-sections{margin-top:12px;gap:4px 20px}.pdf-sections a{display:inline-flex;align-items:center;min-height:44px}details{border-top:1px solid #d9dedc;padding-top:16px}summary{cursor:pointer;font-weight:650;min-height:44px}details p{font-size:14px;color:#5c6c70}ol.references{padding-left:24px;font-size:14px}.references li{padding:6px 0;overflow-wrap:anywhere}code{overflow-wrap:anywhere}footer{border-top:1px solid #d9dedc;font-size:14px}header p,article p,footer{word-break:keep-all;overflow-wrap:anywhere}@media(max-width:600px){body{font-size:16px}header,main,footer{padding:24px 18px}header{padding-top:28px}article{padding:18px}h2{font-size:23px}h3{font-size:20px}.actions{gap:0 16px}.actions a{font-size:13px;padding:2px 0}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}'''
 
 
 def escape(value):
@@ -70,6 +76,7 @@ def unit_card(unit, english=False):
     return f'''<article id="unit-{unit['id'].lower()}">
   <p class="eyebrow">{unit['id']} · <time datetime="{unit['date']}">{unit['date']}</time> · {page_label}</p>
   <h3>{escape(title)}</h3>
+  <p class="unit-summary">{escape(unit['summary_en' if english else 'summary'])}</p>
   <div class="actions">{buttons}</div>
   <div class="pdf-sections">{sections}</div>
 </article>'''
@@ -116,7 +123,7 @@ def course_page(units, english=False):
 <link rel="alternate" hreflang="ko" href="{BASE}lectures/classiq-qae-onboarding/">
 <link rel="alternate" hreflang="en" href="{BASE}lectures/classiq-qae-onboarding/en/">
 <link rel="alternate" hreflang="x-default" href="{BASE}lectures/classiq-qae-onboarding/">
-<link rel="stylesheet" href="{prefix}notes.css?v=20261106-compact">
+<link rel="stylesheet" href="{prefix}notes.css?v=20261106-summaries">
 </head><body>
 <header><nav><a href="{home}">{'Lecture notes' if english else '렉처 노트'}</a><a href="{alternate}" lang="{'ko' if english else 'en'}">{'한국어' if english else 'English'}</a></nav>
 <p class="eyebrow">{'INDEPENDENT STUDY · KOREAN PDFs' if english else '독립 학습 과정 · 한국어 PDF'}</p>
@@ -146,6 +153,7 @@ def main():
             raise ValueError('Public PDF differs from approved edition: ' + record['file'])
         units.append(dict(
             id=unit, date=record['date'], title=record['title'], title_en=detail['en'], archive_id=document_id,
+            summary=detail['summary'], summary_en=detail['summary_en'],
             status='available', language='ko', pdf=record['file'], public_pages=record['public_pages'],
             original_pages=record['source_pages'], sha256=record['public_sha256'], topics=detail['topics'],
             exercises=detail['exercise_count'], exercise_pdf_page=detail['exercise_page'], answer_pdf_page=detail['answer_page'],
