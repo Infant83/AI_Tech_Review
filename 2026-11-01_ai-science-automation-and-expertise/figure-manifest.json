@@ -1,28 +1,69 @@
 {
   "review": "2026-11-01_ai-science-automation-and-expertise",
   "date": "2026-11-01",
-  "status": "paragraph-context prose revision published and HTTPS payloads verified",
+  "status": "2026-11-06 cover redesign artifacts and bilingual publication package validated",
   "cover": {
-    "tool": "built-in image_gen",
-    "model_id": "not retained",
-    "source_image_input": "none",
-    "prompt_file": "artifacts/hero-prompt.txt",
-    "original_size": [
+    "revision": "2026-11-06 redesign",
+    "file": "artifacts/hero.webp",
+    "original_generated_asset": "artifacts/hero-redesign-2026-11-06.png",
+    "kind": "AI-generated conceptual editorial illustration",
+    "tool": "OpenAI built-in image_gen",
+    "exact_model_identifier": "not retained",
+    "design_rules": "COVER_ART_DIRECTION.md version 1.2",
+    "source_dimensions": [
       1672,
       941
     ],
-    "final_size": [
+    "publication_dimensions": [
       1664,
       936
     ],
-    "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
-    "postprocessing": "Minor edge fit to exact 16:9 and WebP encoding; semantic content unchanged; no source metadata copied",
-    "review": "Root inspected original, 320x180 thumbnail, grayscale and recent-four montage; final bilingual desktop/mobile and PDF output inspected. Conceptual limits stated in caption; grayscale requires caption to explain energy separation.",
-    "file": "artifacts/hero.webp",
-    "kind": "AI-generated conceptual illustration",
-    "meaning": "Separation of combined information and selection of observations relevant to a physical question",
-    "scope": "Not an actual optical instrument, electronic spectrum or LDOS measurement",
-    "prompt": "Use case: stylized-concept\nAsset type: original 16:9 editorial cover for an accessible science review about AI automation in quantum and materials research, and the choice of physical validation criteria.\nPrimary request: one broad milky-white band of light meets a simple translucent triangular prism and spreads into distinguishable soft colour bands beyond it. A small restrained brass observation slit beside the spread makes the act of selecting what to inspect legible. Keep the incoming band, prism and spread visibly connected. The scientific idea is that information combined into one impression can conceal differences that a more discriminating observation reveals. This is a conceptual material metaphor, not a real instrument, data plot or electronic spectrum.\nStyle and medium: carefully hand-painted gouache and translucent watercolour on warm rough cotton paper. Quiet editorial illustration with tactile brush edges, a clear sculptural focal form and spacious composition; avoid photorealistic product advertising and glossy sci-fi renderings.\nComposition: wide landscape 16:9, one coherent scene on a spare matte work surface, all important relationships inside the central safe area for thumbnails and mobile. Soft shadows and tonal separation should preserve the main relationship in grayscale. The prism is the focal point; the slit is a small secondary element.\nPalette: warm ivory, deep muted indigo, restrained teal, ochre and terracotta colour separation; no neon glow. Band count and width have no numerical meaning.\nConstraints: no text, letters, numerals, equations, axis marks, charts, logos or watermark. No robot, brain, computer circuitry, people, padlock or shields. No invented measured results, no actual molecular structure or apparatus claim. No imitation of a named artist or publication's distinctive artwork. Opaque background.\n"
+    "postprocessing": "Centered maximum-inscribed exact 16:9 trim of at most 8 horizontal and 5 vertical edge pixels, followed by RGB WebP encoding; no stretching or semantic retouch. Generated PNG remains unchanged.",
+    "sha256": "ced1a5ba968c9cfe5dba09e87795b6a8126c0bac89ca61935dba3a330d646b6a",
+    "source_sha256": "c41db52c35704e2f45eabaafc11f8acb0fb1660740d45e61e6790ae59dd809ff",
+    "prompt_file": "artifacts/hero-prompt.txt",
+    "prompt_files": [
+      "artifacts/hero-redesign-2026-11-06-prompt.txt"
+    ],
+    "caption": {
+      "ko": "거리가 달라지는 원자쌍을 반복 배치한 작업대에서 연구자가 겹친 정보 층을 골라 대조한다. 반복 계산의 자동화와 질문에 맞춘 물리량·참조값의 검증을 연결한 AI 생성 개념 일러스트다. 실제 장치나 계산 자료를 그린 것은 아니다.",
+      "en": "On a workbench of repeated atomic pairs at different separations, a researcher selects and compares layers of information. This AI-generated conceptual illustration connects automated repeated calculations with checking physical quantities and references chosen for a scientific question. It depicts neither an actual apparatus nor computed data."
+    },
+    "alt": {
+      "ko": "거리별 두 원자 모형이 이어진 작업대 앞에서 연구자의 손이 곡선 무늬가 다른 투명 판들을 골라 대조하는 회화적 장면.",
+      "en": "A painted research workbench shows pairs of atoms at different separations while a hand selects translucent sheets bearing different contour patterns for comparison."
+    },
+    "art_references": [
+      {
+        "artist": "Charles Sheeler",
+        "work": "American Landscape",
+        "date": "1930",
+        "url": "https://www.moma.org/collection/works/79032?locale=en",
+        "role": "Actual work image and official metadata viewed; structured perspective, functional relationships and crisp planes analysed, no pixels supplied to generation."
+      }
+    ],
+    "reference_artwork_pixels_used": false,
+    "generation_record": "artifacts/hero-redesign-2026-11-06.json",
+    "history": "artifacts/cover-history-2026-11-06/",
+    "roles": {
+      "root": "Editorial selection and independent final scientific/artistic cover review",
+      "weekly_cover_publication": "Bilingual source, exact16:9 export, font coverage, HTML/PDF and archive/site integration",
+      "weekly_cover_quantum_ai": "Cover research and generation; complete bilingual PDF output review"
+    },
+    "scope": "Qualitative conceptual scene. Scientific models, calculations, results, body text, references and original authorship history preserved.",
+    "verification": {
+      "root_independent_cover_review": "accepted after actual final PNG and caption/alt inspection",
+      "font_coverage": "all new caption and alt characters included in existing licensed subsets",
+      "html_output": "Both languages checked at 1440px and 390px; all images loaded, no overflow; builder checks passed.",
+      "pdf_visual_review": "weekly_cover_quantum_ai individually viewed all 24 final pages at 115 dpi; cover, captions, fonts, figures, references, disclosures and footers passed.",
+      "metadata": "Generated PNG has no ancillary text metadata;final static RGB WebP has no EXIF/GPS/XMP."
+    },
+    "edge_trim_pixels_ltrb": [
+      4,
+      2,
+      4,
+      3
+    ]
   },
   "figures": [
     {
@@ -67,64 +108,16 @@
   "authoring_system": "OpenAI Codex; exact model identifier not retained",
   "human_review": "Editorial direction incorporated; no line-by-line human approval or reader-comprehension study",
   "verification": {
-    "manuscripts": "Both complete manuscripts were reread for paragraph claims, sources of comparisons and scientific meaning after deletion/reconstruction. Independent Korean science/context reviews and a separate English reading passed;13reference entries are unchanged and29citationgroups retain their sequence.",
-    "output": {
-      "korean_pages": 11,
-      "english_pages": 13,
-      "visual_inspection": "All24final pages individually inspected;root independently checkedKO2/5/11 andEN2. Both languages at1440/390px,all12SVGs and mobile explanatory footers passed.",
-      "figures": "12of12geometry comparisons matched exactly:476shape-attribute records unchanged. Captions,visible explanation,SVGdesc and metadata were revised to state actual objects and source identities.",
-      "links": "43HTTPS PDF annotations per language;attachments0;fileURI0;13references and29citationgroups.",
-      "bilingual": "63manuscript blocks per language,all citations,reference URLs,7disclosurefields and12SVG text inventories correspond to final outputs.",
-      "cover": "Original generated WebP unchanged;conceptual-image caption updated in both languages."
+    "original_scientific_and_authorship_record": "Full previous record retained in revision_history; scientific body and original authorship disclosure unchanged.",
+    "source_body_preservation": "Both language manuscripts are byte-identical outside the hero figure to source commit 58c4c8d.",
+    "cover_redesign": {
+      "root_independent_cover_review": "accepted after actual final PNG and caption/alt inspection",
+      "font_coverage": "all new caption and alt characters included in existing licensed subsets",
+      "html_output": "Both languages checked at 1440px and 390px; all images loaded, no overflow; builder checks passed.",
+      "pdf_visual_review": "weekly_cover_quantum_ai individually viewed all 24 final pages at 115 dpi; cover, captions, fonts, figures, references, disclosures and footers passed.",
+      "metadata": "Generated PNG has no ancillary text metadata;final static RGB WebP has no EXIF/GPS/XMP."
     },
-    "publication": "Style revision source ccce1bbe96c5878b14bf519e46fec06fda561055 deployed successfully; 32 HTTPS URLs verified. Prior releases remain in revision_history.",
-    "pauli_test": {
-      "input": "separate verification input |0> in the Z basis, not the original agent task input",
-      "Pauli_Z_initial_expectation": 1,
-      "Pauli_Y_initial_expectation": 0,
-      "verification": "independently evaluated2x2matrices",
-      "scope": "formal test-case check only; no agent experiment, measured error reduction or time saving"
-    },
-    "contextual_prose": {
-      "date": "2026-11-01",
-      "focus": "Establish the paragraph claim and the source of a contrast;test whether deleting a qualification changes scientific meaning;integrate necessary conditions and reread the resulting argument.",
-      "applied_tools": [
-        ".automation/writing-style-audit-harness.md",
-        "EDITORIAL_METHOD.md",
-        "SCIENTIFIC_EXPLANATION_DIRECTION.md",
-        "templates/review-explanation-brief.md",
-        "artifacts/build_figures.py",
-        "artifacts/build_review.mjs",
-        "current review publication metadata"
-      ],
-      "scope": "Korean and English article prose,hero and figure captions,12localized SVG explanations and authorship disclosures. Technical publication validation is recorded separately.",
-      "readers": "cuantico_source and dqb_fermiscope reviewed Korean science and argument context;journal_dataset rewrote English;agent_standards separately read English and verified output.",
-      "human_review": "Specific editorial prose criticism incorporated;no whole-text human approval or reader-comprehension experiment."
-    },
-    "publication_local": {
-      "reviews": 51,
-      "archive_documents": 100,
-      "reader_articles": 56,
-      "validated_public_files": 1667,
-      "relevant_regression_tests_passed": 87,
-      "public_site_errors": 0,
-      "preservation": "All1469other review files,50other review records,98other archive records and all other reader article histories retained,including both concurrently added D-Wave documents.",
-      "base_main": "dd20036570bf3c885b485f2141c1d9b37d196ed4",
-      "pdf_copies": "Four exact copies per language:source dist,source archive,public article,public archive.",
-      "scope": "20public article files;private notes,raw source papers,mail andQAimages excluded."
-    },
-    "live": {
-      "date": "2026-11-01",
-      "publication_source": "ccce1bbe96c5878b14bf519e46fec06fda561055",
-      "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41273084596",
-      "workflow_result": "success",
-      "checked_urls": 32,
-      "literal_or_revision_catalog_matches": 24,
-      "html_matches_after_identified_edge_transformations": 8,
-      "failures": 0,
-      "comparison": "All binary assets matched exact bytes. Eight HTML responses matched after only the identified Cloudflare module beacon and existing public contact-link protection/decoder. Both legacy language URLs redirected to infant83.io with HTTP 200.",
-      "metadata_followup": "Whitespace and joined-list punctuation in the current review’s central authoring disclosure were corrected after the payload check; article prose, source figures and both frozen PDF payloads are unchanged."
-    }
+    "output": "All 24 final bilingual PDF pages independently rendered and viewed; no clipping, overlap, missing glyphs or blank pages. Original non-cover body and authorship unchanged."
   },
   "files": {
     "artifacts/density_gap_en.svg": {
@@ -160,8 +153,8 @@
       "bytes": 12780
     },
     "artifacts/hero.webp": {
-      "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
-      "bytes": 392796
+      "sha256": "ced1a5ba968c9cfe5dba09e87795b6a8126c0bac89ca61935dba3a330d646b6a",
+      "bytes": 598364
     },
     "artifacts/referee_controls_en.svg": {
       "sha256": "9a59d95c45075dbcccd24629f9d7c6d8ed3922398a74b46d69015d5ba3d62ff9",
@@ -180,20 +173,20 @@
       "bytes": 4873
     },
     "dist/en/review_en.pdf": {
-      "sha256": "46552ff7cc7896d7f227e27acaf479405ec6cfc1a94b49e5a0728ce890294aad",
-      "bytes": 3615803
+      "sha256": "2717c6ebc19dac92f33741a62f18fde642ccf0ed0bd08374905f44dd64186785",
+      "bytes": 3996578
     },
     "dist/review_ko.pdf": {
-      "sha256": "97ca1bbcac89538c69dca62774106c91cf8c04abba49cd3c5d489ad0f776e9d2",
-      "bytes": 3710883
+      "sha256": "bfbcc3c26e63faef5ff48a683f734e94b289b888ac6ac1727c78d1da91cd0154",
+      "bytes": 4091313
     },
     "reports/review_en.md": {
-      "sha256": "ab6e2f5a3d474c84e2f3591f8da1151c0d99097bf6799c611fb15eca668a1639",
-      "bytes": 32074
+      "sha256": "03c97a8fea59f75947999e0ccca8f109006eae79ac28a2c5cd36a72954342092",
+      "bytes": 32261
     },
     "reports/review_ko.md": {
-      "sha256": "32708e57c4775847c0cf85d3e7c278c5da329b05c64c05a7d5c4aa656b8a522b",
-      "bytes": 32309
+      "sha256": "05972ad9b523b603ed65c6f8ab9a5e4f97e3a3cbcaef279e905994ea2414ef46",
+      "bytes": 32461
     }
   },
   "revision_history": [
@@ -266,6 +259,201 @@
           "bytes": 3716523
         }
       }
+    },
+    {
+      "revision": "before cover redesign 2026-11-06",
+      "source_commit": "58c4c8df96a17bee7c91fce6b4282ca6386167e1",
+      "retained_output_record": {
+        "cover": {
+          "tool": "built-in image_gen",
+          "model_id": "not retained",
+          "source_image_input": "none",
+          "prompt_file": "artifacts/hero-prompt.txt",
+          "original_size": [
+            1672,
+            941
+          ],
+          "final_size": [
+            1664,
+            936
+          ],
+          "sha256": "55fdae1801908ff28ff09477ac63a9137ee6df254a869100e00de11e877504c9",
+          "postprocessing": "Minor edge fit to exact 16:9 and WebP encoding; semantic content unchanged; no source metadata copied",
+          "review": "Root inspected original, 320x180 thumbnail, grayscale and recent-four montage; final bilingual desktop/mobile and PDF output inspected. Conceptual limits stated in caption; grayscale requires caption to explain energy separation.",
+          "file": "artifacts/hero.webp",
+          "kind": "AI-generated conceptual illustration",
+          "meaning": "Separation of combined information and selection of observations relevant to a physical question",
+          "scope": "Not an actual optical instrument, electronic spectrum or LDOS measurement",
+          "prompt": "Use case: stylized-concept\nAsset type: original 16:9 editorial cover for an accessible science review about AI automation in quantum and materials research, and the choice of physical validation criteria.\nPrimary request: one broad milky-white band of light meets a simple translucent triangular prism and spreads into distinguishable soft colour bands beyond it. A small restrained brass observation slit beside the spread makes the act of selecting what to inspect legible. Keep the incoming band, prism and spread visibly connected. The scientific idea is that information combined into one impression can conceal differences that a more discriminating observation reveals. This is a conceptual material metaphor, not a real instrument, data plot or electronic spectrum.\nStyle and medium: carefully hand-painted gouache and translucent watercolour on warm rough cotton paper. Quiet editorial illustration with tactile brush edges, a clear sculptural focal form and spacious composition; avoid photorealistic product advertising and glossy sci-fi renderings.\nComposition: wide landscape 16:9, one coherent scene on a spare matte work surface, all important relationships inside the central safe area for thumbnails and mobile. Soft shadows and tonal separation should preserve the main relationship in grayscale. The prism is the focal point; the slit is a small secondary element.\nPalette: warm ivory, deep muted indigo, restrained teal, ochre and terracotta colour separation; no neon glow. Band count and width have no numerical meaning.\nConstraints: no text, letters, numerals, equations, axis marks, charts, logos or watermark. No robot, brain, computer circuitry, people, padlock or shields. No invented measured results, no actual molecular structure or apparatus claim. No imitation of a named artist or publication's distinctive artwork. Opaque background.\n"
+        },
+        "verification": {
+          "manuscripts": "Both complete manuscripts were reread for paragraph claims, sources of comparisons and scientific meaning after deletion/reconstruction. Independent Korean science/context reviews and a separate English reading passed;13reference entries are unchanged and29citationgroups retain their sequence.",
+          "output": {
+            "korean_pages": 11,
+            "english_pages": 13,
+            "visual_inspection": "All24final pages individually inspected;root independently checkedKO2/5/11 andEN2. Both languages at1440/390px,all12SVGs and mobile explanatory footers passed.",
+            "figures": "12of12geometry comparisons matched exactly:476shape-attribute records unchanged. Captions,visible explanation,SVGdesc and metadata were revised to state actual objects and source identities.",
+            "links": "43HTTPS PDF annotations per language;attachments0;fileURI0;13references and29citationgroups.",
+            "bilingual": "63manuscript blocks per language,all citations,reference URLs,7disclosurefields and12SVG text inventories correspond to final outputs.",
+            "cover": "Original generated WebP unchanged;conceptual-image caption updated in both languages."
+          },
+          "publication": "Style revision source ccce1bbe96c5878b14bf519e46fec06fda561055 deployed successfully; 32 HTTPS URLs verified. Prior releases remain in revision_history.",
+          "pauli_test": {
+            "input": "separate verification input |0> in the Z basis, not the original agent task input",
+            "Pauli_Z_initial_expectation": 1,
+            "Pauli_Y_initial_expectation": 0,
+            "verification": "independently evaluated2x2matrices",
+            "scope": "formal test-case check only; no agent experiment, measured error reduction or time saving"
+          },
+          "contextual_prose": {
+            "date": "2026-11-01",
+            "focus": "Establish the paragraph claim and the source of a contrast;test whether deleting a qualification changes scientific meaning;integrate necessary conditions and reread the resulting argument.",
+            "applied_tools": [
+              ".automation/writing-style-audit-harness.md",
+              "EDITORIAL_METHOD.md",
+              "SCIENTIFIC_EXPLANATION_DIRECTION.md",
+              "templates/review-explanation-brief.md",
+              "artifacts/build_figures.py",
+              "artifacts/build_review.mjs",
+              "current review publication metadata"
+            ],
+            "scope": "Korean and English article prose,hero and figure captions,12localized SVG explanations and authorship disclosures. Technical publication validation is recorded separately.",
+            "readers": "cuantico_source and dqb_fermiscope reviewed Korean science and argument context;journal_dataset rewrote English;agent_standards separately read English and verified output.",
+            "human_review": "Specific editorial prose criticism incorporated;no whole-text human approval or reader-comprehension experiment."
+          },
+          "publication_local": {
+            "reviews": 51,
+            "archive_documents": 100,
+            "reader_articles": 56,
+            "validated_public_files": 1667,
+            "relevant_regression_tests_passed": 87,
+            "public_site_errors": 0,
+            "preservation": "All1469other review files,50other review records,98other archive records and all other reader article histories retained,including both concurrently added D-Wave documents.",
+            "base_main": "dd20036570bf3c885b485f2141c1d9b37d196ed4",
+            "pdf_copies": "Four exact copies per language:source dist,source archive,public article,public archive.",
+            "scope": "20public article files;private notes,raw source papers,mail andQAimages excluded."
+          },
+          "live": {
+            "date": "2026-11-01",
+            "publication_source": "ccce1bbe96c5878b14bf519e46fec06fda561055",
+            "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/41273084596",
+            "workflow_result": "success",
+            "checked_urls": 32,
+            "literal_or_revision_catalog_matches": 24,
+            "html_matches_after_identified_edge_transformations": 8,
+            "failures": 0,
+            "comparison": "All binary assets matched exact bytes. Eight HTML responses matched after only the identified Cloudflare module beacon and existing public contact-link protection/decoder. Both legacy language URLs redirected to infant83.io with HTTP 200.",
+            "metadata_followup": "Whitespace and joined-list punctuation in the current review’s central authoring disclosure were corrected after the payload check; article prose, source figures and both frozen PDF payloads are unchanged."
+          }
+        },
+        "files": {
+          "artifacts/density_gap_en.svg": {
+            "sha256": "df127f0341bd85582473d958eea7ce260820948e3870f4242f790e7425d76d94",
+            "bytes": 5530
+          },
+          "artifacts/density_gap_ko.svg": {
+            "sha256": "8d178eaad041dacff127917da05c339c313257443bbccc14fbed9dd6ebe140a3",
+            "bytes": 5571
+          },
+          "artifacts/density_gap_mobile_en.svg": {
+            "sha256": "3a2e0675fddf1afc61307825c7a663a3ad8bfa0a182326459d6d83923e8a1c77",
+            "bytes": 5623
+          },
+          "artifacts/density_gap_mobile_ko.svg": {
+            "sha256": "0bb4a686635ae8c38af3036ef88a068f33953eebe3b1cb0118a15a96dbe60a39",
+            "bytes": 5648
+          },
+          "artifacts/h2_energy_en.svg": {
+            "sha256": "5916ce06c2670bd681b616e055dc61f1d994b9824b55562e7c207c3458873793",
+            "bytes": 13350
+          },
+          "artifacts/h2_energy_ko.svg": {
+            "sha256": "d76670091173c2fb27c8831a5c201b3a67d6e92cc17d02fa2d80a6cb675cf6cc",
+            "bytes": 13381
+          },
+          "artifacts/h2_energy_mobile_en.svg": {
+            "sha256": "d8fbb4b849569199101a342ba908b8b01378f017811b274d95d2111f72541032",
+            "bytes": 12777
+          },
+          "artifacts/h2_energy_mobile_ko.svg": {
+            "sha256": "fb3ffda74c5d45b967a7a55e1a7b4db98cb2ec49f83894f19bbd176dadfd2771",
+            "bytes": 12780
+          },
+          "artifacts/hero.webp": {
+            "sha256": "ced1a5ba968c9cfe5dba09e87795b6a8126c0bac89ca61935dba3a330d646b6a",
+            "bytes": 598364
+          },
+          "artifacts/referee_controls_en.svg": {
+            "sha256": "9a59d95c45075dbcccd24629f9d7c6d8ed3922398a74b46d69015d5ba3d62ff9",
+            "bytes": 4691
+          },
+          "artifacts/referee_controls_ko.svg": {
+            "sha256": "59e7039f7ce85d5f59e99aff4be18580a15a47dfb19a6b4a39eb7fec2b6f47fb",
+            "bytes": 4707
+          },
+          "artifacts/referee_controls_mobile_en.svg": {
+            "sha256": "191f1ef99c22fff5cac7ad49a7ae9dfc9db1bb84b589e54950767693c6fb4ea6",
+            "bytes": 4850
+          },
+          "artifacts/referee_controls_mobile_ko.svg": {
+            "sha256": "425614185a16e53fbb0b04b52270072b3cc571f125444c5ca053927f6faddb59",
+            "bytes": 4873
+          },
+          "dist/en/review_en.pdf": {
+            "sha256": "2717c6ebc19dac92f33741a62f18fde642ccf0ed0bd08374905f44dd64186785",
+            "bytes": 3996578
+          },
+          "dist/review_ko.pdf": {
+            "sha256": "bfbcc3c26e63faef5ff48a683f734e94b289b888ac6ac1727c78d1da91cd0154",
+            "bytes": 4091313
+          },
+          "reports/review_en.md": {
+            "sha256": "03c97a8fea59f75947999e0ccca8f109006eae79ac28a2c5cd36a72954342092",
+            "bytes": 32261
+          },
+          "reports/review_ko.md": {
+            "sha256": "05972ad9b523b603ed65c6f8ab9a5e4f97e3a3cbcaef279e905994ea2414ef46",
+            "bytes": 32461
+          }
+        }
+      }
     }
-  ]
+  ],
+  "cover_redesign_2026_11_06": {
+    "status": "Complete bilingual output independently reviewed;selective publication package validation passed",
+    "design_rule_version": "1.2",
+    "body_outside_cover": "Byte-identical to source commit 58c4c8d in both language manuscripts.",
+    "historical_authorship_and_scientific_review": "preserved",
+    "publications": {
+      "ko": {
+        "pdf": "dist/review_ko.pdf",
+        "sha256": "bfbcc3c26e63faef5ff48a683f734e94b289b888ac6ac1727c78d1da91cd0154"
+      },
+      "en": {
+        "pdf": "dist/en/review_en.pdf",
+        "sha256": "2717c6ebc19dac92f33741a62f18fde642ccf0ed0bd08374905f44dd64186785"
+      }
+    }
+  },
+  "publication_local": {
+    "cover_redesign_date": "2026-11-06",
+    "reviews": 54,
+    "archive_documents": 114,
+    "review_files_changed": "Only this review and the four other explicitly selected recent reviews",
+    "article_body": "Both manuscript bodies outside the hero figure are byte-identical to source commit 58c4c8d.",
+    "pdfs": {
+      "ko": {
+        "pages": 11,
+        "sha256": "bfbcc3c26e63faef5ff48a683f734e94b289b888ac6ac1727c78d1da91cd0154",
+        "four_copies_equal": true
+      },
+      "en": {
+        "pages": 13,
+        "sha256": "2717c6ebc19dac92f33741a62f18fde642ccf0ed0bd08374905f44dd64186785",
+        "four_copies_equal": true
+      }
+    },
+    "validation": "Public site and reader artifact validation passed; all 127 pages of the 10 campaign PDFs independently viewed.",
+    "deployment": "Separate deployment workflow and live HTTPS verification required"
+  }
 }

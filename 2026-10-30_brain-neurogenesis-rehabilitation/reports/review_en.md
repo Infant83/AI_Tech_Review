@@ -4,7 +4,7 @@
 
 <p class="kicker">RESEARCH REVIEW · OCTOBER 30, 2026 · NEUROBIOLOGY · BRAIN INJURY · REHABILITATION</p>
 
-<figure class="hero"><img src="hero.webp" alt="A paper-cut illustration of a small new neuron extending among mature branches within a narrow, curved layer of cells"><figcaption>A small new neuron within a curved cell layer and the surrounding mature branches evoke local neuron formation and the challenge of joining an existing circuit. AI-generated conceptual illustration with a simplified hippocampal structure.</figcaption></figure>
+<figure class="hero"><img src="hero.webp" alt="A small ochre neuron extends slender processes among pale mature neurons on a deep blue field; an upper-right magnified circle shows a growing tip and the gap to a neighboring process."><figcaption>A small ochre neuron extends among the pale branches of mature neurons; a magnified view shows a growing tip and a gap to a neighboring process. This cyanotype-and-ink-inspired AI-generated conceptual illustration evokes the challenge of joining an appropriate circuit after local neurogenesis.</figcaption></figure>
 
 ## 1. The birthdays of brain cells, recorded by nuclear tests
 

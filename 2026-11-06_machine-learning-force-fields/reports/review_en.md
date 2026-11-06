@@ -2,7 +2,7 @@
 
 <p class="dek">From the foundations of molecular dynamics to choices about model representations, training data, accuracy, and computational cost</p>
 
-<figure class="hero"><img src="hero.webp" alt="Small groups of model atoms connect to a winding purple landscape on a light gray background. Short motion traces appear beside a slightly changed atomic arrangement on the right."><figcaption>Local atomic arrangements, a winding energy landscape, and a changed arrangement illustrate how a learned interaction model enters the calculation of atomic motion. The landscape is a metaphor for potential energy as a function of configuration; it is not physical space, a molecular structure, or a computed trajectory. AI-generated conceptual illustration.</figcaption></figure>
+<figure class="hero"><img src="hero.webp" alt="Small sketches of water configurations flow into curved ultramarine lines, while larger water molecules and overlapping outlines of motion sit among ochre brushstrokes."><figcaption>Samples of water configurations flow into continuous curves and overlapping views of molecular motion. This conceptual illustration connects learning an interaction function from configuration samples with calculating atomic motion. The curves and overlaps are not actual energy values or computed trajectories. AI-generated and edited.</figcaption></figure>
 
 ## 1. Predicting materials through atomic motion
 

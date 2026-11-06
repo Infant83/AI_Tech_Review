@@ -2,7 +2,7 @@
 
 <p class="dek">From single-qubit rotations to interactions and answer probabilities</p>
 
-<figure class="hero"><img src="hero.webp" alt="Two offset wave-like paper ribbons meet at a bend and open into bright ridges and deep troughs."><figcaption>Two offset wave-like paper ribbons meet at a bend and open into bright ridges and deep troughs. An AI-generated conceptual metaphor for relative phase shaping the outcomes of subsequent interference.</figcaption></figure>
+<figure class="hero"><img src="hero.webp" alt="A colourful painted print connects parallel and opposite arrow pairs with offset circular bands and a central pattern of strong and weak interference."><figcaption>Parallel and opposite arrow pairs lead into offset arcs and contrasting interference patterns. This AI-generated conceptual illustration evokes phases assigned according to the relation between two qubit values, then used in interference to affect outcome probabilities. Angles and brightness are not computed data.</figcaption></figure>
 
 When we draw a quantum circuit, small boxes line up along the wires: a gate that rotates one qubit, a CNOT connecting two qubits, then another rotation. A few lines of code run the circuit and return a result. Explaining why the boxes belong in that order can be harder. What has rotated? What relationship has formed between the qubits? Where does that change enter the problem we want to solve?
 

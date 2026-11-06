@@ -2,7 +2,7 @@
 
 <p class="dek">From the nonlinear effects and asymmetric autocatalysis honoured by the 2026 Nobel Prize in Chemistry to circularly polarized optical transitions in chiral charge-density waves</p>
 
-<figure class="hero"><img src="hero.webp" alt="A large clay hand's thumb and index finger shape the unfinished index fingertip of a smaller clay hand."><figcaption>A clay hand uses its thumb and index finger to shape the unfinished index fingertip of a smaller hand of the same handedness. The scene evokes asymmetric autocatalysis, in which a product helps catalyze its own formation. AI-generated conceptual illustration.</figcaption></figure>
+<figure class="hero"><img src="hero.webp" alt="An orange and a blue mirror-related helix stand in the foreground of a gouache-and-stencil scene; orange helices become dominant behind them, with a smaller same-winding helix forming beside a larger one."><figcaption>Mirror-related helices lead into a population dominated by one winding, beside a contact where a smaller unit of the same winding is forming. The scene qualitatively evokes chiral amplification and a product helping further formation in asymmetric autocatalysis. AI-generated conceptual illustration.</figcaption></figure>
 
 Try putting a left-hand glove on your right hand, and the difference between resemblance and identity becomes clear. Molecules can differ in the same way. The same atoms, connected in the same order, can form two spatial arrangements that are mirror images yet cannot be superimposed by rotation. When they encounter something that already has a handedness, such as a protein in our bodies, the two forms can bind and react differently.
 
