@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from html.parser import HTMLParser
+import os
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from urllib.parse import urlsplit
 
 from scripts.hub_layout import render_card, render_hub
 
@@ -51,6 +54,52 @@ class HubCardSummaryTests(unittest.TestCase):
     def test_empty_summary_does_not_create_an_unusable_toggle(self):
         self.item["summary"] = ""
         self.assertNotIn("data-summary-toggle", render_card(self.item))
+
+    def test_replacing_only_cover_bytes_refreshes_hub_images_without_changing_article_identity(self):
+        other = {**self.item, "folder": "other-review", "title": "Other review",
+                 "href": "reviews/other-review/index.html", "thumbnail": "reviews/other-review/cover.png",
+                 "metric_path": "/AI_Tech_Review/reviews/other-review/"}
+        manifest = [self.item, other]
+        original = deepcopy(manifest)
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            cover = root / self.item["thumbnail"]
+            cover.parent.mkdir(parents=True)
+            cover.write_bytes(b"old cover")
+            stable_cover = root / other["thumbnail"]
+            stable_cover.parent.mkdir(parents=True)
+            stable_cover.write_bytes(b"unchanged")
+
+            def render(language):
+                return _CardParser(render_hub(
+                    manifest, [], [], site_dir=root, language=language,
+                    css_version="css", js_version="js", preferences_version="preferences", library_version="library",
+                ))
+
+            def images(parsed, thumbnail):
+                return [attrs["src"] for tag, attrs in parsed.elements
+                        if tag == "img" and urlsplit(attrs.get("src", "")).path.endswith(thumbnail)]
+
+            def identities(parsed):
+                return [(tag, attrs.get("href"), attrs.get("data-article-id"), attrs.get("data-metric-path"))
+                        for tag, attrs in parsed.elements if tag == "a" or "data-article-id" in attrs]
+
+            before = {language: render(language) for language in ("ko", "en")}
+            timestamp = cover.stat()
+            cover.write_bytes(b"new cover")  # Same filename and length, with its timestamps restored.
+            os.utime(cover, ns=(timestamp.st_atime_ns, timestamp.st_mtime_ns))
+            for language in ("ko", "en"):
+                after = render(language)
+                with self.subTest(language=language):
+                    old_urls, new_urls = images(before[language], self.item["thumbnail"]), images(after, self.item["thumbnail"])
+                    self.assertEqual(len(old_urls), 2)  # Latest feature and its listing card.
+                    self.assertEqual(len(new_urls), 2)
+                    self.assertNotEqual(old_urls, new_urls)
+                    self.assertTrue(all(urlsplit(url).query for url in old_urls + new_urls))
+                    self.assertEqual([urlsplit(url).path for url in old_urls], [urlsplit(url).path for url in new_urls])
+                    self.assertEqual(images(before[language], other["thumbnail"]), images(after, other["thumbnail"]))
+                    self.assertEqual(identities(before[language]), identities(after))
+            self.assertEqual(manifest, original)
 
 
 class _HubParser(HTMLParser):

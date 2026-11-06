@@ -1,6 +1,7 @@
 """Bilingual, progressively enhanced entry pages for the existing public catalog."""
 from __future__ import annotations
 
+import hashlib
 import html
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -61,6 +62,21 @@ def public_href(value: object, prefix: str = "") -> str:
     return escape(prefix + value)
 
 
+def cover_href(value: object, prefix: str = "", *, site_dir: Path | None = None) -> str:
+    """Change the image URL when a cover is replaced at its stable public path."""
+    href = public_href(value, prefix)
+    if site_dir is None:
+        return href
+    root = Path(site_dir).resolve()
+    source = (root / unquote(urlsplit(str(value)).path)).resolve()
+    if not source.is_relative_to(root):
+        raise ValueError("A hub cover must remain inside the public site")
+    if not source.is_file():
+        return href
+    version = hashlib.sha256(source.read_bytes()).hexdigest()[:16]
+    return f"{href}?v={version}"
+
+
 def category_label(value: object, language: str) -> str:
     category = str(value)
     return CATEGORY_KO.get(category, category) if language == "ko" else category
@@ -75,14 +91,14 @@ def language_badge(item: dict, language: str, prefix: str) -> str:
     return ""
 
 
-def render_card(item: dict, language: str = "ko", prefix: str = "") -> str:
+def render_card(item: dict, language: str = "ko", prefix: str = "", *, site_dir: Path | None = None) -> str:
     en = language == "en"
     title = str(item["title"])
     tags = list(item.get("tags") or [])
     search = str(item.get("search_text") or " ".join(str(item.get(key) or "") for key in ("title", "subtitle", "summary", "category"))) + " " + " ".join(map(str, tags))
     href = public_href(item["href"], prefix)
     thumbnail = item.get("thumbnail")
-    image = (f'<img src="{public_href(thumbnail, prefix)}" alt="{escape(title)} {"cover" if en else "대표 이미지"}" loading="lazy" decoding="async" width="960" height="540">'
+    image = (f'<img src="{cover_href(thumbnail, prefix, site_dir=site_dir)}" alt="{escape(title)} {"cover" if en else "대표 이미지"}" loading="lazy" decoding="async" width="960" height="540">'
              if thumbnail else '<div class="thumb-placeholder" aria-hidden="true"></div>')
     subtitle = str(item.get("subtitle") or "").strip()
     summary = str(item.get("summary") or "").strip()
@@ -103,11 +119,11 @@ def render_card(item: dict, language: str = "ko", prefix: str = "") -> str:
 </article>'''
 
 
-def render_latest(item: dict, language: str = "ko", prefix: str = "") -> str:
+def render_latest(item: dict, language: str = "ko", prefix: str = "", *, site_dir: Path | None = None) -> str:
     en = language == "en"
     href = public_href(item["href"], prefix)
     thumbnail = item.get("thumbnail")
-    image = (f'<img src="{public_href(thumbnail, prefix)}" alt="{escape(item["title"])} {"cover" if en else "대표 이미지"}" loading="eager" fetchpriority="high" width="1200" height="675">'
+    image = (f'<img src="{cover_href(thumbnail, prefix, site_dir=site_dir)}" alt="{escape(item["title"])} {"cover" if en else "대표 이미지"}" loading="eager" fetchpriority="high" width="1200" height="675">'
              if thumbnail else '<div class="thumb-placeholder" aria-hidden="true"></div>')
     subtitle = str(item.get("subtitle") or "").strip()
     subtitle_html = f'<p class="latest-subtitle">{escape(subtitle)}</p>' if subtitle else ""
@@ -136,8 +152,8 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     categories = [value for value in (preferred_category_order or []) if value in available]
     categories.extend(sorted(available - set(categories)))
     category_options = "".join(f'<option value="{escape(value)}">{escape(category_label(value, language))}</option>' for value in categories)
-    cards = "\n".join(render_card(item, language, prefix) for item in items)
-    latest = render_latest(items[0], language, prefix) if items else ""
+    cards = "\n".join(render_card(item, language, prefix, site_dir=site_dir) for item in items)
+    latest = render_latest(items[0], language, prefix, site_dir=site_dir) if items else ""
     description = "Reviews and lecture notes on AI, quantum computing, and materials science." if en else "AI·양자 컴퓨팅·재료과학 리뷰와 렉처 노트."
     canonical = HUB_URL + ("en/" if en else "")
     image_meta = ""
