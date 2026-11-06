@@ -1480,16 +1480,38 @@ REVIEWS: tuple[PublicReview, ...] = (
     PublicReview(
         folder="2026-08-26_quantum-computing-layers",
         title="재료 계산에서 QRAM까지: 양자 연구를 계산 계층으로 읽는 법",
-        subtitle="SiC 색 중심 DFT, 실제 QPU 라우터, 페르미온 회로 컴파일과 QML 시뮬레이션을 같은 기준표 위에서 구분합니다",
+        subtitle="발광 효율·라우팅 충실도·회로 깊이로 살펴보는 양자 연구의 평가 기준",
         date="2026-08-26",
-        updated="2026-08-26",
+        updated="2026-11-06",
         category="Quantum Computing",
         tags=("Quantum Computing", "Materials Science", "QRAM", "Qiskit Fermions", "VQE", "QML"),
         summary=(
             '양자메모리에 쓸 작은 라우터는 초전도 칩에서 작동했고, 스핀 큐비트로 쓸 SiC 결함 후보는 고전 컴퓨터에서 선별됐습니다. 두 성과를 구체적인 계산과 실험으로 따라가며, 같은 ‘양자’라는 이름 아래 어디까지 구현됐고 어떤 문제가 다음 연구로 남는지 살펴봅니다.'
         ),
-        ai_system="Codex-based GPT-5-family agent harness",
-        ai_system_ko="Codex 기반 GPT-5 계열 에이전트 하네스",
+        ai_system="Original edition: Codex-based GPT-5-family harness; November 6 revision: OpenAI Codex",
+        ai_system_ko="원 작성: Codex 기반 GPT-5 계열 하네스; 11월 6일 개정: OpenAI Codex",
+        agents=(
+            PublicAgent("root", "Manuscript, APS integration, reproducible build and publication verification", "전체 원고·APS 통합·재생성 빌드·공개 게시 확인"),
+            PublicAgent("legacy1106_materials_router", "Independent SiC and QRAM primary-source, metric and bibliography review", "SiC·QRAM 원문·지표·서지 독립 대조"),
+            PublicAgent("legacy1106_algorithms", "Independent historical compilation, PAS and QRC source and bibliography review", "당시 회로 합성·PAS·QRC 판본·방법·서지 독립 대조"),
+            PublicAgent("legacy1106_prose_output", "Independent prose, public briefing cleanup and final output review", "독립 문체·공개 브리핑 정리·최종 출력 감수"),
+        ),
+        primary_sources_checked=True,
+        evidence_cutoff="2026-08-26",
+        verification_scope=(
+            "SiC published paper and QRAM main text/relevant appendices; original source and exact metric definitions checked in the November 6 editorial revision.",
+            "Historical Qiskit guide and synthesis source at commit cd27fcf1e73c0606ef81d11ee3428f8658a06c9d; complete fermion-encoding v2, PAS v1 and QRC v1 papers. No code or hardware reproduction.",
+            "Original three illustrations, six QRC values, publication history, saved metrics, dated briefing privacy cleanup, APS references and public output checked. No new translation, article PDF, cover or video.",
+        ),
+        verification_scope_ko=(
+            "11월 6일 편집 개정에서 SiC 출판 논문과 QRAM 본문·관련 부록, 원출처와 지표 정의를 대조했다.",
+            "당시 Qiskit 가이드·합성 코드 commit cd27fcf1e73c0606ef81d11ee3428f8658a06c9d와 페르미온 인코딩 v2·PAS v1·QRC v1 논문 전체를 대조했다. 코드·장치 실험은 재현하지 않았다.",
+            "기존 그림 3개·QRC 수치 6개·발행 이력·집계 설정, 당시 브리핑의 공개 정보 정리·APS·출력물을 확인했다. 새 영문판·기사 PDF·표지·영상은 만들지 않았다.",
+        ),
+        human_review_level="Automated editorial revision with independent agent review; no human line-by-line reader study recorded",
+        human_review_level_ko="독립 에이전트 감수를 거친 자동 편집 개정이며 사람의 문장별 검토·독자 평가는 기록되지 않음",
+        disclosure_note_ko="원 작성 세션의 세부 모델·에이전트·검증 기록은 미보존으로 유지한다. 2026-11-06의 대조·개정과 2026-08-26의 원 발행·근거 기준일을 구별한다.",
+        disclosure_note_en="Original detailed model, agent and verification records remain not retained. The November 6 check and editorial revision are distinguished from the original August 26 publication and evidence cutoff.",
     ),
     PublicReview(
         folder="2026-08-24_oti-iqcc-oled-quantum-emulation",

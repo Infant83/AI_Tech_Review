@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">다섯 양자 연구의 계산 대상과 평가 지표</title>
+  <desc id="desc">고전 DFT, 실제 QPU, 컴파일 결과, 이상적 VQE 시뮬레이션, QML 워크숍 시뮬레이션을 서로 다른 증거 층으로 구분한 도식</desc>
+  <defs>
+    <style>
+      .bg{fill:#fbfaf7}.panel{fill:#fff;stroke:#d8d5cb;stroke-width:2}.head{font:700 34px 'Noto Sans KR','Segoe UI',sans-serif;fill:#17211d}.sub{font:400 18px 'Noto Sans KR','Segoe UI',sans-serif;fill:#5f6b65}.label{font:700 17px 'Noto Sans KR','Segoe UI',sans-serif;fill:#fff}.title{font:700 22px 'Noto Sans KR','Segoe UI',sans-serif;fill:#25456f}.body{font:400 17px 'Noto Sans KR','Segoe UI',sans-serif;fill:#3b4842}.note{font:600 16px 'Noto Sans KR','Segoe UI',sans-serif;fill:#8a4c16}.line{stroke:#d8d5cb;stroke-width:2}.dot{stroke:#fff;stroke-width:3}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="760" rx="22"/>
+  <text class="head" x="60" y="64">다섯 연구는 서로 다른 계산과 실험을 평가합니다</text>
+  <text class="sub" x="60" y="98">아래 항목은 성숙도 순서가 아니라, 무엇을 어디서 계산했는지를 구분한 지도입니다.</text>
+  <line class="line" x1="145" y1="155" x2="145" y2="650"/>
+
+  <g transform="translate(0 128)">
+    <circle class="dot" cx="145" cy="62" r="17" fill="#0f766e"/>
+    <rect x="52" y="42" width="72" height="40" rx="20" fill="#0f766e"/><text class="label" x="88" y="68" text-anchor="middle">고전</text>
+    <rect class="panel" x="188" y="15" width="940" height="94" rx="14"/>
+    <text class="title" x="218" y="51">First-principles screening</text>
+    <text class="body" x="218" y="82">HSE06/DFT · 576-atom 4H-SiC · 방사·비방사 경로 · 단일 유효 포논 근사</text>
+  </g>
+
+  <g transform="translate(0 238)">
+    <circle class="dot" cx="145" cy="62" r="17" fill="#2563eb"/>
+    <rect x="52" y="42" width="72" height="40" rx="20" fill="#2563eb"/><text class="label" x="88" y="68" text-anchor="middle">QPU</text>
+    <rect class="panel" x="188" y="15" width="940" height="94" rx="14"/>
+    <text class="title" x="218" y="51">Superconducting QRAM router experiment</text>
+    <text class="body" x="218" y="82">RAT 추정: 개별 평균 94.8% · 2단 82.4% · erasure 검출·후선택</text>
+  </g>
+
+  <g transform="translate(0 348)">
+    <circle class="dot" cx="145" cy="62" r="17" fill="#a35a16"/>
+    <rect x="35" y="42" width="89" height="40" rx="20" fill="#a35a16"/><text class="label" x="79" y="68" text-anchor="middle">컴파일</text>
+    <rect class="panel" x="188" y="15" width="940" height="94" rx="14"/>
+    <text class="title" x="218" y="51">Qiskit Fermions</text>
+    <text class="body" x="218" y="82">100모드·한 Trotter 단계: CX 깊이 12 vs 항별 합성 407 · 배치 제약 없음</text>
+  </g>
+
+  <g transform="translate(0 458)">
+    <circle class="dot" cx="145" cy="62" r="17" fill="#6f4da0"/>
+    <rect x="18" y="42" width="106" height="40" rx="20" fill="#6f4da0"/><text class="label" x="71" y="68" text-anchor="middle">이상적 모사</text>
+    <rect class="panel" x="188" y="15" width="940" height="94" rx="14"/>
+    <text class="title" x="218" y="51">VQE prior-informed adaptive shifts</text>
+    <text class="body" x="218" y="82">5-qubit TFIM·4-qubit MaxCut · shot noise · 고정 샷 수에서 측정각 선택</text>
+  </g>
+
+  <g transform="translate(0 568)">
+    <circle class="dot" cx="145" cy="62" r="17" fill="#607d6b"/>
+    <rect x="18" y="42" width="106" height="40" rx="20" fill="#607d6b"/><text class="label" x="71" y="68" text-anchor="middle">학회 모사</text>
+    <rect class="panel" x="188" y="15" width="940" height="94" rx="14"/>
+    <text class="title" x="218" y="51">QRC + physics-informed correction</text>
+    <text class="body" x="218" y="82">순수상태 simulation · corrector는 QRC를 개선 · 두 PDE 모두 Ridge-AR의 RMSE가 더 낮음</text>
+  </g>
+  <text class="note" x="188" y="720">판정은 각 층의 질문에 맞춰야 합니다: 물성 정확도, 장치 충실도, 회로 깊이, 샷 효율, end-to-end 예측 성능.</text>
+</svg>
