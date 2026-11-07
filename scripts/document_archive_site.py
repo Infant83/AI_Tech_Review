@@ -13,9 +13,11 @@ from urllib.parse import urlencode
 
 try:
     from .briefing_site import render_briefings, validate_briefings
+    from .site_search import search_head, search_form, search_results, search_script
     from .site_brand import SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
+    from site_search import search_head, search_form, search_results, search_script
     from site_brand import SITE_STYLES_VERSION, render_brand_link
 
 SERIES = {
@@ -350,6 +352,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
   <meta property="og:type" content="website"><meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}"><meta property="og:url" content="{current_url}">
   <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
+  {search_head(prefix)}
 </head><body class="archive-page">
   <header class="site-header">
     <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
@@ -357,16 +360,18 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
       <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
     </nav>
     {render_library_navigation(documents, "archive", language, prefix)}
+    {search_form(prefix, language)}
     <section class="hero archive-hero"><p class="eyebrow">Reference library</p><h1>{title}</h1><p class="lead">{description}</p>
       <p class="archive-caption">{'Latest addition' if en else '최근 등록'} <time>{latest}</time> <span>·</span> {'Preserved PDFs & official book links' if en else 'PDF 보관본 · 서적 공식 링크'}</p>
     </section>
   </header>
   <main>
+    {search_results(language)}
     <section class="archive-browser" aria-label="{'Find documents' if en else '문서 찾기'}">
-      <div class="collection-filters" aria-label="{'Collections' if en else '문서 분류'}">{buttons}</div>
+      <div class="collection-filters legacy-search-hidden" aria-label="{'Collections' if en else '문서 분류'}">{buttons}</div>
       <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the Daily Quantum Brief series alongside weekly reviews, articles and the latest supplied lecture notes. External books link to their authors and official book pages; their dates indicate catalog registration.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰, 수시 PDF와 확인된 최신 렉처 노트를 보관합니다. 외부 서적은 저자·책 공식 안내로 연결하며 날짜는 아카이브 등록일입니다.'}</p>
       <div class="archive-controls">
-        <label class="archive-search"><span>{'Search documents' if en else '문서 검색'}</span><input id="archive-search" type="search" placeholder="{'Title, topic, keyword…' if en else '제목, 주제, 키워드로 검색…'}" autocomplete="off"></label>
+        <label class="archive-search legacy-search-hidden"><span>{'Search documents' if en else '문서 검색'}</span><input id="archive-search" type="search" placeholder="{'Title, topic, keyword…' if en else '제목, 주제, 키워드로 검색…'}" autocomplete="off"></label>
         <label><span>{'Month' if en else '발행·등록 월'}</span><select id="archive-month"><option value="">{'All months' if en else '전체 기간'}</option>{month_options}</select></label>
         <label><span>{'Sort' if en else '정렬'}</span><select id="archive-sort"><option value="newest">{'Newest first' if en else '최신순'}</option><option value="oldest">{'Oldest first' if en else '오래된순'}</option></select></label>
       </div>
@@ -379,6 +384,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
     <footer class="archive-note"><p>{'Archived PDFs are preserved in their original language. The English catalog describes the collection; it does not imply an English PDF translation.' if en else '문서는 발행 당시의 언어와 내용으로 보관합니다. 아카이브 등록은 본문의 연구 결과를 새로 검증하거나 독립 재현했다는 뜻이 아닙니다.'}</p><a href="{prefix}archive-manifest.json">{'Archive data (JSON)' if en else '아카이브 데이터 (JSON)'} ↗</a></footer>
   </main>
   <script src="{prefix}assets/archive.js?v={LIBRARY_ASSET_VERSION}" defer></script>
+  {search_script(prefix)}
 </body></html>'''
 
 
@@ -501,6 +507,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
       <meta property="og:type" content="website"><meta property="og:title" content="{title}">
       <meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">
       <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
+  {search_head(prefix)}
       </head><body class="lectures-page">
       <header class="site-header">
         <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
@@ -508,14 +515,15 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
           <span class="topbar-links"><a href="{escape(lecture_reader_href(prefix=prefix, language=language))}">{'My study notes' if en else '내 학습 노트'}</a><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
         </nav>
         {render_library_navigation(documents, 'lectures', language, prefix)}
+        {search_form(prefix, language, 'lectures')}
         <section class="lecture-hero"><p class="section-kicker">Study &amp; practice</p><h1>{title}</h1><p>{description}</p>
           <span class="lecture-count">{count_label}</span>
         </section>
       </header>
-      <main><section class="lecture-list" aria-label="{'Choose learning material' if en else '학습 자료 선택'}">{''.join(cards)}</section>
+      <main>{search_results(language)}<section class="lecture-list" aria-label="{'Choose learning material' if en else '학습 자료 선택'}">{''.join(cards)}</section>
         <footer class="lecture-note"><p>{'Each series retains its original language. The English catalog is a guide to the Korean notes.' if en else '회차별 PDF를 읽거나 필기하며 공부할 수 있습니다. 각 자료의 작성 범위와 출처는 PDF와 자료 안내에 남깁니다.'}</p>
         <a href="{prefix}archive/{'en/' if en else ''}">{'Find all preserved PDFs in the archive' if en else '전체 PDF 보관본 찾기'} →</a></footer>
-      </main></body></html>'''
+      </main>{search_script(prefix)}</body></html>'''
 
 
 def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec: dict,
@@ -892,7 +900,7 @@ ARCHIVE_JS = '''
   const more = document.querySelector('#archive-more');
   let series = buttons.some(button => button.dataset.series === params.get('series')) ? params.get('series') : '';
   let limit = 12;
-  search.value = params.get('q') || '';
+  search.value = document.querySelector('[data-site-search]') ? '' : params.get('q') || '';
   if (Array.from(month.options).some(option => option.value === params.get('month'))) month.value = params.get('month');
   if (params.get('sort') === 'oldest') sort.value = 'oldest';
   const normalize = value => value.normalize('NFKC').toLocaleLowerCase().replace(/\\s+/g, ' ').trim();

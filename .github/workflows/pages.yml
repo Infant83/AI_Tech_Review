@@ -3,40 +3,75 @@ name: Publish public report hub
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: github-pages
+  group: github-pages-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'main' }}
   cancel-in-progress: false
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+          fetch-depth: 0
           persist-credentials: false
-      - name: Enrich the existing public output and stamp its source revision
-        run: python3 scripts/reader_engagement_publish.py enrich --revision "$GITHUB_SHA"
-      - name: Reject private files and validate the public publication catalog
-        run: python3 scripts/reader_engagement_publish.py validate
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/setup-python@v5
         with:
-          path: site
+          python-version: '3.12'
+      - name: Install the pinned build-only image dependency
+        run: python3 -m pip install -r scripts/requirements-listing-images.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check publication, search and preservation rules
+        run: python3 -m unittest discover -s tests
+      - name: Check multilingual search ranking
+        run: node --test tests/site_search.test.cjs
+      - name: Check the existing lecture reader and storage races
+        run: node --test .automation/lecture-reader/*.test.mjs
+      - name: Read the deployed source revision and extract its immutable baseline
+        run: python3 scripts/publication_release.py baseline --output output/release-baseline
+      - name: Build an independent candidate from the combined source registrations
+        run: python3 scripts/prepare_publication.py --output output/publication --revision "$GITHUB_SHA" --baseline-snapshot output/release-baseline/snapshot.json
+      - name: Reject missing identities and undeclared article or PDF changes
+        run: python3 scripts/publication_release.py check --baseline-snapshot output/release-baseline/snapshot.json --site output/publication/site --output output/publication/release-check.json
+      - name: Enforce initial payload and deferred search budgets
+        run: python3 scripts/site_payload_budget.py --site output/publication/site --baseline-payload output/release-baseline/payload.json --output output/publication/payload-check.json
+      - name: Package the continuity snapshot with the exact deployable artifact
+        run: python3 scripts/publication_release.py seal --site output/publication/site --revision "$GITHUB_SHA" --payload-report output/publication/payload-check.json
+      - name: Validate the complete sealed public artifact
+        run: python3 scripts/reader_engagement_publish.py validate --site-dir output/publication/site
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: output/publication/site
       - name: Preserve the exact catalog packaged with Pages
         uses: actions/upload-artifact@v4
         with:
           name: reader-publication-catalog
-          path: site/reader-publications.json
+          path: output/publication/site/reader-publications.json
           retention-days: 7
+      - name: Preserve release verification summaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: publication-validation
+          path: |
+            output/publication/report.json
+            output/publication/release-check.json
+            output/publication/payload-check.json
+          retention-days: 14
 
   deploy:
     needs: build
+    if: github.ref == 'refs/heads/main'
     outputs:
       current: ${{ steps.guard.outputs.current }}
     permissions:

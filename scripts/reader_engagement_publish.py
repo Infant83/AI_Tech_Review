@@ -38,7 +38,8 @@ SHA_RE = re.compile(r"[0-9a-f]{40}\Z")
 CONTENT_SHA_RE = re.compile(r"[0-9a-f]{64}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
-                     ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME}
+                     ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME,
+                     "publication-release.json"}
 PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en"}
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
@@ -335,7 +336,7 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
     return {"html_changed": changed, "articles": len(articles), "revision": revision}
 
 
-def validate_public_artifact(site_dir: Path) -> dict:
+def validate_public_artifact(site_dir: Path, *, verify_search: bool = True) -> dict:
     """Fail before artifact upload on private files, links, or unregistered article assets."""
     try:
         from .publish_public_site import public_text_risks
@@ -346,6 +347,18 @@ def validate_public_artifact(site_dir: Path) -> dict:
     site_dir = Path(site_dir)
     if site_dir.is_symlink():
         raise ValueError("The public output directory cannot be a symlink")
+    # A search corpus must describe this artifact's public registries, not an
+    # older independently generated list. Its engine files are pinned to source.
+    home = site_dir / "index.html"
+    if verify_search and ((site_dir / "assets/search-assets.json").exists()
+            or (home.is_file() and "data-site-search" in home.read_text(encoding="utf-8"))):
+        try:
+            from .site_search import validate_search
+        except ImportError:
+            from site_search import validate_search
+        search_errors = validate_search(site_dir)
+        if search_errors:
+            raise ValueError("; ".join(search_errors))
     catalog = validate_catalog(json.loads((site_dir / CATALOG_NAME).read_text(encoding="utf-8")))
     updates = validate_updates(json.loads((site_dir / UPDATES_NAME).read_text(encoding="utf-8")))
     if build_updates(site_dir, updates) != updates:

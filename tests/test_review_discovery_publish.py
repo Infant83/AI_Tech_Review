@@ -27,6 +27,22 @@ class Cards(HTMLParser):
 
 
 class ReviewDiscoveryPublicationTests(unittest.TestCase):
+    def test_registered_hub_metadata_refreshes_search_fields_without_republishing_article(self):
+        registered = publisher.REVIEWS[0]
+        existing = review(folder=registered.folder, title=registered.title, date=registered.date,
+                          translations=[{"language": row.language} for row in registered.translations],
+                          assets=["original.pdf"], disclosure={"version": "original"})
+        refreshed = publisher.refresh_registered_hub_metadata([existing], set())[0]
+        for key in ("subtitle", "category", "summary"):
+            self.assertEqual(refreshed[key], getattr(registered, key))
+        self.assertEqual(refreshed["tags"], list(registered.tags))
+        for key in ("folder", "date", "updated", "href", "metric_path", "assets", "disclosure", "translations"):
+            self.assertEqual(refreshed[key], existing[key])
+        with self.assertRaisesRegex(ValueError, "--review"):
+            publisher.refresh_registered_hub_metadata([{**existing, "title": "An earlier title"}], set())
+        with self.assertRaisesRegex(ValueError, "date must remain"):
+            publisher.refresh_registered_hub_metadata([{**existing, "date": "2020-01-01"}], {registered.folder})
+
     def test_hub_only_summary_refresh_keeps_article_dates_assets_and_identity(self):
         registered = publisher.REVIEWS[0]
         existing = review(folder=registered.folder, summary="An earlier introduction.",

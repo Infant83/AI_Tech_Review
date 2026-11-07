@@ -8,10 +8,14 @@ from urllib.parse import unquote, urlsplit
 
 try:
     from .hub_localization import localize_manifest
+    from .site_search import search_head, search_form, search_results, search_script
+    from .listing_images import image_attributes
     from .document_archive_site import render_library_navigation
     from .site_brand import render_brand_link
 except ImportError:
     from hub_localization import localize_manifest
+    from site_search import search_head, search_form, search_results, search_script
+    from listing_images import image_attributes
     from document_archive_site import render_library_navigation
     from site_brand import render_brand_link
 
@@ -91,14 +95,34 @@ def language_badge(item: dict, language: str, prefix: str) -> str:
     return ""
 
 
-def render_card(item: dict, language: str = "ko", prefix: str = "", *, site_dir: Path | None = None) -> str:
+def listing_image(thumbnail: str, title: str, language: str, prefix: str,
+                  site_dir: Path | None, role: str) -> str:
+    attributes = image_attributes(thumbnail, role=role, prefix=prefix, site_dir=site_dir)
+    if not attributes:
+        attributes = {"src": cover_href(thumbnail, prefix, site_dir=site_dir),
+                      "width": 1200 if role == "highlight" else 960,
+                      "height": 675 if role == "highlight" else 540}
+        # cover_href is already escaped; the attribute assembly below escapes
+        # every value exactly once along with manifest-derived srcset/sizes.
+        attributes["src"] = html.unescape(attributes["src"])
+    attributes["alt"] = title + (" cover" if language == "en" else " 대표 이미지")
+    attributes["loading"] = "eager" if role == "highlight" else "lazy"
+    if role == "highlight":
+        attributes["fetchpriority"] = "high"
+    else:
+        attributes["decoding"] = "async"
+    return "<img " + " ".join(f'{key}="{escape(value)}"' for key, value in attributes.items()) + ">"
+
+
+def render_card(item: dict, language: str = "ko", prefix: str = "", *, site_dir: Path | None = None, legacy_search: bool = True) -> str:
     en = language == "en"
     title = str(item["title"])
     tags = list(item.get("tags") or [])
     search = str(item.get("search_text") or " ".join(str(item.get(key) or "") for key in ("title", "subtitle", "summary", "category"))) + " " + " ".join(map(str, tags))
+    search_attribute = f' data-search="{escape(search)}"' if legacy_search else ""
     href = public_href(item["href"], prefix)
     thumbnail = item.get("thumbnail")
-    image = (f'<img src="{cover_href(thumbnail, prefix, site_dir=site_dir)}" alt="{escape(title)} {"cover" if en else "대표 이미지"}" loading="lazy" decoding="async" width="960" height="540">'
+    image = (listing_image(thumbnail, title, language, prefix, site_dir, "card")
              if thumbnail else '<div class="thumb-placeholder" aria-hidden="true"></div>')
     subtitle = str(item.get("subtitle") or "").strip()
     summary = str(item.get("summary") or "").strip()
@@ -108,7 +132,7 @@ def render_card(item: dict, language: str = "ko", prefix: str = "", *, site_dir:
                     f'<button class="summary-toggle" data-summary-toggle type="button" aria-controls="{escape(summary_id)}" aria-expanded="false" hidden>{"Read full summary" if en else "요약 더 보기"}</button>'
                     if summary else "")
     content_language = "en" if item.get("content_language") == "en" else "ko"
-    return f'''<article class="review-card" data-article-id="{escape(item['folder'])}" data-published="{escape(item['date'])}" data-search="{escape(search)}" data-category="{escape(item['category'])}" data-tags="{escape(' '.join(map(str, tags)))}" data-title="{escape(title)}" data-metric-path="{escape(item['metric_path'])}">
+    return f'''<article class="review-card" data-article-id="{escape(item['folder'])}" data-published="{escape(item['date'])}"{search_attribute} data-category="{escape(item['category'])}" data-tags="{escape(' '.join(map(str, tags)))}" data-title="{escape(title)}" data-metric-path="{escape(item['metric_path'])}">
   <a class="thumb" href="{href}">{image}</a>
   <div class="review-card-body">
     <p class="meta">{escape(category_label(item['category'], language))} · <time datetime="{escape(item['date'])}">{escape(item['date'])}</time>{language_badge(item, language, prefix)}</p>
@@ -123,7 +147,7 @@ def render_latest(item: dict, language: str = "ko", prefix: str = "", *, site_di
     en = language == "en"
     href = public_href(item["href"], prefix)
     thumbnail = item.get("thumbnail")
-    image = (f'<img src="{cover_href(thumbnail, prefix, site_dir=site_dir)}" alt="{escape(item["title"])} {"cover" if en else "대표 이미지"}" loading="eager" fetchpriority="high" width="1200" height="675">'
+    image = (listing_image(thumbnail, str(item["title"]), language, prefix, site_dir, "highlight")
              if thumbnail else '<div class="thumb-placeholder" aria-hidden="true"></div>')
     subtitle = str(item.get("subtitle") or "").strip()
     subtitle_html = f'<p class="latest-subtitle">{escape(subtitle)}</p>' if subtitle else ""
@@ -152,7 +176,9 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     categories = [value for value in (preferred_category_order or []) if value in available]
     categories.extend(sorted(available - set(categories)))
     category_options = "".join(f'<option value="{escape(value)}">{escape(category_label(value, language))}</option>' for value in categories)
-    cards = "\n".join(render_card(item, language, prefix, site_dir=site_dir) for item in items)
+    # Shared search downloads its bilingual catalog only on interaction. Keep
+    # visible summaries intact without duplicating that catalog on every card.
+    cards = "\n".join(render_card(item, language, prefix, site_dir=site_dir, legacy_search=False) for item in items)
     latest = render_latest(items[0], language, prefix, site_dir=site_dir) if items else ""
     description = "Reviews and lecture notes on AI, quantum computing, and materials science." if en else "AI·양자 컴퓨팅·재료과학 리뷰와 렉처 노트."
     canonical = HUB_URL + ("en/" if en else "")
@@ -198,6 +224,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&amp;display=swap">
   <link rel="stylesheet" href="{prefix}assets/site.css?v={css_version}">
   <link rel="stylesheet" href="{prefix}assets/archive.css?v={library_version}">
+  {search_head(prefix)}
 </head>
 <body class="hub-page">
   <header class="site-header">
@@ -214,9 +241,10 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
         <noscript><style>.hub-toggle{{display:none}}</style><a href="{'../' if en else 'en/'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
       </div>
     </nav>
-    <div class="hub-browse">{navigation}<label class="top-search"><span class="sr-only">{'Search reviews' if en else '리뷰 검색'}</span><input id="search" type="search" placeholder="{'Search titles or topics' if en else '제목·주제 검색'}" autocomplete="off"></label></div>
+    <div class="hub-browse">{navigation}{search_form(prefix, language)}<input id="search" type="hidden" value=""></div>
   </header>
   <main>
+    {search_results(language)}
     {latest}
     <section class="topic-filter" id="topic-filter" aria-label="{'Find reviews' if en else '주제별 리뷰 찾기'}">
       <div class="filter-heading"><h2>{'Reviews' if en else '리뷰'}</h2><div class="discovery-controls">
@@ -241,6 +269,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     <div data-reader-site-metrics></div>
   </footer>
   <script src="{prefix}assets/site.js?v={js_version}" defer></script>
+  {search_script(prefix)}
 </body>
 </html>
 '''

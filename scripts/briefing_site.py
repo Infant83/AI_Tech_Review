@@ -10,8 +10,10 @@ from pathlib import Path
 import re
 
 try:
+    from .site_search import search_head, search_form, search_results, search_script
     from .site_brand import SITE_STYLES_VERSION, render_brand_link
 except ImportError:
+    from site_search import search_head, search_form, search_results, search_script
     from site_brand import SITE_STYLES_VERSION, render_brand_link
 
 BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
@@ -141,13 +143,14 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
       <link rel="alternate" hreflang="ko" href="{base_url}briefings/"><link rel="alternate" hreflang="en" href="{base_url}briefings/en/"><link rel="alternate" hreflang="x-default" href="{base_url}briefings/">
       <meta property="og:type" content="website"><meta property="og:title" content="{title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">
       <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={asset_version}"><link rel="stylesheet" href="{prefix}assets/briefings.css?v={asset_version}">
+      {search_head(prefix)}
       </head><body class="briefings-page">
       <header class="site-header"><nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">{render_brand_link(prefix)}<span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span></nav>
-      {navigation}<section class="briefing-hero"><p class="section-kicker">Day by day · Quantum research</p><h1>{title}</h1><p>{description}</p><div class="briefing-hero-meta"><span>{str(len(issues)) + ' published briefings' if en else str(len(issues)) + '건의 브리핑'}</span>{f'<span>{"Latest issue" if en else "최근 발행"} <time datetime="{latest_date}">{latest_date}</time></span>' if latest_date else ''}<a href="#briefing-board">{'Browse list' if en else '목록으로 보기'} ↓</a></div></section></header>
-      <main>
+      {navigation}{search_form(prefix, language, "briefings")}<section class="briefing-hero"><p class="section-kicker">Day by day · Quantum research</p><h1>{title}</h1><p>{description}</p><div class="briefing-hero-meta"><span>{str(len(issues)) + ' published briefings' if en else str(len(issues)) + '건의 브리핑'}</span>{f'<span>{"Latest issue" if en else "최근 발행"} <time datetime="{latest_date}">{latest_date}</time></span>' if latest_date else ''}<a href="#briefing-board">{'Browse list' if en else '목록으로 보기'} ↓</a></div></section></header>
+      <main>{search_results(language)}
       <div class="briefing-tools" role="search">
         <label><span>{'Publication month' if en else '발행 월'}</span><select id="briefing-month"{' disabled' if not months else ''}>{options}</select></label>
-        <label class="briefing-search"><span>{'Search topics' if en else '주제 검색'}</span><input id="briefing-search" type="search" placeholder="{'Title, keyword or date…' if en else '제목, 키워드, 날짜로 검색…'}" autocomplete="off"></label>
+        <label class="briefing-search legacy-search-hidden"><span>{'Search topics' if en else '주제 검색'}</span><input id="briefing-search" type="search" placeholder="{'Title, keyword or date…' if en else '제목, 키워드, 날짜로 검색…'}" autocomplete="off"></label>
         <label class="briefing-scope"><input id="briefing-all-months" type="checkbox"><span>{'All months' if en else '전체 기간'}</span></label><button type="button" id="briefing-reset">{'Reset' if en else '초기화'}</button>
       </div>
       <div class="briefing-layout">{calendar_section}<section class="briefing-detail" id="briefing-day-panel" aria-labelledby="briefing-day-heading"><p class="section-kicker">{'Selected day / preview' if en else '날짜별 브리핑'}</p><h3 id="briefing-day-heading">{latest_date or ('No issues yet' if en else '발행 대기')}</h3><div id="briefing-day-content">{detail}</div></section></div>
@@ -156,6 +159,7 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
         <noscript><p>{'All registered briefings are listed. Calendar selection and search require JavaScript.' if en else '전체 브리핑을 최신순으로 표시합니다. 날짜 선택과 검색은 JavaScript를 켜면 사용할 수 있습니다.'}</p></noscript>
       </section><footer class="archive-note"><p>{'Dates follow each document’s publication date. PDFs retain their original language and content. Only publicly registered issues appear here.' if en else '달력은 문서에 표기된 발행일 기준입니다. 공개 등록된 브리핑만 표시하며, 각 PDF는 발행 당시의 내용으로 보관합니다.'}</p><a href="{prefix}archive/{'en/' if en else ''}">{'All-document archive' if en else '전체 자료 아카이브'} →</a></footer>
       </main><script type="application/json" id="briefing-data">{payload}</script><script src="{prefix}assets/briefings.js?v={script_version}" defer></script>
+      {search_script(prefix)}
       </body></html>'''
 
 

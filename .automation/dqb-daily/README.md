@@ -4,7 +4,7 @@
 
 ## 매일 이어갈 작업
 
-1. 최신 사용자 지시와 `AGENTS.md`, `EDITORIAL_POLICY.md`, `EDITORIAL_METHOD.md`, `SCIENTIFIC_EXPLANATION_DIRECTION.md`, `REFERENCE_STYLE.md`, `.automation/writing-style-audit-harness.md`를 확인한다. `archive/manifest.json`, `site/manifest.json`과 기존 `daily_research_review/` 기획도 확인해 이미 다룬 문제를 파악한다.
+1. 최신 사용자 지시와 `AGENTS.md`, `EDITORIAL_POLICY.md`, `EDITORIAL_METHOD.md`, `SCIENTIFIC_EXPLANATION_DIRECTION.md`, `REFERENCE_STYLE.md`, `.automation/writing-style-audit-harness.md`를 확인한다. `archive/entries/`, `publication/reviews/`, `site/manifest.json`, `PUBLICATION_WORKFLOW.md`와 기존 `daily_research_review/` 기획도 확인해 이미 다룬 문제를 파악한다.
 2. 연결된 메일 도구에서 DQB를 조회한다. 최초에는 최근 7일을 대조하고, 이후에는 마지막 성공 조회보다 7일 앞선 시점부터 겹쳐 조회해 지연 도착·정정 메일을 잡는다. 첨부 원문을 실제로 읽고, 호 날짜와 파일 해시·개정 관계로 중복을 구분한다. 같은 날짜의 새 첨부도 이전 자료와 비교한다. 목록 발견, 원문 확보, 내용 대조, 공개 등록은 서로 다른 상태다.
 3. DQB를 탐색의 출발점으로 삼아 연결된 원 논문·보충자료·공식 코드와 관련 선행·후속 연구를 확인한다. 관련 연구는 단순한 키워드 유사성보다 연구 질문·물리적 메커니즘·방법·증거·미해결 문제로 연결한다. 기존 리뷰와 가까운 부분과 새로 설명할 부분을 판단한다. 전자구조·재료·OLED, 양자 알고리즘·소프트웨어·하드웨어, AI를 이용한 과학 연구 등은 초기 관심 지형이며, 새로운 목록이나 고정 분량을 강제하지 않는다.
 4. 누적 관심사에 근거·반례·연결·열린 질문을 보탠다. 현재 집중할 주제와 탐색 중인 주변 주제를 구별하고, 새 근거가 있을 때만 범위와 우선순위를 조정한다. 당일 새 자료가 없어도 남은 질문을 진전시킬 수 있으나, 매일 새 주제·새 리뷰·새 기획안을 만들 의무는 없다. 오래된 기획의 진행 상태는 현재 게시 목록과 다시 대조한다.

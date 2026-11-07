@@ -1,6 +1,6 @@
 """Validate the explicit public PDF registry and import reviewed PDF documents.
 
-Only files named in manifest.json are eligible for publication. This module has
+Only files named in explicit registrations are eligible for publication. This module has
 no dependency on the site publisher, so the publisher can safely import it.
 """
 
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -17,6 +18,11 @@ import stat
 import sys
 import tempfile
 from typing import Any
+
+try:
+    from .publication_lock import publication_lock
+except ImportError:
+    from publication_lock import publication_lock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -157,7 +163,8 @@ def load_documents(archive_dir: Path) -> list[dict[str, Any]]:
     """Return validated, explicitly registered public PDFs, newest first.
 
     A missing or zero-byte manifest initializes an empty registry. Extra files
-    in archive/files are never discovered or returned automatically.
+    in archive/files are never discovered or returned automatically. Version 1
+    reads the legacy documents list; version 2 reads one JSON per entries/ file.
     """
     archive_dir = Path(archive_dir)
     _check_directory(archive_dir, allow_missing=True)
@@ -175,11 +182,30 @@ def load_documents(archive_dir: Path) -> list[dict[str, Any]]:
         manifest = json.loads(raw, object_pairs_hook=_unique_json_object)
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         _fail(f"Could not read archive manifest: {exc}")
-    if not isinstance(manifest, dict) or set(manifest) != {"version", "documents"}:
+    if isinstance(manifest, dict) and type(manifest.get("version")) is int and manifest["version"] == 2:
+        if manifest != {"version": 2, "entries": "entries"}:
+            _fail("Version 2 registry must contain exactly version:2 and entries:entries")
+        entries = archive_dir / "entries"
+        _check_directory(entries)
+        documents = []
+        for entry in sorted(entries.iterdir()):
+            _reject_symlink_components(entry)
+            if not entry.is_file() or entry.suffix != ".json":
+                _fail("Archive entries must contain only regular JSON registrations")
+            try:
+                document = json.loads(entry.read_text(encoding="utf-8"), object_pairs_hook=_unique_json_object)
+            except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                _fail(f"Could not read archive entry {entry.name}: {exc}")
+            _validate_metadata(document)
+            if entry.name != document["id"] + ".json":
+                _fail("Archive entry filename must match its document id")
+            documents.append(document)
+    elif not isinstance(manifest, dict) or set(manifest) != {"version", "documents"}:
         _fail("Manifest must contain exactly version and documents")
-    if type(manifest["version"]) is not int or manifest["version"] != 1:
-        _fail("Manifest version must be 1")
-    documents = manifest["documents"]
+    else:
+        if type(manifest["version"]) is not int or manifest["version"] != 1:
+            _fail("Manifest version must be 1 or 2")
+        documents = manifest["documents"]
     if not isinstance(documents, list):
         _fail("Manifest documents must be a list")
     seen: set[str] = set()
@@ -210,19 +236,37 @@ def _write_manifest_atomic(archive_dir: Path, documents: list[dict[str, Any]]) -
         temporary_path.unlink(missing_ok=True)
 
 
+def document_version(archive_dir: Path, document: dict[str, Any]) -> str:
+    """Optimistic concurrency token for both metadata and PDF bytes."""
+    payload = json.dumps(document, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    checksum = hashlib.sha256((Path(archive_dir) / document["file"]).read_bytes()).digest()
+    return hashlib.sha256(payload + b"\0" + checksum).hexdigest()
+
+
 def import_document(
     input_pdf: Path,
     document: dict[str, Any],
     archive_dir: Path = DEFAULT_ARCHIVE_DIR,
     *,
     replace: bool = False,
+    expected_sha256: str | None = None,
+    expected_version: str | None = None,
 ) -> Path:
-    """Copy an explicitly reviewed PDF and atomically update the registry.
+    """Serialize a reviewed import and roll back ordinary write failures.
 
     --replace can replace the PDF of an existing registry entry only. An
     unregistered file is never overwritten, even when replace is requested.
+    Git integration and release snapshots protect cross-checkout publication;
+    a filesystem lock alone is not a distributed transaction or power-loss WAL.
     """
     archive_dir = Path(archive_dir)
+    _check_directory(archive_dir, allow_missing=True)
+    with publication_lock(archive_dir / ".publication.lock"):
+        return _import_document_locked(input_pdf, document, archive_dir, replace=replace,
+                                       expected_sha256=expected_sha256, expected_version=expected_version)
+
+
+def _import_document_locked(input_pdf, document, archive_dir, *, replace=False, expected_sha256=None, expected_version=None):
     input_pdf = Path(input_pdf)
     _validate_metadata(document)
     _check_pdf(input_pdf)
@@ -236,6 +280,21 @@ def import_document(
     _reject_symlink_components(destination)
     if destination.exists() and existing is None:
         _fail(f"Refusing to overwrite an unregistered file: {destination}")
+    marker = archive_dir / "manifest.json"
+    marker_text = marker.read_text(encoding="utf-8").strip() if marker.exists() else ""
+    entry_mode = bool(marker_text) and json.loads(marker_text).get("version") == 2
+    if expected_sha256 is not None and (not isinstance(expected_sha256, str)
+            or not re.fullmatch(r"[a-f0-9]{64}", expected_sha256)):
+        _fail("expected_sha256 must be the previous PDF's lowercase SHA-256")
+    if existing is not None and entry_mode and expected_version is None:
+        _fail("Replacing a registered document requires --expected-version to reject stale metadata or PDF edits")
+    if expected_version is not None:
+        if (not isinstance(expected_version, str) or not re.fullmatch(r"[a-f0-9]{64}", expected_version)
+                or existing is None or document_version(archive_dir, existing) != expected_version):
+            _fail("The registered document changed since the edit started; inspect its current version before replacing")
+    if expected_sha256 is not None:
+        if existing is None or hashlib.sha256(destination.read_bytes()).hexdigest() != expected_sha256:
+            _fail("The registered PDF changed since the edit started; refresh before replacing")
     archive_dir.mkdir(parents=True, exist_ok=True)
     files_dir.mkdir(exist_ok=True)
     fd, temporary_name = tempfile.mkstemp(prefix=".incoming-", suffix=".pdf", dir=files_dir)
@@ -254,7 +313,22 @@ def import_document(
             shutil.copyfile(destination, backup_path)
         os.replace(temporary_path, destination)
         installed = True
-        _write_manifest_atomic(archive_dir, updated)
+        if entry_mode:
+            entry = archive_dir / "entries" / (document["id"] + ".json")
+            _reject_symlink_components(entry)
+            descriptor, name = tempfile.mkstemp(prefix=".entry-", suffix=".json", dir=archive_dir)
+            pending = Path(name)
+            try:
+                with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+                    json.dump(document, handle, ensure_ascii=False, indent=2)
+                    handle.write("\n")
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                os.replace(pending, entry)
+            finally:
+                pending.unlink(missing_ok=True)
+        else:
+            _write_manifest_atomic(archive_dir, updated)
     except BaseException:
         if installed:
             if backup_path is not None:
@@ -270,6 +344,21 @@ def import_document(
 
 
 def main(argv: list[str] | None = None) -> int:
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if arguments and arguments[0] == "inspect":
+        parser = argparse.ArgumentParser(description="Read a registered document's current concurrency token")
+        parser.add_argument("id")
+        parser.add_argument("--archive-dir", type=Path, default=DEFAULT_ARCHIVE_DIR)
+        args = parser.parse_args(arguments[1:])
+        try:
+            with publication_lock(args.archive_dir / ".publication.lock"):
+                document = next((row for row in load_documents(args.archive_dir) if row["id"] == args.id), None)
+                if document is None:
+                    _fail("Unknown archive document id")
+                print(json.dumps({"id": document["id"], "version": document_version(args.archive_dir, document)}, ensure_ascii=False))
+        except (ArchiveValidationError, OSError, ValueError, TimeoutError) as error:
+            parser.exit(1, f"Archive inspection failed: {error}\n")
+        return 0
     parser = argparse.ArgumentParser(description="Import a PDF reviewed for publication into the review archive")
     parser.add_argument("input_pdf", type=Path, help="PDF file supplied by the user")
     parser.add_argument("--archive-dir", type=Path, default=DEFAULT_ARCHIVE_DIR)
@@ -285,7 +374,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--source-title", help="Public series or publication title, without email metadata")
     parser.add_argument("--public-reviewed", action="store_true", required=True, help="Confirm the entire PDF and display metadata have been reviewed for public release")
     parser.add_argument("--replace", action="store_true", help="Replace an existing registered document with the same id")
-    args = parser.parse_args(argv)
+    parser.add_argument("--expected-sha256", help="Optional additional check against the previous PDF SHA-256")
+    parser.add_argument("--expected-version", help="Token returned by inspect; required to replace a per-document registration")
+    args = parser.parse_args(arguments)
     document = {
         "id": args.id,
         "date": args.date,
@@ -302,8 +393,9 @@ def main(argv: list[str] | None = None) -> int:
         if value is not None:
             document[field] = value
     try:
-        destination = import_document(args.input_pdf, document, args.archive_dir, replace=args.replace)
-    except (ArchiveValidationError, OSError) as exc:
+        destination = import_document(args.input_pdf, document, args.archive_dir, replace=args.replace,
+                                      expected_sha256=args.expected_sha256, expected_version=args.expected_version)
+    except (ArchiveValidationError, OSError, TimeoutError) as exc:
         parser.exit(1, f"Archive import failed: {exc}\n")
     print(f"Imported {document['id']}: {destination}")
     return 0

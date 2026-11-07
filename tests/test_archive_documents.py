@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from concurrent.futures import ThreadPoolExecutor
+import hashlib
 import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
 
-from scripts.archive_documents import ArchiveValidationError, import_document, load_documents
+from scripts.archive_documents import ArchiveValidationError, document_version, import_document, load_documents
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "archive_documents.py"
@@ -269,6 +272,103 @@ class ArchiveDocumentsTests(unittest.TestCase):
                 import_document(source, item, self.archive, replace=True)
         self.assertEqual((self.archive / item["file"]).read_bytes(), PDF_BYTES)
         self.assertEqual((self.archive / "manifest.json").read_bytes(), previous_manifest)
+
+    def migrate_to_entries(self):
+        rows = load_documents(self.archive)
+        entries = self.archive / "entries"
+        entries.mkdir(exist_ok=True)
+        for row in rows:
+            (entries / (row["id"] + ".json")).write_text(json.dumps(row), encoding="utf-8")
+        (self.archive / "manifest.json").write_text('{"version":2,"entries":"entries"}\n', encoding="utf-8")
+
+    def test_entry_registry_preserves_metadata_and_import_does_not_rewrite_shared_marker(self):
+        self.write_registry([document()])
+        previous = load_documents(self.archive)
+        self.migrate_to_entries()
+        marker = (self.archive / "manifest.json").read_bytes()
+        self.assertEqual(load_documents(self.archive), previous)
+        source = self.root / "new.pdf"
+        source.write_bytes(PDF_BYTES)
+        new = document("2026-10-17-second-review")
+        import_document(source, new, self.archive)
+        self.assertEqual((self.archive / "manifest.json").read_bytes(), marker)
+        self.assertEqual({row["id"] for row in load_documents(self.archive)}, {document()["id"], new["id"]})
+
+    def test_entry_replacement_requires_current_metadata_and_pdf_version(self):
+        item = document()
+        self.write_registry([item])
+        self.migrate_to_entries()
+        token = document_version(self.archive, item)
+        source = self.root / "replacement.pdf"
+        source.write_bytes(PDF_BYTES + b"% replaced")
+        with self.assertRaisesRegex(ArchiveValidationError, "expected-version"):
+            import_document(source, item, self.archive, replace=True)
+        updated = {**item, "title": "수정된 공개 제목"}
+        import_document(source, updated, self.archive, replace=True, expected_version=token)
+        with self.assertRaisesRegex(ArchiveValidationError, "changed since"):
+            import_document(source, item, self.archive, replace=True, expected_version=token)
+        # A metadata-only concurrent change also invalidates the token.
+        token = document_version(self.archive, updated)
+        entry = self.archive / "entries" / (item["id"] + ".json")
+        entry.write_text(json.dumps({**updated, "summary": "동시에 수정된 요약"}), encoding="utf-8")
+        with self.assertRaisesRegex(ArchiveValidationError, "changed since"):
+            import_document(source, updated, self.archive, replace=True, expected_version=token)
+
+    def test_parallel_imports_preserve_all_entries_in_both_registry_modes(self):
+        for entry_mode in (False, True):
+            with self.subTest(entry_mode=entry_mode):
+                archive = self.root / ("entries-archive" if entry_mode else "legacy-archive")
+                archive.mkdir()
+                (archive / "files").mkdir()
+                if entry_mode:
+                    (archive / "entries").mkdir()
+                    (archive / "manifest.json").write_text('{"version":2,"entries":"entries"}')
+                barrier = threading.Barrier(4)
+                def run(index):
+                    source = self.root / f"worker-{entry_mode}-{index}.pdf"
+                    source.write_bytes(PDF_BYTES + str(index).encode())
+                    row = document(f"2026-10-16-worker-{index}")
+                    barrier.wait()
+                    import_document(source, row, archive)
+                    return row["id"]
+                with ThreadPoolExecutor(max_workers=4) as executor:
+                    expected = set(executor.map(run, range(4)))
+                self.assertEqual({row["id"] for row in load_documents(archive)}, expected)
+
+    def test_entry_write_failure_restores_pdf_and_registration(self):
+        item = document()
+        self.write_registry([item])
+        self.migrate_to_entries()
+        source = self.root / "replacement.pdf"
+        source.write_bytes(PDF_BYTES + b"% replacement")
+        entry = self.archive / "entries" / (item["id"] + ".json")
+        previous = entry.read_bytes()
+        token = document_version(self.archive, item)
+        import os
+        real_replace = os.replace
+        def fail_entry(source, destination):
+            if Path(destination) == entry:
+                raise OSError("registration disk failure")
+            return real_replace(source, destination)
+        with patch("scripts.archive_documents.os.replace", side_effect=fail_entry):
+            with self.assertRaisesRegex(OSError, "registration disk failure"):
+                import_document(source, item, self.archive, replace=True, expected_version=token)
+        self.assertEqual(entry.read_bytes(), previous)
+        self.assertEqual((self.archive / item["file"]).read_bytes(), PDF_BYTES)
+
+    def test_entry_registry_rejects_filename_mismatch_symlinks_and_unknown_files(self):
+        self.write_registry([document()])
+        self.migrate_to_entries()
+        entry = self.archive / "entries" / (document()["id"] + ".json")
+        other = entry.with_name("wrong-id.json")
+        entry.rename(other)
+        with self.assertRaises(ArchiveValidationError):
+            load_documents(self.archive)
+        other.rename(entry)
+        entry.rename(self.root / "external-entry.json")
+        entry.symlink_to(self.root / "external-entry.json")
+        with self.assertRaises(ArchiveValidationError):
+            load_documents(self.archive)
 
 
 if __name__ == "__main__":

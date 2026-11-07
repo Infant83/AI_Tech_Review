@@ -2,7 +2,9 @@
 
 Requires Pillow. The fixed, reviewed imagegen source is only resized; no
 generation call, color correction, crop, or artistic filter runs during builds.
-The SVG embeds the exact exported 512px PNG to avoid external image requests.
+The browser SVG embeds the exact exported 64px PNG. The 512px art export and
+180px home-screen icon are retained separately, so browser tabs do not download
+an unused high-resolution copy of the watercolor artwork.
 """
 
 from __future__ import annotations
@@ -38,18 +40,18 @@ def main() -> None:
             GENERATED / name, optimize=True
         )
 
-    png = (GENERATED / "ai-tech-review-icon-512.png").read_bytes()
+    png = (GENERATED / "favicon-64x64.png").read_bytes()
     encoded = base64.b64encode(png).decode("ascii")
     (GENERATED / "ai-tech-review-icon.svg").write_text(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" '
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" '
         'role="img" aria-label="AI Tech Review Letters journal-page R with a prompt-inspired opening curly brace stem and topic keywords Q AI DFT VQE LLM OLED GPU">\n'
-        f'  <image width="512" height="512" href="data:image/png;base64,{encoded}"/>\n'
+        f'  <image width="64" height="64" href="data:image/png;base64,{encoded}"/>\n'
         '</svg>\n',
         encoding="utf-8",
     )
     master.resize((512, 512), Image.Resampling.LANCZOS).save(
         GENERATED / "favicon.ico",
-        sizes=[(16, 16), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)],
+        sizes=[(16, 16), (32, 32), (48, 48), (64, 64)],
     )
 
 

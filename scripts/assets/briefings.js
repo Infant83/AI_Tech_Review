@@ -65,6 +65,7 @@
   });
   const rows = [...ui.list.querySelectorAll('.briefing-row')];
   const state = { month: latestMonth, date: null, query: '', all: false };
+  const sharedSearch = Boolean(document.querySelector('[data-site-search]'));
   const readLocation = () => {
     const parameters = new URLSearchParams(location.search);
     const month = parameters.get('month');
@@ -72,16 +73,16 @@
     state.month = inRange(month) ? month : latestMonth;
     state.date = validDate(date) && documentsByDate.has(date) ? date : null;
     if (state.date) state.month = state.date.slice(0, 7);
-    state.query = (parameters.get('q') || '').slice(0, 300).trim();
-    state.all = parameters.get('scope') === 'all' && !state.date;
+    state.query = sharedSearch ? '' : (parameters.get('q') || '').slice(0, 300).trim();
+    state.all = parameters.get(sharedSearch ? 'period' : 'scope') === 'all' && !state.date;
   };
   const writeLocation = () => {
     const url = new URL(location.href);
-    ['month', 'date', 'q', 'scope'].forEach(key => url.searchParams.delete(key));
+    (sharedSearch ? ['month', 'date', 'period'] : ['month', 'date', 'q', 'scope']).forEach(key => url.searchParams.delete(key));
     if (state.month !== latestMonth || state.date) url.searchParams.set('month', state.month);
     if (state.date) url.searchParams.set('date', state.date);
-    if (state.query) url.searchParams.set('q', state.query);
-    if (state.all) url.searchParams.set('scope', 'all');
+    if (state.query && !sharedSearch) url.searchParams.set('q', state.query);
+    if (state.all) url.searchParams.set(sharedSearch ? 'period' : 'scope', 'all');
     const next = `${url.pathname}${url.search}${url.hash}`;
     if (next !== `${location.pathname}${location.search}${location.hash}`) history.replaceState(null, '', next);
   };

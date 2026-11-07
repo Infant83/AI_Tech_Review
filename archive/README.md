@@ -1,6 +1,6 @@
 # 리뷰·자료 아카이브
 
-이 폴더는 Daily Quantum Review, 금요일 주간 리뷰, 사용자가 제공하는 개별 PDF 아티클과 렉처 노트를 리뷰 허브에 등록하는 원본입니다. `manifest.json`에 명시적으로 등록된 PDF만 공개 사이트에 복사됩니다. `files/`에 파일을 넣는 것만으로는 게시되지 않습니다.
+이 폴더는 Daily Quantum Review, 금요일 주간 리뷰, 사용자가 제공하는 개별 PDF 아티클과 렉처 노트를 리뷰 허브에 등록하는 원본입니다. `entries/<문서 ID>.json`에 명시적으로 등록된 PDF만 공개 사이트에 복사됩니다. `manifest.json`은 이 문서별 등록 방식을 선택하는 v2 설정이며 글을 추가할 때 편집하지 않습니다. `files/`에 파일을 넣는 것만으로는 게시되지 않습니다. [동시 작성과 배포 후보 안내](../PUBLICATION_WORKFLOW.md)를 함께 따릅니다.
 
 외부 서적은 `external-resources.json`에 공개 서지 정보와 저자·책 공식 페이지 링크로 등록합니다. 아카이브의 ‘외부 서적’ 분류와 검색에 표시되며, PDF 등록부·복사 대상에는 포함되지 않습니다. 링크는 이메일·인증 토큰·직접 PDF 주소를 포함하지 않는 공개 HTTPS 안내 페이지만 허용합니다. 날짜는 책 출간일이 아닌 아카이브 등록일입니다. 공개 JSON에서도 PDF 목록 `documents`와 링크 목록 `external_resources`를 구분합니다.
 
@@ -273,35 +273,30 @@ python3 scripts/archive_documents.py /absolute/path/review.pdf \
 
 같은 렉처 노트에 여러 수정본이 있으면 본문과 버전 표시를 대조해 확인한 최신본만 등록합니다. 더 새 수정본이 제공되면 기존 ID를 유지하고 `--replace`로 교체해 이전 판이 별도 문서로 중복 노출되지 않게 합니다. 요약에는 확인된 판본과 기록의 한계를 적습니다.
 
-같은 ID의 자료를 수정할 때만 `--replace`를 추가합니다. 이미 등록된 PDF가 교체되므로 수정할 파일을 확인한 뒤 사용합니다. 등록되지 않은 동명 파일은 `--replace`로도 덮어쓰지 않습니다. 원본 입력 PDF는 그대로 유지됩니다.
+같은 ID의 자료를 수정할 때만 `--replace`를 추가합니다. 먼저 `python3 scripts/archive_documents.py inspect <문서 ID>`로 현재 버전을 확인한 뒤 `--expected-version <출력된 version>`을 함께 넣습니다. 다른 작업이 메타데이터나 PDF를 먼저 바꿨으면 오래된 수정으로 덮어쓰지 않습니다. 등록되지 않은 동명 파일은 `--replace`로도 덮어쓰지 않습니다. 원본 입력 PDF는 그대로 유지됩니다.
 
 등록 후 리뷰 허브를 다시 생성합니다:
 
 ```sh
-python3 scripts/publish_public_site.py --hub-only
+python3 scripts/prepare_publication.py --output output/publication-candidate
 ```
 
 파일을 브라우저에 올리는 업로드 기능은 없습니다. PDF 제공 → 내용 확인 → 이 명령으로 등록 → 허브 생성 → 사이트 게시 순서로 진행합니다. 게시 전에는 생성된 허브에서 제목·분류·PDF 링크를 확인합니다.
 
-`manifest.json` 형식:
+v2 `manifest.json`은 `{"version": 2, "entries": "entries"}`로 고정합니다. 문서마다 `entries/<문서 ID>.json`을 하나 만들며 그 형식은 다음과 같습니다. 기존 v1 `documents` 목록을 사용하는 별도 보관함도 호환해서 읽습니다.
 
 ```json
 {
-  "version": 1,
-  "documents": [
-    {
-      "id": "2026-10-16-daily-quantum-review",
-      "date": "2026-10-16",
-      "series": "daily-quantum",
-      "title": "Daily Quantum Review · 2026년 10월 16일",
-      "summary": "이번 호에서 다루는 양자컴퓨팅 연구를 요약합니다.",
-      "language": "ko",
-      "file": "files/2026-10-16-daily-quantum-review.pdf",
-      "tags": ["Quantum"],
-      "source_title": "Daily Quantum Review",
-      "public_reviewed": true
-    }
-  ]
+  "id": "2026-10-16-daily-quantum-review",
+  "date": "2026-10-16",
+  "series": "daily-quantum",
+  "title": "Daily Quantum Review · 2026년 10월 16일",
+  "summary": "이번 호에서 다루는 양자컴퓨팅 연구를 요약합니다.",
+  "language": "ko",
+  "file": "files/2026-10-16-daily-quantum-review.pdf",
+  "tags": ["Quantum"],
+  "source_title": "Daily Quantum Review",
+  "public_reviewed": true
 }
 ```
 
@@ -311,4 +306,4 @@ python3 scripts/publish_public_site.py --hub-only
 
 리뷰허브는 글을 읽는 곳, `/lectures/`는 강좌를 골라 공부하는 곳, [브리핑](https://infant83.github.io/AI_Tech_Review/briefings/)은 발행일별 짧은 리뷰의 주제를 달력과 게시판 목록으로 확인하고 PDF를 읽는 곳이다. 주요 메뉴는 리뷰허브 → 렉처 노트 → 브리핑 순서이며, `/archive/`는 전체 PDF 보관본의 검색을 위한 별도 보조 링크로 둔다. 렉처 목록은 온라인 학습·실습과 PDF 노트를 구분한다. 한영 목록을 함께 생성하고, 이전 `archive/?series=lecture-notes` 주소는 새 학습 목록으로 연결한다. 검색어·기간·정렬을 포함한 기존 아카이브 검색 주소는 그대로 보존한다.
 
-브리핑은 `manifest.json`에 공개 검토를 마쳐 등록한 `daily-quantum`·`weekly-review` 자료만 자동으로 모은다. 달력은 문서의 실제 발행일을 사용하며 메일 수신 시간을 뜻하지 않는다. 월·날짜·검색어로 주제를 찾고 제목이나 읽기 링크에서 해당 PDF를 연다. 빈 날짜는 공개 등록된 브리핑이 없다는 뜻이며, 수신 여부를 추정하지 않는다. 자료 수집 원문·개인 메일·내부 경로를 공개 데이터에 포함하지 않는다. 새 PDF를 등록하고 공개 사이트를 갱신하면 브리핑의 달력과 목록에도 반영된다.
+브리핑은 `entries/`에 공개 검토를 마쳐 등록한 `daily-quantum`·`weekly-review` 자료만 자동으로 모은다. 달력은 문서의 실제 발행일을 사용하며 메일 수신 시간을 뜻하지 않는다. 월·날짜·검색어로 주제를 찾고 제목이나 읽기 링크에서 해당 PDF를 연다. 빈 날짜는 공개 등록된 브리핑이 없다는 뜻이며, 수신 여부를 추정하지 않는다. 자료 수집 원문·개인 메일·내부 경로를 공개 데이터에 포함하지 않는다. 새 PDF를 등록하고 공개 사이트를 갱신하면 브리핑의 달력과 목록에도 반영된다.

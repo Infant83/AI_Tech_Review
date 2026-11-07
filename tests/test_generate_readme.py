@@ -13,12 +13,13 @@ from scripts import generate_readme
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "generate_readme.py"
 PERSISTENT_REFERENCES = (
     "[아카이브 운영 안내](archive/README.md)",
-    "`archive/manifest.json`",
+    "`archive/entries/`",
+    "`publication/reviews/`",
     "[리뷰허브](https://infant83.github.io/AI_Tech_Review/)",
     "[렉처 노트](https://infant83.github.io/AI_Tech_Review/lectures/)",
     "[브리핑](https://infant83.github.io/AI_Tech_Review/briefings/)",
     "[전체 자료 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)",
-    "python3 scripts/publish_public_site.py --hub-only",
+    "python3 scripts/prepare_publication.py --output output/publication-candidate",
     "`site/manifest.json`",
     "`site/archive-manifest.json`",
     "[과학 표지 제작 원칙](COVER_ART_DIRECTION.md)",

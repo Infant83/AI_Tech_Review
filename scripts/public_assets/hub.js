@@ -259,7 +259,7 @@
     const knownIds = new Set(cards.map(card => card.dataset.articleId));
     if (!Array.isArray(expanded) || expanded.length > cards.length || expanded.some(id => typeof id !== "string" || !knownIds.has(id))) return false;
     for (const id of expanded) expandedSummaries.add(id);
-    search.value = state.search; category.value = state.category; sort.value = state.sort; period.value = state.period;
+    search.value = document.querySelector("[data-site-search]") ? "" : state.search; category.value = state.category; sort.value = state.sort; period.value = state.period;
     from.value = state.from; to.value = state.to; view = state.view; visibleLimit = state.limit;
     dates.hidden = period.value !== "custom";
     return true;

@@ -1,0 +1,202 @@
+from __future__ import annotations
+
+import copy
+import hashlib
+import io
+import json
+import tempfile
+import unittest
+from contextlib import redirect_stdout
+from pathlib import Path
+
+from scripts import publication_snapshot as snapshots
+from scripts import reader_engagement_publish as reader
+
+
+class PublicationSnapshotTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.site = self.root / "site"
+        self.site.mkdir()
+        self.review = {"folder": "example", "href": "reviews/example/index.html",
+                       "metric_path": "/AI_Tech_Review/reviews/example/",
+                       "assets": ["hero.webp"], "translations": [{"language": "en",
+                       "href": "reviews/example/en/index.html",
+                       "metric_path": "/AI_Tech_Review/reviews/example/en/", "assets": []}]}
+        self.document = {"id": "lecture", "href": "archive/files/lecture.pdf",
+                         "sha256": hashlib.sha256(b"public PDF").hexdigest()}
+        self.article = {"id": "example", "path": "/AI_Tech_Review/reviews/example/", "topic": "review"}
+        for name, value in {"index.html": b"<html>Home</html>",
+                            self.review["href"]: b"<html><head></head><body>Public article</body></html>",
+                            "reviews/example/en/index.html": b"<html>English</html>",
+                            "reviews/example/hero.webp": b"public image",
+                            self.document["href"]: b"public PDF"}.items():
+            path = self.site / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(value)
+        self.write_registries()
+
+    def write_registries(self, reviews=None, documents=None, articles=None):
+        for name, value in {"manifest.json": reviews if reviews is not None else [self.review],
+                            "archive-manifest.json": {"documents": documents if documents is not None else [self.document]},
+                            "reader-publications.json": {"revision": "a" * 40,
+                             "articles": articles if articles is not None else [self.article]}}.items():
+            (self.site / name).write_text(json.dumps(value), encoding="utf-8")
+
+    def baseline(self):
+        return snapshots.capture_site(self.site)
+
+    def test_capture_is_deterministic_read_only_and_contains_no_root_path(self):
+        original = {path.relative_to(self.site).as_posix(): path.read_bytes()
+                    for path in self.site.rglob("*") if path.is_file()}
+        first = self.baseline()
+        self.assertEqual(first, self.baseline())
+        self.assertNotIn(str(self.root), json.dumps(first))
+        self.assertEqual(original, {path.relative_to(self.site).as_posix(): path.read_bytes()
+                                   for path in self.site.rglob("*") if path.is_file()})
+
+    def test_coherent_catalog_drop_is_still_detected(self):
+        baseline = self.baseline()
+        self.write_registries(reviews=[], articles=[])
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertFalse(result["structural_ok"])
+        self.assertIn({"kind": "record_removed", "group": "reviews", "id": "example"}, result["blockers"])
+
+    def test_metric_identity_change_blocks_even_with_unchanged_files(self):
+        baseline = self.baseline()
+        self.review["metric_path"] = "/AI_Tech_Review/reviews/renamed/"
+        self.write_registries()
+        self.assertFalse(snapshots.compare_snapshots(baseline, self.baseline())["structural_ok"])
+
+    def test_translation_removal_blocks_even_when_html_is_left_on_disk(self):
+        baseline = self.baseline()
+        self.review["translations"] = []
+        self.write_registries()
+        self.assertFalse(snapshots.compare_snapshots(baseline, self.baseline())["structural_ok"])
+
+    def test_missing_declared_image_and_pdf_block(self):
+        baseline = self.baseline()
+        for name in ("reviews/example/hero.webp", self.document["href"]):
+            (self.site / name).unlink()
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertFalse(result["structural_ok"])
+        self.assertTrue(any(item["kind"] == "missing_file" for item in result["blockers"]))
+
+    def test_new_publication_is_allowed(self):
+        baseline = self.baseline()
+        addition = {"folder": "second", "href": "reviews/second/index.html", "assets": []}
+        target = self.site / addition["href"]
+        target.parent.mkdir(parents=True)
+        target.write_text("<html>New article</html>")
+        self.write_registries(reviews=[self.review, addition])
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertTrue(result["structural_ok"])
+        self.assertIn({"group": "reviews", "id": "second"}, result["additions"])
+
+    def test_article_content_change_requires_review_but_is_not_identity_failure(self):
+        baseline = self.baseline()
+        (self.site / self.review["href"]).write_text("<html>Revised article</html>")
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertTrue(result["structural_ok"])
+        self.assertTrue(result["content_review_required"])
+        self.assertIn(self.review["href"], result["content_changes"])
+
+    def test_injection_changes_are_separate_from_article_content(self):
+        path = self.site / self.review["href"]
+        original = path.read_text()
+        path.write_text(reader.enrich_html(original, self.review["href"], self.article))
+        baseline = self.baseline()
+        path.write_text(reader.enrich_html(original, self.review["href"], self.article,
+                                          asset_versions={"reader-engagement.js": "123456abcdef"}))
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertTrue(result["structural_ok"])
+        self.assertFalse(result["content_review_required"])
+        self.assertIn(self.review["href"], result["instrumentation_only_changes"])
+
+    def test_reader_identity_drift_blocks_without_manifest_change(self):
+        path = self.site / self.review["href"]
+        original = path.read_text()
+        path.write_text(reader.enrich_html(original, self.review["href"], self.article))
+        baseline = self.baseline()
+        path.write_text(reader.enrich_html(original, self.review["href"], {**self.article, "id": "wrong"}))
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertIn({"kind": "reader_identity_changed", "path": self.review["href"]}, result["blockers"])
+
+    def test_duplicate_id_and_traversal_are_rejected(self):
+        self.write_registries(reviews=[self.review, copy.deepcopy(self.review)])
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+        self.review["assets"] = ["../private.txt"]
+        self.write_registries()
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+
+    def test_declared_checksum_mismatch_blocks(self):
+        baseline = self.baseline()
+        (self.site / self.document["href"]).write_bytes(b"changed PDF without updating its registry")
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertIn({"kind": "declared_hash_mismatch", "path": self.document["href"]}, result["blockers"])
+
+    def test_duplicate_urls_are_rejected_even_for_distinct_ids(self):
+        second = {**self.review, "folder": "second"}
+        self.write_registries(reviews=[self.review, second])
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+
+    def test_malformed_baseline_file_hash_is_rejected(self):
+        baseline = self.baseline()
+        baseline["files"][self.review["href"]] = "not a hash record"
+        with self.assertRaises(snapshots.SnapshotError):
+            snapshots.compare_snapshots(baseline, self.baseline())
+
+    def test_shared_counter_reader_and_font_assets_are_tracked(self):
+        names = ["assets/reader-engagement.js", "assets/public-metrics.js", "assets/type.woff2",
+                 "lectures/reader/reader.mjs"]
+        for name in names:
+            path = self.site / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"original")
+        baseline = self.baseline()
+        (self.site / names[0]).write_bytes(b"new counter code")
+        (self.site / names[3]).write_bytes(b"new reader code")
+        (self.site / names[2]).unlink()
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertIn(names[0], result["content_changes"])
+        self.assertIn(names[3], result["content_changes"])
+        self.assertIn({"kind": "reference_missing", "path": names[2]}, result["blockers"])
+
+    def test_symlinked_json_registry_is_rejected(self):
+        path = self.site / "manifest.json"
+        outside = self.root / "other.json"
+        outside.write_bytes(path.read_bytes())
+        path.unlink()
+        path.symlink_to(outside)
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+
+    def test_original_publication_date_drift_blocks(self):
+        baseline = self.baseline()
+        self.review["date"] = "2026-11-07"
+        self.document["date"] = "2026-11-07"
+        self.article["publishedAt"] = "2026-11-07"
+        self.write_registries()
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        changed = {item.get("group") for item in result["blockers"]}
+        self.assertTrue({"reviews", "archive", "publications"}.issubset(changed))
+
+    def test_cli_writes_outside_public_site_and_returns_failure_on_removal(self):
+        baseline_path = self.root / "baseline.json"
+        self.assertEqual(snapshots.main(["capture", "--site", str(self.site), "--output", str(baseline_path)]), 0)
+        self.write_registries(reviews=[], articles=[])
+        self.assertEqual(snapshots.main(["compare", "--baseline", str(baseline_path), "--site", str(self.site),
+                                         "--output", str(self.root / "comparison.json")]), 1)
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(snapshots.main(["capture", "--site", str(self.site),
+                                             "--output", str(self.site / "snapshot.json")]), 2)
+        self.assertFalse((self.site / "snapshot.json").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

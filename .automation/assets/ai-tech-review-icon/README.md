@@ -61,8 +61,12 @@ python3 .automation/assets/ai-tech-review-icon/build_favicon.py
 - `ai-tech-review-icon-512.png`: 원본의 512px 내보내기
 - `apple-touch-icon.png`: 180px 불투명 RGB
 - `favicon-16x16.png`, `favicon-32x32.png`, `favicon-64x64.png`: 같은 원본의 축소본
-- `favicon.ico`: 16/32/48/64/128/256px 슬롯
-- `ai-tech-review-icon.svg`: 같은 512px PNG를 data URL로 내장한 SVG. 벡터 원화가 아니다.
+- `favicon.ico`: 브라우저 탭용 16/32/48/64px 슬롯
+- `ai-tech-review-icon.svg`: 같은 원본에서 내보낸 64px PNG를 data URL로 내장한 브라우저 아이콘. 벡터 원화가 아니다. 512px 원화 내보내기와 180px 홈 화면 아이콘은 별도로 보존한다.
+
+2026-11-07 경량화에서는 브라우저가 사용하지 않는 ICO의 128/256px 슬롯과
+SVG 안의 512px PNG를 작은 탭용 내보내기로 줄였다. 원화·크롭·색·구성은
+바꾸지 않았고, 큰 아트워크와 홈 화면 설치용 자산의 해상도는 유지한다.
 
 큰 이미지에서 주제어를 읽고, 작은 아이콘에서는 R의 실루엣과 색으로 매체를
 식별한다. 180/64/32/16px의 실제 축소본을 비교하며 모든 크기에서 일곱 약어의
