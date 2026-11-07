@@ -6323,7 +6323,7 @@
     "title": "양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로",
     "subtitle": "고수준 기능 합성, automatic control skips, native gate·SWAP absorption이 회로 비용을 줄이는 서로 다른 층을 비교합니다",
     "date": "2026-08-27",
-    "updated": "2026-08-27",
+    "updated": "2026-11-07",
     "category": "Quantum Computing",
     "tags": [
       "Quantum Compilation",
@@ -6351,17 +6351,44 @@
         "name_en": "Hyun-Jung Kim"
       },
       "ai_assistance": {
-        "system": "Codex-based GPT-5-family agent harness",
-        "system_ko": "Codex 기반 GPT-5 계열 에이전트 하네스",
+        "system": "Original edition: Codex-based GPT-5-family harness; November 7 revision: OpenAI Codex",
+        "system_ko": "원 작성: Codex 기반 GPT-5 계열 하네스; 11월 7일 개정: OpenAI Codex",
         "model": "exact model identifier not retained",
         "model_ko": "정확한 모델 식별자는 보존되지 않음",
-        "agent_count": null,
-        "agents": [],
+        "agent_count": 4,
+        "agents": [
+          {
+            "name": "root",
+            "role": "Manuscript, APS integration, source build and publication checks",
+            "role_ko": "원고·APS 통합·원고 빌드·게시 검사"
+          },
+          {
+            "name": "classiq_source_audit",
+            "role": "Independent Classiq synthesis, control skips, Qmod and runtime source and bibliography audit",
+            "role_ko": "Classiq 합성·제어 생략·Qmod·시간 지표의 원문·서지 독립 감수"
+          },
+          {
+            "name": "ashn_source_audit",
+            "role": "Independent AshN main and supplementary source, equations, metrics and bibliography audit",
+            "role_ko": "AshN 본문·보충자료·수식·지표·서지 독립 감수"
+          },
+          {
+            "name": "classiq_renderer",
+            "role": "Source renderer restoration and independent manuscript context review",
+            "role_ko": "원고 렌더러 복원·독립 문맥 감수"
+          }
+        ],
         "agent_roles": [
-          "individual agent-role roster not retained"
+          "root — Manuscript, APS integration, source build and publication checks",
+          "classiq_source_audit — Independent Classiq synthesis, control skips, Qmod and runtime source and bibliography audit",
+          "ashn_source_audit — Independent AshN main and supplementary source, equations, metrics and bibliography audit",
+          "classiq_renderer — Source renderer restoration and independent manuscript context review"
         ],
         "agent_roles_ko": [
-          "원 작성 세션의 개별 에이전트 역할 기록 미보존"
+          "root — 원고·APS 통합·원고 빌드·게시 검사",
+          "classiq_source_audit — Classiq 합성·제어 생략·Qmod·시간 지표의 원문·서지 독립 감수",
+          "ashn_source_audit — AshN 본문·보충자료·수식·지표·서지 독립 감수",
+          "classiq_renderer — 원고 렌더러 복원·독립 문맥 감수"
         ]
       },
       "harness": {
@@ -6373,21 +6400,21 @@
         "evidence_cutoff": "2026-08-27",
         "primary_source_check": true,
         "scope": [
-          "primary and official sources listed in the article",
-          "public links and final HTML"
+          "Historical synthesis v2, control-skips v1, AshN v1 main text and relevant supplementary sections; Qmod, runtime and AshN theory publication metadata.",
+          "Source-driven Korean HTML, APS citations, three existing figures, preserved article metrics, responsive layout and public links. No compiler or QPU reproduction."
         ],
         "scope_ko": [
-          "본문에 기재된 원문·공식 자료",
-          "공개 링크와 최종 HTML"
+          "당시 합성 v2·control-skips v1·AshN v1 본문과 관련 보충자료, Qmod·시간 지표·AshN 이론의 정식 서지를 대조했다.",
+          "원고 기반 국문 HTML·APS 인용·기존 그림 3개·글별 집계 설정·반응형 화면·공개 링크를 확인한다. 컴파일·QPU 실험은 독립 재실행하지 않았다."
         ],
         "human_review_level": {
-          "ko": "세부 검토 수준은 별도 기록되지 않음",
-          "en": "review level not separately retained"
+          "ko": "독립 에이전트 편집 감수. 사람의 문장별 검토는 기록되지 않음",
+          "en": "Independent agent editorial audit; human line-by-line review not recorded"
         }
       },
       "note": {
-        "ko": "보존되지 않은 모델·에이전트·원 작성 세션 검증 정보는 미보존으로 표시하며 추정해 재구성하지 않습니다.",
-        "en": "Missing model, agent, or original verification details are marked as not retained and are not reconstructed by inference."
+        "ko": "원 작성 세션의 세부 모델·역할·검수 기록은 미보존이다. 2026-08-27 원 발행·근거와 2026-11-07 편집 개정을 구별한다.",
+        "en": "Original detailed model, role and verification records remain not retained. The August 27 publication and evidence cutoff are distinguished from the November 7 editorial revision."
       }
     }
   },

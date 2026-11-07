@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.">
+  <meta name="author" content="김현중">
+  <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:title" content="양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로">
+  <meta property="og:description" content="양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.">
+  <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/classiq_ashn_hero_imagegen-web.webp">
+  <meta property="og:image:alt" content="고수준 양자 회로 합성과 초전도 프로세서의 네이티브 게이트를 연결한 개념 일러스트">
+  <meta property="article:published_time" content="2026-08-27">
+  <meta property="article:modified_time" content="<!-- REVISION_DATE -->">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로">
+  <meta name="twitter:description" content="양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/classiq_ashn_hero_imagegen-web.webp">
+  <title>양자 회로 최적화는 왜 필요한가: Classiq와 AshN을 대표 사례로</title>
+  <style>
+    :root{--paper:#fbfaf7;--paper2:#f2f0ea;--ink:#17211d;--muted:#5f6b65;--line:#d8d5cb;--teal:#0f766e;--blue:#25456f;--amber:#a35a16;--rose:#8b3a3a;--green:#e9f3ef;--blue-soft:#e9eef5;--amber-soft:#f6eee2;--wrap:1180px;--article:790px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"Segoe UI","Noto Sans KR",Arial,sans-serif;text-rendering:optimizeLegibility}a{color:var(--teal);text-underline-offset:3px}.topline{border-bottom:1px solid var(--line);background:#fff}.topline-inner,.hero-inner,.content-grid{width:min(var(--wrap),calc(100% - 40px));margin:0 auto}.topline-inner{display:flex;justify-content:space-between;gap:18px;padding:14px 0;color:var(--muted);font-size:.9rem}.topline a{font-weight:700;text-decoration:none;color:var(--blue)}
+    .hero{border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(15,118,110,.11),transparent 48%),linear-gradient(180deg,#fff 0%,var(--paper) 100%)}.hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 455px;gap:40px;align-items:center;padding:46px 0 36px}.eyebrow{margin:0 0 16px;color:var(--teal);font-size:.82rem;font-weight:800;text-transform:uppercase}h1{margin:0;font-size:clamp(2.2rem,4.8vw,3.85rem);line-height:1.07;letter-spacing:-.035em;word-break:keep-all}.dek{margin:22px 0 0;color:var(--muted);font-size:1.08rem;line-height:1.75;word-break:keep-all}.hero-figure{margin:0;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.hero-figure img{display:block;width:100%;height:auto;border-radius:6px}.hero-figure figcaption{padding:9px 5px 2px;color:var(--muted);font-size:.78rem;line-height:1.55}
+    .content-grid{overflow-wrap:anywhere;display:grid;grid-template-columns:minmax(0,var(--article)) minmax(250px,310px);gap:52px;align-items:start;padding:40px 0 62px}article{min-width:0}article .references{overflow-wrap:anywhere}article a[href^="#ref-"]{white-space:nowrap}.lead{font-size:1.17rem;line-height:1.84;color:#20302a}article h2{margin:50px 0 16px;padding-top:22px;border-top:1px solid var(--line);font-size:1.72rem;line-height:1.3;word-break:keep-all}article h3{margin:31px 0 12px;color:var(--blue);font-size:1.2rem;line-height:1.42;word-break:keep-all}article p,article li{font-size:1.01rem;line-height:1.88}article p{margin:0 0 18px}article ul,article ol{padding-left:24px;margin:0 0 22px}article li+li{margin-top:8px}article small{color:var(--muted);line-height:1.72}.math{overflow-x:auto}.display.math{display:block;margin:24px 0;padding:18px;background:#fff;border-left:4px solid var(--teal);text-align:center}
+    .figure-panel{margin:30px 0 8px;padding:12px;border:1px solid var(--line);background:#fff;border-radius:12px}.figure-panel img{display:block;width:100%;height:auto;border-radius:6px}.figure-open{display:inline-block;min-height:44px;line-height:28px;padding:8px 0}.legacy-anchor{display:block;scroll-margin-top:20px}.figure-caption{margin:0 5px 32px!important;color:var(--muted);font-size:.82rem!important;line-height:1.65!important}.table-wrap{overflow-x:auto;margin:22px 0 30px}.table-wrap:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}table{width:100%;border-collapse:collapse;background:#fff;font-size:.88rem}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.58}th{background:var(--blue-soft);color:var(--blue)}
+    .equation-scroll{max-width:100%;overflow-x:auto;margin:24px 0;padding:6px 0}.equation-scroll mjx-container[display="true"]{min-width:max-content}.equation-scroll:focus{outline:3px solid rgba(15,118,110,.25);outline-offset:3px}
+    article h2:first-of-type{margin-top:32px}.sidebar{position:sticky;top:20px}.side-section{margin-bottom:18px;padding:18px 19px;border:1px solid var(--line);background:#fff}.side-section.accent{border-top:4px solid var(--teal)}.side-section h2{margin:0 0 12px;color:var(--blue);font-size:.88rem;text-transform:uppercase}.side-section ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.65}.side-section li+li{margin-top:7px}.side-section p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.68}.side-section p+p{margin-top:10px}.tag{display:inline-block;margin:0 5px 6px 0;padding:5px 8px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-size:.75rem;font-weight:700}.metric{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px 0;border-top:1px solid var(--line);font-size:.84rem}.metric:first-of-type{border-top:0}.metric strong{color:var(--ink)}.public-note{width:min(var(--wrap),calc(100% - 40px));margin:0 auto 50px;padding:18px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.87rem;line-height:1.65}code{padding:.12em .35em;background:var(--paper2);border-radius:4px}
+    @media(max-width:900px){.hero-inner,.content-grid{grid-template-columns:minmax(0,1fr)}.hero-figure{max-width:760px}.sidebar{position:static}}@media(max-width:620px){.topline-inner,.hero-inner,.content-grid,.public-note{width:calc(100% - 24px)}.topline-inner{display:grid}.hero-inner{padding:34px 0 28px}h1{font-size:2.25rem}article h2{font-size:1.44rem}th,td{min-width:138px}.figure-panel{padding:6px}}
+</style>
+  <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script>
+</head>
+<body class="public-review">
+  <div class="topline"><div class="topline-inner"><span>AI Tech Review Letters · 2026-08-27 발행 · <!-- REVISION_DATE --> 개정</span><span><a href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브로 돌아가기</a></span></div></div>
+  <header class="hero"><div class="hero-inner">
+    <section>
+      <p class="eyebrow">Quantum Circuit Optimization · From Synthesis to Native Control</p>
+      <h1>양자 회로 최적화는 왜 필요한가:<br>Classiq와 AshN을 대표 사례로</h1>
+      <p class="dek">양자 회로 최적화가 필요한 이유와 고수준 합성, 게이트 재작성, 큐비트 배치·라우팅, 네이티브 게이트·펄스 최적화의 전체 지형을 정리하고 Classiq와 AshN을 대표 사례로 증거와 발전 방향을 검토합니다.</p>
+    </section>
+    <figure class="hero-figure"><img src="classiq_ashn_hero_imagegen-web.webp" alt="고수준 회로 후보가 합성 네트워크를 거쳐 초전도 양자 프로세서로 이어지는 생성형 과학 일러스트" decoding="async" fetchpriority="high"><figcaption>그림 1. 생성 개념 일러스트. 기능 모델–합성–네이티브 제어의 연결을 표현했으며 특정 제품 화면이나 실험 장치를 재현하지 않습니다.</figcaption></figure>
+  </div></header>
+  <main class="content-grid">
+    <article><!-- ARTICLE_BODY --></article>
+    <aside class="sidebar">
+      <section class="side-section accent"><h2>오늘의 한 문장</h2><p>함수 구현과 ancilla를 함께 고르는 합성부터 이동과 연산을 합치는 네이티브 제어까지, 회로 비용은 여러 설계 단계에서 달라집니다.</p></section>
+      <section class="side-section"><h2>분류</h2><span class="tag">Quantum Compilation</span><span class="tag">Classiq</span><span class="tag">Qmod</span><span class="tag">AshN</span><span class="tag">Native Gates</span><span class="tag">Circuit Depth</span><span class="tag">Circuit Optimization</span></section>
+      <section class="side-section"><h2>정량 근거</h2><div class="metric"><span>Classiq quantum walk</span><strong>274→120 CX</strong></div><div class="metric"><span>Classiq control skips</span><strong>&gt;50%*</strong></div><div class="metric"><span>AshN mapped 2Q · 1D / 2D</span><strong>−45.2 / −43.7%</strong></div><div class="metric"><span>Dicke QST 충실도</span><strong>.631→.736</strong></div><p>양자 보행의 width는 원 논문 캡션 기준 5→7입니다. *state-preparation의 게이트 개수·깊이 감소. AshN 감소율은 CZ 기준이며, Dicke 충실도는 결함 없는 2×4 배치에서 읽기 오류를 보정한 값입니다.</p></section>
+      <section class="side-section"><h2>평가한 대상</h2><ul><li>Classiq synthesis: 고전 컴파일</li><li>Control skips: 고전 transpilation</li><li>AshN 7 circuits: 실제 QPU</li><li>AshN large scale: compilation-only</li></ul></section>
+      <section class="side-section"><h2>연구자가 볼 지표</h2><ul><li>logical vs mapped 2Q depth</li><li>SWAP·ancilla·routing overhead</li><li>native gate duration·XEB error</li><li>output fidelity·energy error</li><li>compile·calibration·shot wall-clock</li></ul></section>
+      <section class="side-section"><h2>검증 기준</h2><p>원 발행·근거 2026-08-27<br>편집 개정 <!-- REVISION_DATE --></p></section>
+    </aside>
+  </main>
+  <section class="public-note"><p>책임 편집 김현중 · AI 보조: 원 작성 Codex 기반 GPT-5 계열 하네스, 이번 개정 OpenAI Codex. 근거 기준 2026-08-27 · 편집 개정 <!-- REVISION_DATE -->. 개별 원문·출력 검수의 범위는 본문의 작성·검증 기록을 따릅니다.</p><p>공개 조회수와 평균 읽은 시간은 개인 식별 정보 없이 페이지 경로 단위로만 집계합니다.</p></section>
+</body>
+</html>
