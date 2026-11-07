@@ -692,6 +692,64 @@ test('a pending service worker registration restores preparation controls after 
   assert.equal(harness.api.state.preparing, false);
   assert.equal(harness.api.state.registrationError, true);
 });
+for (const notificationPermission of ['default', 'denied']) {
+  test(`startup with ${notificationPermission} notification permission never queries native push subscriptions`, async () => {
+    const harness = frontendHarness({ responseJSON: url => url.endsWith('/v1/config')
+      ? { ok: true, vapidPublicKey: 'B' + 'A'.repeat(86) } : { ok: true, subscription: null } });
+    harness.releasePermission(notificationPermission);
+    const registration = harness.api.state.registration;
+    registration.active = {};
+    let lookups = 0;
+    registration.pushManager.getSubscription = () => { lookups++; throw Error('unexpected native push lookup'); };
+    harness.context.navigator.serviceWorker.register = async () => registration;
+    await harness.api.prepare();
+    assert.equal(lookups, 0);
+    assert.equal(harness.api.state.preparing, false);
+    assert.equal(harness.api.state.registrationError, false);
+    assert.equal(harness.api.state.registration, registration);
+    assert.equal(harness.api.state.localSubscription, null);
+    assert.equal(harness.events.includes('permission'), false, 'startup must not request permission');
+  });
+}
+test('startup with granted notification permission restores the existing native and server subscription state', async () => {
+  const savedSubscription = { endpoint: 'https://push.example/device', keys: { p256dh: 'public', auth: 'auth' } };
+  const harness = frontendHarness({ existingSubscription: true, responseJSON: url => url.endsWith('/v1/config')
+    ? { ok: true, vapidPublicKey: 'B' + 'A'.repeat(86) } : { ok: true, subscription: savedSubscription } });
+  harness.releasePermission('granted');
+  harness.api.mount();
+  const registration = harness.api.state.registration;
+  registration.active = {};
+  let lookups = 0;
+  registration.pushManager.getSubscription = async () => { lookups++; return harness.subscription; };
+  harness.context.navigator.serviceWorker.register = async () => registration;
+  await harness.api.prepare();
+  assert.equal(lookups, 1);
+  assert.equal(harness.api.state.registrationError, false);
+  assert.equal(harness.api.state.localSubscription, harness.subscription);
+  assert.equal(harness.api.state.serverSubscription, savedSubscription);
+  assert.equal(harness.topbar.children[0].textContent, '알림 설정');
+  assert.equal(harness.events.includes('permission'), false, 'restoring permission must not prompt again');
+});
+test('an explicit subscription after default-permission startup queries push only after the permission gesture', async () => {
+  const harness = frontendHarness({ responseJSON: (url, init) => url.endsWith('/v1/config')
+    ? { ok: true, vapidPublicKey: 'B' + 'A'.repeat(86) }
+    : { ok: true, subscription: init.method === 'PUT' ? JSON.parse(init.body).subscription : null } });
+  const registration = harness.api.state.registration;
+  registration.active = {};
+  let lookups = 0;
+  registration.pushManager.getSubscription = async () => { lookups++; harness.events.push('push-lookup'); return null; };
+  harness.context.navigator.serviceWorker.register = async () => registration;
+  await harness.api.prepare();
+  assert.equal(lookups, 0);
+  await harness.api.subscribe();
+  assert.equal(lookups, 1);
+  assert.equal(harness.events.filter(event => event === 'permission').length, 1);
+  assert.ok(harness.events.indexOf('permission') < harness.events.indexOf('push-lookup'));
+  assert.equal(harness.counts().subscribeCount, 1);
+  assert.equal(harness.api.state.localSubscription, harness.subscription);
+  assert.equal(harness.api.state.serverSubscription.endpoint, harness.subscription.endpoint);
+  assert.equal(harness.calls.filter(call => call.init.method === 'PUT' && call.url.endsWith('/v1/subscription')).length, 1);
+});
 test('mount uses explicit header priority and inserts article controls immediately after the article', () => {
   const hub = frontendHarness();
   hub.api.mount();

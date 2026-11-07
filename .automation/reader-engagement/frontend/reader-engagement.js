@@ -869,7 +869,12 @@
           worker.addEventListener("statechange", changed);
           changed();
         });
-      }).then(function (registered) { void refreshNotificationState(true); return browserSubscription(registered); })
+      }).then(function (registered) {
+        void refreshNotificationState(true);
+        // Restore an existing subscription only after notification permission is granted.
+        // A reader's explicit subscribe gesture performs its own lookup after permission.
+        return permission() === "granted" ? browserSubscription(registered) : null;
+      })
         .then(function (subscription) { state.localSubscription = subscription; })
         .catch(function () { state.registrationError = true; });
     }

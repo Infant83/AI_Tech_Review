@@ -35,6 +35,11 @@ jobs:
         run: python3 -m unittest discover -s tests
       - name: Check multilingual search ranking
         run: node --test tests/site_search.test.cjs tests/course_navigation.test.cjs
+      - name: Check reader controls and notification permission handling
+        working-directory: .automation/reader-engagement/frontend
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run test:unit
       - name: Check the existing lecture reader and storage races
         run: node --test .automation/lecture-reader/*.test.mjs
       - name: Check portable media delivery

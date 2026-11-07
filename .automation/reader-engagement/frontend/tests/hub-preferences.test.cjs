@@ -14,7 +14,7 @@ function harness(options = {}) {
     if (Object.hasOwn(options, option)) storage.set(key, options[option]);
   }
   class Element {
-    constructor() { this.textContent = ''; this.attributes = {}; this.listeners = {}; }
+    constructor() { this.textContent = ''; this.attributes = {}; this.dataset = {}; this.listeners = {}; }
     addEventListener(name, handler) { (this.listeners[name] ||= []).push(handler); }
     click() { for (const handler of this.listeners.click || []) handler({ type: 'click', target: this }); }
     setAttribute(name, value) { this.attributes[name] = String(value); }
@@ -26,7 +26,10 @@ function harness(options = {}) {
   const root = { dataset: { ...(options.initialTheme ? { theme: options.initialTheme } : {}) }, style: {} };
   if (options.language !== null) root.dataset.hubLanguage = options.language || 'ko';
   const home = options.home === null ? null : new Element();
-  if (home) home.attributes.href = options.home || '/AI_Tech_Review/index.html';
+  if (home) {
+    home.attributes.href = options.home || '/AI_Tech_Review/index.html';
+    if (options.pageNumber !== undefined) home.dataset.hubPage = String(options.pageNumber);
+  }
   const document = { documentElement: root, readyState: options.loading ? 'loading' : 'complete',
     querySelector: selector => selector === '[data-hub-home]' ? home : null,
     querySelectorAll: selector => ({ '[data-hub-theme-toggle]': themes, '[data-hub-preference-status]': [status], '[data-hub-language-toggle]': languages })[selector] || [],
@@ -210,4 +213,16 @@ test('language changes after a theme change in another tab never restore an olde
   const h = harness({ savedTheme: 'light' }); h.storageChange('dark'); h.languages[0].click();
   assert.equal(h.storage.get(themeKey), 'dark');
   assert.deepEqual(h.writes, [{ name: languageKey, value: 'en' }]);
+});
+
+test('page-two language toggles keep the page number, query, scope and anchor', () => {
+  const ko = harness({ href: 'https://infant83.io/AI_Tech_Review/page/2/?q=QML&scope=lectures#review-grid', home: '../../index.html', pageNumber: 2, savedTheme: 'dark' });
+  ko.languages[0].click();
+  assert.equal(ko.navigation[0].target, 'https://infant83.io/AI_Tech_Review/en/page/2/?q=QML&scope=lectures&lang=en#review-grid');
+  assert.equal(ko.storage.get(themeKey), 'dark');
+  const en = harness({ href: ko.navigation[0].target, language: 'en', home: '../../../index.html', pageNumber: 2, storage: ko.storage });
+  assert.deepEqual(en.navigation, []);
+  en.languages[0].click();
+  assert.equal(en.navigation[0].target, 'https://infant83.io/AI_Tech_Review/page/2/?q=QML&scope=lectures&lang=ko#review-grid');
+  assert.equal(en.storage.get(themeKey), 'dark');
 });
