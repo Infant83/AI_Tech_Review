@@ -1,8 +1,9 @@
 from contextlib import ExitStack
-from dataclasses import asdict
+from dataclasses import asdict, replace
 import hashlib
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -42,6 +43,13 @@ class PreparePublicationTests(unittest.TestCase):
         self.assertEqual(publisher.SITE_DIR, self.source)
         self.assertTrue(report["comparison"]["structural_ok"])
         self.assertEqual(json.loads((self.output / "report.json").read_text())["revision"], "a" * 40)
+        marker = json.loads((self.output / ".publication-candidate.json").read_text())
+        self.assertEqual(marker["kind"], "publication-candidate")
+        self.assertEqual(marker["revision"], "a" * 40)
+        self.assertEqual(marker["site"], "site")
+        self.assertFalse((self.output / "site/.publication-candidate.json").exists())
+        self.assertEqual(prepare.validate_public_artifact.call_args.kwargs,
+                         {"verify_search": False, "verify_reader_source": False})
 
     def test_build_failure_preserves_source_and_restores_publisher_paths(self):
         with patch.object(publisher, "main", return_value=2):
@@ -50,6 +58,7 @@ class PreparePublicationTests(unittest.TestCase):
         self.assertEqual((self.source / "index.html").read_text(), "original public index")
         self.assertEqual(publisher.SITE_DIR, self.source)
         self.assertFalse((self.output / "report.json").exists())
+        self.assertFalse((self.output / ".publication-candidate.json").exists())
 
     def test_existing_output_and_paths_inside_site_are_rejected_before_building(self):
         self.output.mkdir()
@@ -121,7 +130,9 @@ class PreparePublicationTests(unittest.TestCase):
         path.parent.mkdir(parents=True)
         path.write_text("original scientific article")
         (self.source / "manifest.json").write_text(json.dumps([{"folder": review.folder,
-            "href": href, "date": review.date, "translations": [], "assets": []}]))
+            "href": href, "date": review.date, "title": review.title, "subtitle": review.subtitle,
+            "category": review.category, "tags": list(review.tags), "summary": review.summary,
+            "translations": [], "assets": []}]))
         return review, dist, href
 
     def test_review_request_is_persistent_and_future_build_reapplies_the_same_checked_revision(self):
@@ -153,6 +164,62 @@ class PreparePublicationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "inputs changed while"):
                 prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
         self.assertFalse((self.root / "publication/requests" / (review.folder + ".json")).exists())
+
+    def test_metadata_only_edit_refreshes_hub_and_request_without_rebuilding_current_article(self):
+        review, dist, href = self.review_fixture()
+        def publish_checked(arguments):
+            self.assertIn(review.folder, arguments)
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+        # A locally refreshed site seed already contains the exact published
+        # article. A metadata-only edit must not invoke article publication.
+        shutil.rmtree(self.source)
+        shutil.copytree(self.output / "site", self.source)
+        request = self.root / "publication/requests" / (review.folder + ".json")
+        before = json.loads(request.read_text())
+        registration = self.root / "publication/reviews" / (review.folder + ".json")
+        source = json.loads(registration.read_text())
+        source["review"].update(summary="목록만 새로 정리한 요약", tags=["Updated topic"])
+        registration.write_text(json.dumps(source))
+        updated_review = replace(review, summary=source["review"]["summary"], tags=("Updated topic",))
+        self.stack.enter_context(patch.object(publisher, "REVIEWS", (updated_review,)))
+        later = self.root / "metadata-candidate"
+        original_article = (self.source / href).read_bytes()
+        def refresh_metadata(arguments):
+            self.assertNotIn(review.folder, arguments)
+            manifest = json.loads((publisher.SITE_DIR / "manifest.json").read_text())
+            refreshed = publisher.refresh_registered_hub_metadata(manifest, set())
+            (publisher.SITE_DIR / "manifest.json").write_text(json.dumps(refreshed))
+            return 0
+        with patch.object(publisher, "main", side_effect=refresh_metadata):
+            report = prepare.prepare_candidate(later, revision="b" * 40,
+                                                baseline_snapshot=self.output / "candidate.json")
+        self.assertEqual(report["rebuilt_reviews"], [])
+        self.assertEqual((later / "site" / href).read_bytes(), original_article)
+        self.assertEqual(report["comparison"]["content_changes"], [])
+        row = json.loads((later / "site/manifest.json").read_text())[0]
+        self.assertEqual(row["summary"], updated_review.summary)
+        self.assertEqual(row["tags"], list(updated_review.tags))
+        after = json.loads(request.read_text())
+        self.assertEqual(after["article_registration_sha256"], before["article_registration_sha256"])
+        self.assertNotEqual(after["registration_sha256"], before["registration_sha256"])
+
+    def test_concurrent_metadata_edit_is_rejected_before_refreshing_a_review_request(self):
+        review, dist, href = self.review_fixture()
+        registration = self.root / "publication/reviews" / (review.folder + ".json")
+        def build(arguments):
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            source = json.loads(registration.read_text())
+            source["review"]["summary"] = "Concurrent unchecked hub edit"
+            registration.write_text(json.dumps(source))
+            return 0
+        with patch.object(publisher, "main", side_effect=build):
+            with self.assertRaisesRegex(ValueError, "inputs changed while"):
+                prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+        self.assertFalse((self.root / "publication/requests" / (review.folder + ".json")).exists())
+        self.assertFalse((self.output / ".publication-candidate.json").exists())
 
 
 if __name__ == "__main__":

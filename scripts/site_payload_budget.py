@@ -187,11 +187,19 @@ def listing_payload(site: Path, relative: str) -> dict | None:
 
 def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: dict | None = None) -> dict:
     pages, failures, warnings = {}, [], []
+    try:
+        from .listing_pagination import is_page_path
+    except ImportError:
+        from listing_pagination import is_page_path
     if baseline_payload is not None and (not isinstance(baseline_payload, dict)
-            or any(name not in PAGES or type(value) is not int or value < 0 for name, value in baseline_payload.items())):
+            or any((name not in PAGES and not is_page_path(name)) or type(value) is not int or value < 0 for name, value in baseline_payload.items())):
         raise ValueError("Baseline payload must map known page names to nonnegative gzip byte counts")
     has_search = False
-    for name in PAGES:
+    try:
+        from .listing_pagination import generated_paths
+    except ImportError:
+        from listing_pagination import generated_paths
+    for name in dict.fromkeys((*PAGES, *sorted(generated_paths(site)))):
         if not (site / name).exists():
             continue
         report = page_payload(site, name)
@@ -222,12 +230,19 @@ def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: 
     search_bytes = sum(compressed(path) for path in search_paths if path.is_file())
     if search_bytes > 100_000:
         failures.append("Lazy metadata search exceeds 100KB gzip")
+    elif search_bytes > 80_000:
+        warnings.append("Lazy metadata search exceeds the 80KB growth warning")
+    total_bytes = sum(path.stat().st_size for path in site.rglob("*") if path.is_file())
+    if total_bytes > 800_000_000:
+        warnings.append("Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted")
+    elif total_bytes > 600_000_000:
+        warnings.append("Public artifact exceeds 600MB; review object storage migration")
     icons = [site / "favicon.ico", site / "assets/ai-tech-review-icon.svg"]
     icon_bytes = sum(compressed(path) for path in icons if path.is_file())
     if icon_bytes > 30_000:
         failures.append("Browser favicon payload exceeds 30KB gzip")
     return {"ok": not failures, "failures": failures, "warnings": warnings, "pages": pages,
-            "lazy_search_gzip_bytes": search_bytes, "browser_icons_gzip_bytes": icon_bytes,
+            "lazy_search_gzip_bytes": search_bytes, "browser_icons_gzip_bytes": icon_bytes, "public_artifact_bytes": total_bytes,
             "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."}
 
 

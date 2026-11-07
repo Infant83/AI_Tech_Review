@@ -8,6 +8,7 @@
   const results = document.querySelector("#review-results"), empty = document.querySelector("#review-empty"), more = document.querySelector("#review-more");
   if (!search || !category || !reviewGrid || !sort || !period || !from || !to || !dates || !hint || !status || !retry || !results || !empty || !more) return;
   const cards = Array.from(reviewGrid.querySelectorAll(".review-card"));
+  const pagination = window.ListingPages?.create(reviewGrid, ".review-card");
   const categoryTriggers = Array.from(document.querySelectorAll("[data-category-filter]"));
   const originalOptions = Array.from(category.options);
   const originalOrder = new Map(cards.map((card, index) => [card, index]));
@@ -49,7 +50,7 @@
   function normalize(value) { return String(value || "").toLocaleLowerCase(english ? "en-US" : "ko-KR").trim(); }
   function refreshSummaries() {
     for (const {card, summary, button} of summaryRecords) {
-      if (card.hidden) continue;
+      if (card.hidden || !card.isConnected) continue;
       // Measure the same three-line layout in both views, even after expansion.
       summary.dataset.summaryCollapsed = "true";
       const long = summary.clientHeight > 0 && summary.scrollHeight > summary.clientHeight + 1;
@@ -60,12 +61,40 @@
       button.textContent = english ? (expanded ? "Show less" : "Read full summary") : (expanded ? "요약 접기" : "요약 더 보기");
     }
   }
-  for (const {card, button} of summaryRecords) button.addEventListener("click", () => {
+  function bindSummary({card, button}) { button.addEventListener("click", () => {
     const id = card.dataset.articleId;
     if (expandedSummaries.has(id)) expandedSummaries.delete(id);
     else expandedSummaries.add(id);
     refreshSummaries();
-  });
+  }); }
+  summaryRecords.forEach(bindSummary);
+  function absorbCards(nodes) {
+    const known = new Set(cards.map(card => card.dataset.articleId));
+    for (const card of nodes) {
+      if (known.has(card.dataset.articleId)) continue;
+      known.add(card.dataset.articleId); cards.push(card);
+      searchText.set(card, normalize(card.dataset.search || `${card.dataset.title} ${card.dataset.tags}`));
+      const record = {card, summary: card.querySelector(".review-summary"), button: card.querySelector("[data-summary-toggle]")};
+      if (record.summary && record.button) { summaryRecords.push(record); bindSummary(record); }
+    }
+    nodes.forEach((card, index) => originalOrder.set(card, index));
+    if (discovery) showCounts(discovery);
+  }
+  let listPending;
+  async function ensureAll() {
+    if (!pagination || pagination.complete()) return;
+    if (!listPending) listPending = pagination.all().then(absorbCards).finally(() => { listPending = null; });
+    await listPending;
+  }
+  async function applyGlobal(reset) {
+    try { await ensureAll(); applyFilters(reset); } catch (_) { /* Static links remain available for retry. */ }
+  }
+  async function restoreExpandedPages() {
+    try {
+      while (pagination?.hasNext() && cards.length < visibleLimit) absorbCards(await pagination.next());
+      applyFilters(false);
+    } catch (_) { /* Keep the static page and retry controls visible. */ }
+  }
   let summaryRefreshPending = false;
   function scheduleSummaryRefresh() {
     if (summaryRefreshPending) return;
@@ -126,6 +155,7 @@
     category.value = selected;
   }
   function applyFilters(reset) {
+    if (pagination && !pagination.complete() && (category.value || sort.value !== "latest")) return;
     if (reset) visibleLimit = pageSize;
     const q = normalize(search.value), selected = category.value;
     matched = cards.filter(card => (!selected || card.dataset.category === selected) && (!q || searchText.get(card).includes(q)));
@@ -133,11 +163,11 @@
     const focused = document.activeElement, focusedCard = focused && typeof focused.closest === "function" ? focused.closest(".review-card") : null;
     const focusedIndex = matched.indexOf(focusedCard);
     if (view === "gallery" && !reset && focusedIndex >= visibleLimit) visibleLimit = focusedIndex + 1;
-    const shown = new Set(view === "list" ? matched : matched.slice(0, visibleLimit));
-    const ordered = matched.concat(cards.filter(card => !matched.includes(card)));
+    const shown = new Set(matched.slice(0, visibleLimit));
+    const ordered = matched.slice(0, visibleLimit);
     const orderKey = ordered.map(card => card.dataset.articleId).join("|");
     if (orderKey !== renderedOrder) {
-      for (const card of ordered) reviewGrid.appendChild(card);
+      reviewGrid.replaceChildren(...ordered);
       renderedOrder = orderKey;
     }
     for (const card of cards) { card.hidden = !shown.has(card); card.classList.toggle("hidden", card.hidden); }
@@ -151,11 +181,13 @@
       const selectedView = button.dataset.view || (button.id === "hub-view-list" ? "list" : "gallery");
       button.setAttribute("aria-pressed", selectedView === view ? "true" : "false");
     }
-    const shownCount = view === "list" ? matched.length : Math.min(visibleLimit, matched.length);
-    results.textContent = english ? (view === "list" ? `${matched.length} ${matched.length === 1 ? "review" : "reviews"}` : `${shownCount} of ${matched.length} reviews`) : (view === "list" ? `${matched.length}편 전체 목록` : `${matched.length}편 중 ${shownCount}편`);
+    const shownCount = Math.min(visibleLimit, matched.length);
+    const total = pagination && !pagination.complete() ? pagination.total : matched.length;
+    pagination?.filtered(Boolean(selected) || sort.value !== "latest");
+    results.textContent = english ? `${shownCount} of ${total} ${total === 1 ? "review" : "reviews"}` : `${total}편 중 ${shownCount}편`;
     empty.hidden = matched.length !== 0;
-    more.hidden = view === "list" || shownCount >= matched.length;
-    more.textContent = english ? `Show ${Math.min(pageSize, matched.length - shownCount)} more` : `더 보기 (${Math.min(pageSize, matched.length - shownCount)}편)`;
+    more.hidden = shownCount >= matched.length && !pagination?.hasNext();
+    more.textContent = english ? `Show ${Math.min(pageSize, Math.max(matched.length - shownCount, pagination?.hasNext() ? pageSize : 0))} more` : `더 보기 (${Math.min(pageSize, Math.max(matched.length - shownCount, pagination?.hasNext() ? pageSize : 0))}편)`;
     refreshSummaries();
     if (focusedCard && shown.has(focusedCard) && typeof focused.focus === "function") focused.focus({ preventScroll: true });
   }
@@ -217,8 +249,8 @@
     } finally { if (deadline !== undefined) clearTimeout(deadline); if (current === generation) pending = null; }
   }
   search.addEventListener("input", () => applyFilters(true));
-  category.addEventListener("change", () => applyFilters(true));
-  sort.addEventListener("change", () => { if (!ready) sort.value = "latest"; applyFilters(true); });
+  category.addEventListener("change", () => { void applyGlobal(true); });
+  sort.addEventListener("change", () => { if (!ready) sort.value = "latest"; void applyGlobal(true); });
   period.addEventListener("change", () => {
     dates.hidden = period.value !== "custom";
     if (period.value === "custom" && !from.value && !to.value) {
@@ -228,13 +260,20 @@
   });
   for (const field of [from, to]) field.addEventListener("change", () => { visibleLimit = pageSize; void loadDiscovery(false); });
   for (const trigger of categoryTriggers) trigger.addEventListener("click", event => {
-    event.preventDefault(); category.value = trigger.dataset.categoryFilter || ""; applyFilters(true);
+    event.preventDefault(); category.value = trigger.dataset.categoryFilter || ""; void applyGlobal(true);
     if (trigger.tagName === "A") reviewGrid.scrollIntoView({ behavior: window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });
   document.querySelector('a[href="#topic-filter"]')?.addEventListener("click", event => { event.preventDefault(); if (topicFilter) topicFilter.scrollIntoView({ behavior: "smooth", block: "start" }); });
-  more.addEventListener("click", () => {
-    const previous = Math.min(visibleLimit, matched.length); visibleLimit += pageSize; applyFilters(false);
-    const next = matched[previous]?.querySelector("h3 a"); if (next) next.focus({ preventScroll: true });
+  more.addEventListener("click", async () => {
+    const previous = Math.min(visibleLimit, matched.length);
+    more.disabled = true;
+    try {
+      if (category.value || sort.value !== "latest") await ensureAll();
+      if (pagination?.hasNext() && previous >= matched.length) absorbCards(await pagination.next());
+      visibleLimit += pageSize; applyFilters(false);
+      const next = matched[previous]?.querySelector("h3 a"); if (next) next.focus({ preventScroll: true });
+    } catch (_) { /* Keep the button and page links available for retry. */ }
+    finally { more.disabled = false; }
   });
   retry.addEventListener("click", () => { void loadDiscovery(true); });
   for (const button of viewButtons) button.addEventListener("click", () => {
@@ -242,7 +281,7 @@
     applyFilters(false);
   });
   function saveBrowseState() {
-    const state = { version: 1, time: Date.now(), search: String(search.value || "").slice(0, 1000), category: category.value, sort: sort.value, period: period.value, from: from.value, to: to.value, view, limit: Math.min(Math.max(pageSize, cards.length), Math.max(pageSize, visibleLimit)), expandedSummaries: Array.from(expandedSummaries) };
+    const state = { version: 1, time: Date.now(), search: String(search.value || "").slice(0, 1000), category: category.value, sort: sort.value, period: period.value, from: from.value, to: to.value, view, limit: Math.min(Math.max(pageSize, pagination?.total || cards.length), Math.max(pageSize, visibleLimit)), expandedSummaries: Array.from(expandedSummaries) };
     try { window.sessionStorage.setItem(browseStateKey, JSON.stringify(state)); } catch (_) { /* Navigation remains usable when storage is blocked. */ }
   }
   function restoreBrowseState() {
@@ -253,11 +292,10 @@
       if (!stored || stored.length > 131072) return false;
       state = JSON.parse(stored);
     } catch (_) { return false; }
-    if (!state || state.version !== 1 || !Number.isFinite(state.time) || state.time > Date.now() || Date.now() - state.time > 600000 || typeof state.search !== "string" || state.search.length > 1000 || !originalOptions.some(option => option.value === state.category) || !["latest", "views", "likes"].includes(state.sort) || !["all", "7d", "30d", "90d", "custom"].includes(state.period) || !["gallery", "list"].includes(state.view) || !Number.isSafeInteger(state.limit) || state.limit < pageSize || state.limit > Math.max(pageSize, cards.length)) return false;
+    if (!state || state.version !== 1 || !Number.isFinite(state.time) || state.time > Date.now() || Date.now() - state.time > 600000 || typeof state.search !== "string" || state.search.length > 1000 || !originalOptions.some(option => option.value === state.category) || !["latest", "views", "likes"].includes(state.sort) || !["all", "7d", "30d", "90d", "custom"].includes(state.period) || !["gallery", "list"].includes(state.view) || !Number.isSafeInteger(state.limit) || state.limit < pageSize || state.limit > Math.max(pageSize, pagination?.total || cards.length)) return false;
     if (typeof state.from !== "string" || typeof state.to !== "string" || (state.from && !validDay(state.from)) || (state.to && !validDay(state.to))) return false;
     const expanded = state.expandedSummaries === undefined ? [] : state.expandedSummaries;
-    const knownIds = new Set(cards.map(card => card.dataset.articleId));
-    if (!Array.isArray(expanded) || expanded.length > cards.length || expanded.some(id => typeof id !== "string" || !knownIds.has(id))) return false;
+    if (!Array.isArray(expanded) || expanded.length > (pagination?.total || cards.length) || expanded.some(id => typeof id !== "string" || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(id))) return false;
     for (const id of expanded) expandedSummaries.add(id);
     search.value = document.querySelector("[data-site-search]") ? "" : state.search; category.value = state.category; sort.value = state.sort; period.value = state.period;
     from.value = state.from; to.value = state.to; view = state.view; visibleLimit = state.limit;
@@ -266,8 +304,12 @@
   }
   window.addEventListener("hub:before-language-change", saveBrowseState);
   window.addEventListener("atr:before-refresh", saveBrowseState);
+  window.addEventListener("pagehide", saveBrowseState);
   window.addEventListener("pageshow", event => { if (event.persisted) void loadDiscovery(true); });
   from.max = to.max = todayKST();
-  applyFilters(!restoreBrowseState());
+  const restored = restoreBrowseState();
+  if (restored && (category.value || sort.value !== "latest")) void applyGlobal(false);
+  else if (restored && visibleLimit > pageSize) void restoreExpandedPages();
+  else applyFilters(!restored);
   void loadDiscovery(false);
 })();

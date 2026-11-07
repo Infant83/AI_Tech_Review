@@ -14,6 +14,12 @@
   } catch (_) { return; }
   const paths = new Set([base.pathname, base.pathname + "index.html", base.pathname.slice(0, -1),
     base.pathname + "en", base.pathname + "en/", base.pathname + "en/index.html"]);
+  const pageNumber = Number(home.dataset.hubPage || 1);
+  if (!Number.isSafeInteger(pageNumber) || pageNumber < 1) return;
+  if (pageNumber > 1) for (const prefix of ["", "en/"]) {
+    paths.add(base.pathname + prefix + "page/" + pageNumber + "/");
+    paths.add(base.pathname + prefix + "page/" + pageNumber + "/index.html");
+  }
   if (!paths.has(location.pathname)) return;
   const languageKey = "atr.reader.language.v1";
   const themeKey = "atr.reader.theme.v1";
@@ -68,7 +74,7 @@
   if (validLanguage(explicit)) { savedLanguage = explicit; persist(languageKey, explicit); }
   const requested = validLanguage(explicit) ? explicit : (language === "ko" && savedLanguage === "en" ? "en" : language);
   function destination(value) {
-    const target = new URL(value === "en" ? "en/" : "./", base);
+    const target = new URL((value === "en" ? "en/" : "") + (pageNumber > 1 ? "page/" + pageNumber + "/" : "./"), base);
     target.search = location.search;
     target.searchParams.set("lang", value);
     target.hash = location.hash;

@@ -40,7 +40,7 @@ ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
                      ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME,
                      "publication-release.json"}
-PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en"}
+PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en", "page"}
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
                      ".py", ".csv", ".mp4", ".vtt"}
@@ -99,6 +99,14 @@ def load_publications(site_dir: Path) -> tuple[list[dict], dict[str, dict]]:
         articles.append(article)
         if document.get("study_href"):
             pages[href.rstrip("/") + "/index.html"] = article
+            # Chapter pages are views of the same publication. Keep its reader
+            # identity, like counter and canonical metrics path across lessons.
+            if "chapter-manifest.json" in document.get("study_assets", {}):
+                for name in document["study_assets"]:
+                    if name.endswith(".html"):
+                        alias = href.rstrip("/") + "/" + name
+                        public_path(alias)
+                        pages[alias] = article
     if len({a["id"] for a in articles}) != len(articles) or len({a["path"] for a in articles}) != len(articles):
         raise ValueError("Duplicate publication ids or canonical paths")
     return sorted(articles, key=lambda a: (a["publishedAt"], a["id"]), reverse=True), pages
@@ -336,7 +344,8 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
     return {"html_changed": changed, "articles": len(articles), "revision": revision}
 
 
-def validate_public_artifact(site_dir: Path, *, verify_search: bool = True) -> dict:
+def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
+                             verify_reader_source: bool = True) -> dict:
     """Fail before artifact upload on private files, links, or unregistered article assets."""
     try:
         from .publish_public_site import public_text_risks
@@ -368,6 +377,11 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True) -> d
         raise ValueError("Publication catalog differs from approved public registries")
     reviews = json.loads((site_dir / "manifest.json").read_text(encoding="utf-8"))
     registered = set()
+    try:
+        from .listing_pagination import generated_paths, is_page_path
+    except ImportError:
+        from listing_pagination import generated_paths, is_page_path
+    listing_paths = generated_paths(site_dir)
     for review in reviews:
         for variant in [review, *review.get("translations", [])]:
             href = variant["href"]
@@ -382,11 +396,19 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True) -> d
     for document in archive.get("documents", []):
         public_path(document["href"])
         registered.add(document["href"])
+        try:
+            from .pdf_editions import validate_editions
+        except ImportError:
+            from pdf_editions import validate_editions
+        if validate_editions(site_dir, document):
+            raise ValueError("Invalid registered PDF editions: " + document["id"])
+        registered.update(row["href"] for row in document.get("editions", []))
         for asset in document.get("study_assets", {}):
             path = (Path(document["study_href"]) / asset).as_posix()
             public_path(path)
             registered.add(path)
-    reader_errors = archive_site.validate_lecture_reader(site_dir, required=False)
+    reader_errors = archive_site.validate_lecture_reader(site_dir, required=False,
+                                                        verify_app_source=verify_reader_source)
     if reader_errors:
         raise ValueError("; ".join(reader_errors))
     shared_reader_pins = (archive_site.lecture_reader_asset_hashes()
@@ -421,12 +443,14 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True) -> d
                 raise ValueError(f"Unapproved public root file: {relative}")
         elif relative.parts[0] not in PUBLIC_DIRECTORIES:
             raise ValueError(f"Unapproved public directory: {relative}")
-        if relative.parts[0] == "en" and name != "en/index.html":
+        if relative.parts[0] == "en" and name not in listing_paths:
             raise ValueError(f"Unapproved English hub file: {relative}")
+        if (relative.parts[0] == "page" or is_page_path(name)) and name not in listing_paths:
+            raise ValueError(f"Unapproved generated list page: {relative}")
         if (name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS
                 and name not in shared_reader_assets):
             raise ValueError(f"Unapproved public file type: {relative}")
-        if ((relative.parts[0] == "reviews" or name.startswith("archive/files/")
+        if ((relative.parts[0] == "reviews" or name.startswith(("archive/files/", "archive/editions/"))
              or (relative.parts[0] == "lectures" and name not in {"lectures/index.html", "lectures/en/index.html"}))
                 and name not in registered):
             if exceptions.get(name) != hashlib.sha256(path.read_bytes()).hexdigest():

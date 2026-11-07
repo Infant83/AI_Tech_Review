@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from contextlib import contextmanager, ExitStack
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -15,14 +16,14 @@ try:
     from . import publish_public_site as publisher
     from .publication_lock import publication_lock
     from .publication_snapshot import capture_site, compare_snapshots, read_json
-    from .reader_engagement_publish import validate_public_artifact
+    from .reader_engagement_publish import content_digest, validate_public_artifact
     from .publication_intent import pending_review_intents, review_inputs, write_review_intent
     from .archive_documents import load_documents, document_version
 except ImportError:
     import publish_public_site as publisher
     from publication_lock import publication_lock
     from publication_snapshot import capture_site, compare_snapshots, read_json
-    from reader_engagement_publish import validate_public_artifact
+    from reader_engagement_publish import content_digest, validate_public_artifact
     from publication_intent import pending_review_intents, review_inputs, write_review_intent
     from archive_documents import load_documents, document_version
 
@@ -61,6 +62,24 @@ def write_change_declaration(root: Path, name: str, files: dict, reason: str):
         Path(pending).unlink(missing_ok=True)
 
 
+def reviewed_article_is_current(site: Path, baseline: dict, folder: str) -> bool:
+    """Reuse a seeded article only when every registered content byte agrees.
+
+    A persistent request is still replayed when the old committed site seed
+    predates an artifact-only article revision. Hub metadata never makes that
+    stale article an acceptable replacement for the checked publication.
+    """
+    record = baseline.get("reviews", {}).get(folder)
+    if not record or not record.get("references"):
+        return False
+    for name in record["references"]:
+        path = Path(site) / name
+        expected = baseline.get("files", {}).get(name, {}).get("content_sha256")
+        if not expected or not path.is_file() or path.is_symlink() or content_digest(path) != expected:
+            return False
+    return True
+
+
 def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), baseline_site: Path | None = None,
                       baseline_snapshot: Path | None = None, change_reason: str = "") -> dict:
     """Seed immutable historical pages, rebuild registrations and validate.
@@ -87,11 +106,13 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
     output.parent.mkdir(parents=True, exist_ok=True)
     with publication_lock(publisher.ROOT / "archive" / ".publication.lock"):
         # Validate before copying so symlinks/private assets cannot enter staging.
-        validate_public_artifact(source_site, verify_search=False)
+        validate_public_artifact(source_site, verify_search=False, verify_reader_source=False)
         baseline = read_json(baseline_snapshot) if baseline_snapshot is not None else capture_site(baseline_site)
         known = {review.folder for review in publisher.REVIEWS}
         selected = set(reviews) | (known - set(publisher.load_existing_manifest()))
         intents = pending_review_intents(publisher.ROOT, known, selected, set(baseline["reviews"]))
+        rebuilt_reviews = {folder for folder in intents
+                           if folder in selected or not reviewed_article_is_current(source_site, baseline, folder)}
         selected_documents = set(documents)
         source_documents = {row["id"]: row for row in load_documents(publisher.ROOT / "archive")}
         if selected_documents - set(source_documents):
@@ -103,7 +124,7 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
         shutil.copytree(source_site, stage)
         with candidate_site(stage):
             arguments = ["--preserve-existing", "--revision", revision]
-            for review in sorted(intents):
+            for review in sorted(rebuilt_reviews):
                 arguments.extend(("--review", review))
             result = publisher.main(arguments)
         if result:
@@ -122,13 +143,18 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
             "version": 1, "revision": revision,
             "reviews": len(current["reviews"]), "archive_documents": len(current["archive"]),
             "selected_reviews": sorted(intents), "selected_documents": sorted(selected_documents), "comparison": comparison,
+            "rebuilt_reviews": sorted(rebuilt_reviews),
             "status": "candidate_only_requires_release_policy_and_browser_review",
         }
         (output / "baseline.json").write_text(json.dumps(baseline, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (output / "candidate.json").write_text(json.dumps(current, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (output / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        # Refresh the complete metadata fingerprint only after the exact inputs
+        # were validated before/after the build. Legacy unchanged requests also
+        # migrate here, without silently authorizing changed article fields.
+        for folder, inputs in intents.items():
+            write_review_intent(publisher.ROOT, folder, inputs)
         for folder in selected:
-            write_review_intent(publisher.ROOT, folder, intents[folder])
             changed = {name: {"before": baseline["files"][name]["content_sha256"],
                               "after": current["files"][name]["content_sha256"]}
                        for name in comparison["content_changes"]
@@ -149,6 +175,11 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
                        for name in comparison["content_changes"] if name in owned_pdfs}
             write_change_declaration(publisher.ROOT, "document-" + identifier, changed,
                 change_reason or "Explicit registered PDF update prepared from checked source: " + identifier)
+        (output / ".publication-candidate.json").write_text(json.dumps({
+            "version": 1, "kind": "publication-candidate", "revision": revision,
+            "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "status": "verified-local", "site": "site",
+        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         return report
 
 

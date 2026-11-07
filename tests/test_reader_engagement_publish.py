@@ -204,6 +204,58 @@ class ReaderEnrichmentTests(unittest.TestCase):
                             reader.validate_public_artifact(site)
                         extra.unlink()
 
+    def test_seed_reader_allows_old_known_application_subset_but_final_validation_remains_strict(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            site, frontend = self.fixture(root)
+            source = self.shared_reader_fixture(root, site)
+            reader_root = site / archive_site.LECTURE_READER_HREF
+            (reader_root / "reader.mjs").write_text("Old public application code")
+            (reader_root / "editions.mjs").unlink()
+            with patch.object(archive_site, "LECTURE_READER_SOURCE", source):
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                with self.assertRaisesRegex(ValueError, "allowlist|approved source"):
+                    reader.validate_public_artifact(site)
+                self.assertEqual(reader.validate_public_artifact(site, verify_reader_source=False)["articles"], 3)
+                # The actual builder replaces the seed with current approved
+                # application files; default final validation then passes.
+                for name in archive_site.LECTURE_READER_FILES:
+                    (reader_root / name).write_bytes((source / name).read_bytes())
+                self.assertEqual(reader.validate_public_artifact(site)["articles"], 3)
+
+    def test_seed_reader_still_rejects_missing_modified_or_unlisted_vendor_and_app_assets(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            site, frontend = self.fixture(root)
+            source = self.shared_reader_fixture(root, site)
+            reader_root = site / archive_site.LECTURE_READER_HREF
+            with patch.object(archive_site, "LECTURE_READER_SOURCE", source):
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                target = reader_root / "vendor/fixture.mjs"
+                original = target.read_bytes()
+                target.write_bytes(original + b"corruption")
+                with self.assertRaisesRegex(ValueError, "approved source|checksum"):
+                    reader.validate_public_artifact(site, verify_reader_source=False)
+                target.unlink()
+                with self.assertRaisesRegex(ValueError, "allowlist"):
+                    reader.validate_public_artifact(site, verify_reader_source=False)
+                target.write_bytes(original)
+                extra = reader_root / "personal-notes.json"
+                extra.write_text('{"unregistered":"private note"}')
+                with self.assertRaisesRegex(ValueError, "allowlist"):
+                    reader.validate_public_artifact(site, verify_reader_source=False)
+
+    def test_old_seed_application_is_still_scanned_for_private_text(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            site, frontend = self.fixture(root)
+            source = self.shared_reader_fixture(root, site)
+            with patch.object(archive_site, "LECTURE_READER_SOURCE", source):
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                (site / archive_site.LECTURE_READER_HREF / "reader.mjs").write_text("/* working source /Users/Private/source */")
+                with self.assertRaisesRegex(ValueError, "Sensitive content"):
+                    reader.validate_public_artifact(site, verify_reader_source=False)
+
     def test_updates_bootstrap_uses_editorial_dates_and_has_all_document_types(self):
         with tempfile.TemporaryDirectory() as temporary:
             site, frontend = self.fixture(Path(temporary))

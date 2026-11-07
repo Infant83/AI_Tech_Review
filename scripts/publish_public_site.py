@@ -1836,6 +1836,7 @@ def render_index(
     preferred_category_order: list[str] | None = None,
     documents: list[dict] | None = None,
     language: str = "ko",
+    page_number: int = 1,
 ) -> str:
     return render_hub(
         manifest, preferred_category_order, documents,
@@ -1843,7 +1844,7 @@ def render_index(
         css_version=hashlib.sha256(SITE_CSS.encode("utf-8")).hexdigest()[:12],
         js_version=hashlib.sha256(SITE_JS.encode("utf-8")).hexdigest()[:12],
         preferences_version=hashlib.sha256(HUB_PREFERENCES_JS.encode("utf-8")).hexdigest()[:12],
-        library_version=LIBRARY_ASSET_VERSION,
+        library_version=LIBRARY_ASSET_VERSION, page_number=page_number,
     )
 
 
@@ -2867,11 +2868,18 @@ def main(argv: Iterable[str] | None = None) -> int:
         from listing_images import build_listing_images
     build_listing_images(SITE_DIR, [str(item["thumbnail"]) for item in manifest if item.get("thumbnail")],
                          highlight_hrefs=[str(manifest[0]["thumbnail"])] if manifest and manifest[0].get("thumbnail") else [])
-    for language, target, prefix in (("ko", SITE_DIR / "index.html", ""), ("en", SITE_DIR / "en/index.html", "../")):
-        index_html = inject_public_icons(render_index(manifest, preferred_category_order, documents, language), prefix)
-        index_html = inject_public_metrics(index_html, prefix)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
+    try:
+        from .listing_pagination import page_count, page_path, page_prefix
+    except ImportError:
+        from listing_pagination import page_count, page_path, page_prefix
+    for language in ("ko", "en"):
+        for page_number in range(1, page_count(len(manifest), "reviews") + 1):
+            target = SITE_DIR / page_path("reviews", language, page_number)
+            prefix = page_prefix("reviews", language, page_number)
+            index_html = inject_public_icons(render_index(manifest, preferred_category_order, documents, language, page_number), prefix)
+            index_html = inject_public_metrics(index_html, prefix)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(inject_cloudflare_web_analytics(index_html), encoding="utf-8")
     (SITE_DIR / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
     (ASSETS_DIR / "site.css").write_text(SITE_CSS.strip() + "\n", encoding="utf-8")

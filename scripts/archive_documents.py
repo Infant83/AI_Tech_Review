@@ -307,6 +307,15 @@ def _import_document_locked(input_pdf, document, archive_dir, *, replace=False, 
         _check_pdf(temporary_path)
         updated = [item for item in documents if item["id"] != document["id"]] + [document]
         if existing is not None:
+            # Preserve the exact old bytes before replacing the mutable legacy
+            # URL. An interrupted import can leave a harmless immutable edition,
+            # but can never destroy the only copy of the old notebook's PDF.
+            if destination.read_bytes() != temporary_path.read_bytes():
+                try:
+                    from .pdf_editions import preserve_previous
+                except ImportError:
+                    from pdf_editions import preserve_previous
+                preserve_previous(archive_dir, existing["id"], destination)
             backup_fd, backup_name = tempfile.mkstemp(prefix=".previous-", suffix=".pdf", dir=files_dir)
             os.close(backup_fd)
             backup_path = Path(backup_name)

@@ -38,6 +38,8 @@ HTML 출력은 `dist/index.html`, PDF 정본은 `output/pdf/quantum-machine-lear
 
 2.0판은 수학 준비편·용어집·워크북을 포함한 정본 27개를 순서대로 묶는다. 용어집의 144항목에는 안정적인 anchor를 붙이고 브라우저에서 한국어·영문·약어 검색을 제공한다. 검색 상태는 인쇄 내용에 영향을 주지 않는다.
 
+웹 게시 후보를 만들 때에는 공통 출판 도구의 `scripts/lecture_chapters.py`가 이 검토한 `dist/index.html`을 코스 목차와 27개의 회차·보충 자료 페이지로 나눈다. Markdown 정본이나 인쇄용 통합 HTML을 별도로 나누어 관리하지 않는다. 본문·수식 SVG·그림·문서 ID를 보존하고 문서 사이의 내부 링크만 새 회차 주소로 연결한다. 기존 코스 주소와 PDF·필기 문서 ID는 그대로 두며, 이전 `#anchor`는 자동 연결과 JavaScript 없는 명시 링크를 제공한다. 게시용 회차 HTML과 `chapter-manifest.json`은 생성물이므로 직접 편집하지 않는다. 원문을 개정하면 위 명령으로 HTML·PDF를 검수한 뒤 저장소의 `scripts/prepare_publication.py`로 후보를 만든다.
+
 `print_notes.mjs`는 1440px·390px에서 가로 넘침, 수식 오류, 깨진 anchor·중복 ID, 글꼴과 세 그림의 load·clipping을 확인하고, 144항목 검색의 단일 결과·결과 없음·초기화도 검증한다. 그 뒤 태그와 목차가 있는 PDF를 만든다. QA 화면과 결과는 `tmp/pdfs/`에만 저장한다. PDF는 본문 9.6pt, A4, 쪽번호 footer, 문서별 새 페이지이며 참고문헌은 8.2pt로 조판한다.
 
 ## PDF 최종 검사

@@ -146,6 +146,10 @@ def capture_site(site: Path) -> dict:
         archive_paths.add(href)
         study = document.get("study_href")
         owned = {reference(href, document.get("sha256"))}
+        for edition in rows(document.get("editions", []), "PDF editions"):
+            if edition.get("href") != f'archive/editions/{document["id"]}/{edition.get("sha256")}.pdf':
+                raise SnapshotError("Invalid PDF edition path")
+            owned.add(reference(edition["href"], edition.get("sha256")))
         if study:
             owned.add(reference(study))
             base = Path(study) if study.endswith("/") else Path(study).parent
@@ -180,6 +184,13 @@ def capture_site(site: Path) -> dict:
     for name in ("index.html", "en/index.html", "archive/index.html", "lectures/index.html",
                  "briefings/index.html", "assets/site.css", "assets/site.js",
                  "assets/archive.css", "assets/archive.js", "assets/briefings.css", "assets/briefings.js"):
+        if (site / name).exists():
+            reference(name)
+    try:
+        from .listing_pagination import generated_paths
+    except ImportError:
+        from listing_pagination import generated_paths
+    for name in generated_paths(site):
         if (site / name).exists():
             reference(name)
     for directory in (site / "assets", site / "lectures/reader"):

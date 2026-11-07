@@ -14,10 +14,12 @@ from urllib.parse import urlencode
 try:
     from .briefing_site import render_briefings, validate_briefings
     from .site_search import search_head, search_form, search_results, search_script
+    from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from .site_brand import SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
     from site_search import search_head, search_form, search_results, search_script
+    from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from site_brand import SITE_STYLES_VERSION, render_brand_link
 
 SERIES = {
@@ -35,7 +37,7 @@ LECTURE_READER_SOURCE = Path(__file__).resolve().parents[1] / ".automation/lectu
 LECTURE_READER_HREF = "lectures/reader/"
 LECTURE_READER_FILES = (
     "index.html", "reader.css", "reader.mjs", "ink-core.mjs", "storage.mjs",
-    "cloud.mjs", "cloud-core.mjs", "cloud.css",
+    "cloud.mjs", "cloud-core.mjs", "cloud.css", "editions.mjs",
 )
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
@@ -79,6 +81,7 @@ LECTURE_BUNDLES = {
     "2026-10-20-quantum-machine-learning-lecture-notes-ko": {
         "source": "2026-10-20_quantum-machine-learning-lecture-series/dist",
         "href": "lectures/quantum-machine-learning/",
+        "chapter_pages": True,
         "files": (
             "index.html", "notes.css", "notes.pdf",
             "assets/qml-sans-regular.woff2", "assets/qml-sans-bold.woff2",
@@ -192,7 +195,8 @@ def stage_lecture_reader(staging: Path) -> Path:
     return destination
 
 
-def validate_lecture_reader(site_dir: Path, *, required: bool = True) -> list[str]:
+def validate_lecture_reader(site_dir: Path, *, required: bool = True,
+                            verify_app_source: bool = True) -> list[str]:
     root = site_dir / LECTURE_READER_HREF
     if not root.exists():
         return ["missing shared lecture reader"] if required else []
@@ -204,13 +208,18 @@ def validate_lecture_reader(site_dir: Path, *, required: bool = True) -> list[st
         return [str(exc)]
     actual = {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()}
     errors = []
-    if actual != set(assets):
+    # A source site is a previously published seed, so its known application
+    # files may predate this build and newly introduced app paths may be absent.
+    # Vendor bytes and the vendor manifest remain exactly pinned in both modes.
+    vendors = {name for name, checksum in assets.items() if checksum is not None}
+    if ((verify_app_source and actual != set(assets))
+            or (not verify_app_source and (not actual.issubset(assets) or not vendors.issubset(actual)))):
         errors.append("shared lecture reader output differs from allowlist")
     for name in actual & set(assets):
         path, source = root / name, LECTURE_READER_SOURCE / name
         if path.is_symlink() or any(parent.is_symlink() for parent in path.parents if parent != root and root in parent.parents):
             errors.append(f"symlinked lecture reader asset: {name}")
-        elif not source.is_file() or path.read_bytes() != source.read_bytes():
+        elif (verify_app_source or assets[name] is not None) and (not source.is_file() or path.read_bytes() != source.read_bytes()):
             errors.append(f"lecture reader asset differs from approved source: {name}")
         elif assets[name] and hashlib.sha256(path.read_bytes()).hexdigest() != assets[name]:
             errors.append(f"lecture reader vendor checksum mismatch: {name}")
@@ -283,12 +292,14 @@ def render_learning_teaser(documents: list[dict]) -> str:
     </section>'''
 
 
-def render_archive(documents: list[dict], base_url: str, language: str = "ko", external_resources: list[dict] | None = None) -> str:
+def render_archive(documents: list[dict], base_url: str, language: str = "ko", external_resources: list[dict] | None = None, page_number: int = 1) -> str:
     en = language == "en"
     catalog = sorted(documents + (external_resources or []), key=lambda doc: (doc["date"], doc["id"]), reverse=True)
-    prefix = "../../" if en else "../"
-    pdf_prefix = "../files/" if en else "files/"
-    current_url = base_url + "archive/" + ("en/" if en else "")
+    prefix = page_prefix("archive", language, page_number)
+    pdf_prefix = prefix + "archive/files/"
+    current_url = base_url + page_directory("archive", language, page_number)
+    alternate_ko = prefix + page_path("archive", "ko", page_number)
+    alternate_en = prefix + page_path("archive", "en", page_number)
     title = "All-document archive" if en else "전체 자료 아카이브"
     description = ("Find preserved PDFs and official book resources by title, topic and date. Explore the Briefings calendar or study with Lecture notes."
                    if en else "발행한 PDF와 외부 서적의 공식 안내를 제목·주제·날짜로 찾습니다. 날짜별 소식은 브리핑에서, 주제별 학습은 렉처 노트에서 시작하세요.")
@@ -301,7 +312,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
     months = sorted({doc["date"][:7] for doc in catalog}, reverse=True)
     month_options = "".join(f'<option value="{month}">{month}</option>' for month in months)
     cards = []
-    for doc in catalog:
+    for doc in page_slice(catalog, "archive", page_number):
         doc_title = doc.get("title_en") if en else doc["title"]
         doc_summary = doc.get("summary_en") if en else doc["summary"]
         doc_title = doc_title or doc["title"]
@@ -314,7 +325,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
         if doc["series"] == "external-book":
             native = ({"ko": "Korean book", "en": "English book"} if en else {"ko": "한국어 서적", "en": "영어 서적"})[doc["language"]]
-            cards.append(f'''<article id="{escape(doc['id'])}" class="document-card" data-series="external-book" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
+            cards.append(f'''<article id="{escape(doc['id'])}" class="document-card" data-document-id="{escape(doc['id'])}" data-series="external-book" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
               <div class="document-meta"><span>{SERIES['external-book'][int(en)]}</span><time datetime="{escape(doc['date'])}">{'Added' if en else '등록'} {escape(doc['date'])}</time></div>
               <h2 lang="{text_language}"><a href="{escape(doc['book_url'])}" target="_blank" rel="noopener">{escape(doc_title)}</a></h2>
               <p class="document-author">{escape(doc['author'])} · {native}</p>
@@ -331,7 +342,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
         annotate_link = (f'<a href="{escape(lecture_reader_href(doc["id"], prefix=prefix, language=language))}">'
                          f'{"Read &amp; annotate" if en else "필기하며 읽기"} →</a>') if doc["series"] == "lecture-notes" else ""
         native_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
-        cards.append(f'''<article class="document-card" data-series="{escape(doc['series'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
+        cards.append(f'''<article class="document-card" data-document-id="{escape(doc['id'])}" data-series="{escape(doc['series'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
           <div class="document-meta"><span>{SERIES[doc['series']][int(en)]}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
           <h2 lang="{text_language}">{title_link}</h2>
           <p class="document-summary" lang="{summary_language}">{escape(doc_summary)}</p>
@@ -346,9 +357,9 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
   <title>{title} | AI Tech Review Letters</title>
   <meta name="description" content="{description}">
   <link rel="canonical" href="{current_url}">
-  <link rel="alternate" hreflang="ko" href="{base_url}archive/">
-  <link rel="alternate" hreflang="en" href="{base_url}archive/en/">
-  <link rel="alternate" hreflang="x-default" href="{base_url}archive/">
+  <link rel="alternate" hreflang="ko" href="{base_url}{page_directory('archive', 'ko', page_number)}">
+  <link rel="alternate" hreflang="en" href="{base_url}{page_directory('archive', 'en', page_number)}">
+  <link rel="alternate" hreflang="x-default" href="{base_url}{page_directory('archive', 'ko', page_number)}">
   <meta property="og:type" content="website"><meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}"><meta property="og:url" content="{current_url}">
   <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/archive.css?v={LIBRARY_ASSET_VERSION}">
@@ -357,7 +368,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
   <header class="site-header">
     <nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">
       {render_brand_link(prefix)}
-      <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{'../' if en else 'en/'}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
+      <span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{alternate_ko if en else alternate_en}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span>
     </nav>
     {render_library_navigation(documents, "archive", language, prefix)}
     {search_form(prefix, language)}
@@ -378,11 +389,13 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
       <div class="archive-results-bar"><p id="archive-result-count" role="status">{len(catalog)} {'resources' if en else '건의 자료'}</p><button type="button" id="archive-reset">{'Reset filters' if en else '필터 초기화'}</button></div>
       <div class="document-grid" id="document-grid">{''.join(cards)}</div>
       <div id="archive-empty" class="archive-empty" hidden><h2>{'No matching documents' if en else '조건에 맞는 문서가 없습니다'}</h2><p>{'Try another keyword or clear the filters. Empty collections will appear here when documents are added.' if en else '검색어나 기간을 바꾸거나 필터를 초기화해 보세요. 아직 비어 있는 분류는 문서가 등록되면 이곳에 표시됩니다.'}</p></div>
+      {pagination("archive", language, page_number, len(catalog))}
       <button type="button" class="archive-more" id="archive-more" hidden>{'Show more documents' if en else '문서 더 보기'} ↓</button>
       <noscript><p>{'All documents are shown below. Enable JavaScript to search and filter.' if en else '전체 문서를 표시합니다. 검색과 필터는 JavaScript를 켜면 사용할 수 있습니다.'}</p></noscript>
     </section>
     <footer class="archive-note"><p>{'Archived PDFs are preserved in their original language. The English catalog describes the collection; it does not imply an English PDF translation.' if en else '문서는 발행 당시의 언어와 내용으로 보관합니다. 아카이브 등록은 본문의 연구 결과를 새로 검증하거나 독립 재현했다는 뜻이 아닙니다.'}</p><a href="{prefix}archive-manifest.json">{'Archive data (JSON)' if en else '아카이브 데이터 (JSON)'} ↗</a></footer>
   </main>
+  {pagination_script(prefix)}
   <script src="{prefix}assets/archive.js?v={LIBRARY_ASSET_VERSION}" defer></script>
   {search_script(prefix)}
 </body></html>'''
@@ -594,8 +607,27 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
                         f'<h2>웹 게재 기록</h2><p>{escape(publication_text)}</p></section>')
     text = text.replace("</main>", publication_note + "</main>", 1)
     text = decorate(text, prefix)
-    index.write_text(text, encoding="utf-8")
+    if spec.get("chapter_pages"):
+        try:
+            from .lecture_chapters import build_chapters
+        except ImportError:
+            from lecture_chapters import build_chapters
+        build_chapters(destination, (source / "index.html").read_text(encoding="utf-8"), text, canonical)
+    else:
+        index.write_text(text, encoding="utf-8")
     return destination
+
+
+def lecture_bundle_files(spec: dict, source_dir: Path) -> tuple[str, ...]:
+    """Exact static inputs plus source-derived chapter outputs for QML only."""
+    files = tuple(spec["files"])
+    if spec.get("chapter_pages"):
+        try:
+            from .lecture_chapters import chapter_files
+        except ImportError:
+            from lecture_chapters import chapter_files
+        files += chapter_files((source_dir / "index.html").read_text(encoding="utf-8"))
+    return files
 
 
 def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) -> list[dict]:
@@ -628,7 +660,8 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
                 staged = stage_lecture_bundle(archive_dir, temporary_root, source, spec, base_url, decorate)
                 # Only derived, public fields leave the source registry.
                 document["study_href"] = spec["href"]
-                document["study_assets"] = {name: hashlib.sha256((staged / name).read_bytes()).hexdigest() for name in spec["files"]}
+                bundle_files = lecture_bundle_files(spec, archive_dir.parent / spec["source"])
+                document["study_assets"] = {name: hashlib.sha256((staged / name).read_bytes()).hexdigest() for name in bundle_files}
                 if spec.get("unit_registry"):
                     registry = json.loads((staged / spec["unit_registry"]).read_text(encoding="utf-8"))
                     document["study_series"] = lecture_series_metadata(registry, documents, source["id"])
@@ -637,20 +670,31 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             page = temporary_root / "lectures" / ("en/index.html" if lang == "en" else "index.html")
             page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text(decorate(render_lectures(documents, base_url, lang), prefix), encoding="utf-8")
-            page = temporary_root / "briefings" / ("en/index.html" if lang == "en" else "index.html")
-            page.parent.mkdir(parents=True, exist_ok=True)
-            navigation = render_library_navigation(documents, "briefings", lang, prefix)
-            page.write_text(decorate(render_briefings(documents, base_url, lang, navigation, LIBRARY_ASSET_VERSION), prefix), encoding="utf-8")
+            count = sum(document["series"] in {"daily-quantum", "weekly-review"} for document in documents)
+            for number in range(1, page_count(count, "briefings") + 1):
+                page = temporary_root / page_path("briefings", lang, number)
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page_root = page_prefix("briefings", lang, number)
+                navigation = render_library_navigation(documents, "briefings", lang, page_root)
+                page.write_text(decorate(render_briefings(documents, base_url, lang, navigation, LIBRARY_ASSET_VERSION, number), page_root), encoding="utf-8")
         # Read all source assets before replacing any published output.
         briefing_assets = {name: (Path(__file__).parent / "assets" / name).read_text(encoding="utf-8") for name in ("briefings.css", "briefings.js")}
         staging = Path(temporary) / "archive"
         (staging / "files").mkdir(parents=True)
         (staging / "en").mkdir()
+        try:
+            from .pdf_editions import stage_editions
+        except ImportError:
+            from pdf_editions import stage_editions
+        stage_editions(archive_dir, staging, documents)
         for source in source_documents:
             shutil.copyfile(archive_dir / source["file"], staging / "files" / f'{source["id"]}.pdf')
-        for lang, prefix in (("ko", "../"), ("en", "../../")):
-            target = staging / ("en/index.html" if lang == "en" else "index.html")
-            target.write_text(decorate(render_archive(documents, base_url, lang, external_resources), prefix), encoding="utf-8")
+        for lang in ("ko", "en"):
+            for number in range(1, page_count(len(documents) + len(external_resources), "archive") + 1):
+                relative = page_path("archive", lang, number).removeprefix("archive/")
+                target = staging / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(decorate(render_archive(documents, base_url, lang, external_resources, number), page_prefix("archive", lang, number)), encoding="utf-8")
         target = site_dir / "archive"
         if target.exists():
             shutil.rmtree(target)
@@ -689,7 +733,12 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
             errors.append(f"missing lecture link: {document['id']}")
             continue
         root = site_dir / spec["href"]
-        expected = set(spec["files"])
+        source_dir = Path(__file__).resolve().parents[1] / spec["source"]
+        try:
+            expected = set(lecture_bundle_files(spec, source_dir))
+        except (OSError, ValueError) as error:
+            errors.append(f"invalid lecture source: {document['id']}: {error}")
+            continue
         actual = {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()}
         if actual != expected:
             errors.append(f"lecture output differs from allowlist: {document['id']}")
@@ -701,6 +750,12 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
                 errors.append(f"lecture asset checksum mismatch: {name}")
         if (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
             errors.append(f"lecture PDF differs from archive: {document['id']}")
+        if spec.get("chapter_pages"):
+            try:
+                from .lecture_chapters import validate_chapters
+            except ImportError:
+                from lecture_chapters import validate_chapters
+            errors.extend(validate_chapters(root, (source_dir / "index.html").read_text(encoding="utf-8")))
         if spec.get("unit_registry"):
             try:
                 registry = json.loads((root / spec["unit_registry"]).read_text(encoding="utf-8"))
@@ -734,8 +789,20 @@ def validate_archive(site_dir: Path) -> list[str]:
     for relative in ("index.html", "en/index.html"):
         if not (site_dir / "lectures" / relative).is_file():
             errors.append(f"missing lecture catalog: {relative}")
-    expected_files = {"index.html", "en/index.html"}
+    first_archive = site_dir / "archive/index.html"
+    paginated = first_archive.is_file() and 'data-list-pagination' in first_archive.read_text(encoding="utf-8")
+    count = len(manifest["documents"]) + len(external_resources)
+    expected_files = {page_path("archive", lang, number).removeprefix("archive/")
+                      for lang in ("ko", "en") for number in range(1, (page_count(count, "archive") if paginated else 1) + 1)}
     for doc in manifest["documents"]:
+        try:
+            from .pdf_editions import validate_editions
+        except ImportError:
+            from pdf_editions import validate_editions
+        edition_errors = validate_editions(site_dir, doc)
+        errors.extend(edition_errors)
+        if not edition_errors:
+            expected_files.update(row["href"].removeprefix("archive/") for row in doc.get("editions", []))
         path = site_dir / doc["href"]
         if not path.is_file():
             errors.append(f"missing archive PDF: {doc['id']}")
@@ -747,19 +814,27 @@ def validate_archive(site_dir: Path) -> list[str]:
     actual_files = {path.relative_to(site_dir / "archive").as_posix() for path in (site_dir / "archive").rglob("*") if path.is_file()}
     if actual_files != expected_files:
         errors.append(f"archive output differs from allowlist: {sorted(actual_files ^ expected_files)}")
-    for relative in ("index.html", "en/index.html"):
-        path = site_dir / "archive" / relative
-        if not path.exists():
-            errors.append(f"missing archive page: {relative}")
-        else:
+    catalog = sorted(manifest["documents"] + external_resources, key=lambda row: (row["date"], row["id"]), reverse=True)
+    for lang in ("ko", "en"):
+        for number in range(1, (page_count(count, "archive") if paginated else 1) + 1):
+            relative = page_path("archive", lang, number).removeprefix("archive/")
+            path = site_dir / "archive" / relative
+            if not path.is_file():
+                errors.append(f"missing archive page: {relative}"); continue
             page = path.read_text(encoding="utf-8")
-            for doc in manifest["documents"]:
-                if f"files/{doc['id']}.pdf" not in page:
-                    errors.append(f"archive PDF absent from {relative}: {doc['id']}")
-            for item in external_resources:
-                for expected in (f'id="{escape(item["id"])}"', f'href="{escape(item["author_url"])}"', f'href="{escape(item["book_url"])}"'):
-                    if expected not in page:
-                        errors.append(f"external book link absent from {relative}: {item['id']}")
+            expected_cards = page_slice(catalog, "archive", number) if paginated else catalog
+            if paginated:
+                actual_ids = re.findall(r'class="document-card" data-document-id="([^"]+)"', page)
+                if actual_ids != [row["id"] for row in expected_cards]:
+                    errors.append(f"archive page cards differ from registered slice: {relative}")
+            for doc in expected_cards:
+                if doc["series"] != "external-book":
+                    if f"files/{doc['id']}.pdf" not in page:
+                        errors.append(f"archive PDF absent from {relative}: {doc['id']}")
+                else:
+                    for expected in (f'id="{escape(doc["id"])}"', f'href="{escape(doc["author_url"])}"', f'href="{escape(doc["book_url"])}"'):
+                        if expected not in page:
+                            errors.append(f"external book link absent from {relative}: {doc['id']}")
     return errors
 
 
@@ -876,67 +951,69 @@ ARCHIVE_CSS = '''
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
 '''
 
-ARCHIVE_JS = '''
+ARCHIVE_JS = r'''
 (() => {
   const en = document.documentElement.lang === 'en';
   const params = new URLSearchParams(location.search);
+  const shared = document.querySelector('[data-site-search]');
+  const base = shared ? new URL(shared.dataset.root || '../', location.href) : null;
   if (params.get('series') === 'lecture-notes' && !['q', 'month', 'sort'].some(key => params.has(key))) {
-    location.replace(en ? '../../lectures/en/' : '../lectures/');
-    return;
+    location.replace(base ? new URL(en ? 'lectures/en/' : 'lectures/', base).href : en ? '../../lectures/en/' : '../lectures/'); return;
   }
   if (['daily-quantum', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
-    location.replace(en ? '../../briefings/en/' : '../briefings/');
-    return;
+    location.replace(base ? new URL(en ? 'briefings/en/' : 'briefings/', base).href : en ? '../../briefings/en/' : '../briefings/'); return;
   }
-  const search = document.querySelector('#archive-search');
-  if (!search) return;
-  const month = document.querySelector('#archive-month');
-  const sort = document.querySelector('#archive-sort');
-  const grid = document.querySelector('#document-grid');
-  const cards = Array.from(grid.querySelectorAll('.document-card'));
-  const buttons = Array.from(document.querySelectorAll('[data-series].collection-button'));
-  const count = document.querySelector('#archive-result-count');
-  const empty = document.querySelector('#archive-empty');
-  const more = document.querySelector('#archive-more');
-  let series = buttons.some(button => button.dataset.series === params.get('series')) ? params.get('series') : '';
-  let limit = 12;
-  search.value = document.querySelector('[data-site-search]') ? '' : params.get('q') || '';
-  if (Array.from(month.options).some(option => option.value === params.get('month'))) month.value = params.get('month');
+  const search = document.querySelector('#archive-search'); if (!search) return;
+  const month = document.querySelector('#archive-month'), sort = document.querySelector('#archive-sort');
+  const grid = document.querySelector('#document-grid'), cards = [...grid.querySelectorAll('.document-card')];
+  const pagination = window.ListingPages?.create(grid, '.document-card');
+  const buttons = [...document.querySelectorAll('[data-series].collection-button')];
+  const count = document.querySelector('#archive-result-count'), empty = document.querySelector('#archive-empty'), more = document.querySelector('#archive-more');
+  let series = buttons.some(button => button.dataset.series === params.get('series')) ? params.get('series') : '', limit = 12, pending;
+  search.value = shared ? '' : params.get('q') || '';
+  if ([...month.options].some(option => option.value === params.get('month'))) month.value = params.get('month');
   if (params.get('sort') === 'oldest') sort.value = 'oldest';
-  const normalize = value => value.normalize('NFKC').toLocaleLowerCase().replace(/\\s+/g, ' ').trim();
+  const normalize = value => String(value || '').normalize('NFKC').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+  const text = new Map(cards.map(card => [card, normalize(card.dataset.search + ' ' + card.dataset.date)]));
+  function absorb(nodes) {
+    const ids = new Set(cards.map(card => card.dataset.documentId));
+    for (const card of nodes) if (!ids.has(card.dataset.documentId)) {
+      ids.add(card.dataset.documentId); cards.push(card); text.set(card, normalize(card.dataset.search + ' ' + card.dataset.date));
+    }
+  }
+  async function all() {
+    if (!pagination || pagination.complete()) return;
+    if (!pending) pending = pagination.all().then(absorb).finally(() => { pending = null; });
+    await pending;
+  }
+  const filtered = () => Boolean(series || month.value || search.value.trim() || sort.value !== 'newest');
   function apply(updateUrl = true) {
+    if (filtered() && pagination && !pagination.complete()) return;
     const words = normalize(search.value).split(' ').filter(Boolean);
     const ordered = [...cards].sort((a, b) => sort.value === 'oldest' ? a.dataset.date.localeCompare(b.dataset.date) : b.dataset.date.localeCompare(a.dataset.date));
-    let matches = 0;
-    for (const card of ordered) {
-      const haystack = normalize(card.dataset.search + ' ' + card.dataset.date);
-      const match = (!series || card.dataset.series === series) && (!month.value || card.dataset.date.startsWith(month.value)) && words.every(word => haystack.includes(word));
-      card.hidden = !match || matches >= limit;
-      if (match) matches++;
-      grid.append(card);
-    }
-    for (const button of buttons) {
-      const active = button.dataset.series === series;
-      button.classList.toggle('active', active);
-      button.setAttribute('aria-pressed', String(active));
-    }
-    count.textContent = en ? `${matches} resources · ${Math.min(limit, matches)} shown` : `${matches}건의 자료 · ${Math.min(limit, matches)}건 표시`;
-    empty.hidden = matches !== 0;
-    more.hidden = matches <= limit;
-    more.textContent = en ? `Show more (${matches - limit} remaining) ↓` : `문서 더 보기 (${matches - limit}건 남음) ↓`;
-    if (updateUrl) {
-      const next = new URLSearchParams();
-      if (series) next.set('series', series);
-      if (search.value.trim()) next.set('q', search.value.trim());
-      if (month.value) next.set('month', month.value);
-      if (sort.value !== 'newest') next.set('sort', sort.value);
-      history.replaceState(null, '', location.pathname + (next.size ? '?' + next : '') + location.hash);
+    const matches = ordered.filter(card => (!series || card.dataset.series === series) && (!month.value || card.dataset.date.startsWith(month.value)) && words.every(word => text.get(card).includes(word)));
+    const shown = matches.slice(0, limit); shown.forEach(card => { card.hidden = false; }); grid.replaceChildren(...shown);
+    for (const button of buttons) { const active = button.dataset.series === series; button.classList.toggle('active', active); button.setAttribute('aria-pressed', String(active)); }
+    const total = pagination && !pagination.complete() ? pagination.total : matches.length;
+    count.textContent = en ? `${total} resources · ${shown.length} shown` : `${total}건의 자료 · ${shown.length}건 표시`;
+    empty.hidden = matches.length !== 0; more.hidden = matches.length <= limit && !pagination?.hasNext();
+    more.textContent = en ? 'Show more documents ↓' : '문서 더 보기 ↓'; pagination?.filtered(filtered());
+    if (updateUrl) { const next = new URL(location.href); ['series', 'month', 'sort'].forEach(key => next.searchParams.delete(key));
+      if (!shared) next.searchParams.delete('q');
+      if (series) next.searchParams.set('series', series); if (search.value.trim() && !shared) next.searchParams.set('q', search.value.trim());
+      if (month.value) next.searchParams.set('month', month.value); if (sort.value !== 'newest') next.searchParams.set('sort', sort.value);
+      history.replaceState(null, '', next.pathname + next.search + next.hash);
     }
   }
-  for (const control of [search, month, sort]) control.addEventListener(control === search ? 'input' : 'change', () => { limit = 12; apply(); });
-  for (const button of buttons) button.addEventListener('click', () => { series = button.dataset.series; limit = 12; apply(); });
+  async function globalFilter() { limit = 12; try { await all(); apply(); } catch (_) { /* Page links and controls remain available for retry. */ } }
+  for (const control of [search, month, sort]) control.addEventListener(control === search ? 'input' : 'change', globalFilter);
+  for (const button of buttons) button.addEventListener('click', () => { series = button.dataset.series; void globalFilter(); });
   document.querySelector('#archive-reset').addEventListener('click', () => { series = ''; search.value = ''; month.value = ''; sort.value = 'newest'; limit = 12; apply(); search.focus(); });
-  more.addEventListener('click', () => { const previous = cards.filter(card => !card.hidden); limit += 12; apply(); const firstNew = Array.from(grid.children).find(card => !card.hidden && !previous.includes(card)); firstNew?.querySelector('a')?.focus(); });
-  apply(false);
+  more.addEventListener('click', async () => {
+    const previous = [...grid.children]; more.disabled = true;
+    try { if (filtered()) await all(); else if (pagination?.hasNext()) absorb(await pagination.next()); limit += 12; apply(); const firstNew = [...grid.children].find(card => !previous.includes(card)); firstNew?.querySelector('a')?.focus(); }
+    catch (_) { /* A failed page request never removes the existing cards. */ } finally { more.disabled = false; }
+  });
+  if (filtered()) void globalFilter(); else apply(false);
 })();
 '''

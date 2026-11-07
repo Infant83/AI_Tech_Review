@@ -10,12 +10,14 @@ try:
     from .hub_localization import localize_manifest
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_images import image_attributes
+    from .listing_pagination import page_prefix, page_directory, page_slice, pagination, pagination_script
     from .document_archive_site import render_library_navigation
     from .site_brand import render_brand_link
 except ImportError:
     from hub_localization import localize_manifest
     from site_search import search_head, search_form, search_results, search_script
     from listing_images import image_attributes
+    from listing_pagination import page_prefix, page_directory, page_slice, pagination, pagination_script
     from document_archive_site import render_library_navigation
     from site_brand import render_brand_link
 
@@ -165,11 +167,11 @@ def render_latest(item: dict, language: str = "ko", prefix: str = "", *, site_di
 
 def render_hub(manifest: list[dict], preferred_category_order: list[str] | None, documents: list[dict] | None,
                *, site_dir: Path, language: str, css_version: str, js_version: str,
-               preferences_version: str, library_version: str) -> str:
+               preferences_version: str, library_version: str, page_number: int = 1) -> str:
     if language not in {"ko", "en"}:
         raise ValueError("Unsupported hub language")
     en = language == "en"
-    prefix = "../" if en else ""
+    prefix = page_prefix("reviews", language, page_number)
     items = localize_manifest(manifest, site_dir, language)
     documents = documents or []
     available = {str(item["category"]) for item in items}
@@ -178,20 +180,22 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     category_options = "".join(f'<option value="{escape(value)}">{escape(category_label(value, language))}</option>' for value in categories)
     # Shared search downloads its bilingual catalog only on interaction. Keep
     # visible summaries intact without duplicating that catalog on every card.
-    cards = "\n".join(render_card(item, language, prefix, site_dir=site_dir, legacy_search=False) for item in items)
-    latest = render_latest(items[0], language, prefix, site_dir=site_dir) if items else ""
+    cards = "\n".join(render_card(item, language, prefix, site_dir=site_dir, legacy_search=False) for item in page_slice(items, "reviews", page_number))
+    latest = render_latest(items[0], language, prefix, site_dir=site_dir) if items and page_number == 1 else ""
     description = "Reviews and lecture notes on AI, quantum computing, and materials science." if en else "AI·양자 컴퓨팅·재료과학 리뷰와 렉처 노트."
-    canonical = HUB_URL + ("en/" if en else "")
+    canonical = HUB_URL + page_directory("reviews", language, page_number)
+    ko_page = HUB_URL + page_directory("reviews", "ko", page_number)
+    en_page = HUB_URL + page_directory("reviews", "en", page_number)
     image_meta = ""
     if items and items[0].get("thumbnail"):
         image = escape(HUB_URL + str(items[0]["thumbnail"]))
         image_meta = f'<meta property="og:image" content="{image}"><meta name="twitter:image" content="{image}">'
     brand = render_brand_link(prefix).replace('<span class="brand-name">AI Tech Review Letters</span>', '<span class="brand-name"><b>AI Tech Review</b> <small>LETTERS</small></span>')
     if en:
-        brand = brand.replace('href="../index.html"', 'href="index.html"', 1)
+        brand = brand.replace(f'href="{prefix}index.html"', f'href="{prefix}en/index.html"', 1)
     navigation = render_library_navigation(documents, "reviews", language, prefix)
     if en:
-        navigation = navigation.replace('href="../index.html"', 'href="index.html"', 1)
+        navigation = navigation.replace(f'href="{prefix}index.html"', f'href="{prefix}en/index.html"', 1)
     methods_label = "Editorial policy" if en else "작성·검증 원칙"
     editor_label = "About the editor" if en else "편집자 소개"
     mail_label = "Email the editor" if en else "편집자에게 메일 보내기"
@@ -204,10 +208,10 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
   <title>AI Tech Review Letters</title>
   <meta name="description" content="{escape(description)}">
   <link rel="canonical" href="{canonical}">
-  <link rel="alternate" hreflang="ko" href="{HUB_URL}">
-  <link rel="alternate" hreflang="en" href="{HUB_URL}en/">
-  <link rel="alternate" hreflang="x-default" href="{HUB_URL}">
-  <link rel="home" href="{prefix}index.html" data-hub-home>
+  <link rel="alternate" hreflang="ko" href="{ko_page}">
+  <link rel="alternate" hreflang="en" href="{en_page}">
+  <link rel="alternate" hreflang="x-default" href="{ko_page}">
+  <link rel="home" href="{prefix}index.html" data-hub-home data-hub-page="{page_number}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AI Tech Review Letters">
   <meta property="og:title" content="AI Tech Review Letters">
@@ -238,13 +242,14 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
         <button class="hub-toggle hub-language-toggle" type="button" role="switch" data-hub-language-toggle aria-label="{'English' if en else '영어'}" aria-checked="{'true' if en else 'false'}" title="{'Switch to Korean' if en else '영어로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice" lang="ko">{KOREAN_LANGUAGE_MARK}</span><span class="hub-toggle-choice hub-language-en" lang="en">EN</span></span></button>
         <button class="hub-toggle hub-theme-toggle" type="button" role="switch" data-hub-theme-toggle aria-label="{'Dark theme' if en else '어두운 화면'}" aria-checked="false" title="{'Switch to dark theme' if en else '어두운 화면으로 전환'}"><span class="hub-toggle-track" aria-hidden="true"><span class="hub-toggle-choice">{icon('sun')}</span><span class="hub-toggle-choice">{icon('moon')}</span></span></button>
         <span class="sr-only" data-hub-preference-status role="status" aria-live="polite"></span>
-        <noscript><style>.hub-toggle{{display:none}}</style><a href="{'../' if en else 'en/'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
+        <noscript><style>.hub-toggle{{display:none}}</style><a href="{prefix}{page_directory('reviews', 'ko' if en else 'en', page_number)}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></noscript>
       </div>
     </nav>
     <div class="hub-browse">{navigation}{search_form(prefix, language)}<input id="search" type="hidden" value=""></div>
   </header>
   <main>
     {search_results(language)}
+    {f'<h1 class="sr-only">{"Review list" if en else "리뷰 목록"} · {page_number}</h1>' if page_number > 1 else ""}
     {latest}
     <section class="topic-filter" id="topic-filter" aria-label="{'Find reviews' if en else '주제별 리뷰 찾기'}">
       <div class="filter-heading"><h2>{'Reviews' if en else '리뷰'}</h2><div class="discovery-controls">
@@ -256,11 +261,12 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
       <p class="discovery-hint" id="discovery-hint">{'The period applies to viewing and liking activity. Card counts are cumulative.' if en else '기간은 글 발행일이 아닌 조회·좋아요 활동 기준이며, 카드 수치는 누적값입니다.'}</p>
       <div class="discovery-feedback"><p id="discovery-status" role="status" aria-live="polite"></p><button class="discovery-retry" id="discovery-retry" type="button" hidden>{'Reload statistics' if en else '통계 다시 불러오기'}</button></div>
     </section>
-    <div class="hub-viewbar"><div class="hub-view-switch" role="group" aria-label="{'Review view' if en else '리뷰 보기'}"><button id="hub-view-covers" type="button" data-view="gallery" aria-controls="review-grid" aria-pressed="true">{'Covers' if en else '표지 보기'}</button><button id="hub-view-list" type="button" data-view="list" aria-controls="review-grid" aria-pressed="false">{'All reviews' if en else '전체 목록'}</button></div><p class="discovery-results" id="review-results" role="status" aria-live="polite"></p></div>
+    <div class="hub-viewbar"><div class="hub-view-switch" role="group" aria-label="{'Review view' if en else '리뷰 보기'}"><button id="hub-view-covers" type="button" data-view="gallery" aria-controls="review-grid" aria-pressed="true">{'Covers' if en else '표지 보기'}</button><button id="hub-view-list" type="button" data-view="list" aria-controls="review-grid" aria-pressed="false">{'List view' if en else '목록 보기'}</button></div><p class="discovery-results" id="review-results" role="status" aria-live="polite"></p></div>
     <section class="review-grid" id="review-grid" data-view="gallery" aria-label="{'Review list' if en else '리뷰 목록'}">
 {cards}
     </section>
     <p class="discovery-empty" id="review-empty" hidden>{'No reviews match this search.' if en else '검색 조건에 맞는 리뷰가 없습니다.'}</p>
+    {pagination("reviews", language, page_number, len(items))}
     <div class="discovery-more-wrap"><button class="discovery-more" id="review-more" type="button" hidden>{'Show more' if en else '더 보기'}</button></div>
   </main>
   <footer class="site-footer">
@@ -268,6 +274,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     <nav class="hub-footer-links" aria-label="{'Information' if en else '하단 안내'}">{icon_link(EDITOR_URL, editor_label, 'editor')}{icon_link(prefix + 'methods/', methods_label, 'methods')}{icon_link(prefix + 'methods/#reader-metrics', data_label, 'info')}{icon_link('mailto:' + CONTACT_EMAIL, mail_label, 'mail')}</nav>
     <div data-reader-site-metrics></div>
   </footer>
+  {pagination_script(prefix)}
   <script src="{prefix}assets/site.js?v={js_version}" defer></script>
   {search_script(prefix)}
 </body>

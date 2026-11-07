@@ -20,7 +20,7 @@
       const catalog = fetch(url, {credentials: "omit"}).then(response => { if (!response.ok) throw Error("search_catalog"); return response.json(); });
       const [, , data] = await Promise.all([window.MiniSearch ? null : script("minisearch.js", form.dataset.engineVersion), window.SiteSearchCore ? null : script("site-search-core.js", form.dataset.coreVersion), catalog]);
       if (data.version !== 1) throw Error("search_version");
-      engine = window.SiteSearchCore.create(window.MiniSearch, data.records); return engine;
+      engine = await window.SiteSearchCore.createAsync(window.MiniSearch, data.records); return engine;
     })().catch(error => { loading = null; throw error; });
     return loading;
   }

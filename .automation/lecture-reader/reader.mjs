@@ -2,6 +2,7 @@ import * as pdfjs from './vendor/pdf.mjs';
 import { clamp, normalizedPoint, eraseStrokes, splitStroke, STROKE_CHUNK_POINTS, pdfPoint, validateNotebook, NOTEBOOK_FORMAT, MAX_PAGES } from './ink-core.mjs';
 import * as storage from './storage.mjs';
 import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
+import { editionsFor, selectEdition } from './editions.mjs';
 
 const $ = id => document.getElementById(id);
 const rootURL = new URL('../../', import.meta.url);
@@ -35,6 +36,7 @@ const strings = {
   exportFailed: ['PDF를 내보내지 못했습니다. 암호화된 PDF라면 원본 잠금을 해제한 뒤 다시 시도해 주세요. 필기 백업은 사용할 수 있습니다.', 'Could not export this PDF. If it is encrypted, unlock the original and try again. The editable notes backup remains available.'],
   backupInvalid: ['이 필기 백업을 읽을 수 없습니다. 지원하는 백업 파일인지 확인해 주세요.', 'This is not a valid supported notes backup.'], fingerprintMismatch: ['다른 PDF의 필기입니다. 백업을 만든 것과 같은 원본 PDF를 먼저 열어주세요.', 'These notes belong to a different PDF. Open the exact original PDF used for this backup first.'],
   requestedPDFMismatch: ['이 노트의 원본 PDF와 다른 파일입니다. 같은 원본 파일을 다시 선택해 주세요.', 'This file differs from this notebook’s original PDF. Choose the identical original file.'],
+  pdfEdition: ['PDF 판본', 'PDF edition'], editionHelp: ['판본마다 필기가 따로 보존됩니다.', 'Each edition keeps its own notes.'],
   replaceConfirm: ['백업으로 이 PDF의 현재 필기를 바꿀까요? 기존 필기는 먼저 백업해 주세요.', 'Replace this PDF’s current notes with the backup? Export your current notes first.'], imported: ['필기를 가져왔습니다.', 'Notes imported.'], clearConfirm: ['현재 페이지의 필기를 모두 지울까요? 실행 취소로 되돌릴 수 있습니다.', 'Clear all ink on this page? You can undo this.'],
   clearSharedConfirm: ['이 노트의 현재 페이지 필기를 모두 지울까요? 공유 중이면 다른 사람의 필기도 함께 지워지고 모두에게 반영됩니다. 지운 직후에는 실행 취소로 되돌릴 수 있습니다.', 'Clear all ink on this notebook’s current page? If shared, other members’ ink is erased too and everyone sees the change. You can undo immediately afterward.'],
   persistentYes: ['이 브라우저가 보관 유지 요청을 허용했습니다. 백업도 함께 보관하세요.', 'This browser granted persistent storage. Keep backups too.'], persistentNo: ['이 브라우저에서는 보관 유지를 보장할 수 없습니다. 중요한 필기는 백업해 주세요.', 'This browser cannot guarantee persistent storage. Back up important notes.'],
@@ -106,6 +108,7 @@ function controls() {
   document.querySelectorAll('[data-tool="pen"],[data-tool="eraser"],[data-color]').forEach(node => { node.disabled = !current || busy || !canAddInk(); });
   $('finger-draw').disabled = $('pen-width').disabled = !current || busy || !canAddInk();
   $('page-number').disabled = !current || busy;
+  if ($('pdf-edition')) $('pdf-edition').disabled = !current || busy;
   $('page-number').value = pageNumber;
   $('page-count').textContent = current?.pageCount || '—';
   $('page-number').max = current?.pageCount || 1;
@@ -320,10 +323,14 @@ async function openBytes(bytes, metadata) {
     // The cloud module consumes a private invitation after the PDF module loads.
     // Keep it until explicit acceptance, even when a cached PDF opens first.
     if (invitation && /^[A-Za-z0-9_-]{20,512}$/.test(invitation)) fragment.set('invite', invitation);
-    if (metadata.publicId) url.searchParams.set('id', metadata.publicId);
+    if (metadata.publicId) {
+      url.searchParams.set('id', metadata.publicId);
+      const entry = catalog.find(doc => doc.id === metadata.publicId);
+      if (entry && entry.sha256 !== fingerprint) fragment.set('edition', fingerprint);
+    }
     else { url.searchParams.delete('id'); fragment.set('local', fingerprint); }
     url.hash = fragment.toString(); historyReplace(url);
-    renderBookmarks(); $('page-controls').hidden = false; busy = false; await renderPage();
+    renderBookmarks(); renderEditions(); $('page-controls').hidden = false; busy = false; await renderPage();
     if (saved) status(dirty.size ? 'pending' : 'saved');
     signal('atr:document-open', currentInfo()); return true;
   } catch (error) {
@@ -333,23 +340,42 @@ async function openBytes(bytes, metadata) {
 }
 function historyReplace(url) { try { window.history.replaceState(null, '', url); } catch {} }
 function showError(message) { $('loading-state').hidden = true; $('error-state').hidden = false; $('error-message').textContent = message; busy = false; controls(); }
-async function openPublished(id, { intent = null } = {}) {
+function renderEditions() {
+  const selector = $('pdf-edition'), wrapper = $('pdf-edition-control');
+  if (!selector || !wrapper) return;
+  const rows = editionsFor(catalog.find(doc => doc.id === current?.publicId));
+  selector.replaceChildren(); wrapper.hidden = rows.length < 2;
+  for (const row of rows) {
+    const option = document.createElement('option'); option.value = row.sha256;
+    option.textContent = row.current ? (en ? 'Current edition' : '현재 판본') : `${en ? 'Previous edition' : '이전 판본'} · ${row.sha256.slice(0, 8)}`;
+    option.selected = row.sha256 === current?.fingerprint; selector.append(option);
+  }
+}
+$('pdf-edition')?.addEventListener('change', async event => {
+  if (!current?.publicId || busy) { renderEditions(); return; }
+  const id = current.publicId, fingerprint = event.target.value;
+  const intent = beginDocumentOpen({ explicit: true, fingerprint });
+  if (!(await openPublished(id, { intent, edition: fingerprint }))) renderEditions();
+});
+async function openPublished(id, { intent = null, edition = null } = {}) {
   if (busy) return false;
   intent ??= beginDocumentOpen();
   const doc = catalog.find(d => d.id === id);
   if (!doc) { showError(t('unknownPDF')); return false; }
-  retry = () => openPublished(id); $('original-link').href = new URL(doc.href, rootURL).href;
+  const selected = selectEdition(doc, edition);
+  if (!selected) { showError(t('hashMismatch')); return false; }
+  retry = () => openPublished(id, { edition }); $('original-link').href = new URL(selected.href, rootURL).href;
   try {
-    const response = await fetch(new URL(doc.href, rootURL), { credentials: 'omit' });
+    const response = await fetch(new URL(selected.href, rootURL), { credentials: 'omit' });
     if (!isCurrentDocumentOpen(intent)) return false;
     if (!response.ok) throw new Error('NETWORK');
     const bytes = await response.arrayBuffer();
     if (!isCurrentDocumentOpen(intent)) return false;
-    return await openBytes(bytes, { title: en && doc.title_en ? doc.title_en : doc.title, publicId: doc.id, sha256: doc.sha256 });
+    return await openBytes(bytes, { title: en && doc.title_en ? doc.title_en : doc.title, publicId: doc.id, sha256: selected.sha256 });
   } catch {
     if (!isCurrentDocumentOpen(intent)) return false;
     try {
-      const cached = (await storage.listDocuments()).find(d => d.publicId === id && (d.hasPDF || d.pdf));
+      const cached = (await storage.listDocuments()).find(d => d.publicId === id && d.fingerprint === selected.sha256 && (d.hasPDF || d.pdf));
       if (!isCurrentDocumentOpen(intent)) return false;
       if (cached) return openStored(cached.fingerprint, { intent });
     } catch {}
@@ -645,7 +671,7 @@ async function init() {
   const id = params.get('id');
   // A selection made while the catalog loads takes precedence over startup restore.
   if (!explicitSelection && !current && !busy) {
-    if (id) await openPublished(id);
+    if (id) await openPublished(id, { edition: new URLSearchParams(location.hash.slice(1)).get('edition') });
     else if (/^[a-f0-9]{64}$/.test(initialLocal || '')) await openStored(initialLocal);
     else if (params.get('library') === '1') await openWorkspace();
   }

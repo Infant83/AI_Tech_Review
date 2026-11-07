@@ -110,7 +110,7 @@
 
 ## 적용과 검증
 
-- 국문 출판 원본: `scripts/publish_public_site.py`의 `PublicReview.summary`. 허브 전용 빌드도 이 값을 새로 읽는다.
+- 국문 출판 원본: 현재는 `publication/reviews/<folder ID>.json`의 `review.summary`를 사용한다. 이 사례를 작성한 당시에는 `scripts/publish_public_site.py`의 `PublicReview.summary`에 저장했으며, 2026-11-07에 글별 등록 파일로 이관했다. 새 수정은 [현재 게시 절차](../../../PUBLICATION_WORKFLOW.md)에 따라 후보를 만들며, 허브 요약만 바꿀 때에는 본문 개정 없이 목록과 검색에 반영한다.
 - 영문 출판 원본: `scripts/hub_summaries_en.json`. 실제 영문 페이지와 현재 국문 `source`의 일치를 확인한 뒤 적용한다. 메타 설명에서 자동으로 뽑은 글과 감수한 소개를 구분한다.
 - 과학적 범위: 별도 광양자 비교를 동일 실험의 통제된 재시험처럼 보이게 한 표현, 신경망의 내부 계산 가설과 모델의 자기설명 혼동, JUPITER 전체 실행 결과의 과도한 귀속을 독립 감수에서 바로잡았다.
 - 공통 하네스: 주제·독자·저자별 전개 선택과 과학적 기본 형식·APS 책임을 함께 유지했다. Vibe 퇴고 절과 APS 참고문헌 감사 절을 보존했다.

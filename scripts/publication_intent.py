@@ -14,6 +14,7 @@ except ImportError:
     from review_registry import _unique_object
 
 SHA = re.compile(r"[a-f0-9]{64}\Z")
+HUB_METADATA_FIELDS = frozenset({"subtitle", "category", "tags", "summary"})
 
 
 def source_digest(directory: Path) -> str | None:
@@ -44,8 +45,19 @@ def review_inputs(root: Path, folder: str) -> dict:
     registration = Path(root) / "publication/reviews" / (folder + ".json")
     if registration.is_symlink() or not registration.is_file():
         raise ValueError("Review registration is missing or linked: " + folder)
+    payload = registration.read_bytes()
+    source = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique_object)
+    if not isinstance(source, dict) or not isinstance(source.get("review"), dict):
+        raise ValueError("Review registration must contain a review object: " + folder)
+    # The article review covers all registration fields except the four
+    # independently editable hub/search display fields. Unknown or newly added
+    # fields stay protected by default rather than widening the metadata path.
+    protected = {**source, "review": {key: value for key, value in source["review"].items()
+                                      if key not in HUB_METADATA_FIELDS}}
+    canonical = json.dumps(protected, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return {"source_sha256": source_digest(Path(root) / folder / "dist"),
-            "registration_sha256": hashlib.sha256(registration.read_bytes()).hexdigest()}
+            "registration_sha256": hashlib.sha256(payload).hexdigest(),
+            "article_registration_sha256": hashlib.sha256(canonical).hexdigest()}
 
 
 def pending_review_intents(root: Path, known: set[str], explicit: set[str], existing: set[str]) -> dict:
@@ -59,17 +71,26 @@ def pending_review_intents(root: Path, known: set[str], explicit: set[str], exis
             if path.is_symlink() or not path.is_file():
                 raise ValueError("Publication request must be a regular file")
             request = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_object)
-            if (not isinstance(request, dict)
-                    or set(request) != {"version", "review", "source_sha256", "registration_sha256"}
-                    or type(request["version"]) is not int or request["version"] != 1
+            version = request.get("version") if isinstance(request, dict) else None
+            expected_fields = {"version", "review", "source_sha256", "registration_sha256"}
+            if version == 2:
+                expected_fields.add("article_registration_sha256")
+            if (not isinstance(request, dict) or set(request) != expected_fields
+                    or type(version) is not int or version not in {1, 2}
                     or request["review"] not in known or path.name != request["review"] + ".json"
                     or any(not isinstance(request[field], str) or not SHA.fullmatch(request[field])
-                           for field in ("source_sha256", "registration_sha256"))):
+                           for field in expected_fields - {"version", "review"})):
                 raise ValueError("Invalid review publication request: " + path.name)
             folder = request["review"]
             inputs = review_inputs(root, folder)
-            if folder not in explicit and any(request[key] != value for key, value in inputs.items()):
-                raise ValueError("Review inputs changed after validation; prepare again with --review " + folder)
+            if folder not in explicit:
+                protected_keys = ("source_sha256", "article_registration_sha256") if version == 2 else (
+                    "source_sha256", "registration_sha256")
+                if any(request[key] != inputs[key] for key in protected_keys):
+                    message = "Review inputs changed after validation; prepare again with --review " + folder
+                    if version == 1:
+                        message += " (legacy request must be revalidated once before metadata-only edits)"
+                    raise ValueError(message)
             result[folder] = inputs
     for folder in existing - set(result) - explicit:
         registration = root / "publication/reviews" / (folder + ".json")
@@ -98,11 +119,16 @@ def write_review_intent(root: Path, folder: str, inputs: dict):
     path = directory / (folder + ".json")
     if path.is_symlink():
         raise ValueError("Review request must not be a symlink")
+    # Requests written after this migration separate public list metadata from
+    # the reviewed article inputs. Rewriting JSON whitespace is harmless; actual
+    # source/protected-field drift and concurrent changes remain rejected.
+    payload = json.dumps({"version": 2, "review": folder, **inputs}, ensure_ascii=False, indent=2) + "\n"
+    if path.is_file() and path.read_text(encoding="utf-8") == payload:
+        return
     descriptor, name = tempfile.mkstemp(prefix=".request-", dir=directory)
     try:
         with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-            json.dump({"version": 1, "review": folder, **inputs}, handle, ensure_ascii=False, indent=2)
-            handle.write("\n")
+            handle.write(payload)
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(name, path)

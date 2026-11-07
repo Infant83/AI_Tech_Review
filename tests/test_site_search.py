@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -74,6 +75,24 @@ class SiteSearchTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Symlinked search assets"):
             build_search(self.root)
         self.assertEqual(list(outside.iterdir()), [])
+
+    def test_split_course_headings_are_preserved_under_one_publication(self):
+        course = self.root / "lectures/qml"
+        leaf = course / "lecture-09.html"
+        leaf.write_text('<aside><h2>Course contents</h2></aside><h2 id="barren">Barren plateau and gradients</h2>')
+        manifest = {"version": 1, "course_href": "lectures/qml/", "pages": [{"href": "lecture-09.html"}]}
+        manifest_path = course / "chapter-manifest.json"
+        manifest_path.write_text(json.dumps(manifest))
+        (course / "index.html").write_text('<h1>Course contents</h1>')
+        self.documents[0]["study_assets"] = {name: hashlib.sha256((course / name).read_bytes()).hexdigest() for name in ("lecture-09.html", "chapter-manifest.json")}
+        self.write_catalogs()
+        lecture = next(item for item in build_records(self.root) if item["id"] == "lecture")
+        self.assertIn("Barren plateau and gradients", lecture["headings"])
+        self.assertEqual(lecture["headings"].count("Course contents"), 1)
+        self.assertEqual(lecture["url"], "lectures/qml/")
+        leaf.write_text("unregistered changes")
+        with self.assertRaisesRegex(ValueError, "Unregistered or changed"):
+            build_records(self.root)
 
     def test_compact_control_has_named_scope_submit_and_no_section_button_row(self):
         markup = search_form("../", "ko", "lectures")

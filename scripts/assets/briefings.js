@@ -63,8 +63,10 @@
     searchText.set(item.id, clean([item.title, item.title_en, item.summary, item.summary_en,
       item.date, item.series, ...(Array.isArray(item.tags) ? item.tags : [])].join(' ')));
   });
-  const rows = [...ui.list.querySelectorAll('.briefing-row')];
-  const state = { month: latestMonth, date: null, query: '', all: false };
+  const rows = new Map([...ui.list.querySelectorAll('.briefing-row')].map(row => [row.dataset.id, row]));
+  const pagination = document.querySelector('[data-list-pagination]'), more = byId('briefing-more');
+  const firstOffset = pagination ? (Number(pagination.dataset.page) - 1) * 12 : 0;
+  const state = { month: latestMonth, date: null, query: '', all: false, limit: 12, offset: firstOffset };
   const sharedSearch = Boolean(document.querySelector('[data-site-search]'));
   const readLocation = () => {
     const parameters = new URLSearchParams(location.search);
@@ -74,7 +76,8 @@
     state.date = validDate(date) && documentsByDate.has(date) ? date : null;
     if (state.date) state.month = state.date.slice(0, 7);
     state.query = sharedSearch ? '' : (parameters.get('q') || '').slice(0, 300).trim();
-    state.all = parameters.get(sharedSearch ? 'period' : 'scope') === 'all' && !state.date;
+    state.all = !state.date && (parameters.get(sharedSearch ? 'period' : 'scope') === 'all' || Boolean(pagination && !parameters.has('month') && !parameters.has('date')));
+    state.offset = state.all && !state.query ? firstOffset : 0;
   };
   const writeLocation = () => {
     const url = new URL(location.href);
@@ -95,6 +98,19 @@
     link.lang = en && item.title_en ? 'en' : item.language || 'ko';
     link.title = `${topicTitle(item)} · PDF`;
     return link;
+  };
+  const readingRow = item => {
+    if (rows.has(item.id)) return rows.get(item.id);
+    const row = element('article', 'briefing-row'); row.dataset.id = item.id; row.dataset.date = item.date;
+    const date = element('div', 'briefing-date'), time = element('time', '', item.date); time.dateTime = item.date;
+    date.append(time, element('span', '', item.series === 'weekly-review' ? (en ? 'Weekly review' : '주간 브리핑') : 'Daily Quantum Brief'));
+    const body = element('div', 'briefing-row-body'), heading = element('h3'); heading.lang = en && item.title_en ? 'en' : item.language || 'ko'; heading.append(topicLink(item));
+    const summary = element('p', '', en ? item.summary_en || item.summary : item.summary); summary.lang = en && item.summary_en ? 'en' : item.language || 'ko';
+    const tags = element('div', 'briefing-tags'); (item.tags || []).forEach(tag => tags.append(element('span', '', tag))); body.append(heading, summary, tags);
+    const actions = element('div', 'briefing-row-actions'), read = topicLink(item), download = topicLink(item);
+    read.textContent = en ? 'Read PDF ↗' : '읽기 ↗'; download.textContent = en ? 'Download ↓' : '다운로드 ↓'; download.setAttribute('download', '');
+    actions.append(element('span', '', item.language === 'en' ? (en ? 'English PDF' : '영어 PDF') : (en ? 'Korean PDF' : '한국어 PDF')), read, download);
+    row.append(date, body, actions); rows.set(item.id, row); return row;
   };
   const matches = item => {
     const tokens = clean(state.query).split(' ').filter(Boolean);
@@ -220,7 +236,8 @@
       }
     }
   };
-  const render = (focusDate = null, updateLocation = true) => {
+  const render = (focusDate = null, updateLocation = true, resetList = true) => {
+    if (resetList) { state.limit = 12; state.offset = 0; }
     ui.month.value = state.month;
     ui.search.value = state.query;
     ui.all.checked = state.all;
@@ -229,10 +246,12 @@
     ui.clear.hidden = !state.date;
     const matchingDocuments = documents.filter(matches);
     const visible = matchingDocuments.filter(item => (state.all || item.date.startsWith(state.month)) && (!state.date || item.date === state.date));
-    const ids = new Set(visible.map(item => item.id));
-    rows.forEach(row => { row.hidden = !ids.has(row.dataset.id); });
+    const shown = visible.slice(state.offset, state.offset + state.limit);
+    ui.list.replaceChildren(...shown.map(readingRow));
+    if (pagination) pagination.hidden = !state.all || Boolean(state.date || state.query);
+    if (more) more.hidden = state.offset + state.limit >= visible.length;
     ui.empty.hidden = visible.length !== 0;
-    ui.count.textContent = en ? `${visible.length} briefing${visible.length === 1 ? '' : 's'}` : `브리핑 ${visible.length}건`;
+    ui.count.textContent = en ? `${visible.length} briefing${visible.length === 1 ? '' : 's'} · ${shown.length} shown` : `브리핑 ${visible.length}건 · ${shown.length}건 표시`;
     const scope = state.date ? dateLabel(state.date) : state.all
       ? (en ? 'All published dates' : '전체 발행 기간') : monthLabel(state.month);
     ui.label.textContent = `${scope}${state.query ? ` · ${en ? 'Search' : '검색'}: “${state.query}”` : ''}`;
@@ -324,6 +343,7 @@
     }
   });
   window.addEventListener('popstate', () => { readLocation(); render(null, false); });
+  if (more) more.addEventListener('click', () => { const previous = state.limit; state.limit += 12; render(null, true, false); ui.list.children[previous]?.querySelector('a')?.focus(); });
   readLocation();
-  render();
+  render(null, true, false);
 })();

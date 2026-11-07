@@ -56,3 +56,17 @@ test('publication month and full date search retain exact date filtering', () =>
   assert.equal(engine.search('2026-11', 'lectures').length, 1);
   assert.equal(engine.search('2026-10-01').length, 0);
 });
+
+test('async construction yields before preprocessing and between bounded batches', async () => {
+  let yields = 0, added = 0;
+  class ObservedMiniSearch extends MiniSearch { add(record) { added++; return super.add(record); } }
+  const observations = [];
+  const asyncEngine = await core.createAsync(ObservedMiniSearch, records, {batchSize: 2, now: () => 0, yieldTask: async () => { yields++; observations.push(added); }});
+  assert.deepEqual(observations, [0, 2, 4]);
+  assert.equal(yields, 3);
+  for (const query of ['QML', 'OLED TabPFN', 'barren plateau', '2026-11', '']) assert.deepEqual(asyncEngine.search(query), engine.search(query));
+});
+
+test('async construction rejects duplicate IDs across separate batches', async () => {
+  await assert.rejects(core.createAsync(MiniSearch, [...records, records[0]], {batchSize: 2, yieldTask: async () => {}}), /Duplicate/);
+});

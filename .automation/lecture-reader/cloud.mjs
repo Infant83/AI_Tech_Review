@@ -592,6 +592,9 @@ async function enableCurrent(){
 }
 function notebookURL(notebook){
   const url=new URL(location.href);url.search='';url.hash='';url.searchParams.set('id',notebook.publicId);url.searchParams.set('notebook',notebook.id);
+  // A public notebook belongs to exact PDF bytes, including a retained edition.
+  // Loading the current mutable alias could attach it to the wrong PDF version.
+  url.hash=new URLSearchParams({edition:notebook.fingerprint}).toString();
   if(en)url.searchParams.set('lang','en');if(loopback(location.hostname)&&apiBase!=='https://api.infant83.io')url.searchParams.set('api',apiBase);
   return url;
 }

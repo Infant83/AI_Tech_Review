@@ -21,7 +21,7 @@ except ImportError:
     from hub_localization import localize_manifest
 
 SOURCE = Path(__file__).parent / "public_assets"
-ASSETS = ("site-search.js", "site-search-core.js", "site-search.css", "minisearch.js", "minisearch-LICENSE.txt")
+ASSETS = ("site-search.js", "site-search-core.js", "site-search.css", "minisearch.js", "minisearch-LICENSE.txt", "listing-pages.js")
 SCOPES = ("all", "reviews", "lectures", "briefings", "books")
 
 
@@ -139,7 +139,29 @@ def build_records(site_dir: Path) -> list[dict]:
             if path.exists():
                 parser = StudyHeadings()
                 parser.feed(path.read_text(encoding="utf-8"))
-                headings = " ".join(title for _, title in parser.headings)[:20000]
+                manifest_path = path.parent / "chapter-manifest.json"
+                if manifest_path.exists():
+                    manifest = _read_json(manifest_path, {})
+                    pages = manifest.get("pages")
+                    if manifest.get("version") != 1 or manifest.get("course_href") != item["study_href"] or not isinstance(pages, list) or not 1 <= len(pages) <= 500:
+                        raise ValueError("Invalid public lecture chapter manifest")
+                    approved = item.get("study_assets", {})
+                    if approved.get("chapter-manifest.json") != hashlib.sha256(manifest_path.read_bytes()).hexdigest():
+                        raise ValueError("Unregistered lecture chapter manifest")
+                    seen_pages = set()
+                    for page in pages:
+                        leaf_href = page.get("href", "")
+                        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*\.html", leaf_href) or leaf_href in seen_pages:
+                            raise ValueError("Invalid lecture chapter search source")
+                        seen_pages.add(leaf_href)
+                        leaf = _public_file(root, item["study_href"] + leaf_href)
+                        if not leaf.is_file() or approved.get(leaf_href) != hashlib.sha256(leaf.read_bytes()).hexdigest():
+                            raise ValueError("Unregistered or changed lecture chapter")
+                        parser.feed(leaf.read_text(encoding="utf-8"))
+                # Every chapter repeats its course sidebar. Deduplicate before
+                # the size cap so repeated navigation cannot displace glossary
+                # terms at the end of the original course.
+                headings = " ".join(dict.fromkeys(title for _, title in parser.headings))[:20000]
         grouped = item.get("study_series", {})
         if grouped:
             headings += " " + " ".join(" ".join(str(unit.get(key, "")) for key in ("number", "title", "title_en", "summary", "summary_en")) for unit in grouped.get("units", []))
@@ -176,7 +198,10 @@ def build_search(site_dir: Path) -> dict:
     records_version = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
     # Version the catalog URL in each generated entry point. The same revision
     # always fetches the same catalog, while new posts cannot reuse old JSON.
-    for relative in ("index.html", "en/index.html", "archive/index.html", "archive/en/index.html", "lectures/index.html", "lectures/en/index.html", "briefings/index.html", "briefings/en/index.html"):
+    entry_points = {"index.html", "en/index.html", "archive/index.html", "archive/en/index.html", "lectures/index.html", "lectures/en/index.html", "briefings/index.html", "briefings/en/index.html"}
+    for pattern in ("page/[0-9]*/index.html", "en/page/[0-9]*/index.html", "archive/page/[0-9]*/index.html", "archive/en/page/[0-9]*/index.html", "briefings/page/[0-9]*/index.html", "briefings/en/page/[0-9]*/index.html"):
+        entry_points.update(path.relative_to(root).as_posix() for path in root.glob(pattern))
+    for relative in sorted(entry_points):
         page = _public_file(root, relative)
         if page.is_file():
             if page.is_symlink():

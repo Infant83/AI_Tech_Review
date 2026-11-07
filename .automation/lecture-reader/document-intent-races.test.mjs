@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { webcrypto } from 'node:crypto';
 import vm from 'node:vm';
+import { selectEdition } from './editions.mjs';
 
 // Exercise production orchestration with delayed cache, fetch and file reads.
 // The PDF renderer is the terminal boundary: only the latest intent may reach it.
@@ -28,7 +29,7 @@ function harness(overrides = {}) {
     requestedId: null, selection: null, notebookOpenGeneration: 0, documentOpenGeneration: 0,
     requestedLocalPDF: null, explicitSelection: false, busy: false, retry: null, en: false,
     account: { id: 'owner' }, active: null, inviteToken: null, path: '/v1/study', idPattern: /^[A-Za-z0-9_-]+$/,
-    URL, URLSearchParams, Uint8Array, crypto: webcrypto,
+    URL, URLSearchParams, Uint8Array, crypto: webcrypto, loopback: () => false,
     location: { href: 'https://example.test/reader/?notebook=book-a', assign() { throw Error('Unexpected navigation'); } },
     history: { state: null, replaceState(_state, _title, href) { context.location.href = href; } },
     current: () => ({ fingerprint: visible, busy: false, drawing: false }),
@@ -38,7 +39,7 @@ function harness(overrides = {}) {
     showError: value => errors.push(value), toast: value => warnings.push(value), status() {}, t: key => key,
     error: code => Error(code), safeMetadata: value => value, stateKey: (...values) => values.join(':'), linkKey: (...values) => values.join(':'),
     readStore: async () => null, showLibrary: async () => {}, closeDialogs() {},
-    catalog: [{ id: 'published-a', href: 'a.pdf', sha256: a, title: 'A' }], rootURL: new URL('https://example.test/'),
+    catalog: [{ id: 'published-a', href: 'archive/files/published-a.pdf', sha256: a, title: 'A' }], rootURL: new URL('https://example.test/'), selectEdition,
     document: { createElement: () => ({ attributes: {}, setAttribute(key, value) { this.attributes[key] = value; }, remove() { nodes.delete(this.id); } }) },
     $: key => nodes.get(key),
     dialog: { open: true, close() { this.open = false; } },
@@ -56,7 +57,7 @@ function harness(overrides = {}) {
     section(reader, 'function beginDocumentOpen(', 'function status(') +
     section(reader, 'async function openPublished(', 'function closeDialogs(') +
     section(reader, 'function clearLocalPDFRequest(', 'async function showLibrary(') +
-    section(cloud, 'async function openNotebook(', 'async function activate(') +
+    section(cloud, 'function notebookURL(', 'async function activate(') +
     section(cloud, 'async function resume()', 'async function documentOpened(') +
     section(reader, "window.addEventListener('atr:cloud-document-request'", "$('library-dialog').addEventListener("),
     context,
@@ -113,6 +114,14 @@ test('an automatic cached-link resume cannot activate after a newer document sel
   const held = deferred(), qa = harness({ readStore: async store => store === 'links' ? held.promise : { metadata: metadata(b) } });
   const first = qa.context.resume(); await qa.choose(b); held.resolve({ notebookId: 'book-b' }); await first;
   assert.deepEqual(qa.activated, []); assert.deepEqual(qa.opened, [b]);
+});
+
+test('a cloud notebook URL pins its PDF edition instead of drifting to the latest alias', () => {
+  const qa = harness();
+  const url = qa.context.notebookURL({ id: 'notebook-7', publicId: 'published-a', fingerprint: a });
+  assert.equal(url.searchParams.get('notebook'), 'notebook-7');
+  assert.equal(url.searchParams.get('id'), 'published-a');
+  assert.equal(new URLSearchParams(url.hash.slice(1)).get('edition'), a);
 });
 
 for (const delayAt of ['response', 'bytes']) test(`a delayed public PDF ${delayAt} cannot replace a newer private selection`, async () => {

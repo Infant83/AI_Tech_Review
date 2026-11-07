@@ -40,6 +40,7 @@ GENERATED = frozenset({
     "assets/site-search.js", "assets/site-search-core.js", "assets/site-search.css",
     "assets/minisearch.js", "assets/minisearch-LICENSE.txt", "assets/search-records.json",
     "assets/search-assets.json", "assets/listing-images/manifest.json",
+    "assets/listing-pages.js",
 })
 
 
@@ -96,7 +97,11 @@ def validate_release(baseline: dict, candidate: dict, changes: dict | None = Non
         blockers.append(issue)
     permitted, undeclared = [], []
     for name in comparison["content_changes"]:
-        if name in GENERATED or DERIVED_LISTING.fullmatch(name):
+        try:
+            from .listing_pagination import is_page_path
+        except ImportError:
+            from listing_pagination import is_page_path
+        if name in GENERATED or DERIVED_LISTING.fullmatch(name) or is_page_path(name):
             permitted.append(name)
             continue
         actual = {"before": baseline["files"][name]["content_sha256"],
@@ -225,8 +230,16 @@ def seal_release(site: Path, revision: str, payload_report: Path) -> dict:
     snapshot = capture_site(site)
     if not validate_release(snapshot, snapshot)["ok"]:
         raise ValueError("A release must pass structural checks before sealing")
+    complete_files = {}
+    for path in sorted(site.rglob("*")):
+        if path.is_symlink():
+            raise ValueError("Cannot seal linked artifact files")
+        if path.is_file() and path != site / "publication-release.json":
+            complete_files[path.relative_to(site).as_posix()] = {
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "bytes": path.stat().st_size}
     result = {"version": 1, "revision": revision, "catalog_sha256": hashlib.sha256(catalog_bytes).hexdigest(),
-              "snapshot": snapshot, "initial_payloads": {name: record["gzip_bytes"] for name, record in payload["pages"].items()}}
+              "snapshot": snapshot, "artifact_files": complete_files,
+              "initial_payloads": {name: record["gzip_bytes"] for name, record in payload["pages"].items()}}
     # This root-level file is deliberately outside capture_site's referenced
     # assets, avoiding a self-referential checksum. It is fetched by CI only.
     (site / "publication-release.json").write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")

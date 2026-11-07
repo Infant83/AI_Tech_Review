@@ -37,12 +37,60 @@ class PublicationIntentTests(unittest.TestCase):
             self.pending()
         self.assertNotEqual(self.pending([self.folder])[self.folder], inputs)
 
-    def test_registration_edits_invalidate_a_reviewed_request(self):
+    def test_v2_metadata_edits_preserve_the_checked_article_and_keep_the_full_fingerprint(self):
+        inputs = review_inputs(self.root, self.folder)
+        write_review_intent(self.root, self.folder, inputs)
+        source = json.loads(self.registration.read_text())
+        source["review"].update(summary="New reviewed hub summary", subtitle="New subtitle",
+                                category="Materials AI", tags=["Materials", "AI"])
+        self.registration.write_text(json.dumps(source))
+        updated = self.pending()[self.folder]
+        self.assertEqual(updated["source_sha256"], inputs["source_sha256"])
+        self.assertEqual(updated["article_registration_sha256"], inputs["article_registration_sha256"])
+        self.assertNotEqual(updated["registration_sha256"], inputs["registration_sha256"])
+
+    def test_v2_protected_registration_changes_still_require_explicit_article_review(self):
+        original = self.registration.read_text()
+        inputs = review_inputs(self.root, self.folder)
+        write_review_intent(self.root, self.folder, inputs)
+        for changes in ({"title": "Unchecked title"}, {"translations": [{"language": "en", "subdir": "en", "label": "English"}]},
+                        {"date": "2026-11-08"}, {"updated": "2026-11-08"}, {"ai_system": "Unchecked provenance"}):
+            with self.subTest(changes=changes):
+                source = json.loads(original)
+                source["review"].update(changes)
+                self.registration.write_text(json.dumps(source))
+                with self.assertRaisesRegex(ValueError, "inputs changed"):
+                    self.pending()
+                self.assertNotEqual(self.pending([self.folder])[self.folder]["article_registration_sha256"],
+                                    inputs["article_registration_sha256"])
+        source = json.loads(original)
+        source["source_sha256"] = "a" * 64
+        self.registration.write_text(json.dumps(source))
+        with self.assertRaisesRegex(ValueError, "inputs changed"):
+            self.pending()
+
+    def test_v2_semantically_identical_registration_formatting_is_harmless(self):
         inputs = review_inputs(self.root, self.folder)
         write_review_intent(self.root, self.folder, inputs)
         self.registration.write_text(self.registration.read_text() + "\n")
+        self.assertEqual(self.pending()[self.folder]["article_registration_sha256"], inputs["article_registration_sha256"])
+
+    def test_legacy_request_requires_exact_input_until_safe_migration(self):
+        inputs = review_inputs(self.root, self.folder)
+        requests = self.root / "publication/requests"
+        requests.mkdir()
+        path = requests / (self.folder + ".json")
+        path.write_text(json.dumps({"version": 1, "review": self.folder,
+            "source_sha256": inputs["source_sha256"], "registration_sha256": inputs["registration_sha256"]}))
+        migrated = self.pending()[self.folder]
+        self.assertEqual(migrated, inputs)
+        self.registration.write_text(self.registration.read_text() + "\n")
         with self.assertRaisesRegex(ValueError, "inputs changed"):
             self.pending()
+        migrated = self.pending([self.folder])[self.folder]
+        write_review_intent(self.root, self.folder, migrated)
+        self.assertEqual(json.loads(path.read_text())["version"], 2)
+        self.assertEqual(self.pending()[self.folder], migrated)
 
     def test_source_digest_tracks_names_and_bytes_but_ignores_os_metadata(self):
         before = source_digest(self.dist)

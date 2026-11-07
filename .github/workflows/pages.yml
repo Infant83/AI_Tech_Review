@@ -34,9 +34,11 @@ jobs:
       - name: Check publication, search and preservation rules
         run: python3 -m unittest discover -s tests
       - name: Check multilingual search ranking
-        run: node --test tests/site_search.test.cjs
+        run: node --test tests/site_search.test.cjs tests/course_navigation.test.cjs
       - name: Check the existing lecture reader and storage races
         run: node --test .automation/lecture-reader/*.test.mjs
+      - name: Check portable media delivery
+        run: node --test .automation/cloudflare/public-media/*.test.mjs
       - name: Read the deployed source revision and extract its immutable baseline
         run: python3 scripts/publication_release.py baseline --output output/release-baseline
       - name: Build an independent candidate from the combined source registrations
@@ -99,6 +101,40 @@ jobs:
         if: steps.guard.outputs.current == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
+
+  recovery-copy:
+    needs: [build, deploy]
+    if: needs.deploy.result == 'success' && needs.deploy.outputs.current == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout: scripts
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: output/pages-recovery-input
+      - name: Verify and package the exact deployed artifact for recovery
+        run: python3 scripts/release_backup.py from-pages --archive output/pages-recovery-input/artifact.tar --output output/publication-recovery.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: publication-recovery
+          path: output/publication-recovery.tar.gz
+          compression-level: 0
+          retention-days: 30
+          if-no-files-found: error
+      - name: Retain the three most recent complete recovery copies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/release_artifact_retention.py --repository "$GITHUB_REPOSITORY" --keep 3 --apply
 
   notify-readers:
     # A branch push or a green build does not prove that an article is public.
