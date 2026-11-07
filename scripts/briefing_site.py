@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import calendar
+import hashlib
 from datetime import date
 import html
 import json
@@ -48,6 +49,14 @@ def month_label(month: str, language: str = "ko") -> str:
     return f"{calendar.month_name[number]} {year}" if language == "en" else f"{year}년 {number}월"
 
 
+def briefing_title(document: dict, language: str = "ko") -> str:
+    return (document.get("title_en") or document["title"]) if language == "en" else document["title"]
+
+
+def briefing_title_language(document: dict, language: str = "ko") -> str:
+    return "en" if language == "en" and document.get("title_en") else document["language"]
+
+
 def render_calendar(documents: list[dict], month: str, language: str = "ko") -> str:
     """A Monday-first native table, also readable with scripting disabled."""
     en = language == "en"
@@ -64,9 +73,9 @@ def render_calendar(documents: list[dict], month: str, language: str = "ko") -> 
                 continue
             iso = f"{month}-{day:02d}"
             issues = days.get(iso, [])
-            topic_label = (f"{len(issues)} briefings: " if en else f"브리핑 {len(issues)}건: ") + "; ".join(doc["title"] for doc in issues)
+            topic_label = (f"{len(issues)} briefings: " if en else f"브리핑 {len(issues)}건: ") + "; ".join(briefing_title(doc, language) for doc in issues)
             label = f"{iso} · " + (topic_label if issues else ("No registered briefing" if en else "등록된 브리핑 없음"))
-            links = "".join(f'<a href="{escape(doc["href"])}" lang="{escape(doc["language"])}" target="_blank" rel="noopener" title="{escape(doc["title"])}">{escape(doc["title"])}</a>' for doc in issues)
+            links = "".join(f'<a href="{escape(doc["href"])}" lang="{escape(briefing_title_language(doc, language))}" target="_blank" rel="noopener" title="{escape(briefing_title(doc, language))}">{escape(briefing_title(doc, language))}</a>' for doc in issues)
             badge = f'<span class="day-count" aria-hidden="true">{len(issues)}</span>' if issues else ""
             cells.append(f'<td class="calendar-day{" has-briefing" if issues else ""}"><button class="day-select" type="button" data-date="{iso}" aria-label="{escape(label)}" aria-pressed="false"{" disabled" if not issues else ""}><span class="day-number">{day}</span>{badge}</button><div class="day-topics">{links}</div></td>')
         rows.append("<tr>" + "".join(cells) + "</tr>")
@@ -82,12 +91,13 @@ def render_detail(documents: list[dict], language: str = "ko") -> str:
         summary = (doc.get("summary_en") or doc["summary"]) if en else doc["summary"]
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
-        cards.append(f'<article class="briefing-detail-issue"><h4 lang="{escape(doc["language"])}"><a href="{escape(doc["href"])}" target="_blank" rel="noopener">{escape(doc["title"])}</a></h4><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div><a class="briefing-read" href="{escape(doc["href"])}" target="_blank" rel="noopener">{"Read PDF" if en else "브리핑 읽기"} ↗</a></article>')
+        cards.append(f'<article class="briefing-detail-issue"><h4 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(doc["href"])}" target="_blank" rel="noopener">{escape(briefing_title(doc, language))}</a></h4><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div><a class="briefing-read" href="{escape(doc["href"])}" target="_blank" rel="noopener">{"Read PDF" if en else "브리핑 읽기"} ↗</a></article>')
     return "".join(cards)
 
 
 def render_briefings(documents: list[dict], base_url: str, language: str = "ko", navigation: str = "", asset_version: str = "") -> str:
     en = language == "en"
+    script_version = hashlib.sha256((Path(__file__).parent / "assets" / "briefings.js").read_bytes()).hexdigest()[:12]
     prefix = "../../" if en else "../"
     issues = briefing_documents(documents, prefix)
     months = calendar_months(issues)
@@ -110,7 +120,7 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
         pdf_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         rows.append(f'''<article class="briefing-row" data-id="{escape(doc['id'])}" data-date="{escape(doc['date'])}" data-search="{escape(searchable)}">
           <div class="briefing-date"><time datetime="{doc['date']}">{doc['date']}</time><span>{series}</span></div>
-          <div class="briefing-row-body"><h3 lang="{escape(doc['language'])}"><a href="{escape(doc['href'])}" target="_blank" rel="noopener">{escape(doc['title'])}</a></h3><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div></div>
+          <div class="briefing-row-body"><h3 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(doc['href'])}" target="_blank" rel="noopener">{escape(briefing_title(doc, language))}</a></h3><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div></div>
           <div class="briefing-row-actions"><span>{pdf_language}</span><a href="{escape(doc['href'])}" target="_blank" rel="noopener">{'Read PDF' if en else '읽기'} ↗</a><a href="{escape(doc['href'])}" download>{'Download' if en else '다운로드'} ↓</a></div>
         </article>''')
     payload = json.dumps({"documents": issues, "months": months, "latest_month": latest_month}, ensure_ascii=False, separators=(",", ":"))
@@ -144,8 +154,8 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
       <section class="briefing-board" id="briefing-board" aria-labelledby="briefing-board-title"><div class="briefing-board-heading"><div><p class="section-kicker">Reading list</p><h2 id="briefing-board-title">{'Briefing list' if en else '브리핑 목록'}</h2><p id="briefing-filter-label">{'Newest first' if en else '최신 발행순'}</p></div><button type="button" id="briefing-clear-day" hidden>{'Show whole month' if en else '월 전체 보기'}</button></div>
         <p id="briefing-count" role="status">{len(issues)} {'briefings' if en else '건의 브리핑'}</p><div id="briefing-list">{''.join(rows)}</div><div id="briefing-empty" class="briefing-empty"{' hidden' if issues else ''}><p>{'No matching briefings. Try another month or search all months.' if en else '조건에 맞는 브리핑이 없습니다. 다른 달을 선택하거나 전체 기간으로 검색해 보세요.'}</p></div>
         <noscript><p>{'All registered briefings are listed. Calendar selection and search require JavaScript.' if en else '전체 브리핑을 최신순으로 표시합니다. 날짜 선택과 검색은 JavaScript를 켜면 사용할 수 있습니다.'}</p></noscript>
-      </section><footer class="archive-note"><p>{'Dates follow each document’s publication date. Topics and PDFs retain their original language. Only publicly registered issues appear here.' if en else '달력은 문서에 표기된 발행일 기준입니다. 공개 등록된 브리핑만 표시하며, 각 PDF는 발행 당시의 내용으로 보관합니다.'}</p><a href="{prefix}archive/{'en/' if en else ''}">{'All-document archive' if en else '전체 자료 아카이브'} →</a></footer>
-      </main><script type="application/json" id="briefing-data">{payload}</script><script src="{prefix}assets/briefings.js?v={asset_version}" defer></script>
+      </section><footer class="archive-note"><p>{'Dates follow each document’s publication date. PDFs retain their original language and content. Only publicly registered issues appear here.' if en else '달력은 문서에 표기된 발행일 기준입니다. 공개 등록된 브리핑만 표시하며, 각 PDF는 발행 당시의 내용으로 보관합니다.'}</p><a href="{prefix}archive/{'en/' if en else ''}">{'All-document archive' if en else '전체 자료 아카이브'} →</a></footer>
+      </main><script type="application/json" id="briefing-data">{payload}</script><script src="{prefix}assets/briefings.js?v={script_version}" defer></script>
       </body></html>'''
 
 

@@ -85,13 +85,14 @@
     const next = `${url.pathname}${url.search}${url.hash}`;
     if (next !== `${location.pathname}${location.search}${location.hash}`) history.replaceState(null, '', next);
   };
+  const topicTitle = item => (en ? item.title_en || item.title : item.title || item.title_en) || item.date;
   const topicLink = (item, className) => {
-    const link = element('a', className, item.title || item.title_en || item.date);
+    const link = element('a', className, topicTitle(item));
     link.href = item.href;
     link.target = '_blank';
     link.rel = 'noopener';
-    link.lang = item.language || 'ko';
-    link.title = `${item.title || item.title_en || item.date} · PDF`;
+    link.lang = en && item.title_en ? 'en' : item.language || 'ko';
+    link.title = `${topicTitle(item)} · PDF`;
     return link;
   };
   const matches = item => {
@@ -194,7 +195,7 @@
       button.tabIndex = date === tabDate ? 0 : -1;
       button.setAttribute('aria-pressed', String(state.date === date));
       const label = items.length
-        ? `${dateLabel(date)} · ${items.map(item => item.title || item.title_en || '').join('; ')}`
+        ? `${dateLabel(date)} · ${items.map(topicTitle).join('; ')}`
         : `${dateLabel(date)} · ${originals.length
           ? (en ? 'Briefing published · No match for the current search' : '발행된 브리핑 있음 · 현재 검색 일치 없음')
           : (en ? 'No published briefing' : '등록된 브리핑 없음')}`;
