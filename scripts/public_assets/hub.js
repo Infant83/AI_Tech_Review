@@ -17,7 +17,7 @@
   const cache = new Map();
   const pageSize = 6;
   const viewButtons = [document.querySelector("#hub-view-covers"), document.querySelector("#hub-view-list")].filter(Boolean);
-  const browseStateKey = "atr.hub.browse.v1";
+  const browseStateKey = "atr.hub.browse.v1" + (pagination && pagination.first > 1 ? ".page." + pagination.first : "");
   const expandedSummaries = new Set();
   const summaryRecords = cards.map(card => ({card, summary: card.querySelector(".review-summary"), button: card.querySelector("[data-summary-toggle]")})).filter(record => record.summary && record.button);
   const text = english ? {
