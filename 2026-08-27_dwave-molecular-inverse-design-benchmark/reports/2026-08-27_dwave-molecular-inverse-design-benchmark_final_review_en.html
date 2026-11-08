@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT</title>
-  <meta name="description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
+  <meta name="description" content="A recorded computational snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
@@ -12,18 +12,18 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AI Tech Review Letters">
   <meta property="og:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
-  <meta property="og:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
+  <meta property="og:description" content="A recorded computational snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="ko_KR">
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
   <meta property="og:image:alt" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
   <meta property="article:published_time" content="2026-08-27">
-  <meta property="article:modified_time" content="2026-08-27">
+  <meta property="article:modified_time" content="2026-11-08">
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
-  <meta name="twitter:description" content="A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
+  <meta name="twitter:description" content="A recorded computational snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/molecular_inverse_design_hero.png">
   <meta name="twitter:image:alt" content="A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT">
   <link rel="icon" href="data:,">
@@ -31,11 +31,12 @@
   <script>
     window.MathJax = {
       tex: {
-        inlineMath: [['$', '$']],
-        displayMath: [['$$', '$$']]
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       options: {
-        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        ignoreHtmlClass: 'tex2jax_ignore'
       }
     };
   </script>
@@ -646,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -756,13 +760,26 @@
         position: static;
       }
     }
+
+    .final-article, .content-grid > *, .hero-inner > * { min-width: 0; }
+    .figure-panel { margin: 1.7rem 0; }
+    .figure-panel figcaption { color: var(--muted); font-size: .94rem; line-height: 1.65; margin-top: .65rem; }
+    .figure-zoom { display: block; cursor: zoom-in; }
+    .figure-zoom:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    .table-scroll, .equation-scroll { max-width: 100%; overflow-x: auto; }
+    .equation-scroll { margin: 1rem 0; }
+    .table-scroll:focus-visible, .equation-scroll:focus-visible { outline: 2px solid var(--teal); }
+    .reference-list { padding-left: 1.9rem; overflow-wrap: anywhere; }
+    .reference-list li { padding-left: .35rem; margin-bottom: 1rem; }
+    .citation { white-space: nowrap; }
   </style>
 </head>
 <body>
   <div class="topline">
     <div class="topline-inner">
-      <span>AI Tech Review Letters: Week 35 (2026-08-27)</span>
+      <span>AI Tech Review Letters: Week 45 (2026-11-08)</span>
       <div class="topline-actions">
+        <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
         <a href="2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md">2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md</a>
       </div>
@@ -774,7 +791,7 @@
       <section>
         <p class="eyebrow">AI Tech Review Letters</p>
         <h1>A D-Wave Molecular Inverse-Design Experiment: Checking QPU-Selected Candidates with Single-Point DFT</h1>
-        <p class="dek">A reproducible snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.</p>
+        <p class="dek">A recorded computational snapshot connecting a deterministic 5,000-molecule QM9 subset, open-source ML and molecular generators, QUBO batch selection, one 100-read D-Wave QPU submission, and six PySCF single-point calculations.</p>
       </section>
 
     </div>
@@ -784,18 +801,16 @@
     <article class="final-article">
       <p>Suppose we have 18 candidate molecules and must choose three for the next round of calculations. Candidates with predictions close to the target should receive priority, but the batch should not be crowded with nearly identical molecules. In this experiment, we formulated that selection task as a QUBO and sent the same problem to an independent exact search, classical simulated annealing, and a D-Wave QPU. We then recalculated the selected molecules with PySCF.</p>
 <p>The experiment was small, but the computational stages were connected end to end. We trained prediction models on a deterministic 5,000-molecule subset derived from QM9, ran three proposal mechanisms, and produced 30 candidates that passed a shared chemistry filter. We froze a shortlist of 18, selected batches of three, and completed six single-point DFT calculations across the QPU-selected and exact-selected batches.</p>
-<p><img alt="Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation" src="../artifacts/final_review/figures/molecular_inverse_design_hero.png" /></p>
-<p><em>Figure 1. A generated conceptual illustration that separates the roles of candidate generation and prediction, QUBO/QPU batch selection, and quantum-chemistry validation. The central device is an editorial representation, not a photograph of the D-Wave hardware used in this experiment.</em></p>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/molecular_inverse_design_hero.png" target="_blank" rel="noopener" aria-label="Open Figure 1 at full size (new tab)"><img alt="Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation" src="../artifacts/final_review/figures/molecular_inverse_design_hero.png" /></a><figcaption>Figure 1. An AI-generated conceptual illustration of ML predictions, QUBO selection of a three-candidate batch and subsequent electronic-structure calculations. The central device represents the quantum-annealing selection stage.</figcaption></figure>
 <aside class="callout callout-highlight">
 <p class="callout-label">D-Wave&#x27;s role in this experiment</p>
 <p>The D-Wave QPU performed <strong>batch acquisition optimization to select three candidates</strong> for the next PySCF calculations. Molecular electronic structure was calculated with PySCF. BQM energy is the acquisition-objective value; the DFT orbital gap is the result of a molecular calculation.</p>
 </aside>
-<p><img alt="English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop" src="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.svg" /></p>
-<p><em>Figure 2. The top and middle sections show computations that were executed. The dashed path at the bottom shows the live active-learning loop proposed for the next validation stage. The values match the <a href="../artifacts/final_review/data/benchmark_results.csv">public computation results table</a>.</em></p>
-<p><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></p>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.svg?v=278793055e02" target="_blank" rel="noopener" aria-label="Open Figure 2 at full size (new tab)"><img alt="English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop" src="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.svg?v=278793055e02" /></a><figcaption>Figure 2. The top and middle sections show computations that were executed. The dashed path at the bottom shows the live active-learning loop proposed for the next validation stage. The values match the <a href="https://github.com/Infant83/AI_Tech_Review/blob/6add022d87564623dcb41d11b511015e23ba6311/2026-08-27_dwave-molecular-inverse-design-benchmark/artifacts/final_review/data/benchmark_results.csv">public computation results table</a>.</figcaption></figure>
+<p><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.png?v=5600001c03cf">View the detailed infographic as a full-size PNG</a></p>
 <h2 id="what-the-pipeline-actually-computed">What the pipeline actually computed</h2>
 <p>The pipeline consists of six layers with distinct meanings.</p>
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Computational layer</th>
@@ -835,12 +850,12 @@
 <td>A classical proxy comparing acquisition policies as precomputed labels are revealed</td>
 </tr>
 </tbody>
-</table>
-<p>This table does not cover the stability, synthetic accessibility, optical excitation, or experimental properties of the generated molecules. A live loop that returns DFT labels for generated candidates to the training data has not yet been run.</p>
+</table></div>
+<p>The replay in the last row compares acquisition policies by revealing existing QM9 labels. The later section sets out the next step of retraining on new DFT labels for generated candidates.</p>
 <h2 id="extratrees-achieved-the-lower-prediction-mae">ExtraTrees achieved the lower prediction MAE</h2>
-<p>We divided a 5,000-molecule QM9-derived dataset into 4,058 training, 511 validation, and 431 test molecules. The target was the precomputed HOMO-LUMO orbital gap in QM9, converted to eV. The <a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">original QM9 collection</a> provides quantum-chemical structures and properties for roughly 130,000 molecules. This experiment used a deterministic subset that passed the chemistry rules.</p>
-<p>On the same split, we compared a <a href="https://chemprop.readthedocs.io/en/main/index.html">Chemprop</a> D-MPNN ensemble with ExtraTrees built on Morgan fingerprints.</p>
-<table>
+<p>We divided the 5,000-molecule QM9-derived dataset into 4,058 training, 511 validation, and 431 test molecules. The target was the QM9 HOMO–LUMO orbital gap in eV. QM9 provides quantum-chemical structures and properties for approximately 134,000 molecules; this experiment used a deterministic subset that passed the chemistry rules. <a class="citation" href="#ref-1">[1]</a> PyTorch Geometric&rsquo;s QM9 documentation describes the property fields and units. <a class="citation" href="#ref-2">[2]</a></p>
+<p>On the same split, we compared a Chemprop D-MPNN ensemble <a class="citation" href="#ref-3">[3]</a> with ExtraTrees using Morgan fingerprints. <a class="citation" href="#ref-4">[4]</a></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Model</th>
@@ -863,10 +878,9 @@
 <td style="text-align: right;">0.7567</td>
 </tr>
 </tbody>
-</table>
-<p><img alt="Parity plot comparing predictions from Chemprop D-MPNN and ExtraTrees Morgan with reference orbital gaps on the same QM9 test split" src="../artifacts/final_review/figures/02_qm9_surrogate_parity.png" /></p>
-<p><em>Figure 3. The two models were evaluated on the same 431 test molecules. ExtraTrees achieved the lower MAE. Neither result guarantees out-of-domain accuracy on generated molecules or agreement with experiment.</em></p>
-<p>This smoke benchmark does not support a claim that the GNN outperformed the classical model. Chemprop served as an external, structure-aware scorer for generated candidates, but its held-out MAE was higher than that of the classical baseline. Across the 18-candidate shortlist used in the QUBO, the prediction spread between the two Chemprop models was also very small, approximately $9\times10^{-6}$ to 0.00275 eV, and was not calibrated. The QUBO uncertainty term below was therefore treated only as an exploratory proxy.</p>
+</table></div>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/02_qm9_surrogate_parity.png" target="_blank" rel="noopener" aria-label="Open Figure 3 at full size (new tab)"><img alt="Parity plot comparing predictions from Chemprop D-MPNN and ExtraTrees Morgan with reference orbital gaps on the same QM9 test split" src="../artifacts/final_review/figures/02_qm9_surrogate_parity.png" /></a><figcaption>Figure 3. Predicted orbital gaps versus QM9 reference gaps for the same 431 held-out molecules. The dashed line marks equality; the MAEs are 0.4743 eV for ExtraTrees and 0.5308 eV for Chemprop.</figcaption></figure>
+<p>Chemprop supplied the structure-aware scores used for generated candidates; ExtraTrees had the lower MAE on the same held-out QM9 split. Across the 18-candidate shortlist used in the QUBO, the prediction spread between the two Chemprop models was also very small, approximately $9\times10^{-6}$ to 0.00275 eV, and was not calibrated. The QUBO uncertainty term below was therefore treated as an exploratory proxy.</p>
 <h2 id="the-same-chemistry-rules-were-applied-to-all-three-proposal-mechanisms">The same chemistry rules were applied to all three proposal mechanisms</h2>
 <p>Candidate generation used three routes:</p>
 <ol>
@@ -874,13 +888,12 @@
 <li>An autoregressive SELFIES GRU decoder</li>
 <li>A classical SELFIES RBM using contrastive divergence and Gibbs sampling</li>
 </ol>
-<p><a href="https://github.com/the-matter-lab/selfies">SELFIES</a> is a molecular string representation designed for convenient use in generative models. It makes syntactically interpretable strings easier to obtain, but it does not by itself establish stability or synthetic accessibility.</p>
-<p>Each route returned 30 candidates. We applied RDKit parsing and canonicalization, a CHONF element restriction, a maximum of nine heavy atoms, a neutral closed-shell requirement, and deduplication across all routes. The final union received 11 candidates from the guided path, 8 from the GRU, and 11 from the RBM, for 30 unique candidates in total. The raw proposal stream excluded 41 radicals, 15 candidates over the size limit, 3 candidates with unsupported elements, and 1 non-neutral candidate.</p>
-<p><img alt="Chart comparing validity, uniqueness, novelty, shared chemistry-filter pass rates, and recorded proposal times for three molecular proposal mechanisms" src="../artifacts/final_review/figures/03_generator_metrics.png" /></p>
-<p><em>Figure 4. Raw-proposal diagnostics and the number of candidates passing the shared filter for each route. The times on the right were not measured under equal training costs. The guided path includes Chemprop scoring; the GRU and RBM times cover proposal generation from saved models.</em></p>
-<p>The label <code>GNN-guided</code> refers to a route that scores SELFIES mutations with Chemprop. It is not a GNN decoder. The RBM was also executed as a classical model.</p>
+<p>SELFIES represents molecules as strings for use in generative models. <a class="citation" href="#ref-5">[5]</a> We then screened the generated strings with the chemistry rules below.</p>
+<p>Each route returned 30 candidates, for 90 in total. RDKit parsing and canonicalization, a CHONF element restriction, a maximum of nine heavy atoms, a neutral closed-shell requirement, and deduplication were applied to those 90. The final union received 11 candidates from the guided path, 8 from the GRU, and 11 from the RBM, giving 30 unique candidates. The filter excluded 41 radicals, 15 candidates over the size limit, 3 with unsupported elements, and 1 non-neutral candidate. The raw-proposal diagnostics in the figure use each generator&rsquo;s internal decode, duplicate and novelty counters; their denominators differ from those of this shared filter.</p>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/03_generator_metrics.png" target="_blank" rel="noopener" aria-label="Open Figure 4 at full size (new tab)"><img alt="Chart comparing validity, uniqueness, novelty, shared chemistry-filter pass rates, and recorded proposal times for three molecular proposal mechanisms" src="../artifacts/final_review/figures/03_generator_metrics.png" /></a><figcaption>Figure 4. Raw-proposal diagnostics and the number of candidates passing the shared filter for each route. The guided-path time includes Chemprop scoring; GRU and RBM times cover proposal generation from saved models.</figcaption></figure>
+<p><code>GNN-guided</code> denotes SELFIES mutations scored by Chemprop. The RBM was a classical model trained by contrastive divergence and sampled by Gibbs sampling.</p>
 <h2 id="the-qubo-scores-target-fit-and-batch-diversity-together">The QUBO scores target fit and batch diversity together</h2>
-<p>For candidate $i$, let $x_i=1$ when it is selected and $x_i=0$ otherwise. Candidates close to the 6.0 eV target received priority. Novelty and model spread earned rewards, while high pairwise similarity within the batch incurred a penalty. A cardinality penalty enforced the selection of exactly three candidates.</p>
+<p>For candidate $i$, let $x_i=1$ when it is selected and $x_i=0$ otherwise. Candidates close to the 6.0 eV target received priority. Novelty and model spread earned rewards, while high pairwise similarity incurred a penalty. A cardinality penalty grew with departures from a three-candidate batch.</p>
 <p>The implementation-oriented expression is:</p>
 <pre><code class="language-text">target_loss = sum_i target_weight
                     * ((predicted_gap_i - target_gap) / gap_scale)^2
@@ -906,21 +919,22 @@ acquisition_score = target_loss
                   + cardinality_penalty
 </code></pre>
 <p>The same objective in compact notation is:</p>
-<p>$$
+<div class="equation-scroll" tabindex="0" role="region" aria-label="Scroll equation horizontally">$$
 \begin{aligned}
 A(x) ={}&amp; \sum_i w_t
 \left(\frac{\hat g_i-g^*}{s_g}\right)^2 x_i
 - \sum_i w_u\frac{\hat\sigma_i}{s_g}x_i
-- \sum_i w_n n_i x_i \
+- \sum_i w_n n_i x_i \\
 &amp;+ \sum_{i&lt;j}w_s T_{ij}x_ix_j
 + w_c\left(\sum_i x_i-k\right)^2.
 \end{aligned}
-$$</p>
-<p>As explained in <a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html">D-Wave&rsquo;s introduction to QUBOs</a>, a binary quadratic model expresses a minimization problem through linear terms and quadratic interactions over 0/1 variables. The frozen problem in this experiment had 18 variables and 153 pairwise interactions. The batch size was 3.</p>
+$$</div>
+
+<p>Here $\hat g_i$ is the predicted gap, $g^*=6.0$ eV the target, and $s_g$ an eV-valued normalization scale. $\hat\sigma_i$ is the spread between the two model predictions, $n_i$ novelty, and $T_{ij}$ the Tanimoto similarity; $w_t,w_u,w_n,w_s,w_c$ weight the terms, and $k=3$ is the desired batch size. D-Wave&rsquo;s QUBO introduction describes binary quadratic models as minimizing linear terms and quadratic interactions over 0/1 variables. <a class="citation" href="#ref-6">[6]</a> The frozen problem had 18 variables and 153 pairwise interactions.</p>
 <p>The independent combination search, Ocean ExactSolver, and classical simulated annealing with 2,000 reads all found the same three candidates at an acquisition energy of <code>-0.480789</code>. The readable objective also matched <code>bqm.energy(sample)</code>. We submitted the same BQM to the QPU after completing these checks.</p>
 <h2 id="one-100-read-qpu-submission-missed-the-exact-optimum">One 100-read QPU submission missed the exact optimum</h2>
-<p>We submitted the frozen BQM to the D-Wave QPU once with 100 reads. The 18 logical variables were embedded into 46 physical qubits on the Pegasus topology. <a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html">EmbeddingComposite</a> maps logical variables to chains on the QPU topology and can return chain-break information.</p>
-<table>
+<p>We submitted the frozen BQM to the D-Wave QPU once with 100 reads. The 18 logical variables were embedded into 46 physical qubits on the Pegasus topology. EmbeddingComposite maps logical variables to chains on the QPU topology and can return chain-break information. <a class="citation" href="#ref-7">[7]</a> The three-candidate condition was a soft penalty. Recounting the 100 preserved occurrences in this audit finds 48 that select three candidates; the lowest acquisition score was among them.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Optimizer</th>
@@ -949,13 +963,12 @@ $$</p>
 <td><code>1727, 58d4, 7768</code></td>
 </tr>
 </tbody>
-</table>
-<p><img alt="Chart comparing solution gap and recorded wall time for exact search, classical simulated annealing, and the D-Wave QPU on the same frozen acquisition BQM" src="../artifacts/final_review/figures/04_acquisition_comparison.png" /></p>
-<p><em>Figure 5. The QPU path executed successfully but returned a different batch from the exact solution. The wall times on the right include different execution paths and cannot support a speedup claim.</em></p>
-<p>The recorded occurrence-weighted mean chain-break fraction was 0.01333, and client wall time was 2.087 seconds. This single result confirms that the QPU path ran. It does not establish reproduction of the exact optimum or quantum advantage.</p>
-<p>The archive also has unresolved quality gaps. The record lacks a separate configuration file containing the execution timestamp, Python and Ocean versions at submission, the project source hash, and explicit units for the solver timing fields. We did not backfill historical execution metadata with values from the current environment. The next QPU campaign should freeze this metadata before submission.</p>
+</table></div>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/04_acquisition_comparison.png" target="_blank" rel="noopener" aria-label="Open Figure 5 at full size (new tab)"><img alt="Chart comparing solution gap and recorded wall time for exact search, classical simulated annealing, and the D-Wave QPU on the same frozen acquisition BQM" src="../artifacts/final_review/figures/04_acquisition_comparison.png" /></a><figcaption>Figure 5. The left panel shows each acquisition score relative to the exact optimum. The right panel records wall time for each execution path; the classical searches and QPU submission include different stages.</figcaption></figure>
+<p>The recorded occurrence-weighted mean chain-break fraction was 0.01333, and client wall time was 2.087 seconds.</p>
+<p>The QPU submission record lacks a separate configuration file combining its execution timestamp, Python and Ocean versions at submission, project source hash, and explicit units for the solver timing fields. D-Wave&rsquo;s solver-properties documentation provides the interpretation of device and timing fields. <a class="citation" href="#ref-8">[8]</a> The next campaign should preserve the actual configuration and timing units before submission.</p>
 <h2 id="the-exact-batch-had-the-lower-mean-dft-error-the-qpu-batch-contained-the-closest-individual-candidate">The exact batch had the lower mean DFT error; the QPU batch contained the closest individual candidate</h2>
-<p>We evaluated the three QPU-selected molecules and the three independently exact-selected molecules with <a href="https://pyscf.org/user/dft.html">PySCF DFT</a>. One molecule appeared in both batches and was run separately in each, yielding six jobs over five unique molecules. All jobs converged.</p>
+<p>We evaluated the three QPU-selected molecules and the three independently exact-selected molecules with PySCF DFT. <a class="citation" href="#ref-9">[9]</a> One molecule appeared in both batches and was run separately in each, yielding six jobs over five unique molecules. All jobs converged.</p>
 <p>The calculation settings were:</p>
 <pre><code class="language-text">geometry = RDKit ETKDGv3 embedding + MMFF94s optimization
 calculation = single point
@@ -965,7 +978,7 @@ grid level = 3
 SCF convergence tolerance = 1e-8
 maximum SCF cycles = 100
 </code></pre>
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Selection batch</th>
@@ -991,18 +1004,16 @@ maximum SCF cycles = 100
 <td style="text-align: right;">177.258 s</td>
 </tr>
 </tbody>
-</table>
-<p><img alt="Chart comparing per-molecule DFT target error, mean error, and best error for the exact-selected and D-Wave QPU-selected batches" src="../artifacts/final_review/figures/07_exact_vs_qpu_dft_batch.png" /></p>
-<p><em>Figure 6. The exact batch had the lower mean target error. The QPU batch contained the single candidate closest to the target in this snapshot. Three molecules per batch are insufficient to generalize the relative performance of the optimizers.</em></p>
+</table></div>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/07_exact_vs_qpu_dft_batch.png" target="_blank" rel="noopener" aria-label="Open Figure 6 at full size (new tab)"><img alt="Chart comparing per-molecule DFT target error, mean error, and best error for the exact-selected and D-Wave QPU-selected batches" src="../artifacts/final_review/figures/07_exact_vs_qpu_dft_batch.png" /></a><figcaption>Figure 6. Points show each molecule&rsquo;s error from the 6.0 eV target and diamonds mark batch means. The right panel compares the mean and best-candidate errors. Each batch contains three molecules, with one shared between the batches.</figcaption></figure>
 <p>The QPU-selected <code>N#CC=C1CC=NC1O</code> had an ML prediction of 5.8763 eV and a PySCF value of 5.8808 eV. Its error relative to the 6.0 eV target was 0.1192 eV, the smallest in this set of calculations. The best target error in the exact batch was 0.2994 eV.</p>
-<p><img alt="Chart comparing Chemprop predictions and PySCF orbital gaps alongside the molecular structures of the three QPU-selected candidates" src="../artifacts/final_review/figures/05_dft_molecule_validation.png" /></p>
-<p><em>Figure 7. ML predictions and PySCF results for the three QPU-selected candidates. The first candidate differed by about 0.005 eV, while the other two differed by approximately 1.1 eV.</em></p>
-<p>These values are Kohn-Sham HOMO-LUMO orbital gaps calculated at force-field geometries. An excited-state method such as <a href="https://pyscf.org/user/tddft.html">TDDFT</a> is needed to calculate optical excitations. This experiment did not include DFT geometry optimization, stability analysis, synthesis, toxicity assessment, or experimental measurement.</p>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/05_dft_molecule_validation.png" target="_blank" rel="noopener" aria-label="Open Figure 7 at full size (new tab)"><img alt="Chart comparing Chemprop predictions and PySCF orbital gaps alongside the molecular structures of the three QPU-selected candidates" src="../artifacts/final_review/figures/05_dft_molecule_validation.png" /></a><figcaption>Figure 7. ML predictions and PySCF results for the three QPU-selected candidates. The first candidate differed by about 0.005 eV, while the other two differed by approximately 1.1 eV.</figcaption></figure>
+<p>These values are Kohn–Sham HOMO–LUMO orbital gaps at geometries obtained using ETKDGv3 and MMFF94s. Optical excitation is a different quantity, calculated with an excited-state method such as TDDFT. <a class="citation" href="#ref-10">[10]</a></p>
 <h2 id="a-fixed-label-qm9-replay-tested-the-iteration-policy">A fixed-label QM9 replay tested the iteration policy</h2>
-<p>A <a href="https://doi.org/10.1038/s41524-019-0153-8">review of active learning in materials science</a> describes an iterative structure linking a surrogate, uncertainty, utility, and an expensive oracle. As a first step, this project created a replay that hid and then revealed precomputed labels from a fixed QM9 pool.</p>
+<p>A review of active learning in materials science describes an iterative structure linking a surrogate, uncertainty, utility, and an expensive oracle. <a class="citation" href="#ref-11">[11]</a> This project first created a replay that hid and then revealed precomputed labels from a fixed QM9 pool.</p>
 <p>This replay was separate from the 6.0 eV molecular batch-selection task above. It compared acquisition policies at a <strong>4.0 eV target</strong>.</p>
 <p>Across three paired seeds, each run began with 40 labels and performed four updates with a batch size of 3. At a budget of 52 labels, the mean best target errors were:</p>
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Policy</th>
@@ -1027,35 +1038,30 @@ maximum SCF cycles = 100
 <td style="text-align: right;"><strong>0.1261 eV</strong></td>
 </tr>
 </tbody>
-</table>
-<p><img alt="Convergence plot showing best target error as the number of revealed QM9 labels increases from 40 to 52 for random, greedy, exact, and QUBO simulated-annealing policies" src="../artifacts/final_review/figures/06_qm9_replay_convergence.png" /></p>
-<p><em>Figure 8. In the fixed QM9 replay at a 4.0 eV target, QUBO simulated annealing matched the exact batch in all 12 recorded acquisitions. Shading shows the minimum-to-maximum range across three seeds.</em></p>
-<p>The replay is a proxy for checking the acquisition implementation. It performed 0 new DFT calculations, made 0 QPU calls, and performed 0 generated chemical-space expansions. The six DFT labels from the preceding section have not yet been added to the training set.</p>
+</table></div>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/final_review/figures/06_qm9_replay_convergence.png" target="_blank" rel="noopener" aria-label="Open Figure 8 at full size (new tab)"><img alt="Convergence plot showing best target error as the number of revealed QM9 labels increases from 40 to 52 for random, greedy, exact, and QUBO simulated-annealing policies" src="../artifacts/final_review/figures/06_qm9_replay_convergence.png" /></a><figcaption>Figure 8. In the fixed QM9 replay at a 4.0 eV target, QUBO simulated annealing matched the exact batch in all 12 recorded acquisitions. Shading shows the minimum-to-maximum range across three seeds.</figcaption></figure>
+<p>Each round revealed three precomputed QM9 labels from the fixed pool. The retraining did not use the six DFT labels from the earlier experiment. It compared how the policies spent a label budget within that pool, without new DFT calculations, QPU submissions or generated candidates.</p>
 <h2 id="what-the-evidence-establishes-and-what-remains-open">What the evidence establishes, and what remains open</h2>
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll comparison table horizontally"><table>
 <thead>
 <tr>
 <th>Status</th>
-<th>What this work established</th>
+<th>Computation recorded on 2026-08-27</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>reproduced</code></td>
+<td>Recorded execution</td>
 <td>Two surrogate models, three proposal mechanisms, a shared chemistry filter, objective-to-BQM mapping, exact search and classical SA, one 100-read QPU submission, and six PySCF single-point DFT calculations</td>
 </tr>
 <tr>
-<td><code>proxy</code></td>
+<td>Classical proxy</td>
 <td>Three-seed replay using a fixed QM9 pool and precomputed labels</td>
 </tr>
-<tr>
-<td><code>not established</code></td>
-<td>Optical gap, stability and synthetic accessibility, experimental properties, a persistent live loop, scalable speedup, quantum advantage, or molecular discovery</td>
-</tr>
 </tbody>
-</table>
-<p>We retained the result in which the QPU missed the exact optimum. In downstream DFT, the exact batch performed better on average, while the QPU batch contained the best individual candidate. These observations answer different questions. The lowest acquisition score and the best hit found in a handful of downstream calculations should not be combined into one performance metric.</p>
-<p>Before generating more molecules, the next experiment should freeze the following conditions:</p>
+</table></div>
+<p>In downstream DFT, the exact batch had the lower mean target error, while the QPU batch contained the closest individual candidate. The acquisition minimum scores predictions and batch diversity; the DFT mean and best-candidate errors are calculated after selection. Following the difference between these quantities helps determine whether to improve the surrogate or the acquisition policy in the next selection round.</p>
+<p>The next comparison should fix the candidate pool, DFT budget and execution record together:</p>
 <ol>
 <li>A persistent ledger preserving candidates and calculation history</li>
 <li>The same candidate pool, batch size, and DFT label budget</li>
@@ -1065,33 +1071,37 @@ maximum SCF cycles = 100
 </ol>
 <p>Assessing the practical efficiency of active learning will require several rounds in which new DFT labels are added to the data, the surrogate is retrained, and generation and selection run again. The campaign also needs a stop rule if the QPU fails to beat a strong classical champion under the same budget.</p>
 <aside class="callout callout-evidence">
-<p class="callout-label">Verdict from this snapshot</p>
-<p>Open-source ML, three molecular proposal mechanisms, a validated acquisition QUBO, one 100-read D-Wave QPU submission, and six PySCF screening calculations were connected into a traceable computational pipeline. The stages executed and exchanged artifacts successfully. Any claim of superiority must await a live-loop bake-off.</p>
+<p class="callout-label">From this snapshot to the next comparison</p>
+<p>The batch minimizing the predicted acquisition score differed from the batch containing the closest candidate in DFT. The next step is to repeat the cycle of updating the surrogate with new DFT labels and compare how well the same calculation budget finds molecules near the target.</p>
 </aside>
 <h2 id="publication-information">Publication information</h2>
 <ul>
-<li>Generated: 2026-08-27 KST</li>
-<li>Original computation checkpoint: 2026-08-27</li>
-<li>Writing assistance: Codex-based GPT-5 family agent harness</li>
-<li>Method: Local CSV and JSON computational evidence was checked first. Official documentation and primary papers were then used to verify terminology and methodological boundaries, followed by audits of prose, figures, and HTML rendering.</li>
+<li>Original publication and computation checkpoint: 2026-08-27.</li>
+<li>Editorial revision and source comparison: 2026-11-08. The original numerical record and scope were checked; current device performance was not substituted for the historical result.</li>
+<li>Original writing assistance: Codex-based GPT-5-family agent harness; the exact model identifier and original individual role roster were not retained.</li>
+<li>This revision: Codex root (editing and integration), dwave_science (preserved computation, numbers and figures), dwave_references (APS, original authors and official documentation), and dwave_prose (independent bilingual argument and caption review). Exact model identifiers were not retained.</li>
+<li>This audit re-enumerated $2^{18}$ BQM states, rescored 100 QPU occurrences and 100 preserved SA rows, and checked the gaps and batch means of six DFT jobs plus final replay aggregates. It did not rerun the QPU, DFT or model training, or recover the raw QM9 data, Cartesian inputs or all replay batches.</li>
+<li>Common prose audit harness: revision 2026-11-06. The original publication record and this audit are identified separately.</li>
 </ul>
 <h2 id="references">References</h2>
-<ol>
-<li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">QM9 original collection, Figshare</a></li>
-<li><a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html">PyTorch Geometric QM9 documentation</a></li>
-<li><a href="https://chemprop.readthedocs.io/en/main/index.html">Chemprop documentation</a></li>
-<li><a href="https://github.com/the-matter-lab/selfies">SELFIES reference implementation</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html">D-Wave, QUBOs and Ising Models</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html">D-Wave, EmbeddingComposite.sample</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html">D-Wave, General QPU Solver Properties</a></li>
-<li><a href="https://pyscf.org/user/dft.html">PySCF, Density Functional Theory</a></li>
-<li><a href="https://pyscf.org/user/tddft.html">PySCF, Time-dependent Hartree-Fock and DFT</a></li>
-<li><a href="https://doi.org/10.1038/s41524-019-0153-8">Lookman et al., Active learning in materials science, npj Computational Materials 5, 21 (2019)</a></li>
+<ol class="reference-list">
+<li id="ref-1" value="1">R. Ramakrishnan, P. O. Dral, M. Rupp, and O. A. von Lilienfeld, Quantum chemistry structures and properties of 134 kilo molecules, <a href="https://doi.org/10.1038/sdata.2014.22">Sci. Data 1, 140022 (2014)</a>; R. Ramakrishnan, P. Dral, M. Rupp, and O. A. von Lilienfeld, Quantum chemistry structures and properties of 134 kilo molecules, version 5 (Figshare, 2019), <a href="https://doi.org/10.6084/m9.figshare.c.978904.v5">doi:10.6084/m9.figshare.c.978904.v5</a>.</li>
+<li id="ref-2" value="2">PyG Team, torch_geometric.datasets.QM9, PyTorch Geometric documentation, <a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html">https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html</a> (accessed November 8, 2026).</li>
+<li id="ref-3" value="3">K. Yang, K. Swanson, W. Jin, C. Coley, P. Eiden, H. Gao, A. Guzman-Perez, T. Hopper, B. Kelley, M. Mathea, A. Palmer, V. Settels, T. Jaakkola, K. Jensen, and R. Barzilay, Analyzing learned molecular representations for property prediction, <a href="https://doi.org/10.1021/acs.jcim.9b00237">J. Chem. Inf. Model. 59, 3370 (2019)</a>; E. Heid, K. P. Greenman, Y. Chung, S.-C. Li, D. E. Graff, F. H. Vermeire, H. Wu, W. H. Green, and C. J. McGill, Chemprop: A machine learning package for chemical property prediction, <a href="https://doi.org/10.1021/acs.jcim.3c01250">J. Chem. Inf. Model. 64, 9 (2024)</a>; D. E. Graff, N. K. Morgan, J. W. Burns, A. C. Doner, B. Li, S.-C. Li, J. Manu, A. Menon, H.-W. Pang, H. Wu, A. S. Zalte, J. W. Zheng, C. W. Coley, W. H. Green, and K. P. Greenman, Chemprop v2: An efficient, modular machine learning package for chemical property prediction, <a href="https://doi.org/10.1021/acs.jcim.5c02332">J. Chem. Inf. Model. 66, 28 (2026)</a>.</li>
+<li id="ref-4" value="4">P. Geurts, D. Ernst, and L. Wehenkel, Extremely randomized trees, <a href="https://doi.org/10.1007/s10994-006-6226-1">Mach. Learn. 63, 3 (2006)</a>; D. Rogers and M. Hahn, Extended-connectivity fingerprints, <a href="https://doi.org/10.1021/ci100050t">J. Chem. Inf. Model. 50, 742 (2010)</a>.</li>
+<li id="ref-5" value="5">M. Krenn, F. Häse, A. Nigam, P. Friederich, and A. Aspuru-Guzik, Self-referencing embedded strings (SELFIES): A 100% robust molecular string representation, <a href="https://doi.org/10.1088/2632-2153/aba947">Mach. Learn.: Sci. Technol. 1, 045024 (2020)</a>; A. Lo, R. Pollice, A. Nigam, A. D. White, M. Krenn, and A. Aspuru-Guzik, Recent advances in the self-referencing embedded strings (SELFIES) library, <a href="https://doi.org/10.1039/D3DD00044C">Digital Discovery 2, 897 (2023)</a>.</li>
+<li id="ref-6" value="6">D-Wave, QUBOs and Ising Models, D-Wave Quantum Computing Products documentation, <a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html">https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html</a> (accessed November 8, 2026).</li>
+<li id="ref-7" value="7">D-Wave, dwave.system.composites.EmbeddingComposite.sample, D-Wave Quantum Computing Products documentation, <a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html">https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html</a> (accessed November 8, 2026).</li>
+<li id="ref-8" value="8">D-Wave, General QPU Solver Properties, D-Wave Quantum Computing Products documentation, <a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html">https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html</a> (accessed November 8, 2026).</li>
+<li id="ref-9" value="9">Q. Sun, T. C. Berkelbach, N. S. Blunt, G. H. Booth, S. Guo, Z. Li, J. Liu, J. D. McClain, E. R. Sayfutyarova, S. Sharma, S. Wouters, and G. K.-L. Chan, PySCF: The Python-based simulations of chemistry framework, <a href="https://doi.org/10.1002/wcms.1340">WIREs Comput. Mol. Sci. 8, e1340 (2018)</a>; The PySCF Developers, Density functional theory (DFT), <a href="https://pyscf.org/user/dft.html">https://pyscf.org/user/dft.html</a> (accessed November 8, 2026).</li>
+<li id="ref-10" value="10">The PySCF Developers, Time-dependent Hartree-Fock and density functional theory, <a href="https://pyscf.org/user/tddft.html">https://pyscf.org/user/tddft.html</a> (accessed November 8, 2026).</li>
+<li id="ref-11" value="11">T. Lookman, P. V. Balachandran, D. Xue, and R. Yuan, Active learning in materials science with emphasis on adaptive sampling using uncertainties for targeted design, <a href="https://doi.org/10.1038/s41524-019-0153-8">npj Comput. Mater. 5, 21 (2019)</a>.</li>
 </ol>
-<p><small>The computational values come from the CSV and JSON evidence and figure manifest generated by the project. The raw QM9 mirror is not included in this public package. Production and review records for the generated hero image and computation-based figures are archived in <code>artifacts/final_review/figure_manifest.md</code>.</small></p>
+
+<p><small>The numerical results come from the project record of 2026-08-27 and the <a href="https://github.com/Infant83/AI_Tech_Review/blob/6add022d87564623dcb41d11b511015e23ba6311/2026-08-27_dwave-molecular-inverse-design-benchmark/artifacts/final_review/data/benchmark_results.csv">public results table</a>. This audit checked the preserved portions of that record; evidence_state in the CSV is the original record&rsquo;s label.</small></p>
       <div class="footer">
-        Generated: 2026-08-27 06:58:53<br>
-        Source last modified: 2026-08-27 06:49:49
+        Original edition generated: 2026-08-27 KST<br>
+        Editorial revision: 2026-11-08
       </div>
     </article>
 
@@ -1120,25 +1130,39 @@ maximum SCF cycles = 100
         <h2 id="links-heading">Evidence links</h2>
         <ul>
           <li><a href="../artifacts/final_review/figures/molecular_inverse_design_hero.png">Scientific illustration separating molecular candidates and ML prediction, QUBO-based quantum annealing batch selection, and quantum-chemistry validation</a></li>
-<li><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.svg">English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop</a></li>
-<li><a href="../artifacts/final_review/data/benchmark_results.csv">public computation results table</a></li>
-<li><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.png">View the detailed infographic as a full-size PNG</a></li>
-<li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5" target="_blank" rel="noreferrer">original QM9 collection</a></li>
-<li><a href="https://chemprop.readthedocs.io/en/main/index.html" target="_blank" rel="noreferrer">Chemprop</a></li>
+<li><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.svg?v=278793055e02">English infographic connecting QM9 data, ML, molecular generation, QUBO and QPU batch selection, PySCF DFT, fixed-label replay, and the proposed live loop</a></li>
+<li><a href="https://github.com/Infant83/AI_Tech_Review/blob/6add022d87564623dcb41d11b511015e23ba6311/2026-08-27_dwave-molecular-inverse-design-benchmark/artifacts/final_review/data/benchmark_results.csv" target="_blank" rel="noreferrer">public computation results table</a></li>
+<li><a href="../artifacts/final_review/figures/molecular_inverse_design_infographic_en.png?v=5600001c03cf">View the detailed infographic as a full-size PNG</a></li>
 <li><a href="../artifacts/final_review/figures/02_qm9_surrogate_parity.png">Parity plot comparing predictions from Chemprop D-MPNN and ExtraTrees Morgan with reference orbital gaps on the same QM9 test split</a></li>
-<li><a href="https://github.com/the-matter-lab/selfies" target="_blank" rel="noreferrer">SELFIES</a></li>
 <li><a href="../artifacts/final_review/figures/03_generator_metrics.png">Chart comparing validity, uniqueness, novelty, shared chemistry-filter pass rates, and recorded proposal times for three molecular proposal mechanisms</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html" target="_blank" rel="noreferrer">D-Wave&#x27;s introduction to QUBOs</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html" target="_blank" rel="noreferrer">EmbeddingComposite</a></li>
 <li><a href="../artifacts/final_review/figures/04_acquisition_comparison.png">Chart comparing solution gap and recorded wall time for exact search, classical simulated annealing, and the D-Wave QPU on the same frozen acquisition BQM</a></li>
-<li><a href="https://pyscf.org/user/dft.html" target="_blank" rel="noreferrer">PySCF DFT</a></li>
 <li><a href="../artifacts/final_review/figures/07_exact_vs_qpu_dft_batch.png">Chart comparing per-molecule DFT target error, mean error, and best error for the exact-selected and D-Wave QPU-selected batches</a></li>
 <li><a href="../artifacts/final_review/figures/05_dft_molecule_validation.png">Chart comparing Chemprop predictions and PySCF orbital gaps alongside the molecular structures of the three QPU-selected candidates</a></li>
-<li><a href="https://pyscf.org/user/tddft.html" target="_blank" rel="noreferrer">TDDFT</a></li>
-<li><a href="https://doi.org/10.1038/s41524-019-0153-8" target="_blank" rel="noreferrer">review of active learning in materials science</a></li>
 <li><a href="../artifacts/final_review/figures/06_qm9_replay_convergence.png">Convergence plot showing best target error as the number of revealed QM9 labels increases from 40 to 52 for random, greedy, exact, and QUBO simulated-annealing policies</a></li>
-<li><a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html" target="_blank" rel="noreferrer">PyTorch Geometric QM9 documentation</a></li>
-<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html" target="_blank" rel="noreferrer">D-Wave, General QPU Solver Properties</a></li>
+<li><a href="https://doi.org/10.1038/sdata.2014.22&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.6084/m9.figshare.c.978904.v5&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html&quot;" target="_blank" rel="noreferrer">pytorch-geometric.readthedocs.io</a></li>
+<li><a href="https://pytorch-geometric.readthedocs.io/en/latest/generated/torch_geometric.datasets.QM9.html" target="_blank" rel="noreferrer">pytorch-geometric.readthedocs.io</a></li>
+<li><a href="https://doi.org/10.1021/acs.jcim.9b00237&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1021/acs.jcim.3c01250&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1021/acs.jcim.5c02332&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1007/s10994-006-6226-1&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1021/ci100050t&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1088/2632-2153/aba947&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1039/D3DD00044C&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html&quot;" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/qubo_ising.html" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html&quot;" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/ocean/api_ref_system/generated/dwave.system.composites.EmbeddingComposite.sample.html" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html&quot;" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://docs.dwavequantum.com/en/latest/quantum_research/solver_properties_all.html" target="_blank" rel="noreferrer">docs.dwavequantum.com</a></li>
+<li><a href="https://doi.org/10.1002/wcms.1340&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://pyscf.org/user/dft.html&quot;" target="_blank" rel="noreferrer">pyscf.org</a></li>
+<li><a href="https://pyscf.org/user/dft.html" target="_blank" rel="noreferrer">pyscf.org</a></li>
+<li><a href="https://pyscf.org/user/tddft.html&quot;" target="_blank" rel="noreferrer">pyscf.org</a></li>
+<li><a href="https://pyscf.org/user/tddft.html" target="_blank" rel="noreferrer">pyscf.org</a></li>
+<li><a href="https://doi.org/10.1038/s41524-019-0153-8&quot;" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://github.com/Infant83/AI_Tech_Review/blob/6add022d87564623dcb41d11b511015e23ba6311/2026-08-27_dwave-molecular-inverse-design-benchmark/artifacts/final_review/data/benchmark_results.csv&quot;" target="_blank" rel="noreferrer">github.com</a></li>
         </ul>
       </section>
     </aside>

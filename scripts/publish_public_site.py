@@ -892,6 +892,10 @@ def public_metrics_endpoint() -> str:
         or os.environ.get(LEGACY_PUBLIC_METRICS_ENDPOINT_ENV)
         or DEFAULT_PUBLIC_METRICS_ENDPOINT
     )
+    return validate_public_metrics_endpoint(endpoint)
+
+
+def validate_public_metrics_endpoint(endpoint: str) -> str:
     endpoint = endpoint.strip().rstrip("/")
     if not endpoint:
         return ""
@@ -907,6 +911,29 @@ def public_metrics_endpoint() -> str:
             f"{PUBLIC_METRICS_ENDPOINT_ENV} must be an http(s) URL without credentials"
         )
     return endpoint
+
+
+def published_variant_metrics_config(existing_html: str | None) -> dict[str, str] | None:
+    """Read only the known public settings, never an old executable script."""
+    if not existing_html:
+        return None
+    scripts = PUBLIC_METRICS_CONFIG_RE.findall(existing_html)
+    if not scripts:
+        return None
+    if len(scripts) != 1:
+        raise ValueError("Ambiguous published metrics settings")
+    matches = re.findall(r'window\.AI_TECH_REVIEW_METRICS\s*=\s*(\{[^<]*?\})\s*;', scripts[0])
+    if len(matches) != 1:
+        raise ValueError("Ambiguous or malformed published metrics settings")
+    config = json.loads(matches[0])
+    if (not isinstance(config, dict) or set(config) != {"endpoint", "basePath", "siteId"}
+            or not all(isinstance(value, str) for value in config.values())
+            or config["basePath"] != PUBLIC_BASE_PATH or config["siteId"] != PUBLIC_SITE_ID):
+        raise ValueError("Unsupported published metrics settings")
+    endpoint = validate_public_metrics_endpoint(config["endpoint"])
+    if not endpoint or private_url(endpoint) or urlsplit(endpoint).query or urlsplit(endpoint).fragment:
+        raise ValueError("Published metrics endpoint must be a public base URL")
+    return {**config, "endpoint": endpoint}
 
 
 def restore_published_analytics() -> None:
@@ -953,12 +980,15 @@ def public_metrics_head(asset_prefix: str = "", indent: int = 4) -> str:
     )
 
 
-def public_metrics_scripts(asset_prefix: str = "", indent: int = 4) -> str:
+def public_metrics_scripts(asset_prefix: str = "", indent: int = 4, *,
+                           fallback_config: dict[str, str] | None = None) -> str:
     endpoint = public_metrics_endpoint()
-    if not endpoint:
+    settings = ({"endpoint": endpoint, "basePath": PUBLIC_BASE_PATH, "siteId": PUBLIC_SITE_ID}
+                if endpoint else fallback_config)
+    if not settings:
         return ""
     config = json.dumps(
-        {"endpoint": endpoint, "basePath": PUBLIC_BASE_PATH, "siteId": PUBLIC_SITE_ID},
+        settings,
         ensure_ascii=False,
         separators=(",", ":"),
     )
@@ -973,14 +1003,17 @@ def public_metrics_scripts(asset_prefix: str = "", indent: int = 4) -> str:
     )
 
 
-def inject_public_metrics(html_text: str, asset_prefix: str = "") -> str:
+def inject_public_metrics(html_text: str, asset_prefix: str = "", *,
+                          published_html: str | None = None) -> str:
+    fallback = (published_variant_metrics_config(published_html)
+                if not public_metrics_endpoint() else None)
     html_text = PUBLIC_METRICS_HEAD_RE.sub("", html_text)
     html_text = PUBLIC_METRICS_SCRIPT_RE.sub("", html_text)
     html_text = PUBLIC_METRICS_CSS_LINK_RE.sub("", html_text)
     html_text = PUBLIC_METRICS_CONFIG_RE.sub("", html_text)
     html_text = PUBLIC_METRICS_JS_RE.sub("", html_text)
     head = public_metrics_head(asset_prefix)
-    scripts = public_metrics_scripts(asset_prefix)
+    scripts = public_metrics_scripts(asset_prefix, fallback_config=fallback)
     if head and "</head>" in html_text:
         html_text = re.sub(r"[ \t\r\n]*</head>", head + "\n  </head>", html_text, count=1)
     if scripts and "</body>" in html_text:
@@ -1500,7 +1533,11 @@ def sanitize_for_public(
         f"{asset_prefix}{EDITORIAL_METHODS_HREF}",
     )
     sanitized = inject_public_icons(sanitized, asset_prefix)
-    sanitized = inject_public_metrics(sanitized, asset_prefix)
+    published_index = identity_dir / "index.html"
+    if published_index.is_symlink():
+        raise ValueError("Published metrics source must not be a symlink")
+    published_html = published_index.read_text(encoding="utf-8") if published_index.is_file() else None
+    sanitized = inject_public_metrics(sanitized, asset_prefix, published_html=published_html)
     return inject_cloudflare_web_analytics(sanitized), copied
 
 
@@ -1556,7 +1593,7 @@ def refresh_existing_public_variant(
         f"{asset_prefix}{EDITORIAL_METHODS_HREF}",
     )
     refreshed = inject_public_icons(refreshed, asset_prefix)
-    refreshed = inject_public_metrics(refreshed, asset_prefix)
+    refreshed = inject_public_metrics(refreshed, asset_prefix, published_html=existing_html)
     refreshed = inject_cloudflare_web_analytics(refreshed)
     index_path.write_text(refreshed, encoding="utf-8")
     prune_public_support_files(public_dir, review=review, language=language)

@@ -29,3 +29,9 @@
 - Localization boundary: all embedded Korean text was translated; recorded metrics, node and card coordinates, arrow paths, colors, and solid-versus-dashed evidence semantics were retained. English-only font declarations and a two-line footer reflow prevent label overlap.
 - Rendering: local Google Chrome headless at 1600 × 1900 pixels with device scale factor 1.
 - Visual review: the 1600 × 1900 PNG was inspected at original resolution; headings, cards, metrics, arrowheads, the proposed-loop dashes, and both footer lines are readable without clipping or overlap.
+
+## Editorial revision · 2026-11-08
+
+The8figure identities and all reported metrics are retained. The hero and numerical PNG charts02–07 are unchanged. KO/EN infographic text identifies the recorded computation, replaces repeated blanket warnings with the actual test/batch/submission conditions, and states that the acquisition score and orbital gap are different quantities. The same solid/executed and dashed/proposed connections remain. English node headings were fitted to their cards without moving data panels. Corresponding1600×1900 PNGs are regenerated from the sourceSVG with Chrome. Final display inspection is recorded in the legacy-refresh audit.
+
+The captions now explain the plotted axes, sample/batch sizes and differing timing scopes. Original chart footers that identify historical comparison conditions remain; their content is not a report of a new QPU or DFT run.

@@ -18,6 +18,7 @@ try:
     from .publication_snapshot import capture_site, compare_snapshots, read_json
     from .reader_engagement_publish import content_digest, validate_public_artifact
     from .publication_intent import pending_review_intents, review_inputs, write_review_intent
+    from .publication_release import declarations
     from .archive_documents import load_documents, document_version
 except ImportError:
     import publish_public_site as publisher
@@ -25,6 +26,7 @@ except ImportError:
     from publication_snapshot import capture_site, compare_snapshots, read_json
     from reader_engagement_publish import content_digest, validate_public_artifact
     from publication_intent import pending_review_intents, review_inputs, write_review_intent
+    from publication_release import declarations
     from archive_documents import load_documents, document_version
 
 
@@ -62,12 +64,14 @@ def write_change_declaration(root: Path, name: str, files: dict, reason: str):
         Path(pending).unlink(missing_ok=True)
 
 
-def reviewed_article_is_current(site: Path, baseline: dict, folder: str) -> bool:
+def reviewed_article_is_current(site: Path, baseline: dict, folder: str, changes: dict | None = None) -> bool:
     """Reuse a seeded article only when every registered content byte agrees.
 
     A persistent request is still replayed when the old committed site seed
     predates an artifact-only article revision. Hub metadata never makes that
-    stale article an acceptable replacement for the checked publication.
+    stale article an acceptable replacement for the checked publication. On
+    the first CI run both seed and baseline can still be old, so the checked
+    change declaration's after hashes must agree as well.
     """
     record = baseline.get("reviews", {}).get(folder)
     if not record or not record.get("references"):
@@ -77,6 +81,12 @@ def reviewed_article_is_current(site: Path, baseline: dict, folder: str) -> bool
         expected = baseline.get("files", {}).get(name, {}).get("content_sha256")
         if not expected or not path.is_file() or path.is_symlink() or content_digest(path) != expected:
             return False
+    prefix = "reviews/" + folder + "/"
+    for name, hashes in (changes or {}).items():
+        if name.startswith(prefix):
+            path = Path(site) / name
+            if not path.is_file() or path.is_symlink() or content_digest(path) != hashes["after"]:
+                return False
     return True
 
 
@@ -111,8 +121,13 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
         known = {review.folder for review in publisher.REVIEWS}
         selected = set(reviews) | (known - set(publisher.load_existing_manifest()))
         intents = pending_review_intents(publisher.ROOT, known, selected, set(baseline["reviews"]))
+        checked_changes = declarations(publisher.ROOT / "publication_changes")
+        for folder in set(intents) - selected:
+            if folder in baseline["reviews"] and not any(
+                    name.startswith("reviews/" + folder + "/") for name in checked_changes):
+                raise ValueError("Published review request lacks reviewed after hashes; prepare again with --review " + folder)
         rebuilt_reviews = {folder for folder in intents
-                           if folder in selected or not reviewed_article_is_current(source_site, baseline, folder)}
+                           if folder in selected or not reviewed_article_is_current(source_site, baseline, folder, checked_changes)}
         selected_documents = set(documents)
         source_documents = {row["id"]: row for row in load_documents(publisher.ROOT / "archive")}
         if selected_documents - set(source_documents):
@@ -133,6 +148,8 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
         for folder, inputs in intents.items():
             if review_inputs(publisher.ROOT, folder) != inputs:
                 raise ValueError("Review inputs changed while the candidate was being built: " + folder)
+            if folder not in selected and not reviewed_article_is_current(stage, current, folder, checked_changes):
+                raise ValueError("Replayed review does not match its reviewed after hashes: " + folder)
         final_documents = {row["id"]: row for row in load_documents(publisher.ROOT / "archive")}
         for identifier, version in document_versions.items():
             if (identifier not in final_documents
@@ -159,6 +176,13 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
                               "after": current["files"][name]["content_sha256"]}
                        for name in comparison["content_changes"]
                        if name.startswith("reviews/" + folder + "/")}
+            if not changed and folder in baseline["reviews"]:
+                # A reviewed no-op still needs an output binding so subsequent
+                # metadata-only builds can safely reuse the current article.
+                for name in current["reviews"][folder]["references"]:
+                    if name.endswith("/index.html") and name in baseline["files"]:
+                        changed[name] = {"before": baseline["files"][name]["content_sha256"],
+                                         "after": current["files"][name]["content_sha256"]}
             write_change_declaration(publisher.ROOT, folder, changed,
                 change_reason or "Explicit review update prepared from checked source: " + folder)
         for identifier in selected_documents:
