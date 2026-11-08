@@ -31,3 +31,11 @@ ATLAS 기술지원 역할 dwave_publication_integrity는 원고 내용과 별도
 복구 검증에서는 CI와 같은 자동 선택 명령으로 새 글이 실제 재생성됐고, 모든 기사 파일이 처음 검수한 후보와 바이트 단위로 일치했다. 릴리스 연속성·전송량 검사를 다시 통과했다. 출력 근거가 빠진 요청을 성공으로 건너뛰지 않는 회귀도 함께 검토한다.
 
 게시 경로 복구는 별도 독립 기술 감수에서 필수 지적 없이 통과했다. 최종 Python296개는 실패 없이 종료됐고 환경 조건으로1개 제외됐다. 원고·그림은 이 기술 복구에서 변경하지 않았다. [게시 재생성 일감](../../../../operations/issues/OPS-58a4237a-48d8-40da-af30-4b0edc80c943.json)을 함께 추적한다.
+
+## 공개 완료
+
+복구 배포 `8b3f0eb7e93bd8fcac8668cdee9839f4fe6fa529`의 [CI](https://github.com/Infant83/AI_Tech_Review/actions/runs/42435844951)는 build·deploy·독자 등록·복구 사본 저장을 모두 통과했다. 2026-11-08T01:54:41.352861+00:00에 한영 본문·18개 미디어·등록 목록 등23개 HTTPS 경로를 확인했다. 본문·미디어는 검수 후보와 일치하고 기존 절 주소·집계 설정을 보존했다. 실제 Chrome 한영390·1280px에서 수식15개·그림8개·인용11개·서지11개, 인용 이동·그림 확대를 확인했으며 페이지 오류는 없었다. 독자 등록 응답은64개 동기화 성공이다. 휴대폰 수신·실제 집계 서비스 전체 건강 검사를 수행한 것으로 확대하지 않는다.
+
+독립 기술 감수 역할 deployment_intent_review는 복구 코드·회귀를 읽고 후보15개·출판 관련49개 검사를 독립 실행했다. 수정 원고의 과학 감수 역할과 구별한다.
+
+[공개 국문](https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/), [영문](https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/). 이번 순차 개편은13/49편 완료이며 다음 대상은 OLED 기작 중심 물성 라벨 글이다.

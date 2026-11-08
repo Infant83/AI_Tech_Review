@@ -3,19 +3,7 @@
   "baseline_commit": "12cf0f9cab909eee428b13f501840818519cbbab",
   "purpose": "기존 게시물을 원 발행일 순서로 한 편씩 검토하고 필요한 개편을 실제 게시한다. 이미 개편한 허브 소개는 본문과 어긋날 때만 조정한다.",
   "order": "original publication date ascending, then stable article id",
-  "current": {
-    "id": "2026-08-27_dwave-molecular-inverse-design-benchmark",
-    "baseline_commit": "6add022d87564623dcb41d11b511015e23ba6311",
-    "stage": "repaired_automatic_candidate_verified_ready_to_redeploy",
-    "started_at": "2026-11-08T01:04:14.575477+00:00",
-    "audit": "2026-11-08-dwave/README.md",
-    "publication_attempt": {
-      "commit": "04eddbcc3f75d9e5e019958df04a2455cc874465",
-      "workflow_run": 42434929453,
-      "result": "old body remained; CI selected reviewed request but skipped rebuild",
-      "next": "repair and test automatic reviewed-intent replay, redeploy, verify actual HTTPS"
-    }
-  },
+  "current": null,
   "completed": {
     "2026-05-09_ai-updates-weekly": {
       "status": "updated",
@@ -205,6 +193,21 @@
       "reference_manifest": "2026-11-07-classiq-ashn/reference-manifest.json",
       "direct_experiment_or_compiler_benchmark_performed": false,
       "reason": "반복 방어·캡션을 다듬고 APS 6개 서지·20개 인용과 원문 조건을 대조했다. width 캡션/회로선 차이, Dicke QST 판독 보정·XEB 평균, SWAP 순서와 QAOA 연결·연산 순서를 보완했다. 기존 그림 3개·표지와 다른 54편·PDF 189개 사본을 보존하고 실제 HTTPS 본문·5자산·수식·모바일을 확인했다."
+    },
+    "2026-08-27_dwave-molecular-inverse-design-benchmark": {
+      "status": "updated",
+      "reviewed_version": "6add022d87564623dcb41d11b511015e23ba6311",
+      "publication_commit": "8b3f0eb7e93bd8fcac8668cdee9839f4fe6fa529",
+      "verified_at": "2026-11-08T01:54:41.352861+00:00",
+      "evidence_cutoff": "2026-08-27",
+      "editorial_revision": "2026-11-08",
+      "live_url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/",
+      "workflow_run": 42435844951,
+      "audit": "2026-11-08-dwave/README.md",
+      "reference_manifest": "2026-11-08-dwave/reference-manifest.json",
+      "direct_experiment_or_model_benchmark_performed": false,
+      "preserved_record_recomputation": "BQM 2^18 enumeration, saved QPU/SA rows, six DFT jobs and replay aggregate arithmetic; no new QPU/DFT/training runs",
+      "reason": "18개 후보 선택과 DFT 평균·최선의 논지를 살리며 반복 방어·작업 메타 문장을 정리했다. soft cardinality·공통 필터 분모·공유 분자의 별도 계산을 명료화하고 APS11개 서지·11인용의 원저자·판본을 대조했다. 한영8그림·원 발행일·당시 근거와 다른54편·PDF190개 사본을 보존했다. 자동 재생성이 검수 원고를 생략하는 경로와 집계 설정 소실 경로를 복구한 뒤 실제 HTTPS 본문·18미디어·모바일·절 링크·알림 등록을 확인했다."
     }
   },
   "queue": [

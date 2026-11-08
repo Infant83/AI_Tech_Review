@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-58a4237a-48d8-40da-af30-4b0edc80c943",
   "uuid": "58a4237a-48d8-40da-af30-4b0edc80c943",
-  "record_version": 1,
+  "record_version": 2,
   "title": "새 검수 원고의 첫 CI 게시가 구판 seed와 baseline 일치로 생략됨",
   "type": "게시 요청 재생 결함",
   "created_at": "2026-11-08T01:44:10+00:00",
-  "updated_at": "2026-11-08T01:47:51+00:00",
-  "status": "validating",
+  "updated_at": "2026-11-08T01:54:41.352861+00:00",
+  "status": "resolved",
   "priority": "P1",
   "source": {
     "kind": "실제 배포 후 원문 대조",
@@ -53,6 +53,11 @@
       "kind": "수정 전후 회귀 재현",
       "reference": "tests/test_prepare_publication.py",
       "finding": "첫 CI의 구seed+구baseline+새요청 경로와 no-op 빌드 성공 방지 검사 2개가 수정 전 실패하고 수정 후 통과했다."
+    },
+    {
+      "kind": "복구 후 운영 검증",
+      "reference": ".automation/writing-reviews/legacy-refresh/2026-11-08-dwave/verification.json",
+      "finding": "실제 검수 원고 게시·설정 보존과23개 HTTPS경로 및 CI를 확인했다."
     }
   ],
   "limitations": [
@@ -83,18 +88,24 @@
     "새 CI의 rebuilt_reviews와 content_changes, 실제 한영 HTTPS 본문이 검수 후보와 일치한다."
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "8b3f0eb7e93bd8fcac8668cdee9839f4fe6fa529"
+    ],
     "candidate_reference": null,
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42435844951"
   },
   "verification": {
-    "status": "로컬 회귀 통과; 독립 감수·통합·실제 복구 배포 확인 중",
+    "status": "최종 후보·독립 감수·CI·실제 HTTPS 검증 통과",
     "checks": [
       "prepare_publication 15개 통과: 수정 전 실패 확인한 첫 CI 재생·출력 검증2개와 after 누락 거절·무변경 후 재사용·신규 등록3개 회귀 포함",
       "publication_intent 7개 통과: source·보호 등록정보 drift와 legacy 입력검증 유지",
       "publication_release 12개 통과: 정밀 before/after·연속성·실제 baseline 보호 유지",
       "git diff --check 통과",
-      "통합 담당이 실제 D-Wave 자동 후보의 rebuilt_reviews, 최초 검수 후보와 전체55편 reviews bytes 일치, release와 payload 통과를 확인함"
+      "통합 담당이 실제 D-Wave 자동 후보의 rebuilt_reviews, 최초 검수 후보와 전체55편 reviews bytes 일치, release와 payload 통과를 확인함",
+      "복구 CI에서 해당 글 실제 재생성과6개 파일 변경 확인",
+      "한영 HTTPS 본문·18미디어가 검수 후보와 일치",
+      "기존 집계 설정·원 발행일·절 주소 보존",
+      "실제 Chrome 한영390·1280px 수식15·8그림·11인용·11서지 확인"
     ],
     "evidence": [
       "tests/test_prepare_publication.py",
@@ -103,18 +114,18 @@
       ".automation/writing-reviews/legacy-refresh/2026-11-08-dwave/verification.json"
     ],
     "remaining_limits": [
-      "통합 담당의 새 후보·CI·운영 HTTPS 판본 확인"
+      "실제 iPhone/Safari·집계 서비스 전체 건강·휴대폰 알림 수신은 이번 검증 범위가 아니다."
     ]
   },
   "observation": {
-    "status": "복구 배포 전",
-    "period": null,
-    "result": null
+    "status": "검증 완료",
+    "period": "2026-11-08T01:54:41.352861+00:00",
+    "result": "실제 운영 HTTPS에서 검수 원고와 보존 설정을 확인했다."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": "기사 원고나 site를 수작업으로 덮지 않고 기존 검수 dist·요청·변경 해시로 게시 경로를 복구한다."
   },
-  "next_action": "독립 기술 감수 후 통합 담당이 같은 원고로 후보를 재생성하고 CI와 실제 한영 본문을 검증한다."
+  "next_action": "재발 시 같은 입력·검수 해시·실제 배포본을 대조해 일감을 다시 연다."
 }
