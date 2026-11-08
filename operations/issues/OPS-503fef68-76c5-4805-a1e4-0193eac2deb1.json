@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "id": "OPS-503fef68-76c5-4805-a1e4-0193eac2deb1",
+  "uuid": "503fef68-76c5-4805-a1e4-0193eac2deb1",
+  "record_version": 1,
+  "title": "허브에 없는 글별 조회 집계 설정을 재게시 때 보존",
+  "type": "게시 설정 보존 결함",
+  "created_at": "2026-11-08T01:15:04.636934Z",
+  "updated_at": "2026-11-08T01:35:32.154108+00:00",
+  "status": "validating",
+  "priority": "P2",
+  "source": {
+    "kind": "게시 준비 중 재현",
+    "reference": "scripts/publish_public_site.py",
+    "summary": "허브 HTML에 레거시 조회 집계 설정이 없는 환경에서 기존 글을 새 dist로 게시하면 글별 집계 설정이 제거되는 경로를 확인했다."
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/",
+      "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/"
+    ],
+    "source_paths": [
+      "scripts/publish_public_site.py",
+      "tests/test_review_metrics_preservation.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "6add022d87564623dcb41d11b511015e23ba6311",
+    "environment": {
+      "device": null,
+      "operating_system": "macOS; Python3.9 local isolated filesystem",
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "기존 공개 글에는 window.AI_TECH_REVIEW_METRICS가 있고 새 dist와 허브에는 없는 상태를 준비한다.",
+      "전역 집계 endpoint 환경변수 없이 해당 dist를 기존 공개 글의 주소로 게시한다.",
+      "변경 전 게시 함수의 출력에서 집계 config가 사라지는 것을 확인한다."
+    ],
+    "expected": "원래 공개 글의 endpoint·basePath·siteId를 유지한다.",
+    "actual": "수정 전 재현에서 기존 config1개가 출력0개가 됐다. 수정 후 한영 variant 모두 원 공개 config와 필드별로 일치했다."
+  },
+  "evidence": [
+    {
+      "kind": "공개 원본 대조",
+      "reference": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/",
+      "finding": "한영 공개 글에 같은 endpoint/basePath/siteId가 있으며 원 dist에는 이 config가 없다."
+    },
+    {
+      "kind": "격리 게시 전후 재현",
+      "reference": "scripts/publish_public_site.py",
+      "finding": "새 dist의 본문은 게시하면서 교체 전 공개 variant의 검증한 집계 설정만 재생성했다. 전역 환경은 변경하지 않았다."
+    },
+    {
+      "kind": "자동 회귀 검사",
+      "reference": "tests/test_review_metrics_preservation.py",
+      "finding": "전체 publish_review의 한영 설정 보존, 명시 환경변수 우선, 기존 variant 갱신, 새 원고의 임의 script 미승격, 일반 본문의 config 언급 미승격, 비공개·모호 설정 거절6개 통과."
+    }
+  ],
+  "limitations": [
+    "실제 게시 후보와 HTTPS의 최종 설정 보존은 통합 담당이 확인한다.",
+    "집계 서비스의 실시간 건강 상태·실제 조회 수 증가·휴대폰 알림 수신은 검증 범위가 아니다.",
+    "기존 공개 파일의 알려진 JSON 설정만 읽으며 원 script를 복사하지 않는다."
+  ],
+  "policy_decision": {
+    "state": "최소 수정·검증",
+    "rationale": "기존 게시물의 조회 집계 연결을 보존하는 기술 수정이며 내용·디자인·인증 구조를 바꾸지 않는다. 기존 공개 설정이 잘못됐으면 조용히 폐기하거나 실행하지 않고 오류로 남긴다.",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "승인된 순차 개편의 기존 공개 설정 보존과 필요한 게시 경로 복구",
+    "current_scope": "검증한 글별 공개 집계 설정 fallback과 회귀 검사",
+    "additional_decision": null
+  },
+  "owner_role": "ATLAS 인프라·기술지원",
+  "acceptance_criteria": [
+    "허브에 설정이 없어도 기존 KO/EN variant의 집계 config가 각각 보존된다.",
+    "명시 current/legacy 환경변수의 기존 우선순위를 유지하고 전역 환경을 오염하지 않는다.",
+    "새 dist의 임의 집계 script를 공개 설정으로 승격하지 않는다.",
+    "비공개 URL·자격증명·다른 site/basePath·모호한 config를 복사하지 않는다.",
+    "최종 게시 후보와 실제 HTTPS에서 기존 설정을 다시 대조한다."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": ".automation/writing-reviews/legacy-refresh/2026-11-08-dwave/verification.json",
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "로컬 회귀·최종 후보·Chrome 통과; 운영 HTTPS 확인 대기",
+    "checks": [
+      "새 회귀 검사6개 통과",
+      "기존 document/archive/publisher 관련35개 통과",
+      "실제 DWave 한영 dist 격리 게시에서 원 공개 config와 필드별 일치",
+      "git diff --check",
+      "통합 Python291개·Node12개 검사 통과",
+      "최종 후보 한영 집계 config 필드별 일치",
+      "Chrome 한영320·390·1280px 화면과 원고·그림·인용 연결 확인",
+      "다른54편·PDF190개 사본 보존"
+    ],
+    "evidence": [
+      "tests/test_review_metrics_preservation.py",
+      "tests/test_document_archive_site.py"
+    ],
+    "remaining_limits": [
+      "게시 후보·운영 HTTPS 검수는 통합 담당에게 인계"
+    ]
+  },
+  "observation": {
+    "status": "게시 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": "필요 시 이 게시기 변경만 검토해 되돌리며 기사나 다른 작업의 변경을 함께 되돌리지 않는다."
+  },
+  "next_action": "통합 담당이 이번 기사 후보의 한영 집계 설정과 다른 글 보존을 확인하고, 배포 후 실제 HTTPS 설정·CI·배포 참조를 연결한다."
+}

@@ -49,7 +49,7 @@
   <text x="82" y="105" class="title ink">양자 보조 분자 역설계, 실제 계산은 어디까지 왔나</text>
   <text x="84" y="154" class="subtitle muted">QM9 5,000개 → ML·분자 생성 → QUBO/QPU 배치 선택 → PySCF DFT 검증</text>
   <rect x="1290" y="76" width="220" height="58" rx="29" class="navy"/>
-  <text x="1400" y="113" text-anchor="middle" class="chip white">REPRODUCED SNAPSHOT</text>
+  <text x="1400" y="113" text-anchor="middle" class="chip white">RECORDED SNAPSHOT</text>
 
   <text x="82" y="232" class="section ink">1. 실제로 실행된 파이프라인</text>
 
@@ -108,7 +108,7 @@
 
   <rect x="82" y="575" width="1426" height="264" rx="34" class="navy"/>
   <text x="122" y="632" class="chip" fill="#86d8c4">ROLE SEPARATION</text>
-  <text x="122" y="688" class="section white">QPU가 최적화한 값과 DFT가 계산한 값은 서로 다른 에너지다</text>
+  <text x="122" y="688" class="section white">QPU의 획득 점수와 DFT의 궤도 갭은 서로 다른 양이다</text>
   <rect x="122" y="727" width="600" height="76" rx="18" fill="#273b55"/>
   <text x="152" y="758" class="node-title" fill="#e9b9d5">QUBO / D-Wave QPU</text>
   <text x="152" y="789" class="small white">다음 DFT 계산에 보낼 세 후보를 고르는 획득 점수</text>
@@ -127,7 +127,7 @@
     <text x="112" y="1066" class="node-title ink">같은 QM9 split에서 고전 baseline의 MAE가 더 낮았다</text>
     <text x="112" y="1120" class="metric teal">0.4743 &lt; 0.5308 eV</text>
     <text x="112" y="1160" class="small muted">ExtraTrees/Morgan &lt; Chemprop D-MPNN ensemble</text>
-    <text x="112" y="1188" class="tiny muted">생성 분자·실험 정확도까지 보장하지 않는 held-out 결과</text>
+    <text x="112" y="1188" class="tiny muted">같은 QM9 test 분자 431개의 orbital gap 예측 비교</text>
 
     <rect x="816" y="960" width="692" height="250" rx="28" class="card"/>
     <rect x="846" y="990" width="146" height="36" rx="18" class="pink-soft"/>
@@ -135,7 +135,7 @@
     <text x="846" y="1066" class="node-title ink">한 번의 100-read QPU run은 exact batch를 놓쳤다</text>
     <text x="846" y="1120" class="metric pink">gap +0.046334</text>
     <text x="846" y="1160" class="small muted">exact −0.480789 · QPU −0.434455</text>
-    <text x="846" y="1188" class="tiny muted">18 logical → 46 physical qubits · quantum advantage claim 없음</text>
+    <text x="846" y="1188" class="tiny muted">18 logical → 46 physical qubits · QPU 제출 1회, 100 reads</text>
 
     <rect x="82" y="1248" width="690" height="250" rx="28" class="card"/>
     <rect x="112" y="1278" width="146" height="36" rx="18" class="blue-soft"/>
@@ -144,7 +144,7 @@
     <text x="112" y="1408" class="metric-small teal">평균 0.620 eV</text>
     <text x="442" y="1408" class="metric-small pink">평균 0.761 eV</text>
     <text x="112" y="1452" class="small muted">QPU batch best single target error: <tspan font-weight="700" fill="#c36f9f">0.119 eV</tspan></text>
-    <text x="112" y="1480" class="tiny muted">총 다섯 unique molecules · 통계적 우열 판단 불가</text>
+    <text x="112" y="1480" class="tiny muted">배치당 세 분자 · 공통 한 분자 · 총 다섯 unique molecules</text>
 
     <rect x="816" y="1248" width="692" height="250" rx="28" class="card"/>
     <rect x="846" y="1278" width="146" height="36" rx="18" class="amber-soft"/>
@@ -186,5 +186,5 @@
   </g>
 
   <text x="82" y="1850" class="small muted">확인됨: open-source ML·3 proposal lanes·QUBO mapping·QPU 1회·single-point DFT 6건</text>
-  <text x="1518" y="1850" text-anchor="end" class="small muted">미확립: optical gap·합성·실험·live active learning·speedup·quantum advantage</text>
+  <text x="1518" y="1850" text-anchor="end" class="small muted">다음 비교: 새 DFT 라벨로 재학습하며 동일 예산의 live loop 평가</text>
 </svg>
