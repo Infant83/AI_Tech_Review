@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "id": "OPS-79b80bf3-b847-485a-9f60-3cd663e5b433",
+  "uuid": "79b80bf3-b847-485a-9f60-3cd663e5b433",
+  "record_version": 1,
+  "title": "기존 게시물의 현재 웹 제호와 공유 정보에 ATRL 명칭 적용",
+  "type": "제호 표시와 출판 생성 경로 정합성",
+  "created_at": "2026-11-08T13:06:33Z",
+  "updated_at": "2026-11-08T13:06:33Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "사용자 배정 요청과 공개본 감사",
+    "reference": "ATRL_BRAND_BRIEF.md#기존-발행본의-제호-정리와-역할",
+    "summary": "사용자가 잔존 제호의 처리 주체를 판단하고 업무를 배정하도록 요청함. 편집부(AER)의 기준을 문서화하고 운영팀(AOT)에 기술 적용을 배정함"
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-05-06_gpt-5-5-family-post-release-evaluation",
+      "2026-05-07_tabpfn-oled-manufacturing-foundation-model",
+      "2026-05-09_ai-updates-weekly",
+      "2026-05-23_ai-scientist-execution-harness",
+      "2026-05-30_quantum-informed-ai-chaotic-processes",
+      "2026-05-30_shadow-ai-work-boundary-reconfiguration",
+      "2026-06-05_neuromorphic-edge-ai",
+      "2026-06-11_QC-based-inverse-design",
+      "2026-06-17_ai-processor-stack-npu-tpu-gpu-lpu",
+      "2026-08-24_oti-iqcc-oled-quantum-emulation",
+      "2026-08-26_quantum-computing-layers",
+      "2026-08-27_classiq-ashn-circuit-compression",
+      "2026-08-27_dwave-molecular-inverse-design-benchmark",
+      "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
+      "2026-08-29_quantum-simulation-vibronic-dynamics",
+      "2026-08-30_practical-quantum-computing-stack",
+      "2026-08-31_thermal-quantum-states-exciton-validation",
+      "2026-09-01_quantum-error-mitigation-net-benefit",
+      "2026-09-03_quantum-full-stack-codesign",
+      "2026-09-04_quantum-advantage-evidence-ledger",
+      "2026-09-04_weekly-oled-inverse-design-excited-state-reliability",
+      "2026-09-06_agentic-programs-materials-science",
+      "2026-09-09_quantum-resource-aware-workflows",
+      "2026-09-10_cash-qse-classical-quantum-chemistry",
+      "2026-09-11_weekly-oled-inverse-design-excitonic-reliability",
+      "2026-09-13_avatar-scientific-workflow-control",
+      "2026-09-13_multiphoton-reservoir-classical-light",
+      "2026-09-18_weekly-oled-inverse-design-sparse-excited-state-validation",
+      "2026-09-19_transfer-learning-chemical-bayesian-optimization",
+      "2026-09-21_jev-structured-decisions-agent-harnesses",
+      "2026-09-25_weekly-oled-inverse-design-generative-validation",
+      "2026-10-02_weekly-oled-inverse-design-triplet-state-control",
+      "2026-10-03_vqe-energy-subspaces-and-digital-validation",
+      "2026-10-06_quantum-quasiparticles-and-structured-computation",
+      "2026-10-17_noether-symmetry-conservation",
+      "2026-10-18_materials-dataset-redundancy",
+      "2026-10-19_generative-ai-quantum-circuit-design",
+      "2026-10-19_quantum-qubit-platforms",
+      "2026-10-20_jupiter-fault-tolerant-simulation",
+      "2026-10-20_quasi-riemann-ai-proof",
+      "2026-10-21_sparse-reference-quantum-chemistry",
+      "2026-10-23_neural-representations-interpretability",
+      "2026-10-23_php-ai-vulnerability-disclosure",
+      "2026-10-23_quantum-latent-generative-models",
+      "2026-10-25_quantum-software-platforms-ai-agents",
+      "2026-10-26_flat-chern-bands-correlations",
+      "2026-10-26_observable-aware-quantum-dynamics",
+      "2026-10-30_brain-neurogenesis-rehabilitation",
+      "2026-11-01_ai-science-automation-and-expertise",
+      "2026-11-02_chiral-amplification-nobel-chemistry",
+      "2026-11-04_quantum-gates-phase-and-interaction",
+      "2026-11-06_altermagnetism-spin-symmetry",
+      "2026-11-06_machine-learning-force-fields",
+      "2026-11-05-classiq-qae-l003-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/",
+      "https://infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/",
+      "https://infant83.io/AI_Tech_Review/lectures/reader/"
+    ],
+    "source_paths": [
+      "scripts/site_brand.py",
+      "scripts/publish_public_site.py",
+      "scripts/reader_engagement_publish.py",
+      "ATRL_BRAND_BRIEF.md"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "4a3f35acf2c8efb593896207d40d70175580fb00",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "실제 공개 HTML 186개와 배포 릴리스의 경로를 대조함",
+      "현재 매체 표기와 발행 당시 기록·인용·PDF 원판을 구분함"
+    ],
+    "expected": "현재 웹에서 사용하는 매체명은 Agentic Tech Review Letters로 일치하고 역사적 발행 기록은 보존됨",
+    "actual": "리뷰 53편의 한영 92페이지에 이전 제호가 보임. 그중 44페이지는 공유용 사이트명에도 남음. 렉처·PDF 리더 3페이지의 탭 제목과 아카이브 8페이지의 검색 데이터에도 이전 제호가 있음"
+  },
+  "evidence": [
+    {
+      "kind": "공개본 전수 점검",
+      "reference": "https://infant83.io/AI_Tech_Review/publication-release.json",
+      "finding": "2026-11-08 배포 4a3f35acf2c8efb593896207d40d70175580fb00의 HTML 186개를 실제 HTTPS로 검사함. 시작·종료 릴리스가 같고 요청 실패는 없음"
+    },
+    {
+      "kind": "편집 기준",
+      "reference": "ATRL_BRAND_BRIEF.md#기존-발행본의-제호-정리와-역할",
+      "finding": "현재 웹의 매체명은 새 제호로 정리하고 역사적 발행명·인용·서지·하네스·원 PDF는 보존함"
+    }
+  ],
+  "limitations": [
+    "이전 제호 문자열 전체를 기계적으로 치환하면 발행 기록이나 인용을 바꿀 수 있음",
+    "이번에는 편집 기준과 업무 배정만 기록했고 기존 게시물의 잔존 표기는 아직 수정하지 않음"
+  ],
+  "policy_decision": {
+    "state": "편집 기준 확정·기술 일감 채택",
+    "rationale": "현재 표시의 일관성은 운영팀(AOT)의 기술 작업으로 처리하고 발행명·과학 내용의 의미 판단은 편집부(AER)에 둠. 기존 PDF는 제호만을 위해 다시 발행하지 않음",
+    "related_issues": [
+      "OPS-f6deea28-7843-4409-9b02-84a7f23e198e"
+    ],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "사용자의 제호 변경 및 적절한 팀별 업무 배정 요청, 기존 지속 운영 승인",
+    "current_scope": "AER의 기록된 제호 기준에 따라 현재 웹 표시·공유 정보·생성 원본을 AOT가 정리하고 검증함. 과거 PDF 일괄 재발행과 과학 내용 변경은 포함하지 않음",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(AOT) · 출판 기술 정합성 / 편집 기준·예외: 편집부(AER)",
+  "acceptance_criteria": [
+    "현재 웹 제호·공유용 사이트명·탭 제목·검색용 매체명은 새 제호로 일치함",
+    "실제 발행 당시 이름·인용·서지·하네스 이력은 유지하고 모호한 문맥은 AER에 연결함",
+    "생성 원본과 지속 출판 요청을 함께 검토해 다음 빌드에서 옛 표시로 되돌아가지 않음",
+    "기존 글 제목·과학 본문·수식·그림·ID·주소·발행일·조회수와 필기 연결을 보존함",
+    "PDF 원판·해시는 바꾸지 않고 웹 변경에는 정확한 이전·이후 해시로 기존 보존 검사를 통과함",
+    "한영·좁은 화면·공유 메타데이터·검색과 실제 HTTPS 공개본을 확인함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "감사와 편집 범위 확인·구현 전",
+    "checks": [
+      "공개 HTML 186개 전수 대조",
+      "AER 편집 기준과 AOT 기술 범위 문서화"
+    ],
+    "evidence": [
+      "ATRL_BRAND_BRIEF.md",
+      "JOURNAL_TEAM_CHARTER.md"
+    ],
+    "remaining_limits": [
+      "기술 구현·후보 검증·배포·운영 확인은 후속 실행에서 수행함"
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "운영팀(AOT)이 최신 원격·실제 배포를 기준으로 생성 경로와 역사적 예외를 확인하고 웹 표시만 바꾸는 후보를 준비함. 편집부(AER)는 예외 문맥과 표시 문구를 감수함"
+}

@@ -1,6 +1,6 @@
-# AI Tech Review editorial policy
+# ATRL 편집 정책
 
-이 문서는 정기 및 번외 AI Tech Review를 같은 품질 기준으로 발행하기 위한 운영 규칙이다.
+이 문서는 정기 및 번외 Agentic Tech Review Letters(ATRL)를 같은 품질 기준으로 발행하기 위한 운영 규칙이다. 에이전틱 편집부(Agentic Editorial Room, AER)가 저술·편집·과학 감수·발행 판단을 맡고, 에이전틱 운영팀(Agentic Operations Team, AOT)이 플랫폼과 출판 기술을 지원한다. 기획·감수·인계·보고에는 편집부(AER)와 운영팀(AOT)의 이름을 함께 사용하며 [확정 명칭과 역할](JOURNAL_TEAM_CHARTER.md)을 따른다.
 
 인용·참고문헌은 [APS 인용 기준](REFERENCE_STYLE.md)을 따른다. 원저자와 원제·정식 서지·판본 정보를 유지하고, 필요한 보충 주석은 표준 번호 체계 안에서 구분한다.
 
