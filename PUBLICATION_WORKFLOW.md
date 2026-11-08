@@ -1,6 +1,6 @@
 # 글 등록과 배포 후보 만들기
 
-이 절차로 자료를 준비하고 발행하는 편집부(AEDAUT)와, 도구·배포 경로·기술 장애를 지원하는 운영팀(ADT)의 책임은 [웹저널 조직과 역할](JOURNAL_TEAM_CHARTER.md)을 따른다. 운영팀(ADT)을 모든 게시의 중간 승인자로 두지 않는다. 기존 게시 요청의 권한과 검증 절차는 유지한다.
+이 절차로 자료를 준비하고 발행하는 편집부(AEDAUT)와, 도구·배포 경로·기술 장애를 지원하는 운영팀(ADOPT)의 책임은 [웹저널 조직과 역할](JOURNAL_TEAM_CHARTER.md)을 따른다. 운영팀(ADOPT)을 모든 게시의 중간 승인자로 두지 않는다. 기존 게시 요청의 권한과 검증 절차는 유지한다.
 
 리뷰는 `publication/reviews/<기존 folder ID>.json`, 공개 PDF는 `archive/entries/<기존 문서 ID>.json` 한 파일씩 관리한다. 기존 ID·발행일·주소는 유지한다. 새 글의 ID는 날짜와 주제를 조합하며 공용 일련번호를 배정하지 않는다. 리뷰 등록 양식은 `templates/review-registration.json`을 참고한다. 기존 55개 등록의 `legacy_position`은 이전 표시 순서를 보존하는 이관 정보다. 새 글에는 넣지 않는다.
 

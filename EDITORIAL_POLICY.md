@@ -1,6 +1,6 @@
 # ATRL 편집 정책
 
-이 문서는 정기 및 번외 Agentic Tech Review Letters(ATRL)를 같은 품질 기준으로 발행하기 위한 운영 규칙이다. 에이전틱 편집·저술팀(Agentic Editorial and Authoring Team, AEDAUT)이 저술·편집·과학 감수·발행 판단을 맡고, 에이전틱 개발운영팀(Agentic DevOps Team, ADT)이 플랫폼과 출판 기술을 지원한다. 기획·감수·인계·보고에는 편집부(AEDAUT)와 운영팀(ADT)의 이름을 함께 사용하며 [확정 명칭과 역할](JOURNAL_TEAM_CHARTER.md)을 따른다.
+이 문서는 정기 및 번외 Agentic Tech Review Letters(ATRL)를 같은 품질 기준으로 발행하기 위한 운영 규칙이다. 에이전틱 편집·저술팀(Agentic Editorial and Authoring Team, AEDAUT)이 저술·편집·과학 감수·발행 판단을 맡고, 에이전틱 개발운영팀(Agentic DevOps Team, ADOPT)이 플랫폼과 출판 기술을 지원한다. 기획·감수·인계·보고에는 편집부(AEDAUT)와 운영팀(ADOPT)의 이름을 함께 사용하며 [확정 명칭과 역할](JOURNAL_TEAM_CHARTER.md)을 따른다.
 
 [ATRL 조직도](ATRL_ORGANIZATION.md)의 아뜰리에 구조에서 사람의 기획·프롬프팅과 Human Audit, 에이전트의 조사·제작·검증, 저술·편집·시각 창작을 함께 운영한다. 기획과 프롬프팅은 조사와 제작·수정 전반에 이어지는 편집 행위이며, 실제 사람 검토와 에이전트 검증의 범위를 구분해 기록한다.
 
