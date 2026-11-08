@@ -12,11 +12,11 @@ import re
 try:
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from .site_brand import SITE_STYLES_VERSION, render_brand_link
+    from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from site_search import search_head, search_form, search_results, search_script
     from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from site_brand import SITE_STYLES_VERSION, render_brand_link
+    from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
 
 BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
 PUBLIC_FIELDS = ("id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href")
@@ -141,7 +141,7 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
     detail = render_detail([doc for doc in issues if doc["date"] == latest_date], language)
     return f'''<!doctype html><html lang="{language}"><head>
       <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>{title} | AI Tech Review Letters</title><meta name="description" content="{description}">
+      <title>{title} | {SITE_NAME}</title><meta name="description" content="{description}">
       <link rel="canonical" href="{canonical}">
       <link rel="alternate" hreflang="ko" href="{base_url}{page_directory('briefings', 'ko', page_number)}"><link rel="alternate" hreflang="en" href="{base_url}{page_directory('briefings', 'en', page_number)}"><link rel="alternate" hreflang="x-default" href="{base_url}{page_directory('briefings', 'ko', page_number)}">
       <meta property="og:type" content="website"><meta property="og:title" content="{title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{canonical}">

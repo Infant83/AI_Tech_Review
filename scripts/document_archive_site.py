@@ -15,12 +15,12 @@ try:
     from .briefing_site import render_briefings, validate_briefings
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from .site_brand import SITE_STYLES_VERSION, render_brand_link
+    from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
     from site_search import search_head, search_form, search_results, search_script
     from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from site_brand import SITE_STYLES_VERSION, render_brand_link
+    from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
 
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
@@ -354,7 +354,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
     return f'''<!doctype html>
 <html lang="{language}"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{title} | AI Tech Review Letters</title>
+  <title>{title} | {SITE_NAME}</title>
   <meta name="description" content="{description}">
   <link rel="canonical" href="{current_url}">
   <link rel="alternate" hreflang="ko" href="{base_url}{page_directory('archive', 'ko', page_number)}">
@@ -512,7 +512,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
         cards.append('<p class="lecture-empty">' + ("Lecture notes will appear here when a series is published." if en else "새 렉처 시리즈가 발행되면 이곳에서 공부를 시작할 수 있습니다.") + '</p>')
     return f'''<!doctype html><html lang="{language}"><head>
       <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>{title} | AI Tech Review Letters</title><meta name="description" content="{description}">
+      <title>{title} | {SITE_NAME}</title><meta name="description" content="{description}">
       <link rel="canonical" href="{canonical}">
       <link rel="alternate" hreflang="ko" href="{base_url}lectures/">
       <link rel="alternate" hreflang="en" href="{base_url}lectures/en/">

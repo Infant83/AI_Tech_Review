@@ -273,7 +273,7 @@ self.addEventListener("push", function (event) {
     ? payload.notification : payload;
   const rawURL = notification.navigate || notification.url || payload.url;
   const url = readerNotificationURL(rawURL);
-  const title = (typeof notification.title === "string" && notification.title ? notification.title : "AI Tech Review Letters").slice(0, 160);
+  const title = (typeof notification.title === "string" && notification.title ? notification.title : "Agentic Tech Review Letters").slice(0, 160);
   const body = (typeof notification.body === "string" ? notification.body : "새 글이 발행되었습니다. New article published.").slice(0, 400);
   const tag = (typeof notification.tag === "string" ? notification.tag : typeof payload.articleId === "string" ? payload.articleId : url).slice(0, 240);
   // Start the visible notification independently. IDB/Badging API failures or

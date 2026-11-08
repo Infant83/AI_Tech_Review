@@ -21,12 +21,12 @@ from urllib.parse import unquote, urlsplit
 try:
     from .hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
-    from .site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
+    from .site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link
     from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 except ImportError:
     from hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
-    from site_brand import ICON_ASSET_VERSION, SITE_STYLES_VERSION, render_brand_link
+    from site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link
     from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 
 
@@ -1381,7 +1381,7 @@ def inject_review_navigation_and_disclosure(
         )
         if 'class="hub-link"' not in html_text:
             fallback_nav = (
-                '<nav class="public-fallback-nav" aria-label="AI Tech Review">'
+                f'<nav class="public-fallback-nav" aria-label="{SITE_NAME}">'
                 f'<a class="hub-link" href="{PUBLIC_BASE_URL}">{hub_label}</a>'
                 "</nav>"
             )
@@ -2764,7 +2764,7 @@ def validate_public_site(manifest: list[dict[str, object]]) -> list[str]:
         )
     for required in (
         f'<link rel="canonical" href="{HUB_PUBLIC_URL}">',
-        '<meta property="og:title" content="AI Tech Review Letters">',
+        f'<meta property="og:title" content="{SITE_NAME}">',
         '<meta name="twitter:card" content="summary_large_image">',
         'href="methods/"',
     ):

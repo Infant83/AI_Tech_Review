@@ -11,6 +11,11 @@ from urllib.parse import urlparse
 
 import markdown
 
+try:
+    from .site_brand import SITE_NAME
+except ImportError:
+    from site_brand import SITE_NAME
+
 
 FRONTMATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
@@ -160,7 +165,7 @@ def render_document_metadata(context: RenderContext) -> str:
     lines.extend(
         [
             '  <meta property="og:type" content="article">',
-            '  <meta property="og:site_name" content="AI Tech Review Letters">',
+            f'  <meta property="og:site_name" content="{SITE_NAME}">',
             f'  <meta property="og:title" content="{title}">',
         ]
     )
@@ -273,7 +278,7 @@ def build_issue_label(metadata: dict[str, str]) -> str:
     except ValueError:
         issue_date = datetime.now().date()
     week = issue_date.isocalendar().week
-    return f"AI Tech Review Letters: Week {week:02d} ({issue_date.isoformat()})"
+    return f"{SITE_NAME}: Week {week:02d} ({issue_date.isoformat()})"
 
 
 def extract_links(markdown_text: str) -> list[LinkItem]:
@@ -2075,7 +2080,7 @@ def render_final_review_template(context: RenderContext) -> str:
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">{SITE_NAME}</p>
         <h1>{html.escape(context.title)}</h1>
         {dek_html}
       </section>

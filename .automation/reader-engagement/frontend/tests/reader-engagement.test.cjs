@@ -31,7 +31,7 @@ before(async () => {
       id: '2026-10-23_test', title: 'Test article', path: '/AI_Tech_Review/reviews/2026-10-23_test/'
     }};
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    response.end(`<!doctype html><html lang="${english ? 'en' : 'ko'}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test review</title><link rel="stylesheet" href="/reader-engagement.css"><style>body{margin:18px;font:16px system-ui}main{max-width:980px;margin:auto}header{display:flex;gap:12px;flex-wrap:wrap}article{min-height:160px}</style></head><body><header><a href="/AI_Tech_Review/">AI Tech Review Letters</a><span class="topbar-links">Existing links</span></header><main><article><h1>기존 기사 제목</h1><p>기존 본문을 유지합니다.</p></article><footer>Existing footer</footer></main><script id="reader-engagement-config" type="application/json">${JSON.stringify(config)}</script><script src="/reader-engagement.js" defer></script></body></html>`);
+    response.end(`<!doctype html><html lang="${english ? 'en' : 'ko'}"><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Test review</title><link rel="stylesheet" href="/reader-engagement.css"><style>body{margin:18px;font:16px system-ui}main{max-width:980px;margin:auto}header{display:flex;gap:12px;flex-wrap:wrap}article{min-height:160px}</style></head><body><header><a href="/AI_Tech_Review/">Agentic Tech Review Letters</a><span class="topbar-links">Existing links</span></header><main><article><h1>기존 기사 제목</h1><p>기존 본문을 유지합니다.</p></article><footer>Existing footer</footer></main><script id="reader-engagement-config" type="application/json">${JSON.stringify(config)}</script><script src="/reader-engagement.js" defer></script></body></html>`);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
@@ -928,10 +928,10 @@ test('service worker allows only same-origin in-scope notification links and alw
   let promise;
   handlers.push({ data: { json: () => { throw Error('invalid JSON'); } }, waitUntil: p => { promise = p; } });
   await promise;
-  assert.equal(shown.at(-1).title, 'AI Tech Review Letters');
+  assert.equal(shown.at(-1).title, 'Agentic Tech Review Letters');
   handlers.push({ data: { json: () => ({ title: { toString: null }, body: { toString: null }, articleId: { toString: null } }) }, waitUntil: p => { promise = p; } });
   await promise;
-  assert.equal(shown.at(-1).title, 'AI Tech Review Letters');
+  assert.equal(shown.at(-1).title, 'Agentic Tech Review Letters');
   assert.match(shown.at(-1).options.body, /New article published/);
   assert.equal(Object.hasOwn(handlers, 'fetch'), false, 'must not rewrite or cache article requests');
 });

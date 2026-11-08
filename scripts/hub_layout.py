@@ -12,14 +12,14 @@ try:
     from .listing_images import image_attributes
     from .listing_pagination import page_prefix, page_directory, page_slice, pagination, pagination_script
     from .document_archive_site import render_library_navigation
-    from .site_brand import render_brand_link
+    from .site_brand import SITE_NAME, render_brand_link
 except ImportError:
     from hub_localization import localize_manifest
     from site_search import search_head, search_form, search_results, search_script
     from listing_images import image_attributes
     from listing_pagination import page_prefix, page_directory, page_slice, pagination, pagination_script
     from document_archive_site import render_library_navigation
-    from site_brand import render_brand_link
+    from site_brand import SITE_NAME, render_brand_link
 
 
 HUB_URL = "https://infant83.io/AI_Tech_Review/"
@@ -190,7 +190,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     if items and items[0].get("thumbnail"):
         image = escape(HUB_URL + str(items[0]["thumbnail"]))
         image_meta = f'<meta property="og:image" content="{image}"><meta name="twitter:image" content="{image}">'
-    brand = render_brand_link(prefix).replace('<span class="brand-name">AI Tech Review Letters</span>', '<span class="brand-name"><b>AI Tech Review</b> <small>LETTERS</small></span>')
+    brand = render_brand_link(prefix, stacked=True)
     if en:
         brand = brand.replace(f'href="{prefix}index.html"', f'href="{prefix}en/index.html"', 1)
     navigation = render_library_navigation(documents, "reviews", language, prefix)
@@ -205,7 +205,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Tech Review Letters</title>
+  <title>{SITE_NAME}</title>
   <meta name="description" content="{escape(description)}">
   <link rel="canonical" href="{canonical}">
   <link rel="alternate" hreflang="ko" href="{ko_page}">
@@ -213,14 +213,14 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
   <link rel="alternate" hreflang="x-default" href="{ko_page}">
   <link rel="home" href="{prefix}index.html" data-hub-home data-hub-page="{page_number}">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="AI Tech Review Letters">
-  <meta property="og:title" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="{SITE_NAME}">
+  <meta property="og:title" content="{SITE_NAME}">
   <meta property="og:description" content="{escape(description)}">
   <meta property="og:url" content="{canonical}">
   <meta property="og:locale" content="{'en_US' if en else 'ko_KR'}">
   {image_meta}
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Tech Review Letters">
+  <meta name="twitter:title" content="{SITE_NAME}">
   <meta name="twitter:description" content="{escape(description)}">
   <script src="{prefix}assets/hub-preferences.js?v={preferences_version}"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -270,7 +270,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     <div class="discovery-more-wrap"><button class="discovery-more" id="review-more" type="button" hidden>{'Show more' if en else '더 보기'}</button></div>
   </main>
   <footer class="site-footer">
-    <div><strong>AI Tech Review Letters</strong><p>{escape(description)}</p></div>
+    <div><strong>{SITE_NAME}</strong><p>{escape(description)}</p></div>
     <nav class="hub-footer-links" aria-label="{'Information' if en else '하단 안내'}">{icon_link(EDITOR_URL, editor_label, 'editor')}{icon_link(prefix + 'methods/', methods_label, 'methods')}{icon_link(prefix + 'methods/#reader-metrics', data_label, 'info')}{icon_link('mailto:' + CONTACT_EMAIL, mail_label, 'mail')}</nav>
     <div data-reader-site-metrics></div>
   </footer>
