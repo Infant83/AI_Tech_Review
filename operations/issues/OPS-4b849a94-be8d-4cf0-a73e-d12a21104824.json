@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
+  "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
+  "record_version": 1,
+  "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
+  "type": "개발 과제 제안",
+  "created_at": "2026-11-08T00:11:15Z",
+  "updated_at": "2026-11-08T00:11:15Z",
+  "status": "received",
+  "priority": "P2",
+  "source": {
+    "kind": "사용자 제안",
+    "reference": null,
+    "summary": "게시물 관리·동시 작업·사용 경험을 개선하는 동적 기능을 단계적으로 개발하고 실제 운영 피드백으로 보완하는 방향의 제안"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": ["https://infant83.io/AI_Tech_Review/"],
+    "source_paths": [
+      "PUBLICATION_WORKFLOW.md",
+      "SITE_OPERATIONS.md",
+      "scripts/prepare_publication.py",
+      ".automation/cloudflare/reader-engagement/src/study-library.js"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "a1189c8d6d46d1b55acd046c99a89d94a650160f",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [],
+    "expected": "웹 관리 화면과 에이전트가 같은 게시 경로를 사용하고 수정 충돌·중복 발행·실패 상태를 확인하며 기존 공개 자료를 보존함",
+    "actual": "원본·글별 등록정보·출판 요청·검증된 정적 빌드 절차가 있음. 개인 학습 초안 코드는 있으나 정식 공개 게시 관리 도구와 발행 연결은 별도 개발이 필요함"
+  },
+  "evidence": [
+    {
+      "kind": "문서 확인",
+      "reference": "PUBLICATION_WORKFLOW.md",
+      "finding": "글별 독립 등록·입력 해시·최신 공개본 비교·독립 후보·동시 작업 통합 절차를 재사용할 수 있음"
+    },
+    {
+      "kind": "소스 확인",
+      "reference": ".automation/cloudflare/reader-engagement/src/study-library.js",
+      "finding": "개인 초안과 검토 기능이 있으나 승인 결과가 공개 발행으로 연결되지 않으며 정식 협업 편집의 기준 버전 검사도 별도 설계가 필요함"
+    }
+  ],
+  "limitations": [
+    "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
+    "이번 기획에서 운영 서버의 모든 초안 기능·저장소 연결 활성화를 검증한 것은 아님",
+    "수식·그림·한영 본문을 자유롭게 바꾸는 편집기와 기존 모든 글의 형식 변환은 범위·공수를 별도로 확인해야 함",
+    "현재 기록은 설계 제안이며 구현·예약 실행·배포 완료 상태가 아님"
+  ],
+  "policy_decision": {
+    "state": "제안",
+    "rationale": "공개 글의 정적 제공과 기존 비주얼·주소를 보존하면서 관리·게시 기능을 확장하는 방향을 우선 검토함. 원본을 한곳으로 정해 Git과 DB의 이중 원본 충돌을 방지함",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": "운영 정책과 첫 개발 범위의 해결 조건·원본 관리 방식·권한을 구체화할 때"
+  },
+  "authority": {
+    "basis": "단계별 개발 운영 팀과 사이트 개편 운영 정책의 기획 요청",
+    "current_scope": "계획·기술 범위·운영 절차 정리",
+    "additional_decision": null
+  },
+  "owner_role": "운영 조정",
+  "acceptance_criteria": [
+    "관리 화면과 에이전트가 사용할 공통 원본·게시 계약을 정의함",
+    "동일 문서의 기준 버전이 달라지면 조용히 덮어쓰지 않고 충돌을 표시함",
+    "같은 요청을 반복해도 게시 작업·알림이 중복되지 않도록 검증함",
+    "기존 URL·ID·수식·그림·한영 연결·PDF 판본과 필기 연결을 보존함",
+    "발행 실패가 기존 공개본을 바꾸지 않으며 실패 이유와 재시도를 확인할 수 있음",
+    "원본·첨부·운영 데이터의 내보내기·복원 범위를 구분하고 검증함",
+    "관리 화면의 코드가 독자 페이지 초기 로딩에 불필요하게 포함되지 않음"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "기획 근거 확인",
+    "checks": ["기존 게시 절차와 개인 초안 코드의 재사용 범위 확인"],
+    "evidence": [
+      "PUBLICATION_WORKFLOW.md",
+      "SITE_OPERATIONS.md",
+      ".automation/cloudflare/reader-engagement/src/study-library.js"
+    ],
+    "remaining_limits": ["정식 관리 도구의 구현·통합·운영 검증 전"]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "개발 계획의 첫 단계로 원본 관리 방식·편집 권한·동시 수정 계약·기존 게시 파이프라인 연결 범위를 나눠 설계함"
+}

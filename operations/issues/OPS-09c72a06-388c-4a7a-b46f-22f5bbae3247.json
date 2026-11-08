@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "OPS-09c72a06-388c-4a7a-b46f-22f5bbae3247",
+  "uuid": "09c72a06-388c-4a7a-b46f-22f5bbae3247",
+  "record_version": 1,
+  "title": "당겨서 새로고침할 때 진행 상태를 알아보기 쉽게 표시",
+  "type": "사용성 개선 제안",
+  "created_at": "2026-11-08T00:11:15Z",
+  "updated_at": "2026-11-08T00:11:15Z",
+  "status": "needs_evidence",
+  "priority": "P3",
+  "source": {
+    "kind": "사용자 피드백",
+    "reference": null,
+    "summary": "당겨서 새로고침할 때 회전 표시가 보이지 않는 이유와 개선 가능성을 확인한 데서 시작한 제안"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": ["https://infant83.io/AI_Tech_Review/"],
+    "source_paths": [
+      ".automation/reader-engagement/frontend/reader-updates.js",
+      ".automation/reader-engagement/frontend/reader-engagement.css"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "a1189c8d6d46d1b55acd046c99a89d94a650160f",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [],
+    "expected": "화면 맨 위에서 당겨 새로고침할 때 진행 상태와 완료·실패를 알아볼 수 있음",
+    "actual": "소스상 일반 탭은 브라우저 자체 동작을 유지하고 설치형 화면은 글자 배지를 표시함. 자체 회전 애니메이션은 없으며 실제 제보 환경에서의 동작은 아직 확인하지 않음"
+  },
+  "evidence": [
+    {
+      "kind": "소스 확인",
+      "reference": ".automation/reader-engagement/frontend/reader-updates.js",
+      "finding": "설치형 화면에서 당김·놓기·확인 중 문구를 표시하고 최신 정보 확인 후 현재 페이지를 다시 불러옴"
+    },
+    {
+      "kind": "소스 확인",
+      "reference": ".automation/reader-engagement/frontend/reader-engagement.css",
+      "finding": "당김 상태 배지에 회전 애니메이션이 정의되어 있지 않음"
+    }
+  ],
+  "limitations": [
+    "사용 기기·브라우저·일반 탭 또는 설치형 화면 여부가 확인되지 않음",
+    "실제 휴대폰의 제스처·회전 표시·완료 시점은 아직 재현하지 않음",
+    "코드의 표시 방식 확인을 운영 결함의 확정이나 수정 완료로 간주하지 않음"
+  ],
+  "policy_decision": {
+    "state": "제안",
+    "rationale": "정적 공개 구조를 유지하면서 소량의 화면 코드로 새로고침 진행 상태를 개선할 수 있는 후보이며 실제 환경과 동작 확인 후 구체화함",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": "사용 환경을 확인하거나 실제 기기에서 일반 탭·설치형 화면의 동작을 비교할 수 있을 때"
+  },
+  "authority": {
+    "basis": "단계별 사이트 개발 운영 기획과 피드백 기록 요청",
+    "current_scope": "현황·제안·확인할 사항 기록",
+    "additional_decision": null
+  },
+  "owner_role": "운영 조정",
+  "acceptance_criteria": [
+    "확인한 기기·브라우저·화면 모드와 재현 결과를 기록함",
+    "설치형 화면에서 갱신 진행·완료·실패 상태를 구분할 수 있음",
+    "일반 브라우저의 새로고침 제스처와 중복 동작하지 않음",
+    "모션 감소 설정과 느린 연결·오프라인 동작을 고려함",
+    "기존 읽기·검색·필기 동선의 회귀 여부를 확인함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "소스 확인",
+    "checks": ["당김 동작의 적용 조건과 상태 배지 소스 확인"],
+    "evidence": [
+      ".automation/reader-engagement/frontend/reader-updates.js",
+      ".automation/reader-engagement/frontend/reader-engagement.css"
+    ],
+    "remaining_limits": ["실제 제보 환경의 실행 검증 전"]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "기기·브라우저·일반 탭 또는 설치형 화면 여부를 확인하고 재현 가능한 환경에서 상태 표시를 비교함"
+}
