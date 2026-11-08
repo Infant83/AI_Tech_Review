@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-f6deea28-7843-4409-9b02-84a7f23e198e",
   "uuid": "f6deea28-7843-4409-9b02-84a7f23e198e",
-  "record_version": 4,
+  "record_version": 5,
   "title": "2026-09-11 OLED 리뷰 PDF의 잘린 파일 복구",
   "type": "공개 자료 열람 결함",
   "created_at": "2026-11-08T12:52:03Z",
-  "updated_at": "2026-11-08T14:25:13Z",
-  "status": "planned",
+  "updated_at": "2026-11-08T15:00:05Z",
+  "status": "in_progress",
   "priority": "P2",
   "source": {
     "kind": "에이전트 점검",
@@ -51,12 +51,29 @@
       "kind": "독립 파일 검사",
       "reference": null,
       "finding": "PyMuPDF·pypdf·pdfplumber에서 페이지 읽기에 실패하여 단일 추출 도구의 해석 문제와 구분함"
+    },
+    {
+      "kind": "최초 Git 원본·공개 이관 조사",
+      "reference": "https://github.com/Infant83/AI_Tech_Review/commit/af8390fbad9cce897e7882ce487d948a8024daf4",
+      "finding": "최초 등록 5경로와 후속 공개 이관, 해당 주제의 도달 가능한 Git 이력에서 PDF blob은 cc5550ca1eef22843c59c92ae93b003cafa9e5c5 하나다. 접근 가능한 작업 사본 8개의 artifacts PDF도 같은 손상 SHA-256이다. 최근 개편이 파일을 자른 것으로 볼 근거는 없다."
+    },
+    {
+      "kind": "보유 공개 릴리스 복구 사본 3개 조사",
+      "reference": "operations/runs/20261108T150005Z-1d9fce7e-f928-4af4-82fa-c6efd2c78c57.md",
+      "finding": "b9ba52b 기준 사본과 16f1f2a·a1189c8 릴리스 사본의 한영 경로 총 6개 모두 같은 786445바이트·손상 SHA-256이며 PyMuPDF에서 0페이지다. 조사한 사본에서는 정상 원판을 찾지 못했다."
+    },
+    {
+      "kind": "원본 구조와 첨부의 편집 범위 확인",
+      "reference": "2026-09-11_weekly-oled-inverse-design-excitonic-reliability/reports/2026-09-11_weekly-oled-inverse-design-excitonic-reliability_final_review.md",
+      "finding": "PDF는 세 번째 객체의 이미지 스트림 중간에서 끊기고 페이지·카탈로그·xref·EOF 구조가 없다. 원고는 첨부를 영문 기술 브리프로 소개한다. 한영 페이지가 영어 PDF 하나를 공유한 점 자체를 번역 누락으로 판정하지 않으며, 현재 HTML 전체를 원 브리프와 동일한 판본으로 간주하지 않는다."
     }
   ],
   "limitations": [
     "실제 기기·브라우저의 PDF 뷰어는 아직 시험하지 않음",
     "원 파일이 잘린 시점과 생성·게시 원인은 아직 확인하지 않음",
-    "HTML 본문은 공개되어 있으며 이번 검사에서는 PDF나 사이트를 변경하지 않음"
+    "HTML 본문은 공개되어 있으며 이번 검사에서는 PDF나 사이트를 변경하지 않음",
+    "접근 가능한 Git·작업 사본·보유 릴리스 복구 사본에서 정상 PDF를 찾지 못했으며, 외부 또는 개인 보관 원본의 존재는 확인하지 않음",
+    "PDF 생성 코드·TeX·별도 기술 브리프 원고는 확인되지 않음. 재생성에는 영문 기술 브리프의 범위와 과학 내용에 대한 편집 검토가 필요함"
   ],
   "policy_decision": {
     "state": "후속 조치 채택",
@@ -85,17 +102,23 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "기존 결함 재현",
+    "status": "정상 원본·이력·보유 복구 사본 조사 완료, 복구 전",
     "checks": [
       "실제 공개 바이트와 배포 전후 SHA-256 일치",
       "독립 파서 세 종류에서 페이지 읽기 실패",
-      "끝 표시와 교차 참조 시작 표시가 없음"
+      "끝 표시와 교차 참조 시작 표시가 없음",
+      "독립 조사자와 최초 Git blob·SHA-256·원고의 영문 브리프 소개 대조",
+      "보유 릴리스 사본 3개·한영 PDF 6개에서 손상 상태 확인",
+      "실제 HTTPS 한영 PDF에서 기존 손상 재현·HTML 대체 읽기 경로 HTTP 200 확인"
     ],
     "evidence": [
-      "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf"
+      "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf",
+      "operations/runs/20261108T150005Z-1d9fce7e-f928-4af4-82fa-c6efd2c78c57.md",
+      "https://github.com/Infant83/AI_Tech_Review/commit/af8390fbad9cce897e7882ce487d948a8024daf4"
     ],
     "remaining_limits": [
-      "복구 후보·구현·배포·복구 후 검증은 수행하지 않음"
+      "정상 원판 복구나 PDF 재생성·후보 배포·브라우저 PDF 읽기 검증은 수행하지 않음",
+      "원 첨부의 영문 기술 브리프 범위는 편집부(AEDAUT)의 후속 검토가 필요함"
     ]
   },
   "observation": {
@@ -105,8 +128,8 @@
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
-    "execution_reference": null,
-    "result": "이번 검사는 읽기 전용이며 실제 복구는 수행하지 않음"
+    "execution_reference": "operations/runs/20261108T150005Z-1d9fce7e-f928-4af4-82fa-c6efd2c78c57.md",
+    "result": "읽기 전용 원본·이력·보유 백업 조사를 수행했지만 정상 PDF를 찾지 못했다. 손상 bytes를 덮어쓰거나 실제 복구·재생성을 하지 않았다."
   },
-  "next_action": "운영팀(ADOPT)이 정상 PDF 판본이 남은 원본·Git 이력·복구 사본을 먼저 확인함. 재생성이 필요하면 편집부(AEDAUT)가 본문·수식·그림·한영 대응을 감수하고 ADOPT가 판본·주소·필기 연결과 실제 공개 읽기를 검증함"
+  "next_action": "편집부(AEDAUT)의 기록에 영문 기술 브리프의 범위·원고 대응 검토를 연결한다. 확인된 정상 외부 원판이 없으면 검토한 범위에서 새 판본 후보를 재생성하고 과학 내용·수식·그림·한영 첨부 연결을 감수한다. 운영팀(ADOPT)은 기존 손상 bytes와 새 판본을 구분해 보존하며 주소·판본·필기·출판 해시와 실제 공개 읽기를 검증한다."
 }
