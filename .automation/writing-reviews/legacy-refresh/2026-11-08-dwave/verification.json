@@ -5,14 +5,13 @@
   "editorial_revision": "2026-11-08",
   "evidence_cutoff": "2026-08-27",
   "checked_at": "2026-11-08T01:35:32.154108+00:00",
-  "status": "candidate_verified_publication_pending",
+  "status": "automatic_redeployment_candidate_verified_live_pending",
   "independent_reviews": {
     "science": "passed",
     "prose": "passed",
     "references": "passed"
   },
   "local_checks": {
-    "python_tests_passed": 291,
     "node_tests_passed": 12,
     "release_continuity": {
       "ok": true,
@@ -46,11 +45,40 @@
       "page_errors": [],
       "citation_and_figure_links": "passed"
     },
-    "metrics_config": "both variants match preceding public endpoint, basePath and siteId"
+    "metrics_config": "both variants match preceding public endpoint, basePath and siteId",
+    "python_tests_run": 296,
+    "python_tests_skipped": 1,
+    "python_test_result": "OK; no failures"
   },
   "live": null,
   "limits": [
     "No new QPU/DFT/model training or full benchmark rerun.",
     "No actual iPhone/Safari, reader study, counter-service health or phone-push receipt test."
-  ]
+  ],
+  "first_publication_attempt": {
+    "commit": "04eddbcc3f75d9e5e019958df04a2455cc874465",
+    "workflow_run": 42434929453,
+    "observed_at": "2026-11-08T01:42:07.609140+00:00",
+    "selected_reviews": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark"
+    ],
+    "rebuilt_reviews": [],
+    "content_changes": [],
+    "result": "HTTPS article remained the prior manuscript; not marked complete",
+    "next": "repair automatic rebuild selection and redeploy reviewed source"
+  },
+  "repair_candidate": {
+    "selected_reviews": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark"
+    ],
+    "rebuilt_reviews": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark"
+    ],
+    "article_bytes_match_prior_reviewed_candidate": true,
+    "all_other_article_bytes_preserved": true,
+    "release_check": "passed",
+    "payload_check": "passed",
+    "scope": "same automatic build invocation as CI, without --review",
+    "independent_technical_review": "passed; no mandatory findings"
+  }
 }

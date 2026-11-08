@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "OPS-58a4237a-48d8-40da-af30-4b0edc80c943",
+  "uuid": "58a4237a-48d8-40da-af30-4b0edc80c943",
+  "record_version": 1,
+  "title": "새 검수 원고의 첫 CI 게시가 구판 seed와 baseline 일치로 생략됨",
+  "type": "게시 요청 재생 결함",
+  "created_at": "2026-11-08T01:44:10+00:00",
+  "updated_at": "2026-11-08T01:47:51+00:00",
+  "status": "validating",
+  "priority": "P1",
+  "source": {
+    "kind": "실제 배포 후 원문 대조",
+    "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42434929453",
+    "summary": "검수한 D-Wave 한영 개정판 대신 기존 본문이 유지된 배포를 통합 담당이 확인했다."
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-08-27_dwave-molecular-inverse-design-benchmark"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/",
+      "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/"
+    ],
+    "source_paths": [
+      "scripts/prepare_publication.py",
+      "tests/test_prepare_publication.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "04eddbc",
+    "environment": {
+      "device": null,
+      "operating_system": "GitHub Pages CI; local Python3.9 regression",
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "명시 --review로 새 dist 후보를 검수하고 publication/requests와 publication_changes를 저장한다. site/의 원 공개본은 보존한다.",
+      "CI는 구판 source site와 구판 실제 배포 baseline으로 후보를 만든다.",
+      "구판끼리 같다는 이유로 새 검수 요청을 재생성 대상에서 제외한다."
+    ],
+    "expected": "검수 요청에 연결된 after 해시의 새 본문·그림을 게시 후보에 넣는다.",
+    "actual": "통합 담당이 해당 run의 selected_reviews에 대상이 있으나 rebuilt_reviews와 content_changes가 비어 있음을 확인했다. 실제 본문도 이전 판이었다."
+  },
+  "evidence": [
+    {
+      "kind": "통합 담당의 실제 배포 확인",
+      "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42434929453",
+      "finding": "카탈로그는 새 revision이지만 한영 본문은 구판이었다. 캐시 가설 대신 CI의 구판 재사용 경로를 원인으로 확인했다."
+    },
+    {
+      "kind": "수정 전후 회귀 재현",
+      "reference": "tests/test_prepare_publication.py",
+      "finding": "첫 CI의 구seed+구baseline+새요청 경로와 no-op 빌드 성공 방지 검사 2개가 수정 전 실패하고 수정 후 통과했다."
+    }
+  ],
+  "limitations": [
+    "로컬 회귀 통과와 실제 복구 배포 완료를 구분한다. 운영 HTTPS 본문과 새 CI artifact 검증은 통합 담당이 마무리한다.",
+    "이 수정은 새 과학 결과·원고·그림·site 파일을 편집하지 않는다."
+  ],
+  "policy_decision": {
+    "state": "복구 수정 채택",
+    "rationale": "기존 승인된 개정판이 실제 게시되지 않는 기술 결함이다. 기존 검수 출력 after 해시를 재사용해 최소 수정한다.",
+    "related_issues": [
+      "OPS-503fef68-76c5-4805-a1e4-0193eac2deb1"
+    ],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "승인된 순차 개편의 실제 게시 복구와 ATLAS 기술지원",
+    "current_scope": "게시기 재사용 판단·출력 검증과 회귀 검사",
+    "additional_decision": null
+  },
+  "owner_role": "ATLAS 인프라·기술지원",
+  "acceptance_criteria": [
+    "구seed와 구baseline이 같아도 해당 검수 declaration.after와 다르면 요청을 재생성한다.",
+    "검수 after까지 일치하는 최신 seed의 metadata-only 갱신은 원고를 재생성하지 않는다.",
+    "artifact-only 개정 재생·검수 후 source/보호 등록정보 변경 거절을 유지한다.",
+    "기존 공개 요청의 after 근거가 없으면 명시 --review 재검수로 복구하도록 오류를 내며, 신규 등록은 허용한다. 명시 무변경 검수는 실제 before==after를 기록해 다음 메타데이터 갱신에서 재사용한다.",
+    "implicit replay가 검수 after에 도달하지 못하면 성공 report와 candidate marker를 만들지 않는다.",
+    "새 CI의 rebuilt_reviews와 content_changes, 실제 한영 HTTPS 본문이 검수 후보와 일치한다."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "로컬 회귀 통과; 독립 감수·통합·실제 복구 배포 확인 중",
+    "checks": [
+      "prepare_publication 15개 통과: 수정 전 실패 확인한 첫 CI 재생·출력 검증2개와 after 누락 거절·무변경 후 재사용·신규 등록3개 회귀 포함",
+      "publication_intent 7개 통과: source·보호 등록정보 drift와 legacy 입력검증 유지",
+      "publication_release 12개 통과: 정밀 before/after·연속성·실제 baseline 보호 유지",
+      "git diff --check 통과",
+      "통합 담당이 실제 D-Wave 자동 후보의 rebuilt_reviews, 최초 검수 후보와 전체55편 reviews bytes 일치, release와 payload 통과를 확인함"
+    ],
+    "evidence": [
+      "tests/test_prepare_publication.py",
+      "tests/test_publication_intent.py",
+      "tests/test_publication_release.py",
+      ".automation/writing-reviews/legacy-refresh/2026-11-08-dwave/verification.json"
+    ],
+    "remaining_limits": [
+      "통합 담당의 새 후보·CI·운영 HTTPS 판본 확인"
+    ]
+  },
+  "observation": {
+    "status": "복구 배포 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": "기사 원고나 site를 수작업으로 덮지 않고 기존 검수 dist·요청·변경 해시로 게시 경로를 복구한다."
+  },
+  "next_action": "독립 기술 감수 후 통합 담당이 같은 원고로 후보를 재생성하고 CI와 실제 한영 본문을 검증한다."
+}

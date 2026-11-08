@@ -154,6 +154,107 @@ class PreparePublicationTests(unittest.TestCase):
         declaration = json.loads((self.root / "publication_changes" / (review.folder + ".json")).read_text())
         self.assertEqual(set(declaration["files"]), {href})
 
+    def test_first_ci_replays_checked_request_when_seed_and_deployed_baseline_are_both_old(self):
+        review, dist, href = self.review_fixture()
+        original_article = (self.source / href).read_bytes()
+
+        def publish_checked(arguments):
+            self.assertIn(review.folder, arguments)
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+            # Preparing a candidate intentionally leaves site/ unchanged. The
+            # first CI run therefore has both an old committed seed and an old
+            # deployed baseline, plus the checked request and after hashes.
+            later = self.root / "first-ci-candidate"
+            report = prepare.prepare_candidate(later, revision="b" * 40,
+                                                baseline_snapshot=self.output / "baseline.json")
+
+        self.assertEqual(report["rebuilt_reviews"], [review.folder])
+        self.assertEqual(report["comparison"]["content_changes"], [href])
+        self.assertEqual((later / "site" / href).read_bytes(), (dist / "index.html").read_bytes())
+        self.assertEqual((self.source / href).read_bytes(), original_article)
+
+    def test_replayed_request_cannot_succeed_without_its_checked_after_content(self):
+        review, dist, href = self.review_fixture()
+
+        def publish_checked(arguments):
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+
+        later = self.root / "no-op-ci-candidate"
+        with patch.object(publisher, "main", return_value=0):
+            with self.assertRaisesRegex(ValueError, "reviewed after hashes"):
+                prepare.prepare_candidate(later, revision="b" * 40,
+                                            baseline_snapshot=self.output / "baseline.json")
+        self.assertFalse((later / "report.json").exists())
+        self.assertFalse((later / ".publication-candidate.json").exists())
+
+    def test_unbound_published_request_fails_closed_before_reusing_an_old_seed(self):
+        review, dist, href = self.review_fixture()
+
+        def publish_checked(arguments):
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+        (self.root / "publication_changes" / (review.folder + ".json")).unlink()
+        later = self.root / "unbound-ci-candidate"
+        with patch.object(publisher, "main") as build:
+            with self.assertRaisesRegex(ValueError, "lacks reviewed after hashes.*--review"):
+                prepare.prepare_candidate(later, revision="b" * 40,
+                                            baseline_snapshot=self.output / "baseline.json")
+        build.assert_not_called()
+        self.assertFalse(later.exists())
+
+    def test_explicit_no_op_records_output_binding_and_next_metadata_build_reuses_it(self):
+        review, dist, href = self.review_fixture()
+        (dist / "index.html").write_bytes((self.source / href).read_bytes())
+
+        def publish_checked(arguments):
+            self.assertIn(review.folder, arguments)
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            report = prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder])
+        self.assertEqual(report["comparison"]["content_changes"], [])
+        declaration = json.loads((self.root / "publication_changes" / (review.folder + ".json")).read_text())
+        self.assertEqual(declaration["files"][href]["before"], declaration["files"][href]["after"])
+
+        def metadata_only(arguments):
+            self.assertNotIn(review.folder, arguments)
+            return 0
+
+        with patch.object(publisher, "main", side_effect=metadata_only):
+            later = prepare.prepare_candidate(self.root / "no-op-metadata-candidate", revision="b" * 40,
+                                                baseline_snapshot=self.output / "candidate.json")
+        self.assertEqual(later["rebuilt_reviews"], [])
+
+    def test_new_review_with_no_existing_after_hashes_can_publish(self):
+        review, dist, href = self.review_fixture()
+        manifest = (self.source / "manifest.json").read_text()
+        (self.source / "manifest.json").write_text("[]")
+        (self.source / href).unlink()
+
+        def publish_new(arguments):
+            self.assertIn(review.folder, arguments)
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            (publisher.SITE_DIR / "manifest.json").write_text(manifest)
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_new):
+            report = prepare.prepare_candidate(self.output, revision="a" * 40)
+        self.assertEqual(report["rebuilt_reviews"], [review.folder])
+        self.assertEqual((self.output / "site" / href).read_bytes(), (dist / "index.html").read_bytes())
+        self.assertTrue((self.root / "publication/requests" / (review.folder + ".json")).is_file())
+
     def test_source_change_during_build_does_not_record_a_stale_review_request(self):
         review, dist, href = self.review_fixture()
         def build(arguments):
