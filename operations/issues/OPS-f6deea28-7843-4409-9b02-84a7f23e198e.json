@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "OPS-f6deea28-7843-4409-9b02-84a7f23e198e",
+  "uuid": "f6deea28-7843-4409-9b02-84a7f23e198e",
+  "record_version": 1,
+  "title": "2026-09-11 OLED 리뷰 PDF의 잘린 파일 복구",
+  "type": "공개 자료 열람 결함",
+  "created_at": "2026-11-08T12:52:03Z",
+  "updated_at": "2026-11-08T12:52:03Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "에이전트 점검",
+    "reference": null,
+    "summary": "기존 제호 잔존 여부를 조사하면서 공개 PDF 한 편의 한영 경로가 같은 손상 파일을 전달함을 발견함"
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-09-11_weekly-oled-inverse-design-excitonic-reliability"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf",
+      "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/en/oled_inverse_design_weekly_brief_2026-09-11.pdf"
+    ],
+    "source_paths": [
+      "publication/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability.json"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "4a3f35acf2c8efb593896207d40d70175580fb00",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "공개 한영 PDF 경로를 HTTPS로 내려받아 배포 아티팩트의 SHA-256과 비교함",
+      "PyMuPDF에서 페이지 수를 확인하고 pypdf·pdfplumber로 독립 열기를 시도함"
+    ],
+    "expected": "해당 리뷰의 한영 PDF가 정상적으로 열리고 각 페이지를 읽을 수 있음",
+    "actual": "두 경로가 같은 786445바이트를 전달함. PyMuPDF는 복구 상태에서 0페이지, pypdf와 pdfplumber는 예상치 못한 EOF 오류를 반환함. EOF·startxref 표시가 없으며 같은 손상 바이트가 제호 변경 전 배포에도 존재함"
+  },
+  "evidence": [
+    {
+      "kind": "공개 파일 대조",
+      "reference": "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf",
+      "finding": "HTTP 200, application/pdf, SHA-256 ae9b77889c84795c2b630993c097e0d9fc69c81b9e6c837302f9a6ce9e0eaf43. 한영 두 경로·제호 변경 전 기준·현재 배포·로컬 사본이 동일함"
+    },
+    {
+      "kind": "독립 파일 검사",
+      "reference": null,
+      "finding": "PyMuPDF·pypdf·pdfplumber에서 페이지 읽기에 실패하여 단일 추출 도구의 해석 문제와 구분함"
+    }
+  ],
+  "limitations": [
+    "실제 기기·브라우저의 PDF 뷰어는 아직 시험하지 않음",
+    "원 파일이 잘린 시점과 생성·게시 원인은 아직 확인하지 않음",
+    "HTML 본문은 공개되어 있으며 이번 검사에서는 PDF나 사이트를 변경하지 않음"
+  ],
+  "policy_decision": {
+    "state": "후속 조치 채택",
+    "rationale": "공개 PDF 읽기가 막히는 확인된 결함이다. 웹 본문이라는 대체 경로가 있어 P2로 분류하고 정상 판본의 복구와 게시 검증을 후속 처리함",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "사용자의 지속적인 인프라·기술지원 운영 승인 및 운영 정책의 결함 기록·검증 범위",
+    "current_scope": "확인한 결함과 증거를 기록함. 후속 작업에서 정상 원본·백업을 조사하고 복구 후보를 검증함",
+    "additional_decision": null
+  },
+  "owner_role": "ATLAS 출판 기술 정합성",
+  "acceptance_criteria": [
+    "정상 원본이나 백업에서 복구한 PDF의 페이지·그림·수식과 한영 대응을 확인함",
+    "기존 게시물 ID·주소·발행일과 HTML 내용을 보존함",
+    "PDF를 교체할 경우 판본·필기·아카이브 연결을 기존 출판 절차에 따라 보존함",
+    "배포할 때 실제 HTTPS 파일을 다시 내려받아 독립 파서와 브라우저에서 읽기를 검증함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "기존 결함 재현",
+    "checks": [
+      "실제 공개 바이트와 배포 전후 SHA-256 일치",
+      "독립 파서 세 종류에서 페이지 읽기 실패",
+      "끝 표시와 교차 참조 시작 표시가 없음"
+    ],
+    "evidence": [
+      "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf"
+    ],
+    "remaining_limits": [
+      "복구 후보·구현·배포·복구 후 검증은 수행하지 않음"
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": "SITE_OPERATIONS.md",
+    "execution_reference": null,
+    "result": "이번 검사는 읽기 전용이며 실제 복구는 수행하지 않음"
+  },
+  "next_action": "정상 PDF 판본이 남은 원본·Git 이력·복구 사본을 먼저 확인하고, 없으면 검토된 출판 원본에서 편집부와 내용 대응을 확인한 복구 후보를 준비함"
+}
