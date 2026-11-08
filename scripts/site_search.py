@@ -5,6 +5,11 @@ HTML are indexed. PDF bytes and private authoring sources are never discovered.
 """
 from __future__ import annotations
 
+try:
+    from .site_brand import current_source_title
+except ImportError:
+    from site_brand import current_source_title
+
 import argparse
 import hashlib
 import html
@@ -167,7 +172,7 @@ def build_records(site_dir: Path) -> list[dict]:
             headings += " " + " ".join(" ".join(str(unit.get(key, "")) for key in ("number", "title", "title_en", "summary", "summary_en")) for unit in grouped.get("units", []))
         title, title_en = grouped.get("title", item["title"]), grouped.get("title_en", item.get("title_en", ""))
         summary, summary_en = grouped.get("summary", item["summary"]), grouped.get("summary_en", item.get("summary_en", ""))
-        records.append({"id": item["id"], "scope": scope, "title": title, "title_en": title_en, "url": href, "url_en": "", "date": item["date"], "titles": title + " " + title_en, "topics": " ".join(item.get("tags", [])) + " " + item.get("author", ""), "summary": summary, "summary_en": summary_en, "text": summary + " " + summary_en + " " + item.get("source_title", ""), "headings": headings})
+        records.append({"id": item["id"], "scope": scope, "title": title, "title_en": title_en, "url": href, "url_en": "", "date": item["date"], "titles": title + " " + title_en, "topics": " ".join(item.get("tags", [])) + " " + item.get("author", ""), "summary": summary, "summary_en": summary_en, "text": summary + " " + summary_en + " " + current_source_title(item.get("source_title", "")), "headings": headings})
     seen = set()
     for record in records:
         if record["id"] in seen:

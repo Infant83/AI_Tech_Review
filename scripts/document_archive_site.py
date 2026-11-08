@@ -15,12 +15,12 @@ try:
     from .briefing_site import render_briefings, validate_briefings
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link, current_source_title
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
     from site_search import search_head, search_form, search_results, search_script
     from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
-    from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link, current_source_title
 
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
@@ -319,7 +319,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
         doc_summary = doc_summary or doc["summary"]
         text_language = "en" if en and doc.get("title_en") else doc["language"]
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
-        searchable = " ".join(str(doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "source_title")) + " " + " ".join(doc["tags"])
+        searchable = " ".join(str(current_source_title(doc.get(key, "")) if key == "source_title" else doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "source_title")) + " " + " ".join(doc["tags"])
         if doc.get("author"):
             searchable += " " + doc["author"]
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])

@@ -17,6 +17,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
+try:
+    from .recency_migrations import load_recency_migrations, preserve_display_recency
+except ImportError:
+    from recency_migrations import load_recency_migrations, preserve_display_recency
+
 ROOT = Path(__file__).resolve().parents[1]
 SCOPE = "/AI_Tech_Review/"
 SITE_ROOT = "https://infant83.io" + SCOPE
@@ -256,6 +261,11 @@ def build_updates(site_dir: Path, previous: dict | None = None, *, now: str | No
                     hrefs.append(asset)
         identifier = ("lecture:" if document.get("series") == "lecture-notes" else "archive:") + document["id"]
         add(identifier, document["title"], document["date"], hrefs, assets)
+    # A checked chrome migration may preserve an editorial/read-state identity
+    # only for its exact complete output assets. Raw page and release digests
+    # above remain unchanged. Match after all archive PDF aliases are attached.
+    migrations = load_recency_migrations(ROOT)
+    records = [preserve_display_recency(record, migrations) for record in records]
     return {"version": 1, "pages": pages,
             "articles": sorted(records, key=lambda item: (item["publishedAt"], item["id"]), reverse=True)}
 

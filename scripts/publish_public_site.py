@@ -21,12 +21,12 @@ from urllib.parse import unquote, urlsplit
 try:
     from .hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
-    from .site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from .site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
     from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 except ImportError:
     from hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
-    from site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
     from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
 
 
@@ -2929,6 +2929,13 @@ def main(argv: Iterable[str] | None = None) -> int:
         from .site_search import build_search
     except ImportError:
         from site_search import build_search
+    for page in SITE_DIR.rglob("*.html"):
+        if page.is_symlink():
+            raise ValueError("Brand normalization cannot follow symlink HTML")
+        original = page.read_bytes().decode("utf-8")
+        normalized = normalize_brand_html(original)
+        if normalized != original:
+            page.write_bytes(normalized.encode("utf-8"))
     build_search(SITE_DIR)
     enrich_reader_engagement(SITE_DIR, revision=args.revision)
     validate_reader_artifact(SITE_DIR)

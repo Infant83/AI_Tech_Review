@@ -317,7 +317,7 @@ async function openBytes(bytes, metadata) {
     let saved = true; try { await storage.putDocument(current); } catch { saved = false; storageFailure(); }
     $('document-title').textContent = current.title;
     // Local filenames stay out of the browser title and network-visible query.
-    document.title = `${t('studyNotebook')} | AI Tech Review Letters`;
+    document.title = `${t('studyNotebook')} | Agentic Tech Review Letters`;
     const url = new URL(location.href), fragment = new URLSearchParams();
     const invitation = new URLSearchParams(url.hash.slice(1)).get('invite');
     // The cloud module consumes a private invitation after the PDF module loads.
