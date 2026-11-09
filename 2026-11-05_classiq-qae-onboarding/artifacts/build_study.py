@@ -11,11 +11,11 @@ BASE = 'https://infant83.io/AI_Tech_Review/'
 TITLE = 'Classiq QAE 온보딩 시리즈'
 EN_TITLE = 'Classiq QAE Onboarding Series'
 SUMMARY = ('고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. '
-           '문제 명세부터 상태·관측량·측정·얽힘으로 이어지는 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.')
+           '문제 명세부터 상태·관측량·얽힘을 거쳐 측정 결과의 통계적 해석까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.')
 EN_SUMMARY = ('Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. '
-              'This independent Korean series connects problem specifications, states and observables with measurement and entanglement, using PDFs with derivations, exercises and worked answers.')
+              'This independent Korean series connects problem specifications, states, observables and entanglement with statistical interpretation of measurement results, using PDFs with derivations, exercises and worked answers.')
 INDEX_UPDATED = '2026-11-09'
-PLANNED_NEXT = dict(id='L005', status='planned-not-published', topic='확률·추정·샷·신뢰구간')
+PLANNED_NEXT = dict(id='L006', status='planned-not-published', topic='변분 원리·수치 최적화·오차')
 DETAILS = {
     'L001': dict(
         short='문제 명세와 첫 검산', en='Problem specifications and first checks',
@@ -45,6 +45,13 @@ DETAILS = {
         topics=['밀도행렬', '측정', '순도', '부분추적', 'Bell 상태', '얽힘 증인'],
         exercise_count=8, exercise_page=13, answer_page=14, glossary_page=15, reference_page=16,
         intro='한 기저의 확률표만으로 상태 전체를 정할 수 있는지 묻는다. 중첩과 고전 혼합을 밀도행렬로 표현하고 부분추적·Pauli 상관·얽힘 증인으로 Bell 상태와 분리 혼합을 비교한다.'),
+    'L005': dict(
+        short='확률·추정·샷·신뢰구간', en='Shot budgets, estimation and confidence intervals',
+        summary='허용오차와 신뢰수준을 정해 필요한 샷 수를 계산합니다. 신뢰구간의 경계 사례를 살피고, 에너지 측정과 얽힘 검출에 표본 예산을 적용합니다.',
+        summary_en='Calculate shot budgets from a chosen error tolerance and confidence level. Examine confidence intervals at the boundaries, then apply sampling budgets to energy estimation and entanglement detection.',
+        topics=['Bernoulli·이항분포', '표준오차·편향', 'Hoeffding', 'Clopper–Pearson', '샷 배분', '얽힘 검출'],
+        exercise_count=8, exercise_page=13, answer_page=13, glossary_page=15, reference_page=16,
+        intro='반복 측정의 통계 오차와 샷을 늘려도 남는 편향을 구별한다. 고정 샷 신뢰구간의 포함률과 경계 실패를 확인하고, 에너지 측정의 샷 배분과 얽힘 검출의 신뢰 상한을 유도한다.'),
 }
 REFERENCES = [
     ('Classiq, Quantum Application Engineer (accessed 5 November 2026).', 'https://www.classiq.io/positions/position-84_27e'),
@@ -110,8 +117,8 @@ def course_page(units, english=False):
                  'This independently written Korean course uses QAE to mean Quantum Application Engineer. It is separate from official Classiq training and the '
                  '<a href="../../classiq-talk-series/">Classiq webinar replay notes</a>.')
         scope = f'''<p>The public editions preserve {original_pages} original educational pages and add one disclosure page per unit, giving {total_pages} pages. Personalized context and file-launch actions were removed. Previously published PDF bytes and original page numbers are preserved.</p>
-<p>The original source ZIPs for L001–L003 were not retrieved. L004 has local authoring records, which are not republished in this bundle. The original validation suites, including L004's 50 checks, were not independently rerun for this archive update. The supplementary script checks 20 finite-matrix conditions from L001–L003 using the Python standard library, with a Frobenius-norm Trotter comparison. No Classiq SDK, synthesis, QPU or molecular/DFT experiment was run.</p>
-<p>Responsible editor: Hyun-Jung Kim. AI assistance: OpenAI Codex. Agent public_pdf_qa/auth_audit prepared L001–L003 and their partial recalculation. Agent qae_l004_public checked L004 public preparation, privacy, preservation and full-page rendering; root integrated publication. The qae_course_index agent simplified this index on 6 November 2026. Exact original model and agent identifiers were not retained. Human line-by-line review or Classiq approval is not claimed.</p>
+<p>The original source ZIPs for L001–L003 were not retrieved. L004–L005 have local authoring records, which are not republished in this bundle. The original validation suites, including L004's 50 checks and L005's 57 checks, were not independently rerun for these archive updates. The supplementary script checks 20 finite-matrix conditions from L001–L003 using the Python standard library, with a Frobenius-norm Trotter comparison. No Classiq SDK, synthesis, QPU or molecular/DFT experiment was run.</p>
+<p>Responsible editor: Hyun-Jung Kim. AI assistance: OpenAI Codex. Agent public_pdf_qa/auth_audit prepared L001–L003 and their partial recalculation. Agents qae_l004_public and qae_l005_public checked the respective public editions for privacy, preservation, links and full-page rendering. Agent qae_l005_science separately reviewed L005's central statistical derivations and selected numerical values; root integrated publication. The qae_course_index agent simplified this index on 6 November 2026. Exact original model and agent identifiers were not retained. Human manuscript review or Classiq approval is not claimed.</p>
 <p>References were checked on 5 November 2026 for official web content and source metadata; the books and papers were not newly reread in full. Each PDF retains its detailed references and original source-reading record.</p>'''
         practice = ('<a href="../labs/reference_checks.py" download>Download supplementary code</a> · '
                     '<a href="../labs/results/reference-checks.json">Recorded results</a>')
@@ -121,8 +128,8 @@ def course_page(units, english=False):
                  'QAE는 Quantum Application Engineer를 뜻하며, 이 자료는 공식 Classiq 교육과 별개로 집필한 한국어 독립 학습 과정입니다. '
                  '<a href="../classiq-talk-series/">Classiq 웨비나 다시보기 노트</a>는 별도 시리즈입니다.')
         scope = f'''<p>원판 교육 내용 {original_pages}쪽에 회차별 공개판 안내를 한 쪽씩 더해 총{total_pages}쪽입니다. 개인화 표현·메타데이터·파일 실행 링크를 정리했으며, 기존 공개 회차 PDF의 바이트와 원래 쪽번호를 유지합니다.</p>
-<p>L001–L003 원판 ZIP은 수집하지 못했습니다. L004는 로컬 집필·검수 기록을 대조했으며 이 공개 묶음에 원고·ZIP을 추가하지 않았습니다. L004의 원판50개 검사를 포함한 원판 전체 검증을 이번 아카이빙에서 독립 재실행한 것은 아닙니다. 보충 코드는 L001–L003 예제의 작은 행렬20개 조건을 별도로 재계산하며 Trotter 비교에는 Frobenius 노름을 씁니다. Classiq 합성·SDK·QPU나 실제 분자·DFT 실험을 수행한 자료로 표시하지 않습니다.</p>
-<p>책임 편집자 김현중 · AI 보조 OpenAI Codex. public_pdf_qa/auth_audit (L001–L003)가 공개판 정제·부분검산을, root가 통합·게시를 담당했습니다. 2026-11-06 회차 선택 화면 개편은 qae_course_index가 수행했습니다. 원 작성 세션의 정확한 모델·에이전트 식별자는 미보존이며, 사람의 문장별 감수나 Classiq 승인을 받았다고 주장하지 않습니다.</p>
+<p>L001–L003 원판 ZIP은 수집하지 못했습니다. L004–L005는 로컬 집필·검수 기록을 대조했으며 이 공개 묶음에 원고·ZIP을 추가하지 않았습니다. L004의 원판50개와 L005의 원판57개 검사를 포함한 원판 전체 검증을 이번 아카이빙에서 독립 재실행한 것은 아닙니다. 보충 코드는 L001–L003 예제의 작은 행렬20개 조건을 별도로 재계산하며 Trotter 비교에는 Frobenius 노름을 씁니다. Classiq 합성·SDK·QPU나 실제 분자·DFT 실험을 수행한 자료로 표시하지 않습니다.</p>
+<p>책임 편집자 김현중 · AI 보조 OpenAI Codex. public_pdf_qa/auth_audit가 L001–L003의 공개판 정제·부분검산을, qae_l004_public과 qae_l005_public이 해당 회차의 공개판 보존·개인정보·링크·전체 조판 검수를 맡았습니다. qae_l005_science는 L005의 핵심 통계 유도와 일부 수치를 별도 검토했고 root가 통합·게시를 담당했습니다. 2026-11-06 회차 선택 화면 개편은 qae_course_index가 수행했습니다. 원 작성 세션의 정확한 모델·에이전트 식별자는 미보존이며, 사람의 원고 감수나 Classiq 승인을 받았다고 주장하지 않습니다.</p>
 <p>공식 웹 자료와 서지·판본 정보는 2026-11-05 확인했습니다. 교재·논문 전체를 이번에 다시 정독한 기록은 아닙니다. 회차별 상세 참고문헌과 원판의 읽은 위치는 각 PDF에 보존했습니다.</p>'''
         practice = ('<a href="labs/reference_checks.py" download>보충 코드 다운로드</a> · '
                     '<a href="labs/results/reference-checks.json">실행 결과</a>')
@@ -135,7 +142,7 @@ def course_page(units, english=False):
 <link rel="alternate" hreflang="ko" href="{BASE}lectures/classiq-qae-onboarding/">
 <link rel="alternate" hreflang="en" href="{BASE}lectures/classiq-qae-onboarding/en/">
 <link rel="alternate" hreflang="x-default" href="{BASE}lectures/classiq-qae-onboarding/">
-<link rel="stylesheet" href="{prefix}notes.css?v=20261109-l004">
+<link rel="stylesheet" href="{prefix}notes.css?v=20261109-l005">
 </head><body>
 <header><nav><a href="{home}">{'Lecture notes' if english else '렉처 노트'}</a><a href="{alternate}" lang="{'ko' if english else 'en'}">{'한국어' if english else 'English'}</a></nav>
 <p class="eyebrow">{'INDEPENDENT STUDY · KOREAN PDFs' if english else '독립 학습 과정 · 한국어 PDF'}</p>

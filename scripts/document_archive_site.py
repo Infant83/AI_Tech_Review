@@ -52,6 +52,7 @@ LECTURE_BUNDLES = {
             "2026-11-09 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
             "L001–L003의 공개판 정제·20조건 부분검산은 public_pdf_qa/auth_audit의 기존 작업이다. "
             "L004의 공개판 보존·개인정보·링크·전체 조판 검수는 qae_l004_public이, 등록·발행 통합은 root가 담당했다. "
+            "L005의 같은 공개판 검수는 qae_l005_public이, 핵심 통계 유도·일부 수치의 별도 검토는 qae_l005_science가 맡았다. "
             "Classiq 공식 강의가 아닌 자체 집필 과정이며 원판 검증 전체를 이번 아카이빙에서 새로 재실행하지 않았다. "
             "영문 입구는 한국어 PDF의 안내다."
         ),
@@ -61,6 +62,7 @@ LECTURE_BUNDLES = {
             "2026-11-03-classiq-qae-l002-notes-ko.pdf",
             "2026-11-05-classiq-qae-l003-notes-ko.pdf",
             "2026-11-07-classiq-qae-l004-notes-ko.pdf",
+            "2026-11-09-classiq-qae-l005-notes-ko.pdf",
             "labs/reference_checks.py", "labs/results/reference-checks.json",
         ),
     },
