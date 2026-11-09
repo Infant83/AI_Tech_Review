@@ -456,7 +456,7 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         for private in (str(self.root), "PRIVATE_", "research/", "unreviewed.png", "private-intake"):
             self.assertNotIn(private, public_manifest)
 
-    def test_classiq_qae_course_keeps_three_reader_targets_and_only_reviewed_public_assets(self) -> None:
+    def test_classiq_qae_course_keeps_series_identity_while_latest_pdf_advances(self) -> None:
         topic = Path(__file__).resolve().parents[1] / "2026-11-05_classiq-qae-onboarding"
         documents = json.loads((topic / "reports/archive-entries.json").read_text(encoding="utf-8"))
         latest_id = "2026-11-05-classiq-qae-l003-notes-ko"
@@ -468,18 +468,25 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             target.write_bytes(PDF_BYTES if name.endswith(".pdf") else (topic / "dist" / name).read_bytes())
         registry_path = source / spec["unit_registry"]
         fixture_registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        latest_pdf_id = next(u["archive_id"] for u in fixture_registry["units"] if u["id"] == fixture_registry["latest_unit"])
+        latest_bytes = PDF_BYTES + b"% latest lecture, distinct from the stable series anchor\n"
         for unit in fixture_registry["units"]:
-            unit["sha256"] = hashlib.sha256(PDF_BYTES).hexdigest()
+            payload = latest_bytes if unit["archive_id"] == latest_pdf_id else PDF_BYTES
+            (source / unit["pdf"]).write_bytes(payload)
+            unit["sha256"] = hashlib.sha256(payload).hexdigest()
+        (source / "notes.pdf").write_bytes(latest_bytes)
         registry_path.write_text(json.dumps(fixture_registry), encoding="utf-8")
         (source / "private-intake.json").write_text("PRIVATE_MAIL_METADATA")
         spec["source"] = str(source)
         self.registry(documents)
+        (self.archive / next(d["file"] for d in documents if d["id"] == latest_pdf_id)).write_bytes(latest_bytes)
         with patch.dict(archive_site.LECTURE_BUNDLES, {latest_id: spec}, clear=True):
             published = self.publish()
             self.assertEqual(validate_archive(self.site), [])
         destination = self.site / spec["href"]
         self.assertEqual({p.relative_to(destination).as_posix() for p in destination.rglob("*") if p.is_file()}, set(spec["files"]))
-        self.assertEqual((destination / "notes.pdf").read_bytes(), (self.archive / next(d["file"] for d in documents if d["id"] == latest_id)).read_bytes())
+        self.assertEqual((destination / "notes.pdf").read_bytes(), latest_bytes)
+        self.assertEqual((self.archive / next(d["file"] for d in documents if d["id"] == latest_id)).read_bytes(), PDF_BYTES)
         page = (destination / "index.html").read_text(encoding="utf-8")
         english = (destination / "en/index.html").read_text(encoding="utf-8")
         for document in documents:
@@ -488,7 +495,11 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             self.assertTrue((destination / Path(document["file"]).name).is_file())
         self.assertEqual(sum(bool(d.get("study_href")) for d in published), 1)
         registry = json.loads((destination / "unit-registry.json").read_text(encoding="utf-8"))
-        self.assertEqual([u["id"] for u in registry["units"]], ["L001", "L002", "L003"])
+        self.assertEqual([u["id"] for u in registry["units"]], ["L001", "L002", "L003", "L004"])
+        anchor = next(d for d in published if d["id"] == latest_id)
+        self.assertEqual(anchor["study_href"], "lectures/classiq-qae-onboarding/")
+        self.assertEqual(anchor["study_series"]["latest_date"], "2026-11-07")
+        self.assertNotIn("study_href", next(d for d in published if d["id"] == latest_pdf_id))
         self.assertFalse(registry["official_Classiq_course"])
         self.assertFalse(registry["source_zip_available"])
         self.assertFalse(registry["original_validation_suite_independently_rerun"])
@@ -499,12 +510,13 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         for lang, relative in (("ko", "index.html"), ("en", "en/index.html")):
             catalog = (self.site / "lectures" / relative).read_text(encoding="utf-8")
             self.assertEqual(catalog.count('class="lecture-card'), 1)
-            self.assertEqual(catalog.count('data-lecture-unit='), 3)
+            self.assertEqual(catalog.count('data-lecture-unit='), 4)
             self.assertIn('data-lecture-series="classiq-qae-onboarding"', catalog)
-            self.assertIn("1 resources · 3 PDFs" if lang == "en" else "1개 자료 · PDF 3편", catalog)
+            self.assertIn("1 resources · 4 PDFs" if lang == "en" else "1개 자료 · PDF 4편", catalog)
             self.assertNotIn("Online notes" if lang == "en" else "온라인 노트", catalog)
             self.assertLess(catalog.index('data-lecture-unit="L001"'), catalog.index('data-lecture-unit="L002"'))
             self.assertLess(catalog.index('data-lecture-unit="L002"'), catalog.index('data-lecture-unit="L003"'))
+            self.assertLess(catalog.index('data-lecture-unit="L003"'), catalog.index('data-lecture-unit="L004"'))
             for document in documents:
                 self.assertIn("reader/?id=" + document["id"], catalog)
                 self.assertIn(document["file"], catalog)
@@ -515,6 +527,10 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         teaser = archive_site.render_learning_teaser(published)
         self.assertIn(fixture_registry["title"], teaser)
         self.assertIn("1개 자료", teaser)
+        broken_registry = json.loads(json.dumps(fixture_registry))
+        broken_registry["units"][-1]["sha256"] = "0" * 64
+        with self.assertRaisesRegex(ValueError, "registry hash"):
+            archive_site.series_latest_pdf(source, broken_registry)
 
     def test_pdf_focused_catalog_retains_reader_and_source_without_duplicate_online_action(self) -> None:
         document = archive_document("2026-11-04-quantum-computing-applications-lecture-notes-ko")

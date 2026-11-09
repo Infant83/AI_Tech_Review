@@ -49,16 +49,18 @@ LECTURE_BUNDLES = {
         "start_anchor": "study-guide",
         "navigation": (("study-guide", "학습 안내"), ("units", "회차별 학습"), ("practice", "별도 재계산"), ("references", "출처")),
         "publication_note": (
-            "2026-11-05 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
-            "public_pdf_qa/auth_audit가 세 회차의 자료 확인·공개판 정제·웹 학습 입구·20개 부분검산을 담당하고 root가 통합·게재한다. "
-            "Classiq 공식 강의가 아닌 자체 집필 과정이며, 원판 ZIP과 원판의 검증 전체를 이번에 재실행한 자료가 아니다. "
-            "영문 입구는 한국어 PDF 세 회차의 안내다."
+            "2026-11-09 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "L001–L003의 공개판 정제·20조건 부분검산은 public_pdf_qa/auth_audit의 기존 작업이다. "
+            "L004의 공개판 보존·개인정보·링크·전체 조판 검수는 qae_l004_public이, 등록·발행 통합은 root가 담당했다. "
+            "Classiq 공식 강의가 아닌 자체 집필 과정이며 원판 검증 전체를 이번 아카이빙에서 새로 재실행하지 않았다. "
+            "영문 입구는 한국어 PDF의 안내다."
         ),
         "files": (
             "index.html", "en/index.html", "notes.css", "notes.pdf", "unit-registry.json",
             "2026-11-01-classiq-qae-l001-notes-ko.pdf",
             "2026-11-03-classiq-qae-l002-notes-ko.pdf",
             "2026-11-05-classiq-qae-l003-notes-ko.pdf",
+            "2026-11-07-classiq-qae-l004-notes-ko.pdf",
             "labs/reference_checks.py", "labs/results/reference-checks.json",
         ),
     },
@@ -251,13 +253,35 @@ def lecture_series_metadata(registry: dict, documents: list[dict], primary_id: s
                       "pages": unit["public_pages"], "href": document["href"]})
     if primary_id not in seen or not units:
         raise ValueError("Lecture series is missing its registered primary PDF")
-    return {**{key: registry[key] for key in fields}, "units": units}
+    latest = next((unit for unit in units if unit["number"] == registry.get("latest_unit")), None)
+    if latest is None:
+        raise ValueError("Lecture series is missing its latest unit")
+    return {**{key: registry[key] for key in fields}, "units": units,
+            "latest_unit": latest["number"], "latest_date": latest["date"]}
+
+
+def series_latest_pdf(root: Path, registry: dict) -> Path:
+    """Check every explicit unit copy and select the latest immutable PDF."""
+    latest = None
+    for unit in registry.get("units", []):
+        name = unit.get("pdf", "")
+        if not re.fullmatch(r"[a-z0-9-]+\.pdf", name) or name != unit.get("archive_id", "") + ".pdf":
+            raise ValueError("Invalid lecture unit PDF path")
+        path = root / name
+        if path.is_symlink() or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != unit.get("sha256"):
+            raise ValueError("Lecture unit PDF differs from its registry hash")
+        if unit.get("id") == registry.get("latest_unit"):
+            latest = path
+    if latest is None:
+        raise ValueError("Missing latest lecture unit PDF")
+    return latest
 
 
 def grouped_lectures(documents: list[dict]) -> list[dict]:
     lectures = [doc for doc in documents if doc["series"] == "lecture-notes"]
     members = {unit["document_id"] for doc in lectures for unit in doc.get("study_series", {}).get("units", [])}
-    return [doc for doc in lectures if doc.get("study_series") or doc["id"] not in members]
+    grouped = [doc for doc in lectures if doc.get("study_series") or doc["id"] not in members]
+    return sorted(grouped, key=lambda doc: (doc.get("study_series", {}).get("latest_date", doc["date"]), doc["id"]), reverse=True)
 
 
 def render_library_navigation(documents: list[dict], area: str, language: str = "ko", prefix: str = "") -> str:
@@ -278,7 +302,7 @@ def render_library_navigation(documents: list[dict], area: str, language: str = 
 def render_learning_teaser(documents: list[dict]) -> str:
     lectures = grouped_lectures(documents)
     recent = "".join(
-        f'<li><time datetime="{escape(doc["date"])}">{escape(doc["date"])}</time>'
+        f'<li><time datetime="{escape(doc.get("study_series", {}).get("latest_date", doc["date"]))}">{escape(doc.get("study_series", {}).get("latest_date", doc["date"]))}</time>'
         f'<a href="{escape(doc.get("study_href") or doc["href"])}">'
         f'{escape(doc.get("study_series", {}).get("title") or doc["title"])}</a></li>'
         for doc in lectures[:2]
@@ -425,7 +449,7 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
     facts = f"{len(units)} units · PDF {page_count} pages" if en else f"{len(units)}회차 · PDF {page_count}쪽"
     return f'''<article class="lecture-card lecture-featured lecture-series" data-lecture-series="{escape(series['series_id'])}">
       <details class="lecture-series-disclosure"><summary>
-      <div class="lecture-meta"><span class="lecture-format">{'PDF lecture series' if en else 'PDF 강의 시리즈'}</span><span>{'Korean' if en else '한국어'}</span><time datetime="{escape(doc['date'])}">{escape(doc['date'])}</time></div>
+      <div class="lecture-meta"><span class="lecture-format">{'PDF lecture series' if en else 'PDF 강의 시리즈'}</span><span>{'Korean' if en else '한국어'}</span><time datetime="{escape(series['latest_date'])}">{escape(series['latest_date'])}</time></div>
       <h2>{escape(title)}</h2>
       <p class="lecture-summary">{escape(summary)}</p>
       <div class="lecture-series-summary"><span class="lecture-facts">{facts}</span><span class="lecture-series-toggle"><span class="series-show">{'View units' if en else '회차 보기'}</span><span class="series-hide">{'Hide units' if en else '회차 접기'}</span><span class="series-chevron" aria-hidden="true"></span></span></div>
@@ -564,12 +588,13 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
         target = destination / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(asset, target)
-    if (destination / "notes.pdf").read_bytes() != (archive_dir / document["file"]).read_bytes():
+    series = json.loads((destination / spec["unit_registry"]).read_text(encoding="utf-8")) if spec.get("unit_registry") else {}
+    expected_pdf = series_latest_pdf(destination, series) if series else archive_dir / document["file"]
+    if (destination / "notes.pdf").read_bytes() != expected_pdf.read_bytes():
         raise ValueError("Lecture PDF differs from registered archive PDF")
     index = destination / "index.html"
     text = index.read_text(encoding="utf-8")
     canonical = base_url + href
-    series = json.loads((destination / spec["unit_registry"]).read_text(encoding="utf-8")) if spec.get("unit_registry") else {}
     display_title = series.get("title") or document["title"]
     display_summary = series.get("summary") or document["summary"]
     metadata = (f'<link rel="canonical" href="{escape(canonical)}">'
@@ -748,7 +773,7 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
         for name in actual & expected:
             if hashlib.sha256((root / name).read_bytes()).hexdigest() != hashes.get(name):
                 errors.append(f"lecture asset checksum mismatch: {name}")
-        if (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
+        if not spec.get("unit_registry") and (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
             errors.append(f"lecture PDF differs from archive: {document['id']}")
         if spec.get("chapter_pages"):
             try:
@@ -759,6 +784,8 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
         if spec.get("unit_registry"):
             try:
                 registry = json.loads((root / spec["unit_registry"]).read_text(encoding="utf-8"))
+                if (root / "notes.pdf").read_bytes() != series_latest_pdf(root, registry).read_bytes():
+                    errors.append(f"latest lecture PDF alias differs from registry: {document['id']}")
                 if document.get("study_series") != lecture_series_metadata(registry, documents, document["id"]):
                     errors.append(f"lecture series metadata differs from registry: {document['id']}")
             except (OSError, ValueError, KeyError, TypeError):
