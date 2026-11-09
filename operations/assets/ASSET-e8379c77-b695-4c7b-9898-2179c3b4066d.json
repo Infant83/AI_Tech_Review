@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "ASSET-e8379c77-b695-4c7b-9898-2179c3b4066d",
+  "record_version": 1,
+  "asset_key": "public-recovery",
+  "name": "공개 배포 복구 사본",
+  "status": "active",
+  "owner_role": "운영팀(ADOPT)",
+  "security_owner_role": "ADOPT 보안·안정성 파트(SRU)",
+  "purpose": "공개 배포 복구 사본의 책임·접근 경계·확인 범위 관리",
+  "public_locations": [],
+  "data_classification": [
+    "공개 배포 파일"
+  ],
+  "source_references": [
+    "scripts/release_backup.py",
+    "scripts/release_artifact_retention.py",
+    "SITE_OPERATIONS.md"
+  ],
+  "access_boundary": "CI 접근 권한과 기존 보존 정책; 개인 DB 복구와 별도",
+  "verification": {
+    "checked_at": "2026-11-09T01:38:21Z",
+    "confirmed": [
+      "기존 Pages 복구 사본 생성·보존 경로 확인"
+    ],
+    "not_verified": [
+      "이번 보안 조직 변경에서 새 복원 시험은 미수행"
+    ]
+  },
+  "lifecycle": {
+    "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
+    "recovery_reference": "SITE_OPERATIONS.md"
+  }
+}

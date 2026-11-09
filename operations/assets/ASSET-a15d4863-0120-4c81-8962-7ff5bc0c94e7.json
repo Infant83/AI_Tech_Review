@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "ASSET-a15d4863-0120-4c81-8962-7ff5bc0c94e7",
+  "record_version": 1,
+  "asset_key": "agent-execution",
+  "name": "운영·편집 에이전트 실행 환경",
+  "status": "configured",
+  "owner_role": "운영팀(ADOPT)",
+  "security_owner_role": "ADOPT 보안·안정성 파트(SRU)",
+  "purpose": "운영·편집 에이전트 실행 환경의 책임·접근 경계·확인 범위 관리",
+  "public_locations": [],
+  "data_classification": [
+    "비공개 작업 문맥·연결 세션·최소 증거"
+  ],
+  "source_references": [
+    "AGENTS.md",
+    "DEVELOPMENT_OPERATIONS_POLICY.md",
+    "SECURITY_OPERATIONS.md"
+  ],
+  "access_boundary": "사용자 지시와 외부 자료를 구분; 원시 문맥·세션·로그는 Git·공개 산출물에서 제외",
+  "verification": {
+    "checked_at": "2026-11-09T01:38:21Z",
+    "confirmed": [
+      "기존 ADOPT 예약을 새벽 3시에 유지하고 SRU 지시 통합"
+    ],
+    "not_verified": [
+      "호스트·앱 부재 시 연속 실행",
+      "모든 외부 연결 권한·수명주기 전수 감사"
+    ]
+  },
+  "lifecycle": {
+    "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
+    "recovery_reference": "SITE_OPERATIONS.md"
+  }
+}

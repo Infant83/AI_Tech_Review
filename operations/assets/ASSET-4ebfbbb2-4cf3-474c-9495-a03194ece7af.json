@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "ASSET-4ebfbbb2-4cf3-474c-9495-a03194ece7af",
+  "record_version": 1,
+  "asset_key": "source-ci",
+  "name": "공개 소스와 게시 CI",
+  "status": "active",
+  "owner_role": "운영팀(ADOPT)",
+  "security_owner_role": "ADOPT 보안·안정성 파트(SRU)",
+  "purpose": "공개 소스와 게시 CI의 책임·접근 경계·확인 범위 관리",
+  "public_locations": [
+    "https://github.com/Infant83/AI_Tech_Review"
+  ],
+  "data_classification": [
+    "공개 소스",
+    "공급자에 보관한 CI 비밀정보"
+  ],
+  "source_references": [
+    ".github/workflows/pages.yml",
+    "scripts/publish_public_site.py"
+  ],
+  "access_boundary": "공개 소스 읽기; 배포·카탈로그 동기화 권한은 기존 작업별 범위 유지",
+  "verification": {
+    "checked_at": "2026-11-09T01:38:21Z",
+    "confirmed": [
+      "GitHub secret scanning·push protection 활성 상태 재확인",
+      "기존 CI 읽기 권한과 main 배포 조건 확인"
+    ],
+    "not_verified": [
+      "비밀정보 탐지 후보의 최종 분류",
+      "의존성 경고의 별도 가시성"
+    ]
+  },
+  "lifecycle": {
+    "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
+    "recovery_reference": "SITE_OPERATIONS.md"
+  }
+}

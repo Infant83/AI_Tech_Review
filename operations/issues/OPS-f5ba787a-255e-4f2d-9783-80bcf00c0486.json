@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "id": "OPS-f5ba787a-255e-4f2d-9783-80bcf00c0486",
+  "uuid": "f5ba787a-255e-4f2d-9783-80bcf00c0486",
+  "record_version": 1,
+  "title": "ADOPT 내부 보안·안정성 파트의 조직·운영·CI 통합",
+  "type": "security_operations",
+  "created_at": "2026-11-09T01:38:21Z",
+  "updated_at": "2026-11-09T01:38:21Z",
+  "status": "in_progress",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "https://lnkd.in/p/gzDtfxBf",
+    "summary": "ADOPT 내부에 보안팀을 두고 운영 보안과 사이트 안정성을 지속 개선하라는 요청"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [],
+    "source_paths": []
+  },
+  "observed": {
+    "baseline_revision": "8c082b0",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [],
+    "expected": "기존 게시 권한과 성능을 보존하며 위험을 확인·개선·검증한다.",
+    "actual": "기존 통제 확인, 로컬 56개 테스트 통과, 공급자 탐지·push protection 활성화; 후속 분류와 CI 검증은 별도 추적."
+  },
+  "evidence": [
+    "SECURITY_OPERATIONS.md",
+    "ATRL_ORGANIZATION.md",
+    ".github/workflows/pages.yml"
+  ],
+  "limitations": [
+    "후보 탐지 수를 확정 유출 수로 간주하지 않음",
+    "공급자 전체 접근 정책·개인 데이터 복원의 전수 감사는 미수행"
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "사용자의 ADOPT 내부 보안팀 설치·지속 개선 지시",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "2026-11-09 사용자의 보안팀 설치와 운영 개선 지시",
+    "current_scope": "기존 운영 안에서 조직·점검·검증·Git 위생과 제공자 기본 보호 강화",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) · 보안·안정성 파트(SRU)",
+  "acceptance_criteria": [
+    "조직도·정책·자산 기록에서 SRU의 ADOPT 내부 편제와 책임이 일치함",
+    "기존 새벽 3시 예약을 보존하며 SRU 점검을 통합함",
+    "GitHub 비밀정보 탐지·push protection 활성 상태를 확인함",
+    "기존 backend 56개 검사를 CI에서 실행하고 실제 결과를 연결함",
+    "일반 게시 권한·공개 동작·런타임 부하를 바꾸지 않음"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "진행 중",
+    "checks": [
+      "로컬 격리 backend 56개 통과",
+      "익명 개인 노트 접근 401",
+      "새벽 3시 예약의 기존 식별자·주기·대상 유지 확인"
+    ],
+    "evidence": [],
+    "remaining_limits": [
+      "실제 CI 실행 확인 전",
+      "비밀정보 탐지 후보 후속 분류 전"
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "독립 검토와 비배포 CI를 확인하고 최신 main과 통합한다."
+}

@@ -1,6 +1,6 @@
 # ATRL 조직도와 아뜰리에의 공동 작업 구조
 
-2026년 11월 8일 기준. **Agentic Tech Review Letters(ATRL)**는 사람의 문제의식과 기획·프롬프팅, 에이전트의 조사·제작·검증, 저술·편집·창작과 기술 운영이 함께 움직이는 아뜰리에로 조직한다. 사람의 관리와 Human Audit은 이 공동 작업 안에 포함된다. 사람은 연구 질문·창작 방향과 최종 책임을 맡고, 편집과 창작은 수정과 감수를 거치며 함께 발전한다.
+2026년 11월 9일 갱신. **Agentic Tech Review Letters(ATRL)**는 사람의 문제의식과 기획·프롬프팅, 에이전트의 조사·제작·검증, 저술·편집·창작과 기술 운영이 함께 움직이는 아뜰리에로 조직한다. 사람의 관리와 Human Audit은 이 공동 작업 안에 포함된다. 사람은 연구 질문·창작 방향과 최종 책임을 맡고, 편집과 창작은 수정과 감수를 거치며 함께 발전한다.
 
 아뜰리에는 ATRL의 협업 방식을 설명하는 표현이다. 정식 제호와 약칭, [운영팀(ADOPT)·편집부(AEDAUT)의 이름과 책임](JOURNAL_TEAM_CHARTER.md)은 그대로 사용한다.
 
@@ -27,7 +27,12 @@ flowchart TB
             sharedRecord["공유 기록 · 근거·원고·감수·판본"]
         end
 
-        ops["운영팀(ADOPT)"]
+        subgraph operationsTeam["운영팀(ADOPT)"]
+            direction TB
+            ops["운영 조정 · 개발 · 기술지원"]
+            security["보안·안정성 파트(SRU)"]
+            ops <-->|"위험 검토 · 개선 · 사고 대응"| security
+        end
         editions["발행 · 리뷰·레터·렉처·브리핑"]
 
         humanLead -->|"질문 · 관점 · 방향"| prompting
@@ -39,6 +44,8 @@ flowchart TB
         humanAudit -->|"검토한 범위 기록"| sharedRecord
         ops -->|"기술 기반과 보존"| sharedRecord
         ops <-->|"도구 지원 · 기술 피드백"| agents
+        security <-->|"권한 · 입력 · 도구 경계"| agents
+        security -->|"점검 · 조치 근거"| sharedRecord
         creation -->|"기존 권한의 발행 판단"| editions
         sharedRecord -.->|"검토본 · 판본 참조"| editions
     end
@@ -55,6 +62,7 @@ flowchart TB
 | 에이전틱 편집·저술팀 · Agentic Editorial and Authoring Team, AEDAUT | 통찰·기획·조사·저술·시각 창작·편집·과학 감수를 하나의 흐름으로 수행한다. 사람과 에이전트가 초안·비평·수정과 대안 비교를 함께 진행한다. |
 | 에이전트 협업 | 과제에 맞게 역할과 도구를 구성해 조사·재현·초안·번역·시각화·독립 검증을 수행한다. AEDAUT의 제작과 ADOPT의 기술 작업에 참여하며 검증 결과와 제한을 전달한다. |
 | 에이전틱 개발운영팀 · Agentic DevOps Team, ADOPT | 공통 도구와 게시 경로, 검색·성능·접근성·저장·복구·CI의 기술적 신뢰성을 관리하고 편집부의 작업을 지원한다. |
+| ADOPT 보안·안정성 파트 · Security & Reliability Unit, SRU | 운영팀 내부에서 자산·권한·비밀정보·의존성·에이전트 도구 경계·복구 위험을 점검하고 개선을 검증한다. [보안 운영 기준](SECURITY_OPERATIONS.md)에 따라 기존 새벽 운영에 통합한다. |
 
 휴먼 관리와 Human Audit은 기능의 구분이며 같은 사람이 두 역할을 맡을 수 있다. 과제에 필요한 사람과 에이전트 역할을 구성하고 사람 감수와 에이전트의 독립 검증은 별도로 기록한다. 기존에 위임한 게시·기술 작업의 권한을 유지하며 새로운 상시 사람 승인 단계를 추가하지 않는다.
 

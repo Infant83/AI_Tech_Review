@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
+  "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
+  "record_version": 1,
+  "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
+  "type": "security_operations",
+  "created_at": "2026-11-09T01:38:21Z",
+  "updated_at": "2026-11-09T01:38:21Z",
+  "status": "in_progress",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "https://lnkd.in/p/gzDtfxBf",
+    "summary": "ADOPT 내부에 보안팀을 두고 운영 보안과 사이트 안정성을 지속 개선하라는 요청"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [],
+    "source_paths": []
+  },
+  "observed": {
+    "baseline_revision": "8c082b0",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [],
+    "expected": "기존 게시 권한과 성능을 보존하며 위험을 확인·개선·검증한다.",
+    "actual": "초기 열린 후보 9건: 축약 라이브러리 3건·PDF 자료 5건·만료된 서명 URL의 키 식별자 1건. 유효성은 미확인이다. 마지막 항목은 비밀 키 필드가 함께 확인되지 않았다."
+  },
+  "evidence": [
+    "SECURITY_OPERATIONS.md",
+    "ATRL_ORGANIZATION.md",
+    ".github/workflows/pages.yml"
+  ],
+  "limitations": [
+    "후보 탐지 수를 확정 유출 수로 간주하지 않음",
+    "공급자 전체 접근 정책·개인 데이터 복원의 전수 감사는 미수행"
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "사용자의 ADOPT 내부 보안팀 설치·지속 개선 지시",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "2026-11-09 사용자의 보안팀 설치와 운영 개선 지시",
+    "current_scope": "기존 운영 안에서 조직·점검·검증·Git 위생과 제공자 기본 보호 강화",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) · 보안·안정성 파트(SRU)",
+  "acceptance_criteria": [
+    "탐지 후보마다 문맥·실제 비밀 여부·영향·조치 근거를 제한된 보안 경로에 남김",
+    "만료된 URL·식별자와 실제 자격증명 노출을 구분함",
+    "실제 대응이 필요한 항목은 권한·복구 범위를 정해 처리하고 재검증함",
+    "과거 이력·로컬 보존의 제한과 공개 기록 정리 범위를 사실대로 남김"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "진행 중",
+    "checks": [
+      "비밀값 출력 없이 경고 메타데이터·제한된 문맥 확인",
+      "게시 기능이 참조하지 않는 원시 기록은 로컬 보존 후 Git 추적 제외"
+    ],
+    "evidence": [],
+    "remaining_limits": [
+      "파일 형식만으로 오탐 판정하지 않음",
+      "이전 Git 이력은 보존되어 있음",
+      "후보 키의 외부 유효성 시험·폐기·경고 종료는 수행하지 않음"
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "공급자 보안 화면에서 후보를 분류한다. 실제 비밀이 확인되면 영향에 맞게 우선순위를 높이고 정확한 대응 범위를 정한다."
+}

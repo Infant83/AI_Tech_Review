@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "ASSET-9b8d478d-80ce-4146-920c-658d05fee43c",
+  "record_version": 1,
+  "asset_key": "public-site",
+  "name": "공개 웹저널과 PDF 리더",
+  "status": "active",
+  "owner_role": "운영팀(ADOPT)",
+  "security_owner_role": "ADOPT 보안·안정성 파트(SRU)",
+  "purpose": "공개 웹저널과 PDF 리더의 책임·접근 경계·확인 범위 관리",
+  "public_locations": [
+    "https://infant83.io/AI_Tech_Review/"
+  ],
+  "data_classification": [
+    "공개 게시물"
+  ],
+  "source_references": [
+    "PUBLICATION_WORKFLOW.md",
+    "SITE_OPERATIONS.md"
+  ],
+  "access_boundary": "공개 읽기; 관리·쓰기 권한은 별도 API와 CI에서 검사",
+  "verification": {
+    "checked_at": "2026-11-09T01:38:21Z",
+    "confirmed": [
+      "공개 홈·리더 HTTPS 200"
+    ],
+    "not_verified": [
+      "도메인 공급자 계정 권한 전체",
+      "CSP 호환성·위협 범위 전체"
+    ]
+  },
+  "lifecycle": {
+    "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
+    "recovery_reference": "SITE_OPERATIONS.md"
+  }
+}

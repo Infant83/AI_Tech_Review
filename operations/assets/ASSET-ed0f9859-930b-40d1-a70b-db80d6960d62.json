@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "ASSET-ed0f9859-930b-40d1-a70b-db80d6960d62",
+  "record_version": 1,
+  "asset_key": "reader-data",
+  "name": "학습 데이터와 알림 큐",
+  "status": "configured",
+  "owner_role": "운영팀(ADOPT)",
+  "security_owner_role": "ADOPT 보안·안정성 파트(SRU)",
+  "purpose": "학습 데이터와 알림 큐의 책임·접근 경계·확인 범위 관리",
+  "public_locations": [],
+  "data_classification": [
+    "개인 계정·필기·알림 구독"
+  ],
+  "source_references": [
+    ".automation/cloudflare/reader-engagement/wrangler.jsonc",
+    ".automation/cloudflare/reader-engagement/migrations"
+  ],
+  "access_boundary": "Worker 바인딩을 사용; 공개 정적 사본으로 개인 데이터 복구를 대신하지 않음",
+  "verification": {
+    "checked_at": "2026-11-09T01:38:21Z",
+    "confirmed": [
+      "D1·Queue 바인딩과 마이그레이션 코드 확인"
+    ],
+    "not_verified": [
+      "운영 데이터 백업·내보내기·실제 복원",
+      "공급자 접근 정책·보존 기간 전체"
+    ]
+  },
+  "lifecycle": {
+    "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
+    "recovery_reference": "SITE_OPERATIONS.md"
+  }
+}

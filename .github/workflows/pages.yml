@@ -42,6 +42,12 @@ jobs:
           npm run test:unit
       - name: Check the existing lecture reader and storage races
         run: node --test .automation/lecture-reader/*.test.mjs
+      - name: Check backend authentication and notebook authorization
+        working-directory: .automation/cloudflare/reader-engagement
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund
+          npm run check
+          npm test
       - name: Check portable media delivery
         run: node --test .automation/cloudflare/public-media/*.test.mjs
       - name: Read the deployed source revision and extract its immutable baseline
