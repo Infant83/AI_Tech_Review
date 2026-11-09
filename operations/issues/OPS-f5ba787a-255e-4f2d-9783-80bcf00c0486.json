@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-f5ba787a-255e-4f2d-9783-80bcf00c0486",
   "uuid": "f5ba787a-255e-4f2d-9783-80bcf00c0486",
-  "record_version": 1,
+  "record_version": 2,
   "title": "ADOPT 내부 보안·안정성 파트의 조직·운영·CI 통합",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-09T01:38:21Z",
-  "status": "in_progress",
+  "updated_at": "2026-11-09T01:44:27Z",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "user_request",
@@ -43,7 +43,9 @@
   "policy_decision": {
     "state": "채택",
     "rationale": "사용자의 ADOPT 내부 보안팀 설치·지속 개선 지시",
-    "related_issues": [],
+    "related_issues": [
+      "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a"
+    ],
     "duplicate_of": null,
     "revisit_when": null
   },
@@ -61,32 +63,44 @@
     "일반 게시 권한·공개 동작·런타임 부하를 바꾸지 않음"
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
+    "commits": [
+      "3218407382014e8a90ceecb133261d3e68cd69c1"
+    ],
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42546764717",
     "deployment_reference": null
   },
   "verification": {
-    "status": "진행 중",
+    "status": "독립 검토·실제 CI 확인 완료",
     "checks": [
-      "로컬 격리 backend 56개 통과",
-      "익명 개인 노트 접근 401",
-      "새벽 3시 예약의 기존 식별자·주기·대상 유지 확인"
+      "문서 링크·JSON·자산 소스 참조·diff 검사 통과",
+      "조직도 실제 브라우저 렌더링 확인",
+      "GitHub secret scanning·push protection enabled 재조회",
+      "기존 새벽 3시 예약 유지 및 SRU 프롬프트 실제 반영 확인",
+      "Ubuntu GitHub CI build 성공; 기존 backend 56개 테스트 단계 통과",
+      "기존 출판·검색·리더·산출물 보존·용량 검사 통과; 글·PDF 변경 판정 0건",
+      "main에 검증한 구현 커밋 반영; 실제 공개 릴리스는 이전 정상본 유지"
     ],
-    "evidence": [],
+    "evidence": [
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42546764717",
+      "operations/runs/20261109T013942Z-e2915cd4-049a-443a-b1af-fc275a1130fd.md",
+      "SECURITY_OPERATIONS.md"
+    ],
     "remaining_limits": [
-      "실제 CI 실행 확인 전",
-      "비밀정보 탐지 후보 후속 분류 전"
+      "비밀정보 후보 9건은 별도 일감에서 유효성·영향 분류 중",
+      "개인 데이터 복원·공급자 전체 접근 정책 감사는 미완료",
+      "이번 조직·CI 변경은 사이트 재배포가 필요 없어 배포하지 않음",
+      "기존 지연 검색 80KB 성장 경고와 Actions 런타임 안내는 후속 운영 관찰"
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "설정·소스 반영 확인",
+    "period": "2026-11-09T01:44:27Z",
+    "result": "일반 게시 권한·공개 런타임·이전 정상 공개 릴리스 보존. 별도 상주 관제나 실제 공격 시나리오 전수 검증을 의미하지 않음."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "독립 검토와 비배포 CI를 확인하고 최신 main과 통합한다."
+  "next_action": "다음 새벽 회차에서 관련 후보 분류 일감과 자산의 미확인 권한·복구 항목을 이어서 확인한다."
 }
