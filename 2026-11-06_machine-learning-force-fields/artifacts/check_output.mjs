@@ -9,10 +9,23 @@ if(!modules)throw Error('Set REVIEW_BROWSER_MODULES or CODEX_PRIMARY_RUNTIME_NOD
 const {chromium}=createRequire(path.join(modules,'_check.cjs'))('playwright');
 const qa=path.join(root,'tmp','html-qa');fs.mkdirSync(qa,{recursive:true});
 const only=process.argv.find(x=>x.startsWith('--language='))?.split('=')[1];
+if(only&&!['ko','en'].includes(only))throw Error('--language must be ko or en.');
+function sourceContract(language){
+ const data=JSON.parse(fs.readFileSync(path.join(root,'artifacts',`article-${language}.json`),'utf8'));
+ const blocks=data.sections.filter(s=>!['작성·검증 정보','Production and verification','How this review was made','Writing and verification disclosure'].includes(s.title)).flatMap(s=>s.blocks);
+ const legacy=blocks.filter(b=>b.type==='equation'&&!Object.hasOwn(b,'tex'));
+ const explicit=blocks.filter(b=>b.type==='equation'&&Object.hasOwn(b,'tex'));
+ if(legacy.length!==9)throw Error('Preserve the reviewed nine legacy equation/cost blocks.');
+ if(explicit.some(b=>typeof b.tex!=='string'||!b.tex.trim()||b.tex.includes('$$')))throw Error('New equations require nonempty explicit TeX without delimiters.');
+ if(blocks.filter(b=>b.type==='figure'&&b.role==='hero').length!==1)throw Error('Exactly one authored hero is required.');
+ if(!data.references.length||data.references.some((r,i)=>r.id!==i+1))throw Error('Reference IDs must be consecutive.');
+ return {title:data.title,figures:blocks.filter(b=>b.type==='figure').length,tables:blocks.filter(b=>b.type==='table').length,references:data.references.length,equations:8+explicit.length,published:data.publication_date||data.date,updated:data.updated_date||null,evidence:data.evidence_date||data.date};
+}
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const records=[];
 try{
  for(const language of only?[only]:['ko','en']){
+  const expected=sourceContract(language);
   const index=path.join(root,'dist',language==='ko'?'':'en','index.html');
   const source=fs.readFileSync(index,'utf8');
   if(/file:\/\/|\/Users\/|archive\/private|MATH(?:BLOCK|INLINE)\d+END/.test(source))throw Error('Nonpublic path or typesetting token in output.');
@@ -21,17 +34,17 @@ try{
   await page.goto(pathToFileURL(index).href,{waitUntil:'load'});
   await page.evaluate(()=>document.fonts.ready);
   await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0));
-  const content=await page.evaluate(()=>({title:document.title,h1:document.querySelector('h1')?.textContent.trim(),canonical:document.querySelector('link[rel=canonical]')?.href,figures:document.querySelectorAll('figure').length,tables:document.querySelectorAll('table').length,references:document.querySelectorAll('.reference-list>li').length,equations:document.querySelectorAll('.math-block').length,disclosures:document.querySelectorAll('.authoring-disclosure').length,disclosureParagraphs:document.querySelectorAll('.authoring-disclosure p').length,missingTargets:[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash)}));
-  if(content.title!==content.h1||content.figures!==5||content.tables!==5||content.references!==30||content.equations!==8||content.disclosures!==1||content.disclosureParagraphs<2||content.missingTargets.length)throw Error(JSON.stringify(content));
+  const content=await page.evaluate(()=>({title:document.title,h1:document.querySelector('h1')?.textContent.trim(),canonical:document.querySelector('link[rel=canonical]')?.href,figures:document.querySelectorAll('figure').length,tables:document.querySelectorAll('table').length,references:document.querySelectorAll('.reference-list>li').length,equations:document.querySelectorAll('.math-block').length,disclosures:document.querySelectorAll('.authoring-disclosure').length,disclosureParagraphs:document.querySelectorAll('.authoring-disclosure p').length,published:document.querySelector('meta[property="article:published_time"]')?.content,updated:document.querySelector('meta[property="article:modified_time"]')?.content||null,evidence:document.querySelector('meta[name="evidence-cutoff"]')?.content,brand:document.querySelector('header .brand')?.textContent.trim(),missingTargets:[...document.querySelectorAll('a[href^="#"]')].filter(a=>!document.getElementById(a.hash.slice(1))).map(a=>a.hash)}));
+  if(Object.entries(expected).some(([field,value])=>content[field]!==value)||content.title!==content.h1||content.brand!=='AGENTIC TECH REVIEW LETTERS'||content.disclosures!==1||content.disclosureParagraphs<2||content.missingTargets.length)throw Error(JSON.stringify({expected,content}));
   await page.screenshot({path:path.join(qa,`${language}-desktop.png`)});
   const figures=await page.locator('figure').all();
   for(let i=0;i<figures.length;i++)await figures[i].screenshot({path:path.join(qa,`${language}-figure-${i+1}.png`)});
   await page.setViewportSize({width:390,height:844});
   await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto';window.scrollTo(0,0)});
   const mobile=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,hero:[...document.querySelectorAll('figure.hero img')].map(i=>({width:i.width,height:i.height,ratio:i.width/i.height})),badImages:[...document.images].filter(i=>!i.complete||!i.naturalWidth).map(i=>i.getAttribute('src'))}));
-  if(mobile.width>mobile.viewport+1||mobile.badImages.length||errors.length||Math.abs(mobile.hero[0].ratio-16/9)>.01)throw Error(JSON.stringify({mobile,errors}));
+  if(mobile.width>mobile.viewport+1||mobile.badImages.length||errors.length||mobile.hero.length!==1||Math.abs(mobile.hero[0].ratio-16/9)>.01)throw Error(JSON.stringify({mobile,errors}));
   await page.screenshot({path:path.join(qa,`${language}-mobile.png`)});
-  records.push({language,content,mobile,errors});await page.close();
+  records.push({language,expected,content,mobile,errors});await page.close();
  }
 }finally{await browser.close()}
 fs.writeFileSync(path.join(qa,'checks.json'),JSON.stringify(records,null,2)+'\n');

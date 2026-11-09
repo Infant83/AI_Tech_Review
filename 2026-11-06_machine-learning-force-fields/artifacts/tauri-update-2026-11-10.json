@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-10",
+  "topic": "2026-11-06_machine-learning-force-fields",
+  "status": "Reviewed bilingual revision; publication preparation and actual deployment are separately recorded.",
+  "original_publication_date": "2026-11-06",
+  "revision_date": "2026-11-10",
+  "evidence_date": "2026-11-10",
+  "editorial_assessment": {
+    "verdict": "Suitable as a substantive explanatory revision of the existing review.",
+    "reason": "The notified paper is the same Tauri arXivv1 already used in the original review; strengthen model/derivative/data/observable explanation rather than claim a newly released scientific result.",
+    "changes": [
+      "Four-term energy and full coordinate derivative explanation with two new formulas and one conceptualdiagram.",
+      "Exact train/validation/test denominators and known neutral-water reuse, staged heads/label masks/sampling weights.",
+      "Charge normalization vsQEq and environmental pair dispersion vs self-consistent polarization/MBD.",
+      "Observable-specific water/barrier comparison with reference and temperature conditions.",
+      "Fixed-code/checkpoint reproducibility and original/updated/evidence dates."
+    ],
+    "scope_retained": "General MD/MLFF introduction, original title/subtitle, cover and original four scientific illustrations/calculations preserved."
+  },
+  "sources": {
+    "paper": {
+      "title": "SO3LR Tauri: Generally Applicable Force Fields for Reactive(Bio)Molecular Simulations Covering the Periodic Table",
+      "version": "arXiv:2611.06237v1",
+      "submitted": "2026-11-04",
+      "checked": "2026-11-10",
+      "url": "https://arxiv.org/html/2611.06237v1",
+      "review_status": "preprint; no later arXiv version found"
+    },
+    "data": {
+      "version": "1.0.0",
+      "doi": "10.5281/zenodo.22920714",
+      "readme": "https://zenodo.org/api/records/22920714/files/README.md/content",
+      "train": 147894100,
+      "validation": 499644,
+      "test": 499672,
+      "all_splits": 148893416,
+      "known_reused_neutral_water": 694467,
+      "interpretation": "Split entries and known reuse do not certify globally deduplicated geometry count."
+    },
+    "code": {
+      "commit": "ee62fa28860850d736845c3b91fba051d230f478",
+      "url": "https://github.com/general-molecular-simulations/so3lr/tree/ee62fa28860850d736845c3b91fba051d230f478",
+      "method": "static inspection of registry, observable, JAX gradient and fast backward paths; no model inference/training/MD executed"
+    }
+  },
+  "independent_reviews": {
+    "physics": "tauri-physics-review-2026-11-10.md",
+    "data": "tauri-data-review-2026-11-10.md",
+    "required_fixes_integrated": [
+      "T-M300K/Yeh-Hummer versus experiment≈298K in water row",
+      "Original-edition figure provenance in Englishdisclosure"
+    ],
+    "optional_clarifications_integrated": [
+      "Direct atomic targets specifyPBE0+MBD-NL",
+      "Locality thought experiment is scoped to inputs determining the atom force"
+    ]
+  },
+  "verification": {
+    "ko": {
+      "figures": 6,
+      "tables": 6,
+      "references": 31,
+      "display_equations": 10,
+      "image_assets": 16,
+      "html_sha256": "d44594de37db679f958c5c6e15392748705acea7b05122f2f45c9b593f65f86f",
+      "pdf_sha256": "1b0a724510e31d9a37c1594c6f74f7bcdd8753aefd99d69b8b7bfeaf1b8b1c7c",
+      "pdf_pages": 16,
+      "local_assets_links": "passed",
+      "metadata_dates": "passed",
+      "pdf_private_annotations": []
+    },
+    "en": {
+      "figures": 6,
+      "tables": 6,
+      "references": 31,
+      "display_equations": 10,
+      "image_assets": 16,
+      "html_sha256": "67b25611ff656298f3df195a56afdb59b5ca0395520e48e3d8062efb1ae2fbfe",
+      "pdf_sha256": "69810b79b05a388111d2e5b4924ae6f3f01a4cfe6c1e7d610392532b470f24b7",
+      "pdf_pages": 19,
+      "local_assets_links": "passed",
+      "metadata_dates": "passed",
+      "pdf_private_annotations": []
+    }
+  },
+  "visual_review": {
+    "ko": "All16PDF pages rendered and individually inspected; no requiredlayoutfix.",
+    "en": "All19PDF pages rendered and individually inspected; no requiredlayoutfix.",
+    "new_diagram": "Both language full figure renders actually viewed; four-term paths and text fit.",
+    "actual_browser": "KO actual new diagram/chain-rule/article and mobile layout viewed; EN local page metadata/counts/images at375px checked. KO/EN no horizontal overflow, allimages loaded; temporary viewport reset to1265px.",
+    "proof": "Actual article screen retained privately and excluded from public artifacts.",
+    "human_review": "No new sentence-by-sentence human review or reader-comprehension study performed."
+  },
+  "publication_readiness": {
+    "latest_remote_main_checked": "d420c75d890c1ddd70faa7270c2e665c982f7280",
+    "topic_matches_remote_before_revision": true,
+    "publication_registry_and_archive": "Not changed; current public edition preserved.",
+    "next_step": "Integrate reviewed revision against current main via individual review registration and latest publication workflow, preserving original ID/date/URLs and priorPDFversions."
+  },
+  "publication_preparation": {
+    "approval_date": "2026-11-10",
+    "request": "게재하자",
+    "deployed_baseline": "4f4496ae9d5b6bcde651132233661172dc6280e4",
+    "change_declaration_ownership": "Two HTML paths transferred from the previous display-only declaration into this article revision; previous after hashes equal this revision before hashes.",
+    "previous_display_transition": {
+      "reviews/2026-11-06_machine-learning-force-fields/en/index.html": {
+        "before": "23d44c213a29dd05b637daaf584284aef7b1b1ae31f0f77e0fcba23472c7752b",
+        "after": "87323b3e7bce9756f22d98fff3ca6f6743088cbdd71e9e342b127720bee19384"
+      },
+      "reviews/2026-11-06_machine-learning-force-fields/index.html": {
+        "before": "9cb62c3aa1dbffc5028bb0ac083f64c530c137c09604f189ac26ea3d84810154",
+        "after": "2ada6dd7cf6962150d16d10b48ed3d780a514c446ca5c35baaeee55439669c5c"
+      }
+    },
+    "status": "Approved candidate preparation; actual deployment verified separately in release records."
+  }
+}

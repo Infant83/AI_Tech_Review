@@ -1,7 +1,8 @@
 """Export the curated bilingual article JSON to the repository's Markdown format.
 
 Only authored text and explicitly approved local illustrations are accepted.
-The nine equations are typeset from equivalent TeX rather than Unicode facsimiles.
+Legacy equations retain their reviewed positional TeX mapping. New equations
+carry explicit TeX so additions do not shift the original mapping.
 """
 from pathlib import Path
 import argparse
@@ -16,6 +17,7 @@ ASSETS = {
     'figures-v2/lj_md_energy.png': 'lj_md_energy.svg',
     'figures/simulation_workflow.png': 'simulation_workflow.svg',
     'figures/barrier_accuracy.png': 'barrier_accuracy.svg',
+    'figures/tauri_energy_model.png': 'tauri_energy_model.svg',
 }
 EQUATIONS = [
     r'U(\mathbf R)=U_{\mathrm{bond}}+U_{\mathrm{angle}}+U_{\mathrm{torsion}}+U_{\mathrm{nonbonded}}',
@@ -53,7 +55,8 @@ def export(language):
     source = ROOT / 'artifacts' / f'article-{language}.json'
     data = json.loads(source.read_text(encoding='utf-8'))
     safe_text(json.dumps(data, ensure_ascii=False))
-    assert [r['id'] for r in data['references']] == list(range(1, 31))
+    references = data['references']
+    assert references and [r['id'] for r in references] == list(range(1, len(references) + 1)), 'References must have consecutive reviewed IDs.'
     ko = language == 'ko'
     parts = [f'# {data["title"]}', f'<p class="dek">{html.escape(data["subtitle"])}</p>']
     # Keep the introductory artwork beside the title, ahead of the numbered prose.
@@ -61,6 +64,9 @@ def export(language):
     assert len(heroes) == 1
     parts.append(figure(heroes[0], language))
     equation_index = 0
+    display_equations = 0
+    figure_count = len(heroes)
+    table_count = 0
     disclosure = []
     for section in data['sections']:
         if section['title'] in ['작성·검증 정보', 'Production and verification', 'How this review was made', 'Writing and verification disclosure']:
@@ -75,15 +81,26 @@ def export(language):
                 parts.append(block['text'])
             elif kind == 'figure':
                 parts.append(figure(block, language))
+                figure_count += 1
             elif kind == 'equation':
-                tex = EQUATIONS[equation_index]
-                equation_index += 1
+                if 'tex' in block:
+                    tex = block['tex']
+                    if not isinstance(tex, str) or not tex.strip() or '$$' in tex:
+                        raise ValueError('Explicit equation TeX must be a nonempty string without display delimiters.')
+                    tex = safe_text(tex).strip()
+                else:
+                    if equation_index >= len(EQUATIONS):
+                        raise ValueError('New equations require an explicit tex field.')
+                    tex = EQUATIONS[equation_index]
+                    equation_index += 1
                 if tex:
                     parts.append('$$\n' + tex + '\n$$')
+                    display_equations += 1
                 else:
                     # Cost accounting is a prose relation, with no fictitious variables.
                     parts.append('<p class="cost-relation">' + html.escape(block['text']) + '</p>')
             elif kind == 'table':
+                table_count += 1
                 def cell(value):
                     return safe_text(value).replace('|', '\\|').replace('\n', '<br>')
                 parts.append('\n'.join(['| ' + ' | '.join(map(cell, block['columns'])) + ' |',
@@ -93,14 +110,14 @@ def export(language):
                 parts.append('\n'.join(f'{i}. {item}' for i, item in enumerate(block['items'], 1)))
             else:
                 raise ValueError(f'Unsupported block type: {kind}')
-    assert equation_index == 9, equation_index
+    assert equation_index == len(EQUATIONS), 'Preserve all nine legacy equation/cost blocks.'
     parts.append('## ' + ('참고문헌' if ko else 'References'))
     parts.append('\n'.join(f'{r["id"]}. {r["label"]} [{"doi:" + r["url"].split("doi.org/")[1] if "doi.org/" in r["url"] else r["url"]}]({r["url"]})' for r in data['references']))
     assert len(disclosure) >= 2, 'Preserve the source and authoring disclosure.'
     parts.append('<!-- AI Tech Review Authoring Disclosure -->\n<section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading">\n<h2 id="disclosure-heading">' + ('작성·검증 정보' if ko else 'How this review was made') + '</h2>\n' + '\n'.join('<p>' + html.escape(b['text']) + '</p>' for b in disclosure) + '\n</section>\n<!-- End AI Tech Review Authoring Disclosure -->')
     output = ROOT / 'reports' / f'review_{language}.md'
     output.write_text('\n\n'.join(parts) + '\n', encoding='utf-8')
-    print(json.dumps({'language': language, 'references': 30, 'equations': equation_index, 'figures': 5, 'file': str(output.relative_to(ROOT))}))
+    print(json.dumps({'language': language, 'references': len(references), 'legacy_equation_blocks': equation_index, 'equations': display_equations, 'figures': figure_count, 'tables': table_count, 'file': str(output.relative_to(ROOT))}))
 
 
 if __name__ == '__main__':

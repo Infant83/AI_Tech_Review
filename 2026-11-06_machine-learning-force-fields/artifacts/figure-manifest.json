@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-06",
+  "date": "2026-11-10",
   "assets": [
     {
       "asset": "hero.webp",
@@ -30,11 +30,23 @@
       "role": "Review analytic sensitivity calculation",
       "meaning_and_conditions": "exp(|δΔG‡|/RT), same prefactor, 300/600/1000 K; no MLFF benchmark.",
       "sha256": "4065c39d30fcba2d22354b29a88d4a1c65d45af4d7fabf97a8000d489bcdb792"
+    },
+    {
+      "asset": "tauri_energy_model.svg",
+      "language_sources": [
+        "tauri_energy_model_ko.svg",
+        "tauri_energy_model_en.svg"
+      ],
+      "role": "Review-created conceptual architecture and derivative diagram",
+      "meaning_and_conditions": "Fixed NLH repulsion and predicted semi-local energy/charges/polarizability/dispersion properties enter four differentiable energy terms. Forces include all coordinate dependencies at fixed parametersZ/Q/S/cell. PaperII.1/S1 and fixed official code; not benchmark data.",
+      "source_code": "build_tauri_energy_figure.py",
+      "sha256": "348474885654f2a6065e0d53d8e568ab71669514323652704b136dea107484c3"
     }
   ],
   "scientific_code": [
     "build_intro_figures.py",
-    "build_figures.py"
+    "build_figures.py",
+    "build_tauri_energy_figure.py"
   ],
   "calculation_data": [
     "intro-calculation-checks.json",
@@ -44,7 +56,8 @@
   "source_versions": {
     "SO3LR_Tauri": "arXiv:2611.06237v1 and Supporting Information",
     "data": "Zenodo 1.0.0, doi:10.5281/zenodo.22920714",
-    "code": "70707f5bb0c333ecec707e5a12b1efdf1c83603a"
+    "code": "ee62fa28860850d736845c3b91fba051d230f478",
+    "code_original_review": "70707f5bb0c333ecec707e5a12b1efdf1c83603a"
   },
   "rights": "Original review calculations and schematics; cover generated with image_gen. Referenced papers, third-party code, dataset and model weights retain their own terms. No dataset body or model weights are redistributed.",
   "fonts": "SIL Open Font License 1.1; complete notices in font-license.txt.",
@@ -58,6 +71,52 @@
           "role": "AI-generated conceptual cover",
           "meaning_and_conditions": "Samples of water configurations flow into continuous curves and overlapping views of molecular motion. This conceptual illustration connects learning an interaction function from configuration samples with calculating atomic motion. The curves and overlaps are not actual energy values or computed trajectories. AI-generated and edited.",
           "sha256": "1497e1fdee5faf2b9b49584bb7caa5b305a6f1bfa51239573a7522c0b8cfaf46"
+        }
+      }
+    },
+    {
+      "revision": "Before2026-11-10 substantive text update",
+      "source_commit": "95c7b270fcdceb2ff607be5f71830668dd2627c6",
+      "retained_output_record": {
+        "date": "2026-11-06",
+        "source_versions": {
+          "SO3LR_Tauri": "arXiv:2611.06237v1 and Supporting Information",
+          "data": "Zenodo 1.0.0, doi:10.5281/zenodo.22920714",
+          "code": "ee62fa28860850d736845c3b91fba051d230f478",
+          "code_original_review": "70707f5bb0c333ecec707e5a12b1efdf1c83603a"
+        },
+        "verification": {
+          "original_scientific_and_authorship_record": "Full previous record retained in revision_history; scientific body and original authorship disclosure unchanged.",
+          "source_body_preservation": "Both language manuscripts are byte-identical outside the hero figure to source commit 58c4c8d.",
+          "cover_redesign": {
+            "root_independent_cover_review": "accepted after actual final PNG and caption/alt inspection",
+            "font_coverage": "all new caption and alt characters included in existing licensed subsets",
+            "html_output": "Both languages checked at 1440px and 390px; all images loaded, no overflow; builder checks passed.",
+            "pdf_visual_review": "root individually viewed all 30 final pages at 130 dpi; cover, captions, fonts, figures, references, disclosures and footers passed.",
+            "metadata": "Generated PNG has no ancillary text metadata;final static RGB WebP has no EXIF/GPS/XMP."
+          },
+          "output": "All 30 final bilingual PDF pages independently rendered and viewed; no clipping, overlap, missing glyphs or blank pages. Original non-cover body and authorship unchanged."
+        },
+        "publication_local": {
+          "cover_redesign_date": "2026-11-06",
+          "reviews": 54,
+          "archive_documents": 114,
+          "review_files_changed": "Only this review and the four other explicitly selected recent reviews",
+          "article_body": "Both manuscript bodies outside the hero figure are byte-identical to source commit 58c4c8d.",
+          "pdfs": {
+            "ko": {
+              "pages": 14,
+              "sha256": "63251c77f7f6ce2e3a8b64a323228123569cb26c513fb39fec17d46c55dd8aff",
+              "four_copies_equal": true
+            },
+            "en": {
+              "pages": 16,
+              "sha256": "3ba9a80a71c07219298b6befbd6d2b4f230daede509013e2e0e2871f6ca6a4a1",
+              "four_copies_equal": true
+            }
+          },
+          "validation": "Public site and reader artifact validation passed; all 127 pages of the 10 campaign PDFs independently viewed.",
+          "deployment": "Separate deployment workflow and live HTTPS verification required"
         }
       }
     }
@@ -144,36 +203,216 @@
     }
   },
   "verification": {
-    "original_scientific_and_authorship_record": "Full previous record retained in revision_history; scientific body and original authorship disclosure unchanged.",
-    "source_body_preservation": "Both language manuscripts are byte-identical outside the hero figure to source commit 58c4c8d.",
-    "cover_redesign": {
-      "root_independent_cover_review": "accepted after actual final PNG and caption/alt inspection",
-      "font_coverage": "all new caption and alt characters included in existing licensed subsets",
-      "html_output": "Both languages checked at 1440px and 390px; all images loaded, no overflow; builder checks passed.",
-      "pdf_visual_review": "root individually viewed all 30 final pages at 130 dpi; cover, captions, fonts, figures, references, disclosures and footers passed.",
-      "metadata": "Generated PNG has no ancillary text metadata;final static RGB WebP has no EXIF/GPS/XMP."
-    },
-    "output": "All 30 final bilingual PDF pages independently rendered and viewed; no clipping, overlap, missing glyphs or blank pages. Original non-cover body and authorship unchanged."
+    "revision": "2026-11-10 local manuscript revision; public deployment not performed",
+    "historical_record": "Original cover-only preservation and publication checks retained in revision_history and cover_redesign_2026_11_06. They describe that edition, not this revised body.",
+    "science": "Independent physics and data review records; required temperature/provenance wording fixes integrated.",
+    "rendering": "KO16/EN19PDF pages visually reviewed; actual bilingual browser/static checks passed. Details in tauri-update-2026-11-10.json."
   },
   "publication_local": {
-    "cover_redesign_date": "2026-11-06",
-    "reviews": 54,
-    "archive_documents": 114,
-    "review_files_changed": "Only this review and the four other explicitly selected recent reviews",
-    "article_body": "Both manuscript bodies outside the hero figure are byte-identical to source commit 58c4c8d.",
+    "status": "revised local HTML/PDF; no registry or archived-PDF replacement and no public deployment in this task",
+    "original_publication_date": "2026-11-06",
+    "revision_date": "2026-11-10",
     "pdfs": {
       "ko": {
-        "pages": 14,
-        "sha256": "63251c77f7f6ce2e3a8b64a323228123569cb26c513fb39fec17d46c55dd8aff",
-        "four_copies_equal": true
+        "pdf": "dist/review_ko.pdf",
+        "sha256": "1b0a724510e31d9a37c1594c6f74f7bcdd8753aefd99d69b8b7bfeaf1b8b1c7c"
       },
       "en": {
-        "pages": 16,
-        "sha256": "3ba9a80a71c07219298b6befbd6d2b4f230daede509013e2e0e2871f6ca6a4a1",
-        "four_copies_equal": true
+        "pdf": "dist/en/review_en.pdf",
+        "sha256": "69810b79b05a388111d2e5b4924ae6f3f01a4cfe6c1e7d610392532b470f24b7"
       }
+    }
+  },
+  "distribution_files": [
+    {
+      "file": "dist/barrier_accuracy.svg",
+      "bytes": 57374,
+      "sha256": "4065c39d30fcba2d22354b29a88d4a1c65d45af4d7fabf97a8000d489bcdb792"
     },
-    "validation": "Public site and reader artifact validation passed; all 127 pages of the 10 campaign PDFs independently viewed.",
-    "deployment": "Separate deployment workflow and live HTTPS verification required"
-  }
+    {
+      "file": "dist/en/barrier_accuracy.svg",
+      "bytes": 57374,
+      "sha256": "4065c39d30fcba2d22354b29a88d4a1c65d45af4d7fabf97a8000d489bcdb792"
+    },
+    {
+      "file": "dist/en/hero.webp",
+      "bytes": 657580,
+      "sha256": "1497e1fdee5faf2b9b49584bb7caa5b305a6f1bfa51239573a7522c0b8cfaf46"
+    },
+    {
+      "file": "dist/en/index.html",
+      "bytes": 69192,
+      "sha256": "67b25611ff656298f3df195a56afdb59b5ca0395520e48e3d8062efb1ae2fbfe"
+    },
+    {
+      "file": "dist/en/lj_energy_force.svg",
+      "bytes": 80492,
+      "sha256": "268f29508db12f97e3f829b4aa72f0309400b6ce3106c44a8cd965fa612f2e66"
+    },
+    {
+      "file": "dist/en/lj_md_energy.svg",
+      "bytes": 90929,
+      "sha256": "c84d5cf2236a26cb5f0b510ad97671a1975ac817b4a2809d7df329ab2a15bd82"
+    },
+    {
+      "file": "dist/en/math_46ecbb225fe8cd.svg",
+      "bytes": 18890,
+      "sha256": "ffebc431f72d07e618e02048b7553bac349e6097e197113357abd0136d7c3546"
+    },
+    {
+      "file": "dist/en/math_6c759ef5c522d7.svg",
+      "bytes": 10837,
+      "sha256": "03788b5088e3d9cad4ca0065a52c76a5f57f014dd1ad0258eb471338d6b5c2cc"
+    },
+    {
+      "file": "dist/en/math_870ea54d308e84.svg",
+      "bytes": 16464,
+      "sha256": "9fbc8e51f3f36ab74f622d56403dd9bc191156504f35445c867a6733ab851b9a"
+    },
+    {
+      "file": "dist/en/math_939785b7c147a3.svg",
+      "bytes": 12219,
+      "sha256": "48454df7f46e23a1697e123ede56e41d73f5f314fb1cfcea77793ef554c094d8"
+    },
+    {
+      "file": "dist/en/math_99d32d543376c0.svg",
+      "bytes": 22776,
+      "sha256": "14ee9150e4200ce0425f37abb7afa3debce4a7f24ff9c17b1436c4c9c1883df4"
+    },
+    {
+      "file": "dist/en/math_9ed846d8a7d4d0.svg",
+      "bytes": 12341,
+      "sha256": "9453b70a3f6210795c7f5ceddb117b2f8f1b49edfa16556c7e02ef0bb82d9a94"
+    },
+    {
+      "file": "dist/en/math_b0c4a359dbb705.svg",
+      "bytes": 9945,
+      "sha256": "0207a1ee90ddc2b10602706a45214f045d712fc0593690951739d04c6c75f198"
+    },
+    {
+      "file": "dist/en/math_bf6f9e71bb6c64.svg",
+      "bytes": 17868,
+      "sha256": "48ba80f5076115ba4460559e75d65a5ed4793f34809d2f64e5d6c2181d09e781"
+    },
+    {
+      "file": "dist/en/math_db649bdf78f869.svg",
+      "bytes": 12858,
+      "sha256": "b3e8d572c02ce9528683b3421bb8e1e6bf803b50a591beb85142129dbba69726"
+    },
+    {
+      "file": "dist/en/math_eac5a921b0ce07.svg",
+      "bytes": 13240,
+      "sha256": "99f075f118ab066907f3997e43148f8f00302ab7158be4d6a46d8f82f402cc0e"
+    },
+    {
+      "file": "dist/en/review.css",
+      "bytes": 237955,
+      "sha256": "132743e9c8c3794f1046a60218a285dd7f1c97eee8443b8d7485b2707b7833dd"
+    },
+    {
+      "file": "dist/en/review_en.pdf",
+      "bytes": 4912135,
+      "sha256": "69810b79b05a388111d2e5b4924ae6f3f01a4cfe6c1e7d610392532b470f24b7"
+    },
+    {
+      "file": "dist/en/simulation_workflow.svg",
+      "bytes": 58953,
+      "sha256": "344ea99887f007047f7d1b8a46eb9f3813546e1545eed1d371b7ae78f347ded4"
+    },
+    {
+      "file": "dist/en/tauri_energy_model.svg",
+      "bytes": 232996,
+      "sha256": "7524988976bff8087ac41ea3743edad9418f664071be15fee3e0c36a68e5f9a2"
+    },
+    {
+      "file": "dist/hero.webp",
+      "bytes": 657580,
+      "sha256": "1497e1fdee5faf2b9b49584bb7caa5b305a6f1bfa51239573a7522c0b8cfaf46"
+    },
+    {
+      "file": "dist/index.html",
+      "bytes": 67881,
+      "sha256": "d44594de37db679f958c5c6e15392748705acea7b05122f2f45c9b593f65f86f"
+    },
+    {
+      "file": "dist/lj_energy_force.svg",
+      "bytes": 80492,
+      "sha256": "268f29508db12f97e3f829b4aa72f0309400b6ce3106c44a8cd965fa612f2e66"
+    },
+    {
+      "file": "dist/lj_md_energy.svg",
+      "bytes": 90929,
+      "sha256": "c84d5cf2236a26cb5f0b510ad97671a1975ac817b4a2809d7df329ab2a15bd82"
+    },
+    {
+      "file": "dist/math_46ecbb225fe8cd.svg",
+      "bytes": 18890,
+      "sha256": "ffebc431f72d07e618e02048b7553bac349e6097e197113357abd0136d7c3546"
+    },
+    {
+      "file": "dist/math_6c759ef5c522d7.svg",
+      "bytes": 10837,
+      "sha256": "03788b5088e3d9cad4ca0065a52c76a5f57f014dd1ad0258eb471338d6b5c2cc"
+    },
+    {
+      "file": "dist/math_870ea54d308e84.svg",
+      "bytes": 16464,
+      "sha256": "9fbc8e51f3f36ab74f622d56403dd9bc191156504f35445c867a6733ab851b9a"
+    },
+    {
+      "file": "dist/math_939785b7c147a3.svg",
+      "bytes": 12219,
+      "sha256": "48454df7f46e23a1697e123ede56e41d73f5f314fb1cfcea77793ef554c094d8"
+    },
+    {
+      "file": "dist/math_99d32d543376c0.svg",
+      "bytes": 22776,
+      "sha256": "14ee9150e4200ce0425f37abb7afa3debce4a7f24ff9c17b1436c4c9c1883df4"
+    },
+    {
+      "file": "dist/math_9ed846d8a7d4d0.svg",
+      "bytes": 12341,
+      "sha256": "9453b70a3f6210795c7f5ceddb117b2f8f1b49edfa16556c7e02ef0bb82d9a94"
+    },
+    {
+      "file": "dist/math_b0c4a359dbb705.svg",
+      "bytes": 9945,
+      "sha256": "0207a1ee90ddc2b10602706a45214f045d712fc0593690951739d04c6c75f198"
+    },
+    {
+      "file": "dist/math_bf6f9e71bb6c64.svg",
+      "bytes": 17868,
+      "sha256": "48ba80f5076115ba4460559e75d65a5ed4793f34809d2f64e5d6c2181d09e781"
+    },
+    {
+      "file": "dist/math_db649bdf78f869.svg",
+      "bytes": 12858,
+      "sha256": "b3e8d572c02ce9528683b3421bb8e1e6bf803b50a591beb85142129dbba69726"
+    },
+    {
+      "file": "dist/math_eac5a921b0ce07.svg",
+      "bytes": 13240,
+      "sha256": "99f075f118ab066907f3997e43148f8f00302ab7158be4d6a46d8f82f402cc0e"
+    },
+    {
+      "file": "dist/review.css",
+      "bytes": 237955,
+      "sha256": "132743e9c8c3794f1046a60218a285dd7f1c97eee8443b8d7485b2707b7833dd"
+    },
+    {
+      "file": "dist/review_ko.pdf",
+      "bytes": 4968622,
+      "sha256": "1b0a724510e31d9a37c1594c6f74f7bcdd8753aefd99d69b8b7bfeaf1b8b1c7c"
+    },
+    {
+      "file": "dist/simulation_workflow.svg",
+      "bytes": 58953,
+      "sha256": "344ea99887f007047f7d1b8a46eb9f3813546e1545eed1d371b7ae78f347ded4"
+    },
+    {
+      "file": "dist/tauri_energy_model.svg",
+      "bytes": 232993,
+      "sha256": "348474885654f2a6065e0d53d8e568ab71669514323652704b136dea107484c3"
+    }
+  ]
 }

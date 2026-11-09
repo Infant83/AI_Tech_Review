@@ -2,9 +2,11 @@
 
 Bilingual AI Tech Review article dated 6 November 2026. The Korean text is canonical; the complete English edition is in `dist/en/`.
 
+Revision prepared on 10 November 2026: the same SO3LR Tauri v1 paper was rechecked against data release 1.0.0 and fixed official code. The revision expands energy construction, full coordinate derivatives, training-data denominators and staged targets, and observable-specific validation. Original publication date and article ID remain unchanged. Publication is tracked by the review registration, persistent publication request, and release verification records.
+
 - Final authored source: `artifacts/article-ko.json`, `artifacts/article-en.json`; Markdown exports in `reports/`.
 - Final delivery: `dist/index.html`, `dist/review_ko.pdf`, `dist/en/index.html`, `dist/en/review_en.pdf`.
-- Approved figure assets: `hero.webp`, `lj_energy_force.svg`, `lj_md_energy.svg`, `simulation_workflow.svg`, `barrier_accuracy.svg`. Eight generated `math_*.svg` assets and the self-contained `review.css` complete each language edition.
+- Figure assets: `hero.webp`, `lj_energy_force.svg`, `lj_md_energy.svg`, `simulation_workflow.svg`, `tauri_energy_model.svg`, `barrier_accuracy.svg`. Ten generated `math_*.svg` assets and the self-contained `review.css` complete each language edition. The new diagram is generated from `artifacts/build_tauri_energy_figure.py` and its language-specific SVG sources.
 - Figure provenance and source versions: `artifacts/figure-manifest.json`. Scientific educational calculations: `build_intro_figures.py`, `build_figures.py` and their curated calculation data. The source datasets, paper captures and model weights are not distributed.
 - Cover planning: `cover-art-brief.md`; explanation planning: `review-explanation-brief.md`. Font sources and complete SIL OFL notices are retained with the build assets.
 
@@ -25,3 +27,5 @@ REVIEW_BROWSER_MODULES=/path/to/node_modules node "$TOPIC/artifacts/check_output
 The existing figures are final assets. Regenerate their calculations with `python3 "$TOPIC/artifacts/build_intro_figures.py"` and `python3 "$TOPIC/artifacts/build_figures.py"`, then rebuild the HTML and PDFs. The PDF operation marker required by the active PDF skill belongs to the authoring workflow and should precede a new PDF authoring operation. Temporary dependencies and QA outputs stay under ignored `tmp/`.
 
 The site publisher reads only `dist/` and resolves the explicitly referenced assets. Publication registry, hub metadata, archive records and deployment are maintained by the repository-level publisher.
+
+The source `publication_date`/`date` remains `2026-11-06`; `updated_date` and `evidence_date` are `2026-11-10`. New formula blocks may supply an explicit `tex` field; the original nine positional blocks retain their previous mapping. Source, physics/data reviews and publication suitability are recorded in `artifacts/tauri-update-2026-11-10.json`. Public registration and any replacement of archived PDFs must follow the latest repository publication workflow, preserving the original PDF editions and checking current main before integration.

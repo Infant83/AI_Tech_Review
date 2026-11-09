@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1420" height="910" viewBox="0 0 1420 910" role="img" aria-labelledby="title desc"><title id="title">무엇을 배우고, 무엇을 식으로 계산하는가</title><desc id="desc">Four differentiable energy terms sum to total energy. Fixed NLH repulsion is distinct from network-predicted energy, charge and dispersion properties; forces include their coordinate dependence.</desc>
+<style>text{font-family:ReviewFigure,sans-serif;fill:#253b42}.label{font-size:25px;font-weight:700}.body{font-size:22px}.small{font-size:20px}.wire{fill:none;stroke:#748c91;stroke-width:2.5;stroke-linejoin:round}</style>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#748c91" stroke-width="1.4"/></marker></defs>
+<rect width="1420" height="910" fill="#fbfaf6"/>
+<text x="48" y="49" class="label" text-anchor="start">무엇을 배우고, 무엇을 식으로 계산하는가</text>
+<text x="48" y="82" class="small" text-anchor="start">SO3LR Tauri의 에너지 구성과 힘의 계산</text>
+<rect x="48" y="111" width="1324" height="96" rx="12" fill="#edf2ee" stroke="#b5c5c3" stroke-width="2"/>
+<text x="710" y="148" class="label" text-anchor="middle">입력: 원자 좌표 R · 원소 Z · 총전하 Q · 스핀 다중도 S</text>
+<text x="710" y="182" class="small" text-anchor="middle">좌표를 미분할 때 Z, Q, S는 고정한다</text>
+<path d="M198 207 V250" class="wire" marker-end="url(#arrow)"/>
+<path d="M886 207 V250" class="wire" marker-end="url(#arrow)"/>
+<rect x="48" y="253" width="300" height="142" rx="12" fill="#f6eee1" stroke="#bd8542" stroke-width="2"/>
+<rect x="392" y="253" width="980" height="142" rx="12" fill="#eaf0f3" stroke="#426a79" stroke-width="2"/>
+<text x="198" y="297" class="label" text-anchor="middle">고정 NLH 반발표</text>
+<text x="198" y="332" class="small" text-anchor="middle">별도 DFT로 정한 원자쌍 항</text>
+<text x="198" y="366" class="small" text-anchor="middle">ML 학습 중 고정</text>
+<text x="882" y="298" class="label" text-anchor="middle">SO3krates 신경망</text>
+<text x="882" y="334" class="body" text-anchor="middle">학습 출력: 원자 에너지 · 전하 q · 분극률 α · 분산 계수 C₆</text>
+<text x="882" y="368" class="small" text-anchor="middle">현재 원자 환경에 따라 출력값도 변한다</text>
+<path d="M198 395 V450" class="wire" marker-end="url(#arrow)"/>
+<path d="M542 395 V450" class="wire" marker-end="url(#arrow)"/>
+<path d="M886 395 V450" class="wire" marker-end="url(#arrow)"/>
+<path d="M1222 395 V450" class="wire" marker-end="url(#arrow)"/>
+<rect x="48" y="454" width="300" height="135" rx="12" fill="#fff" stroke="#bd8542" stroke-width="2"/>
+<text x="198" y="490" class="label" text-anchor="middle">Erep</text>
+<text x="198" y="526" class="body" text-anchor="middle">단거리 반발</text>
+<text x="198" y="562" class="small" text-anchor="middle">가까운 접촉의 급한 반발</text>
+<path d="M198 589 V631" class="wire"/>
+<rect x="392" y="454" width="300" height="135" rx="12" fill="#fff" stroke="#426a79" stroke-width="2"/>
+<text x="542" y="490" class="label" text-anchor="middle">ESO3k</text>
+<text x="542" y="526" class="body" text-anchor="middle">반국소 에너지</text>
+<text x="542" y="562" class="small" text-anchor="middle">신경망이 학습한 에너지</text>
+<path d="M542 589 V631" class="wire"/>
+<rect x="736" y="454" width="300" height="135" rx="12" fill="#fff" stroke="#638776" stroke-width="2"/>
+<text x="886" y="490" class="label" text-anchor="middle">Eelec</text>
+<text x="886" y="526" class="body" text-anchor="middle">정전기 에너지</text>
+<text x="886" y="562" class="small" text-anchor="middle">예측 q를 쿨롱식에 대입</text>
+<path d="M886 589 V631" class="wire"/>
+<rect x="1072" y="454" width="300" height="135" rx="12" fill="#fff" stroke="#a96678" stroke-width="2"/>
+<text x="1222" y="490" class="label" text-anchor="middle">Edisp</text>
+<text x="1222" y="526" class="body" text-anchor="middle">분산 에너지</text>
+<text x="1222" y="562" class="small" text-anchor="middle">예측 α, C₆로 쌍 항 구성</text>
+<path d="M1222 589 V631" class="wire"/>
+<path d="M198 631 H1222" class="wire"/>
+<path d="M710 631 V664" class="wire" marker-end="url(#arrow)"/>
+<rect x="266" y="668" width="888" height="78" rx="12" fill="#edf2ee" stroke="#638776" stroke-width="2"/>
+<text x="710" y="714" class="label" text-anchor="middle">Etotal = Erep + ESO3k + Eelec + Edisp</text>
+<path d="M710 746 V789" class="wire" marker-end="url(#arrow)"/>
+<text x="710" y="825" class="label" text-anchor="middle">힘 F = −∇R Etotal</text>
+<text x="710" y="862" class="body" text-anchor="middle">거리의 변화와 예측 물리량의 변화를 함께 미분한다</text>
+<text x="48" y="894" class="small" text-anchor="start">개념도 · 길이·색은 정량 값을 뜻하지 않음</text>
+</svg>

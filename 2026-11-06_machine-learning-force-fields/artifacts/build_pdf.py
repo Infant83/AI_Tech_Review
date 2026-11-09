@@ -18,20 +18,34 @@ const require=createRequire(path.join(cfg.modules,'_print.cjs'));
 const {chromium}=require('playwright');
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const results=[];
+function sourceDates(data){
+ const dates={published:data.publication_date||data.date,updated:data.updated_date||null,evidence:data.evidence_date||data.date};
+ for(const [field,value] of Object.entries(dates)){
+  if(value===null)continue;
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))throw Error(`Invalid source ${field} date.`);
+  const parsed=new Date(`${value}T00:00:00Z`);
+  if(Number.isNaN(parsed.valueOf())||parsed.toISOString().slice(0,10)!==value)throw Error(`Invalid source ${field} date.`);
+ }
+ if(dates.updated&&dates.updated<dates.published)throw Error('Revision date precedes original publication.');
+ return dates;
+}
 try {
  for(const language of cfg.languages){
   const dir=path.join(cfg.root,'dist',language==='ko'?'':'en');
+  const authored=JSON.parse(fs.readFileSync(path.join(cfg.root,'artifacts',`article-${language}.json`),'utf8'));
+  const dates=sourceDates(authored);
   const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
   const errors=[];page.on('pageerror',error=>errors.push(error.message));
   await page.goto(pathToFileURL(path.join(dir,'index.html')).href,{waitUntil:'load'});
   await page.evaluate(()=>document.fonts.ready);
   await page.evaluate(()=>{document.documentElement.style.scrollBehavior='auto'});
   await page.waitForFunction(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0),undefined,{timeout:20000});
-  const metadata=await page.evaluate(()=>({title:document.title,h1:document.querySelector('h1')?.textContent.trim(),og:document.querySelector('meta[property="og:title"]')?.content,lang:document.documentElement.lang,canonical:document.querySelector('link[rel="canonical"]')?.href}));
-  if(metadata.title!==metadata.h1||metadata.og!==metadata.h1||metadata.lang!==language)throw Error(`Metadata mismatch: ${JSON.stringify(metadata)}`);
+  const metadata=await page.evaluate(()=>({title:document.title,h1:document.querySelector('h1')?.textContent.trim(),og:document.querySelector('meta[property="og:title"]')?.content,lang:document.documentElement.lang,canonical:document.querySelector('link[rel="canonical"]')?.href,published:document.querySelector('meta[property="article:published_time"]')?.content,updated:document.querySelector('meta[property="article:modified_time"]')?.content||null,evidence:document.querySelector('meta[name="evidence-cutoff"]')?.content,brand:document.querySelector('header .brand')?.textContent.trim()}));
+  if(metadata.title!==metadata.h1||metadata.og!==metadata.h1||metadata.lang!==language||metadata.published!==dates.published||metadata.updated!==dates.updated||metadata.evidence!==dates.evidence||metadata.brand!=='AGENTIC TECH REVIEW LETTERS')throw Error(`Metadata mismatch: ${JSON.stringify(metadata)}`);
   // Keep local SVG inspection links on screen without leaking host file URIs to PDF annotations.
   await page.evaluate(()=>{for(const a of document.querySelectorAll('a.figure-zoom')){a.dataset.figureHref=a.getAttribute('href');a.removeAttribute('href')}});
-  const footer='<div style="width:100%;margin:0 18mm;color:#66716f;font:8px Arial,sans-serif;border-top:1px solid #d9e1dc;padding-top:9px;display:flex;justify-content:space-between"><span>AI Tech Review Letters · 2026-11-06</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>';
+  const footerDates=`${dates.published}${dates.updated?` · ${language==='ko'?'개정':'Updated'} ${dates.updated}`:''}`;
+  const footer=`<div style="width:100%;margin:0 18mm;color:#66716f;font:8px Arial,sans-serif;border-top:1px solid #d9e1dc;padding-top:9px;display:flex;justify-content:space-between"><span>Agentic Tech Review Letters (ATRL) · ${footerDates}</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>`;
   await page.pdf({path:path.join(dir,`review_${language}.pdf`),format:'A4',preferCSSPageSize:true,printBackground:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:footer,margin:{top:'18mm',bottom:'20mm',left:'18mm',right:'18mm'},tagged:true,outline:true});
   await page.evaluate(()=>{for(const a of document.querySelectorAll('a.figure-zoom'))a.setAttribute('href',a.dataset.figureHref)});
   await page.emulateMedia({media:'screen'});

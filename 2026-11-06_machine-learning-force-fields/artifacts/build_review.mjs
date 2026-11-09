@@ -24,14 +24,29 @@ const {AllPackages}=requireModule('mathjax-full/js/input/tex/AllPackages.js');
 const adaptor=liteAdaptor();RegisterHTMLHandler(adaptor);
 const mathDocument=mathjax.document('',{InputJax:new TeX({packages:AllPackages}),OutputJax:new SVG({fontCache:'local'})});
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-const cutoff='2026-11-06';
+const brand='Agentic Tech Review Letters';
+function sourceDates(data){
+ const values={published:data.publication_date||data.date,evidence:data.evidence_date||data.date,updated:data.updated_date||null};
+ for(const [field,value] of Object.entries(values)){
+  if(value===null)continue;
+  if(typeof value!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(value))throw Error(`Invalid source ${field} date: ${value}`);
+  const parsed=new Date(`${value}T00:00:00Z`);
+  if(Number.isNaN(parsed.valueOf())||parsed.toISOString().slice(0,10)!==value)throw Error(`Invalid source ${field} date: ${value}`);
+ }
+ if(values.updated&&values.updated<values.published)throw Error('Revision date precedes original publication.');
+ return values;
+}
+function dateLabel(value,language){
+ const [year,month,day]=value.split('-').map(Number);
+ return language==='ko'?`${year}년 ${month}월 ${day}일`:new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${value}T00:00:00Z`));
+}
 const onlyLanguage=process.argv.find(a=>a.startsWith('--language='))?.split('=')[1];
 if(onlyLanguage&&!['ko','en'].includes(onlyLanguage))throw Error('--language must be ko or en.');
 const publicBase=(process.argv.find(a=>a.startsWith('--public-base='))?.split('=').slice(1).join('=')||'https://infant83.io/AI_Tech_Review/reviews/2026-11-06_machine-learning-force-fields/').replace(/\/?$/,'/');
 const descriptors={ko:'원자 배치에서 에너지와 힘을 계산하는 원리부터 머신러닝 포스필드의 표현·학습 데이터·물성 정확도·계산 비용까지 살핀다.',en:'From atomic configurations to energies and forces: how machine-learning force fields connect representation and training data with observable accuracy and computational cost.'};
 const titles={ko:'머신러닝 포스필드: 원자 사이의 힘에서 물질의 성질까지',en:'Machine-Learning Force Fields: From Interatomic Forces to Material Properties'};
 const figureStems=[];
-const figureAssets=['lj_energy_force.svg','lj_md_energy.svg','simulation_workflow.svg','barrier_accuracy.svg'];
+const figureAssets=['lj_energy_force.svg','lj_md_energy.svg','simulation_workflow.svg','barrier_accuracy.svg','tauri_energy_model.svg'];
 const outputFiles=[];
 // This check needs no manuscripts/fonts and creates no artifact files.
 if(process.argv.includes('--check-math-stability')){
@@ -95,6 +110,8 @@ function mathImage(tex,display){
 
 for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const ko=lang==='ko';
+ const authored=JSON.parse(fs.readFileSync(path.join(artifacts,`article-${lang}.json`),'utf8'));
+ const dates=sourceDates(authored);
  const source=fs.readFileSync(path.join(root,'reports',`review_${lang}.md`),'utf8');
  const title=source.match(/^#\s+(.+)$/m)?.[1]?.trim()||titles[lang];
  const description=(source.match(/<p class=["']dek["']>([\s\S]*?)<\/p>/)?.[1]||descriptors[lang]).replace(/<[^>]*>/g,'').trim();
@@ -120,7 +137,8 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  let count=0;const toc=[];
  body=body.replace(/<h2(?:\s[^>]*)?>(.*?)<\/h2>/g,(_,text)=>{if(text==='작성·검증 정보'||text==='How this review was made')return `<h2 id="disclosure-heading">${text}</h2>`;const id=`section-${++count}`;toc.push(`<li><a href="#${id}">${text}</a></li>`);return `<h2 id="${id}">${text}</h2>`});
  body=body.replaceAll('<table>',`<div class="table-scroll" role="region" tabindex="0" aria-label="${ko?'비교와 응용 표':'Comparison and applications table'}"><table>`).replaceAll('</table>','</table></div>');
- const editor=`<p class="byline-disclosure">${ko?'책임 편집: 김현중 · AI 보조 작성: Codex · 근거 기준일: 2026년 11월 6일':'Responsible editor: Hyun-Jung Kim · AI assistance: Codex · Evidence cutoff: 6 November 2026'} · <a href="#authoring-disclosure">${ko?'작성·검증 범위':'Production and verification'}</a></p>`;
+ const dateParts=[`${ko?'최초 발행':'First published'}: ${dateLabel(dates.published,lang)}`,...(dates.updated?[`${ko?'개정':'Updated'}: ${dateLabel(dates.updated,lang)}`]:[]),`${ko?'근거 기준일':'Evidence cutoff'}: ${dateLabel(dates.evidence,lang)}`];
+ const editor=`<p class="byline-disclosure">${ko?'책임 편집: 김현중 · AI 보조 작성: Codex':'Responsible editor: Hyun-Jung Kim · AI assistance: Codex'} · ${dateParts.join(' · ')} · <a href="#authoring-disclosure">${ko?'작성·검증 범위':'Production and verification'}</a></p>`;
  const heroEnd=body.indexOf('</figure>');
  const tocHTML=`<details class="toc"><summary>${ko?'내용 살펴보기':'Contents'}</summary><ol>${toc.join('')}</ol></details>`;
  if(heroEnd>=0){
@@ -148,11 +166,12 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const other=publicBase?publicBase+(ko?'en/':''):(ko?'en/index.html':'../index.html');
  const url=publicBase?publicBase+(ko?'':'en/'):'';
  const metadata=publicBase?`<link rel="canonical" href="${esc(url)}"><link rel="alternate" hreflang="ko" href="${esc(publicBase)}"><link rel="alternate" hreflang="en" href="${esc(publicBase)}en/"><link rel="alternate" hreflang="x-default" href="${esc(publicBase)}"><meta property="og:url" content="${esc(url)}"><meta property="og:image" content="${esc(publicBase)}hero.webp">`:'';
+ const dateMetadata=`<meta property="article:published_time" content="${dates.published}">${dates.updated?`<meta property="article:modified_time" content="${dates.updated}">`:''}<meta name="evidence-cutoff" content="${dates.evidence}">`;
  const localBadge=publicBase?'':`<span class="local-status">${ko?'로컬 검토본':'Local review copy'}</span>`;
  const html=`<!doctype html>
-<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css"></head><body>
-<header><a class="brand" href="https://infant83.io/AI_Tech_Review/">AI TECH REVIEW LETTERS</a><div class="topline-actions">${localBadge}<nav class="language-switcher" aria-label="${ko?'언어 선택':'Language'}"><span class="language-current" aria-current="page" lang="${lang}">${ko?'한국어':'English'}</span><a href="${other}" lang="${ko?'en':'ko'}" hreflang="${ko?'en':'ko'}">${ko?'English':'한국어'}</a></nav><a class="download" href="review_${lang}.pdf">PDF ↓</a></div></header>
-<main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>2026.11.06</span><span>${ko?'원자 상호작용 · 학습 데이터 · 분자동역학':'INTERATOMIC FORCES · TRAINING DATA · MOLECULAR DYNAMICS'}</span></div><article>${body}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">AI Tech Review Letters · ${cutoff}<br>${ko?'원자의 에너지·힘에서 물질의 성질까지.':'From atomic energies and forces to material properties.'}</footer></main></body></html>\n`;
+<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}${dateMetadata}<link rel="stylesheet" href="review.css"></head><body>
+<header><a class="brand" href="https://infant83.io/AI_Tech_Review/">${brand.toUpperCase()}</a><div class="topline-actions">${localBadge}<nav class="language-switcher" aria-label="${ko?'언어 선택':'Language'}"><span class="language-current" aria-current="page" lang="${lang}">${ko?'한국어':'English'}</span><a href="${other}" lang="${ko?'en':'ko'}" hreflang="${ko?'en':'ko'}">${ko?'English':'한국어'}</a></nav><a class="download" href="review_${lang}.pdf">PDF ↓</a></div></header>
+<main class="paper"><div class="issue-meta"><span>RESEARCH LETTER</span><span>${dates.published.replaceAll('-','.')}</span><span>${ko?'원자 상호작용 · 학습 데이터 · 분자동역학':'INTERATOMIC FORCES · TRAINING DATA · MOLECULAR DYNAMICS'}</span></div><article>${body}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">${brand} · ${dates.published}${dates.updated?` · ${ko?'개정':'Updated'} ${dates.updated}`:''}<br>${ko?'원자의 에너지·힘에서 물질의 성질까지.':'From atomic energies and forces to material properties.'}</footer></main></body></html>\n`;
  fs.writeFileSync(path.join(dir,'index.html'),html.split('\n').map(line=>line.trimEnd()).join('\n'));
  fs.writeFileSync(path.join(dir,'review.css'),stylesheet);
  const allowedFigures=new Set(['hero.webp',...figureAssets,...figureStems.flatMap(stem=>[`${stem}_${lang}.svg`,`${stem}_mobile_${lang}.svg`])]);
@@ -165,8 +184,10 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  }
  for(const filename of assetNames){
   if(path.basename(filename)!==filename)throw Error(`Only flat local assets are allowed: ${filename}`);
-  const asset=path.join(artifacts,filename);if(!fs.existsSync(asset))throw Error(`Missing asset: ${filename}`);
-  if(filename.endsWith('.svg')&&!filename.startsWith('math_')&&!figureAssets.includes(filename))fs.writeFileSync(path.join(dir,filename),embedFigureFonts(fs.readFileSync(asset,'utf8')));else fs.copyFileSync(asset,path.join(dir,filename));
+  const sourceFilename=filename==='tauri_energy_model.svg'?`tauri_energy_model_${lang}.svg`:filename;
+  const asset=path.join(artifacts,sourceFilename);if(!fs.existsSync(asset))throw Error(`Missing asset: ${sourceFilename}`);
+  const embedFonts=filename==='tauri_energy_model.svg'||(filename.endsWith('.svg')&&!filename.startsWith('math_')&&!figureAssets.includes(filename));
+  if(embedFonts)fs.writeFileSync(path.join(dir,filename),embedFigureFonts(fs.readFileSync(asset,'utf8')));else fs.copyFileSync(asset,path.join(dir,filename));
  }
  for(const filename of fs.readdirSync(dir)){
   if(fs.statSync(path.join(dir,filename)).isFile()&&!assetNames.has(filename)&&!new Set(['index.html','review.css',`review_${lang}.pdf`]).has(filename))fs.unlinkSync(path.join(dir,filename));

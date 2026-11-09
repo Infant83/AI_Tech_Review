@@ -6,7 +6,7 @@
     "title": "머신러닝 포스필드: 원자 사이의 힘에서 물질의 성질까지",
     "subtitle": "분자동역학의 기초에서 모델의 표현·학습 데이터·정확도와 계산 비용의 선택까지",
     "date": "2026-11-06",
-    "updated": "2026-11-06",
+    "updated": "2026-11-10",
     "category": "AI for Science",
     "tags": [
       "Molecular Dynamics",
@@ -86,26 +86,50 @@
         "name": "mlff_publication_check",
         "role": "independent whole-manuscript, contextual, bilingual and cover review",
         "role_ko": "전체 원고·문맥·한영·표지의 독립 감수"
+      },
+      {
+        "name": "tauri_physics_update",
+        "role": "Revision physics and official derivative-path review; complete Korean PDF visual QA",
+        "role_ko": "개정 물리·공식 미분 경로 감수 및 한글 PDF 전쪽 시각 검수"
+      },
+      {
+        "name": "tauri_data_update",
+        "role": "Revision data,staged training and fixed-version audit; complete English PDF visual QA",
+        "role_ko": "개정 데이터·학습 단계·고정 판본 감수 및 영문 PDF 전쪽 시각 검수"
+      },
+      {
+        "name": "mlff_current_audit",
+        "role": "Baseline preservation,export/build and original/revisiondate review",
+        "role_ko": "기존 원고 보존·내보내기/빌드·원발행/개정일 대조"
+      },
+      {
+        "name": "mlff_publication_preflight",
+        "role": "Independent revised PDF hash,registration,archive and publication-boundary preflight",
+        "role_ko": "개정 PDF 해시·등록·아카이브·공개 범위의 독립 출판 전 감수"
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "Primary research and official LAMMPS release30Sep2026, OpenMM8.6 and i-PI documentation; 30 APS references; SO3LR Tauri arXiv2611.06237v1 and supporting information, data release1.0.0, source commit70707f5bb0c333ecec707e5a12b1efdf1c83603a",
-      "Independent educational checks: LJ analytic and finite-difference forces; equal-mass relative-coordinate velocity Verlet, total-energy error and timestep halving; analytic barrier-rate sensitivity with an unchanged prefactor",
-      "Complete Korean and English argument, citation and condition correspondence; conceptual-cover identity and latest-cover comparison; five figures, typeset formulas, embedded fonts, HTML/PDF, mobile layout and archive copies"
+      "Original 6 November edition: Primary research and official LAMMPS release30Sep2026, OpenMM8.6 and i-PI documentation; 30 APS references; SO3LR Tauri arXiv:2611.06237v1 and supporting information, data release1.0.0, source commit70707f5bb0c333ecec707e5a12b1efdf1c83603a",
+      "Original 6 November edition: Independent educational checks: LJ analytic and finite-difference forces; equal-mass relative-coordinate velocity Verlet, total-energy error and timestep halving; analytic barrier-rate sensitivity with an unchanged prefactor",
+      "Original 6 November edition: Complete Korean and English argument, citation and condition correspondence; conceptual-cover identity and latest-cover comparison; five figures, typeset formulas, embedded fonts, HTML/PDF, mobile layout and archive copies",
+      "10 November revision: SO3LR Tauri arXiv:2611.06237v1/SI and data 1.0.0 rechecked; static official code inspection at ee62fa28860850d736845c3b91fba051d230f478;31 APS references,6 figures,10 display formulas; fixed NLH and predicted-property coordinate derivatives, split counts and staged targets. No new inference/training/MD benchmark run.",
+      "Final revised KO 16-page and EN 19-page PDFs pages individually rendered and visually inspected; bilingual HTML/mobile, fonts, links, captions and dates checked. Publication preflight confirms reviewed PDF hashes."
     ],
     "verification_scope_ko": [
-      "원저와 LAMMPS release30Sep2026·OpenMM8.6·i-PI 공식 문서, APS 참고문헌30개, SO3LR Tauri arXiv2611.06237v1·보충자료·데이터1.0.0·공식 코드 commit70707f5bb0c333ecec707e5a12b1efdf1c83603a 대조",
-      "독립 교육 검산: LJ 해석식·수치 미분 힘, 동일 질량 상대좌표 velocity Verlet·총에너지 오차·시간 간격 절반 검사, 같은 앞인자를 가정한 장벽·속도 민감도",
-      "전체 한영 논증·인용·조건 대응, 개념 표지의 관계·최근 표지와의 비교, 그림5개·수식·내장 글꼴·HTML/PDF·모바일·아카이브 사본 검사"
+      "11월6일 원판: 원저와 LAMMPS release30Sep2026·OpenMM8.6·i-PI 공식 문서, APS 참고문헌30개, SO3LR Tauri arXiv2611.06237v1·보충자료·데이터1.0.0·공식 코드 commit70707f5bb0c333ecec707e5a12b1efdf1c83603a 대조",
+      "11월6일 원판: 독립 교육 검산: LJ 해석식·수치 미분 힘, 동일 질량 상대좌표 velocity Verlet·총에너지 오차·시간 간격 절반 검사, 같은 앞인자를 가정한 장벽·속도 민감도",
+      "11월6일 원판: 전체 한영 논증·인용·조건 대응, 개념 표지의 관계·최근 표지와의 비교, 그림5개·수식·내장 글꼴·HTML/PDF·모바일·아카이브 사본 검사",
+      "11월10일 개정: SO3LR Tauri arXiv2611.06237v1·SI·데이터1.0.0 재확인, 공식 코드 ee62fa28860850d736845c3b91fba051d230f478의 정적 대조. APS 참고문헌31개·그림6개·표시 수식10개, 고정NLH와 예측 성질의 좌표 미분·분할 집계·학습 단계 설명. 새 추론·학습·MD 벤치마크는 실행하지 않음.",
+      "최종 개정 KO16쪽·EN19쪽 PDF를 각각 렌더해 전쪽 시각 검수. 한영 HTML·모바일·글꼴·링크·캡션·날짜 검수, 출판 전 감수에서 검토 PDF 해시 일치 확인."
     ],
     "primary_sources_checked": true,
-    "evidence_cutoff": "2026-11-06",
+    "evidence_cutoff": "2026-11-10",
     "human_review_level": "The editor specified the topic, introductory and methodological scope, accuracy and cost questions, and requested publication. Scientific, contextual, bilingual and output reviews were performed by AI agents; line-by-line human approval and reader-comprehension testing were not performed.",
     "human_review_level_ko": "편집자가 주제·기초 및 방법론 설명의 범위·정확도와 비용의 질문을 지정하고 게재를 요청했다. 과학·문맥·한영·출력 감수는 AI 에이전트가 수행했으며 문장 단위 사람 승인과 독자 이해도 실험은 수행하지 않았다.",
-    "disclosure_note_ko": "표지는 AI 생성 개념 일러스트다. LJ 에너지·힘·두 입자 MD와 자유에너지 장벽 민감도는 리뷰의 교육 계산이며, SO3LR Tauri 등의 물성·성능 수치는 저자 보고값이다. 원저자의 모델 학습·MD 벤치마크를 독립 재실행하지 않았다.",
-    "disclosure_note_en": "The cover is an AI-generated conceptual illustration. LJ energy, forces, two-particle MD and free-energy-barrier sensitivity are educational calculations for this review; property and performance figures for SO3LR Tauri and other models are attributed to their authors. Their training and MD benchmarks were not independently rerun."
+    "disclosure_note_ko": "표지는 AI 생성 개념 일러스트다. LJ 에너지·힘·두 입자 MD와 자유에너지 장벽 민감도는 리뷰의 교육 계산이며, SO3LR Tauri 등의 물성·성능 수치는 저자 보고값이다. 원저자의 모델 학습·MD 벤치마크를 독립 재실행하지 않았다. 11월10일 개정의 에너지 구성 그림은 리뷰의 개념도이며, 코드 미분 경로와 학습 데이터 집계를 정적으로 대조했다.",
+    "disclosure_note_en": "The cover is an AI-generated conceptual illustration. LJ energy, forces, two-particle MD and free-energy-barrier sensitivity are educational calculations for this review; property and performance figures for SO3LR Tauri and other models are attributed to their authors. Their training and MD benchmarks were not independently rerun. The10 November revision adds an original energy-construction diagram and static checks of derivative paths and dataset counts."
   },
   "source_sha256": "be21f85b8a16774280abeb7321ad59c524d159305eaa97c31d6c652858212b22"
 }
