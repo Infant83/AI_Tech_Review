@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
   "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
-  "record_version": 2,
+  "record_version": 3,
   "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-09T01:46:51Z",
+  "updated_at": "2026-11-09T18:06:18Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -29,12 +29,14 @@
     },
     "steps": [],
     "expected": "기존 게시 권한과 성능을 보존하며 위험을 확인·개선·검증한다.",
-    "actual": "초기 열린 후보 9건: 축약 라이브러리 3건·PDF 자료 5건·만료된 서명 URL의 키 식별자 1건. 유효성은 미확인이다. 마지막 항목은 비밀 키 필드가 함께 확인되지 않았다."
+    "actual": "초기 열린 후보 9건: 축약 라이브러리 3건·PDF 자료 5건·만료된 서명 URL의 키 식별자 1건. 유효성은 미확인이다. 마지막 항목은 비밀 키 필드가 함께 확인되지 않았다. 11월10일 후속 검토에서 공급자 경고3건은 공식 PDF.js 정적 Brotli 사전 데이터의 오탐으로 분류·종료하고 재조회했다. 나머지6건은유효성unknown의 열린 후보로 유지한다."
   },
   "evidence": [
     "SECURITY_OPERATIONS.md",
     "ATRL_ORGANIZATION.md",
-    ".github/workflows/pages.yml"
+    ".github/workflows/pages.yml",
+    "https://registry.npmjs.org/pdfjs-dist/6.5.438",
+    "공식 legacy worker의 unpackDictionaryData(dictionary,data0,data1,skipFlip,sizeBits,sizeBitsData)와 dictionary.set(dict) 문맥"
   ],
   "limitations": [
     "후보 탐지 수를 확정 유출 수로 간주하지 않음",
@@ -65,27 +67,43 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "진행 중",
+    "status": "정적 vendor 후보3건 독립 검증·오탐 종료 확인; 나머지6건 분류 중",
     "checks": [
       "비밀값 출력 없이 경고 메타데이터·제한된 문맥 확인",
-      "게시 기능이 참조하지 않는 원시 기록은 로컬 보존 후 Git 추적 제외"
+      "게시 기능이 참조하지 않는 원시 기록은 로컬 보존 후 Git 추적 제외",
+      "공식 npm pdfjs-dist6.5.438 tarball SHA-512 integrity와 worker 전체 바이트를 대조함",
+      "과거·현재 원본/공개 worker의 동일성과 세 후보의 정적 Brotli 사전 초기화 인자 문맥을 확인함",
+      "독립 담당과 통합 담당이 공식 byte 일치와 비인증 사전 데이터 문맥을 각각 대조함",
+      "공급자에서3건을false_positive로 종료한 뒤 상태 재조회; 열린 후보6건unknown, 탐지·push protection enabled 유지"
     ],
     "evidence": [],
     "remaining_limits": [
-      "파일 형식만으로 오탐 판정하지 않음",
-      "이전 Git 이력은 보존되어 있음",
-      "후보 키의 외부 유효성 시험·폐기·경고 종료는 수행하지 않음"
+      "남은PDF자료5건·만료된서명URL의키식별자1건은 별도 분류 필요",
+      "이전 Git 이력은 보존돼 있음",
+      "공급자 자격증명 유효성 시험·키폐기·validity override는 수행하지 않음",
+      "이번 오탐 판단은 해당 고정 vendor 바이트의 세 후보에 한정하며 의존성 전체의 안전성을 보증하지 않음"
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "부분 분류·공급자 상태 재조회",
+    "period": "2026-11-09T18:06:18Z",
+    "result": "열린 후보9→6. 세 건은 정적 vendor 데이터 오탐으로 근거를 남겨 종료했으며 나머지는 실제 유출 또는 오탐으로 단정하지 않음."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "공급자 보안 화면에서 후보를 분류한다. 실제 비밀이 확인되면 영향에 맞게 우선순위를 높이고 정확한 대응 범위를 정한다."
+  "next_action": "남은PDF자료5건과만료된서명URL의식별자1건을 제한된 비공개 문맥에서 분류한다. 실제 비밀이나 영향이 확인되면 우선순위를 조정하고 권한 범위의 대응·복구안을 정한다.",
+  "triage_summary": {
+    "checked_at": "2026-11-09T18:06:18Z",
+    "closed_false_positives": 3,
+    "remaining_open_unknown": 6,
+    "classification": "공식 고정 PDF.js worker의 정적 Brotli 사전 초기화 데이터",
+    "worker_sha256": "b4c8353ded0d88d2e2009574a29eb4e0c3ff7e942ecdf51ef5f71566a9667f31",
+    "unminified_worker_sha256": "8336aabf764cb08c818555a2fd2545e4fed10837146de927564875c93b3c4f83",
+    "registry_tarball_integrity_verified": true,
+    "external_credential_validation": false,
+    "validity_overridden": false
+  }
 }
