@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
+  "uuid": "e956eee1-0469-4990-8874-11b310d6c517",
+  "record_version": 1,
+  "title": "편집 하네스 공개 버전과 글별 실제 적용 판본의 추적 정합성",
+  "type": "editorial_provenance",
+  "created_at": "2026-11-09T03:12:43Z",
+  "updated_at": "2026-11-09T03:12:43Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "https://infant83.io/AI_Tech_Review/methods/",
+    "summary": "최근 작성·검증 정보의 반복된 2026.08 표기, 편집 하네스의 지속 버전 관리와 글별 최신 기준 실제 적용 근거를 확인하라는 요청"
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-11-01_ai-science-automation-and-expertise",
+      "2026-11-02_chiral-amplification-nobel-chemistry",
+      "2026-11-04_quantum-gates-phase-and-interaction",
+      "2026-11-06_altermagnetism-spin-symmetry",
+      "2026-11-06_machine-learning-force-fields",
+      "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/methods/"
+    ],
+    "source_paths": [
+      "EDITORIAL_METHOD.md",
+      ".automation/writing-style-audit-harness.md",
+      ".automation/editorial-reference-pool.md",
+      "scripts/publish_public_site.py",
+      "scripts/review_registry.py",
+      "scripts/publication_intent.py",
+      "tests/test_publish_public_site_privacy.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "f34783648bdd6b93b7f7b7abb46d9488b84a3045",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "지침 문서와 Git 개정 이력, 글별 기록 및 출판 경로를 독립적으로 대조함",
+      "11월 등록 리뷰 5편과 11월 9일 OLED 개정의 작성정보·기록을 표본 조사함",
+      "실제 공개 브라우저에서 OLED·MLFF·AI 과학 리뷰와 방법서의 표시를 확인함"
+    ],
+    "expected": "공개 방법 체계의 기본판과 글별 실제 적용 지침·원고 판본·감수 범위를 구별하고 근거로 확인할 수 있다.",
+    "actual": "지침은 11월까지 갱신됐으나 출판 코드의 공통 상수는2026.08이다. 글별 하네스 판본 입력 필드가 없고 CI는 표시·링크 존재와 게시 입력을 검사한다. 실제 최근 문체 감수 기록은 있으나 사용한 정책 파일의 정확한 커밋/해시와 검토 원고를 일관되게 연결하는 공통 구조는 확인되지 않았다."
+  },
+  "evidence": [
+    "scripts/publish_public_site.py:41,1267,1292,1696,2440,2633",
+    "scripts/review_registry.py:50",
+    "scripts/publication_intent.py:44",
+    "EDITORIAL_METHOD.md:3,6,207",
+    ".automation/writing-style-audit-harness.md:5,39,51",
+    ".automation/writing-reviews/2026-11-01-paragraph-context/README.md",
+    ".automation/writing-reviews/legacy-refresh/2026-11-06-quantum-layers/prose-review.md",
+    ".automation/writing-reviews/legacy-refresh/2026-11-09-oled/README.md"
+  ],
+  "limitations": [
+    "표본과 확인 경로의 감사이며 모든 과거 글을 최신 기준으로 재감수한 결과가 아님",
+    "현재 파일의 Git 판본을 알 수 있다는 사실은 과거 작업이 그 판본을 읽었다는 증거가 아님",
+    "CI 통과·원문 검사·출력 해시는 문맥·과학 감수 또는 사람 검토 수행을 대신 증명하지 않음",
+    "실제 담당 편집 작업에 사용자 요청으로 질의를 전달했으며 답변 인계는 별도 확인 필요"
+  ],
+  "policy_decision": {
+    "state": "보완 필요 확인",
+    "rationale": "공개 기본판 표시와 실제 글별 지침 적용 추적이 분리돼 있어 독자가 적용 판본을 판별하기 어려움",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": "편집부의 글별 감수 근거와 최소 추적 계약을 정리한 뒤 표시·출판 연계 후보를 검토할 때"
+  },
+  "authority": {
+    "basis": "사용자의 하네스 버전 관리·실제 적용 확인 요청과 기존 운영·편집 책임",
+    "current_scope": "공개 표시·코드·Git·글별 감수 근거의 감사와 후속 설계. 내용 판단은 AEDAUT, 기술적 기록·표시 연결은 ADOPT.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) · 편집부(AEDAUT) 협업",
+  "acceptance_criteria": [
+    "공개 방법 체계의 기본 릴리스와 글별 실제 적용한 지침의 판본·범위를 구별해 표시함",
+    "새 감수부터 기존 기록에 실제 사용한 구성 문서의 커밋/해시, 검토 원고 판본, 감수일·범위·역할·결과·제한을 연결함",
+    "CI는 참조·해시·필드와 대상 변경 여부를 확인하며 의미 감수나 사람 검토를 자동으로 보증하지 않음",
+    "과거 글의 미확인 판본은 미확인으로 유지하며 공통 상수 변경으로 최신 감수를 소급 표시하지 않음",
+    "다음 재빌드에서도 검토한 글별 기록과 실제 공개 표시가 일치하고 기존 글·PDF·ID·날짜·필기 연결을 보존함",
+    "일상 게시에 추가 사람 승인 단계나 별도의 중복 관리 대장을 강제하지 않음"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "소스·Git·표본·공개 화면 감사 완료; 개선 구현 전",
+    "checks": [
+      "문체 하네스 updated2026-11-06, 마지막 Git변경d4d4bdc(2026-11-07) 확인",
+      "방법서 Version2026.08과 10월 보완 이력, 공통 렌더러 고정값 확인",
+      "최근 글의 실제 수정·독립 감수·출력 검증 기록 확인",
+      "공개 OLED의 11월6일 적용 설명과 공통 하단2026.08 병존 확인"
+    ],
+    "evidence": [
+      "scripts/publish_public_site.py:41,1267,1292,1696,2440,2633",
+      "scripts/review_registry.py:50",
+      "scripts/publication_intent.py:44",
+      "EDITORIAL_METHOD.md:3,6,207",
+      ".automation/writing-style-audit-harness.md:5,39,51",
+      ".automation/writing-reviews/2026-11-01-paragraph-context/README.md",
+      ".automation/writing-reviews/legacy-refresh/2026-11-06-quantum-layers/prose-review.md",
+      ".automation/writing-reviews/legacy-refresh/2026-11-09-oled/README.md"
+    ],
+    "remaining_limits": [
+      "표본과 확인 경로의 감사이며 모든 과거 글을 최신 기준으로 재감수한 결과가 아님",
+      "현재 파일의 Git 판본을 알 수 있다는 사실은 과거 작업이 그 판본을 읽었다는 증거가 아님",
+      "CI 통과·원문 검사·출력 해시는 문맥·과학 감수 또는 사람 검토 수행을 대신 증명하지 않음",
+      "실제 담당 편집 작업에 사용자 요청으로 질의를 전달했으며 답변 인계는 별도 확인 필요"
+    ]
+  },
+  "observation": {
+    "status": "현재 공개 표기 확인",
+    "period": "2026-11-09T03:12:43Z",
+    "result": "공개 3개 리뷰와 방법서에서2026.08 고정 표기를 재확인함. 최신 지침 적용을 일괄 부정하거나 보증하지 않음."
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "AEDAUT가 보존된 글별 적용 근거와 미확인 범위를 정리하고 ADOPT가 기존 등록·감수 기록을 재사용하는 최소 판본 연결·표시 후보를 설계한다. 담당 편집 작업의 회신을 이 일감에 연결한다."
+}
