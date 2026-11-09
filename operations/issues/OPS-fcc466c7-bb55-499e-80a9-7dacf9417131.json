@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "record_version": 1,
+  "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
+  "type": "maintenance_cleanup",
+  "created_at": "2026-11-09T01:52:09Z",
+  "updated_at": "2026-11-09T01:52:09Z",
+  "status": "in_progress",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "SITE_OPERATIONS.md#자료와-파일-구조의-정리",
+    "summary": "불필요한 자료와 더는 유지할 필요 없는 파일을 안전하게 정리하고 간결하며 유지보수 가능한 구조를 상시 관리하라는 요청"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [],
+    "source_paths": [
+      "SITE_OPERATIONS.md",
+      "PUBLICATION_WORKFLOW.md",
+      "scripts/publication_retention.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "9671b11e6739957b8a203bee20e8742cb5391420",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "기존 정리·보존 기준과 관련 열린 일감을 확인함",
+      "기존 출판 후보 정리 도구를 apply 없이 실행함"
+    ],
+    "expected": "용도·의존·보존·복구와 다른 작업을 확인한 불필요한 파일만 작은 단위로 정리한다.",
+    "actual": "초기 로컬 후보 모음 34개 폴더 모두 보존: 형식 미확인/연결 폴더 31개, 최소 보존기간 미경과 1개, keep 표시 2개. 삭제 계획·실제 삭제·회수 용량 0."
+  },
+  "evidence": [
+    "SITE_OPERATIONS.md#자료와-파일-구조의-정리",
+    "PUBLICATION_WORKFLOW.md#오래된-로컬-후보-정리",
+    "scripts/publication_retention.py"
+  ],
+  "limitations": [
+    "이번 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됨",
+    "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
+    "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "운영팀의 상시 유지보수와 안전한 파일 구조 관리를 추가한 사용자 지시",
+    "related_issues": [
+      "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "새 생성·등록·공개 경로 또는 파일 사용·복구 조건이 확인될 때"
+  },
+  "authority": {
+    "basis": "2026-11-09 사용자의 운영팀 상시 파일 정리 과제 추가",
+    "current_scope": "용도·의존·복구·동시 작업을 확인한 범위의 안전한 정리와 관련 지침·구조 개선. 확인되지 않은 유일본·개인 자료·권한 밖의 파괴적 변경은 제외.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "첫 조사 범위에서 원본·생성물·설정·기록과 실제 사용·생성·출판·복구의 관계를 구분함",
+    "정리 후보별 유지·삭제·통합·이동 또는 보류의 이유와 필요한 확인을 남김",
+    "안전한 첫 정리 묶음을 실행하거나 확인된 후보가 없으면 그 범위와 보류 이유를 남김",
+    "변경 시 기존 글·ID·URL·판본·필기·다른 작업을 보존하고 영향에 맞는 검사와 복구 경로를 확인함",
+    "실제 회수 용량·관리 경로 감소와 미측정 범위를 구분해 기록함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "초기 읽기 전용 조사 완료; 정리 실행 전",
+    "checks": [
+      "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
+      "출판 원본·공개 파일·정리 도구·CI 코드 변경 없음"
+    ],
+    "evidence": [
+      "scripts/publication_retention.py"
+    ],
+    "remaining_limits": [
+      "이번 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됨",
+      "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
+      "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
+    ]
+  },
+  "observation": {
+    "status": "초기 후보 모음 관찰",
+    "period": "2026-11-09T01:52:09Z",
+    "result": "오래된 파일이나 참조 검색 부재만으로 삭제하지 않고 보호 조건을 유지함"
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "작은 범위의 미확인 자료·폐기 도구·중복 관리 경로를 선택해 담당·생성·등록·공개·복구·다른 작업의 사용 근거를 조사하고 첫 정리 후보를 분류한다."
+}
