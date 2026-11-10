@@ -31,3 +31,7 @@ Korean: 큐노바의 질소 분자 벤치마크에는 양자 프로세서 4분 1
 English: A Qunova nitrogen benchmark records 4 minutes 18 seconds of QPU use and nearly 13 hours overall. HI-VQE uses quantum samples to choose electronic configurations; a classical computer then constructs the wavefunction and energy. Its practical value for difficult electronic problems in catalysts and iron–sulfur systems depends on whether this division of work delivers the required accuracy at lower total cost.
 
 Suggested English dek: How electronic-configuration sampling and classical diagonalization shape the strengths of HI-VQE and the prospects for practical quantum advantage.
+
+## Title revision · 2026-11-10
+
+The published title was broadened to “Two computers for molecular chemistry: where could quantum advantage come from?” after the editor requested an issue-led framing. The independent title and PDF revision review is recorded with this edition; the original manuscript review above retains its historical title and scope.

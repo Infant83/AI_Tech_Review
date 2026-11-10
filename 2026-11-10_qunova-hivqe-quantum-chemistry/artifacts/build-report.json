@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "edition": "2026-11-10",
-  "render_revision": "v3",
+  "render_revision": "v4-title",
   "state": "rendered and checked; publication handled by repository workflow",
   "inputs_sha256": {
     "artifacts/handover_workflow_en.svg": "b071e4494bb4dcfcb259d485fb8e5a9f3d6c151b14fd9c0369724e6f87a43bb0",
@@ -13,9 +13,9 @@
     "artifacts/support_and_energy_mobile_en.svg": "70d00ae6a381647488a7d2e6d321f555435e9a24619d54baf24c04edbbc54ed4",
     "artifacts/support_and_energy_mobile_ko.svg": "c99085060c4edf10435549e85ab39a2b87efdc9f65acf3c97e49bd26aebe186e",
     "artifacts/hero.webp": "f5868f251f23b6ced4bfe1cd733f91f19ffc1d9095f1ef9322de7154d1760f33",
-    "artifacts/publication-metadata.json": "4e9f1314bef42d3b540fdc145c9dd82e0f4fedca004908f8385ed76ff79cb20c",
-    "reports/review_ko.md": "20d440384d6bf7e8f2e67715a1ada2353fc5ee8cfa92d707d53a78560673088e",
-    "reports/review_en.md": "e1dff8cc30a8eb4f26e3bc69af61f3221d833a21966e753ee6c8fc368b41c1b2"
+    "artifacts/publication-metadata.json": "e2b29c6af8eb5282a73ffb247cfd7aa2f0592ad298b519383f6ec40404027e8c",
+    "reports/review_ko.md": "be66756c3b29ef282005354c4cfba2a61b5cebfd0528a568c945c3f8a784c5d7",
+    "reports/review_en.md": "ba03fdb5f66ea2b0fd57038d850a7b548ff06b65a7298bbc3183c3fa50e695c5"
   },
   "builder_sha256": {
     "build_fonts.py": "e18b5dab7e2142794e167e89fc072a849aa46d394835083bea8ab0c869240e05",
@@ -78,13 +78,13 @@
   "reference_link_behavior": "Citation groups retain their first-number link; 19 bibliography entries and all original external source links remain. Chrome emits the 14 referenced bibliography named destinations, identical to v1. No hidden links or PDF postprocessing.",
   "outputs": {
     "ko": {
-      "title": "큐노바 HI-VQE와 양자화학의 계산 분업",
+      "title": "분자를 계산하는 두 컴퓨터: 양자 이점은 어디서 오는가",
       "canonical": "https://infant83.io/AI_Tech_Review/reviews/2026-11-10_qunova-hivqe-quantum-chemistry/",
       "html": "dist/index.html",
-      "html_sha256": "7adfb068f2c193dd5b8200c333239ae388e52ada7fbe6a91080f907a6c76d85b",
+      "html_sha256": "7c7470e00063ac6ce58a2200fe771b8c5d62a13fa5ff1fec786cecd49d058e47",
       "pdf": "dist/review_ko.pdf",
-      "pdf_sha256": "bef166318409de5726c1fc66fc02c5ea79fd54b0e65651988229debc39ade008",
-      "pdf_bytes": 4397119,
+      "pdf_sha256": "649c4112d17b3f2194e4b96399adb91bb1feb59d770ae6806d20c881e0f0ca07",
+      "pdf_bytes": 4398736,
       "pages": 8,
       "sections": 7,
       "figures": 3,
@@ -101,23 +101,29 @@
       "source_html_unmodified_by_print": true,
       "render_errors": [],
       "pixel_changed_pages_from_v1": [
+        1,
         5,
         6,
         7,
         8
       ],
-      "print_input_html_sha256": "74235e2e774cf967346efae53b27e1319994c454d8412fde1388c32a2b44a970",
+      "print_input_html_sha256": "7c7470e00063ac6ce58a2200fe771b8c5d62a13fa5ff1fec786cecd49d058e47",
       "public_source_json_uri": "https://github.com/Infant83/AI_Tech_Review/blob/main/2026-11-10_qunova-hivqe-quantum-chemistry/artifacts/example-results.json",
-      "pixel_changed_pages_from_v2": []
+      "pixel_changed_pages_from_v2": [
+        1
+      ],
+      "pixel_changed_pages_from_v3": [
+        1
+      ]
     },
     "en": {
-      "title": "Qunova HI-VQE and the division of work in quantum chemistry",
+      "title": "Two computers for molecular chemistry: where could quantum advantage come from?",
       "canonical": "https://infant83.io/AI_Tech_Review/reviews/2026-11-10_qunova-hivqe-quantum-chemistry/en/",
       "html": "dist/en/index.html",
-      "html_sha256": "7ae9f80418d4b4563b18e4a7f93c29c12a0b23bd1442c44e494db03702e2bd28",
+      "html_sha256": "59b732a567ed6a37ff5cfb6f65783d4813e47182d2f67b5c85f171459486e33c",
       "pdf": "dist/en/review_en.pdf",
-      "pdf_sha256": "4792f54c46108f41b724b22d28eceb9d29eae59bbce3025b268ffc093709c2d6",
-      "pdf_bytes": 4220662,
+      "pdf_sha256": "7472babfdf7dd745fc4c8570fb0c8273a93545729144119b43a3316c556ebc79",
+      "pdf_bytes": 4221310,
       "pages": 10,
       "sections": 7,
       "figures": 3,
@@ -134,14 +140,20 @@
       "source_html_unmodified_by_print": true,
       "render_errors": [],
       "pixel_changed_pages_from_v1": [
+        1,
         6,
         7,
         8,
         9
       ],
-      "print_input_html_sha256": "de453d70fe58b34c96eafb520fe07a559b3aa6724b6f8f48fa9951f5a85e1bc6",
+      "print_input_html_sha256": "59b732a567ed6a37ff5cfb6f65783d4813e47182d2f67b5c85f171459486e33c",
       "public_source_json_uri": "https://github.com/Infant83/AI_Tech_Review/blob/main/2026-11-10_qunova-hivqe-quantum-chemistry/artifacts/example-results.json",
-      "pixel_changed_pages_from_v2": []
+      "pixel_changed_pages_from_v2": [
+        1
+      ],
+      "pixel_changed_pages_from_v3": [
+        1
+      ]
     }
   },
   "render_verification": {
@@ -209,5 +221,49 @@
       "ko": "7adfb068f2c193dd5b8200c333239ae388e52ada7fbe6a91080f907a6c76d85b",
       "en": "7ae9f80418d4b4563b18e4a7f93c29c12a0b23bd1442c44e494db03702e2bd28"
     }
+  },
+  "title_revision": {
+    "date": "2026-11-10",
+    "reason": "Issue-led title requested by editor; quantum/classical division of work and conditions for practical quantum advantage precede the named company and algorithm.",
+    "source_body_beyond_h1_byte_identical": true,
+    "scientific_claims_figures_equations_and_references_unchanged": true,
+    "independent_review": "qunova_retitle_review",
+    "pdf_pages": {
+      "ko": 8,
+      "en": 10
+    },
+    "visually_read_changed_pages": {
+      "ko": [
+        1
+      ],
+      "en": [
+        1
+      ]
+    },
+    "unchanged_pages_rgb_identical": {
+      "ko": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "en": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    "title_glyphs_missing": [],
+    "all_pdf_uri_annotations_unchanged": true,
+    "source_web_desktop_and_mobile_checked": true
   }
 }

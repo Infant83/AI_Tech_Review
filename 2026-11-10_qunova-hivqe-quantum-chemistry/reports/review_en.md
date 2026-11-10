@@ -1,4 +1,4 @@
-# Qunova HI-VQE and the division of work in quantum chemistry
+# Two computers for molecular chemistry: where could quantum advantage come from?
 
 How configuration sampling and classical diagonalization shape the prospects for practical quantum advantage
 
