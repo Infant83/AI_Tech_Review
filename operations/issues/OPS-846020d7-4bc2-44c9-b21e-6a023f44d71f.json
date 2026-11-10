@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
+  "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
+  "record_version": 1,
+  "title": "렉처 PDF 필기의 세로 연속 스크롤과 제한된 페이지 렌더링 검토",
+  "type": "reader_usability",
+  "created_at": "2026-11-10T01:55:24Z",
+  "updated_at": "2026-11-10T01:55:24Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "user_feedback",
+    "reference": "PUBLICATION_WORKFLOW.md",
+    "summary": "사용자는 필기 중 매번 다음 페이지 버튼을 누르는 불편을 제보하고, 세로 연속 스크롤과 긴 문서의 초기 로딩 부담을 함께 검토해 달라고 요청함"
+  },
+  "affected": {
+    "publication_ids": [
+      "lecture:2026-11-09-classiq-qae-l005-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-09-classiq-qae-l005-notes-ko"
+    ],
+    "source_paths": [
+      ".automation/lecture-reader/reader.mjs",
+      ".automation/lecture-reader/reader.css",
+      ".automation/lecture-reader/index.html",
+      ".automation/lecture-reader/storage.mjs",
+      ".automation/lecture-reader/cloud.mjs",
+      "scripts/document_archive_site.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "b4a48826f5d6f4cf78f893bd7116110645fb6e4f",
+    "environment": {
+      "device": "브라우저 데스크톱 화면",
+      "operating_system": null,
+      "browser": "in-app browser",
+      "display_mode": "가로 화면; 실제 터치·펜 미시험"
+    },
+    "steps": [
+      "공개 L005 필기 리더를 열어 18쪽·현재 1쪽·필기/읽기 도구를 확인함",
+      "아래로 스크롤한 뒤 첫 페이지 끝과 현재 1/18, 다음 페이지 버튼을 확인함",
+      "실제 공개 reader.mjs와 생성 원본 .automation/lecture-reader/reader.mjs의 SHA-256 일치를 확인함",
+      "독립 담당이 페이지별 저장·판본·동기화·내보내기와 연속 표시의 위험을 읽기 전용 검토함"
+    ],
+    "expected": "필기한 페이지를 유지하며 위아래로 다음·이전 쪽을 이어 읽고, 긴 문서도 전체 고해상도 페이지를 동시에 렌더링하지 않음",
+    "actual": "PDF와 필기 캔버스 한 쌍을 재사용하며 goPage에서 해당 쪽을 다시 그린다. 스크롤은 현재 쪽 내부에서만 이동한다. 현재 전체 PDF 다운로드·SHA 검증 뒤 화면을 그리므로 지연 렌더링과 최초 다운로드 시간은 별개다."
+  },
+  "evidence": [
+    "https://infant83.io/AI_Tech_Review/lectures/reader/reader.mjs",
+    ".automation/lecture-reader/reader.mjs",
+    ".automation/lecture-reader/storage.mjs",
+    ".automation/lecture-reader/editions.mjs",
+    "https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#i-want-to-render-all-100-pages-in-a-document-at-a-high-resolution-is-it-a-good-idea",
+    "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action"
+  ],
+  "limitations": [
+    "이번 작업은 조사·설계 권고이며 연속 리더 구현·후보 성능 측정·배포는 수행하지 않음",
+    "실제 iPad/Pencil·Safari·Android·Windows 입력과 장기 사용은 시험하지 않음",
+    "기존 필기는 페이지 단위로 저장되지만 새 표시 방식의 보존은 구현 후 별도 검증해야 함",
+    "최초 로딩 시간·최대 메모리·스크롤 지연의 실측 기준선은 아직 없음"
+  ],
+  "policy_decision": {
+    "state": "연속 스크롤 기본 방향 권고",
+    "rationale": "전체 쪽의 자리는 이어 두되 화면과 가까운 앞뒤 쪽만 렌더링하고 멀어진 캔버스를 해제한다. 기존 PDF.js와 브라우저 API를 재사용한다. 첫 범위에서는 PDF bytes·fingerprint·페이지/획 ID·노트 형식·서버 API를 보존하며 네트워크 Range 전환은 분리한다.",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": "독립 후보의 입력·필기 보존·성능 결과에 따라 렌더 범위와 기본 동작을 조정할 때"
+  },
+  "authority": {
+    "basis": "사용자의 필기 UX·로딩 검토 요청과 기존 ADOPT 기술 개선 범위",
+    "current_scope": "현재 구현과 공개 화면 조사, 독립 정합성 검토, 제안과 후속 일감 기록",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "연속 화면에서 안정적으로 보이는 쪽과 앞뒤 소수 쪽만 제한된 큐·픽셀 예산으로 렌더링한다. 전체 쪽 렌더 완료를 첫 표시 조건으로 두지 않는다.",
+    "필기 시작 쪽·좌표·렌더 작업을 페이지별로 분리하고 진행 중인 획·저장 대기 데이터를 화면 캐시 해제로 잃지 않는다.",
+    "펜 필기·손가락 스크롤을 기본으로 하고 손가락 필기에서는 기존 읽기 도구로 이동하는 예외를 명확히 한다.",
+    "확대·회전·혼합 페이지 크기·빠른 왕복 스크롤·undo·지우개·책갈피·원격 동기화·발표자 따라가기에 페이지와 위치가 뒤섞이거나 튀지 않는다.",
+    "기존 PDF 판본 SHA·노트 키·획 ID·백업·PDF 내보내기·권한·오프라인 저장과 저장 실패 처리를 보존한다.",
+    "활성 페이지 변화만 디바운스 저장하고 매 scroll 이벤트마다 DB 쓰기·클라우드 동기화를 발생시키지 않는다.",
+    "현재/후보의 첫 표시·연속 이동·메모리와 실제 터치/펜 검증 범위를 비교해 공개한다."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "현행 조사와 독립 설계 검토 완료; 구현 검증 전",
+    "checks": [
+      "18쪽 L005에서 단일 페이지 스크롤 종료와 1/18 버튼 UI 확인",
+      "실제 공개 reader.mjs HTTPS 200; 생성 원본과 동일 SHA-256 6dd3d13d0c3724192dbbe1d28ab341c347a386de69c1083ef9d4e3c1ec2a03a3",
+      "독립 담당이 페이지 정규화 저장·판본별 fingerprint·goPage 발표 연동과 메타데이터 저장 이벤트를 대조함"
+    ],
+    "evidence": [
+      "scripts/document_archive_site.py",
+      ".automation/lecture-reader/reader.mjs",
+      ".automation/lecture-reader/cloud.mjs"
+    ],
+    "remaining_limits": [
+      "후보의 성능·필기 보존 회귀와 실제 펜/터치 입력 시험은 미실시"
+    ]
+  },
+  "observation": {
+    "status": "사용 불편 재현; 개선 미적용",
+    "period": "2026-11-10 공개 화면 및 원본 조사",
+    "result": "다음 쪽을 읽기 위해 버튼이 필요함을 확인했다. 이 조사는 필기 데이터를 새로 작성하거나 계정·공유 노트를 변경하지 않았다."
+  },
+  "recovery": {
+    "plan_reference": "구현 시 기존 렌더 경로와 Git 복구를 사용하고 PDF 원본·판본별 노트 키를 변경하지 않는다.",
+    "execution_reference": null,
+    "result": "런타임 변경·사이트 배포·데이터 이전·롤백 없음"
+  },
+  "next_action": "운영팀(ADOPT)이 기존 PDF.js로 페이지별 뷰와 가시 영역 렌더 큐의 독립 후보를 준비한다. 원본 .automation/lecture-reader를 수정 대상으로 삼고 첫 표시·메모리 기준선을 먼저 측정한다. 기존 쪽 번호 이동·책갈피는 스크롤 바로가기로 유지하며 실제 기기 미확인 범위를 구분한다."
+}
