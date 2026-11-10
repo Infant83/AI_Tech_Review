@@ -36,6 +36,8 @@ python3 scripts/prepare_publication.py --output output/publication-candidate
 4. 같은 문서가 양쪽에서 개정되면 내용과 등록정보를 확인해 합친다. Git 충돌을 한쪽 버전 선택만으로 숨기지 않는다.
 5. 후보 검수와 이전 배포본 연속성 검사를 통과한 하나의 아티팩트만 배포한다. 배포 직전 원격 최신 커밋을 다시 확인하고, 실제 HTTPS 공개 확인 후 독자 알림을 동기화한다.
 
+게시 담당은 해당 Actions의 build·deploy·recovery-copy·notify-readers 결과와 실제 HTTPS 공개본까지 확인한다. 실패하면 [CI 실패와 알림 메일 대조](SITE_OPERATIONS.md#ci-실패와-알림-메일-대조)에 따라 run·attempt, 원인, 수정 또는 재실행, 공개 영향과 남은 조치를 기존 게시·운영 기록에 연결한다. 운영팀(ADOPT)의 새벽 점검은 이 즉시 확인을 보완하며 일반 게시의 추가 승인 단계가 아니다.
+
 로컬 PDF 가져오기는 OS가 해제하는 프로세스 잠금으로 직렬화한다. 이 잠금은 한 checkout의 협력 프로세스에만 적용된다. 다른 컴퓨터·브랜치의 변경은 독립 등록 파일과 위 통합 절차로 합친다. 동일 PDF의 교체에는 메타데이터와 파일 양쪽을 포함하는 이전 버전 토큰이 필요하다.
 
 ```sh
