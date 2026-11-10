@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 2,
-  "title": "새 글 숫자 표시와 푸시 메시지 미수신 제보의 발송·표시 단계 대조",
+  "record_version": 3,
+  "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-10T13:40:05Z",
-  "status": "needs_evidence",
+  "updated_at": "2026-11-10T14:19:00Z",
+  "status": "in_progress",
   "priority": "P2",
   "source": {
     "kind": "user_feedback",
@@ -40,10 +40,11 @@
       "공개 API pushEnabled:true와 실제 공개 revision8a513dc, 최근 Actions의 build·deploy·복구 사본·notify-readers 성공을 대조함",
       "기존 Cloudflare OAuth 연결을 지원 CLI로 재확인하고 D1에서 비식별 SELECT 집계만 수행함",
       "독립 담당이 서버 이벤트·배송 상태와 서비스 워커의 배지·표시 경로, 공개 코드 일치를 확인함",
-      "기기·접속 방식·문제 글 제목 및 숫자의 표시 위치를 사용자에게 확인 요청함"
+      "기기·접속 방식·문제 글 제목 및 숫자의 표시 위치를 사용자에게 확인 요청함",
+      "사용자가 테스트 알림과 이전 글 알림의 동반 표시를 보고함. 최근 테스트 한 건과 같은 구독의 과거 글 배송을 내부 조인하고 식별값 없이 발송 시각만 대조함"
     ],
     "expected": "구독 주제에 해당하는 새 글의 푸시가 제공자 수락을 거쳐 해당 기기에 표시되고, 배지·수신 이력·화면 표시의 차이를 구분해 진단함",
-    "actual": "최근 새 ATRL 글은 발행 이벤트·fanout 완료 후 대상 배송이 모두 sent·HTTP201·첫 시도 수락 상태이며 미완료·실패 기록이 없다. 최근 7일 조사한 article 이벤트의 배송도 모두 같은 수락 상태다. 앱 아이콘 배지는 SW의 push 수신 후 증가하지만 showNotification과 독립 처리라 표시 성공을 증명하지 않는다. 사용자의 실제 기기·문제 글과 일치 여부는 아직 미확인이다."
+    "actual": "사용자는 테스트를 누르자 테스트와 이전 글 알림이 함께 보였다고 보고했다. 최근 테스트는23:13:28KST 생성·23:13:30 제공자201수락이다. 같은 구독의 Qunova 글은22:29:56KST 수락·첫시도1회 상태이며 테스트 시각에 서버에서 재발송하지 않았다. 함께 표시된 글의 정확한 제목·기기 환경은 아직 미확인이고 SW도착 및 OS표시 시각은 현재 서버에서 알 수 없다."
   },
   "evidence": [
     "operations/runs/20261110T105505Z-bc242733-a281-4752-a9b8-4d5e3b48d303.md",
@@ -51,7 +52,9 @@
     ".automation/cloudflare/reader-engagement/README.md",
     ".automation/reader-engagement/frontend/sw.js",
     "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/",
-    "operations/events/EVT-f88fd739-1f7f-4b5b-8529-87ea6d21589c.json"
+    "operations/events/EVT-f88fd739-1f7f-4b5b-8529-87ea6d21589c.json",
+    ".automation/cloudflare/reader-engagement/src/web-push.js",
+    "https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers"
   ],
   "limitations": [
     "사용자 휴대폰·설치 인스턴스·알림 권한·배너/집중 모드·실제 최근 수신 목록을 직접 확인하지 못함",
@@ -60,8 +63,8 @@
     "현재 수신 이력은 push 수신을 기록하며 showNotification 결과나 OS 표시 결과는 수집하지 않음"
   ],
   "policy_decision": {
-    "state": "서버 발송 수락 확인; 단말 표시 증거 대기",
-    "rationale": "확인된 서버 발송 실패가 없어 과거 글 재발송·구독 재설정으로 대응하지 않는다. 기존 구독·필기와 개인정보를 보존하며 실제 기기의 최근 수신 이력으로 단계부터 구분한다. CI에서 누락하는 비민감 이벤트 진단 필드는 최소 보완한다.",
+    "state": "기기 단계 지연 조사 진행",
+    "rationale": "사용자 테스트가 실제 도착해 구독 경로의 동작을 확인했다. 서버 재발송을 근거 없이 원인으로 삼거나 구독을 초기화하지 않는다. 제공자 수락 이후의 수신·표시 시각을 구분하고 현재 normal 우선순위의 전달 특성을 개선 후보로 조사한다.",
     "related_issues": [
       "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867"
     ],
@@ -88,31 +91,35 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "최신 새 글의 이벤트 생성·발송 수락 및 진단 출력 실제 적용 확인; 사용자 단말 미확인",
+    "status": "실제 테스트 수신 보고 및 같은 구독의 과거 발송 시각 대조 완료; 지연 구간 조사 중",
     "checks": [
       "API와 공개 릴리스 HTTPS200; pushEnabled:true, revision8a513dcbc583ec6876a58654b8d2395ced6761cc",
       "D1 비식별 집계: 후보 새 글 fanout 완료·모든 대상 sent/201/attempt1·미완료/실패0",
       "공개 SW와 프런트엔드 원본 동일; 독립 담당의 배지 로컬 하네스20개 통과(실제 푸시 없음)",
       "CI 진단 allowlist·정상0/false 보존·누락/오류 타입 생략·민감 필드 차단을 포함한 test_reader_engagement_publish.py 41개 통과",
       "독립 담당의 코드·운영 기록 감수와 JSON·소스 경로·링크·diff 검사 통과",
-      "즉시재확인: 새 Qunova 글의 CI42824084381에서 newArticles1·queuedEvents1·baselinefalse를 확인. D1배송3건 모두sent/201/첫시도, 미완료·미발송0; 진단 출력의 실제 게시 적용 관찰 완료"
+      "즉시재확인: 새 Qunova 글의 CI42824084381에서 newArticles1·queuedEvents1·baselinefalse를 확인. D1배송3건 모두sent/201/첫시도, 미완료·미발송0; 진단 출력의 실제 게시 적용 관찰 완료",
+      "최근15분 테스트 이벤트1건:23:13:30KST sent/HTTP201/attempt1. 같은 구독의 Qunova22:29:56·ATRL17:55:25 등 과거 배송은attempt1이며 테스트 후 재발송 이력 없음",
+      "독립 담당이 테스트POST의 단일 이벤트/단일 배송 생성, 과거글 재발송·복구 호출 부재와 sent 배송 재발송 거절을 확인함",
+      "새 글과 테스트의 현재 전송 헤더는 모두 Urgency normal·TTL24시간이다. 이를 이번 원인 또는 high의 즉시 도착 보장으로 단정하지 않음"
     ],
     "evidence": [
       "operations/runs/20261110T105505Z-bc242733-a281-4752-a9b8-4d5e3b48d303.md"
     ],
     "remaining_limits": [
-      "사용자 기기의 수신/표시 상태가 확인되기 전 해결 완료 아님"
+      "함께 표시된 글 제목·실제 기기·앱·잠금/네트워크/집중 모드 상태와 SW수신/OS표시 시각은 확인 전",
+      "수락 이후 전달·표시 지연 또는 이전 알림의 뒤늦은 확인 중 정확한 구간과 원인은 아직 확정하지 못함"
     ]
   },
   "observation": {
-    "status": "제보 미해결·단말 증거 대기",
-    "period": "2026-11-10 13:38 UTC 재확인",
-    "result": "새 Qunova 글까지 서버 발송 수락을 확인했지만 실제 휴대폰의 수신·배너·알림센터 표시는 확인 전이다. DB에 테스트 이벤트는 없으며 미클릭인지 요청 전 실패인지 이 기록만으로 단정하지 않는다."
+    "status": "미수신 제보에서 동반 표시·지연 현상으로 조사 갱신",
+    "period": "2026-11-10 23:13KST 사용자 테스트 및 23:16KST 서버 대조",
+    "result": "테스트 수신은 사용자가 확인했다. 테스트가 이전 글을 다시 발송한 코드 경로는 없고 같은 구독의 과거 글 배송은 이미 제공자 수락된 상태다. 테스트가 연결을 깨웠다는 인과나 OS 원인은 단정하지 않는다."
   },
   "recovery": {
     "plan_reference": "진단 출력 변경은 이전 Git 경로로 복구 가능하며 운영 DB·구독·키를 변경하지 않는다.",
     "execution_reference": null,
     "result": "실제 배포·테스트 푸시·재발송·구독 변경·롤백 없음"
   },
-  "next_action": "사용자가 요청한 즉시 확인은 해당 기기의 벨→이 기기로 테스트 알림 보내기 한 번으로 이어간다. 테스트 도착은 OS 배너·알림센터에서 확인하고 서버 접수와 대조한다. 테스트는 최근 새 글 목록에 남지 않는다. 원래 새 글의 수신 여부는 별도로 최근 받은 새 글 목록에서 확인하고 기기·앱 환경과 연결한다."
+  "next_action": "함께 표시된 글 제목과 사용 기기·앱 환경을 확인한다. 로컬 헤더 검사와 실제 단말 관찰을 구분해 normal/high 전송 우선순위 및 수신/표시 요청의 로컬 진단을 검토한다. 과거 글 재발송·임의 테스트 푸시·구독 초기화는 하지 않고 실제 원인이 확인되기 전 해결 완료로 처리하지 않는다."
 }
