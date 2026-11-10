@@ -557,6 +557,45 @@ class PublicationSyncTests(unittest.TestCase):
         self.assertEqual(calls[-1], (reader.API_BASE + "/v1/publications/sync", {"token": "publish-secret", "body": CATALOG}))
         self.assertIn("&check=", calls[1][0])
 
+    def sync_backend_result(self, backend):
+        def respond(url, **kwargs):
+            if "/git/ref/" in url:
+                return {"object": {"sha": REVISION}}
+            if url.startswith(reader.SITE_ROOT):
+                return CATALOG
+            return backend
+        return self.run_sync(respond)[0]
+
+    def test_sync_reports_only_valid_publication_diagnostics(self):
+        base = {"synced": 1, "revision": REVISION, "ok": True}
+        for diagnostics in (
+            {"newArticles": 2, "queuedEvents": 3, "baseline": False, "replay": False},
+            {"newArticles": 0, "queuedEvents": 0, "baseline": True, "replay": True},
+        ):
+            with self.subTest(diagnostics=diagnostics):
+                sentinel = "private-response-sentinel"
+                backend = {"ok": True, **diagnostics, "synced": 999,
+                           "revision": sentinel, "endpoint": "https://push.invalid/" + sentinel,
+                           "subscription": {"keys": {"auth": sentinel}}, "raw": sentinel}
+                result = self.sync_backend_result(backend)
+                self.assertEqual(result, {**base, **diagnostics})
+                self.assertNotIn(sentinel, json.dumps(result))
+
+    def test_absent_sync_diagnostics_remain_unknown(self):
+        self.assertEqual(self.sync_backend_result({"ok": True}),
+                         {"synced": 1, "revision": REVISION, "ok": True})
+
+    def test_malformed_sync_diagnostics_are_omitted_without_coercion(self):
+        base = {"synced": 1, "revision": REVISION, "ok": True}
+        for value in (None, True, False, -1, 1.0, "1", [], {}):
+            with self.subTest(count=value):
+                self.assertEqual(self.sync_backend_result(
+                    {"ok": True, "newArticles": value, "queuedEvents": value}), base)
+        for value in (None, 0, 1, "false", "true", [], {}):
+            with self.subTest(flag=value):
+                self.assertEqual(self.sync_backend_result(
+                    {"ok": True, "baseline": value, "replay": value}), base)
+
     def test_source_advancing_during_url_checks_prevents_sync(self):
         refs = iter([REVISION, NEW_REVISION])
         calls = []

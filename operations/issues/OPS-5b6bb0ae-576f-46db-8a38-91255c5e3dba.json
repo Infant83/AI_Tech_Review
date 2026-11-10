@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
+  "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
+  "record_version": 1,
+  "title": "새 글 숫자 표시와 푸시 메시지 미수신 제보의 발송·표시 단계 대조",
+  "type": "push_delivery_observation",
+  "created_at": "2026-11-10T10:55:05Z",
+  "updated_at": "2026-11-10T10:57:22Z",
+  "status": "needs_evidence",
+  "priority": "P2",
+  "source": {
+    "kind": "user_feedback",
+    "reference": "SITE_OPERATIONS.md",
+    "summary": "사용자는 알림을 설정했으나 새 글 메시지가 오지 않고 홈 버튼에 숫자1만 보인다고 제보함. 해당 숫자가 앱 아이콘 배지인지 사이트 내부 표시인지, 기기와 글 제목은 아직 확인 전임"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/",
+      "https://api.infant83.io/v1/config"
+    ],
+    "source_paths": [
+      ".automation/reader-engagement/frontend/sw.js",
+      ".automation/reader-engagement/frontend/reader-engagement.js",
+      ".automation/cloudflare/reader-engagement/src/worker.js",
+      "scripts/reader_engagement_publish.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "780010f82a18b6bfbe7fbb032f761d5ab7656347",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "최신 원격 main을 fast-forward로 반영하며 동시 게시와 다른 작업의 미추적 인계를 보존함",
+      "공개 API pushEnabled:true와 실제 공개 revision8a513dc, 최근 Actions의 build·deploy·복구 사본·notify-readers 성공을 대조함",
+      "기존 Cloudflare OAuth 연결을 지원 CLI로 재확인하고 D1에서 비식별 SELECT 집계만 수행함",
+      "독립 담당이 서버 이벤트·배송 상태와 서비스 워커의 배지·표시 경로, 공개 코드 일치를 확인함",
+      "기기·접속 방식·문제 글 제목 및 숫자의 표시 위치를 사용자에게 확인 요청함"
+    ],
+    "expected": "구독 주제에 해당하는 새 글의 푸시가 제공자 수락을 거쳐 해당 기기에 표시되고, 배지·수신 이력·화면 표시의 차이를 구분해 진단함",
+    "actual": "최근 새 ATRL 글은 발행 이벤트·fanout 완료 후 대상 배송이 모두 sent·HTTP201·첫 시도 수락 상태이며 미완료·실패 기록이 없다. 최근 7일 조사한 article 이벤트의 배송도 모두 같은 수락 상태다. 앱 아이콘 배지는 SW의 push 수신 후 증가하지만 showNotification과 독립 처리라 표시 성공을 증명하지 않는다. 사용자의 실제 기기·문제 글과 일치 여부는 아직 미확인이다."
+  },
+  "evidence": [
+    "operations/runs/20261110T105505Z-bc242733-a281-4752-a9b8-4d5e3b48d303.md",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42794409298",
+    ".automation/cloudflare/reader-engagement/README.md",
+    ".automation/reader-engagement/frontend/sw.js",
+    "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/"
+  ],
+  "limitations": [
+    "사용자 휴대폰·설치 인스턴스·알림 권한·배너/집중 모드·실제 최근 수신 목록을 직접 확인하지 못함",
+    "공급자 HTTP201과 sent는 단말 도착·알림 표시·소리·열람을 보증하지 않음",
+    "홈 표시가 앱 아이콘 배지인지 사이트의 업데이트 표시인지 확인 전이므로 어느 단계의 증거인지 단정하지 않음",
+    "현재 수신 이력은 push 수신을 기록하며 showNotification 결과나 OS 표시 결과는 수집하지 않음"
+  ],
+  "policy_decision": {
+    "state": "서버 발송 수락 확인; 단말 표시 증거 대기",
+    "rationale": "확인된 서버 발송 실패가 없어 과거 글 재발송·구독 재설정으로 대응하지 않는다. 기존 구독·필기와 개인정보를 보존하며 실제 기기의 최근 수신 이력으로 단계부터 구분한다. CI에서 누락하는 비민감 이벤트 진단 필드는 최소 보완한다.",
+    "related_issues": [
+      "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "사용자 기기/글/최근수신목록 확인, 새 배송 실패·표시 실패·구독 불일치가 확인될 때"
+  },
+  "authority": {
+    "basis": "사용자의 새 글 알림 기능 확인 요청과 기존 ADOPT 운영·기술지원 권한",
+    "current_scope": "읽기 전용 게시·API·DB 집계·공개 코드 점검, CI의 비민감 알림 진단 출력 보완과 관련 검증",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "문제 글·기기·접속 방식·숫자 표시 위치를 특정하고 신규 발행인지 기존 글 개정인지 대조함",
+    "이벤트 생성·fanout·배송·제공자 수락·SW 수신·OS 표시를 구분하고 단말 증거 없이 해결 완료로 표시하지 않음",
+    "CI 출력에 허용한 이벤트 수·기준선/재처리 여부만 보존하며 누락값을 0/false로 발명하거나 원문 응답·구독 정보를 출력하지 않음",
+    "기존 구독·VAPID·서비스 워커 scope·저장 자료를 보존하고 임의 테스트 푸시·구독 해제·사이트 자료 삭제·과거 알림 재발송을 하지 않음"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "공개·서버 읽기 점검 및 진단 출력 41개 회귀 통과; 사용자 단말 미확인",
+    "checks": [
+      "API와 공개 릴리스 HTTPS200; pushEnabled:true, revision8a513dcbc583ec6876a58654b8d2395ced6761cc",
+      "D1 비식별 집계: 후보 새 글 fanout 완료·모든 대상 sent/201/attempt1·미완료/실패0",
+      "공개 SW와 프런트엔드 원본 동일; 독립 담당의 배지 로컬 하네스20개 통과(실제 푸시 없음)",
+      "CI 진단 allowlist·정상0/false 보존·누락/오류 타입 생략·민감 필드 차단을 포함한 test_reader_engagement_publish.py 41개 통과",
+      "독립 담당의 코드·운영 기록 감수와 JSON·소스 경로·링크·diff 검사 통과"
+    ],
+    "evidence": [
+      "operations/runs/20261110T105505Z-bc242733-a281-4752-a9b8-4d5e3b48d303.md"
+    ],
+    "remaining_limits": [
+      "보완한 진단 출력의 실제 다음 게시 로그는 관찰 전",
+      "사용자 기기의 수신/표시 상태가 확인되기 전 해결 완료 아님"
+    ]
+  },
+  "observation": {
+    "status": "제보 미해결·단말 증거 대기",
+    "period": "2026-11-10 공개 게시와 최근7일 발송 기록 점검",
+    "result": "발송누락은조사범위에서발견하지못했다. 미표시의원인을OS설정또는코드결함으로확정하지않는다."
+  },
+  "recovery": {
+    "plan_reference": "진단 출력 변경은 이전 Git 경로로 복구 가능하며 운영 DB·구독·키를 변경하지 않는다.",
+    "execution_reference": null,
+    "result": "실제 배포·테스트 푸시·재발송·구독 변경·롤백 없음"
+  },
+  "next_action": "사용자에게 요청한 기기·문제 글·배지 위치를 확인하고 해당 앱의 알림 설정 ‘최근 수신 알림’ 제목·시각과 연결한다. 목록에 있으면 SW 수신 이후 표시 단계, 없으면 해당 발행·주제·앱 인스턴스·구독을 추적한다. 서버 수락을 휴대폰 표시 완료로 보고하지 않는다."
+}

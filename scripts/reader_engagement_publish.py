@@ -598,7 +598,18 @@ def sync_publications(expected: dict, revision: str, repository: str, github_tok
             result = request_json(API_BASE + "/v1/publications/sync", token=publish_token, body=expected)
             if not result.get("ok"):
                 raise ValueError("Backend did not confirm publication synchronization")
-            return {"synced": len(expected["articles"]), "revision": expected["revision"], "ok": True}
+            summary = {"synced": len(expected["articles"]), "revision": expected["revision"], "ok": True}
+            # Keep only bounded-shape diagnostics, never an unfiltered backend
+            # response. Missing/invalid fields do not imply zero work or delivery.
+            for key in ("newArticles", "queuedEvents"):
+                value = result.get(key)
+                if type(value) is int and value >= 0:
+                    summary[key] = value
+            for key in ("baseline", "replay"):
+                value = result.get(key)
+                if type(value) is bool:
+                    summary[key] = value
+            return summary
         except HTTPError as error:
             if error.code != 409 or attempt == 2:
                 raise
