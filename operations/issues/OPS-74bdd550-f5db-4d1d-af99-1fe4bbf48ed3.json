@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
+  "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
+  "record_version": 1,
+  "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
+  "type": "pages_deployment_timeout",
+  "created_at": "2026-11-10T14:06:56Z",
+  "updated_at": "2026-11-10T14:06:56Z",
+  "status": "in_progress",
+  "priority": "P2",
+  "source": {
+    "kind": "publication_ci",
+    "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
+    "summary": "The bilingual title revision passed build, continuity, payload and sealed-artifact validation; the Pages deployment timed out during file sync."
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-11-10_qunova-hivqe-quantum-chemistry"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/reviews/2026-11-10_qunova-hivqe-quantum-chemistry/"
+    ],
+    "source_paths": [
+      ".github/workflows/pages.yml",
+      "publication/requests/2026-11-10_qunova-hivqe-quantum-chemistry.json"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "50fb320ba25eecb6923ec8fc40b2c4e5f1f88b6c",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "Run the existing Pages workflow for bfc2383a8219521dbb85cd7c72732f46c186e29d.",
+      "All build, preservation, payload and artifact checks pass; upload succeeds.",
+      "Deploy remains at syncing_files and exceeds its 600-second timeout."
+    ],
+    "expected": "Deploy the validated artifact, preserve recovery copy and synchronize reader catalog.",
+    "actual": "Run42828205239 attempt1: build success; deploy failed14:04:03UTC. Last valid state14:03:55UTC syncing_files; timeout14:04:00UTC; deployment canceled14:04:01UTC. Recovery-copy and notify-readers were skipped."
+  },
+  "evidence": [
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42818327217",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42824084381",
+    "https://www.githubstatus.com/"
+  ],
+  "limitations": [
+    "The internal cause of the Pages delay is unconfirmed.",
+    "The official operational status does not establish success of this deployment.",
+    "A prior new-source-version retry succeeded, but this is not proof that a cached build version caused the timeout."
+  ],
+  "policy_decision": {
+    "state": "accepted",
+    "rationale": "Record the repeated deployment-service delay separately from editorial validation. Retry once with a new source revision and identical publication inputs. Preserve workflow, security and validation rules.",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": "After the bounded retry or another concrete timeout."
+  },
+  "authority": {
+    "basis": "Authorized review revision and ADOPT ongoing operations approved2026-11-08.",
+    "current_scope": "Failure evidence and one new-source-revision full CI retry; no publication, workflow or security-rule changes.",
+    "additional_decision": null
+  },
+  "owner_role": "ADOPT - publication integration and recovery",
+  "acceptance_criteria": [
+    "Record per-attempt results and actual deployment cancellation.",
+    "Verify live bilingual HTML, PDFs and historical archive copies against the sealed artifact.",
+    "Verify recovery-copy and notify-readers separately.",
+    "Keep the external delay cause unconfirmed until evidence supports it."
+  ],
+  "change": {
+    "commits": [
+      "bfc2383a8219521dbb85cd7c72732f46c186e29d"
+    ],
+    "candidate_reference": "publication_changes/2026-11-10_qunova-hivqe-quantum-chemistry.json",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239"
+  },
+  "verification": {
+    "status": "Editorial and artifact validation pass; Pages timeout verified; bounded recovery pending.",
+    "checks": [
+      "Both new PDF first pages visually read; the other16 pages RGB-identical.",
+      "Scientific manuscripts are byte-identical after H1.",
+      "Only intended bilingual HTML/PDF and two archive PDFs changed; other articles and PDFs preserved.",
+      "Timeout, cancellation and downstream skips verified from completed job logs."
+    ],
+    "evidence": [
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239"
+    ],
+    "remaining_limits": [
+      "Revised title is not yet live.",
+      "Recovery-copy and reader sync remain pending.",
+      "Internal Pages cause remains unconfirmed."
+    ]
+  },
+  "observation": {
+    "status": "retry_pending",
+    "period": "2026-11-10T14:06:56Z",
+    "result": "Actual HTTPS release remains50fb320; previous public edition remains available."
+  },
+  "recovery": {
+    "plan_reference": "Run the existing workflow once with a fresh source revision containing only this operations record; all publication inputs and checks remain identical.",
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "Execute the bounded full-CI retry; verify actual HTTPS, recovery copy and reader synchronization, then append the outcome without claiming the external cause is fixed."
+}
