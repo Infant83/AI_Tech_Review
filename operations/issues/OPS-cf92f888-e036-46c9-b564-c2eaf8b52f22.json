@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "id": "OPS-cf92f888-e036-46c9-b564-c2eaf8b52f22",
+  "uuid": "cf92f888-e036-46c9-b564-c2eaf8b52f22",
+  "record_version": 1,
+  "title": "Copy and validate responsive srcset figures during article publication",
+  "type": "bug",
+  "created_at": "2026-11-10T08:43:43Z",
+  "updated_at": "2026-11-10T08:43:43Z",
+  "status": "validating",
+  "priority": "P1",
+  "source": {
+    "kind": "publication_preflight",
+    "reference": "2026-11-09_atrl-agentic-atelier",
+    "summary": "A file-identity comparison before initial publication found missing responsive figure copies in the generated candidate."
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-11-09_atrl-agentic-atelier"
+    ],
+    "public_urls": [],
+    "source_paths": [
+      "scripts/publish_public_site.py",
+      "tests/test_publish_public_site_data.py",
+      "tests/test_publish_public_site_srcset.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "5f905ac640013826798f47ac702933d80a08f120",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "Build the registered ATRL publication candidate.",
+      "Compare all 76 reviewed dist files and each picture/source srcset against the candidate."
+    ],
+    "expected": "All referenced desktop and mobile SVG variants are copied and their references validated.",
+    "actual": "The publisher copied src/href/poster assets but omitted 18 mobile SVGs referenced only through srcset (9 per language). The candidate was withheld from deployment."
+  },
+  "evidence": [
+    "The reviewed dist has 36 explanatory SVG variants; the affected candidate omitted all 18 mobile variants.",
+    "Independent publication preflight confirmed the missing-file list."
+  ],
+  "limitations": [
+    "The defect was found in a local candidate before this new article was deployed. This record does not claim a site-wide audit of older article mobile views."
+  ],
+  "policy_decision": {
+    "state": "accepted",
+    "rationale": "Responsive figures are part of the authorized final publication and must reach the reader with their reviewed identities.",
+    "related_issues": [],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "The editor explicitly requested publication of the reviewed article.",
+    "current_scope": "Repair and verify the necessary article asset-delivery path while preserving existing published content.",
+    "additional_decision": null
+  },
+  "owner_role": "ADOPT publication tooling",
+  "acceptance_criteria": [
+    "Copy supported srcset candidates through existing asset and path restrictions.",
+    "Reject unsafe or missing local candidates and keep unapproved working files excluded.",
+    "Confirm all 76 article files are present, 74 non-HTML assets match reviewed source bytes, and actual mobile Figure 9 renders.",
+    "Pass the release continuity guard and verify actual HTTPS files after deployment."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "in_progress",
+    "checks": [
+      "Original scoped public-data tests passed.",
+      "Initial candidate withheld due to missing responsive assets.",
+      "The srcset copier and local-reference validator now process supported URL/descriptor candidates using existing asset/path checks.",
+      "Six srcset regression tests and the complete Python suite (329 tests, one skip) passed."
+    ],
+    "evidence": [],
+    "remaining_limits": [
+      "Corrected candidate, browser and actual deployment verification pending."
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "Finish srcset regression checks, rebuild one corrected candidate, verify browser and release continuity, then publish and record live file identities."
+}

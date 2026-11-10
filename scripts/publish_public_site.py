@@ -121,6 +121,10 @@ LOCAL_REF_RE = re.compile(
     r"(?P<prefix>\b(?:src|href|poster)=['\"])(?P<url>[^'\"]+)(?P<suffix>['\"])",
     re.IGNORECASE,
 )
+SRCSET_REF_RE = re.compile(
+    r"(?P<prefix>\bsrcset\s*=\s*)(?P<quote>['\"])(?P<urls>.*?)(?P=quote)",
+    re.IGNORECASE | re.DOTALL,
+)
 LOCAL_HREF_RE = re.compile(r"\s+href=(?P<quote>['\"])(?P<url>[^'\"]+)(?P=quote)", re.IGNORECASE)
 INTERNAL_PATH_RE = re.compile(
     r"(?:"
@@ -468,6 +472,48 @@ def rebuild_local_url(filename: str, query: str, fragment: str) -> str:
     if fragment:
         rebuilt += f"#{fragment}"
     return rebuilt
+
+
+def srcset_candidates(value: str) -> list[tuple[str, str]]:
+    """Parse URL/descriptor candidates without splitting commas inside a URL.
+
+    URLs run until ASCII whitespace, as in HTML srcset tokenization; trailing
+    commas terminate a descriptor-free candidate. Descriptors accepted here are
+    a single positive width or pixel density. Invalid input fails publication
+    instead of accidentally copying the entire attribute as a filename.
+    """
+    value = html.unescape(value)
+    position, length = 0, len(value)
+    candidates: list[tuple[str, str]] = []
+    whitespace = " \t\n\r\f"
+    while position < length:
+        while position < length and value[position] in whitespace + ",":
+            position += 1
+        if position >= length:
+            break
+        start = position
+        while position < length and value[position] not in whitespace:
+            position += 1
+        url = value[start:position]
+        descriptor = ""
+        if url.endswith(","):
+            url = url.rstrip(",")
+        else:
+            start = position
+            while position < length and value[position] != ",":
+                position += 1
+            descriptor = value[start:position].strip()
+            if position < length:
+                position += 1
+        if not url or (descriptor and not re.fullmatch(
+                r"(?:[1-9][0-9]*w|(?:[0-9]+(?:\.[0-9]+)?|\.[0-9]+)x)", descriptor)):
+            raise ValueError("Invalid srcset candidate or descriptor")
+        if descriptor.endswith("x") and float(descriptor[:-1]) <= 0:
+            raise ValueError("Invalid srcset pixel density")
+        candidates.append((url, descriptor))
+    if not candidates:
+        raise ValueError("Empty srcset")
+    return candidates
 
 
 def approved_video_assets(review: PublicReview | None, language: str) -> dict[str, str]:
@@ -1517,14 +1563,13 @@ def sanitize_for_public(
     data_files = approved_data_assets(review, language)
     approved_files = video_files | set(data_files)
 
-    def replace_ref(match: re.Match[str]) -> str:
-        raw_url = match.group("url")
+    def copy_ref(raw_url: str) -> tuple[str, str | None]:
         if is_external_or_anchor(raw_url):
-            return match.group(0)
+            return raw_url, None
 
         local_path, query, fragment = split_local_url(raw_url)
         if not local_path:
-            return match.group(0)
+            return raw_url, None
 
         requested_path = dist_dir / local_path
         if local_path in data_files and requested_path.is_symlink():
@@ -1538,16 +1583,13 @@ def sanitize_for_public(
         try:
             source_path.relative_to(dist_root)
         except ValueError:
-            safe_url = html.escape(raw_url, quote=True)
-            return f'data-blocked-ref="{safe_url}"'
+            return raw_url, "data-blocked-ref"
 
         if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES and local_path not in approved_files:
-            safe_url = html.escape(raw_url, quote=True)
-            return f"data-local-ref=\"{safe_url}\""
+            return raw_url, "data-local-ref"
 
         if not source_path.exists() or not source_path.is_file():
-            safe_url = html.escape(raw_url, quote=True)
-            return f"data-missing-ref=\"{safe_url}\""
+            return raw_url, "data-missing-ref"
 
         if source_path not in source_to_dest:
             dest_name = unique_dest_name(source_path, used_names)
@@ -1555,11 +1597,30 @@ def sanitize_for_public(
             copy_public_file(source_path, public_dir / dest_name)
             copied.append(dest_name)
 
-        new_url = rebuild_local_url(source_to_dest[source_path], query, fragment)
-        return f"{match.group('prefix')}{html.escape(new_url, quote=True)}{match.group('suffix')}"
+        return rebuild_local_url(source_to_dest[source_path], query, fragment), None
+
+    def replace_ref(match: re.Match[str]) -> str:
+        url, problem = copy_ref(match.group("url"))
+        if problem:
+            return f'{problem}="{html.escape(url, quote=True)}"'
+        return f"{match.group('prefix')}{html.escape(url, quote=True)}{match.group('suffix')}"
+
+    def replace_srcset(match: re.Match[str]) -> str:
+        risks = public_text_risks(html.unescape(match.group("urls")))
+        if risks:
+            raise ValueError("Unsafe srcset: " + ", ".join(risks))
+        rewritten = []
+        for raw_url, descriptor in srcset_candidates(match.group("urls")):
+            url, problem = copy_ref(raw_url)
+            if problem:
+                raise ValueError(f"Invalid local srcset asset ({problem})")
+            rewritten.append(url + (" " + descriptor if descriptor else ""))
+        quote = match.group("quote")
+        return match.group("prefix") + quote + html.escape(", ".join(rewritten), quote=True) + quote
 
     sanitized = strip_private_public_material(html_text, language, approved_files)
     sanitized = LOCAL_REF_RE.sub(replace_ref, sanitized)
+    sanitized = SRCSET_REF_RE.sub(replace_srcset, sanitized)
     sanitized = sanitize_public_text(sanitized)
     sanitized = sanitized.replace("<body>", '<body class="public-review">')
     sanitized = inject_public_local_note(sanitized, language)
@@ -2454,8 +2515,13 @@ def validate_local_references(
     sparse_tracked_paths: set[Path] | None = None,
 ) -> list[str]:
     errors: list[str] = []
-    for match in LOCAL_REF_RE.finditer(text):
-        raw_url = match.group("url")
+    raw_urls = [match.group("url") for match in LOCAL_REF_RE.finditer(text)]
+    for match in SRCSET_REF_RE.finditer(text):
+        try:
+            raw_urls.extend(url for url, _ in srcset_candidates(match.group("urls")))
+        except ValueError as error:
+            errors.append(f"invalid srcset in {document_path}: {error}")
+    for raw_url in raw_urls:
         if is_external_or_anchor(raw_url):
             continue
         local_path = split_local_url(raw_url)[0]
@@ -2463,7 +2529,7 @@ def validate_local_references(
             resolved_path = (document_path.parent / local_path).resolve()
             if resolved_path.exists() or resolved_path in (sparse_tracked_paths or set()):
                 continue
-        errors.append(f"missing local href/src/poster in {document_path}: {raw_url}")
+        errors.append(f"missing local href/src/poster/srcset in {document_path}: {raw_url}")
     return errors
 
 
