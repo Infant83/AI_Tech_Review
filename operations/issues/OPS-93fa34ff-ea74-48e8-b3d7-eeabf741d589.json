@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
+  "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
+  "record_version": 1,
+  "title": "ADOPT 정기 운영을 하루 세 번으로 확대",
+  "type": "schedule_configuration",
+  "created_at": "2026-11-10T11:46:58Z",
+  "updated_at": "2026-11-10T11:46:58Z",
+  "status": "observing",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "DEVELOPMENT_OPERATIONS_POLICY.md",
+    "summary": "사용자가 운영 과제의 적체를 줄이기 위해 기존 하루 한 번의 운영 예약을 하루 세 번으로 늘리라고 지시함"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [],
+    "source_paths": [
+      "DEVELOPMENT_OPERATIONS_POLICY.md",
+      "SITE_OPERATIONS.md",
+      "SECURITY_OPERATIONS.md",
+      "JOURNAL_TEAM_CHARTER.md",
+      "ATRL_ORGANIZATION.md",
+      "PUBLICATION_WORKFLOW.md"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "61f161203a3b55799fdf65a8c10bf4f39bc038e6",
+    "environment": {
+      "device": "기존 실행 호스트",
+      "operating_system": "macOS; Asia/Seoul",
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "기존 ai-tech-review의 실제 설정과 운영 정책을 확인함",
+      "기존03시를 유지하고 오전11시·오후7시를 추가하는8시간간격을 사용자에게 알림",
+      "지원 도구로 기존 예약의 주기와 관련 프롬프트만 갱신함",
+      "실제 저장 설정을 재조회해 시간·프롬프트 일치와 기존 이름·종류·대상·ACTIVE 보존을 확인함"
+    ],
+    "expected": "기존 대화의 운영팀 예약 하나가 매일 한국시간03:00·11:00·19:00에 작업을 이어가고 미완료 일감을 중복 없이 인계함",
+    "actual": "하루 세 번의 저장 설정과 프롬프트가 일치한다. 실제 세 시간대의 다음 기동은 아직 관찰 전이다."
+  },
+  "evidence": [
+    "지원 automation_update 성공 응답과 실제 설정 전후 비교",
+    "https://learn.chatgpt.com/docs/automations?surface=app",
+    "DEVELOPMENT_OPERATIONS_POLICY.md"
+  ],
+  "limitations": [
+    "실제 다음03시·11시·19시의 기동·중복·누락 여부는 관찰 전",
+    "설정 확인이 정각 실행 또는 로컬 호스트·앱·연결의 지속 가용성을 보증하지 않음",
+    "명시적인 nominal/nextRun 값은 설정 응답에 없어 특정 다음 실행 시각을 확인한 것으로 기록하지 않음"
+  ],
+  "policy_decision": {
+    "state": "사용자 지시에 따라 기존 예약 한 개의 빈도 확대",
+    "rationale": "새벽3시의 오전 사람 검토 준비 취지를 유지하며11시·19시를 더한다. 회차마다 새 일감을 늘리지 않고 이전 우선 일감을 이어가며 새 변경부터 확인한다. 주간·월간 작업은 마지막 완료 기록을 재사용해 중복하지 않는다.",
+    "related_issues": [
+      "OPS-a057503d-372b-44f5-bdb2-8a19381c3b20"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "실제 기동이 의도한 세 시간대와 다르거나 작업 중복·누락·적체가 관측될 때"
+  },
+  "authority": {
+    "basis": "사용자의 운영 예약 하루 세 번 확대 지시",
+    "current_scope": "기존 ADOPT 예약의 시간·주기와 관련 안내·인계 지침 갱신. 역할·권한·대상·편집부 예약은 유지.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "기존 예약 하나가 매일 한국시간03:00·11:00·19:00의 하루 세 번 설정으로 저장됨",
+    "설정과 프롬프트·현재 운영 정책이 일치하고 기존 이름·대상·활성·종류·통지 설정을 보존함",
+    "직전 실행·우선 일감·진행 파일을 이어받아 같은 전체 이력·주간/월간 작업·동시 배포를 중복하지 않음",
+    "설정 반영과 실제 각 시간대 기동을 구분해 기록하고 다음 회차에서 실제 동작을 관찰함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "설정 갱신·실제 저장 재조회·독립 검증 완료; 미래 기동 관찰",
+    "checks": [
+      "지원 도구가 기존ai-tech-review 갱신 성공을 반환함",
+      "실제 설정 비교에서 prompt·시간 규칙·updated_at만 변경됨",
+      "하루03시·11시·19시와 프롬프트가 정확히 일치하며 기존name·kind·ACTIVE·대상 보존",
+      "호스트 시간대가 한국시간임을 독립 baseline 재조회로 확인; UTC로 역산 보정하지 않음",
+      "독립 담당이 실제 저장된 세 시각·8시간 간격·KST·기존 식별자/대상/활성과 현재 정책6개 문서의 일치를 재확인함",
+      "JSON·참조 링크·문서 시간표·diff 검사 통과; 다른 작업의 미추적 인계 해시 보존"
+    ],
+    "evidence": [
+      "DEVELOPMENT_OPERATIONS_POLICY.md",
+      "SITE_OPERATIONS.md",
+      "SECURITY_OPERATIONS.md"
+    ],
+    "remaining_limits": [
+      "실제 다음03시·11시·19시 기동은 관찰 전"
+    ]
+  },
+  "observation": {
+    "status": "설정 반영 완료; 실제 확대 회차 관찰 전",
+    "period": "2026-11-10 변경 이후 첫 세 시간대",
+    "result": "기존 예약과 기록을 재사용했다. 새 예약·새 실행 기반·추가 권한을 만들지 않았다."
+  },
+  "recovery": {
+    "plan_reference": "필요하면 지원 도구로 같은 예약의 이전03시 주기와 해당 안내만 복구한다. 대상·역할·권한·기록은 보존한다.",
+    "execution_reference": null,
+    "result": "사이트·게시물·PDF·구독·DB 배포나 실제 복구 작업 없음"
+  },
+  "next_action": "다음 기존 운영 회차는 실제 trigger의UTC/KST 시각과 저장 일정·기동 중복을 대조하고, 마지막 확인 이후의 미완료 일감과 새 변경을 이어간다. 세 시간대의 첫 기동이 확인되면 설정 범위의 관찰 결과를 갱신한다."
+}
