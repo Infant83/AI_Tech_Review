@@ -29,6 +29,7 @@ const onlyLanguage=process.argv.find(a=>a.startsWith('--language='))?.split('=')
 if(onlyLanguage&&!['ko','en'].includes(onlyLanguage))throw Error('--language must be ko or en.');
 const publicBaseValue=process.argv.find(a=>a.startsWith('--public-base='))?.split('=').slice(1).join('=')||'';
 const publicBase=publicBaseValue?publicBaseValue.replace(/\/?$/,'/'):'';
+const articleDescriptions={"ko":"논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자라고, 그 과정의 문제는 공통 기준과 게시 도구의 수리로 돌아옵니다. ATRL 공방을 사례로 사람의 기획과 AEDAUT 편집·저술, ADOPT 개발운영이 하나의 에이전틱 워크플로를 이루는 구조를 살핍니다. 글을 만드는 협업 아키텍처 자체가 연구와 창작의 대상이 되는 변화를 따라갑니다.","en":"A question arising while reading a paper grows through investigation, calculation, writing and review into an explanation; problems encountered along the way return as changes to shared criteria and publishing tools. Using the ATRL atelier as a case, this essay follows how human direction, AEDAUT editorial work and ADOPT operations form one agentic workflow, making the collaborative architecture itself an object of research and creation."};
 const descriptors={"ko": "에이전틱 시대의 지식 흐름과 연구 공방의 탄생", "en": "Knowledge Flows in the Agentic Era: The Emergence of a Research Atelier"};
 const titles={ko:'ATRL: Agentic Atelier for Tech Review Letters',en:'ATRL: Agentic Atelier for Tech Review Letters'};
 // Optional stems are permitted, but only explicitly referenced assets are copied.
@@ -192,7 +193,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  // Manuscripts retain their production record; the output uses one structured disclosure below.
  const renderSource=source.replace(/^##\s+(?:작성과 검증|Writing and verification|Preparation and verification)\s*\n[\s\S]*$/im,'').trimEnd();
  const title=source.match(/^#\s+(.+)$/m)?.[1]?.trim()||titles[lang];
- const description=(source.match(/<p class=["']dek["']>([\s\S]*?)<\/p>/)?.[1]||descriptors[lang]).replace(/<[^>]*>/g,'').trim();
+ const description=articleDescriptions[lang];
  const math=[];
  const safe=renderSource.replace(/\$\$([\s\S]*?)\$\$|\\\(([\s\S]*?)\\\)/g,(_,a,b)=>{
   const result=mathImage((a||b).trim(),a!==undefined);math.push(result);

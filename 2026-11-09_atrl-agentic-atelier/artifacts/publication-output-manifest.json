@@ -10,7 +10,7 @@
   "inputs": [
     {
       "path": "artifacts/build_review.mjs",
-      "sha256": "4bcfe2c2ab23bf974638a84c235751c4fa588d224978b30e6806b59de5c4436e"
+      "sha256": "23a828f32439e30150bc80d960da1be79989de992561ebed3de253e0dfef6303"
     },
     {
       "path": "reports/review_ko.md",
@@ -153,8 +153,8 @@
     },
     {
       "path": "dist/en/index.html",
-      "bytes": 71633,
-      "sha256": "0710c0b6f690562ee8610cdb4868d9fa04e972ff32471956d38bc35fc065f5fc"
+      "bytes": 72373,
+      "sha256": "df21dbf9994b0e7c4bd2a43a3fb232cc782678f2b70b34ffdb1829c9676dda80"
     },
     {
       "path": "dist/en/math_0fb4bf7e3ae4de.svg",
@@ -303,8 +303,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 70660,
-      "sha256": "825433260d8b9a7411c717a0ac4d4841555b3836b35e05ddcc2e84e8d57c7d86"
+      "bytes": 71470,
+      "sha256": "182a382deac40427cf1cb05555f06ec00b18d6fdda95cd5017c54aeaebcee148"
     },
     {
       "path": "dist/math_0fb4bf7e3ae4de.svg",
@@ -533,6 +533,41 @@
       },
       "note": "An old-HTML intermediate pass was started after a dependency failure and interrupted. Only the subsequent successful public-HTML outputs are final."
     },
-    "unresolved_issues": []
-  }
+    "unresolved_issues": [],
+    "metadata_followup": {
+      "date": "2026-11-10",
+      "reason": "Use the approved hub summaries for article meta descriptions so the English hub subtitle remains distinct from the description.",
+      "scope": "Builder description selection and Korean/English HTMLHEAD meta description/og:description only; dek unchanged.",
+      "previous_publication_manifest_sha256": "89634a2e070f6e3fa9ee984b314222297039ab141312132c2ac3e51833f4dffd",
+      "heads": [
+        {
+          "language": "ko",
+          "path": "dist/index.html",
+          "before_sha256": "825433260d8b9a7411c717a0ac4d4841555b3836b35e05ddcc2e84e8d57c7d86",
+          "after_sha256": "182a382deac40427cf1cb05555f06ec00b18d6fdda95cd5017c54aeaebcee148",
+          "after_head_sha256": "7ef48c8b5a51e4a373b4e6426ce81b6a7aeec5e458815e91a5322c5ef9bf62b1",
+          "tail_after_head_sha256": "a8c8bed3538cd7aac439c9c0c8b351c99f2ba6d2a2ea4e85f0db5f506b7822ba",
+          "all_bytes_after_head_exact": true,
+          "description": "논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자라고, 그 과정의 문제는 공통 기준과 게시 도구의 수리로 돌아옵니다. ATRL 공방을 사례로 사람의 기획과 AEDAUT 편집·저술, ADOPT 개발운영이 하나의 에이전틱 워크플로를 이루는 구조를 살핍니다. 글을 만드는 협업 아키텍처 자체가 연구와 창작의 대상이 되는 변화를 따라갑니다."
+        },
+        {
+          "language": "en",
+          "path": "dist/en/index.html",
+          "before_sha256": "0710c0b6f690562ee8610cdb4868d9fa04e972ff32471956d38bc35fc065f5fc",
+          "after_sha256": "df21dbf9994b0e7c4bd2a43a3fb232cc782678f2b70b34ffdb1829c9676dda80",
+          "after_head_sha256": "62fd84ff6529873a22fdb495460b2d94ff0dd83f7a45b9db4e3579834272fe90",
+          "tail_after_head_sha256": "5ca25643c6ca39ac1d9deaa17c026c57fdda6deae3f53a249064b2c9c4874ecd",
+          "all_bytes_after_head_exact": true,
+          "description": "A question arising while reading a paper grows through investigation, calculation, writing and review into an explanation; problems encountered along the way return as changes to shared criteria and publishing tools. Using the ATRL atelier as a case, this essay follows how human direction, AEDAUT editorial work and ADOPT operations form one agentic workflow, making the collaborative architecture itself an object of research and creation."
+        }
+      ],
+      "non_html_dist_files_exact": 74,
+      "pdfs_exact": true,
+      "pdf_rebuilds": 0,
+      "pdf_operation_markers": 0,
+      "source_manuscripts_figures_exact": true,
+      "unresolved_issues": []
+    }
+  },
+  "previous_publication_manifest_sha256": "89634a2e070f6e3fa9ee984b314222297039ab141312132c2ac3e51833f4dffd"
 }
