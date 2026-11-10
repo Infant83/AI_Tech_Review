@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-cf92f888-e036-46c9-b564-c2eaf8b52f22",
   "uuid": "cf92f888-e036-46c9-b564-c2eaf8b52f22",
-  "record_version": 2,
+  "record_version": 3,
   "title": "Copy and validate responsive srcset figures during article publication",
   "type": "bug",
   "created_at": "2026-11-10T08:43:43Z",
-  "updated_at": "2026-11-10T08:43:43Z",
-  "status": "validating",
+  "updated_at": "2026-11-10T09:07:18Z",
+  "status": "resolved",
   "priority": "P1",
   "source": {
     "kind": "publication_preflight",
@@ -67,12 +67,16 @@
     "Pass the release continuity guard and verify actual HTTPS files after deployment."
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
-    "deployment_reference": null
+    "commits": [
+      "7d89b18dc18672953fe83b267759796e64908a95",
+      "6a5bc1935398bc1ea69995e42e1a094191e48871",
+      "f98748fdf502cdb61b9878bd8388a096828abdff"
+    ],
+    "candidate_reference": "2026-11-09_atrl-agentic-atelier/artifacts/publication-verification.json",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42787075906"
   },
   "verification": {
-    "status": "in_progress",
+    "status": "passed",
     "checks": [
       "Original scoped public-data tests passed.",
       "Initial candidate withheld due to missing responsive assets.",
@@ -80,24 +84,28 @@
       "Six srcset regression tests and the complete Python suite (329 tests, one skip) passed.",
       "The first srcset candidate was withheld: continuity checking found existing external link entities re-escaped in a replayed D-Wave review. The remote build was canceled before any deployment.",
       "External and anchor attributes retain their exact original escaped bytes; the new entity-preservation regression passes (30 related tests).",
-      "All eight Korean/English HTML content digests for the four replayed articles match the previously checked candidate after the correction."
+      "All eight Korean/English HTML content digests for the four replayed articles match the previously checked candidate after the correction.",
+      "Corrected combined candidate passed release continuity, payload and complete public-file validation.",
+      "All76articlefiles present;74non-HTMLassets and2archivePDFcopies match source hashes on live HTTPS.",
+      "Actual public Korean desktop and English mobile Figure9 loaded current source variants; all26articleimages loaded and no document overflow.",
+      "Metadata follow-up restored English hub subtitle without changing article bodies or PDF bytes. Final build/deploy/recovery-copy/notify-readers jobs succeeded."
     ],
     "evidence": [
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/42785221422"
     ],
     "remaining_limits": [
-      "Corrected candidate, browser and actual deployment verification pending."
+      "The recorded browser checks use a desktop browser with viewport emulation. Older articles were not subjected to a new full mobile visual audit."
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "verified",
+    "period": "2026-11-10T09:07:18Z",
+    "result": "Resolved on actual public URLs with source-identity and browser checks."
   },
   "recovery": {
-    "plan_reference": null,
-    "execution_reference": null,
-    "result": null
+    "plan_reference": "SITE_OPERATIONS.md",
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42787075906",
+    "result": "Verified recovery-copy job succeeded; no rollback was performed."
   },
-  "next_action": "Build and inspect the corrected combined candidate, verify release continuity, deploy, then confirm actual HTTPS file identities."
+  "next_action": "Resolved; retain the srcset and external-entity regression tests in the existing publication workflow."
 }
