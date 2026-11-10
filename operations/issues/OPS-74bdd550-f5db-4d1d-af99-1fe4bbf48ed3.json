@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
   "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
-  "record_version": 1,
+  "record_version": 2,
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-10T14:06:56Z",
-  "status": "in_progress",
+  "updated_at": "2026-11-10T14:22:36Z",
+  "status": "needs_evidence",
   "priority": "P2",
   "source": {
     "kind": "publication_ci",
@@ -40,13 +40,14 @@
       "Deploy remains at syncing_files and exceeds its 600-second timeout."
     ],
     "expected": "Deploy the validated artifact, preserve recovery copy and synchronize reader catalog.",
-    "actual": "Run42828205239 attempt1: build success; deploy failed14:04:03UTC. Last valid state14:03:55UTC syncing_files; timeout14:04:00UTC; deployment canceled14:04:01UTC. Recovery-copy and notify-readers were skipped."
+    "actual": "Run42828205239 attempt1: build success; deploy failed14:04:03UTC. Last valid state14:03:55UTC syncing_files; timeout14:04:00UTC; deployment canceled14:04:01UTC. Recovery-copy and notify-readers were skipped. Fresh-revision run42830866020 also failed: build success14:10:16UTC; final syncing_files and timeout14:20:29UTC; cancellation14:20:30UTC; deploy failure14:20:32UTC. Recovery-copy and notify-readers skipped."
   },
   "evidence": [
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42818327217",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42824084381",
-    "https://www.githubstatus.com/"
+    "https://www.githubstatus.com/",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
   ],
   "limitations": [
     "The internal cause of the Pages delay is unconfirmed.",
@@ -56,9 +57,11 @@
   "policy_decision": {
     "state": "accepted",
     "rationale": "Record the repeated deployment-service delay separately from editorial validation. Retry once with a new source revision and identical publication inputs. Preserve workflow, security and validation rules.",
-    "related_issues": [],
+    "related_issues": [
+      "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867"
+    ],
     "duplicate_of": null,
-    "revisit_when": "After the bounded retry or another concrete timeout."
+    "revisit_when": "Next existing ADOPT operations session; inspect provider state and this exact artifact before considering a further retry."
   },
   "authority": {
     "basis": "Authorized review revision and ADOPT ongoing operations approved2026-11-08.",
@@ -74,37 +77,40 @@
   ],
   "change": {
     "commits": [
-      "bfc2383a8219521dbb85cd7c72732f46c186e29d"
+      "bfc2383a8219521dbb85cd7c72732f46c186e29d",
+      "cd70a48e4bdcabbbf3e0b8c9bc678a78cd3da66d"
     ],
     "candidate_reference": "publication_changes/2026-11-10_qunova-hivqe-quantum-chemistry.json",
-    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239"
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
   },
   "verification": {
-    "status": "Editorial and artifact validation pass; Pages timeout verified; bounded recovery pending.",
+    "status": "Both bounded attempts passed all build checks and failed in Pages file sync; both cancellations verified; publication remains pending.",
     "checks": [
       "Both new PDF first pages visually read; the other16 pages RGB-identical.",
       "Scientific manuscripts are byte-identical after H1.",
       "Only intended bilingual HTML/PDF and two archive PDFs changed; other articles and PDFs preserved.",
-      "Timeout, cancellation and downstream skips verified from completed job logs."
+      "Timeout, cancellation and downstream skips verified from completed job logs.",
+      "Actual HTTPS release still50fb320 and article H1 still the previous published title after both attempts."
     ],
     "evidence": [
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
     ],
     "remaining_limits": [
-      "Revised title is not yet live.",
-      "Recovery-copy and reader sync remain pending.",
-      "Internal Pages cause remains unconfirmed."
+      "The new title is not yet public on the journal site.",
+      "The internal Pages sync delay cause remains unconfirmed.",
+      "The unchanged-input new-revision experiment did not resolve the stall."
     ]
   },
   "observation": {
-    "status": "retry_pending",
-    "period": "2026-11-10T14:06:56Z",
-    "result": "Actual HTTPS release remains50fb320; previous public edition remains available."
+    "status": "confirmed_pending_publication",
+    "period": "2026-11-10T14:22:36Z",
+    "result": "Previous public edition remains available; revised source and bilingual PDFs are committed and accessible. No new publication or subscriber-delivery completion is claimed."
   },
   "recovery": {
     "plan_reference": "Run the existing workflow once with a fresh source revision containing only this operations record; all publication inputs and checks remain identical.",
-    "execution_reference": null,
-    "result": null
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
+    "result": "The single fresh-source-version retry also timed out. Stop repeated retries; keep validated publication inputs, historical editions and original workflow/security checks."
   },
-  "next_action": "Execute the bounded full-CI retry; verify actual HTTPS, recovery copy and reader synchronization, then append the outcome without claiming the external cause is fixed."
+  "next_action": "ADOPT should inspect the confirmed repeated Pages-sync delay at the next existing operations session, using the two exact failed runs and immutable artifacts. Do not assume a cause or weaken validation. The persistent title-revision request is ready for normal deployment when the path recovers; then verify live HTML/PDF, recovery and reader sync."
 }
