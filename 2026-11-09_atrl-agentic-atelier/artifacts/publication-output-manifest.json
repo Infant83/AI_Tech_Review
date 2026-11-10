@@ -1,0 +1,538 @@
+{
+  "version": 1,
+  "revision": 23,
+  "edition": "Publication edition prepared on 2026-11-10 at the responsible editor’s request",
+  "displayed_publication_date": "2026-11-09",
+  "evidence_cutoff": "2026-11-09",
+  "public_base": "https://infant83.io/AI_Tech_Review/reviews/2026-11-09_atrl-agentic-atelier/",
+  "status": "Prepared and visually checked; actual deployment verification belongs to the publication record",
+  "previous_review_manifest_sha256": "7d180276b3626fc9d16ee679297db86e40223b0933ed376cf1515448772739db",
+  "inputs": [
+    {
+      "path": "artifacts/build_review.mjs",
+      "sha256": "4bcfe2c2ab23bf974638a84c235751c4fa588d224978b30e6806b59de5c4436e"
+    },
+    {
+      "path": "reports/review_ko.md",
+      "sha256": "242a7682ee3a081e585fb87b1f9407a96a2f4b775566a8633fdd530f8410952a"
+    },
+    {
+      "path": "reports/review_en.md",
+      "sha256": "f1b702d4d9a9e150fcce8df0bce745413a81551c3349867a47230752625b49ef"
+    },
+    {
+      "path": "artifacts/review.css",
+      "sha256": "97cb6ef28503409b486f93f18fe89ac9038b3e35127bc0b9f4d2e8e7277c3437"
+    }
+  ],
+  "files": [
+    {
+      "path": "dist/atelier_architecture_ko.svg",
+      "bytes": 458861,
+      "sha256": "3cf61b567be7c1039868e06aa11611920ba8ba2ed95f9592f3201fd05450ac8b"
+    },
+    {
+      "path": "dist/atelier_architecture_mobile_ko.svg",
+      "bytes": 428169,
+      "sha256": "b91e18443e5a940a95f0578f678daa89782f131930ec48a0f0bcb2a8e6cc26a0"
+    },
+    {
+      "path": "dist/collaboration_mechanism_ko.svg",
+      "bytes": 477967,
+      "sha256": "dda074801111e44df15178d6bb9663b0d3793d856fe91e2b58933096f9abbf9f"
+    },
+    {
+      "path": "dist/collaboration_mechanism_mobile_ko.svg",
+      "bytes": 428151,
+      "sha256": "2c7fd6587cef9275ecacc9af06d7aafe1b0ef37cb920f114592e2b842d0a120c"
+    },
+    {
+      "path": "dist/coupled_cycles_ko.svg",
+      "bytes": 377192,
+      "sha256": "1be36a98e28a16cc20ab2d2342ee2b355b41349bb53ce6672b2c219a22de5da4"
+    },
+    {
+      "path": "dist/coupled_cycles_mobile_ko.svg",
+      "bytes": 413588,
+      "sha256": "21463c267e165cd9b067491939df0f4bcf9a641b5f288f103af39b8787b0b47e"
+    },
+    {
+      "path": "dist/editorial_workflow_ko.svg",
+      "bytes": 387233,
+      "sha256": "60650d48415cd18e988121589c032b432f78428dd18556c27b9e64624f8611d7"
+    },
+    {
+      "path": "dist/editorial_workflow_mobile_ko.svg",
+      "bytes": 391546,
+      "sha256": "a0090df41a97352aaebf2e16af33cfd1a68d8e6cee1e2cece4376dafaa4b6649"
+    },
+    {
+      "path": "dist/en/atelier_architecture_en.svg",
+      "bytes": 749532,
+      "sha256": "8635ad65f7f07b09360c8111ff874d727c5d18c1e76763a8bf9af97ae49f3555"
+    },
+    {
+      "path": "dist/en/atelier_architecture_mobile_en.svg",
+      "bytes": 707774,
+      "sha256": "fa6dc145d89e013b16918d2f402d5259bb33031376415cd1a6d31d58adc04115"
+    },
+    {
+      "path": "dist/en/collaboration_mechanism_en.svg",
+      "bytes": 677394,
+      "sha256": "9935816b7dc6bab515ec4f65bc3370feb0a2a773c854797804dc807e4d667e07"
+    },
+    {
+      "path": "dist/en/collaboration_mechanism_mobile_en.svg",
+      "bytes": 617899,
+      "sha256": "19484659ce3417e91de74d0608f2b29346719b1853013b93e4c56068e9d4f457"
+    },
+    {
+      "path": "dist/en/coupled_cycles_en.svg",
+      "bytes": 375481,
+      "sha256": "291e6e170f91c9dccec9127401b30a5300633c6cee32b9730639ed8f20081fe9"
+    },
+    {
+      "path": "dist/en/coupled_cycles_mobile_en.svg",
+      "bytes": 395031,
+      "sha256": "739e243859645c05ae7ba9903fae4ca848db0221997ddbdf406387e9a00cadbb"
+    },
+    {
+      "path": "dist/en/editorial_workflow_en.svg",
+      "bytes": 383764,
+      "sha256": "814c58961da06d6acbd4200ff8d06e94ef1ca3dccb960f9edf0e41ab80d02914"
+    },
+    {
+      "path": "dist/en/editorial_workflow_mobile_en.svg",
+      "bytes": 385145,
+      "sha256": "c6e49c7dc81646aae21d0eb9c3c1ee25fbe94c4e9fc21e38cae2faebe912575a"
+    },
+    {
+      "path": "dist/en/explanation_design_en.svg",
+      "bytes": 362993,
+      "sha256": "b6d818cf26c47f24adca5f8cf6184e427a30a5022409135c7ba6c5ad760c558c"
+    },
+    {
+      "path": "dist/en/explanation_design_mobile_en.svg",
+      "bytes": 359316,
+      "sha256": "0f24aa8f941584a70f5bfe85d11ef28759163eee02575241a84166b8a73e06bf"
+    },
+    {
+      "path": "dist/en/harness_configuration_en.svg",
+      "bytes": 904234,
+      "sha256": "e17f26bcebce348d827a587579974cbec7137f2847be3f79fee9fe9c772329e1"
+    },
+    {
+      "path": "dist/en/harness_configuration_mobile_en.svg",
+      "bytes": 904660,
+      "sha256": "b6450ef855fce4afd75cb2626fbf0b520c8a0fc7568761ddaf2a342c16850409"
+    },
+    {
+      "path": "dist/en/hero.webp",
+      "bytes": 729892,
+      "sha256": "d29045c956639ec76c0e4960a5d479f4319e8bcb52b8d23e10f5885f8dccb5a1"
+    },
+    {
+      "path": "dist/en/hub-publication-topics-v15.csv",
+      "bytes": 63507,
+      "sha256": "0abfee2672f5a64c5e021c9e01b50412e12f3d745806db703a9d26eda4b55271"
+    },
+    {
+      "path": "dist/en/hub-publication-topics-v15.json",
+      "bytes": 486927,
+      "sha256": "9ff8d41b382faa031aaee1293c9808933321e815ccf731ec35e023887a180de5"
+    },
+    {
+      "path": "dist/en/hub_observation_en.svg",
+      "bytes": 297437,
+      "sha256": "2e7d16efe6b911a22fe22bf9d991e061d02679a8b83f0ee4ac9af25fa9e2df41"
+    },
+    {
+      "path": "dist/en/hub_observation_mobile_en.svg",
+      "bytes": 286490,
+      "sha256": "4d139d77cca1e7c42b8492244f0e10043ade38181a99bf43ec3bbe79f2cb8ece"
+    },
+    {
+      "path": "dist/en/index.html",
+      "bytes": 71633,
+      "sha256": "0710c0b6f690562ee8610cdb4868d9fa04e972ff32471956d38bc35fc065f5fc"
+    },
+    {
+      "path": "dist/en/math_0fb4bf7e3ae4de.svg",
+      "bytes": 3293,
+      "sha256": "bda98e3c2fd23be0802fca03b6e32bcce793bd412e3a9e1aa98667bde5119df9"
+    },
+    {
+      "path": "dist/en/math_1e67b0b4301978.svg",
+      "bytes": 3113,
+      "sha256": "d53be50f319eeba95e1f515d6166efd292d2f2f4d07224404e740e7574de5fb3"
+    },
+    {
+      "path": "dist/en/math_7c7a2cbda27deb.svg",
+      "bytes": 3449,
+      "sha256": "12bca6d7569977450a38e17fa5fa91400ca232f7cc8ab163cb27dc89c1dab49a"
+    },
+    {
+      "path": "dist/en/math_88515012cb2a68.svg",
+      "bytes": 6589,
+      "sha256": "4304388a8ff2b0e31ded165fb3020c47c716252f8e5488d13db4e158b06188bd"
+    },
+    {
+      "path": "dist/en/math_88ea555b6fee26.svg",
+      "bytes": 2547,
+      "sha256": "2d31ba3a838e258ac32422d2aee3d954ad10b5c51854db192fae5081d7a347aa"
+    },
+    {
+      "path": "dist/en/math_9f7fa97d2baa58.svg",
+      "bytes": 8729,
+      "sha256": "febe032b36aaee365b2fb68fa98b47ac15e3629742db687a621cea59b8960a61"
+    },
+    {
+      "path": "dist/en/math_af39717bebfd24.svg",
+      "bytes": 10809,
+      "sha256": "772fe2054776fd5b9578e5c8791552f2df4d86d3474153e0d6acaa9a0a07d542"
+    },
+    {
+      "path": "dist/en/math_bab0d1b8ae84b8.svg",
+      "bytes": 6104,
+      "sha256": "76cdabe635a23d5f44b48a92339198b84e1e79d693272df051cfe7a74ec0df28"
+    },
+    {
+      "path": "dist/en/math_c473ef515c2d5f.svg",
+      "bytes": 1548,
+      "sha256": "f677352ff993450745976e1f92d20f9197d45bb880436e8c2fb2b2f30991b83a"
+    },
+    {
+      "path": "dist/en/math_d120793914af12.svg",
+      "bytes": 1937,
+      "sha256": "b0610e0b9afeeb0a568f0574ed925e4d3c0454bdc303dcd7d8fe7831f9adad85"
+    },
+    {
+      "path": "dist/en/math_daaed874b78aa5.svg",
+      "bytes": 2558,
+      "sha256": "5e264848bbb6fe13a4f1a3b2f4440b90be32008659434ddd9eab6162941f61a5"
+    },
+    {
+      "path": "dist/en/math_e6e520feaed158.svg",
+      "bytes": 2013,
+      "sha256": "8c95c6319cec1eb6a084849faef27d630a959ae292d4ea3d3710940ce1ad8aa4"
+    },
+    {
+      "path": "dist/en/math_fceb0ded9949d1.svg",
+      "bytes": 1940,
+      "sha256": "bb4e4a9092f012700f5289ca8611287dde19f88f5e7cacc19bb8282a63ca0a60"
+    },
+    {
+      "path": "dist/en/math_ffdac8200d0b85.svg",
+      "bytes": 3805,
+      "sha256": "6c8a747f186cdacc4e15a7bfd9bbe6ba5dbe106344a84a45228e4835ba285977"
+    },
+    {
+      "path": "dist/en/research_agent_evidence_en.svg",
+      "bytes": 241004,
+      "sha256": "fb6334e22d05574b0d1a5c5293fba5777de3d1ae11b55d0e58d0a43ad826c899"
+    },
+    {
+      "path": "dist/en/research_agent_evidence_mobile_en.svg",
+      "bytes": 240981,
+      "sha256": "0683260cb6efb2f035079172b0e06f9348b5a5a6b6e22968d27afcf9a9b26cba"
+    },
+    {
+      "path": "dist/en/reusable_archive_en.svg",
+      "bytes": 871256,
+      "sha256": "6e7e5e9a67d3948f191742a9c494cbeba387f41a1b268a880ecc514eaa506caa"
+    },
+    {
+      "path": "dist/en/reusable_archive_mobile_en.svg",
+      "bytes": 872166,
+      "sha256": "fe26083f89ca1d55663d66943d3a23af0ea53befb8308cc1b01b422520eab6f2"
+    },
+    {
+      "path": "dist/en/review.css",
+      "bytes": 244631,
+      "sha256": "be80e3743a6b6b441a4835a6dd3902629826bdabfe64ad9d9c767606a8b242fb"
+    },
+    {
+      "path": "dist/en/review_en.pdf",
+      "bytes": 13569271,
+      "sha256": "f5e356cf324ef20e2324f0ca4147e23f83535877adf8221c559a61dd712a6e9c"
+    },
+    {
+      "path": "dist/explanation_design_ko.svg",
+      "bytes": 375451,
+      "sha256": "375b8f9f58a4908341986e211492913867691e458c6827ba41e4788eb6b00651"
+    },
+    {
+      "path": "dist/explanation_design_mobile_ko.svg",
+      "bytes": 358806,
+      "sha256": "5a94dd4ad1f395a962dcc2cea001f658b4668f0c9c22985ae58d71fecf8210f7"
+    },
+    {
+      "path": "dist/harness_configuration_ko.svg",
+      "bytes": 871820,
+      "sha256": "a2508c34d80d004df044b6e2599e110d5c7d08219daf10639807fee6a60e76b5"
+    },
+    {
+      "path": "dist/harness_configuration_mobile_ko.svg",
+      "bytes": 872246,
+      "sha256": "eb6b1b9bd551f3e4dd34cc7aaa7e7d5a90555c792fdbbbc8af56f0b57d46c09e"
+    },
+    {
+      "path": "dist/hero.webp",
+      "bytes": 729892,
+      "sha256": "d29045c956639ec76c0e4960a5d479f4319e8bcb52b8d23e10f5885f8dccb5a1"
+    },
+    {
+      "path": "dist/hub-publication-topics-v15.csv",
+      "bytes": 63507,
+      "sha256": "0abfee2672f5a64c5e021c9e01b50412e12f3d745806db703a9d26eda4b55271"
+    },
+    {
+      "path": "dist/hub-publication-topics-v15.json",
+      "bytes": 486927,
+      "sha256": "9ff8d41b382faa031aaee1293c9808933321e815ccf731ec35e023887a180de5"
+    },
+    {
+      "path": "dist/hub_observation_ko.svg",
+      "bytes": 237826,
+      "sha256": "a2d7bdfbf9d66197e39547d3590d6a7bf7082c745d375e566175efa16025906c"
+    },
+    {
+      "path": "dist/hub_observation_mobile_ko.svg",
+      "bytes": 225922,
+      "sha256": "c8f32a499f842af74147e21b95fbe825d0caa1ceb7c3065d1bb3e094520788f1"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 70660,
+      "sha256": "825433260d8b9a7411c717a0ac4d4841555b3836b35e05ddcc2e84e8d57c7d86"
+    },
+    {
+      "path": "dist/math_0fb4bf7e3ae4de.svg",
+      "bytes": 3293,
+      "sha256": "bda98e3c2fd23be0802fca03b6e32bcce793bd412e3a9e1aa98667bde5119df9"
+    },
+    {
+      "path": "dist/math_1e67b0b4301978.svg",
+      "bytes": 3113,
+      "sha256": "d53be50f319eeba95e1f515d6166efd292d2f2f4d07224404e740e7574de5fb3"
+    },
+    {
+      "path": "dist/math_7c7a2cbda27deb.svg",
+      "bytes": 3449,
+      "sha256": "12bca6d7569977450a38e17fa5fa91400ca232f7cc8ab163cb27dc89c1dab49a"
+    },
+    {
+      "path": "dist/math_88515012cb2a68.svg",
+      "bytes": 6589,
+      "sha256": "4304388a8ff2b0e31ded165fb3020c47c716252f8e5488d13db4e158b06188bd"
+    },
+    {
+      "path": "dist/math_88ea555b6fee26.svg",
+      "bytes": 2547,
+      "sha256": "2d31ba3a838e258ac32422d2aee3d954ad10b5c51854db192fae5081d7a347aa"
+    },
+    {
+      "path": "dist/math_9f7fa97d2baa58.svg",
+      "bytes": 8729,
+      "sha256": "febe032b36aaee365b2fb68fa98b47ac15e3629742db687a621cea59b8960a61"
+    },
+    {
+      "path": "dist/math_af39717bebfd24.svg",
+      "bytes": 10809,
+      "sha256": "772fe2054776fd5b9578e5c8791552f2df4d86d3474153e0d6acaa9a0a07d542"
+    },
+    {
+      "path": "dist/math_bab0d1b8ae84b8.svg",
+      "bytes": 6104,
+      "sha256": "76cdabe635a23d5f44b48a92339198b84e1e79d693272df051cfe7a74ec0df28"
+    },
+    {
+      "path": "dist/math_c473ef515c2d5f.svg",
+      "bytes": 1548,
+      "sha256": "f677352ff993450745976e1f92d20f9197d45bb880436e8c2fb2b2f30991b83a"
+    },
+    {
+      "path": "dist/math_d120793914af12.svg",
+      "bytes": 1937,
+      "sha256": "b0610e0b9afeeb0a568f0574ed925e4d3c0454bdc303dcd7d8fe7831f9adad85"
+    },
+    {
+      "path": "dist/math_daaed874b78aa5.svg",
+      "bytes": 2558,
+      "sha256": "5e264848bbb6fe13a4f1a3b2f4440b90be32008659434ddd9eab6162941f61a5"
+    },
+    {
+      "path": "dist/math_e6e520feaed158.svg",
+      "bytes": 2013,
+      "sha256": "8c95c6319cec1eb6a084849faef27d630a959ae292d4ea3d3710940ce1ad8aa4"
+    },
+    {
+      "path": "dist/math_fceb0ded9949d1.svg",
+      "bytes": 1940,
+      "sha256": "bb4e4a9092f012700f5289ca8611287dde19f88f5e7cacc19bb8282a63ca0a60"
+    },
+    {
+      "path": "dist/math_ffdac8200d0b85.svg",
+      "bytes": 3805,
+      "sha256": "6c8a747f186cdacc4e15a7bfd9bbe6ba5dbe106344a84a45228e4835ba285977"
+    },
+    {
+      "path": "dist/research_agent_evidence_ko.svg",
+      "bytes": 201083,
+      "sha256": "f5237ea2827f88946d71c1bce712bca528fa3fbdda4e48ee67906ad1615dd2b7"
+    },
+    {
+      "path": "dist/research_agent_evidence_mobile_ko.svg",
+      "bytes": 201060,
+      "sha256": "13bafb2f425418bd0c35bec54fc5d5dda9bbb79d390b59da2c474690344192ff"
+    },
+    {
+      "path": "dist/reusable_archive_ko.svg",
+      "bytes": 767537,
+      "sha256": "8c003d1da94ad23bebe86211ba4e7eaf55c91bdd208cc47aba9ac99254e9021e"
+    },
+    {
+      "path": "dist/reusable_archive_mobile_ko.svg",
+      "bytes": 768447,
+      "sha256": "0381c0d72b740acfa2be6cd5ae8c395d2c0587f625524764e2e04a2dd936aa90"
+    },
+    {
+      "path": "dist/review.css",
+      "bytes": 244631,
+      "sha256": "be80e3743a6b6b441a4835a6dd3902629826bdabfe64ad9d9c767606a8b242fb"
+    },
+    {
+      "path": "dist/review_ko.pdf",
+      "bytes": 13786818,
+      "sha256": "f9c5a0eb2b4041c1157c13b89ff5274bd155dc6186e938f8ae3f66b990bc1fc1"
+    }
+  ],
+  "qa": {
+    "pdfs": [
+      {
+        "language": "ko",
+        "file": "dist/review_ko.pdf",
+        "pages": 15,
+        "bytes": 13786818,
+        "sha256": "f9c5a0eb2b4041c1157c13b89ff5274bd155dc6186e938f8ae3f66b990bc1fc1",
+        "https_uris": 79,
+        "attachments": 0,
+        "figure_caption_pages_by_number": {
+          "1": 2,
+          "2": 3,
+          "3": 4,
+          "4": 5,
+          "5": 7,
+          "6": 8,
+          "7": 10,
+          "8": 11,
+          "9": 12
+        }
+      },
+      {
+        "language": "en",
+        "file": "dist/en/review_en.pdf",
+        "pages": 19,
+        "bytes": 13569271,
+        "sha256": "f5e356cf324ef20e2324f0ca4147e23f83535877adf8221c559a61dd712a6e9c",
+        "https_uris": 81,
+        "attachments": 0,
+        "figure_caption_pages_by_number": {
+          "1": 2,
+          "2": 3,
+          "3": 5,
+          "4": 7,
+          "5": 8,
+          "6": 10,
+          "7": 12,
+          "8": 13,
+          "9": 14
+        }
+      }
+    ],
+    "pdf_fresh_pages": {
+      "ko": [
+        15
+      ],
+      "en": [
+        18,
+        19
+      ]
+    },
+    "fresh_page_count": 3,
+    "exact_page_pixel_carryover": {
+      "ko": {
+        "same_full_page_pixels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "changed_pages": [
+          15
+        ]
+      },
+      "en": {
+        "same_full_page_pixels": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "changed_pages": [
+          18,
+          19
+        ]
+      }
+    },
+    "carryover_page_count": 31,
+    "comparison_method": "Exact full-page RGB comparison of110dpi Poppler renders including footer, against reviewed revision23",
+    "actual_web_reading": "Eight views individually read: article top and Figure9 with adjacent prose/caption, Korean and English at1440and390px. Fonts/images loaded; no viewport overflow or local badge.",
+    "keyboard": "Both Figure9 larger-view controls exercised using Shift+Tab,Tab,Enter; current sourceSVG opened in new tabs; controls hidden in print.",
+    "pdf_fonts": "All used fonts embedded; no attachments, private/local URI or replacement-glyph text. Both PDF metadata languages/titles match editions.",
+    "preservation": {
+      "source_figures_exact": 36,
+      "other_dist_assets_exact": 72,
+      "changed_dist_files": 4,
+      "dist_files": 76,
+      "core_body_bibliography_exact": true
+    },
+    "pdf_operation": {
+      "marker_executions": 1,
+      "expected_output_count": 2,
+      "operation_kind": "edit",
+      "final_successful_print_passes": 1,
+      "interrupted_prior_passes": 1,
+      "actual_pdf_writes": {
+        "ko": 2,
+        "en": 2,
+        "total": 4
+      },
+      "note": "An old-HTML intermediate pass was started after a dependency failure and interrupted. Only the subsequent successful public-HTML outputs are final."
+    },
+    "unresolved_issues": []
+  }
+}

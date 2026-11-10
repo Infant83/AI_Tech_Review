@@ -156,6 +156,14 @@ NOETHER_VIDEO_ASSETS = {
     }
     for language in ("ko", "en")
 }
+# Explicit, reader-linked data from the reviewed ATRL atelier article. Keep
+# JSON/CSV out of the general extension allowlist; working manifests and audit
+# records in other articles remain private.
+ATRL_DATA_FOLDER = "2026-11-09_atrl-agentic-atelier"
+ATRL_DATA_ASSETS = frozenset({
+    "hub-publication-topics-v15.json",
+    "hub-publication-topics-v15.csv",
+})
 PUBLIC_LOCAL_NOTE_RE = re.compile(
     r"\s*<section\b(?=[^>]*\bid=['\"]public-local-references['\"])[^>]*>.*?</section>\s*",
     re.IGNORECASE | re.DOTALL,
@@ -468,6 +476,16 @@ def approved_video_assets(review: PublicReview | None, language: str) -> dict[st
     return NOETHER_VIDEO_ASSETS.get(language, {})
 
 
+def approved_data_assets(review: PublicReview | None, language: str) -> frozenset[str]:
+    if review is None or review.folder != ATRL_DATA_FOLDER or language not in {"ko", "en"}:
+        return frozenset()
+    return ATRL_DATA_ASSETS
+
+
+def approved_support_names(review: PublicReview | None, language: str) -> set[str]:
+    return set(approved_video_assets(review, language).values()) | set(approved_data_assets(review, language))
+
+
 def unpublished_local_text_reference(fragment: str, approved_names: Iterable[str] = ()) -> bool:
     approved_names = set(approved_names)
     for match in LOCAL_HREF_RE.finditer(fragment):
@@ -545,7 +563,7 @@ def inject_public_local_note(html_text: str, language: str) -> str:
 def public_asset_names(
     values: Iterable[object], *, review: PublicReview | None = None, language: str = "ko",
 ) -> list[str]:
-    approved_names = set(approved_video_assets(review, language).values())
+    approved_names = approved_support_names(review, language)
     return sorted(
         {
             str(value)
@@ -559,7 +577,7 @@ def public_asset_names(
 def prune_public_support_files(
     public_dir: Path, *, review: PublicReview | None = None, language: str = "ko",
 ) -> None:
-    approved_names = set(approved_video_assets(review, language).values())
+    approved_names = approved_support_names(review, language)
     if not public_dir.exists():
         return
     for support_path in public_dir.iterdir():
@@ -847,7 +865,24 @@ def validate_video_embed(
     return set(names.values())
 
 
+def validate_public_data(source_path: Path) -> None:
+    """Preserve reviewed data bytes; reject unsafe content rather than redact it."""
+    if source_path.is_symlink() or not source_path.is_file():
+        raise ValueError(f"Public data must be a regular file: {source_path.name}")
+    try:
+        text = source_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError(f"Public data is not UTF-8: {source_path.name}") from error
+    risks = public_text_risks(html.unescape(text))
+    if risks:
+        raise ValueError(f"Unsafe public data in {source_path.name}: {', '.join(risks)}")
+
+
 def copy_public_file(source_path: Path, dest_path: Path) -> None:
+    if source_path.name in ATRL_DATA_ASSETS:
+        validate_public_data(source_path)
+        shutil.copy2(source_path, dest_path)
+        return
     if source_path.suffix.lower() == ".vtt" or source_path.name in {
         names["transcript"] for names in NOETHER_VIDEO_ASSETS.values()
     }:
@@ -1479,6 +1514,8 @@ def sanitize_for_public(
     used_names: set[str] = {"index.html"}
     dist_root = dist_dir.resolve()
     video_files = validate_video_embed(html_text, dist_dir, review, language)
+    data_files = approved_data_assets(review, language)
+    approved_files = video_files | set(data_files)
 
     def replace_ref(match: re.Match[str]) -> str:
         raw_url = match.group("url")
@@ -1489,7 +1526,10 @@ def sanitize_for_public(
         if not local_path:
             return match.group(0)
 
-        source_path = (dist_dir / local_path).resolve()
+        requested_path = dist_dir / local_path
+        if local_path in data_files and requested_path.is_symlink():
+            raise ValueError(f"Public data must be a regular file: {local_path}")
+        source_path = requested_path.resolve()
         suffix = source_path.suffix.lower()
         if suffix in {".mp4", ".vtt"} or Path(local_path).name.startswith("noether-abstract-"):
             if local_path not in video_files:
@@ -1501,7 +1541,7 @@ def sanitize_for_public(
             safe_url = html.escape(raw_url, quote=True)
             return f'data-blocked-ref="{safe_url}"'
 
-        if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES and local_path not in video_files:
+        if suffix not in PUBLIC_REVIEW_FILE_SUFFIXES and local_path not in approved_files:
             safe_url = html.escape(raw_url, quote=True)
             return f"data-local-ref=\"{safe_url}\""
 
@@ -1518,7 +1558,7 @@ def sanitize_for_public(
         new_url = rebuild_local_url(source_to_dest[source_path], query, fragment)
         return f"{match.group('prefix')}{html.escape(new_url, quote=True)}{match.group('suffix')}"
 
-    sanitized = strip_private_public_material(html_text, language, video_files)
+    sanitized = strip_private_public_material(html_text, language, approved_files)
     sanitized = LOCAL_REF_RE.sub(replace_ref, sanitized)
     sanitized = sanitize_public_text(sanitized)
     sanitized = sanitized.replace("<body>", '<body class="public-review">')
@@ -1582,7 +1622,8 @@ def refresh_existing_public_variant(
     existing_html = index_path.read_text(encoding="utf-8")
     asset_prefix = asset_prefix_for_public_dir(public_dir)
     video_files = validate_video_embed(existing_html, public_dir, review, language)
-    refreshed = strip_private_public_material(existing_html, language, video_files)
+    approved_files = video_files | set(approved_data_assets(review, language))
+    refreshed = strip_private_public_material(existing_html, language, approved_files)
     refreshed = sanitize_public_text(refreshed)
     refreshed = inject_public_local_note(refreshed, language)
     refreshed = normalize_review_metadata(refreshed, review, language, public_dir)
@@ -2494,6 +2535,12 @@ def validate_public_support_files(
     if not public_dir.exists():
         return errors
     for support_path in sorted(public_dir.iterdir(), key=lambda path: path.name.lower()):
+        if support_path.name in approved_data_assets(review, language):
+            try:
+                validate_public_data(support_path)
+            except (OSError, ValueError) as error:
+                errors.append(str(error))
+            continue
         if support_path.is_file() and (
             support_path.suffix.lower() in {".mp4", ".vtt"}
             or support_path.name.startswith("noether-abstract-")
