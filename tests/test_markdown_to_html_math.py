@@ -244,9 +244,12 @@ Q_{ij}=c_i d_j
             / "2026-08-29_quantum-simulation-vibronic-dynamics"
             / "reports"
         )
+        # The 2026-11-10 editorial revision explicitly adds initial-state,
+        # physical-time, fixed-separation and phase-convention expressions.
+        # Keep the full-source round-trip assertion below as the invariant.
         expected_counts = {
-            "2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md": 80,
-            "2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md": 73,
+            "2026-08-29_quantum-simulation-vibronic-dynamics_final_review.md": 88,
+            "2026-08-29_quantum-simulation-vibronic-dynamics_final_review_en.md": 82,
         }
 
         for filename, expected_count in expected_counts.items():
