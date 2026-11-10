@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "OPS-cf92f888-e036-46c9-b564-c2eaf8b52f22",
   "uuid": "cf92f888-e036-46c9-b564-c2eaf8b52f22",
-  "record_version": 1,
+  "record_version": 2,
   "title": "Copy and validate responsive srcset figures during article publication",
   "type": "bug",
   "created_at": "2026-11-10T08:43:43Z",
@@ -77,9 +77,14 @@
       "Original scoped public-data tests passed.",
       "Initial candidate withheld due to missing responsive assets.",
       "The srcset copier and local-reference validator now process supported URL/descriptor candidates using existing asset/path checks.",
-      "Six srcset regression tests and the complete Python suite (329 tests, one skip) passed."
+      "Six srcset regression tests and the complete Python suite (329 tests, one skip) passed.",
+      "The first srcset candidate was withheld: continuity checking found existing external link entities re-escaped in a replayed D-Wave review. The remote build was canceled before any deployment.",
+      "External and anchor attributes retain their exact original escaped bytes; the new entity-preservation regression passes (30 related tests).",
+      "All eight Korean/English HTML content digests for the four replayed articles match the previously checked candidate after the correction."
     ],
-    "evidence": [],
+    "evidence": [
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42785221422"
+    ],
     "remaining_limits": [
       "Corrected candidate, browser and actual deployment verification pending."
     ]
@@ -94,5 +99,5 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "Finish srcset regression checks, rebuild one corrected candidate, verify browser and release continuity, then publish and record live file identities."
+  "next_action": "Build and inspect the corrected combined candidate, verify release continuity, deploy, then confirm actual HTTPS file identities."
 }

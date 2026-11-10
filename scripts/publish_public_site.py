@@ -1600,7 +1600,12 @@ def sanitize_for_public(
         return rebuild_local_url(source_to_dest[source_path], query, fragment), None
 
     def replace_ref(match: re.Match[str]) -> str:
-        url, problem = copy_ref(match.group("url"))
+        raw_url = match.group("url")
+        # External and anchor attributes are already escaped by their author.
+        # Preserve their original bytes, as the pre-srcset publisher did.
+        if is_external_or_anchor(raw_url) or not split_local_url(raw_url)[0]:
+            return match.group(0)
+        url, problem = copy_ref(raw_url)
         if problem:
             return f'{problem}="{html.escape(url, quote=True)}"'
         return f"{match.group('prefix')}{html.escape(url, quote=True)}{match.group('suffix')}"

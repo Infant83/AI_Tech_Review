@@ -92,6 +92,24 @@ class PublicSiteSrcsetTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 srcset_candidates(value)
 
+    def test_existing_external_and_anchor_attributes_remain_byte_exact(self):
+        anchors = (
+            '<a href="https://example.org/paper?a=1&amp;b=2">Source</a>'
+            '<a href="#condition">Condition</a>'
+            "<a href='https://example.org/other?a=1&amp;b=2'>Other</a>"
+            '<a href="https://example.org/legacy&quot;">Legacy entity</a>'
+            '<img src="https://example.org/image.svg?a=1&amp;b=2" alt="External">'
+        )
+        source = ('<html lang="ko"><head><title>Review</title></head><body><main>'
+                  f'<h1>{self.review.title}</h1>{anchors}</main></body></html>')
+        text, assets = sanitize_for_public(
+            source, self.dist, self.public, self.review, "ko",
+            SITE_DIR / "reviews" / self.review.folder,
+        )
+        self.assertIn(anchors, text)
+        self.assertNotIn("&amp;amp;", text)
+        self.assertEqual(assets, [])
+
 
 if __name__ == "__main__":
     unittest.main()
