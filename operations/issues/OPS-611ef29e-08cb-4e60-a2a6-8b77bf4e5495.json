@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
+  "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
+  "record_version": 1,
+  "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편 기획",
+  "type": "reader_insights",
+  "created_at": "2026-11-10T11:15:18Z",
+  "updated_at": "2026-11-10T11:15:18Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "DEVELOPMENT_ROADMAP.md",
+    "summary": "사용자는 푸시 구독 환경들이 같은 사람·지역인지 확인 가능한 범위를 묻고, 하단 통계 안내 링크의 첫 화면을 수집 방식 설명보다 독자에게 읽을거리와 관심 주제의 인사이트를 제공하는 그래프 중심으로 기획하라고 요청함"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/",
+      "https://infant83.io/AI_Tech_Review/methods/#reader-metrics",
+      "https://api.infant83.io/v1/metrics",
+      "https://api.infant83.io/v1/discovery?period=7d"
+    ],
+    "source_paths": [
+      ".automation/reader-engagement/frontend/reader-engagement.js",
+      ".automation/cloudflare/reader-engagement/src/metrics.js",
+      ".automation/cloudflare/reader-engagement/src/discovery.js",
+      "scripts/reader_engagement_publish.py",
+      "publication/reviews",
+      "archive/entries"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "3bfe32925cbd09598742179d1cdd89bbaeeec1b1",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "현재 하단 통계 안내가 methods/#reader-metrics로 연결됨을 생성 원본에서 확인함",
+      "구독·좋아요·방문 세션 및 별도 학습 계정의 연결 여부와 지역 저장 필드·수집 코드를 독립 조사함",
+      "D1 비식별 SELECT 집계에서 별도 구독 환경3개와 계정 연결0을 확인함. 개인 ID·endpoint·키·IP는 출력하지 않음",
+      "공개 API와 일별 집계의 보존 범위를 확인하고 독자 동선·통계 해석·최소 개발 범위를 독립 검토함"
+    ],
+    "expected": "독자는 통계에서 읽을거리·분야별 읽기 관심·시간 흐름을 탐색하고 관리자만 구독 환경과 발송 진단을 확인한다. 수집 단위와 측정 범위가 사람 수나 기술 전체의 동향으로 오해되지 않는다.",
+    "actual": "현재 통계 링크는 수집 방식 설명으로 이동한다. 구독3개는 물리 기기3대나 사람3명이 아니라 계정 미연결 구독 환경이며 지역 기록도 없다. 기간별 글 합계와 일별 집계는 있으나 공개 API는 일별 배열을 제공하지 않는다. 현재 표본은 작다."
+  },
+  "evidence": [
+    ".automation/reader-engagement/frontend/README.md",
+    ".automation/cloudflare/reader-engagement/README.md",
+    ".automation/cloudflare/reader-engagement/migrations/0002_public_metrics.sql",
+    ".automation/cloudflare/reader-engagement/migrations/0003_review_discovery.sql",
+    "https://developers.cloudflare.com/web-analytics/data-metrics/dimensions/",
+    "https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties"
+  ],
+  "limitations": [
+    "이번 작업은 현행 조사·기획이며 공개 페이지·API·통계 수집·배포는 바꾸지 않음",
+    "같은 사람인지·정확한 기종·거주 지역은 현재 기록으로 판별할 수 없음. Apple/FCM 공급자 분류는 지역·동일인 증거가 아님",
+    "현재 구독 성장·해지 이력과 과거 시점의 좋아요 누계는 재구성할 수 없음",
+    "Cloudflare 국가별 트래픽 기능의 제공과 실제 계정에서의 해당 집계 가용성을 구분함. 이번에는 공급자 지역 분석 화면을 조회하지 않음"
+  ],
+  "policy_decision": {
+    "state": "독자 탐색 중심의 읽기 통계 페이지 기획",
+    "rationale": "주 링크는 읽기 통계로 바꾸고 인기 글·분야별 관심·읽기 흐름을 우선한다. 집계 기준은 작은 보조 링크로 유지한다. 구독별 상태·발송 실패·동일 계정 연결 관리 등은 관리자 영역에 두며 새로운 개인 추적·지역 저장·계정 연결을 이번 범위에 넣지 않는다.",
+    "related_issues": [
+      "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
+      "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "독립 후보의 정보 이해·모바일·성능 결과 또는 실제 독자 피드백에 따라 구성과 집계 범위를 조정할 때"
+  },
+  "authority": {
+    "basis": "사용자의 구독 정보 확인 및 독자용 통계 링크 개편 기획 요청",
+    "current_scope": "코드·공개 API·D1 집계 읽기 조사, 독자 페이지와 관리자 기능의 범위·해석·개발 순서 기획",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) 주관; 편집부(AEDAUT)는 공개 분야 분류와 해석 문구 검토",
+  "design": {
+    "entry": {
+      "label_ko": "읽기 통계",
+      "label_en": "Reading insights",
+      "proposed_path": "/AI_Tech_Review/insights/",
+      "state": "제안 경로; 아직 게시되지 않음",
+      "footer": "기존 숫자와 하단 배치를 유지하고 주 링크 목적지만 독자용 페이지로 전환한다. 집계 기준은 새 페이지 하단의 작은 보조 링크로 기존 안내에 연결한다."
+    },
+    "reader_panels": [
+      {
+        "title": "많이 읽힌 글",
+        "question": "이번 기간에 어떤 글을 더 읽어볼까?",
+        "visual": "7/30/90일 선택·상위 글 수평 막대와 실제 열람 건수·글 링크. 현재 좋아요 순위는 별도 선택으로 제공하고 모두0이면 반응이 아직 쌓이지 않았음을 표시한다.",
+        "data": "기존 /v1/discovery 기간 합계 재사용. 발행일을 함께 보여 공개 기간 차이를 알린다."
+      },
+      {
+        "title": "분야별 읽기 관심",
+        "question": "ATRL의 어떤 주제에 읽기 활동이 모였을까?",
+        "visual": "기존 주분류별 기간 열람 수·비중과 해당 분야 글 목록 링크. 원시 건수를 함께 보여 준다.",
+        "data": "공개 등록정보의 확정된 주분류 한 개로 글 ID를 결합한다. DB topic의 review/lecture는 매체 유형이며 과학 분야로 쓰지 않는다. 여러 태그를 중복 합산한 비중을100%로 표현하지 않는다."
+      },
+      {
+        "title": "읽기 관심의 흐름",
+        "question": "관심 있는 분야의 글이 언제 읽혔을까?",
+        "visual": "일별 또는 주별 전체/선택 분야의 열람 흐름. 기간·건수·집계 범위와 표 형태 대체 보기를 제공한다.",
+        "data": "기존 metrics_article_daily를 집계 전용 읽기 API로 제공해야 한다. 방문 브라우저 추이는 별도 보조 맥락으로 두며 사람 수로 표시하지 않는다."
+      }
+    ],
+    "admin_scope": "익명 구독별 등록·갱신 시각, 선택 주제, 제공자 수락·실패·미완료 상태를 인증된 운영 관리 화면에서 제한적으로 확인한다. 안정된 내부 별칭으로 구분하고 endpoint·구독 키·세션 토큰·개별 방문 이력은 공개 화면이나 진단 출력에 노출하지 않는다. 기존 관리 목록 과제에 연결하며 새로운 관리자 권한을 이 계획만으로 부여하지 않는다.",
+    "identity_and_region": "현재 구독3개는 모두 계정 미연결이며 방문 브라우저 ID·좋아요/구독 세션·학습 계정은 서로 다른 단위다. 지역은 구독DB에 없고 IP를 역추적하지 않는다. 향후 자발적인 계정·기기 이름 연결은 같은 계정의 구독을 묶을 수 있으나 실제 동일인이나 과거 기록을 소급 증명하지 않는다. 국가별 접속 집계는 Cloudflare 등 별도 자료로 검토할 수 있으며 거주지나 각 구독의 위치로 표현하지 않는다.",
+    "interpretation_rules": [
+      "모든 차트에 선택 기간·집계 시작일·갱신 시각·단위를 표시한다. 브라우저·글·한국 날짜별 열람과 현재 기기 세션별 좋아요를 같은 단위의 사람으로 설명하지 않는다.",
+      "좋아요를 열람 수로 나눈 비율을 사람의 선호 확률·전환율로 표시하지 않는다. 현재 유효 좋아요의 원등록일 분포를 신규 클릭 추이·당시 성장 곡선으로 부르지 않는다.",
+      "구독의 현재 규모와 누적 등록 전환 수는 역사적인 일별 성장·해지 곡선을 만들기에 충분하지 않다. 필요할 때 앞으로의 일별 집계·스냅샷을 별도 설계하고 실제 측정 시작 이후만 보여 준다.",
+      "소수 표본에서 급상승·대세·유의성·과학적 품질을 단정하지 않는다. 이전 기간0에는 증가율을 만들지 않고 실제 건수와 증감을 표시한다.",
+      "수집 전 날짜·장애·불완전 기간을0으로 꾸미지 않는다. 합계는 공개 범위·분류·집계 단위를 맞추고 한영 동일 ID 중복을 피한다. 기술 분야 전체의 중요도나 연구 동향을 대표하는 그래프로 설명하지 않는다.",
+      "순위는 독자가 원문으로 들어가는 탐색 도구다. 과학적·산업적 해석이 필요한 문구는 편집부(AEDAUT)의 근거 검토로 연결한다."
+    ],
+    "implementation": "기존 D1·Worker와 생성 경로를 재사용한다. 공개 등록정보에서 제목·분야·주소를 빌드 시 정적으로 포함하고 집계 값을 ID로 결합한다. /v1/discovery를 재사용하며 기간·상위 개수·응답 크기를 제한한 일별 집계 읽기 API 하나를 추가한다. 작은 SVG 차트와 표를 해당 페이지에서만 로드하고 글마다 요청하거나 상주 폴링하지 않는다. 새 서버·대형 차트 프레임워크·유료 분석 도구는 초기 범위에 필요하지 않다.",
+    "delivery_order": [
+      "현재 값과 단위·범위·확정된 분야 분류를 대조하고 세 패널의 독립 화면 후보를 만든다.",
+      "기간 합계와 일별 집계 읽기 API를 연결하고 합산·0/누락·모바일·한영·접근성·성능을 검증한다.",
+      "독자용 링크와 집계 기준 보조 링크를 한 후보에서 확인한다. 관리자 상세는 기존 인증된 관리 목록 과제와 연결하고 실제 기획/구현/배포 상태를 구분한다."
+    ],
+    "scope": "기본 범위는 현재 공개 카탈로그의 리뷰와 렉처다. 전체/리뷰/렉처 선택과 기간을 세 패널에 공통 적용한다. 리뷰는 publication/reviews, 렉처는 archive/entries의 검토한 분류에서 생성한다. 분야가 없는 자료는 미분류로 따로 표시해 합계에서 조용히 빠지지 않게 한다. 선택 범위의 합계와 사이트 누적 전체 수치는 다른 범위일 수 있음을 라벨로 구분하고, 같은 범위에서만 분야 합계와 총합을 검증한다."
+  },
+  "acceptance_criteria": [
+    "하단 읽기 통계 링크로 독자가 인기 글·분야 관심·시간 흐름과 실제 글 링크에 접근함",
+    "현재 사람·구독·방문·열람·좋아요 단위와 과거 재구성 가능 범위를 정확히 표시함",
+    "개별 구독·원본 IP·계정·지역·endpoint·키·비공개 노트가 공개 API/화면에 노출되지 않음",
+    "기존 원본 등록·분류와 집계 합계·한영 ID를 대조하고 0/미수집/작은 표본을 다르게 처리함",
+    "모바일 한 열·표 대체 보기·키보드·명암을 확인하고 그래프 자산을 해당 페이지에만 로드함"
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "현행 자료·개인 구분 한계·독립 기획 검토 완료; 구현 전",
+    "checks": [
+      "D1 집계: 구독 환경3·별도endpoint3·계정 연결0; 개인 식별값 출력 없음",
+      "공개 API 스냅샷: 누적 방문 브라우저24·열람48·활성구독3; 표본이 작음을 기획에 반영",
+      "일별 집계는2026-10-25 이후 관측된 날짜를 보존하며 현재 discovery는 기간 합계만 반환함",
+      "독립 담당이 수집 단위·좋아요 날짜 의미·구독 이력 부재·독자 탐색 구성과 해석 한계를 검토함",
+      "정확한 기획 기록·로드맵의 독립 감수 및 JSON·참조·민감정보 패턴·diff 검사 통과; 리뷰/렉처·미분류 범위를 추가 명시"
+    ],
+    "evidence": [
+      ".automation/cloudflare/reader-engagement/src/metrics.js",
+      ".automation/cloudflare/reader-engagement/src/discovery.js"
+    ],
+    "remaining_limits": [
+      "실제 독자 페이지·일별 API·관리자 상세·화면 검증·배포는 미실시"
+    ]
+  },
+  "observation": {
+    "status": "기획 완료; 제품 미적용",
+    "period": "2026-11-10 11:13 UTC 전후 조사",
+    "result": "단위·지역·집계 구조를 확인했으며 신규 추적·계정 연결·구독 변경·통계 쓰기·실발송은 수행하지 않음"
+  },
+  "recovery": {
+    "plan_reference": "구현 시 기존 하단 안내 링크·공개 집계 API와 Git 복구를 유지하고 개인 저장·구독 자료를 변경하지 않는다.",
+    "execution_reference": null,
+    "result": "이번 변경은 일감·로드맵 기획 기록이며 사이트/DB/인증 배포·복구 없음"
+  },
+  "next_action": "운영팀(ADOPT)은 기존 일별 집계와 기간 API를 활용한 읽기 통계 후보를 준비하고, 편집부(AEDAUT)는 확정된 분야 표시와 해석 문구를 확인한다. 관리자 구독 진단은 기존 관리 목록 과제에 연결한다. 동일인 추정·구독별 위치 추적·과거 성장 수치 재구성은 이번 범위에 포함하지 않는다."
+}
