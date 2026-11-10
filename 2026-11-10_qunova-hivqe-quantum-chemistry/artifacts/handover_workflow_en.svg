@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" role="img" aria-labelledby="title desc" xml:lang="en">
+<title id="title">A QPU proposes configurations; a classical solver sets their coefficients</title>
+<desc id="desc">The QPU proposes occupation strings. Classical recovery, spin recombination and expansion create candidate configurations. The current subspace supplies circuit-training feedback. Selected configurations are retained in the cumulative subspace, which supplies the reported energy. Both projected Hamiltonians use known electronic integrals.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#6c8587"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#679885"/></marker></defs>
+<rect width="1200" height="660" rx="18" fill="#fcfaf5"/>
+<g font-family="ReviewFigure,ReviewFigureSymbols,ReviewFigureMath,'Noto Sans KR',sans-serif" fill="#243d45">
+<text x="40" y="48" font-size="27" font-weight="700" fill="#243d45" >A QPU proposes configurations; a classical solver sets their coefficients</text>
+<text x="40" y="83" font-size="19" font-weight="400" fill="#617275" >Explanatory workflow for the 2026 HI-VQE formulation</text>
+<rect x="40" y="150" width="275" height="245" rx="16" fill="#f4e6ce" stroke="#bb9868" stroke-width="2"/>
+<text x="64" y="188" font-size="23" font-weight="700" fill="#243d45" >Quantum sampling</text>
+<text x="64" y="231" font-size="22" font-weight="400" fill="#243d45" >Prepare U(θ)|HF⟩</text>
+<text x="65" y="281" font-size="21" font-weight="400" fill="#7c5c31" >1010…   0101…</text>
+<text x="65" y="315" font-size="21" font-weight="400" fill="#7c5c31" >1001…   1010…</text>
+<text x="64" y="359" font-size="17" font-weight="400" fill="#243d45" >Computational-basis samples</text>
+<path d="M315 270H361" fill="none" stroke="#6c8587" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="375" y="150" width="335" height="245" rx="16" fill="#edf1ee" stroke="#86a696" stroke-width="2"/>
+<text x="399" y="188" font-size="23" font-weight="700" fill="#243d45" >Classical processing</text>
+<text x="399" y="235" font-size="20" font-weight="400" fill="#243d45" >Recover valid occupations</text>
+<text x="399" y="273" font-size="20" font-weight="400" fill="#243d45" >Recombine spin configurations</text>
+<text x="399" y="311" font-size="20" font-weight="400" fill="#243d45" >Expand and screen candidates</text>
+<text x="399" y="359" font-size="18" font-weight="400" fill="#617275" >Optional steps depend on the run</text>
+<path d="M710 270H742" fill="none" stroke="#6c8587" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="770" y="135" width="390" height="132" rx="14" fill="#e4eeeb" stroke="#679885" stroke-width="2"/>
+<text x="795" y="173" font-size="22" font-weight="700" fill="#243d45">Current-iteration subspace S<tspan baseline-shift="sub" font-size="16">t</tspan></text>
+<text x="795" y="210" font-size="21" font-weight="400" fill="#243d45" >Diagonalize → training energy</text>
+<text x="795" y="242" font-size="18" font-weight="400" fill="#243d45" >Circuit update uses this track</text>
+<rect x="770" y="300" width="390" height="132" rx="14" fill="#e9eef4" stroke="#8a9eb7" stroke-width="2"/>
+<text x="795" y="338" font-size="22" font-weight="700" fill="#243d45">Cumulative subspace Ω<tspan baseline-shift="sub" font-size="16">t</tspan></text>
+<text x="795" y="375" font-size="21" font-weight="400" fill="#243d45" >Diagonalize → reported energy</text>
+<text x="795" y="407" font-size="18" font-weight="400" fill="#243d45" >Retain selected earlier configurations</text>
+<path d="M742 270V201H765" fill="none" stroke="#6c8587" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M742 270V366H765" fill="none" stroke="#6c8587" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1130 270V296" fill="none" stroke="#6c8587" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="806" y="290" font-size="16" font-weight="400" fill="#617275" >Retain selected configurations</text>
+<path d="M960 135V108H178V145" fill="none" stroke="#679885" stroke-width="2.5" marker-end="url(#feedback-arrow)"/>
+<rect x="436" y="94" width="277" height="29" fill="#fcfaf5"/>
+<text x="445" y="115" font-size="18" font-weight="400" fill="#446f5e" >Classical update of θ</text>
+<rect x="375" y="479" width="785" height="120" rx="14" fill="#f2f0e9" stroke="#b9b7aa" stroke-width="2"/>
+<text x="400" y="516" font-size="22" font-weight="700" fill="#243d45" >Electronic integrals define the projected Hamiltonian</text>
+<text x="400" y="555" font-size="24" font-weight="400" fill="#243d45">(H<tspan baseline-shift="sub" font-size="16">S</tspan>)<tspan baseline-shift="sub" font-size="16">ij</tspan> = ⟨D<tspan baseline-shift="sub" font-size="16">i</tspan>|H|D<tspan baseline-shift="sub" font-size="16">j</tspan>⟩</text>
+<text x="795" y="555" font-size="24" font-weight="400" fill="#243d45">H<tspan baseline-shift="sub" font-size="16">S</tspan> c = E<tspan baseline-shift="sub" font-size="16">S</tspan> c</text>
+<text x="400" y="584" font-size="18" font-weight="400" fill="#243d45" >The solver returns coefficients and energy in the chosen subspace.</text>
+<path d="M1020 479V439" fill="none" stroke="#6c8587" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="40" y="634" font-size="17" font-weight="400" fill="#617275" >Conceptual diagram; arrows show information flow. No measured performance is plotted.</text>
+</g></svg>

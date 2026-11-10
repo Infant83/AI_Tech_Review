@@ -1,0 +1,110 @@
+{
+  "kind": "independent explanatory calculation",
+  "physical_qpu_execution": false,
+  "vendor_algorithm_reproduction": false,
+  "hubbard_dimer": {
+    "t": 1.0,
+    "U": 4.0,
+    "energy_unit": "t",
+    "orbital_order": [
+      "site1_up",
+      "site2_up",
+      "site1_down",
+      "site2_down"
+    ],
+    "basis": [
+      "1010",
+      "1001",
+      "0110",
+      "0101"
+    ],
+    "matrix": [
+      [
+        4.0,
+        -1.0,
+        -1.0,
+        0.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      [
+        0.0,
+        -1.0,
+        -1.0,
+        4.0
+      ]
+    ],
+    "exact_energy": -0.8284271247461901,
+    "ground_state_probabilities": [
+      0.07322330470336316,
+      0.4267766952966363,
+      0.42677669529663664,
+      0.07322330470336307
+    ],
+    "subsets": [
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ]
+    ],
+    "ritz_energies": [
+      0.0,
+      -0.44948974278317816,
+      -0.8284271247461902
+    ],
+    "projected_variance_for_separated_pair": 0.0,
+    "full_variance_for_separated_pair": 3.999999999999999,
+    "support_invariance": "Once the same determinant set is retained, rediagonalization does not use input sample frequencies."
+  },
+  "ibm_reported_n2_row_arithmetic": {
+    "source": "https://quantum.cloud.ibm.com/docs/en/guides/qunova-chemistry",
+    "accessed": "2026-11-10",
+    "active_electrons": 14,
+    "active_spatial_orbitals": 20,
+    "fixed_ms_determinants": 6009350400,
+    "selected_determinants": 9012004,
+    "selected_fraction": 0.0014996635909265666,
+    "total_seconds": 46547,
+    "total_hours": 12.929722222222223,
+    "qpu_seconds": 258,
+    "qpu_minutes": 4.3,
+    "qpu_fraction_of_reported_total": 0.005542784712226352,
+    "reported_reference_error_mHa": 1.2
+  },
+  "tracker_energy_difference_arithmetic": {
+    "fe2s2_hivqe_minus_hci_mHa": 0.7428999999916641,
+    "n2_hivqe_minus_hci_mHa": 0.2674999999925376,
+    "timing_comparison": "No speedup derived from different classical compute resources."
+  },
+  "checks": [
+    "fermionic anticommutation signs",
+    "matrix Hermiticity",
+    "four analytic Hubbard energies",
+    "nested-space variational ordering",
+    "projected versus full variance",
+    "binomial CAS count"
+  ],
+  "numpy_version": "2.5.4",
+  "matplotlib_version": "3.11.2"
+}

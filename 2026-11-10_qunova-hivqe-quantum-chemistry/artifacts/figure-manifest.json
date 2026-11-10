@@ -1,0 +1,118 @@
+{
+  "review": "2026-11-10_qunova-hivqe-quantum-chemistry",
+  "date": "2026-11-10",
+  "evidence_cutoff": "2026-11-10",
+  "figures": [
+    {
+      "id": "fig1",
+      "kind": "AI-edited conceptual illustration",
+      "file": "hero.webp",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "sha256": "f5868f251f23b6ced4bfe1cd733f91f19ffc1d9095f1ef9322de7154d1760f33",
+      "creator": "OpenAI built-in imagegen; editorial planning and source geometry by the review team",
+      "prompt_file": "artifacts/hero-prompt.txt",
+      "source_geometry": "artifacts/cover_geometry.json",
+      "source_data": "https://files.rcsb.org/ligands/view/SF4.cif",
+      "preserved_structure": {
+        "iron_atoms": 4,
+        "sulfur_atoms": 4,
+        "core_Fe_S_edges": 12
+      },
+      "scope": "Fe4S4 core reference geometry with external ligands omitted; occupation motifs and threads symbolize configuration proposal and information flow, not measured populations or electron trajectories.",
+      "art_reference": {
+        "work": "Anni Albers, Intersecting (1962)",
+        "url": "https://www.albersfoundation.org/art/highlights/intersecting",
+        "observed_principle": "Regular woven organization with selective local variation, translated into an independent asymmetric chemical scene.",
+        "reference_image_used_as_generation_input": false
+      },
+      "visual_review": {
+        "roles": [
+          "root",
+          "qunova_production_science"
+        ],
+        "views": [
+          "source sketch",
+          "generated original",
+          "1600x900 WebP",
+          "320x180 thumbnail",
+          "grayscale"
+        ],
+        "result": "Complete core and twelve Fe-S links retained; no same-element core edges observed. Selection concerns surrounding patterns, not atoms."
+      }
+    },
+    {
+      "id": "fig2",
+      "kind": "Original explanatory vector diagram",
+      "source": "artifacts/build_workflow.py",
+      "sources": [
+        "https://arxiv.org/abs/2503.06292v2",
+        "https://arxiv.org/abs/2601.06935v2"
+      ],
+      "meaning": "QPU configuration proposals and optional classical processing feed separate current and cumulative subspace diagonalizations; current-space information trains the circuit and selected configurations are accumulated.",
+      "variants": [
+        {
+          "file": "handover_workflow_ko.svg",
+          "language": "ko",
+          "layout": "desktop",
+          "sha256": "947f9f484ef963ccd9f7c408d7aac2161cef384d31fe4fa51bf5a3028012a8d1"
+        },
+        {
+          "file": "handover_workflow_mobile_ko.svg",
+          "language": "ko",
+          "layout": "mobile",
+          "sha256": "e9da3ec5d1b93295cab52c5b62024bc9f174d160bd48cc66f1a2d2a1b310f88f"
+        },
+        {
+          "file": "handover_workflow_en.svg",
+          "language": "en",
+          "layout": "desktop",
+          "sha256": "b071e4494bb4dcfcb259d485fb8e5a9f3d6c151b14fd9c0369724e6f87a43bb0"
+        },
+        {
+          "file": "handover_workflow_mobile_en.svg",
+          "language": "en",
+          "layout": "mobile",
+          "sha256": "cbcbbb24eba96401e41b139564d3a593a6b1754cd5a526c4418b94d878b3238e"
+        }
+      ]
+    },
+    {
+      "id": "fig3",
+      "kind": "Independently calculated educational plot",
+      "source": "artifacts/verify_examples.py",
+      "data": "artifacts/example-results.json",
+      "model": "Two-site Hubbard model: U=4t, Nalpha=Nbeta=1. This is not a company benchmark reproduction.",
+      "meaning": "Nested-support energies and different sampling distributions with identical full support.",
+      "variants": [
+        {
+          "file": "support_and_energy_ko.svg",
+          "language": "ko",
+          "layout": "desktop",
+          "sha256": "d9ddf5cef63d3259e01b3a0cedf80455c8d1c50d5f2ce64e32912a1aad47498f"
+        },
+        {
+          "file": "support_and_energy_mobile_ko.svg",
+          "language": "ko",
+          "layout": "mobile",
+          "sha256": "c99085060c4edf10435549e85ab39a2b87efdc9f65acf3c97e49bd26aebe186e"
+        },
+        {
+          "file": "support_and_energy_en.svg",
+          "language": "en",
+          "layout": "desktop",
+          "sha256": "9a7305c434264c595d38922869ec03cc3bbac98385c02de888ec16382c59968f"
+        },
+        {
+          "file": "support_and_energy_mobile_en.svg",
+          "language": "en",
+          "layout": "mobile",
+          "sha256": "70d00ae6a381647488a7d2e6d321f555435e9a24619d54baf24c04edbbc54ed4"
+        }
+      ]
+    }
+  ],
+  "asset_policy": "Only reviewed final article, figures, fonts, CSS, public numerical JSON and PDFs are in the site artifact; private research notes and QA screenshots are excluded."
+}

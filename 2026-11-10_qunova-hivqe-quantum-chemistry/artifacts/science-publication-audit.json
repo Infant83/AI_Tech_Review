@@ -1,0 +1,801 @@
+{
+  "version": 1,
+  "status": "science_cover_bilingual_pdf_and_publication_candidate_reviews_passed",
+  "checked_at": "2026-11-10T11:49:23.865189+00:00",
+  "agent": "qunova_production_science",
+  "manuscript": "reports/review_ko.md",
+  "manuscript_sha256_at_audit": "a73d819d949f592673241864cb996fd347af9695873671aa8822d961c1c26be2",
+  "critical_scientific_errors": [],
+  "checks": {
+    "reference_first_appearance": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "reference_count": 19,
+    "hubbard_numeric_sections_exact_match": true,
+    "hubbard_ritz_energies": [
+      0.0,
+      -0.44948974278317816,
+      -0.8284271247461902
+    ],
+    "hubbard_full_variance_at_t1": 4.0,
+    "latest_hivqe": {
+      "version": "2601.06935v2",
+      "variational_gap_description": "about 64 mHa above DMRG, not chemical accuracy",
+      "classical_node_hours": 66249,
+      "ansatz_qubits": 72,
+      "connector_qubits": 8,
+      "physical_qubits": 80,
+      "locations": [
+        "Table 6",
+        "Table 7",
+        "Figure 9",
+        "Sections 4.1,4.5,4.6"
+      ]
+    },
+    "tracker_scope": "EPA baseline submissions are separate from the later 72-ansatz-qubit LUCJ experiment; classical simulability is not generalized to every HI-VQE circuit.",
+    "hsqd_scope": "Half-spin configuration proposal plus classical alpha/beta reconstruction, not lossless arbitrary-state compression. HCI-HSQD sub-mHa comparisons use a stated classical HCI reference.",
+    "ibm_sqd_scope": "72 problem plus 5 auxiliary qubits, 77 physical qubits, distinguished in manuscript.",
+    "claim_strength": "Feasibility, active-space reference agreement and industrial quantum advantage are separated; no universal speedup or commercial performance ranking asserted."
+  },
+  "clarity_recommendations": [
+    {
+      "priority": "minor",
+      "text": "In the HSQD sentence explicitly name the classical HCI reference for sub-mHa accuracy.",
+      "source": "https://arxiv.org/html/2602.01165v3#S2.F5"
+    },
+    {
+      "priority": "minor",
+      "text": "The largest HI-VQE paragraph can explicitly say 72 ansatz + 8 connectors = 80 physical qubits instead of only noting extra connector qubits.",
+      "source": "https://arxiv.org/html/2601.06935v2#S3.F9"
+    }
+  ],
+  "cover_structure_reference": {
+    "source": "https://files.rcsb.org/ligands/view/SF4.cif",
+    "component": "SF4",
+    "atom_counts": {
+      "Fe": 4,
+      "S": 4
+    },
+    "coordination_edges": [
+      [
+        "FE1",
+        "S2"
+      ],
+      [
+        "FE1",
+        "S3"
+      ],
+      [
+        "FE1",
+        "S4"
+      ],
+      [
+        "FE2",
+        "S1"
+      ],
+      [
+        "FE2",
+        "S3"
+      ],
+      [
+        "FE2",
+        "S4"
+      ],
+      [
+        "FE3",
+        "S1"
+      ],
+      [
+        "FE3",
+        "S2"
+      ],
+      [
+        "FE3",
+        "S4"
+      ],
+      [
+        "FE4",
+        "S1"
+      ],
+      [
+        "FE4",
+        "S2"
+      ],
+      [
+        "FE4",
+        "S3"
+      ]
+    ],
+    "core_degree_by_atom": {
+      "FE1": 3,
+      "FE2": 3,
+      "FE3": 3,
+      "FE4": 3,
+      "S1": 3,
+      "S2": 3,
+      "S3": 3,
+      "S4": 3
+    },
+    "idealized_cube_coordinates_for_graph_only": {
+      "FE1": [
+        0,
+        0,
+        0
+      ],
+      "FE2": [
+        0,
+        1,
+        1
+      ],
+      "FE3": [
+        1,
+        0,
+        1
+      ],
+      "FE4": [
+        1,
+        1,
+        0
+      ],
+      "S1": [
+        1,
+        1,
+        1
+      ],
+      "S2": [
+        1,
+        0,
+        0
+      ],
+      "S3": [
+        0,
+        1,
+        0
+      ],
+      "S4": [
+        0,
+        0,
+        1
+      ]
+    },
+    "meaning": "Idealized cubane graph only, not a reported optimized geometry, oxidation-state assignment or spin-state model.",
+    "visual_invariants": [
+      "Preserve four Fe and four bridging S vertices and the 12 Fe-S core coordination edges.",
+      "Do not substitute Fe-Fe or S-S edges for the core Fe-S connections.",
+      "If peripheral thiolate ligands are omitted, identify the depiction as the core.",
+      "Selection acts on electronic occupation configurations, not a subset of atoms or bonds."
+    ]
+  },
+  "independent_execution": "Imported and ran calculate() only; did not regenerate figures or execute a QPU/vendor solver.",
+  "pending": [],
+  "publication_allowed_asset": false,
+  "cover_geometry_reference_created": {
+    "svg": "artifacts/cover_geometry.svg",
+    "png": "artifacts/cover_geometry.png",
+    "metadata": "artifacts/cover_geometry.json",
+    "builder": "artifacts/build_cover_geometry.py",
+    "source_sha256": "c15afc27c7405e2ccd1fefe50e92e38360ea63ba43a443b5ceccb1d1f7a3db48",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "core_center": [
+        980,
+        450
+      ],
+      "core_bbox_including_nodes": [
+        759.9545588196323,
+        227.0,
+        1200.0454411803676,
+        673.0
+      ],
+      "atom_radius": 34,
+      "camera_rotation_degrees": [
+        75,
+        0,
+        -8
+      ]
+    },
+    "png_renderer": "Sharp/libvips SVG rasterization",
+    "visual_review": "Inspected 1600x900 PNG; 4 coral Fe and 4 amber S vertices, 12 core Fe-S edges, labels absent, approximately 440x446px core centered at [980,450].",
+    "checks": [
+      "Four Fe and four S atoms",
+      "Twelve exclusively Fe-S coordination edges",
+      "All core degrees equal three",
+      "No atom/bond dropped during projection",
+      "Uniform scaling and 3D rotation preserve reference geometry"
+    ]
+  },
+  "cover_visual_audit": {
+    "checked_at": "2026-11-10T11:58:59.642361+00:00",
+    "reviewer": "qunova_production_science",
+    "method": "Direct visual inspection with view_image; manual source-graph correspondence, not automated image segmentation or a reader study.",
+    "files": [
+      {
+        "name": "artifacts/hero-generated.png",
+        "size": [
+          1672,
+          941
+        ],
+        "sha256": "e15ec0204e17536e6a10206a0ad9eb5933e0d65eb0b5d7cd51229c1650c829cb"
+      },
+      {
+        "name": "artifacts/hero.webp",
+        "size": [
+          1600,
+          900
+        ],
+        "sha256": "f5868f251f23b6ced4bfe1cd733f91f19ffc1d9095f1ef9322de7154d1760f33"
+      },
+      {
+        "name": "private cover-thumbnail.png",
+        "size": [
+          320,
+          180
+        ]
+      },
+      {
+        "name": "private cover-grayscale.png",
+        "size": [
+          1600,
+          900
+        ]
+      }
+    ],
+    "structure": {
+      "observed_fe_vertices": 4,
+      "observed_s_vertices": 4,
+      "source_core_edges_preserved": 12,
+      "extra_fe_fe_or_s_s_core_edges_observed": 0,
+      "verdict": "passed",
+      "notes": "The eight-node cubane core is intact. Each of the twelve source Fe-S connections can be traced in the generated scene. Colored fiber paths terminate at symbolic cards and are visually separate from the neutral core coordination ropes."
+    },
+    "theme": {
+      "verdict": "passed as conceptual illustration",
+      "visible_relationship": "Many pale patterned scraps surround the intact core; a smaller, foreground stack of patterned pieces is more distinct and ordered. The visual selection concerns patterns, not atoms or bonds.",
+      "caption_needed_for": "Naming configuration proposal and classical subspace calculation; the picture alone does not establish the algorithmic direction, sample counts, probabilities or computational advantage.",
+      "specific_caption_refinement": "이어진 색실은 전자배치 제안과 고전 부분공간 계산 사이의 정보 흐름을 상징한다."
+    },
+    "aesthetic_editorial_judgment": {
+      "verdict": "passed",
+      "features": "Pastel gouache-like paper currents, frayed paper layers, visibly interlaced textile structures and a warm focused core. Large asymmetric core/selection focal points coexist with detailed local occupation motifs.",
+      "thumbnail": "Core and selected stack remain the principal shapes; many peripheral patterns become texture at 320x180.",
+      "grayscale": "Core silhouette, selected foreground pieces and layered texture remain readable. Element hues are partially replaced by luminance contrast; alt text and the core caption retain the element identification.",
+      "crop_scope": "Static 16:9 source, thumbnail and grayscale inspected. Actual mobile article/card rendering remains for the root browser check."
+    }
+  },
+  "ko_pdf_visual_audits": [
+    {
+      "checked_at": "2026-11-10T12:11:54.470466+00:00",
+      "reviewer": "qunova_production_science",
+      "version_label": "ko_pdf_v1_before_literal_chemical_link_repair",
+      "pdf": "dist/review_ko.pdf",
+      "pdf_sha256": "47517412d8cba7d45bb586814cbbbaa7acd91b02f2faf10036202fb4780fb6af",
+      "source_sha256_at_review_start": "3033f23f3f433fc4ad3885ae594108e1fecb0a14958390d2a6d65eced51668ec",
+      "source_sha256_after_root_literal_link_repair": "fd2a76d651ab058dec901fd30a5d8be87f78ec0141f825b3a6c0f1343de38654",
+      "method": "Viewed every page PNG separately at original 992x1404 resolution with view_image; no contact sheet substituted for page reading. Supplemented by pypdf text and annotation checks.",
+      "pages": [
+        {
+          "page": 1,
+          "png_name": "page-1.png",
+          "png_sha256": "f35646681add65a4e26589b4a4295949fb1ff1d4a0343bea459eb7343a09414b",
+          "actual_review": "Read title/dek/byline, full hero and caption, opening numerical example and algorithm introduction. Eight core atoms and twelve coordination connections preserved at print size. No clipping or overlap."
+        },
+        {
+          "page": 2,
+          "png_name": "page-2.png",
+          "png_sha256": "2856ff87943304893c033bc10c50081229571ef3964846731ae6be5a72b5cf7b",
+          "actual_review": "Read orbital/count definitions and three display equations. Greek letters, sums, bras/kets, subscripts and vectors are legible; body and references do not clip."
+        },
+        {
+          "page": 3,
+          "png_name": "page-3.png",
+          "png_sha256": "6909106c28ba940694af03b8d11c3c1dc33f9a6938430d074bcac129d4266d37",
+          "actual_review": "Read complete Korean workflow diagram, its caption, current/cumulative-space explanation, noise/sample discussion and Hubbard introduction. Diagram labels/arrows and bottom Hamiltonian equations are intact."
+        },
+        {
+          "page": 4,
+          "png_name": "page-4.png",
+          "png_sha256": "0aa79f2399327469b87bf6e45ace973f943500b85c3c78fa5776efd3712fe407",
+          "actual_review": "Read complete two-panel Hubbard figure and caption, support explanation, projector/full-variance equation, and start of 40q/72q section. Axes, numbers, occupation strings and units are readable."
+        },
+        {
+          "page": 5,
+          "png_name": "page-5.png",
+          "png_sha256": "26936079e529f6ed18cfd0ee8f0bc8870d93cd1ff005cc5765fc3e7cddf93278",
+          "actual_review": "Read large Fe-S result, three-row evidence table, HSQD method/reference condition and Tracker/EPA discussion. Table and paragraphs are legible. The original Markdown chemical link suppresses the (30e,20o) text in this v1 PDF; root has corrected the source and regeneration is pending."
+        },
+        {
+          "page": 6,
+          "png_name": "page-6.png",
+          "png_sha256": "fde54de83e1b66006d4283b96f5a742dd78de9e9a89e1f32c56f2965cc95f860",
+          "actual_review": "Read tensor-network paragraph, five-company comparison table, licensing paragraph and IBM/QC Ware/Quantinuum discussion. Table text wraps without overlap. The QPE paragraph leaves one continuation line at the top of page7."
+        },
+        {
+          "page": 7,
+          "png_name": "page-7.png",
+          "png_sha256": "8dce0fd35c8d538f8555345db7799e7d7d6763f2612ad636d2715c1bbcd5b94f",
+          "actual_review": "Read the single QPE continuation line, full industrial-comparison section, closing assessment and references1-5. Reference heading is followed by entries; no orphan heading. One QPE widow line is a typography finding."
+        },
+        {
+          "page": 8,
+          "png_name": "page-8.png",
+          "png_sha256": "2f706823837198ee4fa4b873a02f6c5d950a990c24dd4b5116c3c581f675137d",
+          "actual_review": "Read references6-19 and complete production/verification disclosure. All reference entries are readable, including hashes/DOIs and the final PRX Quantum reference. Footer and disclosure do not overlap."
+        }
+      ],
+      "page_count": 8,
+      "references_present": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "figures_read_in_full": [
+        {
+          "figure": 1,
+          "page": 1,
+          "kind": "hero"
+        },
+        {
+          "figure": 2,
+          "page": 3,
+          "kind": "workflow"
+        },
+        {
+          "figure": 3,
+          "page": 4,
+          "kind": "independent Hubbard model"
+        }
+      ],
+      "missing_or_unreadable_equations": 0,
+      "clipped_or_overlapping_content": 0,
+      "orphan_headings": 0,
+      "annotations_checked": 35,
+      "private_or_file_annotation_urls": [],
+      "findings": [
+        {
+          "severity": "minor_typography",
+          "pages": [
+            6,
+            7
+          ],
+          "issue": "One continuation line from the QPE paragraph starts page7, and the Korean word for phase estimation crosses the page boundary.",
+          "recommendation": "Keep this paragraph together or adjust page6 spacing to retain the final line.",
+          "status": "reported to root; awaiting revised PDF"
+        },
+        {
+          "severity": "content_rendering",
+          "pages": [
+            5
+          ],
+          "issue": "Markdown interprets the chemical notation [2Fe–2S](30e,20o) as a link and suppresses the active-space parenthetical in the v1 PDF.",
+          "status": "Identified independently by EN reviewer; root corrected the literal source; revised PDF pending"
+        }
+      ],
+      "conclusion": "All eight pages visually read. No clipping, overlap, missing references or orphan headings. Final approval awaits corrected PDF and changed-page reinspection."
+    },
+    {
+      "checked_at": "2026-11-10T12:24:34.756870+00:00",
+      "reviewer": "qunova_production_science",
+      "version_label": "ko_pdf_v2_final",
+      "pdf": "dist/review_ko.pdf",
+      "pdf_sha256": "08b09630c6095da68a0b95bb2eea64baecf59b464ae36c97f170d2851716b28e",
+      "source_sha256": "5dab60fdc83971bc504dfb2f60f3b692dd27bc649512731c04ee79091501d447",
+      "page_count": 8,
+      "passed": true,
+      "method": "Direct original-resolution view_image inspection of every changed page5-8; independently confirmed pages1-4 are RGB-pixel-identical to the individually inspected v1 pages, so those visual approvals are inherited.",
+      "inherited_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "directly_reinspected_pages": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "pixel_comparison": [
+        {
+          "page": 1,
+          "rgb_pixel_identical_to_v1": true,
+          "new_png_sha256": "f35646681add65a4e26589b4a4295949fb1ff1d4a0343bea459eb7343a09414b"
+        },
+        {
+          "page": 2,
+          "rgb_pixel_identical_to_v1": true,
+          "new_png_sha256": "2856ff87943304893c033bc10c50081229571ef3964846731ae6be5a72b5cf7b"
+        },
+        {
+          "page": 3,
+          "rgb_pixel_identical_to_v1": true,
+          "new_png_sha256": "6909106c28ba940694af03b8d11c3c1dc33f9a6938430d074bcac129d4266d37"
+        },
+        {
+          "page": 4,
+          "rgb_pixel_identical_to_v1": true,
+          "new_png_sha256": "0aa79f2399327469b87bf6e45ace973f943500b85c3c78fa5776efd3712fe407"
+        },
+        {
+          "page": 5,
+          "rgb_pixel_identical_to_v1": false,
+          "new_png_sha256": "eb92ee45d8b09b797388b55e3205ab10311a81dadf06fe5c3039e43eb1ea3824"
+        },
+        {
+          "page": 6,
+          "rgb_pixel_identical_to_v1": false,
+          "new_png_sha256": "fc7c7294dc4eed1131266a6240c9e90c5532ddaa7635552f01683f0db74b8b57"
+        },
+        {
+          "page": 7,
+          "rgb_pixel_identical_to_v1": false,
+          "new_png_sha256": "f9d96f2413c5d84dc11295f55a973faf5e898a68ee158333adc87fe7ef3e4a78"
+        },
+        {
+          "page": 8,
+          "rgb_pixel_identical_to_v1": false,
+          "new_png_sha256": "96d1fe8189b1746a172d277c373d8f73de12aadd74dcf6db1b912ed2d290e512"
+        }
+      ],
+      "changed_page_review": {
+        "5": "Read the full page: active-space literal [2Fe-2S] (30e,20o) is restored; evidence table, HSQD reference condition and Tracker/EPA paragraphs remain legible and unclipped.",
+        "6": "Read the full page: company table and surrounding paragraphs remain intact; complete QPE paragraph moves to page7 and no unfinished word or widow line is left.",
+        "7": "Read the full page: QPE paragraph is together at page top, exp(-iHt/hbar) is properly typeset inline, industrial comparison text and references1-4 flow without orphan headings or collisions.",
+        "8": "Read the full page: references5-19 are complete; all author entries, hashes, publication records, disclosure box and footer remain readable without clipping or overlap."
+      },
+      "v1_findings_resolved": [
+        "chemical-literal Markdown link suppression",
+        "QPE page6-to7 single-line widow and word split"
+      ],
+      "remaining_findings": [],
+      "clipping_overlap_or_missing_glyphs": 0,
+      "orphan_headings": 0,
+      "reference_numbers_present": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19
+      ],
+      "unique_internal_ref_destinations": [
+        "/ref-1",
+        "/ref-11",
+        "/ref-14",
+        "/ref-16",
+        "/ref-18",
+        "/ref-19",
+        "/ref-2",
+        "/ref-3",
+        "/ref-4",
+        "/ref-5",
+        "/ref-6",
+        "/ref-7",
+        "/ref-8",
+        "/ref-9"
+      ],
+      "unique_internal_ref_destination_count": 14,
+      "external_uri_annotation_count": 36,
+      "private_or_file_annotation_urls": [],
+      "full_document_visual_coverage": "All8pages covered: v1 individual inspection plus exact pixel inheritance1-4 and v2 individual reinspection5-8."
+    }
+  ],
+  "ko_pdf_final_visual_approval": {
+    "checked_at": "2026-11-10T12:24:34.756870+00:00",
+    "reviewer": "qunova_production_science",
+    "version_label": "ko_pdf_v2_final",
+    "pdf": "dist/review_ko.pdf",
+    "pdf_sha256": "08b09630c6095da68a0b95bb2eea64baecf59b464ae36c97f170d2851716b28e",
+    "source_sha256": "5dab60fdc83971bc504dfb2f60f3b692dd27bc649512731c04ee79091501d447",
+    "page_count": 8,
+    "passed": true,
+    "method": "Direct original-resolution view_image inspection of every changed page5-8; independently confirmed pages1-4 are RGB-pixel-identical to the individually inspected v1 pages, so those visual approvals are inherited.",
+    "inherited_pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "directly_reinspected_pages": [
+      5,
+      6,
+      7,
+      8
+    ],
+    "pixel_comparison": [
+      {
+        "page": 1,
+        "rgb_pixel_identical_to_v1": true,
+        "new_png_sha256": "f35646681add65a4e26589b4a4295949fb1ff1d4a0343bea459eb7343a09414b"
+      },
+      {
+        "page": 2,
+        "rgb_pixel_identical_to_v1": true,
+        "new_png_sha256": "2856ff87943304893c033bc10c50081229571ef3964846731ae6be5a72b5cf7b"
+      },
+      {
+        "page": 3,
+        "rgb_pixel_identical_to_v1": true,
+        "new_png_sha256": "6909106c28ba940694af03b8d11c3c1dc33f9a6938430d074bcac129d4266d37"
+      },
+      {
+        "page": 4,
+        "rgb_pixel_identical_to_v1": true,
+        "new_png_sha256": "0aa79f2399327469b87bf6e45ace973f943500b85c3c78fa5776efd3712fe407"
+      },
+      {
+        "page": 5,
+        "rgb_pixel_identical_to_v1": false,
+        "new_png_sha256": "eb92ee45d8b09b797388b55e3205ab10311a81dadf06fe5c3039e43eb1ea3824"
+      },
+      {
+        "page": 6,
+        "rgb_pixel_identical_to_v1": false,
+        "new_png_sha256": "fc7c7294dc4eed1131266a6240c9e90c5532ddaa7635552f01683f0db74b8b57"
+      },
+      {
+        "page": 7,
+        "rgb_pixel_identical_to_v1": false,
+        "new_png_sha256": "f9d96f2413c5d84dc11295f55a973faf5e898a68ee158333adc87fe7ef3e4a78"
+      },
+      {
+        "page": 8,
+        "rgb_pixel_identical_to_v1": false,
+        "new_png_sha256": "96d1fe8189b1746a172d277c373d8f73de12aadd74dcf6db1b912ed2d290e512"
+      }
+    ],
+    "changed_page_review": {
+      "5": "Read the full page: active-space literal [2Fe-2S] (30e,20o) is restored; evidence table, HSQD reference condition and Tracker/EPA paragraphs remain legible and unclipped.",
+      "6": "Read the full page: company table and surrounding paragraphs remain intact; complete QPE paragraph moves to page7 and no unfinished word or widow line is left.",
+      "7": "Read the full page: QPE paragraph is together at page top, exp(-iHt/hbar) is properly typeset inline, industrial comparison text and references1-4 flow without orphan headings or collisions.",
+      "8": "Read the full page: references5-19 are complete; all author entries, hashes, publication records, disclosure box and footer remain readable without clipping or overlap."
+    },
+    "v1_findings_resolved": [
+      "chemical-literal Markdown link suppression",
+      "QPE page6-to7 single-line widow and word split"
+    ],
+    "remaining_findings": [],
+    "clipping_overlap_or_missing_glyphs": 0,
+    "orphan_headings": 0,
+    "reference_numbers_present": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "unique_internal_ref_destinations": [
+      "/ref-1",
+      "/ref-11",
+      "/ref-14",
+      "/ref-16",
+      "/ref-18",
+      "/ref-19",
+      "/ref-2",
+      "/ref-3",
+      "/ref-4",
+      "/ref-5",
+      "/ref-6",
+      "/ref-7",
+      "/ref-8",
+      "/ref-9"
+    ],
+    "unique_internal_ref_destination_count": 14,
+    "external_uri_annotation_count": 36,
+    "private_or_file_annotation_urls": [],
+    "full_document_visual_coverage": "All8pages covered: v1 individual inspection plus exact pixel inheritance1-4 and v2 individual reinspection5-8."
+  },
+  "current_manuscript_sha256": "5dab60fdc83971bc504dfb2f60f3b692dd27bc649512731c04ee79091501d447",
+  "current_ko_pdf_sha256": "08b09630c6095da68a0b95bb2eea64baecf59b464ae36c97f170d2851716b28e",
+  "en_pdf_visual_audit": {
+    "reviewer": "qunova_english_publication",
+    "reviewed_at_utc": "2026-11-10T12:23:25.358810+00:00",
+    "status": "pass_no_remaining_blockers",
+    "scope": "Final English PDF visual reinspection; no source or CSS mutation. All10 v1 pages individually inspected; only changed v2 pages6–9 opened individually again.",
+    "pdf_sha256": "20ea13a4f0d2f23feac48564b447485dd4cbb5b853cd81b64182e8bd22eb03f1",
+    "pdf_bytes": 4213548,
+    "page_count": 10,
+    "previous_pdf_sha256": "bdd49ca9b5cdb2c7da2060f4e4c92e63ca7b70325dc35ab4c063bb1a2d944500",
+    "source_or_css_mutations": false,
+    "pages": [
+      {
+        "page": 1,
+        "file": "page-01.png",
+        "png_sha256": "5f93a940693c68a0d8e9188493ced497eb421846a0306bf5b2ca9b400c69625b",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Title/dek/byline, SF4 concept cover and caption, evidence/publication dates, first benchmark numbers and footer are legible; no clipping or missing glyphs."
+      },
+      {
+        "page": 2,
+        "file": "page-02.png",
+        "png_sha256": "8c934bb786b6ea31372a548d8b316d109b1bbec7f49bce15921d7b26f9e7b9b0",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Orbital/count explanation, determinant-count equation, VQE equation, HF definition and projected-Hamiltonian equation are fully visible and correctly separated from the footer."
+      },
+      {
+        "page": 3,
+        "file": "page-03.png",
+        "png_sha256": "a2949facaadacc41a871d4c2294b92f72b9378f7fb3674f4e72862c04de50875",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Workflow labels, matrix/subscript glyphs, training-feedback and cumulative-retention arrows, figure caption and following noise heading are legible; no overlap."
+      },
+      {
+        "page": 4,
+        "file": "page-04.png",
+        "png_sha256": "b32ad689e6cebeedb637cdacd3542b1d15881ba3568bd53078dad89d668316bc",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Hubbard energy/probability figure, numeric values, axis labels, caption and visible code/JSON link labels are legible. The final paragraph introduces the variance equation on the next page; ordinary continuation, not a stranded heading."
+      },
+      {
+        "page": 5,
+        "file": "page-05.png",
+        "png_sha256": "bbc47fb1105719a0dce15b47f186609904c33dd6142cad0334a591a796b38f15",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Full/projected variance equation and follow-up text are legible. 40/72-qubit discussion and three-row benchmark table fit. HSQD paragraph continues on page6; no clipping."
+      },
+      {
+        "page": 6,
+        "file": "page-06.png",
+        "png_sha256": "41d389c2380f9e8744e334bea51c24756cb1642de66d66a289a7da9548221dc9",
+        "same_png_bytes_as_v1": false,
+        "inspection_method": "view_image original detail (v2 changed page)",
+        "visual_notes": "Opened individually at original detail. Literal [2Fe–2S] (30e,20o) now fully visible in the Tracker paragraph. Subsequent [2Fe–2S] mention, baseline scope and EPA/LUCJ discussion are legible. Company heading retains its introductory paragraph; no overflow or clipped glyphs."
+      },
+      {
+        "page": 7,
+        "file": "page-07.png",
+        "png_sha256": "98a06867736f896c47679850fbb9013acfe8b0207bfe6a10320c82ff9e0c8482",
+        "same_png_bytes_as_v1": false,
+        "inspection_method": "view_image original detail (v2 changed page)",
+        "visual_notes": "Opened individually at original detail. Full five-company comparison table fits with no row splitting, missing content or clipped labels. Licensing and 72+5=77 physical-qubit paragraphs remain legible. QPE paragraph begins together on next page rather than being split; lower margin and footer normal."
+      },
+      {
+        "page": 8,
+        "file": "page-08.png",
+        "png_sha256": "bc2e62eade1d23010dd0fcccfb8b3737b22c35d71c83d02c81f339a67323454c",
+        "same_png_bytes_as_v1": false,
+        "inspection_method": "view_image original detail (v2 changed page)",
+        "visual_notes": "Opened individually at original detail. QPE paragraph starts intact at page top; e^{-iHt/ℏ} is properly rendered with superscript. Following industrial-comparison heading and paragraphs fit. Spin glyphs and reaction-energy error notation are legible; no orphan heading, overlap or bottom clipping."
+      },
+      {
+        "page": 9,
+        "file": "page-09.png",
+        "png_sha256": "a900b28a1e88bc971da61095c35884cf8c9e7ed2d70eed747233b82f3603ae01",
+        "same_png_bytes_as_v1": false,
+        "inspection_method": "view_image original detail (v2 changed page)",
+        "visual_notes": "Opened individually at original detail. References heading and all nineteen numbered references appear on this page and are fully legible, including author lists, arXiv versions, DOI publication data, pinned commits and source dates. No entry clipped or overflowing."
+      },
+      {
+        "page": 10,
+        "file": "page-10.png",
+        "png_sha256": "7abe49560d8b651353780263cb4ac8468b850f36d8fe7fb6a124d4420ce21322",
+        "same_png_bytes_as_v1": true,
+        "inspection_method": "v1 page-by-page visual review retained; v2 PNG SHA-256 identical",
+        "visual_notes": "Read individually. Authoring/verification disclosure and agent names are legible, with no clipped text. Partial final page is expected endmatter rather than a blank page; footer/date/page10of10 intact."
+      }
+    ],
+    "resolved_findings": [
+      {
+        "from_v1": "markdown_literal_parsed_as_link",
+        "status": "resolved",
+        "evidence": "Page6 visibly shows [2Fe–2S] (30e,20o)."
+      },
+      {
+        "from_v1": "relative_asset_link_missing_in_pdf",
+        "status": "resolved",
+        "evidence": "Page4 now contains explicit URI annotation for https://infant83.io/AI_Tech_Review/reviews/2026-11-10_qunova-hivqe-quantum-chemistry/en/example-results.json"
+      }
+    ],
+    "annotation_checks": {
+      "external_uri_annotations": 36,
+      "code_link": {
+        "page": 4,
+        "uri": "https://github.com/Infant83/AI_Tech_Review/blob/main/2026-11-10_qunova-hivqe-quantum-chemistry/artifacts/verify_examples.py"
+      },
+      "json_link": {
+        "page": 4,
+        "uri": "https://infant83.io/AI_Tech_Review/reviews/2026-11-10_qunova-hivqe-quantum-chemistry/en/example-results.json"
+      }
+    },
+    "remaining_blockers": []
+  },
+  "pdf_link_only_v3": {
+    "reviewer": "qunova_publication_builder",
+    "reason": "Direct public GitHub source data link avoids article-JSON support restrictions in the existing publisher.",
+    "ko_sha256": "bef166318409de5726c1fc66fc02c5ea79fd54b0e65651988229debc39ade008",
+    "en_sha256": "4792f54c46108f41b724b22d28eceb9d29eae59bbce3025b268ffc093709c2d6",
+    "ko_pages": 8,
+    "en_pages": 10,
+    "rgb_pixel_identical_to_visually_approved_v2_all_18_pages": true,
+    "extracted_pdf_text_identical": true,
+    "inherited_visual_approval": "All v2 page approvals retained by exact RGB equality; only the numerical-JSON URI target changed.",
+    "code_and_data_uri_annotations_checked": true,
+    "reference_texts": 19,
+    "reference_named_destinations": 14,
+    "valid_internal_links": 33,
+    "private_or_file_uris": 0
+  },
+  "browser_publication_candidate_audit": {
+    "reviewer": "root",
+    "candidate": "v5",
+    "article_files": 26,
+    "all_article_bytes_identical_to_candidate_v4": true,
+    "method": "Actual in-app browser desktop and explicit 390x844 viewport review; no physical device or reader study.",
+    "views_read": [
+      "Korean desktop title, cover, single hub link and source/data links",
+      "Korean mobile workflow",
+      "English mobile numerical plot and source/data links",
+      "Korean hub lead card, summary, cover and recent-cover context"
+    ],
+    "visible_mobile_image_variants_loaded": true,
+    "body_horizontal_overflow": false,
+    "source_code_and_json_links": "Direct public GitHub source links. Actual HTTPS availability is a separate check after the publication commit.",
+    "unpublished_draft_pdf_editions": "Privately retained; final registered PDFs alone included in the new public article/archive."
+  }
+}
