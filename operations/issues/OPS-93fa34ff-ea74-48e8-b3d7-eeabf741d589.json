@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 1,
+  "record_version": 2,
   "title": "ADOPT 정기 운영을 하루 세 번으로 확대",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-10T11:46:58Z",
+  "updated_at": "2026-11-10T18:19:47Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -23,7 +23,8 @@
       "SECURITY_OPERATIONS.md",
       "JOURNAL_TEAM_CHARTER.md",
       "ATRL_ORGANIZATION.md",
-      "PUBLICATION_WORKFLOW.md"
+      "PUBLICATION_WORKFLOW.md",
+      "AGENTS.md"
     ]
   },
   "observed": {
@@ -38,18 +39,20 @@
       "기존 ai-tech-review의 실제 설정과 운영 정책을 확인함",
       "기존03시를 유지하고 오전11시·오후7시를 추가하는8시간간격을 사용자에게 알림",
       "지원 도구로 기존 예약의 주기와 관련 프롬프트만 갱신함",
-      "실제 저장 설정을 재조회해 시간·프롬프트 일치와 기존 이름·종류·대상·ACTIVE 보존을 확인함"
+      "실제 저장 설정을 재조회해 시간·프롬프트 일치와 기존 이름·종류·대상·ACTIVE 보존을 확인함",
+      "확대 후 첫03시 trigger와 실제 저장 설정·호스트 한국시간을 대조하고 AGENTS의 남은 하루1회 안내 한 곳을 현재 세 시각으로 맞춤"
     ],
     "expected": "기존 대화의 운영팀 예약 하나가 매일 한국시간03:00·11:00·19:00에 작업을 이어가고 미완료 일감을 중복 없이 인계함",
-    "actual": "하루 세 번의 저장 설정과 프롬프트가 일치한다. 실제 세 시간대의 다음 기동은 아직 관찰 전이다."
+    "actual": "첫03시 회차 trigger는 2026-11-10T18:03:35.419Z, 한국시간2026-11-11 03:03:35.419로 확인됐다. 예정03시 대비215.419초 뒤이며 같은 예약 한 개로 이어졌다. 11시·19시 첫 기동은 아직 관찰 전이다."
   },
   "evidence": [
     "지원 automation_update 성공 응답과 실제 설정 전후 비교",
     "https://learn.chatgpt.com/docs/automations?surface=app",
-    "DEVELOPMENT_OPERATIONS_POLICY.md"
+    "DEVELOPMENT_OPERATIONS_POLICY.md",
+    "operations/runs/20261110T180335Z-758a3a2c-716d-4441-8acd-045c454574f5.md"
   ],
   "limitations": [
-    "실제 다음03시·11시·19시의 기동·중복·누락 여부는 관찰 전",
+    "확대 후 첫03시 회차는 관찰했으며 11시·19시 첫 기동·중복·누락 여부는 관찰 전",
     "설정 확인이 정각 실행 또는 로컬 호스트·앱·연결의 지속 가용성을 보증하지 않음",
     "명시적인 nominal/nextRun 값은 설정 응답에 없어 특정 다음 실행 시각을 확인한 것으로 기록하지 않음"
   ],
@@ -75,38 +78,43 @@
     "설정 반영과 실제 각 시간대 기동을 구분해 기록하고 다음 회차에서 실제 동작을 관찰함"
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "ac43e5109b20e41b5eac771de1a9c5ba3e5e7ed8"
+    ],
     "candidate_reference": null,
     "deployment_reference": null
   },
   "verification": {
-    "status": "설정 갱신·실제 저장 재조회·독립 검증 완료; 미래 기동 관찰",
+    "status": "실제 설정 재조회와 확대 후 첫03시 기동 확인; 11시·19시 관찰 대기",
     "checks": [
       "지원 도구가 기존ai-tech-review 갱신 성공을 반환함",
       "실제 설정 비교에서 prompt·시간 규칙·updated_at만 변경됨",
       "하루03시·11시·19시와 프롬프트가 정확히 일치하며 기존name·kind·ACTIVE·대상 보존",
       "호스트 시간대가 한국시간임을 독립 baseline 재조회로 확인; UTC로 역산 보정하지 않음",
       "독립 담당이 실제 저장된 세 시각·8시간 간격·KST·기존 식별자/대상/활성과 현재 정책6개 문서의 일치를 재확인함",
-      "JSON·참조 링크·문서 시간표·diff 검사 통과; 다른 작업의 미추적 인계 해시 보존"
+      "JSON·참조 링크·문서 시간표·diff 검사 통과; 다른 작업의 미추적 인계 해시 보존",
+      "기존 예약 ACTIVE·한국시간03:00·11:00·19:00 저장과 호스트 offset+09:00 재확인; 설정 변경 없음",
+      "실제 trigger는 첫03시 예정 시각보다215.419초 늦음. 정각 기동 보장으로 기록하지 않음"
     ],
     "evidence": [
       "DEVELOPMENT_OPERATIONS_POLICY.md",
       "SITE_OPERATIONS.md",
-      "SECURITY_OPERATIONS.md"
+      "SECURITY_OPERATIONS.md",
+      "operations/runs/20261110T180335Z-758a3a2c-716d-4441-8acd-045c454574f5.md"
     ],
     "remaining_limits": [
-      "실제 다음03시·11시·19시 기동은 관찰 전"
+      "확대 후 첫11시·19시 기동은 관찰 전; 모든 날의 정각 실행·호스트 가용성은 보장하지 않음"
     ]
   },
   "observation": {
-    "status": "설정 반영 완료; 실제 확대 회차 관찰 전",
-    "period": "2026-11-10 변경 이후 첫 세 시간대",
-    "result": "기존 예약과 기록을 재사용했다. 새 예약·새 실행 기반·추가 권한을 만들지 않았다."
+    "status": "확대 후 첫03시 기동 관찰; 나머지 두 시간대 대기",
+    "period": "2026-11-11 03:03:35.419 KST trigger",
+    "result": "기존 예약에서 운영 회차가 이어졌고 과거 누락 회차를 실행한 것으로 꾸미지 않았다. 새 예약·역할·권한을 추가하지 않았다."
   },
   "recovery": {
     "plan_reference": "필요하면 지원 도구로 같은 예약의 이전03시 주기와 해당 안내만 복구한다. 대상·역할·권한·기록은 보존한다.",
     "execution_reference": null,
     "result": "사이트·게시물·PDF·구독·DB 배포나 실제 복구 작업 없음"
   },
-  "next_action": "다음 기존 운영 회차는 실제 trigger의UTC/KST 시각과 저장 일정·기동 중복을 대조하고, 마지막 확인 이후의 미완료 일감과 새 변경을 이어간다. 세 시간대의 첫 기동이 확인되면 설정 범위의 관찰 결과를 갱신한다."
+  "next_action": "다음11시·19시 기존 회차의 실제 trigger UTC/KST를 확인하고 같은 일감에 이어 기록한다. 마지막 성공 점검 이후의 새 변경과 미완료 우선 일감을 진행하며 이미 완료한 주간·월간 검사를 반복하지 않는다."
 }

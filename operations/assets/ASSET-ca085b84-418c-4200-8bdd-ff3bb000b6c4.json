@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-ca085b84-418c-4200-8bdd-ff3bb000b6c4",
-  "record_version": 2,
+  "record_version": 3,
   "asset_key": "reader-api",
   "name": "동적 독자·학습 API",
   "status": "active",
@@ -16,24 +16,28 @@
   ],
   "source_references": [
     ".automation/cloudflare/reader-engagement/src/worker.js",
-    ".automation/cloudflare/reader-engagement/src/study.js"
+    ".automation/cloudflare/reader-engagement/src/study.js",
+    ".automation/cloudflare/reader-engagement/src/web-push.js"
   ],
   "access_boundary": "서버 세션·passkey·역할 확인; 공개 설정 읽기와 개인 자료 접근 구분",
   "verification": {
-    "checked_at": "2026-11-09T01:38:21Z",
+    "checked_at": "2026-11-10T18:19:47Z",
     "confirmed": [
-      "익명 상태는 계정 없음",
-      "익명 노트 목록 401",
-      "기존 로컬 인증·인가 테스트 56개 통과"
+      "HTTPS /v1/config200·pushEnabled:true·기존 공개 VAPID 키 보존",
+      "HTTPS 익명 /v1/study/me200·account:null",
+      "HTTPS 익명 /v1/study/notebooks401",
+      "로컬 격리 백엔드 테스트57개 통과; 실제 단말 푸시 도착 검증은 아님",
+      "기존 Worker의 우선순위 변경 배포 후 binding 메타데이터·runtime 설정·구독/이벤트/배송 집계 전후 동일"
     ],
     "not_verified": [
       "운영 계정 간 모든 공유 동선",
-      "공급자 관리 계정 권한 전체"
+      "공급자 관리 계정 권한 전체",
+      "실제 운영 기기의 푸시 수신·표시 지연 개선"
     ]
   },
   "lifecycle": {
     "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
     "recovery_reference": "SITE_OPERATIONS.md"
   },
-  "updated_at": "2026-11-09T01:46:51Z"
+  "updated_at": "2026-11-10T18:19:47Z"
 }
