@@ -59,7 +59,9 @@ export async function webPushRequest(subscription, payload, env) {
   const [body, authorization] = await Promise.all([encryptedPayload(subscription,payload),vapidAuthorization(subscription.endpoint,env)]);
   return new Request(subscription.endpoint,{
     method:'POST',redirect:'manual',body,
-    headers:{'Authorization':authorization,'Content-Encoding':'aes128gcm','Content-Type':'application/octet-stream','TTL':'86400','Urgency':'normal',
+    // Request immediate delivery attempts for opted-in alerts. This does not
+    // guarantee arrival or override the device's notification presentation.
+    headers:{'Authorization':authorization,'Content-Encoding':'aes128gcm','Content-Type':'application/octet-stream','TTL':'86400','Urgency':'high',
       'Topic':String(payload.tag || '').replace(/[^A-Za-z0-9_-]/g,'').slice(0,32)},
   });
 }

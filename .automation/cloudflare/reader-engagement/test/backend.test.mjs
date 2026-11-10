@@ -107,6 +107,9 @@ test('real Web Push encryption decrypts with independent http_ece and VAPID sign
   assert.equal(request.method,'POST');
   assert.equal(request.redirect,'manual');
   assert.equal(request.headers.get('Content-Encoding'),'aes128gcm');
+  assert.equal(request.headers.get('Urgency'),'high');
+  assert.equal(request.headers.get('TTL'),'86400');
+  assert.equal(request.headers.get('Topic'),'a'.repeat(32));
   const decrypted = ece.decrypt(Buffer.from(await request.arrayBuffer()),{version:'aes128gcm',privateKey:browser.client,authSecret:browser.auth});
   assert.deepEqual(JSON.parse(decrypted.toString()),payload);
   const authorization = request.headers.get('Authorization');
@@ -258,6 +261,8 @@ test('delivery sends encrypted payload once, honors concurrent redelivery and pr
   let calls=0;
   const transport=async request => {
     calls++;
+    assert.equal(request.headers.get('Urgency'),'high');
+    assert.equal(request.headers.get('TTL'),'86400');
     const plaintext=ece.decrypt(Buffer.from(await request.arrayBuffer()),{version:'aes128gcm',privateKey:subscriber.client,authSecret:subscriber.auth});
     const payload=JSON.parse(plaintext.toString());
     assert.equal(payload.url,`${ORIGIN}${event.path}`);
@@ -328,6 +333,54 @@ test('test push targets only the current device, with 60-second and five-per-day
   const event=await f.db.prepare('SELECT * FROM publication_events LIMIT 1').first();
   assert.equal(event.title,'AI Tech Review 알림 테스트');
   assert.equal(event.path,'/AI_Tech_Review/');
+});
+
+test('immediate test delivery targets its requester without resending a completed article',async t => {
+  const f=await fixture(t);
+  const current=await f.register();
+  const browser=browserSubscription('immediate-test-requester');
+  await f.request('/v1/subscription',{method:'PUT',cookie:current.cookie,
+    body:{subscription:browser.subscription,topics:['review']}});
+  const other=await seedSubscriber(f,2,['lecture']);
+  const article=await newEvent(f);
+  await fanout(f.env,article.id);
+  const received=[];
+  const transport=async request => {
+    assert.equal(request.url,browser.subscription.endpoint);
+    assert.equal(request.headers.get('Urgency'),'high');
+    assert.equal(request.headers.get('TTL'),'86400');
+    const plaintext=ece.decrypt(Buffer.from(await request.arrayBuffer()),{
+      version:'aes128gcm',privateKey:browser.client,authSecret:browser.auth});
+    received.push(JSON.parse(plaintext.toString()));
+    return new Response(null,{status:201});
+  };
+  await deliver(f.env,article.id,current.id,transport);
+  const completed=await f.db.prepare('SELECT * FROM deliveries WHERE event_id=? AND device_id=?')
+    .bind(article.id,current.id).first();
+  assert.equal(completed.status,'sent');
+  assert.equal(completed.attempts,1);
+
+  const queuedBefore=f.queued.length;
+  const response=await worker.fetch(new Request(`${API}/v1/subscription/test`,{
+    method:'POST',headers:{Origin:ORIGIN,Cookie:current.cookie,'Content-Type':'application/json'},body:'{}',
+  }),f.env);
+  assert.equal(response.status,202);
+  const testEvent=await f.db.prepare("SELECT * FROM publication_events WHERE kind='test'").first();
+  assert.deepEqual(f.queued.slice(queuedBefore),[{type:'push',eventId:testEvent.id,deviceId:current.id}]);
+  assert.equal((await f.db.prepare('SELECT COUNT(*) n FROM deliveries WHERE event_id=?')
+    .bind(testEvent.id).first()).n,1);
+  assert.equal((await f.db.prepare('SELECT COUNT(*) n FROM deliveries WHERE device_id=?')
+    .bind(other.id).first()).n,0);
+  await deliver(f.env,testEvent.id,current.id,transport);
+  await deliver(f.env,article.id,current.id,transport);
+  await deliver(f.env,testEvent.id,current.id,transport);
+  assert.equal(await recoverOutbox(f.env),0);
+  assert.equal(received.length,2);
+  assert.equal(received[0].articleId,article.article_id);
+  assert.equal(received[1].articleId,null);
+  assert.equal(received[1].tag,testEvent.id);
+  assert.deepEqual(await f.db.prepare('SELECT * FROM deliveries WHERE event_id=? AND device_id=?')
+    .bind(article.id,current.id).first(),completed);
 });
 
 test('queue consumer acknowledges terminal/successful messages without retrying a whole batch',async t => {

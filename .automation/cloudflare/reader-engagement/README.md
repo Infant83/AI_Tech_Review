@@ -297,6 +297,8 @@ GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revisi
 
 ## 전송·장애 복구
 
+2026-11-11부터 명시적으로 구독한 새 글과 사용자가 직접 요청한 테스트는 Web Push의 `Urgency: high`로 즉시 전달 시도를 요청한다. 기존 TTL24시간·암호화·VAPID·Topic·대상 선택·재시도는 유지한다. 이는 운영체제의 집중 모드나 표시 설정을 우회하는 긴급 알림 등급이 아니며, 실제 도착·배너 표시를 보장하지 않는다. 과거 `normal` 설정이 관측한 지연의 원인이었다고 확정한 것도 아니다. [Apple 전송 문서](https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers)와 [RFC8030의 전송 우선순위](https://www.rfc-editor.org/rfc/rfc8030#section-5.3)를 따른다. 기존 수락 시각·기기의 새 글 수신 시각·사용자의 실제 표시 관찰을 구분하고, 확인을 위해 과거 알림을 재발송하지 않는다.
+
 한 fanout 작업은 주제에 맞는 기존 구독 최대 20개를 cursor로 읽고, 실제 암호화·발송은 기기당 Queue 작업 하나씩 수행한다. fanout 이후 새로 가입한 구독에는 과거 새 글 알림을 보내지 않는다. 기기가 탈퇴·endpoint 변경·주제 해제를 하면 대기 중인 작업도 발송 직전에 다시 확인한다.
 
 D1 outbox가 원본이며 Queue 메시지에는 이벤트·기기 식별자만 들어간다. 발행 이벤트/기기 복합키와 lease로 중복·동시 처리를 억제한다. 성공은 `sent`, 404/410은 구독 정리, 429/5xx/일부 인증 오류는 최대 여섯 번 지연 재시도한다. 10분 Cron은 큐 유실·lease 만료·미완료 fanout을 복구한다. 10초 네트워크 시간 제한이 있어 2분 lease보다 먼저 요청이 끝난다.
