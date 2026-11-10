@@ -4,18 +4,19 @@ subtitle: "KDC 해밀토니안을 격자 큐비트로 옮기는 방법, 23-wire 
 type: final review
 author: "김현중"
 date created: 2026-08-29
-date modified: 2026-08-29
+date modified: 2026-11-10
+issue date: 2026-08-29
 status: checked
 language: ko
-canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
-alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
-alternate en url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
-alternate x-default url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
-social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
+canonical url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
+alternate ko url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
+alternate en url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
+alternate x-default url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
+social image url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
 writing assistance: "OpenAI Codex Work Mode; exact model identifier and original article agent roster not retained"
 agent roles: "2026-08-29 public repair: orchestration and editorial integration; LinkedIn and primary-paper research; disclosure design; repository audit and publication QA"
-editorial harness: "AI Tech Review Editorial Harness v2026.08"
-verification sources: "PennyLane demo and fixed-commit source; peer-reviewed paper; current arXiv version; official documentation; final HTML"
+editorial harness: "Common prose audit harness, revised 2026-11-06; original v2026.08 record retained in revision history"
+verification sources: "Fixed-commit demo sources; arXiv v3 full paper and selected v1 passages; Crossref journal metadata; official documentation; final web editions"
 human review record: "scope, direction, and publication request confirmed; line-by-line review not separately retained"
 evidence cutoff: "2026-08-29"
 tags:
@@ -31,42 +32,30 @@ tags:
 
 # 정적 에너지에서 광여기 동역학으로: PennyLane 진동-전자 양자 시뮬레이션의 원리와 연구 전망
 
-분자는 빛을 받은 뒤 전자만 바뀌는 정지된 물체가 아니다. 원자핵이 움직이고 결합이 늘어나거나 비틀리면서 전자상태의 에너지와 성격도 함께 달라진다. 이 진동과 전자의 결합 운동, 즉 **진동-전자(vibronic) 동역학**은 내부전환, 계간전이, 에너지·전하이동처럼 시간에 따라 진행되는 광물리 현상의 중심에 있다.
+분자가 빛을 받으면 전자상태가 바뀌며 핵의 운동도 달라진다. 결합이 늘어나거나 비틀릴 때 전자상태의 에너지와 성격도 달라진다. 이 결합된 움직임인 **진동–전자 동역학(vibronic dynamics)**을 따라가야, 들뜬 에너지가 어떤 상태와 경로를 거쳐 전달되는지 이해할 수 있다.
 
-2026년 8월 19일 공개된 PennyLane 데모 [*A quantum algorithm for vibronic dynamics*](https://pennylane.ai/demos/simulating_vibronic_dynamics)는 이 문제를 양자회로로 옮기는 과정을 코드로 보여준다. 기반 방법은 Motlagh 등이 발표한 동료평가 논문 [*Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design*](https://doi.org/10.1088/2058-9565/ae0828), *Quantum Science and Technology* **10**, 045048 (2025)이다.
+Emily Nobes가 2026년 8월 19일 공개한 PennyLane 데모 *A quantum algorithm for vibronic dynamics*는 그 움직임을 회로로 옮기는 과정을 보여준다. <a class="citation" href="#ref-1">[1]</a> 기반은 Motlagh 등의 동료평가 논문 *Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design*이다. <a class="citation" href="#ref-2">[2]</a>
 
-핵심 판정부터 말하면, 이 데모는 **실제 양자 프로세서에서 실제 분자를 계산한 결과가 아니다.** 두 전자상태와 한 진동모드로 만든 작은 모형을 CPU 기반 `lightning.qubit` 상태벡터 시뮬레이터에서 실행했다. 가치는 다른 곳에 있다. 진동-전자 해밀토니안을 실공간 격자, Quantum Fourier Transform(QFT), Quantum Read-Only Memory(QROM), 가역 산술, 위상 기울기 상태와 2차 Trotter 전개로 연결해, 미래 내결함성 양자컴퓨터용 알고리즘의 내부 구조를 학습 가능한 형태로 공개했다.
+공개 코드는 두 전자상태와 진동모드 하나를 CPU 상태벡터 시뮬레이터 `lightning.qubit`으로 전파한다. <a class="citation" href="#ref-3">[3]</a> <a class="citation" href="#ref-4">[4]</a> 작은 모형 안에 격자 인코딩, 양자 푸리에 변환(QFT), 고정 계수 조회(QROM), 가역 산술과 위상 부여가 모두 들어 있다. 이 글은 각 구성요소가 분자의 운동에서 무엇을 담당하는지 읽고, 그 설명을 OLED 분자의 시간별 상태점유와 기작 중심 라벨로 이어 본다.
 
 ![전자와 핵의 결합 운동이 퍼텐셜 표면과 격자 인코딩 양자 시간진화로 이어지는 개념 일러스트](../artifacts/vibronic_dynamics_quantum_simulation_hero.jpg)
 
-*그림 1. 전자상태 변화, 핵 파동묶음의 운동, 실공간 격자 인코딩을 연결한 개념 일러스트. 특정 분자의 구조식, 실제 양자회로 또는 계산 결과를 재현한 그림이 아니다.*
+*그림 1. AI 생성 개념 일러스트. 왼쪽의 분자 진동, 가운데의 전자상태별 퍼텐셜 표면과 핵 파동묶음, 오른쪽의 격자 인코딩 시간진화를 연결한다.*
 
-::: highlight 리뷰 판정
-PennyLane 데모는 비단열 분자동역학을 현재 양자컴퓨터가 해결했다는 실증이 아니라, 미래 내결함성 장치용 회로 설계를 23개의 simulator wire로 설명한 교육용 구현이다. OLED 연구에는 정적 $\Delta E_{\mathrm{ST}}$를 넘어 상태별 population과 진동 매개 경로를 계산한다는 장기적 의미가 있지만, 현재 코드에는 spin–orbit coupling(SOC), ISC/RISC, 실제 분자, 열환경과 QPU 실행이 없다.
-:::
+## 한눈에 보는 계산
 
-## 한눈에 보는 검증 결과
-
-| 항목 | 확인된 내용 |
+| 구성 | 이 글에서 살펴볼 내용 |
 |---|---|
-| 공개물 | Emily Nobes, PennyLane 교육용 데모, 2026년 8월 19일 |
-| 기반 연구 | Motlagh et al., *Quantum Science and Technology* **10**, 045048 (2025) |
-| 계산 방식 | 디지털 gate 기반 실시간 해밀토니안 시뮬레이션; VQE·QAOA·양자 어닐링이 아님 |
-| 실행 장치 | CPU C++ 상태벡터 시뮬레이터 `lightning.qubit` |
-| 데모 모형 | 전자상태 2개, 진동모드 1개, 모드당 격자점 4개, 선형 결합 |
-| 전체 크기 | 23 simulated wires: system 3개 + 보조·정밀도 wire 20개 |
-| 출력 | 두 diabatic 전자상태의 시간별 정확 확률(exact probability) |
-| 직접 보여주지 않은 것 | 실제 분자 정확도, QPU 성능, noise·오류정정, 양자우위, OLED 물성 예측 |
-| 연구적 위치 | 초기 내결함성 양자컴퓨팅을 겨냥한 알고리즘·자원 타당성 연구 |
+| 물리 모형 | 두 전자상태·한 진동모드, 선형 진동–전자 결합 |
+| 좌표 표현 | 모드당 네 격자점을 두 큐비트에 저장 |
+| 회로 | 계수 조회·가역 산술·위상 부여를 결합한 실시간 전파 |
+| 실행 | CPU `lightning.qubit`, 전체 23 wires |
+| 관측량 | 상태벡터에서 구한 전자상태별 점유 확률 |
+| 논문 자원 추정 | 화학적 동기를 가진 더 큰 모형의 알고리즘·논리 자원 |
 
-이 글은 다음 근거 층을 구분한다.
+작은 데모의 실행과 논문의 자원 추정은 규모와 검증 방법이 다르다. 먼저 회로가 하는 일을 이해한 뒤, 분자 정확도와 실제 장치 비용을 평가하는 데 필요한 조건을 살펴보자.
 
-- **[원 데모]** 공개 코드가 실제로 실행한 설정과 출력
-- **[기반 논문]** 동료평가 알고리즘과 최신 arXiv v3가 제시한 자원 추정
-- **[계산 경계]** 코드가 검증하지 않은 정확도·하드웨어·물리 조건
-- **[리뷰 해석]** TADF·PhOLED 및 분자 역설계 연구로 연결할 때 필요한 후속 단계
-
-## 1. 쉬운 설명: 여러 장의 지형도 위를 움직이는 파동묶음
+## 1. 여러 장의 지형도 위를 움직이는 파동묶음
 
 Born–Oppenheimer(BO) 근사는 전자가 핵보다 훨씬 빠르게 움직인다는 차이를 이용한다. 각 핵 배치에서 전자상태를 먼저 계산하고, 핵은 그 상태가 만드는 잠재에너지표면(potential-energy surface, PES) 위를 움직인다고 본다. 평형 구조와 바닥상태 에너지를 계산할 때 매우 성공적인 접근이다.
 
@@ -104,7 +93,7 @@ $$
 
 $\lambda$는 좌표와 무관한 에너지 또는 결합, $a_rQ_r$은 선형 진동-전자 결합, $b_{rr'}Q_rQ_{r'}$은 이차 및 모드 간 결합을 나타낸다. 선형항까지 남기면 linear vibronic coupling(LVC), 이차항까지 포함하면 quadratic vibronic coupling(QVC) 모델이다. 여기서 $Q_r$은 원자 하나의 위치가 아니라 분자 전체가 함께 움직이는 **무차원 정상모드 좌표**다.
 
-이 해밀토니안은 압축된 물리 모형이지 전자구조를 자동으로 만들어 주는 장치가 아니다. 전자상태, 진동수, 정상모드와 결합계수는 DFT/TDDFT 또는 다중참조 전자구조 계산과 diabatization으로 먼저 얻어야 한다. [기반 논문 최신 v3](https://arxiv.org/html/2411.13669v3)도 해밀토니안 구성 자체는 양자 동역학 알고리즘의 범위 밖이라고 명시한다.
+이 해밀토니안을 입력하려면 전자상태, 진동수, 정상모드와 결합계수를 DFT/TDDFT 또는 다중참조 전자구조 계산과 diabatization으로 먼저 얻어야 한다. [당시 공개된 arXiv v3](https://arxiv.org/html/2411.13669v3)도 해밀토니안 구성 자체는 양자 동역학 알고리즘의 범위 밖이라고 명시한다. <a class="citation" href="#ref-5">[5]</a>
 
 ## 3. 연속적인 핵 운동을 큐비트 격자에 넣는 법
 
@@ -123,13 +112,13 @@ $$
 
 개의 큐비트를 사용한다.
 
-중요한 정정이 하나 있다. 이 데모는 진동을 연속변수 **qumode**로 처리하는 광자 하이브리드 구현이 아니다. 전자상태 레지스터와 모든 진동 격자 레지스터를 **모두 큐비트**로 표현하고 `lightning.qubit`에서 계산한다. 코드의 `electrons` 변수도 전자 수가 아니라 diabatic electronic-state register를 뜻한다.
+이 구현에서는 전자상태와 진동 좌표 모두 **큐비트 레지스터**에 부호화된다. 연속적인 정상좌표를 유한한 위치 격자로 바꾸는 방식이며, 광자 연속변수 qumode와는 구별된다. 코드의 `electrons` 변수는 diabatic 전자상태를 구별하는 레지스터를 가리킨다.
 
 고전적인 primitive grid는 $N K^M$개의 복소 진폭을 명시적으로 저장해야 하므로 모드 수에 따라 메모리가 지수적으로 늘 수 있다. 양자상태는 이 진폭을 더 작은 큐비트 레지스터에 부호화할 수 있다. 하지만 이 압축이 곧 저비용 계산을 뜻하지는 않는다. 상태 준비, 계수 로딩, 양자 산술, Trotter 반복, 오류정정과 측정 비용이 남는다.
 
 ![KDC 해밀토니안, 실공간 격자 레지스터와 2차 Trotter 단계의 정확한 매핑](../artifacts/vibronic_dynamics_algorithm_map.svg)
 
-*그림 2. KDC 진동-전자 모형을 전자상태·진동 격자 큐비트로 옮기고 대칭 2차 Trotter 단계로 전파하는 흐름. 하단은 PennyLane 코드가 실제 실행한 toy 범위를 표시한다. 모든 진동 좌표는 qumode가 아니라 큐비트 격자로 인코딩된다.*
+*그림 2. PennyLane 데모와 기반 논문을 따라 작성한 회로 구성도. KDC 해밀토니안에서 전자상태·진동 격자 레지스터로, 이어 대칭적인 Trotter 시간 단계로 읽는다. 아래 띠에는 데모에서 실행한 모형과 출력 조건을 적었다.*
 
 ## 4. 한 번의 시간 진화를 회로로 조립하는 방법
 
@@ -137,25 +126,25 @@ $$
 
 ### 운동에너지: QFT로 운동량 공간에 다녀온다
 
-위치 $Q$는 격자 계산기저에서 대각형이지만 운동량 $P$는 그렇지 않다. 회로는 각 모드에 QFT를 적용해 운동량기저로 이동하고, `OutPoly`로 $(x-K/2)^2$을 보조 레지스터에 계산한다. 이 값과 운동에너지 계수로 위상을 누적한 뒤 중간 계산을 되돌리고 역 QFT로 위치기저에 복귀한다.
+위치 $Q$는 격자 계산기저에서 대각형이지만 운동량 $P$는 그렇지 않다. 회로는 각 모드에 QFT를 적용하고 최상위 비트를 뒤집어 운동량 격자의 중심을 맞춘 뒤, `OutPoly`로 $(x-K/2)^2$을 보조 레지스터에 계산한다. 이 값과 운동에너지 계수로 위상을 누적한 뒤 중간 계산과 최상위 비트 반전을 되돌리고 역 QFT로 위치기저에 복귀한다.
 
 ### 퍼텐셜: 상태별 계수를 QROM으로 불러와 위상으로 바꾼다
 
-퍼텐셜 계수는 전자상태에 따라 달라진다. `LoadCoeffsKDC`는 QROM을 사용해 현재 전자상태에 맞는 미리 계산된 비트열을 계수 레지스터로 적재한다. 여기서 QROM은 외부 데이터베이스에 양자적으로 접속하는 하드웨어 QRAM이 아니다. **고정된 coefficient table을 가역 회로로 조회하는 논리 연산**이다.
+퍼텐셜 계수는 전자상태에 따라 달라진다. `LoadCoeffsKDC`는 QROM을 사용해 현재 전자상태에 맞는 미리 계산된 비트열을 계수 레지스터로 적재한다. **고정된 coefficient table을 가역 회로로 조회하는 논리 연산**으로, 외부 메모리에 접근하는 하드웨어 QRAM과 구별된다.
 
-선형항은 $Q_r$, 이차항은 $Q_rQ_{r'}$를 산술회로로 계산한다. 그 결과를 재사용 가능한 $b$-qubit 위상 기울기 상태
+선형항은 $Q_r$, 이차항은 $Q_rQ_{r'}$를 산술회로로 계산하고, 그 결과와 계수에 따른 제어 가산으로 위상을 부여한다. 공개 코드는 기울기 레지스터의 모든 큐비트를 $\lvert 1\rangle$로 만든 뒤 QFT를 적용하므로, 준비 상태는
 
 $$
-|R_b\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{i2\pi y/2^b}|y\rangle
+|R_b^-\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{-i2\pi y/2^b}|y\rangle.
 $$
 
-에 더해 에너지와 시간에 해당하는 위상을 만든다. $b$는 회전의 고정소수점 정밀도를 정한다. 위상을 적용한 뒤 QROM과 산술 중간값을 uncompute해 보조 레지스터를 원상복구한다.
+이다. <a class="citation" href="#ref-3">[3]</a> 가산 회로가 부여하는 위상의 부호는 이 푸리에 규약과 가산·역가산의 방향으로 정해진다. $b$는 회전의 고정소수점 정밀도를 정한다. 위상을 적용한 뒤 QROM과 산술 중간값을 되돌린다.
 
 ### 비대각 전자 결합: XOR fragment와 Clifford 대각화
 
 전자상태 사이의 결합은 전자 부분에서 비대각 행렬을 만든다. 기반 알고리즘은 두 전자상태 인덱스의 XOR 차이가 같은 항을 하나의 fragment로 묶는다. 비트열이 한 자리에서 다르면 Hadamard로, 여러 자리에서 다르면 CNOT으로 차이를 한 자리에 모은 뒤 Hadamard로 block diagonalization한다. 이 과정은 Clifford gate만 사용한다. 각 fragment가 대각형이 된 뒤에야 위치별 퍼텐셜 위상을 효율적으로 적용할 수 있다.
 
-## 5. [원 데모] 코드가 실제로 계산한 것
+## 5. 네 격자점과 두 상태로 보는 전파
 
 실행된 예제의 설정은 다음과 같다.
 
@@ -184,53 +173,42 @@ $$
 | cache | 4 |
 | **합계** | **23** |
 
-물리 모형 자체는 전자 1개와 진동 2개, 즉 3 wires에 부호화된다. 나머지 20개는 정밀도와 가역 산술을 위한 작업공간이다. 따라서 이를 “23-qubit 실제 분자 계산”이라고 부르면 부정확하다.
+전자상태 표지에 한 큐비트, 진동 좌표에 두 큐비트가 쓰이므로 물리 모형을 담는 레지스터는 3 wires다. 나머지 20개는 정밀도와 가역 산술을 위한 작업공간이다. 전체 회로 폭에서 산술 비용이 얼마나 큰 몫을 차지하는지 이 작은 예제에서도 드러난다.
 
-초기 핵 상태는 조화진동자 바닥상태를 흉내 낸 이산 Gaussian 파동묶음이다. 프로그램은 각 $t=0,\ldots,10$에서 회로를 처음부터 다시 상태벡터로 계산하고 전자 레지스터의 `qp.probs`를 반환한다. shots를 지정하지 않았으므로 유한 표본의 통계가 아니라 상태벡터에서 얻은 exact probabilities다. 페이지에 보고된 전체 스크립트 실행시간은 약 8분 9.7초다.
+초기 전자상태는 $\lvert 0\rangle$이며, 핵 상태는 네 격자점에 놓인 조화진동자 바닥상태 근사의 이산 Gaussian 파동묶음이다. 데모 앞부분의 상태 준비 설명 그림은 64점 격자의 진폭을 그린 것으로, 실제 전파에 쓰인 네 점 격자와 구별해야 한다. 프로그램은 각 단계 $n=0,\ldots,10$의 시간 $t=n\,dt$에서 회로를 처음부터 다시 상태벡터로 계산하고 전자 레지스터의 `qp.probs`를 반환한다. shots를 지정하지 않았으므로 유한 표본의 통계가 아니라 상태벡터에서 얻은 exact probabilities다. 페이지에 보고된 전체 스크립트 실행시간은 약 8분 9.7초다.
 
-출력 그래프는 두 전자상태의 population이 진동하고 전달이 완전하지 않음을 보여준다. 두 곡선의 합이 1이라는 것은 unitary evolution과 두 상태 레지스터의 정규화에 따른 필요조건이다. 정확한 고전 격자 전파, MCTDH, Trotter 수렴 또는 실험과 비교하지 않았으므로 chemical accuracy의 검증은 아니다.
+출력에서는 두 전자상태의 점유 확률이 진동하며, 전달은 완전하지 않다. 두 곡선의 합이 1인 것은 정규화된 전체상태에서 전자 레지스터의 두 확률을 모두 더했기 때문이다. 이 곡선은 회로의 기능을 보여주는 출발점이며, 정량적인 분자 동역학을 판단하려면 전파 오차와 해밀토니안의 적절성을 각각 검사해야 한다.
 
-## 6. [계산 경계] 데모가 입증하지 않은 것
+## 6. 분자 정확도를 얻으려면 무엇을 검증해야 하나
 
-| 층 | 데모가 한 일 | 하지 않은 일 |
-|---|---|---|
-| 장치 | CPU 상태벡터 시뮬레이션 | 실제 QPU 또는 광자 칩 실행 |
-| 측정 | exact electronic probabilities | finite-shot 오차와 측정 비용 검증 |
-| 회로 | PennyLane 고수준 산술 연산 | 특정 하드웨어 native gate 컴파일 |
-| 오차 | 작은 격자·고정 정밀도·Trotter 근사 사용 | 오차항별 수렴 연구와 총 error budget |
-| 화학 | 임의 계수의 2-state·1-mode LVC toy | 실제 분자 parameterization과 고전 기준값 |
-| OLED | 일반 spin-vibronic 확장 가능성 | SOC, singlet–triplet, ISC/RISC, host 환경 |
-| 성능 주장 | 알고리즘 기능 설명 | 양자 가속 또는 양자우위 입증 |
+첫 기준은 같은 해밀토니안의 고전 전파다. exact grid나 MCTDH 기준선과 시간별 점유를 비교하면서 격자점 수 $K$와 좌표 범위, Trotter 간격 $dt$, 고정소수점 정밀도 $b$를 독립적으로 바꾸면 회로 근사의 기여를 분해할 수 있다. 원 데모에는 이런 수렴 비교가 포함되어 있지 않다.
 
-실제 연구에서는 최소한 다음 오차를 분리해야 한다.
+수치적으로 수렴한 회로라도 입력 모형이 중요한 상태와 진동을 빠뜨리면 분자의 경로를 놓친다. 전자구조 계산과 diabatization, 포함할 상태·모드의 선택, LVC/QVC와 비조화 항의 절단을 별도로 검토해야 한다. 실험과 비교할 때에는 초기 상태와 열적 분포도 맞춰야 한다.
 
-1. 포함한 전자상태와 진동모드의 선택
-2. LVC/QVC 및 비조화 퍼텐셜의 절단
-3. 전자구조 parameterization과 diabatization
-4. 위치 격자 $K$와 범위
-5. Trotter 시간간격과 차수
-6. 고정소수점 위상 정밀도 $b$
-7. 상태 준비와 유한-shot 측정
-8. 하드웨어 noise, 오류정정과 논리→물리 자원 변환
+장치 실행으로 옮기면 유한-shot 관측량의 불확실성, native gate 컴파일, 하드웨어 잡음과 오류정정 비용이 더해진다. 논문의 알고리즘 자원 수치와 실제 장치의 처리시간을 연결하려면 이 단계까지 포함한 오차·비용 예산이 필요하다.
 
-## 7. [기반 논문] 실제 연구 규모의 자원 추정
+## 7. 분자 모형을 키울 때의 자원 비용
 
-최신 arXiv v3와 저널 논문은 모드당 $K=16$ 격자점과 2차 product formula를 사용해 다음 **algorithmic/logical** 자원을 추정한다.
+원 발행 당시 확인한 저널 논문과 arXiv v3는 모드당 $K=16$ 격자점과 2차 product formula를 사용해 다음 **algorithmic/logical** 자원을 추정한다. 표의 1%·10%는 축소 모형에서 계산해 모드 수에 따라 외삽한 **전자상태 점유확률의 Trotter 오차 목표**다. 전자구조 입력부터 모든 오차를 합한 분자 정확도는 아니다.
 
 | 모형 | states · modes | 전파 조건 | qubits | Toffoli gates |
 |---|---:|---:|---:|---:|
 | $(\mathrm{NO})_4$-Anth | 5 · 19 | 100 fs, 10% | 146 | $5.47\times10^6$ |
 | $(\mathrm{NO})_4$-Anth | 5 · 19 | 100 fs, 1% | 146 | $1.73\times10^7$ |
-| anthracene dimer | 6 · 21 | 100 fs, 1% | 154 | $2.76\times10^6$ |
-| anthracene dimer | 6 · 21 | 500 fs, 1% | 154 | $3.54\times10^7$ |
+| $(\mathrm{NO})_4$-Anth dimer | 6 · 21 | 100 fs, 1% | 154 | $2.76\times10^6$ |
+| $(\mathrm{NO})_4$-Anth dimer | 6 · 21 | 500 fs, 1% | 154 | $3.54\times10^7$ |
 | anthracene/$\mathrm{C}_{60}$, reduced | 4 · 11 | 100 fs, 1% | 113 | $6.62\times10^5$ |
 | anthracene/$\mathrm{C}_{60}$, full | 4 · 246 | 100 fs, 1% | 1,053 | $2.66\times10^7$ |
 
-이 표는 실행 결과가 아니다. 물리 큐비트 수, 오류정정 code distance, magic-state factory, gate cycle time과 wall-clock time을 포함하지 않는다. 154 logical/algorithmic qubits를 현재의 154개 물리 큐비트 장치에서 실행할 수 있다는 뜻이 아니다.
+표의 dimer는 $(\mathrm{NO})_4$-Anth의 QVC 모형이다. 분자 사이 거리 $R$을 추가 동역학 좌표로 다루는 대신 $R=3.2$ Å에 고정한 퍼텐셜을 쓰므로, 분자 내 triplet 분리를 흉내 내기 위해 거리 좌표를 고정한 대리모형의 자원 추정으로 읽어야 한다.
 
-또한 버전을 섞어 읽으면 안 된다. arXiv v1은 full 246-mode anthracene/$\mathrm{C}_{60}$에 1,065 qubits와 $2.7\times10^9$ Toffoli를 제시했지만, v3는 empirical error extrapolation을 사용해 1,053 qubits와 $2.66\times10^7$ Toffoli로 갱신했다. 이는 QPU 성능 향상이 아니라 **자원 산정법과 알고리즘 분석의 변경**이다.
+표의 큐비트와 Toffoli 수는 논문이 산정한 알고리즘·논리 회로 비용이다. 물리 장치의 규모와 실행시간으로 바꾸려면 오류정정 code distance, magic-state factory, gate cycle time과 관측량 추출 비용을 더해야 한다.
 
-별도 PennyLane [자원 추정 데모](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics)는 희소성을 활용하지 않는 dense $(\mathrm{NO})_4$-Anth 상한으로 146 wires, $6.082\times10^7$ Toffoli, 총 $5.21\times10^8$ gates를 보고한다. 구조와 희소성을 어떻게 쓰는지가 feasibility를 크게 바꾼다는 뜻이다.
+판본 사이의 변화도 눈여겨볼 만하다. 2024년 11월 20일의 arXiv v1은 full 246-mode anthracene/$\mathrm{C}_{60}$에 1,065 qubits와 $2.7\times10^9$ Toffoli를 제시했지만, v3는 empirical error extrapolation을 사용해 1,053 qubits와 $2.66\times10^7$ Toffoli로 갱신했다. 2025년 10월 8일의 v3에서 줄어든 것은 **자원 산정법과 알고리즘 분석을 갱신해 얻은 추정치**다. <a class="citation" href="#ref-6">[6]</a>
+
+별도 PennyLane [자원 추정 데모](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics)는 희소성을 활용하지 않는 dense $(\mathrm{NO})_4$-Anth 상한으로 146 wires, $6.082\times10^7$ Toffoli, 총 $5.21\times10^8$ gates를 보고한다. 이 데모의 기본 위상 정밀도는 $10^{-6}$, 전파는 500단계다. 구조·희소성·정밀도와 전파 조건을 맞춰 읽어야 두 산정치의 차이를 이해할 수 있다. <a class="citation" href="#ref-7">[7]</a>
+
+논문은 강하게 상관된 고차 진동–전자 동역학을 고전 tensor 방법에 어려울 수 있는 영역으로 제시한다. 실제 이득을 판단하려면 같은 정확도에서 해밀토니안 구성, 전파 시간과 관측량 추출까지 포함한 전체 비교가 필요하다.
 
 ## 8. VQE와는 무엇이 다른가
 
@@ -244,9 +222,9 @@ $$
 
 VQE로 얻은 에너지는 동역학 해밀토니안의 입력 일부가 될 수 있다. 그러나 정적 에너지 하나가 진동이 유도하는 시간별 population transfer를 자동으로 주지는 않는다.
 
-## 9. [리뷰 해석] TADF·PhOLED 연구에 연결되는 지점
+## 9. TADF·PhOLED 연구로 이어지는 질문
 
-Thermally activated delayed fluorescence(TADF)의 reverse intersystem crossing(RISC)은 $\Delta E_{\mathrm{ST}}$ 하나로 결정되지 않는다. singlet와 triplet의 state character, higher triplet, SOC, 특정 promoting mode, 주변 유전환경과 구조 변동이 함께 관여할 수 있다. KDC 형식은 원리상 퍼텐셜 행렬에 SOC 해밀토니안을 더해
+Thermally activated delayed fluorescence(TADF)의 reverse intersystem crossing(RISC)은 $\Delta E_{\mathrm{ST}}$ 하나로 결정되지 않는다. singlet와 triplet의 state character, higher triplet, 스핀–궤도 결합(SOC), 특정 promoting mode, 주변 유전환경과 구조 변동이 함께 관여할 수 있다. KDC 형식은 원리상 퍼텐셜 행렬에 SOC 해밀토니안을 더해
 
 $$
 \mathbf W'(\mathbf Q)=\mathbf W(\mathbf Q)+\mathbf H_{\mathrm{SO}}(\mathbf Q)
@@ -263,11 +241,11 @@ $$
 | 시간별 상태점유 | $P_{S_1}(t)$, $P_{T_1}(t)$, $P_{T_n}(t)$ |
 | 스펙트럼 | 시간 상관함수의 Fourier transform |
 
-그러나 이 연결은 **리뷰의 확장 해석**이지 현재 데모의 결과가 아니다. 데모에는 SOC도 triplet도 없다. 실제 TADF·PhOLED 박막에는 열적 진동분포, dephasing, host polarization, disorder, 분자간 모드와 개방계 relaxation이 중요하다. 닫힌 계 toy model의 coherent oscillation을 비가역적인 ISC/RISC rate로 바로 읽을 수 없다.
+이 연결은 SOC와 triplet 상태를 추가하는 연구 제안이다. 실제 TADF·PhOLED 박막으로 확장할 때에는 열적 진동분포, dephasing, host polarization, disorder, 분자간 모드와 개방계 relaxation이 중요하다. 닫힌 계 toy model의 coherent oscillation을 비가역적인 ISC/RISC rate로 바로 읽을 수 없다.
 
-따라서 이 알고리즘은 가까운 시기의 high-throughput generator보다, 미래 fault-tolerant 환경에서 소수의 고가치 후보를 검증하는 **동역학 커널**로 보는 편이 타당하다.
+이 글이 기대하는 활용은 미래 fault-tolerant 환경에서 소수의 고가치 후보를 정밀하게 살피는 **동역학 커널**이다. 후보 생성과 저비용 선별을 거친 뒤, 정적인 지표만으로 갈리지 않는 경로를 검증하는 데 계산을 집중할 수 있다.
 
-## 10. OLED 역설계에 넣는다면: 제한된 검증형 workflow
+## 10. OLED 역설계 안에서 검증을 시작하는 방법
 
 현실적인 연결 순서는 다음과 같다.
 
@@ -282,21 +260,29 @@ $$
 
 첫 PoC는 $S_1$, $T_1$과 한두 개 higher triplet, 5–10개 promoting mode 정도의 공개 해밀토니안으로 시작하는 편이 낫다. 모든 trajectory를 exact 또는 MCTDH 기준과 비교하고, $K$, $dt$, $b$를 독립적으로 변화시켜 오차를 분해해야 한다. 이 검증을 통과한 뒤에야 larger-state 또는 open-system 확장을 논의할 수 있다.
 
-## 최종 평가
+## 정적 준위에서 시간별 경로로
 
-PennyLane 데모는 진동-전자 해밀토니안을 양자회로의 구체적인 구성요소로 번역한 좋은 구현 튜토리얼이다. QFT가 운동에너지에, QROM과 가역 산술이 상태·좌표 의존 퍼텐셜에, phase-gradient state가 시간진화 위상에, Clifford fragment diagonalization이 다전자상태 결합에 각각 어떤 역할을 하는지 코드 수준에서 볼 수 있다.
+PennyLane 데모의 장점은 물리와 회로 사이를 따라 읽을 수 있다는 데 있다. QFT는 운동에너지를, QROM과 가역 산술은 상태·좌표 의존 퍼텐셜을, phase-gradient state는 시간진화 위상을 맡는다. 작은 모형에서 이 역할을 이해하면 더 큰 동역학 계산의 비용이 어디서 생기는지도 보인다.
 
-과학적 주장은 작게 유지해야 한다. 23-wire CPU 상태벡터 toy simulation이며, 실제 분자나 QPU, quantitative dynamics 또는 quantum advantage를 검증하지 않았다. 기반 논문의 수백 logical qubits와 수백만 Toffoli도 물리 하드웨어 비용이 아니라 fault-tolerant 알고리즘 수준의 추정이다.
+OLED 분자설계에서 얻고 싶은 것은 상태별 점유, higher-state mediation, SOC와 promoting mode가 만드는 경로다. 신뢰할 수 있는 해밀토니안과 고전 기준선 위에서 이런 시간 정보를 검증해야, 정적 $\Delta E_{\mathrm{ST}}$와 oscillator strength에 동역학적 의미를 보탤 수 있다. 회로는 그 연결의 한 구성요소이며, 이 데모는 구성요소를 직접 살펴볼 수 있는 출발점이다.
 
-그럼에도 연구 방향은 분명하다. OLED 분자설계가 정적 $\Delta E_{\mathrm{ST}}$와 oscillator strength만 보는 단계에서 벗어나, 상태별 population, higher-state mediation, SOC와 promoting mode의 시간동역학을 기작 중심 라벨로 사용하려면 이런 실시간 진동-전자 전파가 필요하다. 그 가능성을 현실적인 연구도구로 바꾸는 데에는 더 깊은 회로만큼이나 신뢰할 수 있는 해밀토니안 구성과 엄격한 고전 기준선이 중요하다.
+## 작성 정보와 개정 이력
 
-## 근거 자료
+- 원 발행일·문헌 기준일: 2026-08-29. 당시 데모와 논문 판본의 결과를 유지한다.
+- 편집 개정·원문 대조: 2026-11-10. 한영 설명의 반복과 캡션을 다듬고, dimer 자원 표의 분자명·거리 고정 조건을 보완했다. 상태 준비 설명용 64점 그림과 실제 네 점 전파를 구별하고 단계 번호와 물리 시간을 명료화했다. 기존 여섯 자원 수치는 유지한다.
+- 원 작성 보조와 2026-08-29 공개본 복구: OpenAI Codex Work Mode. 원 세션의 정확한 모델·역할 명단은 미보존이며, 당시 복구에서 확인한 Volta·Feynman·Carson·Kierkegaard의 역할 기록은 유지한다. 당시 편집 하네스 명칭은 AI Tech Review Editorial Harness v2026.08이다.
+- 이번 감수: 편집부(AEDAUT)의 Codex root(편집·통합), vibronic_science(논문·v1/v3·자원 조건), vibronic_code_refs(고정 커밋의 두 데모·공식 문서·APS 서지), vibronic_prose(한영 문맥과 두 그림·캡션의 독립 감수). 정확한 모델 식별자는 미보존이다.
+- 실행시간과 자원 수치는 원저자 보고값이다. 이번에 23-wire 스크립트나 QPU·분자 계산을 새로 실행하지 않았으며 OLED 검증 workflow는 연구 제안이다. 사람의 문장별 감수나 독자 평가를 수행한 것으로 표시하지 않는다.
+- 현재 제호: Agentic Tech Review Letters(ATRL). 공통 문체 감사 하네스의 2026-11-06 개정 기준을 적용했다. 과학 본문은 arXiv v3 전체와 v1 선택 구간을 대조하고 정식 저널 서지는 Crossref로 확인했다. 출판사 최종판 PDF는 접근 확인 화면으로 확보하지 못했다.
 
-1. Emily Nobes, [*A quantum algorithm for vibronic dynamics*](https://pennylane.ai/demos/simulating_vibronic_dynamics), PennyLane Demos, 19 August 2026.
-2. D. Motlagh et al., [*Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design*](https://doi.org/10.1088/2058-9565/ae0828), *Quantum Science and Technology* **10**, 045048 (2025).
-3. D. Motlagh et al., [arXiv:2411.13669v3](https://arxiv.org/html/2411.13669v3), current technical version.
-4. D. Dhawan, [*Quantifying resource requirements for vibronic dynamics simulation*](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics), PennyLane Demos, updated 27 May 2026.
-5. PennyLaneAI, [official demo source at fixed commit](https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py).
-6. PennyLane, [`lightning.qubit` documentation](https://docs.pennylane.ai/projects/lightning/en/stable/index.html).
+## References
 
-*검증 메모: 수치와 실행 조건은 PennyLane 공개 코드, 공식 문서, 동료평가 논문과 최신 arXiv v3를 대조했다. 데모 결과, 논문 자원 추정, OLED 적용에 관한 리뷰 해석을 서로 다른 증거 층으로 유지했다.*
+<ol class="reference-list">
+<li id="ref-1" value="1">E. Nobes, <a href="https://pennylane.ai/demos/simulating_vibronic_dynamics">A quantum algorithm for vibronic dynamics, PennyLane Demos (19 August 2026)</a>.</li>
+<li id="ref-2" value="2">D. Motlagh, R. A. Lang, P. Jain, J. A. Campos-Gonzalez-Angulo, W. Maxwell, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://doi.org/10.1088/2058-9565/ae0828">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, Quantum Sci. Technol. <b>10</b>, 045048 (2025)</a>.</li>
+<li id="ref-3" value="3">PennyLaneAI, <a href="https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py">Simulating Vibronic Dynamics, demonstrations_v2/simulating_vibronic_dynamics/demo.py, demos repository, commit 4e1b6f0c2501ff79fb6addbaf9323a9399e3f824 (19 August 2026)</a>.</li>
+<li id="ref-4" value="4">PennyLane, <a href="https://docs.pennylane.ai/projects/lightning/en/stable/lightning_qubit/device.html">Lightning Qubit device, Lightning 0.45.0 documentation (accessed 10 November 2026)</a>.</li>
+<li id="ref-5" value="5">D. Motlagh, R. A. Lang, P. Jain, J. A. Campos-Gonzalez-Angulo, W. Maxwell, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://arxiv.org/abs/2411.13669v3">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, arXiv:2411.13669v3 (2025)</a>.</li>
+<li id="ref-6" value="6">D. Motlagh, R. A. Lang, J. A. Campos-Gonzalez-Angulo, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://arxiv.org/abs/2411.13669v1">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, arXiv:2411.13669v1 (2024)</a>.</li>
+<li id="ref-7" value="7">D. Dhawan, <a href="https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics">Quantifying resource requirements for vibronic dynamics simulation, PennyLane Demos (16 March 2026; updated 27 May 2026)</a>.</li>
+</ol>

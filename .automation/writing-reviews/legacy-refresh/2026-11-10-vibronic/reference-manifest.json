@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "article_id": "2026-08-29_quantum-simulation-vibronic-dynamics",
+  "original_evidence_cutoff": "2026-08-29",
+  "verification_date": "2026-11-10",
+  "references": [
+    {
+      "number": 1,
+      "url": "https://pennylane.ai/demos/simulating_vibronic_dynamics",
+      "version": "page displayed publication 2026-08-19; source at commit 4e1b6f0c2501ff79fb6addbaf9323a9399e3f824",
+      "read_scope": "Full tutorial source and metadata read; published output plot inspected."
+    },
+    {
+      "number": 2,
+      "url": "https://doi.org/10.1088/2058-9565/ae0828",
+      "version": "Quantum Sci. Technol. 10, 045048 (2025); online 2025-09-29",
+      "read_scope": "Crossref bibliographic metadata and arXiv DOI link; publisher VOR PDF unavailable behind access verification; scientific text checked against v3."
+    },
+    {
+      "number": 3,
+      "url": "https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py",
+      "version": "commit 4e1b6f0c2501ff79fb6addbaf9323a9399e3f824",
+      "read_scope": "Full 792-line source; no full circuit rerun. Source dependencies PennyLane 0.45.0 / Lightning 0.45.0."
+    },
+    {
+      "number": 4,
+      "url": "https://docs.pennylane.ai/projects/lightning/en/stable/lightning_qubit/device.html",
+      "version": "Lightning 0.45.0; accessed 2026-11-10",
+      "read_scope": "Official device documentation and relevant QFT, SemiAdder and probs definitions; current docs not retroactive proof of historical versions."
+    },
+    {
+      "number": 5,
+      "url": "https://arxiv.org/abs/2411.13669v3",
+      "version": "v3, 2025-10-08, eight authors",
+      "read_scope": "Full 21-page scientific paper; equations, methods, Table I and appendices. Resource table rendered and inspected."
+    },
+    {
+      "number": 6,
+      "url": "https://arxiv.org/abs/2411.13669v1",
+      "version": "v1, 2024-11-20, six authors",
+      "read_scope": "Selected resource/error sections and Table I; table rendered and compared with v3."
+    },
+    {
+      "number": 7,
+      "url": "https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics",
+      "version": "page published 2026-03-16, updated 2026-05-27; same fixed source commit",
+      "read_scope": "Full 388-line tutorial source and metadata; default precision and 500 steps checked; estimator not rerun."
+    }
+  ],
+  "additional_resource_check": {
+    "repository": "https://github.com/ixy-lange/VibeCounting",
+    "commit": "3f1f5e500a7829796ed3faf68c7ca5549cf7f420",
+    "scope": "Selected error-estimation cells inspected; notebook not executed; table values remain the paper-reported estimates."
+  },
+  "execution": "No full 23-wire circuit, resource estimator, molecular calculation or QPU experiment. Only small normalization/Fourier arithmetic checked independently.",
+  "unchanged_figures": [
+    {
+      "path": "2026-08-29_quantum-simulation-vibronic-dynamics/artifacts/vibronic_dynamics_algorithm_map.svg",
+      "sha256": "83b103cb7a96613445d22b38bb54d2653b323eb6176e6945c404405c8497dd0a"
+    },
+    {
+      "path": "2026-08-29_quantum-simulation-vibronic-dynamics/artifacts/vibronic_dynamics_quantum_simulation_hero.jpg",
+      "sha256": "1fbafecaeeb8afdd8a38aa61e91db1c0050ae68c64fe63269bc2425ac2ef8330"
+    }
+  ]
+}

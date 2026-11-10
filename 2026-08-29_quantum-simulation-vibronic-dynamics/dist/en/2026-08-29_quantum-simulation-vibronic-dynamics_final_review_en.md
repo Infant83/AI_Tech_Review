@@ -4,18 +4,19 @@ subtitle: "How the KDC Hamiltonian is mapped to grid-encoded qubits, what a 23-w
 type: final review
 author: "Hyun-Jung Kim"
 date created: 2026-08-29
-date modified: 2026-08-29
+date modified: 2026-11-10
+issue date: 2026-08-29
 status: checked
 language: en
-canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
-alternate ko url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
-alternate en url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
-alternate x-default url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
-social image url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
+canonical url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
+alternate ko url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
+alternate en url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/en/"
+alternate x-default url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/"
+social image url: "https://infant83.io/AI_Tech_Review/reviews/2026-08-29_quantum-simulation-vibronic-dynamics/vibronic_dynamics_quantum_simulation_hero.jpg"
 writing assistance: "OpenAI Codex Work Mode; exact model identifier and original article agent roster not retained"
 agent roles: "2026-08-29 public repair: orchestration and editorial integration; LinkedIn and primary-paper research; disclosure design; repository audit and publication QA"
-editorial harness: "AI Tech Review Editorial Harness v2026.08"
-verification sources: "PennyLane demo and fixed-commit source; peer-reviewed paper; current arXiv version; official documentation; final HTML"
+editorial harness: "Common prose audit harness, revised 2026-11-06; original v2026.08 record retained in revision history"
+verification sources: "Fixed-commit demo sources; arXiv v3 full paper and selected v1 passages; Crossref journal metadata; official documentation; final web editions"
 human review record: "scope, direction, and publication request confirmed; line-by-line review not separately retained"
 evidence cutoff: "2026-08-29"
 tags:
@@ -31,40 +32,28 @@ tags:
 
 # From Static Energies to Photoexcited Dynamics: Vibronic Quantum Simulation in PennyLane
 
-A molecule does not respond to light through electronic energy levels alone. Its nuclei move, bonds stretch and twist, and those motions change the energies and characters of the electronic states. This coupled electronic–vibrational motion—**vibronic dynamics**—is central to internal conversion, intersystem crossing, energy transfer, and charge transfer.
+Absorbing light changes a molecule’s electronic state and alters its nuclear motion. Stretching and twisting bonds alter the energies and characters of the electronic states in turn. Following this coupled **vibronic dynamics** reveals the pathways through which excitation is redistributed.
 
-The PennyLane demo [*A quantum algorithm for vibronic dynamics*](https://pennylane.ai/demos/simulating_vibronic_dynamics), published on 19 August 2026, turns this problem into executable circuit components. It implements a small example of the peer-reviewed algorithm developed by Motlagh and co-workers in [*Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design*](https://doi.org/10.1088/2058-9565/ae0828), *Quantum Science and Technology* **10**, 045048 (2025).
+Emily Nobes’s PennyLane demo *A quantum algorithm for vibronic dynamics*, published on 19 August 2026, makes those motions inspectable as circuit operations. <a class="citation" href="#ref-1">[1]</a> It implements the peer-reviewed algorithm of Motlagh and co-workers, *Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design*. <a class="citation" href="#ref-2">[2]</a>
 
-The boundary is important. This is **not a real molecule run on a quantum processor**. The supplied program evolves an illustrative two-electronic-state, one-vibrational-mode model with the CPU-based `lightning.qubit` state-vector simulator. Its contribution is architectural and educational: it exposes how a fault-tolerant vibronic algorithm can be assembled from a real-space grid, a Quantum Fourier Transform (QFT), quantum read-only memory (QROM), reversible arithmetic, a phase-gradient state, and a second-order Trotter product formula.
+The public code propagates two electronic states and one vibrational mode with the CPU-based `lightning.qubit` state-vector simulator. <a class="citation" href="#ref-3">[3]</a> <a class="citation" href="#ref-4">[4]</a> This small model contains the real-space grid, Quantum Fourier Transform (QFT), fixed-table lookup (QROM), reversible arithmetic, and phase operations needed to assemble the evolution. We follow their physical roles, then consider how time-resolved populations could inform mechanism-aware OLED design.
 
 ![Concept illustration connecting coupled electron–nuclear motion, potential-energy surfaces, and grid-encoded quantum time evolution](vibronic_dynamics_quantum_simulation_hero.jpg)
 
-*Figure 1. Concept illustration linking electronic-state change, nuclear-wavepacket motion, and real-space grid encoding. It is not the structure of a specific molecule, a literal quantum circuit, or a computed result.*
+*Figure 1. AI-generated concept illustration. Molecular vibration at left connects through electronic-state potential surfaces and a nuclear wavepacket in the centre to grid-encoded time evolution at right.*
 
-::: highlight Review verdict
-The PennyLane page is an implementation tutorial for a future fault-tolerant algorithm, not evidence that present quantum hardware has solved nonadiabatic molecular dynamics. Its executed result is a 23-wire classical state-vector toy simulation. The formalism is relevant to mechanism-resolved TADF and OLED photophysics, but the code contains no spin–orbit coupling, ISC/RISC, real-molecule parameters, thermal environment, or QPU run.
-:::
+## The calculation at a glance
 
-## Evidence at a glance
-
-| Item | Verified scope |
+| Component | What this review examines |
 |---|---|
-| Public artifact | Emily Nobes, PennyLane educational demo, 19 August 2026 |
-| Underlying research | Motlagh et al., *Quantum Science and Technology* **10**, 045048 (2025) |
-| Algorithm class | Digital gate-based real-time Hamiltonian simulation; not VQE, QAOA, or annealing |
-| Execution backend | CPU C++ `lightning.qubit` state-vector simulator |
-| Demonstrated model | Two electronic states, one vibrational mode, four grid points, linear coupling |
-| Full circuit width | 23 simulated wires: three system wires and 20 work/precision wires |
-| Readout | Exact electronic-state probabilities from the state vector |
-| Not demonstrated | Molecular accuracy, a QPU run, noise/error correction, quantum advantage, or OLED prediction |
-| Research position | Algorithm and resource-feasibility work aimed at early fault-tolerant computing |
+| Physical model | Two electronic states, one vibrational mode, linear vibronic coupling |
+| Coordinates | Four grid points stored in two qubits per mode |
+| Circuit | Real-time propagation using coefficient lookup, arithmetic, and phases |
+| Execution | CPU `lightning.qubit`, 23 wires in total |
+| Observable | Electronic-state populations from the state vector |
+| Paper estimates | Algorithmic/logical resources for larger chemically motivated models |
 
-This review keeps four evidence layers separate:
-
-- **Demo result:** settings and outputs in the public PennyLane code
-- **Source paper:** the peer-reviewed algorithm and current arXiv v3 resource estimates
-- **Computational boundary:** accuracy, chemistry, and hardware claims that were not tested
-- **Review inference:** a bounded path toward TADF, PhOLED, and inverse-design research
+The demo execution and the paper’s resource estimates operate at different scales. Understanding the circuit comes first; molecular accuracy and physical-device costs require additional tests.
 
 ## 1. An intuitive picture: a wavepacket moving across several landscapes
 
@@ -101,7 +90,7 @@ $$
 
 The coordinate-independent $\lambda$ terms set energy offsets and couplings, $a_rQ_r$ gives linear vibronic coupling, and $b_{rr'}Q_rQ_{r'}$ introduces quadratic and mode–mode dependence. Keeping only the linear terms gives an LVC model; retaining the quadratic terms gives a QVC model. Each $Q_r$ is a dimensionless molecular normal coordinate, not the position of one atom.
 
-This Hamiltonian is an input model, not an automatic electronic-structure calculation. Electronic states, frequencies, normal modes, and coupling coefficients must be obtained upstream from DFT/TDDFT or multireference calculations and a diabatization procedure. The [current arXiv v3](https://arxiv.org/html/2411.13669v3) explicitly leaves Hamiltonian construction outside the quantum-propagation algorithm.
+Electronic states, frequencies, normal modes, and coupling coefficients for this input Hamiltonian must be obtained upstream from DFT/TDDFT or multireference calculations and a diabatization procedure. The [then-available arXiv v3](https://arxiv.org/html/2411.13669v3) explicitly leaves Hamiltonian construction outside the quantum-propagation algorithm. <a class="citation" href="#ref-5">[5]</a>
 
 ## 3. Encoding continuous nuclear motion on qubits
 
@@ -120,13 +109,13 @@ $$
 
 qubits before work and precision registers are added.
 
-One common misconception should be removed: this demo does **not** place vibrations in photonic continuous-variable qumodes. It represents both the electronic-state label and every vibrational position grid with **qubit registers**, then evaluates the circuit with `lightning.qubit`. The code variable called `electrons` denotes the diabatic electronic-state register, not the number of electrons.
+Both the electronic label and vibrational coordinates are encoded in **qubit registers**. A continuous normal coordinate is represented by a finite position grid, distinct from a photonic continuous-variable qumode. The code variable `electrons` labels the diabatic electronic-state register.
 
 A primitive classical grid stores $N K^M$ complex amplitudes explicitly, so memory can grow exponentially with the number of modes. A quantum state can encode those amplitudes in a smaller register. That representational compression does not eliminate state preparation, coefficient loading, quantum arithmetic, circuit precision, error correction, or measurement costs.
 
 ![Exact mapping from the KDC Hamiltonian to qubit grids and a symmetric second-order Trotter step](vibronic_dynamics_algorithm_map.svg)
 
-*Figure 2. Source-derived mapping from the vibronic model to electronic-state and vibrational grid registers and then to one symmetric Trotter step. The scope bar records the settings executed in the PennyLane toy example. The vibrational coordinates are grid-encoded on qubits, not qumodes.*
+*Figure 2. Circuit map drawn from the PennyLane demo and source paper. Read from the KDC Hamiltonian through electronic-state and vibrational grid registers to one symmetric Trotter step. The bottom strip records the executed model and output settings.*
 
 ## 4. How one time step is assembled
 
@@ -134,25 +123,25 @@ The target evolution is $|\psi(t)\rangle=e^{-iHt}|\psi(0)\rangle$. Kinetic and p
 
 ### Kinetic energy: visit momentum space with a QFT
 
-Position $Q$ is diagonal on the computational grid, whereas momentum $P$ is not. For each mode, the circuit applies a QFT to enter the momentum representation, uses `OutPoly` to compute $(x-K/2)^2$ in a work register, converts the kinetic contribution into phase, uncomputes the intermediate value, and applies the inverse QFT.
+Position $Q$ is diagonal on the computational grid, whereas momentum $P$ is not. For each mode, the circuit applies a QFT and flips the most significant bit to centre the momentum grid, then uses `OutPoly` to compute $(x-K/2)^2$ in a work register, converts the kinetic contribution into phase, uncomputes the intermediate value, reverses the bit flip, and applies the inverse QFT.
 
 ### Potential energy: load state-specific coefficients and turn them into phase
 
 Potential coefficients depend on the electronic state. `LoadCoeffsKDC` uses QROM to load a precomputed bit string conditioned on the electronic-state register. QROM here is a reversible lookup circuit for a fixed coefficient table; it is not a hardware QRAM that provides coherent access to an external database.
 
-Reversible arithmetic evaluates $Q_r$ for a linear term or $Q_rQ_{r'}$ for a quadratic term. The result controls addition into the reusable $b$-qubit phase-gradient state
+Reversible arithmetic evaluates $Q_r$ or $Q_rQ_{r'}$; controlled additions using the result and coefficients impart a phase. The public code sets every gradient qubit to $\lvert 1\rangle$ and applies QFT, preparing
 
 $$
-|R_b\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{i2\pi y/2^b}|y\rangle,
+|R_b^-\rangle=2^{-b/2}\sum_{y=0}^{2^b-1}e^{-i2\pi y/2^b}|y\rangle.
 $$
 
-thereby applying the energy–time phase. The QROM and arithmetic work are uncomputed afterward.
+<a class="citation" href="#ref-3">[3]</a> The sign imparted by an adder depends on this Fourier convention and on whether addition or inverse addition is used. The register size $b$ sets fixed-point phase precision. The QROM and arithmetic work are uncomputed afterward.
 
 ### Off-diagonal electronic coupling: XOR fragments and Clifford diagonalization
 
 Electronic-state couplings make the potential matrix off-diagonal. The source algorithm groups matrix elements whose electronic labels have the same bitwise XOR difference. A single differing bit can be diagonalized with a Hadamard; multiple differing bits are reduced with controlled-NOT operations before the Hadamard. This block-diagonalization uses Clifford gates, after which each fragment can receive a coordinate-dependent phase efficiently.
 
-## 5. What the public program actually computes
+## 5. Propagation on four grid points and two states
 
 | Setting | Value | Meaning |
 |---|---:|---|
@@ -179,46 +168,42 @@ The registers total 23 simulated wires:
 | cache | 4 |
 | **total** | **23** |
 
-Only three wires encode the physical toy model. The other 20 provide precision and reversible-arithmetic workspace. Calling this a “23-qubit molecular calculation” would therefore be misleading.
+One qubit labels the electronic state and two encode the vibrational coordinate: three wires hold the physical model. The other 20 provide precision and reversible-arithmetic workspace. Even this small example shows how much circuit width is devoted to arithmetic.
 
-The initial nuclear state is a discrete Gaussian approximation to a harmonic-oscillator ground wavepacket. For each $t=0,\ldots,10$, the program recomputes the state vector from the beginning and returns `qp.probs` on the electronic register. No shots are specified, so the curves are exact state-vector probabilities rather than finite-sampling estimates. The page reports approximately 8 minutes 9.7 seconds for the whole script.
+The electronic register starts in $\lvert 0\rangle$, while the nuclear register holds a four-point discrete Gaussian approximation to a harmonic-oscillator ground wavepacket. The earlier state-preparation illustration plots amplitudes on a 64-point grid; the actual propagation uses four points. For each step $n=0,\ldots,10$ at time $t=n\,dt$, the program recomputes the state vector from the beginning and returns `qp.probs` on the electronic register. No shots are specified, so the curves are exact state-vector probabilities rather than finite-sampling estimates. The page reports approximately 8 minutes 9.7 seconds for the whole script.
 
-The two electronic populations oscillate and the transfer remains incomplete. Their sum staying at one is a necessary consequence of a normalized unitary evolution in a two-state register. The demo does not compare against exact classical grid propagation, MCTDH, a Trotter convergence study, or experiment, so this is a qualitative functionality check rather than a chemical-accuracy validation.
+The two electronic populations oscillate and transfer remains incomplete. Their sum is one because the two probabilities exhaust the electronic register of the normalized full state. The curves establish circuit functionality; quantitative molecular dynamics requires separate tests of propagation error and the physical Hamiltonian.
 
-## 6. Computational boundary
+## 6. From a working circuit to molecular accuracy
 
-| Layer | Demonstrated | Not demonstrated |
-|---|---|---|
-| device | CPU state-vector simulation | QPU or photonic-chip execution |
-| measurement | exact electronic probabilities | finite-shot uncertainty and sampling cost |
-| circuit | high-level PennyLane arithmetic | native compilation to a hardware topology |
-| error | one coarse grid, fixed precision, and Trotterization | a separated, converged error budget |
-| chemistry | illustrative two-state, one-mode LVC | real-molecule parameterization and a classical reference |
-| OLED | formal possibility of spin-vibronic extension | SOC, singlet–triplet states, ISC/RISC, or a host environment |
-| performance | implementation functionality | quantum speedup or quantum advantage |
+The first reference is classical propagation of the same Hamiltonian. Comparing populations with an exact grid or MCTDH calculation while independently varying grid size $K$ and coordinate range, Trotter step $dt$, and fixed-point precision $b$ separates the circuit approximations. The demo does not include this convergence study.
 
-A realistic study must separate at least eight errors: state/mode selection, LVC/QVC truncation, electronic-structure parameterization and diabatization, grid size $K$, Trotter order and step size, fixed-point precision $b$, state preparation and finite-shot readout, and finally hardware noise plus logical-to-physical error-correction overhead.
+A converged circuit can still miss a pathway if its input omits important states or modes. Electronic-structure parameterization, diabatization, state/mode selection, and truncation at LVC or QVC order need their own validation. Comparisons with experiment also require appropriate initial states and thermal populations.
+
+Device execution adds finite-shot uncertainty, native-gate compilation, hardware noise, and error-correction overhead. An error and cost budget covering those stages is needed to translate algorithmic resource counts into physical-device runtime.
 
 ## 7. Source-paper resource estimates at chemically motivated scale
 
-The current journal/arXiv v3 analysis uses $K=16$ grid points per mode and a second-order product formula. Selected **algorithmic/logical** estimates are:
+The journal/arXiv v3 analysis available at the original evidence cutoff uses $K=16$ grid points per mode and a second-order product formula. Selected **algorithmic/logical** estimates are listed below. The 1% and 10% targets concern **Trotter error in electronic populations**, estimated in reduced models and extrapolated with mode count. They do not combine all errors from electronic-structure inputs onward:
 
 | Model | States · modes | Propagation target | Qubits | Toffoli gates |
 |---|---:|---:|---:|---:|
 | $(\mathrm{NO})_4$-Anth | 5 · 19 | 100 fs, 10% | 146 | $5.47\times10^6$ |
 | $(\mathrm{NO})_4$-Anth | 5 · 19 | 100 fs, 1% | 146 | $1.73\times10^7$ |
-| anthracene dimer | 6 · 21 | 100 fs, 1% | 154 | $2.76\times10^6$ |
-| anthracene dimer | 6 · 21 | 500 fs, 1% | 154 | $3.54\times10^7$ |
+| $(\mathrm{NO})_4$-Anth dimer | 6 · 21 | 100 fs, 1% | 154 | $2.76\times10^6$ |
+| $(\mathrm{NO})_4$-Anth dimer | 6 · 21 | 500 fs, 1% | 154 | $3.54\times10^7$ |
 | anthracene/$\mathrm{C}_{60}$, reduced | 4 · 11 | 100 fs, 1% | 113 | $6.62\times10^5$ |
 | anthracene/$\mathrm{C}_{60}$, full | 4 · 246 | 100 fs, 1% | 1,053 | $2.66\times10^7$ |
 
-These circuits were not executed. The estimates do not include physical-qubit counts, code distance, magic-state factories, control hardware, or an end-to-end wall-clock time. A 154-logical-qubit estimate does not mean that the calculation fits on a present 154-physical-qubit processor.
+The dimer rows refer to the QVC model of $(\mathrm{NO})_4$-Anth. Its potential is fixed at intermolecular separation $R=3.2$ Å rather than propagating an additional separation coordinate. It is a fixed-separation proxy for intramolecular triplet-separation dynamics.
 
-Version control also matters. The v1 preprint reported 1,065 qubits and $2.7\times10^9$ Toffolis for the full 246-mode anthracene/$\mathrm{C}_{60}$ model. Version 3 reports 1,053 qubits and $2.66\times10^7$ Toffolis after changing the resource and empirical-error analysis. That reduction is an analytical revision, not a hardware result.
+The table counts algorithmic/logical circuit resources. Physical-device size and runtime additionally depend on error-correction code distance, magic-state factories, gate cycle time, and observable extraction.
 
-A separate PennyLane [resource-estimation demo](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics) gives a dense upper bound of 146 wires, $6.082\times10^7$ Toffolis, and $5.21\times10^8$ total gates for a $(\mathrm{NO})_4$-Anth model. Its larger count illustrates how Hamiltonian sparsity and circuit construction materially change feasibility.
+The change between versions is instructive. The v1 preprint of 20 November 2024 reported 1,065 qubits and $2.7\times10^9$ Toffolis for the full 246-mode anthracene/$\mathrm{C}_{60}$ model. Version 3 reports 1,053 qubits and $2.66\times10^7$ Toffolis after changing the resource and empirical-error analysis. The smaller estimate in v3, dated 8 October 2025, follows a revision of the resource and algorithm analysis. <a class="citation" href="#ref-6">[6]</a>
 
-No quantum advantage is established. The peer-reviewed work identifies strongly correlated, higher-order vibronic dynamics as a plausible difficult regime for classical tensor methods, but a matched end-to-end comparison in accuracy, runtime, Hamiltonian construction, and observable extraction remains undone.
+A separate PennyLane [resource-estimation demo](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics) gives a dense upper bound of 146 wires, $6.082\times10^7$ Toffolis, and $5.21\times10^8$ total gates for a $(\mathrm{NO})_4$-Anth model. This demo uses default phase precision $10^{-6}$ and 500 propagation steps. Structure, sparsity, precision, and propagation settings must be aligned when comparing the estimates. <a class="citation" href="#ref-7">[7]</a>
+
+The peer-reviewed work identifies strongly correlated, higher-order vibronic dynamics as a plausible difficult regime for classical tensor methods, but a matched end-to-end comparison in accuracy, runtime, Hamiltonian construction, and observable extraction remains undone.
 
 ## 8. How this differs from VQE
 
@@ -232,7 +217,7 @@ No quantum advantage is established. The peer-reviewed work identifies strongly 
 
 Static energies from VQE could help parameterize a dynamics model. They do not by themselves produce vibrationally mediated population transfer in time.
 
-## 9. Review inference: relevance to TADF and PhOLED research
+## 9. Questions for TADF and PhOLED research
 
 Reverse intersystem crossing (RISC) in thermally activated delayed fluorescence (TADF) is not determined by a single $\Delta E_{\mathrm{ST}}$. Singlet and triplet state character, higher triplets, spin–orbit coupling (SOC), promoting modes, dielectric surroundings, and structural disorder can all alter the pathway.
 
@@ -253,9 +238,9 @@ and the source paper identifies TADF as a possible application.
 | time-resolved occupation | $P_{S_1}(t)$, $P_{T_1}(t)$, $P_{T_n}(t)$ |
 | spectra | Fourier transform of a time-correlation function |
 
-This connection is a review inference, not a demo result. The code contains neither SOC nor triplet states. A real TADF or PhOLED film also requires thermal mode populations, dephasing, host polarization, disorder, intermolecular modes, and open-system relaxation. Coherent oscillations in a closed two-state toy model cannot be read directly as irreversible ISC or RISC rates.
+This extension is a research proposal requiring SOC and triplet states to be added. Modelling a TADF or PhOLED film also requires thermal mode populations, dephasing, host polarization, disorder, intermolecular modes, and open-system relaxation. Coherent oscillations in a closed two-state toy model cannot be read directly as irreversible ISC or RISC rates.
 
-The algorithm is therefore better positioned as a future high-fidelity dynamics kernel for a small number of valuable candidates than as a near-term high-throughput generator.
+The role envisaged here is a future high-fidelity dynamics kernel for a small number of valuable candidates. Following generation and inexpensive screening, computation could concentrate on pathways that static descriptors leave unresolved.
 
 ## 10. A bounded validation workflow for OLED inverse design
 
@@ -266,27 +251,35 @@ A defensible research sequence would be:
 3. obtain states, Hessians, normal modes, and SOC with DFT/TDDFT or multireference methods;
 4. perform diabatization and construct a compact LVC/QVC spin-vibronic Hamiltonian;
 5. validate it first with exact grids, MCTDH, or an appropriate tensor-network baseline;
-6. separate grid, Trotter, and fixed-point errors under the same accuracy target;
+6. separate grid, Trotter, and fixed-point errors under the same accuracy target and estimate logical resources;
 7. consider quantum propagation only where the controlled classical baseline becomes limiting;
 8. feed populations, pathway sensitivities, and uncertainty back into a mechanism-aware ML surrogate.
 
 A useful first proof of concept would contain $S_1$, $T_1$, one or two higher triplets, and 5–10 selected promoting modes from a published model. Every trajectory should be compared with an exact or MCTDH reference while $K$, $dt$, and $b$ are varied independently. Larger state spaces or open-system models should come only after that validation ladder is passed.
 
-## Assessment
+## From static levels to time-resolved pathways
 
-The PennyLane demo succeeds as an implementation tutorial. It makes the circuit roles of QFT, QROM, reversible arithmetic, phase-gradient states, electronic-fragment diagonalization, and Trotterization inspectable rather than treating vibronic simulation as a black box.
+The strength of the PennyLane demo is the traceable connection between physics and circuits. QFT handles kinetic energy; QROM and reversible arithmetic handle state- and coordinate-dependent potentials; the phase-gradient state carries the evolution phase. Understanding these roles in a small model also shows where the cost of a larger calculation arises.
 
-Its scientific claim must remain bounded. The result is a 23-wire CPU state-vector toy simulation, not a real-molecule calculation, a QPU experiment, a quantitative dynamics benchmark, or evidence of quantum advantage. The source paper’s hundreds of logical qubits and millions of Toffoli gates are fault-tolerant algorithm estimates, not physical-hardware costs.
+For OLED design, the desired information concerns populations, higher-state mediation, SOC, and promoting-mode pathways. Validating those time-dependent quantities with a credible Hamiltonian and a controlled classical reference can add mechanistic meaning to static $\Delta E_{\mathrm{ST}}$ and oscillator strength. The circuit is one component of that connection, and this tutorial makes the component accessible.
 
-The research direction is nevertheless coherent. Moving OLED molecular design beyond static $\Delta E_{\mathrm{ST}}$ and oscillator strength toward state populations, higher-state mediation, SOC, and promoting-mode dynamics will require real-time vibronic propagation. Turning that direction into a useful tool will depend as much on credible Hamiltonian construction and strict classical validation as on a deeper quantum circuit.
+## Publication information and revision history
 
-## Primary and official sources
+- Original publication and evidence cutoff: 29 August 2026. The original demo and paper versions remain the evidence base.
+- Editorial revision and source comparison: 10 November 2026. Repetition and captions were edited in both languages. The dimer name and fixed-separation condition were added; the 64-point state-preparation illustration was distinguished from the four-point propagation, and step number was distinguished from physical time. The six resource figures were retained.
+- Original assistance and public-edition repair on 29 August 2026: OpenAI Codex Work Mode. The exact original model identifier and session roster were not retained. The recorded repair roles of Volta, Feynman, Carson, and Kierkegaard are preserved, as is the historical harness name AI Tech Review Editorial Harness v2026.08.
+- This revision: the editorial team (AEDAUT), with Codex root editing and integrating; vibronic_science checking the paper, v1/v3, and resource conditions; vibronic_code_refs checking both fixed-commit demos, official documentation, and APS references; and vibronic_prose independently reviewing both editions and the figures/captions. Exact model identifiers were not retained.
+- Runtime and resource figures are source-reported. No new execution of the 23-wire script, QPU experiment, or molecular calculation was performed. The OLED validation workflow remains a research proposal. Line-by-line human review and reader testing are not claimed.
+- Current journal: Agentic Tech Review Letters (ATRL). The common prose audit harness revised on 6 November 2026 was applied. Scientific text was checked against the full arXiv v3 and selected v1 passages; the journal record was checked through Crossref. The publisher’s version-of-record PDF was unavailable behind an access verification page.
 
-1. Emily Nobes, [*A quantum algorithm for vibronic dynamics*](https://pennylane.ai/demos/simulating_vibronic_dynamics), PennyLane Demos, 19 August 2026.
-2. D. Motlagh et al., [*Quantum Algorithm for Vibronic Dynamics: Case Study on Singlet Fission Solar Cell Design*](https://doi.org/10.1088/2058-9565/ae0828), *Quantum Science and Technology* **10**, 045048 (2025).
-3. D. Motlagh et al., [arXiv:2411.13669v3](https://arxiv.org/html/2411.13669v3), current technical version.
-4. D. Dhawan, [*Quantifying resource requirements for vibronic dynamics simulation*](https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics), PennyLane Demos, updated 27 May 2026.
-5. PennyLaneAI, [official demo source at fixed commit](https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py).
-6. PennyLane, [`lightning.qubit` documentation](https://docs.pennylane.ai/projects/lightning/en/stable/index.html).
+## References
 
-*Verification note: numerical settings and resource figures were checked against the public PennyLane code, official documentation, the peer-reviewed paper, and the current arXiv v3. Demo execution, source-paper estimates, and the OLED extension proposed by this review remain separate evidence layers.*
+<ol class="reference-list">
+<li id="ref-1" value="1">E. Nobes, <a href="https://pennylane.ai/demos/simulating_vibronic_dynamics">A quantum algorithm for vibronic dynamics, PennyLane Demos (19 August 2026)</a>.</li>
+<li id="ref-2" value="2">D. Motlagh, R. A. Lang, P. Jain, J. A. Campos-Gonzalez-Angulo, W. Maxwell, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://doi.org/10.1088/2058-9565/ae0828">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, Quantum Sci. Technol. <b>10</b>, 045048 (2025)</a>.</li>
+<li id="ref-3" value="3">PennyLaneAI, <a href="https://github.com/PennyLaneAI/demos/blob/4e1b6f0c2501ff79fb6addbaf9323a9399e3f824/demonstrations_v2/simulating_vibronic_dynamics/demo.py">Simulating Vibronic Dynamics, demonstrations_v2/simulating_vibronic_dynamics/demo.py, demos repository, commit 4e1b6f0c2501ff79fb6addbaf9323a9399e3f824 (19 August 2026)</a>.</li>
+<li id="ref-4" value="4">PennyLane, <a href="https://docs.pennylane.ai/projects/lightning/en/stable/lightning_qubit/device.html">Lightning Qubit device, Lightning 0.45.0 documentation (accessed 10 November 2026)</a>.</li>
+<li id="ref-5" value="5">D. Motlagh, R. A. Lang, P. Jain, J. A. Campos-Gonzalez-Angulo, W. Maxwell, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://arxiv.org/abs/2411.13669v3">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, arXiv:2411.13669v3 (2025)</a>.</li>
+<li id="ref-6" value="6">D. Motlagh, R. A. Lang, J. A. Campos-Gonzalez-Angulo, T. Zeng, A. Aspuru-Guzik, and J. M. Arrazola, <a href="https://arxiv.org/abs/2411.13669v1">Quantum algorithm for vibronic dynamics: Case study on singlet fission solar cell design, arXiv:2411.13669v1 (2024)</a>.</li>
+<li id="ref-7" value="7">D. Dhawan, <a href="https://pennylane.ai/demos/tutorial_resource_estimation_vibronic_dynamics">Quantifying resource requirements for vibronic dynamics simulation, PennyLane Demos (16 March 2026; updated 27 May 2026)</a>.</li>
+</ol>
