@@ -1,24 +1,25 @@
 {
   "version": 1,
-  "revision": 23,
-  "edition": "Publication edition prepared on 2026-11-10 at the responsible editor’s request",
+  "revision": 24,
+  "edition": "Reader-entry revision prepared on2026-11-10: functions before team names, and collaboration as harness design",
   "displayed_publication_date": "2026-11-09",
   "evidence_cutoff": "2026-11-09",
   "public_base": "https://infant83.io/AI_Tech_Review/reviews/2026-11-09_atrl-agentic-atelier/",
-  "status": "Prepared and visually checked; actual deployment verification belongs to the publication record",
+  "status": "Prepared and visually checked; deployment is verified separately by the parent publication record",
+  "previous_publication_manifest_sha256": "3b18ad80d9a9093eddce919cca514c99704437ad81dc39e2b37470532675e684",
   "previous_review_manifest_sha256": "7d180276b3626fc9d16ee679297db86e40223b0933ed376cf1515448772739db",
   "inputs": [
     {
       "path": "artifacts/build_review.mjs",
-      "sha256": "23a828f32439e30150bc80d960da1be79989de992561ebed3de253e0dfef6303"
+      "sha256": "de6abf48eb0431d5ddaf59ddd629ee68d678e41649df44e61bf3c0b2449ce03c"
     },
     {
       "path": "reports/review_ko.md",
-      "sha256": "242a7682ee3a081e585fb87b1f9407a96a2f4b775566a8633fdd530f8410952a"
+      "sha256": "78f505aed1469afa3d4937c412904617a4f1e47821fd4a6982995538830490d2"
     },
     {
       "path": "reports/review_en.md",
-      "sha256": "f1b702d4d9a9e150fcce8df0bce745413a81551c3349867a47230752625b49ef"
+      "sha256": "a954e12e84dbc757f93450e6398b064ab6bf56a2fb081eb623ab09af7b752700"
     },
     {
       "path": "artifacts/review.css",
@@ -153,8 +154,8 @@
     },
     {
       "path": "dist/en/index.html",
-      "bytes": 72373,
-      "sha256": "df21dbf9994b0e7c4bd2a43a3fb232cc782678f2b70b34ffdb1829c9676dda80"
+      "bytes": 72851,
+      "sha256": "a978878db10768236d648a000806778a12ecbad0bc76de8ed9b110b868094932"
     },
     {
       "path": "dist/en/math_0fb4bf7e3ae4de.svg",
@@ -253,8 +254,8 @@
     },
     {
       "path": "dist/en/review_en.pdf",
-      "bytes": 13569271,
-      "sha256": "f5e356cf324ef20e2324f0ca4147e23f83535877adf8221c559a61dd712a6e9c"
+      "bytes": 13570683,
+      "sha256": "920e1a71de9ac046b4dbaeb12a6ce811e38f5984a793a19d629abffe924d7f9d"
     },
     {
       "path": "dist/explanation_design_ko.svg",
@@ -303,8 +304,8 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 71470,
-      "sha256": "182a382deac40427cf1cb05555f06ec00b18d6fdda95cd5017c54aeaebcee148"
+      "bytes": 72121,
+      "sha256": "008973f19fe30f95fa697d279ad8f6cb539166ed3ada18efbde64b307dc3e461"
     },
     {
       "path": "dist/math_0fb4bf7e3ae4de.svg",
@@ -403,8 +404,8 @@
     },
     {
       "path": "dist/review_ko.pdf",
-      "bytes": 13786818,
-      "sha256": "f9c5a0eb2b4041c1157c13b89ff5274bd155dc6186e938f8ae3f66b990bc1fc1"
+      "bytes": 13786107,
+      "sha256": "75cdf969df1e73fdf46b75d8d6f34cdf3cd9a4f05d666badc87e0e184bbd2bac"
     }
   ],
   "qa": {
@@ -413,10 +414,11 @@
         "language": "ko",
         "file": "dist/review_ko.pdf",
         "pages": 15,
-        "bytes": 13786818,
-        "sha256": "f9c5a0eb2b4041c1157c13b89ff5274bd155dc6186e938f8ae3f66b990bc1fc1",
+        "bytes": 13786107,
+        "sha256": "75cdf969df1e73fdf46b75d8d6f34cdf3cd9a4f05d666badc87e0e184bbd2bac",
         "https_uris": 79,
         "attachments": 0,
+        "pdf_language": "ko",
         "figure_caption_pages_by_number": {
           "1": 2,
           "2": 3,
@@ -433,10 +435,11 @@
         "language": "en",
         "file": "dist/en/review_en.pdf",
         "pages": 19,
-        "bytes": 13569271,
-        "sha256": "f5e356cf324ef20e2324f0ca4147e23f83535877adf8221c559a61dd712a6e9c",
+        "bytes": 13570683,
+        "sha256": "920e1a71de9ac046b4dbaeb12a6ce811e38f5984a793a19d629abffe924d7f9d",
         "https_uris": 81,
         "attachments": 0,
+        "pdf_language": "en",
         "figure_caption_pages_by_number": {
           "1": 2,
           "2": 3,
@@ -450,25 +453,31 @@
         }
       }
     ],
-    "pdf_fresh_pages": {
+    "changed_page_review": "Actual changed-page reading: Korean pages4,5,6,15 by ko_changed_pages; English pages4,5,18,19 by atrl_plain_terms_production. All eight changed pages read; no clipping, overlap or new excessive gap. The other26full-page110dpiRGBimages match the reviewed previous publication including footers.",
+    "actual_fresh_pdf_pages": {
       "ko": [
+        4,
+        5,
+        6,
         15
       ],
       "en": [
+        4,
+        5,
         18,
         19
       ]
     },
-    "fresh_page_count": 3,
-    "exact_page_pixel_carryover": {
+    "actual_fresh_pdf_page_count": 8,
+    "identical_page_carryover_count": 26,
+    "page_comparison": {
       "ko": {
+        "old_pages": 15,
+        "new_pages": 15,
         "same_full_page_pixels": [
           1,
           2,
           3,
-          4,
-          5,
-          6,
           7,
           8,
           9,
@@ -479,16 +488,19 @@
           14
         ],
         "changed_pages": [
+          4,
+          5,
+          6,
           15
         ]
       },
       "en": {
+        "old_pages": 19,
+        "new_pages": 19,
         "same_full_page_pixels": [
           1,
           2,
           3,
-          4,
-          5,
           6,
           7,
           8,
@@ -503,71 +515,88 @@
           17
         ],
         "changed_pages": [
+          4,
+          5,
           18,
           19
         ]
       }
     },
-    "carryover_page_count": 31,
-    "comparison_method": "Exact full-page RGB comparison of110dpi Poppler renders including footer, against reviewed revision23",
-    "actual_web_reading": "Eight views individually read: article top and Figure9 with adjacent prose/caption, Korean and English at1440and390px. Fonts/images loaded; no viewport overflow or local badge.",
-    "keyboard": "Both Figure9 larger-view controls exercised using Shift+Tab,Tab,Enter; current sourceSVG opened in new tabs; controls hidden in print.",
-    "pdf_fonts": "All used fonts embedded; no attachments, private/local URI or replacement-glyph text. Both PDF metadata languages/titles match editions.",
+    "actual_web_views_read": 8,
+    "web_scope": "Korean/English at1440and390px; article top and the new team introduction immediately before Figure3. All26images loaded each; no viewport overflow; summaries contain no AEDAUT/ADOPT; full names precede the diagram.",
+    "web_checks": [
+      {
+        "lang": "ko",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "images": 26,
+        "badImages": 0,
+        "definitionBeforeFigure": true,
+        "disclosureCount": 1,
+        "errors": []
+      },
+      {
+        "lang": "ko",
+        "width": 390,
+        "scrollWidth": 390,
+        "images": 26,
+        "badImages": 0,
+        "definitionBeforeFigure": true,
+        "disclosureCount": 1,
+        "errors": []
+      },
+      {
+        "lang": "en",
+        "width": 1440,
+        "scrollWidth": 1440,
+        "images": 26,
+        "badImages": 0,
+        "definitionBeforeFigure": true,
+        "disclosureCount": 1,
+        "errors": []
+      },
+      {
+        "lang": "en",
+        "width": 390,
+        "scrollWidth": 390,
+        "images": 26,
+        "badImages": 0,
+        "definitionBeforeFigure": true,
+        "disclosureCount": 1,
+        "errors": []
+      }
+    ],
+    "font_scope": "Visible article/disclosure Korean text has zero missing glyphs in the existing regular/bold body subsets. All5font files retained. Metadata strings are not printable body text.",
     "preservation": {
       "source_figures_exact": 36,
-      "other_dist_assets_exact": 72,
-      "changed_dist_files": 4,
+      "unchanged_dist_files": 72,
+      "changed_dist_files": [
+        "dist/en/index.html",
+        "dist/en/review_en.pdf",
+        "dist/index.html",
+        "dist/review_ko.pdf"
+      ],
       "dist_files": 76,
-      "core_body_bibliography_exact": true
+      "math_occurrences_per_language": 16,
+      "references": 14,
+      "hero_data_css_and_fonts_retained": true,
+      "figure_blocks_per_language": 10,
+      "bibliography_source_exact": true
     },
     "pdf_operation": {
       "marker_executions": 1,
-      "expected_output_count": 2,
       "operation_kind": "edit",
-      "final_successful_print_passes": 1,
-      "interrupted_prior_passes": 1,
+      "expected_outputs": 2,
+      "initial_bilingual_print_passes": 1,
+      "korean_repair_passes": 1,
       "actual_pdf_writes": {
         "ko": 2,
-        "en": 2,
-        "total": 4
+        "en": 1,
+        "total": 3
       },
-      "note": "An old-HTML intermediate pass was started after a dependency failure and interrupted. Only the subsequent successful public-HTML outputs are final."
+      "note": "The visible-body font audit identified two new disclosure glyphs after the first print. Equivalent existing terms were used (쪽 and 중심), then only Korean was printed again. Final output has complete primary glyph coverage. English was not reprinted."
     },
-    "unresolved_issues": [],
-    "metadata_followup": {
-      "date": "2026-11-10",
-      "reason": "Use the approved hub summaries for article meta descriptions so the English hub subtitle remains distinct from the description.",
-      "scope": "Builder description selection and Korean/English HTMLHEAD meta description/og:description only; dek unchanged.",
-      "previous_publication_manifest_sha256": "89634a2e070f6e3fa9ee984b314222297039ab141312132c2ac3e51833f4dffd",
-      "heads": [
-        {
-          "language": "ko",
-          "path": "dist/index.html",
-          "before_sha256": "825433260d8b9a7411c717a0ac4d4841555b3836b35e05ddcc2e84e8d57c7d86",
-          "after_sha256": "182a382deac40427cf1cb05555f06ec00b18d6fdda95cd5017c54aeaebcee148",
-          "after_head_sha256": "7ef48c8b5a51e4a373b4e6426ce81b6a7aeec5e458815e91a5322c5ef9bf62b1",
-          "tail_after_head_sha256": "a8c8bed3538cd7aac439c9c0c8b351c99f2ba6d2a2ea4e85f0db5f506b7822ba",
-          "all_bytes_after_head_exact": true,
-          "description": "논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자라고, 그 과정의 문제는 공통 기준과 게시 도구의 수리로 돌아옵니다. ATRL 공방을 사례로 사람의 기획과 AEDAUT 편집·저술, ADOPT 개발운영이 하나의 에이전틱 워크플로를 이루는 구조를 살핍니다. 글을 만드는 협업 아키텍처 자체가 연구와 창작의 대상이 되는 변화를 따라갑니다."
-        },
-        {
-          "language": "en",
-          "path": "dist/en/index.html",
-          "before_sha256": "0710c0b6f690562ee8610cdb4868d9fa04e972ff32471956d38bc35fc065f5fc",
-          "after_sha256": "df21dbf9994b0e7c4bd2a43a3fb232cc782678f2b70b34ffdb1829c9676dda80",
-          "after_head_sha256": "62fd84ff6529873a22fdb495460b2d94ff0dd83f7a45b9db4e3579834272fe90",
-          "tail_after_head_sha256": "5ca25643c6ca39ac1d9deaa17c026c57fdda6deae3f53a249064b2c9c4874ecd",
-          "all_bytes_after_head_exact": true,
-          "description": "A question arising while reading a paper grows through investigation, calculation, writing and review into an explanation; problems encountered along the way return as changes to shared criteria and publishing tools. Using the ATRL atelier as a case, this essay follows how human direction, AEDAUT editorial work and ADOPT operations form one agentic workflow, making the collaborative architecture itself an object of research and creation."
-        }
-      ],
-      "non_html_dist_files_exact": 74,
-      "pdfs_exact": true,
-      "pdf_rebuilds": 0,
-      "pdf_operation_markers": 0,
-      "source_manuscripts_figures_exact": true,
-      "unresolved_issues": []
-    }
-  },
-  "previous_publication_manifest_sha256": "89634a2e070f6e3fa9ee984b314222297039ab141312132c2ac3e51833f4dffd"
+    "no_new_image_generation_or_raster_edit": true,
+    "unresolved_issues": []
+  }
 }

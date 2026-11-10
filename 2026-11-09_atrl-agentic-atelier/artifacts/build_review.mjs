@@ -29,11 +29,11 @@ const onlyLanguage=process.argv.find(a=>a.startsWith('--language='))?.split('=')
 if(onlyLanguage&&!['ko','en'].includes(onlyLanguage))throw Error('--language must be ko or en.');
 const publicBaseValue=process.argv.find(a=>a.startsWith('--public-base='))?.split('=').slice(1).join('=')||'';
 const publicBase=publicBaseValue?publicBaseValue.replace(/\/?$/,'/'):'';
-const articleDescriptions={"ko":"논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자라고, 그 과정의 문제는 공통 기준과 게시 도구의 수리로 돌아옵니다. ATRL 공방을 사례로 사람의 기획과 AEDAUT 편집·저술, ADOPT 개발운영이 하나의 에이전틱 워크플로를 이루는 구조를 살핍니다. 글을 만드는 협업 아키텍처 자체가 연구와 창작의 대상이 되는 변화를 따라갑니다.","en":"A question arising while reading a paper grows through investigation, calculation, writing and review into an explanation; problems encountered along the way return as changes to shared criteria and publishing tools. Using the ATRL atelier as a case, this essay follows how human direction, AEDAUT editorial work and ADOPT operations form one agentic workflow, making the collaborative architecture itself an object of research and creation."};
+const articleDescriptions={"ko":"논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자랍니다. ATRL 공방에서는 사람의 기획 아래 에이전틱 편집팀과 에이전틱 개발운영팀이 협력하고, 그 과정에서 얻은 판단을 바탕으로 역할과 도구의 연결을 다시 설계합니다. 그 협업 구조를 설계하고 검토하는 일도 연구와 창작의 일부가 되는 변화를 따라갑니다.","en":"A question arising while reading a paper grows through investigation, calculation, writing and review into an explanation. At the ATRL atelier, an agentic editorial team and an agentic development and operations team work under human direction, revising how roles and tools connect as findings and feedback return. This essay follows how designing and examining that collaborative structure becomes part of research and creative practice."};
 const descriptors={"ko": "에이전틱 시대의 지식 흐름과 연구 공방의 탄생", "en": "Knowledge Flows in the Agentic Era: The Emergence of a Research Atelier"};
 const titles={ko:'ATRL: Agentic Atelier for Tech Review Letters',en:'ATRL: Agentic Atelier for Tech Review Letters'};
 // Optional stems are permitted, but only explicitly referenced assets are copied.
-// Revision 23 replaces Figure 9 only; larger-view links reuse current desktop SVGs.
+// Revision 24 clarifies team roles before names; all current figures are retained.
 const figureStems=["research_agent_evidence","harness_configuration","atelier_architecture","editorial_workflow","hub_observation","explanation_design","collaboration_mechanism","coupled_cycles","reusable_archive"];
 // Only these assembled, public-safe records may be linked as local data downloads.
 const reproductionAssets=['hub-publication-topics-v15.json','hub-publication-topics-v15.csv'];
@@ -72,19 +72,19 @@ function disclosure(ko){
   ],
   [
     "확인 가능한 에이전트 역할",
-    "gate_article_editorial은 그림 9와 인접 설명의 한영 문장·캡션을 개정했다. gate_article_physics는 출판물·세 기록층·후속 질문의 의미와 예제 조건을 감수했다. agent_standards는 그림 9의 정확한 벡터 자료와 한영 PC·모바일 구성, 웹·PDF 제작·검수를 맡았다. root는 내장 이미지 생성 도구로 원화를 편집하고 본문·원본·출력·판본 기록을 대조했다."
+    "개정 24에서 root는 요약·본문·게시 정보를 통합했다. atrl_reader_terms는 독자의 진입 순서와 팀 이름의 소개 위치를 검토했다. atrl_plain_terms_production은 한영 웹·PDF 제작과 출력·보존 검사를 맡았다. 앞선 개정 23의 그림 9는 gate_article_editorial·gate_article_physics·agent_standards와 root가 문장·의미·벡터·원화를 제작하고 감수한 산출물이다."
   ],
   [
     "편집 하네스",
-    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a> 기본판 2026.08과 2026-11-06 과학 설명·문체 보완을 적용했다. 2026-11-10 개정 23은 완성된 출판물과 그 설명을 이루는 근거·방법·편집 판단을 그림 9에서 함께 읽도록 다듬었다."
+    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a> 기본판 2026.08과 2026-11-06 과학 설명·문체 보완을 적용했다. 2026-11-10 개정 24는 요약에서 팀의 역할로 먼저 소개하고, 본문에서 팀 이름과 약어를 그림 3 앞에 정의하며 그 협업 구조를 설계하는 의미를 연결했다."
   ],
   [
     "검증 범위",
-    "구조·운영의 8개 자료는 e5a8ac6, 55편 관찰은 f347836 고정판을 유지했다. 14개 참고문헌·수학 조건·교육용 CSV·통계 자료를 보존했다. 그림 9는 기존 교육모형과 기록을 펼쳐 보는 설계 예다. 새 외부 연구·실험·성능 측정·과학 수치 계산은 추가하지 않았다."
+    "구조·운영의 8개 자료는 e5a8ac6, 55편 관찰은 f347836 고정판을 유지했다. 14개 참고문헌·수학 조건·교육용 CSV·통계 자료와 그림 36종을 보존했다. 이번 개정은 요약·팀 소개의 순서·하네스 설계 설명과 작성 정보를 다듬고, 한영 실제 출력과 이전 판본의 동일한 쪽·자산을 대조했다. 새 외부 연구·실험·과학 수치 계산은 추가하지 않았다."
   ],
   [
     "사람 검토 기록",
-    "책임 편집자는 그림 9의 위쪽이 완성된 책 표지로 읽히고 아래 기록층의 실제 내용이 그 설명을 함께 이루도록 개정 방향을 제시했다. 에이전트들이 새 원화·자료·한영 설명·출력을 감수했다. 책임 편집자는 2026-11-10 게재를 요청했다. 문장 단위의 사람 감수나 별도 사람 독자 조사는 수행하지 않았다."
+    "책임 편집자는 요약에 설명 없이 팀 약어가 등장하면 독자의 진입을 방해할 수 있음을 지적했다. 먼저 일반적인 에이전틱 편집팀·개발운영팀으로 소개하고 본문에서 팀 이름을 정의하며, 하네스 자체도 설계할 수 있음을 보여 달라는 방향을 제시했다. 문장·한영·출력 검토는 에이전트가 수행했다. 문장 단위의 사람 재독이나 별도 사람 독자 조사는 기록하지 않았다."
   ],
   [
     "근거 기준일",
@@ -92,7 +92,7 @@ function disclosure(ko){
   ],
   [
     "적용 판본과 감수",
-    "기본 방법서와 2026-11-06 보완판의 정체를 유지한다. 이번 그림 9의 원화·벡터·표면 배치·한영 설명과 실제 출력 검토를 앞선 원고·그림·자료 감수와 구분했다. 새로운 모형 실험이나 기존 55편의 품질 효과를 측정한 기록으로 쓰지 않는다."
+    "기본 방법서와 2026-11-06 보완판의 정체를 유지한다. 개정 24의 요약·이름 소개·실제 출력 검토를 앞선 원고·그림·자료 감수와 구분했다. 사람과 에이전트의 역할, 도구·권한·공유 기록·인계 방식을 연결하는 일을 하네스 설계의 대상으로 설명한다. 조직의 소속과 기존 권한, 연구 근거와 계산 조건은 유지한다."
   ]
 ]:[
   [
@@ -105,19 +105,19 @@ function disclosure(ko){
   ],
   [
     "Verifiable agent roles",
-    "gate_article_editorial revised bilingual prose and captions for Figure 9 and its adjacent explanation. gate_article_physics reviewed the meaning of the publication, three supporting record layers and follow-up question, with the example’s conditions. agent_standards authored exact vector contents and desktop/mobile arrangements and handled web/PDF production and checks. root edited the bare artwork with the built-in image tool and compared prose, sources, outputs and edition records."
+    "For revision 24, root integrated the summaries, manuscript and publication information. atrl_reader_terms reviewed the reader’s entry and the point at which team names are introduced. atrl_plain_terms_production handled bilingual web/PDF production and output/preservation checks. Figure 9 retains the revision 23 work of gate_article_editorial, gate_article_physics, agent_standards and root on prose, meaning, vectors and artwork."
   ],
   [
     "Editorial harness",
-    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a>, base edition 2026.08 with scientific-explanation and prose supplements dated 2026-11-06. Revision 23, produced on 2026-11-10, refines Figure 9 so a finished publication can be read together with the evidence, methods and editorial judgments behind its explanation."
+    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a>, base edition 2026.08 with scientific-explanation and prose supplements dated 2026-11-06. Revision 24, prepared on 2026-11-10, introduces teams by function in the summary, defines their full names and acronyms before Figure 3, and connects their organization to the design of the harness."
   ],
   [
     "Verification scope",
-    "The eight structural/operational sources retain e5a8ac6 and the 55-review observation retains f347836. Fourteen references, mathematical conditions, educational CSV and statistical materials were preserved. Figure 9 unfolds an existing teaching model and records as a design example. No new external study, experiment, performance measurement or scientific numerical calculation was added."
+    "The eight structural/operational sources retain e5a8ac6 and the 55-review observation retains f347836. Fourteen references, mathematical conditions, educational CSV, statistical materials and all thirty-six figure variants were retained. The revision refines summaries, the order of team introductions, harness-design explanation and disclosure, with actual bilingual output and prior-edition page/asset comparisons. No new external study, experiment or scientific numerical calculation was added."
   ],
   [
     "Human review record",
-    "The responsible editor asked for Figure 9’s top to read as a finished book cover and the concrete contents of its supporting layers to form that explanation together. Agents reviewed the new artwork, materials, bilingual explanation and outputs. The responsible editor requested publication on 2026-11-10. Line-by-line human review and a separate human-reader study were not performed."
+    "The responsible editor observed that unexplained team acronyms in the summary could obstruct the reader’s entry. The requested direction was to introduce an agentic editorial team and a development/operations team by function, define their names in the body, and show that the harness itself can be designed. Agents performed wording, bilingual and output checks. Line-by-line human rereading and a separate human-reader study were not recorded."
   ],
   [
     "Evidence cutoff",
@@ -125,10 +125,10 @@ function disclosure(ko){
   ],
   [
     "Applied versions and review",
-    "The base method and supplements dated 2026-11-06 retain their identities. Current Figure 9 artwork, vectors, surface placement, bilingual explanation and actual-output review are distinguished from earlier manuscript, figure and data review. They are not recorded as a new model experiment or measurement of quality effects across the 55 reviews."
+    "The base method and supplements dated 2026-11-06 retain their identities. Revision 24 summary, team-introduction and actual-output checks are distinguished from earlier manuscript, figure and data review. Arranging people and agents, tools, permissions, shared records and hand-offs is explained as part of harness design. Team membership, existing authority, research evidence and calculation conditions are retained."
   ]
 ];
- const note=ko?"2026-11-10 게재용 개정 23. 발행 표기·근거 기준일은 2026-11-09다. 그림 9의 제본 표지와 세 내용층, 후속 질문을 시각화하고 인접 한영 설명을 맞췄다. 나머지 논지와 근거를 유지하며 실제 검토 범위·입력·최종 출력의 정체를 기록했다. 책임 편집자의 2026-11-10 게재 요청에 따라 공개용 판본을 준비했다. 기존 무문자 그림 9 원화를 내장 image_gen 도구로 1회 편집하고, 새 제본 책 장면에 모형·코드·CSV·감수 기록을 정확한 벡터로 구성했다. 한영 PC·모바일 4종을 바꾸고 다른 32개 SVG·B3 대표 이미지·기존 자료는 보존했다. 단순 WebP 인코딩과 SVG 화면 재배치를 창작적 래스터 편집과 구분했다.":"Revision 23, prepared for publication on 2026-11-10. Displayed publication date and evidence cutoff remain 2026-11-09. Figure 9’s bound cover, three content layers and follow-up question were redrawn and its adjacent bilingual explanation aligned. The remaining argument and evidence retain their identities; actual review scope, inputs and final outputs were recorded. The public edition was prepared following the responsible editor’s publication request on 2026-11-10. The earlier text-free Figure 9 artwork was edited once with the built-in image_gen tool. Exact model, code, CSV and review records were authored as vectors on the new bound-book scene. Four desktop/mobile language variants changed; the other thirty-two SVGs, B3 hero and existing data were retained. Encoding-only WebP conversion and SVG presentation are distinguished from creative raster editing.";
+ const note=ko?"2026-11-10 개정 24. 발행 표기·근거 기준일은 2026-11-09다. 요약에서는 에이전틱 편집팀·개발운영팀의 역할을 소개하고, 본문에서는 정식 이름과 약어를 그림 3보다 먼저 정의했다. 원고의 중심 논지와 과학적 근거를 유지하며 이번 문장·한영 출력과 최종 파일의 정체를 기록했다. 그림 9는 개정 23에서 기존 무문자 원화를 내장 image_gen 도구로 1회 편집하고 모형·코드·CSV·감수 기록을 정확한 벡터로 구성한 산출물이다. 개정 24에서는 새 원화 생성·편집 없이 그림 36종과 B3 대표 이미지·기존 자료를 보존했다. 실제 출력의 시각 판독과 동일한 쪽·자산의 보존 비교는 각각 수행한 범위로 구분한다.":"Revision 24, prepared on 2026-11-10. Displayed publication date and evidence cutoff remain 2026-11-09. The summary introduces the functions of the agentic editorial and development/operations teams; the body defines their full names and acronyms before Figure 3. The central argument and scientific evidence are retained, while current wording, bilingual outputs and final file identities are recorded. Figure 9 retains revision 23’s single built-in image_gen edit of the earlier text-free artwork, with exact model, code, CSV and review inscriptions authored as vectors. Revision 24 generates or edits no new artwork and preserves all thirty-six figure variants, the B3 hero and existing data. Actual visual reading is distinguished from comparisons establishing identical pages and assets.";
  return '<!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">'+(ko?'작성·검증 정보':'How this review was made')+'</h2><dl>'+rows.map(([a,b])=>'<div><dt>'+a+'</dt><dd>'+b+'</dd></div>').join('')+'</dl><p>'+note+'</p></section><!-- End AI Tech Review Authoring Disclosure -->';
 }
 

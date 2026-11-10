@@ -2,9 +2,9 @@
 
 에이전틱 시대의 지식 흐름과 연구 공방의 탄생
 
-표기 발행일·근거 기준일: 2026-11-09. 개정 23 공개판 게재·검증: 2026-11-10.
+표기 발행일·근거 기준일: 2026-11-09. 개정 24 공개판 게재·검증: 2026-11-10.
 
-논문을 읽으며 얻은 질문이 조사·계산·집필·감수와 운영의 왕복을 거쳐 설명으로 자라는 과정을 ATRL 공방의 사례로 살핀다. 사람의 기획, AEDAUT의 편집·저술, ADOPT의 개발운영이 하나의 워크플로를 이루며, 그 협업 아키텍처 자체도 연구와 창작의 대상이 되는 변화를 논의한다. 기획·권한·자료·판본의 관계, 작은 교육용 비교, 고정된 55편의 게재·개정 기록과 외부 연구 시스템을 함께 읽는다.
+논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자랍니다. ATRL 공방에서는 사람의 기획 아래 에이전틱 편집팀과 에이전틱 개발운영팀이 협력하고, 그 과정에서 얻은 판단을 바탕으로 역할과 도구의 연결을 다시 설계합니다. 그 협업 구조를 설계하고 검토하는 일도 연구와 창작의 일부가 되는 변화를 따라갑니다.
 
 - [한국어 웹](https://infant83.io/AI_Tech_Review/reviews/2026-11-09_atrl-agentic-atelier/) · [English](https://infant83.io/AI_Tech_Review/reviews/2026-11-09_atrl-agentic-atelier/en/)
 - [한국어 원고](reports/review_ko.md) · [English manuscript](reports/review_en.md)
@@ -22,4 +22,4 @@ REVIEW_NODE_MODULES=/path/to/node_modules node 2026-11-09_atrl-agentic-atelier/a
 python3 2026-11-09_atrl-agentic-atelier/artifacts/build_pdf.py --node /path/to/node --modules /path/to/node_modules
 ```
 
-리뷰 등록은 `publication/reviews/2026-11-09_atrl-agentic-atelier.json`, 지속 출판 요청은 `publication/requests/`를 사용한다. 게재 절차는 저장소의 [게시 작업 안내](../PUBLICATION_WORKFLOW.md)를 따른다. 검토된 원고 개정 23과 기본 하네스 2026.08·2026-11-06 보완판은 서로 다른 판본이다. 편집자가 기획·개정 방향과 게시를 지시했으며, 문장 단위 사람 재독이나 독자 이해도 조사를 수행했다고 표시하지 않는다.
+리뷰 등록은 `publication/reviews/2026-11-09_atrl-agentic-atelier.json`, 지속 출판 요청은 `publication/requests/`를 사용한다. 게재 절차는 저장소의 [게시 작업 안내](../PUBLICATION_WORKFLOW.md)를 따른다. 검토된 원고 개정 24과 기본 하네스 2026.08·2026-11-06 보완판은 서로 다른 판본이다. 편집자가 기획·개정 방향과 게시를 지시했으며, 문장 단위 사람 재독이나 독자 이해도 조사를 수행했다고 표시하지 않는다.

@@ -7,9 +7,23 @@
     "date": "2026-11-09",
     "updated": "2026-11-10",
     "category": "AI for Science",
-    "tags": ["Agentic AI", "Research Workflows", "Harness Engineering", "Scientific Review", "Knowledge Archiving", "Human-AI Collaboration", "Research Governance"],
-    "summary": "논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자라고, 그 과정의 문제는 공통 기준과 게시 도구의 수리로 돌아옵니다. ATRL 공방을 사례로 사람의 기획과 AEDAUT 편집·저술, ADOPT 개발운영이 하나의 에이전틱 워크플로를 이루는 구조를 살핍니다. 글을 만드는 협업 아키텍처 자체가 연구와 창작의 대상이 되는 변화를 따라갑니다.",
-    "translations": [{"language": "en", "subdir": "en", "label": "English"}],
+    "tags": [
+      "Agentic AI",
+      "Research Workflows",
+      "Harness Engineering",
+      "Scientific Review",
+      "Knowledge Archiving",
+      "Human-AI Collaboration",
+      "Research Governance"
+    ],
+    "summary": "논문을 읽다 생긴 질문이 조사·계산·집필·감수를 거쳐 한 편의 설명으로 자랍니다. ATRL 공방에서는 사람의 기획 아래 에이전틱 편집팀과 에이전틱 개발운영팀이 협력하고, 그 과정에서 얻은 판단을 바탕으로 역할과 도구의 연결을 다시 설계합니다. 그 협업 구조를 설계하고 검토하는 일도 연구와 창작의 일부가 되는 변화를 따라갑니다.",
+    "translations": [
+      {
+        "language": "en",
+        "subdir": "en",
+        "label": "English"
+      }
+    ],
     "responsible_editor": "김현중",
     "responsible_editor_en": "Hyun-Jung Kim",
     "ai_system": "OpenAI Codex",
@@ -17,28 +31,68 @@
     "ai_model": "exact model identifier not retained",
     "ai_model_ko": "정확한 모델 식별자는 보존되지 않음",
     "agents": [
-      {"name": "root", "role": "Editorial integration, conceptual artwork editing, edition binding and publication", "role_ko": "편집 통합·개념 원화 편집·판본 정합과 게시"},
-      {"name": "gate_article_editorial", "role": "Bilingual narrative, caption and Figure 9 editorial review", "role_ko": "한영 서사·캡션·그림 9 편집 감수"},
-      {"name": "gate_article_physics", "role": "Independent argument, teaching-model and visual-meaning review", "role_ko": "논증·교육 모형·시각적 의미의 독립 감수"},
-      {"name": "agent_standards", "role": "Native figures, bilingual HTML/PDF production and output checks", "role_ko": "벡터 도식·한영 HTML/PDF 제작과 출력 검수"},
-      {"name": "publication_preflight", "role": "Independent final-output, public-file and publication-metadata preflight", "role_ko": "최종 산출물·공개 파일·출판 메타데이터의 독립 사전 감수"},
-      {"name": "publication_pdf", "role": "Publication-status adaptation and bilingual web/PDF production checks", "role_ko": "공개판 상태 정합과 한영 웹·PDF 제작 검수"},
-      {"name": "publication_data_assets", "role": "Article-scoped public data delivery and regression checks", "role_ko": "글별 공개 데이터 전달과 회귀 검사"}
+      {
+        "name": "root",
+        "role": "Editorial integration, conceptual artwork editing, edition binding and publication",
+        "role_ko": "편집 통합·개념 원화 편집·판본 정합과 게시"
+      },
+      {
+        "name": "gate_article_editorial",
+        "role": "Bilingual narrative, caption and Figure 9 editorial review",
+        "role_ko": "한영 서사·캡션·그림 9 편집 감수"
+      },
+      {
+        "name": "gate_article_physics",
+        "role": "Independent argument, teaching-model and visual-meaning review",
+        "role_ko": "논증·교육 모형·시각적 의미의 독립 감수"
+      },
+      {
+        "name": "agent_standards",
+        "role": "Native figures, bilingual HTML/PDF production and output checks",
+        "role_ko": "벡터 도식·한영 HTML/PDF 제작과 출력 검수"
+      },
+      {
+        "name": "publication_preflight",
+        "role": "Independent final-output, public-file and publication-metadata preflight",
+        "role_ko": "최종 산출물·공개 파일·출판 메타데이터의 독립 사전 감수"
+      },
+      {
+        "name": "publication_pdf",
+        "role": "Publication-status adaptation and bilingual web/PDF production checks",
+        "role_ko": "공개판 상태 정합과 한영 웹·PDF 제작 검수"
+      },
+      {
+        "name": "publication_data_assets",
+        "role": "Article-scoped public data delivery and regression checks",
+        "role_ko": "글별 공개 데이터 전달과 회귀 검사"
+      },
+      {
+        "name": "atrl_reader_terms",
+        "role": "Independent bilingual summary and team-name entry-order review",
+        "role_ko": "한영 요약·팀 이름 진입 순서의 독립 감수"
+      },
+      {
+        "name": "atrl_plain_terms_production",
+        "role": "Revision24 disclosure, bilingual web/PDF production and output review",
+        "role_ko": "개정24 작성 정보·한영 웹/PDF 제작과 출력 검수"
+      }
     ],
     "verification_scope": [
       "Fourteen APS references; institutional survey questions and denominators; selected public organizational and operations records at e5a8ac6; 55-review metadata snapshot at f347836, classified as an observation rather than a causal performance estimate.",
       "Analytic educational decay model with initial value 1, distinct time scales and separate normalized/common-time views; existing CSV and scalar checks retained. Conceptual illustrations are distinguished from reported data and educational calculations.",
-      "Revision 23: Figure 9 and adjacent bilingual prose independently reviewed; all 76 output files bound to the reviewed manifest. Targeted actual web/PDF reads and pixel-identical carryover are recorded separately."
+      "Revision 23: Figure 9 and adjacent bilingual prose independently reviewed; all 76 output files bound to the reviewed manifest. Targeted actual web/PDF reads and pixel-identical carryover are recorded separately.",
+      "Revision24: independently reread functional team introductions, names before Figure3 and the explanation of harness design. Eight entry/team web views at1440/390px and eight changed PDF pages were actually read;26remaining pages are full-page pixel-identical to the prior PDFs. All36sourcefigures,fonts,CSS anddata retained."
     ],
     "verification_scope_ko": [
       "APS 참고문헌 14개, 기관 설문의 질문·분모, e5a8ac6의 공개 조직·운영 자료와 f347836의 55편 메타데이터를 대조했다. 허브 관찰과 생산성·품질의 인과 추정을 구별한다.",
       "초기값 1·서로 다른 시간척도의 해석적 교육용 감쇠 모형에서 개별 정규화 축과 공통 시간 축을 구별했다. 기존 CSV·수치 검증을 보존하며 개념 그림·보고값·교육 계산의 정체를 밝힌다.",
-      "개정 23: 그림 9와 인접 한영 설명의 독립 감수, 검토한 76개 산출물의 해시 연결을 확인했다. 실제 웹·PDF 판독과 동일 픽셀로 이어받은 검수 범위는 구분해 기록한다."
+      "개정 23: 그림 9와 인접 한영 설명의 독립 감수, 검토한 76개 산출물의 해시 연결을 확인했다. 실제 웹·PDF 판독과 동일 픽셀로 이어받은 검수 범위는 구분해 기록한다.",
+      "개정24: 요약의 약어 제거·그림3 앞의 팀 이름 정의와 하네스 설계 설명을 독립 재독했다. 한영 웹 각1440/390px의 도입·팀 소개8개 화면과 바뀐 PDF8쪽을 실제 판독했으며, 이전 PDF와 나머지26쪽은 전체 픽셀이 같다. 그림36종·글꼴·CSS·자료는 보존했다."
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-11-09",
-    "human_review_level": "The editor set the central argument and directed specific prose, figure and architecture revisions, then requested publication on 10 November 2026. Independent manuscript and output reviews were performed by AI agents; this does not record a line-by-line human rereading or a reader-comprehension study.",
-    "human_review_level_ko": "편집자가 중심 논지와 구체적 문체·그림·아키텍처 개정을 지휘하고 2026년 11월 10일 게재를 요청했다. 원고·출력의 독립 감수는 AI 에이전트가 수행했으며, 문장 단위 사람 재독이나 독자 이해도 조사를 기록한 것은 아니다.",
+    "human_review_level": "The editor set the central argument and directed specific prose, figure and architecture revisions, then requested publication on 10 November 2026. Independent manuscript and output reviews were performed by AI agents; this does not record a line-by-line human rereading or a reader-comprehension study. In the follow-up correction, the editor requested functional team introductions in the summary and named teams and harness design in the body.",
+    "human_review_level_ko": "편집자가 중심 논지와 구체적 문체·그림·아키텍처 개정을 지휘하고 2026년 11월 10일 게재를 요청했다. 원고·출력의 독립 감수는 AI 에이전트가 수행했으며, 문장 단위 사람 재독이나 독자 이해도 조사를 기록한 것은 아니다. 후속 교정에서는 요약에 역할을 먼저 소개하고 본문에서 팀 이름과 하네스 설계를 설명하도록 지시했다.",
     "disclosure_note_ko": "대표 이미지와 일부 장면은 AI 생성·편집 개념 그림이며 정확한 도식·수식·표기는 벡터로 구성했다. 55편 관찰은 고정된 공개 메타데이터에 근거한다. 교육용 감쇠 예제는 가상의 해석 모형이며 실제 연구나 AI 효과를 측정한 실험이 아니다. 기본 하네스 2026.08과 2026-11-06 보완판, 이번 원고 개정 23을 구별한다.",
     "disclosure_note_en": "The hero and selected scenes are AI-generated or edited conceptual illustrations, with exact diagrams, formulas and inscriptions authored as vectors. The 55-review observation uses a fixed public-metadata snapshot. The decay example is an imagined analytic teaching model, not an experiment measuring research or AI effects. Base harness 2026.08, its 6 November supplements and manuscript revision 23 are distinguished."
   }
