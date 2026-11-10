@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Faryad 실습 보충: 알고리즘 노트북과 QAOA 실행 예산 | Agentic Tech Review Letters</title>
+<meta name="description" content="Faryad의 공개 알고리즘 노트북 14개를 QML 18강에 연결하고, 정오표와 클라우드 QAOA의 후보·샷·작업·시간 예산을 읽는 한국어 보충자료.">
+<link rel="canonical" href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/supplements/faryad-qml-v1/">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header>
+<nav aria-label="상위 자료"><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/">QML 코스 목차</a><a href="https://infant83.io/AI_Tech_Review/lectures/">렉처 노트</a></nav>
+<p class="eyebrow">QML 18강 · 보충자료 01</p>
+<h1>Faryad 실습 보충:<br>알고리즘 노트북과 QAOA 실행 예산</h1>
+<p class="lead">작은 회로의 정답을 확인한 뒤에는 실제 장치에서 어떤 비용을 셀지 정해야 합니다. Faryad의 공개 알고리즘 노트북 14개를 기존 강의에 연결하고, 클라우드 QAOA에서 후보·샷·작업·시간을 함께 읽습니다.</p>
+<p class="meta"><time datetime="2026-11-10">2026-11-10</time> · 한국어 PDF 8쪽 · 독립 편집 보충</p>
+<div class="actions" aria-label="보충자료 열기">
+<a class="primary" href="https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-10-faryad-qml-supplement-ko-v1">필기하며 읽기 →</a>
+<a href="supplement.pdf">PDF 열기 ↗</a><a href="supplement.pdf" download>PDF 다운로드 ↓</a><a href="resources.zip" download>실습 자료 ZIP ↓</a>
+</div>
+<p class="relation">이 자료는 CMU 17-620의 공개 실러버스에서 출발한 <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/">「퀀텀 머신러닝: 데이터, 학습과 양자 우위의 조건」</a>에 덧붙인 보충입니다. 기존 147쪽 교재는 그대로 읽고 필기할 수 있습니다. Faryad의 공식 강의록이나 교재 번역본으로 표시하지 않습니다.</p>
+</header>
+<main id="main">
+<section id="learning-paths">
+<h2>기존 강의에서 이어 읽기</h2>
+<ol class="paths">
+<li><h3>02–03강 뒤: 회로의 관례와 근사</h3><p><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-02-qubits-gates-and-measurement.html">02 큐비트·측정</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-03-entanglement-and-circuits.html">03 얽힘·회로</a></p><p>Grover 예제의 비트 순서를 확인하고, 반복 위상 추정과 고정 시간의 Trotter 오차를 비교합니다. PDF 2–3쪽의 연결표·정오표에서 시작해 7쪽 실습 A를 풉니다.</p></li>
+<li><h3>07·10–12강 뒤: 같은 예산의 비교</h3><p><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-07-gradients-and-training.html">07 훈련</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-10-generalization-and-benchmarking.html">10 비교 설계</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-11-hardware-and-resources.html">11 자원</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-12-noise-and-mitigation.html">12 잡음</a></p><p>QAOA의 후보 수, 점마다 쓰는 샷, 제출 횟수와 시간을 나눠 셉니다. PDF 4–6쪽의 비교·장부를 읽고 7쪽 실습 B에서 공개 JSON을 검산합니다.</p></li>
+<li><h3>14·17강 뒤: 해 상태와 출력 비용</h3><p><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-14-advantage-and-dequantization.html">14 우위·탈양자화</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17 내결함성 QML</a></p><p>HHL과 QSVT에서 정규화된 해 상태, 성공확률과 고전 계수의 출력을 구별합니다. PDF 3쪽의 작은 예제와 7쪽 실습 C를 연결합니다.</p></li>
+</ol>
+</section>
+<section id="notebooks">
+<h2>알고리즘 노트북 14개</h2>
+<p>교재 6–10장에 대응하는 원저자의 코드와 저장 출력을 연결했습니다.<a class="citation" href="#ref-1">[1]</a> 파일명은 원본을 따르며, 오른쪽 강의 연결은 편집자의 제안입니다. 노트북 전체를 이번 게시에서 실행한 기록은 아닙니다.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="노트북과 기존 강의 연결표">
+<table><caption>원저자 장 번호와 기존 18강 번호는 서로 다른 체계입니다.</caption><thead><tr><th scope="col">노트북</th><th scope="col">내용</th><th scope="col">기존 강의</th></tr></thead><tbody>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/06a_grover.ipynb">06a</a></th><td>Grover 검색</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-02-qubits-gates-and-measurement.html">02강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-03-entanglement-and-circuits.html">03강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-14-advantage-and-dequantization.html">14강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/06b_quantum_counting.ipynb">06b</a></th><td>양자 계수</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-03-entanglement-and-circuits.html">03강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/06c_amplitude_amplification.ipynb">06c</a></th><td>진폭 증폭</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/06d_search_by_hamiltonian_simulation.ipynb">06d</a></th><td>모사 기반 검색</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-03-entanglement-and-circuits.html">03강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/07a_trotter_suzuki.ipynb">07a</a></th><td>Trotter-Suzuki</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-11-hardware-and-resources.html">11강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/07b_sparse_hamiltonian.ipynb">07b</a></th><td>희소 Hamiltonian</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-14-advantage-and-dequantization.html">14강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/07c_lcu.ipynb">07c</a></th><td>LCU</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/07d_pauli_string_simulation.ipynb">07d</a></th><td>Pauli 합 모사</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-03-entanglement-and-circuits.html">03강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-11-hardware-and-resources.html">11강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/08_chemistry_pipeline.ipynb">08</a></th><td>H2 STO-3G</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-16-symmetry-and-scientific-learning.html">16강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/09a_qaoa.ipynb">09a</a></th><td>고정 schedule QAOA</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-07-gradients-and-training.html">07강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-10-generalization-and-benchmarking.html">10강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/09b_hhl.ipynb">09b</a></th><td>HHL</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-04-data-encoding-and-loading.html">04강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-14-advantage-and-dequantization.html">14강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/10a_mlae.ipynb">10a</a></th><td>MLAE</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/10b_qubitization_simulation.ipynb">10b</a></th><td>qubitization</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+<tr><th scope="row"><a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/notebooks/10c_qsvt_linear_solver.ipynb">10c</a></th><td>QSVT 선형계</td><td><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-14-advantage-and-dequantization.html">14강</a> · <a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html">17강</a></td></tr>
+</tbody></table></div>
+<p><a class="text-action" href="notebook-catalog.csv" download>연결표 CSV 다운로드 ↓</a></p>
+</section>
+<section id="errata">
+<h2>실행 전에 읽을 정오표</h2>
+<p>원저자의 공개 정오표는 반복 위상 추정에서 주 레지스터를 유지하는 경우, Trotter 한 스텝 오차와 고정 시간 누적 오차, H₂의 물리 부분공간에 따른 항 수를 정정합니다.<a class="citation" href="#ref-2">[2]</a> PDF 3쪽에서 관례와 작은 계산을 확인할 수 있습니다. 인쇄본의 해당 페이지를 직접 대조한 것은 아닙니다.</p>
+</section>
+<section id="qaoa-budget">
+<h2>클라우드 QAOA의 실행 예산</h2>
+<p>논문은 6–12개 자산을 고르는 작은 QAOA 문제에서 배치 패턴 탐색과 순차 COBYLA를 같은 명목 작업·샷 예산으로 비교합니다. 배치는 한 제출에 여러 후보 각도를 넣습니다. 점당 정밀도와 탐색 폭, 결과를 기다리는 횟수가 함께 바뀝니다.<a class="citation" href="#ref-3">[3]</a></p>
+<dl class="metrics">
+<div><dt>공개 장부 작업 수</dt><dd>193개</dd></div>
+<div><dt>QPU 점유 시간 추정 합계</dt><dd>약 33.6143분</dd></div>
+<div><dt>제출부터 결과까지 측정 시간의 합</dt><dd>약 142.9255분</dd></div>
+</dl>
+<p>여섯 공개 JSON의 로그를 합산한 값입니다.<a class="citation" href="#ref-4">[4]</a> QPU 시간 필드는 논문이 밝힌 계측 키 오류 때문에 예측값으로 대체되어 있습니다. 따라서 33.6분은 장치 계측값이 아닙니다. 142.9분도 문제 준비·고전 계산 등을 포함한 전체 실험 시간과 구별합니다.</p>
+<p>논문의 ‘95% 도달’은 <strong>각 최적화 방법이 자기 예산 종료 시 얻은 무잡음 근사비 누적최댓값의 95%</strong>입니다. 전역 최적해 확률·장치 정확도·통계적 신뢰수준을 뜻하지 않습니다. 후보 수와 샷 배분, 조건부 근사비의 정의·유도는 PDF 4–6쪽에 있습니다.</p>
+</section>
+<section id="resources">
+<h2>다운로드와 실행 범위</h2>
+<p>ZIP에는 공개판 PDF, 이 안내 페이지, 노트북 14개, 원저자 의존성 목록, 연결표, 공개 데이터 6개, 오프라인 검산 코드 두 개와 기존 결과, 출처·라이선스·파일별 SHA-256 목록이 들어 있습니다. 노트북·데이터의 바이트는 원저자의 확인 커밋과 같습니다.</p>
+<p>동봉한 <code>audit_notebooks.py</code>와 <code>audit_qaoa.py</code>는 로컬 작은 모형과 장부를 검산합니다. 원저자 노트북을 실행하거나 장치에 작업을 제출하지 않습니다. 실행 방법은 ZIP의 <code>README.txt</code>에 있습니다.</p>
+<details><summary>환경·미해결 항목과 재사용 조건</summary>
+<ul>
+<li>원저자의 의존성 목록은 잠금 파일이 아닙니다. 노트북을 별도 환경에서 실행하면 실제 설치 판본과 결과를 기록해야 합니다.</li>
+<li>H₂ 예제의 sign-trap 설명과 저장 출력의 불일치, QAOA 저장소가 안내하지만 확인 커밋에 없는 <code>paper/make_figures.py</code>·<code>make_tables.py</code>는 미해결로 남겼습니다.</li>
+<li>QAOA 장치 노트북 6개는 공개 원출처 링크로 제공합니다. 해당 저장소의 NB16a는 <code>DRY_RUN=False</code>가 기본입니다. 로컬 모의실험을 원하면 실행 전에 <code>True</code>로 바꿔야 합니다. 이 사이트는 장치 실행을 시작하지 않습니다.</li>
+<li>노트북·코드는 Muhammad Faryad의 MIT 고지를, 데이터는 저자 표시와 CC-BY-4.0을 유지했습니다. 책 본문과 논문 PDF는 재배포하지 않습니다. 편집한 보충 설명에 원자료의 라이선스를 일괄 적용하지 않습니다.</li>
+</ul></details>
+</section>
+<section id="references">
+<h2>참고문헌</h2>
+<ol class="references">
+<li id="ref-1">M. Faryad, <i>Quantum Algorithms from First Principles</i> companion notebooks, commit <a href="https://github.com/muf148/quantum-algorithms-first-principles/tree/22954602b59d586c0727cf6110292b7000659db2"><code>22954602b59d586c0727cf6110292b7000659db2</code></a> (2026).</li>
+<li id="ref-2">M. Faryad, <i>Errata</i>, commit <a href="https://github.com/muf148/quantum-algorithms-first-principles/blob/22954602b59d586c0727cf6110292b7000659db2/ERRATA.md"><code>22954602b59d586c0727cf6110292b7000659db2</code></a> (2026).</li>
+<li id="ref-3">M. Faryad, Batched pattern search for QAOA parameter optimization on cloud-accessed quantum hardware, <a href="https://arxiv.org/html/2609.13669v1">arXiv:2609.13669v1</a> (2026).</li>
+<li id="ref-4">M. Faryad, <i>qaoa-job-budget</i>, commit <a href="https://github.com/muf148/qaoa-job-budget/tree/438b205b9bfd072038f4d342cf6adb89b1bdbb02"><code>438b205b9bfd072038f4d342cf6adb89b1bdbb02</code></a> (2026).</li>
+</ol>
+</section>
+<section id="publication-scope">
+<h2>작성·검증 범위</h2>
+<p>책임 편집자 김현중 · AI 보조 OpenAI Codex · 확인일 2026-11-10. 편집부(AEDAUT)의 <code>faryad_science_package</code>가 공개 원문·정오표·자료의 판본과 라이선스를 대조하고 웹 안내와 공개 자료 묶음을 편집했습니다. <code>faryad_pdf_review</code>가 PDF의 개인정보 정리·교육 내용 보존·링크·8쪽 조판을 검수했고, <code>root</code>가 강의 연결·등록·게시를 통합합니다.</p>
+<p>이번 검토에서는 제공된 오프라인 검산 코드 두 개를 다시 실행하고 장부 합계를 별도 계산했습니다. 작은 모형의 이번 재실행에는 NumPy 2.0.2를 사용했습니다. 원저자의 노트북 전체·Qiskit·분자 적분·QPU 실험과 논문 전체를 독립 재현한 것은 아닙니다. 사람의 원고 감수는 수행하지 않았습니다.</p>
+<p class="meta">공개판 PDF SHA-256: <code>f50d8147b650070ecd47734655738fd25631a614e01eed1142f47555545323bd</code></p>
+</section>
+</main>
+<footer><a href="https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/">QML 코스 목차로</a> · <a href="https://infant83.io/AI_Tech_Review/methods/">작성·검증 원칙</a></footer>
+</body></html>

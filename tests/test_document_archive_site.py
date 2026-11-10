@@ -397,6 +397,92 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         self.assertTrue(all("study_href" not in document for document in published))
         self.assertFalse((self.site / "lectures/quantum-machine-learning").exists())
 
+    def supplement_fixture(self):
+        parent, bundles, source = self.lecture_fixture()
+        spec = bundles[parent["id"]]
+        spec.update(chapter_pages=True, supplement_registry="supplement-registry.json",
+                    start_anchor="doc-study-guide", navigation=(("doc-study-guide", "학습 안내"),))
+        (source / "index.html").write_text(
+            '<!doctype html><html><head><title>Original course</title></head><body><aside class="sidebar"></aside><main>'
+            '<section id="front-cover" class="cover"><h1>Original course</h1></section>'
+            '<section class="document" id="doc-study-guide" data-source="study-guide.md"><h1>Study guide</h1><p>Original text and formula.</p></section>'
+            '<section class="document" id="doc-second" data-source="second.md"><h1>Second</h1><p>Unchanged second section.</p></section>'
+            '</main></body></html>')
+        child = archive_document("2026-11-10-faryad-qml-supplement-ko-v1")
+        child.update(series="lecture-notes", title="보충 강의", title_en="Supplement")
+        self.registry([parent, child])
+        child_bytes = PDF_BYTES + b"% distinct supplement\n"
+        (self.archive / child["file"]).write_bytes(child_bytes)
+        href = "supplements/faryad-qml-v1/"
+        names = ("supplement-registry.json", href + "index.html", href + "style.css", href + "supplement.pdf", href + "resources.zip", href + "notebook-catalog.csv")
+        spec["files"] += names
+        for name in names[1:]:
+            target = source / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(child_bytes if name.endswith(".pdf") else b"Reviewed supplementary resource")
+        registry = {"version": 1, "parent_id": parent["id"], "supplements": [{
+            "document_id": child["id"], "href": href, "pdf": href + "supplement.pdf",
+            "summary": "기존 강의를 보충하는 실습 자료입니다.", "summary_en": "Supplementary practice for this course.",
+            "sha256": hashlib.sha256(child_bytes).hexdigest(), "related_chapters": ["study-guide.html"]}]}
+        (source / spec["supplement_registry"]).write_text(json.dumps(registry))
+        return parent, child, bundles, source, registry
+
+    def test_supplement_has_distinct_reader_but_remains_under_unchanged_parent_course(self):
+        parent, child, bundles, source, registry = self.supplement_fixture()
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            published = self.publish()
+            self.assertEqual(validate_archive(self.site), [])
+        root = self.site / bundles[parent["id"]]["href"]
+        primary = next(doc for doc in published if doc["id"] == parent["id"])
+        extra = next(doc for doc in published if doc["id"] == child["id"])
+        self.assertEqual(primary["date"], parent["date"])
+        self.assertEqual(primary["title"], parent["title"])
+        self.assertNotIn("study_href", extra)
+        self.assertEqual(primary["study_supplements"][0]["document_id"], child["id"])
+        self.assertEqual((root / "notes.pdf").read_bytes(), PDF_BYTES)
+        self.assertNotEqual((root / registry["supplements"][0]["pdf"]).read_bytes(), PDF_BYTES)
+        self.assertIn('id="course-supplements"', (root / "index.html").read_text())
+        self.assertIn('class="document qml-related-supplements"', (root / "study-guide.html").read_text())
+        self.assertNotIn('class="document qml-related-supplements"', (root / "second.html").read_text())
+        for language, path in (("ko", "index.html"), ("en", "en/index.html")):
+            catalog = (self.site / "lectures" / path).read_text()
+            self.assertEqual(catalog.count('class="lecture-card'), 1)
+            self.assertIn('data-lecture-supplement="' + child["id"] + '"', catalog)
+            self.assertIn("reader/?id=" + child["id"], catalog)
+            self.assertIn(child["file"], catalog)
+            self.assertIn("1 resources · 2 PDFs" if language == "en" else "1개 자료 · PDF 2편", catalog)
+
+    def test_invalid_supplement_relation_path_hash_or_chapter_does_not_replace_publication(self):
+        parent, child, bundles, source, registry = self.supplement_fixture()
+        target = source / "supplement-registry.json"
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+            original = (self.site / "archive-manifest.json").read_bytes()
+            variants = [("href", "../private/"), ("pdf", "notes.pdf"), ("sha256", "0" * 64),
+                        ("document_id", parent["id"]), ("related_chapters", ["nonexistent.html"])]
+            for key, value in variants:
+                with self.subTest(key=key):
+                    changed = json.loads(json.dumps(registry))
+                    changed["supplements"][0][key] = value
+                    target.write_text(json.dumps(changed))
+                    with self.assertRaises(ValueError):
+                        self.publish()
+                    self.assertEqual((self.site / "archive-manifest.json").read_bytes(), original)
+
+    def test_supplement_pdf_hash_is_rechecked_even_if_parent_asset_manifest_is_forged(self):
+        parent, child, bundles, source, registry = self.supplement_fixture()
+        with patch.dict(archive_site.LECTURE_BUNDLES, bundles, clear=True):
+            self.publish()
+            manifest_path = self.site / "archive-manifest.json"
+            manifest = json.loads(manifest_path.read_text())
+            primary = next(doc for doc in manifest["documents"] if doc["id"] == parent["id"])
+            name = registry["supplements"][0]["pdf"]
+            data = PDF_BYTES + b"% modified public supplement\n"
+            (self.site / primary["study_href"] / name).write_bytes(data)
+            primary["study_assets"][name] = hashlib.sha256(data).hexdigest()
+            manifest_path.write_text(json.dumps(manifest))
+            self.assertTrue(any("invalid lecture supplement registry" in e for e in validate_archive(self.site)))
+
     def classiq_fixture(self) -> tuple[dict, dict, Path]:
         document = archive_document("2026-10-22-classiq-talk-series-notes-ko")
         document.update(series="lecture-notes", title="Classiq 최근 토크시리즈 상세 학습 노트",

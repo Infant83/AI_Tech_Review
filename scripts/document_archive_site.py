@@ -29,7 +29,7 @@ SERIES = {
     "lecture-notes": ("렉처 노트", "Lecture notes"),
     "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261106-series-summaries"
+LIBRARY_ASSET_VERSION = "20261110-qml-supplement"
 
 # The shared reader is application code, not a course or an article. Never copy
 # a source directory recursively: it may also contain tests or private notes.
@@ -86,6 +86,7 @@ LECTURE_BUNDLES = {
         "source": "2026-10-20_quantum-machine-learning-lecture-series/dist",
         "href": "lectures/quantum-machine-learning/",
         "chapter_pages": True,
+        "supplement_registry": "supplement-registry.json",
         "files": (
             "index.html", "notes.css", "notes.pdf",
             "assets/qml-sans-regular.woff2", "assets/qml-sans-bold.woff2",
@@ -95,6 +96,12 @@ LECTURE_BUNDLES = {
             "labs/requirements-pennylane.txt", "labs/sdk-lock.txt",
             "labs/qpu_submission_template.json", "labs/results/reference-results.json",
             "labs/results/pennylane-results.json",
+            "supplement-registry.json",
+            "supplements/faryad-qml-v1/index.html",
+            "supplements/faryad-qml-v1/style.css",
+            "supplements/faryad-qml-v1/supplement.pdf",
+            "supplements/faryad-qml-v1/resources.zip",
+            "supplements/faryad-qml-v1/notebook-catalog.csv",
         ),
     },
     "2026-10-22-classiq-talk-series-notes-ko": {
@@ -279,9 +286,61 @@ def series_latest_pdf(root: Path, registry: dict) -> Path:
     return latest
 
 
+def lecture_supplement_metadata(root: Path, registry: dict, documents: list[dict], primary_id: str,
+                                spec: dict) -> list[dict]:
+    """Bind explicit course supplements to distinct, registered PDF identities."""
+    if (not isinstance(registry, dict) or set(registry) != {"version", "parent_id", "supplements"}
+            or registry.get("version") != 1 or registry.get("parent_id") != primary_id
+            or not isinstance(registry.get("supplements"), list) or not registry["supplements"]):
+        raise ValueError("Invalid lecture supplement registry")
+    try:
+        from .archive_documents import _check_text, _reject_symlink_components
+        from .lecture_chapters import chapter_files
+    except ImportError:
+        from archive_documents import _check_text, _reject_symlink_components
+        from lecture_chapters import chapter_files
+    indexed = {doc["id"]: doc for doc in documents if doc["series"] == "lecture-notes"}
+    if primary_id not in indexed:
+        raise ValueError("Missing supplement parent PDF")
+    allowed = set(spec["files"])
+    authored = Path(__file__).resolve().parents[1] / spec["source"] / "index.html"
+    chapters = set(chapter_files(authored.read_text(encoding="utf-8"))) if spec.get("chapter_pages") else set()
+    result, seen, locations = [], set(), set()
+    fields = {"document_id", "href", "pdf", "summary", "summary_en", "sha256", "related_chapters"}
+    for item in registry["supplements"]:
+        if not isinstance(item, dict) or set(item) != fields:
+            raise ValueError("Invalid lecture supplement fields")
+        identifier, href, pdf = item["document_id"], item["href"], item["pdf"]
+        child = indexed.get(identifier) if isinstance(identifier, str) else None
+        if (not child or identifier == primary_id or identifier in seen or identifier in LECTURE_BUNDLES
+                or not isinstance(href, str) or not re.fullmatch(r"supplements/[a-z0-9]+(?:-[a-z0-9]+)*/", href)
+                or href in locations or pdf != href + "supplement.pdf"
+                or not {href + "index.html", pdf, href + "resources.zip"}.issubset(allowed)
+                or not isinstance(item["sha256"], str) or not re.fullmatch(r"[a-f0-9]{64}", item["sha256"])
+                or item["sha256"] != child["sha256"]):
+            raise ValueError("Lecture supplement differs from its registered PDF or allowlist")
+        related = item["related_chapters"]
+        if (not isinstance(related, list)
+                or any(not isinstance(name, str) or not name.endswith(".html") or name not in chapters for name in related)
+                or len(related) != len(set(related))):
+            raise ValueError("Invalid lecture supplement chapter links")
+        for field in ("summary", "summary_en"):
+            _check_text(item[field], "supplement " + field, 1600)
+        path = root / pdf
+        _reject_symlink_components(path)
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != child["sha256"]:
+            raise ValueError("Lecture supplement PDF differs from archive hash")
+        result.append({**item, "title": child["title"], "title_en": child.get("title_en") or child["title"],
+                       "date": child["date"], "archive_href": child["href"], "study_href": spec["href"] + href})
+        seen.add(identifier)
+        locations.add(href)
+    return result
+
+
 def grouped_lectures(documents: list[dict]) -> list[dict]:
     lectures = [doc for doc in documents if doc["series"] == "lecture-notes"]
     members = {unit["document_id"] for doc in lectures for unit in doc.get("study_series", {}).get("units", [])}
+    members.update(supplement["document_id"] for doc in lectures for supplement in doc.get("study_supplements", []))
     grouped = [doc for doc in lectures if doc.get("study_series") or doc["id"] not in members]
     return sorted(grouped, key=lambda doc: (doc.get("study_series", {}).get("latest_date", doc["date"]), doc["id"]), reverse=True)
 
@@ -461,6 +520,28 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
     </article>'''
 
 
+def render_lecture_supplements(supplements: list[dict], prefix: str, language: str) -> str:
+    if not supplements:
+        return ""
+    en = language == "en"
+    items = []
+    for item in supplements:
+        title = item["title_en" if en else "title"]
+        summary = item["summary_en" if en else "summary"]
+        reader = lecture_reader_href(item["document_id"], prefix=prefix, language=language)
+        pdf = prefix + item["archive_href"]
+        items.append(f'''<li data-lecture-supplement="{escape(item['document_id'])}">
+          <h4><a href="{escape(prefix + item['study_href'])}">{escape(title)}</a></h4>
+          <p class="lecture-unit-meta"><time datetime="{escape(item['date'])}">{escape(item['date'])}</time></p>
+          <p class="lecture-unit-summary">{escape(summary)}</p>
+          <div class="lecture-actions"><a class="lecture-primary" href="{escape(reader)}">{'Annotate' if en else '필기'} →</a>
+          <a class="lecture-secondary" href="{escape(pdf)}" target="_blank" rel="noopener">PDF ↗</a>
+          <a class="lecture-secondary" href="{escape(pdf)}" download>{'Download' if en else '다운로드'} ↓</a></div>
+        </li>''')
+    return ('<section class="lecture-supplements" aria-label="' + ('Supplementary lessons' if en else '보충 강의')
+            + '"><h3>' + ('Supplementary lessons' if en else '보충 강의') + '</h3><ul>' + ''.join(items) + '</ul></section>')
+
+
 def render_lectures(documents: list[dict], base_url: str, language: str = "ko") -> str:
     en = language == "en"
     prefix = "../../" if en else "../"
@@ -533,6 +614,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
           <h2 lang="{title_language}"><a href="{reader}">{escape(doc_title)}</a></h2>
           <p class="lecture-summary" lang="{summary_language}">{escape(summary)}</p>
           {stats}<div class="lecture-actions">{actions}</div>{quick_links}
+          {render_lecture_supplements(doc.get('study_supplements', []), prefix, language)}
         </article>''')
     if not cards:
         cards.append('<p class="lecture-empty">' + ("Lecture notes will appear here when a series is published." if en else "새 렉처 시리즈가 발행되면 이곳에서 공부를 시작할 수 있습니다.") + '</p>')
@@ -566,7 +648,7 @@ def render_lectures(documents: list[dict], base_url: str, language: str = "ko") 
 
 
 def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec: dict,
-                         base_url: str, decorate) -> Path:
+                         base_url: str, decorate, documents: list[dict] | None = None) -> Path:
     """Copy only reviewed assets, validating everything before replacing output."""
     try:
         from .archive_documents import _reject_symlink_components
@@ -591,6 +673,13 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(asset, target)
     series = json.loads((destination / spec["unit_registry"]).read_text(encoding="utf-8")) if spec.get("unit_registry") else {}
+    supplements = []
+    if spec.get("supplement_registry"):
+        if spec["supplement_registry"] not in files:
+            raise ValueError("Lecture supplement registry is missing from allowlist")
+        supplements = lecture_supplement_metadata(destination,
+            json.loads((destination / spec["supplement_registry"]).read_text(encoding="utf-8")),
+            documents or [document], document["id"], spec)
     expected_pdf = series_latest_pdf(destination, series) if series else archive_dir / document["file"]
     if (destination / "notes.pdf").read_bytes() != expected_pdf.read_bytes():
         raise ValueError("Lecture PDF differs from registered archive PDF")
@@ -639,7 +728,8 @@ def stage_lecture_bundle(archive_dir: Path, staging: Path, document: dict, spec:
             from .lecture_chapters import build_chapters
         except ImportError:
             from lecture_chapters import build_chapters
-        build_chapters(destination, (source / "index.html").read_text(encoding="utf-8"), text, canonical)
+        build_chapters(destination, (source / "index.html").read_text(encoding="utf-8"), text, canonical,
+                       supplements=supplements)
     else:
         index.write_text(text, encoding="utf-8")
     return destination
@@ -684,7 +774,8 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             if spec:
                 if source["series"] != "lecture-notes":
                     raise ValueError("Study bundles must belong to lecture-notes")
-                staged = stage_lecture_bundle(archive_dir, temporary_root, source, spec, base_url, decorate)
+                staged = stage_lecture_bundle(archive_dir, temporary_root, source, spec, base_url, decorate,
+                                              documents=documents)
                 # Only derived, public fields leave the source registry.
                 document["study_href"] = spec["href"]
                 bundle_files = lecture_bundle_files(spec, archive_dir.parent / spec["source"])
@@ -692,7 +783,13 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
                 if spec.get("unit_registry"):
                     registry = json.loads((staged / spec["unit_registry"]).read_text(encoding="utf-8"))
                     document["study_series"] = lecture_series_metadata(registry, documents, source["id"])
+                if spec.get("supplement_registry"):
+                    registry = json.loads((staged / spec["supplement_registry"]).read_text(encoding="utf-8"))
+                    document["study_supplements"] = lecture_supplement_metadata(staged, registry, documents, source["id"], spec)
                 lecture_outputs.append((staged, site_dir / spec["href"]))
+        supplement_members = [item["document_id"] for doc in documents for item in doc.get("study_supplements", [])]
+        if len(supplement_members) != len(set(supplement_members)):
+            raise ValueError("Lecture supplement belongs to more than one parent")
         for lang, prefix in (("ko", "../"), ("en", "../../")):
             page = temporary_root / "lectures" / ("en/index.html" if lang == "en" else "index.html")
             page.parent.mkdir(parents=True, exist_ok=True)
@@ -755,6 +852,8 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
         if not spec:
             if document.get("study_href"):
                 errors.append(f"unregistered study site: {document['id']}")
+            if document.get("study_supplements"):
+                errors.append(f"unregistered lecture supplements: {document['id']}")
             continue
         if document.get("study_href") != spec["href"]:
             errors.append(f"missing lecture link: {document['id']}")
@@ -777,12 +876,22 @@ def validate_lecture_bundles(site_dir: Path, documents: list[dict]) -> list[str]
                 errors.append(f"lecture asset checksum mismatch: {name}")
         if not spec.get("unit_registry") and (root / "notes.pdf").is_file() and hashlib.sha256((root / "notes.pdf").read_bytes()).hexdigest() != document["sha256"]:
             errors.append(f"lecture PDF differs from archive: {document['id']}")
+        supplements = []
+        if spec.get("supplement_registry"):
+            try:
+                registry = json.loads((root / spec["supplement_registry"]).read_text(encoding="utf-8"))
+                supplements = lecture_supplement_metadata(root, registry, documents, document["id"], spec)
+                if document.get("study_supplements") != supplements:
+                    errors.append(f"lecture supplement metadata differs from registry: {document['id']}")
+            except (OSError, ValueError, KeyError, TypeError):
+                errors.append(f"invalid lecture supplement registry: {document['id']}")
         if spec.get("chapter_pages"):
             try:
                 from .lecture_chapters import validate_chapters
             except ImportError:
                 from lecture_chapters import validate_chapters
-            errors.extend(validate_chapters(root, (source_dir / "index.html").read_text(encoding="utf-8")))
+            errors.extend(validate_chapters(root, (source_dir / "index.html").read_text(encoding="utf-8"),
+                                            supplements=supplements))
         if spec.get("unit_registry"):
             try:
                 registry = json.loads((root / spec["unit_registry"]).read_text(encoding="utf-8"))
@@ -936,6 +1045,12 @@ ARCHIVE_CSS = '''
 .lecture-resources { display:flex; flex-wrap:wrap; gap:2px 22px; margin-top:15px; padding-top:12px; border-top:1px solid #edf0eb; }
 .lecture-resources a { display:inline-flex; align-items:center; min-height:44px; font-size:13px; color:var(--muted); text-decoration:none; }
 .lecture-resources a:hover { color:var(--green); text-decoration:underline; }
+.lecture-supplements { border-top:1px solid #d9dedc; margin-top:18px; padding-top:16px; }
+.lecture-supplements h3 { font-size:15px; margin:0 0 12px; }
+.lecture-supplements ul { list-style:none; padding:0; margin:0; }
+.lecture-supplements h4 { font-size:16px; line-height:1.5; margin:0 0 6px; }
+.lecture-supplements h4 a { color:inherit; text-decoration:none; }
+.lecture-supplements h4 a:hover { text-decoration:underline; }
 .lecture-note { border-top:1px solid var(--line); padding:20px 0 36px; color:var(--muted); font-size:12px; line-height:1.8; }
 .lecture-note p { max-width:800px; }
 .lecture-note a { display:inline-flex; align-items:center; min-height:44px; }

@@ -50,6 +50,13 @@ PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
                      ".py", ".csv", ".mp4", ".vtt"}
 PUBLIC_TEXT_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".txt", ".py", ".csv", ".vtt"}
+# This downloadable archive's inventory, rights and checksums were reviewed in
+# 2026-11-10_faryad-qml-supplement/reports/package-publication-qa.json. This is
+# an exact registered study-asset pin, not permission to publish arbitrary ZIPs.
+REVIEWED_STUDY_ARCHIVES = {
+    "lectures/quantum-machine-learning/supplements/faryad-qml-v1/resources.zip":
+        "97c35fc225a38b75d76e1e5c8fb7ab8de74de892e2d00ff88e1513d9ddbbe684",
+}
 PRIVATE_NAMES = re.compile(r"(?:^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|^wrangler\.|^id_(?:rsa|ed25519)|"
                            r"(?:^|[._-])(?:credential|credentials|secret|secrets)(?:[._-]|$)|"
                            r"(?:\.pem|\.key|\.p12|\.pfx|\.sqlite|\.sqlite3|\.db|\.sql|\.bak|\.log|~)$)", re.I)
@@ -387,6 +394,7 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
         raise ValueError("Publication catalog differs from approved public registries")
     reviews = json.loads((site_dir / "manifest.json").read_text(encoding="utf-8"))
     registered = set()
+    registered_study_assets = {}
     try:
         from .listing_pagination import generated_paths, is_page_path
     except ImportError:
@@ -413,10 +421,12 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
         if validate_editions(site_dir, document):
             raise ValueError("Invalid registered PDF editions: " + document["id"])
         registered.update(row["href"] for row in document.get("editions", []))
-        for asset in document.get("study_assets", {}):
+        for asset, checksum in document.get("study_assets", {}).items():
             path = (Path(document["study_href"]) / asset).as_posix()
             public_path(path)
             registered.add(path)
+            if document.get("series") == "lecture-notes":
+                registered_study_assets[path] = checksum
     reader_errors = archive_site.validate_lecture_reader(site_dir, required=False,
                                                         verify_app_source=verify_reader_source)
     if reader_errors:
@@ -457,8 +467,14 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
             raise ValueError(f"Unapproved English hub file: {relative}")
         if (relative.parts[0] == "page" or is_page_path(name)) and name not in listing_paths:
             raise ValueError(f"Unapproved generated list page: {relative}")
+        reviewed_archive = name in REVIEWED_STUDY_ARCHIVES
+        if reviewed_archive:
+            expected = REVIEWED_STUDY_ARCHIVES[name]
+            if (registered_study_assets.get(name) != expected
+                    or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
+                raise ValueError(f"Unapproved reviewed study archive: {relative}")
         if (name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS
-                and name not in shared_reader_assets):
+                and name not in shared_reader_assets and not reviewed_archive):
             raise ValueError(f"Unapproved public file type: {relative}")
         if ((relative.parts[0] == "reviews" or name.startswith(("archive/files/", "archive/editions/"))
              or (relative.parts[0] == "lectures" and name not in {"lectures/index.html", "lectures/en/index.html"}))

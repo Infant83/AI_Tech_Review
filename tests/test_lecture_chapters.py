@@ -57,6 +57,24 @@ class LectureChapterTests(unittest.TestCase):
         (self.root / chapters.MANIFEST).write_text(json.dumps(manifest))
         self.assertTrue(any("scientific section changed" in error for error in chapters.validate_chapters(self.root, SOURCE)))
 
+    def test_supplement_is_separate_from_original_sections_and_only_linked_from_selected_chapter(self):
+        supplements = [{"document_id": "2026-11-10-supplement", "href": "supplements/example/",
+                        "pdf": "supplements/example/supplement.pdf", "title": "보충 & 실습", "date": "2026-11-10",
+                        "summary": "기존 수식은 보존한다.", "related_chapters": ["second.html"]}]
+        chapters.build_chapters(self.root, SOURCE, SOURCE, "https://example.com/course/", supplements=supplements)
+        self.assertEqual(chapters.validate_chapters(self.root, SOURCE, supplements=supplements), [])
+        original = chapters.source_plan(SOURCE)
+        for record in original["records"]:
+            page = (self.root / record["href"]).read_text()
+            self.assertIn(chapters.retarget_fragments(record["html"], original["anchors"]), page)
+        self.assertIn('id="course-supplements"', (self.root / "index.html").read_text())
+        self.assertIn('href="#course-supplements">보충 강의 ↓</a>', (self.root / "index.html").read_text())
+        self.assertNotIn('class="document qml-related-supplements"', (self.root / "first.html").read_text())
+        second = self.root / "second.html"
+        self.assertIn('class="document qml-related-supplements"', second.read_text())
+        second.write_text(second.read_text().replace("기존 수식은 보존한다.", "unreviewed change"))
+        self.assertTrue(any("related supplement" in error for error in chapters.validate_chapters(self.root, SOURCE, supplements=supplements)))
+
     def test_changed_source_or_missing_chapter_fails_preservation_check(self):
         self.build()
         changed = SOURCE.replace('원래 설명', '달라진 설명')

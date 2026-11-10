@@ -456,6 +456,59 @@ class ReaderEnrichmentTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     reader.validate_public_artifact(site)
 
+    def reviewed_study_archive_fixture(self, root):
+        site, frontend = self.fixture(root)
+        relative = "lectures/quantum-machine-learning/supplements/faryad-qml-v1/resources.zip"
+        expected = "97c35fc225a38b75d76e1e5c8fb7ab8de74de892e2d00ff88e1513d9ddbbe684"
+        data = (reader.ROOT / "2026-11-10_faryad-qml-supplement/dist/resources.zip").read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(), expected)
+        target = site / relative
+        target.parent.mkdir(parents=True)
+        target.write_bytes(data)
+        index = site / "lectures/quantum-machine-learning/index.html"
+        (site / "lectures/course/index.html").rename(index)
+        (site / "lectures/course").rmdir()
+        manifest_path = site / "archive-manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        parent = manifest["documents"][0]
+        parent["study_href"] = "lectures/quantum-machine-learning/"
+        parent["study_assets"]["supplements/faryad-qml-v1/resources.zip"] = expected
+        manifest_path.write_text(json.dumps(manifest))
+        reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+        return site, frontend, target, manifest_path
+
+    def test_reviewed_study_archive_accepts_exact_registered_path_and_bytes_only(self):
+        self.assertNotIn(".zip", reader.PUBLIC_EXTENSIONS)
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend, target, manifest_path = self.reviewed_study_archive_fixture(Path(temporary))
+            self.assertEqual(reader.validate_public_artifact(site)["articles"], 3)
+            target.write_bytes(target.read_bytes() + b"unreviewed modification")
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            with self.assertRaisesRegex(ValueError, "Unapproved reviewed study archive"):
+                reader.validate_public_artifact(site)
+
+    def test_reviewed_study_archive_without_registration_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend, target, manifest_path = self.reviewed_study_archive_fixture(Path(temporary))
+            manifest = json.loads(manifest_path.read_text())
+            manifest["documents"][0]["study_assets"].pop("supplements/faryad-qml-v1/resources.zip")
+            manifest_path.write_text(json.dumps(manifest))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            with self.assertRaisesRegex(ValueError, "Unapproved reviewed study archive"):
+                reader.validate_public_artifact(site)
+
+    def test_other_zip_is_rejected_even_when_registered_as_study_asset(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend, target, manifest_path = self.reviewed_study_archive_fixture(Path(temporary))
+            other = target.with_name("other.zip")
+            other.write_bytes(target.read_bytes())
+            manifest = json.loads(manifest_path.read_text())
+            manifest["documents"][0]["study_assets"]["supplements/faryad-qml-v1/other.zip"] = hashlib.sha256(other.read_bytes()).hexdigest()
+            manifest_path.write_text(json.dumps(manifest))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            with self.assertRaisesRegex(ValueError, "Unapproved public file type"):
+                reader.validate_public_artifact(site)
+
 
 class PublicationSyncTests(unittest.TestCase):
     def run_sync(self, responder, **kwargs):

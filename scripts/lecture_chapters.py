@@ -186,7 +186,31 @@ def _pager(records: list[dict], index: int) -> str:
     return '<nav class="qml-page-navigation" aria-label="학습 자료 이동">' + "".join(links) + '</nav>'
 
 
-def build_chapters(directory: Path, source: str, published: str, canonical: str) -> dict:
+def supplement_section(supplements: list[dict], *, chapter: str | None = None) -> str:
+    """Render separate additions without changing an existing study section."""
+    selected = [item for item in supplements if chapter is None or chapter in item["related_chapters"]]
+    if not selected:
+        return ""
+    items = []
+    action_style = ' style="min-height:44px;display:inline-flex;align-items:center;padding:0;border:0;background:none"'
+    for item in selected:
+        title = html.escape(item["title"])
+        href, pdf, identifier = (html.escape(item[key], quote=True) for key in ("href", "pdf", "document_id"))
+        items.append(f'<li data-course-supplement="{identifier}"><h3><a href="{href}">{title}</a></h3>'
+                     f'<p><time datetime="{html.escape(item["date"], quote=True)}">{html.escape(item["date"])}</time></p>'
+                     f'<p>{html.escape(item["summary"])}</p><nav class="qml-page-navigation qml-supplement-actions" aria-label="보충자료 열기" style="gap:0 18px">'
+                     f'<a{action_style} href="../reader/?id={identifier}">필기 →</a><a{action_style} href="{pdf}">PDF ↗</a>'
+                     f'<a{action_style} href="{pdf}" download>다운로드 ↓</a><a{action_style} href="{href}resources.zip" download>실습 자료 ZIP ↓</a>'
+                     '</nav></li>')
+    if chapter is not None:
+        return ('<aside class="document qml-related-supplements" aria-label="공개 자료 보충"><h2>공개 자료 보충</h2>'
+                '<ul>' + ''.join(items) + '</ul></aside>')
+    return ('<section class="document qml-course-supplements" id="course-supplements" aria-labelledby="course-supplements-heading">'
+            '<h2 id="course-supplements-heading">보충 강의</h2><ul>' + ''.join(items) + '</ul></section>')
+
+
+def build_chapters(directory: Path, source: str, published: str, canonical: str,
+                   supplements: list[dict] | None = None) -> dict:
     """Replace only the QML course HTML with a course entry and exact sections.
 
     source is the reviewed dist HTML, published adds existing site navigation,
@@ -197,6 +221,14 @@ def build_chapters(directory: Path, source: str, published: str, canonical: str)
     if directory.is_symlink():
         raise ValueError("Chapter output must not be a symlink")
     plan = source_plan(source)
+    supplements = supplements or []
+    related_pages = {record["href"] for record in plan["records"]}
+    for item in supplements:
+        if (not re.fullmatch(r"supplements/[a-z0-9]+(?:-[a-z0-9]+)*/", item.get("href", ""))
+                or item.get("pdf") != item["href"] + "supplement.pdf"
+                or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", item.get("document_id", ""))
+                or not set(item.get("related_chapters", [])).issubset(related_pages)):
+            raise ValueError("Invalid supplement chapter metadata")
     published_plan = source_plan(published)
     if [r["source_section_sha256"] for r in plan["records"]] != [r["source_section_sha256"] for r in published_plan["records"]]:
         raise ValueError("Site decoration changed scientific source sections")
@@ -218,7 +250,8 @@ def build_chapters(directory: Path, source: str, published: str, canonical: str)
         title = record["title"] or record["id"]
         page = (_chapter_head(head, title, canonical + record["href"]) +
                 '<body class="qml-chapter"><a class="skip" href="#' + record["id"] + '">본문 바로가기</a>' + sidebar +
-                '<main class="workspace">' + _pager(plan["records"], index) + body + _pager(plan["records"], index) + disclosure + '</main>' + trailing)
+                '<main class="workspace">' + _pager(plan["records"], index) + body +
+                supplement_section(supplements, chapter=record["href"]) + _pager(plan["records"], index) + disclosure + '</main>' + trailing)
         (directory / record["href"]).write_text(page, encoding="utf-8")
         record_manifest.append({key: value for key, value in record.items() if key != "html"} |
                                {"rendered_section_sha256": sha256(body), "raw_page_bytes": len(page.encode("utf-8"))})
@@ -236,10 +269,12 @@ def build_chapters(directory: Path, source: str, published: str, canonical: str)
     contents = ('<section class="document qml-course-contents" aria-labelledby="qml-contents-heading">'
                 '<h2 id="qml-contents-heading">강의와 학습 자료</h2>'
                 '<p><a href="study-guide.html#doc-study-guide">학습 안내에서 시작하기 →</a> · '
-                '<a href="notes.pdf">통합 PDF</a></p><ol>' + ''.join(items) + '</ol></section>')
+                '<a href="notes.pdf">통합 PDF</a>'
+                + (' · <a href="#course-supplements">보충 강의 ↓</a>' if supplements else '')
+                + '</p><ol>' + ''.join(items) + '</ol></section>')
     entry_head = head.replace('</head>', f'<link rel="stylesheet" href="{_asset_href(NAVIGATION_CSS)}"></head>', 1)
     index_page = (entry_head + '<body class="qml-course-index" data-qml-course-index data-qml-source="' + plan["source_sha256"] + '"><a class="skip" href="#front-cover">본문 바로가기</a>' + sidebar +
-                  '<main class="workspace">' + plan["cover"] + contents + ''.join(fallback) + disclosure + '</main>' +
+                  '<main class="workspace">' + plan["cover"] + contents + supplement_section(supplements) + ''.join(fallback) + disclosure + '</main>' +
                   f'<script defer src="{_asset_href(NAVIGATION_JS)}"></script>' + trailing)
     (directory / "index.html").write_text(index_page, encoding="utf-8")
     for name in (NAVIGATION_JS, NAVIGATION_CSS):
@@ -249,14 +284,17 @@ def build_chapters(directory: Path, source: str, published: str, canonical: str)
                 "files": [record["href"] for record in record_manifest] + [MANIFEST, NAVIGATION_JS, NAVIGATION_CSS],
                 "reader_identity": "lecture:2026-10-20-quantum-machine-learning-lecture-notes-ko",
                 "coverage": "Original document sections, equations, figures and IDs; only local fragment hrefs retargeted. Full print source is retained in authoring dist, complete reading copy is the unchanged PDF."}
+    if supplements:
+        manifest["supplements"] = supplements
     (directory / MANIFEST).write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
-def validate_chapters(directory: Path, source: str) -> list[str]:
+def validate_chapters(directory: Path, source: str, supplements: list[dict] | None = None) -> list[str]:
     """Rebuild preservation expectations from the reviewed source, not metadata."""
     directory = Path(directory)
     errors = []
+    supplements = supplements or []
     try:
         path = directory / MANIFEST
         if path.is_symlink():
@@ -265,6 +303,8 @@ def validate_chapters(directory: Path, source: str) -> list[str]:
         plan = source_plan(source)
         if manifest.get("version") != 1 or manifest.get("source_sha256") != plan["source_sha256"] or manifest.get("anchors") != plan["anchors"]:
             errors.append("chapter source or anchor map differs")
+        if manifest.get("supplements", []) != supplements:
+            errors.append("chapter supplement metadata differs")
         expected_files = list(chapter_files(source))
         if manifest.get("files") != expected_files:
             errors.append("chapter generated file list differs")
@@ -281,6 +321,9 @@ def validate_chapters(directory: Path, source: str) -> list[str]:
             expected = retarget_fragments(original["html"], plan["anchors"])
             if body != [expected]:
                 errors.append("scientific section changed: " + original["href"])
+            added = supplement_section(supplements, chapter=original["href"])
+            if added and path.read_text(encoding="utf-8").count(added) != 1:
+                errors.append("missing or changed related supplement: " + original["href"])
             record = records.get(original["href"], {})
             if (any(record.get(key) != value for key, value in original.items() if key != "html")
                     or record.get("rendered_section_sha256") != sha256(expected)):
@@ -291,6 +334,9 @@ def validate_chapters(directory: Path, source: str) -> list[str]:
                 errors.append("chapter navigation source differs: " + name)
         index = directory / "index.html"
         index_text = index.read_text(encoding="utf-8")
+        added = supplement_section(supplements)
+        if added and index_text.count(added) != 1:
+            errors.append("missing or changed course supplement section")
         if plan["cover"] not in index_text or any(record["html"] in index_text for record in plan["records"]):
             errors.append("course entry must preserve its cover without duplicating complete study sections")
         index_ids = set(Identifiers(index_text).ids)
