@@ -2,13 +2,13 @@
   "format": "ai-tech-review-course-registry",
   "version": 1,
   "series_id": "classiq-qae-onboarding",
-  "updated": "2026-11-09",
+  "updated": "2026-11-11",
   "title": "Classiq QAE 온보딩 시리즈",
   "title_en": "Classiq QAE Onboarding Series",
-  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 문제 명세부터 상태·관측량·얽힘을 거쳐 측정 결과의 통계적 해석까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.",
-  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. This independent Korean series connects problem specifications, states, observables and entanglement with statistical interpretation of measurement results, using PDFs with derivations, exercises and worked answers.",
+  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 문제 명세부터 상태·관측량·얽힘과 측정 통계를 거쳐 변분 에너지·수치 최적화까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.",
+  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. This independent Korean series connects problem specifications, states, observables, entanglement and measurement statistics with variational energies and numerical optimization, using PDFs with derivations, exercises and worked answers.",
   "official_Classiq_course": false,
-  "latest_unit": "L005",
+  "latest_unit": "L006",
   "units": [
     {
       "id": "L001",
@@ -149,12 +149,40 @@
       "answer_pdf_page": 13,
       "glossary_pdf_page": 15,
       "reference_pdf_page": 16
+    },
+    {
+      "id": "L006",
+      "date": "2026-11-11",
+      "title": "계산한 에너지가 정확한 바닥보다 낮아져도 되는가",
+      "title_en": "Variational bounds, optimization and selection bias",
+      "archive_id": "2026-11-11-classiq-qae-l006-notes-ko",
+      "summary": "같은 Hamiltonian의 정확한 에너지 기댓값이 바닥에너지보다 낮아질 수 없는 이유를 증명합니다. 수치 최적화와 유한 샷 추정을 비교하고, 가장 낮은 추정값을 고를 때 생기는 편향과 새 표본 검증을 살핍니다.",
+      "summary_en": "Prove why the exact energy expectation of a fixed Hamiltonian cannot fall below its ground energy. Compare numerical optimization with finite-shot estimation, then examine bias from selecting the lowest estimate and validation with fresh samples.",
+      "status": "available",
+      "language": "ko",
+      "pdf": "2026-11-11-classiq-qae-l006-notes-ko.pdf",
+      "public_pages": 17,
+      "original_pages": 16,
+      "sha256": "8ad8a4027db5f46fc1c4ab7b839d79df92ffb65bcdd92f90ef03d29efa322258",
+      "topics": [
+        "Rayleigh 몫",
+        "변분 원리",
+        "수치 최적화",
+        "선택 편향",
+        "검증 표본",
+        "비직교 기저·DFT"
+      ],
+      "exercises": 8,
+      "exercise_pdf_page": 12,
+      "answer_pdf_page": 13,
+      "glossary_pdf_page": 14,
+      "reference_pdf_page": 15
     }
   ],
   "planned_next": {
-    "id": "L006",
+    "id": "L007",
     "status": "planned-not-published",
-    "topic": "변분 원리·수치 최적화·오차"
+    "topic": "계산 복잡도·입출력 비용"
   },
   "source_zip_available": false,
   "original_validation_suite_independently_rerun": false
