@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-02057b16-cceb-4569-b55a-e245f7c703b3",
   "uuid": "02057b16-cceb-4569-b55a-e245f7c703b3",
-  "record_version": 3,
+  "record_version": 4,
   "title": "무변경 후보 생성이 기존 출판 변경 선언의 개정 이력을 덮어씀",
   "type": "출판 후보 생성·변경 이력 보존 결함",
   "created_at": "2026-11-10T12:37:38Z",
-  "updated_at": "2026-11-11T02:06:56Z",
-  "status": "observing",
+  "updated_at": "2026-11-11T11:35:48Z",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "신규 리뷰 게시 후보 생성 중 발견",
@@ -65,16 +65,21 @@
       "kind": "구현·독립 검증·기술 도구 통합",
       "reference": "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
       "finding": "현재 출력과 기존 after 해시가 일치하는 무변경 글만 선언 쓰기를 생략한다. 수정 전18개 중 새 이력 보존 검사만 실패했고 수정 후18개 및 관련36개 검사가 통과했다."
+    },
+    {
+      "kind": "실제 공개 baseline을 사용하는 편집 후보의 개별 선언 보존 관찰",
+      "reference": "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
+      "finding": "ab575기준v1·ff02기준v2 각각기존review7개자동재생성에도출판입력/선언JSON84개가추가·삭제·byte변경없이유지됨. 실제과학파일/등록/PDF도각baseline과동일함."
     }
   ],
   "limitations": [
-    "초기 기록은 통합 담당의 실제 후보 관찰이었다. 이번 회차는 임시 fixture에서 재현·수정·독립 경계 검사를 수행했으며 전체 실제 사이트 후보를 추가 생성하지 않았다.",
-    "영향 0은 이번 후보의 기존 공개 본문·PDF와 실제 baseline의 비교 범위다. 모든 과거 선언·다른 게시 경로를 전수 조사한 결론은 아니다.",
-    "실제 기존 선언은 이전 통합 담당이 복원한 상태를 유지했다. 이번에는 운영 선언을 수정하거나 복구하지 않았고, 다음 정상 게시의 실제 사용은 관찰 전이다.",
+    "초기01:58UTC 회차는 임시 fixture의 재현·수정·독립 경계 검사까지였고 실제 사이트 후보 추가 생성은 하지 않았다. 이후11:35 기록의 두 실제 후보에서 이 관찰 공백을 보완했다.",
+    "본문·PDF·선언 보존은 확인한 실제 baseline과 후보 및84개 요청/등록/선언 JSON의 비교 범위다. 모든 과거 선언·다른 게시 경로를 전수 조사한 결론은 아니다.",
+    "초기01:58UTC 시점에는 기존 선언의 이전 수동 복원 상태를 보존했고 다음 정상 게시 사용은 관찰 전이었다. 이후 정상CI와 두 실제 후보에서 선언 bytes 불변을 확인했으며 새 수동 복원을 하지 않았다.",
     "브라우저·실제 기기 동작은 이 운영 일감의 검증 대상이 아니다."
   ],
   "policy_decision": {
-    "state": "최소 수정·독립 검증·도구 소스 통합 완료; 정상 게시 사용 관찰",
+    "state": "최소 수정·독립 검증·정상CI·실제 후보 선언 보존 관찰 완료",
     "rationale": "유효한 기존 after 결속이 현재 검수 출력과 일치할 때에만 원본 선언 bytes를 보존한다. 낡은 결속·선언 없음은 기존 no-op 생성 경로, 실제 개정은 정확한 baseline before/candidate after 경로를 유지한다. 추가 배포·테스트 푸시나 게시 승인 단계는 만들지 않는다.",
     "related_issues": [
       "OPS-58a4237a-48d8-40da-af30-4b0edc80c943"
@@ -100,10 +105,10 @@
       "86b6cce9961458acaef3e08f5e4269cbf5ce02c6"
     ],
     "candidate_reference": "tests/test_prepare_publication.py",
-    "deployment_reference": "Git main의 게시 도구 소스로 통합함. 정적 사이트 재배포·CI 재실행은 하지 않음."
+    "deployment_reference": "초기에는 Git main 게시 도구 소스로 통합했고 이를 위한 별도 정적 배포·CI 재실행은 하지 않았다. 이후 정상 게시 CI와 이번 SW 보완의 실제 후보에서 도구 사용·기존 선언 보존을 관찰했다. operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md"
   },
   "verification": {
-    "status": "수정 전 실패 재현·수정 후54개 검사·독립 감수 및 Git main 통합 통과; 다음 정상 게시 관찰",
+    "status": "격리/독립 검사와 정상CI에 이어 실제 후보의 개별 선언 bytes 보존까지 관찰 완료",
     "checks": [
       "초기 인계: 현재 Git diff의 4개 실제 개정 항목 → 2개 HTML 무변경 항목 대조",
       "초기 인계: selected 구성·무변경 HTML 결속·선언 교체 코드 분기 읽기 전용 점검",
@@ -115,27 +120,28 @@
       "독립 관련 검사36개 통과: publication_intent7·publication_release12·publication_snapshot17",
       "독립 임시 경계 검사: stale PDF after·symlink/누락 PDF·symlink 선언 거절, release의 파일/참조 삭제 차단과 기존 참조 추가 정책 유지",
       "코드·정책 감수와 diff 검사 통과. 기존 site·archive·publication·publication_changes 변경 없음; 다른 작업의 미추적 인계 bytes 보존",
-      "수정 소스를 포함한 다음 정상 편집 발행42943810872의 build·deploy·recovery-copy·notify-readers 성공과 실제HTTPS96acc04를 확인했다. 이 성공만으로 CI 작업 사본의 모든 선언 bytes 보존을 직접 관찰한 것으로 확대하지 않음"
+      "수정 소스를 포함한 다음 정상 편집 발행42943810872의 build·deploy·recovery-copy·notify-readers 성공과 실제HTTPS96acc04를 확인했다. 이 성공만으로 CI 작업 사본의 모든 선언 bytes 보존을 직접 관찰한 것으로 확대하지 않음",
+      "두 실제 후보에서 기존review7개자동selected/rebuilt와content_changes0을확인. 독립담당이전체84개요청/등록/선언JSON을재대조해byte변경0을확인했고원래atelier4개HTML/PDF·사유/이력도유지됨"
     ],
     "evidence": [
       "scripts/prepare_publication.py",
       "tests/test_prepare_publication.py",
-      "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md"
+      "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
+      "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md"
     ],
     "remaining_limits": [
-      "격리 검사는 전체 공개 사이트 재빌드·실제 기기 검증을 뜻하지 않음",
-      "수정 후 정상 CI·공개는 성공했지만 다음 실제 편집 후보에서 개별 선언 bytes 보존을 직접 대조하는 관찰은 아직 필요함"
+      "이번 종료는 확인한 무변경 후보·출력 결속·개정 이력 보존 범위다. 새로운 내용 개정은 기존 검수/정확한before-after 절차를 계속 적용한다."
     ]
   },
   "observation": {
-    "status": "검증된 도구 소스 반영; 정상 게시 관찰 대기",
-    "period": "2026-11-11 오전11시 근접 정기 회차",
-    "result": "실제 기사·PDF·운영 선언은 바꾸지 않고 후보 생성기의 선언 갱신 판단만 수정했다. Git main 반영과 이후 실제 정상 게시 사용을 구분한다. 수정 소스를 포함한 정상 편집 발행의 CI·공개 성공도 확인했으며 개별 선언 bytes의 실제 편집 후보 관찰과 구분한다."
+    "status": "실제 후보의 선언 bytes 보존 확인으로 종료",
+    "period": "2026-11-11 사용자 알림 비교 작업의 v1/v2 후보",
+    "result": "실제공개본과동일한기존글들이자동재생성된뒤에도84개출판입력/선언이바뀌지않았다. 수동복원·새승인없이기존이력을보존했으며새과학내용개정을수행하지않았다."
   },
   "recovery": {
     "plan_reference": "필요 시 이전 f4a692c 소스의 후보 생성기 해당 분기만 복구한다. 다른 게시·원고·요청·선언은 유지한다.",
     "execution_reference": "Git HEAD 848c60ebb11fd19b490d71b12222308248d5165b:publication_changes/2026-11-09_atrl-agentic-atelier.json",
-    "result": "초기 통합 담당은 최종 후보v5 생성 뒤 기존 선언을 Git HEAD의 원래 bytes로 복원해 완전 일치를 확인했다. 이번 회차에는 해당 선언을 변경하거나 다시 복원하지 않았고 실제 롤백·정적 배포·DB 복원도 하지 않았다."
+    "result": "초기 통합 담당은 최종 후보v5 생성 뒤 기존 선언을 Git HEAD 원래 bytes로 복원해 완전 일치를 확인했다. 이번 실제 후보에서는 선언을 변경·수동 복원하지 않았고 이 이력 복구를 위한 별도 배포·롤백·DB 복원도 없었다. 같은 실행의 SW 보완 정상 배포와 구분한다."
   },
-  "next_action": "다음 실제 편집 후보에서 무변경 기존 글의 선언 사유와 전체 한영 HTML/PDF 이력이 유지되는지 기존 게시 기록에 연결한다. 수정 후 정상 CI·공개 성공은 확인했지만 개별 선언 bytes 직접 대조 전까지 observing을 유지한다. 이를 위해 별도 배포·재시도·테스트 알림을 만들지 않는다."
+  "next_action": "새 무변경 이력 축소나 출력 결속 결함이 발생하면 같은 일감을 다시 연다. 정상 후보마다 선언을 수동 복원하거나 새 승인 절차를 추가하지 않는다."
 }
