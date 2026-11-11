@@ -7,6 +7,7 @@ const source = await readFile(new URL('./reader.mjs', import.meta.url), 'utf8');
 const start = source.indexOf('function readerFocusMode(');
 const focusSource = start < 0 ? '' : source.slice(start, source.indexOf('async function renderPage(', start));
 const renderSource = source.slice(source.indexOf('async function renderPage('), source.indexOf('async function ensurePage('));
+const rasterSource = source.slice(source.indexOf('function readerRasterPlan('), source.indexOf('function readerBitmapPixels('));
 function deferred() { let resolve, reject; const promise = new Promise((a,b) => { resolve=a; reject=b; }); return {promise,resolve,reject}; }
 function harness({ native = null } = {}) {
   const listeners = {}, timers = new Map(), calls = [];
@@ -26,18 +27,20 @@ function harness({ native = null } = {}) {
     exitFullscreen:async()=>{ calls.push('exit'); document.fullscreenElement=null; } };
   if(native)root.requestFullscreen=()=>{calls.push('request');return native(document,root);};
   const page = {getViewport:({scale})=>({width:600*scale,height:800*scale}),render:()=>({promise:Promise.resolve(),cancel(){}})};
-  const context = { document, window:{addEventListener(name,listener) { listeners['window:'+name]=listener; }, scrollTo(){}},
+  const context = { document, window:{devicePixelRatio:2,addEventListener(name,listener) { listeners['window:'+name]=listener; }, scrollTo(){}},
     $:id=>elements[id], t:key=>key, finishStroke:()=>calls.push('finish'), pdf:{getPage:async()=>page}, current:{fingerprint:'public'},
     active:null,busy:false,pageNumber:3,renderSequence:0,renderTask:null,baseWidth:595,pageAspect:1.414,cssWidth:595,cssHeight:842,pixelRatio:1,
     pdfCanvas:canvas,inkCanvas:elements['ink-canvas'],sheet,devicePixelRatio:2,innerWidth:1600,
     controls(){},drawInk:()=>calls.push('draw'),showError:()=>calls.push('error'),
-    readerFocusGeneration:0,readerNativeFullscreen:false,readerFocusReturn:null,readerResizePending:false,resizeTimer:null,
+    readerFocusGeneration:0,readerNativeFullscreen:false,readerFocusReturn:null,readerResizePending:false,readerResizeAnchorPending:false,resizeTimer:null,
     readerFocusAnchor:null,readerFocusInputEpoch:0,readerExpectedNativeExit:0,documentOpenGeneration:0,
+    readerViews:new Map(),readerMountedViews:new Set(),readerPositionTimer:null,readerScrollPending:false,queueReaderNeighbours(){},
+    readerResizePending:false,readerResizeAnchorPending:false,scheduleReaderVisible(){},
     getComputedStyle:()=>({paddingLeft:'4px',paddingRight:'4px'}),
     setTimeout(callback,delay) { const id=++nextTimer;timers.set(id,{callback,at:now+delay});return id; },
     clearTimeout(id) { timers.delete(id); },
   };
-  vm.createContext(context);vm.runInContext(focusSource+renderSource,context);
+  vm.createContext(context);vm.runInContext(rasterSource+focusSource+renderSource,context);
   if(context.initializeReaderFullscreen)context.initializeReaderFullscreen();
   return {context,document,root,button,icon,area,elements,calls,listeners,
     advance(ms) { now+=ms;for(const [id,timer]of [...timers])if(timer.at<=now){timers.delete(id);timer.callback();} },

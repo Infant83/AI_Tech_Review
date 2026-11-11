@@ -20,11 +20,11 @@ const functions = {
   ensurePage: section('async function ensurePage(', 'async function goPage('),
   goPage: section('async function goPage(', 'function renderBookmarks('),
   permissions: section('function canAddInk(', 'function state('),
-  eraseAt: section('function eraseAt(', "inkCanvas.addEventListener('pointerover'"),
+  eraseAt: section('function eraseAt(', 'function appendActivePoint('),
   undo: section('function undo(', "document.querySelectorAll('button[data-tool]')"),
   historyEntry: section('function historyEntry(', 'function finishStroke('),
 };
-const pointerDown = section("inkCanvas.addEventListener('pointerdown'", "inkCanvas.addEventListener('pointermove'");
+const pointerDown = section('function onInkPointerDown(', 'function onInkPointerMove(');
 const document = { fingerprint: 'a'.repeat(64), title: 'Lecture', pageCount: 2 };
 const stroke = id => ({ id, color: '#123456', width: .003, points: [{ x: .1, y: .2, p: .5 }] });
 const deferred = () => {
@@ -39,24 +39,24 @@ function context(names) {
     permissions: { role: 'local', accountId: null, notebookId: null }, strokeAuthors: new Map(), suspendedTool: null,
     roleCapabilities, strokeAuthorMap, strokeKey, eraseStrokes, cssWidth: 600, cssHeight: 800,
     pages: new Map([[1, [stroke('existing')]]]), histories: new Map(), dirty: new Map(),
-    metaSaved: 0, metaVersion: 0, mutationRevision: 0,
+    metaSaved: 0, metaVersion: 0, mutationRevision: 0, documentOpenGeneration: 0, readerInkEpoch: 0,
     NOTEBOOK_FORMAT: 'ai-tech-review-notebook', clone: structuredClone,
     validateNotebook: value => value, uid: () => 'new-stroke', confirm: () => true, t: value => value,
     clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
     controls: () => {}, finishStroke: () => {}, renderBookmarks: () => {},
     chooseTool: next => { ctx.tool = next; }, sheet: { dataset: {} }, markDirty() {}, requestInk() {}, drawInk() {},
-    retiredIds: new Set(), state: () => ctx.pages.get(ctx.pageNumber) || [],
+    retiredIds: new Set(), readerMountedViews:new Set(), state: () => ctx.pages.get(ctx.pageNumber) || [],
     history: () => { if (!ctx.histories.has(ctx.pageNumber)) ctx.histories.set(ctx.pageNumber, { undo: [], redo: [] }); return ctx.histories.get(ctx.pageNumber); },
     canAddInk: () => true, canEditAllInk: () => true, ownStroke() {},
     ensurePage: async () => {}, renderPage: async () => { ctx.busy = false; },
     flush: async () => true, status: () => {}, signal: () => {}, currentInfo: () => ({ ...document }), storageFailure: () => {},
     showError: () => { ctx.busy = false; }, markMeta: () => { ctx.mutationRevision++; },
     storage: { loadPages: async () => [], loadPage: async () => [], importPages: async () => {} },
-    inkCanvas: { addEventListener: (name, handler) => { listeners[name] = handler; } },
+    inkCanvas: { addEventListener: (name, handler) => { listeners[name] = handler; } }, selectReaderInput:()=>true,
   };
   vm.createContext(ctx);
   vm.runInContext(names.map(name => functions[name]).join('\n') + '\n' + pointerDown, ctx);
-  ctx.pointerDown = () => listeners.pointerdown({ pointerType: 'mouse', button: 0 });
+  ctx.pointerDown = () => ctx.onInkPointerDown({ pointerType: 'mouse', button: 0 });
   return ctx;
 }
 
@@ -240,7 +240,7 @@ function publicReadHarness(options = {}) {
   const ctx = {
     URL, URLSearchParams, Uint8Array, Blob, crypto: webcrypto, rootURL, MAX_PAGES: 100,
     current: null, pdf: null, pdfLoadingTask: null, pdfBytes: null, busy: false, active: null,
-    mutationRevision: 0, documentOpenGeneration: 0, metaVersion: 0, metaSaved: 0, pageNumber: 1,
+    mutationRevision: 0, documentOpenGeneration: 0, readerInkEpoch: 0, metaVersion: 0, metaSaved: 0, pageNumber: 1,
     pages: new Map(), histories: new Map(), dirty: new Map(), versions: new Map(), retiredIds: new Set(), strokeAuthors: new Map(),
     catalog: [{ id: 'published-a', href: 'archive/files/published-a.pdf', sha256: 'a'.repeat(64) }],
     location: { href: new URL('lectures/reader/?id=published-a', rootURL).href },
@@ -251,7 +251,7 @@ function publicReadHarness(options = {}) {
       register() { assert.fail('reading must never register a service worker'); },
     } },
     $: id => { if (!nodes.has(id)) nodes.set(id, { hidden: false, textContent: '' }); return nodes.get(id); },
-    sheet: { dataset: {} }, permissions: {},
+    sheet: { dataset: {} }, permissions: {}, readerMountedViews:new Set(),releaseReaderView(){},
     pdfjs: { getDocument: () => ({ promise: Promise.resolve({ numPages: 2 }) }) },
     storage: { getDocument: async () => null, putDocument: async () => {} },
     controls() {}, finishStroke() {}, flush: async () => true, ensurePage: async () => {},
@@ -354,7 +354,7 @@ function saveFeedbackHarness(options = {}) {
   Object.defineProperty(node, 'textContent', { get: () => text, set: value => { text = value; writes.push(['text', value]); } });
   class ClockDate extends Date { static now() { return now; } }
   const ctx = {
-    current: { ...document, bookmarks: [] }, documentOpenGeneration: 0, pageNumber: 1, active: null, tool: 'pen',
+    current: { ...document, bookmarks: [] }, documentOpenGeneration: 0, readerInkEpoch: 0, pageNumber: 1, active: null, tool: 'pen',
     readerResizePending: false, scheduleReaderResize() {},
     saveFeedbackTimer: null, saveFeedbackEpoch: 0, saveFeedbackOwner: null, saveFeedbackGeneration: -1,
     saveFeedbackShownAt: 0, saveFeedbackWanted: 'ready',
@@ -363,7 +363,7 @@ function saveFeedbackHarness(options = {}) {
     $: id => id === 'save-state' ? node : { checked: false }, t: key => key, toast() {},
     clone: structuredClone, Date: ClockDate, setTimeout: clock.setTimeout, clearTimeout: clock.clearTimeout,
     currentInfo: () => ({ fingerprint: ctx.current?.fingerprint }), signal: (type, detail) => events.push({ type, detail }),
-    historyEntry() {}, state: () => ctx.pages.get(ctx.pageNumber), requestInk() {}, inkCanvas: { releasePointerCapture() {}, style: {} },
+    historyEntry() {}, state: () => ctx.pages.get(ctx.pageNumber), requestInk() {}, readerPositionTimer:null, readerScrollPending:false,queueReaderNeighbours(){}, inkCanvas: { releasePointerCapture() {}, style: {} },
     storage: {
       async savePage(fingerprint, number, strokes, meta) { stored.push(structuredClone({ type: 'page', fingerprint, number, strokes, meta })); await options.savePage?.(); },
       async saveMetadata(fingerprint, meta) { stored.push(structuredClone({ type: 'meta', fingerprint, meta })); await options.saveMetadata?.(); },

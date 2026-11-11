@@ -22,7 +22,7 @@ const strings = {
   personalLearning: ['나의 학습', 'Personal study'], libraryBody: ['읽던 페이지와 필기가 이 브라우저에 보관됩니다. 중요한 필기는 백업 파일로도 보관하세요.', 'Your place and notes stay in this browser. Keep a backup of important notes too.'], importPDF: ['내 PDF 가져오기', 'Bring your own PDF'], localOnly: ['업로드 없이 이 기기에 보관', 'Keep on this device without uploading'], recent: ['이어서 공부하기', 'Continue studying'], publishedLectures: ['렉처 자료', 'Published lectures'], close: ['닫기', 'Close'],
   exportPDF: ['필기한 PDF 내보내기', 'Export PDF with ink'], exportBackup: ['수정 가능한 필기 백업', 'Export editable notes backup'], importBackup: ['필기 백업 가져오기', 'Import notes backup'],
   exportOriginal: ['원본 PDF 내보내기', 'Export original PDF'], sourceHelp: ['PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.', 'The original PDF stays unchanged; ink is stored separately. Export either the original PDF or a copy with ink.'], originalReady: ['필기 없는 원본 PDF를 저장했습니다.', 'The original PDF without ink is ready.'],
-  drawingHelp: ['펜으로 쓰고, 손가락으로 넘기세요', 'Write with Pencil, scroll with a finger'], drawingHelpBody: ['Apple Pencil은 바로 필기할 수 있습니다. 손가락으로 화면을 움직이고 두 손가락으로 확대할 수 있습니다. 마우스로도 쓸 수 있으며 손가락 필기는 도구에서 켤 수 있습니다. 지우개는 닿은 획을 지웁니다.', 'Write with Apple Pencil, scroll with a finger, and pinch to zoom. A mouse works too. Enable Finger ink to draw with a finger. The eraser removes strokes it touches.'],
+  drawingHelp: ['스크롤로 읽고, 펜으로 쓰세요', 'Scroll to read, write with your pen'], drawingHelpBody: ['위아래로 스크롤해 페이지를 이어 읽습니다. Apple Pencil로 필기하고 손가락으로 이동하거나 두 손가락으로 확대하세요. 손가락 필기를 꺼두면 두 번 탭해 2배 확대와 너비 맞춤을 전환합니다. 마우스는 읽기 도구에서 두 번 클릭하세요. 손가락 필기는 도구에서 켤 수 있습니다.', 'Scroll up and down through the pages. Write with Apple Pencil, move with a finger, or pinch to zoom. With Finger ink off, double-tap to switch between 2× and fit width. In the Read tool, double-click with a mouse. Enable Finger ink to draw with a finger.'],
   savingHelp: ['필기는 자동 저장됩니다', 'Your notes save automatically'], savingHelpBody: ['이 기기·브라우저에 필기와 읽던 페이지를 저장합니다. 로그인하면 선택한 노트를 동기화합니다. 개인 PDF 원본까지 클라우드 보관한 경우 다른 기기에서도 파일을 열 수 있고, 기기에만 둔 PDF는 같은 원본 파일을 다시 가져와야 합니다. 중요한 필기는 백업 파일로도 보관하세요.', 'Ink and your place are saved on this device. Sign in to sync selected notebooks. A private PDF stored in the cloud can also open on other devices; a device-only PDF needs the identical original file there. Keep a backup of important notes.'],
   exportHelp: ['필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.', 'The inked PDF is a copy for reading and sharing in other apps. Keep the editable backup to continue editing strokes.'], retainStorage: ['이 기기에 보관 유지 요청', 'Request persistent device storage'], clearPage: ['현재 페이지의 필기 지우기', 'Clear ink on this page'], shortcuts: ['단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소', 'Keys: P pen · E eraser · H read · ← → pages · ⌘/Ctrl+Z undo'],
   saving: ['저장 중…', 'Saving…'], saved: ['이 기기에 저장됨', 'Saved on this device'], saveFailed: ['저장 실패 · 백업 필요', 'Save failed · back up'],
@@ -56,13 +56,13 @@ let tool = 'pen', color = '#243746', active = null, busy = false, renderSequence
 let writeQueue = Promise.resolve(true), metaVersion = 0, metaSaved = 0, drawingFrame = 0, lastStorageError = 0, mutationRevision = 0;
 let explicitSelection = false;
 let requestedLocalPDF = null;
-let documentOpenGeneration = 0;
+let documentOpenGeneration = 0, readerInkEpoch = 0;
 let saveFeedbackTimer = null, saveFeedbackEpoch = 0, saveFeedbackOwner = null, saveFeedbackGeneration = -1, saveFeedbackShownAt = 0, saveFeedbackWanted = 'ready';
-let readerFocusGeneration = 0, readerNativeFullscreen = false, readerFocusReturn = null, readerResizePending = false, resizeTimer;
+let readerFocusGeneration = 0, readerNativeFullscreen = false, readerFocusReturn = null, readerResizePending = false, readerResizeAnchorPending = false, resizeTimer;
 let readerFocusAnchor = null, readerFocusInputEpoch = 0, readerExpectedNativeExit = 0;
 let permissions = { role: 'local', accountId: null, notebookId: null }, strokeAuthors = new Map(), suspendedTool = null;
 const pages = new Map(), dirty = new Map(), versions = new Map(), histories = new Map(), retiredIds = new Set();
-const pdfCanvas = $('pdf-canvas'), inkCanvas = $('ink-canvas'), sheet = $('page-sheet');
+let pdfCanvas = $('pdf-canvas'), inkCanvas = $('ink-canvas'), sheet = $('page-sheet');
 let cssWidth = 595, cssHeight = 842, pixelRatio = 1, retry = null;
 const uid = () => crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
 const clone = value => JSON.parse(JSON.stringify(value));
@@ -184,20 +184,27 @@ async function flush() {
   });
   return writeQueue;
 }
-function drawStroke(ctx, stroke) {
+function drawStroke(ctx, stroke, width = cssWidth, height = cssHeight) {
   if (!stroke.points.length) return;
   ctx.strokeStyle = stroke.color; ctx.fillStyle = stroke.color; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   const points = stroke.points;
-  if (points.length === 1) { const p = points[0]; ctx.beginPath(); ctx.arc(p.x * cssWidth, p.y * cssHeight, Math.max(.4, stroke.width * cssWidth * .5), 0, Math.PI * 2); ctx.fill(); return; }
+  if (points.length === 1) { const p = points[0]; ctx.beginPath(); ctx.arc(p.x * width, p.y * height, Math.max(.4, stroke.width * width * .5), 0, Math.PI * 2); ctx.fill(); return; }
   for (let i = 1; i < points.length; i++) {
     const a = points[i - 1], b = points[i];
-    ctx.lineWidth = Math.max(.35, stroke.width * cssWidth * (.45 + .95 * (a.p + b.p) / 2));
-    ctx.beginPath(); ctx.moveTo(a.x * cssWidth, a.y * cssHeight); ctx.lineTo(b.x * cssWidth, b.y * cssHeight); ctx.stroke();
+    ctx.lineWidth = Math.max(.35, stroke.width * width * (.45 + .95 * (a.p + b.p) / 2));
+    ctx.beginPath(); ctx.moveTo(a.x * width, a.y * height); ctx.lineTo(b.x * width, b.y * height); ctx.stroke();
   }
 }
+function drawReaderViewInk(view) {
+  if (!view.inkCanvas || !view.inkCanvas.width || !view.cssWidth) return;
+  const ctx = view.inkCanvas.getContext('2d');
+  ctx.setTransform(view.pixelRatio, 0, 0, view.pixelRatio, 0, 0); ctx.clearRect(0, 0, view.cssWidth, view.cssHeight);
+  (pages.get(view.number) || []).forEach(stroke => drawStroke(ctx, stroke, view.cssWidth, view.cssHeight));
+}
 function drawInk() {
-  drawingFrame = 0; const ctx = inkCanvas.getContext('2d');
-  ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0); ctx.clearRect(0, 0, cssWidth, cssHeight);
+  drawingFrame = 0;
+  if (readerViews.size) { for (const view of readerMountedViews) if (view.ready || view.number === pageNumber) drawReaderViewInk(view); return; }
+  const ctx = inkCanvas.getContext('2d'); ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0); ctx.clearRect(0, 0, cssWidth, cssHeight);
   state().forEach(stroke => drawStroke(ctx, stroke));
 }
 function requestInk() { if (!drawingFrame) drawingFrame = requestAnimationFrame(drawInk); }
@@ -209,19 +216,22 @@ function historyEntry(before, after) {
 }
 function finishStroke() {
   if (!active) return;
-  const before = active.before, number = active.page, pointerId = active.id;
+  const before = active.before, number = active.page, pointerId = active.id, canvas = active.canvas || inkCanvas;
   active = null;
-  try { inkCanvas.releasePointerCapture(pointerId); } catch { /* capture may already have ended */ }
-  inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'pan-x pan-y pinch-zoom';
-  if (number === pageNumber) { historyEntry(before, state()); markDirty(); void flush(); }
+  try { canvas.releasePointerCapture(pointerId); } catch { /* capture may already have ended */ }
+  inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'manipulation';
+  if (number === pageNumber) { clearTimeout(readerPositionTimer); readerPositionTimer = null; historyEntry(before, state()); markDirty(); void flush(); }
   requestInk();
   if (readerResizePending) scheduleReaderResize();
+  if (readerScrollPending) scheduleReaderVisible();
+  queueReaderNeighbours();
 }
 function chooseTool(next) {
   finishStroke(); tool = canAddInk() ? next : 'read'; next = tool; sheet.dataset.tool = next;
   document.querySelectorAll('[data-tool]').forEach(e => { if (e.tagName === 'BUTTON') { e.classList.toggle('active', e.dataset.tool === next); e.setAttribute('aria-pressed', String(e.dataset.tool === next)); } });
   sheet.classList.toggle('finger-drawing', $('finger-draw').checked && tool !== 'read');
-  inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'pan-x pan-y pinch-zoom';
+  inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'manipulation';
+  for (const view of readerMountedViews) readerViewTools(view);
 }
 function pointerPoint(event) { return normalizedPoint(event.clientX, event.clientY, inkCanvas.getBoundingClientRect(), event.pressure); }
 function eraseAt(from, to) {
@@ -233,10 +243,6 @@ function eraseAt(from, to) {
     pages.set(pageNumber, after); markDirty(); requestInk();
   }
 }
-inkCanvas.addEventListener('pointerover', event => { if (event.pointerType === 'pen' && tool !== 'read') inkCanvas.style.touchAction = 'none'; });
-for (const name of ['pointerout', 'pointerleave']) inkCanvas.addEventListener(name, () => {
-  if (!active) inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'pan-x pan-y pinch-zoom';
-});
 function appendActivePoint(point) {
   if (active.stroke.points.length >= STROKE_CHUNK_POINTS) {
     const previous = active.stroke;
@@ -246,17 +252,17 @@ function appendActivePoint(point) {
   }
   active.stroke.points.push(point); markDirty(); requestInk();
 }
-inkCanvas.addEventListener('pointerdown', event => {
+function onInkPointerDown(event) {
   if (!current || busy || !canAddInk() || tool === 'read' || active || (event.pointerType === 'mouse' && event.button !== 0) ||
-      (event.pointerType === 'touch' && !$('finger-draw').checked)) return;
+      (event.pointerType === 'touch' && !$('finger-draw').checked) || !selectReaderInput(event)) return;
   event.preventDefault(); inkCanvas.setPointerCapture(event.pointerId); inkCanvas.style.touchAction = 'none';
   const point = pointerPoint(event), kind = event.button === 5 || event.buttons === 32 ? 'eraser' : tool;
-  active = { id: event.pointerId, type: event.pointerType, page: pageNumber, before: clone(state()), point, kind };
+  active = { id: event.pointerId, type: event.pointerType, page: pageNumber, canvas: inkCanvas, before: clone(state()), point, kind };
   if (kind === 'pen') { active.stroke = { id: uid(), color, width: Number($('pen-width').value) / baseWidth, points: [point] }; ownStroke(active.stroke); state().push(active.stroke); markDirty(); requestInk(); }
   else eraseAt(point, point);
-});
-inkCanvas.addEventListener('pointermove', event => {
-  if (!active || active.id !== event.pointerId) return;
+}
+function onInkPointerMove(event) {
+  if (!active || active.id !== event.pointerId || event.currentTarget !== active.canvas) return;
   event.preventDefault();
   const samples = typeof event.getCoalescedEvents === 'function' ? event.getCoalescedEvents() : [event];
   for (const sample of samples.length ? samples : [event]) {
@@ -265,19 +271,309 @@ inkCanvas.addEventListener('pointermove', event => {
     else if (Math.hypot((point.x - active.point.x) * cssWidth, (point.y - active.point.y) * cssHeight) > .35) appendActivePoint(point);
     active.point = point;
   }
-});
-['pointerup', 'pointercancel', 'lostpointercapture'].forEach(name => inkCanvas.addEventListener(name, event => {
-  if (active?.id !== event.pointerId) return;
-  if (name === 'pointerup' && active.kind === 'pen') {
+}
+function onInkPointerEnd(event) {
+  if (active?.id !== event.pointerId || event.currentTarget !== active.canvas) return;
+  if (event.type === 'pointerup' && active.kind === 'pen') {
     const point = pointerPoint(event);
     if (Math.hypot((point.x - active.point.x) * cssWidth, (point.y - active.point.y) * cssHeight) > .35) appendActivePoint(point);
   }
   finishStroke();
-}));
-// Safari exposes Pencil touchType; cancel only Pencil gestures, leaving finger scroll/pinch native.
-for (const name of ['touchstart', 'touchmove']) inkCanvas.addEventListener(name, event => {
-  if (tool !== 'read' && ($('finger-draw').checked || active?.type === 'pen' || [...event.touches].some(touch => touch.touchType === 'stylus'))) event.preventDefault();
-}, { passive: false });
+}
+function bindReaderInk(canvas) {
+  canvas.addEventListener('pointerover', event => { if (event.pointerType === 'pen' && tool !== 'read') canvas.style.touchAction = 'none'; });
+  for (const name of ['pointerout', 'pointerleave']) canvas.addEventListener(name, () => {
+    if (!active) canvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'manipulation';
+  });
+  canvas.addEventListener('pointerdown', onInkPointerDown); canvas.addEventListener('pointermove', onInkPointerMove);
+  for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) canvas.addEventListener(name, onInkPointerEnd);
+  // Safari exposes Pencil touchType. Keep finger scroll/pinch native otherwise.
+  for (const name of ['touchstart', 'touchmove']) canvas.addEventListener(name, event => {
+    if (tool !== 'read' && ($('finger-draw').checked || active?.type === 'pen' || [...event.touches].some(touch => touch.touchType === 'stylus'))) event.preventDefault();
+  }, { passive: false });
+}
+bindReaderInk(inkCanvas);
+
+// Continuous reader views keep document geometry, ink and bitmap lifetimes separate.
+// Only the active page and its immediate neighbours own canvas backing stores.
+const READER_BITMAP_BUDGET = 20_000_000;
+const READER_ACTIVE_PIXELS = 8_000_000;
+const READER_NEIGHBOUR_PIXELS = 1_000_000;
+const readerViews = new Map(), readerCanvasViews = new WeakMap(), readerMountedViews = new Set();
+let readerViewsOwner = null, readerViewPDF = null, readerViewEpoch = 0, readerScrollFrame = 0, readerBoundView = null, readerLayoutKey = null;
+let readerNeighbourQueue = Promise.resolve(), readerNeighbourRequested = false, readerNeighbourRunning = false, readerNeighbourGeneration = 0, readerPositionTimer = null, readerScrollPending = false;
+let readerLastGestureTap = null, readerGestureCandidate = null, readerNonMouseAt = 0;
+const readerTouchPointers = new Set();
+function readerRasterPlan(width, height, desiredRatio, maximumPixels = READER_ACTIVE_PIXELS) {
+  const limit = Math.max(1, Math.floor(maximumPixels));
+  let ratio = Math.min(Math.max(.01, desiredRatio || 1), 4096 / Math.max(width, height), Math.sqrt(limit / (width * height)));
+  let pixelsW = Math.max(1, Math.ceil(width * ratio)), pixelsH = Math.max(1, Math.ceil(height * ratio));
+  while (pixelsW * pixelsH > limit) {
+    ratio *= Math.sqrt(limit / (pixelsW * pixelsH)) * .99999;
+    pixelsW = Math.max(1, Math.ceil(width * ratio)); pixelsH = Math.max(1, Math.ceil(height * ratio));
+  }
+  return { ratio, width: pixelsW, height: pixelsH, pixels: pixelsW * pixelsH };
+}
+function readerDesiredPixelRatio() {
+  return Math.max(1, (window.devicePixelRatio || 1) * (window.visualViewport?.scale || 1));
+}
+function readerBitmapPixels() {
+  let total = 0;
+  for (const view of readerMountedViews) for (const canvas of [view.pdfCanvas, view.inkCanvas]) if (canvas) total += canvas.width * canvas.height;
+  return total;
+}
+function resetReaderTap() { readerLastGestureTap = null; readerGestureCandidate = null; }
+function readerViewCurrent(view, epoch = readerViewEpoch, owner = current, documentPDF = pdf) {
+  return view && readerViews.get(view.number) === view && readerViewsOwner === owner && current === owner &&
+    readerViewPDF === documentPDF && pdf === documentPDF && epoch === readerViewEpoch;
+}
+function readerViewTools(view) {
+  view.sheet.dataset.tool = tool; view.sheet.dataset.permission = permissions.role;
+  view.sheet.classList.toggle('finger-drawing', $('finger-draw').checked && tool !== 'read');
+  if (view.inkCanvas) view.inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'manipulation';
+}
+function releaseReaderView(view) {
+  if (!view || (active && active.page === view.number)) return;
+  view.ready = false; view.sheet.dataset.ready = 'false'; view.sheet.setAttribute('aria-busy', 'true');
+  const task = view.renderTask; view.renderTask = null; view.renderToken++;
+  if (task) { try { task.cancel(); } catch {} }
+  for (const canvas of [view.pdfCanvas, view.inkCanvas]) if (canvas) { canvas.width = 0; canvas.height = 0; }
+  if (view.number !== pageNumber) {
+    view.pdfCanvas?.remove(); view.inkCanvas?.remove(); view.pdfCanvas = null; view.inkCanvas = null; readerMountedViews.delete(view);
+  }
+  const page = view.pdfPage; view.pdfPage = null;
+  if (page) {
+    // cleanup only succeeds after PDF.js releases the old render task.
+    const cleanup = () => { try { page.cleanup(); } catch {} };
+    if (task) view.releasePromise = Promise.resolve(task.promise).catch(() => {}).then(cleanup); else { cleanup(); view.releasePromise = Promise.resolve(); }
+  } else view.releasePromise = task ? Promise.resolve(task.promise).catch(() => {}) : Promise.resolve();
+  return view.releasePromise;
+}
+function prepareReaderCanvases(view) {
+  if (view.pdfCanvas && view.inkCanvas) return;
+  const paper = document.createElement('canvas'), ink = document.createElement('canvas');
+  paper.className = 'pdf-page-canvas'; ink.className = 'ink-page-canvas';
+  paper.setAttribute('aria-label', `${t('pdfContent')} · ${view.number}`);
+  ink.setAttribute('aria-label', `${t('inkCanvas')} · ${view.number}`); ink.tabIndex = 0;
+  paper.width = paper.height = ink.width = ink.height = 0;
+  view.pdfCanvas = paper; view.inkCanvas = ink; view.sheet.prepend(paper, ink); readerMountedViews.add(view);
+  readerCanvasViews.set(ink, view); bindReaderInk(ink); readerViewTools(view);
+}
+function bindReaderView(view) {
+  if (!view) return;
+  prepareReaderCanvases(view);
+  const previous = readerBoundView;
+  if (previous && previous !== view) { previous.sheet.removeAttribute('id'); previous.pdfCanvas?.removeAttribute('id'); previous.inkCanvas?.removeAttribute('id'); }
+  readerBoundView = view;
+  sheet = view.sheet; pdfCanvas = view.pdfCanvas; inkCanvas = view.inkCanvas;
+  sheet.id = 'page-sheet'; pdfCanvas.id = 'pdf-canvas'; inkCanvas.id = 'ink-canvas';
+  cssWidth = view.cssWidth; cssHeight = view.cssHeight; baseWidth = view.naturalWidth; pageAspect = view.aspect;
+  pixelRatio = view.pixelRatio || 1; readerViewTools(view);
+}
+function initializeReaderViews() {
+  if (readerViewsOwner === current && readerViewPDF === pdf) return;
+  readerViewEpoch++; readerNeighbourGeneration++; readerNeighbourRunning = false; readerNeighbourRequested = false; readerNeighbourQueue = Promise.resolve();
+  resetReaderTap(); readerTouchPointers.clear(); clearTimeout(readerPositionTimer);
+  for (const view of [...readerMountedViews]) releaseReaderView(view);
+  readerViews.clear(); readerMountedViews.clear(); readerBoundView = null; readerLayoutKey = null; readerViewsOwner = current; readerViewPDF = pdf;
+  const area = $('page-area'), fragment = document.createDocumentFragment();
+  for (let number = 1; number <= current.pageCount; number++) {
+    const element = document.createElement('div'), label = document.createElement('span');
+    element.className = 'page-sheet reader-page'; element.dataset.page = String(number); element.dataset.ready = 'false';
+    element.setAttribute('role', 'group'); element.setAttribute('aria-label', `${t('pdfPage')} ${number}`); element.setAttribute('aria-busy', 'true');
+    label.className = 'reader-page-number'; label.textContent = String(number); label.setAttribute('aria-hidden', 'true'); element.append(label);
+    const view = { number, sheet: element, aspect: 1.414, naturalWidth: 595, cssWidth: 595, cssHeight: 842,
+      pixelRatio: 1, ready: false, renderToken: 0, renderTask: null, pdfPage: null, pdfCanvas: null, inkCanvas: null, renderedKey: null };
+    readerViews.set(number, view); readerViewTools(view); fragment.append(element);
+  }
+  area.replaceChildren(fragment); bindReaderView(readerViews.get(pageNumber));
+}
+function layoutReaderViews(width) {
+  for (const view of readerViews.values()) {
+    const height = width * view.aspect;
+    if (view.cssWidth === width && view.cssHeight === height && view.sheet.style.width) continue;
+    view.cssWidth = width; view.cssHeight = height;
+    view.sheet.style.width = width + 'px'; view.sheet.style.height = view.cssHeight + 'px';
+    for (const canvas of [view.pdfCanvas, view.inkCanvas]) if (canvas) { canvas.style.width = width + 'px'; canvas.style.height = view.cssHeight + 'px'; }
+  }
+}
+function readerScrollToView(view) {
+  if (!view) return;
+  const viewport = readerVisibleViewport(), rect = view.sheet.getBoundingClientRect();
+  if (!viewport) return;
+  let dy = rect.top - viewport.top - 8;
+  for (const element of [$('page-area'), $('reader-main')]) {
+    if (!element) continue; const old = element.scrollTop;
+    element.scrollTop = Math.max(0, Math.min(Math.max(0, element.scrollHeight - element.clientHeight), old + dy));
+    dy -= element.scrollTop - old;
+  }
+  if (Math.abs(dy) > .5) window.scrollTo({ top: (window.scrollY || 0) + dy, left: window.scrollX || 0, behavior: 'instant' });
+}
+function scheduleReaderPosition() {
+  clearTimeout(readerPositionTimer);
+  const owner = current, number = pageNumber, generation = documentOpenGeneration;
+  const remember = () => {
+    readerPositionTimer = null;
+    if (owner !== current || generation !== documentOpenGeneration || number !== pageNumber) return;
+    if (active || busy) { readerPositionTimer = setTimeout(remember, 300); return; }
+    markMeta();
+  };
+  readerPositionTimer = setTimeout(remember, 300);
+}
+function readerSelectView(view, remember = true) {
+  if (!view || active || view.number === pageNumber) return false;
+  pageNumber = view.number; bindReaderView(view); controls();
+  if (remember) scheduleReaderPosition(); return true;
+}
+function nearestReaderView() {
+  const viewport = readerVisibleViewport(); if (!viewport || !readerViews.size) return null;
+  const middle = (viewport.top + viewport.bottom) / 2;
+  let low = 1, high = current.pageCount;
+  while (low < high) {
+    const number = Math.floor((low + high) / 2), rect = readerViews.get(number).sheet.getBoundingClientRect();
+    if (rect.bottom < middle) low = number + 1; else high = number;
+  }
+  const found = readerViews.get(low), before = readerViews.get(low - 1);
+  if (!before) return found;
+  const distance = view => { const r = view.sheet.getBoundingClientRect(); return middle < r.top ? r.top - middle : middle > r.bottom ? middle - r.bottom : 0; };
+  return distance(before) < distance(found) ? before : found;
+}
+function readerVisibleChanged() {
+  readerScrollFrame = 0;
+  if (!current || !pdf || !readerViews.size) return;
+  if (active || busy || (readerResizePending && readerAnchorCurrent(readerFocusAnchor))) { readerScrollPending = true; return; }
+  readerScrollPending = false;
+  const view = nearestReaderView();
+  if (readerSelectView(view)) {
+    void renderPage(false).catch(() => showError(t('loadError')));
+  } else queueReaderNeighbours();
+}
+function scheduleReaderVisible() {
+  if (!readerScrollFrame) readerScrollFrame = requestAnimationFrame(readerVisibleChanged);
+}
+function evictReaderDistant() {
+  return Promise.all([...readerMountedViews].filter(view => Math.abs(view.number - pageNumber) > 1).map(releaseReaderView));
+}
+async function renderReaderNeighbour(view, epoch, owner, documentPDF) {
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending || Math.abs(view.number - pageNumber) !== 1) return;
+  if (view.releasePromise) await view.releasePromise;
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending) return;
+  const page = await documentPDF.getPage(view.number);
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending || Math.abs(view.number - pageNumber) !== 1) { try { page.cleanup(); } catch {} return; }
+  if (!(await ensurePage(view.number))) { try { page.cleanup(); } catch {} return; }
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending || Math.abs(view.number - pageNumber) !== 1) { try { page.cleanup(); } catch {} return; }
+  const natural = page.getViewport({ scale: 1 });
+  view.naturalWidth = natural.width;
+  if (view.aspect !== natural.height / natural.width) {
+    const anchor = readerFocusAnchor || captureReaderFocusAnchor();
+    if (anchor && !readerFocusAnchor) readerFocusAnchor = anchor;
+    view.aspect = natural.height / natural.width; layoutReaderViews(cssWidth);
+    if (anchor && readerAnchorCurrent(anchor)) { anchor.scroll = readerScrollOffsets(); restoreReaderFocusAnchor(anchor); }
+  }
+  prepareReaderCanvases(view); readerViewTools(view);
+  const plan = readerRasterPlan(view.cssWidth, view.cssHeight, readerDesiredPixelRatio(), READER_NEIGHBOUR_PIXELS);
+  const key = `${view.cssWidth}/${view.cssHeight}/${plan.width}/${plan.height}`;
+  if (view.ready && view.renderedKey === key) { drawReaderViewInk(view); if (view.pdfPage !== page) { try { page.cleanup(); } catch {} } return; }
+  const old = view.renderTask; if (old) { try { old.cancel(); } catch {} await Promise.resolve(old.promise).catch(() => {}); }
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending) { try { page.cleanup(); } catch {} return; }
+  view.pdfPage = page; view.pixelRatio = plan.ratio; const token = ++view.renderToken;
+  for (const canvas of [view.pdfCanvas, view.inkCanvas]) { canvas.width = plan.width; canvas.height = plan.height; canvas.style.width = view.cssWidth + 'px'; canvas.style.height = view.cssHeight + 'px'; }
+  if (readerBitmapPixels() > READER_BITMAP_BUDGET) { releaseReaderView(view); return; }
+  const viewport = page.getViewport({ scale: view.cssWidth / natural.width });
+  const task = view.renderTask = page.render({ canvasContext: view.pdfCanvas.getContext('2d', { alpha: false }), viewport, transform: [plan.ratio, 0, 0, plan.ratio, 0, 0] });
+  try { await task.promise; } catch (error) { if (error.name !== 'RenderingCancelledException') throw error; }
+  if (!readerViewCurrent(view, epoch, owner, documentPDF) || token !== view.renderToken || Math.abs(view.number - pageNumber) > 1) { try { page.cleanup(); } catch {} return; }
+  view.renderTask = null; view.ready = true; view.renderedKey = key; view.sheet.dataset.ready = 'true'; view.sheet.setAttribute('aria-busy', 'false'); drawReaderViewInk(view);
+}
+function queueReaderNeighbours() {
+  if (!current || !pdf || !readerViews.size || active || busy || readerResizePending) return;
+  readerNeighbourRequested = true;
+  if (readerNeighbourRunning) return;
+  readerNeighbourRunning = true;
+  const queueGeneration = readerNeighbourGeneration;
+  readerNeighbourQueue = Promise.resolve().then(async () => {
+    while (queueGeneration === readerNeighbourGeneration && readerNeighbourRequested) {
+      readerNeighbourRequested = false; await evictReaderDistant();
+      if (queueGeneration !== readerNeighbourGeneration) break;
+      const epoch = readerViewEpoch, owner = current, documentPDF = pdf, number = pageNumber;
+      const entries = [readerViews.get(number + 1), readerViews.get(number - 1)].filter(Boolean);
+      for (const view of entries) {
+        if (!readerViewCurrent(view, epoch, owner, documentPDF) || active || busy || readerResizePending || pageNumber !== number) break;
+        try { await renderReaderNeighbour(view, epoch, owner, documentPDF); } catch { /* A failed adjacent preview never replaces the active page. */ }
+      }
+    }
+  }).finally(() => { if (queueGeneration === readerNeighbourGeneration) { readerNeighbourRunning = false; if (readerNeighbourRequested) queueReaderNeighbours(); } });
+}
+function selectReaderInput(event) {
+  const view = readerCanvasViews.get(event.currentTarget);
+  if (!view || !view.ready || !pages.has(view.number) || active || busy) return false;
+  if (view.number !== pageNumber) { pageNumber = view.number; bindReaderView(view); controls(); scheduleReaderPosition(); readerResizePending = true; }
+  return true;
+}
+function readerGestureView(event) {
+  const element = event.target?.closest?.('.reader-page');
+  return element ? readerViews.get(Number(element.dataset.page)) : null;
+}
+function readerTapEligible(event) {
+  return event.pointerType === 'touch' && !$('finger-draw').checked && tool !== 'eraser';
+}
+function captureReaderTap(event) {
+  if (event.pointerType !== 'touch') { if (event.pointerType === 'pen') resetReaderTap(); return; }
+  readerTouchPointers.add(event.pointerId);
+  if (readerTouchPointers.size !== 1 || !readerTapEligible(event)) { resetReaderTap(); return; }
+  const view = readerGestureView(event);
+  if (!view?.ready || active || busy) { resetReaderTap(); return; }
+  readerGestureCandidate = { id: event.pointerId, x: event.clientX, y: event.clientY, at: Date.now(), number: view.number, owner: current, generation: documentOpenGeneration };
+}
+function moveReaderTap(event) {
+  const candidate = readerGestureCandidate;
+  if (candidate?.id === event.pointerId && Math.hypot(event.clientX - candidate.x, event.clientY - candidate.y) > 10) resetReaderTap();
+}
+function finishReaderTap(event) {
+  if (event.pointerType !== 'mouse') readerNonMouseAt = Date.now();
+  readerTouchPointers.delete(event.pointerId);
+  const candidate = readerGestureCandidate;
+  if (event.type === 'lostpointercapture' && !candidate) return;
+  readerGestureCandidate = null;
+  if (event.type !== 'pointerup' || !candidate || candidate.id !== event.pointerId || readerTouchPointers.size || !readerTapEligible(event) ||
+      candidate.owner !== current || candidate.generation !== documentOpenGeneration || Date.now() - candidate.at > 250 ||
+      Math.hypot(event.clientX - candidate.x, event.clientY - candidate.y) > 10) { resetReaderTap(); return; }
+  const last = readerLastGestureTap, now = Date.now();
+  if (last && last.number === candidate.number && last.owner === current && now - last.at <= 320 && Math.hypot(event.clientX - last.x, event.clientY - last.y) <= 28) {
+    resetReaderTap(); event.preventDefault(); toggleReaderZoom(event.clientX, event.clientY, candidate.number);
+  } else readerLastGestureTap = { number: candidate.number, owner: current, at: now, x: event.clientX, y: event.clientY };
+}
+function readerPointAnchor(view, clientX, clientY) {
+  const viewport = readerVisibleViewport(), rect = view?.sheet.getBoundingClientRect();
+  if (!viewport || !rect?.width || !rect.height) return null;
+  return { document: current, page: view.number, documentGeneration: documentOpenGeneration, focusGeneration: readerFocusGeneration,
+    inputEpoch: readerFocusInputEpoch, x: clamp((clientX - rect.left) / rect.width, 0, 1), y: clamp((clientY - rect.top) / rect.height, 0, 1),
+    viewportX: clamp((clientX - viewport.left) / (viewport.right - viewport.left), 0, 1), viewportY: clamp((clientY - viewport.top) / (viewport.bottom - viewport.top), 0, 1), scroll: readerScrollOffsets() };
+}
+function toggleReaderZoom(clientX, clientY, number = pageNumber) {
+  if (!current || !pdf || active || busy) return;
+  const view = readerViews.get(number); if (!view?.ready) return;
+  readerSelectView(view, false); readerFocusAnchor = readerPointAnchor(view, clientX, clientY);
+  $('zoom').value = Number($('zoom').value) > 1 ? '1' : '2';
+  void renderPage(false).catch(() => showError(t('loadError')));
+}
+function initializeReaderScrolling() {
+  const area = $('page-area');
+  const scrolled = () => { resetReaderTap(); scheduleReaderVisible(); };
+  area.addEventListener('scroll', scrolled, { passive: true }); window.addEventListener('scroll', scrolled, { passive: true });
+  area.addEventListener('pointerdown', captureReaderTap, { capture: true, passive: true });
+  area.addEventListener('pointermove', moveReaderTap, { capture: true, passive: true });
+  for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) area.addEventListener(name, finishReaderTap, { capture: true, passive: false });
+  area.addEventListener('dblclick', event => {
+    if (tool !== 'read' || event.button !== 0 || Date.now() - readerNonMouseAt < 700) return;
+    const view = readerGestureView(event); if (!view?.ready) return;
+    event.preventDefault(); toggleReaderZoom(event.clientX, event.clientY, view.number);
+  });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', event => { resetReaderTap(); scheduleReaderResize(event); }, { passive: true });
+    window.visualViewport.addEventListener('scroll', scrolled, { passive: true });
+  }
+}
 
 function readerFocusMode() { return document.documentElement.dataset.readerFocus === 'true'; }
 function readerScrollOffsets() {
@@ -288,8 +584,9 @@ function readerVisibleViewport() {
   const area = $('page-area'); if (!area?.getBoundingClientRect) return null;
   const rect = area.getBoundingClientRect(), header = document.querySelector('.reader-header')?.getBoundingClientRect?.();
   const footer = !$('page-controls')?.hidden && $('page-controls')?.getBoundingClientRect?.();
-  const left = Math.max(0, rect.left), right = Math.min(window.innerWidth, rect.right);
-  const top = Math.max(0, rect.top, header?.bottom || 0), bottom = Math.min(window.innerHeight, rect.bottom, footer?.top || Infinity);
+  const visual = window.visualViewport, visualLeft = visual?.offsetLeft || 0, visualTop = visual?.offsetTop || 0;
+  const left = Math.max(visualLeft, rect.left), right = Math.min(visualLeft + (visual?.width || window.innerWidth), rect.right);
+  const top = Math.max(visualTop, rect.top, header?.bottom || 0), bottom = Math.min(visualTop + (visual?.height || window.innerHeight), rect.bottom, footer?.top || Infinity);
   return right > left && bottom > top ? { left, right, top, bottom } : null;
 }
 function readerAnchorCurrent(anchor, checkScroll = false, nextMode = false) {
@@ -334,11 +631,14 @@ function cancelReaderFocusPosition(event) {
   if (event.key === 'Escape' || (button && (event.target === button || button.contains?.(event.target)))) return;
   readerFocusInputEpoch++; readerFocusAnchor = null;
 }
-function scheduleReaderResize() {
+function scheduleReaderResize(event = null) {
+  if (event?.type === 'resize') readerResizeAnchorPending = true;
   readerResizePending = true; clearTimeout(resizeTimer);
   resizeTimer = setTimeout(() => {
     if (!readerResizePending || !pdf || !current || active || busy) return;
     readerResizePending = false;
+    if (readerResizeAnchorPending && !readerAnchorCurrent(readerFocusAnchor)) readerFocusAnchor = captureReaderFocusAnchor();
+    readerResizeAnchorPending = false;
     renderPage(false).catch(() => showError(t('loadError')));
   }, 180);
 }
@@ -406,13 +706,32 @@ function initializeReaderFullscreen() {
 }
 async function renderPage(scroll = true) {
   if (!pdf || !current) return;
+  if (active) { readerResizePending = true; return; }
+  const owner = current, documentPDF = pdf, generation = documentOpenGeneration;
+  if (current.pageCount) initializeReaderViews();
+  const view = readerViews.get(pageNumber);
+  if (view) bindReaderView(view);
   const position = scroll ? null : readerFocusAnchor;
   const positionGeneration = readerFocusGeneration, positionMode = readerFocusMode();
   if (scroll) readerFocusAnchor = null;
   const sequence = ++renderSequence; busy = true; controls();
-  if (renderTask) { try { renderTask.cancel(); } catch {} }
-  const page = await pdf.getPage(pageNumber);
-  if (sequence !== renderSequence) return;
+  try {
+  if (renderTask) { try { renderTask.cancel(); } catch {} await Promise.resolve(renderTask.promise).catch(() => {}); }
+  if (view) {
+    view.renderToken++;
+    const oldTask = view.renderTask;
+    if (oldTask) { try { oldTask.cancel(); } catch {} await Promise.resolve(oldTask.promise).catch(() => {}); }
+    view.renderTask = null;
+    if (view.releasePromise) await view.releasePromise;
+    const releases = [];
+    for (const other of [...readerMountedViews]) if (other !== view && (Math.abs(other.number - pageNumber) > 1 ||
+        (other.pdfCanvas && other.pdfCanvas.width * other.pdfCanvas.height > READER_NEIGHBOUR_PIXELS))) releases.push(releaseReaderView(other));
+    await Promise.all(releases);
+  }
+  if (view && !(await ensurePage(pageNumber))) return;
+  if (sequence !== renderSequence || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration) return;
+  const page = await documentPDF.getPage(pageNumber);
+  if (sequence !== renderSequence || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration) { try { page.cleanup(); } catch {} return; }
   const natural = page.getViewport({ scale: 1 }); baseWidth = natural.width; pageAspect = natural.height / natural.width;
   $('page-area').hidden = false;
   const area = $('page-area'), padding = getComputedStyle(area);
@@ -421,37 +740,61 @@ async function renderPage(scroll = true) {
   const scale = available / natural.width * Number($('zoom').value);
   const preservingPosition = positionGeneration === readerFocusGeneration && positionMode === readerFocusMode() && readerAnchorCurrent(position, true);
   const viewport = page.getViewport({ scale }); cssWidth = viewport.width; cssHeight = viewport.height;
-  pixelRatio = Math.min(devicePixelRatio || 1, 2, 4096 / Math.max(cssWidth, cssHeight), Math.sqrt(10000000 / (cssWidth * cssHeight)));
-  pixelRatio = Math.max(.2, pixelRatio);
-  sheet.style.width = cssWidth + 'px'; sheet.style.height = cssHeight + 'px';
-  for (const canvas of [pdfCanvas, inkCanvas]) { canvas.width = Math.ceil(cssWidth * pixelRatio); canvas.height = Math.ceil(cssHeight * pixelRatio); canvas.style.width = cssWidth + 'px'; canvas.style.height = cssHeight + 'px'; }
+  if (view) {
+    const layoutKey = `${cssWidth}/${readerDesiredPixelRatio()}`;
+    if (readerLayoutKey !== layoutKey) {
+      readerLayoutKey = layoutKey; readerViewEpoch++;
+      await Promise.all([...readerMountedViews].filter(other => other !== view).map(releaseReaderView));
+    }
+  }
+  const raster = readerRasterPlan(cssWidth, cssHeight, readerDesiredPixelRatio(), view ? READER_ACTIVE_PIXELS : 10_000_000);
+  pixelRatio = raster.ratio;
+  if (view) {
+    view.aspect = pageAspect; view.naturalWidth = baseWidth; view.pdfPage = page; view.pixelRatio = pixelRatio;
+    layoutReaderViews(cssWidth); bindReaderView(view); view.ready = false; view.sheet.dataset.ready = 'false'; view.sheet.setAttribute('aria-busy', 'true');
+  } else { sheet.style.width = cssWidth + 'px'; sheet.style.height = cssHeight + 'px'; }
+  for (const canvas of [pdfCanvas, inkCanvas]) { canvas.width = raster.width; canvas.height = raster.height; canvas.style.width = cssWidth + 'px'; canvas.style.height = cssHeight + 'px'; }
+  if (view && readerBitmapPixels() > READER_BITMAP_BUDGET) throw new Error('READER_BITMAP_BUDGET');
   if (preservingPosition && readerAnchorCurrent(position)) { sheet.getBoundingClientRect?.(); position.scroll = readerScrollOffsets(); }
   $('page-area').hidden = false; $('loading-state').hidden = true;
   const ctx = pdfCanvas.getContext('2d', { alpha: false });
   renderTask = page.render({ canvasContext: ctx, viewport, transform: [pixelRatio, 0, 0, pixelRatio, 0, 0] });
+  if (view) view.renderTask = renderTask;
   try { await renderTask.promise; } catch (error) { if (error.name !== 'RenderingCancelledException') throw error; }
-  if (sequence !== renderSequence) return;
+  if (sequence !== renderSequence || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration) return;
+  if (view) { view.renderTask = null; view.ready = true; view.renderedKey = `${cssWidth}/${cssHeight}/${raster.width}/${raster.height}`; view.sheet.dataset.ready = 'true'; view.sheet.setAttribute('aria-busy', 'false'); }
   drawInk(); busy = false; controls();
   if (preservingPosition && positionGeneration === readerFocusGeneration && positionMode === readerFocusMode()) restoreReaderFocusAnchor(position);
-  if (scroll) { window.scrollTo({ top: 0, behavior: 'instant' }); area.scrollLeft = 0; if (readerFocusMode()) area.scrollTop = 0; }
+  if (scroll) {
+    if (view) readerScrollToView(view);
+    else { window.scrollTo({ top: 0, behavior: 'instant' }); area.scrollLeft = 0; if (readerFocusMode()) area.scrollTop = 0; }
+  }
   if (readerResizePending) scheduleReaderResize();
+  if (view) { queueReaderNeighbours(); if (readerScrollPending) scheduleReaderVisible(); }
+  } finally {
+    if (owner === current && sequence === renderSequence) { busy = false; controls(); }
+  }
 }
 async function ensurePage(number) {
+  const owner = current, generation = documentOpenGeneration, inkEpoch = readerInkEpoch;
   if (!pages.has(number)) {
     let strokes = [];
-    try { strokes = await storage.loadPage(current.fingerprint, number); } catch (error) { storageFailure(); throw error; }
+    try { strokes = await storage.loadPage(owner.fingerprint, number); } catch (error) { if (inkEpoch === readerInkEpoch) storageFailure(owner, generation); throw error; }
+    if (owner !== current || generation !== documentOpenGeneration || inkEpoch !== readerInkEpoch) return false;
+    if (pages.has(number)) return true;
     let changed = false;
     strokes.forEach(s => { if (!s.id) { s.id = uid(); changed = true; } });
     strokes = strokes.flatMap(s => { if (s.points.length > 5000) { changed = true; return splitStroke(s, uid); } return [s]; });
     pages.set(number, strokes); if (changed) markDirty(number);
   }
+  return true;
 }
 async function goPage(value) {
   if (!current || busy) return;
   finishStroke(); const target = clamp(Math.trunc(Number(value)) || 1, 1, current.pageCount);
   if (target === pageNumber) { controls(); return; }
   busy = true; controls();
-  try { await ensurePage(target); pageNumber = target; markMeta(); await renderPage(); }
+  try { if (await ensurePage(target) === false) { busy = false; controls(); return; } pageNumber = target; markMeta(); await renderPage(); }
   catch { showError(t('loadError')); }
 }
 function renderBookmarks() {
@@ -479,6 +822,7 @@ async function openBytes(bytes, metadata) {
     if (nextPDF.numPages > MAX_PAGES) { await task.destroy(); throw new Error('PAGE_LIMIT'); }
     // PDF.js 6 owns worker cleanup on the loading task; its document proxy no
     // longer exposes destroy(). Keep the old document until the new one loads.
+    for (const view of [...readerMountedViews]) releaseReaderView(view);
     if (pdfLoadingTask) await pdfLoadingTask.destroy();
     pdf = nextPDF; pdfLoadingTask = task; pdfBytes = new Uint8Array(bytes).slice();
     let previous;
@@ -704,7 +1048,7 @@ async function applyNotebook(value, options = {}) {
   if (options.confirmReplace && !confirm(t('replaceConfirm'))) return false;
   // Hold the edit lock across storage awaits so incoming Pencil events cannot
   // be overwritten by a remote snapshot after the initial drawing check.
-  busy = true; controls();
+  busy = true; readerInkEpoch++; controls();
   try {
     if (!(await flush()) && (dirty.size || metaSaved !== metaVersion)) throw new Error('SAVE_FAILED');
     const position = options.preservePosition ? pageNumber : backup.position;
@@ -717,6 +1061,9 @@ async function applyNotebook(value, options = {}) {
     await storage.importPages(current.fingerprint, importedPages, backup.bookmarks, position);
     mutationRevision++;
     pages.clear(); importedPages.forEach(p => pages.set(p.number, p.strokes));
+    // The imported notebook is a complete snapshot; absent mounted pages are
+    // known-empty now, so their ready overlays never await an obsolete read.
+    for (const view of readerMountedViews) if (!pages.has(view.number)) pages.set(view.number, []);
     if (!options.preserveHistory || options.confirmReplace) histories.clear();
     dirty.clear(); current.bookmarks = backup.bookmarks; pageNumber = position; await ensurePage(pageNumber);
     renderBookmarks(); await renderPage(!options.silent); status('saved');
@@ -782,7 +1129,7 @@ $('finger-draw').addEventListener('change', () => chooseTool(tool)); $('pen-widt
 $('undo').addEventListener('click', () => undo()); $('redo').addEventListener('click', () => undo(true));
 $('previous-page').addEventListener('click', () => goPage(pageNumber - 1)); $('next-page').addEventListener('click', () => goPage(pageNumber + 1));
 $('page-number').addEventListener('change', event => goPage(event.target.value)); $('page-number').addEventListener('keydown', event => { if (event.key === 'Enter') { event.target.blur(); goPage(event.target.value); } });
-$('zoom').addEventListener('change', () => { finishStroke(); if (pdf && !busy) renderPage(false).catch(() => showError(t('loadError'))); });
+$('zoom').addEventListener('change', () => { finishStroke(); if (pdf && !busy) { readerFocusAnchor = captureReaderFocusAnchor(); renderPage(false).catch(() => showError(t('loadError'))); } });
 $('bookmark').addEventListener('click', () => {
   if (!current) return; const marks = new Set(current.bookmarks || []); if (marks.has(pageNumber)) marks.delete(pageNumber); else marks.add(pageNumber);
   current.bookmarks = [...marks].sort((a, b) => a - b); renderBookmarks(); markMeta();
@@ -863,6 +1210,7 @@ window.addEventListener('atr:document-open', () => {
 window.addEventListener('focus', () => { void acknowledgePublicRead(); });
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void acknowledgePublicRead(); });
 initializeReaderFullscreen();
+initializeReaderScrolling();
 window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: notebook, applyNotebook, setPermissions, openPublic: openPublished, openStored,
   libraryData,chooseLocalPDF,chooseStored,choosePublished,openCloudPDF,goPage,trashLocal,restoreLocal,
   pdfBlob: () => current?.pdf || null, flush, language: en ? 'en' : 'ko' });
