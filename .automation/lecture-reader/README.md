@@ -4,6 +4,12 @@
 
 All lecture cards enter the shared reader by registered archive ID. The Korean and English catalogs keep the original online notes, raw PDF and download links. The reader resolves IDs through `archive-manifest.json`; it accepts no arbitrary remote PDF URL. A separately selected local PDF remains on the device until its owner explicitly chooses cloud storage for that original.
 
+## Fullscreen notes and quiet save feedback
+
+The explicit fullscreen button keeps a compact pen toolbar, page navigation, local save status and exit available. When element fullscreen is available it is requested directly from the click; otherwise the same viewport layout works inside the app. Escape and platform exit restore the normal layout. Browser/OS chrome cannot be assumed hidden on every iPhone or PWA. Current page, selected zoom and a guarded normalized document anchor survive transitions; new input or a different document cancels an older anchor restoration.
+
+Autosave still uses the existing 350ms ink / 250ms metadata scheduling and pen-up flush. Only the feedback is delayed: fast writes keep a stable label, a pending write is shown after 600ms, and visible pending feedback stays for at least 300ms. Errors appear immediately and are not cleared by an older timer or another document's completion. Local save confirmation remains separate from cloud synchronization.
+
 ## Device storage and explicit cloud storage
 
 The original PDF, local ink, bookmarks and reading position live in the origin’s IndexedDB through `storage.mjs`. Saving locally does not require signing in. Version 2 separates mutable metadata and pages from immutable PDF bytes, so listing the library or saving a stroke does not read/rewrite the original. The upgrade copies only v1 metadata and keeps legacy original records intact. Chrome and WebKit migration checks preserve original hashes, ink and progress, including concurrent original saves and trash/restore. Browser storage can still be removed by the user, browser or operating system; portable editable backups and annotated PDF exports remain available. After upgrading the browser database, a code rollback must keep the v2 storage adapter; loading the old v1 adapter causes a VersionError.

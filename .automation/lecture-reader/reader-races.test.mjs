@@ -265,7 +265,7 @@ function publicReadHarness(options = {}) {
   ctx.signal = name => emit('window', name);
   vm.createContext(ctx);
   vm.runInContext(section('async function openBytes(', 'function showError(').replaceAll('import.meta.url', JSON.stringify(rootURL.href)) +
-    section("document.addEventListener('visibilitychange'", 'let resizeTimer;'), ctx);
+    section("document.addEventListener('visibilitychange'", 'initializeReaderFullscreen();'), ctx);
   return { ctx, messages, emit, focus: value => { focused = value; },
     open: (publicId = 'published-a') => ctx.openBytes(new Uint8Array([37, 80, 68, 70]).buffer,
       { publicId, title: 'Private title must never enter an alert message' }) };
@@ -330,4 +330,127 @@ test('missing or failing existing workers cannot prevent a public PDF from openi
     const qa = publicReadHarness(options); assert.equal(await qa.open(), true);
     await new Promise(resolve => setImmediate(resolve)); assert.deepEqual(qa.messages, []);
   }
+});
+
+function saveFeedbackHarness(options = {}) {
+  let now = 20_000, nextTimer = 0, text = 'saved', painted = 'saved';
+  const timers = new Map(), callbacks = new Map(), writes = [], stored = [], events = [];
+  const clock = {
+    setTimeout(callback, delay) { const id = ++nextTimer; timers.set(id, { callback, due: now + delay }); callbacks.set(id, callback); return id; },
+    clearTimeout(id) { timers.delete(id); },
+    advance(delay) {
+      const target = now + delay;
+      for (;;) {
+        const due = [...timers.entries()].filter(([, value]) => value.due <= target).sort((a, b) => a[1].due - b[1].due)[0];
+        if (!due) break;
+        now = due[1].due; timers.delete(due[0]); due[1].callback();
+      }
+      now = target;
+    },
+    queued(id) { assert.ok(callbacks.has(id), 'the timer callback must have been scheduled'); callbacks.get(id)(); },
+  };
+  const node = { dataset: {} };
+  Object.defineProperty(node.dataset, 'state', { get: () => painted, set: value => { painted = value; writes.push(['state', value]); } });
+  Object.defineProperty(node, 'textContent', { get: () => text, set: value => { text = value; writes.push(['text', value]); } });
+  class ClockDate extends Date { static now() { return now; } }
+  const ctx = {
+    current: { ...document, bookmarks: [] }, documentOpenGeneration: 0, pageNumber: 1, active: null, tool: 'pen',
+    readerResizePending: false, scheduleReaderResize() {},
+    saveFeedbackTimer: null, saveFeedbackEpoch: 0, saveFeedbackOwner: null, saveFeedbackGeneration: -1,
+    saveFeedbackShownAt: 0, saveFeedbackWanted: 'ready',
+    saveTimer: null, writeQueue: Promise.resolve(true), metaVersion: 0, metaSaved: 0, mutationRevision: 0, lastStorageError: 0,
+    versions: new Map(), dirty: new Map(), pages: new Map([[1, [stroke('saved-ink')]]]),
+    $: id => id === 'save-state' ? node : { checked: false }, t: key => key, toast() {},
+    clone: structuredClone, Date: ClockDate, setTimeout: clock.setTimeout, clearTimeout: clock.clearTimeout,
+    currentInfo: () => ({ fingerprint: ctx.current?.fingerprint }), signal: (type, detail) => events.push({ type, detail }),
+    historyEntry() {}, state: () => ctx.pages.get(ctx.pageNumber), requestInk() {}, inkCanvas: { releasePointerCapture() {}, style: {} },
+    storage: {
+      async savePage(fingerprint, number, strokes, meta) { stored.push(structuredClone({ type: 'page', fingerprint, number, strokes, meta })); await options.savePage?.(); },
+      async saveMetadata(fingerprint, meta) { stored.push(structuredClone({ type: 'meta', fingerprint, meta })); await options.saveMetadata?.(); },
+    },
+  };
+  vm.createContext(ctx);
+  const feedbackStart = source.includes('function paintSaveStatus(') ? 'function paintSaveStatus(' : 'function status(';
+  vm.runInContext(section(feedbackStart, 'function toast(') + section('function storageFailure(', 'function currentInfo(') +
+    section('function markDirty(', 'function drawStroke(') + section('function finishStroke(', 'function chooseTool('), ctx);
+  ctx.status('saved'); writes.length = 0;
+  return { ctx, clock, node, writes, stored, events };
+}
+
+test('fast ink saves retain the saved display without changing the 350ms write debounce or stored strokes', async () => {
+  const qa = saveFeedbackHarness();
+  qa.ctx.markDirty();
+  assert.equal(qa.node.dataset.state, 'saved', 'pending feedback waits 600ms');
+  assert.deepEqual(qa.writes, []);
+  qa.clock.advance(349); assert.equal(qa.stored.length, 0);
+  qa.clock.advance(1); await qa.ctx.writeQueue;
+  assert.deepEqual(qa.stored, [{ type: 'page', fingerprint: document.fingerprint, number: 1,
+    strokes: [stroke('saved-ink')], meta: { position: 1, bookmarks: [] } }]);
+  qa.clock.advance(600); assert.deepEqual(qa.writes, [], 'a fast completion must not rewrite an unchanged saved display');
+  assert.equal(qa.events.length, 1); assert.equal(qa.events[0].type, 'atr:notes-saved');
+  assert.equal(qa.events[0].detail.metadataOnly, false);
+});
+
+test('metadata keeps its 250ms debounce and pen-up still flushes immediately without visible feedback flicker', async () => {
+  const meta = saveFeedbackHarness(); meta.ctx.markMeta(); meta.clock.advance(249); assert.equal(meta.stored.length, 0);
+  meta.clock.advance(1); await meta.ctx.writeQueue;
+  assert.deepEqual(meta.stored, [{ type: 'meta', fingerprint: document.fingerprint, meta: { position: 1, bookmarks: [] } }]);
+  assert.equal(meta.events[0].detail.metadataOnly, true); assert.deepEqual(meta.writes, []);
+  const pen = saveFeedbackHarness(); pen.ctx.active = { before: [], page: 1, id: 'pen-1' };
+  pen.ctx.finishStroke(); await pen.ctx.writeQueue;
+  assert.equal(pen.stored.length, 1, 'finishing the stroke must not wait for any UI or save timer');
+  assert.deepEqual(pen.writes, []);
+});
+
+test('long saves show pending at the first 600ms deadline and keep it visible for at least 300ms', async () => {
+  const gate = deferred(), qa = saveFeedbackHarness({ savePage: () => gate.promise });
+  qa.ctx.markDirty(); qa.clock.advance(200); qa.ctx.markDirty();
+  qa.clock.advance(350); await new Promise(resolve => setImmediate(resolve)); assert.equal(qa.stored.length, 1);
+  qa.clock.advance(49); assert.equal(qa.node.dataset.state, 'saved');
+  qa.clock.advance(1); assert.equal(qa.node.dataset.state, 'pending', 'repeated pointer changes must not postpone feedback');
+  qa.clock.advance(50); gate.resolve(); await qa.ctx.writeQueue;
+  assert.equal(qa.node.dataset.state, 'pending');
+  qa.clock.advance(249); assert.equal(qa.node.dataset.state, 'pending');
+  qa.clock.advance(1); assert.equal(qa.node.dataset.state, 'saved');
+});
+
+test('save errors display immediately, survive pending retries, and clear only after a successful save', async () => {
+  let failing = true; const retry = deferred();
+  const qa = saveFeedbackHarness({ savePage: async () => { if (failing) throw Error('STORAGE_FAILED'); await retry.promise; } });
+  qa.ctx.markDirty(); assert.equal(await qa.ctx.flush(), false);
+  assert.equal(qa.node.dataset.state, 'error');
+  failing = false; qa.ctx.markDirty(); qa.clock.advance(1000); await new Promise(resolve => setImmediate(resolve));
+  assert.equal(qa.node.dataset.state, 'error', 'pending retry must not hide a known save failure');
+  retry.resolve(); await qa.ctx.writeQueue;
+  assert.equal(qa.node.dataset.state, 'saved'); assert.equal(qa.events.length, 1);
+});
+
+test('queued callbacks from a cancelled feedback cycle cannot clear a newer timer or overwrite its state', () => {
+  const qa = saveFeedbackHarness();
+  qa.ctx.status('pending'); const oldTimer = qa.ctx.saveFeedbackTimer;
+  qa.ctx.status('saved'); qa.ctx.status('pending'); const newTimer = qa.ctx.saveFeedbackTimer;
+  qa.clock.queued(oldTimer);
+  assert.equal(qa.ctx.saveFeedbackTimer, newTimer);
+  assert.equal(qa.node.dataset.state, 'saved');
+  qa.clock.advance(600); assert.equal(qa.node.dataset.state, 'pending');
+  qa.ctx.status('saved'); const savedTimer = qa.ctx.saveFeedbackTimer;
+  qa.ctx.status('error'); qa.clock.queued(savedTimer);
+  assert.equal(qa.node.dataset.state, 'error', 'a queued delayed completion must not hide an error');
+});
+
+test('feedback timers and late owners cannot paint across document identity or selection generations', () => {
+  for (const changed of ['document', 'generation']) {
+    const qa = saveFeedbackHarness(), owner = qa.ctx.current;
+    qa.ctx.status('pending'); const timer = qa.ctx.saveFeedbackTimer;
+    if (changed === 'document') qa.ctx.current = { ...owner };
+    else qa.ctx.documentOpenGeneration++;
+    qa.clock.queued(timer);
+    assert.equal(qa.node.dataset.state, 'saved', changed + ' invalidates an old pending timer');
+  }
+  const qa = saveFeedbackHarness(), old = qa.ctx.current;
+  qa.ctx.current = { ...old, fingerprint: 'b'.repeat(64) }; qa.ctx.documentOpenGeneration++;
+  qa.ctx.status('saved'); qa.writes.length = 0;
+  qa.ctx.status('pending', old); qa.ctx.storageFailure(old); qa.ctx.status('saved', old);
+  qa.clock.advance(1000);
+  assert.deepEqual(qa.writes, [], 'late status/error calls from the previous document are ignored');
 });
