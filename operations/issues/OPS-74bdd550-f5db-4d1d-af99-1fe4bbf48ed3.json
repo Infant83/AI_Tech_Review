@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
   "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
-  "record_version": 2,
+  "record_version": 3,
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-10T14:22:36Z",
-  "status": "needs_evidence",
+  "updated_at": "2026-11-11T01:25:12Z",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "publication_ci",
@@ -40,14 +40,15 @@
       "Deploy remains at syncing_files and exceeds its 600-second timeout."
     ],
     "expected": "Deploy the validated artifact, preserve recovery copy and synchronize reader catalog.",
-    "actual": "Run42828205239 attempt1: build success; deploy failed14:04:03UTC. Last valid state14:03:55UTC syncing_files; timeout14:04:00UTC; deployment canceled14:04:01UTC. Recovery-copy and notify-readers were skipped. Fresh-revision run42830866020 also failed: build success14:10:16UTC; final syncing_files and timeout14:20:29UTC; cancellation14:20:30UTC; deploy failure14:20:32UTC. Recovery-copy and notify-readers skipped."
+    "actual": "Run42828205239 attempt1: build success; deploy failed14:04:03UTC. Last valid state14:03:55UTC syncing_files; timeout14:04:00UTC; deployment canceled14:04:01UTC. Recovery-copy and notify-readers were skipped. Fresh-revision run42830866020 also failed: build success14:10:16UTC; final syncing_files and timeout14:20:29UTC; cancellation14:20:30UTC; deploy failure14:20:32UTC. Recovery-copy and notify-readers skipped. Nov11 normal DQB publication run42937888682 for a4e46da996154ff6b8ecf862cd5010c4e8a67298 succeeded in build, deploy, recovery-copy and notify-readers. It carried the unchanged reviewed title-revision inputs; no diagnostic retry or workflow change was used."
   },
   "evidence": [
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42818327217",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42824084381",
     "https://www.githubstatus.com/",
-    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682"
   ],
   "limitations": [
     "The internal cause of the Pages delay is unconfirmed.",
@@ -84,33 +85,39 @@
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
   },
   "verification": {
-    "status": "Both bounded attempts passed all build checks and failed in Pages file sync; both cancellations verified; publication remains pending.",
+    "status": "Recovered during the next normal publication; live bilingual title/PDF/archive, recovery and catalog sync verified.",
     "checks": [
       "Both new PDF first pages visually read; the other16 pages RGB-identical.",
       "Scientific manuscripts are byte-identical after H1.",
       "Only intended bilingual HTML/PDF and two archive PDFs changed; other articles and PDFs preserved.",
       "Timeout, cancellation and downstream skips verified from completed job logs.",
-      "Actual HTTPS release still50fb320 and article H1 still the previous published title after both attempts."
+      "Actual HTTPS release still50fb320 and article H1 still the previous published title after both attempts.",
+      "Actual HTTPS release revision is a4e46da996154ff6b8ecf862cd5010c4e8a67298; KO/EN article titles match the approved title revision.",
+      "Root verified fifteen HTTPS routes against the sealed artifact, including both article PDFs and both current archive PDFs. Independent reviewer verified the Qunova paths and exact hashes.",
+      "Approved bfc2383 source remains unchanged; the other16 PDF pages are RGB-identical to the prior edition.",
+      "Recovery artifact13818803385 exists with digest sha256:fd0fbed20e4396967483826ae1986f4fdd3b77c236f82f6d7deab07b35fd92cd.",
+      "Actual HTTPS verification and reader sync completed: synced69, newArticles0, queuedEvents0; no assertion of phone push receipt."
     ],
     "evidence": [
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682"
     ],
     "remaining_limits": [
-      "The new title is not yet public on the journal site.",
-      "The internal Pages sync delay cause remains unconfirmed.",
-      "The unchanged-input new-revision experiment did not resolve the stall."
+      "The internal cause of the prior Pages sync delay remains unconfirmed.",
+      "One subsequent normal publication succeeded; this does not establish that the provider delay cannot recur.",
+      "No phone push receipt, device notification delivery or new recovery restore exercise is claimed."
     ]
   },
   "observation": {
-    "status": "confirmed_pending_publication",
-    "period": "2026-11-10T14:22:36Z",
-    "result": "Previous public edition remains available; revised source and bilingual PDFs are committed and accessible. No new publication or subscriber-delivery completion is claimed."
+    "status": "recovered_during_normal_publication",
+    "period": "2026-11-11T01:25:12Z",
+    "result": "The pending title revision is now live with exact reviewed bilingual PDFs and archive copies. All four jobs succeeded; recovery artifact and69-item catalog sync verified. Preserve prior failed-attempt evidence and observe subsequent ordinary publications."
   },
   "recovery": {
     "plan_reference": "Run the existing workflow once with a fresh source revision containing only this operations record; all publication inputs and checks remain identical.",
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
-    "result": "The single fresh-source-version retry also timed out. Stop repeated retries; keep validated publication inputs, historical editions and original workflow/security checks."
+    "result": "The single fresh-source-version retry also timed out. Stop repeated retries; keep validated publication inputs, historical editions and original workflow/security checks. Nov11 next normal DQB publication succeeded with the unchanged reviewed title inputs; no extra diagnostic push or workflow/security change."
   },
-  "next_action": "ADOPT should inspect the confirmed repeated Pages-sync delay at the next existing operations session, using the two exact failed runs and immutable artifacts. Do not assume a cause or weaken validation. The persistent title-revision request is ready for normal deployment when the path recovers; then verify live HTML/PDF, recovery and reader sync."
+  "next_action": "ADOPT should observe the next ordinary publication for recurrence, retaining both failed attempts and this successful recovery evidence. No extra retry, scheduler or workflow change is required by this observation."
 }

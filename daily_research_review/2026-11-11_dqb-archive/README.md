@@ -28,3 +28,9 @@ dqb1111_optimization은 13쪽·18쪽 v1의 본문·방법·표·통합 부록을
 공개 후보 PDF SHA-256: `79f93109cbf4ff6478c0554f66dd0b4a31f995246547e543a2ab5b65e6539e9b`. 실제 배포와 HTTPS 확인 전에는 공개 완료로 기록하지 않는다.
 
 실제 배포 기준 `50fb320ba25eecb6923ec8fc40b2c4e5f1f88b6c`와 대조한 최종 후보는 리뷰 57편·PDF 129건·DQB 79건·독자 카탈로그 69개 ID다. 앞서 검수·커밋됐으나 Pages 지연으로 대기 중인 Qunova 제목 개정의 한영 HTML·PDF와 해당 아카이브 사본은 기존 출판 선언을 따른다. 다른 리뷰 56편과 기존 PDF 사본 206개는 동일하다. 공개 파일·릴리스 연속성·전송량 검사를 통과했으며 기존 검색 메타데이터 증가·600MB 초과 경고는 운영 검토 대상으로 남긴다. Chrome 한영 브리핑·아카이브의 넓은 화면·360px, 검색·PDF 연결과 JavaScript 없는 목록 표시를 확인했다. 실제 휴대폰·Safari·푸시 수신 검사는 미수행이다.
+
+## 실제 공개 확인
+
+`a4e46da996154ff6b8ecf862cd5010c4e8a67298`의 [정규 배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682)는 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 실제 HTTPS 15개 경로를 봉인한 배포 파일과 대조했고, Chrome에서 내려받은 [6쪽 공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-11-daily-quantum-brief.pdf)도 위 해시와 같다. 한영 목록·검색·360px 화면과 JavaScript 없는 목록을 실제 사이트에서도 확인했다.
+
+복구 사본 artifact `13818803385`의 생성·검증이 완료됐고 독자 목록 69개가 동기화됐다(`newArticles=0`, `queuedEvents=0`). 실제 전화기 푸시 수신이나 새 복원 훈련을 수행한 결과는 아니다. 함께 대기하던 Qunova 제목 개정의 한영 HTML·PDF·아카이브도 승인본과 일치한다. 이전 Pages 지연의 내부 원인은 미확인으로 유지하며 [기존 운영 기록](../../operations/issues/OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3.json)에 이번 정상 게시의 회복 증거를 연결했다.
