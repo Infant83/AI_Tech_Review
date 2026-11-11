@@ -303,6 +303,8 @@ GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revisi
 
 전송 payload에는 기존 `title/body/url/articleId/tag`와 같은 내용을 `web_push:8030`·`notification`의 선언형 설명에도 담는다. 최상위 `mutable:true`로 SW 처리를 요청하고 `notification.data.articleId`로 공개 글 ID를 전달한다. 현대 WebKit의 이 이벤트는 원본 `event.data` 대신 제안된 `event.notification`을 제공하므로 SW는 양쪽 입력을 처리하고, 교체 표시의 `showNotification`에는 유효한 `navigate`도 전달한다. `mutable`가 없거나 false이면 지원 브라우저가 SW 없이 직접 표시할 수 있어, SW 수신 이력·배지와 배너가 분리된다. 정확한 계약과 SW를 실행할 수 없거나 교체 표시를 하지 못할 때의 기본 표시 보존은 [Apple WWDC25 설명](https://developer.apple.com/videos/play/wwdc2025/235/)과 [WebKit parser](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/notifications/NotificationJSONParser.cpp)를 따른다.
 
+PDF 전용 렉처는 공개 글 ID와 원본 PDF URL을 카탈로그·이벤트·flat `url`에 그대로 보존한다. 현재 리더가 지원하는 문서 ID와 `archive/files/<문서 ID>.pdf`가 정확히 맞을 때 선언형 `notification.navigate`만 `lectures/reader/?id=<문서 ID>`로 연결한다. SW가 실행되지 않는 기본 표시에서도 사이트 복귀 도구가 있는 리더로 들어가기 위한 구분이다. 기존 웹 렉처·리뷰·테스트의 이동 경로와 구독·이벤트 수는 바꾸지 않는다. 이미 운영체제에 표시된 과거 알림의 기본 목적지는 서버 배포로 소급 변경하지 못하며, 이 동선을 확인하려고 과거 알림을 재발송하지 않는다.
+
 기존 구독·키·SW scope와 flat 필드·구형 브라우저의 기존 Web Push 경로를 보존한다. 서버는 단말의 정확한 미열람 수를 모르므로 `app_badge:1` 같은 고정 숫자를 보내지 않고 SW의 로컬 Badging API를 유지한다. 기본 표시만 수행된 알림은 로컬 이력·배지가 갱신되지 않을 수 있다. 복구는 같은 설치·scope의 알림센터에 실제 남은 항목만 검증해 관측 시각을 구분하며, 닫힌 모든 과거 알림을 복원하는 기능이 아니다. 서버 수락·기본 표시 지원은 실제 기기 도착·OS 배너·소리·열람을 보장하지 않는다.
 
 D1 outbox가 원본이며 Queue 메시지에는 이벤트·기기 식별자만 들어간다. 발행 이벤트/기기 복합키와 lease로 중복·동시 처리를 억제한다. 성공은 `sent`, 404/410은 구독 정리, 429/5xx/일부 인증 오류는 최대 여섯 번 지연 재시도한다. 10분 Cron은 큐 유실·lease 만료·미완료 fanout을 복구한다. 10초 네트워크 시간 제한이 있어 2분 lease보다 먼저 요청이 끝난다.

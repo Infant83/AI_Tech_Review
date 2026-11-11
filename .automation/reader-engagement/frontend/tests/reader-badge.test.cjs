@@ -125,8 +125,62 @@ test('native proposed notifications with null data preserve article identity and
   assert.equal(state.notifications[0].id,'native');
 });
 
+test('PDF lecture delivery opens the site reader while durable history and read ACK keep the canonical PDF',async()=>{
+  const h=harness(),id='lecture:2026-notes',url=scope+'archive/files/2026-notes.pdf';
+  await h.push(article(id,{url}));
+  assert.equal(h.shown[0].settings.navigate,scope+'lectures/reader/?id=2026-notes');
+  assert.deepEqual(h.shown[0].settings.data,{url:scope+'lectures/reader/?id=2026-notes',articleId:id});
+  let state=await stored(h.factory);
+  assert.equal(state.notifications[0].url,url);assert.deepEqual(state.unreadArticleIds,[id]);
+  const client=windowClient({url:scope+'lectures/reader/?id=2026-notes'});h.clients.set(client.id,client);
+  assert.equal((await h.read(id,url,client)).count,0);
+  state=await stored(h.factory);assert.equal(state.notifications[0].url,url);
+});
+
+test('native PDF reader navigation with null raw data restores the canonical receipt identity',async()=>{
+  const h=harness(),id='lecture:2026-notes',url=scope+'lectures/reader/?id=2026-notes';
+  await h.emit('push',{data:null,notification:{title:'Lecture',body:'New lecture',navigate:url,tag:'lecture-event',data:{articleId:id}}});
+  assert.equal(h.shown[0].settings.navigate,url);
+  const state=await stored(h.factory);
+  assert.equal(state.notifications[0].url,scope+'archive/files/2026-notes.pdf');
+  assert.equal(state.count,1);
+});
+
+test('reader routes must bind one matching supported lecture document ID before recording a receipt',async()=>{
+  for(const url of [scope+'lectures/reader/?id=other',scope+'lectures/reader/?id=2026-notes&id=other',
+    scope+'lectures/reader/?id=Upper',scope+'archive/files/other.pdf']) {
+    const h=harness();await h.push(article('lecture:2026-notes',{url}));
+    assert.equal((await h.message()).notifications.length,0,url);
+  }
+});
+
 const eventTag=async id=>Buffer.from(await webcrypto.subtle.digest('SHA-256',new TextEncoder().encode('article:'+id))).toString('hex');
 function publicFeed(items) {return {ok:true,headers:{get:()=>null},text:async()=>JSON.stringify({revision:'a'.repeat(40),articles:items.map(item=>({id:item.articleId,path:new URL(item.url).pathname,title:item.title,topic:item.articleId.startsWith('lecture:')?'lecture':'review'}))})};}
+
+test('notification-center recovery recognizes old PDF and new reader links as one canonical lecture',async()=>{
+  const payload=article('lecture:2026-notes',{url:scope+'archive/files/2026-notes.pdf'});
+  const tag=await eventTag(payload.articleId);
+  const h=harness({getNotifications:async()=>[
+    {title:payload.title,tag,navigate:payload.url,data:{articleId:payload.articleId}},
+    {title:payload.title,tag,navigate:scope+'lectures/reader/?id=2026-notes',data:{articleId:payload.articleId}},
+    {title:payload.title,tag,navigate:scope+'lectures/reader/?id=wrong',data:{articleId:payload.articleId}},
+    {title:payload.title,tag,navigate:scope+'lectures/reader/?id=2026-notes&id=wrong'},
+    {title:payload.title,tag,navigate:scope+'lectures/reader/?id=2026-notes',data:{articleId:'lecture:wrong'}}
+  ],fetch:async()=>publicFeed([payload])});
+  await h.message();const state=await stored(h.factory);
+  assert.equal(state.count,1);assert.equal(state.notifications.length,1);
+  assert.equal(state.notifications[0].url,payload.url);
+  assert.equal(state.notifications[0].source,'notification-center');
+  assert.deepEqual((await stored(h.factory)).unreadArticleIds,[payload.articleId]);
+});
+
+test('new reader navigation alone can recover an already displayed lecture without inventing a receipt',async()=>{
+  const payload=article('lecture:2026-notes',{url:scope+'archive/files/2026-notes.pdf'}),tag=await eventTag(payload.articleId);
+  const h=harness({getNotifications:async()=>[{title:payload.title,tag,navigate:scope+'lectures/reader/index.html?id=2026-notes&lang=en'}],
+    fetch:async()=>publicFeed([payload])});
+  await h.message();const state=await stored(h.factory);assert.equal(state.count,1);assert.equal(state.notifications[0].url,payload.url);
+  assert.equal(Object.hasOwn(state.notifications[0],'receivedAt'),false);
+});
 
 test('notification-center recovery restores only strict delivered matches with observed time, never a received time',async()=>{
   const payload=article('restored'),tag=await eventTag(payload.articleId),requests=[];

@@ -254,6 +254,16 @@
     });
     return result;
   }
+  function recentNotificationURL(item) {
+    var match = /^lecture:([a-z0-9][a-z0-9-]{0,179})$/.exec(item.id), safe = notificationURL(item.url);
+    if (!match || !safe) return safe;
+    var id = match[1], url = new URL(safe);
+    if (url.pathname !== scope + "archive/files/" + id + ".pdf") return safe;
+    var reader = new URL("lectures/reader/", location.origin + scope);
+    reader.searchParams.set("id", id);
+    if (english) reader.searchParams.set("lang", "en");
+    return reader.href;
+  }
   function appendRecentNotifications() {
     if (!state.historyReady) return;
     var recent = node("section", "atr-reader-recent");
@@ -266,7 +276,7 @@
       var list = node("ul", "atr-reader-recent-list");
       state.notificationHistory.slice(0, state.historyLimit).forEach(function (item) {
         var row = node("li");
-        var link = node("a", "", item.title); link.href = item.url;
+        var link = node("a", "", item.title); link.href = recentNotificationURL(item);
         row.appendChild(link);
         var observed = item.source === "notification-center", timestamp = observed ? item.observedAt : item.receivedAt;
         var received = node("time", "", (observed ? guideText.observed : guideText.received) + " · " + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(timestamp));

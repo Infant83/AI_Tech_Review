@@ -26,8 +26,32 @@ function readerScopedURL(value) {
   return null;
 }
 
-function readerNotificationURL(value) {
-  return readerScopedURL(value) || READER_SCOPE.href;
+function readerLectureDocumentId(articleId) {
+  const match = typeof articleId === "string" && /^lecture:([a-z0-9][a-z0-9-]{0,179})$/.exec(articleId);
+  return match ? match[1] : null;
+}
+
+function readerCanonicalURL(value, articleId) {
+  const scoped = readerScopedURL(value);
+  if (!scoped) return null;
+  const url = new URL(scoped), reader = new URL("lectures/reader/", READER_SCOPE);
+  if (![reader.pathname, reader.pathname + "index.html"].includes(url.pathname)) return scoped;
+  const id = readerLectureDocumentId(articleId);
+  if (!id || url.searchParams.getAll("id").length !== 1 || url.searchParams.get("id") !== id) return null;
+  return new URL("archive/files/" + id + ".pdf", READER_SCOPE).href;
+}
+
+function readerNotificationURL(value, articleId) {
+  const scoped = readerScopedURL(value);
+  if (!scoped) return READER_SCOPE.href;
+  const id = readerLectureDocumentId(articleId), canonical = readerCanonicalURL(scoped, articleId);
+  if (id && canonical && new URL(canonical).pathname === READER_SCOPE.pathname + "archive/files/" + id + ".pdf") {
+    const reader = new URL("lectures/reader/", READER_SCOPE);
+    reader.searchParams.set("id", id);
+    if (new URL(scoped).searchParams.get("lang") === "en") reader.searchParams.set("lang", "en");
+    return reader.href;
+  }
+  return scoped;
 }
 
 function readerArticleId(value) {
@@ -36,12 +60,13 @@ function readerArticleId(value) {
 
 function readerArticle(payload, title, rawURL) {
   if (!readerArticleId(payload.articleId) || typeof title !== "string" || !title.trim()) return null;
-  const url = readerScopedURL(rawURL);
+  const url = readerCanonicalURL(rawURL, payload.articleId);
   if (!url) return null;
   const pathname = new URL(url).pathname;
   const relative = pathname.slice(READER_SCOPE.pathname.length);
   if (payload.articleId.startsWith("lecture:")) {
     if (!/^(?:lectures\/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\/(?:index\.html)?|archive\/files\/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\.pdf)$/.test(relative)) return null;
+    if (relative.startsWith("archive/files/") && relative !== "archive/files/" + payload.articleId.slice(8) + ".pdf") return null;
   } else {
     const base = "reviews/" + payload.articleId + "/";
     if (![base, base + "index.html", base + "en/", base + "en/index.html"].includes(relative)) return null;
@@ -294,10 +319,9 @@ function readerRecoverDisplayed() {
     displayed.slice(-READER_MAX_SEEN).forEach(function (notification) {
       if (!notification || typeof notification.title !== "string") return;
       const data = notification.data && typeof notification.data === "object" ? notification.data : {};
-      const url = readerScopedURL(notification.navigate || data.url);
-      if (!url) return;
+      const rawURL = notification.navigate || data.url;
       const match = articles.find(function (entry) {
-        return entry.article.url === url && entry.title === notification.title && entry.tag === notification.tag
+        return entry.article.url === readerCanonicalURL(rawURL, entry.article.id) && entry.title === notification.title && entry.tag === notification.tag
           && (!data.articleId || (readerArticleId(data.articleId) && entry.article.id === data.articleId));
       });
       if (!match || ids.has(match.article.id)) return;
@@ -398,7 +422,7 @@ self.addEventListener("push", function (event) {
   const metadata = notification.data && typeof notification.data === "object" ? notification.data : {};
   const articleId = metadata.articleId || payload.articleId;
   const rawURL = notification.navigate || notification.url || metadata.url || payload.url;
-  const url = readerNotificationURL(rawURL);
+  const url = readerNotificationURL(rawURL, articleId);
   const title = (typeof notification.title === "string" && notification.title ? notification.title : "Agentic Tech Review Letters").slice(0, 160);
   const body = (typeof notification.body === "string" ? notification.body : "새 글이 발행되었습니다. New article published.").slice(0, 400);
   const tag = (typeof notification.tag === "string" ? notification.tag : typeof payload.articleId === "string" ? payload.articleId : url).slice(0, 240);
@@ -426,7 +450,8 @@ self.addEventListener("push", function (event) {
 
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  const url = readerNotificationURL(event.notification.navigate || (event.notification.data && event.notification.data.url));
+  const data = event.notification.data || {};
+  const url = readerNotificationURL(event.notification.navigate || data.url, data.articleId);
   const fresh = new URL(url);
   // A tap asks to see the current article. A matching open window may contain
   // an older DOM, and the canonical URL may still be fresh in the HTTP cache.

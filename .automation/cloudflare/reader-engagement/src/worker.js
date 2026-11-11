@@ -339,11 +339,17 @@ export async function deliver(env,eventId,deviceId,transport=fetch) {
   try {
     const subscription = pushSubscription({endpoint:sub.endpoint,expirationTime:sub.expiration_time,keys:{p256dh:sub.p256dh,auth:sub.auth}});
     const url = `${SITE_ORIGIN}${event.path}`;
+    // Keep the catalog/event identity at its original PDF URL. Only the tap
+    // destination changes, including declarative fallback without a running SW.
+    const documentId = /^lecture:([a-z0-9][a-z0-9-]{0,179})$/.exec(event.article_id || '')?.[1];
+    const navigate = event.kind === 'article' && event.topic === 'lecture' && documentId
+      && event.path === `${SITE_ROOT}archive/files/${documentId}.pdf`
+      ? `${SITE_ORIGIN}${SITE_ROOT}lectures/reader/?id=${documentId}` : url;
     // Ask compatible browsers to run the receipt/unread worker while retaining
     // the browser's visible fallback if that worker cannot run. Native mutable
     // events expose notification.data rather than the legacy raw event.data.
     const payload = {title:event.title,body:event.body,url,articleId:event.article_id,tag:event.id,
-      web_push:8030,mutable:true,notification:{title:event.title,body:event.body,navigate:url,tag:event.id,
+      web_push:8030,mutable:true,notification:{title:event.title,body:event.body,navigate,tag:event.id,
         icon:`${SITE_ORIGIN}${SITE_ROOT}assets/apple-touch-icon.png`,data:{articleId:event.article_id}}};
     response = await transport(new Request(await webPushRequest(subscription,payload,env),{signal:AbortSignal.timeout(10_000)}));
     await response.body?.cancel();

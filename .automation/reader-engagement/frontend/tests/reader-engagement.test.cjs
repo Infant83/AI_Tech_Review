@@ -573,6 +573,20 @@ test('recent alerts appear before help with received times, safe title text and 
   assert.equal(harness.api.state.notificationHistory.length, 20);
   assert.equal(harness.api.state.historyCount, 0);
 });
+
+test('recent PDF lecture links open the site reader without changing stored identity or web lecture links', async () => {
+  const pdf='https://infant83.io/AI_Tech_Review/archive/files/2026-notes.pdf';
+  const records=[historyRecord('lecture:2026-notes',{url:pdf}),
+    historyRecord('lecture:other',{url:'https://infant83.io/AI_Tech_Review/lectures/quantum-learning/'}),
+    historyRecord('lecture:mismatch',{url:pdf})];
+  const harness=frontendHarness({messageChannel:true,notificationWorker:replyingWorker(records)});
+  const dialog=openModal(harness);await harness.api.refreshHistory(false);
+  const recent=dialog.querySelectorAll('section').find(e=>e.className==='atr-reader-recent');
+  const links=recent.querySelectorAll('a');
+  assert.equal(links[0].href,'https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-notes');
+  assert.equal(links[1].href,records[1].url);assert.equal(links[2].href,pdf);
+  assert.equal(harness.api.state.notificationHistory[0].url,pdf);
+});
 test('new subscribers receive an empty recent-alert list without fetching or inventing old publications', async () => {
   const worker = replyingWorker([]);
   const harness = frontendHarness({ messageChannel: true, notificationWorker: worker });
@@ -993,6 +1007,15 @@ function assertFreshNotificationTarget(actual, expected) {
   assert.equal(fresh.href, canonical.href, 'real query parameters and anchors must survive');
   return token;
 }
+test('old PDF alerts with lecture identity open a reader with a return path, while no-ID legacy links stay unchanged',async()=>{
+  const h=workerHarness(),pdf='https://infant83.io/AI_Tech_Review/archive/files/2026-notes.pdf';
+  let pending;
+  h.handlers.notificationclick({notification:{data:{url:pdf,articleId:'lecture:2026-notes'},close(){}},waitUntil:p=>{pending=p;}});
+  await pending;
+  assertFreshNotificationTarget(h.opened[0],'https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-notes');
+  h.handlers.notificationclick({notification:{data:{url:pdf},close(){}},waitUntil:p=>{pending=p;}});
+  await pending;assertFreshNotificationTarget(h.opened[1],pdf);
+});
 test('notification click opens a fresh article URL and navigates an existing exact match before focusing', async () => {
   const harness = workerHarness();
   const url = 'https://infant83.io/AI_Tech_Review/reviews/example/?view=full#section-2';

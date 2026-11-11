@@ -432,6 +432,60 @@ test('article and requested test deliveries encrypt matching legacy and declarat
   }
 });
 
+test('PDF lecture delivery changes only the matching reader navigation and preserves canonical publication identity',async t => {
+  const f=await fixture(t);
+  const subscriber=await seedSubscriber(f,1,['review','lecture']);
+  const cases=[
+    {article:{...item('public-notes','lecture'),path:'/AI_Tech_Review/archive/files/public-notes.pdf'},
+      navigate:`${ORIGIN}/AI_Tech_Review/lectures/reader/?id=public-notes`},
+    {article:{...item('requested-notes','lecture'),path:'/AI_Tech_Review/archive/files/other-notes.pdf'}},
+    {article:item('web-course','lecture')},
+    {article:{...item('UPPER-notes','lecture'),path:'/AI_Tech_Review/archive/files/UPPER-notes.pdf'}},
+    {article:{...item('notes.v1','lecture'),path:'/AI_Tech_Review/archive/files/notes.v1.pdf'}},
+    {article:item('regular-review')},
+  ];
+  await f.sync();
+  const result=await f.sync({revision:revision('b'),articles:[item(),...cases.map(value=>value.article)]});
+  assert.equal(result.status,200);
+  assert.equal((await result.json()).newArticles,cases.length);
+  const events=(await f.db.prepare('SELECT * FROM publication_events ORDER BY article_id').all()).results;
+  assert.equal(events.length,cases.length);
+  for(const event of events) await fanout(f.env,event.id);
+  const publicationEventsBefore=(await f.db.prepare('SELECT * FROM publication_events ORDER BY article_id').all()).results;
+  const queuedBefore=f.queued.length;
+  const sent=[];
+  for(const event of events) {
+    const expected=cases.find(value=>value.article.id===event.article_id);
+    assert.ok(expected);
+    const canonical=`${ORIGIN}${expected.article.path}`;
+    await deliver(f.env,event.id,subscriber.id,async request => {
+      const encrypted=Buffer.from(await request.arrayBuffer());
+      const plaintext=ece.decrypt(encrypted,{version:'aes128gcm',
+        privateKey:subscriber.client,authSecret:subscriber.auth});
+      const payload=JSON.parse(plaintext.toString());
+      assert.equal(payload.url,canonical,'legacy identity retains the public canonical path');
+      assert.equal(payload.notification.navigate,expected.navigate || canonical);
+      assert.equal(payload.articleId,expected.article.id);
+      assert.deepEqual(payload.notification.data,{articleId:expected.article.id});
+      assert.equal(payload.tag,event.id);
+      assert.equal(payload.mutable,true);
+      assert.equal(request.headers.get('TTL'),'86400');
+      assert.equal(request.headers.get('Urgency'),'high');
+      sent.push(payload);
+      return new Response(null,{status:201});
+    });
+  }
+  assert.equal(sent.length,cases.length);
+  assert.equal(f.queued.length,queuedBefore,'navigation does not enqueue another event or delivery');
+  assert.deepEqual((await f.db.prepare('SELECT * FROM publication_events ORDER BY article_id').all()).results,publicationEventsBefore,
+    'delivery navigation leaves the durable event and canonical path unchanged');
+  const articles=(await f.db.prepare('SELECT id,path FROM articles ORDER BY id').all()).results;
+  for(const {article} of cases) assert.deepEqual(articles.find(value=>value.id===article.id),{id:article.id,path:article.path});
+  let repeated=0;
+  for(const event of events) await deliver(f.env,event.id,subscriber.id,async()=>{repeated++;return new Response(null,{status:201});});
+  assert.equal(repeated,0,'completed delivery must not send again');
+});
+
 test('maximum multilingual titles and longest review/PDF paths fit encrypted declarative deliveries',async t => {
   const f=await fixture(t);
   const subscriber=await seedSubscriber(f,1,['review','lecture']);
@@ -457,7 +511,8 @@ test('maximum multilingual titles and longest review/PDF paths fit encrypted dec
       assert.equal(payload.title,title);
       assert.equal(payload.notification.title,title);
       assert.equal(payload.url,`${ORIGIN}${event.path}`);
-      assert.equal(payload.notification.navigate,payload.url);
+      assert.equal(payload.notification.navigate,event.topic==='lecture'
+        ? `${ORIGIN}/AI_Tech_Review/lectures/reader/?id=${identifier}` : payload.url);
       assert.equal(payload.mutable,true,'declarative delivery must request the receipt/badge worker');
       assert.deepEqual(payload.notification.data,{articleId:event.article_id},
         'native PushEvent has no raw event.data; the proposed notification must carry the article identity');
