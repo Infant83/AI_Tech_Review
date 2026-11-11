@@ -554,6 +554,11 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             target.write_bytes(PDF_BYTES if name.endswith(".pdf") else (topic / "dist" / name).read_bytes())
         registry_path = source / spec["unit_registry"]
         fixture_registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        expected_units = [f"L{number:03d}" for number in range(1, len(fixture_registry["units"]) + 1)]
+        self.assertEqual([unit["id"] for unit in fixture_registry["units"]], expected_units)
+        self.assertEqual(expected_units[:5], ["L001", "L002", "L003", "L004", "L005"])
+        expected_count = len(expected_units)
+        expected_latest_date = max(unit["date"] for unit in fixture_registry["units"])
         latest_pdf_id = next(u["archive_id"] for u in fixture_registry["units"] if u["id"] == fixture_registry["latest_unit"])
         latest_bytes = PDF_BYTES + b"% latest lecture, distinct from the stable series anchor\n"
         for unit in fixture_registry["units"]:
@@ -581,10 +586,10 @@ class DocumentArchiveSiteTests(unittest.TestCase):
             self.assertTrue((destination / Path(document["file"]).name).is_file())
         self.assertEqual(sum(bool(d.get("study_href")) for d in published), 1)
         registry = json.loads((destination / "unit-registry.json").read_text(encoding="utf-8"))
-        self.assertEqual([u["id"] for u in registry["units"]], ["L001", "L002", "L003", "L004", "L005"])
+        self.assertEqual([u["id"] for u in registry["units"]], expected_units)
         anchor = next(d for d in published if d["id"] == latest_id)
         self.assertEqual(anchor["study_href"], "lectures/classiq-qae-onboarding/")
-        self.assertEqual(anchor["study_series"]["latest_date"], "2026-11-09")
+        self.assertEqual(anchor["study_series"]["latest_date"], expected_latest_date)
         self.assertNotIn("study_href", next(d for d in published if d["id"] == latest_pdf_id))
         self.assertFalse(registry["official_Classiq_course"])
         self.assertFalse(registry["source_zip_available"])
@@ -596,14 +601,12 @@ class DocumentArchiveSiteTests(unittest.TestCase):
         for lang, relative in (("ko", "index.html"), ("en", "en/index.html")):
             catalog = (self.site / "lectures" / relative).read_text(encoding="utf-8")
             self.assertEqual(catalog.count('class="lecture-card'), 1)
-            self.assertEqual(catalog.count('data-lecture-unit='), 5)
+            self.assertEqual(catalog.count('data-lecture-unit='), expected_count)
             self.assertIn('data-lecture-series="classiq-qae-onboarding"', catalog)
-            self.assertIn("1 resources · 5 PDFs" if lang == "en" else "1개 자료 · PDF 5편", catalog)
+            self.assertIn(f"1 resources · {expected_count} PDFs" if lang == "en" else f"1개 자료 · PDF {expected_count}편", catalog)
             self.assertNotIn("Online notes" if lang == "en" else "온라인 노트", catalog)
-            self.assertLess(catalog.index('data-lecture-unit="L001"'), catalog.index('data-lecture-unit="L002"'))
-            self.assertLess(catalog.index('data-lecture-unit="L002"'), catalog.index('data-lecture-unit="L003"'))
-            self.assertLess(catalog.index('data-lecture-unit="L003"'), catalog.index('data-lecture-unit="L004"'))
-            self.assertLess(catalog.index('data-lecture-unit="L004"'), catalog.index('data-lecture-unit="L005"'))
+            for previous, following in zip(expected_units, expected_units[1:]):
+                self.assertLess(catalog.index(f'data-lecture-unit="{previous}"'), catalog.index(f'data-lecture-unit="{following}"'))
             for document in documents:
                 self.assertIn("reader/?id=" + document["id"], catalog)
                 self.assertIn(document["file"], catalog)
