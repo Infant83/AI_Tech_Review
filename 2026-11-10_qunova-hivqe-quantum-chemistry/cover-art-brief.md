@@ -1,6 +1,6 @@
 # 큐노바 HI-VQE 표지 일러스트 브리프
 
-- 제목·슬러그: 분자를 계산하는 두 컴퓨터: 양자 이점은 어디서 오는가 / 2026-11-10_qunova-hivqe-quantum-chemistry
+- 제목·슬러그: 분자를 계산하는 두 컴퓨터: 양자 이득은 어디서 오는가 / 2026-11-10_qunova-hivqe-quantum-chemistry
 - 작성일: 2026-11-10
 - 상태: 원화·과학·축소·흑백 검수 완료, 발행 출력에 통합 중
 - 담당: root 기획·제작·편집, qunova_production_science 구조·과학 감수. 편집부(AEDAUT)의 발행 작업이며 운영팀(ADOPT)의 플랫폼 변경은 없다.

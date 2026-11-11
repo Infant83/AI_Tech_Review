@@ -1,4 +1,4 @@
-# 분자를 계산하는 두 컴퓨터: 양자 이점은 어디서 오는가
+# 분자를 계산하는 두 컴퓨터: 양자 이득은 어디서 오는가
 
 근거 기준일: 2026-11-10. 한영 원고·표지·기술 도식·웹·PDF를 제작하고 과학·번역·화면·PDF 검수를 마쳤다.
 
@@ -11,7 +11,7 @@
 - 기술 도식: [계산 분업](artifacts/handover_workflow_ko.svg) · [부분공간과 에너지](artifacts/support_and_energy_ko.svg)
 - 과학·시각 검수: [science-publication-audit.json](artifacts/science-publication-audit.json)
 
-편집부(AEDAUT)는 큐노바의 원리·논문 판본·공개 성능과 양자 이점 조건, 비교 기업의 접근을 조사하고 한영 원고와 시각자료를 준비했다. 운영팀(ADOPT)의 기존 등록·연속성·아티팩트 검증 경로를 사용한다. 실제 공개 상태는 해당 출판 요청과 GitHub Pages 배포 기록으로 확인한다.
+편집부(AEDAUT)는 큐노바의 원리·논문 판본·공개 성능과 양자 이득 조건, 비교 기업의 접근을 조사하고 한영 원고와 시각자료를 준비했다. 운영팀(ADOPT)의 기존 등록·연속성·아티팩트 검증 경로를 사용한다. 실제 공개 상태는 해당 출판 요청과 GitHub Pages 배포 기록으로 확인한다.
 
 계산 재생성에는 Python과 `artifacts/requirements-examples.txt`의 NumPy·Matplotlib가 필요하다. `python artifacts/verify_examples.py`는 두 자리 Hubbard 행렬을 직접 만들고 해석해와 대조한 뒤 결과 JSON·SVG를 만든다. QPU 실행·회사 알고리즘 재현·속도 비교는 수행하지 않는다.
 
