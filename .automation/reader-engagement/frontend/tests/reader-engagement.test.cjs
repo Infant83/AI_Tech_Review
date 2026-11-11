@@ -102,7 +102,7 @@ async function setup(options = {}) {
 browserTest('iPhone browser gives real installation instructions and never requests permission automatically', async () => {
   const { page, context, errors } = await setup({ ios: true, standalone: false });
   await page.getByRole('button', { name: '새 글 알림', exact: true }).first().click();
-  await page.getByRole('heading', { name: '테크리뷰를 홈 화면에 추가해 주세요' }).waitFor();
+  await page.getByRole('heading', { name: 'ATRL을 홈 화면에 추가해 주세요' }).waitFor();
   assert.equal(await page.getByRole('button', { name: '새 글 알림 받기', exact: true }).count(), 0);
   assert.deepEqual(await page.evaluate(() => window.__events.filter(event => event.name === 'permission')), []);
   assert.deepEqual(errors, []);
@@ -318,7 +318,7 @@ function frontendHarness(options = {}) {
   context.window = context;
   const initializer = source.lastIndexOf('\n  mount();');
   assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
-  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, acknowledgeArticle: typeof acknowledgeCurrentArticle === "function" ? acknowledgeCurrentArticle : null, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
@@ -480,6 +480,55 @@ function replyingWorker(records, count = 0) {
   }};
   return worker;
 }
+test('notification-center records show observed time without pretending it is received time', async () => {
+  const record = { id: 'native-observed', title: 'Native alert', url: 'https://infant83.io/AI_Tech_Review/reviews/native-observed/', source: 'notification-center', observedAt: 1792893600000 };
+  const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([record], 1) });
+  openModal(h); await h.api.refreshHistory(true);
+  assert.equal(h.api.state.notificationHistory.length, 1);
+  assert.equal(Object.hasOwn(h.api.state.notificationHistory[0], 'receivedAt'), false);
+  assert.match(modal(h).textContent, /알림센터에서 확인/);
+  assert.equal(modal(h).querySelectorAll('time')[0].dateTime, new Date(record.observedAt).toISOString());
+  const invalid = h.api.sanitizeHistory({ ok: true, count: 1, notifications: [{ ...record, observedAt: -1 }] });
+  assert.equal(invalid.length, 0);
+});
+
+test('lecture article identity permits the full 180-character document ID and rejects overflow', async () => {
+  for (const size of [180, 181]) {
+    const messages = [], id = 'lecture:' + 'a'.repeat(size);
+    const worker = { postMessage(message, ports) { messages.push(message); ports[0].postMessage({ ok: true, count: 0, notifications: [] }); } };
+    const h = frontendHarness({ article: { id, path: '/AI_Tech_Review/lectures/long-notes/' }, pathname: '/AI_Tech_Review/lectures/long-notes/', messageChannel: true, notificationWorker: worker });
+    await h.api.acknowledgeArticle();
+    assert.equal(messages.length, size === 180 ? 1 : 0);
+    if (messages.length) assert.equal(messages[0].articleId, id);
+  }
+});
+
+test('opened articles acknowledge their own ID only in a focused top-level article view', async () => {
+  const messages = [], worker = { postMessage(message, ports) {
+    messages.push(message); ports[0].postMessage({ ok: true, count: 0, notifications: [] });
+  }};
+  for (const options of [
+    {}, { article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' } },
+    { article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname: '/AI_Tech_Review/reviews/two/' },
+    { article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname: '/AI_Tech_Review/reviews/one/', visibility: 'hidden' },
+    { article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname: '/AI_Tech_Review/reviews/one/', focused: false },
+    { article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname: '/AI_Tech_Review/reviews/one/', iframe: true },
+  ]) {
+    const h = frontendHarness({ ...options, messageChannel: true, notificationWorker: worker });
+    assert.equal(typeof h.api.acknowledgeArticle, 'function');
+    await h.api.acknowledgeArticle();
+  }
+  assert.equal(messages.length, 0, 'hub, settings, unrelated and inactive pages must not acknowledge');
+  for (const pathname of ['/AI_Tech_Review/reviews/one/', '/AI_Tech_Review/reviews/one/en/index.html']) {
+    const h = frontendHarness({ article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname, messageChannel: true, notificationWorker: worker });
+    await h.api.acknowledgeArticle();
+    assert.equal(messages.at(-1).type, 'atr-reader-article-read');
+    assert.equal(messages.at(-1).articleId, 'one');
+    assert.equal(messages.at(-1).url, 'https://infant83.io/AI_Tech_Review/reviews/one/');
+    assert.equal(h.calls.length, 0, 'reading acknowledgements remain local to the worker');
+  }
+});
+
 test('recent alert records are bounded, deduplicated and validate current-origin scoped URLs and received timestamps', () => {
   const harness = frontendHarness();
   const records = harness.api.sanitizeHistory({ ok: true, count: 3, notifications: [

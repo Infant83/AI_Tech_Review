@@ -301,7 +301,9 @@ GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revisi
 
 한 fanout 작업은 주제에 맞는 기존 구독 최대 20개를 cursor로 읽고, 실제 암호화·발송은 기기당 Queue 작업 하나씩 수행한다. fanout 이후 새로 가입한 구독에는 과거 새 글 알림을 보내지 않는다. 기기가 탈퇴·endpoint 변경·주제 해제를 하면 대기 중인 작업도 발송 직전에 다시 확인한다.
 
-전송 payload에는 기존 `title/body/url/articleId/tag`와 같은 내용을 `web_push:8030`·`notification`의 선언형 설명에도 담는다. [iOS/iPadOS18.4 이상의 홈 화면 앱](https://webkit.org/blog/16574/webkit-features-in-safari-18-4/)에서는 지원 브라우저가 SW의 표시 처리가 실패하거나 지연될 때 이 설명으로 fallback 알림을 표시할 수 있다. 기존 구독·키·SW scope를 유지하고, 구형 SW가 읽는 flat 필드와 구형 브라우저의 기존 Web Push 경로도 보존한다. 형식과 점진 적용은 [WebKit의 호환성 안내](https://webkit.org/blog/16535/meet-declarative-web-push/)를 따른다. 서버는 기기의 로컬 미확인 개수를 모르므로 `app_badge`를 보내지 않는다. SW가 해당 건을 처리하지 못한 fallback에서는 그 알림의 로컬 최근 수신 기록이나 배지 갱신이 없을 수 있다. 서버 수락·fallback 지원은 실제 기기 도착·OS 표시를 보장하지 않으며, 원래 미수신 원인과 실기기 개선 효과는 별도 확인한다.
+전송 payload에는 기존 `title/body/url/articleId/tag`와 같은 내용을 `web_push:8030`·`notification`의 선언형 설명에도 담는다. 최상위 `mutable:true`로 SW 처리를 요청하고 `notification.data.articleId`로 공개 글 ID를 전달한다. 현대 WebKit의 이 이벤트는 원본 `event.data` 대신 제안된 `event.notification`을 제공하므로 SW는 양쪽 입력을 처리하고, 교체 표시의 `showNotification`에는 유효한 `navigate`도 전달한다. `mutable`가 없거나 false이면 지원 브라우저가 SW 없이 직접 표시할 수 있어, SW 수신 이력·배지와 배너가 분리된다. 정확한 계약과 SW를 실행할 수 없거나 교체 표시를 하지 못할 때의 기본 표시 보존은 [Apple WWDC25 설명](https://developer.apple.com/videos/play/wwdc2025/235/)과 [WebKit parser](https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/notifications/NotificationJSONParser.cpp)를 따른다.
+
+기존 구독·키·SW scope와 flat 필드·구형 브라우저의 기존 Web Push 경로를 보존한다. 서버는 단말의 정확한 미열람 수를 모르므로 `app_badge:1` 같은 고정 숫자를 보내지 않고 SW의 로컬 Badging API를 유지한다. 기본 표시만 수행된 알림은 로컬 이력·배지가 갱신되지 않을 수 있다. 복구는 같은 설치·scope의 알림센터에 실제 남은 항목만 검증해 관측 시각을 구분하며, 닫힌 모든 과거 알림을 복원하는 기능이 아니다. 서버 수락·기본 표시 지원은 실제 기기 도착·OS 배너·소리·열람을 보장하지 않는다.
 
 D1 outbox가 원본이며 Queue 메시지에는 이벤트·기기 식별자만 들어간다. 발행 이벤트/기기 복합키와 lease로 중복·동시 처리를 억제한다. 성공은 `sent`, 404/410은 구독 정리, 429/5xx/일부 인증 오류는 최대 여섯 번 지연 재시도한다. 10분 Cron은 큐 유실·lease 만료·미완료 fanout을 복구한다. 10초 네트워크 시간 제한이 있어 2분 lease보다 먼저 요청이 끝난다.
 

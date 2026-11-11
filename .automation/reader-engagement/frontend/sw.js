@@ -14,6 +14,8 @@ let readerDesiredBadge = 0;
 let readerBadgeGeneration = 0;
 let readerBadgeReconcileScheduled = false;
 let readerNavigationGeneration = 0;
+let readerRecoveryPromise;
+let readerRecoveryAttempt = 0;
 
 function readerScopedURL(value) {
   if (typeof value !== "string" || !value) return null;
@@ -48,6 +50,20 @@ function readerArticle(payload, title, rawURL) {
   return text ? { id: payload.articleId, title: text, url: url } : null;
 }
 
+function readerArticleWindow(article, client) {
+  if (!readerScopedWindow(client) || client.visibilityState !== "visible" || client.focused !== true) return false;
+  const url = new URL(client.url), target = new URL(article.url);
+  if (!article.id.startsWith("lecture:")) return !!readerArticle({ articleId: article.id }, article.title, client.url);
+  const documentId = article.id.slice(8), reader = new URL("lectures/reader/", READER_SCOPE);
+  if ([reader.pathname, reader.pathname + "index.html"].includes(url.pathname)) {
+    return url.searchParams.get("id") === documentId
+      && target.pathname === READER_SCOPE.pathname + "archive/files/" + documentId + ".pdf";
+  }
+  if (!target.pathname.startsWith(READER_SCOPE.pathname + "lectures/")) return false;
+  const base = target.pathname.replace(/index\.html$/, "");
+  return url.pathname === base || (url.pathname.startsWith(base) && /^[A-Za-z0-9._-]+\.html$/.test(url.pathname.slice(base.length)));
+}
+
 function readerStoredState(value) {
   const current = value && typeof value === "object" ? value : {};
   const seen = Array.isArray(current.seenArticleIds) ? current.seenArticleIds.slice(-READER_MAX_SEEN) : [];
@@ -55,15 +71,25 @@ function readerStoredState(value) {
   const notifications = [];
   const recentIds = new Set();
   if (Array.isArray(current.notifications)) current.notifications.slice(0, READER_MAX_RECENT).forEach(function (item) {
-    if (!item || typeof item !== "object" || !Number.isSafeInteger(item.receivedAt) || item.receivedAt <= 0) return;
+    if (!item || typeof item !== "object") return;
+    const observed = item.source === "notification-center" && Number.isSafeInteger(item.observedAt) && item.observedAt > 0;
+    if (!observed && (!Number.isSafeInteger(item.receivedAt) || item.receivedAt <= 0)) return;
     const article = readerArticle({ articleId: item.id }, item.title, item.url);
     if (!article || recentIds.has(article.id)) return;
     recentIds.add(article.id);
-    notifications.push({ ...article, receivedAt: item.receivedAt });
+    notifications.push(observed ? { ...article, source: "notification-center", observedAt: item.observedAt } : { ...article, receivedAt: item.receivedAt });
   });
+  const count = Number.isSafeInteger(current.count) && current.count >= 0 ? current.count : 0;
+  // The old count covers the final unique receipts since its last reset.
+  // Seen IDs retain that receipt order; a cleared zero must never revive them.
+  const unread = Array.isArray(current.unreadArticleIds) ? current.unreadArticleIds : count > 0 ? seenArticleIds.slice(-count) : [];
+  const unreadArticleIds = Array.from(new Set(unread.filter(readerArticleId))).slice(-READER_MAX_SEEN);
+  const readArticleIds = Array.isArray(current.readArticleIds) ? Array.from(new Set(current.readArticleIds.filter(readerArticleId))).slice(-READER_MAX_SEEN) : [];
   return {
-    count: Number.isSafeInteger(current.count) && current.count >= 0 ? current.count : 0,
+    count: count,
     seenArticleIds: seenArticleIds,
+    unreadArticleIds: unreadArticleIds,
+    readArticleIds: readArticleIds,
     notifications: notifications
   };
 }
@@ -212,9 +238,11 @@ function readerRememberArticle(article) {
         current.seenArticleIds = current.seenArticleIds.slice(-READER_MAX_SEEN);
         current.notifications.unshift({ ...article, receivedAt: Date.now() });
         current.notifications = current.notifications.slice(0, READER_MAX_RECENT);
-        current.count = Math.min(Number.MAX_SAFE_INTEGER, current.count + 1);
+        if (!current.readArticleIds.includes(article.id)) {
+          current.unreadArticleIds.push(article.id);
+          current.count = Math.min(Number.MAX_SAFE_INTEGER, current.count + 1);
+        }
       }
-      if (status.focused) current.count = 0;
       return current;
     });
     if (added) status.windows.forEach(function (client) {
@@ -226,10 +254,92 @@ function readerRememberArticle(article) {
   }).then(async function (result) { await result.badge; return result.state; });
 }
 
+function readerRecoverDisplayed() {
+  const registration = self.registration;
+  if (typeof registration.getNotifications !== "function" || registration.scope !== READER_SCOPE.href
+      || !registration.active || registration.active.scriptURL !== new URL("sw.js", READER_SCOPE).href) return Promise.resolve();
+  if (readerRecoveryPromise) return readerRecoveryPromise;
+  if (Date.now() - readerRecoveryAttempt < 30_000) return Promise.resolve();
+  readerRecoveryAttempt = Date.now();
+  let active = true, timer;
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  const collection = (async function () {
+    const displayed = await registration.getNotifications();
+    if (!active || !Array.isArray(displayed) || !displayed.length) return [];
+    // Only currently delivered platform notifications are evidence of receipt.
+    // This fixed public catalog supplies identity, never historical delivery.
+    const response = await fetch(new URL("reader-publications.json", READER_SCOPE).href, {
+      credentials: "omit", cache: "no-store", redirect: "error", signal: controller ? controller.signal : undefined
+    });
+    if (!active || !response.ok || Number(response.headers.get("Content-Length") || 0) > 300_000) return [];
+    const text = await response.text();
+    if (!active || text.length > 300_000 || new TextEncoder().encode(text).length > 300_000) return [];
+    const feed = JSON.parse(text);
+    if (!feed || !/^[a-f0-9]{40,64}$/.test(feed.revision || "") || !Array.isArray(feed.articles) || feed.articles.length > 500) return [];
+    const articles = [];
+    const catalogIds = new Set(), catalogURLs = new Set();
+    for (const item of feed.articles) {
+      if (!item || typeof item.path !== "string" || !item.path.startsWith(READER_SCOPE.pathname) || item.path.includes("?") || item.path.includes("#")) continue;
+      const article = readerArticle({ articleId: item.id }, item.title, item.path);
+      if (!article || item.title.length > 240) continue;
+      if (catalogIds.has(article.id) || catalogURLs.has(article.url)) return [];
+      catalogIds.add(article.id); catalogURLs.add(article.url);
+      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("article:" + article.id));
+      articles.push({ article: article, title: item.title, tag: Array.from(new Uint8Array(digest)).map(function (value) { return value.toString(16).padStart(2, "0"); }).join("") });
+      if (!active) return [];
+    }
+    const found = [], ids = new Set();
+    // getNotifications is in creation order. Preserve the newest records when
+    // the durable history is capped, including a 21st currently delivered item.
+    displayed.slice(-READER_MAX_SEEN).forEach(function (notification) {
+      if (!notification || typeof notification.title !== "string") return;
+      const data = notification.data && typeof notification.data === "object" ? notification.data : {};
+      const url = readerScopedURL(notification.navigate || data.url);
+      if (!url) return;
+      const match = articles.find(function (entry) {
+        return entry.article.url === url && entry.title === notification.title && entry.tag === notification.tag
+          && (!data.articleId || (readerArticleId(data.articleId) && entry.article.id === data.articleId));
+      });
+      if (!match || ids.has(match.article.id)) return;
+      ids.add(match.article.id); found.push(match.article);
+    });
+    return found;
+  })().catch(function () { return []; });
+  const bounded = new Promise(function (resolve) {
+    timer = setTimeout(function () { active = false; if (controller) controller.abort(); resolve([]); }, 2000);
+    collection.then(function (result) { if (!active) return; clearTimeout(timer); resolve(result); });
+  });
+  readerRecoveryPromise = bounded.then(function (articles) {
+    if (!active || !articles.length) return;
+    const observedAt = Date.now();
+    return readerSerialState(async function () {
+      let added = false;
+      const state = await readerChangeState(function (current) {
+        articles.forEach(function (article) {
+          if (current.seenArticleIds.includes(article.id)) return;
+          added = true; current.seenArticleIds.push(article.id);
+          current.notifications.unshift({ ...article, source: "notification-center", observedAt: observedAt });
+          if (!current.readArticleIds.includes(article.id)) {
+            current.unreadArticleIds.push(article.id); current.count = Math.min(Number.MAX_SAFE_INTEGER, current.count + 1);
+          }
+        });
+        return current;
+      });
+      if (!added) return;
+      const status = await readerWindowStatus();
+      status.windows.forEach(function (client) { try { client.postMessage({ type: "atr-reader-notifications-changed" }); } catch (_) {} });
+      return { badge: readerNativeBadge(state.count) };
+    }).then(function (result) { return result && result.badge; });
+  }).catch(function () { /* Platform lookup and recovery are optional. */ }).then(function () { clearTimeout(timer); readerRecoveryPromise = null; });
+  return readerRecoveryPromise;
+}
+
 self.addEventListener("message", function (event) {
-  if (!event.data || event.data.type !== "atr-reader-notification-state") return;
+  if (!event.data || !["atr-reader-notification-state", "atr-reader-article-read"].includes(event.data.type)) return;
+  const reading = event.data.type === "atr-reader-article-read";
   const port = event.ports && event.ports[0];
-  if (!port || typeof port.postMessage !== "function") return;
+  const reply = function (value) { if (port && typeof port.postMessage === "function") port.postMessage(value); };
+  if (!reading && (!port || typeof port.postMessage !== "function")) return;
   const operation = readerSerialState(async function () {
     let source;
     try {
@@ -237,19 +347,33 @@ self.addEventListener("message", function (event) {
       source = await self.clients.get(event.source.id);
     } catch (_) { return { response: { ok: false, error: "source_not_allowed" } }; }
     if (!readerScopedWindow(source) || source.id !== event.source.id) return { response: { ok: false, error: "source_not_allowed" } };
-    const foreground = source.visibilityState === "visible" && source.focused === true;
     let state;
     try {
-      state = await readerChangeState(function (current) { if (foreground) current.count = 0; return current; });
+      const article = reading && readerArticle({ articleId: event.data.articleId }, "Article", event.data.url);
+      if (reading && (!article || !readerArticleWindow(article, source))) return { response: { ok: false, error: "article_not_open" } };
+      state = await readerChangeState(function (current) {
+        if (!reading) return current;
+        const known = current.notifications.find(function (item) { return item.id === article.id; });
+        if (known && !readerArticleWindow(known, source)) return current;
+        if (!current.readArticleIds.includes(article.id)) current.readArticleIds.push(article.id);
+        if (current.unreadArticleIds.includes(article.id)) {
+          current.unreadArticleIds = current.unreadArticleIds.filter(function (id) { return id !== article.id; });
+          current.count = Math.max(0, current.count - 1);
+        }
+        return current;
+      });
     } catch (_) {
-      return { response: { ok: false, error: "state_unavailable" }, badge: foreground ? readerNativeBadge(0) : null };
+      return { response: { ok: false, error: "state_unavailable" } };
     }
-    return { response: { ok: true, count: state.count, notifications: state.notifications }, badge: foreground ? readerNativeBadge(0) : null };
+    return { response: { ok: true, count: state.count, notifications: state.notifications },
+      badge: source.visibilityState === "visible" && source.focused === true ? readerNativeBadge(state.count) : null,
+      recover: !reading && source.visibilityState === "visible" && source.focused === true };
   }).then(function (result) {
-    try { port.postMessage(result.response); } catch (_) { /* The page may have closed. */ }
-    return result.badge;
+    try { reply(result.response); } catch (_) { /* The page may have closed. */ }
+    // Reply first: optional platform enumeration must not hold the UI deadline.
+    return Promise.all([result.badge, result.recover ? readerRecoverDisplayed() : null]);
   }).catch(function () {
-    try { port.postMessage({ ok: false, error: "state_unavailable" }); } catch (_) {}
+    try { reply({ ok: false, error: "state_unavailable" }); } catch (_) {}
   });
   event.waitUntil(operation);
 });
@@ -269,9 +393,11 @@ self.addEventListener("push", function (event) {
     payload = event.data ? event.data.json() : {};
   } catch (_) { /* An invalid payload must still produce a visible notification. */ }
   if (!payload || typeof payload !== "object") payload = {};
-  const notification = payload.notification && typeof payload.notification === "object"
-    ? payload.notification : payload;
-  const rawURL = notification.navigate || notification.url || payload.url;
+  const notification = event.notification && typeof event.notification === "object" ? event.notification
+    : payload.notification && typeof payload.notification === "object" ? payload.notification : payload;
+  const metadata = notification.data && typeof notification.data === "object" ? notification.data : {};
+  const articleId = metadata.articleId || payload.articleId;
+  const rawURL = notification.navigate || notification.url || metadata.url || payload.url;
   const url = readerNotificationURL(rawURL);
   const title = (typeof notification.title === "string" && notification.title ? notification.title : "Agentic Tech Review Letters").slice(0, 160);
   const body = (typeof notification.body === "string" ? notification.body : "새 글이 발행되었습니다. New article published.").slice(0, 400);
@@ -284,11 +410,12 @@ self.addEventListener("push", function (event) {
     icon: READER_ICON,
     badge: READER_ICON,
     tag: tag,
-    data: { url: url },
+    navigate: url,
+    data: { url: url, articleId: readerArticleId(articleId) ? articleId : null },
     // Updating a retried notification should not alert the reader a second time.
     renotify: false
   })); } catch (error) { visible = Promise.reject(error); }
-  const article = readerArticle(payload, notification.title, rawURL);
+  const article = readerArticle({ articleId: articleId }, notification.title, rawURL);
   const recorded = article ? readerRememberArticle(article).catch(function () {}) : Promise.resolve();
   // Keep history alive even if display fails first, then preserve that failure.
   event.waitUntil(visible.then(function () { return recorded; }, async function (error) {
@@ -299,7 +426,7 @@ self.addEventListener("push", function (event) {
 
 self.addEventListener("notificationclick", function (event) {
   event.notification.close();
-  const url = readerNotificationURL(event.notification.data && event.notification.data.url);
+  const url = readerNotificationURL(event.notification.navigate || (event.notification.data && event.notification.data.url));
   const fresh = new URL(url);
   // A tap asks to see the current article. A matching open window may contain
   // an older DOM, and the canonical URL may still be fresh in the HTTP cache.

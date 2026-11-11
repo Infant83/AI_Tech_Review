@@ -24,7 +24,7 @@
   } catch (_) { /* Never send credentials to arbitrary configured hosts. */ }
   var article = supplied.article && typeof supplied.article === "object" ? supplied.article : null;
   if (!article && script && script.dataset.articleId) article = { id: script.dataset.articleId };
-  if (article && (typeof article.id !== "string" || !article.id || article.id.length > 180)) article = null;
+  if (article && (typeof article.id !== "string" || !/^(?:lecture:)?[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(article.id))) article = null;
   var english = String(document.documentElement.lang || "ko").toLowerCase().startsWith("en");
   var text = english ? {
     open: "New article alerts", settings: "Alert settings", close: "Close", subscribe: "Enable new article alerts",
@@ -100,8 +100,8 @@
     installOptional: "Installation is optional. You can keep reading and receiving alerts in this browser tab.",
     installFailed: "The install window did not open or respond. You can use the browser menu above, or keep receiving alerts in this tab.",
     recentTitle: "Recent new article alerts", recentEmpty: "No new article alerts are saved on this device/browser yet. New article alerts received from now on will appear here.",
-    recentNote: "These alerts belong to this device/browser. Supported installed apps can show a number when OS badge display is allowed; opening the app/site clears that number while keeping this list. Test alerts do not add to the number or list.",
-    received: "Received", more: "Show more"
+    recentNote: "The number counts new article alerts you have not opened on this device. Opening the app or these settings keeps the number; opening an article clears only that article. OS badge display must be allowed. Test alerts do not add to the number or list.",
+    received: "Received", observed: "Seen in Notification Center", more: "Show more"
   } : {
     title: "설치·알림 받는 방법", device: "안내할 기기", iphone: "iPhone · iPad", chrome: "Mac · Chrome", safari: "Mac · Safari", other: "그 밖의 기기",
     iphoneReady: "홈 화면 앱으로 열었어요. 추가 설치 없이 아래에서 알림을 설정할 수 있어요.",
@@ -125,8 +125,8 @@
     installOptional: "앱 설치는 선택이에요. 이 브라우저 탭에서도 계속 읽고 알림을 받을 수 있어요.",
     installFailed: "설치 창이 열리지 않거나 응답하지 않아요. 위의 브라우저 메뉴를 이용하거나 이 탭에서 알림을 받을 수 있어요.",
     recentTitle: "최근 받은 새 글 알림", recentEmpty: "이 기기·브라우저에 저장된 새 글 알림이 아직 없어요. 앞으로 도착하는 새 글 알림을 여기에 모아 보여드려요.",
-    recentNote: "기기·브라우저별 알림입니다. 숫자는 지원하는 설치 앱에서 운영체제의 배지 표시를 허용해야 보여요. 앱·사이트를 열면 숫자는 0이 되고 목록은 남아요. 테스트 알림은 숫자·목록에 포함하지 않아요.",
-    received: "받은 시각", more: "더 보기"
+    recentNote: "숫자는 이 기기에서 아직 열지 않은 새 글 알림 수입니다. 앱이나 설정을 열어도 유지되고, 해당 글을 열면 그 글만 줄어듭니다. 숫자 표시는 운영체제의 배지 허용이 필요해요. 테스트 알림은 숫자·목록에 포함하지 않아요.",
+    received: "받은 시각", observed: "알림센터에서 확인", more: "더 보기"
   };
   var state = { preparing: true, busy: false, configError: false, registrationError: false, key: "", registration: null,
     localSubscription: null, serverSubscription: null, topics: ["review", "lecture"], feedback: "", feedbackError: false,
@@ -139,6 +139,7 @@
   var deviceSessionKnown = false, pendingDeviceRegistration = null, pendingLikeWrite = null;
   var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
+  var articleReadRequest = null, articleReadWorker = null, articleReadKey = null;
   var metricsRoot = null, metricsFields = {}, metricsStatus = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
   var reviewHub = !article && (location.pathname === scope || location.pathname === scope + "index.html" || location.pathname === scope.slice(0, -1) || location.pathname === scope + "en/" || location.pathname === scope + "en/index.html");
@@ -239,12 +240,17 @@
     var seen = new Set();
     var result = [];
     reply.notifications.slice(0, 20).forEach(function (item) {
-      if (!item || typeof item !== "object" || typeof item.id !== "string" || !item.id.trim() || item.id.length > 180 || seen.has(item.id)
-        || typeof item.title !== "string" || !item.title.trim() || !Number.isSafeInteger(item.receivedAt) || item.receivedAt <= 0 || !Number.isFinite(new Date(item.receivedAt).getTime())) return;
+      if (!item || typeof item !== "object" || typeof item.id !== "string" || !item.id.trim() || item.id.length > 188 || seen.has(item.id)
+        || typeof item.title !== "string" || !item.title.trim()) return;
+      var observed = item.source === "notification-center", timestamp = observed ? item.observedAt : item.receivedAt;
+      if (!Number.isSafeInteger(timestamp) || timestamp <= 0 || !Number.isFinite(new Date(timestamp).getTime())) return;
       var url = notificationURL(item.url);
       if (!url) return;
       seen.add(item.id);
-      result.push({ id: item.id, title: item.title.slice(0, 240), url: url, receivedAt: item.receivedAt });
+      var record = { id: item.id, title: item.title.slice(0, 240), url: url };
+      if (observed) { record.source = "notification-center"; record.observedAt = timestamp; }
+      else record.receivedAt = timestamp;
+      result.push(record);
     });
     return result;
   }
@@ -262,8 +268,9 @@
         var row = node("li");
         var link = node("a", "", item.title); link.href = item.url;
         row.appendChild(link);
-        var received = node("time", "", guideText.received + " · " + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(item.receivedAt));
-        received.dateTime = new Date(item.receivedAt).toISOString();
+        var observed = item.source === "notification-center", timestamp = observed ? item.observedAt : item.receivedAt;
+        var received = node("time", "", (observed ? guideText.observed : guideText.received) + " · " + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(timestamp));
+        received.dateTime = new Date(timestamp).toISOString();
         row.appendChild(received);
         list.appendChild(row);
       });
@@ -278,7 +285,7 @@
     var worker = navigator.serviceWorker.controller || (state.registration && state.registration.active);
     return worker && typeof worker.postMessage === "function" ? worker : null;
   }
-  function requestNotificationState(worker) {
+  function requestNotificationState(worker, message) {
     return new Promise(function (resolve, reject) {
       var channel = new window.MessageChannel();
       var finished = false;
@@ -296,7 +303,7 @@
       channel.port1.onmessage = function (event) { finish(null, event.data); };
       channel.port1.onmessageerror = function () { finish(apiError("notification_state_unavailable")); };
       if (typeof channel.port1.start === "function") channel.port1.start();
-      try { worker.postMessage({ type: "atr-reader-notification-state" }, [channel.port2]); }
+      try { worker.postMessage(message || { type: "atr-reader-notification-state" }, [channel.port2]); }
       catch (error) { finish(error); }
     });
   }
@@ -330,6 +337,31 @@
     catch (_) { return; }
     historyDirty = true;
     void refreshNotificationState(false);
+    void acknowledgeCurrentArticle();
+  }
+  function acknowledgeCurrentArticle() {
+    if (!article || document.visibilityState !== "visible" || (typeof document.hasFocus === "function" && !document.hasFocus()) || document.prerendering) return Promise.resolve();
+    if (window.top && window.top !== window.self) return Promise.resolve();
+    var url = notificationURL(article.path), pathname = location.pathname;
+    if (!url) return Promise.resolve();
+    var base = new URL(url).pathname;
+    if (!article.id.startsWith("lecture:")) {
+      if (base !== scope + "reviews/" + article.id + "/" || ![base, base + "index.html", base + "en/", base + "en/index.html"].includes(pathname)) return Promise.resolve();
+    } else if (!base.startsWith(scope + "lectures/") || !(pathname === base || (pathname.startsWith(base) && /^[A-Za-z0-9._-]+\.html$/.test(pathname.slice(base.length))))) return Promise.resolve();
+    var worker = notificationWorker(), key = article.id + " " + url;
+    if (!worker || typeof window.MessageChannel !== "function" || (articleReadWorker === worker && articleReadKey === key)) return articleReadRequest || Promise.resolve();
+    if (articleReadRequest) return articleReadRequest;
+    articleReadRequest = requestNotificationState(worker, { type: "atr-reader-article-read", articleId: article.id, url: url }).then(function (reply) {
+      if (!reply || reply.ok !== true || worker !== notificationWorker()) return;
+      articleReadWorker = worker; articleReadKey = key;
+      var records = notificationList(reply);
+      if (records !== null) {
+        historyGeneration += 1;
+        state.notificationHistory = records; state.historyCount = reply.count; state.historyReady = true;
+        if (dialog && dialog.open) renderDialog();
+      }
+    }).catch(function () { /* Reading stays available with an older/unavailable worker. */ }).then(function () { articleReadRequest = null; });
+    return articleReadRequest;
   }
   function supported() {
     return window.isSecureContext !== false && "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
@@ -871,6 +903,7 @@
         });
       }).then(function (registered) {
         void refreshNotificationState(true);
+        void acknowledgeCurrentArticle();
         // Restore an existing subscription only after notification permission is granted.
         // A reader's explicit subscribe gesture performs its own lookup after permission.
         return permission() === "granted" ? browserSubscription(registered) : null;
@@ -1094,12 +1127,12 @@
   if (typeof window.addEventListener === "function") {
     window.addEventListener("beforeinstallprompt", offerInstall);
     window.addEventListener("appinstalled", installedApp);
-    window.addEventListener("pageshow", function (event) { void refreshNotificationState(false); metricsPageShow(event); });
-    window.addEventListener("focus", function () { void refreshNotificationState(false); });
-    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { void refreshNotificationState(false); startMetrics(); } });
+    window.addEventListener("pageshow", function (event) { void refreshNotificationState(false); void acknowledgeCurrentArticle(); metricsPageShow(event); });
+    window.addEventListener("focus", function () { void refreshNotificationState(false); void acknowledgeCurrentArticle(); });
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { void refreshNotificationState(false); void acknowledgeCurrentArticle(); startMetrics(); } });
     document.addEventListener("prerenderingchange", startMetrics);
     if ("serviceWorker" in navigator && typeof navigator.serviceWorker.addEventListener === "function") {
-      navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); });
+      navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); void acknowledgeCurrentArticle(); });
       navigator.serviceWorker.addEventListener("message", notificationHint);
     }
   }

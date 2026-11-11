@@ -655,6 +655,37 @@ document.addEventListener('keydown', event => {
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { finishStroke(); flush(); } });
 window.addEventListener('pagehide', () => { finishStroke(); flush(); });
 window.addEventListener('beforeunload', event => { if (dirty.size) { finishStroke(); flush(); event.preventDefault(); event.returnValue = ''; } });
+// Only a public PDF that finished rendering can acknowledge its local alert.
+// Personal PDF metadata and notebook/account state never enter this message.
+let renderedPublicRead = null;
+function visiblePublicRead(snapshot) {
+  if (!snapshot || snapshot !== renderedPublicRead || snapshot.document !== current ||
+      snapshot.generation !== documentOpenGeneration || busy || !current?.publicId ||
+      window.top !== window.self || document.visibilityState !== 'visible' ||
+      typeof document.hasFocus !== 'function' || !document.hasFocus()) return false;
+  const id = current.publicId, query = new URL(location.href).searchParams;
+  return query.getAll('id').length === 1 && query.get('id') === id &&
+    catalog.some(entry => entry.id === id && entry.href === 'archive/files/' + id + '.pdf');
+}
+async function acknowledgePublicRead() {
+  try {
+    const snapshot = renderedPublicRead;
+    if (!visiblePublicRead(snapshot) || !navigator.serviceWorker) return;
+    const workers = navigator.serviceWorker;
+    const worker = workers.controller || (await workers.getRegistration(rootURL.href))?.active;
+    // An awaited registration lookup must not acknowledge a superseded PDF.
+    if (!visiblePublicRead(snapshot) || typeof worker?.postMessage !== 'function') return;
+    const id = current.publicId;
+    worker.postMessage({ type: 'atr-reader-article-read', articleId: 'lecture:' + id,
+      url: new URL('archive/files/' + id + '.pdf', rootURL).href });
+  } catch { /* Alert bookkeeping must never block reading or handwriting. */ }
+}
+window.addEventListener('atr:document-open', () => {
+  renderedPublicRead = current ? { document: current, generation: documentOpenGeneration } : null;
+  void acknowledgePublicRead();
+});
+window.addEventListener('focus', () => { void acknowledgePublicRead(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void acknowledgePublicRead(); });
 let resizeTimer; window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if (pdf && !active && !busy) renderPage(false).catch(() => {}); }, 180); });
 window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: notebook, applyNotebook, setPermissions, openPublic: openPublished, openStored,
   libraryData,chooseLocalPDF,chooseStored,choosePublished,openCloudPDF,goPage,trashLocal,restoreLocal,

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { webcrypto } from 'node:crypto';
 import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
 import { eraseStrokes } from './ink-core.mjs';
 
@@ -225,4 +226,108 @@ test('explicit replacement and role changes clear local inverse history',async()
   assert.equal(ctx.histories.size,0);
   ctx.historyEntry([],[own]);ctx.setPermissions({fingerprint:document.fingerprint,notebookId:'shared',role:'viewer',accountId:'member-a',strokeAuthors:[]});
   assert.equal(ctx.histories.size,0);
+});
+
+function publicReadHarness(options = {}) {
+  const rootURL = new URL('https://example.test/AI_Tech_Review/'), messages = [], nodes = new Map(), listeners = new Map();
+  let focused = options.focused !== false;
+  const subscribe = target => (name, handler) => {
+    const key = target + ':' + name;
+    if (!listeners.has(key)) listeners.set(key, []);
+    listeners.get(key).push(handler);
+  };
+  const worker = { postMessage(value) { if (options.postFails) throw Error('unavailable'); messages.push(structuredClone(value)); } };
+  const ctx = {
+    URL, URLSearchParams, Uint8Array, Blob, crypto: webcrypto, rootURL, MAX_PAGES: 100,
+    current: null, pdf: null, pdfLoadingTask: null, pdfBytes: null, busy: false, active: null,
+    mutationRevision: 0, documentOpenGeneration: 0, metaVersion: 0, metaSaved: 0, pageNumber: 1,
+    pages: new Map(), histories: new Map(), dirty: new Map(), versions: new Map(), retiredIds: new Set(), strokeAuthors: new Map(),
+    catalog: [{ id: 'published-a', href: 'archive/files/published-a.pdf', sha256: 'a'.repeat(64) }],
+    location: { href: new URL('lectures/reader/?id=published-a', rootURL).href },
+    document: { visibilityState: options.hidden ? 'hidden' : 'visible', hasFocus: () => focused, addEventListener: subscribe('document') },
+    navigator: { serviceWorker: options.noServiceWorker ? undefined : {
+      controller: options.lookup ? null : worker,
+      getRegistration: async url => { assert.equal(url, rootURL.href); return options.lookup(worker); },
+      register() { assert.fail('reading must never register a service worker'); },
+    } },
+    $: id => { if (!nodes.has(id)) nodes.set(id, { hidden: false, textContent: '' }); return nodes.get(id); },
+    sheet: { dataset: {} }, permissions: {},
+    pdfjs: { getDocument: () => ({ promise: Promise.resolve({ numPages: 2 }) }) },
+    storage: { getDocument: async () => null, putDocument: async () => {} },
+    controls() {}, finishStroke() {}, flush: async () => true, ensurePage: async () => {},
+    renderPage: options.render || (async () => {}), renderBookmarks() {}, renderEditions() {},
+    clamp: (value, low, high) => Math.min(high, Math.max(low, value)), status() {}, storageFailure() {}, showError() {}, t: value => value,
+    currentInfo: () => ctx.current, setTimeout, clearTimeout,
+  };
+  ctx.window = { addEventListener: subscribe('window'), history: { replaceState(_state, _title, url) { ctx.location.href = String(url); } } };
+  ctx.window.self = ctx.window; ctx.window.top = options.framed ? {} : ctx.window;
+  const emit = (target, name) => { for (const handler of listeners.get(target + ':' + name) || []) handler({}); };
+  ctx.signal = name => emit('window', name);
+  vm.createContext(ctx);
+  vm.runInContext(section('async function openBytes(', 'function showError(').replaceAll('import.meta.url', JSON.stringify(rootURL.href)) +
+    section("document.addEventListener('visibilitychange'", 'let resizeTimer;'), ctx);
+  return { ctx, messages, emit, focus: value => { focused = value; },
+    open: (publicId = 'published-a') => ctx.openBytes(new Uint8Array([37, 80, 68, 70]).buffer,
+      { publicId, title: 'Private title must never enter an alert message' }) };
+}
+
+test('only a successfully rendered visible public PDF acknowledges its public alert through the existing worker', async () => {
+  const rendered = deferred(), entered = deferred();
+  const qa = publicReadHarness({ render: async () => { entered.resolve(); await rendered.promise; } });
+  const opening = qa.open(); await entered.promise;
+  qa.emit('window', 'focus'); assert.deepEqual(qa.messages, [], 'pending rendering is not a read');
+  rendered.resolve(); assert.equal(await opening, true);
+  assert.deepEqual(qa.messages, [{ type: 'atr-reader-article-read', articleId: 'lecture:published-a',
+    url: 'https://example.test/AI_Tech_Review/archive/files/published-a.pdf' }]);
+});
+
+test('a public PDF first rendered while hidden waits for visibility and real focus', async () => {
+  const qa = publicReadHarness({ hidden: true, focused: false });
+  await qa.open(); assert.deepEqual(qa.messages, []);
+  qa.ctx.document.visibilityState = 'visible'; qa.emit('document', 'visibilitychange');
+  assert.deepEqual(qa.messages, []);
+  qa.focus(true); qa.emit('window', 'focus');
+  assert.equal(qa.messages.length, 1);
+});
+
+test('private, unknown, framed, mismatched and failed-render documents never acknowledge public alerts', async () => {
+  for (const options of [{ id: null }, { id: 'unknown' }, { framed: true },
+    { render: async () => { throw Error('render failed'); } }, { mismatch: true }]) {
+    const qa = publicReadHarness({ ...options, hidden: true });
+    await qa.open(Object.hasOwn(options, 'id') ? options.id : 'published-a');
+    if (options.mismatch) qa.ctx.location.href = qa.ctx.location.href.replace('id=published-a', 'id=other');
+    qa.ctx.document.visibilityState = 'visible'; qa.emit('document', 'visibilitychange'); qa.emit('window', 'focus');
+    assert.deepEqual(qa.messages, []);
+  }
+});
+
+test('existing registration lookup cannot send a late public read after document selection changes', async () => {
+  for (const change of ['selection', 'document', 'focus', 'visibility', 'query', 'catalog']) {
+    const lookup = deferred(); let lookups = 0;
+    const qa = publicReadHarness({ lookup: async worker => { lookups++; await lookup.promise; return { active: worker }; } });
+    await qa.open(); await new Promise(resolve => setImmediate(resolve));
+    assert.equal(lookups, 1);
+    if (change === 'selection') qa.ctx.documentOpenGeneration++;
+    if (change === 'document') qa.ctx.current = { ...qa.ctx.current };
+    if (change === 'focus') qa.focus(false);
+    if (change === 'visibility') qa.ctx.document.visibilityState = 'hidden';
+    if (change === 'query') qa.ctx.location.href = qa.ctx.location.href.replace('id=published-a', 'id=other');
+    if (change === 'catalog') qa.ctx.catalog = [];
+    lookup.resolve(); await new Promise(resolve => setImmediate(resolve));
+    assert.deepEqual(qa.messages, [], change + ' changed during the lookup');
+  }
+});
+
+test('a public read can reuse an already active registration without creating a new worker', async () => {
+  const qa = publicReadHarness({ lookup: async worker => ({ active: worker }) });
+  assert.equal(await qa.open(), true); await new Promise(resolve => setImmediate(resolve));
+  assert.equal(qa.messages.length, 1);
+});
+
+test('missing or failing existing workers cannot prevent a public PDF from opening', async () => {
+  for (const options of [{ noServiceWorker: true }, { lookup: async () => undefined },
+    { lookup: async () => { throw Error('unavailable'); } }, { postFails: true }]) {
+    const qa = publicReadHarness(options); assert.equal(await qa.open(), true);
+    await new Promise(resolve => setImmediate(resolve)); assert.deepEqual(qa.messages, []);
+  }
 });

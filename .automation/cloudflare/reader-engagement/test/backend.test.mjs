@@ -416,9 +416,10 @@ test('article and requested test deliveries encrypt matching legacy and declarat
     assert.equal(result.topic,event.id.replace(/[^A-Za-z0-9_-]/g,'').slice(0,32));
     assert.equal(result.encoding,'aes128gcm');
     assert.deepEqual(result.payload,{title:event.title,body:event.body,url,
-      articleId:event.article_id,tag:event.id,web_push:8030,
+      articleId:event.article_id,tag:event.id,web_push:8030,mutable:true,
       notification:{title:event.title,body:event.body,navigate:url,tag:event.id,
-        icon:`${ORIGIN}/AI_Tech_Review/assets/apple-touch-icon.png`}});
+        icon:`${ORIGIN}/AI_Tech_Review/assets/apple-touch-icon.png`,
+        data:{articleId:event.article_id}}});
     for(const field of ['app_badge','silent','renotify']) {
       assert.equal(Object.hasOwn(result.payload,field),false);
       assert.equal(Object.hasOwn(result.payload.notification,field),false);
@@ -457,6 +458,9 @@ test('maximum multilingual titles and longest review/PDF paths fit encrypted dec
       assert.equal(payload.notification.title,title);
       assert.equal(payload.url,`${ORIGIN}${event.path}`);
       assert.equal(payload.notification.navigate,payload.url);
+      assert.equal(payload.mutable,true,'declarative delivery must request the receipt/badge worker');
+      assert.deepEqual(payload.notification.data,{articleId:event.article_id},
+        'native PushEvent has no raw event.data; the proposed notification must carry the article identity');
       assert.equal(payload.articleId,event.article_id);
       sizes.push({plaintext:plaintext.length,encrypted:encrypted.length});
       return new Response(null,{status:201});
