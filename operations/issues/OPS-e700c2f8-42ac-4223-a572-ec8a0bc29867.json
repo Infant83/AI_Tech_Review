@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 3,
+  "record_version": 4,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-11T02:16:33Z",
+  "updated_at": "2026-11-11T10:15:43Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -49,7 +49,8 @@
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42723063677/attempts/2",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42325071858",
     "operations/runs/20261110T180335Z-758a3a2c-716d-4441-8acd-045c454574f5.md",
-    "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md"
+    "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
+    "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -94,38 +95,40 @@
       "최초 점검: 독립 조사 담당이 두 운영 기록의 원인·후속 성공·확인 범위·미확인 한계와 완료 상태를 대조해 통과",
       "2026-11-11 오전 회차: 기본 검색1통과 in:anywhere 포함7통의 차이를 대조하고 누락 영역까지 열람. 5개 run의 저장소·발신자·후속 성공 확인; 메일 상태 변경 없음",
       "기록 통합 직전 새 정상 편집 발행96acc04·run42943810872를 추가 확인함. 02:10:57UTC build진행 중으로 완료/실패 판정하지 않고 main stale guard를 보존해 운영 기록 push를 보류함",
-      "새 정상run42943810872 attempt1의 build·deploy·recovery-copy·notify-readers 모두 성공 확인(각02:12:21/02:12:48/02:13:28/02:14:10UTC). 02:15:30.348585Z 실제 HTTPS 릴리스200·96acc04, synced69/newArticles0/queuedEvents0/baselinefalse; replay 미출력은 추정하지 않음"
+      "새 정상run42943810872 attempt1의 build·deploy·recovery-copy·notify-readers 모두 성공 확인(각02:12:21/02:12:48/02:13:28/02:14:10UTC). 02:15:30.348585Z 실제 HTTPS 릴리스200·96acc04, synced69/newArticles0/queuedEvents0/baselinefalse; replay 미출력은 추정하지 않음",
+      "19시 회차: 동일7통·5run의 발신자/저장소/본문runURL·전페이지를 확인했고 새실패/미해결0. 최신정상run42986822618 불변·이후새run0; 실제HTTPS release/catalog200·ab575a6·69개 확인. 메일 상태 변경 없음"
     ],
     "evidence": [
       "operations/runs/20261110T014834Z-9780e750-a5eb-4369-b8cd-4e21cccaa646.md",
-      "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md"
+      "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
+      "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-11T02:01:03.483Z",
-    "last_successful_actions_check_at": "2026-11-11T02:15:09Z",
-    "mail_window": "2026-11-08 이후; 직전 성공 시각부터48시간 중첩; in:anywhere·읽지 않음 조건 없음; 7통·추가 페이지 없음",
-    "actions_window": "2026-11-08 UTC 이후31run 전체 대조는02:01:34Z 완료. 이후 새 정상run42943810872 성공을02:15:09Z 추가 확인; 합계32run 최종 상태 성공27·실패4·취소1·진행0. 전체 attempt 수는 이번 집계에 포함하지 않음",
+    "last_successful_mail_check_at": "2026-11-11T10:13:19.310Z",
+    "last_successful_actions_check_at": "2026-11-11T10:12:54Z",
+    "mail_window": "마지막 성공 시각에서48시간을 겹쳐 날짜로 내린2026-11-09 이후; in:anywhere·실제 GitHub발신자·저장소·읽지 않음 조건 없음; 7통·5run·추가페이지 없음",
+    "actions_window": "직전 전체/추가 대조와09:40 사용자 조사의42986822618 정상 확인을 재사용. 이번에는 같은run 및 이후 변화 범위1건 확인: attempt1/ab575a6/성공 불변·새run/진행0. 전체 과거 run/attempt 재집계 아님",
     "mail_notification_count": 7,
     "unique_mail_linked_runs": 5,
     "failed_attempt_count": null,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "96acc04cccab0b69581f3d67973f003daa7a9b9f",
-    "run_reference": "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
-    "supplemental_actions_check_at": "2026-11-11T02:15:09Z",
+    "live_source_revision": "ab575a676113f44d7ca3cc0bf7997a823f7a7412",
+    "run_reference": "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md",
+    "supplemental_actions_check_at": "2026-11-11T10:12:54Z",
     "supplemental_in_progress_runs": [],
     "last_full_actions_check_at": "2026-11-11T02:01:34Z",
     "supplemental_successful_runs": [
-      42943810872
+      42986822618
     ]
   },
   "observation": {
-    "status": "전체 보관 영역 검색·기존 Pages 회복 확인",
-    "period": "2026-11-11 한국시간 오전11시 근접 회차",
-    "result": "기본 검색에서 빠진 메일을 in:anywhere로 찾아7통·5개run을 후속 성공과 연결했다. 새 미해결 실패는0이다. 기존 제목 개정은 정상 DQB발행42937888682가 승인 입력을 그대로 실어 공개·네 작업·복구 사본·카탈로그 동기화가 성공했다. 기존 일감v3 회복 기록을 재사용한다. 기록 중 새 정상 편집 발행42943810872도 네 작업과 실제HTTPS96acc04가 성공했다. main stale guard를 보존해 완료까지 기록 push를 기다렸으며 별도 재실행·배포·푸시는 하지 않았다."
+    "status": "정기 중첩 메일·CI 변화 확인 정상; 신규 조치 없음",
+    "period": "2026-11-11 19시 회차; 메일10:13:19.310Z/API10:12:54Z/HTTPS10:13:26.572210Z",
+    "result": "같은 실패 메일7통은 기존 후속 성공과 연결된다. 새 미해결0이며 최신정상42986822618 이후 새 실행이 없다. 전체 과거 이력 재감수·재실행·메일 상태 변경·별도 통지는 하지 않았다."
   },
   "recovery": {
     "plan_reference": "문서 변경은 Git의 이전 해당 경로로 복구하고 예약 지침은 지원 도구로 해당 추가 문단만 되돌린다. 기존 시각·대상·권한은 유지한다.",
