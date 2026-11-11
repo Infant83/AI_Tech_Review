@@ -100,6 +100,71 @@ async function until(predicate) {
   assert.fail('asynchronous operation did not reach its expected stage');
 }
 
+function heldDatabaseOpen(factory) {
+  const opened=deferred(),release=deferred();
+  return {
+    opened:opened.promise,release:()=>release.resolve(),
+    indexedDB:{open(...args){
+      const request=factory.open(...args),proxy={};
+      for(const name of ['result','error'])Object.defineProperty(proxy,name,{get:()=>request[name]});
+      for(const name of ['onupgradeneeded','onerror','onblocked'])Object.defineProperty(proxy,name,{set:handler=>{request[name]=handler;}});
+      Object.defineProperty(proxy,'onsuccess',{set:handler=>{request.onsuccess=()=>{
+        opened.resolve();release.promise.then(()=>handler());
+      };}});
+      return proxy;
+    }},
+  };
+}
+
+test('rejected or throwing visible notifications wait for delayed history before preserving the original error',async t=>{
+  for(const mode of ['rejected','throws'])await t.test(mode,async()=>{
+    const factory=new IDBFactory(),storage=heldDatabaseOpen(factory),failure=new Error('display denied');
+    let failDisplay=true,settled=false,result;
+    const h=harness({factory,indexedDB:storage.indexedDB,showNotification:()=>{
+      if(!failDisplay)return Promise.resolve();
+      if(mode==='throws')throw failure;
+      return Promise.reject(failure);
+    }});
+    const payload=article('display-'+mode);
+    const pending=h.push(payload).then(()=>{settled=true;return {};},error=>{settled=true;return {error};});
+    assert.equal(h.shown.length,1,'display must start immediately, before storage');
+    try {
+      await storage.opened;
+      await new Promise(resolve=>setImmediate(resolve));
+      assert.equal(settled,false,'waitUntil must remain pending until history finishes');
+    } finally {storage.release();result=await pending;}
+    assert.equal(result.error,failure,'the original display error must reach waitUntil');
+    const first=await stored(factory);
+    assert.equal(first.count,1);
+    assert.deepEqual(first.notifications.map(value=>value.id),[payload.articleId]);
+    failDisplay=false;
+    await h.push(payload);
+    const repeated=await stored(factory);
+    assert.deepEqual(repeated,first,'redelivery must not duplicate history or the badge count');
+    assert.equal(h.shown.length,2);
+    assert.equal(h.shown[1].settings.tag,payload.tag);
+    assert.equal(h.shown[1].settings.renotify,false);
+  });
+});
+
+test('successful display waits for delayed history and storage failure cannot replace a display error',async()=>{
+  const factory=new IDBFactory(),storage=heldDatabaseOpen(factory);
+  const h=harness({factory,indexedDB:storage.indexedDB});
+  let settled=false;
+  const pending=h.push(article('display-success')).then(()=>{settled=true;});
+  assert.equal(h.shown.length,1);
+  try {
+    await storage.opened;
+    await new Promise(resolve=>setImmediate(resolve));
+    assert.equal(settled,false);
+  } finally {storage.release();await pending;}
+  assert.equal((await stored(factory)).notifications[0].id,'display-success');
+  const failure=new Error('display rejected');
+  const broken=harness({indexedDB:{open(){throw Error('storage denied');}},showNotification:()=>Promise.reject(failure)});
+  await assert.rejects(broken.push(article('both-fail')),error=>error===failure);
+  assert.equal(broken.shown.length,1);
+});
+
 test('new article push stores a bounded public record and preserves visible notification/icon',async()=>{
   const h=harness();
   const payload=article('first',{title:'<b>Plain title</b>\nnext',endpoint:'https://private.invalid',keys:{auth:'not-stored'},token:'not-stored'});

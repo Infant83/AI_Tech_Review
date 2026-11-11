@@ -290,7 +290,11 @@ self.addEventListener("push", function (event) {
   })); } catch (error) { visible = Promise.reject(error); }
   const article = readerArticle(payload, notification.title, rawURL);
   const recorded = article ? readerRememberArticle(article).catch(function () {}) : Promise.resolve();
-  event.waitUntil(Promise.all([visible, recorded]));
+  // Keep history alive even if display fails first, then preserve that failure.
+  event.waitUntil(visible.then(function () { return recorded; }, async function (error) {
+    await recorded;
+    throw error;
+  }));
 });
 
 self.addEventListener("notificationclick", function (event) {
