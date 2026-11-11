@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 8,
+  "record_version": 9,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-11T12:25:49Z",
+  "updated_at": "2026-11-11T22:49:53Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -204,5 +204,13 @@
     "execution_reference": null,
     "result": "Pages/Worker배포와읽기운영검증완료. 실제롤백·개인DB복원·구독초기화·테스트푸시·과거재발송없음"
   },
-  "next_action": "기존앱을정상새로고침해새JS/SW를적용한뒤최근L006목록과홈/설정진입후배지유지를확인한다. OS배지허용설정은별도확인하되추가승인조건으로삼지않는다. 다음정상신규발행에서배너→목록→배지유지→해당글/PDF공유리더열람1건차감까지관찰한다. 닫힌과거알림을가짜수신기록으로백필하거나과거재발송·재구독·데이터삭제로우회하지않는다."
+  "next_action": "기존앱을정상새로고침해새JS/SW를적용한뒤최근L006목록과홈/설정진입후배지유지를확인한다. OS배지허용설정은별도확인하되추가승인조건으로삼지않는다. 다음정상신규발행에서배너→목록→배지유지→해당글/PDF공유리더열람1건차감까지관찰한다. 닫힌과거알림을가짜수신기록으로백필하거나과거재발송·재구독·데이터삭제로우회하지않는다.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "timezone": "Asia/Seoul",
+    "state": "planned_not_proof_of_execution",
+    "next_scheduled_step_at": "2026-11-12T19:00:00+09:00",
+    "next_review_at": "2026-11-13T07:00:00+09:00",
+    "scheduled_step": "새 정상 발행·실기기 관찰 근거 검토"
+  }
 }

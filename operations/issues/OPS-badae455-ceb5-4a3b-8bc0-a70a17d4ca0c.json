@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
   "uuid": "badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
-  "record_version": 1,
+  "record_version": 2,
   "title": "렉처 알림이 원본 PDF 뷰어로 열려 ATRL 복귀 경로가 없는 문제",
   "type": "notification_navigation",
   "created_at": "2026-11-11T14:40:55Z",
-  "updated_at": "2026-11-11T15:00:16Z",
+  "updated_at": "2026-11-11T22:49:53Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -122,5 +122,13 @@
     "execution_reference": null,
     "result": "Pages 복구 사본 생성 성공; 실제 롤백·개인 DB 복원은 미실행"
   },
-  "next_action": "ATRL 앱을 정상 새로고침해 새 SW/클라이언트를 적용한 뒤 다음 정상 렉처 알림에서 리더 진입·렉처 목록·ATRL 홈 복귀·수신 이력·해당 글 읽음 차감을 관찰한다. 이미 열린 OS PDF 뷰어와 매우 오래된 ID 없는 알림의 한계를 유지한다."
+  "next_action": "ATRL 앱을 정상 새로고침해 새 SW/클라이언트를 적용한 뒤 다음 정상 렉처 알림에서 리더 진입·렉처 목록·ATRL 홈 복귀·수신 이력·해당 글 읽음 차감을 관찰한다. 이미 열린 OS PDF 뷰어와 매우 오래된 ID 없는 알림의 한계를 유지한다.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "timezone": "Asia/Seoul",
+    "state": "planned_not_proof_of_execution",
+    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
+    "next_review_at": "2026-11-16T19:00:00+09:00",
+    "scheduled_step": "정상 렉처 알림의 사이트 복귀 근거 검토"
+  }
 }
