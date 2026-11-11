@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 5,
+  "record_version": 6,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-11T11:39:47Z",
+  "updated_at": "2026-11-11T12:25:49Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -51,7 +51,8 @@
     "operations/runs/20261110T180335Z-758a3a2c-716d-4441-8acd-045c454574f5.md",
     "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
     "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md",
-    "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md"
+    "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
+    "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -98,13 +99,15 @@
       "기록 통합 직전 새 정상 편집 발행96acc04·run42943810872를 추가 확인함. 02:10:57UTC build진행 중으로 완료/실패 판정하지 않고 main stale guard를 보존해 운영 기록 push를 보류함",
       "새 정상run42943810872 attempt1의 build·deploy·recovery-copy·notify-readers 모두 성공 확인(각02:12:21/02:12:48/02:13:28/02:14:10UTC). 02:15:30.348585Z 실제 HTTPS 릴리스200·96acc04, synced69/newArticles0/queuedEvents0/baselinefalse; replay 미출력은 추정하지 않음",
       "19시 회차: 동일7통·5run의 발신자/저장소/본문runURL·전페이지를 확인했고 새실패/미해결0. 최신정상run42986822618 불변·이후새run0; 실제HTTPS release/catalog200·ab575a6·69개 확인. 메일 상태 변경 없음",
-      "이후 변화만 추가 확인: L00643010516180 attempt1의 한 개 course-preservation 단위 검사 실패는 게시 담당ff02 수정 후43010926852 네 작업 성공·HTTPS ff02·정상 신규 알림으로 연결됐다. SW 보완43012707656도 네 작업 성공·HTTPS089871a·새 이벤트0이다. 메일은 다시 조회하지 않았고 전체 과거 실행 재감수도 하지 않음"
+      "이후 변화만 추가 확인: L00643010516180 attempt1의 한 개 course-preservation 단위 검사 실패는 게시 담당ff02 수정 후43010926852 네 작업 성공·HTTPS ff02·정상 신규 알림으로 연결됐다. SW 보완43012707656도 네 작업 성공·HTTPS089871a·새 이벤트0이다. 메일은 다시 조회하지 않았고 전체 과거 실행 재감수도 하지 않음",
+      "추가알림UX43018682201 attempt1/head1f1의네작업모두성공. lastAPI12:21:06Z·실제HTTPS12:21:53Z 1f1/70개/L006필드·PDF보존·synced70/newArticles0/queuedEvents0/baselinefalse. 메일재조회/전체Actions재집계/재실행없음"
     ],
     "evidence": [
       "operations/runs/20261110T014834Z-9780e750-a5eb-4369-b8cd-4e21cccaa646.md",
       "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
       "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md",
-      "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md"
+      "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
+      "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
@@ -112,27 +115,26 @@
   },
   "monitoring_baseline": {
     "last_successful_mail_check_at": "2026-11-11T10:13:19.310Z",
-    "last_successful_actions_check_at": "2026-11-11T11:37:47Z",
+    "last_successful_actions_check_at": "2026-11-11T12:21:06Z",
     "mail_window": "마지막 성공 시각에서48시간을 겹쳐 날짜로 내린2026-11-09 이후; in:anywhere·실제 GitHub발신자·저장소·읽지 않음 조건 없음; 7통·5run·추가페이지 없음",
-    "actions_window": "10:12:54Z 이후 알려진 세 실행의 변화만 추가 확인. L00643010516180 실패를 담당 수정·43010926852 성공으로 연결하고 SW43012707656 완료 확인. 전체 과거 실행 재집계 아님; last_full_actions_check_at 유지",
+    "actions_window": "직전변화확인이후새알림UX43018682201만관찰,attempt1네작업성공·실제HTTPS보존확인. 전체과거이력재집계와메일재조회아님; last_full_actions_check_at 유지",
     "mail_notification_count": 7,
     "unique_mail_linked_runs": 5,
     "failed_attempt_count": null,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "089871a8aae563a1a1a40d5e79e48d23ab342351",
-    "run_reference": "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
-    "supplemental_actions_check_at": "2026-11-11T11:37:47Z",
+    "live_source_revision": "1f1b8e7649f5688683ce035808822b23cf19e08c",
+    "run_reference": "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
+    "supplemental_actions_check_at": "2026-11-11T12:21:06Z",
     "supplemental_in_progress_runs": [],
     "last_full_actions_check_at": "2026-11-11T02:01:34Z",
     "supplemental_successful_runs": [
-      43010926852,
-      43012707656
+      43018682201
     ]
   },
   "observation": {
-    "status": "새 CI 실패는 담당 수정·정상 후속 발행으로 연결; 별도 메일 재조회 없음",
-    "period": "추가 Actions11:37:47Z/HTTPS11:38:38Z; 메일 마지막 성공10:13:19.310Z 유지",
-    "result": "한 단위 검사의 옛 고정 개수 기대치를 게시 담당이 보완했고 정상 L006 발행과 실제 새 알림까지 이어졌다. 이후 SW 보완 네 작업도 성공했다. 새 미해결 실행을 발견하지 않았으며 메일·전체 이력 점검을 수행한 것으로 확대하지 않는다."
+    "status": "추가유지보수CI정상; 메일마지막성공시각유지",
+    "period": "Actions12:21:06Z/HTTPS12:21:53Z; 메일10:13:19.310Z유지",
+    "result": "알림UX변경의정상CI·공개보존·새이벤트0을추가연결했다. 메일을새로확인하거나전체과거실행을감수한것으로기록하지않는다."
   },
   "recovery": {
     "plan_reference": "문서 변경은 Git의 이전 해당 경로로 복구하고 예약 지침은 지원 도구로 해당 추가 문단만 되돌린다. 기존 시각·대상·권한은 유지한다.",
