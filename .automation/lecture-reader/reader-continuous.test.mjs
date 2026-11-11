@@ -132,14 +132,17 @@ test('eviction waits for a cancelled PDF render before cleaning its page resourc
 });
 
 function gestures() {
- let now=1000;const zooms=[],view={number:2,ready:true},fakeDate={now:()=>now};
+ let now=1000;const zooms=[],view={number:2,ready:true},fakeDate={now:()=>now},scroll=[0,0,0,0,0,0],listeners={};
+ const area={addEventListener:(name,handler)=>{listeners[name]=handler;}};
+ const visual={offsetLeft:0,offsetTop:0,addEventListener:(name,handler)=>{listeners['visual:'+name]=handler;}};
  const c=vm.createContext({Date:fakeDate,Math,Set,readerTouchPointers:new Set(),readerGestureCandidate:null,readerLastGestureTap:null,readerNonMouseAt:0,
-  current:{fingerprint:'doc'},documentOpenGeneration:1,active:null,busy:false,tool:'pen',$:()=>({checked:false}),readerGestureView:()=>view,
+  current:{fingerprint:'doc'},documentOpenGeneration:1,active:null,busy:false,tool:'pen',$:id=>id==='page-area'?area:{checked:false},readerGestureView:()=>view,
+  readerScrollOffsets:()=>[...scroll],window:{visualViewport:visual,addEventListener:(name,handler)=>{listeners['window:'+name]=handler;}},scheduleReaderVisible(){},scheduleReaderResize(){},
   toggleReaderZoom:(x,y,n)=>zooms.push([x,y,n]),resetReaderTap(){c.readerGestureCandidate=null;c.readerLastGestureTap=null;}});
- const code=section('function readerTapEligible(', 'function readerPointAnchor(');vm.runInContext(code,c);
+ const code=section('function resetReaderTap(', 'function readerViewCurrent(')+section('function readerTapEligible(', 'function readerPointAnchor(')+section('function initializeReaderScrolling(', 'function readerFocusMode(');vm.runInContext(code,c);c.initializeReaderScrolling();
  const event=(type,id=1,extra={})=>({type,pointerId:id,pointerType:'touch',clientX:100,clientY:120,preventDefault(){},...extra});
  const tap=(id=1)=>{c.captureReaderTap(event('pointerdown',id));now+=40;c.finishReaderTap(event('pointerup',id));c.finishReaderTap(event('lostpointercapture',id));now+=100;};
- return {c,zooms,event,tap,advance:n=>{now+=n;}};
+ return {c,zooms,event,tap,advance:n=>{now+=n;},scrollTo:n=>{scroll[1]=n;},visualPan:n=>{visual.offsetTop=n;},scrollEvent:()=>listeners.scroll(),visualScrollEvent:()=>listeners['visual:scroll']()};
 }
 
 test('a real touch double-tap survives implicit lostpointercapture and zooms exactly once',()=>{
@@ -257,4 +260,17 @@ test('an unchanged-aspect adjacent preview cannot leave an anchor which freezes 
  assert.equal(h.ctx.readerFocusAnchor,null);
  const third=h.ctx.views.get(3);h.area.scrollTop=third.sheet.getBoundingClientRect().top-48+100;
  h.ctx.readerVisibleChanged();await h.settle();assert.equal(h.ctx.pageNumber,3);
+});
+
+test('a delayed scroll event with already-reflected offsets cannot erase the first tap',()=>{
+ const h=gestures();h.scrollTo(17);h.tap(1);h.scrollEvent();h.tap(2);
+ assert.deepEqual(h.zooms,[[100,120,2]]);
+});
+
+test('actual layout or visual viewport movement between taps still cancels double-tap',()=>{
+ for(const visual of [false,true]) {
+  const h=gestures();h.tap(1);
+  if(visual){h.visualPan(.5);h.visualScrollEvent();}else{h.scrollTo(.5);h.scrollEvent();}
+  h.tap(2);assert.deepEqual(h.zooms,[]);
+ }
 });

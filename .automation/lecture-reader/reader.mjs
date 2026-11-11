@@ -323,6 +323,18 @@ function readerBitmapPixels() {
   return total;
 }
 function resetReaderTap() { readerLastGestureTap = null; readerGestureCandidate = null; }
+function readerGestureOffsets() {
+  return [...readerScrollOffsets(), window.visualViewport?.offsetLeft || 0, window.visualViewport?.offsetTop || 0];
+}
+function readerGestureScrollMatches(tap) {
+  return !!tap && Array.isArray(tap.scroll) && readerGestureOffsets().every((value, index) => value === tap.scroll[index]);
+}
+function readerGestureScrolled() {
+  // A queued scroll event can arrive after the first tap even though the
+  // viewport had already reached those offsets before that tap began.
+  if ((readerGestureCandidate && !readerGestureScrollMatches(readerGestureCandidate)) ||
+      (readerLastGestureTap && !readerGestureScrollMatches(readerLastGestureTap))) resetReaderTap();
+}
 function readerViewCurrent(view, epoch = readerViewEpoch, owner = current, documentPDF = pdf) {
   return view && readerViews.get(view.number) === view && readerViewsOwner === owner && current === owner &&
     readerViewPDF === documentPDF && pdf === documentPDF && epoch === readerViewEpoch;
@@ -523,7 +535,8 @@ function captureReaderTap(event) {
   if (readerTouchPointers.size !== 1 || !readerTapEligible(event)) { resetReaderTap(); return; }
   const view = readerGestureView(event);
   if (!view?.ready || active || busy) { resetReaderTap(); return; }
-  readerGestureCandidate = { id: event.pointerId, x: event.clientX, y: event.clientY, at: Date.now(), number: view.number, owner: current, generation: documentOpenGeneration };
+  if (readerLastGestureTap && !readerGestureScrollMatches(readerLastGestureTap)) resetReaderTap();
+  readerGestureCandidate = { id: event.pointerId, x: event.clientX, y: event.clientY, at: Date.now(), number: view.number, owner: current, generation: documentOpenGeneration, scroll: readerGestureOffsets() };
 }
 function moveReaderTap(event) {
   const candidate = readerGestureCandidate;
@@ -536,12 +549,12 @@ function finishReaderTap(event) {
   if (event.type === 'lostpointercapture' && !candidate) return;
   readerGestureCandidate = null;
   if (event.type !== 'pointerup' || !candidate || candidate.id !== event.pointerId || readerTouchPointers.size || !readerTapEligible(event) ||
-      candidate.owner !== current || candidate.generation !== documentOpenGeneration || Date.now() - candidate.at > 250 ||
+      candidate.owner !== current || candidate.generation !== documentOpenGeneration || !readerGestureScrollMatches(candidate) || Date.now() - candidate.at > 250 ||
       Math.hypot(event.clientX - candidate.x, event.clientY - candidate.y) > 10) { resetReaderTap(); return; }
   const last = readerLastGestureTap, now = Date.now();
   if (last && last.number === candidate.number && last.owner === current && now - last.at <= 320 && Math.hypot(event.clientX - last.x, event.clientY - last.y) <= 28) {
     resetReaderTap(); event.preventDefault(); toggleReaderZoom(event.clientX, event.clientY, candidate.number);
-  } else readerLastGestureTap = { number: candidate.number, owner: current, at: now, x: event.clientX, y: event.clientY };
+  } else readerLastGestureTap = { number: candidate.number, owner: current, at: now, x: event.clientX, y: event.clientY, scroll: candidate.scroll };
 }
 function readerPointAnchor(view, clientX, clientY) {
   const viewport = readerVisibleViewport(), rect = view?.sheet.getBoundingClientRect();
@@ -559,7 +572,7 @@ function toggleReaderZoom(clientX, clientY, number = pageNumber) {
 }
 function initializeReaderScrolling() {
   const area = $('page-area');
-  const scrolled = () => { resetReaderTap(); scheduleReaderVisible(); };
+  const scrolled = () => { readerGestureScrolled(); scheduleReaderVisible(); };
   area.addEventListener('scroll', scrolled, { passive: true }); window.addEventListener('scroll', scrolled, { passive: true });
   area.addEventListener('pointerdown', captureReaderTap, { capture: true, passive: true });
   area.addEventListener('pointermove', moveReaderTap, { capture: true, passive: true });
