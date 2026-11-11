@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "id": "OPS-badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
+  "uuid": "badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
+  "record_version": 1,
+  "title": "렉처 알림이 원본 PDF 뷰어로 열려 ATRL 복귀 경로가 없는 문제",
+  "type": "notification_navigation",
+  "created_at": "2026-11-11T14:40:55Z",
+  "updated_at": "2026-11-11T15:00:16Z",
+  "status": "observing",
+  "priority": "P2",
+  "source": {
+    "kind": "user_feedback",
+    "reference": "SITE_OPERATIONS.md",
+    "summary": "아이폰 홈 화면 앱에서 렉처 알림을 누른 뒤 사이트 메뉴가 없는 PDF 화면에 머물러 ATRL로 돌아가기 어렵다는 제보. 제공 화면에서는 L001 PDF 내용과 사이트 복귀 도구 부재를 확인했다."
+  },
+  "affected": {
+    "publication_ids": [
+      "lecture:2026-11-01-classiq-qae-l001-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/lectures/reader/",
+      "https://infant83.io/AI_Tech_Review/archive/files/2026-11-01-classiq-qae-l001-notes-ko.pdf"
+    ],
+    "source_paths": [
+      ".automation/cloudflare/reader-engagement/src/worker.js",
+      ".automation/reader-engagement/frontend/sw.js",
+      ".automation/reader-engagement/frontend/reader-engagement.js"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "239788aeb094fcce2bde0f67164e5514468895f4",
+    "environment": {
+      "device": "iPhone",
+      "operating_system": null,
+      "browser": null,
+      "display_mode": "사용자 홈 화면 웹 앱; 정확한 OS·설치 SW 버전은 미확인"
+    },
+    "steps": [
+      "PDF만 있는 렉처의 알림 카탈로그는 canonical archive/files PDF를 사용한다.",
+      "서버 native navigate·SW 표시/클릭·최근 알림 링크가 그 PDF 주소를 그대로 사용함을 확인했다."
+    ],
+    "expected": "알림에서 해당 PDF를 읽고 기존 사이트 도구로 렉처 목록과 ATRL 홈으로 돌아갈 수 있다.",
+    "actual": "원본 PDF 직접 이동 경로에서는 사이트의 복귀 도구를 실행할 수 없다."
+  },
+  "evidence": [
+    "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43042124533"
+  ],
+  "limitations": [
+    "실제 아이폰 PWA의 새 SW 설치와 OS 알림 클릭은 미시험이다. Chrome 화면 크기 시험과 구분한다.",
+    "이미 OS 원본 PDF 뷰어로 열린 화면과 article ID가 없는 매우 오래된 알림의 소급 전환은 보장하지 않는다.",
+    "원본 PDF의 직접 주소·다운로드는 유지한다. PDF 본문에 복귀 버튼을 삽입하거나 fetch를 가로채지 않는다."
+  ],
+  "policy_decision": {
+    "state": "canonical 식별정보를 보존한 알림 이동 경로 수정",
+    "rationale": "과학 PDF·글 ID·카탈로그·이벤트·필기 원본과 읽음 ACK를 보존하고, ID와 파일명이 일치하는 렉처만 기존 공유 리더로 연결한다. 기존 웹 렉처·리뷰·테스트 알림 경로는 유지한다.",
+    "related_issues": [
+      "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
+      "OPS-716b0f60-ba8e-4c17-b941-bc34b5620b33"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "실제 PWA에서 새 알림·최근 목록·복귀·읽음 연계의 회귀가 확인될 때"
+  },
+  "authority": {
+    "basis": "현재 사용자 확인 요청과 기존 운영팀의 합의된 기술 개선·감수·검증·배포 권한",
+    "current_scope": "기존 Pages·Worker의 알림 URL 처리와 회귀 검사. 문서/필기/구독/계정/비밀값/스키마/이벤트 정책/권한/과금은 유지한다.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "신규 native 기본 알림과 SW 표시/클릭·기존 ID가 있는 PDF 알림·최근 목록이 사이트 리더를 연다.",
+    "reader→canonical PDF 복원은 단일 일치 ID·지원 문자셋·origin/scope를 검증하고 history/복구/읽음 ACK를 유지한다.",
+    "읽기 성공 뒤 해당 ID만 차감하고 홈/설정은 기존 미열람을 유지한다.",
+    "기존 웹 렉처·리뷰·ID 없는 구형 알림·외부 주소 차단과 최대 암호문 한도를 보존한다.",
+    "리더에서 렉처 목록과 ATRL 홈으로 실제 이동하며 원본 PDF·등록·동시 게시를 보존한다."
+  ],
+  "change": {
+    "commits": [
+      "f5463d0a45474d776eb0ff554be7eca23cd64f7c",
+      "c898550c00826f3a1db39977699f592352920381"
+    ],
+    "candidate_reference": "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43042124533"
+  },
+  "verification": {
+    "status": "Pages 네 작업·Worker·실제 HTTPS·Chrome 복귀 동선 검증 통과; 실제 아이폰 PWA 관찰 유지",
+    "checks": [
+      "backend check 및 전달/복호화38/38통과(실제 공급자 호출 없음)",
+      "frontend187개 중179통과·브라우저전용8생략·실패0, 독립 재실행",
+      "기존 등록2562·PDF217개·57리뷰130아카이브70출판 보존; reader/저장/잉크/클라우드 bytes 불변",
+      "214개 최종 출판 입력 불변; 최초213개불변+client정확해시 선언1개갱신",
+      "후보release ok/blockers0·payload ok/failures0·seal후2577파일70글검증",
+      "로컬 Chrome390×844 최근 알림→25쪽L001리더→렉처목록→ATRL홈 이동 확인",
+      "Chrome 844x390 EN / 1280x800 KO: fullscreen exit, lecture list and ATRL home; canonical receipt retained, render ACK 1 to 0",
+      "Pages 43042124533 attempt1: 4 jobs success; synced70/newArticles0/queuedEvents0/baselinefalse",
+      "Public c898550/catalog70/L001-L006/SW/client/reader/L001 PDF verified independently",
+      "Public Chrome390x844: 25-page L001 rendered, lecture list and ATRL home reached; API mocked and writes blocked",
+      "Worker adopt-reader-return-c898550c0082 active100%; 7 bindings/runtime/handlers/named_handlers unchanged",
+      "API config200/pushEnabledtrue/nonempty public VAPID key unchanged; anonymous me200/accountnull/notebooks401"
+    ],
+    "evidence": [
+      "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md"
+    ],
+    "remaining_limits": [
+      "실제 아이폰 PWA의 새 SW 설치와 OS 알림 클릭은 미시험이다. Chrome 화면 크기 시험과 구분한다.",
+      "이미 OS 원본 PDF 뷰어로 열린 화면과 article ID가 없는 매우 오래된 알림의 소급 전환은 보장하지 않는다.",
+      "원본 PDF의 직접 주소·다운로드는 유지한다. PDF 본문에 복귀 버튼을 삽입하거나 fetch를 가로채지 않는다."
+    ]
+  },
+  "observation": {
+    "status": "공개 사이트·서버 반영과 Chrome 복귀 동선 정상; 실제 아이폰 알림은 관찰 중",
+    "period": {
+      "pages_deployed_at": "2026-11-11T14:52:59Z",
+      "worker_deployed_at": "2026-11-11T14:56:48Z",
+      "metadata_checked_at": "2026-11-11T14:58:22Z"
+    },
+    "result": "사이트 리더에서 복귀 경로를 제공하고 canonical 이력·읽음 ACK·PDF bytes를 보존한다. 이미 열린 OS 뷰어와 매우 오래된 ID 없는 알림의 소급 변경은 보장하지 않는다."
+  },
+  "recovery": {
+    "plan_reference": "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md#복구와-인계",
+    "execution_reference": null,
+    "result": "Pages 복구 사본 생성 성공; 실제 롤백·개인 DB 복원은 미실행"
+  },
+  "next_action": "ATRL 앱을 정상 새로고침해 새 SW/클라이언트를 적용한 뒤 다음 정상 렉처 알림에서 리더 진입·렉처 목록·ATRL 홈 복귀·수신 이력·해당 글 읽음 차감을 관찰한다. 이미 열린 OS PDF 뷰어와 매우 오래된 ID 없는 알림의 한계를 유지한다."
+}
