@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-02057b16-cceb-4569-b55a-e245f7c703b3",
   "uuid": "02057b16-cceb-4569-b55a-e245f7c703b3",
-  "record_version": 2,
+  "record_version": 3,
   "title": "무변경 후보 생성이 기존 출판 변경 선언의 개정 이력을 덮어씀",
   "type": "출판 후보 생성·변경 이력 보존 결함",
   "created_at": "2026-11-10T12:37:38Z",
-  "updated_at": "2026-11-10T12:39:45Z",
-  "status": "planned",
+  "updated_at": "2026-11-11T02:06:56Z",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "신규 리뷰 게시 후보 생성 중 발견",
@@ -60,26 +60,31 @@
       "kind": "기존 결함과 구분",
       "reference": "operations/issues/OPS-58a4237a-48d8-40da-af30-4b0edc80c943.json",
       "finding": "기존 resolved 일감은 첫 CI에서 구 seed와 구 baseline이 일치해 검수 개정판을 생략하던 결함이다. 이번 일감은 실제 콘텐츠가 동일한 후보 생성에서 출판 변경 선언의 이력을 덮어쓰는 별도 문제다."
+    },
+    {
+      "kind": "구현·독립 검증·기술 도구 통합",
+      "reference": "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md",
+      "finding": "현재 출력과 기존 after 해시가 일치하는 무변경 글만 선언 쓰기를 생략한다. 수정 전18개 중 새 이력 보존 검사만 실패했고 수정 후18개 및 관련36개 검사가 통과했다."
     }
   ],
   "limitations": [
-    "이번 기록은 통합 담당이 생성한 후보 v2·v3의 관찰과 현재 diff·코드 점검을 연결한다. 기록 담당이 후보를 재생성하거나 플랫폼 코드를 수정하지 않았다.",
+    "초기 기록은 통합 담당의 실제 후보 관찰이었다. 이번 회차는 임시 fixture에서 재현·수정·독립 경계 검사를 수행했으며 전체 실제 사이트 후보를 추가 생성하지 않았다.",
     "영향 0은 이번 후보의 기존 공개 본문·PDF와 실제 baseline의 비교 범위다. 모든 과거 선언·다른 게시 경로를 전수 조사한 결론은 아니다.",
-    "기존 이력은 Git HEAD에 남아 있어 복원 가능하다. 통합 담당의 복원 계획과 실제 복원 완료를 구분한다.",
+    "실제 기존 선언은 이전 통합 담당이 복원한 상태를 유지했다. 이번에는 운영 선언을 수정하거나 복구하지 않았고, 다음 정상 게시의 실제 사용은 관찰 전이다.",
     "브라우저·실제 기기 동작은 이 운영 일감의 검증 대상이 아니다."
   ],
   "policy_decision": {
-    "state": "후속 회차의 최소 수정 과제로 채택",
-    "rationale": "반복 후보 생성 때 개정 이력의 수동 복원이 필요한 P2 운영 결함이다. 기존 콘텐츠는 보존되어 있으므로 편집부(AEDAUT)의 Qunova 일반 게시를 중단하거나 새 승인 조건을 만들지 않는다. 운영팀(ADOPT)이 다음 회차에 원인·회귀 범위를 확인하고 최소 수정한다.",
+    "state": "최소 수정·독립 검증·도구 소스 통합 완료; 정상 게시 사용 관찰",
+    "rationale": "유효한 기존 after 결속이 현재 검수 출력과 일치할 때에만 원본 선언 bytes를 보존한다. 낡은 결속·선언 없음은 기존 no-op 생성 경로, 실제 개정은 정확한 baseline before/candidate after 경로를 유지한다. 추가 배포·테스트 푸시나 게시 승인 단계는 만들지 않는다.",
     "related_issues": [
       "OPS-58a4237a-48d8-40da-af30-4b0edc80c943"
     ],
     "duplicate_of": null,
-    "revisit_when": "운영팀(ADOPT)의 다음 개발·검증 회차"
+    "revisit_when": "다음 정상 후보 생성·CI 또는 이력 축소 재발이 관찰될 때"
   },
   "authority": {
     "basis": "기존 지속 운영 승인과 이번 게시 중 발견한 기술 결함의 기록·인계 범위",
-    "current_scope": "이번 작업은 새 일감 기록만 추가한다. 코드·원고·기존 선언·기존 일감은 수정하지 않는다. 후속 구현은 운영팀(ADOPT)의 기존 격리 구현·독립 검증 절차를 따른다.",
+    "current_scope": "기존 ADOPT 지속 운영 권한으로 후보 생성기의 최소 수정·격리 재현·독립 검증·공용 소스 통합. 과학 원고·출판 요청·운영 선언·실제 공개 파일·배포 경로는 변경하지 않는다.",
     "additional_decision": null
   },
   "owner_role": "운영팀(ADOPT) 출판 기술 정합성·개발·독립 기술 검증",
@@ -91,37 +96,46 @@
     "이번 Qunova 후보의 기존 본문·PDF 보존과 기존 선언의 Git HEAD 복원 결과를 통합 담당이 확인한다. 플랫폼 수정·배포·운영 확인은 후속 회차에서 각각 사실대로 기록한다."
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
-    "deployment_reference": null
+    "commits": [
+      "86b6cce9961458acaef3e08f5e4269cbf5ce02c6"
+    ],
+    "candidate_reference": "tests/test_prepare_publication.py",
+    "deployment_reference": "Git main의 게시 도구 소스로 통합함. 정적 사이트 재배포·CI 재실행은 하지 않음."
   },
   "verification": {
-    "status": "증상·관련 분기 점검 완료; 수정·회귀 검증 미실시",
+    "status": "수정 전 실패 재현·수정 후54개 검사·독립 감수 및 Git main 통합 통과; 다음 정상 게시 관찰",
     "checks": [
-      "현재 Git diff의 4개 실제 개정 항목 → 2개 HTML 무변경 항목 대조",
-      "selected 구성·무변경 HTML 결속·선언 교체 코드 분기 읽기 전용 점검",
-      "관련 resolved OPS-58a4237a-48d8-40da-af30-4b0edc80c943와 문제 범위 구분",
-      "통합 담당: 최종 후보 생성 후 atelier 기존 변경 선언을 HEAD 원본 바이트로 복원하고 일치 확인"
+      "초기 인계: 현재 Git diff의 4개 실제 개정 항목 → 2개 HTML 무변경 항목 대조",
+      "초기 인계: selected 구성·무변경 HTML 결속·선언 교체 코드 분기 읽기 전용 점검",
+      "초기 인계: 관련 resolved OPS-58a4237a-48d8-40da-af30-4b0edc80c943와 문제 범위 구분",
+      "초기 인계: 통합 담당: 최종 후보 생성 후 atelier 기존 변경 선언을 HEAD 원본 바이트로 복원하고 일치 확인",
+      "수정 전 prepare 검사18개 중 새 자동selected 보존 검사만 실패: 한영 HTML/PDF4개 선언이2개 no-op HTML로 축소되는 문제를 격리 재현",
+      "수정 후 test_prepare_publication.py18개 통과: 새 등록과 기존 글 자동selected, 사유·4개 before/after·선언 원본 bytes2회 연속 보존 및 본문 bytes 불변 확인",
+      "선언 없는 no-op·stale after의 현재 출력 결속, 후속 실제 개정의 새 baseline before/candidate after·사유, 첫 CI 구 seed·잘못된 replay·입력/메타데이터 동시 변경 거절 검사 유지",
+      "독립 관련 검사36개 통과: publication_intent7·publication_release12·publication_snapshot17",
+      "독립 임시 경계 검사: stale PDF after·symlink/누락 PDF·symlink 선언 거절, release의 파일/참조 삭제 차단과 기존 참조 추가 정책 유지",
+      "코드·정책 감수와 diff 검사 통과. 기존 site·archive·publication·publication_changes 변경 없음; 다른 작업의 미추적 인계 bytes 보존",
+      "수정 소스를 포함한 다음 정상 편집 발행42943810872의 build·deploy·recovery-copy·notify-readers 성공과 실제HTTPS96acc04를 확인했다. 이 성공만으로 CI 작업 사본의 모든 선언 bytes 보존을 직접 관찰한 것으로 확대하지 않음"
     ],
     "evidence": [
-      "publication_changes/2026-11-09_atrl-agentic-atelier.json",
       "scripts/prepare_publication.py",
-      "operations/issues/OPS-58a4237a-48d8-40da-af30-4b0edc80c943.json"
+      "tests/test_prepare_publication.py",
+      "operations/runs/20261111T015828Z-613c7850-1895-4358-acb3-0507c8df67bb.md"
     ],
     "remaining_limits": [
-      "구현 후보·회귀 검사·독립 검증은 후속 회차에서 수행한다.",
-      "현재 공개 콘텐츠 보존 비교는 통합 담당이 수행한 이번 후보 범위의 결과다."
+      "격리 검사는 전체 공개 사이트 재빌드·실제 기기 검증을 뜻하지 않음",
+      "수정 후 정상 CI·공개는 성공했지만 다음 실제 편집 후보에서 개별 선언 bytes 보존을 직접 대조하는 관찰은 아직 필요함"
     ]
   },
   "observation": {
-    "status": "후속 처리 대기",
-    "period": null,
-    "result": "이번 후보의 기존 본문·PDF 변화는 확인되지 않았다. 이력 보존 결함은 planned로 인계한다."
+    "status": "검증된 도구 소스 반영; 정상 게시 관찰 대기",
+    "period": "2026-11-11 오전11시 근접 정기 회차",
+    "result": "실제 기사·PDF·운영 선언은 바꾸지 않고 후보 생성기의 선언 갱신 판단만 수정했다. Git main 반영과 이후 실제 정상 게시 사용을 구분한다. 수정 소스를 포함한 정상 편집 발행의 CI·공개 성공도 확인했으며 개별 선언 bytes의 실제 편집 후보 관찰과 구분한다."
   },
   "recovery": {
-    "plan_reference": "publication_changes/2026-11-09_atrl-agentic-atelier.json",
+    "plan_reference": "필요 시 이전 f4a692c 소스의 후보 생성기 해당 분기만 복구한다. 다른 게시·원고·요청·선언은 유지한다.",
     "execution_reference": "Git HEAD 848c60ebb11fd19b490d71b12222308248d5165b:publication_changes/2026-11-09_atrl-agentic-atelier.json",
-    "result": "최종 후보 v5 생성 후 통합 담당이 기존 선언을 Git HEAD의 원래 바이트로 복원하고 완전 일치를 확인했다. 코드 수정은 미실시다."
+    "result": "초기 통합 담당은 최종 후보v5 생성 뒤 기존 선언을 Git HEAD의 원래 bytes로 복원해 완전 일치를 확인했다. 이번 회차에는 해당 선언을 변경하거나 다시 복원하지 않았고 실제 롤백·정적 배포·DB 복원도 하지 않았다."
   },
-  "next_action": "운영팀(ADOPT)이 다음 회차에 격리 재현을 만들고 무변경 경로에서 기존 개정 선언을 보존하는 최소 조건을 검토한다. 실제 개정·새 무변경 검수의 출력 결속과 첫 CI 구 seed 보호를 회귀 검증한다. 편집부(AEDAUT)의 Qunova 게시 절차는 계속 진행한다."
+  "next_action": "다음 실제 편집 후보에서 무변경 기존 글의 선언 사유와 전체 한영 HTML/PDF 이력이 유지되는지 기존 게시 기록에 연결한다. 수정 후 정상 CI·공개 성공은 확인했지만 개별 선언 bytes 직접 대조 전까지 observing을 유지한다. 이를 위해 별도 배포·재시도·테스트 알림을 만들지 않는다."
 }
