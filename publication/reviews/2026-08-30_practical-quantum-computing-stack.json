@@ -6,7 +6,7 @@
     "title": "양자컴퓨터가 계산 시스템이 되기까지",
     "subtitle": "최신 고전 기준선에서 회로 구현·판독·오류정정·제조 기반까지, 실용성을 가르는 다섯 검증 단계",
     "date": "2026-08-30",
-    "updated": "2026-08-30",
+    "updated": "2026-11-11",
     "category": "Quantum Computing",
     "tags": [
       "Practical Quantum Computing",
@@ -27,8 +27,8 @@
     ],
     "responsible_editor": "김현중",
     "responsible_editor_en": "Hyun-Jung Kim",
-    "ai_system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
-    "ai_system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+    "ai_system": "Original edition: OpenAI Codex Work Mode; November 11 editorial revision: OpenAI Codex",
+    "ai_system_ko": "원 작성: OpenAI Codex Work Mode; 11월 11일 편집 개정: OpenAI Codex",
     "ai_model": "exact model identifier not retained",
     "ai_model_ko": "정확한 모델 식별자는 보존되지 않음",
     "agents": [
@@ -71,28 +71,50 @@
         "name": "deploy_qa",
         "role": "local and deployed-page verification",
         "role_ko": "로컬·배포 페이지 검증"
+      },
+      {
+        "name": "root",
+        "role": "November11 editorial integration, official announcements, output and publication checks",
+        "role_ko": "11월11일 편집 통합·공식 공고 대조·출력·게시 확인"
+      },
+      {
+        "name": "stack1111_ksfno",
+        "role": "KS-FNO v1 full text, selected static source, linked historical DQB public-copy review",
+        "role_ko": "KS-FNO v1 본문 전체·선택 정적 소스 대조와 연결된 당시 DQB 공개 사본 검수"
+      },
+      {
+        "name": "stack1111_readout_ftqc",
+        "role": "PTSET and FTQC v1 full papers with integrated appendices/supplement; claim audit",
+        "role_ko": "PTSET·FTQC v1 본문·통합 부록·보충자료 전체와 주장 대조"
+      },
+      {
+        "name": "stack1111_prose",
+        "role": "Independent bilingual prose, explanatory flow and captions",
+        "role_ko": "한영 문체·설명 전개·캡션 독립 감수"
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "official challenge specification",
-      "three arXiv v1 preprints and full text",
-      "Government of Canada release, Pasqal release, and SEC filing",
-      "bilingual HTML, figures, PDF, metadata, links, and responsive rendering"
+      "Historical Classiq official announcements; original public entry 404, baseline implementation not obtained",
+      "KS-FNO v1 entire 19 pages, PTSET v1 entire 9 pages including appendices, memory-cost v1 entire 40 pages including Methods and SI",
+      "Official government/company releases and SEC 6-K and exhibit; no current-market update",
+      "Bilingual manuscripts and diagram wording; linked five-page DQB privacy-only public copy",
+      "No QPU, solver, model or formal-proof reproduction; no human-reader study"
     ],
     "verification_scope_ko": [
-      "공식 challenge 사양",
-      "arXiv v1 프리프린트 3건과 원문",
-      "캐나다 정부·Pasqal 발표와 SEC 공시",
-      "한영 HTML·도해·PDF·metadata·링크·반응형 렌더링"
+      "당시 Classiq 공식 안내; 원 공개 페이지 404·기준 구현 미확보",
+      "KS-FNO v1 19쪽, PTSET v1 통합 부록 포함 9쪽, 메모리 비용 v1 Methods·통합SI 포함 40쪽 전체",
+      "정부·기업 발표와 SEC 6-K·별첨; 현재 시장 정보 확장 아님",
+      "한영 원고·도식 문구와 연결된 5쪽 DQB 공개 사본",
+      "QPU·모델·solver·형식증명 재현 및 사람 독자 평가 미수행"
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-08-30",
-    "human_review_level": "topic, framing, and publication request confirmed; line-by-line review not separately retained",
-    "human_review_level_ko": "주제·서술 방향·발행 요청 확인. 문장 단위 검토 여부는 별도 기록되지 않음",
-    "disclosure_note_ko": "모델의 정확한 식별자는 세션 기록에 남지 않았습니다. 기재된 에이전트명과 역할은 이번 게시 작업에서 실제로 사용한 멀티에이전트 구성입니다.",
-    "disclosure_note_en": "The exact model identifier was not retained in the session record. The listed agent names and roles are the multi-agent configuration actually used for this publication."
+    "human_review_level": "Original detailed human-review record not retained; November revision used independent agent review, not a new human line-by-line audit.",
+    "human_review_level_ko": "원 작성의 상세 사람 검토 기록 미보존; 11월 개정은 독립 에이전트 감수이며 새 사람 문장별 검토를 뜻하지 않음.",
+    "disclosure_note_ko": "원 작성의 에이전트·하네스 이력은 유지하고, 11월 11일 개정 역할을 별도로 덧붙였습니다. 정확한 모델 식별자는 추정하지 않습니다.",
+    "disclosure_note_en": "Original agent and harness history is retained, with November 11 revision roles added separately. Exact model identifiers are not inferred."
   },
   "source_sha256": "58891a23ee64f3bd58366972ac1d2696c785d738d8580513079d239088de9a8e"
 }

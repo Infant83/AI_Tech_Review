@@ -10,7 +10,7 @@
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="Agentic Tech Review Letters">
   <meta property="og:title" content="What It Takes for a Quantum Computer to Become a Computing System">
   <meta property="og:description" content="Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/en/">
@@ -19,7 +19,7 @@
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/practical_quantum_stack_hero-web.webp">
   <meta property="og:image:alt" content="What It Takes for a Quantum Computer to Become a Computing System">
   <meta property="article:published_time" content="2026-08-30">
-  <meta property="article:modified_time" content="2026-08-30">
+  <meta property="article:modified_time" content="2026-11-11">
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="What It Takes for a Quantum Computer to Become a Computing System">
@@ -647,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -757,12 +760,21 @@
         position: static;
       }
     }
+
+    .final-article, .content-grid > *, .hero-inner > * { min-width: 0; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+    .reference-list { overflow-wrap: anywhere; }
+    .reference-list li { margin-bottom: 1rem; }
+    .citation { white-space: nowrap; }
+    code { overflow-wrap: anywhere; white-space: normal; }
   </style>
 </head>
 <body>
   <div class="topline">
     <div class="topline-inner">
-      <span>AI Tech Review Letters: Week 35 (2026-08-30)</span>
+      <span>Agentic Tech Review Letters: Week 35 (2026-08-30)</span>
       <div class="topline-actions">
         <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
@@ -774,7 +786,7 @@
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">Agentic Tech Review Letters</p>
         <h1>What It Takes for a Quantum Computer to Become a Computing System</h1>
         <p class="dek">Five validation gates that determine practical value, from the advancing classical baseline to circuit realization, readout, fault tolerance, and manufacturing capacity</p>
       </section>
@@ -785,85 +797,81 @@
   <main class="content-grid">
     <article class="final-article">
       <p>Judging the practical value of a quantum computer by qubit count or a single circuit-depth metric obscures where the bottlenecks actually arise. The strongest classical method for the same problem must first be fixed as the baseline. The remaining task must then be realized as an executable circuit, and repeated measurements must become trustworthy data at the sensor. Long computations also require error-correction resources that preserve logical information, while deployment depends on a manufacturing base capable of producing devices repeatedly.</p>
-<p>Five developments reported in late August 2026 illuminate different points along this path. Classiq launched an open challenge to reduce the depth of a phase oracle. A Kohn–Sham Fourier neural operator (KS-FNO) from Caltech researchers replaced repeated orbital diagonalization with density prediction on a classical GPU. Researchers at Quantum Motion demonstrated PTSET, a more sensitive charge sensor for semiconductor spin qubits. A separate theoretical study established an unavoidable logarithmic term in the cumulative spacetime cost of quantum memory. Canadian investment in Xanadu’s manufacturing project and Pasqal’s public listing show that the industrial base for producing and deploying research hardware is a bottleneck in its own right.</p>
-<p>These results were not integrated and demonstrated in one device. Nor are they competing records of the same quantity. This review places them along a validation path—<strong>classical baseline → circuit realization → readout → fault-tolerant memory → manufacturing and deployment</strong>—and asks where a bounded quantum kernel could reasonably enter an OLED or materials-computing workflow.</p>
+<p>Five developments reported in late August 2026 illuminate different points along this path. Classiq launched an open challenge to reduce the depth of a phase oracle, which reverses the sign of states satisfying a condition.<span class="citation">[<a href="#ref-1">1</a>]</span> A Kohn–Sham Fourier neural operator (KS-FNO) from Caltech researchers replaced repeated orbital diagonalization with density prediction on a classical GPU.<span class="citation">[<a href="#ref-2">2</a>]</span> Researchers at Quantum Motion demonstrated PTSET, a more sensitive charge sensor for semiconductor spin qubits.<span class="citation">[<a href="#ref-3">3</a>]</span> A separate theoretical study established an unavoidable logarithmic term in the cumulative spacetime cost of quantum memory.<span class="citation">[<a href="#ref-4">4</a>]</span> Canadian investment in Xanadu’s manufacturing project and Pasqal’s business combination show that producing and deploying research hardware also requires sustained time and capital.<span class="citation">[<a href="#ref-5">5</a>, <a href="#ref-6">6</a>]</span></p>
+<p>In the order a materials researcher encounters these requirements, the path is <strong>classical baseline → circuit realization → readout → fault-tolerant memory → manufacturing and deployment</strong>. Following the cases makes it possible to ask which part of an OLED or materials calculation is worth testing on a quantum computer, and what comparisons that choice requires. The cases and announcements below retain the original evidence date of 30 August 2026.</p>
 <figure class="article-hero-figure">
   <img src="practical_quantum_stack_hero-web.webp" alt="Concept illustration linking electron density, a quantum circuit, cryogenic readout, an error-correction lattice, and semiconductor manufacturing along one computational path" width="1600" height="900" loading="eager">
-  <figcaption>Figure 1. From problem representation to manufacturing, practical quantum computing must pass the constraints of the entire path rather than post one best-in-class metric at a single stage. This conceptual illustration contains no quantitative data and does not reproduce any company’s device.</figcaption>
+  <figcaption>Figure 1. An AI-generated concept illustration connecting electron density and circuits, a cryogenic device and readout signals, an error-correction lattice, and manufacturing processes.</figcaption>
 </figure>
 
-<aside class="callout callout-evidence">
-<p class="callout-label">Review verdict</p>
-<p>The strongest signal today is not that quantum hardware is about to replace classical computing. While classical baselines such as KS-FNO advance rapidly, a quantum computation must increasingly be judged by its full cost, including oracle realization, readout, error correction, and manufacturing. An OLED or materials PoC should first fix that classical baseline, then place a bounded quantum kernel only at a residual bottleneck such as a strongly correlated active space or state selection.</p>
-</aside>
-<h2 id="evidence-map-at-a-glance">Evidence map at a glance</h2>
+<span class="legacy-anchor" id="evidence-map-at-a-glance" aria-hidden="true"></span><h2 id="section-what-the-five-cases-establish">What the five cases establish</h2>
 <div aria-label="Today’s five evidence items and their computational boundaries" class="data-panel" role="region" tabindex="0">
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll table horizontally"><table>
 <thead>
 <tr>
-<th>Validation gate</th>
+<th>Computational stage</th>
 <th>Case</th>
-<th>What was established</th>
-<th>What was not directly established</th>
+<th>Reported result or task</th>
+<th>Conditions for interpretation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Classical baseline</td>
-<td>KS-FNO, arXiv preprint</td>
-<td>Trained on 8,504 molecules and solids. Converged the density SCF for 8,250 Mg atoms and 82,500 valence electrons on one B300</td>
-<td>A QPU result, excited-state OLED properties, complete orbital-free DFT, or a hardware-matched speedup</td>
+<td>KS-FNO, preprint</td>
+<td>Base training on 8,504 molecules and solids. Density SCF convergence for 8,250 Mg atoms and 82,500 valence electrons on one B300</td>
+<td>The largest Mg system uses additional fine-tuning. Density, energy and excited-state calculations have different scopes</td>
 </tr>
 <tr>
 <td>Circuit realization</td>
 <td>Official Classiq challenge</td>
-<td>Implement a phase oracle for 1,097 marked pixels in a 64×64 image, using separate 6-qubit x and y registers. Depth is the primary ranking metric and CX count the tie-breaker</td>
-<td>A winning result, QPU execution, quantum acceleration, or the cost under an unpublished gate basis and topology</td>
+<td>Implement a phase oracle for 1,097 marked pixels in a 64×64 image, using separate 6-qubit x and y registers</td>
+<td>Correctness precedes depth ranking, with CX count the tie-breaker. Ancillas are additional to the twelve address qubits</td>
 </tr>
 <tr>
 <td>Readout</td>
-<td>PTSET, arXiv preprint</td>
+<td>PTSET, preprint</td>
 <td>Approximately 10-fold large-signal and 100-fold small-signal sensitivity gains over a conventional rfSET</td>
-<td>Actual spin-state readout fidelity, array multiplexing, crosstalk, or thermal load</td>
+<td>Device test with a gate-voltage shift emulating a charge event; sensitivity evaluated through minimum integration time</td>
 </tr>
 <tr>
 <td>Fault-tolerant memory</td>
-<td>FTQC theory, arXiv preprint</td>
-<td>A tight memory bound with an unavoidable logarithmic contribution to cumulative spacetime overhead</td>
-<td>The impossibility of FTQC, physical resources for a particular surface-code device, or a QPU experiment</td>
+<td>FTQC theory, preprint</td>
+<td>Matching upper and lower bounds with a logarithmic term in cumulative memory cost</td>
+<td>Independent known-location erasure noise and ideal recovery; relative cost depends on width K</td>
 </tr>
 <tr>
 <td>Manufacturing and deployment</td>
 <td>Canada–Xanadu and Pasqal</td>
 <td>A CAD 195M government investment in a CAD 893M project; approximately USD 360M in cash available to Pasqal at closing</td>
-<td>Facility completion, logical-qubit performance, fault-tolerant operation, or quantum advantage</td>
+<td>Announcements about facilities, manufacturing capacity and capital, with different currencies and transaction structures</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
 <figure class="figure-panel figure-panel-fit">
   <img src="practical_quantum_validation_gates_en.svg" alt="Evidence map placing KS-FNO, the Classiq phase oracle, PTSET, the FTQC memory bound, Xanadu, and Pasqal at five distinct validation gates" width="1200" height="920" loading="lazy">
-  <figcaption>Figure 2. The five cases measure different objects at different levels of evidence. The arrows indicate an order for assessing practicality; they do not imply that these technologies have been demonstrated as one device or integrated workflow.</figcaption>
+  <figcaption>Figure 2. A review diagram placing the studies, announcements and reported values at the relevant stages, from classical calculation to manufacturing.<span class="citation">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>, <a href="#ref-3">3</a>, <a href="#ref-4">4</a>, <a href="#ref-5">5</a>, <a href="#ref-6">6</a>]</span> The vertical line follows the order of the discussion.</figcaption>
 </figure>
 
-<h2 id="1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</h2>
+<span class="legacy-anchor" id="1-an-advancing-classical-baseline-changes-the-starting-point" aria-hidden="true"></span><h2 id="section-1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</h2>
 <p>A Kohn–Sham DFT self-consistent field (SCF) calculation constructs a Kohn–Sham potential from an input density, diagonalizes the Hamiltonian to obtain new orbitals and a new density, and repeats the cycle to convergence. As the system grows, orbital diagonalization at every iteration becomes a bottleneck with roughly cubic scaling. Orbital-free DFT has long sought to avoid this step, but a transferable kinetic-energy functional has proved difficult to construct.</p>
-<p><a href="https://arxiv.org/abs/2608.23895">Danish Khan and colleagues</a> did not train an inverse map or attempt to predict the final ground-state density in one step. Instead, they learned the <strong>forward Kohn–Sham map</strong> inside the SCF cycle:</p>
+<p>Danish Khan and colleagues learned the <strong>forward Kohn–Sham map</strong>, which takes a potential to the next electron density within an SCF iteration:<span class="citation">[<a href="#ref-2">2</a>]</span></p>
 $$
 v_{\mathrm{KS}}(\mathbf r)\longmapsto n^{\mathrm{out}}(\mathbf r).
 $$
 
-<p>Their SE(3)-equivariant Fourier neural operator takes a potential on a real-space grid and predicts the next density. Construction of the Hartree and exchange-correlation potentials, together with density mixing, remains within the conventional SCF structure. The precise interpretation is therefore that a <strong>learned operator replaces the repeated one-particle eigensolve</strong>, not that a neural network has replaced all of DFT.</p>
-<h3 id="the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</h3>
+<p>The equation expresses the mapping to be learned. In the implementation, the Kohn–Sham potential and the local external ionic potential on a real-space grid form two input channels. The SE(3)-equivariant Fourier neural operator respects how density transforms under rotations and translations, and predicts the next density. Construction of the Hartree and exchange-correlation potentials, together with density mixing, remains within the conventional SCF structure. Replacing the repeated one-particle eigensolve with this learned operator provides the central computational saving.</p>
+<span class="legacy-anchor" id="the-training-domain-and-the-maximum-scale-calculation-are-different-sets" aria-hidden="true"></span><h3 id="section-the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</h3>
 <p>The base model was trained from <strong>59,500 ordinary SCF labels</strong> obtained for <strong>8,504 systems</strong>: 2,004 QM9 molecules and 6,500 MC3D solids. The authors treated density self-consistency for molecules, insulators, and metals within one model family, then evaluated spectra and structural observables using a fixed-density post-SCF diagonalization.</p>
 <p>The 82,500-electron Mg dislocation result was not a direct extrapolation of the base model. That model diverged for every tested dislocation cell. The researchers therefore fine-tuned it on <strong>1,203 Mg structures containing 20–364 atoms</strong>, spanning bulk, strain, surface, stacking-fault, and dislocation-core environments. They then converged the density of a system with as many as <strong>8,250 Mg atoms and 82,500 valence electrons</strong> on <strong>one NVIDIA B300</strong> to a relative-\(L^1\) fixed-point threshold of \(10^{-3}\).</p>
-<p>The fitted exponent for a complete SCF update was \(p=1.03\) for KS-FNO and \(p=3.37\) for Quantum ESPRESSO. Absolute wall-clock time is not a hardware-matched benchmark, however, because the comparison places FNO timings from one B300 against Quantum ESPRESSO timings linearly rescaled from a 192-core AMD EPYC 9655 node. No PBE reference density exists for the largest system. Density errors of <strong>0.33–0.35%</strong> were checked on core crops containing at most 528 atoms; convergence of the 8,250-atom calculation is not by itself independent proof of PBE ground-state accuracy.</p>
-<h3 id="what-remains-to-be-calculated">What remains to be calculated</h3>
+<p>A power-law fit of the time for <strong>one complete SCF update against grid-point count</strong> gave \(p=1.03\) for KS-FNO and \(p=3.37\) for Quantum ESPRESSO. Absolute timings use different hardware: FNO ran on one B300, while Quantum ESPRESSO timings were linearly rescaled to a 192-core AMD EPYC 9655 node. Density errors of <strong>0.33–0.35%</strong> against PBE were checked on dislocation-core crops containing at most 528 atoms. The 8,250-atom system has no PBE reference density, so the result established there is self-consistent convergence of the learned map.</p>
+<span class="legacy-anchor" id="what-remains-to-be-calculated" aria-hidden="true"></span><h3 id="section-what-remains-to-be-calculated">What remains to be calculated</h3>
 <p>The present model learns only the density component of the joint Kohn–Sham operator. Total energies and orbital-resolved spectra still require one fixed-density post-SCF orbital calculation. Removing that step would require a forward kinetic-energy model and additional validation. The paper’s references to “quantum calculations” mean electronic-structure calculations, not computation on a quantum computer.</p>
-<p>For OLED research, this result is not a substitute for excited-state calculations. It does not directly predict \(S_1\), \(T_1\), \(\Delta E_{\mathrm{ST}}\), oscillator strength, spin–orbit coupling (SOC), \(k_r\), or \(k_{nr}\). Its significance is that the classical baseline for ground-state density and large-structure calculations has become stronger. A quantum PoC should confront that advancing baseline directly and compare residual bottlenecks—strong correlation, excited states, or sampling—under matched conditions.</p>
-<h2 id="2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</h2>
+<p>For OLED research, the significance is a stronger classical baseline for ground-state density and large structures. Emission still requires singlet and triplet excitation energies \(S_1\) and \(T_1\), their difference \(\Delta E_{\mathrm{ST}}\), oscillator strengths, spin–orbit coupling (SOC), and radiative and nonradiative rates \(k_r\) and \(k_{nr}\). The value of a quantum calculation can be assessed against the strong-correlation, excited-state and sampling costs that remain in obtaining these properties.</p>
+<span class="legacy-anchor" id="2-an-oracle-must-be-implemented-not-merely-assumed" aria-hidden="true"></span><h2 id="section-2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</h2>
 <p>Descriptions of quantum algorithms often draw an oracle as a one-line box that “marks every state satisfying the condition.” Hardware does not execute that box; it executes the decomposed gate sequence. The structure of the Boolean expression, the use of ancillas, uncomputation, decomposition of multi-controlled gates, and routing for the target topology all affect circuit depth and the number of two-qubit gates.</p>
-<p>The <a href="https://get.classiq.io/quantum-circuit-challenge/">Classiq Quantum Circuit Challenge</a> turns this gap into a concrete problem. The target consists of <strong>1,097 marked pixels</strong> in a 64×64 binary image. The x and y coordinates are represented by separate 6-qubit registers, and the task is to implement the phase oracle</p>
+<p>The Classiq Quantum Circuit Challenge turns this gap into a concrete problem.<span class="citation">[<a href="#ref-1">1</a>]</span> The target consists of <strong>1,097 marked pixels</strong> in a 64×64 binary image. The x and y coordinates are represented by separate 6-qubit registers, and the task is to implement the phase oracle</p>
 $$
 U_f\lvert x,y\rangle=(-1)^{f(x,y)}\lvert x,y\rangle,\qquad
 f(x,y)=
@@ -873,17 +881,17 @@ f(x,y)=
 \end{cases}
 $$
 
-<p>The two address registers contain 12 qubits in total, but this should not be described as a “12-qubit circuit” or as solving the problem with “12 logical qubits.” An implementation may add ancillas. A submitted circuit must first pass the oracle-correctness test; valid entries are then ranked by <strong>circuit depth</strong>, with <strong>CX count</strong> used to break ties. Participants submit both a Classiq <code>.qmod</code> source file and an OpenQASM <code>.qasm</code> file implementing the same circuit.</p>
-<p>The challenge opened on 28 August 2026 and closes on 30 September. What is currently public is the problem and its evaluation procedure, not an optimization result. The public page does not specify a baseline depth or CX count, the permitted ancilla count, the evaluation gate basis, connectivity, or the detailed depth-counting rules. QPU execution is not listed as an evaluation criterion.</p>
-<p>The case nevertheless has clear educational value. Quantum-circuit optimization cannot be reduced to a single Classiq method. Problem representation, high-level synthesis, Boolean factorization, logical rewriting, qubit mapping and routing, native gates, pulses, and fault-tolerant resource optimization operate at different layers. The Classiq challenge is one example that turns <strong>high-level modeling and synthesis search</strong> into a measurable task. The broader landscape is reviewed in <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/"><em>Why Quantum Circuit Optimization Matters</em></a>.</p>
-<h2 id="3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</h2>
+<p>The two address registers contain twelve qubits in total, with any implementation ancillas counted separately. A submitted circuit must first pass the oracle-correctness test; valid entries are then ranked by <strong>circuit depth</strong>, with <strong>CX count</strong> used to break ties. Participants submit both a Classiq <code>.qmod</code> source file and an OpenQASM <code>.qasm</code> file implementing the same circuit.</p>
+<p>As of 30 August, the official announcement gave 28 August as the opening date and 30 September as the submission deadline, and advertised a baseline implementation and technical specification. The announcement rechecked for this revision establishes the problem, submission format and ranking procedure. Baseline depth/CX values, the permitted ancilla count, evaluation gate basis, connectivity and detailed depth-counting rules were not obtained. This section concerns the synthesis task announced at the time; it has not been expanded with later winning entries or device-execution results.</p>
+<p>The interesting point is that circuits implementing the same truth table can have different costs. Boolean factorization, high-level synthesis, logical rewriting, qubit mapping and routing, and native-gate choices change costs at different levels. The Classiq challenge supplies a common task for comparing <strong>high-level modeling and synthesis search</strong>. The relationship between these levels is developed in the earlier review, <em>Why Quantum Circuit Optimization Matters</em>.<span class="citation">[<a href="#ref-7">7</a>]</span></p>
+<span class="legacy-anchor" id="3-a-shot-becomes-data-only-after-readout" aria-hidden="true"></span><h2 id="section-3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</h2>
 <p>A semiconductor spin qubit is not read directly with a voltmeter. Spin-dependent tunnelling or Pauli blockade generally converts spin information into a charge configuration, after which the radio-frequency response of a nearby charge sensor is measured. Insufficient sensor sensitivity or bandwidth lengthens the required integration time, allowing relaxation and noise to limit readout fidelity.</p>
-<p>The <a href="https://arxiv.org/abs/2608.27045">PTSET study</a> placed a TiN element with low critical current and high kinetic inductance in series with the matching network of a radio-frequency single-electron transistor (rfSET). When the SET current exceeds a threshold, the TiN switches from the superconducting to the normal state, abruptly changing the circuit impedance and reflected RF signal. The architecture uses a phase transition to amplify a small, continuous change in resistance.</p>
+<p>The PTSET study placed a TiN element with low critical current and high kinetic inductance in series with the matching network of a radio-frequency single-electron transistor (rfSET).<span class="citation">[<a href="#ref-3">3</a>]</span> When the SET current exceeds a threshold, the TiN switches from the superconducting to the normal state, abruptly changing the circuit impedance and reflected RF signal. The architecture uses this phase transition to turn a small resistance change into a large readout signal.</p>
 <p>The experimental device was fabricated in GlobalFoundries <strong>22-nm FD-SOI CMOS</strong>. At an out-of-plane field of 0.6 T, the switching current was approximately <strong>33 nA</strong> and the resonance frequency was 334 MHz. Rather than using an adjacent spin qubit, the researchers emulated a charge event through a gate-bias shift. Relative to the conventional rfSET mode, sensitivity defined through the minimum integration time improved by nearly <strong>one order of magnitude</strong> in the large-signal regime and by <strong>two orders of magnitude</strong> in the small-signal regime, which more closely resembles spin readout.</p>
-<p>It would therefore be incorrect to state that “spin-qubit readout fidelity improved by a factor of 100.” The experiment did not read an actual spin state or report a fidelity. The IQ traces used an integration time of <strong>637 μs</strong>. The apparatus could not directly resolve the switching and recovery dynamics, and the reported <strong>10–100 ns recovery time</strong> is an estimate based on TiN properties. The value of <strong>more than 350-fold SNR</strong> over a conventional rfSET under well-overcoupled conditions is likewise a circuit-model prediction, not an experimental result. Array yield, multiplexing crosstalk, cryogenic wiring, and thermal load remain to be tested.</p>
-<h2 id="4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</h2>
+<p>The measured in-phase and quadrature (IQ) traces used an integration time of <strong>637 μs</strong>. The authors inferred a minimum integration time, \(t_{\min}=t_{\mathrm{int}}/\mathrm{SNR}\), from the power signal-to-noise ratio and used it to compare sensitivity. The fidelity obtained by reading actual spin states is a separate measurement. The apparatus could not directly resolve switching and recovery dynamics; the reported <strong>10–100 ns recovery time</strong> is an estimate based on TiN properties. <strong>More than 350-fold SNR</strong> under well-overcoupled conditions is a circuit-model prediction. Extending the sensor to arrays requires joint validation of yield, multiplexing crosstalk, cryogenic wiring and thermal load.</p>
+<span class="legacy-anchor" id="4-error-correction-also-incurs-a-cost-for-memory" aria-hidden="true"></span><h2 id="section-4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</h2>
 <p>The fault-tolerance threshold theorem states that, below a threshold physical error rate, arbitrarily reliable computation can be achieved by adding physical qubits and circuit depth. The remaining question is whether the cumulative space×time cost can stay at a constant ratio to the useful computation.</p>
-<p>The theoretical analysis by <a href="https://arxiv.org/abs/2608.26272">Bharti, Haug, and Tanggara</a> begins with the simplest case, quantum memory. Under optimistic assumptions—independent erasure noise with known erased locations, \(0&lt;p&lt;\delta_{\mathrm{GV}}\simeq0.1100\), arbitrary adaptive protocols, and ideal recovery—the minimum worst-case physical storage-location cost for retaining \(K\) logical qubits over \(S\) time steps with total error no greater than \(\varepsilon\) is</p>
+<p>Bharti, Haug, and Tanggara begin by analyzing quantum memory.<span class="citation">[<a href="#ref-4">4</a>]</span> Physical qubits are independently erased, with the erased locations known and \(0&lt;p&lt;\delta_{\mathrm{GV}}\simeq0.1100\). Adaptive protocols conditioned on measurement outcomes and ideal recovery are allowed. For retaining \(K\) logical qubits over \(S\) time steps, the error \(\varepsilon\) is the diamond-norm distance between the decoded memory channel and the identity channel. This assesses preservation of information including entanglement with another system. For fixed \(0&lt;\varepsilon_0&lt;1\) and \(0&lt;\varepsilon\leq\varepsilon_0\), the minimum physical storage-location cost in the worst case over realizable measurement histories is</p>
 $$
 C_{\min}(K,S,\varepsilon)
 =\Theta\!\left[S\left(K+\log\frac{S}{\varepsilon}\right)\right].
@@ -894,15 +902,15 @@ $$
 \Theta\!\left(1+\frac{\log(S/\varepsilon)}{K}\right).
 $$
 
-<p>The logarithmic term cannot be avoided when a small number of logical qubits must be preserved for a very long time. Conversely, a sufficiently wide computation with \(K=\Omega(\log(S/\varepsilon))\) can share the reliability cost across many logical qubits and maintain bounded relative overhead.</p>
-<p>The title’s statement that fault-tolerant quantum computation “cannot be achieved with constant spacetime overhead” is not an impossibility theorem for FTQC. The authors also construct positive-rate CSS codes that attain the memory bound. Their extension to general fault-tolerant circuits is discussed under sufficient conditions on codes and gadgets; it is not a matching lower bound for every algorithm and every noise model. Nor is this a QPU experiment or a physical-qubit estimate for a specific surface-code machine. The result establishes an information-theoretic cost that remains even when erasure locations are known and ideal recovery is allowed.</p>
-<h2 id="5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</h2>
-<p>Even improved algorithms and device fidelity cannot produce a computing system if complex optical, cryogenic, and electronic-control hardware cannot be manufactured and installed repeatedly. On 28 August, the Canadian government announced <a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html">a CAD 195M Strategic Response Fund investment in Xanadu’s CAD 893M project</a>. The scope includes expanding R&amp;D facilities and building capabilities for integrating, packaging, testing, and assembling photonic and semiconductor components. The project is expected to create <strong>275 highly skilled jobs</strong>.</p>
-<p>This announcement is a commitment to manufacturing facilities and process qualification. It is not evidence that the facilities have been completed or that a fault-tolerant photonic processor is operating. The government release calls the CAD 195M an investment but does not break down its grant, repayment, or equity terms on the public page.</p>
-<p>On 27 August, Pasqal announced <a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/">completion of its business combination with Bleichroeder Acquisition Corp. II</a>. The surviving company, Pasqal Holding SA, was listed on Nasdaq under ticker <code>PSQL</code>, with warrants under <code>PSQLW</code>, and said that <strong>approximately USD 360M in cash was available at closing</strong>. This amount is not pure new financing, enterprise value, or revenue. The company stated that it plans to use the capital for QPU manufacturing and deployment, its fault-tolerant roadmap, cloud and software, HPC integration, and commercial operations.</p>
-<p>The Xanadu and Pasqal developments involve different currencies and transaction structures. Their amounts should neither be added nor compared as though they were quantum-performance metrics. They show that manufacturing capacity and long-term capital have become independent competitive dimensions of the quantum industry; they do not demonstrate fault-tolerant performance.</p>
-<h2 id="6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</h2>
-<p>The purpose of inverse molecular design for OLEDs is not to execute a quantum circuit. It is to change the ranking of host and dopant candidates that can be synthesized and to improve decisions about emission efficiency, stability, and lifetime. The first question should therefore be <strong>“What bottleneck remains after applying the best available classical method?”</strong>, rather than “Which quantum algorithm should we use?”</p>
+<p>The logarithmic term cannot be avoided when a small number of logical qubits must be preserved for a very long time. Conversely, a sufficiently wide memory with \(K=\Omega(\log(S/\varepsilon))\) can share the reliability cost across many logical qubits and maintain bounded relative overhead.</p>
+<p>The \(\Theta\) notation means that upper and lower bounds have the same dependence on size. The authors also establish a matching memory upper bound using the existence of positive-rate CSS codes and ideal recovery. Constructing an efficient recovery circuit remains a separate task. Extension to general fault-tolerant circuits requires sufficient conditions on the width, depth and error suppression of codes and logical-layer gadgets. Applying the expression to estimate the physical-qubit count and total time of a particular surface-code machine therefore requires its noise, recovery and gate conditions as well.</p>
+<span class="legacy-anchor" id="5-scale-is-also-a-manufacturing-and-capital-problem" aria-hidden="true"></span><h2 id="section-5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</h2>
+<p>As algorithms and device fidelity improve, manufacturing and installing the devices repeatedly becomes the next task. On 28 August, the Canadian government announced a CAD 195M Strategic Response Fund investment in Xanadu’s CAD 893M project.<span class="citation">[<a href="#ref-5">5</a>]</span> The scope includes expanding R&amp;D facilities and building capabilities for integrating, packaging, testing and assembling photonic and semiconductor components. The project was expected to create <strong>275 highly skilled jobs</strong>.</p>
+<p>The investment targets manufacturing facilities and qualification of processes compatible with future fault-tolerant quantum computing. The announcement describes capabilities that the facilities and processes are intended to develop. CAD 195M is the investment figure used by the government; its public release does not break down grant, repayment or equity terms.</p>
+<p>On 27 August, Pasqal announced completion of its business combination with Bleichroeder Acquisition Corp. II.<span class="citation">[<a href="#ref-6">6</a>]</span> The surviving company, Pasqal Holding SA, said that ordinary shares <code>PSQL</code> and warrants <code>PSQLW</code> were expected to begin Nasdaq trading on 28 August, and reported <strong>approximately USD 360M in cash available at closing</strong>. The figure describes available closing cash. The company planned to use it for QPU manufacturing and deployment, its fault-tolerant roadmap, cloud and software, HPC integration and commercial operations.</p>
+<p>Read together, the announcements show a quantum industry securing manufacturing capacity and long-term capital alongside algorithm and device development. Capital, qualified processes and a supply of devices must connect before laboratory results can become a repeatable service.</p>
+<span class="legacy-anchor" id="6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc" aria-hidden="true"></span><h2 id="section-6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</h2>
+<p>Inverse molecular design for OLEDs aims to change the ranking of synthesizable host and dopant candidates and improve decisions about emission efficiency, stability and lifetime. Identifying <strong>the bottleneck that remains after the best available classical methods</strong> clarifies which small computational task—a quantum kernel—is worth testing on a quantum computer.</p>
 <p>A defensible bounded workflow proceeds as follows.</p>
 <ol>
 <li>Reduce chemical space with classical generative models and chemical rules.</li>
@@ -915,13 +923,13 @@ $$
 </ol>
 <figure class="figure-panel figure-panel-fit">
   <img src="bounded_quantum_materials_workflow_en.svg" alt="OLED and materials workflow that narrows chemical space with DFT, TDDFT, and ML baselines before placing a bounded quantum kernel at a residual bottleneck and assessing its total cost" width="1200" height="760" loading="lazy">
-  <figcaption>Figure 3. A validated classical workflow narrows the full chemical space, and only the residual bottleneck becomes a candidate for a quantum kernel. The KS-FNO and Classiq values are separate evidence anchors for costs at different stages, not results from one integrated demonstration.</figcaption>
+  <figcaption>Figure 3. The review’s proposed workflow, with a main classical route for narrowing candidates and a quantum branch for testing a residual bottleneck. The branch is assessed at matched scientific accuracy using total workflow time. The upper KS-FNO and Classiq boxes illustrate density calculation and oracle synthesis, respectively.<span class="citation">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span></figcaption>
 </figure>
 
-<p>KS-FNO represents progress in the classical backbone of this structure. The Classiq challenge exposes the cost of translating an already defined Boolean oracle into an executable gate sequence. PTSET reminds us that shots become data only after passing through a readout chain, the FTQC bound captures the memory cost of long circuits, and the Xanadu and Pasqal developments highlight the cost of supplying hardware. None is an OLED quantum-computing result, but together they provide a checklist for assessing an OLED PoC.</p>
-<h2 id="7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</h2>
+<p>The quantum branch passes through encoding, state preparation, synthesis, execution, readout and post-processing before returning to the materials decision. A faster calculation inside that branch can deliver little overall benefit when input preparation or failed samples are costly. Changes in candidate rankings or property errors should therefore be recorded together with the time required to obtain them.</p>
+<span class="legacy-anchor" id="7-what-an-evidence-ledger-for-a-poc-should-record" aria-hidden="true"></span><h2 id="section-7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</h2>
 <div aria-label="Evidence-ledger checklist for an OLED and materials quantum PoC" class="data-panel" role="region" tabindex="0">
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll table horizontally"><table>
 <thead>
 <tr>
 <th>Area</th>
@@ -971,27 +979,30 @@ $$
 <td>Can a reader still distinguish QPU, simulator, and classical emulation?</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 </div>
-<p>“Quantum advantage” cannot be inferred from a shallow circuit or a large qubit count alone. Encoding, data loading, state preparation, shots, readout, mitigation, post-processing, and wall-clock time must be compared with the classical baseline at the same problem size and solution quality. Each of today’s five cases fills a different column in that comparison.</p>
-<h2 id="final-assessment">Final assessment</h2>
-<p>Practical quantum computing is not a single-algorithm problem. The oracle in the Classiq challenge must realize the correct unitary in a shallow circuit, while PTSET illustrates the need to convert a circuit output into a trustworthy electrical signal. The FTQC memory bound fixes a cost for preserving information during a long computation. The Xanadu and Pasqal developments show that an industrial base is needed to manufacture and deploy such devices repeatedly.</p>
-<p>KS-FNO sets the starting point for this path. As classical DFT handles larger systems at lower scaling, the role of quantum computing does not simply disappear; it becomes more narrowly defined. Advanced classical AI and HPC can handle ground-state density, routine screening, and large-scale chemical-space reduction, while a quantum kernel must be tested against the strongly correlated, state-selection, or measurement bottlenecks that classical methods leave behind.</p>
-<p>A persuasive OLED or materials PoC does not end with the statement that a quantum computer was used. It becomes a reusable computational asset only when the strongest classical baseline is fixed, the quantum kernel is tightly bounded, and circuit, readout, error-correction, and manufacturing costs are recorded in the same evidence ledger.</p>
-<h2 id="sources">Sources</h2>
-<ol>
-<li>Classiq Technologies, <a href="https://get.classiq.io/quantum-circuit-challenge/">Classiq Quantum Circuit Challenge</a>, 28 August–30 September 2026.</li>
-<li>D. Khan et al., <a href="https://arxiv.org/abs/2608.23895"><em>Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory</em></a>, arXiv:2608.23895v1, 24 August 2026.</li>
-<li>G. Aizpurua-Iraola et al., <a href="https://arxiv.org/abs/2608.27045"><em>A Superconducting Phase Transition Single-Electron Transistor</em></a>, arXiv:2608.27045v1, 27 August 2026.</li>
-<li>K. Bharti, T. Haug, A. Tanggara, <a href="https://arxiv.org/abs/2608.26272"><em>Fault-tolerant quantum computation cannot be achieved with constant spacetime overhead</em></a>, arXiv:2608.26272v1, 26 August 2026.</li>
-<li>Innovation, Science and Economic Development Canada, <a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html"><em>Government of Canada invests in Xanadu to build up advanced quantum manufacturing in Canada</em></a>, 28 August 2026.</li>
-<li>Pasqal, <a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/"><em>Pasqal and Bleichroeder Acquisition Corp. II Complete Business Combination</em></a>, 27 August 2026; <a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm">SEC Form 6-K</a>.</li>
+<p>These records help determine whether savings inside the circuit survive in the full calculation. For example, reducing depth by adding ancillas may change placement and measurement costs; a more sensitive sensor must ultimately reduce actual assignment errors or total time. Each comparison needs the same problem and acceptable error.</p>
+<span class="legacy-anchor" id="final-assessment" aria-hidden="true"></span><h2 id="section-final-assessment">Final assessment</h2>
+<p>The role of practical quantum computing becomes more specific as classical computing advances. If KS-FNO lowers the cost of repeated density calculations, a quantum kernel must demonstrate value in the correlation, state-selection or measurement tasks that follow. Executing that kernel brings oracle-synthesis cost, the time needed to distinguish sensor signals, and the cost of preserving information in memory into the same calculation.</p>
+<p>For materials research, a meaningful gain is selecting more reliable candidates with the same resources, or reaching the required accuracy at lower total cost. Connecting a small calculation that demonstrates such a gain to devices that can be manufactured and supplied repeatedly is how a quantum computer can become a computing system.</p>
+<span class="legacy-anchor" id="sources" aria-hidden="true"></span><h2 id="section-references">References</h2>
+<ol class="reference-list">
+<li id="ref-1">Classiq Technologies, Classiq Quantum Circuit Challenge (2026). <code>https://get.classiq.io/quantum-circuit-challenge/</code></li>
+<li id="ref-2"><a href="https://arxiv.org/abs/2608.23895v1">D. Khan, M. D. Hanisch, N. Argatoff, E. Xie, S. Sharma, and A. Anandkumar, Learning the Kohn-Sham map with neural operators for quasi-linear scaling density functional theory, arXiv:2608.23895v1 (2026).</a></li>
+<li id="ref-3"><a href="https://arxiv.org/abs/2608.27045v1">G. Aizpurua-Iraola, T. H. Swift, F.-E. von Horstig, D. Prete, J. Kirkman, G. M. Noah, F. Olivieri, A. Gomez-Saiz, and M. F. Gonzalez-Zalba, A superconducting phase transition single-electron transistor, arXiv:2608.27045v1 (2026).</a></li>
+<li id="ref-4"><a href="https://arxiv.org/abs/2608.26272v1">K. Bharti, T. Haug, and A. Tanggara, Fault-tolerant quantum computation cannot be achieved with constant spacetime overhead, arXiv:2608.26272v1 (2026).</a></li>
+<li id="ref-5"><a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html">Innovation, Science and Economic Development Canada, Government of Canada invests in Xanadu to build up advanced quantum manufacturing in Canada (28 August 2026).</a></li>
+<li id="ref-6"><a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/">Pasqal Holding SA and Bleichroeder Acquisition Corp. II, Pasqal and Bleichroeder Acquisition Corp. II complete business combination (27 August 2026)</a>; <a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm">Pasqal Holding SA, Report of foreign private issuer, Form 6-K (27 August 2026).</a></li>
+<li id="ref-7"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/">H.-J. Kim, Why quantum circuit optimization matters, Agentic Tech Review Letters (27 August 2026).</a></li>
 </ol>
-<p><a href="daily_quantum_brief_2026-08-30.pdf">Download the verified five-page Daily Quantum Brief PDF</a></p>
-<p><em>Verification note: Quantitative claims, publication status, and execution location were checked against the official challenge documentation, the full arXiv papers, the government announcement, the company announcement, and the SEC filing. QPU, classical GPU, device PoC, theory, and industry announcement remain separate evidence layers. Evidence cutoff: 30 August 2026.</em></p>
+
+<p><a href="daily_quantum_brief_2026-08-30.pdf">Download the public five-page edition of the 30 August 2026 briefing</a></p>
+<h2 id="section-writing-and-revision-history">Writing and revision history</h2>
+<p>The original publication and evidence date is 30 August 2026. The 11 November 2026 revision edits the bilingual explanation, captions and diagram wording, APS citations and historical time references. It clarifies the two KS-FNO input channels and single-update timing exponent, PTSET minimum integration time, and the memory theorem’s error and worst-case cost definitions. The principal values, formulas and cover are retained. The linked historical DQB keeps its scientific text, five pages and original source links; collection and receipt details and internal notes were removed from its public copy.</p>
+<p>This audit read all 19 pages of KS-FNO v1, all 9 pages of PTSET v1 including its integrated appendices, and all 40 pages of the memory-cost v1 including Methods and integrated supplementary material. Separate KS-FNO supplements and code were not obtained. Historical official Classiq announcements were rechecked, but the original public entry returned 404, so its baseline implementation and evaluation backend were not verified. Government and company releases and the SEC filing were read directly. This work did not independently reproduce the papers’ experiments, model, circuit or proofs.</p>
       <div class="footer">
-        Generated: 2026-08-30 09:37:39<br>
-        Source last modified: 2026-08-30 09:37:25
+        Original edition generated: 2026-08-30 09:37:39<br>
+        Editorial revision: 2026-11-11
       </div>
     </article>
 
@@ -1001,20 +1012,21 @@ $$
           <h2 id="toc-heading">Section map</h2>
           <div class="toc">
 <ul>
-<li><a href="#evidence-map-at-a-glance">Evidence map at a glance</a></li>
-<li><a href="#1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</a><ul>
-<li><a href="#the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</a></li>
-<li><a href="#what-remains-to-be-calculated">What remains to be calculated</a></li>
+<li><a href="#section-what-the-five-cases-establish">What the five cases establish</a></li>
+<li><a href="#section-1-an-advancing-classical-baseline-changes-the-starting-point">1. An advancing classical baseline changes the starting point</a><ul>
+<li><a href="#section-the-training-domain-and-the-maximum-scale-calculation-are-different-sets">The training domain and the maximum-scale calculation are different sets</a></li>
+<li><a href="#section-what-remains-to-be-calculated">What remains to be calculated</a></li>
 </ul>
 </li>
-<li><a href="#2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</a></li>
-<li><a href="#3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</a></li>
-<li><a href="#4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</a></li>
-<li><a href="#5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</a></li>
-<li><a href="#6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</a></li>
-<li><a href="#7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</a></li>
-<li><a href="#final-assessment">Final assessment</a></li>
-<li><a href="#sources">Sources</a></li>
+<li><a href="#section-2-an-oracle-must-be-implemented-not-merely-assumed">2. An oracle must be implemented, not merely assumed</a></li>
+<li><a href="#section-3-a-shot-becomes-data-only-after-readout">3. A shot becomes data only after readout</a></li>
+<li><a href="#section-4-error-correction-also-incurs-a-cost-for-memory">4. Error correction also incurs a cost for memory</a></li>
+<li><a href="#section-5-scale-is-also-a-manufacturing-and-capital-problem">5. Scale is also a manufacturing and capital problem</a></li>
+<li><a href="#section-6-where-should-a-quantum-kernel-enter-an-oled-or-materials-poc">6. Where should a quantum kernel enter an OLED or materials PoC?</a></li>
+<li><a href="#section-7-what-an-evidence-ledger-for-a-poc-should-record">7. What an evidence ledger for a PoC should record</a></li>
+<li><a href="#section-final-assessment">Final assessment</a></li>
+<li><a href="#section-references">References</a></li>
+<li><a href="#section-writing-and-revision-history">Writing and revision history</a></li>
 </ul>
 </div>
 
@@ -1023,15 +1035,14 @@ $$
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">Evidence links</h2>
         <ul>
-          <li><a href="https://arxiv.org/abs/2608.23895" target="_blank" rel="noreferrer">Danish Khan and colleagues</a></li>
-<li><a href="https://get.classiq.io/quantum-circuit-challenge/" target="_blank" rel="noreferrer">Classiq Quantum Circuit Challenge</a></li>
-<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/" target="_blank" rel="noreferrer">*Why Quantum Circuit Optimization Matters*</a></li>
-<li><a href="https://arxiv.org/abs/2608.27045" target="_blank" rel="noreferrer">PTSET study</a></li>
-<li><a href="https://arxiv.org/abs/2608.26272" target="_blank" rel="noreferrer">Bharti, Haug, and Tanggara</a></li>
-<li><a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html" target="_blank" rel="noreferrer">a CAD 195M Strategic Response Fund investment in Xanadu’s CAD 893M project</a></li>
-<li><a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/" target="_blank" rel="noreferrer">completion of its business combination with Bleichroeder Acquisition Corp. II</a></li>
-<li><a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm" target="_blank" rel="noreferrer">SEC Form 6-K</a></li>
-<li><a href="daily_quantum_brief_2026-08-30.pdf">Download the verified five-page Daily Quantum Brief PDF</a></li>
+          <li><a href="https://arxiv.org/abs/2608.23895v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2608.27045v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2608.26272v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://www.canada.ca/en/innovation-science-economic-development/news/2026/08/government-of-canada-invests-in-xanadu-to-build-up-advanced-quantum-manufacturing-in-canada.html" target="_blank" rel="noreferrer">www.canada.ca</a></li>
+<li><a href="https://www.pasqal.com/newsroom/pasqal-and-bleichroeder-acquisition-corp-ii-complete-business-combination/" target="_blank" rel="noreferrer">www.pasqal.com</a></li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/2119292/000121390026094393/ea0303667-6k_pasqal.htm" target="_blank" rel="noreferrer">www.sec.gov</a></li>
+<li><a href="https://infant83.io/AI_Tech_Review/reviews/2026-08-27_classiq-ashn-circuit-compression/" target="_blank" rel="noreferrer">infant83.io</a></li>
+<li><a href="daily_quantum_brief_2026-08-30.pdf">Download the public five-page edition of the 30 August 2026 briefing</a></li>
         </ul>
       </section>
     </aside>
