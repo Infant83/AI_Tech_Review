@@ -177,6 +177,12 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
                        for name in comparison["content_changes"]
                        if name.startswith("reviews/" + folder + "/")}
             if not changed and folder in baseline["reviews"]:
+                reviewed_changes = {name: hashes for name, hashes in checked_changes.items()
+                                    if name.startswith("reviews/" + folder + "/")}
+                if reviewed_changes and reviewed_article_is_current(stage, current, folder, reviewed_changes):
+                    # Preserve the prior revision's reason and complete HTML/PDF
+                    # hashes when they already bind this unchanged checked output.
+                    continue
                 # A reviewed no-op still needs an output binding so subsequent
                 # metadata-only builds can safely reuse the current article.
                 for name in current["reviews"][folder]["references"]:

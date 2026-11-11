@@ -237,6 +237,113 @@ class PreparePublicationTests(unittest.TestCase):
                                                 baseline_snapshot=self.output / "candidate.json")
         self.assertEqual(later["rebuilt_reviews"], [])
 
+    def test_new_registration_auto_selects_unchanged_review_without_erasing_bilingual_pdf_history(self):
+        review, dist, href = self.review_fixture()
+        prefix = "reviews/" + review.folder + "/"
+        relative_names = ("index.html", "en/index.html", "review_ko.pdf", "en/review_en.pdf")
+        for name in relative_names:
+            for directory, label in ((self.source / prefix, "original"), (dist, "checked")):
+                path = directory / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes((label + " " + name).encode())
+        old_manifest = json.loads((self.source / "manifest.json").read_text())
+        old_manifest[0]["assets"] = ["review_ko.pdf"]
+        old_manifest[0]["translations"] = [{"language": "en", "href": prefix + "en/index.html",
+                                              "assets": ["review_en.pdf"]}]
+        (self.source / "manifest.json").write_text(json.dumps(old_manifest))
+
+        def publish_checked(arguments):
+            self.assertIn(review.folder, arguments)
+            shutil.copytree(dist, publisher.SITE_DIR / prefix, dirs_exist_ok=True)
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder],
+                                      change_reason="Checked bilingual article and PDF revision")
+        declaration_path = self.root / "publication_changes" / (review.folder + ".json")
+        original_declaration = declaration_path.read_bytes()
+        self.assertEqual(set(json.loads(original_declaration)["files"]),
+                         {prefix + name for name in relative_names})
+
+        # A later checkout's committed seed can omit an artifact-only review
+        # from its manifest while its persistent request and live baseline exist.
+        (self.source / "manifest.json").write_text("[]")
+        addition = replace(review, folder="2026-11-08_new-review", title="New checked review")
+        addition_dist = self.root / addition.folder / "dist"
+        addition_dist.mkdir(parents=True)
+        (addition_dist / "index.html").write_text("new checked article")
+        (self.root / "publication/reviews" / (addition.folder + ".json")).write_text(json.dumps({
+            "version": 1, "source_sha256": "0" * 64, "review": asdict(addition)}))
+        addition_href = "reviews/" + addition.folder + "/index.html"
+
+        def publish_both(arguments):
+            self.assertIn(review.folder, arguments)
+            self.assertIn(addition.folder, arguments)
+            shutil.copytree(dist, publisher.SITE_DIR / prefix, dirs_exist_ok=True)
+            new_path = publisher.SITE_DIR / addition_href
+            new_path.parent.mkdir(parents=True, exist_ok=True)
+            new_path.write_bytes((addition_dist / "index.html").read_bytes())
+            (publisher.SITE_DIR / "manifest.json").write_text(json.dumps([
+                *old_manifest, {"folder": addition.folder, "href": addition_href,
+                                "date": addition.date, "assets": [], "translations": []}]))
+            return 0
+
+        with patch.object(publisher, "REVIEWS", (review, addition)), \
+                patch.object(publisher, "main", side_effect=publish_both):
+            baseline = self.output / "candidate.json"
+            for index in range(2):
+                later = self.root / ("new-registration-candidate-" + str(index))
+                report = prepare.prepare_candidate(later, revision="b" * 40,
+                                                    baseline_snapshot=baseline)
+                self.assertEqual(report["rebuilt_reviews"], sorted([review.folder, addition.folder]))
+                self.assertEqual(report["comparison"]["content_changes"], [])
+                self.assertEqual(declaration_path.read_bytes(), original_declaration)
+                for name in relative_names:
+                    self.assertEqual((later / "site" / prefix / name).read_bytes(), (dist / name).read_bytes())
+                baseline = later / "candidate.json"
+        self.assertTrue((self.root / "publication/requests" / (addition.folder + ".json")).is_file())
+        self.assertEqual((self.source / "manifest.json").read_text(), "[]")
+
+    def test_explicit_no_op_replaces_stale_after_binding_with_current_checked_output(self):
+        review, dist, href = self.review_fixture()
+        (dist / "index.html").write_bytes((self.source / href).read_bytes())
+        prepare.write_change_declaration(self.root, review.folder,
+            {href: {"before": "1" * 64, "after": "2" * 64}}, "Earlier revision")
+        with patch.object(publisher, "main", return_value=0):
+            report = prepare.prepare_candidate(self.output, revision="a" * 40,
+                reviews=[review.folder], change_reason="Checked current no-op")
+        expected = hashlib.sha256((dist / "index.html").read_bytes()).hexdigest()
+        declaration = json.loads((self.root / "publication_changes" / (review.folder + ".json")).read_text())
+        self.assertEqual(report["comparison"]["content_changes"], [])
+        self.assertEqual(declaration, {"version": 1, "reason": "Checked current no-op",
+                                      "files": {href: {"before": expected, "after": expected}}})
+        with patch.object(publisher, "main", return_value=0) as build:
+            later = prepare.prepare_candidate(self.root / "stale-binding-metadata-candidate",
+                revision="b" * 40, baseline_snapshot=self.output / "candidate.json")
+        self.assertEqual(later["rebuilt_reviews"], [])
+        self.assertNotIn(review.folder, build.call_args.args[0])
+
+    def test_later_real_revision_records_new_baseline_hashes_and_reason(self):
+        review, dist, href = self.review_fixture()
+
+        def publish_checked(arguments):
+            (publisher.SITE_DIR / href).write_bytes((dist / "index.html").read_bytes())
+            return 0
+
+        with patch.object(publisher, "main", side_effect=publish_checked):
+            prepare.prepare_candidate(self.output, revision="a" * 40, reviews=[review.folder],
+                                      change_reason="First checked revision")
+            previous = hashlib.sha256((dist / "index.html").read_bytes()).hexdigest()
+            (dist / "index.html").write_text("second checked scientific revision")
+            report = prepare.prepare_candidate(self.root / "second-real-revision", revision="b" * 40,
+                reviews=[review.folder], baseline_snapshot=self.output / "candidate.json",
+                change_reason="Second checked revision")
+        current = hashlib.sha256((dist / "index.html").read_bytes()).hexdigest()
+        declaration = json.loads((self.root / "publication_changes" / (review.folder + ".json")).read_text())
+        self.assertEqual(report["comparison"]["content_changes"], [href])
+        self.assertEqual(declaration, {"version": 1, "reason": "Second checked revision",
+                                      "files": {href: {"before": previous, "after": current}}})
+
     def test_new_review_with_no_existing_after_hashes_can_publish(self):
         review, dist, href = self.review_fixture()
         manifest = (self.source / "manifest.json").read_text()
