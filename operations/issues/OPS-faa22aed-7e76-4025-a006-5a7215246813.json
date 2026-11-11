@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "OPS-faa22aed-7e76-4025-a006-5a7215246813",
+  "uuid": "faa22aed-7e76-4025-a006-5a7215246813",
+  "record_version": 1,
+  "title": "낡은 공개 seed에서 재빌드할 때 같은 판본의 갱신시각이 다시 생성됨",
+  "type": "publication_recency",
+  "created_at": "2026-11-11T18:08:14Z",
+  "updated_at": "2026-11-11T18:08:14Z",
+  "status": "planned",
+  "priority": "P2",
+  "source": {
+    "kind": "기존 운영 관찰의 독립 원인 재현",
+    "reference": "operations/runs/20261111T124556Z-0007f0a7-0764-48c2-8646-0ceb2cb7fa59.md",
+    "summary": "직전 두 배포에서 같은 6개 글의 updatedAt만 빌드 시각으로 달랐던 관찰을 재사용한다. 현재 출력은 같아도 이전값으로 낡은 tracked seed를 읽으면 같은 시각이 반복 재생됨을 독립 재현했다."
+  },
+  "affected": {
+    "publication_ids": [
+      "2026-08-28_weekly-oled-inverse-design-mechanism-aware-labels",
+      "2026-08-29_quantum-simulation-vibronic-dynamics",
+      "2026-08-30_practical-quantum-computing-stack",
+      "2026-11-06_machine-learning-force-fields",
+      "lecture:2026-10-20-quantum-machine-learning-lecture-notes-ko",
+      "lecture:2026-11-05-classiq-qae-l003-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/reader-updates.json"
+    ],
+    "source_paths": [
+      "scripts/reader_engagement_publish.py",
+      "scripts/prepare_publication.py",
+      ".automation/reader-engagement/frontend/reader-updates.js"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "a955c41055d00e606e0b90e619b170cccb5ec7a2",
+    "environment": {
+      "device": null,
+      "operating_system": "로컬 Python 읽기 재현; 공개 HTTPS",
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "실제 release에 reader-updates.json의 원시 SHA를 대조하고 같은 공개 판본이 유지됨을 확인한다.",
+      "동일한 최종 후보와 tracked seed의 이전 기록133건으로 now만 다르게 build_updates를 두 번 실행한다.",
+      "같은 최종 후보와 실제 공개의 검증된 이전 기록143건을 연결해 별도 now에서 실행한다."
+    ],
+    "expected": "실제 공개 판본과 같은 완전한 글의 갱신시각은 일반 재빌드로 바뀌지 않는다. 실제 내용 개정과 새 글은 기존 규칙으로 구별된다.",
+    "actual": "seed 입력에서는 기존6개 ID의 updatedAt만 각 고정 now로 바뀌고 pages·revision·기타 필드는 불변이다. 검증된 공개 기록을 previous로 주면 전체 결과가 현재 공개 기록과 같다. enrich_site는 stage의 seed recency를 읽으며 실제 baseline snapshot은 이 이전값 전달에 사용되지 않는다."
+  },
+  "evidence": [
+    "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
+    "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181"
+  ],
+  "limitations": [
+    "확인된 프런트 영향은 미열람 글의 7일 업데이트 표시 기간이 연장되는 것이다. 같은 revision을 이미 읽은 글의 읽음 초기화·푸시 재발송·OS 배지 증가를 재현한 것은 아니다.",
+    "이번에는 원인 재현만 했으며 제품 코드·후보·배포는 바꾸지 않았다.",
+    "검증된 이전값 전달은 같은 판본 재생을 막는 설계다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 개정 시각 복원은 별도 문제다."
+  ],
+  "policy_decision": {
+    "state": "기존 반복 관찰에 근거한 기술 후속 채택",
+    "rationale": "현재 제호·seed 재생의 이전 일감은 해결 상태를 보존하고, 별도 원인의 갱신시각 반복을 이 후속에서 처리한다. 과학 본문과 글별 개정·읽음 identity를 임의 변경하지 않는다.",
+    "related_issues": [
+      "OPS-79b80bf3-b847-485a-9f60-3cd663e5b433",
+      "OPS-58a4237a-48d8-40da-af30-4b0edc80c943"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "검증된 실제 이전값 전달 후보의 구현·보존 검사 시"
+  },
+  "authority": {
+    "basis": "사용자의 지속 운영·게시 정합성 개선 권한",
+    "current_scope": "갱신 메타데이터의 읽기 원인 재현과 최소 수정 후보 설계. 본문·PDF·알림 구독·개인 필기·계정은 보존한다.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT)",
+  "acceptance_criteria": [
+    "같은 최종 글·실제 배포 판본은 일반 재빌드에서도 updatedAt·change·revision을 보존한다.",
+    "실제 이전 release에 결속한 metadata bytes·SHA·schema·크기를 확인하고 낡은 seed로 조용히 대체하지 않는다.",
+    "현재 content revision 계산·새 글/실제 개정·정확한 display migration 조건을 유지한다. 이전 레코드를 무조건 복사해 실제 개정을 숨기지 않는다.",
+    "검증 실패·판본 경합·명시적 로컬 baseline의 동작을 분리하고 기존 게시/연속성 검사를 보존한다.",
+    "실제 개정의 시각 결정성까지 해결했다고 주장하지 않으며 원본·ID·PDF·읽음·알림 연결과 일반 게시 권한을 보존한다."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": null,
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "동일 최종 자산·서로 다른 now의 읽기 재현 및 독립 재실행 통과; 수정/후보/배포 전",
+    "checks": [
+      "seed133건→최종143건의 공통 revision 차이7건 중 기존6건이 updatedAt만 재생됨; 기존 display migration이 적용된 D-Wave는 별도 보존",
+      "동일 final site+검증된 공개 previous에서 pages·전체143건의 완전 일치",
+      "현재 공개 release/catalog a955c410·70글과 reader3자산 정규해시 일치"
+    ],
+    "evidence": [
+      "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md"
+    ],
+    "remaining_limits": [
+      "수정 후보·회귀 검사는 다음 실행에서 진행한다. 실제 기기와 개인 DB/구독 시험은 수행하지 않았다."
+    ]
+  },
+  "observation": {
+    "status": "기존 반복 현상의 입력 원인 확인",
+    "period": "2026-11-11T18:05:54Z~18:06:02Z 및 독립 재현",
+    "result": "공개 소스나 PDF가 새로 바뀐 증거가 아니라 이전 seed와 현재 출력 판본 차이로 갱신시각 분기가 반복된다."
+  },
+  "recovery": {
+    "plan_reference": "PUBLICATION_WORKFLOW.md",
+    "execution_reference": null,
+    "result": "이번에는 제품 코드·배포·DB 변경이나 실제 롤백 없음. 후속 수정은 최신 게시물을 보존하는 기존 단일 경로에서 검증한다."
+  },
+  "next_action": "실제 공개 release와 결속해 검증한 이전 reader-updates를 후보 생성에 전달하는 최소 설계를 준비한다. 검증 실패·오래된 seed·실제 개정·새 ID·명시적 로컬 baseline·display migration 경계를 작은 fixture로 먼저 검사하고 기존 보존·배포 절차에 연결한다."
+}
