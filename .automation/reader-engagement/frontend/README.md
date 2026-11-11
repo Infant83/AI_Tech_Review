@@ -133,7 +133,7 @@ A compact view-count, like and share row follows the article's first `h1`, inclu
 
 ## Fresh pages and recent content cues
 
-Notification taps navigate even an already-open matching client to a fresh, scoped URL before focusing it. A transient `_atr_refresh` parameter avoids cached HTML and is removed after loading; canonical/share URLs remain clean. Worker registration uses `updateViaCache: none`. The worker still does not intercept fetches or store article responses.
+Notification taps navigate even an already-open matching client to a fresh, scoped URL before focusing it. A transient `_atr_refresh` parameter avoids cached HTML and is removed after loading on ordinary article pages; canonical/share URLs remain clean. Worker registration uses `updateViaCache: none`. The worker still does not intercept fetches or store article responses.
 
 PDF lecture alerts open `lectures/reader/?id=<document-id>` so the existing Lecture notes link and listing's brand link lead back to ATRL. The backend's native fallback, worker display/click and recent-alert links use this destination only for a matching `lecture:` identity and canonical lowercase-hyphen PDF filename. History, catalog identity and successful-render read acknowledgements retain the canonical PDF URL. Notification-center recovery recognizes either the original PDF or a matching single-ID reader URL, preserving title/tag validation, deduplication and observed timestamps. Web lectures and review links are unchanged. Very old alerts without an article identity and an OS PDF viewer already opened cannot be retroactively given site controls; no fetch redirect, PDF rewrite, resend or subscription reset is used.
 
