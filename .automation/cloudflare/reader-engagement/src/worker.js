@@ -338,7 +338,10 @@ export async function deliver(env,eventId,deviceId,transport=fetch) {
   let response;
   try {
     const subscription = pushSubscription({endpoint:sub.endpoint,expirationTime:sub.expiration_time,keys:{p256dh:sub.p256dh,auth:sub.auth}});
-    const payload = {title:event.title,body:event.body,url:`${SITE_ORIGIN}${event.path}`,articleId:event.article_id,tag:event.id};
+    const url = `${SITE_ORIGIN}${event.path}`;
+    const payload = {title:event.title,body:event.body,url,articleId:event.article_id,tag:event.id,
+      web_push:8030,notification:{title:event.title,body:event.body,navigate:url,tag:event.id,
+        icon:`${SITE_ORIGIN}${SITE_ROOT}assets/apple-touch-icon.png`}};
     response = await transport(new Request(await webPushRequest(subscription,payload,env),{signal:AbortSignal.timeout(10_000)}));
     await response.body?.cancel();
   } catch {

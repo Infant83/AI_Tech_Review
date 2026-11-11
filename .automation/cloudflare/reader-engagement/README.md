@@ -301,6 +301,8 @@ GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revisi
 
 한 fanout 작업은 주제에 맞는 기존 구독 최대 20개를 cursor로 읽고, 실제 암호화·발송은 기기당 Queue 작업 하나씩 수행한다. fanout 이후 새로 가입한 구독에는 과거 새 글 알림을 보내지 않는다. 기기가 탈퇴·endpoint 변경·주제 해제를 하면 대기 중인 작업도 발송 직전에 다시 확인한다.
 
+전송 payload에는 기존 `title/body/url/articleId/tag`와 같은 내용을 `web_push:8030`·`notification`의 선언형 설명에도 담는다. [iOS/iPadOS18.4 이상의 홈 화면 앱](https://webkit.org/blog/16574/webkit-features-in-safari-18-4/)에서는 지원 브라우저가 SW의 표시 처리가 실패하거나 지연될 때 이 설명으로 fallback 알림을 표시할 수 있다. 기존 구독·키·SW scope를 유지하고, 구형 SW가 읽는 flat 필드와 구형 브라우저의 기존 Web Push 경로도 보존한다. 형식과 점진 적용은 [WebKit의 호환성 안내](https://webkit.org/blog/16535/meet-declarative-web-push/)를 따른다. 서버는 기기의 로컬 미확인 개수를 모르므로 `app_badge`를 보내지 않는다. SW가 해당 건을 처리하지 못한 fallback에서는 그 알림의 로컬 최근 수신 기록이나 배지 갱신이 없을 수 있다. 서버 수락·fallback 지원은 실제 기기 도착·OS 표시를 보장하지 않으며, 원래 미수신 원인과 실기기 개선 효과는 별도 확인한다.
+
 D1 outbox가 원본이며 Queue 메시지에는 이벤트·기기 식별자만 들어간다. 발행 이벤트/기기 복합키와 lease로 중복·동시 처리를 억제한다. 성공은 `sent`, 404/410은 구독 정리, 429/5xx/일부 인증 오류는 최대 여섯 번 지연 재시도한다. 10분 Cron은 큐 유실·lease 만료·미완료 fanout을 복구한다. 10초 네트워크 시간 제한이 있어 2분 lease보다 먼저 요청이 끝난다.
 
 외부 푸시 제공자가 수락한 직후 Worker가 중단되면 DB에 `sent`를 기록하기 전에 재시도할 수 있다. 외부 전송의 exactly-once는 보장하지 않는다. 같은 이벤트의 안정적인 notification tag와 outbox 상태로 중복 표시를 줄인다. OS의 알림 설정·집중 모드·네트워크 상태에 따라 실제 표시가 지연되거나 차단될 수 있다.

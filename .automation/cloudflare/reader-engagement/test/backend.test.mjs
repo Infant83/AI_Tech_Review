@@ -383,6 +383,89 @@ test('immediate test delivery targets its requester without resending a complete
     .bind(article.id,current.id).first(),completed);
 });
 
+test('article and requested test deliveries encrypt matching legacy and declarative fallback content',async t => {
+  const f=await fixture(t);
+  const current=await f.register();
+  const browser=browserSubscription('declarative-fallback-requester');
+  await f.request('/v1/subscription',{method:'PUT',cookie:current.cookie,
+    body:{subscription:browser.subscription,topics:['review']}});
+  const article=await newEvent(f);
+  await fanout(f.env,article.id);
+  const response=await worker.fetch(new Request(`${API}/v1/subscription/test`,{
+    method:'POST',headers:{Origin:ORIGIN,Cookie:current.cookie,'Content-Type':'application/json'},body:'{}',
+  }),f.env);
+  assert.equal(response.status,202);
+  const testEvent=await f.db.prepare("SELECT * FROM publication_events WHERE kind='test'").first();
+  const received=[];
+  const transport=async request => {
+    const plaintext=ece.decrypt(Buffer.from(await request.arrayBuffer()),{
+      version:'aes128gcm',privateKey:browser.client,authSecret:browser.auth});
+    received.push({endpoint:request.url,payload:JSON.parse(plaintext.toString()),
+      ttl:request.headers.get('TTL'),urgency:request.headers.get('Urgency'),
+      topic:request.headers.get('Topic'),encoding:request.headers.get('Content-Encoding')});
+    return new Response(null,{status:201});
+  };
+  const events=[article,testEvent];
+  for(const event of events) await deliver(f.env,event.id,current.id,transport);
+  assert.equal(received.length,2);
+  for(const [index,event] of events.entries()) {
+    const result=received[index],url=`${ORIGIN}${event.path}`;
+    assert.equal(result.endpoint,browser.subscription.endpoint);
+    assert.equal(result.ttl,'86400');
+    assert.equal(result.urgency,'high');
+    assert.equal(result.topic,event.id.replace(/[^A-Za-z0-9_-]/g,'').slice(0,32));
+    assert.equal(result.encoding,'aes128gcm');
+    assert.deepEqual(result.payload,{title:event.title,body:event.body,url,
+      articleId:event.article_id,tag:event.id,web_push:8030,
+      notification:{title:event.title,body:event.body,navigate:url,tag:event.id,
+        icon:`${ORIGIN}/AI_Tech_Review/assets/apple-touch-icon.png`}});
+    for(const field of ['app_badge','silent','renotify']) {
+      assert.equal(Object.hasOwn(result.payload,field),false);
+      assert.equal(Object.hasOwn(result.payload.notification,field),false);
+    }
+    const encoded=JSON.stringify(result.payload);
+    for(const secret of [f.env.VAPID_PRIVATE_KEY,f.env.READER_PUBLISH_TOKEN,current.cookie,
+      browser.subscription.endpoint,browser.subscription.keys.p256dh,browser.subscription.keys.auth]) {
+      assert.equal(encoded.includes(secret),false);
+    }
+  }
+});
+
+test('maximum multilingual titles and longest review/PDF paths fit encrypted declarative deliveries',async t => {
+  const f=await fixture(t);
+  const subscriber=await seedSubscriber(f,1,['review','lecture']);
+  const identifier='a'.repeat(180),title='한漢あ'.repeat(80);
+  assert.equal(title.length,240);
+  assert.equal(Buffer.byteLength(title),720);
+  await f.sync();
+  const response=await f.sync({revision:revision('b'),articles:[item(),
+    {...item(identifier),title},
+    {...item(identifier,'lecture'),title,path:`/AI_Tech_Review/archive/files/${identifier}.pdf`},
+  ]});
+  assert.equal(response.status,200);
+  assert.equal((await response.json()).newArticles,2);
+  const events=(await f.db.prepare('SELECT * FROM publication_events ORDER BY topic').all()).results;
+  const sizes=[];
+  for(const event of events) {
+    await fanout(f.env,event.id);
+    await deliver(f.env,event.id,subscriber.id,async request => {
+      const encrypted=Buffer.from(await request.arrayBuffer());
+      const plaintext=ece.decrypt(encrypted,{version:'aes128gcm',
+        privateKey:subscriber.client,authSecret:subscriber.auth});
+      const payload=JSON.parse(plaintext.toString());
+      assert.equal(payload.title,title);
+      assert.equal(payload.notification.title,title);
+      assert.equal(payload.url,`${ORIGIN}${event.path}`);
+      assert.equal(payload.notification.navigate,payload.url);
+      assert.equal(payload.articleId,event.article_id);
+      sizes.push({plaintext:plaintext.length,encrypted:encrypted.length});
+      return new Response(null,{status:201});
+    });
+  }
+  assert.equal(sizes.length,2);
+  assert.ok(sizes.every(size=>size.plaintext<=3000 && size.encrypted<4096),JSON.stringify(sizes));
+});
+
 test('queue consumer acknowledges terminal/successful messages without retrying a whole batch',async t => {
   const f=await fixture(t);
   let acknowledgements=0,retries=0;
