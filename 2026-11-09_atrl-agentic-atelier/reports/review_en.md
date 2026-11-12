@@ -266,3 +266,6 @@ Revision 26, prepared on 12 November 2026, integrates the harness, loop and grap
 
 
 Revision 27, prepared on 12 November 2026, links AI_Tech_Review in reference [4] to its GitHub repository and retains the existing snapshot commit as a separate link in the same entry. The repository and absence of a recommended citation file were rechecked, and the access date updated. Existing body text, figures, citation numbers and the observation cutoff are retained.
+
+
+Revision 28, prepared on 12 November 2026, separates the dates of the editorial/checking base method (2026.08), applied supplements (6 and 11 November), November organizational/operational sources and current manuscript edition in the production disclosure. The original issue date and first publication, existing body, references, figures, numerical conditions and earlier authoring history are retained.

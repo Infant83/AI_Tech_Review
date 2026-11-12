@@ -40,6 +40,25 @@ ICON_SOURCE_DIR = ROOT / ".automation" / "assets" / "ai-tech-review-icon" / "gen
 EDITORIAL_HARNESS_NAME = "AI Tech Review Editorial Harness"
 EDITORIAL_HARNESS_VERSION = "2026.08"
 EDITORIAL_METHODS_HREF = "methods/"
+METHOD_VERSION_DISCLOSURE_LABELS = {
+    "en": (
+        "Editorial/checking method",
+        "Applied supplements",
+        "Atelier organization/operations",
+        "Current manuscript",
+    ),
+    "ko": (
+        "편집·검수 방법서 기본판",
+        "이번에 적용한 보완",
+        "공방 조직·운영 근거",
+        "이번 원고 판본",
+    ),
+}
+METHOD_VERSION_FIELD_NAMES = frozenset(
+    label.casefold()
+    for labels in METHOD_VERSION_DISCLOSURE_LABELS.values()
+    for label in labels
+)
 
 
 @dataclass(frozen=True)
@@ -436,7 +455,14 @@ class DisclosureMetadataParser(HTMLParser):
     def handle_endtag(self, tag: str) -> None:
         tag = tag.lower()
         if self._section_depth and tag == self._capture:
-            value = " ".join(" ".join(self._parts).split())
+            # Inline reference links split text nodes; do not add spaces before
+            # their punctuation in explicit version records. Legacy fields keep
+            # their established normalization and rendered bytes.
+            separator = (
+                "" if tag == "dd" and self._current_term.casefold() in METHOD_VERSION_FIELD_NAMES
+                else " "
+            )
+            value = " ".join(separator.join(self._parts).split())
             if tag == "dt":
                 self._current_term = value
             elif self._current_term:
@@ -1263,11 +1289,93 @@ def historical_disclosure_value(
     return ""
 
 
+def explicit_method_version_fields(
+    fields: dict[str, str] | None,
+    language: str,
+) -> tuple[tuple[str, str], ...]:
+    """Use an explicitly recorded edition set without inventing missing dates."""
+    labels = METHOD_VERSION_DISCLOSURE_LABELS[
+        "en" if language.lower().startswith("en") else "ko"
+    ]
+    recorded = tuple(
+        (label, historical_disclosure_value(fields, (label,))) for label in labels
+    )
+    return recorded if all(value for _, value in recorded) else ()
+
+
+def render_method_version_rows(
+    language: str,
+    methods_href: str,
+    historical_fields: dict[str, str] | None = None,
+    historical_links: dict[str, list[str]] | None = None,
+) -> str:
+    is_english = language.lower().startswith("en")
+    methods_url = html.escape(methods_href, quote=True)
+    recorded = explicit_method_version_fields(historical_fields, language)
+    if not recorded:
+        label = "Editorial harness" if is_english else "편집 하네스"
+        link_label = "public method" if is_english else "공개 방법서"
+        return (
+            f'          <div><dt>{label}</dt><dd>{html.escape(EDITORIAL_HARNESS_NAME)} '
+            f'v{html.escape(EDITORIAL_HARNESS_VERSION)} · '
+            f'<a href="{methods_url}">{link_label}</a></dd></div>'
+        )
+
+    rows = []
+    for index, (label, value) in enumerate(recorded):
+        observed_links = {
+            href
+            for field, links in (historical_links or {}).items()
+            if field.casefold() == label.casefold()
+            for href in links
+        }
+        if index == 0:
+            link_label = "public method" if is_english else "공개 방법서"
+            generated_suffix = " · " + link_label
+            public_method_urls = {
+                f"{base}{EDITORIAL_METHODS_HREF}".rstrip("/")
+                for base in (PUBLIC_BASE_URL, HUB_PUBLIC_URL)
+            }
+            has_recorded_method_link = any(
+                href.rstrip("/") in public_method_urls
+                or (
+                    href == methods_href
+                    and re.fullmatch(r"(?:\.\./)*methods(?:/index\.html|/)?", href)
+                )
+                for href in observed_links
+            )
+            # A refreshed public page already contains our generated method
+            # suffix. Normalize exactly that suffix only when a valid method
+            # link was actually recorded, then add one current link below.
+            if has_recorded_method_link and value.endswith(generated_suffix):
+                value = value[:-len(generated_suffix)]
+        safe_value = html.escape(value)
+        # Preserve only references actually linked in this source field. Other
+        # HTML and link targets are never copied from the removed disclosure.
+        source_links = {
+            href for href in observed_links if re.fullmatch(r"#ref-[1-9][0-9]*", href)
+        }
+
+        def link_recorded_reference(match: re.Match[str]) -> str:
+            target = "#ref-" + match.group(1)
+            if target not in source_links:
+                return match.group(0)
+            return f'<a href="{target}">{match.group(0)}</a>'
+
+        safe_value = re.sub(r"\[([1-9][0-9]*)\]", link_recorded_reference, safe_value)
+        if index == 0:
+            link_label = "public method" if is_english else "공개 방법서"
+            safe_value += f' · <a href="{methods_url}">{link_label}</a>'
+        rows.append(f'          <div><dt>{label}</dt><dd>{safe_value}</dd></div>')
+    return "\n".join(rows)
+
+
 def render_authoring_disclosure(
     review: PublicReview,
     language: str,
     methods_href: str,
     historical_fields: dict[str, str] | None = None,
+    historical_links: dict[str, list[str]] | None = None,
 ) -> tuple[str, str]:
     is_english = language.lower().startswith("en")
     editor = review.responsible_editor_en if is_english else review.responsible_editor
@@ -1328,6 +1436,9 @@ def render_authoring_disclosure(
         else "원 작성 세션 검증 기록 미보존"
     )
     methods_url = html.escape(methods_href, quote=True)
+    method_rows = render_method_version_rows(
+        language, methods_href, historical_fields, historical_links,
+    )
 
     if is_english:
         strip = (
@@ -1345,7 +1456,7 @@ def render_authoring_disclosure(
           <div><dt>Responsible editor</dt><dd>{html.escape(editor)}</dd></div>
           <div><dt>AI system</dt><dd>{html.escape(system_text)}</dd></div>
           <div><dt>Verifiable agent roles</dt><dd>{html.escape(role_text)}</dd></div>
-          <div><dt>Editorial harness</dt><dd>{html.escape(EDITORIAL_HARNESS_NAME)} v{html.escape(EDITORIAL_HARNESS_VERSION)} · <a href="{methods_url}">public method</a></dd></div>
+{method_rows}
           <div><dt>Verification scope</dt><dd>{html.escape(scope_text)}</dd></div>
           <div><dt>Human review record</dt><dd>{html.escape(human_review_level)}</dd></div>
           <div><dt>Evidence cutoff</dt><dd>{html.escape(cutoff)}</dd></div>
@@ -1370,7 +1481,7 @@ def render_authoring_disclosure(
           <div><dt>책임 편집자</dt><dd>{html.escape(editor)}</dd></div>
           <div><dt>AI 시스템</dt><dd>{html.escape(system_text)}</dd></div>
           <div><dt>확인 가능한 에이전트 역할</dt><dd>{html.escape(role_text)}</dd></div>
-          <div><dt>편집 하네스</dt><dd>{html.escape(EDITORIAL_HARNESS_NAME)} v{html.escape(EDITORIAL_HARNESS_VERSION)} · <a href="{methods_url}">공개 방법서</a></dd></div>
+{method_rows}
           <div><dt>검증 범위</dt><dd>{html.escape(scope_text)}</dd></div>
           <div><dt>사람 검토 기록</dt><dd>{html.escape(human_review_level)}</dd></div>
           <div><dt>근거 기준일</dt><dd>{html.escape(cutoff)}</dd></div>
@@ -1433,11 +1544,13 @@ def inject_review_navigation_and_disclosure(
         )
     )
     historical_fields: dict[str, str] | None = None
+    historical_links: dict[str, list[str]] | None = None
     removed_ids: set[str] = set()
     if marked_disclosure:
         historical = DisclosureMetadataParser()
         historical.feed(marked_disclosure.group(0))
         historical_fields = historical.fields
+        historical_links = historical.field_links
         removed_ids = set(
             re.findall(
                 r'\bid=["\']([^"\']+)["\']',
@@ -1486,6 +1599,7 @@ def inject_review_navigation_and_disclosure(
         language,
         methods_href,
         historical_fields,
+        historical_links,
     )
     with_strip = re.sub(
         r'(<main class="content-grid">)',
@@ -2553,10 +2667,15 @@ def validate_disclosure(review_index: Path, text: str) -> list[str]:
     errors: list[str] = []
     disclosure = DisclosureMetadataParser()
     disclosure.feed(text)
+    explicit_method_labels = tuple(
+        recorded[0][0]
+        for language in ("en", "ko")
+        if (recorded := explicit_method_version_fields(disclosure.fields, language))
+    )
     required_fields = {
         "responsible editor": ("Responsible editor", "책임 편집자"),
         "AI system": ("AI system", "AI 시스템"),
-        "editorial harness": ("Editorial harness", "편집 하네스"),
+        "editorial harness": ("Editorial harness", "편집 하네스", *explicit_method_labels),
         "evidence cutoff": ("Evidence cutoff", "근거 기준일"),
     }
     observed: dict[str, tuple[str, str]] = {}

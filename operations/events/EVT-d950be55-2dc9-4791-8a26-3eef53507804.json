@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "id": "EVT-d950be55-2dc9-4791-8a26-3eef53507804",
+  "issue_id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
+  "created_at": "2026-11-12T02:41:18Z",
+  "base_record_version": 2,
+  "status": "validating",
+  "affected": {
+    "publication_ids": [
+      "2026-11-09_atrl-agentic-atelier"
+    ],
+    "source_paths": [
+      "scripts/publish_public_site.py",
+      "2026-11-09_atrl-agentic-atelier/dist/index.html",
+      "2026-11-09_atrl-agentic-atelier/dist/en/index.html"
+    ]
+  },
+  "observation": "ATRL 원고 개정 28의 한영 출판 원본에는 편집·검수 방법서 기본판, 이번 적용 보완, 공방 조직·운영 근거, 현재 원고 판본의 네 항목이 각각 존재한다. 독립 후보 검수에서 공통 게시기가 이를 단일 편집 하네스 v2026.08 행으로 바꾸는 것을 확인했다. 본래 네 시점의 설명은 긴 검증 이력과 하단 주석에만 남아 주요 필드에서 구분되지 않았다. 공통 render_authoring_disclosure가 이미 파싱한 원본 작성정보의 네 명시적 필드를 출력에 전달하지 않는 경로가 원인이다.",
+  "expected": "명시적으로 검증한 네 필드가 있는 글은 실제 공개 웹에서도 방법서 기본판·적용 보완·조직 및 운영 근거의 정비·확인 시점·현재 원고 판본을 별도 항목으로 표시한다. 기본판 2026.08을 전체 공방의 현재 버전으로 확장하지 않는다.",
+  "implementation_scope": "완전한 한영 네 필드 묶음이 출판 원본에 있을 때 공통 방법서 한 행을 네 행으로 보존하도록 구현했다. 각 값은 HTML 이스케이프하고, 원본의 해당 필드에서 실제 관찰한 #ref-N 링크만 복원하며 방법서 링크는 기존 허용 경로를 사용한다. 일반·부분 누락 원고의 기존 출력과 필수 공개 정보·방법서 URL 검증은 유지했다. 같은 공개 페이지를 다시 처리할 때는 실제로 관찰된 정상 방법서 링크와 정확한 생성 접미문만 정규화해 링크 문구를 한 번만 덧붙인다. 정상 링크 없이 저자가 쓴 같은 문구는 지우지 않는다.",
+  "evidence": [
+    "scripts/publish_public_site.py:DisclosureMetadataParser",
+    "scripts/publish_public_site.py:render_authoring_disclosure",
+    "2026-11-09_atrl-agentic-atelier/artifacts/publication-output-manifest.json",
+    "2026-11-09_atrl-agentic-atelier/artifacts/publication-verification.json",
+    "scripts/publish_public_site.py:render_method_version_rows",
+    "tests/test_authoring_version_disclosure.py"
+  ],
+  "verification": {
+    "status": "코드 및 회귀 검사 통과; 독립 후보·실제 공개 검수 대기, 아직 배포하지 않음",
+    "confirmed": [
+      "한영 출판 원본의 네 dt 항목 존재를 읽기 전용으로 확인했다.",
+      "독립 후보 브라우저 검수에서 공통 방법서 한 행으로 바뀌는 증상이 확인되었다.",
+      "완전한 한영 네 필드 보존, 부분 누락·공백 시 기존 양식, HTML 및 링크 이스케이프, 필수 공개 정보와 방법서 URL 규칙의 새 회귀 검사 6개가 통과했다.",
+      "기존 공통 게시기 관련 검사 30개가 통과했다.",
+      "같은 현재 등록정보로 변경 전·후 코드를 비교한 200개 렌더 중 기본 출력 100개와 관련 없는 출판 원본 출력 98개가 바이트 동일하다. 변경된 두 출력은 ATRL 한영 원본의 명시적 네 필드뿐이다.",
+      "한영 실제 출판 원본을 공개 변환한 뒤 두 번 더 처리해도 네 필드·링크와 작성 정보 전체 내용이 동일하다. 반복 처리 검사에는 현재·이전 공식 도메인과 한국어·영문 상대경로, 정상 방법서 링크 없는 저술 문구 보존을 포함했다."
+    ],
+    "remaining": [
+      "재생성 후보의 독립 한영 모바일 및 PC 판독",
+      "배포 담당의 실제 HTTPS 공개 확인과 기존 기사·PDF·아카이브 연속성 확인"
+    ]
+  },
+  "limitations": [
+    "후보에서 발견한 게시 변환 결함이며, 이 이벤트는 새 코드의 배포나 운영 해결 완료를 뜻하지 않는다.",
+    "기존 넓은 일감의 글별 지침 해시·실제 적용 추적 계약 전체를 해결한 것으로 간주하지 않는다."
+  ],
+  "proposed_next_action": "통합 담당이 같은 PDF·출판 원본으로 후보를 다시 생성하고 독립 화면 검수와 실제 공개 웹의 네 항목을 확인한다. 해당 출판 검증·CI·배포 기록을 이 기존 일감에 연결하며, 기존 넓은 추적 과제와 정기 일정은 유지한다."
+}
