@@ -18,6 +18,10 @@ except ImportError:
     from reader_engagement_publish import validate_public_artifact
 
 
+def worker_manifest_bytes(manifest: dict) -> bytes:
+    return ("export default " + json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + ";\n").encode("utf-8")
+
+
 def export_media(site: Path, output: Path, *, validate=True) -> dict:
     site, output = Path(site), Path(output)
     if output.is_symlink() or output.exists():
@@ -52,7 +56,7 @@ def export_media(site: Path, output: Path, *, validate=True) -> dict:
     source = Path(__file__).resolve().parents[1] / ".automation/cloudflare/public-media"
     for name in ("worker.mjs", "serve.mjs", "wrangler.example.jsonc"):
         shutil.copyfile(source / name, worker / name)
-    (worker / "manifest.mjs").write_text("export default " + json.dumps(manifest, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
+    (worker / "manifest.mjs").write_bytes(worker_manifest_bytes(manifest))
     report = {"version": 1, "status": "export_only_no_live_changes", "pdf_aliases": len(manifest["aliases"]),
               "unique_objects": len(manifest["objects"]),
               "local_pdf_bytes": sum(snapshot["files"][name]["bytes"] for name in snapshot["files"] if name.endswith(".pdf")),
@@ -62,9 +66,19 @@ def export_media(site: Path, output: Path, *, validate=True) -> dict:
 
 
 def verify_export(output: Path) -> dict:
-    manifest = json.loads((output / "media-manifest.json").read_text())
+    output = Path(output)
+    source = output / "media-manifest.json"
+    worker = output / "worker"
+    generated = worker / "manifest.mjs"
+    if (output.is_symlink() or source.is_symlink() or not source.is_file()
+            or worker.is_symlink() or not worker.is_dir()
+            or generated.is_symlink() or not generated.is_file()):
+        raise ValueError("Media manifests must be regular files in the export")
+    manifest = json.loads(source.read_text(encoding="utf-8"))
     if manifest.get("version") != 1:
         raise ValueError("Unknown media manifest")
+    if generated.read_bytes() != worker_manifest_bytes(manifest):
+        raise ValueError("Worker media manifest differs from the verified export")
     for key, row in manifest["objects"].items():
         digest = row["sha256"]
         if key != f"pdf/sha256/{digest[:2]}/{digest}.pdf" or len(digest) != 64 or any(c not in "abcdef0123456789" for c in digest):
