@@ -1,5 +1,5 @@
 {
-  "status": "candidate_verified_awaiting_production_deployment",
+  "status": "published_and_live_verified",
   "date": "2026-11-12",
   "base_commit": "9302037c75b98b8412237383d98d78d5628153c7",
   "integrated_remote_revision": "6adadfccc59f3f7cbcedabb4b568a06e7eed3a9d",
@@ -76,5 +76,378 @@
     "XY published PDF unavailable; cutoff-valid v2 used.",
     "No scientific solver/device/experiment rerun.",
     "Metrics configuration preservation is not a live aggregation-API health test."
-  ]
+  ],
+  "publication_commit": "fcf64a5ccf8bf769e237c9f6303bb9da252f52d3",
+  "verified_at": "2026-11-12T01:43:36.137009+00:00",
+  "workflow_run": 43135366198,
+  "workflow_attempt": 1,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43135366198",
+  "ci": {
+    "head_revision_verified": true,
+    "all_four_jobs_success": true,
+    "jobs": [
+      {
+        "name": "build",
+        "job_id": 130909307742,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-12T01:33:59Z",
+        "completed_at": "2026-11-12T01:38:20Z",
+        "duration_seconds": 261,
+        "steps_success": 24,
+        "steps_skipped": 0,
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43135366198/job/130909307742"
+      },
+      {
+        "name": "deploy",
+        "job_id": 130910947778,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-12T01:38:25Z",
+        "completed_at": "2026-11-12T01:38:50Z",
+        "duration_seconds": 25,
+        "steps_success": 4,
+        "steps_skipped": 0,
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43135366198/job/130910947778"
+      },
+      {
+        "name": "recovery-copy",
+        "job_id": 130911134847,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-12T01:38:52Z",
+        "completed_at": "2026-11-12T01:39:34Z",
+        "duration_seconds": 42,
+        "steps_success": 10,
+        "steps_skipped": 0,
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43135366198/job/130911134847"
+      },
+      {
+        "name": "notify-readers",
+        "job_id": 130911134997,
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-12T01:38:52Z",
+        "completed_at": "2026-11-12T01:39:53Z",
+        "duration_seconds": 61,
+        "steps_success": 7,
+        "steps_skipped": 0,
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43135366198/job/130911134997"
+      }
+    ],
+    "release_check": {
+      "ok": true,
+      "blockers": [],
+      "counts": {
+        "archive": 131,
+        "external": 1,
+        "publications": 70,
+        "reviews": 57
+      },
+      "report_review_and_archive_counts_match": true
+    },
+    "test_totals": {
+      "reported_tests": 773,
+      "passed": 764,
+      "skipped": 9,
+      "failed": 0
+    },
+    "recovery_workflow_verification": {
+      "ok": true,
+      "revision": "fcf64a5ccf8bf769e237c9f6303bb9da252f52d3",
+      "files": 2582,
+      "bytes": 710441199,
+      "archive_sha256": "13202ddb6892619c96f8268d224a464960ae86b752e73e081130d3b49f7277e1"
+    },
+    "recovery_artifact": {
+      "id": 13907546865,
+      "name": "publication-recovery",
+      "digest": "sha256:cfb51f4cd8a737a04157168801184a67628aafd49bb6274d43cc403bdb293e08",
+      "size_in_bytes": 631063357,
+      "expired": false,
+      "created_at": "2026-11-12T01:39:30Z",
+      "expires_at": "2026-12-12T01:39:26Z"
+    },
+    "recovery_wrapper_digest_matches_upload_log": true,
+    "actual_notify_readers_response": {
+      "synced": 70,
+      "revision": "fcf64a5ccf8bf769e237c9f6303bb9da252f52d3",
+      "ok": true,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "baseline": false
+    },
+    "validation_artifact": {
+      "id": 13907666201,
+      "name": "publication-validation",
+      "digest": "sha256:92532b1269b33c05251fa83e3b8db8f8df3b98e8917fe8e6cdff2f571f8441b0",
+      "size_in_bytes": 3862,
+      "expired": false,
+      "created_at": "2026-11-12T01:38:16Z",
+      "expires_at": "2026-11-26T01:38:15Z"
+    },
+    "downloaded_validation_files": [
+      {
+        "name": "payload-check.json",
+        "bytes": 49439,
+        "sha256": "01bd7f151983e8772779b4c63c529268577e3e750b6e672b32d5fc48ae3ea474"
+      },
+      {
+        "name": "release-check.json",
+        "bytes": 1417,
+        "sha256": "e84f81830c1af536a31e92500ffa63c299f675b5b4bf042b6f9461801f54b226"
+      },
+      {
+        "name": "report.json",
+        "bytes": 2545,
+        "sha256": "677c00c4676dd3bc7b8fea78d4c20c290f21c8b300ea80cff80d0fa02f3482db"
+      }
+    ],
+    "selected_reviewed_changes": [
+      "archive/en/page/11/index.html",
+      "archive/files/2026-08-31-daily-quantum-brief.pdf",
+      "archive/page/11/index.html",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/daily_quantum_brief_2026-08-31.pdf",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/daily_quantum_brief_2026-08-31.pdf",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/evidence_layers_en.svg",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/index.html",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/quantum_optimization_stack_en.svg",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.png",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.svg",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/index.html",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.png",
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.svg"
+    ],
+    "selected_change_lists_match": true,
+    "payload_budget_ok": true,
+    "payload_failure_count": 0,
+    "payload_existing_warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 600MB; review object storage migration"
+    ],
+    "recovery_local_restore_test_performed": false
+  },
+  "live_https": {
+    "checked_at": "2026-11-12T01:39:29.825284+00:00",
+    "revision": "fcf64a5ccf8bf769e237c9f6303bb9da252f52d3",
+    "workflow_run": 43135366198,
+    "responses": {
+      "reader-publications.json": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reader-publications.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 22038,
+        "sha256": "e13e10c27302ad2e2b38c1c1f9b50fb08a00a9f40f628d481c3fbfe46c28dcbc",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "publication-release.json": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/publication-release.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 1317230,
+        "sha256": "f236f34468d58680a599c1a1984c1230ada2b768061ce8790fd9d5aaed4b7f01"
+      },
+      "manifest.json": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/manifest.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 487865,
+        "sha256": "3aa7a842449a162b50c688e9dd1a29cb41ef2955c55b73a2ce9853c3670feae2",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive-manifest.json": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/archive-manifest.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 169461,
+        "sha256": "41d67488d6b62791129b77e1302a91479897aa261dc37d1df930a0dc97828ccb",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 57293,
+        "sha256": "690692fc23ac8a9c45372dfb922d505c1b980cb4c172f72fafd41fac8759e900",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 58840,
+        "sha256": "c3ec132beb75e00532ff0a7a86e55fbb0ca67131271fb91845af769769b8b552",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.png": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.png",
+        "content_type": "image/png",
+        "bytes": 373415,
+        "sha256": "9a9e59c8a64a6d8ea4c709b7b80a5dc7be27982945c6ab3b0c38b13ae201059b",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.svg": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/evidence_layers_ko.svg",
+        "content_type": "image/svg+xml",
+        "bytes": 5198,
+        "sha256": "ae5ee3e310a99042f193a076ef67beb01d2a9da2c68a3a6789eb2aee021eb417",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/evidence_layers_en.svg": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/evidence_layers_en.svg",
+        "content_type": "image/svg+xml",
+        "bytes": 5180,
+        "sha256": "bafc1f4a1d0b8ce27aceca213c79b24d640d04727665c5aaff22d7bda95da9c8",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.png": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.png",
+        "content_type": "image/png",
+        "bytes": 354440,
+        "sha256": "1edf16922c53f165cee9325cba4d438a8babb88c7773a9f312ea4fe6b20bd4d0",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.svg": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/quantum_optimization_stack_ko.svg",
+        "content_type": "image/svg+xml",
+        "bytes": 7069,
+        "sha256": "c4b19caf6d58a0a5bfab35f13c90facdcedd505edb078300bac2d9a28d56050b",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/quantum_optimization_stack_en.svg": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/quantum_optimization_stack_en.svg",
+        "content_type": "image/svg+xml",
+        "bytes": 7024,
+        "sha256": "f2ba32f5275076b4a931219b787b14ff8f492740373b434f55c747dd523e8615",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/thermal_quantum_exciton_hero-web.webp",
+        "content_type": "image/webp",
+        "bytes": 108624,
+        "sha256": "2c855f317af32aa3772a54d6457d2ac5ad2e2521b40bf00bfb94e67a1b7fb2c0",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/thermal_quantum_exciton_hero-web.webp": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/thermal_quantum_exciton_hero-web.webp",
+        "content_type": "image/webp",
+        "bytes": 108624,
+        "sha256": "2c855f317af32aa3772a54d6457d2ac5ad2e2521b40bf00bfb94e67a1b7fb2c0",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/daily_quantum_brief_2026-08-31.pdf": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/daily_quantum_brief_2026-08-31.pdf",
+        "content_type": "application/pdf",
+        "bytes": 101041,
+        "sha256": "5be58e1ec7b0beba2eae9572a5e994f7276e638a7191faea7acfa8fc5a469638",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/daily_quantum_brief_2026-08-31.pdf": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/en/daily_quantum_brief_2026-08-31.pdf",
+        "content_type": "application/pdf",
+        "bytes": 101041,
+        "sha256": "5be58e1ec7b0beba2eae9572a5e994f7276e638a7191faea7acfa8fc5a469638",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": [],
+        "matches_reviewed_candidate_content": true
+      },
+      "archive/files/2026-08-31-daily-quantum-brief.pdf": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/archive/files/2026-08-31-daily-quantum-brief.pdf",
+        "content_type": "application/pdf",
+        "bytes": 101041,
+        "sha256": "5be58e1ec7b0beba2eae9572a5e994f7276e638a7191faea7acfa8fc5a469638",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive/page/11/": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/archive/page/11/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 26079,
+        "sha256": "71ab73461da171460f4e0c4d5c4a6ad1cd8d99be7d5c6c81361af83389f59394",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive/en/page/11/": {
+        "status": 200,
+        "url": "https://infant83.io/AI_Tech_Review/archive/en/page/11/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 25568,
+        "sha256": "27bc7efff3308e6c66c3d775072ee8091d3670ac41a658826d9941869e32a805",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      }
+    },
+    "archive_documents": 131,
+    "reviews": 57,
+    "original_issue_and_revision_distinct": true,
+    "hub_title_subtitle_summary_preserved": true,
+    "pdf_pages": 4,
+    "pdf_sha256": "5be58e1ec7b0beba2eae9572a5e994f7276e638a7191faea7acfa8fc5a469638",
+    "status": "live_https_candidate_and_sealed_artifact_verified",
+    "limits": "No scientific experiment or actual phone push receipt test."
+  },
+  "live_browser": {
+    "languages": [
+      "ko",
+      "en"
+    ],
+    "widths": [
+      320,
+      390,
+      1280
+    ],
+    "cases": 6,
+    "page_errors": [],
+    "overflow": false,
+    "broken_anchors": false,
+    "figures": 3,
+    "citations": 12,
+    "references": 7,
+    "math_errors": 0,
+    "pdf": {
+      "url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-31_thermal-quantum-states-exciton-validation/daily_quantum_brief_2026-08-31.pdf",
+      "status": 200,
+      "bytes": 101041,
+      "sha256": "5be58e1ec7b0beba2eae9572a5e994f7276e638a7191faea7acfa8fc5a469638"
+    },
+    "screenshots_visually_inspected": true,
+    "human_reader_test": false
+  }
 }
