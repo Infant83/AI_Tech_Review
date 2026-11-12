@@ -95,15 +95,21 @@ class ReleaseGuardTests(unittest.TestCase):
 
     def test_actual_artifact_snapshot_keeps_source_only_publications(self):
         catalog_bytes = json.dumps({"revision": "b" * 40, "articles": []}).encode()
+        updates_bytes = json.dumps({"version": 1, "pages": {}, "articles": []}).encode()
         # This publication exists in the deployed artifact, independently of
         # what a historical committed site/ directory happened to contain.
         self.new["reviews"]["artifact-only"] = copy.deepcopy(self.new["reviews"]["review"])
         wrapper = {"version": 1, "revision": "b" * 40, "snapshot": self.new,
                    "catalog_sha256": hashlib.sha256(catalog_bytes).hexdigest(),
+                   "artifact_files": {"reader-updates.json": {
+                       "sha256": hashlib.sha256(updates_bytes).hexdigest(), "bytes": len(updates_bytes)}},
                    "initial_payloads": {"index.html": 5000}}
+        release_bytes = json.dumps(wrapper).encode()
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            with patch.object(release, "urlopen", side_effect=[io.BytesIO(catalog_bytes), io.BytesIO(json.dumps(wrapper).encode())]), patch.object(release, "extract_baseline") as extract:
+            responses = [io.BytesIO(payload) for payload in (
+                catalog_bytes, release_bytes, updates_bytes, release_bytes, catalog_bytes)]
+            with patch.object(release, "urlopen", side_effect=responses), patch.object(release, "extract_baseline") as extract:
                 result = release.live_baseline(root, root / "baseline")
                 extract.assert_not_called()
             self.assertEqual(result["source"], "deployed_artifact_snapshot")
@@ -128,6 +134,26 @@ class ReleaseGuardTests(unittest.TestCase):
             with patch.object(release, "urlopen", side_effect=[io.BytesIO(catalog), error]), patch.object(release, "extract_baseline") as extract:
                 with self.assertRaises(ValueError): release.live_baseline(root, root / "out")
                 extract.assert_not_called()
+
+    def test_verified_presnapshot_bootstrap_retains_the_source_exception(self):
+        catalog = json.dumps({"revision": release.BOOTSTRAP_REVISION, "articles": []}).encode()
+        error = HTTPError(release.LIVE_RELEASE, 404, "Not Found", {}, None)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            output = root / "bootstrap"
+
+            def extract(repo, destination, revision):
+                self.assertEqual(revision, release.BOOTSTRAP_REVISION)
+                (destination / "site").mkdir(parents=True)
+
+            with patch.object(release, "urlopen", side_effect=[io.BytesIO(catalog), error]):
+                with patch.object(release, "extract_baseline", side_effect=extract) as source:
+                    with patch.object(release, "capture_site", return_value=self.old):
+                        result = release.live_baseline(root, output)
+                    source.assert_called_once_with(root, output, release.BOOTSTRAP_REVISION)
+            self.assertEqual(result["source"], "verified_pre_snapshot_bootstrap")
+            self.assertEqual(json.loads((output / "snapshot.json").read_text()), self.old)
+            self.assertFalse((output / "release.json").exists())
 
 
 if __name__ == "__main__":

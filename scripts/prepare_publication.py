@@ -18,7 +18,7 @@ try:
     from .publication_snapshot import capture_site, compare_snapshots, read_json
     from .reader_engagement_publish import content_digest, validate_public_artifact
     from .publication_intent import pending_review_intents, review_inputs, write_review_intent
-    from .publication_release import declarations
+    from .publication_release import declarations, read_baseline_updates, read_metadata_file, validate_updates_payload, MAX_UPDATES_BYTES
     from .archive_documents import load_documents, document_version
 except ImportError:
     import publish_public_site as publisher
@@ -26,7 +26,7 @@ except ImportError:
     from publication_snapshot import capture_site, compare_snapshots, read_json
     from reader_engagement_publish import content_digest, validate_public_artifact
     from publication_intent import pending_review_intents, review_inputs, write_review_intent
-    from publication_release import declarations
+    from publication_release import declarations, read_baseline_updates, read_metadata_file, validate_updates_payload, MAX_UPDATES_BYTES
     from archive_documents import load_documents, document_version
 
 
@@ -112,12 +112,20 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
         raise ValueError("Candidate output must be outside the published site and its parent directories")
     if baseline_site is not None and baseline_snapshot is not None:
         raise ValueError("Choose either a baseline site or baseline snapshot")
-    baseline_site = Path(baseline_site) if baseline_site is not None else source_site
+    explicit_local = baseline_site is not None
+    baseline_site = Path(baseline_site) if explicit_local else source_site
     output.parent.mkdir(parents=True, exist_ok=True)
     with publication_lock(publisher.ROOT / "archive" / ".publication.lock"):
         # Validate before copying so symlinks/private assets cannot enter staging.
         validate_public_artifact(source_site, verify_search=False, verify_reader_source=False)
         baseline = read_json(baseline_snapshot) if baseline_snapshot is not None else capture_site(baseline_site)
+        if baseline_snapshot is not None:
+            prior_updates = read_baseline_updates(baseline_snapshot, baseline)
+            updates_source = "sealed_release_bundle"
+        else:
+            prior_updates = read_metadata_file(baseline_site / "reader-updates.json", MAX_UPDATES_BYTES)
+            validate_updates_payload(prior_updates)
+            updates_source = "explicit_local_site" if explicit_local else "local_seed_only"
         known = {review.folder for review in publisher.REVIEWS}
         selected = set(reviews) | (known - set(publisher.load_existing_manifest()))
         intents = pending_review_intents(publisher.ROOT, known, selected, set(baseline["reviews"]))
@@ -137,6 +145,10 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
         output.mkdir()
         stage = output / "site"
         shutil.copytree(source_site, stage)
+        # The copied checkout may predate an artifact-only publication. Feed
+        # the verified prior release to the existing revision calculation,
+        # before publisher.main enriches pages or computes their after hashes.
+        (stage / "reader-updates.json").write_bytes(prior_updates)
         with candidate_site(stage):
             arguments = ["--preserve-existing", "--revision", revision]
             for review in sorted(rebuilt_reviews):
@@ -161,6 +173,7 @@ def prepare_candidate(output: Path, *, revision: str, reviews=(), documents=(), 
             "reviews": len(current["reviews"]), "archive_documents": len(current["archive"]),
             "selected_reviews": sorted(intents), "selected_documents": sorted(selected_documents), "comparison": comparison,
             "rebuilt_reviews": sorted(rebuilt_reviews),
+            "baseline_updates_source": updates_source,
             "status": "candidate_only_requires_release_policy_and_browser_review",
         }
         (output / "baseline.json").write_text(json.dumps(baseline, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -232,8 +245,11 @@ def main(argv=None):
                 except ImportError:
                     from publication_release import live_baseline
                 temporary = Path(cleanup.enter_context(tempfile.TemporaryDirectory(prefix="publication-baseline-")))
-                live_baseline(publisher.ROOT, temporary / "release")
-                args.baseline_snapshot = temporary / "release/snapshot.json"
+                source = live_baseline(publisher.ROOT, temporary / "release")
+                if source["source"] == "verified_pre_snapshot_bootstrap":
+                    args.baseline_site = temporary / "release/site"
+                else:
+                    args.baseline_snapshot = temporary / "release/snapshot.json"
             report = prepare_candidate(args.output, revision=revision, reviews=args.review, documents=args.document, baseline_site=args.baseline_site,
                                        baseline_snapshot=args.baseline_snapshot, change_reason=args.change_reason)
     except (ValueError, OSError, RuntimeError, TimeoutError) as error:

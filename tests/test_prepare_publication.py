@@ -20,6 +20,7 @@ class PreparePublicationTests(unittest.TestCase):
         self.source = self.root / "site"
         self.source.mkdir()
         (self.source / "manifest.json").write_text("[]\n")
+        (self.source / "reader-updates.json").write_text(json.dumps({"version": 1, "pages": {}, "articles": []}) + "\n")
         (self.source / "index.html").write_text("original public index")
         self.output = self.root / "candidate"
         self.stack = ExitStack()
@@ -29,6 +30,20 @@ class PreparePublicationTests(unittest.TestCase):
                             ("ASSETS_DIR", self.source / "assets"), ("REVIEWS", ())):
             self.stack.enter_context(patch.object(publisher, name, value))
         self.stack.enter_context(patch.object(prepare, "validate_public_artifact", return_value={}))
+
+    def bound_snapshot(self, path):
+        """Package the selected fake release with exact prior metadata bytes."""
+        snapshot = json.loads(path.read_text())
+        catalog = json.dumps({"revision": "b" * 40, "articles": []}).encode()
+        updates = (self.source / "reader-updates.json").read_bytes()
+        release = {"version": 1, "revision": "b" * 40, "snapshot": snapshot,
+                   "catalog_sha256": hashlib.sha256(catalog).hexdigest(),
+                   "artifact_files": {"reader-updates.json": {
+                       "sha256": hashlib.sha256(updates).hexdigest(), "bytes": len(updates)}}}
+        (path.parent / "release.json").write_text(json.dumps(release))
+        (path.parent / "reader-publications.json").write_bytes(catalog)
+        (path.parent / "reader-updates.json").write_bytes(updates)
+        return path
 
     def test_candidate_is_independent_and_stamp_and_validation_arguments_are_passed(self):
         def build(arguments):
@@ -147,7 +162,7 @@ class PreparePublicationTests(unittest.TestCase):
             # the persistent request and the actually deployed candidate hashes.
             later = self.root / "next-candidate"
             report = prepare.prepare_candidate(later, revision="b" * 40,
-                                                baseline_snapshot=self.output / "candidate.json")
+                                                baseline_snapshot=self.bound_snapshot(self.output / "candidate.json"))
         self.assertEqual(report["selected_reviews"], [review.folder])
         self.assertEqual(report["comparison"]["content_changes"], [])
         self.assertEqual((later / "site" / href).read_text(), "new reviewed scientific article")
@@ -170,7 +185,7 @@ class PreparePublicationTests(unittest.TestCase):
             # deployed baseline, plus the checked request and after hashes.
             later = self.root / "first-ci-candidate"
             report = prepare.prepare_candidate(later, revision="b" * 40,
-                                                baseline_snapshot=self.output / "baseline.json")
+                                                baseline_snapshot=self.bound_snapshot(self.output / "baseline.json"))
 
         self.assertEqual(report["rebuilt_reviews"], [review.folder])
         self.assertEqual(report["comparison"]["content_changes"], [href])
@@ -191,7 +206,7 @@ class PreparePublicationTests(unittest.TestCase):
         with patch.object(publisher, "main", return_value=0):
             with self.assertRaisesRegex(ValueError, "reviewed after hashes"):
                 prepare.prepare_candidate(later, revision="b" * 40,
-                                            baseline_snapshot=self.output / "baseline.json")
+                                            baseline_snapshot=self.bound_snapshot(self.output / "baseline.json"))
         self.assertFalse((later / "report.json").exists())
         self.assertFalse((later / ".publication-candidate.json").exists())
 
@@ -209,7 +224,7 @@ class PreparePublicationTests(unittest.TestCase):
         with patch.object(publisher, "main") as build:
             with self.assertRaisesRegex(ValueError, "lacks reviewed after hashes.*--review"):
                 prepare.prepare_candidate(later, revision="b" * 40,
-                                            baseline_snapshot=self.output / "baseline.json")
+                                            baseline_snapshot=self.bound_snapshot(self.output / "baseline.json"))
         build.assert_not_called()
         self.assertFalse(later.exists())
 
@@ -234,7 +249,7 @@ class PreparePublicationTests(unittest.TestCase):
 
         with patch.object(publisher, "main", side_effect=metadata_only):
             later = prepare.prepare_candidate(self.root / "no-op-metadata-candidate", revision="b" * 40,
-                                                baseline_snapshot=self.output / "candidate.json")
+                                                baseline_snapshot=self.bound_snapshot(self.output / "candidate.json"))
         self.assertEqual(later["rebuilt_reviews"], [])
 
     def test_new_registration_auto_selects_unchanged_review_without_erasing_bilingual_pdf_history(self):
@@ -294,7 +309,7 @@ class PreparePublicationTests(unittest.TestCase):
             for index in range(2):
                 later = self.root / ("new-registration-candidate-" + str(index))
                 report = prepare.prepare_candidate(later, revision="b" * 40,
-                                                    baseline_snapshot=baseline)
+                                                    baseline_snapshot=self.bound_snapshot(baseline))
                 self.assertEqual(report["rebuilt_reviews"], sorted([review.folder, addition.folder]))
                 self.assertEqual(report["comparison"]["content_changes"], [])
                 self.assertEqual(declaration_path.read_bytes(), original_declaration)
@@ -319,7 +334,7 @@ class PreparePublicationTests(unittest.TestCase):
                                       "files": {href: {"before": expected, "after": expected}}})
         with patch.object(publisher, "main", return_value=0) as build:
             later = prepare.prepare_candidate(self.root / "stale-binding-metadata-candidate",
-                revision="b" * 40, baseline_snapshot=self.output / "candidate.json")
+                revision="b" * 40, baseline_snapshot=self.bound_snapshot(self.output / "candidate.json"))
         self.assertEqual(later["rebuilt_reviews"], [])
         self.assertNotIn(review.folder, build.call_args.args[0])
 
@@ -336,7 +351,7 @@ class PreparePublicationTests(unittest.TestCase):
             previous = hashlib.sha256((dist / "index.html").read_bytes()).hexdigest()
             (dist / "index.html").write_text("second checked scientific revision")
             report = prepare.prepare_candidate(self.root / "second-real-revision", revision="b" * 40,
-                reviews=[review.folder], baseline_snapshot=self.output / "candidate.json",
+                reviews=[review.folder], baseline_snapshot=self.bound_snapshot(self.output / "candidate.json"),
                 change_reason="Second checked revision")
         current = hashlib.sha256((dist / "index.html").read_bytes()).hexdigest()
         declaration = json.loads((self.root / "publication_changes" / (review.folder + ".json")).read_text())
@@ -403,7 +418,7 @@ class PreparePublicationTests(unittest.TestCase):
             return 0
         with patch.object(publisher, "main", side_effect=refresh_metadata):
             report = prepare.prepare_candidate(later, revision="b" * 40,
-                                                baseline_snapshot=self.output / "candidate.json")
+                                                baseline_snapshot=self.bound_snapshot(self.output / "candidate.json"))
         self.assertEqual(report["rebuilt_reviews"], [])
         self.assertEqual((later / "site" / href).read_bytes(), original_article)
         self.assertEqual(report["comparison"]["content_changes"], [])

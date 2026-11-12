@@ -18,13 +18,17 @@ from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
 try:
-    from .publication_snapshot import capture_site, compare_snapshots, read_json, relative_path, SHA, GROUPS
+    from .publication_snapshot import capture_site, compare_snapshots, read_json, relative_path, unique_object, SHA, GROUPS
 except ImportError:
-    from publication_snapshot import capture_site, compare_snapshots, read_json, relative_path, SHA, GROUPS
+    from publication_snapshot import capture_site, compare_snapshots, read_json, relative_path, unique_object, SHA, GROUPS
 
 ROOT = Path(__file__).resolve().parents[1]
 LIVE_CATALOG = "https://infant83.io/AI_Tech_Review/reader-publications.json"
 LIVE_RELEASE = "https://infant83.io/AI_Tech_Review/publication-release.json"
+LIVE_UPDATES = "https://infant83.io/AI_Tech_Review/reader-updates.json"
+MAX_UPDATES_BYTES = 2_000_000
+MAX_RELEASE_BYTES = 5_000_000
+MAX_CATALOG_BYTES = 2_000_000
 # Only the verified last release before the artifact snapshot existed may use
 # a Git archive bootstrap. Every later deployment must supply its own snapshot.
 BOOTSTRAP_REVISION = "faa0bffb2a9bdb3e6d4b539bfe01ba1746a1fdf4"
@@ -168,37 +172,142 @@ def deployed_revision() -> str:
     return revision
 
 
+def parse_metadata(payload: bytes, label: str) -> dict:
+    """Parse bounded metadata without accepting ambiguous duplicate keys."""
+    try:
+        value = json.loads(payload.decode("utf-8"), object_pairs_hook=unique_object)
+    except (UnicodeError, ValueError, RecursionError) as error:
+        raise ValueError("Invalid " + label + " metadata") from error
+    if not isinstance(value, dict):
+        raise ValueError("Invalid " + label + " metadata object")
+    return value
+
+
+def validate_updates_payload(payload: bytes) -> dict:
+    try:
+        from .reader_engagement_publish import validate_updates
+    except ImportError:
+        from reader_engagement_publish import validate_updates
+    if not isinstance(payload, bytes) or len(payload) > MAX_UPDATES_BYTES:
+        raise ValueError("Reader updates exceed the metadata limit")
+    updates = parse_metadata(payload, "reader updates")
+    if type(updates.get("version")) is not int:
+        raise ValueError("Reader updates require an integer schema version")
+    try:
+        if any(not isinstance(value, str) for value in updates.get("pages", {}).values()):
+            raise ValueError("Reader page digests must be strings")
+        if any(not isinstance(item.get("revision"), str) for item in updates.get("articles", [])):
+            raise ValueError("Reader article revisions must be strings")
+        return validate_updates(updates)
+    except (KeyError, TypeError, AttributeError, ValueError, OverflowError) as error:
+        raise ValueError("Invalid reader update records") from error
+
+
+def verify_baseline_updates(release: dict, snapshot: dict, updates_payload: bytes) -> dict:
+    """Bind raw recency bytes to the same sealed snapshot used for continuity."""
+    if (not isinstance(release, dict) or type(release.get("version")) is not int
+            or release["version"] != 1 or not isinstance(release.get("revision"), str)
+            or not REVISION.fullmatch(release["revision"]) or not isinstance(snapshot, dict)
+            or release.get("snapshot") != snapshot):
+        raise ValueError("Baseline reader updates require the matching sealed release snapshot")
+    files = release.get("artifact_files")
+    record = files.get("reader-updates.json") if isinstance(files, dict) else None
+    if (not isinstance(record, dict) or set(record) != {"sha256", "bytes"}
+            or not isinstance(record.get("sha256"), str) or not SHA.fullmatch(record["sha256"])
+            or type(record.get("bytes")) is not int or not 0 < record["bytes"] <= MAX_UPDATES_BYTES
+            or not isinstance(updates_payload, bytes) or len(updates_payload) != record["bytes"]
+            or hashlib.sha256(updates_payload).hexdigest() != record["sha256"]):
+        raise ValueError("Baseline reader updates differ from the sealed artifact bytes")
+    return validate_updates_payload(updates_payload)
+
+
+def read_metadata_file(path: Path, limit: int) -> bytes:
+    path = Path(path)
+    if path.is_symlink() or path.parent.is_symlink() or not path.is_file():
+        raise ValueError("Missing or linked baseline metadata: " + path.name)
+    with path.open("rb") as stream:
+        payload = stream.read(limit + 1)
+    if len(payload) > limit:
+        raise ValueError("Baseline metadata exceeds limit: " + path.name)
+    return payload
+
+
+def verify_catalog_binding(release: dict, catalog_bytes: bytes) -> None:
+    catalog = parse_metadata(catalog_bytes, "publication catalog")
+    if (not isinstance(release.get("revision"), str) or not REVISION.fullmatch(release["revision"])
+            or catalog.get("revision") != release["revision"]
+            or release.get("catalog_sha256") != hashlib.sha256(catalog_bytes).hexdigest()):
+        raise ValueError("Baseline catalog and release do not describe the same artifact")
+
+
+def read_baseline_updates(snapshot_path: Path, snapshot: dict) -> bytes:
+    """Read a verified baseline bundle; a bare snapshot cannot prove recency."""
+    directory = Path(snapshot_path).parent
+    release = parse_metadata(read_metadata_file(directory / "release.json", MAX_RELEASE_BYTES), "release")
+    catalog_bytes = read_metadata_file(directory / "reader-publications.json", MAX_CATALOG_BYTES)
+    verify_catalog_binding(release, catalog_bytes)
+    updates_bytes = read_metadata_file(directory / "reader-updates.json", MAX_UPDATES_BYTES)
+    verify_baseline_updates(release, snapshot, updates_bytes)
+    return updates_bytes
+
+
+def fetch_metadata(url: str, limit: int) -> bytes:
+    request = Request(url + "?release_check=" + str(time.time_ns()), headers={
+        "User-Agent": "AI-Tech-Review-release-validation", "Cache-Control": "no-cache"})
+    with urlopen(request, timeout=30) as response:
+        payload = response.read(limit + 1)
+    if len(payload) > limit:
+        raise ValueError("Live release metadata exceeds limit")
+    return payload
+
+
 def live_baseline(repo: Path, output: Path) -> dict:
     """Read the snapshot packaged in the actual deployment, not committed site/."""
     if output.exists():
         raise ValueError("Baseline output already exists")
-    request = Request(LIVE_CATALOG + "?release_check=" + str(time.time_ns()), headers={"User-Agent": "AI-Tech-Review-release-validation", "Cache-Control": "no-cache"})
-    with urlopen(request, timeout=30) as response:
-        catalog_bytes = response.read(2_000_001)
-    if len(catalog_bytes) > 2_000_000:
-        raise ValueError("Live catalog exceeds limit")
-    catalog = json.loads(catalog_bytes)
+    catalog_bytes = fetch_metadata(LIVE_CATALOG, MAX_CATALOG_BYTES)
+    catalog = parse_metadata(catalog_bytes, "publication catalog")
     revision = catalog.get("revision", "")
     if not isinstance(revision, str) or not REVISION.fullmatch(revision):
         raise ValueError("Live catalog has invalid revision")
     try:
-        request = Request(LIVE_RELEASE + "?release_check=" + str(time.time_ns()), headers={"User-Agent": "AI-Tech-Review-release-validation", "Cache-Control": "no-cache"})
-        with urlopen(request, timeout=30) as response:
-            payload = response.read(5_000_001)
-        if len(payload) > 5_000_000:
-            raise ValueError("Live release snapshot exceeds limit")
-        release = json.loads(payload)
-        if (release.get("version") != 1 or release.get("revision") != revision
-                or release.get("catalog_sha256") != hashlib.sha256(catalog_bytes).hexdigest()):
-            raise ValueError("Deployed catalog and release snapshot do not describe the same artifact; retry after deployment settles")
-        snapshot, page_sizes = release["snapshot"], release["initial_payloads"]
-        if not validate_release(snapshot, snapshot)["ok"]:
-            raise ValueError("Deployed release snapshot is not internally valid")
-        output.mkdir(parents=True)
-        source = "deployed_artifact_snapshot"
+        payload = fetch_metadata(LIVE_RELEASE, MAX_RELEASE_BYTES)
     except HTTPError as error:
         if error.code != 404 or revision != BOOTSTRAP_REVISION:
             raise ValueError("Deployed artifact snapshot is unavailable; do not substitute a source checkout") from error
+        payload = None
+    if payload is not None:
+        release = parse_metadata(payload, "release")
+        if (release.get("version") != 1 or release.get("revision") != revision
+                or release.get("catalog_sha256") != hashlib.sha256(catalog_bytes).hexdigest()):
+            raise ValueError("Deployed catalog and release snapshot do not describe the same artifact; retry after deployment settles")
+        snapshot, page_sizes = release.get("snapshot"), release.get("initial_payloads")
+        if (not isinstance(page_sizes, dict)
+                or any(not isinstance(name, str) or type(size) is not int or size < 0
+                       for name, size in page_sizes.items())):
+            raise ValueError("Deployed release requires valid initial payload measurements")
+        try:
+            valid_snapshot = isinstance(snapshot, dict) and validate_release(snapshot, snapshot)["ok"]
+        except (KeyError, TypeError, AttributeError, ValueError) as error:
+            raise ValueError("Deployed release snapshot is not internally valid") from error
+        if not valid_snapshot:
+            raise ValueError("Deployed release snapshot is not internally valid")
+        try:
+            updates_bytes = fetch_metadata(LIVE_UPDATES, MAX_UPDATES_BYTES)
+            verify_baseline_updates(release, snapshot, updates_bytes)
+            # A same-source rebuild can change only artifact_files/recency.
+            # Compare complete raw metadata, not just revision or snapshot.
+            if (fetch_metadata(LIVE_RELEASE, MAX_RELEASE_BYTES) != payload
+                    or fetch_metadata(LIVE_CATALOG, MAX_CATALOG_BYTES) != catalog_bytes):
+                raise ValueError("Deployed artifact changed while reading its baseline; retry after deployment settles")
+        except HTTPError as error:
+            raise ValueError("Deployed reader baseline is unavailable; do not substitute the checkout seed") from error
+        output.mkdir(parents=True)
+        (output / "release.json").write_bytes(payload)
+        (output / "reader-publications.json").write_bytes(catalog_bytes)
+        (output / "reader-updates.json").write_bytes(updates_bytes)
+        source = "deployed_artifact_snapshot"
+    else:
         extract_baseline(repo, output, revision)
         snapshot = capture_site(output / "site")
         # Bootstrap has a known, manually verified immutable predecessor. Its
