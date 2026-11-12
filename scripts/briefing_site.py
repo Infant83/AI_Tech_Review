@@ -19,7 +19,7 @@ except ImportError:
     from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
 
 BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
-PUBLIC_FIELDS = ("id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href")
+PUBLIC_FIELDS = ("id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href", "editorial_href", "editorial_en_href")
 
 
 def escape(value: object) -> str:
@@ -33,7 +33,9 @@ def briefing_documents(documents: list[dict], prefix: str = "") -> list[dict]:
         if source["series"] not in BRIEFING_SERIES:
             continue
         doc = {key: source[key] for key in PUBLIC_FIELDS if key in source}
-        doc["href"] = prefix + doc["href"]
+        for key in ("href", "editorial_href", "editorial_en_href"):
+            if key in doc:
+                doc[key] = prefix + doc[key]
         result.append(doc)
     return sorted(result, key=lambda doc: (doc["date"], doc["id"]), reverse=True)
 
@@ -61,6 +63,18 @@ def briefing_title_language(document: dict, language: str = "ko") -> str:
     return "en" if language == "en" and document.get("title_en") else document["language"]
 
 
+def briefing_reading_href(document: dict, language: str = "ko") -> str:
+    return document.get("editorial_en_href" if language == "en" else "editorial_href") or document["href"]
+
+
+def briefing_has_editorial(document: dict, language: str = "ko") -> bool:
+    return bool(document.get("editorial_en_href" if language == "en" else "editorial_href"))
+
+
+def briefing_reading_target(document: dict, language: str = "ko") -> str:
+    return "" if briefing_has_editorial(document, language) else ' target="_blank" rel="noopener"'
+
+
 def render_calendar(documents: list[dict], month: str, language: str = "ko") -> str:
     """A Monday-first native table, also readable with scripting disabled."""
     en = language == "en"
@@ -79,7 +93,7 @@ def render_calendar(documents: list[dict], month: str, language: str = "ko") -> 
             issues = days.get(iso, [])
             topic_label = (f"{len(issues)} briefings: " if en else f"브리핑 {len(issues)}건: ") + "; ".join(briefing_title(doc, language) for doc in issues)
             label = f"{iso} · " + (topic_label if issues else ("No registered briefing" if en else "등록된 브리핑 없음"))
-            links = "".join(f'<a href="{escape(doc["href"])}" lang="{escape(briefing_title_language(doc, language))}" target="_blank" rel="noopener" title="{escape(briefing_title(doc, language))}">{escape(briefing_title(doc, language))}</a>' for doc in issues)
+            links = "".join(f'<a href="{escape(briefing_reading_href(doc, language))}" lang="{escape(briefing_title_language(doc, language))}"{briefing_reading_target(doc, language)} title="{escape(briefing_title(doc, language))}">{escape(briefing_title(doc, language))}</a>' for doc in issues)
             badge = f'<span class="day-count" aria-hidden="true">{len(issues)}</span>' if issues else ""
             cells.append(f'<td class="calendar-day{" has-briefing" if issues else ""}"><button class="day-select" type="button" data-date="{iso}" aria-label="{escape(label)}" aria-pressed="false"{" disabled" if not issues else ""}><span class="day-number">{day}</span>{badge}</button><div class="day-topics">{links}</div></td>')
         rows.append("<tr>" + "".join(cells) + "</tr>")
@@ -95,7 +109,12 @@ def render_detail(documents: list[dict], language: str = "ko") -> str:
         summary = (doc.get("summary_en") or doc["summary"]) if en else doc["summary"]
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
-        cards.append(f'<article class="briefing-detail-issue"><h4 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(doc["href"])}" target="_blank" rel="noopener">{escape(briefing_title(doc, language))}</a></h4><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div><a class="briefing-read" href="{escape(doc["href"])}" target="_blank" rel="noopener">{"Read PDF" if en else "브리핑 읽기"} ↗</a></article>')
+        editorial = briefing_has_editorial(doc, language)
+        reading = briefing_reading_href(doc, language)
+        pdf_actions = (f'<a class="briefing-read" href="{escape(doc["href"])}" target="_blank" rel="noopener">{"Read PDF" if en else "PDF 읽기"} ↗</a> <a href="{escape(doc["href"])}" download>{"Download PDF" if en else "PDF 다운로드"} ↓</a>' if editorial else "")
+        read_label = ("Read briefing" if editorial else "Read PDF") if en else "브리핑 읽기"
+        target = briefing_reading_target(doc, language)
+        cards.append(f'<article class="briefing-detail-issue"><h4 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(reading)}"{target}>{escape(briefing_title(doc, language))}</a></h4><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div><a class="briefing-read" href="{escape(reading)}"{target}>{read_label} ↗</a> {pdf_actions}</article>')
     return "".join(cards)
 
 
@@ -123,10 +142,12 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
         series = ("Weekly review" if en else "주간 브리핑") if doc["series"] == "weekly-review" else "Daily Quantum Brief"
         pdf_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
+        reading = briefing_reading_href(doc, language)
+        editorial_action = (f'<a href="{escape(reading)}">{"Read briefing" if en else "브리핑 읽기"} →</a>' if briefing_has_editorial(doc, language) else "")
         rows.append(f'''<article class="briefing-row" data-id="{escape(doc['id'])}" data-date="{escape(doc['date'])}">
           <div class="briefing-date"><time datetime="{doc['date']}">{doc['date']}</time><span>{series}</span></div>
-          <div class="briefing-row-body"><h3 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(doc['href'])}" target="_blank" rel="noopener">{escape(briefing_title(doc, language))}</a></h3><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div></div>
-          <div class="briefing-row-actions"><span>{pdf_language}</span><a href="{escape(doc['href'])}" target="_blank" rel="noopener">{'Read PDF' if en else '읽기'} ↗</a><a href="{escape(doc['href'])}" download>{'Download' if en else '다운로드'} ↓</a></div>
+          <div class="briefing-row-body"><h3 lang="{escape(briefing_title_language(doc, language))}"><a href="{escape(reading)}"{briefing_reading_target(doc, language)}>{escape(briefing_title(doc, language))}</a></h3><p lang="{summary_language}">{escape(summary)}</p><div class="briefing-tags">{tags}</div></div>
+          <div class="briefing-row-actions"><span>{pdf_language}</span>{editorial_action}<a href="{escape(doc['href'])}" target="_blank" rel="noopener">{'Read PDF' if en else ('PDF 읽기' if editorial_action else '읽기')} ↗</a><a href="{escape(doc['href'])}" download>{'Download' if en else '다운로드'} ↓</a></div>
         </article>''')
     payload = json.dumps({"documents": issues, "months": months, "latest_month": latest_month}, ensure_ascii=False, separators=(",", ":"))
     # Raw text script elements do not honor HTML entities. Escape their delimiters.
@@ -134,7 +155,7 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
     empty_message = "No briefings have been published yet." if en else "아직 등록된 브리핑이 없습니다."
     calendar_section = f'''<section class="briefing-calendar-wrap" aria-labelledby="briefing-calendar-title">
         <div class="briefing-calendar-heading"><button id="briefing-prev" type="button" aria-label="{'Previous month' if en else '이전 달'}"{' disabled' if len(months) < 2 else ''}>←</button><h2 id="briefing-calendar-title">{month_label(latest_month, language)}</h2><button id="briefing-next" type="button" aria-label="{'Next month' if en else '다음 달'}" disabled>→</button></div>
-        <p class="briefing-calendar-help">{'Select a date to see its topics below. Topic links open the PDF.' if en else '날짜를 선택하면 주제가 표시됩니다. 제목을 누르면 PDF를 읽을 수 있습니다.'}</p>
+        <p class="briefing-calendar-help">{'Select a date to see its topics below. Topic links open the briefing; PDF links remain available.' if en else '날짜를 선택하면 주제가 표시됩니다. 제목을 누르면 브리핑을 읽을 수 있고 PDF도 따로 열 수 있습니다.'}</p>
         <table class="briefing-calendar" aria-labelledby="briefing-calendar-title"><thead><tr>{headers}</tr></thead><tbody id="briefing-calendar">{render_calendar(issues, latest_month, language)}</tbody></table>
         <p class="briefing-calendar-legend"><span aria-hidden="true">●</span> {'Published briefing · blank dates have no registered issue' if en else '브리핑 발행일 · 빈 날짜는 등록된 문서가 없습니다'}</p>
       </section>''' if months else f'<p class="briefing-detail-empty">{empty_message}</p>'
@@ -176,9 +197,29 @@ def validate_briefings(site_dir: Path, documents: list[dict]) -> list[str]:
     total = len(briefing_documents(documents))
     pages = page_count(total, "briefings") if paginated else 1
     expected_files = {page_path("briefings", lang, number).removeprefix("briefings/") for lang in ("ko", "en") for number in range(1, pages + 1)}
+    editorial_files = {}
+    for doc in documents:
+        if doc.get("series") not in BRIEFING_SERIES:
+            continue
+        expected_paths = {f"briefings/{doc['date']}/index.html", f"briefings/{doc['date']}/en/index.html"}
+        declared = doc.get("editorial_assets", {})
+        if doc.get("editorial_href") or doc.get("editorial_en_href") or declared:
+            if (doc.get("editorial_href") != f"briefings/{doc['date']}/index.html"
+                    or doc.get("editorial_en_href") != f"briefings/{doc['date']}/en/index.html"
+                    or not isinstance(declared, dict) or set(declared) != expected_paths
+                    or any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value) for value in declared.values())
+                    or editorial_files.keys() & declared.keys()):
+                errors.append(f"invalid briefing editorial registration: {doc['id']}")
+                continue
+            editorial_files.update(declared)
+            expected_files.update(path.removeprefix("briefings/") for path in declared)
     actual = {path.relative_to(root).as_posix() for path in root.rglob("*") if path.is_file()}
     if actual != expected_files:
         errors.append("briefing output differs from allowlist")
+    for relative, digest in editorial_files.items():
+        page = site_dir / relative
+        if not page.is_file() or page.is_symlink() or hashlib.sha256(page.read_bytes()).hexdigest() != digest:
+            errors.append(f"briefing editorial missing or changed: {relative}")
     for lang in ("ko", "en"):
         for number in range(1, pages + 1):
             relative = page_path("briefings", lang, number).removeprefix("briefings/")
@@ -201,6 +242,8 @@ def validate_briefings(site_dir: Path, documents: list[dict]) -> list[str]:
             for doc in cards:
                 if f'href="{escape(doc["href"])}"' not in text:
                     errors.append(f"briefing PDF absent from {relative}: {doc['id']}")
+                if f'href="{escape(briefing_reading_href(doc, lang))}"' not in text:
+                    errors.append(f"briefing reading link absent from {relative}: {doc['id']}")
     for name in ("briefings.css", "briefings.js"):
         source = Path(__file__).parent / "assets" / name
         output = site_dir / "assets" / name

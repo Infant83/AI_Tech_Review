@@ -90,13 +90,17 @@
     if (next !== `${location.pathname}${location.search}${location.hash}`) history.replaceState(null, '', next);
   };
   const topicTitle = item => (en ? item.title_en || item.title : item.title || item.title_en) || item.date;
-  const topicLink = (item, className) => {
+  const editorialHref = item => en ? item.editorial_en_href : item.editorial_href;
+  const topicLink = (item, className, pdf = false) => {
     const link = element('a', className, topicTitle(item));
-    link.href = item.href;
-    link.target = '_blank';
-    link.rel = 'noopener';
+    const editorial = !pdf && editorialHref(item);
+    link.href = editorial || item.href;
+    if (!editorial) {
+      link.target = '_blank';
+      link.rel = 'noopener';
+    }
     link.lang = en && item.title_en ? 'en' : item.language || 'ko';
-    link.title = `${topicTitle(item)} · PDF`;
+    link.title = `${topicTitle(item)}${editorial ? '' : ' · PDF'}`;
     return link;
   };
   const readingRow = item => {
@@ -107,9 +111,15 @@
     const body = element('div', 'briefing-row-body'), heading = element('h3'); heading.lang = en && item.title_en ? 'en' : item.language || 'ko'; heading.append(topicLink(item));
     const summary = element('p', '', en ? item.summary_en || item.summary : item.summary); summary.lang = en && item.summary_en ? 'en' : item.language || 'ko';
     const tags = element('div', 'briefing-tags'); (item.tags || []).forEach(tag => tags.append(element('span', '', tag))); body.append(heading, summary, tags);
-    const actions = element('div', 'briefing-row-actions'), read = topicLink(item), download = topicLink(item);
-    read.textContent = en ? 'Read PDF ↗' : '읽기 ↗'; download.textContent = en ? 'Download ↓' : '다운로드 ↓'; download.setAttribute('download', '');
-    actions.append(element('span', '', item.language === 'en' ? (en ? 'English PDF' : '영어 PDF') : (en ? 'Korean PDF' : '한국어 PDF')), read, download);
+    const actions = element('div', 'briefing-row-actions'), read = topicLink(item, '', true), download = topicLink(item, '', true);
+    read.textContent = en ? 'Read PDF ↗' : (editorialHref(item) ? 'PDF 읽기 ↗' : '읽기 ↗'); download.textContent = en ? 'Download ↓' : '다운로드 ↓'; download.setAttribute('download', '');
+    actions.append(element('span', '', item.language === 'en' ? (en ? 'English PDF' : '영어 PDF') : (en ? 'Korean PDF' : '한국어 PDF')));
+    if (editorialHref(item)) {
+      const editorial = topicLink(item);
+      editorial.textContent = en ? 'Read briefing →' : '브리핑 읽기 →';
+      actions.append(editorial);
+    }
+    actions.append(read, download);
     row.append(date, body, actions); rows.set(item.id, row); return row;
   };
   const matches = item => {
@@ -170,9 +180,16 @@
         article.append(tags);
       }
       const action = topicLink(item, 'briefing-read');
-      action.textContent = en ? 'Read PDF ↗' : '브리핑 읽기 ↗';
+      action.textContent = en ? (editorialHref(item) ? 'Read briefing ↗' : 'Read PDF ↗') : '브리핑 읽기 ↗';
       action.removeAttribute('lang');
       article.append(action);
+      if (editorialHref(item)) {
+        const pdf = topicLink(item, 'briefing-read', true), download = topicLink(item, '', true);
+        pdf.textContent = en ? 'Read PDF ↗' : 'PDF 읽기 ↗';
+        download.textContent = en ? 'Download PDF ↓' : 'PDF 다운로드 ↓';
+        download.setAttribute('download', '');
+        article.append(document.createTextNode(' '), pdf, document.createTextNode(' '), download);
+      }
       ui.content.append(article);
     });
     appendCalendarLink();

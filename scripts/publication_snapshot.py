@@ -7,6 +7,7 @@ Snapshots belong outside the public site directory.
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import hashlib
 import json
 import re
@@ -78,6 +79,67 @@ def add_record(group, identifier, record):
     if identifier in group:
         raise SnapshotError("Duplicate publication identifier: " + identifier)
     group[identifier] = record
+
+
+def editorial_references(document: dict) -> list[str]:
+    """Recognize only the two registered readings of an existing briefing PDF."""
+    if not any(key in document for key in ("editorial_href", "editorial_en_href", "editorial_assets")):
+        return []
+    identifier, published = document.get("id"), document.get("date")
+    if (not isinstance(published, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", published)
+            or not isinstance(identifier, str)
+            or not re.fullmatch(re.escape(published) + r"-[a-z0-9]+(?:-[a-z0-9]+)*", identifier)):
+        raise SnapshotError("Invalid briefing editorial identity or date")
+    try:
+        date.fromisoformat(published)
+    except ValueError as error:
+        raise SnapshotError("Invalid briefing editorial date") from error
+    expected = [f"briefings/{published}/index.html", f"briefings/{published}/en/index.html"]
+    assets = document.get("editorial_assets")
+    if (document.get("series") not in {"daily-quantum", "weekly-review"}
+            or document.get("href") != f"archive/files/{identifier}.pdf"
+            or not SHA.fullmatch(str(document.get("sha256", "")))
+            or document.get("editorial_href") != expected[0]
+            or document.get("editorial_en_href") != expected[1]
+            or not isinstance(assets, dict) or set(assets) != set(expected)
+            or any(not isinstance(value, str) or not SHA.fullmatch(value) for value in assets.values())):
+        raise SnapshotError("Invalid registered briefing editorial references")
+    return sorted(expected)
+
+
+def initial_editorial_append(identifier: str, old: dict, new: dict,
+                             old_files: dict, new_files: dict) -> bool:
+    """Allow the first exact bilingual append while retaining the PDF identity."""
+    if ("editorial_references" in old or "editorial_references" not in new
+            or not isinstance(old_files, dict) or not isinstance(new_files, dict)):
+        return False
+    published = old.get("date")
+    if (not isinstance(published, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", published)
+            or not re.fullmatch(re.escape(published) + r"-[a-z0-9]+(?:-[a-z0-9]+)*", identifier)):
+        return False
+    try:
+        date.fromisoformat(published)
+    except ValueError:
+        return False
+    expected = sorted([f"briefings/{published}/index.html", f"briefings/{published}/en/index.html"])
+    old_refs = old.get("references")
+    if (new["editorial_references"] != expected or not isinstance(old_refs, list)
+            or any(not isinstance(value, str) for value in old_refs)
+            or set(old_refs) & set(expected)
+            or new.get("references") != sorted(set(old_refs) | set(expected))
+            or {key: value for key, value in old.items() if key != "references"}
+               != {key: value for key, value in new.items() if key not in {"references", "editorial_references"}}):
+        return False
+    pdf = f"archive/files/{identifier}.pdf"
+    before, after = old_files.get(pdf), new_files.get(pdf)
+    if (old.get("href") != pdf or pdf not in old_refs
+            or not isinstance(before, dict) or not isinstance(after, dict)
+            or not SHA.fullmatch(str(before.get("sha256", "")))
+            or before.get("sha256") != after.get("sha256")):
+        return False
+    return all(isinstance(new_files.get(path), dict)
+               and SHA.fullmatch(str(new_files[path].get("sha256", "")))
+               and SHA.fullmatch(str(new_files[path].get("content_sha256", ""))) for path in expected)
 
 
 def capture_site(site: Path) -> dict:
@@ -158,9 +220,14 @@ def capture_site(site: Path) -> dict:
                 raise SnapshotError("Invalid study asset map")
             for asset, checksum in assets.items():
                 owned.add(reference((base / relative_path(asset)).as_posix(), checksum))
-        add_record(result["archive"], document.get("id"),
-                   {"href": href, "study_href": study, "date": document.get("date"),
-                    "references": sorted(owned)})
+        editorials = editorial_references(document)
+        for editorial in editorials:
+            owned.add(reference(editorial, document["editorial_assets"][editorial]))
+        record = {"href": href, "study_href": study, "date": document.get("date"),
+                  "references": sorted(owned)}
+        if editorials:
+            record["editorial_references"] = editorials
+        add_record(result["archive"], document.get("id"), record)
     for resource in rows(archive.get("external_resources", []), "external"):
         url = resource.get("book_url")
         if not isinstance(url, str) or urlsplit(url).scheme not in {"https", "http"}:
@@ -241,7 +308,9 @@ def compare_snapshots(baseline: dict, current: dict) -> dict:
                 raise SnapshotError("Invalid baseline record")
             if identifier not in new:
                 blockers.append({"kind": "record_removed", "group": group, "id": identifier})
-            elif record != new[identifier]:
+            elif record != new[identifier] and not (
+                    group == "archive" and initial_editorial_append(
+                        identifier, record, new[identifier], baseline.get("files", {}), current["files"])):
                 blockers.append({"kind": "identity_or_references_changed", "group": group, "id": identifier})
         additions.extend({"group": group, "id": identifier} for identifier in sorted(new.keys() - old.keys()))
     old_files = baseline.get("files")

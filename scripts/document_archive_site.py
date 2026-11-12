@@ -756,6 +756,10 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
     except ImportError:
         from archive_documents import load_documents
         from external_resources import load_external_resources
+    try:
+        from .briefing_editorials import stage_editorials
+    except ImportError:
+        from briefing_editorials import stage_editorials
     source_documents = load_documents(archive_dir)
     external_resources = load_external_resources(archive_dir)
     if {doc["id"] for doc in source_documents} & {item["id"] for item in external_resources}:
@@ -770,6 +774,7 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
     # Stage the complete allowlist before replacing the generated archive.
     with tempfile.TemporaryDirectory(prefix="document-archive-", dir=site_dir.parent) as temporary:
         temporary_root = Path(temporary)
+        stage_editorials(archive_dir.parent, temporary_root, documents, base_url, decorate)
         lecture_outputs = [(stage_lecture_reader(temporary_root), site_dir / LECTURE_READER_HREF)]
         for source, document in zip(source_documents, documents):
             spec = LECTURE_BUNDLES.get(source["id"])

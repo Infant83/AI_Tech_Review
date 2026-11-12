@@ -186,6 +186,103 @@ class PublicationSnapshotTests(unittest.TestCase):
         changed = {item.get("group") for item in result["blockers"]}
         self.assertTrue({"reviews", "archive", "publications"}.issubset(changed))
 
+    def briefing_document(self):
+        self.document.update(id="2026-11-12-daily-quantum-brief", date="2026-11-12", series="daily-quantum",
+                             href="archive/files/2026-11-12-daily-quantum-brief.pdf")
+        (self.site / self.document["href"]).write_bytes(b"public PDF")
+        self.write_registries()
+
+    def register_editorial(self):
+        self.document.update(editorial_href="briefings/2026-11-12/index.html",
+                             editorial_en_href="briefings/2026-11-12/en/index.html")
+        assets = {}
+        for language in ("ko", "en"):
+            name = self.document["editorial_en_href" if language == "en" else "editorial_href"]
+            page = self.site / name
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text(f"<html><body>Reviewed {language} editorial</body></html>")
+            assets[name] = hashlib.sha256(page.read_bytes()).hexdigest()
+        self.document["editorial_assets"] = assets
+        self.write_registries()
+
+    def test_first_registered_editorial_pair_is_a_narrow_structural_append(self):
+        self.briefing_document()
+        baseline = self.baseline()
+        self.register_editorial()
+        current = self.baseline()
+        identity = self.document["id"]
+        expected = sorted(self.document["editorial_assets"])
+        self.assertNotIn("editorial_references", baseline["archive"][identity])
+        self.assertEqual(current["archive"][identity]["editorial_references"], expected)
+        result = snapshots.compare_snapshots(baseline, current)
+        self.assertTrue(result["structural_ok"], result["blockers"])
+        self.assertTrue(snapshots.compare_snapshots(current, current)["structural_ok"])
+        self.assertEqual(set(current["archive"][identity]["references"]) - set(baseline["archive"][identity]["references"]), set(expected))
+
+    def test_first_append_does_not_allow_identity_drift_or_extra_references(self):
+        self.briefing_document()
+        baseline = self.baseline()
+        self.register_editorial()
+        current = self.baseline()
+        identity = self.document["id"]
+        for field, value in (("date", "2026-11-11"), ("href", "archive/files/renamed.pdf"),
+                             ("study_href", "lectures/unrelated/"),
+                             ("references", current["archive"][identity]["references"] + ["archive/files/other.pdf"])):
+            with self.subTest(field=field):
+                changed = copy.deepcopy(current)
+                changed["archive"][identity][field] = value
+                self.assertFalse(snapshots.compare_snapshots(baseline, changed)["structural_ok"])
+        changed = copy.deepcopy(current)
+        changed["files"][self.document["href"]]["sha256"] = "f" * 64
+        self.assertFalse(snapshots.compare_snapshots(baseline, changed)["structural_ok"])
+
+    def test_existing_editorial_removal_or_movement_remains_blocked(self):
+        self.briefing_document()
+        self.register_editorial()
+        baseline = self.baseline()
+        for key in ("editorial_href", "editorial_en_href", "editorial_assets"):
+            self.document.pop(key)
+        self.write_registries()
+        self.assertFalse(snapshots.compare_snapshots(baseline, self.baseline())["structural_ok"])
+        self.register_editorial()
+        self.document["editorial_href"] = "briefings/2026-11-13/index.html"
+        self.write_registries()
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+
+    def test_editorial_capture_requires_matching_id_date_path_and_exact_two_hashes(self):
+        self.briefing_document()
+        self.register_editorial()
+        valid = copy.deepcopy(self.document)
+        invalid = [
+            {"id": "2026-11-11-daily-quantum-brief"}, {"date": "2026-99-99"},
+            {"series": "article"}, {"href": "archive/files/other.pdf"},
+            {"editorial_assets": {self.document["editorial_href"]: "a" * 64}},
+            {"editorial_assets": {key: "not-a-hash" for key in self.document["editorial_assets"]}},
+            {"editorial_assets": {**self.document["editorial_assets"], "archive/files/other.pdf": "a" * 64}},
+        ]
+        for change in invalid:
+            with self.subTest(change=change):
+                self.document = {**copy.deepcopy(valid), **change}
+                self.write_registries()
+                with self.assertRaises(snapshots.SnapshotError):
+                    self.baseline()
+
+    def test_missing_or_tampered_editorial_cannot_pass_the_first_append(self):
+        self.briefing_document()
+        baseline = self.baseline()
+        self.register_editorial()
+        page = self.site / self.document["editorial_en_href"]
+        original = page.read_bytes()
+        page.write_bytes(b"tampered body")
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertTrue(any(item["kind"] == "declared_hash_mismatch" for item in result["blockers"]))
+        page.write_bytes(original)
+        page.unlink()
+        result = snapshots.compare_snapshots(baseline, self.baseline())
+        self.assertFalse(result["structural_ok"])
+        self.assertTrue(any(item["kind"] == "missing_file" for item in result["blockers"]))
+
     def test_cli_writes_outside_public_site_and_returns_failure_on_removal(self):
         baseline_path = self.root / "baseline.json"
         self.assertEqual(snapshots.main(["capture", "--site", str(self.site), "--output", str(baseline_path)]), 0)

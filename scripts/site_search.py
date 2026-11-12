@@ -137,7 +137,7 @@ def build_records(site_dir: Path) -> list[dict]:
         if series == "article" and re.sub(r"\s+", " ", item["title"]).strip().casefold() in review_titles:
             continue
         scope = "lectures" if series == "lecture-notes" else "books" if series == "external-book" else "briefings" if series in {"daily-quantum", "weekly-review"} else "reviews"
-        href = item.get("book_url") if scope == "books" else item.get("study_href") or item["href"]
+        href = item.get("book_url") if scope == "books" else item.get("editorial_href") or item.get("study_href") or item["href"]
         headings = ""
         if scope == "lectures" and item.get("study_href"):
             path = _public_file(root, item["study_href"])
@@ -172,7 +172,7 @@ def build_records(site_dir: Path) -> list[dict]:
             headings += " " + " ".join(" ".join(str(unit.get(key, "")) for key in ("number", "title", "title_en", "summary", "summary_en")) for unit in grouped.get("units", []))
         title, title_en = grouped.get("title", item["title"]), grouped.get("title_en", item.get("title_en", ""))
         summary, summary_en = grouped.get("summary", item["summary"]), grouped.get("summary_en", item.get("summary_en", ""))
-        records.append({"id": item["id"], "scope": scope, "title": title, "title_en": title_en, "url": href, "url_en": "", "date": item["date"], "titles": title + " " + title_en, "topics": " ".join(item.get("tags", [])) + " " + item.get("author", ""), "summary": summary, "summary_en": summary_en, "text": summary + " " + summary_en + " " + current_source_title(item.get("source_title", "")), "headings": headings})
+        records.append({"id": item["id"], "scope": scope, "title": title, "title_en": title_en, "url": href, "url_en": item.get("editorial_en_href", ""), "date": item["date"], "titles": title + " " + title_en, "topics": " ".join(item.get("tags", [])) + " " + item.get("author", ""), "summary": summary, "summary_en": summary_en, "text": summary + " " + summary_en + " " + current_source_title(item.get("source_title", "")), "headings": headings})
     seen = set()
     for record in records:
         if record["id"] in seen:

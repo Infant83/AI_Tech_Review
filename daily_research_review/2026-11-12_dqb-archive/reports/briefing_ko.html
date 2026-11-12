@@ -1,0 +1,18 @@
+<p>양자 회로를 분자의 에너지 계산이나 발전기 가동 계획에 사용하려면, 반복해서 얻은 표본을 최종 답으로 바꾸어야 한다. IBM은 Nighthawk r2가 초당 최대 10만 개의 표본을 만들며 Heron보다 표본 처리량을 25배 높였다고 발표했다.<span class="citation">[<a href="#ref-1">1</a>]</span> 같은 시간에 더 많은 자료를 얻을 여지가 생겼다. 그 자료의 양이 필요한 답의 정확도와 전체 계산시간을 어떻게 바꾸는지가 다음 질문이다.</p>
+<p>전력망 연구는 그 연결을 작은 문제에서 시험한다. Gaidai와 Mukherjee의 혼합 알고리즘은 양자 회로로 발전기의 가동 여부를 표본화하고, 각 선택에 따른 연속적인 교류 전력 흐름은 고전 최적화로 푼다. 발전기 5–13개를 다룬 잡음 없는 모의에서 이 방법은 일률적으로 뽑은 가동 조합보다 뚜렷한 개선을 보이지 않았다.<span class="citation">[<a href="#ref-2">2</a>]</span> 회로가 만드는 분포가 탐색에 보태는 정보가 무엇인지 살피게 하는 결과다.</p>
+<p>이 비교는 각 규모 120개 중 변분 최적화가 빨리 끝난 공통 100개 문제를 골라 평균한 것이며, 양자 모의시간은 0으로 두었다. 작은 탐색공간에서는 반복당 1,000개의 표본으로 좋은 후보를 일찍 얻어, 회로의 분포를 더 최적화해도 최선해를 얻는 진행이 달라지지 않았다. 이 관찰에서 이어지는 질문은 어떤 문제 구조에서 학습한 표본분포가 필요한 후보를 더 일찍 찾게 하는가이다. 그 차이를 얻은 뒤 회로 실행까지 더한 전체 비용을 비교해야 장치 처리량과 응용의 이득이 연결된다.</p>
+<p>분자 에너지에서는 표본을 해석하는 방식이 병목을 바꾼다. CURE-QKSD는 실시간 진화에서 읽은 위상으로 에너지를 구하는 계산을 다룬다. 시간 간격을 넓히면 비슷한 Krylov 상태가 겹쳐 생기는 수치 불안정은 줄지만, 위상이 여러 바퀴 돌아 서로 다른 에너지가 같은 각도로 나타날 수 있다. Jain 등은 고전 계산으로 얻은 에너지 창을 이용해 빠진 바퀴 수를 찾고, 한 번의 실행으로 모호하면 다른 시간 간격의 실행을 더해 후보를 좁혔다.<span class="citation">[<a href="#ref-3">3</a>]</span></p>
+<p>이 방법의 분자 수치시험은 양자 측정자료와 고전 사전정보를 함께 설계할 이유를 보여준다. 다만 기저 계산에서 이미 분해된 에너지의 위상 가지를 복원하는 방법이므로, 서로 다른 상태를 분해하지 못한 문제는 여전히 남는다. 두 번째 시간 간격의 자료를 얻는 비용도 더해진다. 다음에 살필 것은 에너지 창의 정확도, 초기 상태가 목표 상태와 갖는 겹침, 그리고 추가 실행이 줄이는 불확실성이다.</p>
+<p>기존 「양자컴퓨터가 계산 시스템이 되기까지」<span class="citation">[<a href="#ref-4">4</a>]</span>는 양자 회로의 앞뒤에 있는 준비·측정·고전 처리를 전체 비용으로 읽었다. CURE는 「VQE의 현재와 다음 단계: 에너지 최소화, 부분공간 계산, 디지털 검증」<span class="citation">[<a href="#ref-5">5</a>]</span>에서 다룬 부분공간 계산을 이어 생각할 사례다. 그 글은 비직교 기저의 overlap 행렬에서 작은 고유값이 측정 오차를 증폭하는 문제를 설명했다. CURE는 시간 간격으로 이 수치 안정성을 조절하고, 그 선택이 만든 위상 모호성을 고전 에너지 창으로 푼다. 이번에는 그 분업에서 양자가 새로 주는 정보와 고전 계산이 이미 알고 있는 정보를 구체적으로 나눌 수 있다.</p>
+<p>이들을 함께 읽으며 우리가 얻는 설계 관점은, 표본의 개수와 함께 표본 한 개가 다음 계산에 보태는 정보의 가치를 보자는 것이다. 같은 해의 품질을 정해 놓고 필요한 표본 수, 고전 탐색과 후처리 시간을 함께 재면, 더 빠른 장치를 어디에 쓰고 어떤 알고리즘을 고쳐야 하는지 구체적으로 판단할 수 있다.</p>
+<h2>References</h2>
+<ol class="reference-list">
+<li id="ref-1"><a href="https://www.ibm.com/quantum/blog/qdc-2026">IBM Quantum, The year of advantage—and what comes next (11 November 2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1038/s41598-026-78377-6">I. Gaidai and R. Mukherjee, Benchmarking hybrid quantum-classical algorithms for power grid optimization problems, Sci. Rep., accepted early article (2026), doi:10.1038/s41598-026-78377-6.</a> Methods and numerical results: <a href="https://arxiv.org/abs/2607.15543v1">arXiv:2607.15543v1 (2026)</a>.</li>
+<li id="ref-3"><a href="https://arxiv.org/abs/2611.14214v1">T. K. Jain, R. Maitra, and N. J. Mayhall, Classical phase unwrapping enables large-time-step unitary quantum Krylov subspace diagonalization, arXiv:2611.14214v1 (2026).</a></li>
+<li id="ref-4"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-08-30_practical-quantum-computing-stack/">H.-J. Kim, What It Takes for a Quantum Computer to Become a Computing System, Agentic Tech Review Letters (2026-08-30).</a></li>
+<li id="ref-5"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-10-03_vqe-energy-subspaces-and-digital-validation/">H.-J. Kim, VQE Today and Beyond: Energy Minimization, Subspace Methods, and Digital Validation, Agentic Tech Review Letters (2026-10-03).</a></li>
+</ol>
+
+<h2>작성·검증</h2>
+<p>11월 12일 DQB의 원문 대조 기록을 재사용하고 IBM 공식 발표, 전력망 v1·CURE v1의 서지·초록과 관련 대조 내용을 다시 읽었다. 전력망의 저널 본문은 확보하지 못해 수치·방법은 공개 v1을 따른다. 기존 리뷰는 해당 논의를 재독했다. 원 연구의 QPU·수치계산을 재실행한 작업은 아니다.</p>

@@ -1,0 +1,27 @@
+최적화 알고리즘이 내놓은 후보들의 평균 점수가 좋아졌다고 하자. 우리가 필요한 것은 그중 실제로 쓸 만한 해 하나인데, 평균의 개선은 그 해를 얼마나 자주 얻게 되는지까지 말해 주지 않는다. 11월 11일 DQB에서 주목할 연구들은 이 간격을 구체적으로 보여준다. 양자 회로의 출력이 좋아졌다는 사실을 최종 작업의 성과로 연결하려면, 출력 분포와 그 출력을 사용하는 다음 단계까지 따라가야 한다.
+
+Fahim과 Hossain은 작은 학습 집합에서 구한 QAOA 회로의 각도를 재사용해 IBM Heron의 12개 물리 큐비트에서 실행했다. 주된 시험군에서 균등 표본 대비 평균 gap 개선은 무잡음 회로의 29–46%를 유지했지만, 최적해 확률의 개선은 5–15%만 남았다. 앞의 값은 각 실행에서 문제별 보존율을 평균한 값, 뒤의 값은 그 중앙값이며, 둘 다 균등 표본의 기여를 뺀 개선량의 보존율이다. 실제 최적해 성공확률 자체가 5–15%라는 뜻은 아니다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+이 차이를 이해하려면 평균보다 분포를 봐야 한다. 연구진의 사후 분석에서 장치는 아주 나쁜 해를 피하는 능력을 비교적 잘 유지했지만, 최적해와 가까운 좋은 해에 확률을 모으는 능력은 더 크게 잃었다.<span class="citation">[<a href="#ref-1">1</a>]</span> 평균 에너지가 내려가는 동안에도 정작 필요한 후보는 드물어질 수 있는 것이다. 기존 리뷰 「양자 우위의 경계는 계속 다시 그려진다」<span class="citation">[<a href="#ref-2">2</a>]</span>가 관측량·비용의 분모·실행 위치를 함께 기록하자고 제안했다면, 이번 결과는 그중 관측량을 선택하는 일이 왜 중요한지 실측 분포로 보여준다.
+
+그렇다고 좋은 부분해를 자주 얻으면 전체 문제가 풀리는 것도 아니다. 같은 연구진은 이진 변수와 연속 변수를 번갈아 갱신하는 ADMM에 QAOA를 넣어 시험했다. 별도의 planted 일반 문제군에서 무잡음 QAOA는 부분문제의 97.8%를 정확히 풀었지만, 전체 최적해를 찾은 인스턴스는 77.5%였다. 부분문제 정확도가 더 낮은 네 고전 휴리스틱의 전체 성공률은 92.5–96.2%였다. 이 비교는 벌점계수 ρ=1로 고정한 두 블록 ADMM 조건에 해당한다. 부분문제를 정확히 푸는 갱신이 같은 상태에 머무는 반면, 근사해의 변동이 그 정체를 벗어나게 하는 경우가 있었다.<span class="citation">[<a href="#ref-3">3</a>]</span>
+
+예측에서도 성과를 읽는 단위를 골라야 한다. Connerty 등의 양자 reservoir 연구는 압축한 유동·반응확산 데이터를 고정 양자 회로에 넣고, 측정한 특징으로 고전 선형 예측기를 학습했다. 실제 IBM의 26·52큐비트 결과에서 한 단계 예측과 압력 추정의 정규화 RMSE(NRMSE)는 같은 압축 표현의 선형 기준선보다 21.2–41.1% 낮았다. 다만 readout 설정을 시험 오차로 골랐으므로 독립 평가가 뒤따라야 한다. 연구의 실행시간 비교는 양자 회로의 장치 실행과 그 회로를 정확히 모사하는 GPU 작업시간의 합을 비교한다. 유동 예측 전체를 고전 PDE solver보다 빨리 끝냈는지는 별도의 시험이다.<span class="citation">[<a href="#ref-4">4</a>]</span>
+
+이 연구를 「혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까」<span class="citation">[<a href="#ref-5">5</a>]</span>와 함께 읽으면 다음 비교가 선명해진다. 기존 글의 QIML은 양자 모델로 통계적 prior를 오프라인에서 만든 뒤 고전 예측기에 전달한다. 이번 reservoir는 예측 중에도 양자 회로의 측정 특징을 얻는다. 따라서 두 설계는 양자 비용을 지불하는 시점부터 다르다. 짧은 예측 오차에 더해 긴 시간의 분포·에너지 스펙트럼을 얼마나 잘 유지하는지, 그 품질을 얻기 위해 측정을 얼마나 반복하는지를 같은 과제에서 비교할 이유가 생긴다. 두 논문의 수치는 서로 다른 시스템과 시험에서 얻었으므로 직접 순위를 매길 수는 없다.
+
+이 결과들을 읽으며 내가 먼저 정하고 싶은 것은 성공한 출력의 조건이다. 최적화라면 허용할 목적함수 오차와 제약조건, 예측이라면 필요한 시간 범위와 지켜야 할 물리량을 정한 뒤, 그 조건을 만족하는 출력을 얻을 때까지의 측정·고전 계산 비용을 세는 편이 유용하다. 평균 점수의 개선이 어디에서 살아남고 어디에서 사라지는지 보이면, 다음 연구에서 고쳐야 할 대상도 회로, 측정, 전체 알고리즘 가운데 구체적으로 고를 수 있다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://arxiv.org/abs/2611.10529v2">S. Y. Fahim and M. A. Hossain, Beyond the mean gap: What transferred-angle QAOA retains on a superconducting processor, arXiv:2611.10529v2 (2026).</a></li>
+<li id="ref-2"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">H.-J. Kim, The Boundary of Quantum Advantage Keeps Moving, Agentic Tech Review Letters (2026-09-04).</a></li>
+<li id="ref-3"><a href="https://arxiv.org/abs/2611.10527v1">M. A. Hossain and S. Y. Fahim, QAOA inside ADMM: Subproblem wins do not become decomposition wins at matched budgets, arXiv:2611.10527v1 (2026).</a></li>
+<li id="ref-4"><a href="https://arxiv.org/abs/2611.10351v1">E. Connerty, J. Eastridge, T. Patti, G. Angelatos, and E. N. Evans, Realizing unstructured PDE forecasting on superconducting quantum processors, arXiv:2611.10351v1 (2026).</a></li>
+<li id="ref-5"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-05-30_quantum-informed-ai-chaotic-processes/">H.-J. Kim, 혼돈계 예측에 양자 prior를 더하면 무엇이 달라질까, Agentic Tech Review Letters (2026-05-30).</a></li>
+</ol>
+
+## 작성·검증
+
+11월 11일 공개 보관본의 원문 감수를 재사용하고, 11월 12일 본문에 인용한 핵심 대목과 QAOA v2를 추가 대조했다. 장치·학습·solver를 재실행하지 않았다. 기존 글과의 연결 및 후속 비교 제안은 이번 브리핑의 해석이다.

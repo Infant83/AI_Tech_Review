@@ -266,8 +266,13 @@ def build_updates(site_dir: Path, previous: dict | None = None, *, now: str | No
                 assets.append(asset)
                 if asset.endswith(".html"):
                     hrefs.append(asset)
+        for editorial in (document.get("editorial_href"), document.get("editorial_en_href")):
+            if editorial:
+                public_path(editorial)
+                hrefs.append(editorial)
+                assets.append(editorial)
         identifier = ("lecture:" if document.get("series") == "lecture-notes" else "archive:") + document["id"]
-        add(identifier, document["title"], document["date"], hrefs, assets)
+        add(identifier, document["title"], document["date"], hrefs, assets, document.get("editorial_updated"))
     # A checked chrome migration may preserve an editorial/read-state identity
     # only for its exact complete output assets. Raw page and release digests
     # above remain unchanged. Match after all archive PDF aliases are attached.
@@ -353,6 +358,11 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
                     if checksum != current:
                         document["study_assets"][name] = current
                         updated = True
+            for name, checksum in document.get("editorial_assets", {}).items():
+                current = hashlib.sha256((site_dir / name).read_bytes()).hexdigest()
+                if checksum != current:
+                    document["editorial_assets"][name] = current
+                    updated = True
         if updated:
             write_changed(archive_path, (json.dumps(archive, ensure_ascii=False, indent=2) + "\n").encode())
     write_changed(site_dir / UPDATES_NAME, (json.dumps(updates, ensure_ascii=False, indent=2) + "\n").encode())
