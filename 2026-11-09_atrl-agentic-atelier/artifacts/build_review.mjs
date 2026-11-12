@@ -24,7 +24,8 @@ const {AllPackages}=requireModule('mathjax-full/js/input/tex/AllPackages.js');
 const adaptor=liteAdaptor();RegisterHTMLHandler(adaptor);
 const mathDocument=mathjax.document('',{InputJax:new TeX({packages:AllPackages}),OutputJax:new SVG({fontCache:'local'})});
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-const cutoff='2026-11-09';
+const cutoff='2026-11-12';
+const issueDate='2026-11-09';
 const onlyLanguage=process.argv.find(a=>a.startsWith('--language='))?.split('=')[1];
 if(onlyLanguage&&!['ko','en'].includes(onlyLanguage))throw Error('--language must be ko or en.');
 const publicBaseValue=process.argv.find(a=>a.startsWith('--public-base='))?.split('=').slice(1).join('=')||'';
@@ -33,7 +34,7 @@ const articleDescriptions={"ko":"논문을 읽다 생긴 질문이 조사·계�
 const descriptors={"ko": "에이전틱 시대의 지식 흐름과 연구 공방의 탄생", "en": "Knowledge Flows in the Agentic Era: The Emergence of a Research Atelier"};
 const titles={ko:'ATRL: Agentic Atelier for Tech Review Letters',en:'ATRL: Agentic Atelier for Tech Review Letters'};
 // Optional stems are permitted, but only explicitly referenced assets are copied.
-// Revision 24 clarifies team roles before names; all current figures are retained.
+// Revision 25 relates the retained collaboration figures to loop and graph engineering.
 const figureStems=["research_agent_evidence","harness_configuration","atelier_architecture","editorial_workflow","hub_observation","explanation_design","collaboration_mechanism","coupled_cycles","reusable_archive"];
 // Only these assembled, public-safe records may be linked as local data downloads.
 const reproductionAssets=['hub-publication-topics-v15.json','hub-publication-topics-v15.csv'];
@@ -62,73 +63,25 @@ stylesheet='/* '+fs.readFileSync(path.join(artifacts,'font-license.txt'),'utf8')
 
 function disclosure(ko){
  const rows=ko?[
-  [
-    "책임 편집자",
-    "김현중"
-  ],
-  [
-    "AI 시스템",
-    "OpenAI Codex; 정확한 모델 식별자는 보존되지 않음"
-  ],
-  [
-    "확인 가능한 에이전트 역할",
-    "개정 24에서 root는 요약·본문·게시 정보를 통합했다. atrl_reader_terms는 독자의 진입 순서와 팀 이름의 소개 위치를 검토했다. atrl_plain_terms_production은 한영 웹·PDF 제작과 출력·보존 검사를 맡았다. 앞선 개정 23의 그림 9는 gate_article_editorial·gate_article_physics·agent_standards와 root가 문장·의미·벡터·원화를 제작하고 감수한 산출물이다."
-  ],
-  [
-    "편집 하네스",
-    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a> 기본판 2026.08과 2026-11-06 과학 설명·문체 보완을 적용했다. 2026-11-10 개정 24는 요약에서 팀의 역할로 먼저 소개하고, 본문에서 팀 이름과 약어를 그림 3 앞에 정의하며 그 협업 구조를 설계하는 의미를 연결했다."
-  ],
-  [
-    "검증 범위",
-    "구조·운영의 8개 자료는 e5a8ac6, 55편 관찰은 f347836 고정판을 유지했다. 14개 참고문헌·수학 조건·교육용 CSV·통계 자료와 그림 36종을 보존했다. 이번 개정은 요약·팀 소개의 순서·하네스 설계 설명과 작성 정보를 다듬고, 한영 실제 출력과 이전 판본의 동일한 쪽·자산을 대조했다. 새 외부 연구·실험·과학 수치 계산은 추가하지 않았다."
-  ],
-  [
-    "사람 검토 기록",
-    "책임 편집자는 요약에 설명 없이 팀 약어가 등장하면 독자의 진입을 방해할 수 있음을 지적했다. 먼저 일반적인 에이전틱 편집팀·개발운영팀으로 소개하고 본문에서 팀 이름을 정의하며, 하네스 자체도 설계할 수 있음을 보여 달라는 방향을 제시했다. 문장·한영·출력 검토는 에이전트가 수행했다. 문장 단위의 사람 재독이나 별도 사람 독자 조사는 기록하지 않았다."
-  ],
-  [
-    "근거 기준일",
-    "2026-11-09"
-  ],
-  [
-    "적용 판본과 감수",
-    "기본 방법서와 2026-11-06 보완판의 정체를 유지한다. 개정 24의 요약·이름 소개·실제 출력 검토를 앞선 원고·그림·자료 감수와 구분했다. 사람과 에이전트의 역할, 도구·권한·공유 기록·인계 방식을 연결하는 일을 하네스 설계의 대상으로 설명한다. 조직의 소속과 기존 권한, 연구 근거와 계산 조건은 유지한다."
-  ]
-]:[
-  [
-    "Responsible editor",
-    "Hyun-Jung Kim"
-  ],
-  [
-    "AI system",
-    "OpenAI Codex; exact model identifier not retained"
-  ],
-  [
-    "Verifiable agent roles",
-    "For revision 24, root integrated the summaries, manuscript and publication information. atrl_reader_terms reviewed the reader’s entry and the point at which team names are introduced. atrl_plain_terms_production handled bilingual web/PDF production and output/preservation checks. Figure 9 retains the revision 23 work of gate_article_editorial, gate_article_physics, agent_standards and root on prose, meaning, vectors and artwork."
-  ],
-  [
-    "Editorial harness",
-    "<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a>, base edition 2026.08 with scientific-explanation and prose supplements dated 2026-11-06. Revision 24, prepared on 2026-11-10, introduces teams by function in the summary, defines their full names and acronyms before Figure 3, and connects their organization to the design of the harness."
-  ],
-  [
-    "Verification scope",
-    "The eight structural/operational sources retain e5a8ac6 and the 55-review observation retains f347836. Fourteen references, mathematical conditions, educational CSV, statistical materials and all thirty-six figure variants were retained. The revision refines summaries, the order of team introductions, harness-design explanation and disclosure, with actual bilingual output and prior-edition page/asset comparisons. No new external study, experiment or scientific numerical calculation was added."
-  ],
-  [
-    "Human review record",
-    "The responsible editor observed that unexplained team acronyms in the summary could obstruct the reader’s entry. The requested direction was to introduce an agentic editorial team and a development/operations team by function, define their names in the body, and show that the harness itself can be designed. Agents performed wording, bilingual and output checks. Line-by-line human rereading and a separate human-reader study were not recorded."
-  ],
-  [
-    "Evidence cutoff",
-    "2026-11-09"
-  ],
-  [
-    "Applied versions and review",
-    "The base method and supplements dated 2026-11-06 retain their identities. Revision 24 summary, team-introduction and actual-output checks are distinguished from earlier manuscript, figure and data review. Arranging people and agents, tools, permissions, shared records and hand-offs is explained as part of harness design. Team membership, existing authority, research evidence and calculation conditions are retained."
-  ]
-];
- const note=ko?"2026-11-10 개정 24. 발행 표기·근거 기준일은 2026-11-09다. 요약에서는 에이전틱 편집팀·개발운영팀의 역할을 소개하고, 본문에서는 정식 이름과 약어를 그림 3보다 먼저 정의했다. 원고의 중심 논지와 과학적 근거를 유지하며 이번 문장·한영 출력과 최종 파일의 정체를 기록했다. 그림 9는 개정 23에서 기존 무문자 원화를 내장 image_gen 도구로 1회 편집하고 모형·코드·CSV·감수 기록을 정확한 벡터로 구성한 산출물이다. 개정 24에서는 새 원화 생성·편집 없이 그림 36종과 B3 대표 이미지·기존 자료를 보존했다. 실제 출력의 시각 판독과 동일한 쪽·자산의 보존 비교는 각각 수행한 범위로 구분한다.":"Revision 24, prepared on 2026-11-10. Displayed publication date and evidence cutoff remain 2026-11-09. The summary introduces the functions of the agentic editorial and development/operations teams; the body defines their full names and acronyms before Figure 3. The central argument and scientific evidence are retained, while current wording, bilingual outputs and final file identities are recorded. Figure 9 retains revision 23’s single built-in image_gen edit of the earlier text-free artwork, with exact model, code, CSV and review inscriptions authored as vectors. Revision 24 generates or edits no new artwork and preserves all thirty-six figure variants, the B3 hero and existing data. Actual visual reading is distinguished from comparisons establishing identical pages and assets.";
+  ["책임 편집자","김현중"],
+  ["AI 시스템","OpenAI Codex; 정확한 모델 식별자는 보존되지 않음"],
+  ["확인 가능한 에이전트 역할","개정 25에서 root는 한영 본문·참고문헌·게시 정보를 통합했다. loop_graph_sources는 Ralph 원문과 루프·그래프 엔지니어링의 추가 1차 자료를, loop_graph_evidence는 공방의 역할·정기 재개·인계·종료 조건의 공개 근거를 대조했다. loop_graph_production은 한영 웹·PDF 제작과 출력·보존 검사를 맡았다. 그림 9는 개정 23에서 gate_article_editorial·gate_article_physics·agent_standards와 root가 제작·감수한 원화·벡터·설명을 유지한다."],
+  ["편집 하네스","<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a> 기본판 2026.08, 2026-11-06 과학 설명·문체 보완과 2026-11-11 독자 친화적 설명 보완을 이번 편집에 적용했다. 2026-11-12 원고 개정 25는 반복의 상태·검증·재개와 역할 사이의 연결을 통합 하네스의 설계 문제로 설명한다."],
+  ["검증 범위","추가 1차 자료 3건과 0f67956의 공개 일정·운영 정책을 대조했다. 기존 조직 자료의 e5a8ac6과 55편 관찰의 f347836은 유지한다. 참고문헌은 기존 14건을 보존해 18건으로 편성했다. 교육모형·CSV·공개 통계·그림 36종을 유지하며, 이번 한영 원고와 실제 웹·PDF의 문장·인용·조판·보존을 검사한다."],
+  ["사람 검토 기록","책임 편집자는 공방의 정기 수행과 개선, 편집·운영·보안파트의 협력, 사람의 프롬프팅·감수를 루프와 그래프의 관점으로 설명해 달라는 방향을 제시했다. 추가 자료 대조와 한영 문장·출력 검토는 에이전트가 수행했다. 문장 단위의 사람 재독이나 별도 사람 독자 조사는 기록하지 않았다."],
+  ["근거 기준일","2026-11-12. 기존 55편의 관찰과 조직 자료는 각 고정판의 시점을 유지하며 추가 문헌·운영 근거의 확인일을 구분한다."],
+  ["적용 판본과 감수","기본 방법서와 보완판의 정체를 유지한다. 개정 25는 Ralph의 반복 실행 발상과 최근 프리프린트의 설계 관점을 공방의 실제 규약·공유 기록·도구 경로에 대조한 해석이다. 특정 Ralph 플러그인이나 그래프 실행 기반의 도입, 자동 자기개선의 성능 측정을 주장하지 않는다. 새 원화 생성이나 기존 그림의 편집은 수행하지 않았다."]
+ ]:[
+  ["Responsible editor","Hyun-Jung Kim"],
+  ["AI system","OpenAI Codex; exact model identifier not retained"],
+  ["Verifiable agent roles","For revision 25, root integrated the bilingual manuscripts, references and publication information. loop_graph_sources examined the original Ralph account and additional primary sources on loop and graph engineering; loop_graph_evidence checked public evidence for the atelier’s roles, recurring resumption, hand-offs and stopping conditions. loop_graph_production handled bilingual web/PDF production and output/preservation checks. Figure 9 retains the revision 23 artwork, vectors and explanation produced and reviewed by gate_article_editorial, gate_article_physics, agent_standards and root."],
+  ["Editorial harness","<a href=\"https://infant83.io/AI_Tech_Review/methods/\">AI Tech Review Editorial Harness</a>, base edition 2026.08, with scientific-explanation/prose supplements dated 2026-11-06 and the reader-friendly explanation supplement dated 2026-11-11, applied to this edit. Manuscript revision 25, prepared on 2026-11-12, explains state, verification and resumption in iterative work and connections among roles as the design of an integrated harness."],
+  ["Verification scope","Three additional primary sources and the public schedule and operational policy at 0f67956 were compared. Existing organizational sources retain e5a8ac6 and the 55-review observation retains f347836. The fourteen prior references remain within an eighteen-item bibliography. The educational model, CSV, public statistics and all thirty-six figure variants are retained; current bilingual manuscripts and actual web/PDF outputs are checked for wording, citations, layout and preservation."],
+  ["Human review record","The responsible editor requested an account of recurring work and improvement, collaboration among editorial, operations and the security unit, and human prompting/review through loop and graph design. Agents compared the added sources and reviewed bilingual wording and outputs. Line-by-line human rereading and a separate human-reader study were not recorded."],
+  ["Evidence cutoff","2026-11-12. The existing 55-review observation and organizational sources retain their respective fixed dates; additional literature and operational evidence have separately recorded access dates."],
+  ["Applied versions and review","The base method and supplements retain their identities. Revision 25 interprets the original Ralph iteration idea and recent preprint proposals against the atelier’s actual conventions, shared records and tools. It does not claim installation of a particular Ralph plugin or graph runtime, or measured automatic self-improvement. No new artwork was generated or existing figure edited."]
+ ];
+ const note=ko?"2026-11-12 개정 25. 원 발행 표기는 2026-11-09다. 그림 3·7·8의 조직 관계·조건별 인계·수정과 수리를 루프·그래프 엔지니어링의 관점으로 읽는 절을 추가했다. 기존 연구·계산·시각자료의 판본을 보존하며, 추가 문헌과 현재 운영 근거·원고·출력 검토는 실제로 수행한 범위로 기록한다.":"Revision 25, prepared on 2026-11-12. The original issue date remains 2026-11-09. A new section reads the role relationships, conditional hand-offs, and revision/repair in Figures 3, 7 and 8 through loop and graph engineering. Prior research, calculations and visual editions are retained; added literature, current operational evidence, manuscript and output checks are recorded according to their actual scope.";
  return '<!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure" aria-labelledby="disclosure-heading"><h2 id="disclosure-heading">'+(ko?'작성·검증 정보':'How this review was made')+'</h2><dl>'+rows.map(([a,b])=>'<div><dt>'+a+'</dt><dd>'+b+'</dd></div>').join('')+'</dl><p>'+note+'</p></section><!-- End AI Tech Review Authoring Disclosure -->';
 }
 
@@ -250,7 +203,7 @@ for(const lang of onlyLanguage?[onlyLanguage]:['ko','en']){
  const html=`<!doctype html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}"><meta name="author" content="${ko?'김현중':'Hyun-Jung Kim'}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">${metadata}<link rel="stylesheet" href="review.css"></head><body>
 <header><a class="brand" href="https://infant83.io/AI_Tech_Review/">AGENTIC TECH REVIEW LETTERS</a><div class="topline-actions">${localBadge}<nav class="language-switcher" aria-label="${ko?'언어 선택':'Language'}"><span class="language-current" aria-current="page" lang="${lang}">${ko?'한국어':'English'}</span><a href="${other}" lang="${ko?'en':'ko'}" hreflang="${ko?'en':'ko'}">${ko?'English':'한국어'}</a></nav><a class="download" href="review_${lang}.pdf">PDF ↓</a></div></header>
-<main class="paper"><div class="issue-meta"><span>EDITORIAL ESSAY</span><span>2026.11.09</span><span>${ko?'지식 아카이빙 · 협업 · 공유':'KNOWLEDGE ARCHIVING · COLLABORATION · SHARING'}</span></div><article>${body}${disclosure(ko)}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">Agentic Tech Review Letters · ${cutoff}<br>${ko?'연구를 함께 읽고 연결하며 나누는 방식.':'Reading, connecting, and sharing research.'}</footer></main></body></html>\n`;
+<main class="paper"><div class="issue-meta"><span>EDITORIAL ESSAY</span><span>2026.11.09</span><span>${ko?'지식 아카이빙 · 협업 · 공유':'KNOWLEDGE ARCHIVING · COLLABORATION · SHARING'}</span></div><article>${body}${disclosure(ko)}</article><div class="downloads"><a href="review_${lang}.pdf">${ko?'한국어 PDF 내려받기':'Download English PDF'}</a><a href="${other}">${ko?'English version':'한국어판'}</a></div><footer class="footer">Agentic Tech Review Letters · ${issueDate}<br>${ko?'연구를 함께 읽고 연결하며 나누는 방식.':'Reading, connecting, and sharing research.'}</footer></main></body></html>\n`;
  fs.writeFileSync(path.join(dir,'index.html'),html.split('\n').map(line=>line.trimEnd()).join('\n'));
  fs.writeFileSync(path.join(dir,'review.css'),stylesheet);
  const allowedFigures=new Set(['hero.webp',...reproductionAssets,...figureStems.flatMap(stem=>[`${stem}_${lang}.svg`,`${stem}_mobile_${lang}.svg`])]);
