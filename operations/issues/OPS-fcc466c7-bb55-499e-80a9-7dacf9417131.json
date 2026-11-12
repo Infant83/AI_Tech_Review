@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 5,
+  "record_version": 6,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-12T10:00:39Z",
+  "updated_at": "2026-11-12T22:18:13Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -23,7 +23,8 @@
       "scripts/publication_retention.py",
       "scripts/public_media.py",
       "tests/test_public_media.py",
-      ".automation/cloudflare/public-media/serve.mjs"
+      ".automation/cloudflare/public-media/serve.mjs",
+      ".gitignore"
     ]
   },
   "observed": {
@@ -47,12 +48,18 @@
     "scripts/publication_retention.py",
     "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
     "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
-    "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
+    "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
+    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+    "operations/assets/ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e.json",
+    "https://developers.cloudflare.com/r2/pricing/",
+    "https://developers.cloudflare.com/r2/get-started/",
+    "https://developers.cloudflare.com/workers/platform/pricing/",
+    "https://developers.cloudflare.com/workers/platform/limits/"
   ],
   "limitations": [
-    "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
-    "실제 외부 버킷 권한·과금·업로드·운영 라우트·원격 응답·실기기 필기와 외부객체 복원은 이번 로컬 시험으로 확인하지 않았다.",
-    "실제 파일 삭제·공개 저장량 절감·정적사본 제거는0이며, 현재 봉인/복구 검증은 로컬PDF를 계속 요구한다."
+    "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
+    "현재 CLI OAuth에 R2 권한이 없어 목록 조회가 거절되고 Chrome 대시보드도 로그인이 필요하다. 실제 R2 활성/버킷·계정 사용량·무료 포함량 잔여·청구는 미확인이다.",
+    "공개 PDF/원본 삭제·정적 사본 제거·공개 저장량 절감은0이다. 이번 조회가 만든 임시 출력4개와 계정 조회 캐시1개, 합계5개·3556B만 비식별 요약/감수 후 정리했고 인증 저장소·사용자 원본은 보존했다."
   ],
   "policy_decision": {
     "state": "채택",
@@ -66,7 +73,7 @@
   "authority": {
     "basis": "2026-11-09 사용자의 운영팀 상시 파일 정리 과제 추가",
     "current_scope": "용도·의존·복구·동시 작업을 확인한 범위의 안전한 정리와 관련 지침·구조 개선. 확인되지 않은 유일본·개인 자료·권한 밖의 파괴적 변경은 제외.",
-    "additional_decision": null
+    "additional_decision": "현재 읽기 점검에는 대시보드 기존 계정 로그인 복원이 필요하다. 신규 구독/과금·권한 확대·운영 라우트·정적 사본 제거는 실제 영향/복구안을 확인해 현재 권한 밖이면 필요한 결정만 받는다."
   },
   "owner_role": "운영팀(ADOPT)",
   "acceptance_criteria": [
@@ -84,7 +91,7 @@
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442"
   },
   "verification": {
-    "status": "공개 PDF 용량/별칭·구판 연결 조사, 준비 도구 매핑 보완·전체/독립/로컬 검사·CI/실제 HTTPS 확인 완료. 외부 활성화·정적 사본 제거 전.",
+    "status": "현재 연결 확인과 공식 비용 시나리오·별도배포 판본/복구 계약 검토 완료. CLI R2 조회 거절·브라우저 로그인 필요로 실제 계정 사용량/청구·활성 상태는 미확인.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -92,38 +99,48 @@
       "Worker매핑이변조돼도기존verify_export성공하는공백을독립격리재현. helper공유·실제생성매핑raw비교·일반파일/symlink거절보완. 준비도구5개/HTTP3개독립통과, 전체Python385개중384통과·기존1생략",
       "최종a94후보: 등록2577파일·전체2592파일구성·226PDF/구판16경로·221출판입력·updates144/198pages·reader/SW보존. release/payload ok, 내보내기226alias/159객체SHA결속·로컬Node1585검사통과(외부0)",
       "준비도구a94 Pages43166664442 attempt1 네작업success:build06:18:40Z/deploy06:19:10Z/recovery-copy06:20:02Z/notify-readers06:20:19Z. synced70/newArticles0/queuedEvents0/baselinefalse·replay미출력. 복구artifact미만료685635673B metadata확인·전체복원미실행",
-      "실제HTTPS06:21:26.089009Z sourcea94·catalog70/updates144·fullrelease/갱신/리더3/SW/client/대표PDF4(현재/구판포함) rawbytes/SHA가봉인후보와일치. 갱신자료는이전593a와전체동일"
+      "실제HTTPS06:21:26.089009Z sourcea94·catalog70/updates144·fullrelease/갱신/리더3/SW/client/대표PDF4(현재/구판포함) rawbytes/SHA가봉인후보와일치. 갱신자료는이전593a와전체동일",
+      "07시 CLI4.160.0 whoami로그인/계정소속확인·R2scope없음. R2목록22:04:09Z10000거절, 브라우저새대시보드세션도로그인필요. 사용자로그인요청·인계했으며자격증명/권한/과금변경없음.",
+      "공식R2/Workers요금과월1/10/100만열기·다중요청가정, 현재리더전체PDF읽기·계정공유/일별CPU한계·실제청구미확인을구분. 기대SHA고정과별도Worker/Pages배포·원격봉인/복구선행조건을SITE_OPERATIONS에보강.",
+      "이번읽기조회가생성한임시개인식별/오류출력4개만파일종류/이름/해당회차소유를확인해비식별요약·독립감수후정리(논리3465B). 공개PDF/사용자원본/인증저장소삭제0·비식별연결결과유지.",
+      "같은CLI가22:04생성한루트계정조회캐시1개91B를생성시각/종류/단독구성으로확인해정리했다. 루트.wrangler/cache만Git추적제외·check-ignore확인. 합계5개3556B이며인증/앱로그/DB/공개원본은대상이아님."
     ],
     "evidence": [
       "scripts/publication_retention.py",
       "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
-      "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
+      "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+      "operations/assets/ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e.json",
+      "https://developers.cloudflare.com/r2/pricing/",
+      "https://developers.cloudflare.com/r2/get-started/",
+      "https://developers.cloudflare.com/workers/platform/pricing/",
+      "https://developers.cloudflare.com/workers/platform/limits/"
     ],
     "remaining_limits": [
-      "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
-      "실제 외부 버킷 권한·과금·업로드·운영 라우트·원격 응답·실기기 필기와 외부객체 복원은 이번 로컬 시험으로 확인하지 않았다.",
-      "실제 파일 삭제·공개 저장량 절감·정적사본 제거는0이며, 현재 봉인/복구 검증은 로컬PDF를 계속 요구한다."
+      "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
+      "요금표/가정별연산비용은실제트래픽·청구예측이아니다. 현재리더는PDF전체를arrayBuffer로읽으므로다중Range가현재발생한다고간주하지않는다.",
+      "Worker매핑과Pages카탈로그의별도배포에기대SHA고정/구신판본공존·원격자산봉인/복구계약이필요하다. 외부활성화/업로드/라우트/정적사본제거·실기기시험·공개저장량절감은미실행이다."
     ]
   },
   "observation": {
-    "status": "19시 공개 용량·검증 준비 묶음 유지 확인",
-    "period": "2026-11-12T09:58:10.389591Z~09:58:34.780293Z",
-    "result": "실제공개a94의전체release/catalog/recency가15시검증본과raw동일. 등록2591파일764229027B·226PDF/159유일객체355371133B·800MB관리목표여유35770973B 유지. 새자료/용량증가0으로기존내보내기/HTTP1585근거재사용·새전체회귀/로컬전달검사·이전/삭제/절감없음."
+    "status": "07시 현재 연결·비용·판본/복구 조건 검토, 계정 읽기 연결 대기",
+    "period": "2026-11-12T22:02:12.916984Z~22:16:24Z",
+    "result": "기존공개764229027B·226PDF/159객체355371133B 유지. CLI로그인/대상계정소속은유효하나R2권한없음·목록API10000. Chrome저장로그인방식복원을시도해도비밀번호입력이필요하여사용자에게로그인한단계를요청·화면인계. 새과금/권한확대/구독활성화/업로드/라우트변경/공개PDF·원본삭제0."
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
     "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "11/13 07시에현재지원연결의최소권한·별도공개PDF시험저장소/라우트상태와사용량/비용, remote객체를포함한봉인·업로드선행/동시게시·복원/되돌림계약을구체화한다. 과거R2권한부재를이번실조회로간주하지않고실제권한/요금/원격응답은미확인으로유지한다. PDF링크제품목표11/13 11시는유지하며기존공개URL/구판필기/개인저장소분리를보존한다.",
+  "next_action": "로그인완료가전달되면기존세션에서R2활성/사용량/청구를읽기확인한다. 다음15시에는연결복원근거와기대SHA고정·구/신카탈로그전환·원격객체복구계약을검토하고제품검증을우선한다. 19시에상태/필요결정을정리한다. 11시PDF링크제품착수와같은파일을동시에수정하거나미확인무료포함량을근거로구독/과금·운영전환을진행하지않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "preparation_tool_deployed_remote_activation_pending",
-    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
-    "next_review_at": "2026-11-13T07:00:00+09:00",
-    "scheduled_step": "지원 연결·공개PDF 시험 저장소/사용량·비용·원격객체 봉인/게시/복귀 계약 검토",
+    "state": "connection_limited_contract_and_cost_reviewed",
+    "next_scheduled_step_at": "2026-11-13T15:00:00+09:00",
+    "next_review_at": "2026-11-13T19:00:00+09:00",
+    "scheduled_step": "로그인 복원 근거·기대 SHA/구신 판본·원격 복구 계약 검토(제품 검증 우선, 외부 활성화 아님)",
     "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
     "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님."
   }

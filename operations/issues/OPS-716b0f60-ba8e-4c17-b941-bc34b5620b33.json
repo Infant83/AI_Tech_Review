@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-716b0f60-ba8e-4c17-b941-bc34b5620b33",
   "uuid": "716b0f60-ba8e-4c17-b941-bc34b5620b33",
-  "record_version": 2,
+  "record_version": 3,
   "title": "PDF 필기 전체화면과 자동 저장 안내의 깜빡임 완화",
   "type": "reader_usability",
   "created_at": "2026-11-11T12:45:56Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T22:18:13Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -47,7 +47,8 @@
     ".automation/lecture-reader/reader.css",
     ".automation/lecture-reader/index.html",
     "operations/runs/20261111T124556Z-0007f0a7-0764-48c2-8646-0ceb2cb7fa59.md",
-    "https://fullscreen.spec.whatwg.org/"
+    "https://fullscreen.spec.whatwg.org/",
+    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
   ],
   "limitations": [
     "실제 iPad/Pencil·iPhone·Windows 펜 시험 전이며 데스크톱 터치 에뮬레이션과 구분한다.",
@@ -93,11 +94,13 @@
       "최종입력84개bytes보존; 최초83개불변+정확한reader3자산선언1개갱신",
       "Pages43029514680 attempt1의build/deploy/recovery-copy/notify-readers전체성공; synced70/newArticles0/queuedEvents0/baselinefalse",
       "실제HTTPS239788a/catalog70/L006/reader3rawbytes/PDF원본일치·독립재확인",
-      "공개PDF 실제Chrome390x844렌더·전체화면/나가기/Escape·전후필기bytes불변(API모의·쓰기차단)"
+      "공개PDF 실제Chrome390x844렌더·전체화면/나가기/Escape·전후필기bytes불변(API모의·쓰기차단)",
+      "07시 새 공유 실기기 근거가 없어 기존 배포·관찰 이력은 보존한다. 공개 리더/SW/API의 읽기 확인을 실제 iPhone/Pencil 동작 검증으로 확대하지 않고, 새 정상 발행 또는 사용자 피드백을 기다리며11/16 19시에 재검토한다."
     ],
     "evidence": [
       "operations/runs/20261111T124556Z-0007f0a7-0764-48c2-8646-0ceb2cb7fa59.md",
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43029514680"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43029514680",
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
     ],
     "remaining_limits": [
       "실제 iPad/Pencil·iPhone·Windows 펜 시험 전이며 데스크톱 터치 에뮬레이션과 구분한다.",
@@ -121,8 +124,8 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
+    "state": "awaiting_new_physical_device_evidence",
+    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
     "next_review_at": "2026-11-16T19:00:00+09:00",
     "scheduled_step": "실제 필기 기기의 새 관찰 근거 검토"
   }

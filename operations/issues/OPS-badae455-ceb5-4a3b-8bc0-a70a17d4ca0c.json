@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
   "uuid": "badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
-  "record_version": 2,
+  "record_version": 3,
   "title": "렉처 알림이 원본 PDF 뷰어로 열려 ATRL 복귀 경로가 없는 문제",
   "type": "notification_navigation",
   "created_at": "2026-11-11T14:40:55Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T22:18:13Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -45,7 +45,8 @@
   },
   "evidence": [
     "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md",
-    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43042124533"
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43042124533",
+    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
   ],
   "limitations": [
     "실제 아이폰 PWA의 새 SW 설치와 OS 알림 클릭은 미시험이다. Chrome 화면 크기 시험과 구분한다.",
@@ -97,10 +98,12 @@
       "Public c898550/catalog70/L001-L006/SW/client/reader/L001 PDF verified independently",
       "Public Chrome390x844: 25-page L001 rendered, lecture list and ATRL home reached; API mocked and writes blocked",
       "Worker adopt-reader-return-c898550c0082 active100%; 7 bindings/runtime/handlers/named_handlers unchanged",
-      "API config200/pushEnabledtrue/nonempty public VAPID key unchanged; anonymous me200/accountnull/notebooks401"
+      "API config200/pushEnabledtrue/nonempty public VAPID key unchanged; anonymous me200/accountnull/notebooks401",
+      "07시 새 공유 실기기 근거가 없어 기존 배포·관찰 이력은 보존한다. 공개 리더/SW/API의 읽기 확인을 실제 iPhone/Pencil 동작 검증으로 확대하지 않고, 새 정상 발행 또는 사용자 피드백을 기다리며11/16 19시에 재검토한다."
     ],
     "evidence": [
-      "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md"
+      "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md",
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
     ],
     "remaining_limits": [
       "실제 아이폰 PWA의 새 SW 설치와 OS 알림 클릭은 미시험이다. Chrome 화면 크기 시험과 구분한다.",
@@ -126,8 +129,8 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
+    "state": "awaiting_new_physical_device_evidence",
+    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
     "next_review_at": "2026-11-16T19:00:00+09:00",
     "scheduled_step": "정상 렉처 알림의 사이트 복귀 근거 검토"
   }
