@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 3,
+  "record_version": 4,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-12T02:30:43Z",
+  "updated_at": "2026-11-12T06:22:33Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -20,7 +20,10 @@
     "source_paths": [
       "SITE_OPERATIONS.md",
       "PUBLICATION_WORKFLOW.md",
-      "scripts/publication_retention.py"
+      "scripts/publication_retention.py",
+      "scripts/public_media.py",
+      "tests/test_public_media.py",
+      ".automation/cloudflare/public-media/serve.mjs"
     ]
   },
   "observed": {
@@ -42,12 +45,13 @@
     "SITE_OPERATIONS.md#자료와-파일-구조의-정리",
     "PUBLICATION_WORKFLOW.md#오래된-로컬-후보-정리",
     "scripts/publication_retention.py",
-    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
+    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+    "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md"
   ],
   "limitations": [
-    "초기 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됐다. 11/12에는 공개 PDF 용량·해시별 집계를 추가했고 URL/구판/필기 매핑 조사는 다음 단계다.",
-    "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
-    "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
+    "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
+    "실제 외부 버킷 권한·과금·업로드·운영 라우트·원격 응답·실기기 필기와 외부객체 복원은 이번 로컬 시험으로 확인하지 않았다.",
+    "실제 파일 삭제·공개 저장량 절감·정적사본 제거는0이며, 현재 봉인/복구 검증은 로컬PDF를 계속 요구한다."
   ],
   "policy_decision": {
     "state": "채택",
@@ -72,43 +76,52 @@
     "실제 회수 용량·관리 경로 감소와 미측정 범위를 구분해 기록함"
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
-    "deployment_reference": null
+    "commits": [
+      "a94abe40497a078378a745a162c5d6d4ccdb6c07"
+    ],
+    "candidate_reference": "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442"
   },
   "verification": {
-    "status": "초기 읽기 전용 조사 완료; 정리 실행 전",
+    "status": "공개 PDF 용량/별칭·구판 연결 조사, 준비 도구 매핑 보완·전체/독립/로컬 검사·CI/실제 HTTPS 확인 완료. 외부 활성화·정적 사본 제거 전.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
-      "출판 원본·공개 파일·정리 도구·CI 코드 변경 없음"
+      "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
+      "11/12 15시: 실제 공개593a의2591파일764,229,027B·226PDF/159유일본·구판16경로를SHA/크기로집계. 같은해시별칭과구판의삭제근거로사용하지않음",
+      "Worker매핑이변조돼도기존verify_export성공하는공백을독립격리재현. helper공유·실제생성매핑raw비교·일반파일/symlink거절보완. 준비도구5개/HTTP3개독립통과, 전체Python385개중384통과·기존1생략",
+      "최종a94후보: 등록2577파일·전체2592파일구성·226PDF/구판16경로·221출판입력·updates144/198pages·reader/SW보존. release/payload ok, 내보내기226alias/159객체SHA결속·로컬Node1585검사통과(외부0)",
+      "준비도구a94 Pages43166664442 attempt1 네작업success:build06:18:40Z/deploy06:19:10Z/recovery-copy06:20:02Z/notify-readers06:20:19Z. synced70/newArticles0/queuedEvents0/baselinefalse·replay미출력. 복구artifact미만료685635673B metadata확인·전체복원미실행",
+      "실제HTTPS06:21:26.089009Z sourcea94·catalog70/updates144·fullrelease/갱신/리더3/SW/client/대표PDF4(현재/구판포함) rawbytes/SHA가봉인후보와일치. 갱신자료는이전593a와전체동일"
     ],
     "evidence": [
-      "scripts/publication_retention.py"
+      "scripts/publication_retention.py",
+      "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442"
     ],
     "remaining_limits": [
-      "초기 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됐다. 11/12에는 공개 PDF 용량·해시별 집계를 추가했고 URL/구판/필기 매핑 조사는 다음 단계다.",
-      "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
-      "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
+      "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
+      "실제 외부 버킷 권한·과금·업로드·운영 라우트·원격 응답·실기기 필기와 외부객체 복원은 이번 로컬 시험으로 확인하지 않았다.",
+      "실제 파일 삭제·공개 저장량 절감·정적사본 제거는0이며, 현재 봉인/복구 검증은 로컬PDF를 계속 요구한다."
     ]
   },
   "observation": {
-    "status": "초기 후보 모음 관찰",
-    "period": "2026-11-09T01:52:09Z",
-    "result": "오래된 파일이나 참조 검색 부재만으로 삭제하지 않고 보호 조건을 유지함"
+    "status": "최신 공개 용량과 안전한 내보내기/로컬 전달 확인",
+    "period": "2026-11-12T06:03:38.898097Z~06:11:46.089Z",
+    "result": "실제공개764,229,027B로내부700MB이전시험완료목표초과·800MB목표까지35,770,973B. 구판/별칭을보존한검증묶음을준비했고PDF재생성/이전/삭제는하지않음."
   },
   "recovery": {
-    "plan_reference": null,
-    "execution_reference": null,
-    "result": null
+    "plan_reference": "SITE_OPERATIONS.md",
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
+    "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "공개 산출물736,634,728B가 기존700MB 이전 시험 완료 관리 목표를 넘은 근거를 바탕으로 오늘15시에 공개 PDF224경로/157유일본의 역할·기존 URL·구판/필기 연결·재생성/복구를 읽기 검토한다. 같은 해시 alias를 삭제 후보로 단정하지 않고 기존 public_media 준비 도구의 매핑·검증·이전/복귀 시험안을 구체화한다. 실제 외부 업로드·운영 경로 전환·과금·원본 삭제는 별도 권한과 검증 판단 전 진행하지 않는다. 작은 안전한 정리 후보 조사는 기존 범위에서 이어간다.",
+  "next_action": "다음19시회차에새게시용량·이번CI/공개결과와이전시험의연결요건을확인하고11/13 07시에별도시험저장소의권한·비용·원URL/Range·구판필기·외부객체복원/되돌림계약을검토한다. 기존PDF링크제품목표11/13 11시는유지하며준비도구검증과실제외부활성화/삭제를구분한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-12T15:00:00+09:00",
+    "state": "preparation_tool_deployed_remote_activation_pending",
+    "next_scheduled_step_at": "2026-11-12T19:00:00+09:00",
     "next_review_at": "2026-11-13T07:00:00+09:00",
-    "scheduled_step": "공개 파일 구조·용량과 PDF alias/구판 연결 읽기 조사; 이전/복귀 시험안 준비(실제 이전/삭제 아님)",
+    "scheduled_step": "새 게시 용량·준비 도구 공개 결과 관찰, 별도 저장소 시험/복귀 계약 검토",
     "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
     "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님."
   }

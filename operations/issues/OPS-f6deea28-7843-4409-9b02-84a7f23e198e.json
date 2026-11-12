@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-f6deea28-7843-4409-9b02-84a7f23e198e",
   "uuid": "f6deea28-7843-4409-9b02-84a7f23e198e",
-  "record_version": 6,
+  "record_version": 7,
   "title": "2026-09-11 OLED 리뷰 PDF의 잘린 파일 복구",
   "type": "공개 자료 열람 결함",
   "created_at": "2026-11-08T12:52:03Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T06:14:49Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -66,6 +66,11 @@
       "kind": "원본 구조와 첨부의 편집 범위 확인",
       "reference": "2026-09-11_weekly-oled-inverse-design-excitonic-reliability/reports/2026-09-11_weekly-oled-inverse-design-excitonic-reliability_final_review.md",
       "finding": "PDF는 세 번째 객체의 이미지 스트림 중간에서 끊기고 페이지·카탈로그·xref·EOF 구조가 없다. 원고는 첨부를 영문 기술 브리프로 소개한다. 한영 페이지가 영어 PDF 하나를 공유한 점 자체를 번역 누락으로 판정하지 않으며, 현재 HTML 전체를 원 브리프와 동일한 판본으로 간주하지 않는다."
+    },
+    {
+      "kind": "15시편집의존변화확인",
+      "reference": "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
+      "finding": "공개593a의한영PDF는기존손상SHA·786445B. 직전원격이후해당원고/등록/일감의새복구근거·영문브리프범위확정없음. 정상원판미확보와재생성편집감수필요를유지."
     }
   ],
   "limitations": [
@@ -136,8 +141,8 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-12T15:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
     "next_review_at": "2026-11-14T15:00:00+09:00",
-    "scheduled_step": "손상 PDF 기존 근거·편집 의존 상태 확인"
+    "scheduled_step": "정상 원판/영문 기술 브리프 범위의 새 편집 근거 재검토; 근거 없이 재생성/복구 완료 금지"
   }
 }

@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-faa22aed-7e76-4025-a006-5a7215246813",
   "uuid": "faa22aed-7e76-4025-a006-5a7215246813",
-  "record_version": 5,
+  "record_version": 6,
   "title": "낡은 공개 seed에서 재빌드할 때 같은 판본의 갱신시각이 다시 생성됨",
   "type": "publication_recency",
   "created_at": "2026-11-11T18:08:14Z",
-  "updated_at": "2026-11-12T02:38:05Z",
-  "status": "observing",
+  "updated_at": "2026-11-12T06:14:49Z",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "기존 운영 관찰의 독립 원인 재현",
@@ -52,7 +52,8 @@
     "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
     "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
-    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
+    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+    "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md"
   ],
   "limitations": [
     "동일 판본의 재빌드 갱신시각 재생 방지다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 시각 복원은 별도 문제다.",
@@ -67,7 +68,7 @@
       "OPS-58a4237a-48d8-40da-af30-4b0edc80c943"
     ],
     "duplicate_of": null,
-    "revisit_when": "검증된 실제 이전값 전달 후보의 구현·보존 검사 시"
+    "revisit_when": "같은 판본의 갱신시각이 일반 재빌드에서 다시 생성되는 재발을 확인할 때"
   },
   "authority": {
     "basis": "사용자의 지속 운영·게시 정합성 개선 권한",
@@ -91,7 +92,7 @@
     "baseline_revision": "4276f47e59c0e432bfe3fbaeb3e6b7e02f27fc00"
   },
   "verification": {
-    "status": "구현·전체 Python·독립 경계/통합 회귀·정확한 후보 보존·CI 네 작업·실제 HTTPS 검증 완료. 다음 통상 게시의 갱신시각 보존은 운영 관찰.",
+    "status": "같은 판본 갱신시각 재생 수정·배포 뒤 정상 편집 배포 두 건에서 보존 확인. 해당 원인의 해결 조건 충족.",
     "checks": [
       "seed133건→최종143건의 공통 revision 차이7건 중 기존6건이 updatedAt만 재생됨; 기존 display migration이 적용된 D-Wave는 별도 보존",
       "동일 final site+검증된 공개 previous에서 pages·전체143건의 완전 일치",
@@ -100,12 +101,14 @@
       "실제4276 기준의 최종6be 후보:57리뷰/131아카이브/70출판/외부1·2569등록파일·224PDF·218출판입력 보존. updates144건/192pages 전체dict/raw bytes와 두now 재계산 모두 동일",
       "release ok/blockers0·payload ok/failures0·reviewed/content/instrumentation changes0. seal/전체2584파일70글 검증 통과. 기존 검색80KB/공개artifact600MB 성장 경고 유지",
       "Pages43141664084 attempt1/source6be build02:32:52Z·deploy02:33:24Z·recovery-copy02:34:10Z·notify-readers02:34:29Z 전체success. synced70/newArticles0/queuedEvents0/baselinefalse, replay 미출력",
-      "실제 HTTPS02:35:41.671052Z source6be·70catalog/144updates, full release·catalog·recency·reader3·SW/client·공개PDF3개의 raw bytes/SHA가 봉인 후보와 일치. recency 전체가 이전4276과동일"
+      "실제 HTTPS02:35:41.671052Z source6be·70catalog/144updates, full release·catalog·recency·reader3·SW/client·공개PDF3개의 raw bytes/SHA가 봉인 후보와 일치. recency 전체가 이전4276과동일",
+      "11/12 15시: 수정후정상편집43145132138/43146732135의공개593a를대조.144건중140완전동일·변경4건은DQB3추가읽기와ATRL실제개정이며같은revision의updatedAt재생0. pages192→198은새한영읽기6경로. 준비도구후보도144건raw동일."
     ],
     "evidence": [
       "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
       "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084",
+      "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md"
     ],
     "remaining_limits": [
       "동일 판본의 재빌드 갱신시각 재생 방지다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 시각 복원은 별도 문제다.",
@@ -114,22 +117,22 @@
     ]
   },
   "observation": {
-    "status": "기술 수정 배포·원래 재빌드 경로 공개 확인 완료;다음 통상 게시 관찰",
-    "period": "2026-11-12T02:35:41.671052+00:00",
-    "result": "CI가 같은 공개4276에서 새6be를 생성한 뒤 실제 공개 release 전체와 recency144건이 검수 후보 및 이전 recency bytes와 일치했다. 글의 갱신시각을 기술 배포 때문에 다시 쓰지 않았다. 다음 실제 본문 개정/새 글의 경로는 지속 관찰한다."
+    "status": "다음 정상 편집 배포 관찰 완료·해당 원인 해결",
+    "period": "2026-11-12T02:35:41.671052Z~06:03:38.898097Z",
+    "result": "실제편집발행두건뒤동일revision의updatedAt변경0. 실제개정4건과140건보존을구분해확인했다. 새개정의최초시각결정성·과거최초일복원·알림/OS배지는해결범위에포함하지않음."
   },
   "recovery": {
     "plan_reference": "PUBLICATION_WORKFLOW.md",
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084",
     "result": "기존 단일 Pages 경로 배포와 공개 복구 사본 생성 성공. 개인 DB·구독·필기·PDF 이전/삭제나 실제 롤백·개인 복원·테스트 푸시·재발송 없음."
   },
-  "next_action": "다음 정상 게시에서 같은 판본의 updatedAt/change/revision 보존과 실제 개정·새 ID의 구분을 관찰한다. bare snapshot은 검증 묶음을 새로 받거나 명시적 로컬 site 비교로 처리하며 낡은 seed로 조용히 대체하지 않는다. 본문·PDF·배지/알림 설정을 바꾸거나 검증용 게시·푸시를 만들지 않는다.",
+  "next_action": "해당 원인은 해결로 닫고 통상 게시의 연속성 검사에서 보존을 확인한다. 같은 판본 날짜 재생이 재발하면 이 일감을 재개한다. 별도 확인용 발행·푸시는 만들지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "deployed_observing",
-    "next_scheduled_step_at": "2026-11-12T15:00:00+09:00",
-    "next_review_at": "2026-11-12T15:00:00+09:00",
-    "scheduled_step": "배포 후 정상 게시의 동일 판본 갱신시각 보존 관찰·다음 회차 인계"
+    "state": "resolved",
+    "next_scheduled_step_at": null,
+    "next_review_at": null,
+    "scheduled_step": "정상 편집 배포 두 건 관찰로 해결; 재발 시 같은 일감 재개"
   }
 }
