@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 4,
+  "record_version": 5,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-12T06:22:33Z",
+  "updated_at": "2026-11-12T10:00:39Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -46,7 +46,8 @@
     "PUBLICATION_WORKFLOW.md#오래된-로컬-후보-정리",
     "scripts/publication_retention.py",
     "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
-    "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md"
+    "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
+    "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
@@ -96,7 +97,8 @@
     "evidence": [
       "scripts/publication_retention.py",
       "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
+      "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
     ],
     "remaining_limits": [
       "초기 로컬 후보 조사는 이후 공개PDF별칭·구판 연결/용량 및 격리 내보내기 조사로 확대했다. 전체 저장소 파일·미사용 의존성의 정리를 마친 것은 아니다.",
@@ -105,23 +107,23 @@
     ]
   },
   "observation": {
-    "status": "최신 공개 용량과 안전한 내보내기/로컬 전달 확인",
-    "period": "2026-11-12T06:03:38.898097Z~06:11:46.089Z",
-    "result": "실제공개764,229,027B로내부700MB이전시험완료목표초과·800MB목표까지35,770,973B. 구판/별칭을보존한검증묶음을준비했고PDF재생성/이전/삭제는하지않음."
+    "status": "19시 공개 용량·검증 준비 묶음 유지 확인",
+    "period": "2026-11-12T09:58:10.389591Z~09:58:34.780293Z",
+    "result": "실제공개a94의전체release/catalog/recency가15시검증본과raw동일. 등록2591파일764229027B·226PDF/159유일객체355371133B·800MB관리목표여유35770973B 유지. 새자료/용량증가0으로기존내보내기/HTTP1585근거재사용·새전체회귀/로컬전달검사·이전/삭제/절감없음."
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
     "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "다음19시회차에새게시용량·이번CI/공개결과와이전시험의연결요건을확인하고11/13 07시에별도시험저장소의권한·비용·원URL/Range·구판필기·외부객체복원/되돌림계약을검토한다. 기존PDF링크제품목표11/13 11시는유지하며준비도구검증과실제외부활성화/삭제를구분한다.",
+  "next_action": "11/13 07시에현재지원연결의최소권한·별도공개PDF시험저장소/라우트상태와사용량/비용, remote객체를포함한봉인·업로드선행/동시게시·복원/되돌림계약을구체화한다. 과거R2권한부재를이번실조회로간주하지않고실제권한/요금/원격응답은미확인으로유지한다. PDF링크제품목표11/13 11시는유지하며기존공개URL/구판필기/개인저장소분리를보존한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "preparation_tool_deployed_remote_activation_pending",
-    "next_scheduled_step_at": "2026-11-12T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
     "next_review_at": "2026-11-13T07:00:00+09:00",
-    "scheduled_step": "새 게시 용량·준비 도구 공개 결과 관찰, 별도 저장소 시험/복귀 계약 검토",
+    "scheduled_step": "지원 연결·공개PDF 시험 저장소/사용량·비용·원격객체 봉인/게시/복귀 계약 검토",
     "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
     "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님."
   }

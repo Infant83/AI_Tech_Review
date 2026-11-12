@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
   "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
-  "record_version": 4,
+  "record_version": 5,
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T10:00:39Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -48,7 +48,8 @@
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42824084381",
     "https://www.githubstatus.com/",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
-    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682"
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682",
+    "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
   ],
   "limitations": [
     "The internal cause of the Pages delay is unconfirmed.",
@@ -96,12 +97,14 @@
       "Root verified fifteen HTTPS routes against the sealed artifact, including both article PDFs and both current archive PDFs. Independent reviewer verified the Qunova paths and exact hashes.",
       "Approved bfc2383 source remains unchanged; the other16 PDF pages are RGB-identical to the prior edition.",
       "Recovery artifact13818803385 exists with digest sha256:fd0fbed20e4396967483826ae1986f4fdd3b77c236f82f6d7deab07b35fd92cd.",
-      "Actual HTTPS verification and reader sync completed: synced69, newArticles0, queuedEvents0; no assertion of phone push receipt."
+      "Actual HTTPS verification and reader sync completed: synced69, newArticles0, queuedEvents0; no assertion of phone push receipt.",
+      "11/12 19시: 직전추가확인후새run/진행0, a94의기존네작업success유지·실제HTTPS동일공개본확인. 새재발근거없어재실행/검사반복/새배포없음. 기존원인미확정과주간관찰을유지."
     ],
     "evidence": [
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/42828205239",
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
-      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682"
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682",
+      "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
     ],
     "remaining_limits": [
       "The internal cause of the prior Pages sync delay remains unconfirmed.",
@@ -123,8 +126,8 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-12T19:00:00+09:00",
+    "state": "ordinary_publication_observation",
+    "next_scheduled_step_at": "2026-11-13T03:00:00+09:00",
     "next_review_at": "2026-11-18T15:00:00+09:00",
     "scheduled_step": "새 통상 게시 run의 재발 관찰·주간 검토"
   }

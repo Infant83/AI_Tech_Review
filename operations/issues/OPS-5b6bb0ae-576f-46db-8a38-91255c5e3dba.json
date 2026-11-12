@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 9,
+  "record_version": 10,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T10:00:39Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -83,7 +83,8 @@
     "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/43010926852",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/43012707656",
-    "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md"
+    "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
+    "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
   ],
   "limitations": [
     "사용자가 iPhone 홈 화면 앱의 과거 수신 기록과 신규L006 배너 도착을 확인했다. 운영팀의 직접 기기 검사, 정확한 OS 표시 시각·iOS 버전·집중 모드·요약/배너 설정 확인은 하지 못함",
@@ -173,7 +174,8 @@
       "Pages43018682201 attempt1/head1f1: build12:19:01/deploy12:19:25/recovery-copy12:20:07/notify-readers12:20:27Z 성공. lastAPI12:21:06Z·synced70/newArticles0/queuedEvents0/baselinefalse. replay미출력은추정않음",
       "실제HTTPS12:21:42Z release/catalog1f1·70개·L006와SW/client/PDFreader canonical세해시일치. 독립12:21:53Z에도L006필드및PDF406146B/hash일치확인",
       "Worker기존auth/dryrun통과·직전21동시변경없음확인후keep-vars배포12:22:45Z.12:24:38Z tag adopt-unread-1f1b8e7649f5 활성100%,binding메타데이터/runtime/handlers불변·config200/true/공개키불변·익명me200/null·notebooks401. 수동DB명령·계정/구독/스키마변경·테스트/재발송없음;기존CI카탈로그동기화는정상처리",
-      "배포후독립대조:영수증/source/tag/활성100%·전후7binding메타데이터/runtime/handlers/namedhandlers동일·코드etag만변경. 공개JS3개canonical bytes·release/catalog1f1/70/L006·config200/true·공개키/주제불변·Origin포함익명me200/null·notebooks401 확인;폰실제UX는미확인"
+      "배포후독립대조:영수증/source/tag/활성100%·전후7binding메타데이터/runtime/handlers/namedhandlers동일·코드etag만변경. 공개JS3개canonical bytes·release/catalog1f1/70/L006·config200/true·공개키/주제불변·Origin포함익명me200/null·notebooks401 확인;폰실제UX는미확인",
+      "11/12 19시: 새 정상 게시run이나 추가 실기기 사용자 근거를 확인하지 못했다. 실제공개SW·client·공유리더raw는15시검증본과동일. 기존배너확인과미완료목록/배지관찰을보존하며새발송점검·실기기성공으로확대하지않음."
     ],
     "evidence": [
       "operations/runs/20261110T105505Z-bc242733-a281-4752-a9b8-4d5e3b48d303.md",
@@ -181,7 +183,8 @@
       "operations/runs/20261111T093848Z-402dc3d2-c189-4d77-ad6e-7e1f82d5452a.md",
       "operations/runs/20261111T100353Z-43aed536-36d6-4f72-9a36-21cd113b7b8b.md",
       "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
-      "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md"
+      "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
+      "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md"
     ],
     "remaining_limits": [
       "아이폰의 정확한 OS 표시 시각·지연·iOS 버전·설정 및 JS/native 경로는 미확인",
@@ -208,8 +211,8 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-12T19:00:00+09:00",
+    "state": "awaiting_new_physical_device_evidence",
+    "next_scheduled_step_at": "2026-11-13T07:00:00+09:00",
     "next_review_at": "2026-11-13T07:00:00+09:00",
     "scheduled_step": "새 정상 발행·실기기 관찰 근거 검토"
   }
