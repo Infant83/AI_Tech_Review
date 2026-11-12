@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 7,
+  "record_version": 8,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-11T18:09:26Z",
+  "updated_at": "2026-11-12T02:42:16Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -53,7 +53,8 @@
     "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md",
     "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
     "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
-    "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md"
+    "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
+    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -102,7 +103,8 @@
       "19시 회차: 동일7통·5run의 발신자/저장소/본문runURL·전페이지를 확인했고 새실패/미해결0. 최신정상run42986822618 불변·이후새run0; 실제HTTPS release/catalog200·ab575a6·69개 확인. 메일 상태 변경 없음",
       "이후 변화만 추가 확인: L00643010516180 attempt1의 한 개 course-preservation 단위 검사 실패는 게시 담당ff02 수정 후43010926852 네 작업 성공·HTTPS ff02·정상 신규 알림으로 연결됐다. SW 보완43012707656도 네 작업 성공·HTTPS089871a·새 이벤트0이다. 메일은 다시 조회하지 않았고 전체 과거 실행 재감수도 하지 않음",
       "추가알림UX43018682201 attempt1/head1f1의네작업모두성공. lastAPI12:21:06Z·실제HTTPS12:21:53Z 1f1/70개/L006필드·PDF보존·synced70/newArticles0/queuedEvents0/baselinefalse. 메일재조회/전체Actions재집계/재실행없음",
-      "2026-11-12 03시 회차: 메일18:05:33.375Z·Actions18:05:14.932396Z 성공. 48시간겹친 전페이지8통/6run/8실패attempt 대조, L006기존해결1통이 추가확인됨. 직전전체API확인후9run(성공8·기존실패1)과메일6run대조; 새미해결0·이후새run0. 최신43053726181 네작업성공 유지. 실제HTTPS18:06:02Z a955/70글·reader3hash일치."
+      "2026-11-12 03시 회차: 메일18:05:33.375Z·Actions18:05:14.932396Z 성공. 48시간겹친 전페이지8통/6run/8실패attempt 대조, L006기존해결1통이 추가확인됨. 직전전체API확인후9run(성공8·기존실패1)과메일6run대조; 새미해결0·이후새run0. 최신43053726181 네작업성공 유지. 실제HTTPS18:06:02Z a955/70글·reader3hash일치.",
+      "2026-11-12 11시 회차: 메일02:09:02.399Z 전페이지8통/6run/8실패attempt·새메일/미해결0. Actions전체차이02:08:51.859897Z에서직전이후편집5run모두성공, 이후이번기술43141664084 네작업성공을02:34:57.152220Z에추가확인. 실제HTTPS02:35:41.671052Z source6be·catalog70/updates144·후보rawSHA일치. 메일/API체크포인트분리·재실행/메일상태변경/테스트푸시없음."
     ],
     "evidence": [
       "operations/runs/20261110T014834Z-9780e750-a5eb-4369-b8cd-4e21cccaa646.md",
@@ -110,34 +112,35 @@
       "operations/runs/20261111T101144Z-8fe2ea19-f797-4722-933f-a55fc59d7bd2.md",
       "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
       "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
-      "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md"
+      "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
+      "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-11T18:05:33.375Z",
-    "last_successful_actions_check_at": "2026-11-11T18:05:14.932396Z",
-    "mail_window": "직전성공에서48시간겹친2026-11-09T10:13:19Z이후; in:anywhere·확인된GitHub발신자·저장소·읽지않음제한없음. 전페이지8통/6run/8실패attempt. 기존L006해결메일1통추가·배포후새메일0.",
-    "actions_window": "이전전체성공02:01:34Z이후9run을끝까지확인(성공8·기존실패1), 메일6run의현재상태·실패8attempt·후속성공도대조. 최신43053726181후새run/진행0. 더오래된동일해결기록은재사용.",
+    "last_successful_mail_check_at": "2026-11-12T02:09:02.399Z",
+    "last_successful_actions_check_at": "2026-11-12T02:34:57.152220Z",
+    "mail_window": "직전메일성공에서48시간겹친2026-11-09T18:05:33Z이후; in:anywhere·확인된GitHub발신자·저장소·읽지않음제한없음. 전페이지8통/6run/8실패attempt, 같은해결기록·새메일0. 02:09이후추가메일조회없음.",
+    "actions_window": "직전전체성공2026-11-11T18:05:14.932396Z이후의편집5run을02:08:51.859897Z까지확인해모두성공; 기존메일6run/8실패attempt와후속성공대조. 이후기술43141664084 attempt1/head6be의네작업을02:34:57.152220Z에추가확인. 추가조회범위와전체차이체크포인트를구분.",
     "mail_notification_count": 8,
     "unique_mail_linked_runs": 6,
     "failed_attempt_count": 8,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "a955c41055d00e606e0b90e619b170cccb5ec7a2",
-    "run_reference": "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
-    "supplemental_actions_check_at": "2026-11-11T18:05:14.932396Z",
+    "live_source_revision": "6be8a959ec11df7cfa63f4a0a6a9108686130397",
+    "run_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+    "supplemental_actions_check_at": "2026-11-12T02:34:57.152220Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-11T18:05:14.932396Z",
+    "last_full_actions_check_at": "2026-11-12T02:08:51.859897Z",
     "supplemental_successful_runs": [
-      43053726181
+      43141664084
     ]
   },
   "observation": {
-    "status": "정기 메일·API·공개 변화 확인 정상",
-    "period": "2026-11-11T18:05:14.932396Z~18:06:02.150541Z",
-    "result": "기존L006실패메일을후속성공과다시연결했고새미해결/새실행/사용자조치필요0. 공개리더배포는유지됐다. 같은해결알림재통지·재실행·테스트푸시·메일상태변경없음."
+    "status": "정기 메일·API 대조와 기술 배포 네 작업·실제 공개 확인 정상",
+    "period": "2026-11-12T02:08:51.859897Z~02:35:41.671052Z",
+    "result": "직전이후편집5run과이번기술1run성공, 같은8통/6run/8실패attempt는기존후속성공과연결·새미해결0. 공개6be는70글·updates144보존. 메일최종02:09와API최종02:34를분리했으며같은해결알림재통지·재실행·테스트푸시·메일상태변경없음."
   },
   "recovery": {
     "plan_reference": "문서 변경은 Git의 이전 해당 경로로 복구하고 예약 지침은 지원 도구로 해당 추가 문단만 되돌린다. 기존 시각·대상·권한은 유지한다.",

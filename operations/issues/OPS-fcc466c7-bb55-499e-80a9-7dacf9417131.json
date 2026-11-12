@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 2,
+  "record_version": 3,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-12T02:30:43Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -41,10 +41,11 @@
   "evidence": [
     "SITE_OPERATIONS.md#자료와-파일-구조의-정리",
     "PUBLICATION_WORKFLOW.md#오래된-로컬-후보-정리",
-    "scripts/publication_retention.py"
+    "scripts/publication_retention.py",
+    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
   ],
   "limitations": [
-    "이번 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됨",
+    "초기 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됐다. 11/12에는 공개 PDF 용량·해시별 집계를 추가했고 URL/구판/필기 매핑 조사는 다음 단계다.",
     "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
     "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
   ],
@@ -85,7 +86,7 @@
       "scripts/publication_retention.py"
     ],
     "remaining_limits": [
-      "이번 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됨",
+      "초기 읽기 전용 조사는 해당 checkout의 로컬 출판 후보 모음에 한정됐다. 11/12에는 공개 PDF 용량·해시별 집계를 추가했고 URL/구판/필기 매핑 조사는 다음 단계다.",
       "보존된 미확인 폴더를 사용 중 또는 불필요한 자료로 판정한 것은 아님",
       "전체 원본·도구·의존성·배포의 정리나 실제 파일 이동·삭제를 완료하지 않음"
     ]
@@ -100,13 +101,15 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "작은 범위의 미확인 자료·폐기 도구·중복 관리 경로를 선택해 담당·생성·등록·공개·복구·다른 작업의 사용 근거를 조사하고 첫 정리 후보를 분류한다.",
+  "next_action": "공개 산출물736,634,728B가 기존700MB 이전 시험 완료 관리 목표를 넘은 근거를 바탕으로 오늘15시에 공개 PDF224경로/157유일본의 역할·기존 URL·구판/필기 연결·재생성/복구를 읽기 검토한다. 같은 해시 alias를 삭제 후보로 단정하지 않고 기존 public_media 준비 도구의 매핑·검증·이전/복귀 시험안을 구체화한다. 실제 외부 업로드·운영 경로 전환·과금·원본 삭제는 별도 권한과 검증 판단 전 진행하지 않는다. 작은 안전한 정리 후보 조사는 기존 범위에서 이어간다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-14T07:00:00+09:00",
-    "next_review_at": "2026-11-17T07:00:00+09:00",
-    "scheduled_step": "작은 정리 후보의 참조·복구·현재 사용 조사"
+    "next_scheduled_step_at": "2026-11-12T15:00:00+09:00",
+    "next_review_at": "2026-11-13T07:00:00+09:00",
+    "scheduled_step": "공개 파일 구조·용량과 PDF alias/구판 연결 읽기 조사; 이전/복귀 시험안 준비(실제 이전/삭제 아님)",
+    "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+    "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님."
   }
 }

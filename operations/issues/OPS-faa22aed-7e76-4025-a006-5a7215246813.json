@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-faa22aed-7e76-4025-a006-5a7215246813",
   "uuid": "faa22aed-7e76-4025-a006-5a7215246813",
-  "record_version": 3,
+  "record_version": 5,
   "title": "낡은 공개 seed에서 재빌드할 때 같은 판본의 갱신시각이 다시 생성됨",
   "type": "publication_recency",
   "created_at": "2026-11-11T18:08:14Z",
-  "updated_at": "2026-11-11T22:49:53Z",
-  "status": "planned",
+  "updated_at": "2026-11-12T02:38:05Z",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "기존 운영 관찰의 독립 원인 재현",
@@ -51,12 +51,13 @@
   "evidence": [
     "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
     "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
-    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181"
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
+    "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md"
   ],
   "limitations": [
-    "확인된 프런트 영향은 미열람 글의 7일 업데이트 표시 기간이 연장되는 것이다. 같은 revision을 이미 읽은 글의 읽음 초기화·푸시 재발송·OS 배지 증가를 재현한 것은 아니다.",
-    "이번에는 원인 재현만 했으며 제품 코드·후보·배포는 바꾸지 않았다.",
-    "검증된 이전값 전달은 같은 판본 재생을 막는 설계다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 개정 시각 복원은 별도 문제다."
+    "동일 판본의 재빌드 갱신시각 재생 방지다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 시각 복원은 별도 문제다.",
+    "현재 실제 iPhone/OS 알림이나 개인 DB/필기 동기화를 새로 시험한 것은 아니다. 기존 ID·원본·연결과 프런트엔드 bytes는 보존했다.",
+    "재현한 사용자 영향은 미열람 글의 7일 Updated 표시 기간이 재빌드로 늘어나는 현상이다. 읽음 초기화·중복 푸시·OS 배지 문제를 재현하거나 이번 수정으로 해결한 것은 아니다."
   ],
   "policy_decision": {
     "state": "기존 반복 관찰에 근거한 기술 후속 채택",
@@ -70,7 +71,7 @@
   },
   "authority": {
     "basis": "사용자의 지속 운영·게시 정합성 개선 권한",
-    "current_scope": "갱신 메타데이터의 읽기 원인 재현과 최소 수정 후보 설계. 본문·PDF·알림 구독·개인 필기·계정은 보존한다.",
+    "current_scope": "사용자의 지속 운영·게시 정합성 개선 권한과 2026-11-12 11시 착수 계획에 따른 검증된 이전 갱신 자료 전달·회귀 검사·후보/기존 단일 경로 배포. 본문·PDF·알림 구독·개인 필기·계정·호스팅 권한은 보존한다.",
     "additional_decision": null
   },
   "owner_role": "운영팀(ADOPT)",
@@ -82,41 +83,53 @@
     "실제 개정의 시각 결정성까지 해결했다고 주장하지 않으며 원본·ID·PDF·읽음·알림 연결과 일반 게시 권한을 보존한다."
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
-    "deployment_reference": null
+    "commits": [
+      "6be8a959ec11df7cfa63f4a0a6a9108686130397"
+    ],
+    "candidate_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084",
+    "baseline_revision": "4276f47e59c0e432bfe3fbaeb3e6b7e02f27fc00"
   },
   "verification": {
-    "status": "동일 최종 자산·서로 다른 now의 읽기 재현 및 독립 재실행 통과; 수정/후보/배포 전",
+    "status": "구현·전체 Python·독립 경계/통합 회귀·정확한 후보 보존·CI 네 작업·실제 HTTPS 검증 완료. 다음 통상 게시의 갱신시각 보존은 운영 관찰.",
     "checks": [
       "seed133건→최종143건의 공통 revision 차이7건 중 기존6건이 updatedAt만 재생됨; 기존 display migration이 적용된 D-Wave는 별도 보존",
       "동일 final site+검증된 공개 previous에서 pages·전체143건의 완전 일치",
-      "현재 공개 release/catalog a955c410·70글과 reader3자산 정규해시 일치"
+      "현재 공개 release/catalog a955c410·70글과 reader3자산 정규해시 일치",
+      "전체 Python358개 중357통과·기존1생략·실패0, 신규 경계16개/release13개 독립 재실행·통합5개 실제 enrichment 경로 통과",
+      "실제4276 기준의 최종6be 후보:57리뷰/131아카이브/70출판/외부1·2569등록파일·224PDF·218출판입력 보존. updates144건/192pages 전체dict/raw bytes와 두now 재계산 모두 동일",
+      "release ok/blockers0·payload ok/failures0·reviewed/content/instrumentation changes0. seal/전체2584파일70글 검증 통과. 기존 검색80KB/공개artifact600MB 성장 경고 유지",
+      "Pages43141664084 attempt1/source6be build02:32:52Z·deploy02:33:24Z·recovery-copy02:34:10Z·notify-readers02:34:29Z 전체success. synced70/newArticles0/queuedEvents0/baselinefalse, replay 미출력",
+      "실제 HTTPS02:35:41.671052Z source6be·70catalog/144updates, full release·catalog·recency·reader3·SW/client·공개PDF3개의 raw bytes/SHA가 봉인 후보와 일치. recency 전체가 이전4276과동일"
     ],
     "evidence": [
-      "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md"
+      "operations/runs/20261111T180506Z-2dcd59cc-1e35-4d8c-9a4c-7530ffc8f36e.md",
+      "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084"
     ],
     "remaining_limits": [
-      "수정 후보·회귀 검사는 다음 실행에서 진행한다. 실제 기기와 개인 DB/구독 시험은 수행하지 않았다."
+      "동일 판본의 재빌드 갱신시각 재생 방지다. 실제 새 개정의 최초 로컬/CI 시각 결정성이나 과거 최초 시각 복원은 별도 문제다.",
+      "현재 실제 iPhone/OS 알림이나 개인 DB/필기 동기화를 새로 시험한 것은 아니다. 기존 ID·원본·연결과 프런트엔드 bytes는 보존했다.",
+      "재현한 사용자 영향은 미열람 글의 7일 Updated 표시 기간이 재빌드로 늘어나는 현상이다. 읽음 초기화·중복 푸시·OS 배지 문제를 재현하거나 이번 수정으로 해결한 것은 아니다."
     ]
   },
   "observation": {
-    "status": "기존 반복 현상의 입력 원인 확인",
-    "period": "2026-11-11T18:05:54Z~18:06:02Z 및 독립 재현",
-    "result": "공개 소스나 PDF가 새로 바뀐 증거가 아니라 이전 seed와 현재 출력 판본 차이로 갱신시각 분기가 반복된다."
+    "status": "기술 수정 배포·원래 재빌드 경로 공개 확인 완료;다음 통상 게시 관찰",
+    "period": "2026-11-12T02:35:41.671052+00:00",
+    "result": "CI가 같은 공개4276에서 새6be를 생성한 뒤 실제 공개 release 전체와 recency144건이 검수 후보 및 이전 recency bytes와 일치했다. 글의 갱신시각을 기술 배포 때문에 다시 쓰지 않았다. 다음 실제 본문 개정/새 글의 경로는 지속 관찰한다."
   },
   "recovery": {
     "plan_reference": "PUBLICATION_WORKFLOW.md",
-    "execution_reference": null,
-    "result": "이번에는 제품 코드·배포·DB 변경이나 실제 롤백 없음. 후속 수정은 최신 게시물을 보존하는 기존 단일 경로에서 검증한다."
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43141664084",
+    "result": "기존 단일 Pages 경로 배포와 공개 복구 사본 생성 성공. 개인 DB·구독·필기·PDF 이전/삭제나 실제 롤백·개인 복원·테스트 푸시·재발송 없음."
   },
-  "next_action": "실제 공개 release와 결속해 검증한 이전 reader-updates를 후보 생성에 전달하는 최소 설계를 준비한다. 검증 실패·오래된 seed·실제 개정·새 ID·명시적 로컬 baseline·display migration 경계를 작은 fixture로 먼저 검사하고 기존 보존·배포 절차에 연결한다.",
+  "next_action": "다음 정상 게시에서 같은 판본의 updatedAt/change/revision 보존과 실제 개정·새 ID의 구분을 관찰한다. bare snapshot은 검증 묶음을 새로 받거나 명시적 로컬 site 비교로 처리하며 낡은 seed로 조용히 대체하지 않는다. 본문·PDF·배지/알림 설정을 바꾸거나 검증용 게시·푸시를 만들지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-12T11:00:00+09:00",
+    "state": "deployed_observing",
+    "next_scheduled_step_at": "2026-11-12T15:00:00+09:00",
     "next_review_at": "2026-11-12T15:00:00+09:00",
-    "scheduled_step": "최소 수정 구현·회귀 검사"
+    "scheduled_step": "배포 후 정상 게시의 동일 판본 갱신시각 보존 관찰·다음 회차 인계"
   }
 }
