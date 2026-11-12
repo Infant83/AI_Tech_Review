@@ -19,3 +19,9 @@
 ## 다음 실행
 
 Codex 앱의 기존 DQB 예약에 이 작성 방향을 반영했다. 매일 09:30 Asia/Seoul 일정과 같은 대화 연결을 유지한다. 새로 읽고 검수한 DQB의 짧은 편집글·요약은 이번 요청에 따라 작성·감수·공개하고, 심층 리뷰와 다른 본문의 실질적 확장에는 기존 승인 조건을 적용한다. 날짜별 원고·웹 편집·PDF 보관·기획의 상태를 따로 기록한다.
+
+## 공개 확인
+
+2026-11-12 `297413ddc47e82762d7208a4d8e7569ac2ada203`의 [배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/43145132138)를 확인했다. 빌드·배포·복구 사본·독자 카탈로그 동기화 네 작업이 성공했고, 812검사 중 803통과·9제외·실패0이었다. 실제 HTTPS 15경로, 한영 여섯 본문의 로컬 원고 대응, 이전과 동일한 PDF 세 해시와 날짜별 목록·한영 이동을 확인했다. 기존 PDF 사본224개와 reader 식별자70개를 보존했다. 신규 심층 리뷰·별도 외부 메시지·새 알림 큐는 추가하지 않았다.
+
+[11월 10일](https://infant83.io/AI_Tech_Review/briefings/2026-11-10/) · [11월 11일](https://infant83.io/AI_Tech_Review/briefings/2026-11-11/) · [11월 12일](https://infant83.io/AI_Tech_Review/briefings/2026-11-12/) · [날짜별 목록](https://infant83.io/AI_Tech_Review/briefings/)

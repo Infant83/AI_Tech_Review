@@ -41,5 +41,65 @@
   "registered_archive_pdfs": 131,
   "reader_catalog_identity_count": 70,
   "browser_checks": "Chrome desktop and 390px mobile, six headings/summaries/citation anchors; English search; date selection and separate PDF actions; keyboard navigation to web edition. Viewport restored.",
-  "status": "local_verified_pending_production_deployment"
+  "status": "published_verified",
+  "completed_at": "2026-11-12T03:10:01.949186+00:00",
+  "publication_commit": "297413ddc47e82762d7208a4d8e7569ac2ada203",
+  "workflow_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43145132138",
+  "ci_test_totals": {
+    "run": 812,
+    "passed": 803,
+    "failed": 0,
+    "skipped": 9
+  },
+  "workflow_jobs": [
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "live_routes_checked": 15,
+  "live_all_http_200": true,
+  "six_live_web_bodies_match_local": true,
+  "three_live_pdf_hashes_match_pre_refresh": true,
+  "existing_pdf_files_preserved": 224,
+  "reader_sync": {
+    "synced": 70,
+    "revision": "297413ddc47e82762d7208a4d8e7569ac2ada203",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "recovery": {
+    "ok": true,
+    "revision": "297413ddc47e82762d7208a4d8e7569ac2ada203",
+    "files": 2590,
+    "bytes": 738027459,
+    "archive_sha256": "207dcbc8806ebeb850f64874b89ef9ced3e9189127c30ceef6a8b6d8390032f8"
+  },
+  "recovery_verification_scope": "Independently compared upload-log ZIP digests with GitHub artifact metadata. Recovery job log reports seal verification of every file and the inner archive hash; the large recovery artifact was not downloaded/rehashed by this reviewer.",
+  "actual_chrome_https_calendar_and_ko_en_navigation": true,
+  "automation": {
+    "id": "dqb",
+    "status": "ACTIVE",
+    "time": "09:30 Asia/Seoul daily",
+    "direction_updated": "2026-11-12",
+    "schedule_unchanged": true
+  }
 }
