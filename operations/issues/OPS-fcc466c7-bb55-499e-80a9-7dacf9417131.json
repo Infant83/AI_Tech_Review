@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 8,
+  "record_version": 9,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-13T06:52:01.011175Z",
+  "updated_at": "2026-11-13T10:10:25.966292Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -160,6 +160,47 @@
         "guard_worktree": "clean관리작업사본을복구가능한상태로보관후회수;PDF후보작업사본은유지"
       },
       "cleanup_after_verification": "구판PDF표본의첫전송부분실패965391B도성공한전체bytes/SHA대조와실패요약보존뒤자체임시응답만정리했다. 두불완전응답의논리합계2108926B,실제파일시스템회수량미측정. 원본/PDF후보/필기/개인증거삭제없음."
+    },
+    "scope_plan_20261113_19": {
+      "status": "scope_decided_not_implemented_or_activated",
+      "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
+      "base_revision": "9cd9f007f96ecfea4bfc25a567fb8485e15a28ee",
+      "owner": "ADOPT 개발, 구현자 외 독립 검증, 통합 담당",
+      "planned_source_scope": [
+        "scripts/public_media.py",
+        ".automation/cloudflare/public-media/serve.mjs",
+        "tests/test_public_media.py",
+        ".automation/cloudflare/public-media/serve.test.mjs"
+      ],
+      "optional_scope": "worker.mjs 어댑터 변경은 실제 필요한 때만 범위를 다시 기록한다.",
+      "first_candidate": "검증한 구/신 export에서 경로별 현재 key와 허용 SHA→불변 key를 묶는 v2 매핑 및 GET/HEAD/304/Range/If-Range 전 판본 선택. 무query 현재판·비관리 경로 fallback 보존. 초기 query 제안을 후보에서 검증한다.",
+      "acceptance": [
+        "경로별 현재/구판 SHA, 교차 문서 SHA 거절, 검증된 이전 export만 병합, 고아/잘못된 key와 Worker 생성 매핑 불일치 거절",
+        "두 판본의 GET/HEAD/304/실제 부분 Range/If-Range, 잘못된/중복 query400·경로별 미지원SHA409·누락/크기불일치503은 no-store, 비관리 경로의 실제 fallback spy",
+        "선택 객체가 없거나 크기가 다르면 일치 ETag라도304로 감추지 않도록 head 확인. 크기 확인은 SHA 증명이 아니며 업로드 전체해시는 별도다. 추가 조회 수와 비용은 후속 측정으로 구분한다.",
+        "현재 v1 준비 Worker는 기대SHA를 무시하므로 새 카탈로그의 안전한 rollback 대상이 아니다. 최초 활성화부터 SHA 지원 버전과 필요한 구신 판본을 보존한 전달 코드만 허용한다.",
+        "합성 PDF로 구/신 catalog×지원 매핑/코드와 독립 되돌림을 검증한다. 같은 길이 오객체는 전체 업로드 검증으로 검출하며 매 Range 전체해시로 우회하지 않는다."
+      ],
+      "root_probe": "합성 누락 객체3상황을 실제 serveMedia로 호출했다. 일반GET503/no-store·store1회, 일치ETag GET/HEAD는객체조회0회304. 준비 코드 계약 확인이며 실제 운영 장애·PDF 손상 판정이 아니다.",
+      "excluded": "실제 업로드·버킷/과금/권한/라우트·원본/정적 사본 제외·Git 이력·개인DB·클라이언트/공통 release/snapshot/backup 변경은 이 최소 후보에서 제외한다. 실제 외부 전환·저장량 절감은 미실행이다.",
+      "later_stages": [
+        "업로드/재시도·전체 원격 SHA/size 검증, 코드/매핑/설정/URL-key-SHA/Pages revision 봉인",
+        "공통 아티팩트/연속성/복구 도구의 원격 PDF 실제 회수·해시·누락/부분복원/단독되돌림과 실제 HTTPS/리더/필기 검증 뒤 정적 제외를 별도 판단"
+      ],
+      "live_delta": {
+        "revision": "df668e3db2a469d4ad85c112a5784dac373db092",
+        "same_revision_as_previous": true,
+        "same_snapshot_as_previous": true,
+        "same_artifact_manifest": true,
+        "manifest_files": 2599,
+        "manifest_bytes": 765106978,
+        "self_json_bytes": 1326259,
+        "public_files": 2600,
+        "public_bytes": 766433237,
+        "headroom_internal_800MB": 33566763,
+        "pdf_paths": 228
+      },
+      "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     }
   },
   "observation": {
@@ -172,16 +213,23 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
     "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "19시 연결 복원 근거·계정 미확인 사항과 구체화한 전환/원격 복구 계약을 대조해 준비 도구의 후속 구현 범위·검사·슬롯을 정한다. 실제 R2 활성화/과금·운영 전환은 계정 상태와 기존 권한 경계를 먼저 확인한다. PDF8970441은11/14 15시 검증·19시 통합 목표를 유지한다.",
+  "next_action": "11/14 19시는 PDF 단일 통합을 우선하고 여유가 있으면 공급자 연결 근거만 읽기 확인한다. PDF 기술 종료를 전제로11/15 03시 v2 매핑/선택·전달의 로컬 최소 후보 착수,07시 독립 검증을 목표로 한다. 미종료/검사 부족이면 후보와 재개점을 보존하고 통계11시 전 원장·영향 일감을 실제 재배정한다. 실제 외부 전환은 계정·원격 봉인/복구 실증 뒤 별도 슬롯으로 배정한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "contract_review_complete_provider_connection_pending",
-    "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
-    "next_review_at": "2026-11-14T19:00:00+09:00",
-    "scheduled_step": "전환/복구 계약의 후속 구현 범위·슬롯과 공급자 연결/필요 결정 검토",
-    "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
-    "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님.",
-    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "state": "bounded_local_candidate_scheduled_after_pdf",
+    "next_scheduled_step_at": "2026-11-14T19:00:00+09:00",
+    "next_review_at": "2026-11-15T07:00:00+09:00",
+    "scheduled_step": "PDF 통합 우선 뒤 연결 근거 읽기 확인;11/15 03시 로컬 v2 후보·07시 독립 검증 목표",
+    "replan_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
+    "replan_reason": "공개전체766433237B/내부800MB까지33566763B. PDF 기술 종료 뒤 기존03/07슬롯에 작은 로컬 후보를 배정한다. 통계11시·관리17일 목표 날짜는 유지하되07시에 미완료 영향을 재판정한다.",
+    "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
+    "implementation_start_target": "2026-11-15T03:00:00+09:00",
+    "independent_review_target": "2026-11-15T07:00:00+09:00",
+    "dependencies": [
+      "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f"
+    ],
+    "dependency_completion_condition": "PDF 후보8970441의 최신 기준 기술 검증·단일 통합 종료. 실제 iPhone/Pencil 관찰 전체나 PDF 일감의 모든 후속 해결을 기다리는 조건은 아니다.",
+    "operating_order": 2
   }
 }

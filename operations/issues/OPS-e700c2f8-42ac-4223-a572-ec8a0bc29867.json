@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 15,
+  "record_version": 16,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-13T06:52:01.011175Z",
+  "updated_at": "2026-11-13T10:10:25.966292Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -132,19 +132,19 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-13T06:02:14.488Z",
-    "last_successful_actions_check_at": "2026-11-13T06:01:47.079279Z",
-    "mail_window": "직전메일확인에서48시간겹친11/11T02:05:57Z이후 전페이지1통/1run/실패1attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
-    "actions_window": "전체 API의직전확인이후5e/cc6 attempt1성공을대조하고,직전추가확인02:48:10Z뒤새run/진행0. 최신cc6네작업모두성공·미해결0.",
+    "last_successful_mail_check_at": "2026-11-13T10:04:03.491Z",
+    "last_successful_actions_check_at": "2026-11-13T10:03:34.866895Z",
+    "mail_window": "직전메일06:02:14Z에서48시간겹친11/11T06:02:14Z이후 전페이지1통/1run/실패1attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
+    "actions_window": "직전전체API06:01:47Z 이후 이미 추가검증한43379685019 한 건 success유지. 이후새run/실패/진행0,최신네작업success.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
     "live_source_revision": "df668e3db2a469d4ad85c112a5784dac373db092",
-    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "supplemental_actions_check_at": "2026-11-13T06:41:44.387271Z",
+    "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
+    "supplemental_actions_check_at": "2026-11-13T10:04:04.867812Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-13T06:01:47.079279Z",
+    "last_full_actions_check_at": "2026-11-13T10:03:34.866895Z",
     "supplemental_successful_runs": [
       "43379685019"
     ]
@@ -227,6 +227,13 @@
       "live_metadata_at": "2026-11-13T06:43:56.285424Z",
       "live_samples_at": "2026-11-13T06:48:39.956388Z",
       "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    },
+    "evening_20261113_19": {
+      "mail_at": "2026-11-13T10:04:03.491Z",
+      "full_api_at": "2026-11-13T10:03:34.866895Z",
+      "latest_jobs_at": "2026-11-13T10:04:04.867812Z",
+      "result": "새메일/실행/실패/미해결0,각조회전페이지완료·오류0. 기존실패/수정사슬재사용,최신df668네작업success·실제공개df668묶음동일. 재실행/메일변경/테스트푸시0.",
+      "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md"
     }
   },
   "recovery": {

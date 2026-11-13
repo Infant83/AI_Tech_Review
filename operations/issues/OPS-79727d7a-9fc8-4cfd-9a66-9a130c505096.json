@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-79727d7a-9fc8-4cfd-9a66-9a130c505096",
   "uuid": "79727d7a-9fc8-4cfd-9a66-9a130c505096",
-  "record_version": 2,
+  "record_version": 3,
   "title": "공개 산출물에서 비공개 전용 폴더 구성요소를 거절하는 경계 보강",
   "type": "publication_security_boundary",
   "created_at": "2026-11-13T06:27:49.890136Z",
-  "updated_at": "2026-11-13T06:52:01.011175Z",
+  "updated_at": "2026-11-13T10:11:47.148957Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -123,7 +123,8 @@
   "observation": {
     "status": "검증기기술조치완료",
     "period": "2026-11-13T06:34:50Z~2026-11-13T06:48:39.956388Z",
-    "result": "합성비공개경로는CI회귀에서거절,승인자료와실제공개snapshot/PDF원판보존. 실제비공개자료노출은발견하지않았으며개인DB/권한/알림구독변경없음."
+    "result": "합성비공개경로는CI회귀에서거절,승인자료와실제공개snapshot/PDF원판보존. 실제비공개자료노출은발견하지않았으며개인DB/권한/알림구독변경없음.",
+    "routine_check_20261113_19": "새 run/관련 회귀 근거 없음. 실제 공개df668 메타데이터 결속/기존snapshot·전체PDF경로 보존 확인. 해결 상태 유지·관찰용 재실행 없음."
   },
   "recovery": {
     "plan_reference": "문제발견시이검증기변경만수정해최신동시게시물/원본/필기를보존한다. 실제운영롤백·개인DB복원은실행하지않음.",
@@ -135,9 +136,9 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "resolved_ci_enforced",
-    "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
-    "next_review_at": "2026-11-13T19:00:00+09:00",
-    "scheduled_step": "정상운영의새실행/재발관찰과연결;같은전체검사반복없음",
-    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "next_scheduled_step_at": null,
+    "next_review_at": null,
+    "scheduled_step": "별도 슬롯 없이 새 관련 실행/회귀 때 정기 운영에서 관찰",
+    "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md"
   }
 }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 2,
+  "record_version": 3,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편 기획",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-13T10:10:25.966292Z",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -171,6 +171,13 @@
     "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
     "next_review_at": "2026-11-16T15:00:00+09:00",
     "scheduled_step": "기존 집계·기간 API 계약 조사",
-    "implementation_start_target": "2026-11-15T11:00:00+09:00"
+    "implementation_start_target": "2026-11-15T11:00:00+09:00",
+    "operating_order": 3,
+    "dependencies": [
+      "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
+    ],
+    "replan_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
+    "replan_reason": "PDF 뒤 저장소 로컬 최소 후보03/07목표를 명시했다. 이 과제의 기존 착수/검토 날짜는 변경하지 않았으며 선행 미완료 시07시 판단에서 실제 새 일정·이유를 함께 갱신한다.",
+    "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다."
   }
 }
