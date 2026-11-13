@@ -120,6 +120,82 @@ class BriefingEditorialTests(unittest.TestCase):
         self.assertEqual(earlier["editorial_updated"], "2026-11-12")
         self.assertEqual(self.document["editorial_updated"], "2026-11-13")
 
+    def test_same_day_research_and_quantum_editorials_keep_distinct_reading_paths(self) -> None:
+        from scripts.publication_snapshot import capture_site
+        from scripts.reader_engagement_publish import build_updates
+        from scripts.site_search import build_records
+
+        self.register()
+        self.stage()
+        old_quantum_bytes = {path: (self.staging / path).read_bytes() for path in self.document["editorial_assets"]}
+        research = {**document(), "id": "2026-11-12-daily-research-brief", "series": "daily-research",
+                    "title": "모형과 검증", "title_en": "Models and validation",
+                    "href": "archive/files/2026-11-12-daily-research-brief.pdf"}
+        research_spec = {**self.spec, "id": research["id"]}
+        (self.repo / "publication/briefings" / (research["id"] + ".json")).write_text(json.dumps(research_spec))
+        docs = [self.document, research]
+        for item in docs:
+            pdf = self.staging / item["href"]
+            pdf.parent.mkdir(parents=True, exist_ok=True)
+            pdf.write_bytes(("PDF " + item["id"]).encode())
+            item["sha256"] = hashlib.sha256(pdf.read_bytes()).hexdigest()
+        assets = briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
+        self.assertEqual(len(assets), 4)
+        self.assertEqual(research["editorial_href"], "briefings/research/2026-11-12/index.html")
+        self.assertEqual(research["editorial_en_href"], "briefings/research/2026-11-12/en/index.html")
+        self.assertEqual(self.document["editorial_href"], "briefings/2026-11-12/index.html")
+        for path, content in old_quantum_bytes.items():
+            self.assertEqual((self.staging / path).read_bytes(), content)
+        for language, prefix in (("ko", "../../../"), ("en", "../../../../")):
+            relative = research["editorial_en_href" if language == "en" else "editorial_href"]
+            markup = (self.staging / relative).read_text()
+            self.assertIn(f'href="{prefix}assets/site.css', markup)
+            self.assertIn(f'href="{prefix}{research["href"]}"', markup)
+            self.assertIn(f'href="{BASE_URL}{relative.removesuffix("index.html")}"', markup)
+            self.assertIn(relative, briefing_site.render_calendar(docs, "2026-11", language))
+            for surface in (briefing_site.render_detail(docs, language),
+                            briefing_site.render_briefings(docs, BASE_URL, language)):
+                self.assertIn(relative, surface)
+                self.assertIn(research["href"], surface)
+            self.assertIn("Daily Research Brief", briefing_site.render_briefings(docs, BASE_URL, language))
+            target = self.staging / "briefings" / ("en/index.html" if language == "en" else "index.html")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(briefing_site.render_briefings(docs, BASE_URL, language))
+        (self.staging / "assets").mkdir(exist_ok=True)
+        for name in ("briefings.css", "briefings.js"):
+            shutil.copyfile(Path(briefing_site.__file__).parent / "assets" / name, self.staging / "assets" / name)
+        self.assertEqual(briefing_site.validate_briefings(self.staging, docs), [])
+        (self.staging / "manifest.json").write_text("[]")
+        (self.staging / "archive-manifest.json").write_text(json.dumps({"documents": docs, "external_resources": []}))
+        snapshot = capture_site(self.staging)
+        self.assertEqual(snapshot["declared_hash_mismatches"], [])
+        self.assertEqual(snapshot["archive"][research["id"]]["editorial_references"], sorted(research["editorial_assets"]))
+        updates = build_updates(self.staging)
+        entry = next(x for x in updates["articles"] if x["id"] == "archive:" + research["id"])
+        self.assertEqual(set(entry["paths"]), {"/AI_Tech_Review/" + research["href"],
+                                              "/AI_Tech_Review/briefings/research/2026-11-12/",
+                                              "/AI_Tech_Review/briefings/research/2026-11-12/en/"})
+        records = build_records(self.staging)
+        record = next(x for x in records if x["id"] == research["id"])
+        self.assertEqual(record["scope"], "briefings")
+        self.assertEqual(record["url"], research["editorial_href"])
+        self.assertEqual(record["url_en"], research["editorial_en_href"])
+
+    def test_same_research_issue_namespace_collision_still_rejects_before_writing(self) -> None:
+        self.register()
+        docs = []
+        (self.repo / "publication/briefings" / (IDENTITY + ".json")).unlink()
+        for suffix in ("daily-research-brief", "another-research-brief"):
+            identity = "2026-11-12-" + suffix
+            item = {**document(), "id": identity, "series": "daily-research", "href": "archive/files/" + identity + ".pdf"}
+            docs.append(item)
+            spec = {**self.spec, "id": identity}
+            (self.repo / "publication/briefings" / (identity + ".json")).write_text(json.dumps(spec))
+        with self.assertRaisesRegex(ValueError, "collision"):
+            briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
+        self.assertFalse(self.staging.exists())
+        self.assertTrue(all("editorial_href" not in item for item in docs))
+
     def test_registry_requires_complete_dates_and_both_manuscripts(self) -> None:
         for field, value in (("version", True), ("updated", "2026-11-11"), ("updated", "2026-02-30"),
                              ("evidence_cutoff", "2026-11-14"), ("ko", "missing.html")):

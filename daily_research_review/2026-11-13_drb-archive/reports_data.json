@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "issue_date": "2026-11-13",
+  "public_edition_date": "2026-11-13",
+  "title": "양자재료 계산의 출발점: 모형의 식별과 해의 검증",
+  "subtitle": "Daily Research Brief · 모형, 관측량, 계산비용을 함께 읽다",
+  "original_edition_sha256": "ca91490c3c7ad92371420e0529da6e3100686e32b8a4ca58d3337c90f5c26816",
+  "intro": [
+    "자화 곡선을 잘 맞추는 해밀토니안이 여럿이라면, 그중 어느 것을 양자 시뮬레이션의 입력으로 삼아야 할까. 계산 결과가 실험과 닮았다는 사실만으로 물리적 모형의 모든 매개변수가 정해지는 것은 아니다. 이번 DRB는 α-RuCl3의 역추정에서 출발해, 모형을 푼 뒤 어떤 관측량과 비용으로 결과를 판단할지 살핀다.",
+    "모아레 자성의 신경망 파동함수, 여러 분자 기하의 들뜬상태를 함께 계산하는 DeepQMC, Pauli 연산자를 전파하는 고전 근사는 서로 다른 계와 방법을 다룬다. 이들을 이어 읽을 때 얻는 관점은 같다. 목표 에너지가 수렴했는지와 연구에 필요한 질서·상관·상태 성격이 보존됐는지를 함께 확인해야 한다.",
+    "실제 중성원자 실험은 제약된 동역학을 관측하는 별도 사례다. 장치의 원자 수와 계산의 정확성을 같은 수치로 취급하는 대신, 계의 크기·관측시간·비교 가능한 고전 기준을 나누어 읽는다. 마지막에는 새 QML 리뷰의 표와 본문 수치가 일치하는지 대조한다."
+  ],
+  "papers": [
+    {
+      "id": 1,
+      "heading": "자화에 맞는 모형은 얼마나 유일한가",
+      "citation": "T. Misawa, R. Tamura, K. Yoshimi, and Y. Yamaji, Revisiting spin Hamiltonian parameters in a Kitaev material via Bayesian optimization of magnetization curves, Phys. Rev. B 114, 274420 (2026).",
+      "doi": "10.1103/s9sc-4m5y",
+      "url": "https://doi.org/10.1103/s9sc-4m5y",
+      "read_url": "https://arxiv.org/html/2605.24857v2",
+      "published": "2026-11-12",
+      "read_scope": "출판사 서지·초록과 공개 arXiv v2 본문·부록·그림·표를 대조한 기존 감수를 재사용했다. 공식 코드·데이터 기록은 확인했으나 계산을 실행하지 않았다.",
+      "paragraphs_before": [
+        "Misawa와 공저자들은 α-RuCl3의 1.4 K 자화 36점에 최근접 스핀 모형을 맞췄다. HPhi의 24-site 고전 exact diagonalization으로 예측 자화를 계산하고 PHYSBO의 Bayesian optimization이 다섯 매개변수를 탐색한다. 500회 평가를 다섯 번 수행했으며, 각 평가에 36회의 ED가 들어간다.[1]",
+        "최저 자화 비용 설정은 (K, Γ, Γ′, J, g_c)=(-6.0, 7.5, -0.3, -1.75, 2.3)이다. 앞의 네 교환상수 단위는 meV, g_c는 무차원이다. 다만 자화가 Kitaev 결합 K의 절대 척도에 둔감한 방향이 있어, 자화만으로 K를 충분히 정하기 어렵다."
+      ],
+      "paragraphs_after": [
+        "최저 비용 모형의 비열 피크는 약 50 K로, 실험의 넓은 피크 약 70 K와 차이가 난다. K를 바꿔 자화 fit을 크게 잃지 않으면서 비열을 개선할 수 있다는 결과는, fitting에 쓴 자료와 모형을 시험할 자료가 다른 역할을 함을 보여준다.",
+        "나는 최솟값 하나보다 목적함수의 평평한 방향을 먼저 읽을 필요가 있다고 본다. 양자 시뮬레이션의 입력 모형을 고를 때 비열·구조인자·감수율이 자화에서 남은 자유도를 얼마나 좁히는지 묻는 방식이다. 이 해석은 정해진 탐색 범위와 24-site 최근접 모형에 대한 결과에서 출발한다."
+      ],
+      "figure_kind": "inverse",
+      "figure_caption": "그림 1. 리뷰 재구성. 자화 자료로 모형 매개변수를 탐색한 뒤 비열·구조인자·감수율로 시험하는 관계를 그렸다. 24 sites·36점·500평가×5회는 원문 [1]의 실행 조건이다. 자화에 둔감한 매개변수를 다른 관측량으로 제한하는 논점을 정리했다.",
+      "figure_basis": "원문 III.1-III.2, Table II, Fig.4, IV.5 및 Appendix B의 검수 기록. 원 논문 그림을 복제하지 않은 독자 제작 관계도."
+    },
+    {
+      "id": 2,
+      "heading": "모형을 정한 뒤, 자성을 어떻게 읽을까",
+      "citation": "M. Geier and L. Fu, Predicting moiré magnetism with first-principles AI, Phys. Rev. B 114, 295109 (2026).",
+      "doi": "10.1103/77s8-8s61",
+      "url": "https://doi.org/10.1103/77s8-8s61",
+      "read_url": "https://arxiv.org/html/2602.09093v2",
+      "published": "2026-11-12",
+      "read_scope": "출판사 서지·초록과 공개 arXiv v2 본문·훈련 및 유한크기 부록의 기존 감수를 재사용했다. 신경망 학습은 재실행하지 않았다.",
+      "paragraphs_before": [
+        "Geier와 Fu는 DFT에서 얻은 매개변수를 가진 continuum moiré Hamiltonian을 고전 transformer 신경망 파동함수로 푼다. WSe2/WS2의 itinerant ferromagnet과 Γ-valley homobilayer의 antiferromagnetic insulator가 두 사례다. 이 계산은 원자 전체의 전자구조를 매번 새로 푸는 대신, 유효 모형의 상호작용 전자를 변분적으로 다룬다.[2]",
+        "SU(2) 대칭 아래에서는 전체 스핀의 z성분 S_z=0인 부분공간에도 총스핀 크기 S가 큰 상태가 들어 있다. 저자들은 이 점을 이용해 여러 S_z를 각각 풀어 비교하는 부담을 줄인다. 강자성 예제는 28전자·21단위격자, 반강자성 예제는 최대 54전자·27단위격자의 고전 계산이다."
+      ],
+      "paragraphs_after": [
+        "강자성 예제의 S_z=0 해는 총스핀 S=7과 연결되며, S_z=7 표현의 운동량 점유수는 금속성을 살피는 데 쓰인다. 반강자성은 에너지 외에 스핀 구조인자로 진단한다. 어떤 모형을 입력했는지와 그 해에서 어떤 질서를 읽었는지가 분리되는 지점이다.",
+        "여기서는 유효 모형의 근사와 유한크기를 함께 읽어야 한다. 강자성 계 크기는 shell filling에 맞추어 선택했으며, WSe2/WS2의 metallic ferromagnet에 관한 직접 실험 증거는 아직 없다고 저자들이 밝혔다. 첫 preprint는 2월 공개되었고 이번 11월 자료는 저널 게재 소식이다."
+      ],
+      "figure_kind": "moire",
+      "figure_caption": "그림 2. 리뷰 재구성. DFT 유래 continuum 모형에서 고전 신경망 VMC를 거쳐 자성 관측량을 읽는 흐름이다. 28전자·21격자와 54전자·27격자는 서로 다른 강자성·반강자성 사례의 규모다. 자성은 총스핀·운동량 점유수·구조인자로 읽는다.[2]",
+      "figure_basis": "원문 Eq.2, Fig.2-3, Appendices A-B의 검수 기록. 독자 제작 계산·관측 관계도."
+    },
+    {
+      "id": 3,
+      "heading": "여러 기하의 들뜬상태를 함께 계산하다",
+      "citation": "Z. Schätzle, P. B. Szabó, A. Cuzzocrea, M. Mezera, and F. Noé, Ab initio simulation of excited-state potential energy surfaces with transferable deep quantum Monte Carlo, Nat. Comput. Sci. (2026), doi:10.1038/s43588-026-01065-y.",
+      "doi": "10.1038/s43588-026-01065-y",
+      "url": "https://doi.org/10.1038/s43588-026-01065-y",
+      "published": "2026-11-06",
+      "read_scope": "공개 출판 본문의 방법·결과·정확도 정의·코드·데이터 가용성을 읽은 기존 감수를 재사용했다. 별도 SI 전체 독해와 DeepQMC v1.3.0 재실행은 하지 않았다.",
+      "paragraphs_before": [
+        "분자의 기하가 바뀔 때마다 전자상태를 처음부터 최적화하면, 표면 전체의 계산비용이 커지고 교차점에서 상태의 순서를 따라가기 어렵다. Schätzle와 공저자들은 여러 기하와 전자상태 사이에서 파동함수 매개변수를 공유하고 상태 순서를 동적으로 다루는 deep quantum Monte Carlo를 제시했다. 계산은 NVIDIA A100에서 수행한 고전 신경망 VMC다.[3]",
+        "에틸렌의 두 singlet 표면에서 보고한 상대에너지 MAE는 9개·14개 기하 집합에 대해 각각 29.4(1) meV와 4.7(7) meV이며, single-point 계산보다 약 다섯 배 적은 계산 조건이다. 기준은 NES-VMC이며 모든 기하·상태 집합에 하나의 상수 이동을 적용해 에너지를 정렬한다."
+      ],
+      "paragraphs_after": [
+        "같은 논문의 100점 CH2NH2+ 표면은 기하 수에 따른 sublinear 훈련비용을 보고하고, 96전자 rubredoxin 축약 모형도 다룬다. 이 사례들의 비용 개선을 임의 새 분자의 전이 성능이나 절대 총에너지 오차로 옮겨 읽지는 않는다.",
+        "내가 주목하는 것은 표면의 에너지와 상태 성격을 함께 추적한다는 점이다. 에너지 오차가 작은 기하가 모여 있어도 교차점에서 상태의 overlap이 급변하면 경로의 해석이 달라진다. 분자 설계에 적용할 때에는 상대 표면·상태 연속성·기하 전체의 비용을 같은 조건에서 비교할 필요가 있다."
+      ],
+      "figure_kind": "deepqmc",
+      "figure_caption": "그림 3. 리뷰 재구성. 에틸렌의 서로 다른 기하 집합에서 보고한 상대에너지 MAE [3]를 그렸다. 점은 평균 보고값, 막대는 원문의 괄호 불확실성 0.1·0.7 meV다. 기준은 NES-VMC이며 두 값은 서로 다른 기하 집합의 결과다.",
+      "figure_basis": "출판 본문 Fig.1-2, Methods accuracy metric Eq.23 및 computational details의 검수 기록. 두 보고값으로 새로 그린 도표."
+    },
+    {
+      "id": 4,
+      "heading": "에너지 수렴과 장거리 상관의 수렴",
+      "citation": "C. Shrikhande, A. Bachhar, J. A. Rodríguez-Jiménez, E. F. Valeev, and N. J. Mayhall, Pauli propagation enables fast classical simulation of strongly correlated quantum systems, PRX Quantum 7, 043022 (2026).",
+      "doi": "10.1103/kq3v-whcq",
+      "url": "https://doi.org/10.1103/kq3v-whcq",
+      "published": "2026-11-02",
+      "read_scope": "25쪽 공개 출판 PDF의 방법·결과 Tables I/IV/VI, Fig.3, Appendix C를 조사한 기존 감수를 재사용했다. 원 알고리즘은 실행하지 않았다.",
+      "paragraphs_before": [
+        "Shrikhande와 공저자들은 Pauli 연산자를 전파하는 고전 근사로 강상관계의 바닥상태를 계산한다. Table I의 10×10 열린 경계 Heisenberg 예제는 cutoff 10^-3·100회 반복에서 외삽 DMRG 기준 에너지 오차 0.158%, 단일 스레드 2.5분을 보고한다. 비교 DMRG는 64스레드·결합차원 3500·3213.9분으로 실행 조건이 다르다.[4]",
+        "별도의 1×100 체인에서는 cutoff 10^-4로 구한 vDBF의 장거리 연결 스핀 상관이 빠르게 사라지고, DMRG의 상관은 더 먼 거리까지 교대 진동을 남긴다. 원문은 vDBF의 지수 감쇠와 DMRG의 멱법칙 감쇠를 구분한다."
+      ],
+      "paragraphs_after": [
+        "두 사례는 같은 문제의 에너지와 상관을 한꺼번에 비교한 하나의 benchmark가 아니다. 10×10 시간 비교와 1×100 상관 비교를 나누어야, 빠른 에너지 근사가 어떤 관측량에서는 충분하지 않을 수 있다는 논점이 선명해진다.",
+        "양자재료 solver나 QPU의 성적표에도 연구 질문이 요구하는 상관함수·구조인자를 적어야 한다고 본다. 절단으로 엄밀한 변분 상한이 사라지고 외삽에 의존한다는 조건도 에너지 결과와 함께 남긴다. 이 논문은 기존 DQB의 고전 사전훈련 기획을 보강하는 자료이며 새 독립 실험 결과는 아니다."
+      ],
+      "figure_kind": "vdbf",
+      "figure_caption": "그림 4. 리뷰 재구성. 원문 [4]의 두 계산 조건을 분리했다. 왼쪽은 Table I의 10×10 에너지·시간 사례, 오른쪽은 Fig.3의 1×100 상관 사례다. 각 결과가 답하는 관측량에 맞춰 에너지·시간과 상관 검사를 나누었다.",
+      "figure_basis": "출판 PDF Table I, Fig.3, Appendix C의 검수 기록. 원 논문 그림을 복제하지 않은 조건 비교도."
+    },
+    {
+      "id": 5,
+      "heading": "원자 수와 관측시간을 함께 읽는 실험",
+      "citation": "S. Darbha, A. Khudorozhkov, P. L. S. Lopes, F. Liu, E. Rrapaj, J. Balewski, M. Hamdan, P. E. Dolgirev, A. Schuckert, K. Klymko, S.-T. Wang, M. D. Lukin, D. Camps, and M. Kornjača, Observation of prethermal dynamical phase transitions and resonant melting, Nature 659, 324 (2026).",
+      "doi": "10.1038/s41586-026-11225-9",
+      "url": "https://doi.org/10.1038/s41586-026-11225-9",
+      "read_url": "https://arxiv.org/html/2510.11706v1",
+      "published": "2026-11-04",
+      "read_scope": "출판본 공개 초록·서지·확장 데이터 캡션과 공개 arXiv v1 본문·방법의 핵심 부분을 읽은 기존 감수를 재사용했다. 구독 제한 출판 본문 전문이나 SI 전체를 이번에 새로 읽은 것으로 세지 않는다.",
+      "paragraphs_before": [
+        "실제 Aquila 중성원자 아날로그 장치는 최대 180원자의 2차원 스핀 모형을 quench한 뒤 응답을 관측했다. 차단 제약 때문에 계가 허용된 부분공간에 오래 머무는 prethermal 구간과, 공명으로 그 제약에서 빠져나오는 구간을 비교한다.[5]",
+        "공개 arXiv v1의 180원자 실험 방법은 시간점당 100샷·관측 범위 0-4 μs다. 그 판본의 Fig.4에는 9·16·64·180원자의 크기 비교와 16원자 수치 기준, 180원자 실험과 고전 스핀 모형의 비교가 나뉘어 있다. 작은 계의 수치 검사를 180원자 전체의 동일 조건 정확 계산으로 볼 수는 없다."
+      ],
+      "paragraphs_after": [
+        "11월 4일 공개된 출판 초록은 Néel 결함에 관한 일차 동역학 상전이와 일반화 Clausius-Clapeyron 검사도 보고한다. 이 추가 검사의 정량 근거와 초기 v1의 차이는 별도의 전문 대조가 남아 있다. 11월 12일은 해당 호 날짜이며 최초 온라인 공개일과 다르다.",
+        "이 실험을 읽는 기준은 원자 수 하나보다 풍부하다. 어느 크기와 시간창에서 제약된 응답이 유지되고, 공명 부근에서 무엇이 바뀌는지를 함께 보아야 한다. DQB가 11월 6일 이미 조사한 연구이므로 이번에는 새 발견으로 다시 세지 않고 관측량 비교의 사례로 연결했다."
+      ],
+      "figure_kind": "prethermal",
+      "figure_caption": "그림 5. 리뷰 재구성. arXiv v1 방법 [5]의 180원자 실험에 적힌 관측 범위 0-4 μs와 시간점당 100샷을 표시했다. 아래의 크기 비교는 원문 Fig.4(b)의 9·16·64·180원자다. 타임라인은 원문 방법에 적힌 측정 범위를 나타낸다.",
+      "figure_basis": "arXiv:2510.11706v1 Methods I, IV-VI 및 Fig.4 검수 기록. 구독 제한 원 그림을 복제하지 않은 측정 조건도."
+    },
+    {
+      "id": 6,
+      "heading": "리뷰의 표와 본문 수치를 대조하다",
+      "citation": "R. Abu Zitar, M. Al-Rajab, S. Loucif, and A. Nasayrah, A systematic review of quantum machine learning: algorithms, application domains, and emerging trends, Artif. Intell. Rev. (2026), doi:10.1007/s10462-026-11744-x.",
+      "doi": "10.1007/s10462-026-11744-x",
+      "url": "https://doi.org/10.1007/s10462-026-11744-x",
+      "published": "2026-11-12",
+      "read_scope": "공개 74쪽 Article in Press PDF의 Sections 3, 5.7, 6, 9, Appendices A-B와 참고문헌의 선택 감수 및 50-51쪽 시각 대조를 재사용했다. 전 분야를 문장별로 전수 감사하지 않았다.",
+      "paragraphs_before": [
+        "새 QML systematic review는 알고리즘·응용 분야를 분류하고 작은 분류 실험을 제시한다. 문헌 검색 종료는 2025년 6월이며 자체 비교는 3큐비트 고전 시뮬레이터다. 분류 체계와 열린 문제는 탐색에 쓸 수 있지만, 성능을 인용할 때는 모델 이름과 표·본문의 숫자부터 맞추어 읽어야 한다.[6]",
+        "Breast Cancer 시험 정확도는 Table 15의 QNB가 91.75%(표준편차 1.53%p), Random Forest가 94.21%(표준편차 2.33%p)다. 바로 아래 본문은 QNB를 94.2%라고 서술한다. 표의 ±는 다섯 실행의 표준편차이며, 본문 값의 불확실성은 제시되지 않았다."
+      ],
+      "paragraphs_after": [
+        "독립 산술로 확인한 표 QNB와 본문 QNB의 차이는 2.45%p다. RF의 표 값 0.9421을 소수 셋째 자리로 반올림하면 0.942가 되지만, 이 사실만으로 불일치의 원인이나 어느 값이 맞는지 단정할 수 없다.",
+        "이 리뷰는 성능 우위의 근거보다 원논문을 찾아 비교 조건을 확인하는 출발점으로 두는 편이 낫다. 11월 12일 Article in Press 판본이므로 후속 편집·정정도 확인해야 한다. 여기서 수행한 것은 세 보고값의 대조이며 classifier 재학습이나 QPU 실험은 아니다."
+      ],
+      "figure_kind": "air",
+      "figure_caption": "그림 6. 리뷰 재구성. 원문 [6] PDF 50쪽 Table 15와 §6.2 본문의 세 보고값을 새로 그렸다. 동그라미는 표의 평균과 다섯 실행의 표준편차, 마름모는 본문 서술값이다. 본문 값에는 미제시 오차를 그리지 않았다.",
+      "figure_basis": "Table 15 및 같은 쪽 §6.2의 세 수치만 선택해 대조한 독자 제작 도표. 원문은 CC BY-NC-ND 4.0이나 원 이미지·표의 배치를 복제하거나 개작하지 않았다."
+    }
+  ],
+  "figures": {
+    "deepqmc": {
+      "x_unit": "meV",
+      "labels": [
+        "9 geometries",
+        "14 geometries"
+      ],
+      "values": [
+        29.4,
+        4.7
+      ],
+      "uncertainty": [
+        0.1,
+        0.7
+      ]
+    },
+    "air": {
+      "x_unit": "percent",
+      "labels": [
+        "QNB / Table 15",
+        "RF / Table 15",
+        "QNB / prose"
+      ],
+      "values": [
+        91.75,
+        94.21,
+        94.2
+      ],
+      "std": [
+        1.53,
+        2.33,
+        null
+      ],
+      "runs": [
+        5,
+        5,
+        null
+      ]
+    }
+  },
+  "revision_note": "2026-11-13의 11쪽 전달판은 원본으로 별도 보존했다. 이번 공개 파생판은 독자용 설명과 보고 수치·관계를 다시 조판하고, 전달판의 여섯 그림 대신 검증 가능한 자체 도식·보고값 대조 그림 여섯 개를 사용했다. 원문·수치·판본과 추가 해석의 구분을 유지했다.",
+  "verification_note": "기존 DRB의 원문 감수 기록을 재사용하고 공개 파생판의 서지·그림 생성 근거·본문·모든 쪽 렌더·PDF 구조를 별도로 확인했다. 이번 PDF 제작은 원 논문의 계산·학습·QPU·분류기나 전체 잡음 모형의 독립 재현이 아니다. 문장별 사람 독자 평가는 수행하지 않았다.",
+  "read_scope_note": "2026-10-30부터11-13까지의 관련 저널 목록에서 고른 자료이며 전수 조사로 표시하지 않는다. 일부 PRB 목록의 조회 누락과 출판 본문 접근 제한을 남겼다. PRB 두 연구는 공개 v2 전문, DeepQMC는 출판 본문, PRX Quantum은 선택 절·표·그림, Nature 동역학은 공개 초록과 v1 핵심 부분, AIR은 선택 절·50-51쪽을 읽은 감수를 재사용했다."
+}

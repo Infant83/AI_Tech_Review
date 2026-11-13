@@ -18,12 +18,13 @@ from urllib.parse import parse_qsl, unquote, urlsplit
 
 try:
     from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from .briefing_routes import BRIEFING_SERIES, editorial_paths
 except ImportError:
     from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from briefing_routes import BRIEFING_SERIES, editorial_paths
 
 
 REGISTRY_KEYS = {"version", "id", "updated", "evidence_cutoff", "ko", "en"}
-BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
 ALLOWED_TAGS = {"p", "h2", "h3", "strong", "em", "ol", "ul", "li", "a", "code", "span", "br"}
 PUBLIC_ROOTS = {"reviews", "archive", "briefings", "lectures", "methods", "assets"}
 TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_-]{0,95}\Z")
@@ -267,8 +268,7 @@ def stage_editorials(repo: Path, staging_root: Path, documents: list[dict], base
         if not isinstance(href, str) or not href.startswith("archive/files/") or not href.endswith(".pdf") or _href(href, "") != href:
             raise ValueError("editorial must retain a registered public PDF")
         enriched = dict(document)
-        enriched["editorial_href"] = f"briefings/{issue_date.isoformat()}/index.html"
-        enriched["editorial_en_href"] = f"briefings/{issue_date.isoformat()}/en/index.html"
+        enriched["editorial_href"], enriched["editorial_en_href"] = editorial_paths(issue_date.isoformat(), document["series"])
         enriched["editorial_updated"] = spec["updated"]
         pages = {}
         for language in ("ko", "en"):

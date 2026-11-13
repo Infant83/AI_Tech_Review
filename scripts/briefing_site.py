@@ -13,12 +13,13 @@ try:
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from .briefing_routes import BRIEFING_SERIES, editorial_paths
 except ImportError:
     from site_search import search_head, search_form, search_results, search_script
     from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link
+    from briefing_routes import BRIEFING_SERIES, editorial_paths
 
-BRIEFING_SERIES = {"daily-quantum", "weekly-review"}
 PUBLIC_FIELDS = ("id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href", "editorial_href", "editorial_en_href")
 
 
@@ -127,8 +128,8 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
     latest_month = months[0] if months else ""
     latest_date = issues[0]["date"] if issues else ""
     title = "Briefings" if en else "브리핑"
-    description = ("Explore quantum briefings by publication date and topic. Choose a day on the calendar or browse the reading list."
-                   if en else "날짜별로 양자 연구의 흐름을 살펴봅니다. 달력에서 발행일과 주제를 확인하거나, 목록에서 읽을 브리핑을 찾으세요.")
+    description = ("Explore research briefings by publication date and topic. Choose a day on the calendar or browse the reading list."
+                   if en else "날짜별로 연구의 흐름을 살펴봅니다. 달력에서 발행일과 주제를 확인하거나, 목록에서 읽을 브리핑을 찾으세요.")
     canonical = base_url + page_directory("briefings", language, page_number)
     alternate = prefix + page_path("briefings", "ko" if en else "en", page_number)
     options = "".join(f'<option value="{month}">{month_label(month, language)}</option>' for month in months)
@@ -140,7 +141,8 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
         summary_language = "en" if en and doc.get("summary_en") else doc["language"]
         searchable = " ".join(str(doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "date")) + " " + " ".join(doc["tags"])
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
-        series = ("Weekly review" if en else "주간 브리핑") if doc["series"] == "weekly-review" else "Daily Quantum Brief"
+        series = {"weekly-review": "Weekly review" if en else "주간 브리핑",
+                  "daily-research": "Daily Research Brief", "daily-quantum": "Daily Quantum Brief"}[doc["series"]]
         pdf_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         reading = briefing_reading_href(doc, language)
         editorial_action = (f'<a href="{escape(reading)}">{"Read briefing" if en else "브리핑 읽기"} →</a>' if briefing_has_editorial(doc, language) else "")
@@ -170,7 +172,7 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
       {search_head(prefix)}
       </head><body class="briefings-page">
       <header class="site-header"><nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">{render_brand_link(prefix)}<span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{alternate}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span></nav>
-      {navigation}{search_form(prefix, language, "briefings")}<section class="briefing-hero"><p class="section-kicker">Day by day · Quantum research</p><h1>{title}</h1><p>{description}</p><div class="briefing-hero-meta"><span>{str(len(issues)) + ' published briefings' if en else str(len(issues)) + '건의 브리핑'}</span>{f'<span>{"Latest issue" if en else "최근 발행"} <time datetime="{latest_date}">{latest_date}</time></span>' if latest_date else ''}<a href="#briefing-board">{'Browse list' if en else '목록으로 보기'} ↓</a></div></section></header>
+      {navigation}{search_form(prefix, language, "briefings")}<section class="briefing-hero"><p class="section-kicker">Day by day · Research briefings</p><h1>{title}</h1><p>{description}</p><div class="briefing-hero-meta"><span>{str(len(issues)) + ' published briefings' if en else str(len(issues)) + '건의 브리핑'}</span>{f'<span>{"Latest issue" if en else "최근 발행"} <time datetime="{latest_date}">{latest_date}</time></span>' if latest_date else ''}<a href="#briefing-board">{'Browse list' if en else '목록으로 보기'} ↓</a></div></section></header>
       <main>{search_results(language)}
       <div class="briefing-tools" role="search">
         <label><span>{'Publication month' if en else '발행 월'}</span><select id="briefing-month"{' disabled' if not months else ''}>{options}</select></label>
@@ -201,11 +203,12 @@ def validate_briefings(site_dir: Path, documents: list[dict]) -> list[str]:
     for doc in documents:
         if doc.get("series") not in BRIEFING_SERIES:
             continue
-        expected_paths = {f"briefings/{doc['date']}/index.html", f"briefings/{doc['date']}/en/index.html"}
+        ko_path, en_path = editorial_paths(doc["date"], doc["series"])
+        expected_paths = {ko_path, en_path}
         declared = doc.get("editorial_assets", {})
         if doc.get("editorial_href") or doc.get("editorial_en_href") or declared:
-            if (doc.get("editorial_href") != f"briefings/{doc['date']}/index.html"
-                    or doc.get("editorial_en_href") != f"briefings/{doc['date']}/en/index.html"
+            if (doc.get("editorial_href") != ko_path
+                    or doc.get("editorial_en_href") != en_path
                     or not isinstance(declared, dict) or set(declared) != expected_paths
                     or any(not isinstance(value, str) or not re.fullmatch(r"[0-9a-f]{64}", value) for value in declared.values())
                     or editorial_files.keys() & declared.keys()):
