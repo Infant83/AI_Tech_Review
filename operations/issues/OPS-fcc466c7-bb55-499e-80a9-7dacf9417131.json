@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 6,
+  "record_version": 7,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-13T06:27:49.890136Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -54,7 +54,8 @@
     "https://developers.cloudflare.com/r2/pricing/",
     "https://developers.cloudflare.com/r2/get-started/",
     "https://developers.cloudflare.com/workers/platform/pricing/",
-    "https://developers.cloudflare.com/workers/platform/limits/"
+    "https://developers.cloudflare.com/workers/platform/limits/",
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
@@ -121,7 +122,29 @@
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
       "요금표/가정별연산비용은실제트래픽·청구예측이아니다. 현재리더는PDF전체를arrayBuffer로읽으므로다중Range가현재발생한다고간주하지않는다.",
       "Worker매핑과Pages카탈로그의별도배포에기대SHA고정/구신판본공존·원격자산봉인/복구계약이필요하다. 외부활성화/업로드/라우트/정적사본제거·실기기시험·공개저장량절감은미실행이다."
-    ]
+    ],
+    "contract_review_20261113_15": {
+      "status": "local_contract_review_complete_not_activated",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+      "probe": "현재 serveMedia와 같은 길이의 합성 PDF·구신 매핑11상황을 메모리에서 검증, 독립 재실행 통과. 교차 catalog/worker GET200 판본 불일치2·같은 크기 오객체의 선언 ETag200·구판 보존·누락 복원503/no-store를 재현. 외부요청/실제PDF·운영변경0.",
+      "interpretation": "sha256 query는 현재 미지원이다. HEAD/304의 본문 없음은 hash 실패가 아니며 status/ETag로 판정했다. Range fixture는 전체14B 범위로 부분본문 무결성 전수검증이 아니며 기본 fallback404를 운영Worker의 fetch fallback 결과로 확대하지 않는다.",
+      "remaining_contract": "경로별 허용 판본과 기대SHA/불변key, 조건부·Range 전 판본 선택, 업로드 전체 SHA, 구/신 전환·서비스별 되돌림, 코드/매핑/객체/Pages 결속 봉인과 실제 원격 복원. SITE_OPERATIONS에 활성화 전 미구현 계약으로 구체화.",
+      "connection": "기존 Chrome 인계 화면을 읽었을 때 여전히 공급자 로그인 화면. 새 로그인·권한/요금·버킷·업로드/라우트 변경 없이 인계 유지. 07시 CLI 거절 후 실제 R2 접근 복원·사용량/청구를 확인한 새 근거 없음.",
+      "footprint": {
+        "live_revision": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
+        "checked_at": "2026-11-13T06:08:48.473459Z",
+        "release_files": 2599,
+        "release_bytes": 765106978,
+        "pdf_aliases": 228,
+        "pdf_bytes": 531808796,
+        "unique_objects": 160,
+        "unique_object_bytes": 355855982,
+        "old_editions": 16,
+        "unchanged_since_previous_ending_release": true,
+        "headroom_to_internal_800MB_bytes": 34893022
+      },
+      "cleanup": "검증된 실제 baseline 확보 후 이번 조회의 불완전한 자체 진단 응답1개만 조건 재검사·비식별 실패요약 보존 뒤 정리(논리1143535B). 사용자 원본·PDF·후보·복구/개인 자료 삭제0. 실제 파일시스템 회수량을 측정한 것은 아님."
+    }
   },
   "observation": {
     "status": "07시 현재 연결·비용·판본/복구 조건 검토, 계정 읽기 연결 대기",
@@ -133,15 +156,16 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
     "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "로그인완료가전달되면기존세션에서R2활성/사용량/청구를읽기확인한다. 다음15시에는연결복원근거와기대SHA고정·구/신카탈로그전환·원격객체복구계약을검토하고제품검증을우선한다. 19시에상태/필요결정을정리한다. 11시PDF링크제품착수와같은파일을동시에수정하거나미확인무료포함량을근거로구독/과금·운영전환을진행하지않는다.",
+  "next_action": "19시 연결 복원 근거·계정 미확인 사항과 구체화한 전환/원격 복구 계약을 대조해 준비 도구의 후속 구현 범위·검사·슬롯을 정한다. 실제 R2 활성화/과금·운영 전환은 계정 상태와 기존 권한 경계를 먼저 확인한다. PDF8970441은11/14 15시 검증·19시 통합 목표를 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "connection_limited_contract_and_cost_reviewed",
-    "next_scheduled_step_at": "2026-11-13T15:00:00+09:00",
-    "next_review_at": "2026-11-13T19:00:00+09:00",
-    "scheduled_step": "로그인 복원 근거·기대 SHA/구신 판본·원격 복구 계약 검토(제품 검증 우선, 외부 활성화 아님)",
+    "state": "contract_review_complete_provider_connection_pending",
+    "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
+    "next_review_at": "2026-11-14T19:00:00+09:00",
+    "scheduled_step": "전환/복구 계약의 후속 구현 범위·슬롯과 공급자 연결/필요 결정 검토",
     "replan_reference": "operations/runs/20261112T020733Z-b8d78ba5-6ed4-4b1a-9d90-fcd017a2656a.md",
-    "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님."
+    "replan_reason": "최신 편집 게시 뒤 공개 산출물736,634,728B로 내부700MB 이전 시험 완료 관리 목표 초과. 기술 수정 후보는 현재 공개본과 bytes 동일이며 이번 수정이 증가 원인은 아님.",
+    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   }
 }

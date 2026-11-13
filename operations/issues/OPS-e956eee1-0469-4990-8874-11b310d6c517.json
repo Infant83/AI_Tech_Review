@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
   "uuid": "e956eee1-0469-4990-8874-11b310d6c517",
-  "record_version": 2,
+  "record_version": 3,
   "title": "편집 하네스 공개 버전과 글별 실제 적용 판본의 추적 정합성",
   "type": "editorial_provenance",
   "created_at": "2026-11-09T03:12:43Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-13T06:27:49.890136Z",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -60,7 +60,8 @@
     ".automation/writing-style-audit-harness.md:5,39,51",
     ".automation/writing-reviews/2026-11-01-paragraph-context/README.md",
     ".automation/writing-reviews/legacy-refresh/2026-11-06-quantum-layers/prose-review.md",
-    ".automation/writing-reviews/legacy-refresh/2026-11-09-oled/README.md"
+    ".automation/writing-reviews/legacy-refresh/2026-11-09-oled/README.md",
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   ],
   "limitations": [
     "표본과 확인 경로의 감사이며 모든 과거 글을 최신 기준으로 재감수한 결과가 아님",
@@ -122,7 +123,11 @@
   "observation": {
     "status": "현재 공개 표기 확인",
     "period": "2026-11-09T03:12:43Z",
-    "result": "공개 3개 리뷰와 방법서에서2026.08 고정 표기를 재확인함. 최신 지침 적용을 일괄 부정하거나 보증하지 않음."
+    "result": "공개 3개 리뷰와 방법서에서2026.08 고정 표기를 재확인함. 최신 지침 적용을 일괄 부정하거나 보증하지 않음.",
+    "checkpoint_20261113_15": {
+      "result": "공용 감수 기록·EVTd950와11시 인수 이후 delta에서 새 글별 하네스 적용 commit/hash·검토 원고를 잇는 공통 근거는 없었다. 네 표시 필드 보존 해결을 전체 적용 추적으로 확대하지 않는다. Git 최신 정책을 과거 적용/사람 감수 증거로 만들지 않는다.",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    }
   },
   "recovery": {
     "plan_reference": null,
@@ -134,8 +139,9 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-13T15:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-17T15:00:00+09:00",
     "next_review_at": "2026-11-17T15:00:00+09:00",
-    "scheduled_step": "기존 감수·적용 판본 근거 확인"
+    "scheduled_step": "AEDAUT 적용 근거와 미확인 범위를 잇는 최소 판본 연결/표시 설계 검토",
+    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   }
 }

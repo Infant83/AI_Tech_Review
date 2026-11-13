@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "id": "OPS-79727d7a-9fc8-4cfd-9a66-9a130c505096",
+  "uuid": "79727d7a-9fc8-4cfd-9a66-9a130c505096",
+  "record_version": 1,
+  "title": "공개 산출물에서 비공개 전용 폴더 구성요소를 거절하는 경계 보강",
+  "type": "publication_security_boundary",
+  "created_at": "2026-11-13T06:27:49.890136Z",
+  "updated_at": "2026-11-13T06:27:49.890136Z",
+  "status": "validating",
+  "priority": "P2",
+  "source": {
+    "kind": "isolated_verification",
+    "reference": "SECURITY_OPERATIONS.md",
+    "summary": "제한된 보안 후보 분류 중 공개 validator의 private 폴더 경계 공백을 발견하고 실제 전체 fixture로 재현했다. 실제 비공개 자료 유출 제보나 운영 노출 확정이 아니다."
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [],
+    "source_paths": [
+      "scripts/reader_engagement_publish.py",
+      "tests/test_reader_engagement_publish.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "5072d4a624297b38edba6e49a5ea41f8d2529ba3",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "기존 공개 산출물 fixture를 정상 생성·검증",
+      "등록파일만복사하는builder와별개로 합성 private 구성요소의 빈/중첩/대소문자 폴더와 비민감 JSON을 후보에 추가",
+      "동일 validate_public_artifact를 호출해 허용됨을 확인"
+    ],
+    "expected": "비공개전용폴더구성요소는본문내용에관계없이아티팩트업로드전에거절",
+    "actual": "수정전6하위사례가통과했다. 실제공개cc6의2599파일경로에는해당예약구성요소0건,실제비공개파일/외부요청0."
+  },
+  "evidence": [
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "scripts/reader_engagement_publish.py",
+    "tests/test_reader_engagement_publish.py"
+  ],
+  "limitations": [
+    "현재 builder는 등록한 파일/판본만 명시적으로 복사한다. 이 결함 재현을 실제 노출이나 전체 저장소 안전성 감사로 확대하지 않는다.",
+    "예약된 정확한 private 구성요소만 차단한다. 모든 개인정보·비밀정보 탐지를 대체하지 않는다."
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "관측된 방어 공백의 작은 검증기 보강으로 기존 단일 게시 경로와 일반 편집 발행 권한을 유지한다.",
+    "related_issues": [
+      "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a"
+    ],
+    "duplicate_of": null,
+    "revisit_when": null
+  },
+  "authority": {
+    "basis": "2026-11-08 승인된 ADOPT 일상 기술 수정·2026-11-09 프로시커 보안 경계 점검",
+    "current_scope": "격리 합성 시험·검증기1줄/회귀검사·기존CI단일경로검증. 실제비공개자료/권한/계정/과금변경없음.",
+    "additional_decision": "없음;새상시게시승인자를두지않음"
+  },
+  "owner_role": "운영팀(ADOPT) · 보안파트 프로시커",
+  "acceptance_criteria": [
+    "전체 validator가빈/중첩/대소문자 private 구성요소와비민감JSON을거절",
+    "유사한 정상 과학 이름과 기존 승인 공개 자료는 보존",
+    "독립전후재현·전체Python회귀·실제기존CI경로에서검증확인"
+  ],
+  "change": {
+    "commits": [
+      "55cf9b9580ef01ec7cf01d72e2a526331100d412"
+    ],
+    "candidate_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "로컬구현/독립재현통과·CI확인전",
+    "checks": [
+      "수정전6하위사례가허용됨을재현",
+      "기존case-insensitivePRIVATE_NAMES에^private$추가1줄,실제validator회귀3개추가",
+      "대상44검사통과,전체392중391통과·기존1생략·실패0",
+      "독립구현자외담당이정상fixture허용과같은합성privateJSON거절을확인",
+      "실제공개릴리스경로의예약private구성요소0"
+    ],
+    "evidence": [
+      "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    ],
+    "remaining_limits": [
+      "공통CI검증/공개릴리스결속의최종결과는실행기록에후속연결"
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": "문제발견시이검증기변경만수정해최신동시게시물/원본/필기를보존한다. 실제운영롤백·개인DB복원은실행하지않음.",
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "같은회차에서기존단일CI의후보/보존검사·배포·복구·알림결과와실제공개기준본을확인하고기술검증완료상태를갱신한다. 일반게시물추가승인은없다.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "timezone": "Asia/Seoul",
+    "state": "implemented_local_verified_ci_pending",
+    "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
+    "next_review_at": "2026-11-13T19:00:00+09:00",
+    "scheduled_step": "금회CI결과연결·실패시우선후속확인",
+    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+  }
+}

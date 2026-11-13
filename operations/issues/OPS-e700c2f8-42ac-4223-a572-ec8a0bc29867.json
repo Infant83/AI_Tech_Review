@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 13,
+  "record_version": 14,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-13T02:48:52.430301Z",
+  "updated_at": "2026-11-13T06:27:49.890136Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -59,7 +59,8 @@
     "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
-    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -131,19 +132,19 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-13T02:05:57.794Z",
-    "last_successful_actions_check_at": "2026-11-13T02:05:31.670813Z",
-    "mail_window": "직전22:01:34.204Z부터48시간겹친2026-11-10T22:01:34Z이후 전페이지1통/1run/1실패attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
-    "actions_window": "전체조회에서 신규DQB43342083384 성공·5e43349171333 진행중 확인. 추가02:07:21.376020Z조회에서두run attempt1의build/deploy/recovery-copy/notify-readers모두성공. 새실패/미해결0.",
+    "last_successful_mail_check_at": "2026-11-13T06:02:14.488Z",
+    "last_successful_actions_check_at": "2026-11-13T06:01:47.079279Z",
+    "mail_window": "직전메일확인에서48시간겹친11/11T02:05:57Z이후 전페이지1통/1run/실패1attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
+    "actions_window": "전체 API의직전확인이후5e/cc6 attempt1성공을대조하고,직전추가확인02:48:10Z뒤새run/진행0. 최신cc6네작업모두성공·미해결0.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
     "live_source_revision": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
-    "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
-    "supplemental_actions_check_at": "2026-11-13T02:48:10.165153Z",
+    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "supplemental_actions_check_at": "2026-11-13T06:02:17.745923Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-13T02:05:31.670813Z",
+    "last_full_actions_check_at": "2026-11-13T06:01:47.079279Z",
     "supplemental_successful_runs": [
       "43342083384",
       "43349171333",
@@ -206,6 +207,12 @@
         "external": 1,
         "article_updates": 145
       }
+    },
+    "checkpoint_20261113_15": {
+      "mail_at": "2026-11-13T06:02:14.488Z",
+      "full_api_at": "2026-11-13T06:01:47.079279Z",
+      "result": "새실패·메일·미해결0,조회오류0. 실제공개cc6묶음별도검증. 금회새검증기수정run은기존정상편집게시기록과구분해추가확인한다.",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
     }
   },
   "recovery": {

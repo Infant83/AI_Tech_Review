@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
   "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
-  "record_version": 4,
+  "record_version": 5,
   "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-13T06:31:25.478488Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -36,7 +36,8 @@
     "ATRL_ORGANIZATION.md",
     ".github/workflows/pages.yml",
     "https://registry.npmjs.org/pdfjs-dist/6.5.438",
-    "공식 legacy worker의 unpackDictionaryData(dictionary,data0,data1,skipFlip,sizeBits,sizeBitsData)와 dictionary.set(dict) 문맥"
+    "공식 legacy worker의 unpackDictionaryData(dictionary,data0,data1,skipFlip,sizeBits,sizeBitsData)와 dictionary.set(dict) 문맥",
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   ],
   "limitations": [
     "후보 탐지 수를 확정 유출 수로 간주하지 않음",
@@ -82,19 +83,41 @@
       "이전 Git 이력은 보존돼 있음",
       "공급자 자격증명 유효성 시험·키폐기·validity override는 수행하지 않음",
       "이번 오탐 판단은 해당 고정 vendor 바이트의 세 후보에 한정하며 의존성 전체의 안전성을 보증하지 않음"
-    ]
+    ],
+    "context_review_20261113_15": {
+      "status": "limited_context_classification_complete_validity_unconfirmed",
+      "candidates_reviewed": 6,
+      "history_locations_matched": 10,
+      "pdf_candidates": 5,
+      "flate_candidates": 3,
+      "jpeg_candidates": 2,
+      "signed_request_identifier_candidates": 1,
+      "provider_validity": "unknown_for_all_6",
+      "evidence": "로컬 Git bytes와 PDF 구조를 제한해 대조했다. Flate3은 완전 해제 후 후보 문자열 소실, JPEG2는 정상 이미지의 비엔트로피 구간7곳이지만 기본 Huffman 참조와 일치하지 않아 추가 검토다. 서명 URL 식별자1은 관련 요청2개 모두 만료됐고 제한된 query에 비밀키/세션토큰 필드는 없다. 실제 자격증명 유효성/폐기는 검증하지 않았다.",
+      "private_evidence": "기존 허용 비공개 영역에 최소 문맥과 boolean 근거만 보관했다.0700/0600·Git 제외 확인, 후보 값/탐지 경로/원시 로그 없음. 외부 유효성 시험·경고 종료0.",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    }
   },
   "observation": {
     "status": "부분 분류·공급자 상태 재조회",
     "period": "2026-11-09T18:06:18Z",
-    "result": "열린 후보9→6. 세 건은 정적 vendor 데이터 오탐으로 근거를 남겨 종료했으며 나머지는 실제 유출 또는 오탐으로 단정하지 않음."
+    "result": "열린 후보9→6. 세 건은 정적 vendor 데이터 오탐으로 근거를 남겨 종료했으며 나머지는 실제 유출 또는 오탐으로 단정하지 않음.",
+    "checkpoint_20261113_15": {
+      "security_metadata_at": "2026-11-13T06:01:47.986020Z",
+      "total": 9,
+      "open": 6,
+      "resolved": 3,
+      "updated_since_previous": 0,
+      "result": "제한된후보문맥조사와실제유효성/노출은구분. 공개산출물의예약privatenamespace방어공백은별도OPS-79727d7a로분리해수정·검증중이며실제노출확정아님.",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    }
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "남은PDF자료5건과만료된서명URL의식별자1건을 제한된 비공개 문맥에서 분류한다. 실제 비밀이나 영향이 확인되면 우선순위를 조정하고 권한 범위의 대응·복구안을 정한다.",
+  "next_action": "11/14 15시 JPEG2후보의구조/원본참조를독립대조하고기존분류근거의제한을검토한다. 공급자유효성6건은미확인으로유지하며근거없이경고를닫거나폐기/회전·외부검증하지않는다. 실제중대위험확인시기존절차로우선대응한다.",
   "triage_summary": {
     "checked_at": "2026-11-09T18:06:18Z",
     "closed_false_positives": 3,
@@ -109,9 +132,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-13T15:00:00+09:00",
-    "next_review_at": "2026-11-14T15:00:00+09:00",
-    "scheduled_step": "남은 보안 탐지 후보의 제한된 문맥 분류"
+    "state": "limited_context_review_complete_followup_needed",
+    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
+    "next_review_at": "2026-11-17T15:00:00+09:00",
+    "scheduled_step": "JPEG2후보의제한된원본/구조독립검토·전체유효성미확인범위대조",
+    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   }
 }
