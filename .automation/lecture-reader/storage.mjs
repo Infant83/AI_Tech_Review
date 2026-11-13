@@ -142,7 +142,7 @@ export async function importPages(fingerprint, pages, bookmarks, position) {
     const range = IDBKeyRange.bound(pageKey(fingerprint, 0), pageKey(fingerprint, 99999));
     store.delete(range);
     pages.forEach(page => store.put({ key: pageKey(fingerprint, page.number), fingerprint, number: page.number, strokes: page.strokes, updatedAt: Date.now() }));
-    docs.put(metadata({ ...document, bookmarks, position, annotatedPages: pages.filter(p => p.strokes.length).map(p => p.number), updatedAt: Date.now() }));
+    docs.put(metadata({ ...document, bookmarks, position, localPosition: null, annotatedPages: pages.filter(p => p.strokes.length).map(p => p.number), updatedAt: Date.now() }));
   };
   await done;
 }

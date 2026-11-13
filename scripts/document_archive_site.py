@@ -37,7 +37,7 @@ LECTURE_READER_SOURCE = Path(__file__).resolve().parents[1] / ".automation/lectu
 LECTURE_READER_HREF = "lectures/reader/"
 LECTURE_READER_FILES = (
     "index.html", "reader.css", "reader.mjs", "ink-core.mjs", "storage.mjs",
-    "cloud.mjs", "cloud-core.mjs", "cloud.css", "editions.mjs",
+    "cloud.mjs", "cloud-core.mjs", "cloud.css", "editions.mjs", "pdf-navigation.mjs",
 )
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.

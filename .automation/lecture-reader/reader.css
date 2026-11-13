@@ -43,3 +43,15 @@
 .reader-page.finger-drawing .ink-page-canvas{touch-action:none}
 .reader-page-number{position:absolute;right:2px;bottom:-19px;color:var(--muted);font-size:10px;line-height:15px;font-variant-numeric:tabular-nums;pointer-events:none;user-select:none}
 @media(max-width:590px){.page-area{gap:22px}.reader-page-number{bottom:-18px}}
+.pdf-navigation{display:flex;flex:none;gap:0}
+.pdf-navigation .icon-button{min-width:40px;min-height:44px;padding:8px}
+.pdf-link-layer{position:absolute;inset:0;pointer-events:none;z-index:2}
+.pdf-link-layer[hidden]{display:none}
+.pdf-page-link{position:absolute;display:block;pointer-events:auto;border-radius:2px;touch-action:manipulation}
+.pdf-page-link:hover{background:#28745f18}
+.pdf-page-link:focus-visible{outline:3px solid #286f5f;outline-offset:2px;background:#28745f18}
+.outline-dialog{border:1px solid var(--line);border-radius:16px;width:min(560px,calc(100vw - 24px));max-height:80dvh;padding:24px}
+.outline-dialog::backdrop{background:#142b2266}
+#outline-items ul{list-style:none;padding:0 0 0 16px;margin:0}
+#outline-items>ul{padding-left:0}
+#outline-items button,#outline-items a{display:block;text-align:left;white-space:normal;overflow-wrap:anywhere;background:transparent;border:0;color:var(--ink);padding:12px 6px;min-height:44px;width:100%;font:inherit;text-decoration:none;border-bottom:1px solid var(--line)}

@@ -22,6 +22,7 @@
     <symbol id="i-fullscreen" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M8 21H3v-5"/></symbol>
     <symbol id="i-fullscreen-exit" viewBox="0 0 24 24"><path d="M3 8h5V3M16 3v5h5M21 16h-5v5M8 21v-5H3"/></symbol>
     <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18H6a4 4 0 0 1-1-8 7 7 0 0 1 13-2 5 5 0 0 1 0 10h-1M12 22V12m-4 4 4-4 4 4"/></symbol>
+    <symbol id="i-contents" viewBox="0 0 24 24"><path d="M8 5h13M8 12h13M8 19h13M3 5h.1M3 12h.1M3 19h.1"/></symbol>
   </defs></svg>
   <header class="reader-header">
     <div class="document-bar">
@@ -49,6 +50,7 @@
       <div class="tool-group history-group"><button id="undo" class="icon-button" type="button" disabled data-i18n-title="undo" title="실행 취소"><svg aria-hidden="true"><use href="#i-undo"/></svg></button><button id="redo" class="icon-button" type="button" disabled data-i18n-title="redo" title="다시 실행"><svg aria-hidden="true"><use href="#i-redo"/></svg></button></div>
       <div class="tool-group toolbar-end"><label class="touch-toggle"><input id="finger-draw" type="checkbox"><span data-i18n="finger">손가락 필기</span></label></div>
     </div>
+    <div class="pdf-navigation"><button id="navigation-back" class="icon-button" type="button" disabled data-i18n-aria="returnPosition" data-i18n-title="returnPosition" aria-label="이동 전 위치로" title="이동 전 위치로"><svg aria-hidden="true"><use href="#i-undo"/></svg></button><button id="pdf-outline" class="icon-button" type="button" disabled aria-controls="outline-dialog" data-i18n-aria="contents" data-i18n-title="contents" aria-label="목차" title="목차"><svg aria-hidden="true"><use href="#i-contents"/></svg></button></div>
     <button id="toggle-fullscreen" class="icon-button reader-focus-toggle" type="button" aria-controls="reader-main" aria-pressed="false" aria-label="노트 전체화면" data-i18n-aria="fullscreen" data-i18n-title="fullscreen" title="노트 전체화면"><svg aria-hidden="true"><use href="#i-fullscreen"/></svg></button>
     </div>
   </header>
@@ -66,12 +68,13 @@
     <label class="zoom-control"><span data-i18n="zoom">확대</span><select id="zoom" aria-label="페이지 확대" data-i18n-aria="zoom"><option value="1" data-i18n="fitWidth">너비 맞춤</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select></label>
   </footer>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="outline-dialog" class="outline-dialog"><div class="dialog-heading"><h2 data-i18n="contents">목차</h2><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><div id="outline-items"></div></dialog>
   <dialog id="library-dialog" class="library-dialog"><div class="dialog-heading"><div><span class="eyebrow" data-i18n="personalLearning">나의 학습</span><h2 data-i18n="myLibrary">내 보관함</h2></div><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
     <p class="library-intro" data-i18n="libraryBody">읽던 페이지와 필기가 이 브라우저에 보관됩니다. 중요한 필기는 백업 파일로도 보관하세요.</p><button class="import-pdf-button" id="import-pdf" type="button"><span aria-hidden="true">＋</span><span data-i18n="importPDF">내 PDF 가져오기</span><small data-i18n="localOnly">업로드 없이 이 기기에 보관</small></button>
     <h3 data-i18n="recent">이어서 공부하기</h3><div id="saved-documents" class="document-list"></div><h3 data-i18n="publishedLectures">렉처 자료</h3><div id="published-documents" class="document-list"></div>
   </dialog>
   <dialog id="options-dialog" class="options-dialog"><div class="dialog-heading"><h2 data-i18n="options">저장·가져오기·도움말</h2><button class="icon-button close-dialog" type="button" data-i18n-title="close" title="닫기"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
-    <p data-i18n="sourceHelp">PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.</p>
+    <p data-i18n="sourceHelp">PDF 원본은 그대로 두고 필기를 별도로 저장합니다. 원본 PDF와 필기를 포함한 사본을 각각 내보낼 수 있습니다.</p><p data-i18n="readLinks">읽기 도구에서 PDF 링크를 누를 수 있습니다. 외부 링크는 새 창에서 열립니다.</p>
     <div id="pdf-edition-control" hidden><label for="pdf-edition" data-i18n="pdfEdition">PDF 판본</label> <select id="pdf-edition"></select><p data-i18n="editionHelp">판본마다 필기가 따로 보존됩니다.</p></div>
     <div class="export-actions"><button id="export-pdf" type="button" data-i18n="exportPDF">필기한 PDF 내보내기</button><button id="export-original" type="button" data-i18n="exportOriginal">원본 PDF 내보내기</button><button id="export-backup" type="button" data-i18n="exportBackup">수정 가능한 필기 백업</button><button id="import-backup" type="button" data-i18n="importBackup">필기 백업 가져오기</button></div>
     <h3 data-i18n="drawingHelp">스크롤로 읽고, 펜으로 쓰세요</h3><p data-i18n="drawingHelpBody">위아래로 스크롤해 페이지를 이어 읽습니다. Apple Pencil로 필기하고 손가락으로 이동하거나 두 손가락으로 확대하세요. 손가락 필기를 꺼두면 두 번 탭해 2배 확대와 너비 맞춤을 전환합니다. 마우스는 읽기 도구에서 두 번 클릭하세요. 손가락 필기는 도구에서 켤 수 있습니다.</p>

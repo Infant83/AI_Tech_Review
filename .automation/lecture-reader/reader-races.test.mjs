@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
 import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
 import { eraseStrokes } from './ink-core.mjs';
+import { editionsFor } from './editions.mjs';
 
 // Exercise the actual browser functions with delayed storage, without publishing
 // test hooks or replacing the production implementation with a test copy.
@@ -40,6 +41,7 @@ function context(names) {
     roleCapabilities, strokeAuthorMap, strokeKey, eraseStrokes, cssWidth: 600, cssHeight: 800,
     pages: new Map([[1, [stroke('existing')]]]), histories: new Map(), dirty: new Map(),
     metaSaved: 0, metaVersion: 0, mutationRevision: 0, documentOpenGeneration: 0, readerInkEpoch: 0,
+    readerNavigationRequest: 0, readerPrecisionTimer: null, clearTimeout,
     NOTEBOOK_FORMAT: 'ai-tech-review-notebook', clone: structuredClone,
     validateNotebook: value => value, uid: () => 'new-stroke', confirm: () => true, t: value => value,
     clamp: (value, min, max) => Math.min(max, Math.max(min, value)),
@@ -105,12 +107,15 @@ test('incoming ink holds the edit lock through both flush and import awaits', as
 
 test('explicit backup restoration creates fresh ink IDs while preserving editable geometry', async () => {
   const ctx = context(['applyNotebook']);
+  ctx.current.localPosition = { fingerprint: document.fingerprint, page: 1, nx: .2, ny: .7, zoom: 2 };
   const original = stroke('erased-cloud-id');
   const value = { document, pages: [{ number: 1, strokes: [original] }], bookmarks: [], position: 1 };
   await ctx.applyNotebook(value, { confirmReplace: true });
   const restored = ctx.pages.get(1)[0];
   assert.equal(restored.id, 'new-stroke');
   assert.deepEqual({ ...restored, id: original.id }, original);
+  assert.equal(ctx.current.localPosition, null, 'restored notebook cannot inherit an older device-only precision anchor');
+  assert.equal(ctx.readerNavigationRequest, 1, 'import invalidates an outstanding destination request');
 });
 
 test('page navigation locks ink and commits the page number only after storage loads', async () => {
@@ -253,18 +258,19 @@ function publicReadHarness(options = {}) {
     $: id => { if (!nodes.has(id)) nodes.set(id, { hidden: false, textContent: '' }); return nodes.get(id); },
     sheet: { dataset: {} }, permissions: {}, readerMountedViews:new Set(),releaseReaderView(){},
     pdfjs: { getDocument: () => ({ promise: Promise.resolve({ numPages: 2 }) }) },
-    storage: { getDocument: async () => null, putDocument: async () => {} },
+    storage: { getDocument: async () => options.cached || null, putDocument: async () => {} },
     controls() {}, finishStroke() {}, flush: async () => true, ensurePage: async () => {},
     renderPage: options.render || (async () => {}), renderBookmarks() {}, renderEditions() {},
     clamp: (value, low, high) => Math.min(high, Math.max(low, value)), status() {}, storageFailure() {}, showError() {}, t: value => value,
     currentInfo: () => ctx.current, setTimeout, clearTimeout,
+    editionsFor, readerFocusInputEpoch: 0, readerSetZoom() {}, readerRestorePosition() {}, persistReaderPosition() {}, scheduleReaderVisible() {},
   };
   ctx.window = { addEventListener: subscribe('window'), history: { replaceState(_state, _title, url) { ctx.location.href = String(url); } } };
   ctx.window.self = ctx.window; ctx.window.top = options.framed ? {} : ctx.window;
   const emit = (target, name) => { for (const handler of listeners.get(target + ':' + name) || []) handler({}); };
   ctx.signal = name => emit('window', name);
   vm.createContext(ctx);
-  vm.runInContext(section('async function openBytes(', 'function showError(').replaceAll('import.meta.url', JSON.stringify(rootURL.href)) +
+  vm.runInContext(section('function validReaderPosition(', 'function readerNavigationControls(') + section('async function openBytes(', 'function showError(').replaceAll('import.meta.url', JSON.stringify(rootURL.href)) +
     section("document.addEventListener('visibilitychange'", 'initializeReaderFullscreen();'), ctx);
   return { ctx, messages, emit, focus: value => { focused = value; },
     open: (publicId = 'published-a') => ctx.openBytes(new Uint8Array([37, 80, 68, 70]).buffer,
@@ -279,6 +285,26 @@ test('only a successfully rendered visible public PDF acknowledges its public al
   rendered.resolve(); assert.equal(await opening, true);
   assert.deepEqual(qa.messages, [{ type: 'atr-reader-article-read', articleId: 'lecture:published-a',
     url: 'https://example.test/AI_Tech_Review/archive/files/published-a.pdf' }]);
+});
+
+test('reopening a precise device position avoids page-top scrolling and yields to newer input or document selection', async () => {
+  const fingerprint = [...new Uint8Array(await webcrypto.subtle.digest('SHA-256', new Uint8Array([37, 80, 68, 70])))].map(value => value.toString(16).padStart(2, '0')).join('');
+  for (const variant of ['unchanged', 'input', 'document']) {
+    const entered = deferred(), release = deferred(), restored = [], visible = [];
+    const precise = { fingerprint, page: 1, nx: .2, ny: .7, zoom: 2, viewportY: 1 / 3 };
+    const qa = publicReadHarness({ cached: { fingerprint, position: 1, localPosition: precise, bookmarks: [] } });
+    qa.ctx.readerRestorePosition = position => restored.push(position);
+    qa.ctx.scheduleReaderVisible = () => visible.push(true);
+    qa.ctx.renderPage = async scroll => { assert.equal(scroll, false); entered.resolve(); await release.promise; };
+    const opening = qa.open(); await entered.promise;
+    if (variant === 'input') qa.ctx.readerFocusInputEpoch++;
+    if (variant === 'document') { qa.ctx.current = { fingerprint: 'b'.repeat(64) }; qa.ctx.documentOpenGeneration++; }
+    release.resolve(); const result = await opening;
+    assert.equal(restored.length, variant === 'unchanged' ? 1 : 0, variant);
+    if (restored.length) assert.equal(restored[0].viewportY, 1 / 3, 'reopening retains the local viewport offset');
+    assert.equal(visible.length, variant === 'input' ? 1 : 0, variant);
+    assert.equal(result, variant !== 'document', variant);
+  }
 });
 
 test('a public PDF first rendered while hidden waits for visibility and real focus', async () => {
