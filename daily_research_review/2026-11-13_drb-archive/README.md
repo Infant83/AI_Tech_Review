@@ -27,3 +27,11 @@ drb_public_pdf가 제작과 전체 8쪽 렌더·엄격 파싱·URI·개인정보
 등록 ID는 `2026-11-13-daily-research-brief`, 시리즈는 `daily-research`다. 한영 편집글은 `briefings/research/2026-11-13/`와 `en/`, PDF는 `archive/files/2026-11-13-daily-research-brief.pdf`로 제공한다. 같은 날짜 DQB의 ID·기존 URL·본문·PDF를 보존한다. 달력·목록·검색은 짧은 글을 먼저 안내하고 원 PDF 열기·다운로드를 별도로 제공한다.
 
 drb_publication_support가 기존 경로를 유지하는 시리즈·경로 정본과 목록·검색·보존 검증을 보완했다. Python 전체 389개와 독립 경로 회귀 검사, JavaScript 문법 검사가 통과했다. 실제 후보의 이전 파일 보존·브라우저·배포·HTTPS 확인은 후속 검증 기록에서 구별한다. 문서 설정과 로컬 등록만으로 공개 완료로 표시하지 않는다.
+
+## 실제 공개 확인 · 완료
+
+[국문 편집글](https://infant83.io/AI_Tech_Review/briefings/research/2026-11-13/), [영문 편집글](https://infant83.io/AI_Tech_Review/briefings/research/2026-11-13/en/), [8쪽 공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-13-daily-research-brief.pdf)를 게시했다. 배포 커밋은 `cc6b604b18bc16443bd81e77b29582d62cf44b63`이며 [워크플로](https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 실제 로그에서826개 중817개 통과·9개 스킵·실패0을 확인했다.
+
+실제 HTTPS16경로가 봉인된 배포물 해시와 일치하며 공개 PDF는 검수한8쪽·SHA `14ffe05db6c58e5003355c81ec6cabdb62c5acc12383e54972f8471c61d15ab8`였다. 기존57리뷰·81DQB·70카탈로그를 유지하고 DRB1건을 더해 전체PDF133건·브리핑82건이다. 기존기사·PDF내용 변경은0이며 새 독자 알림 이벤트도0이다. Chrome에서 한영전환·390×844화면·실제검색→영문편집글·같은날짜달력의 두항목과 별도PDF링크를 확인했다.
+
+복구 workflow는2,600파일·766,433,237바이트의 검증·업로드와 최근3개 보존을 마쳤다. 원시 복구 사본의 별도 내려받기·재해시·전체 복원과 실제 휴대폰 알림 수신은 수행하지 않았다. [공개 검증 기록](artifacts/publication-verification.json)에 범위를 남긴다. 기존 금요일09시 예약을 유지하고 일상적인 짧은 한영편집글·검수PDF의 공개 지시를 반영했다. 이번 웹공개 때문에 기존 회차 메일을 재발송하지 않았다. 병행한 운영 기록은 통합하되 출판 원고·자산 변경에 섞지 않았다.
