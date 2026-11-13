@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 4,
+  "record_version": 5,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-13T02:41:58.893587Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -27,7 +27,8 @@
       ".automation/lecture-reader/index.html",
       ".automation/lecture-reader/storage.mjs",
       ".automation/lecture-reader/cloud.mjs",
-      "scripts/document_archive_site.py"
+      "scripts/document_archive_site.py",
+      ".automation/lecture-reader/pdf-navigation.mjs"
     ]
   },
   "observed": {
@@ -57,7 +58,8 @@
     "https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#i-want-to-render-all-100-pages-in-a-document-at-a-high-resolution-is-it-a-good-idea",
     "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action",
     "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
-    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181"
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
   ],
   "limitations": [
     "실제 iPhone/iPad/Pencil·Safari·Windows 펜 시험 전이며 Chrome 에뮬레이션과 구분한다.",
@@ -99,7 +101,25 @@
       "a955c41055d00e606e0b90e619b170cccb5ec7a2"
     ],
     "candidate_reference": "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
-    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181"
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
+    "navigation_followup_candidate": {
+      "status": "implemented_candidate_not_deployed",
+      "source_revision": "897044109cad25606e39d87fb30d53e050632d69",
+      "branch": "codex/pdf-navigation-20261113",
+      "workspace": "managed:pdf-navigation/tech-review",
+      "base_revision": "5e99585ba61fe5aceac8610b0e825ccc98f15b6c",
+      "files": [
+        ".automation/lecture-reader/index.html",
+        ".automation/lecture-reader/reader.css",
+        ".automation/lecture-reader/reader.mjs",
+        ".automation/lecture-reader/storage.mjs",
+        ".automation/lecture-reader/pdf-navigation.mjs",
+        "scripts/document_archive_site.py"
+      ],
+      "summary": "읽기 모드의 안전한 PDF 링크·목차·이름/좌표 목적지, 30개 명시적 점프 복귀 이력, 로컬의 판본별 정밀 위치/배율. 펜·지우개에서는 포인터·키보드 차단. 백업·클라우드는 기존 페이지/필기 형식을 유지하며 가져오기 때 세부 위치를 무효화.",
+      "isolation": "제품 코드와 5개 검사 파일만 별도 후보 커밋/원격 브랜치·작업 사본으로 보관했다. 정책 작업 사본은 최신 main의 편집 완료 메타데이터 86153b9까지 인수했고 제품 수정은 포함하지 않는다.",
+      "cleanup_condition": "검증·단일 경로 통합·공개 확인 뒤 후보 작업 사본을 archive_worktree로 회수한다. 보호된 미리보기·검사 산출물은 현재 사용/참조를 확인하고 기존 보존 절차로 정리한다."
+    }
   },
   "verification": {
     "status": "연속 페이지·더블탭·해상도 개선은 단위·독립 브라우저·보존 검증 뒤 배포 완료, 실제 공개 HTTPS와 Chrome 동선 통과. 실제 기기 사용 관찰과 PDF 링크는 남은 범위.",
@@ -125,19 +145,37 @@
       "20M pixels는 backingstore 상한이며 실제 전체 RAM/CPU의 측정값이 아니다.",
       "더블탭 기본너비는 리더 배율 기준이며 native browser pinch 배율은 별도다.",
       "PDF 링크·텍스트 검색·재열기 시 정밀한 쪽 안 위치/확대 복귀는 이번 완료 범위가 아니다."
-    ]
+    ],
+    "navigation_followup_candidate": {
+      "reader_tests": {
+        "passed": 204,
+        "failed": 0,
+        "skipped": 0
+      },
+      "python_tests": {
+        "total": 385,
+        "passed": 384,
+        "failed": 0,
+        "skipped": 1
+      },
+      "browser": "실제 Chrome 390x844와 IAB에서 목차·내부 링크·복귀·모드 차단, 외부 링크 새 탭과 기존 앱 유지 확인. Chrome 전체화면의 본문 영역 390x786, 가로 넘침0. 200%/3쪽 재열기에서 left=-167.5 유지, top122.109375→122.4140625(0.305px 차이)·배율 유지. iPhone/Pencil/Safari 실기기 검증은 아님.",
+      "boundaries": "10,000쪽 canvas/link layer 인접 페이지만 유지, 늦은 문서·판본·렌더 token·모드·사용자 입력 취소, 90/270도 partial destination 14상황, 두 쪽 경계 viewportY·구형 저장 호환·클라우드 numeric page 보존.",
+      "preservation": "기준의 기존 공개 참조2170개와 PDF227개 원시 bytes/크기/SHA 일치. 출판 입력226개·다른 작업 미추적 인계1개 보존. 최종 후보와 정확 커밋 결속은 실행 기록의 최종 빌드 결과로 구분한다.",
+      "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    }
   },
   "observation": {
     "status": "이번 개선 범위 배포·공개 확인 완료; 실제 기기 사용 관찰 중",
     "period": "2026-11-11T16:03:32Z 배포 이후 16:07:20Z까지 공개 HTTPS·Chrome·CI 확인",
-    "result": "공개 리더에서 연속 페이지와 더블탭 확대/기본 너비 복귀, 목록·홈 복귀를 확인했다. 기존 필기 저장 형식·문서 ID·원본 PDF와 알림 경로는 보존했다. 물리 iPhone/Pencil·Safari 및 사용자 계정의 실제 원격 동기화를 시험한 것은 아니다."
+    "result": "공개 리더에서 연속 페이지와 더블탭 확대/기본 너비 복귀, 목록·홈 복귀를 확인했다. 기존 필기 저장 형식·문서 ID·원본 PDF와 알림 경로는 보존했다. 물리 iPhone/Pencil·Safari 및 사용자 계정의 실제 원격 동기화를 시험한 것은 아니다.",
+    "navigation_followup": "후보 구현/독립 자동 검사/브라우저 확인 단계. 공개 서비스는 기존 5e 배포이며 새 링크 후속은 미배포, 실기기 새 근거 없음."
   },
   "recovery": {
     "plan_reference": "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md#한계복구인계",
     "execution_reference": null,
     "result": "기존 단일 Pages 경로로 리더 화면·렌더 개선 배포 완료. 원본·문서 ID·필기 형식과 백엔드/Worker 보존, 실제 롤백·개인 DB 복원·데이터 이전/삭제 없음."
   },
-  "next_action": "정상 필기 사용에서 실제 iPhone/iPad/Pencil·Safari의 손가락 이동/펜 입력·쪽 경계·가로/세로·확대·원격 동기화 피드백을 확인한다. 남은 모드별 PDF 링크·안전한 목적지·명시적 점프 이력·정밀 로컬 복귀는 기존 설계에 따라 후속 후보로 진행한다.",
+  "next_action": "11/14 15시 같은 후보의 최신 main/실제 baseline 인수와 링크·확대·원본/필기 보존 최종 독립 확인, 19시 기존 단일 경로 통합 목표. 검사 미완료나 새 충돌이면 후보를 보존하고 같은 일감의 새 검토 시각을 함께 갱신한다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -179,9 +217,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-13T11:00:00+09:00",
-    "next_review_at": "2026-11-14T15:00:00+09:00",
-    "scheduled_step": "PDF 링크 후속 구현 목표(선행 과제 종료 조건)"
+    "state": "candidate_implemented_validation_pending",
+    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
+    "next_review_at": "2026-11-14T19:00:00+09:00",
+    "scheduled_step": "8970441 후보의 최신 원격/공개본 인수·독립 검증;19시 통합 목표, 배포 완료 약속 아님",
+    "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
   }
 }

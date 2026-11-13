@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
   "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
-  "record_version": 7,
+  "record_version": 8,
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-13T02:41:58.893587Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -51,7 +51,8 @@
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/42937888682",
     "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
-    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
+    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
   ],
   "limitations": [
     "The internal cause of the Pages delay is unconfirmed.",
@@ -121,7 +122,16 @@
   "observation": {
     "status": "recovered_during_normal_publication",
     "period": "2026-11-11T01:25:12Z",
-    "result": "The pending title revision is now live with exact reviewed bilingual PDFs and archive copies. All four jobs succeeded; recovery artifact and69-item catalog sync verified. Preserve prior failed-attempt evidence and observe subsequent ordinary publications."
+    "result": "The pending title revision is now live with exact reviewed bilingual PDFs and archive copies. All four jobs succeeded; recovery artifact and69-item catalog sync verified. Preserve prior failed-attempt evidence and observe subsequent ordinary publications.",
+    "checkpoint_20261113_11": {
+      "status": "ordinary_publication_success_no_recurrence",
+      "runs": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/43342083384",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/43349171333"
+      ],
+      "result": "두편집배포attempt1 네작업성공,실제공개5e결속확인. 최신복구artifact미만료686183902B;다운로드/복원시험은실행하지않음.",
+      "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    }
   },
   "recovery": {
     "plan_reference": "Run the existing workflow once with a fresh source revision containing only this operations record; all publication inputs and checks remain identical.",
@@ -133,8 +143,9 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "ordinary_publication_observation",
-    "next_scheduled_step_at": "2026-11-13T11:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
     "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "새 통상 게시 run의 재발 관찰·주간 검토"
+    "scheduled_step": "새 통상 게시 run의 재발 관찰·주간 검토",
+    "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
   }
 }

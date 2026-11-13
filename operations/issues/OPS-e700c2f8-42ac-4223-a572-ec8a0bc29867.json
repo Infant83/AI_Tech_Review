@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 12,
+  "record_version": 13,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-13T02:41:58.893587Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -58,7 +58,8 @@
     "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
     "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
-    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
+    "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -130,25 +131,28 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-12T22:01:34.204Z",
-    "last_successful_actions_check_at": "2026-11-12T22:01:18.740699Z",
-    "mail_window": "직전메일성공18:01:40Z에서48시간겹친2026-11-10T18:01:40Z이후; in:anywhere·확인된GitHub발신자·저장소·읽지않음제한없음. 전페이지1통/1run/1실패attempt·새메일0. 이전6→1은기존해결5통이기간밖으로이동한결과.",
-    "actions_window": "직전전체18:01:17.890641Z이후새run/변경run/진행0. 최신43166664442/a94기존성공·미해결0을22:01:18.740699Z확인. 기존해결사슬은재사용하며원인/후속조치를다시누락시키거나과거메일을새실패로통지하지않음.",
+    "last_successful_mail_check_at": "2026-11-13T02:05:57.794Z",
+    "last_successful_actions_check_at": "2026-11-13T02:05:31.670813Z",
+    "mail_window": "직전22:01:34.204Z부터48시간겹친2026-11-10T22:01:34Z이후 전페이지1통/1run/1실패attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
+    "actions_window": "전체조회에서 신규DQB43342083384 성공·5e43349171333 진행중 확인. 추가02:07:21.376020Z조회에서두run attempt1의build/deploy/recovery-copy/notify-readers모두성공. 새실패/미해결0.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "a94abe40497a078378a745a162c5d6d4ccdb6c07",
-    "run_reference": "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
-    "supplemental_actions_check_at": "2026-11-12T09:57:23.951266Z",
+    "live_source_revision": "5e99585ba61fe5aceac8610b0e825ccc98f15b6c",
+    "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
+    "supplemental_actions_check_at": "2026-11-13T02:07:21.376020Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-12T22:01:18.740699Z",
-    "supplemental_successful_runs": []
+    "last_full_actions_check_at": "2026-11-13T02:05:31.670813Z",
+    "supplemental_successful_runs": [
+      "43342083384",
+      "43349171333"
+    ]
   },
   "observation": {
-    "status": "07시 정상 변화 점검·새 실패/실행 없음",
-    "period": "2026-11-12T22:01:18.740699Z~22:11:53.867321Z",
-    "result": "현재검색구간은기존L006해결1통/1run/1실패attempt,새메일/실행/미해결0. 실제공개a94와SW/client/리더raw유지·공개알림config200. 메일/API별도체크포인트·기간이동에따른건수변화를기록하고재실행/메일변경/테스트푸시없음."
+    "status": "11시 새 편집 배포2건 성공·새 실패 없음",
+    "period": "2026-11-13T02:05:31.670813Z~02:12:15.236313Z",
+    "result": "메일/API 별도 체크포인트, 네 작업과 실제 release/catalog/recency5e 결속 확인. 비식별 후속 기록만 유지; 재실행·메일 변경·테스트 푸시 없음."
   },
   "recovery": {
     "plan_reference": "문서 변경은 Git의 이전 해당 경로로 복구하고 예약 지침은 지원 도구로 해당 추가 문단만 되돌린다. 기존 시각·대상·권한은 유지한다.",
