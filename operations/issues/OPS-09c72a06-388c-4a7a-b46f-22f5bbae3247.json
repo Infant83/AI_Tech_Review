@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-09c72a06-388c-4a7a-b46f-22f5bbae3247",
   "uuid": "09c72a06-388c-4a7a-b46f-22f5bbae3247",
-  "record_version": 3,
+  "record_version": 4,
   "title": "당겨서 새로고침할 때 진행 상태를 알아보기 쉽게 표시",
   "type": "사용성 개선 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-11T22:49:53Z",
+  "updated_at": "2026-11-13T22:11:06.180703Z",
   "status": "needs_evidence",
   "priority": "P3",
   "source": {
@@ -81,7 +81,9 @@
   "verification": {
     "status": "소스 확인",
     "checks": [
-      "당김 동작의 적용 조건과 상태 배지 소스 확인"
+      "당김 동작의 적용 조건과 상태 배지 소스 확인",
+      "07시 최신소스확인:standalone에서만자체당김/하단버튼,일반탭은브라우저기본동작유지. 상태글자/7초확인실패안내가있고자체회전/전환애니메이션없음.",
+      "확인중성공은새로고침탐색시작으로이어지며새페이지전체로딩완료를별도로표시하는계약은없다. 기존DOM검사와실제iPhone제스처재현을구분했다."
     ],
     "evidence": [
       ".automation/reader-engagement/frontend/reader-updates.js",
@@ -92,22 +94,35 @@
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "관련환경맥락확인·원당김제보재현전",
+    "period": "2026-11-13T22:00:21.474Z",
+    "result": "실제제보페이지/동작/연결·iOS버전미확인으로needs_evidence/P3유지. 관련iPhone설치앱사용근거는별도연결하고observed.environment는임의확정하지않음. 코드/테스트/실기기/배포수정없음."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "기기·브라우저·일반 탭 또는 설치형 화면 여부를 확인하고 재현 가능한 환경에서 상태 표시를 비교함",
+  "next_action": "발생페이지URL,일반탭/홈화면앱구분,화면맨위당김시작과놓기동작,상태문구/재로딩여부,연결상태·iOS버전/모션감소설정의실제근거가오면확인한다. 새근거없으면11/18 07시기존재검토를유지하며PDF슬롯을밀거나회전표시를추가하지않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-14T07:00:00+09:00",
+    "state": "needs_reproduction_evidence",
+    "next_scheduled_step_at": "2026-11-18T07:00:00+09:00",
     "next_review_at": "2026-11-18T07:00:00+09:00",
-    "scheduled_step": "새로고침 환경·재현 자료 확인"
+    "scheduled_step": "새사용환경/실제당김재현근거검토;근거도착시기존회차에서앞당김",
+    "run_reference": "operations/runs/20261113T220233Z-7dcb066c-d773-4063-b5c8-fe2a2249012a.md",
+    "replan_reference": "operations/runs/20261113T220233Z-7dcb066c-d773-4063-b5c8-fe2a2249012a.md",
+    "replan_reason": "11/14 07시예정된근거검토를수행했으나원제보재현자료부족. 기존11/18재검토일유지·제품구현슬롯추가없음."
+  },
+  "related_environment_evidence": {
+    "source_issue_id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
+    "source_kind": "기존 별건의 사용자 답변과 비식별 기기 문맥",
+    "device": "iPhone",
+    "display_mode": "home_screen_installed_app",
+    "operating_system_version": null,
+    "browser_version": null,
+    "same_as_original_pull_report_confirmed": false,
+    "finding": "다른알림제보에서iPhone홈화면ATRL설치앱사용이확인됐다. 원래당김제보도그환경인지확인된것은아니다."
   }
 }
