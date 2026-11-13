@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 16,
+  "record_version": 17,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-13T10:10:25.966292Z",
+  "updated_at": "2026-11-13T18:01:43.931405Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -132,21 +132,21 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-13T10:04:03.491Z",
-    "last_successful_actions_check_at": "2026-11-13T10:03:34.866895Z",
-    "mail_window": "직전메일06:02:14Z에서48시간겹친11/11T06:02:14Z이후 전페이지1통/1run/실패1attempt·기존L006해결메일·새메일0. 읽지않음 제한 없음.",
-    "actions_window": "직전전체API06:01:47Z 이후 이미 추가검증한43379685019 한 건 success유지. 이후새run/실패/진행0,최신네작업success.",
+    "last_successful_mail_check_at": "2026-11-13T17:58:16.364Z",
+    "last_successful_actions_check_at": "2026-11-13T17:57:31.864601Z",
+    "mail_window": "직전메일10:04:03Z에서48시간겹친11/11T10:04:03Z이후 전페이지1통/1run/실패1attempt,기존해결알림·새메일0·읽지않음제한없음.",
+    "actions_window": "직전전체API10:03:34Z 이후 L007 정상편집run43416893403 한 건 attempt1성공,진행/실패/미해결0. 최신네작업성공.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "df668e3db2a469d4ad85c112a5784dac373db092",
-    "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
-    "supplemental_actions_check_at": "2026-11-13T10:04:04.867812Z",
+    "live_source_revision": "6c191e094a96c398bb91f1c614ab3ff1136be5be",
+    "run_reference": "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md",
+    "supplemental_actions_check_at": "2026-11-13T17:58:20.426305Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-13T10:03:34.866895Z",
+    "last_full_actions_check_at": "2026-11-13T17:57:31.864601Z",
     "supplemental_successful_runs": [
-      "43379685019"
+      "43416893403"
     ]
   },
   "observation": {
@@ -234,6 +234,15 @@
       "latest_jobs_at": "2026-11-13T10:04:04.867812Z",
       "result": "새메일/실행/실패/미해결0,각조회전페이지완료·오류0. 기존실패/수정사슬재사용,최신df668네작업success·실제공개df668묶음동일. 재실행/메일변경/테스트푸시0.",
       "run_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md"
+    },
+    "night_20261114_03": {
+      "mail_at": "2026-11-13T17:58:16.364Z",
+      "full_api_at": "2026-11-13T17:57:31.864601Z",
+      "jobs_at": "2026-11-13T17:58:20.426305Z",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43416893403",
+      "source_revision": "6c191e094a96c398bb91f1c614ab3ff1136be5be",
+      "result": "정상 L007 편집배포1건·네작업성공,동기화71/신규1/큐1·baselinefalse. 새실패/미해결/조회오류0. 실제HTTPS metadata와새PDF/최신별칭2표본원시SHA일치. 기기수신을확인한것은아님.",
+      "run_reference": "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md"
     }
   },
   "recovery": {

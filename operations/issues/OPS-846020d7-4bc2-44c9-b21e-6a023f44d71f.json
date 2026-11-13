@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 5,
+  "record_version": 6,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-13T02:45:19.038828Z",
+  "updated_at": "2026-11-13T18:01:43.931405Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -169,6 +169,16 @@
       "boundaries": "10,000쪽 canvas/link layer 인접 페이지만 유지, 늦은 문서·판본·렌더 token·모드·사용자 입력 취소, 90/270도 partial destination 14상황, 두 쪽 경계 viewportY·구형 저장 호환·클라우드 numeric page 보존.",
       "preservation": "기준의 기존 공개 참조2170개와 PDF227개 원시 bytes/크기/SHA 일치. 출판 입력226개·다른 작업 미추적 인계1개 보존. 최종 후보와 정확 커밋 결속은 실행 기록의 최종 빌드 결과로 구분한다.",
       "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    },
+    "preintegration_check_20261114_03": {
+      "status": "new_editorial_baseline_recorded_candidate_unchanged",
+      "run_reference": "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md",
+      "candidate_revision": "897044109cad25606e39d87fb30d53e050632d69",
+      "current_main_and_live_revision": "6c191e094a96c398bb91f1c614ab3ff1136be5be",
+      "candidate_worktree_clean": true,
+      "scope": "새L007등록·7개단위레지스트리·한영과정입구·최신notes.pdf별칭·지속변경선언을최신기준으로인수한다. 기존L001-L006불변자료/reader ID·새L007을보존하며후보재생성·정확한변경해시·모드/링크/정밀복귀·브라우저검증을이어간다.",
+      "shared_source": "document_archive_site.py의L007설명/복사목록과후보helper등록은다른구간이다. 실제병합/충돌검사·새후보생성은아직하지않았다.",
+      "new_automatic_or_physical_device_validation": false
     }
   },
   "observation": {
@@ -182,7 +192,7 @@
     "execution_reference": null,
     "result": "기존 단일 Pages 경로로 리더 화면·렌더 개선 배포 완료. 원본·문서 ID·필기 형식과 백엔드/Worker 보존, 실제 롤백·개인 DB 복원·데이터 이전/삭제 없음."
   },
-  "next_action": "11/14 15시 같은 후보의 최신 main/실제 baseline 인수와 링크·확대·원본/필기 보존 최종 독립 확인, 19시 기존 단일 경로 통합 목표. 검사 미완료나 새 충돌이면 후보를 보존하고 같은 일감의 새 검토 시각을 함께 갱신한다.",
+  "next_action": "오늘11/14 15시 후보8970441에 최신 main/실제 L007 배포6c191e0 이후 변경을 인수하고 재생성·독립 검증한다. 새L007·최신별칭/단위등록·기존 불변PDF/필기·reader ID를 보존하고19시 단일 통합을 목표로 한다. 기존5e기준검사를새실기기검증으로승격하지않으며,미완료/충돌이면후보와재개점을보존하고원장·일감의검토시각을함께갱신한다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -228,6 +238,6 @@
     "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
     "next_review_at": "2026-11-14T19:00:00+09:00",
     "scheduled_step": "8970441 후보의 최신 원격/공개본 인수·독립 검증;19시 통합 목표, 배포 완료 약속 아님",
-    "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    "run_reference": "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md"
   }
 }
