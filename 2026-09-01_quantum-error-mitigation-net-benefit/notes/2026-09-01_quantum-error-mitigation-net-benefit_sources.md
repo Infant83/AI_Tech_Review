@@ -30,3 +30,15 @@ Evidence cutoff: 2026-09-01. The two error-mitigation papers are the main subjec
 - [x] D-Wave Tabu and simulated annealing are labeled classical.
 - [x] M-Diffushadow is labeled a classical AI-for-quantum model.
 - [x] pMBD–QEDFT is labeled classical ab initio prediction, with the hBN baseline caveat.
+
+
+## Revision audit · 2026-11-13
+
+The ledger above records the original September1 assessment. The current article and linked DQB retain its publication/evidence date and reported numerical values, with these explicit corrections after rechecking the same historical editions:
+
+- Huang’s noisy-encoding estimates treat the final bit errors as independent. A single IX fault after CNOT1→2 can propagate through CNOT2→3: input000 becomes010 then011, so majority decoding fails after one physical fault. The review’s small deterministic check qualifies the model assumption; it does not supply new corrected performance estimates or reproduce the entire noisy model.
+- Chongder’s proposed coefficient-weighted Neyman formula differs from the inspected software’s standard-deviation allocation. Table6 budget B counts final allocated shots; separately executed pilots require additional cost accounting. The review no longer diagnoses these six outcomes as bias-dominated. Software credit is separate from the single-author preprint.
+- M-Diffushadow masks outcome tokens with parameters/axes supplied. The cavity0.15Angstrom/0.8Angstrom/18percent values are bilayerhBN results.
+- APS references1–6 and the software’s two creators/version/commit are in the current bilingual manuscripts. The hero is retained; two basis-encoding/allocated-shot labels per explanatory diagram are corrected. Private collection/search notes are removed from the linked DQB and a new ATRL revision/reference page is appended.
+
+Actual source editions, read scope and review roles are in the [revision reference manifest](../../.automation/writing-reviews/legacy-refresh/2026-11-13-error-mitigation/reference-manifest.json). Original models, experiments and notebooks were not rerun, and no human reader study was performed.

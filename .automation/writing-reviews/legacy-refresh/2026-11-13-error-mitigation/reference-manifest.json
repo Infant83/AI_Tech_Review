@@ -1,0 +1,74 @@
+{
+  "article": "2026-09-01_quantum-error-mitigation-net-benefit",
+  "original_publication": "2026-09-01",
+  "original_evidence_cutoff": "2026-09-01",
+  "revision": "2026-11-13",
+  "historical_versions_only": true,
+  "references": [
+    {
+      "number": 1,
+      "text": "H.-L. Huang, Exponential measurement error mitigation in quantum sampling, npj Unconv. Comput. 3, 47 (2026).",
+      "url": "https://doi.org/10.1038/s44335-026-00094-0"
+    },
+    {
+      "number": 2,
+      "text": "S. Chongder, Hardware-efficient error mitigation and shot-efficient sampling on IBM Quantum hardware, arXiv:2608.28535v1 (2026).",
+      "url": "https://arxiv.org/abs/2608.28535v1",
+      "software": {
+        "text": "S. T. Chongder and K. R. Hiremath, Hardware-aware error mitigation and shot-efficient sampling on IBM Quantum hardware, version 1.0.0 (2026), commit 472b4454917491e2294daa867d5a822a95106d2a.",
+        "url": "https://github.com/Sumitchongder/hardware-efficient-error-mitigation-ibm-quantum/tree/472b4454917491e2294daa867d5a822a95106d2a"
+      }
+    },
+    {
+      "number": 3,
+      "text": "J. Osca and J. Vala, Automated design of photonic two-qubit quantum gates and circuits via optimization and pruning, APS Open Sci. 1, 000115 (2026).",
+      "url": "https://doi.org/10.1103/xjrz-csmx"
+    },
+    {
+      "number": 4,
+      "text": "A. A. Tehrani, M. Boroushaki, and A. Rajabi, Energy Internet routing using quantum optimization algorithms, arXiv:2608.28401v1 (2026).",
+      "url": "https://arxiv.org/abs/2608.28401v1"
+    },
+    {
+      "number": 5,
+      "text": "Y. Li and H.-K. Tang, Multimodal discrete diffusion for quantum measurement generation in the one-dimensional transverse-field Ising model, APS Open Sci. 1, 000116 (2026).",
+      "url": "https://doi.org/10.1103/4tft-d7gf"
+    },
+    {
+      "number": 6,
+      "text": "M. Hassan, C. Tasci, L. A. Cunha, and J. Flick, Modifying van der Waals materials via cavity vacuum fluctuations, arXiv:2608.28521v1 (2026).",
+      "url": "https://arxiv.org/abs/2608.28521v1"
+    }
+  ],
+  "core_source_read_scope": {
+    "existing_review": "Core KO/EN sections and original source ledger; adjacent4papers left to other reviewer.",
+    "Huang": "Full7page VOR and full5page Supplementary Information read; publisher metadata/DOI and Figure1b/Table1/eq9-11 visually checked. References list read but cited predecessor papers not independently retrieved.",
+    "Chongder": "Full16page arXivv1 including appendix and references read; Table3 and Table6 visually checked; arXiv metadata/history checked.",
+    "code_static": "Official repository commit472b4454917491e2294daa867d5a822a95106d2a (2026-08-31), README through reproducibility/results discussion, CITATION.cff full, EXPERIMENT_MANIFEST/RESEARCH_SCOPE full, 2CSV files full, simulation notebook selected code cells1-22 (especially15/20), hardware notebook selected pilot/budget/allocation cells. Notebook04 acquired but not used as evidence; no notebook execution.",
+    "independent_calculations": "Table6/CSV arithmetic and direct analytic CNOT Pauli propagation; no original numerical model, theorem-wide proof, experiments or code executed."
+  },
+  "independent_fault_check": "Input000;CNOT1to2; IX fault on secondbit gives010;CNOT2to3 gives011, so one gate fault flips majority. No full noisy-model reproduction.",
+  "preserved_assets": "Existing hero byte-identical; diagram geometry, colors and quantitative data preserved, with two readout/allocated-shot labels corrected in each language.",
+  "body_corrections": [
+    "Effective final-error independence is a model condition, not implied by independent physical gate faults.",
+    "Neyman formula, inspected standard-deviation allocation and separately executed pilot costs distinguished.",
+    "No unsupported bias-dominated diagnosis for the six-budget simulation.",
+    "Masked outcomes retain parameters/axes; cavity0.15Angstrom/0.8Angstrom/18percent specificallybilayerhBN."
+  ],
+  "new_work_roles": {
+    "root": "bilingual editing/integration/build/publication",
+    "legacy0901_mitigation": "core primary sources and static code/CSV/arithmetic",
+    "legacy0901_adjacent": "four adjacent primary sources and independent single-fault check",
+    "legacy0901_prose": "bilingual style and captions/summary"
+  },
+  "human_reader_study": false,
+  "original_model_or_experiment_rerun": false,
+  "linked_pdf_synchronization": {
+    "previous_article_attachment_sha256": "754684668b37d79945b0f1e71d08b3dc0d83456e1c4373bde46ce25206045e46",
+    "previous_registered_archive_sha256": "da144ca48f92c6659bd208a932c65e1521841ad9c6b1985bdddb04885dd2a21f",
+    "current_sha256": "d25664d336c4533bc0da6aa98576c0c2c0901bd1f9ca53987fb621aeb66f1e93",
+    "current_pages": 6,
+    "issue": "Archive held olderQPU/simulation wording while article attachment held corrected5pageedition. Allcurrentpaths synchronized; source copies retained privately due collection/search notes.",
+    "pixel_check_baseline": "previous correctedarticle attachment, explicitly identified by source_sha256; archivedoriginalscientificURIsetalso retained."
+  }
+}
