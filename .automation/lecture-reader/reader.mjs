@@ -3,6 +3,7 @@ import { clamp, normalizedPoint, eraseStrokes, splitStroke, STROKE_CHUNK_POINTS,
 import * as storage from './storage.mjs';
 import { roleCapabilities, strokeAuthorMap, strokeKey } from './cloud-core.mjs';
 import { editionsFor, selectEdition } from './editions.mjs';
+import { safeExternalURL, linkRectangle, resolveDestination, createNavigationHistory } from './pdf-navigation.mjs';
 
 const $ = id => document.getElementById(id);
 const rootURL = new URL('../../', import.meta.url);
@@ -27,6 +28,9 @@ const strings = {
   exportHelp: ['필기 PDF는 다른 앱에서 읽거나 공유하는 사본입니다. 필기를 계속 수정하려면 백업 파일도 보관하세요.', 'The inked PDF is a copy for reading and sharing in other apps. Keep the editable backup to continue editing strokes.'], retainStorage: ['이 기기에 보관 유지 요청', 'Request persistent device storage'], clearPage: ['현재 페이지의 필기 지우기', 'Clear ink on this page'], shortcuts: ['단축키: P 펜 · E 지우개 · H 읽기 · ← → 페이지 · ⌘/Ctrl+Z 실행 취소', 'Keys: P pen · E eraser · H read · ← → pages · ⌘/Ctrl+Z undo'],
   saving: ['저장 중…', 'Saving…'], saved: ['이 기기에 저장됨', 'Saved on this device'], saveFailed: ['저장 실패 · 백업 필요', 'Save failed · back up'],
   fullscreen: ['전체화면', 'Fullscreen'], exitFullscreen: ['전체화면 나가기', 'Exit fullscreen'],
+  contents: ['목차', 'Contents'], returnPosition: ['이동 전 위치로', 'Return to previous position'],
+  noContents: ['이 PDF에는 목차가 없습니다.', 'This PDF has no outline.'], navigationFailed: ['이동할 위치를 찾지 못했습니다.', 'This destination is unavailable.'],
+  readLinks: ['읽기 도구에서 PDF 링크를 누를 수 있습니다. 외부 링크는 새 창에서 열립니다.', 'Use the Read tool to follow PDF links. External links open in a new tab.'],
   storageError: ['이 브라우저에서 저장하지 못했습니다. 필기를 백업해 주세요. 저장이 복구될 때까지 현재 PDF를 유지합니다.', 'This browser could not save your notes. Export a backup. Keep this PDF open until saving is restored.'],
   noRecent: ['아직 보관한 PDF가 없습니다.', 'No PDFs saved yet.'], noCatalog: ['렉처 목록을 불러오지 못했습니다. 내 PDF는 계속 열 수 있습니다.', 'The lecture catalog is unavailable. You can still open a local PDF.'],
   pdfLimit: ['PDF는 50 MB 이하의 파일을 열 수 있습니다.', 'Choose a PDF up to 50 MB.'], notPDF: ['PDF 파일을 선택해 주세요.', 'Please choose a PDF file.'], unknownPDF: ['등록된 렉처 PDF를 찾을 수 없습니다. 보관함에서 자료를 골라 주세요.', 'This lecture PDF is not registered. Choose one from the library.'],
@@ -139,6 +143,7 @@ function setPermissions(value = {}) {
 function state() { return pages.get(pageNumber) || []; }
 function history() { if (!histories.has(pageNumber)) histories.set(pageNumber, { undo: [], redo: [] }); return histories.get(pageNumber); }
 function controls() {
+  readerNavigationControls();
   $('undo').disabled = !current || !canAddInk() || !history().undo.length || busy;
   $('redo').disabled = !current || !canAddInk() || !history().redo.length || busy;
   $('previous-page').disabled = !current || pageNumber <= 1 || busy;
@@ -227,6 +232,7 @@ function finishStroke() {
   queueReaderNeighbours();
 }
 function chooseTool(next) {
+  readerNavigationRequest++; resetReaderTap();
   finishStroke(); tool = canAddInk() ? next : 'read'; next = tool; sheet.dataset.tool = next;
   document.querySelectorAll('[data-tool]').forEach(e => { if (e.tagName === 'BUTTON') { e.classList.toggle('active', e.dataset.tool === next); e.setAttribute('aria-pressed', String(e.dataset.tool === next)); } });
   sheet.classList.toggle('finger-drawing', $('finger-draw').checked && tool !== 'read');
@@ -294,6 +300,212 @@ function bindReaderInk(canvas) {
 }
 bindReaderInk(inkCanvas);
 
+// PDF actions are opt-in user navigation. No scripts, launch actions or remote
+// documents are executed, and the local reading position is not a cloud field.
+const readerJumpHistory = createNavigationHistory(30);
+let readerNavigationRequest = 0, readerPrecisionTimer = null, readerLinkGesture = 0;
+function validReaderPosition(position) {
+  return position?.fingerprint === current?.fingerprint && position.page === pageNumber &&
+    ['nx', 'ny'].every(key => Number.isFinite(position[key]) && position[key] >= 0 && position[key] <= 1) &&
+    (!Object.hasOwn(position, 'viewportY') || (Number.isFinite(position.viewportY) && position.viewportY >= 0 && position.viewportY <= 1)) &&
+    Number.isFinite(position.zoom) && position.zoom >= .1 && position.zoom <= 4;
+}
+function readerPublicBaseURL(fingerprint, publicId) {
+  const entry = catalog.find(row => row.id === publicId), edition = entry && editionsFor(entry).find(row => row.sha256 === fingerprint);
+  return edition ? new URL(edition.href, rootURL).href : null;
+}
+function readerNavigationControls() {
+  if ($('navigation-back')) $('navigation-back').disabled = !current || busy || !readerJumpHistory.size;
+  if ($('pdf-outline')) $('pdf-outline').disabled = !current || busy;
+}
+function readerSavedPosition() {
+  const viewport = readerVisibleViewport(), rect = sheet.getBoundingClientRect?.();
+  if (!current || !pdf || !viewport || !rect?.width || !rect.height) return null;
+  const pointY = clamp(viewport.top + 8, rect.top, Math.min(rect.bottom, viewport.bottom));
+  return { fingerprint: current.fingerprint, page: pageNumber, zoom: Number($('zoom').value),
+    nx: clamp(((viewport.left + viewport.right) / 2 - rect.left) / rect.width, 0, 1),
+    ny: clamp((pointY - rect.top) / rect.height, 0, 1), viewportY: clamp((pointY - viewport.top) / (viewport.bottom - viewport.top), 0, 1) };
+}
+function readerSetZoom(value) {
+  const selector = $('zoom'), zoom = clamp(Number(value) || 1, .1, 4);
+  for (const option of [...selector.querySelectorAll('option[data-destination-zoom]')]) option.remove();
+  if (![...selector.options].some(option => Number(option.value) === zoom)) {
+    const option = document.createElement('option'); option.value = String(zoom); option.dataset.destinationZoom = 'true';
+    option.textContent = `${Math.round(zoom * 100)}%`; selector.append(option);
+  }
+  selector.value = String(zoom);
+}
+function readerRestorePosition(position) {
+  const view = readerViews.get(position.page), viewport = readerVisibleViewport();
+  if (!view || !viewport || position.fingerprint !== current?.fingerprint || position.page !== pageNumber) return;
+  readerFocusAnchor = { document: current, page: pageNumber, documentGeneration: documentOpenGeneration,
+    focusGeneration: readerFocusGeneration, inputEpoch: readerFocusInputEpoch,
+    x: position.nx, y: position.ny, viewportX: .5,
+    viewportY: position.viewportY ?? Math.min(1, 8 / (viewport.bottom - viewport.top)), scroll: readerScrollOffsets() };
+  restoreReaderFocusAnchor(readerFocusAnchor);
+}
+function persistReaderPosition() {
+  clearTimeout(readerPrecisionTimer);
+  if (busy || active || !current) return;
+  const position = readerSavedPosition(), owner = current, generation = documentOpenGeneration;
+  if (!position) return;
+  // Metadata only: no ink revision, autosave flash or cloud sync event per scroll.
+  writeQueue = writeQueue.catch(() => false).then(async () => {
+    if (owner !== current || generation !== documentOpenGeneration) return true;
+    try { await storage.saveMetadata(owner.fingerprint, { position: position.page, localPosition: position }); owner.localPosition = position; return true; }
+    catch { storageFailure(owner, generation); return false; }
+  });
+  return writeQueue;
+}
+function scheduleReaderPrecision() {
+  clearTimeout(readerPrecisionTimer);
+  readerPrecisionTimer = setTimeout(persistReaderPosition, 700);
+}
+function resetReaderNavigation() {
+  readerNavigationRequest++; readerJumpHistory.clear(); clearTimeout(readerPrecisionTimer);
+  $('outline-dialog')?.close(); $('outline-items')?.replaceChildren(); readerNavigationControls();
+}
+function goReaderPage(value) {
+  if (!current || busy) return;
+  const number = clamp(Math.trunc(Number(value)) || 1, 1, current.pageCount);
+  if (number === pageNumber) { controls(); return; }
+  return navigateReaderPosition({ fingerprint: current.fingerprint, page: number, nx: .5, ny: 0, zoom: Number($('zoom').value) });
+}
+async function navigateReaderPosition(position, { remember = true, request = ++readerNavigationRequest } = {}) {
+  if (!current || !pdf || busy || active || position.fingerprint !== current.fingerprint ||
+      !Number.isInteger(position.page) || position.page < 1 || position.page > current.pageCount) return false;
+  const owner = current, documentPDF = pdf, generation = documentOpenGeneration, previous = readerSavedPosition();
+  const inputEpoch = readerFocusInputEpoch;
+  finishStroke(); busy = true; controls();
+  try {
+    if (await ensurePage(position.page) === false || request !== readerNavigationRequest || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || inputEpoch !== readerFocusInputEpoch) return false;
+    pageNumber = position.page; readerSetZoom(position.zoom); readerFocusAnchor = null; await renderPage(false);
+    if (request !== readerNavigationRequest || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || inputEpoch !== readerFocusInputEpoch) { scheduleReaderVisible(); return false; }
+    if (remember && previous) readerJumpHistory.push(previous);
+    readerRestorePosition(position); markMeta(); scheduleReaderPrecision(); return true;
+  } catch { toast(t('navigationFailed')); return false; }
+  finally { if (owner === current) { busy = false; controls(); } }
+}
+async function followReaderDestination(dest) {
+  if (tool !== 'read' || !current || !pdf || busy || active) return;
+  const owner = current, documentPDF = pdf, generation = documentOpenGeneration, request = ++readerNavigationRequest;
+  const inputEpoch = readerFocusInputEpoch, scroll = readerScrollOffsets();
+  try {
+    const destination = await resolveDestination(documentPDF, dest);
+    if (!destination || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || request !== readerNavigationRequest ||
+        tool !== 'read' || busy || active || inputEpoch !== readerFocusInputEpoch || !readerScrollOffsets().every((v, i) => v === scroll[i])) return;
+    const page = await documentPDF.getPage(destination.page);
+    if (owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || request !== readerNavigationRequest || tool !== 'read' ||
+        busy || active || inputEpoch !== readerFocusInputEpoch || !readerScrollOffsets().every((v, i) => v === scroll[i])) return;
+    const viewport = page.getViewport({ scale: 1 }), previous = readerSavedPosition();
+    const point = destination.point || {}, left = page.view?.[0] || 0, top = page.view?.[3] || viewport.height;
+    // Fill unspecified coordinates in PDF space before transforming: on a
+    // rotated page, PDF x/y do not correspond to screen horizontal/vertical.
+    const keep = typeof viewport.convertToPdfPoint === 'function'
+      ? viewport.convertToPdfPoint((previous?.nx ?? .5) * viewport.width, (previous?.ny ?? 0) * viewport.height) : [left, top];
+    const xy = viewport.convertToViewportPoint(point.x ?? keep[0], point.y ?? keep[1]);
+    const area = $('page-area'), padding = getComputedStyle(area);
+    const available = Math.max(240, Math.min(readerFocusMode() ? Infinity : 1100,
+      area.clientWidth - (parseFloat(padding.paddingLeft) || 0) - (parseFloat(padding.paddingRight) || 0)));
+    let zoom = previous?.zoom || 1;
+    if (destination.kind.startsWith('Fit')) zoom = 1;
+    if (destination.zoom) zoom = destination.zoom * (96 / 72) * viewport.width / available;
+    const visible = readerVisibleViewport();
+    if (visible && ['Fit', 'FitB', 'FitV', 'FitBV'].includes(destination.kind)) {
+      zoom = (visible.bottom - visible.top - 16) / viewport.height * viewport.width / available;
+      if (['Fit', 'FitB'].includes(destination.kind)) zoom = Math.min(1, zoom);
+    }
+    let nx = clamp(xy[0] / viewport.width, 0, 1), ny = clamp(xy[1] / viewport.height, 0, 1);
+    if (['Fit', 'FitB'].includes(destination.kind)) { nx = .5; ny = 0; }
+    if (destination.rect && visible) {
+      const box = linkRectangle([destination.rect.left, destination.rect.bottom, destination.rect.right, destination.rect.top], viewport);
+      if (box) {
+        zoom = Math.min((visible.right - visible.left - 16) / box.width, (visible.bottom - visible.top - 16) / box.height) * viewport.width / available;
+        nx = (box.left + box.width / 2) / viewport.width; ny = box.top / viewport.height;
+      }
+    }
+    // Destination zoom uses the same bounded raster plan as toolbar zoom.
+    await navigateReaderPosition({ fingerprint: owner.fingerprint, page: destination.page, zoom,
+      nx, ny }, { request });
+  } catch { if (owner === current && request === readerNavigationRequest) toast(t('navigationFailed')); }
+}
+function syncReaderLinks(view) {
+  if (!view.linkLayer) return;
+  const enabled = tool === 'read' && view.ready;
+  if (!enabled && view.linkLayer.contains(document.activeElement)) view.inkCanvas?.focus({ preventScroll: true });
+  view.linkLayer.inert = !enabled; view.linkLayer.hidden = !enabled;
+}
+function readerLinkTap(link, activate) {
+  let candidate = null;
+  link.addEventListener('pointerdown', event => {
+    candidate = tool === 'read' && event.isPrimary !== false && event.button === 0
+      ? { id: event.pointerId, x: event.clientX, y: event.clientY, at: Date.now(), scroll: readerGestureOffsets(), owner: current, generation: documentOpenGeneration, request: readerNavigationRequest, gesture: readerLinkGesture, valid: true } : null;
+  });
+  link.addEventListener('pointermove', event => { if (candidate && Math.hypot(event.clientX - candidate.x, event.clientY - candidate.y) > 10) candidate.valid = false; });
+  link.addEventListener('pointercancel', () => { candidate = null; });
+  link.addEventListener('click', event => {
+    const tap = candidate; candidate = null;
+    if (tool !== 'read' || busy || active || !link.isConnected || (event.detail !== 0 && (!tap || !tap.valid || tap.owner !== current || tap.generation !== documentOpenGeneration ||
+        tap.request !== readerNavigationRequest || tap.gesture !== readerLinkGesture || Date.now() - tap.at > 700 || !readerGestureScrollMatches(tap)))) { event.preventDefault(); return; }
+    event.stopPropagation(); resetReaderTap(); readerNavigationRequest++;
+    if (activate) { event.preventDefault(); activate(); }
+  });
+}
+async function renderReaderLinks(view, page, viewport) {
+  const epoch = readerViewEpoch, owner = current, documentPDF = pdf, token = view.renderToken;
+  view.linkLayer?.remove(); view.linkLayer = null;
+  if (typeof page.getAnnotations !== 'function') return;
+  try {
+    const annotations = await page.getAnnotations({ intent: 'display' });
+    if (!readerViewCurrent(view, epoch, owner, documentPDF) || token !== view.renderToken || !view.ready) return;
+    const layer = document.createElement('div'); layer.className = 'pdf-link-layer';
+    const baseURL = readerPublicBaseURL(owner.fingerprint, owner.publicId);
+    for (const annotation of annotations.slice(0, 2000)) {
+      if (annotation.subtype !== 'Link') continue;
+      const box = linkRectangle(annotation.rect, viewport); if (!box) continue;
+      const external = safeExternalURL(annotation, { baseURL }), internal = annotation.dest && !annotation.url && !annotation.action && !annotation.jsActions;
+      if (!external && !internal) continue;
+      const link = document.createElement('a'); link.className = 'pdf-page-link';
+      link.style.left = `${box.left / viewport.width * 100}%`; link.style.top = `${box.top / viewport.height * 100}%`;
+      link.style.width = `${box.width / viewport.width * 100}%`; link.style.height = `${box.height / viewport.height * 100}%`;
+      link.setAttribute('aria-label', annotation.titleObj?.str || annotation.contentsObj?.str || (external ? `${en ? 'Open link' : '링크 열기'}: ${new URL(external).hostname}` : (en ? 'Go to PDF destination' : 'PDF 안의 연결 위치로 이동')));
+      if (external) { link.href = external; link.target = '_blank'; link.rel = 'noopener noreferrer'; readerLinkTap(link); }
+      else { link.href = '#'; readerLinkTap(link, () => followReaderDestination(annotation.dest)); }
+      layer.append(link);
+    }
+    view.linkLayer = layer; view.sheet.append(layer); syncReaderLinks(view);
+  } catch { /* A malformed or unavailable link layer never blocks ink or PDF. */ }
+}
+async function openReaderOutline() {
+  if (!current || !pdf || busy) return;
+  chooseTool('read');
+  const owner = current, documentPDF = pdf, generation = documentOpenGeneration, request = ++readerNavigationRequest;
+  const items = $('outline-items'); items.replaceChildren(); $('outline-dialog').showModal();
+  const message = document.createElement('p'); message.textContent = t('loading'); items.append(message);
+  try {
+    const outline = typeof documentPDF.getOutline === 'function' ? await documentPDF.getOutline() : null;
+    if (owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || request !== readerNavigationRequest || !$('outline-dialog').open) return;
+    items.replaceChildren(); let count = 0;
+    const add = (rows, parent, depth = 0) => {
+      if (depth > 16 || count >= 2000 || !Array.isArray(rows)) return;
+      const list = document.createElement('ul'); parent.append(list);
+      for (const row of rows) {
+        if (++count > 2000) break;
+        const item = document.createElement('li'), button = document.createElement('button');
+        button.type = 'button'; button.textContent = String(row.title || (en ? 'Untitled section' : '제목 없는 항목')).slice(0, 500);
+        const external = safeExternalURL(row);
+        if (row.dest && !row.action && !row.jsActions && !row.url) button.addEventListener('click', () => { $('outline-dialog').close(); void followReaderDestination(row.dest); });
+        else if (external) {
+          const link = document.createElement('a'); link.textContent = button.textContent; link.href = external; link.target = '_blank'; link.rel = 'noopener noreferrer'; item.append(link);
+        } else button.disabled = true;
+        if (!item.children.length) item.append(button); list.append(item); add(row.items, item, depth + 1);
+      }
+    };
+    if (outline?.length) add(outline, items);
+    else { message.textContent = t('noContents'); items.append(message); }
+  } catch { if (owner === current && request === readerNavigationRequest) message.textContent = t('navigationFailed'); }
+}
+
 // Continuous reader views keep document geometry, ink and bitmap lifetimes separate.
 // Only the active page and its immediate neighbours own canvas backing stores.
 const READER_BITMAP_BUDGET = 20_000_000;
@@ -343,10 +555,12 @@ function readerViewTools(view) {
   view.sheet.dataset.tool = tool; view.sheet.dataset.permission = permissions.role;
   view.sheet.classList.toggle('finger-drawing', $('finger-draw').checked && tool !== 'read');
   if (view.inkCanvas) view.inkCanvas.style.touchAction = $('finger-draw').checked && tool !== 'read' ? 'none' : 'manipulation';
+  syncReaderLinks(view);
 }
 function releaseReaderView(view) {
   if (!view || (active && active.page === view.number)) return;
   view.ready = false; view.sheet.dataset.ready = 'false'; view.sheet.setAttribute('aria-busy', 'true');
+  view.linkLayer?.remove(); view.linkLayer = null;
   const task = view.renderTask; view.renderTask = null; view.renderToken++;
   if (task) { try { task.cancel(); } catch {} }
   for (const canvas of [view.pdfCanvas, view.inkCanvas]) if (canvas) { canvas.width = 0; canvas.height = 0; }
@@ -384,6 +598,7 @@ function bindReaderView(view) {
 }
 function initializeReaderViews() {
   if (readerViewsOwner === current && readerViewPDF === pdf) return;
+  resetReaderNavigation();
   readerViewEpoch++; readerNeighbourGeneration++; readerNeighbourRunning = false; readerNeighbourRequested = false; readerNeighbourQueue = Promise.resolve();
   resetReaderTap(); readerTouchPointers.clear(); clearTimeout(readerPositionTimer);
   for (const view of [...readerMountedViews]) releaseReaderView(view);
@@ -496,6 +711,7 @@ async function renderReaderNeighbour(view, epoch, owner, documentPDF) {
   try { await task.promise; } catch (error) { if (error.name !== 'RenderingCancelledException') throw error; }
   if (!readerViewCurrent(view, epoch, owner, documentPDF) || token !== view.renderToken || Math.abs(view.number - pageNumber) > 1) { try { page.cleanup(); } catch {} return; }
   view.renderTask = null; view.ready = true; view.renderedKey = key; view.sheet.dataset.ready = 'true'; view.sheet.setAttribute('aria-busy', 'false'); drawReaderViewInk(view);
+  void renderReaderLinks(view, page, viewport);
 }
 function queueReaderNeighbours() {
   if (!current || !pdf || !readerViews.size || active || busy || readerResizePending) return;
@@ -530,6 +746,8 @@ function readerTapEligible(event) {
   return event.pointerType === 'touch' && !$('finger-draw').checked && tool !== 'eraser';
 }
 function captureReaderTap(event) {
+  readerLinkGesture++;
+  if (event.target?.closest?.('a,button,input,select')) { resetReaderTap(); return; }
   if (event.pointerType !== 'touch') { if (event.pointerType === 'pen') resetReaderTap(); return; }
   readerTouchPointers.add(event.pointerId);
   if (readerTouchPointers.size !== 1 || !readerTapEligible(event)) { resetReaderTap(); return; }
@@ -572,12 +790,13 @@ function toggleReaderZoom(clientX, clientY, number = pageNumber) {
 }
 function initializeReaderScrolling() {
   const area = $('page-area');
-  const scrolled = () => { readerGestureScrolled(); scheduleReaderVisible(); };
+  const scrolled = () => { readerGestureScrolled(); scheduleReaderVisible(); scheduleReaderPrecision(); };
   area.addEventListener('scroll', scrolled, { passive: true }); window.addEventListener('scroll', scrolled, { passive: true });
   area.addEventListener('pointerdown', captureReaderTap, { capture: true, passive: true });
   area.addEventListener('pointermove', moveReaderTap, { capture: true, passive: true });
   for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) area.addEventListener(name, finishReaderTap, { capture: true, passive: false });
   area.addEventListener('dblclick', event => {
+    if (event.target?.closest?.('a,button,input,select')) return;
     if (tool !== 'read' || event.button !== 0 || Date.now() - readerNonMouseAt < 700) return;
     const view = readerGestureView(event); if (!view?.ready) return;
     event.preventDefault(); toggleReaderZoom(event.clientX, event.clientY, view.number);
@@ -732,6 +951,7 @@ async function renderPage(scroll = true) {
   if (renderTask) { try { renderTask.cancel(); } catch {} await Promise.resolve(renderTask.promise).catch(() => {}); }
   if (view) {
     view.renderToken++;
+    view.linkLayer?.remove(); view.linkLayer = null;
     const oldTask = view.renderTask;
     if (oldTask) { try { oldTask.cancel(); } catch {} await Promise.resolve(oldTask.promise).catch(() => {}); }
     view.renderTask = null;
@@ -776,6 +996,7 @@ async function renderPage(scroll = true) {
   try { await renderTask.promise; } catch (error) { if (error.name !== 'RenderingCancelledException') throw error; }
   if (sequence !== renderSequence || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration) return;
   if (view) { view.renderTask = null; view.ready = true; view.renderedKey = `${cssWidth}/${cssHeight}/${raster.width}/${raster.height}`; view.sheet.dataset.ready = 'true'; view.sheet.setAttribute('aria-busy', 'false'); }
+  if (view) void renderReaderLinks(view, page, viewport);
   drawInk(); busy = false; controls();
   if (preservingPosition && positionGeneration === readerFocusGeneration && positionMode === readerFocusMode()) restoreReaderFocusAnchor(position);
   if (scroll) {
@@ -784,6 +1005,7 @@ async function renderPage(scroll = true) {
   }
   if (readerResizePending) scheduleReaderResize();
   if (view) { queueReaderNeighbours(); if (readerScrollPending) scheduleReaderVisible(); }
+  scheduleReaderPrecision();
   } finally {
     if (owner === current && sequence === renderSequence) { busy = false; controls(); }
   }
@@ -803,6 +1025,7 @@ async function ensurePage(number) {
   return true;
 }
 async function goPage(value) {
+  readerNavigationRequest++;
   if (!current || busy) return;
   finishStroke(); const target = clamp(Math.trunc(Number(value)) || 1, 1, current.pageCount);
   if (target === pageNumber) { controls(); return; }
@@ -817,6 +1040,7 @@ function renderBookmarks() {
 }
 async function openBytes(bytes, metadata) {
   if (busy) return false;
+  persistReaderPosition();
   finishStroke(); busy = true; controls();
   if (current && !(await flush()) && (dirty.size || metaSaved !== metaVersion)) { busy = false; controls(); storageFailure(); return false; }
   mutationRevision++;
@@ -826,7 +1050,8 @@ async function openBytes(bytes, metadata) {
     if (bytes.byteLength > 50 * 1024 * 1024) throw new Error('PDF_TOO_LARGE');
     const fingerprint = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(b => b.toString(16).padStart(2, '0')).join('');
     if (metadata.sha256 && metadata.sha256 !== fingerprint) throw new Error('HASH_MISMATCH');
-    const task = pdfjs.getDocument({ data: new Uint8Array(bytes).slice(), cMapUrl: new URL('./vendor/cmaps/', import.meta.url).href, cMapPacked: true,
+    const task = pdfjs.getDocument({ data: new Uint8Array(bytes).slice(), docBaseUrl: readerPublicBaseURL(fingerprint, metadata.publicId) || undefined,
+      cMapUrl: new URL('./vendor/cmaps/', import.meta.url).href, cMapPacked: true,
       standardFontDataUrl: new URL('./vendor/standard_fonts/', import.meta.url).href, wasmUrl: new URL('./vendor/wasm/', import.meta.url).href,
       isEvalSupported: false, enableXfa: false, disableFontFace: false, useSystemFonts: true });
     nextLoadingTask = task;
@@ -863,7 +1088,13 @@ async function openBytes(bytes, metadata) {
     }
     else { url.searchParams.delete('id'); fragment.set('local', fingerprint); }
     url.hash = fragment.toString(); historyReplace(url);
-    renderBookmarks(); renderEditions(); $('page-controls').hidden = false; busy = false; await renderPage();
+    const precise = validReaderPosition(current.localPosition) ? current.localPosition : null;
+    readerSetZoom(precise?.zoom || 1);
+    const openedOwner = current, openingGeneration = documentOpenGeneration, inputEpoch = readerFocusInputEpoch;
+    renderBookmarks(); renderEditions(); $('page-controls').hidden = false; busy = false; await renderPage(!precise);
+    if (openedOwner !== current || openingGeneration !== documentOpenGeneration) return false;
+    if (precise && inputEpoch === readerFocusInputEpoch) readerRestorePosition(precise);
+    else if (precise) scheduleReaderVisible();
     if (saved) status(dirty.size ? 'pending' : 'saved');
     signal('atr:document-open', currentInfo()); return true;
   } catch (error) {
@@ -1072,6 +1303,7 @@ async function applyNotebook(value, options = {}) {
       return stroke.points.length > 5000 ? splitStroke(stroke, uid) : [stroke];
     }) }));
     await storage.importPages(current.fingerprint, importedPages, backup.bookmarks, position);
+    clearTimeout(readerPrecisionTimer); readerNavigationRequest++; current.localPosition = null;
     mutationRevision++;
     pages.clear(); importedPages.forEach(p => pages.set(p.number, p.strokes));
     // The imported notebook is a complete snapshot; absent mounted pages are
@@ -1140,14 +1372,21 @@ document.querySelectorAll('[data-color]').forEach(button => button.addEventListe
 }));
 $('finger-draw').addEventListener('change', () => chooseTool(tool)); $('pen-width').addEventListener('input', () => { $('width-value').value = $('pen-width').value; });
 $('undo').addEventListener('click', () => undo()); $('redo').addEventListener('click', () => undo(true));
-$('previous-page').addEventListener('click', () => goPage(pageNumber - 1)); $('next-page').addEventListener('click', () => goPage(pageNumber + 1));
-$('page-number').addEventListener('change', event => goPage(event.target.value)); $('page-number').addEventListener('keydown', event => { if (event.key === 'Enter') { event.target.blur(); goPage(event.target.value); } });
+$('navigation-back')?.addEventListener('click', async () => {
+  if (busy || active) return;
+  const position = readerJumpHistory.pop(); if (!position) return;
+  if (!(await navigateReaderPosition(position, { remember: false }))) readerJumpHistory.push(position);
+  readerNavigationControls();
+});
+$('pdf-outline')?.addEventListener('click', openReaderOutline);
+$('previous-page').addEventListener('click', () => goReaderPage(pageNumber - 1)); $('next-page').addEventListener('click', () => goReaderPage(pageNumber + 1));
+$('page-number').addEventListener('change', event => goReaderPage(event.target.value)); $('page-number').addEventListener('keydown', event => { if (event.key === 'Enter') { event.target.blur(); goReaderPage(event.target.value); } });
 $('zoom').addEventListener('change', () => { finishStroke(); if (pdf && !busy) { readerFocusAnchor = captureReaderFocusAnchor(); renderPage(false).catch(() => showError(t('loadError'))); } });
 $('bookmark').addEventListener('click', () => {
   if (!current) return; const marks = new Set(current.bookmarks || []); if (marks.has(pageNumber)) marks.delete(pageNumber); else marks.add(pageNumber);
   current.bookmarks = [...marks].sort((a, b) => a - b); renderBookmarks(); markMeta();
 });
-$('bookmarks').addEventListener('change', event => { if (event.target.value) goPage(Number(event.target.value)); event.target.value = ''; });
+$('bookmarks').addEventListener('change', event => { if (event.target.value) goReaderPage(Number(event.target.value)); event.target.value = ''; });
 $('open-library').addEventListener('click', openWorkspace); $('choose-document').addEventListener('click', openWorkspace);
 $('presentation-action').addEventListener('click',()=>window.dispatchEvent(new CustomEvent('atr:presentation-action')));
 window.addEventListener('atr:cloud-open-local', event => { void requestLocalPDF(event.detail).catch(() => toast(t('storageError'))); });
@@ -1186,10 +1425,10 @@ document.addEventListener('keydown', event => {
   if (/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) || document.querySelector('dialog[open]')) return;
   if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); undo(event.shiftKey); }
   else if (event.key.toLowerCase() === 'p') chooseTool('pen'); else if (event.key.toLowerCase() === 'e') chooseTool('eraser'); else if (event.key.toLowerCase() === 'h') chooseTool('read');
-  else if (event.key === 'ArrowLeft') { event.preventDefault(); goPage(pageNumber - 1); } else if (event.key === 'ArrowRight') { event.preventDefault(); goPage(pageNumber + 1); }
+  else if (event.key === 'ArrowLeft') { event.preventDefault(); goReaderPage(pageNumber - 1); } else if (event.key === 'ArrowRight') { event.preventDefault(); goReaderPage(pageNumber + 1); }
 });
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { finishStroke(); flush(); } });
-window.addEventListener('pagehide', () => { finishStroke(); flush(); });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { finishStroke(); flush(); persistReaderPosition(); } });
+window.addEventListener('pagehide', () => { finishStroke(); flush(); persistReaderPosition(); });
 window.addEventListener('beforeunload', event => { if (dirty.size) { finishStroke(); flush(); event.preventDefault(); event.returnValue = ''; } });
 // Only a public PDF that finished rendering can acknowledge its local alert.
 // Personal PDF metadata and notebook/account state never enter this message.

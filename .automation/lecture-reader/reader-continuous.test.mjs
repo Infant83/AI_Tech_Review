@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { clamp, normalizedPoint } from './ink-core.mjs';
+import { safeExternalURL, linkRectangle } from './pdf-navigation.mjs';
 const source = fs.readFileSync(new URL('./reader.mjs', import.meta.url), 'utf8');
 const section = (start, end) => { const a=source.indexOf(start),b=source.indexOf(end,a+start.length);assert.ok(a>=0&&b>a,start);return source.slice(a,b); };
 const continuous = section('const READER_BITMAP_BUDGET', 'function readerFocusMode(');
@@ -14,6 +15,7 @@ const pointerDown = section('function onInkPointerDown(', 'function onInkPointer
 const pointGeometry = section('function pointerPoint(', 'function eraseAt(');
 const applyNotebook = section('async function applyNotebook(', 'async function exportPDF(');
 const pageNavigation = section('async function goPage(', 'function renderBookmarks(');
+const linkRendering = section('function readerPublicBaseURL(', 'function readerNavigationControls(') + section('function syncReaderLinks(', 'function readerLinkTap(') + section('async function renderReaderLinks(', 'async function openReaderOutline(');
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 
@@ -43,6 +45,7 @@ function harness({count=25,failPage=null,dpr=3,scale=1,aspect=number=>number===4
       const width=Number.parseFloat(this.style.width)||0,height=Number.parseFloat(this.style.height)||0;
       return {left:-area.scrollLeft,right:width-area.scrollLeft,top,bottom:top+height,width,height};}
     closest(selector){if(selector==='.reader-page')return this.dataset.page?this:this.parentNode?.closest(selector);return null;}
+    contains(node){return this===node||this.children.some(child=>child.contains(node));}
   }
   const area=new Node(),root={dataset:{readerFocus:'true'}},elements={'page-area':area,zoom:{value:'1'},'finger-draw':{checked:false},'loading-state':{hidden:true}};
   const document={documentElement:root,createElement:tag=>new Node(tag),createDocumentFragment:()=>new Node('#fragment'),querySelector:()=>null,querySelectorAll:()=>[]};
@@ -55,6 +58,11 @@ function harness({count=25,failPage=null,dpr=3,scale=1,aspect=number=>number===4
     pages:new Map(),histories:new Map(),dirty:new Map(),versions:new Map(),retiredIds:new Set(),color:'#123456',mutationRevision:0,
     t:x=>x,clamp,normalizedPoint,clone:structuredClone,uid:()=>`ink-${Math.random()}`,ownStroke:noop,
     canAddInk:()=>true,canEraseStroke:()=>true,controls:noop,finishStroke:noop,
+    // Navigation is exercised by reader-navigation-integration.test; these are
+    // terminal UI boundaries for the existing canvas/ink lifetime regressions.
+    resetReaderNavigation:noop,scheduleReaderPrecision:noop,
+    readerNavigationRequest:0,readerPrecisionTimer:null,
+    catalog:[],safeExternalURL,linkRectangle,
     readerFocusMode:()=>true,readerVisibleViewport:()=>({left:0,right:390,top:40,bottom:700}),
     readerAnchorCurrent:()=>false,captureReaderFocusAnchor:()=>null,restoreReaderFocusAnchor:noop,readerScrollOffsets:()=>[0,0,area.scrollLeft,area.scrollTop,0,0],
     bindReaderInk:noop,requestAnimationFrame:fn=>{const id=++nextTimer;timers.set(id,fn);return id;},
@@ -67,8 +75,8 @@ function harness({count=25,failPage=null,dpr=3,scale=1,aspect=number=>number===4
     storageFailure:()=>failures.push('storage'),
   };
   elements['pen-width']={value:'2'};
-  ctx.pdf={getPage:async number=>{requests.push(number);if(number===failPage)throw Error('page failed');return {getViewport:({scale})=>({width:600*scale,height:600*aspect(number)*scale}),cleanup:()=>cleanups.push(number),render:()=>({promise:Promise.resolve(),cancel(){}})};}};
-  vm.createContext(ctx);vm.runInContext(continuous+drawing+loading+rendering+pageNavigation+pointGeometry+pointerDown+applyNotebook,ctx);
+  ctx.pdf={getPage:async number=>{requests.push(number);if(number===failPage)throw Error('page failed');return {getViewport:({scale})=>({width:600*scale,height:600*aspect(number)*scale}),getAnnotations:async()=>[],cleanup:()=>cleanups.push(number),render:()=>({promise:Promise.resolve(),cancel(){}})};}};
+  vm.createContext(ctx);vm.runInContext(continuous+drawing+loading+rendering+pageNavigation+pointGeometry+pointerDown+applyNotebook+linkRendering,ctx);
   vm.runInContext('globalThis.views=readerViews;globalThis.mounted=readerMountedViews;globalThis.waitNeighbours=()=>readerNeighbourQueue;globalThis.pixelBudget=READER_BITMAP_BUDGET;',ctx);
   return {ctx,area,elements,requests,cleanups,strokes,failures,timers,get rectReads(){return rectReads;},Node,
     async render(){await ctx.renderPage();await ctx.waitNeighbours();},
@@ -90,8 +98,10 @@ test('a 10000-page PDF renders only the active page and adjacent preview and own
  const h=harness({count:10_000});await h.render();
  assert.equal(h.ctx.views.size,10_000);assert.equal(h.area.children.length,10_000);
  assert.deepEqual(h.requests,[1,2]);assert.equal(h.ctx.mounted.size,2);assert.ok(h.ctx.readerBitmapPixels()<=h.ctx.pixelBudget);
+ assert.equal([...h.ctx.views.values()].filter(view=>view.linkLayer).length,2,'only rendered views allocate annotation layers');
  await h.ctx.goPage(5000);await h.settle();
  assert.deepEqual([...h.ctx.mounted].map(v=>v.number).sort((a,b)=>a-b),[4999,5000,5001]);
+ assert.equal([...h.ctx.views.values()].filter(view=>view.linkLayer).length,3,'distant annotation layers are evicted with their canvases');
  assert.ok(h.cleanups.includes(1)&&h.cleanups.includes(2));assert.ok(h.ctx.readerBitmapPixels()<=20_000_000);
  assert.equal(h.ctx.sheet.dataset.page,'5000');assert.equal(h.ctx.sheet.id,'page-sheet');
 });
@@ -135,9 +145,9 @@ function gestures() {
  let now=1000;const zooms=[],view={number:2,ready:true},fakeDate={now:()=>now},scroll=[0,0,0,0,0,0],listeners={};
  const area={addEventListener:(name,handler)=>{listeners[name]=handler;}};
  const visual={offsetLeft:0,offsetTop:0,addEventListener:(name,handler)=>{listeners['visual:'+name]=handler;}};
- const c=vm.createContext({Date:fakeDate,Math,Set,readerTouchPointers:new Set(),readerGestureCandidate:null,readerLastGestureTap:null,readerNonMouseAt:0,
+ const c=vm.createContext({Date:fakeDate,Math,Set,readerTouchPointers:new Set(),readerGestureCandidate:null,readerLastGestureTap:null,readerNonMouseAt:0,readerLinkGesture:0,
   current:{fingerprint:'doc'},documentOpenGeneration:1,active:null,busy:false,tool:'pen',$:id=>id==='page-area'?area:{checked:false},readerGestureView:()=>view,
-  readerScrollOffsets:()=>[...scroll],window:{visualViewport:visual,addEventListener:(name,handler)=>{listeners['window:'+name]=handler;}},scheduleReaderVisible(){},scheduleReaderResize(){},
+  readerScrollOffsets:()=>[...scroll],window:{visualViewport:visual,addEventListener:(name,handler)=>{listeners['window:'+name]=handler;}},scheduleReaderVisible(){},scheduleReaderResize(){},scheduleReaderPrecision(){},
   toggleReaderZoom:(x,y,n)=>zooms.push([x,y,n]),resetReaderTap(){c.readerGestureCandidate=null;c.readerLastGestureTap=null;}});
  const code=section('function resetReaderTap(', 'function readerViewCurrent(')+section('function readerTapEligible(', 'function readerPointAnchor(')+section('function initializeReaderScrolling(', 'function readerFocusMode(');vm.runInContext(code,c);c.initializeReaderScrolling();
  const event=(type,id=1,extra={})=>({type,pointerId:id,pointerType:'touch',clientX:100,clientY:120,preventDefault(){},...extra});

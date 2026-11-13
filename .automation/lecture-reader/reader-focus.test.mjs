@@ -32,6 +32,7 @@ function harness({ native = null } = {}) {
     active:null,busy:false,pageNumber:3,renderSequence:0,renderTask:null,baseWidth:595,pageAspect:1.414,cssWidth:595,cssHeight:842,pixelRatio:1,
     pdfCanvas:canvas,inkCanvas:elements['ink-canvas'],sheet,devicePixelRatio:2,innerWidth:1600,
     controls(){},drawInk:()=>calls.push('draw'),showError:()=>calls.push('error'),
+    renderReaderLinks(){},scheduleReaderPrecision(){},
     readerFocusGeneration:0,readerNativeFullscreen:false,readerFocusReturn:null,readerResizePending:false,readerResizeAnchorPending:false,resizeTimer:null,
     readerFocusAnchor:null,readerFocusInputEpoch:0,readerExpectedNativeExit:0,documentOpenGeneration:0,
     readerViews:new Map(),readerMountedViews:new Set(),readerPositionTimer:null,readerScrollPending:false,queueReaderNeighbours(){},
