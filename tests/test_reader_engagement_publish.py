@@ -402,6 +402,38 @@ class ReaderEnrichmentTests(unittest.TestCase):
                         reader.validate_public_artifact(site)
                     path.unlink()
 
+    def test_public_artifact_rejects_empty_private_namespace_components(self):
+        for name in ("archive/private", "archive/supplements/PRIVATE", "assets/charts/PrIvAtE"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:
+                site, frontend = self.fixture(Path(temporary))
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                (site / name).mkdir(parents=True)
+                with self.assertRaisesRegex(ValueError, "Private or hidden filename"):
+                    reader.validate_public_artifact(site)
+
+    def test_public_artifact_rejects_private_namespace_with_benign_json(self):
+        for name in ("archive/private/fixture.json", "archive/supplements/PRIVATE/fixture.json",
+                     "assets/charts/PrIvAtE/fixture.json"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:
+                site, frontend = self.fixture(Path(temporary))
+                reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+                path = site / name
+                path.parent.mkdir(parents=True)
+                path.write_text(json.dumps({"result": "synthetic scientific fixture"}))
+                with self.assertRaisesRegex(ValueError, "Private or hidden filename"):
+                    reader.validate_public_artifact(site)
+
+    def test_public_artifact_private_namespace_rule_keeps_scientific_names(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            for name in ("archive/private-computing/fixture.json", "archive/private_results/fixture.json",
+                         "assets/PrivateComputing/fixture.json", "archive/private.json"):
+                path = site / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(json.dumps({"result": "synthetic scientific fixture"}))
+            self.assertEqual(reader.validate_public_artifact(site)["articles"], 3)
+
     def test_secret_detection_never_includes_the_value_in_its_error(self):
         with tempfile.TemporaryDirectory() as temporary:
             site, frontend = self.fixture(Path(temporary))

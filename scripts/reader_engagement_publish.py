@@ -57,7 +57,7 @@ REVIEWED_STUDY_ARCHIVES = {
     "lectures/quantum-machine-learning/supplements/faryad-qml-v1/resources.zip":
         "97c35fc225a38b75d76e1e5c8fb7ab8de74de892e2d00ff88e1513d9ddbbe684",
 }
-PRIVATE_NAMES = re.compile(r"(?:^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|^wrangler\.|^id_(?:rsa|ed25519)|"
+PRIVATE_NAMES = re.compile(r"(?:^private$|^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|^wrangler\.|^id_(?:rsa|ed25519)|"
                            r"(?:^|[._-])(?:credential|credentials|secret|secrets)(?:[._-]|$)|"
                            r"(?:\.pem|\.key|\.p12|\.pfx|\.sqlite|\.sqlite3|\.db|\.sql|\.bak|\.log|~)$)", re.I)
 RASTER_DATA_URI = re.compile(r"data:image/(png|jpe?g|gif|webp);base64,([A-Za-z0-9+/=]+)", re.I)
