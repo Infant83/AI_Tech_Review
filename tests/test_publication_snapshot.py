@@ -219,6 +219,33 @@ class PublicationSnapshotTests(unittest.TestCase):
         self.assertTrue(snapshots.compare_snapshots(current, current)["structural_ok"])
         self.assertEqual(set(current["archive"][identity]["references"]) - set(baseline["archive"][identity]["references"]), set(expected))
 
+    def test_research_editorial_append_uses_its_own_route_and_still_preserves_pdf(self):
+        self.briefing_document()
+        self.document.update(id="2026-11-12-daily-research-brief", series="daily-research",
+                             href="archive/files/2026-11-12-daily-research-brief.pdf")
+        (self.site / self.document["href"]).write_bytes(b"public PDF")
+        self.write_registries()
+        baseline = self.baseline()
+        self.register_editorial()
+        # A research briefing cannot take the existing quantum date route.
+        with self.assertRaises(snapshots.SnapshotError):
+            self.baseline()
+        self.document.update(editorial_href="briefings/research/2026-11-12/index.html",
+                             editorial_en_href="briefings/research/2026-11-12/en/index.html")
+        assets = {}
+        for name in (self.document["editorial_href"], self.document["editorial_en_href"]):
+            page = self.site / name
+            page.parent.mkdir(parents=True, exist_ok=True)
+            page.write_text("<html><body>Research editorial</body></html>")
+            assets[name] = hashlib.sha256(page.read_bytes()).hexdigest()
+        self.document["editorial_assets"] = assets
+        self.write_registries()
+        current = self.baseline()
+        self.assertTrue(snapshots.compare_snapshots(baseline, current)["structural_ok"])
+        changed = copy.deepcopy(current)
+        changed["files"][self.document["href"]]["sha256"] = "f" * 64
+        self.assertFalse(snapshots.compare_snapshots(baseline, changed)["structural_ok"])
+
     def test_first_append_does_not_allow_identity_drift_or_extra_references(self):
         self.briefing_document()
         baseline = self.baseline()

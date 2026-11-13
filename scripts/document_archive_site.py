@@ -13,17 +13,20 @@ from urllib.parse import urlencode
 
 try:
     from .briefing_site import render_briefings, validate_briefings
+    from .briefing_routes import BRIEFING_SERIES
     from .site_search import search_head, search_form, search_results, search_script
     from .listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from .site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link, current_source_title
 except ImportError:
     from briefing_site import render_briefings, validate_briefings
+    from briefing_routes import BRIEFING_SERIES
     from site_search import search_head, search_form, search_results, search_script
     from listing_pagination import page_count, page_path, page_prefix, page_directory, page_slice, pagination, pagination_script
     from site_brand import SITE_NAME, SITE_STYLES_VERSION, render_brand_link, current_source_title
 
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
+    "daily-research": ("Daily Research Brief", "Daily Research Brief"),
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
@@ -350,7 +353,7 @@ def grouped_lectures(documents: list[dict]) -> list[dict]:
 def render_library_navigation(documents: list[dict], area: str, language: str = "ko", prefix: str = "") -> str:
     en = language == "en"
     count = len(grouped_lectures(documents))
-    briefing_count = sum(doc["series"] in {"daily-quantum", "weekly-review"} for doc in documents)
+    briefing_count = sum(doc["series"] in BRIEFING_SERIES for doc in documents)
     current = lambda key: ' aria-current="page"' if area == key else ""
     return (f'<nav class="hub-nav" aria-label="{"Site sections" if en else "콘텐츠 메뉴"}">'
             '<div class="hub-primary">'
@@ -801,7 +804,7 @@ def publish_archive(archive_dir: Path, site_dir: Path, base_url: str, decorate) 
             page = temporary_root / "lectures" / ("en/index.html" if lang == "en" else "index.html")
             page.parent.mkdir(parents=True, exist_ok=True)
             page.write_text(decorate(render_lectures(documents, base_url, lang), prefix), encoding="utf-8")
-            count = sum(document["series"] in {"daily-quantum", "weekly-review"} for document in documents)
+            count = sum(document["series"] in BRIEFING_SERIES for document in documents)
             for number in range(1, page_count(count, "briefings") + 1):
                 page = temporary_root / page_path("briefings", lang, number)
                 page.parent.mkdir(parents=True, exist_ok=True)
@@ -1111,7 +1114,7 @@ ARCHIVE_JS = r'''
   if (params.get('series') === 'lecture-notes' && !['q', 'month', 'sort'].some(key => params.has(key))) {
     location.replace(base ? new URL(en ? 'lectures/en/' : 'lectures/', base).href : en ? '../../lectures/en/' : '../lectures/'); return;
   }
-  if (['daily-quantum', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
+  if (['daily-quantum', 'daily-research', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
     location.replace(base ? new URL(en ? 'briefings/en/' : 'briefings/', base).href : en ? '../../briefings/en/' : '../briefings/'); return;
   }
   const search = document.querySelector('#archive-search'); if (!search) return;

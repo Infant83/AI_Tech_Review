@@ -1,0 +1,23 @@
+자기장을 걸었을 때 물질의 자화가 얼마나 변하는지 계산해 실험 곡선에 맞췄다고 하자. 이때 얻은 스핀 상호작용으로 온도에 따른 비열까지 설명할 수 있을까. 11월 13일 DRB에서 먼저 읽은 α-RuCl₃ 연구는 자화 곡선을 잘 맞추는 모형들 사이에도 중요한 차이가 남는 장면을 보여준다. 무엇을 계산할지 정하는 일과, 그 계산이 물질을 얼마나 잘 설명하는지 확인하는 일이 여기서 이어진다.
+
+Misawa 등은 1.4 K에서 측정된 두 방향의 자화 자료 36점에 맞춰 다섯 매개변수를 Bayesian optimization으로 탐색했다. 각 후보의 자화는 스핀 24개를 둔 모형을 고전적으로 정확 대각화해 구한다. 그런데 자화의 오차를 작게 만드는 영역에서도 Kitaev 결합 K의 절대 크기는 충분히 정해지지 않았다. K를 바꾸며 비열을 살펴보면 자화만으로는 드러나지 않았던 차이가 나타난다. 좋은 적합도가 다음 계산의 끝점이 아니라, 다른 관측량으로 시험할 후보 모형의 출발점이 되는 셈이다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+입력 모형을 정한 뒤에는 그 모형의 상태를 구하는 문제가 남는다. Geier와 Fu는 DFT에서 얻은 매개변수를 넣은 모아레 연속체 Hamiltonian을 신경망 변분 Monte Carlo로 풀었다. WSe₂/WS₂ 강자성 예제는 전자 28개·단위셀 21개를 다룬다. 전체 스핀의 z성분이 S_z=0인 영역에서 계산하면서 전체 스핀의 크기를 진단해 강자성 상태를 찾는 접근이 핵심이다. 앞선 연구가 실험에서 결합 상수를 추정한다면, 이 연구는 주어진 상호작용 아래에서 자기질서를 구한다. 계산 결과를 평가할 때도 에너지와 함께 스핀 상관을 읽어야 상태의 성격이 드러난다.<span class="citation">[<a href="#ref-2">2</a>]</span>
+
+분자의 여러 구조를 비교할 때에는 한 상태의 낮은 에너지에 더해 구조 사이의 에너지 차이와 상태 순서가 중요해진다. Schätzle 등의 transferable DeepQMC는 여러 기하와 전자상태 사이에서 파동함수 매개변수를 공유하고 상태 순서를 동적으로 정한다. 에틸렌의 두 singlet를 다룬 14개 기하 설정에서 저자들은 NES-VMC 기준에 대해 공통 상수 이동으로 정렬한 상대에너지의 평균 절대오차 4.7(7) meV를 보고했다. 이 값은 어떤 분자 구조들 사이의 관계를 맞췄는지를 알려준다. 각 기하를 따로 계산하는 방식과 공동 최적화를 비교할 때에도 같은 상대에너지 기준과 계산비용을 함께 놓아야 한다.<span class="citation">[<a href="#ref-3">3</a>]</span>
+
+기존 LUSH 리뷰는 여러 여기상태를 학습된 Hamiltonian으로 묶어 상태가 섞이는 영역을 매끄럽게 표현하려는 논의를 다뤘다.<span class="citation">[<a href="#ref-4">4</a>]</span> 이번 DeepQMC는 변분 원리로 파동함수를 공동 최적화하는 고전 계산이지만, 구조가 바뀌어도 상태 사이의 관계를 신뢰할 수 있는지라는 질문은 이어받는다. 희소 기준상태와 양자 측정을 다룬 기존 글은 좋은 상태를 준비한 뒤에도 원하는 에너지 차이를 읽는 비용과 편향이 남는다고 설명했다.<span class="citation">[<a href="#ref-5">5</a>]</span> 나는 다음 비교에서 모형을 맞추는 데 쓴 관측량과 그 모형을 시험할 관측량을 먼저 나누고 싶다. 그 뒤 같은 모형·물리량·목표 오차에서 최적화와 측정 비용을 비교하면, 더 큰 계산이 실제로 어떤 이해를 보탰는지 판단하기 쉬워진다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1103/s9sc-4m5y">T. Misawa, R. Tamura, K. Yoshimi, and Y. Yamaji, Revisiting spin Hamiltonian parameters in a Kitaev material via Bayesian optimization of magnetization curves, Phys. Rev. B 114, 274420 (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1103/77s8-8s61">M. Geier and L. Fu, Predicting moiré magnetism with first-principles AI, Phys. Rev. B 114, 295109 (2026).</a></li>
+<li id="ref-3"><a href="https://doi.org/10.1038/s43588-026-01065-y">Z. Schätzle, P. B. Szabó, A. Cuzzocrea, M. Mezera, and F. Noé, Ab initio simulation of excited-state potential energy surfaces with transferable deep quantum Monte Carlo, Nat. Comput. Sci. (2026).</a></li>
+<li id="ref-4"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/">H.-J. Kim, 다중 여기상태를 매끄럽게 학습하는 법: OLED 분자 역설계의 물리 표현과 검증 경계 (2026-09-04).</a></li>
+<li id="ref-5"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/">H.-J. Kim, 양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량 (2026-10-21).</a></li>
+</ol>
+
+## 작성·검증
+
+편집부(AEDAUT)의 root가 한영 편집글과 요약을 집필·통합했다. 첫 DRB의 원문 감수를 재사용하고, drb_workflow_audit가 두 PRB의 공개 arXiv v2 해당 절·정식 서지와 DeepQMC 공개 출판 본문을 다시 대조했다. 두 PRB의 정식 출판 전문을 이번에 읽은 것으로 표시하지 않는다. 관련 기존 글의 해당 논의도 대조했다. 마지막 문단의 비교 방향은 편집 제안이며 새 양자장치·전자구조 계산·신경망 훈련은 실행하지 않았다. AI 보조는 OpenAI Codex이고 정확한 모델 식별자는 미보존이다. 사람의 문장별 감수와 독자 평가는 수행하지 않았다.

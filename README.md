@@ -10,9 +10,9 @@
 
 ## 리뷰·렉처·브리핑과 자료 보관
 
-[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [렉처 노트](https://infant83.github.io/AI_Tech_Review/lectures/)에서 주제별 학습을 시작한다. [브리핑](https://infant83.github.io/AI_Tech_Review/briefings/)에서는 Daily Quantum Review(Daily Quantum Brief)와 주간 브리핑의 주제를 월별 달력과 게시판 목록으로 확인하고 PDF를 읽는다. 주요 메뉴는 리뷰허브 → 렉처 노트 → 브리핑 순서이며, [전체 자료 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)는 전체 공개 PDF 보관본을 날짜·주제·분류로 찾는 보조 영역이다.
+[리뷰허브](https://infant83.github.io/AI_Tech_Review/)에서 심층 리뷰를 읽고, [렉처 노트](https://infant83.github.io/AI_Tech_Review/lectures/)에서 주제별 학습을 시작한다. [브리핑](https://infant83.github.io/AI_Tech_Review/briefings/)에서는 Daily Quantum Brief·Daily Research Brief와 주간 브리핑을 월별 달력과 게시판 목록으로 찾는다. 검수한 한영 편집글을 먼저 읽고 원 PDF는 따로 열거나 내려받을 수 있다. 주요 메뉴는 리뷰허브 → 렉처 노트 → 브리핑 순서이며, [전체 자료 아카이브](https://infant83.github.io/AI_Tech_Review/archive/)는 전체 공개 PDF 보관본을 날짜·주제·분류로 찾는 보조 영역이다.
 
-브리핑 달력은 공개 등록부의 `daily-quantum`·`weekly-review` 자료를 발행일 기준으로 표시한다. 메일 수신 시간이나 개인 메일 원문은 공개하지 않으며, 문서가 없는 날짜는 등록된 공개 브리핑이 없는 날을 뜻한다.
+브리핑 달력은 공개 등록부의 `daily-quantum`·`daily-research`·`weekly-review` 자료를 발행일 기준으로 표시한다. 메일 수신 시간이나 개인 메일 원문은 공개하지 않으며, 문서가 없는 날짜는 등록된 공개 브리핑이 없는 날을 뜻한다.
 
 등록한 뒤 `python3 scripts/prepare_publication.py --output output/publication-candidate`로 기존 리뷰를 보존하는 배포 후보를 만든다. 허브·렉처 목록·브리핑·아카이브·검색 자료·목록용 이미지를 생성하고 검증하며 원래 `site/`를 교체하지 않는다. 기존 리뷰 개정은 `--review <folder ID>`를 명시한다. 기존 허브의 공개 조회수·분석 설정을 보존하고 명시한 환경변수를 우선한다. 생성된 `site/manifest.json`과 `site/archive-manifest.json`은 공개 목록이며 직접 편집하는 등록 원본이 아니다. 여러 에이전트의 통합과 검수는 [게시 작업 안내](PUBLICATION_WORKFLOW.md)를 따른다.
 

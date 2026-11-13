@@ -16,8 +16,10 @@ from urllib.parse import unquote, urlsplit
 
 try:
     from .reader_engagement_publish import content_digest
+    from .briefing_routes import BRIEFING_SERIES, editorial_paths
 except ImportError:
     from reader_engagement_publish import content_digest
+    from briefing_routes import BRIEFING_SERIES, editorial_paths
 
 SCOPE = "/AI_Tech_Review/"
 ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
@@ -94,10 +96,11 @@ def editorial_references(document: dict) -> list[str]:
         date.fromisoformat(published)
     except ValueError as error:
         raise SnapshotError("Invalid briefing editorial date") from error
-    expected = [f"briefings/{published}/index.html", f"briefings/{published}/en/index.html"]
+    if document.get("series") not in BRIEFING_SERIES:
+        raise SnapshotError("Invalid briefing editorial series")
+    expected = list(editorial_paths(published, document["series"]))
     assets = document.get("editorial_assets")
-    if (document.get("series") not in {"daily-quantum", "weekly-review"}
-            or document.get("href") != f"archive/files/{identifier}.pdf"
+    if (document.get("href") != f"archive/files/{identifier}.pdf"
             or not SHA.fullmatch(str(document.get("sha256", "")))
             or document.get("editorial_href") != expected[0]
             or document.get("editorial_en_href") != expected[1]
@@ -121,9 +124,12 @@ def initial_editorial_append(identifier: str, old: dict, new: dict,
         date.fromisoformat(published)
     except ValueError:
         return False
-    expected = sorted([f"briefings/{published}/index.html", f"briefings/{published}/en/index.html"])
+    expected = new["editorial_references"]
+    allowed_pairs = {tuple(sorted(editorial_paths(published, series))) for series in BRIEFING_SERIES}
+    if not isinstance(expected, list) or tuple(expected) not in allowed_pairs:
+        return False
     old_refs = old.get("references")
-    if (new["editorial_references"] != expected or not isinstance(old_refs, list)
+    if (not isinstance(old_refs, list)
             or any(not isinstance(value, str) for value in old_refs)
             or set(old_refs) & set(expected)
             or new.get("references") != sorted(set(old_refs) | set(expected))

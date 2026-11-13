@@ -5,9 +5,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+import json
 from urllib.parse import urljoin
 
-from scripts.listing_pagination import page_count, page_path, page_prefix, pagination
+from scripts.listing_pagination import page_count, page_path, page_prefix, pagination, generated_paths
 from scripts.hub_layout import render_hub
 from scripts.document_archive_site import render_archive
 from scripts.briefing_site import render_briefings
@@ -52,6 +53,17 @@ class ListingPaginationTests(unittest.TestCase):
         self.assertIn('rel="prev"', text)
         self.assertEqual(page_count(55, "reviews"), 10)
         self.assertEqual(page_count(119, "archive"), 10)
+
+    def test_research_briefings_count_towards_generated_list_pages(self):
+        docs = self.documents(12)
+        research = {**docs[0], "id": "2026-11-07-research", "series": "daily-research"}
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "manifest.json").write_text("[]")
+            (root / "archive-manifest.json").write_text(json.dumps({"documents": docs + [research]}))
+            paths = generated_paths(root)
+            self.assertIn("briefings/page/2/index.html", paths)
+            self.assertIn("briefings/en/page/2/index.html", paths)
 
     def test_review_html_contains_only_the_requested_six_and_covers_every_id_once(self):
         documents = self.documents(19)

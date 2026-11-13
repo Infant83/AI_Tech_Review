@@ -7,6 +7,11 @@ import json
 from math import ceil
 from pathlib import Path
 
+try:
+    from .briefing_routes import BRIEFING_SERIES
+except ImportError:
+    from briefing_routes import BRIEFING_SERIES
+
 SIZES = {"reviews": 6, "archive": 12, "briefings": 12}
 
 
@@ -16,7 +21,7 @@ def generated_paths(site: Path) -> set[str]:
     archive = json.loads((site / "archive-manifest.json").read_text()) if (site / "archive-manifest.json").exists() else {}
     docs = archive.get("documents", [])
     totals = {"reviews": len(reviews), "archive": len(docs) + len(archive.get("external_resources", [])),
-              "briefings": sum(row.get("series") in {"daily-quantum", "weekly-review"} for row in docs)}
+              "briefings": sum(row.get("series") in BRIEFING_SERIES for row in docs)}
     return {page_path(area, language, number) for area, total in totals.items()
             for language in ("ko", "en") for number in range(1, page_count(total, area) + 1)}
 

@@ -21,6 +21,11 @@ import shutil
 from urllib.parse import unquote, urlsplit
 
 try:
+    from .briefing_routes import BRIEFING_SERIES
+except ImportError:
+    from briefing_routes import BRIEFING_SERIES
+
+try:
     from .hub_localization import localize_manifest
 except ImportError:
     from hub_localization import localize_manifest
@@ -136,7 +141,7 @@ def build_records(site_dir: Path) -> list[dict]:
             continue
         if series == "article" and re.sub(r"\s+", " ", item["title"]).strip().casefold() in review_titles:
             continue
-        scope = "lectures" if series == "lecture-notes" else "books" if series == "external-book" else "briefings" if series in {"daily-quantum", "weekly-review"} else "reviews"
+        scope = "lectures" if series == "lecture-notes" else "books" if series == "external-book" else "briefings" if series in BRIEFING_SERIES else "reviews"
         href = item.get("book_url") if scope == "books" else item.get("editorial_href") or item.get("study_href") or item["href"]
         headings = ""
         if scope == "lectures" and item.get("study_href"):
