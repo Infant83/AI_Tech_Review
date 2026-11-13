@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Classiq QAE 온보딩 시리즈 | AI Tech Review Letters</title><meta name="description" content="고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 문제 명세부터 상태·관측량·얽힘과 측정 통계를 거쳐 변분 에너지·수치 최적화까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.">
+<title>Classiq QAE 온보딩 시리즈 | AI Tech Review Letters</title><meta name="description" content="고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화부터 입출력·반복을 포함한 계산 비용까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.">
 
 <link rel="alternate" hreflang="ko" href="https://infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/">
 <link rel="alternate" hreflang="en" href="https://infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/en/">
 <link rel="alternate" hreflang="x-default" href="https://infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/">
-<link rel="stylesheet" href="notes.css?v=20261111-l006">
+<link rel="stylesheet" href="notes.css?v=20261113-l007">
 </head><body>
 <header><nav><a href="../">렉처 노트</a><a href="en/" lang="en">English</a></nav>
 <p class="eyebrow">독립 학습 과정 · 한국어 PDF</p>
-<h1>Classiq QAE 온보딩 시리즈</h1><p>고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 문제 명세부터 상태·관측량·얽힘과 측정 통계를 거쳐 변분 에너지·수치 최적화까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.</p>
-<p class="meta">L001–L006 · 6회차 · PDF 116쪽</p></header>
+<h1>Classiq QAE 온보딩 시리즈</h1><p>고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화부터 입출력·반복을 포함한 계산 비용까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.</p>
+<p class="meta">L001–L007 · 7회차 · PDF 133쪽</p></header>
 <main>
-<section id="study-guide"><h2>학습 순서</h2><p>L001부터 L006까지 차례로 선택하세요. 수식·유도·문제·해설·용어색인은 각 회차 PDF에 있습니다. QAE는 Quantum Application Engineer를 뜻하며, 이 자료는 공식 Classiq 교육과 별개로 집필한 한국어 독립 학습 과정입니다. <a href="../classiq-talk-series/">Classiq 웨비나 다시보기 노트</a>는 별도 시리즈입니다.</p></section>
+<section id="study-guide"><h2>학습 순서</h2><p>L001부터 L007까지 차례로 선택하세요. 수식·유도·문제·해설·용어색인은 각 회차 PDF에 있습니다. QAE는 Quantum Application Engineer를 뜻하며, 이 자료는 공식 Classiq 교육과 별개로 집필한 한국어 독립 학습 과정입니다. <a href="../classiq-talk-series/">Classiq 웨비나 다시보기 노트</a>는 별도 시리즈입니다.</p></section>
 <section id="units"><h2>회차 선택</h2><article id="unit-l001">
   <p class="eyebrow">L001 · <time datetime="2026-11-01">2026-11-01</time> · PDF 25쪽 · 한국어</p>
   <h3>고객의 질문을 계산 가능한 문제로</h3>
@@ -50,12 +50,18 @@
   <p class="unit-summary">같은 Hamiltonian의 정확한 에너지 기댓값이 바닥에너지보다 낮아질 수 없는 이유를 증명합니다. 수치 최적화와 유한 샷 추정을 비교하고, 가장 낮은 추정값을 고를 때 생기는 편향과 새 표본 검증을 살핍니다.</p>
   <div class="actions"><a class="primary" href="../reader/?id=2026-11-11-classiq-qae-l006-notes-ko">필기하며 읽기</a><a class="" href="2026-11-11-classiq-qae-l006-notes-ko.pdf">PDF 열기</a><a class="" href="2026-11-11-classiq-qae-l006-notes-ko.pdf" download>다운로드</a></div>
   <div class="pdf-sections"><a href="2026-11-11-classiq-qae-l006-notes-ko.pdf#page=12">문제 8개</a><a href="2026-11-11-classiq-qae-l006-notes-ko.pdf#page=13">해설</a><a href="2026-11-11-classiq-qae-l006-notes-ko.pdf#page=14">용어색인</a></div>
+</article><article id="unit-l007">
+  <p class="eyebrow">L007 · <time datetime="2026-11-13">2026-11-13</time> · PDF 17쪽 · 한국어</p>
+  <h3>질의 수가 줄면 실제 계산도 빨라지는가</h3>
+  <p class="unit-summary">오라클 질의 수의 개선과 실제 계산 시간의 차이를 살핍니다. Grover 회전과 역계산을 익히고, 입력 준비·반복 측정·고전 처리를 포함한 가상 비용 모형을 같은 조건에서 비교합니다.</p>
+  <div class="actions"><a class="primary" href="../reader/?id=2026-11-13-classiq-qae-l007-notes-ko">필기하며 읽기</a><a class="" href="2026-11-13-classiq-qae-l007-notes-ko.pdf">PDF 열기</a><a class="" href="2026-11-13-classiq-qae-l007-notes-ko.pdf" download>다운로드</a></div>
+  <div class="pdf-sections"><a href="2026-11-13-classiq-qae-l007-notes-ko.pdf#page=12">문제 8개</a><a href="2026-11-13-classiq-qae-l007-notes-ko.pdf#page=13">해설</a><a href="2026-11-13-classiq-qae-l007-notes-ko.pdf#page=14">용어색인</a></div>
 </article></section>
 <section id="practice"><h2>보충 코드</h2><p><a href="labs/reference_checks.py" download>보충 코드 다운로드</a> · <a href="labs/results/reference-checks.json">실행 결과</a></p><p class="meta">L001–L003 예제에서 별도로 재계산한 20개 조건입니다. Python 표준 라이브러리만 사용합니다.</p></section>
-<section id="references"><details><summary>출처와 작성 범위</summary><p>원판 교육 내용 110쪽에 회차별 공개판 안내를 한 쪽씩 더해 총116쪽입니다. 개인화 표현·메타데이터·파일 실행 링크를 정리했으며, 기존 공개 회차 PDF의 바이트와 원래 쪽번호를 유지합니다.</p>
-<p>L001–L003 원판 ZIP은 수집하지 못했습니다. L004–L006는 로컬 집필·검수 기록을 대조했으며 이 공개 묶음에 원고·ZIP을 추가하지 않았습니다. L004의 원판50개·L005의 원판57개·L006의 원판46개 검사를 포함한 원판 전체 검증을 이번 아카이빙에서 독립 재실행한 것은 아닙니다. 보충 코드는 L001–L003 예제의 작은 행렬20개 조건을 별도로 재계산하며 Trotter 비교에는 Frobenius 노름을 씁니다. Classiq 합성·SDK·QPU나 실제 분자·DFT 실험을 수행한 자료로 표시하지 않습니다.</p>
-<p>책임 편집자 김현중 · AI 보조 OpenAI Codex. public_pdf_qa/auth_audit가 L001–L003의 공개판 정제·부분검산을, qae_l004_public·qae_l005_public·qae_l006_public이 해당 회차의 공개판 보존·개인정보·링크·전체 조판 검수를 맡았습니다. qae_l005_science는 L005의 핵심 통계 유도와 일부 수치를, qae_l006_science는 L006의 변분·최적화·선택 편향 논증과 일부 고전 계산을 별도 검토했고 root가 통합·게시를 담당했습니다. 2026-11-06 회차 선택 화면 개편은 qae_course_index가 수행했습니다. 원 작성 세션의 정확한 모델·에이전트 식별자는 미보존이며, 사람의 원고 감수나 Classiq 승인을 받았다고 주장하지 않습니다.</p>
+<section id="references"><details><summary>출처와 작성 범위</summary><p>원판 교육 내용 126쪽에 회차별 공개판 안내를 한 쪽씩 더해 총133쪽입니다. 개인화 표현·메타데이터·파일 실행 링크를 정리했으며, 기존 공개 회차 PDF의 바이트와 원래 쪽번호를 유지합니다.</p>
+<p>L001–L003 원판 ZIP은 수집하지 못했습니다. L004–L007은 로컬 집필·검수 기록을 대조했으며 이 공개 묶음에 원고·ZIP을 추가하지 않았습니다. L004의 원판50개·L005의 원판57개·L006의 원판46개·L007의 원판48개 검사를 포함한 원판 전체 검증을 이번 아카이빙에서 독립 재실행한 것은 아닙니다. 보충 코드는 L001–L003 예제의 작은 행렬20개 조건을 별도로 재계산하며 Trotter 비교에는 Frobenius 노름을 씁니다. Classiq 합성·SDK·QPU나 실제 분자·DFT 실험을 수행한 자료로 표시하지 않습니다.</p>
+<p>책임 편집자 김현중 · AI 보조 OpenAI Codex. public_pdf_qa/auth_audit가 L001–L003의 공개판 정제·부분검산을, qae_l004_public·qae_l005_public·qae_l006_public·qae_l007_public이 해당 회차의 공개판 보존·개인정보·링크·전체 조판 검수를 맡았습니다. qae_l005_science는 L005의 핵심 통계 유도와 일부 수치를, qae_l006_science는 L006의 변분·최적화·선택 편향 논증과 일부 고전 계산을, qae_l007_science는 L007의 오라클·Grover·전체 비용 논증과 일부 고전 계산을 별도 검토했고 root가 통합·게시를 담당했습니다. 2026-11-06 회차 선택 화면 개편은 qae_course_index가 수행했습니다. 원 작성 세션의 정확한 모델·에이전트 식별자는 미보존이며, 사람의 원고 감수나 Classiq 승인을 받았다고 주장하지 않습니다.</p>
 <p>공식 웹 자료와 서지·판본 정보는 2026-11-05 확인했습니다. 교재·논문 전체를 이번에 다시 정독한 기록은 아닙니다. 회차별 상세 참고문헌과 원판의 읽은 위치는 각 PDF에 보존했습니다.</p><ol class="references"><li id="ref-1"><a href="https://www.classiq.io/positions/position-84_27e">Classiq, Quantum Application Engineer (accessed 5 November 2026).</a></li><li id="ref-2"><a href="https://docs.classiq.io/getting-started/classiq_tutorial/Qmod_tutorial_part1">Classiq, Qmod Tutorial - Part I (accessed 5 November 2026).</a></li><li id="ref-3"><a href="https://docs.classiq.io/qmod-reference/language-reference/quantum-types">Classiq, Quantum Types (accessed 5 November 2026).</a></li><li id="ref-4"><a href="https://docs.classiq.io/user-guide/execution/observe">Classiq, Observe (accessed 5 November 2026).</a></li><li id="ref-5"><a href="https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information">IBM Quantum Learning, Quantum information, Basics of Quantum Information: Single systems (accessed 5 November 2026).</a></li><li id="ref-6"><a href="https://cs.uwaterloo.ca/~watrous/TQI/">J. Watrous, The Theory of Quantum Information (Cambridge University Press, Cambridge, 2018).</a></li><li id="ref-7"><a href="https://www.preskill.caltech.edu/ph219/chap2_15.pdf">J. Preskill, Lecture Notes for Ph219/CS219: Quantum Information, Chapter 2: Foundations I: States and Ensembles (July 2015).</a></li><li id="ref-8"><a href="https://doi.org/10.1103/PhysRevX.11.011020">A. M. Childs, Y. Su, M. C. Tran, N. Wiebe, and S. Zhu, Theory of Trotter error with commutator scaling, Phys. Rev. X 11, 011020 (2021).</a></li></ol>
-<p><a href="../../methods/">AI Tech Review Editorial Harness 2026.08</a> · <a href="unit-registry.json">회차 등록부</a></p><p>L007는 계획 단계이며 아직 강의나 PDF를 발행하지 않았습니다.</p></details></section>
+<p><a href="../../methods/">AI Tech Review Editorial Harness 2026.08</a> · <a href="unit-registry.json">회차 등록부</a></p><p>L008는 계획 단계이며 아직 강의나 PDF를 발행하지 않았습니다.</p></details></section>
 </main><footer><a href="../">렉처 노트 목록</a> · <a href="en/">English</a></footer>
 </body></html>

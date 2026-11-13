@@ -2,13 +2,13 @@
   "format": "ai-tech-review-course-registry",
   "version": 1,
   "series_id": "classiq-qae-onboarding",
-  "updated": "2026-11-11",
+  "updated": "2026-11-13",
   "title": "Classiq QAE 온보딩 시리즈",
   "title_en": "Classiq QAE Onboarding Series",
-  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 문제 명세부터 상태·관측량·얽힘과 측정 통계를 거쳐 변분 에너지·수치 최적화까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.",
-  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. This independent Korean series connects problem specifications, states, observables, entanglement and measurement statistics with variational energies and numerical optimization, using PDFs with derivations, exercises and worked answers.",
+  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화부터 입출력·반복을 포함한 계산 비용까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.",
+  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. This independent Korean series covers quantum states, measurement, energy optimization and the total cost of computation, including input/output and repeated runs, using PDFs with derivations, exercises and worked answers.",
   "official_Classiq_course": false,
-  "latest_unit": "L006",
+  "latest_unit": "L007",
   "units": [
     {
       "id": "L001",
@@ -177,12 +177,40 @@
       "answer_pdf_page": 13,
       "glossary_pdf_page": 14,
       "reference_pdf_page": 15
+    },
+    {
+      "id": "L007",
+      "date": "2026-11-13",
+      "title": "질의 수가 줄면 실제 계산도 빨라지는가",
+      "title_en": "Oracle queries, input/output and total cost",
+      "archive_id": "2026-11-13-classiq-qae-l007-notes-ko",
+      "summary": "오라클 질의 수의 개선과 실제 계산 시간의 차이를 살핍니다. Grover 회전과 역계산을 익히고, 입력 준비·반복 측정·고전 처리를 포함한 가상 비용 모형을 같은 조건에서 비교합니다.",
+      "summary_en": "Distinguish fewer oracle queries from a shorter end-to-end computation. Learn Grover rotations and uncomputation, then compare a hypothetical cost model that includes input preparation, repeated measurements and classical processing under matched assumptions.",
+      "status": "available",
+      "language": "ko",
+      "pdf": "2026-11-13-classiq-qae-l007-notes-ko.pdf",
+      "public_pages": 17,
+      "original_pages": 16,
+      "sha256": "ebbee5c1b7312d2b63438991df539e35ca0024a90c6c2438e021c2d615b5a218",
+      "topics": [
+        "계산 복잡도",
+        "오라클·역계산",
+        "Grover 회전",
+        "상태 준비",
+        "입출력·샷 예산",
+        "전체 비용·상각"
+      ],
+      "exercises": 8,
+      "exercise_pdf_page": 12,
+      "answer_pdf_page": 13,
+      "glossary_pdf_page": 14,
+      "reference_pdf_page": 15
     }
   ],
   "planned_next": {
-    "id": "L007",
+    "id": "L008",
     "status": "planned-not-published",
-    "topic": "계산 복잡도·입출력 비용"
+    "topic": "Python SDK·Studio·Qmod 프로그램 구조"
   },
   "source_zip_available": false,
   "original_validation_suite_independently_rerun": false
