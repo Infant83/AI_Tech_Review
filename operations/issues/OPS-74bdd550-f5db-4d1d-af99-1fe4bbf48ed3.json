@@ -6,7 +6,7 @@
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-13T02:41:58.893587Z",
+  "updated_at": "2026-11-13T02:48:52.430301Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -131,6 +131,59 @@
       ],
       "result": "두편집배포attempt1 네작업성공,실제공개5e결속확인. 최신복구artifact미만료686183902B;다운로드/복원시험은실행하지않음.",
       "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    },
+    "concurrent_drb_publication": {
+      "checked_at": "2026-11-13T02:44:33.722384Z",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
+      "source_revision": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
+      "attempt": 1,
+      "state": "completed_success",
+      "observed_failures": 0,
+      "completion_unconfirmed": false,
+      "next_check_at": "2026-11-13T19:00:00+09:00",
+      "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
+      "initial_state": "build_in_progress",
+      "initial_not_created_jobs": [
+        "deploy",
+        "recovery-copy",
+        "notify-readers"
+      ],
+      "completion_checked_at": "2026-11-13T02:48:10.165153Z",
+      "jobs": [
+        {
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_at": "2026-11-13T02:46:05Z"
+        },
+        {
+          "name": "deploy",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_at": "2026-11-13T02:46:33Z"
+        },
+        {
+          "name": "recovery-copy",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_at": "2026-11-13T02:47:59Z"
+        },
+        {
+          "name": "notify-readers",
+          "status": "completed",
+          "conclusion": "success",
+          "completed_at": "2026-11-13T02:47:36Z"
+        }
+      ],
+      "live_baseline": {
+        "revision": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
+        "checked_at": "2026-11-13T02:47:22.876359Z",
+        "reviews": 57,
+        "archive": 133,
+        "publications": 70,
+        "external": 1,
+        "article_updates": 145
+      }
     }
   },
   "recovery": {

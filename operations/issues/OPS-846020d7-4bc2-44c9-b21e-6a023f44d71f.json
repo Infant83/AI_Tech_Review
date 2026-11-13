@@ -6,7 +6,7 @@
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-13T02:41:58.893587Z",
+  "updated_at": "2026-11-13T02:45:19.038828Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -118,7 +118,14 @@
       ],
       "summary": "읽기 모드의 안전한 PDF 링크·목차·이름/좌표 목적지, 30개 명시적 점프 복귀 이력, 로컬의 판본별 정밀 위치/배율. 펜·지우개에서는 포인터·키보드 차단. 백업·클라우드는 기존 페이지/필기 형식을 유지하며 가져오기 때 세부 위치를 무효화.",
       "isolation": "제품 코드와 5개 검사 파일만 별도 후보 커밋/원격 브랜치·작업 사본으로 보관했다. 정책 작업 사본은 최신 main의 편집 완료 메타데이터 86153b9까지 인수했고 제품 수정은 포함하지 않는다.",
-      "cleanup_condition": "검증·단일 경로 통합·공개 확인 뒤 후보 작업 사본을 archive_worktree로 회수한다. 보호된 미리보기·검사 산출물은 현재 사용/참조를 확인하고 기존 보존 절차로 정리한다."
+      "cleanup_condition": "검증·단일 경로 통합·공개 확인 뒤 후보 작업 사본을 archive_worktree로 회수한다. 보호된 미리보기·검사 산출물은 현재 사용/참조를 확인하고 기존 보존 절차로 정리한다.",
+      "integration_recheck_required": {
+        "new_main": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
+        "reason": "Concurrent reviewed DRB publication changes shared archive/briefing/snapshot generation; acquire latest main and actual deployed baseline, preserve the helper copy-list hunk, regenerate and revalidate. Existing 8970441 candidate proof remains bound to 5e baseline.",
+        "publication_inputs_now": 228,
+        "original_inputs_preserved": 226,
+        "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+      }
     }
   },
   "verification": {
