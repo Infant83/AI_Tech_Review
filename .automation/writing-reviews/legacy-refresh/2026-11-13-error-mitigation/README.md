@@ -31,3 +31,11 @@ APS 최초 인용순1–6과 6개 하단 서지 그룹, ref2의 소프트웨어 
 ## 최종 후보 검증
 
 최종 v4에서 공개 파일·연속성·용량 검증이 통과했다. 다른 기사·PDF2,069경로(732,336,562바이트), 변경하지 않은 PDF224경로를 독립 재해시했다. 57리뷰·132문서·81DQB·70카탈로그와 이전 공개 조회 설정을 유지한다. 실제 Chrome의 기본 화면과 390×844 화면에서 한영 도입·표·수식·도표·참고문헌 줄바꿈을 확인했고 뷰포트는 복원했다. 절대주소 언어 전환의 실제 클릭은 배포 후 검증한다. [후보 검증](candidate-verification.json)의 범위와 제한을 따른다.
+
+## 실제 공개 확인 · 완료
+
+배포 커밋은 `5e99585ba61fe5aceac8610b0e825ccc98f15b6c`이며 [실제 워크플로](https://github.com/Infant83/AI_Tech_Review/actions/runs/43349171333)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 실제 로그의 테스트822개 중813개가 통과했고9개는 스킵, 실패는0이었다. 기존57리뷰·132PDF·81DQB·70카탈로그를 유지하며 새 기사와 알림 대기 이벤트는0이다.
+
+[국문 공개판](https://infant83.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/), [영문 공개판](https://infant83.io/AI_Tech_Review/reviews/2026-09-01_quantum-error-mitigation-net-benefit/en/), [아카이브 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-09-01-daily-quantum-brief.pdf)를 포함한 HTTPS18경로를 확인했다. 세 PDF주소가 모두 같은6쪽·SHA `d25664d336c4533bc0da6aa98576c0c2c0901bd1f9ca53987fb621aeb66f1e93`로 내려왔다. 응답들은 봉인된 CI배포물 해시와 일치했고, 선택한 글·도표·첨부와 오늘의 DQB웹은 검수 후보 내용과 일치했다. 실제 Chrome에서 한국어→영어→한국어와390×844화면·도표·수식을 확인했다.
+
+복구 사본은 CI에서2,597파일·766,195,936바이트의 검증·업로드와 최근3개 보존을 마쳤다. 원시 복구 파일의 별도 내려받기·재해시·전체 복원, 실제 휴대폰 알림 수신과 집계API상태 시험은 수행하지 않았다. [공개 검증 기록](publication-verification.json)에 실제 범위와 제한을 남긴다. 순차 작업은18/49완료이며 다음 대상은 「큐비트 수를 넘어: 양자컴퓨팅은 시스템 경쟁으로 간다」(2026-09-03)다.
