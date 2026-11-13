@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-79727d7a-9fc8-4cfd-9a66-9a130c505096",
   "uuid": "79727d7a-9fc8-4cfd-9a66-9a130c505096",
-  "record_version": 1,
+  "record_version": 2,
   "title": "공개 산출물에서 비공개 전용 폴더 구성요소를 거절하는 경계 보강",
   "type": "publication_security_boundary",
   "created_at": "2026-11-13T06:27:49.890136Z",
-  "updated_at": "2026-11-13T06:27:49.890136Z",
-  "status": "validating",
+  "updated_at": "2026-11-13T06:52:01.011175Z",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "isolated_verification",
@@ -69,45 +69,75 @@
   ],
   "change": {
     "commits": [
-      "55cf9b9580ef01ec7cf01d72e2a526331100d412"
+      "55cf9b9580ef01ec7cf01d72e2a526331100d412",
+      "df668e3db2a469d4ad85c112a5784dac373db092"
     ],
     "candidate_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43379685019"
   },
   "verification": {
-    "status": "로컬구현/독립재현통과·CI확인전",
+    "status": "독립로컬·기존단일CI·실제HTTPS결속확인완료",
     "checks": [
       "수정전6하위사례가허용됨을재현",
       "기존case-insensitivePRIVATE_NAMES에^private$추가1줄,실제validator회귀3개추가",
       "대상44검사통과,전체392중391통과·기존1생략·실패0",
       "독립구현자외담당이정상fixture허용과같은합성privateJSON거절을확인",
-      "실제공개릴리스경로의예약private구성요소0"
+      "실제공개릴리스경로의예약private구성요소0",
+      "CI392개중391통과·기존1생략·실패0,연속성/payload/봉인/최종2600공개파일검사통과",
+      "stale guard current=true·실제deploy실행·build/deploy/recovery-copy/notify-readers모두success,재실행0",
+      "실제release/snapshot/catalog/recency source df668e3결속·기존snapshot동일·PDF228SHA/크기보존·private예약경로0",
+      "HTTPS리더MJS/CSS·SW/client·현재PDF/구판PDF6표본원시bytes/SHA일치. 구판표본은최초전송중절단후HTTP1.1재조회전체4220662B로정상확인"
     ],
     "evidence": [
       "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
     ],
     "remaining_limits": [
-      "공통CI검증/공개릴리스결속의최종결과는실행기록에후속연결"
-    ]
+      "이보강은예약private구성요소경계이며모든민감자료탐지·계정/DB전수감사나기존6후보의유효성확정을뜻하지않는다."
+    ],
+    "ci": {
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43379685019",
+      "revision": "df668e3db2a469d4ad85c112a5784dac373db092",
+      "attempt": 1,
+      "checked_at": "2026-11-13T06:41:44.387271Z",
+      "jobs_completed_at": {
+        "build": "2026-11-13T06:39:35Z",
+        "deploy": "2026-11-13T06:40:06Z",
+        "recovery-copy": "2026-11-13T06:40:53Z",
+        "notify-readers": "2026-11-13T06:41:11Z"
+      },
+      "notification_summary": {
+        "synced": 70,
+        "newArticles": 0,
+        "queuedEvents": 0,
+        "baseline": false,
+        "replay": "not_reported"
+      },
+      "recovery_artifact": {
+        "expired": false,
+        "size_bytes": 686380399,
+        "digest": "sha256:33a953879ca92a390f8765927a21166f03124bba1b059d1afa226ba1a8c1f027",
+        "full_download_or_restore_performed": false
+      }
+    }
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "검증기기술조치완료",
+    "period": "2026-11-13T06:34:50Z~2026-11-13T06:48:39.956388Z",
+    "result": "합성비공개경로는CI회귀에서거절,승인자료와실제공개snapshot/PDF원판보존. 실제비공개자료노출은발견하지않았으며개인DB/권한/알림구독변경없음."
   },
   "recovery": {
     "plan_reference": "문제발견시이검증기변경만수정해최신동시게시물/원본/필기를보존한다. 실제운영롤백·개인DB복원은실행하지않음.",
-    "execution_reference": null,
-    "result": null
+    "execution_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "result": "실제롤백/개인DB복원은없음. 검증용clean관리작업사본은source55cf9b9와검사근거를보존하고지원archive_worktree로복구가능하게보관·회수완료."
   },
-  "next_action": "같은회차에서기존단일CI의후보/보존검사·배포·복구·알림결과와실제공개기준본을확인하고기술검증완료상태를갱신한다. 일반게시물추가승인은없다.",
+  "next_action": "기존정기회차의새게시/관련회귀관찰에합친다. 새보호namespace요청이나재발이있을때같은일감을재개하며추가게시승인/별도감시를만들지않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "implemented_local_verified_ci_pending",
+    "state": "resolved_ci_enforced",
     "next_scheduled_step_at": "2026-11-13T19:00:00+09:00",
     "next_review_at": "2026-11-13T19:00:00+09:00",
-    "scheduled_step": "금회CI결과연결·실패시우선후속확인",
+    "scheduled_step": "정상운영의새실행/재발관찰과연결;같은전체검사반복없음",
     "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
   }
 }

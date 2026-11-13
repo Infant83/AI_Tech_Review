@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 14,
+  "record_version": 15,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-13T06:27:49.890136Z",
+  "updated_at": "2026-11-13T06:52:01.011175Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -140,15 +140,13 @@
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
+    "live_source_revision": "df668e3db2a469d4ad85c112a5784dac373db092",
     "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "supplemental_actions_check_at": "2026-11-13T06:02:17.745923Z",
+    "supplemental_actions_check_at": "2026-11-13T06:41:44.387271Z",
     "supplemental_in_progress_runs": [],
     "last_full_actions_check_at": "2026-11-13T06:01:47.079279Z",
     "supplemental_successful_runs": [
-      "43342083384",
-      "43349171333",
-      "43353879664"
+      "43379685019"
     ]
   },
   "observation": {
@@ -212,6 +210,22 @@
       "mail_at": "2026-11-13T06:02:14.488Z",
       "full_api_at": "2026-11-13T06:01:47.079279Z",
       "result": "새실패·메일·미해결0,조회오류0. 실제공개cc6묶음별도검증. 금회새검증기수정run은기존정상편집게시기록과구분해추가확인한다.",
+      "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    },
+    "guard_run_20261113_15": {
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43379685019",
+      "revision": "df668e3db2a469d4ad85c112a5784dac373db092",
+      "checked_at": "2026-11-13T06:41:44.387271Z",
+      "attempt": 1,
+      "jobs_completed_at": {
+        "build": "2026-11-13T06:39:35Z",
+        "deploy": "2026-11-13T06:40:06Z",
+        "recovery-copy": "2026-11-13T06:40:53Z",
+        "notify-readers": "2026-11-13T06:41:11Z"
+      },
+      "result": "같은회차작은검증기보강run전부성공·실제deploy실행·실제HTTPSsource df668일치. 동기화70/신규0/큐0,기존메일/전체API체크포인트는유지.",
+      "live_metadata_at": "2026-11-13T06:43:56.285424Z",
+      "live_samples_at": "2026-11-13T06:48:39.956388Z",
       "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
     }
   },

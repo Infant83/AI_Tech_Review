@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 7,
+  "record_version": 8,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-13T06:27:49.890136Z",
+  "updated_at": "2026-11-13T06:52:01.011175Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -141,9 +141,25 @@
         "unique_object_bytes": 355855982,
         "old_editions": 16,
         "unchanged_since_previous_ending_release": true,
-        "headroom_to_internal_800MB_bytes": 34893022
+        "headroom_to_internal_800MB_bytes": 33566763,
+        "manifested_files": 2599,
+        "manifested_bytes": 765106978,
+        "release_metadata_bytes": 1326259,
+        "public_files_including_release": 2600,
+        "public_bytes_including_release": 766433237,
+        "scope_note": "release명세artifact_files는자기publication-release.json을제외한다. 전체정적파일수/용량은그파일을별도로더한수치다."
       },
-      "cleanup": "검증된 실제 baseline 확보 후 이번 조회의 불완전한 자체 진단 응답1개만 조건 재검사·비식별 실패요약 보존 뒤 정리(논리1143535B). 사용자 원본·PDF·후보·복구/개인 자료 삭제0. 실제 파일시스템 회수량을 측정한 것은 아님."
+      "cleanup": "검증된 실제 baseline 확보 후 이번 조회의 불완전한 자체 진단 응답1개만 조건 재검사·비식별 실패요약 보존 뒤 정리(논리1143535B). 사용자 원본·PDF·후보·복구/개인 자료 삭제0. 실제 파일시스템 회수량을 측정한 것은 아님.",
+      "post_guard_live": {
+        "source": "df668e3db2a469d4ad85c112a5784dac373db092",
+        "metadata_at": "2026-11-13T06:43:56.285424Z",
+        "samples_at": "2026-11-13T06:48:39.956388Z",
+        "snapshot_unchanged": true,
+        "pdf_paths_preserved": 228,
+        "direct_samples_match": 6,
+        "guard_worktree": "clean관리작업사본을복구가능한상태로보관후회수;PDF후보작업사본은유지"
+      },
+      "cleanup_after_verification": "구판PDF표본의첫전송부분실패965391B도성공한전체bytes/SHA대조와실패요약보존뒤자체임시응답만정리했다. 두불완전응답의논리합계2108926B,실제파일시스템회수량미측정. 원본/PDF후보/필기/개인증거삭제없음."
     }
   },
   "observation": {
