@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 7,
+  "record_version": 8,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-14T02:33:36.737133Z",
+  "updated_at": "2026-11-14T06:57:26.695209Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -103,9 +103,9 @@
     "candidate_reference": "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
     "navigation_followup_candidate": {
-      "status": "latest_candidate_auto_verified_browser_pending",
-      "source_revision": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
-      "branch": "codex/pdf-navigation-20261114",
+      "status": "independent_browser_verified_integration_pending",
+      "source_revision": "302a8ecc59fdf8d02b42c05779f44550d2777ca7",
+      "branch": "codex/pdf-navigation-20261114-reopen",
       "workspace": "managed:pdf-navigation/tech-review",
       "base_revision": "561595296bb31c662400ae367640b2506d16f45f",
       "files": [
@@ -117,20 +117,20 @@
         "scripts/document_archive_site.py"
       ],
       "summary": "읽기 모드의 안전한 PDF 링크·목차·이름/좌표 목적지, 30개 명시적 점프 복귀 이력, 로컬의 판본별 정밀 위치/배율. 펜·지우개에서는 포인터·키보드 차단. 백업·클라우드는 기존 페이지/필기 형식을 유지하며 가져오기 때 세부 위치를 무효화.",
-      "isolation": "원래 후보/브랜치와 첫 미봉인 산출물을 보존하고 최신 정상 게시를 새 브랜치에 인수했다. 원래 11파일 변경 패치는 같고 필수 기존 선언 1파일 보완을 합쳐 12파일이다. main 통합/배포는 미실행이다.",
+      "isolation": "기존897·7ec·중간4cc 소스/봉인 근거를 보존하고 reopen 브랜치에 순차 수정했다.7ec 대비 리더/CSS/기존 통합회귀/기존 선언4파일이며 전체 기술 후보는 기존12파일 범위다.302a는4cc의 실패 안내만 보완했고 main 통합/배포는 미실행이다.",
       "cleanup_condition": "독립 검증·단일 배포/공개 확인 뒤 현재 사용·보존 조건과 필요한 ignored 근거 보존을 재확인해 작업 사본 회수를 판단한다. 현재 후보/미리보기·필요 복구 근거·기존 최신 2개/최소 7일 보존 조건을 무시해 삭제하지 않는다.",
       "integration_recheck_required": {
         "new_main": "561595296bb31c662400ae367640b2506d16f45f",
-        "reason": "실제 561 기준 자동/보존 검증 완료. 15시 새 main/실제 공개 delta가 있으면 입력/후보를 다시 결속한 뒤 브라우저 독립 검증한다. 5e/6a 기준 증거를 최신 실기기 증거로 승격하지 않는다.",
+        "reason": "실제561 기준 자동/봉인/원본 보존과302a 독립 브라우저 결속을 마쳤다.19시 최신 main/실제 공개 delta를 인수해 소스/후보/정확 전이를 다시 결속하고 기존 단일 경로로 통합한다. 실제 기기 관찰은 별도 미완료다.",
         "publication_inputs_now": 237,
-        "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
-        "browser_pending": true,
+        "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
+        "browser_pending": false,
         "physical_device_observation_pending": true
       },
       "previous_candidate_revision": "897044109cad25606e39d87fb30d53e050632d69",
       "first_rebase_revision": "0c2b15fe2dc7c40779b3c23eb0f09c3c8cc0c7f3",
-      "candidate_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
-      "protected_artifact_key": "pdf-navigation-20261114-677211c3/candidate-latest",
+      "candidate_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
+      "protected_artifact_key": "pdf-navigation-reopen-20261114-70816984/candidate-feedback/artifact",
       "remote_backed_up": true,
       "source_files": [
         ".automation/lecture-reader/index.html",
@@ -145,7 +145,9 @@
         ".automation/lecture-reader/storage.mjs",
         "publication_changes/site-growth-2026-11-07.json",
         "scripts/document_archive_site.py"
-      ]
+      ],
+      "reopen_fix_previous_source_revision": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
+      "reopen_intermediate_revision": "4cc0124c1b6cdd1c6fc6277602d2c9c40399adca"
     }
   },
   "verification": {
@@ -174,13 +176,14 @@
       "PDF 링크·텍스트 검색·재열기 시 정밀한 쪽 안 위치/확대 복귀는 이번 완료 범위가 아니다."
     ],
     "navigation_followup_candidate": {
-      "source_revision": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
+      "source_revision": "302a8ecc59fdf8d02b42c05779f44550d2777ca7",
       "baseline_revision": "561595296bb31c662400ae367640b2506d16f45f",
       "reader_tests": {
-        "passed": 204,
+        "passed": 208,
         "failed": 0,
-        "reused_same_reader_inputs": true,
-        "original_execution_revision": "0c2b15fe2dc7c40779b3c23eb0f09c3c8cc0c7f3"
+        "skipped": 0,
+        "reused_same_reader_inputs": false,
+        "original_execution_revision": "302a8ecc59fdf8d02b42c05779f44550d2777ca7"
       },
       "python_tests": {
         "total": 392,
@@ -188,23 +191,61 @@
         "skipped": 1,
         "failed": 0,
         "python": "3.12.14",
-        "Pillow": "11.2.1"
+        "Pillow": "11.2.1",
+        "reused_from_revision": "4cc0124c1b6cdd1c6fc6277602d2c9c40399adca",
+        "reuse_reason": "Python scripts/tests 및 고정 runtime 입력이 동일함을 확인"
       },
-      "publication_checks": "최신 prepare·continuity·payload·seal·봉인 최종 validator 통과. 전체 2609파일/71글, source7ec와 실제 baseline561 결속.",
-      "preservation": "최신 232PDF 원시 SHA/크기 동일·4종 identity map/카탈로그 71항목/updates 동일. reader4경로와 카탈로그 revision만 변경, helper1추가·삭제/예상 밖 0.",
+      "publication_checks": "302a 새 prepare·continuity·payload·seal·봉인 validator 통과. 전체2609파일/71글, source302a와 실제 baseline561·입력237 결속.",
+      "preservation": "최신232PDF 원시 bytes/크기/SHA 동일·4종 identity map/카탈로그71항목/updates 동일. reader4경로와 카탈로그 revision만 변경, helper1추가·삭제/예상 밖0.7ec 봉인 대비 reader.mjs/css와 카탈로그 revision만 변경.",
       "declaration_fix": "첫 6a 기준 prepare 뒤 reader4 미선언 전이를 기존 검사가 차단했다. 기존 site-growth의 reader3전이를 현재 before/after에 맞추고 storage1추가, cloud 전이 보존·중복0. 이전 전이는 Git에 보존하고 검사를 완화하지 않았다.",
       "artifact_sha256": {
-        "publication-release.json": "dcd1546ccf2918b3614554501ee1d1c928155087073608b379c87a81f9a0cbd6",
-        "reader-publications.json": "7ea22db36021d6acf6a255f8460dfe9486e2d0aafd00283c3bdb70864d57c84b",
+        "publication-release.json": "2d2757854827089d24ec9d4b5ea9bd10664e0a026bbc763cabfc72c5dccaeb39",
+        "reader-publications.json": "24e8cd1df6b5d77ec90662a670250a3f0936f7c2590375e68b2217b65a173910",
         "reader-updates.json": "d1366c2ffabe37ba6125bc448e99bd0555f24f43d11bb47bd0fd6192786b2050"
       },
       "warnings": [
         "기존 검색 80KB 경고 92,239B, 실패 아님",
         "기존 공개 600MB 경고, 내부 800MB까지 현재 공개 약 30.4MB"
       ],
-      "browser": "이번 최신 후보는 15시 브라우저 검증 예정, 실제 iPhone/Pencil/Safari 관찰은 별도 미완료.",
-      "independent_review": "12파일 범위·원래 11파일 패치/재기준 0c의 11blob 동일·main236입력 보존과 선언4SHA/봉인 실제 파일·카탈로그·동시 DRB/PDF 메타를 구현자 외 역할이 확인.",
-      "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
+      "browser": "7ec에서 누적8px 재열기와 무효 목적지 무안내를 재현했다.4cc의 cached390x844/fresh390x844/1280x900에서200% 각3회 재열기 x/y최대오차0·필기동일, 모바일 안내행 빈 상태/채운 뒤 높이15px로 유지됐다. 302a에서는 위치/CSS 함수 동일성을 읽기 확인하고 실제 최종source의 재열기 x/y0·필기동일 및 무효 목적지 안내/취소 경계를 확인했다. 7ec의 모드별 링크/목차·점프 복귀·더블클릭 확대/전체화면·연속보기·별도 합성 판본 분리/안전 목적지 동선은 해당 코드/자산의 동일성으로 재사용했다. 실제 iPhone/Pencil/Safari 검증은 아니다.",
+      "independent_review": "구현자 외 역할이 기존 intent/scroll 취소·동기2pass/clamp·불가뷰 return·안내행 예약과 현재 목적지 실패 안내/취소 guard를 읽기 감수했다. 다른 역할이 봉인 source302a를 실제 브라우저 응답과 결속하고 실제/합성 동선·원본/필기·재열기·목적지 안내를 검증했다. 전체 PDF raw 보존 검사는 개발 역할의 별도 전체 대조이고, 독립 브라우저/읽기 검토 범위와 구분한다.",
+      "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
+      "declaration_rebound_for_reopen_fix": "561 실제 before/302a 정확 after의 reader4전이를 검증했고 기존 cloud 전이는 같다. 원본 입력237 중 선언1개 외236개 보존.",
+      "reopen_regression_20261114_15": {
+        "affected_candidate": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
+        "fixed_candidate": "302a8ecc59fdf8d02b42c05779f44550d2777ca7",
+        "reproduction": "390x844/L007/2쪽/200%/가로 위치 유지에서 안정화 후3회 재열기마다 세로8px 누적. 필기/쪽/배율/가로 위치 동일, 목차 점프 복귀는 오차0.",
+        "cause": "초기 위치 복원 뒤 atr:document-open에 따른 비동기 개인 필기 안내행이 추가돼 header144→151.84375px와 scroll+8이 발생했다. 글꼴은 이미 준비돼 있었다.",
+        "fix": "기존 nowrap 안내행1.5em 공간을 선예약하고 empty 상태는 visibility:hidden. 기존 저장 형식/8px 기준점/전역 scrollRestoration/cloud·권한을 보존한다. 위치 복원은 동기 최대2회 실제 기하를 재측정하고 실제 이동0이면 종료한다.",
+        "regression": "기존7ec가 실패하는 실제 viewport/문서 scroll 기하 회귀를 추가했다. 수정 뒤4회 반복 저장/복원과 가로 위치가0.5px 이내로 보존돼 Reader205개 통과. 실제 브라우저 재열기는 별도 재검증한다.",
+        "status": "fixed_in_candidate_independent_browser_verified_not_deployed",
+        "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+      },
+      "invalid_destination_feedback_20261114_15": {
+        "affected_candidate": "4cc0124c1b6cdd1c6fc6277602d2c9c40399adca",
+        "fixed_candidate": "302a8ecc59fdf8d02b42c05779f44550d2777ca7",
+        "reproduction": "로컬 합성 PDF의 누락 이름/범위 밖 목적지 클릭이 이동/필기를 유지하지만 실패 안내를 표시하지 않음.",
+        "fix": "기존 owner/PDF/generation/request/tool/busy/active/inputEpoch/scroll 조건을 stillRequested로 재사용하고 현재 null목적지에만 기존 실패 안내1회. 취소·stale 및 늦은 getPage reject는 같은 guard로 무음 처리.",
+        "tests": "4cc에서 새3회귀 중2실패를 확인한 뒤 수정208/208 통과. 실제 함수의 현재 실패1회·9취소상황0회·늦은getPage실패의현재/취소를 구분하고 원본/필기/이력/메타데이터 보존 확인.",
+        "independent_code_review": "요청 guard·문구·권한 보존·CSS/위치복원 불변을 구현자 외 역할이 읽기 감수했다. 실제 토스트/최종source 브라우저 확인은 별도다.",
+        "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
+        "status": "fixed_in_candidate_independent_browser_verified_not_deployed",
+        "browser": "최종302a의 실제 누락 이름/범위 밖 목적지 클릭에서 짧은 안내가 표시되고 자동 종료됐다. 모드/문서 변경으로 취소된 이전 요청은 무음이며 정상 이름 목적지/복귀·합성 필기 보존·위험 URL 미실행을 확인했다."
+      },
+      "artifact_size": {
+        "files_including_release_json": 2609,
+        "bytes_including_release_json": 769636470,
+        "files_excluding_release_json": 2608,
+        "bytes_excluding_release_json": 768305584,
+        "growth_vs_live_payload_bytes": 26324,
+        "growth_vs_live_all_bytes": 26666,
+        "initial_gzip_change_bytes": 0
+      },
+      "browser_limits": [
+        "두 페이지 경계3회 재열기는 첫0.203125px 뒤 고정, 문서 끝은0.390625px 잔차와 실제 최대 scroll 일치. x/페이지/배율/필기는 유지.",
+        "같은 두 페이지 경계·200%의 전체화면 왕복은2px씩 누적된다. 실제561의 reader4파일/의존성209개를 실제 release와 대조한 별도 origin에서도2회 -2/-4px로 동일해 신규 회귀와 분리했다. 기존OPS-716b0f60에서 낮은 영향의 후속 관찰로 이어간다.",
+        "실제 iPhone/Pencil/Safari·개인 DB/클라우드 운영 쓰기·실제 외부 링크 목적지 HTTPS 성공을 검증한 것은 아니다. 외부 요청은 차단하고 새 탭/opener 격리와 원래 앱 상태를 확인했다."
+      ]
     },
     "preintegration_check_20261114_03": {
       "status": "new_editorial_baseline_recorded_candidate_unchanged",
@@ -228,7 +269,7 @@
     "execution_reference": null,
     "result": "기존 단일 Pages 경로로 리더 화면·렌더 개선 배포 완료. 원본·문서 ID·필기 형식과 백엔드/Worker 보존, 실제 롤백·개인 DB 복원·데이터 이전/삭제 없음."
   },
-  "next_action": "15시 최신 main/실제 공개 delta를 확인해 7ec 후보를 필요시 다시 결속하고 모드별 링크·목차/점프 복귀·확대/연속 스크롤·저장/필기·캐시·안전 목적지의 브라우저 독립 검증을 수행한다. 통과 시 19시 기존 단일 경로 통합 목표다. 자동 검증/원격 후보 보관을 배포·실기기 완료로 간주하지 않으며 미완료면 원장·영향 일감을 함께 재배정한다.",
+  "next_action": "오늘19시 source302a 원격 후보와 최신 main/실제 공개 delta를 확인하고, 동시 게시 원본·ID/URL/PDF/필기/updates를 보존해 한 후보를 재결속·봉인한 뒤 기존 단일 배포 경로로 통합한다. 실제 HTTPS·네 작업·복구 사본까지 확인하고 새 코드/입력 변화가 있으면 필요한 회귀를 다시 검증한다. 기존 전체화면2px 누적은OPS-716b0f60 후속으로 분리하고 실제 기기 관찰은 완료로 처리하지 않는다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -270,10 +311,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "latest_candidate_auto_verified_browser_pending",
-    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
+    "state": "independent_browser_verified_integration_pending",
+    "next_scheduled_step_at": "2026-11-14T19:00:00+09:00",
     "next_review_at": "2026-11-14T19:00:00+09:00",
-    "scheduled_step": "7ec 최신 후보 15시 브라우저 독립 검증/원본 보존 확인; 19시 단일 통합 목표",
-    "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
+    "scheduled_step": "최신 원격/실제 공개 delta 인수·검증된302a 후보 재결속 뒤 단일 경로 통합 목표",
+    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
   }
 }

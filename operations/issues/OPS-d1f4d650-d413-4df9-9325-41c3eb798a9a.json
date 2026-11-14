@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
   "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
-  "record_version": 5,
+  "record_version": 6,
   "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-13T06:31:25.478488Z",
+  "updated_at": "2026-11-14T06:08:43.633744Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -96,6 +96,15 @@
       "evidence": "로컬 Git bytes와 PDF 구조를 제한해 대조했다. Flate3은 완전 해제 후 후보 문자열 소실, JPEG2는 정상 이미지의 비엔트로피 구간7곳이지만 기본 Huffman 참조와 일치하지 않아 추가 검토다. 서명 URL 식별자1은 관련 요청2개 모두 만료됐고 제한된 query에 비밀키/세션토큰 필드는 없다. 실제 자격증명 유효성/폐기는 검증하지 않았다.",
       "private_evidence": "기존 허용 비공개 영역에 최소 문맥과 boolean 근거만 보관했다.0700/0600·Git 제외 확인, 후보 값/탐지 경로/원시 로그 없음. 외부 유효성 시험·경고 종료0.",
       "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    },
+    "source_structure_review_20261114_15": {
+      "status": "bounded_source_structure_crosscheck_complete_candidate_validity_unconfirmed",
+      "checked_at": "2026-11-14T06:07:18.055730+00:00",
+      "recorded_pdf_contexts": 4,
+      "jpeg_structure_checks": 68,
+      "candidate_location_independent_matching": false,
+      "finding": "최소 비공개 근거가 가리킨 PDF4개 원본 해시·양의 페이지 수와 JPEG68개 marker/디코딩을 독립 대조했다. 최소 근거에 후보 문자열/위치가 없어 기존7위치를 재매칭한 검사는 아니다. 형식 정상만으로 오탐이나 자격증명 유효성을 판정하지 않으며 열린6건 unknown을 유지한다.",
+      "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
     }
   },
   "observation": {
@@ -110,6 +119,15 @@
       "updated_since_previous": 0,
       "result": "제한된후보문맥조사와실제유효성/노출은구분. 공개산출물의예약privatenamespace방어공백은별도OPS-79727d7a로분리해수정·검증중이며실제노출확정아님.",
       "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    },
+    "checkpoint_20261114_15": {
+      "security_metadata_at": "2026-11-14T06:02:37.864189Z",
+      "total": 9,
+      "open": 6,
+      "resolved": 3,
+      "updated_since_previous": 0,
+      "result": "기존 탐지·push protection 설정 유지. 제한된 구조 대조와 실제 탐지 위치/유효성 미확인을 구분했다. 비밀값 출력·외부 시험·경고 종료0.",
+      "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
     }
   },
   "recovery": {
@@ -117,7 +135,7 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/14 15시 JPEG2후보의구조/원본참조를독립대조하고기존분류근거의제한을검토한다. 공급자유효성6건은미확인으로유지하며근거없이경고를닫거나폐기/회전·외부검증하지않는다. 실제중대위험확인시기존절차로우선대응한다.",
+  "next_action": "11/17 15시 또는 새 근거 도착 시 기존 공급자 제한 화면의 정확한 탐지 문맥을 허용된 비공개 경로에서 대조한다. 값/위치를 공용 기록에 남기지 않고 JPEG구조 정상만으로 경고를 닫지 않는다. 열린6건 유효성은 미확인이며 실제 중대한 위험이 확인되면 기존 절차로 우선 대응한다.",
   "triage_summary": {
     "checked_at": "2026-11-09T18:06:18Z",
     "closed_false_positives": 3,
@@ -132,10 +150,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "limited_context_review_complete_followup_needed",
-    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
+    "state": "bounded_structure_review_complete_exact_location_unverified",
+    "next_scheduled_step_at": "2026-11-17T15:00:00+09:00",
     "next_review_at": "2026-11-17T15:00:00+09:00",
-    "scheduled_step": "JPEG2후보의제한된원본/구조독립검토·전체유효성미확인범위대조",
-    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "scheduled_step": "기존 제한 화면의 정확한 탐지 문맥 대조·유효성 미확인 범위 재검토",
+    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
   }
 }

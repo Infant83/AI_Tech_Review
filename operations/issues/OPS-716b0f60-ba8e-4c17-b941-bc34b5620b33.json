@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-716b0f60-ba8e-4c17-b941-bc34b5620b33",
   "uuid": "716b0f60-ba8e-4c17-b941-bc34b5620b33",
-  "record_version": 3,
+  "record_version": 4,
   "title": "PDF 필기 전체화면과 자동 저장 안내의 깜빡임 완화",
   "type": "reader_usability",
   "created_at": "2026-11-11T12:45:56Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-14T06:57:26.695209Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -113,20 +113,29 @@
       "deployed_at": "2026-11-11T13:34:31Z",
       "https_checked_at": "2026-11-11T13:36:25Z"
     },
-    "result": "공개 리더·원본 PDF·기존 게시물 보존 확인. 실제 iPad/Pencil·iPhone·Windows 펜은 미시험."
+    "result": "공개 리더·원본 PDF·기존 게시물 보존 확인. 실제 iPad/Pencil·iPhone·Windows 펜은 미시험.",
+    "browser_focus_roundtrip_20261114_15": {
+      "scope": "390x844 Chromium·L007·200%·두 페이지 경계",
+      "baseline_revision": "561595296bb31c662400ae367640b2506d16f45f",
+      "candidate_revision": "302a8ecc59fdf8d02b42c05779f44550d2777ca7",
+      "finding": "실제561 reader4파일의 원시 SHA/크기와 나머지 reader의존성209개를 실제 release/브라우저 응답에 결속한 별도 origin에서 전체화면2회 왕복 후 -2/-4px 세로 누적이 후보와 동일했다. 페이지·배율·가로 위치·필기 유지, pageError0. 신규 후보 회귀로 볼 근거는 없으며 기존 낮은 영향의 위치 문제로 후속 분리한다.",
+      "limits": "이 browser 표본의 원인·모든 환경 영향과 실제 iPhone/Pencil/Safari는 미확인. 재열기8px 결함과 구분하며 해결 완료로 처리하지 않는다.",
+      "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    }
   },
   "recovery": {
     "plan_reference": "operations/runs/20261111T124556Z-0007f0a7-0764-48c2-8646-0ceb2cb7fa59.md#한계복구인계",
     "execution_reference": null,
     "result": "복구 사본 생성 성공; 실제 롤백·개인 데이터 복원 미실행"
   },
-  "next_action": "열려 있던 리더를 정상 새로고침해 새 버전을 적용하고 실제 필기 기기에서 노트 공간·나가기·필기/재열기·오류 안내를 관찰한다. 회귀 시 이 일감에 연결한다. 연속 스크롤·PDF 링크 과제는 기존 별도 일감으로 유지한다.",
+  "next_action": "11/16 19시 새 실기기 근거와 함께 기존 전체화면 왕복의 작은 세로 누적 사례를 재검토하고 필요한 최소 수정/검증 범위를 정한다. PDF 링크 후속의 정상 재열기·무효 목적지 수정과 구분하며, 현재 저장/필기·페이지·배율 보존을 유지한다. 새 영향이 커지면 같은 일감의 우선순위와 슬롯을 재판정한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "awaiting_new_physical_device_evidence",
     "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
     "next_review_at": "2026-11-16T19:00:00+09:00",
-    "scheduled_step": "실제 필기 기기의 새 관찰 근거 검토"
+    "scheduled_step": "실제 필기 기기 새 근거·기존 전체화면 왕복의 작은 위치 누적 사례 재검토",
+    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
   }
 }

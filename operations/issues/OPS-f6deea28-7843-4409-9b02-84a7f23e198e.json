@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-f6deea28-7843-4409-9b02-84a7f23e198e",
   "uuid": "f6deea28-7843-4409-9b02-84a7f23e198e",
-  "record_version": 7,
+  "record_version": 8,
   "title": "2026-09-11 OLED 리뷰 PDF의 잘린 파일 복구",
   "type": "공개 자료 열람 결함",
   "created_at": "2026-11-08T12:52:03Z",
-  "updated_at": "2026-11-12T06:14:49Z",
+  "updated_at": "2026-11-14T06:08:43.633744Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -71,6 +71,11 @@
       "kind": "15시편집의존변화확인",
       "reference": "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
       "finding": "공개593a의한영PDF는기존손상SHA·786445B. 직전원격이후해당원고/등록/일감의새복구근거·영문브리프범위확정없음. 정상원판미확보와재생성편집감수필요를유지."
+    },
+    {
+      "kind": "11/14 15시 새 편집 의존 근거 확인",
+      "reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
+      "finding": "직전11시 원격42bc818 이후 관련 원고/등록/공용 편집 기록 delta0. 정상 외부 원판·영문 기술 브리프 범위의 새 확정 근거가 없다. 기존 손상 원본 조사 결과를 재실행하거나 복구/재생성 완료로 바꾸지 않았다."
     }
   ],
   "limitations": [
@@ -140,9 +145,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
-    "next_review_at": "2026-11-14T15:00:00+09:00",
-    "scheduled_step": "정상 원판/영문 기술 브리프 범위의 새 편집 근거 재검토; 근거 없이 재생성/복구 완료 금지"
+    "state": "editorial_scope_or_normal_original_evidence_pending",
+    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
+    "next_review_at": "2026-11-18T15:00:00+09:00",
+    "scheduled_step": "새 정상 원판/영문 기술 브리프 범위 근거 재검토; 근거 도착 시 앞당김",
+    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
   }
 }
