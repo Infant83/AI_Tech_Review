@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 19,
+  "record_version": 20,
   "title": "ADOPT 기본 운영 주기와 임시 하루 다섯 회차·과제 일정 관리",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-14T10:26:38.983457Z",
+  "updated_at": "2026-11-14T18:12:15.244190Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -149,23 +149,23 @@
     ]
   },
   "observation": {
-    "status": "임시19시 실제 기동·검증 후보 통합/배포·후속 슬롯 인계",
-    "period": "2026-11-14T10:00:57.454Z",
-    "result": "19:00:57.454KST trigger, 예정19시보다57.454초 뒤. 임시5회/11월19일 재평가 조건·설정 유지. PDF 기술 배포 종료를 확인해 다음 구현은11/15 03시 저장소 후보로 인계하고 실제 기기는 별도 관찰한다."
+    "status": "임시03시 실제 기동·저장소 로컬 후보 구현/검증",
+    "period": "2026-11-14T17:56:03.627Z",
+    "result": "11/15 02:56:03.627KST trigger, 명목03시보다3분56.373초 이른 기동. 시간차 원인/다음 기동을 추정하거나 예약을 보정하지 않았다. 임시5회·11/19 재평가 조건 유지."
   },
   "recovery": {
     "plan_reference": "임시 증편 설정 문제나 기간 종료 시 지원 도구로 같은 예약을 기본03·11·19시로 복귀하고 최신 프롬프트·일정표를 함께 정리한다. 대상·이름·ACTIVE·권한·게시물/개인 데이터는 보존한다.",
     "execution_reference": null,
-    "result": "이번 실제 변경은 기존 운영 예약·일정 메타데이터뿐이다. 사이트·DB·게시물·PDF·구독 배포나 실제 복구는 없다."
+    "result": "이번 회차 예약/설정 변경과 실제 운영 복구는 없다. 실제 trigger와 로컬 후보의 상태·일정을 기존 원장에 기록했다."
   },
   "next_action": "임시5회각시각의첫기동관찰을확인했으므로11/13 11시부터지속실행·인계/충돌·새우선순위를관찰한다. 11/18 19시적체/회귀/기록부담을평가하고11/19첫이용가능회차에사용자연장지시가없으면같은예약을기본03/11/19시로복귀·read-back과원장을갱신한다. 새예약/콘텐츠일정변경/일반게시추가승인자는만들지않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "configured_initial_all_five_slots_observed",
-    "next_scheduled_step_at": "2026-11-15T03:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-15T07:00:00+09:00",
     "next_review_at": "2026-11-18T19:00:00+09:00",
     "scheduled_step": "임시5회 실제 기동·인계/충돌·일정 변경 관찰;11/19 첫 이용 가능 회차 재평가/기본3회 복귀",
-    "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
+    "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md"
   }
 }

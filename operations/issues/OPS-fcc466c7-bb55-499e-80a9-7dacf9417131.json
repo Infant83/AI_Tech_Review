@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 13,
+  "record_version": 14,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-14T10:26:38.983457Z",
+  "updated_at": "2026-11-14T18:12:15.244190Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -89,10 +89,28 @@
       "a94abe40497a078378a745a162c5d6d4ccdb6c07"
     ],
     "candidate_reference": "operations/runs/20261112T060313Z-4cb86978-4f19-4edc-af4b-af00ecefe57b.md",
-    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442"
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
+    "local_v2_candidate": {
+      "source_revision": "073885e9e483139e6f776f44cfb7b8cc71f313f0",
+      "base_revision": "68cdbb25a46f040cfc42708898168e53587ce283",
+      "branch": "codex/public-media-versioning-20261115",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_files": [
+        ".automation/cloudflare/public-media/serve.mjs",
+        ".automation/cloudflare/public-media/serve.test.mjs",
+        "scripts/public_media.py",
+        "tests/test_public_media.py"
+      ],
+      "status": "locally_implemented_and_independently_verified_not_integrated",
+      "remote_reference": "refs/heads/codex/public-media-versioning-20261115",
+      "remote_source_confirmed": true,
+      "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
+      "protected_proof_key": "public-media-20261115-03 / independent-public-media-20261115-03",
+      "resume": "07시 최신 main/실제 공개 delta와 고정 소스/검사 근거를 재확인해 준비 도구 통합 범위를 판단한다. 외부 이전 전체 완료와 분리하며 통계11시 목표는 유지한다."
+    }
   },
   "verification": {
-    "status": "현재 연결 확인과 공식 비용 시나리오·별도배포 판본/복구 계약 검토 완료. CLI R2 조회 거절·브라우저 로그인 필요로 실제 계정 사용량/청구·활성 상태는 미확인.",
+    "status": "v2 매핑·판본 선택/조건부 전달의 로컬 최소 후보073885 구현·대상/전체 자동 검사·독립 합성 검증 완료. main 통합/외부 활성화·원격 무결성/복구는 미완료이며 제공자 연결 재조회는 하지 않았다.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -116,7 +134,8 @@
       "https://developers.cloudflare.com/r2/pricing/",
       "https://developers.cloudflare.com/r2/get-started/",
       "https://developers.cloudflare.com/workers/platform/pricing/",
-      "https://developers.cloudflare.com/workers/platform/limits/"
+      "https://developers.cloudflare.com/workers/platform/limits/",
+      "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md"
     ],
     "remaining_limits": [
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
@@ -203,19 +222,18 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "checked_at": "2026-11-14T10:15:40.932297Z",
-      "source_revision": "617b38f5bef1fee53dcb77f2a58138f0ab9a2855",
-      "manifest_files": 2608,
-      "manifest_bytes": 768305584,
-      "release_json_bytes": 1330886,
-      "public_files": 2609,
-      "public_bytes": 769636470,
-      "growth_since_previous_bytes": 26666,
-      "headroom_to_internal_800MB_bytes": 30363530,
-      "pdf_paths": 232,
-      "unique_pdf_objects": 162,
-      "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
-      "scope": "실제 공개 기술 배포의 전체 정적 파일 크기. 공급자 청구/사용량·외부 이전/저장량 절감과 구분."
+      "source_revision": "5adb8d7379c47277acd3ba48e6d1cff36913dd19",
+      "public_files": 2614,
+      "public_bytes": 769965286,
+      "pdf_paths": 233,
+      "unique_pdf_objects": 163,
+      "checked_at": "2026-11-14T17:59:50.470196Z",
+      "manifest_files": 2613,
+      "manifest_bytes": 768632048,
+      "release_json_bytes": 1333238,
+      "headroom_to_internal_800MB_bytes": 30034714,
+      "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
+      "scope": "실제 정상 DQE 공개 정적 파일의 전체 크기이며 저장소 사용량/청구·절감량이 아니다."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -237,29 +255,89 @@
       "new_connection_evidence_in_shared_records": false,
       "new_implementation_or_upload": false,
       "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
+    },
+    "local_v2_candidate": {
+      "source_revision": "073885e9e483139e6f776f44cfb7b8cc71f313f0",
+      "base_revision": "68cdbb25a46f040cfc42708898168e53587ce283",
+      "branch": "codex/public-media-versioning-20261115",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_files": [
+        ".automation/cloudflare/public-media/serve.mjs",
+        ".automation/cloudflare/public-media/serve.test.mjs",
+        "scripts/public_media.py",
+        "tests/test_public_media.py"
+      ],
+      "source_sha256": {
+        ".automation/cloudflare/public-media/serve.mjs": "9be5c75307dec94671548fed6221077b0f453366eb24ae416d7b3d062099088c",
+        ".automation/cloudflare/public-media/serve.test.mjs": "52a240a931384a7a0bf13f5fc496b8e03163270bc00d04af53fa97dcb950a21c",
+        "scripts/public_media.py": "56cb2fbd7b9b2ca090cba8c1945678d1ffaaff8d65c3f4f08b604ec24da4cf36",
+        "tests/test_public_media.py": "c4aff9585dc368558e3b28be69b2b85768b74bc6f2aa13e491f7992b52dad637"
+      },
+      "status": "locally_implemented_and_independently_verified_not_integrated",
+      "remote_reference": "refs/heads/codex/public-media-versioning-20261115",
+      "remote_source_confirmed": true,
+      "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
+      "implementation_fixed_at": "2026-11-14T18:06:51.456926+00:00",
+      "independent_checked_at": "2026-11-14T18:09:59.871803+00:00",
+      "tests": {
+        "javascript": {
+          "passed": 14,
+          "failed": 0
+        },
+        "target_python": {
+          "passed": 11,
+          "failed": 0
+        },
+        "full_python": {
+          "total": 401,
+          "passed": 400,
+          "skipped": 1,
+          "failed": 0,
+          "python": "3.12.14",
+          "Pillow": "11.2.1",
+          "checked_at": "2026-11-14T18:07:42.157450+00:00"
+        },
+        "independent_http_groups": 8,
+        "independent_export_groups": 7,
+        "same_input_before_after_comparisons": 4
+      },
+      "shape": "v2 aliases[path]={current:SHA,editions:{SHA:immutable_key}}; 검증한v1/v2 이전 export는 현재 공개 경로의 과거 판본만 병합.",
+      "queries": "관리 경로는 선택적 소문자64자리sha256만 허용. 잘못된/중복/다른 query400, 경로 미지원/교차문서SHA409·no-store. 비관리 경로는 원래 fallback 요청/응답 보존.",
+      "limits": [
+        "로컬 합성 fixture와 소스 검증이며 실제 외부 업로드/운영 전달·원격 전체 SHA·공통 릴리스/복구·정적 제외는 미실행이다.",
+        "GET head1/get1, HEAD/304 head1/get0은 로컬 어댑터 호출 수이며 실제 비용이 아니다. 크기/head/ETag는 같은 크기 오객체를 검출하지 못하므로 활성화 전 별도 전체 업로드 해시 검증이 필요하다.",
+        "이전 export 입력 자체의 SHA/생성 매핑·부모 symlink/복사 중 변조를 거절한다. 현재에 없는 과거 URL은 자동 복원하지 않는다.",
+        "기존v1 Worker 코드는 SHA를 무시하므로 안전한 되돌림 대상이 아니다. 새 지원 코드가 검증된v1 현재 매핑을 읽는 것과 구분한다."
+      ],
+      "protected_proof_key": "public-media-20261115-03 / independent-public-media-20261115-03",
+      "resume": "07시 최신 main/실제 공개 delta와 고정 소스/검사 근거를 재확인해 준비 도구 통합 범위를 판단한다. 외부 이전 전체 완료와 분리하며 통계11시 목표는 유지한다."
     }
   },
   "observation": {
-    "status": "07시 현재 연결·비용·판본/복구 조건 검토, 계정 읽기 연결 대기",
-    "period": "2026-11-12T22:02:12.916984Z~22:16:24Z",
-    "result": "기존공개764229027B·226PDF/159객체355371133B 유지. CLI로그인/대상계정소속은유효하나R2권한없음·목록API10000. Chrome저장로그인방식복원을시도해도비밀번호입력이필요하여사용자에게로그인한단계를요청·화면인계. 새과금/권한확대/구독활성화/업로드/라우트변경/공개PDF·원본삭제0."
+    "status": "03시 로컬 최소 후보 구현·독립 검증 완료,07시 통합 범위 검토",
+    "period": {
+      "trigger": "2026-11-14T17:56:03.627Z",
+      "candidate_fixed_at": "2026-11-14T18:06:51.456926+00:00",
+      "independent_verified_at": "2026-11-14T18:09:59.871803+00:00"
+    },
+    "result": "공개5adb8d7과 기존232PDF/리더 bytes 보존. 별도 후보4파일만 구현·소스 원격 보존, 외부/운영/사용자원본 변경과 자료 정리·회수0."
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43166664442",
     "result": "기존단일Pages배포·공개복구사본생성/미만료metadata확인. 실제외부이전·원격객체복원·운영롤백·개인DB복원·원본삭제는미실행."
   },
-  "next_action": "PDF 기술 배포/공개 확인 선행을 충족했다.11/15 03시 기존4파일 범위의v2 매핑/선택·전달 로컬 최소 후보에 착수하고07시 독립 검증을 목표로 한다. 미완료면 후보/재개점을 보존하고 통계11시 전 영향을 원장·일감에 함께 재배정한다. 제공자 권한/원격 봉인·복구의 새 근거는 없으며 외부 활성화/업로드/정적 제외는 이번 범위가 아니다.",
+  "next_action": "07시 최신 main/실제 공개 delta와 고정 소스/검사 근거를 재확인해 준비 도구 통합 범위를 판단한다. 외부 이전 전체 완료와 분리하며 통계11시 목표는 유지한다. 후보 사본/보호 근거를 현재 사용·최신2개/최소7일 조건에 따라 보존하고07시 인계한다. 새 후보 코드가 아직 main 준비 도구에 적용됐다고 기록하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "pdf_technical_dependency_satisfied_local_candidate_pending",
-    "next_scheduled_step_at": "2026-11-15T03:00:00+09:00",
+    "state": "local_candidate_verified_integration_review_pending",
+    "next_scheduled_step_at": "2026-11-15T07:00:00+09:00",
     "next_review_at": "2026-11-15T07:00:00+09:00",
-    "scheduled_step": "03시 로컬v2 최소 후보 착수·07시 독립 검증/지연 영향 판정",
+    "scheduled_step": "이미 수행한 독립 검증의 고정 소스·최신 delta 대조와 준비 도구 통합 범위 판단",
     "replan_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
     "replan_reason": "PDF 기술 배포 완료에 따라 남은 실행 큐를 전진했다. 우선순위·03/07시 목표와 통계/관리 날짜는 유지한다.",
-    "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
+    "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -267,6 +345,8 @@
     ],
     "dependency_completion_condition": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f의 현재 최신 후보가 기술 검증·단일 통합을 마침. 실제 iPhone/Pencil 관찰 전체나 PDF 일감의 모든 후속 해결을 기다리는 조건은 아니다.",
     "operating_order": 1,
-    "technical_predecessor_satisfied": true
+    "technical_predecessor_satisfied": true,
+    "local_candidate_technical_validation_complete": true,
+    "integration_pending": true
   }
 }
