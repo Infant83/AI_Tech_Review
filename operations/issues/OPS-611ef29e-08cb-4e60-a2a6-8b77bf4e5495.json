@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 3,
+  "record_version": 4,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편 기획",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-13T10:10:25.966292Z",
+  "updated_at": "2026-11-14T06:08:43.633744Z",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -137,7 +137,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "현행 자료·개인 구분 한계·독립 기획 검토 완료; 구현 전",
+    "status": "현행 자료·단위·독립 계약 조사 완료; 제품/API 구현 전",
     "checks": [
       "D1 집계: 구독 환경3·별도endpoint3·계정 연결0; 개인 식별값 출력 없음",
       "공개 API 스냅샷: 누적 방문 브라우저24·열람48·활성구독3; 표본이 작음을 기획에 반영",
@@ -151,7 +151,17 @@
     ],
     "remaining_limits": [
       "실제 독자 페이지·일별 API·관리자 상세·화면 검증·배포는 미실시"
-    ]
+    ],
+    "contract_review_20261114_15": {
+      "source_revision": "42bc818e56a5189fa4425f15bbbdb8e1ca24ebd9",
+      "scope": "로컬 코드·스키마·검사 읽기 조사, DB/통계 쓰기·새 API·화면 배포 없음",
+      "existing_api": "discovery는 KST 오늘을 포함한7/30/90일 또는 전체 기간 합계를 제공하고 active ID 최대500개를 반환한다. 501개는503으로 거절하며 조용히 자르지 않는다. metrics와 discovery 모두 일별 배열은 제공하지 않는다.",
+      "mapping": "현재 리뷰57+lecture-notes14=71개 ID를 정확히 결합한다. 리뷰는 review.category를 쓰고 주분류 필드가 없는 렉처14개는 명시적 미분류로 보존한다. tags·DB topic을 과학 분야로 추정하지 않으며 한영판·장별 링크는 원래 ID를 유지한다.",
+      "coverage": "metrics_article_daily의 관측 합계와 since/activitySince를 재사용한다. 수집 전·첫날/오늘 부분 기간·장애/응답 오류·실제0을 구분하며, 현재 DB만으로 장애 전구간 coverage를 증명할 수 없다. 좋아요는 현재 유지된 반응의 원등록일 분포이며 과거 성장/클릭 이력이 아니다.",
+      "minimum_api": "다음 구현은 집계 전용 GET 일별 route 하나와 정적 공개 카탈로그 결합이 필요하다.7/30/90일·active ID·행/직렬화 bytes·중복/알 수 없는 selector·미래 날짜를 제한하고 총합을 같은 범위로 대조한다.500ID*90일의 dense45000행을 무제한 반환하지 않도록 구체 한도는 구현 슬롯에서 정한다.",
+      "privacy_and_tests": "GET의 새 세션/쿠키 쓰기와 개인 ID·구독 endpoint/키 노출0, 잘못된 Origin 거절, 날짜 경계·희소0/미수집·미분류·비활성/불일치 ID·한영 중복·동일 범위 일별합계·행/bytes제한·모바일/키보드/표 대체 보기·페이지 전용 자산을 검증한다.",
+      "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    }
   },
   "observation": {
     "status": "기획 완료; 제품 미적용",
@@ -163,14 +173,14 @@
     "execution_reference": null,
     "result": "이번 변경은 일감·로드맵 기획 기록이며 사이트/DB/인증 배포·복구 없음"
   },
-  "next_action": "운영팀(ADOPT)은 기존 일별 집계와 기간 API를 활용한 읽기 통계 후보를 준비하고, 편집부(AEDAUT)는 확정된 분야 표시와 해석 문구를 확인한다. 관리자 구독 진단은 기존 관리 목록 과제에 연결한다. 동일인 추정·구독별 위치 추적·과거 성장 수치 재구성은 이번 범위에 포함하지 않는다.",
+  "next_action": "11/15 11시 선행 저장소 로컬 후보 종료 또는07시 명시적 재배정 뒤 최소 후보를 구현한다. 기존 discovery와 정확한71개 카탈로그·review.category/미분류 렉처를 결합하고 bounded 일별 집계 GET을 추가한다. coverage·행/bytes 한도·합계·개인정보 경계와 화면 회귀를 검증한다. 편집부(AEDAUT)의 분야 매핑 근거 전에는 태그로 과학 분야를 추정하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
+    "state": "contract_review_complete_implementation_pending",
+    "next_scheduled_step_at": "2026-11-15T11:00:00+09:00",
     "next_review_at": "2026-11-16T15:00:00+09:00",
-    "scheduled_step": "기존 집계·기간 API 계약 조사",
+    "scheduled_step": "선행 종료/07시 재배정 확인 후 독자 통계 최소 후보 구현",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "operating_order": 3,
     "dependencies": [
@@ -178,6 +188,7 @@
     ],
     "replan_reference": "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
     "replan_reason": "PDF 뒤 저장소 로컬 최소 후보03/07목표를 명시했다. 이 과제의 기존 착수/검토 날짜는 변경하지 않았으며 선행 미완료 시07시 판단에서 실제 새 일정·이유를 함께 갱신한다.",
-    "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다."
+    "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
+    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
   }
 }
