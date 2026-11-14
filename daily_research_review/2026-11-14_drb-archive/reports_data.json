@@ -1,0 +1,180 @@
+{
+  "date": "2026-11-14",
+  "title": "광자와 잡음을 측정하고\n양자 모형을 추정하는 조건",
+  "short_title": "양자 메모리·잡음 진단·모형 식별",
+  "summary": [
+    "에르븀 스핀 메모리는 고전 회수 효율과 얽힘 검사를 서로 다른 증폭 조건에서 수행했다. 최고 효율 81%와 양자 검사 때의 17%를 분리해 읽으면, 광자를 많이 되돌리는 성능과 양자상관을 보존하는 성능을 함께 평가할 이유가 드러난다.",
+    "초전도 공진기 잡음 진단, 양자점 Hamiltonian 학습과 다체계 시간 복잡도 연구도 함께 검토했다. 손실 원인·모형 매개변수·목표 관측량 가운데 무엇을 실제 측정하거나 계산했는지에 따라 성과의 의미가 달라진다."
+  ],
+  "papers": [
+    {
+      "id": 1,
+      "heading": "에르븀 스핀 메모리: 회수 효율과 얽힘의 조건",
+      "journal": "PRX Quantum",
+      "published": "2026-11-13",
+      "doi": "10.1103/bgbx-ph24",
+      "url": "https://doi.org/10.1103/bgbx-ph24",
+      "table_title": "[1] Er 스핀 메모리\n빛을 얼마나 회수하고 무엇을 보존했나\nDOI 10.1103/bgbx-ph24",
+      "table_result": "고전 I4LE 최대 81%; 얽힘 검사는 7 dB·효율 17%에서 3.7σ 위반. 실제 결정 실험.",
+      "table_assessment": "최우선 상세 기획. 효율·저장시간·용량의 서로 다른 최댓값을 한 조건의 성과로 합치지 않음.",
+      "claim": "1538 nm 통신 파장의 에르븀 이온 집단에서 얽힌 빛을 만들고, 집단 상태를 초미세 스핀 준위에 저장한 뒤 회수한다. 이온을 반전시켜 ASE를 방출하고 제어 펄스로 저장·RASE 방출을 수행하는 광원과 메모리의 결합이다.",
+      "result": "1.5 K·6 T에서 고전 I4LE 최대 재위상화 효율은 증폭도 36 dB, 광학 지연 6 μs·스핀 구간 0.1 μs에서 81%였다. 얽힘 검사는 보수적으로 선택한 7 dB·효율 17%에서 별도 수행했다. 5,000회 측정, 13.2 μs 창·280 kHz 필터에서 판정량 최솟값 1.81±0.05(b=0.17), 분리 가능한 상태의 경계 2를 3.7σ 위반한 결과을 보고했다.",
+      "meaning": "먼저 나온 ASE와 저장 후 회수된 RASE의 전기장 상관은 저장 과정의 양자적 성격을 보여준다. 고전 에코의 밝기·회수 효율과 얽힘 보존은 서로 다른 검사이며, 17%는 얽힘의 비율이나 충실도가 아니다.",
+      "insight": "통신 부품으로 평가하려면 효율·잡음·시간·모드 용량을 같은 작동점에서 확인해야 한다. 논문의 재료 준위 선택과 스핀 저장 과정을 따라가며, 높은 고전 효율을 양자 영역에서도 유지할 조건을 후속 질문으로 삼는다.",
+      "limit": "현재 RASE는 장치 내부에서 만든 자원을 저장한다. 임의 외부 입력의 read-write 메모리는 미시연이며 NLPE 전환은 제안이다. 25.1 μs는 별도 I4LE 에코 진폭의 1/e 저장시간이다. 향후 90% 이상·초 단위 저장·대용량 예측을 이번 실증으로 세지 않는다.",
+      "figure": {
+        "asset": "erbium-memory-fig11.png",
+        "height": 230,
+        "caption": "그림 1 | 출판 Fig.11. ASE·RASE의 비분리성 판정량과 가중치 b. 파란 띠는 1σ·2σ, 붉은 선은 이론 모형이다. 7 dB·효율 17%의 양자 검사 조건이며 81% 고전 최대값의 검사가 아니다.",
+        "credit": "Stuart, Smith, Hedges, Ahlefeldt, Sellars [1], PRX Quantum 7, 043031 (2026), Fig.11. CC BY 4.0. 원그림 무수정·표시 크기만 조절.",
+        "url": "https://journals.aps.org/prxquantum/article/10.1103/bgbx-ph24/figures/11/medium",
+        "reading": "가로축은 두 광장의 가중치 b, 세로축은 두 결합 전기장 성분의 분산 합이다. 검은 기준선 2 아래로 곡선이 내려가며 삽입그림에서 1.81±0.05의 최솟값을 읽는다. 주 세로축의 끊김과 7 dB 조건을 함께 확인한다.",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "license_notice": "CC BY 4.0; https://creativecommons.org/licenses/by/4.0/"
+      },
+      "citation": "James Stuart, Kieran Smith, Morgan Hedges, Rose Ahlefeldt, and Matthew Sellars, High-performance spin-state memory for telecom quantum information applications, PRX Quantum 7, 043031 (2026).",
+      "read_url": "https://journals.aps.org/prxquantum/pdf/10.1103/bgbx-ph24",
+      "read_scope": "출판 Version of Record 17쪽의 II–IV절, 특히 III A/C와 Fig.6·11 조건 및 IV절 read-write 논의를 직접 확인. 실험·원자료 분석은 독립 재현하지 않음.",
+      "availability": "ANU Data Commons DOI 10.25911/fcw8-3676을 저자가 인용한다. 연결 대상은 식별했으나 자료 파일은 열람하지 못했다. 별도 코드 저장소·실행은 확인하지 않음."
+    },
+    {
+      "id": 2,
+      "heading": "초전도 공진기의 광자 손실로 큐비트 잡음을 분리하기",
+      "journal": "Physical Review Letters",
+      "published": "2026-11-13",
+      "doi": "10.1103/jjcg-z4xb",
+      "url": "https://doi.org/10.1103/jjcg-z4xb",
+      "table_title": "[2] 초전도 큐비트 잡음\n어느 손실이 큐비트에서 왔나\nDOI 10.1103/jjcg-z4xb",
+      "table_result": "508 MHz에서 잡음 PSD <0.70×10³ rad²/s, 68% Bayesian 상한. 60,000회 측정.",
+      "table_assessment": "실제 transmon–cavity 진단 실험. 단일 주파수 상한과 조건부 선택의 비용을 보존.",
+      "claim": "초전도 공진기에 저장한 단일 광자의 손실을 이용해 결합된 transmon의 고주파 주파수 잡음을 감지한다. 모든 측정의 광자 생존과 큐비트가 계속 바닥상태로 판정된 궤적의 생존을 함께 분석해 손실 채널을 분리한다.",
+      "result": "공진기 4.308 GHz와 transmon 3.800 GHz의 차이인 508 MHz에서 내재 잡음 PSD Sδω<0.70×10³ rad²/s의 68% Bayesian 상한을 보고했다. 최저 주입잡음 세 조건을 각 20,000회, 합계 60,000회 측정한 결과다. 큐비트 중간 측정 간격은 7.45 μs이며, 독립 보정한 결합과 잡음 주입으로 손실률의 해석을 확인했다.",
+      "meaning": "광자 수명의 한 곡선만으로 구분하기 어려운 공진기 자체 손실과 큐비트 잡음 유도 손실에 서로 다른 정보를 준다. 낮은 잡음에서는 유한 통계에 따라 양의 검출값 대신 상한을 제시한다.",
+      "insight": "조건부로 오래 남은 광자를 물리적 수명이 늘어난 성과로 읽으면 진단의 목적을 놓친다. 같은 측정 기록을 어떻게 선택했는지가 손실 원인을 분리하는 정보를 주며, 양자프로세서의 교정과 잡음 조사에 연결된다.",
+      "limit": "508 MHz 한 지점의 68% 상한이다. 전 주파수 잡음 스펙트럼·95% 한계·잡음 부재를 뜻하지 않는다. 조건부 선택에는 버린 궤적과 반복 비용이 있으며 오류정정이나 게이트 충실도 개선을 실증하지 않았다. 출판 전문과 공개 v3의 완전한 동일성도 확인하지 못했다.",
+      "figure": {
+        "kind": "noise_bound",
+        "caption": "그림 2 | 리뷰 재구성. 공개 v3 본문·Fig.4가 보고한 508 MHz의 68% Bayesian PSD 상한만 자체 도식화했다. 전체 Fig.4나 분포·측정 곡선을 복원한 그림은 아니다.",
+        "credit": "Kahn, Garti, Goldblatt, Joshi, Lafont, Rosenblum [2], arXiv:2603.06848v3, 본문·Fig.4의 보고 상한을 이용한 자체 도표. 원그림은 복제하지 않음.",
+        "url": "https://arxiv.org/html/2603.06848v3",
+        "reading": "가로축은 Sδω[10³ rad²/s]다. 0.70에서 왼쪽으로 향하는 화살표는 68% 상한의 방향만 표시한다. 검출된 PSD의 점추정이나 확률분포가 아니며, 60,000회의 통계 조건이 붙는다.",
+        "license": null,
+        "license_notice": "자체 도식; 사실 수치 대조. 원 preprint CC BY-NC-ND 4.0의 이미지·곡선을 복제하거나 가공하지 않음."
+      },
+      "citation": "Nitzan Kahn, Dror Garti, Uri Goldblatt, Lalit M. Joshi, Fabien Lafont, and Serge Rosenblum, Qubit noise sensing via induced photon loss in a superconducting cavity, Phys. Rev. Lett. 137, 200801 (2026).",
+      "read_url": "https://arxiv.org/html/2603.06848v3",
+      "read_scope": "출판사 초록·서지와 공개 arXiv v3 본문 및 Supplemental Material S1–S9, Fig.3–4의 모델·보정·Bayesian 상한을 확인. 출판 전문은 접근 제한이며 v3와의 완전한 동일성 확인 미완료. 실험·코드 재실행 없음.",
+      "availability": "읽은 공개판의 모델·보정·추정 절차는 확인했다. 원자료·실행 코드의 공개 저장소와 판본을 별도로 검증하지 않았으며 데이터 재분석을 수행하지 않음."
+    },
+    {
+      "id": 3,
+      "heading": "전도맵에서 유효 Hamiltonian을 학습하는 역문제",
+      "journal": "Physical Review B",
+      "published": "2026-11-13",
+      "doi": "10.1103/jj3s-brfk",
+      "url": "https://doi.org/10.1103/jj3s-brfk",
+      "table_title": "[3] 고체 양자시뮬레이터\n전도맵은 모형을 얼마나 정하나\nDOI 10.1103/jj3s-brfk",
+      "table_result": "3개 양자점의 7개 매개변수를 합성 100×100 전도맵 16장으로 추정. 고전 학습·수송 계산.",
+      "table_assessment": "11/13 α-RuCl₃ 기획의 확장 검토. 낮은 재구성 잔차와 모형의 유일한 식별을 구분.",
+      "claim": "Hamiltonian 정답 라벨 없이도 수송 전도맵에서 유효 매개변수를 추정하도록, 신경망 encoder와 산란행렬의 물리 decoder를 결합한다. 출력 매개변수로 관측을 다시 계산하고 입력 맵과의 차이를 줄이는 비지도 학습이다.",
+      "result": "세 Rashba 양자점의 7개 매개변수를 4개 전도 성분×4개 스캔인 16장의 100×100 합성 전도맵으로 추정한다. 주 ViT encoder는 약 8,600만 매개변수, 1만~5만 합성 표본·300 epoch를 사용했다. Fig.3(a–c)에서는 학습 상자 바깥 일부에도 낮은 재구성오차가 이어지지만, 더 먼 영역과 모형에서 빠진 물리가 커지면 잔차가 증가한다.",
+      "meaning": "물리 decoder는 어떤 모형 안에서 관측을 설명하는지 명시한다. 색이 어두운 영역은 전도맵을 잘 재구성한 범위이며, 모든 매개변수를 유일하게 맞혔다는 지도는 아니다.",
+      "insight": "앞선 α-RuCl₃ 자화 역추정과 공통 질문은 관측을 잘 맞추는 여러 모형 가운데 무엇을 식별했는가다. 추가 관측이나 모형 불일치 검사를 선택하는 연구로 확장할 수 있으나 실제 장치에서 검증할 후속 제안이다.",
+      "limit": "실제 장치·QPU·DFT 실행이 아닌 합성 학습 결과다. t→−t와 λ→λ+π의 비유일성이 있어 출력 범위를 제한해 한 분기를 고른다. 낮은 잔차가 미시 Hamiltonian 복원을 보장하지 않는다. 저널 전문과 공개 v3의 완전한 동일성·코드 실행은 확인하지 않았다.",
+      "figure": {
+        "asset": "hamiltonian-fig3abc.png",
+        "height": 195,
+        "caption": "그림 3 | Pawłowski·Krawczyk의 arXiv:2603.02889v3 Fig.3(a–c). 저자가 별도 제공한 상단 세 패널 원 PNG이며, 전체 Fig.3(d–g) 예시는 포함하지 않는다. CC BY-SA 4.0, 내용 무수정·표시 크기만 조절.",
+        "credit": "Jarosław Pawłowski and Mateusz Krawczyk [3], arXiv:2603.02889v3, Fig.3(a–c). CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/",
+        "url": "https://arxiv.org/html/2603.02889v3/3abc.png",
+        "reading": "축은 기준 P₀에서의 Δt·Δμ(meV), Δλ(π) 변화다. 흰 상자는 학습 영역이며 공통 색막대는 전도맵 평균절대 재구성오차(a.u.)다. 보라색은 낮고 노란색은 높은 오차다. 상자 밖 일부의 어두운 색과 멀리서의 밝아짐을 비교한다.",
+        "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "license_notice": "CC BY-SA 4.0; https://creativecommons.org/licenses/by-sa/4.0/; 원 PNG 내용 무수정·크기만 조절."
+      },
+      "citation": "Jarosław Pawłowski and Mateusz Krawczyk, Learning Hamiltonians for solid-state quantum simulators, Phys. Rev. B 114, 285415 (2026).",
+      "read_url": "https://arxiv.org/html/2603.02889v3",
+      "read_scope": "공개 v3 본문 I–VIII절·Appendices A–D, Fig.3(a–c)와 Fig.7의 축·범례·정규화·비유일성·모형 불일치 검사를 확인. 온라인 게재일 11/13과 호 날짜 11/15를 구분. 저널 전문과의 완전한 동일성 확인 미완료.",
+      "availability": "공개 GitHub https://github.com/jarek-pawlowski/Hlearning 의 README·파일 목록과 생성·학습·test 스크립트의 존재를 확인했다. 코드 실행·독립 재현과 코드 라이선스 확인은 하지 않음."
+    },
+    {
+      "id": 4,
+      "heading": "전체 시간 이력과 한 관측량의 계산 난도",
+      "journal": "Physical Review X",
+      "published": "2026-11-13",
+      "doi": "10.1103/3v7h-7dx9",
+      "url": "https://doi.org/10.1103/3v7h-7dx9",
+      "table_title": "[4] 다체계 시간 복잡도\n무엇의 이력을 계산하나\nDOI 10.1103/3v7h-7dx9",
+      "table_result": "구성한 회로군에서 상수·다항·지수적 표현 규모. 일부 국소 관측량은 다항 비용 근사 가능. 이론·고전 수치.",
+      "table_assessment": "별도 이론 기획 후보. 높은 시간 얽힘을 모든 관측의 고전적 난해성으로 확대하지 않음.",
+      "claim": "풀 수 있는 특수 양자 회로군에서 환경이 남긴 시간 이력을 영향행렬로 나타내고, 필요한 시간 방향 텐서 표현의 규모를 비교한다. 공간의 적분가능성이나 혼돈이라는 분류만으로 시간 복잡도가 결정되지 않는 예를 구성한다.",
+      "result": "제어된 단일 사이트 유니터리와 SWAP으로 만든 회로에서 표현의 결합차원 χ(T)가 상수·다항·지수적으로 증가하는 경우를 보였다. 이는 구성한 표현의 상한이며 보편적 최소 비용의 하한이 아니다. Fig.4는 model C의 θ=π/2+0.05와 π/3에서 χ=64·128·256·512 수치 결과를 비교한다. 일부 국소·두 점 관측량에는 다항 비용 근사와 오차 제어를 제시한다.",
+      "meaning": "환경의 모든 다중 시간 상관을 담는 표현과 특정 물리량 하나를 계산하는 데 필요한 정보는 다르다. 전체 영향행렬의 시간 얽힘이 커져도 선택한 국소 관측량이 반드시 계산하기 어려운 것은 아니다.",
+      "insight": "비평형 양자 시뮬레이션의 활용성을 논할 때는 목표 관측량·허용 오차·시간 구간을 먼저 정해야 한다. 앞선 vDBF의 에너지와 장거리 상관 구분을 새로운 이론적 사례로 심화할 수 있다.",
+      "limit": "특수하게 구성한 회로군의 정리·수치 결과다. 일반 Hamiltonian·양자재료에 대한 효율적 해법이나 보편적 양자 우위는 입증하지 않는다. 유한 χ 곡선의 평탄화는 절단 오차일 수 있으며, Er 광학 메모리의 저장 효율과 같은 의미의 메모리가 아니다.",
+      "figure": {
+        "asset": "temporal-hierarchy-fig4.png",
+        "height": 190,
+        "caption": "그림 4 | 출판 Fig.4. Model C의 시간 얽힘 엔트로피를 서로 다른 θ와 유지 결합차원 χ에서 비교한다. CC BY 4.0 출판 원그림, 내용 무수정·크기만 조절.",
+        "credit": "He-Ran Wang, Ilya Vilkoviskiy, Dmitry A. Abanin [4], Phys. Rev. X 16, 041041 (2026), Fig.4. CC BY 4.0.",
+        "url": "https://journals.aps.org/prx/article/10.1103/3v7h-7dx9/figures/4/medium",
+        "reading": "가로축은 시간 T, 세로축은 시간 얽힘 엔트로피다. 두 패널의 시간·엔트로피 축 범위가 다르다. χ를 늘릴 때 곡선이 유지되는 구간을 확인해야 하며, 작은 χ에서 생긴 평탄화를 물리적 포화로 곧바로 읽지 않는다.",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "license_notice": "CC BY 4.0; https://creativecommons.org/licenses/by/4.0/"
+      },
+      "citation": "He-Ran Wang, Ilya Vilkoviskiy, and Dmitry A. Abanin, Temporal complexity hierarchies in solvable quantum many-body dynamics, Phys. Rev. X 16, 041041 (2026).",
+      "read_url": "https://journals.aps.org/prx/pdf/10.1103/3v7h-7dx9",
+      "read_scope": "출판 전문의 도입·II–IV절, Fig.4·국소 관측량 논의와 Appendix D를 선별 검토. 증명·수치 자료를 독립 재현하지 않음.",
+      "availability": "출판 Data Availability가 DOI 10.5281/zenodo.17596990을 인용한다. 직접 연결 실패로 기록의 파일·코드를 열람하지 못했으며 GitHub나 재현 실행을 확인하지 않음."
+    }
+  ],
+  "plans": [
+    {
+      "title": "최우선 신규 기획 | 에르븀의 통신 파장과 스핀 저장으로 만드는 얽힌 자원 메모리",
+      "audience": "양자광학·양자네트워크 연구자, 희토류 재료와 광학 양자컴퓨팅 부품을 검토하는 독자. 이번 RASE 광원·메모리의 실제 과정과 측정 조건에 집중한다.",
+      "thesis": "Er의 준위 구조와 제어 펄스는 광원과 저장을 한 재료에서 수행하게 한다. 실용성은 개별 최댓값보다 동일한 작동점의 효율·잡음·시간·용량으로 평가해야 한다.",
+      "outline": [
+        "반전→ASE와 집단 상태의 얽힘→초미세 스핀 저장→RASE 방출을 Fig.1의 준위·펄스로 설명한다. 임의 외부 입력의 read-write 과정과 구현 범위를 구분한다.",
+        "Fig.6의 36 dB·81% 고전 I4LE와 Fig.11의 7 dB·17%·3.7σ 검사를 조건별로 읽는다. 17%를 충실도나 얽힘 비율로 바꾸지 않는다.",
+        "진폭 1/e 시간과 시간 모드 용량의 정의를 확인하고, 같은 작동점에서 양자 성능을 검증할 후속 조건을 제안한다. 공동 측정·NLPE·공진기 개선은 실증과 제안을 나눈다."
+      ],
+      "checks": "II–IV절·Fig.1·6·10·11과 공개 데이터의 실제 열람, 회수 효율 정의·손실 보정·필터/창 선택 대조. 통신망 성능이나 모든 최적 지표의 동시 달성을 추정하지 않는다.",
+      "relation": "기존 양자재료·소자 글에 연결할 신규 상세 기획 제안이다. 공개 DRB의 짧은 편집글과 구분하며, 신규 심층 리뷰는 구체적 초안 검토·게시 승인 전 상태다."
+    },
+    {
+      "title": "확장 검토 | 자화와 전도맵이 Hamiltonian을 얼마나 유일하게 정하는가",
+      "audience": "전자구조·양자재료·양자점 시뮬레이터 연구자. 11/13 α-RuCl₃ 모형 식별 기획에 다른 고체 플랫폼의 역문제를 비교할 가능성만 검토한다.",
+      "thesis": "관측을 잘 맞추는 해가 있어도 매개변수의 유일한 복원이 보장되지는 않는다. 자화 역추정과 물리 decoder 학습에서 어떤 추가 관측·가정이 비유일성을 줄이는지 비교한다.",
+      "outline": [
+        "α-RuCl₃ 자화 비용 함수의 평평한 방향과, 양자점 수송의 동등 매개변수 분기를 각각 원래 물리계 안에서 설명한다.",
+        "양자점 Fig.3(a–c)의 학습 영역·재구성오차와 모형 불일치 검사를 읽는다. 재구성 잔차·매개변수 정확도·실제 장치 검증을 구분한다.",
+        "추가 관측량·모형 선택·다중 분기 추론을 후속 계산 제안으로 제시하되, 동등 예산의 비교와 실험 전이 검증이 남았음을 적는다."
+      ],
+      "checks": "PRB 공개 v3 I–VIII절·Appendices A–D, 부호/각도 비유일성·숨은 궤도·cross-capacitance 가정, Hlearning 코드 판본과 기존 α-RuCl₃ 기획의 승인·수정 상태 대조.",
+      "relation": "어제의 기존 기획에 대한 확장 검토안이며 새 게시 승인이나 기존 상태 변경이 아니다. 두 플랫폼의 수치·물리량을 한 성능 순위로 합치지 않는다."
+    }
+  ],
+  "external_title": "회수한 빛, 분리한 잡음, 관측에서 추정한 양자 모형",
+  "external_brief": [
+    "통신 파장의 에르븀 스핀 메모리는 얽힌 빛을 만들고 일부를 저장·회수했다. 고전 최대 효율 81%와 얽힘 검사 때의 효율 17%는 서로 다른 증폭 조건의 결과다. 초전도 공진기의 단일 광자 손실을 이용한 연구는 특정 주파수의 큐비트 잡음을 분리하고 68% Bayesian 상한을 제시했다. 두 실험은 회수량·양자상관·잡음 원인처럼 다른 질문에 각기 맞는 측정이 필요함을 보여준다. [1,2]",
+    "양자점 전도맵에서 유효 Hamiltonian을 학습하는 연구와 다체계 시간 이력을 분석하는 연구는 계산 대상을 구체화한다. 관측의 낮은 재구성오차가 모형의 유일성을 보장하지 않으며, 복잡한 전체 시간 이력이 모든 국소 관측량을 어렵게 만드는 것도 아니다. 양자 부품과 시뮬레이션의 성과를 평가할 때는 실제 관측·모형 가정·계산 오차를 함께 확인해야 한다. [3,4]"
+  ],
+  "watchlist": [
+    "Er RASE: 같은 양자 검사 조건의 효율·잡음·저장시간·모드 용량을 확인한다. NLPE 임의 입력 저장, 재위상화·공진기 개선과 미래 목표는 별도 실증을 기다린다.",
+    "초전도 잡음 진단: 단일 508 MHz 상한에서 다른 주파수·구동 상태로 범위를 넓힐 때 선택 비용·보정과 68% credible level을 유지한다.",
+    "양자점 역문제: 출력 분기·모형 불일치·실제 장치 전이를 점검한다. 합성 전도맵의 잔차를 매개변수 정확도나 Majorana 큐비트 실증으로 읽지 않는다.",
+    "시간 복잡도: 특수 회로군의 전체 영향행렬과 국소·다중시간 관측을 구분한다. 일반 Hamiltonian·재료로 확장할 근거와 수치 χ 수렴을 확인한다.",
+    "이전 회차의 유한온도 Gibbs 상태·중성원자 중간 측정·고전 표현 가능성·Nature Materials 광학/수송 후보를 유지한다. 새 근거 없이 신규 성과로 반복하지 않는다.",
+    "혼합 SPT 계층과 MoX₃ 스핀갭 후보는 관측량·대칭·고전 수치 범위를 확인하는 후속 목록에 둔다. 일반 잡음의 이로움·상온 큐비트 성과로 확대하지 않는다.",
+    "PRB 과거 누락 기간은 날짜·고정 호 기준으로 계속 보완한다. AIR 기존 QML 리뷰는 후속 판본·정정 및 원논문 수치 대조를 기다린다."
+  ],
+  "coverage": [
+    "Nature, Nature Physics, Nature Materials, Nature Computational Science, npj Quantum Information의 공식 최신 목록을 각각 이전 날짜 경계까지 재확인했다. 확인 당시 11/13–14 새 항목은 보이지 않았다. Nature 전 계열의 전수 조사나 오늘 하루의 발행 종료를 뜻하지 않는다.",
+    "연결된 메일 검색·읽기 경로를 재확인했으며 새 Nature 알림은 발견되지 않았다. 메일 원문·계정·식별자·개인 수신 시각은 이 공개 자료에 포함하지 않는다.",
+    "PRL 최신 20건 중 11/13 항목 8건, PRB 최신 20건 중 11/13 항목 18건을 선별했고 다음 11/12 경계를 확인했다. PRX·PRX Quantum에서는 11/13 각 2건과 다음 11/12 경계를 확인했다. 목록 확인을 모두 전문 독해로 세지 않는다.",
+    "PRB의 고정 호 목록 일부를 추가 확인했지만 10/30–11/13 전체 누락은 해결하지 못했다. 고정 호 간 전체 대조·중복 제거가 남아 있으며 이전 미완료 상태를 완료로 바꾸지 않는다.",
+    "Artificial Intelligence Review 공식 날짜순 50건을 재확인했다. 최신은 기존 11/12 QML 리뷰이며 11/13–14 새 항목은 없었다. 기존 PDF가 전날과 동일한 해시인 것을 확인했고 표 15/본문 불일치가 유지된다."
+  ],
+  "air_citation": "Raed Abu Zitar, Murad Al-Rajab, Samia Loucif, and Ahmad Nasayrah, A systematic review of quantum machine learning: algorithms, application domains, and emerging trends, Artificial Intelligence Review (2026), Article in Press, doi:10.1007/s10462-026-11744-x.",
+  "air_url": "https://doi.org/10.1007/s10462-026-11744-x",
+  "air_scope": "공식 목록·출판 페이지·Crossref와 기존 74쪽 PDF를 새로 확인했다. 파일 해시는 전날과 같으며 50쪽 Table 15의 QNB 91.75%(표준편차 1.53%p), 본문 QNB 94.2% 불일치가 남는다. 새로운 연구 성과가 아닌 기존 watchlist의 후속 판본 점검이다. 원문의 CC BY-NC-ND 4.0을 확인했으며 새 도표나 원그림은 싣지 않는다."
+}
