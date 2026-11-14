@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 21,
+  "record_version": 22,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-14T10:26:38.983457Z",
+  "updated_at": "2026-11-14T18:12:15.244190Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -132,27 +132,31 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-14T10:03:31.546Z",
-    "last_successful_actions_check_at": "2026-11-14T10:03:36.765813Z",
-    "mail_window": "직전 성공부터48시간 겹친11/12T06:02:36.063Z 이후, 읽지 않음 제한 없이 전페이지0통·오류0·상태 변경0.",
-    "actions_window": "착수 시 전체 API에서 새/갱신/진행0이었다. 이후 이번 PDF 기술 배포43583990647은 별도 보충 확인으로 네 작업 성공·실제 공개617b까지 연결했다. 메일/전체 API 시각을 보충 조회로 덮지 않았다.",
+    "last_successful_mail_check_at": "2026-11-14T17:57:46.233Z",
+    "last_successful_actions_check_at": "2026-11-14T17:57:50.819539Z",
+    "mail_window": "직전 성공부터48시간 겹친11/12T10:03:31.546Z 이후 전페이지0통·오류0·읽지않음 제한/본문읽기/상태변경0.",
+    "actions_window": "새 정상 DQE1건 네 작업 성공, 이전617b 보충 확인은 중복 신규로 세지 않음. 진행/대기·실패·미해결0. 메일/전체API/상세 시각을 분리.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "617b38f5bef1fee53dcb77f2a58138f0ab9a2855",
-    "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
-    "supplemental_actions_check_at": "2026-11-14T10:17:11.380674Z",
+    "live_source_revision": "5adb8d7379c47277acd3ba48e6d1cff36913dd19",
+    "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
+    "supplemental_actions_check_at": "2026-11-14T17:57:51.391994Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-14T10:03:36.765813Z",
+    "last_full_actions_check_at": "2026-11-14T17:57:50.819539Z",
     "supplemental_successful_runs": [
-      "43583990647"
+      "43592074430"
     ]
   },
   "observation": {
-    "status": "11시 새 편집 배포2건 성공·새 실패 없음",
-    "period": "2026-11-13T02:05:31.670813Z~02:12:15.236313Z",
-    "result": "메일/API 별도 체크포인트, 네 작업과 실제 release/catalog/recency5e 결속 확인. 비식별 후속 기록만 유지; 재실행·메일 변경·테스트 푸시 없음.",
+    "status": "03시 새 정상 DQE 성공·새 실패 없음",
+    "period": {
+      "mail": "2026-11-14T17:57:46.233Z",
+      "full_api": "2026-11-14T17:57:50.819539Z",
+      "jobs": "2026-11-14T17:57:51.391994Z"
+    },
+    "result": "새 정상 게시 run43592074430/source5adb8d7 네 작업 성공·실제 공개 결속. 운영 후보073885는 별도 미배포 소스이며 정상 게시 CI와 구분한다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -286,6 +290,35 @@
       },
       "result": "네 작업/실제 배포 성공·새 미해결0. synced71/newArticles0/queuedEvents0, 별도 테스트 푸시·재실행·메일 상태 변경0. 복구 사본 미만료/최근3개 보존과 실제 HTTPS를 확인.",
       "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
+    },
+    "normal_dqe_20261115_03": {
+      "run_reference": "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43592074430",
+      "source_revision": "5adb8d7379c47277acd3ba48e6d1cff36913dd19",
+      "attempt": 1,
+      "jobs": {
+        "build": "2026-11-14T11:57:17Z",
+        "deploy": "2026-11-14T11:57:51Z",
+        "recovery-copy": "2026-11-14T11:58:55Z",
+        "notify-readers": "2026-11-14T11:58:53Z"
+      },
+      "notification_summary": {
+        "synced": "71",
+        "newArticles": "0",
+        "queuedEvents": "0",
+        "baseline": "false",
+        "replay": "not_printed"
+      },
+      "recovery": {
+        "name": "publication-recovery",
+        "size_in_bytes": 689207169,
+        "expired": false,
+        "created_at": "2026-11-14T11:58:51Z",
+        "expires_at": "2026-12-14T11:58:44Z",
+        "digest": "sha256:220300215fa8d46d95ec683b0b57f0938b11c79d1e65ebf03a6ba3526e28091c",
+        "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43592074430"
+      },
+      "actual_restore": false
     }
   },
   "recovery": {
