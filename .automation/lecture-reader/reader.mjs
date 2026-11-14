@@ -842,20 +842,28 @@ function captureReaderFocusAnchor() {
 }
 function restoreReaderFocusAnchor(anchor) {
   if (!readerAnchorCurrent(anchor, true)) return;
-  const viewport = readerVisibleViewport(), rect = sheet.getBoundingClientRect?.();
-  if (!viewport || !rect?.width || !rect.height) return;
-  let dx = rect.left + anchor.x * rect.width - viewport.left - anchor.viewportX * (viewport.right - viewport.left);
-  let dy = rect.top + anchor.y * rect.height - viewport.top - anchor.viewportY * (viewport.bottom - viewport.top);
-  // The normal layout scrolls the document; focus can scroll the PDF viewport.
-  // Consume each delta from the inside out without assuming either container.
-  for (const element of [$('page-area'), $('reader-main')]) {
-    if (!element) continue;
-    const x = element.scrollLeft || 0, y = element.scrollTop || 0;
-    element.scrollLeft = Math.max(0, Math.min(Math.max(0, element.scrollWidth - element.clientWidth) || 0, x + dx));
-    element.scrollTop = Math.max(0, Math.min(Math.max(0, element.scrollHeight - element.clientHeight) || 0, y + dy));
-    dx -= element.scrollLeft - x; dy -= element.scrollTop - y;
+  // Scrolling the document can move the reader region behind the sticky header,
+  // changing its visible viewport. Remeasure once after actual scroll/clamping;
+  // a fixed inset correction would drift at page boundaries or in focus mode.
+  for (let pass = 0; pass < 2 && readerAnchorCurrent(anchor); pass++) {
+    const viewport = readerVisibleViewport(), rect = sheet.getBoundingClientRect?.();
+    if (!viewport || !rect?.width || !rect.height) return;
+    let dx = rect.left + anchor.x * rect.width - viewport.left - anchor.viewportX * (viewport.right - viewport.left);
+    let dy = rect.top + anchor.y * rect.height - viewport.top - anchor.viewportY * (viewport.bottom - viewport.top);
+    if (Math.abs(dx) <= .5 && Math.abs(dy) <= .5) break;
+    const before = readerScrollOffsets();
+    // The normal layout scrolls the document; focus can scroll the PDF viewport.
+    // Consume each delta from the inside out without assuming either container.
+    for (const element of [$('page-area'), $('reader-main')]) {
+      if (!element) continue;
+      const x = element.scrollLeft || 0, y = element.scrollTop || 0;
+      element.scrollLeft = Math.max(0, Math.min(Math.max(0, element.scrollWidth - element.clientWidth) || 0, x + dx));
+      element.scrollTop = Math.max(0, Math.min(Math.max(0, element.scrollHeight - element.clientHeight) || 0, y + dy));
+      dx -= element.scrollLeft - x; dy -= element.scrollTop - y;
+    }
+    if (Math.abs(dx) > .5 || Math.abs(dy) > .5) window.scrollTo({ left: (window.scrollX || 0) + dx, top: (window.scrollY || 0) + dy, behavior: 'instant' });
+    if (readerScrollOffsets().every((value, index) => value === before[index])) break;
   }
-  if (Math.abs(dx) > .5 || Math.abs(dy) > .5) window.scrollTo({ left: (window.scrollX || 0) + dx, top: (window.scrollY || 0) + dy, behavior: 'instant' });
   if (readerFocusAnchor === anchor) readerFocusAnchor = null;
 }
 function cancelReaderFocusPosition(event) {

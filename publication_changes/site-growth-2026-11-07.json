@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reason": "Site growth maintenance: section-preserving QML chapters and PDF editions; skip unnecessary startup Push subscription lookup without granted notification permission. Existing article bodies and PDFs unchanged. Subsequent QML supplement navigation changes for lectures/quantum-machine-learning/index.html are reviewed in faryad-qml-supplement.json; prior transitions remain in Git history. 2026-11-11 후속 기술 검토: 공개 PDF가 공유 리더에서 실제 렌더된 뒤 해당 글의 로컬 알림만 읽음 처리한다. 개인 PDF·실패·배경 창·다른 문서는 제외하고 기존 문서 ID·PDF·필기·계정·저장 흐름을 보존한다. 이전 reader 변경은 Git 이력에 보존한다. 2026-11-11 후속 필기 UX 검토: 명시적 노트 전체화면·앱 내 fallback·작은 도구와 나가기·문서 위치 복원을 추가하고 실제 저장 주기는 유지하면서 저장 안내만 안정화한다. 원본 PDF·문서 ID·정규화 필기·클라우드/알림 권한은 보존한다. 이전 전환은 Git 이력에 유지한다. 2026-11-12 후속 기술 검토: 페이지별 필기와 기존 저장·동기화 형식을 보존하며 세로 연속 페이지·제한된 가시 렌더 큐·전체 픽셀 예산·손가락 더블탭·고해상도 재렌더를 적용한다. 원본 PDF·문서 ID·알림 읽음 ACK는 보존하고 이전 정확한 전환은 Git 이력에 유지한다. 2026-11-14 기술 후보: 읽기 모드의 안전한 PDF 링크·목차와 명시적 점프 복귀·판본별 로컬 정밀 위치를 추가한다. 기존 PDF·필기·클라우드 권한과 저장 형식, 이전 정확한 전환의 Git 이력은 보존한다.",
+  "reason": "Site growth maintenance: section-preserving QML chapters and PDF editions; skip unnecessary startup Push subscription lookup without granted notification permission. Existing article bodies and PDFs unchanged. Subsequent QML supplement navigation changes for lectures/quantum-machine-learning/index.html are reviewed in faryad-qml-supplement.json; prior transitions remain in Git history. 2026-11-11 후속 기술 검토: 공개 PDF가 공유 리더에서 실제 렌더된 뒤 해당 글의 로컬 알림만 읽음 처리한다. 개인 PDF·실패·배경 창·다른 문서는 제외하고 기존 문서 ID·PDF·필기·계정·저장 흐름을 보존한다. 이전 reader 변경은 Git 이력에 보존한다. 2026-11-11 후속 필기 UX 검토: 명시적 노트 전체화면·앱 내 fallback·작은 도구와 나가기·문서 위치 복원을 추가하고 실제 저장 주기는 유지하면서 저장 안내만 안정화한다. 원본 PDF·문서 ID·정규화 필기·클라우드/알림 권한은 보존한다. 이전 전환은 Git 이력에 유지한다. 2026-11-12 후속 기술 검토: 페이지별 필기와 기존 저장·동기화 형식을 보존하며 세로 연속 페이지·제한된 가시 렌더 큐·전체 픽셀 예산·손가락 더블탭·고해상도 재렌더를 적용한다. 원본 PDF·문서 ID·알림 읽음 ACK는 보존하고 이전 정확한 전환은 Git 이력에 유지한다. 2026-11-14 기술 후보: 읽기 모드의 안전한 PDF 링크·목차와 명시적 점프 복귀·판본별 로컬 정밀 위치를 추가한다. 기존 PDF·필기·클라우드 권한과 저장 형식, 이전 정확한 전환의 Git 이력은 보존한다. 2026-11-14 독립 브라우저 검토 후속: 비동기 노트 문맥 표시 전에도 같은 한 줄 높이를 예약해 재열기 헤더 이동을 방지하고, 실제 스크롤·클램프 뒤 가시 영역을 제한 재측정한다. 원래 정확 전환과 후보는 Git 이력에 보존한다.",
   "files": {
     "lectures/reader/cloud.mjs": {
       "before": "b7028a943a7d0fb5cc2202bdea26e38a69cc703e8763b72b01295fec29af671f",
@@ -12,11 +12,11 @@
     },
     "lectures/reader/reader.mjs": {
       "before": "f8c20b7e059dbb7c28e6505a1d5d167a4d9055a1776280d721944ca8c1be8168",
-      "after": "51eb6a30d1c51ef84a0956b59b45b96f705413908728b5a8add9595b299a4a09"
+      "after": "7ee6b6ed048a5a0c7bb6fc372fb9e6a2d18e5bc2b1c028ccbc015b99f8ac105a"
     },
     "lectures/reader/reader.css": {
       "before": "50baf3274af78ae53b2e8551638d8e524cd3600f97a19f3b8da6112056ae51b1",
-      "after": "939192e7ae13ff7982ddc6ab0bb53e76b65b2048a5d3dc1e4af78d3f580b7f16"
+      "after": "5b210c5b2f9ea10b6192621f4f7398a7203b33bb6a997fe8937f4c4adaa34135"
     },
     "lectures/reader/storage.mjs": {
       "before": "fca4a5d154fa7c22ea7838b283936631b2c3fb09d5b9a79599e4e8cb3fb5c977",

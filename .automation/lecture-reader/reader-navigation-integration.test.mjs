@@ -233,6 +233,36 @@ test('saving and returning to a page below the viewport top preserves its visibl
   assert.equal(h.ctx.validReaderPosition(legacy), true, 'older saved anchors remain compatible');
 });
 
+test('reopening across the document scroll boundary remeasures the visible viewport and stays stable on repeated saves', async () => {
+  const h = harness(), area = h.nodes.get('page-area'); h.addView(2); h.ctx.pageNumber = 2;
+  const box = (left, top, width, height) => ({ left, right: left + width, top, bottom: top + height, width, height });
+  const headerBottom = 151.84375, paperTop = 1237.40625, paperHeight = 1046.5625;
+  const main = new Node(); h.nodes.set('reader-main', main);
+  Object.assign(area, { scrollLeft: 320, scrollTop: 0, scrollWidth: 760, clientWidth: 390, scrollHeight: 18_192, clientHeight: 18_192 });
+  Object.assign(main, { scrollLeft: 0, scrollTop: 0, scrollWidth: 390, clientWidth: 390, scrollHeight: 18_292, clientHeight: 18_292 });
+  h.nodes.set('page-controls', { hidden: false, getBoundingClientRect: () => box(0, 783, 390, 61) });
+  h.ctx.document.querySelector = selector => selector === '.reader-header' ? { getBoundingClientRect: () => box(0, 0, 390, headerBottom) } : null;
+  Object.assign(h.ctx.window, { scrollX: 0, scrollY: 1363, innerWidth: 390, innerHeight: 844 });
+  h.ctx.window.scrollTo = ({ left = 0, top = 0 }) => { h.ctx.window.scrollX = Math.max(0, left); h.ctx.window.scrollY = Math.max(0, Math.min(17_500, top)); };
+  // A normal-flow reader region can initially sit below the sticky header;
+  // after document scrolling, the visible top clips to the header instead.
+  area.getBoundingClientRect = () => box(0, headerBottom + 8 - h.ctx.window.scrollY, 390, 18_192);
+  h.sheet.getBoundingClientRect = () => box(10 - area.scrollLeft, paperTop - h.ctx.window.scrollY - area.scrollTop, 740, paperHeight);
+  vm.runInContext(read('function readerScrollOffsets(', 'function cancelReaderFocusPosition('), h.ctx);
+  const expected = h.sheet.getBoundingClientRect(), original = h.ctx.readerSavedPosition();
+  assert.equal(expected.top, -125.59375); assert.equal(original.viewportY, 8 / (783 - headerBottom));
+  for (let reopen = 0; reopen < 4; reopen++) {
+    const saved = h.ctx.readerSavedPosition();
+    h.ctx.window.scrollY = 0; area.scrollLeft = 0;
+    h.ctx.readerRestorePosition(saved);
+    const restored = h.sheet.getBoundingClientRect();
+    assert.ok(Math.abs(restored.top - expected.top) <= .5, `reopen ${reopen}: visible paper top drifted from ${expected.top} to ${restored.top}`);
+    assert.ok(Math.abs(restored.left - expected.left) <= .5, 'horizontal position stays in the existing PDF scroll region');
+    await h.ctx.persistReaderPosition();
+    assert.ok(Math.abs(h.saved.at(-1)[1].localPosition.ny - original.ny) * paperHeight <= .5, 'saving the reopened position must not accumulate a viewport inset');
+  }
+});
+
 test('named destinations stop after new document, tool, scroll or navigation intent during resolution', async () => {
   for (const variant of ['document', 'tool', 'scroll', 'input', 'new-jump', 'cloud-page']) {
     const h = harness(), held = deferred(); h.addView(); h.addView(2);
