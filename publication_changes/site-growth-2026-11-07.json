@@ -1,22 +1,26 @@
 {
   "version": 1,
-  "reason": "Site growth maintenance: section-preserving QML chapters and PDF editions; skip unnecessary startup Push subscription lookup without granted notification permission. Existing article bodies and PDFs unchanged. Subsequent QML supplement navigation changes for lectures/quantum-machine-learning/index.html are reviewed in faryad-qml-supplement.json; prior transitions remain in Git history. 2026-11-11 후속 기술 검토: 공개 PDF가 공유 리더에서 실제 렌더된 뒤 해당 글의 로컬 알림만 읽음 처리한다. 개인 PDF·실패·배경 창·다른 문서는 제외하고 기존 문서 ID·PDF·필기·계정·저장 흐름을 보존한다. 이전 reader 변경은 Git 이력에 보존한다. 2026-11-11 후속 필기 UX 검토: 명시적 노트 전체화면·앱 내 fallback·작은 도구와 나가기·문서 위치 복원을 추가하고 실제 저장 주기는 유지하면서 저장 안내만 안정화한다. 원본 PDF·문서 ID·정규화 필기·클라우드/알림 권한은 보존한다. 이전 전환은 Git 이력에 유지한다. 2026-11-12 후속 기술 검토: 페이지별 필기와 기존 저장·동기화 형식을 보존하며 세로 연속 페이지·제한된 가시 렌더 큐·전체 픽셀 예산·손가락 더블탭·고해상도 재렌더를 적용한다. 원본 PDF·문서 ID·알림 읽음 ACK는 보존하고 이전 정확한 전환은 Git 이력에 유지한다.",
+  "reason": "Site growth maintenance: section-preserving QML chapters and PDF editions; skip unnecessary startup Push subscription lookup without granted notification permission. Existing article bodies and PDFs unchanged. Subsequent QML supplement navigation changes for lectures/quantum-machine-learning/index.html are reviewed in faryad-qml-supplement.json; prior transitions remain in Git history. 2026-11-11 후속 기술 검토: 공개 PDF가 공유 리더에서 실제 렌더된 뒤 해당 글의 로컬 알림만 읽음 처리한다. 개인 PDF·실패·배경 창·다른 문서는 제외하고 기존 문서 ID·PDF·필기·계정·저장 흐름을 보존한다. 이전 reader 변경은 Git 이력에 보존한다. 2026-11-11 후속 필기 UX 검토: 명시적 노트 전체화면·앱 내 fallback·작은 도구와 나가기·문서 위치 복원을 추가하고 실제 저장 주기는 유지하면서 저장 안내만 안정화한다. 원본 PDF·문서 ID·정규화 필기·클라우드/알림 권한은 보존한다. 이전 전환은 Git 이력에 유지한다. 2026-11-12 후속 기술 검토: 페이지별 필기와 기존 저장·동기화 형식을 보존하며 세로 연속 페이지·제한된 가시 렌더 큐·전체 픽셀 예산·손가락 더블탭·고해상도 재렌더를 적용한다. 원본 PDF·문서 ID·알림 읽음 ACK는 보존하고 이전 정확한 전환은 Git 이력에 유지한다. 2026-11-14 기술 후보: 읽기 모드의 안전한 PDF 링크·목차와 명시적 점프 복귀·판본별 로컬 정밀 위치를 추가한다. 기존 PDF·필기·클라우드 권한과 저장 형식, 이전 정확한 전환의 Git 이력은 보존한다.",
   "files": {
     "lectures/reader/cloud.mjs": {
       "before": "b7028a943a7d0fb5cc2202bdea26e38a69cc703e8763b72b01295fec29af671f",
       "after": "67d589e4183a25677f37055fca9d93fdd38f6cfe6a6ef008da109b714841499a"
     },
     "lectures/reader/index.html": {
-      "before": "f669d50561fb9245b4dcc08ce80f47a6019b6cbe7fd01f078569483a0307896a",
-      "after": "dae5e0988834fdc839062ca5d138fac1e0a5afd6b54830a5e1286fcc990f2a71"
+      "before": "dae5e0988834fdc839062ca5d138fac1e0a5afd6b54830a5e1286fcc990f2a71",
+      "after": "98ef81bddfffceae5e221f9bb731e3c92ae78c4480f3e38cfe5b829275701642"
     },
     "lectures/reader/reader.mjs": {
-      "before": "02e1cde8b714a4efe5b30179153fcdcb461bbbd7644e9d68a23333d109b6b121",
-      "after": "f8c20b7e059dbb7c28e6505a1d5d167a4d9055a1776280d721944ca8c1be8168"
+      "before": "f8c20b7e059dbb7c28e6505a1d5d167a4d9055a1776280d721944ca8c1be8168",
+      "after": "51eb6a30d1c51ef84a0956b59b45b96f705413908728b5a8add9595b299a4a09"
     },
     "lectures/reader/reader.css": {
-      "before": "877cd0bb444a51a53af0f75112d4ea39e51c18381a4ece84a6ff0f3a902d6b61",
-      "after": "50baf3274af78ae53b2e8551638d8e524cd3600f97a19f3b8da6112056ae51b1"
+      "before": "50baf3274af78ae53b2e8551638d8e524cd3600f97a19f3b8da6112056ae51b1",
+      "after": "939192e7ae13ff7982ddc6ab0bb53e76b65b2048a5d3dc1e4af78d3f580b7f16"
+    },
+    "lectures/reader/storage.mjs": {
+      "before": "fca4a5d154fa7c22ea7838b283936631b2c3fb09d5b9a79599e4e8cb3fb5c977",
+      "after": "3a3d8cbcc60200db3ba59de4096fbf03017d2ba292168404ee68ce74f084c87a"
     }
   }
 }
