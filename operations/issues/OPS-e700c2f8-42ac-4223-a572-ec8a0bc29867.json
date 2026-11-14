@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 18,
+  "record_version": 19,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-13T22:10:44.942662Z",
+  "updated_at": "2026-11-14T02:25:21.979365Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -132,21 +132,21 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-13T22:02:45.617Z",
-    "last_successful_actions_check_at": "2026-11-13T22:02:43.746092Z",
-    "mail_window": "직전메일17:58:16Z에서48시간겹친11/11T17:58:16Z이후 전페이지0통. 이전해결알림이이동검색기간밖으로나갔으며삭제/상태변경이아님. 읽지않음제한없음.",
-    "actions_window": "직전전체API17:57:31Z이후 새/갱신run·실패·진행0. 최신L007네작업success유지,미해결0.",
+    "last_successful_mail_check_at": "2026-11-14T02:02:17.607Z",
+    "last_successful_actions_check_at": "2026-11-14T02:02:22.685389Z",
+    "mail_window": "직전메일22:02:45Z에서48시간겹친11/11T22:02:45Z이후 전페이지0통·읽지않음제한없음. 새메일/조회오류0.",
+    "actions_window": "직전전체API이후DQB43537547674·9월리뷰43543394051두run네작업성공. 회차중추가DRB43544798167은별도보충확인에서네작업완료,초기전체API시각은유지.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "6c191e094a96c398bb91f1c614ab3ff1136be5be",
-    "run_reference": "operations/runs/20261113T220233Z-7dcb066c-d773-4063-b5c8-fe2a2249012a.md",
-    "supplemental_actions_check_at": "2026-11-13T22:02:44.668602Z",
+    "live_source_revision": "561595296bb31c662400ae367640b2506d16f45f",
+    "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
+    "supplemental_actions_check_at": "2026-11-14T02:16:31.239823Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-13T22:02:43.746092Z",
+    "last_full_actions_check_at": "2026-11-14T02:02:22.685389Z",
     "supplemental_successful_runs": [
-      "43416893403"
+      "43544798167"
     ]
   },
   "observation": {
@@ -250,6 +250,19 @@
       "jobs_at": "2026-11-13T22:02:44.668602Z",
       "result": "새메일/run/미해결/조회오류0. 이동검색0통이며과거실패이력은보존. 실제공개6c191e0묶음동일,재실행/메일변경/테스트푸시0.",
       "run_reference": "operations/runs/20261113T220233Z-7dcb066c-d773-4063-b5c8-fe2a2249012a.md"
+    },
+    "preintegration_20261114_11": {
+      "mail_at": "2026-11-14T02:02:17.607Z",
+      "full_api_at": "2026-11-14T02:02:22.685389Z",
+      "initial_jobs_at": "2026-11-14T02:02:54.795110Z",
+      "initial_successful_run_urls": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/43537547674",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051"
+      ],
+      "supplemental_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43544798167",
+      "supplemental_run_at": "2026-11-14T02:16:31.239823Z",
+      "result": "정상게시3run모두attempt1네작업성공·새실패/미해결0. 마지막DRB는진행관측후완료를확인했고실제deploystep이실행됨. 정상게시진행중main기록push를하지않았고새발행/테스트푸시/재실행/메일수정없음.",
+      "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
     }
   },
   "recovery": {

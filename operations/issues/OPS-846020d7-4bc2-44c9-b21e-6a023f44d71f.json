@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 6,
+  "record_version": 7,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-13T18:01:43.931405Z",
+  "updated_at": "2026-11-14T02:33:36.737133Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -103,11 +103,11 @@
     "candidate_reference": "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
     "navigation_followup_candidate": {
-      "status": "implemented_candidate_not_deployed",
-      "source_revision": "897044109cad25606e39d87fb30d53e050632d69",
-      "branch": "codex/pdf-navigation-20261113",
+      "status": "latest_candidate_auto_verified_browser_pending",
+      "source_revision": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
+      "branch": "codex/pdf-navigation-20261114",
       "workspace": "managed:pdf-navigation/tech-review",
-      "base_revision": "5e99585ba61fe5aceac8610b0e825ccc98f15b6c",
+      "base_revision": "561595296bb31c662400ae367640b2506d16f45f",
       "files": [
         ".automation/lecture-reader/index.html",
         ".automation/lecture-reader/reader.css",
@@ -117,15 +117,35 @@
         "scripts/document_archive_site.py"
       ],
       "summary": "읽기 모드의 안전한 PDF 링크·목차·이름/좌표 목적지, 30개 명시적 점프 복귀 이력, 로컬의 판본별 정밀 위치/배율. 펜·지우개에서는 포인터·키보드 차단. 백업·클라우드는 기존 페이지/필기 형식을 유지하며 가져오기 때 세부 위치를 무효화.",
-      "isolation": "제품 코드와 5개 검사 파일만 별도 후보 커밋/원격 브랜치·작업 사본으로 보관했다. 정책 작업 사본은 최신 main의 편집 완료 메타데이터 86153b9까지 인수했고 제품 수정은 포함하지 않는다.",
-      "cleanup_condition": "검증·단일 경로 통합·공개 확인 뒤 후보 작업 사본을 archive_worktree로 회수한다. 보호된 미리보기·검사 산출물은 현재 사용/참조를 확인하고 기존 보존 절차로 정리한다.",
+      "isolation": "원래 후보/브랜치와 첫 미봉인 산출물을 보존하고 최신 정상 게시를 새 브랜치에 인수했다. 원래 11파일 변경 패치는 같고 필수 기존 선언 1파일 보완을 합쳐 12파일이다. main 통합/배포는 미실행이다.",
+      "cleanup_condition": "독립 검증·단일 배포/공개 확인 뒤 현재 사용·보존 조건과 필요한 ignored 근거 보존을 재확인해 작업 사본 회수를 판단한다. 현재 후보/미리보기·필요 복구 근거·기존 최신 2개/최소 7일 보존 조건을 무시해 삭제하지 않는다.",
       "integration_recheck_required": {
-        "new_main": "cc6b604b18bc16443bd81e77b29582d62cf44b63",
-        "reason": "Concurrent reviewed DRB publication changes shared archive/briefing/snapshot generation; acquire latest main and actual deployed baseline, preserve the helper copy-list hunk, regenerate and revalidate. Existing 8970441 candidate proof remains bound to 5e baseline.",
-        "publication_inputs_now": 228,
-        "original_inputs_preserved": 226,
-        "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
-      }
+        "new_main": "561595296bb31c662400ae367640b2506d16f45f",
+        "reason": "실제 561 기준 자동/보존 검증 완료. 15시 새 main/실제 공개 delta가 있으면 입력/후보를 다시 결속한 뒤 브라우저 독립 검증한다. 5e/6a 기준 증거를 최신 실기기 증거로 승격하지 않는다.",
+        "publication_inputs_now": 237,
+        "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
+        "browser_pending": true,
+        "physical_device_observation_pending": true
+      },
+      "previous_candidate_revision": "897044109cad25606e39d87fb30d53e050632d69",
+      "first_rebase_revision": "0c2b15fe2dc7c40779b3c23eb0f09c3c8cc0c7f3",
+      "candidate_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
+      "protected_artifact_key": "pdf-navigation-20261114-677211c3/candidate-latest",
+      "remote_backed_up": true,
+      "source_files": [
+        ".automation/lecture-reader/index.html",
+        ".automation/lecture-reader/pdf-navigation.mjs",
+        ".automation/lecture-reader/pdf-navigation.test.mjs",
+        ".automation/lecture-reader/reader-continuous.test.mjs",
+        ".automation/lecture-reader/reader-focus.test.mjs",
+        ".automation/lecture-reader/reader-navigation-integration.test.mjs",
+        ".automation/lecture-reader/reader-races.test.mjs",
+        ".automation/lecture-reader/reader.css",
+        ".automation/lecture-reader/reader.mjs",
+        ".automation/lecture-reader/storage.mjs",
+        "publication_changes/site-growth-2026-11-07.json",
+        "scripts/document_archive_site.py"
+      ]
     }
   },
   "verification": {
@@ -154,21 +174,37 @@
       "PDF 링크·텍스트 검색·재열기 시 정밀한 쪽 안 위치/확대 복귀는 이번 완료 범위가 아니다."
     ],
     "navigation_followup_candidate": {
+      "source_revision": "7ec17dbe88b05be5ef7e56ae2b60c105a5af95a2",
+      "baseline_revision": "561595296bb31c662400ae367640b2506d16f45f",
       "reader_tests": {
         "passed": 204,
         "failed": 0,
-        "skipped": 0
+        "reused_same_reader_inputs": true,
+        "original_execution_revision": "0c2b15fe2dc7c40779b3c23eb0f09c3c8cc0c7f3"
       },
       "python_tests": {
-        "total": 385,
-        "passed": 384,
+        "total": 392,
+        "passed": 391,
+        "skipped": 1,
         "failed": 0,
-        "skipped": 1
+        "python": "3.12.14",
+        "Pillow": "11.2.1"
       },
-      "browser": "실제 Chrome 390x844와 IAB에서 목차·내부 링크·복귀·모드 차단, 외부 링크 새 탭과 기존 앱 유지 확인. Chrome 전체화면의 본문 영역 390x786, 가로 넘침0. 200%/3쪽 재열기에서 left=-167.5 유지, top122.109375→122.4140625(0.305px 차이)·배율 유지. iPhone/Pencil/Safari 실기기 검증은 아님.",
-      "boundaries": "10,000쪽 canvas/link layer 인접 페이지만 유지, 늦은 문서·판본·렌더 token·모드·사용자 입력 취소, 90/270도 partial destination 14상황, 두 쪽 경계 viewportY·구형 저장 호환·클라우드 numeric page 보존.",
-      "preservation": "기준의 기존 공개 참조2170개와 PDF227개 원시 bytes/크기/SHA 일치. 출판 입력226개·다른 작업 미추적 인계1개 보존. 최종 후보와 정확 커밋 결속은 실행 기록의 최종 빌드 결과로 구분한다.",
-      "run_reference": "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+      "publication_checks": "최신 prepare·continuity·payload·seal·봉인 최종 validator 통과. 전체 2609파일/71글, source7ec와 실제 baseline561 결속.",
+      "preservation": "최신 232PDF 원시 SHA/크기 동일·4종 identity map/카탈로그 71항목/updates 동일. reader4경로와 카탈로그 revision만 변경, helper1추가·삭제/예상 밖 0.",
+      "declaration_fix": "첫 6a 기준 prepare 뒤 reader4 미선언 전이를 기존 검사가 차단했다. 기존 site-growth의 reader3전이를 현재 before/after에 맞추고 storage1추가, cloud 전이 보존·중복0. 이전 전이는 Git에 보존하고 검사를 완화하지 않았다.",
+      "artifact_sha256": {
+        "publication-release.json": "dcd1546ccf2918b3614554501ee1d1c928155087073608b379c87a81f9a0cbd6",
+        "reader-publications.json": "7ea22db36021d6acf6a255f8460dfe9486e2d0aafd00283c3bdb70864d57c84b",
+        "reader-updates.json": "d1366c2ffabe37ba6125bc448e99bd0555f24f43d11bb47bd0fd6192786b2050"
+      },
+      "warnings": [
+        "기존 검색 80KB 경고 92,239B, 실패 아님",
+        "기존 공개 600MB 경고, 내부 800MB까지 현재 공개 약 30.4MB"
+      ],
+      "browser": "이번 최신 후보는 15시 브라우저 검증 예정, 실제 iPhone/Pencil/Safari 관찰은 별도 미완료.",
+      "independent_review": "12파일 범위·원래 11파일 패치/재기준 0c의 11blob 동일·main236입력 보존과 선언4SHA/봉인 실제 파일·카탈로그·동시 DRB/PDF 메타를 구현자 외 역할이 확인.",
+      "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
     },
     "preintegration_check_20261114_03": {
       "status": "new_editorial_baseline_recorded_candidate_unchanged",
@@ -192,7 +228,7 @@
     "execution_reference": null,
     "result": "기존 단일 Pages 경로로 리더 화면·렌더 개선 배포 완료. 원본·문서 ID·필기 형식과 백엔드/Worker 보존, 실제 롤백·개인 DB 복원·데이터 이전/삭제 없음."
   },
-  "next_action": "오늘11/14 15시 후보8970441에 최신 main/실제 L007 배포6c191e0 이후 변경을 인수하고 재생성·독립 검증한다. 새L007·최신별칭/단위등록·기존 불변PDF/필기·reader ID를 보존하고19시 단일 통합을 목표로 한다. 기존5e기준검사를새실기기검증으로승격하지않으며,미완료/충돌이면후보와재개점을보존하고원장·일감의검토시각을함께갱신한다.",
+  "next_action": "15시 최신 main/실제 공개 delta를 확인해 7ec 후보를 필요시 다시 결속하고 모드별 링크·목차/점프 복귀·확대/연속 스크롤·저장/필기·캐시·안전 목적지의 브라우저 독립 검증을 수행한다. 통과 시 19시 기존 단일 경로 통합 목표다. 자동 검증/원격 후보 보관을 배포·실기기 완료로 간주하지 않으며 미완료면 원장·영향 일감을 함께 재배정한다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -234,10 +270,10 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "candidate_implemented_validation_pending",
+    "state": "latest_candidate_auto_verified_browser_pending",
     "next_scheduled_step_at": "2026-11-14T15:00:00+09:00",
     "next_review_at": "2026-11-14T19:00:00+09:00",
-    "scheduled_step": "8970441 후보의 최신 원격/공개본 인수·독립 검증;19시 통합 목표, 배포 완료 약속 아님",
-    "run_reference": "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md"
+    "scheduled_step": "7ec 최신 후보 15시 브라우저 독립 검증/원본 보존 확인; 19시 단일 통합 목표",
+    "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
   }
 }
