@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e",
-  "record_version": 6,
+  "record_version": 7,
   "asset_key": "public-document-storage",
   "name": "공개 PDF 객체 저장소 이전 준비",
   "status": "prepared",
@@ -22,11 +22,12 @@
     "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
     "operations/runs/20261113T100400Z-2fe00e07-9f0e-4d35-8d44-61510d630c6b.md",
     "operations/runs/20261113T175651Z-325be594-ebf7-462c-944d-2e459b512ee7.md",
-    "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md"
+    "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
+    "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
   ],
   "access_boundary": "준비 코드·로컬 검증과 실제 운영 활성화를 구분한다. 향후 업로드는 게시 담당 권한으로 제한하고 공개 읽기는 검증된 URL/기대 SHA 매핑만 허용한다. 개인 문서·필기·사용자 계정 데이터를 공개 PDF 객체와 섞지 않는다.",
   "verification": {
-    "checked_at": "2026-11-14T02:17:08.559943Z",
+    "checked_at": "2026-11-14T10:15:40.932297Z",
     "confirmed": [
       "기존 검증 묶음의 공개 PDF226경로/159객체와 Worker 매핑·로컬 전달 근거 재사용",
       "기존 CLI 로그인과 해당 계정 소속 확인. 현 OAuth 권한 목록에 R2 없음·R2 목록 요청10000거절, 브라우저 로그인 필요",
@@ -43,12 +44,29 @@
       "Worker/Pages 별도 배포의 기대 SHA 고정·구신 판본 전환·원격 객체 봉인/복원",
       "15시기존로그인인계화면도로그인필요. 계정/R2접근복원·실제업로드/원격객체봉인/복원·기대SHA고정지원운영활성화미확인.",
       "19시 기존로그인인계도암호입력필요. 실제R2권한·버킷·사용량/청구·원격전체해시/복구의새확인근거없음."
-    ]
+    ],
+    "current_public_footprint": {
+      "checked_at": "2026-11-14T10:15:40.932297Z",
+      "source_revision": "617b38f5bef1fee53dcb77f2a58138f0ab9a2855",
+      "manifest_files": 2608,
+      "manifest_bytes": 768305584,
+      "release_json_bytes": 1330886,
+      "public_files": 2609,
+      "public_bytes": 769636470,
+      "growth_since_previous_bytes": 26666,
+      "headroom_to_internal_800MB_bytes": 30363530,
+      "pdf_paths": 232,
+      "unique_pdf_objects": 162,
+      "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
+      "scope": "실제 공개 기술 배포의 전체 정적 파일 크기. 공급자 청구/사용량·외부 이전/저장량 절감과 구분."
+    },
+    "provider_connection_rechecked_this_cycle": false,
+    "operational_storage_activation": false
   },
   "lifecycle": {
     "retirement_trigger": "준비 폐기 시 도구/예제/문서의 사용을 확인한다. 활성화 뒤 퇴역은 기존 공개 URL·판본/필기와 복구·권한을 검증한 별도 절차로 처리하며 원본을 자동 삭제하지 않는다.",
     "recovery_reference": "SITE_OPERATIONS.md"
   },
   "created_at": "2026-11-12T22:16:24Z",
-  "updated_at": "2026-11-14T02:25:21.979365Z"
+  "updated_at": "2026-11-14T10:26:38.983457Z"
 }

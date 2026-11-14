@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 20,
+  "record_version": 21,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-14T06:05:28.113929Z",
+  "updated_at": "2026-11-14T10:26:38.983457Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -132,21 +132,21 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-14T06:02:36.063Z",
-    "last_successful_actions_check_at": "2026-11-14T06:02:41.407969Z",
-    "mail_window": "직전 성공부터 48시간 겹친 11/12T02:02:17.607Z 이후, 읽지 않음 제한 없이 전페이지 0통. 조회 오류·상태 변경0.",
-    "actions_window": "직전 전체 조회 이후 DRB1건은 이미 보충 확인한 성공 실행이다. 새 미관측 run·실패·진행·미해결0. 최신 attempt1의 네 작업 성공 유지.",
+    "last_successful_mail_check_at": "2026-11-14T10:03:31.546Z",
+    "last_successful_actions_check_at": "2026-11-14T10:03:36.765813Z",
+    "mail_window": "직전 성공부터48시간 겹친11/12T06:02:36.063Z 이후, 읽지 않음 제한 없이 전페이지0통·오류0·상태 변경0.",
+    "actions_window": "착수 시 전체 API에서 새/갱신/진행0이었다. 이후 이번 PDF 기술 배포43583990647은 별도 보충 확인으로 네 작업 성공·실제 공개617b까지 연결했다. 메일/전체 API 시각을 보충 조회로 덮지 않았다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "561595296bb31c662400ae367640b2506d16f45f",
-    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md",
-    "supplemental_actions_check_at": "2026-11-14T06:03:01.599020Z",
+    "live_source_revision": "617b38f5bef1fee53dcb77f2a58138f0ab9a2855",
+    "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
+    "supplemental_actions_check_at": "2026-11-14T10:17:11.380674Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-14T06:02:41.407969Z",
+    "last_full_actions_check_at": "2026-11-14T10:03:36.765813Z",
     "supplemental_successful_runs": [
-      "43544798167"
+      "43583990647"
     ]
   },
   "observation": {
@@ -270,6 +270,22 @@
       "jobs_at": "2026-11-14T06:03:01.599020Z",
       "result": "새 메일·미관측 run·실패·진행·미해결·issue/PR 피드백0. 직전 보충 확인 DRB를 중복 신규 실행으로 세지 않았다. 실제 공개561 묶음 동일·재실행/발송/상태 변경0.",
       "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    },
+    "technical_deployment_20261114_19": {
+      "mail_at": "2026-11-14T10:03:31.546Z",
+      "full_api_at": "2026-11-14T10:03:36.765813Z",
+      "supplemental_run_at": "2026-11-14T10:17:11.380674Z",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43583990647",
+      "source_revision": "617b38f5bef1fee53dcb77f2a58138f0ab9a2855",
+      "attempt": 1,
+      "jobs": {
+        "build": "2026-11-14T10:14:42Z",
+        "deploy": "2026-11-14T10:15:06Z",
+        "recovery-copy": "2026-11-14T10:16:08Z",
+        "notify-readers": "2026-11-14T10:16:14Z"
+      },
+      "result": "네 작업/실제 배포 성공·새 미해결0. synced71/newArticles0/queuedEvents0, 별도 테스트 푸시·재실행·메일 상태 변경0. 복구 사본 미만료/최근3개 보존과 실제 HTTPS를 확인.",
+      "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
     }
   },
   "recovery": {
