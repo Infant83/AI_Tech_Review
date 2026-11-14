@@ -27,3 +27,11 @@ dqb1114_qml_ibm은 QML Article in Press 31쪽 전체 텍스트와 수치표 4쪽
 root가 6쪽 전체 렌더를 확인했고, 빌더는 선언한 편집 영역 밖의 원 4쪽 픽셀을 144 dpi에서 대조했다. PDF 본문·메타데이터·원 진입점과 판본 링크·첨부·실행 동작·개인정보 검사와 별도 담당자의 검수를 거쳐 등록한다. 등록·후보·실제 HTTPS 공개 확인은 서로 다른 단계로 기록한다.
 
 최종 후보에서 기존 리뷰 57편·등록 PDF 134건(참조 PDF 파일 230개)과 DRB·Classiq L007의 바이트 보존을 독립 확인했다. 새 DQB를 더해 등록 PDF 135건·DQB 82건·DRB 1건이며 reader catalog는 71개다. 현재 HTML이 쓰지 않는 목록용 파생 이미지 캐시 5개만 기존 정책에 따라 교체되고 원 표지·기사·PDF는 유지한다. Chrome에서 한영 편집글·언어 전환·별도 PDF 링크, 달력 날짜 선택·목록과 한영 검색, 390px 모바일을 확인했다. 이 검수와 실제 공개 확인은 구별한다.
+
+## 공개 확인 · 2026-11-14
+
+[한국어 편집 브리핑](https://infant83.io/AI_Tech_Review/briefings/2026-11-14/)·[영어 편집 브리핑](https://infant83.io/AI_Tech_Review/briefings/2026-11-14/en/)과 [6쪽 공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-14-daily-quantum-brief.pdf)를 배포했다. 발행 커밋은 `4cb2fa2f05adc1be994277eaeb65783228caaef0`이며 [배포 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/43537547674)의 build·deploy·recovery-copy·notify-readers 네 작업이 모두 성공했다. 실제 CI 테스트 829개 중 820개 통과·9개 스킵·실패 0개다.
+
+실제 HTTPS 12경로를 확인했고 PDF SHA는 `001b8af02d37741fb0421c06c9074d5c3da626d2dce13c43bf368610d88382b8`로 dist·아카이브와 같다. 선택한 실제 공개 경로를 봉인한 CI 아티팩트의 해시와 대조했다. Chrome에서 실제 한영 페이지와 언어 전환·날짜·서지·관련 글·PDF 링크를 확인했다. 390px 모바일·달력 날짜 선택·한영 검색 검수는 같은 최종 로컬 후보에서 수행한 범위다.
+
+복구 사본은 CI의 동일 배포물 검증·포장과 아티팩트 업로드 성공을 확인했으며 로컬 전체 복원 시험으로 표시하지 않는다. 독자 동기화는 71개·신규 기사 0·대기 이벤트 0이다. [공개 검증 기록](notes/publication-verification.json)에 실제 범위와 제한을 남겼다. 승인 대기 심층 기획의 상태는 유지하며 이 공개 보관·짧은 글을 신규 심층 리뷰 발행으로 세지 않는다.
