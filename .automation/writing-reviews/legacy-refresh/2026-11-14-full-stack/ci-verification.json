@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/legacy0903_software",
+  "team": "편집부(AEDAUT)",
+  "completed_at": "2026-11-14T02:03:01.004972+00:00",
+  "status": "passed",
+  "run_id": 43543394051,
+  "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051",
+  "source_revision": "6a36c49a56ed0a99ce6a31ad270a8c42bff6abed",
+  "run_conclusion": "success",
+  "tests": {
+    "totals": {
+      "discovered": 829,
+      "passed": 820,
+      "failed": 0,
+      "skipped": 9
+    },
+    "executed": 820,
+    "suites": [
+      {
+        "name": "Check publication, search and preservation rules",
+        "framework": "python unittest",
+        "discovered": 392,
+        "passed": 391,
+        "failed": 0,
+        "skipped": 1,
+        "skip_details": "Non-verbose unittest log reports skipped=1; reason not present in CI summary."
+      },
+      {
+        "name": "Check multilingual search ranking",
+        "framework": "node:test",
+        "discovered": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "Check reader controls and notification permission handling",
+        "framework": "node:test",
+        "discovered": 187,
+        "passed": 179,
+        "failed": 0,
+        "skipped": 8,
+        "skip_details": [
+          "iPhone browser gives real installation instructions and never requests permission automatically # SKIP",
+          "subscribe follows a direct gesture; settings, test and unsubscribe work; resubscribe preserves granted permission # SKIP",
+          "denied permission shows settings and never creates a subscription # SKIP",
+          "likes toggle from server response; share fallback keeps the English article path; cancel is silent # SKIP",
+          "dialog stays inside viewport, focus and controls work at 320px # SKIP",
+          "dialog stays inside viewport, focus and controls work at 390px # SKIP",
+          "dialog stays inside viewport, focus and controls work at 736px # SKIP",
+          "dialog stays inside viewport, focus and controls work at 1280px # SKIP"
+        ]
+      },
+      {
+        "name": "Check the existing lecture reader and storage races",
+        "framework": "node:test",
+        "discovered": 175,
+        "passed": 175,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "Check backend authentication and notebook authorization",
+        "framework": "node:test",
+        "discovered": 60,
+        "passed": 60,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "name": "Check portable media delivery",
+        "framework": "node:test",
+        "discovered": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "wording": "820passed,0failed,9skipped,829discovered; skipped tests are not counted as passed."
+  },
+  "recovery_copy": {
+    "verification": {
+      "ok": true,
+      "revision": "6a36c49a56ed0a99ce6a31ad270a8c42bff6abed",
+      "files": 2605,
+      "bytes": 768425783,
+      "archive_sha256": "ea1c6494e937a6fb8e164a4c060150aa1747ebf97f42fd86d8480ac50da34c7d"
+    },
+    "files_verified": 2605,
+    "uncompressed_file_bytes_verified": 768425783,
+    "archive_sha256": "ea1c6494e937a6fb8e164a4c060150aa1747ebf97f42fd86d8480ac50da34c7d",
+    "uploaded_artifact": {
+      "id": 14093680425,
+      "name": "publication-recovery",
+      "size_in_bytes": 688124808,
+      "expired": false,
+      "created_at": "2026-11-14T02:00:26Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051/artifacts/14093680425"
+    },
+    "retention_workflow_result": {
+      "keep": [
+        14093680425,
+        14090582596,
+        14032890894
+      ],
+      "delete": [
+        14015329961
+      ],
+      "applied": true
+    },
+    "interpretation": "CI recovery step verified the exact deployed artifact and packaged it; bytes is the sum of verified content file sizes, distinct from the compressed uploaded artifact size. Auditor did not download or re-extract the688MBarchive."
+  },
+  "notifications": {
+    "workflow_report": {
+      "synced": 71,
+      "revision": "6a36c49a56ed0a99ce6a31ad270a8c42bff6abed",
+      "ok": true,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "baseline": false
+    },
+    "synced_catalog_entries": 71,
+    "new_articles": 0,
+    "newly_queued_events": 0,
+    "pending_events_created_by_this_run": 0,
+    "global_preexisting_pending_queue_count": null,
+    "interpretation": "71catalogentries synchronized;0newarticles and0newlyqueuedevents. No claim about all historical pending delivery events or delivery to an actual device."
+  },
+  "jobs": [
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051/job/132288883570",
+      "duration_seconds": 233
+    },
+    {
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051/job/132290001020",
+      "duration_seconds": 22
+    },
+    {
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051/job/132290118612",
+      "duration_seconds": 45
+    },
+    {
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43543394051/job/132290118613",
+      "duration_seconds": 79
+    }
+  ],
+  "scope": "Read-only final CI log/artifact-metadata comparison; no rerun, manual notification, experiment or separate recovery download/restore."
+}
