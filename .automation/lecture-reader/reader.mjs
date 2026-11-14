@@ -390,13 +390,14 @@ async function followReaderDestination(dest) {
   if (tool !== 'read' || !current || !pdf || busy || active) return;
   const owner = current, documentPDF = pdf, generation = documentOpenGeneration, request = ++readerNavigationRequest;
   const inputEpoch = readerFocusInputEpoch, scroll = readerScrollOffsets();
+  const stillRequested = () => owner === current && documentPDF === pdf && generation === documentOpenGeneration && request === readerNavigationRequest &&
+    tool === 'read' && !busy && !active && inputEpoch === readerFocusInputEpoch && readerScrollOffsets().every((v, i) => v === scroll[i]);
   try {
     const destination = await resolveDestination(documentPDF, dest);
-    if (!destination || owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || request !== readerNavigationRequest ||
-        tool !== 'read' || busy || active || inputEpoch !== readerFocusInputEpoch || !readerScrollOffsets().every((v, i) => v === scroll[i])) return;
+    if (!stillRequested()) return;
+    if (!destination) { toast(t('navigationFailed')); return; }
     const page = await documentPDF.getPage(destination.page);
-    if (owner !== current || documentPDF !== pdf || generation !== documentOpenGeneration || request !== readerNavigationRequest || tool !== 'read' ||
-        busy || active || inputEpoch !== readerFocusInputEpoch || !readerScrollOffsets().every((v, i) => v === scroll[i])) return;
+    if (!stillRequested()) return;
     const viewport = page.getViewport({ scale: 1 }), previous = readerSavedPosition();
     const point = destination.point || {}, left = page.view?.[0] || 0, top = page.view?.[3] || viewport.height;
     // Fill unspecified coordinates in PDF space before transforming: on a
@@ -427,7 +428,7 @@ async function followReaderDestination(dest) {
     // Destination zoom uses the same bounded raster plan as toolbar zoom.
     await navigateReaderPosition({ fingerprint: owner.fingerprint, page: destination.page, zoom,
       nx, ny }, { request });
-  } catch { if (owner === current && request === readerNavigationRequest) toast(t('navigationFailed')); }
+  } catch { if (stillRequested()) toast(t('navigationFailed')); }
 }
 function syncReaderLinks(view) {
   if (!view.linkLayer) return;

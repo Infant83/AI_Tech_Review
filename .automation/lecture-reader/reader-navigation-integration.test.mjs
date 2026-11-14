@@ -280,6 +280,52 @@ test('named destinations stop after new document, tool, scroll or navigation int
   }
 });
 
+test('missing, rejected and out-of-range destinations report one failure without changing the PDF or ink', async () => {
+  for (const variant of ['missing', 'rejected', 'out-of-range']) {
+    const h = harness(); h.addView();
+    const strokes = [{ id: 'existing-ink', points: [{ x: .2, y: .3 }] }]; h.ctx.pages.set(1, strokes);
+    h.ctx.pdf.getDestination = async () => { if (variant === 'rejected') throw Error('unavailable'); return null; };
+    await h.ctx.followReaderDestination(variant === 'out-of-range' ? [5, { name: 'Fit' }] : 'missing-section');
+    assert.deepEqual(h.alerts, ['navigationFailed'], variant);
+    assert.equal(h.ctx.pageNumber, 1); assert.equal(h.nodes.get('zoom').value, '1');
+    assert.equal(h.ctx.pages.get(1), strokes); assert.equal(h.ctx.mutationRevision, 0); assert.equal(h.ctx.jumpHistory.size, 0);
+    assert.deepEqual(h.saved, []); assert.deepEqual(h.rendered, []); assert.deepEqual(h.restored, []);
+  }
+});
+
+test('a missing destination completed after cancellation never reports an obsolete failure', async () => {
+  for (const variant of ['owner', 'pdf', 'generation', 'request', 'tool', 'input', 'scroll', 'busy', 'ink']) {
+    const h = harness(), held = deferred(); h.addView();
+    h.ctx.pdf.getDestination = () => held.promise;
+    const pending = h.ctx.followReaderDestination('missing-section');
+    if (variant === 'owner') h.ctx.current = { ...h.ctx.current };
+    if (variant === 'pdf') h.ctx.pdf = { ...h.ctx.pdf };
+    if (variant === 'generation') h.ctx.documentOpenGeneration++;
+    if (variant === 'request') h.ctx.resetReaderNavigation();
+    if (variant === 'tool') h.ctx.chooseTool('pen');
+    if (variant === 'input') h.ctx.readerFocusInputEpoch++;
+    if (variant === 'scroll') h.scroll[3] = 50;
+    if (variant === 'busy') h.ctx.busy = true;
+    if (variant === 'ink') h.ctx.active = { page: 1 };
+    held.resolve(null); await pending;
+    assert.deepEqual(h.alerts, [], variant); assert.deepEqual(h.rendered, []); assert.equal(h.ctx.pageNumber, 1);
+  }
+});
+
+test('an awaited page failure respects the same current-intent guard as destination resolution', async () => {
+  for (const variant of ['current', 'input', 'scroll', 'tool']) {
+    const h = harness(), entered = deferred(), held = deferred(); h.addView();
+    h.ctx.pdf.getPage = () => { entered.resolve(); return held.promise; };
+    const pending = h.ctx.followReaderDestination([1, { name: 'Fit' }]); await entered.promise;
+    if (variant === 'input') h.ctx.readerFocusInputEpoch++;
+    if (variant === 'scroll') h.scroll[3] = 50;
+    if (variant === 'tool') h.ctx.chooseTool('pen');
+    held.reject(Error('page unavailable')); await pending;
+    assert.deepEqual(h.alerts, variant === 'current' ? ['navigationFailed'] : [], variant);
+    assert.equal(h.ctx.pageNumber, 1); assert.equal(h.ctx.jumpHistory.size, 0); assert.equal(h.ctx.mutationRevision, 0);
+  }
+});
+
 test('user input during an awaited page load cancels a jump before page, history or metadata changes', async () => {
   const h = harness(), held = deferred(); h.addView(); h.addView(2);
   h.ctx.ensurePage = () => held.promise;
