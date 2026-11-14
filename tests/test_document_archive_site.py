@@ -1053,6 +1053,9 @@ class DocumentArchiveSiteTests(unittest.TestCase):
                 "?series=lecture-notes&month=2026-10", "?series=lecture-notes&sort=oldest", "?series=lecture-notes&sort=newest",
                 "?series=daily-quantum", "?series=daily-quantum&q=kernel", "?series=daily-quantum&q=",
                 "?series=daily-quantum&month=2026-10", "?series=daily-quantum&sort=oldest", "?series=daily-quantum&sort=newest",
+                "?series=daily-research", "?series=daily-research&q=kernel", "?series=daily-research&month=2026-10",
+                "?series=daily-quantum-exercise", "?series=daily-quantum-exercise&q=kernel", "?series=daily-quantum-exercise&q=",
+                "?series=daily-quantum-exercise&month=2026-11", "?series=daily-quantum-exercise&sort=oldest",
                 "?series=weekly-review", "?series=weekly-review&q=kernel", "?series=weekly-review&month=2026-10", "?series=weekly-review&sort=oldest", "",
             )
         ]
@@ -1075,6 +1078,8 @@ process.stdout.write(JSON.stringify(results));
                 destination_section = {
                     "?series=lecture-notes": "lectures",
                     "?series=daily-quantum": "briefings",
+                    "?series=daily-research": "briefings",
+                    "?series=daily-quantum-exercise": "briefings",
                     "?series=weekly-review": "briefings",
                 }.get(case["query"])
                 expected = (

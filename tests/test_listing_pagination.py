@@ -54,16 +54,17 @@ class ListingPaginationTests(unittest.TestCase):
         self.assertEqual(page_count(55, "reviews"), 10)
         self.assertEqual(page_count(119, "archive"), 10)
 
-    def test_research_briefings_count_towards_generated_list_pages(self):
+    def test_research_and_exercise_briefings_count_towards_generated_list_pages(self):
         docs = self.documents(12)
-        research = {**docs[0], "id": "2026-11-07-research", "series": "daily-research"}
-        with TemporaryDirectory() as directory:
-            root = Path(directory)
-            (root / "manifest.json").write_text("[]")
-            (root / "archive-manifest.json").write_text(json.dumps({"documents": docs + [research]}))
-            paths = generated_paths(root)
-            self.assertIn("briefings/page/2/index.html", paths)
-            self.assertIn("briefings/en/page/2/index.html", paths)
+        for series in ("daily-research", "daily-quantum-exercise"):
+            with self.subTest(series=series), TemporaryDirectory() as directory:
+                added = {**docs[0], "id": "2026-11-07-" + series, "series": series}
+                root = Path(directory)
+                (root / "manifest.json").write_text("[]")
+                (root / "archive-manifest.json").write_text(json.dumps({"documents": docs + [added]}))
+                paths = generated_paths(root)
+                self.assertIn("briefings/page/2/index.html", paths)
+                self.assertIn("briefings/en/page/2/index.html", paths)
 
     def test_review_html_contains_only_the_requested_six_and_covers_every_id_once(self):
         documents = self.documents(19)

@@ -84,12 +84,13 @@ class BriefingSiteTests(unittest.TestCase):
         daily = document("2026-10-20")
         weekly = document("2026-10-16", "weekly", "weekly-review")
         research = document("2026-10-20", "research", "daily-research")
+        exercise = document("2026-10-20", "exercise", "daily-quantum-exercise")
         article = document("2026-10-19", "article", "article")
         lecture = document("2026-10-18", "lecture", "lecture-notes")
 
-        selected = briefing_site.briefing_documents([daily, weekly, research, article, lecture], prefix="../")
+        selected = briefing_site.briefing_documents([daily, weekly, research, exercise, article, lecture], prefix="../")
 
-        self.assertEqual({item["id"] for item in selected}, {daily["id"], weekly["id"], research["id"]})
+        self.assertEqual({item["id"] for item in selected}, {daily["id"], weekly["id"], research["id"], exercise["id"]})
         allowed = {"id", "date", "series", "title", "title_en", "summary", "summary_en", "tags", "language", "href"}
         for item in selected:
             self.assertTrue(set(item) <= allowed)

@@ -107,7 +107,8 @@
     if (rows.has(item.id)) return rows.get(item.id);
     const row = element('article', 'briefing-row'); row.dataset.id = item.id; row.dataset.date = item.date;
     const date = element('div', 'briefing-date'), time = element('time', '', item.date); time.dateTime = item.date;
-    date.append(time, element('span', '', item.series === 'weekly-review' ? (en ? 'Weekly review' : '주간 브리핑') : item.series === 'daily-research' ? 'Daily Research Brief' : 'Daily Quantum Brief'));
+    const seriesLabel = {'weekly-review': en ? 'Weekly review' : '주간 브리핑', 'daily-research': 'Daily Research Brief', 'daily-quantum': 'Daily Quantum Brief', 'daily-quantum-exercise': 'Daily Quantum Exercise'}[item.series];
+    date.append(time, element('span', '', seriesLabel));
     const body = element('div', 'briefing-row-body'), heading = element('h3'); heading.lang = en && item.title_en ? 'en' : item.language || 'ko'; heading.append(topicLink(item));
     const summary = element('p', '', en ? item.summary_en || item.summary : item.summary); summary.lang = en && item.summary_en ? 'en' : item.language || 'ko';
     const tags = element('div', 'briefing-tags'); (item.tags || []).forEach(tag => tags.append(element('span', '', tag))); body.append(heading, summary, tags);

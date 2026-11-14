@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "document_id": "2026-11-14-daily-quantum-exercise",
+  "publication_status": "candidate_verified_not_yet_deployed",
+  "python_tests": {
+    "run": 395,
+    "passed": 394,
+    "skipped": 1,
+    "failed": 0
+  },
+  "node_search_navigation_tests": {
+    "run": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "targeted_integration_tests": 120,
+  "existing_bilingual_editorial_pages_byte_identical": 14,
+  "release_check": {
+    "ok": true,
+    "blockers": [],
+    "additions": [
+      {
+        "group": "archive",
+        "id": "2026-11-14-daily-quantum-exercise"
+      }
+    ],
+    "counts": {
+      "archive": 137,
+      "external": 1,
+      "publications": 71,
+      "reviews": 57
+    }
+  },
+  "payload_check": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 600MB; review object storage migration"
+    ]
+  },
+  "browser": {
+    "engine": "Codex in-app browser",
+    "tested": [
+      "Korean and English editorial navigation",
+      "Native details initially collapsed and expands",
+      "390 x 844 viewport: no horizontal overflow",
+      "Same-date calendar shows DQB, DRB and DQE separately",
+      "Briefing list labels DQE and offers editorial/PDF/download",
+      "Search for Korean delivery term returns DQE editorial"
+    ],
+    "scope": "Local candidate; browser-tested files byte-identical in pinned final candidate; live verification pending"
+  },
+  "build_dependency": "Pillow 11.2.1; first candidate had five missing prior thumbnail references with unpinned local encoder, resolved using repository-pinned build dependency",
+  "public_pdf_sha256": "17e5fbc57f8c39968e9410a31afb4bab5058a862e32bd515666f727d11d99100",
+  "human_sentence_review": "not performed"
+}

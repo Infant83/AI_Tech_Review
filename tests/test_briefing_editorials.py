@@ -181,20 +181,78 @@ class BriefingEditorialTests(unittest.TestCase):
         self.assertEqual(record["url"], research["editorial_href"])
         self.assertEqual(record["url_en"], research["editorial_en_href"])
 
-    def test_same_research_issue_namespace_collision_still_rejects_before_writing(self) -> None:
+    def test_same_day_exercise_preserves_quantum_and_research_and_enters_discovery(self) -> None:
+        from scripts.document_archive_site import render_archive
+        from scripts.publication_snapshot import capture_site
+        from scripts.reader_engagement_publish import build_updates
+        from scripts.site_search import build_records
+
         self.register()
-        docs = []
-        (self.repo / "publication/briefings" / (IDENTITY + ".json")).unlink()
-        for suffix in ("daily-research-brief", "another-research-brief"):
-            identity = "2026-11-12-" + suffix
-            item = {**document(), "id": identity, "series": "daily-research", "href": "archive/files/" + identity + ".pdf"}
-            docs.append(item)
-            spec = {**self.spec, "id": identity}
-            (self.repo / "publication/briefings" / (identity + ".json")).write_text(json.dumps(spec))
-        with self.assertRaisesRegex(ValueError, "collision"):
-            briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
-        self.assertFalse(self.staging.exists())
-        self.assertTrue(all("editorial_href" not in item for item in docs))
+        research = {**document(), "id": "2026-11-12-daily-research-brief", "series": "daily-research",
+                    "href": "archive/files/2026-11-12-daily-research-brief.pdf"}
+        registry = self.repo / "publication/briefings"
+        (registry / (research["id"] + ".json")).write_text(json.dumps({**self.spec, "id": research["id"]}))
+        docs = [self.document, research]
+        original_assets = briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
+        previous = {path: (self.staging / path).read_bytes() for path in original_assets}
+        exercise = {**document(), "id": "2026-11-12-daily-quantum-exercise", "series": "daily-quantum-exercise",
+                    "title": "경로 선택 문제", "title_en": "Route selection exercise",
+                    "summary": "제약을 만족하는 경로를 직접 찾습니다.", "summary_en": "Find a route that satisfies the constraints.",
+                    "href": "archive/files/2026-11-12-daily-quantum-exercise.pdf"}
+        (registry / (exercise["id"] + ".json")).write_text(json.dumps({**self.spec, "id": exercise["id"]}))
+        docs.append(exercise)
+        for item in docs:
+            pdf = self.staging / item["href"]
+            pdf.parent.mkdir(parents=True, exist_ok=True)
+            pdf.write_bytes(("PDF " + item["id"]).encode())
+            item.update(sha256=hashlib.sha256(pdf.read_bytes()).hexdigest(), size_bytes=pdf.stat().st_size)
+        assets = briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
+        self.assertEqual(len(assets), 6)
+        self.assertEqual(exercise["editorial_href"], "briefings/exercises/2026-11-12/index.html")
+        self.assertEqual(exercise["editorial_en_href"], "briefings/exercises/2026-11-12/en/index.html")
+        for path, content in previous.items():
+            self.assertEqual((self.staging / path).read_bytes(), content)
+        for language in ("ko", "en"):
+            reading = exercise["editorial_en_href" if language == "en" else "editorial_href"]
+            self.assertIn(reading, briefing_site.render_calendar(docs, "2026-11", language))
+            self.assertIn(reading, briefing_site.render_detail(docs, language))
+            listing = briefing_site.render_briefings(docs, BASE_URL, language)
+            self.assertIn(reading, listing)
+            self.assertIn("Daily Quantum Exercise", listing)
+            archive = render_archive(docs, BASE_URL, language)
+            self.assertIn('data-series="daily-quantum-exercise"', archive)
+            self.assertIn(exercise["href"], archive)
+        (self.staging / "manifest.json").write_text("[]")
+        (self.staging / "archive-manifest.json").write_text(json.dumps({"documents": docs, "external_resources": []}))
+        snapshot = capture_site(self.staging)
+        self.assertEqual(snapshot["declared_hash_mismatches"], [])
+        self.assertEqual(snapshot["archive"][exercise["id"]]["editorial_references"], sorted(exercise["editorial_assets"]))
+        entry = next(item for item in build_updates(self.staging)["articles"] if item["id"] == "archive:" + exercise["id"])
+        self.assertEqual(set(entry["paths"]), {"/AI_Tech_Review/" + exercise["href"],
+                                              "/AI_Tech_Review/briefings/exercises/2026-11-12/",
+                                              "/AI_Tech_Review/briefings/exercises/2026-11-12/en/"})
+        record = next(item for item in build_records(self.staging) if item["id"] == exercise["id"])
+        self.assertEqual(record["scope"], "briefings")
+        self.assertEqual((record["url"], record["url_en"]), (exercise["editorial_href"], exercise["editorial_en_href"]))
+
+    def test_same_daily_namespace_collision_still_rejects_before_writing(self) -> None:
+        self.register()
+        registry = self.repo / "publication/briefings"
+        for series in ("daily-research", "daily-quantum-exercise"):
+            with self.subTest(series=series):
+                for registration in registry.glob("*.json"):
+                    registration.unlink()
+                docs = []
+                for suffix in (series, "another-" + series):
+                    identity = "2026-11-12-" + suffix
+                    item = {**document(), "id": identity, "series": series, "href": "archive/files/" + identity + ".pdf"}
+                    docs.append(item)
+                    spec = {**self.spec, "id": identity}
+                    (registry / (identity + ".json")).write_text(json.dumps(spec))
+                with self.assertRaisesRegex(ValueError, "collision"):
+                    briefing_editorials.stage_editorials(self.repo, self.staging, docs, BASE_URL, lambda text, prefix: text)
+                self.assertFalse(self.staging.exists())
+                self.assertTrue(all("editorial_href" not in item for item in docs))
 
     def test_registry_requires_complete_dates_and_both_manuscripts(self) -> None:
         for field, value in (("version", True), ("updated", "2026-11-11"), ("updated", "2026-02-30"),
@@ -256,6 +314,22 @@ class BriefingEditorialTests(unittest.TestCase):
         self.assertIn('href="https://arxiv.org/abs/2611.14214v1"', briefing_editorials.validate_fragment(fragment))
         self.assertIn("E &lt; 0", briefing_editorials.validate_fragment(fragment))
         self.assertEqual(briefing_editorials.validate_fragment("<p>Private quantum queries are a research topic.</p>"), "<p>Private quantum queries are a research topic.</p>")
+
+    def test_collapsed_solutions_remain_passive_and_rewrite_only_public_links(self) -> None:
+        fragment = '<p>Try the problem first.</p><details><summary>Solution and applications</summary><p><code>E = 1</code> <a href="lectures/quantum-machine-learning/">Study notes</a></p></details>'
+        rendered = briefing_editorials.validate_fragment(fragment, "../../../")
+        self.assertIn('<details><summary>Solution and applications</summary>', rendered)
+        self.assertIn('href="../../../lectures/quantum-machine-learning/"', rendered)
+        self.assertNotIn("open", rendered)
+        self.assertEqual(briefing_editorials.validate_fragment(fragment), fragment)
+        for unsafe in ('<details open><summary>Answer</summary><p>text</p></details>',
+                       '<details ontoggle="run()"><summary>Answer</summary><p>text</p></details>',
+                       '<details><summary onclick="run()">Answer</summary><p>text</p></details>',
+                       '<details><summary>Answer</summary><p><a href="javascript:run()">code</a></p></details>',
+                       '<details><summary>Answer</summary><p>text</details>'):
+            with self.subTest(fragment=unsafe):
+                with self.assertRaises(ValueError):
+                    briefing_editorials.validate_fragment(unsafe)
 
     def test_public_payload_and_all_reading_surfaces_use_language_specific_page(self) -> None:
         self.register()

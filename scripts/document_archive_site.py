@@ -27,12 +27,13 @@ except ImportError:
 SERIES = {
     "daily-quantum": ("Daily Quantum Review", "Daily Quantum Review"),
     "daily-research": ("Daily Research Brief", "Daily Research Brief"),
+    "daily-quantum-exercise": ("Daily Quantum Exercise", "Daily Quantum Exercise"),
     "weekly-review": ("주간 리뷰", "Weekly reviews"),
     "article": ("수시 아티클", "Articles"),
     "lecture-notes": ("렉처 노트", "Lecture notes"),
     "external-book": ("외부 서적", "External books"),
 }
-LIBRARY_ASSET_VERSION = "20261110-qml-supplement"
+LIBRARY_ASSET_VERSION = "20261114-exercises"
 
 # The shared reader is application code, not a course or an article. Never copy
 # a source directory recursively: it may also contain tests or private notes.
@@ -472,7 +473,7 @@ def render_archive(documents: list[dict], base_url: str, language: str = "ko", e
     {search_results(language)}
     <section class="archive-browser" aria-label="{'Find documents' if en else '문서 찾기'}">
       <div class="collection-filters legacy-search-hidden" aria-label="{'Collections' if en else '문서 분류'}">{buttons}</div>
-      <p class="collection-description" id="collection-description">{'Daily Quantum Review collects the Daily Quantum Brief series alongside weekly reviews, articles and the latest supplied lecture notes. External books link to their authors and official book pages; their dates indicate catalog registration.' if en else 'Daily Quantum Review에는 Daily Quantum Brief 시리즈를 모았습니다. 주간 리뷰, 수시 PDF와 확인된 최신 렉처 노트를 보관합니다. 외부 서적은 저자·책 공식 안내로 연결하며 날짜는 아카이브 등록일입니다.'}</p>
+      <p class="collection-description" id="collection-description">{'Daily Quantum Brief, Daily Research Brief and Daily Quantum Exercise are preserved alongside weekly reviews, articles and lecture notes. External books link to their authors and official book pages; their dates indicate catalog registration.' if en else 'Daily Quantum Brief·Daily Research Brief·Daily Quantum Exercise와 주간 리뷰, 수시 PDF·렉처 노트를 보관합니다. 외부 서적은 저자·책 공식 안내로 연결하며 날짜는 아카이브 등록일입니다.'}</p>
       <div class="archive-controls">
         <label class="archive-search legacy-search-hidden"><span>{'Search documents' if en else '문서 검색'}</span><input id="archive-search" type="search" placeholder="{'Title, topic, keyword…' if en else '제목, 주제, 키워드로 검색…'}" autocomplete="off"></label>
         <label><span>{'Month' if en else '발행·등록 월'}</span><select id="archive-month"><option value="">{'All months' if en else '전체 기간'}</option>{month_options}</select></label>
@@ -1116,7 +1117,7 @@ ARCHIVE_JS = r'''
   if (params.get('series') === 'lecture-notes' && !['q', 'month', 'sort'].some(key => params.has(key))) {
     location.replace(base ? new URL(en ? 'lectures/en/' : 'lectures/', base).href : en ? '../../lectures/en/' : '../lectures/'); return;
   }
-  if (['daily-quantum', 'daily-research', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
+  if (['daily-quantum', 'daily-research', 'daily-quantum-exercise', 'weekly-review'].includes(params.get('series')) && !['q', 'month', 'sort'].some(key => params.has(key))) {
     location.replace(base ? new URL(en ? 'briefings/en/' : 'briefings/', base).href : en ? '../../briefings/en/' : '../briefings/'); return;
   }
   const search = document.querySelector('#archive-search'); if (!search) return;

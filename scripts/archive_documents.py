@@ -27,7 +27,7 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ARCHIVE_DIR = ROOT / "archive"
-SERIES = frozenset({"daily-quantum", "daily-research", "weekly-review", "article", "lecture-notes"})
+SERIES = frozenset({"daily-quantum", "daily-research", "daily-quantum-exercise", "weekly-review", "article", "lecture-notes"})
 LANGUAGES = frozenset({"ko", "en"})
 REQUIRED_FIELDS = frozenset(
     {"id", "date", "series", "title", "summary", "language", "file", "tags", "public_reviewed"}

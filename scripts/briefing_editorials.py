@@ -25,7 +25,7 @@ except ImportError:
 
 
 REGISTRY_KEYS = {"version", "id", "updated", "evidence_cutoff", "ko", "en"}
-ALLOWED_TAGS = {"p", "h2", "h3", "strong", "em", "ol", "ul", "li", "a", "code", "span", "br"}
+ALLOWED_TAGS = {"p", "h2", "h3", "strong", "em", "ol", "ul", "li", "a", "code", "span", "br", "details", "summary"}
 PUBLIC_ROOTS = {"reviews", "archive", "briefings", "lectures", "methods", "assets"}
 TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_-]{0,95}\Z")
 PRIVATE_TEXT = re.compile(
@@ -197,6 +197,10 @@ def _render(document: dict, spec: dict, fragment: str, base_url: str, language: 
     summary = document["summary_en" if en else "summary"]
     escape = lambda value: html.escape(str(value), quote=True)
     body = validate_fragment(fragment, prefix)
+    disclosure_style = (".briefing-editorial details{margin:1.5rem 0;padding:1rem;border:1px solid currentColor;border-radius:.5rem}"
+                        ".briefing-editorial summary{cursor:pointer;font-weight:600}"
+                        ".briefing-editorial summary:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+                        if "<details" in body else "")
     canonical = base_url.rstrip("/") + "/" + relative.removesuffix("index.html")
     links = [("ko", document["editorial_href"]), ("en", document["editorial_en_href"])]
     alternates = "".join(f'<link rel="alternate" hreflang="{lang}" href="{escape(base_url.rstrip("/") + "/" + path.removesuffix("index.html"))}">' for lang, path in links)
@@ -206,7 +210,7 @@ def _render(document: dict, spec: dict, fragment: str, base_url: str, language: 
       <link rel="canonical" href="{escape(canonical)}">{alternates}
       <meta property="og:type" content="article"><meta property="og:title" content="{escape(title)}"><meta property="og:description" content="{escape(summary)}"><meta property="og:url" content="{escape(canonical)}">
       <link rel="stylesheet" href="{prefix}assets/site.css?v={SITE_STYLES_VERSION}"><link rel="stylesheet" href="{prefix}assets/briefings.css">
-      <style>.briefing-editorial{{max-width:70ch;margin:2rem auto;padding:0 1.25rem 3rem;font-size:16px;line-height:1.85}}.briefing-editorial h1{{font-size:2rem;line-height:1.35}}.briefing-editorial h2{{font-size:1.4rem;margin-top:2rem}}.briefing-editorial h3{{font-size:1.15rem}}.briefing-editorial-meta,.briefing-editorial-byline{{font-size:.9rem}}.briefing-editorial-links{{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}}.briefing-editorial li{{margin:.5rem 0}}.briefing-editorial a{{overflow-wrap:anywhere}}</style>
+      <style>.briefing-editorial{{max-width:70ch;margin:2rem auto;padding:0 1.25rem 3rem;font-size:16px;line-height:1.85}}.briefing-editorial h1{{font-size:2rem;line-height:1.35}}.briefing-editorial h2{{font-size:1.4rem;margin-top:2rem}}.briefing-editorial h3{{font-size:1.15rem}}.briefing-editorial-meta,.briefing-editorial-byline{{font-size:.9rem}}.briefing-editorial-links{{display:flex;gap:1rem;flex-wrap:wrap;margin:1.5rem 0}}.briefing-editorial li{{margin:.5rem 0}}.briefing-editorial a{{overflow-wrap:anywhere}}{disclosure_style}</style>
       </head><body class="briefings-page">
       <header class="site-header"><nav class="topbar" aria-label="{'Main navigation' if en else '주요 링크'}">{render_brand_link(prefix)}<span class="topbar-links"><a href="{prefix}methods/">{'Editorial methods' if en else '작성·검증 원칙'}</a><a href="{prefix}{other}" lang="{'ko' if en else 'en'}" hreflang="{'ko' if en else 'en'}">{'한국어' if en else 'English'}</a></span></nav></header>
       <main class="briefing-editorial"><article>

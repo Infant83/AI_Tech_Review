@@ -142,7 +142,8 @@ def render_briefings(documents: list[dict], base_url: str, language: str = "ko",
         searchable = " ".join(str(doc.get(key, "")) for key in ("title", "title_en", "summary", "summary_en", "date")) + " " + " ".join(doc["tags"])
         tags = "".join(f'<span>{escape(tag)}</span>' for tag in doc["tags"])
         series = {"weekly-review": "Weekly review" if en else "주간 브리핑",
-                  "daily-research": "Daily Research Brief", "daily-quantum": "Daily Quantum Brief"}[doc["series"]]
+                  "daily-research": "Daily Research Brief", "daily-quantum": "Daily Quantum Brief",
+                  "daily-quantum-exercise": "Daily Quantum Exercise"}[doc["series"]]
         pdf_language = ({"ko": "Korean PDF", "en": "English PDF"} if en else {"ko": "한국어 PDF", "en": "영어 PDF"})[doc["language"]]
         reading = briefing_reading_href(doc, language)
         editorial_action = (f'<a href="{escape(reading)}">{"Read briefing" if en else "브리핑 읽기"} →</a>' if briefing_has_editorial(doc, language) else "")

@@ -70,6 +70,18 @@ class ArchiveDocumentsTests(unittest.TestCase):
         self.write_registry([])
         self.assertEqual(load_documents(self.archive), [])
 
+    def test_exercise_is_a_reviewed_public_pdf_series(self) -> None:
+        item = document("2026-11-14-daily-quantum-exercise")
+        item.update(series="daily-quantum-exercise", source_title="Daily Quantum Exercise")
+        source = self.root / "exercise.pdf"
+        source.write_bytes(PDF_BYTES)
+        destination = import_document(source, item, self.archive)
+        self.assertEqual(destination.read_bytes(), PDF_BYTES)
+        self.assertEqual(load_documents(self.archive), [item])
+        item["public_reviewed"] = False
+        with self.assertRaises(ArchiveValidationError):
+            import_document(source, item, self.archive)
+
     def test_explicit_public_review_is_required_and_must_be_boolean(self) -> None:
         for value in (None, False, 1, "true"):
             with self.subTest(value=value):
