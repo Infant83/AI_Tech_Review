@@ -4,27 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race</title>
-  <meta name="description" content="An integrated review of 2–3 September research, from D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
+  <meta name="description" content="From D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
   <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="Agentic Tech Review Letters">
   <meta property="og:title" content="Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race">
-  <meta property="og:description" content="An integrated review of 2–3 September research, from D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
+  <meta property="og:description" content="From D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">
   <meta property="og:locale" content="en_US">
   <meta property="og:locale:alternate" content="ko_KR">
-  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/../artifacts/quantum_full_stack_hero-web.webp">
+  <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/quantum_full_stack_hero-web.webp">
   <meta property="og:image:alt" content="Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race">
   <meta property="article:published_time" content="2026-09-03">
-  <meta property="article:modified_time" content="2026-09-03">
+  <meta property="article:modified_time" content="2026-11-14">
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race">
-  <meta name="twitter:description" content="An integrated review of 2–3 September research, from D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
-  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/../artifacts/quantum_full_stack_hero-web.webp">
+  <meta name="twitter:description" content="From D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation">
+  <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/quantum_full_stack_hero-web.webp">
   <meta name="twitter:image:alt" content="Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race">
   <link rel="icon" href="data:,">
   <meta name="color-scheme" content="light">
@@ -647,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -757,6 +760,15 @@
         position: static;
       }
     }
+
+    .final-article, .content-grid > *, .hero-inner > * { min-width: 0; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+    .reference-list { overflow-wrap: anywhere; }
+    .reference-list li { margin-bottom: 1rem; }
+    .citation { white-space: nowrap; }
+    code { overflow-wrap: anywhere; white-space: normal; }
   </style>
 </head>
 <body>
@@ -766,7 +778,6 @@
       <div class="topline-actions">
         <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
-        <a href="2026-09-03_quantum-full-stack-codesign_final_review_en.md">2026-09-03_quantum-full-stack-codesign_final_review_en.md</a>
       </div>
     </div>
   </div>
@@ -774,9 +785,9 @@
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">Agentic Tech Review Letters</p>
         <h1>Beyond Qubit Counts: Quantum Computing Is Becoming a Systems Race</h1>
-        <p class="dek">An integrated review of 2–3 September research, from D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation</p>
+        <p class="dek">From D-Wave molecular generation and fiber-delivered transmon control to IBM, QuEra, IonQ, and fault-tolerant compilation</p>
       </section>
 
     </div>
@@ -784,63 +795,50 @@
 
   <main class="content-grid">
     <article class="final-article">
-      <p>Reading progress in quantum computing only through qubit counts or a single fidelity figure misses half of the competition now under way. More qubits do not make a system scalable if the wiring that carries control signals from room temperature to cryogenic stages cannot keep up. A high-quality state does not make a computation useful if measurement shots and classical post-processing explode. And mapping an application onto a quantum circuit does not constitute an industrial result if valid answers are vanishingly rare or a stronger classical method still wins.</p>
-<p>The studies reviewed on 2 and 3 September 2026 therefore form a coherent picture. The field is shifting its focus from <strong>more qubits</strong> to <strong>system designs that jointly reduce control lines, state-preparation cost, samples, measurements, compilation overhead, and classical post-processing</strong>. Starting with a D-Wave molecular-generation study and an optical-control study of superconducting transmons found through LinkedIn, this article evaluates IBM&rsquo;s 100-site quantum-state experiment and sampling-based quantum diagonalization, neutral-atom and trapped-ion optimization, and fault-tolerant compilation against the same evidentiary standard.</p>
+      <p>More qubits bring more work around them. Control signals generated at room temperature must reach a chip inside a refrigerator; the states prepared by a circuit must be measured repeatedly; and classical processing must turn those samples into answers. Resources saved on the chip can return as a burden in wiring, measurement, or post-processing. To judge a quantum computer&rsquo;s usefulness, we need to follow that path to its end.</p>
+<p>The studies reviewed on 2–3 September 2026 reveal these connections from several directions: fiber-delivered transmon control, D-Wave molecular generation, state preparation and quantum chemistry on IBM devices, industrial applications on neutral-atom and trapped-ion hardware, and fault-tolerant compilation. This review reads them through <strong>co-design from the chip to the application</strong>. Looking at both the cost each study reduces and the work it passes downstream makes development problems visible that qubit counts alone cannot show.</p>
 <figure class="article-hero-figure">
-  <img src="../artifacts/quantum_full_stack_hero-web.webp" alt="Concept illustration stacking cryogenic quantum hardware, circuit and sampling layers, molecules, and industrial-network applications into a single system" width="1672" height="941" loading="eager">
-  <figcaption>Figure 1. The bottleneck in quantum computing does not reside on a single chip. The entire path—from control hardware through circuits and measurement to classical post-processing and application validation—determines whether a computation has value. This editorial concept image does not reproduce a specific device or quantitative result.</figcaption>
+<img src="../artifacts/quantum_full_stack_hero-web.webp" loading="eager" width="1672" height="941" alt="AI-generated concept illustration connecting cryogenic hardware with circuits, sampling, molecules, and industrial networks" />
+<figcaption>Figure 1. A computational path from cryogenic hardware through circuits and sampling to molecules and industrial networks. An AI-generated concept illustration layering several aspects of quantum-system design.</figcaption>
 </figure>
 
-<aside class="callout callout-evidence">
-<p class="callout-label">Two corrections to make first</p>
-<p>The study that controlled transmons over optical fiber was not conducted by IBM. It is a preprint from Pan Jianwei&rsquo;s team at the University of Science and Technology of China (USTC). IBM appears in two separate key studies: the 100-site spin-chain experiment and the DF-SQD experiment. Nor is D-Wave&rsquo;s 96.97% a drug-efficacy or drug-development success rate. It is the fraction of generated SMILES strings that RDKit could interpret as molecular graphs. This article uses the LinkedIn posts only as discovery routes; institutions, numbers, and methods are taken from the original papers.</p>
-</aside>
-<h2 id="conclusions-up-front">Conclusions up front</h2>
-<ol>
-<li><strong>Input and output are becoming the next bottleneck in hardware scaling.</strong> The USTC study carried room-temperature control signals over 1490 nm fiber to the 4 K stage and used them to control two physical transmons. Wiring and readout below 4 K remained unchanged, however, and the thousands-of-channels figure was an estimate based on cooling capacity, not a demonstrated scale.</li>
-<li><strong>Obtaining better samples is becoming an algorithmic task in its own right.</strong> D-Wave served as a discrete latent-variable sampler for a molecular generative model, while an IBM QPU proposed determinants for selected CI. In both cases, the quantum device was a constrained sampling kernel rather than the whole computer.</li>
-<li><strong>State-preparation and measurement costs matter as much as qubit counts.</strong> The 100-site state ran on physical IBM hardware because its CNOT depth was only 18–39. Instead of adding more circuits, MC-PQE grouped Pauli terms and allocated shots to reduce standard error by a factor of 5–10 at the same number of measurements.</li>
-<li><strong>Compilation results must be interpreted within the layer they optimize.</strong> SpiderLS&rsquo;s 49.2% refers to a reduction in surface-code lattice-surgery spacetime volume; the 16.02% in the BB-code study refers to fewer inter-module instructions. Neither means that present-day NISQ circuit depth falls by the same percentage.</li>
-<li><strong>Applications still center on hybrid proofs of concept.</strong> The QuEra and IonQ experiments reached physical QPUs, but neither demonstrated an end-to-end runtime advantage over strong classical solvers. Their principal achievement was building a path through problem decomposition, recovery of feasible solutions, and hardware execution.</li>
-</ol>
-<h2 id="1-what-changes-when-optical-fiber-replaces-transmon-control-lines">1. What changes when optical fiber replaces transmon control lines?</h2>
-<p>Superconducting qubits operate at tens of millikelvin, while their control electronics typically remain at room temperature. Sending a coaxial line, attenuators, and filters down to each qubit increases heat inflow, consumes refrigerator space, and adds cable-assembly and calibration work. Even if the qubits themselves improve, this wiring can prevent the system from scaling.</p>
-<p><a href="https://arxiv.org/abs/2608.19602">A preprint by Yu-Huai Li, Daojin Fan, and colleagues</a> directly modulated a 1490 nm distributed-feedback laser with GHz-band XY signals and square-wave Z signals from a room-temperature arbitrary waveform generator. The optical signal traveled along fiber to the 4 K stage, where a reverse-biased InGaAs PIN photodiode converted it back into an electrical signal. The researchers used this architecture to control two tunable transmons and a tunable coupler.</p>
-<p>This was not a quantum transducer that converts between photonic and microwave qubits. It was an <strong>analog radio-over-fiber link carrying classical control waveforms</strong>. The photodiode also sat at 4 K, not at the millikelvin stage. Electrical wiring from 4 K to the chip and the existing readout lines remained in place.</p>
-<h3 id="results-from-the-physical-two-qubit-device">Results from the physical two-qubit device</h3>
-<table>
+<span class="legacy-anchor" id="conclusions-up-front" aria-hidden="true"></span><span class="legacy-anchor" id="1-what-changes-when-optical-fiber-replaces-transmon-control-lines" aria-hidden="true"></span><span class="legacy-anchor" id="results-from-the-physical-two-qubit-device" aria-hidden="true"></span><h2 id="section-1-what-changes-when-optical-fiber-replaces-transmon-control-lines">1. What changes when optical fiber replaces transmon control lines?</h2>
+<p>Superconducting qubits operate at tens of millikelvin, while their control electronics usually remain at room temperature. Sending coaxial lines, attenuators, and filters down to each qubit increases heat inflow, consumes refrigerator space, and adds cable assembly and calibration. Independently of qubit performance, delivering signals becomes part of the scaling problem.</p>
+<p>Yu-Huai Li, Daojin Fan, and colleagues, including researchers at the University of Science and Technology of China (USTC), directly modulated a 1490 nm laser with GHz-band XY signals and square-wave Z signals from a room-temperature arbitrary waveform generator (AWG). At the 4 K stage, a reverse-biased InGaAs PIN photodiode converted the light back into electrical signals. This arrangement controlled two frequency-tunable transmons and a tunable coupler.<a class="citation" href="#ref-1">[1]</a></p>
+<p>The link carries <strong>classical control waveforms</strong>. Its role differs from transferring a quantum state between photonic and microwave qubits. The experiment changed signal delivery between room temperature and 4 K, while retaining electrical wiring below the photodiode to the millikelvin chip and the existing readout lines.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll table horizontally"><table>
 <thead>
 <tr>
 <th>Item</th>
 <th style="text-align: right;">Reported value</th>
-<th>Interpretive boundary</th>
+<th>Measurement or operating condition</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>\(T_1\)</td>
-<td style="text-align: right;">\(58.58\pm3.39\ \mu s\)</td>
-<td>Measured on the two-qubit device</td>
+<td>$T_1$</td>
+<td style="text-align: right;">$58.58\pm3.39\ \mu s$</td>
+<td>Representative measurement on the experimental device</td>
 </tr>
 <tr>
-<td>\(T_2^*\)</td>
-<td style="text-align: right;">\(2.40\pm0.23\ \mu s\)</td>
+<td>$T_2^*$</td>
+<td style="text-align: right;">$2.40\pm0.23\ \mu s$</td>
 <td>Operating point 409 MHz away from the sweet spot</td>
 </tr>
 <tr>
-<td>1Q \(X/2\) gate</td>
+<td>1Q X/2 gate</td>
 <td style="text-align: right;">50 ns</td>
-<td>Optical-link control waveform</td>
+<td>Optically delivered control waveform</td>
 </tr>
 <tr>
 <td>Q1 1Q fidelity</td>
-<td style="text-align: right;">\(99.915\pm0.005\%\)</td>
-<td>Randomized benchmarking</td>
+<td style="text-align: right;">$99.915\pm0.005\%$</td>
+<td>Cross-entropy benchmarking (XEB)</td>
 </tr>
 <tr>
 <td>Q2 1Q fidelity</td>
-<td style="text-align: right;">\(99.854\pm0.014\%\)</td>
-<td>Randomized benchmarking</td>
+<td style="text-align: right;">$99.854\pm0.014\%$</td>
+<td>XEB</td>
 </tr>
 <tr>
 <td>CZ gate</td>
@@ -849,31 +847,31 @@
 </tr>
 <tr>
 <td>CZ pure fidelity</td>
-<td style="text-align: right;">\(99.676\pm0.041\%\)</td>
-<td>Value reported separately in the paper</td>
+<td style="text-align: right;">$99.676\pm0.041\%$</td>
+<td>The paper&rsquo;s pure estimate</td>
 </tr>
 <tr>
 <td>CZ dressed fidelity</td>
-<td style="text-align: right;">\(99.445\pm0.041\%\)</td>
-<td>Comparative value including decoherence</td>
+<td style="text-align: right;">$99.445\pm0.041\%$</td>
+<td>The paper&rsquo;s dressed estimate</td>
 </tr>
 </tbody>
-</table>
-<p>Assuming 1.5 W of cooling capacity at 4 K, the paper estimated active heat loads of 0.058 mW per XY-only channel and 0.752 mW per XY+Z channel. Simple division gives 25,816 channels and approximately 1,996 channels, respectively. These figures do not mean that thousands of qubits have already been controlled optically. They are <strong>4 K thermal-budget extrapolations</strong> that exclude photodiode duty cycle, bias, drift, fan-out, simultaneous operation, millikelvin wiring, readout, and the refrigerator&rsquo;s other heat loads.</p>
-<p>Optical links for controlling superconducting qubits are not new in themselves. <a href="https://www.nist.gov/publications/control-and-readout-superconducting-qubit-using-photonic-link">In 2021, NIST researchers reported control and readout of a single superconducting qubit using a photonic link in Nature</a>. The advance in the present study is to integrate XY, Z, and coupler control in a two-transmon gate system while reporting both the thermal cost of the 4 K photodiode and gate fidelities. The next tests are simultaneous operation across tens or hundreds of channels, long-term phase and amplitude stability, complete I/O including readout, and the total heat budget of a physical refrigerator.</p>
-<h2 id="2-d-wave-did-not-calculate-molecules-it-sampled-latent-space">2. D-Wave did not calculate molecules; it sampled latent space</h2>
-<p>The <a href="https://www.nature.com/articles/s41598-026-49186-8">Scientific Reports paper highlighted by D-Wave</a> did not use quantum chemistry to calculate molecular electronic structure or bond energies. It used a generative model in which a Transformer encoder-decoder compressed SMILES strings into discrete latent variables and reconstructed them as strings. The D-Wave annealer was used specifically to <strong>draw binary latent vectors from the Boltzmann prior</strong>.</p>
-<p>The researchers embedded 128 visible variables and 128 hidden variables in the Zephyr topology of D-Wave&rsquo;s <code>Advantage2_prototype2.6</code>, using 1,215 physical qubits in total. The remaining encoder-decoder training and molecular-string processing were classical. The comparator was a classical Boltzmann machine sampled with simulated-annealing Metropolis-Hastings.</p>
-<p>Another central component was not the quantum device but a new classical objective. The Neural Hash Function (NHF) converted continuous encoder outputs into binary codes while incorporating quantization and regularization into the training loss. The effect of the quantum sampler must therefore be distinguished from the effect of NHF as a classical learning method.</p>
-<h3 id="results-for-10000-generated-strings">Results for 10,000 generated strings</h3>
-<table>
+</table></div>
+<p>The researchers used XEB and Speckle Purity Benchmarking (SPB) to evaluate fidelity and purity. The table retains the paper&rsquo;s separate pure and dressed estimates.</p>
+<p>The thermal model includes photodiode bias and conversion efficiency and assumes <strong>continuous operation</strong>. Table I gives a 4 K cooling capacity of 1.5 W, active heat loads of 0.058 mW per XY channel and 0.752 mW per XY+Z channel, and corresponding estimates of 25,816 and 1,996 channels. The displayed heat loads are rounded. This calculation concerns the photoconversion thermal budget at 4 K; the complete scale, including readout, lower-stage wiring, and the refrigerator&rsquo;s other loads, needs separate validation.</p>
+<p>An earlier example is the 2021 single-qubit control and readout experiment by Lecocq and colleagues.<a class="citation" href="#ref-2">[2]</a> The present study combines XY, Z, and coupler control in a two-transmon gate system and considers both fidelity and thermal cost. The next questions concern phase and amplitude stability during simultaneous operation of many channels, and the recalibration interval. Those tests will show whether the wiring savings persist in operation.</p>
+<span class="legacy-anchor" id="2-d-wave-did-not-calculate-molecules-it-sampled-latent-space" aria-hidden="true"></span><span class="legacy-anchor" id="results-for-10000-generated-strings" aria-hidden="true"></span><h2 id="section-2-d-wave-sampled-the-latent-variables-of-a-molecular-generator">2. D-Wave sampled the latent variables of a molecular generator</h2>
+<p>In the study by Kunugi and colleagues, a Transformer encoder-decoder compresses SMILES strings representing molecules into discrete latent variables and reconstructs them. The D-Wave annealer performs the intermediate step of <strong>drawing binary latent vectors from a Boltzmann prior</strong>.<a class="citation" href="#ref-3">[3]</a> Locating its role makes clear how the generated-string metrics relate to subsequent questions about molecular electronic structure or drug activity.</p>
+<p>Embedding 128 visible and 128 hidden variables in the Zephyr topology of <code>Advantage2_prototype2.6</code> used 1,215 physical qubits. Encoder-decoder training and string processing were classical. The classical Boltzmann-machine comparator drew samples through simulated annealing with Metropolis–Hastings updates.</p>
+<p>The accompanying Neural Hash Function (NHF) turns continuous encoder outputs into binary codes while adding quantization and regularization terms to the training loss. The comparison therefore needs to separate the effect of changing the sampler from the effect of this classical training objective.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll table horizontally"><table>
 <thead>
 <tr>
 <th>Prior sampler</th>
 <th>Binarization</th>
 <th style="text-align: right;">Validity</th>
 <th style="text-align: right;">Uniqueness</th>
-<th style="text-align: right;">Unique valid molecules among all 10,000</th>
+<th style="text-align: right;">Unique valid molecules among 10,000</th>
 </tr>
 </thead>
 <tbody>
@@ -882,7 +880,7 @@
 <td>Gumbel-Softmax</td>
 <td style="text-align: right;">52.20%</td>
 <td style="text-align: right;">99.94%</td>
-<td style="text-align: right;">5,126</td>
+<td style="text-align: right;">5,216</td>
 </tr>
 <tr>
 <td>Classical BM</td>
@@ -906,159 +904,135 @@
 <td style="text-align: right;">5,035</td>
 </tr>
 </tbody>
-</table>
-<p>The highest validity came with the lowest uniqueness. QBM+NHF often produced interpretable strings, but it repeated the same molecules more frequently; its absolute count of unique valid molecules, 5,035, was lower than the 6,077 from classical BM+NHF. The D-Wave article and the paper&rsquo;s main text describe the comparison as 97% versus 73%, but the matched classical NHF value in Table 1 is 61.95%. The 71.88% result is for <strong>QBM+Gumbel-Softmax</strong>, so 73% should not be read as the matched classical baseline.</p>
-<p>The researchers also calculated the fraction of unique molecules with QED of at least 0.7. The results were 31.61% for the training data, 40.81% for classical/Gumbel, 43.15% for classical/NHF, 52.60% for QBM/Gumbel, and 66.79% for QBM/NHF. QED, however, is a heuristic drug-likeness score combining properties such as molecular weight and lipophilicity. It does not measure target binding, efficacy, selectivity, toxicity, ADME, synthesis, or clinical success.</p>
-<p>Moreover, when the architecture was changed from a Transformer to an MLP, the quantum-classical validity gap shrank to 0.8 percentage points with Gumbel and 1.6 points with NHF. The study did not report repeated seeds, confidence intervals, strong modern classical generative models, annealing reads, wall-clock time, or energy. It is therefore an exploratory study showing that a physical quantum annealer <strong>can serve as a discrete sampler within a candidate generator</strong>, not a demonstration of quantum advantage or speed advantage in drug discovery. <a href="https://www.dwavequantum.com/learn/blog/posts/how-quantum-computing-could-improve-generative-ai-what-a-new-drug-discovery-study-reveals/">D-Wave&rsquo;s corporate account</a> should be read with this distinction in mind.</p>
-<h2 id="3-prepare-shallower-states-measure-less-and-choose-better-samples">3. Prepare shallower states, measure less, and choose better samples</h2>
-<p>The algorithmic studies from 2–3 September consistently pursued <strong>the required information through cheaper circuits and better samples</strong>, rather than simply building larger circuits.</p>
-<h3 id="shallow-preparation-circuits-enabled-the-100-site-state">Shallow preparation circuits enabled the 100-site state</h3>
-<p>A <a href="https://www.nature.com/articles/s41534-026-01334-8">peer-reviewed paper in npj Quantum Information</a> prepared the symmetry-protected topological state of a 100-site bond-alternating Heisenberg chain on IBM&rsquo;s <code>ibm_pittsburgh</code>. The authors compressed a matrix-product state obtained with DMRG using tensor-network approximate quantum compilation, producing four circuits with CNOT depths of 18, 21, 21, and 39. On the physical hardware, they measured string order up to length 20, features of the entanglement spectrum, and edge modes.</p>
-<p>The 97.9–99.0% figure is not raw hardware fidelity. It is the <strong>fidelity between the classically compiled circuit state and the DMRG target state</strong>. The experiment used Pauli twirling, TREX, and zero-noise extrapolation. It remains unresolved whether the decrease in measured string order with length arose from accumulated readout error or from a loss of order in the physical state. Because one-dimensional gapped states have strong classical DMRG/MPS methods, this result cannot be described as a computational advantage. The achievement was to replace deep adiabatic evolution with a shallow preparation circuit and read several nonlocal diagnostics on a physical 100-site device.</p>
-<h3 id="mc-pqe-reduced-error-by-grouping-measurement-terms">MC-PQE reduced error by grouping measurement terms</h3>
-<p>The <a href="https://arxiv.org/abs/2608.30612">MC-PQE preprint</a> measured full-commuting Pauli terms together when estimating asymmetric expectation values and allocated shots to each group. In numerical experiments on molecules of up to 12 qubits, it reduced standard error by a factor of 5–10 at the same total number of measurements. These were not physical-QPU results, and neither noise from basis-change gates nor wall-clock time was validated. Even so, the study quantified why the measurement schedule can matter as much as changing the circuit ansatz when the number of Hamiltonian terms grows in quantum chemistry.</p>
-<h3 id="df-sqd-changed-the-determinant-proposal-distribution">DF-SQD changed the determinant proposal distribution</h3>
-<p>The <a href="https://arxiv.org/abs/2609.01264">DF-SQD preprint</a> used a shallow number-preserving circuit to propose occupation-number configurations, while a classical selected configuration-interaction calculation evaluated the original active-space Hamiltonian. In a physical IBM-QPU execution for a 32-qubit N₂ case, DF-SQD used 98,304 shots and 29 seconds of QPU time, compared with 300,000 shots and 85 seconds for SQD-LUCJ. The authors also reported a lower energy error.</p>
-<p>QPU time alone does not establish total speed. In the iron-sulfur case, the determinant subspace reached approximately 221 million, and even the matched comparison processed approximately 50 million determinants classically. CPU/GPU time and memory for configuration recovery, Hamiltonian construction, and selected-CI diagonalization must be included in the end-to-end cost. What the study directly demonstrates is that <strong>a proposal distribution informed by physical and chemical structure can collect more useful determinants with fewer QPU shots</strong>.</p>
-<p>Taken together, these three studies show circuit depth, Pauli grouping, and determinant distribution playing the same role: each makes an individual QPU execution yield a more informative sample.</p>
-<h2 id="4-compilation-in-the-error-corrected-era-uses-different-cost-functions">4. Compilation in the error-corrected era uses different cost functions</h2>
-<p>Reducing gate count or depth on current hardware is not the same problem as moving logical patches under a surface code.</p>
-<p><a href="https://arxiv.org/abs/2608.30228">SpiderLS</a> first simplifies Clifford+T circuits with full ZX reduction, lowers them to multi-target operations and Pauli-product measurements, and places the patches and routes used in lattice surgery. Relative to TopoLS, a prior ZX-based compiler, it reduced average spacetime volume by 49.2% and compilation time by 99.8%. These results came from compiler workloads, not from a physical fault-tolerant QPU. Nor do they guarantee a 49.2% reduction in present-day NISQ depth when converted back to a gate-model circuit.</p>
-<p>The <a href="https://arxiv.org/abs/2609.00852">multi-controlled Toffoli placement study for BB codes</a> used a binary-tree structure to place interacting subtrees in the same module. It reduced inter-module instructions by up to 16.02% relative to naive sequential first-fit placement, while a grid-shaped magic-state-factory layout reduced them by up to 23.7% relative to a linear topology. This, too, was a design evaluation using a Qiskit community logical-error estimator rather than an execution on a physical logical processor.</p>
-<p>The development direction indicated by both studies is clear. A fault-tolerant machine must jointly optimize logical-patch area, syndrome cycles, magic-state factories, inter-module movement, and execution time—not merely one gate-count figure. SpiderLS&rsquo;s full-ZX reduction can therefore be tested as a preprocessing idea for a Classiq oracle, but its lattice-surgery metric must not be compared directly with the submitted-circuit depth in the Classiq challenge.</p>
-<h2 id="5-industrial-applications-enter-through-small-quantum-kernels-and-large-classical-workflows">5. Industrial applications enter through small quantum kernels and large classical workflows</h2>
-<h3 id="neutral-atom-power-operations-recovering-feasible-solutions-was-central">Neutral-atom power operations: recovering feasible solutions was central</h3>
-<p>The <a href="https://arxiv.org/abs/2609.01248">stochastic unit commitment study</a> converted discrete generator on/off moves into maximum-weight independent set (MWIS) problems and ran them on QuEra&rsquo;s Aquila. Continuous dispatch and feasibility recovery remained classical. In the 50-node cases from a 15-day hardware campaign, classically refining the QPU samples produced results that matched or exceeded the dispatch margin based on exact MWIS. In larger cases, the mean inner-objective ratio was 0.940, but the fraction of shots in which the full atom array survived and yielded a valid sample fell to 0.095 at 100 nodes.</p>
-<p>This does not mean that the quantum device solved the entire power-operations problem. The achievement was an end-to-end workflow connecting problem decomposition and post-processing; the finding was that atom survival becomes a scaling bottleneck. The study did not demonstrate that the system was faster or cheaper than classical HiGHS.</p>
-<h3 id="ionq-gas-network-qaoa-a-small-proof-of-the-execution-path">IonQ gas-network QAOA: a small proof of the execution path</h3>
-<p>The <a href="https://arxiv.org/abs/2609.00825">gas-transmission-network study</a> encoded pressure allocation and hydraulic constraints as a QUBO and synthesized QAOA circuits with Classiq. The simulator used \(p=30\) for the original model, but the physical IonQ Forte-1 execution used a reduced 10-logical-qubit instance with \(p=2\). The total probability of physically valid states in the QPU distribution was 3.6%.</p>
-<p>Valid candidates did appear, but the experiment addressed a reduced problem that differed from the original scale, and most shots fell outside the feasible region. The baselines were a classical exhaustive solution and a hydraulic simulator; the results did not show that the QPU was faster or found a better solution. The present contribution is the physical connection of the formulate → synthesize → hardware → feasibility-check path.</p>
-<h3 id="in-qml-more-qubits-instead-caused-the-kernel-to-collapse">In QML, more qubits instead caused the kernel to collapse</h3>
-<p>A <a href="https://arxiv.org/abs/2609.00475">quantum-kernel study run on IBM&rsquo;s <code>ibm_fez</code></a> observed that when the width of an angle-encoded feature map exceeded the intrinsic dimension of the data and the map, kernel values for different data points became similar—a collapse. In physical executions with 8 samples and 256 shots, a one-layer ZZ kernel at the fractal-dimension width matched the exact kernel with an MAE of 0.021; increasing the width caused collapse in both simulation and hardware.</p>
-<p>A separate <a href="https://arxiv.org/abs/2608.31117">comparison of quantum generative models</a> showed, using statevectors of up to 30 qubits, that a low MMD training loss did not guarantee coverage of unseen valid samples. Likelihood-trained baselines such as classical Transformers, RNNs, and tensor networks remained important. Together, the two studies reject the simple formula that widening a quantum model or lowering its training loss necessarily improves generalization. Data representation and evaluation metrics come before circuit size.</p>
-<h2 id="6-reordering-two-days-of-research-by-evidence-level">6. Reordering two days of research by evidence level</h2>
+</table></div>
+<p>The table follows Table 1 of the published version. Validity is the fraction of strings that RDKit interprets as molecular graphs; uniqueness is the fraction of valid molecules that are distinct. The highest validity accompanied the lowest uniqueness. QBM+NHF produced interpretable strings frequently but repeated them more often, yielding 5,035 unique valid molecules against 6,077 for classical BM+NHF. Although the paper&rsquo;s prose describes “97% versus 73%,” the matched classical NHF value in the table is 61.95%.</p>
+<p>The fractions of unique molecules with QED of at least 0.7 were 31.61% for the training data, 40.81% for classical/Gumbel, 43.15% for classical/NHF, 52.60% for QBM/Gumbel, and 66.79% for QBM/NHF. QED combines properties such as molecular weight and lipophilicity into a drug-likeness score. The result describes a change in the candidate distribution; target binding, toxicity, and synthesizability belong to later evaluation stages.</p>
+<p>Changing the architecture from a Transformer to an MLP narrowed the quantum–classical validity gap to 0.8 percentage points with Gumbel and 1.6 points with NHF. Performance thus depends on the combination of learning model and objective as well as the device. Repeated seeds, confidence intervals, strong classical generators, and total time and energy comparisons are needed to assess the reproducibility and cost of the distributional change.</p>
+<span class="legacy-anchor" id="3-prepare-shallower-states-measure-less-and-choose-better-samples" aria-hidden="true"></span><h2 id="section-3-state-preparation-measurement-and-sample-selection-reduce-different-costs">3. State preparation, measurement, and sample selection reduce different costs</h2>
+<span class="legacy-anchor" id="shallow-preparation-circuits-enabled-the-100-site-state" aria-hidden="true"></span><h3 id="section-shallow-preparation-circuits-enabled-the-100-site-state">Shallow preparation circuits enabled the 100-site state</h3>
+<p>Pennington and colleagues prepared the symmetry-protected topological state of a 100-site bond-alternating Heisenberg chain on IBM&rsquo;s <code>ibm_pittsburgh</code>.<a class="citation" href="#ref-4">[4]</a> Approximate quantum compilation compressed a matrix-product state (MPS) obtained with DMRG into four circuits with CNOT depths of 18, 21, 21, and 39. The experiment read string order up to length 20, degeneracy patterns in the entanglement spectrum, and edge modes. String order includes a product of spin operators between two endpoints, revealing order that local correlations alone do not show.</p>
+<p>The 97.9–99.0% fidelity is the <strong>overlap between the classically calculated circuit state and the DMRG target state</strong>. It must be distinguished from the full-state fidelity on the device. String order and edge magnetization used Pauli twirling, TREX, and zero-noise extrapolation (ZNE); local tomography of the entanglement spectrum used twirling and TREX. Whether string order decreases with length because of accumulated readout errors or reduced order in the state remains an open question. DMRG can obtain the target state of this one-dimensional system. The experiment&rsquo;s achievement is access to a 100-site device through shallow preparation and several nonlocal diagnostics.</p>
+<span class="legacy-anchor" id="mc-pqe-reduced-error-by-grouping-measurement-terms" aria-hidden="true"></span><h3 id="section-mc-pqe-allocating-the-same-measurement-budget-more-efficiently">MC-PQE: allocating the same measurement budget more efficiently</h3>
+<p>The MC-PQE study groups mutually commuting Pauli terms when measuring asymmetric expectation values and allocates shots among the groups.<a class="citation" href="#ref-5">[5]</a> In classical molecular simulations of up to 12 qubits, combining several improvements reduced standard error by a factor of 5–10 at the same total measurement count. This ratio is not a universal effect of grouping alone or a result for every molecule. The next test is how much of the saving remains after basis-change gate noise and physical QPU time are included.</p>
+<span class="legacy-anchor" id="df-sqd-changed-the-determinant-proposal-distribution" aria-hidden="true"></span><h3 id="section-df-sqd-selecting-candidates-for-classical-diagonalization">DF-SQD: selecting candidates for classical diagonalization</h3>
+<p>DF-SQD uses shallow number-preserving circuits to propose occupation-number configurations, while classical selected configuration interaction (CI) evaluates the original active-space Hamiltonian.<a class="citation" href="#ref-6">[6]</a> The 32-qubit N₂ case on IBM&rsquo;s <code>ibm_kingston</code> used 12 circuits × 8,192 shots, totaling 98,304 shots and 29 seconds of QPU time. The compared SQD-LUCJ execution used 300,000 shots and 85 seconds. The circuits, shots, and batches differ, so these runs do not yield a matched algorithmic speed ratio.</p>
+<p>The matched iron–sulfur comparison diagonalized approximately 50.01 million determinants and reduced the energy error from 79.7 to 60.2 mEh. Approximately 221 million refers to the pool of candidate combinations available after configuration recovery, which must be distinguished from the space actually diagonalized. These experiments show a way to gather useful CI candidates from fewer QPU samples; the final cost includes CPU/GPU time and memory for recovery, Hamiltonian construction, and diagonalization. The reported hardware results come from the initial circuit ensemble before selected-CI feedback (<code>flip=0</code>).</p>
+<p>The three studies save resources in different ways. Shallow preparation reduces the depth over which noise accumulates; measurement grouping lowers estimator variance; and changing the proposal distribution changes the candidates passed to classical computation. The largest burden determines where to intervene first.</p>
+<span class="legacy-anchor" id="4-compilation-in-the-error-corrected-era-uses-different-cost-functions" aria-hidden="true"></span><h2 id="section-4-fault-tolerant-compilation-includes-the-cost-of-space-and-movement">4. Fault-tolerant compilation includes the cost of space and movement</h2>
+<p>SpiderLS simplifies Clifford+T circuits through ZX reduction, lowers them to multi-target operations and Pauli-product measurements, and places the patches and routes for lattice surgery.<a class="citation" href="#ref-7">[7]</a> Its mean reductions of 49.2% in spacetime volume and 99.8% in compilation time relative to TopoLS concern these logical-circuit workloads. The objective differs from gate depth on present devices.</p>
+<p>The multi-controlled Toffoli study for BB-code architectures places interacting subtrees in the same module.<a class="citation" href="#ref-8">[8]</a> With a factory-placement period of 2, the largest mean reduction in inter-module instructions was 16.02%. The 23.7% reduction for a grid-shaped magic-state-factory layout corresponds to $k=5$ controls per module in the main text. It also reports 27.7% at $k=3$, so 23.7% should not be read as the maximum across all cases. These figures evaluate placement and routing designs, separately from physical logical-processor measurements.</p>
+<p>The connection between the studies is the need to optimize logical-patch area, syndrome cycles, magic-state-factory production cycles, and inter-module movement together. ZX reduction is also an idea worth testing in Classiq circuit preprocessing, with its effect evaluated again using that circuit&rsquo;s gate and depth metrics.</p>
+<span class="legacy-anchor" id="5-industrial-applications-enter-through-small-quantum-kernels-and-large-classical-workflows" aria-hidden="true"></span><h2 id="section-5-which-part-of-an-industrial-application-did-the-quantum-device-perform">5. Which part of an industrial application did the quantum device perform?</h2>
+<span class="legacy-anchor" id="neutral-atom-power-operations-recovering-feasible-solutions-was-central" aria-hidden="true"></span><h3 id="section-neutral-atom-scheduling-discrete-moves-and-feasibility-recovery">Neutral-atom scheduling: discrete moves and feasibility recovery</h3>
+<p>The stochastic unit commitment study concerns operating schedules for six electrolyser modules. It turns discrete moves around a schedule into a maximum-weight independent set (MWIS) problem for QuEra Aquila, with continuous dispatch and feasibility recovery performed classically.<a class="citation" href="#ref-9">[9]</a> In the 15-day, 50-node hardware campaign, classically refined results matched or exceeded the dispatch margin based on exact MWIS. The mean inner-objective ratio of 0.940 belongs to this campaign.</p>
+<p>A separate sweep of 50–144 nodes had a mean ratio of 0.918. At 100 nodes, the valid fraction of 0.095 measures <strong>whether the full array was occupied before evolution</strong>: 19 of 200 shots passed. Reading it as post-evolution atom survival would locate the bottleneck differently. This case connects problem decomposition to hardware execution and recovery; an end-to-end comparison of time and cost against classical solvers such as HiGHS remains to be made.</p>
+<span class="legacy-anchor" id="ionq-gas-network-qaoa-a-small-proof-of-the-execution-path" aria-hidden="true"></span><h3 id="section-ionq-gas-network-qaoa-samples-that-satisfy-physical-constraints">IonQ gas-network QAOA: samples that satisfy physical constraints</h3>
+<p>The gas-network study turns pressure assignments and hydraulic constraints into a QUBO and synthesizes QAOA circuits with Classiq.<a class="citation" href="#ref-10">[10]</a> It uses $p=30$ for the original simulated model and $p=2$ for the reduced IonQ Forte-1 instance. The hardware circuit&rsquo;s 10 qubits consist of six decision qubits and four auxiliaries; they do not denote error-corrected logical qubits.</p>
+<p>Among 500 shots, the two valid states highlighted in the paper accounted for 2.0% and 1.6%, totaling 18 shots. This small execution connects formulation → synthesis → QPU → hydraulic validation. The next evaluations need to establish the frequency of useful samples for the larger original problem and the total cost compared with classical search.</p>
+<span class="legacy-anchor" id="in-qml-more-qubits-instead-caused-the-kernel-to-collapse" aria-hidden="true"></span><h3 id="section-qml-evaluating-beyond-circuit-width-and-training-loss">QML: evaluating beyond circuit width and training loss</h3>
+<p>The kernel experiment on IBM&rsquo;s <code>ibm_fez</code> examines the near-vanishing of kernel values between different data points as the angle-encoding circuit width increases relative to the intrinsic dimension of the data. The onset of collapse depends on the feature map and angular bandwidth.<a class="citation" href="#ref-11">[11]</a> For eight breast-cancer PCA data points and 256 shots, a one-layer ZZ kernel at $q=3$ agreed with the ideal kernel with MAE 0.021. At $q=7$ on the same data, off-diagonal entries nearly vanished in both hardware and ideal calculations. A small MAE alone does not mean useful discrimination between data points survives. The classifiers were not run on the QPU.</p>
+<p>The generative-model comparison uses statevector simulations of up to 30 qubits to show that a small MMD training loss need not improve coverage of unseen valid samples.<a class="citation" href="#ref-12">[12]</a> This motivates comparisons with likelihood-trained Transformers, RNNs, and tensor-network baselines. A kernel must be assessed by how it distinguishes data; a generator by its distribution of new valid candidates. Adding qubits should be judged against those purposes.</p>
+<span class="legacy-anchor" id="6-reordering-two-days-of-research-by-evidence-level" aria-hidden="true"></span><span class="legacy-anchor" id="7-development-directions-five-forms-of-co-design" aria-hidden="true"></span><span class="legacy-anchor" id="1-co-design-qubits-with-control-and-readout-electronics" aria-hidden="true"></span><span class="legacy-anchor" id="2-identify-where-information-is-lost-before-designing-the-circuit" aria-hidden="true"></span><span class="legacy-anchor" id="3-match-the-compilers-objective-function-to-the-hardware-era" aria-hidden="true"></span><span class="legacy-anchor" id="4-deploy-the-quantum-device-as-a-verifiable-kernel-not-as-the-whole-solver" aria-hidden="true"></span><span class="legacy-anchor" id="5-fix-a-usefulness-protocol-before-claiming-quantum-advantage" aria-hidden="true"></span><h2 id="section-6-connecting-the-layers-reveals-the-next-experiments">6. Connecting the layers reveals the next experiments</h2>
 <figure class="figure-panel figure-panel-fit">
-  <img src="../artifacts/quantum_full_stack_map_en.svg" alt="Chart organizing physical-QPU and numerical results into four layers: hardware and I/O; states, samples, and measurements; compilation and error correction; and applications and validation" width="1600" height="1120" loading="lazy">
-  <figcaption>Figure 2. Across these two days, the common thread is full-stack co-design that reduces bottlenecks at each layer. Physical QPU results, numerical experiments, and compiler estimates must remain separate to avoid comparing improvement rates across incompatible layers.</figcaption>
+<img src="../artifacts/quantum_full_stack_map_en.svg" loading="lazy" width="1600" height="1120" alt="Diagram connecting the costs reduced in four layers: hardware and I/O; states, samples, and measurement; compilation and error correction; and applications and validation" />
+<figcaption>Figure 2. A co-design map connecting control channels, preparation circuits and measurement, logical routing, and valid candidates. It distinguishes physical-device results from numerical and compiler evaluations and connects each layer to its next evaluation metrics. Based on optical control [1], states, samples, and measurement [4–6], compilation [7,8], and applications [3,9,10].</figcaption>
 </figure>
 
-<table>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Scroll table horizontally"><table>
 <thead>
 <tr>
 <th>Study</th>
-<th>Evidence status</th>
-<th>Direct demonstration</th>
-<th>Still needed</th>
+<th>Evidence form</th>
+<th>Cost or outcome directly addressed</th>
+<th>Next evaluation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>USTC fiber-delivered transmon control</td>
-<td>Preprint · physical 2Q QPU</td>
-<td>1490 nm link and high-fidelity 1Q and CZ control</td>
-<td>Multi-channel and long-duration operation; total I/O including readout</td>
+<td>USTC optical control</td>
+<td>Preprint · physical 2Q</td>
+<td>1490 nm link, 1Q and CZ control</td>
+<td>Simultaneous operation, long-term stability, complete I/O</td>
 </tr>
 <tr>
 <td>D-Wave molecular generation</td>
 <td>Peer-reviewed · physical annealer</td>
-<td>Binary latent-prior sampling and SMILES generation</td>
-<td>Strong classical sampler, repeated statistics, target and wet-lab validation, total cost</td>
+<td>Binary latent-variable samples and string generation</td>
+<td>Diversity, target properties, repeated statistics, total cost</td>
 </tr>
 <tr>
-<td>IBM 100-site SPT</td>
+<td>100-site SPT</td>
 <td>Peer-reviewed · physical QPU</td>
-<td>Shallow preparation circuits and several nonlocal observables</td>
-<td>Noisy-state fidelity boundary, difficult dynamics, comparison of classical cost</td>
+<td>Shallow state preparation, nonlocal observables</td>
+<td>Order under noise, state diagnostics</td>
 </tr>
 <tr>
-<td>MC-PQE measurement</td>
-<td>Preprint · numerical</td>
-<td>Standard error reduced by a factor of 5–10 at the same number of measurements</td>
-<td>Basis-change noise and QPU wall-clock time</td>
+<td>MC-PQE</td>
+<td>Preprint · classical simulation</td>
+<td>Lower estimation error for a measurement budget</td>
+<td>Basis-change noise, QPU time</td>
 </tr>
 <tr>
 <td>DF-SQD</td>
-<td>Preprint · physical QPU + classical CI</td>
-<td>Better determinant proposals with fewer shots</td>
-<td>End-to-end time and memory including CI</td>
+<td>Preprint · QPU + classical CI</td>
+<td>CI-candidate proposal distribution</td>
+<td>Recovery and diagonalization time and memory</td>
 </tr>
 <tr>
 <td>SpiderLS and BB-code</td>
-<td>Preprint · compiler/estimator</td>
-<td>Lower logical-routing and spacetime cost</td>
-<td>Physical logical hardware and error-correction cycles</td>
+<td>Preprint · compiler evaluation</td>
+<td>Logical spacetime and inter-module movement</td>
+<td>Error-correction cycles, physical logical devices</td>
 </tr>
 <tr>
-<td>QuEra unit commitment</td>
-<td>Preprint · physical QPU + classical recovery</td>
-<td>Industrial problem → MWIS → QPU → feasible dispatch</td>
-<td>Total time and cost versus a strong classical solver</td>
+<td>QuEra and IonQ</td>
+<td>Preprint · QPU + classical validation</td>
+<td>Execution paths for industrial problems</td>
+<td>Valid samples, scale, strong classical baselines</td>
 </tr>
 <tr>
-<td>IonQ gas-network QAOA</td>
-<td>Preprint · reduced QPU PoC</td>
-<td>Path from Classiq synthesis to physical QPU</td>
-<td>Original scale, higher valid-shot rate, and an advantage comparison against classical baselines</td>
-</tr>
-<tr>
-<td>QML kernel and generator</td>
-<td>Preprint · mixed QPU/statevector</td>
-<td>Failure conditions for excessive width and proxy losses</td>
-<td>Downstream accuracy and classical champions at each scale</td>
+<td>QML kernels and generators</td>
+<td>Preprint · QPU/statevector</td>
+<td>Limits of width and proxy-loss evaluations</td>
+<td>Data discrimination, generalization, valid-candidate coverage</td>
 </tr>
 </tbody>
-</table>
-<p>Secondary signals pointed in the same direction. The theory of VQAs with guiding states formalized convergence conditions when a good initial state is available, but it did not guarantee that such a state could be prepared cheaply. A simulated six-qubit drug-target-affinity pilot retained only limited signals after correction. A 1.55 μm quantum-dot study measured hole-spin \(T_2^*=15.9\pm1.7\) ns in a physical optical system, but it did not yet demonstrate a repeater or cluster-state generation. These results should be read, respectively, as a theoretical condition, a small QML pilot, and progress in a photonic device.</p>
-<h2 id="7-development-directions-five-forms-of-co-design">7. Development directions: five forms of co-design</h2>
-<p>The following synthesis is this review&rsquo;s assessment based on the reported results and bottlenecks.</p>
-<h3 id="1-co-design-qubits-with-control-and-readout-electronics">1) Co-design qubits with control and readout electronics</h3>
-<p>Optical fiber, cryogenic CMOS, and multiplexed readout are not peripheral technologies. Passive heat and active heat per channel, phase noise, calibration drift, wiring that remains down to the millikelvin stage, and the refrigerator&rsquo;s total load must appear in the same resource table. Simultaneous channel count and recalibration interval become scaling metrics alongside gate fidelity.</p>
-<h3 id="2-identify-where-information-is-lost-before-designing-the-circuit">2) Identify where information is lost before designing the circuit</h3>
-<p>The 100-site state&rsquo;s enabling feature was shallow compilation; MC-PQE relied on commuting groups; and DF-SQD relied on the proposal distribution. Algorithmic evaluations should therefore report compiled 2Q depth, measurement groups, shots, valid or postselected fraction, and classical recovery cost alongside logical qubits and gate count.</p>
-<h3 id="3-match-the-compilers-objective-function-to-the-hardware-era">3) Match the compiler&rsquo;s objective function to the hardware era</h3>
-<p>NISQ gate depth, annealer embedding, neutral-atom survival, and surface-code patch volume are different costs. An improvement percentage at one layer should not be copied to another. What is needed is a Pareto curve that runs from high-level Boolean and phase synthesis through native gates and routing to logical patches and factories.</p>
-<h3 id="4-deploy-the-quantum-device-as-a-verifiable-kernel-not-as-the-whole-solver">4) Deploy the quantum device as a verifiable kernel, not as the whole solver</h3>
-<p>D-Wave&rsquo;s latent sampler, DF-SQD&rsquo;s determinant proposer, and QuEra&rsquo;s discrete MWIS step are realistic patterns. The input and output of the quantum kernel and the classical stages must be explicit so that changes in cost and quality can be located. An end-to-end claim cannot hide classical preprocessing or post-processing.</p>
-<h3 id="5-fix-a-usefulness-protocol-before-claiming-quantum-advantage">5) Fix a usefulness protocol before claiming quantum advantage</h3>
-<p>Before the experiment, specify the current classical baseline, identical problem instances, a solution-quality target, and the full boundaries for time and energy. Record failure rate, discard rate, and calibration, rather than only successful shots. Separate averages from best cases and retain seeds and confidence intervals. Only under these conditions can one tell whether an improvement reproduces on a new device.</p>
-<h2 id="8-applying-this-framework-to-oled-and-materials-research">8. Applying this framework to OLED and materials research</h2>
-<p>Transferring the D-Wave study directly to OLED materials discovery cannot end with “generate many molecular strings.” A quantum annealer could serve as a discrete latent-proposal engine, but property validation and synthesizability filters must follow generation.</p>
-<ol>
-<li><strong>Establish the classical champion first.</strong> Compare modern molecular generators, Bayesian optimization, and genetic algorithms on the same training set and compute budget.</li>
-<li><strong>Separate the targets.</strong> First report SMILES validity, uniqueness, and novelty. Then evaluate \(S_1\), \(T_1\), \(\Delta E_{ST}\), oscillator strength, SOC, radiative and non-radiative rates, charge mobility, stability, and synthetic accessibility.</li>
-<li><strong>Narrow the quantum kernel&rsquo;s scope.</strong> Use the annealer for latent sampling and a gate-model QPU for a verifiable step such as a restricted active-space energy or observable.</li>
-<li><strong>Put measurement and post-processing in the resource ledger.</strong> Include compiled 2Q depth, commuting groups, shots, mitigation circuits, postselection, QPU time, queue time, CPU/GPU time, and memory.</li>
-<li><strong>Pass candidates through staged validation.</strong> Reduce them in the order low-cost surrogate → DFT/TDDFT or multireference calculation → synthesizability → experiment.</li>
-<li><strong>Compare at equal total budgets.</strong> The final metric is whether the same time, energy, and monetary budget yields more validated candidates than a classical pipeline.</li>
+</table></div>
+<p>Related studies add different questions to this map. VQA theory with guiding states analyzes convergence and generalization under conditions on access to the initial state, small initialization, and the kernel; preparing the state is also a cost.<a class="citation" href="#ref-13">[13]</a> The drug–target affinity pilot simulated two six-qubit modules with statevectors. Across ten fixed splits, the signal remaining after Holm correction was a reduction in RMSE for the DAVIS unseen-drug split (S2). A fixed seed and comparisons across splits also delimit the result.<a class="citation" href="#ref-14">[14]</a> A telecom C-band quantum dot yielded a hole-spin $T_2^*=15.9\pm1.7$ ns in pulsed photon-correlation measurements at 150 mT.<a class="citation" href="#ref-15">[15]</a> This is a device metric for a photonic interface, at a different evaluation stage from the compilation and optimization results above.</p>
+<p>These studies share no common improvement percentage. They do share a question: <strong>does a resource saving remain a gain in the next stage?</strong> The thermal saving from optical transmission must carry through to readout and lower-stage wiring; the gain from a shallow circuit must survive measurement and post-processing; and good samples must become feasible solutions to the final problem. A complete resource ledger needs problem size, circuit depth, shots and discard rates, error mitigation, and time, memory, and energy for both QPU and classical computation.</p>
+<span class="legacy-anchor" id="8-applying-this-framework-to-oled-and-materials-research" aria-hidden="true"></span><h2 id="section-7-following-candidates-through-to-oled-and-materials-properties">7. Following candidates through to OLED and materials properties</h2>
+<p>Applying the molecular-generation example to OLEDs takes the objective beyond the number of strings. Obtaining new valid molecules must connect to evaluating $S_1$, $T_1$, $\Delta E_{ST}$, oscillator strength, SOC, radiative and non-radiative rates, charge mobility, and stability. Higher QED alone does not establish improvement in these properties.</p>
+<p>A practical test could begin with classical generators, Bayesian optimization, and genetic algorithms as baselines on the same training data and total budget. An annealer can propose discrete latent variables; a gate-model QPU can address a step whose input and output can be checked, such as a restricted active-space energy or observable. Candidates can be narrowed through low-cost surrogates, DFT/TDDFT or multireference calculations, synthesizability assessment, and experiment. The comparison then measures the number and diversity of candidates that pass this process and its total cost.</p>
+<p>In this evaluation, a small quantum module can have value if it reduces search cost or extends the coverage of useful candidates. The first task is to design an evaluation that can identify where that gain arises.</p>
+<span class="legacy-anchor" id="final-assessment" aria-hidden="true"></span><h2 id="section-final-assessment">Final assessment</h2>
+<p>The studies reviewed here make the development tasks for quantum computing concrete. Changing control lines, preparing shallower circuits, allocating measurements, and selecting samples for classical computation connect physical-device performance to applications. Fault-tolerant compilation adds the costs of logical space and movement.</p>
+<p>This is why the review focuses on system co-design. <strong>The ability to carry an improvement from one layer into the next</strong> determines useful computation. Adding a complete resource ledger and strong classical baselines to qubit counts and fidelities makes both current achievements and the questions for the next experiment easier to judge.</p>
+<span class="legacy-anchor" id="sources" aria-hidden="true"></span><h2 id="section-references">References</h2>
+<ol class="reference-list">
+<li id="ref-1">Y.-H. Li, D. Fan, N. Li, F. Chen, S. Li, D.-D. Li, Y. Xu, J. Lin, M. Gong, H.-L. Huang, H. Deng, Y. Wu, H. Qian, S. Guo, F. Liang, X. Zhu, C.-Z. Peng, and J.-W. Pan, High fidelity control of superconducting qubits with optical transmitted signal, arXiv:2608.19602v1 (2026). <a href="https://arxiv.org/abs/2608.19602v1">https://arxiv.org/abs/2608.19602v1</a></li>
+<li id="ref-2">F. Lecocq, F. Quinlan, K. Cicak, J. Aumentado, S. A. Diddams, and J. D. Teufel, Control and readout of a superconducting qubit using a photonic link, Nature 591, 575–579 (2021). <a href="https://doi.org/10.1038/s41586-021-03268-x">https://doi.org/10.1038/s41586-021-03268-x</a></li>
+<li id="ref-3">H. Kunugi, M. Rahmani, Y. Iyama, Y. Hirono, A. Suma, M. Woolway, V. Vargas-Calderón, W. Kim, K. Chern, M. Amin, and M. Tateno, Molecular design beyond training data with novel extended objective functionals of generative AI models driven by quantum annealing computer, Sci. Rep. 16, 31767 (2026). <a href="https://doi.org/10.1038/s41598-026-49186-8">https://doi.org/10.1038/s41598-026-49186-8</a></li>
+<li id="ref-4">G. Pennington, K. C. Smith, J. R. Garrison, L. P. Lindoy, J. Crain, and B. Jaderberg, Symmetry-protected topological order in a 100-site spin chain on a digital quantum computer, npj Quantum Inf. 12, 141 (2026). <a href="https://doi.org/10.1038/s41534-026-01334-8">https://doi.org/10.1038/s41534-026-01334-8</a></li>
+<li id="ref-5">D. Baid and M.-A. Filip, Efficient measurement schemes for the Monte Carlo projective quantum eigensolver, arXiv:2608.30612v1 (2026). <a href="https://arxiv.org/abs/2608.30612v1">https://arxiv.org/abs/2608.30612v1</a></li>
+<li id="ref-6">K. Agarwal and A. Ray, DF-SQD: Deterministic fields for sampling-based quantum diagonalization, arXiv:2609.01264v1 (2026). <a href="https://arxiv.org/abs/2609.01264v1">https://arxiv.org/abs/2609.01264v1</a></li>
+<li id="ref-7">H. Kim, C. Lee, S. Kim, E. Jang, Y. Kim, S. Choi, H. Lee, S. Pyun, and W. W. Ro, SpiderLS: Leveraging full ZX reduction for lattice surgery compilation, arXiv:2608.30228v1 (2026). <a href="https://arxiv.org/abs/2608.30228v1">https://arxiv.org/abs/2608.30228v1</a></li>
+<li id="ref-8">A. B. Bhaumik, S. Dutta, S. Wang, and A. Chattopadhyay, Structure-aware placement and routing of multi-controlled Toffoli on bivariate bicycle code architectures, arXiv:2609.00852v1 (2026). <a href="https://arxiv.org/abs/2609.00852v1">https://arxiv.org/abs/2609.00852v1</a></li>
+<li id="ref-9">J. Chen, M. Lin, J. Wen, Z. Zhang, and C. Wu, A backend-agnostic MWIS kernel for stochastic unit commitment with neutral-atom hardware validation, arXiv:2609.01248v1 (2026). <a href="https://arxiv.org/abs/2609.01248v1">https://arxiv.org/abs/2609.01248v1</a></li>
+<li id="ref-10">A. Ben-Ishay, Y. Eyal, Y. Cohen, and N. Erez, Quantum-based optimization of gas throughput in natural gas transmission networks under hydraulic constraints using QAOA, arXiv:2609.00825v1 (2026). <a href="https://arxiv.org/abs/2609.00825v1">https://arxiv.org/abs/2609.00825v1</a></li>
+<li id="ref-11">A. P. Appel, Fractal dimension predicts quantum kernel collapse in angle-encoded data, arXiv:2609.00475v1 (2026). <a href="https://arxiv.org/abs/2609.00475v1">https://arxiv.org/abs/2609.00475v1</a></li>
+<li id="ref-12">S. Raj, N. Mathur, and A. Perdomo-Ortiz, “Train classical, deploy quantum” requires rethinking generalization, arXiv:2608.31117v1 (2026). <a href="https://arxiv.org/abs/2608.31117v1">https://arxiv.org/abs/2608.31117v1</a></li>
+<li id="ref-13">T. Nguyen and M. Kieferová, Theoretical guarantees of variational quantum algorithm with guiding states, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01364-2. <a href="https://doi.org/10.1038/s41534-026-01364-2">https://doi.org/10.1038/s41534-026-01364-2</a></li>
+<li id="ref-14">A. Salehi, G. Salehi, A. Heydarian, and H. R. Goudarzi, Comparative study of hybrid quantum-classical models for cold-start drug–target affinity prediction: a partial pilot analysis, Sci. Rep. (2026), doi:10.1038/s41598-026-69754-2. <a href="https://doi.org/10.1038/s41598-026-69754-2">https://doi.org/10.1038/s41598-026-69754-2</a></li>
+<li id="ref-15">J. M. Michl, R. Hekmati, M. Helal, G. Peniakov, Y. Reum, J. Kaupp, Q. Buchinger, J. Kim, A. T. Pfenning, Y.-H. Cho, S. Höfling, and T. Huber-Loyola, A spin-photon interface in the telecom C-band with long hole spin dephasing time, Nat. Commun. 17, 10458 (2026). <a href="https://doi.org/10.1038/s41467-026-77282-w">https://doi.org/10.1038/s41467-026-77282-w</a></li>
 </ol>
-<p>Under this structure, a quantum sampler does not have to be useless or replace everything. It can have value as a small module that reduces total search cost or improves coverage of the candidate distribution. That value, however, must be established in final properties, experiments, and total cost—not in proxies such as validity or QED.</p>
-<h2 id="final-assessment">Final assessment</h2>
-<p>The research from these two days shows quantum computing moving from competition over the performance of a single chip toward co-design of the computational system. There was progress on physical hardware. Two transmons were controlled with optically transmitted signals; the nonlocal order of a 100-site state was read on an IBM QPU; and a quantum annealer, gate-model QPUs, and a neutral-atom QPU were incorporated into workflows for molecular generation, quantum chemistry, and industrial optimization.</p>
-<p>These results cannot be collapsed into one claim of quantum advantage. D-Wave&rsquo;s 96.97% was string validity and traded off against uniqueness. The thousands of channels in the optical-control work were thermal-budget estimates. A large classical CI computation remains behind DF-SQD&rsquo;s reduction in QPU shots; QuEra and IonQ proofs of concept still involve classical feasibility recovery and small valid fractions. The large improvements in SpiderLS and the BB-code study remain logical-compiler metrics.</p>
-<p>The most important direction is also the most practical. <strong>A quantum computer becomes more useful as reductions in each control line, circuit layer, measurement group, and invalid sample accumulate.</strong> Future evaluations should begin with a full-stack resource ledger and strong classical baselines rather than with qubit count.</p>
-<h2 id="sources">Sources</h2>
-<ol>
-<li>H. Kunugi et al., <a href="https://doi.org/10.1038/s41598-026-49186-8"><em>Molecular design beyond training data with novel extended objective functionals of generative AI models driven by quantum annealing computer</em></a>, Scientific Reports, published 9 July 2026; <a href="https://arxiv.org/abs/2602.15451">arXiv v3</a>. Discovery route: <a href="https://www.linkedin.com/posts/d-wave-quantum_drug-discovery-study-shows-how-quantum-computing-activity-7500932164926984193-hRYm">D-Wave&rsquo;s LinkedIn post</a> and <a href="https://www.dwavequantum.com/learn/blog/posts/how-quantum-computing-could-improve-generative-ai-what-a-new-drug-discovery-study-reveals/">corporate account</a>.</li>
-<li>Y.-H. Li, D. Fan et al., <a href="https://arxiv.org/abs/2608.19602"><em>High fidelity control of superconducting qubits with optical transmitted signal</em></a>, arXiv:2608.19602v1, submitted 20 August 2026. Discovery route: <a href="https://www.linkedin.com/posts/michaela-eichinger_ive-been-suspicious-of-putting-control-electronics-activity-7500517475097186305-AQKT">Michaela Eichinger&rsquo;s LinkedIn post</a>.</li>
-<li>B. J. Chapman et al., <a href="https://www.nist.gov/publications/control-and-readout-superconducting-qubit-using-photonic-link"><em>Control and readout of a superconducting qubit using a photonic link</em></a>, Nature 591, 2021.</li>
-<li>G. Pennington et al., <a href="https://www.nature.com/articles/s41534-026-01334-8"><em>Symmetry-protected topological order in a 100-site spin chain on a digital quantum computer</em></a>, npj Quantum Information 12, Article 141, published 1 September 2026.</li>
-<li>D. Baid and M.-A. Filip, <a href="https://arxiv.org/abs/2608.30612"><em>Efficient measurement schemes for the Monte Carlo projective quantum eigensolver</em></a>, arXiv:2608.30612v1, submitted 31 August 2026.</li>
-<li>K. Agarwal and A. Ray, <a href="https://arxiv.org/abs/2609.01264"><em>DF-SQD: Deterministic Fields for Sampling-Based Quantum Diagonalization</em></a>, arXiv:2609.01264v1, submitted 1 September 2026.</li>
-<li>H. Kim et al., <a href="https://arxiv.org/abs/2608.30228"><em>SpiderLS: Leveraging Full ZX Reduction for Lattice Surgery Compilation</em></a>, arXiv:2608.30228v1, submitted 31 August 2026.</li>
-<li>A. B. Bhaumik et al., <a href="https://arxiv.org/abs/2609.00852"><em>Structure-Aware Placement and Routing of Multi-Controlled Toffoli on Bivariate Bicycle Code Architectures</em></a>, arXiv:2609.00852v1, submitted 1 September 2026.</li>
-<li>J. Chen et al., <a href="https://arxiv.org/abs/2609.01248"><em>A Backend-Agnostic MWIS Kernel for Stochastic Unit Commitment with Neutral-Atom Hardware Validation</em></a>, arXiv:2609.01248v1, submitted 1 September 2026.</li>
-<li>A. Ben Ishay et al., <a href="https://arxiv.org/abs/2609.00825"><em>Quantum-Based Optimization of Gas Throughput in Natural Gas Transmission Networks Under Hydraulic Constraints Using QAOA</em></a>, arXiv:2609.00825v1, submitted 1 September 2026.</li>
-<li>A. P. Appel, <a href="https://arxiv.org/abs/2609.00475"><em>Fractal dimension predicts quantum kernel collapse in angle-encoded data</em></a>, arXiv:2609.00475v1, submitted 31 August 2026.</li>
-<li>S. Raj, N. Mathur, and A. Perdomo-Ortiz, <a href="https://arxiv.org/abs/2608.31117"><em>“Train classical, deploy quantum” requires rethinking generalization</em></a>, arXiv:2608.31117v1, submitted 31 August 2026.</li>
-<li>R. Villanueva et al., <a href="https://www.nature.com/articles/s41534-026-01364-2"><em>Variational Quantum Algorithms with Guiding States: Trainability and Generalization</em></a>, npj Quantum Information, published 2 September 2026.</li>
-<li><a href="https://www.nature.com/articles/s41598-026-69754-2"><em>A quantum-enhanced hybrid deep learning framework for drug-target affinity prediction</em></a>, Scientific Reports, published 2026.</li>
-<li><a href="https://www.nature.com/articles/s41467-026-77282-w"><em>A telecom-wavelength quantum dot spin-photon interface</em></a>, Nature Communications, published 2 September 2026.</li>
-</ol>
+
 <p><a href="../artifacts/daily_quantum_brief_2026-09-02.pdf">Download the 2 September Daily Quantum Brief PDF</a> · <a href="../artifacts/daily_quantum_brief_2026-09-03.pdf">Download the 3 September Daily Quantum Brief PDF</a></p>
-<p><em>Verification note: The public LinkedIn posts were used only to discover the topics and compare promotional wording. Institutions, execution hardware, quantitative results, and publication status were checked against the original papers and official sources. Physical-QPU execution, statevector or classical numerical experiments, and compiler or logical estimates were kept separate; no quantum-advantage or speed-advantage claim was assigned where strong classical baselines or end-to-end costs were absent. Public search cannot fully cover private feeds or every index.</em></p>
+<h2 id="section-version-and-revision-history">Version and revision history</h2>
+<p>The original publication date and evidence cutoff are 3 September 2026. The previous web update of 4 September 2026 and the original publication-generation record are preserved. On 14 November 2026, the editorial team (AEDAUT) checked the relevant versions of the original sources and revised the introduction, transitions, conclusion, and figure captions. Corrections cover XEB/SPB and the optical-control thermal model, the QuEra cohorts and initial-occupancy check, algorithmic qubits in the gas-network experiment, and the DF-SQD candidate pool versus diagonalized space. For D-Wave&rsquo;s count of unique valid molecules, preprint v3 gives 5,126 while published Table 1 gives 5,216; this review follows the published table. The revision restores author credit for Lecocq and colleagues and the original titles and bibliographic records of the guiding-state, affinity, and quantum-dot papers. Both existing DQB attachments were also synchronized with their reviewed public editions.</p>
+<p>This review used selective comparison of the original papers, official bibliographic records, and relevant methods, tables, and supplementary material, together with automated file checks and rendering review. The document metadata preserves the original assistance and verification history. AI agents performed the present source comparison and independent manuscript review. No device experiments, numerical reproduction, or separate human reader evaluation were performed. Later research results were not added as evidence available on 3 September.</p>
       <div class="footer">
-        Generated: 2026-09-03 08:46:49<br>
-        Source last modified: 2026-09-03 08:46:40
+        Original edition generated: 2026-09-03 08:46:49<br>
+        Editorial revision: 2026-11-14
       </div>
     </article>
 
@@ -1068,40 +1042,26 @@
           <h2 id="toc-heading">Section map</h2>
           <div class="toc">
 <ul>
-<li><a href="#conclusions-up-front">Conclusions up front</a></li>
-<li><a href="#1-what-changes-when-optical-fiber-replaces-transmon-control-lines">1. What changes when optical fiber replaces transmon control lines?</a><ul>
-<li><a href="#results-from-the-physical-two-qubit-device">Results from the physical two-qubit device</a></li>
+<li><a href="#section-1-what-changes-when-optical-fiber-replaces-transmon-control-lines">1. What changes when optical fiber replaces transmon control lines?</a></li>
+<li><a href="#section-2-d-wave-sampled-the-latent-variables-of-a-molecular-generator">2. D-Wave sampled the latent variables of a molecular generator</a></li>
+<li><a href="#section-3-state-preparation-measurement-and-sample-selection-reduce-different-costs">3. State preparation, measurement, and sample selection reduce different costs</a><ul>
+<li><a href="#section-shallow-preparation-circuits-enabled-the-100-site-state">Shallow preparation circuits enabled the 100-site state</a></li>
+<li><a href="#section-mc-pqe-allocating-the-same-measurement-budget-more-efficiently">MC-PQE: allocating the same measurement budget more efficiently</a></li>
+<li><a href="#section-df-sqd-selecting-candidates-for-classical-diagonalization">DF-SQD: selecting candidates for classical diagonalization</a></li>
 </ul>
 </li>
-<li><a href="#2-d-wave-did-not-calculate-molecules-it-sampled-latent-space">2. D-Wave did not calculate molecules; it sampled latent space</a><ul>
-<li><a href="#results-for-10000-generated-strings">Results for 10,000 generated strings</a></li>
+<li><a href="#section-4-fault-tolerant-compilation-includes-the-cost-of-space-and-movement">4. Fault-tolerant compilation includes the cost of space and movement</a></li>
+<li><a href="#section-5-which-part-of-an-industrial-application-did-the-quantum-device-perform">5. Which part of an industrial application did the quantum device perform?</a><ul>
+<li><a href="#section-neutral-atom-scheduling-discrete-moves-and-feasibility-recovery">Neutral-atom scheduling: discrete moves and feasibility recovery</a></li>
+<li><a href="#section-ionq-gas-network-qaoa-samples-that-satisfy-physical-constraints">IonQ gas-network QAOA: samples that satisfy physical constraints</a></li>
+<li><a href="#section-qml-evaluating-beyond-circuit-width-and-training-loss">QML: evaluating beyond circuit width and training loss</a></li>
 </ul>
 </li>
-<li><a href="#3-prepare-shallower-states-measure-less-and-choose-better-samples">3. Prepare shallower states, measure less, and choose better samples</a><ul>
-<li><a href="#shallow-preparation-circuits-enabled-the-100-site-state">Shallow preparation circuits enabled the 100-site state</a></li>
-<li><a href="#mc-pqe-reduced-error-by-grouping-measurement-terms">MC-PQE reduced error by grouping measurement terms</a></li>
-<li><a href="#df-sqd-changed-the-determinant-proposal-distribution">DF-SQD changed the determinant proposal distribution</a></li>
-</ul>
-</li>
-<li><a href="#4-compilation-in-the-error-corrected-era-uses-different-cost-functions">4. Compilation in the error-corrected era uses different cost functions</a></li>
-<li><a href="#5-industrial-applications-enter-through-small-quantum-kernels-and-large-classical-workflows">5. Industrial applications enter through small quantum kernels and large classical workflows</a><ul>
-<li><a href="#neutral-atom-power-operations-recovering-feasible-solutions-was-central">Neutral-atom power operations: recovering feasible solutions was central</a></li>
-<li><a href="#ionq-gas-network-qaoa-a-small-proof-of-the-execution-path">IonQ gas-network QAOA: a small proof of the execution path</a></li>
-<li><a href="#in-qml-more-qubits-instead-caused-the-kernel-to-collapse">In QML, more qubits instead caused the kernel to collapse</a></li>
-</ul>
-</li>
-<li><a href="#6-reordering-two-days-of-research-by-evidence-level">6. Reordering two days of research by evidence level</a></li>
-<li><a href="#7-development-directions-five-forms-of-co-design">7. Development directions: five forms of co-design</a><ul>
-<li><a href="#1-co-design-qubits-with-control-and-readout-electronics">1) Co-design qubits with control and readout electronics</a></li>
-<li><a href="#2-identify-where-information-is-lost-before-designing-the-circuit">2) Identify where information is lost before designing the circuit</a></li>
-<li><a href="#3-match-the-compilers-objective-function-to-the-hardware-era">3) Match the compiler&rsquo;s objective function to the hardware era</a></li>
-<li><a href="#4-deploy-the-quantum-device-as-a-verifiable-kernel-not-as-the-whole-solver">4) Deploy the quantum device as a verifiable kernel, not as the whole solver</a></li>
-<li><a href="#5-fix-a-usefulness-protocol-before-claiming-quantum-advantage">5) Fix a usefulness protocol before claiming quantum advantage</a></li>
-</ul>
-</li>
-<li><a href="#8-applying-this-framework-to-oled-and-materials-research">8. Applying this framework to OLED and materials research</a></li>
-<li><a href="#final-assessment">Final assessment</a></li>
-<li><a href="#sources">Sources</a></li>
+<li><a href="#section-6-connecting-the-layers-reveals-the-next-experiments">6. Connecting the layers reveals the next experiments</a></li>
+<li><a href="#section-7-following-candidates-through-to-oled-and-materials-properties">7. Following candidates through to OLED and materials properties</a></li>
+<li><a href="#section-final-assessment">Final assessment</a></li>
+<li><a href="#section-references">References</a></li>
+<li><a href="#section-version-and-revision-history">Version and revision history</a></li>
 </ul>
 </div>
 
@@ -1110,26 +1070,21 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">Evidence links</h2>
         <ul>
-          <li><a href="https://arxiv.org/abs/2608.19602" target="_blank" rel="noreferrer">A preprint by Yu-Huai Li, Daojin Fan, and colleagues</a></li>
-<li><a href="https://www.nist.gov/publications/control-and-readout-superconducting-qubit-using-photonic-link" target="_blank" rel="noreferrer">In 2021, NIST researchers reported control and readout of a single superconducting qubit using a photonic link in Nature</a></li>
-<li><a href="https://www.nature.com/articles/s41598-026-49186-8" target="_blank" rel="noreferrer">Scientific Reports paper highlighted by D-Wave</a></li>
-<li><a href="https://www.dwavequantum.com/learn/blog/posts/how-quantum-computing-could-improve-generative-ai-what-a-new-drug-discovery-study-reveals/" target="_blank" rel="noreferrer">D-Wave&#x27;s corporate account</a></li>
-<li><a href="https://www.nature.com/articles/s41534-026-01334-8" target="_blank" rel="noreferrer">peer-reviewed paper in npj Quantum Information</a></li>
-<li><a href="https://arxiv.org/abs/2608.30612" target="_blank" rel="noreferrer">MC-PQE preprint</a></li>
-<li><a href="https://arxiv.org/abs/2609.01264" target="_blank" rel="noreferrer">DF-SQD preprint</a></li>
-<li><a href="https://arxiv.org/abs/2608.30228" target="_blank" rel="noreferrer">SpiderLS</a></li>
-<li><a href="https://arxiv.org/abs/2609.00852" target="_blank" rel="noreferrer">multi-controlled Toffoli placement study for BB codes</a></li>
-<li><a href="https://arxiv.org/abs/2609.01248" target="_blank" rel="noreferrer">stochastic unit commitment study</a></li>
-<li><a href="https://arxiv.org/abs/2609.00825" target="_blank" rel="noreferrer">gas-transmission-network study</a></li>
-<li><a href="https://arxiv.org/abs/2609.00475" target="_blank" rel="noreferrer">quantum-kernel study run on IBM&#x27;s `ibm_fez`</a></li>
-<li><a href="https://arxiv.org/abs/2608.31117" target="_blank" rel="noreferrer">comparison of quantum generative models</a></li>
-<li><a href="https://doi.org/10.1038/s41598-026-49186-8" target="_blank" rel="noreferrer">*Molecular design beyond training data with novel extended objective functionals of generative AI models driven by quantum annealing computer*</a></li>
-<li><a href="https://arxiv.org/abs/2602.15451" target="_blank" rel="noreferrer">arXiv v3</a></li>
-<li><a href="https://www.linkedin.com/posts/d-wave-quantum_drug-discovery-study-shows-how-quantum-computing-activity-7500932164926984193-hRYm" target="_blank" rel="noreferrer">D-Wave&#x27;s LinkedIn post</a></li>
-<li><a href="https://www.linkedin.com/posts/michaela-eichinger_ive-been-suspicious-of-putting-control-electronics-activity-7500517475097186305-AQKT" target="_blank" rel="noreferrer">Michaela Eichinger&#x27;s LinkedIn post</a></li>
-<li><a href="https://www.nature.com/articles/s41534-026-01364-2" target="_blank" rel="noreferrer">*Variational Quantum Algorithms with Guiding States: Trainability and Generalization*</a></li>
-<li><a href="https://www.nature.com/articles/s41598-026-69754-2" target="_blank" rel="noreferrer">*A quantum-enhanced hybrid deep learning framework for drug-target affinity prediction*</a></li>
-<li><a href="https://www.nature.com/articles/s41467-026-77282-w" target="_blank" rel="noreferrer">*A telecom-wavelength quantum dot spin-photon interface*</a></li>
+          <li><a href="https://arxiv.org/abs/2608.19602v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://doi.org/10.1038/s41586-021-03268-x" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41598-026-49186-8" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41534-026-01334-8" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://arxiv.org/abs/2608.30612v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.01264v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2608.30228v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.00852v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.01248v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.00825v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.00475v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2608.31117v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://doi.org/10.1038/s41534-026-01364-2" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41598-026-69754-2" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41467-026-77282-w" target="_blank" rel="noreferrer">doi.org</a></li>
 <li><a href="../artifacts/daily_quantum_brief_2026-09-02.pdf">Download the 2 September Daily Quantum Brief PDF</a></li>
 <li><a href="../artifacts/daily_quantum_brief_2026-09-03.pdf">Download the 3 September Daily Quantum Brief PDF</a></li>
         </ul>
