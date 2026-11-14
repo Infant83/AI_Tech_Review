@@ -1,7 +1,7 @@
 {
   "version": 1,
   "document_id": "2026-11-14-daily-quantum-exercise",
-  "publication_status": "candidate_verified_not_yet_deployed",
+  "publication_status": "published_and_live_verified",
   "python_tests": {
     "run": 395,
     "passed": 394,
@@ -49,9 +49,107 @@
       "Briefing list labels DQE and offers editorial/PDF/download",
       "Search for Korean delivery term returns DQE editorial"
     ],
-    "scope": "Local candidate; browser-tested files byte-identical in pinned final candidate; live verification pending"
+    "scope": "Reviewed local candidate plus actual public Korean page and browser PDF download; live bilingual article markup, manifest and release revision also checked"
   },
   "build_dependency": "Pillow 11.2.1; first candidate had five missing prior thumbnail references with unpinned local encoder, resolved using repository-pinned build dependency",
   "public_pdf_sha256": "17e5fbc57f8c39968e9410a31afb4bab5058a862e32bd515666f727d11d99100",
-  "human_sentence_review": "not performed"
+  "human_sentence_review": "not performed",
+  "source_commit": "5adb8d7379c47277acd3ba48e6d1cff36913dd19",
+  "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43592074430",
+  "workflow_jobs": {
+    "build": "success",
+    "deploy": "success",
+    "recovery-copy": "success",
+    "notify-readers": "success"
+  },
+  "ci_tests": {
+    "run": 865,
+    "passed": 856,
+    "skipped": 9,
+    "failed": 0
+  },
+  "live_verification": {
+    "resources": [
+      {
+        "path": "briefings/exercises/2026-11-14/",
+        "status": 200,
+        "bytes": 14512,
+        "sha256": "9e65e05ced15b5cdeb055c4a95d62362453786c52876b40de5bd1cd694dace4b",
+        "article_markup_matches_reviewed_candidate": true,
+        "canonical_redirect_verified": true
+      },
+      {
+        "path": "briefings/exercises/2026-11-14/en/",
+        "status": 200,
+        "bytes": 14194,
+        "sha256": "bcbe8955178ed4d7fc71bbfa307f02d4c9922abdca5b356802c67f4856f6bfec",
+        "article_markup_matches_reviewed_candidate": true,
+        "canonical_redirect_verified": true
+      },
+      {
+        "path": "archive-manifest.json",
+        "status": 200,
+        "bytes": 182549,
+        "sha256": "3f5d85d8b0049fd9fa341e0bc4b86c1fc89dabcaeaf27f9b56899dfbf7bbe85b",
+        "document": {
+          "id": "2026-11-14-daily-quantum-exercise",
+          "date": "2026-11-14",
+          "series": "daily-quantum-exercise",
+          "title": "배송 마감 안에 쓸 수 있는 최적화",
+          "summary": "주문이 바뀐 배송센터에서는 짧은 경로와 정확한 배정, 반환 마감을 함께 맞춰야 한다. 작은 배차 문제를 풀며 양자 최적화에 맡길 부분과 실제 도입 시험에서 비교할 성능을 생각해 본다.",
+          "language": "ko",
+          "tags": [
+            "Quantum Optimization",
+            "Vehicle Routing",
+            "QUBO",
+            "Exercise"
+          ],
+          "source_title": "Daily Quantum Exercise",
+          "title_en": "Optimization that returns a usable dispatch plan on time",
+          "summary_en": "A changed order makes distance, correct assignments, and a return deadline part of the same dispatch decision. A small routing exercise helps identify a role for quantum optimization and the measures needed to assess deployment.",
+          "href": "archive/files/2026-11-14-daily-quantum-exercise.pdf",
+          "size_bytes": 75355,
+          "sha256": "17e5fbc57f8c39968e9410a31afb4bab5058a862e32bd515666f727d11d99100",
+          "editorial_href": "briefings/exercises/2026-11-14/index.html",
+          "editorial_en_href": "briefings/exercises/2026-11-14/en/index.html",
+          "editorial_updated": "2026-11-14",
+          "editorial_assets": {
+            "briefings/exercises/2026-11-14/index.html": "a2220bc59f2fc11147d1cc9b1f72fc25dc0595c879a561f4445c17ad67d62a02",
+            "briefings/exercises/2026-11-14/en/index.html": "868d1dfc9058e8c4a917df2b2cd66870faa5c43b1e7c76072f839ea69fc56af6"
+          }
+        }
+      },
+      {
+        "path": "reader-publications.json",
+        "status": 200,
+        "bytes": 22349,
+        "sha256": "f2e2808e4a093b0e926ac1a12ac050abb91241d06ad6e7a04a209eddad2351e0"
+      },
+      {
+        "path": "publication-release.json",
+        "status": 200,
+        "bytes": 1333238,
+        "sha256": "81a8175c2b3697e3fd8490353b02e7f591e1024f60708f7ddef70774a3431322"
+      }
+    ],
+    "public_pdf": {
+      "path": "archive/files/2026-11-14-daily-quantum-exercise.pdf",
+      "bytes": 75355,
+      "sha256": "17e5fbc57f8c39968e9410a31afb4bab5058a862e32bd515666f727d11d99100",
+      "verified_clients": [
+        "curl",
+        "in-app browser download"
+      ]
+    },
+    "editorial_article_markup_matches_reviewed_candidate": true,
+    "canonical_redirects_to_service_domain": true,
+    "browser": "Actual public Korean page opened in in-app browser; local bilingual/mobile/disclosure tests retained"
+  },
+  "recovery": {
+    "scope": "Verified by completed CI recovery-copy job; archive not downloaded or restored locally in this task",
+    "files": 2614,
+    "bytes": 769965286,
+    "archive_sha256": "be0c8e74ee8a14c4ba72823f1f74c1799487647453e40786f310037125e61fa6",
+    "github_artifact_zip_sha256": "220300215fa8d46d95ec683b0b57f0938b11c79d1e65ebf03a6ba3526e28091c"
+  }
 }

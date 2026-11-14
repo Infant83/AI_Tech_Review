@@ -21,8 +21,16 @@
 
 ## 검증과 배포 상태
 
-시리즈·등록·주소 충돌·한영 편집글·목록·검색·페이지 나눔·보존·독자 추적의 관련 Python 검사 120개와 초점 검사, 기존 14개 DQB·DRB 편집글의 바이트 보존을 확인했다. 전체 Python 검사 395개 중 394개 통과·1개 스킵, 검색·렉처 이동 Node 검사 12개 통과를 확인했다. 뒤의 실제 후보·브라우저·CI·HTTPS 확인 결과는 완료 시 덧붙인다.
+시리즈·등록·주소 충돌·한영 편집글·목록·검색·페이지 나눔·보존·독자 추적의 관련 Python 검사 120개와 초점 검사, 기존 14개 DQB·DRB 편집글의 바이트 보존을 확인했다. 전체 Python 검사 395개 중 394개 통과·1개 스킵, 검색·렉처 이동 Node 검사 12개 통과를 확인했다.
 
 매일 확인은 [.automation/dqe-daily/README.md](../../.automation/dqe-daily/README.md)의 기준과 이 대화에 연결된 Codex 앱 예약에서 이어간다. 예약 설정과 실제 회차 실행·공개 완료는 구별한다.
 
 독립 후보의 보존 검사와 페이지 용량 검사를 통과했다. 첫 로컬 생성의 썸네일 참조 5개 누락은 저장소의 고정 Pillow 11.2.1을 사용해 해결했으며, 최종 후보에는 차단 항목이 없다. 현재 배포본과 비교해 기존 기사·PDF의 변경 없이 새 DQE 한 건을 더했다. 인앱 브라우저에서 한영 이동·기본 접힘/펼침·390×844 모바일 수평 넘침 없음·같은 날짜 세 시리즈의 달력·목록·검색·PDF 연결을 확인했다. 실제 브라우저로 본 파일과 고정 의존성으로 만든 최종 후보의 해당 파일이 바이트 단위로 같음을 대조했다. 세부 범위는 `artifacts/publication-qa.json`에 남겼다.
+
+## 공개 완료
+
+[국문 DQE](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-14/)·[영문 DQE](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-14/en/)와 [문제·해설 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-14-daily-quantum-exercise.pdf)를 게시했다. 발행 커밋은 `5adb8d7379c47277acd3ba48e6d1cff36913dd19`, [배포 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/43592074430)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. CI 검사 865개 중 856개 통과·9개 스킵·실패 0개를 실제 로그에서 확인했다.
+
+실제 HTTPS 한영 article 마크업이 검토 후보와 같고, 기존 GitHub Pages canonical이 서비스 도메인의 해당 주소로 연결됨을 확인했다. 공개 아카이브의 DQE 항목·독자 카탈로그·실제 릴리스의 source revision을 대조했다. 브라우저에서 공개 국문 페이지와 접힌 해설을 확인하고 PDF를 다운로드했으며, 별도 curl 다운로드와 함께 75,355 bytes·SHA-256 `17e5fbc57f8c39968e9410a31afb4bab5058a862e32bd515666f727d11d99100`이 검수·등록 사본과 같았다.
+
+CI 복구 작업은 2,614개 파일·769,965,286 bytes의 정확한 배포물을 검증했다. 복구 아카이브 SHA-256은 `be0c8e74ee8a14c4ba72823f1f74c1799487647453e40786f310037125e61fa6`이며 이번 작업에서 복구 사본 전체를 다시 내려받거나 로컬 복원한 것으로 표시하지 않는다. 실제 결과와 공개 범위는 `artifacts/publication-qa.json`에 기록했다. 일일 예약은 활성화했으며 첫 예약 회차의 실제 실행 여부는 후속 실행에서 별도로 확인한다.
