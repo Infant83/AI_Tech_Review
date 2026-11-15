@@ -90,6 +90,28 @@ test('missing/incomplete collection state fails instead of inventing coverage',a
   }
 });
 
+test('coverage and recorded rows before the KST collection start fail closed without truncation',async()=>{
+  const selected=range('?period=30d');
+  // The UTC date is October 25, but collection begins on the October 26 KST day.
+  const started={since:'2026-10-25T15:00:00.000Z',discovery_activity_since:'2026-10-26'};
+  await assert.rejects(readingInsights(dbFixture({states:[{...started,discovery_activity_since:'2026-10-25'}]}).env,selected,NOW),
+    error=>error.status===503 && error.code==='insights_not_configured');
+  const actual={day:'2026-10-26',article_id:'review-a',opens:2};
+  const before={day:'2026-10-25',article_id:'review-a',opens:3};
+  await assert.rejects(readingInsights(dbFixture({states:[started],rows:[actual,before]}).env,selected,NOW),
+    error=>error.status===503 && error.code==='insights_unavailable');
+  // A first-day aggregate is retained, including when it predates activityRecordedFrom.
+  const body=await readingInsights(dbFixture({states:[{...started,discovery_activity_since:'2026-10-27'}],rows:[actual]}).env,selected,NOW);
+  assert.equal(body.coverage.collectionStartedOn,'2026-10-26');
+  assert.deepEqual(body.daily,[{day:'2026-10-26',articleId:'review-a',opens:2}]);
+  assert.equal(body.articles.find(row=>row.id==='review-a').periodOpens,2);
+  for (const f of [dbFixture({states:[{...started,discovery_activity_since:'2026-10-25'}]}),dbFixture({states:[started],rows:[before]})]) {
+    const response=await worker.fetch(new Request(URL_BASE+'?period=30d',{headers:{Origin:'https://infant83.io'}}),f.env);
+    assert.equal(response.status,503); assert.equal(response.headers.get('Cache-Control'),'private, no-store');
+    assert.equal(response.headers.get('Set-Cookie'),null);
+  }
+});
+
 test('article and sparse-row caps fail closed rather than returning a partial catalog',async()=>{
   const articles=Array.from({length:501},(_,i)=>({id:`article-${i}`}));
   await assert.rejects(readingInsights(dbFixture({articles}).env,range(),NOW),error=>error.status===503 && error.code==='catalog_too_large');
@@ -100,7 +122,7 @@ test('exact article and row caps remain available when the response fits its byt
   const articles=Array.from({length:500},(_,i)=>({id:`a-${String(i).padStart(3,'0')}`}));
   const selected=range('?period=30d'),rows=[];
   for (let i=0;i<20;i++) for (const article of articles) {
-    rows.push({day:new Date(Date.parse(selected.from+'T00:00:00Z')+i*86_400_000).toISOString().slice(0,10),article_id:article.id,opens:1});
+    rows.push({day:new Date(Date.parse(selected.to+'T00:00:00Z')-(19-i)*86_400_000).toISOString().slice(0,10),article_id:article.id,opens:1});
   }
   const body=await readingInsights(dbFixture({articles,rows}).env,selected,NOW);
   assert.equal(body.articles.length,500); assert.equal(body.daily.length,10_000);
@@ -116,7 +138,7 @@ test('response UTF-8 budget also rejects an otherwise bounded valid sparse resul
     rows.push({day:new Date(Date.parse(selected.from+'T00:00:00Z')+i*86_400_000).toISOString().slice(0,10),article_id:article.id,opens:1});
   }
   assert.equal(rows.length,9000);
-  await assert.rejects(readingInsights(dbFixture({articles,rows}).env,selected,NOW),error=>error.status===503 && error.code==='insights_too_large');
+  await assert.rejects(readingInsights(dbFixture({states:[{since:'2026-08-18T00:00:00.000Z',discovery_activity_since:'2026-08-19'}],articles,rows}).env,selected,NOW),error=>error.status===503 && error.code==='insights_too_large');
 });
 
 test('invalid/overflow counts, duplicate or mismatched rows never become misleading totals',async()=>{

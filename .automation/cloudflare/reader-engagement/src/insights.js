@@ -52,6 +52,8 @@ export async function readingInsights(env,range,now=Date.now()) {
   if (!Number.isFinite(sinceTime) || sinceTime>now || !/^\d{4}-\d{2}-\d{2}T/.test(since)
       || calendarDay(since.slice(0,10))===null
       || calendarDay(activitySince)===null || activitySince>range.to) unavailable('insights_not_configured');
+  const collectionStartedOn=kstDay(sinceTime);
+  if (activitySince<collectionStartedOn) unavailable('insights_not_configured');
   const totals=new Map();
   for (const row of active) {
     const id=validId(row?.id);
@@ -61,7 +63,7 @@ export async function readingInsights(env,range,now=Date.now()) {
   const keys=new Set();
   const daily=rows.map(row=>{
     const id=validId(row?.article_id),day=row.day,opens=row.opens;
-    if (!totals.has(id) || calendarDay(day)===null || day<range.from || day>range.to
+    if (!totals.has(id) || calendarDay(day)===null || day<range.from || day>range.to || day<collectionStartedOn
         || !Number.isSafeInteger(opens) || opens<0) unavailable();
     const key=`${day}:${id}`;
     if (keys.has(key)) unavailable();
@@ -73,7 +75,7 @@ export async function readingInsights(env,range,now=Date.now()) {
   }).sort((a,b)=>a.day<b.day ? -1 : a.day>b.day ? 1 : a.articleId<b.articleId ? -1 : a.articleId>b.articleId ? 1 : 0);
   const articles=[...totals].sort(([a],[b])=>a<b ? -1 : a>b ? 1 : 0).map(([id,periodOpens])=>({id,periodOpens}));
   const result={ok:true,since,activitySince,generatedAt:new Date(now).toISOString(),range:{...expected},
-    coverage:{timezone:'Asia/Seoul',collectionStartedOn:kstDay(sinceTime),activityRecordedFrom:activitySince,
+    coverage:{timezone:'Asia/Seoul',collectionStartedOn,activityRecordedFrom:activitySince,
       firstDayMayBePartial:true,todayPartial:true,outageHistoryAvailable:false},
     articles,daily,limits:{...INSIGHTS_LIMITS}};
   // Fail explicitly rather than silently truncating recorded activity.
