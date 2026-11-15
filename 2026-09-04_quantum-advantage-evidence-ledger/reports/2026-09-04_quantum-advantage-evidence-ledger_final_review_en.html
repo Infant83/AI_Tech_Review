@@ -10,7 +10,7 @@
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="Agentic Tech Review Letters">
   <meta property="og:title" content="The Boundary of Quantum Advantage Keeps Moving">
   <meta property="og:description" content="Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/">
@@ -19,7 +19,7 @@
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/quantum_evidence_ledger_hero-web.webp">
   <meta property="og:image:alt" content="The Boundary of Quantum Advantage Keeps Moving">
   <meta property="article:published_time" content="2026-09-04">
-  <meta property="article:modified_time" content="2026-09-04">
+  <meta property="article:modified_time" content="2026-11-15">
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="The Boundary of Quantum Advantage Keeps Moving">
@@ -647,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -757,8 +760,20 @@
         position: static;
       }
     }
+
+    .final-article, .content-grid > *, .hero-inner > * { min-width: 0; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+    .reference-list { overflow-wrap: anywhere; }
+    .reference-list li { margin-bottom: 1rem; }
+    .citation { white-space: nowrap; }
+    code { overflow-wrap: anywhere; white-space: normal; }
   </style>
-</head>
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
 <body>
   <div class="topline">
     <div class="topline-inner">
@@ -766,7 +781,6 @@
       <div class="topline-actions">
         <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">Review hub</a>
         <nav class="language-switch" aria-label="Language"><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/" lang="ko" hreflang="ko">Korean</a><span lang="en" aria-current="page">English</span></nav>
-        <a href="2026-09-04_quantum-advantage-evidence-ledger_final_review_en.md">2026-09-04_quantum-advantage-evidence-ledger_final_review_en.md</a>
       </div>
     </div>
   </div>
@@ -774,7 +788,7 @@
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">Agentic Tech Review Letters</p>
         <h1>The Boundary of Quantum Advantage Keeps Moving</h1>
         <p class="dek">Reading classical D-Wave simulation, 92-qubit noise learning, QuanONet and Quantum MeanFlow, protein VQE, and an oscillator–transmon experiment through one evidence ledger</p>
       </section>
@@ -784,230 +798,74 @@
 
   <main class="content-grid">
     <article class="final-article">
-      <p>The quantum research of September 4, 2026 cannot be summarized by asking “who was faster?” What matters more is <strong>what counted as the answer, which costs entered the denominator, and which part of the computation actually ran on quantum hardware</strong>.</p>
-<p>The six studies reviewed together here appear far apart. One study simulated D-Wave spin-glass dynamics classically on GPUs, while another examined the gauge freedom of non-identifiable Pauli noise on IBM quantum hardware. QuanONet established an expressivity bound for quantum neural operators, and Quantum MeanFlow reduced sequential ODE integration in a generative model to one step. A protein study encoded continuous torsions with logarithmically scaling qubit counts, while a superconducting harmonic oscillator–transmon experiment programmed cubic, double-well, and approximate Morse potentials on the same device.</p>
-<p>It would be wrong or incomplete to summarize these results as “classical computing has caught up with quantum,” “a quantum neural network outperformed classical models,” “a quantum computer folded a protein,” or “molecular simulation has been realized.” Each paper measures a different target, uses a different baseline, excludes different costs, and places a different part of the workflow on quantum hardware. When those distinctions are preserved, however, the six studies reveal a common direction: quantum computing is moving from a contest over the qubit count of a single chip toward a <strong>systems competition that co-designs representation, control, measurement, error mitigation, and classical pre- and post-processing</strong>.</p>
-<p><img alt="Conceptual illustration combining a quantum processor, classical GPUs, a measurement ledger, continuous-variable potentials, and hybrid-computing boundaries" src="../artifacts/quantum_evidence_ledger_hero-web.webp" /></p>
-<p><em>Figure 1. Conceptual illustration for this review. Quantum hardware and GPUs, observables and resource accounting, and generative, molecular, and continuous-variable applications are arranged within one validation framework. The image does not reproduce any specific chip wiring, experimental dataset, molecular structure, potential, or performance curve.</em></p>
-<aside class="callout callout-highlight">
-<p class="callout-label">Verdict of this review</p>
-<p>The central advance this week is not the confirmation of universal quantum advantage, but the refinement of the units of comparison. t-VMC reproduced selected two-point correlations at substantial classical cost. The Pauli-noise study showed that gauge ambiguity does not corrupt mitigated observables under a self-consistent model. QuanONet’s advantage is an expressivity bound, not a runtime advantage. Quantum MeanFlow’s “one step” is an ODE integration step, not one physical shot or one complete job. The protein VQE used QPU sampling with simulation-optimized parameters, while the oscillator–transmon experiment implemented components of molecular potentials without calculating an actual molecular spectrum or reaction rate.</p>
-</aside>
-<p>The 5-page technical brief, whose layout has been verified, is available as a <a href="../artifacts/daily_quantum_brief_2026-09-04.pdf">PDF download</a>.</p>
-<h2 id="1-different-quantum-results-use-different-units-of-evidence">1. Different “Quantum Results” Use Different Units of Evidence</h2>
-<p>The first thing to check in the headline of a quantum paper is not the qubit count. Four questions come first.</p>
-<ol>
-<li><strong>Observable</strong>: What was matched—energy, correlation, classification accuracy, RMSD, or state fidelity?</li>
-<li><strong>Denominator</strong>: Which costs were counted—shots, circuit count, repetitions, GPU/QPU time, classical training, or decoding?</li>
-<li><strong>Execution boundary</strong>: Which stage—training, optimization, inference, or sampling—actually ran on a QPU?</li>
-<li><strong>Baseline</strong>: Which classical method was compared on the same instance, at the same target accuracy, and under the same total budget?</li>
+      <p>On a problem involving 72 interacting spins, a classical simulation came close to D-Wave’s quantum-device result. Roeland Wiersema compared matrices describing how pairs of spins were correlated. The final matrix differed by about 7.6% from the QPU reference in relative error. The result specifies what information the classical calculation reproduced. <span class="citation">[<a href="#ref-1">1</a>]</span></p>
+<p>Obtaining that information took computation. Summing the reported experiments’ elapsed times, excluding initial exploration, gives 2,123.02 hours. How the quantum and classical costs grow as the target correlation error becomes smaller is the curve that defines the boundary of quantum advantage. Specifying the answer makes it possible to specify the cost of obtaining it.</p>
+<p>I read six studies available by September 4, 2026 from this perspective. Their subjects range from spin correlations and noise learning to function approximation, generative models, molecular structures, and oscillator control. Across them, constructing a useful representation meets the work of extracting a useful answer. Following the measurements and classical processing that remain after a circuit becomes narrower or needs fewer sequential calls shows which part of the calculation to improve next.</p>
+<figure class="article-hero-figure"><img src="../artifacts/quantum_evidence_ledger_hero-web.webp" alt="Conceptual illustration combining a quantum processor, classical GPUs, a measurement ledger, and continuous-variable potentials" width="1600" height="900"><figcaption>Figure 1. The transparent balance and panels between a quantum processor and GPUs symbolize accounting for observables, measurements, and classical processing together. The twisted molecular ribbon and potential motifs below refer to structure search and continuous-variable control. Conceptual illustration created with the OpenAI image-generation tool.</figcaption></figure>
+
+<p>The original issue’s technical brief is available as a <a href="../artifacts/daily_quantum_brief_2026-09-04.pdf">PDF</a>.</p>
+<span class="legacy-anchor" id="1-different-quantum-results-use-different-units-of-evidence" aria-hidden="true"></span><span class="legacy-anchor" id="read-together-from-system-bottlenecks-to-an-evidence-ledger" aria-hidden="true"></span><span class="legacy-anchor" id="2-the-exact-scope-of-the-claim-that-d-wave-was-classically-reproduced" aria-hidden="true"></span><h2 id="section-the-cost-of-reaching-the-same-correlations">The Cost of Reaching the Same Correlations</h2>
+<p>Wiersema simulated frustrated transverse-field Ising annealing studied on D-Wave Advantage2 using correlator-state-based time-dependent variational Monte Carlo (t-VMC). Classical GPUs calculate an approximate wavefunction’s evolution, and its pairwise spin correlations are compared with the QPU result. The September 1 preprint covers four graph families—2D cylinder, 3D dimer, diamond, and biclique—with anneal times of 7 ns and 20 ns. <span class="citation">[<a href="#ref-1">1</a>]</span></p>
+<p>Increasing the capacity of the approximate wavefunction brought the final two-point-correlation matrix closer to the QPU reference. The agreement described above was obtained even for a 72-spin biclique with 360 couplings and maximum degree 14. Its relative $L_2$ error includes all pairs $i&gt;j$ and uses the QPU matrix as the reference. There is no converged MPS reference solution at this size. Thus, 7.6% describes the difference between the QPU and classical results; it does not determine full-wavefunction fidelity or the accuracy of higher-order correlations. The couplings take precision-256 values, distinct from the harder bimodal $J=\pm1$ instances.</p>
+<p>The 2,123.02 hours sum the reported experiments’ elapsed times, excluding initial exploration and experimentation. Each run used either four A100 or eight H200 GPUs, so this is different from GPU-hours multiplied by device count. The most expensive single run took 109.25 hours on eight H200s. Comparing these costs with the QPU’s 7 or 20 ns anneal time requires matching where the two calculations start and finish. QPU programming, readout, repetitions, queues, and access costs fall within that interval, as do classical hyperparameter searches, failed runs, Markov-chain sampling, and numerical stabilization.</p>
+<p>These procedures directly affected the success of the classical simulation. Inadequate movement between Markov-chain states and high variance in the local-energy estimator made time integration unstable. The authors mitigated these problems with parallel tempering, blurred sampling, and an importance-weighted differential-equation solver. Combining the wavefunction representation with tailored sampling and integration extended the range of correlations they could reproduce.</p>
+<p>A subsequent comparison could measure time-to-target on the same instance at a fixed correlation error. Larger systems, harder $\pm1$ couplings, and higher-order correlations would reveal which costs grow first. For molecular selection or logistics encoded as an Ising/QUBO problem, strong applicable baselines from exact solvers, MILP/CP-SAT, simulated annealing, tensor networks, and Monte Carlo can serve the same purpose: measuring both the information added by a quantum calculation and its cost.</p>
+<figure class="figure-panel figure-panel-fit"><img src="../artifacts/quantum_evidence_ledger_en.svg" alt="Resource ledger mapping six studies across observables and denominators, execution location, circuit and measurement, classical processing, and baselines" width="1600" height="900"><figcaption>Figure 2. Resource ledger constructed for this review. From spin correlations to function approximation and potential control, it compares the measured quantities and the computational stages used to obtain each result. Numbers and execution conditions follow the source papers. <span class="citation">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>, <a href="#ref-3">3</a>, <a href="#ref-4">4</a>, <a href="#ref-5">5</a>, <a href="#ref-6">6</a>]</span></figcaption></figure>
+
+<p>The <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">September 3 full-stack co-design review</a> asked where a bottleneck moves among state preparation, measurement, routing, and classical processing when one layer is optimized. Here the question is how to measure that bottleneck. Having considered the cost of reaching the same correlations, we can turn to noise models that change the cost of estimating the same observable.</p>
+<span class="legacy-anchor" id="3-when-does-non-identifiable-noise-cease-to-be-a-problem" aria-hidden="true"></span><h2 id="section-how-a-noise-representation-changes-sampling-cost">How a Noise Representation Changes Sampling Cost</h2>
+<p>How much of an observed error should be assigned to state preparation, gates, and measurement? Experimental statistics sometimes cannot determine this allocation uniquely. The freedom for different parameter sets to give the same statistics is called a gauge. Edward H. Chen and colleagues examined the relationship between this non-identifiability and error mitigation in a study published in <em>PRX Quantum</em> on September 3. <span class="citation">[<a href="#ref-2">2</a>]</span></p>
+<p>The authors jointly characterized the learnable parameters of state preparation, measurement, single-qubit gates, and multi-qubit entangling Clifford gates. In the resulting self-consistent Pauli-noise model, changing the unlearnable gauge freedom preserves both predictions of noisy dynamics and mitigated observables. The required observable can therefore be calculated without assigning one unique value to every error component.</p>
+<p>The experiments played different roles at different scales. GHZ circuits with up to 21 qubits and a 92-qubit ring on <code>ibm_strasbourg</code> used prediction ratios on classically tractable Clifford circuits for proxy mitigation. The median error across 92 local $Z_i$ observables fell from 4.9% to 3.1%. Full probabilistic error cancellation (PEC) was performed on a 20-qubit non-Clifford circuit on <code>ibm_fez</code>. Each model ran 100,000 randomized circuit instances at one shot each; about 18% survived leakage postselection. The median absolute error was 21.8% without mitigation, 5.6% with inconsistent PEC, and 2.4% with gauge-optimized consistent PEC.</p>
+<p>In the same experiment, the PEC norm $\gamma$ was 6.74 for the inconsistent model, 48.68 for the default-gauge consistent model, and 3.7 for the optimized consistent model. Predicted sampling cost is proportional to $\gamma^2$, giving an approximately 173-fold reduction from the default consistent gauge to the optimized gauge. This number describes the predicted overhead for reaching the same estimation precision, rather than a measured 173-fold reduction in runtime.</p>
+<p>Although the observable stays fixed, the magnitudes of the decomposition coefficients used to implement PEC can change. Those coefficients affect the estimator’s variance and sampling cost, making the gauge an optimization variable. Establishing a self-consistent Pauli-noise model and choosing an inexpensive representation within it become connected tasks. This mitigation estimates observables under the stated noise model; its task differs from demonstrating logical qubits that detect and correct physical errors.</p>
+<p>The same reasoning applies when a materials calculation reports a smaller energy error. Counting noise-characterization shots, PEC/ZNE variance amplification, samples surviving postselection, and drift between calibration times shows how much of the mitigation improvement remains in the complete calculation.</p>
+<span class="legacy-anchor" id="4-quanonets-is-an-expressivity-bound-not-a-speedup" aria-hidden="true"></span><h2 id="section-connecting-function-expressivity-to-measurement-cost">Connecting Function Expressivity to Measurement Cost</h2>
+<p>QuanONet, published by Ruocheng Wang, Xiaoqiu Zhong, Zhuo Xia, and Junchi Yan in <em>Nature Machine Intelligence</em> on September 3, learns mappings from functions to functions. For example, it approximates the solution operator that takes the inputs of a differential equation to its solution function. <span class="citation">[<a href="#ref-3">3</a>]</span></p>
+<p>QuanONet’s density matrix creates an implicit quadratic frame containing products of input features. Under the stated comparison conditions, this provides an operator feature span of up to $O(p^2)$ against the $O(p)$ linear capacity of the classical model. Here, $p$ is the dimension of the trunk’s latent feature vector. The quadratic scaling is reached when the pair-product features are linearly independent; in a Sidon-spectrum example in the supplement, coverage is lower at $O(p^{3/2})$. The paper also extends a universal-approximation result for continuous nonlinear operators to the quantum setting.</p>
+<p>A larger representable function space raises the possibility of approximating a problem with fewer parameters. Testing that possibility in an application also requires measuring useful density-matrix terms, encoding classical data, and optimizing parameters. The expressivity theorem does not directly determine the runtime or shots needed for those tasks.</p>
+<p>On actual <code>ibm_fez</code> hardware, a pretrained two-qubit model inferred 100 output coordinates for an antiderivative problem. The public script sets the Estimator default to 10,000 shots. Training occurred outside the QPU, and this run was a qualitative proof of hardware feasibility for inference. In the separate scaling experiment, $p=256$ corresponds to an eight-qubit statevector simulation because the implementation uses $p=2^n$. The scaling experiment, the strict parameter-matched comparison, and the two-qubit hardware inference each supply a different result.</p>
+<p>Classical polynomial-feature models, kernel methods, and DeepONet/FNO offer useful next comparisons. Holding the data split and seeds fixed while matching parameter counts, preprocessing, circuit depth, measurement settings, shots, and training time would show how the quadratic features affect approximation error and computational cost. Device runs across several calibrations would also expose the simulator-to-QPU gap and the burden of mitigation.</p>
+<span class="legacy-anchor" id="5-how-far-does-quantum-meanflows-one-step-extend" aria-hidden="true"></span><h2 id="section-the-many-measurements-within-one-integration-step">The Many Measurements Within One Integration Step</h2>
+<p>Quantum MeanFlow (QMF) targets the burden of sequential calls in a quantum generative model. Flow matching learns a velocity field that transports a simple distribution to a target distribution, then integrates an ordinary differential equation (ODE) during inference. Quantum Flow Matching (QFM) repeats QPU submissions and input/output operations because its time steps depend on one another. The September 2 preprint by Ashish Joshi, Eshaan Mistry, and Takahiko Koyama learns an interval-averaged velocity in place of an instantaneous velocity, reducing this integration to one step. <span class="citation">[<a href="#ref-4">4</a>]</span></p>
+<p>Obtaining the output of that step required 4,096 shots in each of the X and Z measurement bases: 8,192 shots for one image, or 65,536 when best-of-$N$ (BoN) selection uses $N=8$. The paper’s “single-shot” therefore refers to an ODE integration step whose value is estimated through many physical measurements. The QMF circuit uses 11 qubits and 24 layers, with 10 CNOTs per layer, totaling 240 CNOTs and 792 trainable parameters.</p>
+<p>Classical computation surrounds this generation step. An autoencoder with about $2.2\times10^5$ parameters compresses 16×16 MNIST images to a 32-dimensional latent representation. QMF and QFM parameters were trained with a statevector simulator; <code>ibm_pittsburgh</code> and <code>ibm_boston</code> performed inference with fixed parameters.</p>
+<p>Reducing sequential calls traded off against generation quality. In statevector simulation, 60-step Heun QFM had an accuracy of 0.85, compared with 0.63 for one-step QMF. FID, calculated from 2,000 samples in the feature space of the authors’ trained classifier, was 10.62 and 28.26, respectively, indicating lower QMF quality. Raw accuracy on <code>ibm_boston</code> was 0.30 for QFM and 0.20 for QMF. Generating eight candidates with BoN=8 raised these to 0.80 and 0.60. A classical classifier with 98.2% test accuracy participated in both selection and evaluation, so the reported quality includes that selection procedure and differs from an independent downstream validation.</p>
+<p>The interesting comparison is between the number of integration steps and the total cost of generation. Classical MeanFlow using the same latent representation, classifier, and acceptance rule could test how much a shorter sequential workflow saves after circuit execution, measurement, and candidate selection. Counting measurement bases, shots per basis, and candidates, then including circuit depth and device queue and input/output latency, would establish the cost of the one-step design.</p>
+<span class="legacy-anchor" id="6-logarithmic-qubit-protein-vqe-moves-costs-rather-than-removing-them" aria-hidden="true"></span><h2 id="section-the-cost-of-encoding-protein-angles-in-fewer-qubits">The Cost of Encoding Protein Angles in Fewer Qubits</h2>
+<p>The September 2 preprint by Fabio Cumbo and colleagues encodes a protein’s continuous torsional angles in the phase of a quantum state in simulation. The representation stores $N$ degrees of freedom in $O(\log_2N)$ qubits, while a classical algorithm reconstructs heavy-atom coordinates from the angles. It assigns six qubits to chignolin’s 44 torsions and seven to Trp-cage’s 88. <span class="citation">[<a href="#ref-5">5</a>]</span></p>
+<p>The rule for reading angles changes with the execution setting. Statevector simulation uses relative phase; hardware maps computational-basis probabilities through an empirical cumulative distribution function (CDF) to bounded angular variables. The workflow uses EfficientSU2 circuits and multistage structural relaxation, with custom molecular-mechanics, Rosetta, or OpenMM as energy functions inside QTF. Recovering probabilities, reconstructing coordinates, and evaluating energies remain after the circuit width is reduced. A matched noiseless CDF baseline would be needed to separate the effects of the changed decoder from those of hardware noise.</p>
+<p>In classical statevector optimization, chignolin’s lowest retained-snapshot Cα RMSD was 0.623 Å and its final-model RMSD was 1.199 Å. The corresponding Trp-cage values were 2.501 Å and 3.512 Å. The 0.623 Å result was the lowest value selected retrospectively against a known PDB structure among 7.33 million retained snapshots across both proteins. Its role differs from an average result selected by the energy function; no Trp-cage snapshot fell below 2 Å.</p>
+<p>Only the six-qubit chignolin circuit ran on hardware: <code>ibm_cleveland</code> (156-qubit Heron R2) and <code>ibm_miami</code> (120-qubit Nighthawk R1). Here, six qubits describe the width of the circuit executed on the devices. Each device ran 300 jobs at 8,192 shots per job, totaling 600 jobs and 4,915,200 shots. The lowest RMSD across repeats was 1.758 Å on Cleveland and 1.782 Å on Miami, with samples below 2 Å in 88/300 and 45/300 jobs. RMSD was measured over the structural core with terminal residues excluded. Cleveland’s median transpiled CZ count was 204 and its QPU time was about five seconds per job; Miami used 60 CZs and took about 35 seconds. Circuit width or gate count alone thus gave an incomplete account of processing time.</p>
+<p>The hardware parameters were selected in classical simulation. For each of three energy functions, the authors chose 10 final chignolin models with low RMSD, giving 30 circuits, each repeated 10 times. The starting structures already had RMSDs of 1.199–2.270 Å, and most hardware repeats were worse. The experiment tested the recovery of device samples from these starting structures and transferred parameters. It differs from VQE optimization that repeatedly measures energies and updates parameters on hardware; its objective is also a hybrid torsional-conformer score, rather than the ground-state energy of an electronic Hamiltonian.</p>
+<p>For materials, this encoding could first be tested on 6–12 important torsions in an OLED donor–acceptor molecule or a restricted family of polymer-backbone conformers. RDKit/CREST, molecular dynamics, basin hopping, and learned potentials could provide baselines using the same conformer family, energy function, and budget. Separating decoder error with an exact statevector, the additional error from a noisy distribution, and the ranking error from the energy function would clarify the role required of the quantum circuit.</p>
+<span class="legacy-anchor" id="7-the-oscillatortransmon-programmed-potentials-not-a-molecule" aria-hidden="true"></span><h2 id="section-controlling-an-oscillators-potential">Controlling an Oscillator’s Potential</h2>
+<p>In their September 2 preprint, Clara Yun Fontaine and colleagues dispersively coupled a long-lived superconducting harmonic oscillator to a transmon qubit. A modular circuit derived from bosonic quantum signal processing creates a non-Gaussian phase gate $e^{-iV(\hat X)}$. Changing qubit-rotation angles between fixed calibrated control operations programs several potentials $V(X)$ on the same device. <span class="citation">[<a href="#ref-6">6</a>]</span></p>
+<p>Adding a nonlinear phase gate to the Gaussian operations readily available in a harmonic oscillator expands continuous-variable processing. The experiment implemented a cubic potential $V(X)=0.6X^3$, symmetric and asymmetric double wells, and an approximate Morse potential. Each elementary echoed conditional-displacement gate lasted about 520 ns, each qubit rotation 28 ns, and Fourier orders were approximately 11–14. For the cubic gate, the reconstructed coefficient was $c_3=0.68\pm0.10$, with a state-fidelity lower bound of 0.84 in the reconstructed $D=25$ truncated space and a Wigner-negativity lower bound of 0.11. Repeated application also showed an accumulating trend in non-Gaussianity.</p>
+<p>A linear bias controlled double-well symmetry and the depth difference between the wells; reconstruction and bootstrap tests examined the topology. Measurement volume matters when reading these results. The cubic, symmetric-double-well, and broken-double-well cases each used about $4.4\times10^6$ measurement outcomes; the asymmetric double well used $5.3\times10^7$ and Morse $6.7\times10^7$.</p>
+<p>The Morse gate approximates the exponential form of a molecular vibrational potential. Actual coherent probes reliably reconstructed only harmonics with $|n|\le2$, leaving the steep repulsive wall inadequately resolved. Recovering the wall through $|n|\le7$ with 10.9 dB squeezed probes was simulated; full $M=13$ reconstruction was estimated to require 16.3 dB squeezing and 29 probe positions. After data collection, the authors discovered a missing $\pi$ factor in constructing the complementary polynomial and re-evaluated results against the circuit that actually ran. Their analysis preserves the observed topology and asymmetry while documenting the difference between intended and executed potentials.</p>
+<p>The experiment supplies control that applies a potential as an impulsive phase, together with a method for reconstructing pointwise forces. Developing it toward molecular calculations could combine that control with kinetic evolution to reproduce known spectra or wavepacket dynamics. Longer coherence, shorter modular sequences, and stable calibration offer ways to reduce accumulated error at higher Fourier orders. Low-lying Morse-oscillator levels, tunnelling splitting, and time-correlation functions compared with precise classical numerical solutions would provide concrete next tests.</p>
+<span class="legacy-anchor" id="8-development-directions-shared-by-the-six-studies" aria-hidden="true"></span><span class="legacy-anchor" id="81-design-the-execution-boundary-before-minimizing-the-qubit-count" aria-hidden="true"></span><span class="legacy-anchor" id="82-a-noise-model-determines-sampling-cost-as-well-as-the-answer" aria-hidden="true"></span><span class="legacy-anchor" id="83-separate-expressivity-theorems-from-application-speedups" aria-hidden="true"></span><span class="legacy-anchor" id="84-begin-applications-with-small-verifiable-physical-quantities" aria-hidden="true"></span><span class="legacy-anchor" id="9-a-minimum-quantumclassical-resource-ledger" aria-hidden="true"></span><span class="legacy-anchor" id="10-three-validation-experiments-that-can-be-run-now" aria-hidden="true"></span><span class="legacy-anchor" id="11-application-outlook" aria-hidden="true"></span><span class="legacy-anchor" id="conclusion" aria-hidden="true"></span><h2 id="section-starting-the-next-comparison-from-the-same-observable">Starting the Next Comparison from the Same Observable</h2>
+<p>The six studies change different resources. QuanONet enlarges the feature space it can represent, while QMF reduces sequential integration. Protein encoding narrows a circuit; oscillator control expands the potentials available on one device. Measurement, sample selection, and classical reconstruction intervene as these changes become a computational benefit. The Pauli-noise study shows another possibility: preserving the observable while lowering sampling cost by choosing its representation.</p>
+<p>For materials and OLED calculations, I would start the next comparisons with observables that have strong classical baselines: a small-active-space energy, a restricted conformer family, or a known vibrational level. They make it easier to identify what changes when the quantum component is replaced by classical features, a sampler, or a decoder. Holding candidate-selection rules fixed in generation, or energy functions fixed in conformer search, serves that purpose.</p>
+<p>A calculation can be planned by setting the target error and success rate, then following the preparation, repetition, measurement, and post-processing required to obtain the answer. Circuit depth and shots will dominate some problems; CI, DFT, molecular dynamics, or a classifier will dominate others. Failed runs and variation across calibrations belong on the same cost curve. As the classical reconstruction of D-Wave’s correlations illustrates, strong comparators and specific observables continually redraw the boundary of quantum advantage.</p>
+<span class="legacy-anchor" id="references" aria-hidden="true"></span><h2 id="section-references">References</h2>
+<ol class="reference-list">
+<li id="ref-1"><a href="https://arxiv.org/abs/2609.01719v1">R. Wiersema, Numerical simulation of D-Wave&#x27;s quantum advantage experiment with time-dependent variational Monte Carlo, arXiv:2609.01719v1 (2026).</a>; <a href="https://github.com/therooler/dwave_vmc/tree/3456ea264fa409921367bd953d3d34372e5dd3e4">dwave_vmc project contributors, dwave_vmc, GitHub repository, commit 3456ea264fa409921367bd953d3d34372e5dd3e4 (3 September 2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1103/69wc-gzl6">E. H. Chen, S. Chen, L. E. Fischer, A. Eddins, L. C. G. Govia, B. Mitchell, A. He, Y. Kim, L. Jiang, and A. Seif, Disambiguating Pauli noise in quantum computers, PRX Quantum 7, 033045 (2026).</a></li>
+<li id="ref-3"><a href="https://doi.org/10.1038/s42256-026-01289-7">R. Wang, X. Zhong, Z. Xia, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1371–1380 (2026).</a>; <a href="https://doi.org/10.5281/zenodo.21084057">R. Wang, Z. Xia, X. Zhong, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.21084057.</a>; <a href="https://github.com/Wang-Ruocheng/QuanONet/tree/2481511b131917fc91820b1486aa929c44938fad">QuanONet project contributors, QuanONet: Quantum Neural Operators with Adaptive Frequency Strategy, GitHub repository, commit 2481511b131917fc91820b1486aa929c44938fad (30 June 2026).</a>; <a href="https://doi.org/10.1038/s42256-026-01314-9">R. Wang, X. Zhong, Z. Xia, and J. Yan, Publisher Correction: Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1506 (2026).</a></li>
+<li id="ref-4"><a href="https://arxiv.org/abs/2609.02186v1">A. Joshi, E. Mistry, and T. Koyama, Quantum MeanFlow: single-shot generative sampling on NISQ hardware, arXiv:2609.02186v1 (2026).</a></li>
+<li id="ref-5"><a href="https://arxiv.org/abs/2609.02113v1">F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space, arXiv:2609.02113v1 (2026).</a>; <a href="https://github.com/cumbof/qtf/tree/4f700c9f2bd278f7c469b6ccf7c641c0a2fa5006">QTF project contributors, QTF: Quantum Torsion Folder, GitHub repository, commit 4f700c9f2bd278f7c469b6ccf7c641c0a2fa5006 (28 August 2026).</a>; <a href="https://doi.org/10.5281/zenodo.22088098">F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, QTF Manuscript Results, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.22088098.</a></li>
+<li id="ref-6"><a href="https://arxiv.org/abs/2609.02405v1">C. Y. Fontaine, M. Somani, K. Yu, M. C. Loke, J. Schwinger, P.-T. Fong, N.-N. Huang, A. Copetudo, M. Bakr, H.-K. Lau, T. Krisnanda, and Y. Y. Gao, Programming anharmonic potentials in a superconducting harmonic oscillator, arXiv:2609.02405v1 (2026).</a></li>
 </ol>
-<p>Applying these four questions to this week’s six studies produces the following ledger.</p>
-<div aria-label="Evidence units and unproven scope of six quantum studies" class="data-panel" role="region" tabindex="0">
-<table>
-<thead>
-<tr>
-<th>Study</th>
-<th>Actual execution boundary</th>
-<th>Minimum verified claim</th>
-<th>Costs and denominators to track</th>
-<th>Not demonstrated</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>D-Wave t-VMC</td>
-<td>Fully classical GPU simulation; compared with a D-Wave QPU correlation matrix</td>
-<td>The final two-point matrix of a 72-spin precision-256 biclique had about 7.6% relative $L_2$ error to the QPU reference</td>
-<td>2,123.02 aggregate wall-clock hours, GPU count and type, samples, sweeps, solver stability, and QPU access</td>
-<td>7.6% error to a ground-truth state, hardest $J=\pm1$ instances, or a refutation of all prior advantage claims</td>
-</tr>
-<tr>
-<td>Self-consistent Pauli noise</td>
-<td>Actual IBM QPUs; 92-qubit proxy mitigation and 20-qubit end-to-end PEC</td>
-<td>Jointly learning the full gate set makes the gauge irrelevant to noisy predictions and mitigated observables; optimizing the gauge choice can lower predicted sampling overhead</td>
-<td>Characterization circuits and shots, PEC norm, leakage postselection, mitigation variance, and calibration drift</td>
-<td>92-qubit end-to-end PEC, elimination of physical errors, fault-tolerant QEC, or reduction of all noise to a Pauli model</td>
-</tr>
-<tr>
-<td>QuanONet</td>
-<td>Theory, numerical benchmarks, and a pretrained 2-qubit <code>ibm_fez</code> inference PoC</td>
-<td>The density matrix creates an implicit quadratic feature frame and provides an operator feature span of up to $O(p^2)$ versus $O(p)$ for a matched classical model</td>
-<td>Data encoding, circuit compilation, shots, training time, and the classical optimizer</td>
-<td>An $O(p^2)$ runtime speedup, a cost advantage for the full PDE solver, or general quantum advantage</td>
-</tr>
-<tr>
-<td>Quantum MeanFlow</td>
-<td>Statevector training and IBM QPU inference</td>
-<td>Replaces multistep ODE integration with a one-step average velocity, reducing sequential submissions</td>
-<td>11Q, 240 CNOTs, 8,192 shots/output; 65,536 with BoN=8 plus a classical classifier</td>
-<td>One physical shot, advantage over classical generators, or preservation of quality on a noisy QPU</td>
-</tr>
-<tr>
-<td>Torsion-space VQE</td>
-<td>Classical statevector optimization followed by IBM QPU sampling</td>
-<td>Encoded 44 chignolin torsions in 6Q; best-of-repeats RMSD was 1.758 Å across 600 jobs</td>
-<td>4,915,200 shots, circuit depth, CDF decoding, coordinate reconstruction, and classical energy optimization</td>
-<td>Error-corrected logical qubits, iterative on-QPU VQE, independent protein prediction, or end-to-end acceleration</td>
-</tr>
-<tr>
-<td>Oscillator–transmon</td>
-<td>One superconducting oscillator mode and one transmon</td>
-<td>Programmable non-Gaussian phase gates with cubic, tunable double-well, and band-limited approximate Morse forms</td>
-<td>$M=11$–14; 4.4M–67M outcomes by potential; tomography, reconstruction, and calibration</td>
-<td>Coherent-probe recovery of the Morse wall, molecular spectra, dynamics, or reaction rates</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img alt="Five-column resource ledger mapping six studies across observable and denominator, execution location, circuit and measurement, classical pre- and post-processing, and baseline and nonclaims" src="../artifacts/quantum_evidence_ledger_en.svg" /></p>
-<p><em>Figure 2. Five-column resource ledger constructed for this review. It does not rank the six studies by performance; it compares their observables and denominators, execution locations, circuit and measurement costs, classical pre- and post-processing, and baselines and nonclaims in one view.</em></p>
-<h3 id="read-together-from-system-bottlenecks-to-an-evidence-ledger">Read Together: From System Bottlenecks to an Evidence Ledger</h3>
-<p>The <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/">September 3 review of full-stack co-design</a> followed synthesis, state preparation, measurement, routing, and classical post-processing to ask where the bottleneck moves when an optimization reduces the cost of one layer. This article does not repeat that map. Instead, it uses six studies from the following day to specify <strong>which observables and denominators should measure the shifted bottleneck</strong>. If the September 3 article asked “which parts of the full stack must be co-designed,” the September 4 article asks “what ledger can establish that the resulting design actually reduced total cost?”</p>
-<h2 id="2-the-exact-scope-of-the-claim-that-d-wave-was-classically-reproduced">2. The Exact Scope of the Claim That D-Wave Was Classically Reproduced</h2>
-<p>Roeland Wiersema’s <a href="https://arxiv.org/abs/2609.01719"><em>Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo</em></a> is a preprint released on September 1, 2026. It simulates frustrated transverse-field Ising annealing studied on D-Wave Advantage2 using correlator-state-based time-dependent variational Monte Carlo (t-VMC). The targets comprise four graph families—2D cylinder, 3D dimer, diamond, and biclique—with anneal times of 7 ns and 20 ns.</p>
-<p>The paper makes an important choice: it asks not “how accurately was the entire wavefunction reconstructed?” but <strong>how closely the full final two-point-correlation matrix matched the QPU result</strong>. Systematically increasing the ansatz size brought this error toward the QPU level, with close agreement even on a 72-spin biclique with 360 couplings and maximum degree 14. The approximately 7.6% figure is the relative $L_2$ error of the correlation matrix over all $i&gt;j$, using the QPU matrix as the reference. No converged MPS ground truth is available at this size. The number is therefore not an error against an exact solution, a full-state-fidelity error, or an error for every higher-order correlation. The couplings of this 72-spin problem are also precision-256 values, not the harder bimodal $J=\pm1$ instances.</p>
-<p>The result exposes both the capability and cost of classical simulation. The paper’s table sums to 2,123.02 wall-clock hours across runs; this is not GPU-hours multiplied by the number of devices. Each run used either 4 A100 or 8 H200 GPUs, and the most expensive single run took 109.25 hours on 8 H200s. One cannot place the annealer’s physical anneal time directly beside this campaign time and declare a speed winner. The QPU side also includes programming, readout, repetition, queueing, and access overhead; the classical side includes hyperparameter search, failed runs, Markov-chain sampling, and numerical stabilization. A meaningful comparison must fix the target correlation error on the same instance and record time and energy for preparation, repetition, and post-processing on both sides.</p>
-<p>The paper is also explicit about the sources of classical failure. Poor Markov-chain mixing, a high-variance local-energy estimator, and stochastic Runge–Kutta error estimates caused instability. Parallel tempering, blurred sampling, and an importance-weighted differential-equation solver mitigated these problems. The accurate conclusion is therefore not that “generic VMC easily simulated D-Wave,” but that <strong>an ansatz and sampling and integration techniques tailored to the problem structure reproduced a specific observable</strong>.</p>
-<p>This result does not invalidate every prior quantum-advantage claim. Cost scaling may differ at larger sizes, on harder ±1 instances, for other observables, for the full distribution, or for higher-order correlations. Conversely, it is also difficult to maintain a blanket claim that classical simulation is impossible. The lesson for application researchers is benchmark discipline, not a win–loss verdict. If molecular selection or logistics optimization is mapped to a QUBO, exact solvers, MILP/CP-SAT, simulated annealing, tensor-network, and Monte Carlo methods should be fixed to the same instances and stopping conditions. Comparisons should report solution distributions and time-to-target alongside the best objective value.</p>
-<h2 id="3-when-does-non-identifiable-noise-cease-to-be-a-problem">3. When Does Non-Identifiable Noise Cease to Be a Problem?</h2>
-<p>Edward H. Chen, Senrui Chen, Laurin E. Fischer, and colleagues’ <a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6"><em>Disambiguating Pauli Noise in Quantum Computers</em></a> was published in the peer-reviewed journal <em>PRX Quantum</em> on September 3, 2026. The experiments ran on actual IBM quantum processors with up to 92 qubits.</p>
-<p>Noise characterization has a fundamental identifiability problem. Some errors in state preparation, gates, and measurement cannot be uniquely separated using experimental data alone. Different parameter sets may produce the same observed statistics; this freedom is called a gauge. At first glance, this creates a serious concern: if the noise model cannot be uniquely specified, perhaps its predictions and error-mitigation results cannot be trusted.</p>
-<p>The paper’s answer is self-consistency. Rather than characterizing state preparation, measurement, single-qubit gates, and multi-qubit entangling Clifford gates separately while assuming arbitrary ideal components, the authors jointly characterize the learnable parameters of the complete gate set. They show theoretically and experimentally that, under this treatment, unlearnable gauge degrees of freedom do not change predictions of noisy dynamics or error-mitigated observables. Moreover, among gauges that produce the same physical observables, one can select a representation with lower sampling overhead.</p>
-<p>The roles of experiments at different scales must be kept separate. The largest experiments on <code>ibm_strasbourg</code>—GHZ circuits with up to 21 qubits and a 92-qubit ring—used prediction ratios on classically tractable Clifford circuits for proxy mitigation. Across 92 local $Z_i$ observables, the median error fell from 4.9% to 3.1%. The full randomized PEC experiment instead used 20-qubit non-Clifford circuits on <code>ibm_fez</code>. Each model ran 100,000 randomized circuit instances with one shot per instance; only about 18% remained after leakage postselection. The median absolute error was 21.8% without mitigation, 5.6% with inconsistent PEC, and 2.4% with gauge-optimized consistent PEC.</p>
-<p>In the same 20-qubit experiment, the PEC norm $\gamma$ was 6.74 for the inconsistent model, 48.68 for the default-gauge consistent model, and 3.7 for the optimized consistent model. Using $\gamma^2$ as a proxy for sampling cost, the optimized gauge was about 173 times lower than the default consistent gauge. This is neither a measured speedup nor a direct measurement that fewer shots were used. It is a reduction in the <strong>predicted sampling overhead</strong> needed to reach the same PEC estimation precision.</p>
-<p>There is no contradiction between saying that “the gauge is irrelevant” and “the gauge can be optimized.” The final observable, when computed self-consistently, is gauge-invariant. Yet the magnitudes of decomposition coefficients used in implementations such as probabilistic error cancellation—and therefore their variance and sampling cost—can depend on the representation. The answer stays the same; the cost of estimating it changes.</p>
-<p>This is not a demonstration of quantum error correction. The work neither creates logical qubits that detect and correct physical errors nor claims to solve arbitrary non-Pauli or strongly non-Markovian noise. The precise practical statement is: <strong>even when every model parameter cannot be uniquely identified, useful noisy predictions and mitigation remain possible within a self-consistently learned model, and the gauge can serve as a cost-optimization variable.</strong></p>
-<p>The nearest-term use is in reporting. Error-mitigation experiments should include absolute error before and after mitigation alongside noise-characterization shots, sampling amplification, calibration time, drift, and the final effective sample size. The same applies to VQE or SQD for OLED and materials problems: if a lower energy error requires a larger PEC/ZNE variance and a higher QPU allocation, the net benefit must be calculated separately. The paper’s value lies in translating the theoretical problem of identifiability into the operational problem of selecting a representation that estimates the same observable with fewer shots.</p>
-<h2 id="4-quanonets-is-an-expressivity-bound-not-a-speedup">4. QuanONet’s $O(p^2)$ Is an Expressivity Bound, Not a Speedup</h2>
-<p>Ruocheng Wang, Xiaoqiu Zhong, Zhuo Xia, and Junchi Yan’s <a href="https://www.nature.com/articles/s42256-026-01289-7"><em>Quantum neural operators with implicit quadratic frame and expressivity advantages</em></a> was published in <em>Nature Machine Intelligence</em> on September 3, 2026. QuanONet, the model proposed in the study, is a quantum neural operator that approximates mappings from functions to functions—that is, the solution operator of a differential equation.</p>
-<p>The central theory is more specific than a vague appeal to an exponentially large Hilbert space. The architecture’s density matrix creates an implicit quadratic frame over the input features, providing a feature span of up to $O(p^2)$ for operator approximation compared with the $O(p)$ linear capacity of a matched classical model. Here, $p$ is the dimension of the sampling locations or latent representation, not a qubit count. Quadratic scaling requires linearly independent pair-product features; in a Sidon-spectrum example in the supplement, coverage falls to $O(p^{3/2})$. The paper also extends a universal-approximation result for continuous nonlinear operators to the quantum setting.</p>
-<p>The exact claim is an <strong>expressive-capacity bound for a particular architecture class against a classically matched model</strong>. The fact that $O(p^2)$ exceeds $O(p)$ does not by itself reduce training time, inference latency, data requirements, shots, or energy use. Extracting useful density-matrix terms requires measurement, and the costs of encoding classical data and optimizing the parameters remain. The ability to represent a larger function space is distinct from the ability to find a good solution within that space efficiently.</p>
-<p>The run on actual <code>ibm_fez</code> hardware is best understood as a qualitative proof of hardware feasibility. A pretrained 2-qubit model inferred 100 output coordinates for an antiderivative problem; the public script sets the Estimator default to 10,000 shots. The QPU did not perform training. The paper presents a comparison with noise-free simulation and provides compilation information, but it does not offer an end-to-end benchmark showing that the quantum system solves the full PDE workflow faster or with less energy than a competitive classical neural operator. In the public implementation $p=2^n$, so the $p=256$ scaling experiment is an 8-qubit statevector simulation, not a 256-qubit experiment. It should not be conflated with the separate strict parameter-matched comparison as though both were one hardware result.</p>
-<p>The research direction remains important. It moves the persuasive question in QML from “the Hilbert space is exponentially large” to “which feature interactions can be obtained cheaply with which circuits and measurements?” Future experiments should match parameter counts, data preprocessing, circuit depth, measurement settings, shots, and training wall-clock against classical polynomial-feature models, kernel methods, and DeepONet/FNO families. Hardware studies should retain the same data splits and seeds while reporting the simulator-to-QPU gap, variation across calibrations, and error-mitigation costs.</p>
-<h2 id="5-how-far-does-quantum-meanflows-one-step-extend">5. How Far Does Quantum MeanFlow’s “One Step” Extend?</h2>
-<p>Ashish Joshi, Eshaan Mistry, and Takahiko Koyama’s <a href="https://arxiv.org/abs/2609.02186"><em>Quantum MeanFlow: single-shot generative sampling on NISQ hardware</em></a> is a preprint released on September 2, 2026. Flow matching learns a velocity field that transports a simple distribution to a target distribution and then integrates an ODE during inference. Conventional Quantum Flow Matching (QFM) accumulates QPU submissions and input/output overhead because its multiple time steps are sequentially dependent. Quantum MeanFlow (QMF) replaces the instantaneous velocity with an interval-averaged velocity, reducing the integration to one step.</p>
-<p>“Single-shot” must not be read as one physical shot. QMF’s one step has the algorithmic meaning of <strong>one ODE integration step, or one model-evaluation stage</strong>. The implementation reconstructs the output from X and Z measurement bases with 4,096 shots per basis. One QMF image therefore costs 8,192 shots, or 65,536 shots when BoN=8 is included. The 11-qubit QMF circuit has 24 layers with 10 CNOTs per layer, for 240 CNOTs and 792 trainable parameters in total. The favorable structural property of one-step integration therefore coexists with the measurement cost of a deep, noisy circuit.</p>
-<p>A second boundary concerns where training occurs. A classical autoencoder with about $2.2\times10^5$ parameters compresses 16×16 MNIST images into a 32-dimensional latent space, and the QMF and QFM parameters were trained with a statevector simulator. The IBM Heron systems <code>ibm_pittsburgh</code> and <code>ibm_boston</code> performed inference with fixed parameters. The QPU therefore did not train the complete generative pipeline; it executed a quantum inference block after classical encoding and simulator training.</p>
-<p>The results must also be decomposed. In statevector simulation, 60-step Heun QFM achieved an accuracy of 0.85, compared with 0.63 for one-step QMF. FID, calculated from 2,000 samples in the feature space of a classifier trained by the authors, was 10.62 for QFM and 28.26 for QMF, indicating lower QMF quality. On <code>ibm_boston</code>, raw accuracy was 0.30 for QFM and 0.20 for QMF. With best-of-$N$ (BoN) rejection sampling at $N=8$, the figures recovered to 0.80 and 0.60, respectively. That recovery came from generating eight times as many candidates and using a classical classifier with 98.2% test accuracy to choose the best. Because the same classifier participates in both selection and evaluation, this is difficult to treat as independent downstream validation. The method can mitigate noise-induced quality loss without modifying the circuit, but repeated generation, shots, and classifier cost must all enter the accounting.</p>
-<p>The study therefore demonstrates an architectural trade-off that reduces sequential ODE submissions and the feasibility of inference on noisy hardware. It does not demonstrate a quality or total-time advantage over classical diffusion or flow models, QPU-accelerated training, or one-shot physical generation. The next comparison is straightforward: compute <code>number of bases × shots × BoN × circuit depth × queue/latency</code> as one cost term, then compare against classical MeanFlow using the same latent representation, classifier, and acceptance rule. Whether QMF’s shorter workflow provides an advantage must be decided from this total cost.</p>
-<h2 id="6-logarithmic-qubit-protein-vqe-moves-costs-rather-than-removing-them">6. Logarithmic-Qubit Protein VQE Moves Costs Rather Than Removing Them</h2>
-<p>Fabio Cumbo and colleagues’ <a href="https://arxiv.org/abs/2609.02113"><em>Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space</em></a> is a preprint released on September 2, 2026. Instead of forcing a protein onto a lattice, the method encodes continuous torsional degrees of freedom in phase, reducing the required qubit count to $O(\log_2 N)$, while a classical algorithm reconstructs heavy-atom coordinates from the torsions.</p>
-<p>At the statevector stage, torsions are read from relative phases. On hardware, computational-basis probabilities are instead mapped to bounded torsion variables through an empirical cumulative distribution function (CDF). The workflow uses an EfficientSU2 ansatz and multistage relaxation, while structural evaluation depends on custom molecular-mechanics, Rosetta, or OpenMM scoring backends. Rosetta and OpenMM are internal QTF energy functions here, not independent folding-pipeline baselines. “Logarithmic qubit count” is therefore accurate, but it does not mean that the shots required to recover physical information, deep circuits, classical coordinate reconstruction, or energy-evaluation costs disappear.</p>
-<p>In classical statevector optimization, chignolin achieved a retained-snapshot Cα RMSD of 0.623 Å and a final-model RMSD of 1.199 Å; for Trp-cage, the corresponding values were 2.501 Å and 3.512 Å. The 0.623 Å result was an extreme best selected after the fact against a known PDB structure from 7.33 million retained snapshots across the two proteins; it was not the average performance of candidates selected by the energy function. No Trp-cage snapshot fell below 2 Å.</p>
-<p>The hardware experiment ran only the six-qubit chignolin circuit on the 156-qubit Heron R2 <code>ibm_cleveland</code> and the 120-qubit Nighthawk R1 <code>ibm_miami</code>. The six qubits describe the circuit width, not six error-corrected logical qubits. Each device executed 300 jobs with 8,192 shots per job, for a total of 600 jobs and 4,915,200 shots. The best-of-repeats RMSD was 1.758 Å on Cleveland and 1.782 Å on Miami; native-like samples below 2 Å appeared in 88/300 and 45/300 jobs, respectively. These RMSDs are calculated on the structural core with terminal residues excluded. Cleveland used a median of 204 transpiled CZ gates and about 5 seconds of QPU time per job. Miami used only 60 CZ gates but took about 35 seconds. This is a useful example of why fewer 2Q gates do not necessarily imply shorter processing time or a higher recovery rate.</p>
-<p>The most important boundary is parameter optimization. For each of three energy functions, the hardware experiment selected 10 final chignolin models with low simulation RMSD—30 circuits in total—and repeated each 10 times as a parameter-transfer sampling experiment. It did not perform on-QPU VQE in which energy is measured and parameters are iteratively updated inside the hardware loop. The warm-start RMSD was already 1.199–2.270 Å, and most hardware repeats were worse than their starting points. Saying that “a quantum computer optimized a protein structure from scratch” would overstate the result. The Hamiltonian also scores torsional conformers through a hybrid objective; this is not electronic-structure VQE that finds the ground state of an electronic Hamiltonian.</p>
-<p>The application case remains a benchmark hypothesis. Compact encoding could be used to search 6–12 important torsions in an OLED donor–acceptor molecule or low-dimensional conformers along a polymer backbone. The test would need to hold the conformer family, energy function, and budget fixed against RDKit/CREST, molecular dynamics, basin hopping, and learned potentials. The criterion is whether the method finds a better low-energy conformer faster after accounting for the greater circuit depth, shots, and decoder sensitivity associated with the narrower qubit width. The present study supplies a hardware protocol for asking that question; it does not settle the answer.</p>
-<h2 id="7-the-oscillatortransmon-programmed-potentials-not-a-molecule">7. The Oscillator–Transmon Programmed Potentials, Not a Molecule</h2>
-<p>The 12-author team led by Clara Yun Fontaine released <a href="https://arxiv.org/abs/2609.02405"><em>Programming anharmonic potentials in a superconducting harmonic oscillator</em></a> as a preprint on September 2, 2026. The experiment dispersively couples a long-lived superconducting harmonic oscillator to a transmon qubit and uses a modular circuit derived from bosonic quantum signal processing to implement a non-Gaussian phase gate $e^{-iV(\hat X)}$. Changing only the qubit-rotation angles between fixed calibrated control unitaries programs several $V(X)$ functions on the same device.</p>
-<p>Gaussian operations readily implemented with a harmonic oscillator are not sufficient for universal continuous-variable processing. Nonlinear potentials such as the cubic phase supply a non-Gaussian resource. The experiment implemented a cubic potential $V(X)=0.6X^3$, symmetric and asymmetric double wells, and an approximate Morse potential. Each elementary echoed conditional-displacement gate lasted about 520 ns, each qubit rotation 28 ns, and the Fourier orders were approximately 11–14. For the cubic gate, the authors reported a reconstructed coefficient of $c_3=0.68\pm0.10$, a lower bound on state fidelity of 0.84, and a lower bound on Wigner negativity of 0.11. Repeated applications also showed an accumulating trend in non-Gaussianity.</p>
-<p>For the double wells, a linear bias tuned the symmetry and well-depth difference, and reconstruction with bootstrap tests checked whether the topology remained intact. Measurement cost was nevertheless substantial. Total measurement outcomes were approximately $4.4\times10^6$ each for the cubic, symmetric-double-well, and broken-double-well potentials; $5.3\times10^7$ for the asymmetric double well; and $6.7\times10^7$ for Morse.</p>
-<p>The Morse gate was presented as an approximate implementation of the exponential form of a molecular vibrational potential. Actual coherent probes stably reconstructed only harmonics with $|n|\le2$, so the steep repulsive wall did not emerge adequately. Recovery of the wall through $|n|\le7$ with 10.9 dB squeezed probes was a simulation. Full $M=13$ reconstruction was estimated to require 16.3 dB of squeezing and 29 probe positions. The authors also identified after data collection a missing $\pi$ factor in constructing the complementary polynomial. Because the paper re-evaluates the results against the circuit that actually ran, the observations of topology and asymmetry remain. It would nevertheless be inaccurate to say that the intended potentials were implemented unchanged at high precision.</p>
-<p>The decisive words are <strong>approximate</strong> and <strong>potential gate</strong>. The experiment neither inserted parameters for a real molecule to calculate its vibrational spectrum nor predicted a chemical reaction rate or tunnelling yield. It demonstrated a component that applies a potential as an impulsive phase, together with pointwise force reconstruction.</p>
-<p>Two near-term development paths follow. First, longer coherence, shorter modular sequences, and robust calibration could reduce accumulated error at higher Fourier orders. Second, the field can move from testing a potential gate in isolation to an end-to-end analogue benchmark that combines it with kinetic evolution and reproduces a known spectrum or wavepacket dynamics. Any molecular claim should begin with blind comparisons on small problems with precise classical numerical solutions, such as the low-lying eigenlevels of a Morse oscillator, tunnelling splitting, or a time-correlation function.</p>
-<h2 id="8-development-directions-shared-by-the-six-studies">8. Development Directions Shared by the Six Studies</h2>
-<h3 id="81-design-the-execution-boundary-before-minimizing-the-qubit-count">8.1 Design the Execution Boundary Before Minimizing the Qubit Count</h3>
-<p>QMF and the protein VQE reduce the number of calls to the quantum block or the qubit count, but they move costs elsewhere. QMF removes sequential steps while retaining a deep circuit, two measurement bases, and BoN. Torsion encoding narrows the circuit while requiring phase information to be recovered from a probability distribution. Sound co-design does not minimize one resource in isolation. Encoding, ansatz, measurement, and classical decoding should be evaluated together on a Pareto frontier of total error and total time.</p>
-<h3 id="82-a-noise-model-determines-sampling-cost-as-well-as-the-answer">8.2 A Noise Model Determines Sampling Cost as Well as the Answer</h3>
-<p>The Pauli-noise study shows that a gauge can leave the final observable unchanged while still affecting sampling overhead. Device calibration can therefore serve not merely as a preliminary check, but as an objective for compilation and mitigation. Qubit and coupler selection, Pauli frames and decompositions, and shot allocation across observables can be treated as one optimization problem.</p>
-<h3 id="83-separate-expressivity-theorems-from-application-speedups">8.3 Separate Expressivity Theorems from Application Speedups</h3>
-<p>QuanONet’s quadratic frame is a substantive theoretical result. For an application, however, it must translate into the same error with fewer parameters, a more accurate operator within the same time, or lower measurement cost at the same accuracy. Reporting the theorem, simulator benchmark, device PoC, and end-to-end advantage as four distinct stages prevents success at one stage from being treated as an automatic guarantee of the next.</p>
-<h3 id="84-begin-applications-with-small-verifiable-physical-quantities">8.4 Begin Applications with Small, Verifiable Physical Quantities</h3>
-<p>Targeting an entire protein-folding process or chemical reaction at once makes it difficult to determine how much of the result was set by classical preprocessing and heuristic scoring. The torsion study first tested sample recovery under a fixed decoder and energy function; the oscillator–transmon study first tested reconstruction of known anharmonic potentials. For materials and OLED problems, the quantum block’s net contribution is easier to measure on quantities with strong classical baselines: energy in a small active space, a restricted torsion family, a known vibrational level, or a specific correlation function.</p>
-<h2 id="9-a-minimum-quantumclassical-resource-ledger">9. A Minimum Quantum–Classical Resource Ledger</h2>
-<p>At least the following fields are required to place these six papers in one ledger. Leaving even one or two blank creates an invisible-cost segment on the quantum or classical side.</p>
-<table>
-<thead>
-<tr>
-<th>Ledger field</th>
-<th>What must be recorded</th>
-<th>Misinterpretation when omitted</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Problem and instance</td>
-<td>Graph, molecule, or data split; size; distribution of difficulty</td>
-<td>Generalizing from a handpicked set of easy instances</td>
-</tr>
-<tr>
-<td>Target observable</td>
-<td>Energy, correlation order, accuracy, RMSD, fidelity, or spectrum</td>
-<td>Comparing different answers as though they had the same accuracy</td>
-</tr>
-<tr>
-<td>Success criterion</td>
-<td>Target error, confidence interval, valid-sample condition</td>
-<td>Treating one best run as average performance</td>
-</tr>
-<tr>
-<td>Quantum execution boundary</td>
-<td>Which of training, optimization, inference, and sampling ran on a QPU</td>
-<td>Treating an entire hybrid pipeline as QPU computation</td>
-</tr>
-<tr>
-<td>Circuit resources</td>
-<td>Logical and physical qubits, 2Q gates, depth, bases, circuit count</td>
-<td>Hiding greater depth behind a lower qubit count</td>
-</tr>
-<tr>
-<td>Measurement resources</td>
-<td>Shots per basis, repetitions, postselection, BoN, effective sample count</td>
-<td>Erasing the cost of mitigation and selection</td>
-</tr>
-<tr>
-<td>Classical resources</td>
-<td>Encoding, optimizer, decoder, CI/DFT/MD, GPU/CPU time and memory</td>
-<td>Reporting time only for the quantum subroutine</td>
-</tr>
-<tr>
-<td>Operational resources</td>
-<td>Compilation, queue, calibration, QPU access, wall-clock, energy</td>
-<td>Directly comparing anneal time with total GPU time</td>
-</tr>
-<tr>
-<td>Baseline</td>
-<td>Best classical method under the same instance, budget, and stopping rule</td>
-<td>Expanding an improvement over a weak baseline into an advantage claim</td>
-</tr>
-<tr>
-<td>Repeatability</td>
-<td>Seeds, calibration dates, failed runs, uncertainty</td>
-<td>Treating selected successes as stable performance</td>
-</tr>
-</tbody>
-</table>
-<p>For OLED and materials calculations, the ledger should become more specific. Put target overlap, active space definition, state-preparation cost, compiled 2Q depth, number of commuting groups, shots, mitigation amplification, postselection yield, QPU time, and classical CI/DFT time and memory in the same row. For optimization problems, add encoding penalties, feasible-shot rate, time-to-best, optimality gap, and the classical solver’s termination condition. For generative models, record the candidate count, rejection rate, scoring model, and selection compute in addition to FID or classifier accuracy.</p>
-<h2 id="10-three-validation-experiments-that-can-be-run-now">10. Three Validation Experiments That Can Be Run Now</h2>
-<p>First, <strong>redesign a D-Wave or QAOA benchmark around matched observables</strong>. On the same Ising/QUBO instances, measure the objective together with two-point and higher-order correlations and sample diversity. Separate a small regime accessible to exact methods, a middle regime where tensor-network or Monte Carlo methods remain competitive, and the claimed QPU-only regime. Report time-to-target and energy-to-target.</p>
-<p>Second, <strong>attach an end-to-end denominator to each QML PoC</strong>. QuanONet and QMF should both publish a pipeline graph that includes classical encoding, training, and selection, with an ablation in which the quantum block is replaced by a classical quadratic-feature or MeanFlow block of the same size. Across at least three QPU calibrations, compare shots-to-accuracy and wall-clock-to-accuracy.</p>
-<p>Third, <strong>evaluate the decoder separately from the physical solver in molecular and materials applications</strong>. For torsion encoding, measure decoder error with exact phase/statevector input, the additional error with a noisy distribution, and the ranking error introduced by the classical energy function. For the oscillator–transmon system, extend potential reconstruction to a benchmark of known eigenvalues and dynamical observables. This decomposition reveals whether the bottleneck lies in quantum-state preparation, measurement, or classical reconstruction.</p>
-<h2 id="11-application-outlook">11. Application Outlook</h2>
-<ul>
-<li><strong>Nearest-term operational use</strong>: self-consistent Pauli-noise learning and gauge optimization. These directly address the engineering problem of reducing sampling overhead in device characterization and error mitigation.</li>
-<li><strong>Near-term research use</strong>: employ strong classical simulations, including t-VMC, as controls for quantum-advantage benchmarks. Their role is less to replace the quantum device than to define more precisely where a defensible claim begins.</li>
-<li><strong>Medium-term QML use</strong>: evaluate QuanONet’s quadratic frame and QMF’s one-step inference with measurement cost included. Both remain at the architecture and PoC stage.</li>
-<li><strong>Medium-term molecular and biophysical use</strong>: connect compact torsion representations and bosonic anharmonic gates to small conformer and vibrational benchmarks. It is too early to extend these results to end-to-end acceleration of protein folding or chemical reactions.</li>
-<li><strong>Long-term direction</strong>: a heterogeneous stack that combines error-corrected gate models, bosonic modes, and high-performance classical simulation by problem. Rather than assigning every calculation to one platform, the stack selects the least expensive computational layer for each well-defined observable.</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>This week’s research did not settle a contest between quantum and classical computation. It clarified what must be counted before such a contest can be judged. t-VMC raised the classical baseline by reproducing selected D-Wave correlations at substantial GPU cost. Self-consistent Pauli-noise learning showed that non-identifiability does not necessarily imply unpredictability, and that gauge choice can reduce the sample cost of reaching the same answer. QuanONet supplied a theoretical basis for greater expressivity, while QMF proposed a structure that reduces sequential inference. Torsion VQE and the oscillator–transmon experiment placed, respectively, compact encoding and programmable non-Gaussian potentials on real hardware.</p>
-<p>None of these results demonstrates universal quantum advantage, acceleration of a full application workflow, or the calculation of a real chemical reaction. Stating those limits does not diminish the research. Separating what already works from what remains to be tested directs research and development effort toward the actual bottleneck.</p>
-<p>Qubit count alone is no longer an adequate headline metric. <strong>The relevance of the observable, the completeness of the comparison denominator, the transparency of the execution boundary, and a strong classical baseline under the same budget</strong> must be reported together. The boundary of quantum advantage will keep moving. Good reviews and good experiments do not draw that boundary broadly; they record the coordinates and costs at which it was established.</p>
-<h2 id="references">References</h2>
-<ol>
-<li>R. Wiersema, <a href="https://arxiv.org/abs/2609.01719">“Numerical simulation of D-Wave&rsquo;s quantum advantage experiment with time-dependent variational Monte Carlo,” arXiv:2609.01719v1 (1 September 2026)</a>. <strong>Preprint; classical GPU simulation.</strong> <a href="https://github.com/therooler/dwave_vmc">Code</a></li>
-<li>E. H. Chen, S. Chen, L. E. Fischer et al., <a href="https://doi.org/10.1103/69wc-gzl6">“Disambiguating Pauli Noise in Quantum Computers,” <em>PRX Quantum</em> 7, 033045 (3 September 2026)</a>. <strong>Peer-reviewed article; actual IBM QPUs, up to 92 qubits.</strong></li>
-<li>R. Wang, X. Zhong, Z. Xia, J. Yan, <a href="https://doi.org/10.1038/s42256-026-01289-7">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” <em>Nature Machine Intelligence</em> (3 September 2026)</a>. <strong>Peer-reviewed article; qualitative <code>ibm_fez</code> PoC.</strong> <a href="https://github.com/Wang-Ruocheng/QuanONet">Code</a></li>
-<li>A. Joshi, E. Mistry, T. Koyama, <a href="https://arxiv.org/abs/2609.02186">“Quantum MeanFlow: single-shot generative sampling on NISQ hardware,” arXiv:2609.02186v1 (2 September 2026)</a>. <strong>Preprint; simulator training and actual IBM QPU inference.</strong></li>
-<li>F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, D. Blankenberg, <a href="https://arxiv.org/abs/2609.02113">“Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space,” arXiv:2609.02113v1 (2 September 2026)</a>. <strong>Preprint; actual QPU sampling, not on-QPU optimization.</strong> <a href="https://github.com/cumbof/qtf">Code</a> · <a href="https://doi.org/10.5281/zenodo.22088098">Data</a></li>
-<li>C. Y. Fontaine, M. Somani, K. Yu et al., <a href="https://arxiv.org/abs/2609.02405">“Programming anharmonic potentials in a superconducting harmonic oscillator,” arXiv:2609.02405v1 (2 September 2026)</a>. <strong>Preprint; actual superconducting oscillator–transmon device.</strong></li>
-</ol>
+
 <hr />
-<p>Authoring information. Responsible editor: Hyun-Jung Kim. AI assistance: OpenAI Codex Work Mode multi-agent workflow. Evidence cutoff: September 4, 2026. <code>evidence_algorithms</code> checked t-VMC, Pauli-noise learning, and QuanONet against primary sources; <code>evidence_applications</code> checked Quantum MeanFlow, torsion-space VQE, and oscillator–transmon control; and <code>draft_sep4_review</code> assembled the Korean and English reviews. Numerical values and methods are source-reported; their proposed translation to OLED and materials applications, the shared resource ledger, and the three validation experiments are editorial recommendations. The review distinguishes 2 peer-reviewed articles from 4 preprints and separately identifies actual QPU execution, classical simulation, simulator training, and classical decoding.</p>
+<p>Writing and verification history. The original publication date and evidence cutoff are September 4, 2026. At that time, <code>evidence_algorithms</code> checked t-VMC, Pauli-noise learning, and QuanONet; <code>evidence_applications</code> checked Quantum MeanFlow, torsion-space VQE, and oscillator–transmon control; and <code>draft_sep4_review</code> prepared the bilingual drafts. The responsible editor was Hyun-Jung Kim. AI assistance was OpenAI Codex Work Mode multi-agent workflow with AI Tech Review Editorial Harness v2026.08. The exact model identifier was not retained, and sentence-by-sentence human review was not separately recorded. Numbers are source-reported; the resource comparisons and materials/OLED applications are editorial interpretations and proposals.</p>
+<p>Editorial revision on November 15, 2026. AEDAUT’s <code>legacy0904_prose</code> revised the openings, connections, repetition, and captions in both languages while retaining the original evidence cutoff and numerical conditions. This revision did not rerun the source experiments or conduct a human-reader evaluation. The actual scope of additional scientific and publication checks is recorded separately for this revision.</p>
+<p>In this revision, root integrated the manuscripts, references, build and publication. <code>legacy0904_algorithms</code> checked the relevant t-VMC, Pauli-noise and QuanONet source passages, editions, public supplements and code; <code>legacy0904_applications</code> checked the QMF, protein and oscillator sources at recorded scopes. The full subscription QuanONet article was not obtained; its public abstract, figure captions, supplements and period code were used. The 14 September PDF-equation typesetting correction was checked separately without changing the original evidence cutoff.<span class="citation">[<a href="#ref-3">3</a>]</span> Reading and publication checks are detailed in the revision record.</p>
       <div class="footer">
-        Generated: 2026-09-04 11:22:30<br>
-        Source last modified: 2026-09-04 11:22:22
+        Original edition generated: 2026-09-04 11:22:30<br>
+        Editorial revision: 2026-11-15
       </div>
     </article>
 
@@ -1017,28 +875,14 @@
           <h2 id="toc-heading">Section map</h2>
           <div class="toc">
 <ul>
-<li><a href="#1-different-quantum-results-use-different-units-of-evidence">1. Different “Quantum Results” Use Different Units of Evidence</a><ul>
-<li><a href="#read-together-from-system-bottlenecks-to-an-evidence-ledger">Read Together: From System Bottlenecks to an Evidence Ledger</a></li>
-</ul>
-</li>
-<li><a href="#2-the-exact-scope-of-the-claim-that-d-wave-was-classically-reproduced">2. The Exact Scope of the Claim That D-Wave Was Classically Reproduced</a></li>
-<li><a href="#3-when-does-non-identifiable-noise-cease-to-be-a-problem">3. When Does Non-Identifiable Noise Cease to Be a Problem?</a></li>
-<li><a href="#4-quanonets-is-an-expressivity-bound-not-a-speedup">4. QuanONet’s Is an Expressivity Bound, Not a Speedup</a></li>
-<li><a href="#5-how-far-does-quantum-meanflows-one-step-extend">5. How Far Does Quantum MeanFlow’s “One Step” Extend?</a></li>
-<li><a href="#6-logarithmic-qubit-protein-vqe-moves-costs-rather-than-removing-them">6. Logarithmic-Qubit Protein VQE Moves Costs Rather Than Removing Them</a></li>
-<li><a href="#7-the-oscillatortransmon-programmed-potentials-not-a-molecule">7. The Oscillator–Transmon Programmed Potentials, Not a Molecule</a></li>
-<li><a href="#8-development-directions-shared-by-the-six-studies">8. Development Directions Shared by the Six Studies</a><ul>
-<li><a href="#81-design-the-execution-boundary-before-minimizing-the-qubit-count">8.1 Design the Execution Boundary Before Minimizing the Qubit Count</a></li>
-<li><a href="#82-a-noise-model-determines-sampling-cost-as-well-as-the-answer">8.2 A Noise Model Determines Sampling Cost as Well as the Answer</a></li>
-<li><a href="#83-separate-expressivity-theorems-from-application-speedups">8.3 Separate Expressivity Theorems from Application Speedups</a></li>
-<li><a href="#84-begin-applications-with-small-verifiable-physical-quantities">8.4 Begin Applications with Small, Verifiable Physical Quantities</a></li>
-</ul>
-</li>
-<li><a href="#9-a-minimum-quantumclassical-resource-ledger">9. A Minimum Quantum–Classical Resource Ledger</a></li>
-<li><a href="#10-three-validation-experiments-that-can-be-run-now">10. Three Validation Experiments That Can Be Run Now</a></li>
-<li><a href="#11-application-outlook">11. Application Outlook</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
-<li><a href="#references">References</a></li>
+<li><a href="#section-the-cost-of-reaching-the-same-correlations">The Cost of Reaching the Same Correlations</a></li>
+<li><a href="#section-how-a-noise-representation-changes-sampling-cost">How a Noise Representation Changes Sampling Cost</a></li>
+<li><a href="#section-connecting-function-expressivity-to-measurement-cost">Connecting Function Expressivity to Measurement Cost</a></li>
+<li><a href="#section-the-many-measurements-within-one-integration-step">The Many Measurements Within One Integration Step</a></li>
+<li><a href="#section-the-cost-of-encoding-protein-angles-in-fewer-qubits">The Cost of Encoding Protein Angles in Fewer Qubits</a></li>
+<li><a href="#section-controlling-an-oscillators-potential">Controlling an Oscillator’s Potential</a></li>
+<li><a href="#section-starting-the-next-comparison-from-the-same-observable">Starting the Next Comparison from the Same Observable</a></li>
+<li><a href="#section-references">References</a></li>
 </ul>
 </div>
 
@@ -1047,25 +891,27 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">Evidence links</h2>
         <ul>
-          <li><a href="../artifacts/quantum_evidence_ledger_hero-web.webp">Conceptual illustration combining a quantum processor, classical GPUs, a measurement ledger, continuous-variable potentials, and hybrid-computing boundaries</a></li>
-<li><a href="../artifacts/daily_quantum_brief_2026-09-04.pdf">PDF download</a></li>
-<li><a href="../artifacts/quantum_evidence_ledger_en.svg">Five-column resource ledger mapping six studies across observable and denominator, execution location, circuit and measurement, classical pre- and post-processing, and baseline and nonclaims</a></li>
-<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/" target="_blank" rel="noreferrer">September 3 review of full-stack co-design</a></li>
-<li><a href="https://arxiv.org/abs/2609.01719" target="_blank" rel="noreferrer">*Numerical simulation of D-Wave&#x27;s quantum advantage experiment with time-dependent variational Monte Carlo*</a></li>
-<li><a href="https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">*Disambiguating Pauli Noise in Quantum Computers*</a></li>
-<li><a href="https://www.nature.com/articles/s42256-026-01289-7" target="_blank" rel="noreferrer">*Quantum neural operators with implicit quadratic frame and expressivity advantages*</a></li>
-<li><a href="https://arxiv.org/abs/2609.02186" target="_blank" rel="noreferrer">*Quantum MeanFlow: single-shot generative sampling on NISQ hardware*</a></li>
-<li><a href="https://arxiv.org/abs/2609.02113" target="_blank" rel="noreferrer">*Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space*</a></li>
-<li><a href="https://arxiv.org/abs/2609.02405" target="_blank" rel="noreferrer">*Programming anharmonic potentials in a superconducting harmonic oscillator*</a></li>
-<li><a href="https://github.com/therooler/dwave_vmc" target="_blank" rel="noreferrer">Code</a></li>
-<li><a href="https://doi.org/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">“Disambiguating Pauli Noise in Quantum Computers,” *PRX Quantum* 7, 033045 (3 September 2026)</a></li>
-<li><a href="https://doi.org/10.1038/s42256-026-01289-7" target="_blank" rel="noreferrer">“Quantum neural operators with implicit quadratic frame and expressivity advantages,” *Nature Machine Intelligence* (3 September 2026)</a></li>
-<li><a href="https://github.com/Wang-Ruocheng/QuanONet" target="_blank" rel="noreferrer">Code</a></li>
-<li><a href="https://github.com/cumbof/qtf" target="_blank" rel="noreferrer">Code</a></li>
-<li><a href="https://doi.org/10.5281/zenodo.22088098" target="_blank" rel="noreferrer">Data</a></li>
+          <li><a href="../artifacts/daily_quantum_brief_2026-09-04.pdf">PDF</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/" target="_blank" rel="noreferrer">infant83.github.io</a></li>
+<li><a href="https://arxiv.org/abs/2609.01719v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://github.com/therooler/dwave_vmc/tree/3456ea264fa409921367bd953d3d34372e5dd3e4" target="_blank" rel="noreferrer">github.com</a></li>
+<li><a href="https://doi.org/10.1103/69wc-gzl6" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01289-7" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.21084057" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://github.com/Wang-Ruocheng/QuanONet/tree/2481511b131917fc91820b1486aa929c44938fad" target="_blank" rel="noreferrer">github.com</a></li>
+<li><a href="https://doi.org/10.1038/s42256-026-01314-9" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.02186v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.02113v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://github.com/cumbof/qtf/tree/4f700c9f2bd278f7c469b6ccf7c641c0a2fa5006" target="_blank" rel="noreferrer">github.com</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.22088098" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://arxiv.org/abs/2609.02405v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
         </ul>
       </section>
     </aside>
   </main>
-</body>
+    <!-- AI Tech Review Public Metrics -->
+    <script>window.AI_TECH_REVIEW_METRICS={"endpoint":"https://infant83-public-metrics.infant83.workers.dev","basePath":"/AI_Tech_Review/","siteId":"ai-tech-review"};</script>
+    <script defer src="../../../assets/public-metrics.js"></script>
+    <!-- End AI Tech Review Public Metrics -->
+  </body>
 </html>

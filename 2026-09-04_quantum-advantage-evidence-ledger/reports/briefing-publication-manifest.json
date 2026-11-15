@@ -1,0 +1,268 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-15",
+  "article_id": "2026-09-04_quantum-advantage-evidence-ledger",
+  "source_audit_complete": true,
+  "review_status": "passed",
+  "method": "True redaction; bounded line corrections; dated appendix; original issue date/title and clean public entry URIs preserved. No archive registration or publication by builder.",
+  "issues": [
+    {
+      "date": "2026-09-04",
+      "document_id": "2026-09-04-daily-quantum-brief",
+      "filename": "daily_quantum_brief_2026-09-04.pdf",
+      "original_pages": 5,
+      "original_sha256": "339dd76bd0056f00b867038e0ec3f5b919c5784557b9180511b16a30331290ce",
+      "removals": {
+        "4": [
+          [
+            40,
+            573,
+            549,
+            662
+          ],
+          [
+            40,
+            725,
+            555,
+            792
+          ]
+        ]
+      },
+      "line_replacements": [
+        {
+          "page": 0,
+          "old": "QMF의 이미지당 순차 회로 단계",
+          "new": "QMF의 이미지당 ODE 적분 단계",
+          "right": 520
+        },
+        {
+          "page": 1,
+          "old": "경계: 고전 계산은 수백 GPU-hours, QPU는 같은 관측량을 수초에 얻었다. 최대·최난도 사례와 ±1 인스턴스는 여전히 열려 있으므로 ‘우위 전복’으로 일반화할",
+          "new": "비용: 초기 탐색을 뺀 고전 run의 총 경과시간은 2,123.02시간이다. GPU 수를 곱한 GPU-hours가 아니며 QPU의 일부 시간과 속도를 바로 비교할 수 없다.",
+          "right": 538,
+          "size": 7.2
+        },
+        {
+          "page": 1,
+          "old": "수 없다.",
+          "new": "최대·최난도 사례와 ±1 인스턴스, 같은 목표 오차와 전체 운영비용을 함께 비교한다.",
+          "right": 538,
+          "size": 7.2
+        },
+        {
+          "page": 1,
+          "old": "모델을 IBM 장치에서 최대 92큐비트까지 검증했다.",
+          "new": "모델을 최대 92큐비트 proxy에서, 실제 end-to-end PEC는 20큐비트에서 검증했다.",
+          "right": 538,
+          "size": 8.4
+        },
+        {
+          "page": 1,
+          "old": "경계: gauge 선택은 완화된 관측값을 바꾸지 않지만 최적화하면 sampling overhead를 줄였다. 오류정정이나 무비용 완화가 아니라 PEC 표본비용을 낮추는",
+          "new": "조건: self-consistent 모형에서 gauge 선택은 관측값을 유지한다. gauge 최적화는 모형이 예측한 표본 비용을 낮췄으며, 물리 오류정정과 구별한다.",
+          "right": 538,
+          "size": 7.3
+        },
+        {
+          "page": 1,
+          "old": "잡음모델 설계다.",
+          "new": "장치 교정·측정과 선택 비용은 실제 적용에서 함께 센다.",
+          "right": 538,
+          "size": 7.3
+        },
+        {
+          "page": 2,
+          "old": "수백 GPU-hours ↔ QPU 수초",
+          "new": "2,123.02 wall-clock h",
+          "right": 420,
+          "size": 6.5
+        },
+        {
+          "page": 3,
+          "old": "입증 · self-consistent gate-set Pauli noise 학습과 PEC",
+          "new": "입증 · 92Q proxy 학습 / 20Q end-to-end PEC",
+          "right": 287,
+          "size": 8.1
+        },
+        {
+          "page": 3,
+          "old": "한계 · QPU 단일샷 정확도 0.20; BoN=8에서 0.60",
+          "new": "조건 · 출력 1개 정확도 0.20; BoN=8에서 0.60",
+          "right": 287,
+          "size": 7.3
+        },
+        {
+          "page": 3,
+          "old": "한계 · 고전 좌표복원·에너지함수 민감도·총시간 남음",
+          "new": "조건 · 모사 매개변수 이전 / 확률 CDF로 각도 복원",
+          "right": 544,
+          "size": 7.2
+        },
+        {
+          "page": 4,
+          "old": "QPU calls 산출",
+          "new": "측정 샷 수 산출",
+          "right": 540,
+          "size": 7.3
+        }
+      ],
+      "inserts": [
+        {
+          "page": 4,
+          "origin": [
+            42.5,
+            582
+          ],
+          "text": "정식 참고문헌과 원 출처 링크는 공개 감수 부록에 수록했다.",
+          "size": 9,
+          "rectangle": [
+            41,
+            569,
+            548,
+            591
+          ]
+        }
+      ],
+      "original_entry_points": [
+        {
+          "label": "t-VMC / original arXiv entry",
+          "url": "https://arxiv.org/abs/2609.01719"
+        },
+        {
+          "label": "Oscillator–transmon / arXiv entry",
+          "url": "https://arxiv.org/abs/2609.02405"
+        },
+        {
+          "label": "Pauli noise / publisher entry",
+          "url": "https://journals.aps.org/prxquantum/abstract/10.1103/69wc-gzl6"
+        },
+        {
+          "label": "QuanONet / publisher entry",
+          "url": "https://www.nature.com/articles/s42256-026-01289-7"
+        },
+        {
+          "label": "QuanONet / original repository entry",
+          "url": "https://github.com/Wang-Ruocheng/QuanONet"
+        },
+        {
+          "label": "Quantum MeanFlow / arXiv entry",
+          "url": "https://arxiv.org/abs/2609.02186"
+        },
+        {
+          "label": "Protein torsion VQE / arXiv entry",
+          "url": "https://arxiv.org/abs/2609.02113"
+        }
+      ],
+      "edition_intro": "원 DQB의 발행일과 근거 기준일은 2026년 9월 4일이다. 2026년 11월 15일 기존 글 감수에 맞춰 공개판의 비용 단위·실행 범위와 정식 서지를 바로잡았다. 원 5쪽의 연구 내용·수치·공개 출처 진입점 7개를 유지하고, 수집 경위와 개인 소셜 검색 기록은 공개판에서 분리했다.",
+      "edition_notes": [
+        "[1] t-VMC의 2,123.02시간은 논문이 보고한 전체 실험의 경과시간(wall time)이며 초기 탐색은 제외한다. 각 run에서 사용한 GPU 장치 수를 곱한 GPU-hours가 아니다. 72-spin precision-256 biclique의 약 7.6%는 QPU의 최종 2점 상관행렬에 대한 상대 L₂ 차이다. 수렴한 참값이나 전체 파동함수에 대한 오차로 해석하지 않는다.",
+        "[2] 92큐비트 실험은 고전 계산 가능한 Clifford 회로의 proxy mitigation이며, 실제 비-Clifford 회로 end-to-end PEC는 20큐비트다. gauge 최적화의 약 173배는 γ²에 따른 예측 표본 부담의 변화다. 장치에서 측정한 총시간의 173배 향상을 뜻하지 않는다.",
+        "[3–4] QuanONet의 p는 trunk feature vector의 폭이며 큐비트 수나 입력 함수를 샘플링한 위치의 수와 구분한다. O(p²)는 조건에 따른 표현 공간의 크기다. 실제 ibm_fez 검토는 미리 학습한 2큐비트 추론 PoC다. 출판사의 공개 요약·그림, 보충자료의 해당 절과 v1.0.0 코드를 대조했으며 구독 제한이 있는 주 논문 전문은 이번 감수에서 확보하지 못했다.",
+        "[5] QMF의 single step은 ODE 적분 한 단계다. 실제 출력에는 X/Z 두 측정 설정이 각각 4,096샷 필요하므로 원시 이미지당 8,192샷, best-of-8 선택 이미지당 65,536샷이다. 고전 분류기는 후보 선택과 평가에 쓰였다. 원 5쪽의 shots×bases×steps×BoN은 호출 수와 구분해 총 측정 샷 수를 센 표현으로 정정했다.",
+        "[6] 단백질 모사에서는 상대위상으로 각도를 읽지만, 실제 장치에서는 측정 확률의 경험적 CDF로 각도를 정한다. CDF는 위상을 측정하거나 재구성한 결과가 아니다. 같은 무잡음 CDF 기준선이 없어 복원 규칙 변경과 장치 잡음을 분리하지 못한다. 실제 실행은 모사에서 고른 매개변수를 600 jobs에서 반복 측정한 것이며, 최저 RMSD 1.758Å는 알려진 참조 구조에 대한 선택된 결과다.",
+        "[7] oscillator–transmon은 비가우시안 potential phase gate를 프로그래밍했다. cubic fidelity 하한 0.84는 D=25 절단공간에서의 재구성 조건이다. Morse의 높은 조화성분을 10.9dB squeezed probe로 회수한 결과는 모사이며, 전체 M=13 대역 복원에 필요한 16.3dB·29개 probe 위치도 계산한 조건이다. 데이터 획득 뒤 확인한 보완 다항식의 π 누락은 실제 실행 회로를 기준으로 비교한 논문 해석에 따라 남긴다.",
+        "후속 판본은 당시 근거와 구별했다. oscillator arXiv v2(2026-10-21)는 이번 9월 4일 근거에 소급하지 않았다. QuanONet의 9월 14일 출판사 정정은 PDF 식 (3)의 Λ 누락을 원 HTML과 맞춘 조판 정정이며, 이번에 다룬 표현력·장치·비용 주장을 바꾸는 근거로 쓰지 않았다."
+      ],
+      "production_disclosure": "편집부(AEDAUT) root가 한영 본문을 통합하고, legacy0904_algorithms가 t-VMC·Pauli noise와 공개 QuanONet 근거를, legacy0904_applications가 QMF·단백질·oscillator의 해당 절과 자료를 대조해 이 PDF를 제작·검사했다. 원 연구의 QPU·GPU 모사·학습·단백질 탐색과 정리를 재실행하거나 독립 인증하지 않았다. 이전 작성·검증 이력과 원호 날짜를 유지한다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 사람의 문장별 감수와 독자 평가는 수행하지 않았다.",
+      "references": [
+        {
+          "number": 1,
+          "citation": "R. Wiersema, Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo, arXiv:2609.01719v1 (2026).",
+          "url": "https://arxiv.org/abs/2609.01719v1",
+          "read_scope": "Official arXiv metadata; v1 PDF abstract/introduction, model and numerical-method passages, large-biclique result and Discussion, Appendix A topology and B cost/hyperparameters. No simulation rerun.",
+          "locator": "arXiv:2609.01719v1"
+        },
+        {
+          "number": 2,
+          "citation": "E. H. Chen, S. Chen, L. E. Fischer, A. Eddins, L. C. G. Govia, B. Mitchell, A. He, Y. Kim, L. Jiang, and A. Seif, Disambiguating Pauli noise in quantum computers, PRX Quantum 7, 033045 (2026), doi:10.1103/69wc-gzl6.",
+          "url": "https://doi.org/10.1103/69wc-gzl6",
+          "read_scope": "Publisher abstract, metadata, full VOR PDF selected theory and experimental sections IV and appendices on parameter/shot counts, gauge optimization and PEC. No independent proof certification or experiment rerun.",
+          "locator": "doi:10.1103/69wc-gzl6"
+        },
+        {
+          "number": 3,
+          "citation": "R. Wang, X. Zhong, Z. Xia, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1371–1380 (2026), doi:10.1038/s42256-026-01289-7; R. Wang, X. Zhong, Z. Xia, and J. Yan, Publisher Correction: Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1506 (2026), doi:10.1038/s42256-026-01314-9.",
+          "url": "https://doi.org/10.1038/s42256-026-01289-7",
+          "read_scope": "Public publisher abstract/metadata/data-code availability; public figure1/3/5 captions; full supplementary scientific text S1 selected proofs and numerical-scaling discussion; reporting-summary page1 viewed; official v1.0.0 code CITATION and inference script statically read. Main subscription VOR not obtained; no QPU/training rerun or complete theorem-proof certification.",
+          "locator": "doi:10.1038/s42256-026-01289-7",
+          "additional_locators": [
+            {
+              "locator": "doi:10.1038/s42256-026-01314-9",
+              "url": "https://doi.org/10.1038/s42256-026-01314-9"
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "citation": "R. Wang, Z. Xia, X. Zhong, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.21084057; QuanONet, GitHub repository, commit 2481511b131917fc91820b1486aa929c44938fad.",
+          "locator": "doi:10.5281/zenodo.21084057",
+          "url": "https://doi.org/10.5281/zenodo.21084057",
+          "additional_locators": [
+            {
+              "locator": "2481511b131917fc91820b1486aa929c44938fad",
+              "url": "https://github.com/Wang-Ruocheng/QuanONet/tree/2481511b131917fc91820b1486aa929c44938fad"
+            }
+          ],
+          "read_scope": "Public publisher abstract/metadata/data-code availability; public figure1/3/5 captions; full supplementary scientific text S1 selected proofs and numerical-scaling discussion; reporting-summary page1 viewed; official v1.0.0 code CITATION and inference script statically read. Main subscription VOR not obtained; no QPU/training rerun or complete theorem-proof certification."
+        },
+        {
+          "number": 5,
+          "citation": "A. Joshi, E. Mistry, and T. Koyama, Quantum MeanFlow: single-shot generative sampling on NISQ hardware, arXiv:2609.02186v1 (2026).",
+          "locator": "arXiv:2609.02186v1",
+          "url": "https://arxiv.org/abs/2609.02186v1",
+          "read_scope": "Version1 metadata/author list and PDF abstract, methods, results, relevant figures and discussion (especially pages6–13); no QPU/model training rerun."
+        },
+        {
+          "number": 6,
+          "citation": "F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space, arXiv:2609.02113v1 (2026); F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, QTF Manuscript Results, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.22088098.",
+          "locator": "arXiv:2609.02113v1",
+          "url": "https://arxiv.org/abs/2609.02113v1",
+          "read_scope": "Version1 metadata/author list, PDF decoder definitions and selected results/resource/hardware/limitations/software sections, especially pages16–18,26–32,35–37; not an all50page or codeexecution claim.",
+          "additional_locators": [
+            {
+              "locator": "doi:10.5281/zenodo.22088098",
+              "url": "https://doi.org/10.5281/zenodo.22088098"
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "citation": "C. Y. Fontaine, M. Somani, K. Yu, M. C. Loke, J. Schwinger, P.-T. Fong, N.-N. Huang, A. Copetudo, M. Bakr, H.-K. Lau, T. Krisnanda, and Y. Y. Gao, Programming anharmonic potentials in a superconducting harmonic oscillator, arXiv:2609.02405v1 (2026).",
+          "locator": "arXiv:2609.02405v1",
+          "url": "https://arxiv.org/abs/2609.02405v1",
+          "read_scope": "Version1 metadata/12author list; main methods/results and selected supplementary sectionsS3,S9–S12 andtablesS11/S15; no total28page line-by-line or independentexperiment claim."
+        }
+      ],
+      "clear_removed_frames": [
+        {
+          "page": 4,
+          "rect": [
+            40,
+            725,
+            555,
+            792
+          ]
+        }
+      ]
+    }
+  ],
+  "review_verification": {
+    "status": "passed",
+    "sha256": "60dfee0652da974df2b3cd5050306113571768622e4caf2c96a76540133fa258",
+    "pages": 7,
+    "producer": "legacy0904_applications",
+    "independent_reviewer": "legacy0904_algorithms",
+    "integrator_all_page_render_review": "root",
+    "source_pages_outside_declared_edits_pixel_identical": true,
+    "strict_parse_and_public_uris_privacy_active_content_checked": true
+  },
+  "public_outputs": [
+    {
+      "date": "2026-09-04",
+      "filename": "daily_quantum_brief_2026-09-04.pdf",
+      "pages": 7,
+      "bytes": 236050,
+      "sha256": "60dfee0652da974df2b3cd5050306113571768622e4caf2c96a76540133fa258"
+    }
+  ]
+}

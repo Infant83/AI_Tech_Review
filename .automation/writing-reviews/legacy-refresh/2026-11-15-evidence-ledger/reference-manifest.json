@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "review_id": "2026-09-04_quantum-advantage-evidence-ledger",
+  "evidence_cutoff": "2026-09-04",
+  "editorial_revision": "2026-11-15",
+  "references": [
+    {
+      "number": 1,
+      "authors": [
+        "Roeland Wiersema"
+      ],
+      "citation": "R. Wiersema, Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo, arXiv:2609.01719v1 (2026).",
+      "url": "https://arxiv.org/abs/2609.01719v1",
+      "edition": "v1; submitted 1 September 2026; PDF title-page date 3 September 2026",
+      "status_at_cutoff": "preprint",
+      "read_scope": "Official arXiv metadata; v1 PDF abstract/introduction, model and numerical-method passages, large-biclique result and Discussion, Appendix A topology and B cost/hyperparameters. No simulation rerun.",
+      "code": {
+        "repository": "https://github.com/therooler/dwave_vmc",
+        "commit": "3456ea264fa409921367bd953d3d34372e5dd3e4",
+        "commit_date": "2026-09-03T00:09:13Z",
+        "url": "https://github.com/therooler/dwave_vmc/tree/3456ea264fa409921367bd953d3d34372e5dd3e4",
+        "citation_note": "README identifies this as code for the Wiersema paper. No CITATION file or separate creator record in cutoff tree; do not infer exclusive authorship from committer. Repository source credit may accompany primary paper without invented preferred-citation metadata.",
+        "read_scope": "Cutoff tree and README; no source executed."
+      }
+    },
+    {
+      "number": 2,
+      "authors": [
+        "Edward H. Chen",
+        "Senrui Chen",
+        "Laurin E. Fischer",
+        "Andrew Eddins",
+        "Luke C. G. Govia",
+        "Brad Mitchell",
+        "Andre He",
+        "Youngseok Kim",
+        "Liang Jiang",
+        "Alireza Seif"
+      ],
+      "citation": "E. H. Chen, S. Chen, L. E. Fischer, A. Eddins, L. C. G. Govia, B. Mitchell, A. He, Y. Kim, L. Jiang, and A. Seif, Disambiguating Pauli noise in quantum computers, PRX Quantum 7, 033045 (2026).",
+      "url": "https://doi.org/10.1103/69wc-gzl6",
+      "edition": "Version of record, published 3 September 2026",
+      "status_at_cutoff": "peer-reviewed",
+      "read_scope": "Publisher abstract, metadata, full VOR PDF selected theory and experimental sections IV and appendices on parameter/shot counts, gauge optimization and PEC. No independent proof certification or experiment rerun."
+    },
+    {
+      "number": 3,
+      "authors": [
+        "Ruocheng Wang",
+        "Xiaoqiu Zhong",
+        "Zhuo Xia",
+        "Junchi Yan"
+      ],
+      "citation": "R. Wang, X. Zhong, Z. Xia, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1371–1380 (2026).",
+      "url": "https://doi.org/10.1038/s42256-026-01289-7",
+      "edition": "Published 3 September 2026; current formal pagination checked. Main full VOR behind subscription; original HTML equation3 unaffected by later PDF typo correction.",
+      "status_at_cutoff": "peer-reviewed",
+      "read_scope": "Public publisher abstract/metadata/data-code availability; public figure1/3/5 captions; full supplementary scientific text S1 selected proofs and numerical-scaling discussion; reporting-summary page1 viewed; official v1.0.0 code CITATION and inference script statically read. Main subscription VOR not obtained; no QPU/training rerun or complete theorem-proof certification.",
+      "code": {
+        "authors": [
+          "Ruocheng Wang",
+          "Zhuo Xia",
+          "Xiaoqiu Zhong",
+          "Junchi Yan"
+        ],
+        "cff_title": "QuanONet: Quantum Neural Operators with Adaptive Frequency Strategy",
+        "zenodo_title": "Quantum Neural Operators with Implicit Quadratic Frame and Expressivity Advantages",
+        "citation": "R. Wang, Z. Xia, X. Zhong, and J. Yan, Quantum neural operators with implicit quadratic frame and expressivity advantages, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.21084057.",
+        "url": "https://doi.org/10.5281/zenodo.21084057",
+        "version": "1.0.0",
+        "released": "2026-06-30",
+        "commit": "2481511b131917fc91820b1486aa929c44938fad",
+        "commit_url": "https://github.com/Wang-Ruocheng/QuanONet/tree/2481511b131917fc91820b1486aa929c44938fad",
+        "citation_note": "Software creator order Wang/Xia/Zhong/Yan differs from published paper Wang/Zhong/Xia/Yan. Preserve each source’s credit; CITATION preferred-article order conflicts with publisher, so publisher governs article credit."
+      },
+      "post_cutoff_exception": {
+        "citation": "R. Wang, X. Zhong, Z. Xia, and J. Yan, Publisher Correction: Quantum neural operators with implicit quadratic frame and expressivity advantages, Nat. Mach. Intell. 8, 1506 (2026).",
+        "url": "https://doi.org/10.1038/s42256-026-01314-9",
+        "published": "2026-09-14",
+        "scope": "Initial PDF equation3 missing Lambda; corrected M(u)=B(u)Lambda B†(u) to match original HTML. Not a change to the reviewed feature-span, hardware or cost claims. Do not silently present post-cutoff correction as known on 4September."
+      }
+    },
+    {
+      "number": 4,
+      "citation": "A. Joshi, E. Mistry, and T. Koyama, Quantum MeanFlow: single-shot generative sampling on NISQ hardware, arXiv:2609.02186v1 (2026).",
+      "url": "https://arxiv.org/abs/2609.02186v1",
+      "locator": "arXiv:2609.02186v1",
+      "authors": [
+        "Ashish Joshi",
+        "Eshaan Mistry",
+        "Takahiko Koyama"
+      ],
+      "source_date": "2026-09-02",
+      "status_at_cutoff": "preprint",
+      "read_scope": "Version1 metadata/author list and PDF abstract, methods, results, relevant figures and discussion (especially pages6–13); no QPU/model training rerun.",
+      "key_conditions": [
+        "11qubits;24layers;240CNOTs;792circuit parameters",
+        "PennyLane statevector training;fixed parameters for IBM Heron inference",
+        "4096shots per each ofX/Z settings =>8192shots per rawQMF image; BoN8 =>65536shots before other costs",
+        "Same classical classifier assesses and selects outputs; testaccuracy98.2%; statevector60stepHeunQFM0.85 vsone-stepQMF0.63; FID10.62vs28.26 in ownclassifierfeature space on2000samples",
+        "HardwareQFMuses5stepEuler; ibm_boston rawQFM.30/QMF.20 to.80/.60 afterBoN8; bothmachines named butreported remainingresultsBoston"
+      ],
+      "software_status": "No official code/data repository identified from PDF links in this audit; no claim that none exists.",
+      "pdf_sha256": "9bc1d9d52736ba111812d6044faed05d6470a3fb02e2d5f384b30ec347208ea0"
+    },
+    {
+      "number": 5,
+      "citation": "F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space, arXiv:2609.02113v1 (2026).",
+      "url": "https://arxiv.org/abs/2609.02113v1",
+      "locator": "arXiv:2609.02113v1",
+      "authors": [
+        "Fabio Cumbo",
+        "Bryan Raubenolt",
+        "Varun Puram",
+        "Natalie Katzenmeyer",
+        "Jayadev Joshi",
+        "Daniel Blankenberg"
+      ],
+      "source_date": "2026-09-02",
+      "status_at_cutoff": "preprint",
+      "read_scope": "Version1 metadata/author list, PDF decoder definitions and selected results/resource/hardware/limitations/software sections, especially pages16–18,26–32,35–37; not an all50page or codeexecution claim.",
+      "key_conditions": [
+        "44torsions/6qubits and88torsions/7qubits; only6qubitChignolinhardware",
+        "7,332,100retainedsnapshots plus2333finalmodels, allselectedanalysis; .623Å bestretainedChignolin snapshot and1.199Å bestfinal",
+        "30simulation-selectedparametercircuits ×10repeats ×2devices=600jobs;8192shots/job=4915200total",
+        "besthardwareRMSD1.758ÅCleveland/1.782ÅMiami;88/300vs45/300native-like<2Å; terminalresiduesexcluded/coremetric",
+        "Relative-phase simulator decoder and probabilityCDFhardware decoder differ; CDFdoesnotrecoverencodedphases; noiselessCDFbaselineabsent",
+        "QPUjobs performfixedparameterforward sampling; noiterativeQPUVQEoptimization; majorityrepeatsworsenedselectedstarts"
+      ],
+      "software": [
+        {
+          "citation": "QTF project contributors, QTF: Quantum Torsion Folder, GitHub repository, commit 4f700c9f2bd278f7c469b6ccf7c641c0a2fa5006 (28 August 2026).",
+          "url": "https://github.com/cumbof/qtf/tree/4f700c9f2bd278f7c469b6ccf7c641c0a2fa5006",
+          "creator_credit_scope": "Project attribution; do not identify commit author as sole software creator.",
+          "read_scope": "Cutoff commit metadata,README andLICENSE only; CITATION.cff andCITATION.bib return404; no recommended software citation identified, no implementation execution."
+        },
+        {
+          "citation": "F. Cumbo, B. Raubenolt, V. Puram, N. Katzenmeyer, J. Joshi, and D. Blankenberg, QTF Manuscript Results, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.22088098.",
+          "url": "https://doi.org/10.5281/zenodo.22088098",
+          "locator": "doi:10.5281/zenodo.22088098",
+          "source_date": "2026-08-25",
+          "read_scope": "Official Zenodo metadata/description/creators/version/license; full dataset not downloaded or rerun.",
+          "license": "CC-BY-4.0"
+        }
+      ],
+      "pdf_sha256": "da595aa9a3afbaec0588eb26ea822a15f1433e7cc5752163117d0b20e778fa6e"
+    },
+    {
+      "number": 6,
+      "citation": "C. Y. Fontaine, M. Somani, K. Yu, M. C. Loke, J. Schwinger, P.-T. Fong, N.-N. Huang, A. Copetudo, M. Bakr, H.-K. Lau, T. Krisnanda, and Y. Y. Gao, Programming anharmonic potentials in a superconducting harmonic oscillator, arXiv:2609.02405v1 (2026).",
+      "url": "https://arxiv.org/abs/2609.02405v1",
+      "locator": "arXiv:2609.02405v1",
+      "authors": [
+        "Clara Yun Fontaine",
+        "Mansi Somani",
+        "Kehui Yu",
+        "May Chee Loke",
+        "Jonathan Schwinger",
+        "Pak-Tik Fong",
+        "Ni-Ni Huang",
+        "Adrian Copetudo",
+        "Mustafa Bakr",
+        "Hoi-Kwan Lau",
+        "Tanjung Krisnanda",
+        "Yvonne Y. Gao"
+      ],
+      "source_date": "2026-09-02",
+      "status_at_cutoff": "preprint",
+      "read_scope": "Version1 metadata/12author list; main methods/results and selected supplementary sectionsS3,S9–S12 andtablesS11/S15; no total28page line-by-line or independentexperiment claim.",
+      "key_conditions": [
+        "Oneoscillator+transmon; nonGaussian impulsivepotentialphasegate exp(-iV(X)); notfullmolecularspectrum/dynamics",
+        "ECD520ns;qubitrotation28ns; M11–14",
+        "Cubic fittedc3=.682±.102 (bootstrap1sd);fidelity>=.84 withinD25truncatedreconstruction, Wignernegativity>=.11",
+        "outcomes4.4e6 cubic/symmetric/brokendoublewell;5.3e7asymmetric;6.7e7Morse",
+        "CoherentprobeMorse|n|<=2 missessteepwall;10.9dB/|n|<=7 wallrecovery issimulation;M13fullband reconstructioncalculation16.3dB and29probe positions",
+        "Droppedpiincomplementarypolynomial foundpostacquisition; experimentcomparedwithexactas-runcompiledcircuit"
+      ],
+      "later_version_note": "Current arXiv metadata listsv2dated2026-10-21. Not substituted into this September4evidence review.",
+      "pdf_sha256": "88884855cf66c2e67d4b751d63028bb8261b54568be97a4ce54a945ff1ffaa43"
+    }
+  ],
+  "scope": "Contemporaneous v1/VoR evidence retained; later correction separated. No original device, training, solver or theorem reproduction."
+}
