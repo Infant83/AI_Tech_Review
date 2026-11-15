@@ -1,0 +1,147 @@
+{
+  "review": "2026-11-11_ai-augmentation-and-assessment",
+  "date": "2026-11-11",
+  "status": "public-edition-verified",
+  "cover": {
+    "asset": "artifacts/hero.webp",
+    "dimensions": [
+      1600,
+      900
+    ],
+    "kind": "AI-edited conceptual illustration",
+    "tool": "built-in ImageGen, edit mode",
+    "exact_model_identifier": "not retained",
+    "prompt_file": "artifacts/hero-v3-prompt.txt",
+    "prompt": "Use case: precise-object-edit\nAsset type: 16:9 editorial review cover, revising the provided illustration.\nEdit target: the provided self-generated swimming-and-canoeing gouache illustration.\nPrimary request: Enrich this image with a visual metaphor for human abilities expanding with tools, including AI, while the arena and the ways of recognizing those abilities open up to fit a changed environment. Keep the human activities as the emotional and visual focus.\nPreserve: one swimmer on the left and one person actively paddling a canoe on the right, their bodily effort and physically coherent anatomy, a single-bladed paddle held correctly, the coherent canoe hull, continuous turquoise water, warm trees and distant purple hills, soft daylight, matte gouache and linocut grain. Maintain the broad 16:9 panoramic view and generous space between the two people.\nChange the setting: In the open middle distance, let a modest old rectangular timber frame at the water's edge unfold outward into several spacious, open, gently curving ivory-and-timber frames along the SIDES of the water. Their different proportions accommodate different kinds of movement and extend the arena outward into the open lake. Make the opening-out legible as a graceful architectural gesture, with hinged/folding segments, rather than a technical diagram. These are peripheral viewing frames and landscape edges, never obstacles or gateways that the swimmer or canoe must cross. The water remains continuous and free.\nAI-augmented human activity: Give the canoeist discreet slim smart glasses. Just above the bow and to the side of the canoeist, show a single translucent pale-blue navigation map, painterly rather than glossy, with a few branching possible routes and one selected route. It is a conceptual image of help with exploring options, visually associated with the PERSON using the tool. Keep the paddler's hands on the paddle; the boat remains human-powered. The map must be clearly separate from the water and physically subtle, not a rail, track, force beam or actual measured data.\nComposition: The swimmer and canoeist remain prominent at small thumbnail size. The unfolding arena is visible in the upper middle and does not crowd the people. Give the new map and frames clear silhouettes and restrained contrast so their roles can be understood without covering the original scene. Both activities remain valuable; no winner or ranking.\nStyle: Preserve the original warm, literary, tactile editorial illustration. Integrate additions into the same gouache/linocut treatment. No neon cyberpunk or photorealistic electronics.\nText: none.\nAvoid: AI robot, AI referee, surveillance cameras, drones, central control tower, underwater machinery, underwater rails, glowing grid, scoring display, check marks, charts, numbers, letters, formulas, Olympic rings, logos, medals, finish lines, racing stripes, a shared timed race, speed hierarchy, motor, towline, duplicated limbs or people, split-screen, before/after panels.\nMeaning: This is an invented conceptual landscape for changing abilities and appropriate assessment. It does not depict real Olympic equipment, verified navigation performance, or actual educational measurements.\n",
+    "reference_images": [
+      {
+        "role": "edit target",
+        "origin": "previous swimming/canoeing cover generated for this review",
+        "sha256": "f1711e93e04c3da19bbc17cbe5e2c4eb79d062b87503242ffabe0cdfb09e275d"
+      }
+    ],
+    "postprocessing": "Built-in image edit adds smart glasses, a conceptual route-choice map and unfolding peripheral frames; only RGB conversion and negligible aspect-ratio trim/resizing to 1600x900 WebP afterward.",
+    "checks": {
+      "thumbnail_320x180": "viewed; people, canoe, route map and open frames remain recognizable",
+      "grayscale": "viewed at 640x360; silhouettes and key relationships retained",
+      "human_effort": "swimmer strokes and canoeist paddles; no motor, towline or central controller",
+      "open_water": "frames follow the bank and leave the water unblocked",
+      "no_shared_finish_line": "verified visually",
+      "independent_visual_review": "conceptual_review: full cover, thumbnail and grayscale viewed; no required image change; first caption sentence made observational",
+      "mobile_full_frame": "Both languages at 390px, full frame, alt and caption retained; no clipping"
+    },
+    "limitations": "Invented metaphor. Open frames need the caption to connect them to changing assessment. Smart glasses are small at thumbnail size; the separate map carries the assistance cue. No claim about real equipment, measured performance, superiority or prerequisites.",
+    "versioned_asset": "artifacts/hero-v3.webp",
+    "alt_ko": "왼쪽의 수영자와 오른쪽의 카누 이용자. 카누 이용자는 스마트 안경과 갈래진 항로가 그려진 디지털 지도를 활용하며, 물가에는 크기와 모양이 다른 열린 틀이 이어진다.",
+    "caption_ko": "같은 물에서 헤엄치고 노를 젓는 사람들 옆으로, 크기와 모양이 다른 틀이 물가를 따라 열려 있다. 디지털 지도는 AI로 넓어지는 선택지를, 열린 틀은 변화한 역량과 환경에 맞춰 달라지는 평가를 상징한다. 실제 경기·장치·측정자료가 아닌 AI 생성 개념 일러스트.",
+    "alt_en": "A swimmer on the left and a canoeist on the right. The canoeist uses smart glasses and a digital map showing branching routes, while open frames of different sizes and shapes line the water’s edge.",
+    "caption_en": "Open frames of varied shapes and sizes line the bank beside people swimming and paddling on the same water. The digital map represents choices expanded by AI; the open frames represent assessment adapting to changing capabilities and conditions. This is an AI-generated conceptual illustration, not a depiction of an actual competition, device, or measurement data."
+  },
+  "data_figure": {
+    "assets": [
+      "figures/practice-and-learning-ko.svg",
+      "figures/practice-and-learning-mobile-ko.svg",
+      "figures/practice-and-learning-en.svg",
+      "figures/practice-and-learning-mobile-en.svg"
+    ],
+    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12232635/",
+    "location": "Table 1",
+    "data": "artifacts/study-figure-data.json",
+    "code": "artifacts/build_figures.py",
+    "uncertainty": "Plus/minus 1 classroom-clustered HC1 robust SE; not 95% CI",
+    "scope": "Published coefficient redraw; no participant-level reanalysis",
+    "independent_check": "augmentation_evidence compared source values, code, JSON and four rendered variants"
+  },
+  "conceptual_figure": {
+    "assets": [
+      "figures/competence-and-tools-ko.svg",
+      "figures/competence-and-tools-en.svg"
+    ],
+    "code": "artifacts/build_figures.py",
+    "kind": "Review proposal; not a validated universal scale"
+  },
+  "fonts": {
+    "family": "Noto Sans KR; renamed Review Sans Subset in derivatives",
+    "license": "artifacts/font-OFL.txt",
+    "credits": "artifacts/font-license.txt"
+  },
+  "assets": [
+    {
+      "path": "artifacts/hero.webp",
+      "sha256": "2f6f1436c28984a11add791e6fe7ae1d5a1849a4718a4daa4fbd35d70ba8765b",
+      "bytes": 438584
+    },
+    {
+      "path": "artifacts/hero-v3.webp",
+      "sha256": "2f6f1436c28984a11add791e6fe7ae1d5a1849a4718a4daa4fbd35d70ba8765b",
+      "bytes": 438584
+    },
+    {
+      "path": "artifacts/hero-v2.webp",
+      "sha256": "f1711e93e04c3da19bbc17cbe5e2c4eb79d062b87503242ffabe0cdfb09e275d",
+      "bytes": 399424
+    },
+    {
+      "path": "artifacts/figures/competence-and-tools-en.svg",
+      "sha256": "2276577490663286c5df66d84241421433bd32cdc69825b3ef4bfb65cd6747c2",
+      "bytes": 2760
+    },
+    {
+      "path": "artifacts/figures/competence-and-tools-ko.svg",
+      "sha256": "cf98a0842d58429bc77a926b43f34bbb811e932cbe45f835cfc2b1b5b959d000",
+      "bytes": 2852
+    },
+    {
+      "path": "artifacts/figures/practice-and-learning-en.svg",
+      "sha256": "4e3a8b48ca80f927ab2c66621b6fa206a8b43fb9774135a651d50fef17149251",
+      "bytes": 79035
+    },
+    {
+      "path": "artifacts/figures/practice-and-learning-ko.svg",
+      "sha256": "31452d4426a8f1188fa9e5ec1bb989c12596e28cbb0e33d79def4fd4bf142b17",
+      "bytes": 73627
+    },
+    {
+      "path": "artifacts/figures/practice-and-learning-mobile-en.svg",
+      "sha256": "d2486eea6ca61d3f2f2be4d2c97d7b1306f4becc05871d743df364bd126013c2",
+      "bytes": 73425
+    },
+    {
+      "path": "artifacts/figures/practice-and-learning-mobile-ko.svg",
+      "sha256": "7dd992806b9070217f35d8d48048833ebc74ad2222d94d390dc6023dace24e4f",
+      "bytes": 69441
+    }
+  ],
+  "public_asset_allowlist": [
+    "index.html",
+    "review.css",
+    "hero.webp",
+    "review.pdf",
+    "figures/practice-and-learning-ko.svg",
+    "figures/practice-and-learning-mobile-ko.svg",
+    "figures/competence-and-tools-ko.svg",
+    "en/index.html",
+    "en/review.css",
+    "en/hero.webp",
+    "en/review-en.pdf",
+    "en/figures/practice-and-learning-en.svg",
+    "en/figures/practice-and-learning-mobile-en.svg",
+    "en/figures/competence-and-tools-en.svg"
+  ],
+  "not_in_public_package": [
+    "source image PNG",
+    "research notes",
+    "QA screenshots",
+    "local runtime",
+    "unredistributed source papers"
+  ],
+  "human_review": "Topic, analogy and prose-style direction incorporated; no sentence-by-sentence review or reader-comprehension study",
+  "revision": "Assessment appropriate to changing abilities and environments; human use of AI route options and open frames extend the swimming/canoeing metaphor.",
+  "narrative_review": "conceptual_review: actual v5 dek, introduction, central claim, caption and conclusion checked; changing abilities and environments remain central. assessment_research: bilingual meanings, reference URLs and citation order checked.",
+  "evidence_cutoff": "2026-11-12",
+  "output_review": "v5: Korean 9 pages and English 13 pages, all 22 rendered and inspected. Metadata, references, 14-file allowlist, private-path checks, PDF links and mobile layout passed. Root reviewed Korean; assessment_research independently reviewed English. No original study or proof re-execution.",
+  "revised": "2026-11-15",
+  "publication_date": "2026-11-15",
+  "publication_verification": "Public edition and archive PDF hashes match; 58 reviews and 141 archive PDFs pass continuity and payload checks against actual prior HTTPS release. Existing article/PDF identities and content preserved; real-browser local bilingual listings/search/article and mobile checks passed. Deployment and live HTTPS checks pending.",
+  "public_reference_groups": 19
+}
