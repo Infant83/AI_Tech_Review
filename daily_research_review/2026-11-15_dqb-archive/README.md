@@ -14,4 +14,12 @@ Autoclave는 앞서 읽은 논문과 파일이 동일하다. 오류정정 논리
 
 편집부(AEDAUT) root가 원 DQB 전체를 읽고 집필·통합했다. dqb1115_qunova는 회사 본문·그림, HI-VQE의 해당 절·표·판본, DMRG 수치 절과 기존 리뷰를 독립 대조했다. dqb1115_methods는 방법론의 원문·정식 서지와 이전 감수를 대조하고 재사용한 검토 범위를 구별했다. dqb1115_pdf가 공개 PDF의 실제 삭제·정정·부록·글꼴·URI와 전페이지 렌더를 검사했다. 원 연구의 QPU·HPC·스케줄러·정리 증명을 재실행하거나 독립 인증하지 않았다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 사람의 문장별 감수나 독자 평가는 수행하지 않았다.
 
-현재 공개 후보 검증 단계다. 공개 완료는 실제 배포와 HTTPS 확인 후 이 기록에 추가한다. 신규 심층 리뷰를 발행하거나 승인 대기 기획의 상태를 바꾸는 작업이 아니다.
+신규 심층 리뷰를 발행하거나 승인 대기 기획의 상태를 바꾸는 작업이 아니다.
+
+## 공개 확인
+
+배포 커밋은 `c4496d9c2ad38e8423db461709510aae99e7290a`다. [Actions43660502089](https://github.com/Infant83/AI_Tech_Review/actions/runs/43660502089)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 자동 검사882개 중873개 통과·9개 건너뜀이며 실패는 없다.
+
+실제 HTTPS15경로와 [국문](https://infant83.io/AI_Tech_Review/briefings/2026-11-15/)·[영문](https://infant83.io/AI_Tech_Review/briefings/2026-11-15/en/) 렌더를 확인했다. [공개PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-15-daily-quantum-brief.pdf)는 검수한6쪽·284,787바이트와 SHA256이 같다. 기존57개 리뷰·137개 보관문서·참조PDF233경로의 내용 해시를 보존했다. DRB2편과 DQE1편도 유지된다.
+
+같은 최종 로컬 후보에서 달력의11월15일 선택, 한영 검색의 편집글 우선 경로, 별도 PDF 읽기·다운로드와390×844 한영 상단 화면을 확인했다. 실제 공개 브라우저 검수는 한영 데스크톱 표시와 언어 전환·날짜·출처·관련 글·PDF 연결 범위다. 복구 사본의 로컬 전체 복원이나 알림 수신, 사람 독자 평가는 수행했다고 쓰지 않는다. [공개 확인 기록](notes/publication-verification.json)에 범위와 제한을 남겼다.
