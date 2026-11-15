@@ -298,7 +298,7 @@ GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revisi
 
 ### 독자 통계의 일별 열람 조회
 
-`GET /v1/insights`는 기존 `0003_review_discovery.sql`의 공개 일별 집계를 읽는 후보 API다. 별도 migration이나 과거 좋아요 이력을 재구성하지 않는다. 코드 구현과 로컬 검증은 실제 Worker 배포·운영 확인과 구분한다.
+`GET /v1/insights`는 기존 `0003_review_discovery.sql`의 공개 일별 집계를 읽는 API다. 별도 migration이나 과거 좋아요 이력을 재구성하지 않는다. 코드 구현과 로컬 검증은 실제 Worker 배포·운영 확인과 구분한다. 2026-11-15 최소 기능의 실제 적용과 HTTPS 검증은 [운영 기록](https://github.com/Infant83/AI_Tech_Review/blob/main/operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md)에 연결한다.
 
 `period`는 오늘을 포함한 한국 날짜 기준 `7d`·`30d`·`90d`이며 기본값은 `7d`다. `from`·`to` 같은 사용자 지정 날짜, `all`, 추가·중복 query 필드는 400으로 거절한다. 응답은 다음 구조다. 예시의 글 ID와 숫자는 계약 설명용이다.
 

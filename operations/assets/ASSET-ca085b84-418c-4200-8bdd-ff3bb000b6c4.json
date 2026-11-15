@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-ca085b84-418c-4200-8bdd-ff3bb000b6c4",
-  "record_version": 4,
+  "record_version": 5,
   "asset_key": "reader-api",
   "name": "동적 독자·학습 API",
   "status": "active",
@@ -42,11 +42,23 @@
       "status": "prepared_local_candidate_not_deployed",
       "method": "GET /v1/insights?period=7d|30d|90d",
       "boundary": "동일 D1 batch 상태·활성 ID·일별 열람 SELECT3개, 최대500ID/90일/10000행/750000B. 세션·쿠키·계정/기기/구독/노트 조회·쓰기·migration0. 비정상 상태/수집 전 행은503. 기존 실제 metrics/discovery 공개 GET만 관찰했으며 새 route 실제 운영 HTTPS는 미검증."
+    },
+    "reading_insights_operational": {
+      "source_revision": "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3",
+      "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+      "status": "active_verified",
+      "version_id": "a89fc109-9022-4363-b7a2-573fbb53e35e",
+      "active_percent": 100,
+      "completed_at": "2026-11-15T07:45:13.655261Z",
+      "independent_https": "7/30/90일 GET 200·71ID/같은 응답 합계·Set-Cookie0·공개 cache/CORS 정상",
+      "existing_access_boundary": "config200·익명me200/accountnull·notebooks401의 전후 응답 해시 동일",
+      "preservation": "7개 binding metadata/runtime/handlers 동일·etag만 변경, 비밀값 요청/검사 아님",
+      "database_migration_or_direct_write": false
     }
   },
   "lifecycle": {
     "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
     "recovery_reference": "SITE_OPERATIONS.md"
   },
-  "updated_at": "2026-11-15T02:34:17.294646Z"
+  "updated_at": "2026-11-15T07:58:19.390049Z"
 }

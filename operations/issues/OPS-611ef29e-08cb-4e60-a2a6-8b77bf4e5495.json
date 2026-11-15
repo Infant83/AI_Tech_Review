@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 7,
+  "record_version": 8,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-15T02:44:05.460598Z",
-  "status": "validating",
+  "updated_at": "2026-11-15T07:58:19.390049Z",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "user_request",
@@ -61,13 +61,13 @@
     "https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties"
   ],
   "limitations": [
-    "이번 작업은 현행 조사·기획이며 공개 페이지·API·통계 수집·배포는 바꾸지 않음",
+    "2026-11-10 최초 조사·기획 단계는 공개 페이지/API를 바꾸지 않았다.11/15 최소 기능의 실제 적용은 아래 변경·검증·관찰 기록으로 구분한다.",
     "같은 사람인지·정확한 기종·거주 지역은 현재 기록으로 판별할 수 없음. Apple/FCM 공급자 분류는 지역·동일인 증거가 아님",
     "현재 구독 성장·해지 이력과 과거 시점의 좋아요 누계는 재구성할 수 없음",
     "Cloudflare 국가별 트래픽 기능의 제공과 실제 계정에서의 해당 집계 가용성을 구분함. 이번에는 공급자 지역 분석 화면을 조회하지 않음"
   ],
   "policy_decision": {
-    "state": "독자 탐색 중심의 읽기 통계 페이지 기획",
+    "state": "독자 탐색 중심 최소 기능 실제 배포·관찰",
     "rationale": "주 링크는 읽기 통계로 바꾸고 인기 글·분야별 관심·읽기 흐름을 우선한다. 집계 기준은 작은 보조 링크로 유지한다. 구독별 상태·발송 실패·동일 계정 연결 관리 등은 관리자 영역에 두며 새로운 개인 추적·지역 저장·계정 연결을 이번 범위에 넣지 않는다.",
     "related_issues": [
       "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
@@ -78,7 +78,7 @@
   },
   "authority": {
     "basis": "사용자의 구독 정보 확인 및 독자용 통계 링크 개편 기획 요청",
-    "current_scope": "코드·공개 API·D1 집계 읽기 조사, 독자 페이지와 관리자 기능의 범위·해석·개발 순서 기획",
+    "current_scope": "사용자의 지속 운영 승인과 합의된 로드맵에 따른 최소 기능 구현·독립 검증·기존 Worker/Pages 통합·실제 공개 관찰. 새 과금·권한·개인 추적·콘텐츠 판단은 범위 밖이다.",
     "additional_decision": null
   },
   "owner_role": "운영팀(ADOPT) 주관; 편집부(AEDAUT)는 공개 분야 분류와 해석 문구 검토",
@@ -87,7 +87,7 @@
       "label_ko": "읽기 통계",
       "label_en": "Reading insights",
       "proposed_path": "/AI_Tech_Review/insights/",
-      "state": "제안 경로; 아직 게시되지 않음",
+      "state": "11/15 한영 공개 페이지 배포·HTTPS 확인, 실사용 관찰 중",
       "footer": "기존 숫자와 하단 배치를 유지하고 주 링크 목적지만 독자용 페이지로 전환한다. 집계 기준은 새 페이지 하단의 작은 보조 링크로 기존 안내에 연결한다."
     },
     "reader_panels": [
@@ -139,13 +139,14 @@
     "commits": [
       "407fb2d135010cb5f5fb9f041a61aba69db22bf8",
       "19077d7960a8881ac4ce9549955dbb023bfdc889",
-      "24261ab7307efc184662b3a7786247fba370b36e"
+      "24261ab7307efc184662b3a7786247fba370b36e",
+      "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3"
     ],
     "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/codex/reader-insights-20261115",
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43691636808"
   },
   "verification": {
-    "status": "11시 최소 제품/API 로컬 후보 구현·봉인·자동/독립 계약·합성 Chrome 검증 통과; 실제 배포 전",
+    "status": "Worker/Pages 실제 적용·CI 네 작업·HTTPS/독립 API·화면 확인, 실사용 관찰 중",
     "checks": [
       "D1 집계: 구독 환경3·별도endpoint3·계정 연결0; 개인 식별값 출력 없음",
       "공개 API 스냅샷: 누적 방문 브라우저24·열람48·활성구독3; 표본이 작음을 기획에 반영",
@@ -155,7 +156,10 @@
       "Python 전체404개 중403통과·기존1생략, frontend188통과·기존8생략, 초기 backend 전체71통과·최종 insights 관련12통과",
       "새 GET의 동일3 SELECT·500ID/90일/10000행/750000B·Origin/세션·쿠키/개인정보·실제0/수집 전 실패 경계를 로컬 격리 및 독립 검증",
       "최신 실제237159b DRB까지 인수한 source24261ab 후보의 연속성·payload·봉인 및 전체2624파일/71 ID 검증 통과",
-      "독립 Chrome320px: 전체/리뷰/렉처71/57/14행·분야/일별 동일 합계·한영/테마·키보드/표·0빈순위·503/ID/합계 오류·늦은 응답 검증. 정상 페이지 오류0·외부 전송/POST/쿠키/SW등록0. 주입한503의 예상 콘솔2건은 제품 오류와 구분."
+      "독립 Chrome320px: 전체/리뷰/렉처71/57/14행·분야/일별 동일 합계·한영/테마·키보드/표·0빈순위·503/ID/합계 오류·늦은 응답 검증. 정상 페이지 오류0·외부 전송/POST/쿠키/SW등록0. 주입한503의 예상 콘솔2건은 제품 오류와 구분.",
+      "최종 소스 backend 전체72/72, 실제 CI Python403+기존skip1·frontend188+기존skip8·Reader208·backend72·media14 통과",
+      "Worker 새 version100%·7개 binding/runtime/handlers 보존, 실제 HTTPS7/30/90일 71ID·동일 응답 합계·프런트 계약·쿠키0 독립 검증",
+      "Pages run43691636808 attempt1 네 작업 성공·실제 current 배포·원격 봉인/모든 파일 명세 로컬 일치·통계4파일/공통JS/PDF2표본 실제 HTTPS 원시 일치"
     ],
     "evidence": [
       ".automation/cloudflare/reader-engagement/src/metrics.js",
@@ -164,12 +168,13 @@
       "scripts/reader_insights_site.py",
       ".automation/cloudflare/reader-engagement/test/insights.test.mjs",
       ".automation/reader-engagement/frontend/tests/reader-insights.test.cjs",
-      "tests/test_reader_insights_site.py"
+      "tests/test_reader_insights_site.py",
+      "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md"
     ],
     "remaining_limits": [
-      "새 Worker route와 Pages 화면의 실제 운영 배포·HTTPS/운영 응답 정합성은 미실시",
       "실제 휴대기기·독자 사용 관찰과 AEDAUT의 새 분류 판단은 미실시; 렉처14개 미분류 유지",
-      "DB의 전체 장애 이력은 없으며 수집 전·보존 전 불완전·첫날/오늘 일부·기록0을 구분한다. 과거 고유 독자/좋아요 성장·구독 성장/지역은 추정하지 않는다."
+      "수집 전·보존 전 불완전·첫날/오늘 일부·기록0을 구분하며 DB 전체 장애 이력·과거 고유 독자/좋아요 성장·구독 성장/지역은 추정하지 않음",
+      "분야별 드릴다운·발행일 보조 표시·관리자 상세 등 기존 확장 기획은 이번 최소 배포 완료 범위와 구분함"
     ],
     "contract_review_20261114_15": {
       "source_revision": "42bc818e56a5189fa4425f15bbbdb8e1ca24ebd9",
@@ -213,37 +218,68 @@
       "optional_dom_browser_probe": "local fixture page.goto timeout; not completed. Generator escaping and safe DOM sinks independently passed code/pure-function checks.",
       "independent_final_review_at": "2026-11-15T02:45:24.708351Z",
       "dedicated_preview_closed": true
+    },
+    "deployment_20261115_15": {
+      "source_revision": "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3",
+      "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43691636808",
+      "worker_version": "a89fc109-9022-4363-b7a2-573fbb53e35e",
+      "worker_previous_version": "3f927e43-e9af-40c2-afa1-40066dbda2ef",
+      "worker_completed_at": "2026-11-15T07:45:13.655261Z",
+      "worker_active_percent": 100,
+      "pages_completed_at": "2026-11-15T07:52:57Z",
+      "public_checked_at": "2026-11-15T07:56:04.492760Z",
+      "counts": {
+        "reviews": 57,
+        "lectures": 14,
+        "archive": 139,
+        "pdf_paths": 235,
+        "article_updates": 149
+      },
+      "notification": {
+        "synced": 71,
+        "newArticles": 0,
+        "queuedEvents": 0,
+        "baseline": false,
+        "replay": "not_printed"
+      },
+      "browser": "independent live Chrome 320px KO/EN; 18 period/kind combinations passed with actual API, no POST/cookie/SW/page exceptions; physical devices/Safari unverified",
+      "actual_rollback_or_private_restore": false,
+      "browser_checked_at": "2026-11-15T07:59:22.291192Z",
+      "edge_analytics": "Existing Cloudflare beacon injection observed and blocked before transmission during QA; not part of generated reader scripts",
+      "new_statistics_get_or_direct_database_writes_or_migrations": 0,
+      "existing_publication_sync": "기존 notify-readers의 정상 출판 sync는 articles/publication_state/sync_revisions를 저장했다. synced71/new0/queued0이며 새 통계 GET의 읽기 전용 성질과 구분한다."
     }
   },
   "observation": {
-    "status": "로컬 후보 구현·자동/독립 계약·합성 Chrome 검증, 실제 미배포",
-    "period": "2026-11-15 11시 회차",
-    "result": "운영팀(ADOPT)은 기존 확정 분류·한영/장별 ID·본문/PDF/필기·알림을 보존했다. 편집부(AEDAUT)의 분류/내용/발행 권한과 정상 DRB를 유지했다. 실제 운영 쓰기·별도 발송/테스트 푸시0."
+    "status": "최소 기능 실제 배포·실사용 관찰",
+    "period": "2026-11-15 오후 실제 회차",
+    "result": "운영팀(ADOPT)은 실제 읽기 전용 API와 한영 통계 화면을 연결했고 편집부(AEDAUT)의 기존 분류·본문/PDF/ID·판본·필기·알림을 보존했다. 합성 검증과 실제 HTTPS/브라우저·실기기 관찰을 구분한다."
   },
   "recovery": {
     "plan_reference": "구현 시 기존 하단 안내 링크·공개 집계 API와 Git 복구를 유지하고 개인 저장·구독 자료를 변경하지 않는다.",
     "execution_reference": null,
-    "result": "로컬/합성 후보만 생성했다. 미적용 API/Pages의 실제 롤백과 개인 DB 복구는 수행하지 않았다. 기존 source/단일 Pages 경로·공개 복구 사본을 보존한다."
+    "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "11/15 15시 같은 최소 후보의 독립 회귀와 실제 Worker/Pages 적용 선행·원격 판본/응답·복구 정합성을 확인한다. 적용 시 최신 main/실제 공개 묶음·정상 동시 게시를 다시 인수한다.11/16 15시 최소 후보 검토 목표와 관리 후속 날짜/P2는 유지하며, 현재 구현/로컬 검증을 운영 배포 완료로 보고하지 않는다.",
+  "next_action": "11/15 19시 새 정상 사용/피드백·API/공개 판본 delta를 관찰하고11/16 15시 예정된 최소 기능 검토를 이어간다. 새 근거 없으면 전체 검사·재배포·추가 통지를 반복하지 않는다. 관리 목록의11/16 범위 조사·11/17 구현 목표는 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "local_minimum_candidate_validating_not_deployed",
-    "next_scheduled_step_at": "2026-11-15T15:00:00+09:00",
+    "state": "minimum_delivery_deployed_observing",
+    "next_scheduled_step_at": "2026-11-15T19:00:00+09:00",
     "next_review_at": "2026-11-16T15:00:00+09:00",
-    "scheduled_step": "최소 후보 독립 회귀와 Worker/Pages 적용 선행·복구 정합성 확인",
+    "scheduled_step": "새 정상 사용/피드백·실제 API/Pages delta 관찰",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
-    "operating_order": 1,
     "dependencies": [
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
     ],
-    "replan_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
-    "replan_reason": "저장소 로컬 최소 슬롯 통합·필요 검증 완료에 따라 남은 큐 순번만 전진했다. 우선순위·이 과제의 기존 착수/검토 날짜는 같다.",
+    "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+    "replan_reason": "최소 제품/API의 구현·독립 검증·실제 통합 종료에 따라 실행 큐에서 관찰로 옮겼다. 기존11/16 검토 날짜와 P2는 유지한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+    "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
-    "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md"
+    "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+    "technical_delivery_complete": true
   }
 }

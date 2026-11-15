@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 24,
+  "record_version": 25,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-15T02:34:17.294646Z",
+  "updated_at": "2026-11-15T07:58:19.390049Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -126,38 +126,39 @@
       "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
       "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
       "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
-      "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md"
+      "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+      "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-15T02:04:31.246Z",
-    "last_successful_actions_check_at": "2026-11-15T02:04:37.788683Z",
-    "mail_window": "직전 성공부터48시간 겹친11/12T22:00:04.029Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
-    "actions_window": "최초 조회의 새 정상 DQB·리뷰/브리핑2건 네 작업 성공. 이후 정상 DRB1건은 별도 보충 조회에서 네 작업 성공을 확인했다. 기존07시 run은 재완료로 세지 않는다.",
+    "last_successful_mail_check_at": "2026-11-15T07:39:54.798Z",
+    "last_successful_actions_check_at": "2026-11-15T07:39:58.819327Z",
+    "mail_window": "직전 성공부터48시간 겹친11/13T02:04:31.246Z 이후 전페이지0통·읽지 않음 제한/오류/상태 변경0.",
+    "actions_window": "착수 시 새/진행/대기/미해결0. 이번 통계 run43691636808은 별도 보충 관찰에서 attempt1·네 작업·실제 HTTPS까지 연결했다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
-    "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
-    "supplemental_actions_check_at": "2026-11-15T02:29:16.977982Z",
+    "live_source_revision": "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3",
+    "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+    "supplemental_actions_check_at": "2026-11-15T07:55:21.396073Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-15T02:04:37.788683Z",
+    "last_full_actions_check_at": "2026-11-15T07:39:58.819327Z",
     "supplemental_successful_runs": [
-      "43666157319"
+      "43691636808"
     ]
   },
   "observation": {
-    "status": "11시 정상 게시3건 성공·새 실패 없음",
+    "status": "오후 통계 기술 통합 성공·새 미해결 실패 없음",
     "period": {
-      "mail": "2026-11-15T02:04:31.246Z",
-      "full_api": "2026-11-15T02:04:37.788683Z",
-      "supplemental": "2026-11-15T02:29:16.977982Z"
+      "mail": "2026-11-15T07:39:54.798Z",
+      "full_api": "2026-11-15T07:39:58.819327Z",
+      "supplemental": "2026-11-15T07:55:21.396073Z"
     },
-    "result": "정상 DQB·리뷰/브리핑·DRB의 attempt1과 build/deploy/recovery-copy/notify-readers 성공 및 최신 실제 HTTPS237159b를 확인했다. 재실행·메일 상태 변경·별도 발송0.",
+    "result": "새 통계 기술 run43691636808 네 작업·실제 current 배포·공개 확인 성공. synced71/new0/queued0/baselinefalse/replay미출력. 재실행·메일 상태 변경·별도 발송0.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -364,6 +365,16 @@
       ],
       "new_unresolved_runs": 0,
       "scope": "기존 정상 게시 기록 재사용; 메일/전체 API와 보충 API 체크포인트 분리"
+    },
+    "insights_deployment_20261115_15": {
+      "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43691636808",
+      "attempt": 1,
+      "jobs": "all_four_success",
+      "synced": 71,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "replay": "not_printed"
     }
   },
   "recovery": {
