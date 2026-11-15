@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 16,
+  "record_version": 17,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-15T02:34:17.294646Z",
+  "updated_at": "2026-11-15T18:08:15.264269Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -158,7 +158,8 @@
       "https://developers.cloudflare.com/workers/platform/pricing/",
       "https://developers.cloudflare.com/workers/platform/limits/",
       "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
-      "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md"
+      "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
+      "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md"
     ],
     "remaining_limits": [
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
@@ -432,6 +433,24 @@
       "provider_connection_rechecked": false,
       "operational_storage_activation": false,
       "asset_reference": "operations/assets/ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e.json"
+    },
+    "normal_publication_20261116_03": {
+      "manifest_files": 2641,
+      "manifest_bytes": 786958367,
+      "release_json_bytes": 1347085,
+      "public_files": 2642,
+      "public_bytes": 788305452,
+      "headroom_to_internal_800MB_bytes": 11694548,
+      "pdf_paths": 239,
+      "unique_pdf_objects": 166,
+      "checked_at": "2026-11-15T18:03:46.758282Z",
+      "source_revision": "119cda8a3f685545aaed1f8d234773c64d35e10f",
+      "growth_bytes": 16510180,
+      "run_reference": "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
+      "scope": "정상 편집 게시 후 실제 HTTPS 봉인 전체 메타데이터. 외부 저장소 비활성·실제 공개 절감0. 내부800MB는 관리 목표이며 공급자 한도나 실제 장애 판정이 아니다.",
+      "public_storage_bytes_saved": 0,
+      "provider_connection_rechecked": false,
+      "operational_storage_activation": false
     }
   },
   "recovery": {
@@ -455,17 +474,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/18 19시 구조 회고에서 새 계정/원격 선행 근거와 다음 외부 단계 범위를 재검토한다. 새 근거가 오면 앞당겨 확인하며 통계11시 구현은 이 전체 이전 완료를 기다리지 않는다. 기존 로그인/권한 인계와 보호된 소스/근거를 유지하고, 같은 차단 조회나 로그인 요청을 반복하지 않는다.",
+  "next_action": "11/16 07시 오전 계획 점검에서 최신 용량·새 계정/원격 근거와 다음 외부 단계의 안전한 범위를 재검토한다.11/18 19시 구조 회고와 관리11시 계약/후속 구현 날짜는 유지한다. 기존 로그인/권한 인계·보호된 소스/근거를 보존하며 같은 차단 조회나 로그인 요청을 반복하지 않는다. 새 과금·원격 활성화·정적 사본 제외는 근거와 기존 권한 경계에 따라 별도로 판단한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "local_minimum_integrated_external_preconditions_pending",
-    "next_scheduled_step_at": "2026-11-18T19:00:00+09:00",
-    "next_review_at": "2026-11-18T19:00:00+09:00",
-    "scheduled_step": "새 연결/원격 준비 근거 및 구조·다음 외부 단계 검토; 근거 도착 시 앞당김",
-    "replan_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
-    "replan_reason": "기존03/07 로컬 최소 슬롯의 통합·필요 검증을 마쳐 현재 제품 큐에서 내렸다. 외부 전체 이전의 미완료는 유지하며 통계/관리 날짜와 우선순위는 같다.",
-    "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
+    "next_scheduled_step_at": "2026-11-16T07:00:00+09:00",
+    "next_review_at": "2026-11-16T07:00:00+09:00",
+    "scheduled_step": "내부800MB 목표 여유 축소에 따른 용량·새 연결 근거·우선순위 재검토",
+    "replan_reference": "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
+    "replan_reason": "정상 게시로16,510,180B 증가해 내부800MB 목표까지11,694,548B가 남았다. 기존11/18 19시의 다음 근거 검토를11/16 07시로 앞당기고11/18 구조 회고·관리11시 계약/후속 구현 날짜·P2는 유지한다. 실제 장애나 공급자 한도 도달로 판정하지 않는다.",
+    "run_reference": "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -475,6 +494,7 @@
     "technical_predecessor_satisfied": true,
     "local_candidate_technical_validation_complete": true,
     "integration_pending": false,
-    "local_minimum_delivery_completed": true
+    "local_minimum_delivery_completed": true,
+    "weekly_structure_review_at": "2026-11-18T19:00:00+09:00"
   }
 }
