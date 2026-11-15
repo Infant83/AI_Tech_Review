@@ -29,3 +29,11 @@ APS 최초인용1–6과 전원저자·정식 서지를 한영으로 맞췄다. 
 독립 과학·문체·전 페이지 PDF 감수를 통과했다. Python 401개 검사에서 400개 통과·1개 제외, 릴리스·용량 검증 통과다. 한영 기본 화면과 390×844 화면의 도입·피규어·수식·서지에서 가로 넘침과 수식 오류가 없었다. 다른 56편의 1,911파일과 변경 대상 외 PDF 231경로는 원본 바이트를 유지한다. 실제 집계 API·휴대폰 수신·사람 독자 평가는 확인한 범위에 포함하지 않는다.
 
 아카이브 교체 도구가 자동 생성한 이전 PDF의 새 해시 주소는 기존 공개 판본이 아니었다. 수집 경위가 남은 원본을 정확히 비공개 보존한 뒤 새 공개 사본만 제거했으며, 기존 ID·URL과 Git 이력은 보존했다. 최종 후보의 한영 과학 자산은 브라우저 감수한 후보와 바이트가 같다.
+
+## 공개 완료
+
+`1a06ab6d80f90d1d35aaba8aab5ad8d2271fe252`를 배포했다. [Pages 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/43663869300)의 build·deploy·recovery-copy·notify-readers 네 작업 모두 성공했고, 실제 로그의 882개 검사는 873개 통과·9개 제외·실패0이다. 봉인한 2,617개 공개 파일과 복구 패키지 검증을 마쳤다. 카탈로그71건의 후속 동기화는 신규0·대기 알림0이며 휴대폰 수신이나 Mac 로컬 복원을 확인한 결과는 아니다.
+
+[국문](https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/)·[영문](https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/)과 PDF세경로·원그림·목록·검색·카탈로그·오늘 DQB를 포함해 실제HTTPS20경로를 대조했다. PDF는7쪽·236,050바이트이며 세 공개 경로가 `60dfee0652da974df2b3cd5050306113571768622e4caf2c96a76540133fa258`로 일치한다. 공개HTML은 기존 연락처의 정확한Cloudflare난독화/디코더만 구분한 뒤 봉인CI자산과 일치했다. 실제IAB에서 한영왕복 클릭·기존GitHub.io→현도메인 전환, 각2그림·30개수식·오류0·참고문헌6개를 확인했다. [공개검증](live-verification.json)과 [독립CI감수](ci-verification.json)를 따른다.
+
+초기49편 중20편 완료다. 다음 회차는 `2026-09-04_weekly-oled-inverse-design-excited-state-reliability`이며 이번에 추가 개편하지 않았다.
