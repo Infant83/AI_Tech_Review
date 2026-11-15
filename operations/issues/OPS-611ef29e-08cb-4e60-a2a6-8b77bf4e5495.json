@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 10,
+  "record_version": 11,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-15T18:08:15.264269Z",
+  "updated_at": "2026-11-15T22:06:19.677731Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -171,7 +171,8 @@
       "tests/test_reader_insights_site.py",
       "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
       "operations/runs/20261115T100339Z-492af1f2-9cdf-49bc-8a18-b67c6c204880.md",
-      "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md"
+      "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
+      "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md"
     ],
     "remaining_limits": [
       "실제 휴대기기·독자 사용 관찰과 AEDAUT의 새 분류 판단은 미실시; 렉처14개 미분류 유지",
@@ -254,21 +255,21 @@
     }
   },
   "observation": {
-    "status": "03시 정상 게시 뒤 통계 연속성 관찰·새 피드백 없음",
-    "period": "2026-11-15T18:00:06.048Z 회차",
-    "result": "정상 편집 게시119cda8의 새72번째 ID·통계 HTML의 카탈로그 전이를 확인했다. 전용 JS/CSS는 그대로이며 기존149개 갱신 기록도 보존됐다. 이전71개/HTML 고정 기대값을 쓴 초기 관찰 검사의 오류를 바로잡아 재검증했다. 실제 활동 값을 고정하거나 실제 휴대기기/Safari 감수로 확대하지 않는다."
+    "status": "07시 정상 개정 게시 뒤 기술 보존 관찰·새 피드백 없음",
+    "period": "2026-11-15T21:55:36.317Z 회차",
+    "result": "정상 개정e337e183에서도72개 ID/주소/원 발행일과 통계 전용 JS/CSS를 포함한 리더220경로가 봉인 메타데이터에서 보존됐다. 한 리뷰의 실제 개정만 갱신되고 나머지149개 갱신 기록은 같다. API/한영 화면은 직전03시 정상 근거를 재사용하며 새 전체 검사·브라우저/실기기/실사용 증거를 만들지 않았다."
   },
   "recovery": {
     "plan_reference": "구현 시 기존 하단 안내 링크·공개 집계 API와 Git 복구를 유지하고 개인 저장·구독 자료를 변경하지 않는다.",
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "11/16 07시 이후 새 정상 사용/피드백·실제 API/공개 판본 delta를 관찰하고15시 최소 기능 관찰 검토를 이어간다. 새 근거 없으면 전체 검사·재배포·추가 통지를 반복하지 않는다. 관리 목록11시 범위 조사·11/17 구현 목표와 P2는 유지한다.",
+  "next_action": "11/16 11시 이후 새 정상 사용/피드백·공개 판본 delta를 관찰하고15시 최소 기능 관찰 검토를 이어간다. 새 근거 없이 API/전체 검사·재배포·추가 통지를 반복하지 않는다. 관리11시 계약·11/17 구현 목표와 P2는 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_delivery_deployed_observing",
-    "next_scheduled_step_at": "2026-11-16T07:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-16T11:00:00+09:00",
     "next_review_at": "2026-11-16T15:00:00+09:00",
     "scheduled_step": "새 정상 사용/피드백·실제 API/Pages delta 관찰",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
@@ -278,7 +279,7 @@
     "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
     "replan_reason": "최소 제품/API의 구현·독립 검증·실제 통합 종료에 따라 실행 큐에서 관찰로 옮겼다. 기존11/16 검토 날짜와 P2는 유지한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
+    "run_reference": "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
     "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
