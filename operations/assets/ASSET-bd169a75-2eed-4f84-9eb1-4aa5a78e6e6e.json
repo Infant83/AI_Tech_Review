@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e",
-  "record_version": 9,
+  "record_version": 10,
   "asset_key": "public-document-storage",
   "name": "공개 PDF 객체 저장소 이전 준비",
   "status": "prepared",
@@ -25,7 +25,8 @@
     "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
     "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
     "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
-    "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md"
+    "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
+    "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md"
   ],
   "access_boundary": "준비 코드·로컬 검증과 실제 운영 활성화를 구분한다. 향후 업로드는 게시 담당 권한으로 제한하고 공개 읽기는 검증된 URL/기대 SHA 매핑만 허용한다. 개인 문서·필기·사용자 계정 데이터를 공개 PDF 객체와 섞지 않는다.",
   "verification": {
@@ -48,18 +49,18 @@
       "19시 기존로그인인계도암호입력필요. 실제R2권한·버킷·사용량/청구·원격전체해시/복구의새확인근거없음."
     ],
     "current_public_footprint": {
-      "checked_at": "2026-11-14T22:10:53.220230+00:00",
-      "source_revision": "c63e0507b5b0c9057fc952a09d4d3b7c9a44a070",
-      "manifest_files": 2613,
-      "manifest_bytes": 768632048,
-      "release_json_bytes": 1333238,
-      "public_files": 2614,
-      "public_bytes": 769965286,
-      "headroom_to_internal_800MB_bytes": 30034714,
-      "pdf_paths": 233,
-      "unique_pdf_objects": 163,
-      "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
-      "scope": "실제 공개 정적 파일 전체. 로컬 export의 중복 제거·공급자 사용량/청구·실제 공개 절감과 구분."
+      "checked_at": "2026-11-15T02:29:45.401179Z",
+      "source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
+      "manifest_files": 2619,
+      "manifest_bytes": 770372119,
+      "release_json_bytes": 1336241,
+      "public_files": 2620,
+      "public_bytes": 771708360,
+      "headroom_to_internal_800MB_bytes": 28291640,
+      "pdf_paths": 235,
+      "unique_pdf_objects": 164,
+      "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+      "scope": "최신 정상 DRB까지 반영한 실제 공개 정적 전체. 로컬 후보와 외부 활성화/공급자 사용량·청구/실제 공개 절감과 구분."
     },
     "provider_connection_rechecked_this_cycle": false,
     "operational_storage_activation": false,
@@ -82,5 +83,5 @@
     "recovery_reference": "SITE_OPERATIONS.md"
   },
   "created_at": "2026-11-12T22:16:24Z",
-  "updated_at": "2026-11-14T22:15:13.261315Z"
+  "updated_at": "2026-11-15T02:34:17.294646Z"
 }

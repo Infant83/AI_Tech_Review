@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-ca085b84-418c-4200-8bdd-ff3bb000b6c4",
-  "record_version": 3,
+  "record_version": 4,
   "asset_key": "reader-api",
   "name": "동적 독자·학습 API",
   "status": "active",
@@ -12,12 +12,14 @@
     "https://api.infant83.io"
   ],
   "data_classification": [
-    "계정·세션·필기·공유 권한"
+    "계정·세션·필기·공유 권한",
+    "공개 글 ID별·KST 일별 집계 열람과 현재 좋아요; 개인 식별정보 제외"
   ],
   "source_references": [
     ".automation/cloudflare/reader-engagement/src/worker.js",
     ".automation/cloudflare/reader-engagement/src/study.js",
-    ".automation/cloudflare/reader-engagement/src/web-push.js"
+    ".automation/cloudflare/reader-engagement/src/web-push.js",
+    "https://github.com/Infant83/AI_Tech_Review/blob/24261ab7307efc184662b3a7786247fba370b36e/.automation/cloudflare/reader-engagement/src/insights.js"
   ],
   "access_boundary": "서버 세션·passkey·역할 확인; 공개 설정 읽기와 개인 자료 접근 구분",
   "verification": {
@@ -33,11 +35,18 @@
       "운영 계정 간 모든 공유 동선",
       "공급자 관리 계정 권한 전체",
       "실제 운영 기기의 푸시 수신·표시 지연 개선"
-    ]
+    ],
+    "reading_insights_candidate": {
+      "source_revision": "24261ab7307efc184662b3a7786247fba370b36e",
+      "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+      "status": "prepared_local_candidate_not_deployed",
+      "method": "GET /v1/insights?period=7d|30d|90d",
+      "boundary": "동일 D1 batch 상태·활성 ID·일별 열람 SELECT3개, 최대500ID/90일/10000행/750000B. 세션·쿠키·계정/기기/구독/노트 조회·쓰기·migration0. 비정상 상태/수집 전 행은503. 기존 실제 metrics/discovery 공개 GET만 관찰했으며 새 route 실제 운영 HTTPS는 미검증."
+    }
   },
   "lifecycle": {
     "retirement_trigger": "기능 종료·서비스 대체 시 의존 관계·데이터 보존·권한 회수를 확인",
     "recovery_reference": "SITE_OPERATIONS.md"
   },
-  "updated_at": "2026-11-10T18:19:47Z"
+  "updated_at": "2026-11-15T02:34:17.294646Z"
 }

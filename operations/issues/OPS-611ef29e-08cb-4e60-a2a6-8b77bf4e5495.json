@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 6,
-  "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편 기획",
+  "record_version": 7,
+  "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-14T22:15:13.261315Z",
-  "status": "planned",
+  "updated_at": "2026-11-15T02:44:05.460598Z",
+  "status": "validating",
   "priority": "P2",
   "source": {
     "kind": "user_request",
@@ -28,7 +28,11 @@
       ".automation/cloudflare/reader-engagement/src/discovery.js",
       "scripts/reader_engagement_publish.py",
       "publication/reviews",
-      "archive/entries"
+      "archive/entries",
+      "scripts/reader_insights_site.py",
+      ".automation/reader-engagement/frontend/reader-insights.js",
+      ".automation/reader-engagement/frontend/reader-insights.css",
+      ".automation/cloudflare/reader-engagement/src/insights.js"
     ]
   },
   "observed": {
@@ -132,25 +136,40 @@
     "모바일 한 열·표 대체 보기·키보드·명암을 확인하고 그래프 자산을 해당 페이지에만 로드함"
   ],
   "change": {
-    "commits": [],
-    "candidate_reference": null,
+    "commits": [
+      "407fb2d135010cb5f5fb9f041a61aba69db22bf8",
+      "19077d7960a8881ac4ce9549955dbb023bfdc889",
+      "24261ab7307efc184662b3a7786247fba370b36e"
+    ],
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/codex/reader-insights-20261115",
     "deployment_reference": null
   },
   "verification": {
-    "status": "현행 자료·단위·독립 계약 조사 완료; 제품/API 구현 전",
+    "status": "11시 최소 제품/API 로컬 후보 구현·봉인·자동/독립 계약·합성 Chrome 검증 통과; 실제 배포 전",
     "checks": [
       "D1 집계: 구독 환경3·별도endpoint3·계정 연결0; 개인 식별값 출력 없음",
       "공개 API 스냅샷: 누적 방문 브라우저24·열람48·활성구독3; 표본이 작음을 기획에 반영",
       "일별 집계는2026-10-25 이후 관측된 날짜를 보존하며 현재 discovery는 기간 합계만 반환함",
       "독립 담당이 수집 단위·좋아요 날짜 의미·구독 이력 부재·독자 탐색 구성과 해석 한계를 검토함",
-      "정확한 기획 기록·로드맵의 독립 감수 및 JSON·참조·민감정보 패턴·diff 검사 통과; 리뷰/렉처·미분류 범위를 추가 명시"
+      "정확한 기획 기록·로드맵의 독립 감수 및 JSON·참조·민감정보 패턴·diff 검사 통과; 리뷰/렉처·미분류 범위를 추가 명시",
+      "Python 전체404개 중403통과·기존1생략, frontend188통과·기존8생략, 초기 backend 전체71통과·최종 insights 관련12통과",
+      "새 GET의 동일3 SELECT·500ID/90일/10000행/750000B·Origin/세션·쿠키/개인정보·실제0/수집 전 실패 경계를 로컬 격리 및 독립 검증",
+      "최신 실제237159b DRB까지 인수한 source24261ab 후보의 연속성·payload·봉인 및 전체2624파일/71 ID 검증 통과",
+      "독립 Chrome320px: 전체/리뷰/렉처71/57/14행·분야/일별 동일 합계·한영/테마·키보드/표·0빈순위·503/ID/합계 오류·늦은 응답 검증. 정상 페이지 오류0·외부 전송/POST/쿠키/SW등록0. 주입한503의 예상 콘솔2건은 제품 오류와 구분."
     ],
     "evidence": [
       ".automation/cloudflare/reader-engagement/src/metrics.js",
-      ".automation/cloudflare/reader-engagement/src/discovery.js"
+      ".automation/cloudflare/reader-engagement/src/discovery.js",
+      "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+      "scripts/reader_insights_site.py",
+      ".automation/cloudflare/reader-engagement/test/insights.test.mjs",
+      ".automation/reader-engagement/frontend/tests/reader-insights.test.cjs",
+      "tests/test_reader_insights_site.py"
     ],
     "remaining_limits": [
-      "실제 독자 페이지·일별 API·관리자 상세·화면 검증·배포는 미실시"
+      "새 Worker route와 Pages 화면의 실제 운영 배포·HTTPS/운영 응답 정합성은 미실시",
+      "실제 휴대기기·독자 사용 관찰과 AEDAUT의 새 분류 판단은 미실시; 렉처14개 미분류 유지",
+      "DB의 전체 장애 이력은 없으며 수집 전·보존 전 불완전·첫날/오늘 일부·기록0을 구분한다. 과거 고유 독자/좋아요 성장·구독 성장/지역은 추정하지 않는다."
     ],
     "contract_review_20261114_15": {
       "source_revision": "42bc818e56a5189fa4425f15bbbdb8e1ca24ebd9",
@@ -167,26 +186,53 @@
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43646352202",
       "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
       "scope": "이번 저장소 로컬 최소 후보의 구현·필요 검증·통합 완료이며 FCC 전체/외부 이전 완료가 아니다."
+    },
+    "candidate_20261115_11": {
+      "source_revision": "24261ab7307efc184662b3a7786247fba370b36e",
+      "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+      "local_candidate": "candidate-v4",
+      "latest_public_baseline": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
+      "catalog": {
+        "reviews": 57,
+        "lectures": 14,
+        "unclassified_lectures": 14
+      },
+      "public_documents": 139,
+      "pdf_paths": 235,
+      "article_updates": 149,
+      "publication_inputs": 246,
+      "new_api_deployed": false,
+      "pages_deployed": false,
+      "independent_contract": "passed; final coverage boundary supplement passed",
+      "browser": "passed desktop Chrome with 320px viewport and synthetic read-only API; actual phone/use unverified",
+      "resume": "같은 브랜치·보호된 v4에서 15시 독립 회귀와 Worker/Pages 동시 적용의 선행·복구 범위를 확인한다. 실제 적용 직전 최신 main/공개 묶음으로 다시 결속한다.",
+      "operational_writes_or_migrations": 0,
+      "independent_preservation_checked_at": "2026-11-15T02:35:03.043669Z",
+      "browser_normal_checked_at": "2026-11-15T02:35:43.694Z",
+      "browser_failure_states_checked_at": "2026-11-15T02:37:41.139Z",
+      "optional_dom_browser_probe": "local fixture page.goto timeout; not completed. Generator escaping and safe DOM sinks independently passed code/pure-function checks.",
+      "independent_final_review_at": "2026-11-15T02:45:24.708351Z",
+      "dedicated_preview_closed": true
     }
   },
   "observation": {
-    "status": "기획 완료; 제품 미적용",
-    "period": "2026-11-10 11:13 UTC 전후 조사",
-    "result": "단위·지역·집계 구조를 확인했으며 신규 추적·계정 연결·구독 변경·통계 쓰기·실발송은 수행하지 않음"
+    "status": "로컬 후보 구현·자동/독립 계약·합성 Chrome 검증, 실제 미배포",
+    "period": "2026-11-15 11시 회차",
+    "result": "운영팀(ADOPT)은 기존 확정 분류·한영/장별 ID·본문/PDF/필기·알림을 보존했다. 편집부(AEDAUT)의 분류/내용/발행 권한과 정상 DRB를 유지했다. 실제 운영 쓰기·별도 발송/테스트 푸시0."
   },
   "recovery": {
     "plan_reference": "구현 시 기존 하단 안내 링크·공개 집계 API와 Git 복구를 유지하고 개인 저장·구독 자료를 변경하지 않는다.",
     "execution_reference": null,
-    "result": "이번 변경은 일감·로드맵 기획 기록이며 사이트/DB/인증 배포·복구 없음"
+    "result": "로컬/합성 후보만 생성했다. 미적용 API/Pages의 실제 롤백과 개인 DB 복구는 수행하지 않았다. 기존 source/단일 Pages 경로·공개 복구 사본을 보존한다."
   },
-  "next_action": "07시 저장소 로컬 최소 선행을 충족했다.11/15 11시 기존71개 카탈로그·review.category/미분류 렉처와 bounded 일별 집계 GET의 최소 후보를 구현한다. coverage·한도·합계·개인정보·화면 회귀를 검증하며 편집부의 분류 근거 전에는 태그로 분야를 추정하지 않는다.",
+  "next_action": "11/15 15시 같은 최소 후보의 독립 회귀와 실제 Worker/Pages 적용 선행·원격 판본/응답·복구 정합성을 확인한다. 적용 시 최신 main/실제 공개 묶음·정상 동시 게시를 다시 인수한다.11/16 15시 최소 후보 검토 목표와 관리 후속 날짜/P2는 유지하며, 현재 구현/로컬 검증을 운영 배포 완료로 보고하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "contract_review_complete_local_predecessor_satisfied",
-    "next_scheduled_step_at": "2026-11-15T11:00:00+09:00",
+    "state": "local_minimum_candidate_validating_not_deployed",
+    "next_scheduled_step_at": "2026-11-15T15:00:00+09:00",
     "next_review_at": "2026-11-16T15:00:00+09:00",
-    "scheduled_step": "선행 종료/07시 재배정 확인 후 독자 통계 최소 후보 구현",
+    "scheduled_step": "최소 후보 독립 회귀와 Worker/Pages 적용 선행·복구 정합성 확인",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -195,7 +241,9 @@
     "replan_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
     "replan_reason": "저장소 로컬 최소 슬롯 통합·필요 검증 완료에 따라 남은 큐 순번만 전진했다. 우선순위·이 과제의 기존 착수/검토 날짜는 같다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
-    "technical_predecessor_satisfied": true
+    "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
+    "technical_predecessor_satisfied": true,
+    "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
+    "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md"
   }
 }
