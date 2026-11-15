@@ -1,10 +1,10 @@
 # 생성형 AI의 인지적 증강과 역량 평가의 재설계
 
-2026-11-15 한영 공개판 v1.0(검토본 v5 기반). 근거 기준일은 2026-11-12이며, 이번 개정은 표지와 중심 표현을 다듬은 작업이다. 인간이 도구와 기술을 통해 능력을 확대해 온 역사에서 출발한다. 기술을 활용하는 숙련도 인간의 능력에 포함된다는 관점을 세우고, 그 성취를 인정하고 비교하는 사례로 올림픽의 수영·카누를 연결한다. 이를 AI 활용자의 새 평가 기준과 구체적인 과제 설계로 이어 간다. Quanta Transformation의 AI 수학 증명 자동 형식화 기고를 계기로, 검증 자체의 증강과 개인 학습·공동 지식의 차이를 보강했다.
+2026-11-16 한영 공개판 v1.1(문체 교정). 최초 발행일은 2026-11-15, 근거 기준일은 2026-11-12다. 반복적인 예고·판정·해명과 번역투를 다듬고 실제 행동을 중심으로 설명했다. 연구 결과·수치·한계·서지와 표지 v3는 보존했다. 인간이 도구와 기술을 통해 능력을 확대해 온 역사에서 출발한다. 기술을 활용하는 숙련도 인간의 능력에 포함된다는 관점을 세우고, 그 성취를 인정하고 비교하는 사례로 올림픽의 수영·카누를 연결한다. 이를 AI 활용자의 새 평가 기준과 구체적인 과제 설계로 이어 간다. Quanta Transformation의 AI 수학 증명 자동 형식화 기고를 계기로, 검증 자체의 증강과 개인 학습·공동 지식의 차이를 보강했다.
 
 - [한국어 원고](reports/review.md) · [English manuscript](reports/review_en.md)
 - [한국어 읽기 화면](dist/index.html) · [English reading view](dist/en/index.html)
-- [한국어 PDF, 9쪽](dist/review.pdf) · [English PDF, 13 pages](dist/en/review-en.pdf)
+- [한국어 PDF, 9쪽](dist/review.pdf) · [English PDF, 12 pages](dist/en/review-en.pdf)
 - [설명·검토 기록](review-explanation-brief.md) · [표지 브리프](cover-art-brief.md) · [시각자료 provenance](figure-manifest.json)
 
 ## 본문과 근거
@@ -50,3 +50,9 @@ v5의 한국어 9쪽·영어 13쪽 최종 22쪽을 모두 렌더링해 확인했
 2026-11-15, `119cda8a3f685545aaed1f8d234773c64d35e10f`를 [GitHub Pages로 배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/43716055748)했다. [한국어 본문](https://infant83.io/AI_Tech_Review/reviews/2026-11-11_ai-augmentation-and-assessment/)과 [English edition](https://infant83.io/AI_Tech_Review/reviews/2026-11-11_ai-augmentation-and-assessment/en/)이 공개됐다. 실제 HTTPS 자료 20개에서 본문·메타데이터를 대조하고 표지·도식·스타일·한영 PDF와 아카이브 사본의 동일 바이트를 확인했다. 실제 Chrome에서 기존 GitHub Pages 주소의 infant83.io 전환과 한영 이동·모바일 화면을 확인했다.
 
 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 독자 카탈로그에 새 글 1건이 등록되고 알림 이벤트 1건이 큐에 들어갔음을 CI가 보고했으며, 실제 개인별 알림 전달을 검증했다고 주장하지 않는다. 공개 복구 사본은 CI에서 전체 파일·봉인 정보와 대조해 검증됐다. 최종 해시와 검수 범위는 [발행 기록](publication-record.json)에 남겼다.
+
+## v1.1 문체 개정 · 2026-11-16
+
+게시본의 AI 문투를 감수하라는 편집 요청에 따라 한영 전문을 다듬었다. 반복적인 예고·판정과 가상의 극단을 부정하는 해명을 줄이고, 학생·실무자가 하는 일로 설명을 구체화했다. 한국어 문맥 별도 감수, 영어 대응·문체 교정, 기존 게시본과의 수치·조건 대조를 수행했다. 연구 수치와 참고문헌 원문·인용 순서는 유지했다. 표지 v3와 도식의 데이터·기하도 같다.
+
+개정 PDF는 한국어 9쪽·영어 12쪽으로 전 21쪽을 렌더링해 확인했다. 중요 페이지 확대, 한영 390px 모바일과 게시 후보의 실제 본문을 검토했다. 공개 패키지·연속성·초기 전송량 검사를 통과했다. 이전 한영 PDF는 아카이브의 판본 저장 기능으로 보존했다. 최초 발행일·기존 URL은 유지하고 개정일만 11월 16일로 기록한다. 실제 배포 결과는 발행 기록의 v1.1 항목에 남긴다.
