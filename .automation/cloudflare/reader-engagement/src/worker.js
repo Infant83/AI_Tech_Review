@@ -6,6 +6,7 @@ import {
 import {webPushRequest} from './web-push.js';
 import {metricsArticleQuery,metricsSummary,pruneMetrics,recordMetrics} from './metrics.js';
 import {discoveryRange,reviewDiscovery} from './discovery.js';
+import {insightsRange,readingInsights} from './insights.js';
 import {studyRoute,pruneStudy} from './study.js';
 
 const PUBLIC_FEED = `${SITE_ORIGIN}${SITE_ROOT}reader-publications.json`;
@@ -404,6 +405,11 @@ export default {
       if (url.pathname === '/v1/discovery' && request.method === 'GET') {
         if (request.body) throw new ApiError('invalid_body');
         return json(request,env,await reviewDiscovery(env,discoveryRange(url)),200,{'Cache-Control':'public, max-age=30'});
+      }
+      if (url.pathname === '/v1/insights' && request.method === 'GET') {
+        if (request.body) throw new ApiError('invalid_body');
+        const now=Date.now();
+        return json(request,env,await readingInsights(env,insightsRange(url,now),now),200,{'Cache-Control':'public, max-age=30'});
       }
       if (url.pathname === '/v1/metrics' && request.method === 'GET') return json(request,env,await metricsSummary(env,metricsArticleQuery(url)));
       if (url.pathname === '/v1/metrics/events' && request.method === 'POST') {

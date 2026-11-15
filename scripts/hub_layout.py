@@ -199,7 +199,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
     methods_label = "Editorial policy" if en else "작성·검증 원칙"
     editor_label = "About the editor" if en else "편집자 소개"
     mail_label = "Email the editor" if en else "편집자에게 메일 보내기"
-    data_label = "Reader statistics guide" if en else "독자 통계 안내"
+    data_label = "Reading insights" if en else "읽기 통계"
     return f'''<!doctype html>
 <html lang="{language}" data-hub-language="{language}" data-theme="light">
 <head>
@@ -271,7 +271,7 @@ def render_hub(manifest: list[dict], preferred_category_order: list[str] | None,
   </main>
   <footer class="site-footer">
     <div><strong>{SITE_NAME}</strong><p>{escape(description)}</p></div>
-    <nav class="hub-footer-links" aria-label="{'Information' if en else '하단 안내'}">{icon_link(EDITOR_URL, editor_label, 'editor')}{icon_link(prefix + 'methods/', methods_label, 'methods')}{icon_link(prefix + 'methods/#reader-metrics', data_label, 'info')}{icon_link('mailto:' + CONTACT_EMAIL, mail_label, 'mail')}</nav>
+    <nav class="hub-footer-links" aria-label="{'Information' if en else '하단 안내'}">{icon_link(EDITOR_URL, editor_label, 'editor')}{icon_link(prefix + 'methods/', methods_label, 'methods')}{icon_link(prefix + ('en/' if en else '') + 'insights/', data_label, 'info')}{icon_link('mailto:' + CONTACT_EMAIL, mail_label, 'mail')}</nav>
     <div data-reader-site-metrics></div>
   </footer>
   {pagination_script(prefix)}

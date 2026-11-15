@@ -157,7 +157,7 @@ class HubToolbarTests(unittest.TestCase):
             parsed = self.render(language)
             expected = {
                 "https://infant83.io/", f"{prefix}methods/",
-                f"{prefix}methods/#reader-metrics", "mailto:angpangmokjang@gmail.com",
+                f"{prefix}{'en/' if language == 'en' else ''}insights/", "mailto:angpangmokjang@gmail.com",
             }
             links = [node for node in parsed.nodes if node["tag"] == "a" and node["attrs"].get("href") in expected]
             with self.subTest(language=language):

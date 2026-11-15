@@ -515,8 +515,8 @@
     metricsStatus.setAttribute("aria-live", "polite");
     metricsRoot.appendChild(metricsStatus);
     if (!article) {
-      var info = node("a", "atr-reader-metrics-info", english ? "About reader statistics" : "통계 안내");
-      info.href = scope + "methods/#reader-metrics";
+      var info = node("a", "atr-reader-metrics-info", english ? "Reading insights" : "읽기 통계");
+      info.href = scope + (english ? "en/insights/" : "insights/");
       metricsRoot.appendChild(info);
     }
     if (articleActions) articleActions.appendChild(metricsRoot);

@@ -6,6 +6,7 @@ These source files are copied by the publication integration into the existing s
 | --- | --- |
 | `reader-engagement.js` | `site/assets/reader-engagement.js` |
 | `reader-engagement.css` | `site/assets/reader-engagement.css` |
+| `reader-insights.js` / `reader-insights.css` | `site/assets/reader-insights.js` / `site/assets/reader-insights.css` |
 | `app.webmanifest` | `site/app.webmanifest` |
 | `sw.js` | `site/sw.js` |
 
@@ -82,7 +83,17 @@ The native positive badge display should be checked on an installed device after
 
 ## Public reader activity counters
 
-Only the Korean and English review hub indexes gain a compact summary in their dedicated footer slot, with the user-selected label **방문자수 / Visitors**. Article pages retain only open and share/copy counts within the existing reader action bar. Supplementary methods, archive, briefing and lecture-list pages gain no summary or additional main-grid child. Existing content, header links, artwork, app identity and like/share controls are retained. The hub links once to **methods/#reader-metrics**; detailed definitions belong on that dedicated page instead of disclosures on every article. Root personal landing-page traffic is outside this integration.
+Only the Korean and English review hub indexes gain a compact summary in their dedicated footer slot, with the user-selected label **방문자수 / Visitors**. Article pages retain only open and share/copy counts within the existing reader action bar. Supplementary methods, archive, briefing and lecture-list pages gain no summary or additional main-grid child. Existing content, header links, artwork, app identity and like/share controls are retained. The hub's **읽기 통계 / Reading insights** link opens the matching `/insights/` or `/en/insights/` page. Its smaller **집계 기준 / Counting guide** link leads to `methods/#reader-metrics`; definitions stay off article controls. Root personal landing-page traffic is outside this integration.
+
+## Read-only insights pages
+
+`scripts/reader_insights_site.py` generates precisely `insights/index.html` and `en/insights/index.html` in the existing publication candidate. Both embed the same canonical publication IDs from `load_publications`; public English review text and existing lecture `title_en` fields supply labels and destinations. Only the registered review category is used. Lecture tags never infer a category, and unclassified entries remain explicit. The page assets load only on these two routes, which are excluded from generic engagement instrumentation.
+
+The three panels share 7/30/90-day and all/review/lecture filters. A bounded, eight-second `GET /v1/insights` joins the static catalog to one daily/period-opens snapshot. A matching-period `GET /v1/discovery` supplies currently retained likes; its independent opens snapshot never overwrites the daily totals. Every request uses `credentials: "omit"`, `cache: "no-store"`, a fixed API origin and redirect rejection. The frontend rejects missing/extra/duplicate IDs, mismatched ranges, invalid counts, oversized bodies and inconsistent daily sums. It aborts superseded requests and has no timer polling, event POST, reader session, notification or personal-note path.
+
+Article, category and daily totals use the same type filter and include recorded zeros. Before collection, values are unknown; before daily retention, missing records remain incomplete. The first retained day and today are partial. Query time is labeled as query time. Missing outage history is acknowledged, and current likes are a separate ranking rather than daily clicks or growth. Small SVG bars have tables with the same values and coverage. Theme preferences reuse `atr.reader.theme.v1`; the language link preserves URL filters without carrying reader credentials. Blocked storage leaves controls usable.
+
+Unit checks: `node --test tests/reader-insights.test.cjs` from this directory and `python -m unittest tests.test_reader_insights_site tests.test_reader_engagement_publish` from the repository root. Independent browser checks must use clearly labeled synthetic aggregate responses; local fixtures are not live usage observations.
 
 `GET /v1/metrics?articleId=<canonical-id>` and `POST /v1/metrics/events` use `credentials: "omit"` and never create an authentication device. POST accepts only `{type: "open" | "share" | "copy", visitorId, eventId, articleId}`. No URL query, email address, user agent or IP is supplied by this frontend. A random UUIDv4 is retained in first-party `localStorage` under `atr-reader-metrics-visitor:/AI_Tech_Review/`, separately from the API's HttpOnly authentication session. The backend hashes it for duplicate counting. Clearing site storage or using another browser can count as another visiting browser; these are not unique people.
 

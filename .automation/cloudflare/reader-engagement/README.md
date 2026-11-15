@@ -220,6 +220,7 @@ npx wrangler deploy
 | `POST /v1/metrics/events` `{type,visitorId,eventId,articleId}` | 공개 집계 이벤트. 정확한 Origin 필수, 세션 생성 안 함 |
 | `GET /v1/discovery[?period=all\|7d\|30d\|90d]` | 활성 글 최대 500개의 누적 카드 숫자와 활동 기간 정렬 숫자. 세션 불필요 |
 | `GET /v1/discovery?from=YYYY-MM-DD&to=YYYY-MM-DD` | 한국 날짜 양 끝을 포함한 사용자 지정 활동 기간 |
+| `GET /v1/insights[?period=7d\|30d\|90d]` | 활성 글의 기간 열람 합계와 희소 일별 열람. 세션·쿠키·DB 쓰기 없음 |
 
 ### 방문·열람·공유·구독 통계
 
@@ -294,6 +295,39 @@ migration은 남아 있는 실제 `metrics_daily_opens`와 `metrics_actions`만 
 발행 API는 `https://infant83.io/AI_Tech_Review/reader-publications.json`만 직접 가져온다. 임의 URL을 받지 않는다. 서버 nonce, 캐시 우회, redirect 거부와 writer lock 안의 revision·전체 metadata 비교를 적용한다. 같은 revision의 다른 내용은 409다. 같은 내용을 재처리해도 이벤트를 중복 생성하지 않으며, 과거에 처리한 revision으로 카탈로그 상태를 되돌리지 않는다. 공개 배포가 아직 맞지 않으면 409로 실패하여 CI가 재시도한다.
 
 GitHub source commit과 Pages 배포 branch commit은 다를 수 있다. `revision`은 카탈로그를 생성한 main source SHA다. 외부 게시와 API DB 변경을 하나의 트랜잭션으로 묶을 수는 없으므로 GitHub 배포를 직렬화하고, CI와 Worker 양쪽에서 공개 feed를 확인한다.
+
+### 독자 통계의 일별 열람 조회
+
+`GET /v1/insights`는 기존 `0003_review_discovery.sql`의 공개 일별 집계를 읽는 후보 API다. 별도 migration이나 과거 좋아요 이력을 재구성하지 않는다. 코드 구현과 로컬 검증은 실제 Worker 배포·운영 확인과 구분한다.
+
+`period`는 오늘을 포함한 한국 날짜 기준 `7d`·`30d`·`90d`이며 기본값은 `7d`다. `from`·`to` 같은 사용자 지정 날짜, `all`, 추가·중복 query 필드는 400으로 거절한다. 응답은 다음 구조다. 예시의 글 ID와 숫자는 계약 설명용이다.
+
+```json
+{
+  "ok": true,
+  "since": "2026-10-25T05:42:25.151Z",
+  "activitySince": "2026-10-25",
+  "generatedAt": "2026-11-15T02:00:00.000Z",
+  "range": {"period": "7d", "from": "2026-11-09", "to": "2026-11-15"},
+  "coverage": {
+    "timezone": "Asia/Seoul",
+    "collectionStartedOn": "2026-10-25",
+    "activityRecordedFrom": "2026-10-25",
+    "firstDayMayBePartial": true,
+    "todayPartial": true,
+    "outageHistoryAvailable": false
+  },
+  "articles": [{"id": "example", "periodOpens": 3}, {"id": "lecture:example", "periodOpens": 0}],
+  "daily": [{"day": "2026-11-15", "articleId": "example", "opens": 3}],
+  "limits": {"maxArticles": 500, "maxDays": 90, "maxRows": 10000, "maxBytes": 750000}
+}
+```
+
+`articles`에는 열람 0인 글을 포함해 전체 활성 ID가 오름차순으로 담긴다. `daily`는 선택 기간에 실제 남아 있는 행만 날짜·ID 오름차순으로 반환한다. `periodOpens`는 같은 D1 batch에서 읽은 해당 글의 `daily.opens` 합계다. 상태·전체 활성 ID·선택 기간의 일별 열람을 SELECT 세 개의 batch로 함께 읽어 서로 다른 조회의 합계를 섞지 않는다. 비활성 글은 제외하며 제목·개인별 좋아요·세션·방문 식별자·구독 정보는 조회하거나 반환하지 않는다.
+
+`since`와 `activitySince`는 기존 집계의 시작 정보다. `generatedAt`은 이번 서버 조회 시각이며 최종 활동 발생·갱신 시각이 아니다. 수집 시작 전·일별 보존 시작 전·첫날 부분 집계·오늘 진행 중·장애 이력 미보유를 `coverage`로 구분한다. 빈 일별 행만으로 미측정과 실제 0을 구분할 수는 없다. 보존 시작보다 이른 실제 행도 선택 기간에 있으면 그대로 반환하며 미측정 날짜를 임의의 0으로 채우지 않는다. 현재 좋아요와 기존 기간 숫자가 필요한 화면은 `/v1/discovery`의 기존 의미를 유지하고, 이 API의 열람 합계·일별 패널은 이 응답 안의 일관된 합을 사용한다.
+
+활성 ID 500개·일별 행 10,000개·직렬화한 UTF-8 응답 750,000바이트를 초과하면 조용히 잘라내지 않고 503으로 실패한다. 필요한 상태 누락, 유효하지 않거나 안전한 정수 범위를 넘는 숫자도 503이다. 성공은 기존 공개 Origin 검사와 `Cache-Control: public, max-age=30`, `Vary: Origin`을 쓰고 오류는 `private, no-store`다. GET은 기기 세션이나 쿠키를 만들거나 갱신하지 않으며 DB를 쓰지 않는다.
 
 ## 전송·장애 복구
 

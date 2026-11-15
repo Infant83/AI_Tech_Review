@@ -1224,14 +1224,15 @@ test('a late metrics read cannot overwrite counts from a newer completed share',
   releaseRead(metricsSummary('test-review')); await read;
   assert.match(harness.api.metricsRoot().textContent, /공유·복사6/);
 });
-test('English hub metrics keep compact labels with one separate statistics guide link', () => {
+test('English hub metrics keep compact labels with a reading insights link', () => {
   const harness = frontendHarness({ english: true });
   harness.api.mount(); harness.api.applyMetrics(metricsSummary());
   assert.match(harness.api.metricsRoot().textContent, /Visitors42/);
   assert.match(harness.api.metricsRoot().textContent, /Shares · copies12/);
   assert.match(harness.api.metricsRoot().textContent, /Alert subscriptions3 devices/);
   assert.equal(harness.api.metricsRoot().querySelectorAll("details").length, 0);
-  assert.equal(harness.api.metricsRoot().querySelectorAll("a")[0].href, "/AI_Tech_Review/methods/#reader-metrics");
+  assert.equal(harness.api.metricsRoot().querySelectorAll("a")[0].href, "/AI_Tech_Review/en/insights/");
+  assert.equal(harness.api.metricsRoot().querySelectorAll("a")[0].textContent, "Reading insights");
 });
 test('English hub paths mount public statistics in the dedicated footer slot with legacy fallback intact', () => {
   for (const pathname of ['/AI_Tech_Review/en/', '/AI_Tech_Review/en/index.html']) {

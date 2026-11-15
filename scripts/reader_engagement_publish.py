@@ -35,6 +35,8 @@ ASSETS = {
     "reader-engagement.js": "assets/reader-engagement.js",
     "reader-updates.js": "assets/reader-updates.js",
     "reader-engagement.css": "assets/reader-engagement.css",
+    "reader-insights.js": "assets/reader-insights.js",
+    "reader-insights.css": "assets/reader-insights.css",
     "app.webmanifest": "app.webmanifest",
     "sw.js": "sw.js",
 }
@@ -45,7 +47,8 @@ ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
                      ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME,
                      "publication-release.json"}
-PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en", "page"}
+PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en", "page", "insights"}
+INSIGHTS_PAGES = frozenset({"insights/index.html", "en/insights/index.html"})
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
                      ".jpg", ".jpeg", ".webp", ".gif", ".ico", ".woff", ".woff2", ".txt",
                      ".py", ".csv", ".mp4", ".vtt"}
@@ -139,7 +142,7 @@ def enrich_html(text: str, relative_path: str, article: dict | None,
     text = strip_engagement(text)
     # Personal/local documents must never gain telemetry, a publication identity,
     # automatic navigation, or the standalone pull-to-refresh gesture.
-    if relative_path == LECTURE_READER_PAGE:
+    if relative_path == LECTURE_READER_PAGE or relative_path in INSIGHTS_PAGES:
         return text
     if not re.search(r"</head\s*>", text, re.I) or not re.search(r"</body\s*>", text, re.I):
         return text
@@ -318,8 +321,6 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
     articles, pages = load_publications(site_dir)
     previous_file = site_dir / UPDATES_NAME
     previous = validate_updates(json.loads(previous_file.read_text(encoding="utf-8"))) if previous_file.exists() else None
-    updates = build_updates(site_dir, previous)
-    validate_updates(updates)
     if revision is None:
         revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     if not SHA_RE.fullmatch(revision):
@@ -331,12 +332,19 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
         if path.is_symlink() or not path.is_file():
             raise ValueError(f"Missing reader frontend asset: {source}")
         payloads[target] = path.read_bytes()
+    try:
+        from .reader_insights_site import generate as generate_insights
+    except ImportError:
+        from reader_insights_site import generate as generate_insights
+    insights_changed = generate_insights(site_dir, articles, asset_payloads=payloads)
+    updates = build_updates(site_dir, previous)
+    validate_updates(updates)
     asset_versions = {name: hashlib.sha256(payloads[ASSETS[name]]).hexdigest()[:12]
                       for name in ("reader-engagement.js", "reader-engagement.css", "reader-updates.js")}
     for target, payload in payloads.items():
         write_changed(site_dir / target, payload)
     content_versions = {path: item["revision"] for item in updates["articles"] for path in item["paths"]}
-    changed = 0
+    changed = insights_changed
     for path in sorted(site_dir.rglob("*.html")):
         if path.is_symlink():
             raise ValueError("Reader output cannot contain symlink HTML")
@@ -473,8 +481,10 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
                 raise ValueError(f"Unapproved public root file: {relative}")
         elif relative.parts[0] not in PUBLIC_DIRECTORIES:
             raise ValueError(f"Unapproved public directory: {relative}")
-        if relative.parts[0] == "en" and name not in listing_paths:
+        if relative.parts[0] == "en" and name not in listing_paths and name not in INSIGHTS_PAGES:
             raise ValueError(f"Unapproved English hub file: {relative}")
+        if relative.parts[0] == "insights" and name not in INSIGHTS_PAGES:
+            raise ValueError(f"Unapproved insights file: {relative}")
         if (relative.parts[0] == "page" or is_page_path(name)) and name not in listing_paths:
             raise ValueError(f"Unapproved generated list page: {relative}")
         reviewed_archive = name in REVIEWED_STUDY_ARCHIVES
