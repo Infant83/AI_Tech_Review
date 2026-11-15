@@ -44,3 +44,9 @@ v5의 한국어 9쪽·영어 13쪽 최종 22쪽을 모두 렌더링해 확인했
 책임 편집자의 게시 승인에 따라 검토본 표시를 제거하고 최초 발행일을 2026-11-15로 정했다. 근거 기준일은 2026-11-12다. 공개판의 19개 문헌 그룹을 최초 인용순으로 정리하고 원저자·원제·DOI·출판 판본을 재확인했다. 미인용 배경자료 두 항목과 개별 서지의 검증 메모를 목록에서 제외했다. Barba·Stegner의 정식 출판 정보를 반영하되, 설계 설명은 실제 읽은 공개 v1에 근거함을 작성 공개에 밝혔다. 공개판 한영 PDF 22쪽과 모바일을 다시 검토했다.
 
 게시 후보 검증: 실제 이전 HTTPS 릴리스와 대조한 연속성 검사가 통과했다. 리뷰 58개·공개 PDF 141개이며 이번 리뷰와 한영 PDF 두 항목만 새로 추가했다. 기존 과학 본문·PDF·ID·주소는 보존된다. Python 검사 404개(1개 skip)와 검색·탐색 검사 12개, 초기 전송량 기준을 통과했고 한영 허브·검색·본문과 모바일을 브라우저에서 확인했다. 로컬 API 요청의 CORS 제한은 실제 공개 origin에서 별도 확인한다. 실제 배포·복구 아티팩트와 HTTPS 해시는 후속 발행 기록에 남긴다.
+
+## 발행 완료
+
+2026-11-15, `119cda8a3f685545aaed1f8d234773c64d35e10f`를 [GitHub Pages로 배포](https://github.com/Infant83/AI_Tech_Review/actions/runs/43716055748)했다. [한국어 본문](https://infant83.io/AI_Tech_Review/reviews/2026-11-11_ai-augmentation-and-assessment/)과 [English edition](https://infant83.io/AI_Tech_Review/reviews/2026-11-11_ai-augmentation-and-assessment/en/)이 공개됐다. 실제 HTTPS 자료 20개에서 본문·메타데이터를 대조하고 표지·도식·스타일·한영 PDF와 아카이브 사본의 동일 바이트를 확인했다. 실제 Chrome에서 기존 GitHub Pages 주소의 infant83.io 전환과 한영 이동·모바일 화면을 확인했다.
+
+build·deploy·recovery-copy·notify-readers가 모두 성공했다. 독자 카탈로그에 새 글 1건이 등록되고 알림 이벤트 1건이 큐에 들어갔음을 CI가 보고했으며, 실제 개인별 알림 전달을 검증했다고 주장하지 않는다. 공개 복구 사본은 CI에서 전체 파일·봉인 정보와 대조해 검증됐다. 최종 해시와 검수 범위는 [발행 기록](publication-record.json)에 남겼다.
