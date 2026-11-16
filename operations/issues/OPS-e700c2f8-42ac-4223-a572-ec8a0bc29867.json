@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 32,
+  "record_version": 33,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-16T18:06:54.760479Z",
+  "updated_at": "2026-11-16T22:02:28.624597Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -140,31 +140,30 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-16T18:03:09.219Z",
-    "last_successful_actions_check_at": "2026-11-16T18:03:12.423203Z",
-    "mail_window": "직전 성공부터48시간 겹친11/14T10:01:37.517Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
-    "actions_window": "새 정상 DQE run43874538422·attempt1의 네 작업/실제 배포 성공과 기존 게시 QA를 대조했다. 새 실패/미해결/진행·대기/조회 오류0. 이전 회차 회복한 접근 오류와 구분하며 기존 성공 jobs/log는 반복 조회하지 않았다.",
+    "last_successful_mail_check_at": "2026-11-16T21:57:21.852Z",
+    "last_successful_actions_check_at": "2026-11-16T21:57:26.496607Z",
+    "mail_window": "직전 성공부터48시간 겹친11/14T18:03:09.219Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
+    "actions_window": "새run/갱신/미해결/진행·대기/조회 오류0. 기존 DQE run43874538422 성공과03시 보충 확인을 재사용하며 기존 jobs/log는 반복 조회하지 않았다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
     "live_source_revision": "4b0c294034f1936f721f059902a735b470fe4ee6",
-    "run_reference": "operations/runs/20261116T180258Z-3618319a-18d6-4129-8dd0-34e7bc53b838.md",
+    "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
     "supplemental_actions_check_at": "2026-11-16T18:04:07.435919Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-16T18:03:12.423203Z",
+    "last_full_actions_check_at": "2026-11-16T21:57:26.496607Z",
     "supplemental_successful_runs": [
       "43874538422"
     ]
   },
   "observation": {
-    "status": "03시 정상 DQE 게시 인수·새 미해결 실패 없음",
+    "status": "07시 새 CI·메일 문제 없음",
     "period": {
-      "mail": "2026-11-16T18:03:09.219Z",
-      "full_api": "2026-11-16T18:03:12.423203Z",
-      "supplemental_api": "2026-11-16T18:04:07.435919Z"
+      "mail": "2026-11-16T21:57:21.852Z",
+      "full_api": "2026-11-16T21:57:26.496607Z"
     },
-    "result": "새 정상 DQE4b0c294의 run43874538422·attempt1 네 작업/실제 배포와 synced73/new0/queued0/baselinefalse를 기존 게시 QA와 대조했다. 메일/전체 API/보충 시각을 분리했으며 새 실패·미해결·조회 오류0, 실제 공개4b0 결속. 정상 CI 동기화의 운영 DB 쓰기와 관찰자의 직접 DB 쓰기0을 구분한다. 이전19시 접근 오류 회복 이력은 기존 실행 기록에 보존하며 재실행/메일 상태 변경/별도 발송0이다.",
+    "result": "메일과 전체 API는 각 성공 시각으로 갱신했다.03시 DQE 성공 jobs/log·보충18:04:07.435919Z는 역사적 근거로 유지하며 재검사하지 않았다. 새run·실패·미해결·진행/대기·접근 오류0, 실제 공개4b0 불변·재실행/메일 변경/별도 발송/직접 DB 쓰기0이다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",

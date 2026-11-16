@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 22,
+  "record_version": 23,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-16T18:06:54.760479Z",
+  "updated_at": "2026-11-16T22:02:28.624597Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -251,18 +251,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "checked_at": "2026-11-14T22:10:53.220230+00:00",
-      "source_revision": "c63e0507b5b0c9057fc952a09d4d3b7c9a44a070",
-      "manifest_files": 2613,
-      "manifest_bytes": 768632048,
-      "release_json_bytes": 1333238,
-      "public_files": 2614,
-      "public_bytes": 769965286,
-      "headroom_to_internal_800MB_bytes": 30034714,
-      "pdf_paths": 233,
-      "unique_pdf_objects": 163,
-      "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
-      "scope": "실제 공개 정적 파일 전체. 로컬 export의 중복 제거·공급자 사용량/청구·실제 공개 절감과 구분."
+      "checked_at": "2026-11-16T21:57:28.488843+00:00",
+      "source_revision": "4b0c294034f1936f721f059902a735b470fe4ee6",
+      "manifest_files": 2659,
+      "manifest_bytes": 804311939,
+      "release_json_bytes": 1357013,
+      "public_files": 2660,
+      "public_bytes": 805668952,
+      "growth_bytes": 152637,
+      "excess_over_internal_800MB_bytes": 5668952,
+      "pdf_paths": 249,
+      "unique_pdf_objects": 175,
+      "retained_edition_urls": 21,
+      "growth_basis_source": "d8eb871ea3ade13967e169f7eea13b9246c1340a",
+      "headroom_to_internal_800MB_bytes": -5668952,
+      "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
+      "scope": "03시와 같은 실제 공개 봉인 전체. 이전 통합 시점 수치와 최신 metric을 구분하며 외부 비활성·실제 절감0이다."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -589,6 +593,24 @@
       "provider_connection_rechecked": false,
       "operational_storage_activation": false,
       "public_storage_bytes_saved": 0
+    },
+    "morning_planning_20261117_07": {
+      "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
+      "source_revision": "4b0c294034f1936f721f059902a735b470fe4ee6",
+      "https_checked_at": "2026-11-16T21:57:28.488843+00:00",
+      "base_plan_sha256": "375f19cdb9baa832be61d262247cd7780051db57a4e6102e88bd3f3c9bab9ea7",
+      "plan_delta_sha256": "31440bc4129481ffcb4458ab4be4119fe3b23c655a8c67b0c16bc59d5facc7ac",
+      "public_pdf_aliases": 249,
+      "unique_pdf_objects": 175,
+      "retained_edition_urls": 21,
+      "pdf_path_payload_bytes": 568208177,
+      "current_sealed_unique_object_payload_bytes": 383033129,
+      "remaining_non_pdf_plus_current_release_metadata_bytes": 237460775,
+      "result": "03시 이후 동일한 공개 묶음과 기존 보존 검토를 재사용하고 새 DQE1별칭/1객체·출처/현재 봉인·증분 산술만 overlay로 보완·독립 검토했다. 기존248 전체 계획/검토와7개 미확인 선행은 보존한다. 새 full plan·248경로 전체 대조·PDF bytes/export·차단 로그인/R2 조회는 반복하지 않았다. P2와 관리17일11시/18일15시를 유지하고 다음 구조/후속 검토는 기존18일19시에 잇는다. 새 공개/접근·유의미 증가/중대한 제보는 받은 회차에서 앞당겨 본다.",
+      "provider_connection_rechecked": false,
+      "actual_export": false,
+      "external_delivery_active": false,
+      "actual_public_bytes_saved": 0
     }
   },
   "recovery": {
@@ -612,17 +634,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/17 07시 오전 계획 점검에서 새 공개/정상 연결 근거와 우선순위를 확인한다.15시 계획/19시 인수의 정확한 SHA·남은7개 선행을 재사용하며 새 delta가 없으면 전체 metadata/코드 시험·차단 로그인/R2 조회를 반복하지 않는다. 실제 새 bytes export·원격 전체 SHA·클라이언트·구신 전환·봉인/회수복구·정적 제외는 미완료다. 관리17일11시 구현/18일15시 검토·P2와18일19시 구조 회고는 유지한다.",
+  "next_action": "11/18 19시 기존 주간 구조 회고에서 base375f+07시 delta의 정확한 해시·남은7개 선행과 새 공개/접근 근거를 인수한다. 새 source/유의미한 증가·정상 연결·중대한 제보는 받은 기존 회차에서 앞당겨 판단한다. 새 근거 없으면 전체 metadata/코드 시험·차단 로그인/R2 조회를 반복하지 않는다. 실제 최신 bytes export·원격 전체 SHA·클라이언트·구신 전환·봉인/회수복구·정적 제외는 미완료이며 관리17일11시 구현/18일15시 검토·P2는 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "reviewed_plan_handoff_remote_evidence_pending",
-    "next_scheduled_step_at": "2026-11-17T07:00:00+09:00",
-    "next_review_at": "2026-11-17T07:00:00+09:00",
-    "scheduled_step": "오전 계획 점검의 새 공개/접근 근거·우선순위 검토",
+    "state": "metadata_delta_reviewed_remote_evidence_pending",
+    "next_scheduled_step_at": "2026-11-18T19:00:00+09:00",
+    "next_review_at": "2026-11-18T19:00:00+09:00",
+    "scheduled_step": "기존 주간 구조 회고에서 새 공개/정상 연결 근거·외부 후속 범위/우선순위 검토",
     "replan_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
     "replan_reason": "11시 짧은 확인에서 내부800MB 목표 초과를 확인해15시 기존 슬롯에 URL/SHA/size/불변 key·예상 제외 범위/남은 선행의 오프라인 준비를 배정했다.19시 독립 검토와11/18 구조 회고, 관리11/17 구현·11/18 검토/P2는 유지한다. 실제 외부 활성화·분리 완료일은 확정하지 않는다.",
-    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+    "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
