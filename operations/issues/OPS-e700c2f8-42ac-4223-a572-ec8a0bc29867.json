@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 29,
+  "record_version": 30,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-16T02:23:49.148969Z",
+  "updated_at": "2026-11-16T06:11:42.455644Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -131,43 +131,39 @@
       "operations/runs/20261115T100339Z-492af1f2-9cdf-49bc-8a18-b67c6c204880.md",
       "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
       "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
-      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md"
+      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
+      "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-16T02:02:33.032Z",
-    "last_successful_actions_check_at": "2026-11-16T02:02:37.512843Z",
-    "mail_window": "직전 성공부터48시간 겹친11/13T21:56:41.634Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
-    "actions_window": "새 정상 게시4run의 attempt1 네 작업·실제 deploy가 모두 성공했다. 이전 보충 확인43766376278은 신규에서 제외했고 새 실패/미해결/진행·대기0이다. 종료 전 새 DRB43790410981 한 건도 별도 보충에서 attempt1 네 작업/실제 deploy 완료를 확인했다.",
+    "last_successful_mail_check_at": "2026-11-16T06:00:34.846Z",
+    "last_successful_actions_check_at": "2026-11-16T06:00:38.807134Z",
+    "mail_window": "직전 성공부터48시간 겹친11/14T02:02:33.032Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
+    "actions_window": "새 정상43799112440 한 건의 attempt1 네 작업/실제 deploy 성공. 이전 초기4+DRB1은 신규 재집계/성공 jobs·logs 재조회하지 않았고 새 실패/미해결/진행·대기0이다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "b20f452c5bbba9b2ac53456363c0d08efabd4353",
-    "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
-    "supplemental_actions_check_at": "2026-11-16T02:19:57.382337Z",
+    "live_source_revision": "d8eb871ea3ade13967e169f7eea13b9246c1340a",
+    "run_reference": "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
+    "supplemental_actions_check_at": "2026-11-16T06:01:19.382944Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-16T02:02:37.512843Z",
+    "last_full_actions_check_at": "2026-11-16T06:00:38.807134Z",
     "supplemental_successful_runs": [
-      "43772503994",
-      "43783345013",
-      "43787210969",
-      "43788643350",
-      "43790410981"
+      "43799112440"
     ]
   },
   "observation": {
-    "status": "11시 정상 게시4건 대조·새 실패 없음",
+    "status": "15시 정상 L008 개정1건 대조·새 실패 없음",
     "period": {
-      "mail": "2026-11-16T02:02:33.032Z",
-      "full_api": "2026-11-16T02:02:37.512843Z",
-      "supplemental_api": "2026-11-16T02:03:59.013458Z",
-      "late_drb_supplemental_api": "2026-11-16T02:19:57.382337Z"
+      "mail": "2026-11-16T06:00:34.846Z",
+      "full_api": "2026-11-16T06:00:38.807134Z",
+      "supplemental_api": "2026-11-16T06:01:19.382944Z"
     },
-    "result": "실제 공개e0b7dcf·73출판과 기존 정상 게시 기록을 연결했다. 최신 synced73/newArticles1/queuedEvents1/baselinefalse, 앞3건72/0/0·replay미출력이다. 기기 수신을 확인한 것은 아니며 이전 성공 jobs/log 재조회·메일 상태 변경·재실행·별도 발송0이다. 마감 전 DRB43790410981은73/0/0/baselinefalse·replay미출력이며 실제 공개 b20f452까지 보존했다.",
+    "result": "실제d8eb871e/73출판·현재/구판 보존과 기존 정상 게시 기록을 연결했다. synced73/newArticles0/queuedEvents0/baselinefalse·replay미출력이며 기기 수신을 확인한 것은 아니다. 재실행·메일 상태 변경·별도 발송0이다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
