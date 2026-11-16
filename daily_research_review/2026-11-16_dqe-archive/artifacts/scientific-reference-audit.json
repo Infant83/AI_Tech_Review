@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "date": "2026-11-16",
+  "reviewer_role": "Independent scientific, reference and bilingual editorial review",
+  "exercise_id": "2026-11-16-daily-quantum-exercise",
+  "reproduction": "Fictional educational arithmetic only; no QPU run or reproduction of the cited experiments.",
+  "calculation_file": "exercise-calculations.json",
+  "calculation_script": "verify_exercise.py",
+  "calculation_script_sha256": "c15c16b46961b4db40d277de0da23d1edaa26b2481882e7bb32da9f806afa8db",
+  "checks": {
+    "arithmetic": "pass",
+    "worst_case_error_corners": "pass: 16 signed model/solver combinations",
+    "strict_threshold": "pass: equality allows a tie",
+    "ground_state_vs_transition_state": "Nuclear-coordinate saddle versus lowest electronic state in the specified fixed charge/spin sector; VQE role does not replace reaction-path search.",
+    "errors": "Bounds are already per-candidate barriers after energy differences. No cancellation is assumed.",
+    "resources": "Sixteen data qubits per sequential structure under the stipulated occupation mapping, not 64 simultaneously allocated qubits.",
+    "measurement_budget": "A 40% shot reduction meets the fictional timing arithmetic; the solver error target must be checked again.",
+    "execution_levels": "Fictional catalyst exercise, classical arithmetic, original DFT method and historical ion-QPU demonstration remain distinct.",
+    "applications": "Catalyst candidate recommendation and matched validation are proposed uses, not demonstrated performance of this exercise."
+  },
+  "references": [
+    {
+      "number": 1,
+      "authors": [
+        "C. J. H. Jacobsen",
+        "S. Dahl",
+        "B. S. Clausen",
+        "S. Bahn",
+        "A. Logadottir",
+        "J. K. Nørskov"
+      ],
+      "title": "Catalyst design by interpolation in the periodic table: Bimetallic ammonia synthesis catalysts",
+      "journal": "J. Am. Chem. Soc.",
+      "volume": "123",
+      "issue": "34",
+      "pages": "8404–8405",
+      "year": 2001,
+      "doi": "10.1021/ja010963d",
+      "url": "https://doi.org/10.1021/ja010963d",
+      "published_online": "2001-08-03",
+      "issue_date": "2001-08-29",
+      "author_metadata_note": "Use S. Bahn as printed by ACS; the DTU institutional record expands his name to Sune Rastad Bahn.",
+      "access_urls": [
+        "https://pubs.acs.org/doi/10.1021/ja010963d",
+        "https://orbit.dtu.dk/en/publications/catalyst-design-by-interpolation-in-the-periodic-table-bimetallic/"
+      ],
+      "access_scope": "ACS indexed publisher bibliographic record and opened DTU institutional bibliographic record. Full article body was not accessible and was not read. Experimental linkage or quantitative catalyst results were not independently verified.",
+      "supports": "The publication addresses periodic-table interpolation in bimetallic ammonia-synthesis catalyst design; bibliography and topic only.",
+      "aps_text": "C. J. H. Jacobsen, S. Dahl, B. S. Clausen, S. Bahn, A. Logadottir, and J. K. Nørskov, Catalyst design by interpolation in the periodic table: Bimetallic ammonia synthesis catalysts, J. Am. Chem. Soc. 123, 8404–8405 (2001)."
+    },
+    {
+      "number": 2,
+      "authors": [
+        "G. Henkelman",
+        "B. P. Uberuaga",
+        "H. Jónsson"
+      ],
+      "title": "A climbing image nudged elastic band method for finding saddle points and minimum energy paths",
+      "journal": "J. Chem. Phys.",
+      "volume": "113",
+      "issue": "22",
+      "pages": "9901–9904",
+      "year": 2000,
+      "doi": "10.1063/1.1329672",
+      "url": "https://doi.org/10.1063/1.1329672",
+      "issue_date": "2000-12-08",
+      "access_urls": [
+        "https://theory.cm.utexas.edu/henkelman/pubs/henkelman00_9901.pdf",
+        "https://math.pku.edu.cn/teachers/litj/notes/stoch_topics2017/lect04/climbimageNEB.pdf"
+      ],
+      "access_scope": "Original four-page article read, including abstract, introduction, harmonic transition-state rate expression, DFT applications, NEB/CI-NEB procedure, variable springs and figure captions. Author-hosted PDF retrieved; university course copy also inspected.",
+      "supports": "CI-NEB searches nuclear-coordinate paths for saddle points; reported applications use plane-wave DFT for CH4 dissociation on Ir(111) and H2 on Si(100). No new calculation was reproduced.",
+      "aps_text": "G. Henkelman, B. P. Uberuaga, and H. Jónsson, A climbing image nudged elastic band method for finding saddle points and minimum energy paths, J. Chem. Phys. 113, 9901–9904 (2000)."
+    },
+    {
+      "number": 3,
+      "authors": [
+        "C. Hempel",
+        "C. Maier",
+        "J. Romero",
+        "J. McClean",
+        "T. Monz",
+        "H. Shen",
+        "P. Jurcevic",
+        "B. P. Lanyon",
+        "P. Love",
+        "R. Babbush",
+        "A. Aspuru-Guzik",
+        "R. Blatt",
+        "C. F. Roos"
+      ],
+      "title": "Quantum chemistry calculations on a trapped-ion quantum simulator",
+      "journal": "Phys. Rev. X",
+      "volume": "8",
+      "article_number": "031022",
+      "year": 2018,
+      "doi": "10.1103/PhysRevX.8.031022",
+      "url": "https://doi.org/10.1103/PhysRevX.8.031022",
+      "published": "2018-07-24",
+      "author_metadata_note": "Exact printed given names begin Cornelius Hempel and Christine Maier. All 13 authors are retained.",
+      "access_urls": [
+        "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.8.031022",
+        "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.8.031022"
+      ],
+      "access_scope": "Publisher abstract, popular summary and bibliographic record; published PDF abstract, introduction and fixed-nuclei electronic-structure/mapping discussion were read. The complete 22-page article was not read.",
+      "supports": "Actual trapped-calcium-ion VQE demonstration for H2 and LiH using up to four qubits and discussion of measurement noise/mitigation. It does not establish the fictional catalyst barrier, accuracy, runtime or a quantum advantage.",
+      "aps_text": "C. Hempel, C. Maier, J. Romero, J. McClean, T. Monz, H. Shen, P. Jurcevic, B. P. Lanyon, P. Love, R. Babbush, A. Aspuru-Guzik, R. Blatt, and C. F. Roos, Quantum chemistry calculations on a trapped-ion quantum simulator, Phys. Rev. X 8, 031022 (2018)."
+    }
+  ],
+  "source_scope_ko": "Jacobsen 등의 출판사 서지와 DTU 연구기관 기록을 확인했으며 해당 논문 본문은 읽지 못했다. Henkelman 등의 저자 공개 원문 4쪽과 Hempel 등의 출판사 초록·공개 요약·서지 및 원논문의 초록·서론·전자구조 매핑 설명을 읽었다. Hempel 논문 22쪽 전체를 읽은 것은 아니다.",
+  "source_scope_en": "The Jacobsen publisher and DTU institutional bibliographic records were checked; that article body was not accessible and was not read. Source reading covered the four-page Henkelman author-hosted article, and the Hempel publisher abstract, popular summary, bibliographic record, and the published paper’s abstract, introduction and electronic-structure mapping discussion. The complete 22-page Hempel article was not read.",
+  "editorial_review": {
+    "ko_en_complete_drafts_read": true,
+    "numeric_and_specific_solution_spoilers": "Confined to initially collapsed details in both drafts. General statement of model/solver/time questions remains visible.",
+    "jacobsen_revision": "Unverified experimental linkage removed by author after independent review. Wording is limited to the research topic verified by publisher/institutional records.",
+    "listing_title_and_summary": "Both languages faithfully present fictional candidate selection, error and measurement budgets without giving numerical answers.",
+    "related_reading": "Qunova HI-VQE review discussion of configuration proposal, classical subspace energy calculation and total runtime was inspected; standard VQE in this exercise is distinguished.",
+    "manuscript_edits_by_reviewer": false,
+    "human_reader_testing": false,
+    "final_hash_review": "Pass: both complete final manuscripts and passive compiled fragments reread; exact hashes recorded. No numerical or algorithm-choice answer precedes the initially collapsed solution.",
+    "final_files": [
+      {
+        "path": "daily_research_review/2026-11-16_dqe-archive/reports/briefing_ko.md",
+        "sha256": "6648fc807563b045805c44dd5ef2f47b83d960e2b62b0d6d325df7faa9389452",
+        "read_scope": "Complete manuscript and compiled fragment; final reference, access-scope, punctuation and no-spoiler revisions checked."
+      },
+      {
+        "path": "daily_research_review/2026-11-16_dqe-archive/reports/briefing_ko.html",
+        "sha256": "2d40bd3d2994f396d5d0abc20ed43799e1cdf5fff62f4e517fda8645f0661617",
+        "read_scope": "Complete manuscript and compiled fragment; final reference, access-scope, punctuation and no-spoiler revisions checked."
+      },
+      {
+        "path": "daily_research_review/2026-11-16_dqe-archive/reports/briefing_en.md",
+        "sha256": "1f52e0ac7ddd605fc4bedf2ddcb40f4dc90c83f2d18fa69c6d9749e61f894cd3",
+        "read_scope": "Complete manuscript and compiled fragment; final reference, access-scope, punctuation and no-spoiler revisions checked."
+      },
+      {
+        "path": "daily_research_review/2026-11-16_dqe-archive/reports/briefing_en.html",
+        "sha256": "1722ae2970a26246397f732046438e2c871aef9feb6c2b00a9025ef60ab3ee46",
+        "read_scope": "Complete manuscript and compiled fragment; final reference, access-scope, punctuation and no-spoiler revisions checked."
+      }
+    ],
+    "final_reference_scope": "All three final APS references and their DOI links agree in Korean/English. Jacobsen topic wording stays within verified bibliographic scope.",
+    "reader_flow": "The fictional single-slot experiment gives a concrete reason to compare barrier differences, error bounds and measurement time. Proposed matched validation and catalyst-planning use are distinguished from measured experimental results.",
+    "pdf_reference_text_check": {
+      "sha256": "a4a06b8b0c537b18832e9c0d55052c6511375d2cde5932cde1ed1c4ccb084a07",
+      "scope": "Public PDF page 4 reference text checked against the independently verified metadata. Layout inspection belongs to the PDF/root review."
+    }
+  },
+  "status": "pass_with_disclosed_source_access_boundaries"
+}

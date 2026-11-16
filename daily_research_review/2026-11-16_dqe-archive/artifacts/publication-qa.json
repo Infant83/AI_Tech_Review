@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "document_id": "2026-11-16-daily-quantum-exercise",
+  "publication_status": "candidate_verified",
+  "source_base": "23a6dd50f90fc81629c3c45e826d04844c8381d0",
+  "deployed_baseline": "d8eb871ea3ade13967e169f7eea13b9246c1340a",
+  "targeted_python_tests": {
+    "run": 67,
+    "passed": 67,
+    "failed": 0,
+    "skipped": 0
+  },
+  "node_search_navigation_tests": {
+    "run": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "existing_bilingual_editorial_pages_byte_identical": 24,
+  "release_check": {
+    "ok": true,
+    "blockers": [],
+    "additions": [
+      {
+        "group": "archive",
+        "id": "2026-11-16-daily-quantum-exercise"
+      }
+    ],
+    "counts": {
+      "archive": 145,
+      "external": 1,
+      "publications": 73,
+      "reviews": 58
+    }
+  },
+  "payload_check": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ]
+  },
+  "browser": {
+    "engine": "Chromium via Playwright",
+    "viewport": [
+      390,
+      844
+    ],
+    "tested": [
+      "Both article languages, title and original/update/evidence dates",
+      "Native details initially closed; mouse and keyboard expansion",
+      "Language switch to matching bilingual issue",
+      "November 16 calendar and list retain distinct DQB, DRB and DQE",
+      "Korean catalyst search returns DQE editorial",
+      "DQE category and November filter select exactly the November 14 and 16 issues",
+      "PDF opens in browser and actual browser download matches registered SHA-256"
+    ],
+    "horizontal_overflow": false,
+    "reviewers": [
+      "archive_architecture",
+      "root"
+    ],
+    "qa_screenshots": "private only"
+  },
+  "public_pdf_sha256": "a4a06b8b0c537b18832e9c0d55052c6511375d2cde5932cde1ed1c4ccb084a07",
+  "public_pdf_bytes": 75706,
+  "scientific_reference_review": "scientific-reference-audit.json",
+  "pdf_review": "public-pdf-qa.json",
+  "build_dependency": "Pillow 11.2.1",
+  "human_sentence_review": "not performed",
+  "live_verification": "pending deployment"
+}
