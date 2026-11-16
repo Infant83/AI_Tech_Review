@@ -16,4 +16,10 @@
 
 ## 등록과 공개 검증
 
-검수 PDF는 `2026-11-16-daily-quantum-exercise`, `daily-quantum-exercise`로 등록했고 한영 원고는 기존 컴파일러를 사용한다. 웹 주소는 `briefings/exercises/2026-11-16/`와 대응 `/en/`이다. 배포 후보·연속성·모바일·접힌 해설·목록·검색·PDF 및 실제 HTTPS 검증 결과는 발행 후 이 기록과 별도 공개 적합한 QA에 연결한다. 아직 배포 완료를 주장하지 않는다.
+검수 PDF는 `2026-11-16-daily-quantum-exercise`, `daily-quantum-exercise`로 등록했고 한영 원고는 기존 컴파일러를 사용했다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-16/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-16/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-16-daily-quantum-exercise.pdf)를 공개했다.
+
+실제 이전 배포 `d8eb871ea3ade13967e169f7eea13b9246c1340a`를 기준으로 만든 독립 후보는 새 DQE 한 건만 추가했고, 기존 한영 브리핑 24개 페이지는 바이트 단위로 같았다. 필요한 로컬 Python 67건과 검색·탐색 12건을 통과했다. `archive_architecture`가 Chromium의 390×844 화면에서 두 언어·접힌 해설의 마우스와 키보드 동작·언어 전환·같은 날짜의 세 시리즈·검색·DQE 분류·PDF 열기·실제 다운로드를 검수했다. `root`도 모바일 진입·펼친 해설·달력·검색 화면을 확인했다. QA 화면은 비공개 보존한다.
+
+출판 소스 `4b0c294034f1936f721f059902a735b470fe4ee6`의 [배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/43874538422)은 build·deploy·recovery-copy·notify-readers 모두 성공했다. CI 테스트는 906건 중 897건 통과·9건 건너뜀·실패 0건이다. 복구 사본은 CI가 정확한 배포물 2,660개 파일·805,668,952바이트를 검증하고 업로드한 결과이며, 이 작업에서 로컬 복원 시험은 하지 않았다. 기존 리뷰·렉처 알림 카탈로그 73건 동기화가 성공했으며, DQB·DRB와 마찬가지로 새 DQE를 별도 알림 기사로 등록한 것은 아니다.
+
+별도 담당자 `heartbeat_public_check`의 실제 HTTPS 검사와 `root`의 query 없는 공개 주소 GET 검사에서 한영 전체 HTML·본문과 PDF가 검수본의 SHA-256에 일치했다. 원호 날짜·기본 접힌 해설·언어/PDF 링크·기존 canonical 리다이렉트·이전 DQE 및 같은 날짜 DQB·DRB 보존도 확인했다. [공개 검증 요약](artifacts/publication-qa.json)에 실제 범위와 해시를 남겼다. 과학 본문과 PDF에는 완료 기록을 위해 추가 변경하지 않았다.
