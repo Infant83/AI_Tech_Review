@@ -1,0 +1,200 @@
+{
+  "date": "2026-11-16",
+  "issue": "04",
+  "title": "10 mK에서 출력선을 나누는 CryoCMOS",
+  "short_title": "저온 다중화와 양자 장치의 연결",
+  "tagline": "11월 16일 조사 | CryoCMOS·공진기 리드베리 배열·NV 결함 스펙트럼",
+  "summary": [
+    "큐비트의 수를 늘리는 데에는 장치를 바깥과 연결하는 일도 따라온다. 초전도 소자에서는 제어선이 열과 잡음을 들여오고, 원자 배열에서는 광공진기의 전기장이 리드베리 준위를 흔든다. 이번 DRB는 이 두 실험과 스핀 결함의 전자–포논 결합을 다룬 제일원리 계산을 읽었다. 서로 다른 연결 문제에 대한 세 결과다.",
+    "최우선 후보는 11월 14일 온라인 공개된 CryoCMOS RF 다중화기다. 10 mK·0.55 V에서 정적 소모 200 pW를 보고했고, 큐비트와 스위치 사이에 추가 감쇠기 없이 입력선과 출력선에 각각 연결해 특성을 측정했다. 포트 전환과 자속 바이어스의 열 예산까지 읽으면 순차 소자 측정에 적합한 조건이 보인다.",
+    "PRX의 공진기 결합 리드베리 배열은 원자–빛 결합과 N=1–4 집단 진동의 양립을 보여준다. PRB의 NV− 계산은 0 K에도 남는 다중 포논 전자 스펙트럼을 예측한다. 세 항목은 11월 5·12·14일 논문의 신규 발견·상세 독해이며 오늘 모두 새로 출판된 논문이라는 뜻은 아니다."
+  ],
+  "comparison": [
+    [
+      "[1] 냉동기 안의 출력선을 공유할 수 있는가",
+      "실제 22 nm FDSOI·10 mK 실험. 정적 200 pW; 출력선 T1 중앙값 100–200 µs, T2e 50–100 µs.",
+      "입력·출력·자속 모드를 별도 시험. 전환 108 fJ/회와 바이어스 전류의 발열을 포함해 순차 특성 측정에 적용."
+    ],
+    [
+      "[2] 공진기와 리드베리 배열이 함께 작동하는가",
+      "실제 87Rb 장치. 단일 원자 협동성 하한 C=9.6(4), N=1–4의 √N 집단 진동.",
+      "전기장 차폐로 같은 공간에서 두 결합을 확보. 집단 진동은 광자 전송·게이트 충실도와 다른 관측량."
+    ],
+    [
+      "[3] 스핀 결함의 포논 위성 피크를 계산할 수 있는가",
+      "고전 제일원리·누적함수 계산. NV−, 511원자; 0 K e↑x/e↑y 측대역 FWHM 약 400 meV.",
+      "전자 추가·제거 스펙트럼의 동적 상관. 광학선폭과 구별하며 재료 모형에 궤도별 포논 채널을 반영."
+    ]
+  ],
+  "papers": [
+    {
+      "id": 1,
+      "heading": "출력 경로를 공유하는 10 mK 스위치",
+      "journal": "npj Quantum Information",
+      "published": "2026-11-14",
+      "doi": "10.1038/s41534-026-01424-7",
+      "url": "https://doi.org/10.1038/s41534-026-01424-7",
+      "paragraphs": [
+        "초전도 큐비트의 배선은 제어 신호를 보내는 동시에 열과 잡음이 들어오는 통로다. 특히 약한 판독 신호가 나오는 출력선에는 순환기와 증폭기 등 부품이 붙는다. 여러 소자를 한 출력 경로로 번갈아 측정하면 배선과 부품을 공유할 수 있다. 저온 배선 연구 [4]가 설명하듯 열전도·신호 소모·열광자의 유입을 함께 낮춰야 하고 스위치가 새로 만드는 잡음도 중요하다.",
+        "Fallik 등은 22 nm FDSOI의 네 갈래 SP4T 다중화기를 10 mK에서 동작시켰다. 0.55 V에서 정적 소비전력은 200 pW, DC–8 GHz 삽입 손실은 2 dB 미만, 포트 간 격리도는 30 dB 초과다. 큐비트와 스위치 사이에 추가 감쇠기 없이 입력선·출력선에 각각 연결했다. 출력선 T1 중앙값은 100–200 µs, Hahn-echo T2e는 50–100 µs였다. 열 필터링을 사용한 2023년 입력선 제어 [5]에서 조용한 스위치를 큐비트 출력에도 직접 잇는 단계로 나아간 결과다.",
+        "그림 A는 입력선에서 기준·다중화 경로를 교대로 측정한 세 큐비트의 추가 탈위상률이다. 2.3±0.4, 5.6±0.4, 2.4±0.7 kHz의 차이를 정량화하면서 약 100 µs 규모의 결맞음을 읽었다. 오차는 평균 차이의 표준오차다. 입력·출력·자속 모드는 한 번에 다중화기 하나씩 시험했다."
+      ],
+      "figures": [
+        {
+          "asset": "cryo-reported-values.png",
+          "height": 260,
+          "caption": "그림 1 | 리뷰 재구성. A는 Table 1의 보고값·평균 표준오차(SE)를 자체 도표로 옮겼다. B는 정적 대기, 추가 동적 소모의 산술 예시, 자속 바이어스 발열 추정을 별도 조건으로 비교한다. 108 fJ/회에 전환율을 곱했으며 AWG 구형파 1 Hz는 전환 2회/초다. 원 논문 그림·곡선은 사용하지 않았다. 근거: [1] 본문·Table 1·보충자료.",
+          "url": "https://doi.org/10.1038/s41534-026-01424-7"
+        }
+      ],
+      "after": [
+        "200 pW는 경로를 유지할 때의 소모다. 108 fJ/회를 적용하면 2,000회/초에서 추가 동적 소모 216 pW, 백만 회/초에서는 108 nW가 된다. 별도 정적 바이어스 실험은 0.23 mA와 시뮬레이션 저항 약 5.3 Ω로 발열 약 0.28 µW를 추정했다. 저항은 −40°C PDK 모형 값이며, 해당 실험에서는 혼합실 온도 상승 최대 5 mK와 T1 약 30% 감소가 관찰됐다. 측정 간격과 전류까지 포함해 열 예산을 잡는 것이 활용을 정한다."
+      ],
+      "citation": "L. Fallik, S. Balamurali, A. Caglar, R. Acharya, J. Van Damme, T. Ivanov, S. Massar, R. Asanovski, A. M. Vadiraj, M. Mongillo, J. Craninckx, A. Grill, D. Wan, A. Potočnik, and K. De Greve, CryoCMOS RF multiplexer for superconducting qubit control, readout and flux biasing at millikelvin temperatures with picowatt power consumption, npj Quantum Inf. (2026), Article in Press.",
+      "read_url": "https://www.nature.com/articles/s41534-026-01424-7_reference.pdf",
+      "read_scope": "출판사 배포 8쪽 Article in Press의 초록·서론·장치·실험·논의·Table 1/Figs.1–5. 보충 DOCX의 Methods, 정적·동적 전력, 소자·통계 Tables 1–2, 구동선·바이어스·잡음 모형 관련 선택 절. DOI·온라인 날짜는 공식 HTML로 확인했다.",
+      "availability": "데이터는 합리적 요청에 따라 저자에게서 받을 수 있다고 명시한다. 원자료·공식 코드 실행은 하지 않았다. 원문 CC BY-NC-ND 4.0; 그림 1은 보고된 사실·수치로 만든 자체 도표다."
+    },
+    {
+      "id": 2,
+      "heading": "리드베리 상호작용과 광공진기를 한곳에",
+      "journal": "Physical Review X",
+      "published": "2026-11-12",
+      "doi": "10.1103/jgdt-d61y",
+      "url": "https://doi.org/10.1103/jgdt-d61y",
+      "paragraphs": [
+        "리드베리 원자는 가까운 원자 사이의 논리 연산에, 광공진기는 원자와 빛을 연결하는 데 유리하다. 그러나 둘을 같은 장치에 넣으면 공진기 길이를 조절하는 피에조의 전기장이 리드베리 공명을 흔든다. De Santis 연구진은 피에조를 티타늄 지지대 안에 넣어 차폐하고, 공진기 모드 안의 루비듐-87 원자 배열에서 두 기능의 양립을 시험했다.",
+        "원자 수에 따른 공진기 공명 이동으로 추정한 단일 원자 협동성의 하한은 C=9.6(4)였다. 별도로, 약 3.2 μm 간격의 네 트랩에 적재된 원자 수 N=1–4에 따라 집단 리드베리 진동을 관측했다. 단일 원자에서 Ω₁/(2π)=0.820(4) MHz였고, 진동 주파수는 √N 증강과 일치했다. 이는 공진기의 같은 공간에서 원자–빛 결합과 리드베리 상호작용을 함께 확보했다는 결과다.",
+        "그림의 왼쪽은 원자 수별 진동을, 오른쪽은 추출한 진동 주파수의 √N 의존성을 보여준다. 같은 공간에서 원자–빛 결합과 리드베리 상호작용을 확보한 것이 핵심이다. 협동성 C=4g²/(κΓ)는 원자–공진기 결합을 두 감쇠율과 비교하는 양이다. C=9.6(4)는 공진기 공명 이동에서 구한 하한이며 집단 진동의 상태 충실도와는 다른 측정이다."
+      ],
+      "figures": [
+        {
+          "asset": "prx-cavity-rydberg-fig4ab-excerpt.png",
+          "height": 240,
+          "caption": "그림 2 | De Santis 등 [2], 최종 출판본 Fig.4(a,b) 발췌·크기 조절. CC BY 4.0. 초기 적재 원자 수 N=1–4의 단일 여기 확률과 집단 진동 주파수. 트랩 간격 약 3.2 µm, 봉쇄 반경 5.8 µm. (a)의 오차는 평균 표준오차, (b) 삽입도는 피팅 1σ 신뢰구간이다. 원 축·단위·눈금·삽입도를 보존했다. 본문은 Ω₁/(2π)를 MHz 단위의 주파수로 제시한다.",
+          "url": "https://journals.aps.org/prx/pdf/10.1103/jgdt-d61y",
+          "license": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "after": [
+        "LMU의 11월 13일 기관 해설 [6]은 광자로 여러 원자 모듈을 잇는 가능성을 연구진 발언과 함께 설명한다. 실제 후속 과제는 이 장치에서 원자–광자 얽힘과 연결 동작을 측정하는 일이다. 그림은 최대 한 원자의 손실로 여기 여부를 분석하며 두 원자 이상이 손실된 약 7%의 시행이 남는다."
+      ],
+      "citation": "J. De Santis, B. Dura-Kovács, M. Öncü, A. Bouscal, D. Vasileiadis, and J. Zeiher, Realization of a cavity-coupled Rydberg array, Phys. Rev. X 16, 041039 (2026).",
+      "read_url": "https://journals.aps.org/prx/pdf/10.1103/jgdt-d61y",
+      "read_scope": "최종 9쪽 PDF의 초록·서론·과학 본문 II–VI·Figs.1–4·캡션과 데이터 공개문을 확인했다.",
+      "availability": "별도 SI 링크는 확인한 공식 페이지·PDF에서 관찰하지 못했다. 데이터 DOI 10.17617/3.60MFFH의 호스트가 자동접근을 제한하여 파일을 확인하지 못했다. 원자료·코드 실행은 하지 않았다."
+    },
+    {
+      "id": 3,
+      "heading": "NV 결함에 남는 다중 포논 전자 스펙트럼",
+      "journal": "Physical Review B",
+      "published": "2026-11-05",
+      "doi": "10.1103/7xrx-2fd2",
+      "url": "https://doi.org/10.1103/7xrx-2fd2",
+      "paragraphs": [
+        "스핀 결함을 빛으로 초기화하고 읽는 재료에서는 전자와 격자진동의 결합이 중요하다. 기존 재료 설계 리뷰 [7]는 광학 영포논선과 포논 측대역을 스핀–광자 연결의 조건으로 설명한다. Park 등은 NV− 결함에서 전자 하나를 더하거나 뺄 때 나타나는 단입자 전자 스펙트럼의 동적 상관을 계산했다. 정지된 원자배치를 뽑는 계산에서 더 나아가 여러 포논의 반복적 방출·흡수가 만드는 위성 피크를 다룬다.",
+        "511원자 초격자의 PBE 전자구조에 G0W0 보정과 전자–포논 자기 에너지를 결합하고 지연 누적함수 근사(RCA)를 적용했다. 조화근사에서 점유 e↑x/e↑y 상태의 포논 측대역은 0 K에도 반치전폭 약 400 meV를 보였다. 준입자 주피크보다 약 70·170 meV 낮은 위성 피크는 300 K에서 흐려지지만 넓은 가중치 분포는 남았다. 냉각해 열적 포논 점유를 없애도 영점 요동에 의한 결합이 남는다는 결과다.",
+        "검정선과 빨간선을 비교하면 온도에 따라 흐려지는 미세 피크와 저온에도 남는 측대역을 구별할 수 있다. 약 400 meV는 전자 추가·제거 스펙트럼의 폭이며 광학 발광선폭과 다른 관측량이다. 저자들은 광전자분광이나 전기적으로 접근 가능한 결함의 터널링분광으로 위성 피크를 시험할 수 있다고 제안한다."
+      ],
+      "figures": [
+        {
+          "asset": "prb-nv-cumulant-fig1.png",
+          "height": 225,
+          "caption": "그림 3 | Park 등 [3], 최종 출판본 Fig.1(a–e) 발췌·크기 조절. CC BY 4.0. (a)는 300 K 전자 스펙트럴 가중치로 에너지는 G0W0 가전자대 꼭대기 기준이다. (b–e)의 검정은 0 K, 빨강은 300 K. 가로축 Frequency(eV)의 0은 각 상태의 G0W0 준입자 에너지이며 결합 후 최종 주피크와 다르다. 세로축은 1/eV. 원 패널·색막대·축·범례를 보존했다.",
+          "url": "https://journals.aps.org/prb/pdf/10.1103/7xrx-2fd2",
+          "license": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "after": [
+        "국소 진동, 결함–벌크 혼합 진동, 전파하는 진동이 궤도·스핀 채널마다 다르게 기여한다. 결함 재료의 역설계를 구상할 때에는 단일 에너지 준위나 폭과 함께 어떤 관측량과 포논 채널을 목표로 할지도 정해야 한다. 이는 편집부의 기획 해석이다. 광학 측대역 계산으로의 연결과 Jahn–Teller·비조화성·비대각 결합의 영향은 후속 확인 대상이다."
+      ],
+      "citation": "J. Park, Y. Jin, A. Kundu, J. O. Sofo, and G. Galli, First-principles cumulant approach to the vibronic structure of spin defects, Phys. Rev. B 114, L291402 (2026).",
+      "read_url": "https://journals.aps.org/prb/pdf/10.1103/7xrx-2fd2",
+      "read_scope": "최종 7쪽 PDF의 초록·서론·방법·결과·논의·그림·데이터 공개문. 온라인 11/5와 114권 29호 명목일 11/15를 구별했다.",
+      "availability": "공식 SI는 본문으로 재연결되거나 접근이 거절돼 읽지 못했다. 본문이 언급하는 수렴·유도를 SI까지 검증하지 않았다. 데이터 공개 인용은 직접 데이터셋이 아닌 Qresp 도구 논문으로 이어져 원자료를 확보하지 못했다. 원 계산·워크플로를 재실행하지 않았다."
+    }
+  ],
+  "plans": [
+    {
+      "title": "최우선 | 양자 소자 특성 측정의 배선·시간·열 비용",
+      "audience": "독자: 초전도 소자·재료·공정 연구자, 저온 계측·제어 설계자",
+      "thesis": "가제: 「큐비트를 번갈아 읽을 때의 열 예산」. 정적 대기와 전환 에너지, 바이어스 전류를 측정 일정에 대입해 배선 공유의 이득을 평가한다. 중심은 대규모 순차 특성 측정에서 읽기 경로를 얼마나 조용하게 공유할 수 있는가다.",
+      "outline": [
+        "입력·출력·자속 선이 담당하는 신호와 부품, 기존 열 필터링의 역할을 설명한다.",
+        "새 SP4T의 저누설 설계와 실제 입력·출력·바이어스 실험을 각각 읽는다.",
+        "소자 선택 간격·전환 횟수·정적 전류를 바꾼 열 예산을 공개 수치로 계산한다.",
+        "웨이퍼별·공정별 특성 측정에 필요한 측정 시간과 잡음 허용량을 구체화한다."
+      ],
+      "checks": "공식 최종 편집판과 SI, 전환 이벤트 정의, 큐비트별 장시간 변동, 저항 모형의 저온 적용 범위, 공개 원자료 후속 게시 여부.",
+      "relation": "새 심층 리뷰 제안 단계다. 기존 DQB의 계산 전체 비용 논의와 연결하지만 기존 글 본문·승인 상태를 바꾸지 않는다."
+    },
+    {
+      "title": "병렬 기획 | 스핀–광자 연결에 필요한 장치와 재료",
+      "audience": "독자: 중성원자·고체 스핀 결함·양자 네트워크 연구자",
+      "thesis": "가제: 「빛과 결합하는 양자 모듈의 조건」. 공진기 리드베리 실험에서는 전기장 환경과 결합을, NV 계산에서는 전자·포논 스펙트럼의 관측량을 설명한다. 플랫폼별로 연결을 설계할 때 무엇을 계산하거나 측정해야 하는지 비교한다.",
+      "outline": [
+        "공진기 안에서 원자–빛 결합과 리드베리 상호작용을 양립시킨 실험을 읽는다.",
+        "NV 단입자 스펙트럼과 광학 측대역을 구별하고 포논 채널을 살핀다.",
+        "결합 효율·관측 스펙트럼·광자 방출 등 목적에 맞는 지표를 각각 정한다."
+      ],
+      "checks": "동일 Rydberg 장치의 원자–광자 얽힘·연결 실증, NV의 공식 SI·직접 데이터, 광학 전이 계산으로 이어지는 근거.",
+      "relation": "기존 Er 재료·메모리 기획의 주변 논의를 확장할 후보이며 재료 간 수치를 합치지 않는다. 신규 심층 본문·기존 글 확장에는 개별 승인 조건을 유지한다."
+    }
+  ],
+  "external_title": "출력선을 공유하는 스위치가 큐비트에 가까워지다",
+  "external": [
+    "초전도 큐비트 수를 늘리려면 저온 배선과 판독 부품도 함께 늘어난다. Fallik 등의 CryoCMOS 다중화기는 10 mK에서 정적 소모 200 pW로 동작했고, 큐비트와 스위치 사이에 추가 감쇠기 없이 입력선과 출력선에 각각 연결됐다. 출력선에서 T1 중앙값 100–200 µs, T2e 50–100 µs의 소자 특성을 측정한 것은 여러 소자가 출력 경로를 공유할 근거를 보탠다.",
+    "활용을 정하는 것은 측정 일정이다. 보고된 108 fJ/회 전환 에너지는 초당 2,000회에서 추가 동적 소모 216 pW에 해당하고 자속 바이어스 전류는 또 다른 발열을 만든다. 배선을 줄이면서 시간과 열 예산을 함께 설계하는 순차 소자 측정이 우선 검토할 활용이다.",
+    "함께 읽은 공진기 리드베리 배열은 같은 공간에서 원자–빛 결합과 집단 진동을 양립시켰다. NV 결함 계산은 0 K에도 남는 다중 포논 전자 스펙트럼을 예측했다. 서로 다른 장치·재료에서 필요한 연결을 확보하고 그 환경을 이해하는 연구들이다."
+  ],
+  "watchlist": [
+    "CryoCMOS의 최종 편집판과 공개 원자료·코드. 전용 XY 선·고속 반복 전환은 이번 피드라인·특성 측정과 구분해 후속 결과를 확인한다.",
+    "동일 공진기 리드베리 장치의 원자–광자 얽힘·광자 연결·게이트 결과, 공개 데이터 호스트의 정상 접근 여부.",
+    "NV 누적함수 계산의 공식 SI·직접 데이터를 재확인한다. 4H-SiC 스핀 결맞음(10.1103/bg36-b6bs)은 초록만 읽은 별도 후보로 보존한다.",
+    "AIR QML(10.1007/s10462-026-11744-x)의 최종판·정정. 기존 조건부 참고 상태를 유지하고 성능 불일치를 새 성과로 쓰지 않는다."
+  ],
+  "coverage": [
+    "11월 16일 조사. Gmail은 직전 성공 조회보다 7일 겹친 범위를 발신자·제목으로 전 페이지 확인하고 기존 Nature 안내 두 건을 읽었다. 연결은 정상이고 새 원천 메일은 없었다. 당일 DQB 본문·첨부로 주제 중복을 대조했다.",
+    "Nature·Nature Physics·Nature Materials·Nature Computational Science·npj Quantum Information 공식 최신 목록 각 20개를 확인했다. npjQI의 11/14 CryoCMOS를 오늘 새로 발견했다. 나머지 네 목록 최신 표시는 11/11·11/12·11/12·11/6였다. Nature 전 계열·하루 종료까지의 전수 조사를 뜻하지 않는다.",
+    "PRL·PRB·PRX·PRX Quantum 최신 목록은 확인 시점에 11/13이 최신이었다. PRB의 부분 고정 호를 전날 inventory와 대조해 추가·변경 DOI는 관찰하지 못했다. 전날의 234 DOI 목록 보완과 오늘의 전문 독해를 구별했다.",
+    "선정 세 편의 온라인 날짜 11/5·12·14는 최근 14일 범위 안이다. PRX는 이전 초록 후보의 새 전문 독해, PRB는 미독해 자료의 보완이다. AIR 최신 50개에는 11/15 뇌졸중 AI 리뷰가 새로 있었으나 초록·서론 확인 후 범위 밖으로 제외했다. 새 관련 AIR 리뷰는 없었다.",
+    "기존 AIR QML [8]의 74쪽 Article in Press PDF는 전날과 같은 해시였고 확인한 공식 기록에서 판본·정정 변화는 관찰하지 못했다. 기존 조건부 참고 분류를 유지해 재선정하지 않았다."
+  ],
+  "context_refs": [
+    {
+      "n": 4,
+      "citation": "S. Krinner, S. Storz, P. Kurpiers, P. Magnard, J. Heinsoo, R. Keller, J. Lütolf, C. Eichler, and A. Wallraff, Engineering cryogenic setups for 100-qubit scale superconducting circuit systems, EPJ Quantum Technol. 6, 2 (2019).",
+      "url": "https://doi.org/10.1140/epjqt/s40507-019-0072-0",
+      "scope": "공식 HTML 초록·서론·1.1 및 열 부하 2.1–2.2의 관련 선택 절. 배선·잡음·열 예산의 역사적 배경이며 최신 논문의 외부 평가가 아니다."
+    },
+    {
+      "n": 5,
+      "citation": "R. Acharya, S. Brebels, A. Grill, J. Verjauw, Ts. Ivanov, D. Perez Lozano, D. Wan, J. Van Damme, A. M. Vadiraj, M. Mongillo, B. Govoreanu, J. Craninckx, I. P. Radu, K. De Greve, G. Gielen, F. Catthoor, and A. Potočnik, Multiplexed superconducting qubit control at millikelvin temperatures with a low-power cryo-CMOS multiplexer, Nat. Electron. 6, 900–909 (2023).",
+      "url": "https://doi.org/10.1038/s41928-023-01033-8",
+      "scope": "공식 초록·서지. 이전 입력선 제어와 열 필터링 조건의 배경; 구독 전문은 읽지 못했다."
+    },
+    {
+      "n": 6,
+      "citation": "LMU, Quantum networks: A building block for light-linked quantum computers (13 November 2026).",
+      "url": "https://www.lmu.de/en/newsroom/news-overview/news/quantum-networks-a-building-block-for-light-linked-quantum-computers-2af93e29.html",
+      "scope": "기관 해설 본문과 De Santis·Zeiher 발언. 연구진·기관의 설명으로 귀속하며 독립 실험 검증으로 다루지 않았다."
+    },
+    {
+      "n": 7,
+      "citation": "G. Wolfowicz, F. J. Heremans, C. P. Anderson, S. Kanai, H. Seo, A. Gali, G. Galli, and D. D. Awschalom, Quantum guidelines for solid-state spin defects, Nat. Rev. Mater. 6, 906–925 (2021).",
+      "url": "https://doi.org/10.1038/s41578-021-00306-y",
+      "scope": "출판 서지·초록, 공개 저자판 arXiv:2010.16395v1의 초록·서론·광학 성질 11–14쪽과 관련 선택 절. 저자판 제목은 Qubit guidelines for solid-state spin defects다. 배경 리뷰이며 최신 NV 결과의 직접 평가는 아니다."
+    },
+    {
+      "n": 8,
+      "citation": "R. Abu Zitar, M. Al-Rajab, S. Loucif, and A. Nasayrah, A systematic review of quantum machine learning: algorithms, application domains, and emerging trends, Artif. Intell. Rev. (2026), Article in Press.",
+      "url": "https://doi.org/10.1007/s10462-026-11744-x",
+      "scope": "이번에는 공식 목록·판본·PDF 해시·정정 기록을 재확인했다. 기존 심층 성능 요약은 반복하지 않았다."
+    }
+  ],
+  "disclosure": [
+    "책임 편집자: 김현중. 편집부(AEDAUT) 작성. root는 Nature·통합 집필·자체 도표·PDF·공개를, aps_quantum_survey는 APS 양자 논문을, aps_condensed_survey는 PRB·제일원리를, brief_format은 AIR·독립 과학/서지·한영·PDF 감수를 담당했다. 출판 기술은 운영팀(ADOPT)의 기존 절차를 사용했다. AI 보조: OpenAI Codex, 정확한 실행 모델 식별자는 미보존이다.",
+    "원문·수치·그림·판본과 모든 PDF 페이지를 별도 담당자가 교차 감수했다. 원 실험·계산·코드를 독립 재현하지 않았고 전환 전력의 산술 대조만 수행했다. 사람의 문장별 감수·독자 이해도 평가는 수행하지 않았다. 심층 후속 기획은 제안 상태다.",
+    "그림 1은 보고 수치와 산술 예시의 자체 재구성이다. 그림 2·3은 최종 출판본 CC BY 4.0 그림 발췌이며 패널·출처·수정 범위를 밝혔다. 원문 PDF·메일·개인정보·비공개 링크·내부 경로·QA 화면은 공개 자료에 넣지 않았다."
+  ]
+}
