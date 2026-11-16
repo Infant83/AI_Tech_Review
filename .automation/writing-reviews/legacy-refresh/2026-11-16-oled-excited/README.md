@@ -30,3 +30,12 @@ MAELLE의 81.1%는 정답 생성물을 넣은 judge 점검이고 89.0%는 정답
 후보의 변경은 대상 한영 HTML과 기존 PDF 두 공개 경로로 한정된다. 다른 57편의 1,927파일과 변경 대상 외 PDF 242경로의 원시 바이트를 실제 배포 기준과 대조했다. 원 그림의 기사·배포 경로도 바이트가 같다. 한영 각각 3그림·참고문헌8개·기존 앵커25/18개·조회 집계3필드를 확인했다. 390×844 및 기본 화면에서 도입·캡션·서지의 가로 넘침이 없다. 실제 집계 API의 성공이나 사람 독자 평가를 수행한 것으로 표시하지 않는다.
 
 릴리스·초기 전송량 검증은 통과했다. 기존 검색 지연 로드 80KB 및 공개 아티팩트 800MB 초과 경고는 운영팀(ADOPT)의 기존 용량·미디어 이관 과제에 해당하며 이 글 개편의 새 승인 조건으로 만들지 않는다.
+
+
+## 공개 완료
+
+`dda5d1fb712b5515bb764fbf14772aabd66b4dac`를 배포했다. [Pages 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969)의 build·deploy·recovery-copy·notify-readers 네 작업이 모두 성공했다. 실제 CI 로그의 906개 검사는 897개 통과·9개 제외·실패0이며, 봉인한 2,649파일·72개 글과 정확한 배포 복구 사본을 검증했다. 복구 사본은 최근 3개를 보존한다. 독자 동기화는72건·신규0·대기 알림0이며 실제 휴대폰 수신이나 전체 로컬 복원 검증을 뜻하지 않는다. [독립 CI 감수](ci-verification.json)를 따른다.
+
+[국문](https://infant83.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/)·[영문](https://infant83.io/AI_Tech_Review/reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/)과 PDF 두 경로·그림·목록·검색·카탈로그·최신 DQB/DRB를 포함한 실제 HTTPS22경로를 대조했다. 공개 PDF는5쪽·80,788바이트이며 두 경로가 `b50a04bed716b12da4f798f42bb97514302cbd761ea2d4aa57ff0bac4b841437`로 일치한다. 공개 HTML은 관측된 기존 연락처의 정확한 Cloudflare 변환만 구분한 뒤 봉인 CI 파일과 같았다. 실제 브라우저에서 한영 왕복과 이전 GitHub.io 주소의 현 도메인 전환, 각3그림·참고문헌8개·모든 이미지 로드를 확인했다. [공개 검증](live-verification.json)을 따른다.
+
+초기49편 중21편 완료다. 다음은 `2026-09-06_agentic-programs-materials-science`, 「계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나」이며 이번에 개편하지 않았다.

@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-11-16T01:43:38.831388+00:00",
+  "role": "Independent read-only CI log and artifact review by oled1116_core",
+  "verdict": "pass",
+  "run": {
+    "databaseId": 43787210969,
+    "headSha": "dda5d1fb712b5515bb764fbf14772aabd66b4dac",
+    "status": "completed",
+    "conclusion": "success",
+    "createdAt": "2026-11-16T01:36:08Z",
+    "updatedAt": "2026-11-16T01:42:23Z",
+    "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969"
+  },
+  "jobs": [
+    {
+      "databaseId": 133037420142,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-16T01:36:10Z",
+      "completedAt": "2026-11-16T01:40:50Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969/job/133037420142"
+    },
+    {
+      "databaseId": 133038806881,
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-16T01:40:54Z",
+      "completedAt": "2026-11-16T01:41:15Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969/job/133038806881"
+    },
+    {
+      "databaseId": 133038934434,
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-16T01:41:16Z",
+      "completedAt": "2026-11-16T01:41:52Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969/job/133038934434"
+    },
+    {
+      "databaseId": 133038934620,
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-16T01:41:17Z",
+      "completedAt": "2026-11-16T01:42:22Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43787210969/job/133038934620"
+    }
+  ],
+  "tests": {
+    "total": 906,
+    "passed": 897,
+    "skipped": 9,
+    "failed": 0,
+    "suites": [
+      {
+        "name": "Python publication/search/preservation",
+        "total": 404,
+        "passed": 403,
+        "skipped": 1,
+        "failed": 0,
+        "duration_s": 13.668,
+        "skip_scope": "Python-Markdown-dependent renderer stress test; log records skipped=1, source skip guard requires optional Python-Markdown. Node routing guard is satisfied by installed Node."
+      },
+      {
+        "name": "Multilingual search/course navigation",
+        "total": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Reader frontend unit tests",
+        "total": 196,
+        "passed": 188,
+        "skipped": 8,
+        "failed": 0,
+        "skip_scope": "Eight browser-only tests intentionally skipped by READER_UNIT_ONLY=1 in npm test:unit; installation, subscription, denied-permission, share/like and 320/390/736/1280px dialog browser cases were not performed by this CI suite."
+      },
+      {
+        "name": "Existing lecture reader/storage races",
+        "total": 208,
+        "passed": 208,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Backend authentication/notebook authorization",
+        "total": 72,
+        "passed": 72,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Portable media delivery",
+        "total": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ]
+  },
+  "release_guard": {
+    "additions": [],
+    "blockers": [],
+    "counts": {
+      "archive": 142,
+      "external": 1,
+      "publications": 72,
+      "reviews": 58
+    },
+    "instrumentation_only_changes": [],
+    "limits": "Continuity does not prove visual rendering, query quality or API health; run their separate checks.",
+    "ok": true,
+    "reviewed_changes": [
+      "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/index.html",
+      "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/en/oled_inverse_design_weekly_brief_2026-09-04.pdf",
+      "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/index.html",
+      "reviews/2026-09-04_weekly-oled-inverse-design-excited-state-reliability/oled_inverse_design_weekly_brief_2026-09-04.pdf"
+    ]
+  },
+  "payload_guard": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "lazy_search_gzip_bytes": 94290,
+    "browser_icons_gzip_bytes": 21902,
+    "public_artifact_bytes": 801855688,
+    "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."
+  },
+  "sealed_public_artifact": {
+    "validated_files": 2649,
+    "articles": 72,
+    "source": "actual build log output from reader_engagement_publish.py validate"
+  },
+  "deployment": {
+    "source_revision": "dda5d1fb712b5515bb764fbf14772aabd66b4dac",
+    "success_reported_at": "2026-11-16T01:41:13.6910711Z",
+    "environment_url": "https://infant83.io/AI_Tech_Review/",
+    "superseded": false
+  },
+  "recovery_packaging": {
+    "ok": true,
+    "revision": "dda5d1fb712b5515bb764fbf14772aabd66b4dac",
+    "files": 2649,
+    "bytes": 803206917,
+    "archive_sha256": "2176e5dda4aca1e19c1cd0d05ad66bbcb05d51703261eb5c4ac9d3c543e1e14f"
+  },
+  "recovery_retention": {
+    "keep": [
+      14191380870,
+      14189103395,
+      14184628964
+    ],
+    "delete": [
+      14182404550
+    ],
+    "applied": true
+  },
+  "reader_catalog": {
+    "revision": "dda5d1fb712b5515bb764fbf14772aabd66b4dac",
+    "articles": 72,
+    "sha256": "8bdc66620f0a54bf654cd43eb7e1ff29dbcb927b51782f699007e1a0abc78005",
+    "downloaded_from_run": 43787210969
+  },
+  "reader_sync": {
+    "synced": 72,
+    "revision": "dda5d1fb712b5515bb764fbf14772aabd66b4dac",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "observed_nonblocking_action_runtime_warnings": [
+    "Node20-targeted actions forced to Node24 on runner; deprecated punycode/url.parse/Buffer APIs in action dependencies"
+  ],
+  "scope_limits": [
+    "Read actual logs and downloaded validation/catalog artifacts for this exact source commit; did not infer success from local candidate checks.",
+    "CI recovery job verified and packaged the exact Pages artifact; no separate local full restore or private database restoration was attempted by this auditor.",
+    "Reader sync does not establish phone notification receipt or real device state; no manual message or test push was sent.",
+    "Root performs independent public HTTPS/browser verification; this CI report does not claim those checks."
+  ]
+}
