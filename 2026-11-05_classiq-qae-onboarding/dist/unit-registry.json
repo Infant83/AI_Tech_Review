@@ -2,13 +2,13 @@
   "format": "ai-tech-review-course-registry",
   "version": 1,
   "series_id": "classiq-qae-onboarding",
-  "updated": "2026-11-13",
+  "updated": "2026-11-16",
   "title": "Classiq QAE 온보딩 시리즈",
   "title_en": "Classiq QAE Onboarding Series",
-  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화부터 입출력·반복을 포함한 계산 비용까지, 회차별 PDF에서 유도와 문제·해설을 읽고 필기할 수 있습니다.",
-  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. This independent Korean series covers quantum states, measurement, energy optimization and the total cost of computation, including input/output and repeated runs, using PDFs with derivations, exercises and worked answers.",
+  "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화, 계산 비용과 프로그램 실행을 회차별 PDF의 유도·문제·해설로 익히고 직접 필기할 수 있습니다.",
+  "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. Learn about states, measurement, energy optimization, computation costs and program execution through Korean PDFs with derivations, exercises and worked answers, and annotate them as you study.",
   "official_Classiq_course": false,
-  "latest_unit": "L007",
+  "latest_unit": "L008",
   "units": [
     {
       "id": "L001",
@@ -205,12 +205,40 @@
       "answer_pdf_page": 13,
       "glossary_pdf_page": 14,
       "reference_pdf_page": 15
+    },
+    {
+      "id": "L008",
+      "date": "2026-11-16",
+      "title": "코드를 쓴 뒤, 무엇이 실행되는가",
+      "title_en": "SDK, Studio, Qmod and output checks",
+      "archive_id": "2026-11-16-classiq-qae-l008-notes-ko",
+      "summary": "한 Bell 예제와 설명용 SDK 코드로 선언·모델 생성·회로 합성·실행의 역할을 구별합니다. 계산 기저에서 같은 분포를 보이는 Bell 상태와 혼합상태를 비교하고, 여러 기저의 관측량과 샷 예산으로 출력을 검증하는 방법을 살핍니다.",
+      "summary_en": "Use a Bell-state example and illustrative SDK code to distinguish declaration, model creation, synthesis and execution. Compare a Bell state with a mixture that has the same computational-basis distribution, then examine how measurements in multiple bases and shot budgets support output checks.",
+      "status": "available",
+      "language": "ko",
+      "pdf": "2026-11-16-classiq-qae-l008-notes-ko.pdf",
+      "public_pages": 17,
+      "original_pages": 16,
+      "sha256": "5c70c140557f7e96fba3f02d522ac14a263abb344825814e405774f0447502c9",
+      "topics": [
+        "Python SDK·Studio·Qmod",
+        "모델·합성·실행",
+        "Bell 상태·혼합상태",
+        "Pauli 관측량",
+        "fidelity·샷 예산",
+        "판본·실행 기록"
+      ],
+      "exercises": 8,
+      "exercise_pdf_page": 13,
+      "answer_pdf_page": 14,
+      "glossary_pdf_page": 15,
+      "reference_pdf_page": 16
     }
   ],
   "planned_next": {
-    "id": "L008",
+    "id": "L009",
     "status": "planned-not-published",
-    "topic": "Python SDK·Studio·Qmod 프로그램 구조"
+    "topic": "양자자료형·할당·정밀도"
   },
   "source_zip_available": false,
   "original_validation_suite_independently_rerun": false
