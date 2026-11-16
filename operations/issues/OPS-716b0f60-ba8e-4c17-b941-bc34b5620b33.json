@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-716b0f60-ba8e-4c17-b941-bc34b5620b33",
   "uuid": "716b0f60-ba8e-4c17-b941-bc34b5620b33",
-  "record_version": 4,
+  "record_version": 5,
   "title": "PDF 필기 전체화면과 자동 저장 안내의 깜빡임 완화",
   "type": "reader_usability",
   "created_at": "2026-11-11T12:45:56Z",
-  "updated_at": "2026-11-14T06:57:26.695209Z",
+  "updated_at": "2026-11-16T10:09:48.523191Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -100,7 +100,8 @@
     "evidence": [
       "operations/runs/20261111T124556Z-0007f0a7-0764-48c2-8646-0ceb2cb7fa59.md",
       "https://github.com/Infant83/AI_Tech_Review/actions/runs/43029514680",
-      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
     ],
     "remaining_limits": [
       "실제 iPad/Pencil·iPhone·Windows 펜 시험 전이며 데스크톱 터치 에뮬레이션과 구분한다.",
@@ -121,6 +122,13 @@
       "finding": "실제561 reader4파일의 원시 SHA/크기와 나머지 reader의존성209개를 실제 release/브라우저 응답에 결속한 별도 origin에서 전체화면2회 왕복 후 -2/-4px 세로 누적이 후보와 동일했다. 페이지·배율·가로 위치·필기 유지, pageError0. 신규 후보 회귀로 볼 근거는 없으며 기존 낮은 영향의 위치 문제로 후속 분리한다.",
       "limits": "이 browser 표본의 원인·모든 환경 영향과 실제 iPhone/Pencil/Safari는 미확인. 재열기8px 결함과 구분하며 해결 완료로 처리하지 않는다.",
       "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    },
+    "shared_evidence_review_20261116_19": {
+      "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "checked_at": "2026-11-16T10:03:36.184882Z",
+      "scope": "이 대화·확인한 공용 일감/실행/event 범위만. 다른 채팅/기기/계정/외부 피드 전체의 부재를 주장하지 않음.",
+      "result": "기존 Chrome 왕복의2px/회(-2/-4) 표본은 해결된8px 재열기 결함과 다르며 새 영향/실기기 근거는 없다.",
+      "new_physical_device_test": false
     }
   },
   "recovery": {
@@ -128,14 +136,14 @@
     "execution_reference": null,
     "result": "복구 사본 생성 성공; 실제 롤백·개인 데이터 복원 미실행"
   },
-  "next_action": "11/16 19시 새 실기기 근거와 함께 기존 전체화면 왕복의 작은 세로 누적 사례를 재검토하고 필요한 최소 수정/검증 범위를 정한다. PDF 링크 후속의 정상 재열기·무효 목적지 수정과 구분하며, 현재 저장/필기·페이지·배율 보존을 유지한다. 새 영향이 커지면 같은 일감의 우선순위와 슬롯을 재판정한다.",
+  "next_action": "11/17 19시 기존 회차에서 묶어 새 근거를 재검토하며 그 전에 새 제보가 오면 해당 회차에서 우선순위를 판단한다. 새 근거가 오면 전체화면 왕복의 페이지/배율·세로 위치/필기 보존만 최소 범위로 재현한 뒤 수정 범위를 판단한다. 이미 관찰한 Chrome 표본을 반복하거나 실기기 해결로 표시하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "awaiting_new_physical_device_evidence",
-    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
-    "next_review_at": "2026-11-16T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
+    "next_review_at": "2026-11-17T19:00:00+09:00",
     "scheduled_step": "실제 필기 기기 새 근거·기존 전체화면 왕복의 작은 위치 누적 사례 재검토",
-    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
   }
 }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 9,
+  "record_version": 10,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-14T10:26:38.983457Z",
+  "updated_at": "2026-11-16T10:09:48.523191Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -211,7 +211,8 @@
     ],
     "evidence": [
       "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
-      "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md"
+      "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
     ],
     "remaining_limits": [
       "실제 iPhone/iPad/Pencil·Safari·Windows 펜 시험 전이며 Chrome 에뮬레이션과 구분한다.",
@@ -359,7 +360,14 @@
     },
     "result": "공개 리더에서 연속 페이지와 더블탭 확대/기본 너비 복귀, 목록·홈 복귀를 확인했다. 기존 필기 저장 형식·문서 ID·원본 PDF와 알림 경로는 보존했다. 물리 iPhone/Pencil·Safari 및 사용자 계정의 실제 원격 동기화를 시험한 것은 아니다.",
     "navigation_followup": "공개617b의 링크/목차·이전 위치 복귀·펜 차단·200% 재열기/합성 필기 보존 확인. 실제 기기·클라우드 운영 쓰기와 기존716 위치 누적은 미완료다.",
-    "initial_deployment_period": "2026-11-11T16:03:32Z 배포 이후 16:07:20Z까지 공개 HTTPS·Chrome·CI 확인"
+    "initial_deployment_period": "2026-11-11T16:03:32Z 배포 이후 16:07:20Z까지 공개 HTTPS·Chrome·CI 확인",
+    "shared_evidence_review_20261116_19": {
+      "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "checked_at": "2026-11-16T10:03:36.184882Z",
+      "scope": "이 대화·확인한 공용 일감/실행/event 범위만. 다른 채팅/기기/계정/외부 피드 전체의 부재를 주장하지 않음.",
+      "result": "617b의 기술 배포/Chrome·HTTPS 근거는 유효하나 새 실물 Safari/Pencil/운영 원격 노트 근거는 없다.",
+      "new_physical_device_test": false
+    }
   },
   "recovery": {
     "plan_reference": "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md#한계복구인계",
@@ -385,7 +393,7 @@
       "private_db_or_device_data_restore": false
     }
   },
-  "next_action": "다음 정상 발행과 새 사용 근거에서 공개617b의 PDF 링크·목차/복귀·로컬 위치/필기 보존을 관찰한다.11/16 19시 실제 펜/기기 근거와 기존OPS-716 후속을 함께 재검토한다. 새 회귀는 같은 일감에 연결하며 저장소 로컬 후보의 기술 선행은 충족했다.",
+  "next_action": "11/17 19시 기존 회차에서 묶어 새 근거를 재검토하며 그 전에 새 제보가 오면 해당 회차에서 우선순위를 판단한다. 새 실제 기기 근거에서 PDF 링크/목차·점프 복귀/로컬 위치·필기 보존을 확인한다.617b 기술 배포와 실제 기기 미확인을 분리하고 기존 전체화면 작은 누적은 OPS716에서 다룬다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -428,10 +436,10 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "technically_deployed_device_observation_pending",
-    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
-    "next_review_at": "2026-11-16T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
+    "next_review_at": "2026-11-17T19:00:00+09:00",
     "scheduled_step": "실제 기기 새 근거·정상 사용·기존 전체화면 후속 관찰",
-    "run_reference": "operations/runs/20261114T100144Z-f9091644-580d-4a69-bc2d-f09262c40f75.md",
+    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
     "technical_predecessor_satisfied": true
   }
 }

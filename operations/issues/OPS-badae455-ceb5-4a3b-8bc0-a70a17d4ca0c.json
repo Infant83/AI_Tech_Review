@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
   "uuid": "badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
-  "record_version": 3,
+  "record_version": 4,
   "title": "렉처 알림이 원본 PDF 뷰어로 열려 ATRL 복귀 경로가 없는 문제",
   "type": "notification_navigation",
   "created_at": "2026-11-11T14:40:55Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-16T10:09:48.523191Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -103,7 +103,8 @@
     ],
     "evidence": [
       "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md",
-      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
     ],
     "remaining_limits": [
       "실제 아이폰 PWA의 새 SW 설치와 OS 알림 클릭은 미시험이다. Chrome 화면 크기 시험과 구분한다.",
@@ -118,20 +119,28 @@
       "worker_deployed_at": "2026-11-11T14:56:48Z",
       "metadata_checked_at": "2026-11-11T14:58:22Z"
     },
-    "result": "사이트 리더에서 복귀 경로를 제공하고 canonical 이력·읽음 ACK·PDF bytes를 보존한다. 이미 열린 OS 뷰어와 매우 오래된 ID 없는 알림의 소급 변경은 보장하지 않는다."
+    "result": "사이트 리더에서 복귀 경로를 제공하고 canonical 이력·읽음 ACK·PDF bytes를 보존한다. 이미 열린 OS 뷰어와 매우 오래된 ID 없는 알림의 소급 변경은 보장하지 않는다.",
+    "shared_evidence_review_20261116_19": {
+      "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "checked_at": "2026-11-16T10:03:36.184882Z",
+      "scope": "이 대화·확인한 공용 일감/실행/event 범위만. 다른 채팅/기기/계정/외부 피드 전체의 부재를 주장하지 않음.",
+      "result": "기술 배포 뒤 실제 렉처 알림의 공유 리더→목록→홈·읽음 차감에 대한 새 기기 근거는 없다.",
+      "new_physical_device_test": false
+    }
   },
   "recovery": {
     "plan_reference": "operations/runs/20261111T144055Z-82f8e4ea-1056-428f-b1c7-9d7508aae27e.md#복구와-인계",
     "execution_reference": null,
     "result": "Pages 복구 사본 생성 성공; 실제 롤백·개인 DB 복원은 미실행"
   },
-  "next_action": "ATRL 앱을 정상 새로고침해 새 SW/클라이언트를 적용한 뒤 다음 정상 렉처 알림에서 리더 진입·렉처 목록·ATRL 홈 복귀·수신 이력·해당 글 읽음 차감을 관찰한다. 이미 열린 OS PDF 뷰어와 매우 오래된 ID 없는 알림의 한계를 유지한다.",
+  "next_action": "11/17 19시 기존 회차에서 묶어 새 근거를 재검토하며 그 전에 새 제보가 오면 해당 회차에서 우선순위를 판단한다. 다음 정상 렉처 알림/실제 사용에서 공유 리더·렉처 목록·ATRL 홈·해당 글 읽음 차감의 새 근거를 확인한다. 같은 기기 근거는 푸시 일감과 재사용하고 오래된 ID 없는 알림/이미 열린 OS PDF 뷰어 한계를 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "awaiting_new_physical_device_evidence",
-    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
-    "next_review_at": "2026-11-16T19:00:00+09:00",
-    "scheduled_step": "정상 렉처 알림의 사이트 복귀 근거 검토"
+    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
+    "next_review_at": "2026-11-17T19:00:00+09:00",
+    "scheduled_step": "정상 렉처 알림의 사이트 복귀 근거 검토",
+    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
   }
 }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 13,
+  "record_version": 14,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-16T06:13:42.885602Z",
+  "updated_at": "2026-11-16T10:09:48.523191Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -174,7 +174,8 @@
       "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
       "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
-      "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md"
+      "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
     ],
     "remaining_limits": [
       "실제 휴대기기·독자 사용 관찰과 AEDAUT의 새 분류 판단은 미실시; 현재 렉처15개 미분류 유지",
@@ -259,21 +260,25 @@
   "observation": {
     "status": "15시 최소 기능의 정상 운영 근거 검토 완료·실사용 관찰 유지",
     "period": "2026-11-16T05:59:12.446Z 회차",
-    "result": "06:01:45.091Z d8eb871e/동적73ID 기준으로 한영 HTML/전용 JS/CSS의 봉인 결속과 insights7d/discovery7d 각1회·프런트 validator·같은 응답 합계/coverage/공개 헤더를 확인했다. 정상 게시의 HTML 변화와 고정 자산을 구분했으며 집계 원시 응답 저장/POST/직접 DB/전체 시험/브라우저 재검증0이다. 새 실사용/실기기·Safari 근거는 없어 해결로 닫지 않는다."
+    "result": "06:01:45.091Z d8eb871e/동적73ID 기준으로 한영 HTML/전용 JS/CSS의 봉인 결속과 insights7d/discovery7d 각1회·프런트 validator·같은 응답 합계/coverage/공개 헤더를 확인했다. 정상 게시의 HTML 변화와 고정 자산을 구분했으며 집계 원시 응답 저장/POST/직접 DB/전체 시험/브라우저 재검증0이다. 새 실사용/실기기·Safari 근거는 없어 해결로 닫지 않는다.",
+    "handoff_20261116_19": {
+      "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "result": "15시 최소 기능 근거 검토 뒤 공개 전체/갱신/알림 카탈로그 raw bytes와 공유 피드백의 새 delta가 없다. 기존 정상 API/한영 근거를 재사용해 API/브라우저 검사를 반복하지 않았고 실사용/실기기 관찰을 유지한다."
+    }
   },
   "recovery": {
     "plan_reference": "구현 시 기존 하단 안내 링크·공개 집계 API와 Git 복구를 유지하고 개인 저장·구독 자료를 변경하지 않는다.",
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "11/16 19시 새 변경/피드백을 확인하고11/18 15시 실사용 근거를 재검토한다.15시 최소 기능 근거 검토는 마쳤으며 새 delta 없으면 API/전체 시험·브라우저 검사를 반복하지 않는다. 실기기/Safari/사람 사용과 확장 기획의 미완료를 유지하고 관리17일 구현·18일 후보 검토와 P2는 그대로 둔다.",
+  "next_action": "새 정상 사용/피드백은 기존 회차에서 확인하고11/18 15시 실사용 근거를 재검토한다.15시 최소 기능의 정상 근거와19시 불변 인수를 재사용하며 새 delta 없으면 API/전체 시험·브라우저 검사를 반복하지 않는다. 실기기/Safari/사람 사용과 확장 기획의 미완료·관찰 상태, 관리17일 구현/18일 후보 검토와 P2를 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_delivery_deployed_observing",
-    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
     "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "새 정상 사용/피드백 delta 관찰;15시 최소 기능 근거 검토는 완료",
+    "scheduled_step": "새 피드백은 기존 회차에서 확인;11/18 실사용 근거 검토",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "dependencies": [
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
@@ -281,7 +286,7 @@
     "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
     "replan_reason": "최소 제품/API의 구현·독립 검증·실제 통합 종료에 따라 실행 큐에서 관찰로 옮겼다. 기존11/16 검토 날짜와 P2는 유지한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
+    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
     "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",

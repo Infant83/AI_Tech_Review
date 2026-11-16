@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 11,
+  "record_version": 12,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-12T22:18:13Z",
+  "updated_at": "2026-11-16T10:09:48.523191Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -187,7 +187,8 @@
       "operations/runs/20261111T113548Z-887396e4-d8d5-40ea-8107-db4600f5c08b.md",
       "operations/runs/20261111T115620Z-e6638e24-a675-4207-84a1-2b00ec10bb1f.md",
       "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
-      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md"
+      "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
     ],
     "remaining_limits": [
       "아이폰의 정확한 OS 표시 시각·지연·iOS 버전·설정 및 JS/native 경로는 미확인",
@@ -203,20 +204,28 @@
   "observation": {
     "status": "구현·독립검증·정적/Worker배포완료; 실제아이폰전체UX관찰대기",
     "period": "2026-11-11 사용자후속증거~12:24:38Z운영확인",
-    "result": "기존앱진입의전체count0과선언형SW미연결계약을보완했다. 정상L006배너의과거성공과이번수정의효과를분리한다. 현재배포에서새이벤트0이며수신목록복구·앱/설정후배지유지·해당글열람시1건차감은새버전을적용한아이폰에서추가확인이필요하다."
+    "result": "기존앱진입의전체count0과선언형SW미연결계약을보완했다. 정상L006배너의과거성공과이번수정의효과를분리한다. 현재배포에서새이벤트0이며수신목록복구·앱/설정후배지유지·해당글열람시1건차감은새버전을적용한아이폰에서추가확인이필요하다.",
+    "shared_evidence_review_20261116_19": {
+      "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "checked_at": "2026-11-16T10:03:36.184882Z",
+      "scope": "이 대화·확인한 공용 일감/실행/event 범위만. 다른 채팅/기기/계정/외부 피드 전체의 부재를 주장하지 않음.",
+      "result": "과거 L006 배너1건의 사용자 확인은 보존하되 현재 목록/배지/읽음·OS 클릭 복귀 전체의 실제 완료로 확대할 새 근거는 없다.",
+      "new_physical_device_test": false
+    }
   },
   "recovery": {
     "plan_reference": "문제시Worker는직전21ee코드로복구할수있다. 클라이언트는새IDB의read/unread/observedAt필드를보존하는호환수정을우선하며원래코드전체교체는새상태보존검증후선택한다. 최신게시/L006/PDF/구독/키/DB·이미수락된배송을유지한다.",
     "execution_reference": null,
     "result": "Pages/Worker배포와읽기운영검증완료. 실제롤백·개인DB복원·구독초기화·테스트푸시·과거재발송없음"
   },
-  "next_action": "기존앱을정상새로고침해새JS/SW를적용한뒤최근L006목록과홈/설정진입후배지유지를확인한다. OS배지허용설정은별도확인하되추가승인조건으로삼지않는다. 다음정상신규발행에서배너→목록→배지유지→해당글/PDF공유리더열람1건차감까지관찰한다. 닫힌과거알림을가짜수신기록으로백필하거나과거재발송·재구독·데이터삭제로우회하지않는다.",
+  "next_action": "11/17 19시 기존 회차에서 묶어 새 근거를 재검토하며 그 전에 새 제보가 오면 해당 회차에서 우선순위를 판단한다. 다음 정상 발행/실제 사용 근거에서 배너→목록→홈/설정 배지 유지→해당 글/PDF 읽음1건 차감을 확인한다. 과거 재발송·테스트 푸시·재구독/데이터 삭제로 수신을 만들지 않고 같은 질문을 반복하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "awaiting_new_physical_device_evidence",
-    "next_scheduled_step_at": "2026-11-16T19:00:00+09:00",
-    "next_review_at": "2026-11-16T19:00:00+09:00",
-    "scheduled_step": "새 정상 발행·실기기 관찰 근거 검토"
+    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
+    "next_review_at": "2026-11-17T19:00:00+09:00",
+    "scheduled_step": "새 정상 발행·실기기 관찰 근거 검토",
+    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
   }
 }
