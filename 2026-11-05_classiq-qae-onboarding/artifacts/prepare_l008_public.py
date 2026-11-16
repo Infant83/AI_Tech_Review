@@ -17,7 +17,7 @@ from PIL import Image, ImageChops, ImageDraw
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parent
 IDENTIFIER = '2026-11-16-classiq-qae-l008-notes-ko'
-TITLE = '코드를 쓴 뒤, 무엇이 실행되는가'
+TITLE = 'Classiq 양자 프로그램의 합성·실행·검증'
 EDITION_DATE = '2026-11-16'
 BASE = 'https://infant83.io/AI_Tech_Review/'
 PREVIOUS = {
@@ -79,6 +79,8 @@ def main():
     parser.add_argument('--expected-source-sha256', required=True,
                         help='Expected edition digest from the private intake record')
     parser.add_argument('--font', type=Path, required=True)
+    parser.add_argument('--title-font', type=Path, required=True,
+                        help='Bold Korean font for the reviewed public cover title')
     parser.add_argument('--qa-dir', type=Path, required=True)
     args = parser.parse_args()
     if not re.fullmatch(r'[0-9a-f]{64}', args.expected_source_sha256):
@@ -91,6 +93,18 @@ def main():
     original_internal_links = internal_link_signature(original)
     original_uris = [link['uri'] for page in original for link in page.get_links() if 'uri' in link]
     regions = {i: [] for i in range(16)}
+
+    # Retitle the public cover only; keep the original subtitle and body intact.
+    cover_title = fitz.Rect(58, 206, 537, 288)
+    doc[0].add_redact_annot(cover_title, fill=(1, 1, 1))
+    doc[0].apply_redactions(images=0, graphics=0)
+    doc[0].insert_font(fontname='PublicTitleBold', fontfile=str(args.title_font))
+    assert doc[0].insert_textbox(
+        fitz.Rect(59.528, 210, 537, 287),
+        'Classiq 양자 프로그램의\n합성·실행·검증',
+        fontname='PublicTitleBold', fontsize=26.8991, lineheight=1.28,
+        color=(0, 0, 0)) >= 0
+    regions[0].append(list(cover_title))
 
     # Generalize personal background without altering the scientific comparison.
     cover_context = fitz.Rect(58, 774, 537, 792)
