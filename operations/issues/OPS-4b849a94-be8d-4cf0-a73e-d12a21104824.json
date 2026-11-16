@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 7,
+  "record_version": 8,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-15T07:58:19.390049Z",
+  "updated_at": "2026-11-16T02:23:49.148969Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -89,38 +89,43 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "기획 근거 확인",
+    "status": "로컬 v1 계약·독립 출처/권한 검토 완료, 구현 전",
     "checks": [
-      "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인"
+      "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
+      "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
+      "등록/알림/코스 view·원본/검토 입력/공개 근거를 분리하는 계약을 독립 대조했다.",
+      "첫 로컬 JSON/HTML·한도·실패/미확인·비공개 경계와 향후9개 검사 그룹을 정리했다. 구현 시험은 실행하지 않았다."
     ],
     "evidence": [
       "PUBLICATION_WORKFLOW.md",
       "SITE_OPERATIONS.md",
       ".automation/cloudflare/reader-engagement/src/study-library.js",
-      "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md"
+      "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
+      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md"
     ],
     "remaining_limits": [
-      "정식 관리 도구의 구현·통합·운영 검증 전"
+      "11/17 로컬 후보 구현·영향 검사·11/18 독립 브라우저 검토 전",
+      "운영 API/인증/쓰기/원격 미리보기와 전체 관리 도구는 별도 후속 범위"
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "11시 v1 계약 확정·후보 구현 전",
+    "period": "2026-11-16T02:01:11.019Z",
+    "result": "DEC85의 로컬 v1 계약을 확정했다.202개 등록 원본과73개 알림 자료를 구분하고 course/언어/PDF 판본은 명시된 관계로 연결한다. 기존 publisher Bearer·개인 study reviewer 권한을 공개 관리 인가로 사용하지 않는다. 생성기/화면/새 API·후보·배포는 아직 없다. 계약 조사 기준e0b7의202행 뒤 새 DRB등록이 들어와 종료 b20f452에서는203행이며 알림73건은 같다. 수량은 고정하지 않는다."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "알림용 카탈로그와 전체 자료 원본을 구분하는 관리 목록 계약을 정리하고 읽기 전용 후보를 구현한다.",
+  "next_action": "11/17 11시 최신 main/공개 묶음·동시 작업을 인수한 뒤 v1 로컬 읽기 후보를 구현한다. strict 원장 존재/크기 검사를 reader 앞에 두고 native sourceId와 관리 키를 구분한다.11/18 15시 독립 후보 검토·11/19 11시 쓰기 API 작업분해를 유지한다. 운영 API/권한·등록/출판 요청·공개 자료는 바꾸지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-16T11:00:00+09:00",
+    "state": "contract_v1_ready_for_local_candidate_not_implemented",
+    "next_scheduled_step_at": "2026-11-17T11:00:00+09:00",
     "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "읽기 전용 관리 목록 계약·범위 조사",
+    "scheduled_step": "로컬 v1 순수 adapter·bounded JSON/정적 읽기 목록 첫 후보 구현",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -129,7 +134,7 @@
     "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
     "replan_reason": "앞 통계 최소 기능의 실제 통합·필요 검증을 마쳐 남은 큐 순번2→1만 전진했다. P2·11/16 범위 조사·11/17 구현·11/18 검토 날짜는 같다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+    "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
     "technical_predecessor_satisfied": true
   }
 }

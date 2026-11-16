@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 18,
+  "record_version": 19,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-15T22:06:19.677731Z",
+  "updated_at": "2026-11-16T02:23:49.148969Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -160,7 +160,9 @@
       "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
       "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
       "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
-      "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md"
+      "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
+      "operations/events/EVT-8ee6916a-61ad-4c91-9ade-5363d2952522.json",
+      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md"
     ],
     "remaining_limits": [
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
@@ -489,6 +491,51 @@
       "historical_export_pdf_aliases": 233,
       "current_public_pdf_paths": 241,
       "scope_limit": "이전 export233은 현재241개 검증/업로드/절감 근거가 아니다. 같은 차단 조회/로그인 요청을 반복하지 않았다."
+    },
+    "internal_target_exceeded_20261116_11": {
+      "manifest_files": 2650,
+      "manifest_bytes": 802664210,
+      "release_json_bytes": 1352497,
+      "public_files": 2651,
+      "public_bytes": 804016707,
+      "growth_bytes": 8508881,
+      "headroom_to_internal_800MB_bytes": -4016707,
+      "excess_over_internal_800MB_bytes": 4016707,
+      "pdf_paths": 246,
+      "unique_pdf_objects": 172,
+      "checked_at": "2026-11-16T02:02:23.637369Z",
+      "source_revision": "e0b7dcf0dd654351eb02470054a84fb164011a66",
+      "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
+      "scope": "최신 정상 게시4건 뒤 실제 HTTPS 봉인 전체. 내부800MB 목표를4,016,707B 초과했다. 공급자 한도/실제 장애 판정은 아니며 외부 비활성·실제 절감0이다.",
+      "editorial_handoff_reference": "operations/events/EVT-8ee6916a-61ad-4c91-9ade-5363d2952522.json",
+      "provider_connection_rechecked": false,
+      "operational_storage_activation": false,
+      "public_storage_bytes_saved": 0,
+      "result": "L008의 공용 용량 인계와 실제 최신 공개 전체를 대조했다. 명세 파일 합계802,664,210B에 release JSON1,352,497B를 더한804,016,707B를 사용하며 snapshot/명세/전체 범위를 구분한다. 기존 목표 초과를 한 번 알리고 P2·관리17일 구현은 유지한다."
+    },
+    "late_drb_20261116_11": {
+      "checked_at": "2026-11-16T02:20:53.936436+00:00",
+      "source_revision": "b20f452c5bbba9b2ac53456363c0d08efabd4353",
+      "manifest_files": 2655,
+      "manifest_bytes": 803665840,
+      "release_json_bytes": 1354811,
+      "public_files": 2656,
+      "public_bytes": 805020651,
+      "growth_since_initial_check_bytes": 1003944,
+      "headroom_to_internal_800MB_bytes": -5020651,
+      "excess_over_internal_800MB_bytes": 5020651,
+      "pdf_paths": 247,
+      "unique_pdf_objects": 173,
+      "prior_pdf_paths_preserved": 246,
+      "reader_paths_preserved": 220,
+      "new_pdf_paths": [
+        "archive/files/2026-11-16-daily-research-brief.pdf"
+      ],
+      "fresh_pdf_downloads": 0,
+      "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
+      "public_storage_bytes_saved": 0,
+      "operational_storage_activation": false,
+      "scope": "초기804,016,707B 확인 뒤 동시 정상 DRB의 별도 종료 관찰.15시 준비 기준을 최신 b20f452/247PDF/173객체로 맞춤."
     }
   },
   "recovery": {
@@ -512,17 +559,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/16 11시 공용 공개본 delta 점검에서 새 용량/접근 근거를 짧게 확인하고 관리 목록 계약을 진행한다. P2·관리11/17 구현/11/18 검토·11/18 19시 구조 회고는 유지한다. 기대 SHA/원격 봉인·복구의 후속 범위는 읽기 제안이며 아직 새 구현 슬롯/배포를 배정하지 않았다. 새 근거 없는 같은 차단 조회/로그인 요청·준비 코드 전체 재시험을 반복하지 않는다. 실제 분리는 원격 무결성/복구와 기존 권한 경계를 충족한 뒤 별도로 진행한다.",
+  "next_action": "11/16 15시 기존 회차에서 b20f452의247PDF/173객체 명세를 기준으로 URL→기대 SHA/크기→불변 key와 예상 정적 제외 범위·클라이언트/봉인·회수복구 선행/담당을 제한된 오프라인 자료로 정리하고19시에 독립 대조한다. 계산상 가능 절감과 실제 절감0을 구분한다. 원본 삭제·업로드·라우트·과금·권한/로그인 요청·운영 배포는 실행하지 않는다. 관리17일 구현과18일 구조 회고는 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "local_minimum_integrated_external_preconditions_pending",
-    "next_scheduled_step_at": "2026-11-16T11:00:00+09:00",
-    "next_review_at": "2026-11-16T11:00:00+09:00",
-    "scheduled_step": "기존 공개본 delta 점검에 합친 용량·새 접근 근거 확인; 관리 계약 슬롯 유지",
-    "replan_reference": "operations/runs/20261115T180302Z-d236cf39-8958-40e5-9ada-051cc2c07d73.md",
-    "replan_reason": "정상 게시로16,510,180B 증가해 내부800MB 목표까지11,694,548B가 남았다. 기존11/18 19시의 다음 근거 검토를11/16 07시로 앞당기고11/18 구조 회고·관리11시 계약/후속 구현 날짜·P2는 유지한다. 실제 장애나 공급자 한도 도달로 판정하지 않는다.",
-    "run_reference": "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
+    "next_scheduled_step_at": "2026-11-16T15:00:00+09:00",
+    "next_review_at": "2026-11-16T19:00:00+09:00",
+    "scheduled_step": "최신 공개 명세의 제한된 오프라인 전환 준비·19시 독립 결과/새 접근 근거 검토",
+    "replan_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
+    "replan_reason": "11시 짧은 확인에서 내부800MB 목표 초과를 확인해15시 기존 슬롯에 URL/SHA/size/불변 key·예상 제외 범위/남은 선행의 오프라인 준비를 배정했다.19시 독립 검토와11/18 구조 회고, 관리11/17 구현·11/18 검토/P2는 유지한다. 실제 외부 활성화·분리 완료일은 확정하지 않는다.",
+    "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
