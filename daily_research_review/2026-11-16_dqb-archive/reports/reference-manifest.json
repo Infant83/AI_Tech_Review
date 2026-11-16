@@ -1,0 +1,140 @@
+{
+  "issue_date": "2026-11-16",
+  "source_pages": 4,
+  "source_sha256": "fbcaca0eb7533a41dbcac98d017730d47c4c7fefe689bbd026c48185c1edc6d9",
+  "source_audit_complete": true,
+  "references": [
+    {
+      "number": 1,
+      "citation": "M. Amoussou, B. Aizpurua, S. Singh, R. Orús, and H.-A. Jacobsen, Multi-head quantum neural networks: Replacing transformer blocks with NISQ modules inside a 30-billion-parameter LLM, arXiv:2611.15250v1 (2026).",
+      "locator": "arXiv:2611.15250v1",
+      "url": "https://arxiv.org/abs/2611.15250v1",
+      "read_scope": "All24 PDF pages extracted and read, including main text and appendices A1–A7, all21tables and5figure captions; matching arXiv HTML checked for metadata/mechanism. Selected PDF pages8/11/12/20 visually checked; no original training or QPU execution."
+    },
+    {
+      "number": 2,
+      "citation": "P. Vikstål, L. García-Álvarez, S. Puri, and G. Ferrini, Quantum approximate optimization algorithm with cat qubits, Sci. Rep. 16, 37504 (2026), doi:10.1038/s41598-026-77938-z; P. Wikståhl, Wikstahl/QAOA-with-Cat-Qubits: Release v1.0, version v1.0, Zenodo (2023), doi:10.5281/zenodo.7915751.",
+      "locator": "doi:10.1038/s41598-026-77938-z",
+      "url": "https://doi.org/10.1038/s41598-026-77938-z",
+      "additional_locators": [
+        {
+          "locator": "doi:10.5281/zenodo.7915751",
+          "url": "https://doi.org/10.5281/zenodo.7915751"
+        }
+      ],
+      "read_scope": "Current abstract, publisher metadata, encoding equations, results/table/limitations checked; exact 13-page VOR PDF SHA equals Nov13 copy, so Nov13 independent full13p+8pSI and selected archive static review reused rather than claimed newly re-executed. Current Zenodo metadata confirms v1.0 is latest."
+    },
+    {
+      "number": 3,
+      "citation": "A. Tavakoli and M. Heidari, A new framework for quantum reinforcement learning, arXiv:2611.14731v1 (2026).",
+      "locator": "arXiv:2611.14731v1",
+      "url": "https://arxiv.org/abs/2611.14731v1",
+      "read_scope": "Main PDF pp1–10; formal CPQC definition p15, proofs/estimator/truncation appendices pp16–21; checklist pp22–23 and targeted acceptance metadata. References pp11–14 and generic checklist pp24–28 not fully reread. Formal statements and proof structure read; no independent machine proof or implementation."
+    },
+    {
+      "number": 4,
+      "citation": "J. Kim, Circuit-aware protection against burst errors in lattice surgery, arXiv:2611.14583v1 (2026); E. Kim, Code and data for Circuit-aware protection against burst errors in lattice surgery, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.24046122.",
+      "locator": "arXiv:2611.14583v1",
+      "url": "https://arxiv.org/abs/2611.14583v1",
+      "additional_locators": [
+        {
+          "locator": "doi:10.5281/zenodo.24046122",
+          "url": "https://doi.org/10.5281/zenodo.24046122"
+        }
+      ],
+      "read_scope": "All8 PDF pages; full HTML main/methods, Fig1–5 captions; official paper-linked Zenodo current metadata, tagged README and CITATION. No full code ZIP download, full raw trajectories or original simulator rerun."
+    },
+    {
+      "number": 5,
+      "citation": "arXiv, Quantum physics: New submissions (accessed 16 November 2026).",
+      "locator": "Quantum physics: New submissions",
+      "url": "https://arxiv.org/list/quant-ph/new",
+      "read_scope": "Public list title/date and matching paper entries read; original background/discovery entry retained, not new performance evidence."
+    }
+  ],
+  "line_replacements": [
+    [
+      0,
+      "다. distance 13과 짧은 burst 조건에서는",
+      "다. distance 13에서는 차이가 분명하지 않았고, 5-round cap의 background matching에서 순위가 역전됐다. 조건별 보호 효과를 비교한 모사다. [4]"
+    ],
+    [
+      1,
+      "routing swap 0이었다. 첫 prompt token은",
+      "routing swap 0이었다. 다섯 checkpoint의 첫 token과 N=8의 15-token 생성 3회(두 prompt)를 실행했다. head bank 제출의 QPU 점유는 약 1.5분이었다."
+    ],
+    [
+      1,
+      "WikiText-2 전체 QPU 평가는 약",
+      "WikiText-2 전체 QPU 평가는 약 10^6 submissions 추정"
+    ],
+    [
+      1,
+      "entangler-off·frozen/random가 한 seed에서",
+      "entangler-off 2seed, frozen/random 1seed에서 full보다 우세"
+    ],
+    [
+      2,
+      "Cat qubit은 |α",
+      "Cat qubit은 even/odd cat의 합·차인 직교 logical 기저를 쓰며 큰 |α|에서 |±α〉에 가깝다. photon loss는 주로 Z-type error를 만든다. RZZ는 이 bias를 비교적"
+    ],
+    [
+      2,
+      "하고, mixer RX는 bias를 깨뜨린다.",
+      "보존하고 mixer RX는 bias를 깨뜨린다. 연구는 두 encoding의 평균 gate fidelity를 맞춰 error의 방향성이 approximation ratio를 바꾸는지 물었다."
+    ],
+    [
+      2,
+      "2큐비트 Exact Cover는 full master equation으로,",
+      "2큐비트 Exact Cover는 full master equation으로, 6·8·10큐비트 MaxCut은 Kraus/Pauli-transfer model로 계산했다. 각 크기에서 Erdős-Rényi p=0.5"
+    ],
+    [
+      3,
+      "Distance 13에서는 oracle decoding 아래 차이가 해소됐고,",
+      "Distance 13의 oracle 비교는 불확실성이 커 차이가 분명하지 않았다. 5-round cap의 background matching에서는 shallow-band 순위가 역전됐다. 숫자는"
+    ],
+    [
+      3,
+      "latency·impact localization을 측정한 결과가 아니라",
+      "tested burst-duration·correlated-background 모형에서 얻은 모사이며 실제 chip의 방사선 환경·decoder latency·impact localization 측정값과는 구별된다."
+    ]
+  ],
+  "font_size_overrides": {},
+  "edition_notes": [
+    "원 DQB 4쪽의 수집·소셜 검색 경위와 내부 출판 작업 메모를 삭제하고 약식 서지를 정식 APS 목록으로 보완했다. 원 호 날짜와 과학 주제·원 출처 진입점 6개를 보존한다. 공개 편집·추가 근거 기준일은 2026년 11월 16일이다.",
+    "[1] Qwen3-30B-A3B-Instruct-2507의 hidden vector를 32개 8큐비트 head로 나눈 모듈이다. 145,281개 학습 매개변수 중 131,072개는 고전 readout이며 16.33% 감소는 저장된 전체 모형 매개변수의 기준이다. 학습과 전체 perplexity 평가는 exact statevector에서 수행했다. 156큐비트 장치에서는 head bank를 14/14/4로 나누어 제한된 token campaign을 실행했다. 두 15-token prompt 가운데 하나를 반복해 총 3회 생성·135개 회로를 실행했다. 약 1.5분은 32개 head를 3개 회로로 나눈 한 token-bank 제출의 QPU 점유시간이다. 깨진 지수는 원문의 약 10^6 submissions로 복원했다. entangler-off 통제는 두 seed, frozen/random 통제는 한 seed였다.",
+    "[2] 정확한 logical 기저는 even/odd cat의 합·차를 정규화한 직교 조합이며 |±α〉는 큰 |α|의 근사다. 원 문서의 깨진 ket 닫기와 Erdős-Rényi 표기를 바로잡았다. 같은 평균 gate fidelity에서도 error 방향성과 QAOA gate 구성이 다르다는 모사 비교를 유지한다. 이번 출판사 PDF는 11월 13일에 대조한 판본과 바이트가 같고 Zenodo v1.0은 2023년 공개 자료다. 저널 저자와 코드 제작자의 별도 이름 표기를 보존했다.",
+    "[3] 반복 policy block 하나를 표본으로 골라 shift하는 gradient estimator는 bounded reward, discount factor γ<1와 suffix return의 불편 추정 조건을 사용한다. 수렴 결과는 smoothness·단계 크기·추정 정밀도 조건 아래 stationary behavior에 관한 것이다. arXiv 저자 comments의 NeurIPS 2026 accepted 표기를 유지하며 공식 OpenReview/proceedings의 공개를 확인한 것으로 표시하지 않는다.",
+    "[4] 38%는 quiet baseline을 뺀 conditional-on-impact excess risk의 감소이며 전체 논리 오류율의 일률적 감소가 아니다. 약 49개 절약은 log-risk 보간의 118.8개와 shallow 기준 168개의 차이고, 실제 비교한 123개 보호 배치는 기준보다 45개 적다. distance 13의 주된 Fig.5a oracle 비교는 불확실 구간이 1을 포함한다. 5-round cap의 순위 역전은 background-matching decoder 조건이다. 연결된 데이터의 creator Eric Kim과 논문 Jaebum Kim 표기를 따로 기록했다. README는 추가 response-model cohort의 일부 결과 차이를 알리므로 원 논문과 자료가 모두 완전 대응한다고 인증하지 않았다. 코드를 실행하거나 모든 결과를 재계산하지 않았다.",
+    "[5] 원 DQB의 공개 arXiv 목록 진입점을 출처 기록으로 보존했다. 이 목록의 현재 표시와 개별 논문의 판본·원문을 구분해 읽었으며 수집·메일·소셜 검색 이력은 공개 과학 근거에서 제외했다."
+  ],
+  "production_disclosure": "편집부(AEDAUT) root가 원 DQB 전체와 한영 웹 집필·통합을 맡고, dqb1116_llm은 LLM/QNN 24쪽 전체와 비교·실행 조건을 대조했다. dqb1116_methods는 cat-QAOA의 현재 판본·조건·코드 metadata와 이전 감수, QRL의 본문·해당 정의·증명 조건, burst 보호 8쪽과 연결 자료의 표기를 확인했다. dqb1116_pdf는 원 4쪽과 공개판의 삭제·정정·부록·구조·문자·URI·전페이지 렌더를 검사했다. 수치는 원저자 보고값이고 원 QPU·LLM 학습·최적화·오류정정 모사는 재실행하지 않았다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 사람 독자 평가는 수행하지 않았다.",
+  "edition_note_links": {},
+  "source_record_links": [
+    {
+      "text": "LLM/QNN 원 진입점",
+      "url": "https://arxiv.org/abs/2611.15250"
+    },
+    {
+      "text": "cat-QAOA DOI",
+      "url": "https://doi.org/10.1038/s41598-026-77938-z"
+    },
+    {
+      "text": "cat 코드 DOI",
+      "url": "https://doi.org/10.5281/zenodo.7915751"
+    },
+    {
+      "text": "QRL 원 진입점",
+      "url": "https://arxiv.org/abs/2611.14731"
+    },
+    {
+      "text": "burst 보호 원 진입점",
+      "url": "https://arxiv.org/abs/2611.14583"
+    },
+    {
+      "text": "arXiv 목록",
+      "url": "https://arxiv.org/list/quant-ph/new"
+    }
+  ],
+  "source_record_line": "원 DQB 진입점: LLM/QNN 원 진입점 · cat-QAOA DOI · cat 코드 DOI · QRL 원 진입점 · burst 보호 원 진입점 · arXiv 목록. 실제 열람 판본과 역할은 위 참고문헌을 따른다."
+}
