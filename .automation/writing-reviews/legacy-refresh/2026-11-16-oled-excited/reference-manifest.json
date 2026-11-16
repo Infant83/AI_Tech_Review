@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-11-16",
+  "original_evidence_cutoff": "2026-09-04",
+  "audit_role": "independent primary-source comparison; no molecular/model experiments performed",
+  "public_safe": true,
+  "records": [
+    {
+      "citation_number": 1,
+      "arxiv_id": "2609.01871",
+      "verified_edition": "v1",
+      "title": "Latent unified smooth Hamiltonians for excited state chemistry",
+      "authors": [
+        "David Juergens",
+        "Martin Stöhr",
+        "Andreas E. Hillers-Bendtsen",
+        "O. Jonathan Fajen",
+        "Todd J. Martínez"
+      ],
+      "posted_at_utc": "2026-09-01T21:09:17Z",
+      "publication_status_in_review": "preprint",
+      "abstract_url": "https://arxiv.org/abs/2609.01871v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.01871v1",
+      "pdf_pages": 31,
+      "pdf_sha256": "066a7f38cd1534db685d55cd146407becff9fd6a46190ff7013b6449656cdb03",
+      "read_scope": {
+        "main_scientific_text_pdf_pages": [
+          1,
+          16
+        ],
+        "supplement_pdf_pages": [
+          25,
+          31
+        ],
+        "references": "identity/context only; cited antecedents not independently reverified in full",
+        "visual_inspection_pdf_pages": [
+          25,
+          26
+        ],
+        "computation": "no training, inference, quantum chemistry, or code execution"
+      },
+      "claim_locations": [
+        {
+          "claim": "Smooth implicit Hamiltonian, diagonalization, common-basis operators, and conditional Hellmann–Feynman NAC construction",
+          "pdf_pages": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "claim": "At least two highest states used as buffers under state-weighted loss",
+          "pdf_pages": [
+            7,
+            8,
+            16
+          ]
+        },
+        {
+          "claim": "Ground-state QM9 task: about 134000 molecules, B3LYP/6-31G(2df,p), 5.95M parameters, about 48h on Tesla V100 32GB; validation on 100 random molecules.",
+          "pdf_pages": [
+            8
+          ]
+        },
+        {
+          "claim": "Separate supplement configuration: about 7.05M parameters (d=256), validation MAE 0.059eV (about 1.36kcal/mol).",
+          "pdf_pages": [
+            25
+          ],
+          "figure": "S1"
+        },
+        {
+          "claim": "QeMFi: 135000 geometries, nine molecules, CAM-B3LYP/def2-TZVP; 90/10 random split.",
+          "pdf_pages": [
+            8,
+            26
+          ],
+          "figure": "S2"
+        },
+        {
+          "claim": "Azobenzene: 780745 single points, FOMO-hh-TDA-BHLYP/def2-SVP; 99/1 random split; undersampled twisted/cis region.",
+          "pdf_pages": [
+            10,
+            11,
+            12,
+            29
+          ],
+          "figure": "S6"
+        },
+        {
+          "claim": "Code release promised upon peer-reviewed acceptance in this edition",
+          "pdf_pages": [
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "citation_number": 2,
+      "arxiv_id": "2609.00594",
+      "verified_edition": "v1",
+      "title": "GW and Bethe-Salpeter Theory for Molecular Polaritons, Quasiparticles, and Excitons",
+      "authors": [
+        "Soohaeng Yoo Willow",
+        "Gi Beom Sim",
+        "Tae Hyeon Park",
+        "Tae In Kim",
+        "D. ChangMo Yang",
+        "Mikuláš Matoušek",
+        "Jiří Brabec",
+        "Libor Veis",
+        "Chang Woo Myung"
+      ],
+      "posted_at_utc": "2026-09-01T02:33:49Z",
+      "publication_status_in_review": "preprint",
+      "abstract_url": "https://arxiv.org/abs/2609.00594v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.00594v1",
+      "pdf_pages": 25,
+      "pdf_sha256": "d2677e82230d5b226a744d8c3dae0a3b05d63b59050f2a812b1db77ae1f0cd6c",
+      "read_scope": {
+        "sections": [
+          "author list and abstract",
+          "III.A computational details",
+          "III.B–D quasiparticle results and shifts",
+          "III.G–I neutral excitation and basis dependence",
+          "IV conclusions",
+          "code/data availability",
+          "Appendices A and B"
+        ],
+        "formal_derivation": "consulted for channel/operator identity; not independently rederived",
+        "visual_inspection_pdf_pages": [
+          18,
+          22
+        ],
+        "computation": "no GW/BSE, coupled-cluster, DMRG, or repository code execution"
+      },
+      "claim_locations": [
+        {
+          "claim": "Nine authors total; Korean author-count correction required",
+          "pdf_pages": [
+            1
+          ]
+        },
+        {
+          "claim": "Four hydrides and two aromatic molecules in the charged-excitation benchmark; PH3 is an additional neutral-excitation test only.",
+          "pdf_pages": [
+            7,
+            8
+          ]
+        },
+        {
+          "claim": "CCSD/DMRG cavity-induced shifts agree within 1meV; absolute charged energies need not.",
+          "pdf_pages": [
+            8,
+            10,
+            20
+          ]
+        },
+        {
+          "claim": "The lowest-exciton kernel residual after removing the quasiparticle contribution is substantial only for NH3 in the examined five-molecule set; this does not describe the total optical-gap shift.",
+          "pdf_pages": [
+            16,
+            17,
+            18
+          ],
+          "tables": [
+            "IV",
+            "V"
+          ]
+        },
+        {
+          "claim": "Unbound-anion basis dependence and changed finite-basis exciton-binding diagnostics.",
+          "pdf_pages": [
+            19,
+            20
+          ],
+          "table": "VI"
+        },
+        {
+          "claim": "lambda=0.05a.u. corresponds to about 0.74nm3 or 0.9nm cubic side; 110nm is the free-space wavelength at 11.31eV; planar-cavity estimates are about 1e-4a.u. single-molecule coupling and 2e5 molecules for collective coupling.",
+          "pdf_pages": [
+            7,
+            22
+          ],
+          "appendix": "A"
+        },
+        {
+          "claim": "Source authors identify public OmegaQMC examples and MOLMPS; software was not executed and a historical commit was not verified.",
+          "pdf_pages": [
+            21,
+            22
+          ]
+        }
+      ],
+      "additional_edition_checked": {
+        "edition": "v2",
+        "posted_at_utc": "2026-09-03T02:54:17Z",
+        "abstract_url": "https://arxiv.org/abs/2609.00594v2",
+        "full_text_url": "https://arxiv.org/pdf/2609.00594v2",
+        "pdf_pages": 26,
+        "pdf_sha256": "a654e8b20136566a850d53c2c16a6b7bfad0035da91c9f0b468eac8a0ee854fd",
+        "relationship_to_cutoff": "within original evidence window",
+        "comparison_scope": "106 HTML scientific paragraphs per edition after citation-anchor removal, plus PDF identity and relevant tables",
+        "observed_changes": "Introduction adds GW history and original-research credit; bibliography expanded/renumbered. Quantitative claims used in this review unchanged.",
+        "use_in_revision": "Audited v1 remains identifiable; switching citation to v2 should be explicit in revision record."
+      }
+    },
+    {
+      "citation_number": 3,
+      "arxiv_id": "2609.00488",
+      "verified_edition": "v1",
+      "title": "AdaptNTK: Adaptive Uncertainty Quantification and Active Learning for Neural Network Potentials",
+      "authors": [
+        "Prajwal Ananth",
+        "Shuwen Yue"
+      ],
+      "posted_at_utc": "2026-08-31T23:34:29Z",
+      "publication_status_in_review": "preprint",
+      "abstract_url": "https://arxiv.org/abs/2609.00488v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.00488v1",
+      "pdf_pages": 19,
+      "pdf_sha256": "0cbc5ef271e2a02d442316978fa3315edecc1dd6932fdf15ea2e458eb17e1274",
+      "read_scope": {
+        "main_scientific_text_pdf_pages": [
+          1,
+          11
+        ],
+        "experimental_protocol_pdf_pages": [
+          17,
+          19
+        ],
+        "limitations": "Mathematical proof and all cited antecedents not independently rederived/reverified.",
+        "visual_inspection_pdf_pages": [
+          7,
+          19
+        ],
+        "computation": "no MACEtraining, NTK calculation, active-learning experiment, or code execution"
+      },
+      "claim_locations": [
+        {
+          "claim": "Empirical NTK regularized Mahalanobis uncertainty and label-free Sherman–Morrison sequential batch updates with fixed features.",
+          "pdf_pages": [
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        {
+          "claim": "Force-error Spearman 0.683+/-0.018, Pearson 0.706+/-0.021, AURCn 0.312+/-0.014 versus ensemble 0.310+/-0.013; ENCE 0.0125+/-0.0018.",
+          "pdf_pages": [
+            7
+          ],
+          "table": "1"
+        },
+        {
+          "claim": "Matched MACE architecture/loss and fixed splits/seeds; three-member ensemble; gas-phase molecules and uncertainty-based comparison scope.",
+          "pdf_pages": [
+            7,
+            9,
+            10,
+            11,
+            17,
+            18
+          ]
+        },
+        {
+          "claim": "Timing 2423.34s versus 6225.15s, 2.57-fold rounded to 2.6; single A100 per method; pretraining plus UQ plus batch selection; reference-label cost excluded.",
+          "pdf_pages": [
+            10,
+            19
+          ],
+          "table": "2"
+        },
+        {
+          "claim": "AURCn normalized to oracle/random retention; ENCE reported after two-fold cross-fitted post-hoc recalibration.",
+          "pdf_pages": [
+            18,
+            19
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Mechanistic Reaction Prediction via Discrete Flow Matching on Graph-Structured Electron Occupation",
+      "authors": [
+        "Xuan-Vu Nguyen",
+        "Octavian Susanu",
+        "Daniel Armstrong",
+        "Philippe Schwaller"
+      ],
+      "edition": "2608.27429v2",
+      "edition_date": "2026-08-28",
+      "first_submission_date": "2026-08-27",
+      "uri": "https://arxiv.org/abs/2608.27429v2",
+      "pdf_uri": "https://arxiv.org/pdf/2608.27429v2",
+      "pdf_sha256": "548e69aefc34fa9ff9ba9abee7f8ca89740f492a7d74663751e705f48f83b47e",
+      "pdf_pages": 26,
+      "read_scope": "Title page and edition history; manuscript-relevant methods, quantitative results/tables, appendices and discussion. No claim of line-by-line review of all supplementary derivations; no numerical reproduction.",
+      "claim_locations_pdf_pages": {
+        "USPTO accuracies and baselines": [
+          9
+        ],
+        "FlowER coverage and direction metrics": [
+          11,
+          12
+        ],
+        "judge ground-truth sanity check": [
+          12,
+          24
+        ]
+      },
+      "citation_number": 4
+    },
+    {
+      "title": "HiPoly: a hierarchical polymer-native AI framework for property prediction and generative design",
+      "authors": [
+        "Ge Sun",
+        "Gervasio Zaldivar",
+        "Yuan Tian",
+        "Gustavo Perez Lemus",
+        "Juhae Park",
+        "Dasha Safarian",
+        "Ming Han",
+        "Juan J. de Pablo"
+      ],
+      "edition": "2609.02746v1",
+      "edition_date": "2026-09-02",
+      "first_submission_date": "2026-09-02",
+      "uri": "https://arxiv.org/abs/2609.02746v1",
+      "pdf_uri": "https://arxiv.org/pdf/2609.02746v1",
+      "pdf_sha256": "8d3bda9ebfbe0cdb2309369c006074f083df534d0373a53e6a707eed88a85c46",
+      "pdf_pages": 30,
+      "read_scope": "Title page and edition history; manuscript-relevant methods, quantitative results/tables, appendices and discussion. No claim of line-by-line review of all supplementary derivations; no numerical reproduction.",
+      "claim_locations_pdf_pages": {
+        "fivefold Tg/density results": [
+          9,
+          10,
+          11
+        ],
+        "PFAS dataset and generated candidates": [
+          11,
+          12
+        ],
+        "MD preparation protocol": [
+          23
+        ],
+        "cross-validation protocol": [
+          9,
+          24
+        ]
+      },
+      "citation_number": 5
+    },
+    {
+      "title": "Language-Informed Flow Matching for Trend-Guided Structure-Based 3D Molecular Generation",
+      "authors": [
+        "Tianyu Gao",
+        "Zhikai Su",
+        "Jiashu Li",
+        "Wenjun Gao",
+        "Zichuan Ying",
+        "Zhe Zhao",
+        "Fei Zhang",
+        "Ye Wei"
+      ],
+      "edition": "2608.31009v1",
+      "edition_date": "2026-08-31",
+      "first_submission_date": "2026-08-31",
+      "uri": "https://arxiv.org/abs/2608.31009v1",
+      "pdf_uri": "https://arxiv.org/pdf/2608.31009v1",
+      "pdf_sha256": "78f6b2aa00776c0804575fc5634245752481b9e00326810d7e3f376b7302ebab",
+      "pdf_pages": 39,
+      "read_scope": "Title page and edition history; manuscript-relevant methods, quantitative results/tables, appendices and discussion. No claim of line-by-line review of all supplementary derivations; no numerical reproduction.",
+      "claim_locations_pdf_pages": {
+        "no-reference QED and SA values": [
+          7,
+          8,
+          13,
+          14
+        ],
+        "PoseBusters prompt setting": [
+          7,
+          8
+        ],
+        "frozen semantic encoder": [
+          6,
+          12,
+          18,
+          19,
+          22
+        ],
+        "generation timing protocol": [
+          19,
+          21
+        ]
+      },
+      "citation_number": 6
+    },
+    {
+      "title": "Numerical simulation of D-Wave's quantum advantage experiment with time-dependent variational Monte Carlo",
+      "authors": [
+        "Roeland Wiersema"
+      ],
+      "edition": "2609.01719v1",
+      "edition_date": "2026-09-01",
+      "first_submission_date": "2026-09-01",
+      "uri": "https://arxiv.org/abs/2609.01719v1",
+      "pdf_uri": "https://arxiv.org/pdf/2609.01719v1",
+      "pdf_sha256": "2f6bd641ed1ec61cc799058f3e556becf542c652bad6a7c2140c140d5791354a",
+      "pdf_pages": 19,
+      "read_scope": "Title page and edition history; manuscript-relevant methods, quantitative results/tables, appendices and discussion. No claim of line-by-line review of all supplementary derivations; no numerical reproduction.",
+      "claim_locations_pdf_pages": {
+        "biclique correlation discrepancy": [
+          6
+        ],
+        "integrated TDVP projection error": [
+          6,
+          19
+        ],
+        "final correlation-error samples": [
+          6
+        ],
+        "source runtime comparison": [
+          7
+        ]
+      },
+      "citation_number": 7
+    },
+    {
+      "title": "Logarithmic-scale variational quantum eigensolver for off-lattice protein structure prediction in continuous torsional angle space",
+      "authors": [
+        "Fabio Cumbo",
+        "Bryan Raubenolt",
+        "Varun Puram",
+        "Natalie Katzenmeyer",
+        "Jayadev Joshi",
+        "Daniel Blankenberg"
+      ],
+      "edition": "2609.02113v1",
+      "edition_date": "2026-09-02",
+      "first_submission_date": "2026-09-02",
+      "uri": "https://arxiv.org/abs/2609.02113v1",
+      "pdf_uri": "https://arxiv.org/pdf/2609.02113v1",
+      "pdf_sha256": "da595aa9a3afbaec0588eb26ea822a15f1433e7cc5752163117d0b20e778fa6e",
+      "pdf_pages": 50,
+      "read_scope": "Title page and edition history; manuscript-relevant methods, quantitative results/tables, appendices and discussion. No claim of line-by-line review of all supplementary derivations; no numerical reproduction.",
+      "claim_locations_pdf_pages": {
+        "snapshot and final RMSDs": [
+          2,
+          23,
+          33
+        ],
+        "hardware execution and selection": [
+          27
+        ],
+        "shot count": [
+          27
+        ],
+        "Miami compiled CZ count": [
+          28,
+          32
+        ],
+        "decoder baseline distinction": [
+          30
+        ],
+        "native-like counts": [
+          2
+        ]
+      },
+      "citation_number": 8
+    }
+  ]
+}
