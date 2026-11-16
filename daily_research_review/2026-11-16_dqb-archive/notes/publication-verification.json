@@ -1,0 +1,432 @@
+{
+  "status": "published_verified",
+  "completed_at": "2026-11-16T01:07:13.065005+00:00",
+  "publication_commit": "073168a0868ac0902e81c016ebd5154d689b4277",
+  "workflow": {
+    "name": "Publish public report hub",
+    "file": ".github/workflows/pages.yml",
+    "run_id": 43783345013,
+    "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43783345013",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-16T00:56:54Z",
+    "updated_at": "2026-11-16T01:02:36Z",
+    "jobs": [
+      {
+        "name": "build",
+        "databaseId": 133025369609,
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-16T00:56:57Z",
+        "completedAt": "2026-11-16T01:00:42Z",
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43783345013/job/133025369609"
+      },
+      {
+        "name": "deploy",
+        "databaseId": 133026516815,
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-16T01:00:47Z",
+        "completedAt": "2026-11-16T01:01:11Z",
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43783345013/job/133026516815"
+      },
+      {
+        "name": "recovery-copy",
+        "databaseId": 133026663753,
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-16T01:01:13Z",
+        "completedAt": "2026-11-16T01:02:00Z",
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43783345013/job/133026663753"
+      },
+      {
+        "name": "notify-readers",
+        "databaseId": 133026663819,
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-11-16T01:01:12Z",
+        "completedAt": "2026-11-16T01:02:36Z",
+        "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43783345013/job/133026663819"
+      }
+    ]
+  },
+  "automated_tests": {
+    "total": 906,
+    "passed": 897,
+    "skipped": 9,
+    "failed": 0,
+    "groups": [
+      {
+        "name": "Python publication/search/preservation",
+        "tests": 404,
+        "passed": 403,
+        "skipped": 1,
+        "failed": 0
+      },
+      {
+        "name": "Multilingual search/course navigation",
+        "tests": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Reader frontend controls/permissions",
+        "tests": 196,
+        "passed": 188,
+        "skipped": 8,
+        "failed": 0
+      },
+      {
+        "name": "Lecture reader/storage races",
+        "tests": 208,
+        "passed": 208,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Backend authentication/notebook authorization",
+        "tests": 72,
+        "passed": 72,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Portable media",
+        "tests": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ],
+    "source": "Actual completed job logs, not previous-run counts.",
+    "limits": "No original scientific rerun, human reader evaluation or device push receipt is established by tests."
+  },
+  "baseline": {
+    "revision": "b79352b29d7d90b97a222fd0b0b86bb59ad84cde",
+    "source": "deployed_artifact_snapshot",
+    "verified_in_actual_build_log": true,
+    "local_source_substitution": false
+  },
+  "source_and_public_pdf": {
+    "original_pages": 4,
+    "public_pages": 6,
+    "public_bytes": 260666,
+    "public_sha256": "1774e6d54b82e4f1fa6916e8656845c5ec704a829eb6ecc873f294c4aed91c76",
+    "producer_root_and_independent_reviews_passed": true,
+    "original_source_URIs_retained": 6
+  },
+  "preservation": {
+    "status": "passed",
+    "baseline_revision": "b79352b29d7d90b97a222fd0b0b86bb59ad84cde",
+    "baseline_reviews": 58,
+    "all_previous_review_files": 1937,
+    "all_previous_PDF_paths": 243,
+    "registered_previous_documents": 141,
+    "prior_scientific_files_exactly_preserved": true,
+    "new_archive_document": "2026-11-16-daily-quantum-brief",
+    "expected_archive_documents": 142,
+    "other_article_bodies_changed": false
+  },
+  "live_verification": {
+    "checked_at": "2026-11-16T01:02:11.773385+00:00",
+    "revision": "073168a0868ac0902e81c016ebd5154d689b4277",
+    "workflow_run": 43783345013,
+    "responses": {
+      "reader-publications.json": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/reader-publications.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 22643,
+        "sha256": "1ee31b5fae8f741a803e6e2a6ecaaae397a131c81cc70f25ce9be21adb4c028a",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "publication-release.json": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/publication-release.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 1351229,
+        "sha256": "c5a2b2861edc42d3580242334db2d4c5d61e0ecb40747ba8aba0227c686728ad"
+      },
+      "reader-updates.json": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/reader-updates.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 129899,
+        "sha256": "a2e80358de9b2c821d59221380b09226e10c1a1a5914e6454799e8f977383831",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive-manifest.json": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/archive-manifest.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 191667,
+        "sha256": "7c70781b4e0038cadd1de8b43bc14207be0d79291aa7e7923deef3b7b2ed8b08",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "assets/search-records.json": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/assets/search-records.json",
+        "content_type": "application/json; charset=utf-8",
+        "bytes": 306511,
+        "sha256": "3b1707c7f0b4507c59191a86690ff8736746a513f5be1b4d1d7d0756c7e242a5",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/2026-11-16/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-16/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 10337,
+        "sha256": "b78913706c294cdca4b54c7931f480350c0ca333de117856e5effd2d3fa7ffc9",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/2026-11-16/en/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-16/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 10104,
+        "sha256": "c0cc8f7a4d3f9397b07ae7d64c1976b707bbcfa05b21af28a5972fd5a69d341e",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 105291,
+        "sha256": "21ea7486135327289b816081a3ffc3f17b2fca922bbbc90b66e4d662f3e385c6",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/en/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 104760,
+        "sha256": "b8170dbc3140b0d33e179d2f48386ef75ce6ed6ad50bc211c61936ec3f2d6e61",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/archive/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 35470,
+        "sha256": "382c03a90b9956b5b786d1f9b4f78b18ba9e305e18af069629f7dab16fad6f67",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive/en/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/archive/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 34620,
+        "sha256": "c90b68c4f5ece65f61913a9841ab178c4d594f0a34801b86e4f09b6bd27f183c",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "archive/files/2026-11-16-daily-quantum-brief.pdf": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/archive/files/2026-11-16-daily-quantum-brief.pdf",
+        "content_type": "application/pdf",
+        "bytes": 260666,
+        "sha256": "1774e6d54b82e4f1fa6916e8656845c5ec704a829eb6ecc873f294c4aed91c76",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "reviews/2026-09-09_quantum-resource-aware-workflows/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 45169,
+        "sha256": "8e8c7ea3b3c8507ac2b1f7a014d43efa81f7e2d85f98d0cb3c42601de59c5783",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/2026-11-15/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-15/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 10987,
+        "sha256": "cce7c1b3f9e13604c4f9853ce3d834248be25631e27a6dc99f7b574048217ef4",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/2026-11-15/en/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-15/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 10690,
+        "sha256": "3fe11bddaaa17499c29b8d6f89a47bb6730669e9b5cebd1d8d59fd6e767a196e",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/research/2026-11-15/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/research/2026-11-15/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 11640,
+        "sha256": "9ca3e568086fb2f5704fd1e7cfa51fc313e4bedb98bea761b77848ba53938595",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/research/2026-11-15/en/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/research/2026-11-15/en/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 11580,
+        "sha256": "baa36b11de9a7a2c7b8a602d7b867b916117e93f29641d0a74300176603098c0",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      },
+      "briefings/exercises/2026-11-14/": {
+        "status": "200",
+        "url": "https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-14/",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 14145,
+        "sha256": "109a80f3502a5f1a078463e77319c25db751b69effb91482f4f99e3694898238",
+        "matches_sealed_CI_artifact": true,
+        "verified_edge_transforms": []
+      }
+    },
+    "archive_documents": 142,
+    "series_counts": {
+      "daily-quantum": 84,
+      "daily-research": 3,
+      "daily-quantum-exercise": 1
+    },
+    "new_document": {
+      "id": "2026-11-16-daily-quantum-brief",
+      "date": "2026-11-16",
+      "series": "daily-quantum",
+      "title": "큰 언어모델 안에서 시험한 작은 양자 회로",
+      "summary": "30B 언어모델의 내부 표현을 32개 작은 양자 회로로 나눠 현재 장치에서 일부 토큰의 회로 출력을 얻었다. 층을 뺀 모델·고정 회로·고전 신경망과의 비교는 작은 모듈이 어떤 기능을 되찾았으며 어떤 학습이 필요한지 살펴볼 단서를 준다.",
+      "language": "ko",
+      "tags": [
+        "QML",
+        "LLM",
+        "QPU"
+      ],
+      "title_en": "Testing Small Quantum Circuits inside a Large Language Model",
+      "summary_en": "A 30B language model routes part of its hidden representation through 32 small quantum circuits to obtain circuit outputs for limited token runs on hardware. Comparisons with deleted layers, fixed circuits and classical networks offer clues to the functions the module recovers and the training it needs.",
+      "source_title": "Daily Quantum Brief",
+      "href": "archive/files/2026-11-16-daily-quantum-brief.pdf",
+      "size_bytes": 260666,
+      "sha256": "1774e6d54b82e4f1fa6916e8656845c5ec704a829eb6ecc873f294c4aed91c76",
+      "editorial_href": "briefings/2026-11-16/index.html",
+      "editorial_en_href": "briefings/2026-11-16/en/index.html",
+      "editorial_updated": "2026-11-16",
+      "editorial_assets": {
+        "briefings/2026-11-16/index.html": "b78913706c294cdca4b54c7931f480350c0ca333de117856e5effd2d3fa7ffc9",
+        "briefings/2026-11-16/en/index.html": "c0cc8f7a4d3f9397b07ae7d64c1976b707bbcfa05b21af28a5972fd5a69d341e"
+      }
+    },
+    "search_record": {
+      "id": "2026-11-16-daily-quantum-brief",
+      "scope": "briefings",
+      "title": "큰 언어모델 안에서 시험한 작은 양자 회로",
+      "title_en": "Testing Small Quantum Circuits inside a Large Language Model",
+      "url": "briefings/2026-11-16/index.html",
+      "url_en": "briefings/2026-11-16/en/index.html",
+      "date": "2026-11-16",
+      "titles": "큰 언어모델 안에서 시험한 작은 양자 회로 Testing Small Quantum Circuits inside a Large Language Model",
+      "topics": "QML LLM QPU ",
+      "summary": "30B 언어모델의 내부 표현을 32개 작은 양자 회로로 나눠 현재 장치에서 일부 토큰의 회로 출력을 얻었다. 층을 뺀 모델·고정 회로·고전 신경망과의 비교는 작은 모듈이 어떤 기능을 되찾았으며 어떤 학습이 필요한지 살펴볼 단서를 준다.",
+      "summary_en": "A 30B language model routes part of its hidden representation through 32 small quantum circuits to obtain circuit outputs for limited token runs on hardware. Comparisons with deleted layers, fixed circuits and classical networks offer clues to the functions the module recovers and the training it needs.",
+      "text": "30B 언어모델의 내부 표현을 32개 작은 양자 회로로 나눠 현재 장치에서 일부 토큰의 회로 출력을 얻었다. 층을 뺀 모델·고정 회로·고전 신경망과의 비교는 작은 모듈이 어떤 기능을 되찾았으며 어떤 학습이 필요한지 살펴볼 단서를 준다. A 30B language model routes part of its hidden representation through 32 small quantum circuits to obtain circuit outputs for limited token runs on hardware. Comparisons with deleted layers, fixed circuits and classical networks offer clues to the functions the module recovers and the training it needs. Daily Quantum Brief",
+      "headings": ""
+    },
+    "device_local_update_metadata": {
+      "id": "archive:2026-11-16-daily-quantum-brief",
+      "path": "/AI_Tech_Review/archive/files/2026-11-16-daily-quantum-brief.pdf",
+      "paths": [
+        "/AI_Tech_Review/archive/files/2026-11-16-daily-quantum-brief.pdf",
+        "/AI_Tech_Review/briefings/2026-11-16/",
+        "/AI_Tech_Review/briefings/2026-11-16/en/"
+      ],
+      "title": "큰 언어모델 안에서 시험한 작은 양자 회로",
+      "publishedAt": "2026-11-16",
+      "revision": "0b0e2088dcf366521a5e642b1f82453bb1248619cf8b04f5693cf4e9629edfda",
+      "updatedAt": "2026-11-16T00:00:00Z",
+      "change": "new"
+    },
+    "pdf_pages": 6,
+    "pdf_sha256": "1774e6d54b82e4f1fa6916e8656845c5ec704a829eb6ecc873f294c4aed91c76",
+    "reader_catalog_articles": 72,
+    "status": "live_https_editorials_and_exact_pdf_verified",
+    "limits": "No source QPU/HPC/solver rerun, human review, phone-notification receipt or complete recovery restore claim."
+  },
+  "browser": {
+    "status": "passed",
+    "checked_at": "2026-11-16T00:54:14.338582+00:00",
+    "route": "in-app browser",
+    "candidate": "final local candidate",
+    "ko_en_title_summary_intro_references": true,
+    "actual_language_switch": true,
+    "calendar_nov16_select": true,
+    "separate_pdf_read_download": true,
+    "ko_query": "작은 양자 회로",
+    "en_query": "Small Quantum Circuits",
+    "both_queries_one_correct_editorial_result": true,
+    "mobile_size": {
+      "width": 390,
+      "height": 844
+    },
+    "mobile_ko_en_no_horizontal_overflow": true,
+    "viewport_reset": true,
+    "actual_live_review": {
+      "status": "passed",
+      "ko_url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-16/",
+      "en_url": "https://infant83.io/AI_Tech_Review/briefings/2026-11-16/en/",
+      "actual_ko_en_ko_click": true,
+      "title_summary_intro_dates_ref2_primary_v1_existing_review_and_pdf_links": true,
+      "desktop_no_overflow": true,
+      "local_vs_live": "Mobile390×844, calendar and search behavior were checked in the final byte-equivalent local candidate. Actual live desktop KO/EN rendering and language switching separately verified."
+    },
+    "limits": "Browser and responsive emulation, not physical-device or human reader testing; notification and API health not established."
+  },
+  "catalog": {
+    "revision": "073168a0868ac0902e81c016ebd5154d689b4277",
+    "snapshot_files": 2632,
+    "validated_files": 2649,
+    "reader_publications": 72,
+    "validated_in_ci": true,
+    "downloaded_catalog_sha256": "1ee31b5fae8f741a803e6e2a6ecaaae397a131c81cc70f25ce9be21adb4c028a",
+    "catalog_revision": "073168a0868ac0902e81c016ebd5154d689b4277",
+    "catalog_articles": 72,
+    "catalog_article_rows_identical_to_baseline": true,
+    "daily_briefing_catalog_design": "The new DQB is represented in archive/search/reader-updates. The existing review/lecture publication catalog remains72 entries; no new notification publication was created by this DQB."
+  },
+  "recovery_package": {
+    "ok": true,
+    "revision": "073168a0868ac0902e81c016ebd5154d689b4277",
+    "files": 2649,
+    "bytes": 803065987,
+    "archive_sha256": "92f38482fc9876168956b535a0412e7cd04abad6ee0fc0a2b718e580566701d3"
+  },
+  "reader_sync": {
+    "synced": 72,
+    "revision": "073168a0868ac0902e81c016ebd5154d689b4277",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "payload": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "unsealed_public_artifact_bytes": 801714758,
+    "lazy_search_gzip_bytes": 94290,
+    "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."
+  },
+  "limits": "No original QPU/LLM training/QEC simulation/proof rerun, human reader study, phone notification receipt or local recovery restore. Existing publication catalog rows remain72; this new daily briefing is in calendar/archive/search/reader-updates."
+}
