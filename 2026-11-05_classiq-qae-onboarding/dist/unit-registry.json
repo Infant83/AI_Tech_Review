@@ -2,13 +2,13 @@
   "format": "ai-tech-review-course-registry",
   "version": 1,
   "series_id": "classiq-qae-onboarding",
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "title": "Classiq QAE 온보딩 시리즈",
   "title_en": "Classiq QAE Onboarding Series",
   "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화, 계산 비용과 프로그램 실행을 회차별 PDF의 유도·문제·해설로 익히고 직접 필기할 수 있습니다.",
   "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. Learn about states, measurement, energy optimization, computation costs and program execution through Korean PDFs with derivations, exercises and worked answers, and annotate them as you study.",
   "official_Classiq_course": false,
-  "latest_unit": "L008",
+  "latest_unit": "L009",
   "units": [
     {
       "id": "L001",
@@ -233,12 +233,40 @@
       "answer_pdf_page": 14,
       "glossary_pdf_page": 15,
       "reference_pdf_page": 16
+    },
+    {
+      "id": "L009",
+      "date": "2026-11-17",
+      "title": "같은 네 큐비트가 왜 다른 수가 되는가",
+      "title_en": "Quantum data types, allocation and precision",
+      "archive_id": "2026-11-17-classiq-qae-l009-notes-ko",
+      "summary": "같은 비트열을 부호와 이진 소수점 위치에 따라 다르게 읽는 법을 익힙니다. 양자 자료형·할당·bind를 살피고, 고전 입력에 정한 반올림 규칙의 오차를 출력과 Hamiltonian 계수의 오차 예산에 연결합니다.",
+      "summary_en": "Learn how sign and the binary-point position change the value represented by the same bit string. Study quantum data types, allocation and bind, then connect errors from a chosen rounding rule for classical inputs to error budgets for outputs and Hamiltonian coefficients.",
+      "status": "available",
+      "language": "ko",
+      "pdf": "2026-11-17-classiq-qae-l009-notes-ko.pdf",
+      "public_pages": 19,
+      "original_pages": 18,
+      "sha256": "95570ddda0d1ec28627c52dce32f4320c1e796e4d940690d34932e084b11a8de",
+      "topics": [
+        "QBit·QNum·QArray·Output",
+        "2의 보수·고정소수점",
+        "반올림·overflow",
+        "할당·bind",
+        "배열 공간",
+        "출력·계수 오차 예산"
+      ],
+      "exercises": 8,
+      "exercise_pdf_page": 15,
+      "answer_pdf_page": 16,
+      "glossary_pdf_page": 17,
+      "reference_pdf_page": 18
     }
   ],
   "planned_next": {
-    "id": "L009",
+    "id": "L010",
     "status": "planned-not-published",
-    "topic": "양자자료형·할당·정밀도"
+    "topic": "가역 산술·비교·정밀도"
   },
   "source_zip_available": false,
   "original_validation_suite_independently_rerun": false
