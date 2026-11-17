@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
   "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
-  "record_version": 6,
+  "record_version": 7,
   "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-14T06:08:43.633744Z",
+  "updated_at": "2026-11-17T06:15:45.999578+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -37,7 +37,8 @@
     ".github/workflows/pages.yml",
     "https://registry.npmjs.org/pdfjs-dist/6.5.438",
     "공식 legacy worker의 unpackDictionaryData(dictionary,data0,data1,skipFlip,sizeBits,sizeBitsData)와 dictionary.set(dict) 문맥",
-    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
   ],
   "limitations": [
     "후보 탐지 수를 확정 유출 수로 간주하지 않음",
@@ -105,6 +106,15 @@
       "candidate_location_independent_matching": false,
       "finding": "최소 비공개 근거가 가리킨 PDF4개 원본 해시·양의 페이지 수와 JPEG68개 marker/디코딩을 독립 대조했다. 최소 근거에 후보 문자열/위치가 없어 기존7위치를 재매칭한 검사는 아니다. 형식 정상만으로 오탐이나 자격증명 유효성을 판정하지 않으며 열린6건 unknown을 유지한다.",
       "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    },
+    "limited_context_review_20261117_15": {
+      "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+      "status": "existing_minimum_evidence_unchanged_exact_location_unverified",
+      "private_evidence_files_reviewed": 1,
+      "private_permissions_and_ignore_verified": true,
+      "new_exact_location_evidence": false,
+      "provider_validity": "unknown_for_all_6",
+      "raw_source_structure_tests_repeated": false
     }
   },
   "observation": {
@@ -128,6 +138,15 @@
       "updated_since_previous": 0,
       "result": "기존 탐지·push protection 설정 유지. 제한된 구조 대조와 실제 탐지 위치/유효성 미확인을 구분했다. 비밀값 출력·외부 시험·경고 종료0.",
       "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    },
+    "checkpoint_20261117_15": {
+      "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+      "security_metadata_at": "2026-11-17T06:06:42Z",
+      "total": 9,
+      "open": 6,
+      "resolved": 3,
+      "updated_since_previous": 0,
+      "result": "안전 metadata의 탐지/push protection enabled·열린6건 unknown 유지. 기존 최소 비공개 근거1개는0600/상위0700/Git 제외이며 정확 문자열/위치의 새 근거가 없다. 반복 원본4PDF/68JPEG 검사·외부 유효성 시험·경고 종료는0이다."
     }
   },
   "recovery": {
@@ -135,7 +154,7 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/17 15시 또는 새 근거 도착 시 기존 공급자 제한 화면의 정확한 탐지 문맥을 허용된 비공개 경로에서 대조한다. 값/위치를 공용 기록에 남기지 않고 JPEG구조 정상만으로 경고를 닫지 않는다. 열린6건 유효성은 미확인이며 실제 중대한 위험이 확인되면 기존 절차로 우선 대응한다.",
+  "next_action": "11/18 07시 기존 오전 계획 점검에서 새 정확 문맥/제한 읽기 경로와 다음 최소 범위를 재검토한다. 새 중대한 근거는 즉시 판단한다. 기존 최소 근거의 부재를 실제 유출/오탐으로 바꾸거나 같은 원본 구조 검사·차단 경로를 반복하지 않는다.",
   "triage_summary": {
     "checked_at": "2026-11-09T18:06:18Z",
     "closed_false_positives": 3,
@@ -150,10 +169,12 @@
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "bounded_structure_review_complete_exact_location_unverified",
-    "next_scheduled_step_at": "2026-11-17T15:00:00+09:00",
-    "next_review_at": "2026-11-17T15:00:00+09:00",
-    "scheduled_step": "기존 제한 화면의 정확한 탐지 문맥 대조·유효성 미확인 범위 재검토",
-    "run_reference": "operations/runs/20261114T060215Z-70816984-7ca0-485b-be5c-759f9dfb4cf3.md"
+    "state": "minimum_context_reviewed_no_new_exact_location_evidence",
+    "next_scheduled_step_at": "2026-11-18T07:00:00+09:00",
+    "next_review_at": "2026-11-18T07:00:00+09:00",
+    "scheduled_step": "새 정확 문맥/제한 읽기 경로·다음 최소 범위의 오전 재검토",
+    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "replan_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "replan_reason": "15시 제한 근거 재확인에서 새 정확 위치/문맥 delta가 없어 유효성 unknown을 유지했다. 반복 구조 검사 대신 기존 오전 계획 점검에서 근거/범위를 재평가한다."
   }
 }

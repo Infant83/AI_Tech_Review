@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
   "uuid": "e956eee1-0469-4990-8874-11b310d6c517",
-  "record_version": 3,
+  "record_version": 4,
   "title": "편집 하네스 공개 버전과 글별 실제 적용 판본의 추적 정합성",
   "type": "editorial_provenance",
   "created_at": "2026-11-09T03:12:43Z",
-  "updated_at": "2026-11-13T06:27:49.890136Z",
+  "updated_at": "2026-11-17T06:15:45.999578+00:00",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -61,7 +61,11 @@
     ".automation/writing-reviews/2026-11-01-paragraph-context/README.md",
     ".automation/writing-reviews/legacy-refresh/2026-11-06-quantum-layers/prose-review.md",
     ".automation/writing-reviews/legacy-refresh/2026-11-09-oled/README.md",
-    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    ".automation/writing-reviews/2026-11-16-reader-flow/README.md",
+    "2026-11-11_ai-augmentation-and-assessment/publication-record.json",
+    "scripts/publication_intent.py"
   ],
   "limitations": [
     "표본과 확인 경로의 감사이며 모든 과거 글을 최신 기준으로 재감수한 결과가 아님",
@@ -96,7 +100,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "소스·Git·표본·공개 화면 감사 완료; 개선 구현 전",
+    "status": "새 부분 적용 근거·최소 연결 기술 설계 검토 완료; 공통 추적 구현/공개 반영 전",
     "checks": [
       "문체 하네스 updated2026-11-06, 마지막 Git변경d4d4bdc(2026-11-07) 확인",
       "방법서 Version2026.08과 10월 보완 이력, 공통 렌더러 고정값 확인",
@@ -118,12 +122,33 @@
       "현재 파일의 Git 판본을 알 수 있다는 사실은 과거 작업이 그 판본을 읽었다는 증거가 아님",
       "CI 통과·원문 검사·출력 해시는 문맥·과학 감수 또는 사람 검토 수행을 대신 증명하지 않음",
       "실제 담당 편집 작업에 사용자 요청으로 질의를 전달했으며 답변 인계는 별도 확인 필요"
-    ]
+    ],
+    "minimum_linkage_design_20261117_15": {
+      "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+      "status": "technical_design_reviewed_not_implemented_or_editorial_fact_approval",
+      "changed_record_files_reviewed": 42,
+      "evidence": [
+        ".automation/writing-reviews/2026-11-16-reader-flow/README.md",
+        "2026-11-11_ai-augmentation-and-assessment/publication-record.json",
+        "scripts/publication_intent.py"
+      ],
+      "proposal": {
+        "record_location": "기존 감수/주제 기록 한 곳의 선택형 editorial_application; 새 대장 없음",
+        "application_facts": "실제로 사용한 정책 path/commit/SHA·검토 원고/그림 path/SHA·감수일·역할·범위·결과·제한·확인 상태; 모르는 값 추정 없음",
+        "registration_binding": "기존 기록 상대경로·고유 불변 항목ID·정해진 직렬화의 해당 항목 digest. 허브4필드 예외로 빼지 않고 보호 등록 해시에 포함하는 후속 설계",
+        "normal_completion_boundary": "QA/CI/배포 완료 정보는 불변 적용 항목 밖에 둠. 전체 파일 raw SHA는 당시 보조 증거이며 현재 파일의 영구 일치 조건이 아님",
+        "historical_correction": "실제 적용 사실 정정은 새 항목ID와 이전 항목 관계로 남김; 과거 미보존은 미확인",
+        "validation_boundary": "유일 항목 선택·중복키 거절·참조/해시/대상 변경의 기술 검사만. 과학/문맥 감수·사람 검토 자동 보증 없음",
+        "circular_binding_boundary": "감수 원고/그림 입력과 최종 dist/배포 해시를 분리해 표시 digest가 자기 HTML 입력이 되는 순환을 피함",
+        "public_display": "기존 네 표시 항목 재사용으로 기본판·적용 보완·조직 근거·원고판 구분; 과거 전체 적용 소급 없음"
+      },
+      "current_code_vs_proposal": "현재 publication_intent는 dist와 등록만 해시한다. 완료 기록 추가로 현재 코드가 실패하는 것이 아니라 향후 전체 기록 raw SHA를 강제할 때 생길 조건부 위험을 검토했다."
+    }
   },
   "observation": {
-    "status": "현재 공개 표기 확인",
-    "period": "2026-11-09T03:12:43Z",
-    "result": "공개 3개 리뷰와 방법서에서2026.08 고정 표기를 재확인함. 최신 지침 적용을 일괄 부정하거나 보증하지 않음.",
+    "status": "새 부분 적용 기록 확인·최소 판본 연결 기술안 검토",
+    "period": "2026-11-17T06:15:45.999578+00:00",
+    "result": "11/13 checkpoint 이후42파일의 좁은 변경에서 문맥 적용·한국어 교정·독립 감수·한영 PDF/출력 근거를 확인했다. 게시 source_commit는 실제 정책 입력 commit/hash가 아니며 새 공통 연결 구조는 미확인이다. 현재 하네스 updated11/16과 방법서 기본판2026.08·실제 글별 적용/사람 감수는 구분한다.",
     "checkpoint_20261113_15": {
       "result": "공용 감수 기록·EVTd950와11시 인수 이후 delta에서 새 글별 하네스 적용 commit/hash·검토 원고를 잇는 공통 근거는 없었다. 네 표시 필드 보존 해결을 전체 적용 추적으로 확대하지 않는다. Git 최신 정책을 과거 적용/사람 감수 증거로 만들지 않는다.",
       "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
@@ -134,14 +159,17 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "AEDAUT가 보존된 글별 적용 근거와 미확인 범위를 정리하고 ADOPT가 기존 등록·감수 기록을 재사용하는 최소 판본 연결·표시 후보를 설계한다. 담당 편집 작업의 회신을 이 일감에 연결한다.",
+  "next_action": "기존 편집부(AEDAUT) 감수 기록의 실제 정책 입력 판본·검토 원고와 미확인 범위를 연결한다.11/18 07시 근거/우선순위를 확인하고18일15시 선택형 기존 기록 항목·보호 등록 ref/digest·표시 범위를 검토한다. 새 일반 게시 승인자나 과거 일괄 채움은 만들지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "planned_not_proof_of_execution",
-    "next_scheduled_step_at": "2026-11-17T15:00:00+09:00",
-    "next_review_at": "2026-11-17T15:00:00+09:00",
-    "scheduled_step": "AEDAUT 적용 근거와 미확인 범위를 잇는 최소 판본 연결/표시 설계 검토",
-    "run_reference": "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "state": "minimal_linkage_design_reviewed_exact_policy_evidence_pending",
+    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
+    "next_review_at": "2026-11-18T15:00:00+09:00",
+    "scheduled_step": "실제 정책 입력 근거/미확인 범위·선택형 기존 기록 연결 기술안 후속 검토",
+    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "morning_reassessment_at": "2026-11-18T07:00:00+09:00",
+    "replan_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "replan_reason": "17일15시 검토는 실시했으며 새 부분 적용 기록을 확인했다. 정확한 정책 입력 결속/공통 구현은 미확인이므로 다음 오전 계획 점검과18일15시 후속 검토로 잇는다. 관리 후보 구현/감수 날짜는 변경하지 않는다."
   }
 }

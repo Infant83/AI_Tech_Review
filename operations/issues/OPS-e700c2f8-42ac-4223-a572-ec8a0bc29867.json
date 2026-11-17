@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 34,
+  "record_version": 35,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-17T02:40:32.320004Z",
+  "updated_at": "2026-11-17T06:15:45.999578+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -60,7 +60,8 @@
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
     "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
-    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -140,34 +141,29 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-17T02:04:16.686Z",
-    "last_successful_actions_check_at": "2026-11-17T02:04:24.556688Z",
-    "mail_window": "직전 성공부터48시간 겹친11/14T21:57:21.852Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
-    "actions_window": "새 정상 DQB/L009·DeMARS/DRB4run·attempt1의 네 작업/실제 배포와 후처리 성공을 확인했다. 새 실패·미해결0이며 마지막2run은 기존 전체 확인 뒤의 별도 보충이다.",
+    "last_successful_mail_check_at": "2026-11-17T06:04:43.990Z",
+    "last_successful_actions_check_at": "2026-11-17T06:05:35.788779Z",
+    "mail_window": "11/15T02:04:16.686Z부터48시간 겹침·읽지 않음 제한 없이 전페이지1·0통·상태 변경/오류0.",
+    "actions_window": "직전 생성 체크포인트까지의 목록1페이지와 모든 active/queued/waiting 상태 페이지를 확인했다. 이후4run은 기존 완료 근거 재사용이며 확인 범위의 신규 미관측/진행/실패/미해결0이다. 오래된 생성 run의 완료 재시도를 전체 이력 스캔하지 않았고 기존 성공 jobs/log 재조회·재실행0.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "e5269e1ce2c205428c6d57be8fce5ec49a392c30",
-    "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+    "live_source_revision": "c04132461340eb4496976f512ee6ef30e0812235",
+    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
     "supplemental_actions_check_at": "2026-11-17T02:24:46.825206Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-17T02:04:24.556688Z",
-    "supplemental_successful_runs": [
-      "43992237095",
-      "43999253480",
-      "44000424831",
-      "44001810193"
-    ]
+    "last_full_actions_check_at": "2026-11-17T06:05:35.788779Z",
+    "supplemental_successful_runs": []
   },
   "observation": {
-    "status": "11시 정상 편집4run 인수·새 미해결 실패 없음",
+    "status": "15시 delta 점검·새 미해결 실패 없음",
     "period": {
-      "mail": "2026-11-17T02:04:16.686Z",
-      "full_api": "2026-11-17T02:04:24.556688Z",
-      "supplemental_api": "2026-11-17T02:24:46.825206Z"
+      "mail": "2026-11-17T06:04:43.990Z",
+      "full_api": "2026-11-17T06:05:35.788779Z",
+      "active_states": "2026-11-17T06:05:37.031172Z"
     },
-    "result": "정상 게시4run의 실제 배포/네 작업을 확인하고 진행 중이던DRB의 완료 전 main 기록 push를 하지 않았다. L009의 정상 sync74/new1/queued1과 다른3run의 신규0을 구분하며 OS 수신 성공으로 확대하지 않는다. 기존 메일/전체 확인 시각과 새2run 보충을 분리했고, 기존 성공 jobs/log 반복·재실행·메일 변경·별도 발송·관찰자 직접 DB 쓰기는 없다. 정상 CI의 카탈로그/queue DB 쓰기와 구분한다.",
+    "result": "메일/API 각각 마지막 성공 시각과 페이지 범위를 기록했다. 기존 DeMARS/DRB/NTCA/제목 수정의 네 작업·HTTPS 근거를 재사용하고 새 실패·진행·피드백0을 확인했다. 재발송/테스트/메일 변경/직접 DB 쓰기는0이다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -384,6 +380,33 @@
       "newArticles": 0,
       "queuedEvents": 0,
       "replay": "not_printed"
+    },
+    "last_successful_checks": {
+      "mail": "2026-11-17T06:04:43.990Z",
+      "full_api": "2026-11-17T06:05:35.788779Z",
+      "active_states": "2026-11-17T06:05:37.031172Z"
+    },
+    "checkpoint_20261117_15": {
+      "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+      "mail_at": "2026-11-17T06:04:43.990Z",
+      "full_api_at": "2026-11-17T06:05:35.788779Z",
+      "mail_pages": 1,
+      "actions_pages": 1,
+      "known_success_runs_reused": [
+        44000424831,
+        44001810193,
+        44005850393,
+        44015250662
+      ],
+      "new_unobserved_runs": 0,
+      "unresolved": 0,
+      "errors": 0,
+      "recovery_metadata": {
+        "unexpired_count": 3,
+        "latest_size_in_bytes": 724447565,
+        "latest_expires_at": "2026-12-17T04:15:22Z",
+        "actual_restore": false
+      }
     }
   },
   "recovery": {

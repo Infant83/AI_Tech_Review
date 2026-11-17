@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 32,
+  "record_version": 33,
   "title": "ADOPT 기본 운영 주기와 임시 하루 다섯 회차·과제 일정 관리",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-17T02:40:32.320004Z",
+  "updated_at": "2026-11-17T06:15:45.999578+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -64,7 +64,8 @@
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
     "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
-    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md"
+    "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
   ],
   "limitations": [
     "첫03시·11시·19시 근접 회차는 실제 관찰했으나 단일 날짜의 결과로 미래 정각 실행·누락 없음·호스트 가용성을 보증하지 않음",
@@ -157,9 +158,9 @@
     ]
   },
   "observation": {
-    "status": "임시11시 실제 기동·관리 후보 구현",
-    "period": "2026-11-17T02:02:54.475Z",
-    "result": "11:02:54.475KST trigger로11시 예정보다174.475초 뒤다. 원인·명목 처리·다음 기동을 추정하거나 설정을 보정하지 않는다. 임시5회·11/19 첫 이용 가능 회차 재평가/복귀 조건 유지."
+    "status": "임시15시 실제 기동·제한 조사/설계 검토",
+    "period": "2026-11-17T06:03:26.521Z",
+    "result": "15:03:26.521KST trigger로15시 예정+206.521초다. 원인·다음 기동을 추정하거나 예약을 보정하지 않는다. 임시5회·18일19시 평가·19일 첫 이용 가능 회차 기본 복귀 조건은 유지한다."
   },
   "recovery": {
     "plan_reference": "임시 증편 설정 문제나 기간 종료 시 지원 도구로 같은 예약을 기본03·11·19시로 복귀하고 최신 프롬프트·일정표를 함께 정리한다. 대상·이름·ACTIVE·권한·게시물/개인 데이터는 보존한다.",
@@ -171,9 +172,9 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "configured_initial_all_five_slots_observed",
-    "next_scheduled_step_at": "2026-11-17T15:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
     "next_review_at": "2026-11-18T19:00:00+09:00",
     "scheduled_step": "임시5회 실제 기동·인계/충돌·일정 변경 관찰;11/19 첫 이용 가능 회차 재평가/기본3회 복귀",
-    "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
+    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
   }
 }
