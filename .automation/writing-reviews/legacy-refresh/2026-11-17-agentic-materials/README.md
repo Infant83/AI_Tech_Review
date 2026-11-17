@@ -41,3 +41,19 @@ Antypov 통계의 전체 ICSD와 수소 함유 구조 제외·조성/공간군 �
 
 
 최종 통합 v5 후보의 변경은 DeMARS 한영 HTML·SVG 네 경로뿐이다. 다른 리뷰1,927파일·전체 PDF252경로와 병행 렉처16파일을 새 실제 배포 기준과 바이트 대조했다. 이 글의6개 공개 파일은 화면 감수한v4와 정확히 같아 그 렌더 검수가 적용된다. 연속성·전송량·봉인 산출물 검사를 통과했으며 공개 파일2,665개·독자 목록74개·아카이브147개를 확인했다.
+
+
+## 공개 완료
+
+게시 커밋 `c8d7af292481c61e6e9f68fe7b5eeda050e44e5e`를 배포했다. [Pages 실행 44000424831](https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 별도 담당자가 실제 완료 로그와 검증 산출물을 대조했다. 총 906개 검사 중 897개 통과·9개 제외·실패 0이며 백엔드 JavaScript 8개 모듈 구문 검사와 esbuild 테스트 번들 생성도 통과했다. [독립 CI 감수](ci-verification.json)를 따른다.
+
+배포 파일 2,665개를 검증해 복구 사본을 30일 보존하고 최근 3개를 유지했다. 복구 파일 해시는 `327aa76741fb41dfc1ae8d7274d2a597a977c4cfa9e2dff637b3dfdb58b97c69`다. 실제 전체 복원 훈련을 수행한 것은 아니다. 독자 목록은 74개를 동기화했고 신규 글·대기 알림은 각각 0개다. 휴대폰 알림 수신·사람의 열람을 확인한 결과로 표시하지 않는다.
+
+[국문](https://infant83.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/)·[영문](https://infant83.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/)과 도식·표지·목록·검색·카탈로그·병행 Classiq L009·최근 DQB/DRB를 포함한 실제 HTTPS 25경로를 대조했다. 검증 시점의 릴리스·카탈로그 revision은 게시 커밋과 같고 바이너리 자산은 봉인한 CI 산출물과 정확히 같다. HTML은 관측된 기존 공개 연락처의 정확한 Cloudflare 변환만 복원해 대조했다. [공개 검증](live-verification.json)을 따른다.
+
+실제 브라우저에서 한영 왕복, 이전 GitHub.io 링크의 현 도메인 전환, 각 2개 이미지·5개 참고문헌·개정 기록과 내용 해시를 붙인 SVG 로드를 확인했다. 좁은 화면과 수식·인용·절 이동은 바이트가 같은 후보에서 확인했고, 공개 기본 화면도 열어 보았다. 별도 API 집계 시험·사람 독자 평가·원 연구 재실행은 하지 않았다.
+
+초기 49편 중 22편을 완료했다. 다음은 `2026-09-09_quantum-resource-aware-workflows`, 「양자 계산의 전체 비용을 설계하다」다. 이번 회차에서 그 글은 개편하지 않았다.
+
+
+완료 기록을 정리하는 동안 별도 DRB 게시 `e5269e1ce2c205428c6d57be8fce5ec49a392c30`이 추가되어 원격 변경을 보존했다. 그 배포가 적용된 뒤에도 DeMARS의 공개6파일이 검수한 게시 커밋과 같은지 실제 HTTPS로 다시 확인했다. [후속 배포의 보존 확인](concurrent-release-preservation.json)은 그 내용 보존만을 확인하며 DRB의 조사·작성·감수는 별도 과제의 범위다. 완료 기록은 내용 재배포를 유발하지 않는 메타데이터 커밋으로 동기화한다.

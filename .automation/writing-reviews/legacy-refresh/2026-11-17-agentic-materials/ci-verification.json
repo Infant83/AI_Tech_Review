@@ -1,0 +1,283 @@
+{
+  "reviewed_at": "2026-11-17T02:15:46.846459+00:00",
+  "reviewer": "materials1117_source",
+  "role": "Independent read-only completed CI logs, artifacts and revision/continuity audit; also core-scientific reviewer of this target article",
+  "verdict": "pass_with_recorded_nonblocking_limits",
+  "run_id": 44000424831,
+  "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831",
+  "revision": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+  "status": "completed",
+  "conclusion": "success",
+  "run_created_at": "2026-11-17T02:05:41Z",
+  "run_updated_at": "2026-11-17T02:13:06Z",
+  "jobs": [
+    {
+      "name": "build",
+      "databaseId": 133762804586,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-17T02:05:44Z",
+      "completedAt": "2026-11-17T02:10:45Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831/job/133762804586"
+    },
+    {
+      "name": "deploy",
+      "databaseId": 133764887812,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-17T02:10:49Z",
+      "completedAt": "2026-11-17T02:11:17Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831/job/133764887812"
+    },
+    {
+      "name": "notify-readers",
+      "databaseId": 133765124604,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-17T02:11:19Z",
+      "completedAt": "2026-11-17T02:13:06Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831/job/133765124604"
+    },
+    {
+      "name": "recovery-copy",
+      "databaseId": 133765124618,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-17T02:11:20Z",
+      "completedAt": "2026-11-17T02:13:03Z",
+      "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44000424831/job/133765124618"
+    }
+  ],
+  "tests": [
+    {
+      "suite": "Python publication/search/preservation",
+      "cases": 404,
+      "passed": 403,
+      "skipped": 1,
+      "failed": 0
+    },
+    {
+      "suite": "Multilingual search/course navigation",
+      "cases": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "suite": "Reader frontend controls",
+      "cases": 196,
+      "passed": 188,
+      "skipped": 8,
+      "failed": 0
+    },
+    {
+      "suite": "Lecture reader/storage races",
+      "cases": 208,
+      "passed": 208,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "suite": "Backend authorization",
+      "cases": 72,
+      "passed": 72,
+      "skipped": 0,
+      "failed": 0
+    },
+    {
+      "suite": "Portable public media",
+      "cases": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0
+    }
+  ],
+  "test_totals": {
+    "cases": 906,
+    "passed": 897,
+    "skipped": 9,
+    "failed": 0
+  },
+  "additional_build_checks": "Backend npm run check executed node --check on eight JavaScript modules, then esbuild bundled worker for tests. Not a TypeScript check.",
+  "skipped_scope": "One Python case and eight frontend cases skipped. Frontend skip names concern installation/gesture/permission, likes/share fallback, and four dialog viewport scenarios; they are not 906 passing tests.",
+  "candidate_and_preservation": {
+    "baseline_revision": "3b7881ba7d0e1dd1b4d1e9b13cb0b99744e26940",
+    "baseline_source": "deployed_artifact_snapshot",
+    "candidate_revision": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+    "structural_ok": true,
+    "continuity_ok": true,
+    "blockers": [],
+    "counts": {
+      "archive": 147,
+      "external": 1,
+      "publications": 74,
+      "reviews": 58
+    },
+    "identity_additions": [],
+    "reviewed_changes": [
+      "reviews/2026-09-06_agentic-programs-materials-science/agentic_program_architecture_ko.svg",
+      "reviews/2026-09-06_agentic-programs-materials-science/en/agentic_program_architecture_en.svg",
+      "reviews/2026-09-06_agentic-programs-materials-science/en/index.html",
+      "reviews/2026-09-06_agentic-programs-materials-science/index.html"
+    ],
+    "other_review_or_pdf_changes": false,
+    "rebuild_note": "Fourteen prior publication requests were reapplied by the combined-source candidate builder; exact continuity reports only the selected article bilingual HTML and two diagrams changed. Rebuilding does not mean fourteen editorial revisions.",
+    "sealed_snapshot_files": 2648,
+    "validated_files": 2665,
+    "reader_catalog_articles": 74,
+    "limits": "Identity and byte continuity do not establish visual rendering, mobile layout, query ranking or live API health. Root separately verified actual HTTPS and browser."
+  },
+  "payload": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "listing_pages_checked": 64,
+    "lazy_search_gzip_bytes": 95810,
+    "browser_icons_gzip_bytes": 21902,
+    "public_artifact_bytes_before_seal": 805281275,
+    "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."
+  },
+  "deploy": {
+    "current_revision_guard_step": "success",
+    "guard_evidence": "Actual conditional Deploy the verified Pages artifact step executed and reported success; both downstream jobs conditional on current=true executed successfully. Guard does not print fetched mainSHA. Echoed source script is distinct from an emitted superseded notice.",
+    "artifact_id": 14292217247,
+    "pages_build_version": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+    "result": "Reported success!",
+    "limits": "Completed deploy job/step logs and metadata inspected; this role did not repeat root actual browser/HTTPS verification."
+  },
+  "recovery": {
+    "job_result": "success",
+    "verification": {
+      "ok": true,
+      "revision": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+      "files": 2665,
+      "bytes": 806641014,
+      "archive_sha256": "327aa76741fb41dfc1ae8d7274d2a597a977c4cfa9e2dff637b3dfdb58b97c69"
+    },
+    "artifact_id": 14292282404,
+    "artifact_zip_bytes": 723491110,
+    "artifact_zip_sha256": "8bb698a21e90e660ae2848f9c4c4650003176437f7f1f5295b62657e9b5b6030",
+    "retention_days": 30,
+    "expires_at": "2026-12-17T02:12:46Z",
+    "retention_applied": true,
+    "retained_ids": [
+      14292282404,
+      14292125924,
+      14288148901
+    ],
+    "deleted_old_ids": [
+      14230041431
+    ],
+    "limits": "CI verified and packaged exact Pages artifact. Audit read job log and metadata, without a fresh local restore or second large recovery download."
+  },
+  "reader_catalog_sync": {
+    "job_result": "success",
+    "setup_enabled": true,
+    "catalog_revision": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+    "catalog_articles": 74,
+    "catalog_sha256": "a0bf8690ba340319a972fb6898cee6bd218e6c93b95f41b3572c61794e78b4f5",
+    "actual_sync_result": {
+      "synced": 74,
+      "revision": "c8d7af292481c61e6e9f68fe7b5eeda050e44e5e",
+      "ok": true,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "baseline": false
+    },
+    "limits": "Existing pipeline completed live-HTTPS checks and catalog registration. No new/queued events reported; no phone/browser notification receipt or human reading proven. No manual external message/test push by this audit."
+  },
+  "artifact_metadata": [
+    {
+      "id": 14292815118,
+      "name": "publication-validation",
+      "size_in_bytes": 3965,
+      "expired": false,
+      "created_at": "2026-11-17T02:10:40Z",
+      "expires_at": "2026-12-01T02:10:39Z",
+      "digest": "sha256:2a22cb49c0527e6b700b1946945aed95556a1131785e69cec626d8fb00236d30"
+    },
+    {
+      "id": 14292282404,
+      "name": "publication-recovery",
+      "size_in_bytes": 723491110,
+      "expired": false,
+      "created_at": "2026-11-17T02:12:56Z",
+      "expires_at": "2026-12-17T02:12:46Z",
+      "digest": "sha256:8bb698a21e90e660ae2848f9c4c4650003176437f7f1f5295b62657e9b5b6030"
+    },
+    {
+      "id": 14292217247,
+      "name": "github-pages",
+      "size_in_bytes": 721357143,
+      "expired": false,
+      "created_at": "2026-11-17T02:10:38Z",
+      "expires_at": "2026-11-18T02:10:13Z",
+      "digest": "sha256:3d3acb124ce75f5ee3f67c8116ba873ced813b8ea1e431cde87b84078609de8b"
+    },
+    {
+      "id": 14291479479,
+      "name": "reader-publication-catalog",
+      "size_in_bytes": 5492,
+      "expired": false,
+      "created_at": "2026-11-17T02:10:39Z",
+      "expires_at": "2026-11-24T02:10:38Z",
+      "digest": "sha256:d746606711cbfd66ddd7351eeee3bdf48c8f717416274fd8135e4dc66a1c347f"
+    }
+  ],
+  "nonblocking_operations_notes": [
+    "Lazy metadata search gzip 95,810 bytes exceeds existing 80KB growth warning.",
+    "Pre-seal artifact 805,281,275 bytes exceeds existing 800MB warning; capacity/media-migration follow-up belongs to 운영팀(ADOPT).",
+    "Workflow annotations about Node20 action targets forced toNode24 and ubuntu-latest image migration are nonblocking for this run."
+  ],
+  "actual_audit_scope": "All four completed job logs, final run/job metadata, artifact metadata, downloaded publication-validation and reader-publication-catalog artifacts. Numerical test summaries, executed guard/deploy, exact recovery verification/retention and sync result inspected. Routine environment/tar listings filtered. No workflow rerun, Git mutation, publication, source experiment or human assessment performed by this audit.",
+  "root_verification_handoff": "Root reported25actualHTTPS routes andIABKO→EN→KO verified separately againstproductionrevision; this CI audit does not claim to have repeated them.",
+  "evidence": [
+    {
+      "file": "ci-workflow.yml",
+      "sha256": "751970693bfb10b4180266de186f2ece8bab488fbece8874bf5d0e931665646f"
+    },
+    {
+      "file": "ci-run.json",
+      "sha256": "87539e8568e43628e8f89cc2d628ef2d64c39a8f9000eaf0ab42d8d9edf72e6c"
+    },
+    {
+      "file": "ci-artifacts.json",
+      "sha256": "52b0e265c7d534afb03ada6e432c4c8b3a81f5d15ec18e8f562fb4b55736e815"
+    },
+    {
+      "file": "ci-build.log",
+      "sha256": "d8686bd26193a00e2090a23f56f727b9030017b3dc4512130a2bf6c7ebe57839"
+    },
+    {
+      "file": "ci-deploy.log",
+      "sha256": "08760ac6d8867c3bb6edf7a5ed8db4f81f13900112580915797a1db3c2b4601d"
+    },
+    {
+      "file": "ci-recovery-copy.log",
+      "sha256": "c667e7d5aa585676af75d75f1816d4f3c5450d615cfea5d39c6d1914f803e52d"
+    },
+    {
+      "file": "ci-notify-readers.log",
+      "sha256": "6d1564486698f2bac4cd01d86b5358b933d41571780f897b0915fb3f43da3fd3"
+    },
+    {
+      "file": "ci-validation/report.json",
+      "sha256": "404e7d97f324b11527784c108ee95572daa23a30ed399953b0b1ef3db59ace09"
+    },
+    {
+      "file": "ci-validation/release-check.json",
+      "sha256": "decdc4e95ac24d8dbd6b981a2d0637386e6ad0c13347ff038ef62cce8d7da135"
+    },
+    {
+      "file": "ci-validation/payload-check.json",
+      "sha256": "6482941cd3c19bf17cee72378dbd876c3547d4d2624d874cb624986fe7e437ed"
+    },
+    {
+      "file": "ci-catalog/reader-publications.json",
+      "sha256": "a0bf8690ba340319a972fb6898cee6bd218e6c93b95f41b3572c61794e78b4f5"
+    }
+  ]
+}
