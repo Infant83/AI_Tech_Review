@@ -1,0 +1,52 @@
+같은 양자 알고리즘을 다른 SDK로 옮겼는데 측정확률이 같다면, 이식에 성공했다고 말할 수 있을까. 진폭을 비선형으로 바꾸는 회로에서는 상대 위상과 성공한 시행을 고르는 조건도 결과의 일부다. 이번 DQE는 작은 세제곱 변환을 PennyLane·Qiskit·Classiq으로 표현하며 무엇을 함께 검증해야 하는지 살펴본다.
+
+출발점은 Naixu Guo, Rishabh Gupta, Po-Wei George Huang, Yizhan Han의 PennyLane 튜토리얼 「Nonlinear transformation of complex amplitudes」다.<span class="citation">[<a href="#ref-1">1</a>]</span> 원 튜토리얼은 진폭을 대각 블록으로 옮겨 QSVT로 매끄러운 함수를 근사한다. Guo 등의 NTCA 연구는 그 일반적 틀을 다룬다.<span class="citation">[<a href="#ref-2">2</a>]</span> 여기서는 근사와 위상 찾기를 잠시 덜고, Rattew–Rebentrost가 논의한 블록 곱의 관점으로 세제곱을 정확하게 확인하는 새 교육용 문제를 만들었다.<span class="citation">[<a href="#ref-3">3</a>]</span>
+
+## 먼저 풀어보기
+
+[문제 PDF의 1쪽 열기](https://infant83.io/AI_Tech_Review/archive/files/2026-11-17-daily-quantum-exercise-ntca.pdf#page=1). 개념·검산은 약 20분이며, 세 플랫폼 실습은 이어서 선택할 수 있다. 해설은 2쪽, 플랫폼 안내는 4쪽부터 시작한다. 입력 상태를 다시 준비할 수 있는 회로 U와 새 작업 레지스터가 주어진다. 두 경로의 출력·수락률·자원을 계산한 뒤, 복소 입력에서도 위상이 맞는지 시험해 보자.
+
+이 연습의 의미는 특정 라이브러리의 명령을 외우는 데서 더 나아간다. 무엇을 준비하고 어느 비트를 제어하며 어떤 시행을 남길지 분명히 하면, 플랫폼이 바뀌어도 같은 물리적 질문을 이어갈 수 있다. 정규화한 성공 출력의 품질과 전체 시행의 비용을 함께 읽는 습관은 더 큰 양자 머신러닝 실험의 설계에도 필요하다.
+
+아래에는 수치 정답과 실행 방법이 함께 있다. 먼저 문제를 푼 뒤 펼쳐 읽을 수 있다.
+
+<details><summary>해설·세 플랫폼 실습·응용 안내 펼치기</summary>
+<h3>새 작업 레지스터가 진폭을 곱한다</h3>
+<p>작업 레지스터에 U를 적용해 Σj xj|j⟩를 준비하고 주소 i를 XOR하면 Σj xj|j XOR i⟩가 된다. 작업 결과 00을 선택하는 항은 j=i이므로 주소 i의 진폭에 xi가 곱해진다. 선택한 블록은 D=diag(x)다. 이 전진 U 다음 XOR 순서는 복소수에서도 켤레가 아닌 xi를 준다. 매번 새 작업 레지스터를 쓰면 이 블록들이 곱해진다.</p>
+<p>x=(1,2,−1,0)/√6에서 균등 주소에 세 필터를 쓰면 성공 가지는 x³/2이고, 주소를 |x⟩로 준비해 두 필터를 쓰면 x³이다. 두 경로의 정규화한 목표 상태는 (1,8,−1,0)/√66으로 같다. 성공확률은 각각 11/144≈0.076389와 11/36≈0.305556이다. 고정된 U와 각 게이트는 선형이다. 입력에 의존하는 준비 회로를 여러 번 사용하고 선택한 가지를 정규화하는 과정이 비선형 함수 모양을 만든다. 임의의 미지 상태 한 복사본을 결정론적으로 세제곱하는 유니터리를 가정하지 않는다.</p>
+<p>명시적 큐비트는 균등 경로 8개, 입력 가중 경로 6개다. XOR용 CNOT은 U 내부를 제외하면 6개와 4개다. 필터 안에서 U를 3회와 2회 부르지만, 입력 가중 경로의 주소 준비에도 U가 한 번 필요하므로 전체 호출은 둘 다 3회다. 모든 시행을 끝낸 뒤 선택하는 독립 반복에서는 성공 1건당 기대 U 호출이 3/p, 즉 약 39.27회와 9.82회다. 상태 준비의 분해·추가 작업 공간과 실제 장치 시간은 별도로 센다.</p>
+<h3>확률이 같은 잘못된 결과를 찾아낸다</h3>
+<p>z=(1,i,−1,0)/√3의 올바른 목표는 (1,−i,−1,0)/√3이다. 성공확률은 균등 경로 1/36, 입력 가중 경로 1/9다. 통상적인 복소 대각 행렬의 세제곱 특이값 변환은 z³ 대신 z|z|²가 될 수 있고, 실수부·허수부를 따로 세제곱해도 복소 세제곱의 교차항을 놓친다. 이 예제에서는 두 잘못된 방법이 같은 잘못된 상태를 만든다.</p>
+<p>그 잘못된 상태와 올바른 상태는 계산 기저 확률이 모두 (1/3,1/3,1/3,0)이지만, 서로의 충실도는 1/9다. 최하위 주소 비트의 Y 기대값은 올바른 출력에서 −2/3, 잘못된 출력에서 +2/3이다. 샷 실험에서는 그 비트에 S†, H 순서로 적용한 뒤 Z를 측정한다. 작업 비트가 모두 0인 시행의 조건부 평균으로 Y를 추정하고, 전체 시행 중 수락 비율도 따로 남긴다. 성공확률과 조건부 평균의 분모가 다르다.</p>
+<h3>PennyLane에서도 구현하기</h3>
+<p>PennyLane 0.45.1 구현은 default.qubit에서 MottonenStatePreparation으로 회전·CNOT 분해의 U를 만들고, 주소에서 새 작업으로 CNOT을 연결한다.<span class="citation">[<a href="#ref-4">4</a>]</span> 주소 wires=[0,1]은 이 코드의 상태벡터에서 앞쪽 최상위 비트다. qml.state()를 주소와 작업 축으로 나눈 뒤 작업 인덱스 0의 열만 고른다. qml.probs(work)[0]과도 성공확률을 대조한다.</p>
+<p>별도 Python 3.12 환경에서 <code>python -m pip install -r requirements-pennylane.txt</code> 다음 <code>python pennylane_ntca_monomial.py</code>를 실행한다. <a href="https://github.com/Infant83/AI_Tech_Review/tree/main/daily_research_review/2026-11-17_dqe-ntca/artifacts/platforms/pennylane">PennyLane 코드·고정 버전·검산 결과</a>에서 실수·복소 두 입력과 두 경로의 결과를 확인할 수 있다.</p>
+<h3>Qiskit으로 같은 회로 옮기기</h3>
+<p>Qiskit 2.6.2 구현은 StatePreparation 게이트와 cx를 사용한다.<span class="citation">[<a href="#ref-5">5</a>]</span> Statevector의 비트 q는 정수 인덱스에서 2**q의 가중치를 가지므로, PennyLane의 배열 절단을 복사하지 않는다. 제공 코드는 논리 주소 비트가 놓인 물리 위치로 전체 인덱스를 만들고 모든 작업 비트 0인 진폭을 고른다. 정규화 전에 그 노름 제곱을 저장한다.</p>
+<p><code>python -m pip install -r requirements-qiskit.txt</code> 다음 <code>python qiskit_ntca_monomial.py</code>를 실행한다. <a href="https://github.com/Infant83/AI_Tech_Review/tree/main/daily_research_review/2026-11-17_dqe-ntca/artifacts/platforms/qiskit">Qiskit 코드·고정 버전·검산 결과</a>에는 상태 준비·대각 블록·복소 진폭·수락률 검사와 작은 회로의 분해 결과가 있다. 분해 게이트 수를 실제 장치 지연으로 해석하지 않는다.</p>
+<h3>Classiq에서 Qmod 모델 만들기</h3>
+<p>Classiq SDK 1.35.0 구현은 prepare_amplitudes와 CX로 같은 논리 모듈을 표현한다. 상태 준비 API의 진폭 인자는 실수다.<span class="citation">[<a href="#ref-6">6</a>]</span> 복소 예제는 절댓값을 준비한 다음 비트 0에 S, 비트 1에 Z를 적용한다. 주소와 작업을 이름 있는 QNum 출력으로 남겨, 클라우드 상태벡터에서는 물리 배치 순서 대신 주소·작업 열의 값을 사용하도록 했다.</p>
+<p><code>python -m pip install -r requirements.txt</code> 다음 <code>python ntca_classiq.py --output classiq-models</code>를 실행하면 로그인 없이 네 모델을 만들고 JSON·클라이언트 스키마를 검사한다. 이미 인증한 SDK 환경에서 <code>--cloud</code>를 추가하면 합성과 Classiq 고전 시뮬레이터 상태벡터를 요청한다. 이 발행에서는 Classiq 클라우드 합성·상태벡터·QPU 실행을 하지 않았다. <a href="https://github.com/Infant83/AI_Tech_Review/tree/main/daily_research_review/2026-11-17_dqe-ntca/artifacts/platforms/classiq">Classiq 코드·설치·인증과 실행 안내</a>는 로컬 모델 검사와 선택적 클라우드 실행을 구분한다.</p>
+<h3>세제곱에서 일반 함수와 응용으로</h3>
+<p>세제곱은 큰 진폭 성분을 상대적으로 강조한다. 입력 혼합 회로, 이 필터, 후속 측정을 연결한 분류기 특징 층을 연구해 볼 수 있다. 매개변수가 바뀔 때 작업 레지스터에도 같은 전체 준비 U를 적용하고, 수락률과 반복 비용을 손실·분류 성능과 함께 기록한다. 이는 후속 실험 제안이다. 네 성분은 고전적으로 바로 계산할 수 있으므로, 동일한 특징을 쓰는 고전 모델과의 비교와 입력 로딩 비용이 더 큰 실험의 출발점이 된다.</p>
+<p>일반 QSVT로 확장할 때에는 근사 구간·차수·짝홀성·스케일·블록 정규화와 성공 신호를 다시 정의한다. 입력 가중 g(t)=f(t)/t가 0에서 유계로 연장될 수 있는지도 확인한다. PennyLane poly_to_angles의 낮은 차수 우선 계수 규칙과 qsvt의 실수부 신호를 따라 복소 블록 전체를 검산해야 한다.<span class="citation">[<a href="#ref-7">7</a>]</span> Qiskit에는 필요한 블록·반사·위상열을 명시적으로 구성하고, Classiq의 qsvt와 qsvt_phases는 해당 신호·측정 규약에 맞춘다.<span class="citation">[<a href="#ref-8">8</a>]</span> 이번 실행은 정확한 단항식 블록 곱이며 QSVT 실행이나 원 튜토리얼의 분류기 재현이 아니다.</p>
+</details>
+
+기존 [양자 소프트웨어 플랫폼 리뷰](reviews/2026-10-25_quantum-software-platforms-ai-agents/index.html)는 Qmod의 함수 명세와 Qiskit의 합성 도구가 어떤 추상 정보를 보존하는지 비교한다. 이번 실습에서는 그 차이를 상태 준비·비트 순서·선택 신호라는 구체적인 검증 항목으로 확인해 볼 수 있다.
+
+## 참고문헌
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://pennylane.ai/demos/nonlinear_transformation_of_complex_amplitudes">N. Guo, R. Gupta, P.-W. G. Huang, and Y. Han, Nonlinear transformation of complex amplitudes, PennyLane Demos (19 October 2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1103/PhysRevResearch.6.043227">N. Guo, K. Mitarai, and K. Fujii, Nonlinear transformation of complex amplitudes via quantum singular value transformation, Phys. Rev. Research 6, 043227 (2024).</a></li>
+<li id="ref-3"><a href="https://arxiv.org/abs/2309.09839v1">A. G. Rattew and P. Rebentrost, Non-linear transformations of quantum amplitudes: Exponential improvement, generalization, and applications, arXiv:2309.09839v1 (2023).</a></li>
+<li id="ref-4"><a href="https://docs.pennylane.ai/en/stable/code/api/pennylane.MottonenStatePreparation.html">PennyLane, MottonenStatePreparation, API documentation, version 0.45.1 (accessed 17 November 2026).</a></li>
+<li id="ref-5"><a href="https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.StatePreparation">IBM Quantum, StatePreparation, Qiskit API documentation, version 2.6.2 (accessed 17 November 2026).</a></li>
+<li id="ref-6"><a href="https://docs.classiq.io/qmod-reference/library-reference/core-library-functions/prepare_state_and_amplitudes/prepare_state_and_amplitudes">Classiq, State Preparation, Qmod documentation (SDK 1.35.0; accessed 17 November 2026).</a></li>
+<li id="ref-7"><a href="https://docs.pennylane.ai/en/stable/code/api/pennylane.poly_to_angles.html">PennyLane, poly_to_angles, API documentation</a>; <a href="https://docs.pennylane.ai/en/stable/code/api/pennylane.qsvt.html">PennyLane, qsvt, API documentation, version 0.45.1 (accessed 17 November 2026).</a></li>
+<li id="ref-8"><a href="https://docs.classiq.io/sdk-reference/qmod/functions/open_library/qsvt">Classiq, Qsvt, SDK documentation</a>; <a href="https://docs.classiq.io/sdk-reference/applications/QSP">Classiq, Qsp, SDK documentation (SDK 1.35.0; accessed 17 November 2026).</a></li>
+</ol>
+
+## 작성·검증 정보
+
+책임 편집자 김현중. AI 보조 OpenAI Codex. 편집부(AEDAUT)의 `root`가 새 문제·한영 원고와 PennyLane 구현을 작성·통합하고, `dqe_science`가 별도 NumPy 회로·수치·출처·한영 설명을 감수했다. `archive_architecture`는 Qiskit 구현과 회차 보존을, `heartbeat_public_check`는 Classiq SDK와 공개 확인을, `dqe_pdf`는 PDF 제작·전체 출력을 담당했다. 운영팀(ADOPT)의 기존 출판 도구를 사용했다. 하네스 2026.08 및 현행 설명·문체·APS 인용 기준. 근거 기준일 2026-11-17. 정확한 실행 모델 식별자는 미보존이다. PennyLane·Qiskit은 로컬 무잡음 상태벡터를, Classiq은 네 모델의 로컬 생성·파싱·스키마와 후처리 함수를 검증했다. Classiq 클라우드, 실제 QPU, QSVT와 원 분류기 학습은 실행하지 않았다. 원 튜토리얼 전체와 원논문의 관련 정의·구성·성공확률·블록 곱 부분, 공식 문서와 설치 SDK를 대조했으며 전체 복잡도 증명을 독립 검증하지 않았다. 사람의 문장별 검토나 독자 평가를 수행한 것으로 표시하지 않는다. 원 저자의 코드·그림 전체를 복제하지 않은 독립 교육용 작성물이다.

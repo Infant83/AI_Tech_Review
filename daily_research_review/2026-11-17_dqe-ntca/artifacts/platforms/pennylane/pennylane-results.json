@@ -1,0 +1,146 @@
+{
+  "execution": "local ideal statevector; no QPU or QSVT execution",
+  "versions": {
+    "pennylane": "0.45.1",
+    "numpy": "2.5.5"
+  },
+  "address_order": "logical vector indices 00,01,10,11; PennyLane wire0 is MSB",
+  "cases": {
+    "real": {
+      "filter_block_max_error": 1.7554167342883506e-16,
+      "runs": [
+        {
+          "mode": "uniform",
+          "success_probability": 0.07638888888888892,
+          "conditional_amplitudes": [
+            [
+              0.1230914909793328,
+              -4.274876967276268e-18
+            ],
+            [
+              0.984731927834662,
+              -2.2015608151645333e-17
+            ],
+            [
+              -0.12309149097933272,
+              1.2245085386039622e-16
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "conditional_fidelity": 1.0000000000000004,
+          "branch_max_amplitude_error": 5.5843644334724e-17,
+          "conditional_Y_least_significant_bit": 2.9993476100783508e-18,
+          "logical_qubits": 8,
+          "filter_U_calls": 3,
+          "input_U_calls": 0,
+          "total_forward_U_calls_per_complete_attempt": 3,
+          "XOR_CNOT_count_excluding_U_decomposition": 6,
+          "expected_U_calls_per_acceptance_without_early_abort": 39.27272727272725
+        },
+        {
+          "mode": "importance",
+          "success_probability": 0.30555555555555586,
+          "conditional_amplitudes": [
+            [
+              0.12309149097933275,
+              2.6030580230164006e-17
+            ],
+            [
+              0.9847319278346618,
+              -1.640358146503908e-16
+            ],
+            [
+              -0.12309149097933267,
+              1.4388004815166485e-16
+            ],
+            [
+              3.8681706311034918e-50,
+              3.924853394577424e-67
+            ]
+          ],
+          "conditional_fidelity": 0.9999999999999998,
+          "branch_max_amplitude_error": 9.067420822927164e-17,
+          "conditional_Y_least_significant_bit": -9.164911290406063e-17,
+          "logical_qubits": 6,
+          "filter_U_calls": 2,
+          "input_U_calls": 1,
+          "total_forward_U_calls_per_complete_attempt": 3,
+          "XOR_CNOT_count_excluding_U_decomposition": 4,
+          "expected_U_calls_per_acceptance_without_early_abort": 9.818181818181808
+        }
+      ]
+    },
+    "complex": {
+      "filter_block_max_error": 3.3306690738754696e-16,
+      "runs": [
+        {
+          "mode": "uniform",
+          "success_probability": 0.027777777777777752,
+          "conditional_amplitudes": [
+            [
+              0.5773502691896255,
+              8.562996322308319e-18
+            ],
+            [
+              -3.68696371544644e-16,
+              -0.5773502691896258
+            ],
+            [
+              -0.577350269189626,
+              1.8262578466712973e-16
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "conditional_fidelity": 0.9999999999999998,
+          "branch_max_amplitude_error": 1.249082437330759e-16,
+          "conditional_Y_least_significant_bit": -0.6666666666666664,
+          "logical_qubits": 8,
+          "filter_U_calls": 3,
+          "input_U_calls": 0,
+          "total_forward_U_calls_per_complete_attempt": 3,
+          "XOR_CNOT_count_excluding_U_decomposition": 6,
+          "expected_U_calls_per_acceptance_without_early_abort": 108.0000000000001
+        },
+        {
+          "mode": "importance",
+          "success_probability": 0.11111111111111102,
+          "conditional_amplitudes": [
+            [
+              0.5773502691896255,
+              -1.2610566053989222e-16
+            ],
+            [
+              -2.5356484786618424e-16,
+              -0.5773502691896258
+            ],
+            [
+              -0.5773502691896261,
+              9.935905782024294e-17
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "conditional_fidelity": 1.0,
+          "branch_max_amplitude_error": 2.8072078211466187e-16,
+          "conditional_Y_least_significant_bit": -0.6666666666666664,
+          "logical_qubits": 6,
+          "filter_U_calls": 2,
+          "input_U_calls": 1,
+          "total_forward_U_calls_per_complete_attempt": 3,
+          "XOR_CNOT_count_excluding_U_decomposition": 4,
+          "expected_U_calls_per_acceptance_without_early_abort": 27.00000000000002
+        }
+      ]
+    }
+  },
+  "random_complex_inputs_of_lengths_2_4_8_with_zero_entry": "passed",
+  "passed": true
+}

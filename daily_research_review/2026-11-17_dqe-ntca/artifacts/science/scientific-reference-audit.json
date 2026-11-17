@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "review_date": "2026-11-17",
+  "exercise_id": "2026-11-17-daily-quantum-exercise-ntca",
+  "reviewer": "dqe_science",
+  "status": "independent_scientific_source_and_bilingual_editorial_review_pass",
+  "references": [
+    {
+      "number": 1,
+      "authors": [
+        "Naixu Guo",
+        "Rishabh Gupta",
+        "Po-Wei George Huang",
+        "Yizhan Han"
+      ],
+      "title": "Nonlinear transformation of complex amplitudes",
+      "container": "PennyLane Demos",
+      "published": "2026-10-19",
+      "updated": "2026-10-19",
+      "accessed": "2026-11-17",
+      "url": "https://pennylane.ai/demos/nonlinear_transformation_of_complex_amplitudes",
+      "aps_text": "N. Guo, R. Gupta, P.-W. G. Huang, and Y. Han, Nonlinear transformation of complex amplitudes, PennyLane Demos (19 October 2026; accessed 17 November 2026).",
+      "access_scope": "Complete tutorial narrative and displayed code/output read, with the downloadable Python source inspected. The original tanh/MNIST training was not rerun.",
+      "claim_scope": "Real-amplitude worked implementation; simulator examples, polynomial approximation and postselection. It is a technical starting point, not an experimental quantum-advantage result."
+    },
+    {
+      "number": 2,
+      "authors": [
+        "Naixu Guo",
+        "Kosuke Mitarai",
+        "Keisuke Fujii"
+      ],
+      "title": "Nonlinear transformation of complex amplitudes via quantum singular value transformation",
+      "journal": "Phys. Rev. Research",
+      "volume": "6",
+      "article_number": "043227",
+      "published": "2024-12-02",
+      "doi": "10.1103/PhysRevResearch.6.043227",
+      "url": "https://doi.org/10.1103/PhysRevResearch.6.043227",
+      "aps_text": "N. Guo, K. Mitarai, and K. Fujii, Nonlinear transformation of complex amplitudes via quantum singular value transformation, Phys. Rev. Research 6, 043227 (2024).",
+      "access_scope": "Publisher metadata and published PDF abstract, introduction, definitions, Lemma 3, Theorems 4-5, construction/proof and application discussion in Sections II-IV; relevant Appendix A gate counts and Appendix B-C excerpts. The complete nine-page paper was not read.",
+      "claim_scope": "State-preparation, adjoint and controlled-access model; bounded polynomial blocks with explicit normalization; complex target P(Re z)+Q(Im z)."
+    },
+    {
+      "number": 3,
+      "authors": [
+        "Arthur G. Rattew",
+        "Patrick Rebentrost"
+      ],
+      "title": "Non-Linear Transformations of Quantum Amplitudes: Exponential Improvement, Generalization, and Applications",
+      "version": "v1",
+      "arxiv": "2309.09839",
+      "submitted": "2023-09-18",
+      "url": "https://arxiv.org/abs/2309.09839v1",
+      "aps_text": "A. G. Rattew and P. Rebentrost, Non-linear transformations of quantum amplitudes: Exponential improvement, generalization, and applications, arXiv:2309.09839v1 (2023).",
+      "publication_status_checked": "Current arXiv record shows v1 and no journal reference; no later published version was verified as of 17 November 2026.",
+      "access_scope": "Current arXiv abstract/version record and HTML introduction, preliminaries, diagonal-block construction, importance-weighted theorem/proof, polynomial-approximation error discussion, tanh complexity theorem and low-degree block-product remark. A PDF was obtained but download is not counted as reading; other applications and appendices were not comprehensively read.",
+      "claim_scope": "Real-amplitude importance weighting with f(0)=0 and bounded quotient; exact low-degree product alternatives can support complex inputs at larger ancilla cost. The tanh theorem is an oracle-complexity comparison, not an end-to-end industrial speed benchmark."
+    },
+    {
+      "number": 4,
+      "authors": [
+        "PennyLane"
+      ],
+      "title": "MottonenStatePreparation",
+      "version": "0.45.1",
+      "accessed": "2026-11-17",
+      "url": "https://docs.pennylane.ai/en/stable/code/api/pennylane.MottonenStatePreparation.html",
+      "aps_text": "PennyLane, MottonenStatePreparation, API documentation, version 0.45.1 (accessed 17 November 2026).",
+      "access_scope": "Official operation definition, normalized complex state input, decomposition description and examples read; implementation script and result record inspected.",
+      "claim_scope": "Coherent state preparation using controlled rotations and CNOTs; this does not make arbitrary classical input loading free."
+    },
+    {
+      "number": 5,
+      "authors": [
+        "IBM Quantum"
+      ],
+      "title": "StatePreparation",
+      "version": "Qiskit 2.6.2 used; current official API page accessed",
+      "accessed": "2026-11-17",
+      "url": "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.StatePreparation",
+      "aps_text": "IBM Quantum, StatePreparation, Qiskit API documentation, version 2.6.2 (accessed 17 November 2026).",
+      "access_scope": "Official Gate definition, complex amplitudes, input and bit-order examples read; implementation and local result record inspected. Exact SDK execution belongs to the Qiskit implementation reviewer.",
+      "claim_scope": "Forward unitary preparation, in contrast to an instruction that resets arbitrary input; explicit physical-index mapping is used for the retained branch."
+    },
+    {
+      "number": 6,
+      "authors": [
+        "Classiq"
+      ],
+      "title": "State Preparation",
+      "version": "SDK 1.35.0 used",
+      "accessed": "2026-11-17",
+      "url": "https://docs.classiq.io/qmod-reference/library-reference/core-library-functions/prepare_state_and_amplitudes/prepare_state_and_amplitudes",
+      "aps_text": "Classiq, State Preparation, Qmod documentation (SDK 1.35.0; accessed 17 November 2026).",
+      "access_scope": "Official normalized real-amplitude argument, zero error bound, and preparation examples read; local Qmod script, README and schema-validation record inspected.",
+      "claim_scope": "The provided complex fixture is constructed from real magnitudes plus S/Z phases. Four models were locally validated; no Classiq synthesis or statevector execution is asserted."
+    },
+    {
+      "number": 7,
+      "authors": [
+        "PennyLane developers"
+      ],
+      "title": "poly_to_angles and qsvt API documentation",
+      "version": "0.45.1 stable documentation as served on access date",
+      "accessed": "2026-11-17",
+      "urls": [
+        "https://docs.pennylane.ai/en/stable/code/api/pennylane.poly_to_angles.html",
+        "https://docs.pennylane.ai/en/stable/code/api/pennylane.qsvt.html"
+      ],
+      "url": "https://docs.pennylane.ai/en/stable/code/api/pennylane.qsvt.html",
+      "aps_text": "PennyLane, poly_to_angles, API documentation; PennyLane, qsvt, API documentation, version 0.45.1 (accessed 17 November 2026).",
+      "access_scope": "Official API requirements and output convention read.",
+      "claim_scope": "Real coefficients, definite parity and bounded polynomial for QSP/QSVT phase finding; qsvt documents the real part of the top-left signal. No QSVT phase sequence is implemented by the exercise script."
+    },
+    {
+      "number": 8,
+      "authors": [
+        "Classiq"
+      ],
+      "title": "Qsvt; Qsp",
+      "version": "SDK 1.35.0 used",
+      "accessed": "2026-11-17",
+      "url": "https://docs.classiq.io/sdk-reference/qmod/functions/open_library/qsvt",
+      "aps_text": "Classiq, Qsvt, SDK documentation; Classiq, Qsp, SDK documentation (SDK 1.35.0; accessed 17 November 2026).",
+      "access_scope": "Relevant qsvt/projector definitions and qsvt_phases signature and signal conventions read on both official API pages. Phase finding was not run.",
+      "claim_scope": "qsvt alternates a block unitary and adjoint with projector phases. qsvt_phases defaults to Chebyshev coefficients and uses a reflection signal with Hadamard measurement convention.",
+      "urls": [
+        "https://docs.classiq.io/sdk-reference/qmod/functions/open_library/qsvt",
+        "https://docs.classiq.io/sdk-reference/applications/QSP"
+      ]
+    }
+  ],
+  "source_scope_ko": "PennyLane 튜토리얼의 설명·코드·표시 결과와 공식 API 조건을 읽었다. Guo 등의 출판본은 초록·서론·정의·주요 구성과 정리·응용 논의 및 관련 부록 일부를, Rattew와 Rebentrost의 v1은 입력 모형·대각 블록·importance 변환·오차와 tanh 정리 및 낮은 차수의 블록 곱 논의를 확인했다. 두 논문의 모든 절과 부록을 통독하거나 원 튜토리얼의 학습 실험을 재현한 것은 아니다.",
+  "source_scope_en": "The PennyLane tutorial narrative, code and displayed results, together with the official API conditions, were read. Reading of Guo and colleagues covered the published abstract, introduction, definitions, main construction and theorems, application discussion and relevant appendix excerpts. Rattew and Rebentrost v1 was checked for the input model, diagonal block, importance transform, error and tanh results, and the low-degree block-product discussion. Neither paper was read comprehensively across every section and appendix, and the tutorial training experiment was not rerun.",
+  "independent_execution": {
+    "script": "verify_forward_oracle.py",
+    "script_sha256": "6735f757d2f752b012474d2d49755801d4b0c259fbe02e801141401d771a66dc",
+    "results": "independent-calculations.json",
+    "method": "Independent NumPy tensor-state simulation using a complete Householder preparation unitary and explicit address-to-work XOR on fresh registers. No PennyLane, Qiskit or Classiq code is reused.",
+    "scope": "Ideal classical statevector calculations; no QPU run, noise study, QSVT phase finding, tutorial QMLP training or asymptotic quantum-advantage test."
+  },
+  "mathematical_contract": {
+    "basis": "Two-qubit address ordered |00>,|01>,|10>,|11>; every work register starts at |00>.",
+    "one_filter": "Apply U to a fresh work register, then XOR the address into that work. The all-zero work block has diagonal entries <i|U|0> = x_i, without complex conjugation.",
+    "uniform": "Uniform address plus three fresh work filters gives branch x_i^3/2.",
+    "importance": "Address prepared by U plus two fresh work filters gives branch x_i^3.",
+    "resource_counts": "Eight versus six qubits; three forward U calls and zero U-dagger calls per complete attempt in both routes; six versus four address-to-work CX gates.",
+    "retry_assumption": "Expected calls = 3/p assumes every coherent trial executes the complete circuit before measuring all work registers. No early-abort scheme or amplitude amplification is included.",
+    "linearity": "For a fixed U, each gate and the good-branch linear operator are linear. Normalizing a selected branch and using a state-dependent preparation oracle do not create a deterministic nonlinear unitary acting on an arbitrary unknown single copy."
+  },
+  "complex_checks": {
+    "correct_map": "z_i -> z_i^3; exact product of diagonal blocks works for this monomial even with complex entries.",
+    "svt_warning": "Ordinary odd singular-value transformation with cubic singular-value polynomial gives z_i |z_i|^2; it need not give z_i^3.",
+    "separable_warning": "P(Re z)+Q(Im z) is the complex target in Guo et al.; independently cubing the real and imaginary parts omits the mixed terms of z^3.",
+    "diagnostic": "The chosen complex fixture has identical computational-basis probabilities for the correct and wrong normalized maps. Relative-phase validation is necessary; the checked I tensor Y expectation changes sign and the wrong-map fidelity is 1/9."
+  },
+  "qsvt_extension_boundary": {
+    "executed": false,
+    "degrees": "For the real cubic exercise, f(t)=t^3 is odd of degree 3 and g(t)=t^2 is even of degree 2. These are target-polynomial degrees, not a report that a QSVT sequence was executed.",
+    "conditions": "Future phase synthesis must preserve parity, coefficient order, boundedness, block normalization and signal-extraction conventions. General NTCA algorithms require adjoint and controlled oracle access even though this special product construction uses only forward U.",
+    "success_probability": "The exact probabilities belong to the fresh-work product circuit; scaling or extra signal-extraction branches in a QSVT implementation can change success probability.",
+    "importance_condition": "f(0)=0 and bounded removable g=f/x are needed for the stated diagonal importance trick; it cannot create a nonzero amplitude at a basis index absent from the input."
+  },
+  "application_review": "Cubic filtering and normalized postselection make an exact platform-neutral educational exercise inspired by NTCA. Importance weighting changes success probability here. Uses in amplitude processing or QML are proposals; a four-entry classical vector is not evidence of a quantum speed advantage.",
+  "required_final_review": [],
+  "final_hash_review": {
+    "review_date": "2026-11-17",
+    "reviewer": "dqe_science",
+    "status": "pass",
+    "scope": "Complete final Korean and English manuscripts and compiled report fragments, all six PDF-content pages, platform code and recorded verification scopes. PDF rendering/layout and live publication are separate responsibilities; this reviewer does not claim an independent PDF visual or hardware check.",
+    "sha256": {
+      "reports/briefing_ko.md": "7a65d51429c2502ba1f0cd12720e9675ae80130de992d90d1a187e256063f3bf",
+      "reports/briefing_en.md": "853452073dd164d3d255d9e89a4bba03d6729491d53c4a7cbbd76c02c7fa153c",
+      "reports/briefing_ko.html": "75ddf0af9bba940ccc9689e446cdd61ca6769bbb1547607b400ae8dc7711baf5",
+      "reports/briefing_en.html": "999ee07be3c2dbd25774b9961cf30256c7589ce979db6b93e42c6bee4d4e7b64",
+      "reports/pdf-content.json": "c886ebf6b8004ee9978b402d245a5a02ec1f0855ee83e9464d26d17cad2a11c6",
+      "dist/2026-11-17-daily-quantum-exercise-ntca.pdf": "75e5a4831ce00cf7e14e5c476663da5fcacb7e585333b4a83883291675cb7ac1",
+      "artifacts/platforms/pennylane/pennylane_ntca_monomial.py": "d2c7271459aaeaa7712ce5d4a1c7ff325880c5bebb2065eb50d326b11396d0fb",
+      "artifacts/platforms/pennylane/pennylane-results.json": "1ab2682d473b4c3477b3aff41453487e9d7563e5f48e7fb8e0cbd4d60767873a",
+      "artifacts/platforms/qiskit/qiskit_ntca_monomial.py": "e32a4ba1bb69a79332a31767b4264b8a90c6beae6e76e33db17d9513f6046b9c",
+      "artifacts/platforms/qiskit/qiskit-results.json": "92ec671c679209c7ed3d9f429232f547f4f971457258178f6822388510faf846",
+      "artifacts/platforms/classiq/ntca_classiq.py": "0ba21ae5b514930ef9a4dbea24c0d9c145a7b59324db8309daa6ce48634e0aa2",
+      "artifacts/platforms/classiq/validation.json": "644ee7c0e082a723c2e257a74081031188eaa79fe950f4a0f07b6b6e8d8d5202"
+    },
+    "checks": {
+      "mathematics": "D=diag(x), no conjugation; x^3/2 versus x^3; real and complex probabilities, eight/six registers, three forward U calls per complete trial, 3/p retry cost all correct.",
+      "phase_diagnostic": "Basis 00,01,10,11; least significant logical address Y gives -2/3 versus +2/3. Applying S-dagger followed by H then measuring Z is correct. Conditional Y and overall acceptance denominators are explicitly separated.",
+      "platform_scope": "PennyLane 0.45.1 and Qiskit 2.6.2 scripts and statevector records inspected, including additional length 2/4/8 inputs. Classiq 1.35.0 source, four local model/schema records and synthetic postprocessing scope inspected; cloud, statevector backend and QPU not executed.",
+      "qsvt_boundary": "Executed circuit is an exact low-degree block product, not QSVT. General extension requires parity, coefficient order, bounded scaling, normalization, success signal and complex component extraction. Guo complex separable target and holomorphic cubic are distinguished.",
+      "applications": "Classifier feature-layer experiment is a proposal; no four-entry quantum speedup, original classifier result, training reproduction or cross-platform hardware ranking claimed.",
+      "reader_flow": "Both editions move from porting question to problem PDF, significance, then collapsed solution. New application and generalization content is contained in the closed details element. Existing platform-review connection is relevant to Qmod/Qiskit abstractions.",
+      "listing": "Proposed Korean/English titles and summaries preserve the scope: a common small circuit, output phases and acceptance/repetition costs, without asserting cloud execution.",
+      "html": {
+        "ko": {
+          "one_closed_details_element": true,
+          "no_numerical_answers_outside_details": true,
+          "references_and_first_citation_order_1_through_8": true,
+          "reference_list_matches_manuscript": true
+        },
+        "en": {
+          "one_closed_details_element": true,
+          "no_numerical_answers_outside_details": true,
+          "references_and_first_citation_order_1_through_8": true,
+          "reference_list_matches_manuscript": true
+        }
+      },
+      "references": "Eight numbered items match Korean/English fragments; complete original tutorial authors, published Guo DOI and Rattew v1 2023 preprint preserved. Official source titles and API conventions checked.",
+      "corrections_applied": "PDF page 3 now states that real signs are preserved by cubing, and explicitly normalizes the incorrect z|z|^2 output."
+    },
+    "remaining_scope": "No scientific/editorial blocker. Actual PDF layout review belongs to PDF author/root; deployment and live browser verification are not covered by this audit."
+  }
+}

@@ -1,0 +1,644 @@
+{
+  "description": "Cubic NTCA exercise using forward U plus XOR and fresh work registers",
+  "execution": "local noiseless Qiskit Statevector; no QPU and no cloud account",
+  "algorithm": "exact repeated amplitude multiplication; not QSVT",
+  "dense_amplitude_diagonal_or_dilation_gate_used": false,
+  "python": "3.12.14",
+  "versions": {
+    "qiskit": "2.6.2",
+    "numpy": "2.3.5",
+    "scipy": "1.16.3",
+    "rustworkx": "0.18.1",
+    "dill": "0.4.1",
+    "stevedore": "5.10.0",
+    "typing-extensions": "4.16.0"
+  },
+  "fixtures": {
+    "real": {
+      "input_block_check": {
+        "u_first_column_max_error": 1.1443916996305594e-16,
+        "amplitude_to_diagonal_block_max_error": 1.1443916996305594e-16,
+        "filter_unitarity_max_error": 4.440892098500626e-16,
+        "block_diagonal": [
+          {
+            "real": 0.40824829046386313,
+            "imag": 5.551115123125783e-17
+          },
+          {
+            "real": 0.8164965809277263,
+            "imag": -2.7755575615628914e-17
+          },
+          {
+            "real": -0.408248290463863,
+            "imag": 4.163336342344337e-17
+          },
+          {
+            "real": 2.7755575615628914e-17,
+            "imag": 2.7755575615628914e-17
+          }
+        ]
+      },
+      "runs": [
+        {
+          "initialization": "uniform",
+          "resources": {
+            "data_qubits": 2,
+            "work_qubits": 6,
+            "total_qubits": 8,
+            "filter_calls": 3,
+            "filter_state_preparation_calls": 3,
+            "input_state_preparation_calls": 0,
+            "total_state_preparation_calls": 3,
+            "xor_cx_gates": 6,
+            "all_work_zero_postselection": true,
+            "decomposed_basis": [
+              "u",
+              "cx"
+            ],
+            "decomposed_depth": 6,
+            "decomposed_gate_counts": {
+              "u": 11,
+              "cx": 9
+            }
+          },
+          "input": [
+            {
+              "real": 0.4082482904638631,
+              "imag": 0.0
+            },
+            {
+              "real": 0.8164965809277261,
+              "imag": 0.0
+            },
+            {
+              "real": -0.4082482904638631,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "postselected_unnormalized": [
+            {
+              "real": 0.0340206908719886,
+              "imag": 2.42861286636753e-17
+            },
+            {
+              "real": 0.2721655269759087,
+              "imag": -6.938893903907228e-17
+            },
+            {
+              "real": -0.03402069087198858,
+              "imag": 2.6020852139652106e-18
+            },
+            {
+              "real": -2.0045735325691467e-51,
+              "imag": 2.6727647100921956e-51
+            }
+          ],
+          "expected_unnormalized": [
+            {
+              "real": 0.0340206908719886,
+              "imag": 0.0
+            },
+            {
+              "real": 0.2721655269759088,
+              "imag": 0.0
+            },
+            {
+              "real": -0.0340206908719886,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "conditional_amplitudes": [
+            {
+              "real": 0.12309149097933277,
+              "imag": 8.787051969567965e-17
+            },
+            {
+              "real": 0.9847319278346618,
+              "imag": -2.5105862770194187e-16
+            },
+            {
+              "real": -0.1230914909793327,
+              "imag": 9.41469853882282e-18
+            },
+            {
+              "real": -7.25281993331905e-51,
+              "imag": 9.670426577758733e-51
+            }
+          ],
+          "target_amplitudes": [
+            {
+              "real": 0.12309149097933274,
+              "imag": 0.0
+            },
+            {
+              "real": 0.9847319278346619,
+              "imag": 0.0
+            },
+            {
+              "real": -0.12309149097933274,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "basis_labels": [
+            "00",
+            "01",
+            "10",
+            "11"
+          ],
+          "conditional_probabilities": [
+            0.015151515151515159,
+            0.9696969696969696,
+            0.015151515151515143,
+            1.4612054718097262e-100
+          ],
+          "success_probability": 0.0763888888888889,
+          "analytic_success_probability": 0.07638888888888896,
+          "work_zero_marginal_probability": 0.0763888888888889,
+          "conditional_fidelity": 0.9999999999999998,
+          "phase_sensitive_amplitude_max_error": 1.3092278833360675e-16,
+          "conditional_amplitude_max_error": 2.745111767991616e-16
+        },
+        {
+          "initialization": "importance",
+          "resources": {
+            "data_qubits": 2,
+            "work_qubits": 4,
+            "total_qubits": 6,
+            "filter_calls": 2,
+            "filter_state_preparation_calls": 2,
+            "input_state_preparation_calls": 1,
+            "total_state_preparation_calls": 3,
+            "xor_cx_gates": 4,
+            "all_work_zero_postselection": true,
+            "decomposed_basis": [
+              "u",
+              "cx"
+            ],
+            "decomposed_depth": 5,
+            "decomposed_gate_counts": {
+              "u": 9,
+              "cx": 7
+            }
+          },
+          "input": [
+            {
+              "real": 0.4082482904638631,
+              "imag": 0.0
+            },
+            {
+              "real": 0.8164965809277261,
+              "imag": 0.0
+            },
+            {
+              "real": -0.4082482904638631,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "postselected_unnormalized": [
+            {
+              "real": 0.0680413817439772,
+              "imag": 4.163336342344337e-17
+            },
+            {
+              "real": 0.5443310539518175,
+              "imag": -1.6653345369377348e-16
+            },
+            {
+              "real": -0.06804138174397716,
+              "imag": 1.734723475976807e-17
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "expected_unnormalized": [
+            {
+              "real": 0.0680413817439772,
+              "imag": 0.0
+            },
+            {
+              "real": 0.5443310539518176,
+              "imag": 0.0
+            },
+            {
+              "real": -0.0680413817439772,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "conditional_amplitudes": [
+            {
+              "real": 0.12309149097933277,
+              "imag": 7.531758831058256e-17
+            },
+            {
+              "real": 0.984731927834662,
+              "imag": -3.0127035324233024e-16
+            },
+            {
+              "real": -0.1230914909793327,
+              "imag": 3.1382328462742733e-17
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "target_amplitudes": [
+            {
+              "real": 0.12309149097933274,
+              "imag": 0.0
+            },
+            {
+              "real": 0.9847319278346619,
+              "imag": 0.0
+            },
+            {
+              "real": -0.12309149097933274,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "basis_labels": [
+            "00",
+            "01",
+            "10",
+            "11"
+          ],
+          "conditional_probabilities": [
+            0.015151515151515159,
+            0.96969696969697,
+            0.015151515151515143,
+            0.0
+          ],
+          "success_probability": 0.3055555555555557,
+          "analytic_success_probability": 0.30555555555555586,
+          "work_zero_marginal_probability": 0.3055555555555557,
+          "conditional_fidelity": 1.0000000000000004,
+          "phase_sensitive_amplitude_max_error": 2.0014830212433607e-16,
+          "conditional_amplitude_max_error": 3.210759682486946e-16
+        }
+      ],
+      "success_probability_ratio_importance_over_uniform": 4.0
+    },
+    "complex": {
+      "input_block_check": {
+        "u_first_column_max_error": 4.0029660424867215e-16,
+        "amplitude_to_diagonal_block_max_error": 4.0029660424867215e-16,
+        "filter_unitarity_max_error": 5.149139303585692e-16,
+        "block_diagonal": [
+          {
+            "real": 0.5773502691896255,
+            "imag": 2.220446049250313e-16
+          },
+          {
+            "real": -2.220446049250313e-16,
+            "imag": 0.5773502691896258
+          },
+          {
+            "real": -0.5773502691896257,
+            "imag": 4.163336342344337e-17
+          },
+          {
+            "real": -1.1102230246251565e-16,
+            "imag": 8.326672684688674e-17
+          }
+        ]
+      },
+      "runs": [
+        {
+          "initialization": "uniform",
+          "resources": {
+            "data_qubits": 2,
+            "work_qubits": 6,
+            "total_qubits": 8,
+            "filter_calls": 3,
+            "filter_state_preparation_calls": 3,
+            "input_state_preparation_calls": 0,
+            "total_state_preparation_calls": 3,
+            "xor_cx_gates": 6,
+            "all_work_zero_postselection": true,
+            "decomposed_basis": [
+              "u",
+              "cx"
+            ],
+            "decomposed_depth": 6,
+            "decomposed_gate_counts": {
+              "u": 11,
+              "cx": 9
+            }
+          },
+          "input": [
+            {
+              "real": 0.5773502691896258,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.5773502691896258
+            },
+            {
+              "real": -0.5773502691896258,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "postselected_unnormalized": [
+            {
+              "real": 0.09622504486493752,
+              "imag": 5.551115123125783e-17
+            },
+            {
+              "real": 4.683753385137379e-17,
+              "imag": -0.09622504486493763
+            },
+            {
+              "real": -0.09622504486493763,
+              "imag": 1.3877787807814457e-17
+            },
+            {
+              "real": 1.0263416486754031e-48,
+              "imag": 1.1973985901213036e-48
+            }
+          ],
+          "expected_unnormalized": [
+            {
+              "real": 0.09622504486493767,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": -0.09622504486493767
+            },
+            {
+              "real": -0.09622504486493767,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "conditional_amplitudes": [
+            {
+              "real": 0.5773502691896254,
+              "imag": 3.330669073875471e-16
+            },
+            {
+              "real": 2.810252031082429e-16,
+              "imag": -0.5773502691896261
+            },
+            {
+              "real": -0.5773502691896261,
+              "imag": 8.326672684688678e-17
+            },
+            {
+              "real": 6.158049892052421e-48,
+              "imag": 7.184391540727826e-48
+            }
+          ],
+          "target_amplitudes": [
+            {
+              "real": 0.5773502691896257,
+              "imag": 0.0
+            },
+            {
+              "real": -0.0,
+              "imag": -0.5773502691896257
+            },
+            {
+              "real": -0.5773502691896257,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "basis_labels": [
+            "00",
+            "01",
+            "10",
+            "11"
+          ],
+          "conditional_probabilities": [
+            0.3333333333333329,
+            0.3333333333333337,
+            0.3333333333333337,
+            8.953706028348839e-95
+          ],
+          "success_probability": 0.027777777777777755,
+          "analytic_success_probability": 0.027777777777777804,
+          "work_zero_marginal_probability": 0.027777777777777755,
+          "conditional_fidelity": 1.0,
+          "phase_sensitive_amplitude_max_error": 1.6243534171511178e-16,
+          "conditional_amplitude_max_error": 4.710277376051326e-16
+        },
+        {
+          "initialization": "importance",
+          "resources": {
+            "data_qubits": 2,
+            "work_qubits": 4,
+            "total_qubits": 6,
+            "filter_calls": 2,
+            "filter_state_preparation_calls": 2,
+            "input_state_preparation_calls": 1,
+            "total_state_preparation_calls": 3,
+            "xor_cx_gates": 4,
+            "all_work_zero_postselection": true,
+            "decomposed_basis": [
+              "u",
+              "cx"
+            ],
+            "decomposed_depth": 5,
+            "decomposed_gate_counts": {
+              "u": 9,
+              "cx": 7
+            }
+          },
+          "input": [
+            {
+              "real": 0.5773502691896258,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.5773502691896258
+            },
+            {
+              "real": -0.5773502691896258,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "postselected_unnormalized": [
+            {
+              "real": 0.19245008972987507,
+              "imag": 1.457167719820518e-16
+            },
+            {
+              "real": 1.1102230246251565e-16,
+              "imag": -0.1924500897298753
+            },
+            {
+              "real": -0.19245008972987526,
+              "imag": 2.7755575615628914e-17
+            },
+            {
+              "real": 2.7369110631344083e-48,
+              "imag": 3.7632527118098115e-48
+            }
+          ],
+          "expected_unnormalized": [
+            {
+              "real": 0.19245008972987535,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": -0.19245008972987535
+            },
+            {
+              "real": -0.19245008972987535,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "conditional_amplitudes": [
+            {
+              "real": 0.5773502691896254,
+              "imag": 4.3715031594615554e-16
+            },
+            {
+              "real": 3.3306690738754706e-16,
+              "imag": -0.5773502691896261
+            },
+            {
+              "real": -0.577350269189626,
+              "imag": 8.326672684688677e-17
+            },
+            {
+              "real": 8.210733189403227e-48,
+              "imag": 1.1289758135429437e-47
+            }
+          ],
+          "target_amplitudes": [
+            {
+              "real": 0.5773502691896257,
+              "imag": 0.0
+            },
+            {
+              "real": -0.0,
+              "imag": -0.5773502691896257
+            },
+            {
+              "real": -0.5773502691896257,
+              "imag": 0.0
+            },
+            {
+              "real": 0.0,
+              "imag": 0.0
+            }
+          ],
+          "basis_labels": [
+            "00",
+            "01",
+            "10",
+            "11"
+          ],
+          "conditional_probabilities": [
+            0.3333333333333329,
+            0.3333333333333337,
+            0.33333333333333354,
+            1.948747782640629e-94
+          ],
+          "success_probability": 0.11111111111111106,
+          "analytic_success_probability": 0.11111111111111122,
+          "work_zero_marginal_probability": 0.11111111111111105,
+          "conditional_fidelity": 1.0,
+          "phase_sensitive_amplitude_max_error": 3.134813796900204e-16,
+          "conditional_amplitude_max_error": 5.495761671766056e-16
+        }
+      ],
+      "success_probability_ratio_importance_over_uniform": 4.0
+    }
+  },
+  "additional_random_complex_checks": [
+    {
+      "dimension": 2,
+      "importance": false,
+      "amplitude_max_error": 1.2412670766236366e-16
+    },
+    {
+      "dimension": 2,
+      "importance": true,
+      "amplitude_max_error": 2.482534153247273e-16
+    },
+    {
+      "dimension": 4,
+      "importance": false,
+      "amplitude_max_error": 9.12668998568199e-17
+    },
+    {
+      "dimension": 4,
+      "importance": true,
+      "amplitude_max_error": 1.1123893155135927e-16
+    },
+    {
+      "dimension": 8,
+      "importance": false,
+      "amplitude_max_error": 1.2696187984570749e-16
+    },
+    {
+      "dimension": 8,
+      "importance": true,
+      "amplitude_max_error": 2.997610197604368e-16
+    }
+  ],
+  "limitations": [
+    "The state preparation is synthesized from a known classical vector; loading and synthesis cost can grow with input dimension.",
+    "Fresh work registers scale as degree times log2(N); this is not the constant-ancilla QSVT construction from the source demo.",
+    "The factor-four success comparison uses N=4 and the exact monomial x**3; it is not a general performance or hardware speedup claim.",
+    "The complex case computes z**3, not Re(z)**3, |z|**3, or a holomorphic extension of the demo's tanh workflow.",
+    "Decomposed u/cx counts are for this local toy circuit and specified transpiler settings only."
+  ],
+  "primary_documentation": [
+    "https://pennylane.ai/demos/nonlinear_transformation_of_complex_amplitudes",
+    "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.circuit.library.StatePreparation",
+    "https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.quantum_info.Statevector",
+    "https://quantum.cloud.ibm.com/docs/en/qiskit/bit-ordering",
+    "https://pypi.org/project/qiskit/2.6.2/"
+  ]
+}

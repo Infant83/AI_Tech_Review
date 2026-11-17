@@ -1,0 +1,83 @@
+{
+  "checked": "2026-11-17",
+  "Python": "3.12",
+  "Classiq": "1.35.0",
+  "numpy": "2.3.5",
+  "pandas": "2.2.3",
+  "pydantic": "2.14.3",
+  "scope": "Local SDK model creation, JSON parse, client schema checks and source/debug-path removal. Synthetic DataFrame checks are helper tests, not Classiq simulator output.",
+  "script_sha256": "0ba21ae5b514930ef9a4dbea24c0d9c145a7b59324db8309daa6ce48634e0aa2",
+  "cases": [
+    {
+      "fixture": "real",
+      "mode": "uniform",
+      "client_model_schema": "passed",
+      "json_parse": "passed",
+      "debug_path_scan": "passed",
+      "declared_address_and_work_qubits": 8,
+      "total_forward_U_calls": 3,
+      "mathematical_reference_success_probability": 0.07638888888888896,
+      "synthetic_dataframe_helper_fidelity": 1.0000000000000004,
+      "cloud_synthesis": "not_run",
+      "Classiq_simulator": "not_run",
+      "QPU": "not_run",
+      "QSVT": "not_used"
+    },
+    {
+      "fixture": "real",
+      "mode": "importance",
+      "client_model_schema": "passed",
+      "json_parse": "passed",
+      "debug_path_scan": "passed",
+      "declared_address_and_work_qubits": 6,
+      "total_forward_U_calls": 3,
+      "mathematical_reference_success_probability": 0.30555555555555586,
+      "synthetic_dataframe_helper_fidelity": 1.0000000000000004,
+      "cloud_synthesis": "not_run",
+      "Classiq_simulator": "not_run",
+      "QPU": "not_run",
+      "QSVT": "not_used"
+    },
+    {
+      "fixture": "complex",
+      "mode": "uniform",
+      "client_model_schema": "passed",
+      "json_parse": "passed",
+      "debug_path_scan": "passed",
+      "declared_address_and_work_qubits": 8,
+      "total_forward_U_calls": 3,
+      "mathematical_reference_success_probability": 0.027777777777777804,
+      "synthetic_dataframe_helper_fidelity": 1.0,
+      "cloud_synthesis": "not_run",
+      "Classiq_simulator": "not_run",
+      "QPU": "not_run",
+      "QSVT": "not_used"
+    },
+    {
+      "fixture": "complex",
+      "mode": "importance",
+      "client_model_schema": "passed",
+      "json_parse": "passed",
+      "debug_path_scan": "passed",
+      "declared_address_and_work_qubits": 6,
+      "total_forward_U_calls": 3,
+      "mathematical_reference_success_probability": 0.11111111111111122,
+      "synthetic_dataframe_helper_fidelity": 1.0,
+      "cloud_synthesis": "not_run",
+      "Classiq_simulator": "not_run",
+      "QPU": "not_run",
+      "QSVT": "not_used"
+    }
+  ],
+  "nonintegral_register_rejection": "passed",
+  "backend_resource_counts": "not_measured",
+  "authentication": "No new login performed; no cloud job submitted",
+  "sources": [
+    "https://docs.classiq.io/qmod-reference/library-reference/core-library-functions/prepare_state_and_amplitudes/prepare_state_and_amplitudes",
+    "https://docs.classiq.io/qmod-reference/language-reference/quantum-types",
+    "https://docs.classiq.io/user-guide/execution/calculate-state-vector",
+    "https://docs.classiq.io/sdk-reference/applications/QSP",
+    "https://docs.classiq.io/sdk-reference/qmod/functions/open_library/qsvt"
+  ],
+  "public_source_script_rerun": "passed: same four models from repository script; no cloud call"
+}

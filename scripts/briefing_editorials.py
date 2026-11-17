@@ -272,7 +272,7 @@ def stage_editorials(repo: Path, staging_root: Path, documents: list[dict], base
         if not isinstance(href, str) or not href.startswith("archive/files/") or not href.endswith(".pdf") or _href(href, "") != href:
             raise ValueError("editorial must retain a registered public PDF")
         enriched = dict(document)
-        enriched["editorial_href"], enriched["editorial_en_href"] = editorial_paths(issue_date.isoformat(), document["series"])
+        enriched["editorial_href"], enriched["editorial_en_href"] = editorial_paths(issue_date.isoformat(), document["series"], identity)
         enriched["editorial_updated"] = spec["updated"]
         pages = {}
         for language in ("ko", "en"):

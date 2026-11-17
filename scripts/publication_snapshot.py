@@ -98,7 +98,10 @@ def editorial_references(document: dict) -> list[str]:
         raise SnapshotError("Invalid briefing editorial date") from error
     if document.get("series") not in BRIEFING_SERIES:
         raise SnapshotError("Invalid briefing editorial series")
-    expected = list(editorial_paths(published, document["series"]))
+    try:
+        expected = list(editorial_paths(published, document["series"], identifier))
+    except ValueError as error:
+        raise SnapshotError("Invalid briefing editorial identity") from error
     assets = document.get("editorial_assets")
     if (document.get("href") != f"archive/files/{identifier}.pdf"
             or not SHA.fullmatch(str(document.get("sha256", "")))
@@ -125,7 +128,12 @@ def initial_editorial_append(identifier: str, old: dict, new: dict,
     except ValueError:
         return False
     expected = new["editorial_references"]
-    allowed_pairs = {tuple(sorted(editorial_paths(published, series))) for series in BRIEFING_SERIES}
+    choices = ({"daily-quantum-exercise"}
+               if identifier.startswith(f"{published}-daily-quantum-exercise-") else BRIEFING_SERIES)
+    try:
+        allowed_pairs = {tuple(sorted(editorial_paths(published, series, identifier))) for series in choices}
+    except ValueError:
+        return False
     if not isinstance(expected, list) or tuple(expected) not in allowed_pairs:
         return False
     old_refs = old.get("references")

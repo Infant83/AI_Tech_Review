@@ -192,9 +192,9 @@ class PublicationSnapshotTests(unittest.TestCase):
         (self.site / self.document["href"]).write_bytes(b"public PDF")
         self.write_registries()
 
-    def register_editorial(self):
-        self.document.update(editorial_href="briefings/2026-11-12/index.html",
-                             editorial_en_href="briefings/2026-11-12/en/index.html")
+    def register_editorial(self, paths=None):
+        paths = paths or ("briefings/2026-11-12/index.html", "briefings/2026-11-12/en/index.html")
+        self.document.update(editorial_href=paths[0], editorial_en_href=paths[1])
         assets = {}
         for language in ("ko", "en"):
             name = self.document["editorial_en_href" if language == "en" else "editorial_href"]
@@ -245,6 +245,37 @@ class PublicationSnapshotTests(unittest.TestCase):
         changed = copy.deepcopy(current)
         changed["files"][self.document["href"]]["sha256"] = "f" * 64
         self.assertFalse(snapshots.compare_snapshots(baseline, changed)["structural_ok"])
+
+    def test_supplement_first_append_requires_its_exact_pair(self):
+        self.briefing_document()
+        identity = "2026-11-12-daily-quantum-exercise-ntca"
+        self.document.update(id=identity, series="daily-quantum-exercise", href=f"archive/files/{identity}.pdf")
+        (self.site / self.document["href"]).write_bytes(b"public PDF")
+        self.write_registries()
+        baseline = self.baseline()
+        pair = ["briefings/exercises/2026-11-12/ntca/index.html",
+                "briefings/exercises/2026-11-12/ntca/en/index.html"]
+        self.register_editorial(pair)
+        current = self.baseline()
+        self.assertTrue(snapshots.compare_snapshots(baseline, current)["structural_ok"])
+        old = baseline["archive"][identity]
+        for wrong in (["briefings/exercises/2026-11-12/index.html", "briefings/exercises/2026-11-12/en/index.html"],
+                      ["briefings/exercises/2026-11-12/other/index.html", "briefings/exercises/2026-11-12/other/en/index.html"],
+                      ["briefings/2026-11-12/index.html", "briefings/2026-11-12/en/index.html"],
+                      [pair[0], "briefings/exercises/2026-11-12/en/index.html"]):
+            with self.subTest(wrong=wrong):
+                changed = copy.deepcopy(current)
+                record = changed["archive"][identity]
+                record["editorial_references"] = sorted(wrong)
+                record["references"] = sorted(set(old["references"]) | set(wrong))
+                for destination, source in zip(wrong, pair):
+                    changed["files"][destination] = current["files"][source]
+                self.assertFalse(snapshots.initial_editorial_append(identity, old, record, baseline["files"], changed["files"]))
+                self.assertFalse(snapshots.compare_snapshots(baseline, changed)["structural_ok"])
+                forged = {**self.document, "editorial_href": wrong[0], "editorial_en_href": wrong[1],
+                          "editorial_assets": {path: "a" * 64 for path in wrong}}
+                with self.assertRaises(snapshots.SnapshotError):
+                    snapshots.editorial_references(forged)
 
     def test_first_append_does_not_allow_identity_drift_or_extra_references(self):
         self.briefing_document()

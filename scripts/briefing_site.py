@@ -204,7 +204,11 @@ def validate_briefings(site_dir: Path, documents: list[dict]) -> list[str]:
     for doc in documents:
         if doc.get("series") not in BRIEFING_SERIES:
             continue
-        ko_path, en_path = editorial_paths(doc["date"], doc["series"])
+        try:
+            ko_path, en_path = editorial_paths(doc["date"], doc["series"], doc["id"])
+        except ValueError:
+            errors.append(f"invalid briefing editorial registration: {doc['id']}")
+            continue
         expected_paths = {ko_path, en_path}
         declared = doc.get("editorial_assets", {})
         if doc.get("editorial_href") or doc.get("editorial_en_href") or declared:
