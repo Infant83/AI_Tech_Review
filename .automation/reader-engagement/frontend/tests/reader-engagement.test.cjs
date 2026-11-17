@@ -274,7 +274,7 @@ function frontendHarness(options = {}) {
   visibilityState: options.visibility || 'visible', hasFocus() { return this.focused !== false; }, focused: options.focused !== false,
   createElement: tag => new MiniNode(tag), createElementNS: (_namespace, tag) => new MiniNode(tag), createTextNode: value => ({ textContent: value }), contains: () => true };
   if (options.hubPage) document.body.className = 'hub-page';
-  const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error,
+  const context = { URL, Intl, Uint8Array, Array, Promise, JSON, String, Number, Boolean, Error, TextEncoder, TextDecoder, AbortController,
     location: { protocol: 'https:', origin: 'https://infant83.io', pathname: options.pathname || '/AI_Tech_Review/', hostname: 'infant83.io' }, document,
     navigator: { userAgent: options.userAgent || '', standalone: options.standalone !== false, serviceWorker: {} },
     Notification: { get permission() { return permission; }, requestPermission: () => {
@@ -288,6 +288,9 @@ function frontendHarness(options = {}) {
     clearTimeout: options.clock ? options.clock.clearTimeout : clearTimeout,
     fetch: async (url, init) => {
       calls.push({ url, init }); events.push(new URL(url).pathname);
+      if (new URL(url).pathname === '/AI_Tech_Review/reader-publications.json') {
+        return options.catalogResponse ? options.catalogResponse(url, init, calls) : new Response('', { status: 404 });
+      }
       const status = options.responseStatus ? options.responseStatus(url, init, calls) : 200;
       return { ok: status >= 200 && status < 300, status, json: async () => options.responseJSON ? options.responseJSON(url, init) : ({ ok: true, subscription: subscriptionJSON }) };
     }
@@ -318,7 +321,7 @@ function frontendHarness(options = {}) {
   context.window = context;
   const initializer = source.lastIndexOf('\n  mount();');
   assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
-  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, acknowledgeArticle: typeof acknowledgeCurrentArticle === "function" ? acknowledgeCurrentArticle : null, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, refreshTitles: refreshNotificationTitles, foregroundNotifications: refreshForegroundNotifications, validateTitleCatalog: notificationTitleCatalog, acknowledgeArticle: typeof acknowledgeCurrentArticle === "function" ? acknowledgeCurrentArticle : null, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
@@ -670,6 +673,148 @@ test('ordinary dialog re-renders never clear notification state or bypass reques
   await harness.api.refreshHistory(false);
   assert.equal(worker.requests, 1);
   assert.equal(harness.api.state.notificationHistory[0].id, 'kept');
+});
+
+function titlePublication(id, title = 'Current ' + id, extra = {}) {
+  const lecture = id.startsWith('lecture:');
+  return { id, title, topic: lecture ? 'lecture' : 'review', publishedAt: '2026-11-16',
+    path: lecture ? '/AI_Tech_Review/archive/files/' + id.slice(8) + '.pdf' : '/AI_Tech_Review/reviews/' + id + '/', ...extra };
+}
+function titleFeed(articles) { return { revision: 'a'.repeat(40), articles }; }
+function titleResponse(value, settings = {}) { return new Response(typeof value === 'string' ? value : JSON.stringify(value), { headers: { 'content-type': 'application/json', ...(settings.headers || {}) }, status: settings.status || 200 }); }
+function recentLinks(h) { return modal(h).querySelectorAll('section').find(item => item.className === 'atr-reader-recent').querySelectorAll('a'); }
+async function loadTitleHistory(h) { openModal(h); await h.api.refreshHistory(false); await h.api.refreshTitles(false); await flushPromises(); }
+
+test('recent L008 uses current ID title text while receipt, links, count, times, order and expansion stay unchanged in KO and EN', async () => {
+  const id = 'lecture:2026-11-16-classiq-qae-l008-notes-ko';
+  const current = 'Classiq QAE L008: Classiq 양자 프로그램의 합성·실행·검증';
+  for (const english of [false, true]) {
+    const records = [historyRecord(id, { title: 'L008 old title', url: 'https://infant83.io/AI_Tech_Review/archive/files/' + id.slice(8) + '.pdf' }), historyRecord('older', { receivedAt: 1792807200000 })];
+    const raw = JSON.stringify(records);
+    const h = frontendHarness({ english, messageChannel: true, notificationWorker: replyingWorker(records, 2), catalogResponse: () => titleResponse(titleFeed([titlePublication(id, current)])) });
+    await loadTitleHistory(h);
+    assert.equal(recentLinks(h)[0].textContent, current);
+    assert.equal(recentLinks(h)[0].href, 'https://infant83.io/AI_Tech_Review/lectures/reader/?id=' + id.slice(8) + (english ? '&lang=en' : ''));
+    assert.equal(recentLinks(h)[1].textContent, records[1].title);
+    assert.equal(h.api.state.historyCount, 2); assert.equal(h.api.state.historyLimit, 5);
+    assert.equal(JSON.stringify(records), raw); assert.equal(JSON.stringify(h.api.state.notificationHistory), raw);
+    assert.equal(modal(h).querySelectorAll('time')[0].dateTime, new Date(records[0].receivedAt).toISOString());
+    const request = h.calls.find(call => call.url.endsWith('/reader-publications.json'));
+    assert.equal(request.url, 'https://infant83.io/AI_Tech_Review/reader-publications.json');
+    assert.equal(request.init.method, 'GET'); assert.equal(request.init.credentials, 'omit');
+    assert.equal(request.init.redirect, 'error'); assert.equal(request.init.cache, 'no-store');
+    assert.equal(request.init.body, undefined); assert.equal(h.calls.length, 1);
+  }
+});
+
+test('reopening and foreground re-entry refetch current titles without ordinary-render requests or receipt changes', async () => {
+  const record = historyRecord('renamed'); let title = 'First rename';
+  const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([record], 1), catalogResponse: () => titleResponse(titleFeed([titlePublication(record.id, title)])) });
+  await loadTitleHistory(h);
+  h.api.render(); h.api.render(); assert.equal(h.calls.length, 1);
+  h.api.close(); title = 'Second rename'; h.api.open(h.topbar.children[0]);
+  await h.api.refreshTitles(false); await flushPromises();
+  assert.equal(recentLinks(h)[0].textContent, title); assert.equal(h.calls.length, 2);
+  title = 'Third rename'; h.api.foregroundNotifications(); await h.api.refreshTitles(false); await flushPromises();
+  assert.equal(recentLinks(h)[0].textContent, title); assert.equal(h.calls.length, 3);
+  assert.equal(h.api.state.notificationHistory[0].title, record.title); assert.equal(h.api.state.historyCount, 1);
+});
+
+test('catalog validation rejects complete malformed feeds rather than accepting foreign or mismatched entries', () => {
+  const h = frontendHarness(), article = titlePublication('one');
+  const invalid = [null, {}, { revision: 'bad', articles: [article] }, titleFeed([]),
+    { ...titleFeed([article]), extra: true }, titleFeed([{ ...article, extra: true }]), titleFeed([article, { ...article }]),
+    titleFeed([article, titlePublication('two', 'Other', { path: article.path })]),
+    ...[
+      { id: 'bad id' }, { id: 'a'.repeat(181) }, { title: '' }, { title: 'x'.repeat(241) }, { title: ' title ' }, { title: 'bad\nline' },
+      { publishedAt: '2026-02-30' }, { topic: 'lecture' }, { path: '/AI_Tech_Review/reviews/two/' },
+      { path: 'https://other.example/AI_Tech_Review/reviews/one/' }, { path: '/outside/reviews/one/' },
+      { path: '/AI_Tech_Review/reviews/one/?token=x' }, { path: '/AI_Tech_Review/reviews/one/#part' },
+      { path: '/AI_Tech_Review/reviews/%6fne/' }, { path: '/AI_Tech_Review/reviews/../one/' },
+    ].map(change => titleFeed([{ ...article, ...change }]))];
+  for (const value of invalid) assert.equal(h.api.validateTitleCatalog(value), null);
+  const lecture = titlePublication('lecture:legacy-id', 'Lecture', { path: '/AI_Tech_Review/lectures/different-web-slug/' });
+  assert.equal(h.api.validateTitleCatalog(titleFeed([lecture])).get(lecture.id), lecture.title);
+  assert.equal(h.api.validateTitleCatalog(titleFeed([{ ...lecture, path: '/AI_Tech_Review/archive/files/other-id.pdf' }])), null);
+  const fiveHundred = Array.from({ length: 500 }, (_, index) => titlePublication('id-' + index));
+  assert.equal(h.api.validateTitleCatalog(titleFeed(fiveHundred)).size, 500);
+  assert.equal(h.api.validateTitleCatalog(titleFeed([...fiveHundred, titlePublication('overflow')])), null);
+});
+
+test('missing ID, malformed, duplicate, offline, status and byte-limit failures retain the receipt title', async () => {
+  const record = historyRecord('one'); const good = titleFeed([titlePublication('one', 'Updated')]);
+  const valid = JSON.stringify(good), exact = valid + ' '.repeat(300000 - Buffer.byteLength(valid));
+  const exactHarness = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([record]), catalogResponse: () => titleResponse(exact) });
+  await loadTitleHistory(exactHarness); assert.equal(recentLinks(exactHarness)[0].textContent, 'Updated');
+  for (const response of [
+    () => titleResponse(titleFeed([titlePublication('another')])), () => titleResponse('{'),
+    () => titleResponse(titleFeed([titlePublication('one'), titlePublication('one')])),
+    () => Promise.reject(Error('offline')), () => titleResponse(good, { status: 503 }),
+    () => titleResponse(exact + ' '), () => titleResponse('한'.repeat(100001)),
+    () => titleResponse(good, { headers: { 'content-length': '300001' } }),
+  ]) {
+    const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([record], 3), catalogResponse: response });
+    await loadTitleHistory(h);
+    assert.equal(recentLinks(h)[0].textContent, record.title); assert.equal(h.api.state.historyCount, 3);
+    assert.equal(h.api.state.notificationHistory.length, 1); assert.equal(h.api.state.notificationHistory[0].title, record.title);
+    assert.equal(h.api.state.feedbackError, false);
+  }
+});
+
+test('catalog failure after a successful rename restores the receipt fallback and malicious titles stay literal text', async () => {
+  let good = true; const record = historyRecord('one'), title = '<img src=x onerror="bad()"> new title';
+  const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([record]), catalogResponse: () => good ? titleResponse(titleFeed([titlePublication('one', title)])) : titleResponse('{') });
+  await loadTitleHistory(h); assert.equal(recentLinks(h)[0].textContent, title); assert.equal(recentLinks(h)[0].children.length, 0);
+  h.api.close(); good = false; h.api.open(h.topbar.children[0]); await h.api.refreshTitles(false); await flushPromises();
+  assert.equal(recentLinks(h)[0].textContent, record.title);
+});
+
+test('a title-only response updates the existing recent link without replacing focus, section or scroll state', async () => {
+  let release;
+  const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([historyRecord('one')]), catalogResponse: () => new Promise(resolve => { release = resolve; }) });
+  openModal(h); await h.api.refreshHistory(false); await flushPromises();
+  const link = recentLinks(h)[0], section = link.parentNode.parentNode.parentNode;
+  link.focus(); h.context.scrollY = 1234; h.api.state.historyLimit = 10;
+  const waiting = h.api.refreshTitles(false); release(titleResponse(titleFeed([titlePublication('one', 'Current title')]))); await waiting;
+  assert.equal(recentLinks(h)[0], link); assert.equal(h.document.activeElement, link);
+  assert.equal(link.parentNode.parentNode.parentNode, section); assert.equal(link.textContent, 'Current title');
+  assert.equal(h.context.scrollY, 1234); assert.equal(h.api.state.historyLimit, 10);
+});
+
+test('shared pending title fetches cannot delay history or let an obsolete reopen result overwrite the latest request', async () => {
+  let first, second, calls = 0;
+  const h = frontendHarness({ messageChannel: true, notificationWorker: replyingWorker([historyRecord('one')], 4), catalogResponse: () => new Promise(resolve => { if (++calls === 1) first = resolve; else second = resolve; }) });
+  openModal(h); await h.api.refreshHistory(false); await flushPromises();
+  assert.equal(h.api.state.historyReady, true); assert.equal(h.api.state.historyCount, 4);
+  const shared = h.api.refreshTitles(false); assert.equal(h.api.refreshTitles(false), shared); assert.equal(calls, 1);
+  h.api.close(); h.api.open(h.topbar.children[0]);
+  first(titleResponse(titleFeed([titlePublication('one', 'Obsolete rename')])));
+  await shared; await flushPromises();
+  assert.equal(calls, 2); assert.equal(recentLinks(h)[0].textContent, 'New article one');
+  second(titleResponse(titleFeed([titlePublication('one', 'Latest rename')])));
+  await h.api.refreshTitles(false); assert.equal(recentLinks(h)[0].textContent, 'Latest rename');
+});
+
+test('catalog timeout falls back without blocking the separate SW history deadline and ignores late bytes', async () => {
+  const clock = fakeClock(); let release;
+  const h = frontendHarness({ clock, messageChannel: true, notificationWorker: replyingWorker([historyRecord('one')], 2), catalogResponse: () => new Promise(resolve => { release = resolve; }) });
+  openModal(h); await h.api.refreshHistory(false); await flushPromises();
+  assert.equal(h.api.state.historyReady, true); assert.equal(h.api.state.historyCount, 2);
+  const waiting = h.api.refreshTitles(false); clock.advance(4000); await waiting;
+  assert.equal(recentLinks(h)[0].textContent, 'New article one');
+  release(titleResponse(titleFeed([titlePublication('one', 'Too late')]))); await flushPromises();
+  assert.equal(recentLinks(h)[0].textContent, 'New article one'); assert.equal(h.api.state.busy, false);
+});
+
+test('ACK response rendering retains the title overlay and the existing local acknowledgement contract', async () => {
+  const record = historyRecord('one'); const messages = [];
+  const worker = { postMessage(message, ports) { messages.push(message); ports[0].postMessage({ ok: true, count: message.type === 'atr-reader-article-read' ? 0 : 1, notifications: [record] }); } };
+  const h = frontendHarness({ article: { id: 'one', path: '/AI_Tech_Review/reviews/one/' }, pathname: '/AI_Tech_Review/reviews/one/', messageChannel: true, notificationWorker: worker, catalogResponse: () => titleResponse(titleFeed([titlePublication('one', 'Current one')])) });
+  await loadTitleHistory(h); await h.api.acknowledgeArticle();
+  assert.equal(recentLinks(h)[0].textContent, 'Current one'); assert.equal(h.api.state.historyCount, 0);
+  assert.equal(h.api.state.notificationHistory[0].title, record.title);
+  assert.equal(messages.at(-1).type, 'atr-reader-article-read'); assert.equal(messages.at(-1).articleId, record.id);
+  assert.equal(messages.at(-1).url, record.url); assert.equal(h.calls.length, 1);
 });
 
 test('a pending permission request times out in 30 seconds and retries never duplicate the OS request', async () => {

@@ -139,6 +139,8 @@
   var deviceSessionKnown = false, pendingDeviceRegistration = null, pendingLikeWrite = null;
   var installPrompt = null, installedInSession = false, currentGuide = null, recentHeading = null;
   var historyRequest = null, historyLastAttempt = 0, historyGeneration = 0, historyQueued = false, historyDirty = false;
+  var recentTitles = null, recentTitlesReady = false, recentTitlesRequest = null, recentTitlesGeneration = 0, recentTitlesQueued = false;
+  var recentTitleLinks = [];
   var articleReadRequest = null, articleReadWorker = null, articleReadKey = null;
   var metricsRoot = null, metricsFields = {}, metricsStatus = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
@@ -264,6 +266,93 @@
     if (english) reader.searchParams.set("lang", "en");
     return reader.href;
   }
+  function notificationTitleCatalog(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value) || Object.keys(value).sort().join(",") !== "articles,revision"
+      || typeof value.revision !== "string" || !/^[a-f0-9]{40,64}$/.test(value.revision)
+      || !Array.isArray(value.articles) || !value.articles.length || value.articles.length > 500) return null;
+    var titles = new Map(), paths = new Set();
+    for (var index = 0; index < value.articles.length; index += 1) {
+      var item = value.articles[index];
+      if (!item || typeof item !== "object" || Array.isArray(item) || Object.keys(item).sort().join(",") !== "id,path,publishedAt,title,topic"
+        || typeof item.id !== "string" || !/^(?:lecture:)?[A-Za-z0-9][A-Za-z0-9._-]{0,179}$/.test(item.id)
+        || !["review", "lecture"].includes(item.topic) || (item.topic === "lecture") !== item.id.startsWith("lecture:")
+        || typeof item.title !== "string" || !item.title.trim() || item.title !== item.title.trim() || item.title.length > 240 || /[\u0000-\u001f\u007f]/.test(item.title)
+        || typeof item.publishedAt !== "string" || !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z)?$/.test(item.publishedAt)
+        || !Number.isFinite(Date.parse(item.publishedAt)) || new Date(item.publishedAt).toISOString().slice(0, 10) !== item.publishedAt.slice(0, 10)
+        || typeof item.path !== "string" || !item.path.startsWith(scope) || !/^[A-Za-z0-9_./-]+$/.test(item.path)
+        || item.path.includes("//") || item.path.split("/").some(function (part) { return part === "." || part === ".."; })) return null;
+      var relative = item.path.slice(scope.length), documentId = item.id.replace(/^lecture:/, "");
+      if (item.topic === "review" ? item.path !== scope + "reviews/" + item.id + "/"
+        : !/^lectures\/[A-Za-z0-9][A-Za-z0-9._-]{0,179}\/$/.test(relative) && relative !== "archive/files/" + documentId + ".pdf") return null;
+      if (titles.has(item.id) || paths.has(item.path)) return null;
+      titles.set(item.id, item.title); paths.add(item.path);
+    }
+    return titles;
+  }
+  async function readNotificationTitleCatalog(response) {
+    if (!response || !response.ok) throw apiError("notification_catalog_unavailable");
+    var length = response.headers && response.headers.get("content-length");
+    if (length && (!/^\d+$/.test(length) || Number(length) > 300000)) throw apiError("notification_catalog_limit");
+    var payload = "";
+    if (response.body && typeof response.body.getReader === "function" && typeof TextDecoder === "function") {
+      var reader = response.body.getReader(), decoder = new TextDecoder("utf-8", { fatal: true }), size = 0;
+      try {
+        while (true) {
+          var part = await reader.read();
+          if (part.done) break;
+          size += part.value.byteLength;
+          if (size > 300000) { void reader.cancel(); throw apiError("notification_catalog_limit"); }
+          payload += decoder.decode(part.value, { stream: true });
+        }
+        payload += decoder.decode();
+      } finally { reader.releaseLock(); }
+    } else {
+      payload = await response.text();
+      if (payload.length > 300000 || typeof TextEncoder !== "function" || new TextEncoder().encode(payload).length > 300000) throw apiError("notification_catalog_limit");
+    }
+    var titles = notificationTitleCatalog(JSON.parse(payload));
+    if (!titles) throw apiError("notification_catalog_invalid");
+    return titles;
+  }
+  function refreshNotificationTitles(force) {
+    if (document.visibilityState !== "visible" || (typeof document.hasFocus === "function" && !document.hasFocus()) || document.prerendering
+      || (window.top && window.top !== window.self)) return Promise.resolve();
+    if (force) recentTitlesReady = false;
+    if (!state.notificationHistory.length) return Promise.resolve();
+    if (recentTitlesRequest) {
+      if (force) { recentTitlesGeneration += 1; recentTitlesQueued = true; }
+      return recentTitlesRequest;
+    }
+    if (recentTitlesReady) return Promise.resolve();
+    var generation = ++recentTitlesGeneration;
+    var controller = typeof window.AbortController === "function" ? new window.AbortController() : null;
+    var options = { method: "GET", credentials: "omit", redirect: "error", cache: "no-store" };
+    if (controller) options.signal = controller.signal;
+    var request = Promise.resolve().then(function () { return fetch(new URL(scope + "reader-publications.json", location.origin).href, options); }).then(readNotificationTitleCatalog);
+    recentTitlesRequest = withDeadline(request, 4000, "notification_catalog_timeout").then(function (titles) {
+      if (generation !== recentTitlesGeneration || document.visibilityState !== "visible" || (typeof document.hasFocus === "function" && !document.hasFocus())) return;
+      recentTitles = titles; recentTitlesReady = true;
+      updateRecentNotificationTitles();
+    }).catch(function () {
+      if (generation !== recentTitlesGeneration) return;
+      recentTitles = null; recentTitlesReady = false;
+      updateRecentNotificationTitles();
+    }).then(function () {
+      if (controller) controller.abort();
+      recentTitlesRequest = null;
+      if (recentTitlesQueued) { recentTitlesQueued = false; void refreshNotificationTitles(true); }
+    });
+    return recentTitlesRequest;
+  }
+  function updateRecentNotificationTitles() {
+    if (!dialog || !dialog.open) return;
+    recentTitleLinks.forEach(function (entry) { entry.link.textContent = recentTitles && recentTitles.get(entry.id) || entry.title; });
+  }
+  function refreshForegroundNotifications() {
+    void refreshNotificationState(false);
+    void refreshNotificationTitles(true);
+    void acknowledgeCurrentArticle();
+  }
   function appendRecentNotifications() {
     if (!state.historyReady) return;
     var recent = node("section", "atr-reader-recent");
@@ -276,7 +365,8 @@
       var list = node("ul", "atr-reader-recent-list");
       state.notificationHistory.slice(0, state.historyLimit).forEach(function (item) {
         var row = node("li");
-        var link = node("a", "", item.title); link.href = recentNotificationURL(item);
+        var link = node("a", "", recentTitles && recentTitles.get(item.id) || item.title); link.href = recentNotificationURL(item);
+        recentTitleLinks.push({ link: link, id: item.id, title: item.title });
         row.appendChild(link);
         var observed = item.source === "notification-center", timestamp = observed ? item.observedAt : item.receivedAt;
         var received = node("time", "", (observed ? guideText.observed : guideText.received) + " · " + new Intl.DateTimeFormat(english ? "en-US" : "ko-KR", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(timestamp));
@@ -335,6 +425,7 @@
       state.historyCount = reply.count;
       state.historyReady = true;
       if (dialog && dialog.open) renderDialog();
+      void refreshNotificationTitles(false);
     }).catch(function () { /* Old workers and unsupported browsers must not affect subscription controls. */ }).then(function () {
       historyRequest = null;
       if (historyQueued) { historyQueued = false; void refreshNotificationState(true); }
@@ -347,6 +438,7 @@
     catch (_) { return; }
     historyDirty = true;
     void refreshNotificationState(false);
+    void refreshNotificationTitles(true);
     void acknowledgeCurrentArticle();
   }
   function acknowledgeCurrentArticle() {
@@ -369,6 +461,7 @@
         historyGeneration += 1;
         state.notificationHistory = records; state.historyCount = reply.count; state.historyReady = true;
         if (dialog && dialog.open) renderDialog();
+        void refreshNotificationTitles(false);
       }
     }).catch(function () { /* Reading stays available with an older/unavailable worker. */ }).then(function () { articleReadRequest = null; });
     return articleReadRequest;
@@ -812,6 +905,7 @@
     else { dialog.setAttribute("open", ""); dialog.setAttribute("role", "dialog"); dialog.setAttribute("aria-modal", "true"); dialog.classList.add("atr-reader-fallback"); }
     dialogHeading.focus({ preventScroll: true });
     void refreshNotificationState(true);
+    void refreshNotificationTitles(true);
   }
   function renderDialog() {
     if (!dialog) return;
@@ -822,6 +916,7 @@
     if (currentGuide) state.guideOpen = currentGuide.open;
     currentGuide = null;
     recentHeading = null;
+    recentTitleLinks = [];
     dialogBody.replaceChildren();
     dialogBody.setAttribute("aria-busy", state.busy || state.preparing ? "true" : "false");
     dialogHeading.textContent = text.title;
@@ -1137,12 +1232,12 @@
   if (typeof window.addEventListener === "function") {
     window.addEventListener("beforeinstallprompt", offerInstall);
     window.addEventListener("appinstalled", installedApp);
-    window.addEventListener("pageshow", function (event) { void refreshNotificationState(false); void acknowledgeCurrentArticle(); metricsPageShow(event); });
-    window.addEventListener("focus", function () { void refreshNotificationState(false); void acknowledgeCurrentArticle(); });
-    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { void refreshNotificationState(false); void acknowledgeCurrentArticle(); startMetrics(); } });
+    window.addEventListener("pageshow", function (event) { refreshForegroundNotifications(); metricsPageShow(event); });
+    window.addEventListener("focus", refreshForegroundNotifications);
+    document.addEventListener("visibilitychange", function () { if (document.visibilityState === "visible") { refreshForegroundNotifications(); startMetrics(); } });
     document.addEventListener("prerenderingchange", startMetrics);
     if ("serviceWorker" in navigator && typeof navigator.serviceWorker.addEventListener === "function") {
-      navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); void acknowledgeCurrentArticle(); });
+      navigator.serviceWorker.addEventListener("controllerchange", function () { void refreshNotificationState(true); void refreshNotificationTitles(true); void acknowledgeCurrentArticle(); });
       navigator.serviceWorker.addEventListener("message", notificationHint);
     }
   }
