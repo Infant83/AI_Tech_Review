@@ -6,7 +6,7 @@
     "title": "계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나",
     "subtitle": "무질서 CIF를 검증 가능한 원자 모델로 바꾸는 DeMARS의 bounded judgment와 아직 남은 재현성 공백",
     "date": "2026-09-06",
-    "updated": "2026-09-06",
+    "updated": "2026-11-17",
     "category": "AI for Science",
     "tags": [
       "Agentic Programs",
@@ -28,35 +28,55 @@
     ],
     "responsible_editor": "김현중",
     "responsible_editor_en": "Hyun-Jung Kim",
-    "ai_system": "OpenAI Codex Work Mode with AI Tech Review Editorial Harness v2026.08",
-    "ai_system_ko": "OpenAI Codex Work Mode 및 AI Tech Review Editorial Harness v2026.08",
+    "ai_system": "OpenAI Codex; original AI Tech Review Editorial Harness v2026.08; editorial revision 17 November 2026",
+    "ai_system_ko": "OpenAI Codex; 원 작성 AI Tech Review Editorial Harness v2026.08; 2026-11-17 편집 개정",
     "ai_model": "exact model identifier not retained",
     "ai_model_ko": "정확한 모델 식별자는 보존되지 않음",
     "agents": [
       {
         "name": "Codex",
-        "role": "repository audit, primary-source research, candidate scoring, bilingual writing, figures, validation, publication, and live-site verification",
-        "role_ko": "저장소 감사·1차 출처 조사·후보 평가·한영 집필·도해·검증·게시·공개 페이지 확인"
+        "role": "Original edition recorded: repository audit, primary-source research, candidate scoring, bilingual writing, figures, validation, publication, and live-site verification",
+        "role_ko": "원 발행본 기록: 저장소 감사·1차 출처 조사·후보 평가·한영 집필·도해·검증·게시·공개 페이지 확인"
+      },
+      {
+        "name": "root",
+        "role": "Nov17 integration, source-edition checks, existing bilingual diagram correction, rendering and publication verification",
+        "role_ko": "11월17일 통합·판본 대조·기존 한영 도식 순서 정정·출력·게시 검증"
+      },
+      {
+        "name": "materials1117_source",
+        "role": "Independent DeMARS v1 source, methods, evaluation and final bilingual scientific review",
+        "role_ko": "DeMARS v1 원문·방법·평가와 최종 한영 과학 독립 감수"
+      },
+      {
+        "name": "materials1117_context",
+        "role": "Independent historical background sources, author credits, APS bibliography and final citation review",
+        "role_ko": "당시 배경 원문·원저자·APS 서지와 최종 인용 독립 감수"
+      },
+      {
+        "name": "materials1117_edit",
+        "role": "Korean and English introduction, argument flow and caption revision",
+        "role_ko": "한영 도입·논지 연결·캡션 문체 개편"
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "arXiv primary paper, HTML full text, code-availability statement, and cited peer-reviewed context",
-      "candidate scoring, prior-hub duplicate check, numerical and chemical-consistency checks, and evidence-boundary review",
-      "bilingual HTML, 16:9 conceptual hero, reviewer-constructed SVGs, metadata, links, privacy, and deployed pages"
+      "Original 6 September evidence cutoff and historical authoring record retained; DeMARS v1 full HTML and targeted PDF/figure comparison",
+      "Eight original references audited at recorded scopes; five sources used and cited in the revised article, including the atomate2 correction",
+      "Existing hero retained; existing bilingual diagram control order corrected; manuscripts, original anchors, local assets, candidate continuity and actual publication checked"
     ],
     "verification_scope_ko": [
-      "arXiv 원 논문·HTML 본문·코드 공개 문구와 인용 동료평가 자료",
-      "후보 평가·기존 허브 중복 점검·수치와 화학식 일관성·주장 경계 검토",
-      "한영 HTML·16:9 개념 대표 이미지·리뷰어 구성 SVG·metadata·링크·개인정보·배포 페이지"
+      "9월 6일 근거 기준과 원 작성 이력 보존; DeMARS v1 전체 HTML·관련 PDF·원도 대조",
+      "기존 원문 8편을 기록 범위에서 감수하고 개정 본문에 사용하는 5개 출처와 atomate2 정정을 인용",
+      "기존 표지 보존·한영 도식 제어 순서 정정; 원고·기존 앵커·자산·배포 연속성과 실제 공개 확인"
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-09-06",
-    "human_review_level": "recurring scope and publication authority confirmed; no separate line-by-line human review in this run",
-    "human_review_level_ko": "정기 리뷰 범위와 공개 게시 권한 확인. 이번 실행에서 별도 문장 단위 사람 검토는 수행되지 않음",
-    "disclosure_note_ko": "약 800개 성숙 사례와 100개 외부 테스트는 저자 보고이며 DeMARS를 독립 실행하지 못했습니다. 코드는 아직 공개되지 않았고 인증·거절 분모가 제시되지 않았다는 한계를 본문에 표시했습니다.",
-    "disclosure_note_en": "The roughly 800 maturation cases and 100 held-out tests are author-reported; DeMARS was not independently run. The review explicitly records that the code and certification/refusal denominator are unavailable."
+    "human_review_level": "Original recurring publication authority retained; no separate line-by-line human review in the 17 November revision",
+    "human_review_level_ko": "원 정기 게시 권한 유지; 11월17일 개정에서 별도 문장 단위 사람 검토 없음",
+    "disclosure_note_ko": "약 800개 성숙 사례와 개발 미사용 100개 내부 평가는 원저자 보고다. DeMARS를 재실행하지 않았다. 코드 공개 약속과 인증·거절 건수의 부재는 9월 6일/v1 근거 범위로 설명했다. 11월 17일 문체·서지·도식 순서의 개정과 실제 역할을 구분하며 새로운 연구·계산을 수행하지 않았다.",
+    "disclosure_note_en": "The roughly 800 maturation cases and 100 held-out internal tests are source-reported; DeMARS was not rerun. The code-release promise and undisclosed certification/refusal counts refer to the 6 September/v1 evidence scope. The 17 November prose, bibliography and diagram-order revision records actual roles without claiming a new research experiment."
   },
   "source_sha256": "ac28c1c5df406630d06966208501ce197671da734a585266502b8715b5cfc945"
 }

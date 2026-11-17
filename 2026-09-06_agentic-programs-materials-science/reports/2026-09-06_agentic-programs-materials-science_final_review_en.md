@@ -1,10 +1,10 @@
 ---
 title: "Beyond Workflow Automation: What Has the Materials-Science ‘Agentic Program’ Actually Demonstrated?"
-subtitle: "DeMARS turns disordered CIFs into atomistic models by bounding LLM judgment between deterministic gates; we assess its held-out test and unreleased code."
+subtitle: "How DeMARS divides responsibility between AI choices and physical checks when converting partial occupancies into explicit atomic arrangements"
 type: final review
 author: "Hyun-Jung Kim"
 date created: 2026-09-06
-date modified: 2026-09-06
+date modified: 2026-11-17
 status: checked
 language: en
 canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/"
@@ -23,161 +23,129 @@ tags: agentic-programs, materials-science, AI-for-science, DeMARS, disordered-cr
 
 # Beyond Workflow Automation: What Has the Materials-Science “Agentic Program” Actually Demonstrated?
 
-## Three-sentence summary
+## Summary
 
-In a preprint posted on 1 September 2026, a Seoul National University team proposes the **agentic program**: not a general AI scientist, but scientific software that assumes end-to-end responsibility for one verifiable, bounded task. Their case study, DeMARS, converts crystallographic information files (CIFs) with partial occupancies into atomistic models; the authors report maturing the system over roughly 800 disordered CIFs and then running a held-out set of 100 without case-by-case human intervention. The code is not yet public, however, and the paper does not report the certified-versus-refused denominator, repeated-run variability, or an independent external assessment, so the present evidence supports a promising architecture and an internally reviewed case study—not a fully reproduced production system.
+A structure file can assign an atomic site an occupancy of 0.18, but an atomistic simulation still needs a choice about which sites to fill. DeMARS, introduced by a Seoul National University team in a preprint on 1 September 2026, gives an LLM a bounded role in making such choices while code calculates and checks the resulting structures. <a class="citation" href="#ref-1">[1]</a> The authors report maturing the program over roughly 800 disordered CIFs and then processing 100 unused cases without human intervention during execution. This internal evaluation illustrates how one narrow scientific task might be delegated end to end; certification and refusal counts, repeated-run stability, and public code remain the next evidence needed to assess reproducibility.
 
 ![Scientific editorial concept showing a partially occupied disordered crystal branching into candidate atomic arrangements and passing physical constraints before explicit atomistic models emerge](../artifacts/agentic_programs_materials_hero.webp)
 
-*Figure 1. AI-generated conceptual illustration. It depicts a partially occupied crystal, candidate branching, physical constraints, and explicit atomistic models. It is not an exact material, a DeMARS interface, or a reproduction of quantitative results.*
+*Figure 1. AI-generated conceptual illustration. A partially occupied crystal on the left branches into candidate arrangements in the center; physical constraints guide the selection of explicit atomistic models on the right.*
 
-::: highlight Editorial verdict
-DeMARS's most consequential claim is not that an LLM “does materials science.” It is an architectural claim: **deterministic code should own quantities and physical checks; the LLM should decide only underdetermined intermediate choices; and computation should make the consequences of those choices falsifiable.** The paper supports this design with a concrete workflow and cases, but generality and reproducibility remain open until code, run records, and the missing evaluation denominators become available.
-:::
+## From an average structure to an atomic arrangement
 
-## Why this matters: automation often stops at judgment, not computation
+A crystallographic information file (CIF) records a unit cell, symmetry, atomic positions, species, and occupancies. Partial occupancies obtained from diffraction describe a structure averaged over space and time. Atomistic calculations such as density functional theory (DFT) usually require an explicit periodic cell containing integer numbers of atoms. Between the two descriptions lies a choice: which atoms should occupy which sites while preserving the reported average composition?
 
-Computational materials science is already heavily automated. Electronic-structure packages execute well-defined calculations, while AiiDA, atomate2, AFLOW, and AMP² manage dependencies, retries, and provenance. Yet researchers still spend substantial time deciding which supercell is commensurate with fractional occupancies, which nearby sites are mutually exclusive, how to impose charge compensation, or whether a failed self-consistent-field calculation calls for a numerical change or a revised physical model.
+Consider the paper's $\mathrm{Ca}_{1-x}\mathrm{Th}_{x}\mathrm{F}_{2+2x}$ example at $x=0.18$. Replacing one $\mathrm{Ca}^{2+}$ with $\mathrm{Th}^{4+}$ adds two units of positive charge. Two additional $\mathrm{F}^{-}$ ions per Th restore charge neutrality, giving the fluorine composition $2+2(0.18)=2.36$. Satisfying this arithmetic is one step. Selecting the interstitial sites for those extra ions, deciding which sites are mutually exclusive, and choosing a compatible supercell require structural and chemical interpretation.
 
-Traditional automation requires such decisions to be expressed as explicit rules. A general LLM agent offers flexibility, but may vary its decision for the same input or approve an attractive but physically unsound structure. The new paper places a narrower software object between these extremes: use an LLM only for incomplete decision rules that remain after the inputs, outputs, allowed operations, and scientific constraints have been specified.
+The statistical study by Antypov and colleagues classifies roughly half of the Inorganic Crystal Structure Database (ICSD) entries as disordered. Its 59% share for structures with substitutional disorder only uses a different denominator: disordered structures in a set excluding hydrogen-containing structures and deduplicated by composition and space group. <a class="citation" href="#ref-2">[2]</a> In more complicated cases, substitutions, vacancies, and interstitials are coupled. Enumerating each partially occupied site independently can break composition, charge neutrality, or connectivity, while the number of combinations grows rapidly. Before calculating many candidates, a program must decide **which chemically constrained arrangements to enumerate**.
 
-This is a follow-up, not a restatement, of the May review [“AI Scientists at the End of the Beginning”](https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/). That article examined verification across broad research workflows, from hypothesis generation to writing. The present study moves in the opposite direction: it restricts autonomy until one responsibility might be delegated completely in routine production.
+DeMARS stands for De-averaged Minimal Atomistic Representation System. It constructs a minimal explicit model, or an ensemble of models, consistent with the CIF evidence and chemical rules, providing a structure from which downstream simulations can begin. Studies of correlations hidden in an average structure may require further checks of cell size and the adequacy of the ensemble.
 
-## Terms to define first
+## Delegating one scientific responsibility
 
-- A **crystallographic information file (CIF)** records lattice parameters, symmetry, atomic positions, species, and occupancies.
-- **Partial occupancy** represents a crystallographic average in which a site is occupied with a probability between zero and one. Most atomistic simulations instead require integer atom counts in an explicit periodic model.
-- A **disordered crystal** contains substitutions, vacancies, interstitials, or coupled occupancy rules that cannot be mapped directly to one periodic arrangement.
-- A **machine-learning interatomic potential (MLIP)** approximates energies and forces learned from first-principles data. It makes the relaxation of many candidates much cheaper than density functional theory (DFT). DeMARS uses the SevenNet family of universal MLIPs, according to the paper.
-- An **agent harness** connects an LLM to files, executable tools, persistent instructions, memory, and reviewer roles.
-- In the authors' definition, an **agentic program** combines deterministic algorithms and bounded LLM judgment to complete one scientific task whose input, objective, tools, constraints, and acceptance criteria are defined in advance.
+Much of computational materials science is already automated. VASP and Quantum ESPRESSO execute specified calculations; AiiDA, atomate2, AFLOW, and AMP² manage dependencies, retries, and data provenance. For example, atomate2 supports dynamic branches, additional calculations, and error recovery under specified conditions. <a class="citation" href="#ref-3">[3]</a> Researchers still make intermediate decisions: whether two nearby sites can be occupied simultaneously, how to impose defect charge compensation, or whether a failed self-consistent-field (SCF) calculation calls for a numerical adjustment or a revised physical model.
 
-## Why a disordered CIF requires judgment
+How much of the recurring judgment not yet expressed in rules can become software? In the authors' definition, an **agentic program** combines deterministic algorithms with bounded LLM judgment to complete a task whose inputs, objective, tools, scientific constraints, and acceptance criteria are specified. An agent harness connects the files, executable tools, persistent memory, instructions, and separate reviewer roles needed to do that work. For DeMARS, the unit of responsibility is to receive a partially occupied CIF and return an atomistic model suitable for further calculation.
 
-Turning partial occupancy into a DFT-ready model is not merely a random vacancy-placement problem. Consider the paper's $\mathrm{Ca}_{1-x}\mathrm{Th}_x\mathrm{F}_{2+2x}$ example at $x=0.18$. Replacing $\mathrm{Ca}^{2+}$ with $\mathrm{Th}^{4+}$ adds two units of positive charge, so two additional $\mathrm{F}^{-}$ ions are required per Th. The simple check $2+2x=2.36$ matches the refined fluorine composition, but selecting associated interstitial sites and coupled exclusions requires structural and chemical interpretation.
+The May review [“AI Scientists at the End of the Beginning”](https://infant83.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/) examined verification across broad research workflows, from hypothesis generation to writing. DeMARS develops a more specific question within that discussion: what conditions allow one task to proceed without a researcher approving each case? Its inputs, deliverables, and reasons for refusal must be defined before routine execution can be delegated.
 
-Citing a prior statistical study, the authors state that roughly half of the Inorganic Crystal Structure Database (ICSD) entries are reported as disordered, and that about 60% of the disordered CIFs are relatively simple substitutional solid solutions. More complicated cases can violate charge, composition, or connectivity if each partially occupied site is enumerated independently; the combinatorics may also explode. The hard step is therefore often not sampling more structures, but deciding **which chemical model ought to be enumerated**.
+## Computational evidence, executable choices, and physical checks
 
-DeMARS stands for De-averaged Minimal Atomistic Representation System. Its goal is not to recover the unique microscopic “true structure” from diffraction. It constructs a minimal explicit model, or an ensemble of models, consistent with the CIF evidence and chemical rules so that downstream atomistic calculations can proceed. A small periodic cell cannot in general reproduce all spatial and temporal disorder correlations hidden by a crystallographic average.
+The LLM in DeMARS reads evidence extracted by code and writes a specification for computation. The paper describes the following sequence.
 
-## The core method: place the LLM between programs
-
-The architecture described in the paper can be reduced to seven steps.
-
-1. Deterministic Python code extracts composition, occupancy, symmetry, and site evidence from a CIF into a structured bundle.
-2. An LLM analyst converts that bundle into an executable specification: supercell size, merged or mutually exclusive sites, charge-balanced targets, and whether model repair or custom construction is required.
-3. An enumeration engine generates candidate arrangements; SevenNet relaxes them and supplies an energy distribution.
-4. Code checks charge neutrality, fidelity to reported occupancy, polyanion connectivity, and other predefined requirements. Energy above hull is recorded as an interpretive quantity, not as a pass/fail gate.
-5. The analyst examines the structure and energy distributions, then accepts the result or tightens the specification and reruns the engine.
-6. A separate reviewer agent audits the final record in a fresh context.
-7. The program returns either a certified model or an explicit refusal with evidence.
+1. Python code extracts composition, occupancy, symmetry, and site information from a CIF.
+2. An LLM analyst specifies the supercell, merged or mutually exclusive sites, charge-balanced composition, and whether missing hydrogen needs repair or custom construction is required.
+3. An enumeration engine generates candidate arrangements. A SevenNet-family machine-learning interatomic potential (MLIP) relaxes them. The MLIP approximates energies and forces learned from first-principles data, making many candidate calculations inexpensive. <a class="citation" href="#ref-4">[4]</a>
+4. The analyst examines the structures and energy distribution, proceeds to the next stage, or narrows the specification and reruns the calculation.
+5. After classifying the disorder mechanism, the program checks charge neutrality, consistency with the CIF occupancies, polyanion connectivity, and other specified rules. The paper records energy above hull as interpretive information and explicitly excludes it from pass/fail decisions.
+6. Construction and checking results are assembled into a finished record.
+7. A separate reviewer agent examines that record in a fresh context.
+8. The program returns a certified model or records why the evidence is insufficient for certification.
 
 ![Architecture diagram showing deterministic evidence extraction, bounded LLM specification, enumeration and MLIP relaxation, physical gates, fresh-context review, and certification or refusal](../artifacts/agentic_program_architecture_en.svg)
 
-*Figure 2. Reviewer-constructed architecture based on the paper's Figure 3 and textual description. Blue denotes deterministic computation, violet denotes LLM judgment, and amber denotes physical or structural gates. It does not reproduce run logs or measured performance.*
+*Figure 2. Reviewer-constructed functional architecture based on the paper's Figure 3 and text. Blue denotes deterministic computation, violet LLM judgment, and amber physical or structural checks. Computed results feed subsequent choices and a separate review before certification or refusal.*
 
-The important claim is not that physical knowledge has somehow been absorbed perfectly by the LLM. The model neither creates the quantitative evidence nor certifies its own work. It interprets code-produced evidence, emits a computable specification, and has the consequences checked by independent code. Judgment becomes a hypothesis generator whose outputs can fail.
+This arrangement turns a chemical interpretation into a choice that can be examined through candidate structures and calculations. For example, treating two sites as mutually exclusive becomes an enumeration specification; code can then check whether the resulting arrangements preserve occupancy and charge constraints. The design move that matters here is **making the consequences of judgment computable**.
 
-## How this differs from workflows and assistants
-
-| System form | Human responsibility | Software responsibility | Failure control | Human in routine production |
-|---|---|---|---|---|
-| Conventional workflow | Define every decision rule | Repeat specified algorithms | Exceptions and unit tests | Needed for new exceptions |
-| Interactive AI assistant | Ask, choose, and approve | Explain and propose code | User inspection | Always in the loop |
-| General AI scientist | Set the objective and supervise | Explore broadly from hypotheses to writing | General evaluators and peer review | Varies by scope |
-| Proposed agentic program | Define objective, bounded responsibility, and principles | Execute the bounded task end to end | Task-specific deterministic gates and a separate reviewer | Outside the mature routine loop |
-
-None of the individual components is new: tool-using agents, MLIPs, verification checklists, reviewer agents, and version control already exist. The proposal is to package them as a **fully delegable, narrow scientific responsibility**. Rather than maximize autonomy over an open domain, it shrinks the task until success and failure can be specified.
-
-The analogy to MLOps and DevOps is strong. A production system validates input contracts, fails closed outside its support envelope, pins versions, and runs regression tests. Scientific correctness, however, extends beyond an API schema to the adequacy of a physical model. Deterministic gates are necessary but cannot be assumed complete.
-
-## Quantitative evidence—and the missing denominators
-
-The paper's largest-scale evidence rests on two counts.
-
-- During development, recurring decisions from **roughly 800 disordered CIFs** were converted into instructions, diagnostics, verification gates, and deterministic code.
-- The mature system processed **100 held-out CIFs** end to end without human intervention during execution. These inputs were randomly selected under stated filters: three to five elements, nontrivial site disorder, at most 40 listed sites, and no use during maturation.
-
-The authors manually inspected every output afterward. They report that certified models were chemically reasonable and consistent with the reported disorder, and that every refusal had a reason verifiable from its own record. “Processed 100,” however, does not mean “certified 100.” The paper gives no count of certifications, refusals, custom constructions, or model repairs.
-
-One failure episode is especially informative. In $\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$, every generated structure passed the existing deterministic gates, yet a reviewer agent noticed that all candidates shared the same cation arrangement. Deterministic ordering in a coupled-enumeration routine had prevented the intended Li/Mo antisite degree of freedom from being sampled. Correcting that routine turned one reviewer-detected failure into a persistent regression improvement.
-
-| Item | Source-reported fact | Independent check in this review | Still unknown |
+| System form | Human responsibility | Software responsibility | How results are checked |
 |---|---|---|---|
-| Release | arXiv v1, 1 September 2026 | arXiv metadata and HTML checked | Changes after peer review |
-| Maturation set | About 800 disordered CIFs | Internal numerical and case consistency checked | Per-case inputs, outputs, and interventions |
-| Held-out test | 100 unused CIFs; no human execution intervention | Filters and post-hoc inspection statement checked | Certification/refusal denominator, success rate, runtime, LLM cost |
-| Chemical example | $2+2(0.18)=2.36$ | Charge-compensation arithmetic recalculated | Uniqueness of the microscopic disorder model |
-| Software | DeMARS architecture described | Current non-release statement confirmed | Repeated-run stability, model sensitivity, environment reproducibility |
+| Conventional workflow | Define decision rules and responses to new exceptions | Execute algorithms and branches under specified conditions | Error recovery and unit tests |
+| Interactive AI assistant | Ask, choose, and approve | Explain and propose code | User inspection |
+| Hypothesis collaborator (Co-Scientist) | Set research goals and examine hypotheses | Generate, critique, and refine hypotheses | Scientist review and task-specific experiments <a class="citation" href="#ref-5">[5]</a> |
+| Proposed agentic program | Define objectives, responsibility, and principles; update principles after new failures | Execute the mature program's bounded task end to end | Task-specific code checks and separate review |
 
-## The main limitation: good architecture is not yet a validated product
+The table compares the goals and responsibilities delegated to software, including hypothesis-oriented collaboration in Co-Scientist and a single structure-construction task in DeMARS. Tool use, MLIPs, reviewer agents, and version control are established components; the proposal packages them around one narrow scientific task. Input contracts and regression checks resemble MLOps and DevOps practices. For scientific software, the checks must also specify which compositions, connections, and physical models are acceptable.
 
-First, this is a preprint. DeMARS code is promised only upon publication of a peer-reviewed version. A third party cannot yet determine whether the same CIF produces the same construction, refusal, or cost.
+## Eight hundred development cases and a hundred internal tests
 
-Second, the 100-case test lacks the denominators needed to interpret it: certification rate, refusal rate, failure classes, retry counts, evaluator agreement, and a baseline comparison. “Chemically reasonable” is useful expert judgment, but it is not a blind external assessment or a quantitative metric.
+The authors report handling **roughly 800 disordered CIFs** during development. Recurring judgments became instructions, diagnostics, verification gates, and deterministic code. After this maturation, the program processed **100 previously unused ICSD CIFs** selected randomly under stated filters: three to five elements, nontrivial site disorder, and at most 40 listed sites. The authors report no case-by-case human intervention during execution.
 
-Third, stochastic stability is not measured. We do not know how often repeated runs with the same model and different seeds produce the same executable specification, final structural ensemble, and certification decision. Nor do we know the regression rate after changing the LLM, skills, or episodic record. The authors themselves argue for joint versioning and continuing audits.
+Afterward, the authors manually inspected all 100 outputs. They describe certified models as chemically reasonable and consistent with the reported disorder, and refusals as supported by verifiable reasons in the records. These were therefore internal tests held out from maturation, with both certification and justified refusal among the possible outcomes. The paper does not give separate counts of certifications, refusals, custom constructions, or model repairs.
 
-Fourth, the universal MLIP introduces a separate validity boundary. It makes many inexpensive episodes possible, but energy ordering can fail outside its training distribution—for unusual coordination, charge states, heavy elements, or bonding. Passing composition and connectivity gates does not establish DFT-level relative stability or correct disorder thermodynamics.
+The $\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$ case shows what a separate review can add. All existing code checks passed, yet the reviewer agent noticed that every candidate had the same cation arrangement. Ordering in a coupled-enumeration routine had prevented the intended Li/Mo antisite degree of freedom from being sampled. The reviewer identifies such failures; a separate orchestrator revises the program between routine runs, with substantive changes to operating principles requiring human approval. The authors report turning this failure into a persistent regression improvement.
 
-Finally, a minimal periodic model may not represent short-range order, configurational entropy, finite-temperature occupancy, or diffuse scattering. DeMARS can provide a plausible starting model without solving the inverse problem uniquely.
+Checking charge, occupancy, and connectivity addresses a different question from checking whether the intended search space was explored. A test applied to each candidate can miss a degree of freedom absent from the entire candidate set. Examining the ensemble and its generation record helps reveal that omission.
 
-## Implications for materials research and industrial workflows
+| Reported item | Conditions for interpreting it | Further evidence needed |
+|---|---|---|
+| Roughly 800 maturation cases | Rules, code, and instructions accumulated during development | Per-case inputs, outputs, and interventions |
+| Automated processing of 100 unused CIFs | Filtered ICSD sample; no human execution intervention; authors' manual post-hoc inspection | Certification/refusal counts, retries, runtime, LLM cost |
+| Charge-compensation example | Composition arithmetic $2+2(0.18)=2.36$ | Structural checks of actual disorder correlations |
+| Joint versioning of code, instructions, and models | Design and cases in the preprint available on 6 September | Public package, repeated-run statistics, independent evaluation |
 
-For a DFT, OLED, and agentic-workflow practice, the immediate lesson is to avoid starting with an agent that “does all research.” Better targets have clear inputs and deliverables but recurring intermediate judgments.
+## Assessing reproducibility and structural accuracy
 
-1. A **DFT protocol steward** could propose pseudopotentials, cutoffs, $k$ meshes, smearing, spin, and spin–orbit coupling, while convergence, symmetry, and magnetic-state checks determine certification.
-2. A **calculation-failure diagnostician** could classify self-consistent-field oscillation, charge sloshing, and geometry blow-up from logs, apply only bounded remedies, and stop when energy, force, or occupation regressions fail.
-3. A **defect/interface builder** could propose terminations, charge compensation, and passivation while deterministic code checks stoichiometry, neutrality, minimum distances, symmetry, and finite-size conditions.
-4. An **OLED excited-state triage program** could combine state character, oscillator strength, spin–orbit coupling, root flipping, and conformer dependence to decide when TDDFT or TDA must be rerun. A rate or mechanism would be certified only when logs and state tracking support it.
-5. In **on-premises research operations**, an internal LLM gateway could make bounded decisions while VASP, Gaussian, or Fortran jobs remain under the established scheduler and GitLab runner. Input/output hashes, compiler or container, code commit, model and skill versions, and all gate results should share one evidence record.
+The preprint available on 6 September promised to release DeMARS code with a peer-reviewed publication. At that date, there was no public package with which to recheck structure construction, refusal decisions, or execution costs. Certification and refusal rates, failure classes, retries, and evaluator agreement for the 100 cases would show which inputs the program handles and how often. A baseline comparison using the same inputs and compute budget is needed at this stage too.
 
-Industrial organizations should read “removing the human from the loop” as a responsibility boundary, not simply a staffing claim. Routine runs can be delegated, while a newly discovered failure class triggers human approval of updated principles, code, tests, or doctrines. Useful operating metrics would include certification coverage, false-certification rate, justified-refusal rate, intervention rate, repeated-run agreement, and total cost per certified case across LLM tokens, MLIP/DFT compute, wall time, and retries.
+Repeated-run stability is a separate question. The paper did not measure how consistently the same CIF, processed repeatedly with the same model, yields the same specification, ensemble, and certification decision. The authors' proposal to version the model, instructions, and episodic record together provides a basis for tracking such changes and testing regressions.
 
-## The validation package a follow-up study should publish
+Physical accuracy also depends on the MLIP and the minimal periodic model. A universal MLIP lowers the cost of repeated calculations, but relative-energy ordering can change outside its training domain—for unusual coordination, charge states, heavy elements, or bonding. Re-relaxing a subset with DFT would test whether structures and energy ordering are preserved. Short-range order, configurational entropy, finite-temperature occupancy, and diffuse scattering may require an ensemble and cell-size convergence. These are concrete tests of how well DeMARS supplies starting structures for further research.
 
-The strongest next result would not merely use a larger language model. It would:
+## Choosing responsibilities in DFT and OLED research
 
-1. publish the fixed identities and certification/refusal outcomes for the 100 held-out CIFs;
-2. compare a rule-based baseline, a general tool-using agent, and DeMARS under the same inputs and compute budget;
-3. repeat each case five to ten times and report variance in specifications, structure clusters, and certification;
-4. re-relax a stratified subset with DFT and measure preservation of structures and energy ordering;
-5. use blind rubrics from external crystallographers and computational materials scientists, reporting inter-rater agreement;
-6. release pinned code, skills, model configuration, and a regression suite spanning version changes; and
-7. retain refusal and failure artifacts, not just successful structures, to define where the system should not be trusted.
+Applied to DFT and OLED calculations, the approach suggests tasks with clear inputs and deliverables but recurring intermediate judgments. The following are editorial proposals based on the paper.
 
-## Researchers to watch and seminar questions
+1. **DFT protocol management:** propose PAW datasets or pseudopotentials, cutoffs, $k$ meshes, smearing, spin, and spin–orbit coupling (SOC); use convergence, symmetry, and magnetic-state checks to assess the choices.
+2. **Calculation-failure diagnosis:** classify SCF oscillation, charge sloshing, and diverging structural relaxation from logs, then apply only specified remedies. Stop when energy, force, or occupation regression checks fail.
+3. **Defect and interface construction:** propose terminations, charge compensation, and passivation, with code checking stoichiometry, neutrality, minimum distances, symmetry, and finite-size conditions.
+4. **OLED excited-state triage:** combine state character, oscillator strength, SOC, root flipping, and conformer dependence to decide when TDDFT or TDA should be rerun. Connect judgments about rates and mechanisms to calculation logs and state tracking.
+5. **On-premises research operations:** let an internal LLM gateway make bounded choices while established schedulers and GitLab runners execute VASP, Gaussian, and Fortran jobs. Track input/output hashes, containers or compilers, code commits, model and instruction versions, and all check results together.
 
-- **Seungwu Han — Department of Materials Science and Engineering and Research Institute of Advanced Materials, Seoul National University; Center for AI and Natural Sciences, KIAS.** Corresponding author with a substantial SevenNet and atomistic-automation program. Question: “How will you expose certification, refusal, and custom-construction denominators, plus repeated-run variance, in a public benchmark?”
-- **Yunsung Lim — Research Institute of Advanced Materials, Seoul National University.** Co-first author presenting the agentic-program concept and DeMARS case. Question: “What criterion decides whether an episode becomes a skill, a doctrine, or deterministic code, and what is the rollback protocol?”
-- **Haekwan Jeon — Department of Materials Science and Engineering, Seoul National University.** Co-first author involved in DeMARS. Question: “Which gate detects when a minimal periodic model is insufficient and an ensemble or explicit short-range order is required?”
+New failure classes still return to the researcher's judgment after routine execution is delegated. People approve principles and preserve those decisions in code, tests, and instructions. Useful operating measures include the fraction of inputs certified, the fraction of certifications later judged wrong by higher-level calculations or experiments, and the fraction of refusals supported by adequate reasons. Human-intervention rates and repeated-run agreement of structures and decisions should accompany them. Cost per certified case should include LLM tokens, MLIP and DFT compute, wall time, and retries.
 
-## Questions to watch
+## What to seek in the next study
 
-- Is the code released with the peer-reviewed paper?
-- Are the detailed outcomes and execution costs for the 100 held-out CIFs disclosed?
-- Can another LLM and harness preserve the same responsibility boundary and gates?
-- What is the false-certification rate on public datasets and under an independent team?
-- Where does MLIP screening become insufficient once the workflow extends to DFT, phonons, defects, and thermodynamics?
-- Can research organizations manage episodes as versioned scientific software assets rather than private chat history?
+A fixed evaluation publishing the identities and certification/refusal outcomes of the 100 CIFs would help establish how this design becomes a reusable research tool. Comparing a rule-based program, a general tool-using agent, and DeMARS under matched inputs and compute budgets would clarify their contributions. Five to ten repetitions per case could expose variation in specifications, ensembles, and certification. DFT re-relaxation of a subset selected with SevenNet would test structural and energy-order preservation.
+
+Independent crystallographers and computational materials scientists could assess blinded outputs using a shared rubric and report inter-rater agreement. Public datasets beyond ICSD would test a wider input range. Pinned code, instructions, and model settings, regression checks across versions, and refusal and failure records would allow other teams to examine the program's decisions. As episodes accumulate, managing those records as part of the scientific software becomes increasingly important.
+
+## Questions for the researchers
+
+- **Seungwu Han — Department of Materials Science and Engineering and Research Institute of Advanced Materials, Seoul National University; Center for AI and Natural Sciences, KIAS.** Corresponding author with a substantial SevenNet and atomistic-automation program. “How will certification, refusal, custom-construction counts, and repeated-run variability become part of a public benchmark?”
+- **Yunsung Lim — Research Institute of Advanced Materials, Seoul National University.** Co-first author presenting the agentic-program concept and DeMARS case. “What determines whether an episode should become an instruction, an operating principle, or deterministic code, and how are those changes rolled back?”
+- **Haekwan Jeon — Department of Materials Science and Engineering, Seoul National University.** Co-first author involved in DeMARS. “Which checks detect when a minimal periodic model is insufficient and an ensemble or explicit short-range order is needed?”
 
 ## Conclusion
 
-The paper asks a more useful question than whether AI will replace scientists: **when can one narrow, repeated act of scientific judgment become software's responsibility?** DeMARS answers by mixing algorithms and judgment while refusing to let the LLM create its own quantitative evidence or certify its own output. The model is a bounded decision-maker between deterministic programs.
+DeMARS illustrates **how one narrow, recurring act of scientific judgment can become software's responsibility** in a concrete materials problem. An LLM's executable specification becomes an atomic arrangement; computed structures and energies supply evidence for the next decision and a separate review. The case in which a reviewer found a missing search degree of freedom shows how executing a calculation and examining its scientific adequacy can work together.
 
-Computational materials science is a favorable domain for this design: inputs and deliverables are often explicit; composition, symmetry, charge, forces, and energies provide computable constraints; and MLIPs reduce the cost of accumulating episodes. Those advantages also raise the evidentiary bar. Once the code is public, evaluation denominators are disclosed, and repeatability and external validation are demonstrated, the “agentic program” could move from an interesting concept to a credible new category of scientific software.
+The consequential choices are the size of the delegated task and the physical conditions to check. Computational materials science offers many computable objects—composition, symmetry, charge, forces, and energies—while MLIPs lower the cost of refining a program over many cases. Following the release of code and evaluation outcomes, together with repeatability and independent assessment, will show whether that bounded responsibility can become part of other researchers' routine calculations.
 
 ## References
 
-1. Y. Lim, H. Jeon, J. Kim, J. Kim, S. Han, [“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)](https://arxiv.org/abs/2609.00795). **Primary source; preprint; DeMARS code not yet released.**
-2. D. Antypov et al., [“Classification and statistical analysis of structural disorder in crystalline materials,” *Journal of Applied Crystallography* 58, 659–677 (2025)](https://doi.org/10.1107/S1600576725003000). **Source for the ICSD disorder taxonomy.**
-3. A. M. Ganose et al., [“atomate2: modular workflows for materials science,” *Digital Discovery* 4, 1944–1973 (2025)](https://doi.org/10.1039/D5DD00019J). **Context for deterministic workflow automation.**
-4. Y. Park et al., [“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)](https://arxiv.org/abs/2606.09422). **Earlier atomistic-agent work from the related research ecosystem.**
-5. J. Kim et al., [“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” *Nature Communications* 17, 3432 (2026)](https://doi.org/10.1038/s41467-026-70195-8). **Background for the SevenNet-family MLIP used by DeMARS.**
-6. J. Gottweis et al., [“Accelerating scientific discovery with Co-Scientist,” *Nature* 655, 487–496 (2026)](https://doi.org/10.1038/s41586-026-10644-y). **Comparison with a broad AI co-scientist.**
-7. Google Research, [“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)](https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/). **Comparison for claim-to-code-to-log linkage and independent reruns.**
-8. Z. Chen et al., [“An agentic artificially intelligent X-ray scientist,” *Nature Machine Intelligence* 8, 1075–1086 (2026)](https://doi.org/10.1038/s42256-026-01261-5). **Comparison for virtual-to-real instrumentation and a human-relay safety boundary.**
+<ol class="reference-list">
+<li id="ref-1"><a href="https://arxiv.org/abs/2609.00795v1">Y. Lim, H. Jeon, J. Kim, J. Kim, and S. Han, Agentic programs: an emerging form of scientific software in computational materials science, arXiv:2609.00795v1 (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1107/S1600576725003000">D. Antypov, C. M. Collins, M. S. Dyer, J. B. Claridge, and M. J. Rosseinsky, Classification and statistical analysis of structural disorder in crystalline materials, J. Appl. Crystallogr. <b>58</b>, 659 (2025).</a></li>
+<li id="ref-3"><a href="https://doi.org/10.1039/D5DD00019J">A. M. Ganose et al., Atomate2: modular workflows for materials science, Digit. Discov. <b>4</b>, 1944 (2025)</a>; <a href="https://doi.org/10.1039/D5DD90036K">A. M. Ganose et al., Correction: Atomate2: modular workflows for materials science, Digit. Discov. <b>4</b>, 2639 (2025).</a></li>
+<li id="ref-4"><a href="https://doi.org/10.1038/s41467-026-70195-8">J. Kim, J. You, Y. Park, Y. Lim, Y. Kang, J. Kim, H. Jeon, S. Ju, D. Hong, S. Y. Lee, S. Choi, Y. Kim, J. W. Lee, and S. Han, Optimizing cross-domain transfer for universal machine learning interatomic potentials, Nat. Commun. <b>17</b>, 3432 (2026).</a></li>
+<li id="ref-5"><a href="https://doi.org/10.1038/s41586-026-10644-y">J. Gottweis et al., Accelerating scientific discovery with Co-Scientist, Nature <b>655</b>, 487 (2026).</a></li>
+</ol>
 
 ---
 
-*Evidence cutoff: 6 September 2026. The architecture and counts of roughly 800 and 100 CIFs are source-reported; this review did not execute DeMARS. Independent checks were limited to arXiv metadata, internal numerical and chemical consistency, current code availability, cited official or peer-reviewed context, and final-page rendering. Proposed applications and operating metrics are editorial interpretations.*
+*Original publication and evidence cutoff: 6 September 2026. The roughly 800 maturation cases, 100 evaluation cases, architecture, and operating examples are source-reported. The original review recorded checks of arXiv metadata, internal numerical and chemical consistency, the code-availability statement at that date, cited official or peer-reviewed context, and public-page rendering. DeMARS was not independently executed; proposed applications and operating measures are editorial interpretations.*
+
+## Revision record
+
+17 November 2026 editorial revision: clarified the progression from partial occupancy to explicit atomic arrangements and the bilingual argument. The 100 cases are described as internal tests held out from maturation, and the roles of separate review, program revision, and human approval of principles are distinguished. Captions now explain the visible objects and actions in the AI-generated concept and functional diagram. The original publication date, 6 September evidence scope, and AI-generated cover are retained. The existing bilingual architecture diagrams now follow the source Figure 3 order of ensemble and mechanism judgment before rule-based checks. Five references follow their first use; unused background reading entries were removed. `materials1117_edit` of the editorial team (AEDAUT) revised the Korean and English prose; source comparison, integration, output, and publication checks follow their separate records of actual work. AI assistance was OpenAI Codex; the exact model identifier is not retained. No separate line-by-line human review or experiment/program rerun was performed for this revision.

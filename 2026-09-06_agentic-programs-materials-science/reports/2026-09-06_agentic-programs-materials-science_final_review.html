@@ -4,26 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나</title>
-  <meta name="description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <meta name="description" content="부분 점유 CIF를 계산 가능한 원자 배열로 만드는 DeMARS에서, AI의 선택과 물리 검사가 과학 업무의 책임을 나누는 방식">
   <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="Agentic Tech Review Letters">
   <meta property="og:title" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
-  <meta property="og:description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <meta property="og:description" content="부분 점유 CIF를 계산 가능한 원자 배열로 만드는 DeMARS에서, AI의 선택과 물리 검사가 과학 업무의 책임을 나누는 방식">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
   <meta property="og:image:alt" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
   <meta property="article:published_time" content="2026-09-06">
-  <meta property="article:modified_time" content="2026-09-06">
+  <meta property="article:modified_time" content="2026-11-17">
   <meta name="author" content="김현중">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
-  <meta name="twitter:description" content="DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.">
+  <meta name="twitter:description" content="부분 점유 CIF를 계산 가능한 원자 배열로 만드는 DeMARS에서, AI의 선택과 물리 검사가 과학 업무의 책임을 나누는 방식">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/agentic_programs_materials_hero.webp">
   <meta name="twitter:image:alt" content="계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나">
   <link rel="icon" href="data:,">
@@ -647,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -757,8 +760,20 @@
         position: static;
       }
     }
+
+    .final-article, .content-grid > *, .hero-inner > * { min-width: 0; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+    .reference-list { overflow-wrap: anywhere; }
+    .reference-list li { margin-bottom: 1rem; }
+    .citation { white-space: nowrap; }
+    code { overflow-wrap: anywhere; white-space: normal; }
   </style>
-</head>
+    <!-- AI Tech Review Public Metrics Styles -->
+    <link rel="stylesheet" href="../../assets/public-metrics.css">
+    <!-- End AI Tech Review Public Metrics Styles -->
+  </head>
 <body>
   <div class="topline">
     <div class="topline-inner">
@@ -766,7 +781,6 @@
       <div class="topline-actions">
         <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
         <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/en/" lang="en" hreflang="en">English</a></nav>
-        <a href="2026-09-06_agentic-programs-materials-science_final_review.md">2026-09-06_agentic-programs-materials-science_final_review.md</a>
       </div>
     </div>
   </div>
@@ -774,9 +788,9 @@
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">Agentic Tech Review Letters</p>
         <h1>계산을 맡기는 다음 단계: 재료과학 ‘에이전트 프로그램’은 무엇을 증명했나</h1>
-        <p class="dek">DeMARS가 무질서 결정의 CIF를 원자 모델로 바꾸는 과정에서 LLM 판단을 어디에 제한했는지, 약 800개 성숙 사례와 100개 외부 테스트가 무엇을 보여주며 코드 비공개와 성공률 미공개가 어떤 검증 공백을 남기는지 재현성·비용·산업 적용의 관점에서 함께 분석한다.</p>
+        <p class="dek">부분 점유 CIF를 계산 가능한 원자 배열로 만드는 DeMARS에서, AI의 선택과 물리 검사가 과학 업무의 책임을 나누는 방식</p>
       </section>
 
     </div>
@@ -784,208 +798,147 @@
 
   <main class="content-grid">
     <article class="final-article">
-      <h2 id="3">3문장 요약</h2>
-<p>서울대학교 연구진은 2026년 9월 1일 공개한 프리프린트에서, 대규모언어모델(Large Language Model, LLM)을 범용 ‘AI 과학자’로 쓰기보다 <strong>검증 가능한 좁은 과학 업무를 끝까지 맡는 소프트웨어</strong>로 만드는 ‘에이전트 프로그램(agentic program)’ 개념을 제안했다. 사례인 DeMARS는 부분 점유가 포함된 무질서 결정의 결정학정보파일(Crystallographic Information File, CIF)을 읽어 계산 가능한 원자 모델을 만들며, 약 800개 CIF에서 규칙을 축적한 뒤 별도의 100개 CIF를 사람의 실행 개입 없이 처리했다고 보고한다. 그러나 코드는 아직 공개되지 않았고, 100개 중 인증·거절 수와 반복 실행 안정성, 외부 독립 평가가 제시되지 않아 현재 근거는 <strong>유망한 설계 원리와 내부 사례 검증</strong>이지 재현이 끝난 생산 소프트웨어는 아니다.</p>
-<p><img alt="부분 점유가 있는 무질서 결정에서 후보 원자배열을 만들고 물리 제약을 통과한 구조만 남기는 과정을 표현한 과학 편집형 개념도" src="../artifacts/agentic_programs_materials_hero.webp" /></p>
-<p><em>그림 1. 이미지 생성으로 만든 개념 일러스트. 왼쪽의 부분 점유 결정, 가운데의 후보 분기와 물리 제약, 오른쪽의 명시적 원자 모델을 표현한다. 특정 물질의 실제 구조, 논문 수치 또는 DeMARS 화면을 재현한 그림은 아니다.</em></p>
-<aside class="callout callout-highlight">
-<p class="callout-label">이번 리뷰의 판정</p>
-<p>DeMARS의 가장 중요한 주장은 LLM이 재료 계산을 ‘잘한다’는 것이 아니다. <strong>수치와 물리 검사는 결정론적 코드가 맡고, LLM은 미리 완전히 규칙화하기 어려운 중간 선택만 하며, 그 선택의 결과를 다시 계산으로 반박 가능하게 만든다</strong>는 설계다. 이 주장은 현재 논문의 구조와 사례로 뒷받침되지만, 코드·실행 로그·성공률 분모가 공개될 때까지 일반화 가능성과 재현성은 보류해야 한다.</p>
-</aside>
-<h2 id="_1">왜 중요한가: 자동화가 멈추는 곳은 계산이 아니라 판단이다</h2>
-<p>재료 계산은 이미 상당히 자동화되어 있다. VASP·Quantum ESPRESSO 같은 전자구조 코드는 주어진 입력을 계산하고, AiiDA·atomate2·AFLOW·AMP² 같은 workflow 도구는 의존관계와 재시작, 데이터 provenance를 관리한다. 그러나 실제 연구에서 시간이 많이 드는 지점은 종종 계산 명령 자체가 아니다. 어떤 supercell이 분수 점유와 정합적인지, 서로 가까운 두 site가 동시에 점유될 수 있는지, 결함의 전하상태를 어떻게 정할지, self-consistent field 계산이 실패했을 때 수치 설정을 바꿀지 물리 모델을 의심할지 같은 선택은 아직 연구자의 판단에 남아 있다.</p>
-<p>기존 자동화는 명확한 규칙을 코드로 써야 한다. 반대로 범용 LLM 에이전트에 전체 업무를 맡기면 유연성은 생기지만, 같은 입력에서 다른 결론을 내리거나 그럴듯한 설명으로 잘못된 구조를 통과시킬 수 있다. 이번 논문은 그 사이에 좁은 길을 제안한다. LLM을 계산기의 대체재로 쓰는 것이 아니라 <strong>정해진 입출력과 물리 제약 사이에 남아 있는 불완전한 결정 규칙</strong>을 담당시키는 것이다.</p>
-<p>이 글은 5월의 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/">「AI 과학자, 시작의 끝에서」</a>를 반복하지 않는다. 당시 리뷰가 가설 생성부터 논문 작성까지 넓은 연구 하네스의 검증 문제를 다뤘다면, 이번 연구는 그 반대 방향을 택한다. 자율성의 범위를 넓히기보다, <strong>하나의 책임을 충분히 좁혀 routine production에서 사람을 빼낼 수 있는가</strong>를 묻는다.</p>
-<h2 id="_2">먼저 정의할 용어</h2>
-<ul>
-<li><strong>결정학정보파일(Crystallographic Information File, CIF)</strong>: 단위격자, 대칭, 원자 위치, 원소와 점유율을 담는 표준 구조 파일이다.</li>
-<li><strong>부분 점유(partial occupancy)</strong>: 결정학적으로 하나의 평균 site에 특정 원소가 0과 1 사이의 확률로 존재한다고 기술된 상태다. 전자구조 계산에는 보통 정수 개의 원자를 가진 명시적 supercell 모델이 필요하다.</li>
-<li><strong>무질서 결정(disordered crystal)</strong>: 치환, vacancy, interstitial 또는 서로 결합된 점유 규칙 때문에 하나의 주기적 원자배열로 바로 환원되지 않는 결정이다.</li>
-<li><strong>머신러닝 원자간 퍼텐셜(Machine-Learning Interatomic Potential, MLIP)</strong>: 제일원리 계산으로 학습한 에너지와 힘을 빠르게 근사해 많은 후보 구조를 이완하는 모델이다. DeMARS는 SevenNet 계열 universal MLIP을 사용했다고 보고한다.</li>
-<li><strong>에이전트 하네스(agent harness)</strong>: LLM에 파일, 코드 실행, 지속 메모리, 기술 규칙, 별도 검토 역할을 연결하는 실행 환경이다.</li>
-<li><strong>에이전트 프로그램(agentic program)</strong>: 저자들의 정의로는 입력·목표·허용 도구·과학 제약·검증 기준이 정해진 하나의 bounded task를, 결정론적 알고리즘과 제한된 LLM 판단을 결합해 끝까지 수행하는 프로그램이다.</li>
-</ul>
-<h2 id="cif">무질서 CIF가 왜 ‘판단이 필요한 계산’인가</h2>
-<p>부분 점유 CIF를 density functional theory(DFT) 입력으로 바꾸는 일을 단순히 vacancy를 임의 배치하는 문제로 보면 중요한 화학을 놓친다. 논문이 든 $\mathrm{Ca}_{1-x}\mathrm{Th}_{x}\mathrm{F}_{2+2x}$의 $x=0.18$ 사례에서는 $\mathrm{Ca}^{2+}$를 $\mathrm{Th}^{4+}$로 하나 바꿀 때 양전하가 2만큼 늘어난다. 따라서 전하 중성을 유지하려면 Th 하나당 $\mathrm{F}^{-}$ 두 개가 추가되어야 하며, $2+2x=2.36$은 보고 조성과 일치한다. 이 산술은 간단하지만, 추가 F를 어느 interstitial에 놓고 어떤 점유가 서로 배타적인지 결정하려면 결정 구조와 국소 화학을 함께 읽어야 한다.</p>
-<p>논문은 ICSD(Inorganic Crystal Structure Database) 항목의 약 절반이 무질서 구조로 보고되며, 그중 약 60%는 비교적 단순한 치환형 고용체라고 선행 연구를 인용한다. 나머지 복잡한 경우는 각 부분 점유 site를 독립적으로 열거하면 조성·전하·국소 연결성이 깨지거나 조합 수가 폭증한다. 이때 필요한 것은 더 많은 brute-force sampling이 아니라 <strong>무엇을 열거해야 하는지 정의하는 모델 선택</strong>이다.</p>
-<p>DeMARS라는 이름은 De-averaged Minimal Atomistic Representation System의 약자다. 목표는 실험의 평균 구조를 유일한 ‘실제 구조’로 복원하는 것이 아니다. 원 CIF의 근거와 화학 규칙을 만족하면서 후속 원자 시뮬레이션에 사용할 수 있는 최소 원자 모델 또는 구조 ensemble을 만드는 것이다. 이 구분이 중요하다. 회절 refinement의 부분 점유는 실제 재료의 공간·시간적 무질서를 평균낸 표현이므로, 하나의 작은 periodic cell이 모든 disorder correlation을 재현한다고 보장할 수 없다.</p>
-<h2 id="llm">핵심 방법: LLM을 코드 사이에 가둔다</h2>
-<p>논문이 설명한 DeMARS 흐름은 다음과 같다.</p>
+      <span class="legacy-anchor" id="3" aria-hidden="true"></span><h2 id="section-_1">요약</h2>
+<p>결정구조 파일에 원자 자리의 점유율이 0.18이라고 적혀 있어도, 원자 시뮬레이션을 시작하려면 어느 자리를 실제로 채울지 정해야 한다. 서울대학교 연구진이 2026년 9월 1일 공개한 DeMARS는 이 선택을 대규모언어모델(Large Language Model, LLM)에 맡기면서, 후보 구조의 수치 계산과 물리 검사는 코드가 수행하도록 설계한 ‘에이전트 프로그램’이다. <a class="citation" href="#ref-1">[1]</a> 저자들은 약 800개 무질서 결정 사례로 프로그램을 성숙시킨 뒤 개발에 쓰지 않은 100개를 실행 중 사람 개입 없이 처리했다고 보고했다. 이 내부 평가를 통해 좁은 과학 업무를 끝까지 위임하는 방식을 보여주었으며, 인증·거절 건수와 반복 실행의 안정성, 코드 공개는 재현성을 판단할 다음 자료로 남았다.</p>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/agentic_programs_materials_hero.webp" target="_blank" rel="noopener" aria-label="그림 1 크게 보기 (새 탭)"><img alt="부분 점유가 있는 무질서 결정에서 후보 원자배열을 만들고 물리 제약을 통과한 구조만 남기는 과정을 표현한 과학 편집형 개념도" src="../artifacts/agentic_programs_materials_hero.webp" /></a><figcaption>그림 1. AI 생성 개념 일러스트. 왼쪽의 부분 점유 결정에서 가운데의 후보 배열을 만들고, 물리 제약을 거쳐 오른쪽의 명시적 원자 모델을 선택하는 과정을 표현했다.</figcaption></figure>
+<span class="legacy-anchor" id="cif" aria-hidden="true"></span><span class="legacy-anchor" id="_2" aria-hidden="true"></span><h2 id="section-_2">평균 구조를 원자 배열로 바꾸는 일</h2>
+<p>결정학정보파일(Crystallographic Information File, CIF)은 단위격자, 대칭, 원자 위치와 원소·점유율을 담는다. 회절 실험으로 얻은 CIF의 부분 점유는 공간과 시간에 걸쳐 평균한 구조를 표현한다. 반면 밀도범함수이론(density functional theory, DFT) 같은 원자 계산에는 보통 정수 개의 원자가 들어 있는 명시적인 주기적 셀이 필요하다. 평균 점유를 지키면서 어떤 원자를 어디에 놓을지 선택하는 일이 그 사이에 있다.</p>
+<p>논문이 든 $\mathrm{Ca}_{1-x}\mathrm{Th}_{x}\mathrm{F}_{2+2x}$의 $x=0.18$ 사례를 보자. $\mathrm{Ca}^{2+}$ 하나를 $\mathrm{Th}^{4+}$로 바꾸면 양전하가 2만큼 늘어난다. 전하 중성을 유지하려면 Th 하나당 $\mathrm{F}^{-}$ 두 개를 더 넣어야 하므로, 불소 조성은 $2+2(0.18)=2.36$이 된다. 이 산술을 만족하는 것과 추가 F를 넣을 틈새 자리, 함께 채울 수 없는 자리, 필요한 초격자(supercell)를 정하는 것은 서로 다른 일이다. 뒤의 선택에는 결정 구조와 국소 화학에 대한 해석이 들어간다.</p>
+<p>Antypov 등의 통계에서 ICSD(Inorganic Crystal Structure Database) 항목의 약 절반은 무질서 구조로 분류됐다. 치환 무질서만 있는 구조의 비중 59%는 수소가 포함된 구조를 제외하고 조성·공간군의 중복을 제거한 집합에서 무질서 구조를 분모로 계산한 값이다. <a class="citation" href="#ref-2">[2]</a> 치환·빈자리·틈새 원자가 결합된 복잡한 경우에는 각 부분 점유 자리를 독립적으로 열거하면 조성이나 전하 중성, 원자들의 연결 관계가 깨질 수 있다. 가능한 조합 수도 빠르게 늘어난다. 후보를 많이 계산하기에 앞서 <strong>어떤 화학적 제약을 가진 배열을 열거할지</strong> 정해야 하는 이유다.</p>
+<p>DeMARS는 De-averaged Minimal Atomistic Representation System의 약자다. 원 CIF의 근거와 화학 규칙을 만족하는 최소 원자 모델 또는 여러 모델의 집합을 만들어, 후속 시뮬레이션이 출발할 구조를 제공한다. 평균 구조 안에 숨어 있는 무질서의 상관관계를 연구할 때는 이 최소 모델에서 더 나아가 셀 크기와 구조 집합이 충분한지도 살펴야 한다.</p>
+<span class="legacy-anchor" id="_1" aria-hidden="true"></span><h2 id="section-_3">좁은 과학 업무를 소프트웨어에 맡긴다</h2>
+<p>재료 계산의 상당 부분은 이미 자동화되어 있다. VASP·Quantum ESPRESSO가 주어진 입력을 계산하고, AiiDA·atomate2·AFLOW·AMP² 같은 워크플로 도구는 계산 의존관계와 재시작, 데이터의 생성 이력을 관리한다. 예를 들어 atomate2는 정해 둔 조건에 따라 동적으로 분기하거나 계산을 추가하고 오류를 복구할 수 있다. <a class="citation" href="#ref-3">[3]</a> 연구자는 그 과정에서 서로 가까운 두 원자 자리가 동시에 점유될 수 있는지, 결함의 전하상태를 어떻게 정할지, 자기일관장(self-consistent field, SCF) 계산의 실패에 수치 설정을 바꿀지 물리 모델을 다시 볼지 판단한다.</p>
+<p>이런 판단 가운데 아직 규칙으로 표현하지 못한 부분을 어디까지 프로그램으로 만들 수 있을까. 저자들이 말하는 <strong>에이전트 프로그램(agentic program)</strong>은 입력·목표·허용 도구·과학 제약·검증 기준이 정해진 하나의 업무를 결정론적 알고리즘과 제한된 LLM 판단으로 끝까지 수행하는 소프트웨어다. 에이전트 하네스는 여기에 필요한 파일·코드 실행·지속 메모리·기술 규칙과 별도 검토 역할을 연결한다. DeMARS에서는 부분 점유 CIF를 받아 후속 계산에 쓸 원자 모델을 내는 일이 그 책임의 단위가 된다.</p>
+<p>5월의 <a href="https://infant83.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/">「AI 과학자, 시작의 끝에서」</a>는 가설 생성부터 논문 작성까지 넓은 연구 하네스의 검증을 다뤘다. DeMARS는 그 논의에서 한 업무의 위임 조건을 더 구체화한다. 연구자가 매 사례를 승인하던 방식에서 벗어나려면, 프로그램이 무엇을 받아 무엇을 내고 언제 거절해야 하는지 먼저 정해야 한다는 것이다.</p>
+<span class="legacy-anchor" id="llm" aria-hidden="true"></span><span class="legacy-anchor" id="workflowai-assistant" aria-hidden="true"></span><h2 id="section-_4">계산 근거, 실행 명세, 물리 검사</h2>
+<p>DeMARS에서 LLM은 코드가 뽑아낸 근거를 읽고 계산할 명세를 만든다. 그 선택을 실행하고 검사하는 과정은 다음과 같다.</p>
 <ol>
-<li>결정론적 Python 코드가 CIF에서 조성, 부분 점유, 대칭과 site 정보를 추출해 구조화된 evidence bundle을 만든다.</li>
-<li>LLM analyst는 그 근거를 읽고 supercell 크기, 합치거나 배타적으로 취급할 site, 전하 중성 조성, 누락 수소의 수리 또는 custom construction 필요 여부를 실행 명세로 만든다.</li>
-<li>열거 엔진이 후보 배치를 만들고 SevenNet MLIP으로 구조를 이완해 에너지 분포를 계산한다.</li>
-<li>코드가 전하 중성, 원 CIF 점유와의 일치, polyanion 연결성 등 미리 정의한 검사를 수행한다. energy above hull은 해석 정보로 계산하지만 pass/fail 기준으로 쓰지 않는다고 명시한다.</li>
-<li>analyst가 구조와 에너지 분포를 보고 수용하거나 더 좁은 명세로 재실행한다.</li>
-<li>별도 reviewer agent가 새 문맥에서 최종 기록을 반대 관점으로 점검한다.</li>
-<li>프로그램은 인증된 모델을 내거나, 근거가 충분하지 않다면 이유와 함께 인증을 거절한다.</li>
+<li>Python 코드가 CIF에서 조성·점유율·대칭·자리 정보를 추출한다.</li>
+<li>LLM 분석자가 초격자 크기, 합치거나 배타적으로 취급할 자리, 전하 중성 조성, 누락 수소의 보완이나 맞춤 구조 생성 필요 여부를 실행 명세로 작성한다.</li>
+<li>열거 엔진이 후보 배열을 만들고 SevenNet 계열 머신러닝 원자간 퍼텐셜(Machine-Learning Interatomic Potential, MLIP)로 구조를 이완한다. MLIP은 제일원리 자료에서 학습한 에너지와 힘을 근사해 많은 후보를 빠르게 계산한다. <a class="citation" href="#ref-4">[4]</a></li>
+<li>분석자가 구조와 에너지 분포를 검토해 다음 단계로 진행하거나, 명세를 좁혀 계산을 다시 실행한다.</li>
+<li>무질서의 기전을 분류한 뒤 전하 중성, 원 CIF 점유와의 일치, 다원자 음이온(polyanion)의 연결성 등 정해진 규칙을 검사한다. 볼록껍질 위 에너지(energy above hull)는 해석 정보로 계산하며 통과·실패 판정에는 쓰지 않는다고 논문은 명시한다.</li>
+<li>구조 생성과 검사 결과를 최종 기록으로 정리한다.</li>
+<li>별도 검토 에이전트가 이 기록을 새 문맥에서 점검한다.</li>
+<li>프로그램은 인증한 모델을 내거나, 인증할 근거가 부족한 이유를 기록한다.</li>
 </ol>
-<p><img alt="무질서 CIF에서 결정론적 근거 추출, 제한된 LLM 실행 명세, 구조 열거와 MLIP 이완, 물리 게이트, 새 문맥 검토를 거쳐 인증 또는 거절로 가는 구조도" src="../artifacts/agentic_program_architecture_ko.svg" /></p>
-<p><em>그림 2. 논문의 Fig. 3과 본문을 바탕으로 리뷰어가 다시 그린 기능 구조도. 파란색은 결정론적 계산, 보라색은 LLM 판단, 주황색은 물리·구조 검사다. 원 논문의 실행 로그나 정량 성능을 재현한 도표가 아니다.</em></p>
-<p>이 구조의 핵심은 “LLM에게 물리를 가르쳤다”가 아니다. LLM은 정량 근거를 생성하지 않고, 자신의 결과를 최종 인증하지도 않는다. 코드가 제공한 근거를 해석해 계산 가능한 명세를 만들고, 그 명세의 결과는 다시 독립적인 코드에 의해 검사된다. 저자들의 표현을 바꾸어 말하면 판단은 신뢰의 대상이 아니라 <strong>검사 가능한 가설 생성기</strong>다.</p>
-<h2 id="workflowai-assistant">기존 workflow·AI assistant와 무엇이 다른가</h2>
-<table>
+<figure class="figure-panel"><a class="figure-zoom" href="../artifacts/agentic_program_architecture_ko.svg?v=6493e5161fda" target="_blank" rel="noopener" aria-label="그림 2 크게 보기 (새 탭)"><img alt="무질서 CIF에서 결정론적 근거 추출, 제한된 LLM 실행 명세, 구조 열거와 MLIP 이완, 물리 게이트, 새 문맥 검토를 거쳐 인증 또는 거절로 가는 구조도" src="../artifacts/agentic_program_architecture_ko.svg?v=6493e5161fda" /></a><figcaption>그림 2. 논문의 Fig. 3과 본문을 바탕으로 리뷰어가 재구성한 기능 구조도. 파란색은 결정론적 계산, 보라색은 LLM 판단, 주황색은 물리·구조 검사다. 계산 결과를 다음 판단의 입력으로 돌려보내고 별도 검토를 거쳐 인증 또는 거절하는 흐름을 보여준다.</figcaption></figure>
+<p>이렇게 하면 LLM이 제안한 화학적 해석을 실제 후보 배열과 계산 결과로 살필 수 있다. 예를 들어 두 자리를 서로 배타적으로 취급하자는 판단은 열거 엔진의 명세가 되고, 출력된 구조가 원 점유율과 전하 조건을 지키는지 코드로 확인한다. 이 글에서 주목하는 설계는 <strong>판단의 결과를 계산 가능한 대상으로 만드는 일</strong>이다.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="표 좌우로 보기"><table>
 <thead>
 <tr>
 <th>시스템 형태</th>
 <th>사람이 맡는 일</th>
 <th>소프트웨어가 맡는 일</th>
-<th>실패를 잡는 방식</th>
-<th>생산 단계의 사람</th>
+<th>결과를 점검하는 방식</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>전통적 workflow</td>
-<td>모든 판단 규칙 정의</td>
-<td>정해진 알고리즘 반복</td>
-<td>예외 처리·단위 테스트</td>
-<td>새 예외에서 필요</td>
+<td>전통적 워크플로</td>
+<td>판단 규칙과 새 예외의 처리 정의</td>
+<td>명시한 알고리즘·조건에 따른 분기와 계산</td>
+<td>오류 복구·단위 테스트</td>
 </tr>
 <tr>
-<td>대화형 AI assistant</td>
+<td>대화형 AI 보조</td>
 <td>질문·선택·최종 승인</td>
 <td>설명·코드 제안</td>
 <td>사용자의 검토</td>
-<td>항상 loop 안</td>
 </tr>
 <tr>
-<td>범용 AI scientist</td>
-<td>연구 목표와 감독</td>
-<td>가설부터 글쓰기까지 넓은 탐색</td>
-<td>일반 evaluator·peer review</td>
-<td>범위에 따라 다름</td>
+<td>가설 탐색 보조(Co-Scientist)</td>
+<td>연구 목표 설정과 가설 검토</td>
+<td>가설 생성·비평·개선</td>
+<td>과학자의 검토와 과업별 실험 <a class="citation" href="#ref-5">[5]</a></td>
 </tr>
 <tr>
-<td>논문이 제안한 agentic program</td>
-<td>목표·책임·원칙 정의, 새 실패를 제도화</td>
-<td>bounded task의 routine execution</td>
-<td>task-specific deterministic gate와 별도 reviewer</td>
-<td>성숙 후 routine loop 밖</td>
+<td>논문이 제안한 에이전트 프로그램</td>
+<td>목표·책임·원칙 정의, 새 실패에서 원칙 갱신</td>
+<td>성숙한 프로그램의 정해진 업무를 끝까지 실행</td>
+<td>업무별 코드 검사와 별도 검토</td>
 </tr>
 </tbody>
-</table>
-<p>새로운 것은 개별 부품이 아니다. tool-using agent, MLIP, verification checklist, reviewer agent, version control은 이미 존재한다. 논문이 제안하는 차이는 이들을 <strong>완전 위임 가능한 좁은 과학 책임</strong>이라는 소프트웨어 단위로 묶는 데 있다. 범용 에이전트의 capability를 계속 넓히는 대신, 성공과 실패를 판정할 수 있을 만큼 업무를 작게 만든다.</p>
-<p>이 관점은 MLOps와 DevOps의 오래된 원리와도 닮았다. production system은 모든 입력에서 답을 억지로 내기보다 입력 계약을 검사하고, 지원하지 않는 경우 fail closed하며, 회귀 테스트와 version pinning으로 변경을 통제한다. 다만 과학 프로그램에서는 correctness가 단순한 API schema를 넘어 물리 모델의 타당성까지 포함하므로, deterministic gate가 모든 오류를 잡을 수 있다는 전제는 위험하다.</p>
-<h2 id="_3">정량 결과: 무엇이 보고되었고 무엇이 빠졌나</h2>
-<p>논문이 제시한 가장 큰 규모의 근거는 두 숫자다.</p>
-<ul>
-<li>개발 과정에서 <strong>약 800개의 무질서 CIF</strong>를 다루며 반복되는 판단을 규칙, 진단, 검증 게이트와 결정론적 코드로 옮겼다.</li>
-<li>성숙 과정에 쓰지 않은 <strong>무작위 100개 CIF</strong>를 별도로 선택해 end-to-end로 처리했고, 실행 도중 case-by-case human intervention은 없었다고 보고한다. 표본은 원소 3–5개, nontrivial site disorder, CIF에 기재된 site 40개 이하라는 조건을 가진다.</li>
-</ul>
-<p>저자들은 100개 출력 모두를 사후 수동 검사했으며, 인증된 모델은 화학적으로 합리적이고 보고 disorder와 일관됐고, 인증을 거절한 경우에는 기록의 근거로 이유를 확인할 수 있었다고 적었다. 여기서 주의할 점은 “100개를 처리했다”와 “100개 모두 구조를 인증했다”가 같지 않다는 것이다. 논문은 인증 수, 거절 수, custom construction 수, model repair 수를 나누어 제시하지 않는다.</p>
-<p>또 하나의 유용한 실패 사례는 $\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$이다. 기존 deterministic gate를 모두 통과했지만 reviewer agent가 모든 후보에 같은 cation arrangement만 존재한다는 사실을 발견했다. coupled-enumeration routine의 ordering이 Li/Mo anti-site disorder 자유도를 실제로 sampling하지 못한 것이 원인이었고, 이를 수정해 영구적인 회귀 개선으로 만들었다고 보고한다. 이 사례는 reviewer가 단순한 문장 교정기가 아니라 <strong>탐색 공간이 의도대로 열렸는지 검사하는 역할</strong>임을 잘 보여준다.</p>
-<table>
+</table></div>
+<p>표는 소프트웨어에 맡기는 목적과 책임의 범위를 비교한다. Co-Scientist는 연구자와 가설을 발전시키는 협업을, DeMARS는 정해진 구조 생성 업무의 위임을 목표로 한다. 도구 사용, MLIP, 검토 에이전트와 버전 관리는 기존 기술이며, 이 제안은 그 부품들을 좁은 과학 업무 하나로 묶는다. 입력 계약과 회귀 검사로 변경을 관리하는 점에서는 MLOps·DevOps와 닮았다. 과학 프로그램의 검사 항목에는 파일 형식뿐 아니라 어떤 조성·연결성·물리 모형을 허용할지도 포함된다.</p>
+<span class="legacy-anchor" id="_3" aria-hidden="true"></span><h2 id="section-800-100">800개 개발 사례와 100개 내부 평가</h2>
+<p>저자들은 개발 과정에서 <strong>약 800개의 무질서 CIF</strong>를 다뤘다고 보고한다. 그 과정에서 되풀이되는 판단을 지침과 진단, 검증 게이트, 결정론적 코드로 옮겼다. 이런 성숙 과정을 거친 뒤에는 개발에 쓰지 않은 ICSD의 <strong>100개 CIF</strong>를 무작위로 골라 처음부터 끝까지 처리했다. 표본 조건은 원소 3–5개, 단순하지 않은 자리 무질서, CIF에 기재된 자리 40개 이하다. 실행 도중에는 사례별 사람 개입이 없었다고 저자들은 설명한다.</p>
+<p>실행 후에는 저자들이 출력 100개를 모두 수동 검사했다. 인증된 모델은 화학적으로 합리적이고 보고된 무질서와 일관됐으며, 거절 사례는 기록에서 그 이유를 확인할 수 있었다고 한다. 따라서 이 100개는 프로그램을 성숙시키는 데 쓰지 않은 내부 평가이며, 결과에는 모델 인증과 근거에 따른 거절이 함께 포함된다. 인증·거절·맞춤 구조 생성·모델 보완의 건수는 각각 공개되지 않았다.</p>
+<p>$\mathrm{Sr}_2\mathrm{LiMoO}_{5.5}$ 사례는 검토 역할이 무엇을 더하는지 보여준다. 기존 코드 검사를 모두 통과했는데도 별도 검토 에이전트는 모든 후보에 같은 양이온 배열만 있다는 점을 찾아냈다. 결합 열거 루틴의 순서가 Li/Mo의 자리바꿈 무질서를 실제로 표본화하지 못한 것이 원인이었다. 검토자가 이 실패를 지적하면 별도 조정자가 일상 실행 사이에 프로그램을 수정하고, 실질적인 운영 원칙의 변경은 사람의 승인을 받는 방식이다. 저자들은 이렇게 발견한 문제를 지속적인 회귀 개선으로 남겼다고 보고한다.</p>
+<p>이 사례에서 전하·점유·연결성 검사를 통과하는 일과, 의도한 탐색 공간을 실제로 계산하는 일은 구별된다. 한 후보가 타당한지만 검사하면 후보 집합에서 빠진 자유도는 놓칠 수 있다. 검토자가 전체 구조 집합과 생성 경위를 읽어야 하는 이유가 여기에 있다.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="표 좌우로 보기"><table>
 <thead>
 <tr>
-<th>항목</th>
-<th>원문이 보고한 사실</th>
-<th>이번 리뷰의 독립 점검</th>
-<th>아직 알 수 없는 것</th>
+<th>논문이 보고한 항목</th>
+<th>결과를 해석하는 조건</th>
+<th>추가로 필요한 자료</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>공개 시점</td>
-<td>arXiv v1, 2026-09-01</td>
-<td>arXiv metadata와 HTML 확인</td>
-<td>동료평가 후 변경될 내용</td>
+<td>약 800개 성숙 사례</td>
+<td>개발 중 규칙·코드·지침을 축적</td>
+<td>사례별 입력·출력·개입 기록</td>
 </tr>
 <tr>
-<td>성숙 자료</td>
-<td>약 800개 disordered CIF</td>
-<td>본문 수치와 사례 일관성 확인</td>
-<td>case별 입력·출력·intervention log</td>
+<td>미사용 100개 CIF의 자동 처리</td>
+<td>정해진 ICSD 표본, 실행 중 사람 개입 없음, 저자의 사후 수동검사</td>
+<td>인증·거절 건수, 재시도·소요시간·LLM 비용</td>
 </tr>
 <tr>
-<td>외부 테스트</td>
-<td>미사용 100개 CIF, 실행 중 사람 개입 없음</td>
-<td>표본 조건과 사후 수동검사 문장 확인</td>
-<td>인증/거절 분모, task success rate, 소요시간·LLM 비용</td>
+<td>전하 보상 예시</td>
+<td>$2+2(0.18)=2.36$의 조성 산술</td>
+<td>실제 무질서 상관관계에 대한 구조 검증</td>
 </tr>
 <tr>
-<td>물리 예시</td>
-<td>$2+2(0.18)=2.36$</td>
-<td>전하 보상 산술 재계산</td>
-<td>실제 disorder correlation의 유일성</td>
-</tr>
-<tr>
-<td>소프트웨어</td>
-<td>DeMARS architecture 설명</td>
-<td>공개 소스 없음 확인</td>
-<td>재실행 안정성, model/version 민감도, 환경 재현성</td>
+<td>코드·지침·모델 버전 관리</td>
+<td>9월 6일 기준 프리프린트의 설계와 사례</td>
+<td>공개 패키지, 반복 실행 통계, 독립 평가</td>
 </tr>
 </tbody>
-</table>
-<h2 id="_4">가장 큰 한계: 좋은 설계와 검증된 제품은 다르다</h2>
-<p>첫째, 논문은 프리프린트다. 동료평가를 거치지 않았고 DeMARS 코드는 “peer-reviewed version 출판 시 공개”될 예정이라고만 명시한다. 따라서 제3자가 동일 CIF를 넣어 같은 구조, 같은 거절 판단, 같은 계산 비용을 얻는지 확인할 수 없다.</p>
-<p>둘째, 100개 test set의 핵심 분모가 없다. 인증률, 거절률, 오류 유형, 재시도 횟수, 사람 사후검사 기준과 평가자 일치도, baseline 대비 개선을 알 수 없다. ‘화학적으로 합리적’이라는 판정은 중요하지만, blind external reviewer나 독립 계산과의 비교가 아니며 정량 metric도 아니다.</p>
-<p>셋째, 결과의 비결정성이 측정되지 않았다. 동일한 CIF를 같은 모델과 다른 random seed로 여러 번 실행했을 때 실행 명세와 최종 구조 ensemble이 얼마나 달라지는지, LLM을 교체하거나 version이 올라갈 때 regression이 생기는지 보고하지 않는다. 저자들도 model·skills·episode record를 함께 versioning하고 지속적으로 audit해야 한다고 인정한다.</p>
-<p>넷째, MLIP 검증 경계가 남는다. universal MLIP은 많은 episode를 싸게 만드는 핵심이지만, training distribution 밖의 coordination, charge state, heavy element 또는 unusual bonding에서 에너지 ordering이 틀릴 수 있다. 구조·조성 게이트를 모두 통과해도 DFT 수준의 상대 안정성이나 실제 disorder thermodynamics가 맞는 것은 아니다.</p>
-<p>다섯째, 최소 periodic model이 실험의 disorder를 대표한다는 보장은 없다. short-range order, configurational entropy, finite-temperature occupancy, diffuse scattering을 연구하려면 단일 구조보다 ensemble과 크기 수렴성이 필요할 수 있다. DeMARS는 좋은 starting model을 만들 수 있지만, 실험 평균 구조의 유일한 microscopic inverse를 복원했다고 읽어서는 안 된다.</p>
-<h2 id="_5">재료 계산과 산업 연구에서의 시사점</h2>
-<p>김현중 연구자의 DFT·OLED·agentic workflow 관점에서 가장 직접적인 교훈은 ‘모든 연구를 하는 agent’를 먼저 만들지 말라는 것이다. 다음과 같이 <strong>입력과 deliverable이 분명하지만 중간 판단이 반복되는 일</strong>이 더 적합하다.</p>
+</table></div>
+<span class="legacy-anchor" id="_4" aria-hidden="true"></span><h2 id="section-_5">재현성과 구조 정확성을 평가할 자료</h2>
+<p>9월 6일의 프리프린트는 DeMARS 코드를 동료평가 논문 출판 시 공개하겠다고 명시했다. 당시에는 같은 CIF로 구조 생성과 거절 판단, 실행 비용을 재확인할 공개 패키지가 없었다. 100개 평가에서 인증·거절 비율과 오류 유형, 재시도 횟수, 평가자 간 일치도를 함께 공개하면 프로그램이 어떤 입력을 얼마나 다루는지 판단할 수 있다. 같은 입력·계산 예산의 기준법과 비교하는 일도 이 단계에 필요하다.</p>
+<p>반복 실행의 안정성도 별도의 질문이다. 동일한 CIF를 같은 모델로 여러 번 처리했을 때 명세와 최종 구조 집합, 인증 결과가 얼마나 같은지 논문은 측정하지 않았다. 모델·지침·에피소드 기록을 함께 버전 관리하고 변경 뒤 회귀 검사를 수행하자는 저자들의 원칙은, 그런 차이를 추적할 토대가 된다.</p>
+<p>구조의 물리적 정확성을 살피려면 MLIP과 최소 주기 모델의 선택까지 평가해야 한다. 보편 MLIP은 반복 계산 비용을 낮추지만 학습 범위를 벗어난 배위·전하상태·무거운 원소·결합에서는 상대 에너지의 순서가 달라질 수 있다. 일부 구조를 DFT로 다시 이완해 구조와 에너지 순서가 유지되는지 확인할 수 있다. 단거리 질서, 배치 엔트로피, 유한 온도 점유나 확산 산란이 관심 대상이라면 여러 구조의 집합과 셀 크기 수렴성도 필요하다. 이 항목들은 DeMARS가 후속 계산의 시작 구조를 얼마나 적절하게 제공하는지 묻는 구체적인 평가다.</p>
+<span class="legacy-anchor" id="_5" aria-hidden="true"></span><h2 id="section-dftoled">DFT·OLED 업무에서 선택할 책임</h2>
+<p>DFT·OLED 계산에 이 접근을 적용해 보면, 입력과 산출물이 분명하면서 중간 판단이 반복되는 업무가 눈에 들어온다. 다음은 논문 결과를 바탕으로 한 편집자의 적용 제안이다.</p>
 <ol>
-<li><strong>DFT protocol steward</strong>: 구조·원소·목표 물성에서 PAW/pseudopotential, cutoff, $k$-mesh, smearing, spin·SOC 설정을 제안하되, convergence test와 symmetry·magnetic-state 검사로 결과를 인증한다.</li>
-<li><strong>계산 실패 진단 프로그램</strong>: SCF oscillation, charge sloshing, geometry blow-up을 로그에서 분류하고 제한된 수정만 허용하며, 에너지·force·occupation 회귀 검사를 통과하지 못하면 중단한다.</li>
-<li><strong>defect/interface builder</strong>: 가능한 termination, charge compensation, passivation을 제안하고 stoichiometry·neutrality·minimum-distance·symmetry·finite-size 기준을 코드로 검사한다.</li>
-<li><strong>OLED excited-state triage</strong>: state character, oscillator strength, spin–orbit coupling, root flipping과 conformer dependence를 묶어 TDDFT/TDA 결과의 재계산 필요 여부를 판정한다. 최종 rate나 기작은 계산 로그와 state tracking이 뒷받침할 때만 인증한다.</li>
-<li><strong>on-premises research operations</strong>: LLM은 사내 gateway에서 판단하고 VASP/Gaussian/Fortran job은 기존 scheduler와 GitLab runner가 실행한다. 입력·output hash, container/compiler, code commit, model version, skill version과 gate 결과를 하나의 evidence record로 남긴다.</li>
+<li><strong>DFT 계산 설정 관리</strong>: 구조·원소·목표 물성에서 PAW/유사퍼텐셜, 에너지 절단값, $k$ 격자, smearing, 스핀·스핀–궤도 결합(SOC) 설정을 제안한다. 수렴성·대칭·자기 상태 검사가 설정의 적절성을 평가한다.</li>
+<li><strong>계산 실패 진단</strong>: 로그에서 SCF 진동, 전하 출렁임(charge sloshing), 구조 이완의 발산을 분류하고 정해 둔 수정만 적용한다. 에너지·힘·점유의 회귀 검사를 통과하지 못하면 중단한다.</li>
+<li><strong>결함·계면 구조 생성</strong>: 표면 끝단, 전하 보상과 부동태화를 제안하고 화학량론·중성·최소 거리·대칭·유한 크기 조건을 코드로 검사한다.</li>
+<li><strong>OLED 들뜬상태 선별</strong>: 상태 성격, 진동자 세기, SOC, 상태 순서 뒤바뀜(root flipping), 배좌 의존성을 함께 읽어 TDDFT/TDA를 다시 계산할 필요를 판단한다. 속도상수와 기작의 판단은 계산 로그와 상태 추적 결과에 연결한다.</li>
+<li><strong>사내 연구 계산 운영</strong>: 사내 LLM 게이트웨이가 제한된 판단을 맡고 VASP·Gaussian·Fortran 계산은 기존 스케줄러와 GitLab runner가 실행한다. 입력·출력 해시, 컨테이너·컴파일러, 코드 커밋, 모델·지침 버전과 검사 결과를 한 기록에서 추적한다.</li>
 </ol>
-<p>산업 조직에서는 ‘사람을 loop에서 제거’라는 문장을 인력 대체로 읽기보다 책임 경계로 읽어야 한다. routine run은 자동화하되, 새로운 failure class가 발견되면 사람이 원칙을 승인하고 code·test·doctrine을 업데이트한다. 이때 중요한 운영 metric은 대화 횟수가 아니라 다음과 같다.</p>
+<p>일상 실행을 위임한 뒤에도 새로운 실패 유형은 연구자의 판단으로 돌아온다. 사람은 원칙을 승인하고 프로그램의 코드·테스트·지침에 그 판단을 남긴다. 운영 성과는 전체 입력 중 인증한 비율, 사후 고급 계산·실험에서 잘못된 것으로 판정된 인증의 비율, 근거가 정당했던 거절의 비율로 볼 수 있다. 사람 개입률과 동일 입력의 구조·판정 일치도도 함께 측정해야 한다. 비용은 인증한 사례당 LLM 토큰, MLIP·DFT 계산 시간, 전체 경과 시간과 재시도를 포함해 비교하는 편이 유용하다.</p>
+<span class="legacy-anchor" id="_6" aria-hidden="true"></span><span class="legacy-anchor" id="_8" aria-hidden="true"></span><h2 id="section-_6">다음 연구에서 보고 싶은 것</h2>
+<p>이 설계가 반복해서 쓸 연구 도구가 되는 과정을 확인하려면, 100개 평가 CIF의 식별자와 인증·거절 결과를 공개한 고정 평가가 필요하다. 같은 입력·계산 예산으로 규칙 기반 프로그램, 일반 도구 사용 에이전트, DeMARS를 비교하고, 각 사례를 5–10회 반복하면 실행 명세·구조 집합·인증의 변동을 볼 수 있다. SevenNet으로 선별한 일부 구조는 DFT로 다시 이완해 비교할 수 있다.</p>
+<p>독립된 결정학자와 계산재료 연구자가 결과를 가린 평가 기준으로 검토하고 평가자 간 합의도를 보고하는 일도 제안한다. ICSD 밖의 공개 자료에서 평가하면 지원하는 입력 범위도 넓게 점검할 수 있다. 고정한 코드·지침·모델 설정, 버전 변경 전후의 회귀 검사와 함께 거절·실패 기록까지 공개하면 다른 연구팀이 프로그램의 판단 과정을 재검토할 수 있다. 에피소드가 축적될수록 이 기록을 과학 소프트웨어의 일부로 관리하는 일이 중요해진다.</p>
+<span class="legacy-anchor" id="_7" aria-hidden="true"></span><h2 id="section-_7">관련 연구자에게 묻고 싶은 질문</h2>
 <ul>
-<li>certification coverage: 전체 입력 중 프로그램이 인증한 비율</li>
-<li>false certification rate: 사후 고급 계산·실험에서 잘못된 인증으로 판정된 비율</li>
-<li>justified refusal rate: 거절이 실제로 근거 부족 또는 지원 범위 밖이었던 비율</li>
-<li>intervention rate: routine batch에서 사람 개입이 필요했던 case 비율</li>
-<li>repeatability: 동일 입력 반복 실행의 구조·판정 일치도</li>
-<li>cost-to-certify: case당 LLM token, MLIP/DFT GPU·CPU 시간, wall-clock과 재시도 횟수</li>
+<li><strong>Seungwu Han — 서울대학교 재료공학부·첨단재료연구소, KIAS AI and Natural Sciences Center.</strong> DeMARS의 교신저자이며 SevenNet·자동 원자 시뮬레이션 연구를 이끌어 왔다. “100개 평가에서 인증·거절·맞춤 구조 생성 건수와 반복 실행의 변동을 어떤 공개 벤치마크로 만들 계획인가?”</li>
+<li><strong>Yunsung Lim — 서울대학교 첨단재료연구소.</strong> 공동 제1저자로 에이전트 프로그램 개념과 DeMARS 사례를 제시했다. “에피소드에서 얻은 판단을 지침·운영 원칙·결정론적 코드 중 어디에 반영할지 결정하는 기준과 되돌리기 절차는 무엇인가?”</li>
+<li><strong>Haekwan Jeon — 서울대학교 재료공학부.</strong> 공동 제1저자로 DeMARS 개발에 참여했다. “최소 주기 모델로 충분하지 않고 구조 집합·단거리 질서를 다뤄야 하는 경우를 어떤 검사가 탐지하는가?”</li>
 </ul>
-<h2 id="_6">후속 연구에서 꼭 보고 싶은 검증</h2>
-<p>가장 설득력 있는 다음 논문은 더 큰 언어모델을 쓰는 연구가 아니라 다음 실험을 공개하는 연구다.</p>
-<ol>
-<li>고정된 100개 test CIF의 ID와 인증·거절 outcome을 공개한다.</li>
-<li>규칙 기반 baseline, 일반 tool-using agent, DeMARS를 같은 입력·계산 budget에서 비교한다.</li>
-<li>각 CIF를 5–10회 반복해 실행 명세, 최종 구조 cluster, 인증 결과의 분산을 제시한다.</li>
-<li>SevenNet screening 뒤 일부를 DFT로 재이완해 구조·에너지 ordering의 보존률을 측정한다.</li>
-<li>외부 결정학자와 계산재료 연구자가 blind rubric으로 결과를 평가하고 합의도를 보고한다.</li>
-<li>code·skill·model version을 고정한 재현 package와, version 변경 전후 regression suite를 공개한다.</li>
-<li>성공한 구조만이 아니라 refusal과 failure artifact도 남겨 어떤 범위에서 프로그램을 믿지 말아야 하는지 보여준다.</li>
+<span class="legacy-anchor" id="_9" aria-hidden="true"></span><h2 id="section-_8">결론</h2>
+<p>DeMARS는 <strong>과학자가 반복해서 내리는 좁은 판단 하나를 소프트웨어의 책임으로 만드는 방법</strong>을 구체적인 재료 문제에서 보여준다. LLM이 만든 실행 명세는 원자 배열이 되고, 코드가 계산한 구조와 에너지는 다음 판단과 별도 검토의 근거가 된다. 잘못된 배열을 찾는 데서 나아가 빠진 탐색 자유도까지 발견한 사례는, 계산의 실행과 과학적 검토가 어떻게 협력할 수 있는지 드러낸다.</p>
+<p>이 접근에서 중요한 선택은 맡길 업무의 크기와 검사할 물리 조건이다. 계산재료과학에는 조성·대칭·전하·힘·에너지처럼 계산으로 확인할 대상이 풍부하고, MLIP은 여러 사례를 거치며 프로그램을 다듬을 비용을 낮춘다. 공개 코드와 평가 결과, 반복성·독립 평가가 갖춰지는 과정을 따라가면, 이 좁은 책임이 다른 연구자의 일상 계산에도 쓰일 수 있는지 판단할 수 있을 것이다.</p>
+<span class="legacy-anchor" id="_10" aria-hidden="true"></span><h2 id="section-references">References</h2>
+<ol class="reference-list">
+<li id="ref-1"><a href="https://arxiv.org/abs/2609.00795v1">Y. Lim, H. Jeon, J. Kim, J. Kim, and S. Han, Agentic programs: an emerging form of scientific software in computational materials science, arXiv:2609.00795v1 (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1107/S1600576725003000">D. Antypov, C. M. Collins, M. S. Dyer, J. B. Claridge, and M. J. Rosseinsky, Classification and statistical analysis of structural disorder in crystalline materials, J. Appl. Crystallogr. <b>58</b>, 659 (2025).</a></li>
+<li id="ref-3"><a href="https://doi.org/10.1039/D5DD00019J">A. M. Ganose et al., Atomate2: modular workflows for materials science, Digit. Discov. <b>4</b>, 1944 (2025)</a>; <a href="https://doi.org/10.1039/D5DD90036K">A. M. Ganose et al., Correction: Atomate2: modular workflows for materials science, Digit. Discov. <b>4</b>, 2639 (2025).</a></li>
+<li id="ref-4"><a href="https://doi.org/10.1038/s41467-026-70195-8">J. Kim, J. You, Y. Park, Y. Lim, Y. Kang, J. Kim, H. Jeon, S. Ju, D. Hong, S. Y. Lee, S. Choi, Y. Kim, J. W. Lee, and S. Han, Optimizing cross-domain transfer for universal machine learning interatomic potentials, Nat. Commun. <b>17</b>, 3432 (2026).</a></li>
+<li id="ref-5"><a href="https://doi.org/10.1038/s41586-026-10644-y">J. Gottweis et al., Accelerating scientific discovery with Co-Scientist, Nature <b>655</b>, 487 (2026).</a></li>
 </ol>
-<h2 id="_7">관련 연구자와 초청 세미나 질문</h2>
-<ul>
-<li><strong>Seungwu Han — 서울대학교 재료공학부·첨단재료연구소, KIAS AI and Natural Sciences Center.</strong> DeMARS의 교신저자이며 SevenNet·자동 원자 시뮬레이션 연구를 이끌어 왔다. 질문: “100개 test set에서 인증·거절·custom construction의 분모와 반복 실행 분산을 어떤 공개 benchmark로 만들 계획인가?”</li>
-<li><strong>Yunsung Lim — 서울대학교 첨단재료연구소.</strong> 논문의 공동 제1저자로 agentic program 개념과 DeMARS 사례를 제시했다. 질문: “에피소드에서 얻은 판단을 skill, doctrine, deterministic code 중 어디로 옮길지 결정하는 기준과 rollback 절차는 무엇인가?”</li>
-<li><strong>Haekwan Jeon — 서울대학교 재료공학부.</strong> 공동 제1저자로 DeMARS 개발에 참여했다. 질문: “부분 점유의 최소 원자 모델이 충분하지 않고 ensemble·short-range order가 필요한 경우를 어떤 gate가 탐지하는가?”</li>
-</ul>
-<h2 id="_8">관찰할 질문</h2>
-<ul>
-<li>코드는 동료평가 논문과 함께 실제로 공개되는가?</li>
-<li>held-out 100개 CIF의 상세 outcome과 실행 비용이 공개되는가?</li>
-<li>다른 LLM·하네스에서도 같은 bounded responsibility와 gate를 유지할 수 있는가?</li>
-<li>ICSD 외 공개 데이터셋과 독립 연구팀 평가에서 false certification이 얼마나 되는가?</li>
-<li>DFT, phonon, defect thermodynamics까지 이어질 때 어느 지점에서 MLIP gate가 부족해지는가?</li>
-<li>연구 조직이 episode를 개인의 대화 기록이 아니라 versioned scientific software asset으로 관리할 수 있는가?</li>
-</ul>
-<h2 id="_9">결론</h2>
-<p>이번 논문은 ‘AI가 과학자를 대체하는가’보다 훨씬 실용적인 질문을 던진다. <strong>과학자가 반복해서 내리는 좁은 판단 하나를, 어디까지 소프트웨어의 책임으로 바꿀 수 있는가?</strong> DeMARS의 답은 알고리즘과 판단을 섞되, LLM을 근거 생성자나 자기 인증자로 두지 말고 결정론적 코드 사이의 bounded decision maker로 두라는 것이다.</p>
-<p>이 설계는 계산재료과학과 잘 맞는다. 입력과 산출물이 비교적 명확하고, 조성·대칭·전하·힘·에너지처럼 계산 가능한 제약이 많으며, MLIP이 반복 episode의 비용을 낮추기 때문이다. 동시에 바로 그 이유로 검증 기준도 높아야 한다. 코드를 공개하고, 인증·거절의 분모를 밝히며, 반복성과 외부 평가를 통과할 때 ‘agentic program’은 흥미로운 개념에서 신뢰할 수 있는 새로운 과학 소프트웨어 범주로 넘어갈 수 있다.</p>
-<h2 id="_10">참고자료</h2>
-<ol>
-<li>Y. Lim, H. Jeon, J. Kim, J. Kim, S. Han, <a href="https://arxiv.org/abs/2609.00795">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a>. <strong>이번 리뷰의 주 출처; 프리프린트; DeMARS 코드는 아직 미공개.</strong></li>
-<li>D. Antypov et al., <a href="https://doi.org/10.1107/S1600576725003000">“Classification and statistical analysis of structural disorder in crystalline materials,” <em>Journal of Applied Crystallography</em> 58, 659–677 (2025)</a>. <strong>ICSD disorder 분류의 근거.</strong></li>
-<li>A. M. Ganose et al., <a href="https://doi.org/10.1039/D5DD00019J">“atomate2: modular workflows for materials science,” <em>Digital Discovery</em> 4, 1944–1973 (2025)</a>. <strong>결정론적 workflow automation 비교 맥락.</strong></li>
-<li>Y. Park et al., <a href="https://arxiv.org/abs/2606.09422">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a>. <strong>같은 연구 생태계의 원자 시뮬레이션 에이전트 선행 연구.</strong></li>
-<li>J. Kim et al., <a href="https://doi.org/10.1038/s41467-026-70195-8">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” <em>Nature Communications</em> 17, 3432 (2026)</a>. <strong>DeMARS가 활용한 SevenNet 계열 MLIP의 배경.</strong></li>
-<li>J. Gottweis et al., <a href="https://doi.org/10.1038/s41586-026-10644-y">“Accelerating scientific discovery with Co-Scientist,” <em>Nature</em> 655, 487–496 (2026)</a>. <strong>넓은 AI co-scientist 접근과의 비교.</strong></li>
-<li>Google Research, <a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a>. <strong>주장–코드–로그 연결과 독립 재실행의 비교 기준.</strong></li>
-<li>Z. Chen et al., <a href="https://doi.org/10.1038/s42256-026-01261-5">“An agentic artificially intelligent X-ray scientist,” <em>Nature Machine Intelligence</em> 8, 1075–1086 (2026)</a>. <strong>virtual instrument에서 real beamline으로 옮긴 human-relay 안전 경계의 비교 사례.</strong></li>
-</ol>
+
 <hr />
-<p><em>근거 기준일: 2026년 9월 6일. 논문의 800·100개 수치와 architecture는 저자 보고이며 이 리뷰가 DeMARS를 재실행한 결과가 아니다. 독립 점검은 arXiv 게시 정보, 본문 내부 수치·화학식의 일관성, 코드 공개 상태, 인용된 공식·동료평가 자료와 공개 페이지 렌더링에 한정된다. 적용 제안과 운영 metric은 편집자 해석이다.</em></p>
+<p><em>원 발행일·근거 기준일: 2026년 9월 6일. 약 800개 성숙 사례와 100개 평가, 구조와 동작 사례는 원저자 보고다. 원 발행 때 기록한 독립 점검은 arXiv 게시 정보, 본문 수치·화학식의 일관성, 당시 코드 공개 문구, 인용 공식·동료평가 자료와 공개 페이지 렌더링이다. DeMARS를 독립 실행하지 않았으며 적용 제안과 운영 지표는 편집자의 해석이다.</em></p>
+<h2 id="section-_9">개정 기록</h2>
+<p>2026년 11월 17일 문체 개정: 부분 점유에서 명시적 원자 배열로 이어지는 설명과 한영 문단 연결을 정리했다. 100개 사례를 개발 미사용 내부 평가로 명확히 하고, 별도 검토·프로그램 수정·사람의 원칙 승인 역할을 구별했다. AI 생성 개념도와 기능 구조도의 캡션은 보이는 대상과 작용을 설명하도록 다듬었다. 원 발행일과 9월 6일 근거 범위, 기존 AI 표지는 유지했다. 한영 기능 도식의 분포·기전 판단과 규칙 검사 순서를 원 Fig. 3에 맞췄다. 본문 첫 인용순의 참고문헌 5개로 서지를 정리하고, 본문에서 쓰지 않는 배경 읽기 항목은 덜었다. 한영 문체 집필은 편집부(AEDAUT)의 <code>materials1117_edit</code>가 맡았으며, 원문 대조·통합·출력·게시 검증은 별도 기록의 실제 수행 범위를 따른다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. 이번 개정에 별도의 문장 단위 사람 검토나 실험·프로그램 재실행은 없었다.</p>
       <div class="footer">
-        생성 시각: 2026-09-06 12:21:12<br>
-        원본 파일 최종 수정 시각: 2026-09-06 12:20:21
+        원 발행본 생성 시각: 2026-09-06 12:21:12<br>
+        편집 개정: 2026-11-17
       </div>
     </article>
 
@@ -995,20 +948,18 @@
           <h2 id="toc-heading">섹션 맵</h2>
           <div class="toc">
 <ul>
-<li><a href="#3">3문장 요약</a></li>
-<li><a href="#_1">왜 중요한가: 자동화가 멈추는 곳은 계산이 아니라 판단이다</a></li>
-<li><a href="#_2">먼저 정의할 용어</a></li>
-<li><a href="#cif">무질서 CIF가 왜 ‘판단이 필요한 계산’인가</a></li>
-<li><a href="#llm">핵심 방법: LLM을 코드 사이에 가둔다</a></li>
-<li><a href="#workflowai-assistant">기존 workflow·AI assistant와 무엇이 다른가</a></li>
-<li><a href="#_3">정량 결과: 무엇이 보고되었고 무엇이 빠졌나</a></li>
-<li><a href="#_4">가장 큰 한계: 좋은 설계와 검증된 제품은 다르다</a></li>
-<li><a href="#_5">재료 계산과 산업 연구에서의 시사점</a></li>
-<li><a href="#_6">후속 연구에서 꼭 보고 싶은 검증</a></li>
-<li><a href="#_7">관련 연구자와 초청 세미나 질문</a></li>
-<li><a href="#_8">관찰할 질문</a></li>
-<li><a href="#_9">결론</a></li>
-<li><a href="#_10">참고자료</a></li>
+<li><a href="#section-_1">요약</a></li>
+<li><a href="#section-_2">평균 구조를 원자 배열로 바꾸는 일</a></li>
+<li><a href="#section-_3">좁은 과학 업무를 소프트웨어에 맡긴다</a></li>
+<li><a href="#section-_4">계산 근거, 실행 명세, 물리 검사</a></li>
+<li><a href="#section-800-100">800개 개발 사례와 100개 내부 평가</a></li>
+<li><a href="#section-_5">재현성과 구조 정확성을 평가할 자료</a></li>
+<li><a href="#section-dftoled">DFT·OLED 업무에서 선택할 책임</a></li>
+<li><a href="#section-_6">다음 연구에서 보고 싶은 것</a></li>
+<li><a href="#section-_7">관련 연구자에게 묻고 싶은 질문</a></li>
+<li><a href="#section-_8">결론</a></li>
+<li><a href="#section-references">References</a></li>
+<li><a href="#section-_9">개정 기록</a></li>
 </ul>
 </div>
 
@@ -1017,17 +968,13 @@
       <section class="side-section link-panel" aria-labelledby="links-heading">
         <h2 id="links-heading">근거 링크</h2>
         <ul>
-          <li><a href="../artifacts/agentic_programs_materials_hero.webp">부분 점유가 있는 무질서 결정에서 후보 원자배열을 만들고 물리 제약을 통과한 구조만 남기는 과정을 표현한 과학 편집형 개념도</a></li>
-<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/" target="_blank" rel="noreferrer">「AI 과학자, 시작의 끝에서」</a></li>
-<li><a href="../artifacts/agentic_program_architecture_ko.svg">무질서 CIF에서 결정론적 근거 추출, 제한된 LLM 실행 명세, 구조 열거와 MLIP 이완, 물리 게이트, 새 문맥 검토를 거쳐 인증 또는 거절로 가는 구조도</a></li>
-<li><a href="https://arxiv.org/abs/2609.00795" target="_blank" rel="noreferrer">“Agentic programs: an emerging form of scientific software in computational materials science,” arXiv:2609.00795v1 (1 September 2026)</a></li>
-<li><a href="https://doi.org/10.1107/S1600576725003000" target="_blank" rel="noreferrer">“Classification and statistical analysis of structural disorder in crystalline materials,” *Journal of Applied Crystallography* 58, 659–677 (2025)</a></li>
-<li><a href="https://doi.org/10.1039/D5DD00019J" target="_blank" rel="noreferrer">“atomate2: modular workflows for materials science,” *Digital Discovery* 4, 1944–1973 (2025)</a></li>
-<li><a href="https://arxiv.org/abs/2606.09422" target="_blank" rel="noreferrer">“A robust agentic framework for expert-level automation of atomistic simulations,” arXiv:2606.09422 (2026)</a></li>
-<li><a href="https://doi.org/10.1038/s41467-026-70195-8" target="_blank" rel="noreferrer">“Optimizing cross-domain transfer for universal machine learning interatomic potentials,” *Nature Communications* 17, 3432 (2026)</a></li>
-<li><a href="https://doi.org/10.1038/s41586-026-10644-y" target="_blank" rel="noreferrer">“Accelerating scientific discovery with Co-Scientist,” *Nature* 655, 487–496 (2026)</a></li>
-<li><a href="https://research.google/blog/science-one-framework-a-verifiable-autonomous-research-framework-via-chain-of-evidence/" target="_blank" rel="noreferrer">“Science One Framework: A verifiable autonomous research framework via Chain-of-Evidence” (30 July 2026)</a></li>
-<li><a href="https://doi.org/10.1038/s42256-026-01261-5" target="_blank" rel="noreferrer">“An agentic artificially intelligent X-ray scientist,” *Nature Machine Intelligence* 8, 1075–1086 (2026)</a></li>
+          <li><a href="https://infant83.io/AI_Tech_Review/reviews/2026-05-23_ai-scientist-execution-harness/" target="_blank" rel="noreferrer">infant83.io</a></li>
+<li><a href="https://arxiv.org/abs/2609.00795v1" target="_blank" rel="noreferrer">arxiv.org</a></li>
+<li><a href="https://doi.org/10.1107/S1600576725003000" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1039/D5DD00019J" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1039/D5DD90036K" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41467-026-70195-8" target="_blank" rel="noreferrer">doi.org</a></li>
+<li><a href="https://doi.org/10.1038/s41586-026-10644-y" target="_blank" rel="noreferrer">doi.org</a></li>
         </ul>
       </section>
     </aside>
