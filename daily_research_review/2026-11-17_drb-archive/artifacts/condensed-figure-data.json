@@ -1,0 +1,75 @@
+{
+  "hole": {
+    "source": "https://arxiv.org/abs/2411.06016v1",
+    "version": "2024-11-09 v1; manuscript pages 4–5,10–12",
+    "occupation_settings": [
+      "M,N",
+      "M+2,N",
+      "M+16,N"
+    ],
+    "g1_in_plane": 0.8,
+    "g1_out_of_plane": 2.6,
+    "g_values_approximate": true,
+    "final_abstract_angle_degrees": 2.5,
+    "angle_source": "https://journals.aps.org/prb/abstract/10.1103/gw2f-r6gy",
+    "angle_not_plotted_or_merged_with_v1": true
+  },
+  "cpdft": {
+    "source": "https://arxiv.org/abs/2605.13226v2",
+    "version": "2026-09-30 accepted revised author manuscript; main text page2",
+    "xc_energies_eV": [
+      {
+        "system": "Na",
+        "cpdft": -8.4,
+        "ks_pbe": -8.16
+      },
+      {
+        "system": "He",
+        "cpdft": -28.3,
+        "ks_pbe": -28.11
+      },
+      {
+        "system": "Si",
+        "cpdft": -65.5,
+        "ks_pbe": -64.89
+      }
+    ],
+    "interpretation": "Agreement/consistency between approximate methods, not absolute accuracy versus an exact reference. No new fitted curves or simulations.",
+    "energy_normalization": "Maintext p2 calls these XC energies integrated over all real-space points. Na/Si atom multiplicity for these values and explicit per-atom normalization are not stated; no intermaterial magnitude comparison. He is one atom in10Angstrom box. Preserve only within-row comparison.",
+    "calculation_settings": {
+      "Na": {
+        "lattice_A": 4.22,
+        "k_grid": [
+          6,
+          6,
+          6
+        ],
+        "grid_Ry": 200,
+        "xc_energy_grid_Ry": 60,
+        "atoms_for_reported_energy": "unspecified"
+      },
+      "He": {
+        "atoms": 1,
+        "box_A": [
+          10,
+          10,
+          10
+        ],
+        "k_grid": "Gamma",
+        "grid_Ry": 500,
+        "xc_energy_grid_Ry": 100
+      },
+      "Si": {
+        "lattice_A": 5.48,
+        "k_grid": [
+          10,
+          10,
+          10
+        ],
+        "grid_Ry": 200,
+        "xc_energy_grid_Ry": 100,
+        "atoms_for_reported_energy": "unspecified"
+      }
+    }
+  }
+}
