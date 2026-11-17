@@ -1,0 +1,22 @@
+When a photon escapes from a cavity, the encoded quantum state moves out of its designated code space. A recovery operation restores the state while leaving information about the error in an ancillary qubit. That ancilla must then be reset for the next correction. Two autonomous error-correction experiments implement this reset through drives and dissipation, protecting a memory without repeated syndrome measurements and classical feedback.<span class="citation">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>
+
+Ni and colleagues release the ancilla's error information into the environment through a rapidly decaying resonator. The drives are designed to disturb the long-lived storage cavity as little as possible. Their binomially encoded memory lasts about 2.0 ms, 18% longer than a reference physical qubit encoded in the zero- and one-photon states of the same device. These lifetimes come from the decay of process fidelity across initial states; they are distinct from the cavity's photon-energy lifetime.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+Sun and colleagues separate the reset from the storage mode. After recovery transfers error information to one ancilla, a swap moves it to a second, more distant ancilla for reset. This arrangement reduces the disturbance that resetting a nearby component can impose on storage. They design recovery as a quantum channel and implement repeated cycles with control pulses, obtaining a logical-memory lifetime 1.04 times that of a same-device physical reference. The percentages describe different devices; the more useful comparison concerns how each design reduces recovery and reset errors.<span class="citation">[<a href="#ref-2">2</a>]</span>
+
+Both results appeared as preprints in 2025 before their publication in Nature Physics on 16 November. Our earlier review of qubit platforms explained why bosonic protection requires controlling errors in ancillary qubits, drives, and readout alongside cavity loss.<span class="citation">[<a href="#ref-3">3</a>]</span> These experiments give that question two concrete implementations. Protecting stored information involves choosing where error information can leave the system and limiting how that path acts on the data.
+
+The next comparison I would like to see inserts operations between protected memories. Can error information still be transferred during a gate, and what phase shifts do the reset drives induce in neighboring modes? Such tests would identify the conditions for carrying the protection demonstrated in one memory into a connected computation.
+
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1038/s41567-026-03493-z">Z. Ni, L. Hu, Y. Cai, L. Zhang, J. Mai, X. Deng, P. Zheng, S. Liu, S.-B. Zheng, Y. Xu, and D. Yu, Extending qubit lifetime beyond break-even and enhancing quantum sensing by autonomous quantum error correction, Nat. Phys. (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1038/s41567-026-03528-5">L. Sun, Y. Xu, Y. Zhou, Z. Hua, W. Wang, J. Zhou, Z.-J. Chen, L. Z. de Paula, Q.-X. Jie, G. Xue, H. Yu, W. Cai, C.-L. Zou, and L. Sun, Extension of coherence time beyond breakeven point using only drives and dissipation, Nat. Phys. (2026).</a></li>
+<li id="ref-3"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-10-19_quantum-qubit-platforms/">H.-J. Kim, 양자 큐비트 플랫폼의 현재와 확장 과제, AI Tech Review Letters (19 October 2026).</a></li>
+</ol>
+
+## Writing and verification
+
+AEDAUT root read the original four-page DQB and the related review, and wrote and integrated both editions. `dqb1117_aqec` independently compared the public journal abstracts, figure captions and supplements with the authors' preprints, checking lifetime metrics, recovery and reset conditions. `dqb1117_methods` checked the optimization, QML, maser and chemistry sources in the original DQB; `dqb1117_pdf` produced and inspected the separate public PDF. The web writing date and additional-evidence cutoff are 17 November 2026. The final paragraph is an editorial proposal. No source experiment, computation or human-reader study was performed for this briefing. AI assistance was OpenAI Codex; the exact model identifier was not retained.
