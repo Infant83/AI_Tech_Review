@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 33,
+  "record_version": 34,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-16T22:02:28.624597Z",
+  "updated_at": "2026-11-17T02:40:32.320004Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -140,30 +140,34 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-16T21:57:21.852Z",
-    "last_successful_actions_check_at": "2026-11-16T21:57:26.496607Z",
-    "mail_window": "직전 성공부터48시간 겹친11/14T18:03:09.219Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
-    "actions_window": "새run/갱신/미해결/진행·대기/조회 오류0. 기존 DQE run43874538422 성공과03시 보충 확인을 재사용하며 기존 jobs/log는 반복 조회하지 않았다.",
+    "last_successful_mail_check_at": "2026-11-17T02:04:16.686Z",
+    "last_successful_actions_check_at": "2026-11-17T02:04:24.556688Z",
+    "mail_window": "직전 성공부터48시간 겹친11/14T21:57:21.852Z 이후 전페이지0통·읽지 않음 제한/상태 변경/오류0.",
+    "actions_window": "새 정상 DQB/L009·DeMARS/DRB4run·attempt1의 네 작업/실제 배포와 후처리 성공을 확인했다. 새 실패·미해결0이며 마지막2run은 기존 전체 확인 뒤의 별도 보충이다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "4b0c294034f1936f721f059902a735b470fe4ee6",
-    "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
-    "supplemental_actions_check_at": "2026-11-16T18:04:07.435919Z",
+    "live_source_revision": "e5269e1ce2c205428c6d57be8fce5ec49a392c30",
+    "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+    "supplemental_actions_check_at": "2026-11-17T02:24:46.825206Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-16T21:57:26.496607Z",
+    "last_full_actions_check_at": "2026-11-17T02:04:24.556688Z",
     "supplemental_successful_runs": [
-      "43874538422"
+      "43992237095",
+      "43999253480",
+      "44000424831",
+      "44001810193"
     ]
   },
   "observation": {
-    "status": "07시 새 CI·메일 문제 없음",
+    "status": "11시 정상 편집4run 인수·새 미해결 실패 없음",
     "period": {
-      "mail": "2026-11-16T21:57:21.852Z",
-      "full_api": "2026-11-16T21:57:26.496607Z"
+      "mail": "2026-11-17T02:04:16.686Z",
+      "full_api": "2026-11-17T02:04:24.556688Z",
+      "supplemental_api": "2026-11-17T02:24:46.825206Z"
     },
-    "result": "메일과 전체 API는 각 성공 시각으로 갱신했다.03시 DQE 성공 jobs/log·보충18:04:07.435919Z는 역사적 근거로 유지하며 재검사하지 않았다. 새run·실패·미해결·진행/대기·접근 오류0, 실제 공개4b0 불변·재실행/메일 변경/별도 발송/직접 DB 쓰기0이다.",
+    "result": "정상 게시4run의 실제 배포/네 작업을 확인하고 진행 중이던DRB의 완료 전 main 기록 push를 하지 않았다. L009의 정상 sync74/new1/queued1과 다른3run의 신규0을 구분하며 OS 수신 성공으로 확대하지 않는다. 기존 메일/전체 확인 시각과 새2run 보충을 분리했고, 기존 성공 jobs/log 반복·재실행·메일 변경·별도 발송·관찰자 직접 DB 쓰기는 없다. 정상 CI의 카탈로그/queue DB 쓰기와 구분한다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",

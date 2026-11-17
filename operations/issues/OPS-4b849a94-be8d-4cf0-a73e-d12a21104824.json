@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 8,
+  "record_version": 9,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-16T02:23:49.148969Z",
-  "status": "in_progress",
+  "updated_at": "2026-11-17T02:43:16.322056Z",
+  "status": "validating",
   "priority": "P2",
   "source": {
     "kind": "사용자 제안",
@@ -59,7 +59,7 @@
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
     "이번 기획에서 운영 서버의 모든 초안 기능·저장소 연결 활성화를 검증한 것은 아님",
     "수식·그림·한영 본문을 자유롭게 바꾸는 편집기와 기존 모든 글의 형식 변환은 범위·공수를 별도로 확인해야 함",
-    "관리 목록 설계를 시작했으며 웹 화면·게시 API 구현과 운영 배포는 아직 완료되지 않음"
+    "로컬 읽기 후보 구현·초기 검증은 완료했으며 전체 관리/게시 API·통합·운영 배포는 미완료다."
   ],
   "policy_decision": {
     "state": "채택",
@@ -85,47 +85,73 @@
   ],
   "change": {
     "commits": [],
-    "candidate_reference": null,
-    "deployment_reference": null
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+    "deployment_reference": null,
+    "local_readonly_candidate": {
+      "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+      "base_revision": "140858249a7625749db53b15efda83848f08b663",
+      "branch": "codex/admin-readonly-20261117",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_files": [
+        ".automation/admin-readonly/README.md",
+        ".automation/admin-readonly/app.js",
+        ".automation/admin-readonly/app.test.mjs",
+        ".automation/admin-readonly/index.html",
+        ".automation/admin-readonly/style.css",
+        "scripts/admin_inventory.py",
+        "scripts/preview_admin_inventory.py",
+        "tests/test_admin_inventory.py",
+        "tests/test_preview_admin_inventory.py"
+      ],
+      "protected_proof_key": "admin-readonly-20261117-11 / verified-candidate",
+      "status": "local_implementation_and_initial_validation_complete_not_integrated_or_deployed",
+      "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+      "resume": "11/18 15시 최신 main/실제 공개 묶음을 다시 인수하고 후보9개 검증 그룹·브라우저/복구 경계와 변경 소스 감수를 이어간다. 검증 결과에 따라 기존 단일 통합 경로의 다음 단계를 판단한다."
+    }
   },
   "verification": {
-    "status": "로컬 v1 계약·독립 출처/권한 검토 완료, 구현 전",
+    "status": "로컬 v1 후보 구현·대상 자동 검사·독립 데이터 실행·로컬 Chrome 확인 완료,18일 후보 감수/통합 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
       "등록/알림/코스 view·원본/검토 입력/공개 근거를 분리하는 계약을 독립 대조했다.",
-      "첫 로컬 JSON/HTML·한도·실패/미확인·비공개 경계와 향후9개 검사 그룹을 정리했다. 구현 시험은 실행하지 않았다."
+      "11/16 계약 검토 이력: 첫 로컬 JSON/HTML·한도·실패/미확인·비공개 경계와 향후9개 검사 그룹을 정리했다. 구현 시험은 실행하지 않았다.",
+      "로컬 순수 adapter·출력 CLI·전용 정적 화면을9새파일로 구현했으며 기존 원본/요청·독자 자산·운영 API는 수정하지 않았다.",
+      "Python38/Node8 검사와 독립 build_inventory1회에서207등록/알림74·같은 토큰·L009 현재판/허용 링크·읽기 경계가 통과했다.",
+      "현재 입력에 결속되지 않은 과거 선언을unknown으로 두고 최신 별칭/구판 SHA·카탈로그 분류·동일 작업 사본 baseline 경계를 보완했다.",
+      "로컬 Chrome320/1280·검색/필터/50·100행/키보드/빈 결과/손상JSON·악의적/긴제목을 확인하고 페이지 이동 스크롤과 반복 view 링크 구분을 수정했다."
     ],
     "evidence": [
       "PUBLICATION_WORKFLOW.md",
       "SITE_OPERATIONS.md",
       ".automation/cloudflare/reader-engagement/src/study-library.js",
       "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
-      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md"
+      "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
+      "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
     ],
     "remaining_limits": [
-      "11/17 로컬 후보 구현·영향 검사·11/18 독립 브라우저 검토 전",
-      "운영 API/인증/쓰기/원격 미리보기와 전체 관리 도구는 별도 후속 범위"
+      "11/18 15시 최신 원본/공개본을 인수한 예정된 독립 후보 감수·통합 판단 전",
+      "운영 API/인증/쓰기/원격 미리보기·운영 배포·실사용과 Safari/실기기 검증은 미실시"
     ]
   },
   "observation": {
-    "status": "11시 v1 계약 확정·후보 구현 전",
-    "period": "2026-11-16T02:01:11.019Z",
-    "result": "DEC85의 로컬 v1 계약을 확정했다.202개 등록 원본과73개 알림 자료를 구분하고 course/언어/PDF 판본은 명시된 관계로 연결한다. 기존 publisher Bearer·개인 study reviewer 권한을 공개 관리 인가로 사용하지 않는다. 생성기/화면/새 API·후보·배포는 아직 없다. 계약 조사 기준e0b7의202행 뒤 새 DRB등록이 들어와 종료 b20f452에서는203행이며 알림73건은 같다. 수량은 고정하지 않는다."
+    "status": "11시 로컬 읽기 후보 구현·초기 검증 완료",
+    "period": "2026-11-17T02:02:54.475Z",
+    "result": "최신 정상 DQB/L009/DeMARS/DRB와 기록 commit1408582를 인수했다. 실제e526 묶음의 전체 등록207행과 알림74건을 구분해537KB 규모의 읽기 목록을 생성했다. 내용 비교는 확인 범위162일치/44근거미확인/외부1해당없음이며 미확인을 미게시·과학 감수 실패로 해석하지 않는다. 원본/등록/지속 요청·공개 자산의 의도하지 않은 변경·직접 DB/발행/알림은 없다."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/17 11시 최신 main/공개 묶음·동시 작업을 인수한 뒤 v1 로컬 읽기 후보를 구현한다. strict 원장 존재/크기 검사를 reader 앞에 두고 native sourceId와 관리 키를 구분한다.11/18 15시 독립 후보 검토·11/19 11시 쓰기 API 작업분해를 유지한다. 운영 API/권한·등록/출판 요청·공개 자료는 바꾸지 않는다.",
+  "next_action": "11/18 15시 같은 후보 브랜치/보호 근거를 인수해 최신 main·실제 공개 묶음과9개 검증 그룹을 독립 감수하고 필요 수정/통합을 판단한다. 새 기술 제보는 받은 회차에서 앞당긴다.11/19 11시 쓰기 API 작업분해는 유지하며 현재 읽기 후보를 인증/발행 완료나 추가 게시 승인으로 확대하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "contract_v1_ready_for_local_candidate_not_implemented",
-    "next_scheduled_step_at": "2026-11-17T11:00:00+09:00",
+    "state": "local_candidate_implemented_initially_validated_not_deployed",
+    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
     "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "로컬 v1 순수 adapter·bounded JSON/정적 읽기 목록 첫 후보 구현",
+    "scheduled_step": "최신 원본/실제 공개 묶음을 인수한 독립 읽기 후보 감수·통합 범위 판단",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -134,7 +160,9 @@
     "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
     "replan_reason": "앞 통계 최소 기능의 실제 통합·필요 검증을 마쳐 남은 큐 순번2→1만 전진했다. P2·11/16 범위 조사·11/17 구현·11/18 검토 날짜는 같다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
-    "technical_predecessor_satisfied": true
+    "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+    "technical_predecessor_satisfied": true,
+    "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
+    "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
   }
 }

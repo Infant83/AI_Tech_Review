@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e",
-  "record_version": 17,
+  "record_version": 18,
   "asset_key": "public-document-storage",
   "name": "공개 PDF 객체 저장소 이전 준비",
   "status": "prepared",
@@ -50,22 +50,22 @@
       "19시 기존로그인인계도암호입력필요. 실제R2권한·버킷·사용량/청구·원격전체해시/복구의새확인근거없음."
     ],
     "current_public_footprint": {
-      "checked_at": "2026-11-16T21:57:28.488843+00:00",
-      "source_revision": "4b0c294034f1936f721f059902a735b470fe4ee6",
-      "manifest_files": 2659,
-      "manifest_bytes": 804311939,
-      "release_json_bytes": 1357013,
-      "public_files": 2660,
-      "public_bytes": 805668952,
-      "growth_bytes": 152637,
-      "excess_over_internal_800MB_bytes": 5668952,
-      "pdf_paths": 249,
-      "unique_pdf_objects": 175,
+      "checked_at": "2026-11-17T02:25:45.226802+00:00",
+      "source_revision": "e5269e1ce2c205428c6d57be8fce5ec49a392c30",
+      "public_files": 2668,
+      "manifest_files": 2667,
+      "manifest_bytes": 806355819,
+      "release_json_bytes": 1361276,
+      "public_bytes": 807717095,
+      "pdf_paths": 253,
+      "unique_pdf_objects": 178,
       "retained_edition_urls": 21,
-      "growth_basis_source": "d8eb871ea3ade13967e169f7eea13b9246c1340a",
-      "headroom_to_internal_800MB_bytes": -5668952,
-      "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
-      "scope": "03시와 같은 실제 공개 봉인 전체. 이전 통합 시점 수치와 최신 metric을 구분하며 외부 비활성·실제 절감0이다."
+      "growth_bytes": 2048143,
+      "growth_basis_source": "4b0c294034f1936f721f059902a735b470fe4ee6",
+      "headroom_to_internal_800MB_bytes": -7717095,
+      "excess_over_internal_800MB_bytes": 7717095,
+      "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+      "scope": "최신 정상 편집4run 뒤 실제 HTTPS 봉인 metadata와 기존 게시 검증 재사용. 내부800MB는 관리 목표·외부 비활성·실제 절감0이다."
     },
     "provider_connection_rechecked_this_cycle": false,
     "operational_storage_activation": false,
@@ -104,7 +104,14 @@
       "base_plan_rewritten": false,
       "full_plan_regenerated": false,
       "next_review_at": "2026-11-18T19:00:00+09:00",
-      "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md"
+      "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
+      "current_public_drift": {
+        "source_revision": "e5269e1ce2c205428c6d57be8fce5ec49a392c30",
+        "pdf_aliases": 253,
+        "objects": 178,
+        "refreshed_this_cycle": false,
+        "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
+      }
     }
   },
   "lifecycle": {
@@ -112,5 +119,5 @@
     "recovery_reference": "SITE_OPERATIONS.md"
   },
   "created_at": "2026-11-12T22:16:24Z",
-  "updated_at": "2026-11-16T22:02:28.624597Z"
+  "updated_at": "2026-11-17T02:40:32.320004Z"
 }
