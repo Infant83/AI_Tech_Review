@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "status": "pass_with_nonblocking_capacity_warnings",
+  "reviewed_at": "2026-11-19T06:00:13.142133+00:00",
+  "reviewer": "legacy0919_sources",
+  "owner": "AEDAUT",
+  "role": "Independent CI audit from read-only gh API job logs, run/artifact APIs, exact revision source and downloaded validation/catalog artifacts",
+  "repository": "Infant83/AI_Tech_Review",
+  "workflow_run": 44468027651,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44468027651",
+  "publication_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+  "actual_jobs": [
+    {
+      "name": "build",
+      "databaseId": 135370429510,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T05:51:35Z",
+      "completedAt": "2026-11-19T05:55:53Z"
+    },
+    {
+      "name": "deploy",
+      "databaseId": 135372044007,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T05:55:58Z",
+      "completedAt": "2026-11-19T05:56:18Z"
+    },
+    {
+      "name": "recovery-copy",
+      "databaseId": 135372200329,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T05:56:20Z",
+      "completedAt": "2026-11-19T05:57:26Z"
+    },
+    {
+      "name": "notify-readers",
+      "databaseId": 135372200375,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-11-19T05:56:20Z",
+      "completedAt": "2026-11-19T05:57:21Z"
+    }
+  ],
+  "deployment": {
+    "guard": "passed",
+    "evidence": "Actual deploy-pages conditional step ran, created deployment for exact5f4a SHA from Pages artifact and reported success. Both current-guard-dependent downstream jobs actually ran, not just a green guard shell step or echoed command.",
+    "pages_artifact_id": 14503435410,
+    "deployed_sha": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+    "environment_url": "https://infant83.io/AI_Tech_Review/"
+  },
+  "tests": {
+    "total": 920,
+    "passed": 911,
+    "skipped": 9,
+    "failed": 0,
+    "suites": [
+      {
+        "suite": "Python unittest",
+        "total": 409,
+        "passed": 408,
+        "skipped": 1,
+        "failed": 0
+      },
+      {
+        "suite": "multilingual search",
+        "total": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "suite": "frontend reader controls",
+        "total": 205,
+        "passed": 197,
+        "skipped": 8,
+        "failed": 0
+      },
+      {
+        "suite": "lecture reader/storage",
+        "total": 208,
+        "passed": 208,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "suite": "backend authentication/notebook authorization",
+        "total": 72,
+        "passed": 72,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "suite": "portable media",
+        "total": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ],
+    "additional_checks": "Actual npm check ran8 backend JavaScript node --check commands and esbuild successfully; not a TypeScript check.",
+    "skip_scope": "8 frontend browser-labelled TAP tests are explicitly skipped; Python terse unittest reports1skip. None counted as pass, real-browser or phone verification."
+  },
+  "artifact_validation": {
+    "validated_files": 2686,
+    "catalog_articles": 74,
+    "reviews": 58,
+    "archive_documents": 153,
+    "archive_series_counts": {
+      "daily-quantum": 87,
+      "lecture-notes": 16,
+      "article": 40,
+      "daily-research": 6,
+      "daily-quantum-exercise": 4
+    },
+    "archive_counts_source": "Read-only git archive inspection of153 segmentedarchive entries at exactdeployedSHA, matched CIreportcount153.",
+    "baseline_revision": "d5f01404c918ba1c4e5ea1f0235657d5f4e97dff",
+    "baseline_updates_source": "sealed_release_bundle",
+    "release_ok": true,
+    "release_blockers": [],
+    "reviewed_changes": [
+      "archive/en/page/12/index.html",
+      "archive/files/2026-09-09-daily-quantum-brief.pdf",
+      "archive/page/12/index.html",
+      "reviews/2026-09-09_quantum-resource-aware-workflows/en/index.html",
+      "reviews/2026-09-09_quantum-resource-aware-workflows/index.html"
+    ],
+    "additions": [],
+    "scope": "No change to other57reviews/1923files; PDF/figure/identity/recency preservation separately audited in candidate-independent-review.json. CI validated the combined exactcommit artifact."
+  },
+  "payload": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "lazy_search_gzip_bytes": 97983,
+    "public_artifact_bytes": 809623994,
+    "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."
+  },
+  "recovery": {
+    "ok": true,
+    "revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+    "files": 2686,
+    "bytes": 810994310,
+    "archive_sha256": "09743d1080fa662d08be373c13e687645193730957b521ffd9f59b17c37a9eed",
+    "verification_scope": "Actual CIfrom-pages job downloaded matchinggithub-pages artifact, validated sourceat exactSHA and rancreate_backup/verify_backup successfully. Everytar member hash/length, completeness, catalog/release identity and complete seal inventory checked beforeupload; independent reviewer read logs/source, didnotdownload725MBbackup or performrestorationdrill.",
+    "input_pages_artifact_id": 14503435410,
+    "input_download_zip_digest": "sha256:33a1721ac579c2545a5bc295e2ade1b144ebbfcb17160d89633595d7645a0b6f",
+    "uploaded_artifact_id": 14502509540,
+    "uploaded_zip_bytes": 726827715,
+    "uploaded_zip_digest": "sha256:a7056bca14707df40fe1d88c21477c2bf81bbee426221e1692d092bcd03bb264",
+    "retention_days": 30,
+    "expires_at": "2026-12-19T05:57:13Z",
+    "retention_operation": {
+      "keep": [
+        14502509540,
+        14502110549,
+        14501635840
+      ],
+      "delete": [
+        14499653983
+      ],
+      "applied": true
+    },
+    "retained_recovery_copies_api": [
+      {
+        "id": 14502509540,
+        "head_sha": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+        "created_at": "2026-11-19T05:57:21Z",
+        "expires_at": "2026-12-19T05:57:13Z",
+        "expired": false,
+        "name": "publication-recovery"
+      },
+      {
+        "id": 14502110549,
+        "head_sha": "d5f01404c918ba1c4e5ea1f0235657d5f4e97dff",
+        "created_at": "2026-11-19T05:26:00Z",
+        "expires_at": "2026-12-19T05:25:55Z",
+        "expired": false,
+        "name": "publication-recovery"
+      },
+      {
+        "id": 14501635840,
+        "head_sha": "c30e88adf74572736c2c8622d35531199d4ec806",
+        "created_at": "2026-11-19T05:16:53Z",
+        "expires_at": "2026-12-19T05:16:47Z",
+        "expired": false,
+        "name": "publication-recovery"
+      }
+    ]
+  },
+  "catalog_sync": {
+    "synced": 74,
+    "revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false,
+    "catalog_artifact_id": 14502952219,
+    "catalog_json_sha256": "a8e7481d3eef47760db78a9e1b4142f5dbf15ecb90d2acc48112a263b18d69a8",
+    "verification_scope": "Actual enabledsync step ran and returnedok. ExactSHA sourcechecks currentmain, actualpubliccatalog equality,canonicalHTTPSsuccess forall74catalogpaths and finalrevisionrecheck beforebackend sync. newArticles0 andqueuedEvents0 areobservedresponses, not notificationsending orphone-receipt claims."
+  },
+  "artifacts_api": [
+    {
+      "id": 14503435410,
+      "name": "github-pages",
+      "size_in_bytes": 724643585,
+      "created_at": "2026-11-19T05:55:47Z",
+      "expires_at": "2026-11-20T05:55:25Z",
+      "expired": false,
+      "digest": "sha256:33a1721ac579c2545a5bc295e2ade1b144ebbfcb17160d89633595d7645a0b6f"
+    },
+    {
+      "id": 14503151700,
+      "name": "publication-validation",
+      "size_in_bytes": 4078,
+      "created_at": "2026-11-19T05:55:49Z",
+      "expires_at": "2026-12-03T05:55:48Z",
+      "expired": false,
+      "digest": "sha256:45aa082656ad68bad49f1ff2fb6f560aa9948e6b992768ac38a8407b62b7d057"
+    },
+    {
+      "id": 14502952219,
+      "name": "reader-publication-catalog",
+      "size_in_bytes": 5494,
+      "created_at": "2026-11-19T05:55:48Z",
+      "expires_at": "2026-11-26T05:55:47Z",
+      "expired": false,
+      "digest": "sha256:ff324955f4c30286b4c85d3fac4a4a78decf5ccd808116a4652e2644451122ba"
+    },
+    {
+      "id": 14502509540,
+      "name": "publication-recovery",
+      "size_in_bytes": 726827715,
+      "created_at": "2026-11-19T05:57:21Z",
+      "expires_at": "2026-12-19T05:57:13Z",
+      "expired": false,
+      "digest": "sha256:a7056bca14707df40fe1d88c21477c2bf81bbee426221e1692d092bcd03bb264"
+    }
+  ],
+  "source_files_exact_revision_sha256": {
+    ".github/workflows/pages.yml": "751970693bfb10b4180266de186f2ece8bab488fbece8874bf5d0e931665646f",
+    "scripts/release_backup.py": "bdc70fc97b4a75bc5a38597ce4d0ba0f2b2d584ae5493f4a8fa9e4e9c22f1d8f",
+    "scripts/release_artifact_retention.py": "a7556a6428ede26c158efc85bed365e78076344111d8cfb934e304c6cec5e74a",
+    "scripts/reader_engagement_publish.py": "bc9e75685d0945d2a8185f3a67dd85e5d9daa65dbaf386afcb201f4b25e888c2",
+    "scripts/publication_release.py": "b99b26f92dadca674bd3f9aaf54013d81d1e9b39d6c6db8e896f931493c4ea38"
+  },
+  "evidence_logs": {
+    "build": {
+      "file": "ci-build.log",
+      "sha256": "ad8fbd217de2f7cc5ed1c81f7e9ff33812ec47a84bbf7e731c8850e54b52a1ee"
+    },
+    "deploy": {
+      "file": "ci-deploy.log",
+      "sha256": "c29426224a9eeb25dee7a5180243ec8b7cd1d5673915174de0e98f1117c4a12b"
+    },
+    "recovery-copy": {
+      "file": "ci-recovery-copy.log",
+      "sha256": "b332d1935d1e103129843cc32a849335b3f20573d7969920dba79b0d23263988"
+    },
+    "notify-readers": {
+      "file": "ci-notify-readers.log",
+      "sha256": "0f57235c13e3b31cd98a0f0be7b3bb4bac785d297e23ed3ded93936cce1d754f"
+    }
+  },
+  "other_nonblocking_observations": [
+    "Third-party Actions emitted Node20 forced-to24 and punycode/Buffer/url.parse deprecationwarnings; jobscompleted successfully."
+  ],
+  "blocking_findings": [],
+  "limitations": [
+    "Root separately checks actualpublicHTML/PDFbytes and livebrowser. This CIauditdoesnot duplicate or claimthose manualbrowser checks.",
+    "No fullrestorationdrill, physicalphone receipt, humanreaderstudy, scientificcomputationrerun ornewexperiment.",
+    "CI success doesnot establish scientificclaim accuracy orhumanreview; separate source/prose/PDF auditsrecord those scopes."
+  ]
+}
