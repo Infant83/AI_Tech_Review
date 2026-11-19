@@ -1,7 +1,7 @@
 {
   "version": 1,
   "document_id": "2026-11-18-daily-quantum-exercise",
-  "publication_status": "candidate_and_browser_verified_ready_for_deployment",
+  "publication_status": "published_and_live_verified",
   "source_base": "e959adbcba2c4a7adbd0fef3ad89265c97c4fcdc",
   "deployed_baseline": "c04132461340eb4496976f512ee6ef30e0812235",
   "targeted_python_tests": {
@@ -46,7 +46,46 @@
   "pdf_review": "public-pdf-qa.json",
   "build_dependency": "Pillow 11.2.1",
   "human_sentence_review": "not performed",
-  "live_verification": "pending",
+  "live_verification": {
+    "checked_at": "2026-11-19T05:01:47.891257+00:00",
+    "revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+    "method": "Actual clean pretty URL GET --compressed, decoded HTML SHA256, exact PDF bytes; no HEAD-body substitution",
+    "ko": {
+      "url": "https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/",
+      "status": 200,
+      "curl_exit": 0,
+      "bytes": 13770,
+      "sha256": "10de2ad6ad7785a732fd1c3351343e7f91089c4338e645c8757cf3cfb0be9927"
+    },
+    "en": {
+      "url": "https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/en/",
+      "status": 200,
+      "curl_exit": 0,
+      "bytes": 13945,
+      "sha256": "c1e90bec5cb0911f951eb5c9fc534c9c482cd74715a11034c74daca1e4845136"
+    },
+    "pdf": {
+      "url": "https://infant83.io/AI_Tech_Review/archive/files/2026-11-18-daily-quantum-exercise.pdf",
+      "status": 200,
+      "curl_exit": 0,
+      "bytes": 71297,
+      "sha256": "3d8d2c6a87467461ce165e7d1ae7102b89066efa8774170be1c605bef1701a54"
+    },
+    "reviewed_candidate_hashes_match": true,
+    "previous_three_dqe_pdfs_unchanged": true,
+    "dqe_inventory": [
+      "2026-11-18-daily-quantum-exercise",
+      "2026-11-17-daily-quantum-exercise-ntca",
+      "2026-11-16-daily-quantum-exercise",
+      "2026-11-14-daily-quantum-exercise"
+    ],
+    "independent_ops_checks": 19,
+    "root_checks": 10,
+    "language_and_canonical_redirects": true,
+    "related_lecture_actual_get": 200,
+    "native_details_initially_collapsed": true,
+    "manifest_editorial_hashes_match": true
+  },
   "reviewed_candidate_html": {
     "ko": {
       "path": "briefings/exercises/2026-11-18/index.html",
@@ -82,5 +121,41 @@
       "root"
     ],
     "qa_screenshots": "private only"
-  }
+  },
+  "source_commit": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+  "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44461708586",
+  "workflow_jobs": {
+    "build": "success",
+    "deploy": "success",
+    "recovery-copy": "success",
+    "notify-readers": "success"
+  },
+  "ci_tests": {
+    "run": 920,
+    "passed": 911,
+    "skipped": 9,
+    "failed": 0,
+    "suites": {
+      "python": 409,
+      "search_navigation": 12,
+      "reader_controls": 205,
+      "lecture_reader": 208,
+      "backend": 72,
+      "portable_media": 14
+    }
+  },
+  "recovery": {
+    "scope": "Completed CI recovery-copy job verified and uploaded the exact deployed artifact; not downloaded or restored locally in this task",
+    "files": 2674,
+    "bytes": 808020572,
+    "archive_sha256": "c86b376a458d0a8cc563ca66e93cc0ebe9c2bdd93a5cd001a638d196ae361f3d",
+    "github_artifact_zip_sha256": "c96287ce0f42e6e0cd0d53bf9eda3d0cc33d52dfb20ed31c86b93473cc9dad74"
+  },
+  "reader_catalog_sync": {
+    "synced": 74,
+    "new_articles": 0,
+    "queued_events": 0,
+    "scope": "Existing review/lecture catalog. Briefings DQB, DRB and DQE are not registered as new notification articles by this existing pipeline."
+  },
+  "remaining_actions": []
 }

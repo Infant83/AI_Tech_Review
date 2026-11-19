@@ -18,6 +18,10 @@ CVX Short Course의 위험·제약·요인 공분산 절을 읽고, HHL 공개 �
 
 ## 등록과 공개 검증
 
-등록 ID는 `2026-11-18-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/en/)·[검수 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-18-daily-quantum-exercise.pdf)를 위한 독립 후보를 실제 공개 배포 `c04132461340eb4496976f512ee6ef30e0812235`와 비교한다. 필요한 로컬 Python 103건과 검색·탐색 12건은 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 기록한다.
+등록 ID는 `2026-11-18-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-18/en/)·[검수 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-18-daily-quantum-exercise.pdf)를 공개했다. 독립 후보를 실제 이전 공개 배포 `c04132461340eb4496976f512ee6ef30e0812235`와 비교했다. 필요한 로컬 Python 103건과 검색·탐색 12건은 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 기록한다.
 
 독립 후보의 기존 날짜별 한영 편집 페이지 32개는 실제 baseline과 바이트 단위로 같으며, 연속성 검사는 새 DQE 등록 한 건만 허용했다. payload 검사도 통과했다. `dqe_ops_1118`이 Chromium 390×844에서 두 언어·기본 접힌 해설·키보드·언어 전환·날짜·달력과 목록·HHL 검색·DQE 4건 분류를 확인했다. 네 DQE PDF를 실제 새 탭에서 열고 내려받아 해시를 대조했으며, 가로 넘침과 콘솔 오류·경고는 없었다. `root`도 한영 모바일 진입·펼친 해설·달력의 5개 화면을 독립 확인했다. 검증용 서버와 브라우저는 종료했다.
+
+출판 소스 `0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b`의 [배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/44461708586)은 build·deploy·recovery-copy·notify-readers 모두 성공했다. CI 테스트는 920건 중 911건 통과·9건 건너뜀·실패 0건이다. 복구 사본은 CI가 정확한 배포물 2,674개 파일·808,020,572바이트를 검증하고 업로드한 결과이며, 이 작업에서 로컬 복원 시험은 하지 않았다. 기존 리뷰·렉처 알림 카탈로그 74건 동기화가 성공했다. DQB·DRB와 마찬가지로 DQE를 새 알림 기사로 등록한 것은 아니며 새 알림 이벤트는 0건이다.
+
+`dqe_ops_1118`의 실제 HTTPS 19개 검사와 `root`의 별도 10개 검사에서 clean URL의 GET 본문·공개 PDF가 검수 후보의 SHA-256과 일치했다. 한영 언어 전환·canonical 리디렉션·관련 렉처·공개 DQE 4건 목록을 확인했고 기존 세 DQE PDF도 보존됐다. 공개 PDF는 71,297바이트, SHA-256 `3d8d2c6a87467461ce165e7d1ae7102b89066efa8774170be1c605bef1701a54`다. 완료 기록을 위해 과학 원고·컴파일 HTML·PDF를 다시 바꾸지 않았다. 남은 게시 조치는 없다.
