@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 27,
+  "record_version": 28,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-19T10:13:34.746312+00:00",
+  "updated_at": "2026-11-19T18:05:13.336663+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -253,22 +253,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "checked_at": "2026-11-19T10:06:51.416867+00:00",
-      "source_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
-      "manifest_files": 2685,
-      "manifest_bytes": 809623994,
-      "release_json_bytes": 1370316,
-      "pdf_paths": 259,
-      "unique_pdf_objects": 183,
+      "checked_at": "2026-11-19T18:00:07.953585+00:00",
+      "source_revision": "7d2f7df82da6a945ee51ce6a66f4b409a26285ac",
+      "manifest_files": 2687,
+      "manifest_bytes": 810406563,
+      "release_json_bytes": 1371584,
+      "pdf_paths": 261,
+      "unique_pdf_objects": 184,
       "retained_edition_urls": 22,
-      "public_files": 2686,
-      "public_bytes": 810994310,
-      "growth_bytes": 2973738,
-      "excess_over_internal_800MB_bytes": 10994310,
-      "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
-      "growth_basis_source": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
-      "headroom_to_internal_800MB_bytes": -10994310,
-      "scope": "실제 공개 봉인 metadata. 내부800MB 목표이며 공급자 장애/한도 판정 아님. 새 export/업로드/원격복구 아님."
+      "public_files": 2688,
+      "public_bytes": 811778147,
+      "growth_bytes": 783837,
+      "growth_basis_source": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+      "excess_over_internal_800MB_bytes": 11778147,
+      "headroom_to_internal_800MB_bytes": -11778147,
+      "scope": "정상 L010 게시의 실제 공개 봉인 metadata. 내부800MB 목표이며 제공자 한도/장애 판정 아님. 새 export/외부 활성화/복구/절감 아님.",
+      "run_reference": "operations/runs/20261119T180215Z-906eb91a-a23a-4ff6-9ca9-ca191eab0c53.md"
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -701,6 +701,34 @@
       "external_active": false,
       "actual_savings_bytes": 0,
       "scope": "정상 동시 게시의 봉인 metadata delta. 내부800MB 목표이며 공급자 한도/장애 판정 아님. 새 export/전체계획/업로드/원격복구는 미실시."
+    },
+    "night_20261120": {
+      "checked_at": "2026-11-19T18:00:07.953585+00:00",
+      "source_revision": "7d2f7df82da6a945ee51ce6a66f4b409a26285ac",
+      "manifest_files": 2687,
+      "manifest_bytes": 810406563,
+      "release_json_bytes": 1371584,
+      "pdf_paths": 261,
+      "unique_pdf_objects": 184,
+      "retained_edition_urls": 22,
+      "public_files": 2688,
+      "public_bytes": 811778147,
+      "growth_bytes": 783837,
+      "growth_basis_source": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+      "excess_over_internal_800MB_bytes": 11778147,
+      "headroom_to_internal_800MB_bytes": -11778147,
+      "scope": "정상 L010 게시의 실제 공개 봉인 metadata. 내부800MB 목표이며 제공자 한도/장애 판정 아님. 새 export/외부 활성화/복구/절감 아님.",
+      "run_reference": "operations/runs/20261119T180215Z-906eb91a-a23a-4ff6-9ca9-ca191eab0c53.md",
+      "external_active": false,
+      "actual_savings_bytes": 0,
+      "new_export_or_remote_restore": false,
+      "completed_probe_cleanup": {
+        "generated_temporary_files_removed": 1,
+        "logical_bytes": 386476,
+        "source_and_public_preserved": true,
+        "physical_disk_savings_measured": false,
+        "scope": "이번 HTTPS 검증에만 생성한 임시 다운로드를 검증 근거 기록·원본 재확인 뒤 제거했다. 기존 후보/공개 자료/원본 정리가 아니다."
+      }
     }
   },
   "recovery": {
@@ -724,7 +752,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "18일19시 예정 구조 회고를 소급 완료하지 않는다. 이번19일 통합 평가에서는 실제 공개 명세 동일·새 제공자 접근 근거 부재와 보호 후보 보존만 확인했다.20일11시 관리 감수 우선 뒤 기존249경로 계획/현재254경로 차이·남은7선행·후속 범위를 검토한다. 차단 로그인/전체 export·원격 복구를 근거 없이 반복하거나 완료로 표시하지 않는다.",
+  "next_action": "11/20 11시 관리 후속 계약 검토를 우선한 뒤 저장소의 새 접근 근거·후속 범위·구조 정리를 재평가한다. 현재7d2f7df 공개261PDF경로/184객체의 metadata delta를 인수했으며 기존249별칭/175객체 오프라인 계획은 당시 근거로 보존한다. 새 권한/접근 근거 없이 로그인·전체 export/업로드/원격 복구를 반복하지 않으며 외부 비활성·공개 절감0과 미확인 선행을 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 37,
+  "record_version": 38,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-19T10:13:34.746312+00:00",
+  "updated_at": "2026-11-19T18:05:13.336663+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "19시 새 정상 게시3건의 attempt1·네 작업·실제 배포 단계와 기존 독립 HTTPS 근거를 대조, 새 미해결 실패0",
+    "status": "03시 새 정상 L010의 attempt1·네 작업·실제 배포/공개 검증후 동기화 단계 성공, 조회 오류의 제한 재확인 완료·새 CI 미해결0",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -136,38 +136,39 @@
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
       "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
       "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
-      "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
+      "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+      "operations/runs/20261119T180215Z-906eb91a-a23a-4ff6-9ca9-ca191eab0c53.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-19T10:06:32.223Z",
-    "last_successful_actions_check_at": "2026-11-19T10:07:19.015242Z",
-    "mail_window": "48시간 겹친11/17T04:44:00Z부터 in:anywhere·GitHub 발신자/저장소·읽지 않음 제한 없이1페이지0통·다음없음·상태변경/오류0.",
-    "actions_window": "48시간 겹침 목록1페이지4run·그중새정상3run attempt1/네작업·실제배포단계성공. 활성5상태 각1페이지0. 옛생성 실행의 완료 재시도 전체 재검색은 아님. 최신 게시자의 기존 독립 HTTPS·동기화 근거 재사용.",
+    "last_successful_mail_check_at": "2026-11-19T18:00:06.457Z",
+    "last_successful_actions_check_at": "2026-11-19T18:01:49.295710Z",
+    "mail_window": "48시간 겹친11/17T10:06:32.223Z부터 in:anywhere·검증한GitHub발신자/저장소·읽지않음제한없이1페이지0통·다음없음·상태변경0.",
+    "actions_window": "초기목록API의일시Server Error뒤동일48h범위를50개/페이지로1회재조회해끝경계까지1페이지5run을확인했다. 새L010 attempt1/네작업·실제배포/동기화단계성공, 로그의synced75/new1/queued1/baselinefalse확인. 활성5상태각0. 옛생성실행의모든완료재시도를전수재검색한범위는아님.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
-    "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+    "live_source_revision": "7d2f7df82da6a945ee51ce6a66f4b409a26285ac",
+    "run_reference": "operations/runs/20261119T180215Z-906eb91a-a23a-4ff6-9ca9-ca191eab0c53.md",
     "supplemental_actions_check_at": "2026-11-19T05:03:14.948324Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-19T10:07:19.015242Z",
+    "last_full_actions_check_at": "2026-11-19T18:01:49.295710Z",
     "supplemental_successful_runs": [
       "44461708586"
     ]
   },
   "observation": {
-    "status": "19시 새 정상3run의 네 작업/실제 배포 단계·기존 공개 검증 대조, 새 미해결0",
+    "status": "03시 정상 게시1건 인수·새 미해결 CI 실패0, 조회일시오류와 구분",
     "period": {
-      "mail": "2026-11-19T10:06:32.223Z",
-      "actions": "2026-11-19T10:07:19.015242Z",
-      "active": "2026-11-19T10:07:23.760202Z"
+      "mail": "2026-11-19T18:00:06.457Z",
+      "actions": "2026-11-19T18:01:49.295710Z",
+      "active": "2026-11-19T18:01:05.334588Z"
     },
-    "result": "새정상3건은 기존 편집부 게시 기록으로 연결했다. 원시 로그·기기 알림 재현·복원 시험·메일변경·관찰자 DB쓰기/알림은 수행하지 않았다.",
+    "result": "초기 Actions 목록 조회 오류는 동일48h 범위의 제한 재조회로 확인을 완료했다. 정상 L010의 네 작업과 실제 공개 봉인/대표 PDF·동기화75/new1/queued1을 연결했다. 실제 기기 수신과 구분하며 관찰자가 추가 알림을 발송하지 않았다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -386,9 +387,9 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-19T10:06:32.223Z",
-      "full_api": "2026-11-19T10:07:19.015242Z",
-      "active_states": "2026-11-19T10:07:23.760202Z"
+      "mail": "2026-11-19T18:00:06.457Z",
+      "full_api": "2026-11-19T18:01:49.295710Z",
+      "active_states": "2026-11-19T18:01:05.334588Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -457,6 +458,40 @@
         "Known successful publication job/log evidence reused; no device push receipt or restore test.",
         "No mail state, provider, source, Git or public-record mutation."
       ]
+    },
+    "night_20261120": {
+      "run_reference": "operations/runs/20261119T180215Z-906eb91a-a23a-4ff6-9ca9-ca191eab0c53.md",
+      "mail_pages": 1,
+      "mail_count": 0,
+      "api_pages": 1,
+      "overlap_run_count": 5,
+      "mail_checked_at": "2026-11-19T18:00:06.457Z",
+      "full_api_checked_at": "2026-11-19T18:01:49.295710Z",
+      "new_success_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44509479188",
+      "attempt": 1,
+      "list_query_failure": {
+        "checked_at": "2026-11-19T18:01:03.044357Z",
+        "message": "Server Error"
+      },
+      "limited_retry_same_window": true,
+      "ci_execution_failure": false,
+      "sync_summary": {
+        "synced": "75",
+        "newArticles": "1",
+        "queuedEvents": "1",
+        "baseline": "false",
+        "replay": "not_printed"
+      },
+      "raw_log_stored": false,
+      "new_unresolved_failures": 0,
+      "recovery_metadata": {
+        "all_artifacts": 126,
+        "pages": 2,
+        "unexpired_copies": 3,
+        "latest_bytes": 727531843,
+        "expires_at": "2026-12-19T10:56:31Z",
+        "actual_restore": false
+      }
     }
   },
   "recovery": {
