@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-d1f4d650-d413-4df9-9325-41c3eb798a9a",
   "uuid": "d1f4d650-d413-4df9-9325-41c3eb798a9a",
-  "record_version": 7,
+  "record_version": 8,
   "title": "비밀정보 탐지 후보 분류와 과거 공개 기록의 후속 검토",
   "type": "security_operations",
   "created_at": "2026-11-09T01:38:21Z",
-  "updated_at": "2026-11-17T06:15:45.999578+00:00",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -38,7 +38,8 @@
     "https://registry.npmjs.org/pdfjs-dist/6.5.438",
     "공식 legacy worker의 unpackDictionaryData(dictionary,data0,data1,skipFlip,sizeBits,sizeBitsData)와 dictionary.set(dict) 문맥",
     "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "후보 탐지 수를 확정 유출 수로 간주하지 않음",
@@ -147,6 +148,16 @@
       "resolved": 3,
       "updated_since_previous": 0,
       "result": "안전 metadata의 탐지/push protection enabled·열린6건 unknown 유지. 기존 최소 비공개 근거1개는0600/상위0700/Git 제외이며 정확 문자열/위치의 새 근거가 없다. 반복 원본4PDF/68JPEG 검사·외부 유효성 시험·경고 종료는0이다."
+    },
+    "shared_delta_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "new_exact_source_or_physical_evidence": false,
+      "scope": "확인한 공용 인계·원격 변경 범위. 다른 대화 전체/외부 원본의 부재를 주장하지 않음",
+      "provider_metadata_checked_at": "2026-11-19T04:44:21.872971Z",
+      "open_unknown": 6,
+      "resolved_historical": 3,
+      "provider_updates": 0,
+      "private_structure_tests_repeated": false
     }
   },
   "recovery": {
@@ -154,7 +165,7 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/18 07시 기존 오전 계획 점검에서 새 정확 문맥/제한 읽기 경로와 다음 최소 범위를 재검토한다. 새 중대한 근거는 즉시 판단한다. 기존 최소 근거의 부재를 실제 유출/오탐으로 바꾸거나 같은 원본 구조 검사·차단 경로를 반복하지 않는다.",
+  "next_action": "11/20 11시 기본 오전 계획 점검에서 열린6건 unknown의 새 정확 문맥/제한 읽기 근거를 기존 기록과 함께 재평가한다. 새 중요한 근거는 도착한 회차에서 앞당긴다. 과거 예정 회차를 완료로 소급하거나 미확인을 해결/내용 적용으로 바꾸지 않으며 관리 후보 감수를 우선한다.",
   "triage_summary": {
     "checked_at": "2026-11-09T18:06:18Z",
     "closed_false_positives": 3,
@@ -170,11 +181,11 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_context_reviewed_no_new_exact_location_evidence",
-    "next_scheduled_step_at": "2026-11-18T07:00:00+09:00",
-    "next_review_at": "2026-11-18T07:00:00+09:00",
-    "scheduled_step": "새 정확 문맥/제한 읽기 경로·다음 최소 범위의 오전 재검토",
-    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
-    "replan_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
-    "replan_reason": "15시 제한 근거 재확인에서 새 정확 위치/문맥 delta가 없어 유효성 unknown을 유지했다. 반복 구조 검사 대신 기존 오전 계획 점검에서 근거/범위를 재평가한다."
+    "next_scheduled_step_at": "2026-11-20T11:00:00+09:00",
+    "next_review_at": "2026-11-20T11:00:00+09:00",
+    "scheduled_step": "열린6건 unknown의 새 정확 문맥/제한 읽기 근거 및 다음 최소 범위 재평가",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다."
   }
 }

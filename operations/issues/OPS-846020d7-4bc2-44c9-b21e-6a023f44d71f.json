@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f",
   "uuid": "846020d7-4bc2-44c9-b21e-6a023f44d71f",
-  "record_version": 10,
+  "record_version": 11,
   "title": "렉처 PDF의 읽기·필기 모드별 링크와 세로 연속 스크롤 개선",
   "type": "reader_usability",
   "created_at": "2026-11-10T01:55:24Z",
-  "updated_at": "2026-11-16T10:09:48.523191Z",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -59,7 +59,8 @@
     "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/touch-action",
     "operations/runs/20261111T150650Z-cb2b273b-841f-42cd-b304-b1536f9f8496.md",
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/43053726181",
-    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "실제 iPhone/iPad/Pencil·Safari·Windows 펜 시험 전이며 Chrome 에뮬레이션과 구분한다.",
@@ -367,6 +368,12 @@
       "scope": "이 대화·확인한 공용 일감/실행/event 범위만. 다른 채팅/기기/계정/외부 피드 전체의 부재를 주장하지 않음.",
       "result": "617b의 기술 배포/Chrome·HTTPS 근거는 유효하나 새 실물 Safari/Pencil/운영 원격 노트 근거는 없다.",
       "new_physical_device_test": false
+    },
+    "shared_delta_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "scope": "확인한 대화·공용 기록·원격 변경 범위",
+      "new_physical_device_evidence": false,
+      "historical_validation_reused": true
     }
   },
   "recovery": {
@@ -393,7 +400,7 @@
       "private_db_or_device_data_restore": false
     }
   },
-  "next_action": "11/17 19시 기존 회차에서 묶어 새 근거를 재검토하며 그 전에 새 제보가 오면 해당 회차에서 우선순위를 판단한다. 새 실제 기기 근거에서 PDF 링크/목차·점프 복귀/로컬 위치·필기 보존을 확인한다.617b 기술 배포와 실제 기기 미확인을 분리하고 기존 전체화면 작은 누적은 OPS716에서 다룬다.",
+  "next_action": "11/19 19시 PDF 링크/목차·점프 복귀·필기/위치의 새 실제 기기 근거를 묶어 확인한다. 새 근거가 없으면20일19시 재검토하며 그 전에 도착한 제보는 즉시 분류한다. 기존 배포/검증과 미확인 범위를 보존하고 테스트 푸시·재발송·실기기 성공을 만들지 않는다.",
   "design": {
     "interaction_rule": "입력 장치보다 현재 선택한 도구로 사용 의도를 판단한다. 펜·마우스·손가락을 사용했다는 이유만으로 도구를 자동 전환하지 않는다. 현재 선택과 전환 방법을 화면·접근성 이름으로 명확히 알린다.",
     "mode_matrix": [
@@ -436,10 +443,13 @@
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "technically_deployed_device_observation_pending",
-    "next_scheduled_step_at": "2026-11-17T19:00:00+09:00",
-    "next_review_at": "2026-11-17T19:00:00+09:00",
-    "scheduled_step": "실제 기기 새 근거·정상 사용·기존 전체화면 후속 관찰",
-    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
-    "technical_predecessor_satisfied": true
+    "next_scheduled_step_at": "2026-11-19T19:00:00+09:00",
+    "next_review_at": "2026-11-19T19:00:00+09:00",
+    "scheduled_step": "PDF 링크/목차·점프 복귀·필기/위치의 새 실제 기기 근거 묶음 확인",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "technical_predecessor_satisfied": true,
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
+    "next_review_if_no_new_evidence": "2026-11-20T19:00:00+09:00"
   }
 }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
   "uuid": "74bdd550-f5db-4d1d-af99-1fe4bbf48ed3",
-  "record_version": 12,
+  "record_version": 13,
   "title": "Repeated GitHub Pages file-sync timeouts delay a validated title revision",
   "type": "pages_deployment_timeout",
   "created_at": "2026-11-10T14:06:56Z",
-  "updated_at": "2026-11-16T10:09:48.523191Z",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -52,7 +52,8 @@
     "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
     "operations/runs/20261112T180049Z-0c23dc41-e01a-4368-9e1d-738aa0ece52e.md",
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
-    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md"
+    "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "The internal cause of the Pages delay is unconfirmed.",
@@ -222,6 +223,15 @@
       "new_runs": 0,
       "successful_jobs_logs_rechecked": false,
       "result": "새 실행이 없어15시 정상 완료 근거를 재사용한다. 새 run은 기존 매회 CI 대조에서 확인하고 이 일감의 다음 명시 시각은18일 주간 검토로 맞춰 중복 관찰 필드 갱신을 줄인다."
+    },
+    "shared_delta_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "public_revision_unchanged": false,
+      "new_accessible_feedback": 0,
+      "new_unresolved_runs": 0,
+      "scope": "초기동일c041 점검 뒤 정상 DQE0e15의 기존 게시 QA·네 작업/실제 HTTPS를 보충했다. 실사용 전체 검증 아님.",
+      "subsequent_normal_publication": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "normal_run_all_four_success": true
     }
   },
   "recovery": {
@@ -229,14 +239,16 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42830866020",
     "result": "The single fresh-source-version retry also timed out. Stop repeated retries; keep validated publication inputs, historical editions and original workflow/security checks. Nov11 next normal DQB publication succeeded with the unchanged reviewed title inputs; no extra diagnostic push or workflow/security change."
   },
-  "next_action": "새 정상 게시의 재발 여부는 기존 매회 CI/공개 확인에서 대조하고11/18 15시 주간 검토로 합친다. 기존 실패 attempt/회복 근거는 보존하며 관찰만을 위한 재실행·별도 예약·추가 게시 승인자를 만들지 않는다.",
+  "next_action": "지난18일 예정 검토를 완료로 소급하지 않는다. 이번 실제 회차의 새 delta/기존 완료 근거를 재사용하고11/20 19시 Pages 새 실행·실패/재발 및 정상 게시 후속 근거를 재검토한다. 새 실패·사용자 근거는 기존 회차에서 앞당겨 확인하고 관찰용 재실행/발송은 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "ordinary_publication_observation",
-    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
-    "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "새 통상 게시 run은 기존 정기 CI 점검에서 확인;11/18 주간 재발 검토",
-    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
+    "next_scheduled_step_at": "2026-11-20T19:00:00+09:00",
+    "next_review_at": "2026-11-20T19:00:00+09:00",
+    "scheduled_step": "Pages 새 실행·실패/재발 및 정상 게시 후속 근거 재검토",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다."
   }
 }

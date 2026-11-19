@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 35,
+  "record_version": 36,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-17T06:15:45.999578+00:00",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -61,7 +61,8 @@
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
     "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
     "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "Pages의 600초 배포 대기 시간 초과는 확인했지만 공급자 내부 원인은 확정하지 못함",
@@ -141,29 +142,32 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-17T06:04:43.990Z",
-    "last_successful_actions_check_at": "2026-11-17T06:05:35.788779Z",
-    "mail_window": "11/15T02:04:16.686Z부터48시간 겹침·읽지 않음 제한 없이 전페이지1·0통·상태 변경/오류0.",
-    "actions_window": "직전 생성 체크포인트까지의 목록1페이지와 모든 active/queued/waiting 상태 페이지를 확인했다. 이후4run은 기존 완료 근거 재사용이며 확인 범위의 신규 미관측/진행/실패/미해결0이다. 오래된 생성 run의 완료 재시도를 전체 이력 스캔하지 않았고 기존 성공 jobs/log 재조회·재실행0.",
+    "last_successful_mail_check_at": "2026-11-19T04:44:00.521Z",
+    "last_successful_actions_check_at": "2026-11-19T04:43:22.320555Z",
+    "mail_window": "마지막 성공에서48시간 겹친11/15T06:04:43Z부터 in:anywhere·GitHub 발신자/저장소·읽지 않음 제한 없이1페이지0통·다음없음·상태변경/오류0.",
+    "actions_window": "48시간 겹침 목록1페이지16run·attempt1/success, 이전 체크포인트 뒤 새run0. 활성5상태 각1페이지0. 오래전 생성 run의 완료 재시도 전체 이력 재검색은 아니며 기존 성공4jobs/로그를 재조회하지 않았다. 이후 새 정상 DQE run44461708586은 별도 보충으로attempt1 네 작업 성공·synced74/new0/queued0을 확인했다.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "c04132461340eb4496976f512ee6ef30e0812235",
-    "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
-    "supplemental_actions_check_at": "2026-11-17T02:24:46.825206Z",
+    "live_source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "supplemental_actions_check_at": "2026-11-19T05:03:14.948324Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-17T06:05:35.788779Z",
-    "supplemental_successful_runs": []
+    "last_full_actions_check_at": "2026-11-19T04:43:22.320555Z",
+    "supplemental_successful_runs": [
+      "44461708586"
+    ]
   },
   "observation": {
-    "status": "15시 delta 점검·새 미해결 실패 없음",
+    "status": "11/19 기록 공백 통합 delta·새 미해결 실패 없음",
     "period": {
-      "mail": "2026-11-17T06:04:43.990Z",
-      "full_api": "2026-11-17T06:05:35.788779Z",
-      "active_states": "2026-11-17T06:05:37.031172Z"
+      "mail": "2026-11-19T04:44:00.521Z",
+      "actions": "2026-11-19T04:43:22.320555Z",
+      "active": "2026-11-19T04:43:24.451247Z",
+      "supplemental_api": "2026-11-19T05:03:14.948324Z"
     },
-    "result": "메일/API 각각 마지막 성공 시각과 페이지 범위를 기록했다. 기존 DeMARS/DRB/NTCA/제목 수정의 네 작업·HTTPS 근거를 재사용하고 새 실패·진행·피드백0을 확인했다. 재발송/테스트/메일 변경/직접 DB 쓰기는0이다.",
+    "result": "초기04:43 목록/04:44메일 범위에서 새run/실패0을 확인한 뒤 동시 정상 DQE run1개를 별도 보충했다.44461708586 네 작업과 실제 HTTPS0e15/PDF SHA 확인·new0/queued0이며 새 미해결0이다. 초기복구3개 metadata와 새복구사본 보충을 구분하고 실제복원·재실행·메일변경·관찰자직접DB쓰기는0이다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -407,6 +411,21 @@
         "latest_expires_at": "2026-12-17T04:15:22Z",
         "actual_restore": false
       }
+    },
+    "concurrent_publication_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44461708586",
+      "source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "attempt": 1,
+      "supplemental_api_checked_at": "2026-11-19T05:03:14.948324Z",
+      "jobs": "all_four_success",
+      "https_checked_at": "2026-11-19T05:01:44.511352Z",
+      "synced": 74,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "recovery_bytes": 724558589,
+      "recovery_expires_at": "2026-12-19T05:01:38Z",
+      "actual_restore": false
     }
   },
   "recovery": {

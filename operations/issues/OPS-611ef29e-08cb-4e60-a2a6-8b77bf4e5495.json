@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 14,
+  "record_version": 15,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-16T10:09:48.523191Z",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -58,7 +58,8 @@
     ".automation/cloudflare/reader-engagement/migrations/0002_public_metrics.sql",
     ".automation/cloudflare/reader-engagement/migrations/0003_review_discovery.sql",
     "https://developers.cloudflare.com/web-analytics/data-metrics/dimensions/",
-    "https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties"
+    "https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "2026-11-10 최초 조사·기획 단계는 공개 페이지/API를 바꾸지 않았다.11/15 최소 기능의 실제 적용은 아래 변경·검증·관찰 기록으로 구분한다.",
@@ -264,6 +265,15 @@
     "handoff_20261116_19": {
       "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
       "result": "15시 최소 기능 근거 검토 뒤 공개 전체/갱신/알림 카탈로그 raw bytes와 공유 피드백의 새 delta가 없다. 기존 정상 API/한영 근거를 재사용해 API/브라우저 검사를 반복하지 않았고 실사용/실기기 관찰을 유지한다."
+    },
+    "shared_delta_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "public_revision_unchanged": false,
+      "new_accessible_feedback": 0,
+      "new_unresolved_runs": 0,
+      "scope": "초기동일c041 점검 뒤 정상 DQE0e15의 기존 게시 QA·네 작업/실제 HTTPS를 보충했다. 실사용 전체 검증 아님.",
+      "subsequent_normal_publication": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "normal_run_all_four_success": true
     }
   },
   "recovery": {
@@ -271,22 +281,22 @@
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "새 정상 사용/피드백은 기존 회차에서 확인하고11/18 15시 실사용 근거를 재검토한다.15시 최소 기능의 정상 근거와19시 불변 인수를 재사용하며 새 delta 없으면 API/전체 시험·브라우저 검사를 반복하지 않는다. 실기기/Safari/사람 사용과 확장 기획의 미완료·관찰 상태, 관리17일 구현/18일 후보 검토와 P2를 유지한다.",
+  "next_action": "지난18일 예정 검토를 완료로 소급하지 않는다. 이번 실제 회차의 새 delta/기존 완료 근거를 재사용하고11/20 19시 독자용 통계의 새 실사용/분류 근거를 재검토한다. 새 실패·사용자 근거는 기존 회차에서 앞당겨 확인하고 관찰용 재실행/발송은 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_delivery_deployed_observing",
-    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
-    "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "새 피드백은 기존 회차에서 확인;11/18 실사용 근거 검토",
+    "next_scheduled_step_at": "2026-11-20T19:00:00+09:00",
+    "next_review_at": "2026-11-20T19:00:00+09:00",
+    "scheduled_step": "독자용 통계의 새 실사용/분류 근거 재검토",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "dependencies": [
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
     ],
-    "replan_reference": "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
-    "replan_reason": "최소 제품/API의 구현·독립 검증·실제 통합 종료에 따라 실행 큐에서 관찰로 옮겼다. 기존11/16 검토 날짜와 P2는 유지한다.",
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
     "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",

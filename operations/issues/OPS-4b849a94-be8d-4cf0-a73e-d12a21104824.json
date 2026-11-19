@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 10,
+  "record_version": 11,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-17T04:16:28.735857+00:00",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "validating",
   "priority": "P2",
   "source": {
@@ -53,7 +53,8 @@
       "kind": "설계 결정",
       "reference": "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
       "finding": "전체 자료와 알림용 카탈로그를 구분하는 첫 읽기 전용 관리 목록의 범위와 종료 조건을 정리함"
-    }
+    },
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
@@ -106,11 +107,11 @@
       "protected_proof_key": "admin-readonly-20261117-11 / verified-candidate",
       "status": "local_implementation_and_initial_validation_complete_not_integrated_or_deployed",
       "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
-      "resume": "11/18 15시 최신 main/실제 공개 묶음을 다시 인수하고 후보9개 검증 그룹·브라우저/복구 경계와 변경 소스 감수를 이어간다. 검증 결과에 따라 기존 단일 통합 경로의 다음 단계를 판단한다."
+      "resume": "11/19 19시 최신 main/실제 공개 묶음과 보존 후보9개 검증 그룹·브라우저/복구 경계 감수를 재개한다. 불충분하면20일11시에 이어가고 쓰기 API 작업분해는 감수 결과 뒤에 둔다. 이번 fresh-data 보충을 전체 감수/통합 완료로 확대하지 않는다."
     }
   },
   "verification": {
-    "status": "로컬 v1 후보 구현·대상 자동 검사·독립 데이터 실행·로컬 Chrome 확인 완료,18일 후보 감수/통합 전",
+    "status": "로컬 v1 구현·기존 자동/독립 데이터·Chrome 근거 보존,11/19 fresh-data 보충 완료;19시 정식 후보 감수/통합 판단 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -130,39 +131,81 @@
       "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
     ],
     "remaining_limits": [
-      "11/18 15시 최신 원본/공개본을 인수한 예정된 독립 후보 감수·통합 판단 전",
+      "지난18일 예정 감수의 실제 완료는 미확인이다.11/19 19시 정식9그룹 감수 재개·불충분하면20일11시 계속이며 fresh-data 보충은 전체 감수/통합 완료가 아니다.",
       "운영 API/인증/쓰기/원격 미리보기·운영 배포·실사용과 Safari/실기기 검증은 미실시"
-    ]
+    ],
+    "fresh_data_intake_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+      "source_revision": "e959adbcba2c4a7adbd0fef3ad89265c97c4fcdc",
+      "release_revision": "c04132461340eb4496976f512ee6ef30e0812235",
+      "source_input_state": "match",
+      "registered": 208,
+      "review": 58,
+      "archive": 149,
+      "external": 1,
+      "notification_members": 74,
+      "matches": 163,
+      "unknown": 44,
+      "not_applicable": 1,
+      "snapshot_token": "685f7124fc4692bbc47de570810300695275c458ce62e2b6bea9afcfb7874603",
+      "inventory_bytes": 540424,
+      "inventory_sha256": "f87429bf1dd79b7c8991667dbb1b29539bbecba54fe6cd872d46d23559de7585",
+      "consumed_sources_unchanged": 2539,
+      "baseline_files_unchanged": 4,
+      "successful_builds": 1,
+      "full_test_groups_run": 0,
+      "result": "명시 root/동일 공개 근거의 보충 인수 성공1회. unknown44는 모두 공개 present이며40결속 부족/4검토 hash 없음이다. 19시 전체 감수·브라우저·통합/배포 완료는 아니다.",
+      "subsequent_source_change": {
+        "source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+        "scope": "성공한 보충 인수 뒤 정상 DQE가 추가됐다. 저장한 e959/c041 묶음은 당시 근거이며19시 감수는 후속 최신 입력을 다시 인수한다.",
+        "old_inventory_overwrites_current_source": false
+      }
+    }
   },
   "observation": {
     "status": "11시 로컬 읽기 후보 구현·초기 검증 완료",
     "period": "2026-11-17T02:02:54.475Z",
-    "result": "최신 정상 DQB/L009/DeMARS/DRB와 기록 commit1408582를 인수했다. 실제e526 묶음의 전체 등록207행과 알림74건을 구분해537KB 규모의 읽기 목록을 생성했다. 내용 비교는 확인 범위162일치/44근거미확인/외부1해당없음이며 미확인을 미게시·과학 감수 실패로 해석하지 않는다. 원본/등록/지속 요청·공개 자산의 의도하지 않은 변경·직접 DB/발행/알림은 없다."
+    "result": "최신 정상 DQB/L009/DeMARS/DRB와 기록 commit1408582를 인수했다. 실제e526 묶음의 전체 등록207행과 알림74건을 구분해537KB 규모의 읽기 목록을 생성했다. 내용 비교는 확인 범위162일치/44근거미확인/외부1해당없음이며 미확인을 미게시·과학 감수 실패로 해석하지 않는다. 원본/등록/지속 요청·공개 자산의 의도하지 않은 변경·직접 DB/발행/알림은 없다.",
+    "resumption_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+      "candidate_worktree_clean": true,
+      "nine_source_files_match_commit": true,
+      "protected_parent_and_verified_candidate": true,
+      "result": "18일 예정 최신 기준 독립 검증/통합은 확인되지 않았다. 원래 후보 기준 뒤의 NTCA 정상 게시와 제목 참조 수정을 보존해 재개한다. 기존 초기 검증을 새 전체 감수 완료로 만들지 않는다.",
+      "intake_reference": "e959adbcba2c4a7adbd0fef3ad89265c97c4fcdc",
+      "intake_public_reference": "c04132461340eb4496976f512ee6ef30e0812235",
+      "subsequent_preserved_source": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "latest_editorial_completion_record": "2764e07"
+    }
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/18 15시 같은 후보 브랜치/보호 근거를 인수해 최신 main·실제 공개 묶음과9개 검증 그룹을 독립 감수하고 필요 수정/통합을 판단한다. 새 기술 제보는 받은 회차에서 앞당긴다.11/19 11시 쓰기 API 작업분해는 유지하며 현재 읽기 후보를 인증/발행 완료나 추가 게시 승인으로 확대하지 않는다.",
+  "next_action": "11/19 19시 보존 후보79cc54e와 최신 main/실제 release·catalog·updates를 함께 인수해9그룹 독립 감수를 재개한다. 미완료면20일11시에 이어가며 지난19일11시 쓰기 API 작업분해도 감수 결과 뒤로 함께 순연한다. 즉시 배포 납기나 인증/쓰기 완료로 확대하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "local_candidate_implemented_initially_validated_not_deployed",
-    "next_scheduled_step_at": "2026-11-18T15:00:00+09:00",
-    "next_review_at": "2026-11-18T15:00:00+09:00",
-    "scheduled_step": "최신 원본/실제 공개 묶음을 인수한 독립 읽기 후보 감수·통합 범위 판단",
+    "next_scheduled_step_at": "2026-11-19T19:00:00+09:00",
+    "next_review_at": "2026-11-19T19:00:00+09:00",
+    "scheduled_step": "최신 main/동일 실제 공개 묶음 인수·읽기 후보9그룹 독립 감수 재개",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261117T035831Z-1ee17f35-a0bb-4602-b432-4a4cced1fbad.md",
-    "replan_reason": "사용자 최신 알림 목록 제목 참조 요청을 즉시1순위로 처리하는 동안 관리 후보를2로 보존했다. 해당 기술 배포·검증 종료로 관리 후보 순번1을 복원한다. 후보79cc54e·18일15시 감수·19일11시 쓰기 API 검토는 그대로이며 날짜 지연은 없다.",
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
-    "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
+    "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+    "continuation_if_incomplete_at": "2026-11-20T11:00:00+09:00",
+    "write_api_breakdown_target": "2026-11-20T11:00:00+09:00"
   }
 }

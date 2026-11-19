@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 25,
+  "record_version": 26,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-17T06:15:45.999578+00:00",
+  "updated_at": "2026-11-19T04:53:07.744651+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -56,7 +56,8 @@
     "https://developers.cloudflare.com/workers/platform/pricing/",
     "https://developers.cloudflare.com/workers/platform/limits/",
     "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
-    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md"
+    "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
@@ -252,22 +253,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "checked_at": "2026-11-17T06:05:28.172298+00:00",
-      "source_revision": "c04132461340eb4496976f512ee6ef30e0812235",
-      "manifest_files": 2670,
-      "manifest_bytes": 806555747,
-      "release_json_bytes": 1362896,
-      "pdf_paths": 254,
-      "unique_pdf_objects": 179,
+      "checked_at": "2026-11-19T05:01:44.511352+00:00",
+      "source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "manifest_files": 2673,
+      "manifest_bytes": 806656123,
+      "release_json_bytes": 1364449,
+      "pdf_paths": 255,
+      "unique_pdf_objects": 180,
       "retained_edition_urls": 21,
-      "public_files": 2671,
-      "public_bytes": 807918643,
-      "growth_bytes": 201548,
-      "growth_basis_source": "e5269e1ce2c205428c6d57be8fce5ec49a392c30",
-      "headroom_to_internal_800MB_bytes": -7918643,
-      "excess_over_internal_800MB_bytes": 7918643,
-      "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
-      "scope": "최신 실제 HTTPS 봉인 metadata 범위. 내부800MB는 관리 목표이며 제공자 한도/장애 판정이 아니다. 기존 정상 게시·제목 수정 완료 근거 재사용, 외부 비활성/실제 절감0."
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "public_files": 2674,
+      "public_bytes": 808020572,
+      "growth_bytes": 101929,
+      "growth_basis_source": "c04132461340eb4496976f512ee6ef30e0812235",
+      "headroom_to_internal_800MB_bytes": -8020572,
+      "excess_over_internal_800MB_bytes": 8020572,
+      "scope": "동시 정상 게시의 실제 공개 봉인 metadata. 새 export/외부 활성화/내용 재감수 아님."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -650,6 +651,38 @@
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
       "scope": "최신 실제 HTTPS 봉인 metadata 범위. 내부800MB는 관리 목표이며 제공자 한도/장애 판정이 아니다. 기존 정상 게시·제목 수정 완료 근거 재사용, 외부 비활성/실제 절감0.",
       "result": "11시 저장소 관찰 이후 NTCA 정상 게시와 공통 JS 변경을 반영한 현재 명세다. 기존249경로 base375f/delta31440 계획을 현재254경로 전체로 부르지 않는다. 새 export/외부 활성화·정적 제외·삭제·절감0이며18일19시 구조 검토 유지."
+    },
+    "resumption_20261119": {
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "public_revision": "c04132461340eb4496976f512ee6ef30e0812235",
+      "public_files": 2671,
+      "public_bytes": 807918643,
+      "pdf_paths": 254,
+      "unique_pdf_objects": 179,
+      "retained_edition_urls": 21,
+      "growth_since_previous": 0,
+      "external_activation": false,
+      "actual_export_or_deletion": false,
+      "scope": "새 HTTPS 봉인 metadata와 기존 계획/보호 표시만 대조. 전체 주간 구조 검토/원격 복구 완료 아님"
+    },
+    "concurrent_publication_20261119": {
+      "checked_at": "2026-11-19T05:01:44.511352+00:00",
+      "source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
+      "manifest_files": 2673,
+      "manifest_bytes": 806656123,
+      "release_json_bytes": 1364449,
+      "pdf_paths": 255,
+      "unique_pdf_objects": 180,
+      "retained_edition_urls": 21,
+      "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+      "public_files": 2674,
+      "public_bytes": 808020572,
+      "growth_bytes": 101929,
+      "growth_basis_source": "c04132461340eb4496976f512ee6ef30e0812235",
+      "headroom_to_internal_800MB_bytes": -8020572,
+      "excess_over_internal_800MB_bytes": 8020572,
+      "scope": "동시 정상 게시의 실제 공개 봉인 metadata. 새 export/외부 활성화/내용 재감수 아님.",
+      "result": "초기 동일c041 점검 뒤 정상 DQE 추가를 보충 인수했다. 기존249경로 계획과 현재255경로 명세를 구분하며 실제 외부 활성화/절감은0이다."
     }
   },
   "recovery": {
@@ -673,17 +706,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/18 19시 기존 주간 구조 회고에서 base375f+07시 delta의 정확한 해시·남은7개 선행과 새 공개/접근 근거를 인수한다. 새 source/유의미한 증가·정상 연결·중대한 제보는 받은 기존 회차에서 앞당겨 판단한다. 새 근거 없으면 전체 metadata/코드 시험·차단 로그인/R2 조회를 반복하지 않는다. 실제 최신 bytes export·원격 전체 SHA·클라이언트·구신 전환·봉인/회수복구·정적 제외는 미완료이며 관리17일11시 구현/18일15시 검토·P2는 유지한다.",
+  "next_action": "18일19시 예정 구조 회고를 소급 완료하지 않는다. 이번19일 통합 평가에서는 실제 공개 명세 동일·새 제공자 접근 근거 부재와 보호 후보 보존만 확인했다.20일11시 관리 감수 우선 뒤 기존249경로 계획/현재254경로 차이·남은7선행·후속 범위를 검토한다. 차단 로그인/전체 export·원격 복구를 근거 없이 반복하거나 완료로 표시하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "metadata_delta_reviewed_remote_evidence_pending",
-    "next_scheduled_step_at": "2026-11-18T19:00:00+09:00",
-    "next_review_at": "2026-11-18T19:00:00+09:00",
-    "scheduled_step": "기존 주간 구조 회고에서 새 공개/정상 연결 근거·외부 후속 범위/우선순위 검토",
-    "replan_reference": "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
-    "replan_reason": "11시 짧은 확인에서 내부800MB 목표 초과를 확인해15시 기존 슬롯에 URL/SHA/size/불변 key·예상 제외 범위/남은 선행의 오프라인 준비를 배정했다.19시 독립 검토와11/18 구조 회고, 관리11/17 구현·11/18 검토/P2는 유지한다. 실제 외부 활성화·분리 완료일은 확정하지 않는다.",
-    "run_reference": "operations/runs/20261116T215703Z-b62cb994-8d9d-468b-b2ac-74388267e14b.md",
+    "next_scheduled_step_at": "2026-11-20T11:00:00+09:00",
+    "next_review_at": "2026-11-20T11:00:00+09:00",
+    "scheduled_step": "관리 감수 우선 뒤 저장소 후속 범위/근거·구조 검토 재개",
+    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
+    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -694,6 +727,6 @@
     "local_candidate_technical_validation_complete": true,
     "integration_pending": false,
     "local_minimum_delivery_completed": true,
-    "weekly_structure_review_at": "2026-11-18T19:00:00+09:00"
+    "weekly_structure_review_at": "2026-11-20T11:00:00+09:00"
   }
 }
