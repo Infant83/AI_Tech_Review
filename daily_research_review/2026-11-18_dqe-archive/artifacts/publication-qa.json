@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "document_id": "2026-11-18-daily-quantum-exercise",
+  "publication_status": "candidate_and_browser_verified_ready_for_deployment",
+  "source_base": "e959adbcba2c4a7adbd0fef3ad89265c97c4fcdc",
+  "deployed_baseline": "c04132461340eb4496976f512ee6ef30e0812235",
+  "targeted_python_tests": {
+    "run": 103,
+    "passed": 103,
+    "failed": 0,
+    "skipped": 0
+  },
+  "node_search_navigation_tests": {
+    "run": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "existing_bilingual_editorial_pages_byte_identical": 32,
+  "release_check": {
+    "additions": [
+      {
+        "group": "archive",
+        "id": "2026-11-18-daily-quantum-exercise"
+      }
+    ],
+    "blockers": [],
+    "counts": {
+      "archive": 150,
+      "external": 1,
+      "publications": 74,
+      "reviews": 58
+    },
+    "ok": true
+  },
+  "payload_check": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ]
+  },
+  "public_pdf_sha256": "3d8d2c6a87467461ce165e7d1ae7102b89066efa8774170be1c605bef1701a54",
+  "public_pdf_bytes": 71297,
+  "scientific_reference_review": "science/scientific-reference-audit.json",
+  "pdf_review": "public-pdf-qa.json",
+  "build_dependency": "Pillow 11.2.1",
+  "human_sentence_review": "not performed",
+  "live_verification": "pending",
+  "reviewed_candidate_html": {
+    "ko": {
+      "path": "briefings/exercises/2026-11-18/index.html",
+      "bytes": 13770,
+      "sha256": "10de2ad6ad7785a732fd1c3351343e7f91089c4338e645c8757cf3cfb0be9927"
+    },
+    "en": {
+      "path": "briefings/exercises/2026-11-18/en/index.html",
+      "bytes": 13945,
+      "sha256": "c1e90bec5cb0911f951eb5c9fc534c9c482cd74715a11034c74daca1e4845136"
+    }
+  },
+  "browser": {
+    "engine": "Chromium via Playwright",
+    "viewport": [
+      390,
+      844
+    ],
+    "tested": [
+      "Both article languages, title and original/update/evidence dates",
+      "Native details initially closed with no numeric solution or verdict visible; mouse and keyboard expansion",
+      "Language switch to matching bilingual issue",
+      "Calendar and list select Nov18; original three DQE identities preserved",
+      "HHL search returns one new DQE editorial",
+      "DQE classification and November filter return exactly four issues",
+      "All four DQE PDFs open in new browser tabs and actual downloads match SHA256"
+    ],
+    "horizontal_overflow": false,
+    "console_errors": 0,
+    "console_warnings": 0,
+    "reviewers": [
+      "dqe_ops_1118",
+      "root"
+    ],
+    "qa_screenshots": "private only"
+  }
+}

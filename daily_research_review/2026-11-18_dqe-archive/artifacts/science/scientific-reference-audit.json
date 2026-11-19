@@ -1,0 +1,177 @@
+{
+  "document_id": "2026-11-18-daily-quantum-exercise",
+  "original_issue_date": "2026-11-18",
+  "review_date": "2026-11-19",
+  "review_team": "AEDAUT",
+  "review_mode": "Independent agent review of the complete four-page exercise, exact recalculation and primary-source comparison",
+  "human_line_by_line_review": false,
+  "result": "Scientific conditions, arithmetic and cited experiment are consistent; bibliography completion and removal of non-scientific history are publication edits",
+  "calculation": {
+    "script": "verify_portfolio.py",
+    "results": "independent-calculations.json",
+    "method": "Python standard-library fractions for exact two-by-two algebra and math.sqrt for condition numbers",
+    "scope": [
+      "Positive definiteness, inverse solution, budget normalization and constrained stationary point",
+      "Portfolio variance, equal-weight comparison and percentage-point/fractional-return unit conversion",
+      "Normalized state probabilities and the error caused by using probabilities as allocations",
+      "A+I solution, changed objective, original-covariance variance and condition numbers",
+      "Sequential timing sum, deadline excess and incomparable hypothetical-total versus measured-p95 statistics",
+      "Relative-sign ambiguity illustrated by two real vectors with the same computational-basis probabilities"
+    ],
+    "execution_level": "Classical arithmetic only; neither an HHL circuit nor a QPU was run"
+  },
+  "scientific_findings": [
+    {
+      "topic": "Optimization and units",
+      "finding": "For the stated symmetric positive-definite A and budget-only constraint, x=(1/7,3/7) and w=(1/4,3/4). The modeled variance is 7/4 percentage-points squared, or 7/40000 in fractional-return units. The 12.5 percent reduction is within the supplied covariance model."
+    },
+    {
+      "topic": "Output semantics",
+      "finding": "The ideal state is (|0>+3|1>)/sqrt(10), with probabilities (1/10,9/10). The probabilities used as weights give variance 46/25. Square roots recover the ratio only with known positive components; signed real solutions require relative-sign information. The allocations here do not require the solution's absolute norm."
+    },
+    {
+      "topic": "Regularization and fair comparison",
+      "finding": "A+I minimizes w^T A w + ||w||_2^2 under the same budget constraint and produces weights (1/3,2/3). Their variance under the original covariance is 16/9, exceeding 7/4 by 1/36 or 1/63 relatively. Both solvers must solve the same objective when their performance is compared."
+    },
+    {
+      "topic": "Runtime and decision criteria",
+      "finding": "The illustrative sequential total is 75 seconds and exceeds the 60-second target. A 90-second measured p95 and a 75-second hypothetical sum do not establish a measured speedup. The p95, per-weight error, budget residual, excess modeled variance and failures must be evaluated consistently. The exercise's thresholds are educational choices."
+    }
+  ],
+  "references": [
+    {
+      "number": 1,
+      "bibliography": "CVX Group, Portfolio optimization, CVX Short Course (accessed 19 November 2026).",
+      "url": "https://www.cvxgrp.org/cvx_short_course/docs/applications/notebooks/portfolio_optimization.html",
+      "accessed": "2026-11-19",
+      "directly_read": [
+        "Portfolio allocation vector",
+        "Asset returns",
+        "Classical (Markowitz) portfolio optimization",
+        "Variations",
+        "Factor covariance model",
+        "Portfolio optimization with factor covariance model"
+      ],
+      "supports": "Budget and short-position meanings, covariance risk, constraints and factor-covariance modeling",
+      "limits": "The source describes general portfolio models. The exercise's two-asset minimum-variance special case and operational timing are educational inputs, not source-reported investment or runtime results. The notebook was read, not executed."
+    },
+    {
+      "number": 2,
+      "bibliography": "A. W. Harrow, A. Hassidim, and S. Lloyd, Quantum algorithm for linear systems of equations, Phys. Rev. Lett. 103, 150502 (2009).",
+      "url": "https://doi.org/10.1103/PhysRevLett.103.150502",
+      "full_text_used": "https://arxiv.org/pdf/0811.3171v3",
+      "version": "arXiv:0811.3171v3, 30 September 2009",
+      "publisher_online_date": "2009-10-07",
+      "accessed": "2026-11-19",
+      "directly_read": [
+        "Publisher author list, title, journal, DOI, online date and abstract",
+        "arXiv v3 pages 1-3: introduction, solution-state output, all-component readout, efficient state preparation and sparse-access assumptions, inverse-eigenvalue conditioning and success cost",
+        "Page 4: discussion paragraphs on preconditioning; page 5 opening paragraphs on output measurements"
+      ],
+      "supports": "Normalized solution-state output, restricted expectation-value use, input/matrix-access assumptions, condition-number and precision dependencies, and readout costs",
+      "limits": "No full 15-page proof audit, complexity lower-bound reproduction, supplementary error-analysis reproduction or hardware run was performed. Publisher full text required authorization; the public author manuscript supplied the specified text."
+    },
+    {
+      "number": 3,
+      "bibliography": "X.-D. Cai, C. Weedbrook, Z.-E. Su, M.-C. Chen, M. Gu, M.-J. Zhu, L. Li, N.-L. Liu, C.-Y. Lu, and J.-W. Pan, Experimental quantum computing to solve systems of linear equations, Phys. Rev. Lett. 110, 230501 (2013).",
+      "url": "https://doi.org/10.1103/PhysRevLett.110.230501",
+      "full_text_used": "https://arxiv.org/pdf/1302.4310v2",
+      "version": "arXiv:1302.4310v2, 3 June 2013",
+      "publisher_online_date": "2013-06-06",
+      "accessed": "2026-11-19",
+      "directly_read": [
+        "Publisher complete ten-author list, title, journal, DOI, online date and abstract",
+        "Author-manuscript page 1 experiment description and normalized-state definition",
+        "Page 2 Figure 1 caption and conditioning description"
+      ],
+      "supports": "Author-reported proof-of-principle 2-by-2 linear-system experiment with four photonic qubits and four controlled logic gates",
+      "limits": "No experiment, fidelity analysis or whole five-page/supplementary-material reproduction was performed. The experiment is not evidence for a 10000-asset portfolio runtime. A generated date printed inside the manuscript PDF is not used as publication metadata; the arXiv version record and publisher date identify the source."
+    }
+  ],
+  "evidence_separation": {
+    "independent": "Classical exact exercise calculations",
+    "reported_experiment": "Cai et al.'s 2013 small photonic demonstration",
+    "hypothetical": "10000 assets, future error-corrected device stages and all timing/accuracy thresholds in this exercise",
+    "proposed_followup": "Match data, objective, access model, classical solver and output accuracy; measure the full latency distribution and reconstruction cost"
+  },
+  "related_existing_reading": {
+    "title": "17. 내결함성 QML: 선형대수의 입력·조건수·출력 비용을 계산한다",
+    "url": "https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-17-fault-tolerant-qml.html",
+    "source_read": "2026-10-20_quantum-machine-learning-lecture-series/lectures/17-fault-tolerant-qml.md",
+    "scope": "Complete lecture source read",
+    "connection": "Its worked inverse-filter example distinguishes coefficient amplitudes from measurement probabilities; its ridge and resource sections explain changes to the model and the costs of input, readout and preconditioning.",
+    "public_availability_check": {
+      "method": "ADOPT independent actual HTTPS GET with established curl client and compression decoding",
+      "http_status": 200,
+      "bytes": 422353,
+      "title_matches": true,
+      "checked_date": "2026-11-19",
+      "scope": "Availability evidence supplied by the separate operations reviewer; this scientific reviewer read the complete local lecture source."
+    }
+  },
+  "publication_notes": [
+    "Preserve the November 18 issue date; distinguish the November 19 public edit and added source verification.",
+    "Complete APS-style bibliography with the three HHL authors and all ten Cai authors; keep explanatory notes outside bibliography entries.",
+    "Solutions, numeric answers and decision verdicts belong inside initially closed web details.",
+    "No commercial deployment, investment recommendation or quantum advantage is inferred from the toy model."
+  ],
+  "editorial_review": {
+    "reviewer_role": "AEDAUT independent scientific and bilingual review",
+    "review_date": "2026-11-19",
+    "result": "pass",
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-18_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 7989,
+        "sha256": "f52062ffd275a15376aa09a968da3e1fa86e1ffe2eba8053983592aa3a13617b"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-18_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 8113,
+        "sha256": "03742eb586087fe5fdb3f4a4aa280aac757bb73c8706966df6b2a12b67e99bc6"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-18_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 8118,
+        "sha256": "8155b6aec53f6ff49f736486a6c9a0da3722beb592e69683b74b055f9fa0eff6"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-18_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 8242,
+        "sha256": "731ecbe98910682634819abb1c85e8cb675058485c11e3baa80303f3841aa4fe"
+      }
+    ],
+    "listing": {
+      "ko": {
+        "title": "양자 해에서 주문 비중까지의 비용",
+        "summary": "가상의 최소분산 포트폴리오를 풀며 양자 상태의 진폭과 주문 비중의 관계를 살핀다. 정규화·조건수 개선·전체 판독 비용을 함께 따져, 같은 출력과 정확도 아래 계산법을 비교하는 기준을 익힌다."
+      },
+      "en": {
+        "title": "The cost of reading portfolio weights from a quantum state",
+        "summary": "Work through a hypothetical minimum-variance portfolio to connect quantum amplitudes with order weights. Examine normalization, conditioning and full readout costs to compare computational methods under matching output and accuracy requirements."
+      },
+      "review": "Both titles and separate listing summaries match the topic, preserve the hypothetical setting and give no numerical solution or adoption verdict."
+    },
+    "checks": [
+      "Both manuscripts and compiled fragments preserve identical numerical answers, units and educational assumptions.",
+      "The distinction between normalized amplitudes, basis probabilities and budget-normalized weights is explicit in both languages.",
+      "Classical exact arithmetic, the hypothetical future-device estimate and the author-reported photonic experiment are distinguished.",
+      "References first appear in order 1, 2, 3 and corresponding bibliography entries match in both languages.",
+      "Numerical answers, solution reasoning and adoption verdicts are inside initially closed details elements.",
+      "The related lecture is described as Korean in the English article; the complete lecture source was read.",
+      "The actual primary-source access scope and absence of experiment/proof reproduction are stated in both languages."
+    ]
+  }
+}
