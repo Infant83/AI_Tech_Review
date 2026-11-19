@@ -4,7 +4,7 @@ subtitle: "Architecture space and time, useful inputs and shots, and classical r
 type: final review
 author: "Hyun-Jung Kim"
 date created: 2026-09-09
-date modified: 2026-09-09
+date modified: 2026-11-19
 status: checked
 language: en
 canonical url: "https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/en/"
@@ -25,92 +25,84 @@ tags:
 
 A researcher choosing a quantum algorithm for molecular energies or industrial classification must meet an accuracy target within a limited computing budget. A shorter circuit can require expensive input preparation. A promising prediction can demand thousands of repeated measurements. An error-corrected device also spends space and time keeping logical qubits available while they wait. **Which resource improved, and does that improvement survive the complete workflow?**
 
-This review connects six updates from the September 9 briefing: error-corrected compilation, satellite and power-grid machine learning, molecular reference states, hardware fabrication, and forthcoming industrial presentations. All four research papers are preprints. Their results establish different things, so their resource estimates, hardware experiments, simulations, and roadmap claims remain separate below.
+The September 9 studies address different parts of that question. Compilation reduces the space used by a given calculation; machine-learning studies examine what information enters a circuit and what samples it produces. In chemistry, a useful classical reference can support an imperfect correlated calculation. We follow four papers available as preprints at the time, then consider fabrication and event announcements as prospects for the environment in which such workflows might run.
 
 ![A conceptual lattice, layered sample sheets, terrain and a reference wave representing the resources of quantum computation](../artifacts/quantum_resources_hero.webp)
 
-*Figure 1. Space, input data, repeated samples and reference models belong in the same planning discussion. This conceptual illustration depicts no particular device or experimental dataset.*
-
-::: highlight The central question
-Evaluate quantum computation through architecture space and time, useful input information, measurement budgets and classical reference states together.
-:::
+*Figure 1. An AI-generated conceptual illustration uses a lattice, sheets, terrain and a wave to represent computing space, repeated samples, inputs and reference models.*
 
 [Download the five-page Korean briefing](../artifacts/daily_quantum_brief_2026-09-09.pdf) · [한국어 리뷰](https://infant83.github.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/)
 
 ## 1. What is being counted?
 
-**Circuit depth** counts sequential layers after compatible gates are placed in parallel. It differs from gate count and from physical duration. **Shots** are repeated circuit executions and measurements used to obtain samples. A **quantum processing unit (QPU)** must supply enough of them for a statistically useful result.
+**Circuit depth** counts sequential layers after compatible gates are placed in parallel. Equal gate counts can have different depths, while physical duration also depends on gate times, movement, connectivity, measurement and reset. A **shot** is one circuit execution and measurement yielding a sample. A **quantum processing unit (QPU)** must provide enough samples for a statistically useful result.
+
+Before comparing improvements, distinguish what was executed and counted. Logical blocks, detection scores and molecular barrier errors answer different questions.
 
 | Update | Execution or validation setting | Result unit | Other costs to record |
 |---|---|---|---|
 | Fermi–Hubbard compilation | Classical compilation and fault-tolerant resource estimation | Active volume; Toffoli count | Logical blocks, idle space, code cycles, preparation |
 | SAR change detection | Selected training and inference on an IonQ QPU | Maximized filtered F1 | Evaluations, shots, classical image processing |
-| Power-grid QML | Noiseless analytic circuit simulation | Balanced accuracy | Encoding, finite shots, postselection success |
+| Power-grid QML | Noiseless analytic circuit simulation | Cross-validation balanced accuracy | Encoding, finite shots, postselection success |
 | DS-NOCI chemistry | Classical numerical tests and synthetic noise | Barrier error | Reference construction, matrices, subspace size |
 | Superion 256 | Fabrication and prototype announcement | Development milestone | Concurrent operation, system error, applications |
-| Qubits Asia | Forthcoming industrial presentations | Event and application agenda | Problem size, classical baseline, elapsed time |
-
-Circuit optimization spans problem formulation, high-level synthesis, rewriting, routing, native gates, pulses and error-correction scheduling. Active-volume compilation is one architecture-aware example. It can be placed alongside Classiq synthesis and AshN native-gate design without implying that these exhaust the field or that this paper compared them directly.
+| Qubits Asia | Industrial event preview | Event schedule | Problem size, classical baseline, elapsed time |
 
 ## 2. Compiling the space used by operations
 
-**[Preprint · resource estimation] Harriet Apel et al. First posted September 4, 2026.**
+The Fermi–Hubbard model represents interacting electrons moving on a lattice. **Quantum phase estimation (QPE)** reads energy from a time-evolution phase; decomposing that evolution creates a large circuit.
 
-The Fermi–Hubbard model represents interacting electrons moving on a lattice. **Quantum phase estimation (QPE)** reads energy from a time-evolution phase; decomposing that evolution creates a large circuit. In an error-corrected architecture, reducing expensive Toffoli operations helps, but other operations and waiting resources still matter.
+Harriet Apel and colleagues compile this circuit for an error-corrected architecture. **Active volume** counts the logical blocks used for computation. Reducing expensive Toffoli operations can leave other blocks costly, so the authors jointly adjust evolution ordering and merging, shared rotations, fermionic movement and ZX simplifications.<a class="citation" href="#ref-1">[1]</a>
 
-The paper measures **active volume** through logical blocks used for computation, distinct from idle volume and total device spacetime. Architecture-aware compilation reduces this volume by up to **3.9×** over prior non-Clifford-focused circuits across square lattices with (L=4) to (20). At (L=20), Toffoli count falls by about **2×**. These are different metrics; their factors must not be multiplied into a runtime claim. [Primary paper](https://arxiv.org/html/2609.05316v1)
+Across square lattices with side length L from 4 to 20, active volume decreases by up to **3.9×** relative to prior circuits. The approximately **2× reduction in Toffoli-equivalent cost** at L=20 uses a separate metric and comparison baseline. The latter metric counts two T gates as one Toffoli. Multiplying these factors would not give a runtime improvement. Idle blocks also lie outside active volume and must be counted separately in total device spacetime.<a class="citation" href="#ref-1">[1]</a>
 
-There is no fault-tolerant QPU execution. Runtime projections depend on code cycles, feedforward latency and failure assumptions. For materials work, fix the Hamiltonian and target energy error, then compare architecture costs while recording initial-state preparation separately.
+These are classical compilation results and logical resource estimates. The compiled cost excludes initial-state preparation, the phase-estimation window state and the inverse quantum Fourier transform. Turning it into elapsed time requires code cycles, feedforward latency and failure assumptions. Initial overlap with the ground state affects repetition as well. A materials calculation therefore needs a fixed Hamiltonian and target energy error, with preparation included alongside execution, before assigning a complete budget to the compilation savings.
 
 ## 3. Satellite imagery: learning a distribution on a QPU
 
-**[Preprint · includes actual QPU execution] Samwel K. Sekwao et al. First posted September 4, 2026.**
+The cost of a circuit and the usefulness of its samples belong in the same design. Samwel K. Sekwao and colleagues study change detection in **synthetic aperture radar (SAR)** images. Learning the relationship between intensities at two times helps estimate the later image expected if nothing had changed. Rare intensity regions offer few observations from which to learn that relationship.<a class="citation" href="#ref-2">[2]</a>
 
-**Synthetic aperture radar (SAR)** change detection estimates the later image expected if nothing had changed. Sparse observations make that background estimate unreliable. A **quantum circuit Born machine (QCBM)** generates samples from its measurement distribution. Here it learns dependence between two image intensities in copula space, separating dependence from individual intensity distributions.
+A **quantum circuit Born machine (QCBM)** generates samples from its measurement distribution. Here it learns dependence in copula space after normalizing the individual intensity distributions. A selected Miramar airport configuration used **20 IonQ qubits for both training and inference**: 300 optimization iterations, 5,000 shots per evaluation and 100,000 inference shots.<a class="citation" href="#ref-2">[2]</a>
 
-A selected airport configuration used **20 IonQ qubits for both training and inference**: 300 optimization iterations, 5,000 shots per evaluation and 100,000 inference shots. Maximized filtered F1 was **0.32**, versus **0.16** for classical NLCD and **0.24** for a classical copula estimator. F1 combines precision and recall; this is the maximum after filtering and threshold adjustment. [Primary paper](https://arxiv.org/html/2609.05313v1)
+Maximized filtered F1 was **0.32** for QCBM, versus **0.16** for classical NLCD and **0.24** for a classical copula estimator. F1 combines precision and recall. The 0.32 value refers to the fully QPU-based route and is a maximum after filtering and detection-threshold selection.<a class="citation" href="#ref-2">[2]</a>
 
 ![Comparison of maximized filtered F1 on the selected airport SAR configuration](../artifacts/sar_f1_en.svg)
 
-*Figure 2. A common zero-based axis compares the reported airport results. It does not represent training speed or performance across all scenes.*
+*Figure 2. Existing code redraws the Miramar results from Sekwao et al.<a class="citation" href="#ref-2">[2]</a> on a common zero-based axis. Values are maxima after filtering and threshold selection; circuit and shot settings appear below the plot.*
 
-On volcanic **interferometric SAR (InSAR)** data, all three methods reached approximately 0.66. The study establishes hardware feasibility with scene-dependent improvements, without an elapsed-time advantage. Industrial defect detection would need matched preprocessing and stronger classical generative baselines.
+On volcanic **interferometric SAR (InSAR)** data, a 22-qubit model was trained on an ideal simulator and run on a QPU for inference; all three methods reached approximately 0.66. The airport improvement did not recur across every scene. For manufacturing defects or process anomalies, a useful comparison would first match preprocessing and selection rules, then measure rare-event detection. Recording total training and inference time would reveal the cost of any quality improvement. The source study does not establish an end-to-end quantum speedup.
 
 ## 4. Power-grid learning: useful information in added qubits
 
-**[Preprint · noiseless simulation] Sang Hyub Kim et al. First posted September 4, 2026.**
+The information supplied to a circuit matters alongside its measurement budget. A time-series model can produce high-dimensional sensor features, but compressing them into a small quantum register can discard information needed for classification. Sang Hyub Kim and colleagues use frozen Chronos representations for power-grid events and add small **wing modules** carrying new inputs to a fixed core.<a class="citation" href="#ref-3">[3]</a>
 
-A foundation model converts long sensor sequences into high-dimensional features. Compressing those features into a small quantum register can discard useful information. This study uses Chronos representations for power-grid event classification and adds small **wing modules** that carry new input to a fixed core.
+Averaging five-fold cross-validation over four seeds on 439 training examples, balanced accuracy rose from **83.6%** with a 12-qubit core plus one postselection qubit to **85.2%** with two wings and 19 qubits in total. Balanced accuracy averages recall across classes. Enlarging a circuit without new information did not help. A separate matched-input cross-validation comparison against a larger classical multilayer perceptron reported a **1.7–2.0 percentage-point** improvement.<a class="citation" href="#ref-3">[3]</a>
 
-Balanced accuracy, the average recall across classes, rose from **83.6%** with a 12-qubit core plus one postselection qubit to **85.2%** with two wings and 19 qubits in total. Enlarging a circuit without supplying new information did not help. A separate matched-input comparison against a larger classical multilayer perceptron reported **1.7–2.0 percentage points** of improvement. [Primary paper](https://arxiv.org/html/2609.05408v1)
-
-Every circuit used **noiseless analytic simulation without finite shots**. A small held-out test set showed a 4–5-point generalization gap. Physical encoding, sampling and postselection costs remain untested. For molecular or OLED learning, track which features survive compression and give the same inputs to classical models before attributing gains to additional qubits.
+Every circuit used **noiseless analytic simulation without finite shots**. Performance on 110 independent test examples was 4–5 points below cross-validation. The input-design result and the costs of physical encoding, finite sampling and postselection therefore need separate assessment. Molecular or OLED learning poses a related question: which features disappear during compression, and what happens when a classical model receives the same recovered information?
 
 ## 5. Chemistry: retain a useful classical reference
 
-**[Preprint · numerical tests and synthetic noise] Vibin Abraham et al. First posted September 3, 2026.**
+Input design delivers information to a circuit. In chemistry, another choice is to retain useful information in the space from which the solution is obtained. **Nonorthogonal configuration interaction (NOCI)** combines several reference states when one electronic configuration is insufficient; those states need not be orthogonal.
 
-Molecular wavefunctions may require several electronic configurations. **Nonorthogonal configuration interaction (NOCI)** combines reference states that need not be orthogonal. If approximate correlated states are poor, relying on them alone can damage the result.
+Vibin Abraham and colleagues' **dual-space NOCI (DS-NOCI)** keeps classical references alongside correlated companions. Even an imperfect correlated state leaves the original references available for the variational solution. With exact Hamiltonian and overlap matrices, the enlarged space contains the original one and its ground-state energy cannot be higher than the reference-only result. Perturbed matrix elements do not automatically retain the physical energy upper-bound guarantee.<a class="citation" href="#ref-4">[4]</a>
 
-**Dual-space NOCI (DS-NOCI)** retains classical references alongside correlated companions in one variational space. With exact Hamiltonian and overlap matrices, that space includes the original solutions. Noisy matrix estimates do not automatically preserve this variational guarantee.
-
-For the cyclobutadiene barrier in a four-electron, four-orbital active space, the reference barrier was **8.96 kcal/mol**. Error decreased from **1.26 kcal/mol** for NOQE to **0.34 kcal/mol** for DS-NOCI. [Primary paper](https://arxiv.org/html/2609.04387v1)
+For the cyclobutadiene barrier in a four-electron, four-orbital active space with cc-pVDZ, the reference was **8.96 kcal/mol**. In classical numerical calculations, barrier error fell from **1.26 kcal/mol** for NOQE to **0.34 kcal/mol** for DS-NOCI.<a class="citation" href="#ref-4">[4]</a>
 
 ![Cyclobutadiene active-space barrier estimates and their absolute errors](../artifacts/chemistry_barrier_en.svg)
 
-*Figure 3. The comparison shares one small active-space reference. It is not a large-molecule or actual-QPU result.*
+*Figure 3. A redraw of Abraham et al.'s small-active-space numerical results.<a class="citation" href="#ref-4">[4]</a> Against the same 8.96 kcal/mol reference, NOQE gives 7.70 and DS-NOCI 8.62 kcal/mol. Retaining classical references reduces the barrier error.*
 
-Validation uses small molecular calculations and modeled perturbations. For OLED chemistry, retaining a useful reference while adding correlation is a research direction; active-space choice, overlap conditioning, preparation and matrix-measurement costs still need assessment.
+When the target is an energy difference between structures, the stability of that difference matters alongside each energy. This motivates retaining a useful classical reference while adding correlation in DFT or OLED research. Active-space choice, overlap conditioning, state preparation and matrix acquisition together determine how the small-molecule result might inform the next calculation.
 
 ## 6. Hardware and industrial deployment milestones
 
-**[Industry/product · roadmap] IonQ Superion 256. Announced September 8, 2026.** IonQ reported first integrated-chip fabrication and initial ion trapping in prototypes, targeting deliveries in **2027**. The announcement does not establish concurrent 256-qubit operation, complete-system fidelity, repeated error correction or an application benchmark. Earlier control fidelity cannot be assigned to the full Superion system. [Official announcement](https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing)
+To convert a resource budget into device time, we also need to know what has been built. On September 8, IonQ announced first integrated-chip fabrication and initial ion trapping in Superion 256 prototypes, with deliveries targeted for **2027**. This is a development milestone toward electronic control and scalable manufacturing. Fabrication and initial trapping establish a different stage from concurrent 256-qubit operation and system performance; earlier control fidelity cannot be assigned to the complete new system.<a class="citation" href="#ref-5">[5]</a>
 
-**[PoC/event preview] D-Wave Qubits Asia. October 28, 2026, Seoul.** The event provides a place to examine telecommunications, port scheduling, imaging and semiconductor optimization applications. An application agenda starts the evaluation: problem size, incumbent solvers, QPU time and classical postprocessing determine what the eventual demonstrations establish. The page was checked on September 9; the event date is not a research publication date. [Official event page](https://qubitsasia26.dwavequantum.com/)
+D-Wave Qubits Asia, scheduled for October 28 in Seoul, was likewise an opportunity to examine industrial work from the original article's September 9 perspective.<a class="citation" href="#ref-6">[6]</a> Moving from an event preview to an application result requires problem sizes and comparisons with incumbent solvers. QPU time and classical postprocessing must also be available before a researcher can assess the workflow against a computing budget.
 
 ## 7. A practical research record
 
-The following is this review's proposed evaluation record, not a shared conclusion asserted by the source authors.
+Compilation space, detection quality, classification inputs and molecular references cannot be combined into one performance ranking. They can inform experiments once the conditions for a particular calculation are fixed. The following record is an **editorial proposal** for that purpose.
 
 | Workflow | Keep matched | Record alongside the headline |
 |---|---|---|
@@ -119,19 +111,23 @@ The following is this review's proposed evaluation record, not a shared conclusi
 | Circuit / oracle optimization | Function, accuracy, qubit budget, target device | Depth, two-qubit gates, ancillas, movement, idle and active volume |
 | Industrial optimization | Instances, constraints, time allowance | Feasibility, repaired solution cost, QPU/CPU time, stability |
 
-For a materials workflow, a useful next experiment starts with a familiar small molecule and a fixed classical reference. It then measures whether the candidate circuit changes the target observable and complete execution cost. Keeping circuit savings, predictive improvement and operational benefit in the same record makes technology choices easier to justify.
+A materials experiment can start with a familiar small molecule and fixed classical reference, then measure how the candidate circuit changes the target observable and complete execution time. Making a computation faster should also preserve information already known to be useful. Recording circuit savings and output quality together helps decide where the next calculation should spend its resources.
 
-## 8. Sources and verification
+## 8. References
 
-| Source | First public date | Status |
-|---|---|---|
-| [Apel et al., arXiv:2609.05316](https://arxiv.org/abs/2609.05316) | September 4, 2026, v1 | Preprint |
-| [Sekwao et al., arXiv:2609.05313](https://arxiv.org/abs/2609.05313) | September 4, 2026, v1 | Preprint |
-| [Kim et al., arXiv:2609.05408](https://arxiv.org/abs/2609.05408) | September 4, 2026, v1 | Preprint |
-| [Abraham et al., arXiv:2609.04387](https://arxiv.org/abs/2609.04387) | September 3, 2026, v1 | Preprint |
-| [IonQ Superion announcement](https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing) | September 8, 2026 | Company announcement |
-| [D-Wave Qubits Asia](https://qubitsasia26.dwavequantum.com/) | Event: October 28, 2026 | Checked September 9; event preview |
+<ol class="reference-list">
+<li id="ref-1">H. Apel, A. Caesura, C. Harvey, S. Heavey, A. Kan, J. Lemieux, R. Levy, S. Pallister, J. Peetz, W. Pol, S. Sim, W. A. Simon, M. Steudtner, and G. Uchehara, Compiling the 2D Fermi-Hubbard ground-state energy estimation algorithm for active volume quantum architectures, <a href="https://arxiv.org/abs/2609.05316v1">arXiv:2609.05316v1</a> (2026).</li>
+<li id="ref-2">S. K. Sekwao, S. De, A. Hocken, S. Staniewicz, E. Epifanovsky, C. Stringham, G. Farquharson, M. Roetteler, P. Kl. Barkoutsos, and J. Iaconis, SAR and InSAR change detection with quantum generative models, <a href="https://arxiv.org/abs/2609.05313v1">arXiv:2609.05313v1</a> (2026).</li>
+<li id="ref-3">S. H. Kim, J. Baglio, R. Krishnakumar, C. Chen, O. Knitter, J. Mei, C. Girotto, M. Yamada, F. F. Flöther, and M. Roetteler, Towards scaling quantum fine-tuning of foundational time series models for classification, <a href="https://arxiv.org/abs/2609.05408v1">arXiv:2609.05408v1</a> (2026).</li>
+<li id="ref-4">V. Abraham, B. Jayee, B. Peng, N. P. Bauman, and K. Kowalski, Toward resilient many-body formulations under incomplete correlation models: A dual-space variational formulation, <a href="https://arxiv.org/abs/2609.04387v1">arXiv:2609.04387v1</a> (2026).</li>
+<li id="ref-5">IonQ, <a href="https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing">IonQ Launches Superion Product Line: Industry-Leading, Upgradeable Platform Designed to Scale Manufacturable Fault Tolerant Quantum Computing</a> (8 September 2026).</li>
+<li id="ref-6">D-Wave, <a href="https://qubitsasia26.dwavequantum.com/">Qubits Asia 2026</a> (accessed 19 November 2026).</li>
+</ol>
 
-Metrics, platforms and comparison conditions were checked against primary sources. The computations were not independently reproduced. No item is presented as a newly accepted AI-conference main paper. No newly validated LinkedIn technical signal was added; public search does not provide complete feed monitoring.
+## Authoring, verification and revision history
 
-The public Korean PDF corrects the opening description of optimization targets, the SAR paper's first-author attribution, and the qualification of maximized filtered F1. Its cost chart now compares like-for-like active volume rather than combining factors from different comparisons. Principal numerical results and platform distinctions are preserved.
+The original publication and scientific evidence cutoff are September 9, 2026. The four papers were checked in their v1 editions; their computations were not independently reproduced. The original Codex and Editorial Harness v2026.08 records remain historical production information.
+
+The November 19, 2026 editorial revision improves connections and repeated qualifications and captions, and checks cross-validation/test conditions and APS author credits and editions. The event date and location were checked against the current D-Wave page, but its September 9 page body was not recovered. The old access-date record is not presented as newly verified, and later program details are not added retrospectively. Subsequent research results and current product states have not been imported into the historical assessment.
+
+The five-page Korean PDF is a separate briefing for the original issue, rather than a PDF edition of this entire web review. Its already-published corrected attachment is preserved. The archive's older copy is synchronized to that edition to correct optimization wording, comparison denominators, F1 conditions and SAR first-author attribution. No English PDF, new cover or video was produced. Actual revision roles and verification scope are distinguished in the disclosure below.

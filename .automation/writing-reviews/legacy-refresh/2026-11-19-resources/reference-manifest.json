@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "article_id": "2026-09-09_quantum-resource-aware-workflows",
+  "reviewed_at": "2026-11-19T05:35:24.319007+00:00",
+  "reviewer": "legacy0919_sources",
+  "owner": "AEDAUT",
+  "role": "Independent primary-source and APS audit; no repository manuscript edits",
+  "evidence_cutoff": "2026-09-09",
+  "editorial_revision": "2026-11-19",
+  "scope": "Four explicitly versioned preprints and twoofficialsources; contemporary rereading of historical claims, no later-model/research expansion.",
+  "reference_order": "Expected first-use order1–6 follows compiler,SAR,QML,DSNOCI,IonQ,DWave; final manuscript/link check remains root responsibility.",
+  "references": [
+    {
+      "number": 1,
+      "kind": "preprint",
+      "title_original": "Compiling the 2D Fermi-Hubbard ground-state energy estimation algorithm for active volume quantum architectures",
+      "authors_ordered": [
+        "Harriet Apel",
+        "Athena Caesura",
+        "Carys Harvey",
+        "Sam Heavey",
+        "Angus Kan",
+        "Jessica Lemieux",
+        "Ryan Levy",
+        "Sam Pallister",
+        "Joseph Peetz",
+        "William Pol",
+        "Sukin Sim",
+        "William A. Simon",
+        "Mark Steudtner",
+        "Gideon Uchehara"
+      ],
+      "identifier": "arXiv:2609.05316v1",
+      "url": "https://arxiv.org/abs/2609.05316v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.05316v1",
+      "first_submitted_at": "2026-09-04T16:10:12Z",
+      "evidence_edition": "v1",
+      "evidence_cutoff": "2026-09-09",
+      "status_scope": "Unpublished preprint as described at original evidence cutoff; later editions/results not incorporated.",
+      "pdf_pages": 57,
+      "pdf_sha256": "387ac38bf57ea4ffac72ec13aa0d93e7a71618d6c50c4a43b4656d1d2b45adec",
+      "read_scope": [
+        "Versioned abstract/metadata and PDF pp1–11; selected opening passages of compiler subsections pp12,14,15,17,21,23,25,31; AppendixD/E pp54–57.",
+        "PDF figures2 and5 (pp7,11) rendered and visually inspected. Full57-page derivations and external cited works were not all read."
+      ],
+      "claims_checked": [
+        {
+          "claim": "Maximum3.9-fold active-volume reduction",
+          "location": "PDFp7 Figure2 and results; p8–9",
+          "conditions": "BaselineAV/improvedAV at L20, within even square lattice L4–20, t1/u8/PBC and total energy error .0051tL². Not the separate12.1-fold circuit-volume/baselineAV ratio."
+        },
+        {
+          "claim": "About2-fold Toffoli reduction",
+          "location": "PDFp10–11 Sec3.2/Figure5",
+          "conditions": "1.96-fold vs Kan2024;3.37-fold vs Campbell2020 is a different baseline. Plotted metric N_Toff+N_T/2 assumes T catalysis from CCZ."
+        },
+        {
+          "claim": "Architecture and runtime boundary",
+          "location": "PDFpp5–6,9–11,56–57/Table7",
+          "conditions": "Active logical-operation blocks exclude idle volume. Example photonic hardware codecycle10us, reaction15us, independentfaultmodel and allocated10% hardwarefailure. No actualFTQPU. Initial-state preparation, window-state preparation and inverseQFT excluded from compiled cost."
+        }
+      ],
+      "audit_notes": [
+        "Keep AV and Toffoli ratios separate; optional term Toffoli-equivalent count improves precision.",
+        "Do not infer end-to-end speedup or ground-state preparation success from3.9×."
+      ]
+    },
+    {
+      "number": 2,
+      "kind": "preprint",
+      "title_original": "SAR and InSAR Change Detection with Quantum Generative Models",
+      "authors_ordered": [
+        "Samwel K. Sekwao",
+        "Shaunak De",
+        "Alexis Hocken",
+        "Scott Staniewicz",
+        "Evgeny Epifanovsky",
+        "Craig Stringham",
+        "Gordon Farquharson",
+        "Martin Roetteler",
+        "Panagiotis Kl. Barkoutsos",
+        "Jason Iaconis"
+      ],
+      "identifier": "arXiv:2609.05313v1",
+      "url": "https://arxiv.org/abs/2609.05313v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.05313v1",
+      "first_submitted_at": "2026-09-04T16:07:01Z",
+      "evidence_edition": "v1",
+      "evidence_cutoff": "2026-09-09",
+      "status_scope": "Unpublished preprint as described at original evidence cutoff; later editions/results not incorporated.",
+      "pdf_pages": 16,
+      "pdf_sha256": "37ad011077ab3faf3d58d62a2019a89bf4349a2f3aa5765a362860777dfe7bfb",
+      "read_scope": [
+        "Versioned abstract/metadata; main scientific text pp1–9 and methods/evaluation pp10–14. Reference list pp15–16 not fully audited.",
+        "Figure3 heatmap on PDFp5 rendered and visually inspected; Table1/quantum hardware execution/evaluation text checked."
+      ],
+      "claims_checked": [
+        {
+          "claim": "Fully-QPU maximized filteredF1 .32 versus .16NLCD/.24classicalcopula",
+          "location": "Abstract; PDFp5 Figure3 heatmap and p6 comparison; p12–14 methods",
+          "conditions": "Miramar1 Original-Med3, 20Forte-Enterprisequbits,50singlequbit/28twoqubit gates,300SPSAiterations,5000shots/circuitevaluation,100000inferenceshots. A selected data configuration, not a mean across all scenes."
+        },
+        {
+          "claim": "F1 selection condition",
+          "location": "PDFpp13–14 Evaluation",
+          "conditions": "Maximum over pixelintensitythresholds and uniformfilter windows3–11pixels/percentagecut10–100%. Peak score does not validate a deployable preselected threshold or total runtime."
+        },
+        {
+          "claim": "InSAR approximately.66 for allthree",
+          "location": "PDFpp6–7 Figure4",
+          "conditions": "Volcano data uses22q, idealsimulator training and QPU inference. Distinct from the20q fullyhardware-trained airport setting."
+        }
+      ],
+      "audit_notes": [
+        "Important v1 internal inconsistency: p5 prose describes Figure2 fullyQPU result as.37, while abstract and Figure3 heatmap give.32; p6 QPUtrain/idealinfer prose alternates.32/.36. Retain supported fullyQPU.32; do not add unstable intermediate numbers.",
+        "Ideal training100000shots/iteration versus QPU5000 and differentoptimizers/iterations; do not attribute differences solely to hardware noise.",
+        "First author is Samwel K.Sekwao; Singh attribution in older derivative is incorrect."
+      ]
+    },
+    {
+      "number": 3,
+      "kind": "preprint",
+      "title_original": "Towards Scaling Quantum Fine-Tuning of Foundational Time Series Models for Classification",
+      "authors_ordered": [
+        "Sang Hyub Kim",
+        "Julien Baglio",
+        "Rajiv Krishnakumar",
+        "Chi Chen",
+        "Oliver Knitter",
+        "Jonathan Mei",
+        "Claudio Girotto",
+        "Masako Yamada",
+        "Frederik F. Flöther",
+        "Martin Roetteler"
+      ],
+      "identifier": "arXiv:2609.05408v1",
+      "url": "https://arxiv.org/abs/2609.05408v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.05408v1",
+      "first_submitted_at": "2026-09-04T17:56:24Z",
+      "evidence_edition": "v1",
+      "evidence_cutoff": "2026-09-09",
+      "status_scope": "Unpublished preprint as described at original evidence cutoff; later editions/results not incorporated.",
+      "pdf_pages": 12,
+      "pdf_sha256": "98b63959c9d11d15744f35353e8b33028aef7fd5e0e48b57cbe7f59e98951fe1",
+      "read_scope": [
+        "Versioned abstract/metadata; main scientific text pp1–7, AppendixA/B pp8–10 and training/evaluation AppendicesC–F pp10–12.",
+        "PDFp12 TablesIV–VI rendered and visually inspected. External benchmark/code execution not reproduced."
+      ],
+      "claims_checked": [
+        {
+          "claim": "83.6% at13q to85.2% at19q",
+          "location": "PDFpp5–7 SecIVC/Figure3; p12 TableIV",
+          "conditions": "83.63±1.23% and85.23±1.22% are means over fourseed fold-means on the439trainingexamples using fivefoldCV. Seed-specific learning-rate selection. Zero/twowings each with oneacceptqubit. SyntheticPSML-5 data; frozenChronos-baseencoder."
+        },
+        {
+          "claim": "1.7–2.0percentagepoint advantage versus largerclassicalMLP",
+          "location": "PDFp5 SecIVB and p12 TableV",
+          "conditions": "Separate fixed12q sketch-budget comparisons on identicalcachedinputs, internalfivefoldCV. Not the13to19q wing effect and not a heldouttest improvement."
+        },
+        {
+          "claim": "Test and execution limits",
+          "location": "PDFp7 discussion; p10 AppendixCE; pp11–12 AppendixF/TableVI",
+          "conditions": "Analytic noiseless statevector expectations, nofinite-shot/QPU. One-shot110sampletest on frozencheckpoints runs4–5ppbelowCV; paper draws no rung-ordering conclusion from thatsmalltest. Postselection acceptance floor penalty.25 does not prove guaranteedacceptance."
+        }
+      ],
+      "audit_notes": [
+        "Add internalfivefoldCV/fourseed scope beside83.6→85.2; keep110sampleheldoutgap separate.",
+        "Balancedaccuracy as meanclassrecall is standardmulticlass interpretation; source baseline paragraph also givesbinary(sensitivity+specificity)/2 wording, not evidence to relabel its fiveclass task as binary.",
+        "No performance or energy advantage follows from parameter count or analytic simulation."
+      ]
+    },
+    {
+      "number": 4,
+      "kind": "preprint",
+      "title_original": "Toward Resilient Many-Body Formulations under Incomplete Correlation Models: A Dual-Space Variational Formulation",
+      "authors_ordered": [
+        "Vibin Abraham",
+        "Bhumika Jayee",
+        "Bo Peng",
+        "Nicholas P. Bauman",
+        "Karol Kowalski"
+      ],
+      "identifier": "arXiv:2609.04387v1",
+      "url": "https://arxiv.org/abs/2609.04387v1",
+      "full_text_url": "https://arxiv.org/pdf/2609.04387v1",
+      "first_submitted_at": "2026-09-03T18:50:32Z",
+      "evidence_edition": "v1",
+      "evidence_cutoff": "2026-09-09",
+      "status_scope": "Unpublished preprint as described at original evidence cutoff; later editions/results not incorporated.",
+      "pdf_pages": 13,
+      "pdf_sha256": "1a6012d839a6384fb66d891a0bccdb4796e02d41b4615a69d3c8fd3b6ff13e7f",
+      "read_scope": [
+        "Versioned abstract/metadata; scientific introduction, theory, computational details and results/discussion PDFpp1–10.",
+        "PDFp9 Figure4/5 rendered and visually inspected. Outlook remainder and bibliography pp11–13 not fully audited; no numerical reproduction."
+      ],
+      "claims_checked": [
+        {
+          "claim": "Preserving both reference and correlatedspans protects exact variationalminimum",
+          "location": "PDFpp3–4 Eqs5–9 and measurementstructure",
+          "conditions": "ExactHamiltonian/overlap matrices and consistentremoval of lineardependencies. Noisy matrixestimates need not remain variational. Crossblock cost depends on estimator; quadratic statecount scaling remains."
+        },
+        {
+          "claim": "Cyclobutadiene barrier8.96, NOQE7.70, DSNOCI8.62kcal/mol; errors1.26/.34",
+          "location": "PDFp7 SecIVC and p9 Figure4",
+          "conditions": "D2hminimum→D4htransitionstructure automerization;ccpVDZ,CASCI/FCI(4e,4o) reference. Fourclosed-shellreferences plus correlatedcompanions from unregularized reference-specificMP2doubles, no subsequentamplitudeoptimization. Classical proof-of-principle."
+        },
+        {
+          "claim": "Modeled-noise resilience",
+          "location": "PDFpp7–10 SecIVD/E/Figures5–6",
+          "conditions": "H4 amplitudeperturbation uses200realizations. H2 matrixnoise uses100pergeometry, exactreferenceblocks, independentGaussian correlatedblocknoise and lowercrossblocknoise1/sqrt2 asauthorchosenmodel; median and16–84percentile. NohardwareQPUtest."
+        }
+      ],
+      "audit_notes": [
+        "Existing graph values and barriererrors agree; do not claim a universal noiserobustness guarantee or fullmolecular/OLEDaccuracy.",
+        "H2 canonicalreference maximal.924mEh error is separate from cyclobutadiene and H4/H2 noise tests."
+      ]
+    },
+    {
+      "number": 5,
+      "kind": "official_company_announcement",
+      "organization": "IonQ",
+      "title_original": "IonQ Launches Superion Product Line: Industry-Leading, Upgradeable Platform Designed to Scale Manufacturable Fault Tolerant Quantum Computing",
+      "url": "https://www.ionq.com/news/ionq-launches-superion-product-line-industry-leading-upgradeable-platform-designed-to-scale-manufacturable-fault-tolerant-quantum-computing",
+      "published": "2026-09-08",
+      "checked": "2026-11-19",
+      "read_scope": "Officialpressrelease entire substantivebody, datedheading, keymilestones, roadmap andforwardlooking qualifications; not investorvideo/underlyinggate experiment.",
+      "claims_checked": [
+        "First integrated256qubitQPUs fabricated at SkyWater and firstions trapped inprototype systems.",
+        "Orders accepted and2027customerdelivery projected in thatrelease.",
+        "99.99%twoqubitgatecontrol record is attributed to priorEQCtechnology, not a measuredcomplete256qubit system result."
+      ],
+      "audit_notes": [
+        "Keep releasehistorical; do not import currentlaterproductavailability or infer simultaneous256qubit operation."
+      ]
+    },
+    {
+      "number": 6,
+      "kind": "official_event_page",
+      "organization": "D-Wave",
+      "title_original": "Qubits Asia 2026",
+      "url": "https://qubitsasia26.dwavequantum.com/",
+      "checked": "2026-11-19",
+      "published": null,
+      "read_scope": "Current publiceventlandingbody, location, JSON-LD Event start/enddates; original Sep9 pageversion not independently recovered.",
+      "current_page_verified_metadata": {
+        "start": "2026-10-28T09:00:00+09:00",
+        "end": "2026-10-28T17:00:00+09:00",
+        "location": "The Four Seasons Hotel Seoul, Nuri Ballroom, 6th Floor"
+      },
+      "historical_record": "Original review records eventOct28 and pagecheckedSep9; this is retained as original editorial history, not newly verified historical state.",
+      "historical_reverification_limit": "Date-limited publicsearch and one successful CDX query for July1–Sep9 returned no qualifying snapshot. This does not prove the page did not exist. Current embeddedcreationmetadata is not proof of its Sep9content.",
+      "excluded_later_source": {
+        "url": "https://www.dwavequantum.com/company/newsroom/press-release/d-wave-to-host-qubits-asia-2026-in-seoul/",
+        "published": "2026-09-16",
+        "reason": "Later-than-cutoff programannouncement; not used as Sep9 evidence."
+      },
+      "claims_checked": [
+        "Current eventidentity/Seoullocation/date; no independentapplicationperformance data onlanding page."
+      ],
+      "audit_notes": [
+        "Remove unsupported retrospective certainty about Sep9specificprogram sectors and exacthistoricalcheck; identify currentreferencecheck versus preserved originalrecord.",
+        "Do not substitute actualNov12recap or Sep16pressrelease for originalSep9evidence."
+      ]
+    }
+  ],
+  "figure_checks": [
+    {
+      "article_figure": "SAR F1 KO/EN",
+      "status": "numbers_supported",
+      "source": "Reference2 abstract and Figure3 fullyQPU heatmap; originalv1 prose has internalinconsistency recordedabove.",
+      "values": {
+        "NLCD": 0.16,
+        "Copula": 0.24,
+        "QCBM_full_QPU": 0.32
+      }
+    },
+    {
+      "article_figure": "Chemistry barrier KO/EN",
+      "status": "numbers_supported",
+      "source": "Reference4 p7 and Figure4",
+      "values_kcal_mol": {
+        "CASCI_FCI": 8.96,
+        "NOQE": 7.7,
+        "DS_NOCI": 8.62,
+        "NOQE_absolute_error": 1.26,
+        "DS_NOCI_absolute_error": 0.34
+      }
+    }
+  ],
+  "not_performed": [
+    "No QPU experiment, original resource compiler, molecular calculation, GPU/ML training, or databenchmark rerun.",
+    "No exhaustive review of every bibliography item or all57pages of compilerderivations.",
+    "No historical Sep9 DWave publicsnapshot confirmed.",
+    "No final manuscript, candidatebuild or deployedpage verification yet."
+  ],
+  "blocking_science_findings": [],
+  "required_scope_corrections": [
+    "QML primary headline scores are internalcross-validation, not independenttestresults.",
+    "DWave presentpage and Sep16program cannot substantiate Sep9programstatus; preserve history and markreverificationlimit.",
+    "APS fullauthors and versionednumbered references needed inbothlanguages."
+  ]
+}
