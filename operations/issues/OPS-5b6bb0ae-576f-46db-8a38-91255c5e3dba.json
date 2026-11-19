@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 14,
+  "record_version": 15,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-19T04:53:07.744651+00:00",
+  "updated_at": "2026-11-19T10:13:34.746312+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -234,6 +234,11 @@
       "scope": "확인한 대화·공용 기록·원격 변경 범위",
       "new_physical_device_evidence": false,
       "historical_validation_reused": true
+    },
+    "evening_20261119": {
+      "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+      "new_shared_physical_device_evidence": false,
+      "result": "새 공용 실기기/필기·정상 알림 열람 근거 없음. 기존 Chrome·배포/HTTPS 근거를 재사용하며 테스트 푸시·이력 재생은 하지 않았다."
     }
   },
   "recovery": {
@@ -241,15 +246,15 @@
     "execution_reference": null,
     "result": "Pages/Worker배포와읽기운영검증완료. 실제롤백·개인DB복원·구독초기화·테스트푸시·과거재발송없음"
   },
-  "next_action": "11/19 19시 현재 제목 표시와 목록·읽음·배지의 새 실제 사용 근거를 묶어 확인한다. 새 근거가 없으면20일19시 재검토하며 그 전에 도착한 제보는 즉시 분류한다. 기존 배포/검증과 미확인 범위를 보존하고 테스트 푸시·재발송·실기기 성공을 만들지 않는다.",
+  "next_action": "새 제보는 받은 회차에서 판단하며 새 근거가 없으면11/20 19시 실제 기기 관찰 묶음을 재검토한다. 기존 검증과 미확인 범위를 보존하며 추가 테스트 푸시는 보내지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "deployed_current_title_reference_observing_existing_device_flow",
-    "next_scheduled_step_at": "2026-11-19T19:00:00+09:00",
-    "next_review_at": "2026-11-19T19:00:00+09:00",
-    "scheduled_step": "현재 제목 표시와 목록·읽음·배지의 새 실제 사용 근거 묶음 확인",
-    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "next_scheduled_step_at": "2026-11-20T19:00:00+09:00",
+    "next_review_at": "2026-11-20T19:00:00+09:00",
+    "scheduled_step": "새 공유 실기기 근거 묶음 검토",
+    "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
     "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
     "next_review_if_no_new_evidence": "2026-11-20T19:00:00+09:00"

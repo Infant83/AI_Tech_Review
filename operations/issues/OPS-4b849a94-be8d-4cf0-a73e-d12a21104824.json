@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 11,
+  "record_version": 12,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-19T04:53:07.744651+00:00",
+  "updated_at": "2026-11-19T10:13:34.746312+00:00",
   "status": "validating",
   "priority": "P2",
   "source": {
@@ -60,7 +60,7 @@
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
     "이번 기획에서 운영 서버의 모든 초안 기능·저장소 연결 활성화를 검증한 것은 아님",
     "수식·그림·한영 본문을 자유롭게 바꾸는 편집기와 기존 모든 글의 형식 변환은 범위·공수를 별도로 확인해야 함",
-    "로컬 읽기 후보 구현·초기 검증은 완료했으며 전체 관리/게시 API·통합·운영 배포는 미완료다."
+    "로컬 읽기 v1의9그룹 감수·최신 main 통합을 마쳤다. 전체 관리 도구·공개 관리자/운영 API·인증·쓰기·실사용은 미완료다."
   ],
   "policy_decision": {
     "state": "채택",
@@ -85,7 +85,9 @@
     "관리 화면의 코드가 독자 페이지 초기 로딩에 불필요하게 포함되지 않음"
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "13c79914ef60141535f8427e09e15303caa81ada"
+    ],
     "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
     "deployment_reference": null,
     "local_readonly_candidate": {
@@ -105,13 +107,15 @@
         "tests/test_preview_admin_inventory.py"
       ],
       "protected_proof_key": "admin-readonly-20261117-11 / verified-candidate",
-      "status": "local_implementation_and_initial_validation_complete_not_integrated_or_deployed",
+      "status": "independently_reviewed_and_integrated_local_tool_not_production_deployed",
       "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
-      "resume": "11/19 19시 최신 main/실제 공개 묶음과 보존 후보9개 검증 그룹·브라우저/복구 경계 감수를 재개한다. 불충분하면20일11시에 이어가고 쓰기 API 작업분해는 감수 결과 뒤에 둔다. 이번 fresh-data 보충을 전체 감수/통합 완료로 확대하지 않는다."
+      "resume": "로컬 읽기 v1의9그룹 감수·최신 main 통합을 마쳤다.11/20 11시 쓰기 API 역할/인가·버전 충돌·중복·복구 계약 작업분해를 검토하며 운영 API/인증/쓰기는 후속이다.",
+      "integration_revision": "13c79914ef60141535f8427e09e15303caa81ada",
+      "integration_run": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
     }
   },
   "verification": {
-    "status": "로컬 v1 구현·기존 자동/독립 데이터·Chrome 근거 보존,11/19 fresh-data 보충 완료;19시 정식 후보 감수/통합 판단 전",
+    "status": "로컬 읽기 v1의 최신 입력·9그룹 독립 감수·main 통합 완료; 공개 관리자/운영 API·인증·쓰기·실사용은 미완료",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -128,11 +132,12 @@
       ".automation/cloudflare/reader-engagement/src/study-library.js",
       "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
-      "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md"
+      "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
+      "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
     ],
     "remaining_limits": [
-      "지난18일 예정 감수의 실제 완료는 미확인이다.11/19 19시 정식9그룹 감수 재개·불충분하면20일11시 계속이며 fresh-data 보충은 전체 감수/통합 완료가 아니다.",
-      "운영 API/인증/쓰기/원격 미리보기·운영 배포·실사용과 Safari/실기기 검증은 미실시"
+      "로컬 도구만 통합했으며 운영 API/인증/쓰기/원격 미리보기·공개 관리자 URL·실사용·Safari/실기기 검증은 미실시다.",
+      "43개 내용 미확인은 공개 present와 별개인 검토 입력/출력 근거 부족이다. 과학 감수 결과로 해석하지 않는다."
     ],
     "fresh_data_intake_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
@@ -161,6 +166,44 @@
         "scope": "성공한 보충 인수 뒤 정상 DQE가 추가됐다. 저장한 e959/c041 묶음은 당시 근거이며19시 감수는 후속 최신 입력을 다시 인수한다.",
         "old_inventory_overwrites_current_source": false
       }
+    },
+    "independent_review_20261119_evening": {
+      "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+      "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+      "integration_revision": "13c79914ef60141535f8427e09e15303caa81ada",
+      "source_revision": "46a44c924678a45df895d3c8a57d40467ed59424",
+      "release_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+      "registered": 212,
+      "reviews": 58,
+      "archive": 153,
+      "external": 1,
+      "notification_members": 74,
+      "reconciled": 0,
+      "content_matches": 168,
+      "content_unknown": 43,
+      "not_applicable": 1,
+      "unknown_reasons": {
+        "current_input_output_binding_insufficient": 39,
+        "reviewed_output_hash_absent": 4
+      },
+      "snapshot_token": "d7fc6f2dbbff03b021b2ebe97d30495354cb8303b8a354dc0a4acc4b3c9c6394",
+      "inventory_sha256": "cdde7d5ff89adbfa9a0566b6ba1d938753e5a3c1310bd398d560ad50a9ef7b7a",
+      "inventory_bytes": 551983,
+      "nine_review_groups": "passed",
+      "independent_python_tests": 38,
+      "additional_compound_fixtures": 3,
+      "independent_boundary_selected_python_tests": 5,
+      "independent_node_tests": 8,
+      "integration_python_tests": 38,
+      "integration_node_tests": 8,
+      "local_chrome_flow_checks": 19,
+      "source_files_preserved": 2550,
+      "baseline_files_preserved": 4,
+      "candidate_files_unchanged": 9,
+      "browser_scope": "실제 로컬 Chrome320/1280, 키보드·검색·복합필터·50/100·빈/오류/악성제목·GET 경계. 생산/실기기 검증 아님.",
+      "browser_harness_correction": "fieldset의 Playwright isDisabled 판정을 DOM disabled 속성으로 바로잡아 오류 상태를 확인했다. 제품 수정이나 성공 동선 전체 재실행은 아니다.",
+      "public_deployment": false,
+      "post_or_db_or_notification_writes": 0
     }
   },
   "observation": {
@@ -178,6 +221,10 @@
       "intake_public_reference": "c04132461340eb4496976f512ee6ef30e0812235",
       "subsequent_preserved_source": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
       "latest_editorial_completion_record": "2764e07"
+    },
+    "evening_result": {
+      "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+      "result": "같은9파일을 최신46a44c9 위에 통합하고 로컬 검사38/8을 통과했다. 기존 정상 게시·원본·등록·요청·공개 자산을 바꾸지 않았다. 공개 배포를 유발하지 않는 로컬 도구 통합이다."
     }
   },
   "recovery": {
@@ -185,14 +232,14 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/19 19시 보존 후보79cc54e와 최신 main/실제 release·catalog·updates를 함께 인수해9그룹 독립 감수를 재개한다. 미완료면20일11시에 이어가며 지난19일11시 쓰기 API 작업분해도 감수 결과 뒤로 함께 순연한다. 즉시 배포 납기나 인증/쓰기 완료로 확대하지 않는다.",
+  "next_action": "11/20 11시 기존 게시 경로를 재사용하는 쓰기 API의 역할/인가·기준 버전 거절·멱등성·중복 알림·실패/복구 계약을 작업분해한다. 로컬 목록 v1은 필요 시 최신 공개 묶음으로 사용하며 전체 관리/쓰기 완료로 처리하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "local_candidate_implemented_initially_validated_not_deployed",
-    "next_scheduled_step_at": "2026-11-19T19:00:00+09:00",
-    "next_review_at": "2026-11-19T19:00:00+09:00",
-    "scheduled_step": "최신 main/동일 실제 공개 묶음 인수·읽기 후보9그룹 독립 감수 재개",
+    "state": "local_readonly_v1_reviewed_integrated_write_contract_next",
+    "next_scheduled_step_at": "2026-11-20T11:00:00+09:00",
+    "next_review_at": "2026-11-20T11:00:00+09:00",
+    "scheduled_step": "쓰기 API 계약·권한/충돌/중복/복구 작업분해",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -201,11 +248,12 @@
     "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
     "continuation_if_incomplete_at": "2026-11-20T11:00:00+09:00",
-    "write_api_breakdown_target": "2026-11-20T11:00:00+09:00"
+    "write_api_breakdown_target": "2026-11-20T11:00:00+09:00",
+    "local_v1_completed_at": "2026-11-19T10:13:34.746312+00:00"
   }
 }

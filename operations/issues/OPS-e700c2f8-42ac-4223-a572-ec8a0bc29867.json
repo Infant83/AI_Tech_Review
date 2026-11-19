@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 36,
+  "record_version": 37,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-19T04:53:07.744651+00:00",
+  "updated_at": "2026-11-19T10:13:34.746312+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "최초 점검의 문서 감수·설정 재조회 통과; 후속 예약 회차 결과는 monitoring_baseline·observation 참조",
+    "status": "19시 새 정상 게시3건의 attempt1·네 작업·실제 배포 단계와 기존 독립 HTTPS 근거를 대조, 새 미해결 실패0",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -135,39 +135,39 @@
       "operations/runs/20261115T215544Z-33e8ff0b-a329-441e-95cb-35a35362a18a.md",
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
       "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
-      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-19T04:44:00.521Z",
-    "last_successful_actions_check_at": "2026-11-19T04:43:22.320555Z",
-    "mail_window": "마지막 성공에서48시간 겹친11/15T06:04:43Z부터 in:anywhere·GitHub 발신자/저장소·읽지 않음 제한 없이1페이지0통·다음없음·상태변경/오류0.",
-    "actions_window": "48시간 겹침 목록1페이지16run·attempt1/success, 이전 체크포인트 뒤 새run0. 활성5상태 각1페이지0. 오래전 생성 run의 완료 재시도 전체 이력 재검색은 아니며 기존 성공4jobs/로그를 재조회하지 않았다. 이후 새 정상 DQE run44461708586은 별도 보충으로attempt1 네 작업 성공·synced74/new0/queued0을 확인했다.",
+    "last_successful_mail_check_at": "2026-11-19T10:06:32.223Z",
+    "last_successful_actions_check_at": "2026-11-19T10:07:19.015242Z",
+    "mail_window": "48시간 겹친11/17T04:44:00Z부터 in:anywhere·GitHub 발신자/저장소·읽지 않음 제한 없이1페이지0통·다음없음·상태변경/오류0.",
+    "actions_window": "48시간 겹침 목록1페이지4run·그중새정상3run attempt1/네작업·실제배포단계성공. 활성5상태 각1페이지0. 옛생성 실행의 완료 재시도 전체 재검색은 아님. 최신 게시자의 기존 독립 HTTPS·동기화 근거 재사용.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
-    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "live_source_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+    "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
     "supplemental_actions_check_at": "2026-11-19T05:03:14.948324Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-19T04:43:22.320555Z",
+    "last_full_actions_check_at": "2026-11-19T10:07:19.015242Z",
     "supplemental_successful_runs": [
       "44461708586"
     ]
   },
   "observation": {
-    "status": "11/19 기록 공백 통합 delta·새 미해결 실패 없음",
+    "status": "19시 새 정상3run의 네 작업/실제 배포 단계·기존 공개 검증 대조, 새 미해결0",
     "period": {
-      "mail": "2026-11-19T04:44:00.521Z",
-      "actions": "2026-11-19T04:43:22.320555Z",
-      "active": "2026-11-19T04:43:24.451247Z",
-      "supplemental_api": "2026-11-19T05:03:14.948324Z"
+      "mail": "2026-11-19T10:06:32.223Z",
+      "actions": "2026-11-19T10:07:19.015242Z",
+      "active": "2026-11-19T10:07:23.760202Z"
     },
-    "result": "초기04:43 목록/04:44메일 범위에서 새run/실패0을 확인한 뒤 동시 정상 DQE run1개를 별도 보충했다.44461708586 네 작업과 실제 HTTPS0e15/PDF SHA 확인·new0/queued0이며 새 미해결0이다. 초기복구3개 metadata와 새복구사본 보충을 구분하고 실제복원·재실행·메일변경·관찰자직접DB쓰기는0이다.",
+    "result": "새정상3건은 기존 편집부 게시 기록으로 연결했다. 원시 로그·기기 알림 재현·복원 시험·메일변경·관찰자 DB쓰기/알림은 수행하지 않았다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -386,9 +386,9 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-17T06:04:43.990Z",
-      "full_api": "2026-11-17T06:05:35.788779Z",
-      "active_states": "2026-11-17T06:05:37.031172Z"
+      "mail": "2026-11-19T10:06:32.223Z",
+      "full_api": "2026-11-19T10:07:19.015242Z",
+      "active_states": "2026-11-19T10:07:23.760202Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -426,6 +426,37 @@
       "recovery_bytes": 724558589,
       "recovery_expires_at": "2026-12-19T05:01:38Z",
       "actual_restore": false
+    },
+    "evening_20261119": {
+      "run_reference": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
+      "mail_checked_at": "2026-11-19T10:06:32.223Z",
+      "api_checked_at": "2026-11-19T10:07:19.015242Z",
+      "mail_pages": 1,
+      "mail_messages": 0,
+      "api_pages": 1,
+      "overlap_runs": 4,
+      "new_success_runs": [
+        44463401926,
+        44464572203,
+        44468027651
+      ],
+      "new_unresolved_failures": 0,
+      "actual_deploy_steps": "all_three_success",
+      "publication_evidence_reused": ".automation/writing-reviews/legacy-refresh/2026-11-19-resources/live-verification.json",
+      "latest_public_source": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
+      "artifacts": {
+        "all": 123,
+        "pages": 2,
+        "unexpired_recovery_copies": 3,
+        "newest_bytes": 726827715,
+        "expires_at": "2026-12-19T05:57:13Z"
+      },
+      "restore_performed": false,
+      "limits": [
+        "Created-time overlap plus active queues and known unresolved runs; not exhaustive re-scan of completed retries for all old-created runs.",
+        "Known successful publication job/log evidence reused; no device push receipt or restore test.",
+        "No mail state, provider, source, Git or public-record mutation."
+      ]
     }
   },
   "recovery": {
@@ -433,5 +464,5 @@
     "execution_reference": null,
     "result": "사이트·DB·글·PDF·CI 코드 변경이나 실제 롤백 없음"
   },
-  "next_action": "각 마지막 성공 시각부터48시간을 겹쳐 GitHub발신자·저장소·in:anywhere 조건으로 조회한다. 기존 Pages 회복은 다음 정상 게시에서 재발 여부만 관찰하고 같은 실패 알림을 다시 통지하거나 검증용 재실행·푸시를 하지 않는다."
+  "next_action": "다음 기존 회차에서 마지막 메일/API 성공 확인부터48시간 겹침·끝페이지와 새/기존 미해결 run/attempt를 대조한다. 이전 성공/실기기·복원 미확인을 반복 실행으로 대체하지 않는다."
 }
