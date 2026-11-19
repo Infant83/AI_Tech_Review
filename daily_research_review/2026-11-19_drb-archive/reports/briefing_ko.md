@@ -1,0 +1,22 @@
+마요라나 큐비트가 기대를 모으는 까닭은 정보를 멀리 떨어진 모드들의 공동 패리티에 저장해 국소적인 교란의 영향을 줄일 수 있기 때문이다. 소자에서 이 보호를 살피려면 두 질문이 만난다. 관측한 신호가 어떤 상태에서 나왔는가, 그리고 그 상태에 오류가 들어오는 길은 무엇인가. 이번 두 이론 연구는 각각의 질문을 더 구체적인 에너지 조건과 측정량으로 바꾼다.<span class="citation">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>
+
+Bhattacharyya와 van Heck은 네 마요라나 모드를 가진 초전도 섬, tetron을 외부 전극과 연결한 열린 양자계로 계산했다. 낮은 에너지의 짝수 패리티 구역에 저장한 큐비트에서는 전자 한 개가 섬에 드나들 때 드는 충전 에너지 U가 열에너지보다 크면 외부 준입자에 의한 오류가 억제된다. 그러나 유한 길이 소자에서는 모드가 겹치며 큐비트 상태의 에너지가 갈라진다. 같은 전극 결합과 ε₁=ε₂=ε인 단순 모형에서 큐비트의 두 상태가 2ε만큼 갈라지면, 두 전이 장벽은 U−ε와 U+ε가 된다. 낮아진 장벽이 열에너지에 가까워질수록 충전 에너지로 얻던 보호도 약해진다. 충전 에너지, 잔여 모드 겹침, 온도와 전극 결합을 함께 읽어야 하는 이유다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+Roy·Sau·Tewari는 상태를 읽는 쪽의 문제를 다뤘다. 반도체–초전도체 나노선의 양 끝을 양자점에 연결해 고리를 만들면 자속을 바꾸며 패리티에 따른 신호를 볼 수 있다. 양자 정전용량은 게이트 전압에 대한 에너지의 굽음을 읽는다. 다만 무질서가 만든 낮은 에너지 상태도 비슷한 정전용량 신호를 낸다. 연구진은 자속에 대한 에너지 응답인 역양자 인덕턴스를 함께 계산했다. 분석한 위상 모형에서는 두 패리티 가지가 같은 자속에서 교차했고, 비교한 자명한 모형의 좁은 이중 교차 부근에는 역인덕턴스의 극값이 나타났다. 서로 다른 변수를 흔들어 얻는 두 응답이 가설을 가려내는 단서를 보탠 것이다.<span class="citation">[<a href="#ref-2">2</a>]</span>
+
+APS Physics의 Ryan Wilkinson은 이 연구를 가짜 마요라나 신호를 구별할 이론적 측정 제안으로 소개했다. 원논문과 해설에서 제안한 것은 정전용량과 인덕턴스를 함께 측정하는 실험이다. 이번 결과 자체는 해석 모형과 미시적 수치 계산에서 나왔다.<span class="citation">[<a href="#ref-2">2</a>, <a href="#ref-3">3</a>]</span>
+
+두 연구를 엮으면 ‘긴 수명’이나 ‘마요라나와 닮은 신호’를 읽는 질문도 선명해진다. 수명이 어느 초기 상태와 오류 경로를 반영하는지, 두 응답이 어떤 대안 모형을 구별하는지 함께 살펴볼 수 있다. 다음 리뷰에서는 전하 장벽과 모드 겹침이 정하는 보호 조건을 출발점으로, 패리티 판독의 신호와 그 해석이 어떻게 연결되는지 다뤄볼 만하다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1103/1d2y-fpbl">S. Bhattacharyya and B. van Heck, Dynamics of Majorana tetron qubits under quasiparticle poisoning, Phys. Rev. B 114, 285419 (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1103/x5ts-xw51">B. B. Roy, J. D. Sau, and S. Tewari, Quantum inductance as a phase-sensitive probe of fermion parity switching in Majorana nanowires, Phys. Rev. B 114, 295406 (2026).</a></li>
+<li id="ref-3"><a href="https://doi.org/10.1103/Physics.19.s142">R. Wilkinson, Exposing Majorana impostors, Physics 19, s142 (2026).</a></li>
+</ol>
+
+## 작성·검증
+
+편집부(AEDAUT) root가 두 논문의 초록·서론과 APS Physics Synopsis를 읽고 집필했다. aps_condensed_survey가 tetron의 최종 출판본 모형·감쇠식·그림과 Roy 등의 공개 저자판 arXiv:2603.12256v1의 응답식·무질서 모형을 조사했다. Roy 등의 최종 본문은 구독 제한으로 읽지 못했으며, 최종 초록·서지와 공개 v1의 세부 계산을 구별했다. 독립 담당자가 과학적 조건·서지·한영 대응과 목록 요약을 교차 감수했다. 원 수치 계산이나 실험은 독립 재현하지 않았다. 마지막 문단은 심층 리뷰 제안이다. AI 보조: OpenAI Codex, 정확한 실행 모델 식별자는 미보존이다. 사람의 문장별 감수는 수행하지 않았다. 웹 작성일·추가 근거 기준일은 2026년 11월 19일이다.
+

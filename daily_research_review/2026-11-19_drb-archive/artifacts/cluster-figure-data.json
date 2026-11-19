@@ -1,0 +1,53 @@
+{
+  "source": {
+    "doi": "10.1038/s43588-026-01076-9",
+    "publisher_data": "https://static-content.springer.com/esm/art%3A10.1038%2Fs43588-026-01076-9/MediaObjects/43588_2026_1076_MOESM18_ESM.xlsx",
+    "source_sha256": "4d72745c675b7ddb5539279219b938109267843cfdbbbc635a147e3aadbfff23",
+    "analysis_recipe": "https://github.com/webbtheosim/data-efficient-regression/blob/631296b91a0b2de790de4f4b5cb563f223e2f66b/analysis/survey_results.ipynb",
+    "methods_edition": "ChemRxiv v2, 6 August 2026, DOI10.26434/chemrxiv.15001127/v2",
+    "methods_url": "https://doi.org/10.26434/chemrxiv.15001127/v2"
+  },
+  "metric": "Dimensionless task-normalized Spearman rank correlation; higher is better. Not accuracy or probability.",
+  "rows": [
+    {
+      "label": "Cluster (k-medoids)",
+      "mean": 0.9034052559470382,
+      "sem": 0.0027190513254619487,
+      "n": 3220
+    },
+    {
+      "label": "Best tested AL: medoids initialization, neural-network surrogate, cluster-margin batches",
+      "mean": 0.8928289658950735,
+      "sem": 0.0028487417847787777,
+      "n": 3220
+    },
+    {
+      "label": "Random",
+      "mean": 0.8728647309788166,
+      "sem": 0.0030342073050759204,
+      "n": 3220
+    }
+  ],
+  "conditions": {
+    "training_size": 100,
+    "initial_tasks": 60,
+    "analyzed_tasks": 46,
+    "algorithms": 100,
+    "predictors": 7,
+    "seeds": 10,
+    "evaluation": "Whole predefined library including training points",
+    "task_filter": "Mean Spearman rho>0.1, following the authors' notebook",
+    "normalization": "Best seed-averaged algorithm–predictor mean for each task is the task denominator; then average normalized raw values over tasks, predictors and seeds.",
+    "errorbars": "SEM of 3220 task×predictor×seed score contributions, following author analysis; not an independent paired significance test.",
+    "level": "Independent deterministic reaggregation of supplied results only; no model training or experiment rerun"
+  },
+  "rights": {
+    "original_art_reused": false,
+    "source_values_credit": "Q. M. Gallagher, S. Hasko, and M. A. Webb",
+    "new_figure": "Editorial presentation and reaggregation",
+    "preprint_license": "CC BY 4.0",
+    "preprint_license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "publisher_edition": "Exclusive licence to Springer Nature America; original figure artwork is not reused",
+    "code_license": "GPL-3.0"
+  }
+}
