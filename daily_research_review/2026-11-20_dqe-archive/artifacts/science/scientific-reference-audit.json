@@ -1,0 +1,161 @@
+{
+  "document_id": "2026-11-20-daily-quantum-exercise",
+  "original_issue_date": "2026-11-20",
+  "review_date": "2026-11-20",
+  "review_team": "AEDAUT",
+  "review_mode": "Independent agent reading of all four exercise pages, exhaustive classical checks and primary-source comparison",
+  "human_line_by_line_review": false,
+  "result": "Scientific conditions, QUBO formulation, optimality argument and probability calculations pass",
+  "calculation": {
+    "script": "verify_exercise.py",
+    "results": "calculations.json",
+    "execution_level": "Classical enumeration and arithmetic; no CP-SAT execution, annealer simulation or QPU execution",
+    "checks": [
+      "Constructed schedule reaches the five-hour job-chain and resource-load lower bounds.",
+      "At deadline five hours, all 16384 assignments of 14 logical variables were evaluated; the nonnegative constraint penalties equal the independently expanded quadratic polynomial on every assignment.",
+      "Exactly one zero-energy assignment exists, matching the independently checked feasible schedule among all 144 start-time combinations.",
+      "At deadline four hours, all 1024 assignments and all 36 start-time combinations were checked; no feasible schedule exists and the minimum penalty energy is two.",
+      "For p=0.10 and p=0.02, exact rational powers verify that 29 and 149 trials are the smallest counts reaching 95 percent success under independent stationary sampling.",
+      "Fixed cost plus sampling gives 9.45 and 15.45 seconds; 40 samples at p=0.02 succeed with probability 0.554299596049049.",
+      "A perfectly correlated Bernoulli-batch counterexample demonstrates why the marginal p alone does not justify the independent-trial formula."
+    ]
+  },
+  "scientific_findings": [
+    {
+      "topic": "Schedule and encoding",
+      "finding": "The nonpreemptive operations occupy half-open intervals [0,2) and [2,5) on alternating resources. Positive feasibility penalties have H=0 exactly for valid schedules. Fourteen is the unpruned logical binary-variable count, not a physical-qubit estimate."
+    },
+    {
+      "topic": "Success and timing",
+      "finding": "The success criterion combines constraint feasibility with completion by the selected schedule deadline. The sample formula assumes independence and constant p. Maintenance makespan is measured in hours; solver latency is measured in seconds."
+    },
+    {
+      "topic": "Adoption and proof",
+      "finding": "The first hypothetical quantum scenario meets the ten-second computation target but is slower than the same-instance two-second classical baseline. Failing to sample a deadline-compliant schedule does not prove infeasibility. A separate lower-bound or exact-solver certificate is needed."
+    },
+    {
+      "topic": "Validation proposal",
+      "finding": "Estimate success uncertainty, inspect dependence and repeat complete batches across instances, embeddings and dates. The proposed confidence-bound and matched-baseline adoption targets are educational choices, not a demonstrated deployment result."
+    }
+  ],
+  "references": [
+    {
+      "number": 1,
+      "bibliography": "Google OR-Tools, The job shop problem (accessed 20 November 2026).",
+      "url": "https://developers.google.com/optimization/scheduling/job_shop",
+      "accessed": "2026-11-20",
+      "directly_read": [
+        "Problem definition, nonpreemption, precedence, exclusive-resource constraints and makespan",
+        "Program sections defining interval variables, NoOverlap constraints, job precedence and maximum-end-time objective"
+      ],
+      "supports": "The classical job-shop constraint structure and CP-SAT modeling approach",
+      "limits": "The official example was read, not executed. Its example data and reported outputs are not the exercise's factory, toy instance or two-second timing assumption."
+    },
+    {
+      "number": 2,
+      "bibliography": "D. Venturelli, D. J. J. Marchand, and G. Rojo, Quantum annealing implementation of job-shop scheduling, arXiv:1506.08479v2 (2016).",
+      "url": "https://arxiv.org/abs/1506.08479v2",
+      "full_text_used": "https://arxiv.org/pdf/1506.08479v2",
+      "version": "v2, 17 October 2016",
+      "first_submission": "2015-06-29",
+      "accessed": "2026-11-20",
+      "authors_verified": [
+        "Davide Venturelli",
+        "Dominic J. J. Marchand",
+        "Galo Rojo"
+      ],
+      "publication_status": "The arXiv record identifies presentation at the COPLAS workshop of ICAPS 2016. No journal reference or verified proceedings pagination was supplied by that record; the citation identifies the versioned arXiv manuscript.",
+      "title_variation": {
+        "arxiv_record": "Quantum Annealing Implementation of Job-Shop Scheduling",
+        "pdf_title_page": "Job Shop Scheduling Solver based on Quantum Annealing",
+        "bibliography_choice": "Use the arXiv record title for the versioned arXiv citation and retain this title variation as an audit note outside the bibliographic entry."
+      },
+      "directly_read": [
+        "ArXiv author, title, version history, abstract and workshop metadata",
+        "PDF pages 1-3: job-shop decision problem and time-indexed QUBO constraints",
+        "Page 4: pruning and preprocessing costs",
+        "Pages 5-7: embedding, parameter setting and D-Wave experimental setup",
+        "Page 8 classical-comparison discussion"
+      ],
+      "supports": "Author-reported physical D-Wave Vesuvius study including ensembles with up to six jobs and six machines, time-indexed QUBOs, pruning, embedding and classical comparisons",
+      "timing_scope": "The benchmark uses a 99 percent ground-state success target and annealing-time accounting that neglects embedding, setup and latency; Figure 4 selects the best of five gauges. These are not the exercise's 95 percent end-to-end timings.",
+      "limits": "No whole 15-page proof/appendix audit, hardware rerun or numerical reconstruction of the paper's benchmark was performed. Neither the exercise's probabilities nor its second-scale stage costs were taken from this paper."
+    }
+  ],
+  "evidence_separation": {
+    "independent": "Exhaustive classical checks of the four-operation exercise and the independent-trial arithmetic",
+    "reported_experiment": "Venturelli and colleagues' historical D-Wave job-shop study",
+    "hypothetical": "Factory scenario, task durations, operational instance, success probabilities, classical and quantum timings, and adoption thresholds",
+    "proposed_followup": "Matched constraints, objective, validation rules and complete timing; empirical success and dependence checks"
+  },
+  "related_existing_reading": {
+    "title": "D-Wave 분자 역설계 실험: QPU가 고른 후보를 DFT까지 확인해 보니",
+    "url_ko": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/index.html",
+    "url_en": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/index.html",
+    "source_ko": "2026-08-27_dwave-molecular-inverse-design-benchmark/reports/2026-08-27_dwave-molecular-inverse-design-benchmark_final_review.md",
+    "source_en": "2026-08-27_dwave-molecular-inverse-design-benchmark/reports/2026-08-27_dwave-molecular-inverse-design-benchmark_final_review_en.md",
+    "directly_read": "Both language sections on QUBO/exact checks, the 100-read QPU submission, embedding and sample validity, timing scope, and matched follow-up comparison",
+    "connection": "An existing worked comparison separates exact mathematical encoding, sample constraints, embedding chains and unequal timing scopes. The molecular application is distinct from job-shop scheduling."
+  },
+  "editorial_review": {
+    "reviewer_role": "AEDAUT independent scientific and bilingual review",
+    "review_date": "2026-11-20",
+    "result": "pass",
+    "listing": {
+      "ko": {
+        "title": "정비 일정의 최적성과 성공까지의 시간",
+        "summary": "공유 자원을 쓰는 정비 일정의 최단 완료시간을 증명하고, 제한시간 안에 해를 얻을 확률을 계산한다. QUBO의 제약과 샘플 반복 비용을 함께 살펴, 유효한 일정과 믿을 만한 솔버를 비교하는 기준을 익힌다."
+      },
+      "en": {
+        "title": "Optimal maintenance schedules and time to success",
+        "summary": "Prove the shortest completion time for a maintenance schedule with shared resources, then calculate the chance of obtaining a solution within a computation budget. Connect QUBO constraints and repeated-sampling costs to assess schedule feasibility and solver reliability."
+      },
+      "review": "Titles and separate listing summaries match the exercise and contain no numerical answer or adoption verdict."
+    },
+    "checks": [
+      "Both languages preserve all numeric answers, units and assumptions.",
+      "The toy mathematical instance and the separate operational-scale probability/timing scenario remain distinct.",
+      "Logical variables and physical qubits, schedule makespan and computation latency, and sampling failure and infeasibility proof are distinguished.",
+      "Reference order is 1 then 2; both language bibliographies match.",
+      "Numeric answers, reasoning and adoption decisions are inside initially closed details.",
+      "The related existing review connects actual encoding and sample-validation issues; its experiments are not claimed as newly reproduced.",
+      "Actual primary-source access scope and the absence of QPU or published-benchmark reproduction are disclosed.",
+      "Final passive fragments use xᵢₜ and ∑ₜ in place of HTML sub tags; the notation retains the same operation/start-time indices and summation.",
+      "English uses 'machines' for the two maintained equipment items, avoiding ambiguity with factory sites; this terminology change preserves durations, resources and all mathematics."
+    ],
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-20_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 7881,
+        "sha256": "d1c040ff8123004d0facc4a7d414cc142d880f34b37efed5adb3bb3bde3fc0b4"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-20_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 7994,
+        "sha256": "899da6a847059707ed27fde72bc159ff52a5bb31dff4d56d2b40753ffa99276e"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-20_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 7692,
+        "sha256": "2123a68646c9c9d7ba71465bad41d90bf0b74279b9560a43eeb35bf1c803b04a"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-20_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 7805,
+        "sha256": "3bd97d20fd598005f69ba1aa2222d63ed44d395349b1286acde90019fda36db5"
+      }
+    ]
+  }
+}

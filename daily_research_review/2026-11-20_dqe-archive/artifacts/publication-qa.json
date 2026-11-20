@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "document_id": "2026-11-20-daily-quantum-exercise",
+  "publication_status": "candidate_and_browser_verified_ready_for_deployment",
+  "source_base": "c55ccc4b3acae1f0a98e846c5c9d0bfb1d521240",
+  "deployed_baseline": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+  "targeted_python_tests": {
+    "run": 103,
+    "passed": 103,
+    "failed": 0,
+    "skipped": 0
+  },
+  "node_search_navigation_tests": {
+    "run": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "existing_bilingual_editorial_pages_byte_identical": 44,
+  "public_pdf_sha256": "6e7de6ebb3afd5cbe0827e24e68e90811ff7f816ac529dfb478010f9e80913be",
+  "public_pdf_bytes": 74884,
+  "scientific_reference_review": "science/scientific-reference-audit.json",
+  "pdf_review": "public-pdf-qa.json",
+  "build_dependency": "Pillow 11.2.1",
+  "human_sentence_review": "not performed",
+  "live_verification": "pending",
+  "reviewed_candidate_html": {
+    "ko": {
+      "path": "briefings/exercises/2026-11-20/index.html",
+      "bytes": 13693,
+      "sha256": "5ce94e79083c7e66fbbd804976840039949b9157ce4ea4223baf81da20d00d49"
+    },
+    "en": {
+      "path": "briefings/exercises/2026-11-20/en/index.html",
+      "bytes": 13559,
+      "sha256": "4398c993d4ad63c5662161917ea4e552aca09e5cf4e5ce7e1804e8b253835298"
+    }
+  },
+  "release_check": {
+    "additions": [
+      {
+        "group": "archive",
+        "id": "2026-11-20-daily-quantum-exercise"
+      }
+    ],
+    "blockers": [],
+    "counts": {
+      "archive": 158,
+      "external": 1,
+      "publications": 76,
+      "reviews": 58
+    },
+    "ok": true
+  },
+  "payload_check": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ]
+  },
+  "final_refinement": "Two English equipment terms clarified. KO scientific body unchanged; paired bilingual articleVersion and reader-update/archive editorial bindings regenerated. Only the two new article HTML files and their two catalogs differ from the initial candidate; all 44 existing dated pages remain byte-identical.",
+  "browser": {
+    "engine": "Chromium via Playwright",
+    "viewport": [
+      390,
+      844
+    ],
+    "tested": [
+      "KO/EN title, date and original issue",
+      "Initially closed details with no numeric answers/verdict visible; pointer and Enter/Space operation",
+      "Unicode xᵢₜ and ∑ₜ rendered legibly",
+      "Language switch returns matching issue",
+      "Nov20 calendar/list preserves DQB and DRB identities",
+      "Korean maintenance search returns one new exercise; DQE filter returns five issues",
+      "All five DQE PDFs open in new tabs and actual downloads match SHA256",
+      "Final English equipment terminology and paired version settings checked separately",
+      "Both related review HTTPS pages return 200"
+    ],
+    "horizontal_overflow": false,
+    "reviewers": [
+      "dqe_ops_1118",
+      "root"
+    ],
+    "agent_checks": 16,
+    "agent_screenshots_reviewed": 12,
+    "root_screenshots_reviewed": 9,
+    "qa_screenshots": "private only"
+  }
+}

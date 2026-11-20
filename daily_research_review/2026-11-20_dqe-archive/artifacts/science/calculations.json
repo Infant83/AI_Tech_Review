@@ -1,0 +1,234 @@
+{
+  "execution": {
+    "kind": "classical exhaustive enumeration and probability arithmetic",
+    "python": "3.12.14",
+    "CP_SAT_executed": false,
+    "QPU_executed": false,
+    "annealer_simulation_executed": false
+  },
+  "operations": {
+    "A1": {
+      "resource": "technicians",
+      "duration_hours": 2
+    },
+    "A2": {
+      "resource": "crane",
+      "duration_hours": 3
+    },
+    "B1": {
+      "resource": "crane",
+      "duration_hours": 2
+    },
+    "B2": {
+      "resource": "technicians",
+      "duration_hours": 3
+    }
+  },
+  "job_chain_lower_bounds_hours": [
+    5,
+    5
+  ],
+  "resource_load_lower_bounds_hours": {
+    "crane": 5,
+    "technicians": 5
+  },
+  "proved_minimum_makespan_hours": 5,
+  "schedule_intervals_hours": {
+    "A1": [
+      0,
+      2
+    ],
+    "A2": [
+      2,
+      5
+    ],
+    "B1": [
+      0,
+      2
+    ],
+    "B2": [
+      2,
+      5
+    ]
+  },
+  "deadline_enumerations": [
+    {
+      "deadline_hours": 4,
+      "variables": [
+        "A1@0",
+        "A1@1",
+        "A1@2",
+        "A2@0",
+        "A2@1",
+        "B1@0",
+        "B1@1",
+        "B1@2",
+        "B2@0",
+        "B2@1"
+      ],
+      "logical_variable_count_before_pruning": 10,
+      "binary_states_exhaustively_evaluated": 1024,
+      "start_time_combinations_independently_evaluated": 36,
+      "precedence_forbidden_pairs": 12,
+      "resource_forbidden_pairs": 12,
+      "minimum_QUBO_energy": 2,
+      "zero_energy_count": 0,
+      "feasible_schedules": [],
+      "energy_histogram": {
+        "2": 13,
+        "3": 116,
+        "4": 55,
+        "5": 132,
+        "6": 48,
+        "7": 158,
+        "8": 12,
+        "9": 92,
+        "10": 46,
+        "11": 104,
+        "12": 48,
+        "13": 4,
+        "14": 12,
+        "15": 90,
+        "17": 36,
+        "19": 2,
+        "20": 13,
+        "21": 24,
+        "22": 8,
+        "27": 10,
+        "34": 1
+      },
+      "qubo_zero_iff_feasible_over_all_states": true
+    },
+    {
+      "deadline_hours": 5,
+      "variables": [
+        "A1@0",
+        "A1@1",
+        "A1@2",
+        "A1@3",
+        "A2@0",
+        "A2@1",
+        "A2@2",
+        "B1@0",
+        "B1@1",
+        "B1@2",
+        "B1@3",
+        "B2@0",
+        "B2@1",
+        "B2@2"
+      ],
+      "logical_variable_count_before_pruning": 14,
+      "binary_states_exhaustively_evaluated": 16384,
+      "start_time_combinations_independently_evaluated": 144,
+      "precedence_forbidden_pairs": 22,
+      "resource_forbidden_pairs": 20,
+      "minimum_QUBO_energy": 0,
+      "zero_energy_count": 1,
+      "feasible_schedules": [
+        {
+          "A1": 0,
+          "A2": 2,
+          "B1": 0,
+          "B2": 2
+        }
+      ],
+      "energy_histogram": {
+        "0": 1,
+        "1": 4,
+        "2": 78,
+        "3": 324,
+        "4": 322,
+        "5": 594,
+        "6": 527,
+        "7": 716,
+        "8": 523,
+        "9": 844,
+        "10": 869,
+        "11": 858,
+        "12": 456,
+        "13": 792,
+        "14": 909,
+        "15": 898,
+        "16": 605,
+        "17": 480,
+        "18": 503,
+        "19": 786,
+        "20": 774,
+        "21": 438,
+        "22": 294,
+        "23": 350,
+        "24": 378,
+        "25": 454,
+        "26": 428,
+        "27": 350,
+        "28": 199,
+        "29": 96,
+        "30": 129,
+        "31": 192,
+        "32": 241,
+        "33": 234,
+        "34": 128,
+        "35": 64,
+        "36": 54,
+        "37": 36,
+        "38": 44,
+        "39": 66,
+        "40": 96,
+        "41": 62,
+        "42": 62,
+        "43": 14,
+        "44": 6,
+        "46": 5,
+        "47": 14,
+        "48": 24,
+        "49": 24,
+        "50": 20,
+        "51": 4,
+        "57": 6,
+        "58": 4,
+        "59": 4,
+        "68": 1
+      },
+      "qubo_zero_iff_feasible_over_all_states": true
+    }
+  ],
+  "independent_trial_scenarios": [
+    {
+      "p": "1/10",
+      "minimum_independent_trials_for_95_percent": 29,
+      "success_probability_at_n": 0.9528987130275376,
+      "success_probability_at_n_minus_one": 0.947665236697264,
+      "fixed_seconds": 8.0,
+      "per_sample_seconds": 0.05,
+      "total_seconds": 9.45,
+      "deadline_seconds": 10.0,
+      "meets_ten_second_deadline_under_assumptions": true,
+      "expected_trials_until_first_success": 10.0,
+      "hypothetical_classical_95_percent_seconds": 2.0,
+      "total_divided_by_classical_seconds": 4.725
+    },
+    {
+      "p": "1/50",
+      "minimum_independent_trials_for_95_percent": 149,
+      "success_probability_at_n": 0.9507183456699104,
+      "success_probability_at_n_minus_one": 0.9497125976223576,
+      "fixed_seconds": 8.0,
+      "per_sample_seconds": 0.05,
+      "total_seconds": 15.45,
+      "deadline_seconds": 10.0,
+      "meets_ten_second_deadline_under_assumptions": false,
+      "expected_trials_until_first_success": 50.0,
+      "hypothetical_classical_95_percent_seconds": 2.0,
+      "total_divided_by_classical_seconds": 7.725
+    }
+  ],
+  "samples_available_in_ten_seconds": 40,
+  "success_with_forty_samples_at_p_002": 0.554299596049049,
+  "perfectly_correlated_counterexample": {
+    "assumption": "All sample outcomes in a batch equal one Bernoulli outcome of probability p",
+    "batch_success_probability_for_any_positive_n": "p",
+    "purpose": "Illustrates why marginal success probability alone does not justify the independent-trial formula"
+  },
+  "scope": "Exercise inputs and timings are hypothetical, not measurements of Google OR-Tools or D-Wave hardware.",
+  "result": "all assertions passed"
+}
