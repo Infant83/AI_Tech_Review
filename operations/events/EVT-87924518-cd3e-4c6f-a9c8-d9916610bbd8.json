@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "EVT-87924518-cd3e-4c6f-a9c8-d9916610bbd8",
+  "issue_id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
+  "created_at": "2026-11-20T02:13:49.942598+00:00",
+  "base_record_version": 15,
+  "observation": "DRB 11/20 게시 run44658717706 attempt1의 backend 검사72건 중71건이 통과하고 insights.test.mjs의 비활성 레코드 제외 검사1건이 실패했다. 허용된 응답 데이터 배열 비교는 통과했으나 전체 JSON에 적용한 /inactive|999|synthetic-private-value|secret/가 generatedAt의 밀리초 .999Z에 일치했다. 실제 원시 로그와 해당 test188–211을 대조한 오탐이다. attempt1에서는 deploy/recovery-copy/notify-readers가 모두 건너뛰어 새 공개 배포가 없었다. 승인된 DRB 소스·검사·인증 설정은 변경하지 않고 같은 revision1aee133의 실패 작업을 재실행했다.",
+  "evidence": [
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/1",
+    ".automation/cloudflare/reader-engagement/test/insights.test.mjs",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/2",
+    "https://infant83.io/AI_Tech_Review/briefings/research/2026-11-20/",
+    "https://infant83.io/AI_Tech_Review/archive/files/2026-11-20-daily-research-brief.pdf"
+  ],
+  "proposed_next_action": "운영팀(ADOPT)의 기존 읽기 통계 일감에서 데이터 필드와 타임스탬프를 구분하는 assertion으로 정밀화하고, 밀리초999인 고정시각의 회귀를 추가해 확인한다. 이번 편집부(AEDAUT) 게시 복구는 동일 입력 재실행 결과와 실제 HTTPS 확인을 별도로 기록하며 검사 우회나 권한 변경은 하지 않는다.",
+  "publication_recovery_status": "같은 소스 revision1aee133의 attempt2에서 build·deploy·recovery-copy·notify-readers의 4job과 핵심23step이 실제 성공했다. 실제 HTTPS29경로·봉인 release·공개 PDF와 메일 첨부의 SHA256 일치를 확인했다.",
+  "original_failure_preserved": true,
+  "publication_verified_at": "2026-11-20T02:17:57.348239+00:00",
+  "workflow_attempt": 2,
+  "underlying_test_status": "오탐을 유발한 전체 JSON 정규식 assertion은 아직 수정하지 않았다. 같은 입력의 재실행 성공은 근본 수정이나 재발 방지 검증을 뜻하지 않는다.",
+  "roles": "편집부(AEDAUT)는 승인된 DRB 게시를 완료했고, 검사 개선은 운영팀(ADOPT)의 기존 일감에 인계한다.",
+  "updated_at": "2026-11-20T02:23:48.625963+00:00"
+}
