@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 15,
+  "record_version": 16,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-19T04:53:07.744651+00:00",
+  "updated_at": "2026-11-20T02:28:42.082870+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -59,7 +59,9 @@
     ".automation/cloudflare/reader-engagement/migrations/0003_review_discovery.sql",
     "https://developers.cloudflare.com/web-analytics/data-metrics/dimensions/",
     "https://developers.cloudflare.com/workers/runtime-apis/request/#incomingrequestcfproperties",
-    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "operations/events/EVT-87924518-cd3e-4c6f-a9c8-d9916610bbd8.json",
+    "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md"
   ],
   "limitations": [
     "2026-11-10 최초 조사·기획 단계는 공개 페이지/API를 바꾸지 않았다.11/15 최소 기능의 실제 적용은 아래 변경·검증·관찰 기록으로 구분한다.",
@@ -141,7 +143,8 @@
       "407fb2d135010cb5f5fb9f041a61aba69db22bf8",
       "19077d7960a8881ac4ce9549955dbb023bfdc889",
       "24261ab7307efc184662b3a7786247fba370b36e",
-      "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3"
+      "1f2227cd3bab2d947d86878c9e4bf58a10e9f2a3",
+      "8e0740bfb3cd10abee0efa56ca7719d4aef5bb92"
     ],
     "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/codex/reader-insights-20261115",
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43691636808"
@@ -256,6 +259,28 @@
       "edge_analytics": "Existing Cloudflare beacon injection observed and blocked before transmission during QA; not part of generated reader scripts",
       "new_statistics_get_or_direct_database_writes_or_migrations": 0,
       "existing_publication_sync": "기존 notify-readers의 정상 출판 sync는 articles/publication_state/sync_revisions를 저장했다. synced71/new0/queued0이며 새 통계 GET의 읽기 전용 성질과 구분한다."
+    },
+    "timestamp_privacy_test_fix_20261120": {
+      "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+      "event_reference": "operations/events/EVT-87924518-cd3e-4c6f-a9c8-d9916610bbd8.json",
+      "source_base": "1aee133406e60a03c9cf64d516fe102214c31353",
+      "fix_revision": "8e0740bfb3cd10abee0efa56ca7719d4aef5bb92",
+      "source_files": [
+        ".automation/cloudflare/reader-engagement/test/insights.test.mjs"
+      ],
+      "cause": "정상 generatedAt ISO 시각의999가 전체 JSON fixture 차단 정규식에 일치한 검사오탐",
+      "scope": "전체 허용응답 projection·정확 article/daily 값과 네 table 불변/HTTP/noCookie를 유지했다. runtime/dep/게시물/API/DB 변경 없음.",
+      "deterministic_old_guard_result": "red_exit_1",
+      "timestamp_999_new_guard": "passed",
+      "intentional_leak_mutants_rejected": 8,
+      "targeted_insights_tests": 13,
+      "backend_full_tests": 73,
+      "backend_full_failed": 0,
+      "backend_full_skipped": 0,
+      "independent_diff_review": "PASS",
+      "actual_post_fix_github_ci_observed": false,
+      "observed_attempt1_failure": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/1",
+      "same_input_attempt2_recovered_publication": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/2"
     }
   },
   "observation": {
@@ -274,6 +299,11 @@
       "scope": "초기동일c041 점검 뒤 정상 DQE0e15의 기존 게시 QA·네 작업/실제 HTTPS를 보충했다. 실사용 전체 검증 아님.",
       "subsequent_normal_publication": "0e15eb2ec0e516ebcc8e5da12a3addbd7f58447b",
       "normal_run_all_four_success": true
+    },
+    "ci_timestamp_test_20261120": {
+      "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+      "status": "원인수정·로컬검증/독립감수·통합 완료, 실제후속CI관찰 전",
+      "result": "실행중 정상 DRB를 보존한 뒤 test1파일8e0740b를 인수하고 게시담당의10dafe4 인계event도 함께 보존했다. 원인없는검사완화/검사삭제·운영자재실행·테스트푸시는없다."
     }
   },
   "recovery": {
@@ -281,7 +311,7 @@
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "지난18일 예정 검토를 완료로 소급하지 않는다. 이번 실제 회차의 새 delta/기존 완료 근거를 재사용하고11/20 19시 독자용 통계의 새 실사용/분류 근거를 재검토한다. 새 실패·사용자 근거는 기존 회차에서 앞당겨 확인하고 관찰용 재실행/발송은 하지 않는다.",
+  "next_action": "11/20 19시 기존 실사용/새 피드백 검토와 다음 정상 GitHub CI에서8e0740b 검사수정의 실제 실행 결과를 관찰한다. 새 발행/푸시를 시험 목적으로 만들거나 구판을 재배포하지 않는다. 렉처의 미분류 원칙과 기존 통계/개인정보·합계 보존을 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
