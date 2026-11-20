@@ -1,0 +1,214 @@
+{
+  "date": "2026-11-20",
+  "status": "source_review_complete",
+  "references": [
+    {
+      "key": "fault-tolerant-components",
+      "role": "dqb1120_ft",
+      "source": {
+        "title": "Fault-Tolerant Execution of Error-Corrected Quantum Algorithms",
+        "authors": [
+          "Michael A. Perlin",
+          "Zichang He",
+          "Anthony Alexiades Armenakas",
+          "Pablo Andres-Martinez",
+          "Tianyi Hao",
+          "Dylan A. Herman",
+          "Yuwei Jin",
+          "Karl Mayer",
+          "Chris N. Self",
+          "David Amaro",
+          "Ciaran Ryan-Anderson",
+          "Ruslan Shaydulin"
+        ],
+        "journal": "Physical Review X",
+        "abbrev": "Phys. Rev. X",
+        "volume": 16,
+        "article": "041048",
+        "year": 2026,
+        "doi": "10.1103/gnq3-c2df",
+        "published": "2026-11-19",
+        "accepted": "2026-10-09",
+        "received": "2026-04-06",
+        "revised": "2026-08-23",
+        "vor_url": "https://journals.aps.org/prx/abstract/10.1103/gnq3-c2df",
+        "vor_pdf_url": "https://journals.aps.org/prx/pdf/10.1103/gnq3-c2df",
+        "arxiv_id": "2603.04584v1",
+        "arxiv_submitted": "2026-03-04T20:26:54Z",
+        "arxiv_versions_available": [
+          "v1"
+        ],
+        "arxiv_title": "Fault-tolerant execution of error-corrected quantum algorithms",
+        "author_version_differences": "arXiv metadata uses Dylan Herman and Chris Self; published credits specify Dylan A. Herman and Chris N. Self."
+      },
+      "read_scope": {
+        "vor": "All main text pp1–17; integral appendices A–H pp17–27, with full text and selected graph/table inspection. Bibliographic records for target paper checked; not every cited reference independently audited.",
+        "visual": [
+          "p11 Fig10 simulated Ramsey with/withoutQEC",
+          "p14 Figs13/14 LABS andselectedportfolio",
+          "p15 Fig15 HHL fidelity/discard",
+          "p18 EqA3 propagationexample"
+        ],
+        "arxiv": "Abstract/history and selected v1 comparative sections; did not separately reread all32pp ofv1.",
+        "supplement": "No separate supplementary-material link located in official APS HTML; experimental tables/derivations are integral appendicesA–H in30pVoR.",
+        "data": "VoR says mostdata inAppendixH; additionaldata onrequest. TableIV andV read. No underlying experiment rerun.",
+        "code": "Article links PECOS/QOKit andcompilationpackages; no code execution/independentnumericalreproduction."
+      }
+    },
+    {
+      "key": "first-quantised-chemistry",
+      "role": "root",
+      "citation": "A. V. Ivanov, C. Sünderhauf, J. Kunjummen, N. S. Blunt, and R. Izsák, Quantum simulation of first-quantised chemistry with a sum-of-squares representation, arXiv:2611.24885v1 (2026).",
+      "url": "https://arxiv.org/abs/2611.24885v1",
+      "version": "v1; submitted2026-11-18T18:29:52UTC",
+      "peer_review": "preprint; no journal publication indicated in checked abs",
+      "pdf_sha256": "407e8de17eb01e62d6b649eb12f473eb45b6a0bf5fa726fd7fb0d824c78458a9",
+      "pdf_pages": 50,
+      "read_scope": [
+        "abstract and history",
+        "introduction pp2–3",
+        "mechanism pp4–6,9–10 and HTML SII/III excerpts",
+        "resource estimate S V and discussion S VI pp20–28 at recorded text/figures",
+        "molecular model/active space AppE p36",
+        "cost model AppF pp36,38–40",
+        "visual figures1and14 pp3,25"
+      ],
+      "conditions": [
+        "Use six molecular model/basis cases, not six distinct molecules: H4 in two basis sets plus4transition-metal models;4–24active electrons32–128spatialorbitals.",
+        "Firstquantwavefunctionregister Nceil(log2D), secondquant2D for spatialorbitalsD; sameN-electronfermionicsector and orbitalHamiltonian, not basisfree physicalencoding.",
+        "LUNA nonconvexsumofsquares with signedweights and symmetry shifts plus spectral amplification; smaller register frees ancillas at fixed logicalbudget.",
+        "At fewest secondquantqubits, samebudget FQToffoli reductions3.4,9.8,15.5,15.9,10.3,4.8; up to16 is samebudgetrelativecomparison not eachmethodsminimum and not physicalspeedup.",
+        "At each method own min logicalbudgetFQ1.3–3.5fewerToffoli,1.4–2fewerqubits; at Toffoli-optimalendSQ1.4–3.9fewer exceptH4def2TZVPP.",
+        "SigmaQPE1.0mHa;factorizationerror both total/correlation energy<.3mHa as estimatedUCCSD(T);not rigorousFCIerrorguarantee.",
+        "Cold/hotstoragearchitecture based on denseplanarsurfacecode assumed for register placement/borrowableancillas; no detailedlatticesurgery/factories/code distances/coldlatency/physicalqubit/runtimemodel. rho.3weightedcoldmodel still2.4–8.1Toffolireduction distinctfromunweighted16.",
+        "AppF(e) excludes initialstatepreparation and QPEregisterToffolis;cliffordfree;phasegradientencoding accounted;statePREPblockencoding not groundstatepreparation.",
+        "256orbital generalization factorization classicalcostbottleneck; no OLEDtargetresult; materials/OLED extension is question not directly tested."
+      ],
+      "limits": [
+        "not all50pages/allappendixderivationsread",
+        "no costmodel/code rerun; data and code promised later in S VII and AppF(i)",
+        "no QPU/physicalQEC/runtime simulation"
+      ],
+      "independent_spotcheck": "dqb1120_ft: pp1–3,39–42; fixedbudget/eachminimum/monolithic/hotcold distinctions, notfull50p reread."
+    },
+    {
+      "key": "crest",
+      "authors": [
+        "Wenjie Sun",
+        "Xiaoyu Li",
+        "Zhigang Wang",
+        "Yuchen He",
+        "Shengbin Wang",
+        "Hantao Sun"
+      ],
+      "title": "CREST: A hardware-aware GNN-based framework for high-fidelity and robust superconducting quantum compilation",
+      "original_title": "CREST: A Hardware-Aware GNN-Based Framework for High-Fidelity and Robust Superconducting Quantum Compilation",
+      "type": "preprint",
+      "identifier": "arXiv:2611.24886v1",
+      "submitted_at": "2026-11-18T18:31:37Z",
+      "url": "https://arxiv.org/abs/2611.24886v1",
+      "fulltext_url": "https://arxiv.org/pdf/2611.24886v1",
+      "pages": 14,
+      "main_read_scope": "Main text pp1–13, all methods/results/tables and relevant figure captions; references not individually verified. Visual Fig6/TableII PDFp8 and controls Fig9/10 PDFp10/9 content.",
+      "aps": "W. Sun, X. Li, Z. Wang, Y. He, S. Wang, and H. Sun, CREST: A hardware-aware GNN-based framework for high-fidelity and robust superconducting quantum compilation, arXiv:2611.24886v1 (2026).",
+      "conditions": [
+        "TianYan-176 device:63 available physical qubits,94 edges;324circuits4–20program qubits in7datasets,1000shots/circuit, no readout mitigation orpostselection.",
+        "Main19.03%relative meanH=.21201 vsHAQA=.17811; mean difference.03390,pairedgroup-bootstrap95%[.02244,.04557]. Fullsuite includes173train55validation96holdout.",
+        "Holdout96mean.21347 vsHAQA.18100,17.94%relative;95%pairedinterval[.01274,.05317].",
+        "QSteed sharedrouter comparison19.79%; SAMEcandidate menu ANDroutercomparison18.74%.",
+        "SixdatesSep30/Oct9/12/15/16/18 reusefixedmodel/refreshedcalibration,323commoncircuits95originalholdout,overallmeanleadall6dates;41/42datasetdates.",
+        "CPUonline entireparse/features/GNNscore/placement/routing/nativeconvertmean.168s (TableIV); offline1.295s/width+4.108sGNNcache. Not a completeQPUqueue/shot/wallclock/energy benefit orQPUMLtrainingacceleration.",
+        "StaticQEC tests terminal distributions,notlogicaldecoding/activefeedback. Realdevice fidelityestimate does not validateFTQEC."
+      ],
+      "sha256": "7d5984dedbed570ebadb863451a6664b28c4121eb52b97ed1bd515f92322bdb8",
+      "bytes": 1544873,
+      "checked_at": "2026-11-20T00:42:56.027047+00:00"
+    },
+    {
+      "key": "optipess",
+      "authors": [
+        "Panayiotis Christou",
+        "Shuwen Kan",
+        "Ying Mao"
+      ],
+      "title": "A GPU-accelerated and geometry-aware quantum-classical framework for optimized PES scans with CUDA-Q",
+      "original_title": "A GPU-Accelerated and Geometry-Aware Quantum-Classical Framework for Optimized PES Scans with CUDA-Q",
+      "type": "preprint_used_for_full_methods_of_official_SC26_technical_paper",
+      "identifier": "arXiv:2611.01389v1",
+      "submitted_at": "2026-11-01T00:50:24Z",
+      "url": "https://arxiv.org/abs/2611.01389v1",
+      "fulltext_url": "https://arxiv.org/pdf/2611.01389v1",
+      "pages": 13,
+      "main_read_scope": "Entire main pp1–11 including Algorithms1–4/TableI–VI/Fig1–4; bibliography not independently checked. Visual PDFp9 TablesII/III and p11Fig3. OfficialSC26presentation26slides acquired and metadata checked, notallslidesvisuallyreviewed.",
+      "aps": "P. Christou, S. Kan, and Y. Mao, A GPU-accelerated and geometry-aware quantum-classical framework for optimized PES scans with CUDA-Q, arXiv:2611.01389v1 (2026).",
+      "official_status_sources": [
+        "https://sc26.supercomputing.org/proceedings/papers/paper_pages/pap943.html",
+        "https://sc26.conference-program.com/presentation/?id=pap943&sess=sess234",
+        "https://sc26.supercomputing.org/program/papers/",
+        "https://sc26.supercomputing.org/program/proceedings-archives/"
+      ],
+      "official_status": "Listed technical paper/eventPaper, currentpresentation19Nov14:15–14:37CST. SC26paperspeerreview3–4expertreviews/doubleanonymous; archive entry links26slidepresentation, NOTpublishedfullpaperPDF. IEEE CSDL entrylinkavailablebutactualDOI/pages/fullpaperunverified; Crossreftitlequerydidnotreturnexactwork.",
+      "conditions": [
+        "LOV class-weightedPauli-coefficientdistance drives skip/quick/full pointbudgets; skipcopiespriorparameters ANDpriorenergy,quickwarmstarts/refines.",
+        "18molecules6–14qubits52–1619Paulis; actualquantitativeVQE/UCCSD, QAOAcompatibilityonlynotquantifiedbenchmark.",
+        "CUDA-Q.11/CUDA12/Python3.11,8A100/32XeonCPU,cuStateVecsimulatedQPU; noiselessstatevector mainwalltime, noisyfinite-shotcountseparate; norealQPU.",
+        "78.3%maximumsimulationevaluationcountreduction is noisyTableIII vsPTfixedbudget:5,121,024→1,109,790; vsPlain4,764,672 is76.7%.",
+        "74.8%walltime reduction is noiselessTableII vsPlain11908.82→3002.23seconds; PT11013.74→3002.23 is~72.74%. These maxima notsamecondition.",
+        "Main average76.4%evaluations/70.8%walltime vsPlain; meanpercentenergydeviation<.03%.",
+        "Fig3averageabsoluteerror atTHREElowestenergygeometriespermolecule is<.005Ha formost,notallmolecules; criterionis5mHa,notuniversal1.6mHachemicalaccuracy orallPESpointsguarantee.",
+        "Initialequalityboundusesunweightedcoefficientchange,LOV issurrogate; noformalguaranteeforfuturegeometries/sharpcrossings. No measuredQPUqueue/networklatency."
+      ],
+      "sha256": "38d7b411bd6dbf94b631d91474d3cae6ee67855fd667e37d8e251d05665d1661",
+      "bytes": 1496929,
+      "checked_at": "2026-11-20T00:42:56.027047+00:00"
+    },
+    {
+      "key": "portfolio",
+      "authors": [
+        "Shintaro Yamamura",
+        "Satoshi Watanabe",
+        "Masaya Kunimi",
+        "Kazuhiro Saito",
+        "Tetsuro Nikuni"
+      ],
+      "equal_contributors": [
+        "Shintaro Yamamura",
+        "Satoshi Watanabe"
+      ],
+      "title": "Performance comparison of QAOA mixers for ternary portfolio optimization",
+      "type": "peer_reviewed_journal_VoR",
+      "journal": "Quantum Information Processing",
+      "journal_abbreviation": "Quantum Inf. Process.",
+      "volume": "25",
+      "article": "377",
+      "year": 2026,
+      "doi": "10.1007/s11128-026-05322-x",
+      "published_online": "2026-11-19",
+      "received": "2026-03-02",
+      "accepted": "2026-08-04",
+      "url": "https://doi.org/10.1007/s11128-026-05322-x",
+      "fulltext_url": "https://link.springer.com/content/pdf/10.1007/s11128-026-05322-x.pdf",
+      "preprint_identifier": "arXiv:2602.21562v1",
+      "preprint_submitted_at": "2026-02-25T04:35:26Z",
+      "pages": 39,
+      "main_read_scope": "Publisher fullHTML sections1–9 and appendicesA(data)/B(Dicke)/C(circuits) read; VoR PDF verified cover dates/authorcredits, and visualPDFpp21,22,24,25 Fig5–8/Table2. Preprint31pages acquired/absmetadataread; notclaimedfullpreprintvsVoRredline. Bibliography notindividuallyverified.",
+      "aps": "S. Yamamura, S. Watanabe, M. Kunimi, K. Saito, and T. Nikuni, Performance comparison of QAOA mixers for ternary portfolio optimization, Quantum Inf. Process. 25, 377 (2026).",
+      "conditions": [
+        "Ideal20randomDAX30portfolios, N5/B2 andN8/B4, QAOAdepth≤7; marketdata2016–2020 notfutureforecasts.",
+        "Standard,XYRing,XYParityRing,XYFull,QAMPA andQWOA comparednoiseless/statevector + finite-shot3000(N5)/10000(N8). QWOAcanonicalfeasiblesubspace exactevolution/finite-sampling,nophysicalgateexecution.",
+        "XYinitialstateuniformoverfeasibleBINARYENCODINGS, notunique ternaryportfolios;no-positiondegeneracy|00>/|11>. N5/B2 120encodedstatesvs30canonicalportfolios; N8/B4 1820vs266.",
+        "HighlyconnectedXYFull/QAMPAgenerallybestnoiselessamongqubitansatzes;QWOAN5largerdepthsmallestapproximationerror,notgenericXYbest.",
+        "Depolarizingnoise analysis ONLYStandard/XY/QAMPA, notQWOA; one5assetinstance8192shots/COBYLA,η0:.001:.01 afterevery1/2qgate; notall20randomportfoliosnoisestudy.",
+        "Dickeinitialstate construction andCNOT/depthresources AREincluded Fig7 andAppendixB;noisyfeasibleprobabilityFig8(20000shots) showspreplayerleakage. Table2 includesfullcircuitasymptoticresourcecostwithstateprep.",
+        "No measuredcompleteprep+shots+optimizerwallclock/energy orstrongclassicaloptimizerendtoendcomparison, noQPU/financePoC.",
+        "PublicGitHubrepo9f77ffca26316c3ab83b230286802812ea10325d hasCSVdata andREADME, noexecutablecode/CITATION/LICENSE incheckedrecursive59entrytree. Noauthorcodeexecuted ordatareproduction."
+      ],
+      "sha256": "8a23a54ab2959c4aff2c94040b0322d06120526dca7ff4ba2efc63ce205175f3",
+      "bytes": 2113975,
+      "checked_at": "2026-11-20T00:42:56.027047+00:00"
+    }
+  ],
+  "independent_experiments": false,
+  "human_reader_study": false,
+  "scope": "Literature verification for a routine short KOENeditorial and correctedDQBarchive;not a newdeepreview or revision of existingarticles."
+}

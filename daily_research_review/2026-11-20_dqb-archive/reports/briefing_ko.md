@@ -1,0 +1,21 @@
+오류정정을 거친 양자 게이트를 이어 붙이면, 앞 게이트에서 남은 오류도 다음 게이트로 넘어간다. 각 부품 안에서는 고칠 수 있던 오류가 뒤의 연산을 통과하며 다른 큐비트로 퍼질 수 있다. 긴 계산을 보호하려면 부품의 충실도와 함께, 그 사이에서 오류가 어떻게 변하고 복구되는지를 알아야 한다.
+
+Perlin 등의 새 PRX 논문은 이 연결을 실제 이온트랩 장치에서 시험했다. Quantinuum H2와 Helios에서 일곱 물리 큐비트로 한 논리 큐비트를 부호화하고, 상태 준비·논리 게이트·중간 측정·고전 피드백을 연결해 QAOA 최적화와 작은 Poisson 방정식의 HHL 양자 선형계 알고리즘을 실행했다. 이진 수열의 자기상관을 줄이는 선택된 최적화 회로에서는 최대 여덟 논리 큐비트·아홉 논리 T 게이트 범위에서 비부호화 회로에 가까운 성공률을 얻었다. 이 비교는 상태 준비를 통과한 실행에 조건부이며, 더 큰 회로에서 같은 성능이 유지되지는 않았다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+논문은 모든 부품이 내결함성을 갖추었다는 말과 계산 전체가 내결함성을 보장한다는 말을 구별한다. 부록의 반례에서는 한 부품을 통과한 오류가 다음 게이트에서 퍼지고, 각 부호 블록을 따로 해독하면 잘못된 보정을 해 논리 오류가 남는다. 부품을 연결하는 경계에 오류정정을 배치하거나, 블록 사이의 오류 상관을 함께 해독해야 이 문제를 다룰 수 있다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+실제 실행에서는 제어 과정도 결과에 들어왔다. HHL의 상태 준비를 더 많이 재시도할 수 있게 컴파일하면, 준비 실패로 버리는 실행은 줄었지만 출력 상태의 충실도는 낮아졌다. 저자들은 추가 재시도를 실제 쓰지 않은 실행에서도 차이를 관찰해, 이온 이동과 대기 시간을 정하는 스케줄링을 원인으로 지목했다.<span class="citation">[<a href="#ref-1">1</a>]</span> 성공한 실행을 더 많이 남기는 일과 남은 상태의 정확도를 높이는 일을 함께 살펴야 하는 이유다.
+
+11월 17일 브리핑은 보소닉 메모리에서 오류 정보를 보조 소자로 옮기고 비우는 두 실험을 다뤘다.<span class="citation">[<a href="#ref-2">2</a>]</span> 오늘의 이온트랩 연구는 다른 물리계에서, 복구 부품들이 실제 알고리즘 안에서 협력할 때 생기는 문제를 보여 준다. 기존 「양자 큐비트 플랫폼의 현재와 확장 과제」가 구별했던 메모리 보존과 논리 계산 사이에, 오류의 전파·해독·제어라는 구체적인 설계 문제가 놓여 있다.<span class="citation">[<a href="#ref-3">3</a>]</span> 다음 비교에서는 회로의 조건부 성공률에 측정 후 선택을 통과한 비율과 실행 시간을 함께 붙여, 오류정정이 유용한 출력 하나를 얻는 데 어떤 차이를 만드는지 보고 싶다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1103/gnq3-c2df">M. A. Perlin, Z. He, A. Alexiades Armenakas, P. Andres-Martinez, T. Hao, D. A. Herman, Y. Jin, K. Mayer, C. N. Self, D. Amaro, C. Ryan-Anderson, and R. Shaydulin, Fault-tolerant execution of error-corrected quantum algorithms, Phys. Rev. X 16, 041048 (2026).</a></li>
+<li id="ref-2"><a href="https://infant83.io/AI_Tech_Review/briefings/2026-11-17/">H.-J. Kim, 보조 큐비트를 비워 양자메모리를 지키다, Agentic Tech Review Letters (17 November 2026).</a></li>
+<li id="ref-3"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-10-19_quantum-qubit-platforms/">H.-J. Kim, 양자 큐비트 플랫폼의 현재와 확장 과제, AI Tech Review Letters (19 October 2026).</a></li>
+</ol>
+
+## 작성·검증
+
+편집부(AEDAUT) root가 원 DQB 4쪽과 관련 기존 글을 읽고 한영 집필·통합했다. `dqb1120_ft`가 PRX 게재본의 본문·부록과 사전공개 이력, 기존 글·한영 편집글·요약을 독립 감수했다. `dqb1120_systems`는 원 DQB의 컴파일러·PES 스케줄링·포트폴리오 혼합 연산자 원출처를 대조했고, root와 `dqb1120_ft`가 양자화학 자원 추정의 읽은 범위를 나누어 기록했다. `dqb1120_pdf`는 원 PDF와 공개 보관본의 공개 적합성·구조·개인정보·렌더링을 검사했다. 원호·웹 작성일·추가 근거 기준일은 2026년 11월 20일이다. 마지막 문장의 비교는 편집 제안이다. 원 논문의 실험·수치 계산이나 사람 독자 평가는 수행하지 않았다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다.
