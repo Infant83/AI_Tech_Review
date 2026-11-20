@@ -320,6 +320,61 @@ class RequestPreflightTests(unittest.TestCase):
         with patch.object(requests._Inputs, "verify", advance):
             self.rejected("input_changed")
 
+    def aba_native_read(self, kind):
+        """Only fixture files temporarily change while the native reader runs."""
+        native = requests.review_inputs
+        target = (self.root / self.folder / "dist/index.html" if kind == "source"
+                  else self.registration_path)
+        original = target.read_bytes()
+        if kind == "source":
+            transient = original + b" transient source edit"
+        else:
+            edited = copy.deepcopy(self.registration)
+            edited["review"]["subtitle" if kind == "hub" else "title"] += " transient edit"
+            transient = (json.dumps(edited, ensure_ascii=False, indent=2) + "\n").encode()
+        def read_transient(root, folder):
+            self.assertEqual(target.read_bytes(), original)
+            target.write_bytes(transient)
+            try:
+                return native(root, folder)
+            finally:
+                target.write_bytes(original)
+        inputs_b = read_transient(self.root, self.folder)
+        # Source/protected cases retain a v2 record for B while Git/file bytes
+        # contain A. Previously a transient native B read could certify it.
+        if kind != "hub":
+            self.save(self.intent_path, {"version": 2, "review": self.folder, **inputs_b})
+            self.commit()
+        self.request["expectedSourceRevision"] = self.head()
+        self.request["expectedInputs"] = inputs_b
+        self.request["patch"] = {"summary": self.registration["review"]["summary"]}
+        self.save_request()
+        before, head, status = self.files(), self.head(), self.git("status", "--porcelain")
+        with patch.object(requests, "review_inputs", side_effect=read_transient) as called:
+            self.rejected("input_changed")
+        self.assertEqual(called.call_count, 1)
+        self.assertEqual(self.files(), before)
+        self.assertEqual(self.head(), head)
+        self.assertEqual(self.git("status", "--porcelain"), status)
+
+    def test_hub_registration_aba_native_read_is_not_the_tracked_registration(self):
+        self.aba_native_read("hub")
+
+    def test_protected_registration_aba_native_read_is_not_the_tracked_protected_input(self):
+        self.aba_native_read("protected")
+
+    def test_source_aba_native_read_is_not_the_tracked_source_input(self):
+        self.aba_native_read("source")
+
+    def test_native_path_component_sort_with_directory_and_hyphen_file_remains_valid(self):
+        (self.root / self.folder / "dist/en-guide.png").write_bytes(b"Reviewed shared-prefix source file")
+        self.save(self.intent_path, {"version": 2, "review": self.folder, **review_inputs(self.root, self.folder)})
+        self.commit()
+        self.request["expectedSourceRevision"] = self.head()
+        self.request["expectedInputs"] = review_inputs(self.root, self.folder)
+        self.save_request()
+        self.assertTrue(self.run_preflight()["ok"])
+
     def test_native_pure_validator_does_not_mutate_inputs_or_seen_sets(self):
         source = copy.deepcopy(self.registration); folders, positions = set(), set()
         row = validate_review_registration(source, self.folder + ".json", PublicReview, PublicTranslation, PublicAgent,
