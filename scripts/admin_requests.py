@@ -113,6 +113,31 @@ def request_fingerprint(request: dict) -> str:
     return hashlib.sha256(_canonical({k: v for k, v in request.items() if k != "idempotencyKey"})).hexdigest()
 
 
+def _tracked_review_inputs(tracker, folder, registration):
+    """Derive the native three hashes from the one already tracked byte set.
+
+    Native review_inputs performs additional reads. Final A bytes alone cannot
+    detect an A→B→A edit during those reads, so its result must also agree with
+    the registration object/raw hash and source file hashes captured together.
+    """
+    protected = {**registration, "review": {key: value for key, value in registration["review"].items()
+                                              if key not in HUB_METADATA_FIELDS}}
+    directory = tracker.root / folder / "dist"
+    source = None
+    if tracker.directories[directory] is not None:
+        digest = hashlib.sha256()
+        # Match source_digest's Path-component order, not relative-name string
+        # order: en/index.html and en-guide.png must sort exactly as native.
+        for path in sorted(path for path in tracker.files if directory in path.parents):
+            digest.update(path.relative_to(directory).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(bytes.fromhex(tracker.files[path]["sha256"]))
+        source = digest.hexdigest()
+    return {"source_sha256": source,
+            "registration_sha256": tracker.files[tracker.root / "publication/reviews" / (folder + ".json")]["sha256"],
+            "article_registration_sha256": hashlib.sha256(_canonical(protected)).hexdigest()}
+
+
 def _preflight(source_root, request_path, baseline_snapshot):
     root = Path(os.path.abspath(source_root))
     _plain(root, root)
@@ -158,6 +183,8 @@ def _preflight(source_root, request_path, baseline_snapshot):
         raise PreflightError("revalidation_required")
     tracker.tree(root / folder / "dist")
     inputs = review_inputs(root, folder)
+    if inputs != _tracked_review_inputs(tracker, folder, registrations[folder]):
+        raise PreflightError("input_changed")
     if (inputs["source_sha256"] is None
             or any(intent[k] != inputs[k] for k in ("source_sha256", "article_registration_sha256"))):
         raise PreflightError("revalidation_required")
