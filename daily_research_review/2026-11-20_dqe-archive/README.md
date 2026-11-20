@@ -18,6 +18,10 @@
 
 ## 등록과 공개 검증
 
-ID는 `2026-11-20-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-20/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-20/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-20-daily-quantum-exercise.pdf)를 위한 독립 후보를 실제 이전 배포 `f4c40ada94bdc72edf5fa86be859eccd08ff7a3c`와 비교한다. 필요한 로컬 Python 103건과 검색·탐색 12건이 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
+ID는 `2026-11-20-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-20/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-20/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-20-daily-quantum-exercise.pdf)를 공개했다. 독립 후보를 실제 이전 배포 `f4c40ada94bdc72edf5fa86be859eccd08ff7a3c`와 비교했다. 필요한 로컬 Python 103건과 검색·탐색 12건이 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
 
 독립 최종 후보는 새 DQE 한 건만 추가했고 기존 날짜별 한영 편집 페이지 44개는 바이트 단위로 보존했다. 연속성·payload 검사를 통과했다. `dqe_ops_1118`은 Chromium 390×844의 한영 진입·접힌 해설과 포인터/키보드·Unicode 수식·언어 전환·같은 날짜의 DQB/DRB·달력/목록·정비 검색·DQE 5건 분류·다섯 PDF의 새 탭과 실제 다운로드를 검수했다. 마지막 영어 용어 정리는 최종 후보에서 재검수했으며, 한영 묶음 판본 설정의 변경과 과학 본문의 변경을 구분했다. `root`도 최초 화면과 수식·달력, 최종 영문 화면 총 9개를 독립 확인했다. 소유한 검증용 브라우저·서버는 종료했다.
+
+출판 소스 `1649f2f8e609cb8ef16136a0ee39f90a79f62413`의 [배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/44742315688)은 build·deploy·recovery-copy·notify-readers 모두 성공했다. CI 테스트는 959건 중 950건 통과·9건 건너뜀·실패 0건이다. 복구 사본은 CI가 정확한 배포물 2,701개 파일·814,206,339바이트를 검증하고 업로드한 결과이며, 이 작업에서 로컬 복원 시험은 하지 않았다. 기존 리뷰·렉처 알림 카탈로그 76건 동기화가 성공했다. DQB·DRB와 마찬가지로 DQE를 새 알림 기사로 등록한 것은 아니며 새 알림 이벤트는 0건이다.
+
+`dqe_ops_1118`의 실제 HTTPS 검사 29건과 `root`의 별도 11건에서 query 없는 공개 주소의 GET 본문·PDF가 최종 검수 후보와 정확히 일치했다. 공개 DQE 5건과 기존 네 PDF, 같은 날짜 DQB·DRB의 한영 페이지·PDF를 보존했고 언어 전환·canonical 리디렉션·관련 기존 리뷰도 확인했다. 완료 기록을 위해 과학 원고·컴파일 HTML·PDF를 다시 바꾸지 않았다. 남은 게시 조치는 없다.
