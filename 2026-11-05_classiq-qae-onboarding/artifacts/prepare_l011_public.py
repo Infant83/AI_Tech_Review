@@ -1,0 +1,241 @@
+"""Preserve L011's reviewed educational pages in a distinct public edition.
+
+The original is an explicit private input. This command does not execute the
+authoring package or regenerate previous units. QA renders remain private.
+"""
+import argparse
+from collections import Counter
+import hashlib
+import json
+import math
+from pathlib import Path
+import re
+
+import fitz
+from PIL import Image, ImageChops, ImageDraw
+
+ROOT = Path(__file__).resolve().parents[1]
+REPO = ROOT.parent
+IDENTIFIER = '2026-11-20-classiq-qae-l011-notes-ko'
+TITLE = '보이지 않던 위상은 왜 제어하면 보이는가'
+EDITION_DATE = '2026-11-20'
+BASE = 'https://infant83.io/AI_Tech_Review/'
+PREVIOUS = {
+    '2026-11-05_Classiq_QAE_Lecture03_KO_v1.pdf': '2026-11-05-classiq-qae-l003-notes-ko',
+    '2026-11-19_Classiq_QAE_Lecture10_KO_v1.pdf': '2026-11-19-classiq-qae-l010-notes-ko',
+}
+
+
+def sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def named_destinations(document):
+    # Freeze value copies: named destinations must retain page and coordinates.
+    return {name: (value['page'], tuple(value['to']), value.get('zoom', 0))
+            for name, value in document.resolve_names().items()}
+
+
+def internal_link_signature(document):
+    return [(index, link['kind'], tuple(link['from']), link.get('page'),
+             link.get('nameddest'), tuple(link.get('to', [])), link.get('zoom'))
+            for index, page in enumerate(document) for link in page.get_links()
+            if link['kind'] in (fitz.LINK_GOTO, fitz.LINK_NAMED)]
+
+
+def raster(page, scale=1.5):
+    pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), alpha=False)
+    return Image.frombytes('RGB', (pix.width, pix.height), pix.samples)
+
+
+def outside_characters(page, regions):
+    """Count the original visible characters outside declared edited boxes."""
+    result = Counter()
+    for block in page.get_text('rawdict')['blocks']:
+        for line in block.get('lines', []):
+            for span in line.get('spans', []):
+                for char in span.get('chars', []):
+                    box = fitz.Rect(char['bbox'])
+                    if not any(box.intersects(fitz.Rect(region)) for region in regions):
+                        result[char['c']] += 1
+    return result
+
+
+def replace_line(page, rectangle, text, font, position, size=9.5):
+    page.add_redact_annot(rectangle, fill=(1, 1, 1))
+    page.apply_redactions(images=0, graphics=0)
+    page.insert_font(fontname='PublicNanum', fontfile=str(font))
+    page.insert_text(position, text, fontname='PublicNanum', fontsize=size,
+                     color=(.12, .25, .30))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source', type=Path, required=True)
+    parser.add_argument('--expected-source-sha256', required=True,
+                        help='Expected edition digest from the private intake record')
+    parser.add_argument('--font', type=Path, required=True)
+    parser.add_argument('--qa-dir', type=Path, required=True)
+    args = parser.parse_args()
+    if not re.fullmatch(r'[0-9a-f]{64}', args.expected_source_sha256):
+        parser.error('Expected source SHA-256 must contain 64 lowercase hexadecimal characters')
+    if sha256(args.source) != args.expected_source_sha256:
+        raise ValueError('Unexpected source PDF edition')
+    original, doc = fitz.open(args.source), fitz.open(args.source)
+    assert len(original) == 14
+    original_names = named_destinations(original)
+    original_internal_links = internal_link_signature(original)
+    original_uris = [link['uri'] for page in original for link in page.get_links() if 'uri' in link]
+    regions = {i: [] for i in range(14)}
+
+    # Replace the local-file placement instruction with the public link behavior.
+    prerequisite_instruction = fitz.Rect(368.5, 157.4, 511.0, 171.0)
+    replace_line(doc[1], prerequisite_instruction, '이전 PDF는 웹 링크로 연다.', args.font,
+                 (369.0878, 167.511), size=10.4)
+    regions[1].append(list(prerequisite_instruction))
+
+    cover_note = fitz.Rect(59, 480, 536, 580)
+    doc[0].insert_font(fontname='PublicNanum', fontfile=str(args.font))
+    note = ('공개 보관본 · 2026-11-20\n'
+            'Agentic Tech Review Letters (ATRL)\n'
+            'Classiq 공식 강의가 아닌 독립 학습 과정이다.\n'
+            '원판 교육 내용과 이번 공개 검수의 범위는 마지막 쪽에서 구분한다.')
+    assert doc[0].insert_textbox(cover_note, note, fontname='PublicNanum', fontsize=9.5,
+                               lineheight=1.5, color=(.10, .30, .35)) >= 0
+    regions[0].append(list(cover_note))
+
+    rewritten = []
+    for index, page in enumerate(doc):
+        for link in page.get_links():
+            if link['kind'] not in (fitz.LINK_LAUNCH, fitz.LINK_GOTOR):
+                continue
+            filename, sep, fragment = link.get('file', '').partition('#')
+            assert filename in PREVIOUS, 'Unreviewed external file link'
+            previous_id = PREVIOUS[filename]
+            previous = fitz.open(REPO / 'archive/files' / (previous_id + '.pdf'))
+            if sep:
+                assert fragment.startswith('nameddest=')
+                destination = fragment.removeprefix('nameddest=')
+                assert destination in previous.resolve_names(), 'Missing prerequisite destination'
+            else:
+                assert link['kind'] == fitz.LINK_GOTOR and link.get('page') == 0
+            uri = BASE + 'archive/files/' + previous_id + '.pdf' + ('#' + fragment if sep else '')
+            page.delete_link(link)
+            page.insert_link({'kind': fitz.LINK_URI, 'from': link['from'], 'uri': uri})
+            rewritten.append({'page': index + 1, 'uri': uri, 'destination_verified': True})
+    assert len(rewritten) == 4
+
+    appendix = doc.new_page(width=595.276, height=841.89)
+    appendix.insert_font(fontname='PublicNanum', fontfile=str(args.font))
+    assert appendix.insert_textbox(fitz.Rect(55, 58, 540, 110), 'L011 · 공개판 안내와 확인 범위',
+                                  fontname='PublicNanum', fontsize=19, color=(.08, .21, .29)) >= 0
+    disclosure = (
+        'Agentic Tech Review Letters (ATRL) · 공개 보관본 · 2026-11-20\n'
+        '책임 편집자 김현중 · AI 보조 OpenAI Codex\n\n'
+        '자료 성격\n'
+        '공개 교재·공식 문서에 근거해 자체 집필한 한국어 독립 학습 과정이다. '
+        '공식 Classiq 강의·인증 과정이나 Classiq의 승인을 받은 자료로 표시하지 않는다. '
+        'QAE는 Quantum Application Engineer이며 진폭 추정 알고리즘 AE/IQAE와 구별한다.\n\n'
+        '원판과 공개본\n'
+        '2026-11-20 v1.0의 교육 내용 14쪽, 수식·도표·8개 자습문제와 해설·28개 개념색인·9개 참고문헌 및 '
+        '원래 쪽번호를 보존했다. 로컬 파일 배치 안내를 웹 링크 안내로 바꾸고 메타데이터를 정리했다. '
+        '선수 개념으로 이동하는 파일 링크 4개는 공개 HTTPS PDF와 확인한 정의 목적지로 바꾸었다. '
+        '개인 메일·원문 수집 파일·운영 기록·QA 화면과 제3자 교재 원문은 공개하지 않는다. '
+        '원판에서 언급한 재현 소스 ZIP은 이 공개 묶음에 포함하지 않으며, 공개 PDF에 남은 유도·문제·해설로 학습할 수 있다.\n\n'
+        '검산과 확인 범위\n'
+        '원판 제작자의 31개 명명 고전 검사, 다른 Python 환경의 복사 재실행·별도 방법 대조와 '
+        '통합 담당의 재실행은 원판의 수행 기록이다. 이번 공개 작업에서는 원판의 검사 묶음이나 '
+        '미실행 Classiq 예제를 실행하지 않았다. '
+        '이번에는 별도 Python 3.9.6 표준 라이브러리로 44개 결정론적 조건을 검산했다. '
+        '작은 복소행렬·상태·밀도행렬과 기저 순열을 써서 제어·역연산 순서, 전체위상과 제어 후 상대위상, '
+        'Hadamard 검사의 실수·허수부와 측정 순서, 제어 위치 이동과 별도 작업공간 조건을 확인했다. '
+        '작은 패리티·AND 구성의 전체 기저와 위상·논리 자원, 예제의 여덟 결합 결과, '
+        'PHASE/RZ의 정확한 행렬 대표, 반복 위상 오차·노름 상한과 조건부 에너지 기준도 별도 계산했다. '
+        '교육 페이지의 문자·내부 목적지·원 공개 URI와 명시한 편집 영역 밖의 전 페이지 렌더링 동일성, '
+        '개인정보·메타데이터·링크 동작 및 실제 조판을 검사했다. '
+        '원판과 이번 공개판 모두 실제 Classiq SDK import·모델 생성·합성·시뮬레이터·QPU·실물 DFT/AMS/ADF '
+        '또는 고객 계산이나 사람의 원고 감수를 수행한 것으로 표시하지 않는다. '
+        '본문의 논리 게이트 계수는 합성 후 성능이나 실물 실험값이 아니다.\n\n'
+        '작성·검수 공개\n'
+        '원판의 자료 열람·과학 검토·실제 고전 계산 범위는 각 본문과 참고문헌에 남은 제작 기록을 따른다. '
+        '이번 공개판의 정제·페이지 보존·링크 및 조판 검수는 qae_l011_public, 선택 검산은 '
+        'qae_l011_science가 수행하고 root가 통합·등록·게시한다. '
+        '이번에 원 교재·논문 전체를 새로 읽거나 원판 수치 검증을 모두 재현한 것으로 소급 표시하지 않는다.\n\n'
+        '공개 학습 입구와 후속 회차\n'
+        'infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/\n'
+        '회차별 공개판과 필기 링크는 같은 시리즈 목록에서 제공한다.\n\n'
+        '편집·출처 기준: AI Tech Review Editorial Harness 2026.08 · APS 인용 기준 · 과학 설명 준칙'
+    )
+    assert appendix.insert_textbox(fitz.Rect(55, 119, 540, 785), disclosure,
+                                  fontname='PublicNanum', fontsize=10.1, lineheight=1.5,
+                                  color=(.12, .20, .25)) >= 0
+    web = appendix.search_for('infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/')[0]
+    appendix.insert_link({'kind': fitz.LINK_URI, 'from': web,
+                         'uri': BASE + 'lectures/classiq-qae-onboarding/'})
+    doc.set_metadata({'title': 'Classiq QAE L011 · ' + TITLE + ' · 공개 보관본',
+                      'author': '김현중', 'creator': 'Agentic Tech Review Letters (ATRL); OpenAI Codex-assisted archive',
+                      'subject': 'Independent Korean study notes; public edition 2026-11-20',
+                      'keywords': '', 'producer': '',
+                      'creationDate': '', 'modDate': ''})
+    doc.del_xml_metadata()
+    doc.xref_set_key(doc.pdf_catalog(), 'OpenAction', 'null')
+    doc.update_object(doc.pdf_catalog(), re.sub(r'\s*/OpenAction\s+null\b', '', doc.xref_object(doc.pdf_catalog())))
+    doc.subset_fonts()
+    output = ROOT / 'output/pdf' / (IDENTIFIER + '.pdf')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(output, garbage=4, deflate=True, clean=True)
+    final = fitz.open(output)
+    assert len(final) == 15
+    assert named_destinations(final) == original_names
+    assert internal_link_signature(final) == original_internal_links
+    characters_preserved = []
+    for index in range(14):
+        assert outside_characters(original[index], regions[index]) == outside_characters(final[index], regions[index]), ('Character change', index + 1)
+        characters_preserved.append(index + 1)
+        diff = ImageChops.difference(raster(original[index]), raster(final[index]))
+        mask = ImageDraw.Draw(diff)
+        for x0, y0, x1, y1 in regions[index]:
+            mask.rectangle((math.floor(x0 * 1.5) - 3, math.floor(y0 * 1.5) - 3,
+                            math.ceil(x1 * 1.5) + 3, math.ceil(y1 * 1.5) + 3), fill='black')
+        assert diff.getbbox() is None, ('Unexpected rendering change', index + 1, diff.getbbox())
+    final_uri_counts = Counter(link['uri'] for page in final for link in page.get_links() if 'uri' in link)
+    expected_uri_counts = Counter(original_uris) + Counter(link['uri'] for link in rewritten)
+    expected_uri_counts[BASE + 'lectures/classiq-qae-onboarding/'] += 1
+    assert final_uri_counts == expected_uri_counts
+    objects = '\n'.join(final.xref_object(i) for i in range(1, final.xref_length()))
+    text = '\n'.join(page.get_text() for page in final)
+    assert final.embfile_count() == 0
+    assert not final.metadata.get('creationDate') and not final.metadata.get('modDate')
+    assert not re.search(r'/S\s*/(?:Launch|JavaScript|GoToR)|/OpenAction\b|/EmbeddedFile\b|/(?:Users|home|private)/|mailto:|chatgpt\.com/share/', objects)
+    assert not re.search(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}', text + objects)
+    assert not any(term in re.sub(r'\s+', '', text) for term in ['사용자배경의', '이전PDF를같은폴더에둔다', 'AMS/ADF경험과연결하면'])
+    args.qa_dir.mkdir(parents=True, exist_ok=True)
+    for index, page in enumerate(final):
+        raster(page, 1.2).save(args.qa_dir / f'L011-page-{index + 1:02d}.png')
+    record = {'unit': 'L011', 'date': '2026-11-20', 'title': TITLE,
+              'source_pages': 14, 'public_pages': 15, 'source_edition_verified_against_private_intake': True,
+              'public_sha256': sha256(output), 'file': output.name,
+              'redaction_and_added_regions': {str(i + 1): boxes for i, boxes in regions.items() if boxes},
+              'rewritten_links': rewritten, 'unchanged_original_page_regions_pixel_equal': True,
+              'original_page_characters_outside_edits_preserved': characters_preserved,
+              'internal_named_destinations_preserved': len(original_names),
+              'internal_link_annotations_preserved': len(original_internal_links),
+              'original_public_uris_preserved': len(original_uris),
+              'embedded_files': 0, 'launch_or_script_actions': 0,
+              'public_bytes': output.stat().st_size,
+              'metadata_review': {'title': final.metadata['title'], 'source_metadata_dates_removed': True,
+                                  'source_producer_removed': True, 'source_keywords_removed': True,
+                                  'xmp_removed': not final.get_xml_metadata(), 'embedded_files': 0,
+                                  'unsafe_actions': 0, 'private_contacts_and_paths_found': False}}
+    report = {'date': EDITION_DATE, 'units': [record], 'source_zip_in_public_bundle': False,
+              'original_validation_suite_rerun': False, 'original_checks_recorded': 31,
+              'independent_selected_classical_checks': 44,
+              'independent_classical_check_scope': 'Python3.9.6 stdlib:44 independently written deterministic conditions using small complex matrices, density matrices, state vectors and bit permutations; coherent/open control, inverse order, controlled global phase, Hadamard real/imaginary readout, full-space control hoisting vs clean workspace, parity/AND basis checks and logical resource contracts, eight mathematical example outcomes, PHASE/RZ representatives, coherent repeated-phase errors and unitary norm bounds, conditional energy shifts. Original31-check suite and author environment/reproduction runs not rerun. NoSDK import/model/synthesis/simulator/QPU/physicalshots/realDFT or human manuscript review.',
+              'public_preparation_scope': 'Preservation, privacy, metadata, cross-PDF destinations and full-page rendering; no new SDK or physical experiment'}
+    (ROOT / 'reports/pdf-L011-qa.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'unit': 'L011', 'pages': 15, 'sha256': record['public_sha256'],
+                      'named_destinations': len(original_names), 'rewritten_links': len(rewritten)}, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()
