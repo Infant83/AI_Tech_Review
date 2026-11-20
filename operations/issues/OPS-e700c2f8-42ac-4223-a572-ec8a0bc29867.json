@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 40,
+  "record_version": 41,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-20T10:13:30.757496+00:00",
+  "updated_at": "2026-11-20T18:09:17.901637+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -146,19 +146,19 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-20T10:00:41.613Z",
-    "last_successful_actions_check_at": "2026-11-20T10:01:39.438881Z",
-    "mail_window": "직전 성공에서48시간 겹친11/18T02:00:24.474Z부터 전 영역·검증한GitHub발신자/저장소·읽지않음제한없이1페이지1통·끝도달·상태변경0. 기존DRB실패알림과연결.",
-    "actions_window": "50개/페이지 첫 시도1페이지9run끝경계. 새L011과기존DRB보충을구분했으며8e074를포함한f4c의실제backend·네작업/실제Pages/HTTPS후sync성공. 활성5상태각0. 옛생성실행의모든완료재시도전수조회는아님.",
+    "last_successful_mail_check_at": "2026-11-20T17:58:34.367Z",
+    "last_successful_actions_check_at": "2026-11-20T17:59:37.262075Z",
+    "mail_window": "직전 성공에서48시간 겹친11/18T10:00:41Z부터 전 영역·검증한GitHub발신자/저장소·읽지않음제한없이1페이지1통·끝도달·상태변경0. 기존해결DRB실패메일과연결.",
+    "actions_window": "50개/페이지 첫시도1페이지10run끝경계. 새DQE44742315688 attempt1·네작업/실제Pages/HTTPS후sync/backend성공. 활성5상태각0. 옛생성실행의모든완료재시도전수조회는아님.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
-    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+    "live_source_revision": "1649f2f8e609cb8ef16136a0ee39f90a79f62413",
+    "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
     "supplemental_actions_check_at": "2026-11-20T02:21:16.168005Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-20T10:01:39.438881Z",
+    "last_full_actions_check_at": "2026-11-20T17:59:37.262075Z",
     "supplemental_successful_runs": [
       "44461708586",
       "44658717706"
@@ -166,13 +166,9 @@
     "historical_supplemental_fields_precede_current_full_check": true
   },
   "observation": {
-    "status": "19시 기존실패메일1통 대조·수정후 실제CI통과 확인·새미해결0",
-    "period": {
-      "mail": "2026-11-20T02:00:24.474Z",
-      "actions": "2026-11-20T02:01:14.435996Z",
-      "active": "2026-11-20T02:01:17.842963Z"
-    },
-    "result": "DQB20와CASH-QSE의 기존 게시 담당/독립 QA를 재사용했다. 새 로그·제품 검사·실기기/복원은 반복하지 않았다. 현재 카탈로그75행/최신동기화75를 단말 수신 확인과 구분한다.",
+    "status": "03시 새DQE 정상게시 인수·기존해결실패메일 대조,새미해결0",
+    "period": "2026-11-20T17:57:02.404Z",
+    "result": "새 DQE44742315688의 네 작업·실제배포/HTTPS후sync/backend 성공과 공개1649를 확인했다. 메일1통은 기존 해결된 DRB실패 사슬에 연결했고 새미해결/조회오류0이다. 메일/API의 현재 성공 기준은 monitoring_baseline과 last_successful_checks를 따른다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -391,9 +387,9 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-20T10:00:41.613Z",
-      "full_api": "2026-11-20T10:01:39.438881Z",
-      "active_states": "2026-11-20T10:01:43.229896Z"
+      "mail": "2026-11-20T17:58:34.367Z",
+      "full_api": "2026-11-20T17:59:37.262075Z",
+      "active_states": "2026-11-20T17:59:40.111832Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -587,6 +583,34 @@
       "latest_recovery_expires_at": "2026-12-20T05:00:34Z",
       "actual_restore": false,
       "raw_logs_read": 0,
+      "mail_state_changes": 0
+    },
+    "night_20261121": {
+      "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
+      "mail_success_at": "2026-11-20T17:58:34.367Z",
+      "full_api_success_at": "2026-11-20T17:59:37.262075Z",
+      "jobs_success_at": "2026-11-20T17:59:38.075619Z",
+      "mail_pages": 1,
+      "mail_count": 1,
+      "mail_result": "기존DRB44658717706의 해결된 실패알림·발신자/저장소/run검증. 새미해결로 집계하지 않음.",
+      "api_pages": 1,
+      "overlap_runs": 10,
+      "new_success_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44742315688",
+      "source_revision": "1649f2f8e609cb8ef16136a0ee39f90a79f62413",
+      "actual_four_jobs_and_pages_https_sync_backend": "success",
+      "new_unresolved_failures": 0,
+      "query_errors": 0,
+      "synced": 76,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "sync_baseline_or_replay_not_assumed": true,
+      "all_artifacts": 131,
+      "artifact_pages": 2,
+      "unexpired_recovery_copies": 3,
+      "latest_recovery_bytes": 729467022,
+      "latest_recovery_expires_at": "2026-12-20T13:18:25Z",
+      "actual_restore": false,
+      "new_raw_logs": 0,
       "mail_state_changes": 0
     }
   },
