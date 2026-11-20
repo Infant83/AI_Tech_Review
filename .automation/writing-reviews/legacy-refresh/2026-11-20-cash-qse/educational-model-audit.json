@@ -1,0 +1,55 @@
+{
+  "reviewer_role": "legacy1120_assets — independent educational model, assets, instrumentation and preservation audit",
+  "generated_at": "2026-11-20T01:13:40.245468+00:00",
+  "article_id": "2026-09-10_cash-qse-classical-quantum-chemistry",
+  "base_commit": "648319541b099384d01f8e595974536662390752",
+  "actual_deployed_release": "87c817107a16d106aab65de8762c48d9f6cb92cd",
+  "scope": {
+    "read": [
+      "AGENTS.md",
+      "PUBLICATION_WORKFLOW.md",
+      "SCIENTIFIC_EXPLANATION_DIRECTION.md",
+      "article build_review.py",
+      "KO/EN source passages for matrix, toy, tables, scientific conditions",
+      "actual deployed KO/EN HTML and release/catalog/archive manifest",
+      "deployed hero, matrix and two_state.js; source CSV from base commit"
+    ],
+    "limitations": [
+      "No original molecular benchmarks, VQE/FCI/shot allocations, hardware performance or device experiments reproduced.",
+      "No real-browser rendering in this independent audit; parent handles browser/render QA.",
+      "Minimal mocked DOM verifies state transitions and localized errors, not browser layout or accessibility behavior.",
+      "Original-paper table attribution is delegated to independent source reviewer.",
+      "No reader metrics API health, analytics collection or human reading study claimed."
+    ]
+  },
+  "result": "passed_with_preservation_requirements",
+  "math": {
+    "hamiltonian": "[[0,V],[V,Delta]] with Delta>0 and real V",
+    "energy": "-2*V^2/(Delta+hypot(Delta,2*V))",
+    "correction_weight": "(1-Delta/hypot(Delta,2*V))/2",
+    "coupling_sensitivity": "2*abs(V)/hypot(Delta,2*V)",
+    "diagonal_sensitivity": "dE_minus/dDelta=correction_weight",
+    "cases": 45,
+    "independent_method": "NumPy symmetric eigensolver/eigenvector weight, eigen residual, centered finite differences with step 1e-6",
+    "maximum_absolute_errors": {
+      "energy": 2.7755575615628914e-17,
+      "weight": 1.6653345369377348e-16,
+      "coupling_sensitivity": 6.123945794911378e-11,
+      "diagonal_sensitivity": 5.652939227829279e-11,
+      "eigen_residual": 1.1102230246251565e-16
+    },
+    "zero_and_sign_behavior": "zero V yields energy/weight/sensitivity zero; reversing V leaves those quantities unchanged, while eigenvector relative phase reverses",
+    "declared_ui_domain": {
+      "delta_eV": [
+        0.1,
+        2
+      ],
+      "V_eV": [
+        0,
+        0.5
+      ]
+    },
+    "formal_function_domain": "finite Delta>0 and finite real V; checks constrained to relevant magnitude, including negative signs"
+  },
+  "record_note": "Detailed numerical and mocked-DOM traces are retained privately. Public asset and CSV preservation is verified again in the candidate comparison."
+}

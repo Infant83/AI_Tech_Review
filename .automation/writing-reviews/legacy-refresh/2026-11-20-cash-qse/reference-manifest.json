@@ -1,0 +1,285 @@
+{
+  "article_id": "2026-09-10_cash-qse-classical-quantum-chemistry",
+  "audit_date": "2026-11-20",
+  "checked_at_utc": "2026-11-20T01:14:40.092100+00:00",
+  "auditor_role": "Independent primary-science and APS audit by child agent legacy1120_sources; no human review or original experiment rerun implied.",
+  "original_evidence_cutoff": "2026-09-10",
+  "manuscripts_edited_by_auditor": false,
+  "references": [
+    {
+      "number": 1,
+      "key": "cash-qse",
+      "authors": [
+        "Artur F. Izmaylov"
+      ],
+      "title": "Classical Active-Space Hybrid Quantum Subspace Expansion (CASH-QSE): Quantum Corrections without Remeasuring the Classically Calculable Energy",
+      "type": "preprint",
+      "arxiv": "2609.08170v1",
+      "url": "https://arxiv.org/abs/2609.08170v1",
+      "first_submission_utc": "2026-09-08T02:59:48Z",
+      "publication_year": 2026,
+      "read_scope": "Full 19-page v1 PDF: abstract, sections I–IX, appendices A–D, references; key tables V–VIII also visually inspected on PDF pages 14 and 18. Source tar inventory contains only 00README.json and ms.tex; no separately packaged SI or reproduction data were available in this source archive. No calculations from the paper were rerun.",
+      "evidence_cutoff": "2026-09-10",
+      "later_version_excluded": "v2 posted 2026-09-15, after article cutoff; no v2 scientific content used."
+    },
+    {
+      "number": 2,
+      "key": "pyscf-mcscf",
+      "authors": [
+        "PySCF Developers"
+      ],
+      "title": "Multi-configuration self-consistent field (MCSCF)",
+      "type": "official_documentation",
+      "url": "https://pyscf.org/user/mcscf.html",
+      "accessed": "2026-11-20",
+      "version": "unversioned live official page",
+      "read_scope": "Introduction/CASCI/CASSCF distinction and initial-orbital/active-space documentation. Live document checked now; original 2026-09-10 access preserved as historical manuscript record, not independently recovered dated snapshot."
+    },
+    {
+      "number": 3,
+      "key": "pyscf-mrpt",
+      "authors": [
+        "PySCF Developers"
+      ],
+      "title": "Multi-reference perturbation theory (MRPT)",
+      "type": "official_documentation",
+      "url": "https://pyscf.org/user/mrpt.html",
+      "accessed": "2026-11-20",
+      "version": "unversioned live official page",
+      "read_scope": "Introduction and examples: strongly contracted NEVPT2 on CASCI/CASSCF; does not by itself document a PySCF CASPT2 implementation. General CASPT2 background also supported in CASH-QSE introduction."
+    },
+    {
+      "number": 4,
+      "key": "asci-scf",
+      "authors": [
+        "Daniel S. Levine",
+        "Diptarka Hait",
+        "Norm M. Tubman",
+        "Susi Lehtola",
+        "K. Birgitta Whaley",
+        "Martin Head-Gordon"
+      ],
+      "title": "CASSCF with extremely large active spaces using the adaptive sampling configuration interaction method",
+      "type": "journal_article",
+      "journal": "J. Chem. Theory Comput.",
+      "volume": "16",
+      "pages": "2340–2354",
+      "year": 2020,
+      "doi": "10.1021/acs.jctc.9b01255",
+      "url": "https://doi.org/10.1021/acs.jctc.9b01255",
+      "companion_read_version": "arXiv:1912.08379v2 (2020-02-05)",
+      "read_scope": "Publisher original metadata/search result, author arXiv record, preprint title/abstract and introduction passages on selected-CI approximate CAS solver, large active spaces and orbital optimization/local minima. Not a complete 54-page reread.",
+      "correction": "Original bibliography used arXiv-only despite 2020 formal publication. Cite published paper with all six authors."
+    },
+    {
+      "number": 5,
+      "key": "adapt-vqe",
+      "authors": [
+        "Harper R. Grimsley",
+        "Sophia E. Economou",
+        "Edwin Barnes",
+        "Nicholas J. Mayhall"
+      ],
+      "title": "An adaptive variational algorithm for exact molecular simulations on a quantum computer",
+      "type": "journal_article",
+      "journal": "Nat. Commun.",
+      "volume": "10",
+      "article": "3007",
+      "year": 2019,
+      "doi": "10.1038/s41467-019-10988-2",
+      "url": "https://doi.org/10.1038/s41467-019-10988-2",
+      "published": "2019-07-08",
+      "companion_read_version": "arXiv:1812.11173v2 (published-version record 2019-07-13)",
+      "read_scope": "Author arXiv metadata and paper algorithm steps/operator-pool/gradient/convergence passages on PDF pages 3–4; publisher PDF search metadata for publication date. Not full-paper reread."
+    },
+    {
+      "number": 6,
+      "key": "measurement-roadblock",
+      "authors": [
+        "Jérôme F. Gonthier",
+        "Maxwell D. Radin",
+        "Corneliu Buda",
+        "Eric J. Doskocil",
+        "Clena M. Abuan",
+        "Jhonathan Romero"
+      ],
+      "title": "Measurements as a roadblock to near-term practical quantum advantage in chemistry: Resource analysis",
+      "type": "journal_article",
+      "journal": "Phys. Rev. Research",
+      "volume": "4",
+      "article": "033154",
+      "year": 2022,
+      "doi": "10.1103/PhysRevResearch.4.033154",
+      "url": "https://doi.org/10.1103/PhysRevResearch.4.033154",
+      "published": "2022-08-26",
+      "companion_read_version": "arXiv:2012.04001v2 (2022-08-26)",
+      "read_scope": "Official APS metadata/abstract; author preprint abstract/introduction and resource-analysis scope/conclusion passage. Claim is limited to combustion-energy molecular set and measurement techniques examined, not all quantum algorithms. Not full 49-page reread."
+    },
+    {
+      "number": 7,
+      "key": "qse",
+      "authors": [
+        "Jarrod R. McClean",
+        "Mollie E. Kimchi-Schwartz",
+        "Jonathan Carter",
+        "Wibe A. de Jong"
+      ],
+      "title": "Hybrid quantum-classical hierarchy for mitigation of decoherence and determination of excited states",
+      "type": "journal_article",
+      "journal": "Phys. Rev. A",
+      "volume": "95",
+      "article": "042308",
+      "year": 2017,
+      "doi": "10.1103/PhysRevA.95.042308",
+      "url": "https://doi.org/10.1103/PhysRevA.95.042308",
+      "published": "2017-04-06",
+      "companion_read_version": "arXiv:1603.05681v1 (2016-03-17)",
+      "read_scope": "Official APS metadata/abstract and author preprint abstract/Fig.1/linear-response subspace/generalized eigenproblem passages, PDF pages 1–3. Publisher title and Kimchi-Schwartz author name prevail over arXiv Schwartz name. Not full 10-page reread."
+    },
+    {
+      "number": 8,
+      "key": "cb-vqe",
+      "authors": [
+        "Maxwell D. Radin",
+        "Peter Johnson"
+      ],
+      "title": "Classically-boosted variational quantum eigensolver",
+      "type": "preprint",
+      "arxiv": "2106.04755v1",
+      "url": "https://arxiv.org/abs/2106.04755v1",
+      "publication_year": 2021,
+      "first_submission_utc": "2021-06-09T00:56:50Z",
+      "read_scope": "Author record, abstract, theory and eigenvalue-sensitivity/orthogonality discussion. Primary arXiv record contains no journal reference and only v1; primary author-team publications list still calls this preprint. No journal publication asserted. Not full 15-page reread."
+    },
+    {
+      "number": 9,
+      "key": "pyscf-dft",
+      "authors": [
+        "PySCF Developers"
+      ],
+      "title": "Density functional theory (DFT)",
+      "type": "official_documentation",
+      "url": "https://pyscf.org/user/dft.html",
+      "accessed": "2026-11-20",
+      "version": "unversioned live official page",
+      "read_scope": "Introduction/Theory: KS total energy functional and approximated exchange-correlation contribution. Live page checked now; dated Sep10 snapshot not recovered."
+    }
+  ],
+  "private_source_inventory": [
+    {
+      "file": "adapt-abs.html",
+      "bytes": 44019,
+      "sha256": "295e76ad53305a801de8d1394098b0d2aa7e128af30998f16e254bb29e21afbf"
+    },
+    {
+      "file": "adapt.pdf",
+      "bytes": 1489611,
+      "sha256": "7f4cacb9d926abff5aec3b8a17134b8b8dcf5dfc731eee467b100c554bcb5493"
+    },
+    {
+      "file": "adapt.txt",
+      "bytes": 52648,
+      "sha256": "53bd6d4738c0d8ca7a1270af2125c2270309573630d4cc81e6e1d077719a6d6d"
+    },
+    {
+      "file": "asci-abs.html",
+      "bytes": 45420,
+      "sha256": "ecdba8b52ae67255d178eacf365b7bcb3e1be02447239bc26ea13ab1eab018a3"
+    },
+    {
+      "file": "asci.pdf",
+      "bytes": 1063067,
+      "sha256": "9229488e69ebb85bd9f0b6d6689b46a5068b296abca0b28021d0be83bda9def3"
+    },
+    {
+      "file": "asci.txt",
+      "bytes": 98355,
+      "sha256": "2f2d66c553e0e45cc407a6667da9df814b8f61b557195daa04432978f7adc584"
+    },
+    {
+      "file": "cash-abs.html",
+      "bytes": 43022,
+      "sha256": "45fa52d716098901609a35fe501b37d26480f0c8a713faed28eb8ee674533ddd"
+    },
+    {
+      "file": "cash-src.tar",
+      "bytes": 34827,
+      "sha256": "fc74b948f267bf9288f209accc086649ca7499e470cefc7302180b09fb0de534"
+    },
+    {
+      "file": "cash.html",
+      "bytes": 503957,
+      "sha256": "69c908ac1458a8797cbdcb3facad54abe457c6923dc657621abf82d5d20b892c"
+    },
+    {
+      "file": "cash.pdf",
+      "bytes": 576446,
+      "sha256": "63fb555105d0fbd7d20f87dbc034183801db3c46530ff58c3b75221d100e3e12"
+    },
+    {
+      "file": "cash.txt",
+      "bytes": 83610,
+      "sha256": "d25783d5f6704880a4c4a6a442e2db5a959690ff8710406f82761c403ba2204b"
+    },
+    {
+      "file": "cbvqe-abs.html",
+      "bytes": 40796,
+      "sha256": "9a9f1361efa7f626c65a353f02daa27d8bf99ff67ae54c1423bc0b889c5f745b"
+    },
+    {
+      "file": "cbvqe.pdf",
+      "bytes": 364591,
+      "sha256": "655c5f6f8fafaf14f343392378fa5f331d5b79fd51224ab5155ea9432d61d821"
+    },
+    {
+      "file": "cbvqe.txt",
+      "bytes": 44612,
+      "sha256": "f1302c12b74dd2f96ef887b992b94a9729d0fc9d1d5d38d826fef301ccb6c53d"
+    },
+    {
+      "file": "measurement-abs.html",
+      "bytes": 43849,
+      "sha256": "1bcb87791c2ed2146c4ec447978fd1ddf4879aa8356a0d611f7480d9a65d4b92"
+    },
+    {
+      "file": "measurement.pdf",
+      "bytes": 6034510,
+      "sha256": "f002f6d3be24b0d129010dbb4a8db66e8b91bf609f337d2ab4d4351587fd46d6"
+    },
+    {
+      "file": "measurement.txt",
+      "bytes": 137281,
+      "sha256": "2d2710709fed372662fa816af8ae6613725ce77db093d5a7bd72b4375c6470f2"
+    },
+    {
+      "file": "pyscf-dft.html",
+      "bytes": 67769,
+      "sha256": "3c6a2690a78dcd8bf7f0a04a6f8ec39c7867a0115247e838a1ef0ea69a971505"
+    },
+    {
+      "file": "pyscf-mcscf.html",
+      "bytes": 69904,
+      "sha256": "4933eae50912c0f89541b7526a8030008c6e8579c3bfe58280bff13a69edccbe"
+    },
+    {
+      "file": "pyscf-mrpt.html",
+      "bytes": 37695,
+      "sha256": "cba2059d656da0d1838e95fd8fa81339d4cb1e22785b6358baead35be696f36c"
+    },
+    {
+      "file": "qse-abs.html",
+      "bytes": 43659,
+      "sha256": "e0dae0d80bcea4a53fc82726ad5b635b6d931ca53d8fd3bbf8d004a084523386"
+    },
+    {
+      "file": "qse.pdf",
+      "bytes": 616772,
+      "sha256": "d0947223987aac05e8523f4abffbb6363779fac4f495415abae849d8fcb189a0"
+    },
+    {
+      "file": "qse.txt",
+      "bytes": 45671,
+      "sha256": "a28aec092b6df0502bf1f1cca5211cfecac16e2f6a81f7e5de40a38ee1fd7915"
+    }
+  ]
+}

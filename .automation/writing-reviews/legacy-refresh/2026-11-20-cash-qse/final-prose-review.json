@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "article_id": "2026-09-10_cash-qse-classical-quantum-chemistry",
+  "reviewed_at_utc": "2026-11-20T01:17:37Z",
+  "reviewer_role": "Independent agent prose and reader-flow reviewer, nonauthor; 편집부(AEDAUT)",
+  "verdict": "pass_no_blocking_prose_or_scientific_bounds_findings",
+  "reviewed_files": [
+    {
+      "path": "reports/final_review.md",
+      "sha256": "1f3e27dad6d00156e6e328ff127657c6b36f460ce5882f94bc60eb7574d15b80",
+      "read_scope": "All 142 lines, continuously from title through introduction, eight sections, both numerical tables, equations, figure placeholders and captions, all nine references, disclosure and revision history."
+    },
+    {
+      "path": "reports/final_review_en.md",
+      "sha256": "663beeebe5c3a19458f08e95b368a77150d4a1c29f8207c3dec3a7e326a62f36",
+      "read_scope": "All 140 lines, continuously from title through introduction, eight sections, both numerical tables, equations, figure placeholders and captions, all nine references, disclosure and revision history."
+    },
+    {
+      "path": "publication/reviews/2026-09-10_cash-qse-classical-quantum-chemistry.json",
+      "sha256": "66451207639dae04588e0a8f30251043af1138a5fcc87832eddcb2d3bc63f88f",
+      "read_scope": "Korean review.summary field only."
+    },
+    {
+      "path": "scripts/hub_summaries_en.json",
+      "sha256": "482bdbab8009380e87856bd7c61b7a6eec4176bdce626db2d517f3f82700d6ee",
+      "read_scope": "The target article entry only: exact Korean source and English summary text."
+    }
+  ],
+  "baseline_commit_for_preservation_comparison": "648319541b099384d01f8e595974536662390752",
+  "reader_reconstruction": "CASH-QSE preserves a classically computed wavefunction component and measures the additional subspace information. Occupation constraints remove state overlap. Circuit length and shot requirements are distinct: nitrogen examples include savings, losses, and a classical stopping point. The practical research problem is finding a useful partition without FCI knowledge and retaining an advantage after state selection, allocation learning and device costs are counted.",
+  "findings": [],
+  "checks": {
+    "initial_prose_findings_resolved": [
+      "The introduction now states the division-of-work viewpoint before the remaining roadmap.",
+      "The Gonthier paragraph connects the reported measurement burden directly to the article's design question without introducing a universal impossibility dispute.",
+      "The overlap example explains the small difference direction and error amplification before connecting to orthogonal design.",
+      "Partition subdivision, additional matrix elements and noise-induced constraint violations are described through their concrete consequences.",
+      "The estimator paragraph ends with the state and measurement-group dependence of variance and shots.",
+      "The accuracy paragraph identifies the chosen-basis FCI reference and the two separate 1.6 mEh budgets at the point where the tables are interpreted."
+    ],
+    "both_languages_table_lines_identical_to_baseline": true,
+    "both_languages_display_formulas_identical_to_baseline": true,
+    "inline_math_preservation": "English math occurrences are unchanged. Korean removes one repeated inline s token while all mathematical expressions and their meanings are retained; no mathematical expression is added or removed as a distinct expression.",
+    "both_languages_image_and_interactive_placeholders_unchanged": true,
+    "preserved_numeric_examples": [
+      "Determinant counts 853,776 and 34,134,779,536 remain explicitly educational examples.",
+      "Two-state defaults Delta=1 eV, V=0.2 eV, E-=approximately -0.03852 eV and correction weight 3.58% are retained.",
+      "The overlap example retains s=0.99 and condition number 199; the added small eigenvalue 0.01 follows directly from the displayed 1-s relation.",
+      "Nitrogen and water table values, ratios, CNOT counts and classical-stop row are unchanged."
+    ],
+    "preserved_scientific_bounds": [
+      "Original publication and scientific evidence cutoff remain 10 September 2026; CASH-QSE version 1 and its classical simulation/resource-analysis status are explicit.",
+      "The review does not claim QPU execution or independent molecular benchmark reproduction.",
+      "Reference preparation may still be needed for classical-quantum coupling measurements.",
+      "Shot estimates concern converged final-energy sampling using exact variances and FCI-assisted state selection, excluding optimization and device execution totals.",
+      "The separate FCI energy-error and sampling-uncertainty budgets are retained.",
+      "The water calculation retains its restricted 14-spatial-orbital window, equal one-shot group floor and the 3.0 A ADAPT FCI-proxy qualification.",
+      "FCI-guided state selection, pilot measurement, classical preprocessing, alternative classical baselines and hardware costs remain substantive parts of the judgment.",
+      "DFT total energy and wavefunction matrix elements remain distinct; OLED is explicitly a research proposal with additional observables and state-balance requirements."
+    ],
+    "citation_first_occurrence_order_ko": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "citation_first_occurrence_order_en": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "all_body_citation_ids_defined_in_each_bibliography": true,
+    "bibliography_review": "Both manuscripts have nine matching numbered entries in first-citation order, including the ASCI-SCF journal edition and named coauthor credits. This prose review checked numbering, manuscript correspondence and claim placement; independent primary-source bibliographic verification is a separate review role.",
+    "revision_history": "Both histories distinguish the 20 November prose/explanatory/reference revision from the original 10 September publication and evidence cutoff. Current PySCF access is dated 20 November and does not claim recovery of the historic documentation state.",
+    "ko_en_viewpoint_consistency": "The central question, favorable and unfavorable examples, research direction and claim bounds correspond. Natural differences in sentence and paragraph boundaries do not obscure the argument.",
+    "hub_summary_verdict": "Retain both summaries. They accurately introduce reuse of the classical reference, quantum correction, favorable/unfavorable classical-simulation examples and the measurement-cost question. The Korean registry summary exactly matches the English mapping's source field."
+  },
+  "limits": [
+    "This is an agent's independent reading and preservation/citation-structure check, not an actual human-reader comprehension evaluation.",
+    "No molecular benchmark was reproduced, and no new experimental or hardware result was evaluated by this reviewer.",
+    "HTML visual rendering, links on the live site, deployment state and binary asset integrity are outside this review's actual read scope.",
+    "This review records findings only and creates no new publication permission or approval gate. Existing user authorization and the responsible publication checks govern release."
+  ],
+  "human_reader_evaluation_performed": false,
+  "creates_publication_authority": false,
+  "authoring_sources_modified_by_reviewer": false
+}
