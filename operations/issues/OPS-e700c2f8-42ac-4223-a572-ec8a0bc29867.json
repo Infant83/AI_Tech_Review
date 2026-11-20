@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 39,
+  "record_version": 40,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-20T02:11:10.859161+00:00",
+  "updated_at": "2026-11-20T10:13:30.757496+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -146,26 +146,27 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-20T02:00:24.474Z",
-    "last_successful_actions_check_at": "2026-11-20T02:01:14.435996Z",
-    "mail_window": "48시간 겹친11/17T18:00:06Z부터 in:anywhere·GitHub발신자/저장소·읽지않음제한없이1페이지0통·다음없음·상태변경0.",
-    "actions_window": "50개/페이지 첫 조회에서동일48h구간1페이지7run끝경계확인. 새DQB20/CASH-QSE2건attempt1·네작업/실제배포/동기화성공. 최신기존QA의sync75/new0/queue0재사용. active5상태각0. 옛생성실행의모든완료재시도전수검색은아님.",
-    "mail_notification_count": 0,
-    "unique_mail_linked_runs": 0,
+    "last_successful_mail_check_at": "2026-11-20T10:00:41.613Z",
+    "last_successful_actions_check_at": "2026-11-20T10:01:39.438881Z",
+    "mail_window": "직전 성공에서48시간 겹친11/18T02:00:24.474Z부터 전 영역·검증한GitHub발신자/저장소·읽지않음제한없이1페이지1통·끝도달·상태변경0. 기존DRB실패알림과연결.",
+    "actions_window": "50개/페이지 첫 시도1페이지9run끝경계. 새L011과기존DRB보충을구분했으며8e074를포함한f4c의실제backend·네작업/실제Pages/HTTPS후sync성공. 활성5상태각0. 옛생성실행의모든완료재시도전수조회는아님.",
+    "mail_notification_count": 1,
+    "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "1aee133406e60a03c9cf64d516fe102214c31353",
-    "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+    "live_source_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
     "supplemental_actions_check_at": "2026-11-20T02:21:16.168005Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-20T02:01:14.435996Z",
+    "last_full_actions_check_at": "2026-11-20T10:01:39.438881Z",
     "supplemental_successful_runs": [
       "44461708586",
       "44658717706"
-    ]
+    ],
+    "historical_supplemental_fields_precede_current_full_check": true
   },
   "observation": {
-    "status": "11시 새 정상2run 인수·조회/CI 새미해결0",
+    "status": "19시 기존실패메일1통 대조·수정후 실제CI통과 확인·새미해결0",
     "period": {
       "mail": "2026-11-20T02:00:24.474Z",
       "actions": "2026-11-20T02:01:14.435996Z",
@@ -390,9 +391,9 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-20T02:00:24.474Z",
-      "full_api": "2026-11-20T02:01:14.435996Z",
-      "active_states": "2026-11-20T02:01:17.842963Z"
+      "mail": "2026-11-20T10:00:41.613Z",
+      "full_api": "2026-11-20T10:01:39.438881Z",
+      "active_states": "2026-11-20T10:01:43.229896Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -549,6 +550,44 @@
       "local_insights_tests": 13,
       "local_backend_tests": 73,
       "actual_post_fix_github_ci_observed": false
+    },
+    "evening_20261120": {
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "mail_success_at": "2026-11-20T10:00:41.613Z",
+      "full_api_success_at": "2026-11-20T10:01:39.438881Z",
+      "mail_pages": 1,
+      "mail_count": 1,
+      "mail_scope": "전 영역·검증한 GitHub 발신자/저장소·읽지 않음 제한 없음·48시간 겹침·끝 도달",
+      "mail_result": "기존 DRB44658717706 attempt1 실패 알림. 기존 원인/동일 입력 재실행/수정/실제 후속CI와 연결하며 새 사고로 집계하지 않음.",
+      "api_pages": 1,
+      "overlap_runs": 9,
+      "newly_unobserved_run": 44677653101,
+      "new_unresolved_failures": 0,
+      "query_errors": 0,
+      "actual_post_fix_ci": {
+        "checked_at": "2026-11-20T10:02:45.210375Z",
+        "fix_revision": "8e0740bfb3cd10abee0efa56ca7719d4aef5bb92",
+        "actual_ci_source_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+        "fix_is_ancestor": true,
+        "test_blob_unchanged_since_fix": true,
+        "actual_ci_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44677653101",
+        "actual_backend_step": "success",
+        "all_four_jobs_and_actual_pages_https_sync_steps": "success",
+        "new_asset_registry_files": 0,
+        "asset_workflow_dependency_delta": [
+          "M\toperations/assets/ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e.json"
+        ],
+        "delta_scope": "1aee→f4c40의 자산등록·워크플로·백엔드package/lock 경로를 한정 대조함. 기존 자산 footprint 갱신1건이며 이 경로에서 새 자산등록파일/워크플로/백엔드 의존성 변경은 없음. 미등록 자산 전체의 전수조사는 아님.",
+        "original_failure_chain": "기존DRB attempt1 timestamp guard오탐 → 같은입력attempt2 게시회복 → 별도8e074 테스트수정 → 수정포함f4c40 실제 backend통과. 이 회차 원시로그 재열람 없음."
+      },
+      "artifacts": 130,
+      "artifact_pages": 2,
+      "unexpired_recovery_copies": 3,
+      "latest_recovery_bytes": 729355564,
+      "latest_recovery_expires_at": "2026-12-20T05:00:34Z",
+      "actual_restore": false,
+      "raw_logs_read": 0,
+      "mail_state_changes": 0
     }
   },
   "recovery": {

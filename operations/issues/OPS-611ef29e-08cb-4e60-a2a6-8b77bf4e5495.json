@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 16,
+  "record_version": 17,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-20T02:28:42.082870+00:00",
+  "updated_at": "2026-11-20T10:13:30.757496+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -280,7 +280,8 @@
       "independent_diff_review": "PASS",
       "actual_post_fix_github_ci_observed": false,
       "observed_attempt1_failure": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/1",
-      "same_input_attempt2_recovered_publication": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/2"
+      "same_input_attempt2_recovered_publication": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44658717706/attempts/2",
+      "historical_status": "11시 초기 관찰 당시 상태다. 수정 후 실제CI통과는 observation.actual_ci_followup_20261120_evening과 해당19시 실행 기록을 따른다."
     }
   },
   "observation": {
@@ -304,6 +305,21 @@
       "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
       "status": "원인수정·로컬검증/독립감수·통합 완료, 실제후속CI관찰 전",
       "result": "실행중 정상 DRB를 보존한 뒤 test1파일8e0740b를 인수하고 게시담당의10dafe4 인계event도 함께 보존했다. 원인없는검사완화/검사삭제·운영자재실행·테스트푸시는없다."
+    },
+    "evening_20261120": {
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "result": "새 공유 실기기/실사용 직접 근거 없음. 정상 L011 발행·HTTPS/CI 확인을 단말 수신·읽음·배지·필기 검증으로 확대하지 않는다. 기존 구현/배포·미확인 범위를 유지한다."
+    },
+    "actual_ci_followup_20261120_evening": {
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "source_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44677653101",
+      "fix_is_ancestor": true,
+      "test_blob_unchanged": true,
+      "actual_backend_step": "success",
+      "four_jobs_and_pages_https_sync": "success",
+      "status": "수정 후 실제 GitHub CI 관찰 완료; 기존 DRB attempt2와 구분",
+      "old_failure_mail_reconciled": true
     }
   },
   "recovery": {
@@ -311,22 +327,22 @@
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "11/20 19시 기존 실사용/새 피드백 검토와 다음 정상 GitHub CI에서8e0740b 검사수정의 실제 실행 결과를 관찰한다. 새 발행/푸시를 시험 목적으로 만들거나 구판을 재배포하지 않는다. 렉처의 미분류 원칙과 기존 통계/개인정보·합계 보존을 유지한다.",
+  "next_action": "8e0740b 수정 후 f4c 정상 CI의 실제 backend 통과 관찰을 마쳤다. 독자 통계의 새 실사용/분류 근거는 받은 기존 회차에서 먼저 확인하고 공식 재검토는11/22 19시로 연결한다.21일 오전 장기대기 우선순위 재평가·렉처 미분류/개인정보/합계 보존을 유지하며 테스트 발행/푸시는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_delivery_deployed_observing",
-    "next_scheduled_step_at": "2026-11-20T19:00:00+09:00",
-    "next_review_at": "2026-11-20T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-22T19:00:00+09:00",
+    "next_review_at": "2026-11-22T19:00:00+09:00",
     "scheduled_step": "독자용 통계의 새 실사용/분류 근거 재검토",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "dependencies": [
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
     ],
-    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
-    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다.",
+    "replan_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+    "replan_reason": "11/20 19시 예정된 공유 근거 검토를 실제 수행했고 새 직접 근거가 없다. 기본3회/우선순위/제품 슬롯은 유지하며 다음 공식 증거 묶음 검토만48시간 뒤로 연결해 반복 기록 부담을 줄인다. 새 제보/CI 실패는 기존 각 회차에서 앞당기고21일 오전에 대기 우선순위를 재평가한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
-    "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
     "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",

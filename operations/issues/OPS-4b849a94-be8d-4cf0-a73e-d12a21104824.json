@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 13,
+  "record_version": 14,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-20T02:10:31.383278+00:00",
+  "updated_at": "2026-11-20T10:13:30.757496+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -88,7 +88,7 @@
     "commits": [
       "13c79914ef60141535f8427e09e15303caa81ada"
     ],
-    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/61a9b2d8926f7ee335ec2b00976609cebe110f0c",
     "deployment_reference": null,
     "local_readonly_candidate": {
       "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -109,13 +109,44 @@
       "protected_proof_key": "admin-readonly-20261117-11 / verified-candidate",
       "status": "independently_reviewed_and_integrated_local_tool_not_production_deployed",
       "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
-      "resume": "로컬 읽기v1과 쓰기 첫 계약의 독립 검토를 마쳤다.11/20 19시 A의 로컬 사전검사 core/CLI·fixture를 구현하고21일11시 독립 검토한다. 지속쓰기·인가HTTP·실제 발행은 후속이다.",
+      "resume": "11/21 11시 최신 main/공개본 인수 후 A 정식 독립 경계/회귀 검토. 지속쓰기·인가HTTP·발행은 후속이며 이 후보를 운영 API로 표시하지 않는다.",
       "integration_revision": "13c79914ef60141535f8427e09e15303caa81ada",
       "integration_run": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
+    },
+    "local_preflight_candidate": {
+      "source_revision": "61a9b2d8926f7ee335ec2b00976609cebe110f0c",
+      "base_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+      "branch": "codex/admin-request-preflight-20261120",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_files": [
+        "scripts/admin_requests.py",
+        "tests/test_admin_requests.py",
+        "scripts/review_registry.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_sha256": {
+        "scripts/admin_requests.py": "38f80e2c88f2fbc46e15d6d72423cd02964a85b921e42ecf8921f28879880c14",
+        "tests/test_admin_requests.py": "a37c646b663d60be501f22dcf852c14692cf792f0e462e4f9e9720fdd75a3b43",
+        "scripts/review_registry.py": "44b2b0516bd48993ddb2b447142044bbb0be8fc19d51f62910fe696ad3fb1c23",
+        ".automation/admin-readonly/README.md": "387bdc6086f74e8a6dec1c259323d74e96dd010a8c2e079292ece7308ce69348"
+      },
+      "status": "implemented_initial_checks_passed_formal_independent_review_pending",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/61a9b2d8926f7ee335ec2b00976609cebe110f0c",
+      "integrated": false,
+      "deployed": false,
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "proof_key": "adopt-admin-request-preflight-20261120",
+      "target_tests": 19,
+      "registry_regression_tests": 6,
+      "intent_regression_tests": 7,
+      "parent_registry_equivalence_cases": 98,
+      "parent_real_no_change_source_and_baseline_files_preserved": 142,
+      "protected_existing_outputs_preserved": 25,
+      "resume": "11/21 11시 최신 main/공개본 인수 후 A 정식 독립 경계/회귀 검토. 지속쓰기·인가HTTP·발행은 후속이며 이 후보를 운영 API로 표시하지 않는다."
     }
   },
   "verification": {
-    "status": "로컬 읽기 v1 통합 완료·쓰기 API 첫 계약/작업분해 독립 검토 완료, 다음 A 사전검사 core 구현 전",
+    "status": "로컬 읽기 v1 통합 완료·A 사전검사 첫 후보/초기 검사 완료, 정식 독립 검토/통합 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -135,7 +166,8 @@
       "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
       "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md",
       "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md",
-      "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md"
+      "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+      "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md"
     ],
     "remaining_limits": [
       "로컬 도구만 통합했으며 운영 API/인증/쓰기/원격 미리보기·공개 관리자 URL·실사용·Safari/실기기 검증은 미실시다.",
@@ -225,12 +257,29 @@
       ],
       "current_http_auth_db_or_source_write_implementation": false,
       "actual_tests_this_contract_review": 0
+    },
+    "local_preflight_20261120_evening": {
+      "source_revision": "61a9b2d8926f7ee335ec2b00976609cebe110f0c",
+      "base_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
+      "branch": "codex/admin-request-preflight-20261120",
+      "status": "implemented_initial_checks_passed_formal_independent_review_pending",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/61a9b2d8926f7ee335ec2b00976609cebe110f0c",
+      "integrated": false,
+      "deployed": false,
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "proof_key": "adopt-admin-request-preflight-20261120",
+      "target_tests": 19,
+      "registry_regression_tests": 6,
+      "intent_regression_tests": 7,
+      "parent_registry_equivalence_cases": 98,
+      "parent_real_no_change_source_and_baseline_files_preserved": 142,
+      "protected_existing_outputs_preserved": 25
     }
   },
   "observation": {
-    "status": "11시 로컬 읽기 후보 구현·초기 검증 완료",
-    "period": "2026-11-17T02:02:54.475Z",
-    "result": "최신 정상 DQB/L009/DeMARS/DRB와 기록 commit1408582를 인수했다. 실제e526 묶음의 전체 등록207행과 알림74건을 구분해537KB 규모의 읽기 목록을 생성했다. 내용 비교는 확인 범위162일치/44근거미확인/외부1해당없음이며 미확인을 미게시·과학 감수 실패로 해석하지 않는다. 원본/등록/지속 요청·공개 자산의 의도하지 않은 변경·직접 DB/발행/알림은 없다.",
+    "status": "20일19시 A첫후보 초기검사 완료·21일 정식독립검토 대기",
+    "period": "2026-11-20T09:58:28.182Z",
+    "result": "원격 후보61a9b2d의4파일/32검사와 초기 독립 동등비교98회·실제 no_change/142입력 보존을 확인했다. main 통합·본감수·실제 저장/운영 API/인가/발행은 미완료이며21일11시 최신 기준으로 재개한다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -250,21 +299,26 @@
     "morning_plan_20261120": {
       "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
       "result": "기존 구현자와 다른 읽기 조사/독립 감수로 권한·writer부작용·충돌/멱등/복구·기존 단일 게시 경로를 대조했다. 같은 공개 source 재빌드의 다른 묶음을 거절하도록 release/catalog/updates 원시SHA3개를 추가했다. 실제 API/DB/원본 편집·게시·테스트 푸시는0이다."
-    }
+    },
+    "evening_20261120": {
+      "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
+      "result": "예정된 A4파일 첫 후보를 별도 브랜치로 구현·보존했다. 전체 reference 선언을 요구하던 과도한 초기 조건은 현재16개 v2 리뷰의 주/번역 HTML 결속과 미변경 첨부의 차이를 직접 대조해 보완했다. 새 원고·등록 payload·운영 DB/API/인가·발행·알림 변경은 없다."
+    },
+    "initial_readonly_candidate_result": "최신 정상 DQB/L009/DeMARS/DRB와 기록 commit1408582를 인수했다. 실제e526 묶음의 전체 등록207행과 알림74건을 구분해537KB 규모의 읽기 목록을 생성했다. 내용 비교는 확인 범위162일치/44근거미확인/외부1해당없음이며 미확인을 미게시·과학 감수 실패로 해석하지 않는다. 원본/등록/지속 요청·공개 자산의 의도하지 않은 변경·직접 DB/발행/알림은 없다."
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/20 19시 계약 A의 제한된 로컬 사전검사 core/CLI·임시 fixture를 구현한다. native 리뷰ID·허브4필드·현재v2 입력/공개묶음 SHA·충돌/한도/요청 fingerprint를 검사하고 원본/DB/네트워크 쓰기는 하지 않는다.11/21 11시 독립 검토를 목표로 하며 지속쓰기/CAS원장·서버인가/HTTP·발행은 후속이다.",
+  "next_action": "11/21 11시 최신 main/공개본 인수 후 A 정식 독립 경계/회귀 검토. 지속쓰기·인가HTTP·발행은 후속이며 이 후보를 운영 API로 표시하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "write_contract_reviewed_local_preflight_next",
-    "next_scheduled_step_at": "2026-11-20T19:00:00+09:00",
+    "state": "local_preflight_candidate_pending_independent_review",
+    "next_scheduled_step_at": "2026-11-21T11:00:00+09:00",
     "next_review_at": "2026-11-21T11:00:00+09:00",
-    "scheduled_step": "쓰기 계약 A: 로컬 사전검사 core/CLI·격리 fixture 구현",
+    "scheduled_step": "A61a9b2d 최신 기준 정식 독립 검토·필요 수정/통합 판단",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -273,12 +327,14 @@
     "replan_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
     "replan_reason": "예정된11/20 11시 계약 검토/작업분해를 실제 완료했다. 같은 운영순서1/P2에서 다음19시 A 구현·21일11시 독립 검토로 전진하며 기존 일반 게시/관찰/기술 선행을 유지한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
     "write_api_breakdown_target": "2026-11-20T11:00:00+09:00",
     "local_v1_completed_at": "2026-11-19T10:13:34.746312+00:00",
-    "write_api_breakdown_completed_at": "2026-11-20T02:10:31.383278+00:00"
+    "write_api_breakdown_completed_at": "2026-11-20T02:10:31.383278+00:00",
+    "local_preflight_started_at": "2026-11-20T09:59:16.459656+00:00",
+    "local_preflight_candidate_ready_at": "2026-11-20T10:13:30.757496+00:00"
   }
 }
