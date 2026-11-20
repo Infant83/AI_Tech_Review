@@ -1,0 +1,223 @@
+{
+  "date": "2026-11-20",
+  "role": "dqb1120_systems",
+  "status": "passed",
+  "checked_at": "2026-11-20T01:02:36.720282+00:00",
+  "source_commit": "87c817107a16d106aab65de8762c48d9f6cb92cd",
+  "workflow": {
+    "run_id": 44649562164,
+    "attempt": 1,
+    "url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44649562164",
+    "status": "completed",
+    "conclusion": "success",
+    "all_four_jobs_completed_success": true,
+    "jobs": [
+      {
+        "name": "build",
+        "databaseId": 136000735702,
+        "startedAt": "2026-11-20T00:54:30Z",
+        "completedAt": "2026-11-20T00:58:45Z",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "deploy",
+        "databaseId": 136002551516,
+        "startedAt": "2026-11-20T00:58:49Z",
+        "completedAt": "2026-11-20T00:59:18Z",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "notify-readers",
+        "databaseId": 136002781465,
+        "startedAt": "2026-11-20T00:59:21Z",
+        "completedAt": "2026-11-20T01:00:40Z",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "recovery-copy",
+        "databaseId": 136002781513,
+        "startedAt": "2026-11-20T00:59:21Z",
+        "completedAt": "2026-11-20T01:00:08Z",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "actual_tests": {
+    "total": 958,
+    "passed": 949,
+    "skipped": 9,
+    "failed": 0,
+    "suites": [
+      {
+        "name": "Python publication/search/preservation",
+        "total": 447,
+        "passed": 446,
+        "skipped": 1,
+        "failed": 0
+      },
+      {
+        "name": "Multilingual search/course navigation",
+        "total": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Reader frontend unit",
+        "total": 205,
+        "passed": 197,
+        "skipped": 8,
+        "failed": 0
+      },
+      {
+        "name": "Lecture reader/storage races",
+        "total": 208,
+        "passed": 208,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Backend authentication/notebook authorization",
+        "total": 72,
+        "passed": 72,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "Portable media delivery",
+        "total": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ],
+    "skip_evidence": "Actual log explicitly reports Python1skip and frontend8#SKIP. Frontend READER_UNIT_ONLY=1 intentionally skips8Playwrightbrowser tests; Python optionalMarkdown test is source-gated and node is available. These are not recorded as passes.",
+    "additional_checks": "Eight JavaScript node --check files and esbuild bundling passed; no TypeScript typecheck claimed."
+  },
+  "build": {
+    "continuity_check": "passed",
+    "payload_check": "passed_with_nonblocking_warnings",
+    "complete_artifact_validation": {
+      "validated_files": 2691,
+      "articles": 75
+    },
+    "sealed_continuity_snapshot_files": 2674,
+    "reviews": 58,
+    "registered_archive_documents": 155,
+    "catalog_revision": "87c817107a16d106aab65de8762c48d9f6cb92cd",
+    "catalog_sha256": "5fb7da42a3e2ca0c975617a810f4227bd3bb9bf7f9a4382baebf7835e16deacf",
+    "catalog_articles": 75,
+    "continuity_blockers": [],
+    "payload_failures": [],
+    "payload_warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ]
+  },
+  "deploy": {
+    "guard_current_true": true,
+    "guard_evidence": "Conditional deploy-pages step actually ran and succeeded; downstream recovery-copy and notify-readers require current=true and both ran.",
+    "actual_deploy_pages": "success",
+    "artifact_id": 14590846147,
+    "artifact_bytes": 725508428,
+    "environment_url": "https://infant83.io/AI_Tech_Review/",
+    "reported_success_at": "2026-11-20T00:59:17.4314335Z"
+  },
+  "recovery": {
+    "verification": {
+      "ok": true,
+      "revision": "87c817107a16d106aab65de8762c48d9f6cb92cd",
+      "files": 2691,
+      "bytes": 812006758,
+      "archive_sha256": "7b0b850de536d55cedfab3fb6d568243a3cbb92dcc10d33cc9eecee448f6ed07"
+    },
+    "artifact_id": 14591525093,
+    "artifact_zip_bytes": 727738159,
+    "artifact_zip_digest": "sha256:84a99e3bca0057ebe00092823b108bdf05e7116a97019ed1e932f3de294f9d98",
+    "configured_retention_days": 30,
+    "created_at": "2026-11-20T01:00:05Z",
+    "expires_at": "2026-12-20T00:59:58Z",
+    "retention_apply": {
+      "keep": [
+        14591525093,
+        14520524757,
+        14502509540
+      ],
+      "delete": [
+        14502110549
+      ],
+      "applied": true
+    },
+    "api_latest_three": [
+      {
+        "id": 14591525093,
+        "created_at": "2026-11-20T01:00:05Z",
+        "expires_at": "2026-12-20T00:59:58Z",
+        "head_sha": "87c817107a16d106aab65de8762c48d9f6cb92cd"
+      },
+      {
+        "id": 14520524757,
+        "created_at": "2026-11-19T10:56:38Z",
+        "expires_at": "2026-12-19T10:56:31Z",
+        "head_sha": "7d2f7df82da6a945ee51ce6a66f4b409a26285ac"
+      },
+      {
+        "id": 14502509540,
+        "created_at": "2026-11-19T05:57:21Z",
+        "expires_at": "2026-12-19T05:57:13Z",
+        "head_sha": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957"
+      }
+    ],
+    "independent_review_scope": "Read actual completed recovery job log, exact executed source release_backup.py and release_artifact_retention.py, and GitHub artifact API. Code verifies every member SHA/byte length/completeness, revision/catalog/seal agreement before upload. Large recovery archive was not redownloaded or restored locally."
+  },
+  "reader_sync": {
+    "synced": 75,
+    "revision": "87c817107a16d106aab65de8762c48d9f6cb92cd",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "artifacts": [
+    {
+      "name": "publication-recovery",
+      "id": 14591525093,
+      "bytes": 727738159,
+      "expires_at": "2026-12-20T00:59:58Z",
+      "digest": "sha256:84a99e3bca0057ebe00092823b108bdf05e7116a97019ed1e932f3de294f9d98"
+    },
+    {
+      "name": "github-pages",
+      "id": 14590846147,
+      "bytes": 725508428,
+      "expires_at": "2026-11-21T00:58:20Z",
+      "digest": "sha256:0477ba9aa5bb8dacd96ded97c4b27777c3e50499bcf4113bf7c1fa690e7e3c31"
+    },
+    {
+      "name": "publication-validation",
+      "id": 14590346540,
+      "bytes": 4452,
+      "expires_at": "2026-12-04T00:58:42Z",
+      "digest": "sha256:b82cc8b2e2b014cb17006de9d8b940506eace26de51b5f58d56383dd458423cc"
+    },
+    {
+      "name": "reader-publication-catalog",
+      "id": 14590286615,
+      "bytes": 5531,
+      "expires_at": "2026-11-27T00:58:41Z",
+      "digest": "sha256:223e6ba8fd49d9d2cea13dddb656fc05ff635b2f45f4e15b41f8e5a0a38dcfb8"
+    }
+  ],
+  "nonblocking_runtime_annotations": [
+    "GitHub reports Node20-based actions forced toNode24; workflow completed success. Existing capacity warnings are retained; no infrastructure changes in this editorial run."
+  ],
+  "limits": [
+    "This CI evidence review does not establish live API health, per-device notification receipt or personal notebook recovery.",
+    "Root separately verifies actual HTTPS article/PDF bytes and browser behavior.",
+    "No new quantum/GPU/model experiment or human reader study performed."
+  ]
+}

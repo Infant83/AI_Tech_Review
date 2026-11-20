@@ -21,3 +21,9 @@ root가 원 DQB 4쪽과 관련 기존 글을 읽고 한영 집필·통합했다.
 실제 이전 공개 릴리스 `7d2f7df82da6a945ee51ce6a66f4b409a26285ac`의 불변 묶음과 비교한 후보는 기존 58편·1,937개 리뷰 파일과 PDF 261경로를 바이트로 보존했다. DRB·DQE를 포함한 기존 날짜별 편집글 40경로와 154개 보관 문서의 ID·날짜·URL도 유지했다. 새 PDF 1개·한영 편집글 2개와 필요한 공통 목록만 생성했다. 독립 검토는 [후보 보존 기록](artifacts/candidate-independent-review.json)을 따른다.
 
 연속성·용량·봉인·공개 파일 검사에서 155개 보관 PDF·75개 독자 목록·봉인 2,690파일을 검증했다. 로컬 Python 검사는 447건 중 446건 통과·1건 제외·실패 0이다. 실제 브라우저의 한영 본문·인용 이동·390px 화면·날짜 선택·한영 검색에서 편집글 우선 안내와 별도 PDF 링크를 확인했다. 검색의 기존 짧은 발췌와 날짜 패널의 요약 전문을 구별한다. [후보 검사](artifacts/candidate-verification.json)와 [브라우저 검사](artifacts/local-browser-review.json)는 실제 배포 전 범위다. 기존 검색 메타데이터·전체 산출물 용량의 비차단 경고는 운영팀(ADOPT)의 기존 용량 관리 대상으로 유지한다.
+
+## 실제 공개 완료 · 2026-11-20
+
+발행 커밋 `87c817107a16d106aab65de8762c48d9f6cb92cd`의 [배포 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/44649562164)에서 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 서버 검사는 958건 중 949건 통과·9건 제외·실패 0이다. 제외 항목을 실제 기기나 사람 검토로 대신 표시하지 않는다. 봉인 산출물과 릴리스를 포함한 2,691개 복구 구성 파일의 해시·길이·목록·카탈로그 일치와 30일 보존·최신 3개 유지 결과를 확인했다. 복구 사본을 다시 내려받아 전체 복원한 실험은 아니다. [독립 CI 검토](artifacts/ci-independent-review.json)에 실제 확인 범위를 남긴다.
+
+[국문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-20/), [영문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-20/en/), [검수 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-20-daily-quantum-brief.pdf)를 포함한 실제 HTTPS 25경로를 확인했다. 공개 PDF는 위 최종 해시와 일치하며 한영 본문도 브라우저에서 검수한 후보와 같은 바이트다. 읽는 동안 공개 릴리스가 바뀌지 않았음을 확인했고, 실제 브라우저의 한영 페이지와 언어 전환도 검수했다. 모바일·달력·검색 조작은 같은 바이트의 로컬 후보 검사로 구별한다. [공개 확인 기록](artifacts/deployment-verification.json)과 [실제 브라우저 기록](artifacts/live-browser-review.json)을 따른다. 검수용 서버·탭은 닫고 화면 크기 설정을 복원했다. 새로운 심층 리뷰나 다른 기존 본문은 게시하지 않았다.
