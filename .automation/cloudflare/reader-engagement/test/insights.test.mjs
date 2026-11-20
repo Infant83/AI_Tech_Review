@@ -12,6 +12,22 @@ const URL_BASE='https://api.infant83.io/v1/insights';
 const range=(query='',now=NOW)=>insightsRange(new URL(URL_BASE+query),now);
 const state={since:'2026-10-25T05:12:00.000Z',discovery_activity_since:'2026-10-26'};
 const active=[{id:'review-b'},{id:'lecture:notes-a'},{id:'review-a'}];
+function assertScopedPublicInsights(body,selected) {
+  assert.match(body.generatedAt,/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  assert.equal(new Date(body.generatedAt).toISOString(),body.generatedAt);
+  const yesterday=new Date(Date.parse(selected.to+'T00:00:00Z')-86_400_000).toISOString().slice(0,10);
+  // Compare the complete allowed projection, including row fields and values.
+  // A valid timestamp may contain 999; the excluded fixture count may not leak.
+  assert.deepEqual(body,{
+    ok:true,since:state.since,activitySince:state.discovery_activity_since,generatedAt:body.generatedAt,
+    range:{...selected},
+    coverage:{timezone:'Asia/Seoul',collectionStartedOn:'2026-10-25',activityRecordedFrom:'2026-10-26',
+      firstDayMayBePartial:true,todayPartial:true,outageHistoryAvailable:false},
+    articles:[{id:'lecture:notes-a',periodOpens:3},{id:'review-a',periodOpens:2}],
+    daily:[{day:yesterday,articleId:'lecture:notes-a',opens:3},{day:selected.to,articleId:'review-a',opens:2}],
+    limits:{...INSIGHTS_LIMITS},
+  });
+}
 function dbFixture({states=[state],articles=active,rows=[]}={}) {
   const calls=[];
   const env={DB:{
@@ -185,6 +201,29 @@ test('public route preserves exact Origin, bounded errors/cache and cookie-free 
   assert.equal((await worker.fetch(request('/v1/insights','https://infant83.io','POST'),dbFixture().env)).status,404);
 });
 
+test('public projection accepts millisecond 999 and rejects excluded data or private fields',async()=>{
+  const now=Date.parse('2026-11-15T02:00:00.999Z'),selected=range('',now);
+  const body=await readingInsights(dbFixture({articles:[{id:'lecture:notes-a'},{id:'review-a'}],rows:[
+    {day:'2026-11-14',article_id:'lecture:notes-a',opens:3},
+    {day:'2026-11-15',article_id:'review-a',opens:2},
+  ]}).env,selected,now);
+  assert.equal(body.generatedAt,'2026-11-15T02:00:00.999Z');
+  assertScopedPublicInsights(body,selected);
+  for (const inject of [
+    value=>value.articles.push({id:'inactive',periodOpens:999}),
+    value=>{value.articles[0].periodOpens=999;},
+    value=>value.daily.push({day:selected.to,articleId:'inactive',opens:999}),
+    value=>value.daily.push({day:'2000-01-01',articleId:'review-a',opens:999}),
+    value=>{value.secret='synthetic-private-value';},
+    value=>{value.daily[0].secret='synthetic-private-value';},
+    value=>{value.coverage.timezone='synthetic-private-value';},
+    value=>{value.generatedAt='synthetic-private-value';},
+  ]) {
+    const exposed=structuredClone(body); inject(exposed);
+    assert.throws(()=>assertScopedPublicInsights(exposed,selected),assert.AssertionError);
+  }
+});
+
 test('actual isolated D1 query excludes inactive/out-of-range records without changing any data',async t=>{
   const mock=createFetchMock(); mock.disableNetConnect();
   const mf=new Miniflare({modules:true,scriptPath:join(ROOT,'.wrangler/test-worker.mjs'),compatibilityDate:'2026-08-06',
@@ -206,9 +245,7 @@ CREATE TABLE private_fixture(secret TEXT);`);
   const response=await mf.dispatchFetch(URL_BASE,{headers:{Origin:'https://infant83.io'}});
   assert.equal(response.status,200); assert.equal(response.headers.get('Set-Cookie'),null);
   const body=await response.json();
-  assert.deepEqual(body.articles,[{id:'lecture:notes-a',periodOpens:3},{id:'review-a',periodOpens:2}]);
-  assert.equal(body.daily.length,2);
-  assert.doesNotMatch(JSON.stringify(body),/inactive|999|synthetic-private-value|secret/);
+  assertScopedPublicInsights(body,current);
   const after=await db.batch(['metrics_state','articles','metrics_article_daily','private_fixture'].map(name=>db.prepare(`SELECT * FROM ${name} ORDER BY ${name==='private_fixture' ? '1' : '1,2'}`)));
   assert.deepEqual(after.map(row=>row.results),before.map(row=>row.results));
 });
