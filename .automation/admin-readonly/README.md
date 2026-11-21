@@ -51,4 +51,31 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_requests.py --root . --request o
 
 소비한 source가 실제 로컬 Git commit과 같은지도 확인한다. 검토 중인 dirty 입력·등록 집합 변경·symlink·입력 변경·잘못된 묶음은 거절한다. Git HEAD와 공개 revision이 다른 것 자체는 장애가 아니며, 요청에 제시한 각각의 근거와 비교한다. 같은 공개 revision의 다른 재빌드도 원시 묶음 hash가 다르면 `release_changed`다.
 
-성공은 `validated_preflight_only`, 현재 값과 같은 patch는 `no_change`다. 둘 다 저장/게시 완료가 아니다. 실패는 종료코드1과 `reason`만 반환한다. `source_conflict`·`input_conflict`·`release_changed`는 새 근거 확인이 필요하며, 초기화 누락·스키마 변경·검토 근거 부족은 안전하게 거절한다. 로컬 전후 확인은 원자적 snapshot이나 분산 잠금이 아니며, 작업 ledger·저장·인가·후보·발행 연결과11/21 독립 검토/통합은 후속 단계다.
+성공은 `validated_preflight_only`, 현재 값과 같은 patch는 `no_change`다. 둘 다 저장/게시 완료가 아니다. 실패는 종료코드1과 `reason`만 반환한다. `source_conflict`·`input_conflict`·`release_changed`는 새 근거 확인이 필요하며, 초기화 누락·스키마 변경·검토 근거 부족은 안전하게 거절한다. A는11/21 정식 독립 감수와 소스 통합을 마쳤다. 로컬 전후 확인은 원자적 snapshot이나 분산 잠금이 아니며, 아래 B1은 별도의 합성 후보 저장 실험이다. 실제 원본의 저장·인가·공개 아티팩트·발행 연결은 후속이다.
+
+## B1 · 합성 standalone Git 후보의 첫 로컬 저장기
+
+`scripts/admin_request_jobs.py`는 **명시적으로 새로 만든 작은 합성 fixture만** 다룬다. `init-fixture`는 기존 저장소를 등록하거나 clone하지 않는다. 고정 합성 리뷰·한영 원고·검토 입력·로컬 baseline을 새 standalone Git repo에 만들고, sandbox/Git 내부 identity와 보호 표식을 결속한다. `apply`는 없는 store를 초기화하지 않는다. 이 도구로 실제 리뷰를 편집하거나 원본/원격 main을 갱신하지 않는다. 서버·계정 인가·DB·C의 빌드·공개 알림도 없다.
+
+```sh
+mkdir -p output/admin-b1-local
+touch output/admin-b1-local/.keep
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_request_jobs.py init-fixture --sandbox output/admin-b1-local/fixture
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_request_jobs.py apply --sandbox output/admin-b1-local/fixture --request output/admin-b1-local/fixture/example-request.json --baseline-snapshot output/admin-b1-local/fixture/baseline/snapshot.json
+```
+
+첫 명령의 목적지는 새 폴더여야 한다. 요청을 바꿔 볼 때에는 이 fixture의 `example-request.json`에서 허용 patch와 새로운 UUID를 준비한다. 기존 key의 patch·target·기준을 바꾸면 `idempotency_conflict`다. 고정 synthetic 대상 외의 새 작업은 지원하지 않는다. stdout은 값/내부 경로/원시 오류/멱등 키를 제외한 상태·operation ID·fingerprint·candidate SHA 또는 reason JSON이다.
+
+store의 불변 key inventory가 claim hash를 예약하고, 불변 claim은 원고 값을 복사하지 않고 operation/fingerprint·대상·기준/결과 SHA를 보존한다. 새 요청은 frozen 요청과 A 결과의 fingerprint/세 기준, 고정 Git registration blob SHA를 다시 결속한다. 실제 후보는 원본 Git tree의 등록 한 파일만 바꾼 commit이다. Git receipt metadata의 operation/phase/parent·before/after hash와 **정확한 예상 전체 tree OID**가 일치해야 재생한다. 예상 tree는 메모리에서 계산하므로 replay는 Git object/ref를 쓰지 않는다. journal 상태 파일은 파생 표시이며 없어지거나 손상되면 검증된 receipt로 다시 만든다.
+
+실제 로컬 `update-ref` transaction에서 sandbox main의 expected SHA를 verify하고 receipt ref를 expected old SHA에서 새 결과로 바꾼다. 다른 글과 무관한 main 전진도 `source_conflict`다. 실제 원본/원격 main CAS의 구현이 아니다. 후보는 raw blob·tree·commit plumbing으로 만들고 workingtree·index·기존 main·한영 원고·baseline은 바꾸지 않는다. 같은 store의 협력 프로세스는 지우지 않는 lock inode로 직렬화하며 분산 잠금은 없다.
+
+`candidate_saved_local`은 합성 Git 후보의 저장일 뿐 공개 아티팩트·게시 성공이 아니다. 같은 요청은 같은 결과를 replay하며, 그 사이 main이 전진했으면 `sourceAdvanced:true`로 구분한다. 기존 결과의 replay 때문에 A를 다시 실행하거나 새 commit을 만들지 않는다. `no_change`는 로컬 tombstone만 남기고 Git commit/ref·후보·빌드·배포·알림을 만들지 않는다.
+
+중단 후 claimed Git receipt가 있으면 같은 요청과 근거를 재검증해 같은 operation을 재개할 수 있다. 결과 ref 성공 뒤 journal 실패는 `outcome_unknown`이며, 재조회는 실제 Git 결과를 대조해 같은 SHA로 조정한다. inventory 예약 직후/claim 직후 중단처럼 claim/receipt 근거가 부족하거나 key 기록이 없어진 경우에는 `outcome_unknown`/`store_inconsistent`로 중단한다. 자동 재초기화·새 key 배정·TTL 만료·claim/receipt 삭제는 하지 않는다. 이 보수적 중단은 자동 완전 복구 기능이 아니며, 수동 근거 조정/보존 사본의 복구 연결은 후속이다.
+
+symlink·연결된 Git common-dir·remotes·외부 alternates·replace/graft·local hook/filter/include 설정·attributes를 거절한다. Git 자식 프로세스와 A 자식은 inherited `GIT_*`/global/system config 영향을 제거한 환경에서 실행하고 hook·signing·filter 경로를 차단한다. 로컬 principal은 고정 fixture 설정이며 실제 사람/에이전트의 서버 인가가 아니다. 사용자가 OS 권한으로 모든 identity/이력을 위조하거나 통째로 없앤 상황을 탐지·복구한다고 주장하지 않는다.
+
+입력 요청32KB·control JSON64KiB, sandbox 파일3,000개/합계16MB·작업128개로 제한한다. 한도 초과는 거절하며 정리·삭제로 우회하지 않는다. 파일 예약/교체는 fsync와 부모 directory sync를 사용하지만 전원 차단·디스크 손상·원격 내구성 보증이 아니다. Git object/ref transaction과 파일 journal을 하나의 원자적 트랜잭션으로 표시하지 않는다.
+
+현재는 프로세스 동시 실행·결정적 중단·I/O 실패·오류 재생을 검사하는 첫 구현 후보다. 정식 독립 검토 목표는11/22 11시다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
