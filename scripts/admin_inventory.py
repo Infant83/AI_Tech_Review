@@ -138,6 +138,7 @@ class _Inputs:
         self.source_directories = set()
         self.json_files = set()
         self.json_total = 0
+        self.json_payloads = {}
 
     def directory(self, path, *, boundary=None, optional=False):
         source_input = boundary is None
@@ -211,12 +212,16 @@ class _Inputs:
         if hashlib.sha256(payload).hexdigest() != info["sha256"]:
             raise InventoryError("input_changed")
         try:
-            return json.loads(payload.decode("utf-8"), object_pairs_hook=_unique,
-                              parse_constant=lambda _: _invalid_json())
+            value = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique,
+                               parse_constant=lambda _: _invalid_json())
         except InventoryError:
             raise
         except (UnicodeError, ValueError, RecursionError):
             raise InventoryError("invalid_json") from None
+        # Only bounded JSON bytes are retained, within json_total's existing
+        # limit. Native validators must consume the bytes whose hashes we track.
+        self.json_payloads[path] = payload
+        return value
 
     def ledger(self, path, *, optional=False):
         entries = self.directory(path, optional=optional)
@@ -270,8 +275,12 @@ def _invalid_json():
 
 def _check_models(tracker):
     path = tracker.root / "scripts/publish_public_site.py"
-    tracker.file(path)
-    tree = ast.parse(path.read_text(encoding="utf-8"))
+    info = tracker.file(path)
+    with path.open("rb") as handle:
+        payload = handle.read(info["bytes"] + 1)
+    if len(payload) != info["bytes"] or hashlib.sha256(payload).hexdigest() != info["sha256"]:
+        raise InventoryError("input_changed")
+    tree = ast.parse(payload.decode("utf-8"))
     classes = {node.name: node for node in tree.body if isinstance(node, ast.ClassDef)}
     for model in (PublicTranslation, PublicAgent, PublicReview):
         node = classes.get(model.__name__)
@@ -340,7 +349,8 @@ def _validate_baseline(tracker, path, checked_at):
     release = tracker.json(release_path, boundary=boundary)
     catalog = tracker.json(catalog_path, boundary=boundary)
     tracker.json(updates_path, boundary=boundary)
-    catalog_bytes, updates_bytes = catalog_path.read_bytes(), updates_path.read_bytes()
+    catalog_bytes = tracker.json_payloads[catalog_path]
+    updates_bytes = tracker.json_payloads[updates_path]
     validate_catalog(catalog)
     verify_catalog_binding(release, catalog_bytes)
     updates = verify_baseline_updates(release, snapshot, updates_bytes)
