@@ -1,0 +1,21 @@
+An electron spin can be prepared and read with light and microwaves. Controlling a nearby nuclear spin as an auxiliary qubit usually adds a separate RF drive. The longer-lived auxiliary qubit therefore brings additional control hardware. Wörnle and colleagues demonstrate a route in silicon carbide that uses microwave control of the electron and a slightly tilted static magnetic field to manipulate the coupled nucleus.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+The experiment uses a single PL6 defect strongly coupled to a ¹³C nucleus in 4H-SiC at room temperature. Hyperfine coupling makes the effective field seen by the nucleus point away from the applied field. Electron-spin manipulation and calibrated waiting times turn nuclear precession into a control and readout resource. A small field tilt activates nuclear precession, while a larger tilt reduces the electron’s optical readout contrast. Comparing these effects with their model, the authors identify an optimum contrast near a tilt of 1.8°.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+The nuclear Ramsey decay time was 102.2±7.2 µs, and the spin-echo decay time was 151.0±6.9 µs. These measurements probe coherence under different pulse sequences. Combining microwave rotations and waiting times, the researchers also prepared an electron–nuclear Bell state with a reported tomography fidelity of 89%. Together, the measurements examine two concrete functions of the register: holding information in the nucleus and preparing and reading a state through the electron.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+Tilted-field control also has a relevant precedent. In 2023, Bürgler and colleagues measured free-induction decay of the ¹⁵N nuclear spin of a diamond NV center using optical initialization and readout alone. The present experiment links a ¹³C nucleus coupled to a SiC PL6 center with microwave electron-spin control. Comparing the different materials and nuclei can help clarify which drives can be removed and which readout capabilities can be retained.<span class="citation">[<a href="#ref-2">2</a>]</span>
+
+A useful next question concerns selectivity in a register containing several nuclei. What state quality and time are required to address one nucleus, maintain the field orientation, and retrieve stored information through the electron? Reading coherence times and reconstructed states against those operations would make the value of reduced RF control more concrete for integrated devices.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1038/s41534-026-01415-8">R. Wörnle, J. Körber, T. Steidl, G. V. Astakhov, D. B. R. Dasari, F. Kaiser, V. Vorobyov, and J. Wrachtrup, RF-free control of nuclear spins with color centers in silicon carbide, npj Quantum Inf. 12, 191 (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1038/s41534-023-00724-6">B. Bürgler, T. F. Sjolander, O. Brinza, A. Tallaire, J. Achard, and P. Maletinsky, All-optical nuclear quantum sensing using nitrogen-vacancy centers in diamond, npj Quantum Inf. 9, 56 (2023).</a></li>
+</ol>
+
+## Authorship and verification
+
+AEDAUT’s root and brief_format cross-checked the published HTML, abstract, introduction, main text, Methods, and the portions read of the official 16-page supplement. aps_quantum_survey independently checked the central numerical claims and state-fidelity interpretation. A separate reviewer checked the opening, bilingual correspondence, listing summaries, and bibliography. We did not reproduce the experiment, pulse control, or model; the multi-nuclear register remains a follow-up proposal. Publication uses ADOPT’s established workflow. AI assistance: OpenAI Codex; the exact runtime model identifier was not retained. No sentence-by-sentence human review was performed. Web authorship and additional-evidence cutoff: November 21, 2026.
+

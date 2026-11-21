@@ -1,0 +1,78 @@
+{
+  "title": "Interaction range changes the magnetic ground state",
+  "source": {
+    "doi": "10.1103/5hhj-wmdk",
+    "official_url": "https://journals.aps.org/prb/abstract/10.1103/5hhj-wmdk",
+    "read_version": "arXiv:2607.20631v2, submitted 2026-11-03; PDF internal date 2026-11-04",
+    "read_url": "https://arxiv.org/pdf/2607.20631v2",
+    "pages": [
+      4,
+      9
+    ],
+    "figure_context": [
+      "Fig. 3",
+      "Fig. 11"
+    ],
+    "extraction": "Numbers are approximate values explicitly stated in the adjacent prose; selected discrete checkpoints only. No curve digitisation, interpolation, simulation, or visual point estimates."
+  },
+  "method": "DFT exchange tensors mapped by LKAG to classical unit-vector spin Hamiltonians; finite-temperature classical Monte Carlo; Tc from heat-capacity peaks.",
+  "materials": [
+    {
+      "material": "CrPS4",
+      "U_eV": 0,
+      "checkpoints": [
+        {
+          "shells": 3,
+          "state": "ferromagnetic",
+          "state_display": "Ferromagnetic",
+          "note_display": "short-range truncation",
+          "Tc_K": 39,
+          "tc_display": "~39 K"
+        },
+        {
+          "shells": 7,
+          "state": "spin spiral",
+          "state_display": "Converged spin spiral",
+          "note_display": "ground-state checkpoint",
+          "Tc_K": null,
+          "tc_display": "—"
+        },
+        {
+          "shells": 10,
+          "state": "spin spiral",
+          "state_display": "Spin spiral",
+          "note_display": "temperature converged",
+          "Tc_K": 21,
+          "tc_display": "~21 K"
+        }
+      ],
+      "interpretation_display": "The state converges before its ordering temperature. Weaker distant couplings still change the thermal prediction.",
+      "caution": "7 is the prose-reported ground-state convergence criterion, not first onset of spiral order. The 7-shell temperature is intentionally not transcribed."
+    },
+    {
+      "material": "NiPS3",
+      "U_eV": 4,
+      "checkpoints": [
+        {
+          "shells": 3,
+          "state": "Neel antiferromagnetic",
+          "state_display": "Néel antiferromagnet",
+          "note_display": "short-range truncation",
+          "Tc_K": 68,
+          "tc_display": "~68 K"
+        },
+        {
+          "shells": 5,
+          "state": "zigzag antiferromagnetic",
+          "state_display": "Zigzag antiferromagnet",
+          "note_display": "state + temperature stable",
+          "Tc_K": 61,
+          "tc_display": "~61 K"
+        }
+      ],
+      "interpretation_display": "The fifth shell changes the selected order. More shells leave the state and temperature essentially unchanged.",
+      "caution": "61 K is the raw classical-model result, not the experimentally measured 120 K and not a quantum-corrected temperature."
+    }
+  ],
+  "rights": "Own editorial graphic from explicitly reported numerical and categorical facts. The source original figure panels are not reproduced. The public author preprint carries the arXiv non-exclusive distribution licence; no general republication permission for its original figures is asserted."
+}
