@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 15,
+  "record_version": 16,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-20T18:09:17.901637+00:00",
+  "updated_at": "2026-11-21T02:29:53.180483+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -86,9 +86,12 @@
   ],
   "change": {
     "commits": [
-      "13c79914ef60141535f8427e09e15303caa81ada"
+      "13c79914ef60141535f8427e09e15303caa81ada",
+      "991caf2c668f7ace55ab441ba2c7855622fa5cdf",
+      "0124fbad287380e3ec3d9489614ac1c7323a9d55",
+      "265b9a260025de826a3e3574a9590d77fa5fa048"
     ],
-    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/7fed2e3dba697655227888b1f37525611f89c917",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/81a4e6d2127338c2f74d39180736e724d9b26912",
     "deployment_reference": null,
     "local_readonly_candidate": {
       "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -109,12 +112,12 @@
       "protected_proof_key": "admin-readonly-20261117-11 / verified-candidate",
       "status": "independently_reviewed_and_integrated_local_tool_not_production_deployed",
       "run_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
-      "resume": "11/21 11시 최신 main/공개본을 인수하고 A7fed2e3의 정식 경계/회귀 감수·필요 수정과 통합을 판단한다. baseline 추적 rawSHA/재읽기 결속도 검토하되 새 결함 확정으로 표시하지 않는다. 지속쓰기/인가HTTP/발행은 후속이다.",
+      "resume": "A의 한정 정식 감수/로컬 도구 통합을 마쳤다.11/21 19시 기존 계약 B1의 standalone 임시 Git 저장소 후보/키claim·실제local ref CAS·중단조정 첫 구현,22일11시 첫 독립 검토. 운영 원본/원격·서버/인가·발행은 제외한다.",
       "integration_revision": "13c79914ef60141535f8427e09e15303caa81ada",
       "integration_run": "operations/runs/20261119T100713Z-a6b0af32-1210-4dd7-8189-bd4840d290dc.md"
     },
     "local_preflight_candidate": {
-      "source_revision": "7fed2e3dba697655227888b1f37525611f89c917",
+      "source_revision": "81a4e6d2127338c2f74d39180736e724d9b26912",
       "base_revision": "f4c40ada94bdc72edf5fa86be859eccd08ff7a3c",
       "branch": "codex/admin-request-preflight-20261120",
       "workspace": "managed:public-media-versioning/tech-review",
@@ -122,34 +125,45 @@
         "scripts/admin_requests.py",
         "tests/test_admin_requests.py",
         "scripts/review_registry.py",
-        ".automation/admin-readonly/README.md"
+        ".automation/admin-readonly/README.md",
+        "scripts/admin_inventory.py"
       ],
       "source_sha256": {
-        "scripts/admin_requests.py": "7108bc7d04e57d360382659f0a355c3314eca21a171abc9208e798e7f5fe3900",
-        "tests/test_admin_requests.py": "7a9e9126506d34378dfe7f56f8fc76916954a6592cd10ae8a11e8ab6f1dbc82b",
+        "scripts/admin_requests.py": "5b1ec3b11ad5cf103ecfac4c4dafdc081f6194b6c9cbf1bfcb1fc0128ebd93db",
+        "tests/test_admin_requests.py": "5ededa752e27ef853186af5b1afa15b41c18c43e441e42564f6c391db9273599",
         "scripts/review_registry.py": "44b2b0516bd48993ddb2b447142044bbb0be8fc19d51f62910fe696ad3fb1c23",
-        ".automation/admin-readonly/README.md": "387bdc6086f74e8a6dec1c259323d74e96dd010a8c2e079292ece7308ce69348"
+        ".automation/admin-readonly/README.md": "387bdc6086f74e8a6dec1c259323d74e96dd010a8c2e079292ece7308ce69348",
+        "scripts/admin_inventory.py": "2356236b533f294486ae1765c140cc6e7d679a8418ddb336565f7eeec7d31af8"
       },
-      "status": "consistency_fix_initially_verified_formal_independent_review_pending",
-      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/7fed2e3dba697655227888b1f37525611f89c917",
-      "integrated": false,
+      "status": "formal_A_review_and_local_tool_integration_complete_not_operational_API",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/81a4e6d2127338c2f74d39180736e724d9b26912",
+      "integrated": true,
       "deployed": false,
-      "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
-      "proof_key": "adopt-admin-request-consistency-20261121",
-      "target_tests": 23,
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "proof_key": "adopt-20261121-morning / admin-formal-review; adopt-admin-baseline-consistency-20261121",
+      "target_tests": 27,
       "registry_regression_tests": 6,
       "intent_regression_tests": 7,
       "parent_registry_equivalence_cases": 98,
-      "parent_real_no_change_source_and_baseline_files_preserved": 142,
-      "protected_existing_outputs_preserved": 26,
-      "resume": "11/21 11시 최신 main/공개본을 인수하고 A7fed2e3의 정식 경계/회귀 감수·필요 수정과 통합을 판단한다. baseline 추적 rawSHA/재읽기 결속도 검토하되 새 결함 확정으로 표시하지 않는다. 지속쓰기/인가HTTP/발행은 후속이다.",
+      "protected_existing_outputs_preserved": 27,
+      "resume": "A의 한정 정식 감수/로컬 도구 통합을 마쳤다.11/21 19시 기존 계약 B1의 standalone 임시 Git 저장소 후보/키claim·실제local ref CAS·중단조정 첫 구현,22일11시 첫 독립 검토. 운영 원본/원격·서버/인가·발행은 제외한다.",
       "initial_source_revision": "61a9b2d8926f7ee335ec2b00976609cebe110f0c",
       "initial_run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-      "protected_current_output_markers": 27
+      "protected_current_output_markers": 28,
+      "integration_revision": "265b9a260025de826a3e3574a9590d77fa5fa048",
+      "integration_base_revision": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
+      "integration_run": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "formal_independent_preflight_cases": 9,
+      "formal_independent_parser_edge_cases": 2,
+      "full_integration_python_tests": 474,
+      "full_integration_python_passed": 473,
+      "full_integration_python_skipped": 1,
+      "initial_parent_real_no_change_source_and_baseline_files_preserved": 142,
+      "actual_integrated_no_change_source_and_baseline_files_preserved": 144
     }
   },
   "verification": {
-    "status": "로컬 A후보의 추적/native 혼합읽기 결함 보완·36검사/한정 독립 재검증 완료,11시 정식 감수/통합 전",
+    "status": "A 로컬 사전검사 정식 독립감수·474 통합회귀/로컬도구 통합 완료, 실제 저장·운영API/인가/발행은 B-E 후속",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -171,7 +185,8 @@
       "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md",
       "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
       "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-      "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md"
+      "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
+      "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md"
     ],
     "remaining_limits": [
       "로컬 도구만 통합했으며 운영 API/인증/쓰기/원격 미리보기·공개 관리자 URL·실사용·Safari/실기기 검증은 미실시다.",
@@ -309,12 +324,44 @@
       "main_integrated": false,
       "deployed": false,
       "formal_A_review_complete": false
+    },
+    "formal_A_20261121_11": {
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "reviewed_candidate": "81a4e6d2127338c2f74d39180736e724d9b26912",
+      "integration_revision": "265b9a260025de826a3e3574a9590d77fa5fa048",
+      "integration_base_revision": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
+      "formal_result": "PASS_A_local_preflight_scope",
+      "formal_groups": 8,
+      "independent_preflight_cases": 9,
+      "independent_parser_edges": 2,
+      "identified_and_corrected_boundaries": [
+        "catalog_and_updates_raw_bytes_vs_tracked_JSON",
+        "source_model_AST_bytes_vs_tracked_raw_SHA_size",
+        "target_declaration_complete_map_vs_tracked_files"
+      ],
+      "developer_target_and_affected_regression_tests": 78,
+      "target_tests": 27,
+      "full_integration_python_tests": 474,
+      "full_integration_failed": 0,
+      "full_integration_errors": 0,
+      "full_integration_skipped": [
+        {
+          "test": "test_markdown_to_html_math.MathProtectionTests.test_renderer_preserves_all_stress_cases",
+          "reason": "Python-Markdown is not installed"
+        }
+      ],
+      "actual_primary_CLI_no_change_files_preserved": 144,
+      "actual_readonly_inventory_registered_rows": 219,
+      "same_five_reviewed_hashes_after_integration": true,
+      "original_publication_source_delta_outside_five_tool_files": 0,
+      "operational_API_or_source_save_or_auth_or_publication_implemented": false,
+      "post_integration_GitHub_execution_observed": false
     }
   },
   "observation": {
-    "status": "03시 A혼합읽기 후보결함 수정·한정 재검증 완료,11시 정식감수 대기",
-    "period": "2026-11-20T17:57:02.404Z",
-    "result": "03시 독립 조사로 확인한 A61a9의 혼합읽기 결함을7fed2e3에서3SHA교차검증으로 보완했다. 개발36검사·한정독립2case·실제 no_change/142입력 보존을 확인했으며11시 정식 감수/통합은 남아 있다. 실제 원고 저장·운영 API/인가/발행은 미구현이다.",
+    "status": "11시 A 한정 완료·B1 격리후보 다음 구현 예정",
+    "period": "2026-11-21T02:04:07.798Z",
+    "result": "확정된 baseline/model/선언 읽기 불일치를 보완한81a4e6d를 독립 감수 후 최신 동시DRB source위265b9a2로 통합했다. 같은5파일 SHA·기존 원고/등록/PDF/필기/알림을 보존했다. 실제 운영 관리자/쓰기 API·인가·B-E 완료가 아니다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -343,6 +390,10 @@
     "night_20261121": {
       "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
       "result": "새 정상 DQE의 source8e626/public1649를 구분하고 실제 충돌/무변경3상황을 확인했다. 별도 독립 경계 조사에서 재현한 A후보의 변경·복원 결함은7fed2e3로 보완하고 이전61a9/검증근거를 보존했다. 후보2파일만 수정했으며 실제 원고/DB/API/인가/배포·일반 게시 권한은 바꾸지 않았다."
+    },
+    "morning_20261121": {
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "result": "확정된 baseline/model/선언 읽기 불일치를 보완한81a4e6d를 독립 감수 후 최신 동시DRB source위265b9a2로 통합했다. 같은5파일 SHA·기존 원고/등록/PDF/필기/알림을 보존했다. 실제 운영 관리자/쓰기 API·인가·B-E 완료가 아니다."
     }
   },
   "recovery": {
@@ -350,23 +401,23 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/21 11시 최신 main/공개본을 인수하고 A7fed2e3의 정식 경계/회귀 감수·필요 수정과 통합을 판단한다. baseline 추적 rawSHA/재읽기 결속도 검토하되 새 결함 확정으로 표시하지 않는다. 지속쓰기/인가HTTP/발행은 후속이다.",
+  "next_action": "A의 한정 정식 감수/로컬 도구 통합을 마쳤다.11/21 19시 기존 계약 B1의 standalone 임시 Git 저장소 후보/키claim·실제local ref CAS·중단조정 첫 구현,22일11시 첫 독립 검토. 운영 원본/원격·서버/인가·발행은 제외한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "local_preflight_candidate_pending_independent_review",
-    "next_scheduled_step_at": "2026-11-21T11:00:00+09:00",
-    "next_review_at": "2026-11-21T11:00:00+09:00",
-    "scheduled_step": "A7fed2e3 최신 기준 정식 독립 검토·필요 수정/통합 판단",
+    "state": "A_local_preflight_integrated_B1_sandbox_candidate_next",
+    "next_scheduled_step_at": "2026-11-21T19:00:00+09:00",
+    "next_review_at": "2026-11-22T11:00:00+09:00",
+    "scheduled_step": "B1: 독립 임시Git 후보 저장·durable key claim/receipt·중단조정 첫 후보",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
-    "replan_reason": "예정된11/20 11시 계약 검토/작업분해를 실제 완료했다. 같은 운영순서1/P2에서 다음19시 A 구현·21일11시 독립 검토로 전진하며 기존 일반 게시/관찰/기술 선행을 유지한다.",
+    "replan_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+    "replan_reason": "예정된11시 A 정식 감수에서 확인한 읽기 결함을 보완·재검증하고 로컬 도구를 최신source위에 통합했다. P2/순번1로 다음 B1격리fixture 하위단위만21일19시/22일11시로 전진하며 B전체 납기·실제원본/서버 활성화는 확정하지 않는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
+    "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -374,6 +425,10 @@
     "local_v1_completed_at": "2026-11-19T10:13:34.746312+00:00",
     "write_api_breakdown_completed_at": "2026-11-20T02:10:31.383278+00:00",
     "local_preflight_started_at": "2026-11-20T09:59:16.459656+00:00",
-    "local_preflight_candidate_ready_at": "2026-11-20T10:13:30.757496+00:00"
+    "local_preflight_candidate_ready_at": "2026-11-20T10:13:30.757496+00:00",
+    "local_preflight_formal_review_completed_at": "2026-11-21T02:29:53.180483+00:00",
+    "local_preflight_integration_revision": "265b9a260025de826a3e3574a9590d77fa5fa048",
+    "b1_implementation_start_target": "2026-11-21T19:00:00+09:00",
+    "b1_first_independent_review_target": "2026-11-22T11:00:00+09:00"
   }
 }

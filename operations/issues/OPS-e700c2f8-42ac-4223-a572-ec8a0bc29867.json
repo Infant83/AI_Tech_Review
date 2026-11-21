@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 41,
+  "record_version": 42,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-20T18:09:17.901637+00:00",
+  "updated_at": "2026-11-21T02:29:53.180483+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -146,29 +146,28 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-20T17:58:34.367Z",
-    "last_successful_actions_check_at": "2026-11-20T17:59:37.262075Z",
-    "mail_window": "직전 성공에서48시간 겹친11/18T10:00:41Z부터 전 영역·검증한GitHub발신자/저장소·읽지않음제한없이1페이지1통·끝도달·상태변경0. 기존해결DRB실패메일과연결.",
-    "actions_window": "50개/페이지 첫시도1페이지10run끝경계. 새DQE44742315688 attempt1·네작업/실제Pages/HTTPS후sync/backend성공. 활성5상태각0. 옛생성실행의모든완료재시도전수조회는아님.",
+    "last_successful_mail_check_at": "2026-11-21T02:05:55.980Z",
+    "last_successful_actions_check_at": "2026-11-21T02:06:48.977986Z",
+    "mail_window": "직전 성공에서48시간 겹침·전 영역/검증GitHub발신자/저장소·읽지않음제한없이1페이지1통끝·상태변경0. 기존해결DRB실패메일과연결.",
+    "actions_window": "50개/페이지 첫시도1페이지12run끝경계. 새DQB/9월11일frontiers웹개정2run attempt1·네작업/backend/실제Pages/HTTPS후sync성공. 별도후발DRB는단일run보충으로구분.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "1649f2f8e609cb8ef16136a0ee39f90a79f62413",
-    "run_reference": "operations/runs/20261120T175737Z-bcc73ad5-9c98-4a7d-8cd5-4533cef1837f.md",
-    "supplemental_actions_check_at": "2026-11-20T02:21:16.168005Z",
+    "live_source_revision": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
+    "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+    "supplemental_actions_check_at": "2026-11-21T02:22:44.392542Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-20T17:59:37.262075Z",
+    "last_full_actions_check_at": "2026-11-21T02:06:48.977986Z",
     "supplemental_successful_runs": [
-      "44461708586",
-      "44658717706"
+      "44854749259"
     ],
-    "historical_supplemental_fields_precede_current_full_check": true
+    "supplemental_scope": "후발 정상DRB 단일run/attempt/job/artifact만. 전체API/메일checkpoint는 이전별도성공시각을 유지한다."
   },
   "observation": {
-    "status": "03시 새DQE 정상게시 인수·기존해결실패메일 대조,새미해결0",
-    "period": "2026-11-20T17:57:02.404Z",
-    "result": "새 DQE44742315688의 네 작업·실제배포/HTTPS후sync/backend 성공과 공개1649를 확인했다. 메일1통은 기존 해결된 DRB실패 사슬에 연결했고 새미해결/조회오류0이다. 메일/API의 현재 성공 기준은 monitoring_baseline과 last_successful_checks를 따른다.",
+    "status": "11시 정상2run+동시DRB 단일run 인수·기존해결메일 대조·새미해결0",
+    "period": "2026-11-21T02:04:07.798Z",
+    "result": "메일/전체API 성공과 후발DRB 단일run 보충시각을 분리했다. 정상세게시의 기존QA·네작업/실제Pages/HTTPS후sync를 대조하고, 미배포A후보의 로컬검증결함/수정은 CI실패·공개사고와 구분한다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -387,9 +386,10 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-20T17:58:34.367Z",
-      "full_api": "2026-11-20T17:59:37.262075Z",
-      "active_states": "2026-11-20T17:59:40.111832Z"
+      "mail": "2026-11-21T02:05:55.980Z",
+      "full_api": "2026-11-21T02:06:48.977986Z",
+      "active_states": "2026-11-21T02:06:51.923907Z",
+      "single_run_supplement": "2026-11-21T02:22:44.392542Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -612,6 +612,56 @@
       "actual_restore": false,
       "new_raw_logs": 0,
       "mail_state_changes": 0
+    },
+    "prior_supplemental_baseline_before_20261121_11": {
+      "supplemental_actions_check_at": "2026-11-20T02:21:16.168005Z",
+      "supplemental_successful_runs": [
+        "44461708586",
+        "44658717706"
+      ],
+      "supplemental_in_progress_runs": []
+    },
+    "morning_20261121": {
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "mail_success_at": "2026-11-21T02:05:55.980Z",
+      "full_api_success_at": "2026-11-21T02:06:48.977986Z",
+      "jobs_success_at": "2026-11-21T02:06:50.081065Z",
+      "mail_pages": 1,
+      "mail_count": 1,
+      "api_pages": 1,
+      "overlap_runs": 12,
+      "new_success_runs": [
+        44847752000,
+        44852166143
+      ],
+      "new_unresolved_failures": 0,
+      "query_errors": 0,
+      "synced": 76,
+      "newArticles": 0,
+      "queuedEvents": 0,
+      "all_artifacts_at_full_check": 133,
+      "artifact_pages": 2,
+      "unexpired_recovery_copies_at_full_check": 3,
+      "latest_recovery_bytes_at_full_check": 729672151,
+      "actual_restore": false,
+      "raw_logs_read": 0,
+      "mail_state_changes": 0
+    },
+    "concurrent_drb_20261121": {
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "supplemental_run_checked_at": "2026-11-21T02:22:44.392542Z",
+      "jobs_checked_at": "2026-11-21T02:22:44.905627Z",
+      "recovery_metadata_checked_at": "2026-11-21T02:22:45.303453Z",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44854749259",
+      "source_revision": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
+      "attempt": 1,
+      "four_jobs_backend_actual_pages_https_sync": "success",
+      "latest_recovery_bytes": 732135827,
+      "expires_at": "2026-12-21T02:20:40Z",
+      "actual_restore": false,
+      "sync_numeric_summary": "not_printed; job actual live-HTTPS-and-register step passed; publisher completion QA not yet in main at initial observation",
+      "initial_full_and_mail_checkpoints_preserved": true,
+      "main_push_held_until_four_jobs_and_https_completed": true
     }
   },
   "recovery": {

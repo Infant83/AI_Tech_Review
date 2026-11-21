@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
   "uuid": "e956eee1-0469-4990-8874-11b310d6c517",
-  "record_version": 6,
+  "record_version": 7,
   "title": "편집 하네스 공개 버전과 글별 실제 적용 판본의 추적 정합성",
   "type": "editorial_provenance",
   "created_at": "2026-11-09T03:12:43Z",
-  "updated_at": "2026-11-20T02:11:10.859161+00:00",
+  "updated_at": "2026-11-21T02:29:53.180483+00:00",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -166,6 +166,53 @@
     "morning_reassessment_20261120": {
       "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
       "result": "CASH-QSE/DQB20의 새 한영 감수 원고4개 SHA·시각·역할·실제범위를 부분 근거로 인수했다. 읽은 정책/harness의 정확 입력 판본 SHA와의 결속은 미확인으로 전체 적용 추적 완료가 아니다."
+    },
+    "morning_20261121": {
+      "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+      "result": "예정된 오전 근거/장기 대기 우선순위를 재평가했다. 새 P0/P1 또는 현재 상태를 종료할 직접 근거가 없어 기존 상태/우선순위를 유지한다. 새 중요한 근거는 받은 기존 회차에서 먼저 확인한다.",
+      "partial_evidence": {
+        "issue": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
+        "new_partial_evidence": [
+          "DQB21 exact reviewed bilingual manuscript hashes/scope/role",
+          "frontiers final exact bilingual manuscript/source metadata hashes and separately recorded scoped delta review"
+        ],
+        "frontiers_final_review_hash_checks": [
+          {
+            "file": "2026-09-11_quantum-ai-brain-frontiers/reports/review.ko.md",
+            "sha_matches_current": true
+          },
+          {
+            "file": "2026-09-11_quantum-ai-brain-frontiers/reports/review.en.md",
+            "sha_matches_current": true
+          },
+          {
+            "file": "2026-09-11_quantum-ai-brain-frontiers/references.json",
+            "sha_matches_current": true
+          },
+          {
+            "file": "2026-09-11_quantum-ai-brain-frontiers/scripts/build_review.mjs",
+            "sha_matches_current": true
+          },
+          {
+            "file": "publication/reviews/2026-09-11_quantum-ai-brain-frontiers.json",
+            "sha_matches_current": true
+          }
+        ],
+        "dqb_bilingual_manuscript_hash_checks": [
+          {
+            "file": "daily_research_review/2026-11-21_dqb-archive/reports/briefing_ko.md",
+            "sha_matches_reviewed": true
+          },
+          {
+            "file": "daily_research_review/2026-11-21_dqb-archive/reports/briefing_en.md",
+            "sha_matches_reviewed": true
+          }
+        ],
+        "exact_policy_or_harness_input_SHA_binding_found_in_inspected_added_final_review_records": false,
+        "technical_manifest_linkage_implemented_by_this_review": false,
+        "full_harness_or_human_review_completion_claimed": false,
+        "existing_partial_status_preserve": true
+      }
     }
   },
   "recovery": {
@@ -173,17 +220,17 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/21 11시 새 직접 근거와 기존 미확인 범위를 재평가한다. 관리 후속 쓰기 계약/로컬 A 구현을 우선하며 편집 적용·복구·재현/유효성 확인을 기술 기록만으로 완료 처리하지 않는다. 중요한 새 근거는 받은 회차에서 앞당긴다.",
+  "next_action": "DQB21/frontiers의 새 원고별 SHA·역할/범위 부분 근거를 보존하고11/22 11시 실제 읽은 정책/harness 입력 판본 결속과 기술 연결의 새 근거를 재평가한다. 원고 SHA만으로 정책 적용·과학/사람 감수 전체 완료를 만들지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimal_linkage_design_reviewed_exact_policy_evidence_pending",
-    "next_scheduled_step_at": "2026-11-21T11:00:00+09:00",
-    "next_review_at": "2026-11-21T11:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-22T11:00:00+09:00",
+    "next_review_at": "2026-11-22T11:00:00+09:00",
     "scheduled_step": "기존 하네스 연결 기술안·실제 정책 입력/검토 원고 근거 및 다음 최소 범위 재평가",
-    "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
+    "run_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
     "morning_reassessment_at": "2026-11-21T11:00:00+09:00",
-    "replan_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
-    "replan_reason": "예정된11/20 오전 근거 재평가를 수행했다. 미확인 종료 조건을 충족할 새 직접 근거가 없어 같은 상태/우선순위로 다음오전21일11시 재검토한다. 새 주요근거는 기존회차에서 앞당긴다."
+    "replan_reference": "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md",
+    "replan_reason": "11/21 예정 오전 근거·장기대기/P2/P3 우선순위 재평가를 실제 수행했다. 원판/재현/정확정책입력/공급자유효성·접근의 새 완료 근거가 없어 같은 상태/우선순위로22일11시 재검토한다. 새 중요 근거는 그 전 받은 기존 회차에서 판단한다."
   }
 }
