@@ -10,6 +10,18 @@ from scripts.site_search import build_records, build_search, validate_search, se
 
 
 class SiteSearchTests(unittest.TestCase):
+    def test_vendored_engine_matches_versioned_provenance_and_license(self):
+        assets = Path(__file__).resolve().parents[1] / "scripts/public_assets"
+        provenance = json.loads((assets / "minisearch-provenance.json").read_text())
+        for name, record in (("minisearch.js", provenance["output"]),
+                             ("minisearch-LICENSE.txt", provenance["license"])):
+            self.assertEqual(hashlib.sha256((assets / name).read_bytes()).hexdigest(), record["sha256"])
+        self.assertFalse(provenance["minifier"]["compress"])
+        self.assertFalse(provenance["minifier"]["mangle"])
+        manifest = build_search(self.root)
+        self.assertEqual(manifest["minisearch"], provenance["library"]["version"])
+        self.assertEqual(manifest["files"]["minisearch.js"], provenance["output"]["sha256"])
+
     def setUp(self):
         temporary = TemporaryDirectory()
         self.addCleanup(temporary.cleanup)

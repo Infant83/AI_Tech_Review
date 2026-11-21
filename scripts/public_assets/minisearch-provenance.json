@@ -1,0 +1,60 @@
+{
+  "format": "vendored-javascript-provenance",
+  "version": 1,
+  "library": {
+    "name": "MiniSearch",
+    "version": "7.2.0",
+    "license": "MIT"
+  },
+  "upstream": {
+    "metadata_url": "https://registry.npmjs.org/minisearch/7.2.0",
+    "tarball_url": "https://registry.npmjs.org/minisearch/-/minisearch-7.2.0.tgz",
+    "tarball_integrity": "sha512-dqT2XBYUOZOiC5t2HRnwADjhNS2cecp9u+TJRiJ1Qp/f5qjkeT5APcGPjHw+bz89Ms8Jp+cG4AlE+QZ/QnDglg==",
+    "tarball_sha256": "cb3b8126a3ea65d6b387787294f0792b0ea4a40b70f8f37688066a5638e0218a",
+    "member": "package/dist/umd/index.js",
+    "member_sha256": "03c27931eb603af1d3358579e9885eafdb6a2f5fa9929557b3e77d7e99d06d03",
+    "input_sha256": "4e02b9fa52f244c377d737c7d06cda6bce967d137254e8532d6c79f68469bef3",
+    "source_map_comment_removed": "//# sourceMappingURL=index.js.map\n",
+    "member_without_source_map_equals_previous_vendor": true,
+    "official_minified_umd_member_exists": false
+  },
+  "minifier": {
+    "name": "Terser",
+    "version": "5.44.1",
+    "license": "BSD-2-Clause",
+    "metadata_url": "https://registry.npmjs.org/terser/5.44.1",
+    "tarball_url": "https://registry.npmjs.org/terser/-/terser-5.44.1.tgz",
+    "tarball_integrity": "sha512-t/R3R/n0MSwnnazuPpPNVO60LX0SKL45pyl9YlvxIdkH0Of7D5qM2EVe+yASRIlY5pZ73nclYJfNANGWPwFDZw==",
+    "tarball_sha256": "6b6b03f934b52a642aa7577fd9557ccf74716b1e93c059560c33d223bdbdf2e0",
+    "compress": false,
+    "mangle": false,
+    "transformation": "AST printing only; remove whitespace and non-license comments. No runtime CDN or library version change.",
+    "reproduce": "npm exec --ignore-scripts --yes --package=terser@5.44.1 -- terser minisearch-7.2.0.umd.js --output scripts/public_assets/minisearch.js --comments '/@license|@preserve/'",
+    "input_note": "Extract the pinned upstream member and remove only the final sourceMappingURL line before running the printer."
+  },
+  "output": {
+    "file": "minisearch.js",
+    "sha256": "3cee816dcedc69b2921e018d44b628dd99e21f4c5ed0072b49d5c75d8b44e8d9",
+    "bytes": 28879,
+    "gzip_bytes_python_mtime0": 7258
+  },
+  "license": {
+    "file": "minisearch-LICENSE.txt",
+    "sha256": "70d37354d6395629fb99edb28cb37a5d356ffa24a48cd02a5def5b83a300a899",
+    "exact_upstream_copy": true,
+    "holder": "Luca Ongaro"
+  },
+  "verification": {
+    "original_catalog_records": 169,
+    "catalog_bytes_unchanged": true,
+    "exact_query_result_comparisons": 25038,
+    "query_count": 1391,
+    "scopes": 6,
+    "construction_modes": [
+      "sync",
+      "async"
+    ],
+    "api_and_browser_commonjs_exports_match": true,
+    "existing_search_tests_passed": 9
+  }
+}

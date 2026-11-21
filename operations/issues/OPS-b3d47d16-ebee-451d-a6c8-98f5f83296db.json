@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db",
+  "uuid": "b3d47d16-ebee-451d-a6c8-98f5f83296db",
+  "record_version": 1,
+  "title": "지연 검색 전송량 게시 한도 초과와 동일 버전 검색엔진 배포 크기 축소",
+  "type": "publication_payload",
+  "created_at": "2026-11-21T05:18:58.290809+00:00",
+  "updated_at": "2026-11-21T05:26:47.789521+00:00",
+  "status": "validating",
+  "priority": "P1",
+  "source": {
+    "kind": "publication_validation",
+    "reference": "publication_changes/classiq-qae-onboarding-updates.json",
+    "summary": "L012 intake publication candidate passed continuity, PDF and reader checks, but deferred search exceeded the unchanged100000-byte gzip gate by222bytes. The failed local candidate was not committed or deployed."
+  },
+  "affected": {
+    "publication_ids": [
+      "lecture:2026-11-05-classiq-qae-l003-notes-ko",
+      "lecture:2026-11-21-classiq-qae-l012-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/lectures/"
+    ],
+    "source_paths": [
+      "scripts/public_assets/minisearch.js",
+      "scripts/public_assets/minisearch-LICENSE.txt",
+      "scripts/public_assets/minisearch-provenance.json",
+      "scripts/site_search.py",
+      "scripts/site_payload_budget.py",
+      "tests/test_site_search.py"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
+    "environment": {
+      "device": "local publication candidate",
+      "operating_system": null,
+      "browser": "Chrome157; isolated QA profile",
+      "display_mode": "390/820 CSS pixels"
+    },
+    "steps": [
+      "Prepare L012 from the actual deployed baseline bundle.",
+      "Run unchanged release and payload checks.",
+      "Measure Python gzip.compress(mtime=0) for deferred metadata and search-engine assets."
+    ],
+    "expected": "All content and identities preserved; deferred search gzip at most100000bytes.",
+    "actual": "100222bytes:79979 catalog+1663 core+18580 unminified MiniSearch. The existing MiniSearch7.2.0 vendor matches the official package except its source-map comment."
+  },
+  "evidence": [
+    "scripts/public_assets/minisearch-provenance.json",
+    "tests/site_search.test.cjs",
+    "tests/test_site_search.py",
+    "publication_changes/classiq-qae-onboarding-updates.json"
+  ],
+  "limitations": [
+    "This was a precommit local admission failure; no CI or live outage occurred.",
+    "Gzip estimates are the existing publication budget metric, not measured device/network latency."
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "Use verified MiniSearch7.2.0 bytes with pinned Terser5.44.1 printing-only minification; preserve metadata, ranking, license, API, public content and the existing gate.",
+    "related_issues": [
+      "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "Deferred search approaches the existing hard limit again or a search regression is reported."
+  },
+  "authority": {
+    "basis": "2026-11-08 autonomous ADOPT development/maintenance and the authorized AEDAUT lecture publication.",
+    "current_scope": "One existing vendored asset format plus provenance, regression verification and publication checks. No dependency version upgrade, new runtime service, account or permission.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) · 편집부(AEDAUT) 발행 기술지원",
+  "acceptance_criteria": [
+    "Pinned official package and tool integrity; unchanged MiniSearch7.2.0 and MIT notice.",
+    "All169 catalog records byte-identical; exact search rankings, scores, metadata and sync/async results preserved.",
+    "Actual KO/EN search UI parity, deferred loading and empty/clear behavior verified.",
+    "Existing100000-byte gate, release continuity, complete regression and actual HTTPS deployment checks pass."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": "publication_changes/classiq-qae-onboarding-updates.json",
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "complete local candidate and independent browser parity passed; deployment pending",
+    "checks": [
+      "25038 exact full-result comparisons;169 records unchanged.",
+      "Printing-only vendor gzip7258bytes; projected lazy search88900bytes.",
+      "Fresh candidate B: release continuity passed, lazy search88900bytes under the unchanged100000-byte limit.",
+      "All475Python tests(1skip) and12Node search/navigation tests passed after the vendor fix.",
+      "QAE course/reader assets and the169record catalog are byte-identical between candidates A/B.",
+      "All80actualKO/ENsearchUIcases matched exactrank/metadata/URLs after host/port normalization.",
+      "Deferredengine/core/catalog loading, clear/Escape, empty results and12unit reader preservation passed."
+    ],
+    "evidence": [
+      "scripts/public_assets/minisearch-provenance.json"
+    ],
+    "remaining_limits": [
+      "The current complete candidate has not yet been deployed."
+    ]
+  },
+  "observation": {
+    "status": "predeployment",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": "SITE_OPERATIONS.md",
+    "execution_reference": null,
+    "result": "No rollback performed. Retain the exact sealed deployed baseline while validating the new candidate."
+  },
+  "next_action": "Complete independent candidate B, search UI parity and the normal Pages/HTTPS verification; then observe future metadata growth in the existing ADOPT cycle.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "replan_reference": "operations/issues/OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db.json",
+    "scope": "Contained in the current publication support work; no existing content or ADOPT scheduled task is reassigned."
+  }
+}
