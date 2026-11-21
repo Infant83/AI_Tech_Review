@@ -136,6 +136,7 @@ jobs:
       - name: Verify and package the exact deployed artifact for recovery
         run: python3 scripts/release_backup.py from-pages --archive output/pages-recovery-input/artifact.tar --output output/publication-recovery.tar.gz
       - uses: actions/upload-artifact@v4
+        id: recovery_upload
         with:
           name: publication-recovery
           path: output/publication-recovery.tar.gz
@@ -145,7 +146,13 @@ jobs:
       - name: Retain the three most recent complete recovery copies
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/release_artifact_retention.py --repository "$GITHUB_REPOSITORY" --keep 3 --apply
+          RECOVERY_ARTIFACT_ID: ${{ steps.recovery_upload.outputs.artifact-id }}
+        run: >-
+          python3 scripts/release_artifact_retention.py
+          --repository "$GITHUB_REPOSITORY" --keep 3 --apply
+          --expected-artifact-id "$RECOVERY_ARTIFACT_ID"
+          --expected-run-id "$GITHUB_RUN_ID"
+          --expected-source-revision "$GITHUB_SHA"
 
   notify-readers:
     # A branch push or a green build does not prove that an article is public.
