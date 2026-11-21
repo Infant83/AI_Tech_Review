@@ -287,6 +287,102 @@ class RequestPreflightTests(unittest.TestCase):
         release = json.loads((self.baseline / "release.json").read_text()); release["snapshot"]["reviews"][self.folder]["date"] = "2026-11-02"
         self.save(self.baseline / "release.json", release); self.rejected()
 
+    def _reject_baseline_raw_read_aba(self, name):
+        target = self.baseline / name
+        original = target.read_bytes()
+        alternate = original + b" "
+        target.write_bytes(alternate)
+        self.request["patch"] = {"summary": self.registration["review"]["summary"]}
+        self.request["expectedReleaseEvidence"] = self.evidence()
+        self.save_request()
+        before, head = self.files(), self.head()
+        # This on-disk bundle differs from the release's sealed raw bytes.
+        self.rejected()
+        read_bytes = Path.read_bytes
+
+        def change_and_restore(path):
+            if path != target:
+                return read_bytes(path)
+            target.write_bytes(original)
+            try:
+                return read_bytes(path)
+            finally:
+                target.write_bytes(alternate)
+
+        # A temporary replacement must not make native validation certify A
+        # while expectedReleaseEvidence and final files still describe B.
+        with patch.object(Path, "read_bytes", change_and_restore):
+            reason = self.rejected()
+        self.assertIn(reason, {"invalid_input", "input_changed"})
+        self.assertEqual(self.files(), before)
+        self.assertEqual(self.head(), head)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_catalog_raw_validation_cannot_certify_different_tracked_bytes(self):
+        self._reject_baseline_raw_read_aba("reader-publications.json")
+
+    def test_updates_raw_validation_cannot_certify_different_tracked_bytes(self):
+        self._reject_baseline_raw_read_aba("reader-updates.json")
+
+    def test_model_validation_cannot_certify_different_tracked_source_code(self):
+        target = self.root / "scripts/publish_public_site.py"
+        compatible = target.read_bytes()
+        changed = compatible + b"\n    drifted_model_field: str = ''\n"
+        target.write_bytes(changed)
+        self.commit()
+        self.request["expectedSourceRevision"] = self.head()
+        self.request["patch"] = {"summary": self.registration["review"]["summary"]}
+        self.save_request()
+        self.rejected("review_model_schema_changed")
+        before, head = self.files(), self.head()
+        read_text = Path.read_text
+
+        def change_and_restore(path, *args, **kwargs):
+            if path != target:
+                return read_text(path, *args, **kwargs)
+            target.write_bytes(compatible)
+            try:
+                return read_text(path, *args, **kwargs)
+            finally:
+                target.write_bytes(changed)
+
+        with patch.object(Path, "read_text", change_and_restore):
+            reason = self.rejected()
+        self.assertIn(reason, {"review_model_schema_changed", "input_changed"})
+        self.assertEqual(self.files(), before)
+        self.assertEqual(self.head(), head)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
+    def test_reviewed_output_cannot_use_a_different_native_declaration_read(self):
+        compatible = self.change_path.read_bytes()
+        changed = copy.deepcopy(self.change)
+        changed["files"][self.references[0]]["after"] = "b" * 64
+        self.save(self.change_path, changed)
+        incompatible = self.change_path.read_bytes()
+        self.commit()
+        self.request["expectedSourceRevision"] = self.head()
+        self.request["patch"] = {"summary": self.registration["review"]["summary"]}
+        self.save_request()
+        self.rejected("revalidation_required")
+        before, head = self.files(), self.head()
+        read_text = Path.read_text
+
+        def change_and_restore(path, *args, **kwargs):
+            if path != self.change_path:
+                return read_text(path, *args, **kwargs)
+            self.change_path.write_bytes(compatible)
+            try:
+                return read_text(path, *args, **kwargs)
+            finally:
+                self.change_path.write_bytes(incompatible)
+
+        with patch.object(Path, "read_text", change_and_restore):
+            reason = self.rejected()
+        self.assertIn(reason, {"revalidation_required", "input_changed"})
+        self.assertEqual(self.files(), before)
+        self.assertEqual(self.head(), head)
+        self.assertEqual(self.git("status", "--porcelain"), "")
+
     def test_symlinks_for_request_source_root_and_baseline_are_rejected(self):
         alias = self.base / "request-link.json"; alias.symlink_to(self.request_path)
         self.rejected("input_symlink", lambda: requests.preflight_request(self.root, alias, self.baseline / "snapshot.json"))

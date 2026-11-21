@@ -191,8 +191,14 @@ def _preflight(source_root, request_path, baseline_snapshot):
     if request["expectedInputs"] != inputs:
         raise PreflightError("input_conflict")
     changes = declarations(root / "publication_changes")
-    if len(changes) != sum(len(value["files"]) for value in change_documents.values()):
-        raise PreflightError("invalid_change_declaration")
+    tracked_changes = {}
+    for document in change_documents.values():
+        for name, hashes in document["files"].items():
+            if name in tracked_changes:
+                raise PreflightError("invalid_change_declaration")
+            tracked_changes[name] = hashes
+    if changes != tracked_changes:
+        raise PreflightError("input_changed")
     checked_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     snapshot, _, _, baseline = _validate_baseline(tracker, Path(baseline_snapshot), checked_at)
     evidence = {key: baseline[key] for key in RELEASE_KEYS}
