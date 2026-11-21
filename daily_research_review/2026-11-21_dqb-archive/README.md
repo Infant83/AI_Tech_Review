@@ -31,3 +31,11 @@ root는 LPB 1판의 초록·판본과 3.1·3.4·3.5·4절, 입력 준비·전처
 실제 배포 판본 `1649f2f8e609cb8ef16136a0ee39f90a79f62413`의 불변 기준과 최신 원격 `39bbf70d72f114796ac43dd9a48333420cb868f1`을 사용했다. 로컬 단위 검사 447건은 통과(1건 건너뜀)했고 공개 파일·연속성·초기 페이로드 검사는 차단 없이 통과했다. 기존 공통 검색 메타데이터·전체 배포물 용량 경고는 운영팀(ADOPT)의 기존 추적 범위다. 후보에서 리뷰 58편·보관 PDF 159개이며 기존 자료를 지우거나 실질적으로 고치지 않았다.
 
 [브라우저 검사](artifacts/candidate-browser-review.json)는 IAB의 기본 1280px·모바일 390px에서 한영 제목·요약·본문, 날짜, 언어 전환·출처 3개·관련 글과 별도 PDF 읽기/다운로드를 확인했다. 달력의 21일 선택과 한영 검색은 편집글을 우선 연결하며 PDF의 HTTP 응답은 최종 검수 바이트와 일치했다. 콘솔 오류·경고는 없었다. 실제 HTTPS와 네 CI 작업 확인은 별도 단계다.
+
+## 실제 공개 확인 · 2026-11-21
+
+게시 커밋은 `770f09bb2db75c13a4b5ce0a3a8469ad4f51387b`이며 [실제 워크플로](https://github.com/Infant83/AI_Tech_Review/actions/runs/44847752000)의 build·deploy·recovery-copy·notify-readers 네 작업이 모두 성공했다. 독립 담당자는 실제 로그·작은 검증 산출물로 959건 중 950 통과·9 제외·실패 0, 배포 리비전 guard, 배포 파일과 연결된 복구 사본 검증·최신 3개 보존, 카탈로그 76건 동기화를 확인했다. 새 심층 기사는 없으며 newArticles 0·queuedEvents 0이다. 전체 복구물을 내려받거나 복원 실험을 했다고 표시하지 않는다. [공개 가능한 CI 요약](artifacts/ci-independent-summary.json)에 실제 범위를 남긴다.
+
+[국문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-21/)·[영문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-21/en/)·[7쪽 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-21-daily-quantum-brief.pdf)를 포함한 실제 HTTPS 26경로를 배포 해시와 대조했다. 새 한영 HTML은 후보와도 동일하고 PDF는 최종 189,274바이트·`d4ba5874…f764818`과 정확히 일치한다. 실제 IAB 한영 화면·언어 전환·출처·요약·별도 PDF 경로와 한영 검색 결과를 확인했으며 콘솔 오류·경고는 없었다. [HTTPS 검사](artifacts/deployment-verification.json)와 [실제 브라우저 검사](artifacts/live-browser-review.json)를 구별한다.
+
+[독립 후보 보존 감수](artifacts/candidate-independent-review.json)에서 기존 리뷰 58편·모든 기존 PDF·날짜별 편집글·제목·한영 요약·카탈로그가 보존됐음을 확인했다. 실제 공개 총계는 PDF 159개(DQB 89·DRB 7·DQE 5·렉처 18·기사 40), 리뷰 58편·카탈로그 76건이다. 수집 8건 중 7건은 원 첨부 해시가 같은 중복으로 재사용했고 새 21일 호 하나만 보관·집필했다. 원호 확보·원문 감수·PDF 공개 보관·웹 편집글 공개를 구별해 기록했다. 관심사의 초점은 유지하며 승인 대기 5건을 반복 제안하지 않는다. 다음 실행은 기존 일일 주기와 겹침 조회를 이어간다.
