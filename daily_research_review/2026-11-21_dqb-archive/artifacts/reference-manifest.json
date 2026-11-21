@@ -1,0 +1,306 @@
+{
+  "date": "2026-11-21",
+  "status": "source_reviewed_for_public_derivative",
+  "references": [
+    {
+      "original_number": 1,
+      "title": "Quantum analogue-to-digital converter for phase estimation",
+      "authors": [
+        "Eugenio Caruccio",
+        "Simone Roncallo",
+        "Valeria Cimini",
+        "Riccardo Albiero",
+        "Ciro Pentangelo",
+        "Francesco Ceccarelli",
+        "Giacomo Corrielli",
+        "Roberto Osellame",
+        "Nicolò Spagnolo",
+        "Lorenzo Maccone",
+        "Chiara Macchiavello",
+        "Fabio Sciarrino"
+      ],
+      "doi": "10.1038/s41566-026-02050-7",
+      "url": "https://www.nature.com/articles/s41566-026-02050-7",
+      "edition": "Version of Record, 20 November 2026; accepted 9 October 2026; received 26 February 2025",
+      "journal": "Nat. Photon.",
+      "volume_issue_pages": "No assigned volume or final journal pagination is shown in the checked online record; do not invent them from the PDF-length metadata.",
+      "aps": "E. Caruccio, S. Roncallo, V. Cimini, R. Albiero, C. Pentangelo, F. Ceccarelli, G. Corrielli, R. Osellame, N. Spagnolo, L. Maccone, C. Macchiavello, and F. Sciarrino, Quantum analogue-to-digital converter for phase estimation, Nat. Photon. (2026), https://doi.org/10.1038/s41566-026-02050-7.",
+      "read_scope": "Complete public VoR HTML scientific main text, Results, Methods, data availability and publication metadata; complete 13-page Supplementary Information, Notes 1–3 and Figs. S1–S9. Peer-review PDF obtained but not audited in full. Nature main-PDF endpoint returned HTML, so no main-PDF read is claimed.",
+      "supplementary_url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41566-026-02050-7/MediaObjects/41566_2026_2050_MOESM1_ESM.pdf",
+      "code_data": "The article and SI contain supporting data; source datasets are available from corresponding authors upon request. No public code repository is linked in the checked article.",
+      "license": "CC BY 4.0, subject to any separately credited third-party material.",
+      "confirmed": [
+        "Eight-mode programmable photonics; four-photon GHZ, two-photon entangled and single-photon probes assemble a three-bit phase output.",
+        "Main experimental dataset uses 99 uniformly spaced phases on [0,2pi) and at most 5,377 retained repetitions per phase.",
+        "Comparison of mutual information is at the same number of successfully collected events, not equal emitted photons or total acquisition wall time.",
+        "Controlled feed-forward operations are represented experimentally by collecting all relevant phase configurations and post-selecting/post-processing the data; a real-time feed-forward controller is not demonstrated.",
+        "Raw-probability information advantage decreases at larger repetition counts. After DAE probability denoising, the reported advantage remains throughout the investigated repetition range (main Fig. 4b).",
+        "A separate feed-forward neural network refines phase estimates; training is on simulated/theoretical noisy probabilities, and Methods report 4,000 epochs with ten samples per batch for this network.",
+        "Methods report source brightness about 14%, total chip input-output transmission about 50%, mean detector efficiency about 85%, and useful coincidence rates about 5MHz/50kHz/8Hz for one/two/four photons respectively. These are different component metrics and should not be collapsed into one measured end-to-end efficiency.",
+        "SI Note 2D supplies a simplified balanced phase-independent efficiency model: NQ=4/eta^4+2/eta^2+1/eta, NC=7/eta. Mutual information per phase-interrogating photon remains advantageous only above about eta=83% in that model. The authors explicitly require individual stage-success probabilities for a complete loss analysis.",
+        "SI Note 2E adds posterior-variance comparisons at equal retained detected-event budgets; mutual information alone is not a SQL precision certificate. Four representative phase posteriors are displayed, and the SI uses a 100-phase wording there while main acquisition and SI2B use 99; do not combine those as a verified uniform full-dataset precision claim."
+      ],
+      "required_pdf_corrections": [
+        {
+          "page": 1,
+          "target": "Executive Summary QADC paragraph and first table row",
+          "instruction": "Qualify repetition-dependent weakening as raw-data behavior and preserve the DAE-corrected advantage over the investigated repetition range."
+        },
+        {
+          "page": 2,
+          "target": "Protocol paragraph",
+          "suggested_short_text": "조건부 위상 설정별로 얻은 측정 자료를 후선택·후처리로 결합해 inverse QFT를 구현하고, 최종 세 비트로 위상을 읽었다."
+        },
+        {
+          "page": 2,
+          "target": "실제로 입증한 것",
+          "suggested_short_text": "같은 성공 검출 사건 수에서 고전 단일광자 간섭계보다 많은 위상 정보를 얻었다. 본문·보충자료·심사 기록은 공개되며, 원 데이터는 저자 요청으로 제공된다."
+        },
+        {
+          "page": 2,
+          "target": "남은 비용",
+          "suggested_short_text": "원시 확률의 이점은 반복 증가 시 약해졌으나 DAE 보정 뒤 조사 구간에서 유지됐다. 손실과 취득시간을 포함한 처리량은 별도 비용이다."
+        },
+        {
+          "page": "added conditions note",
+          "instruction": "Record the SI balanced-loss model and approximate 83% threshold, distinguishing it from an experimentally measured efficiency or whole-sensor wall-clock advantage. State the post-selected feed-forward implementation and simulated NN training."
+        }
+      ]
+    },
+    {
+      "original_number": 2,
+      "authors": [
+        "Mohsen Bagherimehrab",
+        "Daniyaal Farooqi",
+        "Gavin K. Brennen",
+        "Barry C. Sanders",
+        "Alán Aspuru-Guzik"
+      ],
+      "title": "End-to-End Quantum Algorithm for Differential Equations: Application to Simulating a Biomolecular System",
+      "url": "https://arxiv.org/abs/2611.26582v1",
+      "edition": "arXiv v1, 19 November 2026 18:43:32 UTC; preprint",
+      "aps": "M. Bagherimehrab, D. Farooqi, G. K. Brennen, B. C. Sanders, and A. Aspuru-Guzik, End-to-end quantum algorithm for differential equations: Application to simulating a biomolecular system, arXiv:2611.26582v1 (2026).",
+      "read_scope": "Abstract/edition record; full sections3.1,3.4,3.5,4; relevant initial-state and preprocessing passages in2.2/3.2. Selected operator/preconditioning context; no full61-page or appendix-proof audit claimed.",
+      "conditions": [
+        "Linearized Poisson-Boltzmann continuum electrostatics, not electronic Schrodinger wavefunction. Classical coordinates, partial charges and atom-ball cavity specify the dielectric/ionic model.",
+        "Electrostatic free energy is a charge-weighted average of neighboring grid potentials; solvation free energy is a difference of electrostatic free energies in two environments, not a full grid-vector output.",
+        "Polylogarithmic classical preprocessing in grid size/inverse accuracy is for fixed atom count.",
+        "Amplitude estimation gives the best overall quasilinear inverse-accuracy dependence; simpler Hadamard-test circuits have quadratically many repetitions.",
+        "Figure11 compares separately normalized quantum gate/classical full-vector multigrid arithmetic growth atN0=250; atom count/constants excluded; no conversion to physical runtime.",
+        "Grid discretization and algorithmic property error are distinct; no concrete molecular FTphysical-resource or QPU runtime demonstration.",
+        "Initial atom charge supports are assumed disjoint after sufficient grid refinement; atom-index preparation has explicit Theta(Natm) gate and Theta(Natm log Natm) classical costs before the fixed-atom scaling analysis."
+      ],
+      "local_html_sha256": "606973a549156c70af83d805c8f28ae849228100d41d2d567096cbb03f794801"
+    },
+    {
+      "original_number": 3,
+      "key": "rapids",
+      "title": "Scaling classical hardware for accurate real-time quantum error correction",
+      "authors": [
+        "Chenyang (Eric) Jin",
+        "Susanne F. Yelin",
+        "Andi Gu"
+      ],
+      "arxiv": "2611.26447v1",
+      "url": "https://arxiv.org/abs/2611.26447v1",
+      "first_submitted_utc": "2026-11-19T17:16:21Z",
+      "status": "preprint",
+      "read_scope": "All 13 pages: main text, Methods, Extended Data Figures 1–4 and Extended Data Table 1. Source Figure 1 (p2) and routed-build table (p10) rendered and opened. Zenodo official metadata, README, MANIFEST, selected d19 build README and RTL cosimulation record, code archive license and build manifest read statically.",
+      "source_pdf_sha256": "aed8f496a26d5157e2623dafc4b7c887652dfa8429920c8b8db8ce4219da2294",
+      "code_data": {
+        "doi": "10.5281/zenodo.24360244",
+        "version": "1.0",
+        "api_record": 24360244,
+        "date": "2026-11-19",
+        "downloaded_small_files": [
+          "README.md",
+          "MANIFEST.tsv",
+          "surface_compact_d19.tar.zst",
+          "code.tar.zst"
+        ],
+        "downloaded_files_match_api_md5": true,
+        "data_license": "CC BY-NC-ND 4.0",
+        "code_license": "MIT; three paper authors credited",
+        "trained_model_exports_not_in_record": true,
+        "no_large_dcp_download": true,
+        "no_code_executed": true
+      },
+      "findings": {
+        "surface": "At d=19, compact single VP1802 routed build uses 423.7MHz/400 cycles per round =0.944us throughput time, while decision latency is 8628 clocks=20.36us from RTL cosimulation. Strong throughput is not submicrosecond feedback latency.",
+        "surface_error_comparison": "240-fold lower logical error per round than union-find at d=19/SI1000 physical error p=0.15%; nearly10x lower than MWPM. Union-find is a software implementation of the prior Helios decoder for error-rate comparison. Not a measured240x QPU speedup or universal decoder ranking.",
+        "gross": "[[144,12,12]] Gross code, uniform circuit-level depolarizing p=.1%; widest C128 routed build on two VP1802s gives0.331us/round,8.02us cosim latency;16fold lower per-logical-qubit error than real-time int4 X/Z-Relay-BP-1 configuration. Offline joint-basis floating-point Relay is different.",
+        "execution": "Paper and official dataset document synthesis/place-and-route reports, signing, generated RTL and cosimulation. No live-QPU closed-loop test or board-measured runtime was located. Use FPGA design/place-and-route/RTL evaluation, not measured physical hardware execution.",
+        "power": "Switching-activity/report_power estimates, not wall-power measurements. 7nm ASIC is ASAP7/OpenROAD predictive estimate. Chip-to-chip latency uses RTL simulation/link model."
+      }
+    },
+    {
+      "original_number": 4,
+      "authors": [
+        "Ziyi Yang",
+        "Yexin Zhang",
+        "Yuexin Su",
+        "Xinzhao Wang",
+        "Xiaoyang Wang",
+        "Tongyang Li"
+      ],
+      "title": "Efficient Classical Algorithms for Ground Energy Estimation of Fermions with Conjugate-Pair Orbital Interactions",
+      "url": "https://arxiv.org/abs/2611.26382v1",
+      "edition": "arXiv v1, 19 November 2026 16:40:14 UTC; preprint",
+      "aps": "Z. Yang, Y. Zhang, Y. Su, Xinzhao Wang, Xiaoyang Wang, and T. Li, Efficient classical algorithms for ground energy estimation of fermions with conjugate-pair orbital interactions, arXiv:2611.26382v1 (2026).",
+      "read_scope": "Abstract/version, introduction/results subsection1.1 including Theorem1.1/algorithm roadmap and concurrent-work relationship; section2 definitions/model, especially2.3. Proof details and full41pages not audited; no algorithm rerun.",
+      "conditions": [
+        "Conjugate hopping and conjugate-paired attractive interaction channels; not arbitrary molecular Coulomb Hamiltonians.",
+        "Ground-energy target over the full two-component Fock space, not an arbitrary prescribed particle-number sector.",
+        "Rational inputs; additive total-energy error epsilon with probability at least3/4.",
+        "Bit complexity polynomial in n,s,strength bound lambda,inverse epsilon,inputbitlength b; do not call polynomial in bitlength alone.",
+        "No physical spectral gap or weak-coupling assumption. No empirical large-lattice/QPU/industrial speed benchmark claimed."
+      ],
+      "local_html_sha256": "234975a9ae1c9c7c67c8ab3065b8b122b4e88bab656e5941b994d90bad720b61"
+    },
+    {
+      "original_number": 5,
+      "key": "cipec",
+      "title": "Compilation-informed probabilistic logical-error cancellation",
+      "authors": [
+        "Giancarlo Camilo",
+        "Thiago O. Maciel",
+        "Allan Tosta",
+        "Abdulla Alhajri",
+        "Thais de Lima Silva",
+        "Daniel Stilck França",
+        "Leandro Aolita"
+      ],
+      "doi": "10.1038/s41534-026-01407-8",
+      "url": "https://doi.org/10.1038/s41534-026-01407-8",
+      "published_online": "2026-11-19",
+      "journal": "npj Quantum Information",
+      "status": "Latest directly verified publisher manuscript is Article in Press; current Crossref gives no volume/article number. Do not call it final edited VoR.",
+      "read_scope": "Reused the previously verified Nov20 publisher Article-in-Press10pPDF and science audit, rereading pp1–4 assumptions/algorithm/Theorems3–4, Jones example and discussion/Methods pp5–7. Selected SI4/S5 and characterization discussion checked with prior audit. Official SI freshly downloaded and identical. No full proof verification or numerical rerun.",
+      "reuse": {
+        "existing_publication": "2026-11-20-daily-research-brief",
+        "existing_short_title": "DRB 2026-11-20",
+        "publisher_pdf_sha256": "0decdac73c7df69e9930b56c0e24cf4e75fc4eb4fe287672e20311b05f74ff7a",
+        "publisher_pdf_pages": 10,
+        "si_sha256": "2e981403d4326e1a37468a9d3d92b9b0cb324172262c7e947a9243f598abef4d",
+        "si_pages": 5,
+        "fresh_si_identical_to_prior": true,
+        "current_pdf_retrieval": "Normal curl reference.pdf returned publisher empty HTML; urllib hit publisher identity-provider redirect loop. A new main-text byte-identity/current-edition claim cannot be made.",
+        "metadata": "Fresh Crossref author/date/bibliography checked; no volume or article-number deposited."
+      },
+      "findings": {
+        "target": "Unbiased expectation-value estimation by quasiprobability sampling of characterized noisy compiled logical channels; not correction of a prepared state.",
+        "precision": "For fixed original G and sufficiently characterized logical noise/basis, compiled length and needed code distance can be independent of target epsilon. The additional statistical multiplier gamma² can remain bounded under Theorem3 conditions. Total samples still scale as gamma²||O||²epsilon^-2log(2/delta).",
+        "conditions": "Compile each original two-qubit gate to error<=ln(omega1)/(2cstarG), require L epsilonQ<=ln(omega2)/(2cstar) for gamma²<=omega1omega2. Required native noisy channels must span the appropriate channel space.",
+        "characterization": "Basis-channel characterization error<=epsilon/(L||O||) yields final2epsilon; targetepsilon needs algorithm targetepsilon/2 and corresponding tighter channel calibration. Calibration and context-dependent noise are not eliminated.",
+        "example": "Qibo simulation of5 noisy logical qubits estimating Jones-polynomial-related expectation, not logical QPU execution. Approx590k samples/1.07m comparator andgamma²2.46 are reported values. No all10trials success assertion.",
+        "duplicate": "Already independently discussed in Nov20 DRB. Reuse recorded scope; do not create a new deep review or repeat it as newly discovered evidence."
+      }
+    },
+    {
+      "original_number": 6,
+      "key": "bmo",
+      "authors": [
+        "BMO Financial Group"
+      ],
+      "title": "BMO Demonstrates Quantum Utility in Machine Learning Application Using IBM Quantum Computers",
+      "date": "2026-11-19",
+      "url": "https://newsroom.bmo.com/2026-11-19-BMO-Demonstrates-Quantum-Utility-in-Machine-Learning-Application-Using-IBM-Quantum-Computers",
+      "status": "official corporate announcement",
+      "read_scope": "Full primary BMO announcement; no restricted technical report accessed.",
+      "findings": {
+        "reported": "BMO/DUTH report feature selection via adapted PQG using IBM computers including Nighthawk r2, reviewed by IBM quantum research team, with similar quality from1–2orders fewer samples.",
+        "denominator": "Announcement does not define sample, give absolute counts, dataset/split/quality metric/baselines, qubits/circuitdepth/shots/mitigation or end-to-end runtime/energy. Cannot identify10–100x as circuit-shot savings or quantum speedup.",
+        "credit": "IBM team review is company-reported review, distinct from independent peer review or reproduction.",
+        "scope": "Treat actual-QPU use as the company's report; utility term is their definition, not an independently established advantage."
+      }
+    },
+    {
+      "original_number": 7,
+      "key": "pqg",
+      "authors": [
+        "Georgios D. Varsamis",
+        "Ioannis Liliopoulos",
+        "Hamed Mohammadbagherpoor",
+        "Andreas K. Kostopoulos",
+        "Kristin Milchanowski",
+        "Evangelos T. Karamatskos",
+        "Panagiotis Dimitrakis",
+        "Richard P. Padbury",
+        "Ioannis G. Karafyllidis"
+      ],
+      "title": "Proxy Quantum Games",
+      "journal": "Parallel Processing Letters",
+      "volume": "35",
+      "article_number": "2550014",
+      "year": 2025,
+      "doi": "10.1142/S0129626425500148",
+      "url": "https://doi.org/10.1142/S0129626425500148",
+      "read_scope": "Publisher-deposited Crossref abstract and full bibliography, cross-checked with official author DUTH Quantum Lab publication list. Publisher fulltext/PDF unavailable via normal fetch; no full-paper or 2026 feature-selection benchmark read claimed.",
+      "findings": {
+        "framework": "Abstract describes Controller–Proxy–Opponent three-player strategic framework with controlled unitary influence and multiple-controller extension. It does not document the2026BMO feature-selection dataset orsample-count benchmark.",
+        "date": "2025 published framework; do not label it a2026technical validation of BMO announcement."
+      }
+    },
+    {
+      "original_number": 8,
+      "title": "Quantum recurrent unit: an effective and parameter-efficient quantum neural network architecture for NISQ devices",
+      "authors": [
+        "Tzong-Daw Wu",
+        "Hsi-Sheng Goan"
+      ],
+      "doi": "10.1140/epjqt/s40507-026-00600-0",
+      "url": "https://link.springer.com/article/10.1140/epjqt/s40507-026-00600-0",
+      "edition": "Peer-reviewed accepted article shared early on 18 November 2026, subject to further edits and replacement by the final Version of Record; accepted 9 November 2026; received 18 March 2026.",
+      "journal": "EPJ Quantum Technol.",
+      "aps": "T.-D. Wu and H.-S. Goan, Quantum recurrent unit: an effective and parameter-efficient quantum neural network architecture for NISQ devices, EPJ Quantum Technol. (2026), https://doi.org/10.1140/epjqt/s40507-026-00600-0.",
+      "technical_version": "arXiv:2601.18164v3, 10 November 2026, 61 pages; public publisher DOI page and abstract checked separately, without claiming byte-identical accepted text.",
+      "technical_url": "https://arxiv.org/abs/2601.18164v3",
+      "read_scope": "Publisher early-article status/metadata and abstract; arXiv v3 relevant architecture, WDBC/MNIST methods/results, Table 11 and complete Section 3.5 hardware/cost discussion; static official repository metadata, README and hardware-validation/CNN-parameter README files. Not all 61 pages.",
+      "confirmed": [
+        "C-SWAP information selection, measurement-result feed-forward and time-shared parameters give a sequence-length-independent parameter count and per-step effective circuit depth; total sequential execution cost still grows with sequence length.",
+        "The reported 46.2–99.7% parameter reduction is a statevector-model comparison. WDBC includes same-protocol trained MLPs, while the extreme MNIST comparison uses a CNN result from separate literature; it is not a common matched-budget hardware comparison.",
+        "Hardware sequential inference is limited to one MNIST sample per each of two backends, not a hardware test-set accuracy benchmark.",
+        "ArXiv v3 Section 3.5 records one complete eight-step QESEM inference as 33 completed batch jobs, 4,301 seconds reported QPU usage (about1.2h), and about one week of wall-clock time including queue, mitigation and post-processing. These are author-reported historical operating conditions, not a general hardware runtime forecast."
+      ],
+      "required_pdf_corrections": [
+        {
+          "page": 5,
+          "target": "7일 AI/ML watch status",
+          "suggested_short_text": "[동료평가·조기 공개판; statevector 중심]",
+          "instruction": "Retain publication date 18 November, but do not call the DOI text the final Version of Record."
+        },
+        {
+          "page": "added conditions note",
+          "instruction": "Separate statevector parameter counts, mixed comparison provenance and two-sample hardware feasibility. Identify arXiv v3 for the detailed historical job/runtime statement if used."
+        }
+      ],
+      "official_code_static_check": {
+        "repository": "https://github.com/lostsodium/quantum-recurrent-unit",
+        "commit": "da0e8238d0f727e3b0bb021893e62298f3ed4ff9",
+        "scope": "403-entry tree, project README, hardware-validation PEC Phoenix README and CNN parameter-count README; no code execution.",
+        "limits": "No LICENSE or CITATION file in the checked tree. README says license to be determined upon acceptance, identifies exploratory/hardcoded notebook workflows, and distinguishes selected paper runs from all CSV rows. Do not treat public repository visibility as an open reuse license or a completed reproduction."
+      },
+      "accepted_pdf_access_limit": "Publisher reference-PDF endpoint returned 404; technical assertions use the identified arXiv v3, separately from publisher status."
+    }
+  ],
+  "roles": {
+    "root": "LPB/fermion selected primary sections and existing review context; bilingual writing/integration",
+    "dqb1121_photon": "QADC VoR+SI; QRU early-published status and selected v3 technical sections; LPB independent sections",
+    "dqb1121_systems": "Rapids full technical text/static official code; CIPEC reused AIP and same currentSI; BMO official announcement/PQG deposited metadata",
+    "dqb1121_pdf": "Original/public PDF full rendering, privacy, structure, rights, preservation and production"
+  },
+  "limits": "No human reader study, new QPU execution or original benchmark reproduction. Scope and source-access limitations are recorded per reference.",
+  "independent_lpb_scope": {
+    "reference": "arXiv:2611.26582v1",
+    "scope": "Complete sections 3.1, 3.4, 3.5 and 4; selected section 3.2 input/setup/cost passages.",
+    "confirmed": [
+      "Continuum linearized electrostatics with classical atom-position/partial-charge/cavity/dielectric/screening inputs.",
+      "Electrostatic free-energy observable and solvation environment difference need not reconstruct all grid values.",
+      "Polylogarithmic grid scaling holds at fixed atom count under stated input assumptions; atom-dependent preparation and prefactors remain.",
+      "The best inverse-error overall scaling belongs to amplitude estimation; simpler HT and QPE output methods have different repetition/depth costs.",
+      "Figure 11 uses independently normalized growth curves and omitted constant/atom factors, not raw time or a matched-output classical-advantage demonstration.",
+      "Concrete molecular hardware-resource estimates and device implementation remain future work."
+    ],
+    "limits": "No complete 61-page or appendix-proof reading, algorithm reproduction or physical execution."
+  }
+}
