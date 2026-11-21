@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 43,
+  "record_version": 44,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-21T10:13:44.273475+00:00",
+  "updated_at": "2026-11-21T18:28:24.548742+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -146,19 +146,19 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-21T10:05:59.247Z",
-    "last_successful_actions_check_at": "2026-11-21T10:06:59.349729Z",
-    "mail_window": "직전 성공에서48시간 겹침·전 영역/검증GitHub발신자·저장소·읽지않음 제한 없이1페이지1통끝. 기존 해결 DRB와 연결·상태변경0.",
-    "actions_window": "50개/페이지 첫시도1페이지14run끝. 새L012 attempt1·네작업/backend·실제Pages/HTTPS후등록성공. 기존DRB보충도 이번 전체조회에 포함.",
+    "last_successful_mail_check_at": "2026-11-21T18:08:34.322Z",
+    "last_successful_actions_check_at": "2026-11-21T18:09:17.921141Z",
+    "mail_window": "직전 성공에서48시간 겹침·전 영역/검증GitHub발신자/저장소·unread 제한 없이1페이지1통끝·기존해결DRB·상태변경0.",
+    "actions_window": "50개/페이지 첫시도1페이지10run끝·새run/미해결/활성/피드백0. 새run이 없어 L012 jobs/실제HTTPS/A CI는 직전 근거 재사용.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
     "live_source_revision": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
-    "run_reference": "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
+    "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
     "supplemental_actions_check_at": "2026-11-21T02:22:44.392542Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-21T10:06:59.349729Z",
+    "last_full_actions_check_at": "2026-11-21T18:09:17.921141Z",
     "supplemental_successful_runs": [
       "44854749259"
     ],
@@ -166,9 +166,9 @@
     "historical_supplemental_fields_precede_current_full_check": true
   },
   "observation": {
-    "status": "19시 L012·A 실제CI 인수·새실패0, 복구보존 목록 후속 별도 연결",
-    "period": "2026-11-21T10:03:12.121Z",
-    "result": "메일/전체API/작업/controls 성공시각을 구분했다. 새 실패0·기존 해결메일1통이며 복구사본4개 관찰은 실패 run이나 복구 무결성 실패와 구분해 기존 정리 일감에 연결했다.",
+    "status": "03시 새run/실패0·기존jobs재사용, 보존방어 실제CI효과 관찰 전",
+    "period": "2026-11-21T18:01:16.715Z",
+    "result": "메일/전체API/controls 새 성공과 재사용한 이전 jobs 확인시각을 구분했다. 기존해결메일1통·새실패0이며 복구4개는 그대로다. 새보존방어 소스통합을 실제CI실행/운영정리 완료로 표시하지 않는다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -387,10 +387,11 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-21T10:05:59.247Z",
-      "full_api": "2026-11-21T10:06:59.349729Z",
-      "active_states": "2026-11-21T10:07:02.283083Z",
-      "controls": "2026-11-21T10:08:14.114317Z"
+      "mail": "2026-11-21T18:08:34.322Z",
+      "full_api": "2026-11-21T18:09:17.921141Z",
+      "active_states": "2026-11-21T18:09:19.853305Z",
+      "controls": "2026-11-21T18:09:21.692933Z",
+      "jobs": "2026-11-21T10:07:00.174400Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -690,6 +691,30 @@
       "raw_logs_saved": 0,
       "mail_state_changes": 0,
       "retention_followup_issue": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
+    },
+    "night_20261122": {
+      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+      "mail_success_at": "2026-11-21T18:08:34.322Z",
+      "full_api_success_at": "2026-11-21T18:09:17.921141Z",
+      "previous_jobs_success_at_reused": "2026-11-21T10:07:00.174400Z",
+      "new_jobs_or_logs_queried": 0,
+      "mail_pages": 1,
+      "mail_count": 1,
+      "api_pages": 1,
+      "overlap_runs": 10,
+      "new_runs": 0,
+      "new_unresolved_failures": 0,
+      "query_errors": 0,
+      "all_artifacts": 133,
+      "artifact_pages": 2,
+      "unexpired_recovery_copies": 4,
+      "recovery_metadata_unchanged_from_prior": true,
+      "total_artifact_count_decrease_cause": "not_investigated",
+      "new_retention_code": "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa",
+      "new_guard_actual_CI_observed": false,
+      "actual_provider_delete_or_rerun_or_restore": false,
+      "mail_state_changes": 0,
+      "raw_logs_read_or_saved": 0
     }
   },
   "recovery": {

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 33,
+  "record_version": 34,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-21T10:13:44.273475+00:00",
+  "updated_at": "2026-11-21T18:28:24.548742+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -60,7 +60,8 @@
     "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
     "operations/events/EVT-6aebd2ca-695b-4efa-8474-417cbb609170.json",
-    "operations/issues/OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db.json"
+    "operations/issues/OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db.json",
+    "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
@@ -94,7 +95,8 @@
     "commits": [
       "a94abe40497a078378a745a162c5d6d4ccdb6c07",
       "073885e9e483139e6f776f44cfb7b8cc71f313f0",
-      "c63e0507b5b0c9057fc952a09d4d3b7c9a44a070"
+      "c63e0507b5b0c9057fc952a09d4d3b7c9a44a070",
+      "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa"
     ],
     "candidate_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43646352202",
@@ -135,6 +137,21 @@
       "attempt": 1,
       "run_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
       "scope": "준비 도구 소스 main 통합과 Pages 공개물 보존 확인. 외부 Worker/저장소 활성화가 아니다."
+    },
+    "recovery_retention_guard": {
+      "source_revision": "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa",
+      "base_revision": "beaf60c7d55445f8fca568bbed4a38832e83e224",
+      "branch": "codex/recovery-retention-guard-20261122",
+      "workspace": "managed:publication-pipeline/tech-review",
+      "source_sha256": {
+        "scripts/release_artifact_retention.py": "c6ef39159da29c920a17859e281ba5e91183b54f1080b78b23eb5cafbf0736da",
+        ".github/workflows/pages.yml": "c13c905dca9df1843e32b7d6d91c9ff3021631fb889ad733a5b53af7758645fd",
+        "tests/test_release_backup.py": "b1a13445ebffedd25a157ea45f60e765c9c4c08dcc68c4f92151d89d40f346da"
+      },
+      "source_integrated": true,
+      "actual_CI_execution_observed": false,
+      "new_site_deployment_required": false,
+      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md"
     }
   },
   "verification": {
@@ -461,12 +478,42 @@
       "headroom": 11100,
       "existing_publisher_comparison_UI_evidence_reused": true,
       "new_package_download_install_or_browser_suite": false
+    },
+    "retention_guard_20261122_03": {
+      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+      "source_revision": "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa",
+      "legacy_red_tests": 8,
+      "legacy_red_failures": 1,
+      "target_tests": 22,
+      "full_python_tests": 490,
+      "full_passed": 489,
+      "full_failures_errors": 0,
+      "existing_optional_skips": 1,
+      "skip_reason": "Python-Markdown is not installed; existing optional renderer test",
+      "independent_mock_invocations": 10,
+      "actual_YAML_and_folded_command_parsed": true,
+      "existing_workflow_permissions_unchanged": true,
+      "current_upload_id_run_source_binding": true,
+      "complete_metadata_and_before_each_delete_recheck": true,
+      "visibility_attempts": 3,
+      "visibility_wait_seconds_between_attempts": 2,
+      "partial_confirmed_attempted_uncertain_results_separated": true,
+      "actual_existing_artifact_dry_run": {
+        "keep": 3,
+        "planned_older": 1,
+        "deleted": 0,
+        "provider_read_calls": 2,
+        "identity_origin": "existing run metadata, not a new workflow upload receipt",
+        "checked_at": "2026-11-21T18:24:36.531934Z"
+      },
+      "actual_CI_execution_or_cleanup_observed": false,
+      "actual_provider_delete_rerun_restore": false
     }
   },
   "observation": {
-    "status": "정상L012/검색완화 인수·새복구보존 목록 불일치 후속, 외부 비활성",
-    "period": "2026-11-21T10:03:12.121Z",
-    "result": "실제fce9 공개818,211,801B·270PDF/191객체와 이전판보존을 확인하고 기존검색완화 이벤트를 통합했다. 복구 사본은4개 모두 미만료이며 방금 업로드한 사본이 당시 보존계획에서 빠졌던 사실을 확인했다. 실제 삭제/복구/이전 절감은0이다.",
+    "status": "복구보존 방어 구현·독립검증/소스통합 완료, 다음 정상CI 관찰 전·외부 비활성",
+    "period": "2026-11-21T18:01:16.715Z",
+    "result": "현재upload ID/run/source를 확인하고 완전 목록·삭제 직전 metadata를 대조하는 방어를 c6fdf8e로 소스에 통합했다. 기존4개 복구사본의 실제 읽기계획은 keep3/후보1/삭제0이며 운영 정리/복원은 하지 않았다. 새 CI 실행에서의 효과는 아직 미확인이다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -944,6 +991,19 @@
       "operational_delete_or_rerun_or_restore": false,
       "next_scope": "현재 upload artifact-id/run 결속·미만료/양수size 확인과 제한 재조회·미확인시DELETE0 거절 방어 후보. 기존3개 보존 기준을 약화하지 않는다.",
       "next_candidate_target": "2026-11-22T03:00:00+09:00"
+    },
+    "night_20261122": {
+      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+      "same_actual_public_revision": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
+      "public_three_metadata_raw_bytes_unchanged": true,
+      "prior_public_footprint_reused_not_rebuilt": true,
+      "recovery_copies_still_4": true,
+      "new_source_cleanup_candidates": 0,
+      "operational_files_deleted_or_moved": 0,
+      "actual_reclaimed_bytes": 0,
+      "external_storage_activation": false,
+      "provider_index_delay_root_cause": "not_confirmed",
+      "next_runtime_check": "next existing normal publication; no test push or unconditional rerun"
     }
   },
   "recovery": {
@@ -967,17 +1027,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/22 03시 현재 업로드 사본이 보존계획에서 빠지는 경계의 작은 방어 후보/실패 검사를 준비한다. 운영 삭제·무조건재실행 없이 기존3개 보존과 현재사본 결속을 검증한다. 외부접근/전체업로드·원격봉인/복구 근거 재검토는22일11시 그대로이며 B1 정식감수/주요순번1을 막지 않는다.",
+  "next_action": "다음 기존 정상 게시에서 현재upload ID/run/source 확인·재조회/삭제 직전 대조·실제 보존 수를 관찰한다. 거절/부분 실패가 있으면 이미 성공한 삭제와 불확정을 구분하고 무조건재실행하지 않는다.11/22 11시 외부접근/원격봉인·복구의 새 선행 근거 검토와 B1 정식감수 일정을 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "retention_current_upload_guard_candidate_next_external_evidence_pending",
-    "next_scheduled_step_at": "2026-11-22T03:00:00+09:00",
-    "next_review_at": "2026-11-22T03:00:00+09:00",
-    "scheduled_step": "복구보존 현재upload 누락의 한정 방어 후보·실패 검사",
-    "replan_reference": "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
-    "replan_reason": "19시 새복구metadata4개/현재사본 당시계획누락을 확인했다. 손실/공개장애는확인되지않아B1중단없이P2작은후속만다음기존03시에배정한다. 외부근거22일11시·주간27일11시·B1정식11시는유지한다.",
-    "run_reference": "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
+    "state": "retention_guard_source_integrated_normal_CI_observation_and_external_evidence_pending",
+    "next_scheduled_step_at": "2026-11-22T11:00:00+09:00",
+    "next_review_at": "2026-11-22T11:00:00+09:00",
+    "scheduled_step": "외부 저장소 새 선행 근거/다음 정상CI 보존 방어 관찰",
+    "replan_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+    "replan_reason": "예정된03시 한정 방어3파일의 구현·독립검증/소스통합을 마쳤다. 실제CI/공급자정리효과는 다음정상게시에서관찰하며 외부근거11시/B1정식11시·기기관찰19시/주간27일11시를유지한다.",
+    "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -989,6 +1049,7 @@
     "integration_pending": false,
     "local_minimum_delivery_completed": true,
     "weekly_structure_review_at": "2026-11-27T11:00:00+09:00",
-    "external_storage_next_review_at": "2026-11-22T11:00:00+09:00"
+    "external_storage_next_review_at": "2026-11-22T11:00:00+09:00",
+    "retention_guard_next_observation": "next_existing_normal_publication"
   }
 }
