@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "EVT-43c36515-6871-4804-9222-7413aeb41872",
+  "issue_id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "created_at": "2026-11-21T23:25:42.552150+00:00",
+  "base_record_version": 34,
+  "observation": "편집부(AEDAUT)의 L013 정상 게시 run44960941865에서 운영팀(ADOPT)의 현재 upload 결속 보존 경로를 실제 관찰했다. recovery-copy는 새 artifact14729657007을 run44960941865/sourceb6f0dfd89aa34490d9219b14bd0c478cb227ac59에 대조해 currentArtifactVerified=true, listingAttempts=3, applied=true를 보고했다. 게시 전 비만료 복구 사본4개에 새 upload를 더한5개 중14729657007·14693263966·14687456012를 유지하고14686555542·14683508408의 DELETE 성공을 보고했다. 이후 저장소 API에는 보존한3개만 남았고 삭제한2개를 읽는 GET은 모두404였다. 미확정 삭제는 없다. 새 사본은733565071bytes, API digest sha256:8d9dc9d24b09c8022668f7ab74047c76bbe30037394a8070769bcc22e0d36dfc, 비만료 상태다. 이는 정상 CI와 API metadata 관찰이며 새 거절·부분실패를 유발한 시험이나 실제 archive 복원·독립 다운로드 재해시·과금/물리 저장 절감 측정은 아니다. 수동 보존 명령·DELETE·upload·재실행·새 권한 변경은 하지 않았다.",
+  "evidence": [
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/44960941865",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/44960941865/job/137020802568",
+    "scripts/release_artifact_retention.py",
+    ".github/workflows/pages.yml"
+  ],
+  "proposed_next_action": "현재 upload ID/run/source에 결속한 첫 정상 CI 관찰을 기존 ADOPT 보존 과제에 반영한다. 추후 거절·부분실패 때 성공한 삭제와 불확정을 구분하고 무조건 재실행하지 않는 기준을 유지한다. 외부 미디어 접근·원격 봉인/실제 복구 및 B1의 별도 선행 조건·일정은 변경하지 않는다."
+}
