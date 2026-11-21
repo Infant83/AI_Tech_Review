@@ -8,7 +8,7 @@
 
 A tiny change in the polarization of light can reveal something about empty space. The directions of decay products can carry information about particles that no longer exist. A fluid might retain finite total kinetic energy while its maximum speed becomes unbounded. Sensory input from the face might change how the brain learns. Each question asks how a difficult-to-observe process becomes accessible through a measurable quantity or a precise mathematical statement.
 
-This review takes topics highlighted by New Scientist Weekly as starting points and develops them through separately identified papers and official sources. It is a subject review rather than a newsletter digest: two chapters on quantum physics, one on AI and mathematics, one on the brain, and a short climate note.
+Topics highlighted by New Scientist Weekly lead into separately identified papers and official sources. We follow what each field measures or seeks to prove, with a short closing note on El Niño and Amazon fires.
 
 <div class="scope"><strong>Scope and date</strong><p>Evidence cutoff: 10 September 2026. The New Scientist full articles were unavailable. In particular, the new experiment behind the facial-stimulation story could not be identified. The brain chapter reviews named earlier studies and does not invent the new experiment's design or results. The vacuum and collider papers below are independently selected technical examples, not confirmed identifications of the magazine's featured studies.</p></div>
 
@@ -55,9 +55,9 @@ This control evaluates ideal polarization optics over an intentionally enlarged 
 
 ### What has actually been demonstrated?
 
-A concrete primary-source example is the BIREF@HIBEF collaboration's 2024 letter of intent, combining the ReLaX laser with an X-ray probe at the European XFEL HED instrument. An illustrative estimate gives a polarization-flipped photon fraction around 10⁻¹². This is a proposal and sensitivity estimate, not a detection report. [1]
+In a letter of intent released in 2024, the BIREF@HIBEF collaboration proposed combining the ReLaX laser with an X-ray probe at the European XFEL HED instrument. Its illustrative sensitivity estimate gives a polarization-flipped photon fraction around 10⁻¹². Separating that tiny signal from optical leakage and pump background is a central design problem. [1]
 
-A complementary route exchanges a brief intense interaction for a long effective optical path. Spector and colleagues tested an interferometric technique in a 19 m optical cavity in 2025. That demonstration used no magnetic field: it tested the measurement method, not magnetic vacuum birefringence itself. [2]
+A complementary route exchanges a brief intense interaction for a long effective optical path. In work released in 2025 and published in 2026, Spector and colleagues tested an interferometric technique in a 19 m optical cavity. The field-free prototype assessed the performance of the measurement method. [2]
 
 | Approach | How it increases sensitivity | Crucial qualification |
 |---|---|---|
@@ -71,7 +71,7 @@ Related quantum electromagnetic effects have already been observed. ATLAS report
 
 A new light particle coupled to photons could, in principle, modify an optical signal relative to the QED prediction. An unexpected polarization change would still require a careful account of residual gas, mirror birefringence, beam geometry and pump scattering before an exotic explanation became persuasive. Wavelength, field-strength and orientation dependence would need to fit a consistent model.
 
-A successful QED measurement would matter even without a new particle. A null result can also constrain a model within the demonstrated sensitivity. Neither outcome amounts to measuring dark energy or photographing a sea of virtual particles.
+A successful QED measurement would matter even without a new particle. A null result can also constrain a model within the demonstrated sensitivity.
 
 For readers accustomed to quantum computing, this is another kind of quantum research. Its immediate currency is phase sensitivity, photon statistics and background control, rather than qubit count or circuit depth.
 
@@ -107,7 +107,7 @@ One research program infers the quantum correlations of collision products from 
 
 <figure><img src="assets/collider.svg" alt="Branching diagram separating spin-state inference from feature encoding into a quantum circuit" width="1200" height="690" loading="lazy"><figcaption>Figure 2. Classical observations can support quantum-state inference. Encoding those observations into a new quantum circuit does not restore the coherence of the original collision state.</figcaption></figure>
 
-A 2024 quantum-autoencoder paper involving Sarah Malik belongs to the second program. It studies unsupervised searches for beyond-standard-model events through a learned compression model and anomaly score. A new circuit architecture and benchmark are not an experimental particle discovery. [7]
+A quantum-autoencoder paper involving Sarah Malik, released in 2024 and published in 2025, belongs to the second program. It learns to compress normal background features and assigns a higher anomaly score to events that are harder to compress or reconstruct. The new circuit architecture is compared on this unsupervised search task. [7]
 
 The separate 2025 “1 Particle 1 Qubit” paper offers a more concrete example. A jet is a group of particles traveling in roughly the same direction. Selected particle kinematics are mapped to rotation angles, with one qubit assigned to each retained particle. Entanglement created by the circuit is a computational resource of this encoding, not coherent transfer of the complete collision state into quantum memory. [8]
 
@@ -115,7 +115,7 @@ The separate 2025 “1 Particle 1 Qubit” paper offers a more concrete example.
 
 AUC is the area under the receiver operating characteristic curve. It summarizes how well a score ranks signal relative to background as the decision threshold changes. An AUC of 0.872 is not an 87.2% discovery probability or classification accuracy. Real searches must also consider performance at very low false-positive rates and under severe class imbalance.
 
-The circuit experiments used a classical simulator and at most the ten hardest particles per jet. Fewer trainable parameters do not establish an end-to-end quantum speedup. Encoding, measurement shots, optimization, noise and strong classical baselines all belong in the comparison. [8]
+The circuit experiments used a classical simulator and at most the ten constituents with the highest transverse momentum per jet. Fewer trainable parameters do not establish an end-to-end quantum speedup. Encoding, measurement shots, optimization, noise and strong classical baselines all belong in the comparison. [8]
 
 ### What would make the next result convincing?
 
@@ -175,13 +175,13 @@ The first term on the right includes three-dimensional vortex stretching and reo
 
 ### What the AI did, and what a checker does
 
-The official account describes an internal model stronger than the publicly available model and a large agent search. For the Navier–Stokes stage, it reports about 10,000 concurrent agents, 88 hours of search and a further 17 hours of formalization and verification. These are author-reported execution figures, not independently audited logs or costs. This review does not combine token totals from different stages or infer a price from them. [11]
+The official account describes an internal model stronger than the publicly available model and a large agent search. For the Navier–Stokes stage, it reports about 10,000 concurrent agents, 88 hours of search and a further 17 hours of formalization and verification. These are author-reported execution figures, not independently audited logs or costs. [11]
 
 A generative model and a proof checker have different roles. The model proposes definitions and lemmas, explores ideas and repairs failures. A checker determines whether a formal proof follows from its stated assumptions and axioms. A broad search can tolerate many wrong ideas if correct candidates can be filtered rigorously. But a perfectly checked proof of a mistranslated statement can still miss the intended problem.
 
 <figure><img src="assets/proof.svg" alt="Diagram separating AI proof search, formal checking, correspondence to the original statement and expert assessment" width="1200" height="700" loading="lazy"><figcaption>Figure 5. Formal correctness, correspondence to the original problem and mathematical understanding require complementary checks. The arrows show review relationships, not a claim that every check has been completed here.</figcaption></figure>
 
-The public repository includes Lean code and a separate statement-comparison and verification procedure. Fixed, inspectable artifacts make independent examination more concrete than a press release alone. For this review, repository documentation and entry files were inspected; the full Lean build and independent checker were not run. [12]
+The public repository includes Lean code and a separate statement-comparison and verification procedure. Files tied to an identifiable version let other researchers examine the formal statement and its proof. For this review, repository documentation and entry files were inspected; the full Lean build and independent checker were not run. [12]
 
 Human understanding remains useful even after formal acceptance. Knowing what makes the construction work can enable extensions, simpler proofs and new estimates. A theorem's conclusion alone does not explain the mechanism behind it.
 
@@ -189,15 +189,15 @@ Human understanding remains useful even after formal acceptance. Knowing what ma
 
 Córdoba and Martínez-Zoroa studied forced three-dimensional Euler blowup with rougher forcing. Euler has no viscosity term, so that result cannot be identified with ordinary Navier–Stokes. It nevertheless supplies relevant history for a program that improves forcing regularity and investigates different dissipation regimes. [13]
 
-In a public statement, Tristan Buckmaster described how his collaboration with Levent Alpöge built on that program with LLM assistance to obtain smooth-forcing Euler results. He disputed aspects of the announcement and credit, while explicitly saying he did not know whether their data had been used. OpenAI stated that it had not accessed the unpublished work and could not exclude a contribution from de-identified usage data to training. These are separate parties' accounts; the public material does not establish unauthorized data use or misconduct. [14,11]
+In a public statement, Tristan Buckmaster described how his collaboration with Levent Alpöge built on that program with LLM assistance to obtain smooth-forcing Euler results. He disputed aspects of the announcement and credit, while explicitly saying he did not know whether their data had been used. In its 10 September update, OpenAI stated that its own investigation found that Buckmaster's Codex inputs during the two months before the announcement could not have influenced the system, including through training. This is the company's investigative account, distinct from an independent audit of data use. The two parties' accounts do not by themselves establish misconduct. [14,11]
 
 The truth of a theorem and the accuracy of its research history are related responsibilities, but distinct questions. A true result can be presented with inadequate credit; a disputed presentation does not automatically make a theorem false.
 
-Clay's page still marked the problem “Active” at the cutoff. Its award rules include at least two years after publication in a qualifying outlet and general acceptance by the mathematical community. The careful current description is a major solution claim, on an allowed route, released with a paper and formal artifacts—not a completed prize determination. [15,16]
+The original publication record reports that Clay's page marked the problem “Active” on 10 September 2026. Its award rules include at least two years after publication in a qualifying outlet and general acceptance by the mathematical community. At that evidence cutoff, the supported description was a major solution claim on an allowed route, released with a paper and formal artifacts. The solution claim and the prize process were at different stages. [15,16]
 
 ### What other AI-for-science workflows can learn
 
-The transferable lesson is not an agent count. It is a research design that leaves outputs in an independently checkable form. In materials science, those might include structures, inputs, convergence settings and energy calculations. In an experiment, they include calibration, raw signals and analysis code. Fields without a checker as strong as formal logic need more explicit statements of what each verification step establishes.
+Research designs that leave outputs in an independently checkable form can support work in other fields. In materials science, those might include structures, inputs, convergence settings and energy calculations. In an experiment, they include calibration, raw signals and analysis code. Fields without a checker as strong as formal logic need more explicit statements of what each verification step establishes.
 
 Cost reporting should also include failed candidates, restarts, tool calls and human selection, not just the successful final run. Problems with cheap verifiers can support a different search strategy from problems in which every candidate requires an expensive physical experiment. As independent mathematical review proceeds, both the proof and the design of the search will be worth studying.
 
@@ -234,17 +234,17 @@ Plasticity is activity-dependent change in connection efficacy, but indiscrimina
 
 ### A 2024 result that a positive-only narrative would miss
 
-Arias and Buneo studied visuomotor learning in healthy young adults: 63 participants in a pre-task stimulation experiment and 63 in a separate concurrent-stimulation experiment. Pre-task 60 Hz stimulation produced slower learning than sham or 120 Hz; concurrent stimulation showed no significant group difference. The study measured behavior rather than directly testing the LC mechanism. [17]
+Arias and Buneo studied visuomotor learning in healthy young adults, analyzing 63 participants in a pre-task stimulation experiment and 63 in a separate concurrent-stimulation experiment. Pre-task 60 Hz stimulation produced slower learning than sham or 120 Hz; concurrent stimulation showed no significant group difference. The study measured behavior rather than directly testing the LC mechanism. [17]
 
 It would be incorrect to turn this into “120 Hz improved memory.” Doing better than a condition that performed worse is not equivalent to beating sham. Visuomotor adaptation is also different from word learning or memory for everyday events.
 
-Neutral and adverse effects can still inform mechanism. Dependence on timing or frequency may suggest state-dependent processing, but discomfort, distraction and other physiological explanations require separation. That is a follow-up hypothesis, not a mechanism established by the behavioral result.
+Neutral and adverse results make the next mechanistic questions more specific. A follow-up could measure arousal and noradrenergic indicators, discomfort and distraction separately and compare them with the timing- and frequency-dependent behavioral changes. It would test how the brain's starting state shapes its response to peripheral input.
 
 ### A 2025 memory study targeted a different nerve
 
 Arulchelvan and Vanneste studied transcutaneous greater occipital nerve stimulation and word-pair learning in 60 participants across two double-blind experiments. Their abstract reports improved learning and delayed memory but no significant consolidation difference, with EEG and salivary alpha-amylase measurements. The result was checked at abstract level for this review. [18]
 
-The greater occipital nerve is neither the trigeminal nor the facial nerve. This paper therefore cannot be relabeled as proof of facial stimulation. Its relevance is the experimental separation of peripheral input, learning and retention. A salivary biomarker is also not a direct measurement of brain noradrenaline.
+The greater occipital nerve is a different target from the trigeminal and facial nerves. The study offers a design for examining peripheral input, learning and retention together. Its report of no significant consolidation difference calls for separating learning more at the outset from stabilizing what was learned. Salivary alpha-amylase was used as a proxy for noradrenergic activity.
 
 | Study | Actual target and task | Boundary |
 |---|---|---|
@@ -283,15 +283,25 @@ Each topic depends on interpreting a signal: background photons in vacuum optics
 - **AI mathematics:** Who checked the correspondence to the original problem, reran the complete verification and understood the central construction?
 - **Memory:** Is delayed performance still better after initial learning is matched? Was the proposed mechanism measured directly?
 
-Researchers worth following include **Sarah Malik** for collider quantum machine learning, **Tristan Buckmaster** for fluid blowup and its research history, and **Sven Vanneste** for peripheral stimulation and memory. Their specific methods and comparisons matter more than authority by name.
+Researchers worth following include **Sarah Malik** for collider quantum machine learning, **Tristan Buckmaster** for fluid blowup and its research history, and **Sven Vanneste** for peripheral stimulation and memory. Their papers offer further examples of how to choose an observable, a mathematical statement or a neural target.
 
 {{REFERENCES}}
 
-### Editorial verification record
+### Original editorial verification record · 11 September 2026
 
 Primary papers and official statements were prioritized. Source [1] is a proposal, [2] a field-free method demonstration, [5] an analysis of real collision data, [8] a classically simulated quantum-circuit study, [9] a released mathematical solution claim, [18] an abstract-level check, and [19] a dated probabilistic outlook.
 
 Execution costs and logs, the full Lean proof, collider benchmarks and stimulation experiments were not independently reproduced. Five raster illustrations were newly generated as conceptual artwork. Six SVG figures were constructed directly: Figure 3 uses the source table; Figure 4 and the polarization control use the equations shown here. Generated imagery was not used to validate anatomy, apparatus design or fluid data.
+
+The cover was revised to the current vermilion-and-indigo print on the original publication date, 11 September. The <a href="assets/vacuum.webp">earlier conceptual cover</a> replaced that day is retained as part of its production history.
+
+### Revision history · 21 November 2026
+
+The publication date remains 11 September 2026 and the scientific evidence cutoff remains 10 September. This revision removes repetition from the opening and study introductions and checks published bibliography, coauthors, editions and dated sources. The changing NOAA address is replaced with its official 10 September archive. A sentence that could turn statistical nonsignificance in consolidation into absence of a difference has been corrected.
+
+The original account of OpenAI's position on credit and data use has been corrected against the explicitly dated 10 September investigative update in its official announcement. The company's account, Buckmaster's statement and an independent audit of data use remain distinct. This revision does not independently verify the mathematical proof or update its subsequent review status.
+
+AEDAUT root edited both manuscripts and checked neuroscience, climate sources and the existing educational calculations. `frontiers1121_physics` independently compared physics, collider and QML sources and published bibliography; `frontiers1121_math` compared the theorem, official problem, announcement, selected fixed-code material and the parties' statements. `frontiers1121_prose` reviews the complete bilingual argument and prose as a non-writing reviewer. Selected sections, abstracts and static code inspection are distinguished from complete-paper reading or Lean execution. The original cover, eleven figures and meanings of the educational equations and values are preserved. No new experiment, benchmark or human-reader study was performed. The original limits on magazine full text and the unidentified facial-stimulation paper remain.
 
 The New Scientist links below document topic discovery, not full-text access. No private email addresses, headers or tracking links are included.
 
