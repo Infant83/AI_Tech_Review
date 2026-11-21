@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db",
   "uuid": "b3d47d16-ebee-451d-a6c8-98f5f83296db",
-  "record_version": 1,
+  "record_version": 2,
   "title": "지연 검색 전송량 게시 한도 초과와 동일 버전 검색엔진 배포 크기 축소",
   "type": "publication_payload",
   "created_at": "2026-11-21T05:18:58.290809+00:00",
-  "updated_at": "2026-11-21T05:26:47.789521+00:00",
-  "status": "validating",
+  "updated_at": "2026-11-21T05:42:00.085508+00:00",
+  "status": "observing",
   "priority": "P1",
   "source": {
     "kind": "publication_validation",
@@ -79,39 +79,58 @@
     "Existing100000-byte gate, release continuity, complete regression and actual HTTPS deployment checks pass."
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986"
+    ],
     "candidate_reference": "publication_changes/classiq-qae-onboarding-updates.json",
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44870984847"
   },
   "verification": {
-    "status": "complete local candidate and independent browser parity passed; deployment pending",
+    "status": "Local, CI, actual HTTPS and independent Chrome verification passed; observing subsequent growth and regressions.",
     "checks": [
-      "25038 exact full-result comparisons;169 records unchanged.",
-      "Printing-only vendor gzip7258bytes; projected lazy search88900bytes.",
-      "Fresh candidate B: release continuity passed, lazy search88900bytes under the unchanged100000-byte limit.",
-      "All475Python tests(1skip) and12Node search/navigation tests passed after the vendor fix.",
-      "QAE course/reader assets and the169record catalog are byte-identical between candidates A/B.",
-      "All80actualKO/ENsearchUIcases matched exactrank/metadata/URLs after host/port normalization.",
-      "Deferredengine/core/catalog loading, clear/Escape, empty results and12unit reader preservation passed."
+      "Pinned official MiniSearch7.2.0 and Terser5.44.1 integrity verified; printing-only minification, unchanged MIT notice and no runtime dependency upgrade.",
+      "25038 exact full-result comparisons passed. All169 L012-candidate catalog records are byte-identical before/after the engine minification; the publication itself correctly adds L012.",
+      "The local precommit candidate measured100222bytes and was not deployed. Final candidate and actual CI both measured88900gzipbytes under the unchanged100000-byte gate; headroom11100bytes.",
+      "475 Python tests:474 passed,1 skipped;12 Node search/navigation tests passed after the vendor fix; all4Pages jobs succeeded.",
+      "Actual HTTPS engine SHA2563cee816dcedc69b2921e018d44b628dd99e21f4c5ed0072b49d5c75d8b44e8d9, unchanged MIT file and169-record catalog match reviewed candidate B exactly.",
+      "All80actualKO/ENsearchUIcases match reviewed B after origin normalization: exactrank/ID/title/URL/meta/summary, pagination, deferred loading, clear/Escape and no-results behavior.",
+      "Live390/820CSS-pixel KO/EN course/hub and all12actualPDFreaders plus latestEnglish reader passed;24readerURLs and26PDFURLs verified, including the latest alias and priorL008edition.",
+      "All10course/reader and4search screenshots inspected; no content clipping, missing summaries or PDF/search runtime failure. Signed-out401 probes and transition-cancelled background probes were retained and classified; a single settled reader had no request failures."
     ],
     "evidence": [
-      "scripts/public_assets/minisearch-provenance.json"
+      "scripts/public_assets/minisearch-provenance.json",
+      "https://github.com/Infant83/AI_Tech_Review/actions/runs/44870984847",
+      "https://infant83.io/AI_Tech_Review/publication-release.json",
+      "https://infant83.io/AI_Tech_Review/lectures/classiq-qae-onboarding/"
     ],
     "remaining_limits": [
-      "The current complete candidate has not yet been deployed."
+      "Gzip bytes are the existing build budget metric, not measured device latency or network transfer.",
+      "The80KB deferred-search growth warning and800MB internal artifact target warning remain nonblocking; neither is a provider-limit failure.",
+      "Browser checks used an isolated signed-out Chrome profile; no production account creation, cloud notebook write, physical push receipt or human readability study is claimed."
     ]
   },
   "observation": {
-    "status": "predeployment",
-    "period": null,
-    "result": null
+    "status": "deployed-and-live-verified",
+    "period": "Subsequent ordinary ADOPT publication and maintenance checks; reopen on a search regression or renewed admission-limit failure.",
+    "result": {
+      "source_revision": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
+      "deferred_search_gzip_bytes": 88900,
+      "unchanged_hard_limit_bytes": 100000,
+      "headroom_bytes": 11100,
+      "actual_search_UI_cases": 80,
+      "catalog_records_in_minification_comparison": 169,
+      "full_sealed_metadata_files": 2709,
+      "full_sealed_metadata_bytes": 818211801,
+      "CI_preseal_artifact_bytes": 816828763,
+      "inventory_scope": "Actual HTTPS sealed metadata inventory. This does not mean every public asset was redownloaded or provider billing/storage was measured."
+    }
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
-    "execution_reference": null,
-    "result": "No rollback performed. Retain the exact sealed deployed baseline while validating the new candidate."
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44870984847",
+    "result": "The exact deployed artifact was packaged by the successful recovery-copy job. Publication-recovery artifact metadata, revision, digest and nonexpired state verified. No restore or rollback performed."
   },
-  "next_action": "Complete independent candidate B, search UI parity and the normal Pages/HTTPS verification; then observe future metadata growth in the existing ADOPT cycle.",
+  "next_action": "Observe subsequent metadata growth and search behavior in the existing ADOPT cycle. Reopen this issue on regression or renewed100000-byte admission failure; consider scoped metadata loading before that threshold without removing content or weakening the gate.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "replan_reference": "operations/issues/OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db.json",
