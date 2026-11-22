@@ -1,0 +1,160 @@
+{
+  "document_id": "2026-11-22-daily-quantum-exercise",
+  "original_issue_date": "2026-11-22",
+  "review_date": "2026-11-22",
+  "review_team": "AEDAUT",
+  "review_mode": "Independent agent reading of the complete four-page exercise, exact commitment/dispatch verification and primary-source comparison",
+  "human_line_by_line_review": false,
+  "result": "Scientific assumptions, exact optimum, infeasible approximation, startup formulation and total-time arithmetic pass",
+  "calculation": {
+    "script": "verify_exercise.py",
+    "results": "calculations.json",
+    "execution_level": "Classical exact rational arithmetic, all binary commitments and analytical continuous economic dispatch; no MILP package, QAOA simulator or QPU was run",
+    "checks": [
+      "All sixteen commitment patterns were enumerated. Continuous dispatch was solved from its exact feasible interval and the marginal-cost slope, without discretizing output.",
+      "Only B is on in period one; both generators are on in period two. Dispatch (A,B)=(0,30) then (80,10) MW gives USD 3000 variable cost and USD 220 startup cost, totaling USD 3220.",
+      "For every commitment pattern, all sixteen startup-indicator patterns were checked. With the stated strictly positive startup costs, the unique startup-cost minimizer under v>=u-u_previous is the actual off-to-on transition pattern.",
+      "Restoring startup charges to the approximate plan gives USD 2770, but A produces 30 MW below its 40 MW minimum in period one. The USD 450 difference is not a feasible saving.",
+      "The sequential hypothetical stages sum to 44 seconds, fourteen seconds above the target and slower than the hypothetical fifteen-second classical baseline.",
+      "As an additional illustrative example, assigning a fixed USD 10000 cost to infeasible commitments gives an exactly quartic multilinear evaluated-cost function on the four original bits. A per-commitment classical evaluation is therefore not automatically an exact QUBO on those bits."
+    ]
+  },
+  "scientific_findings": [
+    {
+      "topic": "Feasibility before cost comparison",
+      "finding": "The stated exact balance excludes dumping, storage, unserved load and external trades. Minimum output therefore rules out starting A in the low-demand first period. Restoring a cost term without restoring all constraints does not repair the approximate plan."
+    },
+    {
+      "topic": "Model and decomposition",
+      "finding": "The exercise is a two-period mixed-integer linear model with binary commitment/startup variables and continuous MW dispatch. Its candidate sampling and exact dispatch validation are an educational adaptation; they do not reproduce the cited paper's complete variational algorithm."
+    },
+    {
+      "topic": "Resources and timing",
+      "finding": "Four bits count only the commitment register. Output discretization, auxiliary variables, phase-cost construction, circuit depth, routing, measurements and classical evaluations need their own accounting. The five-second QPU stage includes compilation, measurement and mitigation only by the exercise's explicit assumption."
+    },
+    {
+      "topic": "Decision criteria",
+      "finding": "Compare feasible plans under the original objective and equal inputs, accuracy and constraints. Timeout/failure rates and certified optimization gaps must accompany cost and latency; all operational thresholds and timings here are educational assumptions."
+    }
+  ],
+  "references": [
+    {
+      "number": 1,
+      "bibliography": "PyPSA, Unit commitment (accessed 22 November 2026).",
+      "url": "https://docs.pypsa.org/stable/user-guide/optimization/unit-commitment/",
+      "accessed": "2026-11-22",
+      "directly_read": [
+        "Unit Commitment introduction and Start-Up and Shut-down formulation",
+        "Commitment-linked minimum/maximum dispatch inequalities",
+        "Startup/shutdown transition variables and initial-status discussion",
+        "Minimum up/down time and ramping scope"
+      ],
+      "supports": "The MILP relationship between status, dispatch limits and startup indicators",
+      "limits": "The public stable documentation page was read; no numeric software version was inferred from its URL, and PyPSA was not executed. The exercise deliberately omits several constraints described in the full documentation."
+    },
+    {
+      "number": 2,
+      "bibliography": "S. Koretsky, P. Gokhale, J. M. Baker, J. Viszlai, H. Zheng, N. Gurung, R. Burg, E. A. Paaso, A. Khodaei, R. Eskandarpour, and F. T. Chong, Adapting Quantum Approximation Optimization Algorithm (QAOA) for unit commitment, in 2021 IEEE International Conference on Quantum Computing and Engineering (QCE) (IEEE, 2021), pp. 181–187.",
+      "url": "https://doi.org/10.1109/QCE52317.2021.00035",
+      "full_text_used": "https://arxiv.org/pdf/2110.12624v1",
+      "author_manuscript_version": "arXiv:2110.12624v1, 25 October 2021",
+      "accessed": "2026-11-22",
+      "authors_verified": [
+        "Samantha Koretsky",
+        "Pranav Gokhale",
+        "Jonathan M. Baker",
+        "Joshua Viszlai",
+        "Honghao Zheng",
+        "Niroj Gurung",
+        "Ryan Burg",
+        "Esa Aleksi Paaso",
+        "Amin Khodaei",
+        "Rozhin Eskandarpour",
+        "Frederic T. Chong"
+      ],
+      "bibliographic_verification": "IEEE-deposited Crossref DOI metadata confirms all eleven authors, complete title, conference, publisher, proceedings-article status and pages 181–187. The arXiv record and manuscript corroborate the authors and title.",
+      "metadata_source": "https://api.crossref.org/works/10.1109/QCE52317.2021.00035",
+      "directly_read": "Complete seven-page public author manuscript, with particular attention to Section III formulation and hybrid algorithm, Section IV classical baseline, Section V simulation results, and Section VI execution limits",
+      "supports": "A hybrid division between QAOA binary decisions and a classical continuous optimizer, demonstrated through Qiskit simulation",
+      "algorithm_scope": "The paper's classical outer loop jointly varies output, slack and QAOA parameters. For each fixed continuous proposal it constructs a QUBO in the binary variables. This differs from assuming that a fully minimized continuous-dispatch value function is automatically quadratic.",
+      "execution_scope": "The paper reports simulated quantum circuits, not actual QPU execution; the conclusion describes real-hardware evaluation as future work.",
+      "limits": "The IEEE destination required a JavaScript verification step and its full body was not read. The public author manuscript supplied the technical text; the publisher-deposited DOI metadata supplied publication details. No paper simulation, classical benchmark, finite-penalty equivalence proof or hardware experiment was independently reproduced."
+    }
+  ],
+  "evidence_separation": {
+    "independent": "Exact toy commitment/dispatch/startup checks and timing sum",
+    "reported_simulation": "Koretsky and colleagues' Qiskit simulation",
+    "hypothetical": "The two-generator data, operational-scale quantum/classical timings and adoption thresholds",
+    "proposed_followup": "Original-constraint validation, certified gaps, failure-inclusive complete latency and matched baselines"
+  },
+  "related_existing_reading": {
+    "title": "큐비트 수를 넘어: 양자컴퓨팅은 시스템 경쟁으로 간다",
+    "url_ko": "https://infant83.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/index.html",
+    "url_en": "https://infant83.io/AI_Tech_Review/reviews/2026-09-03_quantum-full-stack-codesign/en/index.html",
+    "source_ko": "2026-09-03_quantum-full-stack-codesign/reports/2026-09-03_quantum-full-stack-codesign_final_review.md",
+    "source_en": "2026-09-03_quantum-full-stack-codesign/reports/2026-09-03_quantum-full-stack-codesign_final_review_en.md",
+    "directly_read": "Both language sections on neutral-atom unit commitment, discrete moves, classical continuous dispatch/feasibility recovery, and gas-network QAOA physical-constraint validation",
+    "connection": "The existing review gives distinct examples of separating quantum discrete proposals from classical continuous evaluation and feasible-output recovery. Its underlying hardware studies were not newly audited in this exercise review."
+  },
+  "editorial_review": {
+    "status": "pass",
+    "reviewer_role": "AEDAUT independent scientific and bilingual review",
+    "review_date": "2026-11-22",
+    "listing": {
+      "ko": {
+        "title": "운전 가능한 발전 계획의 비용",
+        "summary": "발전기를 켜는 선택과 연속 출력은 운전 제약으로 연결된다. 최소 출력·기동비를 복원해 근사 계획을 검증하고, QAOA와 고전 최적화의 분업을 원래 비용·전체 시간으로 비교한다."
+      },
+      "en": {
+        "title": "The cost of a feasible generation plan",
+        "summary": "Commitment choices and continuous power output meet through operating constraints. Restore minimum-output limits and startup costs to test an approximate plan, then compare the QAOA–classical split using original-model costs and end-to-end time."
+      },
+      "review": "Both titles and summaries are faithful to the problem and contain no numerical answers or adoption verdicts."
+    },
+    "checks": [
+      "Both languages preserve numerical answers, exact units, assumptions and the initially closed solution structure.",
+      "The formal explanation explicitly identifies binary commitment/startup variables, continuous MW output, initially off generators and the previous-period status.",
+      "Positive startup prices ensure transition equivalence at an optimum; the text does not claim that the lower-bound inequality forces equality in every feasible assignment.",
+      "The paper's joint continuous/slack/variational optimization is distinguished from the exercise's per-commitment exact linear dispatch validation.",
+      "The QAOA cost-operator construction and nonquadratic value-function issue are retained; four commitment bits are not presented as the whole resource cost.",
+      "All eleven paper authors and original title words are retained. Expanded formal algorithm-name capitalization is preserved consistently with the PDF as a named method; the remaining title uses sentence case.",
+      "References appear in order 1 then 2 and both language bibliographies match.",
+      "A relevant existing power-operation discussion is linked through matching language routes; its underlying hardware papers were not newly reviewed.",
+      "The exact primary-source access route and the absence of hardware/benchmark reproduction are disclosed."
+    ],
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-22_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 8274,
+        "sha256": "24caa334523ecdcb98aeed4ae0e40d2f331755aa05c0129fdb69ef66abb3ad70"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-22_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 8387,
+        "sha256": "22a7c7926971cd6978c806b9534ca8f00c1263eb1cb6beed73a4c07a1de0f937"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-22_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 8164,
+        "sha256": "70c6d32977ed35051a820a05d18a4de44661ca34e8a851d2fb8f655555923028"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-22_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 8277,
+        "sha256": "8d3d68924eb08a109b44066ce5da5982c0401438050d6482bdd558467b86c05e"
+      }
+    ]
+  }
+}
