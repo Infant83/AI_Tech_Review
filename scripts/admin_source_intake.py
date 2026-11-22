@@ -10,7 +10,6 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import selectors
-import shutil
 import stat
 import subprocess
 import sys
@@ -32,7 +31,6 @@ MAX_DESCRIPTOR_BYTES = 2_000_000
 MAX_STDOUT_BYTES = 16 * 1024
 GIT_SECONDS = 20
 TOTAL_SECONDS = 120
-GIT = shutil.which("git")
 HEX40 = re.compile(r"[a-f0-9]{40}\Z")
 
 
@@ -40,6 +38,31 @@ class IntakeError(ValueError):
     def __init__(self, code):
         self.code = code
         super().__init__("Source intake refused (" + code + ").")
+
+
+def _trusted_git():
+    # Fixed operator-installed locations only: inherited PATH must never select
+    # an executable. Homebrew's versioned symlink is allowed only in its Git
+    # Cellar; arbitrary links to a source/output executable are not trusted.
+    for name, cellar in [("/usr/local/bin/git", "/usr/local/Cellar/git"),
+                         ("/opt/homebrew/bin/git", "/opt/homebrew/Cellar/git"),
+                         ("/usr/bin/git", None)]:
+        try:
+            candidate = Path(name).resolve(strict=True)
+            if cellar is not None and Path(cellar) not in candidate.parents:
+                continue
+            if cellar is None and candidate != Path(name):
+                continue
+            info = candidate.stat()
+            if (stat.S_ISREG(info.st_mode) and info.st_mode & 0o111
+                    and not info.st_mode & 0o022 and os.access(candidate, os.X_OK)):
+                return str(candidate)
+        except OSError:
+            continue
+    return None
+
+
+GIT = _trusted_git()
 
 
 def _raw(value):
@@ -83,7 +106,7 @@ def _env():
     env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_SYSTEM=os.devnull, GIT_CONFIG_GLOBAL=os.devnull,
                GIT_ATTR_NOSYSTEM="1", GIT_NO_REPLACE_OBJECTS="1", GIT_NO_LAZY_FETCH="1",
                GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0", GIT_ALLOW_PROTOCOL="",
-               GIT_LITERAL_PATHSPECS="1")
+               GIT_LITERAL_PATHSPECS="1", PATH=os.defpath)
     return env
 
 
@@ -118,11 +141,10 @@ class _GitSource:
             raise IntakeError("source_git_required")
         common = self.gitdir / "commondir"
         self.common = _safe(self.gitdir / self.control(common, 4096).decode().strip()) if common.exists() else self.gitdir
-        if common.exists():
-            self.pointer_paths.append(common)
         self.control_paths = [*self.pointer_paths, self.common / "config"]
-        if (self.gitdir / "config.worktree").exists():
-            self.control_paths.append(self.gitdir / "config.worktree")
+        # Bind optional control membership as well as existing file bytes.
+        # Creating an initially absent control during intake is a change.
+        self.optional_controls = [common, self.gitdir / "config.worktree"]
         self.controls = None
         self.guard()
         self.git_version = self.run("version").decode("ascii").strip()
@@ -155,7 +177,10 @@ class _GitSource:
             if _safe(self.common / relative).exists():
                 raise IntakeError("unsafe_source_objects")
         values = {}
-        for path in self.control_paths:
+        for path in [*self.control_paths, *self.optional_controls]:
+            if path in self.optional_controls and not _safe(path).exists():
+                values[str(path)] = None
+                continue
             raw = self.control(path)
             values[str(path)] = _sha(raw)
             if path.name not in {"config", "config.worktree"}:
@@ -184,6 +209,11 @@ class _GitSource:
                     elif section == "user":
                         if keys - {"name", "email", "signingkey"}:
                             raise IntakeError("unsafe_git_config")
+                    elif section == "codex" and path.name == "config.worktree":
+                        # Inert host metadata only. Never open or execute its
+                        # value; raw control bytes remain change-bound above.
+                        if keys != {"localenvironmentconfigpath"}:
+                            raise IntakeError("unsafe_git_config")
                     else:
                         raise IntakeError("unsafe_git_config")
             except (configparser.Error, UnicodeError):
@@ -194,6 +224,8 @@ class _GitSource:
 
     def run(self, *args, limit=None):
         self.budget.check()
+        if GIT is None:
+            raise IntakeError("trusted_git_unavailable")
         limit = MAX_TREE_BYTES if limit is None else limit
         if args[0] not in {"version", "rev-parse", "cat-file", "ls-tree", "for-each-ref"}:
             raise IntakeError("unsafe_git_command")
@@ -311,10 +343,13 @@ class _BoundedInputs(_Inputs):
     def _chunks(self, path, limit=None):
         self.budget.check()
         ceiling = min(MAX_BLOB_BYTES, self.byte_limits.get(path, MAX_BLOB_BYTES))
+        dist_limit = self.dist is not None and self.dist in path.parents and path not in self.files
+        if dist_limit:
+            ceiling = min(ceiling, MAX_DIST_BYTES - sum(self.dist_files.values()))
         if limit is not None:
             ceiling = min(ceiling, limit)
         if path.stat().st_size > ceiling:
-            raise IntakeError("blob_limit")
+            raise IntakeError("dist_limit" if dist_limit else "blob_limit")
         count = 0
         descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
         with os.fdopen(descriptor, "rb") as handle:
@@ -322,7 +357,7 @@ class _BoundedInputs(_Inputs):
             if not stat.S_ISREG(opened.st_mode):
                 raise IntakeError("invalid_source_type")
             if opened.st_size > ceiling:
-                raise IntakeError("blob_limit")
+                raise IntakeError("dist_limit" if dist_limit else "blob_limit")
             while True:
                 chunk = handle.read(min(1024 * 1024, ceiling + 1 - count,
                                         MAX_READ_BYTES + 1 - self.budget.read_bytes))
@@ -330,7 +365,7 @@ class _BoundedInputs(_Inputs):
                     break
                 self.budget.check(len(chunk)); count += len(chunk)
                 if count > ceiling:
-                    raise IntakeError("blob_limit")
+                    raise IntakeError("dist_limit" if dist_limit else "blob_limit")
                 yield chunk
 
     def json(self, path, *, boundary=None):
@@ -344,13 +379,15 @@ class _BoundedInputs(_Inputs):
         return super().json(path, boundary=boundary)
 
     def file(self, path, *, boundary=None):
-        path = Path(path)
+        path = Path(os.path.abspath(path))
         if self.dist is not None and self.dist in path.parents and path not in self.dist_files:
-            size = path.stat().st_size
-            if len(self.dist_files) >= MAX_DIST_FILES or sum(self.dist_files.values()) + size > MAX_DIST_BYTES:
+            if len(self.dist_files) >= MAX_DIST_FILES:
                 raise IntakeError("dist_limit")
-            self.dist_files[path] = size
         result = super().file(path, boundary=boundary)
+        if self.dist is not None and self.dist in path.parents:
+            self.dist_files[path] = result["bytes"]
+            if sum(self.dist_files.values()) > MAX_DIST_BYTES:
+                raise IntakeError("dist_limit")
         result["mode"] = "100755" if path.stat().st_mode & 0o111 else "100644"
         return result
 

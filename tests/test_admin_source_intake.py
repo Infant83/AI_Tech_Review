@@ -128,6 +128,63 @@ class SourceIntakeTests(unittest.TestCase):
                 "GIT_CONFIG_GLOBAL": "/never-open", "GIT_ALTERNATE_OBJECT_DIRECTORIES": "/never-read"}):
             self.assertTrue(self.call()[0]["ok"])
 
+    def test_optional_git_control_absence_is_bound_during_read(self):
+        config = self.source / ".git/config"
+        config.write_bytes(config.read_bytes() + b"\n[extensions]\nworktreeConfig=true\n")
+        control = self.source / ".git/config.worktree"
+        self.assertFalse(control.exists())
+        actual = intake._BoundedInputs.verify; created = []
+        def create_control(reader):
+            result = actual(reader)
+            if not created:
+                control.write_bytes(b"[user]\nname=Synthetic\n"); created.append(True)
+            return result
+        with patch.object(intake._BoundedInputs, "verify", side_effect=create_control, autospec=True):
+            self.reject("source_layout_changed")
+        self.assertFalse((self.parent / "output-1/descriptor.json").exists())
+        control.unlink()
+        source = intake._GitSource(self.source, intake._Budget())
+        (self.source / ".git/commondir").write_bytes(b".\n")
+        with self.assertRaises(intake.IntakeError) as caught:
+            source.guard()
+        self.assertEqual(caught.exception.code, "source_layout_changed")
+
+    def test_linked_codex_metadata_is_inert_bound_and_narrowly_allowed(self):
+        linked = self.parent / "codex-linked"
+        jobs._git(self.source, "worktree", "add", "--detach", str(linked), self.data["expectedSourceRevision"])
+        config = self.source / ".git/config"
+        config.write_bytes(config.read_bytes() + b"\n[extensions]\nworktreeConfig=true\n")
+        gitdir = Path((linked / ".git").read_text()[8:].strip())
+        control = gitdir / "config.worktree"
+        control.write_bytes(b"[codex]\nlocalEnvironmentConfigPath=/never-read-or-execute-synthetic\n")
+        original = self.snapshot()
+        self.assertTrue(self.call(linked)[0]["ok"])
+        self.assertEqual(original, self.snapshot())
+        # No broader extension, helper or include compatibility is implied.
+        control.write_bytes(control.read_bytes() + b"[include]\npath=/never-read-include\n")
+        with self.assertRaises(intake.IntakeError) as caught:
+            self.call(linked)
+        self.assertEqual(caught.exception.code, "unsafe_git_config")
+
+    def test_CLI_does_not_execute_git_from_inherited_PATH(self):
+        fake_bin = self.parent / "untrusted-bin"; fake_bin.mkdir()
+        marker = self.parent / "untrusted-git-executed"
+        fake = fake_bin / "git"
+        fake.write_text("#!/bin/sh\n: > '" + str(marker) + "'\nexit 97\n"); fake.chmod(0o755)
+        original = self.snapshot()
+        output = self.parent / "trusted-cli-output"
+        env = dict(os.environ, PATH=str(fake_bin) + os.pathsep + os.environ.get("PATH", ""),
+                   PYTHONDONTWRITEBYTECODE="1")
+        result = subprocess.run([sys.executable, "-B", str(Path(intake.__file__)),
+            "--root", str(self.source), "--request", str(self.request),
+            "--baseline-snapshot", str(self.baseline), "--output", str(output)],
+            env=env, capture_output=True, timeout=30)
+        self.assertFalse(marker.exists())
+        self.assertEqual(result.returncode, 0)
+        self.assertTrue(json.loads(result.stdout)["ok"])
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual(original, self.snapshot())
+
     def test_promisor_alternates_replace_and_missing_object_are_refused(self):
         config = self.source / ".git/config"; original = config.read_bytes()
         config.write_bytes(original + b'\n[remote "origin"]\nurl=https://example.invalid/never-fetch\npromisor=true\n')
@@ -241,6 +298,52 @@ class SourceIntakeTests(unittest.TestCase):
         with patch.object(intake, "MAX_TREE_ENTRIES", 3):
             reader.directory(one, boundary=self.parent)
             with self.assertRaises(intake.IntakeError): reader.directory(two, boundary=self.parent)
+
+    def test_dist_cap_uses_hashed_bytes_even_when_first_stat_undercounts(self):
+        dist = self.source / jobs.FOLDER / "dist"
+        total = sum(p.stat().st_size for p in dist.rglob("*") if p.is_file())
+        actual = intake._BoundedInputs.file; path_stat = Path.stat; affected = []
+        target = dist / "index.html"
+        def read(reader, path, **kwargs):
+            def undercount(value, *args, **options):
+                info = path_stat(value, *args, **options)
+                if value == target and not affected:
+                    values = list(info); values[6] = 0; affected.append(True)
+                    return os.stat_result(values)
+                return info
+            with patch.object(Path, "stat", undercount):
+                return actual(reader, path, **kwargs)
+        with patch.object(intake, "MAX_DIST_BYTES", total - 1), \
+             patch.object(intake._BoundedInputs, "file", side_effect=read, autospec=True):
+            self.reject("dist_limit")
+        self.assertTrue(affected)
+        self.assertFalse((self.parent / "output-1/descriptor.json").exists())
+        with patch.object(intake, "MAX_DIST_BYTES", total):
+            _, descriptor = self.call()
+        self.assertEqual(descriptor["counts"]["distBytes"], total)
+        self.assertEqual(total, sum(p["bytes"] for p in descriptor["inputs"] if p["role"] == "target_dist"))
+
+    def test_dist_stream_stops_at_remaining_unique_byte_budget(self):
+        dist = self.parent / "stream-dist"; dist.mkdir()
+        one, two = dist / "one", dist / "two"
+        one.write_bytes(b"1234"); two.write_bytes(b"56789")
+        budget = intake._Budget(); reader = intake._BoundedInputs(self.source, budget); reader.dist = dist
+        with patch.object(intake, "MAX_DIST_BYTES", 8):
+            reader.file(one, boundary=self.parent)
+            actual_stat, actual_fstat = Path.stat, os.fstat
+            def size_zero(info):
+                values = list(info); values[6] = 0
+                return os.stat_result(values)
+            def hidden_size(path, *args, **kwargs):
+                info = actual_stat(path, *args, **kwargs)
+                return size_zero(info) if path == two else info
+            with patch.object(Path, "stat", hidden_size), \
+                 patch.object(intake.os, "fstat", side_effect=lambda fd: size_zero(actual_fstat(fd))):
+                with self.assertRaises(intake.IntakeError) as caught:
+                    reader.file(two, boundary=self.parent)
+            self.assertEqual(caught.exception.code, "dist_limit")
+            self.assertEqual(budget.read_bytes, 9)  # one + remaining budget + refusal byte
+            self.assertEqual(sum(reader.dist_files.values()), 4)
 
 
 if __name__ == "__main__":

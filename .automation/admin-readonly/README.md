@@ -94,4 +94,6 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_source_intake.py --root /control
 
 whole-tree metadata20,000행/4MiB, dist1,000경로/고유 경로 합128MiB·한 파일64MiB, JSON5,000,000B/총16,000,000B·요청32,000B, 실제 반복 읽기512MiB·Git 명령20초/전체120초, descriptor2,000,000B/stdout16KiB로 제한한다. 초과는 자르지 않고 거절한다. source 설정/객체 경로와 선택 입력·HEAD가 바뀌거나 baseline이 없으면 거절하며, 무관한 미추적/진행 파일은 보존한다. source config의 위험한 include/filter/fsmonitor/alias·promisor/외부 alternates/replace/graft는 거절하고 Git 자식의 inherited 설정·credential/자동 취득·optional writes를 차단한다.
 
+Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능한 정규 파일을 검증해 선택한다. Homebrew의 버전 경로는 Git Cellar 안으로만 해석하며, 지원 binary가 없으면 거절한다. 선택 source의 `commondir`·`config.worktree`는 부재도 결속하므로 읽는 중 신설·소실을 거절한다. 실제 linked worktree 호환을 위한 `[codex] localEnvironmentConfigPath` 한 설정은 불활성 metadata로만 받으며 값이 가리키는 파일을 읽거나 실행하지 않는다. 원시 설정 bytes는 계속 변경 검사에 포함한다. dist 합계는 hash를 계산한 실제 bytes로 산정하고 첫 읽기부터 남은 고유 경로 예산을 적용한다. 이 실행 파일 선택 보완은 B2a에 한정하며 B1 도구의 후속 실행 환경 검토를 대신하지 않는다.
+
 첫 B2a의 개발 후보와 검사는 정식 독립 감수/실제 운영 완료가 아니다. candidate Git 생성·복제·keyclaim·Git commit/ref/CAS·원본 writer·서버/API/DB·발행은 없다. 원본과 독립 candidate Git의 판본 매핑·namespace·저장 권한은 B2b, 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
