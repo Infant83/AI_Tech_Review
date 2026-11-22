@@ -408,6 +408,9 @@ def _receipt(repo, ref, claim):
     revision = _ref(repo, ref)
     if revision is None:
         raise JobError("outcome_unknown")
+    # cat-file's explicit type and rev-parse peel tags; bind the ref itself.
+    if _git(repo, "cat-file", "-t", revision).strip() != b"commit":
+        raise JobError("store_inconsistent")
     raw = _git(repo, "cat-file", "commit", revision)
     if len(raw) > CONTROL_BYTES:
         raise JobError("store_inconsistent")

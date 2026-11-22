@@ -278,6 +278,24 @@ raise SystemExit(jobs.main(['apply','--sandbox',sys.argv[1],'--request',sys.argv
         self.assertEqual(jobs._ref(self.repo, "refs/heads/main"), self.base)
         self.reject("store_inconsistent")
 
+    def test_receipt_ref_must_name_actual_commit_instead_of_tag_tree_or_blob(self):
+        result = self.apply(); candidate = result["candidateRevision"]
+        ref = self.refs()[0].split()[0]
+        tree = jobs._git(self.repo, "rev-parse", candidate + "^{tree}").decode().strip()
+        blob = jobs._git(self.repo, "rev-parse", candidate + ":" + self.target).decode().strip()
+        tag = jobs._git(self.repo, "mktag", raw=(
+            "object " + candidate + "\ntype commit\ntag synthetic-receipt\n"
+            "tagger Synthetic B1 <synthetic@example.invalid> 946684800 +0000\n\nSynthetic tag\n"
+        ).encode()).decode().strip()
+        for oid in [tag, tree, blob]:
+            with self.subTest(kind=jobs._git(self.repo, "cat-file", "-t", oid).decode().strip()):
+                jobs._git(self.repo, "update-ref", ref, oid, candidate)
+                try:
+                    self.reject("store_inconsistent")
+                finally:
+                    jobs._git(self.repo, "update-ref", ref, candidate, oid)
+        self.assertEqual(self.apply()["candidateRevision"], candidate)
+
     def _mode_tree(self, tree, parts):
         out = []
         for row in jobs._git(self.repo, "ls-tree", "-z", tree).split(b"\0"):

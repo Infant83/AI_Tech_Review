@@ -66,7 +66,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_request_jobs.py apply --sandbox 
 
 첫 명령의 목적지는 새 폴더여야 한다. 요청을 바꿔 볼 때에는 이 fixture의 `example-request.json`에서 허용 patch와 새로운 UUID를 준비한다. 기존 key의 patch·target·기준을 바꾸면 `idempotency_conflict`다. 고정 synthetic 대상 외의 새 작업은 지원하지 않는다. stdout은 값/내부 경로/원시 오류/멱등 키를 제외한 상태·operation ID·fingerprint·candidate SHA 또는 reason JSON이다.
 
-store의 불변 key inventory가 claim hash를 예약하고, 불변 claim은 원고 값을 복사하지 않고 operation/fingerprint·대상·기준/결과 SHA를 보존한다. 새 요청은 frozen 요청과 A 결과의 fingerprint/세 기준, 고정 Git registration blob SHA를 다시 결속한다. 실제 후보는 원본 Git tree의 등록 한 파일만 바꾼 commit이다. Git receipt metadata의 operation/phase/parent·before/after hash와 **정확한 예상 전체 tree OID**가 일치해야 재생한다. 예상 tree는 메모리에서 계산하므로 replay는 Git object/ref를 쓰지 않는다. journal 상태 파일은 파생 표시이며 없어지거나 손상되면 검증된 receipt로 다시 만든다.
+store의 불변 key inventory가 claim hash를 예약하고, 불변 claim은 원고 값을 복사하지 않고 operation/fingerprint·대상·기준/결과 SHA를 보존한다. 새 요청은 frozen 요청과 A 결과의 fingerprint/세 기준, 고정 Git registration blob SHA를 다시 결속한다. 실제 후보는 원본 Git tree의 등록 한 파일만 바꾼 commit이다. receipt ref 자체가 실제 commit 객체를 가리켜야 하며 tag의 자동 해석으로 대신하지 않는다. Git receipt metadata의 operation/phase/parent·before/after hash와 **정확한 예상 전체 tree OID**가 일치해야 재생한다. 예상 tree는 메모리에서 계산하므로 replay는 Git object/ref를 쓰지 않는다. journal 상태 파일은 파생 표시이며 없어지거나 손상되면 검증된 receipt로 다시 만든다.
 
 실제 로컬 `update-ref` transaction에서 sandbox main의 expected SHA를 verify하고 receipt ref를 expected old SHA에서 새 결과로 바꾼다. 다른 글과 무관한 main 전진도 `source_conflict`다. 실제 원본/원격 main CAS의 구현이 아니다. 후보는 raw blob·tree·commit plumbing으로 만들고 workingtree·index·기존 main·한영 원고·baseline은 바꾸지 않는다. 같은 store의 협력 프로세스는 지우지 않는 lock inode로 직렬화하며 분산 잠금은 없다.
 
