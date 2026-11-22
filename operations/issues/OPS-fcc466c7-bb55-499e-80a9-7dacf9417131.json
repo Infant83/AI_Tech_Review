@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 34,
+  "record_version": 35,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-21T18:28:24.548742+00:00",
+  "updated_at": "2026-11-22T02:05:59.171639+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -149,9 +149,10 @@
         "tests/test_release_backup.py": "b1a13445ebffedd25a157ea45f60e765c9c4c08dcc68c4f92151d89d40f346da"
       },
       "source_integrated": true,
-      "actual_CI_execution_observed": false,
+      "actual_CI_execution_observed": true,
       "new_site_deployment_required": false,
-      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md"
+      "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+      "actual_CI_observation_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md"
     }
   },
   "verification": {
@@ -274,22 +275,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "manifest_files": 2708,
-      "manifest_bytes": 816828763,
-      "release_json_bytes": 1383038,
-      "public_files": 2709,
-      "public_bytes": 818211801,
-      "pdf_paths": 270,
-      "unique_pdf_objects": 191,
+      "manifest_files": 2716,
+      "manifest_bytes": 819703935,
+      "release_json_bytes": 1387301,
+      "public_files": 2717,
+      "public_bytes": 821091236,
+      "pdf_paths": 274,
+      "unique_pdf_objects": 194,
       "retained_edition_urls": 22,
-      "growth_bytes": 691203,
-      "growth_basis_source": "d08c281fe46ed0f6aa23b1cd7bec6a92b2e9c4d9",
-      "excess_over_internal_800MB_bytes": 18211801,
-      "checked_at": "2026-11-21T10:09:11.461247+00:00",
-      "source_revision": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
-      "headroom_to_internal_800MB_bytes": -18211801,
-      "run_reference": "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
-      "scope": "실제HTTPS 봉인 metadata 전체. manifest/CI preseal과 release.json 포함 총계를 구분하며 공급자한도·실제절감/외부활성화 판정 아님."
+      "growth_bytes": 1691065,
+      "growth_basis_source": "02face5edced886dc3aaa96c06a2158020f8e7e5",
+      "excess_over_internal_800MB_bytes": 21091236,
+      "checked_at": "2026-11-22T02:17:49.590179+00:00",
+      "source_revision": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
+      "headroom_to_internal_800MB_bytes": -21091236,
+      "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+      "scope": "실제 HTTPS 완전 봉인 metadata. 내부800MB 관리 목표를 공급자 quota/장애 또는 외부활성화/물리절감 측정으로 해석하지 않는다."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -507,13 +508,14 @@
         "checked_at": "2026-11-21T18:24:36.531934Z"
       },
       "actual_CI_execution_or_cleanup_observed": false,
-      "actual_provider_delete_rerun_restore": false
+      "actual_provider_delete_rerun_restore": false,
+      "historical_scope": "03시 당시 검증 상태를 보존했다. 첫 실제 정상CI 관찰은 observation.morning_20261122.retention_actual_CI와 연결한다."
     }
   },
   "observation": {
-    "status": "복구보존 방어 구현·독립검증/소스통합 완료, 다음 정상CI 관찰 전·외부 비활성",
-    "period": "2026-11-21T18:01:16.715Z",
-    "result": "현재upload ID/run/source를 확인하고 완전 목록·삭제 직전 metadata를 대조하는 방어를 c6fdf8e로 소스에 통합했다. 기존4개 복구사본의 실제 읽기계획은 keep3/후보1/삭제0이며 운영 정리/복원은 하지 않았다. 새 CI 실행에서의 효과는 아직 미확인이다.",
+    "status": "보존 방어 첫 정상CI/후속API 관찰 완료·외부 비활성",
+    "period": "2026-11-22T01:57:50.693Z",
+    "result": "L013의 기존 EVT-43c36515(base34)와 DQB의 기존 게시 QA를 현재 API 복구3개/모두 미만료에 대조했다. c6의 current upload 결속·제한 재조회·keep3와 CI 확정삭제2+1을 실제 정상 게시에서 관찰했다. 이 회차 수동삭제/재실행/업로드0이며 원격 archive 다운로드 재해시·실제복원·공급자 지연 원인/물리절감은 미확인이다. 최신 공개819400171B·273PDF/193객체와 외부 비활성/접근·봉인·복구 차단을 유지한다. 이후 정상DRB6a81의 실제공개821091236B·274PDF/194객체와 필터복구목록3개/모두미만료를 보충 확인했다. 새DRB listing/삭제 숫자는 미출력으로 추정하지 않는다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1004,6 +1006,78 @@
       "external_storage_activation": false,
       "provider_index_delay_root_cause": "not_confirmed",
       "next_runtime_check": "next existing normal publication; no test push or unconditional rerun"
+    },
+    "morning_20261122": {
+      "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+      "result": "L013의 기존 EVT-43c36515(base34)와 DQB의 기존 게시 QA를 현재 API 복구3개/모두 미만료에 대조했다. c6의 current upload 결속·제한 재조회·keep3와 CI 확정삭제2+1을 실제 정상 게시에서 관찰했다. 이 회차 수동삭제/재실행/업로드0이며 원격 archive 다운로드 재해시·실제복원·공급자 지연 원인/물리절감은 미확인이다. 최신 공개819400171B·273PDF/193객체와 외부 비활성/접근·봉인·복구 차단을 유지한다.",
+      "public_footprint": {
+        "manifest_files": 2713,
+        "manifest_bytes": 818014405,
+        "release_json_bytes": 1385766,
+        "public_files": 2714,
+        "public_bytes": 819400171,
+        "pdf_paths": 273,
+        "unique_pdf_objects": 193,
+        "retained_edition_urls": 22,
+        "growth_bytes": 1188370,
+        "growth_basis_source": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
+        "excess_over_internal_800MB_bytes": 19400171,
+        "checked_at": "2026-11-22T02:02:11.257494+00:00",
+        "source_revision": "02face5edced886dc3aaa96c06a2158020f8e7e5",
+        "headroom_to_internal_800MB_bytes": -19400171,
+        "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+        "scope": "실제 HTTPS 완전 봉인 metadata의 manifest와 release.json 포함 총계를 구분한다. 내부800MB는 관리 목표로 공급자 quota/장애 판정이나 외부활성화/물리절감 측정이 아니다."
+      },
+      "retention_actual_CI": {
+        "guard_source": "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa",
+        "first_event": "operations/events/EVT-43c36515-6871-4804-9222-7413aeb41872.json",
+        "runs": [
+          "https://github.com/Infant83/AI_Tech_Review/actions/runs/44960941865",
+          "https://github.com/Infant83/AI_Tech_Review/actions/runs/44969151605"
+        ],
+        "listing_attempts": [
+          3,
+          2
+        ],
+        "confirmed_CI_deletions": [
+          2,
+          1
+        ],
+        "kept_copies": 3,
+        "current_metadata_checked_at": "2026-11-22T02:00:49.255368Z",
+        "manual_deletions": 0,
+        "actual_restore": false,
+        "provider_indexing_delay_root_cause_confirmed": false,
+        "physical_storage_savings_measured": false
+      }
+    },
+    "concurrent_DRB_20261122": {
+      "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+      "source_revision": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
+      "public_footprint": {
+        "manifest_files": 2716,
+        "manifest_bytes": 819703935,
+        "release_json_bytes": 1387301,
+        "public_files": 2717,
+        "public_bytes": 821091236,
+        "pdf_paths": 274,
+        "unique_pdf_objects": 194,
+        "retained_edition_urls": 22,
+        "growth_bytes": 1691065,
+        "growth_basis_source": "02face5edced886dc3aaa96c06a2158020f8e7e5",
+        "excess_over_internal_800MB_bytes": 21091236,
+        "checked_at": "2026-11-22T02:17:49.590179+00:00",
+        "source_revision": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
+        "headroom_to_internal_800MB_bytes": -21091236,
+        "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+        "scope": "실제 HTTPS 완전 봉인 metadata. 내부800MB 관리 목표를 공급자 quota/장애 또는 외부활성화/물리절감 측정으로 해석하지 않는다."
+      },
+      "recovery_filtered_check_at": "2026-11-22T02:16:24.711445Z",
+      "unexpired_filtered_recovery_copies": 3,
+      "listing_and_delete_numeric_summary": "not_printed",
+      "manual_provider_deletes_reruns_uploads": 0,
+      "actual_restore": false,
+      "current_guard_source_unchanged": true
     }
   },
   "recovery": {
@@ -1027,17 +1101,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "다음 기존 정상 게시에서 현재upload ID/run/source 확인·재조회/삭제 직전 대조·실제 보존 수를 관찰한다. 거절/부분 실패가 있으면 이미 성공한 삭제와 불확정을 구분하고 무조건재실행하지 않는다.11/22 11시 외부접근/원격봉인·복구의 새 선행 근거 검토와 B1 정식감수 일정을 유지한다.",
+  "next_action": "현재upload 결속 방어는 다음 기존 정상 게시/새 실패에서 관찰한다. 외부 접근/원격 봉인·복구의 새 입력은23일11시 재검토하며 실제 활성화·정적 제외/복원 완료를 확정하지 않는다. 주간 구조27일11시와 B1 이후 범위 검토는 별도다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "retention_guard_source_integrated_normal_CI_observation_and_external_evidence_pending",
-    "next_scheduled_step_at": "2026-11-22T11:00:00+09:00",
-    "next_review_at": "2026-11-22T11:00:00+09:00",
-    "scheduled_step": "외부 저장소 새 선행 근거/다음 정상CI 보존 방어 관찰",
-    "replan_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
-    "replan_reason": "예정된03시 한정 방어3파일의 구현·독립검증/소스통합을 마쳤다. 실제CI/공급자정리효과는 다음정상게시에서관찰하며 외부근거11시/B1정식11시·기기관찰19시/주간27일11시를유지한다.",
-    "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+    "state": "retention_guard_first_normal_CI_observed_external_evidence_pending",
+    "next_scheduled_step_at": "2026-11-23T11:00:00+09:00",
+    "next_review_at": "2026-11-23T11:00:00+09:00",
+    "scheduled_step": "외부 저장소 새 선행 근거 재검토·보존 방어는 다음 정상CI/새 실패에서 관찰",
+    "replan_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+    "replan_reason": "11/22 오전 근거·대기 우선순위 재평가를 수행했다. 현재 차단 조건을 해소할 새 근거가 없어 기존 상태/등급을 유지하며23일11시에 입력을 재검토한다. 중요한 새 근거는 받은 기본 회차에서 먼저 확인한다.",
+    "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -1049,7 +1123,8 @@
     "integration_pending": false,
     "local_minimum_delivery_completed": true,
     "weekly_structure_review_at": "2026-11-27T11:00:00+09:00",
-    "external_storage_next_review_at": "2026-11-22T11:00:00+09:00",
-    "retention_guard_next_observation": "next_existing_normal_publication"
+    "external_storage_next_review_at": "2026-11-23T11:00:00+09:00",
+    "retention_guard_next_observation": "next_existing_normal_publication_or_new_failure",
+    "retention_guard_first_actual_CI_observation_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md"
   }
 }
