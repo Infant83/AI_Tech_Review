@@ -354,8 +354,15 @@ def _cas(repo, ref, new, old, base):
     script = f"start\nverify refs/heads/main {base}\nupdate {ref} {new} {old}\nprepare\ncommit\n".encode()
     try:
         _git(repo, "update-ref", "--stdin", raw=script)
+    except (OSError, subprocess.SubprocessError):
+        # A lost response cannot establish whether the transaction committed.
+        raise JobError("outcome_unknown") from None
     except JobError:
-        if _ref(repo, "refs/heads/main") != base:
+        try:
+            current = _ref(repo, "refs/heads/main")
+        except (JobError, OSError, subprocess.SubprocessError):
+            raise JobError("outcome_unknown") from None
+        if current != base:
             raise JobError("source_conflict") from None
         raise JobError("outcome_unknown") from None
 

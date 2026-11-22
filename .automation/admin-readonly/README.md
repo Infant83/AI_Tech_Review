@@ -68,7 +68,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_request_jobs.py apply --sandbox 
 
 store의 불변 key inventory가 claim hash를 예약하고, 불변 claim은 원고 값을 복사하지 않고 operation/fingerprint·대상·기준/결과 SHA를 보존한다. 새 요청은 frozen 요청과 A 결과의 fingerprint/세 기준, 고정 Git registration blob SHA를 다시 결속한다. 실제 후보는 원본 Git tree의 등록 한 파일만 바꾼 commit이다. receipt ref 자체가 실제 commit 객체를 가리켜야 하며 tag의 자동 해석으로 대신하지 않는다. Git receipt metadata의 operation/phase/parent·before/after hash와 **정확한 예상 전체 tree OID**가 일치해야 재생한다. 예상 tree는 메모리에서 계산하므로 replay는 Git object/ref를 쓰지 않는다. journal 상태 파일은 파생 표시이며 없어지거나 손상되면 검증된 receipt로 다시 만든다.
 
-실제 로컬 `update-ref` transaction에서 sandbox main의 expected SHA를 verify하고 receipt ref를 expected old SHA에서 새 결과로 바꾼다. 다른 글과 무관한 main 전진도 `source_conflict`다. 실제 원본/원격 main CAS의 구현이 아니다. 후보는 raw blob·tree·commit plumbing으로 만들고 workingtree·index·기존 main·한영 원고·baseline은 바꾸지 않는다. 같은 store의 협력 프로세스는 지우지 않는 lock inode로 직렬화하며 분산 잠금은 없다.
+실제 로컬 `update-ref` transaction에서 sandbox main의 expected SHA를 verify하고 receipt ref를 expected old SHA에서 새 결과로 바꾼다. Git transaction의 응답이 timeout/I/O로 끊기거나 실패 뒤 진단 조회도 불가능하면 `outcome_unknown`을 유지하고 같은 key의 receipt를 대조해 조정한다. 다른 글과 무관한 main 전진도 `source_conflict`다. 실제 원본/원격 main CAS의 구현이 아니다. 후보는 raw blob·tree·commit plumbing으로 만들고 workingtree·index·기존 main·한영 원고·baseline은 바꾸지 않는다. 같은 store의 협력 프로세스는 지우지 않는 lock inode로 직렬화하며 분산 잠금은 없다.
 
 `candidate_saved_local`은 합성 Git 후보의 저장일 뿐 공개 아티팩트·게시 성공이 아니다. 같은 요청은 같은 결과를 replay하며, 그 사이 main이 전진했으면 `sourceAdvanced:true`로 구분한다. 기존 결과의 replay 때문에 A를 다시 실행하거나 새 commit을 만들지 않는다. `no_change`는 로컬 tombstone만 남기고 Git commit/ref·후보·빌드·배포·알림을 만들지 않는다.
 

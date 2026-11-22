@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import uuid
 from unittest.mock import patch
 
 from scripts import admin_request_jobs as jobs
@@ -227,6 +228,47 @@ raise SystemExit(jobs.main(['apply','--sandbox',sys.argv[1],'--request',sys.argv
             self.reject("outcome_unknown")
         candidate = self.refs()[0].split()[1]
         self.assertEqual(self.apply()["candidateRevision"], candidate)
+
+    def test_completed_git_transaction_response_failure_is_unknown_and_retry_replays(self):
+        actual = jobs._git
+        errors = [subprocess.TimeoutExpired("Synthetic private command", 20), OSError("Synthetic private failure")]
+        for error in errors:
+            with self.subTest(error=type(error).__name__):
+                self.request["idempotencyKey"] = str(uuid.uuid4()); self.save_request()
+                transactions = []; saved = []
+                def lost_response(repo, *args, **kwargs):
+                    result = actual(repo, *args, **kwargs)
+                    if args == ("update-ref", "--stdin"):
+                        transactions.append(kwargs["raw"])
+                        if len(transactions) == 2:
+                            ref = kwargs["raw"].splitlines()[2].split()[1].decode()
+                            saved.append(jobs._ref(repo, ref))
+                            raise error
+                    return result
+                with patch.object(jobs, "_git", side_effect=lost_response):
+                    self.reject("outcome_unknown")
+                before = actual(self.repo, "count-objects", "-v"); refs = self.refs()
+                replay = self.apply()
+                self.assertEqual(replay["candidateRevision"], saved[0]); self.assertTrue(replay["replay"])
+                self.assertEqual(actual(self.repo, "count-objects", "-v"), before)
+                self.assertEqual(self.refs(), refs)
+
+    def test_failed_cas_diagnostic_cannot_turn_unknown_into_generic_failure(self):
+        actual = jobs._git
+        for error in [jobs.JobError("git_operation_failed"), OSError("Synthetic private failure"),
+                      subprocess.TimeoutExpired("Synthetic private command", 20)]:
+            with self.subTest(error=type(error).__name__):
+                failed = []
+                def unavailable(repo, *args, **kwargs):
+                    if args == ("update-ref", "--stdin"):
+                        failed.append(True)
+                        raise jobs.JobError("git_operation_failed")
+                    if failed:
+                        raise error
+                    return actual(repo, *args, **kwargs)
+                with patch.object(jobs, "_git", side_effect=unavailable):
+                    self.reject("outcome_unknown", call=lambda: jobs._cas(
+                        self.repo, jobs.PREFIX + "b" * 64, self.base, jobs.ZERO, self.base))
 
     def test_missing_or_corrupt_view_is_rebuilt_from_git_not_trusted(self):
         candidate = self.apply()["candidateRevision"]
