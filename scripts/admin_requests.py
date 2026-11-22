@@ -24,6 +24,7 @@ from scripts.admin_inventory import (InventoryError, _Inputs, _plain, _check_mod
                                      PublicReview, PublicTranslation, PublicAgent)
 from scripts.publication_intent import HUB_METADATA_FIELDS, review_inputs
 from scripts.publication_release import declarations
+from scripts.publication_snapshot import relative_path
 from scripts.review_registry import (ReviewRegistrationError, load_review_registry,
                                      validate_review_registration)
 
@@ -138,18 +139,51 @@ def _tracked_review_inputs(tracker, folder, registration):
             "article_registration_sha256": hashlib.sha256(_canonical(protected)).hexdigest()}
 
 
-def _preflight(source_root, request_path, baseline_snapshot):
+def _frozen_registry(documents):
+    folders, positions = set(), set()
+    result = []
+    for name, value in sorted(documents.items()):
+        position, folder, review = validate_review_registration(
+            value, name + ".json", PublicReview, PublicTranslation, PublicAgent,
+            folders=folders, positions=positions)
+        folders.add(folder)
+        if position is not None:
+            positions.add(position)
+        result.append(review)
+    return result
+
+
+def _frozen_declarations(documents):
+    """Apply the existing declaration schema to the already bounded JSON set."""
+    result = {}
+    for document in documents.values():
+        if (not isinstance(document, dict) or set(document) != {"version", "reason", "files"}
+                or document["version"] != 1 or not isinstance(document["reason"], str)
+                or not document["reason"].strip() or not isinstance(document["files"], dict)):
+            raise PreflightError("invalid_change_declaration")
+        for name, hashes in document["files"].items():
+            relative_path(name)
+            if (not isinstance(hashes, dict) or set(hashes) != {"before", "after"}
+                    or not all(isinstance(value, str) and SHA.fullmatch(value) for value in hashes.values())
+                    or name in result):
+                raise PreflightError("invalid_change_declaration")
+            result[name] = hashes
+    return result
+
+
+def _preflight(source_root, request_path, baseline_snapshot, *, tracker=None,
+               revision_reader=None, frozen=False, capture=None):
     root = Path(os.path.abspath(source_root))
     _plain(root, root)
-    tracker = _Inputs(root)
+    tracker = tracker if tracker is not None else _Inputs(root)
+    revision_reader = revision_reader or _source_revision
     incoming = Path(os.path.abspath(request_path))
     boundary = incoming.parent
     _plain(incoming, boundary)
     if incoming.stat().st_size > MAX_REQUEST_BYTES:
         raise PreflightError("request_limit")
     info = tracker.file(incoming, boundary=boundary)
-    with incoming.open("rb") as handle:
-        payload = handle.read(MAX_REQUEST_BYTES + 1)
+    payload = tracker.read_bytes(incoming, MAX_REQUEST_BYTES, boundary=boundary)
     if hashlib.sha256(payload).hexdigest() != info["sha256"]:
         raise PreflightError("input_changed")
     request = parse_request(payload)
@@ -157,7 +191,8 @@ def _preflight(source_root, request_path, baseline_snapshot):
     registrations = tracker.ledger(root / "publication/reviews")
     checked = tracker.ledger(root / "publication/requests", optional=True)
     change_documents = tracker.ledger(root / "publication_changes", optional=True)
-    reviews = load_review_registry(root / "publication/reviews", PublicReview, PublicTranslation, PublicAgent)
+    reviews = (_frozen_registry(registrations) if frozen else
+               load_review_registry(root / "publication/reviews", PublicReview, PublicTranslation, PublicAgent))
     known = {review.folder for review in reviews}
     folder = request["sourceId"]
     if folder not in known:
@@ -182,7 +217,7 @@ def _preflight(source_root, request_path, baseline_snapshot):
     if not intent or intent["version"] != 2:
         raise PreflightError("revalidation_required")
     tracker.tree(root / folder / "dist")
-    inputs = review_inputs(root, folder)
+    inputs = review_inputs(root, folder, reader=tracker) if frozen else review_inputs(root, folder)
     if inputs != _tracked_review_inputs(tracker, folder, registrations[folder]):
         raise PreflightError("input_changed")
     if (inputs["source_sha256"] is None
@@ -190,7 +225,7 @@ def _preflight(source_root, request_path, baseline_snapshot):
         raise PreflightError("revalidation_required")
     if request["expectedInputs"] != inputs:
         raise PreflightError("input_conflict")
-    changes = declarations(root / "publication_changes")
+    changes = _frozen_declarations(change_documents) if frozen else declarations(root / "publication_changes")
     tracked_changes = {}
     for document in change_documents.values():
         for name, hashes in document["files"].items():
@@ -216,7 +251,7 @@ def _preflight(source_root, request_path, baseline_snapshot):
     if any(name not in changes or changes[name]["after"] != snapshot["files"][name]["content_sha256"]
            for name in covered):
         raise PreflightError("revalidation_required")
-    revision, state = _source_revision(root, tracker)
+    revision, state = revision_reader(root, tracker)
     if revision is None or state == "unknown":
         raise PreflightError("source_not_verified")
     if revision != request["expectedSourceRevision"]:
@@ -224,10 +259,13 @@ def _preflight(source_root, request_path, baseline_snapshot):
     if state != "match":
         raise PreflightError("source_not_verified")
     tracker.verify()
-    final_revision, final_state = _source_revision(root, tracker)
+    final_revision, final_state = revision_reader(root, tracker)
     if final_revision != revision or final_state != "match":
         raise PreflightError("input_changed")
     changed = sorted(k for k, v in request["patch"].items() if registrations[folder]["review"][k] != v)
+    if capture is not None:
+        capture.update(tracker=tracker, request=request, checked_at=checked_at,
+                       baseline=baseline, snapshot=snapshot)
     return {"schemaVersion": 1, "ok": True, "status": "validated_preflight_only" if changed else "no_change",
             "operation": OPERATION, "sourceId": folder, "sourceRevision": revision,
             "checkedInputs": inputs, "releaseRevision": baseline["releaseRevision"],

@@ -79,3 +79,19 @@ symlink·연결된 Git common-dir·remotes·외부 alternates·replace/graft·lo
 입력 요청32KB·control JSON64KiB, sandbox 파일3,000개/합계16MB·작업128개로 제한한다. 한도 초과는 거절하며 정리·삭제로 우회하지 않는다. 파일 예약/교체는 fsync와 부모 directory sync를 사용하지만 전원 차단·디스크 손상·원격 내구성 보증이 아니다. Git object/ref transaction과 파일 journal을 하나의 원자적 트랜잭션으로 표시하지 않는다.
 
 현재는 프로세스 동시 실행·결정적 중단·I/O 실패·오류 재생을 검사하는 첫 구현 후보다. 정식 독립 검토 목표는11/22 11시다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
+
+## B2a · 원본 읽기 전용 인수 명세
+
+`admin_source_intake.py`는 기존 A와 같은 요청·완전 baseline을 확인하고 새 보호 폴더에 `descriptor.json`만 작성한다. 결과 `source_intake_plan_only`는 읽은 입력의 명세이며 후보 저장·접수한 key의 replay·인가·발행이나 복구 사본이 아니다. source는 operator가 지정한 standalone/linked worktree이며 source 코드·builder는 실행하지 않는다. 신뢰한 도구 위치와 source 경로는 별개다.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_source_intake.py --root /controlled/source --request output/protected/request.json --baseline-snapshot output/verified-baseline/snapshot.json --output output/new-intake
+```
+
+출력의 부모 폴더는 이미 있어야 하고 목적지는 새 경로여야 한다. `.keep`를 먼저 만들고 배타적으로 완전 명세를 기록한다. 실패한 부분 출력은 보호된 채 남으며 새 목적지에서 다시 인수한다. source 내부 출력은 `output/` 아래만 허용하고 baseline/Git 경로 안에는 기록하지 않는다. stdout은 작은 상태/digest/reason이며 경로·본문·patch·멱등 키를 포함하지 않는다.
+
+명세는 실제 source commit/tree, A의 동일 frozen readset/native3SHA, 정확 ledger membership·모델 AST·선택 dist의 경로/mode/Git blob OID/size/rawSHA, baseline 원시3SHA/snapshot SHA와 신뢰한 도구 code hash를 결속한다. JSON payload는 기존 한도 안에서만 보관하고 원고/첨부 bytes·문구는 복제하지 않는다. 결정적 `intakeDigest`와 확인 시각/관측 I/O 수치는 분리한다. 일부 경로의 새 Git HEAD를 원래 source 판본으로 쓰지 않는다.
+
+whole-tree metadata20,000행/4MiB, dist1,000경로/고유 경로 합128MiB·한 파일64MiB, JSON5,000,000B/총16,000,000B·요청32,000B, 실제 반복 읽기512MiB·Git 명령20초/전체120초, descriptor2,000,000B/stdout16KiB로 제한한다. 초과는 자르지 않고 거절한다. source 설정/객체 경로와 선택 입력·HEAD가 바뀌거나 baseline이 없으면 거절하며, 무관한 미추적/진행 파일은 보존한다. source config의 위험한 include/filter/fsmonitor/alias·promisor/외부 alternates/replace/graft는 거절하고 Git 자식의 inherited 설정·credential/자동 취득·optional writes를 차단한다.
+
+첫 B2a의 개발 후보와 검사는 정식 독립 감수/실제 운영 완료가 아니다. candidate Git 생성·복제·keyclaim·Git commit/ref/CAS·원본 writer·서버/API/DB·발행은 없다. 원본과 독립 candidate Git의 판본 매핑·namespace·저장 권한은 B2b, 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.

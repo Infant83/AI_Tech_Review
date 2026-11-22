@@ -17,9 +17,19 @@ SHA = re.compile(r"[a-f0-9]{64}\Z")
 HUB_METADATA_FIELDS = frozenset({"subtitle", "category", "tags", "summary"})
 
 
-def source_digest(directory: Path) -> str | None:
+def source_digest(directory: Path, *, reader=None) -> str | None:
     """Hash relative names and bytes; no source paths/content leave the checkout."""
     directory = Path(directory)
+    if reader is not None:
+        files = reader.frozen_source_files(directory)
+        if files is None:
+            return None
+        digest = hashlib.sha256()
+        for path, sha in files:
+            digest.update(path.relative_to(directory).as_posix().encode("utf-8"))
+            digest.update(b"\0")
+            digest.update(bytes.fromhex(sha))
+        return digest.hexdigest()
     if directory.is_symlink():
         raise ValueError("Reviewed source directory must not be a symlink")
     if not directory.exists():
@@ -41,11 +51,11 @@ def source_digest(directory: Path) -> str | None:
     return digest.hexdigest()
 
 
-def review_inputs(root: Path, folder: str) -> dict:
+def review_inputs(root: Path, folder: str, *, reader=None) -> dict:
     registration = Path(root) / "publication/reviews" / (folder + ".json")
     if registration.is_symlink() or not registration.is_file():
         raise ValueError("Review registration is missing or linked: " + folder)
-    payload = registration.read_bytes()
+    payload = reader.frozen_payload(registration) if reader is not None else registration.read_bytes()
     source = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique_object)
     if not isinstance(source, dict) or not isinstance(source.get("review"), dict):
         raise ValueError("Review registration must contain a review object: " + folder)
@@ -55,7 +65,7 @@ def review_inputs(root: Path, folder: str) -> dict:
     protected = {**source, "review": {key: value for key, value in source["review"].items()
                                       if key not in HUB_METADATA_FIELDS}}
     canonical = json.dumps(protected, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return {"source_sha256": source_digest(Path(root) / folder / "dist"),
+    return {"source_sha256": source_digest(Path(root) / folder / "dist", reader=reader),
             "registration_sha256": hashlib.sha256(payload).hexdigest(),
             "article_registration_sha256": hashlib.sha256(canonical).hexdigest()}
 

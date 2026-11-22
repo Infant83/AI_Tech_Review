@@ -1,0 +1,475 @@
+"""B2a bounded read-only source intake. Output is a plan, never a candidate."""
+from __future__ import annotations
+
+import argparse
+import configparser
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import selectors
+import shutil
+import stat
+import subprocess
+import sys
+import time
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts import admin_requests, admin_inventory
+from scripts.admin_inventory import _Inputs, InventoryError, MAX_JSON_FILE_BYTES
+
+MAX_TREE_ENTRIES = 20_000
+MAX_TREE_BYTES = 4 * 1024 * 1024
+MAX_DIST_FILES = 1_000
+MAX_DIST_BYTES = 128 * 1024 * 1024
+MAX_BLOB_BYTES = 64 * 1024 * 1024
+MAX_READ_BYTES = 512 * 1024 * 1024
+MAX_DESCRIPTOR_BYTES = 2_000_000
+MAX_STDOUT_BYTES = 16 * 1024
+GIT_SECONDS = 20
+TOTAL_SECONDS = 120
+GIT = shutil.which("git")
+HEX40 = re.compile(r"[a-f0-9]{40}\Z")
+
+
+class IntakeError(ValueError):
+    def __init__(self, code):
+        self.code = code
+        super().__init__("Source intake refused (" + code + ").")
+
+
+def _raw(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+                      allow_nan=False).encode("utf-8")
+
+
+def _sha(value):
+    return hashlib.sha256(value).hexdigest()
+
+
+def _safe(path):
+    path = Path(os.path.abspath(path))
+    if any(p.is_symlink() for p in (path, *path.parents)):
+        raise IntakeError("unsafe_path")
+    return path
+
+
+def _control(path, limit=65_536):
+    path = _safe(path)
+    before = path.stat()
+    if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
+        raise IntakeError("unsafe_source_layout")
+    descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+    with os.fdopen(descriptor, "rb") as handle:
+        opened = os.fstat(handle.fileno())
+        if not stat.S_ISREG(opened.st_mode):
+            raise IntakeError("unsafe_source_layout")
+        raw = handle.read(limit + 1)
+        after = os.fstat(handle.fileno())
+    if (len(raw) > limit or len(raw) != before.st_size
+            or (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
+            != (opened.st_dev, opened.st_ino, opened.st_size, opened.st_mtime_ns)
+            or (opened.st_size, opened.st_mtime_ns) != (after.st_size, after.st_mtime_ns)):
+        raise IntakeError("source_layout_changed")
+    return raw
+
+
+def _env():
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("GIT_", "PYTHON"))}
+    env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_SYSTEM=os.devnull, GIT_CONFIG_GLOBAL=os.devnull,
+               GIT_ATTR_NOSYSTEM="1", GIT_NO_REPLACE_OBJECTS="1", GIT_NO_LAZY_FETCH="1",
+               GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0", GIT_ALLOW_PROTOCOL="",
+               GIT_LITERAL_PATHSPECS="1")
+    return env
+
+
+class _Budget:
+    def __init__(self):
+        self.deadline = time.monotonic() + TOTAL_SECONDS
+        self.read_bytes = 0
+
+    def check(self, amount=0):
+        self.read_bytes += amount
+        if self.read_bytes > MAX_READ_BYTES:
+            raise IntakeError("read_budget")
+        if time.monotonic() > self.deadline:
+            raise IntakeError("intake_timeout")
+
+
+class _GitSource:
+    """Recognize source Git separately from B1's writable synthetic sandbox."""
+    def __init__(self, root, budget):
+        self.root, self.budget = _safe(root), budget
+        git = self.root / ".git"
+        self.pointer_paths = []
+        if git.is_dir():
+            self.gitdir = _safe(git)
+        elif git.is_file():
+            raw = self.control(git, 4096).decode("utf-8")
+            if not raw.startswith("gitdir: ") or raw.count("\n") != 1:
+                raise IntakeError("unsafe_source_layout")
+            self.gitdir = _safe(self.root / raw[8:].strip())
+            self.pointer_paths.append(git)
+        else:
+            raise IntakeError("source_git_required")
+        common = self.gitdir / "commondir"
+        self.common = _safe(self.gitdir / self.control(common, 4096).decode().strip()) if common.exists() else self.gitdir
+        if common.exists():
+            self.pointer_paths.append(common)
+        self.control_paths = [*self.pointer_paths, self.common / "config"]
+        if (self.gitdir / "config.worktree").exists():
+            self.control_paths.append(self.gitdir / "config.worktree")
+        self.controls = None
+        self.guard()
+        self.git_version = self.run("version").decode("ascii").strip()
+        if self.run("rev-parse", "--show-object-format").strip() != b"sha1":
+            raise IntakeError("unsupported_git_format")
+        if self.run("rev-parse", "--show-toplevel").decode().strip() != str(self.root):
+            raise IntakeError("unsafe_source_layout")
+        if self.run("rev-parse", "--path-format=absolute", "--git-common-dir").decode().strip() != str(self.common):
+            raise IntakeError("unsafe_source_layout")
+        if self.run("for-each-ref", "--format=%(refname)", "refs/replace").strip():
+            raise IntakeError("unsafe_source_objects")
+        self.revision = self.head()
+        if self.run("cat-file", "-t", self.revision).strip() != b"commit":
+            raise IntakeError("source_commit_required")
+        self.tree = self.run("rev-parse", self.revision + "^{tree}").decode().strip()
+        if not HEX40.fullmatch(self.tree):
+            raise IntakeError("invalid_git_metadata")
+        self.objects = self.tree_metadata()
+
+    def control(self, path, limit=65_536):
+        raw = _control(path, limit)
+        self.budget.check(len(raw))
+        return raw
+
+    def guard(self):
+        self.budget.check()
+        _safe(self.gitdir); _safe(self.common)
+        _safe(self.common / "objects"); _safe(self.common / "refs")
+        for relative in ["objects/info/alternates", "info/grafts", "info/attributes"]:
+            if _safe(self.common / relative).exists():
+                raise IntakeError("unsafe_source_objects")
+        values = {}
+        for path in self.control_paths:
+            raw = self.control(path)
+            values[str(path)] = _sha(raw)
+            if path.name not in {"config", "config.worktree"}:
+                continue
+            parser = configparser.RawConfigParser(strict=True)
+            try:
+                parser.read_string(raw.decode("utf-8"))
+                if parser.defaults():
+                    raise IntakeError("unsafe_git_config")
+                for section in parser.sections():
+                    keys = set(parser[section])
+                    if section == "core":
+                        if keys - {"repositoryformatversion", "bare", "filemode", "logallrefupdates", "ignorecase", "precomposeunicode"}:
+                            raise IntakeError("unsafe_git_config")
+                        if parser[section].get("repositoryformatversion", "0") != "0" or parser[section].get("bare", "false") != "false":
+                            raise IntakeError("unsafe_git_config")
+                    elif section == "extensions":
+                        if keys != {"worktreeconfig"} or parser[section]["worktreeconfig"].lower() != "true":
+                            raise IntakeError("unsafe_git_config")
+                    elif re.fullmatch(r'remote "[A-Za-z0-9_.-]+"', section):
+                        if keys - {"url", "fetch", "pushurl"}:
+                            raise IntakeError("unsafe_git_config")
+                    elif re.fullmatch(r'branch "[^"\r\n]+"', section):
+                        if keys - {"remote", "merge", "rebase"}:
+                            raise IntakeError("unsafe_git_config")
+                    elif section == "user":
+                        if keys - {"name", "email", "signingkey"}:
+                            raise IntakeError("unsafe_git_config")
+                    else:
+                        raise IntakeError("unsafe_git_config")
+            except (configparser.Error, UnicodeError):
+                raise IntakeError("unsafe_git_config") from None
+        if self.controls is not None and values != self.controls:
+            raise IntakeError("source_layout_changed")
+        self.controls = values
+
+    def run(self, *args, limit=None):
+        self.budget.check()
+        limit = MAX_TREE_BYTES if limit is None else limit
+        if args[0] not in {"version", "rev-parse", "cat-file", "ls-tree", "for-each-ref"}:
+            raise IntakeError("unsafe_git_command")
+        command = [GIT, "--no-replace-objects", "--no-lazy-fetch", "--no-optional-locks",
+                   "-c", "core.hooksPath=" + os.devnull, "-c", "core.attributesFile=" + os.devnull,
+                   "-c", "core.fsmonitor=false", "-c", "protocol.allow=never", "-C", str(self.root), *args]
+        end = min(self.budget.deadline, time.monotonic() + GIT_SECONDS)
+        process = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                                   stderr=subprocess.PIPE, env=_env())
+        output, error = bytearray(), bytearray()
+        try:
+            with selectors.DefaultSelector() as selector:
+                selector.register(process.stdout, selectors.EVENT_READ, output)
+                selector.register(process.stderr, selectors.EVENT_READ, error)
+                while selector.get_map():
+                    left = end - time.monotonic()
+                    if left <= 0:
+                        raise IntakeError("git_timeout")
+                    for key, _ in selector.select(min(left, .2)):
+                        destination = key.data
+                        ceiling = limit if destination is output else MAX_STDOUT_BYTES
+                        chunk = os.read(key.fileobj.fileno(), min(65_536, ceiling + 1 - len(destination)))
+                        if not chunk:
+                            selector.unregister(key.fileobj)
+                        else:
+                            destination.extend(chunk)
+                            if len(destination) > ceiling:
+                                raise IntakeError("git_metadata_limit")
+                            if destination is output and args[0] == "ls-tree" and output.count(b"\0") > MAX_TREE_ENTRIES:
+                                raise IntakeError("tree_entry_limit")
+            process.wait(timeout=max(.01, end - time.monotonic()))
+            if process.returncode:
+                raise IntakeError("git_read_failed")
+            self.budget.check()
+            return bytes(output)
+        finally:
+            if process.poll() is None:
+                process.kill(); process.wait()
+            process.stdout.close(); process.stderr.close()
+
+    def head(self):
+        value = self.run("rev-parse", "HEAD").decode().strip()
+        if not HEX40.fullmatch(value):
+            raise IntakeError("source_commit_required")
+        return value
+
+    def tree_metadata(self):
+        result = {}
+        raw = self.run("ls-tree", "-r", "-l", "-z", self.revision)
+        if raw and not raw.endswith(b"\0"):
+            raise IntakeError("invalid_git_metadata")
+        for row in raw.split(b"\0"):
+            if not row:
+                continue
+            if len(result) >= MAX_TREE_ENTRIES:
+                raise IntakeError("tree_entry_limit")
+            meta, name = row.split(b"\t", 1)
+            mode, kind, oid, size = meta.split()
+            name = name.decode("utf-8")
+            path = PurePosixPath(name)
+            if (path.is_absolute() or path.as_posix() != name or any(p in {".", ".."} for p in path.parts)
+                    or any(ord(c) < 32 for c in name) or name in result):
+                raise IntakeError("invalid_git_metadata")
+            result[name] = {"mode": mode.decode(), "kind": kind.decode(), "oid": oid.decode(),
+                            "bytes": int(size) if size != b"-" else None}
+        return result
+
+    def verify(self, root, tracker):
+        self.guard()
+        if self.head() != self.revision:
+            raise IntakeError("source_conflict")
+        current = self.tree_metadata()
+        if current != self.objects:
+            raise IntakeError("input_changed")
+        selected = set()
+        for path, info in tracker.files.items():
+            if not info["source"]:
+                continue
+            name = path.relative_to(self.root).as_posix(); selected.add(name)
+            entry = current.get(name)
+            if (entry is None or entry["kind"] != "blob" or entry["mode"] not in {"100644", "100755"}
+                    or entry["oid"] != info["git"] or entry["bytes"] != info["bytes"]
+                    or entry["mode"] != info["mode"]):
+                return self.revision, "different"
+        prefixes = tuple(path.relative_to(self.root).as_posix() + "/" for path in tracker.source_directories)
+        if any(name.startswith(prefixes) and name not in selected
+               and Path(name).name not in {".DS_Store", "Thumbs.db"} for name in current):
+            return self.revision, "different"
+        return self.revision, "match"
+
+
+class _BoundedInputs(_Inputs):
+    def __init__(self, root, budget):
+        super().__init__(root)
+        self.budget, self.dist = budget, None
+        self.dist_files = {}
+        self.byte_limits = {}
+        self.enumerated = set()
+
+    def _entries(self, path):
+        result = []
+        # Path.iterdir on supported Python may eagerly call os.listdir. Bound
+        # enumeration itself, including untracked/empty selected directories.
+        with os.scandir(path) as entries:
+            for entry in entries:
+                self.budget.check()
+                child = path / entry.name
+                if child not in self.enumerated:
+                    if len(self.enumerated) >= MAX_TREE_ENTRIES:
+                        raise IntakeError("directory_limit")
+                    self.enumerated.add(child)
+                result.append(child)
+        return sorted(result)
+
+    def _chunks(self, path, limit=None):
+        self.budget.check()
+        ceiling = min(MAX_BLOB_BYTES, self.byte_limits.get(path, MAX_BLOB_BYTES))
+        if limit is not None:
+            ceiling = min(ceiling, limit)
+        if path.stat().st_size > ceiling:
+            raise IntakeError("blob_limit")
+        count = 0
+        descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0))
+        with os.fdopen(descriptor, "rb") as handle:
+            opened = os.fstat(handle.fileno())
+            if not stat.S_ISREG(opened.st_mode):
+                raise IntakeError("invalid_source_type")
+            if opened.st_size > ceiling:
+                raise IntakeError("blob_limit")
+            while True:
+                chunk = handle.read(min(1024 * 1024, ceiling + 1 - count,
+                                        MAX_READ_BYTES + 1 - self.budget.read_bytes))
+                if not chunk:
+                    break
+                self.budget.check(len(chunk)); count += len(chunk)
+                if count > ceiling:
+                    raise IntakeError("blob_limit")
+                yield chunk
+
+    def json(self, path, *, boundary=None):
+        path = Path(os.path.abspath(path))
+        remaining = (admin_inventory.MAX_JSON_TOTAL_BYTES - self.json_total
+                     if path not in self.json_files else MAX_JSON_FILE_BYTES)
+        if path.stat().st_size > remaining:
+            raise InventoryError("json_total_limit")
+        self.byte_limits[path] = min(self.byte_limits.get(path, MAX_JSON_FILE_BYTES),
+                                     MAX_JSON_FILE_BYTES, remaining)
+        return super().json(path, boundary=boundary)
+
+    def file(self, path, *, boundary=None):
+        path = Path(path)
+        if self.dist is not None and self.dist in path.parents and path not in self.dist_files:
+            size = path.stat().st_size
+            if len(self.dist_files) >= MAX_DIST_FILES or sum(self.dist_files.values()) + size > MAX_DIST_BYTES:
+                raise IntakeError("dist_limit")
+            self.dist_files[path] = size
+        result = super().file(path, boundary=boundary)
+        result["mode"] = "100755" if path.stat().st_mode & 0o111 else "100644"
+        return result
+
+    def tree(self, path):
+        for entry in self._entries(path) if path.is_dir() else []:
+            if entry.name in {".DS_Store", "Thumbs.db"} and entry.is_dir():
+                raise IntakeError("invalid_source_type")
+        return super().tree(path)
+
+
+def _tool_hashes():
+    directory = Path(__file__).resolve().parent
+    names = ["admin_source_intake.py", "admin_requests.py", "admin_inventory.py", "publication_intent.py",
+             "publication_release.py", "publication_snapshot.py", "review_registry.py", "reader_engagement_publish.py"]
+    return {"scripts/" + name: _sha((directory / name).read_bytes()) for name in names}
+
+
+def _intake(source_root, request_path, baseline_snapshot, output):
+    budget = _Budget()
+    root, incoming, baseline, output = map(_safe, [source_root, request_path, baseline_snapshot, output])
+    if output.exists() or not output.parent.is_dir():
+        raise IntakeError("new_output_required")
+    if (baseline.parent == output or baseline.parent in output.parents
+            or (root in output.parents and output.relative_to(root).parts[0] != "output")):
+        raise IntakeError("unsafe_output")
+    code = _tool_hashes()
+    source = _GitSource(root, budget)
+    if any(p == output or p in output.parents for p in [source.gitdir, source.common]):
+        raise IntakeError("unsafe_output")
+    tracker = _BoundedInputs(root, budget)
+    tracker.byte_limits[incoming] = admin_requests.MAX_REQUEST_BYTES
+    payload = tracker.read_bytes(incoming, admin_requests.MAX_REQUEST_BYTES, boundary=incoming.parent)
+    request = admin_requests.parse_request(payload)
+    if request["expectedSourceRevision"] != source.revision:
+        raise IntakeError("source_conflict")
+    tracker.dist = root / request["sourceId"] / "dist"
+    capture = {}
+    report = admin_requests._preflight(root, incoming, baseline, tracker=tracker,
+        revision_reader=source.verify, frozen=True, capture=capture)
+    files = []
+    for path, info in sorted(tracker.files.items()):
+        if not info["source"]:
+            continue
+        name = path.relative_to(root).as_posix()
+        files.append({"path": name, "mode": source.objects[name]["mode"], "blob": info["git"],
+                      "bytes": info["bytes"], "sha256": info["sha256"],
+                      "role": "target_dist" if tracker.dist in path.parents else "registration_or_model"})
+    directories = [{"path": path.relative_to(root).as_posix(), "members": list(tracker.directories[path])
+                    if tracker.directories[path] is not None else None}
+                   for path in sorted(tracker.source_directories)]
+    descriptor = {"schemaVersion": 1, "status": "source_intake_plan_only", "operation": report["operation"],
+        "sourceId": report["sourceId"], "sourceOriginRevision": source.revision, "sourceTree": source.tree,
+        "requestFingerprint": report["requestFingerprint"], "checkedInputs": report["checkedInputs"],
+        "releaseRevision": report["releaseRevision"], "releaseEvidence": report["releaseEvidence"],
+        "snapshotSha256": tracker.files[baseline]["sha256"], "inputs": files, "directories": directories,
+        "toolCodeSha256": code, "toolEnvironment": {"python": sys.version.split()[0], "git": source.git_version},
+        "counts": {"treeEntries": len(source.objects), "selectedFiles": len(files),
+                   "selectedBytes": sum(f["bytes"] for f in files), "distFiles": len(tracker.dist_files),
+                   "distBytes": sum(tracker.dist_files.values())},
+        "limits": ["not_authorization", "not_candidate_or_saved_request", "not_published", "not_live_https",
+                   "not_atomic_snapshot", "not_source_backup", "attachment_continuity_unverified", "B2b_mapping_required"]}
+    descriptor["intakeDigest"] = _sha(_raw(descriptor))
+    descriptor["checkedAt"] = capture["checked_at"]
+    descriptor["observedReadBytes"] = budget.read_bytes
+    raw = _raw(descriptor) + b"\n"
+    if len(raw) > MAX_DESCRIPTOR_BYTES:
+        raise IntakeError("descriptor_limit")
+    budget.check()
+    if _tool_hashes() != code:
+        raise IntakeError("tool_changed")
+    source.guard()
+    if source.head() != source.revision:
+        raise IntakeError("source_conflict")
+    output.mkdir(mode=0o700)
+    with (output / ".keep").open("xb") as handle:
+        handle.write(b"")
+    # Incomplete output remains protected and is never reported as successful.
+    partial = output / ".descriptor.partial"
+    with partial.open("xb") as handle:
+        handle.write(raw); handle.flush(); os.fsync(handle.fileno())
+    os.link(partial, output / "descriptor.json")
+    partial.unlink()
+    budget.check()
+    return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
+            "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
+
+
+def create_intake(source_root: Path, request_path: Path, baseline_snapshot: Path, output: Path):
+    try:
+        return _intake(source_root, request_path, baseline_snapshot, output)
+    except IntakeError:
+        raise
+    except (InventoryError, admin_requests.PreflightError) as error:
+        raise IntakeError(error.code) from None
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, UnicodeError, RecursionError,
+            SyntaxError, subprocess.SubprocessError):
+        raise IntakeError("invalid_intake_input") from None
+
+
+class _Parser(argparse.ArgumentParser):
+    def error(self, message):
+        raise IntakeError("invalid_arguments")
+
+
+def main(argv=None):
+    parser = _Parser(description=__doc__)
+    for name in ["root", "request", "baseline-snapshot", "output"]:
+        parser.add_argument("--" + name, type=Path, required=True)
+    try:
+        args = parser.parse_args(argv)
+        result = create_intake(args.root, args.request, args.baseline_snapshot, args.output)
+    except IntakeError as error:
+        result = {"schemaVersion": 1, "ok": False, "reason": error.code}
+    raw = _raw(result)
+    if len(raw) > MAX_STDOUT_BYTES:
+        raw = b'{"schemaVersion":1,"ok":false,"reason":"stdout_limit"}'
+    print(raw.decode("utf-8"))
+    return 0 if result["ok"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

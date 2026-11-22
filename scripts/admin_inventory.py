@@ -140,6 +140,43 @@ class _Inputs:
         self.json_total = 0
         self.json_payloads = {}
 
+    def _entries(self, path):
+        return sorted(path.iterdir())
+
+    def _chunks(self, path, limit=None):
+        size = 0
+        with path.open("rb") as handle:
+            while True:
+                chunk = handle.read(min(1024 * 1024, limit + 1 - size) if limit is not None else 1024 * 1024)
+                if not chunk:
+                    return
+                size += len(chunk)
+                if limit is not None and size > limit:
+                    raise InventoryError("input_limit")
+                yield chunk
+
+    def read_bytes(self, path, limit, *, boundary=None):
+        """Read through the same overridable reader and bind to tracked bytes."""
+        info = self.file(path, boundary=boundary)
+        try:
+            payload = b"".join(self._chunks(path, limit))
+        except InventoryError as error:
+            if error.code == "input_limit":
+                raise InventoryError("input_changed") from None
+            raise
+        if len(payload) != info["bytes"] or hashlib.sha256(payload).hexdigest() != info["sha256"]:
+            raise InventoryError("input_changed")
+        return payload
+
+    def frozen_payload(self, path):
+        return self.json_payloads[path]
+
+    def frozen_source_files(self, directory):
+        if self.directories[directory] is None:
+            return None
+        return [(path, self.files[path]["sha256"]) for path in sorted(self.files)
+                if directory in path.parents]
+
     def directory(self, path, *, boundary=None, optional=False):
         source_input = boundary is None
         boundary = boundary or self.root
@@ -153,7 +190,7 @@ class _Inputs:
             return []
         if not path.is_dir():
             raise InventoryError("invalid_input_type")
-        entries = sorted(path.iterdir())
+        entries = self._entries(path)
         self.directories[path] = tuple(p.name for p in entries)
         for entry in entries:
             _plain(entry, boundary)
@@ -172,14 +209,10 @@ class _Inputs:
             raw, blob = hashlib.sha256(), hashlib.sha1()
             blob.update(("blob " + str(before.st_size)).encode("ascii") + b"\0")
             size = 0
-            with path.open("rb") as handle:
-                while True:
-                    chunk = handle.read(1024 * 1024)
-                    if not chunk:
-                        break
-                    raw.update(chunk)
-                    blob.update(chunk)
-                    size += len(chunk)
+            for chunk in self._chunks(path):
+                raw.update(chunk)
+                blob.update(chunk)
+                size += len(chunk)
             after = path.stat()
         except OSError:
             raise InventoryError("required_input_missing") from None
@@ -205,8 +238,7 @@ class _Inputs:
             self.json_files.add(path)
         if self.json_total > MAX_JSON_TOTAL_BYTES:
             raise InventoryError("json_total_limit")
-        with path.open("rb") as handle:
-            payload = handle.read(MAX_JSON_FILE_BYTES + 1)
+        payload = self.read_bytes(path, MAX_JSON_FILE_BYTES, boundary=boundary)
         if len(payload) > MAX_JSON_FILE_BYTES:
             raise InventoryError("json_file_limit")
         if hashlib.sha256(payload).hexdigest() != info["sha256"]:
@@ -251,7 +283,7 @@ class _Inputs:
             _plain(path, self.root if path == self.root or self.root in path.parents else path.parent)
             if path.exists() and not path.is_dir():
                 raise InventoryError("input_changed")
-            current = tuple(p.name for p in sorted(path.iterdir())) if path.is_dir() else None
+            current = tuple(p.name for p in self._entries(path)) if path.is_dir() else None
             if current != names:
                 raise InventoryError("input_changed")
         for path, info in self.files.items():
@@ -260,9 +292,8 @@ class _Inputs:
             try:
                 if not stat.S_ISREG(path.stat().st_mode):
                     raise InventoryError("input_changed")
-                with path.open("rb") as handle:
-                    for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-                        raw.update(chunk)
+                for chunk in self._chunks(path):
+                    raw.update(chunk)
             except OSError:
                 raise InventoryError("input_changed") from None
             if raw.hexdigest() != info["sha256"]:
@@ -276,8 +307,7 @@ def _invalid_json():
 def _check_models(tracker):
     path = tracker.root / "scripts/publish_public_site.py"
     info = tracker.file(path)
-    with path.open("rb") as handle:
-        payload = handle.read(info["bytes"] + 1)
+    payload = tracker.read_bytes(path, info["bytes"])
     if len(payload) != info["bytes"] or hashlib.sha256(payload).hexdigest() != info["sha256"]:
         raise InventoryError("input_changed")
     tree = ast.parse(payload.decode("utf-8"))

@@ -22,6 +22,19 @@ from scripts.review_registry import validate_review_registration, load_review_re
 
 
 class RequestPreflightTests(unittest.TestCase):
+    def test_internal_frozen_readset_reuses_native_hash_algorithm_without_native_disk_rereads(self):
+        expected = requests.preflight_request(self.root, self.request_path, self.baseline / "snapshot.json")
+        tracker = requests._Inputs(self.root)
+        captured = {}
+        with patch.object(requests, "load_review_registry", side_effect=AssertionError("Frozen registry must not reread")), \
+             patch.object(requests, "declarations", side_effect=AssertionError("Frozen declarations must not reread")):
+            actual = requests._preflight(self.root, self.request_path, self.baseline / "snapshot.json",
+                                         tracker=tracker, frozen=True, capture=captured)
+        self.assertEqual(actual, expected)
+        self.assertEqual(actual["checkedInputs"], review_inputs(self.root, self.folder, reader=tracker))
+        self.assertEqual(actual["checkedInputs"], review_inputs(self.root, self.folder))
+        self.assertIs(captured["tracker"], tracker)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
