@@ -18,4 +18,8 @@ PyPSA 공식 문서의 가동 상태·출력 범위·기동 전환·초기 상�
 
 ## 등록과 공개 검증
 
-ID는 `2026-11-22-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-22/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-22/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-22-daily-quantum-exercise.pdf)를 위한 독립 후보를 실제 이전 배포 `cb112698d7f22bc6cce990e605e3cb56eadbca2b`와 비교한다. 필요한 로컬 Python 103건과 검색·탐색 12건을 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
+ID는 `2026-11-22-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-22/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-22/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-22-daily-quantum-exercise.pdf)를 실제 공개했다. 독립 후보를 이전 배포 `cb112698d7f22bc6cce990e605e3cb56eadbca2b`와 대조했고 기존 날짜별 한영 안내 54페이지의 바이트 동일성을 확인했다. 필요한 로컬 Python 103건과 검색·탐색 12건을 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
+
+[배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/45026583822)의 build·deploy·recovery-copy·notify-readers가 모두 성공했다. CI 1,034건 중 1,025건 통과·9건 건너뜀·실패 0건이다. 390px 모바일 한영·검색·달력·분류·접힌 해설·언어 전환·PDF 새 탭과 실제 다운로드를 확인했다. `root`의 실제 HTTPS 검사 12건과 별도 운영 담당자의 검사 30건이 통과했고 새 한영 전체 HTML·PDF와 기존 DQE 5편의 PDF, 같은 날짜 DQB·DRB를 대조했다.
+
+복구 작업은 배포 아티팩트 2,752개 파일·849,950,128바이트를 검증해 업로드했다. 이 작업에서 사본을 별도 다운로드하거나 로컬 복원하지는 않았다. 기존 리뷰·렉처 알림 카탈로그 79건의 동기화가 성공했으며 새 알림 기사와 대기 이벤트는 모두 0건이다. 이 기존 파이프라인은 DQE를 새 알림 기사로 등록하지 않으므로 독자 알림 발송으로 표시하지 않는다. 원격 게시와 실제 URL 확인을 마쳤으며 남은 조치는 없다.
