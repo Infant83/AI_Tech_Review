@@ -1,0 +1,190 @@
+{
+  "article_id": "2026-09-11_weekly-oled-inverse-design-excitonic-reliability",
+  "checked_at": "2026-11-22T01:21:52.459654+00:00",
+  "role": "Independent final source/science/APS reread for refs1–4",
+  "status": "pass_for_refs_1_to_4_source_and_APS_scope_only",
+  "pass": true,
+  "publication_endorsed": false,
+  "pdf_reviewed": false,
+  "pdf_status": "Outside this review; publication remains held for structural damage to existing PDF.",
+  "read_scope": "Read both canonical Markdown manuscripts in full, including captions, proposal, bibliography and publication/draft history. Independently rechecked refs1–4 claims against prior exact-v1 audit and stored page render checks. Content of refs5–8 not scientifically re-audited. No HTML/PDF/running-code/live-site validation.",
+  "manuscripts": {
+    "ko": {
+      "sha256": "4cca00f6ed64ffab673e11bdb800b35d638d3f3eb39ed660026aa25e86bb29a3",
+      "bytes": 22553,
+      "first_use_order": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "reference_items": 8,
+      "status": "draft",
+      "read": "Full text at r1, then all changed passages bounded rerecheck.",
+      "reviewed_reference_range": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "en": {
+      "sha256": "5c61f496f9aa99400f68339adf38b8a6545e16ffb545f141983ce894e8e2efcc",
+      "bytes": 21387,
+      "first_use_order": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "reference_items": 8,
+      "status": "draft",
+      "read": "Full text at r1, then all changed passages bounded rerecheck.",
+      "reviewed_reference_range": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "checks": {
+    "historical_dates_preserved": true,
+    "draft_status_and_unpublished_disclosure": true,
+    "refs1_4_author_order_and_full_authors": true,
+    "refs1_4_titles_sentence_case_and_exact_v1": true,
+    "numbered_first_use_order": true,
+    "line_width_observable_scope": true,
+    "novelty_denominator_property_matched": true,
+    "mlip_architecture_and_new_DFT_scope": true,
+    "dmrg_FP32_specific_values": true,
+    "dmrg_diffuse_basis_scope": true,
+    "dmrg_reproducibility_limits": true,
+    "machine_precision_distinguished_from_physical_accuracy": true,
+    "proposals_not_claimed_as_performed": true,
+    "screened_target_wise_selection_denominator": true,
+    "FCI_agreement_energy_unit": true,
+    "source_location_main_text_not_table": true
+  },
+  "issues": [],
+  "review_history": [
+    {
+      "checked_at": "2026-11-22T01:21:10.481768+00:00",
+      "status": "minor_corrections_pending",
+      "manuscripts": {
+        "ko": {
+          "sha256": "4cca00f6ed64ffab673e11bdb800b35d638d3f3eb39ed660026aa25e86bb29a3",
+          "bytes": 22553,
+          "first_use_order": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "reference_items": 8,
+          "status": "draft",
+          "read": "Full text at r1, then all changed passages bounded rerecheck.",
+          "reviewed_reference_range": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "en": {
+          "sha256": "5c61f496f9aa99400f68339adf38b8a6545e16ffb545f141983ce894e8e2efcc",
+          "bytes": 21387,
+          "first_use_order": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "reference_items": 8,
+          "status": "draft",
+          "read": "Full text at r1, then all changed passages bounded rerecheck.",
+          "reviewed_reference_range": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      },
+      "issues": [
+        {
+          "id": "A-final-1",
+          "severity": "minor_required",
+          "reference": 2,
+          "issue": "Top30% selection omits the screened-candidate denominator and target-wise operation.",
+          "source": "v1 pp19–20: target-wise30% of77,724 screened candidates gives23,315.",
+          "requested_ko": "기하·화학 검수를 통과한 후보 가운데 목표별 내부 순위 상위30%",
+          "requested_en": "target-wise best30% of screened candidates by internal ranking"
+        },
+        {
+          "id": "A-final-2",
+          "severity": "minor_required",
+          "reference": 4,
+          "issue": "Specific FP32 spreads are in p9 prose, while TableI summarizes approximately10^-6eV.",
+          "requested_ko": "본문 표에서 → 본문에서",
+          "requested_en": "The main-text tables report → The main text reports"
+        },
+        {
+          "id": "A-final-3",
+          "severity": "minor_clarification",
+          "reference": 4,
+          "issue": "The10^-15 active-space FCI energy agreement should include energy units.",
+          "requested_ko": "10^-15Ha 수준",
+          "requested_en": "to10^-15Ha"
+        }
+      ]
+    }
+  ],
+  "resolved_issues": [
+    {
+      "id": "A-final-1",
+      "severity": "minor_required",
+      "reference": 2,
+      "issue": "Top30% selection omits the screened-candidate denominator and target-wise operation.",
+      "source": "v1 pp19–20: target-wise30% of77,724 screened candidates gives23,315.",
+      "requested_ko": "기하·화학 검수를 통과한 후보 가운데 목표별 내부 순위 상위30%",
+      "requested_en": "target-wise best30% of screened candidates by internal ranking",
+      "resolution": "Resolved in both current manuscripts."
+    },
+    {
+      "id": "A-final-2",
+      "severity": "minor_required",
+      "reference": 4,
+      "issue": "Specific FP32 spreads are in p9 prose, while TableI summarizes approximately10^-6eV.",
+      "requested_ko": "본문 표에서 → 본문에서",
+      "requested_en": "The main-text tables report → The main text reports",
+      "resolution": "Resolved in both current manuscripts."
+    },
+    {
+      "id": "A-final-3",
+      "severity": "minor_clarification",
+      "reference": 4,
+      "issue": "The10^-15 active-space FCI energy agreement should include energy units.",
+      "requested_ko": "10^-15Ha 수준",
+      "requested_en": "to10^-15Ha",
+      "resolution": "Resolved in both current manuscripts."
+    }
+  ],
+  "bounded_recheck": "Compared all changes since the full bilingual reread; verified screened target-wise30% selection, Ha units and main-text location. Other changes are KO CASH-QSE basis scope and three-existing-figures wording. They do not alter refs1–4 claims. No PDF/HTML/publication endorsement."
+}
