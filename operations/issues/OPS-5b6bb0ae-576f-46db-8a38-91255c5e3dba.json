@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 16,
+  "record_version": 17,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-20T10:13:30.757496+00:00",
+  "updated_at": "2026-11-22T10:06:25.521343+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -207,9 +207,9 @@
     ]
   },
   "observation": {
-    "status": "구현·독립검증·정적/Worker배포완료; 실제아이폰전체UX관찰대기",
-    "period": "2026-11-11 사용자후속증거~12:24:38Z운영확인",
-    "result": "기존앱진입의전체count0과선언형SW미연결계약을보완했다. 정상L006배너의과거성공과이번수정의효과를분리한다. 현재배포에서새이벤트0이며수신목록복구·앱/설정후배지유지·해당글열람시1건차감은새버전을적용한아이폰에서추가확인이필요하다.",
+    "status": "기존 기술 배포 유지·새 직접 실사용/기기 근거 관찰 중",
+    "period": "2026-11-22T09:55:56.091Z",
+    "result": "c041 현재 제목 참조와 기존 배포 근거를 유지한다. 실제 기기의 정상 알림 수신→목록→배지 유지/읽음 차감 전체 동선의 새 직접 근거는 확인 범위에 없었다.",
     "shared_evidence_review_20261116_19": {
       "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
       "checked_at": "2026-11-16T10:03:36.184882Z",
@@ -243,6 +243,13 @@
     "evening_20261120": {
       "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
       "result": "새 공유 실기기/실사용 직접 근거 없음. 정상 L011 발행·HTTPS/CI 확인을 단말 수신·읽음·배지·필기 검증으로 확대하지 않는다. 기존 구현/배포·미확인 범위를 유지한다."
+    },
+    "evening_20261122": {
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "checked_shared_evidence_at": "2026-11-22T10:00:14.494791+00:00",
+      "result": "c041 현재 제목 참조와 기존 배포 근거를 유지한다. 실제 기기의 정상 알림 수신→목록→배지 유지/읽음 차감 전체 동선의 새 직접 근거는 확인 범위에 없었다.",
+      "new_direct_operational_or_device_evidence": false,
+      "new_tests_or_provider_mutations": 0
     }
   },
   "recovery": {
@@ -250,17 +257,17 @@
     "execution_reference": null,
     "result": "Pages/Worker배포와읽기운영검증완료. 실제롤백·개인DB복원·구독초기화·테스트푸시·과거재발송없음"
   },
-  "next_action": "새 제보·실패·중대한 근거는 받은 기존03/11/19시 회차에서 먼저 확인한다. 같은 미확인의 반복 전체 점검/기록을 줄여 공식 묶음 재검토는11/22 19시로 연결하며,11/21 오전 계획 점검에서 장기 대기 우선순위를 다시 본다. 테스트 푸시·관찰용 재실행은 하지 않는다.",
+  "next_action": "새 의미 있는 제보/실패/근거는 받은 기존03/11/19시 회차에서 먼저 확인한다. 새 직접 근거가 없어 공식 묶음 재검토는11/24 19시로 연결하고23일11시 오전 계획 점검에서 장기 대기 우선순위를 재평가한다. 테스트 발행/푸시·관찰용 재실행이나 같은 전체 검사를 반복하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "deployed_current_title_reference_observing_existing_device_flow",
-    "next_scheduled_step_at": "2026-11-22T19:00:00+09:00",
-    "next_review_at": "2026-11-22T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-24T19:00:00+09:00",
+    "next_review_at": "2026-11-24T19:00:00+09:00",
     "scheduled_step": "새 공유 실기기 근거 묶음 검토",
-    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-    "replan_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-    "replan_reason": "11/20 19시 예정된 공유 근거 검토를 실제 수행했고 새 직접 근거가 없다. 기본3회/우선순위/제품 슬롯은 유지하며 다음 공식 증거 묶음 검토만48시간 뒤로 연결해 반복 기록 부담을 줄인다. 새 제보/CI 실패는 기존 각 회차에서 앞당기고21일 오전에 대기 우선순위를 재평가한다.",
-    "next_review_if_no_new_evidence": "2026-11-22T19:00:00+09:00"
+    "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+    "replan_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+    "replan_reason": "11/22 19시 예정된 공유 근거 검토를 실제 수행했다. 새 직접 실기기/실사용/재발 근거가 없어 P2/관찰·제품 순서를 유지하고 다음 공식 묶음 검토만48시간 뒤로 연결한다. 중요한 새 근거는 받은 기본 회차에서 먼저 판단하며23일11시 오전에 대기 우선순위를 재평가한다.",
+    "next_review_if_no_new_evidence": "2026-11-24T19:00:00+09:00"
   }
 }

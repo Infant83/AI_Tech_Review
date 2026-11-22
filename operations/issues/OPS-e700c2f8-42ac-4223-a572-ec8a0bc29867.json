@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 45,
+  "record_version": 46,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-22T02:05:59.171639+00:00",
+  "updated_at": "2026-11-22T10:06:25.521343+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -146,30 +146,30 @@
     ]
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-22T01:59:59.809Z",
-    "last_successful_actions_check_at": "2026-11-22T02:00:44.793577Z",
+    "last_successful_mail_check_at": "2026-11-22T09:57:50.612Z",
+    "last_successful_actions_check_at": "2026-11-22T09:58:31.217099Z",
     "mail_window": "직전 성공에서48시간 겹침·전 영역/검증GitHub발신자/저장소·unread 제한 없이1페이지1통끝·기존해결DRB·상태변경0.",
-    "actions_window": "50개/페이지 첫시도1페이지11run끝·새정상L013/DQB 두run attempt1/4jobs/backend/Pages·HTTPS후등록 성공·새미해결/활성/피드백0.",
+    "actions_window": "50개/페이지 첫시도1페이지10run끝. 오전에 단일보충한 같은DRB를 포함하며 새로발견run/미해결/활성/피드백/조회오류0. 새jobs/로그조회0.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [],
     "live_source_revision": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
-    "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+    "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
     "supplemental_actions_check_at": "2026-11-22T02:16:23.765935Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-22T02:00:44.793577Z",
+    "last_full_actions_check_at": "2026-11-22T09:58:31.217099Z",
     "supplemental_successful_runs": [
       "44974749097"
     ],
-    "supplemental_scope": "전체API/메일 이후 들어온 단일DRB run/attempt/jobs·name필터 복구목록만 보충. 초기 전체126개/2페이지와 별도이며 전체 재계수/메일 재조회가 아니다.",
-    "historical_supplemental_fields_precede_current_full_check": false,
-    "full_api_checkpoint_excludes_later_concurrent_DRB": true
+    "supplemental_scope": "오전 회차의 단일DRB(02:16Z/11:16KST) 보충 역사적시각/성공run을 보존한다. 현재 전체API09:58:31.217099Z에는 해당DRB도 포함됐으며 별도새실행이 아니다.",
+    "historical_supplemental_fields_precede_current_full_check": true,
+    "full_api_checkpoint_excludes_later_concurrent_DRB": false
   },
   "observation": {
-    "status": "11시 새 정상3run 성공·미해결0·B1소스통합/관리API 전",
-    "period": "2026-11-22T01:57:50.693Z",
-    "result": "초기 L013/DQB 전페이지 점검 뒤 새DRB를 단일run 보충해 attempt1·네작업/backend/실제Pages·HTTPS후등록/보존 성공을 확인했다. 현재 필터복구목록3개/모두미만료이며 전체artifact를 재계수하지 않았다. 원문로그/메일 재조회·수동삭제/재실행/복원0이다.",
+    "status": "19시 새실행/실패0·기존DRB jobs근거 재사용·복구3동일",
+    "period": "2026-11-22T09:55:56.091Z",
+    "result": "메일/전체API 성공시각을 새로 확인했고 기존 해결메일1통·새미해결0이다. 오전 단일보충DRB는 현재전체조회에 포함됐다. 새jobs/로그조회0으로 jobs02:16 근거를 재사용하며 전체artifact125개/2페이지·복구3모두미만료/같은metadata를 확인했다. B1 실제CI미관찰·실제복원전이다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -388,11 +388,11 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-22T01:59:59.809Z",
-      "full_api": "2026-11-22T02:00:44.793577Z",
+      "mail": "2026-11-22T09:57:50.612Z",
+      "full_api": "2026-11-22T09:58:31.217099Z",
       "jobs": "2026-11-22T02:16:24.304099Z",
-      "active_states": "2026-11-22T02:00:47.852984Z",
-      "controls": "2026-11-22T02:00:49.692265Z"
+      "active_states": "2026-11-22T09:58:33.287982Z",
+      "controls": "2026-11-22T09:58:35.083515Z"
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -770,6 +770,32 @@
       "actual_restore": false,
       "raw_logs_read_saved": 0,
       "main_push_held_until_four_jobs_and_actual_HTTPS_complete": true
+    },
+    "evening_20261122": {
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "mail_success_at": "2026-11-22T09:57:50.612Z",
+      "full_api_success_at": "2026-11-22T09:58:31.217099Z",
+      "previous_jobs_success_at_reused": "2026-11-22T02:16:24.304099Z",
+      "mail_pages": 1,
+      "mail_count": 1,
+      "api_pages": 1,
+      "overlap_runs": 10,
+      "newly_discovered_runs": 0,
+      "new_unresolved_failures": 0,
+      "active_or_feedback_or_query_errors": 0,
+      "new_jobs_or_logs_queried": 0,
+      "all_artifacts": 125,
+      "artifact_pages": 2,
+      "unexpired_recovery_copies": 3,
+      "recovery_metadata_unchanged": true,
+      "total_artifact_count_decrease_cause": "not_investigated; not attributed to manual deletion or new guard execution",
+      "security_open_unknown": 6,
+      "security_resolved_historical": 3,
+      "security_provider_delta": 0,
+      "B1_actual_github_CI_observed": false,
+      "actual_restore": false,
+      "manual_provider_deletes_reruns_uploads": 0,
+      "mail_state_changes": 0
     }
   },
   "recovery": {

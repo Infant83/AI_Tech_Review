@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
   "uuid": "badae455-ceb5-4a3b-8bc0-a70a17d4ca0c",
-  "record_version": 7,
+  "record_version": 8,
   "title": "렉처 알림이 원본 PDF 뷰어로 열려 ATRL 복귀 경로가 없는 문제",
   "type": "notification_navigation",
   "created_at": "2026-11-11T14:40:55Z",
-  "updated_at": "2026-11-20T10:13:30.757496+00:00",
+  "updated_at": "2026-11-22T10:06:25.521343+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -114,13 +114,9 @@
     ]
   },
   "observation": {
-    "status": "공개 사이트·서버 반영과 Chrome 복귀 동선 정상; 실제 아이폰 알림은 관찰 중",
-    "period": {
-      "pages_deployed_at": "2026-11-11T14:52:59Z",
-      "worker_deployed_at": "2026-11-11T14:56:48Z",
-      "metadata_checked_at": "2026-11-11T14:58:22Z"
-    },
-    "result": "사이트 리더에서 복귀 경로를 제공하고 canonical 이력·읽음 ACK·PDF bytes를 보존한다. 이미 열린 OS 뷰어와 매우 오래된 ID 없는 알림의 소급 변경은 보장하지 않는다.",
+    "status": "기존 기술 배포 유지·새 직접 실사용/기기 근거 관찰 중",
+    "period": "2026-11-22T09:55:56.091Z",
+    "result": "공유 리더/서버·Chrome의 기존 사이트 복귀 검증은 유지한다. 실제 iPhone 렉처 알림→리더→목록/홈 동선의 새 직접 근거는 확인 범위에 없다.",
     "shared_evidence_review_20261116_19": {
       "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
       "checked_at": "2026-11-16T10:03:36.184882Z",
@@ -142,6 +138,13 @@
     "evening_20261120": {
       "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
       "result": "새 공유 실기기/실사용 직접 근거 없음. 정상 L011 발행·HTTPS/CI 확인을 단말 수신·읽음·배지·필기 검증으로 확대하지 않는다. 기존 구현/배포·미확인 범위를 유지한다."
+    },
+    "evening_20261122": {
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "checked_shared_evidence_at": "2026-11-22T10:00:14.494791+00:00",
+      "result": "공유 리더/서버·Chrome의 기존 사이트 복귀 검증은 유지한다. 실제 iPhone 렉처 알림→리더→목록/홈 동선의 새 직접 근거는 확인 범위에 없다.",
+      "new_direct_operational_or_device_evidence": false,
+      "new_tests_or_provider_mutations": 0
     }
   },
   "recovery": {
@@ -149,17 +152,17 @@
     "execution_reference": null,
     "result": "Pages 복구 사본 생성 성공; 실제 롤백·개인 DB 복원은 미실행"
   },
-  "next_action": "새 제보·실패·중대한 근거는 받은 기존03/11/19시 회차에서 먼저 확인한다. 같은 미확인의 반복 전체 점검/기록을 줄여 공식 묶음 재검토는11/22 19시로 연결하며,11/21 오전 계획 점검에서 장기 대기 우선순위를 다시 본다. 테스트 푸시·관찰용 재실행은 하지 않는다.",
+  "next_action": "새 의미 있는 제보/실패/근거는 받은 기존03/11/19시 회차에서 먼저 확인한다. 새 직접 근거가 없어 공식 묶음 재검토는11/24 19시로 연결하고23일11시 오전 계획 점검에서 장기 대기 우선순위를 재평가한다. 테스트 발행/푸시·관찰용 재실행이나 같은 전체 검사를 반복하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "awaiting_new_physical_device_evidence",
-    "next_scheduled_step_at": "2026-11-22T19:00:00+09:00",
-    "next_review_at": "2026-11-22T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-24T19:00:00+09:00",
+    "next_review_at": "2026-11-24T19:00:00+09:00",
     "scheduled_step": "새 공유 실기기 근거 묶음 검토",
-    "run_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-    "replan_reference": "operations/runs/20261120T095916Z-506ebf02-2613-4979-834e-4b4816ca9169.md",
-    "replan_reason": "11/20 19시 예정된 공유 근거 검토를 실제 수행했고 새 직접 근거가 없다. 기본3회/우선순위/제품 슬롯은 유지하며 다음 공식 증거 묶음 검토만48시간 뒤로 연결해 반복 기록 부담을 줄인다. 새 제보/CI 실패는 기존 각 회차에서 앞당기고21일 오전에 대기 우선순위를 재평가한다.",
-    "next_review_if_no_new_evidence": "2026-11-22T19:00:00+09:00"
+    "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+    "replan_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+    "replan_reason": "11/22 19시 예정된 공유 근거 검토를 실제 수행했다. 새 직접 실기기/실사용/재발 근거가 없어 P2/관찰·제품 순서를 유지하고 다음 공식 묶음 검토만48시간 뒤로 연결한다. 중요한 새 근거는 받은 기본 회차에서 먼저 판단하며23일11시 오전에 대기 우선순위를 재평가한다.",
+    "next_review_if_no_new_evidence": "2026-11-24T19:00:00+09:00"
   }
 }

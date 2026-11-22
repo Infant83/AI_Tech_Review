@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 18,
+  "record_version": 19,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-22T02:14:41.865528+00:00",
+  "updated_at": "2026-11-22T10:07:48.418276+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -195,10 +195,40 @@
       "full_python_existing_optional_skips": 1,
       "actual_github_CI_observed": false,
       "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/c3a4a5d3f54c99cf66daaaf47d7969beb43bd148"
+    },
+    "b2a_source_intake_contract": {
+      "status": "adopted_after_independent_contract_review_not_implemented",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md",
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "source_base_revision": "e37ed9418d321377a8ca4733ebd6055f989bce7f",
+      "reviewed_document_sha256": "069d92a5eb47016707074c31aa66f0ffc9e8df104529346fbbd6dd7ed9b1e0a5",
+      "reviewed_B2a_section_sha256": "e6e9971ecf33ca28f57ae0ae694c0a861365ce5fd3a86bbac6d751c28683a37d",
+      "adopted_document_sha256": "42c872993940908c342d08fda29b7ed1b682e5fd9ffb87cfd5ee464833a46210",
+      "status_only_adoption_after_review": true,
+      "independent_contract_checks": 11,
+      "synthetic_design_assumption_cases": 3,
+      "implementation_acceptance_tests_run": 0,
+      "actual_source_blob_copies": 0,
+      "operational_Git_ref_object_writes": 0,
+      "scope": "Existing A frozen readset/native3SHA + origin commit/tree/membership/model/stream manifest + complete baseline raw3 bound readonly descriptor; no code imported from source",
+      "candidate_Git_key_claim_CAS_source_writer": false,
+      "API_server_DB_publication_activated": false,
+      "proof_key": "adopt-20261122-evening / B2-contract-review / contract-final-verification; design-assumptions; source-metadata-arithmetic",
+      "planned_source_files": [
+        "scripts/admin_source_intake.py",
+        "tests/test_admin_source_intake.py",
+        ".automation/admin-readonly/README.md",
+        "scripts/admin_requests.py",
+        "scripts/admin_inventory.py",
+        "tests/test_admin_requests.py"
+      ],
+      "implementation_workspace": "managed:public-media-versioning/tech-review; preserve B1 branch/outputs and recheck ownership before new branch",
+      "resume": "11/23 03시 B2a bounded reader/descriptor 첫 후보를 구현하고11시 독립 검토한다. 실제 candidate 저장/원본·원격 통합/namespace 권한은 별도 B2b다.",
+      "zero_product_writes_scope": "B2a 제품/설계probe의 실제 원본 쓰기0이다. 이번 운영 문서/계약의 일반 Git 통합과 구분한다."
     }
   },
   "verification": {
-    "status": "A/B1 정식 독립감수·로컬 도구 소스통합 완료, B1은 합성 standalone 한정·운영 API/실제원본 저장 미완료",
+    "status": "A/B1 로컬 도구 통합 완료·B2a 읽기 인수 계약 감수/범위 채택 완료, B2a 제품 구현/종료시험 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -476,12 +506,28 @@
       "actual_source_remote_DB_API_publication_writes": 0,
       "actual_B1_github_CI_observed": false,
       "scope": "B1 synthetic standalone local tool only; full B/C-E, server authorization/HTTP, actual source writer and publication remain unimplemented"
+    },
+    "B2a_contract_20261122_evening": {
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "independent_contract_checks": 11,
+      "additional_blockers": 0,
+      "source_model_AST_input": "scripts/publish_public_site.py",
+      "synthetic_design_assumptions": 3,
+      "whole_tree_metadata_entries": 9582,
+      "whole_tree_blob_bytes": 3168534932,
+      "ledger_entries": 113,
+      "ledger_bytes": 408207,
+      "largest_inspected_dist_entries": 300,
+      "largest_inspected_dist_bytes": 48961514,
+      "metadata_is_not_materialized_source": true,
+      "B1_limits_widened": false,
+      "B2a_product_implementation_or_acceptance_complete": false
     }
   },
   "observation": {
-    "status": "B1 정식감수·로컬 도구 소스통합 완료·실제관리 API 전",
-    "period": "2026-11-22T01:57:50.693Z",
-    "result": "최종 c3a4a5d의 계약12그룹 독립 PASS와 두 결함 red→green을 확인했다. 최신 동시DRB6a81 위 ecd98f5로 정확3파일을 소스통합하고522검사/기존선택1skip·합성CLI1init/2apply/34파일 보존을 확인했다. 실제 원본 writer·서버 인가/발행 활성화가 아니다.",
+    "status": "B2a 최소 계약 채택·구현/독립 종료시험 대기",
+    "period": "2026-11-22T09:55:56.091Z",
+    "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -523,6 +569,12 @@
       "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
       "result": "최종 c3a4a5d의 계약12그룹 독립 PASS와 두 결함 red→green을 확인했다. 최신 동시DRB6a81 위 ecd98f5로 정확3파일을 소스통합하고522검사/기존선택1skip·합성CLI1init/2apply/34파일 보존을 확인했다. 실제 원본 writer·서버 인가/발행 활성화가 아니다.",
       "main_push_held_for_concurrent_DRB_completion": true
+    },
+    "evening_20261122": {
+      "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+      "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
+      "contract_reviewed_document_sha256": "069d92a5eb47016707074c31aa66f0ffc9e8df104529346fbbd6dd7ed9b1e0a5",
+      "product_implementation_tests_run": 0
     }
   },
   "recovery": {
@@ -530,23 +582,23 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "B1 합성 로컬 저장기의 정식 감수·소스통합을 마쳤다.11/22 19시 B2의 실제source 읽기/독립 remote-free Git 격리·통합 권한 최소 계약을 재선정한다. 실제 writer/서버·발행 활성화·구현 납기는 미정이다.",
+  "next_action": "11/23 03시 B2a bounded reader/descriptor 첫 후보를 구현하고11시 독립 검토한다. 실제 candidate 저장/원본·원격 통합/namespace 권한은 별도 B2b다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B1_formal_local_tool_integrated_B2_scope_review_next",
-    "next_scheduled_step_at": "2026-11-22T19:00:00+09:00",
-    "next_review_at": "2026-11-22T19:00:00+09:00",
-    "scheduled_step": "B2 실제원본 읽기/별도Git common-dir·object·ref 격리·통합 권한의 최소 경계 계약 재선정",
+    "state": "B2a_readonly_source_intake_contract_adopted_first_implementation_next",
+    "next_scheduled_step_at": "2026-11-23T03:00:00+09:00",
+    "next_review_at": "2026-11-23T11:00:00+09:00",
+    "scheduled_step": "B2a bounded source reader/동일A입력 결속 descriptor 첫 구현·11시 독립 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
-    "replan_reason": "예정된 B1 정식 감수와 발견한 두 결함의 보완·통합검증을 마쳤다. P2/순번1을 유지해 계약의 다음19시 B2 범위 재선정으로 진행한다. 실제 writer/서버 활성화·B2 구현/완료 납기를 확정하지 않는다.",
+    "replan_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
+    "replan_reason": "예정된19시 B2 경계 재선정·11항목 독립 계약감수를 마쳤다. P2/순번1을 유지해 B2a 읽기 인수 명세만23일03시 구현·11시 검토 목표로 연결한다. 실제candidate저장/원본writer/서버·B2전체 구현완료 납기는 확정하지 않는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+    "run_reference": "operations/runs/20261122T095646Z-fc817985-7fe7-4a80-a48c-b0d5d7cd3d00.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -564,6 +616,9 @@
     "b1_candidate_revision": "c3a4a5d3f54c99cf66daaaf47d7969beb43bd148",
     "b1_formal_review_completed_at": "2026-11-22T02:14:41.865528+00:00",
     "b1_integration_revision": "ecd98f5043324c9af8dc98793e76b79280b39e4a",
-    "b2_scope_review_target": "2026-11-22T19:00:00+09:00"
+    "b2_scope_review_target": "2026-11-22T19:00:00+09:00",
+    "b2_scope_review_completed_at": "2026-11-22T10:07:48.418276+00:00",
+    "b2a_implementation_start_target": "2026-11-23T03:00:00+09:00",
+    "b2a_first_independent_review_target": "2026-11-23T11:00:00+09:00"
   }
 }
