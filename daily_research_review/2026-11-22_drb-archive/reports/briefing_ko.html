@@ -1,0 +1,13 @@
+<p>촉매 후보의 흡착 에너지를 계산하려면 분자가 표면에 어느 자리, 어떤 방향으로 붙는지부터 찾아야 한다. 원자를 조금씩 움직이고 에너지와 힘을 다시 계산하는 과정이 후보마다 반복된다. Huo와 Cao의 DBCata는 초기 구조에서 DFT 완화 구조로 가는 변환을 학습해 이 탐색을 줄인다. 구조를 빠르게 얻은 뒤 어떤 수준의 에너지 계산을 붙일지까지 살펴볼 만한 연구다.<span class="citation">[<a href="#ref-1">1</a>]</span></p>
+<p>선행 연구 AdsorbML은 여러 초기 배치를 머신러닝 원자간 퍼텐셜(MLIP)로 완화하고, 에너지 순으로 추린 상위 후보를 DFT로 평가했다. 여러 흡착 자리의 탐색과 비싼 계산을 연결하는 접근이다. DBCata는 초기 구조와 이미 DFT로 완화한 구조의 쌍을 이용해 끝점 사이의 변환을 배운다. 추론 때는 초기 구조에서 출발해 기본 20단계의 생성 경로로 완화 구조를 예측한다. 이 경로는 실제 원자 운동이나 힘을 이용해 에너지를 낮추는 완화 궤적과는 다르다.<span class="citation">[<a href="#ref-2">2</a>, <a href="#ref-1">1</a>]</span></p>
+<p>MamunHighT2019 자료를 정리한 73,671쌍 가운데 14,728쌍을 무작위 시험셋으로 썼다. 고정한 표면 원자까지 포함하는 원자쌍 거리행렬의 평균 오차는 DBCata에서 약 0.035 Å, UMA-OC20 완화에서 약 0.113 Å였다. 생성한 구조가 추가 DFT 완화에 얼마나 가까운지도 평가했다. 별도 500구조를 같은 RPBE 수렴 조건으로 완화했을 때 필요한 평균 이온 단계는 초기 구조 출발 65회에서 생성 구조 출발 15회로 줄었다고 저자들은 보고했다.<span class="citation">[<a href="#ref-1">1</a>]</span></p>
+<p>흡착 에너지를 읽는 단계에서는 시간의 비중이 달라진다. 보충자료 Table 2의 같은 1,000구조 비교에서 DBCata 생성에 UMA 단일점 평가를 붙이면 약 0.339초/구조, UMA로 완화하고 에너지를 얻으면 약 8.100초였다. DFT 단일점 평가를 붙인 두 흐름은 각각 약 140.291초와 155.411초였다. 뒤의 155.411초는 UMA 완화와 DFT 단일점 평가를 합친 시간이다. DFT 평가가 대부분을 차지하는 흐름에서는 빠른 구조 생성의 이점이 전체 시간에 남는 정도도 달라진다.<span class="citation">[<a href="#ref-1">1</a>]</span></p>
+<p>이 결과의 의미는 에너지를 읽기 좋은 출발점을 학습해 마련한다는 데 있다. 생성 모델에 에너지·힘 라벨이나 중간 궤적을 직접 주지는 않지만, DFT로 만든 완화 끝점 자료는 필요하다. 이번 평가는 규칙 기반으로 준비한 초기 배치와 무작위 자료 분할에서 얻었다. 다른 표면과 흡착물로 넓힐 때는 후보 순위와 목표 에너지 정확도를 유지하면서 자료 구축·생성·후속 계산의 비용을 함께 읽어야 한다. 다음 리뷰는 이 계산 설계를 AdsorbML의 탐색 방식과 연결해 살펴보려 한다.</p>
+<h2>References</h2>
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1038/s41467-026-79243-9">S. Huo and X.-M. Cao, Accelerating high-throughput catalyst screening by direct generation of equilibrium adsorption structures, Nat. Commun. (2026).</a></li>
+<li id="ref-2"><a href="https://doi.org/10.1038/s41524-023-01121-5">J. Lan, A. Palizhati, M. Shuaibi, B. M. Wood, B. Wander, A. Das, M. Uyttendaele, C. L. Zitnick, and Z. W. Ulissi, AdsorbML: a leap in efficiency for adsorption energy calculations using generalizable machine learning potentials, npj Comput. Mater. 9, 172 (2023).</a></li>
+</ol>
+
+<h2>작성·검증</h2>
+<p>편집부(AEDAUT) root와 brief_format이 DBCata의 11월 21일 Article in Press 공식 PDF·초록·서론·본문·Methods와 실제 읽은 보충자료를 대조했다. aps_quantum_survey는 수치·조건과 그림을 비작성자로 감수했다. root는 AdsorbML의 공개 초록·서론·알고리즘 설명을 읽었다. 별도 담당자가 도입·한영 대응·목록 요약·서지와 PDF 전 페이지를 확인했다. 이번 결과는 고전 계산이며 QPU 실행 결과가 아니다. 학습·DFT·MLIP를 재실행하지 않았고 추가 심층 리뷰는 제안 상태다. 출판에는 운영팀(ADOPT)의 기존 절차를 사용했다. AI 보조: OpenAI Codex, 정확한 모델 식별자는 미보존. 사람의 문장별 감수는 수행하지 않았다. 웹 작성·추가 근거 기준일은 2026년 11월 22일이다.</p>

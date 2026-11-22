@@ -1,0 +1,48 @@
+{
+  "source": {
+    "authors": "S. Huo and X.-M. Cao",
+    "title": "Accelerating high-throughput catalyst screening by direct generation of equilibrium adsorption structures",
+    "doi": "10.1038/s41467-026-79243-9",
+    "url": "https://doi.org/10.1038/s41467-026-79243-9",
+    "locator": "Supplementary Information, Supplementary Table 2, PDF page 14",
+    "publication_date": "2026-11-21",
+    "edition": "Publisher Article in Press and accompanying SI"
+  },
+  "kind": "Review reconstruction of reported workflow times; no model execution or timing benchmark rerun",
+  "sample": "The same randomly selected subset of 1000 structures from the Catalysis-Hub test set",
+  "time_unit": "seconds per structure",
+  "SP_definition": "Single-point energy evaluation at the prepared geometry",
+  "plot": {
+    "type": "horizontal stacked bars",
+    "panels": "Separate linear time axes; limits differ between the UMA and DFT-SP panels",
+    "success_rates_shown": false,
+    "reason_success_not_pooled": "UMA and DFT-SP panels use different reference energies, so their success rates are not a common accuracy ranking."
+  },
+  "panels": [
+    {
+      "id": "UMA",
+      "title_ko": "A  UMA 에너지로 평가하는 선별 흐름",
+      "xlim_s": [0, 9.3],
+      "reference": "UMA-OC20 SP energy of the DFT-relaxed structure",
+      "rows": [
+        {"workflow": "DBCata(20) + UMA-SP", "geometry_operation": "DBCata generation, 20 reverse-generation steps", "geometry_time_s": 0.262, "separate_energy_SP_time_s": 0.0772, "energy_evaluation": "UMA-OC20 SP", "total_time_s": 0.3392, "DMAE_A": 0.0336, "energy_MAE_eV": 0.0936, "success_percent": 87.0},
+        {"workflow": "UMA-OC20 relaxation", "geometry_operation": "Full UMA-OC20 relaxation, including its final UMA energy", "geometry_time_s": 8.0996, "separate_energy_SP_time_s": null, "energy_evaluation": "UMA-OC20 energy included in relaxation time", "total_time_s": 8.0996, "DMAE_A": 0.1178, "energy_MAE_eV": 1.2008, "success_percent": 68.6}
+      ]
+    },
+    {
+      "id": "DFT_SP",
+      "title_ko": "B  DFT 단일점 에너지를 더한 구조 품질 확인",
+      "xlim_s": [0, 177],
+      "reference": "DFT-SP energy of the DFT-relaxed structure",
+      "rows": [
+        {"workflow": "DBCata(20) + DFT-SP", "geometry_operation": "DBCata generation, 20 reverse-generation steps", "geometry_time_s": 0.262, "separate_energy_SP_time_s": 140.0291, "energy_evaluation": "DFT SP", "total_time_s": 140.2911, "DMAE_A": 0.0336, "energy_MAE_eV": 0.1086, "success_percent": 88.9},
+        {"workflow": "UMA-OC20 relaxation + DFT-SP", "geometry_operation": "Full UMA-OC20 relaxation", "geometry_time_s": 8.0996, "separate_energy_SP_time_s": 147.3117, "energy_evaluation": "DFT SP", "total_time_s": 155.4113, "DMAE_A": 0.1178, "energy_MAE_eV": 1.0649, "success_percent": 68.4}
+      ]
+    }
+  ],
+  "success_definition": "|E_method - E_ref| < 0.1 eV; energy MAE uses the same panel-specific reference",
+  "relaxation_conditions": "All MLIP relaxations used ASE LBFGS, fmax=0.05 eV/Angstrom, maximum 200 optimization steps",
+  "interpretation_boundary": "The lower two rows compare DBCata generation + DFT-SP with UMA-OC20 relaxation + DFT-SP. They are not a timing comparison against direct DFT geometry relaxation. DFT-SP rows are high-fidelity structural-quality validation rather than the intended rapid-screening workflow.",
+  "integrated_energy_note": "The full UMA relaxation row has no separately reported SP time; null does not mean no energy evaluation. Its 8.0996 s includes the resulting UMA energy.",
+  "omitted_Table2_rows": "DBCata(100), MACE-OMAT and ORB-v3 variants are not drawn; this is a selected four-row comparison, not all Table 2 workflows."
+}
