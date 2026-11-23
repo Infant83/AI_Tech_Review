@@ -14,7 +14,6 @@ import json
 import os
 from pathlib import Path
 import re
-import shutil
 import stat
 import subprocess
 import sys
@@ -40,7 +39,28 @@ MAX_JOBS = 128
 MAX_FILES = 3_000
 MAX_BYTES = 16_000_000
 CONTROL_BYTES = 65_536
-GIT = shutil.which("git")
+
+
+def _trusted_git():
+    for name, cellar in [("/usr/local/bin/git", "/usr/local/Cellar/git"),
+                         ("/opt/homebrew/bin/git", "/opt/homebrew/Cellar/git"),
+                         ("/usr/bin/git", None)]:
+        try:
+            candidate = Path(name).resolve(strict=True)
+            if cellar is not None and Path(cellar) not in candidate.parents:
+                continue
+            if cellar is None and candidate != Path(name):
+                continue
+            info = candidate.stat()
+            if (stat.S_ISREG(info.st_mode) and info.st_mode & 0o111
+                    and not info.st_mode & 0o022 and os.access(candidate, os.X_OK)):
+                return str(candidate)
+        except OSError:
+            continue
+    return None
+
+
+GIT = _trusted_git()
 
 
 class JobError(ValueError):
@@ -139,7 +159,7 @@ def _env():
     env = {k: v for k, v in os.environ.items() if not k.startswith(("GIT_", "PYTHON"))}
     env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_SYSTEM=os.devnull, GIT_CONFIG_GLOBAL=os.devnull,
                GIT_ATTR_NOSYSTEM="1", GIT_TERMINAL_PROMPT="0", GIT_NO_REPLACE_OBJECTS="1",
-               GIT_OPTIONAL_LOCKS="0", GIT_ALLOW_PROTOCOL="",
+               GIT_OPTIONAL_LOCKS="0", GIT_ALLOW_PROTOCOL="", PATH=os.defpath,
                GIT_AUTHOR_NAME="B1 synthetic fixture", GIT_AUTHOR_EMAIL="fixture@example.invalid",
                GIT_COMMITTER_NAME="B1 synthetic fixture", GIT_COMMITTER_EMAIL="fixture@example.invalid",
                GIT_AUTHOR_DATE="2000-01-01T00:00:00+0000", GIT_COMMITTER_DATE="2000-01-01T00:00:00+0000")
@@ -154,6 +174,8 @@ def _env():
 
 
 def _git(repo, *args, raw=None, missing=False):
+    if GIT is None:
+        raise JobError("trusted_git_unavailable")
     result = subprocess.run([GIT, "--no-replace-objects", "-C", str(repo), *args], input=raw,
                             capture_output=True, env=_env(), timeout=20)
     if len(result.stdout) > MAX_BYTES or len(result.stderr) > CONTROL_BYTES:

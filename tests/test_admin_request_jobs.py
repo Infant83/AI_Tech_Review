@@ -38,6 +38,29 @@ class JobTests(unittest.TestCase):
     def save_request(self):
         self.request_path.write_bytes(jobs._raw(self.request))
 
+    def test_CLI_uses_installed_git_with_a_different_inherited_search_path(self):
+        directory = self.parent / "other-search-path"; directory.mkdir()
+        marker = self.parent / "unexpected-program"
+        executable = directory / "git"
+        executable.write_text("#!/bin/sh\n: > '" + str(marker) + "'\nexit 97\n")
+        executable.chmod(0o700)
+        fresh = self.parent / "new-cli-fixture"
+        result = subprocess.run([sys.executable, "-I", "-B", str(Path(jobs.__file__)),
+            "init-fixture", "--sandbox", str(fresh)], capture_output=True, timeout=30,
+            env={**os.environ, "PATH": str(directory)})
+        self.assertFalse(marker.exists())
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)["status"], "synthetic_sandbox_initialized")
+        self.assertEqual(result.stderr, b"")
+        self.assertNotIn(str(self.parent), result.stdout.decode())
+
+    def test_missing_installed_git_refuses_before_subprocess(self):
+        with patch.object(jobs, "GIT", None), patch.object(jobs.subprocess, "run") as run:
+            with self.assertRaises(jobs.JobError) as caught:
+                jobs._git(self.repo, "version")
+        self.assertEqual(caught.exception.code, "trusted_git_unavailable")
+        run.assert_not_called()
+
     def refs(self):
         return jobs._git(self.repo, "for-each-ref", "--format=%(refname) %(objectname)", jobs.PREFIX).decode().splitlines()
 

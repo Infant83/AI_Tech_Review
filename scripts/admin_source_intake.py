@@ -32,6 +32,9 @@ MAX_STDOUT_BYTES = 16 * 1024
 GIT_SECONDS = 20
 TOTAL_SECONDS = 120
 HEX40 = re.compile(r"[a-f0-9]{40}\Z")
+_OUTPUT_DIR_FD_SUPPORTED = (hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_DIRECTORY")
+    and all(call in os.supports_dir_fd for call in [os.open, os.mkdir, os.stat, os.link, os.unlink])
+    and os.link in os.supports_follow_symlinks)
 
 
 class IntakeError(ValueError):
@@ -121,6 +124,107 @@ class _Budget:
             raise IntakeError("read_budget")
         if time.monotonic() > self.deadline:
             raise IntakeError("intake_timeout")
+
+
+class _OutputDirectory:
+    """Keep output writes relative to the directories opened before reading."""
+    def __init__(self, output, budget):
+        self.output, self.budget = output, budget
+        self.parents, self.directory = [], None
+        if not _OUTPUT_DIR_FD_SUPPORTED:
+            raise IntakeError("unsupported_output_platform")
+        self.flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        try:
+            descriptor = os.open(output.anchor, self.flags)
+            self.parents.append((descriptor, output.anchor, self.identity(os.fstat(descriptor))))
+            for name in output.parent.parts[1:]:
+                descriptor = os.open(name, self.flags, dir_fd=self.parents[-1][0])
+                self.parents.append((descriptor, name, self.identity(os.fstat(descriptor))))
+            self.verify()
+            try:
+                os.stat(output.name, dir_fd=self.parents[-1][0], follow_symlinks=False)
+            except FileNotFoundError:
+                pass
+            else:
+                raise IntakeError("new_output_required")
+        except BaseException:
+            self.close()
+            raise
+
+    @staticmethod
+    def identity(info):
+        return info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode)
+
+    def verify(self):
+        self.budget.check()
+        try:
+            for i, (descriptor, name, expected) in enumerate(self.parents):
+                current = os.stat(name, dir_fd=self.parents[i - 1][0] if i else None,
+                                  follow_symlinks=False)
+                if (self.identity(current) != expected or not stat.S_ISDIR(current.st_mode)
+                        or self.identity(os.fstat(descriptor)) != expected):
+                    raise IntakeError("output_changed")
+            if self.directory is not None:
+                self.verify_child(self.output.name, self.parents[-1][0], self.directory)
+        except OSError:
+            raise IntakeError("output_changed") from None
+
+    def verify_child(self, name, parent, descriptor):
+        try:
+            current = os.stat(name, dir_fd=parent, follow_symlinks=False)
+            opened = os.fstat(descriptor)
+        except OSError:
+            raise IntakeError("output_changed") from None
+        if self.identity(current) != self.identity(opened):
+            raise IntakeError("output_changed")
+
+    def publish(self, raw):
+        self.verify()
+        parent = self.parents[-1][0]
+        os.mkdir(self.output.name, mode=0o700, dir_fd=parent)
+        self.directory = os.open(self.output.name, self.flags, dir_fd=parent)
+        self.verify()
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
+        keeper = os.open(".keep", flags, 0o600, dir_fd=self.directory)
+        try:
+            os.fsync(keeper)
+            self.verify_child(".keep", self.directory, keeper)
+        finally:
+            os.close(keeper)
+        self.verify()
+        descriptor = os.open(".descriptor.partial", flags, 0o600, dir_fd=self.directory)
+        try:
+            with os.fdopen(descriptor, "wb", closefd=False) as handle:
+                self.verify()
+                handle.write(raw); handle.flush(); os.fsync(descriptor)
+            self.verify()
+            self.verify_child(".descriptor.partial", self.directory, descriptor)
+            os.link(".descriptor.partial", "descriptor.json", src_dir_fd=self.directory,
+                    dst_dir_fd=self.directory, follow_symlinks=False)
+            self.verify_child("descriptor.json", self.directory, descriptor)
+            self.verify()
+            os.unlink(".descriptor.partial", dir_fd=self.directory)
+            os.fsync(self.directory)
+            self.verify_child("descriptor.json", self.directory, descriptor)
+            self.verify()
+        finally:
+            os.close(descriptor)
+
+    def close(self):
+        descriptors = ([self.directory] if self.directory is not None else [])
+        descriptors += [item[0] for item in reversed(self.parents)]
+        for descriptor in descriptors:
+            try:
+                os.close(descriptor)
+            except OSError:
+                pass
+        self.directory, self.parents = None, []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        self.close()
 
 
 class _GitSource:
@@ -413,6 +517,11 @@ def _intake(source_root, request_path, baseline_snapshot, output):
     if (baseline.parent == output or baseline.parent in output.parents
             or (root in output.parents and output.relative_to(root).parts[0] != "output")):
         raise IntakeError("unsafe_output")
+    with _OutputDirectory(output, budget) as destination:
+        return _read_intake(root, incoming, baseline, output, budget, destination)
+
+
+def _read_intake(root, incoming, baseline, output, budget, destination):
     code = _tool_hashes()
     source = _GitSource(root, budget)
     if any(p == output or p in output.parents for p in [source.gitdir, source.common]):
@@ -461,15 +570,7 @@ def _intake(source_root, request_path, baseline_snapshot, output):
     source.guard()
     if source.head() != source.revision:
         raise IntakeError("source_conflict")
-    output.mkdir(mode=0o700)
-    with (output / ".keep").open("xb") as handle:
-        handle.write(b"")
-    # Incomplete output remains protected and is never reported as successful.
-    partial = output / ".descriptor.partial"
-    with partial.open("xb") as handle:
-        handle.write(raw); handle.flush(); os.fsync(handle.fileno())
-    os.link(partial, output / "descriptor.json")
-    partial.unlink()
+    destination.publish(raw)
     budget.check()
     return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
             "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}

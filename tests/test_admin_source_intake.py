@@ -225,6 +225,61 @@ class SourceIntakeTests(unittest.TestCase):
         self.assertTrue((partial / ".keep").exists()); self.assertTrue((partial / ".descriptor.partial").exists())
         self.assertFalse((partial / "descriptor.json").exists())
 
+    def test_output_parent_replacement_is_refused_before_descriptor_write(self):
+        parent = self.parent / "declared-parent"; parent.mkdir()
+        other = self.parent / "other-parent"; other.mkdir()
+        original = intake._BoundedInputs.verify; changed = []
+        before = self.snapshot()
+        def replace_parent(reader):
+            result = original(reader)
+            if not changed:
+                parent.rename(self.parent / "saved-parent")
+                parent.symlink_to(other, target_is_directory=True); changed.append(True)
+            return result
+        with patch.object(intake._BoundedInputs, "verify", replace_parent):
+            with self.assertRaises(intake.IntakeError) as caught:
+                intake.create_intake(self.source, self.request, self.baseline, parent / "new")
+        self.assertEqual(caught.exception.code, "output_changed")
+        self.assertEqual(list(other.iterdir()), [])
+        self.assertEqual(self.snapshot(), before)
+
+    def test_output_leaf_replacement_cannot_redirect_relative_publication(self):
+        output = self.parent / "new-output"
+        saved = self.parent / "saved-output"
+        other = self.parent / "different-output"; other.mkdir()
+        original = intake.os.link
+        def replace_leaf(*args, **kwargs):
+            output.rename(saved); output.symlink_to(other, target_is_directory=True)
+            return original(*args, **kwargs)
+        with patch.object(intake.os, "link", side_effect=replace_leaf):
+            with self.assertRaises(intake.IntakeError) as caught:
+                intake.create_intake(self.source, self.request, self.baseline, output)
+        self.assertEqual(caught.exception.code, "output_changed")
+        self.assertEqual(list(other.iterdir()), [])
+        self.assertTrue((saved / ".keep").exists())
+        self.assertTrue((saved / ".descriptor.partial").exists())
+
+    def test_output_parent_change_at_partial_open_preserves_anchored_keeper(self):
+        parent = self.parent / "parent-at-open"; parent.mkdir()
+        saved = self.parent / "parent-at-open-preserved"
+        other = self.parent / "other-at-open"; other.mkdir()
+        original = intake.os.open; moved = []
+        def replace_parent(path, *args, **kwargs):
+            if path == ".descriptor.partial" and not moved:
+                parent.rename(saved); parent.symlink_to(other, target_is_directory=True); moved.append(True)
+            return original(path, *args, **kwargs)
+        with patch.object(intake.os, "open", side_effect=replace_parent):
+            with self.assertRaises(intake.IntakeError) as caught:
+                intake.create_intake(self.source, self.request, self.baseline, parent / "new")
+        self.assertEqual(caught.exception.code, "output_changed")
+        self.assertEqual(list(other.iterdir()), [])
+        self.assertTrue((saved / "new/.keep").exists())
+        self.assertEqual((saved / "new/.descriptor.partial").stat().st_size, 0)
+
+    def test_output_without_no_follow_dir_fd_support_fails_closed(self):
+        with patch.object(intake, "_OUTPUT_DIR_FD_SUPPORTED", False):
+            self.reject("unsupported_output_platform")
+
     def test_exact_descriptor_and_selected_path_limits_accept_then_one_less_refuses(self):
         report, descriptor = self.call()
         size = (self.parent / "output-1/descriptor.json").stat().st_size
