@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "reviewer": "dqb1123_pdf",
+  "role": "Independent verification of actual CI jobs, logs and small artifacts; separate from root HTTPS/browser checks. Earlier PDF production role is disclosed.",
+  "checked_at": "2026-11-23T12:11:09.106073+00:00",
+  "status": "pass_with_nonblocking_capacity_warnings",
+  "run": 45170838744,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45170838744",
+  "revision": "3dcb8a75704a9c1186cfe67ba1d398d1b6907582",
+  "previous_deployed_revision": "22d453e855231043182e9aa9bed46224ad8d47ca",
+  "jobs_success": 4,
+  "jobs": [
+    {
+      "name": "build",
+      "id": 137679643358,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "deploy",
+      "id": 137681684458,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "notify-readers",
+      "id": 137681953185,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "recovery-copy",
+      "id": 137681953482,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "tests": {
+    "total": 1034,
+    "passed": 1025,
+    "skipped": 9,
+    "failed": 0,
+    "groups": [
+      {
+        "name": "python",
+        "total": 522,
+        "passed": 521,
+        "skipped": 1,
+        "failed": 0
+      },
+      {
+        "name": "multilingual",
+        "total": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "frontend",
+        "total": 205,
+        "passed": 197,
+        "skipped": 8,
+        "failed": 0
+      },
+      {
+        "name": "lecture",
+        "total": 208,
+        "passed": 208,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "backend",
+        "total": 73,
+        "passed": 73,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "portable_media",
+        "total": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ]
+  },
+  "counts": {
+    "archive": 169,
+    "external": 1,
+    "publications": 80,
+    "reviews": 59
+  },
+  "final_policy_ok": true,
+  "final_policy_blockers": [],
+  "archive_additions": [
+    {
+      "group": "archive",
+      "id": "2026-11-23-daily-quantum-brief"
+    }
+  ],
+  "reviewed_common_changes_count": 71,
+  "new_deep_review": false,
+  "catalog_articles": 80,
+  "catalog_sha256": "6c2a12ea0c968da81983e62bdef91d95fb522aec93bc85aa2b8a1c4185b49a2b",
+  "catalog_candidate_articles_identical": true,
+  "catalog_revision_delta_explained": "The CI catalog revision is the actual publication commit 3dcb8a7; the local candidate records the previous deployment 22d453e. All 80 article objects are identical.",
+  "sealed_files": 2759,
+  "snapshot_files": 2744,
+  "deploy_guard_current_true_evidence": "The actual Deploy the verified Pages artifact step completed, created the Pages deployment and reported success. Both dependent recovery and sync jobs actually ran; echoed shell branches alone were not used as proof.",
+  "deployed_pages_artifact_id": 14817395913,
+  "deployed_pages_artifact_zip_sha256": "0eb4e905706b16c0e2876c66c9009adab3333cc2c8b98da67ec923928c6f5f9f",
+  "recovery_files": 2759,
+  "recovery_bytes": 851103925,
+  "recovery_archive_sha256": "fd9a40fa922bd556d42ff90737d99f7485156b14fb63e1c0f0e830c3eb139cda",
+  "recovery_uploaded_artifact_id": 14817541330,
+  "recovery_uploaded_zip_sha256": "7255024b6d8899d5741d03a9ccccc4429a4eadcf37486376f22b50c7d564d5ee",
+  "recovery_implementation": "Read the current from-pages CLI, safe Pages-member checks and verify_backup streaming digest_stream implementation. Actual workflow logs verify the complete deployed inventory, identities and seal before upload. No independent full-artifact download or restore was performed.",
+  "recovery_copies_kept": 3,
+  "retained_artifact_ids": [
+    14817541330,
+    14815187829,
+    14756092151
+  ],
+  "retention_deleted_artifact_ids": [
+    14755081333
+  ],
+  "retention_current_upload_binding_verified": true,
+  "retention_listing_attempts": 2,
+  "retention_api_rechecked": true,
+  "catalog_synced": 80,
+  "new_articles": 0,
+  "queued_events": 0,
+  "warnings": [
+    "Lazy metadata search exceeds the 80KB growth warning",
+    "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+  ],
+  "blocking_findings": [],
+  "limits": [
+    "All four jobs actually completed before this PASS.",
+    "Only small publication-validation/catalog artifacts, individual raw logs and API metadata were obtained; no full Pages/recovery-artifact download or restore exercise.",
+    "This reviewer ran no extra tests, builds or pushes and sent no external messages or separate notifications.",
+    "Root HTTPS and browser checks are separate evidence, not this CI review.",
+    "Existing capacity warnings and action runtime deprecation notices were not repaired in this content task."
+  ],
+  "public_safe": true,
+  "evidence_sha256": {
+    "ci-jobs.json": "79910a54da0c0861891dbc9dff85f81438b8a4a7362f3417aad4a105c2dd2cfb",
+    "ci-run.json": "25b498e4be2d9e45bd4a43143dea550a9d72d89c575193dba94d1545c747f61c",
+    "ci-retention-artifacts.json": "93996e7ccf1a6db1add696306a3fe6f2f818b01069e571fd20ec01f3993b2d96",
+    "ci-artifacts.json": "1d944ea3a20cab9fcf47fd2176f21d2d904e196becf8c144510d177665e9e0c8",
+    "ci-build.log": "2fe2e2431d7809e9b7a27c2e43a86eb0459ae0fac897fc7c30ccdf7416aff5af",
+    "ci-deploy.log": "d555951d106d688cc7c835ae32de9326da20fa95e122db0fa1d548f576016c2e",
+    "ci-recovery.log": "628525010ff88903df01e4cf90c7a422fa3ad1c90c0147bbb4aa43ce7aa0529b",
+    "ci-notify.log": "c3159ec3569e8a76dc9b5be38b0ec1c67178aaa6b7e5acf0835de5ae5ebf15b7",
+    "ci-validation/report.json": "977f7aed1ad9b04e9753784eac23c9f33b12cd185ad4922246117fa6dd54b259",
+    "ci-validation/release-check.json": "d30441f31e50242b1045c817bf376356bcf60c51fc0b4c4156580a016310c338",
+    "ci-validation/payload-check.json": "76e7be45c87149f346e9f19fd4645b6a6169ab9ee55e23819d3add84aa5c4032",
+    "ci-catalog/reader-publications.json": "6c2a12ea0c968da81983e62bdef91d95fb522aec93bc85aa2b8a1c4185b49a2b"
+  }
+}

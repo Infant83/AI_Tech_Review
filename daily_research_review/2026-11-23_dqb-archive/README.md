@@ -37,3 +37,11 @@ VQA 측정 선택의 평균 49.6%는 정확한 기대값을 쓰는 모의 계산
 [후보 화면 검수](artifacts/candidate-browser-review.json)는 한영1280px·390px의 제목·요약·본문·날짜·서지·실제 언어 전환을 확인했다. 달력은 이미 선택된23일에서 편집글을 먼저 안내했고 PDF 읽기·다운로드는 별도였다. 한영 실제 검색 결과와 국문 검색에서 본문 진입을 확인했으며 로컬 PDF HTTP바이트도 검수본과 같았다. 실제 공개 결과와 CI네 작업은 별도로 확인한다.
 
 [독립 후보 보존 감수](artifacts/candidate-independent-review.json)는 실제 L014 배포의2,755개 페이로드 경로에 새PDF·한영 편집글3개만 추가되고 삭제가 없음을 확인했다. 기존59리뷰의 전체 metadata와 본문·자산,168개 보관 문서의 제목·요약·ID·URL·메타데이터,281PDF경로·54날짜별 편집글·ClassiqL014파일의 바이트를 유지했다. 기존 검색173항목·갱신175항목과 카탈로그80객체도 같았다. 원고→HTML조각→후보 본문,3개 인용·참고문헌과 별도PDF읽기·다운로드, 전체 봉인 해시 대응을 확인했다. 단순히 이력이나 등록을 보고 실제 공개·정상PDF열람을 검증했다고 표시하지 않는다.
+
+## 실제 공개 완료
+
+공개 소스 `3dcb8a75704a9c1186cfe67ba1d398d1b6907582`의 [Pages 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/45170838744)에서 build·deploy·recovery-copy·notify-readers 네 작업이 모두 성공했다. 실제 CI 검사는1,034건 중1,025건 통과·9건 제외·실패0이며, 연속성·전송량·전체 봉인 검사가 통과했다. 기존 용량 경고는 차단 사항이 아니며 운영팀(ADOPT)의 기존 추적 범위로 남긴다. [독립 CI 기록](artifacts/ci-independent-review.json)은 실제 로그·작은 검증 및 카탈로그 산출물·API 메타데이터를 확인한 범위와 전체 복구 파일을 별도로 내려받아 복원하지 않은 범위를 구별한다. 검증한 Pages 산출물에서 복구 사본을 만들고 현재 업로드와 연결해 최근3개를 보존했으며, 기존80문서 카탈로그 동기화의 새 알림 대기는0건이었다.
+
+[국문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-23/), [영문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-23/en/)과 [공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-23-daily-quantum-brief.pdf)를 포함한 실제 HTTPS31경로를 확인했다. 조회 전후 공개 release가 같은 소스 판본을 가리켰고 선택한 모든 응답은 봉인된 파일 해시·크기와 같았다. HTML은 실제 관찰한 기존 공개 연락처의 Cloudflare 난독화·정확한 decoder 추가만 정규화했다. 최종 공개 PDF는 검수한198,206바이트·7쪽·위 SHA-256과 정확히 같았다. 기존 DQB·DRB·DQE, ClassiqL014와 연결 리뷰·최신 리뷰의 선택한 공개 경로도 함께 확인했다. 전체281기존 PDF를 다시 내려받았다고 표시하지 않는다. [실제 HTTPS 기록](artifacts/live-verification.json)을 따른다.
+
+[공개 화면 확인](artifacts/live-browser-review.json)에서 국문 데스크톱과 한영390px 모바일 화면의 제목·별도 요약·날짜·본문·3개 서지를 확인했다. 실제 언어 전환, 날짜별 편집글 우선 안내와 별도 PDF 링크, 한영 검색 결과·영문 검색에서 본문 진입도 확인했다. PDF 리더·알림 구독·계정 흐름이나 사람 독자 평가는 수행하지 않았다. 공개 보관과 짧은 편집글을 완료했으며, 새 심층 리뷰·기존 본문의 실질적 확장·추가 승인 요청은0건이다. QC-QMC v2의 제한된 확인과 기존5기획의 승인 대기는 그대로 보존했다.
