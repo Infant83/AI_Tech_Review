@@ -96,6 +96,8 @@ whole-tree metadata20,000행/4MiB, dist1,000경로/고유 경로 합128MiB·한 
 
 Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능한 정규 파일을 검증해 선택한다. Homebrew의 버전 경로는 Git Cellar 안으로만 해석하며, 지원 binary가 없으면 거절한다. B1 합성 도구도 같은 설치 경로 선택과 고정 child PATH를 사용하며 기존 CAS/receipt·합성 전용 범위는 유지한다. 선택 source의 `commondir`·`config.worktree`는 부재도 결속하므로 읽는 중 신설·소실을 거절한다. 실제 linked worktree 호환을 위한 `[codex] localEnvironmentConfigPath` 한 설정은 불활성 metadata로만 받으며 값이 가리키는 파일을 읽거나 실행하지 않는다. 원시 설정 bytes는 계속 변경 검사에 포함한다. dist 합계는 hash를 계산한 실제 bytes로 산정하고 첫 읽기부터 남은 고유 경로 예산을 적용한다.
 
-출력은 source 읽기 전에 root부터 부모까지 no-follow directory FD로 고정한다. 새 디렉터리·보호 표시·부분 파일·hard link·unlink·fsync는 고정한 FD에 상대적인 연산으로 수행하고 부모/leaf의 경로와 열린 객체가 같은지 다시 확인한다. 부모나 leaf가 교체되면 `output_changed`로 거절하며 다른 경로로 쓰기를 돌리지 않는다. 중단/실패의 보호 출력은 남기고 같은 목적지를 재초기화하지 않는다. 이 경로는 POSIX no-follow/dir-FD 지원이 필요하며 지원하지 않는 환경에서는 거절한다. 완전한 파일이 남아 있어도 CLI의 `ok:false`는 성공한 인수가 아니다. FD 고정도 source 전체의 원자적 snapshot이나 후속 writer 인가를 뜻하지 않는다.
+출력은 source 읽기 전에 root부터 부모까지 no-follow directory FD로 고정한다. 새 디렉터리·보호 표시·부분 파일·hard link·unlink·fsync는 고정한 FD에 상대적인 연산으로 수행하고 부모/leaf의 경로와 열린 객체가 같은지 다시 확인한다. 부모와 첫 open 뒤 leaf의 관측 가능한 교체는 `output_changed`로 거절하며 다른 경로로 쓰기를 돌리지 않는다. 첫 leaf FD는 운영자 euid 소유·정확0700·빈 디렉터리인지 확인하며 모든 출력 파일은 배타 생성한다. 중단/실패의 보호 출력은 남기고 같은 목적지를 재초기화하지 않는다. 이 경로는 POSIX no-follow/dir-FD 지원이 필요하며 지원하지 않는 환경에서는 거절한다. 완전한 파일이 남아 있어도 CLI의 `ok:false`는 성공한 인수가 아니다.
+
+이는 제어된 로컬 운영자와 부모 경로를 위한 도구다. POSIX mkdir는 열린 directory FD를 반환하지 않으므로 mkdir와 첫 open 사이의 임의 same-UID 프로세스가 소유·mode·empty 조건을 만족하는 일반 디렉터리로 교체한 것을 원자적으로 식별한다고 보장하지 않는다. leaf identity 결속은 첫 open부터이며 mkdir가 만든 바로 그 inode의 원자적 획득·출력 namespace 잠금·source 전체의 원자적 snapshot·후속 writer 인가를 뜻하지 않는다. 비신뢰 주체가 부모 경로를 변경할 수 있는 공유 서버의 출력 경로로 활성화하는 것은 후속 설계다.
 
 첫 B2a의 개발 후보와 검사는 정식 독립 감수/실제 운영 완료가 아니다. candidate Git 생성·복제·keyclaim·Git commit/ref/CAS·원본 writer·서버/API/DB·발행은 없다. 원본과 독립 candidate Git의 판본 매핑·namespace·저장 권한은 B2b, 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.

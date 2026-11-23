@@ -34,7 +34,7 @@ TOTAL_SECONDS = 120
 HEX40 = re.compile(r"[a-f0-9]{40}\Z")
 _OUTPUT_DIR_FD_SUPPORTED = (hasattr(os, "O_NOFOLLOW") and hasattr(os, "O_DIRECTORY")
     and all(call in os.supports_dir_fd for call in [os.open, os.mkdir, os.stat, os.link, os.unlink])
-    and os.link in os.supports_follow_symlinks)
+    and os.link in os.supports_follow_symlinks and os.listdir in os.supports_fd)
 
 
 class IntakeError(ValueError):
@@ -136,10 +136,12 @@ class _OutputDirectory:
         self.flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
         try:
             descriptor = os.open(output.anchor, self.flags)
-            self.parents.append((descriptor, output.anchor, self.identity(os.fstat(descriptor))))
+            self.parents.append((descriptor, output.anchor, None))
+            self.parents[-1] = (descriptor, output.anchor, self.identity(os.fstat(descriptor)))
             for name in output.parent.parts[1:]:
                 descriptor = os.open(name, self.flags, dir_fd=self.parents[-1][0])
-                self.parents.append((descriptor, name, self.identity(os.fstat(descriptor))))
+                self.parents.append((descriptor, name, None))
+                self.parents[-1] = (descriptor, name, self.identity(os.fstat(descriptor)))
             self.verify()
             try:
                 os.stat(output.name, dir_fd=self.parents[-1][0], follow_symlinks=False)
@@ -166,6 +168,9 @@ class _OutputDirectory:
                     raise IntakeError("output_changed")
             if self.directory is not None:
                 self.verify_child(self.output.name, self.parents[-1][0], self.directory)
+                info = os.fstat(self.directory)
+                if info.st_uid != os.geteuid() or stat.S_IMODE(info.st_mode) != 0o700:
+                    raise IntakeError("output_changed")
         except OSError:
             raise IntakeError("output_changed") from None
 
@@ -184,6 +189,8 @@ class _OutputDirectory:
         os.mkdir(self.output.name, mode=0o700, dir_fd=parent)
         self.directory = os.open(self.output.name, self.flags, dir_fd=parent)
         self.verify()
+        if os.listdir(self.directory):
+            raise IntakeError("new_output_required")
         flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | getattr(os, "O_CLOEXEC", 0)
         keeper = os.open(".keep", flags, 0o600, dir_fd=self.directory)
         try:
@@ -207,6 +214,8 @@ class _OutputDirectory:
             os.fsync(self.directory)
             self.verify_child("descriptor.json", self.directory, descriptor)
             self.verify()
+            if set(os.listdir(self.directory)) != {".keep", "descriptor.json"}:
+                raise IntakeError("output_changed")
         finally:
             os.close(descriptor)
 

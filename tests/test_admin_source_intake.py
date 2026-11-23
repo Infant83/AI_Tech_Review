@@ -280,6 +280,23 @@ class SourceIntakeTests(unittest.TestCase):
         with patch.object(intake, "_OUTPUT_DIR_FD_SUPPORTED", False):
             self.reject("unsupported_output_platform")
 
+    def test_output_anchor_fstat_failure_closes_every_opened_directory(self):
+        actual_open, actual_fstat = intake.os.open, intake.os.fstat
+        opened = []
+        def opening(*args, **kwargs):
+            descriptor = actual_open(*args, **kwargs); opened.append(descriptor)
+            return descriptor
+        def reading_info(descriptor):
+            if len(opened) == 2 and descriptor == opened[-1]:
+                raise OSError("synthetic directory information failure")
+            return actual_fstat(descriptor)
+        with patch.object(intake.os, "open", side_effect=opening), \
+             patch.object(intake.os, "fstat", side_effect=reading_info):
+            self.reject("invalid_intake_input")
+        self.assertEqual(len(opened), 2)
+        for descriptor in opened:
+            with self.assertRaises(OSError): actual_fstat(descriptor)
+
     def test_exact_descriptor_and_selected_path_limits_accept_then_one_less_refuses(self):
         report, descriptor = self.call()
         size = (self.parent / "output-1/descriptor.json").stat().st_size
