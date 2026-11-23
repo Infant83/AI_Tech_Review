@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 47,
+  "record_version": 48,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-22T18:14:32.963733+00:00",
+  "updated_at": "2026-11-23T18:18:27.557366+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "동시DRB attempt1 오탐과같은입력 attempt2 성공·실제HTTPS를 연결하고 test수정8e0740b/로컬73·독립감수를 통합, 실제후속CI관찰 전",
+    "status": "8e074 검사 수정의 후속 실제CI 성공 이력을 보존하며11/24 새정상4run/네작업·후등록/복구와 새실패0을 확인했다. 과거 해결attempt1 사슬과 현재메일0통을 구분한다.",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -143,34 +143,35 @@
     ],
     "remaining_limits": [
       "관련 메일은 기재한 시각까지 확인했으며 상주 감시가 아님. 이전 Pages 지연의 내부 원인과 재발 가능성은 OPS-74bdd550에서 계속 관찰한다."
-    ]
+    ],
+    "historical_8e074_status_at_local_integration": "동시DRB attempt1 오탐과같은입력 attempt2 성공·실제HTTPS를 연결하고 test수정8e0740b/로컬73·독립감수를 통합, 실제후속CI관찰 전"
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-22T18:03:49.556Z",
-    "last_successful_actions_check_at": "2026-11-22T18:04:31.210708Z",
-    "mail_window": "직전 성공에서48시간 겹침·전 영역/검증GitHub발신자/저장소·unread 제한 없이1페이지0통끝. 이전 해결 실패메일은 현재창 밖이며 과거 해결 이력은 보존한다. 상태변경0.",
-    "actions_window": "50개/페이지 첫시도1페이지10run끝. 새energy/DQE 두run attempt1·네작업/backend/실제Pages·HTTPS후등록/보존 성공·새미해결/활성/피드백/조회오류0.",
+    "last_successful_mail_check_at": "2026-11-23T18:02:42.572Z",
+    "last_successful_actions_check_at": "2026-11-23T18:02:34.702678Z",
+    "mail_window": "직전20:34 성공에서48시간 겹침·전 영역/검증GitHub발신자/저장소·unread 제한 없이1페이지0통끝. 과거 해결실패 사슬은 보존하며 메일상태변경0.",
+    "actions_window": "1페이지9run끝·새정상4건(L014/DQB/cachefix/DRB) 모두attempt1·네작업/backend/실제Pages/HTTPS후등록/복구성공. 새실패/활성/피드백/API조회오류0.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "bb828ba451575d58ca662764b22d503bf0593fff",
-    "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
+    "live_source_revision": "6a920806fdad48eea569d0a61f6819244876f430",
+    "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
     "supplemental_actions_check_at": "2026-11-22T02:16:23.765935Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-22T18:04:31.210708Z",
+    "last_full_actions_check_at": "2026-11-23T18:02:34.702678Z",
     "supplemental_successful_runs": [
       "44974749097"
     ],
-    "supplemental_scope": "오전 회차의 단일DRB(02:16Z/11:16KST) 보충 역사적시각/성공run을 보존한다. 현재 전체API18:04:31.210708Z에는 해당DRB도 포함됐으며 별도새실행이 아니다.",
+    "supplemental_scope": "이전 단일DRB 보충필드는 역사 기록이며 현재 전체API와 합산한 새실행이 아니다. 현재전체API는2026-11-23T18:02:34.702678Z다.",
     "historical_supplemental_fields_precede_current_full_check": true,
     "full_api_checkpoint_excludes_later_concurrent_DRB": false,
     "historical_resolved_failed_attempt_count": 1
   },
   "observation": {
-    "status": "03시 새energy/DQE 정상·미해결0·B1 실제CI 관찰",
-    "period": "2026-11-22T18:01:29.209Z",
-    "result": "메일0통/현재창 메일연결run0과 과거 해결 실패attempt1 이력1건을 구분했다. 두새정상run 네작업·실제Pages/HTTPS후등록/복구 성공과 B1 동일3파일·실제discovery 통과를 확인했다. 전체artifact125개/2페이지·복구3개 모두미만료다. 원문로그/메일상태·수동삭제/재실행/실제복원0이다.",
+    "status": "11/24 03시 새정상4건·미해결0",
+    "period": "2026-11-23T18:00:33.624Z",
+    "result": "메일0통/현재창메일연결run0과 과거 해결attempt1 이력1건을 구분했다. 새4run 네작업·실제Pages/후등록 성공. 전체artifact118/2페이지·복구3모두미만료다. 첫공개HTTP요청오류1은별도기록하고 호환client200/완전묶음후속확인과 API오류0을 구분했다. 원문로그/메일상태·리런/수동삭제/실제복원0.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -389,11 +390,12 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-22T18:03:49.556Z",
-      "full_api": "2026-11-22T18:04:31.210708Z",
-      "jobs": "2026-11-22T18:04:32.820302Z",
-      "active_states": "2026-11-22T18:04:34.797599Z",
-      "controls": "2026-11-22T18:04:36.712577Z"
+      "mail": "2026-11-23T18:02:42.572Z",
+      "full_api": "2026-11-23T18:02:34.702678Z",
+      "jobs": "2026-11-23T18:02:39.920329Z",
+      "active_states": "2026-11-23T18:02:34.795067Z",
+      "controls": "2026-11-23T18:02:36.119875Z",
+      "active_states_scope": "Latest completion of five separate state queries, each one page0/end; full API and mail checkpoints remain separate."
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -835,6 +837,71 @@
       "raw_logs_read_saved": 0,
       "mail_state_changes": 0,
       "manual_provider_deletes_reruns_uploads": 0
+    },
+    "night_20261124_03": {
+      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
+      "mail_at": "2026-11-23T18:02:42.572Z",
+      "full_API_at": "2026-11-23T18:02:34.702678Z",
+      "jobs_at": "2026-11-23T18:02:39.920329Z",
+      "normal_runs": [
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45174298990",
+          "source_revision": "6a920806fdad48eea569d0a61f6819244876f430",
+          "attempt": 1,
+          "sync_summary": {
+            "synced": "not_printed",
+            "newArticles": "not_printed",
+            "queuedEvents": "not_printed",
+            "baseline": "not_printed",
+            "replay": "not_printed"
+          }
+        },
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45172573007",
+          "source_revision": "934a9076ffb07b05cfa9f3fc2a71dd9bbe66c4e4",
+          "attempt": 1,
+          "sync_summary": {
+            "synced": "not_printed",
+            "newArticles": 0,
+            "queuedEvents": 0,
+            "baseline": "not_printed",
+            "replay": "not_printed"
+          }
+        },
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45170838744",
+          "source_revision": "3dcb8a75704a9c1186cfe67ba1d398d1b6907582",
+          "attempt": 1,
+          "sync_summary": {
+            "synced": 80,
+            "newArticles": 0,
+            "queuedEvents": 0,
+            "baseline": "not_printed",
+            "replay": "not_printed"
+          }
+        },
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45167456564",
+          "source_revision": "22d453e855231043182e9aa9bed46224ad8d47ca",
+          "attempt": 1,
+          "sync_summary": {
+            "synced": "not_printed",
+            "newArticles": "not_printed",
+            "queuedEvents": "not_printed",
+            "baseline": "not_printed",
+            "replay": "not_printed"
+          }
+        }
+      ],
+      "recovery_artifacts": 3,
+      "total_artifacts": 118,
+      "all_recovery_unexpired": true,
+      "secret_candidates_open_unknown": 6,
+      "secret_candidates_resolved": 3,
+      "API_errors": 0,
+      "public_initial_request_errors": 1,
+      "actual_public_revision": "6a920806fdad48eea569d0a61f6819244876f430",
+      "scope": "Use existing normal QA/cache-fix737d verification; no new browser/device/restore or B2a GitHub execution claim."
     }
   },
   "recovery": {
