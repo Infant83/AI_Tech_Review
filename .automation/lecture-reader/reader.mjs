@@ -1478,12 +1478,30 @@ window.ATRNotebook = Object.freeze({ current: currentInfo, exportNotebook: noteb
 
 async function init() {
   controls(); chooseTool('pen');
-  try {
-    const response = await fetch(new URL('archive-manifest.json', rootURL), { credentials: 'omit' }); if (!response.ok) throw new Error('CATALOG');
+  async function readCatalog(cache) {
+    const response = await fetch(new URL('archive-manifest.json', rootURL), { credentials: 'omit', mode: 'same-origin', cache });
+    if (!response.ok) throw new Error('CATALOG');
     const value = await response.json();
-    catalog = value.documents.filter(d => d.series === 'lecture-notes' && /^[a-z0-9-]+$/.test(d.id) &&
+    if (!Array.isArray(value.documents)) throw new Error('CATALOG');
+    return value.documents.filter(d => d.series === 'lecture-notes' && /^[a-z0-9-]+$/.test(d.id) &&
       d.href === 'archive/files/' + d.id + '.pdf' && /^[a-f0-9]{64}$/.test(d.sha256));
-  } catch { /* personal and previously cached PDFs remain usable */ }
+  }
+  // Capture a validated HTTP-cache entry before a failed revalidation can evict
+  // it. A cache-only miss never starts a network request; unsupported browsers
+  // may skip this optional snapshot. It lives only in this startup's memory.
+  let cachedCatalog = null;
+  try { cachedCatalog = await readCatalog('only-if-cached'); } catch {}
+  // This catalog changes when a lecture arrives, while PDF/annotation IDs stay
+  // stable. Revalidate even a fresh HTTP-cache entry so a new link opens now.
+  try { catalog = await readCatalog('no-cache'); }
+  catch {
+    // Offline readers may still use a previously cached public catalog. Personal
+    // documents, PDF bytes and ink storage are never cleared or rewritten here.
+    if (cachedCatalog !== null) catalog = cachedCatalog;
+    else {
+      try { catalog = await readCatalog('force-cache'); } catch { /* local PDFs remain usable */ }
+    }
+  }
   const id = params.get('id');
   // A selection made while the catalog loads takes precedence over startup restore.
   if (!explicitSelection && !current && !busy) {

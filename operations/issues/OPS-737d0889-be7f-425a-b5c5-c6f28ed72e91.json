@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "OPS-737d0889-be7f-425a-b5c5-c6f28ed72e91",
+  "uuid": "737d0889-be7f-425a-b5c5-c6f28ed72e91",
+  "record_version": 1,
+  "title": "A fresh HTTP-cached catalog hides newly published lecture PDFs in the reader",
+  "type": "defect",
+  "created_at": "2026-11-23T11:56:09.265778+00:00",
+  "updated_at": "2026-11-23T11:56:09.265778+00:00",
+  "status": "validating",
+  "priority": "P2",
+  "source": {
+    "kind": "publication_verification",
+    "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45167456564",
+    "summary": "Found during actual L014 post-publication reader verification; PDF publication itself is valid."
+  },
+  "affected": {
+    "publication_ids": [
+      "lecture:2026-11-23-classiq-qae-l014-notes-ko"
+    ],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-23-classiq-qae-l014-notes-ko"
+    ],
+    "source_paths": [
+      ".automation/lecture-reader/reader.mjs",
+      ".automation/lecture-reader/index.html"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "22d453e855231043182e9aa9bed46224ad8d47ca",
+    "environment": {
+      "device": "Mac headless browser; emulated mobile viewport",
+      "operating_system": "macOS",
+      "browser": "Firefox 158.0",
+      "display_mode": "390px browser viewport; not a physical iPad"
+    },
+    "steps": [
+      "Visit L013 before deployment to warm the public manifest HTTP cache.",
+      "After L014 deployment, open its reader link in the same browser.",
+      "Compare simultaneous default and no-cache manifest requests before expiry."
+    ],
+    "expected": "The newly published PDF opens without clearing personal notes or storage.",
+    "actual": "Default reused the old167-document/13-unit catalog with max-age=600 and missed L014; no-cache immediately returned the new168-document/14-unit catalog. SW is push-only and CacheStorage was empty. Direct public PDF remained available."
+  },
+  "evidence": [
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/45167456564",
+    "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md"
+  ],
+  "limitations": [
+    "Direct reproduction used isolated Firefox158, not a physical iPad/Pencil. Raw responses, headers and screenshots remain private."
+  ],
+  "policy_decision": {
+    "state": "accepted",
+    "rationale": "A time-limited reader failure with direct-PDF and natural-expiry alternatives: P2. Narrow maintenance during authorized publication; no other schedules or work priorities changed.",
+    "related_issues": [
+      "OPS-846020d7-4bc2-44c9-b21e-6a023f44d71f"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "A new lecture or PDF edition fails to open with a warm HTTP cache."
+  },
+  "authority": {
+    "basis": "Existing publication authorization and Nov8 approved ADOPT maintenance.",
+    "current_scope": "Manifest revalidation, validated cached fallback, reader module version and regression tests. Preserve PDFs, IDs, ink, account permissions, subscriptions and authoring/mail schedules.",
+    "additional_decision": null
+  },
+  "owner_role": "ADOPT; publication support for AEDAUT",
+  "acceptance_criteria": [
+    "Original code fails and fixed code opens the new unit with the same real600s HTTP cache.",
+    "Network/invalid-response failure preserves cached public and private PDF access.",
+    "Explicit selection during either await wins over startup restoration.",
+    "Independent candidate, continuity, all four CI jobs and actual HTTPS original flow pass; old PDFs and notes remain unchanged.",
+    "A real503/no-store revalidation must not erase the already validated in-memory catalog or existing local ink."
+  ],
+  "change": {
+    "commits": [],
+    "candidate_reference": "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
+    "deployment_reference": null
+  },
+  "verification": {
+    "status": "Final222 reader and38 archive tests passed. Independent same-profile real HTTP-cache freshness and503 snapshot/ink/position browser checks passed; combined-source candidate and deployment pending.",
+    "checks": [
+      "217 reader tests including9 new cases passed; integrator independent rerun passed.",
+      "Counterfactual new-unit test fails on the original code.",
+      "Actual Firefox revalidation receiving503/no-store evicts the previous HTTP cache. Pre-error only-if-cached succeeds; post-error cache-only fails. Retain a validated in-memory snapshot before the fresh probe.",
+      "Final revision:222 reader tests including14 new cases passed, independently rerun by integrator. Cache-only snapshot precedes revalidation and survives HTTP503 eviction; no persistent-storage writes.",
+      "Final Firefox158: same warm600s HTTP cache old13 -> new14 conditional revalidation opens16-page L014 at page2.",
+      "Then503/no-store: a pre-captured cache-only snapshot opens the same PDF with one exact existing mouse-ink stroke and page2 retained; only one503 network request, no uncaught exception or storage clearing."
+    ],
+    "evidence": [
+      "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md"
+    ],
+    "remaining_limits": [
+      "Final browser, candidate and deployment verification remain pending."
+    ]
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "ADOPT completes independent warm-cache verification, validates one candidate, deploys through existing Pages and checks the original live flow. AEDAUT lecture monitoring continues unchanged."
+}
