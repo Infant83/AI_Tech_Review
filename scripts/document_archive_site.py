@@ -65,6 +65,7 @@ LECTURE_BUNDLES = {
             "L011의 공개판 검수는 qae_l011_public이, 중첩 제어·위상·역연산·작업공간 정리의 논증과 일부 고전 계산·공식 문서 대조는 qae_l011_science가 맡았다. "
             "L012의 공개판 검수는 qae_l012_public이, 상태 준비·진폭·혼합상태·오차 예산의 논증과 일부 고전 계산·공식 문서 대조는 qae_l012_science가 맡았다. "
             "L013의 공개판 검수는 qae_l013_public이, 함수 조합·입출력 조건과 일부 고전 계산·공식 응용 예제 대조는 qae_l012_science가 맡았다. "
+            "L014의 공개판 검수는 qae_l014_public이, 합성·제약·회로 자원의 논증과 일부 고전 계산·공식 문서 대조는 qae_l014_science가 맡았다. "
             "Classiq 공식 강의가 아닌 자체 집필 과정이며 원판 검증 전체를 이번 아카이빙에서 새로 재실행하지 않았다. "
             "영문 입구는 한국어 PDF의 안내다."
         ),
@@ -83,6 +84,7 @@ LECTURE_BUNDLES = {
             "2026-11-20-classiq-qae-l011-notes-ko.pdf",
             "2026-11-21-classiq-qae-l012-notes-ko.pdf",
             "2026-11-22-classiq-qae-l013-notes-ko.pdf",
+            "2026-11-23-classiq-qae-l014-notes-ko.pdf",
             "labs/reference_checks.py", "labs/results/reference-checks.json",
         ),
     },
