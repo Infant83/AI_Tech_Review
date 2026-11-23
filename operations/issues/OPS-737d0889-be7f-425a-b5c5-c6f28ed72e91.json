@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-737d0889-be7f-425a-b5c5-c6f28ed72e91",
   "uuid": "737d0889-be7f-425a-b5c5-c6f28ed72e91",
-  "record_version": 1,
+  "record_version": 2,
   "title": "A fresh HTTP-cached catalog hides newly published lecture PDFs in the reader",
   "type": "defect",
   "created_at": "2026-11-23T11:56:09.265778+00:00",
-  "updated_at": "2026-11-23T11:56:09.265778+00:00",
-  "status": "validating",
+  "updated_at": "2026-11-23T12:34:20.084812+00:00",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "publication_verification",
@@ -72,36 +72,54 @@
     "A real503/no-store revalidation must not erase the already validated in-memory catalog or existing local ink."
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "934a9076ffb07b05cfa9f3fc2a71dd9bbe66c4e4"
+    ],
     "candidate_reference": "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45172573007"
   },
   "verification": {
-    "status": "Final222 reader and38 archive tests passed. Independent same-profile real HTTP-cache freshness and503 snapshot/ink/position browser checks passed; combined-source candidate and deployment pending.",
+    "status": "Final source deployed; four CI jobs, independent actual HTTPS and original warm-cache/503/ink regression flow passed.",
     "checks": [
       "217 reader tests including9 new cases passed; integrator independent rerun passed.",
       "Counterfactual new-unit test fails on the original code.",
       "Actual Firefox revalidation receiving503/no-store evicts the previous HTTP cache. Pre-error only-if-cached succeeds; post-error cache-only fails. Retain a validated in-memory snapshot before the fresh probe.",
       "Final revision:222 reader tests including14 new cases passed, independently rerun by integrator. Cache-only snapshot precedes revalidation and survives HTTP503 eviction; no persistent-storage writes.",
       "Final Firefox158: same warm600s HTTP cache old13 -> new14 conditional revalidation opens16-page L014 at page2.",
-      "Then503/no-store: a pre-captured cache-only snapshot opens the same PDF with one exact existing mouse-ink stroke and page2 retained; only one503 network request, no uncaught exception or storage clearing."
+      "Then503/no-store: a pre-captured cache-only snapshot opens the same PDF with one exact existing mouse-ink stroke and page2 retained; only one503 network request, no uncaught exception or storage clearing.",
+      "Combined C changed only the two reader runtime assets; all existing identities, QAE14 units,30 PDF URLs and concurrent DQB were preserved.",
+      "Pages45172573007 attempt1: build/deploy/notify-readers/recovery-copy all success; notify sync newArticles0/queuedEvents0.",
+      "Actual HTTPS source934a907/catalog87daab72 matches the sealed release; reader module32e8180069c8 and fingerprinted HTML are exact reviewed code.",
+      "Actual Firefox158:14 readers plus latest English reader render page2;28 reader routes,30 PDF hashes,2 searches and12 reviewed screens pass.",
+      "Same warm HTTPS profile keeps the exact existing empty-ink/bookmark/source/page2 state after an ordinary reload; controlled local-origin nonempty mouse-ink/503 preservation is recorded separately.",
+      "Recovery artifact14818177466 metadata is nonexpired and matches the current source/run; normal retention currentArtifactVerifiedtrue. Browser and all owned preview/fixture servers are closed."
     ],
     "evidence": [
       "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md"
     ],
     "remaining_limits": [
-      "Final browser, candidate and deployment verification remain pending."
+      "Actual browser verification used isolated headless Firefox158 and emulated viewports, not physical iPad/Pencil, production account or cross-device collaboration.",
+      "The optional cache-only snapshot lives in startup memory. Browsers without cache-only support retain a best-effort fallback; physical-device behavior remains observation work.",
+      "Recovery artifact download digest, a full restore and provider billing were not independently measured."
     ]
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "Observing the next naturally received lecture and meaningful user feedback.",
+    "period": "2026-11-23T12:27:15.437139+00:00",
+    "result": "Original defect and HTTP503 eviction are reproduced and corrected in a real same-profile HTTP-cache fixture; reviewed source and the ordinary live HTTPS reader flow are verified. No cache or personal-storage clearing was used.",
+    "concurrent_release_preservation": {
+      "revision": "6a920806fdad48eea569d0a61f6819244876f430",
+      "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45174298990",
+      "all_four_success": true,
+      "unchanged_QAE_reader_and_PDF_assets": 250,
+      "same_fourteen_archive_identity_records": true,
+      "new_browser_test": false
+    }
   },
   "recovery": {
-    "plan_reference": null,
+    "plan_reference": "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
     "execution_reference": null,
-    "result": null
+    "result": "Existing normal Pages recovery artifact and current-upload/source retention guard passed. No rollback, user-note reset, database restore or full recovery download was performed."
   },
-  "next_action": "ADOPT completes independent warm-cache verification, validates one candidate, deploys through existing Pages and checks the original live flow. AEDAUT lecture monitoring continues unchanged."
+  "next_action": "Observe the next naturally published lecture with the existing AEDAUT six-hour intake and ADOPT operational process; investigate meaningful recurrence. No new automation, user approval or authoring/mail schedule change is required."
 }
