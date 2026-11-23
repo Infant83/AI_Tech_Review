@@ -1,0 +1,23 @@
+물속에서 상호작용하는 두 아미노산 잔기의 에너지를 구하려고 양자회로를 반복 실행한다. 시간이 다른 여러 회로의 측정값에서 에너지 성분을 읽어내는 계산이다. Castaldo 등의 새 프리프린트는 그 신호에 중요한 에너지 성분이 적을 때, 측정 시점을 성기게 남겨도 필요한 정보를 복원할 수 있음을 시험했다. 실제 Helios 장치를 사용했지만, 계산한 대상은 생체분자 전체가 아니라 두 공간 궤도·두 전자를 남긴 작은 내장 활성공간이다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+이 방법의 출발점은 시간 신호의 진동이다. 준비한 상태를 시간에 따라 진화시키고 원래 상태와 얼마나 겹치는지 측정하면, 각 에너지 성분이 서로 다른 속도로 위상을 바꾼다. QPD(quantum prolate diagonalization)는 이 자기상관 신호를 고전 행렬 문제로 바꾸어 에너지를 추정한다. 희소 QPD는 소수의 성분이 신호를 지배한다는 구조를 이용해, 빠진 시간점의 값을 압축센싱으로 복원한다. 적게 측정할 수 있는 이유가 단순히 측정 예산을 깎았기 때문이 아니라, 남겨 둔 정보로 신호를 추론할 수 있기 때문이다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+여기서 절감과 정확도를 읽을 때는 실험의 분모가 중요하다. 연구진은 한 번 취득한 128개 시간점의 장치 자료에서 50개씩 고른 부분집합 200개를 만들어 복원 결과를 살폈다. 200회의 독립 QPU 실험이나, 처음부터 50개 시간점만 측정한 전향적 실증은 아니다. 시간점을 균일하게 골라 복원한 에너지 오차의 중앙값은 1.54 mHa(밀리하트리), 그 분포의 사분위범위는 1.77 mHa였다. 관례적인 화학 정확도 약 1.6 mHa와 가까운 값이지만 분포의 폭도 함께 읽어야 한다. 저자들은 불확실성을 고려하면 어느 방식이 더 정확하다고 결론 내릴 수 없다고 명시한다.<span class="citation">[<a href="#ref-1">1</a>]</span>
+
+Peng 등의 다른 프리프린트는 에너지를 복원하는 시간점 대신, 변분 계산의 매개변수를 조정하는 데 필요한 측정 묶음을 고른다. 각 매개변수의 에너지 기울기에 크게 기여하는 관측 연산자 묶음이 다르다는 점을 학습한 선택기가 이용한다. 보고된 평균 49.6%는 정확한 기대값으로 진행한 모의 VQE에서 계상한 기울기 측정 샷의 절감이다. 모든 묶음을 사용하는 Full-QWC와의 평균 절대 에너지 차이는 5.67 mHa였으며, 정확한 분자 에너지에 대한 오차와는 다른 비교다. 학습용 정답 기여도를 만드는 비용도 이 샷 수에는 포함되지 않는다.<span class="citation">[<a href="#ref-2">2</a>]</span>
+
+두 연구는 무엇을 남겨야 하는지 물리적 구조에서 찾는다. 하나는 시간 신호의 에너지 성분을, 다른 하나는 매개변수별 기울기 기여도를 이용한다. 다만 서로 다른 회로 수를 줄이는 일과 회로를 반복 측정하는 샷 수를 줄이는 일은 비용 항목이 다르다. 새로운 분자나 더 복잡한 스펙트럼에서도 복원이 안정적인지, 선택기를 만드는 고전 계산을 여러 계산에 재사용할 수 있는지까지 확인해야 절감이 전체 작업의 이득으로 남는다.
+
+기존 「양자 계산의 전체 비용을 설계하다」는 상태 준비·반복 측정·고전 기준상태의 비용을 함께 세는 문제를 다뤘다.<span class="citation">[<a href="#ref-3">3</a>]</span> 이번 결과는 그 논의를 측정에서 보존할 정보와 허용할 에너지 오차로 구체화한다. 재료 계산에서 다음에 비교할 것은 가장 작은 회로 수 하나보다, 같은 활성공간과 오차 목표에서 얻는 에너지의 안정성과 준비·측정·복원을 합친 시간이다. 이를 기록하면 더 줄여도 되는 측정과, 정확도를 위해 다시 늘려야 할 측정을 구별할 수 있다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://arxiv.org/abs/2611.22834v1">D. Castaldo, M. Kronenberger, M. Miller, S. Forget, G. C. Solomon, K. Lindorff-Larsen, M. Christandl, and M. Reiher, Molecular energies from sparse quantum prolate diagonalization on a trapped-ion quantum processor, arXiv:2611.22834v1 (2026).</a></li>
+<li id="ref-2"><a href="https://arxiv.org/abs/2611.22118v1">Y. Peng, B. Yan, H. Shah, S. Raghuraman, K. Wagner, and S. S. Arora, Variational relevance-informed sparsification of term measurements for variational quantum algorithms, arXiv:2611.22118v1 (2026).</a></li>
+<li id="ref-3"><a href="https://infant83.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/">H.-J. Kim, 양자 계산의 전체 비용을 설계하다, AI Tech Review Letters (9 September 2026; revised 19 November 2026).</a></li>
+</ol>
+
+## 작성·검증
+
+편집부(AEDAUT) root가 원 DQB 5쪽과 관련 기존 글을 읽고, 두 측정 절감 논문의 관련 본문·실험·비교 조건을 대조해 한영 원고를 작성했다. `dqb1123_research`는 두 원문의 판본·수치·실행 범위를 독립 확인하고 한영 원고·제목·별도 요약을 비작성자로 감수했다. `dqb1123_boundaries`는 원 DQB의 다른 네 연구와 정식 서지·출판 상태를 대조했고, `dqb1123_pdf`는 원 PDF와 공개 파생판의 구조·개인정보·링크·렌더링을 검사했다. 실제 읽은 부분과 재사용한 근거는 회차 기록에서 구별한다. 원호·웹 작성일·추가 근거 기준일은 2026년 11월 23일이다. 두 연구의 연결과 후속 비교 항목은 편집 해석이며 실험·QPU·코드 실행이나 사람 독자 평가는 재현하지 않았다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다.

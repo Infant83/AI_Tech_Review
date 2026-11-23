@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 35,
+  "record_version": 36,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-22T02:05:59.171639+00:00",
+  "updated_at": "2026-11-22T18:14:32.963733+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -275,22 +275,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "manifest_files": 2716,
-      "manifest_bytes": 819703935,
-      "release_json_bytes": 1387301,
-      "public_files": 2717,
-      "public_bytes": 821091236,
-      "pdf_paths": 274,
-      "unique_pdf_objects": 194,
+      "manifest_files": 2751,
+      "manifest_bytes": 848545058,
+      "release_json_bytes": 1405070,
+      "public_files": 2752,
+      "public_bytes": 849950128,
+      "pdf_paths": 279,
+      "unique_pdf_objects": 197,
       "retained_edition_urls": 22,
-      "growth_bytes": 1691065,
-      "growth_basis_source": "02face5edced886dc3aaa96c06a2158020f8e7e5",
-      "excess_over_internal_800MB_bytes": 21091236,
-      "checked_at": "2026-11-22T02:17:49.590179+00:00",
-      "source_revision": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
-      "headroom_to_internal_800MB_bytes": -21091236,
-      "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
-      "scope": "실제 HTTPS 완전 봉인 metadata. 내부800MB 관리 목표를 공급자 quota/장애 또는 외부활성화/물리절감 측정으로 해석하지 않는다."
+      "growth_bytes": 28858892,
+      "growth_basis_source": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
+      "excess_over_internal_800MB_bytes": 49950128,
+      "checked_at": "2026-11-22T18:07:31.806189+00:00",
+      "source_revision": "bb828ba451575d58ca662764b22d503bf0593fff",
+      "headroom_to_internal_800MB_bytes": -49950128,
+      "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
+      "scope": "실제 HTTPS 완전 봉인 metadata의 manifest와release.json 포함 총계를 구분한다. 내부800MB는 관리목표이며 공급자quota/장애 판정이나 실제 외부활성화/물리절감 측정이 아니다."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -513,9 +513,9 @@
     }
   },
   "observation": {
-    "status": "보존 방어 첫 정상CI/후속API 관찰 완료·외부 비활성",
-    "period": "2026-11-22T01:57:50.693Z",
-    "result": "L013의 기존 EVT-43c36515(base34)와 DQB의 기존 게시 QA를 현재 API 복구3개/모두 미만료에 대조했다. c6의 current upload 결속·제한 재조회·keep3와 CI 확정삭제2+1을 실제 정상 게시에서 관찰했다. 이 회차 수동삭제/재실행/업로드0이며 원격 archive 다운로드 재해시·실제복원·공급자 지연 원인/물리절감은 미확인이다. 최신 공개819400171B·273PDF/193객체와 외부 비활성/접근·봉인·복구 차단을 유지한다. 이후 정상DRB6a81의 실제공개821091236B·274PDF/194객체와 필터복구목록3개/모두미만료를 보충 확인했다. 새DRB listing/삭제 숫자는 미출력으로 추정하지 않는다.",
+    "status": "보존 방어 정상CI 유지·공개 성장 갱신·외부 비활성",
+    "period": "2026-11-22T18:01:29.209Z",
+    "result": "새energy/DQE의 정상CI에서 같은 c6guard/필수현재upload결속·보존step 성공과 현재복구3개/모두미만료를 확인했다. 개별listing/삭제수는미출력으로추정하지 않았다. 새실제공개849950128B·279PDF/197객체와내부목표초과49950128B를오늘11시성장/외부선행검토에인수하며현재P2/외부비활성·원격봉인/복구미완료를유지한다. 수동삭제/실제복원/물리절감0이다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1078,6 +1078,41 @@
       "manual_provider_deletes_reruns_uploads": 0,
       "actual_restore": false,
       "current_guard_source_unchanged": true
+    },
+    "night_20261123": {
+      "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
+      "source_revision": "bb828ba451575d58ca662764b22d503bf0593fff",
+      "public_footprint": {
+        "manifest_files": 2751,
+        "manifest_bytes": 848545058,
+        "release_json_bytes": 1405070,
+        "public_files": 2752,
+        "public_bytes": 849950128,
+        "pdf_paths": 279,
+        "unique_pdf_objects": 197,
+        "retained_edition_urls": 22,
+        "growth_bytes": 28858892,
+        "growth_basis_source": "6a81b70338a1a4ca3d014d25c0b8b45a03230dce",
+        "excess_over_internal_800MB_bytes": 49950128,
+        "checked_at": "2026-11-22T18:07:31.806189+00:00",
+        "source_revision": "bb828ba451575d58ca662764b22d503bf0593fff",
+        "headroom_to_internal_800MB_bytes": -49950128,
+        "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
+        "scope": "실제 HTTPS 완전 봉인 metadata의 manifest와release.json 포함 총계를 구분한다. 내부800MB는 관리목표이며 공급자quota/장애 판정이나 실제 외부활성화/물리절감 측정이 아니다."
+      },
+      "growth_bytes_since_previous_public": 28858892,
+      "new_normal_run_urls": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45026583822",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45023831084"
+      ],
+      "current_recovery_copies": 3,
+      "all_unexpired": true,
+      "metadata_checked_at": "2026-11-22T18:04:36.298894Z",
+      "guard_source_unchanged": true,
+      "listing_and_individual_delete_numbers": "not_printed",
+      "manual_provider_deletes_reruns_uploads": 0,
+      "actual_restore": false,
+      "new_P1_service_outage_established": false
     }
   },
   "recovery": {
@@ -1101,7 +1136,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "현재upload 결속 방어는 다음 기존 정상 게시/새 실패에서 관찰한다. 외부 접근/원격 봉인·복구의 새 입력은23일11시 재검토하며 실제 활성화·정적 제외/복원 완료를 확정하지 않는다. 주간 구조27일11시와 B1 이후 범위 검토는 별도다.",
+  "next_action": "오늘11시 내부목표초과49,950,128B/새증가28,858,892B와 외부접근·원격봉인/복구의 새 입력 및 가능한 최소 후속 범위를 재평가한다. 내부목표를 providerquota/장애로 판정하지 않으며 실제 외부활성화/정적제외·복원 완료를 확정하지 않는다. 보존 방어는 다음 기존 정상CI/새실패에서 관찰하고 무조건재실행하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
@@ -1111,7 +1146,7 @@
     "scheduled_step": "외부 저장소 새 선행 근거 재검토·보존 방어는 다음 정상CI/새 실패에서 관찰",
     "replan_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
     "replan_reason": "11/22 오전 근거·대기 우선순위 재평가를 수행했다. 현재 차단 조건을 해소할 새 근거가 없어 기존 상태/등급을 유지하며23일11시에 입력을 재검토한다. 중요한 새 근거는 받은 기본 회차에서 먼저 확인한다.",
-    "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+    "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [

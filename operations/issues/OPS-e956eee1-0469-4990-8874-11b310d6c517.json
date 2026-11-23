@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e956eee1-0469-4990-8874-11b310d6c517",
   "uuid": "e956eee1-0469-4990-8874-11b310d6c517",
-  "record_version": 8,
+  "record_version": 9,
   "title": "편집 하네스 공개 버전과 글별 실제 적용 판본의 추적 정합성",
   "type": "editorial_provenance",
   "created_at": "2026-11-09T03:12:43Z",
-  "updated_at": "2026-11-22T02:05:59.171639+00:00",
+  "updated_at": "2026-11-22T18:14:32.963733+00:00",
   "status": "planned",
   "priority": "P2",
   "source": {
@@ -217,6 +217,17 @@
     "morning_20261122": {
       "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
       "result": "OLED 새 한영 웹원고·범위별 과학/문체 감수와 DQB22의 원고별 감수 근거를 부분 인수했다. 정확 정책/harness 입력 SHA 결속은 새 final-review 기록에서도 미확인이다. 원고 SHA·최신 정책을 전체 적용 추적/사람 감수 완료로 해석하지 않았다."
+    },
+    "night_20261123": {
+      "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
+      "source_revision": "c8816e40252c58e43e6615f3f3703e7bd690d1fb",
+      "result": "새energy의11/20 국문초안/preview editorial-review는 현재원고SHA와달라 역사기록으로분리했다. 현재게시판은production/publication QA·v2native3SHA·dist28파일manifest결속으로인수했다. 한영작성정보의기본판2026.08/보완날짜와11/22출판판표시는부분근거이나실제읽은정확정책입력bytesSHA·사람문장별감수는미확인/미기록이다.",
+      "historical_draft_KO_manuscript_hash_matches_current": false,
+      "published_v2_native_three_SHA_verified": true,
+      "published_dist_manifest_files": 28,
+      "exact_policy_or_harness_input_SHA_binding_verified": false,
+      "human_sentence_level_review_recorded": false,
+      "full_tracking_implementation_complete": false
     }
   },
   "recovery": {
@@ -224,7 +235,7 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "OLED/DQB22의 원고·역할·범위 부분 근거를 보존하고23일11시 정확 정책/harness 입력 판본 결속과 최소 기술 연결의 새 근거를 재검토한다.",
+  "next_action": "energy의 과거초안과 현재게시 v2/출력manifest·한영작성정보의부분근거를구분해보존하고 오늘11시 정확 정책/harness 입력판본 결속과 최소 기술 연결의 새 근거를 재평가한다. 옛draftstatus/SHA를 현재감수/게시상태로 복사하거나 원고해시만으로 전체적용·사람감수를 완료하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
@@ -232,7 +243,7 @@
     "next_scheduled_step_at": "2026-11-23T11:00:00+09:00",
     "next_review_at": "2026-11-23T11:00:00+09:00",
     "scheduled_step": "기존 하네스 연결 기술안·실제 정책 입력/검토 원고 근거 및 다음 최소 범위 재평가",
-    "run_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
+    "run_reference": "operations/runs/20261122T180229Z-aec4252f-2e1b-448f-8e6d-91f7cea50731.md",
     "morning_reassessment_at": "2026-11-22T11:00:00+09:00",
     "replan_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md",
     "replan_reason": "11/22 오전 근거·대기 우선순위 재평가를 수행했다. 현재 차단 조건을 해소할 새 근거가 없어 기존 상태/등급을 유지하며23일11시에 입력을 재검토한다. 중요한 새 근거는 받은 기본 회차에서 먼저 확인한다."

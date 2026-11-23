@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-23T11:50:55.176662+00:00",
+  "reviewer": "dqb1123_research",
+  "role": "Independent audit of references1–2 in the actual public PDF, separate from its producer",
+  "status": "pass_for_assigned_science_and_selected_page_visual_scope",
+  "pdf_sha256": "694b32d33dc5f42075bf835a26fa5e76b45b982cc871cb8e2939a83ff503008d",
+  "pdf_bytes": 198206,
+  "pdf_pages": 7,
+  "actual_read_and_render_scope": {
+    "initial_pdf_sha256": "bed93fe11a5723ea778528e66a284a0410f60f08cbd693323e7128dcba481997",
+    "read_pdf_pages": [
+      1,
+      2,
+      3,
+      6,
+      7
+    ],
+    "visually_inspected_rendered_pages": [
+      1,
+      2,
+      3,
+      6,
+      7
+    ],
+    "bounded_final_recheck": "After the absolute-gap notation correction, re-extracted actual PDF text and newly rendered pages1/3 were read. Independent pixel hashes of pages2/6/7 are identical to those previously inspected.",
+    "final_pixel_comparison_to_prior": {
+      "1": false,
+      "2": true,
+      "3": false,
+      "6": true,
+      "7": true
+    }
+  },
+  "science_checks": [
+    "Sparse-QPD headline and summary retain uncertainty rather than claiming all hardware estimates meet chemical accuracy.",
+    "Two spatial orbitals and two electrons, four spin orbitals before tapering, two system qubits plus one ancilla and classical solvent point charges are identified.",
+    "The single128-point acquisition and200 retrospective50-point subsets are not presented as independent hardware runs or a prospective sparse-only cost demonstration.",
+    "Reported medians/IQR notation and Full-QPD comparison match original Figure5; no accuracy superiority or total-workflow advantage is inferred.",
+    "O(log Ns) is scoped to recoverable sparse/low-rank signal time points rather than unconditional shot or wall-clock saving.",
+    "The VQA49.6% nominal gradient-shot account and5.67mHa seed-level mean absolute Full-QWC gap are distinct from physical QPU execution and FCI error.",
+    "Each retained parameter–group pair has two shifted settings charged1,024 shots each; offline training labels and other classical costs are excluded.",
+    "Noise extensions remain simulations. References1–2 list all authors in the original order, preserve titles and use exactv1 links.",
+    "The table now correctly writes mean |ΔE| for5.67mHa; the corrected p1 summary also explicitly says absolute gap."
+  ],
+  "selected_visual_checks": [
+    "Changed scientific text and table cells on pages1–3 remain within their regions without overlap or clipping.",
+    "Edition notes on page6 and references1–2 on page7 are legible and complete at the inspected render size."
+  ],
+  "issues": [],
+  "excluded": [
+    "Scientific verification of references3–6 belongs to the separate assigned reviewer.",
+    "No full7-page PDF structure/privacy/rights audit is claimed by this role.",
+    "No experimental, QPU, training or algorithm execution.",
+    "No final site deployment, CI, or actual new public-URL verification."
+  ]
+}
