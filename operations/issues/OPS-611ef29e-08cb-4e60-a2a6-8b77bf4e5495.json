@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
   "uuid": "611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
-  "record_version": 19,
+  "record_version": 20,
   "title": "하단 통계 링크를 독자용 읽기 통계와 인사이트 페이지로 개편",
   "type": "reader_insights",
   "created_at": "2026-11-10T11:15:18Z",
-  "updated_at": "2026-11-24T12:28:12.960412+00:00",
+  "updated_at": "2026-11-24T21:08:56.074449+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -347,26 +347,26 @@
     "execution_reference": null,
     "result": "직전 Worker 코드 version을 확보했고 최신 게시물을 보존하는 단일 Pages 경로와 공개 복구 사본을 확인했다. 실제 rollback·개인 DB 복구·원본 삭제는 수행하지 않았다."
   },
-  "next_action": "새 의미 있는 제보/실패/근거는 받은 기존03/11/19시 회차에서 먼저 확인한다. 공식 묶음 재검토는11/26 19시, 장기 대기 우선순위 재평가는25일11시다. 새 직접 근거 없이 테스트 발행/푸시·같은 전체 검사를 반복하지 않는다.",
+  "next_action": "새 의미 있는 제보/실패/근거는 받은 기존05:30/13:30/18:30 회차에서 먼저 확인한다. 공식 묶음 재검토는11/26 18:30, 장기 대기 우선순위 재평가는25일13:30이다. 새 직접 근거 없이 테스트 발행/푸시·같은 전체 검사를 반복하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "minimum_delivery_deployed_observing",
-    "next_scheduled_step_at": "2026-11-26T19:00:00+09:00",
-    "next_review_at": "2026-11-26T19:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-26T18:30:00+09:00",
+    "next_review_at": "2026-11-26T18:30:00+09:00",
     "scheduled_step": "독자용 통계의 새 실사용/분류 근거 재검토",
     "implementation_start_target": "2026-11-15T11:00:00+09:00",
     "dependencies": [
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
     ],
-    "replan_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
-    "replan_reason": "11/24 19시 근거 묶음 검토를 실제21:19 재개에서 수행했다. 새 직접 실기기/실사용/재발 근거가 없어 관찰 상태/P2·제품 순서를 유지하고 다음 묶음 검토만26일19시로 연결한다.25일11시 오전 계획 점검에서 장기 대기 우선순위를 재평가하며 새 중요 근거는 받은 기본 회차에서 먼저 판단한다.",
+    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다.",
     "dependency_completion_condition": "FCC 전체 해결이나 외부 이전 완료가 아닌 이번 로컬 v2 최소 후보의 구현·필요 검증 종료 또는07시 명시적 재배정. 선행 미완료이면 후보/재개점과 영향 일정을 함께 갱신한다.",
     "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-15T11:04:05.179391+09:00",
     "implementation_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
     "technical_delivery_complete": true,
-    "next_review_if_no_new_evidence": "2026-11-26T19:00:00+09:00"
+    "next_review_if_no_new_evidence": "2026-11-26T18:30:00+09:00"
   }
 }

@@ -2,17 +2,17 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 37,
+  "record_version": 38,
   "title": "ADOPT 기본 운영 주기와 임시 하루 다섯 회차·과제 일정 관리",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-20T02:10:31.383278+00:00",
-  "status": "resolved",
+  "updated_at": "2026-11-24T21:08:56.074449+00:00",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "user_request",
     "reference": "DEVELOPMENT_OPERATIONS_POLICY.md",
-    "summary": "사용자가 운영 과제의 적체를 줄이기 위해 기존 하루 한 번의 운영 예약을 하루 세 번으로 늘리라고 지시함 2026-11-12 사용자가 당분간 하루5회 증편과 과제별 예정 일정·충돌/회귀 예방 관리를 추가 지시함. 이어 새 요청·긴급 과제에 따라 우선순위와 구현·검증·통합 슬롯을 재조정하고 밀린 작업을 이어 관리하라고 지시함."
+    "summary": "사용자가 운영 과제의 적체를 줄이기 위해 기존 하루 한 번의 운영 예약을 하루 세 번으로 늘리라고 지시함 2026-11-12 사용자가 당분간 하루5회 증편과 과제별 예정 일정·충돌/회귀 예방 관리를 추가 지시함. 이어 새 요청·긴급 과제에 따라 우선순위와 구현·검증·통합 슬롯을 재조정하고 밀린 작업을 이어 관리하라고 지시함. 2026-11-25 사용자가 다른 에이전트와 겹침을 줄이는 일정 조정을 지시해 같은 하루3회 예약만05:30·13:30·18:30으로 분산함."
   },
   "affected": {
     "publication_ids": [],
@@ -66,7 +66,8 @@
     "operations/runs/20261113T021104Z-907ebc2f-47b2-4bbf-9455-1786b706124b.md",
     "operations/runs/20261113T060249Z-263dad96-9a9d-4824-be22-3266ad2c3166.md",
     "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
-    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md"
   ],
   "limitations": [
     "첫03시·11시·19시 근접 회차는 실제 관찰했으나 단일 날짜의 결과로 미래 정각 실행·누락 없음·호스트 가용성을 보증하지 않음",
@@ -89,7 +90,7 @@
   },
   "owner_role": "운영팀(ADOPT)",
   "acceptance_criteria": [
-    "기존 예약 하나의 기본03·11·19시를 보존하고11/12~18 임시03·07·11·15·19시 하루5회 설정·종료 재평가 지침이 저장됨",
+    "기존 예약 하나로 하루3회를 유지하고 현재05:30·13:30·18:30 설정·프롬프트/정책 일치를 확인함. 과거 임시5회와11/19 기본3회 복귀 이력은 보존함.",
     "설정과 프롬프트·현재 운영 정책이 일치하고 기존 이름·대상·활성·종류·통지 설정을 보존함",
     "직전 실행·우선 일감·진행 파일을 이어받아 같은 전체 이력·주간/월간 작업·동시 배포를 중복하지 않음",
     "설정 반영과 실제 각 시간대 기동을 구분해 기록하고 다음 회차에서 실제 동작을 관찰함",
@@ -105,7 +106,7 @@
     "configuration_update_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   },
   "verification": {
-    "status": "기본3회 저장과19·03·11시 각첫근접기동 확인·독립 완료조건 대조, 지속/정각 보장 아님",
+    "status": "새 분산 일정 저장 대조 완료; 실제 새 세 시각 기동 관찰 전",
     "checks": [
       "지원 도구가 기존ai-tech-review 갱신 성공을 반환함",
       "실제 설정 비교에서 prompt·시간 규칙·updated_at만 변경됨",
@@ -192,10 +193,40 @@
       "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
       "acceptance_criteria_reviewed": 6,
       "result": "한정된 설정·복귀·각첫기동·인계/일정 연결 조건 충족. 자동화는 계속 ACTIVE·03/11/19시이며 삭제/변경 없음. 정상 실행의 trigger는 기존 run에 재사용하고 새 지연/회귀/사용자 지시 때 동일 일감 재개."
+    },
+    "reslot_20261125": {
+      "run_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+      "checked_at": "2026-11-24T21:06:56.645143+00:00",
+      "automation_id": "ai-tech-review",
+      "status": "ACTIVE",
+      "hours_kst": [
+        5,
+        13,
+        18
+      ],
+      "minute": 30,
+      "second": 0,
+      "same_id_name_kind_target_status_preserved": true,
+      "other_configuration_files_unchanged": 15,
+      "changed_fields": [
+        "prompt",
+        "rrule",
+        "updated_at"
+      ],
+      "new_automation_created": false,
+      "actual_new_slot_triggers_observed": false,
+      "next_run_provider_confirmed": false,
+      "first_new_nominal_at": "2026-11-25T13:30:00+09:00",
+      "first_five_thirty_nominal_at": "2026-11-26T05:30:00+09:00",
+      "interval_hours": [
+        8,
+        5,
+        11
+      ]
     }
   },
   "observation": {
-    "status": "기본3회 저장과19·03·11시 각첫근접기동 확인·독립 완료조건 대조, 지속/정각 보장 아님",
+    "status": "2026-11-25 새 일정 저장 확인; 실제 기동 관찰 재개",
     "period": "2026-11-19T04:41:08.787Z",
     "result": "11/19 13:41:08.787KST 실제 trigger와13:44:22KST 저장 확인을 구분한다. 마지막17일15시 이후 약46시간38분 공용 기록 공백의 원인·명목 예약 슬롯·실제 누락 횟수는 미확인이다. 과거 회차를 수행한 것으로 만들지 않는다.",
     "default_three_first_evening_trigger": {
@@ -218,6 +249,12 @@
       "trigger_utc": "2026-11-20T01:59:24.393Z",
       "trigger_kst": "2026-11-20T10:59:24.393+09:00",
       "stored_configuration_unchanged": true
+    },
+    "reslot_20261125": {
+      "run_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+      "result": "기존03시 운영 중03:14 렉처 아카이빙이 실제 겹친 근거와 주요 고정 예약 시각을 확인해 운영팀만 분산했다. 저장과 실제 기동은 구분한다. 오늘 경과한05:30은 소급하지 않는다. 기존 대기 실행 유무/장기 실행·지연 기동까지 무중첩은 미확인이다.",
+      "first_new_triggers": {},
+      "old_completed_night_run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
     }
   },
   "recovery": {
@@ -225,16 +262,16 @@
     "execution_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "result": "승인된 임시 기간 종료에 따른 기본3회 설정 복귀와 실제 저장 대조를 수행했다. 제품 배포 롤백/개인 DB 복원은 하지 않았다."
   },
-  "next_action": "별도 기동확인 슬롯은 종료한다. 기본3회 운영은 계속 유지하고 정상 run의 실제 trigger를 재사용한다. 새로운 지연·회귀·주기 변경 요청이 있으면 이 일감을 재개한다. 지속/정각 실행·과거 공백 원인 규명 완료로 확대하지 않는다.",
+  "next_action": "오늘13:30·18:30과11/26 05:30의 실제 trigger를 각각 다음 기존 run에서 관찰한다. 저장된 시간과 명시적 nextRun/실제 기동을 구분하고 과거 대기 실행이나 긴 작업이 겹치면 소유·진행 파일·배포 상태를 확인해 충돌 작업을 보류한다. 새 예약/테스트 기동·소급 완료는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "resolved_default_three_first_slot_observations_complete",
-    "next_scheduled_step_at": null,
-    "next_review_at": null,
-    "scheduled_step": "별도 슬롯 없음; 새 지연/회귀/사용자 주기 지시 때 재개",
-    "run_reference": "operations/runs/20261120T020304Z-21502e5d-6ab6-447f-a839-605ca61b9b27.md",
-    "replan_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
-    "replan_reason": "11/17 15시 이후 공용 실행 기록 공백을11/19 실제 회차 하나로 통합 확인했다. 지난 예정 회차를 소급 완료하지 않고 기본3회 슬롯으로 재배정한다. 우선순위·관리 후보·기존 기술 선행과 게시 권한은 보존한다."
+    "state": "observing_reslotted_three_saved_actual_triggers_pending",
+    "next_scheduled_step_at": "2026-11-25T13:30:00+09:00",
+    "next_review_at": "2026-11-25T13:30:00+09:00",
+    "scheduled_step": "새13:30 첫 기동을 기존 run에 기록하고 이후18:30/05:30 첫 실제 trigger를 관찰",
+    "run_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다."
   }
 }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 39,
+  "record_version": 40,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-24T18:10:28.961835+00:00",
+  "updated_at": "2026-11-24T21:08:56.074449+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -1199,16 +1199,16 @@
       "private_db_restore": false
     }
   },
-  "next_action": "25일11시 외부 저장소 입력/내부목표 초과를 재평가한다. CLI 종료상태 보완은 다음 기존 정상CI에서 거절/정리 결과를 관찰하며 현재keep3/current-upload 검증을 유지한다. 공개 배포 성공·복구 생성·실제 삭제를 구분하고 관찰용 재실행/수동삭제는 하지 않는다.",
+  "next_action": "25일13:30 외부 저장소 입력/내부목표 초과를 재평가한다. CLI 종료상태 보완은 다음 기존 정상CI에서 거절/정리 결과를 관찰하며 현재keep3/current-upload 검증을 유지한다. 공개 배포 성공·복구 생성·실제 삭제를 구분하고 관찰용 재실행/수동삭제는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "retention_guard_first_normal_CI_observed_external_evidence_pending",
-    "next_scheduled_step_at": "2026-11-25T11:00:00+09:00",
-    "next_review_at": "2026-11-25T11:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-25T13:30:00+09:00",
+    "next_review_at": "2026-11-25T13:30:00+09:00",
     "scheduled_step": "외부 저장소 새 선행 근거 재검토·보존 방어는 다음 정상CI/새 실패에서 관찰",
-    "replan_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
-    "replan_reason": "11/24 11시 별도 완료 공용 기록을 확인하지 못해 실제21:19 재개에서 지난03시 이후 새 근거를 통합했다. 차단 조건을 해소할 새 직접 입력이 없어 현재 상태/등급을 유지하고25일11시 재평가한다. 과거 회차 소급 완료·일반 게시 추가승인은 없다.",
+    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다.",
     "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
@@ -1220,8 +1220,8 @@
     "local_candidate_technical_validation_complete": true,
     "integration_pending": false,
     "local_minimum_delivery_completed": true,
-    "weekly_structure_review_at": "2026-11-27T11:00:00+09:00",
-    "external_storage_next_review_at": "2026-11-25T11:00:00+09:00",
+    "weekly_structure_review_at": "2026-11-27T13:30:00+09:00",
+    "external_storage_next_review_at": "2026-11-25T13:30:00+09:00",
     "retention_guard_next_observation": "next_existing_normal_publication_or_new_failure",
     "retention_guard_first_actual_CI_observation_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md"
   }
