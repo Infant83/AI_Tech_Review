@@ -101,3 +101,29 @@ Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능
 이는 제어된 로컬 운영자와 부모 경로를 위한 도구다. POSIX mkdir는 열린 directory FD를 반환하지 않으므로 mkdir와 첫 open 사이의 임의 same-UID 프로세스가 소유·mode·empty 조건을 만족하는 일반 디렉터리로 교체한 것을 원자적으로 식별한다고 보장하지 않는다. leaf identity 결속은 첫 open부터이며 mkdir가 만든 바로 그 inode의 원자적 획득·출력 namespace 잠금·source 전체의 원자적 snapshot·후속 writer 인가를 뜻하지 않는다. 비신뢰 주체가 부모 경로를 변경할 수 있는 공유 서버의 출력 경로로 활성화하는 것은 후속 설계다.
 
 B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다. 최종 전체554검사(553통과·기존 선택1skip)와 범위별 독립 근거는 [실행 기록](../../operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md)을 따른다. candidate Git/keyclaim·원본 writer·서버/API/DB·발행은 구현하지 않았다. 후속 [B2b1 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b1--선택-입력의-독립-git-보존과-불변-판본-매핑)은 선택 원본 bytes의 독립 Git 보존/불변 판본 매핑만 채택했으며 구현 전이다. 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
+
+## B2b1 · 선택 원본 bytes의 첫 독립 Git 보존 후보
+
+`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 현재는 첫 구현/초기 검사 후보이며 정식 독립 감수 목표는11/25 11시다.
+
+운영자는 논리 repository UUID와 고정 local principal을 별도로 정한다. 요청 JSON의 actor/role/path나 현재 source SHA를 namespace로 사용하지 않는다. `init-store`는 존재하지 않는 새 경로에만 적용하며, `import`/`inspect`는 기존 identity/epoch·bare 설정·보호 표시·lock을 확인한다. `repositoryId`·principal·operation은 여러 import에 걸쳐 유지한다. 초기화 시 source common-dir의 device/inode도 결속해 다른 repository를 자동 연결하지 않는다. 물리 source 이전·store 전체 유실/복원·운영 key store 활성화는 미지원이며 새 epoch를 과거 이력 망각의 허가로 쓰지 않는다.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py init-store --store /controlled/projection-store --root /controlled/source --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py import --store /controlled/projection-store --root /controlled/source --request /controlled/checked-request.json --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py inspect --store /controlled/projection-store --projection-digest VERIFIED_DIGEST --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+```
+
+store는 source/common-dir·baseline을 포함한 원본 경로 밖의 제어된 부모에 둔다. `.keep`를 먼저 만들고 부모부터 no-follow directory FD로 결속하며 euid/0700과 파일별 배타 생성을 확인한다. 첫 open 전 namespace 교체의 B2a 로컬 지원 한계는 같다. 공유 서버의 출력 경로나 실제 계정 인가로 확대하지 않는다. 다른 작업의 진행 파일·기존 output을 덮거나 제거하지 않는다.
+
+`sourceOriginRevision`/`sourceTree`는 원본을, parent 없는 `candidateBaseRevision`/`candidateTree`는 선택 파일의 별도 tree를 가리킨다. 원래 요청의 SHA/fingerprint를 부분 후보 SHA로 바꿔 A를 통과시키지 않는다. provenance/도구 hash를 결속한 `projectionDigest`를 먼저 계산하고, 그 digest를 commit에 넣은 다음 mapping이 실제 commit/tree를 가리키므로 해시가 순환하지 않는다. 합성 commit의 identity/시간은 고정하며 실제 저자/발행 이력이 아니다.
+
+원본 Git은 B2a의 설치 Git/정제한 환경·읽기 전용 명령으로만 읽는다. source의 Python/JS·builder는 실행하지 않는다. 후보 Git에는 source의 common-dir/objects/refs·remotes/alternates·hardlink·hook/filter·Git 이력을 복사하지 않는다. importer가 Python으로 정확한 Git header/type/OID와 zlib loose object를 직접 작성하므로 외부 Git 프로세스의 불확정 임시 쓰기를 허용하지 않는다. 실제 candidate 객체는 전용 `refs/adopt/imports/<projectionDigest>`의 배타적 pin으로 보존한다. 이는 요청 처리/원본 main CAS가 아니다.
+
+순서는 불변 intent → 객체 → import pin → 정확 객체/tree 재조회 → 객체 mapping → 원본/control/선택 입력·도구 최종 재대조 → 배타적 success attestation이다. 성공은 `source_projection_saved_local`이며 전체 원본 백업·빌드 후보·발행/복구 완료가 아니다. 같은 projection의 새 호출도 원본/A·완전 baseline을 다시 검사한 뒤 정확 기존 결과를 대조해 `source_projection_already_present_local`로 구분한다. accepted-key replay를 구현한 것이 아니다.
+
+부분 intent/객체/ref/mapping은 삭제하지 않는다. pin 시도 전 I/O 실패는 `import_incomplete`, pin 시도 뒤 응답/I/O 불확정은 `outcome_unknown`이다. source 변경은 `source_conflict`/`input_conflict`, core identity/epoch·객체/ref 불일치는 `store_inconsistent`로 중단한다. 미완료 import가 있으면 새 projection으로 진행하지 않으며 자동 수선·재초기화·새 namespace 우회를 하지 않는다. `inspect`는 기존 객체/mapping의 역사적 완전성과 attestation 유무만 확인한다. mapping 뒤 최종 확인이 실패했다면 `attested:false`이고 성공한 새 인수가 아니다. 선택적으로 `--root`를 주면 origin HEAD 전진을 `sourceAdvanced`로 표시하지만 A 재검증·최신 HTTPS·권한 검사는 아니다.
+
+첫 상한은 선택2,000파일·raw160MiB, control/mapping4MiB, 누적 읽기1GiB·쓰기512MiB, 임시/중복 포함 store 논리 파일 합512MiB·10,000항목, Git read20초·전체180초다. B2a의 더 작은 입력별/dist/JSON/512MiB·120초 읽기 한도도 유지한다. raw 크기와 보수적 zlib/metadata 한도를 사전 산정하며 모든 실제 쓰기·출력 합을 다시 제한한다. 일부 입력은 이 중 더 작은 한도로 거절될 수 있다. 디스크 물리 사용량/공급자 quota·전원 차단·분산 내구성을 보증하지 않는다. stdout은16KiB 이하의 상태/digest/reason이며 본문/patch/멱등 키·내부 경로·원시 예외를 포함하지 않는다.
+
+실제 patch 저장·요청 keyclaim/receipt/CAS는 B2b2, 전체 빌드/첨부 연속성과 원본/원격 통합·서버/API/DB·발행은 C–E의 후속이다. 기존 일반 게시 경로와 편집부(AEDAUT)의 내용/발행 판단을 유지한다.

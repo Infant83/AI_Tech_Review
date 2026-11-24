@@ -364,6 +364,7 @@ class _GitSource:
                         if not chunk:
                             selector.unregister(key.fileobj)
                         else:
+                            self.budget.check(len(chunk))
                             destination.extend(chunk)
                             if len(destination) > ceiling:
                                 raise IntakeError("git_metadata_limit")
@@ -531,9 +532,23 @@ def _intake(source_root, request_path, baseline_snapshot, output):
 
 
 def _read_intake(root, incoming, baseline, output, budget, destination):
+    descriptor, source, tracker, code = _collect_intake(root, incoming, baseline, budget, output=output)
+    raw = _raw(descriptor) + b"\n"
+    destination.publish(raw)
+    budget.check()
+    return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
+            "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
+
+
+def _collect_intake(root, incoming, baseline, budget, *, output=None):
+    """Internal frozen context for the separate local projection importer.
+
+    No output writes. The public B2a CLI still publishes only its descriptor;
+    consumers must revalidate this context before attesting a new import.
+    """
     code = _tool_hashes()
     source = _GitSource(root, budget)
-    if any(p == output or p in output.parents for p in [source.gitdir, source.common]):
+    if output is not None and any(p == output or p in output.parents for p in [source.gitdir, source.common]):
         raise IntakeError("unsafe_output")
     tracker = _BoundedInputs(root, budget)
     tracker.byte_limits[incoming] = admin_requests.MAX_REQUEST_BYTES
@@ -579,10 +594,7 @@ def _read_intake(root, incoming, baseline, output, budget, destination):
     source.guard()
     if source.head() != source.revision:
         raise IntakeError("source_conflict")
-    destination.publish(raw)
-    budget.check()
-    return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
-            "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
+    return descriptor, source, tracker, code
 
 
 def create_intake(source_root: Path, request_path: Path, baseline_snapshot: Path, output: Path):
