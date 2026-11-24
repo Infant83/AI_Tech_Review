@@ -78,7 +78,7 @@ symlink·연결된 Git common-dir·remotes·외부 alternates·replace/graft·lo
 
 입력 요청32KB·control JSON64KiB, sandbox 파일3,000개/합계16MB·작업128개로 제한한다. 한도 초과는 거절하며 정리·삭제로 우회하지 않는다. 파일 예약/교체는 fsync와 부모 directory sync를 사용하지만 전원 차단·디스크 손상·원격 내구성 보증이 아니다. Git object/ref transaction과 파일 journal을 하나의 원자적 트랜잭션으로 표시하지 않는다.
 
-현재는 프로세스 동시 실행·결정적 중단·I/O 실패·오류 재생을 검사하는 첫 구현 후보다. 정식 독립 검토 목표는11/22 11시다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
+B1은11/22 c3a4a5d의12그룹 정식 독립 감수와 소스통합을 마쳤다.11/24에는527b9d8에서 Git 실행 파일 선택도 좁게 보완했다. 당시 첫 후보/11월22일 검토 목표는 역사 이력이며 현재 단계는 로컬 합성 도구 완료다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
 
 ## B2a · 원본 읽기 전용 인수 명세
 
@@ -100,4 +100,4 @@ Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능
 
 이는 제어된 로컬 운영자와 부모 경로를 위한 도구다. POSIX mkdir는 열린 directory FD를 반환하지 않으므로 mkdir와 첫 open 사이의 임의 same-UID 프로세스가 소유·mode·empty 조건을 만족하는 일반 디렉터리로 교체한 것을 원자적으로 식별한다고 보장하지 않는다. leaf identity 결속은 첫 open부터이며 mkdir가 만든 바로 그 inode의 원자적 획득·출력 namespace 잠금·source 전체의 원자적 snapshot·후속 writer 인가를 뜻하지 않는다. 비신뢰 주체가 부모 경로를 변경할 수 있는 공유 서버의 출력 경로로 활성화하는 것은 후속 설계다.
 
-첫 B2a의 개발 후보와 검사는 정식 독립 감수/실제 운영 완료가 아니다. candidate Git 생성·복제·keyclaim·Git commit/ref/CAS·원본 writer·서버/API/DB·발행은 없다. 원본과 독립 candidate Git의 판본 매핑·namespace·저장 권한은 B2b, 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
+B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다. 최종 전체554검사(553통과·기존 선택1skip)와 범위별 독립 근거는 [실행 기록](../../operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md)을 따른다. candidate Git/keyclaim·원본 writer·서버/API/DB·발행은 구현하지 않았다. 후속 [B2b1 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b1--선택-입력의-독립-git-보존과-불변-판본-매핑)은 선택 원본 bytes의 독립 Git 보존/불변 판본 매핑만 채택했으며 구현 전이다. 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.

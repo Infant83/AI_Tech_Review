@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 37,
+  "record_version": 38,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-23T18:18:27.557366+00:00",
+  "updated_at": "2026-11-24T12:28:12.960412+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -1123,6 +1123,20 @@
       "new_or_changed_PDF_objects_downloaded": 3,
       "external_activation": false,
       "physical_storage_saved": 0
+    },
+    "evening_20261124": {
+      "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+      "result": "공용 변경/지원 인계의 새 직접 근거가 없어 기존 차단 조건과 우선순위를 유지한다. 다음25일11시 재평가하며 새 중요 근거는 받은 기본 회차에서 먼저 판단한다.",
+      "next_review_at": "2026-11-25T11:00:00+09:00",
+      "actual_public_revision": "6a920806fdad48eea569d0a61f6819244876f430",
+      "raw3_unchanged": true,
+      "public_bytes_reused": 852371607,
+      "total_artifacts": 102,
+      "recovery_count": 3,
+      "all_unexpired": true,
+      "recovery_metadata_exact_previous": true,
+      "manual_deletion_restore_external_activation": 0,
+      "weekly_structure_review": "2026-11-27T11:00:00+09:00"
     }
   },
   "recovery": {
@@ -1146,17 +1160,17 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/24 11시 내부목표초과52,371,607B와 외부접근·원격봉인/복구의 새 근거 및 최소 후속을 검토한다. 현재P2/외부비활성·기존보존방어를 유지하며 다음 정상CI/새실패에서 관찰한다.",
+  "next_action": "11/25 11시 내부목표초과52,371,607B와 외부접근·원격봉인/복구의 새 근거 및 최소 후속을 검토한다. 현재P2/외부비활성·기존보존방어를 유지하며 다음 정상CI/새실패에서 관찰한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "retention_guard_first_normal_CI_observed_external_evidence_pending",
-    "next_scheduled_step_at": "2026-11-24T11:00:00+09:00",
-    "next_review_at": "2026-11-24T11:00:00+09:00",
+    "next_scheduled_step_at": "2026-11-25T11:00:00+09:00",
+    "next_review_at": "2026-11-25T11:00:00+09:00",
     "scheduled_step": "외부 저장소 새 선행 근거 재검토·보존 방어는 다음 정상CI/새 실패에서 관찰",
-    "replan_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-    "replan_reason": "11/23 11시 목표 이후 별도 완료 실행은 확인되지 않아20:34 재개/11/24 03시 연속 실행의 실제 새 근거만 통합했다. 현재 차단 조건을 해소할 직접 입력이 없어 상태/등급을 유지하고11/24 11시에 재평가한다. 과거 시각을 소급 완료하지 않으며 새 중요 근거는 받은 회차에서 앞당긴다.",
-    "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
+    "replan_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+    "replan_reason": "11/24 11시 별도 완료 공용 기록을 확인하지 못해 실제21:19 재개에서 지난03시 이후 새 근거를 통합했다. 차단 조건을 해소할 새 직접 입력이 없어 현재 상태/등급을 유지하고25일11시 재평가한다. 과거 회차 소급 완료·일반 게시 추가승인은 없다.",
+    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
@@ -1168,7 +1182,7 @@
     "integration_pending": false,
     "local_minimum_delivery_completed": true,
     "weekly_structure_review_at": "2026-11-27T11:00:00+09:00",
-    "external_storage_next_review_at": "2026-11-24T11:00:00+09:00",
+    "external_storage_next_review_at": "2026-11-25T11:00:00+09:00",
     "retention_guard_next_observation": "next_existing_normal_publication_or_new_failure",
     "retention_guard_first_actual_CI_observation_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md"
   }
