@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 38,
+  "record_version": 39,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-24T12:28:12.960412+00:00",
+  "updated_at": "2026-11-24T18:10:28.961835+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -61,7 +61,9 @@
     "operations/runs/20261121T100433Z-3a554559-0ba7-4df2-9c43-8ee657cbf5ca.md",
     "operations/events/EVT-6aebd2ca-695b-4efa-8474-417cbb609170.json",
     "operations/issues/OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db.json",
-    "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md"
+    "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
+    "operations/events/EVT-336e33e8-dfc0-47ec-9787-f6cf6a0c0d15.json",
+    "operations/events/EVT-f5882f00-abf2-4a00-8314-9232c8823e93.json"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
@@ -96,7 +98,8 @@
       "a94abe40497a078378a745a162c5d6d4ccdb6c07",
       "073885e9e483139e6f776f44cfb7b8cc71f313f0",
       "c63e0507b5b0c9057fc952a09d4d3b7c9a44a070",
-      "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa"
+      "c6fdf8e34dc2dbc90b0f563f4adcb8a0c3111baa",
+      "d0b960e83d5e00c2acac1e68bac7098ecbf02b7d"
     ],
     "candidate_reference": "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43646352202",
@@ -153,6 +156,22 @@
       "new_site_deployment_required": false,
       "run_reference": "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
       "actual_CI_observation_reference": "operations/runs/20261122T015838Z-3ba14e8e-9790-4e31-8554-905ccfcb168d.md"
+    },
+    "retention_CLI_exit_correction": {
+      "source_revision": "d0b960e83d5e00c2acac1e68bac7098ecbf02b7d",
+      "source_files_sha256": {
+        "scripts/release_artifact_retention.py": "fe7dab8ad9660f773b71fae5ed51bac2a6860c0736b55f75cfbcfc89f971b7f7",
+        "tests/test_release_backup.py": "917a668e97989e850a30aea18c7f897fca9bd6165dce0334dd6555402afe5211"
+      },
+      "scope": "Only propagate existing main return status through SystemExit; no listing/current-upload/keep3/deletion guard relaxation",
+      "targeted_backup_tests": 24,
+      "independent_entrypoint_tests": 2,
+      "independent_tests_not_summed": true,
+      "before_refusal_exit": 0,
+      "after_refusal_exit": 1,
+      "local_source_integrated": true,
+      "actual_GitHub_CI_observed": false,
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
     }
   },
   "verification": {
@@ -275,22 +294,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "manifest_files": 2761,
-      "manifest_bytes": 850961497,
-      "release_json_bytes": 1410110,
-      "public_files": 2762,
-      "public_bytes": 852371607,
-      "pdf_paths": 283,
-      "unique_pdf_objects": 200,
+      "manifest_files": 2774,
+      "manifest_bytes": 853893801,
+      "release_json_bytes": 1416719,
+      "public_files": 2775,
+      "public_bytes": 855310520,
+      "pdf_paths": 288,
+      "unique_pdf_objects": 204,
       "retained_edition_urls": 22,
-      "growth_bytes": 2421479,
-      "growth_basis_source": "bb828ba451575d58ca662764b22d503bf0593fff",
-      "excess_over_internal_800MB_bytes": 52371607,
-      "headroom_to_internal_800MB_bytes": -52371607,
-      "checked_at": "2026-11-23T18:18:27.557366+00:00",
-      "source_revision": "6a920806fdad48eea569d0a61f6819244876f430",
-      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-      "scope": "Actual complete HTTPS seal metadata; known old22 edition URLs preserved. Current QAE PDF alias has exact declared before/after; new or changed3 PDF objects separately downloaded. Internal800MB target is not provider quota/outage; no external activation, physical saving or restore claim."
+      "growth_bytes": 2938913,
+      "growth_basis_source": "6a920806fdad48eea569d0a61f6819244876f430",
+      "excess_over_internal_800MB_bytes": 55310520,
+      "headroom_to_internal_800MB_bytes": -55310520,
+      "checked_at": "2026-11-24T18:06:00.910451+00:00",
+      "source_revision": "bc703d50853dfad4752da48d4a90168458fe18cb",
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "scope": "Actual complete HTTPS seal metadata. Old283PDF paths and22edition URLs preserved; current alias exact before/after declaration; new5paths/changedalias cover4unique PDF objects downloaded for full SHA/size/magic. No new render/science/Pencil/account/DB restore, provider quota, external activation or savings claim."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -513,9 +532,9 @@
     }
   },
   "observation": {
-    "status": "새정상4건 보존방어·공개성장갱신·외부비활성",
-    "period": "2026-11-23T18:00:33.624Z",
-    "result": "완전실제공개852371607B·283PDF/200객체, 직전대비2421479B증가·내부800MB초과52371607B다. current upload 결속/같은c6guard의네정상run 성공과 미만료복구3개를 인수했다. 전체artifact125→109→118은 각실제시각의metadata이며 감소/증가를수동삭제나물리절감으로환산하지 않는다. 외부접근/원격전체SHA·봉인/복구/외부활성화는 여전히미완료다. 운영자료삭제/실제복원0.",
+    "status": "L015/DQB 거절2회와DQE 실제정리3건 구분·CLI종료상태 보완·외부비활성",
+    "period": "2026-11-24T18:03:26.892Z",
+    "result": "실제공개855310520B·288PDF/204객체·내부800MB목표초과55310520B다. L015/DQB의 incomplete_metadata 거절2회는 삭제0이며 뒤DQE의정형요약이구사본3삭제/현재3보존을확인했다. 공급자불완전metadata원인은미확정이다. main반환값누락으로거절이성공exit였던결함을d0b960e로보완했고실제새CI는대기다. 이번수동삭제/외부활성화/복원0.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1137,6 +1156,26 @@
       "recovery_metadata_exact_previous": true,
       "manual_deletion_restore_external_activation": 0,
       "weekly_structure_review": "2026-11-27T11:00:00+09:00"
+    },
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+    "night_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "retention_events_merged": [
+        "operations/events/EVT-336e33e8-dfc0-47ec-9787-f6cf6a0c0d15.json",
+        "operations/events/EVT-f5882f00-abf2-4a00-8314-9232c8823e93.json"
+      ],
+      "refused_before_delete_runs": [
+        45394978331,
+        45397981670
+      ],
+      "DQE_success_run": 45402215559,
+      "confirmed_CI_deletions": 3,
+      "current_recovery_metadata_count": 3,
+      "all_current_unexpired": true,
+      "total_artifacts": 109,
+      "artifact_pages": 2,
+      "new_exit_fix_actual_CI_observed": false,
+      "manual_deletions_or_restore_or_external_activation": 0
     }
   },
   "recovery": {
@@ -1160,7 +1199,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "11/25 11시 내부목표초과52,371,607B와 외부접근·원격봉인/복구의 새 근거 및 최소 후속을 검토한다. 현재P2/외부비활성·기존보존방어를 유지하며 다음 정상CI/새실패에서 관찰한다.",
+  "next_action": "25일11시 외부 저장소 입력/내부목표 초과를 재평가한다. CLI 종료상태 보완은 다음 기존 정상CI에서 거절/정리 결과를 관찰하며 현재keep3/current-upload 검증을 유지한다. 공개 배포 성공·복구 생성·실제 삭제를 구분하고 관찰용 재실행/수동삭제는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
@@ -1170,7 +1209,7 @@
     "scheduled_step": "외부 저장소 새 선행 근거 재검토·보존 방어는 다음 정상CI/새 실패에서 관찰",
     "replan_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
     "replan_reason": "11/24 11시 별도 완료 공용 기록을 확인하지 못해 실제21:19 재개에서 지난03시 이후 새 근거를 통합했다. 차단 조건을 해소할 새 직접 입력이 없어 현재 상태/등급을 유지하고25일11시 재평가한다. 과거 회차 소급 완료·일반 게시 추가승인은 없다.",
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
     "implementation_start_target": "2026-11-15T03:00:00+09:00",
     "independent_review_target": "2026-11-15T07:00:00+09:00",
     "dependencies": [
