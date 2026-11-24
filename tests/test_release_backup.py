@@ -7,6 +7,8 @@ from pathlib import Path
 import tarfile
 import tempfile
 import unittest
+import subprocess
+import sys
 from unittest.mock import patch
 import os
 from contextlib import redirect_stdout
@@ -284,3 +286,36 @@ class RetentionGuardTests(unittest.TestCase):
         self.assertIn('--expected-source-revision "$GITHUB_SHA"', job)
         self.assertLess(job.index("Verify and package"), job.index("id: recovery_upload"))
         self.assertLess(job.index("id: recovery_upload"), job.index("Retain the three"))
+
+
+class RetentionCliTests(unittest.TestCase):
+    """Exercise the real entrypoint while isolating provider I/O."""
+    script = Path(__file__).resolve().parents[1] / "scripts/release_artifact_retention.py"
+
+    def invoke(self, pages):
+        runner = (
+            "import json,runpy,sys\n"
+            "from types import SimpleNamespace\n"
+            "from unittest.mock import patch\n"
+            "script,pages=sys.argv[1],json.loads(sys.argv[2])\n"
+            "sys.argv=[script,'--repository','Example/Review']\n"
+            "with patch('subprocess.run',return_value=SimpleNamespace(stdout=json.dumps(pages))):\n"
+            " runpy.run_path(script,run_name='__main__')\n"
+        )
+        return subprocess.run([sys.executable, "-I", "-c", runner, str(self.script), json.dumps(pages)],
+                              capture_output=True, text=True, timeout=10)
+
+    def test_refused_incomplete_listing_exits_nonzero_without_deleting(self):
+        result = self.invoke([{"total_count": 1, "artifacts": []}])
+        self.assertEqual(result.returncode, 1)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["reason"], "incomplete_metadata")
+        self.assertEqual(report["deleted"], [])
+        self.assertEqual(report["delete_attempted"], [])
+        self.assertEqual(result.stderr, "")
+
+    def test_successful_dry_run_keeps_zero_exit_and_json(self):
+        result = self.invoke([{"total_count": 0, "artifacts": []}])
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(json.loads(result.stdout)["status"], "dry_run")
+        self.assertEqual(result.stderr, "")
