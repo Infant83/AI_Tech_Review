@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "id": "EVT-336e33e8-dfc0-47ec-9787-f6cf6a0c0d15",
+  "issue_id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "created_at": "2026-11-24T12:48:31.946236+00:00",
+  "base_record_version": 38,
+  "observation": "L015 정상 발행 CI45394978331에서 새 복구 사본14920743068의 업로드와 미만료 소스/run metadata를 확인했다. 보존 단계는 incomplete_metadata/status=refused로 삭제를 거절했고 deleted/delete_attempted/unconfirmed_delete는 모두 빈 배열이었다. 네 작업 성공을 실제 보존 개수3개 달성으로 해석하지 않는다. 수동 삭제·복원·권한 확대·CI 재실행은 하지 않았다. 배포된 소스에서 거절 함수의 반환값1을 CLI 진입점 main()이 종료 상태로 전달하지 않는 것도 확인했다. provider metadata 불완전의 원인은 미확인이다.",
+  "evidence": [
+    "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md",
+    "https://github.com/Infant83/AI_Tech_Review/actions/runs/45394978331",
+    "scripts/release_artifact_retention.py"
+  ],
+  "proposed_next_action": "ADOPT의 기존 파일·복구 관리 회차에서 완전한 metadata 수집과 CLI 반환 상태 전달을 검토한다. 삭제 방어를 완화하거나 수동 삭제로 우회하지 않으며, 기존 일정·등급·외부 활성화 상태와 현재 공개 PDF·복구 사본을 유지한다.",
+  "current_recovery_artifact": {
+    "id": 14920743068,
+    "expired": false,
+    "source_revision": "dec91d9c994aafd2b03c51d5515bb4e1dfd86d36",
+    "run_id": 45394978331,
+    "size_in_bytes": 765254905,
+    "digest": "sha256:c853eba57abaa9efdf9498ae8a9de28fbecda51948434e6a1fe8483fabc511e6"
+  },
+  "provider_delete_attempted": false,
+  "actual_restore": false,
+  "priority_or_schedule_changed": false,
+  "confirmed_CLI_exit_status_propagation_issue": true
+}
