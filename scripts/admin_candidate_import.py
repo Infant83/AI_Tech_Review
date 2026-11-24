@@ -370,6 +370,22 @@ def _store_identity(store, repository_id, principal):
         if prefix + "/success.json" in paths and (prefix + "/mapping.json" not in paths
                 or "git/refs/adopt/imports/" + digest not in paths):
             raise ImportError("store_inconsistent")
+        # A valid-looking replacement epoch/identity must not silently fork
+        # this store's existing history into a new projection namespace.
+        intent_path = prefix + "/intent.json"
+        if intent_path not in paths:
+            raise ImportError("store_inconsistent")
+        intent_raw = store.read(intent_path)
+        intent = _json(intent_raw)
+        if (not isinstance(intent, dict) or intent.get("identitySha256") != _sha(identity_raw)
+                or intent.get("projectionDigest") != digest):
+            raise ImportError("store_inconsistent")
+        if prefix + "/mapping.json" in paths:
+            mapping = _json(store.read(prefix + "/mapping.json"))
+            if (not isinstance(mapping, dict) or mapping.get("identitySha256") != _sha(identity_raw)
+                    or mapping.get("projectionDigest") != digest
+                    or mapping.get("intentSha256") != _sha(intent_raw)):
+                raise ImportError("store_inconsistent")
     return identity, _sha(identity_raw)
 
 
@@ -688,6 +704,10 @@ def _initialize(root, source_root, repository_id, principal):
 
 def _import_inner(root, source_root, request_path, baseline, repository_id, principal, progress):
     budget = _Budget(); code = _tool_hashes()
+    root, baseline = intake._safe(root), intake._safe(baseline)
+    if (root == baseline.parent or root in baseline.parent.parents
+            or baseline.parent in root.parents):
+        raise ImportError("unsafe_store_location")
     with _Store(root, budget) as store, _locked(store):
         identity, identity_sha = _store_identity(store, repository_id, principal)
         # A prior incomplete import is not permission to switch to a new

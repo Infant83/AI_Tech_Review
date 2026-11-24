@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -314,6 +315,44 @@ class CandidateImportTests(unittest.TestCase):
         with patch.object(importer.os, "open", side_effect=tracked_open), patch.object(importer.os, "close", side_effect=tracked_close), patch.object(importer.os, "fstat", side_effect=fail_leaf):
             self.reject("import_incomplete")
         self.assertTrue(opened); self.assertTrue(set(opened).issubset(closed))
+
+    def test_valid_epoch_replacement_cannot_fork_completed_import_history(self):
+        result = self.call(); before_source = self.snapshot()
+        identity = self.store / "identity.json"; original = identity.read_bytes()
+        changed = json.loads(original); changed["storeEpoch"] = str(uuid.uuid4())
+        identity.write_bytes(importer._raw(changed))
+        before_store = self.snapshot(self.store)
+        self.reject("store_inconsistent")
+        self.assertEqual(before_store, self.snapshot(self.store))
+        self.assertEqual(before_source, self.snapshot())
+        for name in ["intent", "mapping", "success"]:
+            self.assertEqual(len(list((self.store / "imports").glob("*/" + name + ".json"))), 1)
+        self.assertEqual(len(list((self.store / "git/refs/adopt/imports").iterdir())), 1)
+        identity.write_bytes(original)
+        self.assertEqual(self.call()["candidateBaseRevision"], result["candidateBaseRevision"])
+
+    def test_existing_mapping_identity_and_projection_prefix_are_bound_before_new_import(self):
+        result = self.call(); path = self.store / "imports" / result["projectionDigest"] / "mapping.json"
+        raw = path.read_bytes()
+        for field in ["identitySha256", "projectionDigest", "intentSha256"]:
+            with self.subTest(field=field):
+                value = json.loads(raw); value[field] = "a" * 64
+                path.write_bytes(importer._raw(value)); before = self.snapshot(self.store)
+                self.reject("store_inconsistent")
+                self.assertEqual(before, self.snapshot(self.store))
+                path.write_bytes(raw)
+
+    def test_known_baseline_parent_and_store_overlap_are_refused_before_import(self):
+        self.store = self.baseline.parent / "projection-store"
+        self.initialize(); before = self.snapshot(self.store)
+        self.reject("unsafe_store_location")
+        self.assertEqual(before, self.snapshot(self.store))
+        self.store = self.parent / "store-with-baseline"; self.initialize()
+        copied = self.store / "copied-baseline"
+        shutil.copytree(self.baseline.parent, copied, ignore=shutil.ignore_patterns("projection-store"))
+        self.baseline = copied / "snapshot.json"; before = self.snapshot(self.store)
+        self.reject("unsafe_store_location")
+        self.assertEqual(before, self.snapshot(self.store))
 
 
 if __name__ == "__main__":

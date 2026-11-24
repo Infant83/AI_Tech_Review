@@ -114,7 +114,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py import --sto
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py inspect --store /controlled/projection-store --projection-digest VERIFIED_DIGEST --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
 ```
 
-store는 source/common-dir·baseline을 포함한 원본 경로 밖의 제어된 부모에 둔다. `.keep`를 먼저 만들고 부모부터 no-follow directory FD로 결속하며 euid/0700과 파일별 배타 생성을 확인한다. 첫 open 전 namespace 교체의 B2a 로컬 지원 한계는 같다. 공유 서버의 출력 경로나 실제 계정 인가로 확대하지 않는다. 다른 작업의 진행 파일·기존 output을 덮거나 제거하지 않는다.
+store는 source/common-dir·baseline을 포함한 원본 경로와 다른 작업 사본 밖의 제어된 부모에 둔다. 현재 도구는 source/common-dir 관계와 import 호출의 알려진 baseline 부모와의 중첩을 거절한다. init-store에는 baseline 정보가 없고 다른 활성 작업 사본의 자동 탐색은 미구현이므로 운영자가 실제 보호 경로 밖의 목적지인지 확인해야 한다. 이 자동 검증 공백은11시 정식 감수에 남긴 초기 지원 조건이다. `.keep`를 먼저 만들고 부모부터 no-follow directory FD로 결속하며 euid/0700과 파일별 배타 생성을 확인한다. 첫 open 전 namespace 교체의 B2a 로컬 지원 한계는 같다. 공유 서버의 출력 경로나 실제 계정 인가로 확대하지 않는다. 다른 작업의 진행 파일·기존 output을 덮거나 제거하지 않는다.
 
 `sourceOriginRevision`/`sourceTree`는 원본을, parent 없는 `candidateBaseRevision`/`candidateTree`는 선택 파일의 별도 tree를 가리킨다. 원래 요청의 SHA/fingerprint를 부분 후보 SHA로 바꿔 A를 통과시키지 않는다. provenance/도구 hash를 결속한 `projectionDigest`를 먼저 계산하고, 그 digest를 commit에 넣은 다음 mapping이 실제 commit/tree를 가리키므로 해시가 순환하지 않는다. 합성 commit의 identity/시간은 고정하며 실제 저자/발행 이력이 아니다.
 
