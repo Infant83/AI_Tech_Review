@@ -18,6 +18,10 @@ Gómez-Bombarelli 등의 Princeton 공개 저자본 1–2·5쪽에서 산업 참
 
 ## 등록과 공개 검증
 
-ID는 `2026-11-24-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-24/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-24/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-24-daily-quantum-exercise.pdf)를 위한 후보를 실제 이전 배포 `2fd8ae44fc9cacbe7ebca428debb56dfa622204e`와 비교한다. 필요한 로컬 Python 103건과 검색·탐색 12건은 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
+ID는 `2026-11-24-daily-quantum-exercise`, 시리즈는 `daily-quantum-exercise`다. [한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-24/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-24/en/)·[PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-24-daily-quantum-exercise.pdf)를 실제 공개했다. 후보는 실제 이전 배포 `2fd8ae44fc9cacbe7ebca428debb56dfa622204e`와 비교했다. 필요한 로컬 Python 103건과 검색·탐색 12건은 통과했다. 후보·브라우저·배포·실제 HTTPS 확인의 완료 범위는 [출판 검증 기록](artifacts/publication-qa.json)에 남긴다.
 
 작성 중 같은 날짜 DRB가 `93b3dfa`로 main에 등록되었고, 뒤이은 문서 기록 `8d5022e`로 해당 실행의 실제 Pages 단계가 생략됐다. 당시 실제 공개본은 계속 `2fd8ae44`였음을 HTTPS로 확인했다. 최신 main을 통합해 DRB의 기존 등록·PDF·컴파일 원고를 수정 없이 포함한 최종 후보를 다시 만들었다. [DRB의 자체 감수 기록](../2026-11-24_drb-archive/README.md)은 그대로 보존한다. 원래 공개된 날짜별 한영 안내 62페이지는 바이트가 같으며, 이 통합 후보의 새 등록은 DRB와 DQE 두 건이다. 새 DQE 한영 본문·PDF는 첫 검토 후보와 정확히 같다.
+
+[최종 배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/45402215559)의 실제 Pages 단계와 build·deploy·recovery-copy·notify-readers가 모두 성공했다. CI 1,080건 중 1,071건 통과·9건 건너뜀·실패 0건이다. 최종 후보 브라우저 검사 19건과 화면 13개를 확인했고, `root`의 실제 HTTPS 검사 13건 및 별도 운영 담당자의 검사 36건이 통과했다. 새 한영 전체 HTML·PDF와 이전 DQE 6편의 PDF, 실제 이전 배포의 DQB를 대조했다. 동시 등록 DRB도 통합된 원고·등록 PDF와 일치하며 이번 검증된 아티팩트로 공개됐다.
+
+복구 작업은 배포 아티팩트 2,775개 파일·855,310,520바이트를 검증해 업로드했다. 이 작업에서 사본을 별도 다운로드하거나 로컬 복원하지는 않았다. 기존 리뷰·렉처 알림 카탈로그 81건의 동기화가 성공했고 새 알림 기사와 대기 이벤트는 모두 0건이다. 이 기존 파이프라인은 DQE·DRB를 새 알림 기사로 등록하지 않으므로 독자 알림 발송으로 표시하지 않는다. 원격 게시와 실제 URL 확인을 마쳤으며 남은 조치는 없다.
