@@ -43,3 +43,11 @@ World model의 이득은 합성 자료에서의 매개변수 지도 오차 비�
 [최종 독립 후보 감수](artifacts/candidate-independent-review.json)는 기존2,763개 페이로드 경로에서 새PDF·한영 편집글3개만 추가되고 삭제가 없음을 확인했다. 기존59리뷰의 전체 메타데이터·본문·자산,171개 보관 항목의 전체 메타데이터,81카탈로그 객체,285PDF 경로·58날짜별 편집글·119목록 이미지와 그 manifest,Classiq기존22경로를 유지했다. 기존 검색175행과 갱신178행도 같았다. 파생 목록·검색·등록 변화 외의 기존 바이트는 유지했다. 원고→HTML 조각→후보 본문과 제목·별도 요약·세 날짜·2개 서지·추가 arXiv 링크·PDF 읽기와 다운로드, 전체 봉인 해시를 대조했다.
 
 [후보 화면 확인](artifacts/candidate-browser-review.json)에서 국문 데스크톱, 한영390px 모바일, 실제 언어 전환과 인용 이동, 날짜별 편집글 우선 안내·별도PDF, 한영 검색과 본문 진입을 확인했다. 고정 버전 재생성 전후 두 편집글 HTML은 정확히 같았으며 새 후보의 국문 검색·진입과 PDF HTTP 바이트도 다시 확인했다. 전송량·연속성·전체 봉인 검사를 통과했고 기존 검색 메타데이터·배포 용량 경고는 운영팀(ADOPT)의 기존 추적 범위다. 실제 배포와 공개 URL 검증은 별도 단계다.
+
+## 실제 공개 확인 · 2026년 11월 24일
+
+소스 `2fd8ae44fc9cacbe7ebca428debb56dfa622204e`를 [실제 Pages 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/45397981670)으로 배포했다. [국문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-24/), [영문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-24/en/), [공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-24-daily-quantum-brief.pdf)를 포함한 실제 HTTPS 39경로를 확인했다. 조회 전후 배포 판본은 같았고 PDF는 등록한 7쪽·196,499바이트·해시와 일치했다. 실제 한영 페이지·언어 전환·390px 모바일·날짜별 안내·검색도 확인했다. [HTTPS 대조](artifacts/live-verification.json)와 [실제 브라우저 검수](artifacts/live-browser-review.json)에 확인 범위와 한계를 남겼다.
+
+[독립 CI 감수](artifacts/ci-independent-review.json)는 네 작업의 성공 표시와 실제 로그·산출물의 결과를 구별한다. 검사 1,080건 중 1,071건이 통과했고 9건은 제외됐으며 실패는 없었다. 배포 자료와 현재 복구 업로드 `14922421510`의 실행·소스·해시 연결, 카탈로그 81건 동기화를 확인했다. 신규 알림과 대기 알림은 0건이다. 전체 복구 사본을 내려받아 복원한 검사는 수행하지 않았다.
+
+복구 사본을 최신 세 개로 정리하는 단계는 `incomplete_metadata`로 삭제 전에 거절됐다. 완전한 API 목록에서 사본 다섯 개를 확인했으며, 정리 완료로 표시하지 않는다. 명령의 실패 반환이 CLI 종료 상태로 전달되지 않아 작업이 성공으로 보인 현상과 제공자 메타데이터 부족의 미확정 원인을 구별한다. 공개 글과 현재 복구 사본의 검증은 완료했다. 정리 문제는 운영팀(ADOPT)의 기존 일감 `OPS-fcc466c7-bb55-499e-80a9-7dacf9417131`에 [추가 관찰](../../operations/events/EVT-f5882f00-abf2-4a00-8314-9232c8823e93.json)로 연결했다. 이 편집 회차에서 공통 도구 수정·사본 삭제·무조건 재시도·새 예약은 수행하지 않았다.

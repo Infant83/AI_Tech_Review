@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "reviewer": "dqb1124_pdf_reset",
+  "role": "Independent actualCI/log/smallartifact verification, separate from root actualHTTPS/browser; earlier PDFproducerrole disclosed",
+  "checked_at": "2026-11-24T13:03:07.239579+00:00",
+  "status": "publication_and_recovery_verified_with_retention_followup_required",
+  "run": 45397981670,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45397981670",
+  "revision": "2fd8ae44fc9cacbe7ebca428debb56dfa622204e",
+  "previous_deployed_revision": "dec91d9c994aafd2b03c51d5515bb4e1dfd86d36",
+  "jobs_success": 4,
+  "jobs": [
+    {
+      "name": "build",
+      "id": 138458750116,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "deploy",
+      "id": 138461074467,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "notify-readers",
+      "id": 138461483360,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "recovery-copy",
+      "id": 138461483552,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "tests": {
+    "total": 1080,
+    "passed": 1071,
+    "skipped": 9,
+    "failed": 0,
+    "groups": [
+      {
+        "name": "python",
+        "total": 554,
+        "passed": 553,
+        "skipped": 1,
+        "failed": 0
+      },
+      {
+        "name": "multilingual",
+        "total": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "frontend",
+        "total": 205,
+        "passed": 197,
+        "skipped": 8,
+        "failed": 0
+      },
+      {
+        "name": "lecture",
+        "total": 222,
+        "passed": 222,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "backend",
+        "total": 73,
+        "passed": 73,
+        "skipped": 0,
+        "failed": 0
+      },
+      {
+        "name": "portable_media",
+        "total": 14,
+        "passed": 14,
+        "skipped": 0,
+        "failed": 0
+      }
+    ]
+  },
+  "counts": {
+    "archive": 172,
+    "external": 1,
+    "publications": 81,
+    "reviews": 59
+  },
+  "final_policy_ok": true,
+  "final_policy_blockers": [],
+  "archive_additions": [
+    {
+      "group": "archive",
+      "id": "2026-11-24-daily-quantum-brief"
+    }
+  ],
+  "reviewed_common_changes_count": 71,
+  "new_deep_review": false,
+  "pinned_Pillow_actually_installed": "11.2.1",
+  "catalog_articles": 81,
+  "catalog_sha256": "6304c4d618c573ff32e5dec3cfd4da9c6e4992fc9f4c4ebf61ab83abdf8aef93",
+  "catalog_candidate_articles_identical": true,
+  "catalog_revision_delta_explained": "ActualCIcatalogrevision2fd8ae4 vs correctedcandidate-pinneddeployedbaseline dec91d9;81articleobjectsidentical. InitialPillow11.3candidate isnotused asvalidbaseline.",
+  "sealed_files": 2767,
+  "snapshot_files": 2752,
+  "deploy_guard_current_true_evidence": "ActualDeployverifiedPagesartifact stepcompleted, Createddeployment forexact2fd8source and Reportedsuccess; recovery/notifyactuallyran. Echoedconditionalcommandalonewasnotusedasguardproof.",
+  "deployed_pages_artifact_id": 14922267000,
+  "deployed_pages_artifact_zip_sha256": "fd5724d09ac8143b5eda87c337da2f3b1b437c9cfe625d4a073b801fba6a7317",
+  "recovery_files": 2767,
+  "recovery_bytes": 853223924,
+  "recovery_archive_sha256": "87ecc1ab87ed533e217adff6cd07ecc9940ce9d22b6857388799539179b4417e",
+  "recovery_uploaded_artifact_id": 14922421510,
+  "recovery_uploaded_zip_sha256": "ffbe1ab222a63be73139d9e70d7d7e33729e27a31c4082c9e0e745bed174423a",
+  "recovery_implementation": "Readcurrent from-pages/create_backup/verify_backup completeinventory,identityandstreamingdigest implementation. Actualworkflowverifiescompletedeployedinput beforeupload; no independentfullartifactdownload/restore.",
+  "retention_status": "refused_before_any_delete",
+  "retention_command_result": {
+    "ok": false,
+    "status": "refused",
+    "reason": "incomplete_metadata",
+    "apply_requested": true,
+    "deleted": [],
+    "delete_attempted": [],
+    "unconfirmed_delete": []
+  },
+  "retention_current_upload_binding_verified": true,
+  "retention_requested_keep": 3,
+  "recovery_copies_observed": 5,
+  "observed_recovery_artifact_ids": [
+    14922421510,
+    14920743068,
+    14818189616,
+    14818177466,
+    14817541330
+  ],
+  "retention_latest_three_completed": false,
+  "retention_api_rechecked_complete": true,
+  "retention_failure_explanation": "Actualretentionlogreports incomplete_metadata refusal beforedelete; freshpaginatedAPImetadata shows5of5nonexpiredcopies, includingcurrentcorrectrun/SHA/digest. Sourceentrypointcalls main() without SystemExit; main returns1 onrefusal butCLIexitstatusremains0, explaininggreenstep/job despitefailedretention.",
+  "catalog_synced": 81,
+  "new_articles": 0,
+  "queued_events": 0,
+  "warnings": [
+    "Lazy metadata search exceeds the 80KB growth warning",
+    "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+  ],
+  "content_or_deployment_blocking_findings": [],
+  "operational_findings": [
+    {
+      "owner": "ADOPT",
+      "issue": "Retention refused incomplete_metadata and left5copies instead of3; failedreturn1 isnotpropagated byCLIentrypoint.",
+      "scope": "Currentpublication/recoveryinput/upload remainverified. Latest3retention cannotbeclaimedcomplete. No sourcefix,delete,applyorretryperformedbythisreviewer.",
+      "existing_issue": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+      "existing_handoff_run": "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md",
+      "known_before_this_DQB": "Parent confirmed same retention refusal/ignoredreturn already recorded for L015; reuse existing ADOPT case, no duplicate issue or repair claim."
+    }
+  ],
+  "limits": [
+    "Onlysmallvalidation/catalogartifacts,individualrawlogsandAPImetadatawereobtained; nofullPages/recoveryartifactdownloadorrestoreexercise.",
+    "GitHubreportedall4jobsandspecificretentionstepsuccess, butactualretentionJSONandpostAPIcontradictlatest3completion; exactfailurepreserved.",
+    "Noextratests/builds/pushes/issuedmessages/notificationsorretentionapply/deleteperformedbythisreviewer.",
+    "RootactualHTTPS/browserverificationisseparateevidence,notclaimedasthisCIreview."
+  ],
+  "public_safe": true,
+  "evidence_sha256": {
+    "ci-run.json": "47281e32607285d70c5de65a3836d35fc7007eec5233180591aa749751388608",
+    "ci-jobs.json": "aa53da19b68ace03642a9fb36f7f66c97645e5d99eb52ff87c1a20b54f245224",
+    "ci-artifacts.json": "53b9b23eb2656bd66db724d238ed0aa77b662f25d43ec24033293ff93daffd55",
+    "ci-retention-artifacts.json": "fd5dbed043d94f36315354ca373bbeda92cde0bf61be8d3da79a4c352c6a7591",
+    "ci-build.log": "6a5835a2437b81fee5a8aea14c0631eb1b8a805e8f751b541b8d8a7d735b4c2c",
+    "ci-deploy.log": "505c7a6c285a2b948fe78ce4ab8d924c7aecadfc2068943654bb916614527bc5",
+    "ci-recovery.log": "6ba758cabd96b9e48a92068a66e6892058ff46817ee91176a6d34948fae877b8",
+    "ci-notify.log": "f2954a400c45aeacfbaf67371f30c27bafc24cd0337afaf73a9def67c737ab4e",
+    "ci-validation/report.json": "4300735eac920b4e8dbffe9808ddf035bd9a08ac9cc06aa56da3de6f3986c642",
+    "ci-validation/release-check.json": "e931686ccb5cb6d4604263ef1f06d7ef532711a48fb07c95b0f27617504f6478",
+    "ci-validation/payload-check.json": "30f2437a90c991b0b4c7f8d69d6b05fc73b6cf3da128134cfc79bf85790595f6",
+    "ci-catalog/reader-publications.json": "6304c4d618c573ff32e5dec3cfd4da9c6e4992fc9f4c4ebf61ab83abdf8aef93"
+  }
+}
