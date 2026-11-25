@@ -354,6 +354,97 @@ class CandidateImportTests(unittest.TestCase):
         self.reject("unsafe_store_location")
         self.assertEqual(before, self.snapshot(self.store))
 
+    def test_current_pin_is_rechecked_before_success_and_acknowledgement(self):
+        for stage in ["after_pin", "after_mapping", "before_attestation", "after_attestation"]:
+            with self.subTest(stage=stage):
+                self.store = self.parent / ("changed-pin-" + stage); self.initialize()
+                before = self.snapshot()
+                def change(at):
+                    if at == stage:
+                        ref = next((self.store / "git/refs/adopt/imports").iterdir())
+                        ref.write_bytes(b"0" * 40 + b"\n")
+                with patch.object(importer, "_checkpoint", side_effect=change):
+                    self.reject("store_inconsistent")
+                self.assertEqual(before, self.snapshot())
+
+    def test_current_identity_cannot_change_during_import(self):
+        for stage in ["after_pin", "after_mapping", "before_attestation", "after_attestation"]:
+            with self.subTest(stage=stage):
+                self.store = self.parent / ("changed-epoch-" + stage); self.initialize()
+                before = self.snapshot()
+                def change(at):
+                    if at == stage:
+                        path = self.store / "identity.json"
+                        value = json.loads(path.read_text()); value["storeEpoch"] = str(uuid.uuid4())
+                        path.write_bytes(importer._raw(value))
+                with patch.object(importer, "_checkpoint", side_effect=change):
+                    self.reject("store_inconsistent")
+                self.assertEqual(before, self.snapshot())
+
+    def test_different_projection_refuses_corrupt_previous_ref_commit_or_success(self):
+        original_request = self.request.read_bytes()
+        for kind in ["ref", "commit", "success"]:
+            with self.subTest(kind=kind):
+                self.request.write_bytes(original_request)
+                self.store = self.parent / ("history-" + kind); self.initialize()
+                old = self.call(); digest = old["projectionDigest"]
+                if kind == "ref":
+                    (self.store / "git/refs/adopt/imports" / digest).write_bytes(b"0" * 40 + b"\n")
+                elif kind == "commit":
+                    oid = old["candidateBaseRevision"]
+                    (self.store / "git/objects" / oid[:2] / oid[2:]).unlink()
+                else:
+                    path = self.store / "imports" / digest / "success.json"
+                    value = json.loads(path.read_text()); value["mappingSha256"] = "a" * 64
+                    path.write_bytes(importer._raw(value))
+                request = json.loads(original_request)
+                request["patch"]["summary"] += " Different projection."
+                self.request.write_bytes(jobs._raw(request))
+                before_store, before_source = self.snapshot(self.store), self.snapshot()
+                self.reject()
+                self.assertEqual(before_store, self.snapshot(self.store))
+                self.assertEqual(before_source, self.snapshot())
+
+    def test_outer_read_budget_applies_inside_source_collection(self):
+        consumed_after_limit = []
+        def collect(root, request, baseline, budget):
+            budget.check(10_001)
+            consumed_after_limit.append(True)
+            raise intake.IntakeError("probe_completed_after_outer_limit")
+        with patch.object(importer, "MAX_READ_BYTES", 10_000), patch.object(intake, "_collect_intake", side_effect=collect):
+            self.reject("import_limit")
+        self.assertEqual(consumed_after_limit, [])
+
+    def test_already_present_result_rechecks_store_after_final_source_validation(self):
+        original = importer._final_source
+        for kind in ["ref", "epoch"]:
+            with self.subTest(kind=kind):
+                self.store = self.parent / ("repeat-change-" + kind); self.initialize()
+                result = self.call(); before = self.snapshot()
+                def change(*args):
+                    original(*args)
+                    if kind == "ref":
+                        (self.store / "git/refs/adopt/imports" / result["projectionDigest"]).write_bytes(b"0" * 40 + b"\n")
+                    else:
+                        path = self.store / "identity.json"
+                        value = json.loads(path.read_text()); value["storeEpoch"] = str(uuid.uuid4())
+                        path.write_bytes(importer._raw(value))
+                with patch.object(importer, "_final_source", side_effect=change):
+                    self.reject("store_inconsistent")
+                self.assertEqual(before, self.snapshot())
+
+    def test_outer_deadline_applies_inside_source_collection(self):
+        continued_after_deadline = []
+        def collect(root, request, baseline, budget):
+            future = importer.time.monotonic() + 2
+            with patch.object(importer.time, "monotonic", return_value=future):
+                budget.check()
+            continued_after_deadline.append(True)
+            raise intake.IntakeError("probe_completed_after_outer_deadline")
+        with patch.object(importer, "TOTAL_SECONDS", 1), patch.object(intake, "_collect_intake", side_effect=collect):
+            self.reject("import_timeout")
+        self.assertEqual(continued_after_deadline, [])
+
 
 if __name__ == "__main__":
     unittest.main()

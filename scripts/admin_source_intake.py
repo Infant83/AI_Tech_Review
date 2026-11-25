@@ -84,7 +84,7 @@ def _safe(path):
     return path
 
 
-def _control(path, limit=65_536):
+def _control(path, limit=65_536, *, budget=None):
     path = _safe(path)
     before = path.stat()
     if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
@@ -94,7 +94,9 @@ def _control(path, limit=65_536):
         opened = os.fstat(handle.fileno())
         if not stat.S_ISREG(opened.st_mode):
             raise IntakeError("unsafe_source_layout")
-        raw = handle.read(limit + 1)
+        raw = handle.read(limit + 1 if budget is None else budget.read_size(limit + 1))
+        if budget is not None:
+            budget.check(len(raw))
         after = os.fstat(handle.fileno())
     if (len(raw) > limit or len(raw) != before.st_size
             or (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
@@ -124,6 +126,11 @@ class _Budget:
             raise IntakeError("read_budget")
         if time.monotonic() > self.deadline:
             raise IntakeError("intake_timeout")
+
+    def read_size(self, maximum):
+        self.check()
+        # One extra byte distinguishes an exhausted budget from true EOF.
+        return min(maximum, MAX_READ_BYTES + 1 - self.read_bytes)
 
 
 class _OutputDirectory:
@@ -278,9 +285,7 @@ class _GitSource:
         self.objects = self.tree_metadata()
 
     def control(self, path, limit=65_536):
-        raw = _control(path, limit)
-        self.budget.check(len(raw))
-        return raw
+        return _control(path, limit, budget=self.budget)
 
     def guard(self):
         self.budget.check()
@@ -360,7 +365,8 @@ class _GitSource:
                     for key, _ in selector.select(min(left, .2)):
                         destination = key.data
                         ceiling = limit if destination is output else MAX_STDOUT_BYTES
-                        chunk = os.read(key.fileobj.fileno(), min(65_536, ceiling + 1 - len(destination)))
+                        chunk = os.read(key.fileobj.fileno(), self.budget.read_size(
+                            min(65_536, ceiling + 1 - len(destination))))
                         if not chunk:
                             selector.unregister(key.fileobj)
                         else:
@@ -473,8 +479,7 @@ class _BoundedInputs(_Inputs):
             if opened.st_size > ceiling:
                 raise IntakeError("dist_limit" if dist_limit else "blob_limit")
             while True:
-                chunk = handle.read(min(1024 * 1024, ceiling + 1 - count,
-                                        MAX_READ_BYTES + 1 - self.budget.read_bytes))
+                chunk = handle.read(self.budget.read_size(min(1024 * 1024, ceiling + 1 - count)))
                 if not chunk:
                     break
                 self.budget.check(len(chunk)); count += len(chunk)

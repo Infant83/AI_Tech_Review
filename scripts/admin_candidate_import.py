@@ -118,6 +118,25 @@ class _Budget:
         if time.monotonic() > self.deadline:
             raise ImportError("import_timeout")
 
+    def read_size(self, maximum):
+        self.check()
+        return min(maximum, MAX_READ_BYTES + 1 - self.read_bytes)
+
+
+class _SourceBudget(intake._Budget):
+    """Keep B2a's narrower limits while charging the outer budget per read."""
+    def __init__(self, outer):
+        super().__init__()
+        self.outer = outer
+        self.deadline = min(self.deadline, outer.deadline)
+
+    def check(self, amount=0):
+        self.outer.check(read=amount)
+        super().check(amount)
+
+    def read_size(self, maximum):
+        return self.outer.read_size(super().read_size(maximum))
+
 
 class _Store:
     """Anchor every directory component and write only through opened dir FDs.
@@ -259,7 +278,7 @@ class _Store:
         with self.opened(path, limit) as fd:
             raw = bytearray()
             while True:
-                chunk = os.read(fd, min(65536, limit + 1 - len(raw)))
+                chunk = os.read(fd, self.budget.read_size(min(65536, limit + 1 - len(raw))))
                 if not chunk:
                     break
                 self.budget.check(read=len(chunk)); raw.extend(chunk)
@@ -434,7 +453,7 @@ def _read_source_blob(source, entry, budget):
                 if left <= 0:
                     raise ImportError("git_timeout")
                 for key, _ in selector.select(min(.2, left)):
-                    chunk = os.read(key.fileobj.fileno(), 65536)
+                    chunk = os.read(key.fileobj.fileno(), budget.read_size(65536))
                     if not chunk:
                         selector.unregister(key.fileobj); continue
                     budget.check(read=len(chunk))
@@ -468,7 +487,7 @@ def _read_object(store, oid, *, collect=False):
     kind = None; expected = count = 0
     with store.opened(path, MAX_STORE_BYTES) as fd:
         while True:
-            compressed = os.read(fd, 65536)
+            compressed = os.read(fd, store.budget.read_size(65536))
             if not compressed:
                 break
             store.budget.check(read=len(compressed))
@@ -662,11 +681,19 @@ def _inspect_locked(store, identity_sha, digest):
     return mapping, attested
 
 
+def _verify_projection_state(store, repository_id, principal, identity_sha, digest, mapping, *, attested):
+    _, current_identity_sha = _store_identity(store, repository_id, principal)
+    if current_identity_sha != identity_sha:
+        raise ImportError("store_inconsistent")
+    current_mapping, current_attested = _inspect_locked(store, identity_sha, digest)
+    if current_mapping != mapping or current_attested != attested:
+        raise ImportError("store_inconsistent")
+
+
 def _final_source(source, tracker, code, importer_code, outer):
-    before = source.budget.read_bytes
+    outer.check()
     tracker.verify()
     revision, state = source.verify(source.root, tracker)
-    outer.check(read=source.budget.read_bytes - before)
     if revision != source.revision or state != "match":
         raise ImportError("source_conflict")
     if intake._tool_hashes() != code or _tool_hashes() != importer_code:
@@ -683,8 +710,7 @@ def _report(mapping, status, *, attested, source_advanced=None):
 
 def _initialize(root, source_root, repository_id, principal):
     budget = _Budget(); namespace = _operator(repository_id, principal)
-    source_budget = intake._Budget(); source = intake._GitSource(intake._safe(source_root), source_budget)
-    budget.check(read=source_budget.read_bytes)
+    source_budget = _SourceBudget(budget); source = intake._GitSource(intake._safe(source_root), source_budget)
     root = intake._safe(root)
     if (root == source.root or source.root in root.parents or root in source.root.parents
             or root == source.common or source.common in root.parents or root in source.common.parents):
@@ -712,13 +738,18 @@ def _import_inner(root, source_root, request_path, baseline, repository_id, prin
         identity, identity_sha = _store_identity(store, repository_id, principal)
         # A prior incomplete import is not permission to switch to a new
         # projection/namespace. Inspect remains available for exact evidence.
-        for path in list(store.dirs):
-            if re.fullmatch(r"imports/[a-f0-9]{64}", path) and not store.exists(path + "/success.json"):
-                raise ImportError("outcome_unknown")
-        source_budget = intake._Budget()
+        for path in sorted(store.dirs):
+            if re.fullmatch(r"imports/[a-f0-9]{64}", path):
+                if not store.exists(path + "/success.json"):
+                    raise ImportError("outcome_unknown")
+                # A new digest must not hide damaged historical refs/objects
+                # or a success record no longer bound to its exact mapping.
+                _, attested = _inspect_locked(store, identity_sha, path.split("/")[1])
+                if not attested:
+                    raise ImportError("outcome_unknown")
+        source_budget = _SourceBudget(budget)
         descriptor, source, tracker, source_code = intake._collect_intake(
             intake._safe(source_root), intake._safe(request_path), intake._safe(baseline), source_budget)
-        budget.check(read=source_budget.read_bytes)
         if _common(source) != identity["sourceCommon"]:
             raise ImportError("source_identity_conflict")
         if (store.root == source.root or store.root in source.root.parents or source.root in store.root.parents
@@ -739,6 +770,7 @@ def _import_inner(root, source_root, request_path, baseline, repository_id, prin
             if not attested:
                 raise ImportError("outcome_unknown")
             _final_source(source, tracker, source_code, code, budget)
+            _verify_projection_state(store, repository_id, principal, identity_sha, digest, mapping, attested=True)
             return _report(mapping, "source_projection_already_present_local", attested=True, source_advanced=False)
         store.reserve(maximum, len(entries) * 2 + len(records) * 2 + 20)
         store.directory(base, create=True); store.write(base + "/intent.json", _raw(intent))
@@ -755,6 +787,8 @@ def _import_inner(root, source_root, request_path, baseline, repository_id, prin
         progress["pin_attempted"] = True
         store.pin("git/refs/adopt/imports/" + digest, (revision + "\n").encode())
         _checkpoint("after_pin")
+        if store.read("git/refs/adopt/imports/" + digest, 41) != (revision + "\n").encode():
+            raise ImportError("store_inconsistent")
         # Validate actual object bytes before writing the authoritative mapping.
         mapping = {"format": FORMAT, "version": 1, "projectionDigest": digest, "identitySha256": identity_sha,
                    "sourceOriginRevision": source.revision, "sourceTree": source.tree,
@@ -769,9 +803,11 @@ def _import_inner(root, source_root, request_path, baseline, repository_id, prin
         store.write(base + "/mapping.json", _raw(mapping)); _checkpoint("after_mapping")
         _final_source(source, tracker, source_code, code, budget)
         _checkpoint("before_attestation")
+        _verify_projection_state(store, repository_id, principal, identity_sha, digest, mapping, attested=False)
         store.write(base + "/success.json", _raw({"format": FORMAT, "version": 1, "projectionDigest": digest,
                     "mappingSha256": _sha(_raw(mapping)), "checkedAt": datetime.now(timezone.utc).isoformat()}))
         _checkpoint("after_attestation")
+        _verify_projection_state(store, repository_id, principal, identity_sha, digest, mapping, attested=True)
         store.verify(); budget.check()
         return _report(mapping, "source_projection_saved_local", attested=True, source_advanced=False)
 
@@ -791,8 +827,7 @@ def _inspect(root, digest, repository_id, principal, source_root=None):
         mapping, attested = _inspect_locked(store, identity_sha, digest)
         advanced = None
         if source_root is not None:
-            source_budget = intake._Budget(); source = intake._GitSource(intake._safe(source_root), source_budget)
-            budget.check(read=source_budget.read_bytes)
+            source_budget = _SourceBudget(budget); source = intake._GitSource(intake._safe(source_root), source_budget)
             if _common(source) != identity["sourceCommon"]:
                 raise ImportError("source_identity_conflict")
             advanced = source.revision != mapping["sourceOriginRevision"]
