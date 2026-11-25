@@ -53,6 +53,11 @@ def _checkpoint(stage):
     """Tests may inject faults; there is no CLI fault-injection option."""
 
 
+def _version(value, field="version", expected=1):
+    # Canonical JSON and dict equality do not distinguish True/1.0 from 1.
+    return isinstance(value, dict) and type(value.get(field)) is int and value[field] == expected
+
+
 class _Budget:
     def __init__(self):
         self.deadline = time.monotonic() + TOTAL_SECONDS
@@ -162,7 +167,7 @@ def _identity(store, repository_id, principal):
     for name in files:
         if name.startswith(("inventory/", "tombstones/", "states/")) or name.endswith("/base.json"):
             value = _json(store.read(name))
-            if not isinstance(value, dict) or value.get("identitySha256") != identity_sha:
+            if not _version(value) or value.get("identitySha256") != identity_sha:
                 raise JobError("store_inconsistent")
     return identity, identity_sha, source_identity, files
 
@@ -189,7 +194,7 @@ def _base(store, identity, identity_sha, digest):
         raise JobError("outcome_unknown")
     raws = _evidence(store, {name: prefix + "/" + name + ".json" for name in ["identity", "intent", "mapping", "success"]})
     evidence = _json(store.read(prefix + "/base.json"))
-    if (not isinstance(evidence, dict) or set(evidence) != {"format", "version", "identitySha256", "projectionDigest", "evidenceSha256"}
+    if (not _version(evidence) or set(evidence) != {"format", "version", "identitySha256", "projectionDigest", "evidenceSha256"}
             or evidence != {"format": FORMAT, "version": 1, "identitySha256": identity_sha,
                             "projectionDigest": digest, "evidenceSha256": {k: _sha(v) for k, v in raws.items()}}
             or _sha(raws["identity"]) != identity["projectionIdentitySha256"]
@@ -198,11 +203,13 @@ def _base(store, identity, identity_sha, digest):
     intent, mapping, success = (_json(raws[n]) for n in ["intent", "mapping", "success"])
     original_identity_sha = _sha(raws["identity"])
     actual, entries, tree, trees, revision, commit = projection._validate_intent(intent, original_identity_sha)
+    if not _version(intent["provenance"], "schemaVersion"):
+        raise JobError("store_inconsistent")
     expected_mapping = {"format": projection.FORMAT, "version": 1, "projectionDigest": digest,
         "identitySha256": original_identity_sha, "sourceOriginRevision": intent["provenance"]["sourceOriginRevision"],
         "sourceTree": intent["provenance"]["sourceTree"], "candidateBaseRevision": revision,
         "candidateTree": tree, "intentSha256": _sha(raws["intent"])}
-    if (actual != digest or mapping != expected_mapping
+    if (actual != digest or not _version(mapping) or mapping != expected_mapping
             or not isinstance(success, dict) or set(success) != {"format", "version", "projectionDigest", "mappingSha256", "checkedAt"}
             or success.get("format") != projection.FORMAT or type(success.get("version")) is not int or success["version"] != 1
             or success.get("projectionDigest") != digest or success.get("mappingSha256") != _sha(raws["mapping"])
@@ -278,7 +285,7 @@ def _inventory(store, identity, identity_sha, files):
     for name in names:
         value = _json(store.read(name)); key = name.split("/")[1][:-5]
         operation = _sha(_raw({"domain": "atrl-admin-b2b2-operation-v1", "keyHash": key}))
-        if (not isinstance(value, dict) or set(value) != {"format", "version", "identitySha256", "namespaceDigest", "keyHash", "operationId", "tombstoneSha256"}
+        if (not _version(value) or set(value) != {"format", "version", "identitySha256", "namespaceDigest", "keyHash", "operationId", "tombstoneSha256"}
                 or value != {"format": FORMAT, "version": 1, "identitySha256": identity_sha,
                     "namespaceDigest": namespace_digest, "keyHash": key, "operationId": operation,
                     "tombstoneSha256": value.get("tombstoneSha256")}
@@ -289,7 +296,8 @@ def _inventory(store, identity, identity_sha, files):
             raise JobError("outcome_unknown")
         raw = store.read(tombstone_path)
         tombstone = _json(raw)
-        if (_sha(raw) != value["tombstoneSha256"] or not isinstance(tombstone, dict)
+        if (_sha(raw) != value["tombstoneSha256"] or not _version(tombstone)
+                or not _version(tombstone, "requestFingerprintVersion", FINGERPRINT_VERSION)
                 or tombstone.get("keyHash") != key or tombstone.get("operationId") != operation
                 or tombstone.get("identitySha256") != identity_sha or tombstone.get("namespaceDigest") != namespace_digest
                 or tombstone.get("noChange") is not True
@@ -342,7 +350,8 @@ def _state(store, key, claim):
              "keyHash": key, "tombstoneSha256": _sha(_raw(claim)), "status": "no_change"}
     path = "states/" + key + ".json"
     if store.exists(path):
-        if _json(store.read(path)) != state:
+        actual = _json(store.read(path))
+        if not _version(actual) or actual != state:
             raise JobError("store_inconsistent")
     else:
         store.write(path, _raw(state))
@@ -420,6 +429,11 @@ def _stage(root, projection_root, digest, repository_id, principal):
                                  for name in ["intent", "mapping", "success"]}})
             intent = _json(raws["intent"])
             _, entries, _, trees, revision, _ = projection._validate_intent(intent, original_sha)
+            # The B2b1 v1 mapping reader historically compared a dict, which
+            # accepts bool/float as int. Refuse malformed source evidence before
+            # creating any writer base/control/object/pin, preserving B2b1.
+            if not _version(_json(raws["mapping"])) or not _version(intent["provenance"], "schemaVersion"):
+                raise JobError("store_inconsistent")
             oids = {revision, *[oid for oid, _ in trees], *[entry["blob"] for entry in entries]}
             sizes = {}
             for oid in oids:

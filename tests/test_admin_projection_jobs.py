@@ -64,6 +64,30 @@ class ProjectionJobTests(unittest.TestCase):
         synthetic._git(self.source, "update-ref", "refs/heads/main", new, old)
         return new
 
+    def projection_with_schema_version(self, value):
+        """Own-fixture proof with linked hashes, exercising the v1 reader gap."""
+        original = self.projection / "imports" / self.digest / "intent.json"
+        intent = json.loads(original.read_bytes())
+        provenance = intent["provenance"]; provenance["schemaVersion"] = value
+        provenance["intakeDigest"] = intake._sha(intake._raw({key: item for key, item in provenance.items() if key != "intakeDigest"}))
+        intent["projectionDigest"] = projection._sha(projection._raw({"identitySha256": intent["identitySha256"],
+            "provenance": provenance, "importerCodeSha256": intent["importerCodeSha256"]}))
+        digest, _, tree, _, revision, commit = projection._validate_intent(intent, intent["identitySha256"])
+        mapping = {"format": projection.FORMAT, "version": 1, "projectionDigest": digest,
+            "identitySha256": intent["identitySha256"], "sourceOriginRevision": provenance["sourceOriginRevision"],
+            "sourceTree": provenance["sourceTree"], "candidateBaseRevision": revision,
+            "candidateTree": tree, "intentSha256": projection._sha(projection._raw(intent))}
+        with projection._Store(self.projection, projection._Budget()) as store, projection._locked(store):
+            prefix = "imports/" + digest; store.directory(prefix, create=True)
+            store.write(prefix + "/intent.json", projection._raw(intent))
+            projection._write_object(store, "commit", [commit], len(commit), expected_oid=revision)
+            store.pin("git/refs/adopt/imports/" + digest, (revision + "\n").encode())
+            store.write(prefix + "/mapping.json", projection._raw(mapping))
+            store.write(prefix + "/success.json", projection._raw({"format": projection.FORMAT, "version": 1,
+                "projectionDigest": digest, "mappingSha256": projection._sha(projection._raw(mapping)),
+                "checkedAt": "2026-11-26T00:00:00Z"}))
+        return digest
+
     def test_explicit_stage_copies_exact_objects_provenance_and_preserves_original(self):
         source = self.snapshot(self.fixture); original = self.snapshot(self.projection)
         result = self.stage()
@@ -326,6 +350,82 @@ class ProjectionJobTests(unittest.TestCase):
             with self.assertRaises(intake.IntakeError) as caught:
                 intake._collect_intake(self.source, self.request, self.baseline, intake._Budget(), frozen_request=frozen)
         self.assertEqual(caught.exception.code, "input_changed")
+
+    def test_scalar_stored_base_and_mapping_versions_refused_before_key_reservation(self):
+        self.stage()
+        prefix = self.writer / "bases" / self.digest
+        paths = {name: prefix / (name + ".json") for name in ["base", "mapping", "success"]}
+        originals = {name: path.read_bytes() for name, path in paths.items()}
+        for target in ["base", "mapping"]:
+            for invalid in [True, 1.0]:
+                with self.subTest(control=target, invalid=invalid):
+                    value = json.loads(originals[target]); value["version"] = invalid
+                    paths[target].write_bytes(writer._raw(value))
+                    if target == "mapping":
+                        # Keep the evidence hashes consistent so a type error
+                        # cannot be hidden by an unrelated raw-hash rejection.
+                        success = json.loads(originals["success"])
+                        success["mappingSha256"] = writer._sha(paths["mapping"].read_bytes())
+                        paths["success"].write_bytes(writer._raw(success))
+                        base = json.loads(originals["base"])
+                        for name in ["mapping", "success"]:
+                            base["evidenceSha256"][name] = writer._sha(paths[name].read_bytes())
+                        paths["base"].write_bytes(writer._raw(base))
+                    before = self.snapshot(self.writer)
+                    self.reject(self.apply, "store_inconsistent")
+                    self.assertEqual(before, self.snapshot(self.writer))
+                    self.assertEqual(list((self.writer / "inventory").glob("*.json")), [])
+                    for name, raw in originals.items():
+                        paths[name].write_bytes(raw)
+
+    def test_scalar_existing_inventory_tombstone_fingerprint_and_state_versions_refused(self):
+        self.stage(); self.apply()
+        paths = {name: next((self.writer / name).glob("*.json")) for name in ["inventory", "tombstones", "states"]}
+        originals = {name: path.read_bytes() for name, path in paths.items()}
+        for target, field in [("inventory", "version"), ("tombstones", "version"),
+                              ("tombstones", "requestFingerprintVersion"), ("states", "version")]:
+            for invalid in [True, 1.0]:
+                with self.subTest(control=target, field=field, invalid=invalid):
+                    value = json.loads(originals[target]); value[field] = invalid
+                    paths[target].write_bytes(writer._raw(value))
+                    if target == "tombstones":
+                        digest = writer._sha(paths[target].read_bytes())
+                        for name in ["inventory", "states"]:
+                            bound = json.loads(originals[name]); bound["tombstoneSha256"] = digest
+                            paths[name].write_bytes(writer._raw(bound))
+                    before = self.snapshot(self.writer)
+                    self.reject(self.apply, "store_inconsistent")
+                    self.assertEqual(before, self.snapshot(self.writer))
+                    for name, raw in originals.items():
+                        paths[name].write_bytes(raw)
+
+    def test_scalar_projection_mapping_version_refused_before_any_stage_write(self):
+        prefix = self.projection / "imports" / self.digest
+        mapping_path, success_path = prefix / "mapping.json", prefix / "success.json"
+        mapping_raw, success_raw = mapping_path.read_bytes(), success_path.read_bytes()
+        for invalid in [True, 1.0]:
+            with self.subTest(invalid=invalid):
+                mapping = json.loads(mapping_raw); mapping["version"] = invalid
+                mapping_path.write_bytes(writer._raw(mapping))
+                # The B2b1 reader compares a dict and hashes its canonical int
+                # reconstruction. Keeping that original success hash exercises
+                # the writer's pre-copy type guard, rather than an earlier
+                # unrelated B2b1 hash refusal.
+                before = self.snapshot(self.writer)
+                self.reject(self.stage, "store_inconsistent")
+                self.assertEqual(before, self.snapshot(self.writer))
+                self.assertEqual(list((self.writer / "bases").iterdir()), [])
+                mapping_path.write_bytes(mapping_raw); success_path.write_bytes(success_raw)
+
+    def test_scalar_projection_provenance_schema_version_refused_before_any_stage_write(self):
+        for invalid in [True, 1.0]:
+            with self.subTest(invalid=invalid):
+                digest = self.projection_with_schema_version(invalid)
+                before = self.snapshot(self.writer)
+                self.reject(lambda: writer.stage_base(self.writer, self.projection, digest,
+                                                      self.repository, self.principal), "store_inconsistent")
+                self.assertEqual(before, self.snapshot(self.writer))
+                self.assertEqual(list((self.writer / "bases").iterdir()), [])
 
     def test_real_cli_no_change_and_sanitized_changed_refusal(self):
         self.stage()
