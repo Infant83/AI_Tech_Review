@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 49,
+  "record_version": 50,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-24T12:28:12.960412+00:00",
+  "updated_at": "2026-11-24T18:10:28.961835+00:00",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "현재 delta는메일/API전페이지·새미해결0·공개raw3동일이다. 기존정상4run/jobs와해결attempt사슬은재사용하며 B2a/B1수정의actualCI는미관찰이다.",
+    "status": "이번실제4정상run의attempt/jobs와actualPages3·DRB staleguard skip·DQE통합공개를확인했다. retention거절/CLIexit결함은FCC후속으로분리하며 API green을실제정리완료로해석하지않는다.",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -147,31 +147,31 @@
     "historical_8e074_status_at_local_integration": "동시DRB attempt1 오탐과같은입력 attempt2 성공·실제HTTPS를 연결하고 test수정8e0740b/로컬73·독립감수를 통합, 실제후속CI관찰 전"
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-24T12:25:11Z",
-    "last_successful_actions_check_at": "2026-11-24T12:23:05.299554Z",
-    "mail_window": "지난 성공부터48시간 겹침·in:anywhere/검증GitHub발신자/저장소·unread 제한 없이1페이지0통끝. 정확 성공 시각을 위해 종료 전 같은 조회를 재확인했으며 메일상태변경0.",
-    "actions_window": "1페이지9run끝·새/변경0·active5states각0·새미해결0. 새job조회0이라 이전jobs성공시각을 유지한다.",
+    "last_successful_mail_check_at": "2026-11-24T18:04:51Z",
+    "last_successful_actions_check_at": "2026-11-24T18:04:50.690278Z",
+    "mail_window": "직전12:25성공부터48시간겹침·in:anywhere/검증GitHub발신자/저장소·unread제한없이1페이지0통끝. 메일상태변경0.",
+    "actions_window": "1페이지10run끝·새4attempt1. 실제Pages3건/L015·DQB·DQE, DRB는actualPages/복구·후등록skip. 새실패0·active5states0이며retention거절2회는별도FCC로연결.",
     "mail_notification_count": 0,
     "unique_mail_linked_runs": 0,
     "failed_attempt_count": 0,
     "unresolved_mail_linked_runs": [],
-    "live_source_revision": "6a920806fdad48eea569d0a61f6819244876f430",
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+    "live_source_revision": "bc703d50853dfad4752da48d4a90168458fe18cb",
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
     "supplemental_actions_check_at": "2026-11-22T02:16:23.765935Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-24T12:23:05.299554Z",
+    "last_full_actions_check_at": "2026-11-24T18:04:50.690278Z",
     "supplemental_successful_runs": [
       "44974749097"
     ],
-    "supplemental_scope": "과거 supplemental 필드는 역사 기록이다. 현재 전체API는2026-11-24T12:23:05.299554Z이며 새job조회 없이 과거jobs성공시각은 전진시키지 않았다.",
+    "supplemental_scope": "과거supplemental필드는역사기록이다. 현재전체API18:04:50.690278Z와jobs18:04:56.431223Z를분리한다.",
     "historical_supplemental_fields_precede_current_full_check": true,
     "full_api_checkpoint_excludes_later_concurrent_DRB": false,
     "historical_resolved_failed_attempt_count": 1
   },
   "observation": {
-    "status": "11/24 실제21:19 delta 점검·새미해결0",
-    "period": "2026-11-24T12:19:53.298Z",
-    "result": "메일0통/Actions신규·변경0·active5states0·새피드백0. 전체artifact102/2페이지와복구3미만료·이전metadata동일을 확인했다.118→102를 삭제/절감으로 환산하지 않았다. 기존정상4run/jobs근거를 재사용하고 B2a/B1수정 actualCI미관찰 유지. 원문로그/메일상태·리런/수동삭제/복원0.",
+    "status": "11/25 03시 새run4·실제배포3/구판차단1·새실패0",
+    "period": "2026-11-24T18:03:26.892Z",
+    "result": "메일0통·API1페이지10run/새4attempt1. L015/DQB/DQE actualPages/4jobs성공, DRB actualPages/recovery/notify는skip이며최신DQE에통합됐다. artifact109/2페이지·미만료복구3을확인했다. L015/DQB거절2회와DQE실제CI삭제3을별도사실로연결하며CLIexit보완의actualCI는대기다. 메일상태/테스트푸시/수동삭제/리런/복원0.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -390,12 +390,12 @@
       "replay": "not_printed"
     },
     "last_successful_checks": {
-      "mail": "2026-11-24T12:25:11Z",
-      "full_api": "2026-11-24T12:23:05.299554Z",
-      "jobs": "2026-11-23T18:02:39.920329Z",
-      "active_states": "2026-11-24T12:23:05.407305Z",
-      "controls": "2026-11-24T12:23:06.846748Z",
-      "active_states_scope": "Five separate state queries each0/end; jobs timestamp reused because no new job queries."
+      "mail": "2026-11-24T18:04:51Z",
+      "full_api": "2026-11-24T18:04:50.690278Z",
+      "jobs": "2026-11-24T18:04:56.431223Z",
+      "active_states": "2026-11-24T18:04:50.794264Z",
+      "controls": "2026-11-24T18:04:52.228095Z",
+      "active_states_scope": "Each state queried separately to end, all0; API/mail/jobs checkpoints are independent."
     },
     "checkpoint_20261117_15": {
       "run_reference": "operations/runs/20261117T060508Z-a6fd37f5-bcd3-4950-a792-62e8dc7268eb.md",
@@ -903,7 +903,7 @@
       "actual_public_revision": "6a920806fdad48eea569d0a61f6819244876f430",
       "scope": "Use existing normal QA/cache-fix737d verification; no new browser/device/restore or B2a GitHub execution claim."
     },
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
     "evening_20261124": {
       "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
       "mail_success_at": "2026-11-24T12:25:11Z",
@@ -924,6 +924,29 @@
       "B2a_B1_correction_actual_CI_observed": false,
       "actual_restore": false,
       "provider_mutations": 0
+    },
+    "night_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "mail_at": "2026-11-24T18:04:51Z",
+      "full_API_at": "2026-11-24T18:04:50.690278Z",
+      "jobs_at": "2026-11-24T18:04:56.431223Z",
+      "mail_count": 0,
+      "API_pages": 1,
+      "overlap_runs": 10,
+      "new_runs": 4,
+      "actual_Pages_deployments": 3,
+      "intentional_stale_source_skips": 1,
+      "new_unresolved_API_failed_runs": 0,
+      "retention_refusals_handed_off": 2,
+      "later_DQE_confirmed_CI_deletions": 3,
+      "total_artifacts": 109,
+      "recovery_copies": 3,
+      "B2a_B1_runtime_correction_actual_CI_observed": true,
+      "new_retention_exit_actual_CI_observed": false,
+      "query_errors": 0,
+      "raw_logs_retained": 0,
+      "bounded_retention_projection_reads": 1,
+      "manual_mutations": 0
     }
   },
   "recovery": {

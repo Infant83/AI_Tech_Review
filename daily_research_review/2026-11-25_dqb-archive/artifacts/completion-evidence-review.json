@@ -1,0 +1,64 @@
+{
+  "checked_at": "2026-11-25T02:29:49.781781+00:00",
+  "reviewer": "dqb1125_qflow_materials",
+  "status": "pass_at_prepared_completion_evidence_scope",
+  "publication_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+  "workflow_run": 45532017728,
+  "blocking_findings": [],
+  "reviewed_public_evidence": {
+    "live-verification.json": {
+      "bytes": 18041,
+      "sha256": "8d397e3f0be87065ded83aeaa65785f22856c5b630512fa569941addd7eb3b93",
+      "private_record_sha256": "39e344169fa7158cdc407859683dca17996b9c1e1473492da0d05f7c6577583c",
+      "correspondence": "Exact recursive match after omitting only downloaded_file cache basenames from HTTP response records. Counts, URLs, status codes, lengths, hashes, source revision, limits and all substantive results are unchanged."
+    },
+    "live-browser-review.json": {
+      "bytes": 1955,
+      "sha256": "d77566f714f497f352e7cbf565d626ee59ee88338ee7c93c145c5ca25aedb8d0",
+      "private_record_sha256": "d77566f714f497f352e7cbf565d626ee59ee88338ee7c93c145c5ca25aedb8d0",
+      "correspondence": "Byte-identical to the prepared browser record. Declared limits distinguish initial pointer failure from successful keyboard activation and omit unperformed browser actions."
+    }
+  },
+  "actual_record_checks": {
+    "stored_response_bodies_hashed": 48,
+    "unique_https_urls": 47,
+    "ordinary_route_responses": 46,
+    "release_reads": 2,
+    "every_stored_body_matches_recorded_bytes_and_sha256": true,
+    "all_recorded_statuses_are_200": true,
+    "selected_ordinary_route_hashes_match_actual_sealed_release": 46,
+    "release_before_after_bytes_identical": true,
+    "release_revision_matches_published_source": true,
+    "new_pdf_live_bytes": 179759,
+    "new_pdf_live_sha256": "2de43b257d4110df8e6481b232344fa21221c9f38a39aa295c803b5dbcd940b7"
+  },
+  "content_preservation": {
+    "approved_candidate_manuscript_and_compiled_fragment_hashes_match_both_languages": true,
+    "approved_dist_archive_and_stored_live_pdf_bytes_and_sha256_match": true,
+    "tracked_worktree_diff_empty": true,
+    "staged_diff_empty": true,
+    "observed_worktree_additions_only": [
+      "live-browser-review.json",
+      "live-verification.json"
+    ],
+    "evidence_only_additions_at_observation": true
+  },
+  "public_safety": {
+    "public_files_contain_no_private_absolute_paths": true,
+    "public_files_contain_no_email_addresses_mail_identifiers_or_authentication_material_observed": true,
+    "only_public_service_urls_and_public_file_names_remain": true,
+    "qa_screenshots_private_download_basenames_and_raw_browser_state_not_copied": true
+  },
+  "ci_claim_boundary": {
+    "all_four_jobs_success_not_claimed": true,
+    "retention_completion_not_claimed_by_these_records": true,
+    "meaning": "HTTP/browser evidence passing and a successful production build do not establish successful recovery retention. Preserve the reported distinction between successful recovery upload and retention rejection for incomplete_metadata.",
+    "final_ci_summary_reviewed": false
+  },
+  "limits": [
+    "Independent correspondence, privacy and content-preservation review of the two prepared completion records.",
+    "No new network request or browser interaction was performed; browser interaction claims were compared to the prepared browser record rather than independently repeated.",
+    "No build, render, science execution, repository edit or deployment was performed.",
+    "The CI summary still being written was excluded; no waiting or repeated polling was performed."
+  ]
+}

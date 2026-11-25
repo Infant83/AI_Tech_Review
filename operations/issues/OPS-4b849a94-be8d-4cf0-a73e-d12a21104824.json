@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 22,
+  "record_version": 24,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-24T12:32:12.752771+00:00",
+  "updated_at": "2026-11-24T21:08:56.074449+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -275,11 +275,12 @@
       "scope": "Installed Git binary selection and fixed child PATH only; synthetic sandbox/CAS/receipt contract preserved.",
       "target_tests": 34,
       "independent_actual_CLI_apply_replay_CAS_checks": 3,
-      "actual_GitHub_CI_of_this_correction_observed": false,
-      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md"
+      "actual_GitHub_CI_of_this_correction_observed": true,
+      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
+      "actual_CI_observation_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
     },
     "b2b1_contract": {
-      "status": "adopted_contract_only_not_implemented",
+      "status": "adopted_contract_initial_candidate_in_separate_branch_not_integrated",
       "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md",
       "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
       "scope": "Exact selected bytes in new isolated remote-free bare Git and immutable origin/projection mapping; no patch/key reservation or publication",
@@ -292,11 +293,52 @@
       "reviewed_B2b1_section_sha256": "736de992a2607e77947f35b26ac165c82cc749f39e4f07adfa029c05d4a4b1aa",
       "independent_result": "PASS_contract_only_after_no_change_and_final_attestation_clarifications",
       "future_runtime_validation_groups": 6,
-      "adopted_after_final_independent_review_at": "2026-11-24T12:32:12.752771+00:00"
+      "adopted_after_final_independent_review_at": "2026-11-24T12:32:12.752771+00:00",
+      "runtime_tests_run_scope": "The recorded zero runtime tests apply to the Nov24 contract adoption; current candidate tests are recorded separately."
+    },
+    "local_b2b1_candidate": {
+      "source_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+      "initial_source_revision": "bbe60a610dcb8213281c925c8dfe6dd03a8ea9bc",
+      "base_revision": "1d112e77eb27078c96d99671859ebd7481f15119",
+      "branch": "codex/admin-candidate-import-b2b1-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_sha256": {
+        "scripts/admin_candidate_import.py": "fdf4bb9bfe6aea1a879b8511e7717e5f0ece477046a5c465176e04cc00889b0b",
+        "tests/test_admin_candidate_import.py": "b17a62031286a2c9a4925036681595d7524bdadec153c0eed8ef4d9167415d20",
+        ".automation/admin-readonly/README.md": "1d5b917019c588425f6aa7f91b59cc6fa9015c5e5d3297dd1340ad83490f3699",
+        "scripts/admin_source_intake.py": "aac7b3401a3d2dbf0e80686274958253a551248a20127e353f8b7411bd5e8f66"
+      },
+      "status": "initial_candidate_corrected_and_bounded_verified_formal_review_pending",
+      "remote_branch_preserved": true,
+      "main_integrated": false,
+      "deployed": false,
+      "source_origin_writer_API_DB_publication_activated": false,
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "proof_key": "adopt-b2b1-20261125 / freeze-corrected; adopt-20261125-night / independent / corrected review; actual-import / verification",
+      "corrected_target_tests": 17,
+      "independent_target_tests": 17,
+      "independent_epoch_regression_cases": 1,
+      "initial_epoch_red_case_preserved": true,
+      "prior_whole_candidate": "bbe60a610dcb8213281c925c8dfe6dd03a8ea9bc",
+      "prior_whole_tests": 568,
+      "prior_whole_passed": 567,
+      "prior_whole_existing_optional_skips": 1,
+      "latest_whole_suite_run": false,
+      "actual_cli_calls": 4,
+      "actual_selected_manifest": 142,
+      "actual_source_baseline_request_foreign_preserved": 148,
+      "actual_Git_all_blob_SHA256_checks": 142,
+      "actual_Git_fsck_exit": 0,
+      "root_controlled_destination_outside_all_checked_worktrees_and_baseline": true,
+      "automatic_other_worktree_discovery": false,
+      "automatic_init_baseline_discovery": false,
+      "automatic_incomplete_import_repair_resume": false,
+      "resume": "11/25 11시 최신 main/정상 게시/작업 파일을 인수해 물리 배치 지원 경계·identity history·incomplete 조정·상한/중단의6군 정식 검토와 최신 전체 회귀를 수행한다. d0b960e의 별도CLI수정도 후보 통합 전 보존한다. 원본/원격writer·patch/key/CAS·서버활성화는후속이다.",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/1272e62e27e5a11a06374d253f1149ced0c8c813"
     }
   },
   "verification": {
-    "status": "A/B1에 이어 B2a 로컬 읽기 인수 명세의 정식 기술 검증·최신 정상 게시 보존·소스통합 완료. 실제서버/API/원본 저장·발행과B2b는후속이다.",
+    "status": "B2a527/B1 실행경로 보완의 실제 정상CI 관찰을 마쳤다. B2b1 초기1272e62는 전용17·독립17/epoch거절1과 실제4CLI·142blob/148입력 보존을 확인했으며 main통합 전/11시 정식6군·최신 전체 검증 대기다. 이전bbe568전체는 수정 전 이력이다. 실제patch/keyclaim/CAS·운영 source/원격writer·서버/API/DB·발행은 후속이다.",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -706,14 +748,51 @@
         "Parent no-follow dir-FD; first leaf euid/0700/empty; exclusive files; observed identity checks after first open.",
         "POSIX mkdir does not return a directory FD; arbitrary same-UID replacement before first open cannot be atomically identified. This is not a shared untrusted-server activation or namespace lock."
       ],
-      "actual_B2a_GitHub_CI_observed": false,
-      "server_auth_API_DB_source_writer_publication_activated": false
+      "actual_B2a_GitHub_CI_observed": true,
+      "server_auth_API_DB_source_writer_publication_activated": false,
+      "actual_CI_observation_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
+    },
+    "B2a_actual_CI_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "normal_run_urls": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45402215559",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45400368890",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45397981670",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45394978331"
+      ],
+      "eight_code_test_files_exact_reviewed527": true,
+      "actual_python_suite": 554,
+      "normal_QA_reference": "daily_research_review/2026-11-24_dqe-archive/artifacts/publication-qa.json",
+      "not_B2b1_or_new_retention_exit_execution": true
+    },
+    "B2b1_initial_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "candidate": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+      "independent_result": "PASS_bounded_correction_and_actual_projection_not_formal_acceptance",
+      "corrected_target_tests": 17,
+      "independent_existing_tests": 17,
+      "separate_epoch_red_then_green_cases": 1,
+      "whole_568_is_prior_candidate_only": true,
+      "corrected_whole_suite_run": false,
+      "actual_source_revision": "d0b960e83d5e00c2acac1e68bac7098ecbf02b7d",
+      "actual_release_revision": "bc703d50853dfad4752da48d4a90168458fe18cb",
+      "actual_cli_calls": 4,
+      "selected_manifest": 142,
+      "source_files_preserved": 148,
+      "native3_fingerprint_raw3_preserved": true,
+      "Git_fsck_and_full_blob_checks": true,
+      "remaining": [
+        "Formal6-group review and latest-base whole suite pending11h.",
+        "init-store has no baseline arg; other-worktree roots are operator verified, not automatically enumerated.",
+        "Incomplete import reconciliation/repair/resume is not implemented; conservative refusal only.",
+        "No patch/keyclaim/CAS, operational source/remote writer, authorization/API/DB/publication activation."
+      ]
     }
   },
   "observation": {
-    "status": "B2a 로컬 완료·B2b1 최소 계약 채택/구현 전",
-    "period": "2026-11-24T12:19:53.298Z",
-    "result": "원본40SHA와부분후보SHA를분리하고 원래요청/fingerprint·고정namespace·importrefpin/비원자적복구·읽기쓰기한도를독립정적감수했다. 새제품시험/후보저장/원본writer·서버발행은0이며 다음25일03시 첫후보/11시독립검토다.",
+    "status": "B2b1 초기 후보1272e62 보완·한정 검증/원격 보존·11시 정식 검토 대기",
+    "period": "2026-11-24T18:03:26.892Z",
+    "result": "새4파일의initial bbe568전체/기존선택1skip과독립14PASS뒤epoch변경중복저장P2를별도1case로재현했다. 최소보완1272e62의전용17·독립17/동일epoch거절1case와실제4CLI/142Gitblob/148입력불변을확인했다. 이전568은수정전이력이며최신전체/정식6군완료아니다. 코드main통합/운영writer·API·DB·발행활성화없음.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -767,30 +846,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md"
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/25 03시 B2b1의 선택 입력 독립bareGit 보존·불변 origin/projection mapping 첫 후보를 만들고11시 독립 검토한다. 원본 A/fingerprint·고정namespace·import ref pin/불확정 실패/예산을 보존하며 실제patch/keyclaim/CAS·원본/원격writer·API/DB·발행 활성화는 후속이다.",
+  "next_action": "11/25 13:30 최신 main/정상 게시/작업 파일을 인수해 물리 배치 지원 경계·identity history·incomplete 조정·상한/중단의6군 정식 검토와 최신 전체 회귀를 수행한다. d0b960e의 별도CLI수정도 후보 통합 전 보존한다. 원본/원격writer·patch/key/CAS·서버활성화는후속이다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b1_contract_adopted_importer_implementation_next",
-    "next_scheduled_step_at": "2026-11-25T03:00:00+09:00",
-    "next_review_at": "2026-11-25T11:00:00+09:00",
-    "scheduled_step": "B2b1 선택projection 독립bareGit 보존/불변mapping 첫 후보;11시 독립 검토 목표",
+    "state": "B2b1_initial_corrected_candidate_preserved_formal_review_next",
+    "next_scheduled_step_at": "2026-11-25T13:30:00+09:00",
+    "next_review_at": "2026-11-25T13:30:00+09:00",
+    "scheduled_step": "B2b1 수정1272e62 최신기준/지원경계·실패조정·상한의 정식6군 검토·필요 보완",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
-    "replan_reason": "24일11시 예정 계약을 실제21:19 재개에서 독립 정적 검토해 B2b1 import/mapping만 채택했다. P2/순번1 유지,25일03시 첫 후보/11시 독립 검토로 연결한다. 실제patch/key/CAS·원본/원격writer·서버/발행과 전체 납기는후속이다.",
+    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
+    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -821,6 +900,8 @@
     "b2b_scope_review_target": "2026-11-24T11:00:00+09:00",
     "b2b_scope_review_completed_at": "2026-11-24T12:32:12.752771+00:00",
     "b2b1_implementation_start_target": "2026-11-25T03:00:00+09:00",
-    "b2b1_first_independent_review_target": "2026-11-25T11:00:00+09:00"
+    "b2b1_first_independent_review_target": "2026-11-25T13:30:00+09:00",
+    "b2b1_initial_candidate_ready_at": "2026-11-24T18:23:28.738053+00:00",
+    "b2b1_candidate_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813"
   }
 }
