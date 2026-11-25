@@ -288,9 +288,11 @@ class CandidateImportTests(unittest.TestCase):
         holder.unlink()
         self.store = self.parent / "tool-change"; self.initialize()
         original = importer._tool_hashes; calls = []
-        def tools():
-            result = original(); calls.append(True)
-            if len(calls) >= 3:
+        def tools(budget=None):
+            result = original(budget=budget); calls.append(True)
+            # Intent shape validation is now I/O-free; the second hash read is
+            # the final source check, not a redundant schema-name lookup.
+            if len(calls) >= 2:
                 result["scripts/admin_candidate_import.py"] = "a" * 64
             return result
         with patch.object(importer, "_tool_hashes", side_effect=tools):

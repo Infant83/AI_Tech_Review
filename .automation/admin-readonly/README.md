@@ -104,7 +104,7 @@ B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다.
 
 ## B2b1 · 선택 원본 bytes의 첫 독립 Git 보존 후보
 
-`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 초기1272e62를11/25 13:30 정식 감수·보완한658de62의 제어된 로컬 도구를 소스통합했다. 실제142입력/기존판본 보존과583전체·별도독립runtime 검증은 운영 기록을 따른다. 현재후속B2b2는 아래 계약단계이며 새코드의실제CI·운영writer/발행은 별도로 구분한다.
+`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 초기1272e62를11/25 13:30 정식 감수·보완한658de62의 제어된 로컬 도구를 소스통합했다. 실제142입력/기존판본 보존과583전체·별도독립runtime 검증은 운영 기록을 따른다. 11/26 인수한 정상 [DRB CI](https://github.com/Infant83/AI_Tech_Review/actions/runs/45642166508)와 [OLED CI](https://github.com/Infant83/AI_Tech_Review/actions/runs/45656787296)에서658de62의 정확 코드와583검사(582통과/기존 선택1skip)를 확인했다. 아래 B2b2 첫 격리 후보의 helper 변경은 그 CI 이후이며 해당 결과로 새 후보를 검증했다고 표시하지 않는다.
 
 운영자는 논리 repository UUID와 고정 local principal을 별도로 정한다. 요청 JSON의 actor/role/path나 현재 source SHA를 namespace로 사용하지 않는다. `init-store`는 존재하지 않는 새 경로에만 적용하며, `import`/`inspect`는 기존 identity/epoch·bare 설정·보호 표시·lock을 확인한다. `repositoryId`·principal·operation은 여러 import에 걸쳐 유지한다. 초기화 시 source common-dir의 device/inode도 결속해 다른 repository를 자동 연결하지 않는다. 물리 source 이전·store 전체 유실/복원·운영 key store 활성화는 미지원이며 새 epoch를 과거 이력 망각의 허가로 쓰지 않는다.
 
@@ -130,4 +130,24 @@ store는 source/common-dir·baseline을 포함한 원본 경로와 다른 작업
 
 ## B2b2 · 지속 요청 키와 별도 로컬 후보 저장 계약
 
-11/25 18:30 [최소 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장)을 두 역할의 정적 독립 검토와 보완 뒤 채택했다. 현재는 계약 단계이며 새 runtime/CLI·키 접수·후보 저장은 구현 전이다. B1의 합성 guard와 B2b1의 기존 형식을 유지하고, 고정 repository/principal/operation의 별도 지속 writer-store에 명시적으로 준비한 독립 base를 사용한다. 기존 key는 현재 A보다 먼저 원래 receipt/tombstone과 정확 tree로 조회하고, no_change 실행은 새 Git copy/commit/ref 없이 불변 tombstone만 기록하도록 분리했다. CAS는 writer의 base/result ref이며 실제 원본/원격 CAS나 서버 인가·발행이 아니다. 첫 구현/검토 목표와 현재 단계는 [일정표](../../operations/SCHEDULE.md)를 따르며 기존 일반 게시 권한·절차는 유지한다.
+11/25 18:30 [최소 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장)을 두 역할의 정적 독립 검토와 보완 뒤 채택했다. 11/26 첫 격리 후보는 **초기화·명시적 base 준비·no_change와 역사 replay만** 구현한다. 허용 필드의 실제 변경을 저장하는 Git receipt/CAS와 전체 B2b2는 미완료이며, `changed_candidate_not_implemented`로 **키 예약 전에 거절**한다. B1의 합성 guard와 B2b1의 기존 형식을 유지한다. 첫 후보의 독립 검증·소스통합 상태와 다음 목표는 [일정표](../../operations/SCHEDULE.md)를 따른다.
+
+### 첫 no_change 후보의 명시적 실행
+
+고정 repository UUID/principal/operation의 **새로운 별도** writer-store를 사용한다. 기존 projection-store 안에 쓰지 않으며 source/common-dir·baseline·다른 작업 사본과의 물리 분리는 운영자가 확인한다. 도구는 전달받은 source/common-dir·baseline 부모·projection-store와 writer의 상하위/동일 경로를 거절한다. 초기화는 기존 B2b1 identity/epoch를 결속하고 store의 `.keep`·0700/euid·0600 파일·no-follow dir-FD·단일 hardlink 조건을 적용한다. 다른 작업 사본의 자동 탐색, 첫 open 이전 namespace 소유권, OS계정 전체를 통제하는 주체에 대한 무결성·전원 차단 내구성을 보장하지 않는다.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py init-writer --store /controlled/writer-store --projection-store /controlled/projection-store --root /controlled/source --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py stage-base --store /controlled/writer-store --projection-store /controlled/projection-store --projection-digest VERIFIED_DIGEST --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py apply-no-change --store /controlled/writer-store --request /controlled/checked-request.json --projection-digest VERIFIED_DIGEST --root /controlled/source --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+```
+
+`stage-base`는 attested:true인 완전 projection의 정확 identity/intent 전체 provenance/mapping/success bytes와 실제 commit/tree/blob/mode·raw SHA를 독립 복사하고 immutable base pin을 둔다. Git 자식의 쓰기 명령은 없으며 직접 작성하는 pin의 임시41B·최종 링크 entry와 실제 복사를 사전·누적으로 제한한다. base 증거 묶음은 읽는 단계부터 합계4MiB로 제한한다. 원 B2b1 store는 읽기만 한다. 준비는 요청/키 접수가 아니며 역사 base 준비가 현재 A/공개본·인가 확인을 뜻하지 않는다. apply는 준비 누락 시 `projection_not_staged`로 거절하고 암묵적 복사·초기화·수선/GC를 하지 않는다.
+
+요청은 strict parser로 한 번 읽어 중첩 값까지 불변인 내부 context로 고정한다. 기존 A/B2a의 내부 선택 인자로 이를 재사용하며 각 tracker의 실제 bytes/SHA를 같은 payload와 계속 대조한다. 이 인자는 public CLI에 노출하지 않는다. 새 no_change만 실제 source에서 현재 A/B2a·native3/raw3·도구/원본 판본과 준비 projection의 정확 provenance를 확인한다. 최초 정식 parser 뒤 immutable 값의 복사에는 JSON 재parse가 없다. helper 소스가 바뀌면 새 접수에는 그 도구와 맞는 새 projection이 필요하다.
+
+기존 key는 현재 source/baseline·새 projection hint를 열기 전에 writer의 원래 증거로 확인한다. namespace는 target/원본판본/부분base/코드/epoch와 독립이다. 동일키의 다른 fingerprint는 `idempotency_conflict`다. 불변 `inventory/<keyHash>.json` 예약을 동기화한 뒤 정확 hash에 결속한 `tombstones/<keyHash>.json`을 배타 생성한다. tombstone에는 원래 판본/native3/raw3·mapping/base·before==after·도구 hash만 보존하고 raw key/patch·본문은 넣지 않는다. no_change는 원래 등록 bytes의 SHA를 그대로 보존하며 Git copy/commit/ref/후보 쓰기0이다. 모든 이전 key와 base를 새 접수 전에 다시 확인하고, inventory만 있고 tombstone이 없으면 `outcome_unknown`으로 보존한다.
+
+역사 replay는 완전 tombstone·원 base의 정확 객체/증거·요청 patch 동일성·operation ref 부재를 확인한다. 현재 validator/도구 파일을 다시 요구하거나 과거 hash를 덮지 않으며, 현재 A·baseline·live B2b1이나 새 hint에 의존하지 않는다. 파생 state가 없으면 같은 정본에서만 재생성한다. 선택한 현재 origin 조회가 불가능하면 `sourceAdvanced:null`이고, true/false 역시 현재 A/권한 재검증이 아니다. 결과는 `no_change`/replay/부분base·원 origin을 구분하며 `published:true`나 새 후보 SHA를 반환하지 않는다.
+
+writer lock → B2b1 lock 순서만 사용하며 대기·중첩 읽기에 같은180초/누적읽기1GiB·쓰기512MiB 예산을 적용한다. 고정 설치 도구 hash의 초기/반복 읽기도 호출 예산의 남은 bytes+최대1B 탐지와 기한에 연결하며 한 도구 파일1MiB를 넘기면 거절한다. 역사 증거의 도구 경로 집합 검사에는 실제 도구 파일 I/O를 요구하지 않는다. 요청32,000B·control/claim/state64KiB·128키, 선택2,000파일/raw160MiB·base근거4MiB, 임시/중복 포함 writer 논리512MiB/10,000항목·stdout16KiB를 제한하고 B2a의 더 작은 한도를 유지한다. 시간/크기 초과는 거절하며 오래된 이력 삭제로 우회하지 않는다. 완전 변경 후보·실제 child 중단/CAS의 독립 종료 조건, API/DB·원본/원격 통합·발행은 다음 단계다. 기존 일반 게시 권한·편집부(AEDAUT)의 내용 판단과 발행 절차는 유지한다.

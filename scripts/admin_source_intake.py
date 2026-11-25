@@ -28,6 +28,7 @@ MAX_DIST_BYTES = 128 * 1024 * 1024
 MAX_BLOB_BYTES = 64 * 1024 * 1024
 MAX_READ_BYTES = 512 * 1024 * 1024
 MAX_DESCRIPTOR_BYTES = 2_000_000
+MAX_TOOL_BYTES = 1024 * 1024
 MAX_STDOUT_BYTES = 16 * 1024
 GIT_SECONDS = 20
 TOTAL_SECONDS = 120
@@ -517,11 +518,21 @@ class _BoundedInputs(_Inputs):
         return super().tree(path)
 
 
-def _tool_hashes():
-    directory = Path(__file__).resolve().parent
-    names = ["admin_source_intake.py", "admin_requests.py", "admin_inventory.py", "publication_intent.py",
-             "publication_release.py", "publication_snapshot.py", "review_registry.py", "reader_engagement_publish.py"]
-    return {"scripts/" + name: _sha((directory / name).read_bytes()) for name in names}
+def _tool_paths():
+    return {"scripts/" + name for name in ["admin_source_intake.py", "admin_requests.py", "admin_inventory.py", "publication_intent.py",
+             "publication_release.py", "publication_snapshot.py", "review_registry.py", "reader_engagement_publish.py"]}
+
+
+def _tool_bytes(path, budget=None):
+    """Read trusted installed code with the same remaining-byte/deadline cap."""
+    if budget is not None:
+        budget.check()
+    return _control(path, MAX_TOOL_BYTES, budget=budget)
+
+
+def _tool_hashes(budget=None):
+    directory = Path(__file__).resolve().parent.parent
+    return {name: _sha(_tool_bytes(directory / name, budget)) for name in sorted(_tool_paths())}
 
 
 def _intake(source_root, request_path, baseline_snapshot, output):
@@ -545,26 +556,31 @@ def _read_intake(root, incoming, baseline, output, budget, destination):
             "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
 
 
-def _collect_intake(root, incoming, baseline, budget, *, output=None):
+def _collect_intake(root, incoming, baseline, budget, *, output=None, frozen_request=None):
     """Internal frozen context for the separate local projection importer.
 
     No output writes. The public B2a CLI still publishes only its descriptor;
     consumers must revalidate this context before attesting a new import.
     """
-    code = _tool_hashes()
+    code = _tool_hashes(budget=budget)
     source = _GitSource(root, budget)
     if output is not None and any(p == output or p in output.parents for p in [source.gitdir, source.common]):
         raise IntakeError("unsafe_output")
     tracker = _BoundedInputs(root, budget)
     tracker.byte_limits[incoming] = admin_requests.MAX_REQUEST_BYTES
     payload = tracker.read_bytes(incoming, admin_requests.MAX_REQUEST_BYTES, boundary=incoming.parent)
-    request = admin_requests.parse_request(payload)
+    if frozen_request is None:
+        request = admin_requests.parse_request(payload)
+    else:
+        if type(frozen_request) is not admin_requests._FrozenRequest or payload != frozen_request.payload:
+            raise IntakeError("input_changed")
+        request = frozen_request.value()
     if request["expectedSourceRevision"] != source.revision:
         raise IntakeError("source_conflict")
     tracker.dist = root / request["sourceId"] / "dist"
     capture = {}
     report = admin_requests._preflight(root, incoming, baseline, tracker=tracker,
-        revision_reader=source.verify, frozen=True, capture=capture)
+        revision_reader=source.verify, frozen=True, capture=capture, frozen_request=frozen_request)
     files = []
     for path, info in sorted(tracker.files.items()):
         if not info["source"]:
@@ -594,7 +610,7 @@ def _collect_intake(root, incoming, baseline, budget, *, output=None):
     if len(raw) > MAX_DESCRIPTOR_BYTES:
         raise IntakeError("descriptor_limit")
     budget.check()
-    if _tool_hashes() != code:
+    if _tool_hashes(budget=budget) != code:
         raise IntakeError("tool_changed")
     source.guard()
     if source.head() != source.revision:

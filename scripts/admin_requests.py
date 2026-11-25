@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import re
 import sys
+from types import MappingProxyType
 import uuid
 
 if __package__ in {None, ""}:
@@ -114,6 +115,42 @@ def request_fingerprint(request: dict) -> str:
     return hashlib.sha256(_canonical({k: v for k, v in request.items() if k != "idempotencyKey"})).hexdigest()
 
 
+class _FrozenRequest:
+    """Internal parsed request, recursively immutable and never a CLI input.
+
+    The consumer must still compare the current tracked bytes with payload.
+    Each use receives a fresh value tree without reparsing caller input.
+    """
+    __slots__ = ("__payload", "__value")
+
+    def __init__(self, payload):
+        value = parse_request(payload)
+        def freeze(item):
+            if isinstance(item, dict):
+                return MappingProxyType({key: freeze(child) for key, child in item.items()})
+            if isinstance(item, list):
+                return tuple(freeze(child) for child in item)
+            return item
+        object.__setattr__(self, "_FrozenRequest__payload", payload)
+        object.__setattr__(self, "_FrozenRequest__value", freeze(value))
+
+    def __setattr__(self, key, value):
+        raise AttributeError("Frozen request cannot be changed")
+
+    @property
+    def payload(self):
+        return self.__payload
+
+    def value(self):
+        def thaw(item):
+            if isinstance(item, MappingProxyType):
+                return {key: thaw(child) for key, child in item.items()}
+            if isinstance(item, tuple):
+                return [thaw(child) for child in item]
+            return item
+        return thaw(self.__value)
+
+
 def _tracked_review_inputs(tracker, folder, registration):
     """Derive the native three hashes from the one already tracked byte set.
 
@@ -172,7 +209,7 @@ def _frozen_declarations(documents):
 
 
 def _preflight(source_root, request_path, baseline_snapshot, *, tracker=None,
-               revision_reader=None, frozen=False, capture=None):
+               revision_reader=None, frozen=False, capture=None, frozen_request=None):
     root = Path(os.path.abspath(source_root))
     _plain(root, root)
     tracker = tracker if tracker is not None else _Inputs(root)
@@ -186,7 +223,12 @@ def _preflight(source_root, request_path, baseline_snapshot, *, tracker=None,
     payload = tracker.read_bytes(incoming, MAX_REQUEST_BYTES, boundary=boundary)
     if hashlib.sha256(payload).hexdigest() != info["sha256"]:
         raise PreflightError("input_changed")
-    request = parse_request(payload)
+    if frozen_request is None:
+        request = parse_request(payload)
+    else:
+        if type(frozen_request) is not _FrozenRequest or payload != frozen_request.payload:
+            raise PreflightError("input_changed")
+        request = frozen_request.value()
     _check_models(tracker)
     registrations = tracker.ledger(root / "publication/reviews")
     checked = tracker.ledger(root / "publication/requests", optional=True)

@@ -429,8 +429,12 @@ def _locked(store):
             fcntl.flock(fd, fcntl.LOCK_UN)
 
 
-def _tool_hashes():
-    return {**intake._tool_hashes(), "scripts/admin_candidate_import.py": _sha(Path(__file__).read_bytes())}
+def _tool_paths():
+    return intake._tool_paths() | {"scripts/admin_candidate_import.py"}
+
+
+def _tool_hashes(budget=None):
+    return {**intake._tool_hashes(budget=budget), "scripts/admin_candidate_import.py": _sha(intake._tool_bytes(Path(__file__).resolve(), budget))}
 
 
 def _read_source_blob(source, entry, budget):
@@ -607,7 +611,7 @@ def _validate_intent(intent, identity_sha):
             or intent["format"] != FORMAT or type(intent["version"]) is not int or intent["version"] != 1
             or intent["identitySha256"] != identity_sha or not isinstance(intent["provenance"], dict)
             or not isinstance(intent["importerCodeSha256"], dict)
-            or set(intent["importerCodeSha256"]) != set(_tool_hashes())
+            or set(intent["importerCodeSha256"]) != _tool_paths()
             or any(not isinstance(value, str) or not HEX64.fullmatch(value) for value in intent["importerCodeSha256"].values())):
         raise ImportError("store_inconsistent")
     digest = _sha(_raw({"identitySha256": identity_sha, "provenance": intent["provenance"],
@@ -696,7 +700,7 @@ def _final_source(source, tracker, code, importer_code, outer):
     revision, state = source.verify(source.root, tracker)
     if revision != source.revision or state != "match":
         raise ImportError("source_conflict")
-    if intake._tool_hashes() != code or _tool_hashes() != importer_code:
+    if intake._tool_hashes(budget=tracker.budget) != code or _tool_hashes(budget=tracker.budget) != importer_code:
         raise ImportError("tool_changed")
 
 
@@ -729,7 +733,7 @@ def _initialize(root, source_root, repository_id, principal):
 
 
 def _import_inner(root, source_root, request_path, baseline, repository_id, principal, progress):
-    budget = _Budget(); code = _tool_hashes()
+    budget = _Budget(); code = _tool_hashes(budget=_SourceBudget(budget))
     root, baseline = intake._safe(root), intake._safe(baseline)
     if (root == baseline.parent or root in baseline.parent.parents
             or baseline.parent in root.parents):
