@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 24,
+  "record_version": 25,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-24T21:08:56.074449+00:00",
+  "updated_at": "2026-11-25T04:51:37.747429+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -335,10 +335,52 @@
       "automatic_incomplete_import_repair_resume": false,
       "resume": "11/25 11시 최신 main/정상 게시/작업 파일을 인수해 물리 배치 지원 경계·identity history·incomplete 조정·상한/중단의6군 정식 검토와 최신 전체 회귀를 수행한다. d0b960e의 별도CLI수정도 후보 통합 전 보존한다. 원본/원격writer·patch/key/CAS·서버활성화는후속이다.",
       "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/1272e62e27e5a11a06374d253f1149ced0c8c813"
+    },
+    "b2b1_formal": {
+      "source_revision": "658de622f788e2e224447857730863b325ff9afb",
+      "base_revision": "62b874962422e58da13bad7bc14e0e2cf1867512",
+      "branch": "codex/admin-b2b1-formal-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "status": "bounded_local_tool_source_integrated_actual_CI_pending",
+      "source_files": [
+        "scripts/admin_candidate_import.py",
+        "scripts/admin_source_intake.py",
+        "tests/test_admin_candidate_import.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_files_sha256": {
+        "scripts/admin_candidate_import.py": "edfc8e06974ae29cf2d94ee47d9f62f7064d036c6c37c3fcfdaf341eb9659d2a",
+        "scripts/admin_source_intake.py": "c34f56d8642f452c9f2c2753a2da4434ae7d0976041f3b792db5f2c2d73dc9b1",
+        "tests/test_admin_candidate_import.py": "ec53c8a9f880b40e5e0630fc384a6fee579f8485cd59dbc0f9f3474062d8df33",
+        ".automation/admin-readonly/README.md": "2dd1887dbf5879f24d8fd976a976975f3e24476c15f82324707e2483b44d9dd4"
+      },
+      "independent_six_group_review": "PASS_with_controlled_local_operator_placement_and_fail_closed_partial_state_limits",
+      "full_tests": 583,
+      "full_passed": 582,
+      "existing_optional_skips": 1,
+      "skip_reason": "Python-Markdown unavailable for existing MathProtectionTests.test_renderer_preserves_all_stress_cases",
+      "independent_runtime_tests": 5,
+      "independent_runtime_cases": 8,
+      "counts_not_summed": true,
+      "actual_selected_files": 142,
+      "actual_selected_bytes": 5224436,
+      "historical_completed_imports_before": 1,
+      "completed_imports_after": 2,
+      "same_namespace_epoch_and_old_files_preserved": true,
+      "old_store_files_preserved": 151,
+      "source_request_baseline_foreign_preserved": true,
+      "actual_CLI_calls_before_integration": 4,
+      "integrated_CLI_historical_inspect_passed": true,
+      "actual_CI_observed": false,
+      "automatic_partial_repair_or_source_writer_patch_key_CAS_API_DB_publication": false,
+      "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+      "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
+      "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+      "integrated_CLI_historical_source_advanced": true
     }
   },
   "verification": {
-    "status": "B2a527/B1 실행경로 보완의 실제 정상CI 관찰을 마쳤다. B2b1 초기1272e62는 전용17·독립17/epoch거절1과 실제4CLI·142blob/148입력 보존을 확인했으며 main통합 전/11시 정식6군·최신 전체 검증 대기다. 이전bbe568전체는 수정 전 이력이다. 실제patch/keyclaim/CAS·운영 source/원격writer·서버/API/DB·발행은 후속이다.",
+    "status": "B2b1 658de62의 제어된 로컬6군/583전체·독립runtime5·실제입력142/기존판본 보존 검증·소스통합 완료. 새코드 실제CI는 다음 정상게시에서 관찰하며 자동부분수선/운영writer·API·DB·발행은 미구현이다. 초기 bbe/1272 검증은 해당 dated field의 이력이다.",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -787,12 +829,54 @@
         "Incomplete import reconciliation/repair/resume is not implemented; conservative refusal only.",
         "No patch/keyclaim/CAS, operational source/remote writer, authorization/API/DB/publication activation."
       ]
+    },
+    "B2b1_formal_20261125": {
+      "source_revision": "658de622f788e2e224447857730863b325ff9afb",
+      "base_revision": "62b874962422e58da13bad7bc14e0e2cf1867512",
+      "branch": "codex/admin-b2b1-formal-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "status": "bounded_local_tool_source_integrated_actual_CI_pending",
+      "source_files": [
+        "scripts/admin_candidate_import.py",
+        "scripts/admin_source_intake.py",
+        "tests/test_admin_candidate_import.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_files_sha256": {
+        "scripts/admin_candidate_import.py": "edfc8e06974ae29cf2d94ee47d9f62f7064d036c6c37c3fcfdaf341eb9659d2a",
+        "scripts/admin_source_intake.py": "c34f56d8642f452c9f2c2753a2da4434ae7d0976041f3b792db5f2c2d73dc9b1",
+        "tests/test_admin_candidate_import.py": "ec53c8a9f880b40e5e0630fc384a6fee579f8485cd59dbc0f9f3474062d8df33",
+        ".automation/admin-readonly/README.md": "2dd1887dbf5879f24d8fd976a976975f3e24476c15f82324707e2483b44d9dd4"
+      },
+      "independent_six_group_review": "PASS_with_controlled_local_operator_placement_and_fail_closed_partial_state_limits",
+      "full_tests": 583,
+      "full_passed": 582,
+      "existing_optional_skips": 1,
+      "skip_reason": "Python-Markdown unavailable for existing MathProtectionTests.test_renderer_preserves_all_stress_cases",
+      "independent_runtime_tests": 5,
+      "independent_runtime_cases": 8,
+      "counts_not_summed": true,
+      "actual_selected_files": 142,
+      "actual_selected_bytes": 5224436,
+      "historical_completed_imports_before": 1,
+      "completed_imports_after": 2,
+      "same_namespace_epoch_and_old_files_preserved": true,
+      "old_store_files_preserved": 151,
+      "source_request_baseline_foreign_preserved": true,
+      "actual_CLI_calls_before_integration": 4,
+      "integrated_CLI_historical_inspect_passed": true,
+      "actual_CI_observed": false,
+      "automatic_partial_repair_or_source_writer_patch_key_CAS_API_DB_publication": false,
+      "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+      "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
+      "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+      "integrated_CLI_historical_source_advanced": true
     }
   },
   "observation": {
-    "status": "B2b1 초기 후보1272e62 보완·한정 검증/원격 보존·11시 정식 검토 대기",
-    "period": "2026-11-24T18:03:26.892Z",
-    "result": "새4파일의initial bbe568전체/기존선택1skip과독립14PASS뒤epoch변경중복저장P2를별도1case로재현했다. 최소보완1272e62의전용17·독립17/동일epoch거절1case와실제4CLI/142Gitblob/148입력불변을확인했다. 이전568은수정전이력이며최신전체/정식6군완료아니다. 코드main통합/운영writer·API·DB·발행활성화없음.",
+    "status": "11/25 13:30 B2b1 제어된 로컬 도구658de62 정식검증·소스통합 완료/새CI관찰 전",
+    "period": "2026-11-25T04:30:02.826Z",
+    "result": "초기 결함을 재현/보완해 독립6군·전체583(582통과/기존선택1skip)·별도runtime5/8case를 통과했다. 실제142파일5224436B의 새판본을 같은namespace/epoch로 추가해 기존1→2/old151파일·원본/요청/baseline/foreign 보존과 통합CLIhistorical/sourceAdvanced를 확인했다. 도구 소스통합이며 실제patch/keyclaim/CAS·운영source/remote writer·공유서버/API/DB·발행은 후속이다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -846,30 +930,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
+    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/25 13:30 최신 main/정상 게시/작업 파일을 인수해 물리 배치 지원 경계·identity history·incomplete 조정·상한/중단의6군 정식 검토와 최신 전체 회귀를 수행한다. d0b960e의 별도CLI수정도 후보 통합 전 보존한다. 원본/원격writer·patch/key/CAS·서버활성화는후속이다.",
+  "next_action": "25일18:30 기존 슬롯에서 B2b2의 요청 namespace·keyclaim/receipt·중단 조정 최소 계약과 B1 합성 엔진을 실제 source projection에 연결할 선행/권한을 독립 검토한다. B2b1은 제어된 로컬 도구의 소스통합까지이며 신규 코드의 다음 정상CI 관찰·자동 미완료 수선/실제source·remote writer/API/DB/발행은 별도 후속이다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b1_initial_corrected_candidate_preserved_formal_review_next",
-    "next_scheduled_step_at": "2026-11-25T13:30:00+09:00",
-    "next_review_at": "2026-11-25T13:30:00+09:00",
-    "scheduled_step": "B2b1 수정1272e62 최신기준/지원경계·실패조정·상한의 정식6군 검토·필요 보완",
+    "state": "B2b1_bounded_local_tool_source_integrated_B2b2_contract_next",
+    "next_scheduled_step_at": "2026-11-25T18:30:00+09:00",
+    "next_review_at": "2026-11-25T18:30:00+09:00",
+    "scheduled_step": "B2b2 요청 namespace/keyclaim·receipt·중단 조정의 최소 계약 독립 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
-    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다.",
+    "replan_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+    "replan_reason": "13:30 정식 검토에서 초기 결함을 재현/보완하고 독립6군·583전체/5별도runtime·실제142선택입력 보존을 확인해 B2b1 로컬 도구 소스통합을 마쳤다. P2/순번1을 유지하고 같은 기존18:30 슬롯에서 후속B2b2 최소 계약만 검토한다. 전체 관리 기능·공유 서버/운영writer·배포 완료 납기를 확정하지 않는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -902,6 +986,9 @@
     "b2b1_implementation_start_target": "2026-11-25T03:00:00+09:00",
     "b2b1_first_independent_review_target": "2026-11-25T13:30:00+09:00",
     "b2b1_initial_candidate_ready_at": "2026-11-24T18:23:28.738053+00:00",
-    "b2b1_candidate_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813"
+    "b2b1_candidate_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+    "b2b1_formal_review_completed_at": "2026-11-25T04:47:02Z",
+    "b2b1_integration_revision": "658de622f788e2e224447857730863b325ff9afb",
+    "b2b2_scope_review_target": "2026-11-25T18:30:00+09:00"
   }
 }
