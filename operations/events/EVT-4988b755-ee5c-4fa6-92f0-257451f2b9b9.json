@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "EVT-4988b755-ee5c-4fa6-92f0-257451f2b9b9",
+  "issue_id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "created_at": "2026-11-25T02:31:33.846870+00:00",
+  "base_record_version": 40,
+  "owner_role": "AEDAUT publication observation handed to ADOPT",
+  "observation": {
+    "kind": "Normal-publication recovery retention refusal after CLI exit propagation fix",
+    "publication_id": "2026-11-25-daily-quantum-brief",
+    "source_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+    "workflow_run": 45532017728,
+    "actual_jobs": {
+      "build": "success",
+      "deploy": "success",
+      "notify-readers": "success",
+      "recovery-copy": "failure"
+    },
+    "public_content_and_current_backup_verified": true,
+    "retention_status": "refused_before_any_delete",
+    "retention_reason": "incomplete_metadata",
+    "retention_CLI_exit_code": 1,
+    "retention_exit_fix_actually_observed": true,
+    "retention_latest_three_completed": false,
+    "current_recovery_artifact_id": 14985433479,
+    "current_upload_run_revision_digest_binding_verified": true,
+    "copies_observed_after_complete_filtered_and_unfiltered_API_listing": 4,
+    "inventory": {
+      "filtered_pages": 1,
+      "filtered_total_count": 4,
+      "filtered_rows": 4,
+      "unfiltered_pages": 2,
+      "unfiltered_total_count": 114,
+      "unfiltered_rows": 114,
+      "unique_ids_complete": true,
+      "filtered_and_full_recovery_sets_identical": true,
+      "current_upload_run_source_digest_verified": true
+    },
+    "deleted": [],
+    "delete_attempted": [],
+    "technical_finding": "Actual refusal exits1 and marks recovery-copy/overall run failed. Build, deploy, reader sync and verified current backup upload succeeded. Later complete inventories show four nonexpired recovery copies; cause of incomplete metadata during CI remains unestablished."
+  },
+  "evidence": [
+    {
+      "kind": "actual normal-publication CI",
+      "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45532017728"
+    },
+    {
+      "kind": "independent bounded CI/log/artifact audit",
+      "reference": "daily_research_review/2026-11-25_dqb-archive/artifacts/ci-independent-review.json"
+    },
+    {
+      "kind": "existing CLI-fix implementation record",
+      "reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
+    }
+  ],
+  "proposed_next_action": "ADOPT should continue the existing issue and scheduled13:30KST review to inspect metadata completeness at the failed CI step. Preserve keep3/current-copy requirements and distinguish publication, backup creation/upload and retention. No manual deletion, unconditional retry, test publication, new scheduler or full restore in this editorial run.",
+  "actual_changes": "Observation only; existing issue status/priority/owner/schedule and provider objects/permissions unchanged."
+}
