@@ -1,0 +1,66 @@
+{
+  "reviewer": "dqb1125_spin",
+  "role": "independent nonproducer primary-source and REF1 review",
+  "verdict": "PASS within stated scope",
+  "reviewed_at_utc": "2026-11-25T02:02:46.215136+00:00",
+  "pdf": "dist/2026-11-25-daily-quantum-brief.pdf",
+  "pdf_pages": 7,
+  "pdf_sha256": "2de43b257d4110df8e6481b232344fa21221c9f38a39aa295c803b5dbcd940b7",
+  "actual_scope": {
+    "full_pdf_text_read": true,
+    "pages_visually_opened": [
+      1,
+      2,
+      6,
+      7
+    ],
+    "scientific_and_APS_comparison": "REF1 Spin-adapted state preparation for quantum chemistry against arXiv:2611.30014v1, selected main text/Table2 and AppendixA/Table3. Other sources have separate assigned reviewers.",
+    "primary_table_visuals_previously_checked": [
+      20,
+      27
+    ]
+  },
+  "findings": [
+    {
+      "item": "State-preparation mechanism and execution level",
+      "result": "PASS",
+      "detail": "UGA relabeling, block-sparse reduced-tensor loading and Clebsch-Gordan return to occupations remain identifiable. Result is a logical resource estimate, with no physical QPU or runtime claim."
+    },
+    {
+      "item": "Same-state and matched-truncation-fidelity comparisons",
+      "result": "PASS",
+      "detail": "51/135× dense and3.4/4.9× abelian comparisons are same-DMRG-state results. Approximate37–38/91–95× dense and3.5–3.6/5.0–5.4× abelian numbers are separated as reference-MPS-fidelity comparisons."
+    },
+    {
+      "item": "Ground-state fidelity and DMRG convergence",
+      "result": "PASS",
+      "detail": "Pages2/6 identify χ1000 reference-MPS overlap rather than exact ground-state error, and state the Fe4S4 energy-convergence condition was not met."
+    },
+    {
+      "item": "Resource assumptions",
+      "result": "PASS",
+      "detail": "Page6 retains no-ancilla-cap QROAM Toffoli minimization,15-bit rotations, as-published dense baseline without later real-tensor optimization and maximum3.7× ancillary-qubit ratio. Physical error correction, wiring, totalQPE repetitions and physical runtime remain unmeasured."
+    },
+    {
+      "item": "Inverse-CG cost fraction",
+      "result": "NOT CLAIMED IN THIS PDF",
+      "detail": "The <0.2% figure appears in the separately reviewed web editorial as a full basis-transform cost. The derivative PDF does not introduce a conflicting percentage."
+    },
+    {
+      "item": "Reference1 APS/version/link",
+      "result": "PASS",
+      "detail": "Page7 retains all3authors in original order, exact original title in sentence case, arXiv:2611.30014v1 without an eprint year, and an active exact-v1 URL. Original generic entry points are retained separately."
+    },
+    {
+      "item": "Assigned selected visual pages",
+      "result": "PASS",
+      "detail": "Pages1/2/6/7 opened at actual render size: assigned ref1 text, tables and source entry are readable with no clipping or overlap seen. Full7page visual QA is assigned separately."
+    }
+  ],
+  "corrections_required": [],
+  "limitations": [
+    "No original DMRG, Qualtran/resource code, QPU experiment or human-reader study was reproduced.",
+    "No full proof audit or independent scientific validation of references2–6 is claimed by this reviewer.",
+    "This review does not establish deployment, liveURL availability or final archive-copy equality."
+  ]
+}
