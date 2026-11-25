@@ -292,17 +292,24 @@ class RetentionCliTests(unittest.TestCase):
     """Exercise the real entrypoint while isolating provider I/O."""
     script = Path(__file__).resolve().parents[1] / "scripts/release_artifact_retention.py"
 
-    def invoke(self, pages):
+    def invoke(self, pages, *, apply=False):
         runner = (
             "import json,runpy,sys\n"
             "from types import SimpleNamespace\n"
             "from unittest.mock import patch\n"
-            "script,pages=sys.argv[1],json.loads(sys.argv[2])\n"
+            "script,pages,apply=sys.argv[1],json.loads(sys.argv[2]),sys.argv[3]=='1'\n"
             "sys.argv=[script,'--repository','Example/Review']\n"
-            "with patch('subprocess.run',return_value=SimpleNamespace(stdout=json.dumps(pages))):\n"
+            "if apply:\n"
+            " sys.argv+=['--apply','--expected-artifact-id','5','--expected-run-id','105',"
+            "'--expected-source-revision','a'*40]\n"
+            "def provider(command,**kwargs):\n"
+            " if 'DELETE' in command: raise AssertionError('Unexpected provider mutation')\n"
+            " return SimpleNamespace(stdout=json.dumps(pages))\n"
+            "with patch('subprocess.run',side_effect=provider):\n"
             " runpy.run_path(script,run_name='__main__')\n"
         )
-        return subprocess.run([sys.executable, "-I", "-c", runner, str(self.script), json.dumps(pages)],
+        return subprocess.run([sys.executable, "-I", "-c", runner, str(self.script), json.dumps(pages),
+                               "1" if apply else "0"],
                               capture_output=True, text=True, timeout=10)
 
     def test_refused_incomplete_listing_exits_nonzero_without_deleting(self):
@@ -312,10 +319,74 @@ class RetentionCliTests(unittest.TestCase):
         self.assertEqual(report["reason"], "incomplete_metadata")
         self.assertEqual(report["deleted"], [])
         self.assertEqual(report["delete_attempted"], [])
+        self.assertEqual(report["metadata_counts"], {"page_count": 1,
+            "advertised_total_count": 1, "collected_row_count": 0})
         self.assertEqual(result.stderr, "")
 
     def test_successful_dry_run_keeps_zero_exit_and_json(self):
         result = self.invoke([{"total_count": 0, "artifacts": []}])
         self.assertEqual(result.returncode, 0)
         self.assertEqual(json.loads(result.stdout)["status"], "dry_run")
+        self.assertNotIn("metadata_counts", json.loads(result.stdout))
         self.assertEqual(result.stderr, "")
+
+    def test_refused_page_container_diagnostics_do_not_echo_values(self):
+        marker = "synthetic-private-provider-body"
+        for pages in ({"private": marker}, marker, None):
+            with self.subTest(container=type(pages).__name__):
+                result = self.invoke(pages, apply=True)
+                self.assertEqual(result.returncode, 1)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["reason"], "incomplete_metadata")
+                self.assertEqual(report["metadata_counts"], {"page_count": None,
+                    "advertised_total_count": None, "collected_row_count": None})
+                self.assertEqual(report["delete_attempted"], [])
+                self.assertNotIn(marker, result.stdout)
+                self.assertEqual(result.stderr, "")
+
+    def test_refused_empty_or_excess_pages_only_reports_page_count(self):
+        for pages in ([], [{"private": "synthetic-private-page"}] * 101):
+            with self.subTest(page_count=len(pages)):
+                result = self.invoke(pages, apply=True)
+                self.assertEqual(result.returncode, 1)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["reason"], "incomplete_metadata")
+                self.assertEqual(report["metadata_counts"], {"page_count": len(pages),
+                    "advertised_total_count": None, "collected_row_count": None})
+                self.assertEqual(report["delete_attempted"], [])
+                self.assertNotIn("synthetic-private-page", result.stdout)
+                self.assertEqual(result.stderr, "")
+
+    def test_refused_missing_rows_reports_safe_counts_without_deleting(self):
+        marker = "synthetic-private-row"
+        result = self.invoke([{"total_count": 5, "artifacts": [
+            {"name": marker, "id": 987654321}]}], apply=True)
+        self.assertEqual(result.returncode, 1)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["reason"], "incomplete_metadata")
+        self.assertEqual(report["metadata_counts"], {"page_count": 1,
+            "advertised_total_count": 5, "collected_row_count": 1})
+        self.assertEqual(report["deleted"], [])
+        self.assertEqual(report["delete_attempted"], [])
+        self.assertNotIn(marker, result.stdout)
+        self.assertNotIn("987654321", result.stdout)
+        self.assertEqual(result.stderr, "")
+
+    def test_malformed_or_unsafe_counts_are_not_serialized(self):
+        cases = [("synthetic-private-count", "invalid_metadata"),
+                 (True, "invalid_metadata"), ((1 << 53), "incomplete_metadata")]
+        for advertised, reason in cases:
+            with self.subTest(reason=reason, type=type(advertised).__name__):
+                result = self.invoke([{"total_count": advertised, "artifacts": []}], apply=True)
+                self.assertEqual(result.returncode, 1)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["reason"], reason)
+                if reason == "incomplete_metadata":
+                    self.assertEqual(report["metadata_counts"], {"page_count": 1,
+                        "advertised_total_count": None, "collected_row_count": 0})
+                else:
+                    self.assertNotIn("metadata_counts", report)
+                self.assertEqual(report["delete_attempted"], [])
+                self.assertNotIn("synthetic-private-count", result.stdout)
+                self.assertNotIn(str(1 << 53), result.stdout)
+                self.assertEqual(result.stderr, "")
