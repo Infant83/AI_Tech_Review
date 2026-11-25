@@ -100,11 +100,11 @@ Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능
 
 이는 제어된 로컬 운영자와 부모 경로를 위한 도구다. POSIX mkdir는 열린 directory FD를 반환하지 않으므로 mkdir와 첫 open 사이의 임의 same-UID 프로세스가 소유·mode·empty 조건을 만족하는 일반 디렉터리로 교체한 것을 원자적으로 식별한다고 보장하지 않는다. leaf identity 결속은 첫 open부터이며 mkdir가 만든 바로 그 inode의 원자적 획득·출력 namespace 잠금·source 전체의 원자적 snapshot·후속 writer 인가를 뜻하지 않는다. 비신뢰 주체가 부모 경로를 변경할 수 있는 공유 서버의 출력 경로로 활성화하는 것은 후속 설계다.
 
-B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다. 최종 전체554검사(553통과·기존 선택1skip)와 범위별 독립 근거는 [실행 기록](../../operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md)을 따른다. candidate Git/keyclaim·원본 writer·서버/API/DB·발행은 구현하지 않았다. 후속 [B2b1 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b1--선택-입력의-독립-git-보존과-불변-판본-매핑)은 선택 원본 bytes의 독립 Git 보존/불변 판본 매핑만 채택했다. 별도 B2b1 후보와 아래 정식 검토 범위를 구분한다. 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
+B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다. 최종 전체554검사(553통과·기존 선택1skip)와 범위별 독립 근거는 [실행 기록](../../operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md)을 따른다. candidate Git/keyclaim·원본 writer·서버/API/DB·발행은 구현하지 않았다. 후속 [B2b1 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b1--선택-입력의-독립-git-보존과-불변-판본-매핑)은 선택 원본 bytes의 독립 Git 보존/불변 판본 매핑만 채택했다. B2b1의 한정 소스통합과 후속 B2b2의 계약/미구현 범위를 아래에서 구분한다. 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
 
 ## B2b1 · 선택 원본 bytes의 첫 독립 Git 보존 후보
 
-`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 초기1272e62 후보의 정식 독립 감수는 일정 분산 뒤11/25 13:30에 진행한다. 후보·검증·소스통합/실제 게시의 결과는 운영 기록으로 구분한다.
+`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 초기1272e62를11/25 13:30 정식 감수·보완한658de62의 제어된 로컬 도구를 소스통합했다. 실제142입력/기존판본 보존과583전체·별도독립runtime 검증은 운영 기록을 따른다. 현재후속B2b2는 아래 계약단계이며 새코드의실제CI·운영writer/발행은 별도로 구분한다.
 
 운영자는 논리 repository UUID와 고정 local principal을 별도로 정한다. 요청 JSON의 actor/role/path나 현재 source SHA를 namespace로 사용하지 않는다. `init-store`는 존재하지 않는 새 경로에만 적용하며, `import`/`inspect`는 기존 identity/epoch·bare 설정·보호 표시·lock을 확인한다. `repositoryId`·principal·operation은 여러 import에 걸쳐 유지한다. 초기화 시 source common-dir의 device/inode도 결속해 다른 repository를 자동 연결하지 않는다. 물리 source 이전·store 전체 유실/복원·운영 key store 활성화는 미지원이며 새 epoch를 과거 이력 망각의 허가로 쓰지 않는다.
 
@@ -127,3 +127,7 @@ store는 source/common-dir·baseline을 포함한 원본 경로와 다른 작업
 첫 상한은 선택2,000파일·raw160MiB, control/mapping4MiB, 누적 읽기1GiB·쓰기512MiB, 임시/중복 포함 store 논리 파일 합512MiB·10,000항목, Git read20초·전체180초다. B2a의 더 작은 입력별/dist/JSON/512MiB·120초 읽기 한도도 유지한다. raw 크기와 보수적 zlib/metadata 한도를 사전 산정하며 모든 실제 쓰기·출력 합을 다시 제한한다. B2a 입력·control/Git stream과 최종 재읽기는 남은 outer 읽기/deadline을 매 읽기에 함께 적용한다. 읽기 크기는 두 예산의 남은 값에 맞추고 EOF/초과 구분을 위한 최대1byte 탐지 읽기 뒤에는 즉시 거절한다. 역사적 import의 전체 객체 재검증과 현재 결과의 반복 확인도 누적 예산에 포함하므로 일부 입력/많은 이력은 이 중 더 작은 한도로 거절될 수 있다. 디스크 물리 사용량/공급자 quota·전원 차단·분산 내구성을 보증하지 않는다. stdout은16KiB 이하의 상태/digest/reason이며 본문/patch/멱등 키·내부 경로·원시 예외를 포함하지 않는다.
 
 실제 patch 저장·요청 keyclaim/receipt/CAS는 B2b2, 전체 빌드/첨부 연속성과 원본/원격 통합·서버/API/DB·발행은 C–E의 후속이다. 기존 일반 게시 경로와 편집부(AEDAUT)의 내용/발행 판단을 유지한다.
+
+## B2b2 · 지속 요청 키와 별도 로컬 후보 저장 계약
+
+11/25 18:30 [최소 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장)을 두 역할의 정적 독립 검토와 보완 뒤 채택했다. 현재는 계약 단계이며 새 runtime/CLI·키 접수·후보 저장은 구현 전이다. B1의 합성 guard와 B2b1의 기존 형식을 유지하고, 고정 repository/principal/operation의 별도 지속 writer-store에 명시적으로 준비한 독립 base를 사용한다. 기존 key는 현재 A보다 먼저 원래 receipt/tombstone과 정확 tree로 조회하고, no_change 실행은 새 Git copy/commit/ref 없이 불변 tombstone만 기록하도록 분리했다. CAS는 writer의 base/result ref이며 실제 원본/원격 CAS나 서버 인가·발행이 아니다. 첫 구현/검토 목표와 현재 단계는 [일정표](../../operations/SCHEDULE.md)를 따르며 기존 일반 게시 권한·절차는 유지한다.

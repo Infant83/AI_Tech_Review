@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 40,
+  "record_version": 41,
   "title": "ADOPT 기본 운영 주기와 임시 하루 다섯 회차·과제 일정 관리",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-25T04:51:37.747429+00:00",
+  "updated_at": "2026-11-25T09:48:07.007920+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -106,7 +106,7 @@
     "configuration_update_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   },
   "verification": {
-    "status": "새13:30 첫 실제 기동 확인·18:30/05:30 관찰 중",
+    "status": "새13:30·18:30 첫실제기동 확인/26일05:30 관찰 전",
     "checks": [
       "지원 도구가 기존ai-tech-review 갱신 성공을 반환함",
       "실제 설정 비교에서 prompt·시간 규칙·updated_at만 변경됨",
@@ -214,7 +214,7 @@
         "updated_at"
       ],
       "new_automation_created": false,
-      "actual_new_slot_triggers_observed": false,
+      "actual_new_slot_triggers_observed": true,
       "next_run_provider_confirmed": false,
       "first_new_nominal_at": "2026-11-25T13:30:00+09:00",
       "first_five_thirty_nominal_at": "2026-11-26T05:30:00+09:00",
@@ -236,15 +236,16 @@
         "independent_current_prompt_authority_boundary_check_passed": true
       },
       "observed_new_slot_labels": [
-        "13:30"
+        "13:30",
+        "18:30"
       ],
       "all_new_slot_first_triggers_observed": false
     }
   },
   "observation": {
-    "status": "새13:30 첫 실제 기동 확인·18:30/05:30 관찰 중",
-    "period": "2026-11-25T04:30:02.826Z",
-    "result": "11/25 13:30:02.826KST 첫 새근접기동을 확인했다. 기존11/19 복귀/과거공백 이력은 해당 dated fields와 실행기록에 보존한다.18:30/11/26 05:30의 첫실제기동과 기간전체 지속/정각·무중첩은 확인 전이며 설정변경/소급실행0이다.",
+    "status": "새13:30·18:30 첫실제기동 확인/26일05:30 관찰 전",
+    "period": "2026-11-25T09:32:05.987Z",
+    "result": "11/25 13:30:02.826과18:32:05.987KST의 새두시각첫근접기동을확인했다. 첫05:30은26일관찰전이며기간전체지속/정각·완전무중첩은미확인이다. 같은예약/주기/대상/권한을유지하고지연회차를소급하지않는다.",
     "default_three_first_evening_trigger": {
       "trigger_utc": "2026-11-19T10:02:43.791Z",
       "trigger_kst": "2026-11-19T19:02:43.791+09:00",
@@ -268,33 +269,38 @@
     },
     "reslot_20261125": {
       "run_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
-      "result": "11/25 13:30:02.826KST 첫 새 근접 기동을 확인했다.05:30/18:30과 기간 전체 지속·정각/완전 무중첩은 별도 미확인이다. 매 무거운 단계 전 현재 구간/다른 지원 상태를 대조하고 한 단계씩 처리했다.",
+      "result": "11/25 13:30:02.826과18:32:05.987KST의 새두시각첫근접기동을확인했다. 첫05:30은26일관찰전이며기간전체지속/정각·완전무중첩은미확인이다. 같은예약/주기/대상/권한을유지하고지연회차를소급하지않는다.",
       "first_new_triggers": {
         "13:30": {
           "trigger_utc": "2026-11-25T04:30:02.826Z",
           "trigger_kst": "2026-11-25T13:30:02.826+09:00",
           "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md"
+        },
+        "18:30": {
+          "trigger_utc": "2026-11-25T09:32:05.987Z",
+          "trigger_kst": "2026-11-25T18:32:05.987+09:00",
+          "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md"
         }
       },
       "old_completed_night_run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
     },
-    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md"
+    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md"
   },
   "recovery": {
     "plan_reference": "향후 설정 회귀 시 같은 지원 도구로 직전 검증 주기/프롬프트·대상/이름/ACTIVE/권한을 보존해 재적용한다. 제품 롤백·개인 DB 복구와 구분한다.",
     "execution_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "result": "승인된 임시 기간 종료에 따른 기본3회 설정 복귀와 실제 저장 대조를 수행했다. 제품 배포 롤백/개인 DB 복원은 하지 않았다."
   },
-  "next_action": "다음 기존18:30과11/26 05:30 실제 trigger를 각각 기존 run에 연결한다. 구간 밖 지연 회차는 경량 확인/체크포인트로 인계하고 무거운 처리·동시파일수정/배포를 겹치지 않는다. 별도 예약/상주 감시/자동 잠금·소급05:30 완료는 만들지 않는다.",
+  "next_action": "26일05:30 첫새근접기동을 다음기존run에연결한다. 두시각관측을기간전체지속/정각·무중첩보증으로확대하지않고구간/현재진행확인·경량인계규칙을유지한다. 별도예약/설정변경·상주감시/자동잠금0이다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "observing_reslotted_three_saved_actual_triggers_pending",
-    "next_scheduled_step_at": "2026-11-25T18:30:00+09:00",
-    "next_review_at": "2026-11-25T18:30:00+09:00",
-    "scheduled_step": "새18:30 첫 실제 기동과26일05:30을 기존 run에서 관찰",
-    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
-    "replan_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
-    "replan_reason": "새13:30 첫 실제기동을 확인했으므로 다음 기존18:30/26일05:30 관찰로 잇는다. 저장 설정과 다른 예약은 이번 회차에서 변경하지 않았다."
+    "next_scheduled_step_at": "2026-11-26T05:30:00+09:00",
+    "next_review_at": "2026-11-26T05:30:00+09:00",
+    "scheduled_step": "새05:30 첫실제기동을기존run에서관찰",
+    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+    "replan_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+    "replan_reason": "새18:30근접기동도확인해다음기존26일05:30 관찰로잇는다. 예약설정/권한·콘텐츠주기변경이나별도기동은하지않는다."
   }
 }

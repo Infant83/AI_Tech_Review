@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 25,
+  "record_version": 26,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-25T04:51:37.747429+00:00",
+  "updated_at": "2026-11-25T09:48:07.007920+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -377,10 +377,37 @@
       "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
       "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
       "integrated_CLI_historical_source_advanced": true
+    },
+    "b2b2_contract": {
+      "status": "adopted_static_contract_not_implemented",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장",
+      "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+      "scope": "Separate persistent local writer-store, B2b1 read-only, explicit attested stage-base followed by key/receipt/result CAS; original source is only read",
+      "reviewed_document_sha256": "9c83da1673296bb8c39fd485fcd1495d03929c08db87b17f9103e2b79a6f1e71",
+      "adopted_document_sha256": "3539d93707b373a964249e5d5ac076c6ec6257c2955bf3a71b16fc757a555d86",
+      "adopted_B2b2_section_sha256": "30771a03c309480bb90666197c5ac61f8c965e67476cc4bc1a81b946f6a22be5",
+      "independent_static_roles": 2,
+      "mandatory_corrections_completed": [
+        "no_change tombstone without Git receipt",
+        "no_change final input/control check",
+        "self-contained attested base evidence"
+      ],
+      "explicit_clarifications": [
+        "stable namespace across projections",
+        "historical replay before current A/hints/live projection",
+        "writer then B2b1 lock order and shared budgets",
+        "origin read checks distinct from writer-local base/result CAS"
+      ],
+      "runtime_code_changes": 0,
+      "runtime_tests_run": 0,
+      "new_runtime_store_or_key_acceptance_or_candidate_writes": 0,
+      "first_implementation_target": "2026-11-26T05:30:00+09:00",
+      "first_independent_review_target": "2026-11-26T13:30:00+09:00",
+      "not_completion_promise": true
     }
   },
   "verification": {
-    "status": "B2b1 658de62의 제어된 로컬6군/583전체·독립runtime5·실제입력142/기존판본 보존 검증·소스통합 완료. 새코드 실제CI는 다음 정상게시에서 관찰하며 자동부분수선/운영writer·API·DB·발행은 미구현이다. 초기 bbe/1272 검증은 해당 dated field의 이력이다.",
+    "status": "B2b1 658de62 로컬도구 검증/소스통합은 오후 근거를 재사용한다.18:30에는B2b2 계약을 두독립역할의 정적 감수/보완 뒤 채택했으며 새runtime코드/검사/키접수·저장0이다. B2b1/안전진단 실제CI는 다음정상게시관찰 전이다.",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -871,12 +898,39 @@
       "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
       "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
       "integrated_CLI_historical_source_advanced": true
+    },
+    "B2b2_contract_20261125": {
+      "status": "adopted_static_contract_not_implemented",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장",
+      "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+      "scope": "Separate persistent local writer-store, B2b1 read-only, explicit attested stage-base followed by key/receipt/result CAS; original source is only read",
+      "reviewed_document_sha256": "9c83da1673296bb8c39fd485fcd1495d03929c08db87b17f9103e2b79a6f1e71",
+      "adopted_document_sha256": "3539d93707b373a964249e5d5ac076c6ec6257c2955bf3a71b16fc757a555d86",
+      "adopted_B2b2_section_sha256": "30771a03c309480bb90666197c5ac61f8c965e67476cc4bc1a81b946f6a22be5",
+      "independent_static_roles": 2,
+      "mandatory_corrections_completed": [
+        "no_change tombstone without Git receipt",
+        "no_change final input/control check",
+        "self-contained attested base evidence"
+      ],
+      "explicit_clarifications": [
+        "stable namespace across projections",
+        "historical replay before current A/hints/live projection",
+        "writer then B2b1 lock order and shared budgets",
+        "origin read checks distinct from writer-local base/result CAS"
+      ],
+      "runtime_code_changes": 0,
+      "runtime_tests_run": 0,
+      "new_runtime_store_or_key_acceptance_or_candidate_writes": 0,
+      "first_implementation_target": "2026-11-26T05:30:00+09:00",
+      "first_independent_review_target": "2026-11-26T13:30:00+09:00",
+      "not_completion_promise": true
     }
   },
   "observation": {
-    "status": "11/25 13:30 B2b1 제어된 로컬 도구658de62 정식검증·소스통합 완료/새CI관찰 전",
-    "period": "2026-11-25T04:30:02.826Z",
-    "result": "초기 결함을 재현/보완해 독립6군·전체583(582통과/기존선택1skip)·별도runtime5/8case를 통과했다. 실제142파일5224436B의 새판본을 같은namespace/epoch로 추가해 기존1→2/old151파일·원본/요청/baseline/foreign 보존과 통합CLIhistorical/sourceAdvanced를 확인했다. 도구 소스통합이며 실제patch/keyclaim/CAS·운영source/remote writer·공유서버/API/DB·발행은 후속이다.",
+    "status": "11/25 18:30 B2b2 최소계약 정적 독립 감수·채택/구현 전",
+    "period": "2026-11-25T09:32:05.987Z",
+    "result": "별도 지속writer-store/B2b1읽기전용·고정키namespace·explicit stage-base/no_change Git쓰기0·역사replay우선·writer-local CAS와원본읽기분리·실제중단/한도검증군을확정했다. 무변경receipt예외/최종재대조·자체완결base증거를보완했으며제품코드/실제요청실행은없다. source/publicdelta0·기존DQB정리실패/미만료backup4 상태는같고새진단/B2b1 actualCI는대기다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -930,30 +984,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md"
+    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "25일18:30 기존 슬롯에서 B2b2의 요청 namespace·keyclaim/receipt·중단 조정 최소 계약과 B1 합성 엔진을 실제 source projection에 연결할 선행/권한을 독립 검토한다. B2b1은 제어된 로컬 도구의 소스통합까지이며 신규 코드의 다음 정상CI 관찰·자동 미완료 수선/실제source·remote writer/API/DB/발행은 별도 후속이다.",
+  "next_action": "26일05:30 기존회차에서 새admin_projection_jobs.py/전용검사·로컬안내의 첫격리후보를 구현한다. B1guard/B2b1형식·원본/원격refs/과학문구/발행을 바꾸지 않고26일13:30 정식독립검토를 목표로 하며 미검증이면같은과제를잇는다. 전체API/서버·writer활성화/완료납기를 확정하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b1_bounded_local_tool_source_integrated_B2b2_contract_next",
-    "next_scheduled_step_at": "2026-11-25T18:30:00+09:00",
-    "next_review_at": "2026-11-25T18:30:00+09:00",
-    "scheduled_step": "B2b2 요청 namespace/keyclaim·receipt·중단 조정의 최소 계약 독립 검토",
+    "state": "B2b2_static_contract_adopted_first_candidate_next",
+    "next_scheduled_step_at": "2026-11-26T05:30:00+09:00",
+    "next_review_at": "2026-11-26T13:30:00+09:00",
+    "scheduled_step": "B2b2 별도지속writer-store/준비base·keyclaim/receipt/CAS 첫격리후보 구현·독립검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
-    "replan_reason": "13:30 정식 검토에서 초기 결함을 재현/보완하고 독립6군·583전체/5별도runtime·실제142선택입력 보존을 확인해 B2b1 로컬 도구 소스통합을 마쳤다. P2/순번1을 유지하고 같은 기존18:30 슬롯에서 후속B2b2 최소 계약만 검토한다. 전체 관리 기능·공유 서버/운영writer·배포 완료 납기를 확정하지 않는다.",
+    "replan_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+    "replan_reason": "예정18:30 B2b2 최소계약을두역할독립정적검토/보완뒤채택했다. P2/순번1·기존권한을유지해다음기존26일05:30 첫코드/13:30 독립검토목표로연결하며실행/검증/통합완료를선언하지않는다. 다른근거대기/관찰/주간시각은유지한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -989,6 +1043,9 @@
     "b2b1_candidate_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813",
     "b2b1_formal_review_completed_at": "2026-11-25T04:47:02Z",
     "b2b1_integration_revision": "658de622f788e2e224447857730863b325ff9afb",
-    "b2b2_scope_review_target": "2026-11-25T18:30:00+09:00"
+    "b2b2_scope_review_target": "2026-11-25T18:30:00+09:00",
+    "b2b2_scope_review_completed_at": "2026-11-25T09:48:07.007920+00:00",
+    "b2b2_implementation_start_target": "2026-11-26T05:30:00+09:00",
+    "b2b2_first_independent_review_target": "2026-11-26T13:30:00+09:00"
   }
 }
