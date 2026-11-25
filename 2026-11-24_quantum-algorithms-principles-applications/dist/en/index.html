@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>How Quantum Algorithms Reframe a Problem</title><meta name="description" content="Follow how molecular energies, good configurations and rare-event probabilities become phases, amplitudes and observables. Small spin and graph calculations connect ten quantum algorithms with recent research and practical requirements."><meta name="author" content="Hyun-Jung Kim"><meta name="evidence-cutoff" content="2026-11-24"><meta property="og:title" content="How Quantum Algorithms Reframe a Problem"><meta property="og:description" content="Follow how molecular energies, good configurations and rare-event probabilities become phases, amplitudes and observables. Small spin and graph calculations connect ten quantum algorithms with recent research and practical requirements."><meta property="og:type" content="article"><meta property="og:url" content="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/en/"><meta property="og:image" content="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/hero.png"><meta property="article:published_time" content="2026-11-24"><meta name="twitter:card" content="summary_large_image"><link rel="canonical" href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/en/"><link rel="alternate" hreflang="ko" href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/"><link rel="alternate" hreflang="en" href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/en/"><link rel="alternate" hreflang="x-default" href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/"><link rel="stylesheet" href="review.css"></head><body><header><a class="brand" href="https://infant83.io/AI_Tech_Review/">AGENTIC TECH REVIEW LETTERS</a><nav class="header-links" aria-label="Language and downloads"><span lang="en" aria-current="page">English</span><a href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/" hreflang="ko">한국어</a><a href="review_en.pdf">PDF ↓</a><a href="https://infant83.io/AI_Tech_Review/methods/">Methods</a></nav></header><main class="paper"><div class="issue-meta">RESEARCH LETTER · 2026-11-24 · QUANTUM ALGORITHMS · ROTATIONS · OBSERVABLES</div><article><h1>How Quantum Algorithms Reframe a Problem</h1>
+<p class="dek">From Shor to QSVT: how rotations and interference become answers, and what ten algorithms still need for practical use</p><p class="byline-disclosure">Responsible editor: Hyun-Jung Kim · AI assistance: Codex · 2026-11-24 · Evidence 2026-11-24 / production checks 2026-11-25 · <a href="#authoring-disclosure">Production and verification</a></p>
+
+<p>A molecular energy, a good configuration and the probability of a rare event are different answers. Quantum algorithms design ways to encode and read them through phases, amplitudes and observables. Calculations on small spin and graph models connect ten algorithms, revealing what recent research has improved and what remains between a circuit and a useful application.</p>
+<figure class="hero"><img src="hero.png" alt="Coral and gold paths cross a sequence of thin indigo surfaces and converge into a structured pattern on a reading plane"><figcaption>A spatial sculpture in which paths overlap after a sequence of operations and form an observable pattern. AI-generated conceptual illustration of representation, operation and measurement.</figcaption></figure>
+
+<p>Imagine sitting down at a quantum computer to calculate the energy of a molecule. The circuit contains gates that rotate individual qubits and gates that couple them. Running it produces bits. Where did the energy enter this sequence, and how can those bits reveal it?</p>
+<p>Even the same energy can be approached in several ways. A variational quantum eigensolver (VQE) measures the energy of a prepared state and adjusts rotation angles to lower it.<span class="cite">[<a role="doc-biblioref" href="#ref-1">1</a>]</span> Quantum phase estimation (QPE) evolves a state in time and converts the accumulated phase into energy.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>]</span> The target is the same, but the state transformations and readout differ. Those choices determine circuit length, repeated measurements and how long the computation must withstand errors.</p>
+<p>Understanding an algorithm begins with specifying the answer. An integer factor, a molecular energy difference, a configuration satisfying a constraint and the probability of finding that configuration are different outputs. After encoding the input in quantum states and operations, we arrange interference so that the desired output appears in a measurement. Rotations are concrete tools for building that connection.</p>
+<h2>Ten algorithms, four organizing principles</h2>
+<p>Write a single-qubit state as α|0⟩+β|1⟩. The states |0⟩ and |1⟩ are the two basis states distinguished by measurement, with probabilities |α|² and |β|². The amplitudes α and β are complex numbers with both magnitude and phase. Rotation gates change these amplitudes; interactions between two qubits change amplitudes and relative phases in their joint state. When paths meet again, we add their amplitudes before squaring the magnitude. Designing this interference changes the probabilities of the results we want.</p>
+<p>Figure 1 connects algorithm names to these operations. QFT, QPE and Shor belong to the phase-reading family; Grover and QAE use the geometry of amplifying successful outcomes. VQE and QAOA adjust state-preparation parameters together with classical computation. HHL, quantum walks and QSVT use matrix and graph structure to assemble these components into larger calculations. QFT changes a representation, QPE reads an eigenphase, and QSVT provides a framework for constructing transformations used by many algorithms.</p>
+<figure id="fig-1"><picture><source media="(max-width: 760px)" srcset="fig1_mobile_en.svg"><img src="fig1_desktop_en.svg" alt="An algorithm map connecting integer, spin, graph and matrix inputs through phase, amplitude, variational and matrix transformations to factors, energies, candidates and observables"></picture><figcaption>Figure 1. From a problem representation to a measured answer. The map connects reusable components while distinguishing the outputs sought by different algorithms. Conceptual diagram for this review, including inputs and outputs of the examples below.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>–<a role="doc-biblioref" href="#ref-9">9</a>]</span> <a class="figure-larger" href="fig1_desktop_en.svg" target="_blank" rel="noopener">View larger</a></figcaption></figure>
+
+<div class="table-scroll" tabindex="0" role="region" aria-label="Horizontally scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>What it changes</th>
+<th>What is read out</th>
+<th>Applications</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QFT · quantum Fourier transform</td>
+<td>Changes to a representation with structured relative phases.</td>
+<td>Period or phase information read with other procedures</td>
+<td>A component of period finding and phase estimation.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>]</span></td>
+</tr>
+<tr>
+<td>QPE · quantum phase estimation</td>
+<td>Transfers an eigenphase into relative phases of a control register.</td>
+<td>An eigenphase and its corresponding energy</td>
+<td>Molecular and materials energies and spectra.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>]</span></td>
+</tr>
+<tr>
+<td>Shor</td>
+<td>Converts an integer problem into the period of modular exponentiation.</td>
+<td>Factors or discrete logarithms obtained by classical postprocessing</td>
+<td>Cryptanalysis and resource assessment for cryptographic migration.<span class="cite">[<a role="doc-biblioref" href="#ref-3">3</a>]</span></td>
+</tr>
+<tr>
+<td>Grover</td>
+<td>Amplifies a subspace satisfying a predicate.</td>
+<td>A candidate satisfying a condition</td>
+<td>Structured search and success amplification within other algorithms.<span class="cite">[<a role="doc-biblioref" href="#ref-4">4</a>]</span></td>
+</tr>
+<tr>
+<td>QAE · quantum amplitude estimation</td>
+<td>Expresses a success amplitude as a rotation angle.</td>
+<td>A probability or normalized expectation, with an error interval</td>
+<td>Integration, risk and uncertainty quantification, Monte Carlo-type computation.<span class="cite">[<a role="doc-biblioref" href="#ref-5">5</a>]</span></td>
+</tr>
+<tr>
+<td>VQE</td>
+<td>Adjusts parameters of a prepared state.</td>
+<td>Approximate energies, states and observables</td>
+<td>Electronic structure, spin models and material properties.<span class="cite">[<a role="doc-biblioref" href="#ref-1">1</a>]</span></td>
+</tr>
+<tr>
+<td>QAOA</td>
+<td>Alternates cost-dependent phases with operations mixing candidates.</td>
+<td>A distribution of good candidates and their costs</td>
+<td>Combinatorial optimization such as MaxCut.<span class="cite">[<a role="doc-biblioref" href="#ref-6">6</a>]</span></td>
+</tr>
+<tr>
+<td>HHL · quantum linear systems</td>
+<td>Rescales component amplitudes by inverse eigenvalues.</td>
+<td>A quantum state proportional to a linear-system solution</td>
+<td>Observables needed for response and differential-equation problems.<span class="cite">[<a role="doc-biblioref" href="#ref-7">7</a>]</span></td>
+</tr>
+<tr>
+<td>Quantum walks</td>
+<td>Propagates and interferes amplitudes through graph connections.</td>
+<td>Search outcomes, samples or dynamical observables</td>
+<td>Structured search, sampling and simulation.<span class="cite">[<a role="doc-biblioref" href="#ref-8">8</a>]</span></td>
+</tr>
+<tr>
+<td>QSVT · quantum singular value transformation</td>
+<td>Applies a polynomial transformation to matrix singular values.</td>
+<td>A transformed operator and observables obtained with it</td>
+<td>Inverse functions, spectral filters and state preparation.<span class="cite">[<a role="doc-biblioref" href="#ref-9">9</a>]</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>Choosing a name is followed by making the input and output concrete again. Cost depends on how we implement matrix access or a condition-checking circuit, and on whether we need one number or a whole vector. Small examples make these differences visible.</p>
+<h2>Two ways to read the energy of the same two spins</h2>
+<p>To follow a calculation to its end, consider two spins. With a positive energy unit E₀, let H/E₀=Z₀Z₁+0.7(X₀+X₁). The Pauli operator Z assigns +1 and −1 to |0⟩ and |1⟩, while X flips the states. The first term lowers the energy of opposite spin orientations; the second mixes each spin's states. We seek the lowest-energy state under both actions.</p>
+<p>VQE begins by choosing which states the circuit can prepare. Using this model's symmetry, consider a one-parameter mixture of |Ψ⁺⟩=(|01⟩+|10⟩)/√2 and |Φ⁺⟩=(|00⟩+|11⟩)/√2.</p>
+<div class="equation">|ψ(θ)⟩ = cosθ |Ψ⁺⟩ − sinθ |Φ⁺⟩<br>⟨H⟩/E₀ = −cos(2θ) − 1.4 sin(2θ)</div>
+
+<p>The angle θ is our control knob. After preparing the state, we measure the expectations of ZZ, X₀ and X₁ and combine them into the energy. To measure ZZ, record +1 for equal bits and −1 for different bits, then average. For each X term, rotate the measurement basis and average the spin’s +1 and −1 outcomes. Combining these averages with the Hamiltonian coefficients gives the state’s energy; a classical optimizer uses it to choose the next θ. Following the energy curve in Figure 2B reaches −1.720465E₀ at θ≈0.47527 rad. Direct diagonalization of this four-dimensional model gives the same value. Here the chosen small state space contains the exact ground state.</p>
+<p>The angle has a direct physical meaning. Changing θ changes the relative weights of the two Bell states, altering both interaction and transverse-field energies. This state can be prepared as exp(−iθY₀Z₁)|Ψ⁺⟩. In the standard Pauli-rotation convention, the rotation angle is 2θ. An operation acting jointly on two qubits is needed because the object we are changing is their coupled state.</p>
+<figure id="fig-2"><picture><source media="(max-width: 760px)" srcset="fig2_mobile_en.svg"><img src="fig2_desktop_en.svg" alt="The VQE energy curve and QPE 64-bin phase measurement distribution for the same two-spin Hamiltonian"></picture><figcaption>Figure 2. Two routes through the same H/E₀=ZZ+0.7(XI+IX). VQE varies a state angle to minimize expected energy; QPE reads eigencomponents of a prepared state through a phase distribution. QPE uses the shift 3I, τ=π/4, six control qubits and input |Ψ⁺⟩. Ideal state-vector educational calculation for this review. <a class="figure-larger" href="fig2_desktop_en.svg" target="_blank" rel="noopener">View larger</a></figcaption></figure>
+
+<p>QPE places energy in the state's time evolution. Evolving an eigenstate |E⟩ for time t introduces the phase exp(−iEt/ℏ). A control qubit creates an evolved path and an unevolved path, making the phase readable as their relative phase. Combining evolutions of different durations records that phase; interference then yields a bit string.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>]</span></p>
+<p>A phase repeats every full turn, so we must choose the energy interval and time unit together. The coefficients alone bound this model's spectrum by |E/E₀|≤2.4. Shifting the energy reference by 3E₀ and choosing τ=E₀t/ℏ=π/4 puts all possible energies within one phase period:</p>
+<div class="equation">U = exp[−i(H/E₀ − 3I)τ]<br>φ = (3 − E/E₀)/8, &nbsp; E/E₀ = 3 − 8φ</div>
+
+<p>Figure 2C shows the exact probability distribution of ideal QPE with input |Ψ⁺⟩. Its ground-state overlap is about 79.1%. Six control qubits resolve phase into 64 bins. The most frequent result, y=38, corresponds to φ=38/64 and energy −1.75E₀; its probability is about 65.6%. The remaining probability includes nearby phase bins and the excited-state component. More control bits provide a finer grid and require longer evolution.</p>
+<p>The repetitions also differ. During optimization, VQE repeatedly prepares states and measures several observables. QPE performs a controlled evolution long enough for the required precision and samples energies according to the input's eigencomponents. If the ground-state component is small, preparation or filtering becomes important. Alongside the qubit count, we therefore count state preparation, the longest circuit and the number of repetitions.</p>
+<h2>Reading a phase period leads to Shor</h2>
+<p>The quantum Fourier transform (QFT) changes the representation so that components with different phases meet in a structured way. In our QPE example, this structure turns phases accumulated in the control register into bit strings. In Shor's algorithm, it reveals repetition generated by integer arithmetic.<span class="cite">[<a role="doc-biblioref" href="#ref-2">2</a>,<a role="doc-biblioref" href="#ref-3">3</a>]</span></p>
+<p>Consider factoring 15. Powers of 2 modulo 15 cycle through 1, 2, 4, 8, 1, giving period 4. Once the period r is known, classical arithmetic gives gcd(2^(r/2)−1,15)=3 and gcd(2^(r/2)+1,15)=5. For large integers, quantum computation finds the period: modular exponentiation is implemented reversibly, period-dependent interference is read out, and classical number theory processes the result.<span class="cite">[<a role="doc-biblioref" href="#ref-3">3</a>]</span></p>
+<p>Here QFT is designed to expose the period of a modular function. Applications needing an array of Fourier coefficients from a classical file must also count loading the data into a state and reading the coefficients. Shor's resources include modular arithmetic and its uncomputation, rotation synthesis and error correction. Changing arithmetic and hardware architecture together changes the cost of the same algorithm.</p>
+<h2>Finding a candidate and knowing its probability</h2>
+<p>Now consider a graph whose four vertices form a cycle. MaxCut assigns each vertex to one of two groups, maximizing the number of edges joining different groups. Four bits give 16 candidates; the two optimal candidates, 0101 and 1010, cut all four edges. Figure 3 compares three roles for quantum operations on this same small problem.</p>
+<p>QAOA alternates exp(−iγC), which converts a candidate's cut value C(z) into a phase, with exp(−iβΣX), which mixes candidates differing in their bits.<span class="cite">[<a role="doc-biblioref" href="#ref-6">6</a>]</span> The angle γ converts cost differences into phase differences, while β mixes them so that interference turns phase differences into probability differences. Starting from a uniform superposition, one layer with γ=π/4 and β=π/8 increases the mean cut from 2 to 3 and the probability of an optimal candidate from 12.5% to 53.125%.</p>
+<figure id="fig-3"><picture><source media="(max-width: 760px)" srcset="fig3_mobile_en.svg"><img src="fig3_desktop_en.svg" alt="Four-cycle MaxCut input, its 16 candidates, optimal-candidate probabilities after QAOA and Grover, and the QAE rotation angle"></picture><figcaption>Figure 3. Different operations serve different objectives on the same 16 candidates. QAOA uses cost phases and a mixer; Grover uses the C=4 predicate and reflections; QAE uses a prepared state's success amplitude and rotation angle. Probabilities are exact ideal state-vector values. The input four-cycle is distinguished from the state-space graph connecting candidates that differ in one bit. Educational calculation for this review.<span class="cite">[<a role="doc-biblioref" href="#ref-4">4</a>–<a role="doc-biblioref" href="#ref-6">6</a>]</span> <a class="figure-larger" href="fig3_desktop_en.svg" target="_blank" rel="noopener">View larger</a></figcaption></figure>
+
+<p>Grover uses the predicate “is the cut value 4?” Flipping the phase of good candidates and reflecting about the initial state produces a rotation in the plane spanned by the good and remaining subspaces.<span class="cite">[<a role="doc-biblioref" href="#ref-4">4</a>]</span> Initially the good fraction is a=2/16. Writing θ=arcsin√a, the success probability after k iterations is sin²[(2k+1)θ]. Two iterations give 94.53125% in this example.</p>
+<p>QAE changes the objective to estimating a from the same rotation. Its inputs include the state preparation A that creates the success amplitude, its inverse A† and a predicate marking good results.<span class="cite">[<a role="doc-biblioref" href="#ref-5">5</a>]</span> Reading the Grover operator's eigenphases ±2θ, or fitting success probabilities at several depths, estimates θ and thus a=sin²θ. Producing one good candidate and precisely learning how likely such candidates are become connected tasks.</p>
+<p>The values 53.125% and 94.53125% describe distributions after different operations. QAOA uses phases from the full cost function, while Grover checks whether a threshold is satisfied. In applications, comparison includes the arithmetic, memory access and uncomputation required for that predicate, along with circuit depth. Too many Grover iterations lower the success probability again, making the iteration count part of the design.</p>
+<p>QAE uses this connection in finance, integration and uncertainty calculations that need probabilities or expectations. Converting the ideal quadratic improvement in queries with respect to error ε into a runtime advantage requires efficient distribution preparation and payoff arithmetic, as well as the ability to run long circuits that preserve phase relationships, along with repeated executions.<span class="cite">[<a role="doc-biblioref" href="#ref-5">5</a>,<a role="doc-biblioref" href="#ref-10">10</a>]</span> The data and the state used to encode it link theoretical acceleration to practical use.</p>
+<h2>What it means to solve a matrix problem</h2>
+<p>The linear system Ax=b is easier to understand by specifying the output first. For A=((2,1),(1,2)) and b=(1,0), the classical solution is x=(2/3,−1/3). A normalized quantum state proportional to it is |x⟩=(2|0⟩−|1⟩)/√5. Measuring Z in this state gives expectation 3/5. Writing all components of a solution and obtaining one such observable have different output sizes and readout costs.</p>
+<p>HHL introduced a way to prepare a solution state by obtaining matrix eigenvalue information and scaling component amplitudes by inverse eigenvalues.<span class="cite">[<a role="doc-biblioref" href="#ref-7">7</a>]</span> Our small matrix has eigenvalues 1 and 3, with condition number κ=3. For large problems, important resources include matrix access, preparation of the right-hand-side state, conditioning and preconditioning, accuracy and success probability. Modern quantum linear-system algorithms compare which of these resources they improve, and by how much.</p>
+<p>Quantum walks turn graph connections into amplitude propagation and interference.<span class="cite">[<a role="doc-biblioref" href="#ref-8">8</a>]</span> A classical walk adds path probabilities; a quantum walk adds complex amplitudes before obtaining probabilities. Search or sampling advantages depend on the graph and the access operations available. In Hamiltonian simulation, qubitization uses a related walk operator to construct time evolution efficiently.<span class="cite">[<a role="doc-biblioref" href="#ref-11">11</a>]</span></p>
+<p>QSVT encodes a matrix as one block of a larger unitary, then combines rotations and reflections so that an admissible polynomial p(σ) acts on its singular values σ.<span class="cite">[<a role="doc-biblioref" href="#ref-9">9</a>]</span> For the positive 2×2 matrix above, inversion requires amplitude weights proportional to 1 and 1/3 on components with eigenvalues 1 and 3. QSVT normalizes the matrix and output and provides a way to approximate this inverse function by a polynomial over the required eigenvalue interval. The same language constructs spectral filters that retain components in a selected energy range. Polynomial degree, parity and magnitude constraints, together with matrix normalization, determine the actual circuit. A filter retaining components near the ground state can help prepare a useful input, connecting matrix transformations back to QPE.</p>
+<p>The ten names now appear as methods that borrow from one another. Reading energy as a phase requires time evolution; walks and polynomial transformations can build that evolution efficiently. Success amplification enters both search and probability estimation. Choosing an application means assembling the components and specifying what each stage prepares and reads.</p>
+<h2>Which bottlenecks is recent research changing?</h2>
+<p>Comparing recent work requires identifying the resource changed under each algorithm's name. A circuit-fidelity experiment, a theorem reducing state-preparation queries and an estimate of physical qubits and runtime represent different advances. The table connects representative work checked on November 24, 2026 to the role of each algorithm.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Horizontally scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Representative researchers, organizations and approaches</th>
+<th>Progress and next challenges</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QFT</td>
+<td>Aumann, Fellner, Lechner and colleagues at ParityQC; Parity Twine</td>
+<td>Compared interaction layouts on IBM and Rigetti QPUs. The roughly 10⁻² value at 50 qubits is process fidelity. Connecting hardware connectivity and gates to application success remains a task.<span class="cite">[<a role="doc-biblioref" href="#ref-12">12</a>]</span></td>
+</tr>
+<tr>
+<td>QPE</td>
+<td>Kristjuhan and Berry; Molecular Quantum Solutions and Macquarie</td>
+<td>Designs the control-state distribution and reuses three control qubits. Circuit construction and numerical work; system-state and evolution resources are needed separately.<span class="cite">[<a role="doc-biblioref" href="#ref-13">13</a>]</span></td>
+</tr>
+<tr>
+<td>Shor</td>
+<td>Pappalardo and colleagues; Alice &amp; Bob, Inria and collaborators</td>
+<td>Compiles arithmetic, codes, layout and runtime into a cat-qubit resource estimate. Physical devices must meet the assumed noise bias and feedback speed.<span class="cite">[<a role="doc-biblioref" href="#ref-14">14</a>]</span></td>
+</tr>
+<tr>
+<td>Grover</td>
+<td>Reeves, Sopkin and Searles</td>
+<td>Optimizes a reversible predicate for a particular seed-recovery problem and executes reduced circuits. Large searches must reduce arithmetic, uncomputation and all repetitions together.<span class="cite">[<a role="doc-biblioref" href="#ref-15">15</a>]</span></td>
+</tr>
+<tr>
+<td>QAE</td>
+<td>Labib</td>
+<td>Theoretical and numerical design of depth schedules and maximum-likelihood estimation. State preparation, intervals, parallelism and device noise must be balanced.<span class="cite">[<a role="doc-biblioref" href="#ref-16">16</a>]</span></td>
+</tr>
+<tr>
+<td>VQE</td>
+<td>Nogueira, Piquemal and colleagues; Sorbonne and Qubit Pharmaceuticals</td>
+<td>VULCAN combines circuit growth, compression and classical perturbative correction. Large comparisons use emulation; measurement proxies, depth and GPU postprocessing require separate assessment.<span class="cite">[<a role="doc-biblioref" href="#ref-17">17</a>]</span></td>
+</tr>
+<tr>
+<td>QAOA</td>
+<td>Perlin, Shaydulin and colleagues; JPMorganChase and Quantinuum</td>
+<td>Executes small error-corrected algorithms on H2 and Helios. Rotation-synthesis precision, accumulated errors and parameter learning for larger problems interact.<span class="cite">[<a role="doc-biblioref" href="#ref-18">18</a>]</span></td>
+</tr>
+<tr>
+<td>HHL and modern linear systems</td>
+<td>The error-corrected experiment above; Low and Su's query optimization</td>
+<td>Small Poisson-HHL execution coexists with theory reducing initial-state-preparation queries. Full costs include input access, preconditioning and observables.<span class="cite">[<a role="doc-biblioref" href="#ref-18">18</a>,<a role="doc-biblioref" href="#ref-19">19</a>]</span></td>
+</tr>
+<tr>
+<td>Quantum walks</td>
+<td>Incudini and Mazzola; Rong and colleagues</td>
+<td>Fault-tolerant sampling resource analysis and physical graph-search experiments progress along distinct routes. Graph access, mixing and reduced state spaces matter.<span class="cite">[<a role="doc-biblioref" href="#ref-20">20</a>,<a role="doc-biblioref" href="#ref-21">21</a>]</span></td>
+</tr>
+<tr>
+<td>QSVT</td>
+<td>Bierman, Poudel and Liu; Lu, Liu and Lin</td>
+<td>Randomized block encoding and polynomials, and extensions of the transformation framework. Error bounds, depth and sampling costs are tested against specific Hamiltonians.<span class="cite">[<a role="doc-biblioref" href="#ref-22">22</a>,<a role="doc-biblioref" href="#ref-23">23</a>]</span></td>
+</tr>
+</tbody>
+</table></div>
+<p>VULCAN illustrates how VQE resources can be divided. It grows a circuit to find a state, compresses it, then corrects remaining correlations through classical perturbation theory. The reported 5–20% of the reference method's cost in noiseless comparisons refers to cumulative Pauli-term evaluations, a proxy for measurement cost. Reducing that quantity can deepen a circuit, so measurement, depth and classical postprocessing must be read together.<span class="cite">[<a role="doc-biblioref" href="#ref-17">17</a>]</span></p>
+<p>Recent error-corrected QAOA experiments show what happens when the angles adjusted in Figure 3 must become physical gates. The experiment builds rotations from Clifford gates, basic operations performed within error correction, and T gates, which change a relative phase by π/4. Approximating arbitrary angles more precisely increases the T count and opportunities for error. Perlin and colleagues improved performance with more T gates on small five- and six-variable problems, but depth two performed worse than depth one on a selected 12-variable problem. Logical expressiveness and execution accuracy must be optimized together.<span class="cite">[<a role="doc-biblioref" href="#ref-18">18</a>]</span></p>
+<p>That 12-variable case used 97 physical qubits, with instances and angles chosen classically for a small T-gate budget. The paper's near-breakeven compares encoded and unencoded quantum execution. The next consequential comparison is the total cost of obtaining answers of the same quality as strong classical solvers across larger problem distributions.<span class="cite">[<a role="doc-biblioref" href="#ref-18">18</a>]</span></p>
+<h2>Reading the time remaining to practical adoption</h2>
+<p>The first clock concerns tools available now: cloud execution of small circuits, collaborative VQE and QAOA research, and circuit development for QAE and QSVT. The second measures the time to demonstrate an application at the needed scale and precision on physical hardware. The third concerns sustained advantages in time, cost and reliability over strong classical alternatives. These clocks move differently for each algorithm.</p>
+<p>Error correction spreads information over several physical qubits to form a protected logical qubit. Physical-qubit requirements include this protection and auxiliary operations. Resource estimates make the second clock's conditions concrete. In a QPE scenario for a 31-spatial-orbital P450 model, Kanasugi and colleagues estimate about 141,000 physical qubits per QPU and 37.4 days in total. Assumptions include an initial ground-state overlap above 99%, target precision 1.6 mHa and physical error rate 10⁻³. A millihartree (mHa) is one thousandth of the Hartree energy unit used in electronic-structure calculations. The longest individual circuit lasts 33.9 seconds. The total duration schedules repeated execution of individual circuits. Reading the longest circuit and the overall duration separately reveals both what error correction must sustain in one computation and the conditions of repeated device operation.<span class="cite">[<a role="doc-biblioref" href="#ref-24">24</a>]</span></p>
+<p>For Shor, circuit and hardware assumptions also determine the date. A cat-qubit resource study estimates 22,593 cat qubits and 3.14 days for RSA-2048. It assumes a 1 μs error-correction cycle, 10 μs reaction time, phase-flip probability 5×10⁻⁴ and a bit-flip time of about 100 years. Setting the bit-flip time to about one hour and adding protection changes the count to about 45,000. Noise assumptions, protection layers, layout and scheduling jointly change physical resources and execution duration.<span class="cite">[<a role="doc-biblioref" href="#ref-14">14</a>]</span></p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Horizontally scrollable comparison table"><table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Uses available now</th>
+<th>Next conditions for adoption</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QFT and QPE</td>
+<td>Phase circuits, small energy calculations and application-specific resource estimates</td>
+<td>Molecular or materials demonstrations meeting preparation-overlap, controlled-evolution, precision, repetition and error budgets</td>
+</tr>
+<tr>
+<td>Shor</td>
+<td>Educational calculations and detailed cryptographic-scale resource assessment</td>
+<td>Integration of general reversible arithmetic, logical gates, factories, feedback and long-running error correction</td>
+</tr>
+<tr>
+<td>Grover and QAE</td>
+<td>Predicate circuits, state preparation, depth schedules and small executions</td>
+<td>Cost comparison with classical search or Monte Carlo at equal accuracy, including loading, reversible arithmetic and coherent depth</td>
+</tr>
+<tr>
+<td>VQE and QAOA</td>
+<td>Cloud experiments and collaborative application research</td>
+<td>Better total cost at the same physical accuracy or solution quality, including optimization, measurements, error handling and classical postprocessing</td>
+</tr>
+<tr>
+<td>HHL, walks and QSVT</td>
+<td>Structured-problem circuit design, small executions and query/resource improvements</td>
+<td>Integrated application validation of matrix/graph access, preparation, preconditioning, filtering and readout</td>
+</tr>
+</tbody>
+</table></div>
+<p>Corporate schedules are timelines for devices on which these conditions can be tested. Quantinuum targets Sol in 2027 and Apollo in 2029; IBM plans 200 qubits and 100 million operations for Starling in 2029. IonQ's roadmap targets an increase from 800 logical qubits in 2027 to 80,000 in 2030.<span class="cite">[<a role="doc-biblioref" href="#ref-25">25</a>–<a role="doc-biblioref" href="#ref-27">27</a>]</span> If the targets are met and devices satisfy the gate, error-rate and operating-time requirements of the circuits, 2027–2029 becomes an important interval for watching early error-corrected algorithms develop toward deeper application demonstrations. Economic adoption must be assessed problem by problem against the conditions in the table.</p>
+<h2>Choosing an algorithm for your problem</h2>
+<p>Move the first research question from “which algorithm is fastest?” to “what must be read, and with what error?” For one energy, preparation and eigenphase are central; for the probability of a risk event, distribution preparation and amplitude estimation matter; for a response observable, the focus shifts to matrix access and measurement on a solution state. Specifying the answer lets us choose its representation and readout.</p>
+<p>Then choose a classical baseline producing the same output at the same accuracy. Match active spaces and electronic-structure approximations in chemistry, instance distributions and solution quality in optimization, and preconditioning and observables in linear systems. On the quantum side, include input preparation, the algorithm, error correction, repetitions and classical postprocessing. Comparing this whole calculation reveals which structures can benefit from quantum operations.<span class="cite">[<a role="doc-biblioref" href="#ref-10">10</a>]</span></p>
+<p>In Figure 2, a rotation angle became a state's energy; in Figure 3, cost phases and mixing became candidate probabilities. Understanding that middle ground makes a circuit intelligible. It becomes a tool for placing physical quantities and computational problems in a representation, then designing interference to read them. Future progress will appear in how accurately, and with how few resources, we can carry that connection through to the end.</p>
+<h2 id="references">References</h2><div class="references">
+<p id="ref-1">[1] A. Peruzzo, J. McClean, P. Shadbolt, M.-H. Yung, X.-Q. Zhou, P. J. Love, A. Aspuru-Guzik, and J. L. O’Brien, A variational eigenvalue solver on a quantum processor, <a href="https://doi.org/10.1038/ncomms5213">Nat. Commun. <strong>5</strong>, 4213 (2014)</a>.</p>
+<p id="ref-2">[2] R. Cleve, A. Ekert, C. Macchiavello, and M. Mosca, Quantum algorithms revisited, <a href="https://doi.org/10.1098/rspa.1998.0164">Proc. R. Soc. Lond. A <strong>454</strong>, 339 (1998)</a>.</p>
+<p id="ref-3">[3] P. W. Shor, Polynomial-time algorithms for prime factorization and discrete logarithms on a quantum computer, <a href="https://doi.org/10.1137/S0097539795293172">SIAM J. Comput. <strong>26</strong>, 1484 (1997)</a>.</p>
+<p id="ref-4">[4] L. K. Grover, A fast quantum mechanical algorithm for database search, <a href="https://doi.org/10.1145/237814.237866">in Proceedings of the Twenty-Eighth Annual ACM Symposium on Theory of Computing (ACM, New York, 1996), p. 212</a>.</p>
+<p id="ref-5">[5] G. Brassard, P. Høyer, M. Mosca, and A. Tapp, Quantum amplitude amplification and estimation, <a href="https://doi.org/10.1090/conm/305/05215">Contemp. Math. <strong>305</strong>, 53 (2002)</a>.</p>
+<p id="ref-6">[6] E. Farhi, J. Goldstone, and S. Gutmann, A quantum approximate optimization algorithm, <a href="https://arxiv.org/abs/1411.4028v1">arXiv:1411.4028v1</a> (2014).</p>
+<p id="ref-7">[7] A. W. Harrow, A. Hassidim, and S. Lloyd, Quantum algorithm for linear systems of equations, <a href="https://doi.org/10.1103/PhysRevLett.103.150502">Phys. Rev. Lett. <strong>103</strong>, 150502 (2009)</a>.</p>
+<p id="ref-8">[8] A. M. Childs, R. Cleve, E. Deotto, E. Farhi, S. Gutmann, and D. A. Spielman, Exponential algorithmic speedup by quantum walk, <a href="https://doi.org/10.1145/780542.780552">in Proceedings of the Thirty-Fifth Annual ACM Symposium on Theory of Computing (ACM, New York, 2003), p. 59</a>.</p>
+<p id="ref-9">[9] A. Gilyén, Y. Su, G. H. Low, and N. Wiebe, Quantum singular value transformation and beyond: Exponential improvements for quantum matrix arithmetics, <a href="https://doi.org/10.1145/3313276.3316366">in Proceedings of the Fifty-First Annual ACM SIGACT Symposium on Theory of Computing (ACM, New York, 2019), p. 193</a>.</p>
+<p id="ref-10">[10] R. Babbush, J. McClean, M. Newman, C. Gidney, S. Boixo, and H. Neven, Focus beyond quadratic speedups for error-corrected quantum advantage, <a href="https://doi.org/10.1103/PRXQuantum.2.010103">PRX Quantum <strong>2</strong>, 010103 (2021)</a>.</p>
+<p id="ref-11">[11] G. H. Low and I. L. Chuang, Hamiltonian simulation by qubitization, <a href="https://doi.org/10.22331/q-2019-07-12-163">Quantum <strong>3</strong>, 163 (2019)</a>.</p>
+<p id="ref-12">[12] P. Aumann, M. Fellner, D. Alber, M. Cykiert, C. Fleckenstein, R. ter Hoeven, L. Stenzel, R. J. Valencia-Tortora, and W. Lechner, Demonstrating record fidelity for the quantum Fourier transform, <a href="https://arxiv.org/abs/2604.12465v3">arXiv:2604.12465v3</a> (2026).</p>
+<p id="ref-13">[13] K. Kristjuhan and D. W. Berry, Quantum phase estimation with optimal confidence interval using three control qubits, <a href="https://doi.org/10.22331/q-2026-08-19-2193">Quantum <strong>10</strong>, 2193 (2026)</a>.</p>
+<p id="ref-14">[14] A. Pappalardo, D. Goudarzi, V. Hertz, H. Jacinto, L. Kroell, A. Schrottenloher, P. Shanahan, É. Gouzien, R. de la Vieuville, and V. Londe, Shor’s algorithm compiled on cat qubits: 22 593 qubits for RSA-2048 in 3.14 days, <a href="https://arxiv.org/abs/2610.37839v2">arXiv:2610.37839v2</a> (2026).</p>
+<p id="ref-15">[15] E. M. Reeves, E. Sopkin, and T. A. Searles, The cost of a real Grover oracle: Minecraft seed search from software to quantum hardware, <a href="https://arxiv.org/abs/2610.33139v1">arXiv:2610.33139v1</a> (2026).</p>
+<p id="ref-16">[16] F. Labib, Quantum amplitude estimation beyond power-of-two schedules, <a href="https://arxiv.org/abs/2609.02715v1">arXiv:2609.02715v1</a> (2026).</p>
+<p id="ref-17">[17] H. D. Nogueira, S. Badreddine, O. Adjoua, D. Traore, G. Michel, and J.-P. Piquemal, Grow, compress, and perturb: A hybrid quantum-classical pathway to scalable quantum chemistry on quantum computers, <a href="https://arxiv.org/abs/2610.40561v3">arXiv:2610.40561v3</a> (2026).</p>
+<p id="ref-18">[18] M. A. Perlin, Z. He, A. Alexiades Armenakas, P. Andres-Martinez, T. Hao, D. A. Herman, Y. Jin, K. Mayer, C. N. Self, D. Amaro, C. Ryan-Anderson, and R. Shaydulin, Fault-tolerant execution of error-corrected quantum algorithms, <a href="https://doi.org/10.1103/gnq3-c2df">Phys. Rev. X <strong>16</strong>, 041048 (2026)</a>.</p>
+<p id="ref-19">[19] G. H. Low and Y. Su, Quantum linear system algorithm with optimal queries to initial state preparation, <a href="https://doi.org/10.22331/q-2026-03-23-2041">Quantum <strong>10</strong>, 2041 (2026)</a>.</p>
+<p id="ref-20">[20] M. Incudini and G. Mazzola, Practical advantage beyond the quadratic speedup limit with fully-quantum walks, <a href="https://arxiv.org/abs/2607.22818v1">arXiv:2607.22818v1</a> (2026).</p>
+<p id="ref-21">[21] T. Rong, M. Li, X. Tong, J. Cai, Y. Li, N. Zhou, S. Li, S. Cao, Y. Li, Y. Xu, F. Chen, M. Gong, X. Sun, and C. Zha, Hardware-aware realization of deterministic quantum-walk search on complete bipartite graphs, <a href="https://arxiv.org/abs/2611.20053v1">arXiv:2611.20053v1</a> (2026).</p>
+<p id="ref-22">[22] J. Bierman, P. Poudel, and Y. Liu, Double-randomized quantum singular value transformations for early fault-tolerant quantum computers, <a href="https://arxiv.org/abs/2611.18881v1">arXiv:2611.18881v1</a> (2026).</p>
+<p id="ref-23">[23] X. Lu, Y. Liu, and H. Lin, Quantum signal processing and quantum singular value transformation on U(N), <a href="https://doi.org/10.22331/q-2026-03-27-2048">Quantum <strong>10</strong>, 2048 (2026)</a>.</p>
+<p id="ref-24">[24] S. Kanasugi, R. Toshio, K. Maruyama, and H. Oshima, Enabling chemically accurate quantum phase estimation in the early fault-tolerant regime via unitary weight concentration, <a href="https://arxiv.org/abs/2603.22778v3">arXiv:2603.22778v3</a> (2026).</p>
+<p id="ref-25">[25] Quantinuum, <a href="https://www.quantinuum.com/company/roadmaps">Roadmaps</a> (accessed November 24, 2026).</p>
+<p id="ref-26">[26] M. Steffen and M. Marwick, <a href="https://www.ibm.com/quantum/blog/path-to-ibm-quantum-starling">Tracking progress on the path to IBM Quantum Starling</a> (November 11, 2026).</p>
+<p id="ref-27">[27] IonQ, <a href="https://www.ionq.com/roadmap">Roadmap</a> (accessed November 24, 2026).</p></div><!-- AI Tech Review Authoring Disclosure --><section class="authoring-disclosure" id="authoring-disclosure"><h2>How this review was made</h2><dl><div><dt>Responsible editor</dt><dd>Hyun-Jung Kim</dd></div><div><dt>AI system</dt><dd>OpenAI Codex · exact model identifier not retained</dd></div><div><dt>Identifiable agent roles</dt><dd>Codex: research, Korean writing and integration. quantum_frontier_update: primary-source and resource-estimate audit. quantum_numeric_figures: independent numerical checks and bilingual figures. independent_review: separate reader review. bilingual_production: English writing, bilingual production and visual checks.</dd></div><div><dt>Editorial/checking method</dt><dd>AI Tech Review Editorial Harness base edition 2026.08</dd></div><div><dt>Applied supplements</dt><dd>2026-10-22 scientific explanation; 2026-11-06 prose/captions; 2026-11-11 reader-friendly explanation; 2026-11-16 reader flow</dd></div><div><dt>Atelier organization/operations</dt><dd>Follows the ATRL role framework for the editorial team (AEDAUT) and operations team (ADOPT). This review examines algorithmic principles, worked calculations and recent research.</dd></div><div><dt>Current manuscript</dt><dd>First edition · manuscript and evidence date 2026-11-24; bilingual production checks 2026-11-25.</dd></div><div><dt>Verification scope</dt><dd>Primary papers, official sources and 27 references checked. Ideal state-vector and analytic cross-checks for two-spin VQE/QPE and four-cycle QAOA/Grover/QAE. Bilingual prose, figures, web and PDF outputs reviewed. Source hardware experiments were not independently rerun.</dd></div><div><dt>Human review level</dt><dd>A person set the topic, perspective and editorial direction and approved proceeding with the manuscript. No separate line-by-line human review is recorded.</dd></div></dl><p>Figure 1 maps algorithmic connections; Figures 2–3 show ideal educational calculations for this review. Hardware execution, emulation and resource estimates in recent work are distinguished as author-reported results. The cover is a conceptual illustration generated with built-in imagegen.</p><p><a href="https://infant83.io/AI_Tech_Review/methods/">Methods and verification</a></p></section><!-- End AI Tech Review Authoring Disclosure --></article><div class="downloads"><a href="review_en.pdf">Download English PDF</a><a href="https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/">한국어판</a></div><footer class="footer">Agentic Tech Review Letters · 2026-11-24</footer></main></body></html>

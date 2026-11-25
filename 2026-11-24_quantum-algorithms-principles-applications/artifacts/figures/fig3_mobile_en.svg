@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1850" viewBox="0 0 720 1850" role="img" aria-labelledby="title desc"><title id="title">One cut problem, three computational questions</title><desc id="desc">A four-cycle MaxCut input, its sixteen-state candidate space, ideal QAOA/Grover distributions and the angle read by amplitude estimation.</desc><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#56627a" stroke-width="1.3"/></marker></defs><style>text{font-family:Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;fill:#26334d}.muted{fill:#56627a}.bold{font-weight:700}.violet{fill:#5d4b8c}.orange{fill:#955037}</style>
+<rect x="0" y="0" width="720" height="1850" rx="0" fill="#f8f7f4" stroke="none"/>
+<text x="36" y="47" font-size="21" class="bold violet" text-anchor="start">03</text>
+<text x="85" y="47" font-size="30" class="bold" text-anchor="start">How to examine the same candidates</text>
+<text x="36" y="91" font-size="24" class="muted" text-anchor="start">Four-cycle MaxCut · 2 optimal candidates of 16</text>
+<text x="36" y="123" font-size="24" class="muted" text-anchor="start">χ(x)=1 ⇔ C(x)=4</text>
+<circle cx="50" cy="188" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="50" y="194" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">A</text>
+<text x="78" y="197" font-size="26" class="bold" text-anchor="start">Input graph and candidate-state space</text>
+<line x1="36" y1="217" x2="684" y2="217" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<line x1="99" y1="305" x2="201" y2="305" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="201" y1="305" x2="201" y2="407" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="201" y1="407" x2="99" y2="407" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="99" y1="407" x2="99" y2="305" stroke="#b99951" stroke-width="4" opacity="1"/>
+<circle cx="99" cy="305" r="18" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="99" y="312" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">0</text>
+<circle cx="201" cy="305" r="18" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="201" y="312" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">1</text>
+<circle cx="201" cy="407" r="18" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="201" y="414" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">2</text>
+<circle cx="99" cy="407" r="18" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="99" y="414" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">3</text>
+<text x="150" y="456" font-size="24" class="bold" text-anchor="middle">Input: 4 vertices</text>
+<line x1="339.0" y1="313.0" x2="422.2" y2="313.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="313.0" x2="339.0" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="313.0" x2="363.8" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="313.0" x2="507.8" y2="313.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="507.8" y1="313.0" x2="591.0" y2="313.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="507.8" y1="313.0" x2="507.8" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="507.8" y1="313.0" x2="532.6" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="363.8" y1="289.8" x2="447.0" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="363.8" y1="289.8" x2="363.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="363.8" y1="289.8" x2="532.6" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="532.6" y1="289.8" x2="615.8" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="532.6" y1="289.8" x2="532.6" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="384.2" x2="422.2" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="384.2" x2="363.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="339.0" y1="384.2" x2="507.8" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="507.8" y1="384.2" x2="591.0" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="507.8" y1="384.2" x2="532.6" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="363.8" y1="361.0" x2="447.0" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="363.8" y1="361.0" x2="532.6" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="532.6" y1="361.0" x2="615.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="422.2" y1="313.0" x2="422.2" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="422.2" y1="313.0" x2="447.0" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="422.2" y1="313.0" x2="591.0" y2="313.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="591.0" y1="313.0" x2="591.0" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="591.0" y1="313.0" x2="615.8" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="447.0" y1="289.8" x2="447.0" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="447.0" y1="289.8" x2="615.8" y2="289.8" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="615.8" y1="289.8" x2="615.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="422.2" y1="384.2" x2="447.0" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="422.2" y1="384.2" x2="591.0" y2="384.2" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="591.0" y1="384.2" x2="615.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="447.0" y1="361.0" x2="615.8" y2="361.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<circle cx="339.0" cy="313.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="507.8" cy="313.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="363.8" cy="289.8" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="532.6" cy="289.8" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="339.0" cy="384.2" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="507.8" cy="384.2" r="6.4" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="516.6" y="373.8" font-size="18.400000000000002" class="bold orange" text-anchor="start">0101</text>
+<circle cx="363.8" cy="361.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="532.6" cy="361.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="422.2" cy="313.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="591.0" cy="313.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="447.0" cy="289.8" r="6.4" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="455.8" y="279.40000000000003" font-size="18.400000000000002" class="bold orange" text-anchor="start">1010</text>
+<circle cx="615.8" cy="289.8" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="422.2" cy="384.2" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="591.0" cy="384.2" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="447.0" cy="361.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="615.8" cy="361.0" r="4.0" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<text x="340" y="456" font-size="24" class="bold" text-anchor="start">Candidates: 16 strings</text>
+<text x="340" y="490" font-size="24" class="bold" text-anchor="start">Edges flip one bit</text>
+<text x="36" y="552" font-size="24" class="muted" text-anchor="start">Input edges determine the cut value.</text>
+<text x="36" y="586" font-size="24" class="muted" text-anchor="start">Candidate edges show possible mixer moves.</text>
+<circle cx="50" cy="681" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="50" y="687" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">B</text>
+<text x="78" y="690" font-size="26" class="bold" text-anchor="start">Operations change the cut distribution</text>
+<line x1="36" y1="710" x2="684" y2="710" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<text x="36" y="780" font-size="25" class="bold" text-anchor="start">Uniform start</text>
+<rect x="68" y="782" width="70.625" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="138.625" y="782" width="423.75" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="562.375" y="782" width="70.625" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="648" y="851" font-size="24" class="bold orange" text-anchor="end">12.50%</text>
+<text x="36" y="899" font-size="25" class="bold" text-anchor="start">QAOA · p=1</text>
+<rect x="68" y="901" width="17.656249999999996" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="85.65625" y="901" width="247.1875" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="332.84375" y="901" width="300.15625" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="648" y="970" font-size="24" class="bold orange" text-anchor="end">53.12%</text>
+<text x="36" y="1018" font-size="25" class="bold" text-anchor="start">Grover · k=2</text>
+<rect x="68" y="1020" width="4.4140625" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="72.4140625" y="1020" width="26.484375" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="98.8984375" y="1020" width="534.1015625" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="648" y="1089" font-size="24" class="bold orange" text-anchor="end">94.53%</text>
+<rect x="40" y="1149" width="15" height="15" rx="0" fill="#d8dce3" stroke="none"/>
+<text x="65" y="1165" font-size="23" class="muted" text-anchor="start">C=0</text>
+<rect x="220" y="1149" width="15" height="15" rx="0" fill="#4f718e" stroke="none"/>
+<text x="245" y="1165" font-size="23" class="muted" text-anchor="start">C=2</text>
+<rect x="400" y="1149" width="15" height="15" rx="0" fill="#c7835b" stroke="none"/>
+<text x="425" y="1165" font-size="23" class="muted" text-anchor="start">C=4</text>
+<text x="36" y="1203" font-size="23" class="muted" text-anchor="start">Each row reports P(C=4)</text>
+<text x="36" y="1248" font-size="23" class="muted" text-anchor="start">QAOA: γ=π/4, β=π/8 · e⁻ⁱᵝΣˣ e⁻ⁱᵞᶜ|+〉⁴</text>
+<circle cx="50" cy="1321" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="50" y="1327" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">C</text>
+<text x="78" y="1330" font-size="26" class="bold" text-anchor="start">The rotation shared by Grover and QAE</text>
+<line x1="36" y1="1350" x2="684" y2="1350" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<line x1="147" y1="1578" x2="352" y2="1578" stroke="#56627a" stroke-width="1.3" opacity="1"/>
+<line x1="181" y1="1602" x2="181" y2="1414" stroke="#56627a" stroke-width="1.3" opacity="1"/>
+<path d="M313.000 1578.000 L312.980 1575.696 L312.920 1573.393 L312.819 1571.092 L312.678 1568.792 L312.498 1566.495 L312.277 1564.202 L312.016 1561.913 L311.715 1559.629 L311.375 1557.351 L310.995 1555.078 L310.575 1552.813 L310.115 1550.556 L309.617 1548.306 L309.079 1546.066 L308.502 1543.836 L307.887 1541.616 L307.232 1539.407 L306.539 1537.210 L305.808 1535.025 L305.039 1532.853 L304.233 1530.695 L303.388 1528.552 L302.507 1526.423 L301.588 1524.311 L300.633 1522.214 L299.641 1520.135 L298.613 1518.073 L297.549 1516.030 L296.450 1514.005 L295.315 1512.000 L294.146 1510.015 L292.942 1508.051 L291.705 1506.108 L290.433 1504.187 L289.128 1502.288 L287.790 1500.412 L286.420 1498.560 L285.017 1496.733 L283.583 1494.930 L282.118 1493.152 L280.622 1491.400 L279.095 1489.675 L277.539 1487.976 L275.953 1486.305 L274.338 1484.662 L272.695 1483.047 L271.024 1481.461 L269.325 1479.905 L267.600 1478.378 L265.848 1476.882 L264.070 1475.417 L262.267 1473.983 L260.440 1472.580 L258.588 1471.210 L256.712 1469.872 L254.813 1468.567 L252.892 1467.295 L250.949 1466.058 L248.985 1464.854 L247.000 1463.685 L244.995 1462.550 L242.970 1461.451 L240.927 1460.387 L238.865 1459.359 L236.786 1458.367 L234.689 1457.412 L232.577 1456.493 L230.448 1455.612 L228.305 1454.767 L226.147 1453.961 L223.975 1453.192 L221.790 1452.461 L219.593 1451.768 L217.384 1451.113 L215.164 1450.498 L212.934 1449.921 L210.694 1449.383 L208.444 1448.885 L206.187 1448.425 L203.922 1448.005 L201.649 1447.625 L199.371 1447.285 L197.087 1446.984 L194.798 1446.723 L192.505 1446.502 L190.208 1446.322 L187.908 1446.181 L185.607 1446.080 L183.304 1446.020 L181.000 1446.000 L178.696 1446.020 L176.393 1446.080 L174.092 1446.181 L171.792 1446.322 L169.495 1446.502 L167.202 1446.723 L164.913 1446.984 L162.629 1447.285 L160.351 1447.625 L158.078 1448.005 L155.813 1448.425 L153.556 1448.885 L151.306 1449.383 L149.066 1449.921 L146.836 1450.498 L144.616 1451.113 L142.407 1451.768 L140.210 1452.461 L138.025 1453.192 L135.853 1453.961 L133.695 1454.767 L131.552 1455.612 L129.423 1456.493 L127.311 1457.412 L125.214 1458.367 L123.135 1459.359 L121.073 1460.387 L119.030 1461.451 L117.005 1462.550 L115.000 1463.685 L113.015 1464.854" stroke="#d8dce3" stroke-width="2" fill="none"/>
+<line x1="181" y1="1578" x2="304.4746937635401" y2="1531.330952441688" stroke="#4f718e" stroke-width="2.2" opacity="1"/>
+<circle cx="304.4746937635401" cy="1531.330952441688" r="6" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<text x="318.4746937635401" y="1555.330952441688" font-size="23" class="bold" text-anchor="start">k=0</text>
+<line x1="181" y1="1578" x2="242.73734688177" y2="1461.3273811042197" stroke="#4f718e" stroke-width="2.2" opacity="1"/>
+<circle cx="242.73734688177" cy="1461.3273811042197" r="6" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<line x1="181" y1="1578" x2="150.13132655911497" y2="1449.6601192146416" stroke="#c7835b" stroke-width="2.2" opacity="1"/>
+<circle cx="150.13132655911497" cy="1449.6601192146416" r="6" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="141.13132655911497" y="1436.6601192146416" font-size="23" class="bold" text-anchor="end">k=2</text>
+<text x="341" y="1615" font-size="22" class="muted" text-anchor="end">Bad amplitude</text>
+<text x="177" y="1421" font-size="22" class="muted" text-anchor="start">Good amplitude</text>
+<text x="360" y="1434" font-size="25" class="bold" text-anchor="start">a = 2/16 = 1/8</text>
+<text x="360" y="1476" font-size="25" class="bold" text-anchor="start">θ = asin√a</text>
+<text x="360" y="1518" font-size="25" class="bold" text-anchor="start">θ = 0.3614 rad</text>
+<text x="36" y="1701" font-size="24" class="muted" text-anchor="start">Grover: rotate the state by 2θ per iteration</text>
+<text x="36" y="1736" font-size="24" class="muted" text-anchor="start">QAE: read eigenphases ±2θ to estimate a=sin²θ</text>
+<line x1="36" y1="1756" x2="684" y2="1756" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<text x="36" y="1788" font-size="23" class="muted" text-anchor="start">Ideal statevector calculation</text>
+<text x="36" y="1820" font-size="23" class="muted" text-anchor="start">Bars: Born probabilities; no shot sampling</text>
+</svg>

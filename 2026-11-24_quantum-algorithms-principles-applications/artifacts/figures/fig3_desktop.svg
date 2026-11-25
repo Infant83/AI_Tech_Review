@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1260" viewBox="0 0 1200 1260" role="img" aria-labelledby="title desc"><title id="title">한 cut 문제에서 세 가지 계산 질문</title><desc id="desc">4-cycle MaxCut 입력과16후보의 상태 공간, QAOA와Grover의 이상적 확률, QAE가 읽는 회전각을 나타낸다.</desc><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#56627a" stroke-width="1.3"/></marker></defs><style>text{font-family:Arial,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;fill:#26334d}.muted{fill:#56627a}.bold{font-weight:700}.violet{fill:#5d4b8c}.orange{fill:#955037}</style>
+<rect x="0" y="0" width="1200" height="1260" rx="0" fill="#f8f7f4" stroke="none"/>
+<text x="44" y="47" font-size="21" class="bold violet" text-anchor="start">03</text>
+<text x="93" y="47" font-size="33" class="bold" text-anchor="start">같은 후보를 어떻게 살펴보는가</text>
+<text x="44" y="91" font-size="24" class="muted" text-anchor="start">4-cycle MaxCut · 16개 후보 중 C=4인 후보는 0101, 1010</text>
+<circle cx="58" cy="151" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="58" y="157" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">A</text>
+<text x="86" y="160" font-size="26" class="bold" text-anchor="start">입력 그래프와 후보 상태 공간</text>
+<line x1="44" y1="180" x2="1156" y2="180" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<line x1="120" y1="238" x2="228" y2="238" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="228" y1="238" x2="228" y2="346" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="228" y1="346" x2="120" y2="346" stroke="#b99951" stroke-width="4" opacity="1"/>
+<line x1="120" y1="346" x2="120" y2="238" stroke="#b99951" stroke-width="4" opacity="1"/>
+<circle cx="120" cy="238" r="18" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="120" y="245" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">0</text>
+<circle cx="228" cy="238" r="18" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="228" y="245" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">1</text>
+<circle cx="228" cy="346" r="18" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="228" y="353" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">2</text>
+<circle cx="120" cy="346" r="18" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="120" y="353" font-size="21" class="bold" text-anchor="middle" style="fill:#ffffff">3</text>
+<text x="174" y="397" font-size="24" class="bold" text-anchor="middle">입력: 4개 꼭짓점</text>
+<line x1="323" y1="291" x2="382" y2="291" stroke="#56627a" stroke-width="2" opacity="1" marker-end="url(#arrow)"/>
+<line x1="453.0" y1="244.0" x2="567.4" y2="244.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="244.0" x2="453.0" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="244.0" x2="487.1" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="244.0" x2="685.1" y2="244.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="685.1" y1="244.0" x2="799.5" y2="244.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="685.1" y1="244.0" x2="685.1" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="685.1" y1="244.0" x2="719.2" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="487.1" y1="212.1" x2="601.5" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="487.1" y1="212.1" x2="487.1" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="487.1" y1="212.1" x2="719.2" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="719.2" y1="212.1" x2="833.6" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="719.2" y1="212.1" x2="719.2" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="341.9" x2="567.4" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="341.9" x2="487.1" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="453.0" y1="341.9" x2="685.1" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="685.1" y1="341.9" x2="799.5" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="685.1" y1="341.9" x2="719.2" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="487.1" y1="310.0" x2="601.5" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="487.1" y1="310.0" x2="719.2" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="719.2" y1="310.0" x2="833.6" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="567.4" y1="244.0" x2="567.4" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="567.4" y1="244.0" x2="601.5" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="567.4" y1="244.0" x2="799.5" y2="244.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="799.5" y1="244.0" x2="799.5" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="799.5" y1="244.0" x2="833.6" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="601.5" y1="212.1" x2="601.5" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="601.5" y1="212.1" x2="833.6" y2="212.1" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="833.6" y1="212.1" x2="833.6" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="567.4" y1="341.9" x2="601.5" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="567.4" y1="341.9" x2="799.5" y2="341.9" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<line x1="799.5" y1="341.9" x2="833.6" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.67"/>
+<line x1="601.5" y1="310.0" x2="833.6" y2="310.0" stroke="#4f718e" stroke-width="1.3" opacity="0.33"/>
+<circle cx="453.0" cy="244.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="685.1" cy="244.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="487.1" cy="212.1" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="719.2" cy="212.1" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="453.0" cy="341.9" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="685.1" cy="341.9" r="8.8" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="697.2" y="327.59999999999997" font-size="25.3" class="bold orange" text-anchor="start">0101</text>
+<circle cx="487.1" cy="310.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="719.2" cy="310.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="567.4" cy="244.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="799.5" cy="244.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="601.5" cy="212.1" r="8.8" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="613.6" y="197.79999999999998" font-size="25.3" class="bold orange" text-anchor="start">1010</text>
+<circle cx="833.6" cy="212.1" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="567.4" cy="341.9" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="799.5" cy="341.9" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="601.5" cy="310.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<circle cx="833.6" cy="310.0" r="5.5" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<text x="909" y="266" font-size="24" class="bold" text-anchor="start">후보: 16개 비트열</text>
+<text x="909" y="301" font-size="24" class="bold" text-anchor="start">한 비트 반전으로 연결</text>
+<text x="451" y="412" font-size="23" class="muted" text-anchor="start">입력의 간선: cut 비용 · 후보의 간선: mixer 이동</text>
+<circle cx="58" cy="473" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="58" y="479" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">B</text>
+<text x="86" y="482" font-size="26" class="bold" text-anchor="start">연산이 바꾸는 cut 값의 분포</text>
+<line x1="44" y1="502" x2="1156" y2="502" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<text x="44" y="572" font-size="25" class="bold" text-anchor="start">균등한 초기 상태</text>
+<rect x="375" y="550" width="74.5" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="449.5" y="550" width="447.0" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="896.5" y="550" width="74.5" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="1149" y="573" font-size="24" class="bold orange" text-anchor="end">12.50%</text>
+<text x="44" y="646" font-size="25" class="bold" text-anchor="start">QAOA · p=1</text>
+<rect x="375" y="624" width="18.624999999999996" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="393.625" y="624" width="260.75" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="654.375" y="624" width="316.625" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="1149" y="647" font-size="24" class="bold orange" text-anchor="end">53.12%</text>
+<text x="44" y="720" font-size="25" class="bold" text-anchor="start">Grover · k=2</text>
+<rect x="375" y="698" width="4.65625" height="30" rx="0" fill="#d8dce3" stroke="none"/>
+<rect x="379.65625" y="698" width="27.9375" height="30" rx="0" fill="#4f718e" stroke="none"/>
+<rect x="407.59375" y="698" width="563.40625" height="30" rx="0" fill="#c7835b" stroke="none"/>
+<text x="1149" y="721" font-size="24" class="bold orange" text-anchor="end">94.53%</text>
+<rect x="376" y="767" width="15" height="15" rx="0" fill="#d8dce3" stroke="none"/>
+<text x="401" y="783" font-size="23" class="muted" text-anchor="start">C=0</text>
+<rect x="542" y="767" width="15" height="15" rx="0" fill="#4f718e" stroke="none"/>
+<text x="567" y="783" font-size="23" class="muted" text-anchor="start">C=2</text>
+<rect x="708" y="767" width="15" height="15" rx="0" fill="#c7835b" stroke="none"/>
+<text x="733" y="783" font-size="23" class="muted" text-anchor="start">C=4</text>
+<text x="1148" y="783" font-size="23" class="muted" text-anchor="end">오른쪽 수치: P(C=4)</text>
+<text x="44" y="832" font-size="23" class="muted" text-anchor="start">QAOA: γ=π/4, β=π/8 · e⁻ⁱᵝΣˣ e⁻ⁱᵞᶜ|+〉⁴</text>
+<circle cx="58" cy="909" r="14" fill="#26334d" stroke="none" stroke-width="1.5"/>
+<text x="58" y="915" font-size="18" class="bold" text-anchor="middle" style="fill:#f8f7f4">C</text>
+<text x="86" y="918" font-size="26" class="bold" text-anchor="start">Grover와 QAE가 공유하는 회전</text>
+<line x1="44" y1="938" x2="1156" y2="938" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<line x1="143" y1="1096" x2="324" y2="1096" stroke="#56627a" stroke-width="1.3" opacity="1"/>
+<line x1="177" y1="1120" x2="177" y2="956" stroke="#56627a" stroke-width="1.3" opacity="1"/>
+<path d="M285.000 1096.000 L284.984 1094.115 L284.934 1092.231 L284.852 1090.348 L284.737 1088.466 L284.589 1086.587 L284.408 1084.711 L284.195 1082.838 L283.949 1080.969 L283.670 1079.105 L283.359 1077.246 L283.016 1075.393 L282.640 1073.546 L282.232 1071.705 L281.792 1069.872 L281.320 1068.048 L280.816 1066.231 L280.281 1064.424 L279.714 1062.626 L279.116 1060.839 L278.487 1059.062 L277.827 1057.296 L277.136 1055.542 L276.415 1053.801 L275.663 1052.072 L274.881 1050.357 L274.070 1048.656 L273.229 1046.969 L272.358 1045.297 L271.459 1043.641 L270.531 1042.000 L269.574 1040.376 L268.589 1038.769 L267.576 1037.179 L266.536 1035.607 L265.468 1034.054 L264.374 1032.519 L263.253 1031.004 L262.105 1029.509 L260.932 1028.033 L259.733 1026.579 L258.509 1025.146 L257.260 1023.734 L255.986 1022.344 L254.689 1020.977 L253.368 1019.632 L252.023 1018.311 L250.656 1017.014 L249.266 1015.740 L247.854 1014.491 L246.421 1013.267 L244.967 1012.068 L243.491 1010.895 L241.996 1009.747 L240.481 1008.626 L238.946 1007.532 L237.393 1006.464 L235.821 1005.424 L234.231 1004.411 L232.624 1003.426 L231.000 1002.469 L229.359 1001.541 L227.703 1000.642 L226.031 999.771 L224.344 998.930 L222.643 998.119 L220.928 997.337 L219.199 996.585 L217.458 995.864 L215.704 995.173 L213.938 994.513 L212.161 993.884 L210.374 993.286 L208.576 992.719 L206.769 992.184 L204.952 991.680 L203.128 991.208 L201.295 990.768 L199.454 990.360 L197.607 989.984 L195.754 989.641 L193.895 989.330 L192.031 989.051 L190.162 988.805 L188.289 988.592 L186.413 988.411 L184.534 988.263 L182.652 988.148 L180.769 988.066 L178.885 988.016 L177.000 988.000 L175.115 988.016 L173.231 988.066 L171.348 988.148 L169.466 988.263 L167.587 988.411 L165.711 988.592 L163.838 988.805 L161.969 989.051 L160.105 989.330 L158.246 989.641 L156.393 989.984 L154.546 990.360 L152.705 990.768 L150.872 991.208 L149.048 991.680 L147.231 992.184 L145.424 992.719 L143.626 993.286 L141.839 993.884 L140.062 994.513 L138.296 995.173 L136.542 995.864 L134.801 996.585 L133.072 997.337 L131.357 998.119 L129.656 998.930 L127.969 999.771 L126.297 1000.642 L124.641 1001.541 L123.000 1002.469 L121.376 1003.426" stroke="#d8dce3" stroke-width="2" fill="none"/>
+<line x1="177" y1="1096" x2="278.02474944289645" y2="1057.8162338159264" stroke="#4f718e" stroke-width="2.2" opacity="1"/>
+<circle cx="278.02474944289645" cy="1057.8162338159264" r="6" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<text x="292.02474944289645" y="1081.8162338159264" font-size="23" class="bold" text-anchor="start">k=0</text>
+<line x1="177" y1="1096" x2="227.5123747214482" y2="1000.5405845398161" stroke="#4f718e" stroke-width="2.2" opacity="1"/>
+<circle cx="227.5123747214482" cy="1000.5405845398161" r="6" fill="#4f718e" stroke="none" stroke-width="1.5"/>
+<line x1="177" y1="1096" x2="151.7438126392759" y2="990.9946429937977" stroke="#c7835b" stroke-width="2.2" opacity="1"/>
+<circle cx="151.7438126392759" cy="990.9946429937977" r="6" fill="#c7835b" stroke="none" stroke-width="1.5"/>
+<text x="142.7438126392759" y="977.9946429937977" font-size="23" class="bold" text-anchor="end">k=2</text>
+<text x="313" y="1133" font-size="22" class="muted" text-anchor="end">실패 진폭</text>
+<text x="173" y="963" font-size="22" class="muted" text-anchor="start">성공 진폭</text>
+<text x="443" y="1000" font-size="26" class="bold" text-anchor="start">a = 2/16 = 1/8</text>
+<text x="443" y="1041" font-size="26" class="bold" text-anchor="start">θ = asin√a = 0.3614 rad</text>
+<text x="832" y="1000" font-size="24" class="muted" text-anchor="start">Grover: 상태를 2θ 회전</text>
+<text x="832" y="1041" font-size="24" class="muted" text-anchor="start">QAE: 고유위상 ±2θ → a</text>
+<line x1="44" y1="1166" x2="1156" y2="1166" stroke="#d8dce3" stroke-width="1.5" opacity="1"/>
+<text x="44" y="1198" font-size="23" class="muted" text-anchor="start">리뷰의 이상적 상태벡터 계산 · 막대는 Born 확률이며 유한 shot 빈도가 아니다.</text>
+</svg>
