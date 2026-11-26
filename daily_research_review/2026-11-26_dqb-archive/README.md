@@ -22,7 +22,7 @@ root는 원 5쪽 전체 텍스트·화면을 읽고 PDF를 제작·통합했으�
 
 `dqb1125_qflow_materials`는 TSP 공개 v1·출판사 서지/초록과 MSTO 정확한 v3·선택 공식 코드를 읽고, 최종 전체 추출본문 및 1·3·4·6·7쪽의 담당 4·5번 과학·서지·화면을 감수했다. 한영 원고·제목·별도 요약은 비작성자로 따로 확인했다. root도 MSTO의 초록·선택 방법/원자·분자 결과·회로 비용과 표, 기존 전체 비용 리뷰의 한영 관련 절을 읽었다. [문헌별 실제 범위](artifacts/reference-manifest.json), [제작 검수](artifacts/public-pdf-qa.json), [root 검토](artifacts/root-pdf-review.json), [전쪽·2/6 감수](artifacts/pdf-neon-roadmap-full-review.json), [1/3 감수](artifacts/pdf-qec-dtc-review.json), [4/5 감수](artifacts/pdf-encoding-basis-review.json), [한영 글·제목·요약 감수](artifacts/editorial-independent-review.json)를 구별한다.
 
-원 연구의 계산·QPU·코드·학습·게이트 benchmark·증명이나 사람 독자 평가는 재현하지 않았다. 원호·웹 작성일·추가 근거 기준일은 2026년 11월 26일이다. 조회·자료 확보·원문 감수·PDF 명시 등록·한영 편집글·후보·배포·실제 URL 검증은 별도 단계다. 현재는 검수한 PDF를 `scripts/archive_documents.py`로 등록하고 한영 원고를 `scripts/build_briefing_editorial.py`로 컴파일했으며, **실제 게시 완료로는 아직 기록하지 않는다.** 최신 원격·실제 배포 기준에서 후보 보존·화면·검사·CI·실제 공개를 확인한 뒤 완료 기록을 보탠다.
+원 연구의 계산·QPU·코드·학습·게이트 benchmark·증명이나 사람 독자 평가는 재현하지 않았다. 원호·웹 작성일·추가 근거 기준일은 2026년 11월 26일이다. 조회·자료 확보·원문 감수·PDF 명시 등록·한영 편집글·후보·배포·실제 URL 검증은 별도 단계다. 검수한 PDF를 `scripts/archive_documents.py`로 명시 등록하고 한영 원고를 `scripts/build_briefing_editorial.py`로 컴파일했다. 아래 완료 기록은 후보와 별도로 실제 배포·공개 URL을 확인한 결과다.
 
 
 ## Publication candidate verification
@@ -30,3 +30,14 @@ root는 원 5쪽 전체 텍스트·화면을 읽고 PDF를 제작·통합했으�
 The independent candidate audit passed with no blockers: 59 reviews, all 178 previous archive records, 83 catalog entries, 294 previous PDF paths and 68 dated editorial paths were preserved. The payload adds only the reviewed PDF and two editorial pages (2,784 to 2,787 paths; no removals). All existing file changes are derived listings, search data or registries. Full artifact validation passed for 2,788 files including the release seal; the focused briefing tests passed 25/25. Existing capacity warnings remain operational follow-ups.
 
 Root checked desktop/mobile reading, language switching, citation navigation, the calendar and Korean keyboard search. The served PDF matched the registered bytes. The native PDF viewer was not tested. See the [independent preservation audit](artifacts/candidate-independent-review.json), [editorial correspondence](artifacts/candidate-editorial-correspondence-review.json), and [browser review](artifacts/candidate-browser-review.json). These are candidate checks; deployment and actual public URL verification are separate.
+
+
+## Actual publication verification
+
+Source `5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7` was published by [Pages run 45742297431](https://github.com/Infant83/AI_Tech_Review/actions/runs/45742297431). All four jobs succeeded. The CI test total was 1,109: 1,100 passed, nine skipped and zero failed. The current recovery copy was generated, validated and uploaded; actual retention kept the newest three copies. Reader synchronization reported 83 entries, zero new articles and zero queued events. The earlier DQB retention refusal is a historical event, not this run's result.
+
+The [Korean editorial](https://infant83.io/AI_Tech_Review/briefings/2026-11-26/), [English editorial](https://infant83.io/AI_Tech_Review/briefings/2026-11-26/en/) and [seven-page PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-26-daily-quantum-brief.pdf) were checked on actual HTTPS. Across 43 unique routes and 44 requests, the current release was stable and all selected bytes matched its seal, allowing only the exact observed public-contact obfuscation/decoder transformation for HTML. Binary PDFs matched exactly. Actual counts are 59 reviews, 179 archive documents and 83 catalog entries. Original issue, web revision and additional evidence dates remain separately labeled 26 November 2026.
+
+Root checked Korean desktop, both languages at 390-pixel mobile width, language links, the English citation target, English keyboard search and its one matching result, and the selected calendar day's editorial-first preview with separate PDF actions. Console warnings/errors were empty. Temporary browser viewport/tab and local preview server were cleaned up. Native PDF viewer display, backend health, original scientific calculations and human-reader evaluations were not tested. See [actual HTTPS verification](artifacts/actual-publication-verification.json), [actual browser review](artifacts/actual-browser-review.json) and the [independent actual CI/recovery audit](artifacts/ci-independent-review.json).
+
+This run published one reviewed DQB derivative and its routine bilingual editorial. It did not publish a new deep review or expand another article. The five approval-pending proposals retain their status and scope; the basis-selection evidence is an internal parallel connection to the existing chemistry/energy-cost question.
