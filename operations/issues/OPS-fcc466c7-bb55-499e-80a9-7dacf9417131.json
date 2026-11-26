@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 43,
+  "record_version": 44,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-26T04:40:21.253497Z",
+  "updated_at": "2026-11-26T09:38:56.538366Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -208,7 +208,7 @@
     }
   },
   "verification": {
-    "status": "기존c63e050 준비도구/233export·원격비활성 이력을 유지한다. 현재공개5c7d43d는864,189,376B·295PDF/209객체이며 이전292PDF 경로와22구판URL/SHA를 보존했다. 새 L017/DQB의 현재backup/keep3 성공과 DQB 로그확정 CI삭제1을 인수했고 복구3개는 미만료다. 6f/658 실제CI와 새B2b2후보의실제CI미확인를 구분하며 실제거절진단출력·과거DQB 원인/동일입력재검증·외부활성화/원격전체SHA/복원/물리절감은 미확인이다. OS 물리I/O·전원차단 내구성·실제 물리저장량 절감도 검증하지 않았다.",
+    "status": "11/26 18:30 공개 JSON 3종 bytes/SHA가 기존 완전 5c7d43d baseline과 정확히 같아 864,189,376B·295PDF/209객체, 이전 292PDF 경로·22구판 URL/SHA 보존 검증을 재사용했다. 복구 3개는 모두 미만료·오전과 동일하고 전체 artifact 104→99로 다른 삭제나 물리 절감을 추정하지 않는다. 기존 c63e050 준비도구·233export·원격 비활성, 6f/658 실제 CI와 기존 DQB 확정 CI삭제 1 근거를 유지한다. 새 B2b2 실제 CI·거절 진단 출력·과거 DQB 원인/동일 입력 재검증·외부 활성화/원격 전체 SHA/복원/물리 절감은 미확인이다. OS 물리 I/O·전원 차단 내구성도 검증하지 않았다.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -240,7 +240,8 @@
       "operations/events/EVT-8ee6916a-61ad-4c91-9ade-5363d2952522.json",
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
       "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
-      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md"
+      "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
+      "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md"
     ],
     "remaining_limits": [
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
@@ -339,10 +340,12 @@
       "growth_basis_source": "14b01272382cfdbbc0390d71906ede24e321bdbe",
       "excess_over_internal_800MB_bytes": 64189376,
       "headroom_to_internal_800MB_bytes": -64189376,
-      "checked_at": "2026-11-26T04:31:02.210788Z",
+      "checked_at": "2026-11-26T09:32:27.628551Z",
       "source_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
-      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
-      "scope": "Complete actual HTTPS release/catalog/updates metadata. Prior292 PDF paths remain present and22 retained edition URLs/SHA are exact; the existing QAE notes.pdf alias changed under its exact declaration and three new PDF paths were added. Existing publisher PDF/editorial/HTTPS QA is reused. No new PDF download/render/science/device check, provider-quota audit, external activation, physical-I/O/storage-savings measurement, power-loss durability or restore claim."
+      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "scope": "Exact HTTPS raw3 bytes/SHA match to the prior complete 5c baseline; full footprint and prior292 PDF paths/22 edition URL/SHA preservation verification reused. QAE alias exact declaration and prior publisher QA remain the same. No new PDF/artifact download, render, science/device check, quota audit, external activation, physical I/O/storage-savings measurement, power-loss durability or restore claim.",
+      "previous_complete_validation_at": "2026-11-26T04:31:02.210788Z",
+      "raw3_exact_previous_complete_baseline": true
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -565,9 +568,9 @@
     }
   },
   "observation": {
-    "status": "11/26 13:30 정상L017/DQB·keep3/현재3미만료·외부새근거없음/비활성",
-    "period": "2026-11-26T04:28:48.266Z",
-    "result": "현재공개864,189,376B·295PDF/209객체·내부800MB 목표초과64,189,376B다. 이전292PDF경로 누락0·22구판exact, QAE notes.pdf alias는정확개정선언과일치하고 새PDF3경로를 인수했다. L017/DQB 네작업/현재backup/keep3는 성공했고 새DQB의 확정CI삭제1만 확인했다. 전체104artifact 변화와 L017 개별삭제수를 물리절감으로추정하지 않는다. 기존DQB 거절원인/실패입력 재검증·신규진단 실제거절출력은미확인이다. 외부저장소 접근의 새공용입력은없으며 이번공급자재접속/수동삭제/리런/외부활성화/복원0이다.",
+    "status": "11/26 18:30 공개 5c·복구 3개 동일; 외부 새 입력 없음·비활성 유지",
+    "period": "2026-11-26T09:27:21.257Z",
+    "result": "실제 공개 5c7d43d의 JSON 3종 bytes/SHA를 재확인해 기존 완전 검증을 재사용했다. 864,189,376B·295PDF/209객체·내부 800MB 목표 초과 64,189,376B와 구 292PDF 경로·22구판 보존은 변함없다. 복구 3개는 모두 미만료·오전 metadata와 동일하며 전체 artifact 104→99는 삭제나 물리 절감 측정이 아니다. 새 정상 CI가 없어 기존 L017/DQB 게시 QA와 확정 DQB CI삭제 1을 재사용했다. 새 B2b2 실제 CI·실제 거절 진단 출력 및 과거 DQB 원인·동일 입력 재검증은 미확인이다. 외부 저장소 접근의 새 공용 입력과 공급자 재접속 시도는 없으며 기존 비활성·복원/물리 절감 미확인을 유지한다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1190,7 +1193,7 @@
       "manual_deletion_restore_external_activation": 0,
       "weekly_structure_review": "2026-11-27T11:00:00+09:00"
     },
-    "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+    "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
     "night_20261125": {
       "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
       "retention_events_merged": [
@@ -1311,6 +1314,44 @@
       "new_external_storage_access_evidence": false,
       "external_next_review_at": "2026-11-27T13:30:00+09:00",
       "metadata_verified_at": "2026-11-26T04:31:02.210788Z"
+    },
+    "evening_20261126": {
+      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "actual_public_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+      "metadata_verified_at": "2026-11-26T09:32:27.628551Z",
+      "raw3_exact_previous_complete_baseline": true,
+      "prior_complete_footprint_and_preservation_verification_reused": true,
+      "public_bytes": 864189376,
+      "growth_since_midday_check_bytes": 0,
+      "PDF_paths": 295,
+      "unique_PDF_objects": 209,
+      "retained_edition_URLs_exact": 22,
+      "prior_292_PDF_paths_missing": 0,
+      "internal_800MB_excess_bytes": 64189376,
+      "current_recovery_copies": 3,
+      "all_current_unexpired": true,
+      "current_three_metadata_exactly_same_as_midday": true,
+      "full_artifact_metadata_count": 99,
+      "previous_artifact_metadata_count": 104,
+      "artifact_pages": 1,
+      "artifact_count_delta_not_deletion_or_savings_measurement": true,
+      "new_normal_runs": 0,
+      "existing_normal_publication_QA_reused": true,
+      "new_B2b2_actual_CI_observed": false,
+      "actual_refusal_metadata_counts_output_observed": false,
+      "known_DQB_failed_attempt_unchanged": true,
+      "provider_root_cause_established": false,
+      "same_failed_input_retested": false,
+      "safe_deletion_candidates_confirmed": 0,
+      "files_deleted_or_moved": 0,
+      "actual_reclaimed_bytes": 0,
+      "external_activation": false,
+      "provider_reconnection_attempts": 0,
+      "new_external_storage_access_evidence": false,
+      "same_source_buffer_physical_IO_or_power_loss_proof": false,
+      "external_next_review_at": "2026-11-27T13:30:00+09:00",
+      "weekly_structure_review_at": "2026-11-27T13:30:00+09:00",
+      "asset_record_version34_reused_unchanged": true
     }
   },
   "recovery": {
@@ -1334,7 +1375,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "새외부저장소 접근근거가없고 이번공급자재접속시도0이므로 다음27일13:30 기존계획점검에서 접근·원격봉인/복구의 입력과 내부목표초과64,189,376B를 재평가한다. 주간27일13:30 구조검토를 함께유지한다. 현재keep3/current-upload 성공과 과거DQB 거절원인을 구분하고 새거절 때만 안전진단을 인수한다. 관찰용리런/수동삭제·보존기준완화/외부활성화는 하지 않는다.",
+  "next_action": "외부 저장소 접근의 새 근거와 이번 공급자 재접속 시도가 없으므로 다음 27일 13:30 기존 계획 점검에서 접근·원격 봉인/복구 입력과 내부 목표 초과 64,189,376B를 재평가한다. 주간 27일 13:30 구조 검토도 유지한다. 기존 keep3/current-upload 성공과 과거 DQB 원인을 구분하고 새 거절 때만 안전 진단을 인수한다. 기존 자산 v34 검증을 재사용하며 관찰용 리런·수동 삭제·보존 기준 완화·외부 활성화는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",

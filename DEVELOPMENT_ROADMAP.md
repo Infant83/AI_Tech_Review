@@ -77,3 +77,5 @@ Git 기반 충돌 검사와 기존 Pages의 직렬화는 현재 재사용할 기
 매주 게시 성공·재시도·재오픈·작업 시간·성능·용량·예약 실행 상태를 보고 다음 주 작업을 조정한다. 측정이 없으면 미측정으로 둔다. 반복 결함을 해결하는 작업을 우선하고, 운영자가 사용하지 않는 기능을 계획에 있다는 이유만으로 계속 만들지 않는다.
 
 요금 참고: [Workers](https://developers.cloudflare.com/workers/platform/pricing/), [D1](https://developers.cloudflare.com/d1/platform/pricing/), [R2](https://developers.cloudflare.com/r2/pricing/).
+
+11/26 18:30의 변경 저장/CAS 선행 검토는 [실행 기록](operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md)에 연결한다. 자기 Git fixture11관찰과 독립2재현에서 native Git의 실패 중 실제 임시쓰기 계상·하위 경로 보호 경계가 드러나 현재 규약 gate를 통과하지 못했다. 지원 no_change 소스와 키/판본 형식은 유지하고 제품 코드·변경 키 접수·배포는0이다. 다음27일05:30에 native 격리와 FD 기반 단일 operation 권위의 최소 설계를 비교하며 어느 방식도 아직 새 계약으로 채택하지 않았다. 준비된 범위의13:30 독립 검토는 목표이며 전체 B2b2 완료 약속이 아니다.

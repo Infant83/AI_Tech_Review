@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
   "uuid": "5b6bb0ae-576f-46db-8a38-91255c5e3dba",
-  "record_version": 19,
+  "record_version": 20,
   "title": "푸시 알림의 테스트 시점 동반 수신과 지연 전달·표시 조사",
   "type": "push_delivery_observation",
   "created_at": "2026-11-10T10:55:05Z",
-  "updated_at": "2026-11-24T21:08:56.074449+00:00",
+  "updated_at": "2026-11-26T09:40:53.645532+00:00",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -87,7 +87,8 @@
     "operations/runs/20261112T095705Z-7e686fc7-2cf4-4630-afdd-6f6a93440252.md",
     "operations/runs/20261112T220135Z-f43de5dc-850a-4efe-9eb0-78e1174bd680.md",
     "operations/runs/20261117T035831Z-1ee17f35-a0bb-4602-b432-4a4cced1fbad.md",
-    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md"
   ],
   "limitations": [
     "사용자가 iPhone 홈 화면 앱의 과거 수신 기록과 신규L006 배너 도착을 확인했다. 운영팀의 직접 기기 검사, 정확한 OS 표시 시각·iOS 버전·집중 모드·요약/배너 설정 확인은 하지 못함",
@@ -208,8 +209,8 @@
   },
   "observation": {
     "status": "기존 기술 배포 유지·새 직접 실사용/기기 근거 관찰 중",
-    "period": "2026-11-22T09:55:56.091Z",
-    "result": "c041 현재 제목 참조와 기존 배포 근거를 유지한다. 실제 기기의 정상 알림 수신→목록→배지 유지/읽음 차감 전체 동선의 새 직접 근거는 확인 범위에 없었다.",
+    "period": "2026-11-26T09:27:21.257Z",
+    "result": "기존 현재 제목 참조와 배포 근거를 유지한다. 알림 배너→목록→배지 유지/해당 글 읽음 차감의 실제 기기 전체 동선은 새 직접 근거가 없다.",
     "shared_evidence_review_20261116_19": {
       "run_reference": "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
       "checked_at": "2026-11-16T10:03:36.184882Z",
@@ -256,6 +257,14 @@
       "new_direct_device_or_usage_or_recurrence_evidence": false,
       "next_review_at": "2026-11-26T19:00:00+09:00",
       "scope": "공용 인계·변경·접근 가능한 피드백의 delta 확인. 다른 chat 전체나 실제 기기/계정 확인을 수행한 것은 아님."
+    },
+    "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+    "review_20261126_evening": {
+      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "result": "기존 현재 제목 참조와 배포 근거를 유지한다. 알림 배너→목록→배지 유지/해당 글 읽음 차감의 실제 기기 전체 동선은 새 직접 근거가 없다.",
+      "new_direct_device_or_user_evidence": false,
+      "new_tests_pushes_or_publications": 0,
+      "next_review_at": "2026-11-28T18:30:00+09:00"
     }
   },
   "recovery": {
@@ -263,17 +272,18 @@
     "execution_reference": null,
     "result": "Pages/Worker배포와읽기운영검증완료. 실제롤백·개인DB복원·구독초기화·테스트푸시·과거재발송없음"
   },
-  "next_action": "새 의미 있는 제보/실패/근거는 받은 기존05:30/13:30/18:30 회차에서 먼저 확인한다. 공식 묶음 재검토는11/26 18:30, 장기 대기 우선순위 재평가는25일13:30이다. 새 직접 근거 없이 테스트 발행/푸시·같은 전체 검사를 반복하지 않는다.",
+  "next_action": "새 의미 있는 제보·실패·직접 근거는 받은 기존05:30/13:30/18:30 회차에서 먼저 확인한다. 다음 공식 관찰 묶음은11/28 18:30, 장기 대기 재평가는27일13:30이다. 기존 상태/P/담당과 원래 미완료를 보존하고 테스트 푸시·같은 전체 검사를 반복하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "deployed_current_title_reference_observing_existing_device_flow",
-    "next_scheduled_step_at": "2026-11-26T18:30:00+09:00",
-    "next_review_at": "2026-11-26T18:30:00+09:00",
+    "next_scheduled_step_at": "2026-11-28T18:30:00+09:00",
+    "next_review_at": "2026-11-28T18:30:00+09:00",
     "scheduled_step": "새 공유 실기기 근거 묶음 검토",
-    "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
-    "replan_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
-    "replan_reason": "2026-11-25 사용자 지시로 다른 에이전트와 시작 시각 겹침을 줄이기 위해 같은 ADOPT 예약을05:30·13:30·18:30 하루3회로 분산했다. priority·제품 순서·선행/검증·편집부(AEDAUT) 권한은 유지하며 현재 후속 시각만 새 기존 슬롯으로 맞춘다. 변경 전후와 재개 지점은 이 실행 기록에 보존한다.",
-    "next_review_if_no_new_evidence": "2026-11-26T18:30:00+09:00"
+    "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+    "replan_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+    "replan_reason": "11/26 18:30 공식 묶음에서 새 직접 실사용/실기기 근거가 없었다. 기존 관찰 간격으로28일18:30에 잇고 장기 대기는27일13:30 계획 점검에서 재평가한다. 새 의미 있는 제보는 받은 기존 회차에서 앞당기며 테스트 알림/발행을 만들지 않는다.",
+    "next_review_if_no_new_evidence": "2026-11-28T18:30:00+09:00",
+    "planning_reassessment_at": "2026-11-27T13:30:00+09:00"
   }
 }
