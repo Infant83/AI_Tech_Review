@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-93fa34ff-ea74-48e8-b3d7-eeabf741d589",
   "uuid": "93fa34ff-ea74-48e8-b3d7-eeabf741d589",
-  "record_version": 41,
+  "record_version": 42,
   "title": "ADOPT 기본 운영 주기와 임시 하루 다섯 회차·과제 일정 관리",
   "type": "schedule_configuration",
   "created_at": "2026-11-10T11:46:58Z",
-  "updated_at": "2026-11-25T09:48:07.007920+00:00",
-  "status": "observing",
+  "updated_at": "2026-11-25T20:38:41.029349+00:00",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "user_request",
@@ -75,8 +75,8 @@
     "명시적인 nominal/nextRun 값은 설정 응답에 없어 특정 다음 실행 시각을 확인한 것으로 기록하지 않음"
   ],
   "policy_decision": {
-    "state": "임시증편 종료·기본3회 복귀와 각시간대 첫근접기동의 한정 범위 완료",
-    "rationale": "11/12~18 임시5회 이력과 첫 기동 관찰은 보존한다.11/19 첫 이용 가능한 실제 회차에 적체·공백·기록 부담을 재평가했고 연장 지시가 없어 같은 예약을 기본03·11·19시로 복귀했다. 제품 구현1개·조사/독립 검증 병렬·통합1경로·기존 권한을 유지하며 수행하지 않은 과거 회차를 완료로 만들지 않는다.",
+    "state": "일정분산 저장과세시각첫근접기동의한정범위완료·기존예약지속",
+    "rationale": "11/12~18 임시5회·11/19 기본3회복귀이력은보존한다.11/25사용자분산지시에따라같은예약의05:30/13:30/18:30 저장과각첫근접기동을확인했다.대상/ACTIVE/역할/권한을유지하며완전무중첩·기간전체지속·정각보장으로확대하지않는다.",
     "related_issues": [
       "OPS-a057503d-372b-44f5-bdb2-8a19381c3b20"
     ],
@@ -84,7 +84,7 @@
     "revisit_when": "새 실행 지연·회귀 또는 사용자의 주기 변경 지시가 있을 때. 정상 run의 trigger 관찰은 기존 실행 기록을 재사용한다."
   },
   "authority": {
-    "basis": "사용자의 기존 지속 운영 승인과 2026-11-12 임시5회·과제 일정 관리 지시",
+    "basis": "사용자의2026-11-08지속운영승인·11/12임시5회/과제일정관리와11/25현재하루3회시각분산지시",
     "current_scope": "기존 ADOPT heartbeat 하나의 임시 종료/기본 복귀 주기·인계 프롬프트와 과제 일정표/연결 메타데이터 갱신, 최신 사용자 지시와 기존 권한 안의 새 요청·긴급 과제 우선순위/슬롯 재배정. 식별자·대상·이름·ACTIVE·권한 및 편집부 콘텐츠 예약은 유지.",
     "additional_decision": null
   },
@@ -106,7 +106,7 @@
     "configuration_update_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   },
   "verification": {
-    "status": "새13:30·18:30 첫실제기동 확인/26일05:30 관찰 전",
+    "status": "현재05:30·13:30·18:30 저장/동일대상·ACTIVE 재확인·세시각각첫근접기동의한정확인완료",
     "checks": [
       "지원 도구가 기존ai-tech-review 갱신 성공을 반환함",
       "실제 설정 비교에서 prompt·시간 규칙·updated_at만 변경됨",
@@ -236,16 +236,24 @@
         "independent_current_prompt_authority_boundary_check_passed": true
       },
       "observed_new_slot_labels": [
+        "05:30",
         "13:30",
         "18:30"
       ],
-      "all_new_slot_first_triggers_observed": false
+      "all_new_slot_first_triggers_observed": true,
+      "first_five_thirty_observation_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+      "bounded_completion_20261126": {
+        "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+        "acceptance_criteria_reviewed": 6,
+        "result": "현재저장/각첫기동·공용계획/우선과제연속·부하구간/진행확인과권한보존조건의한정범위충족.자동화는계속ACTIVE이며삭제/설정변경하지않음.",
+        "continuous_or_exact_or_full_nonoverlap_guarantee": false
+      }
     }
   },
   "observation": {
-    "status": "새13:30·18:30 첫실제기동 확인/26일05:30 관찰 전",
-    "period": "2026-11-25T09:32:05.987Z",
-    "result": "11/25 13:30:02.826과18:32:05.987KST의 새두시각첫근접기동을확인했다. 첫05:30은26일관찰전이며기간전체지속/정각·완전무중첩은미확인이다. 같은예약/주기/대상/권한을유지하고지연회차를소급하지않는다.",
+    "status": "현재세시각첫기동한정확인완료·정상회차지속",
+    "period": "2026-11-25T20:32:12.559Z",
+    "result": "새05:30 첫근접기동2026-11-26 05:32:12.559KST를확인했다.11/25 13:30:02.826·18:32:05.987과함께세시각첫기동의한정관찰을충족했다.기간전체지속/정각·실제완전무중첩/부하감소의인과효과는미확인이다.같은예약/대상/ACTIVE·05:30/13:30/18:30을유지하며설정변경0이다.",
     "default_three_first_evening_trigger": {
       "trigger_utc": "2026-11-19T10:02:43.791Z",
       "trigger_kst": "2026-11-19T19:02:43.791+09:00",
@@ -269,7 +277,7 @@
     },
     "reslot_20261125": {
       "run_reference": "operations/runs/20261124T210640Z-f306f836-5749-4a4d-bf81-ea1cb21122b7.md",
-      "result": "11/25 13:30:02.826과18:32:05.987KST의 새두시각첫근접기동을확인했다. 첫05:30은26일관찰전이며기간전체지속/정각·완전무중첩은미확인이다. 같은예약/주기/대상/권한을유지하고지연회차를소급하지않는다.",
+      "result": "새05:30 첫근접기동2026-11-26 05:32:12.559KST를확인했다.11/25 13:30:02.826·18:32:05.987과함께세시각첫기동의한정관찰을충족했다.기간전체지속/정각·실제완전무중첩/부하감소의인과효과는미확인이다.같은예약/대상/ACTIVE·05:30/13:30/18:30을유지하며설정변경0이다.",
       "first_new_triggers": {
         "13:30": {
           "trigger_utc": "2026-11-25T04:30:02.826Z",
@@ -280,27 +288,32 @@
           "trigger_utc": "2026-11-25T09:32:05.987Z",
           "trigger_kst": "2026-11-25T18:32:05.987+09:00",
           "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md"
+        },
+        "05:30": {
+          "trigger_utc": "2026-11-25T20:32:12.559Z",
+          "trigger_kst": "2026-11-26T05:32:12.559+09:00",
+          "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md"
         }
       },
       "old_completed_night_run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
     },
-    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md"
+    "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md"
   },
   "recovery": {
     "plan_reference": "향후 설정 회귀 시 같은 지원 도구로 직전 검증 주기/프롬프트·대상/이름/ACTIVE/권한을 보존해 재적용한다. 제품 롤백·개인 DB 복구와 구분한다.",
     "execution_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "result": "승인된 임시 기간 종료에 따른 기본3회 설정 복귀와 실제 저장 대조를 수행했다. 제품 배포 롤백/개인 DB 복원은 하지 않았다."
   },
-  "next_action": "26일05:30 첫새근접기동을 다음기존run에연결한다. 두시각관측을기간전체지속/정각·무중첩보증으로확대하지않고구간/현재진행확인·경량인계규칙을유지한다. 별도예약/설정변경·상주감시/자동잠금0이다.",
+  "next_action": "정상trigger는기존run에재사용하고새지연/회귀/사용자변경지시때같은일감을재개한다.05:30·13:30·18:30의같은예약과배정구간·지원상태/진행확인·경량인계를계속유지한다.새예약/상주감시/자동잠금은만들지않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "observing_reslotted_three_saved_actual_triggers_pending",
-    "next_scheduled_step_at": "2026-11-26T05:30:00+09:00",
-    "next_review_at": "2026-11-26T05:30:00+09:00",
-    "scheduled_step": "새05:30 첫실제기동을기존run에서관찰",
-    "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
-    "replan_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
-    "replan_reason": "새18:30근접기동도확인해다음기존26일05:30 관찰로잇는다. 예약설정/권한·콘텐츠주기변경이나별도기동은하지않는다."
+    "state": "bounded_reslot_first_triggers_complete_ongoing_automation_active",
+    "next_scheduled_step_at": null,
+    "next_review_at": null,
+    "scheduled_step": "별도슬롯없음·정상run에trigger재사용/새지연이나회귀때재개",
+    "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+    "replan_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+    "replan_reason": "새05:30 첫근접기동을인수해현재세시각각첫기동관찰의한정종료조건을충족했다.계속운영하는예약의중지/삭제/주기변경은하지않는다."
   }
 }
