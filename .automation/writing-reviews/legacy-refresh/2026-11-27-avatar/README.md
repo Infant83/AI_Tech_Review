@@ -17,7 +17,7 @@ Avatar v1의 원제와 저자 6명, Academy 0.5.0의 정확한 문서 판본을 
 - `avatar1127_prose`: 원고의 초기 독립 문체 검토 후 한영 수정 초안 작성. 자기 수정본의 최종 독립 감수자로 기록하지 않는다.
 - root: 기존·수정 한영 본문 전체 검토, Avatar v1의 실험 정의·배치·결과 직접 대조, 통합 편집과 출판 작업.
 - `avatar1127_science`: v1 HTML 본문·표·캡션·참고문헌 전체, 8쪽 PDF 전체 추출 텍스트와 선택한 1·7쪽, 정확한 Academy 0.5.0 문서·선택 코드, Colmena 공식 문서와 연구자 소개 대조. 최종 한영 과학·APS·역할 공개의 독립 감수.
-- `avatar1127_build_audit`: 기존 실제 한영 공개본과 출판 경로 확인, 수정 한영 원고 전체의 비작성자 문체·보존 감수. 후보·출력·실제 게시 검토는 수행한 단계에 따라 추가 기록한다.
+- `avatar1127_build_audit`: 기존 실제 한영 공개본과 출판 경로 확인, 수정 한영 원고 전체의 비작성자 문체·보존 감수, 후보의 전체 파일·메타데이터·원고 대응 검증.
 
 낭비 계산 최대 약 55%, N=128에서 평균 backlog 약 21과 99, QM9 후보 5,000개·초기 라벨 100개·회차당 32개, 12→7회차·GPU 활동 시간 약 40% 절감을 원 조건과 함께 보존했다. 5/12≈41.7%는 회차 비율의 산술이며 GPU 시간 측정을 재현한 값과 구별한다. QM9 조회, 신규 DFT, 전체 비용과 전력의 구별을 유지했다.
 
@@ -33,4 +33,14 @@ Avatar v1의 원제와 저자 6명, Academy 0.5.0의 정확한 문서 판본을 
 
 [후보 독립 감수](candidate-independent-review.json)는 배포 정책·용량 기준·봉인·전체 공개 파일 검사를 통과했다. 기존 2,795개 payload 경로와 봉인 파일을 포함한 2,796개 파일을 확인했다. 본문 변경은 Avatar 한영 두 페이지이며 목록의 해당 수정일과 독자 갱신 기록이 함께 바뀌었다. 다른 58개 리뷰, 181개 아카이브 행, PDF 297경로, 날짜별 편집글 74경로와 Classiq 24경로를 보존했다. 기존 검색·전체 용량의 주의 표시 두 건은 통과 결과와 함께 기록했다.
 
-CI 네 단계와 실제 HTTPS 공개 확인은 수행한 증거에 따라 별도로 기록한다. 아래 완료 기록을 남기기 전에는 공개 완료로 판정하지 않는다.
+## 실제 게시 완료
+
+게시 소스는 `ba103f72355e40428003d159ab3df084df7f4209`이며 [실제 workflow](https://github.com/Infant83/AI_Tech_Review/actions/runs/45860094968)의 build·deploy·recovery-copy·notify-readers 네 작업이 모두 성공했다. [CI 독립 감수](ci-independent-review.json)는 실제 로그의 1,125개 통과·9개 제외·실패 0, 작은 산출물 ZIP 두 개의 provider digest와 공개 catalog·seal의 소스 결속을 확인했다. 제외한 브라우저 검사 8개를 실행한 것으로 세지 않았다.
+
+[실제 HTTPS 대조](live-verification.json)는 31개 고유 경로에 32회 순차 요청해 응답을 실제 배포 봉인과 비교했다. 한영 Avatar와 기존 자산, 최신 DQB·DRB·DQE, Classiq L017, 앞선 OLED 및 다음 다광자 리뷰의 지정 파일이 일치했다. 기존 2,795개 payload 경로의 inventory도 감수 후보와 같았다. 실제 catalog의 소스 커밋과 Avatar 갱신 기록의 CI 생성 시각만 로컬 준비본과 구별했고, 이 차이를 본문 변경으로 해석하지 않았다. 조회 전후 공개 seal은 동일했다.
+
+[실제 브라우저 확인](browser-live-review.json)에서는 기존 GitHub Pages 주소의 정식 도메인 이동과 한영 양방향 전환, 데스크톱·모바일 본문·그림·수식·표를 확인했다. 공개 글은 [한국어](https://infant83.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/)와 [영어](https://infant83.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/)에 반영됐다. 임시 탭·로컬 서버를 정리하고 화면 크기 설정을 원복했다.
+
+현재 복구 업로드와 배포 입력의 일치 로그, 완료 후 전체 목록에서 최신 복구 사본 3개를 확인했다. 독자 catalog 동기화는 83건이며 새 글·대기 알림은 각각 0건이다. 복구 바이너리 전체를 별도로 내려받거나 복원 시험을 한 것은 아니다. 기존 용량·action runtime 주의 표시는 운영팀(ADOPT)의 기술 후속 범위로 남겼으며 이번 기사 개정에서 인프라 설정을 바꾸지 않았다.
+
+순차 감수는 27/49편을 완료했고 `current`를 비웠다. 다음 대상은 `2026-09-13_multiphoton-reservoir-classical-light`이다. 다른 26편의 완료 기록과 전체 queue를 보존했다. 초기 49편 전체가 끝난 상태가 아니므로 예약은 유지한다.
