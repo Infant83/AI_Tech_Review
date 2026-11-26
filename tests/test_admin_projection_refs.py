@@ -99,6 +99,13 @@ class RefPublisherTests(unittest.TestCase):
         before=self.snapshot();self.refuse(self.publish,"ref_incomplete")
         self.assertEqual(before,self.snapshot())
 
+    def test_empty_pending_directory_other_operation_blocks_publish(self):
+        with projection._Store(self.root,projection._Budget()) as store:
+            store.directory(refs.DIRECTORY+"/.pending-"+"c"*64,create=True)
+        before=self.snapshot();self.refuse(self.publish,"ref_incomplete")
+        self.assertEqual(before,self.snapshot())
+        self.assertFalse((self.root/self.ref_path).exists())
+
     def test_temp_fault_preserves_exact_partial_without_ref(self):
         original=os.write
         calls=0

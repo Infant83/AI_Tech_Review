@@ -121,7 +121,7 @@ def publish_ref(token, *, base_digest, base_oid, operation, expected_oid, new_oi
     temp_attempted = rename_attempted = False
     try:
         files = store.scan()
-        if any(path.startswith(DIRECTORY + "/.pending-") for path in files):
+        if any(path.startswith(DIRECTORY + "/.pending-") for path in files | store.dirs.keys()):
             raise RefError("ref_incomplete")
         directory = store.directory(DIRECTORY)
         _guard(store, base_path, base_raw, operation_path, expected_raw)
@@ -165,4 +165,3 @@ def publish_ref(token, *, base_digest, base_oid, operation, expected_oid, new_oi
                     "output_changed", "job_limit", "job_timeout", "unsupported_output_platform"}:
             raise RefError(code) from None
         raise RefError("ref_io") from None
-
