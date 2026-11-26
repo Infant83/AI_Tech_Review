@@ -30,17 +30,32 @@ class _Token:
         self.store, self.pid, self.active = store, os.getpid(), True
         # Returned write() counts, not physical disk I/O or fsync durability.
         self.actual_ref_payload_bytes = 0
+        self.rename_attempted = False
 
 
 @contextmanager
 def locked_refs(store):
     """Use the original store lock inode; not an authorization capability."""
-    with projection._locked(store):
-        token = _Token(store)
-        try:
-            yield token
-        finally:
-            token.active = False
+    token = None
+    try:
+        with projection._locked(store):
+            token = _Token(store)
+            try:
+                yield token
+            finally:
+                token.active = False
+    except (OSError, ValueError) as error:
+        # Unlock and lock-file/anchor revalidation can fail AFTER publish_ref
+        # returns, including when a caller handled an inner refusal already.
+        if token is not None and token.rename_attempted:
+            raise RefError("outcome_unknown") from None
+        if isinstance(error, RefError):
+            raise
+        code = getattr(error, "code", None)
+        if isinstance(code, str) and code in {"import_limit", "import_timeout", "store_limit",
+                "store_inconsistent", "output_changed", "job_limit", "job_timeout"}:
+            raise RefError(code) from None
+        raise RefError("ref_io") from None
 
 
 def _checkpoint(stage):
@@ -138,6 +153,7 @@ def publish_ref(token, *, base_digest, base_oid, operation, expected_oid, new_oi
         # No pathname-based child process. Both names use the SAME pinned FD.
         # A noncooperating writer can still race the comparison and rename.
         rename_attempted = True
+        token.rename_attempted = True
         os.rename(".pending-" + operation, operation,
                   src_dir_fd=directory, dst_dir_fd=directory)
         if expected_raw is not None:

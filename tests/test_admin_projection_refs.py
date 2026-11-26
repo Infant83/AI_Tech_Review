@@ -146,6 +146,25 @@ class RefPublisherTests(unittest.TestCase):
             self.assertEqual(token.actual_ref_payload_bytes,41)
         self.assertEqual((self.root/self.ref_path).read_bytes(),(self.new+"\n").encode())
 
+    def test_actual_deadline_on_lock_exit_cannot_replace_unknown(self):
+        for handled_inner in [False,True]:
+            with self.subTest(handled_inner=handled_inner):
+                if (self.root/self.ref_path).exists():(self.root/self.ref_path).unlink()
+                budget=writer._Budget()
+                def expire(stage):
+                    if stage=="after_rename":budget.deadline=-1
+                with self.assertRaises(refs.RefError) as error:
+                    with writer._Store(self.root,budget) as store, refs.locked_refs(store) as token:
+                        call=lambda:refs.publish_ref(token,base_digest=self.base,base_oid=self.base_oid,
+                            operation=self.operation,expected_oid=None,new_oid=self.new)
+                        if handled_inner:
+                            with patch.object(refs,"_checkpoint",expire):self.refuse(call,"outcome_unknown")
+                        else:
+                            call();budget.deadline=-1
+                self.assertEqual(error.exception.code,"outcome_unknown")
+                self.assertFalse(token.active)
+                self.assertEqual((self.root/self.ref_path).read_bytes(),(self.new+"\n").encode())
+
     def test_pre_rename_failure_preserves_temp_and_old(self):
         self.publish(new=self.old)
         def fault(stage):
