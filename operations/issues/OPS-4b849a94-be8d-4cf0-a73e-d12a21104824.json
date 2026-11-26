@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 27,
+  "record_version": 28,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-25T21:08:56.854917+00:00",
+  "updated_at": "2026-11-26T04:54:03.458289+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -54,7 +54,8 @@
       "reference": "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
       "finding": "전체 자료와 알림용 카탈로그를 구분하는 첫 읽기 전용 관리 목록의 범위와 종료 조건을 정리함"
     },
-    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md"
   ],
   "limitations": [
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
@@ -91,9 +92,10 @@
       "0124fbad287380e3ec3d9489614ac1c7323a9d55",
       "265b9a260025de826a3e3574a9590d77fa5fa048",
       "ecd98f5043324c9af8dc98793e76b79280b39e4a",
-      "527b9d8f24d21ff3a8f6b878facbca7cecf0951f"
+      "527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
+      "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81"
     ],
-    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
     "deployment_reference": null,
     "local_readonly_candidate": {
       "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -406,7 +408,7 @@
       "not_completion_promise": true
     },
     "b2b2_initial_candidate": {
-      "status": "isolated_no_change_slice_tested_formal_review_pending_not_main_integrated",
+      "status": "historical_initial_candidate_followed_by_supported_slice_formal_review",
       "base_revision": "2e97e87cc1060053f9cb1516962b4fd183fa97ae",
       "initial_candidate_revision": "618a3eb700446da6b2d40886852e63c53369f47f",
       "source_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
@@ -437,11 +439,42 @@
       "deployed": false,
       "actual_user_requests_accepted": 0,
       "source_or_remote_writer_or_publication_activation": false,
-      "resume": "26일13:30에이정확후보의정식독립6군과남은changed receipt/CAS 구현경계를잇는다.새keyspace/암묵적base준비/원본SHA치환을하지않는다."
+      "resume": "26일13:30에이정확후보의정식독립6군과남은changed receipt/CAS 구현경계를잇는다.새keyspace/암묵적base준비/원본SHA치환을하지않는다.",
+      "followup_run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md"
+    },
+    "b2b2_no_change_formal": {
+      "status": "supported_no_change_slice_formal_review_and_local_tool_source_integration_complete",
+      "source_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "integration_base_revision": "d080118fae1f31eabc318965201c22e3e527b7c4",
+      "initial_candidate_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+      "merged_candidate_base_revision": "3cf19e3a1f330f4196f64c42581df8852ac98156",
+      "branch": "codex/admin-b2b2-formal-20261126",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_sha256": {
+        "scripts/admin_projection_jobs.py": "a446b61b7cebc61245c4caf80e5378ec810f55d72bb7877835f20f05e4b62756",
+        "scripts/admin_requests.py": "1c52ff885c2338662de912ac9c4009fc041ee8b7cf9ea2d0b146c94bec9fbeca",
+        "scripts/admin_source_intake.py": "5d7af0281da2cb0d6b0dc18d6dec334d8bf2b8d812905b0626dc941b537b2a55",
+        "scripts/admin_candidate_import.py": "7b524b95996765753eff2842d857fd690aa9cf60de0030f408ec64dd56dfef38",
+        "tests/test_admin_projection_jobs.py": "e9e280585354261a97141c2ba53b54a6aaf0168d12049b8c0c57cfb178dc3ec7",
+        "tests/test_admin_candidate_import.py": "3a0e10d079ec18e5af3d99193ba06f6045d312e926dd4ccbc80e1a1fa42ce6a7",
+        ".automation/admin-readonly/README.md": "91747fa141dc13c9ed3fecf6bcf547a45191b25eb953aad6a893dcb66d5af239"
+      },
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "scope": "별도 초기화·명시 base 준비·no_change inventory/tombstone·역사 replay만 지원",
+      "main_integrated": true,
+      "deployed": false,
+      "new_actual_CI_observed": false,
+      "actual_user_requests_accepted": 0,
+      "source_remote_API_DB_or_publication_activation": false,
+      "changed_candidate_receipt_CAS_supported": false,
+      "changed_request_refusal_before_key_reservation": true,
+      "resume": "11/26 18:30 기존 슬롯에서 changed receipt/CAS의 제한된 Git 쓰기·계상 가능 경계를 검토하고 같은 일감을 이어간다. 전체 B2b2/C–E 납기나 운영 활성화를 확정하지 않는다."
     }
   },
   "verification": {
-    "status": "B2b2 첫7파일격리후보 d3bdbb의새target23·입력교정1재확인과기존helper114회귀사슬을보존했고, 별도비작성script의초기runtime6묶음/15.252s를통과했다. 정식계약6군·전체검사/실제운영도입·main소스통합은전이며B2b1658의기존정상CI를새후보검증으로합산하지않는다.",
+    "status": "B2b2 지원 no_change slice 정식 검증·로컬 소스통합 완료; 실제 변경/CAS·운영 API는 미완료",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -1028,12 +1061,123 @@
       "actual_user_store_mutations": 0,
       "existing_integrated_B2b1_actual_CI_observed": true,
       "source_candidate_new_CI_observed": false
+    },
+    "B2b2_supported_slice_formal_20261126": {
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "source_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "defect_before": {
+        "cases": 3,
+        "seconds": 4.144,
+        "finding": "inventory 예약 이후 source/raw3/tool 실패의 첫 응답이 원충돌 코드이며 후속 호출에서만 unknown으로 바뀜",
+        "not_acceptance_pass": true
+      },
+      "correction": "예약 파일 쓰기 시도 이후 오류는 첫 응답부터 outcome_unknown으로 보존하며 정본 부정합 store_inconsistent는 유지. 예약 전 거절/replay 경계 불변.",
+      "target_new_tests": 2,
+      "target_subcases": 7,
+      "target_seconds": 8.917,
+      "independent_static_result": "PASS_for_supported_slice_and_corrected_boundary",
+      "independent_runtime": {
+        "result": "PASS_at_supported_no_change_slice_only",
+        "groups": 6,
+        "completed_group_seconds_sum": 32.651,
+        "single_continuous_invocation": false,
+        "full_DEC_changed_candidate_and_CAS_complete": false
+      },
+      "earlier_initial_runtime_reused_groups": 6,
+      "earlier_initial_runtime_seconds": 15.252,
+      "earlier_initial_and_current_formal_not_summed_as_one_suite": true,
+      "full_python": {
+        "total": 608,
+        "passed": 607,
+        "existing_optional_skips": 1,
+        "failed": 0,
+        "seconds": 152.872
+      },
+      "actual_public_input": {
+        "checked_at": "2026-11-26T04:51:58.279998+00:00",
+        "result": "PASS",
+        "tool_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+        "source_revision": "d080118fae1f31eabc318965201c22e3e527b7c4",
+        "public_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+        "selected_files": 144,
+        "selected_bytes": 5229603,
+        "CLI_calls": [
+          {
+            "command": "init-store",
+            "exit": 0,
+            "status": "projection_store_initialized_local",
+            "replay": null,
+            "stdout_bytes": 401,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "import",
+            "exit": 0,
+            "status": "source_projection_saved_local",
+            "replay": null,
+            "stdout_bytes": 628,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "init-writer",
+            "exit": 0,
+            "status": "projection_writer_initialized_local",
+            "replay": null,
+            "stdout_bytes": 370,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "stage-base",
+            "exit": 0,
+            "status": "projection_base_staged_local",
+            "replay": false,
+            "stdout_bytes": 859,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "apply-no-change",
+            "exit": 0,
+            "status": "no_change",
+            "replay": false,
+            "stdout_bytes": 1025,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "apply-no-change",
+            "exit": 0,
+            "status": "no_change",
+            "replay": true,
+            "stdout_bytes": 1023,
+            "stderr_bytes": 0
+          }
+        ],
+        "seconds": 16.827,
+        "actual_public_source_A_native3_raw3_no_change": true,
+        "original_Git_HEAD_index_all_refs_status_selected_inputs_baseline_foreign_and_old_store_preserved": true,
+        "new_local_only_projection_and_writer_namespace": true,
+        "source_and_existing_user_store_writes": 0,
+        "writer_Git_writes_for_no_change_and_replay": 0,
+        "replay_total_writes": 0,
+        "self_contained_historical_replay_without_source_baseline_or_projection_hint": true,
+        "one_inventory_tombstone_state_and_no_operation_ref": true,
+        "operator_known_worktrees_common_and_baseline_separation_verified": true,
+        "not_actual_user_operation_changed_candidate_CAS_source_writer_API_publication_or_restore": true
+      },
+      "protected_prior_keep_markers_preserved": 39,
+      "seven_frozen_sources_exact_at_integration": true,
+      "logical_returned_byte_budget_not_OS_physical_IO": true,
+      "limits": [
+        "full DEC changed candidate/receipt/CAS not implemented or accepted",
+        "controlled local operator placement; first-open namespace and same-UID/physical power-loss durability limits remain",
+        "no actual user operation, source/remote writer, server authorization, DB, publication or restore proof"
+      ],
+      "proof_key": "adopt-b2b2-formal-20261126 / freeze/full-python; adopt-b2b2-formal-independent-20261126 / formal-result; adopt-20261126-midday / actual-no-change-result"
     }
   },
   "observation": {
-    "status": "11/26 05:30 첫no_change/replay 후보구현·보완/독립초기runtime PASS·정식감수전",
-    "period": "2026-11-25T20:32:12.559Z",
-    "result": "별도지속writer/base명시준비·고정키namespace와무변경tombstone/역사replay의첫후보를보존했다. 증거합계/도구읽기예산·역사검증/과거키·orphanpin·정수판본결함을격리검증으로보완하고별도초기runtime6묶음을통과했으며changed receipt/CAS·main/서버/발행은미완료다. 새정상DRB/OLED와B2b1658실제CI를인수하고현재공개14b0127·OLED새편집판의기술지원은별도기록했다.",
+    "status": "11/26 13:30 지원 no_change slice 검증·소스통합; 전체 B2b2 미완료",
+    "period": "2026-11-26T04:28:48.266Z",
+    "result": "예약 이후 첫 오류 분류 결함을 재현·보완한0c588을 지원 경계 독립 검토·608검사·실제144입력 no_change/replay 뒤 로컬 도구 소스로 통합했다. 새 L017/DQB와 현재 공개5c7d43d·295PDF 경로를 보존하며 변경 receipt/CAS·서버/발행·실사용은 다음 단계다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -1087,30 +1231,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md"
+    "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "26일13:30 기존슬롯에서d3bdbb 첫7파일후보의정식독립6군/범위·지원한계를검토하고미완료changed receipt/CAS를이어간다.원본/원격통합·관리API/서버/발행은활성화하지않고미완료면같은과제를잇는다.기존업무/보호증거·고정키namespace와latestpublic를보존한다.",
+  "next_action": "11/26 18:30 기존 슬롯에서 changed receipt/CAS의 제한된 Git 쓰기·계상 가능 경계를 검토하고 같은 일감을 이어간다. 전체 B2b2/C–E 납기나 운영 활성화를 확정하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b2_first_no_change_candidate_initial_validation_formal_pending",
-    "next_scheduled_step_at": "2026-11-26T13:30:00+09:00",
-    "next_review_at": "2026-11-26T13:30:00+09:00",
-    "scheduled_step": "첫7파일no_change/replay후보정식독립6군·남은changed receipt/CAS 구현경계재개",
+    "state": "B2b2_supported_no_change_formal_complete_changed_CAS_pending",
+    "next_scheduled_step_at": "2026-11-26T18:30:00+09:00",
+    "next_review_at": "2026-11-26T18:30:00+09:00",
+    "scheduled_step": "changed receipt/CAS의 제한된 Git 쓰기·예산/중단 경계 검토와 가능한 다음 격리 구현",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
-    "replan_reason": "예정05:30에첫후보를착수·격리검증했다.불확정Git쓰기경로를열지않고현재검증가능한무변경/역사재시도slice를우선보존하며기존13:30정식검토목표·P2/순번1은유지한다.다른근거대기/관찰/주간슬롯과편집부권한은바꾸지않는다.",
+    "replan_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+    "replan_reason": "13:30 지원 no_change slice의 검증과 소스통합을 마쳤다. 원래 전체 계약의 변경 결과/CAS는 아직 거절하며 같은 일감·P2/순번1로 다음18:30에 이어간다. 근거 대기 재평가는27일13:30, 관찰 묶음은오늘18:30, 주간도27일13:30이다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+    "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -1151,8 +1295,10 @@
     "b2b2_implementation_start_target": "2026-11-26T05:30:00+09:00",
     "b2b2_first_independent_review_target": "2026-11-26T13:30:00+09:00",
     "b2b2_first_candidate_ready_at": "2026-11-25T20:51:34.097131+00:00",
-    "b2b2_candidate_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+    "b2b2_candidate_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
     "b2b2_corrected_candidate_ready_at": "2026-11-25T21:04:32.758700+00:00",
-    "b2b2_initial_independent_runtime_completed_in_run": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md"
+    "b2b2_initial_independent_runtime_completed_in_run": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+    "b2b2_no_change_formal_completed_at": "2026-11-26T04:54:03.458289+00:00",
+    "b2b2_no_change_source_integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81"
   }
 }

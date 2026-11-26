@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e",
-  "record_version": 33,
+  "record_version": 34,
   "asset_key": "public-document-storage",
   "name": "공개 PDF 객체 저장소 이전 준비",
   "status": "prepared",
@@ -31,7 +31,7 @@
   ],
   "access_boundary": "준비 코드·로컬 검증과 실제 운영 활성화를 구분한다. 향후 업로드는 게시 담당 권한으로 제한하고 공개 읽기는 검증된 URL/기대 SHA 매핑만 허용한다. 개인 문서·필기·사용자 계정 데이터를 공개 PDF 객체와 섞지 않는다.",
   "verification": {
-    "checked_at": "2026-11-25T20:37:54.932217Z",
+    "checked_at": "2026-11-26T04:31:02.210788Z",
     "confirmed": [
       "기존 검증 묶음의 공개 PDF226경로/159객체와 Worker 매핑·로컬 전달 근거 재사용",
       "기존 CLI 로그인과 해당 계정 소속 확인. 현 OAuth 권한 목록에 R2 없음·R2 목록 요청10000거절, 브라우저 로그인 필요",
@@ -50,22 +50,22 @@
       "19시 기존로그인인계도암호입력필요. 실제R2권한·버킷·사용량/청구·원격전체해시/복구의새확인근거없음."
     ],
     "current_public_footprint": {
-      "manifest_files": 2782,
-      "manifest_bytes": 861612029,
-      "release_json_bytes": 1420982,
-      "public_files": 2783,
-      "public_bytes": 863033011,
-      "pdf_paths": 292,
-      "unique_pdf_objects": 207,
+      "manifest_files": 2787,
+      "manifest_bytes": 862765670,
+      "release_json_bytes": 1423706,
+      "public_files": 2788,
+      "public_bytes": 864189376,
+      "pdf_paths": 295,
+      "unique_pdf_objects": 209,
       "retained_edition_urls": 22,
-      "growth_bytes": 6772686,
-      "growth_basis_source": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
-      "excess_over_internal_800MB_bytes": 63033011,
-      "headroom_to_internal_800MB_bytes": -63033011,
-      "checked_at": "2026-11-25T20:37:54.932217Z",
-      "source_revision": "14b01272382cfdbbc0390d71906ede24e321bdbe",
-      "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
-      "scope": "Complete actual HTTPS release/catalog/updates metadata. Prior291 PDF paths remain present and22 retained edition URLs/SHA are exact; only the two existing OLED aliases changed to the reviewed replacement edition and one DRB PDF path was added. PDF/editorial verification belongs to existing AEDAUT/root evidence; this metadata check adds no PDF download/render, scientific or physical-device review, provider-quota, external activation or restore/savings claim."
+      "growth_bytes": 1156365,
+      "growth_basis_source": "14b01272382cfdbbc0390d71906ede24e321bdbe",
+      "excess_over_internal_800MB_bytes": 64189376,
+      "headroom_to_internal_800MB_bytes": -64189376,
+      "checked_at": "2026-11-26T04:31:02.210788Z",
+      "source_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "scope": "Complete actual HTTPS release/catalog/updates metadata. Prior292 PDF paths remain present and22 retained edition URLs/SHA are exact; the existing QAE notes.pdf alias changed under its exact declaration and three new PDF paths were added. Existing publisher PDF/editorial/HTTPS QA is reused. No new PDF download/render/science/device check, provider-quota audit, external activation, physical-I/O/storage-savings measurement, power-loss durability or restore claim."
     },
     "provider_connection_rechecked_this_cycle": false,
     "operational_storage_activation": false,
@@ -120,7 +120,7 @@
     "recovery_reference": "SITE_OPERATIONS.md"
   },
   "created_at": "2026-11-12T22:16:24Z",
-  "updated_at": "2026-11-25T20:44:23.543974Z",
+  "updated_at": "2026-11-26T04:40:21.253497Z",
   "evening_public_metadata_20261119": {
     "checked_at": "2026-11-19T10:06:51.416867+00:00",
     "source_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",
