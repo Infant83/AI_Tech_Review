@@ -31,6 +31,7 @@ class _Token:
         # Returned write() counts, not physical disk I/O or fsync durability.
         self.actual_ref_payload_bytes = 0
         self.rename_attempted = False
+        self.temp_attempted = False
 
 
 @contextmanager
@@ -49,6 +50,8 @@ def locked_refs(store):
         # returns, including when a caller handled an inner refusal already.
         if token is not None and token.rename_attempted:
             raise RefError("outcome_unknown") from None
+        if token is not None and token.temp_attempted:
+            raise RefError("ref_incomplete") from None
         if isinstance(error, RefError):
             raise
         code = getattr(error, "code", None)
@@ -144,6 +147,7 @@ def publish_ref(token, *, base_digest, base_oid, operation, expected_oid, new_oi
         store.reserve(REF_BYTES, 1)
         _checkpoint("before_temp")
         temp_attempted = True
+        token.temp_attempted = True
         _write_temporary(token, directory, ".pending-" + operation, new_raw)
         _checkpoint("after_temp")
         _guard(store, base_path, base_raw, operation_path, expected_raw)

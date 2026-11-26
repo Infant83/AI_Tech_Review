@@ -165,6 +165,20 @@ class RefPublisherTests(unittest.TestCase):
                 self.assertFalse(token.active)
                 self.assertEqual((self.root/self.ref_path).read_bytes(),(self.new+"\n").encode())
 
+    def test_temp_only_actual_deadline_on_lock_exit_stays_incomplete(self):
+        budget=writer._Budget()
+        def expire(stage):
+            if stage=="after_temp":budget.deadline=-1
+        with self.assertRaises(refs.RefError) as error:
+            with writer._Store(self.root,budget) as store, refs.locked_refs(store) as token:
+                with patch.object(refs,"_checkpoint",expire):
+                    self.refuse(lambda:refs.publish_ref(token,base_digest=self.base,base_oid=self.base_oid,
+                        operation=self.operation,expected_oid=None,new_oid=self.new),"ref_incomplete")
+        self.assertEqual(error.exception.code,"ref_incomplete")
+        self.assertFalse(token.active)
+        self.assertEqual((self.root/self.pending_path).read_bytes(),(self.new+"\n").encode())
+        self.assertFalse((self.root/self.ref_path).exists())
+
     def test_pre_rename_failure_preserves_temp_and_old(self):
         self.publish(new=self.old)
         def fault(stage):
