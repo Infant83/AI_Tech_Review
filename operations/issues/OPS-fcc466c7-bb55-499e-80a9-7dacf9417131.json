@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 44,
+  "record_version": 45,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-26T09:38:56.538366Z",
+  "updated_at": "2026-11-26T20:42:15.448644Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -208,7 +208,7 @@
     }
   },
   "verification": {
-    "status": "11/26 18:30 공개 JSON 3종 bytes/SHA가 기존 완전 5c7d43d baseline과 정확히 같아 864,189,376B·295PDF/209객체, 이전 292PDF 경로·22구판 URL/SHA 보존 검증을 재사용했다. 복구 3개는 모두 미만료·오전과 동일하고 전체 artifact 104→99로 다른 삭제나 물리 절감을 추정하지 않는다. 기존 c63e050 준비도구·233export·원격 비활성, 6f/658 실제 CI와 기존 DQB 확정 CI삭제 1 근거를 유지한다. 새 B2b2 실제 CI·거절 진단 출력·과거 DQB 원인/동일 입력 재검증·외부 활성화/원격 전체 SHA/복원/물리 절감은 미확인이다. OS 물리 I/O·전원 차단 내구성도 검증하지 않았다.",
+    "status": "11/27 05:30 새 정상 DQE·DRB·Avatar의 실제 공개 ba103f 완전 metadata를 인수했다. 현재 865,208,647B·297PDF/211객체이며 이전 295PDF 경로/SHA·22구판 URL/SHA를 정확히 보존했고 새 PDF 두 경로가 추가됐다. 최신 복구 3개는 모두 미만료이고 Avatar의 확정 CI삭제 1을 기존 독립 기록과 현재 목록으로 대조했다. 전체 artifact 105와 다른 게시의 미확인 삭제수로 물리 절감을 추정하지 않는다. 0c588 두 파일의 세 정상 CI 소스 결속·DQE/Avatar Python608 근거를 인수했으나 새 격리 파일 디스크립터 후보의 실제 CI·writer 활성화와 구분한다. 외부 저장소는 prepared/비활성이며 실제 거절 진단 출력·과거 DQB 원인/동일 입력 재검증·원격 전체 SHA/복원/물리 절감은 미확인이다. 기존 용량·검색 예산·runtime 주의는 신규 장애가 아니다.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -241,7 +241,8 @@
       "operations/runs/20261116T020122Z-1430dff0-4bfc-40ee-895d-4226bc9f9579.md",
       "operations/runs/20261116T055928Z-76a90172-afa7-4e4d-ab7b-afb9c6806cca.md",
       "operations/runs/20261116T100029Z-1daf30bd-d0e0-4120-a124-39de77330df1.md",
-      "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md"
+      "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md"
     ],
     "remaining_limits": [
       "R2조회는현재OAuth에권한이없어10000으로거절됐고브라우저는로그인필요다. 실제버킷존재·구독활성·사용량·무료포함량잔여·청구는미확인이다.",
@@ -328,24 +329,22 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "manifest_files": 2787,
-      "manifest_bytes": 862765670,
-      "release_json_bytes": 1423706,
-      "public_files": 2788,
-      "public_bytes": 864189376,
-      "pdf_paths": 295,
-      "unique_pdf_objects": 209,
+      "manifest_files": 2795,
+      "manifest_bytes": 863781078,
+      "release_json_bytes": 1427569,
+      "public_files": 2796,
+      "public_bytes": 865208647,
+      "pdf_paths": 297,
+      "unique_pdf_objects": 211,
       "retained_edition_urls": 22,
-      "growth_bytes": 1156365,
-      "growth_basis_source": "14b01272382cfdbbc0390d71906ede24e321bdbe",
-      "excess_over_internal_800MB_bytes": 64189376,
-      "headroom_to_internal_800MB_bytes": -64189376,
-      "checked_at": "2026-11-26T09:32:27.628551Z",
-      "source_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
-      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
-      "scope": "Exact HTTPS raw3 bytes/SHA match to the prior complete 5c baseline; full footprint and prior292 PDF paths/22 edition URL/SHA preservation verification reused. QAE alias exact declaration and prior publisher QA remain the same. No new PDF/artifact download, render, science/device check, quota audit, external activation, physical I/O/storage-savings measurement, power-loss durability or restore claim.",
-      "previous_complete_validation_at": "2026-11-26T04:31:02.210788Z",
-      "raw3_exact_previous_complete_baseline": true
+      "growth_bytes": 1019271,
+      "growth_basis_source": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+      "excess_over_internal_800MB_bytes": 65208647,
+      "headroom_to_internal_800MB_bytes": -65208647,
+      "checked_at": "2026-11-26T20:31:15.534021Z",
+      "source_revision": "ba103f72355e40428003d159ab3df084df7f4209",
+      "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+      "scope": "Complete actual HTTPS release/catalog/updates metadata. All prior295 PDF paths and SHA are unchanged;22 retained edition URLs/SHA remain exact. Two new PDF paths are the normal Nov26 DQE/DRB issues. Existing publisher PDF/editorial/HTTPS QA is reused. No new PDF/artifact download, render, science/device check, quota audit, external activation, physical-I/O/storage-savings measurement, power-loss durability or restore claim."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -568,9 +567,9 @@
     }
   },
   "observation": {
-    "status": "11/26 18:30 공개 5c·복구 3개 동일; 외부 새 입력 없음·비활성 유지",
-    "period": "2026-11-26T09:27:21.257Z",
-    "result": "실제 공개 5c7d43d의 JSON 3종 bytes/SHA를 재확인해 기존 완전 검증을 재사용했다. 864,189,376B·295PDF/209객체·내부 800MB 목표 초과 64,189,376B와 구 292PDF 경로·22구판 보존은 변함없다. 복구 3개는 모두 미만료·오전 metadata와 동일하며 전체 artifact 104→99는 삭제나 물리 절감 측정이 아니다. 새 정상 CI가 없어 기존 L017/DQB 게시 QA와 확정 DQB CI삭제 1을 재사용했다. 새 B2b2 실제 CI·실제 거절 진단 출력 및 과거 DQB 원인·동일 입력 재검증은 미확인이다. 외부 저장소 접근의 새 공용 입력과 공급자 재접속 시도는 없으며 기존 비활성·복원/물리 절감 미확인을 유지한다.",
+    "status": "11/27 05:30 공개 ba103f·새 PDF 2경로·복구 3개; 외부 새 입력 없음·비활성 유지",
+    "period": "2026-11-26T20:29:59.066Z",
+    "result": "실제 공개 완전 metadata는 865,208,647B로 5c 기준 1,019,271B 늘었고 297PDF/211객체·내부 800MB 목표 초과 65,208,647B다. 구295 PDF 경로/SHA와 22구판 URL/SHA는 정확히 같고 새 DQE/DRB 두 PDF를 인수했다. 새 정상 3건은 각 네 작업 성공이며 현재 keep3/업로드 결속과 Avatar의 확정 CI삭제 1을 확인했다. 전체 artifact99→105와 DQE/DRB의 미확인 개별 삭제수로 물리 절감을 추정하지 않는다. 0c588 실제 CI와 새 격리 파일 디스크립터 후보의 미통합/실제 CI 미관찰·writer 비활성은 구분한다. 외부 저장소 접근의 새 입력·이번 공급자 재접속 시도·수동 삭제/리런/외부 활성화/복원은 없다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1193,7 +1192,7 @@
       "manual_deletion_restore_external_activation": 0,
       "weekly_structure_review": "2026-11-27T11:00:00+09:00"
     },
-    "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+    "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
     "night_20261125": {
       "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
       "retention_events_merged": [
@@ -1352,6 +1351,57 @@
       "external_next_review_at": "2026-11-27T13:30:00+09:00",
       "weekly_structure_review_at": "2026-11-27T13:30:00+09:00",
       "asset_record_version34_reused_unchanged": true
+    },
+    "dawn_20261127": {
+      "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+      "actual_public_revision": "ba103f72355e40428003d159ab3df084df7f4209",
+      "metadata_verified_at": "2026-11-26T20:31:15.534021Z",
+      "public_complete_JSON_validated": true,
+      "public_bytes": 865208647,
+      "growth_bytes": 1019271,
+      "growth_basis_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+      "PDF_paths": 297,
+      "unique_PDF_objects": 211,
+      "prior_295_PDF_paths_missing": 0,
+      "prior_295_PDF_SHA_changes": 0,
+      "retained_edition_URLs_exact": 22,
+      "new_PDF_paths": 2,
+      "internal_800MB_excess_bytes": 65208647,
+      "normal_run_urls": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45860094968",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45845061002",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45833052212"
+      ],
+      "current_recovery_copies": 3,
+      "all_current_unexpired": true,
+      "current_three_exact_latest_Avatar_inventory": true,
+      "latest_Avatar_confirmed_CI_deletions": 1,
+      "DQE_DRB_individual_numeric_deletions": "not retrieved; not inferred",
+      "full_artifact_metadata_count": 105,
+      "artifact_pages": 2,
+      "global_count_change_not_physical_savings_measurement": true,
+      "B2b2_0c588_actual_CI_observed": true,
+      "new_isolated_FD_candidate_actual_CI_observed": false,
+      "operational_writer_activation_observed": false,
+      "actual_refusal_metadata_counts_output_observed": false,
+      "known_DQB_failed_attempt_unchanged": true,
+      "provider_root_cause_established": false,
+      "same_failed_input_retested": false,
+      "safe_deletion_candidates_confirmed": 0,
+      "files_deleted_or_moved": 0,
+      "actual_reclaimed_bytes": 0,
+      "provider_reconnection_attempts": 0,
+      "new_external_storage_access_evidence": false,
+      "external_activation": false,
+      "remote_restore_or_physical_IO_power_loss_proof": false,
+      "external_next_review_at": "2026-11-27T13:30:00+09:00",
+      "weekly_structure_review_at": "2026-11-27T13:30:00+09:00",
+      "known_successful_CI_warnings": {
+        "internal_800MB_target_exceeded": true,
+        "lazy_search_gzip_bytes": 94698,
+        "action_runtime_deprecation": "existing successful-run warning; no runtime configuration change"
+      },
+      "new_incident_established": false
     }
   },
   "recovery": {
@@ -1375,7 +1425,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "외부 저장소 접근의 새 근거와 이번 공급자 재접속 시도가 없으므로 다음 27일 13:30 기존 계획 점검에서 접근·원격 봉인/복구 입력과 내부 목표 초과 64,189,376B를 재평가한다. 주간 27일 13:30 구조 검토도 유지한다. 기존 keep3/current-upload 성공과 과거 DQB 원인을 구분하고 새 거절 때만 안전 진단을 인수한다. 기존 자산 v34 검증을 재사용하며 관찰용 리런·수동 삭제·보존 기준 완화·외부 활성화는 하지 않는다.",
+  "next_action": "외부 저장소 접근의 새 근거와 이번 공급자 재접속 시도가 없으므로 27일 13:30 기존 계획 점검에서 접근·원격 봉인/복구 입력과 내부 목표 초과 65,208,647B를 재평가한다. 주간 27일 13:30 구조 검토도 유지한다. 준비 자산 v35의 현재 공개 증가와 기존 미활성·복원/물리 절감 미확인을 연결하고, 알려진 검색 예산/runtime 주의는 기존 기술 일감에서 다룬다. 0c588 실제 CI·keep3 성공과 새 격리 파일 디스크립터 후보·과거 DQB 원인을 구분하며 관찰용 리런·수동 삭제·보존 기준 완화·외부 활성화는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",

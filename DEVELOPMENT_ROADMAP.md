@@ -79,3 +79,5 @@ Git 기반 충돌 검사와 기존 Pages의 직렬화는 현재 재사용할 기
 요금 참고: [Workers](https://developers.cloudflare.com/workers/platform/pricing/), [D1](https://developers.cloudflare.com/d1/platform/pricing/), [R2](https://developers.cloudflare.com/r2/pricing/).
 
 11/26 18:30의 변경 저장/CAS 선행 검토는 [실행 기록](operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md)에 연결한다. 자기 Git fixture11관찰과 독립2재현에서 native Git의 실패 중 실제 임시쓰기 계상·하위 경로 보호 경계가 드러나 현재 규약 gate를 통과하지 못했다. 지원 no_change 소스와 키/판본 형식은 유지하고 제품 코드·변경 키 접수·배포는0이다. 다음27일05:30에 native 격리와 FD 기반 단일 operation 권위의 최소 설계를 비교하며 어느 방식도 아직 새 계약으로 채택하지 않았다. 준비된 범위의13:30 독립 검토는 목표이며 전체 B2b2 완료 약속이 아니다.
+
+11/27 05:30 [연속 검토](operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md)는 native 두ref 요구와 분리한 FD 내부 primitive 계약·두 파일 후보1ff49fd로 이어졌다. 협력 flock 아래 기대값 비교/단일 rename과 반환된 payload 계상만 다루며, 부분쓰기·pending 형태·실제 기한/context 종료 phase를 보완해17대상과 별도 독립6그룹을 통과했다. 기존 no_change7파일·키/형식/역사 경로와 변경 요청 거절은 유지한다. 새 후보의 전체 회귀·main/실제 writer 연결은13:30 검토 목표이며 전체 B2b2 완료나 발행 활성화가 아니다. 기존0c588의 실제 야간 CI608 관찰과 새 미연결 후보의 CI 미관찰을 구분한다.
