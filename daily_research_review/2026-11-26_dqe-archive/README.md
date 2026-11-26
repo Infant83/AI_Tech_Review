@@ -28,3 +28,11 @@ PDF 담당자는 원본 5쪽, 최종 PyMuPDF 144 dpi 5쪽과 독립 Poppler 110 
 ## 등록과 공개 검증
 
 검수 PDF를 `daily-quantum-exercise` 시리즈의 `2026-11-26-daily-quantum-exercise`로 등록하고, `scripts/build_briefing_editorial.py`로 한영 안내를 컴파일했다. 기존 DQB·DRB와 원호 날짜·주소를 보존한다. ADOPT이 실제 공개 baseline과 독립 후보·달력·검색·언어 전환·접힌 해설·모바일·PDF 열기/다운로드 및 배포를 검증한다. 단계별 결과는 `artifacts/publication-qa.json`을 따른다. 실제 HTTPS 확인 전에는 게시 완료로 표시하지 않는다.
+
+## 공개 완료 · 2026-11-26
+
+[한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-26/)·[English guide](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-26/en/)·[검수 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-26-daily-quantum-exercise.pdf)를 실제 HTTPS로 확인했다. 소스 `db790e12a4c406e25308dc46e314f9b092d4f72e`의 [배포 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/45833052212)에서 실제 Pages 게시 단계와 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 전체 CI는 1,134건 중 1,125건 통과·9건 건너뜀·실패 0건이다. 로컬 등록·브리핑·검색 검사 95건과 Node 검색·탐색 12건도 통과했다.
+
+390×844 한영 브라우저 검사 20건과 화면 12장을 감수했다. 기존 달력 ID 106개·날짜별 한영 본문 72개·기존 PDF 경로 295개의 보존을 확인했고, DQE 8건은 실제 새 탭·다운로드 bytes를 대조했다. Nov26의 기존 DQB 한영 본문·PDF를 유지하며 미수신 DRB를 만들지 않았다. 총괄 담당자도 모바일 화면 10장을 독립 열람했다. 실제 HTTPS는 총괄 14건·별도 운영 담당 34건을 대조해 모두 통과했다. 공개 한영 본문 전체와 새 PDF가 후보와 정확히 같고 DQE 8건의 HTTPS PDF해시가 승인본과 일치한다.
+
+복구 사본은 2,793파일·864,384,684bytes이며 CI에서 정확한 배포물의 검증·업로드를 확인했다. 전체 복구물을 로컬로 내려받거나 복원하지 않았다. 독자 카탈로그83건 동기화는 성공했으며 새 article과 알림 대기 event는 각각0건이다. DQE독자 알림을 보냈다는 뜻으로 표시하지 않는다. 완료 기록을 남기는 동안 원고·컴파일 본문·PDF는 수정하지 않았다.

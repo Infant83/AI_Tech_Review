@@ -1,7 +1,7 @@
 {
   "version": 1,
   "document_id": "2026-11-26-daily-quantum-exercise",
-  "publication_status": "candidate_verified_deployment_pending",
+  "publication_status": "published_and_live_verified",
   "source_base": "00968a800db17b94e6423250b5fd8a524559eec0",
   "deployed_baseline": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
   "targeted_python_tests": {
@@ -85,8 +85,102 @@
       "ko-constraints",
       "en-closed",
       "en-math",
-      "en-constraints"
+      "en-constraints",
+      "calendar",
+      "dqe-filter-results",
+      "ko-search",
+      "en-search"
     ],
-    "owned_browser_and_server_closed": true
+    "owned_browser_and_server_closed": true,
+    "checks": 20,
+    "passed": 20,
+    "screens_visually_reviewed_by_ops": 12,
+    "preserved_prior_calendar_identities": 106,
+    "preserved_Nov26_DQB_HTML_and_PDF": true
+  },
+  "source_commit": "db790e12a4c406e25308dc46e314f9b092d4f72e",
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45833052212",
+  "workflow_jobs": {
+    "build": "success",
+    "deploy": "success",
+    "notify-readers": "success",
+    "recovery-copy": "success"
+  },
+  "ci_tests": {
+    "run": 1134,
+    "passed": 1125,
+    "skipped": 9,
+    "failed": 0
+  },
+  "ci_test_suites": {
+    "python": {
+      "run": 608,
+      "passed": 607,
+      "skipped": 1,
+      "failed": 0
+    },
+    "search_navigation": {
+      "run": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    },
+    "reader_controls": {
+      "run": 205,
+      "passed": 197,
+      "skipped": 8,
+      "failed": 0
+    },
+    "lecture_reader": {
+      "run": 222,
+      "passed": 222,
+      "skipped": 0,
+      "failed": 0
+    },
+    "backend": {
+      "run": 73,
+      "passed": 73,
+      "skipped": 0,
+      "failed": 0
+    },
+    "portable_media": {
+      "run": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "recovery_copy": {
+    "ok": true,
+    "revision": "db790e12a4c406e25308dc46e314f9b092d4f72e",
+    "files": 2793,
+    "bytes": 864384684,
+    "archive_sha256": "9f8c363848bf728eed620238c99036b71fa631ddc5c0616a98e638660afc7a1d"
+  },
+  "recovery_artifact_zip_sha256": "6041c211af207c03bfa4d3f52aef6903221800979d6b3582842e8d0802d90347",
+  "recovery_scope": "CI validated and uploaded the exact deployed artifact; no local full recovery download or restoration was performed.",
+  "reader_catalog_sync": {
+    "synced": 83,
+    "revision": "db790e12a4c406e25308dc46e314f9b092d4f72e",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "notification_scope": "Reader catalog sync completed; newArticles=0 and queuedEvents=0. No DQE reader notification was sent.",
+  "live_verification": {
+    "at": "2026-11-26T13:58:44.941565+00:00",
+    "source_revision": "db790e12a4c406e25308dc46e314f9b092d4f72e",
+    "root_checks_passed": 14,
+    "new_KO_EN_full_HTML_exact": true,
+    "all_eight_DQE_PDF_bytes_exact": true,
+    "DQE_inventory_count": 8,
+    "method": "Actual clean pretty URL GET --compressed, decoded HTML SHA256, exact PDF bytes; no HEAD-body substitution",
+    "independent_checked_at": "2026-11-26T13:59:24.530592+00:00",
+    "independent_checks_passed": 34,
+    "canonical_redirect_and_language_switch": true,
+    "default_closed_solutions_verified": true,
+    "actual_DQB26_and_related_links_preserved": true,
+    "remaining_DQE_actions": []
   }
 }
