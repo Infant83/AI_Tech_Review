@@ -1,0 +1,172 @@
+{
+  "issue_date": "2026-11-26",
+  "evidence_access_date": "2026-11-26",
+  "review_team": "AEDAUT",
+  "independent_reviewer_role": "Scientific calculations, official-source references, bilingual editorial review and listing review",
+  "human_line_by_line_review_established": false,
+  "scientific_result": "pass",
+  "reviewed_exercise_scope": "All five original exercise pages were read in extracted text. Conditions, cost units, equations, policy tables, proposed evaluation criteria and source claims on pages 1–4 were checked. PDF visual, metadata and redistribution review is separately recorded by the PDF reviewer.",
+  "calculation": {
+    "script": "verify_exercise.py",
+    "results": "calculations.json",
+    "method": "Python standard-library Fraction arithmetic, exhaustive evaluation of eight order policies and sixteen assignments of the supplied quadratic formulation; direct small binary feasibility checks. No optimization package, circuit simulation or QPU was run.",
+    "checked": [
+      "Reservation costs remain payable on failed delivery; surplus recovery value is zero; shortage is max(8−q,0), with monetary units KRW 10,000.",
+      "Independent Boolean polynomial recovery from the original scenario costs reproduces every coefficient of the supplied base F, including its cubic term.",
+      "Base feasible policies are BC and ABC, with costs 28 and 34 in KRW 10,000 units and service probability 9/10. AB and AC have costs 31 and 33 and service probability 7/10.",
+      "All zero- and one-supplier orders fail the full-demand constraint. Base BC is the exact feasible optimum over all eight orders.",
+      "AB's expected fulfilled-demand fraction is 7/8, distinct from its full-demand probability 7/10. BC's expected delivered quantity is 36/5 boxes.",
+      "Adding A to BC saves six units of expected shortage cost and adds twelve units of reservation cost, increasing expected total cost by six units.",
+      "The AND penalty is zero exactly at y=ab and at least one otherwise. P=15 strictly selects consistent y for every fixed policy, and the quadratic value then equals the original F.",
+      "An inconsistent-y ABC assignment ties at P=14 and is cheaper at P=13; the stated P>14 bound is sufficient for strict policywise consistency. The exercise does not claim the minimum penalty needed solely to preserve global minimizers.",
+      "The four variables a,b,c,y describe the supplied substitution before chance constraints. This count is not a universal minimum, not a final chance-constrained BQM size and not a physical-qubit estimate.",
+      "With shared first-stage order variables, binary z and q+8z≥8, an admissible z exists exactly when the original full-demand chance constraint holds. Positive shortage cost makes u=max(8−q,0) at an optimum; the inequalities alone need not fix every feasible u.",
+      "Base presolve forces b=c=1 and reduces F to 28+6a. Identical presolve leaves no nontrivial search in either route.",
+      "Stress S2 is unsatisfied by every available policy, bounding full-demand probability by 3/4. No order meets 9/10. The independently recovered stress F is 80−45a−21b−19c+14ab+14ac+14abc.",
+      "ABC with two additional guaranteed boxes is a feasibility witness for an expanded choice set; no extension cost or real availability is supplied.",
+      "One thousand reads at twenty microseconds sum to 1/50 second. The assumed annealing route is 1501/50 seconds and the classical route 33/10 seconds. The former retains thirty seconds of fixed assumed costs even with instantaneous annealing."
+    ],
+    "file_bindings": [
+      {
+        "path": "verify_exercise.py",
+        "bytes": 8665,
+        "sha256": "5cf31a106eb786870e51e9a46b91f5d8ea061b96e7f459340a87953f70a0eeb1"
+      },
+      {
+        "path": "calculations.json",
+        "bytes": 14125,
+        "sha256": "7d1d4436090954540af9d019c20f6a1185cd4f1b4d7da4b4078ed44e64f7bd83"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "reference": 1,
+      "bibliography": "Gurobi Optimization, Pharmaceuticals: Using optimization to mitigate risks across global supply chains (accessed 26 November 2026).",
+      "url": "https://www.gurobi.com/resources/case-studies/pharmaceuticals-using-optimization-to-mitigate-risks-across-global-supply-chains",
+      "source_type": "Official supplier case study",
+      "displayed_title": "Pharmaceuticals: Using Optimization to Mitigate Risks Across Global Supply Chains",
+      "displayed_publication_date": null,
+      "credit": "Hosted by Gurobi; ICRON is identified in the text as the optimization solution partner, not explicitly as a joint bylined author.",
+      "actual_access_scope": "Direct HTTP 200 reading of Introduction, The Problem, Solution and Results. The unnamed pharmaceutical customer's buffer-stock, service-risk and mixed-integer planning context was checked. Related-case carousels are not evidence for this issue.",
+      "claim_boundary": "Supplier-reported application context, not independent performance validation; no customer data or reported solve time is substituted for the exercise's synthetic procurement and timing assumptions."
+    },
+    {
+      "reference": 2,
+      "bibliography": "Gurobi Optimization, Multiple scenarios, Gurobi Optimizer Reference Manual 14.0 (accessed 26 November 2026).",
+      "url": "https://docs.gurobi.com/projects/optimizer/en/current/features/multiscenario.html",
+      "source_type": "Official technical documentation",
+      "displayed_title": "Multiple Scenarios",
+      "version": "Gurobi Optimizer Reference Manual 14.0, current documentation route on the access date",
+      "displayed_publication_date": null,
+      "actual_access_scope": "Direct HTTP 200 reading of the full main page: scenario analysis purpose, base-model variations, scenario-specific solutions and bounds, API setup, tips and limitations. Version 14.0 is identified by the current manual's release-notes navigation.",
+      "claim_boundary": "The feature solves scenario variants separately; it does not automatically impose one common order decision or a chance constraint. No Gurobi optimization execution or timing benchmark was performed."
+    },
+    {
+      "reference": 3,
+      "bibliography": "D-Wave, Reformulating a problem, D-Wave Quantum Computing Products documentation, Ocean SDK 9.5.0 (accessed 26 November 2026).",
+      "url": "https://docs.dwavequantum.com/en/latest/quantum_research/reformulating.html",
+      "source_type": "Official technical documentation",
+      "displayed_title": "Reformulating a Problem",
+      "version": "Ocean SDK 9.5.0 displayed in the page footer; latest documentation route on the access date",
+      "displayed_publication_date": null,
+      "actual_access_scope": "Direct HTTP 200 reading of General Guidance on Reformulating, the non-quadratic polynomial introduction and Boolean substitution reduction, and linear equality/inequality penalty sections. The AND penalty, ancillary-variable count, slack encoding and coefficient-scale discussion were checked; other extended examples were not audited.",
+      "claim_boundary": "Supports the supplied quadratization and constraint representation. The numerical P bound is independently checked for this exercise. No Ocean code or hardware benchmark was executed."
+    },
+    {
+      "reference": 4,
+      "bibliography": "D-Wave, Basic workflow: Models and sampling, D-Wave Quantum Computing Products documentation, Ocean SDK 9.5.0 (accessed 26 November 2026).",
+      "url": "https://docs.dwavequantum.com/en/latest/industrial_optimization/workflow.html",
+      "source_type": "Official technical documentation",
+      "displayed_title": "Basic Workflow: Models and Sampling",
+      "version": "Ocean SDK 9.5.0 displayed in the page footer; latest documentation route on the access date",
+      "displayed_publication_date": null,
+      "actual_access_scope": "Direct HTTP 200 reading of the full main page: objective functions, supported nonlinear and quadratic models, BQM/CQM/DQM distinctions, quantum/classical/hybrid samplers and illustrative workflow examples.",
+      "claim_boundary": "A model format and a sampler are separate choices. Hybrid-service performance alone does not isolate the QPU contribution. No service submission or claimed procurement speedup occurred."
+    }
+  ],
+  "source_identification": "The original bibliography contains four official web/case sources, not a research paper. No academic paper, author list, DOI or publication date was invented. Documentation versions identify the pages read, not an installed or executed software environment. Original public source URLs are retained.",
+  "evidence_separation": [
+    "Order data, joint disruption probabilities, all times and the operating deadline are educational assumptions.",
+    "The eight-policy calculations and penalty/feasibility checks are independent tiny classical computations.",
+    "The supplier case is a reported industrial application; it supplies context rather than this exercise's data or performance.",
+    "QAOA and annealing are different proposed solver routes. QUBO/BQM is a mathematical representation, not itself a quantum algorithm.",
+    "Neither actual QPU execution, circuit simulation, logical fault-tolerant resource estimation nor measured quantum advantage is reported for this issue.",
+    "The expanded-model gap, full-delivery probability, time and cost thresholds are proposed evaluation criteria. Probabilities require observations outside the model; stress infeasibility requires changing the available choices."
+  ],
+  "related_readings": [
+    {
+      "title": "D-Wave molecular inverse-design comparison",
+      "ko_url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/index.html",
+      "en_url": "https://infant83.io/AI_Tech_Review/reviews/2026-08-27_dwave-molecular-inverse-design-benchmark/en/index.html",
+      "actual_read_scope": "Both language manuscripts, lines 95–159: QUBO acquisition and soft cardinality penalty, exact-search baseline, one QPU submission, embedding, returned feasibility and timing-record scope.",
+      "connection": "A low BQM score must be checked against the original selection condition, and logical variables acquire additional physical resources on embedding. The article's numerical hardware results are not transferred to procurement. Its underlying experiment was not rerun for this review."
+    },
+    {
+      "title": "QML Lecture 11: hardware, compilation and total learning resources",
+      "url": "https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-11-hardware-and-resources.html",
+      "language": "Korean; explicitly identified as Korean in the English guide",
+      "actual_read_scope": "Korean source through the original-reading section, lines 1–170, including routing, gate count, gradient-shot counts, wall-time boundaries and resource representation.",
+      "connection": "The QAOA extension can practice gate-based routing and shot/time accounting. The guide explicitly keeps these circuit costs separate from the annealing timetable. Historical papers linked by the lecture were not newly reviewed."
+    }
+  ],
+  "editorial_review": {
+    "status": "pass",
+    "title_ko": "함께 멈추는 공급망의 조달 선택",
+    "title_en": "Procurement when suppliers fail together",
+    "listing_summary_ko": "같은 물류 거점을 거치는 공급사들이 함께 멈추면 조달처 수만으로 납기를 판단하기 어렵다. 가상 긴급 조달 문제로 기대비용과 전량 충족 확률을 계산하며, 예비 물량과 양자 최적화의 도입 조건을 살펴본다.",
+    "listing_summary_en": "Suppliers using the same logistics hub can fail together. An educational emergency procurement problem connects expected cost with the probability of filling demand, then examines backup supply and the conditions for adopting quantum optimization.",
+    "checks": [
+      "The title and listing summaries describe the topic and learning purpose without numerical answers or adoption verdicts.",
+      "Both complete manuscripts were independently read in sequence. The reader can identify shared-disruption risk, distinguish expected shortage cost from a full-delivery event, preserve the common order decision, and connect quadratization to the original chance constraint.",
+      "Numerical answers, derivations, optimum policy, stress limit and Go/Pivot/No-Go judgments are inside an initially closed details element. PDF problem and solution page starts are given before it.",
+      "Korean cost units and English KRW amounts agree; equation signs, cubic term, P condition, variable-count qualifications and assumed total times agree.",
+      "References appear in first-use order 1–4 and use matching institutional credits, original title words, documentation versions and access date.",
+      "The related BQM review and Korean QML11 resource follow-up have specific technical connections, rather than being added as generic recommendations.",
+      "Nearby November 22 and 24 Korean DQE guides were read for comparison. The current introduction starts with a shared logistics disruption and the closing proposed test stays specific to procurement observations and stress shortages, without a generic value-ending template.",
+      "The Korean shortage-variable statement is qualified at the optimum, matching the English text and original PDF. The pharmaceutical-company wording clarification is also present."
+    ],
+    "review_limit": "Agent source/scientific/editorial review is distinct from a human reader study, browser layout review and final live deployment verification.",
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-26_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 9529,
+        "sha256": "7ada5bb63e120f13bb0a3bfc189b00020b44590b951528b2b07d087f03aeb86d"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-26_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 9609,
+        "sha256": "98b011f9dae9ed5b014bedbd7e7f7f3a2aa5fb1983453e7ae6f7dc714647cb9c"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-26_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 9539,
+        "sha256": "bac496e0d00cc876bcc0a82f5e887b47bf0e142f83a2a55968b8a27174cc9e2a"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-26_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 9619,
+        "sha256": "f434dd6d8c3cf33b5fcca98e892ee4df29fe7371ede522b94d4c04715968c5f3"
+      }
+    ],
+    "final_revision_check": "Both Korean precision refinements are present. The policy table was converted to four list items in each language without changing values; the final compiled fragments preserve one initially closed solution disclosure and reference order 1–4.",
+    "PDF_reference_check": {
+      "path": "../../dist/2026-11-26-daily-quantum-exercise.pdf",
+      "bytes": 87039,
+      "sha256": "24c8cfccd15b6a393733c6e750ded36aad53e82f931d10fe3faeb5b6f968f2df",
+      "scope": "Page-five bibliography directly extracted/read; all four institutional credits, original title words, documentation versions, access date and source URIs match the web editions. Visual and PDF-structure review are separately recorded by the PDF reviewer."
+    }
+  }
+}
