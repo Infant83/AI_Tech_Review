@@ -238,6 +238,63 @@ class ProjectionJobTests(unittest.TestCase):
         self.assertTrue(result["replay"]); self.assertEqual(before, self.snapshot(self.writer / "git"))
         self.assertEqual(len(list((self.writer / "states").glob("*.json"))), 1)
 
+    def test_post_reservation_semantic_failures_preserve_unknown_or_inconsistent_key(self):
+        for kind in ["source", "raw3", "tools", "deadline", "write_budget", "identity"]:
+            with self.subTest(kind=kind):
+                if kind != "source":
+                    self.setUp()
+                self.stage()
+                real_budget, real_tools = writer._Budget, writer._tool_hashes
+                budgets, reserved = [], []
+                def budget():
+                    value = real_budget(); budgets.append(value); return value
+                def tools(budget=None):
+                    value = real_tools(budget=budget)
+                    if reserved and kind == "tools":
+                        value["scripts/admin_projection_jobs.py"] = "f" * 64
+                    return value
+                def mutate(stage):
+                    if stage != "after_inventory":
+                        return
+                    reserved.append(True)
+                    if kind == "source":
+                        self.origin_advance()
+                    elif kind == "raw3":
+                        path = self.baseline.parent / "reader-publications.json"
+                        path.write_bytes(path.read_bytes() + b" ")
+                    elif kind == "deadline":
+                        budgets[0].deadline = 0
+                    elif kind == "write_budget":
+                        budgets[0].write_bytes = writer.MAX_WRITE_BYTES
+                    elif kind == "identity":
+                        path = self.writer / "identity.json"
+                        value = json.loads(path.read_bytes()); value["writerEpoch"] = str(uuid.uuid4())
+                        path.write_bytes(writer._raw(value))
+                reason = "store_inconsistent" if kind == "identity" else "outcome_unknown"
+                with patch.object(writer, "_Budget", side_effect=budget), \
+                        patch.object(writer, "_tool_hashes", side_effect=tools), \
+                        patch.object(writer, "_checkpoint", side_effect=mutate):
+                    self.reject(self.apply, reason)
+                self.assertEqual(reserved, [True])
+                self.assertEqual(len(list((self.writer / "inventory").glob("*.json"))), 1)
+                self.assertEqual(list((self.writer / "tombstones").glob("*.json")), [])
+                self.assertEqual(list((self.writer / "states").glob("*.json")), [])
+                before = self.snapshot(self.writer)
+                self.reject(self.apply, reason)
+                request = json.loads(self.request.read_bytes()); request["idempotencyKey"] = str(uuid.uuid4())
+                self.request.write_bytes(synthetic._raw(request))
+                self.reject(self.apply, reason)
+                self.assertEqual(before, self.snapshot(self.writer))
+
+    def test_pre_reservation_source_conflict_does_not_consume_key(self):
+        self.stage(); before = self.snapshot(self.writer)
+        def mutate(stage):
+            if stage == "before_final_check":
+                self.origin_advance()
+        with patch.object(writer, "_checkpoint", side_effect=mutate):
+            self.reject(self.apply, "source_conflict")
+        self.assertEqual(before, self.snapshot(self.writer))
+
     def test_partial_base_is_preserved_refused_not_auto_repaired(self):
         def fail(stage):
             if stage == "after_base_pin":

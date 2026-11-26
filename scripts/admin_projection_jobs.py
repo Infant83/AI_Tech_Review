@@ -539,27 +539,33 @@ def _apply(root, request_path, digest, source_root, baseline, repository_id, pri
             raise JobError("store_inconsistent")
         _inventory(store, identity, identity_sha, final_files)
         _base(store, identity, identity_sha, digest)
-        store.write("inventory/" + key + ".json", reservation_raw); _checkpoint("after_inventory")
-        # Recheck even after inventory reservation: a change preserves an unknown
-        # outcome rather than completing a stale no-change tombstone.
-        projection._final_source(source, tracker, source_code, base["intent"]["importerCodeSha256"], budget)
-        if _tool_hashes(budget=source_budget) != code:
-            raise JobError("tool_changed")
-        if store.read("identity.json") != _raw(identity):
-            raise JobError("store_inconsistent")
-        _base(store, identity, identity_sha, digest)
-        if store.read("inventory/" + key + ".json") != reservation_raw:
-            raise JobError("store_inconsistent")
-        store.write("tombstones/" + key + ".json", claim_raw); _checkpoint("after_tombstone")
-        _state(store, key, claim); _checkpoint("after_state")
-        final_identity, final_sha, _, final_files = _identity(store, repository_id, principal)
-        if final_sha != identity_sha or _inventory(store, final_identity, final_sha, final_files).get(key) != claim:
-            raise JobError("store_inconsistent")
-        advanced = _advanced(source_root, source_identity, claim["sourceOriginRevision"], budget)
-        final_identity, final_sha, _, final_files = _identity(store, repository_id, principal)
-        if final_sha != identity_sha or _inventory(store, final_identity, final_sha, final_files).get(key) != claim:
-            raise JobError("store_inconsistent")
-        return _report(claim, replay=False, advanced=advanced)
+        try:
+            # An attempted reservation may already have durable or partial
+            # bytes. Later semantic failures must not look like an unaccepted
+            # request that can safely be replaced with a new key.
+            store.write("inventory/" + key + ".json", reservation_raw); _checkpoint("after_inventory")
+            projection._final_source(source, tracker, source_code, base["intent"]["importerCodeSha256"], budget)
+            if _tool_hashes(budget=source_budget) != code:
+                raise JobError("tool_changed")
+            if store.read("identity.json") != _raw(identity):
+                raise JobError("store_inconsistent")
+            _base(store, identity, identity_sha, digest)
+            if store.read("inventory/" + key + ".json") != reservation_raw:
+                raise JobError("store_inconsistent")
+            store.write("tombstones/" + key + ".json", claim_raw); _checkpoint("after_tombstone")
+            _state(store, key, claim); _checkpoint("after_state")
+            final_identity, final_sha, _, final_files = _identity(store, repository_id, principal)
+            if final_sha != identity_sha or _inventory(store, final_identity, final_sha, final_files).get(key) != claim:
+                raise JobError("store_inconsistent")
+            advanced = _advanced(source_root, source_identity, claim["sourceOriginRevision"], budget)
+            final_identity, final_sha, _, final_files = _identity(store, repository_id, principal)
+            if final_sha != identity_sha or _inventory(store, final_identity, final_sha, final_files).get(key) != claim:
+                raise JobError("store_inconsistent")
+            return _report(claim, replay=False, advanced=advanced)
+        except (JobError, projection.ImportError, intake.IntakeError,
+                admin_requests.PreflightError, InventoryError) as error:
+            reason = "store_inconsistent" if error.code == "store_inconsistent" else "outcome_unknown"
+            raise JobError(reason) from None
 
 
 def _call(function, *args):

@@ -148,6 +148,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py apply-no-chan
 
 기존 key는 현재 source/baseline·새 projection hint를 열기 전에 writer의 원래 증거로 확인한다. namespace는 target/원본판본/부분base/코드/epoch와 독립이다. 동일키의 다른 fingerprint는 `idempotency_conflict`다. 불변 `inventory/<keyHash>.json` 예약을 동기화한 뒤 정확 hash에 결속한 `tombstones/<keyHash>.json`을 배타 생성한다. tombstone에는 원래 판본/native3/raw3·mapping/base·before==after·도구 hash만 보존하고 raw key/patch·본문은 넣지 않는다. no_change는 원래 등록 bytes의 SHA를 그대로 보존하며 Git copy/commit/ref/후보 쓰기0이다. 모든 이전 key와 base를 새 접수 전에 다시 확인하고, inventory만 있고 tombstone이 없으면 `outcome_unknown`으로 보존한다.
 
+예약 파일 쓰기를 시도한 뒤 원본·입력·도구나 한도 검사가 실패하면 첫 응답부터 `outcome_unknown`으로 구분하며, 정본 불일치는 `store_inconsistent`를 유지한다. 예약 전의 원본 충돌은 키를 접수하지 않은 `source_conflict`다. 불확정 결과는 같은 키로 확인하며 새 키·키 삭제로 이력을 우회하지 않는다.
+
 역사 replay는 완전 tombstone·원 base의 정확 객체/증거·요청 patch 동일성·operation ref 부재를 확인한다. 현재 validator/도구 파일을 다시 요구하거나 과거 hash를 덮지 않으며, 현재 A·baseline·live B2b1이나 새 hint에 의존하지 않는다. 파생 state가 없으면 같은 정본에서만 재생성한다. 선택한 현재 origin 조회가 불가능하면 `sourceAdvanced:null`이고, true/false 역시 현재 A/권한 재검증이 아니다. 결과는 `no_change`/replay/부분base·원 origin을 구분하며 `published:true`나 새 후보 SHA를 반환하지 않는다.
 
 writer lock → B2b1 lock 순서만 사용하며 대기·중첩 읽기에 같은180초/누적읽기1GiB·쓰기512MiB 예산을 적용한다. 고정 설치 도구 hash의 초기/반복 읽기도 호출 예산의 남은 bytes+최대1B 탐지와 기한에 연결하며 한 도구 파일1MiB를 넘기면 거절한다. 역사 증거의 도구 경로 집합 검사에는 실제 도구 파일 I/O를 요구하지 않는다. 요청32,000B·control/claim/state64KiB·128키, 선택2,000파일/raw160MiB·base근거4MiB, 임시/중복 포함 writer 논리512MiB/10,000항목·stdout16KiB를 제한하고 B2a의 더 작은 한도를 유지한다. 시간/크기 초과는 거절하며 오래된 이력 삭제로 우회하지 않는다. 완전 변경 후보·실제 child 중단/CAS의 독립 종료 조건, API/DB·원본/원격 통합·발행은 다음 단계다. 기존 일반 게시 권한·편집부(AEDAUT)의 내용 판단과 발행 절차는 유지한다.
+
+읽기 카운터는 bounded read API가 반환한 논리 bytes를 센다. OS의 read-ahead·page cache나 물리 디스크 I/O의 정확한 양을 측정하거나 제한했다는 뜻은 아니다.
