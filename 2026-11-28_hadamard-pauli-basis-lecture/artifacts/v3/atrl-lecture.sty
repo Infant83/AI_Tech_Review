@@ -1,0 +1,89 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{atrl-lecture}[2026/11/28 Korean mathematical lecture layout]
+\RequirePackage[a4paper,left=20mm,right=20mm,top=20mm,bottom=21mm,headheight=15pt,headsep=9mm]{geometry}
+\RequirePackage{fontspec}
+\RequirePackage{kotex}
+\RequirePackage{amsmath,amssymb,mathtools}
+\RequirePackage{unicode-math}
+\setmainfont{texgyrepagella-regular.otf}[BoldFont=texgyrepagella-bold.otf,ItalicFont=texgyrepagella-italic.otf,BoldItalicFont=texgyrepagella-bolditalic.otf]
+\setsansfont{texgyreheros-regular.otf}[BoldFont=texgyreheros-bold.otf,ItalicFont=texgyreheros-italic.otf,BoldItalicFont=texgyreheros-bolditalic.otf]
+\setmonofont{lmmono10-regular.otf}[Scale=MatchLowercase]
+\setmathfont{STIXTwoMath-Regular.otf}
+\setmainhangulfont[Path=fonts/,BoldFont=NotoSerifKR-Bold.otf]{NotoSerifKR-Regular.otf}
+\setsanshangulfont[Path=fonts/,BoldFont=NotoSansKR-Bold.otf]{NotoSansKR-Regular.otf}
+\RequirePackage{xcolor}
+\definecolor{ATRLInk}{HTML}{172F3C}
+\definecolor{ATRLTeal}{HTML}{087D80}
+\definecolor{ATRLMuted}{HTML}{52666E}
+\definecolor{ATRLRule}{HTML}{CCDADB}
+\definecolor{ATRLPale}{HTML}{F1F7F6}
+\definecolor{ATRLWarm}{HTML}{FCF8EF}
+\RequirePackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,matrix,fit}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{booktabs,tabularx,array,enumitem,needspace}
+\RequirePackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\small,breaklines=true,breakanywhere=true}
+\RequirePackage{titlesec,fancyhdr,caption}
+\RequirePackage[section]{placeins}
+\RequirePackage[unicode,colorlinks=true,linkcolor=ATRLTeal,urlcolor=ATRLTeal,citecolor=ATRLTeal,bookmarksopen=true]{hyperref}
+\urlstyle{same}
+\color{ATRLInk}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.62\baselineskip}
+\linespread{1.23}
+\emergencystretch=2em
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
+\allowdisplaybreaks[2]
+\setlength{\abovedisplayskip}{9pt plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{9pt plus 2pt minus 2pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=0.24em,topsep=0.25em}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=0.25em,topsep=0.25em}
+\titleformat{\section}{\Large\sffamily\bfseries\color{ATRLInk}}{\color{ATRLTeal}\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{ATRLInk}}{\color{ATRLTeal}\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1.6ex plus .7ex minus .2ex}{.8ex plus .2ex}
+\captionsetup{font={small,sf},labelfont={bf,color=ATRLTeal},textfont={color=ATRLMuted},labelsep=period,skip=7pt}
+\renewcommand{\figurename}{그림}
+\renewcommand{\tablename}{표}
+\renewcommand{\contentsname}{차례}
+\providecommand{\ATRLRunningTitle}{아다마르·파울리 기저와 측정}
+\providecommand{\ATRLVersion}{v3}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{ATRLMuted}\ATRLRunningTitle}
+\fancyhead[R]{\footnotesize\sffamily\color{ATRLTeal}\ATRLVersion}
+\fancyfoot[L]{\footnotesize\sffamily\color{ATRLMuted}Agentic Tech Review Letters}
+\fancyfoot[R]{\footnotesize\sffamily\color{ATRLTeal}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand{\LectureTitle}[3]{%
+  {\sffamily\small\color{ATRLTeal}MATHEMATICS / QUANTUM COMPUTING\par}%
+  \vspace{8pt}{\sffamily\fontsize{27}{34}\selectfont\bfseries\color{ATRLInk}#1\par}%
+  \vspace{7pt}{\sffamily\large\color{ATRLMuted}#2\par}%
+  \vspace{8pt}{\sffamily\small\color{ATRLMuted}#3\par}%
+  \vspace{9pt}{\color{ATRLRule}\hrule}\vspace{8pt}}
+\tcbset{atrlbox/.style={enhanced,breakable,boxrule=.45pt,arc=1.5mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=9pt,after skip=9pt,
+  colback=ATRLPale,colframe=ATRLRule,coltext=ATRLInk,
+  fonttitle=\sffamily\bfseries,coltitle=ATRLInk,attach title to upper={\par\smallskip},
+  title after break={}}}
+\newtcolorbox{examplebox}[1]{atrlbox,title={#1},borderline west={2pt}{0pt}{ATRLTeal}}
+\newtcolorbox{questionbox}[1]{atrlbox,title={#1},colback=ATRLWarm}
+\newtcolorbox{answerbox}[1]{atrlbox,title={#1},colback=white}
+\newtcolorbox{notebox}[1]{atrlbox,title={#1},colback=white,borderline west={1.5pt}{0pt}{ATRLMuted}}
+\newcommand{\ket}[1]{\left\lvert #1\right\rangle}
+\newcommand{\bra}[1]{\left\langle #1\right\rvert}
+\newcommand{\braket}[2]{\left\langle #1\middle|#2\right\rangle}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\lecturefigure}[2]{%
+  \begin{figure}[htbp]\centering
+  \begin{tcolorbox}[enhanced,colback=ATRLPale,colframe=ATRLRule,boxrule=.4pt,arc=2mm,left=2mm,right=2mm,top=3mm,bottom=3mm]
+  \centering\csname atrlfig#1\endcsname
+  \end{tcolorbox}
+  \caption{#2}\label{fig:#1}\end{figure}}
+\endinput

@@ -1,0 +1,138 @@
+% Original deterministic explanatory vectors; no third-party figure assets.
+% Reading order of circuit gates is left to right. Qubit order is q_1 q_0.
+\tikzset{
+  atrl gate/.style={draw=ATRLTeal,fill=white,rounded corners=1mm,minimum width=1.12cm,minimum height=.65cm,font=\small},
+  atrl measure/.style={draw=ATRLMuted,fill=white,rounded corners=1mm,minimum width=1.18cm,minimum height=.65cm,font=\small},
+  atrl panel/.style={draw=ATRLRule,fill=white,rounded corners=1.5mm},
+  atrl wire/.style={draw=ATRLMuted,line width=.65pt},
+  atrl arrow/.style={-{Latex[length=2mm]},draw=ATRLTeal,line width=.8pt}
+}
+
+\expandafter\newcommand\csname atrlfighadamard-patterns\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \node[font=\sffamily\bfseries] at (-4.7,2.9) {주소별 데이터};
+  \foreach \x/\y/\txt in {-5.5/1.1/00,-4.6/1.1/01,-5.5/.2/10,-4.6/.2/11}{%
+    \draw[fill=white,draw=ATRLRule] (\x,\y) rectangle ++(.9,.9);
+    \node at (\x+.45,\y+.45) {$\txt$};}
+  \draw[fill=ATRLInk,draw=ATRLRule] (-4.6,.2) rectangle ++(.9,.9);
+  \node[text=white] at (-4.15,.65) {$11$};
+  \node at (-4.6,-.35) {$f=(0,0,0,1)$};
+  \draw[atrl arrow] (-3.15,1.2) -- (-1.9,1.2);
+  \node[font=\sffamily\bfseries] at (1.1,2.9) {직교 무늬와 계수};
+  \foreach \r/\rlabel/\coef in {0/r_0/{+\tfrac14},1/r_1/{-\tfrac14},2/r_2/{-\tfrac14},3/r_3/{+\tfrac14}}{%
+    \pgfmathsetmacro{\yy}{1.8-.6*\r}
+    \node[anchor=east] at (-1.1,\yy) {$\rlabel$};
+    \node[anchor=west,text=ATRLTeal] at (3.2,\yy) {$\coef$};
+    \foreach \c in {0,1,2,3}{%
+      \pgfmathsetmacro{\xx}{-.5+.9*\c}
+      \pgfmathtruncatemacro{\phase}{mod(mod(\r,2)*mod(\c,2)+floor(\r/2)*floor(\c/2),2)}
+      \ifnum\phase=0
+        \draw[draw=ATRLRule,fill=white] (\xx-.39,\yy-.24) rectangle (\xx+.39,\yy+.24);
+        \node at (\xx,\yy) {$+1$};
+      \else
+        \draw[draw=ATRLRule,fill=ATRLInk] (\xx-.39,\yy-.24) rectangle (\xx+.39,\yy+.24);
+        \node[text=white] at (\xx,\yy) {$-1$};
+      \fi}}
+  \foreach \c/\address in {0/00,1/01,2/10,3/11}{\node[font=\footnotesize,text=ATRLMuted] at (-.5+.9*\c,2.35) {$\address$};}
+  \node at (0,-.85) {$\displaystyle f=\frac14(r_0-r_1-r_2+r_3)$};
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-1.4) {$r_j\cdot r_k=4\delta_{jk},\qquad \|r_j\|=2,\qquad \text{정규직교 기저: }r_j/2$};
+\end{tikzpicture}}
+
+\expandafter\newcommand\csname atrlfigpauli-action\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \foreach \x/\y/\op in {-3.75/1.7/I,3.75/1.7/X,-3.75/-1.7/Z,3.75/-1.7/Y}{%
+    \begin{scope}[shift={(\x,\y)}]
+      \draw[atrl panel] (-3.4,-1.4) rectangle (3.4,1.4);
+      \node[text=ATRLTeal,font=\large] at (0,1.04) {$\op$};
+      \node (a\op) at (-2.4,.4) {$\ket0$};
+      \node (b\op) at (-2.4,-.6) {$\ket1$};
+      \node (c\op) at (2.4,.4) {$\ket0$};
+      \node (d\op) at (2.4,-.6) {$\ket1$};
+    \end{scope}}
+  \draw[atrl arrow] (aI) -- node[above] {$+1$} (cI);
+  \draw[atrl arrow] (bI) -- node[below] {$+1$} (dI);
+  \draw[atrl arrow] (aX) -- (dX);
+  \draw[atrl arrow] (bX) -- (cX);
+  \draw[atrl arrow] (aZ) -- node[above] {$+1$} (cZ);
+  \draw[atrl arrow] (bZ) -- node[below] {$-1$} (dZ);
+  \draw[atrl arrow] (aY) -- node[pos=.22,above] {$+i$} (dY);
+  \draw[atrl arrow] (bY) -- node[pos=.22,below] {$-i$} (cY);
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-3.5) {화살표의 계수는 출력 진폭에 곱해지는 값이다.};
+\end{tikzpicture}}
+
+\expandafter\newcommand\csname atrlfigoperator-coordinates\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \draw[atrl panel] (-7.25,-.8) rectangle (-.25,2.45);
+  \draw[atrl panel] (.25,-.8) rectangle (7.25,2.45);
+  \node[font=\sffamily\bfseries] at (-3.75,1.95) {상태 벡터의 좌표};
+  \node[font=\sffamily\bfseries] at (3.75,1.95) {연산자의 좌표};
+  \node at (-3.75,1.1) {$\ket\psi=c_0\ket0+c_1\ket1$};
+  \node at (-3.75,.4) {$c_j=\braket{j}{\psi}$};
+  \node[text=ATRLMuted] at (-3.75,-.28) {$\mathbb C^2:\ \text{복소 좌표 2개}$};
+  \node at (3.75,1.1) {$A=a_I I+a_X X+a_Y Y+a_Z Z$};
+  \node at (3.75,.4) {$\displaystyle a_P=\frac12\Tr(P^\dagger A)$};
+  \node[text=ATRLMuted] at (3.75,-.28) {$\mathbb C^{2\times2}:\ \text{복소 좌표 4개}$};
+  \node at (0,-1.5) {$\displaystyle \langle P,Q\rangle_{\mathrm{HS}}=\Tr(P^\dagger Q)=2\delta_{PQ}$};
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-2.1) {$P,Q\in\{I,X,Y,Z\};\qquad A=A^\dagger\ \Longrightarrow\ a_P\in\mathbb R$};
+\end{tikzpicture}}
+
+\expandafter\newcommand\csname atrlfigmeasurement-rotations\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \foreach \y/\obs in {2/Z,.5/X,-1/Y}{%
+    \node[font=\sffamily\bfseries,text=ATRLTeal] at (-6.8,\y) {$\obs$};
+    \node at (-5.55,\y) {$\ket\psi$};
+    \draw[atrl wire] (-4.7,\y) -- (3.75,\y);
+    \node[atrl measure] at (3.75,\y) {$M_Z$};
+    \draw[atrl arrow,double,double distance=.65pt] (4.38,\y) -- (5.6,\y);
+    \node at (6.25,\y) {$b\in\{0,1\}$};}
+  \node[atrl gate] at (1.3,2) {$I$};
+  \node[atrl gate] at (1.3,.5) {$H$};
+  \node[atrl gate] at (-1.8,-1) {$S^\dagger$};
+  \node[atrl gate] at (1.3,-1) {$H$};
+  \node[text=ATRLMuted,font=\footnotesize] at (-1.8,-1.72) {먼저};
+  \node[text=ATRLMuted,font=\footnotesize] at (1.3,-1.72) {그다음};
+  \node at (0,-2.5) {$\lambda=(-1)^b:\quad b=0\mapsto +1,\quad b=1\mapsto -1$};
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-3.12) {$H^\dagger ZH=X,\qquad (HS^\dagger)^\dagger Z(HS^\dagger)=Y$};
+\end{tikzpicture}}
+
+\expandafter\newcommand\csname atrlfigpauli-parity\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \node[font=\sffamily\bfseries] at (0,2.45) {$P=Z\otimes Z=Z_1Z_0$};
+  \draw[atrl panel] (-7.1,-.2) rectangle (-5.8,1.8);
+  \node at (-6.45,.8) {$\ket\psi$};
+  \foreach \y/\q/\bit in {1.4/1/1,.2/0/0}{%
+    \node[anchor=west,font=\footnotesize] at (-5.6,\y+.35) {$q_\q$};
+    \draw[atrl wire] (-5.8,\y) -- (1.7,\y);
+    \node[atrl measure] at (1.1,\y) {$M_Z$};
+    \draw[atrl arrow,double,double distance=.65pt] (1.7,\y) -- (3.0,\y);
+    \node at (3.45,\y) {$b_\bit$};}
+  \draw[atrl arrow] (3.95,1.4) -- (4.6,.8);
+  \draw[atrl arrow] (3.95,.2) -- (4.6,.8);
+  \node[atrl gate,minimum width=2.05cm,minimum height=1cm] at (5.85,.8) {$(-1)^{b_1\oplus b_0}$};
+  \node at (0,-1.05) {$m_1m_0=(-1)^{b_1}(-1)^{b_0}=(-1)^{b_1\oplus b_0}$};
+  \node[font=\footnotesize] at (0,-2.05) {\begin{tabular}{@{}rcccc@{}}\toprule
+    결과 & $00$ & $01$ & $10$ & $11$\\
+    설명용 빈도 & $37$ & $12$ & $8$ & $43$\\\bottomrule
+  \end{tabular}};
+  \node at (0,-3.15) {$\displaystyle \widehat{\langle ZZ\rangle}=\frac{37+43-12-8}{100}=0.60$};
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-3.9) {두 국소 측정값의 곱을 평균한다. 빈도표는 설명용 예시다.};
+\end{tikzpicture}}
+
+\expandafter\newcommand\csname atrlfigphase-oracle\endcsname{%
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+  \node at (0,2.8) {$\displaystyle D=\frac\pi4(I-Z_1-Z_0+Z_1Z_0),\qquad U=e^{iD}$};
+  \foreach \y/\q in {1.35/1,-.05/0}{%
+    \node[anchor=east] at (-6.2,\y) {$q_\q$};
+    \draw[atrl wire] (-6,\y) -- (6.55,\y);}
+  \node[atrl gate] at (-4.5,1.35) {$P(\pi/2)$};
+  \node[atrl gate] at (-4.5,-.05) {$P(\pi/2)$};
+  \node[atrl gate] at (2,-.05) {$P(-\pi/2)$};
+  \foreach \x in {-1.4,5.1}{%
+    \draw[draw=ATRLTeal,line width=1pt] (\x,1.35) -- (\x,-.05);
+    \fill[ATRLTeal] (\x,1.35) circle (2.4pt);
+    \draw[draw=ATRLTeal,line width=1pt,fill=ATRLPale] (\x,-.05) circle (.17cm);
+    \draw[draw=ATRLTeal,line width=.7pt] (\x-.17,-.05)--(\x+.17,-.05) (\x,-.22)--(\x,.12);}
+  \node at (0,-1.15) {$\displaystyle \frac\pi2\big[x_1+x_0-(x_1\oplus x_0)\big]=\pi x_1x_0$};
+  \node at (0,-1.95) {$U=\diag(1,1,1,-1)$};
+  \node[text=ATRLMuted,font=\footnotesize] at (0,-2.6) {$P(\phi)=\diag(1,e^{i\phi});\qquad \text{두 번째 CX가 주소를 복구한다.}$};
+\end{tikzpicture}}

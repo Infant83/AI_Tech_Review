@@ -1,0 +1,652 @@
+\LectureTitle{그림의 규칙을 양자회로로 옮기는 법}{아다마르·파울리 기저에서 관측량과 측정까지}{한국어 전체 개정판 v3 · 2026년 11월 28일\\책임 편집자 김현중 · 편집부(AEDAUT) · OpenAI Codex 보조}
+
+\section{네 칸 그림에서 출발하기}
+
+흰 칸 세 개와 검은 칸 하나가 있는 작은 그림을 생각해 보자. 칸의 주소를
+\(00,01,10,11\)로 정하고, 흰색은 0, 검은색은 1로 적으면 그림은
+\[
+f=(0,0,0,1)
+\]
+이라는 표가 된다. 두 큐비트에는 이 네 주소에 대응하는 상태
+\(\lvert00\rangle,\lvert01\rangle,\lvert10\rangle,\lvert11\rangle\)가 있다.
+\(\lvert x\rangle\)는 주소 \(x\)의 기본 상태이고, \(f(x)\)는 그 칸의 0 또는 1이다.
+여러 상태를 더해 쓸 때 각 상태 앞에 곱하는 수를 진폭이라고 부른다.
+이제 검은 칸에 해당하는 진폭에만 마이너스 부호를 붙이는 규칙을 만들어 보자.
+\[
+U_f\lvert x\rangle=(-1)^{f(x)}\lvert x\rangle,
+\qquad U_f=\operatorname{diag}(1,1,1,-1).
+\]
+\(f(00)=0\)이면 \((-1)^0=+1\), \(f(11)=1\)이면 \((-1)^1=-1\)을 곱한다.
+\(\operatorname{diag}\)는 괄호 안의 수를 행렬의 대각선에 놓으라는 뜻이다.
+이 규칙은 그림 자체를 양자 상태로 준비하는 일이 아니다. 어떤 입력 상태가 들어오든,
+주소 \(11\)에 붙은 진폭의 부호를 바꾸는 \textbf{위상 오라클}을 정한 것이다.
+
+이 노트에서는 이 작은 규칙을 실제 게이트 회로로 옮기는 과정을 따라간다.
+그 과정에 필요한 파울리 기저를 이해하려면, 먼저 상태를 적는 벡터와 상태에 작용하는 행렬을
+구별해야 한다. 여기에 IBM의 관측량 문서~\cite{ibm-observables}에서 다루는
+측정과 기대값을 연결했다. 행렬을 파울리 항으로 나누면 회로를 만드는 데에도,
+측정값을 계산하는 데에도 쓸 수 있다. 두 쓰임에서 무엇을 더하고 무엇을 실행하는지
+작은 예제로 하나씩 확인하자.
+
+\begin{notebox}{읽는 데 필요한 약속}
+\(\lvert\psi\rangle\)는 상태를 나타내는 열벡터이고, \(i\)는 \(i^2=-1\)인 수다.
+\(\dagger\)는 행과 열을 바꾸면서 복소수를 켤레로 바꾸는 연산이다.
+켤레는 \(a+bi\)의 \(i\) 앞 부호를 뒤집어 \(a-bi\)로 바꾸는 것이다(\(a,b\)는 실수).
+예를 들어 \((a,b)^\mathsf{T}\)의 \(\dagger\)는 \((a^*,b^*)\)다.
+두 큐비트의 주소는 끝까지 \(\lvert q_1q_0\rangle\) 순서로 쓴다.
+벡터 성분과 행렬의 행·열 순서는 \(00,01,10,11\)이다.
+\end{notebox}
+
+\section{상태에는 진폭이 있고, 측정에는 결과가 있다}
+
+한 큐비트의 가장 기본적인 두 상태는
+\[
+\lvert0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\qquad
+\lvert1\rangle=\begin{pmatrix}0\\1\end{pmatrix}
+\]
+이다. 일반적인 순수 상태는
+\(\lvert\psi\rangle=a\lvert0\rangle+b\lvert1\rangle\)로 적는다.
+\(a,b\)를 진폭이라고 부른다. 여기서 기본 측정은 0과 1을 구별하는 계산 기저 측정이다.
+이 측정에서 0과 1이 나올 확률은 각각
+\(\lvert a\rvert^2,\lvert b\rvert^2\)이고, 두 확률의 합이 1이 되도록
+\(\lvert a\rvert^2+\lvert b\rvert^2=1\)을 요구한다.
+
+다음 두 상태를 나란히 놓으면 진폭과 확률의 차이가 드러난다.
+\[
+\lvert+\rangle=\frac{\lvert0\rangle+\lvert1\rangle}{\sqrt2},\qquad
+\lvert-\rangle=\frac{\lvert0\rangle-\lvert1\rangle}{\sqrt2}.
+\]
+어느 상태를 기본 측정으로 읽어도 0과 1의 확률은 반반이다. 그러나 두 상태는 서로 다르다.
+두 번째 진폭의 상대적인 부호가 다르기 때문이다. 이 차이는 알맞은 게이트를 거친 뒤
+측정하면 드러난다. 따라서 위상 오라클이 부호를 바꿨다는 사실만으로 기본 측정의
+확률이 곧바로 달라졌다고 말할 수는 없다.
+
+\subsection{관측량은 어떤 값을 읽을지를 정하는 행렬이다}
+
+기본 측정의 비트에 0이면 \(+1\), 1이면 \(-1\)을 붙여 읽어 보자.
+이 측정에 대응하는 관측량은
+\[
+Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+다. \(Z\lvert0\rangle=+\lvert0\rangle\),
+\(Z\lvert1\rangle=-\lvert1\rangle\)이므로 두 상태는 측정값이 확실히 정해진 상태다.
+이처럼 행렬을 적용했을 때 같은 벡터에 수만 곱해지는 벡터를 \textbf{고유벡터},
+그 수를 \textbf{고윳값}이라고 부른다.
+
+관측량 \(O\)는 \(O^\dagger=O\)인 에르미트 행렬로 나타낸다.
+이 성질은 측정 가능한 값인 고윳값이 실수가 되게 한다.
+한 번의 측정에서는 그 고윳값 중 하나를 얻는다. 같은 상태를 매번 새로 준비해
+반복 측정했을 때의 평균을 \textbf{기대값}이라고 부르며,
+순수 상태에서는 다음과 같이 계산한다~\cite{preskill}.
+\[
+\langle O\rangle_\psi=\langle\psi\rvert O\lvert\psi\rangle.
+\]
+\(Z\)의 경우에는 \(\langle Z\rangle=\lvert a\rvert^2-\lvert b\rvert^2\)다.
+\(\lvert0\rangle\)의 평균은 1, \(\lvert+\rangle\)의 평균은 0이다.
+평균 0이라는 말은 한 번 측정해서 0이 나왔다는 뜻이 아니다.
+이 측정에서 한 번에 나오는 값은 \(+1\) 또는 \(-1\)이다.
+
+\section{파울리 행렬 네 개와 아다마르 게이트}
+
+한 큐비트의 행렬을 표현할 때 특히 편리한 네 행렬이 있다.
+\[
+I=\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad
+X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad
+Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+\]
+\(I\)는 상태를 그대로 두고, \(X\)는 \(\lvert0\rangle\)와
+\(\lvert1\rangle\)을 맞바꾼다. \(Z\)는 \(\lvert1\rangle\)의 부호만 바꾼다.
+\(Y\)는 \(\lvert0\rangle\mapsto i\lvert1\rangle\),
+\(\lvert1\rangle\mapsto-i\lvert0\rangle\)로 작용한다.
+이 작용을 기억하면 행렬의 부호와 \(i\)가 어디에 있는지 다시 확인할 수 있다.
+
+\lecturefigure{pauli-action}{한 큐비트의 두 기본 상태에 대한 파울리 행렬의 작용. 화살표 옆의 수는 확률이 아니라 진폭에 곱하는 수다. 본문의 네 행렬에서 직접 구성한 설명도다.}
+
+네 행렬을 관측량으로 읽을 수도 있다. \(I\)를 측정하면 언제나 \(+1\)이고,
+\(X,Y,Z\)의 가능한 값은 각각 \(\pm1\)이다. 여기서 값은 무차원이다.
+실제 스핀 각운동량 \(S_z=(\hbar/2)Z\)를 다룰 때에는 단위와 \(\hbar/2\)가 따로 들어간다.
+
+\subsection{같은 상태에도 서로 다른 측정 질문을 할 수 있다}
+
+\(\lvert+i\rangle=(\lvert0\rangle+i\lvert1\rangle)/\sqrt2\)를 하나 더 준비하자.
+이 상태는 \(Y\)의 \(+1\) 고유상태다. 세 상태에서 기대값을 계산하면 다음과 같다.
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+준비한 상태 & \(\langle X\rangle\) & \(\langle Y\rangle\) & \(\langle Z\rangle\)\\
+\midrule
+\(\lvert0\rangle\) & 0 & 0 & 1\\
+\(\lvert+\rangle\) & 1 & 0 & 0\\
+\(\lvert+i\rangle\) & 0 & 1 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+기본 측정에서는 마지막 두 상태가 모두 반반으로 보인다.
+\(X\)와 \(Y\) 측정까지 보면 어느 상대위상을 가진 상태인지 구별할 수 있다.
+상태를 고정해 두고 어떤 관측량을 읽는지 바꾼 결과다.
+
+\subsection{아다마르 게이트가 바꾸는 것}
+
+아다마르 게이트는
+\[
+H=\frac1{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix},
+\qquad H\lvert0\rangle=\lvert+\rangle,\quad
+H\lvert1\rangle=\lvert-\rangle
+\]
+이다. \(H^2=I\)이므로 반대로 \(H\lvert+\rangle=\lvert0\rangle\),
+\(H\lvert-\rangle=\lvert1\rangle\)도 성립한다.
+앞 절에서 기본 측정으로는 구별하지 못했던 두 부호를, \(H\)를 거친 뒤에는
+0과 1로 확실히 구별할 수 있게 된 것이다.
+
+\(H\)의 두 열은 \(X\)의 고유상태 \(\lvert+\rangle,\lvert-\rangle\)다.
+그래서 \(H\)는 계산 기저와 \(X\) 고유기저를 연결한다.
+이 두 열을 \(H\) 자체의 고유상태라고 부르거나, 모든 관측량의 공통 고유기저라고
+부르면 안 된다. 어느 행렬의 고유상태인지를 함께 적어야 뜻이 정확해진다.
+
+\begin{notebox}{게이트와 관측량의 조건은 서로 다르다}
+게이트 \(U\)는 \(U^\dagger U=I\)인 유니터리 행렬이다. 상태의 전체 확률을 보존한다.
+관측량 \(O\)는 \(O^\dagger=O\)인 행렬이다. 측정할 값과 그 고유상태를 정한다.
+\(X,Y,Z,H\)는 두 조건을 모두 만족하지만, 일반적인 관측량이 그대로 게이트가 되는 것은 아니다.
+\end{notebox}
+
+\section{벡터의 기저 두 개, 행렬의 기저 네 개}
+
+한 큐비트 상태는 두 성분이므로 \(\lvert0\rangle,\lvert1\rangle\) 두 벡터로 적을 수 있다.
+반면 상태에 작용하는 행렬은 \(2\times2\) 크기다. 그 네 자리를 표현할 때
+\(I,X,Y,Z\) 네 행렬이 기저가 된다.
+\textbf{상태를 펼쳐 쓰는 기준}과 \textbf{연산자를 펼쳐 쓰는 기준}에서 세는 대상이 다른 것이다.
+
+에르미트 행렬 하나를 다음처럼 적어 보자.
+\[
+O=\begin{pmatrix}u&w-it\\w+it&v\end{pmatrix},
+\qquad u,v,w,t\in\mathbb R.
+\]
+대각 성분 두 개와, 서로 켤레인 비대각 성분의 실수부·허수부가 필요하다.
+모두 네 개의 실수다. 네 파울리 행렬을 이용하면 같은 행렬을
+\[
+O=aI+bX+cY+dZ
+ =\begin{pmatrix}a+d&b-ic\\b+ic&a-d\end{pmatrix}
+\]
+로 적는다. 따라서 \(a=(u+v)/2\), \(d=(u-v)/2\), \(b=w\), \(c=t\)다.
+특별한 관측량에만 적용되는 요령이 아니라 모든 한 큐비트 에르미트 행렬을 적는 방법이다.
+일반 복소 행렬도 같은 네 행렬로 표현할 수 있으며 그때에는 계수가 복소수일 수 있다.
+
+\lecturefigure{operator-coordinates}{상태를 표현하는 두 벡터와 연산자를 표현하는 네 행렬을 나란히 놓았다. 연산자 쪽의 계수는 행렬의 좌표이며 측정 결과의 확률이 아니다. 독립적인 개수와 본문의 전개식을 바탕으로 구성한 설명도다.}
+
+\begin{examplebox}{직접 만든 관측량 하나를 끝까지 계산하기}
+이후 예제에서는
+\[
+O=2I+\tfrac12X-\tfrac14Y+\tfrac34Z
+ =\begin{pmatrix}2.75&0.5+0.25i\\0.5-0.25i&1.25\end{pmatrix}
+\]
+를 사용한다. \(Y\)의 계수가 음수라서 오른쪽 위 성분의 허수부는 양수가 된다.
+앞의 기대값 표를 대입하면
+\[
+\langle O\rangle_{\lvert0\rangle}=2.75,\qquad
+\langle O\rangle_{\lvert+\rangle}=2.5,\qquad
+\langle O\rangle_{\lvert+i\rangle}=1.75.
+\]
+관측량은 같고 준비한 상태가 달라져 평균이 달라졌다.
+계수 2, \(1/2\), \(-1/4\), \(3/4\)는 각 측정 평균을 얼마나 반영할지 정하는 가중치다.
+확률이 아니므로 음수이거나 1보다 커도 된다.
+\end{examplebox}
+
+\section{행렬에서 파울리 계수를 꺼내는 방법}
+
+큐비트가 늘어나면 행렬 성분을 눈으로 비교하기 어려워진다.
+이때에는 기저의 직교성을 이용한다. 벡터에서 두 방향의 겹침을 내적으로 계산하듯,
+행렬에서는 \(\operatorname{Tr}(A^\dagger B)\)로 겹침을 계산할 수 있다.
+이를 힐베르트--슈미트 내적이라고 부른다.
+\(\operatorname{Tr}\), 즉 트레이스는 행렬의 대각 성분을 모두 더하는 연산이다.
+
+예를 들어 \(\operatorname{Tr}(I)=2\), \(\operatorname{Tr}(Z)=1-1=0\)이다.
+같은 파울리 행렬끼리 곱하면 \(I\)가 되어 트레이스가 2이고,
+서로 다른 두 행렬을 곱한 결과의 트레이스는 0이다.
+따라서 \(O=aI+bX+cY+dZ\)에 \(X\)를 곱하고 트레이스를 취하면
+\[
+\operatorname{Tr}(XO)
+=a\operatorname{Tr}(X)+b\operatorname{Tr}(X^2)
++c\operatorname{Tr}(XY)+d\operatorname{Tr}(XZ)=2b.
+\]
+다른 방향의 성분은 사라지고 \(X\) 성분만 남는다. 결국
+\[
+a=\tfrac12\operatorname{Tr}(O),\quad
+b=\tfrac12\operatorname{Tr}(XO),\quad
+c=\tfrac12\operatorname{Tr}(YO),\quad
+d=\tfrac12\operatorname{Tr}(ZO).
+\]
+앞의 예제에서는 \(\operatorname{Tr}(O)=4\),
+\(\operatorname{Tr}(XO)=1\), \(\operatorname{Tr}(YO)=-1/2\),
+\(\operatorname{Tr}(ZO)=3/2\)가 되어 원래 계수를 되찾는다.
+
+\subsection{여러 큐비트에서는 왜 \texorpdfstring{\(1/2^n\)}{1/(2의 n제곱)}인가}
+
+\(n\)큐비트 상태의 성분 수를 \(N=2^n\)이라고 하자.
+연산자는 \(N\times N\) 행렬이고, 필요한 파울리 기저는 \(4^n=N^2\)개다.
+각 큐비트마다 \(I,X,Y,Z\) 중 하나를 고르고 텐서곱한 행렬을
+\textbf{파울리 문자열}이라고 부른다. 텐서곱은 각 큐비트에 지정한 작용을
+함께 수행하는 다중 큐비트 행렬을 만드는 방법이다.
+
+파울리 문자열 \(P,Q\)에는
+\[
+\operatorname{Tr}(P^\dagger Q)=
+\begin{cases}N,&P=Q,\\0,&P\ne Q\end{cases}
+\]
+가 성립한다. 그러므로 전개와 계수는
+\[
+\boxed{\quad O=\sum_P a_PP,\qquad
+a_P=\frac{\operatorname{Tr}(P^\dagger O)}{N},\quad N=2^n.\quad}
+\]
+파울리 문자열은 에르미트이므로 여기서 \(P^\dagger=P\)다.
+한 큐비트에서는 2로, 두 큐비트에서는 4로 나눈다.
+기저 행렬의 길이가 1이 아니라 \(\sqrt N\)이어서 이 분모가 생긴다.
+길이까지 1로 맞춘 정규직교 기저를 원하면 \(P/\sqrt N\)를 쓴다.
+이는 원래 파울리 행렬을 쓰는 위 계수식의 \(1/N\)과 구별해야 한다.
+
+\section{파울리 문자열의 글자와 큐비트 번호}
+
+두 큐비트에는 \(II,IX,IY,IZ,XI,\ldots,ZZ\) 등 16개 문자열이 있다.
+이 노트와 Qiskit의 약속에서는 \textbf{가장 오른쪽 글자가 \(q_0\)에 작용한다}~\cite{ibm-order}.
+예를 들어
+\[
+IZ=I_{q_1}\otimes Z_{q_0}=Z_0,\qquad
+ZI=Z_{q_1}\otimes I_{q_0}=Z_1.
+\]
+주소 순서 \(00,01,10,11\)에서 대각 성분을 직접 적으면
+\(IZ=\operatorname{diag}(1,-1,1,-1)\),
+\(ZI=\operatorname{diag}(1,1,-1,-1)\)다.
+오른쪽 비트가 1인 자리에 부호를 바꾸는지, 왼쪽 비트가 1인 자리에 바꾸는지 비교하면 된다.
+\(Z_0\)처럼 아래첨자로 한 큐비트를 지정하면 나머지 큐비트에는 \(I\)가 있다는 뜻이다.
+\(ZZ=Z_1Z_0\)에서는 서로 다른 두 큐비트에 작용하므로 곱으로도 적을 수 있다.
+
+\begin{examplebox}{주소 하나로 순서를 확인하기}
+\(\lvert q_1q_0\rangle=\lvert01\rangle\)에서는 \(q_0=1\), \(q_1=0\)이다.
+따라서
+\[
+IZ\lvert01\rangle=-\lvert01\rangle,\qquad
+ZI\lvert01\rangle=+\lvert01\rangle.
+\]
+\(IZ\)와 \(ZI\)를 바꾸면 다른 관측량이 된다.
+회로 그림에서는 \(q_0\)가 윗줄에 놓일 수 있다. 문자열의 왼쪽을 회로의 윗줄로
+외우기보다 큐비트 번호를 확인하는 편이 안전하다.
+\end{examplebox}
+
+세 큐비트가 일렬로 놓인 작은 모형도 적어 보자.
+\[
+\mathcal H=Z_0Z_1+Z_1Z_2-\tfrac12(X_0+X_1+X_2)
+=IZZ+ZZI-\tfrac12(IIX+IXI+XII).
+\]
+\(ZZ\) 항은 이웃한 두 큐비트가 같은 부호인지에 따라 값을 주고,
+\(X\) 항은 각 큐비트의 \(X\) 방향 성분을 읽는다.
+이 \(\mathcal H\)를 에너지 관측량인 해밀토니안으로 해석할 수 있다.
+여기서는 결합의 크기를 에너지 단위로 삼아 계수를 적었다.
+아다마르 게이트 \(H\)와 혼동하지 않도록 이 해밀토니안은 \(\mathcal H\)로 표기한다.
+
+\section{X와 Y를 읽으려면 측정 전에 무엇을 하나}
+
+이제 행렬을 장치의 측정 절차와 연결하자.
+표준적인 계산 기저 측정은 \(Z\)를 읽는다.
+\(X\)나 \(Y\)를 읽을 때에는 측정 전에 상태를 회전시켜, 그 정보를 \(Z\) 측정에 맞춘다.
+앞에서 \(H\)가 \(\lvert+\rangle,\lvert-\rangle\)을
+\(\lvert0\rangle,\lvert1\rangle\)로 보낸 이유가 여기에 쓰인다.
+
+측정 전에 적용하는 게이트를 \(V\)라고 하면 장치가 읽는 평균은
+\[
+\langle\psi\rvert V^\dagger ZV\lvert\psi\rangle
+\]
+다. 따라서 \(V^\dagger ZV=X\)가 되게 \(V=H\)를 고르면 \(X\)를 읽을 수 있다.
+\(Y\)의 경우에는 \(S=\operatorname{diag}(1,i)\)를 사용한다.
+\textbf{먼저 \(S^\dagger\), 그다음 \(H\)}를 적용한다.
+\[
+V=HS^\dagger,\qquad V^\dagger ZV=SHZHS^\dagger=Y.
+\]
+행렬곱은 오른쪽부터 상태에 작용한다. 그래서 실행 순서
+\(S^\dagger\to H\)가 행렬로는 \(HS^\dagger\)다.
+
+\lecturefigure{measurement-rotations}{기본 Z 측정으로 X, Y, Z를 읽는 세 절차. 회로의 시간은 왼쪽에서 오른쪽으로 흐른다. Y에서는 S의 켤레전치 게이트를 먼저 적용한다. 본문의 기저변환 항등식에서 구성한 자체 회로도다.}
+
+\(\lvert+i\rangle\)에 \(S^\dagger\)를 적용하면 \(\lvert+\rangle\),
+다시 \(H\)를 적용하면 \(\lvert0\rangle\)이 된다.
+따라서 이 상태의 \(Y\) 측정값은 확실히 \(+1\)이다.
+순서를 거꾸로 바꾸면 같은 측정이 되지 않는다.
+
+여기서 세 종류의 기저가 만났다. 상태 기저는 상태벡터를 적는 기준이고,
+파울리 기저는 행렬을 적는 기준이다. 측정 기저는 어떤 고유상태를 구별해 읽는가를 뜻한다.
+\(X\)를 파울리 전개의 한 항으로 쓴다는 사실과,
+\(X\)의 고유상태를 구별하도록 측정 장치를 준비한다는 사실은 이처럼 연결된다.
+
+\section{여러 비트에서 하나의 파울리 측정값 얻기}
+
+\(Z_1Z_0\)를 읽으려면 두 큐비트를 기본 측정한 뒤 두 부호를 곱하면 된다.
+이 절에서는 측정 결과를 \(q_i\to c_i\)에 저장하고 \(b_1b_0\) 순서로 적는다.
+그러면 한 번의 기록에서 얻는 값은
+\[
+p=(-1)^{b_1}(-1)^{b_0}=(-1)^{b_1+b_0}.
+\]
+00과 11은 \(+1\), 01과 10은 \(-1\)이다.
+1의 개수가 짝수인지 홀수인지에 따라 부호가 정해져서 이를 패리티라고 부른다.
+
+\lecturefigure{pauli-parity}{두 비트 기록을 ZZ의 측정값으로 바꾸는 표. 아래 빈도는 설명을 위해 만든 가상 기록이며 실험 데이터가 아니다. 부호별 횟수를 합쳐 평균을 구한다.}
+
+예를 들어 같은 상태를 100번 새로 준비하고 측정한 기록이
+00:37회, 11:43회, 01:12회, 10:8회였다고 가정하자.
+이 가상 기록의 표본 평균은
+\[
+\widehat{\langle Z_1Z_0\rangle}
+=\frac{(37+43)-(12+8)}{100}=0.6.
+\]
+0.6은 이 유한한 기록에서 얻은 추정값이다.
+이상적인 독립 반복 측정만 가정하면 표준오차의 근삿값은
+\(\sqrt{(1-0.6^2)/100}=0.08\)이다. 실제 장치에서는 여기에 측정과 게이트의 오류도 영향을 준다.
+
+일반 문자열에서도 \(X\) 자리에는 \(H\), \(Y\) 자리에는
+\(S^\dagger\) 다음 \(H\)를 적용한 뒤 해당 비트의 부호를 곱한다.
+\(I\) 자리는 언제나 1이므로 그 비트를 곱에서 제외한다.
+예를 들어 \(X_1Z_0\)는 \(q_1\)에만 \(H\)를 적용한 뒤 두 비트의 패리티로 읽는다.
+클래식 비트에 다른 순서로 저장했다면 그 대응을 먼저 되짚어야 한다.
+
+\begin{examplebox}{각각의 평균과 곱의 평균은 다르다}
+벨 상태 \(\lvert\Phi^+\rangle=(\lvert00\rangle+\lvert11\rangle)/\sqrt2\)에서는
+00과 11이 반반 나온다. 각 비트를 따로 보면
+\(\langle Z_0\rangle=\langle Z_1\rangle=0\)이지만,
+두 부호의 곱은 매번 \(+1\)이어서 \(\langle Z_1Z_0\rangle=1\)이다.
+상관관계를 보려면 개별 평균을 곱하지 말고 각 기록의 곱을 평균해야 한다.
+\end{examplebox}
+
+\section{항의 평균을 더하는 일과 게이트를 잇는 일}
+
+앞서 만든 관측량 \(O=2I+\tfrac12X-\tfrac14Y+\tfrac34Z\)는
+각 파울리 항의 평균을 알아내면 전체 평균도 알 수 있다.
+\[
+\langle O\rangle=2+\tfrac12\langle X\rangle
+-\tfrac14\langle Y\rangle+\tfrac34\langle Z\rangle.
+\]
+같은 상태를 준비하는 회로를 반복 사용하면서, 일부 반복에서는 \(X\), 다른 반복에서는
+\(Y\), 나머지 반복에서는 \(Z\)를 읽으면 된다.
+각 평균에 계수를 곱해 더한다. 이 절차가 파울리 전개를 측정에 이용하는 방법이다.
+
+두 행렬이 가환한다는 말은 곱의 순서를 바꿔도 결과가 같다는 뜻이다.
+\(X\)와 \(Z\)처럼 서로 가환하지 않는 관측량은 같은 상태의 측정값이
+동시에 확실히 정해져 있지 않을 수 있다.
+한 큐비트를 먼저 \(X\)로 측정한 뒤 \(Z\)로 측정하면 첫 측정이 상태를 바꾸므로,
+두 번째 값을 원래 상태의 \(Z\) 측정 표본으로 취급할 수 없다.
+위 절차에서는 \textbf{각 반복마다 원래 상태를 다시 준비한다}는 점이 중요하다.
+
+전체 \(O\)의 고유기저로 직접 측정하는 방법과, 파울리 항을 여러 설정으로 나누어
+평균을 조합하는 방법도 구별해야 한다. 후자는 기대값을 구하는 방법이다.
+한 번의 기록에 가중치를 모두 더한 수가 반드시 \(O\)의 고윳값이 되지는 않는다.
+
+측정 설정을 함께 쓸 수 있는 항은 묶을 수 있다.
+예를 들어 \(ZI,IZ,ZZ\)는 같은 두 비트의 기본 측정 기록으로 모두 추정할 수 있다.
+반면 \(XX\)와 \(ZZ\)는 전체 행렬로서는 가환하지만, 위와 같은 큐비트별 회전만 쓰는
+단일 측정 설정은 서로 다르다. 이 둘을 함께 읽는 공동 고유기저 측정에는
+추가적인 다중 큐비트 조작이 필요하다.
+
+\begin{notebox}{합은 회로의 실행 순서가 아니다}
+\(O=aX+bZ\)라는 식은 두 행렬을 가중합한다는 뜻이다.
+\(X\) 게이트 다음 \(Z\) 게이트를 적용하면 행렬은 \(ZX\)가 된다.
+\(aX+bZ\)와 \(ZX\)는 다른 연산이다. 파울리 전개식에 항이 보인다고
+그 항을 그대로 차례로 게이트에 놓아서는 안 된다.
+\end{notebox}
+
+\section{네 무늬로 위상 표를 나누기}
+
+처음의 네 칸 그림으로 돌아가자. 네 주소에 붙일 수를 다음 네 부호 무늬로 표현해 보자.
+\[
+\begin{aligned}
+r_0&=(1,1,1,1),&r_1&=(1,-1,1,-1),\\
+r_2&=(1,1,-1,-1),&r_3&=(1,-1,-1,1).
+\end{aligned}
+\]
+서로 다른 두 행을 성분별로 곱해 더하면 0이 되고, 같은 행끼리 내적하면 4가 된다.
+그러므로 네 행은 길이가 2인 직교 기저다.
+\(f=(0,0,0,1)\)을 이 무늬로 나누면
+\[
+f=\frac14r_0-\frac14r_1-\frac14r_2+\frac14r_3.
+\]
+각 계수는 해당 무늬와 \(f\)의 내적을 4로 나눈 값이다.
+예를 들어 \(r_1\cdot f=-1\)이므로 계수는 \(-1/4\)다.
+네 항을 더하면 처음 세 주소에서는 0, 마지막 주소에서는 1이 된다.
+이것이 여기서 사용하는 Walsh 전개다~\cite{welch}.
+
+\lecturefigure{hadamard-patterns}{주소 순서 00, 01, 10, 11에서 본 네 Walsh 부호 무늬. 네 번째 주소의 표시값을 내적으로 읽어 계수 (1, -1, -1, 1)/4를 얻는다. 행의 길이와 계수는 본문의 계산을 사용했다.}
+
+네 행을 모은 행렬을 \(R_4\)라고 하면 \(R_4R_4^\mathsf T=4I\)다.
+양자 게이트로 쓰려면 벡터 길이를 보존해야 하므로 \(R_4/2=H\otimes H\)를 사용한다.
+\(f\)의 고전 전개 계수에 붙는 \(1/4\)와, 양자 게이트의 정규화에 붙는 \(1/2\)는
+서로 다른 역할이다. 일반적으로 주소 수가 \(N\)이면 각각 \(1/N\), \(1/\sqrt N\)가 된다.
+
+\subsection{부호 무늬가 Z 문자열의 대각선이 된다}
+
+같은 주소 순서에서 \(II,IZ,ZI,ZZ\)의 대각 성분은 각각
+\(r_0,r_1,r_2,r_3\)다. 고전 무늬를 분해하던 계산이 곧 대각 행렬의 파울리 전개가 된다.
+이번에는 부호를 바로 전개하는 대신, 부호를 만들어 낼 \textbf{위상 각도}를 전개하자.
+검은 칸에 \(\pi\), 흰 칸에 0을 놓으면
+\[
+D=\pi\operatorname{diag}(0,0,0,1)
+=\frac\pi4(II-IZ-ZI+ZZ).
+\]
+\(D\)는 실수 대각 에르미트 행렬이고 각도의 단위는 라디안이다.
+위상 각도 \(\theta\)는 복소수 \(e^{i\theta}=\cos\theta+i\sin\theta\)로 진폭에 곱한다.
+각도가 0이면 \(+1\), \(\pi\)이면 \(-1\)이 된다.
+대각 행렬의 지수함수는 각 대각 성분에 지수함수를 적용한 행렬이므로,
+이 \(D\)에서 원하는 게이트를 얻는다.
+\[
+U_f=e^{iD}=\operatorname{diag}(1,1,1,e^{i\pi})
+=\operatorname{diag}(1,1,1,-1).
+\]
+\(D\)는 위상 각도를 담는 생성자이고, \(U_f\)는 상태에 실제로 작용하는 유니터리다.
+해밀토니안으로 시간발전을 쓰는 관례 \(e^{-it\mathcal H/\hbar}\)와 부호가 달라 보일 수 있는데,
+여기서는 처음에 정한 \(e^{+iD}\)를 끝까지 사용한다.
+
+\section{위상 각도에서 정확한 게이트 회로로}
+
+\(D\)의 네 항은 모두 대각 행렬이라 서로 가환한다.
+즉 순서를 바꿔 곱해도 같다. 이 조건 덕분에 합의 지수함수를 정확히 나눌 수 있다.
+\[
+e^{iD}=e^{i\pi II/4}e^{-i\pi IZ/4}
+e^{-i\pi ZI/4}e^{i\pi ZZ/4}.
+\]
+이 식에는 \(II\) 항도 있다. 그 항이 만드는 \(e^{i\pi/4}\)는
+모든 진폭에 똑같이 붙는 공통 위상이다.
+단독 상태의 측정 확률에는 영향을 주지 않지만, 전체 행렬이 정확히 같은 회로를
+주장할 때에는 이 항까지 맞춰야 한다. 연산을 제어 게이트 안에 넣을 때에도
+전체 위상이 상대위상으로 드러날 수 있다.
+
+게이트 \(P(\theta)=\operatorname{diag}(1,e^{i\theta})\)를 쓰면 다음 회로가
+공통 위상까지 포함해 \(U_f\)와 정확히 같다.
+\begin{enumerate}
+\item \(q_0,q_1\)에 각각 \(P(\pi/2)\)를 적용한다.
+\item \(q_1\)을 제어, \(q_0\)를 표적으로 CX를 적용한다.
+\item \(q_0\)에 \(P(-\pi/2)\)를 적용한다.
+\item 같은 CX를 다시 적용해 주소를 원래대로 돌린다.
+\end{enumerate}
+
+\lecturefigure{phase-oracle}{네 칸 위상 오라클을 구현하는 P·CX 회로. 제어는 q1, 표적은 q0이며 시간은 왼쪽에서 오른쪽이다. 아래 식은 각 주소가 얻는 전체 위상을 보여준다. 위상 표와 게이트 행렬을 직접 계산해 구성했다.}
+
+입력 비트를 \(x_1,x_0\)라고 하자. 첫 CX 뒤 표적 비트는
+\(x_0\mathbin{\oplus}x_1\)가 된다. \(\oplus\)는 서로 다를 때 1인 배타적 논리합이다.
+세 위상 게이트가 주는 총 각도는
+\[
+\frac\pi2x_0+\frac\pi2x_1-\frac\pi2(x_0\mathbin{\oplus}x_1)
+=\pi x_0x_1.
+\]
+00,01,10에서는 0이고 11에서만 \(\pi\)다. 두 번째 CX는 비트를 복구하므로
+네 입력 모두 주소는 그대로이고 원하는 부호만 남는다.
+
+흔히 쓰는 \(R_z(\theta)=\operatorname{diag}(e^{-i\theta/2},e^{i\theta/2})\)와는
+\(P(\theta)=e^{i\theta/2}R_z(\theta)\)라는 관계가 있다.
+따라서 \(P\)를 \(R_z\)로 바꿀 때에는 공통 위상도 함께 추적해야 한다.
+
+\begin{examplebox}{부호가 측정에서 드러나는 작은 후속 회로}
+두 큐비트를 \(\lvert++\rangle\)로 준비하면 오라클 뒤 상태는
+\((\lvert00\rangle+\lvert01\rangle+\lvert10\rangle-\lvert11\rangle)/2\)다.
+바로 기본 측정하면 네 확률은 여전히 \(1/4\)이다.
+여기에 \(q_0\)의 \(H\)만 더하면
+\((\lvert00\rangle+\lvert11\rangle)/\sqrt2\)가 되어 00과 11만 반반 나온다.
+상대 부호가 간섭을 거쳐 관측 가능한 상관관계로 바뀐 것이다.
+\end{examplebox}
+
+\subsection{X 항까지 있는 합에서는 조건을 다시 확인한다}
+
+앞의 정확한 분리는 \(Z\) 문자열들이 서로 가환하기 때문에 가능했다.
+앞서 본 이징 모형의 \(Z_1Z_0\)와 \(X_0\)는
+\[
+[Z_1Z_0,X_0]=Z_1Z_0X_0-X_0Z_1Z_0=2iZ_1Y_0\ne0
+\]
+이다. 따라서 일반적으로
+\(e^{-it(A+B)}=e^{-itA}e^{-itB}\)라고 쓸 수 없다.
+짧은 시간 간격으로 나누어 근사하는 방법도 있지만, 그때에는 시간 간격과 오차를
+다루는 별도의 문제가 생긴다. 파울리 전개 자체는 항상 가능해도,
+그 항들의 지수 게이트를 곧바로 이어 붙이는 절차가 항상 정확한 것은 아니다.
+
+\section{Qiskit 코드로 적을 때의 짧은 연결}
+
+이 절의 코드는 앞에서 손으로 정한 관측량을 Qiskit 자료형에 옮기는 예다.
+공식 \texttt{SparsePauliOp} API를 대조했다~\cite{ibm-sparse}.
+이번 개정에서는 SDK를 설치해 코드를 실행하지 않았다.
+본문의 행렬·기대값은 별도의 작은 고전 행렬 계산으로 검산했으며,
+아래에 SDK 실행 출력이나 QPU 결과를 제시하지 않는다.
+
+\begin{verbatim}
+from qiskit.quantum_info import SparsePauliOp
+
+observable = SparsePauliOp.from_list([
+    ("I", 2.0), ("X", 0.5),
+    ("Y", -0.25), ("Z", 0.75),
+])
+
+ising3 = SparsePauliOp.from_sparse_list([
+    ("ZZ", [0, 1], 1.0),
+    ("ZZ", [1, 2], 1.0),
+    ("X", [0], -0.5),
+    ("X", [1], -0.5),
+    ("X", [2], -0.5),
+], num_qubits=3)
+\end{verbatim}
+
+\texttt{from\_list}는 전체 문자열과 계수의 목록을 받고,
+\texttt{from\_sparse\_list}는 작용할 큐비트 번호를 따로 받는다.
+이 예제의 \texttt{ZZ}는 같은 글자 두 개이므로 번호별 작용이 분명하다.
+서로 다른 글자를 번호 목록과 함께 쓸 때에도 각 글자가 어느 번호에 대응하는지
+API의 약속을 확인해야 한다.
+
+행렬을 이미 알고 있다면 다음처럼 파울리 전개를 요청할 수도 있다.
+\begin{verbatim}
+import numpy as np
+
+matrix = np.array([
+    [2.75, 0.5 + 0.25j],
+    [0.5 - 0.25j, 1.25],
+], dtype=complex)
+decomposed = SparsePauliOp.from_operator(matrix)
+\end{verbatim}
+수학적으로 앞의 \(2I+\tfrac12X-\tfrac14Y+\tfrac34Z\)와 같은 연산자다.
+다만 코드가 항을 어떤 순서로 출력하는지는 관측량의 의미와 무관하다.
+
+\texttt{SparsePauliOp}에서 ``sparse''는 필요한 파울리 항만 저장한다는 뜻이다.
+모든 입력이 적은 항으로 표현된다는 보장은 아니다.
+\(n\)큐비트의 조밀한 행렬은 \(4^n\)개 성분을 가지며,
+일반적인 파울리 전개도 최대 \(4^n\)항이 필요하다.
+작은 행렬을 변환하는 이 예제를 큰 임의 행렬의 효율적인 처리법으로 확대해서는 안 된다.
+
+\subsection{Estimator에 주는 두 가지 입력}
+
+기대값을 구하려면 준비할 상태와 읽을 관측량이 함께 필요하다.
+회로는 상태 준비를, \texttt{SparsePauliOp}는 관측량을 기술한다.
+Estimator 계열 인터페이스는 이 둘을 받아 기대값을 계산하거나 추정하는 역할을 한다.
+구현에 따라 필요한 변환·측정과 실행 방식이 달라지므로,
+측정 전 회전을 직접 넣는 예와 Estimator 사용을 혼동해 중복 적용하지 않는다.
+
+예를 들어 \texttt{StatevectorEstimator}는 이상적인 유니터리 회로의 상태벡터로
+정확한 기대값을 계산할 수 있다~\cite{ibm-estimator}.
+실물 장치에서 얻는 유한한 샷의 평균과는 실행 조건이 다르다.
+관측량 객체를 만들었다는 사실만으로 회로를 실행하거나 실험값을 얻은 것은 아니다.
+
+\section{같은 도구가 어디까지 이어지는가}
+
+네 칸의 위상 각도를 Walsh 무늬로 나누고, 그 무늬를 \(Z\) 문자열로 바꾸면
+대각 위상 회로를 유도할 수 있었다.
+일반적인 \(n\)큐비트 대각 행렬도 주소 \(x\)마다 위상 각도 \(\theta_x\)를 정해
+\[
+D=\operatorname{diag}(\theta_x)=\sum_{s\in\{0,1\}^n}d_sZ^s,
+\qquad d_s=\frac1{2^n}\sum_x\theta_x(-1)^{s\cdot x}
+\]
+로 쓸 수 있다. \(Z^s\)는 \(s_j=1\)인 큐비트에만 \(Z\)를 놓은 문자열이다.
+\(s\cdot x\)의 홀짝이 그 주소에서의 부호를 정한다.
+일반 파울리 계수식이 대각 행렬에서는 고전 Walsh 계수식으로 줄어든 것이다.
+
+이 계수 계산은 고전 컴퓨터에서 수행할 수 있다.
+위상 표 자체가 \(2^n\)개 수를 담으면 그 입력과 전개가 이미 클 수 있다.
+회로가 짧아지는지는 살아남는 계수의 수와 구조, 구현할 연결과 게이트에 달려 있다.
+기저로 표현할 수 있다는 사실만으로 양자 이득이나 짧은 회로가 보장되지는 않는다.
+
+마지막으로, 여기서 쓴 \(H^{\otimes n}\)은 차수가 \(2^n\)인 Sylvester형
+아다마르 행렬을 정규화한 것이다. 조합론에서는 성분이 \(\pm1\)이고 서로 직교하는
+행을 가진 더 넓은 종류의 아다마르 행렬을 연구한다~\cite{egan}.
+4의 배수인 모든 차수에 그런 행렬이 존재하느냐는 일반 문제와,
+여기서 명시적으로 만들 수 있는 \(2^n\)차 행렬의 존재는 구별해야 한다.
+이 노트의 회로 구성은 그 일반 추측의 해결을 요구하지 않는다.
+
+\section{손으로 확인하는 다섯 문제}
+
+\begin{questionbox}{1. 같은 기본 확률, 다른 X 평균}
+\(\lvert+\rangle\)와 \(\lvert-\rangle\)을 기본 측정하면 확률이 같다.
+각 상태의 \(\langle X\rangle\)는 얼마인가? 어떻게 읽을 수 있는가?
+\end{questionbox}
+\begin{answerbox}{풀이}
+각각 \(+1,-1\)이다. \(H\)를 적용하면 각각 \(\lvert0\rangle,\lvert1\rangle\)이 되어,
+기본 측정 뒤 0을 \(+1\), 1을 \(-1\)로 읽으면 된다.
+\end{answerbox}
+
+\begin{questionbox}{2. 행렬을 네 파울리 항으로 나누기}
+\(A=\begin{pmatrix}3&1-i\\1+i&1\end{pmatrix}\)를
+\(I,X,Y,Z\)로 표현하고 \(\lvert+i\rangle\)에서의 기대값을 구하라.
+\end{questionbox}
+\begin{answerbox}{풀이}
+대각 성분의 평균과 차이에서 \(a=2,d=1\), 비대각 성분에서 \(b=1,c=1\)이다.
+따라서 \(A=2I+X+Y+Z\)이고 기대값은 \(2+0+1+0=3\)이다.
+\end{answerbox}
+
+\begin{questionbox}{3. 문자열 순서와 비트의 부호}
+\(\lvert q_1q_0\rangle=\lvert10\rangle\)에서
+\(IZ,ZI,ZZ\)의 기대값을 구하라.
+\end{questionbox}
+\begin{answerbox}{풀이}
+\(q_0=0,q_1=1\)이므로 각각 \(+1,-1,-1\)이다.
+\(ZZ\)는 두 부호의 곱이다.
+\end{answerbox}
+
+\begin{questionbox}{4. 가상 기록에서 XX 평균 얻기}
+각 큐비트에 \(H\)를 적용한 뒤 기본 측정했다.
+같은 번호의 클래식 비트에 저장한 기록이 00:30회, 11:40회, 01:20회, 10:10회다.
+원래 상태의 \(XX\) 평균 추정값은 얼마인가?
+\end{questionbox}
+\begin{answerbox}{풀이}
+\(H\) 덕분에 각 비트가 \(X\) 측정에 대응한다.
+짝수 패리티 70회, 홀수 패리티 30회이므로 \((70-30)/100=0.4\)다.
+\end{answerbox}
+
+\begin{questionbox}{5. 마지막 칸만 바꾸는 위상}
+\(D_\varphi=\varphi\operatorname{diag}(0,0,0,1)\)의 파울리 전개를 쓰고,
+앞의 P·CX 회로에서 어떤 각도를 바꾸면 되는지 설명하라.
+\end{questionbox}
+\begin{answerbox}{풀이}
+\(D_\varphi=(\varphi/4)(II-IZ-ZI+ZZ)\)다.
+두 첫 P 게이트의 각도를 \(\varphi/2\), 가운데 P 게이트의 각도를
+\(-\varphi/2\)로 바꾸면 총 위상은 \(\varphi x_0x_1\)가 된다.
+따라서 \(e^{iD_\varphi}\)를 정확히 구현한다.
+\end{answerbox}
+
+\begin{thebibliography}{7}
+\bibitem{ibm-observables} IBM Quantum, \href{https://quantum.cloud.ibm.com/docs/en/qiskit/specify-observables-pauli}{Specify observables in the Pauli basis}, IBM Quantum Documentation (확인 2026-11-28; 문서의 코드 환경 \texttt{qiskit[all]\textasciitilde{}=2.6.1}).
+\bibitem{preskill} J. Preskill, \href{https://www.preskill.caltech.edu/ph219/chap2_15.pdf}{Lecture Notes for Ph219/CS219: Quantum Information, Chapter 2: Foundations I: States and Ensembles} (July 2015).
+\bibitem{ibm-order} IBM Quantum, \href{https://quantum.cloud.ibm.com/docs/en/qiskit/bit-ordering}{Bit-ordering in the Qiskit SDK}, IBM Quantum Documentation (확인 2026-11-28).
+\bibitem{welch} J. Welch, D. Greenbaum, S. Mostame, and A. Aspuru-Guzik, \href{https://doi.org/10.1088/1367-2630/16/3/033040}{Efficient quantum circuits for diagonal unitaries without ancillas}, New J. Phys. \textbf{16}, 033040 (2014).
+\bibitem{ibm-sparse} IBM Quantum, \href{https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.quantum_info.SparsePauliOp}{SparsePauliOp}, Qiskit API Reference (확인 2026-11-28).
+\bibitem{ibm-estimator} IBM Quantum, \href{https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.primitives.StatevectorEstimator}{StatevectorEstimator}, Qiskit API Reference (확인 2026-11-28).
+\bibitem{egan} R. Egan, I. S. Kotsireas, S. London, and P. Ó Catháin, \href{https://arxiv.org/abs/2610.27175v2}{Recent progress in the construction of Hadamard matrices}, arXiv:2610.27175v2 (2026).
+\end{thebibliography}
+
+\input{disclosure.tex}
