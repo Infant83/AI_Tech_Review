@@ -1560,11 +1560,11 @@ def inject_review_navigation_and_disclosure(
                 flags=re.IGNORECASE,
             )
         )
-    has_hub_link = re.search(
-        rf'<a\b[^>]*href=["\']{re.escape(PUBLIC_BASE_URL)}["\']',
+    has_hub_link = any(re.search(
+        rf'<a\b[^>]*href=["\']{re.escape(base)}["\']',
         html_text,
         flags=re.IGNORECASE,
-    )
+    ) for base in PUBLIC_BASE_ALIASES)
     if not has_hub_link:
         hub_link = (
             f'<a class="hub-link" href="{PUBLIC_BASE_URL}">{hub_label}</a>\n        '
