@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-f6deea28-7843-4409-9b02-84a7f23e198e",
   "uuid": "f6deea28-7843-4409-9b02-84a7f23e198e",
-  "record_version": 13,
+  "record_version": 19,
   "title": "2026-09-11 OLED 리뷰 PDF의 잘린 파일 복구",
   "type": "공개 자료 열람 결함",
   "created_at": "2026-11-08T12:52:03Z",
-  "updated_at": "2026-11-23T18:18:27.557366+00:00",
-  "status": "in_progress",
+  "updated_at": "2026-11-27T04:44:59.588839+00:00",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "에이전트 점검",
@@ -80,15 +80,14 @@
     "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
   ],
   "limitations": [
-    "실제 기기·브라우저의 PDF 뷰어는 아직 시험하지 않음",
-    "원 파일이 잘린 시점과 생성·게시 원인은 아직 확인하지 않음",
-    "HTML 본문은 공개되어 있으며 이번 검사에서는 PDF나 사이트를 변경하지 않음",
-    "접근 가능한 Git·작업 사본·보유 릴리스 복구 사본에서 정상 PDF를 찾지 못했으며, 외부 또는 개인 보관 원본의 존재는 확인하지 않음",
-    "PDF 생성 코드·TeX·별도 기술 브리프 원고는 확인되지 않음. 재생성에는 영문 기술 브리프의 범위와 과학 내용에 대한 편집 검토가 필요함"
+    "정상원판의전체내용·레이아웃과동일성/잘린시점·원인은미확인이다.기존손상bytes와Gitblob은보존한다.",
+    "새판본은AEDAUT가감수한영문웹원고/동일8개v1근거에서새로쓴영문기술브리프이며원판복원이나한글PDF번역이아니다.",
+    "새PDF의전5쪽독립렌더/파서감수·한영웹브라우저는기존게시검증을재사용했고ADOPT의이번추가확인은HTTPS두PDF의정확bytes/SHA와최종봉인일치다.",
+    "기본인앱PDF뷰어·실제펜/개인필기연결과물리기기열람은미검증이다.새archiveID/구판필기자동이관을만들지않았다."
   ],
   "policy_decision": {
-    "state": "후속 조치 채택",
-    "rationale": "공개 PDF 읽기가 막히는 확인된 결함이다. 웹 본문이라는 대체 경로가 있어 P2로 분류하고 정상 판본의 복구와 게시 검증을 후속 처리함",
+    "state": "새편집판의공개첨부대체인수·현재열람관찰/원판복구미완료",
+    "rationale": "새명시편집범위와전체5쪽/과학감수·실제게시근거를받아현재첨부의손상전달을해소한새판본을인수했다.원래내용/레이아웃·정상원판의복구는증명되지않아동일한복구완료로닫지않고P2·ADOPT소유를유지한다.",
     "related_issues": [
       "OPS-79b80bf3-b847-485a-9f60-3cd663e5b433"
     ],
@@ -97,7 +96,7 @@
   },
   "authority": {
     "basis": "사용자의 지속적인 인프라·기술지원 운영 승인 및 운영 정책의 결함 기록·검증 범위",
-    "current_scope": "확인한 결함과 증거를 기록함. 후속 작업에서 정상 원본·백업을 조사하고 복구 후보를 검증함",
+    "current_scope": "정상원판/백업조사 이력과미복구를보존하고편집부(AEDAUT)가기존권한에서범위결정·집필/독립감수·게시한새영문기술브리프판본의기술정합성과실제열람근거를인수한다.운영팀(ADOPT)이원고의의미/발행판단을대신하거나추가승인자가되지않는다.",
     "additional_decision": null
   },
   "owner_role": "운영팀(ADOPT) · 출판 기술 정합성 / 재생성 내용 감수: 편집부(AEDAUT)",
@@ -108,12 +107,16 @@
     "배포할 때 실제 HTTPS 파일을 다시 내려받아 독립 파서와 브라우저에서 읽기를 검증함"
   ],
   "change": {
-    "commits": [],
+    "commits": [
+      "14b01272382cfdbbc0390d71906ede24e321bdbe"
+    ],
     "candidate_reference": null,
-    "deployment_reference": null
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45656787296",
+    "editorial_publication_owner": "편집부(AEDAUT)",
+    "adopt_this_run": "읽기전용기술인수/기록;새작성·교체·배포0"
   },
   "verification": {
-    "status": "정상 원본·이력·보유 복구 사본 조사 완료, 복구 전",
+    "status": "새편집판14b0127·5쪽2490570B의기존독립전페이지/파서QA와실제CI·HTTPS를인수했다.05:30 추가HTTPS두alias/SHA/봉인일치확인·현재열람관찰중이며정상원판복구완료는아니다.",
     "checks": [
       "실제 공개 바이트와 배포 전후 SHA-256 일치",
       "독립 파서 세 종류에서 페이지 읽기 실패",
@@ -125,17 +128,42 @@
     "evidence": [
       "https://infant83.io/AI_Tech_Review/reviews/2026-09-11_weekly-oled-inverse-design-excitonic-reliability/oled_inverse_design_weekly_brief_2026-09-11.pdf",
       "operations/runs/20261108T150005Z-1d9fce7e-f928-4af4-82fa-c6efd2c78c57.md",
-      "https://github.com/Infant83/AI_Tech_Review/commit/af8390fbad9cce897e7882ce487d948a8024daf4"
+      "https://github.com/Infant83/AI_Tech_Review/commit/af8390fbad9cce897e7882ce487d948a8024daf4",
+      "operations/events/EVT-caddcbc1-e5e9-485a-9ca8-4f3cff509b6b.json",
+      ".automation/writing-reviews/legacy-refresh/2026-11-26-oled/pdf-regeneration-scope.json",
+      ".automation/writing-reviews/legacy-refresh/2026-11-26-oled/independent-final-pdf-review.json",
+      ".automation/writing-reviews/legacy-refresh/2026-11-26-oled/live-verification.json",
+      "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md"
     ],
     "remaining_limits": [
-      "정상 원판 복구나 PDF 재생성·후보 배포·브라우저 PDF 읽기 검증은 수행하지 않음",
-      "원 첨부의 영문 기술 브리프 범위는 편집부(AEDAUT)의 후속 검토가 필요함"
-    ]
+      "원판전체내용/레이아웃·생성소스/잘린원인미확인.현재새PDF는명시된새편집판이다.",
+      "기본인앱PDF뷰어·실제기기/Pencil/개인필기연결은확인하지않았다.그근거없이전체해결로닫지않는다."
+    ],
+    "new_edition_20261126": {
+      "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+      "event_reference": "operations/events/EVT-caddcbc1-e5e9-485a-9ca8-4f3cff509b6b.json",
+      "source_revision": "14b01272382cfdbbc0390d71906ede24e321bdbe",
+      "new_edition_date": "2026-11-26",
+      "original_publication_date": "2026-09-11",
+      "PDF_sha256": "8d68d1bfae35224e9c6f0b5405707a962d7eb8b5ea9e8c2df0def12e63420409",
+      "PDF_bytes": 2490570,
+      "pages_from_independent_existing_QA": 5,
+      "actual_PDF_aliases_exact_readback": 2,
+      "checked_at": "2026-11-25T20:39:59.265453+00:00",
+      "sealed_release_exact": true,
+      "native_PDF_viewer_verified": false,
+      "normal_original_recovered": false,
+      "independent_existing_QA": ".automation/writing-reviews/legacy-refresh/2026-11-26-oled/independent-final-pdf-review.json",
+      "publication_workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45656787296",
+      "new_ID_or_publication_or_manual_content_changes_by_ADOPT": 0,
+      "known_original_Git_blob_bytes_reverified": true,
+      "known_original_Git_blob": "cc5550ca1eef22843c59c92ae93b003cafa9e5c5"
+    }
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null,
+    "status": "11/27 13:30 접근 가능 delta·장기 대기 우선순위 재평가·기존 제한 유지",
+    "period": "2026-11-27T04:44:59.588839+00:00",
+    "result": "새 정상 L018/DQB·photonic과 공개44c의 완전 metadata·기존 판본 보존 근거를 인수했다. 이는 OLED 정상 원판/원래 브리프·기본 PDF뷰어·실기기/Pencil/필기의 새 직접 근거가 아니다. 새 편집판의 기존 기술 검증과 원판 미복구를 분리하고 observing/P2를 유지한다.",
     "shared_delta_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "new_exact_source_or_physical_evidence": false,
@@ -161,23 +189,65 @@
       "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
       "result": "새 공유 근거를 확인했으나 이 차단 조건을 해소할 새 직접 입력은 없다. 기존 부분근거/질문 대기와 현재 우선순위를 보존한다.",
       "next_review_at": "2026-11-24T11:00:00+09:00"
+    },
+    "evening_20261124": {
+      "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+      "result": "공용 변경/지원 인계의 새 직접 근거가 없어 기존 차단 조건과 우선순위를 유지한다. 다음25일11시 재평가하며 새 중요 근거는 받은 기본 회차에서 먼저 판단한다.",
+      "next_review_at": "2026-11-25T11:00:00+09:00"
+    },
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "new_edition_20261126": {
+      "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+      "event_reference": "operations/events/EVT-caddcbc1-e5e9-485a-9ca8-4f3cff509b6b.json",
+      "source_revision": "14b01272382cfdbbc0390d71906ede24e321bdbe",
+      "new_edition_date": "2026-11-26",
+      "original_publication_date": "2026-09-11",
+      "PDF_sha256": "8d68d1bfae35224e9c6f0b5405707a962d7eb8b5ea9e8c2df0def12e63420409",
+      "PDF_bytes": 2490570,
+      "pages_from_independent_existing_QA": 5,
+      "actual_PDF_aliases_exact_readback": 2,
+      "checked_at": "2026-11-25T20:39:59.265453+00:00",
+      "sealed_release_exact": true,
+      "native_PDF_viewer_verified": false,
+      "normal_original_recovered": false,
+      "independent_existing_QA": ".automation/writing-reviews/legacy-refresh/2026-11-26-oled/independent-final-pdf-review.json",
+      "publication_workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45656787296",
+      "new_ID_or_publication_or_manual_content_changes_by_ADOPT": 0,
+      "known_original_Git_blob_bytes_reverified": true,
+      "known_original_Git_blob": "cc5550ca1eef22843c59c92ae93b003cafa9e5c5"
+    },
+    "midday_20261126": {
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "result": "새공개5c7d43d에서도OLED기존두PDF의봉인SHA는감수된새편집판과같다. 새L017/DQB는정상원판/원래브리프·기본PDF뷰어/실기기·필기의추가근거가아니다. 기존동일PDF다운로드/전체렌더·원본검색을반복하지않고관찰/P2와원판미복구를유지한다.",
+      "new_exact_input_evidence": false,
+      "next_review_at": "2026-11-27T13:30:00+09:00"
+    },
+    "midday_20261127": {
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "checked_at": "2026-11-27T04:44:59.588839+00:00",
+      "source_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "result": "새 정상 L018/DQB·photonic과 공개44c의 완전 metadata·기존 판본 보존 근거를 인수했다. 이는 OLED 정상 원판/원래 브리프·기본 PDF뷰어·실기기/Pencil/필기의 새 직접 근거가 아니다. 새 편집판의 기존 기술 검증과 원판 미복구를 분리하고 observing/P2를 유지한다.",
+      "new_exact_input_evidence": false,
+      "priority_reassessment": "장기 대기와 새 공개/공용 근거를 재평가했다. 기존 미확인 범위를 종료하거나 우선순위를 바꿀 새 직접 근거가 없어 현재 상태·priority·담당을 유지한다. 새 중대한 근거는 받은 기존 회차에서 앞당긴다.",
+      "next_review_at": "2026-11-28T13:30:00+09:00"
     }
   },
   "recovery": {
     "plan_reference": "SITE_OPERATIONS.md",
     "execution_reference": "operations/runs/20261108T150005Z-1d9fce7e-f928-4af4-82fa-c6efd2c78c57.md",
-    "result": "읽기 전용 원본·이력·보유 백업 조사를 수행했지만 정상 PDF를 찾지 못했다. 손상 bytes를 덮어쓰거나 실제 복구·재생성을 하지 않았다."
+    "result": "정상원판은기존조사에서찾지못했으며손상원본Gitblob/bytes를보존했다.현재공개첨부는AEDAUT가명시범위에서새로저술·감수한영문브리프판본으로대체됐고이는원판bytes/전체내용복구와다르다."
   },
-  "next_action": "정상 원판 또는 원래 영문 브리프의 작성 가능한 소스/범위를 확보한 뒤 재생성·한영/수식/그림 전페이지 감수와 기존 후보/HTTPS 경로를 잇는다.24일11시 입력을 재검토하며 새 근거는 받은 기본 회차에서 먼저 인수한다.",
+  "next_action": "11/28 13:30에 새 편집판의 기본 PDF뷰어/실기기 근거와 남은 정상 원판 범위를 재평가한다. 새 정상 원본·백업이나 의미 있는 열람 제보는 받은 기존 회차에서 먼저 확인한다. 같은 실패 원본 검색·전체 렌더를 반복하거나 새 편집판을 원판 복구 완료로 바꾸지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "editorial_scope_or_normal_original_evidence_pending",
-    "next_scheduled_step_at": "2026-11-24T11:00:00+09:00",
-    "next_review_at": "2026-11-24T11:00:00+09:00",
-    "scheduled_step": "OLED 정상 원판/백업 또는 AEDAUT 본문·수식·그림·한영 감수 범위 및 다음 최소 범위 재평가",
-    "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-    "replan_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-    "replan_reason": "11/23 11시 목표 이후 별도 완료 실행은 확인되지 않아20:34 재개/11/24 03시 연속 실행의 실제 새 근거만 통합했다. 현재 차단 조건을 해소할 직접 입력이 없어 상태/등급을 유지하고11/24 11시에 재평가한다. 과거 시각을 소급 완료하지 않으며 새 중요 근거는 받은 회차에서 앞당긴다."
+    "state": "new_editorial_edition_public_current_readability_observing_original_unrecovered",
+    "next_scheduled_step_at": "2026-11-28T13:30:00+09:00",
+    "next_review_at": "2026-11-28T13:30:00+09:00",
+    "scheduled_step": "새편집판의열람근거/기기제한과남은정상원판범위재평가",
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "replan_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "replan_reason": "11/27 13:30 기존 계획 점검에서 정상 L018/DQB·photonic과 최신44c의 공용 기록·접근 가능한 피드백/보안 metadata를 대조하고 장기 대기 우선순위를 재평가했다. 새 정상 L018/DQB·photonic과 공개44c의 완전 metadata·기존 판본 보존 근거를 인수했다. 이는 OLED 정상 원판/원래 브리프·기본 PDF뷰어·실기기/Pencil/필기의 새 직접 근거가 아니다. 새 편집판의 기존 기술 검증과 원판 미복구를 분리하고 observing/P2를 유지한다. 다음11/28 13:30 기존 슬롯에서 새 근거/범위를 다시 보며 새 중요한 직접 근거는 받은 기존 회차에서 앞당긴다. 현재 상태·priority·담당과 편집부(AEDAUT)의 일반 게시 권한을 유지한다.",
+    "planning_reassessment_at": "2026-11-28T13:30:00+09:00"
   }
 }

@@ -28,6 +28,7 @@ MAX_DIST_BYTES = 128 * 1024 * 1024
 MAX_BLOB_BYTES = 64 * 1024 * 1024
 MAX_READ_BYTES = 512 * 1024 * 1024
 MAX_DESCRIPTOR_BYTES = 2_000_000
+MAX_TOOL_BYTES = 1024 * 1024
 MAX_STDOUT_BYTES = 16 * 1024
 GIT_SECONDS = 20
 TOTAL_SECONDS = 120
@@ -84,7 +85,7 @@ def _safe(path):
     return path
 
 
-def _control(path, limit=65_536):
+def _control(path, limit=65_536, *, budget=None):
     path = _safe(path)
     before = path.stat()
     if not stat.S_ISREG(before.st_mode) or before.st_size > limit:
@@ -94,7 +95,9 @@ def _control(path, limit=65_536):
         opened = os.fstat(handle.fileno())
         if not stat.S_ISREG(opened.st_mode):
             raise IntakeError("unsafe_source_layout")
-        raw = handle.read(limit + 1)
+        raw = handle.read(limit + 1 if budget is None else budget.read_size(limit + 1))
+        if budget is not None:
+            budget.check(len(raw))
         after = os.fstat(handle.fileno())
     if (len(raw) > limit or len(raw) != before.st_size
             or (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns)
@@ -124,6 +127,11 @@ class _Budget:
             raise IntakeError("read_budget")
         if time.monotonic() > self.deadline:
             raise IntakeError("intake_timeout")
+
+    def read_size(self, maximum):
+        self.check()
+        # One extra byte distinguishes an exhausted budget from true EOF.
+        return min(maximum, MAX_READ_BYTES + 1 - self.read_bytes)
 
 
 class _OutputDirectory:
@@ -278,9 +286,7 @@ class _GitSource:
         self.objects = self.tree_metadata()
 
     def control(self, path, limit=65_536):
-        raw = _control(path, limit)
-        self.budget.check(len(raw))
-        return raw
+        return _control(path, limit, budget=self.budget)
 
     def guard(self):
         self.budget.check()
@@ -360,10 +366,12 @@ class _GitSource:
                     for key, _ in selector.select(min(left, .2)):
                         destination = key.data
                         ceiling = limit if destination is output else MAX_STDOUT_BYTES
-                        chunk = os.read(key.fileobj.fileno(), min(65_536, ceiling + 1 - len(destination)))
+                        chunk = os.read(key.fileobj.fileno(), self.budget.read_size(
+                            min(65_536, ceiling + 1 - len(destination))))
                         if not chunk:
                             selector.unregister(key.fileobj)
                         else:
+                            self.budget.check(len(chunk))
                             destination.extend(chunk)
                             if len(destination) > ceiling:
                                 raise IntakeError("git_metadata_limit")
@@ -472,8 +480,7 @@ class _BoundedInputs(_Inputs):
             if opened.st_size > ceiling:
                 raise IntakeError("dist_limit" if dist_limit else "blob_limit")
             while True:
-                chunk = handle.read(min(1024 * 1024, ceiling + 1 - count,
-                                        MAX_READ_BYTES + 1 - self.budget.read_bytes))
+                chunk = handle.read(self.budget.read_size(min(1024 * 1024, ceiling + 1 - count)))
                 if not chunk:
                     break
                 self.budget.check(len(chunk)); count += len(chunk)
@@ -511,11 +518,21 @@ class _BoundedInputs(_Inputs):
         return super().tree(path)
 
 
-def _tool_hashes():
-    directory = Path(__file__).resolve().parent
-    names = ["admin_source_intake.py", "admin_requests.py", "admin_inventory.py", "publication_intent.py",
-             "publication_release.py", "publication_snapshot.py", "review_registry.py", "reader_engagement_publish.py"]
-    return {"scripts/" + name: _sha((directory / name).read_bytes()) for name in names}
+def _tool_paths():
+    return {"scripts/" + name for name in ["admin_source_intake.py", "admin_requests.py", "admin_inventory.py", "publication_intent.py",
+             "publication_release.py", "publication_snapshot.py", "review_registry.py", "reader_engagement_publish.py"]}
+
+
+def _tool_bytes(path, budget=None):
+    """Read trusted installed code with the same remaining-byte/deadline cap."""
+    if budget is not None:
+        budget.check()
+    return _control(path, MAX_TOOL_BYTES, budget=budget)
+
+
+def _tool_hashes(budget=None):
+    directory = Path(__file__).resolve().parent.parent
+    return {name: _sha(_tool_bytes(directory / name, budget)) for name in sorted(_tool_paths())}
 
 
 def _intake(source_root, request_path, baseline_snapshot, output):
@@ -531,20 +548,39 @@ def _intake(source_root, request_path, baseline_snapshot, output):
 
 
 def _read_intake(root, incoming, baseline, output, budget, destination):
-    code = _tool_hashes()
+    descriptor, source, tracker, code = _collect_intake(root, incoming, baseline, budget, output=output)
+    raw = _raw(descriptor) + b"\n"
+    destination.publish(raw)
+    budget.check()
+    return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
+            "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
+
+
+def _collect_intake(root, incoming, baseline, budget, *, output=None, frozen_request=None):
+    """Internal frozen context for the separate local projection importer.
+
+    No output writes. The public B2a CLI still publishes only its descriptor;
+    consumers must revalidate this context before attesting a new import.
+    """
+    code = _tool_hashes(budget=budget)
     source = _GitSource(root, budget)
-    if any(p == output or p in output.parents for p in [source.gitdir, source.common]):
+    if output is not None and any(p == output or p in output.parents for p in [source.gitdir, source.common]):
         raise IntakeError("unsafe_output")
     tracker = _BoundedInputs(root, budget)
     tracker.byte_limits[incoming] = admin_requests.MAX_REQUEST_BYTES
     payload = tracker.read_bytes(incoming, admin_requests.MAX_REQUEST_BYTES, boundary=incoming.parent)
-    request = admin_requests.parse_request(payload)
+    if frozen_request is None:
+        request = admin_requests.parse_request(payload)
+    else:
+        if type(frozen_request) is not admin_requests._FrozenRequest or payload != frozen_request.payload:
+            raise IntakeError("input_changed")
+        request = frozen_request.value()
     if request["expectedSourceRevision"] != source.revision:
         raise IntakeError("source_conflict")
     tracker.dist = root / request["sourceId"] / "dist"
     capture = {}
     report = admin_requests._preflight(root, incoming, baseline, tracker=tracker,
-        revision_reader=source.verify, frozen=True, capture=capture)
+        revision_reader=source.verify, frozen=True, capture=capture, frozen_request=frozen_request)
     files = []
     for path, info in sorted(tracker.files.items()):
         if not info["source"]:
@@ -574,15 +610,12 @@ def _read_intake(root, incoming, baseline, output, budget, destination):
     if len(raw) > MAX_DESCRIPTOR_BYTES:
         raise IntakeError("descriptor_limit")
     budget.check()
-    if _tool_hashes() != code:
+    if _tool_hashes(budget=budget) != code:
         raise IntakeError("tool_changed")
     source.guard()
     if source.head() != source.revision:
         raise IntakeError("source_conflict")
-    destination.publish(raw)
-    budget.check()
-    return {"schemaVersion": 1, "ok": True, "status": "source_intake_plan_only",
-            "descriptorSha256": _sha(raw), "intakeDigest": descriptor["intakeDigest"]}
+    return descriptor, source, tracker, code
 
 
 def create_intake(source_root: Path, request_path: Path, baseline_snapshot: Path, output: Path):

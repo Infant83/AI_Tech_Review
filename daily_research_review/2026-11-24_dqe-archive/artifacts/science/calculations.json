@@ -1,0 +1,168 @@
+{
+  "execution": {
+    "kind": "classical exact rational arithmetic and numerical pure-state consistency check",
+    "python": "3.12.14",
+    "sklearn_executed": false,
+    "eight_qubit_circuit_executed": false,
+    "QPU_executed": false,
+    "DFT_executed": false
+  },
+  "label_mean_eV": "1/5",
+  "centered_labels_eV": [
+    "-1/10",
+    "1/10"
+  ],
+  "regularized_training_system": [
+    [
+      "3/2",
+      "1/2"
+    ],
+    [
+      "1/2",
+      "3/2"
+    ]
+  ],
+  "alpha_eV": [
+    "-1/10",
+    "1/10"
+  ],
+  "prediction_Q_C_eV": [
+    "7/50",
+    "9/50"
+  ],
+  "single_point_absolute_error_Q_C_eV": [
+    "3/100",
+    "1/100"
+  ],
+  "single_point_error_is_population_MAE": false,
+  "joint_quantum_fidelity_Gram": [
+    [
+      1,
+      "1/2",
+      "4/5"
+    ],
+    [
+      "1/2",
+      1,
+      "1/5"
+    ],
+    [
+      "4/5",
+      "1/5",
+      1
+    ]
+  ],
+  "joint_quantum_fidelity_Gram_principal_minors": {
+    "indices_0": 1,
+    "indices_1": 1,
+    "indices_2": 1,
+    "indices_0_1": "3/4",
+    "indices_0_2": "9/25",
+    "indices_1_2": "24/25",
+    "indices_0_1_2": "23/100"
+  },
+  "joint_classical_Gram_with_one_consistent_test_self_kernel_1": [
+    [
+      1,
+      "1/2",
+      "3/5"
+    ],
+    [
+      "1/2",
+      1,
+      "2/5"
+    ],
+    [
+      "3/5",
+      "2/5",
+      1
+    ]
+  ],
+  "joint_classical_Gram_determinant": "47/100",
+  "quantum_realizability_witness": {
+    "training_states": [
+      "|0>",
+      "(|0>+|1>)/sqrt(2)"
+    ],
+    "test_state": "sqrt(4/5)|0> + sqrt(1/5)*exp(i*theta)|1>; cos(theta)=-3/4, sin(theta)=sqrt(7)/4",
+    "numerically_recovered_fidelity_Gram": [
+      [
+        1.0,
+        0.4999999999999999,
+        0.7999999999999999
+      ],
+      [
+        0.4999999999999999,
+        0.9999999999999996,
+        0.19999999999999993
+      ],
+      [
+        0.7999999999999999,
+        0.19999999999999993,
+        1.0
+      ]
+    ],
+    "scope": "A classical mathematical existence witness for the three supplied kernel points; not an implementation of the unspecified fixed eight-qubit feature circuit. Unused |0> qubits can embed these states in its Hilbert-space dimension."
+  },
+  "independent_audit_matrix_B": [
+    [
+      1,
+      "4/5",
+      "4/5"
+    ],
+    [
+      "4/5",
+      1,
+      0
+    ],
+    [
+      "4/5",
+      0,
+      1
+    ]
+  ],
+  "B_principal_minors": {
+    "indices_0": 1,
+    "indices_1": 1,
+    "indices_2": 1,
+    "indices_0_1": "9/25",
+    "indices_0_2": "9/25",
+    "indices_1_2": 1,
+    "indices_0_1_2": "-7/25"
+  },
+  "B_determinant": "-7/25",
+  "B_eigenvalues": [
+    -0.13137084989847603,
+    1.0,
+    2.131370849898476
+  ],
+  "B_plus_half_identity_eigenvalues": [
+    0.368629150101524,
+    1.5,
+    2.631370849898476
+  ],
+  "ridge_repairs_the_original_measurement_provenance": false,
+  "training_pairs": 19900,
+  "prediction_pairs": 4000,
+  "all_pairs": 23900,
+  "shots_per_pair": 1000,
+  "all_shots": 23900000,
+  "measurement_seconds": 4780,
+  "quantum_total_seconds": 5680,
+  "quantum_total_minutes_seconds": [
+    94,
+    40
+  ],
+  "classical_total_seconds": 360,
+  "maximum_binomial_element_standard_error_1000_shots": 0.015811388300841896,
+  "remaining_measurement_budget_seconds": 900,
+  "minimum_throughput_exact_shots_per_second": "239000/9",
+  "minimum_integer_throughput_shots_per_second": 26556,
+  "maximum_integer_shots_per_pair_at_current_rate": 188,
+  "total_seconds_at_188_shots_per_pair": "44966/25",
+  "total_seconds_at_189_shots_per_pair": "90171/50",
+  "gross_DFT_replacement_upper_bound_CPU_hours": 80,
+  "new_20_label_validation_cost_CPU_hours_if_all_DFT_jobs_are_run": 80,
+  "scope": "Synthetic inputs and timing assumptions. No surrogate deployment, DFT saving, hardware throughput or population accuracy was demonstrated.",
+  "result": "all assertions passed"
+}

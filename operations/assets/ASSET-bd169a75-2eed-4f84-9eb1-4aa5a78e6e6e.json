@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "ASSET-bd169a75-2eed-4f84-9eb1-4aa5a78e6e6e",
-  "record_version": 30,
+  "record_version": 36,
   "asset_key": "public-document-storage",
   "name": "공개 PDF 객체 저장소 이전 준비",
   "status": "prepared",
@@ -27,11 +27,13 @@
     "operations/runs/20261114T175640Z-94eed30e-e280-4826-a1c7-768935adeeec.md",
     "operations/runs/20261114T215909Z-eae47062-7c95-48fc-a731-3fce7733e995.md",
     "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
-    "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md"
+    "operations/runs/20261115T073736Z-37805efe-c9b5-4339-8b41-fbd5504b7117.md",
+    "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
   ],
   "access_boundary": "준비 코드·로컬 검증과 실제 운영 활성화를 구분한다. 향후 업로드는 게시 담당 권한으로 제한하고 공개 읽기는 검증된 URL/기대 SHA 매핑만 허용한다. 개인 문서·필기·사용자 계정 데이터를 공개 PDF 객체와 섞지 않는다.",
   "verification": {
-    "checked_at": "2026-11-14T22:10:53.220230+00:00",
+    "checked_at": "2026-11-27T04:34:47.364301Z",
     "confirmed": [
       "기존 검증 묶음의 공개 PDF226경로/159객체와 Worker 매핑·로컬 전달 근거 재사용",
       "기존 CLI 로그인과 해당 계정 소속 확인. 현 OAuth 권한 목록에 R2 없음·R2 목록 요청10000거절, 브라우저 로그인 필요",
@@ -50,22 +52,22 @@
       "19시 기존로그인인계도암호입력필요. 실제R2권한·버킷·사용량/청구·원격전체해시/복구의새확인근거없음."
     ],
     "current_public_footprint": {
-      "manifest_files": 2761,
-      "manifest_bytes": 850961497,
-      "release_json_bytes": 1410110,
-      "public_files": 2762,
-      "public_bytes": 852371607,
-      "pdf_paths": 283,
-      "unique_pdf_objects": 200,
+      "manifest_files": 2820,
+      "manifest_bytes": 869566548,
+      "release_json_bytes": 1444249,
+      "public_files": 2821,
+      "public_bytes": 871010797,
+      "pdf_paths": 316,
+      "unique_pdf_objects": 221,
       "retained_edition_urls": 22,
-      "growth_bytes": 2421479,
-      "growth_basis_source": "bb828ba451575d58ca662764b22d503bf0593fff",
-      "excess_over_internal_800MB_bytes": 52371607,
-      "headroom_to_internal_800MB_bytes": -52371607,
-      "checked_at": "2026-11-23T18:18:27.557366+00:00",
-      "source_revision": "6a920806fdad48eea569d0a61f6819244876f430",
-      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-      "scope": "Actual complete HTTPS seal metadata; known old22 edition URLs preserved. Current QAE PDF alias has exact declared before/after; new or changed3 PDF objects separately downloaded. Internal800MB target is not provider quota/outage; no external activation, physical saving or restore claim."
+      "growth_bytes": 5802150,
+      "growth_basis_source": "ba103f72355e40428003d159ab3df084df7f4209",
+      "excess_over_internal_800MB_bytes": 71010797,
+      "headroom_to_internal_800MB_bytes": -71010797,
+      "checked_at": "2026-11-27T04:34:47.364301Z",
+      "source_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "scope": "Complete actual HTTPS release/catalog/updates metadata. All prior297 PDF paths remain; the sole old-path SHA change is the current QAE notes.pdf alias under its exact L018 before/after declaration. All22 retained edition URLs/SHA are exact and19 new PDF paths are registered. Existing publisher PDF/editorial/HTTPS QA is reused. No new PDF/artifact download, render, science/device check, quota audit, external activation, physical-I/O/storage-savings measurement, power-loss durability or restore claim."
     },
     "provider_connection_rechecked_this_cycle": false,
     "operational_storage_activation": false,
@@ -113,6 +115,39 @@
         "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
         "scope": "공개 metadata drift만 갱신. 기존249경로 계획의 전체 재생성/새 export 아님."
       }
+    },
+    "latest_operational_observation": {
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "checked_at": "2026-11-27T04:34:47.364301Z",
+      "public_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "prior297_PDF_paths_missing": 0,
+      "old_PDF_SHA_changes": 1,
+      "QAE_alias_before_after_exact_declaration": true,
+      "retained22_edition_URLs_and_SHA_exact": true,
+      "normal_new_PDF_paths": 19,
+      "current_recovery_copies": 3,
+      "all_current_unexpired": true,
+      "current_general_artifact_advertised": 106,
+      "current_general_artifact_collected": 106,
+      "current_general_artifact_cardinality_complete": true,
+      "current_filtered_recovery_advertised": 3,
+      "current_filtered_recovery_collected": 3,
+      "current_filtered_recovery_cardinality_complete": true,
+      "current_recovery_sets_equal": true,
+      "new_DQB_current_copy_source_run_digest_bound": true,
+      "new_DQB_confirmed_CI_deletions": 1,
+      "other_normal_publication_deletion_counts": "not retrieved; not inferred",
+      "historical_DQB104_103_provider_cause_established": false,
+      "our_manual_deletions_downloads_reruns_or_restore": 0,
+      "artifact_count_not_physical_savings_measurement": true,
+      "external_access_evidence_new": false,
+      "provider_reconnection_attempts": 0,
+      "external_activation": false,
+      "actual_public_storage_bytes_saved": 0,
+      "remote_full_SHA_restore_physical_IO_or_power_loss_verified": false,
+      "schedule_reference": "operations/SCHEDULE.md; OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+      "schedule_change_by_this_asset_update": false,
+      "scope": "Current public metadata footprint and separately bounded artifact inventories. Prepared storage access boundary, permissions, inactive state and external-access uncertainty remain unchanged; weekly review is coordinated in the existing cleanup issue."
     }
   },
   "lifecycle": {
@@ -120,7 +155,7 @@
     "recovery_reference": "SITE_OPERATIONS.md"
   },
   "created_at": "2026-11-12T22:16:24Z",
-  "updated_at": "2026-11-23T18:18:27.557366+00:00",
+  "updated_at": "2026-11-27T04:44:41.461489Z",
   "evening_public_metadata_20261119": {
     "checked_at": "2026-11-19T10:06:51.416867+00:00",
     "source_revision": "5f4aacb8e86120b9b9c902917733ceaa5f2e1957",

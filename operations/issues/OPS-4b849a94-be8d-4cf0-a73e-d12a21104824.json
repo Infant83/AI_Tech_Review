@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 21,
+  "record_version": 31,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-23T18:22:08.601648+00:00",
+  "updated_at": "2026-11-27T04:46:06.399789Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -54,7 +54,11 @@
       "reference": "operations/decisions/DEC-85dc450e-2d67-4b89-9ef8-584db1c75ca4.md",
       "finding": "전체 자료와 알림용 카탈로그를 구분하는 첫 읽기 전용 관리 목록의 범위와 종료 조건을 정리함"
     },
-    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md"
+    "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
+    "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+    "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+    "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
   ],
   "limitations": [
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
@@ -91,9 +95,11 @@
       "0124fbad287380e3ec3d9489614ac1c7323a9d55",
       "265b9a260025de826a3e3574a9590d77fa5fa048",
       "ecd98f5043324c9af8dc98793e76b79280b39e4a",
-      "527b9d8f24d21ff3a8f6b878facbca7cecf0951f"
+      "527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
+      "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "75497454864305aafae1e5c0573d34b976ebb966"
     ],
-    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/75497454864305aafae1e5c0573d34b976ebb966",
     "deployment_reference": null,
     "local_readonly_candidate": {
       "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -275,12 +281,242 @@
       "scope": "Installed Git binary selection and fixed child PATH only; synthetic sandbox/CAS/receipt contract preserved.",
       "target_tests": 34,
       "independent_actual_CLI_apply_replay_CAS_checks": 3,
-      "actual_GitHub_CI_of_this_correction_observed": false,
-      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md"
+      "actual_GitHub_CI_of_this_correction_observed": true,
+      "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
+      "actual_CI_observation_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
+    },
+    "b2b1_contract": {
+      "status": "adopted_contract_initial_candidate_in_separate_branch_not_integrated",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md",
+      "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
+      "scope": "Exact selected bytes in new isolated remote-free bare Git and immutable origin/projection mapping; no patch/key reservation or publication",
+      "runtime_tests_run": 0,
+      "source_or_candidate_Git_writes": 0,
+      "next_implementation_target": "2026-11-25T03:00:00+09:00",
+      "independent_review_target": "2026-11-25T11:00:00+09:00",
+      "independent_static_axes": 9,
+      "reviewed_document_sha256": "174c50a33c21eb4c66919095bd641625c50ebc26bcdfe3c3233b31b4e553a998",
+      "reviewed_B2b1_section_sha256": "736de992a2607e77947f35b26ac165c82cc749f39e4f07adfa029c05d4a4b1aa",
+      "independent_result": "PASS_contract_only_after_no_change_and_final_attestation_clarifications",
+      "future_runtime_validation_groups": 6,
+      "adopted_after_final_independent_review_at": "2026-11-24T12:32:12.752771+00:00",
+      "runtime_tests_run_scope": "The recorded zero runtime tests apply to the Nov24 contract adoption; current candidate tests are recorded separately."
+    },
+    "local_b2b1_candidate": {
+      "source_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+      "initial_source_revision": "bbe60a610dcb8213281c925c8dfe6dd03a8ea9bc",
+      "base_revision": "1d112e77eb27078c96d99671859ebd7481f15119",
+      "branch": "codex/admin-candidate-import-b2b1-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_sha256": {
+        "scripts/admin_candidate_import.py": "fdf4bb9bfe6aea1a879b8511e7717e5f0ece477046a5c465176e04cc00889b0b",
+        "tests/test_admin_candidate_import.py": "b17a62031286a2c9a4925036681595d7524bdadec153c0eed8ef4d9167415d20",
+        ".automation/admin-readonly/README.md": "1d5b917019c588425f6aa7f91b59cc6fa9015c5e5d3297dd1340ad83490f3699",
+        "scripts/admin_source_intake.py": "aac7b3401a3d2dbf0e80686274958253a551248a20127e353f8b7411bd5e8f66"
+      },
+      "status": "initial_candidate_corrected_and_bounded_verified_formal_review_pending",
+      "remote_branch_preserved": true,
+      "main_integrated": false,
+      "deployed": false,
+      "source_origin_writer_API_DB_publication_activated": false,
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "proof_key": "adopt-b2b1-20261125 / freeze-corrected; adopt-20261125-night / independent / corrected review; actual-import / verification",
+      "corrected_target_tests": 17,
+      "independent_target_tests": 17,
+      "independent_epoch_regression_cases": 1,
+      "initial_epoch_red_case_preserved": true,
+      "prior_whole_candidate": "bbe60a610dcb8213281c925c8dfe6dd03a8ea9bc",
+      "prior_whole_tests": 568,
+      "prior_whole_passed": 567,
+      "prior_whole_existing_optional_skips": 1,
+      "latest_whole_suite_run": false,
+      "actual_cli_calls": 4,
+      "actual_selected_manifest": 142,
+      "actual_source_baseline_request_foreign_preserved": 148,
+      "actual_Git_all_blob_SHA256_checks": 142,
+      "actual_Git_fsck_exit": 0,
+      "root_controlled_destination_outside_all_checked_worktrees_and_baseline": true,
+      "automatic_other_worktree_discovery": false,
+      "automatic_init_baseline_discovery": false,
+      "automatic_incomplete_import_repair_resume": false,
+      "resume": "11/25 11시 최신 main/정상 게시/작업 파일을 인수해 물리 배치 지원 경계·identity history·incomplete 조정·상한/중단의6군 정식 검토와 최신 전체 회귀를 수행한다. d0b960e의 별도CLI수정도 후보 통합 전 보존한다. 원본/원격writer·patch/key/CAS·서버활성화는후속이다.",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/1272e62e27e5a11a06374d253f1149ced0c8c813"
+    },
+    "b2b1_formal": {
+      "source_revision": "658de622f788e2e224447857730863b325ff9afb",
+      "base_revision": "62b874962422e58da13bad7bc14e0e2cf1867512",
+      "branch": "codex/admin-b2b1-formal-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "status": "bounded_local_tool_source_integrated_actual_CI_pending",
+      "source_files": [
+        "scripts/admin_candidate_import.py",
+        "scripts/admin_source_intake.py",
+        "tests/test_admin_candidate_import.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_files_sha256": {
+        "scripts/admin_candidate_import.py": "edfc8e06974ae29cf2d94ee47d9f62f7064d036c6c37c3fcfdaf341eb9659d2a",
+        "scripts/admin_source_intake.py": "c34f56d8642f452c9f2c2753a2da4434ae7d0976041f3b792db5f2c2d73dc9b1",
+        "tests/test_admin_candidate_import.py": "ec53c8a9f880b40e5e0630fc384a6fee579f8485cd59dbc0f9f3474062d8df33",
+        ".automation/admin-readonly/README.md": "2dd1887dbf5879f24d8fd976a976975f3e24476c15f82324707e2483b44d9dd4"
+      },
+      "independent_six_group_review": "PASS_with_controlled_local_operator_placement_and_fail_closed_partial_state_limits",
+      "full_tests": 583,
+      "full_passed": 582,
+      "existing_optional_skips": 1,
+      "skip_reason": "Python-Markdown unavailable for existing MathProtectionTests.test_renderer_preserves_all_stress_cases",
+      "independent_runtime_tests": 5,
+      "independent_runtime_cases": 8,
+      "counts_not_summed": true,
+      "actual_selected_files": 142,
+      "actual_selected_bytes": 5224436,
+      "historical_completed_imports_before": 1,
+      "completed_imports_after": 2,
+      "same_namespace_epoch_and_old_files_preserved": true,
+      "old_store_files_preserved": 151,
+      "source_request_baseline_foreign_preserved": true,
+      "actual_CLI_calls_before_integration": 4,
+      "integrated_CLI_historical_inspect_passed": true,
+      "actual_CI_observed": false,
+      "automatic_partial_repair_or_source_writer_patch_key_CAS_API_DB_publication": false,
+      "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+      "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
+      "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+      "integrated_CLI_historical_source_advanced": true
+    },
+    "b2b2_contract": {
+      "status": "adopted_static_contract_not_implemented",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장",
+      "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+      "scope": "Separate persistent local writer-store, B2b1 read-only, explicit attested stage-base followed by key/receipt/result CAS; original source is only read",
+      "reviewed_document_sha256": "9c83da1673296bb8c39fd485fcd1495d03929c08db87b17f9103e2b79a6f1e71",
+      "adopted_document_sha256": "3539d93707b373a964249e5d5ac076c6ec6257c2955bf3a71b16fc757a555d86",
+      "adopted_B2b2_section_sha256": "30771a03c309480bb90666197c5ac61f8c965e67476cc4bc1a81b946f6a22be5",
+      "independent_static_roles": 2,
+      "mandatory_corrections_completed": [
+        "no_change tombstone without Git receipt",
+        "no_change final input/control check",
+        "self-contained attested base evidence"
+      ],
+      "explicit_clarifications": [
+        "stable namespace across projections",
+        "historical replay before current A/hints/live projection",
+        "writer then B2b1 lock order and shared budgets",
+        "origin read checks distinct from writer-local base/result CAS"
+      ],
+      "runtime_code_changes": 0,
+      "runtime_tests_run": 0,
+      "new_runtime_store_or_key_acceptance_or_candidate_writes": 0,
+      "first_implementation_target": "2026-11-26T05:30:00+09:00",
+      "first_independent_review_target": "2026-11-26T13:30:00+09:00",
+      "not_completion_promise": true
+    },
+    "b2b2_initial_candidate": {
+      "status": "historical_initial_candidate_followed_by_supported_slice_formal_review",
+      "base_revision": "2e97e87cc1060053f9cb1516962b4fd183fa97ae",
+      "initial_candidate_revision": "618a3eb700446da6b2d40886852e63c53369f47f",
+      "source_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+      "branch": "codex/admin-b2b2-candidate-20261126",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_files": [
+        "scripts/admin_projection_jobs.py",
+        "scripts/admin_requests.py",
+        "scripts/admin_source_intake.py",
+        "scripts/admin_candidate_import.py",
+        "tests/test_admin_projection_jobs.py",
+        "tests/test_admin_candidate_import.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_sha256": {
+        "scripts/admin_projection_jobs.py": "e2bf9bffd4f5505e3cc81ce9951a1bad1d88a8bb3b4bace6751968c88b083c29",
+        "scripts/admin_requests.py": "1c52ff885c2338662de912ac9c4009fc041ee8b7cf9ea2d0b146c94bec9fbeca",
+        "scripts/admin_source_intake.py": "5d7af0281da2cb0d6b0dc18d6dec334d8bf2b8d812905b0626dc941b537b2a55",
+        "scripts/admin_candidate_import.py": "7b524b95996765753eff2842d857fd690aa9cf60de0030f408ec64dd56dfef38",
+        "tests/test_admin_projection_jobs.py": "28244c87713ce4d366495aa2a58ed9737901cc24338e533e237670518c1a6bee",
+        "tests/test_admin_candidate_import.py": "3a0e10d079ec18e5af3d99193ba06f6045d312e926dd4ccbc80e1a1fa42ce6a7",
+        ".automation/admin-readonly/README.md": "15c064f741714223f43793f9e1b394efe863cf74df615a7967f95576d5986751"
+      },
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+      "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+      "scope": "별도지속writer 초기화·명시base준비·no_change inventory/tombstone·역사replay. changed candidate/receipt/CAS는키예약전명시거절한다.",
+      "integrated": false,
+      "deployed": false,
+      "actual_user_requests_accepted": 0,
+      "source_or_remote_writer_or_publication_activation": false,
+      "resume": "26일13:30에이정확후보의정식독립6군과남은changed receipt/CAS 구현경계를잇는다.새keyspace/암묵적base준비/원본SHA치환을하지않는다.",
+      "followup_run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md"
+    },
+    "b2b2_no_change_formal": {
+      "status": "supported_no_change_slice_formal_review_and_local_tool_source_integration_complete",
+      "source_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "integration_base_revision": "d080118fae1f31eabc318965201c22e3e527b7c4",
+      "initial_candidate_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+      "merged_candidate_base_revision": "3cf19e3a1f330f4196f64c42581df8852ac98156",
+      "branch": "codex/admin-b2b2-formal-20261126",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_sha256": {
+        "scripts/admin_projection_jobs.py": "a446b61b7cebc61245c4caf80e5378ec810f55d72bb7877835f20f05e4b62756",
+        "scripts/admin_requests.py": "1c52ff885c2338662de912ac9c4009fc041ee8b7cf9ea2d0b146c94bec9fbeca",
+        "scripts/admin_source_intake.py": "5d7af0281da2cb0d6b0dc18d6dec334d8bf2b8d812905b0626dc941b537b2a55",
+        "scripts/admin_candidate_import.py": "7b524b95996765753eff2842d857fd690aa9cf60de0030f408ec64dd56dfef38",
+        "tests/test_admin_projection_jobs.py": "e9e280585354261a97141c2ba53b54a6aaf0168d12049b8c0c57cfb178dc3ec7",
+        "tests/test_admin_candidate_import.py": "3a0e10d079ec18e5af3d99193ba06f6045d312e926dd4ccbc80e1a1fa42ce6a7",
+        ".automation/admin-readonly/README.md": "91747fa141dc13c9ed3fecf6bcf547a45191b25eb953aad6a893dcb66d5af239"
+      },
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "scope": "별도 초기화·명시 base 준비·no_change inventory/tombstone·역사 replay만 지원",
+      "main_integrated": true,
+      "deployed": false,
+      "new_actual_CI_observed": true,
+      "actual_user_requests_accepted": 0,
+      "source_remote_API_DB_or_publication_activation": false,
+      "changed_candidate_receipt_CAS_supported": false,
+      "changed_request_refusal_before_key_reservation": true,
+      "resume": "11/26 18:30 기존 슬롯에서 changed receipt/CAS의 제한된 Git 쓰기·계상 가능 경계를 검토하고 같은 일감을 이어간다. 전체 B2b2/C–E 납기나 운영 활성화를 확정하지 않는다."
+    },
+    "b2b2_ref_boundary_investigation": {
+      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "status": "isolated_ref_transaction_boundary_investigation_complete_product_gate_not_passed",
+      "source_base_revision": "1fab58bf157b4220573b8bfb6b0266b172bb1cb6",
+      "unchanged_product_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "local_probe_branch": "codex/admin-b2b2-ref-probe-20261126",
+      "product_source_edits": 0,
+      "product_candidate_commits": 0,
+      "request_key_reservations": 0,
+      "changed_writer_or_production_CAS_enabled": false,
+      "proof_key": "adopt-b2b2-ref-probe-20261126 / completed-cases/root-parent-unexpected-observation/result; adopt-b2b2-ref-independent-20261126 / result"
+    },
+    "b2b2_fd_ref_candidate": {
+      "status": "formal_review_and_local_source_integration_complete_internal_primitive_only",
+      "source_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "initial_candidate_revision": "da35f7c388f5302a2737464911431196338a4b46",
+      "source_base_revision": "d36d776ea4efb8a6b15a9de9cefca7b4ef22f7cd",
+      "branch": "codex/admin-b2b2-fd-formal-20261127",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "source_sha256": {
+        "scripts/admin_projection_refs.py": "11ca5c85b3169674d1c1e6923251f92ce9ef52f72ed3d468a8b382dbec789d26",
+        "tests/test_admin_projection_refs.py": "643ec2a0def26d5216c4318bfd3a6fbb53539a35fe94dcdc4414b2fb7c9a8096"
+      },
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/75497454864305aafae1e5c0573d34b976ebb966",
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "main_integrated": true,
+      "deployed": false,
+      "current_writer_imports_primitive": false,
+      "current_changed_requests_enabled": false,
+      "old_seven_no_change_source_hashes_preserved": true,
+      "scope": "협력 local flock 아래 expected-old 비교와 고정 directory FD에서의 단일 operation ref rename만 지원",
+      "contract_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2-p--fd-기준-단일-operation-ref의-격리-내부-계약",
+      "initial_reviewed_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+      "integration_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "integration_base_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "actual_CI_observed": false
     }
   },
   "verification": {
-    "status": "A/B1에 이어 B2a 로컬 읽기 인수 명세의 정식 기술 검증·최신 정상 게시 보존·소스통합 완료. 실제서버/API/원본 저장·발행과B2b는후속이다.",
+    "status": "FD 내부 primitive 정식 검증·로컬 소스통합 완료; 전체 writer/API 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -306,8 +542,11 @@
       "operations/runs/20261121T020447Z-ca65ea00-417f-470c-95a9-9f3cee29dca0.md"
     ],
     "remaining_limits": [
-      "로컬 도구만 통합했으며 운영 API/인증/쓰기/원격 미리보기·공개 관리자 URL·실사용·Safari/실기기 검증은 미실시다.",
-      "11/19 감수 당시43개 내용 미확인은 공개 present와 별개인 검토 입력/출력 근거 부족이다. 과학 감수 결과로 해석하지 않는다."
+      "현재지원은명시초기화/base준비·무변경요청기록/역사재시도뿐이다.실제변경candidate/claim receipt/CAS는미구현이며키예약전에거절한다.",
+      "새후보는별도branch이고main소스통합·전체검사/정식독립6군은전이다.기존658의정상CI를새후보검증으로합산하지않는다.",
+      "자기격리fixture만사용했으며실제사용자요청/운영writer·관리HTTP/API/인가·DB·발행·원격통합·전체복원을활성화하지않았다.",
+      "제어된로컬부모/동일UID·첫open전namespace한계와운영자의물리배치확인조건을유지한다.",
+      "읽기예산과7→8검사는bounded API가반환한논리bytes누계이며OS page-cache/read-ahead·물리I/O8B보장이아니다."
     ],
     "fresh_data_intake_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
@@ -690,14 +929,448 @@
         "Parent no-follow dir-FD; first leaf euid/0700/empty; exclusive files; observed identity checks after first open.",
         "POSIX mkdir does not return a directory FD; arbitrary same-UID replacement before first open cannot be atomically identified. This is not a shared untrusted-server activation or namespace lock."
       ],
-      "actual_B2a_GitHub_CI_observed": false,
-      "server_auth_API_DB_source_writer_publication_activated": false
+      "actual_B2a_GitHub_CI_observed": true,
+      "server_auth_API_DB_source_writer_publication_activated": false,
+      "actual_CI_observation_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md"
+    },
+    "B2a_actual_CI_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "normal_run_urls": [
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45402215559",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45400368890",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45397981670",
+        "https://github.com/Infant83/AI_Tech_Review/actions/runs/45394978331"
+      ],
+      "eight_code_test_files_exact_reviewed527": true,
+      "actual_python_suite": 554,
+      "normal_QA_reference": "daily_research_review/2026-11-24_dqe-archive/artifacts/publication-qa.json",
+      "not_B2b1_or_new_retention_exit_execution": true
+    },
+    "B2b1_initial_20261125": {
+      "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
+      "candidate": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+      "independent_result": "PASS_bounded_correction_and_actual_projection_not_formal_acceptance",
+      "corrected_target_tests": 17,
+      "independent_existing_tests": 17,
+      "separate_epoch_red_then_green_cases": 1,
+      "whole_568_is_prior_candidate_only": true,
+      "corrected_whole_suite_run": false,
+      "actual_source_revision": "d0b960e83d5e00c2acac1e68bac7098ecbf02b7d",
+      "actual_release_revision": "bc703d50853dfad4752da48d4a90168458fe18cb",
+      "actual_cli_calls": 4,
+      "selected_manifest": 142,
+      "source_files_preserved": 148,
+      "native3_fingerprint_raw3_preserved": true,
+      "Git_fsck_and_full_blob_checks": true,
+      "remaining": [
+        "Formal6-group review and latest-base whole suite pending11h.",
+        "init-store has no baseline arg; other-worktree roots are operator verified, not automatically enumerated.",
+        "Incomplete import reconciliation/repair/resume is not implemented; conservative refusal only.",
+        "No patch/keyclaim/CAS, operational source/remote writer, authorization/API/DB/publication activation."
+      ]
+    },
+    "B2b1_formal_20261125": {
+      "source_revision": "658de622f788e2e224447857730863b325ff9afb",
+      "base_revision": "62b874962422e58da13bad7bc14e0e2cf1867512",
+      "branch": "codex/admin-b2b1-formal-20261125",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "status": "bounded_local_tool_source_integrated_actual_CI_pending",
+      "source_files": [
+        "scripts/admin_candidate_import.py",
+        "scripts/admin_source_intake.py",
+        "tests/test_admin_candidate_import.py",
+        ".automation/admin-readonly/README.md"
+      ],
+      "source_files_sha256": {
+        "scripts/admin_candidate_import.py": "edfc8e06974ae29cf2d94ee47d9f62f7064d036c6c37c3fcfdaf341eb9659d2a",
+        "scripts/admin_source_intake.py": "c34f56d8642f452c9f2c2753a2da4434ae7d0976041f3b792db5f2c2d73dc9b1",
+        "tests/test_admin_candidate_import.py": "ec53c8a9f880b40e5e0630fc384a6fee579f8485cd59dbc0f9f3474062d8df33",
+        ".automation/admin-readonly/README.md": "2dd1887dbf5879f24d8fd976a976975f3e24476c15f82324707e2483b44d9dd4"
+      },
+      "independent_six_group_review": "PASS_with_controlled_local_operator_placement_and_fail_closed_partial_state_limits",
+      "full_tests": 583,
+      "full_passed": 582,
+      "existing_optional_skips": 1,
+      "skip_reason": "Python-Markdown unavailable for existing MathProtectionTests.test_renderer_preserves_all_stress_cases",
+      "independent_runtime_tests": 5,
+      "independent_runtime_cases": 8,
+      "counts_not_summed": true,
+      "actual_selected_files": 142,
+      "actual_selected_bytes": 5224436,
+      "historical_completed_imports_before": 1,
+      "completed_imports_after": 2,
+      "same_namespace_epoch_and_old_files_preserved": true,
+      "old_store_files_preserved": 151,
+      "source_request_baseline_foreign_preserved": true,
+      "actual_CLI_calls_before_integration": 4,
+      "integrated_CLI_historical_inspect_passed": true,
+      "actual_CI_observed": false,
+      "automatic_partial_repair_or_source_writer_patch_key_CAS_API_DB_publication": false,
+      "run_reference": "operations/runs/20261125T043132Z-3802c19f-d421-47a0-a5b4-e8ed658bd4bb.md",
+      "actual_source_origin_revision": "6f25773f19cc283b8878aa46d474ec842046ac28",
+      "actual_public_revision": "e3e16c2f058aa7f3e07593cceb5043cbd2ea1806",
+      "integrated_CLI_historical_source_advanced": true
+    },
+    "B2b2_contract_20261125": {
+      "status": "adopted_static_contract_not_implemented",
+      "decision_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장",
+      "run_reference": "operations/runs/20261125T093341Z-ab0907ca-5603-49b2-ae4c-b83b185588cf.md",
+      "scope": "Separate persistent local writer-store, B2b1 read-only, explicit attested stage-base followed by key/receipt/result CAS; original source is only read",
+      "reviewed_document_sha256": "9c83da1673296bb8c39fd485fcd1495d03929c08db87b17f9103e2b79a6f1e71",
+      "adopted_document_sha256": "3539d93707b373a964249e5d5ac076c6ec6257c2955bf3a71b16fc757a555d86",
+      "adopted_B2b2_section_sha256": "30771a03c309480bb90666197c5ac61f8c965e67476cc4bc1a81b946f6a22be5",
+      "independent_static_roles": 2,
+      "mandatory_corrections_completed": [
+        "no_change tombstone without Git receipt",
+        "no_change final input/control check",
+        "self-contained attested base evidence"
+      ],
+      "explicit_clarifications": [
+        "stable namespace across projections",
+        "historical replay before current A/hints/live projection",
+        "writer then B2b1 lock order and shared budgets",
+        "origin read checks distinct from writer-local base/result CAS"
+      ],
+      "runtime_code_changes": 0,
+      "runtime_tests_run": 0,
+      "new_runtime_store_or_key_acceptance_or_candidate_writes": 0,
+      "first_implementation_target": "2026-11-26T05:30:00+09:00",
+      "first_independent_review_target": "2026-11-26T13:30:00+09:00",
+      "not_completion_promise": true
+    },
+    "B2b2_initial_20261126": {
+      "run_reference": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+      "source_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+      "initial_target_before_tool_budget_correction": {
+        "count": 17,
+        "passed": 17,
+        "seconds": 28.92,
+        "not_added_to_final_unique_count": true
+      },
+      "target_and_related_before_scalar": {
+        "unique_tests": 133,
+        "passed": 132,
+        "failed_existing_mock_compatibility": 1,
+        "adapted_mock_same_tool_changed_case_passed": 1,
+        "new_target_tests_included": 19,
+        "product_code_unchanged_after_mock_adaptation": true
+      },
+      "final_scalar_target": {
+        "tests": 23,
+        "passed": 23,
+        "seconds": 35.129,
+        "corrected_mapping_test_recheck": 1,
+        "corrected_mapping_subcases": 2,
+        "corrected_mapping_recheck_seconds": 0.89,
+        "existing_related_helper_tests_reused": 114,
+        "reused_helpers_exact_unchanged": true,
+        "old19_target_tests_replaced_not_added": true
+      },
+      "scalar_before_evidence": {
+        "initial_probe": {
+          "cases": 16,
+          "invalid_controls_accepted": 14,
+          "other_cases_already_refused": 2
+        },
+        "corrected_source_mapping_probe": {
+          "cases": 2,
+          "accepted": 0,
+          "partial_writer_then_refused": 2
+        },
+        "after_early_guard_writer_writes": 0
+      },
+      "independent_initial_runtime": {
+        "status": "pass_at_first_slice_only",
+        "candidate_revision": "d3bdbb772b53013e3cb9d890e760b8f3e30bcba9",
+        "groups": 6,
+        "seconds": 15.252,
+        "method": "별도script·개발test모듈실행0/제품편집0",
+        "cases": [
+          "Git/source/B2b1/baseline/foreign 보존·changed 사전거절",
+          "자기child inventory뒤실제중단·unknown/새키우회거절/추가쓰기0",
+          "tombstone뒤실제중단·응답유실·외부부재/현재도구예외의역사replay/derived state만복구",
+          "실제두프로세스kernel flock경합·같은operation new1/replay1",
+          "현재입력/새hint조회전동일key다른fingerprint충돌",
+          "bool/float control5subcase/결속재계산2 포함거절"
+        ],
+        "seven_frozen_file_hashes_preserved": true,
+        "protected_keep_markers_preserved": 39,
+        "not_formal_six_group_completion": true,
+        "OS_physical_IO_measurement": false
+      },
+      "full_suite_executed": false,
+      "main_integrated": false,
+      "actual_user_store_mutations": 0,
+      "existing_integrated_B2b1_actual_CI_observed": true,
+      "source_candidate_new_CI_observed": false
+    },
+    "B2b2_supported_slice_formal_20261126": {
+      "run_reference": "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
+      "source_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "defect_before": {
+        "cases": 3,
+        "seconds": 4.144,
+        "finding": "inventory 예약 이후 source/raw3/tool 실패의 첫 응답이 원충돌 코드이며 후속 호출에서만 unknown으로 바뀜",
+        "not_acceptance_pass": true
+      },
+      "correction": "예약 파일 쓰기 시도 이후 오류는 첫 응답부터 outcome_unknown으로 보존하며 정본 부정합 store_inconsistent는 유지. 예약 전 거절/replay 경계 불변.",
+      "target_new_tests": 2,
+      "target_subcases": 7,
+      "target_seconds": 8.917,
+      "independent_static_result": "PASS_for_supported_slice_and_corrected_boundary",
+      "independent_runtime": {
+        "result": "PASS_at_supported_no_change_slice_only",
+        "groups": 6,
+        "completed_group_seconds_sum": 32.651,
+        "single_continuous_invocation": false,
+        "full_DEC_changed_candidate_and_CAS_complete": false
+      },
+      "earlier_initial_runtime_reused_groups": 6,
+      "earlier_initial_runtime_seconds": 15.252,
+      "earlier_initial_and_current_formal_not_summed_as_one_suite": true,
+      "full_python": {
+        "total": 608,
+        "passed": 607,
+        "existing_optional_skips": 1,
+        "failed": 0,
+        "seconds": 152.872
+      },
+      "actual_public_input": {
+        "checked_at": "2026-11-26T04:51:58.279998+00:00",
+        "result": "PASS",
+        "tool_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+        "source_revision": "d080118fae1f31eabc318965201c22e3e527b7c4",
+        "public_revision": "5c7d43d4e635b0a7cfe5b54ce42653bb22804ec7",
+        "selected_files": 144,
+        "selected_bytes": 5229603,
+        "CLI_calls": [
+          {
+            "command": "init-store",
+            "exit": 0,
+            "status": "projection_store_initialized_local",
+            "replay": null,
+            "stdout_bytes": 401,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "import",
+            "exit": 0,
+            "status": "source_projection_saved_local",
+            "replay": null,
+            "stdout_bytes": 628,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "init-writer",
+            "exit": 0,
+            "status": "projection_writer_initialized_local",
+            "replay": null,
+            "stdout_bytes": 370,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "stage-base",
+            "exit": 0,
+            "status": "projection_base_staged_local",
+            "replay": false,
+            "stdout_bytes": 859,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "apply-no-change",
+            "exit": 0,
+            "status": "no_change",
+            "replay": false,
+            "stdout_bytes": 1025,
+            "stderr_bytes": 0
+          },
+          {
+            "command": "apply-no-change",
+            "exit": 0,
+            "status": "no_change",
+            "replay": true,
+            "stdout_bytes": 1023,
+            "stderr_bytes": 0
+          }
+        ],
+        "seconds": 16.827,
+        "actual_public_source_A_native3_raw3_no_change": true,
+        "original_Git_HEAD_index_all_refs_status_selected_inputs_baseline_foreign_and_old_store_preserved": true,
+        "new_local_only_projection_and_writer_namespace": true,
+        "source_and_existing_user_store_writes": 0,
+        "writer_Git_writes_for_no_change_and_replay": 0,
+        "replay_total_writes": 0,
+        "self_contained_historical_replay_without_source_baseline_or_projection_hint": true,
+        "one_inventory_tombstone_state_and_no_operation_ref": true,
+        "operator_known_worktrees_common_and_baseline_separation_verified": true,
+        "not_actual_user_operation_changed_candidate_CAS_source_writer_API_publication_or_restore": true
+      },
+      "protected_prior_keep_markers_preserved": 39,
+      "seven_frozen_sources_exact_at_integration": true,
+      "logical_returned_byte_budget_not_OS_physical_IO": true,
+      "limits": [
+        "full DEC changed candidate/receipt/CAS not implemented or accepted",
+        "controlled local operator placement; first-open namespace and same-UID/physical power-loss durability limits remain",
+        "no actual user operation, source/remote writer, server authorization, DB, publication or restore proof"
+      ],
+      "proof_key": "adopt-b2b2-formal-20261126 / freeze/full-python; adopt-b2b2-formal-independent-20261126 / formal-result; adopt-20261126-midday / actual-no-change-result"
+    },
+    "B2b2_ref_boundary_20261126_evening": {
+      "run_reference": "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
+      "status": "isolated_ref_transaction_boundary_investigation_complete_product_gate_not_passed",
+      "source_base_revision": "1fab58bf157b4220573b8bfb6b0266b172bb1cb6",
+      "unchanged_product_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "local_probe_branch": "codex/admin-b2b2-ref-probe-20261126",
+      "product_source_edits": 0,
+      "product_candidate_commits": 0,
+      "actual_source_or_existing_store_writes": 0,
+      "request_key_reservations": 0,
+      "changed_writer_or_production_CAS_enabled": false,
+      "installed_Git_version": "git version 2.49.0",
+      "root_observations": 11,
+      "independent_reproductions_of_two_path_cases": 2,
+      "not_thirteen_unique_acceptance_groups": true,
+      "not_full_DEC_or_single_continuous_suite": true,
+      "root_execution": "8 completed cases preserved; root-parent success hypothesis stopped harness; actual failed commit/partial locks retained and classified; only two remaining cases resumed",
+      "root_continuation_new_cases": 2,
+      "root_continuation_seconds": 0.047,
+      "independent_two_case_seconds": 0.052,
+      "findings": [
+        "prepare에서 base lock0B·operation lock41B와0600을 확인",
+        "failed transient writes cannot be reconstructed from final absence of locks; exact actual bytes remain unknown",
+        "root replacement after prepare aborts native commit and leaves original partial locks; replacement unchanged",
+        "nested directory replacement can redirect native Git to an own controlled destination despite anchored cwd",
+        "existing log appended136B despite logAllRefUpdates=false in own intentionally excluded fixture"
+      ],
+      "seven_product_hashes_preserved": true,
+      "full_Python_608_reused_not_rerun": true,
+      "physical_IO_or_unconditional_native_path_bounds_proven": false,
+      "current_no_change_store_format_identity_key_namespace_and_historical_replay_unchanged": true,
+      "proof_key": "adopt-b2b2-ref-probe-20261126 / completed-cases/root-parent-unexpected-observation/result; adopt-b2b2-ref-independent-20261126 / result",
+      "next_design_options": [
+        {
+          "option": "native Git refs",
+          "impact": "고정 files/SHA1·logs 부재에 더해 하위 namespace 보호와 실패 중 누적 쓰기 계상을 만족할 격리·계상 경계가 필요",
+          "adopted": false
+        },
+        {
+          "option": "FD-relative single operation ref authority",
+          "impact": "기존 Git 객체 검증을 재사용할 수 있지만 Git 두 ref transaction과 같지 않다. receipt/비교 의미의 별도 기술 계약·독립 검증이 필요",
+          "adopted": false
+        }
+      ],
+      "recommendation": "현 무변경 처리를 유지하고 다음 기존 회차에서 경로와 계상을 만족할 최소 권위/트랜잭션 설계를 비교한다. 규약을 조용히 완화하거나 변경 키 접수를 열지 않는다."
+    },
+    "B2b2_FD_primitive_20261127": {
+      "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+      "candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+      "status": "PASS_at_isolated_internal_primitive_only_not_full_writer_or_native_CAS",
+      "final_target_tests": 17,
+      "final_target_seconds": 0.148,
+      "independent_runtime": {
+        "status": "pass_at_isolated_single_ref_primitive_only",
+        "groups": 6,
+        "seconds": 0.957396
+      },
+      "static_review": "PASS_at_primitive_and_new_contract_scope",
+      "before_evidence": {
+        "empty_other_operation_pending_directory": {
+          "cases": 1,
+          "accepted_before_fix": true
+        },
+        "rename_deadline_context_exit": {
+          "cases": 1,
+          "inside": "outcome_unknown",
+          "outer_before": "job_timeout"
+        },
+        "temp_deadline_context_exit": {
+          "cases": 1,
+          "inside": "ref_incomplete",
+          "outer_before": "job_timeout"
+        }
+      },
+      "corrected_boundaries": [
+        "FD-write returned count17B is charged17B; pre-reservation and successful41B remain bounded",
+        "files and directories with pending prefix block new publish",
+        "whole lock context retains rename->unknown / temp->incomplete / pretemp->safe refusal phase"
+      ],
+      "development_12_14_15_16_and_before_cases_not_summed_into_final_17_or_independent_6": true,
+      "full_suite_executed_for_new_candidate": false,
+      "new_candidate_actual_CI_observed": false,
+      "actual_user_operations_source_existing_store_or_publication_mutations": 0,
+      "old_no_change_format_identity_epoch_namespace_and_tool_history_unchanged": true,
+      "full_identity_base_object_receipt_checks_are_future_caller_responsibility": true,
+      "native_two_ref_requirement_not_replaced_or_met": true,
+      "not_noncooperating_writer_source_snapshot_distributed_CAS_or_physical_IO_guarantee": true,
+      "proof_key": "adopt-b2b2-fd-ref-20261127 / freeze-reviewed/target-phase-final/pending-directory-before; adopt-b2b2-fd-independent-20261127 / deadline-before-result/deadline-temp-before-result/final1/result"
+    },
+    "B2b2_no_change_actual_CI_20261127": {
+      "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+      "code_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "normal_run_ids": [
+        45833052212,
+        45845061002,
+        45860094968
+      ],
+      "writer_and_target_test_exact_source_bindings": 6,
+      "existing_DQE_and_Avatar_QA_reused": {
+        "python_total": 608,
+        "python_passed": 607,
+        "python_existing_skips": 1,
+        "all_suites_total": 1134,
+        "all_suites_passed": 1125,
+        "all_suites_skips": 9,
+        "failed": 0
+      },
+      "new_FD_candidate_not_in_these_runs": true,
+      "actual_user_writer_activation": false
+    },
+    "B2b2_FD_formal_20261127_midday": {
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "candidate_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "latest_main_preserved": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "status": "PASS_at_isolated_internal_single_ref_primitive_only",
+      "formal_static_areas": 8,
+      "new_independent_runtime": {
+        "groups": 4,
+        "passed": 4,
+        "seconds": 0.457661,
+        "scope": "exact read/peak limits, metadata and zero-write guards, actual context and deadline boundaries"
+      },
+      "reused_dawn_target_tests": 17,
+      "reused_dawn_runtime_groups": 6,
+      "full_python": {
+        "tests": 632,
+        "passed": 631,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 153.992,
+        "executions": 1
+      },
+      "source_files": [
+        "scripts/admin_projection_refs.py",
+        "tests/test_admin_projection_refs.py"
+      ],
+      "source_sha256": {
+        "scripts/admin_projection_refs.py": "11ca5c85b3169674d1c1e6923251f92ce9ef52f72ed3d468a8b382dbec789d26",
+        "tests/test_admin_projection_refs.py": "643ec2a0def26d5216c4318bfd3a6fbb53539a35fe94dcdc4414b2fb7c9a8096"
+      },
+      "old_seven_source_hashes_and_original_contract_prefix_preserved": true,
+      "existing_publication_compilation_tests_included": 7,
+      "current_CLI_imports_primitive": false,
+      "new_actual_CI_observed": false,
+      "current_changed_key_acceptance": false,
+      "whole_writer_identity_base_object_receipt_or_native_two_ref_contract_complete": false,
+      "deadline_scope": "Cooperative budget checks around syscalls; no hard cancellation of blocked OS syscalls.",
+      "actual_user_source_existing_store_remote_or_publication_mutations": 0,
+      "proof_key": "adopt-b2b2-fd-formal-20261127 / freeze/full-python; adopt-b2b2-fd-formal-independent-20261127 / formal1/result"
     }
   },
   "observation": {
-    "status": "B2a527 로컬 정식 검증·소스통합 완료, B2b 최소 계약 검토 대기",
-    "period": "2026-11-23T18:00:33.624Z",
-    "result": "출력 부모 경로·B1 실행 경로·FD 정리를 보완하고 로컬5기준을 범위별로 종합 판정했다. Git37/기존8그룹·19변경/독립출력29·최종554검사(553PASS·기존선택1skip)와 실제148파일 보존을 연결한다. 출력first-open이전namespace 한계를 보존하고 서버/API/DB·실제source writer·발행 활성화는 후속이다. 다음24일11시 최소B2b계약을 검토한다.",
+    "status": "11/27 13:30 FD 내부 primitive 정식 인수",
+    "period": "2026-11-27T04:33:34.307Z",
+    "result": "최신 L018/DQB/photonic 게시를 보존한7549745에 정식 경계8영역·새 독립4그룹과 전체632검사(631통과/기존선택1skip)를 적용했다. helper만 로컬 소스통합하며 현재 CLI/no_change7파일·변경 요청 사전 거절은 유지한다. 전체 native 두ref/CAS·claim/receipt·서버/발행은 미완료다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -751,30 +1424,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md"
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/24 11시 B2b 원본/독립candidate 판본 매핑·namespace/허용 저장·복구 경계의 최소 계약을 검토한다. 현재 로컬 읽기 명세는 완료했으며 실제source writer/서버·API·DB·발행 활성화는 후속이다.",
+  "next_action": "11/27 18:30 기존 회차에서 완전 identity/base-object/provenance·claim/receipt 권위와 전체 변경 저장 선행 계약을 대조해 다음 최소 구현 범위를 정한다. 미연결 내부 helper의 소스통합과 전체 changed writer/native 두ref·운영 활성화는 구분한다. 현재 CLI/키 접수·원본/원격/서버·발행은 그대로며 전체 납기는 미정이다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2a_local_source_integrated_B2b_minimum_contract_review_next",
-    "next_scheduled_step_at": "2026-11-24T11:00:00+09:00",
-    "next_review_at": "2026-11-24T11:00:00+09:00",
-    "scheduled_step": "B2b 원본/독립candidate 판본·namespace·허용 저장/복구의 최소 계약 검토",
+    "state": "B2b2_FD_internal_primitive_formally_reviewed_source_integrated_caller_contract_pending",
+    "next_scheduled_step_at": "2026-11-27T18:30:00+09:00",
+    "next_review_at": "2026-11-27T18:30:00+09:00",
+    "scheduled_step": "future caller의 완전 identity/base-object/provenance/claim/receipt 권위와 변경 저장 선행 계약·최소 후속 범위 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
-    "replan_reason": "11/23 11시 완료를 확인하지 못해20:34 재개와11/24 03시 연속 실행에서 실제 정식 감수/보완을 수행했다. B2a 로컬 종료 뒤 같은P2/순번1의 다음 최소 계약을24일11시에 검토하며 전체writer/서버 활성화 납기나 일반게시 추가승인을 만들지 않는다.",
+    "replan_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "replan_reason": "13:30 준비 범위의 정식 감수·최신 전체 회귀와 로컬 source통합을 완료해 같은 P2/순번1의 다음18:30에 미연결 caller 권위/전체 changed writer 선행 범위를 잇는다. 기존 native 두ref gate와 일반 게시/편집부 권한은 유지한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md",
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -802,6 +1475,29 @@
     "b2a_formal_review_completed_at": "2026-11-23T18:22:08.601648+00:00",
     "b2a_integration_revision": "527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
     "b2a_integration_base_revision": "c58568e2b3c952eba9b278f8c8ecd05546a00b06",
-    "b2b_scope_review_target": "2026-11-24T11:00:00+09:00"
+    "b2b_scope_review_target": "2026-11-24T11:00:00+09:00",
+    "b2b_scope_review_completed_at": "2026-11-24T12:32:12.752771+00:00",
+    "b2b1_implementation_start_target": "2026-11-25T03:00:00+09:00",
+    "b2b1_first_independent_review_target": "2026-11-25T13:30:00+09:00",
+    "b2b1_initial_candidate_ready_at": "2026-11-24T18:23:28.738053+00:00",
+    "b2b1_candidate_revision": "1272e62e27e5a11a06374d253f1149ced0c8c813",
+    "b2b1_formal_review_completed_at": "2026-11-25T04:47:02Z",
+    "b2b1_integration_revision": "658de622f788e2e224447857730863b325ff9afb",
+    "b2b2_scope_review_target": "2026-11-25T18:30:00+09:00",
+    "b2b2_scope_review_completed_at": "2026-11-25T09:48:07.007920+00:00",
+    "b2b2_implementation_start_target": "2026-11-26T05:30:00+09:00",
+    "b2b2_first_independent_review_target": "2026-11-26T13:30:00+09:00",
+    "b2b2_first_candidate_ready_at": "2026-11-25T20:51:34.097131+00:00",
+    "b2b2_candidate_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+    "b2b2_corrected_candidate_ready_at": "2026-11-25T21:04:32.758700+00:00",
+    "b2b2_initial_independent_runtime_completed_in_run": "operations/runs/20261125T203647Z-d9d79588-1bcb-4627-b471-0392eb1b83f7.md",
+    "b2b2_no_change_formal_completed_at": "2026-11-26T04:54:03.458289+00:00",
+    "b2b2_no_change_source_integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+    "b2b2_ref_boundary_review_completed_at": "2026-11-26T09:40:53.645532+00:00",
+    "b2b2_next_independent_design_review_target": "2026-11-27T18:30:00+09:00",
+    "b2b2_fd_primitive_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+    "b2b2_fd_primitive_initial_validation_at": "2026-11-26T20:50:32.611474+00:00",
+    "b2b2_fd_primitive_formal_completed_at": "2026-11-27T04:46:06.399789Z",
+    "b2b2_fd_primitive_integration_revision": "75497454864305aafae1e5c0573d34b976ebb966"
   }
 }

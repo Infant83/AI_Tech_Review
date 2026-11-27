@@ -1,0 +1,232 @@
+{
+  "issue_date": "2026-11-25",
+  "public_revision_date": "2026-11-25",
+  "additional_evidence_cutoff": "2026-11-25",
+  "references": [
+    {
+      "number": 1,
+      "authors": [
+        "Matthew L. Sims-Goh",
+        "Fredrik Hasselgren",
+        "Hamza Jnane"
+      ],
+      "title": "Spin-adapted state preparation for quantum chemistry",
+      "url": "https://arxiv.org/abs/2611.30014v1",
+      "version": "v1",
+      "publication_status": "unpublished arXiv preprint; no journal reference shown in current arXiv record",
+      "read_scope": {
+        "metadata": "Current arXiv abstract, authors, submission history, version, page count, license link; exact v1 PDF first page and metadata.",
+        "main_text_pages_read": [
+          1,
+          2,
+          3,
+          4,
+          7,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          19,
+          20
+        ],
+        "main_text_topics": [
+          "QPE initial-state overlap problem",
+          "U(1)×SU(2) Hamiltonian and multiplets",
+          "spin-adapted reduced tensors and Clebsch-Gordan factorization",
+          "UGA four-step labeling, CSFs and quantum Paldus transform",
+          "Lemma1 mapping and Corollary1 block-sparse preparation; selected derivation/proof passages",
+          "inverse CG transform and register conventions",
+          "Theorem1 proof passages on p17",
+          "cost model, same-state/equal-truncation-fidelity comparisons",
+          "Table2 and Figure5 extracted content",
+          "limitations and independent related-work note"
+        ],
+        "appendix_pages_read": [
+          26,
+          27
+        ],
+        "appendix_topics": [
+          "block2 phase/normalization/right-canonical conventions",
+          "two-site DMRG inputs/Fiedler ordering/sweep schedule",
+          "Fe4S4 nonconvergence",
+          "Table3",
+          "floating-bond appendix opening and statement only"
+        ],
+        "selected_visual_pages_inspected": [
+          20,
+          27
+        ],
+        "selected_reference_pages_read": [
+          24,
+          25
+        ],
+        "not_claimed": [
+          "full line-by-line audit of all proofs",
+          "complete-paper visual QA",
+          "original DMRG/resource-code reproduction",
+          "QPU or physical hardware test",
+          "complete audit of predecessor or independent similar preprint",
+          "human-reader evaluation"
+        ]
+      },
+      "reuse": "Fresh current exactv1 primary audit; no earlier fullpaper audit reused. Related independentpreprint metadata-only check.",
+      "conditions": [
+        "Method and resource estimates for spin-free U(1)×SU(2)-symmetric electronic Hamiltonians; not physical QPU execution.",
+        "Benchmarks are singlet CAS(30e,20o) [Fe2S2]2− and CAS(54e,36o) [Fe4S4]2−; maximum spin-adapted bond dimension 1000 multiplets.",
+        "Same untruncated states: dense baselines require 51×/135× and U(1)×U(1) baselines 3.4×/4.9× the Toffoli count.",
+        "Matched truncation fidelity: dense ratios approximately 37–38×/91–95× and U(1)×U(1) ratios 3.5–3.6×/5.0–5.4×; ratios use log-space interpolation and χ125,250,500 points.",
+        "Truncation fidelity is relative to the untruncated χ1000 DMRG MPS, not the exact ground state. QPE ground-state success continues to depend on true ground-state overlap.",
+        "15-bit rotations; QROAM lookups minimize Toffoli count with no ancilla cap for every comparator. Dense protocol is costed as published without the real-tensor saving included in the U(1)×U(1) baseline.",
+        "Table2 ancillary qubits: Fe2S2 dense516/U1 514/new267; Fe4S4 dense997/U1 996/new268. Up to3.7× fewer ancillas is distinct from physical qubits or total runtime.",
+        "Fe4S4 DMRG stopped without meeting energy-convergence criterion; no exact ground-state overlap or full QPE success probability is established by Table2/Figure5.",
+        "Authors acknowledge independent similar reduced-tensor preparation preprint arXiv:2611.19728; avoid unsupported first/unique claims."
+      ],
+      "rights": "Original explanatory prose and factual author-reported resource numbers with attribution and exact source links. No paper figures, original paper PDF or code redistributed under an inferred open license.",
+      "aps_citation": "M. L. Sims-Goh, F. Hasselgren, and H. Jnane, Spin-adapted state preparation for quantum chemistry, arXiv:2611.30014v1."
+    },
+    {
+      "number": 2,
+      "authors": [
+        "Bhumika Jayee",
+        "Nathan M. Myers",
+        "Duo Song",
+        "Eric J. Bylaska",
+        "Karol Kowalski",
+        "Nicholas P. Bauman"
+      ],
+      "title": "Quantum flow algorithm: Quantum simulations of chemical systems using reduced quantum resources and constant depth quantum circuits",
+      "url": "https://doi.org/10.1063/5.0342621",
+      "publication_status": "Publishedjournalarticle; online2026-11-23,issue2026-11-28",
+      "read_scope": {
+        "read": "Live publisher metadata; full journal QFlow text, relevant tables and captions; full Scientific Reports Article in Press PDF; exact arXiv v1 metadata and text for version comparison; Crossref metadata.",
+        "visual_check": "QFlow journal Figures 8 and 9 downloaded at small publisher size; Scientific Reports selected method text crops and Figures 3 and 9.",
+        "not_done": [
+          "No independent algorithm or chemistry reproduction",
+          "No code download/run, experiments, full document rendering or build",
+          "No public repository changes, commit, publication, or email",
+          "No held-out model validation or end-to-end runtime reconstruction"
+        ],
+        "reuse": "No matching prior November 24 QFlow/materials audit located in the searched DQB/DRB private audit sources. Scientific claims below were read from the current primary sources rather than inferred from an earlier audit."
+      },
+      "preprint_version_boundary": {
+        "id": "arXiv:2605.01016v1",
+        "url": "https://arxiv.org/abs/2605.01016v1",
+        "first_posted": "2026-05-01",
+        "version_history_checked": "Only v1 listed at the time of this audit",
+        "scope_note": "Earlier manuscript; it does not contain the journal many-body 26–32-to-eight-qubit demonstrations."
+      },
+      "rights": {
+        "license": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      "aps_citation": "B. Jayee, N. M. Myers, D. Song, E. J. Bylaska, K. Kowalski, and N. P. Bauman, Quantum flow algorithm: Quantum simulations of chemical systems using reduced quantum resources and constant depth quantum circuits, J. Chem. Phys. 165, 201101 (2026), https://doi.org/10.1063/5.0342621."
+    },
+    {
+      "number": 3,
+      "authors": [
+        "Mikiya Doi",
+        "Yoshihiro Nakao",
+        "Shinji Takasugi",
+        "Masayuki Ohzeki"
+      ],
+      "title": "Comparing acquisition function optimization methods in combinatorial Bayesian optimization for chemical materials discovery",
+      "url": "https://doi.org/10.1038/s41598-026-77520-7",
+      "publication_status": "Peer-reviewed accepted Article in Press / early sharing; subject to final editing",
+      "read_scope": {
+        "read": "Live publisher metadata; full journal QFlow text, relevant tables and captions; full Scientific Reports Article in Press PDF; exact arXiv v1 metadata and text for version comparison; Crossref metadata.",
+        "visual_check": "QFlow journal Figures 8 and 9 downloaded at small publisher size; Scientific Reports selected method text crops and Figures 3 and 9.",
+        "not_done": [
+          "No independent algorithm or chemistry reproduction",
+          "No code download/run, experiments, full document rendering or build",
+          "No public repository changes, commit, publication, or email",
+          "No held-out model validation or end-to-end runtime reconstruction"
+        ],
+        "reuse": "No matching prior November 24 QFlow/materials audit located in the searched DQB/DRB private audit sources. Scientific claims below were read from the current primary sources rather than inferred from an earlier audit."
+      },
+      "preprint_version_boundary": null,
+      "rights": {
+        "license": "CC BY-NC-ND 4.0",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "source_figure_reuse_note": "Do not publish an adapted source figure under this licence without separate permission; an independently made explanatory diagram of reported facts should be clearly attributed."
+      },
+      "aps_citation": "M. Doi, Y. Nakao, S. Takasugi, and M. Ohzeki, Comparing acquisition function optimization methods in combinatorial Bayesian optimization for chemical materials discovery, Sci. Rep. (2026), https://doi.org/10.1038/s41598-026-77520-7."
+    },
+    {
+      "number": 4,
+      "authors": [
+        "Keerthi Kumaran",
+        "Faisal Alam",
+        "Norhan Eassa",
+        "Kaelyn Ferris",
+        "Xiao Xiao",
+        "Lukasz Cincio",
+        "Nicholas Bronn",
+        "Arnab Banerjee"
+      ],
+      "title": "Transmon qutrit-based simulation of spin-1 AKLT systems",
+      "url": "https://doi.org/10.1038/s41534-026-01421-w",
+      "publication_status": "Peer-reviewed Article in Press published November 24, 2026; final edited version pending, no volume or article number provided.",
+      "read_scope": "Reused prior AIP9p main Results/Discussion/Methods/data-rights and SI S2/S3/S5/S7/S8.5 bounded audit; fresh selected passages distinguish Hellinger distribution agreement, tomography/phase correction/dominant-component postselection and40site noisyTN.",
+      "reuse": "Prior Nov24 DRB root paperblock, support audit and primary AIP/SI reused. Current official publisher HTML/arXiv metadata freshly checked; exact AIP bytes downloaded and identical. Fresh targeted AIP pp2–6 and9 text, SI21–22 noise assumptions; opened prior AIPp6 render. No claim of fresh full9p+26p SI reread.",
+      "conditions": [
+        "Hardware on ibm_hanoi: OBC2/3/4sites, PBC2sites;3–7 partitions for Berry phase with ~10% discrepancies from pi.",
+        "OBC fidelity is Hellinger agreement of measured outcome distributions, not interchangeable with full density matrix fidelity.",
+        "Hardware Berry phase uses tomography, virtual RZ correction, gauge fixing and retained dominant |02>,|11>,|20> components.",
+        "Up to40sites is noisy tensor-network simulation; Fig5 projected noise uses5x longer T1/T2.",
+        "Qubit comparator specific compilation/model, not matched hardware-agnostic superiority; tomography/readout circuit cost scales."
+      ],
+      "rights": "AIP CC BY-NC-ND4.0; no article figure/text block reproduced. Factual scientific paraphrase and credited bibliography only. Code not copied; rootLICENSE absent in prior inspected tree.",
+      "aps_citation": "K. Kumaran, F. Alam, N. Eassa, K. Ferris, X. Xiao, L. Cincio, N. Bronn, and A. Banerjee, Transmon qutrit-based simulation of spin-1 AKLT systems, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01421-w."
+    },
+    {
+      "number": 5,
+      "authors": [
+        "Dounan Du",
+        "Eden Figueroa"
+      ],
+      "title": "Regional attention transformers for spatially structured open quantum dynamics",
+      "url": "https://doi.org/10.1038/s41534-026-01414-9",
+      "publication_status": "Peer-reviewed Article in Press published November 24, 2026; final edited version pending, no volume or article number provided.",
+      "read_scope": "Prior fullmain scientific sections + selectedSI Tables1–5/Notes1,3; independent critical Results4–7/Methods9–10,selectedSI and code staticreview reused. Fresh targeted scope detailed in reuse.",
+      "reuse": "Prior Nov24 DRB regional paperblock + independent-qec-regional audit and primary13p AIP/14pSI reused. Current official publisher/arXiv metadata freshly checked; exact AIPbytes downloaded identical. Fresh AIPp8–11 selected limitations/data generation/architecture/training/metrics/acceleration andp13rights text, opened priorp9Fig5render. No fresh whole13p+14p reread or codeexecution claimed.",
+      "conditions": [
+        "Classical neural surrogate for semiclassical local-density-matrix and field equations, synthetic solver trajectories; long-range entanglement not represented.",
+        "Maximum1485x: GH200GPU batch10 vs AWSCPU; M4GPU vs M4CPU90x. Hardware andbatch dependent; no matchedGPU solver comparison or training amortization.",
+        "Solver uses~100000 adaptive timepoints; model120 outputgrid points interpolated fromsolver, on same physicaltasks.",
+        "OOD EIT mostly timing shifts within fixedplatform; pulse truncation OOD4/5; averaged localfidelity after unittrace normalization does not replace energy/timing diagnostics.",
+        "No experimentalclosed-loop/QPUtrain/quantumadvantage demonstration."
+      ],
+      "rights": "Current AIPCCBY4.0; no sourcefigure/code/data copied into derivative; factualreview+bibliography only.",
+      "aps_citation": "D. Du and E. Figueroa, Regional attention transformers for spatially structured open quantum dynamics, npj Quantum Inf. (2026), doi:10.1038/s41534-026-01414-9."
+    },
+    {
+      "number": 6,
+      "authors": [
+        "University of Cambridge, Department of Engineering"
+      ],
+      "title": "University-IonQ collaboration to advance quantum hardware and explore new applications across science and industry",
+      "url": "https://www.eng.cam.ac.uk/news/university-ionq-collaboration-advance-quantum-hardware-and-explore-new-applications-across",
+      "publication_status": "Official institutional announcement published November 23, 2026; no completed research result or benchmark asserted.",
+      "read_scope": "Publisheddate, partnership/systemdeployment, structureuncertaintyproject, meta-mirrorcavityproject, designestimates/successcriteria andrightsfooter.",
+      "reuse": "Fresh fullpublicofficialannouncement mainbody/datedfooter/rights read usingweb andsavedHTML. No earliertechnicalaudit reused for ref6.",
+      "conditions": [
+        "256qubitIonQsystem dueCambridge deployment bysummer2027 isplan.",
+        "Structuresproject aims tocomputeuncertainloading response distributions; no benchmark orcompletedQPUtest reported.",
+        "60–80% into cavity isidealdesign estimate; not measured fiber efficiency.",
+        "Atleast99.5% reflectivity plusworkingchiparray/fibercoupling are successcriteria, notmeasuredoutcomes."
+      ],
+      "rights": "InstitutionaltextCCBY-NC-SA4.0; images separatelycopyright. Noimage/extendedquotation reproduced.",
+      "aps_citation": "University of Cambridge, Department of Engineering, University-IonQ collaboration to advance quantum hardware and explore new applications across science and industry (23 November 2026), official announcement (accessed 25 November 2026)."
+    }
+  ],
+  "actual_roles": "dqb1125_pdf: complete original five-page PDF text/render/public-safety review, refs 4–6 bounded primary reuse and current-source checks, public derivative producer; dqb1125_spin: ref 1 primary-source and APS audit; dqb1125_qflow_materials: refs 2–3 primary-source and APS audit; root: integration, bilingual editorial and separate review.",
+  "source_scope_limits": "Refs 4–5 explicitly reuse the bounded primary-source and independent reviews from the November 24 DRB. Current AIP binary hashes were freshly confirmed identical and selected primary passages reread. Ref 6 official announcement was fully read fresh. No claim that all authors reread every full paper.",
+  "new_experiments_or_code_runs": false,
+  "independent_reproduction": false,
+  "style_guide": "The official APS guide at the repository reference URL currently returns the November 2026 edition (II.S). The arXiv eprint date is omitted under II.S.8; original author order, full titles and publication status are preserved."
+}

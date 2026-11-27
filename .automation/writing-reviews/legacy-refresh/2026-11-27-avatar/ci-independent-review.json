@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "status": "passed_actual_run_with_recorded_limits",
+  "reviewer_role": "Independent CI, publication catalog and recovery metadata review",
+  "checked_at": "2026-11-26T16:44:58.539841+00:00",
+  "source_revision": "ba103f72355e40428003d159ab3df084df7f4209",
+  "workflow_run_id": 45860094968,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45860094968",
+  "four_jobs": [
+    {
+      "id": 140048556561,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T16:35:04Z",
+      "completed_at": "2026-11-26T16:39:25Z"
+    },
+    {
+      "id": 140050885570,
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T16:39:31Z",
+      "completed_at": "2026-11-26T16:39:58Z"
+    },
+    {
+      "id": 140051161361,
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T16:40:00Z",
+      "completed_at": "2026-11-26T16:41:00Z"
+    },
+    {
+      "id": 140051161492,
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T16:40:00Z",
+      "completed_at": "2026-11-26T16:41:05Z"
+    }
+  ],
+  "ci_test_results": {
+    "groups": [
+      {
+        "group": "publication/search/preservation Python",
+        "total": 608,
+        "passed": 607,
+        "failed": 0,
+        "skipped": 1
+      },
+      {
+        "group": "multilingual search",
+        "total": 12,
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "group": "reader controls/unit",
+        "total": 205,
+        "passed": 197,
+        "failed": 0,
+        "skipped": 8
+      },
+      {
+        "group": "lecture reader/storage",
+        "total": 222,
+        "passed": 222,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "group": "backend authorization",
+        "total": 73,
+        "passed": 73,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "group": "portable media",
+        "total": 14,
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      }
+    ],
+    "aggregate": {
+      "total": 1134,
+      "passed": 1125,
+      "failed": 0,
+      "skipped": 9
+    },
+    "aggregate_method": "Sum of actual six CI group summaries; skipped cases excluded from passed count.",
+    "browser_cases_skipped": 8
+  },
+  "publication_verification": {
+    "reviews": 59,
+    "archive_documents": 181,
+    "publications": 83,
+    "external_sources": 1,
+    "registered_additions": 0,
+    "registered_removals": 0,
+    "registered_content_changes": [
+      "reviews/2026-09-13_avatar-scientific-workflow-control/en/index.html",
+      "reviews/2026-09-13_avatar-scientific-workflow-control/index.html"
+    ],
+    "continuity_blockers": [],
+    "payload_failures": [],
+    "complete_public_artifact_validator": {
+      "files": 2796,
+      "articles": 83
+    },
+    "catalog_bytes": 26075,
+    "catalog_sha256": "d364ed16abd417103dfe61eaf34d7e4e8e0c6d52a07e5043296c37ce6539ca72",
+    "catalog_exact_CI_ZIP_to_HTTPS_bytes": true,
+    "public_seal_source_and_catalog_binding": true,
+    "sealed_file_metadata_count": 2795,
+    "public_seal_SHA256": "be74762c98305f3c2dc6f1de7d751b5b360857e9884fa8f216578993a8303193",
+    "small_artifact_provider_ZIP_digests_verified": true
+  },
+  "reader_sync": {
+    "synced": 83,
+    "revision": "ba103f72355e40428003d159ab3df084df7f4209",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "recovery": {
+    "current_artifact_id": 15136948770,
+    "run_id": 45860094968,
+    "source_revision": "ba103f72355e40428003d159ab3df084df7f4209",
+    "provider_ZIP_digest": "sha256:f6304a3d6a53f17fb882c6455cc6f6b373386e93e6b8f7db2025e927586736a4",
+    "provider_ZIP_bytes": 774965639,
+    "actual_from_pages_verification": {
+      "ok": true,
+      "revision": "ba103f72355e40428003d159ab3df084df7f4209",
+      "files": 2796,
+      "bytes": 865208647,
+      "archive_sha256": "95c982d94b5093fa88b153015a0eedfa7931bd75fc9b10cec849463bf61e9734"
+    },
+    "retention": {
+      "ok": true,
+      "status": "applied",
+      "keep": [
+        15136948770,
+        15130742620,
+        15123171921
+      ],
+      "delete": [
+        15081594183
+      ],
+      "applied": true,
+      "deleted": [
+        15081594183
+      ],
+      "listingAttempts": 2,
+      "currentArtifactVerified": true
+    },
+    "complete_after_inventory": {
+      "filtered_pages": 1,
+      "filtered_rows": 3,
+      "unfiltered_pages": 2,
+      "unfiltered_rows": 106,
+      "inventories_agree": true,
+      "newest_three_ids": [
+        15136948770,
+        15130742620,
+        15123171921
+      ],
+      "removed_ids_confirmed_from_complete_before_after_lists": [
+        15081594183
+      ],
+      "other_removed_ids": [],
+      "two_older_retained_metadata_unchanged": true
+    }
+  },
+  "warnings": {
+    "payload": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "lazy_search_gzip_bytes": 94698,
+    "public_artifact_bytes": 863781078,
+    "existing_action_runtime": "The actual four jobs contain Node.js 20 deprecation annotations; affected actions were forced to Node.js 24. No action/runtime configuration was changed in this article refresh.",
+    "handoff": "Technical capacity/runtime items remain operating-team (ADOPT) follow-up; they are successful-run warnings, not failed editorial checks."
+  },
+  "limitations": [
+    "No independent full Pages/recovery archive download, byte verification or restore: backup integrity is supported here by the actual same-artifact verification log and provider metadata.",
+    "Nine CI tests were skipped (one Python, eight browser cases); this audit does not label those tests as executed.",
+    "No scientific experiment or code reproduction, local build/render/full test run, CI execution/rerun, retention invocation/deletion, reader sync invocation or test notification was performed by this reviewer.",
+    "Article rendering, binary HTTPS assets and browser behavior are covered by separate root audits, not inferred from green CI."
+  ]
+}

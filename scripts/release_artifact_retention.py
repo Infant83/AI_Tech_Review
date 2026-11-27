@@ -15,11 +15,18 @@ VISIBILITY_DELAY_SECONDS = 2
 
 class RetentionError(ValueError):
     """Safe CLI reason; never expose provider output or credentials."""
-    def __init__(self, code):
+    def __init__(self, code, *, metadata_counts=None):
         self.code = code
         self.deleted = []
         self.delete_attempted = []
         self.unconfirmed_delete = []
+        self.metadata_counts = None
+        if code == "incomplete_metadata" and metadata_counts is not None:
+            self.metadata_counts = {}
+            for name in ("page_count", "advertised_total_count", "collected_row_count"):
+                value = metadata_counts.get(name)
+                self.metadata_counts[name] = (value if type(value) is int
+                    and 0 <= value <= (1 << 53) - 1 else None)
         super().__init__("Recovery retention refused (" + code + ").")
 
 
@@ -87,7 +94,8 @@ def _read_artifacts(repository):
     except (ValueError, RecursionError):
         raise RetentionError("invalid_metadata") from None
     if not isinstance(pages, list) or not 1 <= len(pages) <= 100:
-        raise RetentionError("incomplete_metadata")
+        raise RetentionError("incomplete_metadata", metadata_counts={
+            "page_count": len(pages) if isinstance(pages, list) else None})
     rows, total = [], None
     for page in pages:
         if (not isinstance(page, dict) or type(page.get("total_count")) is not int
@@ -99,7 +107,9 @@ def _read_artifacts(repository):
         total = page["total_count"]
         rows.extend(page["artifacts"])
     if total != len(rows):
-        raise RetentionError("incomplete_metadata")
+        raise RetentionError("incomplete_metadata", metadata_counts={
+            "page_count": len(pages), "advertised_total_count": total,
+            "collected_row_count": len(rows)})
     ids = set()
     for row in rows:
         if (not isinstance(row, dict) or not _positive(row.get("id"))
@@ -226,12 +236,16 @@ def main(argv=None):
             expected_artifact_id=args.expected_artifact_id, expected_run_id=args.expected_run_id,
             expected_source_revision=args.expected_source_revision)
     except RetentionError as error:
-        print(json.dumps({"ok": False, "status": "refused" if not error.delete_attempted else "partial_or_uncertain",
+        report = {"ok": False, "status": "refused" if not error.delete_attempted else "partial_or_uncertain",
             "reason": error.code, "apply_requested": bool(args and args.apply),
             "deleted": error.deleted, "delete_attempted": error.delete_attempted,
-            "unconfirmed_delete": error.unconfirmed_delete}))
+            "unconfirmed_delete": error.unconfirmed_delete}
+        if error.metadata_counts is not None:
+            report["metadata_counts"] = error.metadata_counts
+        print(json.dumps(report))
         return 1
     print(json.dumps(report))
     return 0
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    raise SystemExit(main())

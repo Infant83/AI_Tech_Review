@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-25",
+  "reviewer": "dqb1125_qflow_materials",
+  "role": "Independent final PDF visual review and primary-source scientific review of references 2–3",
+  "status": "pass",
+  "blocking_findings": [],
+  "artifact": {
+    "file": "2026-11-25-daily-quantum-brief.pdf",
+    "bytes": 179759,
+    "sha256": "2de43b257d4110df8e6481b232344fa21221c9f38a39aa295c803b5dbcd940b7",
+    "pages": 7
+  },
+  "scope": {
+    "complete_pdf_text_read": true,
+    "visual_pages_opened": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "used_existing_final_render": true,
+    "assigned_science_references": [
+      2,
+      3
+    ],
+    "assigned_pages_checked": [
+      1,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "pdf_produced_by_this_reviewer": false,
+    "independent_algorithm_reproduction": false,
+    "human_review": false
+  },
+  "visual_result": {
+    "status": "pass",
+    "findings": "All seven supplied final page images opened and inspected. No clipping, missing glyphs, overlapping text, broken table rows or bibliography overflow observed. The correction appendix and full reference list are legible.",
+    "render_pdf_hash_binding": "The existing producer render record identifies the same final PDF SHA-256; this reviewer independently hashed the PDF and the seven inspected images."
+  },
+  "scientific_checks": [
+    {
+      "ref": 2,
+      "status": "pass",
+      "checks": [
+        "26-qubit H2O and 32-qubit H8/Hubbard parent representations reduced to eight-qubit active-space subproblems are attributed to the journal.",
+        "NWQSim classical simulation and ExaChem/DUCC/TAMM are distinguished from physical QPU execution.",
+        "Fixed subproblem circuit size is separated from total active-space, repetition, measurement and classical downfolding cost.",
+        "H2O about+8mH, H8 at3a.u. about−15mH and Hubbard U/t2 about−11–13mH versus DMRG are consistent with journal results.",
+        "Nonvariational effective-Hamiltonian truncation and distinction between SD–SDTQ agreement and exact-reference energy errors are explicit.",
+        "arXiv2605.01016v1(May1) is explicitly separated from enlarged26–32-qubit journal tests.",
+        "Complete six-author APS entry, journal165/article201101/year2026 and DOI match primary metadata."
+      ]
+    },
+    {
+      "ref": 3,
+      "status": "pass",
+      "checks": [
+        "Full article title, four-author APS entry, November24 ArticleinPress status and DOI match primary metadata; no unassigned volume/article number invented.",
+        "Actual annealing acquisition sampling is distinguished from DFT/TDDFT19-descriptor and prior-experiment-trained random-forest target-property prediction.",
+        "Threshold0.8911 as maximum in fixed992-point initial sample and three300-draw random baselines with298/299/297 converged evaluations and zero new threshold hits are correct.",
+        "Best tested SA final inverse temperature100 and three runs per condition are stated;30iterations are explicitly separated from equal total evaluation budget after screening.",
+        "New synthesis/measurement validation and end-to-end quantum speedup are not claimed.",
+        "Confidential target chemistry and OLED connection as an application proposal are explicit.",
+        "CCBY-NC-ND4.0 source restrictions are respected at the reviewed scope: factual paraphrase and bibliography only; no source figure, adapted source graphic or long quotation is reproduced."
+      ]
+    }
+  ],
+  "primary_source_basis": [
+    {
+      "ref": 2,
+      "url": "https://doi.org/10.1063/5.0342621",
+      "read_scope": "Current publisher full journal text, methods, TablesV–VI and related result paragraphs; Figures8–9 visually inspected; official Crossref metadata and exact arXivv1 compared."
+    },
+    {
+      "ref": 3,
+      "url": "https://doi.org/10.1038/s41598-026-77520-7",
+      "read_scope": "Current publisher ArticleinPress full PDF and metadata; method conditions on pp4–5, results/discussion, AppendicesA–B; Figures3/9 and method equations visually inspected; Crossref metadata checked."
+    }
+  ],
+  "public_safety": {
+    "full_text_and_metadata_no_private_paths_or_mail_identifiers_observed": true,
+    "reference_links_public_https_only": true,
+    "original_nine_primary_entry_urls_retained": true,
+    "qa_images_kept_out_of_review_summary": true
+  },
+  "limits": [
+    "Scientific primary-source adjudication is assigned to references2–3; other references were visually read but are reviewed scientifically by their assigned reviewers.",
+    "This review does not independently reproduce the original quantum algorithms, chemical calculations, annealing experiments or model training.",
+    "No fresh render, build, public repository edit or network deployment was performed."
+  ],
+  "inspected_page_image_sha256": {
+    "1": "b2c50d788383587a219b5ce4e95c35924f531bef526b6352c577163a050d8e71",
+    "2": "144c971a80632bb32c481083ccc435503de4597003f94a5b7647f20fbe139b34",
+    "3": "3039d36226cdf847682c308fbeb64002c3df5dcf1e1d93698ca5c3f73941fc11",
+    "4": "8f8df1405d5711c29335440cfc3c4891c13ae33e736d0045f6b633e7b6f998fd",
+    "5": "56ba882df1993e54c74d7495e2d1d1433f609936dc0a3a2714c0b0d9e2a63f01",
+    "6": "3bb75efefddc50b1b37fc9502eae3bd504a67fcb67d9f34ad895e9ccdb683b37",
+    "7": "5cbfdfac0fa91e023fbc8a502d065a69e1b463b49e09e09909abf0272d7390de"
+  }
+}

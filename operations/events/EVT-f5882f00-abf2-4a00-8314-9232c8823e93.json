@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "EVT-f5882f00-abf2-4a00-8314-9232c8823e93",
+  "issue_id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
+  "created_at": "2026-11-24T13:03:55.387923+00:00",
+  "base_record_version": 38,
+  "owner_role": "AEDAUT publication observation handed to ADOPT",
+  "observation": {
+    "kind": "Repeat of known normal-publication recovery-retention refusal",
+    "publication_id": "2026-11-24-daily-quantum-brief",
+    "source_revision": "2fd8ae44fc9cacbe7ebca428debb56dfa622204e",
+    "workflow_run": 45397981670,
+    "four_jobs_reported_success": true,
+    "public_content_and_current_backup_verified": true,
+    "retention_status": "refused_before_any_delete",
+    "retention_latest_three_completed": false,
+    "current_recovery_artifact_id": 14922421510,
+    "current_upload_run_revision_binding_verified": true,
+    "copies_observed_after_complete_API_listing": 5,
+    "deleted": [],
+    "delete_attempted": [],
+    "technical_finding": "Retention refused with incomplete_metadata before deletion. Source main returns1 on refusal but CLI entrypoint calls main() without propagating return status; therefore greenjob is not proof of successful latest3cleanup. The provider-side cause of incomplete metadata is not established."
+  },
+  "evidence": [
+    {
+      "kind": "actual normal-publication CI",
+      "reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45397981670"
+    },
+    {
+      "kind": "independent bounded CI summary",
+      "reference": "daily_research_review/2026-11-24_dqb-archive/artifacts/ci-independent-review.json"
+    },
+    {
+      "kind": "existing same-condition L015 handoff",
+      "reference": "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md"
+    }
+  ],
+  "proposed_next_action": "ADOPT should use the existing issue and schedule to recheck provider pagination/total metadata and current-copy binding, and independently verify propagation of refusal to CLI failure. This editorial run does not perform manual deletion, unconditional retry, common-code change, new scheduler or full restore. Preserve source/publication completion separately from cleanup followup.",
+  "actual_changes": "Observation only; existing issue status/priority/schedule, public content, backup objects and permissions unchanged."
+}

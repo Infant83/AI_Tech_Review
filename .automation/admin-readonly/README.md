@@ -78,7 +78,7 @@ symlink·연결된 Git common-dir·remotes·외부 alternates·replace/graft·lo
 
 입력 요청32KB·control JSON64KiB, sandbox 파일3,000개/합계16MB·작업128개로 제한한다. 한도 초과는 거절하며 정리·삭제로 우회하지 않는다. 파일 예약/교체는 fsync와 부모 directory sync를 사용하지만 전원 차단·디스크 손상·원격 내구성 보증이 아니다. Git object/ref transaction과 파일 journal을 하나의 원자적 트랜잭션으로 표시하지 않는다.
 
-현재는 프로세스 동시 실행·결정적 중단·I/O 실패·오류 재생을 검사하는 첫 구현 후보다. 정식 독립 검토 목표는11/22 11시다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
+B1은11/22 c3a4a5d의12그룹 정식 독립 감수와 소스통합을 마쳤다.11/24에는527b9d8에서 Git 실행 파일 선택도 좁게 보완했다. 당시 첫 후보/11월22일 검토 목표는 역사 이력이며 현재 단계는 로컬 합성 도구 완료다. 실제 원본 연결·운영용 key/store 보존/복원·분산 writer·인가/API·배포는 해당 계약의 후속 B/C/D/E로 남는다. 기존 일반 게시의 권한·승인 규칙은 바꾸지 않는다.
 
 ## B2a · 원본 읽기 전용 인수 명세
 
@@ -100,4 +100,58 @@ Git 실행 파일은 inherited PATH 대신 고정 설치 위치의 실행 가능
 
 이는 제어된 로컬 운영자와 부모 경로를 위한 도구다. POSIX mkdir는 열린 directory FD를 반환하지 않으므로 mkdir와 첫 open 사이의 임의 same-UID 프로세스가 소유·mode·empty 조건을 만족하는 일반 디렉터리로 교체한 것을 원자적으로 식별한다고 보장하지 않는다. leaf identity 결속은 첫 open부터이며 mkdir가 만든 바로 그 inode의 원자적 획득·출력 namespace 잠금·source 전체의 원자적 snapshot·후속 writer 인가를 뜻하지 않는다. 비신뢰 주체가 부모 경로를 변경할 수 있는 공유 서버의 출력 경로로 활성화하는 것은 후속 설계다.
 
-첫 B2a의 개발 후보와 검사는 정식 독립 감수/실제 운영 완료가 아니다. candidate Git 생성·복제·keyclaim·Git commit/ref/CAS·원본 writer·서버/API/DB·발행은 없다. 원본과 독립 candidate Git의 판본 매핑·namespace·저장 권한은 B2b, 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
+B2a는11/24 527b9d8의 로컬5기준 정식 검증과 소스통합을 마쳤다. 최종 전체554검사(553통과·기존 선택1skip)와 범위별 독립 근거는 [실행 기록](../../operations/runs/20261123T113702Z-50a20771-a812-4af3-9049-572406a1f132.md)을 따른다. candidate Git/keyclaim·원본 writer·서버/API/DB·발행은 구현하지 않았다. 후속 [B2b1 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b1--선택-입력의-독립-git-보존과-불변-판본-매핑)은 선택 원본 bytes의 독립 Git 보존/불변 판본 매핑만 채택했다. B2b1의 한정 소스통합과 후속 B2b2의 계약/미구현 범위를 아래에서 구분한다. 모든 첨부/ID/URL/한영 실제 연속성은 C/E에서 별도로 검증한다.
+
+## B2b1 · 선택 원본 bytes의 첫 독립 Git 보존 후보
+
+`admin_candidate_import.py`는 **별도의 명시적 로컬 importer**다. B2a의 같은 frozen 입력과 현재 원본을 새로 확인하고, 선택한 Git blob의 raw bytes만 원격 없는 새 standalone bare 저장소에 보존한다. 원본 리뷰 등록이나 허브 문구를 바꾸지 않는다. A가 `no_change`여도 projection 보존은 할 수 있지만 metadata update의 접수·적용·멱등 키 예약/tombstone이나 B1의 범위 확대가 아니다. 초기1272e62를11/25 13:30 정식 감수·보완한658de62의 제어된 로컬 도구를 소스통합했다. 실제142입력/기존판본 보존과583전체·별도독립runtime 검증은 운영 기록을 따른다. 11/26 인수한 정상 [DRB CI](https://github.com/Infant83/AI_Tech_Review/actions/runs/45642166508)와 [OLED CI](https://github.com/Infant83/AI_Tech_Review/actions/runs/45656787296)에서658de62의 정확 코드와583검사(582통과/기존 선택1skip)를 확인했다. 아래 B2b2 첫 격리 후보의 helper 변경은 그 CI 이후이며 해당 결과로 새 후보를 검증했다고 표시하지 않는다.
+
+운영자는 논리 repository UUID와 고정 local principal을 별도로 정한다. 요청 JSON의 actor/role/path나 현재 source SHA를 namespace로 사용하지 않는다. `init-store`는 존재하지 않는 새 경로에만 적용하며, `import`/`inspect`는 기존 identity/epoch·bare 설정·보호 표시·lock을 확인한다. `repositoryId`·principal·operation은 여러 import에 걸쳐 유지한다. 초기화 시 source common-dir의 device/inode도 결속해 다른 repository를 자동 연결하지 않는다. 물리 source 이전·store 전체 유실/복원·운영 key store 활성화는 미지원이며 새 epoch를 과거 이력 망각의 허가로 쓰지 않는다.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py init-store --store /controlled/projection-store --root /controlled/source --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py import --store /controlled/projection-store --root /controlled/source --request /controlled/checked-request.json --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_candidate_import.py inspect --store /controlled/projection-store --projection-digest VERIFIED_DIGEST --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+```
+
+store는 source/common-dir·baseline을 포함한 원본 경로와 다른 작업 사본 밖의 제어된 부모에 둔다. 현재 도구는 source/common-dir 관계와 import 호출의 알려진 baseline 부모와의 중첩을 거절한다. init-store에는 baseline 정보가 없고 다른 활성 작업 사본의 자동 탐색은 미구현이므로 운영자가 실제 보호 경로 밖의 목적지인지 확인해야 한다. 이 조건은 정식 검토에서도 운영자가 확인할 로컬 지원 경계다. 다른 작업 사본 자동 탐색이나 source 전체 유실의 복구를 구현한 것으로 표시하지 않는다. `.keep`를 먼저 만들고 부모부터 no-follow directory FD로 결속하며 euid/0700과 파일별 배타 생성을 확인한다. 첫 open 전 namespace 교체의 B2a 로컬 지원 한계는 같다. 공유 서버의 출력 경로나 실제 계정 인가로 확대하지 않는다. 다른 작업의 진행 파일·기존 output을 덮거나 제거하지 않는다.
+
+`sourceOriginRevision`/`sourceTree`는 원본을, parent 없는 `candidateBaseRevision`/`candidateTree`는 선택 파일의 별도 tree를 가리킨다. 원래 요청의 SHA/fingerprint를 부분 후보 SHA로 바꿔 A를 통과시키지 않는다. provenance/도구 hash를 결속한 `projectionDigest`를 먼저 계산하고, 그 digest를 commit에 넣은 다음 mapping이 실제 commit/tree를 가리키므로 해시가 순환하지 않는다. 합성 commit의 identity/시간은 고정하며 실제 저자/발행 이력이 아니다.
+
+원본 Git은 B2a의 설치 Git/정제한 환경·읽기 전용 명령으로만 읽는다. source의 Python/JS·builder는 실행하지 않는다. 후보 Git에는 source의 common-dir/objects/refs·remotes/alternates·hardlink·hook/filter·Git 이력을 복사하지 않는다. importer가 Python으로 정확한 Git header/type/OID와 zlib loose object를 직접 작성하므로 외부 Git 프로세스의 불확정 임시 쓰기를 허용하지 않는다. 실제 candidate 객체는 전용 `refs/adopt/imports/<projectionDigest>`의 배타적 pin으로 보존한다. 이는 요청 처리/원본 main CAS가 아니다.
+
+순서는 불변 intent → 객체 → import pin → 실제 ref/정확 객체/tree 재조회 → 객체 mapping → 원본/control/선택 입력·도구 최종 재대조 → store identity/ref/mapping/객체 재대조 → 배타적 success attestation과 성공 응답 전 재대조다. 성공은 `source_projection_saved_local`이며 전체 원본 백업·빌드 후보·발행/복구 완료가 아니다. 같은 projection의 새 호출도 원본/A·완전 baseline을 다시 검사한 뒤 정확 기존 결과를 대조해 `source_projection_already_present_local`로 구분한다. 같은 결과를 반환하기 전에도 최종 원본 검사 뒤 store identity/ref/mapping/객체를 재확인한다. 다른 새 projection을 쓰기 전에는 기존 모든 완료 import의 정확 ref·객체·mapping·success 결속도 검사하며 손상 이력을 새 digest로 우회하지 않는다. accepted-key replay를 구현한 것이 아니다.
+
+부분 intent/객체/ref/mapping은 삭제하지 않는다. pin 시도 전 I/O 실패는 `import_incomplete`, pin 시도 뒤 응답/I/O 불확정은 `outcome_unknown`이다. source 변경은 `source_conflict`/`input_conflict`, core identity/epoch·객체/ref 불일치는 `store_inconsistent`로 중단한다. 미완료 import가 있으면 새 projection으로 진행하지 않으며 자동 수선·재초기화·새 namespace 우회를 하지 않는다. `inspect`는 기존 객체/mapping의 역사적 완전성과 attestation 유무만 확인한다. mapping 뒤 최종 확인이 실패했다면 `attested:false`이고 성공한 새 인수가 아니다. 선택적으로 `--root`를 주면 origin HEAD 전진을 `sourceAdvanced`로 표시하지만 A 재검증·최신 HTTPS·권한 검사는 아니다.
+
+첫 상한은 선택2,000파일·raw160MiB, control/mapping4MiB, 누적 읽기1GiB·쓰기512MiB, 임시/중복 포함 store 논리 파일 합512MiB·10,000항목, Git read20초·전체180초다. B2a의 더 작은 입력별/dist/JSON/512MiB·120초 읽기 한도도 유지한다. raw 크기와 보수적 zlib/metadata 한도를 사전 산정하며 모든 실제 쓰기·출력 합을 다시 제한한다. B2a 입력·control/Git stream과 최종 재읽기는 남은 outer 읽기/deadline을 매 읽기에 함께 적용한다. 읽기 크기는 두 예산의 남은 값에 맞추고 EOF/초과 구분을 위한 최대1byte 탐지 읽기 뒤에는 즉시 거절한다. 역사적 import의 전체 객체 재검증과 현재 결과의 반복 확인도 누적 예산에 포함하므로 일부 입력/많은 이력은 이 중 더 작은 한도로 거절될 수 있다. 디스크 물리 사용량/공급자 quota·전원 차단·분산 내구성을 보증하지 않는다. stdout은16KiB 이하의 상태/digest/reason이며 본문/patch/멱등 키·내부 경로·원시 예외를 포함하지 않는다.
+
+실제 patch 저장·요청 keyclaim/receipt/CAS는 B2b2, 전체 빌드/첨부 연속성과 원본/원격 통합·서버/API/DB·발행은 C–E의 후속이다. 기존 일반 게시 경로와 편집부(AEDAUT)의 내용/발행 판단을 유지한다.
+
+## B2b2 · 지속 요청 키와 별도 로컬 후보 저장 계약
+
+11/25 18:30 [최소 계약](../../operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2--지속-요청-키와-별도-로컬-후보-저장)을 두 역할의 정적 독립 검토와 보완 뒤 채택했다. 11/26 첫 격리 후보는 **초기화·명시적 base 준비·no_change와 역사 replay만** 구현한다. 허용 필드의 실제 변경을 저장하는 Git receipt/CAS와 전체 B2b2는 미완료이며, `changed_candidate_not_implemented`로 **키 예약 전에 거절**한다. B1의 합성 guard와 B2b1의 기존 형식을 유지한다. 첫 후보의 독립 검증·소스통합 상태와 다음 목표는 [일정표](../../operations/SCHEDULE.md)를 따른다.
+
+### 첫 no_change 후보의 명시적 실행
+
+고정 repository UUID/principal/operation의 **새로운 별도** writer-store를 사용한다. 기존 projection-store 안에 쓰지 않으며 source/common-dir·baseline·다른 작업 사본과의 물리 분리는 운영자가 확인한다. 도구는 전달받은 source/common-dir·baseline 부모·projection-store와 writer의 상하위/동일 경로를 거절한다. 초기화는 기존 B2b1 identity/epoch를 결속하고 store의 `.keep`·0700/euid·0600 파일·no-follow dir-FD·단일 hardlink 조건을 적용한다. 다른 작업 사본의 자동 탐색, 첫 open 이전 namespace 소유권, OS계정 전체를 통제하는 주체에 대한 무결성·전원 차단 내구성을 보장하지 않는다.
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py init-writer --store /controlled/writer-store --projection-store /controlled/projection-store --root /controlled/source --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py stage-base --store /controlled/writer-store --projection-store /controlled/projection-store --projection-digest VERIFIED_DIGEST --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/admin_projection_jobs.py apply-no-change --store /controlled/writer-store --request /controlled/checked-request.json --projection-digest VERIFIED_DIGEST --root /controlled/source --baseline-snapshot /controlled/baseline/snapshot.json --repository-id 00000000-0000-4000-8000-000000000001 --principal trusted-local-editor
+```
+
+`stage-base`는 attested:true인 완전 projection의 정확 identity/intent 전체 provenance/mapping/success bytes와 실제 commit/tree/blob/mode·raw SHA를 독립 복사하고 immutable base pin을 둔다. Git 자식의 쓰기 명령은 없으며 직접 작성하는 pin의 임시41B·최종 링크 entry와 실제 복사를 사전·누적으로 제한한다. base 증거 묶음은 읽는 단계부터 합계4MiB로 제한한다. 원 B2b1 store는 읽기만 한다. 준비는 요청/키 접수가 아니며 역사 base 준비가 현재 A/공개본·인가 확인을 뜻하지 않는다. apply는 준비 누락 시 `projection_not_staged`로 거절하고 암묵적 복사·초기화·수선/GC를 하지 않는다.
+
+요청은 strict parser로 한 번 읽어 중첩 값까지 불변인 내부 context로 고정한다. 기존 A/B2a의 내부 선택 인자로 이를 재사용하며 각 tracker의 실제 bytes/SHA를 같은 payload와 계속 대조한다. 이 인자는 public CLI에 노출하지 않는다. 새 no_change만 실제 source에서 현재 A/B2a·native3/raw3·도구/원본 판본과 준비 projection의 정확 provenance를 확인한다. 최초 정식 parser 뒤 immutable 값의 복사에는 JSON 재parse가 없다. helper 소스가 바뀌면 새 접수에는 그 도구와 맞는 새 projection이 필요하다.
+
+기존 key는 현재 source/baseline·새 projection hint를 열기 전에 writer의 원래 증거로 확인한다. namespace는 target/원본판본/부분base/코드/epoch와 독립이다. 동일키의 다른 fingerprint는 `idempotency_conflict`다. 불변 `inventory/<keyHash>.json` 예약을 동기화한 뒤 정확 hash에 결속한 `tombstones/<keyHash>.json`을 배타 생성한다. tombstone에는 원래 판본/native3/raw3·mapping/base·before==after·도구 hash만 보존하고 raw key/patch·본문은 넣지 않는다. no_change는 원래 등록 bytes의 SHA를 그대로 보존하며 Git copy/commit/ref/후보 쓰기0이다. 모든 이전 key와 base를 새 접수 전에 다시 확인하고, inventory만 있고 tombstone이 없으면 `outcome_unknown`으로 보존한다.
+
+예약 파일 쓰기를 시도한 뒤 원본·입력·도구나 한도 검사가 실패하면 첫 응답부터 `outcome_unknown`으로 구분하며, 정본 불일치는 `store_inconsistent`를 유지한다. 예약 전의 원본 충돌은 키를 접수하지 않은 `source_conflict`다. 불확정 결과는 같은 키로 확인하며 새 키·키 삭제로 이력을 우회하지 않는다.
+
+역사 replay는 완전 tombstone·원 base의 정확 객체/증거·요청 patch 동일성·operation ref 부재를 확인한다. 현재 validator/도구 파일을 다시 요구하거나 과거 hash를 덮지 않으며, 현재 A·baseline·live B2b1이나 새 hint에 의존하지 않는다. 파생 state가 없으면 같은 정본에서만 재생성한다. 선택한 현재 origin 조회가 불가능하면 `sourceAdvanced:null`이고, true/false 역시 현재 A/권한 재검증이 아니다. 결과는 `no_change`/replay/부분base·원 origin을 구분하며 `published:true`나 새 후보 SHA를 반환하지 않는다.
+
+writer lock → B2b1 lock 순서만 사용하며 대기·중첩 읽기에 같은180초/누적읽기1GiB·쓰기512MiB 예산을 적용한다. 고정 설치 도구 hash의 초기/반복 읽기도 호출 예산의 남은 bytes+최대1B 탐지와 기한에 연결하며 한 도구 파일1MiB를 넘기면 거절한다. 역사 증거의 도구 경로 집합 검사에는 실제 도구 파일 I/O를 요구하지 않는다. 요청32,000B·control/claim/state64KiB·128키, 선택2,000파일/raw160MiB·base근거4MiB, 임시/중복 포함 writer 논리512MiB/10,000항목·stdout16KiB를 제한하고 B2a의 더 작은 한도를 유지한다. 시간/크기 초과는 거절하며 오래된 이력 삭제로 우회하지 않는다. 완전 변경 후보·실제 child 중단/CAS의 독립 종료 조건, API/DB·원본/원격 통합·발행은 다음 단계다. 기존 일반 게시 권한·편집부(AEDAUT)의 내용 판단과 발행 절차는 유지한다.
+
+읽기 카운터는 bounded read API가 반환한 논리 bytes를 센다. OS의 read-ahead·page cache나 물리 디스크 I/O의 정확한 양을 측정하거나 제한했다는 뜻은 아니다.

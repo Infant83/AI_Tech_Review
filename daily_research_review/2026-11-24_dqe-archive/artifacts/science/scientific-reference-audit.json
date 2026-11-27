@@ -1,0 +1,171 @@
+{
+  "document_id": "2026-11-24-daily-quantum-exercise",
+  "original_issue_date": "2026-11-24",
+  "review_date": "2026-11-24",
+  "review_team": "AEDAUT",
+  "review_mode": "Independent agent reading of all four exercise pages, exact arithmetic, joint-kernel consistency and primary-source comparison",
+  "human_line_by_line_review": false,
+  "result": "Scientific assumptions, KRR arithmetic, separate PSD counterexample, measurement counts and time thresholds pass",
+  "calculation": {
+    "script": "verify_exercise.py",
+    "results": "calculations.json",
+    "execution_level": "Classical rational arithmetic and numerical pure-state existence witness; no scikit-learn execution, eight-qubit circuit, QPU or DFT run",
+    "checks": [
+      "The fixed training-label mean is 0.20 eV; centering labels rather than changing the kernel gives alpha=(-0.10,0.10) eV.",
+      "Predictions are 0.14 and 0.18 eV, with single-point absolute errors 0.030 and 0.010 eV. One error is not an independent-test population MAE.",
+      "Appending the test point with self-kernel one gives joint quantum and classical Gram determinants 0.23 and 0.47, respectively. All principal minors are positive.",
+      "Quantum fidelity realizability is established separately by explicit pure states |0>, |+> and sqrt(4/5)|0>+sqrt(1/5)exp(i theta)|1>, with cos(theta)=-3/4. This proves consistency of the exercise fixture, not efficiency or implementation of its unspecified feature circuit.",
+      "The unrelated B matrix has determinant -0.28 and eigenvalues 1, 1 plus/minus sqrt(1.28). Adding 0.5I makes this shifted regression matrix positive definite but does not establish that the original measurements formed a consistent kernel.",
+      "19900 training and 4000 prediction pairs require 23900000 shots at 1000 shots per pair. Measurement takes 4780 seconds and the full quantum path 5680 seconds; the hypothetical classical path is 360 seconds.",
+      "With 900 seconds left for measurement, the exact rate threshold is 239000/9 shots per second, or 26556 if rounded up to an integer. At the current rate, 188 shots per pair fits while 189 exceeds thirty minutes.",
+      "The maximum elementwise binomial standard error is about 0.0158 and is dimensionless, not an eV prediction error.",
+      "Eighty CPU-hours is a gross replacement upper bound. Running twenty new DFT validation jobs still incurs those eighty CPU-hours and does not demonstrate a saving in that batch."
+    ]
+  },
+  "joint_kernel_critique": {
+    "training_and_test_values": "The K off-diagonal 0.5 and quantum test vector (0.8,0.2) are mutually consistent. B is expressly a separate measurement batch.",
+    "necessary_vs_sufficient": "PSD of a nonnegative unit-diagonal matrix is a necessary test for a pure-state fidelity Gram matrix; it is not used here as a universal sufficient realizability criterion. The explicit state construction provides the additional witness for this particular fixture.",
+    "scope": "The witness is a classical mathematical calculation. It neither specifies the exercise's U(x) nor runs a quantum circuit. The one-qubit states can be embedded in an eight-qubit Hilbert space by adjoining unused |0> qubits.",
+    "regularization_vs_repair": "Ridge shifts the system used for regression. PSD projection changes an estimated kernel and can change its diagonal; an out-of-sample extension and evaluation procedure must remain consistent. Hidden test labels must not select the correction or hyperparameters.",
+    "causality": "A negative determinant identifies an inconsistency, not which of sampling, calibration drift or correction procedures caused it."
+  },
+  "references": [
+    {
+      "number": 1,
+      "bibliography": "R. Gómez-Bombarelli et al., Design of efficient molecular organic light-emitting diodes by a high-throughput virtual screening and experimental approach, Nat. Mater. 15, 1120–1127 (2016).",
+      "url": "https://doi.org/10.1038/nmat4717",
+      "full_text_used": "https://lips.cs.princeton.edu/pdfs/bombarelli2016oleds.pdf",
+      "author_count_verified": 21,
+      "author_credit_rule": "First author et al. follows the repository rule for more than twenty authors; all twenty-one authors were checked against the publisher-deposited Crossref record and author-hosted title page.",
+      "publisher_online_date": "2016-08-08",
+      "metadata_source": "https://api.crossref.org/works/10.1038/nmat4717",
+      "accessed": "2026-11-24",
+      "directly_read": "Pages 1-2 and 5 of the nine-page copy hosted by coauthor Ryan P. Adams at Princeton: abstract/title/affiliations, discovery pipeline and quantum-chemistry context, collaborative selection and experimental-validation introduction",
+      "supports": "An industrially collaborative workflow joining virtual screening, quantum chemistry, machine learning, synthesis and OLED device testing",
+      "limits": "This is context for the educational application, not evidence of the exercise's reorganization-energy labels, kernel-regression performance or a company's recurring operation. The full paper and supplements were not audited, and no experiment was reproduced."
+    },
+    {
+      "number": 2,
+      "bibliography": "scikit-learn developers, KernelRidge, scikit-learn 1.9.1 documentation (accessed 24 November 2026).",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.kernel_ridge.KernelRidge.html",
+      "documentation_version_observed": "1.9.1",
+      "accessed": "2026-11-24",
+      "directly_read": "KernelRidge description, regularization parameter, precomputed kernel setting, fitted training matrix, fit and predict input shapes",
+      "supports": "Regularized classical kernel regression and distinct training-by-training versus new-sample-by-training precomputed matrices",
+      "limits": "Documentation was read; the software was not run. The exercise's mean subtraction and lambda convention are explicit mathematical inputs and were checked directly."
+    },
+    {
+      "number": 3,
+      "bibliography": "V. Havlíček, A. D. Córcoles, K. Temme, A. W. Harrow, A. Kandala, J. M. Chow, and J. M. Gambetta, Supervised learning with quantum-enhanced feature spaces, Nature 567, 209–212 (2019).",
+      "url": "https://doi.org/10.1038/s41586-019-0980-2",
+      "full_text_used": "https://arxiv.org/pdf/1804.11326v2",
+      "author_manuscript_version": "arXiv:1804.11326v2, 5 June 2018",
+      "institutional_summary": "https://research.ibm.com/publications/supervised-learning-with-quantum-enhanced-feature-spaces",
+      "publisher_online_date": "2019-03-13",
+      "metadata_source": "https://api.crossref.org/works/10.1038/s41586-019-0980-2",
+      "accessed": "2026-11-24",
+      "authors_verified": [
+        "Vojtěch Havlíček",
+        "Antonio D. Córcoles",
+        "Kristan Temme",
+        "Aram W. Harrow",
+        "Abhinav Kandala",
+        "Jerry M. Chow",
+        "Jay M. Gambetta"
+      ],
+      "directly_read": "IBM's institutional abstract and author list; author-manuscript pages 1, 5, 18 and 22 on hardware classification, kernel estimation and classical SVM, inverse-feature-map/all-zero readout, sampling error, mitigation and negative eigenvalues",
+      "supports": "Author-reported superconducting-processor classification and kernel-estimation experiments; fidelity estimation by inverse circuits and the effect of sampling on Gram-matrix PSD",
+      "limits": "This classifier experiment does not demonstrate the exercise's OLED regression accuracy or runtime. The full twenty-two-page manuscript and supplements were not audited, and hardware results or data were not reproduced."
+    }
+  ],
+  "research_access_note": "Direct Nature article opens reached an access-verification redirect. Public author-hosted texts, IBM's author-institution summary and publisher-deposited Crossref metadata supplied the stated verification scopes. No subscription or access protection was bypassed; downloaded originals remain outside the public repository.",
+  "evidence_separation": {
+    "independent": "Toy KRR and matrix calculations, pure-state consistency witness, shot and timing arithmetic",
+    "reported_experiment": "The cited OLED discovery workflow and superconducting-processor classifier studies",
+    "hypothetical": "The OLED transport-material surrogate task, eight-qubit circuit size, throughput, timing and DFT CPU-hour inputs",
+    "proposed_followup": "Unseen-scaffold/time-split validation, matched classical baselines, repeated kernel/noise checks and actual net replacement accounting"
+  },
+  "related_existing_reading": [
+    {
+      "title": "08. 양자 커널, SVM과 학습에 유용한 기하",
+      "url": "https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-08-kernels-and-svm.html",
+      "source": "2026-10-20_quantum-machine-learning-lecture-series/lectures/08-kernels-and-svm.md",
+      "directly_read": "Complete lecture source through the original-reading section",
+      "connection": "PSD proof, finite-shot and pair-count costs, PSD projection versus a fixed diagonal, and test-label leakage",
+      "language": "Korean; explicitly identified as such in the English guide"
+    },
+    {
+      "title": "양자 우위의 경계는 계속 다시 그려진다",
+      "url_ko": "https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/index.html",
+      "url_en": "https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/en/index.html",
+      "directly_read": "The complete QuanONet section in both Korean and English manuscript sources",
+      "connection": "Expressivity and feature choice must be connected to actual prediction/output and measurement costs; its operator-learning model and experiments are distinct from this exercise."
+    }
+  ],
+  "editorial_review": {
+    "status": "pass",
+    "reviewer_role": "AEDAUT independent scientific and bilingual review",
+    "review_date": "2026-11-24",
+    "listing": {
+      "ko": {
+        "title": "분자 예측의 정확도와 커널 측정 비용",
+        "summary": "분자 사이의 유사도를 바꾸면 DFT 대리모형의 예측도 달라진다. OLED 소재의 교육용 회귀 문제로 커널의 일관성·시험 오차·측정량을 함께 살피고, 대체한 계산과 검증 비용을 구분해 본다."
+      },
+      "en": {
+        "title": "Accuracy and kernel measurement cost in molecular prediction",
+        "summary": "Changing molecular similarities changes a DFT surrogate’s predictions. An educational OLED regression case links kernel consistency, held-out error and measurement load, then asks which DFT calculations are truly avoided after validation costs."
+      },
+      "review": "Titles and separate listing summaries match the exercise, identify the educational application and contain no numerical answers or deployment verdicts."
+    },
+    "checks": [
+      "Both languages preserve the arithmetic, units, label centering, independent-test scope and initially closed answer structure.",
+      "The introduction describes the energetic cost of molecular structural reorganization upon charge-state change while keeping the DFT target separate from device lifetime or mobility.",
+      "The unrelated B audit is not used to invalidate the consistent K/kQ training-test fixture.",
+      "Ridge regularization, kernel correction and empirical physical consistency remain distinct.",
+      "Shot noise is dimensionless kernel error rather than an eV prediction error; throughput and reduced-shot thresholds are hypothetical arithmetic conditions.",
+      "DFT replacement upper bounds, validation costs, CPU-hours and elapsed time remain distinct.",
+      "Reference first-use order is 1, 2, 3; all original title words, verified author credits, bibliography and links match between languages and the final PDF.",
+      "The full-paper/experiment access limitations and actual selected readings are disclosed without claiming a full reproduction."
+    ],
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-24_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 9404,
+        "sha256": "552b06e19af78e65ad9a5ceb668291543a87c10f1b38f9b7fa1ce39b8dbf7ea2"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-24_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 9545,
+        "sha256": "4252df59c03fbed899e7f9a8700b28eceb8f4bed4a48ba147a588391f4321573"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-24_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 9437,
+        "sha256": "0dd45fe21fe091778bbdb26711a5464b2edd80f46977eff175e44fc2bfefe698"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-24_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 9578,
+        "sha256": "4247a4bc8f18927f354fc498564217e2b7e502d1c33bcaf201ca00382e529f33"
+      }
+    ],
+    "PDF_reference_check": {
+      "path": "../../dist/2026-11-24-daily-quantum-exercise.pdf",
+      "sha256": "f0e845d922343c4537e48564a24572fb1f5002b6f02b9356b98760c16f2c430d",
+      "bytes": 82268,
+      "scope": "Final page four bibliography directly extracted/read; author credits, original title words, publication details and documentation version match both web editions. PDF uses ASCII hyphens for page ranges; web typography uses en dashes."
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "date": "2026-11-25",
+  "issue": "2026.11.25",
+  "title": "전자 큐비트의 구속을\n연산 자원으로 바꾸다",
+  "short_title": "전자 큐비트의 구속과 제어",
+  "tagline": "Nature · Artificial Intelligence Review · APS | Materials, Quantum, Condensed Matter",
+  "pdf_subject": "고체 네온의 전자 큐비트 제어, Si/SiGe 구속·동위원소 설계, 광자 classical-shadow 실험",
+  "summary": [
+    "고체 네온에 가까이 갇힌 두 전자의 전하 상태를 마이크로파로 함께 제어했다. 한 전자는 공진기와 잘 결합하고 다른 전자는 거의 직접 결합하지 않지만, 두 전자 사이의 상호작용이 제어와 판독을 이어 준다. 두 큐비트에서 CR·bSWAP형 연산을 관측했고, 별도의 세 큐비트 장치에서는 더 큰 결합을 분광학적으로 확인했다.[1]",
+    "Si/SiGe에서는 좁은 양자우물이 valley 에너지 간격을 키우는 동시에 파동함수를 SiGe 장벽으로 밀어 핵스핀 잡음을 늘린다. 제일원리 계산과 초미세장 모형은 우물 폭·동위원소 농도를 함께 정해야 하는 이유를 보여 준다.[2]",
+    "광자 classical shadow는 광자 상태의 에너지·상관을 적은 유효 표본에서 읽는 방법을 실험했다. shadow 크기와 실제 준비·검출·선택 시도 수를 함께 읽으면 이 방법의 활용 범위를 구체화할 수 있다.[3]"
+  ],
+  "comparison": [
+    [
+      "고체 네온 전자 큐비트 [1]",
+      "실제 두 큐비트 CR·bSWAP형 연산; 별도 세 큐비트의 J₁₂/(2π)=62.5(5) MHz",
+      "전자의 구속·쌍극자 방향이 상호작용과 제어를 정한다. 공개 최종 캡션과 저자판 전문을 구별했다."
+    ],
+    [
+      "Si/SiGe 결맞음·valley 설계 [2]",
+      "급격한 계면의 DFT·초미세장 모형: 3–4 nm, ²⁹Si·⁷³Ge 각각 50 ppm, 점 면적 700 nm²에서 평균 Ev>500 μeV·T₂*>15 μs",
+      "양자우물 폭과 핵스핀 농도를 함께 설계한다. 실제 큐비트 게이트의 측정값이 아니다."
+    ],
+    [
+      "광자 양자상태 학습 [3]",
+      "Belenos 실험의 3·4광자 U=0 에너지 추정 오차 5% 이내; shadow 크기 60·100",
+      "검출기 하나 이상 클릭한 시도는 10⁷·10⁸회다. 유효 표본 수와 준비·선택 비용을 구별한다."
+    ]
+  ],
+  "papers": [
+    {
+      "heading": "네온 표면의 구속을 두 전자 큐비트의 제어로 잇다",
+      "journal": "Nature Physics",
+      "published": "2026-11-25",
+      "doi": "10.1038/s41567-026-03529-4",
+      "url": "https://doi.org/10.1038/s41567-026-03529-4",
+      "paragraphs": [
+        "전자 큐비트를 촘촘히 배치하려면 전자를 가두는 전극과 개별 제어선도 함께 늘어난다. Li와 동료들은 고체 네온 표면의 구조가 가까운 전자들을 구속하는 성질을 이용해 이 부담을 줄이는 경로를 실험했다. 전자의 운동 상태를 쓰는 전하 큐비트이며, 표면 구속과 쌍극자 방향이 공통 공진기와 결합하는 방식을 달리한다.",
+        "두 전자 장치에서는 공진기와 잘 결합하는 밝은 큐비트 Qb가 거의 직접 결합하지 않는 어두운 큐비트 Qd를 제어하는 통로가 된다. 최종 공개 Fig.2 캡션의 결합은 J/(2π)=3.35(9)MHz, 혼성 선폭은 (γb+γd)/(4π)=0.6(1)MHz다. 이는 J/(2π)의 표기이며 스펙트럼의 전체 두 봉우리 간격과 같지 않다. 공통 마이크로파와 단일 d.c. 바이어스로 CR·bSWAP에 해당하는 시간영역 진동을 측정했다.",
+        "판독도 결합의 일부다. 공진기 판독 펄스가 밝은 큐비트의 주파수를 ac-Stark 이동시켜 두 큐비트의 들뜬상태 점유를 교환하고, 어두운 전자의 정보를 밝은 쪽에서 읽는다. 실험 그림의 신호는 정규화한 공진기 I 성분이며, v5의 Lindblad 모사는 이 구동·판독 과정을 함께 모델링했다. 최종 ED4의 게이트 충실도 역시 수치모사다. 실험 과정 충실도나 토모그래피 벤치마크로 바꿔 읽지 않는다.",
+        "J12/(2π)=62.5(5)MHz와 선폭 3.5(7)MHz는 별도 냉각 회차의 Nb 공진기·세 전자 분광에서 얻었다. 앞의 TiN 두 전자 연산과 한 장치의 동시 성과로 묶지 않는다. 재료의 표면 구속은 전자를 가두는 배경을 넘어 결합·구동·판독의 역할을 정하는 설계 자원으로 드러난다. 다음에는 이 구속과 방향을 얼마나 재현성 있게 설계하고 판독까지 보정할 수 있는지 살필 만하다."
+      ],
+      "figures": [
+        {
+          "asset": "neon-relations.png",
+          "width": 499,
+          "height": 305,
+          "caption": "리뷰 자체 도해. 네온 구속·쌍극자 방향과 제어·판독의 관계를 새로 구성하고, 최종 공개 Figs.2·4의 결합/선폭 표기와 서로 다른 장치 조건을 나란히 적었다. 괄호는 출판 캡션의 불확실성 표기를 유지했다(종류는 이 캡션에 명시되지 않음). 두 장치 사이의 화살표나 연속 성능 축은 사용하지 않는다. 원 그림·데이터 곡선을 복제하지 않았다.",
+          "url": "https://www.nature.com/articles/s41567-026-03529-4/figures/2",
+          "license": ""
+        }
+      ],
+      "after": [],
+      "citation": "X. Li, Y. Huang, X. Han, X. Zhou, A. Yacoby, and D. Jin, Coherent manipulation of interacting electron qubits on solid neon, Nat. Phys. (2026).",
+      "read_url": "https://arxiv.org/abs/2503.23738v5",
+      "code_url": "",
+      "read_scope": "정식 Nature Physics 초록·공개 Figs.1–4 및 ED4–6 캡션·권리, 공개 arXiv2503.23738v5의 초록·서론·본문 pp1–6·Methods pp6–8와 ED 그림/표 캡션 pp11–17를 읽었다. 정식 구독 본문은 읽지 못했다. arXiv v5 등록일은2026-03-31, PDF 표지 날짜는2026-04-01로 구별한다. 선행2024논문은 공식 초록·서지만 확인했다. 정식 공개 ED Tables1–2도 직접 읽어 v5와 표 번호가 바뀌고 해당 모형 매개변수 값은 일치함을 대조했다.",
+      "availability": "정식판은 exclusive rights, arXiv v5는 nonexclusive-distrib이므로 원 패널을 발췌하지 않는다. 공개 Source Data XLSX11개 링크 중3개를 내려받아 workbook sheet목록만 확인했다. 추가 자료와 실험·분석 코드는 저자 요청 방식이며 독립 실험·수치모사·원자료 재집계는 수행하지 않았다.",
+      "id": 1
+    },
+    {
+      "heading": "얇은 실리콘 우물에서 valley 분할과 스핀 결맞음을 함께 설계하다",
+      "journal": "Physical Review Letters",
+      "published": "2026-11-25; Vol. 137, Iss. 22",
+      "doi": "10.1103/qbss-wkz7",
+      "url": "https://doi.org/10.1103/qbss-wkz7",
+      "paragraphs": [
+        "실리콘 스핀 큐비트에서는 전자의 스핀을 정보로 쓰지만, 같은 전도대의 낮은 valley 상태들이 가깝게 있으면 다른 상태로 새는 경로가 생긴다. Si 양자우물을 좁히면 두 valley의 에너지 간격을 키울 수 있다. 대신 전자 파동함수가 SiGe 장벽으로 더 퍼져 나가, 장벽의 핵스핀과 결합하는 문제가 커진다.",
+        "Zhang 연구진은 무작위 합금 배치·우물 폭·계면을 바꾼 1,000개 이상의 구조를 DFT로 계산했다. 최대 5,800원자 구조에서 valley 분할과 핵 위치의 초미세 결합을 구하고, 열적으로 무작위인 핵스핀이 만드는 스핀 에너지 분산으로 T₂*를 추정했다. 두 잔류 동위원소 ²⁹Si·⁷³Ge를 각각 50 ppm으로 낮춘 3–4 nm 우물은 평균 valley 분할 >500 μeV와 T₂*>15 μs를 함께 지지한다는 예측이다. 원자적으로 급격한 Si/SiGe 계면과 유효 점 면적 700 nm²를 가정한 결과다."
+      ],
+      "figures": [
+        {
+          "asset": "si-sige-arxiv-v1-fig4ab.png",
+          "width": 499,
+          "height": 235,
+          "caption": "공개 저자판 arXiv:2605.31342v1, Fig.4의 왼쪽 두 패널(a,b)을 발췌했다. 왼쪽은 폭 3.22 nm 우물에서 ²⁹Si·⁷³Ge 농도에 따른 핵스핀 모형의 T₂* 색상·등고선이고, 오른쪽은 ²⁹Si=50 ppm에서 ⁷³Ge 농도를 바꾼 세 우물 폭의 곡선이다. 한 핵스핀 농도를 줄이면 남은 다른 종류가 수명 증가를 제한한다. 원 축·색상막대·수치·점선·범례를 보존했고 나머지 두 패널과 주변 여백을 제외하고, 이웃 패널의 세로축 숫자만 흰색으로 덮었다. 선택 패널의 내용은 바꾸지 않았다. P. Zhang, X. Hu, S. Ullah, and J. R. Petta, arXiv:2605.31342v1 (2026), Fig.4(a,b), CC BY4.0. 정식 DOI10.1103/qbss-wkz7.",
+          "url": "https://arxiv.org/html/2605.31342v1",
+          "license": "https://creativecommons.org/licenses/by/4.0/"
+        }
+      ],
+      "after": [
+        "예를 들어 ²⁹Si=50 ppm·우물 폭 3.22 nm에서 장벽의 ⁷³Ge를 자연 존재비 약 7.7%에서 0.1%로 줄이면, 계산 T₂*는 약 4 μs에서 13 μs로 늘어난다. 더 정제하면 다시 ²⁹Si가 병목이 된다. 따라서 우물 폭만 최적화하기보다 계면의 날카로움과 양쪽 재료의 동위원소 조성을 함께 정해야 한다.",
+        "여기서 T₂*는 핵스핀의 초미세장 요동으로 계산한 비균질 위상 소실 시간이다. 실제 소자의 전하 잡음·게이트 구동까지 합친 수명이나 게이트 충실도와는 측정 대상이 다르다. 기존 장벽 핵스핀 연구를 좁은 우물의 valley 분할과 함께 설계하는 문제로 확장했다는 점이 이번 계산의 의미다."
+      ],
+      "citation": "P. Zhang, X. Hu, S. Ullah, and J. R. Petta, Co-optimization of spin coherence and valley splitting in Si/SiGe heterostructures, Phys. Rev. Lett. 137, 226201 (2026).",
+      "read_url": "https://arxiv.org/html/2605.31342v1",
+      "read_scope": "정식 출판 페이지의 초록·전원 저자·온라인 날짜·권/호/논문번호를 확인했다. 공개 저자판 arXiv:2605.31342v1(2026-05-29)의 초록·서론·방법·결과·논의·Fig.1–5 캡션을 HTML로 읽고, 내려받은 6쪽 PDF의 텍스트와 Fig.4의 위치(p.4)를 대조했다. 최종 출판 초록의 핵심 조건·수치는 이 판본과 일치한다. 최종 본문·SI는 공식 페이지의 Subscription Required 범위로 남긴다. 원 Fig.4 및 발췌한 (a,b)의 축·색상막대·단위·범례를 실제 이미지로 대조했다.",
+      "availability": "공개 저자판과 원본 Fig.4는 HTTP 200이며 arXiv 판본에 CC BY 4.0이 표시되어 있다. 읽은 본문·공식 페이지에서 저자 코드·원자료 저장소를 확인하지 못했다. VASP/PAW·PBEsol 계산과 핵스핀 모델을 재실행하지 않았다. 배경으로 Semiconductor spin qubits(Rev. Mod. Phys.95,025003,2023)와 장벽 핵스핀 연구(Phys. Rev. Applied22,064089,2024)의 공식 초록·서지를 읽었다.[5,6]",
+      "id": 2
+    },
+    {
+      "heading": "광자 상태의 여러 물리량을 같은 측정 기록에서 읽는다",
+      "journal": "PRX Quantum",
+      "published": "2026-11-24",
+      "doi": "10.1103/d6k4-4xrz",
+      "url": "https://doi.org/10.1103/d6k4-4xrz",
+      "paragraphs": [
+        "광자 회로가 커지면 상태를 나타내는 모든 행렬 원소를 복원하는 일이 빠르게 어려워진다. Thomas·Chabaud·Emeriau는 입력 상태에 무작위 수동 선형광학 회로를 적용하고 광자 수를 측정한 뒤, 회로와 검출 결과를 함께 저장하는 classical shadow 프로토콜을 제시했다. 물리량마다 새 측정 장치를 짜는 대신 같은 기록의 고전 후처리를 바꿔 상관함수·불변량·에너지 등을 읽는 방법이다.",
+        "실제 실험에는 12모드 Ascella와 24모드 Belenos를 사용했고, 다룬 입력 광자는 최대 네 개였다. Ascella에서는 세 광자·네 모드 상태에 대해1,100개의 무작위 회로 기록을 만들고 세 종류의 분석에 재사용했다. 각 회로에서 적어도 검출기 하나가 클릭한 사건2,000회를 모아 평균19개의 세 광자 사건을 얻었다. 광자 수를 완전히 구별하지 못하는 검출의 편향을 보정하는 절차도 포함된다.",
+        "에너지 실험에서는 J=1, U=0, μ=0인 Bose–Hubbard 모형의3·4사이트 바닥상태를 Belenos에 준비했다. 광자는 각각의 조합에서3개 또는4개이며, 준비와 측정 보조 모드를 합치면 최대19모드가 쓰인다. 보고된 shadow 크기N은3사이트에서60,4사이트에서100이고 에너지 추정은5% 범위에 들어왔다. 한편 AppendixF는3·4사이트 실험에 각각적어도 검출기 하나가 클릭한 사건 10⁷·10⁸회를 보고한다. 준비 후 선택과 광자 수 판독의 비용을 함께 보는 수치다.",
+        "이 방법의 계산 효율은 정해진 차수의 관측량을 읽는 데서 나온다. 전체 광자 수를 보존하는 광학계의 측정으로 볼 수 있는 물리량에 한정하며, 서로 다른 총 광자 수 사이의 위상을 모두 복원하는 절차로 확대하지 않는다. U>0인 상호작용 상태의 에너지 추정은 별도의 고전 수치 실험으로 보강했다. 광자 회로의 상태 준비, 유효한 검출 기록의 생산, 고전 후처리를 하나의 계산 비용으로 이어서 평가할 근거를 마련한 연구다."
+      ],
+      "figures": [
+        {
+          "width": 480,
+          "caption": "무작위 광학 회로와 광자 수 측정으로 기록을 모은 뒤, 같은 기록을 고전 후처리해 여러 물리량을 추정하는 흐름. 정식 출판본 Fig1 원그림을 변경 없이 사용. H.Thomas,U.Chabaud,and P.-E.Emeriau,PRX Quantum7,043038(2026),DOI10.1103/d6k4-4xrz,CC BY4.0.",
+          "source_figure": "Fig1",
+          "asset": "figure1-large.png",
+          "url": "https://journals.aps.org/prxquantum/pdf/10.1103/d6k4-4xrz",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "height": 180
+        },
+        {
+          "width": 480,
+          "caption": "정식 Fig3(a)의 첫째·넷째 패널 발췌·가로 재배치: (m,n,M)=(3,3,11)과(4,4,19). m은모형사이트수,n은광자수,M은준비·측정을포함한장치모드수다. 가로축N은shadow크기이며 전체검출시도수가아니다. 청색은에너지추정,주황점선은참값,주황영역은5%범위다. 원그림의수치·축·범례는바꾸지않는다. H.Thomas,U.Chabaud,and P.-E.Emeriau,PRX Quantum7,043038(2026),DOI10.1103/d6k4-4xrz,CC BY4.0.",
+          "source_figure": "Fig3(a),outertwo subplots",
+          "asset": "photonic-shadow-energy-pair.png",
+          "url": "https://journals.aps.org/prxquantum/pdf/10.1103/d6k4-4xrz",
+          "license": "https://creativecommons.org/licenses/by/4.0/",
+          "height": 205,
+          "page_before": "광자 에너지를 읽는 표본과 실제 시도"
+        }
+      ],
+      "after": [
+        "Elben 등의2023년 리뷰는 무작위 측정 기록을 나중에 서로 다른 물리량의 질문에 재사용하는 틀을 정리했다. 이번 논문은 그 틀을 수동 선형광학과 광자 수 검출이라는 장치 조건에 맞춰 구체화했다. 기존 리뷰를 새 성과로 세지 않으며, 새로운 실험 근거는 이번 Ascella·Belenos 측정에 둔다.[4]",
+        "후속 기획에서는 shadow의 크기와 실제 시도 수를 따로 기록하고, 같은 에너지 정밀도에서 상태 준비 성공률·검출 선택률·회로 재설정 시간·고전 후처리 시간을 함께 비교할 수 있다. 이는 앞으로의 비교 항목이며 본 브리프에서 새 실험이나 속도 우위를 검증한 결과는 아니다."
+      ],
+      "citation": "H. Thomas, U. Chabaud, and P.-E. Emeriau, Learning photonic quantum states, PRX Quantum 7, 043038 (2026).",
+      "read_url": "https://journals.aps.org/prxquantum/pdf/10.1103/d6k4-4xrz",
+      "read_scope": "정식 출판PDF28쪽의 초록·서론·본문I–IV(pp1–7), Dataavailability,AppendixA의장치/데이터획득/고전후처리(pp8–9),AppendixD의저차관측량후처리선택대목(pp17–19),AppendixE의pseudo-PNR편향/완화(E7–E8,pp21–22),AppendixF의모형·상호작용수치실험·실제준비와시도수(pp22–24)를읽었다. 모든28쪽수학증명을전부독해했다는뜻은아니다. 공개arXiv2510.07240v2는초록·이력/선택HTML만대조했으며정식판을수치기준으로썼다. 원Fig1/3의공개1600pxPNG를원크기로확인했다.",
+      "availability": "공식PDF와원그림HTTP200. 별도SI는공식목록에표시되지않았고실험방법/증명은28쪽본문내Appendices에포함된다. Dataavailability가가리키는LOShadows.jl을commit ef68c7ee184f87b53567d1e37164e37e18fd1dee에고정해README/MIT LICENSE/Project와선택예시·소스만정적으로읽었다. 모델·QPU·코드를실행하지않았으며원실험데이터의별도공개식별자는확인한Dataavailability/저장소목록에서발견하지못했다.",
+      "id": 3,
+      "code_url": "https://github.com/thmhugo/LOShadows.jl/tree/ef68c7ee184f87b53567d1e37164e37e18fd1dee"
+    }
+  ],
+  "plans": [
+    {
+      "title": "우선 기획 | 전자를 가두는 구조가 제어와 잡음을 정하는 법",
+      "audience": "독자: 양자 하드웨어·계산재료 연구자 | 신규 심층 리뷰 제안, 게재 승인 상태는 변경하지 않음",
+      "thesis": "고체 네온의 구속은 이웃 전자와의 결합과 마이크로파 접근성을 만들고, Si/SiGe의 구속은 valley 분할과 핵스핀 잡음을 함께 바꾼다. 파동함수의 위치·쌍극자·장벽 침투를 출발점으로 삼으면 재료 설계에서 실제 제어까지 이어지는 관계를 설명할 수 있다.",
+      "outline": [
+        "고체 네온에서 전자의 운동 상태와 밝은·어두운 큐비트가 무엇을 뜻하는지, 어떤 상호작용으로 연산하는지 설명한다.",
+        "Si/SiGe에서 valley 두 준위와 장벽 침투가 필요한 에너지 간격·잡음을 어떻게 함께 바꾸는지 제일원리 결과로 읽는다.",
+        "두 계의 서로 다른 Hamiltonian·측정량을 보존하면서 구속 설계의 목적함수에 결합, 판독, 결맞음을 어떻게 넣을지 제안한다."
+      ],
+      "checks": "네온 최종 전문의 저자판 대비 변경, 실험 게이트 평가와 모사 충실도의 구별; Si/Ge 핵스핀 농도·점 크기·계면 가정, 전하·전기 잡음의 별도 기여.",
+      "relation": "11/17 DRB의 실리콘 홀 양자점 g-tensor 연구에서 다룬 구속·전기 응답 질문을 이어받는다. 이번 Si/SiGe 전자와 네온 전하 큐비트는 다른 물리계이며, 기존 본문·승인 대기 기획은 수정하지 않는다."
+    },
+    {
+      "title": "후속 기획 | 광자 상태에서 관측량 하나를 읽는 데 드는 비용",
+      "audience": "독자: 광자 양자컴퓨팅·양자 시뮬레이션 연구자 | 신규 리뷰 제안",
+      "thesis": "전체 상태를 복원하는 대신 필요한 관측량을 추정하는 이점은, 어떤 상태·간섭계·검출 자료를 사용했는지와 함께 평가할 수 있다. shadow의 통계적 표본 수와 광자를 준비하고 검출하는 실험 비용을 하나의 설명 안에서 이어 본다.",
+      "outline": [
+        "간섭계와 광자 수 검출이 만드는 shadow 및 광자 상관 정보의 관계를 설명한다.",
+        "U=0의 실험 에너지 추정과 U>0의 수치 연구를 구별하고, 유효 표본·총 시도·측정 시간의 분모를 맞춘다.",
+        "직접 관측량 측정·다른 토모그래피와 같은 준비·검출 예산에서 비교할 조건을 제안한다."
+      ],
+      "checks": "Appendix F 실제 시도 수·후선택·pseudo-PNR 방식, 저자 공개 자료의 조건과 계산식, 상호작용·손실을 포함한 시험 범위.",
+      "relation": "기존 관측량 맞춤 측정·전체 비용 리뷰와 관련되지만 광자 준비·검출이라는 고유한 실험 조건을 다룬다. 오늘 DQB의 MPS·QFlow·재료 최적화 연구를 새 기획으로 재등록하지 않는다."
+    }
+  ],
+  "external_title": "전자 큐비트를 가두는 재료가 제어 방식도 바꾼다",
+  "external": [
+    "고체 네온 위의 전자 두 개를 가까이 가두자 전자의 전하 상태 사이에 충분히 강한 결합이 생겼다. Li 연구진은 공진기와 잘 결합하는 전자를 통해 다른 전자를 구동하고 판독하며, CR·bSWAP형 두 큐비트 연산을 관측했다. 별도 장치의 세 전자에서는 J₁₂/(2π)=62.5(5) MHz의 결합을 확인했다.[1]",
+    "이 결과를 Si/SiGe의 구속 설계와 나란히 보면, 재료의 역할이 더 선명해진다. 전자를 어디에 가두는가는 연산에 필요한 결합과 잡음원에 노출되는 정도를 함께 정한다. Si/SiGe의 새 계산은 valley 에너지 간격을 키우는 좁은 우물이 핵스핀 잡음도 늘릴 수 있어, 우물 폭과 동위원소 농도를 함께 선택해야 함을 보여 준다.[2]"
+  ],
+  "watchlist": [
+    "네온: 최종 전문·저자판 변경, 공개 source-data의 판본 및 실험 게이트 충실도 후속 평가. 62.5 MHz의 세 큐비트와 두 큐비트 시간영역 실험 조건을 계속 분리한다.",
+    "Si/SiGe: 정식 전문·SI 접근, 계면·무작위 합금 가정과 전기 잡음을 포함한 전체 결맞음, 실제 소자의 valley splitting·동위원소 농도 대조.",
+    "광자 shadow: 후선택 포함 준비율·검출기 조건·실험 시간과 공통 예산 비교, 상호작용하는 광자 상태의 실험 후속.",
+    "집적 양자메모리 PRL DOI10.1103/28st-q915: 이번에는 공식 초록·서지만 읽었다. 공개 저자판·SI를 확보한 뒤 효율·시간빈 상태 보존 조건을 확인한다.",
+    "PRB의 moiré quantum-dot valley 제어 DOI10.1103/1m6r-p4dl와 Delta-VQE, Nature Physics의 dipolar-exciton supersolid는 후보 독해 범위를 확대할 때 검토한다.",
+    "AIR QML 리뷰 DOI10.1007/s10462-026-11744-x의 정식 판본·정정과 이전 표/본문 수치 차이; 오늘은 DOM·서지 후속 확인이며 PDF 해시를 새로 확인하지 않았다."
+  ],
+  "coverage": [
+    "조사 기준일 2026-11-25. 새 안내 3건과 7일 겹친 범위의 기존 안내, 당일 DQB 원본을 실제 읽어 중복을 대조했다. Nature Portfolio의 전체 발행·메일 수신 주기를 확인한 것은 아니다.",
+    "Nature·Nature Physics·Nature Materials·Nature Computational Science·Nature Communications·npj Quantum Information의 공식 목록 12응답에서 240카드·239고유URL을 확인했다. 전회 대비 새 관찰URL35건(11/24–25)을 선별했다. 페이지 사이 중복 1건은 URL로 합쳤다.",
+    "AIR는 별도 공식 최신 50카드를 조사했다. 새 치과 보철·딥페이크 탐지 리뷰 2건의 초록을 확인했으나 이번 양자·재료 질문과 연결이 약해 주요 논문에 넣지 않았다. 기존 QML 리뷰의 AIP·정정·서지 상태를 좁혀 확인했다.",
+    "APS 공식 목록의 새 33건(PRL27·PRX4·PRX Quantum2, 온라인11/24–25)을 확인했다. PRB는 신규40건과11/23 겹침26건을 고정114권25–30호의 DOI·날짜·제목과 대조했다. 목록 전수 확인과 전문 독해는 구별한다. 논문별 실제 접근·독해 범위는 다음 쪽에 적었다."
+  ],
+  "context_refs": [
+    {
+      "n": 4,
+      "citation": "A. Elben, S. T. Flammia, H.-Y. Huang, R. Kueng, J. Preskill, B. Vermersch, and P. Zoller, The randomized measurement toolbox, Nat. Rev. Phys. 5, 9–24 (2023).",
+      "url": "https://doi.org/10.1038/s42254-022-00535-2",
+      "scope": "배경 리뷰. 저자 Caltech 공식 공개 PDF pp1–4의 초록·서론·측정/후처리와 비용 논의를 읽었다. 새 광자 실험의 독립 검증으로 세지 않는다."
+    },
+    {
+      "n": 5,
+      "citation": "G. Burkard, T. D. Ladd, A. Pan, J. M. Nichol, and J. R. Petta, Semiconductor spin qubits, Rev. Mod. Phys. 95, 025003 (2023).",
+      "url": "https://doi.org/10.1103/RevModPhys.95.025003",
+      "scope": "배경 리뷰의 공식 초록·서지 확인. 전체 리뷰를 새로 완독하지 않았다."
+    },
+    {
+      "n": 6,
+      "citation": "L. Cvitkovich, P. Stano, C. Wilhelmer, D. Waldhör, D. Loss, Y.-M. Niquet, and T. Grasser, Coherence limit due to hyperfine interaction with nuclei in the barrier material of Si spin qubits, Phys. Rev. Applied 22, 064089 (2024).",
+      "url": "https://doi.org/10.1103/PhysRevApplied.22.064089",
+      "scope": "SiGe 장벽 핵스핀의 선행 원논문. 공식 초록·서지를 읽었고, 이번 Si/SiGe 원논문의 서론과 대조했다. 새 독립 재현으로 세지 않는다."
+    }
+  ],
+  "disclosure": [
+    "편집부(AEDAUT)가 조사·집필·과학 감수를 수행했다. root는 원천 수신·DQB 중복 대조, 통합·PDF·전달·출판 검증을 맡았다. brief_format은 Nature 후속·AIR·네온 원문과 한영 편집글을, aps_condensed_survey는 PRB·Si/SiGe를, aps_quantum_survey는 APS3저널·광자 shadow를 조사했다. 별도 작성 범위의 담당자가 원문·수치·판본·그림·한영 대응을 교차 감수했다.",
+    "출판 기술은 운영팀(ADOPT)의 기존 절차를 사용한다. AI 보조: OpenAI Codex, 정확한 모델 식별자는 미보존. 사람의 문장별 감수는 수행하지 않았다. QPU·DFT·학습·통계 모형을 독립 실행하지 않았고, 새 도표의 보고 수치 대조와 원 그림의 발췌를 실험 재현으로 부르지 않는다.",
+    "원 그림·편집부 도해·보고 수치의 재구성을 구별했다. 패널별 출처·판본·라이선스·수정 범위와 생성 근거를 캡션 및 figure-manifest.json에 남긴다. 공개 재배포 권리가 확인되지 않은 네온 원그림은 사용하지 않는다."
+  ]
+}

@@ -6,7 +6,7 @@
     "title": "집단 엑시톤과 오차 예산이 규정하는 광여기 분자 역설계의 신뢰도",
     "subtitle": "2026년 9월 4–10일 연구 동향 | 공액고분자 탈위상, 3D 생성, 실패 탐지, 비단열·양자 자원 평가",
     "date": "2026-09-11",
-    "updated": "2026-09-11",
+    "updated": "2026-11-26",
     "category": "Materials AI",
     "tags": [
       "OLED",
@@ -35,28 +35,50 @@
     "agents": [
       {
         "name": "Codex",
-        "role": "primary-source research, bilingual writing, illustration direction, deterministic evidence figures, scientific copyediting, implementation and publication verification",
-        "role_ko": "1차 출처 조사·한영 집필·일러스트 구성·근거 도표·과학 감수·구현·게시 검증"
+        "role": "Original authoring record retained: primary-source research, bilingual writing, illustration direction and scientific/publication checks. The earlier five-page-PDF verification claim could not be substantiated for the truncated retained attachment.",
+        "role_ko": "원 작성 이력 보존: 1차 출처 조사·한영 집필·일러스트 구성·과학/게시 검사. 종전 5쪽 PDF 검증 표기는 보유한 손상 첨부에서 재확인할 수 없었다."
+      },
+      {
+        "name": "legacy1126_brief_author",
+        "role": "New revised English technical brief written from the reviewed web manuscript and retained source/prose audits; no new primary-paper reread or original experiment.",
+        "role_ko": "감수한 영문 웹 원고와 기존 원출처·문체 감수에서 새 영문 기술 브리프를 집필. 신규 원문 독해·원 실험 재현은 수행하지 않음."
+      },
+      {
+        "name": "legacy1126_pdf_gate",
+        "role": "Independent revised-manuscript science, argument, bilingual correspondence and APS review using retained source audits plus selected stored primary text; scopes recorded separately.",
+        "role_ko": "기존 원출처 감수와 저장 원문의 선택 본문을 이용한 개정 원고 과학·논지·한영 대응·APS 독립 감수. 실제 범위는 별도 기록."
+      },
+      {
+        "name": "dqb1125_pdf",
+        "role": "Topic-specific PDF generation adapter using existing Markdown and ReportLab components.",
+        "role_ko": "기존 Markdown·ReportLab 구성요소를 재사용한 주제별 PDF 생성 어댑터 작성."
+      },
+      {
+        "name": "root",
+        "role": "Bilingual editorial integration, revised-PDF production and output, candidate and actual publication verification.",
+        "role_ko": "한영 개정 통합·새 PDF 제작과 출력·후보·실제 게시 검증."
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "eight arXiv preprints posted or revised 2026-09-04 through 2026-09-10, checked against primary abstract and full-text pages",
-      "reported numerical results, benchmark conditions, QPU versus simulator execution, sampling costs, and OLED translation boundaries",
-      "bilingual HTML, conceptual hero, two reviewer-constructed SVG figures, verified five-page PDF, metadata and local links"
+      "Original 11 September publication and 10 September evidence cutoff retained; eight exact arXivv1 source/audit scopes reused from 22 November, with newly selected stored-text checks recorded in the 26 November audit.",
+      "Reported numerical conditions, QPU/classical/idealized cost boundaries, first-citation order and all-author references checked across the revised bilingual manuscripts and newly written English technical brief.",
+      "The earlier attachment is truncated; original complete contents, five-page extent and layout cannot be verified. The 26 November PDF is an explicitly new editorial edition, not recovered original bytes.",
+      "Existing three figures, article identity, dates, titles, hub summaries, attachment URLs and per-article analytics configuration preserved; actual PDF/output/publication verification is recorded with this revision."
     ],
     "verification_scope_ko": [
-      "2026년 9월 4–10일 게시·개정된 arXiv 프리프린트 8건의 초록·본문 확인",
-      "보고 수치·벤치마크 조건·QPU와 시뮬레이터 경계·샷 비용·OLED 전이 조건",
-      "한영 HTML·개념 대표 이미지·리뷰어 구성 SVG 2점·검증한 5쪽 PDF·게시 정보·로컬 링크"
+      "원 발행일 9월 11일·근거 기준일 9월 10일 유지. 정확한 arXiv 1판 8편의 11월 22일 원출처·감수 범위를 재사용하고 이번 저장 원문 선택 대조를 11월 26일 기록에서 구별함.",
+      "보고 수치·조건·QPU/고전/이상적 비용 구분, 최초 인용순·전원 저자를 개정 한영 원고와 새 영문 기술 브리프에서 대조함.",
+      "종전 첨부는 잘려 원 전체 내용·5쪽 구성·레이아웃을 검증할 수 없음. 11월 26일 PDF는 새로 쓴 편집 개정판이며 원판 복구를 뜻하지 않음.",
+      "기존 세 그림·글 식별자·원 날짜·제목·허브 요약·첨부 주소·글별 집계 설정을 보존하고 실제 PDF/출력/게시 검증은 이번 개정 기록에 남김."
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-09-10",
     "human_review_level": "scheduled publication requested; no separate line-by-line human review",
     "human_review_level_ko": "정기 게시 요청에 따라 작성. 별도 문장 단위 사람 검토는 수행되지 않음",
-    "disclosure_note_ko": "선정 자료는 모두 프리프린트이며 직접적인 신규 TADF·PhOLED·호스트-도펀트 소자 논문은 없었습니다. 수치를 독립 재현하지 않았고 OLED 적용과 주간 실험안은 리뷰어의 제안입니다. 생성 대표 이미지는 개념 그림입니다.",
-    "disclosure_note_en": "All selected items are preprints, and no directly relevant new TADF, PhOLED, or host–dopant device paper appeared. Numerical results were not independently reproduced; OLED translations and the weekly experiment are reviewer proposals. The generated hero is conceptual."
+    "disclosure_note_ko": "문헌 근거 기준일은 2026년 9월 10일이며 선정한 8편의 1판을 다룬다. 당시 기록한 검색 범위에서 직접적인 신규 TADF·PhOLED·호스트-도펀트 소자 근거는 찾지 못했다. 수치를 독립 재현하지 않았고 OLED 적용과 소규모 검증안은 리뷰어 제안이다. 생성 대표 이미지는 개념 그림이다. 기존 손상 PDF를 정상 복구했다고 주장하지 않으며 감수한 영문 웹 원고에서 11월 26일 기술 브리프 개정판을 새로 작성했다.",
+    "disclosure_note_en": "The evidence cutoff remains 10 September 2026 and covers the eight selected first versions. The recorded search scope found no directly relevant new TADF, PhOLED or host-dopant device evidence; this is not a field-wide absence claim. Numerical results were not independently reproduced, and OLED translations and the small study are reviewer proposals. The generated hero is conceptual. The 26 November technical brief is newly written from the reviewed English web manuscript; restoration of the truncated original is not claimed."
   },
   "source_sha256": "cd3e445f09bfc013277e23389bdb91a032ecb2dc0f24d32f48ee4160771c2fb6"
 }

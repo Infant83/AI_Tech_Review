@@ -1,0 +1,18 @@
+작은 초전도 사슬에 전자가 드나들 때 나타나는 신호와, 그 안에 저장한 양자상태를 결맞게 움직이는 일은 서로 다른 실험을 요구한다. Zatelli와 동료들은 양자점 두 개씩으로 만든 짧은 Kitaev 사슬 두 개를 연결해 후자에 접근했다.<span class="citation">[<a href="#ref-1">1</a>]</span> 각 사슬의 전자 수가 짝수인지 홀수인지, 곧 패리티가 상태를 구별한다. 네 개의 poor-man’s Majorana 모드로 한 큐비트를 구성하고 중앙 결합 양자점의 펄스로 사슬 사이의 상태 변화를 구동했다.
+
+전체 패리티가 짝수이면 두 사슬은 |ee〉와 |oo〉 사이에서, 홀수이면 |eo〉와 |oe〉 사이에서 진동한다. e와 o는 각각 한 사슬의 짝수·홀수 패리티다. 공개 저자판 v2의 대표 짝수 패리티 측정은 결합 펄스9.8 mV에서106.7 ± 0.4 MHz의 진동과26 ± 2 ns의 Rabi 감쇠시간을 보고한다.<span class="citation">[<a href="#ref-1">1</a>]</span> 이는 시간에 따른 조건부 점유확률을 감쇠코사인으로 피팅한 값이다. 판독 중 관찰한 밀리초 규모의 패리티 상태 체류시간과는 다른 물리량이다.
+
+연구의 중요한 선택은 두 전체 패리티를 모두 측정했다는 점이다. 한쪽에서만 진동이 잘 보인다면 두 사슬에 남은 에너지 갈라짐이 우연히 상쇄됐을 수도 있다. 공통 스위트 스폿에서 비교한 주파수는 짝수 113.4 ± 0.5 MHz, 홀수 117.7 ± 0.4 MHz였다. 두 사슬의 게이트 전압을 같은 방향 또는 반대 방향으로 바꾸자 진동이 유지되는 패리티도 달라졌다.<span class="citation">[<a href="#ref-1">1</a>]</span> 사슬 내부 갈라짐의 합과 차이가 두 패리티에 다르게 작용한다는 모형을 시험하는 비교다. 주파수의 유사성에 전압 변화에 대한 응답을 더하면서 상태 해석의 근거가 구체화된다.
+
+이 제어가 곧 위상적으로 보호된 연산을 뜻하지는 않는다. 정식 논문은 현재의 두 자리 사슬 모드에 위상적 보호가 없다고 명시하며, SI는 비슷한 두 주파수만으로 공간적으로 분리된 마요라나 모드를 확정할 수 없다고 설명한다.<span class="citation">[<a href="#ref-1">1</a>]</span> 거의 축퇴한 다른 약결합 부분계도 같은 유효 모형을 만들 수 있기 때문이다. QuTech의 연구기관 설명도 짧은 사슬의 제어를 먼저 확립하고 더 긴 장치에서 보호를 시험하려는 순서를 제시한다.<span class="citation">[<a href="#ref-2">2</a>]</span> 이번 진동과 detuning 측정은 그 다음 실험에서 어떤 상태가 얼마나 안정해졌는지 비교할 출발점을 만든다.
+
+## References
+
+<ol class="reference-list">
+<li id="ref-1"><a href="https://doi.org/10.1038/s41586-026-11309-6">F. Zatelli, B. Roovers, N. van Loo, A. Lombardi, J. D. Torres Luna, S. Miles, V. P. M. Sietses, F. J. Bennebroek Evertsz’, P. Cova Fariña, A. Bordin, G. Badawy, E. P. A. M. Bakkers, M. Wimmer, and L. P. Kouwenhoven, Coherent parity oscillations in coupled minimal Kitaev chains, Nature (2026).</a></li>
+<li id="ref-2"><a href="https://qutech.nl/2026/11/25/qutech-demonstrates-a-qubit-based-on-majorana-quasiparticles/">QuTech, QuTech demonstrates a qubit based on Majorana quasiparticles (2026).</a></li>
+</ol>
+
+## 작성·검증
+
+편집부(AEDAUT) brief_format이 정식판의 초록·공개 Fig.2/3 캡션·서지·권리, <a href="https://arxiv.org/abs/2607.09511v2">arXiv:2607.09511v2</a>의 초록·서론·본문 pp1–9와 Methods pp22–27, 정식 SI의 유효 모형·detuning 선택절을 읽고 한영 초안을 작성했다. 정식 구독 본문은 읽지 못했다. 106.7 MHz·26 ns는 v2 본문 보고값이며,113.4/117.7 MHz는 정식 공개 Fig.3h 캡션과도 대조했다. QuTech 소식은 연구기관의 설명으로 사용했다. 공개 데이터·코드의 목록·README와 분석 보조 코드 선택 부분을 정적으로 읽었으며 독립 실험·피팅·수치모사·원자료 재집계는 수행하지 않았다. aps_condensed_survey가 비작성 범위에서 원문·판본·핵심 조건을 교차 감수했다. AI 보조: OpenAI Codex, 정확한 모델 식별자는 미보존. 사람의 문장별 검토는 수행하지 않았다. 웹 작성·추가 근거 기준일은2026년 11월 26일이다.

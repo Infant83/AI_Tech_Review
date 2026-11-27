@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-737d0889-be7f-425a-b5c5-c6f28ed72e91",
   "uuid": "737d0889-be7f-425a-b5c5-c6f28ed72e91",
-  "record_version": 2,
+  "record_version": 3,
   "title": "A fresh HTTP-cached catalog hides newly published lecture PDFs in the reader",
   "type": "defect",
   "created_at": "2026-11-23T11:56:09.265778+00:00",
-  "updated_at": "2026-11-23T12:34:20.084812+00:00",
-  "status": "observing",
+  "updated_at": "2026-11-24T12:48:31.946236+00:00",
+  "status": "resolved",
   "priority": "P2",
   "source": {
     "kind": "publication_verification",
@@ -44,7 +44,8 @@
   },
   "evidence": [
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/45167456564",
-    "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md"
+    "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
+    "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md"
   ],
   "limitations": [
     "Direct reproduction used isolated Firefox158, not a physical iPad/Pencil. Raw responses, headers and screenshots remain private."
@@ -79,7 +80,7 @@
     "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45172573007"
   },
   "verification": {
-    "status": "Final source deployed; four CI jobs, independent actual HTTPS and original warm-cache/503/ink regression flow passed.",
+    "status": "Original fix and the next naturally received L015 publication verified on actual HTTPS; within-TTL catalog revalidation and prior notebook preservation passed.",
     "checks": [
       "217 reader tests including9 new cases passed; integrator independent rerun passed.",
       "Counterfactual new-unit test fails on the original code.",
@@ -92,10 +93,12 @@
       "Actual HTTPS source934a907/catalog87daab72 matches the sealed release; reader module32e8180069c8 and fingerprinted HTML are exact reviewed code.",
       "Actual Firefox158:14 readers plus latest English reader render page2;28 reader routes,30 PDF hashes,2 searches and12 reviewed screens pass.",
       "Same warm HTTPS profile keeps the exact existing empty-ink/bookmark/source/page2 state after an ordinary reload; controlled local-origin nonempty mouse-ink/503 preservation is recorded separately.",
-      "Recovery artifact14818177466 metadata is nonexpired and matches the current source/run; normal retention currentArtifactVerifiedtrue. Browser and all owned preview/fixture servers are closed."
+      "Recovery artifact14818177466 metadata is nonexpired and matches the current source/run; normal retention currentArtifactVerifiedtrue. Browser and all owned preview/fixture servers are closed.",
+      "Next natural lecture L015: actual Chromium159 same-profile unmodified HTTPS cache at age365s<600 retained old14 catalog, then automatic revalidation loaded new15. L01516-page PDF and ordinary page2 reload passed; existing L014 source/empty-ink/bookmark/page2 state stayed exact. Pages45394978331 all four jobs and independent79-check HTTPS audit/32PDF hashes/30reader routes passed."
     ],
     "evidence": [
-      "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md"
+      "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
+      "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md"
     ],
     "remaining_limits": [
       "Actual browser verification used isolated headless Firefox158 and emulated viewports, not physical iPad/Pencil, production account or cross-device collaboration.",
@@ -104,9 +107,9 @@
     ]
   },
   "observation": {
-    "status": "Observing the next naturally received lecture and meaningful user feedback.",
-    "period": "2026-11-23T12:27:15.437139+00:00",
-    "result": "Original defect and HTTP503 eviction are reproduced and corrected in a real same-profile HTTP-cache fixture; reviewed source and the ordinary live HTTPS reader flow are verified. No cache or personal-storage clearing was used.",
+    "status": "Resolved after the next naturally received lecture satisfied the original warm-cache flow.",
+    "period": "2026-11-24T12:48:31.946236+00:00",
+    "result": "A real old14-unit HTTP cache advertised max-age=600 and was still fresh at age365s; before expiry an ordinary new-L015 reader navigation revalidated and opened the exact reviewed16-page public PDF without clearing storage or overriding responses. Ordinary page2 reload and prior L014 notebook/source/position preservation passed.",
     "concurrent_release_preservation": {
       "revision": "6a920806fdad48eea569d0a61f6819244876f430",
       "workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45174298990",
@@ -114,12 +117,15 @@
       "unchanged_QAE_reader_and_PDF_assets": 250,
       "same_fourteen_archive_identity_records": true,
       "new_browser_test": false
-    }
+    },
+    "resolution_revision": "dec91d9c994aafd2b03c51d5515bb4e1dfd86d36",
+    "resolution_workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45394978331",
+    "natural_publication_observation_reference": "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md"
   },
   "recovery": {
     "plan_reference": "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
     "execution_reference": null,
-    "result": "Existing normal Pages recovery artifact and current-upload/source retention guard passed. No rollback, user-note reset, database restore or full recovery download was performed."
+    "result": "Historical L014 verification: Existing normal Pages recovery artifact and current-upload/source retention guard passed. No rollback, user-note reset, database restore or full recovery download was performed. L015 created a new verified recovery copy, but its metadata-based deletion refused; see operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md."
   },
-  "next_action": "Observe the next naturally published lecture with the existing AEDAUT six-hour intake and ADOPT operational process; investigate meaningful recurrence. No new automation, user approval or authoring/mail schedule change is required."
+  "next_action": "Resolved. Continue the existing AEDAUT six-hour lecture intake independently of this defect; reopen this issue on a meaningful recurrence. No new automation, cache reset, account permission or authoring/mail change."
 }

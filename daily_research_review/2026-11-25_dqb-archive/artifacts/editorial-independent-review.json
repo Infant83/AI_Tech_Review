@@ -1,0 +1,66 @@
+{
+  "reviewer": "dqb1125_spin",
+  "role": "independent nonauthor scientific/editorial/reference reviewer",
+  "verdict": "PASS within recorded source and editorial scope",
+  "reviewed_at_utc": "2026-11-25T02:01:27.627493+00:00",
+  "actual_review_scope": [
+    "Read both full four-paragraph editorial bodies, both references lists and disclosure paragraphs, and independent KO/EN titles and separate summary fields in editorial-metadata.json.",
+    "Compared central claims with actual selected primary reading recorded in source-audit-spin.json, including pp18–20/Table2 and AppendixA pp26–27; visually checked primary Table2 and Table3.",
+    "Read the actual Oct3 VQE §12/13 and relevant KO/EN/publication title/author metadata, rather than inferring continuity from keywords.",
+    "Compared KO/EN scientific targets, versions, numbers, cost assumptions, fidelity reference, nonconvergence, QPE repetition and evolution/QEC costs, citation mapping and scoped verification disclosure.",
+    "Reviewed title and separate summary for actual focus, distinct reader-entry function, no claim of a combined end-to-end quantum speedup, no first/unique claim and no routine-editorial expansion into a pending deep review."
+  ],
+  "science_checks": {
+    "singlet_and_large_block_spin": "PASS: overall S=0 can couple nonzero subsystem spins; opening does not identify local orbital spin with total spin.",
+    "reduced_tensor_loading_then_CG": "PASS: relabeling, block loading and spin-coupling-based return to occupation basis are in source order and correctly distinguish reduced data from known geometric factors.",
+    "CG_fraction": "PASS after correction: <0.2% refers to basis transforms; full transform includes readout/projection updates, not merely an isolated rotation.",
+    "135_and_4_9": "PASS: Fe4S4 same DMRG-state comparison, not equal-fidelity or physical runtime. Source table gives new4.09e6, dense5.52e8 and U1 2.00e7 Toffolis.",
+    "cost_model": "PASS after correction: 15-bit rotation precision, Toffoli-specific minimization with no ancilla cap, and as-published dense baseline excluding later real-tensor saving are stated.",
+    "fidelity_and_convergence": "PASS: truncation fidelity is relative to a larger reference MPS; exact ground-state fidelity is not established; Fe4S4 missed specified DMRG energy convergence.",
+    "complete_cost": "PASS: QPE repetitions plus downstream time evolution and error correction are required before interpreting cheaper preparation as a full calculation benefit.",
+    "scope": "PASS: no physical QPU execution, original DMRG/Qualtran reproduction, paper-proof validation or human-reader study claimed; independent related preprint not scientifically compared."
+  },
+  "editorial_checks": {
+    "opening_and_explanation": "PASS: physical situation (singlet with large subsystem spins) establishes why symmetry can save loading; unfamiliar objects connect to orbitals, reduced tensors and occupation-state reconstruction.",
+    "existing_article_continuity": "PASS: Oct3 §12 explicitly discusses target overlap, initial-state preparation, time evolution and physical error correction. New text adds a concrete symmetry-preserving loader without altering that earlier body.",
+    "title_and_separate_summary": "PASS: both titles name spin symmetry/state preparation cost; each separate summary gives the reader the reduced-loading-to-QPE-cost relationship and is not an archive-work report.",
+    "bilingual_parity": "PASS: claims, model, comparison, numerical conditions and bounded interpretation correspond; prose is natural in each language.",
+    "APS": "PASS: source1 all3authors, exact original title, arXivv1 and no eprint date; source2 existing author/date/wording confirmed, EN reference sentence case corrected. Reference order1then2 matches first citation.",
+    "authorization_boundary": "PASS: routine short bilingual DQB editorial; no new deep-review proposal, priority change, article expansion or publication approval inferred."
+  },
+  "corrections_requested_and_confirmed": [
+    "Korean orbitals wording clarified from splitting orbitals to two groups.",
+    "<0.2% term broadened from isolated rotations to basis transforms.",
+    "Cost minimization explicitly names Toffoli count.",
+    "Dense as-published baseline omission of later real-tensor saving made explicit.",
+    "Time-evolution cost included alongside QPE repetitions and error correction.",
+    "English existing-review reference title converted to APS sentence case.",
+    "Actual independent-review disclosure changed to past tense after substantive review."
+  ],
+  "remaining_limitations": [
+    "This verdict covers source/text/title/summary/reference review; final generated HTML, search/list UI, PDF derivative, archive hashes, deployment and live routes require their separately assigned checks.",
+    "No full line-by-line proof audit or original DMRG/resource-code/QPU/human-reader reproduction was performed.",
+    "Independent arXiv2611.19728 was checked only at metadata/abstract level; no comparative scientific conclusion drawn from its numerical claims."
+  ],
+  "administrative_metadata_status_at_review": "reviewed",
+  "original_science_executions": 0,
+  "public_or_parent_authored_files_edited_by_reviewer": false,
+  "manuscripts": [
+    {
+      "path": "daily_research_review/2026-11-25_dqb-archive/reports/briefing_ko.md",
+      "bytes": 4244,
+      "sha256": "ab5212cef2ac1978e7502653b1d0c2cebfb6e1b134c79e8633d3602fd6dee5d5"
+    },
+    {
+      "path": "daily_research_review/2026-11-25_dqb-archive/reports/briefing_en.md",
+      "bytes": 4150,
+      "sha256": "8df6f19e724e005e5cf0e4728e24d1233ff51372457fd48c6c6912e6de71da8c"
+    }
+  ],
+  "reviewed_titles_and_separate_summaries": true,
+  "source_of_truth": {
+    "primary_version": "arXiv:2611.30014v1",
+    "primary_pdf_sha256": "4527fb70a9ef160223a7eb8cbb2691fc20f259c44a71ad51f779e92bb46ffa53",
+    "existing_body": "2026-10-03_vqe-energy-subspaces-and-digital-validation/reports/review_en.md §12; relevant KO title/body and publication metadata cross-checked"
+  }
+}

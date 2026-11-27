@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "status": "passed_core_CI_and_recovery_with_existing_capacity_warnings_and_general_artifact_listing_limit",
+  "core_ci_checks_passed": true,
+  "checked_at_utc": "2026-11-27T02:55:05.718649+00:00",
+  "reviewer": "dqb1127_pdf",
+  "review_scope": "Read-only external CI execution, source binding, small artifact identity, recovery upload/retention and reader synchronization audit. The same agent earlier produced the DQB PDF; this does not claim independent PDF authorship or duplicate the nonproducer PDF review.",
+  "revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+  "publication_revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+  "source_revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+  "source_commit": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+  "run": 45929716607,
+  "workflow_run": 45929716607,
+  "run_attempt": 1,
+  "workflow_attempt": 1,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45929716607",
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "jobs_success": 4,
+  "jobs_failed": 0,
+  "jobs": [
+    {
+      "id": 140279267274,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T02:40:30Z",
+      "completed_at": "2026-11-27T02:45:28Z"
+    },
+    {
+      "id": 140280801684,
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T02:45:31Z",
+      "completed_at": "2026-11-27T02:46:01Z"
+    },
+    {
+      "id": 140280976314,
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T02:46:04Z",
+      "completed_at": "2026-11-27T02:47:02Z"
+    },
+    {
+      "id": 140280976349,
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T02:46:04Z",
+      "completed_at": "2026-11-27T02:47:09Z"
+    }
+  ],
+  "tests": {
+    "total": 1134,
+    "pass": 1125,
+    "fail": 0,
+    "skip": 9
+  },
+  "test_suites": [
+    {
+      "name": "python_publication_search_preservation",
+      "total": 608,
+      "pass": 607,
+      "fail": 0,
+      "skip": 1,
+      "summary": "OK (skipped=1)"
+    },
+    {
+      "name": "multilingual_search",
+      "total": 12,
+      "suites": 0,
+      "pass": 12,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "reader_controls",
+      "total": 205,
+      "suites": 0,
+      "pass": 197,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 8,
+      "todo": 0
+    },
+    {
+      "name": "lecture_reader",
+      "total": 222,
+      "suites": 0,
+      "pass": 222,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "backend_authorization",
+      "total": 73,
+      "suites": 0,
+      "pass": 73,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "portable_media",
+      "total": 14,
+      "suites": 0,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    }
+  ],
+  "test_scope_note": "Actual six suite summaries, not a prior-run count. Python1 skip and reader-control8 skipped browser tests are excluded from passes. Backend typecheck and every test step succeeded; actual root browser checks are separate.",
+  "pinned_pillow": "11.2.1",
+  "pinned_pillow_install_observed": true,
+  "counts": {
+    "archive": 183,
+    "external": 1,
+    "publications": 84,
+    "reviews": 59
+  },
+  "previous_deployed_revision": "98eba6e5f5a9779eea1ecc5408195a776851b52f",
+  "source_code_matches_prepared_baseline": true,
+  "source_code_bindings": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "bytes": 8247,
+      "sha256": "c13c905dca9df1843e32b7d6d91c9ff3021631fb889ad733a5b53af7758645fd"
+    },
+    {
+      "path": "scripts/release_backup.py",
+      "bytes": 11375,
+      "sha256": "bdc70fc97b4a75bc5a38597ce4d0ba0f2b2d584ae5493f4a8fa9e4e9c22f1d8f"
+    },
+    {
+      "path": "scripts/release_artifact_retention.py",
+      "bytes": 11621,
+      "sha256": "7be88b248e19921f2584c3895352084b273d9c1ef83aaa61c4f881cfc4675354"
+    },
+    {
+      "path": "scripts/requirements-listing-images.txt",
+      "bytes": 15,
+      "sha256": "91479c3a6f15a6895a3cb1543ef75a17d86899b818ecb22f799af9eda0e66228"
+    },
+    {
+      "path": "scripts/reader_engagement_publish.py",
+      "bytes": 38900,
+      "sha256": "bc9e75685d0945d2a8185f3a67dd85e5d9daa65dbaf386afcb201f4b25e888c2"
+    }
+  ],
+  "release_checks": {
+    "deployed_baseline_observed_in_actual_build_log": true,
+    "release_policy_ok": true,
+    "release_policy_blockers": [],
+    "declared_additions": [
+      {
+        "group": "archive",
+        "id": "2026-11-27-daily-quantum-brief"
+      }
+    ],
+    "payload_ok": true,
+    "payload_failures": [],
+    "sealed_source_revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+    "snapshot_files": 2786,
+    "validated_files_including_seal": 2801,
+    "validated_catalog_articles": 84
+  },
+  "small_artifact_checks": [
+    {
+      "id": 15168476256,
+      "name": "publication-validation",
+      "zip_size": 5015,
+      "zip_sha256": "18a6c75bb72934e4569ae8233714ec7c414b847149bbfd6a964e2cb135a9e797",
+      "provider_digest_matched": true,
+      "workflow_source_bound": true,
+      "members": [
+        {
+          "name": "report.json",
+          "bytes": 5457,
+          "sha256": "e8ad2249971d199f3175079dc6e27b6d162345d377dbd7500d473a76199ca3c9"
+        },
+        {
+          "name": "release-check.json",
+          "bytes": 2855,
+          "sha256": "9a9b91c2be8831684d2ad1e880505dd3457ddbb046de59341282aeb1e147970e"
+        },
+        {
+          "name": "payload-check.json",
+          "bytes": 58811,
+          "sha256": "972db670e4542acf436e8303b71a03683ab143ec67bbe904814d9513d30d434c"
+        }
+      ]
+    },
+    {
+      "id": 15168022390,
+      "name": "reader-publication-catalog",
+      "zip_size": 5920,
+      "zip_sha256": "67859e5f221c49ed97c599298e2fdf8af4d67eab1804011675b6b08c3cd1e31e",
+      "provider_digest_matched": true,
+      "workflow_source_bound": true,
+      "members": [
+        {
+          "name": "reader-publications.json",
+          "bytes": 26391,
+          "sha256": "64c4c6b741624becb58dededc3f0b0f820c2d3f5aa53fb34747850afde847a72"
+        }
+      ]
+    }
+  ],
+  "artifact_identity_checks": [
+    {
+      "name": "publication-recovery",
+      "artifact_id": 15168965301,
+      "digest": "sha256:3447c39fd2e24e76464eb2014198f7d653422292fb961da937e50bffe1622b50",
+      "zip_size": 775821715,
+      "upload_log_ID_size_digest_match": true,
+      "provider_run_source_bound": true,
+      "downloaded_by_this_reviewer": false
+    },
+    {
+      "name": "publication-validation",
+      "artifact_id": 15168476256,
+      "digest": "sha256:18a6c75bb72934e4569ae8233714ec7c414b847149bbfd6a964e2cb135a9e797",
+      "zip_size": 5015,
+      "upload_log_ID_size_digest_match": true,
+      "provider_run_source_bound": true,
+      "downloaded_by_this_reviewer": true
+    },
+    {
+      "name": "github-pages",
+      "artifact_id": 15168471360,
+      "digest": "sha256:7f09fd25aad3146c1dbd9d2602b2c316fc9475f1a271f1593c25beeac00c9960",
+      "zip_size": 773398173,
+      "upload_log_ID_size_digest_match": true,
+      "provider_run_source_bound": true,
+      "downloaded_by_this_reviewer": false
+    },
+    {
+      "name": "reader-publication-catalog",
+      "artifact_id": 15168022390,
+      "digest": "sha256:67859e5f221c49ed97c599298e2fdf8af4d67eab1804011675b6b08c3cd1e31e",
+      "zip_size": 5920,
+      "upload_log_ID_size_digest_match": true,
+      "provider_run_source_bound": true,
+      "downloaded_by_this_reviewer": true
+    }
+  ],
+  "candidate_metadata_comparison": {
+    "report.json": true,
+    "release-check.json": true,
+    "payload-check.json": true,
+    "reader-publications.json": true
+  },
+  "small_artifact_independent_review": {
+    "status": "passed_within_small_artifact_and_source_binding_scope",
+    "reviewer": "dqb1127_publication_audit",
+    "record_sha256": "18191d2a04e43181ec4be6b681a6a3cdc9346da57fe2162eb6d3492d020711eb",
+    "scope": "Separately recomputed both small ZIP and4member hashes, read exact source5code blobs and candidate metadata; no duplicate API, build, full artifact or recovery download."
+  },
+  "deploy": {
+    "job_success": true,
+    "current_source_guard_succeeded": true,
+    "deploy_step_actually_executed": true,
+    "provider_reported_success_in_actual_log": true,
+    "deployed_pages_artifact_id": 15168471360,
+    "source_revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+    "job_completed_at_utc": "2026-11-27T02:46:01Z",
+    "root_notified_after_observation": true
+  },
+  "catalog_synced": 84,
+  "new_articles": 0,
+  "queued_events": 0,
+  "reader_sync": {
+    "synced": 84,
+    "revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "reader_sync_failed_steps": 0,
+  "catalog_revision_delta_explained": "Prepared candidate uses checked98eba6e baseline source; actual CI labels report/catalog/seal with publication commitc9476fd6. All84 article objects/order and all other compared metadata match; no new notification article was introduced by the archive addition.",
+  "actual_metadata_comparison": {
+    "source_revision": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+    "root_release_before_after_and_after_browser_bytes_identical": true,
+    "actual_release_sha256": "48e6812ec35b43ab437b451f1096454b9b647d4680e4055d77e9a9d08d361865",
+    "actual_catalog_CI_artifact_byte_identical": true,
+    "actual_catalog_sha256": "64c4c6b741624becb58dededc3f0b0f820c2d3f5aa53fb34747850afde847a72",
+    "catalog_articles": 84,
+    "candidate_actual_inventory_paths_equal": true,
+    "candidate_actual_inventory_changed_rows": [
+      "reader-publications.json"
+    ],
+    "artifact_files_excluding_seal": 2800,
+    "sealed_files_including_seal": 2801,
+    "sealed_bytes_including_seal": 866280567,
+    "current_pdf": {
+      "sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+      "bytes": 239528
+    },
+    "reader_updates_candidate_actual_exact_bytes": true,
+    "reader_update_rows": 190,
+    "current_reader_update": {
+      "id": "archive:2026-11-27-daily-quantum-brief",
+      "path": "/AI_Tech_Review/archive/files/2026-11-27-daily-quantum-brief.pdf",
+      "paths": [
+        "/AI_Tech_Review/archive/files/2026-11-27-daily-quantum-brief.pdf",
+        "/AI_Tech_Review/briefings/2026-11-27/",
+        "/AI_Tech_Review/briefings/2026-11-27/en/"
+      ],
+      "title": "P450의 기준 에너지를 다시 확인하다",
+      "publishedAt": "2026-11-27",
+      "revision": "9e1ba8ba1ffe7861c99dbcb50bf4099ee9de95295c200cef0b40644c91b86ca2",
+      "updatedAt": "2026-11-27T00:00:00Z",
+      "change": "new"
+    },
+    "root_live": {
+      "status": "passed",
+      "actual_https_unique_routes": 45,
+      "actual_https_requests": 46
+    },
+    "root_browser": {
+      "status": "passed",
+      "workflow_run": 45929716607,
+      "release_sha256": "48e6812ec35b43ab437b451f1096454b9b647d4680e4055d77e9a9d08d361865"
+    },
+    "limits": "Compared existing root-fetched actual metadata and complete seal inventories, not a new remote whole-payload download/hash or independent browser test by this reviewer."
+  },
+  "recovery_files": 2801,
+  "recovery_bytes": 866280567,
+  "recovery_archive_sha256": "2becbe006e4732c001b32b8c47b71bc9886e6b84873b74367097244183f07cab",
+  "recovery_upload_status": "verified_current_run_upload_succeeded",
+  "recovery_uploaded_artifact_id": 15168965301,
+  "recovery_uploaded_zip_sha256": "3447c39fd2e24e76464eb2014198f7d653422292fb961da937e50bffe1622b50",
+  "recovery_uploaded_zip_size": 775821715,
+  "recovery_current_upload_run_source_digest_binding_verified": true,
+  "recovery_input_pages_download_digest_matches_deployed_upload": true,
+  "recovery_implementation": "Actual from-pages source verifies the exact deployed sealed input, streamed file hashes and created backup internally. Logged2801files/866280567bytes equal root-fetched full seal metadata plus seal. Inner tar.gz hash and outer providerZIP hash are distinct. This reviewer did not download or restore either full binary.",
+  "retention_status": "applied_and_complete_filtered_recovery_confirmed_with_general_inventory_limit",
+  "retention_command_result": {
+    "ok": true,
+    "status": "applied",
+    "keep": [
+      15168965301,
+      15162234594,
+      15136948770
+    ],
+    "delete": [
+      15130742620
+    ],
+    "applied": true,
+    "deleted": [
+      15130742620
+    ],
+    "listingAttempts": 2,
+    "currentArtifactVerified": true
+  },
+  "retention_current_upload_binding_verified": true,
+  "retention_requested_keep": 3,
+  "retention_latest_three_completed": true,
+  "retention_verdict_scope": "Actual keep3 command and complete recovery-name-filtered3/3 metadata confirm current uploaded copy plus newest2 prior copies, deletion of the former fourth and retained old metadata. General unfiltered advertised-vs-collected completeness remains false and is not part of this successful core claim.",
+  "recovery_copies_observed": 3,
+  "observed_recovery_artifact_ids": [
+    15168965301,
+    15162234594,
+    15136948770
+  ],
+  "retention_filtered_api_rechecked_complete": true,
+  "retention_unfiltered_api_rechecked_complete": false,
+  "retention_inventory_verification": {
+    "checked_at_utc": "2026-11-27T02:51:36.921561+00:00",
+    "status": "core_retention_applied_and_complete_filtered_recovery_confirmed_with_unfiltered_count_limit",
+    "current_artifact_id": 15168965301,
+    "current_upload_source_run_binding": true,
+    "logged_keep_matches_newest_three": true,
+    "filtered_recovery_inventory_complete": true,
+    "filtered_recovery_count": 3,
+    "filtered_recovery_ids": [
+      15168965301,
+      15162234594,
+      15136948770
+    ],
+    "retained_old_metadata_unchanged": [
+      15136948770,
+      15162234594
+    ],
+    "logged_delete_absent_from_all_collected_rows": [
+      15130742620
+    ],
+    "unfiltered_matching_recovery_set_equals_complete_filtered": true,
+    "unfiltered_complete": false,
+    "unfiltered_advertised_total": 104,
+    "unfiltered_collected_rows": 103,
+    "unfiltered_pages": 3,
+    "unfiltered_page_lengths": [
+      50,
+      50,
+      3
+    ],
+    "first_unfiltered_per_page100": {
+      "pages": 2,
+      "advertised_total": 104,
+      "collected_rows": 103
+    },
+    "unfiltered_added_ids": [
+      15168022390,
+      15168471360,
+      15168476256,
+      15168965301
+    ],
+    "unfiltered_removed_ids": [
+      14005556484,
+      15130742620
+    ],
+    "extra_missing_nonrecovery": {
+      "id": 14005556484,
+      "name": "publication-validation",
+      "expires_at": "2026-11-27T02:46:00Z",
+      "interpretation": "Absent after its previously recorded expiry; timing is expiry-consistent, but the actual provider removal cause is not independently established."
+    },
+    "ID_set_arithmetic": "101 before +4 new -1 logged recovery deletion -1 absent nonrecovery record whose pre-recorded expiry passed =103 collected; provider advertised104 remains unverified.",
+    "no_more_listing_polling": true,
+    "limits": "Complete filtered recovery metadata and logged current-upload keep/delete are confirmed. General unfiltered artifact cardinality remains incomplete and is not relabeled complete. No binary archive downloaded, restored or physically reclaimed storage claimed."
+  },
+  "content_or_deployment_blocking_findings": [],
+  "operational_findings": [
+    {
+      "owner": "운영팀(ADOPT)",
+      "status": "technical_followup_recommended_no_cross_chat_delivery_claim",
+      "issue": "General artifact listing advertised104 while collected103, retained at104/103 for two100-per-page snapshots and one50-per-page snapshot. Complete recovery-filtered listing is3/3. Before101 plus4new minus1logged recovery deletion minus1nonrecovery record absent after its pre-recorded02:46 expiry accounts for all103 observed IDs. Actual provider removal cause is not independently established.",
+      "affects_core_deploy_recovery_verdict": false
+    }
+  ],
+  "existing_capacity_warnings": [
+    "Lazy metadata search exceeds the 80KB growth warning",
+    "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+  ],
+  "provider_runtime_notices": [
+    "Actual logs include nonblocking Node20 action-runtime deprecation/forcedNode24 and legacy API notices; no associated step failure observed."
+  ],
+  "payload_summary": {
+    "initial_or_listing_pages_checked": 74,
+    "all_reported_page_limits_passed": true,
+    "lazy_search_gzip_bytes": 95189,
+    "browser_icons_gzip_bytes": 21902,
+    "public_artifact_bytes_before_seal": 864850274,
+    "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."
+  },
+  "limits": [
+    "Only the two small validation/catalog ZIPs, actual per-job logs, provider metadata and root-fetched actual seal/catalog/update records were inspected. No full Pages/recovery download, independent full binary archive rehash or restore exercise.",
+    "Recovery-filtered3/3 metadata and current-source logs establish the stated newest3 retention. The general unfiltered artifact advertised104/collected103 cardinality is explicitly incomplete; no physical account-storage reclamation or historical archive byte integrity is claimed.",
+    "Root executed actual HTTPS45unique routes/46requests and browser interactions. This reviewer read and compared that retained evidence and source-bound metadata; it did not rerun the UI.",
+    "No CI rerun, source or workflow fix, test/build/render/package, retention invocation, DELETE, new schedule, polling loop or external message by this reviewer.",
+    "CI execution audit is separate from this agent previous PDF production and primary-source review; original research experiments/code/QPU/proofs and human-reader review were not reproduced."
+  ],
+  "public_safe": true
+}

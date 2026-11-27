@@ -6,7 +6,7 @@
     "title": "연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용",
     "subtitle": "과학 워크플로의 복구·자원 확장·종료 판단에서 규칙과 LLM을 비교한 실험",
     "date": "2026-09-13",
-    "updated": "2026-09-13",
+    "updated": "2026-11-27",
     "category": "Agent Systems",
     "tags": [
       "Scientific Workflows",
@@ -33,28 +33,52 @@
     "agents": [
       {
         "name": "Codex",
-        "role": "primary-source research, bilingual writing, scientific copyediting, image direction, deterministic SVG, code and publication checks",
-        "role_ko": "1차 출처 조사·한영 집필·과학 감수·이미지 구성·SVG 제작·코드 및 게시 검사"
+        "role": "Original 2026-09-13 edition: source research, bilingual writing, image generation, SVG and publication checks",
+        "role_ko": "2026-09-13 원발행: 출처 조사·한영 집필·표지 생성·SVG 및 게시 검사"
+      },
+      {
+        "name": "root",
+        "role": "2026-11-27 integration editing, selected primary-source cross-checks and publication/output verification",
+        "role_ko": "2026-11-27 통합 편집·선택 원문 대조·출판 및 출력 검증"
+      },
+      {
+        "name": "avatar1127_prose",
+        "role": "Initial independent prose review, then bilingual revision drafting; not final independent review of its own draft",
+        "role_ko": "초기 독립 문체 검토 후 한영 수정 초안 작성; 자기 초안의 최종 독립 감수로 표시하지 않음"
+      },
+      {
+        "name": "avatar1127_science",
+        "role": "Independent Avatar v1, software-documentation, claim and APS reference review",
+        "role_ko": "Avatar v1·소프트웨어 문서·주장·APS 서지 독립 감수"
+      },
+      {
+        "name": "avatar1127_build_audit",
+        "role": "Independent bilingual prose/output, publication-input and asset/math preservation review",
+        "role_ko": "한영 문체·출력·출판입력·자산·수식 보존의 독립 검토"
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "Avatar v1 full text: policy placement, workload definitions, dates, numerical comparisons and execution boundaries; Academy and Colmena official documentation",
-      "round-count arithmetic; bilingual rendering, unit tests, public-site validator, metadata, local and reference links, thumbnail consistency",
-      "single-agent source checking; no independent experiment reproduction or separate verification agent"
+      "Original September evidence window and publication history retained; November 27 edition rechecks the same Avatar v1 rather than adding a new scientific result",
+      "Avatar v1 full HTML and extracted PDF text by the independent source reviewer; root cross-checks of experimental definitions, placement and reported outcomes in section V",
+      "Exact Academy 0.5.0 README/metadata and selected code, Colmena official documentation and researcher profile; source-check dates distinguished from historical September records",
+      "Bilingual source/output correspondence, original formula and existing figure/cover bytes, publication identity, dates, summaries, links and public reader configuration",
+      "No Avatar experiment, source-code execution, GPU-time reproduction or human-reader comprehension study"
     ],
     "verification_scope_ko": [
-      "Avatar v1 본문: 정책 배치·작업 정의·날짜·수치 비교·실행 범위; Academy·Colmena 공식 문서",
-      "회차 비율 산술·한영 렌더링·단위 테스트·공개 사이트 검사·metadata·로컬 및 참고 링크·표지 정합성",
-      "단일 에이전트 출처 대조; 별도 검증 에이전트나 실험 독립 재현 없음"
+      "원 조사 기간과 발행 이력을 보존하고 11월 27일에도 같은 Avatar v1을 재대조; 새 과학 결과 추가 없음",
+      "독립 감수자의 v1 HTML 전문·PDF 전체 추출 텍스트 대조; root의 §V 실험 정의·배치·저자 보고 결과 직접 확인",
+      "Academy 0.5.0 README·metadata·선택 코드, Colmena 공식 문서와 연구자 소개; 현재 재대조일과 9월 보존 기록 구별",
+      "한영 원고·출력 대응, 기존 수식·그림·표지 바이트, 글 ID·날짜·요약·링크·공개 독자 설정 보존",
+      "Avatar 실험·코드 실행·GPU 시간 재현과 사람 독자의 이해도 시험 미수행"
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-09-12",
     "human_review_level": "recurring publication authorized; no line-by-line human review",
     "human_review_level_ko": "정기 공개 게시 요청에 따라 작성; 문장 단위 사람 검토 없음",
-    "disclosure_note_ko": "웹 조사·GitHub 연결·로컬 Python 검사·브라우저 확인·내장 imagegen을 사용했습니다. 정확한 모델 식별자는 미보존입니다. GPU 시간은 저자 보고이며 QM9 조회는 신규 DFT 실행이 아닙니다. 총 추론 비용·일반화는 미확인이고 운영 구조는 후속 제안입니다.",
-    "disclosure_note_en": "Used web research, GitHub connection, local Python checks, browser inspection and built-in imagegen. Exact model identifier not retained. GPU time is author-reported; QM9 lookup is not new DFT execution. Total inference cost and generalization remain unverified; the operational design is proposed."
+    "disclosure_note_ko": "원발행의 단일 에이전트·imagegen·하네스 이력을 보존하고 이번 개정의 집필·독립 감수·출력 검증을 구분했습니다. 기존 표지·도식·수식과 원 발행일·근거 기준일을 유지했습니다. GPU 시간은 저자 보고이며 QM9 조회는 신규 DFT 실행이 아닙니다. 총 추론 비용과 일반화는 검증되지 않았고 운영 방식은 후속 제안입니다.",
+    "disclosure_note_en": "The original single-agent, imagegen and harness history is retained separately from revision drafting, independent review and output verification. Existing cover art, diagrams, formula, original publication date and evidence cutoff are preserved. GPU time is author-reported; QM9 lookup is not new DFT execution. Whole-system inference costs and generalization remain unverified; the operational design is proposed."
   },
   "source_sha256": "54c66429b72398ce2054fa9bf0710269eddce01a03295301c4d35e1b62e357db"
 }

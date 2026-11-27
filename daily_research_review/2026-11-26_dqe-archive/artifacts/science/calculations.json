@@ -1,0 +1,703 @@
+{
+  "issue_date": "2026-11-26",
+  "execution": "Exact tiny classical enumeration with Python standard library; no solver or QPU execution.",
+  "units": {
+    "cost": "10000 KRW",
+    "quantity": "boxes",
+    "time": "seconds"
+  },
+  "base_probabilities_S0_S1_S2": [
+    "7/10",
+    "1/5",
+    "1/10"
+  ],
+  "stress_probabilities_S0_S1_S2": [
+    "7/10",
+    "1/20",
+    "1/4"
+  ],
+  "base_all_eight_policies": [
+    {
+      "bits_abc": [
+        0,
+        0,
+        0
+      ],
+      "policy": "none",
+      "arrivals_boxes_S0_S1_S2": [
+        0,
+        0,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        8,
+        8,
+        8
+      ],
+      "reservation_cost_10000_KRW": 0,
+      "expected_total_cost_10000_KRW": 80,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": 0,
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        0,
+        1
+      ],
+      "policy": "C",
+      "arrivals_boxes_S0_S1_S2": [
+        4,
+        4,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        4,
+        4,
+        8
+      ],
+      "reservation_cost_10000_KRW": 11,
+      "expected_total_cost_10000_KRW": 55,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "9/20",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        1,
+        0
+      ],
+      "policy": "B",
+      "arrivals_boxes_S0_S1_S2": [
+        4,
+        4,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        4,
+        4,
+        8
+      ],
+      "reservation_cost_10000_KRW": 9,
+      "expected_total_cost_10000_KRW": 53,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "9/20",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        1,
+        1
+      ],
+      "policy": "BC",
+      "arrivals_boxes_S0_S1_S2": [
+        8,
+        8,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        0,
+        8
+      ],
+      "reservation_cost_10000_KRW": 20,
+      "expected_total_cost_10000_KRW": 28,
+      "full_delivery_probability": "9/10",
+      "expected_filled_demand_fraction": "9/10",
+      "chance_MILP_feasible": true,
+      "minimal_violation_indicator": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        0,
+        0
+      ],
+      "policy": "A",
+      "arrivals_boxes_S0_S1_S2": [
+        6,
+        0,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        2,
+        8,
+        2
+      ],
+      "reservation_cost_10000_KRW": 12,
+      "expected_total_cost_10000_KRW": 44,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "3/5",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        0,
+        1
+      ],
+      "policy": "AC",
+      "arrivals_boxes_S0_S1_S2": [
+        10,
+        4,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        4,
+        2
+      ],
+      "reservation_cost_10000_KRW": 23,
+      "expected_total_cost_10000_KRW": 33,
+      "full_delivery_probability": "7/10",
+      "expected_filled_demand_fraction": "7/8",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        1,
+        0
+      ],
+      "policy": "AB",
+      "arrivals_boxes_S0_S1_S2": [
+        10,
+        4,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        4,
+        2
+      ],
+      "reservation_cost_10000_KRW": 21,
+      "expected_total_cost_10000_KRW": 31,
+      "full_delivery_probability": "7/10",
+      "expected_filled_demand_fraction": "7/8",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        1,
+        1
+      ],
+      "policy": "ABC",
+      "arrivals_boxes_S0_S1_S2": [
+        14,
+        8,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        0,
+        2
+      ],
+      "reservation_cost_10000_KRW": 32,
+      "expected_total_cost_10000_KRW": 34,
+      "full_delivery_probability": "9/10",
+      "expected_filled_demand_fraction": "39/40",
+      "chance_MILP_feasible": true,
+      "minimal_violation_indicator": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "stress_all_eight_policies": [
+    {
+      "bits_abc": [
+        0,
+        0,
+        0
+      ],
+      "policy": "none",
+      "arrivals_boxes_S0_S1_S2": [
+        0,
+        0,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        8,
+        8,
+        8
+      ],
+      "reservation_cost_10000_KRW": 0,
+      "expected_total_cost_10000_KRW": 80,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": 0,
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        0,
+        1
+      ],
+      "policy": "C",
+      "arrivals_boxes_S0_S1_S2": [
+        4,
+        4,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        4,
+        4,
+        8
+      ],
+      "reservation_cost_10000_KRW": 11,
+      "expected_total_cost_10000_KRW": 61,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "3/8",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        1,
+        0
+      ],
+      "policy": "B",
+      "arrivals_boxes_S0_S1_S2": [
+        4,
+        4,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        4,
+        4,
+        8
+      ],
+      "reservation_cost_10000_KRW": 9,
+      "expected_total_cost_10000_KRW": 59,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "3/8",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        0,
+        1,
+        1
+      ],
+      "policy": "BC",
+      "arrivals_boxes_S0_S1_S2": [
+        8,
+        8,
+        0
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        0,
+        8
+      ],
+      "reservation_cost_10000_KRW": 20,
+      "expected_total_cost_10000_KRW": 40,
+      "full_delivery_probability": "3/4",
+      "expected_filled_demand_fraction": "3/4",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        0,
+        0
+      ],
+      "policy": "A",
+      "arrivals_boxes_S0_S1_S2": [
+        6,
+        0,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        2,
+        8,
+        2
+      ],
+      "reservation_cost_10000_KRW": 12,
+      "expected_total_cost_10000_KRW": 35,
+      "full_delivery_probability": 0,
+      "expected_filled_demand_fraction": "57/80",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        0,
+        1
+      ],
+      "policy": "AC",
+      "arrivals_boxes_S0_S1_S2": [
+        10,
+        4,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        4,
+        2
+      ],
+      "reservation_cost_10000_KRW": 23,
+      "expected_total_cost_10000_KRW": 30,
+      "full_delivery_probability": "7/10",
+      "expected_filled_demand_fraction": "73/80",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        1,
+        0
+      ],
+      "policy": "AB",
+      "arrivals_boxes_S0_S1_S2": [
+        10,
+        4,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        4,
+        2
+      ],
+      "reservation_cost_10000_KRW": 21,
+      "expected_total_cost_10000_KRW": 28,
+      "full_delivery_probability": "7/10",
+      "expected_filled_demand_fraction": "73/80",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "bits_abc": [
+        1,
+        1,
+        1
+      ],
+      "policy": "ABC",
+      "arrivals_boxes_S0_S1_S2": [
+        14,
+        8,
+        6
+      ],
+      "shortfall_boxes_S0_S1_S2": [
+        0,
+        0,
+        2
+      ],
+      "reservation_cost_10000_KRW": 32,
+      "expected_total_cost_10000_KRW": 37,
+      "full_delivery_probability": "3/4",
+      "expected_filled_demand_fraction": "15/16",
+      "chance_MILP_feasible": false,
+      "minimal_violation_indicator": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "base_multilinear_cost_coefficients": {
+    "constant": 80,
+    "c": -25,
+    "b": -27,
+    "bc": 0,
+    "a": -36,
+    "ac": 14,
+    "ab": 14,
+    "abc": 14
+  },
+  "stress_multilinear_cost_coefficients": {
+    "constant": 80,
+    "c": -19,
+    "b": -21,
+    "bc": 0,
+    "a": -45,
+    "ac": 14,
+    "ab": 14,
+    "abc": 14
+  },
+  "base_optimal_feasible_policy": "BC",
+  "stress_maximum_full_delivery_probability": "3/4",
+  "penalty_eight_rows": [
+    {
+      "a": 0,
+      "b": 0,
+      "y": 0,
+      "penalty_factor": 0
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "y": 1,
+      "penalty_factor": 3
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "y": 0,
+      "penalty_factor": 0
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "y": 1,
+      "penalty_factor": 1
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "y": 0,
+      "penalty_factor": 0
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "y": 1,
+      "penalty_factor": 1
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "y": 0,
+      "penalty_factor": 1
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "y": 1,
+      "penalty_factor": 0
+    }
+  ],
+  "quadratic_sixteen_rows_P15": [
+    {
+      "a": 0,
+      "b": 0,
+      "c": 0,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 80,
+      "original_cost_10000_KRW": 80
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "c": 0,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 125,
+      "original_cost_10000_KRW": 80
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "c": 1,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 55,
+      "original_cost_10000_KRW": 55
+    },
+    {
+      "a": 0,
+      "b": 0,
+      "c": 1,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 114,
+      "original_cost_10000_KRW": 55
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "c": 0,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 53,
+      "original_cost_10000_KRW": 53
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "c": 0,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 68,
+      "original_cost_10000_KRW": 53
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "c": 1,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 28,
+      "original_cost_10000_KRW": 28
+    },
+    {
+      "a": 0,
+      "b": 1,
+      "c": 1,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 57,
+      "original_cost_10000_KRW": 28
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 44,
+      "original_cost_10000_KRW": 44
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 59,
+      "original_cost_10000_KRW": 44
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "c": 1,
+      "y": 0,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 33,
+      "original_cost_10000_KRW": 33
+    },
+    {
+      "a": 1,
+      "b": 0,
+      "c": 1,
+      "y": 1,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 62,
+      "original_cost_10000_KRW": 33
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "c": 0,
+      "y": 0,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 46,
+      "original_cost_10000_KRW": 31
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "c": 0,
+      "y": 1,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 31,
+      "original_cost_10000_KRW": 31
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "c": 1,
+      "y": 0,
+      "consistent": false,
+      "QUBO_cost_P15_10000_KRW": 35,
+      "original_cost_10000_KRW": 34
+    },
+    {
+      "a": 1,
+      "b": 1,
+      "c": 1,
+      "y": 1,
+      "consistent": true,
+      "QUBO_cost_P15_10000_KRW": 34,
+      "original_cost_10000_KRW": 34
+    }
+  ],
+  "quadratization_scope": "Four bits a,b,c,y for the supplied y=ab representation before service constraints; not a universal minimum or physical-qubit count.",
+  "strict_policywise_penalty_sufficient_condition": "P > 14 in cost units; P=15 tested. P=14 permits an inconsistent-y tie for ABC. This does not assert the smallest weight needed solely to preserve global minimizers.",
+  "MILP_equivalence": "For each policy, an indicator z exists iff the original full-delivery chance constraint holds; positive shortfall cost attains u=max(8-q,0).",
+  "timing": {
+    "reads": 1000,
+    "anneal_per_read_microseconds": 20,
+    "total_anneal_seconds": "1/50",
+    "quantum_fixed_seconds": 30,
+    "quantum_total_seconds": "1501/50",
+    "classical_total_seconds": "33/10",
+    "operational_limit_seconds": 10
+  },
+  "extension_feasibility_witness": "ABC plus two guaranteed boxes satisfies demand in every scenario; extension costs and operational availability require a new model.",
+  "decision_scope": "Under the stipulated model/timing: classical base case meets the time limit; quantum operational route fails it; stress requires changing feasible choices. Proposed gap/success/cost thresholds are evaluation criteria, not measured performance."
+}

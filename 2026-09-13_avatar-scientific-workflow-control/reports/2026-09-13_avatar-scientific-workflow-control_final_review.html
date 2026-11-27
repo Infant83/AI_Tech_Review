@@ -4,26 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용</title>
-  <meta name="description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 함께 읽고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
+  <meta name="description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 비교하고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
   <link rel="canonical" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
   <link rel="alternate" hreflang="ko" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
   <link rel="alternate" hreflang="en" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/">
   <link rel="alternate" hreflang="x-default" href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="AI Tech Review Letters">
+  <meta property="og:site_name" content="Agentic Tech Review Letters">
   <meta property="og:title" content="연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용">
-  <meta property="og:description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 함께 읽고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
+  <meta property="og:description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 비교하고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
   <meta property="og:url" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:locale:alternate" content="en_US">
   <meta property="og:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/avatar_control_hero.webp">
   <meta property="og:image:alt" content="연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용">
   <meta property="article:published_time" content="2026-09-13">
-  <meta property="article:modified_time" content="2026-09-13">
+  <meta property="article:modified_time" content="2026-11-27">
   <meta name="author" content="Hyun-Jung Kim">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용">
-  <meta name="twitter:description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 함께 읽고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
+  <meta name="twitter:description" content="Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 비교하고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.">
   <meta name="twitter:image" content="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/avatar_control_hero.webp">
   <meta name="twitter:image:alt" content="연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용">
   <link rel="icon" href="data:,">
@@ -647,12 +647,15 @@
       }
 
       .figure-panel img[src$=".svg"],
-      .data-panel img[src$=".svg"] {
+      .figure-panel img[src*=".svg?"],
+      .data-panel img[src$=".svg"],
+      .data-panel img[src*=".svg?"] {
         width: 680px;
         max-width: none;
       }
 
-      .figure-panel.figure-panel-fit img[src$=".svg"] {
+      .figure-panel.figure-panel-fit img[src$=".svg"],
+      .figure-panel.figure-panel-fit img[src*=".svg?"] {
         width: 100%;
         max-width: 100%;
       }
@@ -762,7 +765,7 @@
 <body>
   <div class="topline">
     <div class="topline-inner">
-      <span>AI Tech Review Letters: Week 37 (2026-09-13)</span>
+      <span>Agentic Tech Review Letters: Week 48 (2026-11-27)</span>
       <div class="topline-actions">
         <a class="hub-link" href="https://infant83.github.io/AI_Tech_Review/">리뷰 허브</a>
         <nav class="language-switch" aria-label="언어 선택"><span lang="ko" aria-current="page">한국어</span><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-13_avatar-scientific-workflow-control/en/" lang="en" hreflang="en">English</a></nav>
@@ -774,9 +777,9 @@
   <header class="hero">
     <div class="hero-inner">
       <section>
-        <p class="eyebrow">AI Tech Review Letters</p>
+        <p class="eyebrow">Agentic Tech Review Letters</p>
         <h1>연구 에이전트는 언제 개입해야 하는가: Avatar가 드러낸 판단의 비용</h1>
-        <p class="dek">Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 함께 읽고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.</p>
+        <p class="dek">Avatar는 과학 계산의 복구·자원 확장·종료 판단에서 규칙과 언어모델을 비교한다. GPU 사용시간 감소와 대기열 악화를 비교하고, QM9 조회 실험의 한계와 재료 계산·온프레미스 운영에 필요한 검증 조건을 분석한다. 빠른 제어와 느린 판단을 나누는 설계를 제안한다.</p>
       </section>
 
     </div>
@@ -784,18 +787,18 @@
 
   <main class="content-grid">
     <article class="final-article">
-      <h2 id="3">3문장 요약</h2>
-<p>9월 9일 공개된 Avatar 프리프린트는 과학 계산의 실행 구조를 유지하면서 규칙 기반 제어와 대규모 언어모델(large language model, LLM)의 판단을 비교했다. 연구진은 분자 탐색에서 GPU 사용시간을 약 40% 줄였지만, 빠르게 변하는 자원 수요에 대응할 때는 평균 대기열이 규칙 기반의 약 21개에서 LLM 제어의 약 99개로 커졌다고 보고했다. 이 대비는 에이전트에게 맡길 일을 판단 주기와 잘못된 결정의 비용으로 나누어야 한다는 근거이며, 분자 실험은 새 전자구조 계산이 아닌 QM9 데이터 조회였다는 범위 안에서 읽어야 한다. [1]</p>
+      <h2 id="_1">요약</h2>
+<p>9월 9일 제출된 Avatar 프리프린트는 과학 계산의 실행 구조를 유지한 채 규칙 기반 제어와 대규모 언어모델(large language model, LLM)의 판단을 비교했다. 연구진은 QM9의 저장된 값을 조회하는 분자 탐색에서 GPU 사용시간을 약 40% 줄였지만, 빠르게 변하는 자원 수요에 대응하는 실험에서는 평균 대기열이 규칙 기반의 약 21개에서 LLM 제어의 약 99개로 커졌다고 보고했다. 어떤 판단을 에이전트에게 맡길지는 그 판단을 기다릴 시간과 잘못된 결정으로 생길 손실을 함께 따져야 한다. [1]</p>
 <p><img alt="빠르게 계산 타일을 운반하는 아래 경로와 결과를 검토한 뒤 계산을 분기시키는 느린 위 경로를 구분한 연구 실행 개념 일러스트" src="../artifacts/avatar_control_hero.webp" /></p>
-<p><em>그림 1 · AI-generated conceptual. 빠른 반복 실행과 느린 판단의 분리를 표현한 전용 일러스트다. 원자 모형·계산 장치·검토 렌즈는 개념 표현이며 실제 재료, Avatar 장치 또는 측정 데이터가 아니다.</em></p>
-<p>관찰 기간은 2026년 9월 6–12일이다. 이 글은 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">지난주 DeMARS 리뷰</a>에서 다룬 구조 모델 생성의 후속 논의이지만, 대상과 근거가 다르다. DeMARS는 무질서 결정의 원자 모델을 만드는 판단을 다뤘다. Avatar는 계산이 시작된 뒤 <strong>실패를 어떻게 처리하고, 자원을 언제 늘리며, 탐색을 언제 끝낼지</strong>를 비교 실험으로 묻는다. 5월의 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/">하네스 엔지니어링 리뷰</a>에 더해진 새 근거도 이 긍정·부정 결과의 동시 제시다.</p>
-<h2 id="_1">계산을 잘하는 모델과 계산을 잘 운영하는 시스템</h2>
+<p><em>그림 1 · AI-generated conceptual. 빠른 반복 실행과 결과 검토 후의 분기를 표현한 전용 개념 일러스트다. 원자 모형·계산 장치·검토 렌즈로 두 경로의 역할을 나타냈다.</em></p>
+<p>원 조사의 자료 수집 기간은 2026년 9월 6–12일이다. 앞선 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/">DeMARS 리뷰</a>는 무질서 결정의 원자 모델을 만드는 판단을 다뤘다. Avatar가 시험한 대상은 계산이 시작된 뒤 <strong>실패를 어떻게 처리하고, 자원을 언제 늘리며, 탐색을 언제 끝낼지</strong>다.</p>
+<h2 id="_2">계산이 시작된 뒤의 판단</h2>
 <p>계산 재료과학에서 한 번의 입력 작성보다 더 오래 남는 일은 계산 묶음을 관리하는 일이다. 같은 계산이 다시 실패했을 때 재시도할지, 일시적인 자원 부족인지 물리적 설정 문제인지, 다음 후보를 평가할 가치가 남아 있는지 판단해야 한다. 이 판단을 자동화하면 연구자가 로그를 지켜보는 시간을 줄일 가능성이 있다. 반대로 판단을 기다리느라 계산 자원이 놀거나, 유망한 탐색을 일찍 끝내면 자동화가 손해를 만든다.</p>
-<p>과학 워크플로 관리 시스템(workflow management system, WMS)은 작업의 의존관계와 실행 상태를 관리한다. 고성능 컴퓨팅(high-performance computing, HPC) 환경에서는 여기에 작업 스케줄러와 데이터 이동, 실패 복구가 연결된다. 에이전트의 <strong>하네스</strong>는 모델이 관측할 상태, 사용할 도구, 허용된 행동, 검증과 기록을 포함한 실행 환경이다. 모델이 문맥을 읽고 판단할 수 있어도 이 주변 기능은 여전히 필요하다.</p>
-<p>Avatar의 연구 질문은 기존 시스템 전체를 LLM으로 교체할 수 있느냐가 아니다. <strong>실행 구조와 허용 행동을 고정하고 판단 정책만 바꿨을 때, 어떤 결정에서 이득이 생기는가</strong>다. 같은 하네스 안에서 비교한다는 점이 모델 이름이나 데모의 유창함보다 유용하다. 다만 아래 결과를 저자와 별개로 재실행한 것은 아니다. [1]</p>
-<h2 id="_2">세 역할을 나누고, 판단 정책을 교체한다</h2>
+<p>과학 워크플로 관리 시스템(workflow management system, WMS)은 작업의 의존관계와 실행 상태를 관리한다. 고성능 컴퓨팅(high-performance computing, HPC) 환경에서는 여기에 작업 스케줄러와 데이터 이동, 실패 복구가 연결된다. 5월의 <a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/">하네스 엔지니어링 리뷰</a>에서 다룬 에이전트의 <strong>하네스</strong>는 모델이 관측할 상태, 사용할 도구, 허용된 행동, 검증과 기록을 포함한 실행 환경이다.</p>
+<p>Avatar는 <strong>실행 구조와 허용 행동을 고정하고 판단 정책만 바꿨을 때, 어떤 결정에서 이득이 생기는지</strong>를 묻는다. 복구·자원 확장·탐색 종료를 서로 다른 과업으로 구성해 정책의 효과를 비교했다. 아래 수치는 논문 저자들의 보고를 바탕으로 한다. [1]</p>
+<h2 id="_3">세 역할을 나누고, 판단 정책을 교체한다</h2>
 <p>Avatar는 작업의 논리적 진행을 결정하는 조정자(orchestrator), 실제 작업을 실행하는 실행자(executor), 실행 이력과 실패를 기록하는 관측·이력 담당(provenance)을 분리한다. 여기서 provenance는 결과가 어떤 입력, 시도, 실행 조건을 거쳐 나왔는지 추적할 수 있는 기록이다. [1, §III–IV]</p>
-<p>이 역할을 구현하는 <strong>actor</strong>는 상태를 보관하고 메시지로 통신하는 소프트웨어 구성요소다. actor가 있다고 모든 역할이 LLM으로 움직이는 것은 아니다. 구현 기반인 Academy 역시 LLM 없이 동작할 수 있는 상태 기반 에이전트 미들웨어다. Avatar는 이 구분을 이용해 다음 세 조건을 비교한다. [1, 2]</p>
+<p>이 역할을 구현하는 <strong>actor</strong>는 상태를 보관하고 메시지로 통신하는 소프트웨어 구성요소다. 구현 기반인 Academy는 LLM 없이도 동작하는 상태 기반 에이전트 미들웨어다. Avatar에서는 관측·진단과 진행 판단에 규칙 또는 LLM을 배치해 다음 세 조건을 비교한다. [1, 2]</p>
 <table>
 <thead>
 <tr>
@@ -826,21 +829,21 @@
 </tr>
 </tbody>
 </table>
-<p><em>표 1 · Source-derived. Avatar §IV의 정책 배치다. M2도 실행자까지 LLM으로 바꾼 완전 자율 실행은 아니다.</em></p>
-<p>정책이 제안한 행동은 adapter를 거친다. 이는 시스템 간 표현을 맞추면서 허용된 행동과 형식인지 확인하는 코드다. 재시도, 자원 확장·축소, 처리량 제한, 후보 묶음 제안, 대리모델 재학습, 탐색 종료 등이 공통 행동 목록에 들어간다. 자유로운 자연어가 곧바로 실행 명령이 되는 구조와는 다르다. [1]</p>
-<p>그렇다고 행동 목록 검사가 과학적 타당성까지 보장하지는 않는다. <code>stop-campaign</code>이 올바른 형식이고 권한 범위 안에 있어도, 탐색을 끝낼 근거는 부족할 수 있다. <strong>형식 검증, 권한 검증, 과학적 판단의 검증은 각각 필요하다</strong>는 것이 이 리뷰의 해석이다.</p>
-<p>연구진이 명시한 소프트웨어는 Python 3.12, Academy 0.5.0, Parsl 2026.3.9, TaskVine과 Colmena다. LLM은 Argonne의 Sophia 추론 서비스에서 제공한 <code>open-ai/gpt-oss-20b</code>다. E1/E2의 계산 노드는 Xeon Gold 6248R 3 GHz, CPU 48코어, 메모리 192 GB이며 actor 간 통신은 단일 프로세스의 로컬 메시지 교환을 사용했다. 따라서 이 실험을 여러 연구소에 분산된 에이전트 운영의 검증으로 확대하면 안 된다. Academy의 분산 실행 기능과 Avatar 논문의 실제 시험 범위도 구분해야 한다. [1, 2]</p>
-<h2 id="_3">세 실험은 서로 다른 질문에 답한다</h2>
+<p><em>표 1 · Source-derived. Avatar §IV의 정책 배치다. 세 조건 모두 실제 작업을 실행하는 실행자는 규칙 기반이다.</em></p>
+<p>정책이 제안한 행동은 adapter를 거친다. 이는 시스템 간 표현을 맞추면서 허용된 행동과 형식인지 확인하는 코드다. 재시도, 자원 확장·축소, 처리량 제한, 후보 묶음 제안, 대리모델 재학습, 탐색 종료 등이 공통 행동 목록에 들어간다. 정책은 이 인터페이스에 정의된 동작을 통해 실행 시스템을 제어한다. [1]</p>
+<p><code>stop-campaign</code>이 올바른 형식이고 허용된 권한 안에 있어도, 그때 탐색을 끝낼 과학적 근거가 충분한지는 따로 판단해야 한다. <strong>형식 검증, 권한 검증, 과학적 판단의 검증</strong>은 서로 다른 일을 한다. 이 리뷰는 이 구별을 바탕으로, 실행할 수 있는 명령인지와 실행할 이유가 있는지를 각각 확인하는 설계를 제안한다.</p>
+<p>연구진이 명시한 소프트웨어는 Python 3.12, Academy 0.5.0, Parsl 2026.3.9, TaskVine과 Colmena다. LLM은 Argonne의 Sophia 추론 서비스에서 제공한 <code>open-ai/gpt-oss-20b</code>다. E1/E2 계산에 사용한 노드의 사양은 Xeon Gold 6248R 3 GHz, CPU 48코어, 메모리 192 GB다. E2에서는 actor들이 <code>midway3-login3</code> 로그인 노드의 단일 프로세스에서 로컬 메시지를 교환하고, 수치 작업 worker는 별도의 <code>caslake</code> 계산 노드에서 실행됐다. Academy의 분산 기능과 이 실험에서 시험한 actor 통신·배치 구성을 구별할 필요가 있다. [1, 2]</p>
+<h2 id="_4">세 실험은 서로 다른 질문에 답한다</h2>
 <h3 id="1">1. 복구: 다시 해도 실패하는 일을 얼마나 반복하는가</h3>
-<p>E1은 행렬 계산 뒤에 일시적 또는 영구적 실패를 주입한 합성 작업이다. 기본 실패 확률은 0.35, 실패 종류를 정하는 영구 실패 비율 파라미터는 1/3이다. 연구진은 재시도 상한과 실패 조건을 바꾸었다. M2는 반복 실패 이력을 보고 영구 실패로 판단하면 한 번 재시도한 뒤 포기했다. 논문의 최대 약 55% 낭비 계산 감소는 이 복구 실험의 조건부 성과다. [1, §V]</p>
-<p>이 수치는 전체 연구 시간이 55% 줄었다는 뜻이 아니다. 또한 익숙한 오류 코드를 분류하는 규칙보다 LLM이 우월하다는 비교도 아니다. 기본 비교 대상은 정해진 횟수까지 다시 시도하는 정책이다. 실제 전자구조 계산에서는 메모리 부족, 입력 오류, 전자 수렴 실패처럼 대응이 다른 장애가 섞인다. 오류 종류를 아는 규칙과 비교해야 언어모델이 더한 가치를 분리할 수 있다.</p>
+<p>E1은 행렬 계산을 수행하는 합성 작업에 실패나 straggler(지연 작업)를 주입하는 실험이다. 장애 주입 파라미터는 p=0.35이고, 영구 실패 비율을 정하는 파라미터는 x=1/3이다. 연구진은 재시도 상한과 실패 조건을 바꾸었다. M2는 반복 실패 이력에서 영구 실패로 진단한 작업을 한 번 재시도한 뒤 포기했다. 연구진이 보고한 낭비 계산의 최대 약 55% 감소는 이 복구 실험의 조건부 성과다. [1, §V]</p>
+<p>기본 비교 대상은 정해진 횟수까지 다시 시도하는 정책이다. 실제 전자구조 계산에서는 메모리 부족, 입력 오류, 전자 수렴 실패처럼 대응이 다른 장애가 섞인다. 오류 종류를 구별하는 규칙을 기준선에 추가하면, 단순히 재시도를 줄이는 효과와 언어모델이 진단에 더한 효과를 분리해 비교할 수 있다.</p>
 <h3 id="2">2. 자원 확장: 판단이 늦으면 대기열이 쌓인다</h3>
 <p>E2는 입력 도착률이 달라지는 스트리밍 작업이다. 입력마다 전처리, 병렬 분석, 집계가 연결된다. 고정 worker 수의 Parsl과 Avatar의 동적 제어를 비교했다. worker는 작업을 실행할 수 있는 실행 슬롯이며, backlog는 아직 처리하지 못하고 쌓인 작업 수다. [1]</p>
-<p>논문은 N=128 조건에서 규칙 기반 자동 확장(M0/M1)의 평균 backlog를 약 21, M2를 약 99로 보고한다. 저자들은 이를 LLM이 제어 루프에 필요한 속도로 반응하지 못한 결과로 해석한다. 두 값은 같은 실험의 작업 개수이며, 모델 정확도 점수가 아니다. 대기열을 0.2초마다 표본추출했다는 설명도 있지만, 이를 곧바로 모든 정책의 결정 주기가 0.2초라는 뜻으로 바꾸면 안 된다. [1, §V-A–B]</p>
-<p>이 부정 결과는 운영 설계에 직접적이다. 짧은 주기로 반복해야 하는 자원 제어를 굳이 텍스트 해석에 맡길 이유가 있는지 먼저 물어야 한다. 규칙이 잘 정의된 곳에서는 빠른 규칙을 유지하고, 규칙이 다루지 못한 상황만 느린 진단으로 보내는 구성이 합리적인 후속 실험이다.</p>
-<h3 id="3_1">3. 탐색 종료: 덜 계산하고도 같은 최선값을 얻었는가</h3>
+<p>논문은 N=128 조건에서 규칙 기반 자동 확장(M0/M1)의 평균 backlog를 약 21, M2를 약 99로 보고한다. 저자들은 이를 LLM이 제어 루프에 필요한 속도로 반응하지 못한 결과로 해석한다. 대기열은 0.2초마다 표본추출했으며, 이 관측 간격과 각 정책의 결정 주기는 구별해야 한다. [1, §V-A–B]</p>
+<p>이 자원 제어에서는 느린 판단을 기다리는 동안 대기열이 늘었다. 빠른 규칙 제어를 유지하면서 규칙이 처리하지 못한 상황을 LLM 진단에 맡기면 지연과 진단의 이득이 어떻게 달라지는지 후속 실험으로 비교할 수 있다.</p>
+<h3 id="3">3. 탐색 종료: 덜 계산하고도 같은 최선값을 얻었는가</h3>
 <p>E3는 Colmena를 이용한 분자 능동학습(active learning)이다. 능동학습은 현재 모델로 다음에 평가할 후보를 고르고, 새 값을 반영해 모델을 다시 학습하는 과정이다. 이 실험은 최고 점유 분자궤도(highest occupied molecular orbital, HOMO)와 최저 비점유 분자궤도(lowest unoccupied molecular orbital, LUMO)의 에너지 차이를 최대화한다. QM9 후보 5,000개, 초기 라벨 100개, 회차당 선택 32개를 사용했다. Morgan 분자 지문을 입력으로 하는 다층 퍼셉트론(multilayer perceptron, MLP)을 GPU에서 학습했다. [1]</p>
-<p>분자 값을 얻는 단계는 <strong>QM9에 저장된 gap 조회</strong>다. 밀도범함수이론(density functional theory, DFT) 계산을 새로 실행하거나 실험실에서 분자를 합성한 것이 아니다. 기존 데이터 조회를 값비싼 계산의 대역으로 쓰고, 그 주변의 탐색 운영을 시험했다. [1, §V-A]</p>
+<p>분자 값을 얻는 단계에서는 <strong>QM9에 저장된 gap을 조회</strong>한다. 밀도범함수이론(density functional theory, DFT) 계산을 새로 수행하는 대신 기존 데이터로 후보를 평가해, 후보 선택·학습·종료를 조정하는 탐색 운영을 시험했다. [1, §V-A]</p>
 <p>기본 정책과 M0/M1은 12회차를 모두 실행했다. M2는 학습 진전을 보고 7회차에 종료해 같은 최선의 gap에 도달하면서 GPU-busy time을 약 40% 줄였다고 보고한다. 실행 환경은 NVIDIA Quadro RTX 6000 한 장, CUDA 12.2이며 해당 작업에 CPU 16개를 요청했다. [1, §V]</p>
 <table>
 <thead>
@@ -848,7 +851,7 @@
 <th>실험</th>
 <th>논문이 보고한 비교</th>
 <th>무엇을 측정했나</th>
-<th>확대해서 말하면 안 되는 것</th>
+<th>결과의 범위</th>
 </tr>
 </thead>
 <tbody>
@@ -856,49 +859,49 @@
 <td>E1, 실패 복구</td>
 <td>낭비 계산 최대 약 55% 감소</td>
 <td>합성 실패 작업의 낭비 worker 시간</td>
-<td>전체 연구 시간·DFT 실패 복구 55% 개선</td>
+<td>합성 장애 조건의 재시도 비용</td>
 </tr>
 <tr>
 <td>E2, 자원 확장</td>
 <td>평균 backlog 약 21 → 약 99, N=128</td>
 <td>규칙 자동 확장 대비 M2의 대기 작업 수</td>
-<td>정확도 차이 또는 모든 환경의 지연 배율</td>
+<td>해당 스트리밍 작업과 제어 조건</td>
 </tr>
 <tr>
 <td>E3, 탐색 종료</td>
 <td>12 → 7회차, GPU-busy time 약 40% 감소</td>
 <td>QM9 조회 기반 탐색의 GPU 활동 시간</td>
-<td>실제 DFT·총비용·전력 사용량 40% 감소</td>
+<td>신규 DFT·총비용·전력 사용량은 이 측정 밖</td>
 </tr>
 </tbody>
 </table>
-<p><em>표 2 · Source-derived. Avatar §V 및 그림 5–6의 본문 설명을 재구성했다. 세 행은 서로 다른 작업과 지표이며 하나의 성능 순위로 합치지 않았다. 공개된 수치를 독립 재현하지 않았다.</em></p>
-<p>12회차 중 5회차를 생략한 비율은 5/12, 약 41.7%다. 이것은 리뷰에서 확인한 단순 산술일 뿐 GPU 시간 측정의 재현이 아니다. 회차마다 학습 데이터가 늘고 고정 비용도 있어 회차 비율과 GPU 시간 비율은 같을 필요가 없다. 원문의 최선 gap 수치에는 본문 단위 설명이 충분하지 않아 이 리뷰에서는 eV나 Hartree로 추정 변환하지 않았다.</p>
-<h2 id="_4">비용을 줄였다는 주장에 아직 필요한 분모</h2>
-<p>E3에서 GPU가 덜 일했다는 사실과 전체 시스템이 저렴해졌다는 판단 사이에는 측정 항목이 더 필요하다. 추론 서비스의 자원 사용, 네트워크 대기, CPU 작업, 실패한 판단의 복구, 사람의 개입을 포함해야 한다. GPU-busy time은 측정된 활동 시간이며, 에너지 적분이나 청구 비용과 동일하지 않다.</p>
-<p>후속 비교를 설계하기 위한 <strong>리뷰의 제안식</strong>은 다음처럼 쓸 수 있다.</p>
+<p><em>표 2 · Source-derived. Avatar §V 및 그림 5–6의 본문 설명을 재구성했다. 각 행은 서로 다른 작업에서 측정한 값과 그 비교 조건을 담는다.</em></p>
+<p>12회차 중 5회차를 생략한 비율은 5/12, 약 41.7%다. 리뷰에서 확인한 산술값이며, 회차마다 학습 데이터가 늘고 고정 비용도 있어 이 비율이 GPU 활동 시간의 감소율과 같을 필요는 없다. 원문의 최선 gap 수치에는 본문 단위 설명이 충분하지 않아 이 리뷰에서는 eV나 Hartree로 추정 변환하지 않았다.</p>
+<h2 id="gpu">GPU 시간에서 계산 캠페인의 총비용으로</h2>
+<p>계산 캠페인의 총비용을 비교하려면 E3의 GPU 활동 시간에 더해 추론 서비스의 자원 사용, 네트워크 대기, CPU 작업, 실패한 판단의 복구, 사람의 개입을 계상해야 한다. GPU-busy time은 활동 시간이다. 전력 사용량이나 청구 비용으로 환산하려면 그에 맞는 측정과 단가가 필요하다.</p>
+<p>후속 비교의 비용 항목을 정리하기 위해 이 리뷰에서는 다음 <strong>제안식</strong>을 사용한다.</p>
 $$G = p_{\mathrm{useful}}C_{\mathrm{saved}}-C_{\mathrm{inference}}-\mathbb{E}[C_{\mathrm{wrong}}].$$
 
-<p>여기서 G는 기대 순이득, p는 유용한 판단의 확률, C_saved는 그 판단으로 줄이는 비용, C_inference는 추론·통신 비용, 마지막 항은 잘못된 결정으로 생기는 기대 손실이다. 모든 C는 같은 비용 단위로 평가해야 한다. CPU 초와 GPU 초를 그냥 더하지 않는다. 이 식은 Avatar가 제시하거나 적합한 모델이 아니며, 빠진 비용을 드러내기 위한 장부다.</p>
-<p>시간 제약은 별도로 둬야 한다. 결정 지연 τ가 환경이 달라지는 시간 Δ와 비슷하면, 좋은 판단도 적용 시점에는 낡을 수 있다. 그렇다고 τ/Δ가 어떤 값 아래이면 안전하다는 보편적 임계값이 이 논문에서 증명된 것은 아니다. E2와 E3는 판단을 기다리는 동안 발생하는 비용이 다르다는 사례다.</p>
+<p>여기서 G는 기대 순이득, p는 유용한 판단의 확률, C_saved는 그 판단으로 줄이는 비용, C_inference는 추론·통신 비용, 마지막 항은 잘못된 결정으로 생기는 기대 손실이다. 모든 C는 같은 비용 단위로 평가해야 한다. CPU 초와 GPU 초를 그냥 더하지 않는다. 이 식은 리뷰에서 구성한 비용 계상 방법이다.</p>
+<p>시간 제약은 별도로 둬야 한다. 결정 지연 τ가 환경이 달라지는 시간 Δ와 비슷하면, 좋은 판단도 적용 시점에는 낡을 수 있다. E2의 자원 확장과 E3의 탐색 종료를 비교할 때에도 판단을 기다리는 동안 어떤 비용이 누적되는지 각각 측정해야 한다.</p>
 <figure class="figure-panel figure-panel-fit">
 <img src="../artifacts/control_boundary_ko.svg" alt="빠른 규칙 실행은 계속 유지하고 실패나 탐색 정체만 느린 LLM 검토로 보내며, 제안은 상태·권한·과학 조건 검사를 통과한 뒤 실행하는 제안 구조">
-<figcaption>그림 2 · Proposed / reviewer-constructed. Avatar의 정책 분리에서 출발해 재료 계산에 제안하는 두 시간척도 구조다. 상태가 바뀌었으면 제안을 폐기하고, 과학적 종료 조건은 따로 검사한다. Avatar 구현을 복제한 도식이나 성능 보증이 아니다.</figcaption>
+<figcaption>그림 2 · Proposed / reviewer-constructed. Avatar의 정책 분리에서 출발해 재료 계산에 제안하는 두 시간척도 구조다. 상태가 바뀌었으면 제안을 폐기하고, 과학적 종료 조건은 따로 검사한다.</figcaption>
 </figure>
 
 <h2 id="_5">“언제 멈출지 안다”를 검증하려면</h2>
-<p>가장 강한 후속 비교는 더 좋은 종료 규칙이다. 최근 몇 회차 동안 개선이 없으면 멈추는 patience 정책, 불확실성과 기대 개선량을 이용하는 정책, 일정 비용까지 탐색하는 정책을 같은 후보군과 예산에서 비교해야 한다. M2가 고정 12회차보다 적게 계산했다는 사실만으로 이들보다 낫다고 결론내릴 수 없다.</p>
-<p>또한 이번 실행에서 같은 최선값을 얻었다고 해서 새로운 seed와 후보군에서도 손실 없이 멈춘다는 보장은 없다. 종료 시점에 남아 있던 후보의 최선값, 여러 초기 표본에 대한 결과 분포, 종료 후 추가 탐색에서 발견되는 개선량을 보고 싶다. 이미 정답이 있는 QM9라면 선택되지 않은 후보까지 이용해 사후 손실을 평가하기 좋다. 실제 신규 계산에서는 그 사후 정답 자체가 비싸므로 일부 후속 계산 예산을 검증용으로 남겨야 한다.</p>
-<p>재현성에도 선을 긋는다. 원문은 공통 코드 약 1,200줄을 세 작업에서 그대로 썼다고 설명하지만, 이 조사에서 <strong>Avatar 실험 전용 공개 저장소와 고정 commit을 확인하지 못했다</strong>. Academy·Colmena의 공개 코드가 있다는 사실로 Avatar의 정책, prompt, 무효 행동 처리, seed별 로그가 공개됐다고 대신 말할 수 없다. 본문 대조와 산술 점검은 수행했지만, 저자 코드의 독립 재실행은 하지 않았다. [1–3]</p>
+<p>다음 비교에는 개선이 없는 회차가 이어지면 멈추는 patience 정책, 불확실성과 기대 개선량을 이용하는 정책, 일정 비용까지 탐색하는 정책을 넣을 수 있다. 같은 후보군과 예산에서 M2를 이 적응형 종료 규칙들과 비교하면, 고정 12회차를 생략하는 것에 더해 학습 진단이 어떤 이득을 주는지 평가할 수 있다.</p>
+<p>종료 정책을 다른 seed와 후보군에 적용했을 때 놓치는 개선량도 확인할 필요가 있다. 종료 시점에 남아 있던 후보의 최선값, 여러 초기 표본에 대한 결과 분포, 종료 후 추가 탐색에서 발견되는 개선량을 보고 싶다. 이미 정답이 있는 QM9라면 선택되지 않은 후보까지 이용해 사후 손실을 평가하기 좋다. 실제 신규 계산에서는 그 사후 정답 자체가 비싸므로 일부 후속 계산 예산을 검증용으로 남겨야 한다.</p>
+<p>원문은 공통 코드 약 1,200줄을 세 작업에서 그대로 썼다고 설명한다. 9월 원작성 조사에서는 <strong>Avatar 실험 전용 공개 저장소와 고정 commit을 확인하지 못했다</strong>. Academy·Colmena의 공개 코드와 별도로 Avatar의 정책, prompt, 무효 행동 처리, seed별 로그가 있어야 실험을 다시 구성할 수 있다. 원작성 때 수행한 검토는 본문 대조와 산술 점검까지였다. [1–3]</p>
 <h2 id="_6">재료 계산과 기업 운영에 적용할 작은 실험</h2>
-<p>다음은 기존 성과가 아닌 후속 제안이다. 첫 적용 대상으로는 새 분자 생성 전체를 맡기기보다, 이미 실행된 계산의 실패 로그를 읽고 다음 행동을 제안하는 작업이 적절하다. 제안의 이득과 위험을 과거 이력에서 비교할 수 있기 때문이다.</p>
+<p>재료 계산에 적용할 첫 후속 실험으로는, 과거 실패 로그를 분석해 다음 행동을 제안하는 작업이 적절하다. 이미 알려진 해결 과정과 비교해 제안의 이득과 위험을 평가할 수 있기 때문이다. 다음 네 단계는 이 리뷰의 운영 제안이다.</p>
 <ol>
 <li><strong>과거 계산을 재생한다.</strong> 알려진 실패 로그를 입력으로 주되 최종 해결법은 숨긴다. 기존 재시도, 오류 분류 규칙, LLM 진단+규칙 실행, LLM 행동 제안을 같은 사례에서 비교한다. 동일 구조의 계산이 학습과 평가에 섞이지 않도록 작업 계열별로 나눈다.</li>
 <li><strong>바꾸지 않을 물리를 고정한다.</strong> 전하·스핀·교환상관 범함수·기저·k점·수렴 기준 등은 작업 계약에 기록한다. 이 중 변경이 필요한 제안은 기존 계산의 재시도가 아니라 별도 과학 조건의 새 작업으로 남긴다. 빨리 끝났다는 이유로 다른 물리를 계산한 결과를 성공으로 세지 않는다.</li>
-<li><strong>읽기 전용 검토부터 시작한다.</strong> LLM은 결과를 제안만 하고 실제 실행은 하지 않는다. 사람이 개입한 횟수와 시간, 잘못 포기한 계산, 유효한 결과를 얻은 비율을 모두 기록한다. 전체 작업 수와 자동 수용한 작업 수를 따로 분모로 둔다.</li>
+<li><strong>읽기 전용 검토부터 시작한다.</strong> LLM은 다음 행동을 제안하고 실제 실행은 하지 않는다. 사람이 개입한 횟수와 시간, 잘못 포기한 계산, 유효한 결과를 얻은 비율을 모두 기록한다. 전체 작업 수와 자동 수용한 작업 수를 따로 분모로 둔다.</li>
 <li><strong>유효한 제안만 제한 실행한다.</strong> 승인한 행동 목록, 비용 한도, 상태 버전 검사, 중복 실행 방지 키, 규칙 기반 대체 동작을 둔다. 전역 큐 제어와 빠른 상태 감시는 기존 실행 시스템에 남긴다.</li>
 </ol>
-<p>유기발광다이오드(organic light-emitting diode, OLED) 연구에서는 궤도 gap 하나가 여기상태·발광속도·열화 안정성을 대신하지 않는다. Avatar를 OLED 재료 발견 성과로 읽지 않고, 계산 캠페인 운영을 시험할 구조로 가져오는 편이 정확하다. 기존 양자·OLED 브리핑과 달리 이 글이 평가하는 대상은 물성 예측기가 아니라 <strong>연구를 실행하는 제어 정책</strong>이다.</p>
+<p>유기발광다이오드(organic light-emitting diode, OLED) 계산에서는 궤도 gap뿐 아니라 여기상태·발광속도·열화 안정성 등 목표 물성이 달라진다. Avatar의 운영 정책을 이런 작업에 적용하려면, 재시도와 종료 기준이 각 물성의 계산 목적에 맞게 작동하는지 평가해야 한다.</p>
 <p>온프레미스 환경에서는 모델을 내부에 두었다는 사실과 작업 권한을 제한했다는 사실을 구분해야 한다. 모델 서비스, 계산 실행 계정, 게시·병합 계정을 분리하고, 로그를 비신뢰 입력으로 취급하는 구성을 제안한다. GitLab의 지속적 통합·배포(continuous integration/continuous delivery, CI/CD)는 테스트와 변경 승인을 담당하고, HPC 스케줄러는 자원 실행을 담당하도록 역할을 유지할 수 있다. 이는 이 리뷰의 운영 설계 제안이며 Avatar에서 검증한 GitLab 통합은 아니다.</p>
 <h2 id="_7">연구자와 세미나에서 물을 질문</h2>
 <table>
@@ -922,23 +925,27 @@ $$G = p_{\mathrm{useful}}C_{\mathrm{saved}}-C_{\mathrm{inference}}-\mathbb{E}[C_
 </tr>
 </tbody>
 </table>
-<p>소속은 근거 확인일의 공개 기록을 사용했다. 논문에 없는 프로젝트별 책임 범위는 추정하지 않았다.</p>
+<p>소속은 원 확인일인 2026년 9월 13일의 공개 기록을 기준으로 했다. 논문에 없는 프로젝트별 책임 범위는 추정하지 않았다.</p>
 <h2 id="_8">다음 논문에서 확인할 것</h2>
-<p>Avatar는 에이전트의 장점을 주장하면서 동시에 규칙이 더 나았던 조건을 보여준다는 점에서 읽을 가치가 있다. 다만 실제 DFT 실행, 다중 노드 배치, 강한 적응형 기준선, 총 추론 비용, 사람 개입을 포함한 반복 평가가 더 필요하다. 다음 판단은 “더 큰 모델을 붙였는가”보다 <strong>같은 과학적 결과와 허용 위험 아래 유효 결과당 총비용이 줄었는가</strong>로 내려야 한다.</p>
-<h2 id="_9">참고자료와 짧은 읽기 순서</h2>
+<p>후속 평가에서는 실제 DFT 실행, 분산된 actor의 운영, 적응형 기준선과 사람 개입을 포함한 반복 실험이 필요하다. 그때 추론·대기·복구 비용을 함께 기록해, <strong>같은 과학적 결과와 허용 위험 아래 유효 결과당 총비용이 줄었는지</strong> 비교해야 한다.</p>
+<h2 id="_9">참고문헌</h2>
 <ol>
-<li><strong><a href="https://arxiv.org/abs/2609.10509v1">Raj et al., Avatar, arXiv:2609.10509v1</a></strong> — 2026-09-09 제출, 프리프린트. <a href="https://arxiv.org/html/2609.10509v1">본문 §III–V</a>에서 M0/M1/M2와 E1/E2/E3를 먼저 읽는다. 제출일은 확인했으며 실험 수행일은 별도 공개되지 않았다.</li>
-<li><strong><a href="https://academy-agents.org/">Academy 공식 소개</a></strong> · <a href="https://github.com/academy-agents/academy">공식 코드</a> — 상태·행동·비동기 메시지가 LLM과 독립적인 구성요소임을 확인할 자료. 현재 문서와 논문에 사용된 0.5.0의 기능 범위를 혼동하지 않는다.</li>
-<li><strong><a href="https://colmena.readthedocs.io/en/latest/">Colmena 공식 문서</a></strong> — 과학 계산을 학습 결과로 조정하는 실행 기반. Avatar 실험 자체의 재현 패키지는 아니다.</li>
-<li><strong><a href="https://kylechard.com/">Kyle Chard 공개 연구자 소개</a></strong> — 소속 확인. 검색·문서 확인일 2026-09-13.</li>
+<li><a href="https://arxiv.org/abs/2609.10509v1">S. Raj, H. D. Nguyen, H. Pan, R. Chard, K. Chard, and I. Foster, Avatar: Toward autonomous end-to-end orchestration of scientific workflows using LLMs, arXiv:2609.10509v1 (2026).</a></li>
+<li><a href="https://github.com/academy-agents/academy/tree/v0.5.0">Globus Labs, Academy: Federated actors and agents, version 0.5.0 (2026).</a></li>
+<li><a href="https://colmena.readthedocs.io/en/latest/">Colmena, Colmena: AI-Steering for HPC, official documentation (accessed 27 November 2026).</a></li>
+<li><a href="https://kylechard.com/">K. Chard, Kyle Chard - University of Chicago (accessed 27 November 2026).</a></li>
 </ol>
 <h2 id="_10">작성 및 검토 정보</h2>
-<p>책임 편집자: 김현중. 정기 공개 요청에 따라 OpenAI Codex 에이전트 1개가 조사·한영 집필·출처 대조·과학 감수·코딩·게시 검사를 수행했다. 정확한 실행 모델 식별자는 보존되지 않았으며, 별도 검증 에이전트나 문장 단위 사람 검토는 없었다. 근거 기준일은 2026-09-12이고 원문·문서 확인은 9월 13일 수행했다.</p>
+<p>원작성·검토(2026-09-13): 책임 편집자는 김현중이다. 정기 공개 요청에 따라 OpenAI Codex 에이전트 1개가 조사·한영 집필·출처 대조·과학 감수·코딩·게시 검사를 수행했다. 정확한 실행 모델 식별자는 보존되지 않았으며, 당시 별도 검증 에이전트나 문장 단위 사람 검토는 없었다. 근거 기준일은 2026-09-12이고 원문·문서 확인은 9월 13일 수행했다.</p>
 <p><a href="https://infant83.github.io/AI_Tech_Review/methods/">AI Tech Review Editorial Harness v2026.08</a>에 따라 웹 검색·GitHub 연결·로컬 Python 렌더/검사·브라우저 확인을 사용했다. 표지는 imagegen 내장 생성 도구로 만들었고 도식은 결정론적 SVG다. 과학 감수에서는 수치와 비교 조건을 고정한 뒤 추상적 중요성 선언과 과도한 대비를 줄였다. 본문 대조, 회차 비율 산술, 페이지·링크·metadata 검사를 수행했지만 Avatar 계산과 GPU 측정은 재현하지 않았다. 전체 추론 비용과 일반화는 미확인이다.</p>
+<h2 id="2026-11-27">2026-11-27 편집 개정</h2>
+<p>편집부(AEDAUT)는 원 발행일 2026-09-13과 당시 근거 기준일 2026-09-12를 유지하며 문체와 참고문헌을 개정했다. 반복되는 부정·유보를 비교 조건에 통합하고, E1의 p=0.35를 실패·지연 주입 조건으로 명확히 했다. E2의 로그인 노드 actor와 별도 계산 노드 worker 배치를 보완했으며, Avatar의 원제·저자 6명과 Academy 0.5.0 문서의 식별정보를 정식 서지에 반영했다. 새 연구 결과나 현재 제품 상태를 9월의 사실로 추가하지 않았다.</p>
+<p><code>avatar1127_prose</code>가 원고의 초기 문체 검토와 한영 수정 초안 작성을 맡았고, root가 통합 편집과 원고 전체의 논지·한영 대응을 검토했다. <code>avatar1127_science</code>는 Avatar v1 HTML 본문·표·캡션·참고문헌 전체, 8쪽 PDF 전체 추출 텍스트와 선택한 1·7쪽, Academy 0.5.0 문서·선택 코드, Colmena 공식 문서와 연구자 소개를 대조했다. root도 원문 §V의 실험 정의·배치·결과를 직접 확인했다. <code>avatar1127_build_audit</code>는 기존 한영 공개본·자산·수식과 출판 경로를 별도로 대조했다. 각 담당자의 최종 검토와 실제 출력·공개 확인 범위는 <a href="https://github.com/Infant83/AI_Tech_Review/blob/main/.automation/writing-reviews/legacy-refresh/2026-11-27-avatar/README.md">개정 기록</a>에 구분한다.</p>
+<p>현재 개정에는 ATRL의 공통 작성·문체 감수 기준을 적용했다. 원 논문·공식 문서의 재대조일은 2026-11-27이며, 9월 당시 문서 확인 기록과 구별한다. 기존 표지·도식·수식은 보존했다. AI 보조는 OpenAI Codex이며 정확한 모델 식별자는 미보존이다. Avatar의 코드·실험·GPU 측정과 사람 독자의 이해도 평가는 재현하지 않았다.</p>
 <p>출처·재구성 고지: Raj, Nguyen, Pan, R. Chard, K. Chard, Foster의 Avatar v1은 CC BY-NC-SA 4.0으로 공개되어 있다. 이 글의 원문 기반 해설과 표는 해당 논문을 번역·요약·비평해 재구성했으며 원 그림을 복제하지 않았다. 이 한영 리뷰 본문과 재구성 도식은 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>으로 제공한다. 생성 표지는 별도 AI 개념 이미지이며 원 논문의 그림이 아니다.</p>
       <div class="footer">
-        생성 시각: 2026-09-12 21:02:26<br>
-        원본 파일 최종 수정 시각: 2026-09-12 21:02:25
+        생성 시각: 2026-11-27 01:18:53<br>
+        원본 파일 최종 수정 시각: 2026-11-27 01:18:15
       </div>
     </article>
 
@@ -948,22 +955,23 @@ $$G = p_{\mathrm{useful}}C_{\mathrm{saved}}-C_{\mathrm{inference}}-\mathbb{E}[C_
           <h2 id="toc-heading">섹션 맵</h2>
           <div class="toc">
 <ul>
-<li><a href="#3">3문장 요약</a></li>
-<li><a href="#_1">계산을 잘하는 모델과 계산을 잘 운영하는 시스템</a></li>
-<li><a href="#_2">세 역할을 나누고, 판단 정책을 교체한다</a></li>
-<li><a href="#_3">세 실험은 서로 다른 질문에 답한다</a><ul>
+<li><a href="#_1">요약</a></li>
+<li><a href="#_2">계산이 시작된 뒤의 판단</a></li>
+<li><a href="#_3">세 역할을 나누고, 판단 정책을 교체한다</a></li>
+<li><a href="#_4">세 실험은 서로 다른 질문에 답한다</a><ul>
 <li><a href="#1">1. 복구: 다시 해도 실패하는 일을 얼마나 반복하는가</a></li>
 <li><a href="#2">2. 자원 확장: 판단이 늦으면 대기열이 쌓인다</a></li>
-<li><a href="#3_1">3. 탐색 종료: 덜 계산하고도 같은 최선값을 얻었는가</a></li>
+<li><a href="#3">3. 탐색 종료: 덜 계산하고도 같은 최선값을 얻었는가</a></li>
 </ul>
 </li>
-<li><a href="#_4">비용을 줄였다는 주장에 아직 필요한 분모</a></li>
+<li><a href="#gpu">GPU 시간에서 계산 캠페인의 총비용으로</a></li>
 <li><a href="#_5">“언제 멈출지 안다”를 검증하려면</a></li>
 <li><a href="#_6">재료 계산과 기업 운영에 적용할 작은 실험</a></li>
 <li><a href="#_7">연구자와 세미나에서 물을 질문</a></li>
 <li><a href="#_8">다음 논문에서 확인할 것</a></li>
-<li><a href="#_9">참고자료와 짧은 읽기 순서</a></li>
+<li><a href="#_9">참고문헌</a></li>
 <li><a href="#_10">작성 및 검토 정보</a></li>
+<li><a href="#2026-11-27">2026-11-27 편집 개정</a></li>
 </ul>
 </div>
 
@@ -973,15 +981,14 @@ $$G = p_{\mathrm{useful}}C_{\mathrm{saved}}-C_{\mathrm{inference}}-\mathbb{E}[C_
         <h2 id="links-heading">근거 링크</h2>
         <ul>
           <li><a href="../artifacts/avatar_control_hero.webp">빠르게 계산 타일을 운반하는 아래 경로와 결과를 검토한 뒤 계산을 분기시키는 느린 위 경로를 구분한 연구 실행 개념 일러스트</a></li>
-<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/" target="_blank" rel="noreferrer">지난주 DeMARS 리뷰</a></li>
+<li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-09-06_agentic-programs-materials-science/" target="_blank" rel="noreferrer">DeMARS 리뷰</a></li>
 <li><a href="https://infant83.github.io/AI_Tech_Review/reviews/2026-05-09_ai-updates-weekly/" target="_blank" rel="noreferrer">하네스 엔지니어링 리뷰</a></li>
-<li><a href="https://arxiv.org/abs/2609.10509v1" target="_blank" rel="noreferrer">Raj et al., Avatar, arXiv:2609.10509v1</a></li>
-<li><a href="https://arxiv.org/html/2609.10509v1" target="_blank" rel="noreferrer">본문 §III–V</a></li>
-<li><a href="https://academy-agents.org/" target="_blank" rel="noreferrer">Academy 공식 소개</a></li>
-<li><a href="https://github.com/academy-agents/academy" target="_blank" rel="noreferrer">공식 코드</a></li>
-<li><a href="https://colmena.readthedocs.io/en/latest/" target="_blank" rel="noreferrer">Colmena 공식 문서</a></li>
-<li><a href="https://kylechard.com/" target="_blank" rel="noreferrer">Kyle Chard 공개 연구자 소개</a></li>
+<li><a href="https://arxiv.org/abs/2609.10509v1" target="_blank" rel="noreferrer">S. Raj, H. D. Nguyen, H. Pan, R. Chard, K. Chard, and I. Foster, Avatar: Toward autonomous end-to-end orchestration of scientific workflows using LLMs, arXiv:2609.10509v1 (2026).</a></li>
+<li><a href="https://github.com/academy-agents/academy/tree/v0.5.0" target="_blank" rel="noreferrer">Globus Labs, Academy: Federated actors and agents, version 0.5.0 (2026).</a></li>
+<li><a href="https://colmena.readthedocs.io/en/latest/" target="_blank" rel="noreferrer">Colmena, Colmena: AI-Steering for HPC, official documentation (accessed 27 November 2026).</a></li>
+<li><a href="https://kylechard.com/" target="_blank" rel="noreferrer">K. Chard, Kyle Chard - University of Chicago (accessed 27 November 2026).</a></li>
 <li><a href="https://infant83.github.io/AI_Tech_Review/methods/" target="_blank" rel="noreferrer">AI Tech Review Editorial Harness v2026.08</a></li>
+<li><a href="https://github.com/Infant83/AI_Tech_Review/blob/main/.automation/writing-reviews/legacy-refresh/2026-11-27-avatar/README.md" target="_blank" rel="noreferrer">개정 기록</a></li>
 <li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noreferrer">CC BY-NC-SA 4.0</a></li>
         </ul>
       </section>

@@ -1,0 +1,194 @@
+{
+  "review_date": "2026-11-26",
+  "created_at_utc": "2026-11-26T02:06:02.968880+00:00",
+  "status": "passed_for_assigned_science_APS_and_visual_scope",
+  "pdf": {
+    "sha256": "f5ae40b43997938cb368782007430f3d3803a8a6f369c3aa38447dd62a8ad371",
+    "bytes": 271632,
+    "pages": 7
+  },
+  "scope": {
+    "assigned_references": [
+      1,
+      3
+    ],
+    "text_pages_read": [
+      1,
+      2,
+      3,
+      6,
+      7
+    ],
+    "existing_render_pages_opened_and_visually_checked": [
+      1,
+      2,
+      3,
+      6,
+      7
+    ],
+    "new_render_performed": false,
+    "full_document_scientific_audit_claimed": false,
+    "public_source_or_pipeline_changes_made": false,
+    "new_network_research_or_CI_performed": false
+  },
+  "primary_audit_sha256": "92c0914c9ee02a317de776fd9ac7bdca048aca3e8e0c924c4f0cd0b234b2c269",
+  "qec_checks": [
+    {
+      "check": "Evidence type and headline",
+      "result": "pass",
+      "evidence": "p1 explicitly separates noisy circuit simulation from DTC actual small hardware, and marks no QPU for directional qLDPC."
+    },
+    {
+      "check": "Quarter-to-third denominator and fit scope",
+      "result": "pass",
+      "evidence": "p1/p2 identify12 logical qubits and fit/extrapolation. p6 names rotated N2E3N2 versus RTC, six RTC copies, X-memory d rounds, per-round conversion, p=10^-3, SI-1000 Pauli noise, Stim and Tesseract short-beam."
+    },
+    {
+      "check": "Generalization limits",
+      "result": "pass",
+      "evidence": "p2/p6 retain torus connectivity, modeled-noise/decoder restrictions, leakage/correlated-noise and real-time-decoding limits; no universal ratio or fault-tolerant-workload result is claimed."
+    },
+    {
+      "check": "Full APS reference",
+      "result": "pass",
+      "evidence": "p7 reference1 matches all3 authors, complete current journal title, Article in Press status/year and DOI. The shorter p2 heading is not substituted for the full bibliographic title."
+    }
+  ],
+  "dtc_checks": [
+    {
+      "check": "Actual hardware versus simulation",
+      "result": "pass",
+      "evidence": "p1 and p3 identify three-qubit hardware, while p6 separates modeled sub10-kHz suppression from actual common-idle residual ZZ about100kHz."
+    },
+    {
+      "check": "CZ benchmark already reported",
+      "result": "pass",
+      "evidence": "p1/p3/p6 explicitly report CZ interleaved RB99.00–99.21%; the original claim that RB is still needed has been replaced."
+    },
+    {
+      "check": "State versus process versus average gate metrics",
+      "result": "pass",
+      "evidence": "p3/p6 Bell QST99.34/99.57%, GHZ QST96.0%, iSWAP120ns QPT process96.7% and converted average97.4% are separately identified."
+    },
+    {
+      "check": "Scale boundary",
+      "result": "pass",
+      "evidence": "Large-array simultaneous-gate behavior remains unverified; no full QEC or large-array deployment result is claimed."
+    },
+    {
+      "check": "Full APS reference",
+      "result": "pass",
+      "evidence": "p7 reference3 matches all10 authors, complete current journal title including article a, Article in Press status/year and DOI."
+    }
+  ],
+  "visual_result": {
+    "status": "pass_for_assigned_pages",
+    "findings": "Existing images on all five assigned pages were opened. Scientific lines, tables, added-condition paragraphs and bibliography are legible; no observed clipping, overlapping text or missing-glyph defect in assigned content.",
+    "image_bindings": [
+      {
+        "page": 1,
+        "sha256": "50758fbd0499ea0f65111093e9b3ee371954e413f3b6124ae10ba677c49c365d",
+        "pixels": [
+          1191,
+          1684
+        ]
+      },
+      {
+        "page": 2,
+        "sha256": "5e3ab24eff9906070d3365edf04faa13c2636821fcb3f84281e3e9d11d86c5e8",
+        "pixels": [
+          1191,
+          1684
+        ]
+      },
+      {
+        "page": 3,
+        "sha256": "2066c82ba31b3c8793018b155eea810a93866e688121403a6c9014bf326e909f",
+        "pixels": [
+          1191,
+          1684
+        ]
+      },
+      {
+        "page": 6,
+        "sha256": "c37c2bd1c65debe3e2ae2557b88d2ba335ba21366a26c5e99b828f9b9822892e",
+        "pixels": [
+          1191,
+          1684
+        ]
+      },
+      {
+        "page": 7,
+        "sha256": "8702978815d296f3e14ccebb588be9ad6b38633db60350f1557fd9b7d12ae272",
+        "pixels": [
+          1191,
+          1684
+        ]
+      }
+    ],
+    "binding_limit": "Existing PNGs were supplied as the candidate render; no independent rerender was performed."
+  },
+  "assigned_source_links_observed": [
+    {
+      "page": 5,
+      "url": "https://doi.org/10.1038/s41467-026-79572-9"
+    },
+    {
+      "page": 5,
+      "url": "https://arxiv.org/abs/2507.19430"
+    },
+    {
+      "page": 5,
+      "url": "https://doi.org/10.1038/s42005-026-02958-0"
+    },
+    {
+      "page": 5,
+      "url": "https://arxiv.org/abs/2511.02249"
+    },
+    {
+      "page": 7,
+      "url": "https://doi.org/10.1038/s41467-026-79572-9"
+    },
+    {
+      "page": 7,
+      "url": "https://doi.org/10.1038/s42005-026-02958-0"
+    },
+    {
+      "page": 7,
+      "url": "https://doi.org/10.1038/s41467-026-79572-9"
+    },
+    {
+      "page": 7,
+      "url": "https://arxiv.org/abs/2507.19430"
+    },
+    {
+      "page": 7,
+      "url": "https://doi.org/10.1038/s42005-026-02958-0"
+    },
+    {
+      "page": 7,
+      "url": "https://arxiv.org/abs/2511.02249"
+    }
+  ],
+  "required_public_editorial_corrections": [],
+  "material_scientific_findings": [],
+  "limits": [
+    "This record covers references1/3 and the five assigned pages only; other references remain assigned to other reviewers.",
+    "No numerical reproduction, new PDF rendering, new publication, code change or CI execution was performed.",
+    "The current hash is a reviewed candidate; a changed PDF needs at least the changed page and new hash checked before this record can describe it."
+  ],
+  "policy_reassessment": {
+    "status": "agent_attribution_complies_with_current_policy",
+    "policy_sources": [
+      "EDITORIAL_POLICY.md:57–64, 작성·에이전트·하네스 공개",
+      "EDITORIAL_METHOD.md:12–22, 글마다 공개하는 정보",
+      "EDITORIAL_METHOD.md:189, 실제 에이전트 이름과 역할 공개"
+    ],
+    "controlling_requirement": "EDITORIAL_POLICY.md requires identifiable agent names/identifiers and roles, verification scope and human-review level in the footer. EDITORIAL_METHOD.md similarly requires actual agent roles/tasks and preserved names where available.",
+    "assessment": "The p6 provenance paragraph reports real contributor identifiers, performed tasks and access/reproduction limits. These are permitted public attribution under the current policy and are distinct from private mail/conversation identifiers, private instructions, credentials and absolute local paths.",
+    "earlier_concern": "The preliminary removal recommendation conflated public agent attribution with private-source identifiers and is withdrawn. No opposite rule requiring removal was found.",
+    "pdf_change_required": false,
+    "scope_limit": "This policy reassessment addresses the specific contributor-identifier concern, not every authorship/metadata requirement across other public artifacts."
+  },
+  "updated_at_utc": "2026-11-26T02:06:38.157680+00:00"
+}
