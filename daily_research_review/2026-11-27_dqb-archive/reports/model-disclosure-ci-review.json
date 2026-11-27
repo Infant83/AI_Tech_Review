@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "status": "passed_actual_CI_with_existing_capacity_warnings",
+  "checked_at": "2026-11-27T06:06:30.859589+00:00",
+  "reviewer": "dqb1127_pdf",
+  "publication_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+  "source_commit": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+  "workflow_run": 45948685100,
+  "workflow_attempt": 1,
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45948685100",
+  "jobs_success": 4,
+  "jobs_failed": 0,
+  "jobs": [
+    {
+      "name": "build",
+      "id": 140339209634,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T05:55:48Z",
+      "completed_at": "2026-11-27T05:59:48Z"
+    },
+    {
+      "name": "deploy",
+      "id": 140340414163,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T05:59:52Z",
+      "completed_at": "2026-11-27T06:00:19Z"
+    },
+    {
+      "name": "recovery-copy",
+      "id": 140340579769,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T06:00:21Z",
+      "completed_at": "2026-11-27T06:01:06Z"
+    },
+    {
+      "name": "notify-readers",
+      "id": 140340579820,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-27T06:00:21Z",
+      "completed_at": "2026-11-27T06:01:21Z"
+    }
+  ],
+  "tests": {
+    "total": 1190,
+    "pass": 1181,
+    "fail": 0,
+    "skip": 9
+  },
+  "test_suites": [
+    {
+      "name": "python_publication_search_preservation",
+      "total": 664,
+      "pass": 663,
+      "fail": 0,
+      "skip": 1,
+      "summary": "OK (skipped=1)"
+    },
+    {
+      "name": "multilingual_search",
+      "total": 12,
+      "suites": 0,
+      "pass": 12,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "reader_controls",
+      "total": 205,
+      "suites": 0,
+      "pass": 197,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 8,
+      "todo": 0
+    },
+    {
+      "name": "lecture_reader",
+      "total": 222,
+      "suites": 0,
+      "pass": 222,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "backend_authorization",
+      "total": 73,
+      "suites": 0,
+      "pass": 73,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "portable_media",
+      "total": 14,
+      "suites": 0,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    }
+  ],
+  "skipped_test_scope": "Python1 and reader-controls8 browser cases are skipped, not passes. Parent actual browser evidence is separate.",
+  "pinned_Pillow11_2_1_install_observed": true,
+  "counts": {
+    "reviews": 60,
+    "archive_documents": 193,
+    "catalog_articles": 93,
+    "external_sources": 1
+  },
+  "release_policy": {
+    "ok": true,
+    "blockers": [],
+    "counts": {
+      "archive": 193,
+      "external": 1,
+      "publications": 93,
+      "reviews": 60
+    },
+    "reviewed_changes": [
+      "archive/en/index.html",
+      "archive/files/2026-11-27-daily-quantum-brief.pdf",
+      "archive/index.html",
+      "briefings/2026-11-27/en/index.html",
+      "briefings/2026-11-27/index.html"
+    ]
+  },
+  "actual_full_artifact_validator": {
+    "validated_files": 2848,
+    "articles": 93
+  },
+  "small_artifacts": [
+    {
+      "id": 15176102264,
+      "name": "publication-validation",
+      "zip_size": 4646,
+      "zip_sha256": "4aa13159688f79dcaf85138915afe89102330b190a2b16c82102d9414da17f1f",
+      "provider_digest_matched": true,
+      "workflow_source_bound": true,
+      "members": [
+        {
+          "name": "report.json",
+          "bytes": 3248,
+          "sha256": "bdac6adaeb83d034e9170e42c935f3190a0bc97a1630c25f274c56e601242061"
+        },
+        {
+          "name": "release-check.json",
+          "bytes": 527,
+          "sha256": "6e26c1a4f296899fee89f3c6095b7bebaa5a4cc46a670b6492ee95c58bf9cbc4"
+        },
+        {
+          "name": "payload-check.json",
+          "bytes": 59945,
+          "sha256": "41b078ec306ebd27269f380439a33b1ef27567dc35bef3ec4db213816e296c72"
+        }
+      ]
+    },
+    {
+      "id": 15176226825,
+      "name": "reader-publication-catalog",
+      "zip_size": 6209,
+      "zip_sha256": "13eb7427bdd0e3b29070e0847915757666c411e404ea00f1e8eaabae7580181c",
+      "provider_digest_matched": true,
+      "workflow_source_bound": true,
+      "members": [
+        {
+          "name": "reader-publications.json",
+          "bytes": 29287,
+          "sha256": "2309fc3de15b272ac28f301c7edcbdb4800f69ad4afe292d07cf124c48800fa2"
+        }
+      ]
+    }
+  ],
+  "artifact_identities": [
+    {
+      "name": "reader-publication-catalog",
+      "artifact_id": 15176226825,
+      "zip_bytes": 6209,
+      "digest": "sha256:13eb7427bdd0e3b29070e0847915757666c411e404ea00f1e8eaabae7580181c",
+      "expires_at": "2026-12-04T05:59:43Z",
+      "expired": false,
+      "actual_upload_log_and_provider_source_run_match": true,
+      "downloaded_by_reviewer": true
+    },
+    {
+      "name": "github-pages",
+      "artifact_id": 15176206802,
+      "zip_bytes": 801855311,
+      "digest": "sha256:bf847829b618030d5cfa66365a9ca2f898a07e929c7114a7769cb9f5f5474f8d",
+      "expires_at": "2026-11-28T05:59:25Z",
+      "expired": false,
+      "actual_upload_log_and_provider_source_run_match": true,
+      "downloaded_by_reviewer": false
+    },
+    {
+      "name": "publication-validation",
+      "artifact_id": 15176102264,
+      "zip_bytes": 4646,
+      "digest": "sha256:4aa13159688f79dcaf85138915afe89102330b190a2b16c82102d9414da17f1f",
+      "expires_at": "2026-12-11T05:59:44Z",
+      "expired": false,
+      "actual_upload_log_and_provider_source_run_match": true,
+      "downloaded_by_reviewer": true
+    },
+    {
+      "name": "publication-recovery",
+      "artifact_id": 15176001798,
+      "zip_bytes": 804305993,
+      "digest": "sha256:a2759f79b3f9556156bbac3a1da420ff91d2db00c328587b701f3d42d985fb19",
+      "expires_at": "2026-12-27T06:00:57Z",
+      "expired": false,
+      "actual_upload_log_and_provider_source_run_match": true,
+      "downloaded_by_reviewer": false
+    }
+  ],
+  "candidate_comparison": {
+    "release_check_JSON_exact": true,
+    "payload_check_JSON_exact": true,
+    "all93_catalog_article_objects_and_order_exact": true,
+    "catalog_top_source_revision_changes_029e_to_4e": true,
+    "report_equal_after_source_revision_and_explicit_document_acknowledgement_trace_fields": true,
+    "document_selection_trace_explanation": "Local candidate explicitly acknowledged --document target; actual CI used default empty document acknowledgement. Registry outputs, exact release-policy and payload reports remain equal. This trace-field difference is not a publication guard exception.",
+    "scope": "Actual policy/registry output is identical; a local --document acknowledgement trace differs from CI default[], as documented in the exact source CLI. This does not excuse actual artifact-content changes."
+  },
+  "deploy": {
+    "status": "success",
+    "current_guard_and_deployment_step_succeeded": true,
+    "Pages_artifact_id": 15176206802,
+    "actual_provider_log_reported_success": true,
+    "source_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+    "root_notified_after_success_observed": true
+  },
+  "recovery": {
+    "status": "passed_logged_creation_verification_and_upload",
+    "source_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+    "files": 2848,
+    "bytes": 896407529,
+    "inner_archive_sha256": "f089c09143021a3525267fb41d5b4b42caa2e039539b93306598359015c141f0",
+    "uploaded_artifact_id": 15176001798,
+    "outer_zip_sha256": "a2759f79b3f9556156bbac3a1da420ff91d2db00c328587b701f3d42d985fb19",
+    "outer_zip_bytes": 804305993,
+    "exact_deployed_Pages_input_digest_confirmed": true,
+    "current_artifact_run_source_ID_digest_binding_confirmed": true
+  },
+  "retention": {
+    "status": "passed_complete_filtered_current_run_newest_three",
+    "latest_three_completed": true,
+    "before_filtered_pages": 1,
+    "before_filtered_count": 3,
+    "after_filtered_pages": 1,
+    "after_filtered_count": 3,
+    "current_artifact_id": 15176001798,
+    "currentArtifactVerified": true,
+    "keep": [
+      15176001798,
+      15174567409,
+      15169719839
+    ],
+    "delete": [
+      15168965301
+    ],
+    "deleted": [
+      15168965301
+    ],
+    "older_retained_metadata_exact": [
+      15169719839,
+      15174567409
+    ],
+    "general_unfiltered_inventory_queried": false,
+    "scope": "Evaluated from this current run and complete recovery-filtered3/3 metadata. No older general-inventory discrepancy is presumed or carried forward."
+  },
+  "reader_sync": {
+    "synced": 93,
+    "revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "catalog_synced": 93,
+  "new_articles": 0,
+  "queued_events": 0,
+  "root_actual_URL_and_browser_evidence": {
+    "live-verification.json": {
+      "status": "passed",
+      "publication_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+      "reviewer": "parent/root",
+      "scope": "Actual HTTPS/browser checks were performed by parent, not repeated by this CI auditor."
+    },
+    "browser-review.json": {
+      "status": "passed_selected_actual_browser_disclosure_review",
+      "publication_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+      "reviewer": "parent/root",
+      "scope": "Actual HTTPS/browser checks were performed by parent, not repeated by this CI auditor."
+    }
+  },
+  "supported_wait": "Existing gh run watch at30-second interval completed with exit0; no custom busy-poll loop or CI mutation.",
+  "existing_capacity_warnings": [
+    "Lazy metadata search exceeds the 80KB growth warning",
+    "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+  ],
+  "payload_summary": {
+    "lazy_search_gzip_bytes": 98101,
+    "preseal_public_artifact_bytes": 894948251
+  },
+  "limits": [
+    "Only the two small JSON-summary/catalog ZIPs totaling10855bytes were downloaded and provider-digest verified. No fullPages/recovery/PDF bundle download or restore by this reviewer.",
+    "The actual remote workflow performed full artifact validation and recovery creation/verification; this review reads actual logs and source-bound metadata rather than repeating large local checks.",
+    "This agent earlier produced the corrected PDF; independent PDF/footer audits and parent actual URL/browser checks retain their separate roles.",
+    "No source fix, additional commit/push, CI rerun, direct reader sync or external transmission by this CI audit."
+  ],
+  "public_safe": true
+}
