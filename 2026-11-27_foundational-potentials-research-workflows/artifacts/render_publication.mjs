@@ -10,7 +10,7 @@ if(!modules)throw Error('Set REVIEW_NODE_MODULES to an installed Playwright depe
 const require=createRequire(path.join(modules,'_render.cjs'));
 const {chromium}=require('playwright');
 const browser=await chromium.launch({channel:'chrome',headless:true});
-const qa=path.join(root,'..','output','foundation-review-production-20261127','publication-production');fs.mkdirSync(qa,{recursive:true});
+const qa=process.env.REVIEW_QA_DIR||path.join(root,'..','output','foundation-review-production-20261127','publication-production');fs.mkdirSync(qa,{recursive:true});
 const results=[];
 const expected=JSON.parse(fs.readFileSync(path.join(root,'artifacts','production-html-manifest.json'),'utf8'));
 try{

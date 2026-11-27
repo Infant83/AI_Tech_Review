@@ -45,12 +45,15 @@ def model_disclosure(lang):
     ko=lang=='ko'
     editing=json.loads((ART/'ai-model-provenance-figures-integration.json').read_text(encoding='utf-8'))['roles']
     production=json.loads((ART/'ai-model-provenance-figures-production.json').read_text(encoding='utf-8'))['roles']
+    revision=json.loads((ART/'ai-model-provenance-title-production-start-20261128.json').read_text(encoding='utf-8'))['roles']
     assert len(editing)==1 and editing[0]['role']=='editing' and editing[0]['evidence_kind']=='turn_context'
     assert len(production)==1 and production[0]['role']=='pdf-production' and production[0]['evidence_kind']=='settings_snapshot'
+    assert {r['role'] for r in revision}=={'editing','pdf-production'} and all(r['evidence_kind']=='turn_context' for r in revision)
     e,p=editing[0],production[0]
+    settings='; '.join(f"{r['role']}: {r['model_id']}, {r['reasoning_effort']}" for r in revision)
     if ko:
-        return f"OpenAI Codex · 이번 원그림 보완의 편집 설정: {e['model_id']}, 추론 강도 {e['reasoning_effort']}(대화 설정 기록). PDF 제작 설정: {p['model_id']}, 추론 강도 {p['reasoning_effort']}(현재 기본설정 스냅숏; 실제 대화별 제작 모델 미확인). 초기 집필 담당별 설정은 이번 보완에서 확인하지 않았다."
-    return f"OpenAI Codex · Editing settings for this source-figure addition: {e['model_id']}, reasoning effort {e['reasoning_effort']} (conversation-setting record). PDF production settings: {p['model_id']}, reasoning effort {p['reasoning_effort']} (current default-settings snapshot; actual production-conversation model unverified). Initial writing-role settings were not checked in this update."
+        return f"OpenAI Codex · 원그림 보완 당시 편집 설정: {e['model_id']}, 추론 강도 {e['reasoning_effort']}(대화 설정 기록). 당시 PDF 제작 설정: {p['model_id']}, 추론 강도 {p['reasoning_effort']}(기본설정 스냅숏; 실제 대화별 제작 모델 미확인). 초기 집필 담당별 설정은 확인하지 않았다. 2026-11-28 제목·부제 개정과 PDF 재제작: {settings}(모델·추론 강도, 대화 설정 기록)."
+    return f"OpenAI Codex · Source-figure editing: {e['model_id']}, reasoning effort {e['reasoning_effort']} (conversation-setting record). Earlier PDF production: {p['model_id']}, reasoning effort {p['reasoning_effort']} (default-settings snapshot; actual production-conversation model unverified). Initial writing-role settings remain unchecked. Title/subtitle revision and PDF reproduction on 2026-11-28: {settings} (model and reasoning effort, conversation-setting records)."
 
 def disclosure(lang, reference_count):
     ko = lang=='ko'
@@ -63,7 +66,7 @@ def disclosure(lang, reference_count):
       ('편집·검수 방법서 기본판' if ko else 'Editorial/checking method','AI Tech Review Editorial Harness '+('기본판 2026.08' if ko else 'base edition 2026.08')),
       ('이번에 적용한 보완' if ko else 'Applied supplements','2026-10-22 '+('과학 설명 준칙; 2026-11-06 문장·캡션; 2026-11-11 독자 친화성; 2026-11-16 독자 흐름; 2026-11-26 문맥·관습적 전개 감수; 2026-11-27 외부 그림의 선정·이용 조건·출처·변경 공개' if ko else 'scientific explanation; 2026-11-06 prose/captions; 2026-11-11 reader-friendly explanation; 2026-11-16 reader flow; 2026-11-26 contextual prose and habitual narrative patterns; 2026-11-27 selection, reuse terms, attribution and change disclosure for external figures')),
       ('공방 조직·운영 근거' if ko else 'Atelier organization/operations','ATRL의 편집부(AEDAUT)·운영팀(ADOPT) 역할 기준을 따른다. 이번 리뷰는 사전학습 원자간 포텐셜의 재사용·물성 검증·에이전틱 계산 절차를 다룬다.' if ko else 'Follows the ATRL role framework for the editorial team (AEDAUT) and operations team (ADOPT). This review examines the reuse of pretrained interatomic potentials, property validation and agentic computational workflows.'),
-      ('이번 원고 판본' if ko else 'Current manuscript','제1판 · 원고·근거 기준일 2026-11-27; 한영 출력 검수 2026-11-27.' if ko else 'First edition · manuscript and evidence date 2026-11-27; bilingual production checks 2026-11-27.'),
+      ('이번 원고 판본' if ko else 'Current manuscript','제1판 · 원고·근거 기준일 2026-11-27; 제목·부제 개정과 한영 출력 재검수 2026-11-28.' if ko else 'First edition · manuscript and evidence date 2026-11-27; title/subtitle revision and bilingual production recheck 2026-11-28.'),
       ('검증 범위' if ko else 'Verification scope',f'원 논문·공식 자료·{reference_count}개 참고문헌 대조. 조화 진동 교육 모형의 단위·힘·곡률·진동수 독립 검산. 한영 본문·그림·웹·PDF 검토. 출발 Perspective는 공개 소개·서지를 확인했고, 개별 결과는 공개 원 연구와 대조했다. 원 연구의 MLIP·DFT·MD·에이전트 계산은 독립 재실행하지 않았다.' if ko else f'Primary papers, official sources and {reference_count} references checked. Independent checks of units, forces, curvature and frequencies in a harmonic teaching model. Bilingual prose, figures, web and PDF outputs reviewed. The starting Perspective was checked through its public introduction and bibliographic record; individual results were checked against public primary studies. Source MLIP, DFT, MD and agent calculations were not independently rerun.'),
       ('사람 검토 수준' if ko else 'Human review level','사람이 주제·관점·기획 방향을 제시하고 집필 진행을 승인했다. 별도의 문장 단위 사람 감수는 기록되지 않았다.' if ko else 'A person set the topic, perspective and editorial direction and approved proceeding with the manuscript. No separate line-by-line human review is recorded.')]
     dl=''.join(f'<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>' for k,v in rows)
@@ -128,7 +131,7 @@ def build():
             return figure.replace('</figcaption>',f' <a class="figure-larger" href="{filename}" target="_blank" rel="noopener">{label}</a></figcaption>')
         body=re.sub(r'<figure(?![^>]*class="hero")[\s\S]*?</figure>',larger,body)
 
-        byline=f'<p class="byline-disclosure">'+('책임 편집: 김현중 · AI 보조 작성: Codex' if ko else 'Responsible editor: Hyun-Jung Kim · AI assistance: Codex')+f' · {DATE} · '+('근거 기준 2026-11-27 / 출력 검수 2026-11-27' if ko else 'Evidence 2026-11-27 / production checks 2026-11-27')+' · <a href="#authoring-disclosure">'+('작성·검증 정보' if ko else 'Production and verification')+'</a></p>'
+        byline=f'<p class="byline-disclosure">'+('책임 편집: 김현중 · AI 보조 작성: Codex' if ko else 'Responsible editor: Hyun-Jung Kim · AI assistance: Codex')+f' · {DATE} · '+('근거 기준 2026-11-27 / 출력 재검수 2026-11-28' if ko else 'Evidence 2026-11-27 / production recheck 2026-11-28')+' · <a href="#authoring-disclosure">'+('작성·검증 정보' if ko else 'Production and verification')+'</a></p>'
         body=re.sub(r'(<p class="dek">.*?</p>)',lambda m:m[0]+byline,body,count=1)
         url=BASE+('' if ko else 'en/');other=BASE+('en/' if ko else '')
         desc=('사전학습한 원자간 포텐셜을 새 물질에서 다시 쓰는 조건을 살핀다. 에너지의 곡률과 진동에서 출발해 모델의 적응·물성 검증·에이전틱 계산 절차로 이어간다.' if ko else 'Explore what it takes to reuse a pretrained interatomic potential for a new material, from energy curvature and vibrations to model adaptation, property validation and agentic computational workflows.')

@@ -1,6 +1,6 @@
-# Sharing Atomic Energy Functions
+# AI That Learns Atomic Forces Is Changing Materials Research
 
-**A research workflow for applying pretrained potentials to new materials and reusing validated calculations**
+**From pretrained interatomic potentials to validated, reusable computational workflows**
 
 Downloading an interatomic potential trained on many materials lets calculations on a new crystal begin. Predicting how that crystal vibrates or which structure it may become requires examining where the learned energy function is reliable. Starting with a small vibration calculation, we follow recent fine-tuning studies and agentic simulations to explore how reuse extends from model weights to validated computational procedures.
 
