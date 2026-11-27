@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "issue_date": "2026-11-27",
+  "status": "passed_within_assigned_scope",
+  "checked_at_UTC": "2026-11-27T02:20:06Z",
+  "reviewer": "dqb1127_sources",
+  "team": "편집부(AEDAUT)",
+  "role": "Automated non-producer final-PDF science, source-version and bibliography review of references 1 and 4",
+  "public_safe": true,
+  "subject_pdf": {
+    "path": "dist/2026-11-27-daily-quantum-brief.pdf",
+    "sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+    "bytes": 239528,
+    "pages": 5,
+    "hash_and_size_independently_observed": true,
+    "page_count_evidence": "Producer five-page QA record and existing numbered render set; this reviewer did not rerender the PDF."
+  },
+  "primary_source_audit": {
+    "path": "artifacts/source-audit-qaoa-rydberg.json",
+    "sha256": "2805358fe05e1542fec6a0d8fd71d3306154c9a979e7466d8ca8dfd35282c954",
+    "relationship": "Earlier independent full-source audit reused for this final-PDF comparison; its original-source title casing is archival metadata, while the added final PDF bibliography uses APS sentence case.",
+    "exact_editions": [
+      {
+        "number": 1,
+        "edition": "arXiv:2602.21689v5",
+        "url": "https://arxiv.org/html/2602.21689v5",
+        "citation": "S. Sang, L. Hour, S. Lee, A. Patra, H. C. Park, M. J. Park, and Y. Han, Landscape-similarity-guided optimization in divide-and-conquer QAOA, arXiv:2602.21689v5 (2026)."
+      },
+      {
+        "number": 4,
+        "edition": "arXiv:2611.34636v1",
+        "url": "https://arxiv.org/html/2611.34636v1",
+        "citation": "V. Imchitr, L. Brodoloni, S. Pilati, and E. M. Inack, Data-enhanced self-learning projective quantum Monte Carlo with Rydberg-atom measurements, arXiv:2611.34636v1 (2026)."
+      }
+    ]
+  },
+  "actual_read_scope": [
+    "Reused the same day's complete exact QAOA v5 HTML review: main Sections I–VI, integrated Appendices A–H, equations, tables, captions, bibliography and official abstract/version/license metadata.",
+    "Reused the same day's complete exact Rydberg v1 HTML review: main Sections I–V, data/code statement, integrated Appendices A–F, equations, tables, captions, bibliography and official abstract/version/license metadata.",
+    "Read the complete current five-page extracted public-PDF text, while independently checking the science of references 1 and 4 only.",
+    "Opened existing Poppler pages 1, 3, 4 and 5 for the preceding draft; freshly opened corrected pages 4 and 5. Current pages 1 and 3 render-image hashes match those already visually inspected.",
+    "Page 1: QAOA Figure 1, its six numerical pairs, conditions and assigned prose. Page 3: Rydberg prose and references 1 and 4. Page 4: added assigned-source conditions. Page 5: assigned formal citations, title-case corrections and actual own-role disclosure.",
+    "Checked sentence-case presentation of added references 2 and 5 without claiming independent review of their scientific sources."
+  ],
+  "final_visual_scope": {
+    "pages_visually_reviewed": [
+      1,
+      3,
+      4,
+      5
+    ],
+    "corrected_pages_freshly_opened": [
+      4,
+      5
+    ],
+    "reused_pages_with_identical_render_hashes": [
+      1,
+      3
+    ],
+    "page_2_visual_review_by_this_reviewer": false,
+    "clipping_or_unreadable_glyphs_in_assigned_content_observed": false,
+    "new_render_or_large_check_performed": false
+  },
+  "resolved_findings": [
+    {
+      "location": "Page 4, Rydberg measurement-count condition",
+      "before": "독립 측정 사진 4,000개",
+      "final": "원 측정 사진 4,000개",
+      "status": "resolved_in_current_text_and_render",
+      "reason": "The source establishes 4,000 collected original configurations before fourfold augmentation; statistical independence of those configurations was not independently established."
+    },
+    {
+      "location": "Page 5, added bibliography references 1, 2 and 5",
+      "status": "resolved_in_current_text_and_render",
+      "final": "APS sentence case; exact title words, author order, proper names, numbering and source versions retained.",
+      "historical_original_page_3_title_listing_preserved": true
+    }
+  ],
+  "qaoa_final_pdf_checks": {
+    "source_locator": "Table 4, m=3",
+    "conditions": "Classical noisy simulation, FakeBrisbane-derived noise, p=1, N≤20; no physical-QPU result.",
+    "datasets": [
+      "Power-Law",
+      "Regular",
+      "SK",
+      "AIDS",
+      "Linux",
+      "IMDb"
+    ],
+    "FrozenQubits_ARG_percent": [
+      43,
+      45,
+      57,
+      41,
+      34,
+      58
+    ],
+    "DO_QAOA_ARG_percent": [
+      26,
+      42,
+      57,
+      35,
+      20,
+      51
+    ],
+    "PowerLaw_shots_millions": [
+      65.54,
+      0.17
+    ],
+    "PowerLaw_runtime_seconds": [
+      1055,
+      101
+    ],
+    "interpretation_checks": [
+      "Figure 1 pairs and source conditions match the exact source; no unsupported uncertainty bars were added.",
+      "Mean-energy relative gap is distinguished from the probability of obtaining the optimum bit string.",
+      "SK remains 57% despite fewer shots, and the m=2 worse-gap counterexample is retained.",
+      "The approximately 386-fold shot reduction includes initialization, early termination, refinement and different actual optimization effort; transfer-only causation is not isolated.",
+      "Manufacturing CP-SAT/local-search comparison remains a proposed application test, not a source experiment or full-workflow speed result."
+    ]
+  },
+  "rydberg_final_pdf_checks": {
+    "source_locator": "Main method/results, Figures 2 and 4, Tables 2 and 5, integrated appendices",
+    "conditions": "Existing 16×16 Rydberg experimental configurations train a positive guiding function; the final projection/energy calculation is classical PQMC.",
+    "original_configurations_per_detuning": 4000,
+    "augmented_training_configurations_per_detuning": 16000,
+    "interpretation_checks": [
+      "Fourfold rotations augment original measurements; neither 16,000 independent physical shots nor 4,000 verified independent samples is asserted.",
+      "An unpretrained RNN is retained as a stronger classical comparator than the experimentally pretrained RBM.",
+      "Finite-walker bias and SSE reference uncertainty are acknowledged.",
+      "CPU/GPU values from different implementations are per-step times and do not establish a matched-hardware whole-workflow speedup.",
+      "The added conditions do not imply solving generic fermionic sign/phase problems or demonstrating new experimental ground-state preparation."
+    ]
+  },
+  "bibliography_and_disclosure_checks": [
+    "All seven QAOA authors and all four Rydberg authors match the exact source editions and original ordering.",
+    "References 1 and 4 retain their first-use numbering, full title words and explicit v5/v1 identifiers.",
+    "The disclosure correctly attributes this reviewer's full HTML and integrated-appendix source reading without claiming source-PDF figure-pixel review, reproduced calculations or human review.",
+    "Current ATRL appendix branding and edition date are distinguished from the preserved original three-page DQB issue."
+  ],
+  "figures_and_rights_scope": {
+    "figure_1": "Existing DQB numerical replot of QAOA Table 4, not a copied source-paper image; source/version credit and numerical meaning checked.",
+    "source_licenses": "Exact QAOA v5 and Rydberg v1 arXiv editions identify CC BY 4.0.",
+    "boundary": "Article licenses do not establish blanket newsletter redistribution permission. Full privacy, active-content, attachment, rights and outside-redaction preservation checks belong to separate producer/integration records."
+  },
+  "continuity_and_duplication": {
+    "reused_evidence": "Earlier same-day exact-source and bounded current-publication continuity audit, linked above.",
+    "existing_review_ids": [
+      "2026-10-21_sparse-reference-quantum-chemistry",
+      "2026-09-09_quantum-resource-aware-workflows",
+      "2026-09-04_quantum-advantage-evidence-ledger"
+    ],
+    "selected_relation": "Short parallel examples of estimator inputs, strong classical guides and matched-output/workflow cost conditions; no existing article body expansion.",
+    "evidence_map_additions": "QAOA v5 can inform factory-layout workflow-cost questions; Rydberg v1 is a distinct positive-guide comparison for the pending measurement-reuse topic, not the same fermionic AFQMC method.",
+    "awaiting_approval_records_preserved_by_this_reviewer": 5,
+    "new_deep_review_proposed": false,
+    "priority_changed": false,
+    "approval_or_publication_status_mutated_by_this_reviewer": false,
+    "no_duplicate_existing_article_claim": "Bounded selected-article/catalog check only, not a fresh exhaustive review of every published article."
+  },
+  "limitations": [
+    "Automated non-producer audit; no separate human review or reader evaluation is claimed.",
+    "Primary sources were reviewed as complete HTML text, equations, tables and captions; primary PDF layouts, original figure pixels and every proof were not independently verified.",
+    "No source experiment, simulation, numerical calculation, training run, QPU use or author-code execution was reproduced.",
+    "Scientific conclusions for references 2, 3 and 5 and visual review of public page 2 are outside this reviewer's independent scope.",
+    "This is a final PDF content/render comparison within assigned scope, not deployment or actual-public-URL verification."
+  ]
+}

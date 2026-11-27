@@ -46,6 +46,30 @@ LECTURE_READER_FILES = (
 
 # Reviewed, self-contained study sites. Never discover or copy a topic folder.
 LECTURE_BUNDLES = {
+    "2026-11-27-photonic-fault-tolerant-computing-notes-ko": {
+        "source": "2026-11-27_photonic-fault-tolerant-computing/dist",
+        "href": "lectures/photonic-fault-tolerant-computing/",
+        "unit_registry": "unit-registry.json",
+        "start_anchor": "study-guide",
+        "navigation": (("study-guide", "학습 안내"), ("units", "단계별 학습"), ("references", "출처와 검토 범위")),
+        "publication_note": (
+            "2026-11-27 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "편집부(AEDAUT)의 root가 수신·등록·발행을 통합하고, ftqc_pdf가 통합본과 단계별 공개 PDF의 보존·전체 조판·링크·메타데이터를 검수했다. "
+            "ftqc_science가 전체 원고의 유도·문제·참고문헌과 선택한 고전 계산을 별도 검토했다. "
+            "원판 제작의 94개 검사를 이번 아카이빙에서 재실행하지 않았으며 SDK·QPU·실물 실험과 사람의 문장별 감수도 수행하지 않았다. "
+            "영문 입구는 한국어 PDF의 안내다."
+        ),
+        "files": (
+            "index.html", "en/index.html", "notes.css", "notes.pdf", "unit-registry.json",
+            "2026-11-27-photonic-fault-tolerant-computing-l001-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l002-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l003-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l004-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l005-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l006-notes-ko.pdf",
+            "2026-11-27-photonic-fault-tolerant-computing-l007-notes-ko.pdf",
+        ),
+    },
     "2026-11-05-classiq-qae-l003-notes-ko": {
         "source": "2026-11-05_classiq-qae-onboarding/dist",
         "href": "lectures/classiq-qae-onboarding/",
@@ -53,7 +77,7 @@ LECTURE_BUNDLES = {
         "start_anchor": "study-guide",
         "navigation": (("study-guide", "학습 안내"), ("units", "회차별 학습"), ("practice", "별도 재계산"), ("references", "출처")),
         "publication_note": (
-            "2026-11-26 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "2026-11-27 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
             "L001–L003의 공개판 정제·20조건 부분검산은 public_pdf_qa/auth_audit의 기존 작업이다. "
             "L004의 공개판 보존·개인정보·링크·전체 조판 검수는 qae_l004_public이, 등록·발행 통합은 root가 담당했다. "
             "L005의 같은 공개판 검수는 qae_l005_public이, 핵심 통계 유도·일부 수치의 별도 검토는 qae_l005_science가 맡았다. "
@@ -69,6 +93,7 @@ LECTURE_BUNDLES = {
             "L015 v1.1의 공개판 검수는 qae_l015_public이, 이상 상태·잡음·유한 샷·재현성의 논증과 별도 고전 계산·공식 문서 대조는 qae_l015_science가 맡았다. "
             "L016의 공개판 검수는 l016_pdf가, 오라클·진폭 증폭·반복 수·비용의 논증과 별도 고전 계산·공식 출처 대조는 l016_science가 맡았다. "
             "L017의 공개판 검수는 l017_pdf가, 진폭 추정·신뢰구간·전체 비용의 논증과 별도33조건 고전 계산·공식 출처 대조는 l017_science가 맡았다. "
+            "L018의 공개판 검수는 l018_pdf가, QFT·위상 추정·에너지 복원의 논증과 별도38조건 고전 계산·공식 출처 대조는 l018_science가 맡았다. "
             "Classiq 공식 강의가 아닌 자체 집필 과정이며 원판 검증 전체를 이번 아카이빙에서 새로 재실행하지 않았다. "
             "영문 입구는 한국어 PDF의 안내다."
         ),
@@ -91,6 +116,7 @@ LECTURE_BUNDLES = {
             "2026-11-24-classiq-qae-l015-notes-ko.pdf",
             "2026-11-25-classiq-qae-l016-notes-ko.pdf",
             "2026-11-26-classiq-qae-l017-notes-ko.pdf",
+            "2026-11-27-classiq-qae-l018-notes-ko.pdf",
             "labs/reference_checks.py", "labs/results/reference-checks.json",
         ),
     },
@@ -288,13 +314,28 @@ def lecture_series_metadata(registry: dict, documents: list[dict], primary_id: s
                       "summary": unit.get("summary") or document["summary"],
                       "summary_en": unit.get("summary_en") or document.get("summary_en") or document["summary"],
                       "pages": unit["public_pages"], "href": document["href"]})
-    if primary_id not in seen or not units:
+    compilation = None
+    if "compilation_archive_id" in registry:
+        primary = indexed.get(primary_id)
+        pages = registry.get("compilation_public_pages")
+        if (registry["compilation_archive_id"] != primary_id or not primary
+                or primary_id in seen or type(pages) is not int or pages < 1):
+            raise ValueError("Invalid lecture series compilation binding")
+        compilation = {"document_id": primary_id, "title": primary["title"],
+                       "title_en": primary.get("title_en") or primary["title"],
+                       "pages": pages, "sha256": primary["sha256"], "href": primary["href"]}
+    elif "compilation_public_pages" in registry:
+        raise ValueError("Invalid lecture series compilation binding")
+    if (primary_id not in seen and compilation is None) or not units:
         raise ValueError("Lecture series is missing its registered primary PDF")
     latest = next((unit for unit in units if unit["number"] == registry.get("latest_unit")), None)
     if latest is None:
         raise ValueError("Lecture series is missing its latest unit")
-    return {**{key: registry[key] for key in fields}, "units": units,
-            "latest_unit": latest["number"], "latest_date": latest["date"]}
+    metadata = {**{key: registry[key] for key in fields}, "units": units,
+                "latest_unit": latest["number"], "latest_date": latest["date"]}
+    if compilation is not None:
+        metadata["compilation"] = compilation
+    return metadata
 
 
 def series_latest_pdf(root: Path, registry: dict) -> Path:
@@ -520,6 +561,20 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
     title = series["title_en" if en else "title"]
     summary = series["summary_en" if en else "summary"]
     course = prefix + doc["study_href"] + ("en/" if en else "")
+    compilation = ""
+    if combined := series.get("compilation"):
+        reader = escape(lecture_reader_href(combined["document_id"], prefix=prefix, language=language))
+        pdf = escape(prefix + combined["href"])
+        label = "Combined edition" if en else "통합본"
+        combined_title = escape(combined["title_en" if en else "title"])
+        pages_label = f"{combined['pages']} pages" if en else f"{combined['pages']}쪽"
+        compilation = f'''<div class="lecture-compilation" data-lecture-compilation="{escape(combined['document_id'])}">
+        <h3>{label}</h3><p class="lecture-unit-meta">PDF {pages_label}</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="{reader}" aria-label="{label}: {combined_title} {'Read and annotate' if en else '필기하며 읽기'}">{'Annotate' if en else '필기'} →</a>
+        <a class="lecture-secondary" href="{pdf}" target="_blank" rel="noopener" aria-label="{label} {'Open PDF' if en else 'PDF 열기'}">PDF ↗</a>
+        <a class="lecture-secondary" href="{pdf}" download aria-label="{label} {'Download PDF' if en else 'PDF 다운로드'}">{'Download' if en else '다운로드'} ↓</a></div>
+      </div>
+      '''
     units = []
     for unit in series["units"]:
         number = escape(unit["number"])
@@ -543,7 +598,7 @@ def render_lecture_series(doc: dict, prefix: str, language: str) -> str:
       <p class="lecture-summary">{escape(summary)}</p>
       <div class="lecture-series-summary"><span class="lecture-facts">{facts}</span><span class="lecture-series-toggle"><span class="series-show">{'View units' if en else '회차 보기'}</span><span class="series-hide">{'Hide units' if en else '회차 접기'}</span><span class="series-chevron" aria-hidden="true"></span></span></div>
       </summary>
-      <ol class="lecture-units" aria-label="{'Series units' if en else '시리즈 회차'}">{''.join(units)}</ol>
+      {compilation}<ol class="lecture-units" aria-label="{'Series units' if en else '시리즈 회차'}">{''.join(units)}</ol>
       <a class="lecture-series-index" href="{escape(course)}">{'Series guide' if en else '자료 안내'} →</a></details>
     </article>'''
 

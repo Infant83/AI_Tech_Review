@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "review_id": "dqb-20261127-editorial-independent-review",
+  "reviewer_role": "independent non-author editorial and source reviewer",
+  "reviewer_agent": "dqb1127_publication_audit",
+  "status": "passed",
+  "checked_at": "2026-11-27T02:32:10.651141+00:00",
+  "public_safe": true,
+  "input_bindings": [
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_ko.md",
+      "bytes": 3569,
+      "sha256": "d2287c01997a17d4dd05a7e3ff1cd2c01cd643fb4722339d92cf4e8010670d0b"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_en.md",
+      "bytes": 3403,
+      "sha256": "dc5ecaa36e20d8bf81a1fb7afcbf2a0bdc9d97db69fcf98b739da07aca95a431"
+    },
+    {
+      "path": "editorial-metadata.json",
+      "bytes": 909,
+      "sha256": "9bfce1b627fd3e448652abf315710e0bcb721fb5b694472481f5a00699437b36"
+    }
+  ],
+  "source_audit_cost_sha256": "b1c3e2267c697d8cc223d3c9a271787876dfca90d5f21f3e939446b6bd40bf1e",
+  "review_scope": {
+    "current_editorials": "Full Korean and English manuscripts, both reference lists, authorship/verification disclosures, and all separate title/summary metadata fields; first-unit definition revision reread. Disclosure-only update reread in both languages after responsibility, actual role, harness and separate-human-review statements were added.",
+    "primary_url": "https://arxiv.org/html/2611.34889v1",
+    "primary_direct_read": "Main text I–IV; Appendices B, C, E, F and G; Table 1; Figure 3(d) associated table, caption and discussion. Selected Appendix H d-row for absent FCI reference. HTML only; the raster plot was not visually examined.",
+    "existing_review": {
+      "id": "2026-09-09_quantum-resource-aware-workflows",
+      "title_ko": "양자 계산의 전체 비용을 설계하다",
+      "title_en": "Designing the full cost of quantum computation",
+      "read_scope": "Korean/English front matter and title; relevant cost definitions, QPE compilation, state-preparation/overlap/repetition paragraphs and molecular-reference discussion, using current source manuscripts. Original 9 September date and 19 November revision are distinct in front matter."
+    },
+    "cross_day_style": "Korean opening/body portions of 24, 25 and 26 November DQB editorials were compared for repeated rhetorical moves; not a full historical editorial audit."
+  },
+  "science_checks": {
+    "verdict": "pass",
+    "P450": "The 25e/23o, fixed 2Ms=5 example concerns classical DMRG branches, not a whole-enzyme QPU execution. Both M=4000 final branches meet sweep convergence, differ by 31.832 mHa and end in Fiedler ordering; their initialization/order histories differ.",
+    "reference_limit": "Independent SCI agreement supports reference validation without claiming exact FCI or a ground state across all spin sectors.",
+    "cost_context": "Seven-system pricing is separate and includes P450-x 58o. The classical PT2 diagnostic and QPE precision have different error contracts. Future whole-QPU hourly pricing is expressly assumed. FeMoco range is fit sensitivity, not a confidence interval or the separate variational-energy scenario.",
+    "interpretation": "The connection from state identity and overlap to preparation/repetition is supported. The final budget-recording recommendation is editorial interpretation, not an experimental result."
+  },
+  "bilingual_and_reference_checks": {
+    "verdict": "pass",
+    "parallel_claims_and_conditions": true,
+    "primary_author_order_and_original_title_verified": true,
+    "arxiv_version_explicit": true,
+    "first_use_order_both_languages": [
+      1,
+      2
+    ],
+    "existing_review_connection": "The new reference-validation example develops the earlier review’s explicit state-overlap/repetition and preparation-cost discussion. It does not claim to update the older article or establish a measured overall speedup.",
+    "separate_editorial_title": "P450 focus is legitimate for a short editorial despite the source PDF’s QAOA headline; source_title and original issue identity are retained in metadata.",
+    "separate_summaries": "Both summarize scientific reasoning rather than acquisition, correction or archival work.",
+    "APS_sentence_case_both_languages": true
+  },
+  "prose_checks": {
+    "verdict": "pass",
+    "lead": "Starts with the concrete discrepancy and its computational setting; no delayed common-point revelation.",
+    "development": "Moves from reference validation to trial-state consequences and the explicitly separate cost model. Scientific qualifications perform an explanatory role.",
+    "broad_pattern_assessment": "No forced question/reversal, decorative analogy, unsupported comparison, abstract slogan ending, or research-item list found in the current body. Similar scientific themes in recent days are extended by a new mechanism rather than repeated as a fixed template.",
+    "figurative_read_verbs_in_current_body": false,
+    "fixed_sentence_or_paragraph_quota_used": false,
+    "contrast_phrases_treated_as_automatic_failures": false,
+    "retained_strengths": "Concise quantitative lead; causal link between reference reliability and overlap; natural explanation of unlike accuracy metrics; conditional rather than absolute cost conclusion."
+  },
+  "recommendations": [
+    {
+      "id": "unit-definition",
+      "severity": "minor_reader_clarity",
+      "status": "resolved_and_reread",
+      "detail": "Both first mHa mentions now define the unit; no further unit rewrite required."
+    },
+    {
+      "id": "ko-summary-order-history",
+      "severity": "minor_scientific_precision",
+      "status": "resolved_by_author_and_reread",
+      "target": "editorial-metadata.json summary first sentence",
+      "reason": "Different final orbital orders are not the defining distinction of the two quoted M=4000 solutions; both finish in Fiedler ordering. The histories differ.",
+      "proposed_text": "초기화와 궤도 배치 과정을 달리한 P450 계산이 약 31.8 mHa 다른 에너지를 남겼다."
+    },
+    {
+      "id": "separate-human-review-level",
+      "severity": "minor_disclosure_precision",
+      "status": "resolved_by_author_and_reread",
+      "detail": "Separate human manuscript review is now explicitly unrecorded; human-reader study nonperformance remains a distinct limitation."
+    },
+    {
+      "id": "aps-sentence-case-ref1",
+      "severity": "minor_citation_typography",
+      "status": "resolved_by_author_and_reread",
+      "detail": "Both ref[1] title entries now conform to the repository APS sentence-case rule."
+    }
+  ],
+  "not_performed": [
+    "No source-manuscript or metadata mutation.",
+    "No PDF production/rendering, site build, complete-payload hashing, candidate verification, deployment or live-URL verification.",
+    "No electronic-structure calculation, quantum execution, code/data reproduction or human-reader study.",
+    "No Gmail access or outgoing communication."
+  ],
+  "remaining": "Replacement candidate source/output correspondence, browser and actual live-URL checks remain separate; PDF unchanged.",
+  "prior_input_bindings_before_disclosure_only_revision": [
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_ko.md",
+      "bytes": 3273,
+      "sha256": "fb53ea40dafefbaac7b766278fe268f4b465b8eeebb1a09987867b7786f1b5ec"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_en.md",
+      "bytes": 3141,
+      "sha256": "dc4be259eff3dc189f6c9e417a85980d4a18510c40ad82359bbab6fb71444cda"
+    },
+    {
+      "path": "editorial-metadata.json",
+      "bytes": 909,
+      "sha256": "9bfce1b627fd3e448652abf315710e0bcb721fb5b694472481f5a00699437b36"
+    }
+  ],
+  "science_body_sha256": {
+    "ko": "cc8adb4a04782df85c34737172be80e0d82bed8e33891b7bfddcf8fcbaa805f5",
+    "en": "b217bc1029358402e1cebd9723f5c9cd134766c6695f9075cb3a770f7b6eff25"
+  },
+  "disclosure_only_revision_review": {
+    "verdict": "pass",
+    "science_body": "Three scientific paragraphs manually matched the previously reviewed text; exact science-body hashes now retained. Citation lists and metadata remain unchanged.",
+    "top": "Responsible human editor and AI assistance are provided once by the common builder header. The common builder separately displays original issue, editorial revision and evidence-cutoff dates; final candidate output remains to be checked.",
+    "bottom": "Actual writing and independent non-author agent roles, Editorial Method v2026.08, prose criteria revision, AI system and unretained exact model ID are explicit. Separate human manuscript review is expressly unrecorded, distinct from the absence of human-reader experiments.",
+    "version_policy": "The historical Editorial Method name/version was preserved rather than renamed for the journal rebrand."
+  },
+  "citation_typography_followup": {
+    "finding": "Earlier review checked original title words, authors and version but overlooked APS sentence-case typography.",
+    "resolution": "Both ref[1] entries now use The price of quantum advantage in computational chemistry; title words, authors, identifier and links remain unchanged.",
+    "science_body_unchanged": true,
+    "metadata_unchanged": true
+  },
+  "prior_input_bindings_before_duplicate_byline_removal": [
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_ko.md",
+      "bytes": 3624,
+      "sha256": "6c819f1c8a7190f6ef96e79bec928a31114d59cbe4ed57c0735c7407d593ebc4"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_en.md",
+      "bytes": 3469,
+      "sha256": "1cb903e2de32e0e28a8482c9399b486e9725427f5a26a3a962ed3fd0fdd61fe0"
+    },
+    {
+      "path": "editorial-metadata.json",
+      "bytes": 909,
+      "sha256": "9bfce1b627fd3e448652abf315710e0bcb721fb5b694472481f5a00699437b36"
+    }
+  ],
+  "duplicate_byline_cleanup_review": {
+    "status": "passed_at_source_scope",
+    "only_change": "Removed the redundant first em/byline paragraph from each manuscript. Reattaching that exact paragraph reconstructs the previously reviewed manuscript hash. Scientific paragraphs, references, footer, titles and summaries are unchanged.",
+    "responsibility_preserved": "Common builder briefing_editorials.py supplies the responsible editor, OpenAI Codex assistance and three date fields. Root reported the automatic header in actual first-candidate browser inspection; final candidate output remains a separate forthcoming check.",
+    "candidate_boundary": "The first candidate was preserved privately. Its static pass is historical; final source/output correspondence requires the replacement candidate."
+  }
+}
