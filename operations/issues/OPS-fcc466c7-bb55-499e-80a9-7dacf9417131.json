@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 47,
+  "record_version": 48,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-27T10:16:27.529740Z",
+  "updated_at": "2026-11-27T10:31:45.907178Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -209,7 +209,7 @@
       ]
     },
     "reviewed_legacy_image_preservation": {
-      "status": "validated_source_integrated_actual_CI_and_HTTPS_pending",
+      "status": "deployed_and_clean_HTTPS_verified",
       "source_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
       "base_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
       "branch": "codex/legacy-cover-retention-20261127",
@@ -226,7 +226,7 @@
       "target_tests_passed": 8,
       "target_seconds": 0.549,
       "full_regression_pending": false,
-      "actual_restoration_pending": true,
+      "actual_restoration_pending": false,
       "missing_cover_total_bytes": 283464,
       "derived_listing_cache_not_restored": true,
       "existing_site_replace_atomicity_or_full_ancestor_FD_safety_not_claimed": true,
@@ -253,11 +253,15 @@
       "prior_payload_changed": "reader-publications.json revision only",
       "added_payload_images": 2,
       "local_candidate_public_bytes": 896393405,
-      "old_image_URL_restoration_actual": false
+      "old_image_URL_restoration_actual": true,
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "actual_restoration_verified": true,
+      "actual_CI_observed": true
     }
   },
   "verification": {
-    "status": "정상420c 공개의 PDF/23판본과 기존 주간 검토를 인수했다. pinned 구표지2 URL404의 기술복구333bad7은 전용8/전체674(673통과·기존skip1)와 독립감수·정확CI encoder 후보2/연속성/예산/봉인/guard를 통과해 소스통합했으나 실제 CI·HTTPS 복구는 아직 대기다. 후보1의 Pillow13 URL drift는 배포 대상으로 채택하지 않았다. 현재420c/896,109,564B와 후보896,393,405B를 구분하고 외부활성화·물리복원/절감은 미확인으로 유지한다.",
+    "status": "구표지2 URL은318809 실제배포/cleanHTTPS200·원래SHA로 복구됐다. 전용8/로컬674(673통과·기존skip1)·독립후보/실제CI674와 네 jobs가 통과했고 최신복구3개·현재source결속/확정CI삭제1을 확인했다. actual공개896,393,405B·321PDF/224객체·23판본/192recency를 보존하며 외부저장 활성화·실제복원/물리절감은 미확인이다. 오후 주간 검토를 재사용하고 캐시Pillow13 후보는 배포하지 않았다.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -378,25 +382,23 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "source_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
-      "checked_at": "2026-11-27T09:34:04.178672Z",
+      "source_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "checked_at": "2026-11-27T10:26:02.102752Z",
       "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
-      "manifest_files": 2845,
-      "manifest_bytes": 894650663,
-      "release_json_bytes": 1458901,
-      "public_files": 2846,
-      "public_bytes": 896109564,
+      "manifest_files": 2847,
+      "manifest_bytes": 894934127,
+      "release_json_bytes": 1459278,
+      "public_files": 2848,
+      "public_bytes": 896393405,
       "pdf_paths": 321,
       "unique_pdf_objects": 224,
       "retained_edition_urls": 23,
       "prior_22_retained_editions_exact": true,
-      "prior_316_PDF_paths_missing": 0,
-      "current_DQB_PDF_alias_exact_declaration": true,
-      "old_DQB_PDF_edition_retained": true,
-      "growth_bytes": 25098767,
-      "growth_basis_source": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
-      "excess_over_internal_800MB_bytes": 96109564,
-      "scope": "Complete420c metadata and existing publisher QA only. Pinned old-image2 publicURL404 is separately open for exact restoration; whole previous payload preservation is not claimed."
+      "prior_321_PDF_paths_and23_editions_exact": true,
+      "growth_bytes": 283841,
+      "growth_basis_source": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "excess_over_internal_800MB_bytes": 96393405,
+      "scope": "Complete actual HTTPS metadata plus clean image binary SHA. Prior420 payload missing0; only original pinned old2 images added and catalog revision changed. No PDF/archive download, full-site rollback, personal DB restore, external activation or physical savings."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -676,14 +678,51 @@
       "candidate1": "Pillow13 cache-key href drift, not release-ready; preserved separately",
       "candidate2": "existing Python3.9/Pillow11.2.1 matched deployed/CI; metadata and listing raw exact; no install/global environment change",
       "candidate2_expected_public_bytes": 896393405,
-      "actual_CI_or_HTTPS_restoration_observed": false,
+      "actual_CI_or_HTTPS_restoration_observed": true,
       "proof_key": "adopt-legacy-cover-retention-20261127 / before/validation/independent-read-review-candidate2/sealed-candidate-comparison/candidate-ci-runtime"
+    },
+    "legacy_cover_deployment_20261127": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_code_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "attempt": 1,
+      "actual_run_and_four_jobs": "success",
+      "selected_run_API_verified_at": "2026-11-27T10:27:57Z",
+      "actual_Python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 56.183
+      },
+      "actual_public_raw3_complete_stable_at": "2026-11-27T10:26:02.102752Z",
+      "clean_HTTPS_images_verified_at": "2026-11-27T10:25:51.804435Z",
+      "clean_two_URLs_200_exact_original_SHA": true,
+      "restored_image_bytes": 283464,
+      "old420_payload_missing": 0,
+      "new_payload_image_files": 2,
+      "other_payload_change": "catalog revision only",
+      "current_KO_v4_raw_exact": true,
+      "all_321_PDF_23_edition_SHA_and192_recency_preserved": true,
+      "public_files": 2848,
+      "public_bytes": 896393405,
+      "recovery_copies_unexpired": 3,
+      "new_copy_bound_to_source_run_digest": true,
+      "CI_confirmed_retention_deletions": 1,
+      "manual_DELETE_or_rerun_or_test_push_mail": 0,
+      "actual_restore_of_whole_site_or_private_DB": false,
+      "physical_space_reclaimed": 0,
+      "new_provider_permissions_or_billing": 0,
+      "new_or_current_writer_API_activation": false,
+      "new_V_inspector_implemented": false,
+      "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
     }
   },
   "observation": {
-    "status": "11/27 18:30 pinned 구표지 복구 소스통합·실제 배포 대기",
+    "status": "11/27 18:30 구표지URL 기술복구 완료·공개보존 인수",
     "period": "2026-11-27T09:31:07.344Z",
-    "result": "새 공개/PDF판본과 정상도메인 수정 사슬을 인수했고 oldcover 두 공개URL의 보존회귀를 실제404/명시pin/정확원본으로 분류했다. 현재v4표지는 정상이며 별도 작업 사본에서 기술복구 후보를 검증한다. 주간 검토/기존보호·외부미활성은 그대로다.",
+    "result": "318809의 실제4job/깨끗한HTTPS이미지2 SHA와 전체공개metadata 보존을 확인했다. forward 파일복구와 원본PDF/개인DB복원·외부이전은 구분하며 이번수동삭제/재실행0이다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1588,6 +1627,43 @@
       "external_next_review_at": "2026-11-28T13:30:00+09:00",
       "next_weekly_at": "2026-12-04T13:30:00+09:00",
       "known_original_DQB_failure_cause_or_same_input_established": false
+    },
+    "legacy_restoration_completion_20261127": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_code_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "attempt": 1,
+      "actual_run_and_four_jobs": "success",
+      "selected_run_API_verified_at": "2026-11-27T10:27:57Z",
+      "actual_Python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 56.183
+      },
+      "actual_public_raw3_complete_stable_at": "2026-11-27T10:26:02.102752Z",
+      "clean_HTTPS_images_verified_at": "2026-11-27T10:25:51.804435Z",
+      "clean_two_URLs_200_exact_original_SHA": true,
+      "restored_image_bytes": 283464,
+      "old420_payload_missing": 0,
+      "new_payload_image_files": 2,
+      "other_payload_change": "catalog revision only",
+      "current_KO_v4_raw_exact": true,
+      "all_321_PDF_23_edition_SHA_and192_recency_preserved": true,
+      "public_files": 2848,
+      "public_bytes": 896393405,
+      "recovery_copies_unexpired": 3,
+      "new_copy_bound_to_source_run_digest": true,
+      "CI_confirmed_retention_deletions": 1,
+      "manual_DELETE_or_rerun_or_test_push_mail": 0,
+      "actual_restore_of_whole_site_or_private_DB": false,
+      "physical_space_reclaimed": 0,
+      "new_provider_permissions_or_billing": 0,
+      "new_or_current_writer_API_activation": false,
+      "new_V_inspector_implemented": false,
+      "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
     }
   },
   "recovery": {
@@ -1611,7 +1687,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "현재 회차에서 기존 단일 main/Pages 경로의 실제 build·deploy·recovery-copy·notify-readers와 두 clean HTTPS 이미지 URL/정확SHA·최신동시게시 보존을 확인한다. 실패하면 기존공개를 유지하고 원인/재개 지점을 같은 일감에 연결한다. 외부근거28일13:30·다음주간12/4 13:30은 유지하며 별도리런/푸시·수동삭제·외부활성화·DB복구는 하지 않는다.",
+  "next_action": "다음 자연 게시에서 pin 보존/필수존재 검사의 재발을 관찰한다. 외부저장 접근·원격봉인/복구 입력은11/28 13:30, 다음주간 구조/의존성·권한 검토는12/4 13:30으로 유지한다. 현재공개896,393,405B·내부목표초과96,393,405B는 공급자quota/물리절감 주장과 구분한다. 관찰용리런/수동삭제·외부활성화·개인DB복원은 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",

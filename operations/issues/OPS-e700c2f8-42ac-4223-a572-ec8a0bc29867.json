@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 58,
+  "record_version": 59,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-27T10:16:27.517212Z",
+  "updated_at": "2026-11-27T10:31:45.907178Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "11/27 18:30 새 성공3건과 선언 중복 실패1건을 attempt별로 대조했다. 새 실패45964365869는 기존 도메인 기록의 선언 소유권 수정420c와 후속45965028392 네 작업 성공·실제 HTTPS로 연결되어 새 미해결 CI는0이다. 원래 DQB45532017728의 recovery 실패 원인/동일 입력 재검증은 여전히 미해결이다. FD754 helper/검사 두 SHA는 새4소스에서 정확하며 Ubuntu discovery에 포함된17검사와 기존 DQB 정정 실제664검사 요약을 결속해 실제 CI를 인수했다. 신규 caller 연결·writer 활성화와는 구분한다. 현재 공개420c·896,109,564B·321PDF/224객체·23판본과 비PDF oldcover2 URL404의 별도 P2 보존 복구 전 상태를 구분한다.",
+    "status": "자체복구run45981054975 attempt1/source318809의 build/deploy/recovery-copy/notify-readers가 모두 성공했고 실제Python674(673통과/기존skip1)/cleanHTTPS2 SHA/완전공개보존을 확인했다. 기존도메인선언실패45964365869는420c 수정성공 사슬로 닫고 원래DQB45532017728 원인/같은 실패입력은 미확정으로 유지한다. 메일·전체API 체크포인트와 이번선택run API완료확인을 구분한다.",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -153,8 +153,7 @@
     "legacy_cover_candidate_20261127": {
       "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
       "source_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
-      "status": "local_source_validated_actual_CI_and_HTTPS_pending",
-      "current_public_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "status": "deployed_and_clean_HTTPS_verified",
       "candidate_public_bytes": 896393405,
       "target_tests_passed": 8,
       "full_python_passed": 673,
@@ -162,7 +161,48 @@
       "independent_candidate2": "PASS",
       "new_public_asset_pins": 0,
       "current_image_registration_recency_and_PDFs_unchanged": true,
-      "current_two_image_URLs_still_restore_pending": true
+      "current_two_image_URLs_still_restore_pending": false,
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "public_restore_verified": true,
+      "predeployment_public_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67"
+    },
+    "legacy_cover_deployment_20261127": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_code_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "attempt": 1,
+      "actual_run_and_four_jobs": "success",
+      "selected_run_API_verified_at": "2026-11-27T10:27:57Z",
+      "actual_Python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 56.183
+      },
+      "actual_public_raw3_complete_stable_at": "2026-11-27T10:26:02.102752Z",
+      "clean_HTTPS_images_verified_at": "2026-11-27T10:25:51.804435Z",
+      "clean_two_URLs_200_exact_original_SHA": true,
+      "restored_image_bytes": 283464,
+      "old420_payload_missing": 0,
+      "new_payload_image_files": 2,
+      "other_payload_change": "catalog revision only",
+      "current_KO_v4_raw_exact": true,
+      "all_321_PDF_23_edition_SHA_and192_recency_preserved": true,
+      "public_files": 2848,
+      "public_bytes": 896393405,
+      "recovery_copies_unexpired": 3,
+      "new_copy_bound_to_source_run_digest": true,
+      "CI_confirmed_retention_deletions": 1,
+      "manual_DELETE_or_rerun_or_test_push_mail": 0,
+      "actual_restore_of_whole_site_or_private_DB": false,
+      "physical_space_reclaimed": 0,
+      "new_provider_permissions_or_billing": 0,
+      "new_or_current_writer_API_activation": false,
+      "new_V_inspector_implemented": false,
+      "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
     }
   },
   "monitoring_baseline": {
@@ -199,9 +239,9 @@
     "unresolved_mail_linked_runs_scope": "Historical original DQB failure retained separately; its notice is outside the current48h-overlap search window. Current mail points to the corrected domain failure."
   },
   "observation": {
-    "status": "11/27 18:30 새 domain 실패는 기존 수정/후속 성공 연결; FD 실제 CI 인수·oldcover2 P2 복구 전",
+    "status": "11/27 18:30 자체기술복구 CI·HTTPS 완료",
     "period": "2026-11-27T09:34:00.862437Z",
-    "result": "새 메일1통은 기존 domain release-check 실패1건을 가리키며, 두 선언의 동일 content SHA pair 소유권 이동420c·후속 네 작업 성공과 두 실제 HTML raw SHA 대조로 연결했다. 과학 본문·후보 파일은 이 수정에서 바뀌지 않았고 원문 감수·기기 수신을 새로 수행한 것은 아니다. 새 성공3건·미해결 새 CI0/활성0, 기존 원래 DQB recovery 원인은 미해결이다. 현재 일반 artifact113광고/113수집/113고유와3미만료 복구를 확인했으며 수동 삭제/리런/복원0이다. FD helper/검사 exact8결속·실제 discovery17 및 기존664검사 요약을 인수했지만 caller/운영 활성화는0이다. 현재896,109,564B·321PDF/224객체·기존22 exact+새 DQB구판1=23판본이다. oldcover2의 실제404와 명시pin/원본283,464B를 별도 P2 복구 전 관찰로 남기며 현재v4 표시·캐시예외와 구분한다.",
+    "result": "318809의 정상4jobs와 clean구표지2 복구를 확인했다. 새과학게시/reader recency는 없고 현재896,393,405B과 실제321PDF/23판본 보존을 인수했다. 기존메일/fullAPI시각과 선택자체실행10:27:57완료확인을 구분한다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -1397,6 +1437,43 @@
       "query_errors": 0,
       "our_provider_writes_reruns_DELETE_notifications_or_binary_downloads": 0,
       "raw_mail_IDs_values_or_logs_saved": false
+    },
+    "own_restore_completion_20261127": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_code_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "deployment_revision": "3188092469ef89e1fed36a3de0a733035b574d8f",
+      "deployment_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45981054975",
+      "attempt": 1,
+      "actual_run_and_four_jobs": "success",
+      "selected_run_API_verified_at": "2026-11-27T10:27:57Z",
+      "actual_Python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 56.183
+      },
+      "actual_public_raw3_complete_stable_at": "2026-11-27T10:26:02.102752Z",
+      "clean_HTTPS_images_verified_at": "2026-11-27T10:25:51.804435Z",
+      "clean_two_URLs_200_exact_original_SHA": true,
+      "restored_image_bytes": 283464,
+      "old420_payload_missing": 0,
+      "new_payload_image_files": 2,
+      "other_payload_change": "catalog revision only",
+      "current_KO_v4_raw_exact": true,
+      "all_321_PDF_23_edition_SHA_and192_recency_preserved": true,
+      "public_files": 2848,
+      "public_bytes": 896393405,
+      "recovery_copies_unexpired": 3,
+      "new_copy_bound_to_source_run_digest": true,
+      "CI_confirmed_retention_deletions": 1,
+      "manual_DELETE_or_rerun_or_test_push_mail": 0,
+      "actual_restore_of_whole_site_or_private_DB": false,
+      "physical_space_reclaimed": 0,
+      "new_provider_permissions_or_billing": 0,
+      "new_or_current_writer_API_activation": false,
+      "new_V_inspector_implemented": false,
+      "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
     }
   },
   "recovery": {
@@ -1404,5 +1481,5 @@
     "execution_reference": null,
     "result": "사이트·DB·글·PDF·CI 코드 변경이나 실제 롤백 없음"
   },
-  "next_action": "다음 기존 회차는 현재 성공 메일/API부터48시간 겹침·끝페이지와 원래 DQB 미해결 attempt를 대조한다. 새 domain 실패는081503의 수정420c·실제 CI/HTTPS 완료 기록을 재사용해 중복 issue/리런/알림을 만들지 않는다. FD 실제 CI는 인수하되 미래 caller/운영 활성화와 구분한다. 명시pin oldcover2의283,464B·정확 URL 보존은 총괄의 별도 작은 P2 후보에서 구현·검증·실제 공개 결과를 연결하며 현재 복구 완료로 쓰지 않는다. 기존104/103 원인·물리 절감/실제 복원은 미확인으로 유지한다."
+  "next_action": "다음 기존05:30에 마지막 메일·전체API 성공부터48시간 겹침/끝페이지와 원래DQB미해결attempt를 대조한다. 자체45981054975와 기존도메인수정의 해결된알림은 반복통지하지 않고 새미해결실패/공개영향만 인수한다. 수동리런/삭제·테스트알림/메일0을 유지한다."
 }
