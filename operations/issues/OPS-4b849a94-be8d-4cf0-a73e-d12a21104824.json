@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 30,
+  "record_version": 31,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-26T20:50:32.611474+00:00",
+  "updated_at": "2026-11-27T04:46:06.399789Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -57,7 +57,8 @@
     "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
     "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
     "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
-    "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md"
+    "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
   ],
   "limitations": [
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
@@ -95,9 +96,10 @@
       "265b9a260025de826a3e3574a9590d77fa5fa048",
       "ecd98f5043324c9af8dc98793e76b79280b39e4a",
       "527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
-      "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81"
+      "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
+      "75497454864305aafae1e5c0573d34b976ebb966"
     ],
-    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/75497454864305aafae1e5c0573d34b976ebb966",
     "deployment_reference": null,
     "local_readonly_candidate": {
       "source_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -488,29 +490,33 @@
       "proof_key": "adopt-b2b2-ref-probe-20261126 / completed-cases/root-parent-unexpected-observation/result; adopt-b2b2-ref-independent-20261126 / result"
     },
     "b2b2_fd_ref_candidate": {
-      "status": "isolated_internal_primitive_candidate_scoped_validation_complete_formal_integration_pending",
-      "source_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+      "status": "formal_review_and_local_source_integration_complete_internal_primitive_only",
+      "source_revision": "75497454864305aafae1e5c0573d34b976ebb966",
       "initial_candidate_revision": "da35f7c388f5302a2737464911431196338a4b46",
       "source_base_revision": "d36d776ea4efb8a6b15a9de9cefca7b4ef22f7cd",
-      "branch": "codex/admin-b2b2-fd-ref-20261127",
+      "branch": "codex/admin-b2b2-fd-formal-20261127",
       "workspace": "managed:public-media-versioning/tech-review",
       "source_sha256": {
         "scripts/admin_projection_refs.py": "11ca5c85b3169674d1c1e6923251f92ce9ef52f72ed3d468a8b382dbec789d26",
         "tests/test_admin_projection_refs.py": "643ec2a0def26d5216c4318bfd3a6fbb53539a35fe94dcdc4414b2fb7c9a8096"
       },
-      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
-      "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
-      "main_integrated": false,
+      "remote_candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/75497454864305aafae1e5c0573d34b976ebb966",
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "main_integrated": true,
       "deployed": false,
       "current_writer_imports_primitive": false,
       "current_changed_requests_enabled": false,
       "old_seven_no_change_source_hashes_preserved": true,
       "scope": "협력 local flock 아래 expected-old 비교와 고정 directory FD에서의 단일 operation ref rename만 지원",
-      "contract_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2-p--fd-기준-단일-operation-ref의-격리-내부-계약"
+      "contract_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2-p--fd-기준-단일-operation-ref의-격리-내부-계약",
+      "initial_reviewed_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
+      "integration_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "integration_base_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "actual_CI_observed": false
     }
   },
   "verification": {
-    "status": "B2b2 지원 no_change slice 정식 검증·로컬 소스통합 완료; 실제 변경/CAS·운영 API는 미완료",
+    "status": "FD 내부 primitive 정식 검증·로컬 소스통합 완료; 전체 writer/API 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -1319,12 +1325,52 @@
       },
       "new_FD_candidate_not_in_these_runs": true,
       "actual_user_writer_activation": false
+    },
+    "B2b2_FD_formal_20261127_midday": {
+      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+      "candidate_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "latest_main_preserved": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "status": "PASS_at_isolated_internal_single_ref_primitive_only",
+      "formal_static_areas": 8,
+      "new_independent_runtime": {
+        "groups": 4,
+        "passed": 4,
+        "seconds": 0.457661,
+        "scope": "exact read/peak limits, metadata and zero-write guards, actual context and deadline boundaries"
+      },
+      "reused_dawn_target_tests": 17,
+      "reused_dawn_runtime_groups": 6,
+      "full_python": {
+        "tests": 632,
+        "passed": 631,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 153.992,
+        "executions": 1
+      },
+      "source_files": [
+        "scripts/admin_projection_refs.py",
+        "tests/test_admin_projection_refs.py"
+      ],
+      "source_sha256": {
+        "scripts/admin_projection_refs.py": "11ca5c85b3169674d1c1e6923251f92ce9ef52f72ed3d468a8b382dbec789d26",
+        "tests/test_admin_projection_refs.py": "643ec2a0def26d5216c4318bfd3a6fbb53539a35fe94dcdc4414b2fb7c9a8096"
+      },
+      "old_seven_source_hashes_and_original_contract_prefix_preserved": true,
+      "existing_publication_compilation_tests_included": 7,
+      "current_CLI_imports_primitive": false,
+      "new_actual_CI_observed": false,
+      "current_changed_key_acceptance": false,
+      "whole_writer_identity_base_object_receipt_or_native_two_ref_contract_complete": false,
+      "deadline_scope": "Cooperative budget checks around syscalls; no hard cancellation of blocked OS syscalls.",
+      "actual_user_source_existing_store_remote_or_publication_mutations": 0,
+      "proof_key": "adopt-b2b2-fd-formal-20261127 / freeze/full-python; adopt-b2b2-fd-formal-independent-20261127 / formal1/result"
     }
   },
   "observation": {
-    "status": "11/27 05:30 FD 내부 단일ref 후보 구현·한정 검증/보완; 전체 통합 전",
-    "period": "2026-11-26T20:29:59.066Z",
-    "result": "협력 lock·FD 상대 단일ref의 내부 계약을 분리하고1ff49fd 두 파일 후보를 원격 보존했다. 부분쓰기/디렉터리pending/종료 phase 경계를 보완해17대상검사·별도6그룹을 통과했다. 기존 no_change의 야간 실제CI608근거를 인수했으며 새 FD 후보 main통합/전체 writer·발행은 미완료다.",
+    "status": "11/27 13:30 FD 내부 primitive 정식 인수",
+    "period": "2026-11-27T04:33:34.307Z",
+    "result": "최신 L018/DQB/photonic 게시를 보존한7549745에 정식 경계8영역·새 독립4그룹과 전체632검사(631통과/기존선택1skip)를 적용했다. helper만 로컬 소스통합하며 현재 CLI/no_change7파일·변경 요청 사전 거절은 유지한다. 전체 native 두ref/CAS·claim/receipt·서버/발행은 미완료다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -1378,30 +1424,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md"
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/27 13:30에 정확1ff49fd 후보의 정식 경계·관련 전체 회귀/통합 검토를 잇고, future caller의 완전 identity/base/receipt 권위와 전체 changed writer 계약의 연결 범위를 정한다. 현재 CLI·운영 store migration·변경 키·원본/원격 저장·발행은 활성화하지 않으며 전체 납기는 미정이다.",
+  "next_action": "11/27 18:30 기존 회차에서 완전 identity/base-object/provenance·claim/receipt 권위와 전체 변경 저장 선행 계약을 대조해 다음 최소 구현 범위를 정한다. 미연결 내부 helper의 소스통합과 전체 changed writer/native 두ref·운영 활성화는 구분한다. 현재 CLI/키 접수·원본/원격/서버·발행은 그대로며 전체 납기는 미정이다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b2_FD_internal_primitive_candidate_scoped_tests_complete_formal_integration_pending",
-    "next_scheduled_step_at": "2026-11-27T13:30:00+09:00",
-    "next_review_at": "2026-11-27T13:30:00+09:00",
-    "scheduled_step": "FD 내부 primitive 후보의 정식 경계/전체 회귀·통합 검토와 미래 caller 권위 연결 범위 선정",
+    "state": "B2b2_FD_internal_primitive_formally_reviewed_source_integrated_caller_contract_pending",
+    "next_scheduled_step_at": "2026-11-27T18:30:00+09:00",
+    "next_review_at": "2026-11-27T18:30:00+09:00",
+    "scheduled_step": "future caller의 완전 identity/base-object/provenance/claim/receipt 권위와 변경 저장 선행 계약·최소 후속 범위 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
-    "replan_reason": "05:30의 설계 비교를 한정 내부 primitive 계약과 격리 후보로 구체화했다. 현재17검사/독립6그룹은 해당 범위이며 전체 회귀·호출자 통합은13:30 목표로 잇는다. 기존 native 두ref 규약을 조용히 대체하거나 현재 변경 키 접수를 열지 않는다.",
+    "replan_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "replan_reason": "13:30 준비 범위의 정식 감수·최신 전체 회귀와 로컬 source통합을 완료해 같은 P2/순번1의 다음18:30에 미연결 caller 권위/전체 changed writer 선행 범위를 잇는다. 기존 native 두ref gate와 일반 게시/편집부 권한은 유지한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
+    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -1448,8 +1494,10 @@
     "b2b2_no_change_formal_completed_at": "2026-11-26T04:54:03.458289+00:00",
     "b2b2_no_change_source_integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
     "b2b2_ref_boundary_review_completed_at": "2026-11-26T09:40:53.645532+00:00",
-    "b2b2_next_independent_design_review_target": "2026-11-27T13:30:00+09:00",
+    "b2b2_next_independent_design_review_target": "2026-11-27T18:30:00+09:00",
     "b2b2_fd_primitive_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
-    "b2b2_fd_primitive_initial_validation_at": "2026-11-26T20:50:32.611474+00:00"
+    "b2b2_fd_primitive_initial_validation_at": "2026-11-26T20:50:32.611474+00:00",
+    "b2b2_fd_primitive_formal_completed_at": "2026-11-27T04:46:06.399789Z",
+    "b2b2_fd_primitive_integration_revision": "75497454864305aafae1e5c0573d34b976ebb966"
   }
 }
