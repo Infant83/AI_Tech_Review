@@ -22,12 +22,12 @@ try:
     from .hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from .site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
-    from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
+    from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes
 except ImportError:
     from hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
-    from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact
+    from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -264,7 +264,9 @@ PUBLIC_METRICS_ENDPOINT_ENV = "INFANT83_PUBLIC_METRICS_ENDPOINT"
 LEGACY_PUBLIC_METRICS_ENDPOINT_ENV = "AI_TECH_REVIEW_PUBLIC_METRICS_ENDPOINT"
 DEFAULT_PUBLIC_METRICS_ENDPOINT = ""
 PUBLIC_BASE_PATH = "/AI_Tech_Review/"
-PUBLIC_BASE_URL = "https://infant83.github.io/AI_Tech_Review/"
+PUBLIC_BASE_URL = HUB_PUBLIC_URL
+LEGACY_PUBLIC_BASE_URL = "https://infant83.github.io/AI_Tech_Review/"
+PUBLIC_BASE_ALIASES = (PUBLIC_BASE_URL, LEGACY_PUBLIC_BASE_URL)
 PUBLIC_SITE_ID = "ai-tech-review"
 CLOUDFLARE_WEB_ANALYTICS_RE = re.compile(
     r"\s*<!-- Cloudflare Web Analytics -->.*?<!-- End Cloudflare Web Analytics -->\s*",
@@ -387,7 +389,7 @@ class PageMetadataParser(HTMLParser):
             self.has_authoring_disclosure = True
         if tag.lower() == "a" and values.get("href"):
             self.hrefs.append(values["href"].strip())
-        if tag.lower() == "a" and values.get("href", "").rstrip("/") == PUBLIC_BASE_URL.rstrip("/"):
+        if tag.lower() == "a" and values.get("href", "").rstrip("/") in {base.rstrip("/") for base in PUBLIC_BASE_ALIASES}:
             self.has_hub_link = True
         if values.get("aria-current", "").lower() == "page" and values.get("lang"):
             self.current_languages.add(values["lang"].strip().lower())
@@ -1160,7 +1162,7 @@ def public_url_for_href(href: str) -> str:
 def public_url_aliases(url: str) -> set[str]:
     """Accept only the same path on our legacy and current public domains."""
     aliases = {url}
-    for source, target in ((PUBLIC_BASE_URL, HUB_PUBLIC_URL), (HUB_PUBLIC_URL, PUBLIC_BASE_URL)):
+    for source, target in ((LEGACY_PUBLIC_BASE_URL, PUBLIC_BASE_URL), (PUBLIC_BASE_URL, LEGACY_PUBLIC_BASE_URL)):
         if url.startswith(source):
             aliases.add(target + url[len(source):])
     return aliases
@@ -1334,7 +1336,7 @@ def render_method_version_rows(
             generated_suffix = " · " + link_label
             public_method_urls = {
                 f"{base}{EDITORIAL_METHODS_HREF}".rstrip("/")
-                for base in (PUBLIC_BASE_URL, HUB_PUBLIC_URL)
+                for base in PUBLIC_BASE_ALIASES
             }
             has_recorded_method_link = any(
                 href.rstrip("/") in public_method_urls
@@ -2698,7 +2700,7 @@ def validate_disclosure(review_index: Path, text: str) -> list[str]:
     methods_index = (SITE_DIR / EDITORIAL_METHODS_HREF / "index.html").resolve()
     public_methods_urls = {
         f"{base}{EDITORIAL_METHODS_HREF}".rstrip("/")
-        for base in (PUBLIC_BASE_URL, HUB_PUBLIC_URL)
+        for base in PUBLIC_BASE_ALIASES
     }
     method_link_found = False
     for href in disclosure.field_links.get(harness_label, []):
@@ -3173,6 +3175,9 @@ def main(argv: Iterable[str] | None = None) -> int:
         normalized = normalize_brand_html(original)
         if normalized != original:
             page.write_bytes(normalized.encode("utf-8"))
+    # Display normalization can change registered lecture HTML; refresh its
+    # derived checksums before search validates the exact current bytes.
+    refresh_registered_html_hashes(SITE_DIR)
     build_search(SITE_DIR)
     enrich_reader_engagement(SITE_DIR, revision=args.revision)
     validate_reader_artifact(SITE_DIR)

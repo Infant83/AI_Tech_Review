@@ -353,6 +353,14 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
         enriched = enrich_html(original, relative, pages.get(relative), asset_versions=asset_versions,
                                article_version=content_versions.get(public_path(relative)))
         changed += write_changed(path, enriched.encode("utf-8"))
+    refresh_registered_html_hashes(site_dir)
+    write_changed(site_dir / UPDATES_NAME, (json.dumps(updates, ensure_ascii=False, indent=2) + "\n").encode())
+    catalog = {"revision": revision, "articles": articles}
+    write_changed(site_dir / CATALOG_NAME, (json.dumps(catalog, ensure_ascii=False, indent=2) + "\n").encode())
+    return {"html_changed": changed, "articles": len(articles), "revision": revision}
+
+
+def refresh_registered_html_hashes(site_dir: Path) -> None:
     # Lecture bundles checksum their HTML; keep the derived registry truthful.
     archive_path = site_dir / "archive-manifest.json"
     if archive_path.exists():
@@ -373,10 +381,6 @@ def enrich_site(site_dir: Path, *, revision: str | None = None, frontend_dir: Pa
                     updated = True
         if updated:
             write_changed(archive_path, (json.dumps(archive, ensure_ascii=False, indent=2) + "\n").encode())
-    write_changed(site_dir / UPDATES_NAME, (json.dumps(updates, ensure_ascii=False, indent=2) + "\n").encode())
-    catalog = {"revision": revision, "articles": articles}
-    write_changed(site_dir / CATALOG_NAME, (json.dumps(catalog, ensure_ascii=False, indent=2) + "\n").encode())
-    return {"html_changed": changed, "articles": len(articles), "revision": revision}
 
 
 def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,

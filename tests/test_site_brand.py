@@ -4,6 +4,27 @@ from scripts.site_brand import SITE_NAME, current_source_title, normalize_brand_
 
 
 class CurrentJournalBrandTests(unittest.TestCase):
+    def test_public_metadata_and_navigation_use_current_origin_without_rewriting_science(self):
+        legacy = "https://infant83.github.io"
+        current = "https://infant83.io"
+        science = f'<article><a href="{legacy}/AI_Tech_Review/reviews/history/">source</a><p>{legacy}</p></article>'
+        original = (f'<link rel="canonical" href="{legacy}/AI_Tech_Review/reviews/example/">'
+                    f'<link rel="alternate" hreflang="en" href="{legacy}/AI_Tech_Review/reviews/example/en/">'
+                    f'<meta property="og:url" content="{legacy}/AI_Tech_Review/reviews/example/">'
+                    f'<nav><a href="{legacy}/AI_Tech_Review/?q=x#reviews">hub</a>'
+                    f'<a href="{legacy}/">editor</a></nav>'
+                    + science + f'<pre><a href="{legacy}/example/">code sample</a></pre>'
+                    f'<a href="{legacy}.example/">third party</a>')
+        result = normalize_brand_html(original)
+        self.assertIn(science, result)
+        self.assertIn(f'<pre><a href="{legacy}/example/">code sample</a></pre>', result)
+        self.assertIn(f'<a href="{legacy}.example/">third party</a>', result)
+        self.assertIn(f'<link rel="canonical" href="{current}/AI_Tech_Review/reviews/example/">', result)
+        self.assertIn(f'content="{current}/AI_Tech_Review/reviews/example/"', result)
+        self.assertIn(f'href="{current}/AI_Tech_Review/?q=x#reviews"', result)
+        self.assertIn(f'href="{current}/"', result)
+        self.assertEqual(normalize_brand_html(result), result)
+
     def test_current_chrome_changes_without_touching_issue_history_or_science(self):
         science = ('<article class="final-article"><h1>AI Tech Review Letters as a historical title</h1>'
                    '<p class="brand">AI Tech Review Letters</p>'

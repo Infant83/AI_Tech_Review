@@ -331,7 +331,7 @@ test('test push targets only the current device, with 60-second and five-per-day
   assert.equal(deliveries.length,5);
   assert.ok(deliveries.every(row=>row.device_id===a.id));
   const event=await f.db.prepare('SELECT * FROM publication_events LIMIT 1').first();
-  assert.equal(event.title,'AI Tech Review 알림 테스트');
+  assert.equal(event.title,'ATRL 알림 테스트');
   assert.equal(event.path,'/AI_Tech_Review/');
 });
 

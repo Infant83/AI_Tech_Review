@@ -247,7 +247,7 @@ async function testSubscription(request,env) {
   const id = `test-${crypto.randomUUID()}`;
   await env.DB.batch([
     statement(env,`INSERT INTO publication_events(id,kind,title,body,path,created_at,fanout_completed)
-      VALUES(?,'test',?,?,?,?,1)`,id,'AI Tech Review 알림 테스트','이 기기에서 새 글 알림을 받을 준비가 되었습니다.',SITE_ROOT,now),
+      VALUES(?,'test',?,?,?,?,1)`,id,'ATRL 알림 테스트','이 기기에서 새 글 알림을 받을 준비가 되었습니다.',SITE_ROOT,now),
     statement(env,'INSERT INTO deliveries(event_id,device_id,subscription_version,created_at) VALUES(?,?,?,?)',id,current.id,sub.version,now),
   ]);
   await env.READER_QUEUE.send({type:'push',eventId:id,deviceId:current.id},{contentType:'json'});

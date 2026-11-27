@@ -9,6 +9,8 @@ SITE_STYLES_VERSION = "20261022-header-brand"
 BRAND_TITLE = "Agentic Tech Review"
 SITE_NAME = f"{BRAND_TITLE} Letters"
 SITE_SHORT_NAME = "ATRL"
+PUBLIC_ORIGIN = "https://infant83.io"
+LEGACY_PUBLIC_ORIGIN = "https://infant83.github.io"
 
 _LEGACY_NAME = re.compile(r"AI\s+Tech\s+Review\s+Letters", re.IGNORECASE)
 _VOID_TAGS = frozenset({"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"})
@@ -36,6 +38,26 @@ class _CurrentBrandParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
+        protected = any(name in {"article", "script", "style", "pre", "code"} for name, _ in self.stack)
+        # Current metadata and navigation use the custom domain. Historical
+        # prose, citations, code and publication assets retain their bytes.
+        attribute = None
+        if tag == "link" and set(values.get("rel", "").lower().split()) & {"canonical", "alternate", "home"}:
+            attribute = "href"
+        elif tag == "meta" and values.get("property", "").lower() in {"og:url", "og:image"}:
+            attribute = "content"
+        elif tag == "meta" and values.get("name", "").lower() == "twitter:image":
+            attribute = "content"
+        elif tag == "a" and not protected:
+            attribute = "href"
+        if attribute:
+            value = values.get(attribute, "")
+            if value == LEGACY_PUBLIC_ORIGIN or value.startswith(LEGACY_PUBLIC_ORIGIN + "/"):
+                raw = self.get_starttag_text()
+                match = re.search(r"\b" + attribute + r"\s*=\s*([\"'])(.*?)\1", raw, re.IGNORECASE | re.DOTALL)
+                if match:
+                    start = self.position() + match.start(2)
+                    self.edits.append((start, self.position() + match.end(2), PUBLIC_ORIGIN + value[len(LEGACY_PUBLIC_ORIGIN):]))
         if tag == "meta" and values.get("property", "").lower() == "og:site_name":
             if _LEGACY_NAME.fullmatch(values.get("content", "").strip()):
                 raw = self.get_starttag_text()
