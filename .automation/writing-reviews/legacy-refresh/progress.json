@@ -3,19 +3,7 @@
   "baseline_commit": "12cf0f9cab909eee428b13f501840818519cbbab",
   "purpose": "기존 게시물을 원 발행일 순서로 한 편씩 검토하고 필요한 개편을 실제 게시한다. 이미 개편한 허브 소개는 본문과 어긋날 때만 조정한다.",
   "order": "original publication date ascending, then stable article id",
-  "current": {
-    "id": "2026-09-13_multiphoton-reservoir-classical-light",
-    "baseline_commit": "7f2ff1337084e5175511043431d073763091cd5d",
-    "started_at": "2026-11-27T16:03:08.261237+00:00",
-    "stage": "final_candidate_and_browser_checked_publication_pending",
-    "audit": "2026-11-28-multiphoton/README.md",
-    "resume": "Publish this reviewed article only after final independent release audit; verify all four actual CI jobs, actual HTTPS and browser before marking completed.",
-    "updated_at": "2026-11-27T16:37:15.283537+00:00",
-    "reviewed_manuscripts": {
-      "ko": "c4c70c1304bc4efb7ee962e1b0a6966938faf3932b133c23bbc9f3b7197a843a",
-      "en": "26d1f8fb8dc8c468a984fa83da6f0b722f43baa592d4d50348b63853dc521e0d"
-    }
-  },
+  "current": null,
   "completed": {
     "2026-05-09_ai-updates-weekly": {
       "status": "updated",
@@ -483,6 +471,58 @@
         "queuedEvents": 0,
         "ok": true
       }
+    },
+    "2026-09-13_multiphoton-reservoir-classical-light": {
+      "status": "updated",
+      "reviewed_version": "7f2ff1337084e5175511043431d073763091cd5d",
+      "previous_deployed_revision": "c7cb3a0e3cae37839f2ef4192b60281132901a45",
+      "publication_commit": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+      "editorial_revision": "2026-11-28",
+      "evidence_cutoff": "2026-09-13",
+      "reason": "검출 기록에서 학습 특징으로 이어지는 도입과 문단 연결을 다듬고 비유적 ‘읽다’와 정형적인 평가 전개를 한영에서 정리했다. 제목·요약을 성능과 측정시간에 맞추고 APS 저자·원제·번호 인용을 정리했다. PCA 유효차원의 의미와 보충자료 S20 위치·비음수 P 혼합의 조건을 명확히 했으며 수치·수식·그림의 과학적 관계와 원 발행일·근거 기준일·ID·URL을 보존했다. 현재 개정 모델의 실제 설정을 원 발행 미보존 이력과 구분했다. 다른 게시물·아카이브 보존, 실제 CI·한영 화면·HTTPS 확인을 마쳤다.",
+      "live_url": "https://infant83.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/",
+      "english_url": "https://infant83.io/AI_Tech_Review/reviews/2026-09-13_multiphoton-reservoir-classical-light/en/",
+      "workflow_run": 46035611962,
+      "audit": "2026-11-28-multiphoton/README.md",
+      "reference_manifest": "2026-11-28-multiphoton/reference-manifest.json",
+      "direct_experiment_or_model_benchmark_performed": false,
+      "existing_article_PDF_count": 0,
+      "new_article_PDF_cover_or_video": false,
+      "protected_source_asset_files": 7,
+      "actual_https_unique_routes": 16,
+      "actual_jobs": {
+        "build": "success",
+        "deploy": "success",
+        "recovery-copy": "success",
+        "notify-readers": "success"
+      },
+      "test_totals": {
+        "tests": 1200,
+        "passed": 1191,
+        "skipped": 9,
+        "failed": 0
+      },
+      "retention_latest_three_completed": true,
+      "native_in_app_PDF_viewer_success_claimed": false,
+      "manuscripts": {
+        "ko_sha256": "c4c70c1304bc4efb7ee962e1b0a6966938faf3932b133c23bbc9f3b7197a843a",
+        "en_sha256": "26d1f8fb8dc8c468a984fa83da6f0b722f43baa592d4d50348b63853dc521e0d"
+      },
+      "verified_at": "2026-11-27T16:53:09.578235+00:00",
+      "https_verified_at": "2026-11-27T16:46:57.466915+00:00",
+      "browser_verified_at": "2026-11-27T16:48:44.223254+00:00",
+      "ci_independent_reviewed_at": "2026-11-27T16:51:02.730435+00:00",
+      "reader_sync": {
+        "synced": 94,
+        "revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+        "ok": true,
+        "newArticles": 0,
+        "queuedEvents": 0,
+        "baseline": false
+      },
+      "current_revision_model": "gpt-6.1-sol",
+      "current_revision_reasoning_effort": "ultra",
+      "original_model_not_reconstructed": true
     }
   },
   "queue": [

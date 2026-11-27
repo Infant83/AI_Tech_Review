@@ -1,0 +1,471 @@
+{
+  "schema_version": 1,
+  "status": "passed_actual_CI_recovery_and_reader_audit_with_existing_warnings",
+  "checked_at": "2026-11-27T16:51:02.730435+00:00",
+  "reviewer": "dqb1127_pdf",
+  "role": "Independent actual CI, artifact, recovery-retention and reader synchronization auditor; no source authoring or CI rerun",
+  "article_id": "2026-09-13_multiphoton-reservoir-classical-light",
+  "publication_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+  "source_commit": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+  "workflow_run": 46035611962,
+  "workflow_run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46035611962",
+  "attempt": 1,
+  "workflow_path": ".github/workflows/pages.yml",
+  "workflow_event": "push",
+  "workflow_branch": "main",
+  "conclusion": "success",
+  "candidate_preparation_revision": "7f2ff1337084e5175511043431d073763091cd5d",
+  "actual_previous_release_revision": "c7cb3a0e3cae37839f2ef4192b60281132901a45",
+  "jobs": {
+    "build": {
+      "job_id": 140630125663,
+      "conclusion": "success",
+      "started_at": "2026-11-27T16:40:41Z",
+      "completed_at": "2026-11-27T16:45:03Z",
+      "duration_seconds": 262,
+      "all_step_conclusions": {
+        "Set up job": "success",
+        "Run actions/checkout@v4": "success",
+        "Run actions/setup-python@v5": "success",
+        "Install the pinned build-only image dependency": "success",
+        "Run actions/setup-node@v4": "success",
+        "Check publication, search and preservation rules": "success",
+        "Check multilingual search ranking": "success",
+        "Check reader controls and notification permission handling": "success",
+        "Check the existing lecture reader and storage races": "success",
+        "Check backend authentication and notebook authorization": "success",
+        "Check portable media delivery": "success",
+        "Read the deployed source revision and extract its immutable baseline": "success",
+        "Build an independent candidate from the combined source registrations": "success",
+        "Reject missing identities and undeclared article or PDF changes": "success",
+        "Enforce initial payload and deferred search budgets": "success",
+        "Package the continuity snapshot with the exact deployable artifact": "success",
+        "Validate the complete sealed public artifact": "success",
+        "Run actions/upload-pages-artifact@v3": "success",
+        "Preserve the exact catalog packaged with Pages": "success",
+        "Preserve release verification summaries": "success",
+        "Post Run actions/setup-node@v4": "success",
+        "Post Run actions/setup-python@v5": "success",
+        "Post Run actions/checkout@v4": "success",
+        "Complete job": "success"
+      }
+    },
+    "deploy": {
+      "job_id": 140632176741,
+      "conclusion": "success",
+      "started_at": "2026-11-27T16:45:08Z",
+      "completed_at": "2026-11-27T16:45:34Z",
+      "duration_seconds": 26,
+      "all_step_conclusions": {
+        "Set up job": "success",
+        "Do not redeploy an older main revision": "success",
+        "Deploy the verified Pages artifact": "success",
+        "Complete job": "success"
+      }
+    },
+    "recovery-copy": {
+      "job_id": 140632427674,
+      "conclusion": "success",
+      "started_at": "2026-11-27T16:45:37Z",
+      "completed_at": "2026-11-27T16:47:01Z",
+      "duration_seconds": 84,
+      "all_step_conclusions": {
+        "Set up job": "success",
+        "Run actions/checkout@v4": "success",
+        "Run actions/setup-python@v5": "success",
+        "Run actions/download-artifact@v4": "success",
+        "Verify and package the exact deployed artifact for recovery": "success",
+        "Run actions/upload-artifact@v4": "success",
+        "Retain the three most recent complete recovery copies": "success",
+        "Post Run actions/setup-python@v5": "success",
+        "Post Run actions/checkout@v4": "success",
+        "Complete job": "success"
+      }
+    },
+    "notify-readers": {
+      "job_id": 140632427732,
+      "conclusion": "success",
+      "started_at": "2026-11-27T16:45:36Z",
+      "completed_at": "2026-11-27T16:46:39Z",
+      "duration_seconds": 63,
+      "all_step_conclusions": {
+        "Set up job": "success",
+        "Check publication notification setup": "success",
+        "Run actions/checkout@v4": "success",
+        "Run actions/download-artifact@v4": "success",
+        "Verify live HTTPS articles, then register publications": "success",
+        "Post Run actions/checkout@v4": "success",
+        "Complete job": "success"
+      }
+    }
+  },
+  "test_results": {
+    "python_publication_preservation": {
+      "tests": 674,
+      "passed": 673,
+      "skipped": 1,
+      "failed": 0
+    },
+    "node_search": {
+      "tests": 12,
+      "passed": 12,
+      "skipped": 0,
+      "failed": 0
+    },
+    "node_reader_controls": {
+      "tests": 205,
+      "passed": 197,
+      "skipped": 8,
+      "failed": 0
+    },
+    "node_lecture_storage": {
+      "tests": 222,
+      "passed": 222,
+      "skipped": 0,
+      "failed": 0
+    },
+    "node_backend": {
+      "tests": 73,
+      "passed": 73,
+      "skipped": 0,
+      "failed": 0
+    },
+    "node_public_media": {
+      "tests": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "test_totals": {
+    "tests": 1200,
+    "passed": 1191,
+    "skipped": 9,
+    "failed": 0
+  },
+  "skip_scope": "One Python case and eight reader/browser fixtures were skipped in the actual CI output. They are excluded from passed counts and are not represented as browser verification.",
+  "actual_build_and_policy": {
+    "reviews": 61,
+    "archive_documents": 196,
+    "catalog_articles": 94,
+    "full_sealed_artifact_validation": {
+      "validated_files": 2881,
+      "articles": 94
+    },
+    "release_policy_ok": true,
+    "release_policy_blockers": [],
+    "release_policy_and_payload_JSON_exact_final_local_candidate": true,
+    "report_JSON_only_actual_source_revision_differs": true,
+    "catalog94article_rows_and_order_exact_final_candidate": true,
+    "actual_payload": {
+      "ok": true,
+      "failures": [],
+      "warnings": [
+        "Lazy metadata search exceeds the 80KB growth warning",
+        "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+      ],
+      "lazy_search_gzip_bytes": 99000,
+      "public_artifact_bytes": 928944655
+    }
+  },
+  "small_artifact_verification": {
+    "artifacts": [
+      {
+        "name": "reader-publication-catalog",
+        "artifact_id": 15215838725,
+        "run": 46035611962,
+        "source_commit": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+        "zip_bytes": 6291,
+        "provider_digest": "sha256:9f8b2b955d9df48b11cf74766c830e7d04f12cb2df3a921c9e00ba85c898dd9d",
+        "actual_zip_sha256": "9f8b2b955d9df48b11cf74766c830e7d04f12cb2df3a921c9e00ba85c898dd9d",
+        "expired": false,
+        "created_at": "2026-11-27T16:44:58Z",
+        "expires_at": "2026-12-04T16:44:58Z",
+        "members": [
+          {
+            "name": "reader-publications.json",
+            "bytes": 29609,
+            "sha256": "2f357423e1f3fb7d23154b3629b3a63a7e3eece02464d574fcc70ab0cd0d0081"
+          }
+        ]
+      },
+      {
+        "name": "publication-validation",
+        "artifact_id": 15216267853,
+        "run": 46035611962,
+        "source_commit": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+        "zip_bytes": 5959,
+        "provider_digest": "sha256:d7a519d91e3fb93427fa5fb58e25a9a6f2c86a9fc5164f5ad6cf76dcc5a81ade",
+        "actual_zip_sha256": "d7a519d91e3fb93427fa5fb58e25a9a6f2c86a9fc5164f5ad6cf76dcc5a81ade",
+        "expired": false,
+        "created_at": "2026-11-27T16:45:00Z",
+        "expires_at": "2026-12-11T16:44:59Z",
+        "members": [
+          {
+            "name": "report.json",
+            "bytes": 10181,
+            "sha256": "83cd5407d35dca2426a0f2b308a87e7e69a90cfe613ca9adb5bda43167375113"
+          },
+          {
+            "name": "release-check.json",
+            "bytes": 3125,
+            "sha256": "2124ae8673f41d34adf58689ba9a412b4a00da7df2e5bc191f5cb6d79501fd71"
+          },
+          {
+            "name": "payload-check.json",
+            "bytes": 62651,
+            "sha256": "b81b9af5d16f0ec8fa5ae3c1d8dad67363839de3ce46d9c08b618d96f0b063e1"
+          }
+        ]
+      }
+    ],
+    "ZIP_count": 2,
+    "downloaded_ZIP_bytes": 12250,
+    "all_provider_digests_exact": true,
+    "all_source_run_branch_and_expiry_checks_passed": true,
+    "expected_JSON_members_only": true,
+    "comparison_to_final_candidate": {
+      "report.json": {
+        "differing_top_level_fields": [
+          "revision"
+        ],
+        "only_actual_source_revision_difference": true
+      },
+      "release-check.json": {
+        "differing_top_level_fields": [],
+        "all_JSON_fields_exact": true
+      },
+      "payload-check.json": {
+        "differing_top_level_fields": [],
+        "local_and_CI_both_ok": true,
+        "existing_warning_lists_exact": true,
+        "local_public_bytes": 928944655,
+        "actual_CI_public_bytes": 928944655
+      },
+      "catalog": {
+        "article_rows_and_order_exact": true,
+        "articles": 94,
+        "top_level_revision_is_actual_source": true
+      }
+    }
+  },
+  "all_run_artifact_metadata": [
+    {
+      "id": 15217935887,
+      "name": "publication-recovery",
+      "size_in_bytes": 837163009,
+      "digest": "sha256:9bbcd498e64b57b30b2a93c025745fdcfa4d7fd135f025f3864195abf60b7992",
+      "expired": false,
+      "created_at": "2026-11-27T16:46:56Z",
+      "expires_at": "2026-12-27T16:46:47Z"
+    },
+    {
+      "id": 15216267853,
+      "name": "publication-validation",
+      "size_in_bytes": 5959,
+      "digest": "sha256:d7a519d91e3fb93427fa5fb58e25a9a6f2c86a9fc5164f5ad6cf76dcc5a81ade",
+      "expired": false,
+      "created_at": "2026-11-27T16:45:00Z",
+      "expires_at": "2026-12-11T16:44:59Z"
+    },
+    {
+      "id": 15215993382,
+      "name": "github-pages",
+      "size_in_bytes": 834699550,
+      "digest": "sha256:f1d5e100d985b5d3c093c30ff5f1c3373a27fde85f8e2f9e6640230dd8006c7b",
+      "expired": false,
+      "created_at": "2026-11-27T16:44:57Z",
+      "expires_at": "2026-11-28T16:44:38Z"
+    },
+    {
+      "id": 15215838725,
+      "name": "reader-publication-catalog",
+      "size_in_bytes": 6291,
+      "digest": "sha256:9f8b2b955d9df48b11cf74766c830e7d04f12cb2df3a921c9e00ba85c898dd9d",
+      "expired": false,
+      "created_at": "2026-11-27T16:44:58Z",
+      "expires_at": "2026-12-04T16:44:58Z"
+    }
+  ],
+  "live_artifact_metadata_binding": {
+    "source_commit": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+    "catalog_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+    "catalog_sha256": "2f357423e1f3fb7d23154b3629b3a63a7e3eece02464d574fcc70ab0cd0d0081",
+    "seal_sha256": "b9c299e281b027ec9e5cbe77581c7666f205eac1251a4c2b6a4781cc1b7dfeda",
+    "live_catalog_raw_bytes_exact_uploaded_catalog_ZIP_member": true,
+    "release_repeated_raw_bytes_stable_during_supported_baseline_capture": true,
+    "actual_release_and_updates_bundle_verified": true,
+    "local_candidate_to_actual_CI_sealed_payload_metadata_changes": [
+      "reader-publications.json",
+      "reader-updates.json"
+    ],
+    "interpretation": "The catalog top-level source revision and the selected reader-update revision time are regenerated in CI. Registered article identity groups and all other sealed payload metadata are preserved. This is metadata comparison, not another whole-site download or local hash pass."
+  },
+  "recovery": {
+    "from_exact_Pages_validation_and_packaging": {
+      "ok": true,
+      "revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+      "files": 2881,
+      "bytes": 930421936,
+      "archive_sha256": "ecb08220f920fc52acf2c61d8c0618c610e00c4df03ba32582c9b7156abd4c2c"
+    },
+    "input_Pages_provider_digest_matches_build_upload": true,
+    "upload_artifact_id": 15217935887,
+    "uploaded_outer_ZIP_bytes": 837163009,
+    "uploaded_outer_ZIP_provider_digest": "sha256:9bbcd498e64b57b30b2a93c025745fdcfa4d7fd135f025f3864195abf60b7992",
+    "created_at": "2026-11-27T16:46:56Z",
+    "expires_at": "2026-12-27T16:46:47Z",
+    "expired": false,
+    "upload_logs_digest_and_provider_metadata_match": true,
+    "source_run_and_branch_exact": true,
+    "inner_archive_SHA_is_separate_from_outer_upload_ZIP_digest": true,
+    "full_recovery_binary_downloaded": false,
+    "restoration_test_performed": false
+  },
+  "recovery_retention": {
+    "actual_apply_result": {
+      "ok": true,
+      "status": "applied",
+      "keep": [
+        15217935887,
+        15213511954,
+        15210800987
+      ],
+      "delete": [
+        15190215776
+      ],
+      "applied": true,
+      "deleted": [
+        15190215776
+      ],
+      "listingAttempts": 2,
+      "currentArtifactVerified": true
+    },
+    "filtered_listing_name": "publication-recovery",
+    "before_pages": 1,
+    "before_advertised_total": 3,
+    "before_actual_rows": 3,
+    "after_pages": 1,
+    "after_advertised_total": 3,
+    "after_actual_rows": 3,
+    "all_result_pages_followed": true,
+    "filtered_list_complete": true,
+    "actual_after_order_equals_logged_keep3": true,
+    "current_upload_is_newest_and_verified": true,
+    "prior_retained_full_metadata_exact": [
+      15213511954,
+      15210800987
+    ],
+    "actual_deleted_ID_matches_logged_deletion": true,
+    "general_unfiltered_artifact_inventory_requested": false
+  },
+  "reader_actual_counters": {
+    "synced": 94,
+    "revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "reader_input_catalog_provider_digest_matches_exact_build_upload": true,
+  "source_bindings": {
+    ".github/workflows/pages.yml": {
+      "sha256": "c13c905dca9df1843e32b7d6d91c9ff3021631fb889ad733a5b53af7758645fd",
+      "bytes": 8247
+    },
+    "scripts/publication_release.py": {
+      "sha256": "b99b26f92dadca674bd3f9aaf54013d81d1e9b39d6c6db8e896f931493c4ea38",
+      "bytes": 22220
+    },
+    "scripts/release_backup.py": {
+      "sha256": "bdc70fc97b4a75bc5a38597ce4d0ba0f2b2d584ae5493f4a8fa9e4e9c22f1d8f",
+      "bytes": 11375
+    },
+    "scripts/release_artifact_retention.py": {
+      "sha256": "7be88b248e19921f2584c3895352084b273d9c1ef83aaa61c4f881cfc4675354",
+      "bytes": 11621
+    },
+    "scripts/reader_engagement_publish.py": {
+      "sha256": "ac1ad5f840191c5f19ce672a165341dc876813c83dd0415ef53163e93ec73966",
+      "bytes": 41988
+    },
+    "publication/reviews/2026-09-13_multiphoton-reservoir-classical-light.json": {
+      "sha256": "c0a9f1d005f5d8851b39ff903ee006117eae08f510d0783df2ad3e81fe6caeca",
+      "bytes": 5213
+    },
+    "publication/requests/2026-09-13_multiphoton-reservoir-classical-light.json": {
+      "sha256": "4220fe82c52acac098244a49a40dbbc04ec04d1afdb122b5481efb965a52b111",
+      "bytes": 364
+    },
+    "publication_changes/2026-09-13_multiphoton-reservoir-classical-light.json": {
+      "sha256": "5a6553b7cd8ffc06f8343e9059b133b8ed031f1fbff399306a412efdee1c71d7",
+      "bytes": 950
+    },
+    "publication_changes/atrl-current-name-2026-11-09.json": {
+      "sha256": "5b74cb8ef45e7f166e3c04c04f8d68f1d2bc13830f69b36d070f75dcd34e72ac",
+      "bytes": 16493
+    }
+  },
+  "independent_scope": {
+    "performed": "Exact actual run/attempt and source, all four job results, actual logs, provider metadata, two small ZIPs, bounded live release/catalog/updates metadata and complete filtered recovery listings.",
+    "root_actual_HTTPS_and_browser_records": [
+      "live-verification.json",
+      "browser-live-review.json"
+    ],
+    "root_HTTP_and_browser_checks_not_claimed_as_performed_by_this_auditor": true,
+    "CI_failure_repair_or_rerun_requested": false,
+    "new_push_or_outgoing_message_by_auditor": false,
+    "new_local_build_render_full_payload_inventory_or_recovery_download": false
+  },
+  "observed_warnings": {
+    "existing_capacity": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "actual_action_runtime_annotation": "GitHub warns that the referenced action versions target Node.js 20 and are forced to Node.js 24. All jobs passed. This is recorded for ADOPT technical follow-up; no infrastructure change or message to another thread is claimed."
+  },
+  "process_note": "An early CLI request for completed build-job logs was refused while the overall run was still active. It was not interpreted as no tests; the definitive complete-run log was read after all four jobs completed. No CI rerun, test push or extra full-site scan was performed.",
+  "evidence_bindings": {
+    "run-final.json": {
+      "bytes": 12612,
+      "sha256": "c18af89d508012c9ccf4235e4874c4f0f284227b5a21e4047322f5fcad39ed8b"
+    },
+    "jobs-final.json": {
+      "bytes": 11643,
+      "sha256": "c1347ba94fd399fc57cb04dfa5c43c6fde04809ab9be9d1390f4fd682321f2bb"
+    },
+    "run-complete.log": {
+      "bytes": 1287764,
+      "sha256": "91892068506ce68cf8dc2a606fd4b6b78e32f7354703ee03974b859b3244f097"
+    },
+    "small-artifact-review.json": {
+      "bytes": 2006,
+      "sha256": "1200d8d1314f7c9c64fad007de4c97c19c249c52f83857ba69910a41fc7bda98"
+    },
+    "actual-log-and-artifact-summary.json": {
+      "bytes": 3264,
+      "sha256": "83a7e283344a01029c0b13034cbb3b8ce3d8e800fb3b3fe3f3987a66e7b10808"
+    },
+    "recovery-before-pages.json": {
+      "bytes": 2127,
+      "sha256": "bd003d7eeb3c279b47697ad6812ae3486d36fb42050c1c870378afeeeed8c158"
+    },
+    "recovery-after-pages.json": {
+      "bytes": 2127,
+      "sha256": "1e99432881df513dc69038d16b36c24abc1f370cee8022fc9d3929f7c6fb0c33"
+    },
+    "source-bindings.json": {
+      "bytes": 1603,
+      "sha256": "12a345716a207118c50e2f8b3aa2b01f5b29772e7ab8f68f56713988e48e4cea"
+    }
+  },
+  "blocking_findings": [],
+  "required_changes": [],
+  "limits": [
+    "This audit records actual CI, provider recovery and reader synchronization results. Source publication and root actual article/asset/browser checks remain separately documented.",
+    "Only the two small summary/catalog ZIPs were downloaded locally. The Pages and recovery binaries were validated and transferred by the actual workflow, not downloaded or restored by this auditor.",
+    "No original optical experiment, code-training run, detector calibration, speed benchmark, human prose review or human-reader study was performed.",
+    "Capacity and action-runtime warnings remain operational follow-up observations. No new authorization gate was introduced."
+  ],
+  "public_safe": true
+}
