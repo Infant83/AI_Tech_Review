@@ -2,13 +2,13 @@
   "format": "ai-tech-review-course-registry",
   "version": 1,
   "series_id": "classiq-qae-onboarding",
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "title": "Classiq QAE 온보딩 시리즈",
   "title_en": "Classiq QAE Onboarding Series",
   "summary": "고객의 질문을 계산 문제로 옮기는 데 필요한 양자컴퓨팅의 원리와 수학을 공부합니다. 상태·측정과 에너지 최적화, 계산 비용과 프로그램 실행을 회차별 PDF의 유도·문제·해설로 익히고 직접 필기할 수 있습니다.",
   "summary_en": "Study the quantum principles and mathematics needed to turn a customer’s question into a computational problem. Learn about states, measurement, energy optimization, computation costs and program execution through Korean PDFs with derivations, exercises and worked answers, and annotate them as you study.",
   "official_Classiq_course": false,
-  "latest_unit": "L017",
+  "latest_unit": "L018",
   "units": [
     {
       "id": "L001",
@@ -485,12 +485,40 @@
       "answer_pdf_page": 13,
       "glossary_pdf_page": 15,
       "reference_pdf_page": 16
+    },
+    {
+      "id": "L018",
+      "date": "2026-11-27",
+      "title": "위상을 읽으면 바닥상태 에너지가 나오는가",
+      "title_en": "Quantum Fourier transform, phase estimation and energy",
+      "archive_id": "2026-11-27-classiq-qae-l018-notes-ko",
+      "summary": "위상 추정은 준비한 상태에 들어 있는 고유성분의 위상을 확률적으로 읽습니다. QFT의 부호·비트 순서와 유한 비트의 측정 분포를 확인하고, 시간·에너지 기준·오차가 복원한 에너지와 전체 계산 비용에 미치는 영향을 살핍니다.",
+      "summary_en": "Phase estimation probabilistically reads the phases of the eigenstate components in a prepared state. Examine QFT signs, bit ordering and finite-bit measurement distributions, then see how the evolution time, energy reference and errors affect the recovered energy and total cost.",
+      "status": "available",
+      "language": "ko",
+      "pdf": "2026-11-27-classiq-qae-l018-notes-ko.pdf",
+      "public_pages": 19,
+      "original_pages": 18,
+      "sha256": "b13bf1b5f28082f935205372b2dd8bcd59703d8d940f83c909e7bd3600b4e0c8",
+      "topics": [
+        "QFT·지수 부호·SWAP",
+        "비트 순서·위상 되먹임",
+        "유한 QPE 커널·성공확률",
+        "고유상태 겹침·반복 준비",
+        "에너지 기준·시간·alias",
+        "거듭제곱·구현 오차·전체 비용"
+      ],
+      "exercises": 8,
+      "exercise_pdf_page": 14,
+      "answer_pdf_page": 14,
+      "glossary_pdf_page": 16,
+      "reference_pdf_page": 17
     }
   ],
   "planned_next": {
-    "id": "L018",
+    "id": "L019",
     "status": "planned-not-published",
-    "topic": "양자 Fourier 변환과 위상 추정"
+    "topic": "Hamiltonian 시간발전과 Trotter"
   },
   "source_zip_available": false,
   "original_validation_suite_independently_rerun": false
