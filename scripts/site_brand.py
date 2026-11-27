@@ -38,7 +38,8 @@ class _CurrentBrandParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
-        protected = any(name in {"article", "script", "style", "pre", "code"} for name, _ in self.stack)
+        protected = any(name in {"article", "script", "style", "pre", "code"} or "document" in classes
+                        for name, classes in self.stack)
         # Current metadata and navigation use the custom domain. Historical
         # prose, citations, code and publication assets retain their bytes.
         attribute = None

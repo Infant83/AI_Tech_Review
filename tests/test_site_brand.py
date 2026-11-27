@@ -7,7 +7,8 @@ class CurrentJournalBrandTests(unittest.TestCase):
     def test_public_metadata_and_navigation_use_current_origin_without_rewriting_science(self):
         legacy = "https://infant83.github.io"
         current = "https://infant83.io"
-        science = f'<article><a href="{legacy}/AI_Tech_Review/reviews/history/">source</a><p>{legacy}</p></article>'
+        science = (f'<article><a href="{legacy}/AI_Tech_Review/reviews/history/">source</a><p>{legacy}</p></article>'
+                   f'<section class="document"><a href="{legacy}/AI_Tech_Review/lectures/">lecture reference</a></section>')
         original = (f'<link rel="canonical" href="{legacy}/AI_Tech_Review/reviews/example/">'
                     f'<link rel="alternate" hreflang="en" href="{legacy}/AI_Tech_Review/reviews/example/en/">'
                     f'<meta property="og:url" content="{legacy}/AI_Tech_Review/reviews/example/">'
