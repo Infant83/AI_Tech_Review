@@ -187,7 +187,7 @@ def fig3(lang,mobile):
  s=S(w,h,T('연구 의도를 다시 실행할 수 있는 계산으로','From research intent to a reusable calculation',lang),T('사람이 정한 물성과 기준을 에이전트의 그래프 또는 맞춤 코드 기획에 연결하고 검증된 수치 도구, 결과와 실패 기록으로 이어지는 일반화한 설계.','A generalized design connecting human-selected observables and criteria to agent-planned graphs or custom code, verified numeric tools and retained result/failure records.',lang))
  title=T('의도에서 결과, 다시 쓸 절차까지','From intent to results and reusable procedures',lang)
  if mobile and lang=='en':title='From intent to reusable work'
- header(s,'03',title,[T('사람의 물리적 판단 + 에이전트 기획 + 검증한 수치 실행','Human physical judgment + agent planning + checked numeric execution',lang)] if not mobile else [T('한 결정의 진동 계산으로 읽는 일반화한 설계','Generalized design for one vibration calculation',lang)],mobile)
+ header(s,'05',title,[T('사람의 물리적 판단 + 에이전트 기획 + 검증한 수치 실행','Human physical judgment + agent planning + checked numeric execution',lang)] if not mobile else [T('한 결정의 진동 계산으로 읽는 일반화한 설계','Generalized design for one vibration calculation',lang)],mobile)
  if mobile:
   s.panel(36,178,'A',T('사람이 질문과 기준을 정한다','People set the target and criteria',lang),648)
   s.lines(36,243,[T('“이 결정의 진동을 검증해 달라”','“Validate this crystal’s vibrations”',lang),T('구조·전자 상태·모델·변위·허용 오차','Structure, electronic state, model, step, tolerance',lang)],25,38,'bold')
@@ -247,7 +247,7 @@ def fig3(lang,mobile):
 
 def main():
  OUT.mkdir(parents=True,exist_ok=True);manifest=[]
- for i,fn in [(1,fig1),(2,fig2),(3,fig3)]:
+ for i,fn in [(1,fig1),(2,fig2),(5,fig3)]:
   for lang in ['ko','en']:
    for mobile in [False,True]:
     s=fn(lang,mobile);name=f'fig{i}_{"mobile" if mobile else "desktop"}{"_en" if lang=="en" else ""}.svg';s.save(OUT/name)
