@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 46,
+  "record_version": 47,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-27T04:46:06.399789Z",
+  "updated_at": "2026-11-27T10:16:27.529740Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -64,7 +64,8 @@
     "operations/runs/20261121T180758Z-e9619fd1-5e4c-4eb3-9e3b-fe7546313fa8.md",
     "operations/events/EVT-336e33e8-dfc0-47ec-9787-f6cf6a0c0d15.json",
     "operations/events/EVT-f5882f00-abf2-4a00-8314-9232c8823e93.json",
-    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
+    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md"
   ],
   "limitations": [
     "초기 로컬 후보 조사는 공개 PDF 별칭·구판 연결/용량과 격리 내보내기·현재 연결/비용/판본 계약 조사로 확대됐다. 전체 원본·미사용 의존성·파일 구조의 정리를 마친 것은 아니다.",
@@ -206,10 +207,57 @@
         "https://github.com/Infant83/AI_Tech_Review/actions/runs/45742297431",
         "https://github.com/Infant83/AI_Tech_Review/actions/runs/45729783746"
       ]
+    },
+    "reviewed_legacy_image_preservation": {
+      "status": "validated_source_integrated_actual_CI_and_HTTPS_pending",
+      "source_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "base_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "branch": "codex/legacy-cover-retention-20261127",
+      "workspace": "managed:public-media-versioning/tech-review",
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_files": [
+        "scripts/publish_public_site.py",
+        "scripts/reader_engagement_publish.py",
+        "tests/test_legacy_cover_retention.py"
+      ],
+      "scope": "Existing reviewed four legacy pins preserved on selected regeneration; missing unregistered pinned images refused. Current registered artwork/manifest.assets/reader revision untouched. No new public allowlist entries.",
+      "root_before_missing_pin_accepted_cases": 1,
+      "independently_authored_target_tests": 8,
+      "target_tests_passed": 8,
+      "target_seconds": 0.549,
+      "full_regression_pending": false,
+      "actual_restoration_pending": true,
+      "missing_cover_total_bytes": 283464,
+      "derived_listing_cache_not_restored": true,
+      "existing_site_replace_atomicity_or_full_ancestor_FD_safety_not_claimed": true,
+      "integration_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "full_python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_optional_skipped": 1,
+        "failed": 0,
+        "seconds": 162.694,
+        "executions": 1,
+        "log_sha256": "a3b3fe4f79d6224d9563ef7ff278d2b0ff2c4bdfec50cfb7d989e9937874ff66"
+      },
+      "source_sha256": {
+        "scripts/publish_public_site.py": "0a4ed9fa2160c1eed32c0f1fc541485ef33951ef6dd1ff4f18106165d87fa2b1",
+        "scripts/reader_engagement_publish.py": "ac1ad5f840191c5f19ce672a165341dc876813c83dd0415ef53163e93ec73966",
+        "tests/test_legacy_cover_retention.py": "0584e0a195bb801c20bb11098a25ffa2e949158c6d88f4039bd444a8a7c44ad0"
+      },
+      "independent_candidate_comparison": "PASS_at_exact_CI_encoder_candidate2",
+      "local_release_check": true,
+      "local_payload_budget_check": true,
+      "local_complete_seal_and_guard": true,
+      "prior_payload_missing": 0,
+      "prior_payload_changed": "reader-publications.json revision only",
+      "added_payload_images": 2,
+      "local_candidate_public_bytes": 896393405,
+      "old_image_URL_restoration_actual": false
     }
   },
   "verification": {
-    "status": "11/27 13:30 주간 구조/의존성·권한을 한정 확인했다. native dry-run124개/121unknown·3keep·계획/삭제0, exact18 topic requirements/core manifest변경0·권한 유지이며 공급자 의존경고 조회는 unavailable다. 현재44c 공개871,010,797B·316PDF/221객체·22판본과 정상3건/현재복구3을 인수했다. 일반106/106·필터3/3 완전은 과거 DQB104/103·원래 실패 원인의 해결이 아니며 외부 접근/활성화·복원/물리 절감은 미확인이다.",
+    "status": "정상420c 공개의 PDF/23판본과 기존 주간 검토를 인수했다. pinned 구표지2 URL404의 기술복구333bad7은 전용8/전체674(673통과·기존skip1)와 독립감수·정확CI encoder 후보2/연속성/예산/봉인/guard를 통과해 소스통합했으나 실제 CI·HTTPS 복구는 아직 대기다. 후보1의 Pillow13 URL drift는 배포 대상으로 채택하지 않았다. 현재420c/896,109,564B와 후보896,393,405B를 구분하고 외부활성화·물리복원/절감은 미확인으로 유지한다.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -330,22 +378,25 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "manifest_files": 2820,
-      "manifest_bytes": 869566548,
-      "release_json_bytes": 1444249,
-      "public_files": 2821,
-      "public_bytes": 871010797,
-      "pdf_paths": 316,
-      "unique_pdf_objects": 221,
-      "retained_edition_urls": 22,
-      "growth_bytes": 5802150,
-      "growth_basis_source": "ba103f72355e40428003d159ab3df084df7f4209",
-      "excess_over_internal_800MB_bytes": 71010797,
-      "headroom_to_internal_800MB_bytes": -71010797,
-      "checked_at": "2026-11-27T04:34:47.364301Z",
-      "source_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
-      "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
-      "scope": "Complete actual HTTPS JSON metadata: prior297 PDF paths missing0; QAE notes.pdf change exactly declared;19new paths;22 retained edition URLs/SHA exact. Existing publisher QA reused; no PDF/artifact download, render, physical savings, provider-quota audit, external activation or actual restore."
+      "source_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "checked_at": "2026-11-27T09:34:04.178672Z",
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "manifest_files": 2845,
+      "manifest_bytes": 894650663,
+      "release_json_bytes": 1458901,
+      "public_files": 2846,
+      "public_bytes": 896109564,
+      "pdf_paths": 321,
+      "unique_pdf_objects": 224,
+      "retained_edition_urls": 23,
+      "prior_22_retained_editions_exact": true,
+      "prior_316_PDF_paths_missing": 0,
+      "current_DQB_PDF_alias_exact_declaration": true,
+      "old_DQB_PDF_edition_retained": true,
+      "growth_bytes": 25098767,
+      "growth_basis_source": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
+      "excess_over_internal_800MB_bytes": 96109564,
+      "scope": "Complete420c metadata and existing publisher QA only. Pinned old-image2 publicURL404 is separately open for exact restoration; whole previous payload preservation is not claimed."
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -603,12 +654,36 @@
       "assets": "8 existing records:4active/2configured/2prepared; no new service asset or access evidence",
       "next_weekly_review_at": "2026-12-04T13:30:00+09:00",
       "new_verified_candidate_protection_or_deletion": 0
+    },
+    "legacy_cover_20261127_evening": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "source_revision": "333bad7b62bc1c28ff072bbe4cf17392973922b7",
+      "before_accepted_missing_pin": 1,
+      "target_tests": 8,
+      "target_seconds": 0.549,
+      "full_tests": 674,
+      "full_passed": 673,
+      "existing_optional_skipped": 1,
+      "full_seconds": 162.694,
+      "independent_static": "PASS_after_bounded_read/duplicate/FIFO_corrections",
+      "independent_actual_candidate2": "PASS",
+      "old_payload_missing": 0,
+      "new_payload_files": 2,
+      "restored_source_image_bytes": 283464,
+      "current_registered_article_v4_all_321PDF_23editions_and192_recency_preserved": true,
+      "reader_updates_raw_exact": true,
+      "registry_request_declaration_diff": 0,
+      "candidate1": "Pillow13 cache-key href drift, not release-ready; preserved separately",
+      "candidate2": "existing Python3.9/Pillow11.2.1 matched deployed/CI; metadata and listing raw exact; no install/global environment change",
+      "candidate2_expected_public_bytes": 896393405,
+      "actual_CI_or_HTTPS_restoration_observed": false,
+      "proof_key": "adopt-legacy-cover-retention-20261127 / before/validation/independent-read-review-candidate2/sealed-candidate-comparison/candidate-ci-runtime"
     }
   },
   "observation": {
-    "status": "11/27 13:30 주간 구조/의존성·권한 및 새 공개 인수",
-    "period": "2026-11-27T04:33:34.307Z",
-    "result": "현재 공개 증가와 기존 복구/목록의 정확 범위를 인수하고 예정 주간/외부 선행 근거를 재평가했다. 외부 접근 입력은 여전히 없고 새 과금/활성화·복원/물리절감은0이다.",
+    "status": "11/27 18:30 pinned 구표지 복구 소스통합·실제 배포 대기",
+    "period": "2026-11-27T09:31:07.344Z",
+    "result": "새 공개/PDF판본과 정상도메인 수정 사슬을 인수했고 oldcover 두 공개URL의 보존회귀를 실제404/명시pin/정확원본으로 분류했다. 현재v4표지는 정상이며 별도 작업 사본에서 기술복구 후보를 검증한다. 주간 검토/기존보호·외부미활성은 그대로다.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1231,7 +1306,7 @@
       "manual_deletion_restore_external_activation": 0,
       "weekly_structure_review": "2026-11-27T11:00:00+09:00"
     },
-    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
     "night_20261125": {
       "run_reference": "operations/runs/20261124T180451Z-d35822d6-f834-40be-adb2-cfd0977ee6e1.md",
       "retention_events_merged": [
@@ -1482,6 +1557,37 @@
       "new_FD_primitive_actual_CI_observed": false,
       "new_incident_established": false,
       "result": "현재 공개 증가와 기존 복구/목록의 정확 범위를 인수하고 예정 주간/외부 선행 근거를 재평가했다. 외부 접근 입력은 여전히 없고 새 과금/활성화·복원/물리절감은0이다."
+    },
+    "evening_20261127": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "actual_public_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "metadata_verified_at": "2026-11-27T09:34:04.178672Z",
+      "public_bytes": 896109564,
+      "PDF_paths": 321,
+      "unique_PDF_objects": 224,
+      "retained_edition_paths": 23,
+      "old_22_edition_paths_SHA_exact": true,
+      "current_unexpired_recovery_copies": 3,
+      "general_artifact_advertised_collected_unique": 113,
+      "artifact_pages": 2,
+      "legacy_image_regression": {
+        "priority": "P2",
+        "current_registered_article_and_v4": "200/exact metadata",
+        "legacy_two_URLs": "404,283464B exact originals/pins retained",
+        "case_reference": "operations/issues/OPS-79b80bf3-b847-485a-9f60-3cd663e5b433.json",
+        "before_case": "missing pin accepted by old guard,own fixture1",
+        "recovery": "333bad7 validated source integration; existing single-path actual CI/HTTPS pending",
+        "not_actual_full_site_rollback_or_private_DB_restore": true
+      },
+      "weekly_review_reused": "13:30 current day",
+      "local_retention_dry_run_repeated": false,
+      "manual_deletion_files_or_bytes": 0,
+      "physical_space_reclaimed": 0,
+      "external_storage_access_new_evidence": false,
+      "external_storage_activation": false,
+      "external_next_review_at": "2026-11-28T13:30:00+09:00",
+      "next_weekly_at": "2026-12-04T13:30:00+09:00",
+      "known_original_DQB_failure_cause_or_same_input_established": false
     }
   },
   "recovery": {
@@ -1505,7 +1611,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "외부 저장소 접근·원격 봉인/복구 입력은11/28 13:30에 재평가하고 주간 구조/의존성·권한 검토는12/4 13:30으로 잇는다. 현재871,010,797B·316PDF/221객체·22판본 보존/내부목표초과71,010,797B와 준비 자산 v36을 연결한다. 과거 DQB recovery 실패·104/103 목록 원인은 미확정이며 다음 자연 CI/새 거절 때 관찰한다. 수동 삭제/리런·보존 완화·외부 활성화/과금·실제 복원은 하지 않았다.",
+  "next_action": "현재 회차에서 기존 단일 main/Pages 경로의 실제 build·deploy·recovery-copy·notify-readers와 두 clean HTTPS 이미지 URL/정확SHA·최신동시게시 보존을 확인한다. 실패하면 기존공개를 유지하고 원인/재개 지점을 같은 일감에 연결한다. 외부근거28일13:30·다음주간12/4 13:30은 유지하며 별도리런/푸시·수동삭제·외부활성화·DB복구는 하지 않는다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",

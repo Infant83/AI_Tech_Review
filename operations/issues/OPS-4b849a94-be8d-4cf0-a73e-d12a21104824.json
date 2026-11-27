@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 31,
+  "record_version": 32,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-27T04:46:06.399789Z",
+  "updated_at": "2026-11-27T10:16:27.494988Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -58,7 +58,8 @@
     "operations/runs/20261126T043248Z-3eb6a539-c950-4c3f-b962-31071b1bab5d.md",
     "operations/runs/20261126T093008Z-07a27176-9192-4ef7-b892-a72e6b075381.md",
     "operations/runs/20261126T203259Z-0175361e-6e45-4f6c-9335-ac494c913a63.md",
-    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
+    "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md"
   ],
   "limitations": [
     "개인 학습 초안 코드를 완성된 공개 게시 관리 도구로 간주하지 않음",
@@ -512,11 +513,38 @@
       "initial_reviewed_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
       "integration_revision": "75497454864305aafae1e5c0573d34b976ebb966",
       "integration_base_revision": "44c64751964fdb3472ae222b8f3ddc8cad6e61c5",
-      "actual_CI_observed": false
+      "actual_CI_observed": true,
+      "actual_CI_run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md"
+    },
+    "b2b2_authority_observation_contract": {
+      "status": "adopted_after_two_independent_static_reviews_not_implemented",
+      "adopted_at": "2026-11-27T09:41:53.819759Z",
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "contract_reference": "operations/decisions/DEC-5e30f3a0-1003-4432-bda1-688bdb73ceb1.md#b2b2-v--기존-writer의-읽기-전용-권위-관측",
+      "source_base_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
+      "planned_source_files": [
+        "scripts/admin_projection_authority.py",
+        "tests/test_admin_projection_authority.py"
+      ],
+      "candidate_revision": null,
+      "main_product_integrated": false,
+      "runtime_validation_performed": false,
+      "scope": "current v1 no_change store의 identity/현재 inventory·완전 staged base와 derived state를 읽기 전용으로 검증하는 inspector/자체 CLI",
+      "inputs": "store and trusted local repository/principal only; no request/raw key/new projection hint/source/baseline/live B2b1",
+      "continuity_established": false,
+      "current_local_self_consistency_only": true,
+      "existing_per_key_replay_unchanged": true,
+      "sourceAdvanced": null,
+      "payload_Git_network_or_source_execution": 0,
+      "native_two_ref_requirement_still_unmet": true,
+      "changed_requests_still_rejected_before_reservation": true,
+      "old_seven_files_and_historical_tool_paths_unchanged": true,
+      "first_implementation_target": "2026-11-28T05:30:00+09:00",
+      "prepared_scope_independent_review_target": "2026-11-28T13:30:00+09:00"
     }
   },
   "verification": {
-    "status": "FD 내부 primitive 정식 검증·로컬 소스통합 완료; 전체 writer/API 전",
+    "status": "B2b2-V 읽기 전용 inspector 계약은 두 역할 정적 검토 뒤 채택·제품 구현 전이다. 기존 FD754 source/test의 실제 CI 실행 결속은 확인했으나 현재 writer caller·changed receipt/native gate/운영 활성화와 구분한다.",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -1365,12 +1393,53 @@
       "deadline_scope": "Cooperative budget checks around syscalls; no hard cancellation of blocked OS syscalls.",
       "actual_user_source_existing_store_remote_or_publication_mutations": 0,
       "proof_key": "adopt-b2b2-fd-formal-20261127 / freeze/full-python; adopt-b2b2-fd-formal-independent-20261127 / formal1/result"
+    },
+    "B2b2_authority_contract_20261127_evening": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "status": "PASS_at_readonly_inspector_contract_only",
+      "independent_static_review_roles": 2,
+      "clarifications": [
+        "current retained self-consistency versus externally proven history continuity",
+        "global all-base inspection versus existing per-key historical replay",
+        "pure derived-state validation and missing count, no _state writes",
+        "compressed storage/file metadata versus Git payload/kind/OID/tree-mode hashes, same bounded stream",
+        "stdout failure nonzero/no re-output and complete JSON+success-exit requirement",
+        "self-code bytes cap/shared budget and final exact revalidation"
+      ],
+      "new_product_tests_or_fixtures_executed": 0,
+      "new_implementation_files": 0,
+      "native_gate_format_receipt_full_writer_or_operational_API_completed": false
+    },
+    "B2b2_FD_actual_CI_20261127_evening": {
+      "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "code_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+      "actual_CI_observed": true,
+      "actual_reference_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45948685100",
+      "source_revision": "4e80668d08e5374246d98010f3d37c9c8d87c3c2",
+      "source_binding": "FD helper/test SHA exact across four new CI sources(8/8);17 test methods without skip decorators are included in workflow unittest discover -s tests",
+      "existing_DQB_QA_Python": {
+        "tests": 664,
+        "passed": 663,
+        "existing_optional_skipped": 1
+      },
+      "existing_DQB_QA_all_suites": {
+        "tests": 1190,
+        "passed": 1181,
+        "skipped": 9,
+        "failed": 0
+      },
+      "source_hashes": {
+        "scripts/admin_projection_refs.py": "11ca5c85b3169674d1c1e6923251f92ce9ef52f72ed3d468a8b382dbec789d26",
+        "tests/test_admin_projection_refs.py": "643ec2a0def26d5216c4318bfd3a6fbb53539a35fe94dcdc4414b2fb7c9a8096"
+      },
+      "scope": "actual source/test execution binding only, not current CLI caller or runtime writer activation",
+      "confirmed_latest_source_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45965028392"
     }
   },
   "observation": {
-    "status": "11/27 13:30 FD 내부 primitive 정식 인수",
-    "period": "2026-11-27T04:33:34.307Z",
-    "result": "최신 L018/DQB/photonic 게시를 보존한7549745에 정식 경계8영역·새 독립4그룹과 전체632검사(631통과/기존선택1skip)를 적용했다. helper만 로컬 소스통합하며 현재 CLI/no_change7파일·변경 요청 사전 거절은 유지한다. 전체 native 두ref/CAS·claim/receipt·서버/발행은 미완료다.",
+    "status": "11/27 18:30 후속 권위 관측 계약 채택",
+    "period": "2026-11-27T09:31:07.344Z",
+    "result": "기존 v1의 엄격한 no_change 형식과 native gate를 유지해 읽기 전용 inspector를 다음 최소 후보로 선택했다. 현재 남은 보존 근거의 자기정합만 관측하며 이력 연속성 증명/새 쓰기 capability·현재성으로 확대하지 않는다. 제품/신규 runtime0이며 기존17/632와 주간 검토는 재사용한다.",
     "resumption_20261119": {
       "run_reference": "operations/runs/20261119T044245Z-752199ef-dab8-4ae3-bfa8-0e65ac417fc8.md",
       "candidate_revision": "79cc54e3d7d8a8166d061e2ab0b604187c2b6ff8",
@@ -1424,30 +1493,30 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md"
+    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/27 18:30 기존 회차에서 완전 identity/base-object/provenance·claim/receipt 권위와 전체 변경 저장 선행 계약을 대조해 다음 최소 구현 범위를 정한다. 미연결 내부 helper의 소스통합과 전체 changed writer/native 두ref·운영 활성화는 구분한다. 현재 CLI/키 접수·원본/원격/서버·발행은 그대로며 전체 납기는 미정이다.",
+  "next_action": "11/28 05:30에 B2b2-V 계약의 읽기 전용 inspector/자체 CLI를 기존 별도 작업 사본에서 새 두 파일 후보로 구현한다. 준비된 범위는13:30 독립 검토로 잇는다. 현재 v1/old7·역사 tool paths·per-key replay와 native 두ref gate를 유지하며 변경 키/receipt·원본/원격/서버·발행 활성화는 열지 않는다. Inspector의 continuityEstablished:false와 현재성 미검증을 보존한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b2_FD_internal_primitive_formally_reviewed_source_integrated_caller_contract_pending",
-    "next_scheduled_step_at": "2026-11-27T18:30:00+09:00",
-    "next_review_at": "2026-11-27T18:30:00+09:00",
-    "scheduled_step": "future caller의 완전 identity/base-object/provenance/claim/receipt 권위와 변경 저장 선행 계약·최소 후속 범위 검토",
+    "state": "B2b2_V_readonly_authority_contract_adopted_first_implementation_pending",
+    "next_scheduled_step_at": "2026-11-28T05:30:00+09:00",
+    "next_review_at": "2026-11-28T13:30:00+09:00",
+    "scheduled_step": "현재 v1 writer의 읽기 전용 권위 inspector 첫 격리 구현·준비 범위 독립 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
-    "replan_reason": "13:30 준비 범위의 정식 감수·최신 전체 회귀와 로컬 source통합을 완료해 같은 P2/순번1의 다음18:30에 미연결 caller 권위/전체 changed writer 선행 범위를 잇는다. 기존 native 두ref gate와 일반 게시/편집부 권한은 유지한다.",
+    "replan_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+    "replan_reason": "18:30에 후속 최소 범위 계약을 두 역할의 정적 독립 검토 뒤 채택했다. 현재 format/역사/키·native 두ref 조건을 유지하고 changed 저장보다 읽기 전용 검사기를 먼저 구현한다. 같은P2/순번1의 다음28일05:30 첫 후보·13:30 독립 검토로 연결하며 미검증이면 같은 과제를 잇는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261127T043512Z-9e72cd81-6dd5-410a-8a8f-4601fcddd4a7.md",
+    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -1494,10 +1563,13 @@
     "b2b2_no_change_formal_completed_at": "2026-11-26T04:54:03.458289+00:00",
     "b2b2_no_change_source_integration_revision": "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
     "b2b2_ref_boundary_review_completed_at": "2026-11-26T09:40:53.645532+00:00",
-    "b2b2_next_independent_design_review_target": "2026-11-27T18:30:00+09:00",
+    "b2b2_next_independent_design_review_target": "2026-11-28T13:30:00+09:00",
     "b2b2_fd_primitive_candidate_revision": "1ff49fda3ebd0b275e087f4fa939c422bda2c23d",
     "b2b2_fd_primitive_initial_validation_at": "2026-11-26T20:50:32.611474+00:00",
     "b2b2_fd_primitive_formal_completed_at": "2026-11-27T04:46:06.399789Z",
-    "b2b2_fd_primitive_integration_revision": "75497454864305aafae1e5c0573d34b976ebb966"
+    "b2b2_fd_primitive_integration_revision": "75497454864305aafae1e5c0573d34b976ebb966",
+    "b2b2_authority_contract_adopted_at": "2026-11-27T09:41:53.819759Z",
+    "b2b2_authority_first_candidate_target": "2026-11-28T05:30:00+09:00",
+    "b2b2_authority_formal_review_target": "2026-11-28T13:30:00+09:00"
   }
 }
