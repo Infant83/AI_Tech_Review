@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "status": "source_checked_for_public_archival_notes_and_short_editorial",
+  "checked_at": "2026-11-27T01:59:23.606860+00:00",
+  "reviewer": "root",
+  "source": {
+    "authors": [
+      "Haejung Koh",
+      "Katerina Gratsea",
+      "Hao Zhang",
+      "Matthew Otten"
+    ],
+    "title": "The Price of Quantum Advantage in Computational Chemistry",
+    "version": "arXiv:2611.34889v1",
+    "url": "https://arxiv.org/abs/2611.34889v1",
+    "submitted_at": "2026-11-25T18:45:50Z",
+    "classification": "preprint; abs record has no journal-reference field",
+    "license": "arXiv perpetual non-exclusive; not a blanket license for copying paper figures",
+    "HTML_sha256": "d854f370d3dcf07e6dd8b0d57600711fe64c81162ae2af37655f89ca9984a3fb"
+  },
+  "actual_read_scope": [
+    "Main text I-IV, figure captions1-5 and results tables embedded in Figs2/3",
+    "Appendices B/C DMRG convergence, initialization/order sensitivity, residual and trial overlaps; E/F extrapolation protocols; G adopted pricing",
+    "Selected AppendixA methodology and AppendixH d/e and resource rows; cited works were not all read",
+    "Original DQB3pages full extracted text and all3rendered pages, two source-derived charts",
+    "Earlier resource-aware review KO main text and related EN cost/state-preparation discussion reused at unchanged source"
+  ],
+  "checks": {
+    "number_of_benchmark_instances": 26,
+    "price_compared_systems": 7,
+    "classical_cheaper_in_adopted_model": 6,
+    "classical_rate_USD_per_allocated_core_hour": 0.04125,
+    "future_whole_QPU_hour_price_assumption_USD": 7000,
+    "future_device_price_measured": false,
+    "classical_convergence_diagnostic": "residualPT2 magnitude1.6mHa, not identical certified absolute energy error",
+    "quantum_precision": "QPE1mHa under distributed trapped-ion surface-code10^-4s cycle assumptions",
+    "FeMoco_PT2_fit_range_USD": [
+      721,
+      12114
+    ],
+    "FeMoco_Evar_model_separate": true,
+    "Fe4S4_36orbital_price_USD_approx": 170,
+    "Ru100orbital_price_USD_approx": 0.11,
+    "price_range_statistical_CI": false,
+    "P450_d_active_space": [
+      25,
+      23
+    ],
+    "P450_d_fixed_2Ms": 5,
+    "DMRG_M4000_energy_high_Ha": -2756.507220241,
+    "DMRG_M4000_energy_low_Ha": -2756.539052246,
+    "difference_mHa_from_displayed_values": 31.83200500006933,
+    "both_adjacent_sweep_change_around_Ha": 2e-09,
+    "P450_d_low_branch_SHCI_reference_overlap": 0.998735,
+    "P450_d_high_branch_SHCI_reference_overlap": 8.66e-12,
+    "overlap_reference_is_exact_FCI": false,
+    "P450_d_is_separate_from_cost_plot_P450_x_58orbital": true
+  },
+  "data_and_code": {
+    "paper_named_tools": [
+      "pyLIQTR",
+      "PyZX",
+      "Bench-Q"
+    ],
+    "tool_implementations_executed_or_audited": false,
+    "Zenodo_record": "https://doi.org/10.5281/zenodo.23651694",
+    "record_metadata_read": true,
+    "record_license": "CCBY4.0",
+    "data_file": "benchmark_data.tar.zst",
+    "data_bytes": 5528942321,
+    "data_archive_downloaded_or_parsed": false
+  },
+  "public_notes_needed": [
+    "Make distinct precision/convergence contracts explicit",
+    "Retain future-QPU pricing assumption and whole-machine unit; do not present it as a verified FT tariff",
+    "Distinguish PT2 fit-range from separate variational-energy scenarios",
+    "Keep classical state identity/reference validation in relation to preparation and repetition; SCI reference overlap is not exactQPE probability"
+  ],
+  "no_scientific_experiment_or_model_training": true,
+  "public_safe": true
+}

@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "checked_at": "2026-11-27T02:39:07.824764+00:00",
+  "reviewer": "root",
+  "candidate_only": true,
+  "checks": [
+    "Korean desktop screenshot: title, three distinct date labels, single automatic responsible-editor/AI byline, separate summary and scientific opening.",
+    "Language header navigates to the matching English edition.",
+    "English and Korean 390x844 mobile screenshots, Korean reference/authorship section, and document-width equality (375 CSS px including the scrollbar effect) showed no horizontal overflow.",
+    "Korean first citation navigates to #ref-1; exact v1 primary and existing bilingual review links are present.",
+    "Calendar November27 button selection shows the new title and separate editorial/PDF-open/PDF-download actions.",
+    "Keyboard P450 search returned two results, with the new editorial first; the other result is the distinct October15 source PDF.",
+    "Archived PDF served over local HTTP exactly equals the reviewed registered bytes; download attribute is present.",
+    "Console warning/error list was empty."
+  ],
+  "byline_cleanup": {
+    "initial_candidate_finding": "Manual first byline duplicated the current common builder automatic byline.",
+    "fix": "Removed the first em paragraph only in both manuscripts; source audit proved exact restoration to prior manuscript by prepending the removed paragraphs.",
+    "final_single_byline_verified": true
+  },
+  "served_pdf": {
+    "bytes": 239528,
+    "sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+    "pages": 5
+  },
+  "cleanup": {
+    "tabs_closed": true,
+    "temporary_viewport_reset": true,
+    "server_shutdown_pending": false,
+    "server_stopped": true
+  },
+  "limits": [
+    "These are local candidate checks; actual CI/deployment/HTTPS verification remains separate.",
+    "Native PDF viewer and actual click-to-save behavior were not tested; links, download attribute and served complete PDF bytes were checked.",
+    "No original scientific experiment or human-reader study was performed."
+  ]
+}

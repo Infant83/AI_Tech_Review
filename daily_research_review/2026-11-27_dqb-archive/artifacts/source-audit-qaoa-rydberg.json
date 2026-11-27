@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "status": "passed_for_assigned_claims_with_recorded_qualifications",
+  "checked_at": "2026-11-27T01:59:25.926046+00:00",
+  "reviewer": "dqb1127_sources",
+  "role": "Independent QAOA v5 and Rydberg sPQMC v1 primary-source, bibliography and editorial-continuity audit",
+  "public_safe": true,
+  "references": [
+    {
+      "number": 1,
+      "title": "Landscape-Similarity-Guided Optimization in Divide-and-Conquer QAOA",
+      "authors": [
+        "Sokea Sang",
+        "Leanghok Hour",
+        "Sanghyeon Lee",
+        "Aniket Patra",
+        "Hee Chul Park",
+        "Moon Jip Park",
+        "Youngsun Han"
+      ],
+      "APS": "S. Sang, L. Hour, S. Lee, A. Patra, H. C. Park, M. J. Park, and Y. Han, Landscape-Similarity-Guided Optimization in Divide-and-Conquer QAOA, arXiv:2602.21689v5 (2026).",
+      "url": "https://arxiv.org/abs/2602.21689v5",
+      "exact_HTML": "https://arxiv.org/html/2602.21689v5",
+      "version": "v5",
+      "first_submitted_UTC": "2026-02-25T08:46:05Z",
+      "version_uploaded_UTC": "2026-11-23T06:29:02Z",
+      "peer_review_status": "Preprint under the directly checked official metadata; no journal reference or journal DOI is supplied on the current arXiv page. No exhaustive claim about all acceptance records.",
+      "rights": "CC BY 4.0 explicitly identified in exact HTML and linked from official abstract page."
+    },
+    {
+      "number": 4,
+      "title": "Data-enhanced self-learning projective quantum Monte Carlo with Rydberg-atom measurements",
+      "authors": [
+        "Vichayuth Imchitr",
+        "Luca Brodoloni",
+        "Sebastiano Pilati",
+        "Estelle Maeva Inack"
+      ],
+      "APS": "V. Imchitr, L. Brodoloni, S. Pilati, and E. M. Inack, Data-enhanced self-learning projective quantum Monte Carlo with Rydberg-atom measurements, arXiv:2611.34636v1 (2026).",
+      "url": "https://arxiv.org/abs/2611.34636v1",
+      "exact_HTML": "https://arxiv.org/html/2611.34636v1",
+      "version": "v1",
+      "first_submitted_UTC": "2026-11-25T16:20:27Z",
+      "version_uploaded_UTC": "2026-11-25T16:20:27Z",
+      "peer_review_status": "Preprint under the directly checked official metadata; only v1 is listed and no journal reference/acceptance is established. APS/123-QED in the author manuscript is a template label, not evidence of APS acceptance.",
+      "rights": "CC BY 4.0 explicitly identified in exact HTML and linked from official abstract page."
+    }
+  ],
+  "actual_read_scope": [
+    "Read the complete original three-page extracted DQB text, all source-link records and the numerical/context claims assigned here; no visual inspection of original PDF/figure pixels.",
+    "Read exact QAOA v5 HTML in full: abstract, main Sections I–VI, every integrated Appendix A–H, all equations/tables/figure captions and bibliography. This is full text/caption review, not independent verification of every mathematical proof or figure pixel.",
+    "Read exact Rydberg v1 HTML in full: main Sections I–V, data/code statement, all integrated Appendices A–F, equations/tables/figure captions and bibliography.",
+    "Fresh official arXiv abstract/version/license metadata for both papers; bounded public GitHub/arXiv exact-title code search. No author experiment repository or pinned code release was established.",
+    "Read current private five pending records and focus/open-question map, Nov26 completion/continuity/source audits; selected current Sep4/Sep9/Oct21 source passages and corresponding actual public HTML paragraphs. Read current baseline snapshot/catalog metadata for bounded publication-overlap checks.",
+    "No QPU/DFT/QAOA/PQMC/ML simulation, code execution, full-page rendering, local build/package, outgoing message or central-state/source mutation."
+  ],
+  "qaoa_key_conditions": {
+    "execution": "Classical noisy simulation using IBM FakeBrisbane-derived device noise. No physical QPU, annealer or strong industrial/classical-solver runtime benchmark.",
+    "conditions": {
+      "main_depth_p": 1,
+      "largest_benchmark_N": 20,
+      "frozen_m_for_DQB_figure": 3,
+      "shots_per_cost_evaluation": 8192,
+      "optimizer": "COBYLA",
+      "maximum_optimization_episodes": 1000,
+      "representative_early_termination": "Allowed when its target is reached; actual effort can differ from the full maximum used by independent branch training.",
+      "initialization": "Physics-informed shortcut near gamma=-pi/6,beta=-pi/8 is another component; the source explicitly distinguishes its Ising convention from standard MaxCut angle conventions.",
+      "transpilation": "Qiskit optimization level2",
+      "hardware_for_simulation": "AMD Ryzen Threadripper PRO5955WX16-core CPU,512GB RAM,three NVIDIA RTX4090 GPUs."
+    },
+    "Table4_m3": {
+      "datasets": [
+        "Power-Law",
+        "Regular",
+        "SK",
+        "AIDS",
+        "Linux",
+        "IMDb"
+      ],
+      "FrozenQubits_ARG_percent": [
+        43,
+        45,
+        57,
+        41,
+        34,
+        58
+      ],
+      "DO_QAOA_ARG_percent": [
+        26,
+        42,
+        57,
+        35,
+        20,
+        51
+      ],
+      "FrozenQubits_shots_millions": [
+        65.54,
+        65.54,
+        65.54,
+        65.54,
+        65.54,
+        65.54
+      ],
+      "DO_QAOA_shots_millions": [
+        0.17,
+        0.23,
+        0.23,
+        0.21,
+        0.2,
+        0.23
+      ],
+      "FrozenQubits_runtime_s": [
+        1055,
+        557,
+        434,
+        382,
+        367,
+        358
+      ],
+      "DO_QAOA_runtime_s": [
+        101,
+        82,
+        67,
+        16,
+        35,
+        33
+      ],
+      "means_scope": "Dataset-averaged values across reported node instances; the table supplies no per-cell uncertainty/error bars."
+    },
+    "qualifications": [
+      "ARG is100*abs((Emin-<Hc>)/Emin), a mean-energy relative gap, not optimum-bitstring yield or solution-success probability.",
+      "The headline shot ratios about285–386 and times about6.5–23.9 combine actual training effort, informed initialization/early termination, target-specific refinement and branch evaluation. The source explicitly does not isolate parameter-transfer-only causation.",
+      "Replacing8 full branch trainings by1 changes that component by8 at matched full-training budgets, before other costs. It does not explain386 alone, constant total cost or exponential speedup in N.",
+      "At m2, Regular49vs48,SK61vs59 andAIDS44vs42 have higher DO gaps. The original DQB correctly preserves this counterexample.",
+      "Matching/beating FrozenQubits at m3 does not mean beating every baseline: HEA mean ARG37vsDO57 onSK and40vs42 onRegular. No uncertainty-based significance rank can be inferred.",
+      "No matched industrial constraint/whole-workflow time-to-target result is established. CP-SAT/local-search comparison in the DQB is an editorial future-test proposal."
+    ],
+    "code_supplement": "Integrated Appendices A–H were read. No separate author code/data repository, release tag or pinned commit was identified in the manuscript, official abstract/fulltext links or bounded exact-title search. Generic arXiv conversion-tool GitHub links and cited Qiskit/NetworkX/QAOAKit packages are not this experiment's implementation."
+  },
+  "rydberg_key_conditions": {
+    "execution": "Reanalysis of experimental projective measurements from the earlier256-atom Rydberg experiment plus new classical neural guiding/PQMC calculations. Actual hardware data are an input; the final ground-state calculation is classical continuous-time PQMC.",
+    "physical_scope": "Open-boundary16x16 array of87Rb, Rb/a about1.15,Omega=2*pi*4.3MHz,interaction cutoff4a. A global z-axis rotation makes the model stoquastic, enabling sign-problem-free positive-amplitude PQMC. This does not solve generic fermionic/sign/phase problems.",
+    "dataset": {
+      "source_reference": "S. Ebadi et al., Quantum phases of matter on a256-atom programmable quantum simulator, Nature595,227(2021); dataset handling follows M. S. Moss et al., Phys.Rev.A109,032410(2024). These cited papers were identified in the new source bibliography; their fulltexts were not freshly reread.",
+      "seven_sweep_rates_MHz_per_us": [
+        15,
+        21,
+        30,
+        42,
+        60,
+        85,
+        120
+      ],
+      "snapshots": "500 per sweep/detuning,1000 at15MHz/us, combined4000 perdetuning",
+      "augmentation": "Original plus pi/2,pi,3pi/2 lattice rotations gives16000 training configurations perdetuning; not16000 independent hardware shots.",
+      "smaller_sizes": "L8/L12 configurations are crops of the availableL16 measurements, not new quantum-device experiments at those sizes.",
+      "hardware_readout_fidelity_reported": "about99%, as listed in Table2; not independently remeasured."
+    },
+    "architectures": {
+      "RBM": {
+        "visible": 256,
+        "hidden": 512,
+        "parameters": 131840,
+        "training": "Contrastive divergence plus SGD momentum"
+      },
+      "RNN": {
+        "visible": 256,
+        "hidden": 32,
+        "parameters": 4176,
+        "recurrent_layers": 1,
+        "patch": "2x2",
+        "training": "Adam"
+      },
+      "interpretation": "The more expressive/effective patched RNN reaches the SSE uncertainty band with fewer walkers even without experimental pretraining than the data-pretrained RBM. Data initialization still adds a smaller RNN benefit; compare against the stronger classical guide."
+    },
+    "metrics": [
+      "The reference in Fig2 and subsequent main energy comparisons is stochastic-series-expansion ground-state energy with statistical uncertainty. Fig3 instead uses the corresponding method's Nw10000 mixed-estimator energy as reference; do not label all its points independent SSE benchmarks.",
+      "Energy uses the converged mixed estimator. Checkerboard order/noncommuting observables require separate forward-walking pure estimators; no claim that a mixed estimate is unbiased for arbitrary observables.",
+      "Experimental configurations deviate from ideal equilibrium, especially ordered-phase order parameters. Their usefulness as initialization does not certify that the hardware already prepared the target ground state.",
+      "Unbiased/exact ground-state statements refer to converged projection/large-population limits. Finite walker budgets have controlled residual bias checked against the stated references.",
+      "Finite-size critical-property validation was run without experimental-data pretraining, separating classical-method reliability from the data enhancement. Current text/table andFig7caption report slightly different fit summaries; do not add exact critical values to the briefing without edition/locator qualification."
+    ],
+    "Table5_step_times_s": {
+      "RBM_device": "AMD EPYC7543 CPU",
+      "RNN_device": "NVIDIA H200 GPU",
+      "projection": {
+        "RBM": 0.344,
+        "RNN": 0.7
+      },
+      "experimental_data_training": {
+        "RBM": 0.0859,
+        "RNN": 0.0024
+      },
+      "self_learning_training": {
+        "RBM": 0.0994,
+        "RNN": 0.00342
+      },
+      "boundary": "Per-step timings on different devices and code paths, not a measured full-workflow speedup, matched hardware comparison or quantum advantage. Data acquisition, all training/projection/reuse and hardware access costs need a matched target-budget comparison."
+    },
+    "code_supplement": "All integrated Appendices A–F were read. Data are available upon request from the corresponding author. The statement identifies PyTorch,NumPy,NetKet,SciPy,Matplotlib, but supplies no author experiment repository, pinned release or raw-data download. No author contact, code acquisition/execution or source-data reconstruction was performed.",
+    "direct_citation_connection": "The new paper itself cites the pending Willow QC-QMC source arXiv2611.08151v1 as reference35 and shadow-trained AFQMC2611.08129v2 as reference53. This establishes a meaningful prior/parallel research relation, not identical estimators or transferable performance ratios."
+  },
+  "bibliography_and_figure_qualification": [
+    {
+      "number": 1,
+      "location": "original reference list and source credit for Figure1",
+      "action": "Replace shortened author/title-only listing with all seven original authors, exact full title and exactv5 citation. Keep first-use numbering1."
+    },
+    {
+      "number": 4,
+      "location": "original reference list",
+      "action": "Use all four original authors, exact full title and exactv1 citation. Preserve first-use numbering4."
+    }
+  ],
+  "figure_rights": "Both exact arXiv editions explicitly carryCCBY4.0. Replotting factual Table4 numbers or drawing a new explanatory workflow with proper source/creator/version credit and change notice is supported. Do not imply independent simulation or add unsupported uncertainty. This audit does not independently establish the newsletter's redistribution rights, which are handled by the separate PDF/archive review.",
+  "existing_relations": [
+    {
+      "id": "2026-10-21_sparse-reference-quantum-chemistry",
+      "title": "양자화학의 에너지 차이를 읽는 법: 희소 기준상태와 혼합 추정량",
+      "url": "https://infant83.io/AI_Tech_Review/reviews/2026-10-21_sparse-reference-quantum-chemistry/",
+      "mode": "parallel_short_editorial_connection",
+      "common_question": "Which state information is cheaply known, measured or learned, and which estimator uses it to obtain a useful energy?",
+      "new_contribution": "Rydberg computational-basis probability data initialize a positive guide for stoquastic projection; sparse chemical-reference overlap estimates and the pending fermionic AFQMC overlap/derivative surrogate involve different information and bias conditions.",
+      "actual_change_scope": "DQB short editorial link/context only; no existing body/title/PDF change."
+    },
+    {
+      "id": "2026-09-09_quantum-resource-aware-workflows",
+      "title": "양자 계산의 전체 비용을 설계하다",
+      "url": "https://infant83.io/AI_Tech_Review/reviews/2026-09-09_quantum-resource-aware-workflows/",
+      "mode": "parallel_workflow_cost_case",
+      "common_question": "Does a local resource reduction remain useful after all repeated preparation, measurements and classical processing?",
+      "new_contribution": "QAOA fixes circuit metrics at the same m while reducing the tested optimization effort; Rydberg changes guide training and finite-walker needs. Their gains have different denominators and should not form a shared speed rank.",
+      "actual_change_scope": "Short editorial context, not repetition/expansion of the full cost review."
+    },
+    {
+      "id": "2026-09-04_quantum-advantage-evidence-ledger",
+      "title": "양자 우위의 경계는 계속 다시 그려진다",
+      "url": "https://infant83.io/AI_Tech_Review/reviews/2026-09-04_quantum-advantage-evidence-ledger/",
+      "mode": "parallel_strong_baseline_and_target_observable_case",
+      "common_question": "Which output criterion, reference accuracy and strong classical alternative define a useful computational result?",
+      "new_contribution": "QAOA mean ARG vs optimal-sample yield, and Rydberg learned-guide architecture vs measured-data contribution, give concrete conditions for matched-target tests.",
+      "actual_change_scope": "No public body change."
+    }
+  ],
+  "pending_approval_count_preserved": 5,
+  "new_deep_review_proposed": false,
+  "priority_changed": false,
+  "other_existing_body_expanded": false,
+  "limitations": [
+    "This is automated source and editorial audit; it does not claim human review.",
+    "Full HTML text/captions/appendices were reviewed, not source PDF page layouts, image pixels or independent proof correctness.",
+    "Only selected prior public articles and current catalog metadata were checked; no blanket re-review of all published articles.",
+    "No author code/data was obtained, pinned or executed; no claim that none exists anywhere.",
+    "No raw source-paper figures or PDFs were copied into public source by this reviewer.",
+    "Root/PDF reviewer must separately check actual derivative rendering, privacy, rights, build, deployment and live URLs."
+  ]
+}

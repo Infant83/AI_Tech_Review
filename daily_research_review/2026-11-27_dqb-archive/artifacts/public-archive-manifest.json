@@ -1,0 +1,95 @@
+{
+  "issue_date": "2026-11-27",
+  "edition_date": "2026-11-27",
+  "source_pages": 3,
+  "source_sha256": "53c6fba5e68656fe8d61ba60e1cc9a4c1f61642cb2354c594bb409eeaf98b75e",
+  "source_audit_complete": true,
+  "source_name": "Daily Quantum Brief",
+  "redaction_regions": {
+    "2": [
+      [
+        40,
+        462,
+        555,
+        560
+      ]
+    ]
+  },
+  "line_replacements": [],
+  "pdf_subject": "QAOA optimization effort, chemical quantum-computing cost estimates, CutQAS, Rydberg-data PQMC and latent circuit search",
+  "edition_notes": [
+    "2026년 11월 27일 Daily Quantum Brief의 과학 내용 3쪽·그림 2개와 원 과학 URI 13개를 보존한 공개판이다. 3쪽의 수집 경위와 내부 점검 항목을 삭제하고, Agentic Tech Review Letters(ATRL)가 원문 대조에 따른 계산 조건과 정식 서지를 아래에 보탰다. 원호 날짜와 공개판 개정일은 모두 2026년 11월 27일이며, 별도 웹 편집글도 같은 날 확인한 근거를 사용한다.",
+    "QAOA[1]의 그림 1은 경계 변수 m=3, 회로 깊이 p=1, N≤20의 FakeBrisbane 잡음 모사 결과다. 상대 격차는 평균 에너지와 정확한 최적 에너지 사이의 차이이며 최적 해의 발견 확률과 구별한다. Power-Law의 샷 수 약 386배 감소에는 각도 재사용뿐 아니라 초기화·조기 종료·문제별 보정 등 실제 학습량의 차이도 함께 반영된다. 원표의 비교만으로 각도 재사용의 단독 효과를 분리할 수 없다.",
+    "양자화학 비용[2]은 서로 다른 정확도·수렴 조건에 기초한다. 고전 계산의 잔여 PT2 크기 1.6 mHa는 에너지 수렴 진단이고, QPE의 1 mHa 정밀도와 같은 보증된 총오차가 아니다. 그림 2의 FeMoco 721–12,114달러는 PT2 적합·외삽의 최솟값과 최댓값이며 통계적 신뢰구간이 아니다. 변분 에너지 외삽 시나리오는 별도다. CPU 0.04125달러/core-hour와 미래 오류보정 QPU 전체 7,000달러/hour를 가정했으며, 후자는 현행 Forte 36큐비트 요금을 차용한 값이다. core-hour와 QPU-hour의 비율 자체를 실행시간 가속률로 해석하지 않는다.",
+    "CutQAS[3]는 STO-3G 분자 모형의 수치 실험이다. 저널 표 4의 H2 최선 결과에서 1+3 선형 분할의 오차는 1.30×10^-8, 2+2는 1.89×10^-2다. 표 6의 6큐비트 LiH는 2+4에서 오차 0.037·총 게이트 6·깊이 4, 1+5에서 0.026·59·36으로 정확도와 회로 비용이 함께 변한다. 저널판은 2026년 11월 26일 게재됐고 2025년 저자 v1과 이론 설명이 달라, 수치 결과와 추가 이론의 검증 범위를 구별했다.",
+    "리드베리 자료를 쓴 PQMC[4]에서 16,000개는 원 측정 사진 4,000개의 네 회전 증강 표본이다. 실험 분포는 양의 유도 파동함수의 초기 학습에 쓰이고 최종 에너지는 고전 투영 계산으로 얻는다. 자료 없이 학습한 순환신경망이라는 강한 기준선, 유한 워커의 편향과 기준 SSE의 불확실성을 함께 비교한다. 표의 CPU·GPU 시간은 서로 다른 구현에서 측정한 스텝당 값이다.",
+    "LatentRL-QAS[5]의 5·6큐비트 성공률은 잡음 없는 모사에서 10개 시드의 최종 범위 88.8–99.0%·96.0–99.0%다. 각 블록의 탐욕 평가 500회 중 충실도 0.98 이상 회로를 한 번이라도 만든 에피소드의 비율이다. H·X·Z·CX·CZ 게이트를 쓰며 큐비트 수가 바뀔 때 강화학습 에이전트는 새로 학습한다. 전이하는 대상은 회로 표현과 후보 풀이다. 각 크기의 15,000회 학습 예산은 앞 단계 학습·표현 갱신을 모두 합친 비용과 다르다. 6큐비트 풀에 정답과 CZ 한 개 차이인 후보가 있다는 조건을 유지한다. 공식 채택 기록과 저자 코드 저장소는 독립 확인 범위에서 확정하지 못했다."
+  ],
+  "references": [
+    {
+      "number": 1,
+      "citation": "S. Sang, L. Hour, S. Lee, A. Patra, H. C. Park, M. J. Park, and Y. Han, Landscape-similarity-guided optimization in divide-and-conquer QAOA, arXiv:2602.21689v5 (2026).",
+      "locator": "arXiv:2602.21689v5",
+      "url": "https://arxiv.org/abs/2602.21689v5"
+    },
+    {
+      "number": 2,
+      "citation": "H. Koh, K. Gratsea, H. Zhang, and M. Otten, The price of quantum advantage in computational chemistry, arXiv:2611.34889v1 (2026).",
+      "locator": "arXiv:2611.34889v1",
+      "url": "https://arxiv.org/abs/2611.34889v1"
+    },
+    {
+      "number": 3,
+      "citation": "A. Sadhu, A. Sarkar, and A. Kundu, Topology aware quantum circuit cutting via reinforcement learning, Discov. Quantum Sci. 2, 52 (2026), doi:10.1007/s44464-026-00054-4.",
+      "locator": "10.1007/s44464-026-00054-4",
+      "url": "https://doi.org/10.1007/s44464-026-00054-4"
+    },
+    {
+      "number": 4,
+      "citation": "V. Imchitr, L. Brodoloni, S. Pilati, and E. M. Inack, Data-enhanced self-learning projective quantum Monte Carlo with Rydberg-atom measurements, arXiv:2611.34636v1 (2026).",
+      "locator": "arXiv:2611.34636v1",
+      "url": "https://arxiv.org/abs/2611.34636v1"
+    },
+    {
+      "number": 5,
+      "citation": "M. I. Plakitsi, S. Feld, and A. Kundu, LatentRL-QAS: Transfer via latent reinforcement learning for quantum architecture search, arXiv:2611.34634v1 (2026).",
+      "locator": "arXiv:2611.34634v1",
+      "url": "https://arxiv.org/abs/2611.34634v1"
+    }
+  ],
+  "production_disclosure": "공개판의 책임 편집자는 김현중이며 AI 보조는 OpenAI Codex다. 정확한 모델 식별자는 미보존이다. Editorial Method v2026.08과 2026-11-26 개정 공통 문체 감수 기준을 적용했다. 편집부(AEDAUT)의 AI 에이전트가 원문을 대조하고 공개판을 제작했다. root는 원 3쪽 전체 텍스트·화면과 2번 본문·선택 부록을, dqb1127_sources는 1·4번 HTML 본문·통합 부록 전체를, dqb1127_pdf는 3번 저널 본문·부록·표와 이전 v1의 관련 절, 5번 HTML 본문 전체·선택 부록을 확인했다. 3번 공식 코드의 README·커밋 정보와 2번 자료 저장소의 메타데이터만 확인했으며 원 연구의 실험·계산·학습·증명·코드를 재현하지 않았다. 제작자 화면 확인과 비제작자 최종 감수는 동반 기록에서 구별한다. 이번 공개 편집판에 대한 별도 사람 원고 검토와 사람 독자 평가는 기록되지 않았다.",
+  "rights_note": "원 DQB의 발행명·원 저자 크레딧과 과학 링크를 유지했다. 그림 1·2는 출처의 수치를 다시 그린 원 DQB 도표이며 원 논문의 그림을 복제하지 않았다. 논문별 이용 조건을 DQB 전체의 이용 허가로 확대하지 않는다.",
+  "scientific_replacements": false,
+  "figure_provenance": [
+    {
+      "figure": 1,
+      "kind": "Original DQB independent numerical replot",
+      "source_reference": 1,
+      "source_locator": "Table 4, m=3",
+      "source_figure_copied": false
+    },
+    {
+      "figure": 2,
+      "kind": "Original DQB independent numerical replot",
+      "source_reference": 2,
+      "source_locator": "Figure 3(d) and FeMoco PT2-fit range",
+      "source_figure_copied": false
+    }
+  ],
+  "appendix_creator": "Agentic Tech Review Letters (ATRL), editorial department (AEDAUT)",
+  "reproduction_performed": false,
+  "editorial_credit": "공개판 책임 편집: 김현중 · AI 보조 · 추가 근거 기준일 2026-11-27",
+  "editorial_disclosure": {
+    "responsible_editor": "김현중",
+    "AI_system": "OpenAI Codex",
+    "exact_model_identifier": "not preserved",
+    "editorial_method_version": "2026.08",
+    "writing_style_audit_revision": "2026-11-26",
+    "source_original_system_or_human_review_inferred": false,
+    "human_review_scope": "No separate human manuscript review or human reader evaluation is recorded for this public editorial edition; no inference about the original DQB production."
+  },
+  "narrow_revision": {
+    "measurement_wording": "Use original4000 photos, without asserting statistical independence;16000 augmented samples unchanged.",
+    "bibliography": "APS sentence-case typography for added references1/2/5, preserving original title words, author order and source versions. Historical original-page references unchanged."
+  }
+}
