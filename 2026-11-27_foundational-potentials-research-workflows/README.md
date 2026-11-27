@@ -1,6 +1,6 @@
 # 원자의 에너지 함수를 함께 쓰는 시대
 
-2026-11-27 · 편집부(AEDAUT) 집필·조사·과학 감수, 운영팀(ADOPT) 제작·검수 지원 · 게재 전 제작본
+2026-11-27 원고 · 2026-11-28 최초 게재 · 편집부(AEDAUT) 집필·과학 감수·발행, 운영팀(ADOPT) 제작·배포 검수 지원
 
 ## 이번 글의 중심
 
@@ -43,7 +43,7 @@ q는 모드 진폭이고 Q는 그 좌표의 일반화힘이다. 역공간의 파
 
 국문8쪽·영문10쪽 PDF와 한영 웹 제작본을 완성했다. 통합 담당자는 원고의 중심 논지와 영문 본문 전체를 읽고 참고문헌·기호·단위·수치를 대조했다. 최종 전 페이지 연락판과 국문 조화식·그림2·3, 영문 실제 연구 비교·작성 정보를 확대 확인했다. 참고문헌11항목은 첫 사용 순서이며 한영 항목·URL이 같다. 검산 코드를 통합 담당자도 실행했고, 최종 PDF 실제 파일의 쪽수·SHA가 제작 manifest와 같음을 확인했다.
 
-현재는 다음 리뷰의 게재 전 제작본이다. 실제 공개 확인을 마친 양자 리뷰와 구별한다.
+위 최초 제작 단계는 당시의 게재 전 검수 기록이다. 2026-11-28 정식 게재 결과는 아래 최신 기록을 따른다.
 
 ### 원논문 결과 그림 보완 · 2026-11-27
 
@@ -56,3 +56,18 @@ q는 모드 진폭이고 Q는 그 좌표의 일반화힘이다. 역공간의 파
 현재 개정본은 국문10쪽·영문11쪽이다. 원본 그림 두 개와 한영 웹 복사본의 파일 해시, PDF에 포함된 두 그림의 RGB 픽셀을 대조해 모두 동일함을 확인했다. 통합 담당자는 최신21쪽 전체 연락판과 원그림·표·작성 정보의 확대 출력을 검토했다. 영문 비교표는 같은 쪽에서 다섯 행을 읽도록 인쇄 여백을 조정했다. 최초 제작의 8쪽·10쪽 기록은 위의 이전 단계로 보존한다.
 
 이번 그림 보완의 편집 모델은 대화 설정 기록으로, PDF 제작 담당의 값은 기본 설정 스냅숏으로 구별해 고정 JSON과 작성 정보에 반영했다. 이전 집필 담당별 설정을 이번 확인값으로 소급하지 않는다. 새 외부 그림 편집 기준은 저장소의 과학 설명 준칙·편집 정책·작성 방법·인용 기준과 작업 안내에 연결했다.
+
+
+## 정식 게재 완료 · 2026-11-28
+
+사용자의 게재 요청에 따라 한국어·영어 기사와 승인 PDF를 정식 등록했다. 원고·근거·PDF 판본일은 2026-11-27, 최초 게재일은 2026-11-28로 구분한다. 위에 남긴 게재 전·초기 제작 기록의 수행 범위를 소급해서 바꾸지 않는다.
+
+- [공개 한국어 기사](https://infant83.io/AI_Tech_Review/reviews/2026-11-27_foundational-potentials-research-workflows/)
+- [공개 영어 기사](https://infant83.io/AI_Tech_Review/reviews/2026-11-27_foundational-potentials-research-workflows/en/)
+- [국문 PDF](https://infant83.io/AI_Tech_Review/reviews/2026-11-27_foundational-potentials-research-workflows/review_ko.pdf), [영문 PDF](https://infant83.io/AI_Tech_Review/reviews/2026-11-27_foundational-potentials-research-workflows/en/review_en.pdf)
+- [배포 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/46028207334) · 출판 소스 `c7cb3a0e3cae37839f2ef4192b60281132901a45`
+- [등록 검수](reports/publication-registration-review.md), [동결 판본 점검](reports/publication-preflight-review.md), [배포 후보 검수](reports/publication-candidate-review.md), [실제 공개·복구·알림 확인](reports/live-publication-review.md)
+
+실제 이전 배포를 보존한 독립 후보를 검수한 뒤 배포했다. Actions의 build·deploy·recovery-copy·notify-readers가 모두 성공했고, 실제 HTTPS 31경로가 200을 반환했다. 한영 기사24파일과 아카이브 PDF2파일은 후보와 바이트가 같고, 승인한 국문10쪽·영문11쪽 PDF 해시가 유지된다. Chrome 데스크톱·모바일과 허브에서 그림·인용·캡션·언어·게재일을 확인했다. 독자 등록은94개, 새 글1개·대기 알림 이벤트1개로 동기화됐으며 개별 수신자에게 전달됐다는 보장으로 표시하지 않는다.
+
+게시 이후의 이번 완료 기록은 본문·그림·PDF를 다시 제작하거나 별도 기사 개정을 배포하지 않는 기록 보존이다.
