@@ -75,3 +75,5 @@ q는 모드 진폭이고 Q는 그 좌표의 일반화힘이다. 역공간의 파
 ## 2026-11-28 제목·부제 개정
 
 편집자의 명료화 요청에 따라 현재 제목을 「원자의 힘을 배운 AI, 재료 연구의 출발점을 바꾸다」로 개정했다. 부제는 「사전학습 포텐셜을 검증하고, 계산 절차까지 재사용하는 연구」다. 과학 본문·수치·그림·인용은 유지하고 한영 웹·PDF·등록 제목을 함께 맞췄다. 초기 제목과 최초 게재 당시 PDF의 해시·검수는 과거 기록으로 보존하며, 새 출력의 독립 편집·제작·배포 확인은 [제목 감수](reports/title-revision-review.md)와 [개정 출력 기록](reports/title-revision-production.md)을 따른다.
+
+개정 게재도 완료했다. [실제 공개 리뷰](https://infant83.io/AI_Tech_Review/reviews/2026-11-27_foundational-potentials-research-workflows/)와 한영 PDF·허브·검색·아카이브의 새 제목을 확인했고, 배포·복구·독자 목록 동기화가 모두 성공했다. [실제 개정 배포 검증](reports/title-revision-live.json)에 소스·해시·검증 범위를 기록했다.
