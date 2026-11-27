@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "checked_at": "2026-11-27T16:37:15.283537+00:00",
+  "reviewer": "root",
+  "surface": "Actual in-app browser against the local final publication candidate",
+  "candidate_source_revision": "7f2ff1337084e5175511043431d073763091cd5d",
+  "candidate_release_sha256": "03fed24b60db5ba7a7fb27f0a180a0d8559577af3546adec450329b6c3863abd",
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": {
+    "ko_and_en_titles_and_separate_original_revision_dates": true,
+    "desktop_and_mobile_manuscript_legibility": true,
+    "formula_containers": {
+      "ko": 28,
+      "en": 21
+    },
+    "formula_errors": 0,
+    "citation_links_per_language": 29,
+    "three_reference_anchors": true,
+    "citation_navigation_tested": "English first numbered citation resolved to ref-1",
+    "six_images_loaded_after_scrolling_into_view": true,
+    "ko_pipeline_revised_readout_label_legible": true,
+    "tables": "Both languages: two 620px tables inside 339px auto-scroll containers on 390px mobile; page scroll width 375px, no page overflow.",
+    "standard_current_model_label": "gpt-6.1-sol, reasoning effort ultra, dated current revision; original unknown model history retained",
+    "bilingual_search": "Query 다광자 returned selected review and historical DQB; revised review title and corresponding summary shown in both hub languages."
+  },
+  "limits": [
+    "Candidate rendering only; actual HTTPS publication and four CI jobs remain separate checks.",
+    "Local preview reader metrics/likes are temporarily unavailable; no like, subscription, outgoing message or API-health test was submitted.",
+    "Screenshots inspected in tool output; no human-reader study or new science experiment performed."
+  ]
+}

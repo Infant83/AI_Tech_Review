@@ -23,3 +23,9 @@ Primary source: Hong et al., *Multiphoton Quantum Reservoirs For Robust Multidim
 Discovery: publisher paper and LSU official release established the research title. LinkedIn body was not directly accessible. No claim to have inspected unavailable LinkedIn text.
 
 Writing/model: one Codex agent in OpenAI Codex Work Mode; exact model identifier unavailable in runtime. No additional agents and no independent human line edit. Original imagegen conceptual hero, deterministic SVG plots, original explanatory equations. All application proposals explicitly editorial.
+
+## Recheck and clarification — 2026-11-28
+
+The original record above describes the 13 September publication. For the present editorial revision, the relevant main-paper and SI passages, the phase-space simulation paper and formal bibliographic metadata were checked again. The newly obtained source files are not a byte-level attestation of the files consulted on 13 September.
+
+The earlier location “Note 2, Eq. S19” is refined to **Note 2, Eqs. S20, S29 and S35**: Eq. S19 is in Note 1, while Eq. S20 repeats the mixture representation in Note 2. The earlier shorthand “positive-P inputs” means the specified efficiently sampled, nonnegative **Glauber–Sudarshan P mixture** of coherent amplitudes, not an unrestricted claim about the doubled positive-P representation. The existing numerical results and conditional/unconditional sampling distinction are unchanged. Current role-specific reading, models and independent-review evidence are recorded with the 28 November legacy refresh.

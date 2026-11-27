@@ -3,10 +3,10 @@
   "legacy_position": 28,
   "review": {
     "folder": "2026-09-13_multiphoton-reservoir-classical-light",
-    "title": "빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다",
+    "title": "빛의 세기에서 광자 수 분포로: 다광자 저장소 계산의 성능과 측정시간",
     "subtitle": "고전광·편광·OAM에서 861개 특징, 측정시간과 고전 시뮬레이션 조건까지",
     "date": "2026-09-13",
-    "updated": "2026-09-13",
+    "updated": "2026-11-28",
     "category": "Quantum Computing",
     "tags": [
       "Photonic Computing",
@@ -17,7 +17,7 @@
       "Classical Simulation",
       "Measurement Cost"
     ],
-    "summary": "같은 빛을 보더라도 평균적인 밝기만 읽을 때와 광자 수의 분포까지 읽을 때 얻는 정보는 달라집니다. 상온 광학 실험은 이 분포를 학습의 특징으로 삼아 일부 함수 복원 성능을 높였습니다. 빛의 빠른 전파를 유용한 계산 속도로 이어 가려면 광자를 세고 데이터를 모으는 시간도 함께 살펴야 합니다.",
+    "summary": "광자 계수 분포를 학습 특징으로 사용한 상온 광학 실험에서, 감쇠 사인 함수의 복원 성능이 평균 광량 특징보다 좋아졌습니다. 두 특징 구성의 차이를 살피고, 전체 데이터를 얻는 약 32분의 측정시간과 고전 모사의 조건을 함께 검토합니다.",
     "translations": [
       {
         "language": "en",
@@ -29,33 +29,53 @@
     "responsible_editor_en": "Hyun-Jung Kim",
     "ai_system": "OpenAI Codex Work Mode",
     "ai_system_ko": "OpenAI Codex Work Mode",
-    "ai_model": "exact model identifier not retained",
-    "ai_model_ko": "정확한 모델 식별자는 보존되지 않음",
+    "ai_model": "28 Nov 2026 editorial revision: gpt-6.1-sol, reasoning effort ultra (recorded client turn settings)",
+    "ai_model_ko": "2026-11-28 편집 개정: gpt-6.1-sol, 추론 강도 ultra (대화 설정 기록)",
     "agents": [
       {
-        "name": "Codex",
+        "name": "Codex · original 2026-09-13",
         "role": "primary-source research, bilingual writing, conceptual illustration direction, deterministic figures, scientific copyediting, implementation and publication verification",
         "role_ko": "1차 출처 조사·한영 집필·개념 일러스트 구성·수식 도표·과학 감수·구현·게시 검증"
+      },
+      {
+        "name": "root · 2026-11-28",
+        "role": "bilingual manuscript integration, source-renderer adaptation and publication preparation",
+        "role_ko": "한영 원고 통합·기존 렌더러 개정·출판 준비"
+      },
+      {
+        "name": "model_session_evidence · 2026-11-28",
+        "role": "initial independent prose review followed by English adaptation; not final independent reviewer of its own revision",
+        "role_ko": "초기 독립 문체 검토 후 영문 대응 수정; 자기 수정본의 최종 독립 감수와 구분"
+      },
+      {
+        "name": "provenance_design_audit · 2026-11-28",
+        "role": "independent main-paper, selected SI and classical-simulation primary-source checks",
+        "role_ko": "원논문·보충자료 해당 구간·고전 모사 선행 원문의 독립 대조"
+      },
+      {
+        "name": "dqb1127_pdf · 2026-11-28",
+        "role": "actual deployment-baseline and publication-preservation checks",
+        "role_ko": "실제 배포 기준과 출판 보존 대조"
       }
     ],
     "agent_roles": [],
     "agent_roles_ko": [],
     "verification_scope": [
-      "Hong et al. Advanced Science e77225 main article and 15-page Supporting Information; phase-space classical simulation primary paper",
-      "Table S2 transcription, source configurations, feature dimensions, acquisition costs, detector-model limits and sampling-versus-probability distinction",
-      "bilingual HTML, generated conceptual hero, two original SVG figures, CSV data, local links and publication metadata"
+      "Original 13 Sep source-reading scope retained in evidence ledger; 28 Nov source recheck is separately recorded.",
+      "Current main-paper theory, selected figures and publication metadata; SI Notes 1–2 and 4–7 claims and tables; Rahimi-Keshari phase-space conditions.",
+      "Numerical table, equations and CSV preserved; readout terminology and feature-variance dimension clarified; APS references and bilingual editorial revision."
     ],
     "verification_scope_ko": [
-      "Hong 등 Advanced Science e77225 본문·15쪽 보충자료, 위상공간 고전 시뮬레이션 선행 원문",
-      "표 S2 전사·실험별 광원·특징 차원·취득비용·검출 모델 한계·확률 계산과 표본화 구분",
-      "한영 HTML·생성 개념 표지·SVG 도표 2점·CSV·로컬 링크·게시 정보"
+      "9월 13일 원문 독해 범위는 기존 evidence ledger에 보존하고 11월 28일 재대조와 구분",
+      "원논문 이론·해당 도표·서지, 보충자료 Notes 1–2·4–7의 주장·표와 Rahimi-Keshari 위상공간 조건 대조",
+      "표·수식·CSV 보존, 출력층 용어·특징 분산 유효차원 설명 정밀화, APS 인용·한영 편집 개정"
     ],
     "primary_sources_checked": true,
     "evidence_cutoff": "2026-09-13",
     "human_review_level": "topic and public publication explicitly requested; no separate line-by-line human review",
     "human_review_level_ko": "주제 및 공개 게시 요청 확인. 별도 문장 단위 사람 검토는 수행되지 않음",
-    "disclosure_note_ko": "실험 데이터와 시간을 독립 재현하지 않았습니다. 높은 광자 수 계수와 검출 모델의 연결은 추가 확인이 필요합니다. 고전 표본화 구성과 응용 방향은 리뷰어의 해석·제안이며, 표지는 생성 개념 그림입니다.",
-    "disclosure_note_en": "Experimental data and timings were not independently reproduced. High-count detection and its model need further reconciliation. The classical sampling construction and applications are editorial analysis and proposals; the generated hero is conceptual."
+    "disclosure_note_ko": "실험 데이터·장치 시간·학습 코드를 독립 재현하지 않았습니다. 고계수 항목과 검출 모델의 연결은 확인되지 않은 구체적인 조건으로 남깁니다. 고전 표본화 구성과 응용 방향은 리뷰의 해석·제안입니다. 원 발행의 모델 미보존 기록과 이번 개정의 확인된 모델을 구분하며, 표지는 기존 생성 개념 그림입니다.",
+    "disclosure_note_en": "Experimental data, apparatus timings and learning code were not independently reproduced. The connection between high-count entries and the detector model remains unresolved. The classical-sampling construction and applications are editorial analysis and proposals. The original unrecorded model is distinct from the recorded model used for this revision; the existing generated hero is conceptual."
   },
   "source_sha256": "4f8c6ac0d73d2b483ec496f4e709aec0e06a00053530a8f20f49e823acfee0e4"
 }

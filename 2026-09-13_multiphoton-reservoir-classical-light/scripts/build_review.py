@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup
 TOPIC = Path(__file__).resolve().parents[1]
 ROOT = TOPIC.parent
 SLUG = TOPIC.name
-BASE = 'https://infant83.github.io/AI_Tech_Review/'
+BASE = 'https://infant83.io/AI_Tech_Review/'
 PAPER = 'https://advanced.onlinelibrary.wiley.com/doi/10.1002/advs.77225'
-TITLES = {'ko':'빛의 세기에서 광자 수 분포로: 다광자 저장소 계산을 읽다','en':'From light intensity to photon-count distributions: reading multiphoton reservoir computing'}
-DESCS = {'ko':'고전광·편광·OAM·광자 계수의 원리에서 861개 특징, 함수 복원 성능, 32분 취득비용과 고전 시뮬레이션 조건까지 검토합니다.','en':'Classical light, polarization, OAM and photon counting: 861 features, regression evidence, 32-minute acquisition and classical simulation conditions.'}
+TITLES = {'ko':'빛의 세기에서 광자 수 분포로: 다광자 저장소 계산의 성능과 측정시간','en':'From light intensity to photon-count distributions: multiphoton reservoir performance and acquisition time'}
+DESCS = {'ko':'광자 수 분포를 학습 특징으로 사용한 함수 복원 실험의 성능과, 분포를 측정하는 데 필요한 시간을 함께 살핍니다.','en':'We examine function reconstruction with photon-count features, the time needed to acquire them and the conditions for classical simulation.'}
 # Reuse the established editorial layout without executing another package.
 template=ast.parse((ROOT/'2026-09-10_cash-qse-classical-quantum-chemistry/scripts/build_review.py').read_text())
 CSS=next(ast.literal_eval(node.value) for node in template.body if isinstance(node,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='CSS' for t in node.targets))
@@ -25,7 +25,7 @@ def text(out,x,y,value,size=17,color='#17211d',anchor='start'):
 def pipeline(lang):
     ko=lang=='ko'; out=svg_start(760,510,'Optical feature acquisition and trained readout')
     text(out,32,39,'무엇을 고정하고 무엇을 학습하나' if ko else 'What stays fixed, and what is trained',22)
-    labels=[('입력 · 편광','91개 입력 상태','INPUT') if ko else ('Input · polarization','91 input settings','INPUT'),('고정 · 광학 모드 혼합','파장판 + q-plate','FIXED') if ko else ('Fixed · optical mixing','Wave plates + q-plates','FIXED'),('측정 · 계수 분포','21 OAM × 41 항목 = 861','MEASURE') if ko else ('Measured · count features','21 OAM × 41 entries = 861','MEASURE'),('학습 · 고전 선형 읽기층','가중치 + ridge 정규화','TRAINED') if ko else ('Trained · classical readout','Weights + ridge penalty','TRAINED')]
+    labels=[('입력 · 편광','91개 입력 상태','INPUT') if ko else ('Input · polarization','91 input settings','INPUT'),('고정 · 광학 모드 혼합','파장판 + q-plate','FIXED') if ko else ('Fixed · optical mixing','Wave plates + q-plates','FIXED'),('측정 · 계수 분포','21 OAM × 41 항목 = 861','MEASURE') if ko else ('Measured · count features','21 OAM × 41 entries = 861','MEASURE'),('학습 · 고전 선형 출력층','가중치 + ridge 정규화','TRAINED') if ko else ('Trained · classical readout','Weights + ridge penalty','TRAINED')]
     positions=[(32,65),(402,65),(32,248),(402,248)]
     for (x,y),(a,b,c) in zip(positions,labels):
         out.append(f'<rect x="{x}" y="{y}" width="326" height="132" rx="7" fill="{("#e8f2ed" if c=="TRAINED" else "#f2f5f6")}" stroke="#cad4d1"/>')
@@ -64,7 +64,13 @@ def render_md(source):
         raw=m.group(0);display=raw.startswith('\\[')
         saved.append('<span class="'+('display-math' if display else 'math')+'">'+html.escape(raw)+'</span>')
         return f'MATHBLOCKTOKEN{len(saved)-1}END'
-    body=markdown.markdown(re.sub(r'\\\[.*?\\\]|\\\(.*?\\\)',protect,source,flags=re.S),extensions=['tables','fenced_code','sane_lists'])
+    protected=re.sub(r'\\\[.*?\\\]|\\\(.*?\\\)',protect,source,flags=re.S)
+    def citation(match):
+        numbers=match.group(1).split(',')
+        links=','.join(f'<a href="#ref-{n}">{n}</a>' for n in numbers)
+        return '<span class="citation">['+links+']</span>'
+    protected=re.sub(r'(?<!\\)\[([1-9][0-9]*(?:,[1-9][0-9]*)*)\]',citation,protected)
+    body=markdown.markdown(protected,extensions=['tables','fenced_code','sane_lists'])
     for i,v in enumerate(saved):body=body.replace(f'MATHBLOCKTOKEN{i}END',v)
     return body
 
@@ -92,8 +98,9 @@ def main():
             if name!=hero.name:im['loading']='lazy'
         url=BASE+'reviews/'+SLUG+('/' if ko else '/en/');other=BASE+'reviews/'+SLUG+('/en/' if ko else '/')
         title=html.escape(TITLES[lang]);desc=html.escape(DESCS[lang]);mdurl=f'https://github.com/Infant83/AI_Tech_Review/blob/main/{SLUG}/dist/{"" if ko else "en/"}review.md'
-        full=f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title}</title><meta name="description" content="{desc}"><link rel="canonical" href="{url}"><link rel="alternate" hreflang="ko" href="{BASE}reviews/{SLUG}/"><link rel="alternate" hreflang="en" href="{BASE}reviews/{SLUG}/en/"><link rel="alternate" hreflang="x-default" href="{BASE}reviews/{SLUG}/"><meta property="og:type" content="article"><meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:url" content="{url}"><meta property="og:image" content="{url}{hero.name}"><meta name="twitter:card" content="summary_large_image"><meta name="author" content="김현중"><meta property="article:published_time" content="2026-09-13"><meta property="article:modified_time" content="2026-09-13"><style>{CSS}</style>
-<script>window.MathJax={{tex:{{inlineMath:[['\\\\(','\\\\)']],displayMath:[['\\\\[','\\\\]']]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script></head><body><div class="topline"><div class="topline-inner"><span class="brand">AI Tech Review Letters</span><div class="topline-actions"><a href="{BASE}">{'리뷰 허브' if ko else 'Review hub'}</a><span aria-current="page">{'한국어' if ko else 'English'}</span><a href="{other}" hreflang="{'en' if ko else 'ko'}">{'English' if ko else '한국어'}</a><a href="{mdurl}">Markdown</a></div></div></div><header class="hero"><div class="hero-inner"><div class="kicker">PHOTONIC COMPUTING · 2026.09.13</div><h1>{title}</h1><p class="standfirst">{desc}</p></div></header><main class="content-grid"><article class="final-article">{soup}<div class="publication-note">{'생성 표지는 개념 일러스트입니다. 두 SVG 도표는 논문의 측정 흐름과 이상적 Poisson 식을 설명하기 위해 제작했습니다.' if ko else 'The generated hero is conceptual. Two original SVG figures explain the measurement workflow and ideal Poisson equation.'}</div></article><aside class="sidebar"><h2>{'이 글의 순서' if ko else 'In this article'}</h2><nav aria-label="{'목차' if ko else 'Contents'}">{''.join(toc)}</nav><div class="side-extra"><hr><a href="{PAPER}">Advanced Science · e77225</a><a href="{csvurl}">{'표 데이터 CSV' if ko else 'Table data CSV'}</a><p>{'동료평가 논문 · 상온 광학 실험' if ko else 'Peer-reviewed · room-temperature optics'}</p></div></aside></main></body></html>'''
+        date_label='원 발행 2026.09.13 · 개정 2026.11.28' if ko else 'Original 2026.09.13 · Revised 2026.11.28'
+        full=f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title}</title><meta name="description" content="{desc}"><link rel="canonical" href="{url}"><link rel="alternate" hreflang="ko" href="{BASE}reviews/{SLUG}/"><link rel="alternate" hreflang="en" href="{BASE}reviews/{SLUG}/en/"><link rel="alternate" hreflang="x-default" href="{BASE}reviews/{SLUG}/"><meta property="og:type" content="article"><meta property="og:title" content="{title}"><meta property="og:description" content="{desc}"><meta property="og:url" content="{url}"><meta property="og:image" content="{url}{hero.name}"><meta name="twitter:card" content="summary_large_image"><meta name="author" content="김현중"><meta property="article:published_time" content="2026-09-13"><meta property="article:modified_time" content="2026-11-28"><style>{CSS}</style>
+<script>window.MathJax={{tex:{{inlineMath:[['\\\\(','\\\\)']],displayMath:[['\\\\[','\\\\]']]}},options:{{skipHtmlTags:['script','noscript','style','textarea','pre','code']}}}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js" integrity="sha384-AHAnt9ZhGeHIrydA1Kp1L7FN+2UosbF7RQg6C+9Is/a7kDpQ1684C2iH2VWil6r4" crossorigin="anonymous"></script></head><body><div class="topline"><div class="topline-inner"><span class="brand">Agentic Tech Review Letters</span><div class="topline-actions"><a href="{BASE}">{'리뷰 허브' if ko else 'Review hub'}</a><span aria-current="page">{'한국어' if ko else 'English'}</span><a href="{other}" hreflang="{'en' if ko else 'ko'}">{'English' if ko else '한국어'}</a><a href="{mdurl}">Markdown</a></div></div></div><header class="hero"><div class="hero-inner"><div class="kicker">PHOTONIC COMPUTING · {date_label}</div><h1>{title}</h1><p class="standfirst">{desc}</p></div></header><main class="content-grid"><article class="final-article">{soup}<div class="publication-note">{'생성 표지는 개념 일러스트입니다. 두 SVG 도표는 논문의 측정 흐름과 이상적 Poisson 식을 설명하기 위해 제작했습니다.' if ko else 'The generated hero is conceptual. Two original SVG figures explain the measurement workflow and ideal Poisson equation.'}</div></article><aside class="sidebar"><h2>{'이 글의 순서' if ko else 'In this article'}</h2><nav aria-label="{'목차' if ko else 'Contents'}">{''.join(toc)}</nav><div class="side-extra"><hr><a href="{PAPER}">Advanced Science · e77225</a><a href="{csvurl}">{'표 데이터 CSV' if ko else 'Table data CSV'}</a><p>{'동료평가 논문 · 상온 광학 실험' if ko else 'Peer-reviewed · room-temperature optics'}</p></div></aside></main></body></html>'''
         full=full.replace('<span aria-current="page">',f'<span lang="{lang}" aria-current="page">')
         (dist/'index.html').write_text(full)
         print(lang,len(source.split()),'words',len(source),'characters')
