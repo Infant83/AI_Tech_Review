@@ -53,6 +53,17 @@ class AuthoringVersionDisclosureTests(unittest.TestCase):
         parser.feed(text)
         return parser
 
+    def test_republishing_legacy_hub_navigation_keeps_one_button(self) -> None:
+        for base in publisher.PUBLIC_BASE_ALIASES:
+            with self.subTest(base=base):
+                source = self.source("ko").replace("<header>Review</header>",
+                    f'<div class="topline-actions"><a class="hub-link" href="{base}">리뷰 허브</a></div>')
+                output = publisher.inject_review_navigation_and_disclosure(
+                    source, self.review, "ko", self.methods)
+                output = publisher.normalize_brand_html(output)
+                self.assertEqual(output.count('class="hub-link"'), 1)
+                self.assertIn(f'class="hub-link" href="{publisher.PUBLIC_BASE_URL}"', output)
+
     def test_public_injection_preserves_each_explicit_version_layer_in_both_languages(self) -> None:
         for language in ("ko", "en"):
             with self.subTest(language=language):
