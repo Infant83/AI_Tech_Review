@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "status": "passed_candidate_preservation_with_existing_capacity_warnings",
+  "checked_at": "2026-11-27T05:54:13.768804+00:00",
+  "reviewer": "dqb1127_pdf",
+  "scope": "Assigned normal release gates and one independent actual-file preservation inventory; this agent previously produced the corrected PDF, so separate independent PDF/footer reviews retain their own roles.",
+  "baseline_revision": "4c86b1447b6cf7e5b156f7216ed022cf44023195",
+  "candidate_local_source_revision": "029e985f970fb0dfa3d96ddae4eeab54d5e55c01",
+  "actual_CI_or_deployment_verdict": false,
+  "counts": {
+    "reviews": 60,
+    "archive_documents": 193,
+    "catalog_articles": 93,
+    "external_sources": 1
+  },
+  "checks": {
+    "release_policy_passed": true,
+    "release_blockers": [],
+    "payload_passed": true,
+    "payload_failures": [],
+    "sealed": true,
+    "snapshot_files": 2833,
+    "full_validator": {
+      "validated_files": 2848,
+      "articles": 93
+    },
+    "independent_whole_inventory_passes": 1,
+    "actual_inventory_files": 2848,
+    "actual_inventory_bytes": 896407529,
+    "actual_inventory_sha256": "0da4534874847de14337b88fcd2939258a3154d2e04f7e68fdf2a2d88a14c712",
+    "all_actual_file_bytes_match_seal": true
+  },
+  "inventory_changes": {
+    "baseline_paths_excluding_seal": 2846,
+    "candidate_paths_excluding_seal": 2847,
+    "added": [
+      "archive/editions/2026-11-27-daily-quantum-brief/a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677.pdf"
+    ],
+    "removed": [],
+    "changed": [
+      "archive-manifest.json",
+      "archive/en/index.html",
+      "archive/files/2026-11-27-daily-quantum-brief.pdf",
+      "archive/index.html",
+      "briefings/2026-11-27/en/index.html",
+      "briefings/2026-11-27/index.html",
+      "reader-publications.json",
+      "reader-updates.json"
+    ],
+    "scope": "Exactly approved8 changed paths and1 old-edition preservation addition; no other changed/removed file."
+  },
+  "preservation": {
+    "all60_review_metadata_exact": true,
+    "all_review_directory_files_byte_identical": 1985,
+    "all_previous320_PDF_paths_retained": true,
+    "non_target319_PDFs_byte_identical": true,
+    "original_A52_edition_byte_identical": {
+      "bytes": 239528,
+      "sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677"
+    },
+    "corrected_FF2_PDF": {
+      "bytes": 240249,
+      "sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f"
+    },
+    "archive_ids_retained": 193,
+    "other192_archive_rows_exact": true,
+    "target_archive_changed_fields": [
+      "editions",
+      "editorial_assets",
+      "sha256",
+      "size_bytes"
+    ],
+    "titles_summaries_original_dates_and_credits_unchanged": true,
+    "all93_catalog_articles_and_order_exact": true,
+    "dated_HTML_paths_retained": 78,
+    "other76_dated_HTMLs_byte_identical": true,
+    "search_records_and_search_assets_byte_identical": true,
+    "public_methods_page_byte_identical": true,
+    "eight_photonic_FTQC_archive_ids": [
+      "2026-11-27-photonic-fault-tolerant-computing-l001-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l002-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l003-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l004-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l005-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l006-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-l007-notes-ko",
+      "2026-11-27-photonic-fault-tolerant-computing-notes-ko"
+    ],
+    "L018_Avatar_and_new_quantum_algorithms_article_and_two_PDFs_preserved": true,
+    "reader_update_ids_retained": 192,
+    "reader_update_changed_ids": [
+      "archive:2026-11-27-daily-quantum-brief"
+    ],
+    "recency_timestamp": {
+      "id": "archive:2026-11-27-daily-quantum-brief",
+      "before_updatedAt": "2026-11-27T00:00:00Z",
+      "after_updatedAt": "2026-11-27T05:42:42Z",
+      "scope": "Correction recency timestamp changes; original issue/evidence dates and publication identity remain unchanged."
+    }
+  },
+  "source_declaration_handling": {
+    "generated_untracked_quantum_algorithms_noop": "Raw declaration privately retained; baseline raw and normalized hashes equal candidate for both regenerated HTMLs; only that untracked generated no-op removed with parent authorization.",
+    "target_footer_declaration": "Existing selected-document declaration extended with exact normalized before/after hashes for the two approved model-footer changes after the first release check reported them undeclared.",
+    "guard_code_changed": false
+  },
+  "existing_capacity_warnings": [
+    "Lazy metadata search exceeds the 80KB growth warning",
+    "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+  ],
+  "payload_summary": {
+    "pages_checked": 76,
+    "lazy_search_gzip_bytes": 98101,
+    "lazy_search_hard_limit": 100000,
+    "browser_icons_gzip_bytes": 21902,
+    "public_artifact_bytes_before_seal": 894948251
+  },
+  "limits": [
+    "Parent browser inspection is separate and begins after this heavy stage.",
+    "Scientific text, summaries, references and issue/evidence dates are preserved; this is model-disclosure correction, not research reproduction or a new article.",
+    "Local source label029e985 is a prepared source identity; actual source commit and actual CI4jobs/recovery/reader counters require later evidence.",
+    "Independent complete actual local file inventory was computed once and retained privately; this final report reused that cached inventory without a second file scan."
+  ],
+  "public_safe": true
+}

@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "status": "passed_scoped_model_provenance_integration_review",
+  "checked_on": "2026-11-27",
+  "reviewer": "provenance_design_audit",
+  "scope": "Independent source/docs and saved actual-collector output review, with exact bilingual manuscript/compiled-fragment comparisons. Not a new scientific review or deployment verification.",
+  "actual_collection": {
+    "saved_outputs_inspected": true,
+    "collector_rerun_by_this_reviewer": false,
+    "normalized_public_output_matches_frozen_manuscript_input": true,
+    "original_editorial_roles": 4,
+    "original_model_bearing_context_records": 30,
+    "every_record_digest_matches_previously_independently_inspected_original_evidence": true,
+    "later_correction_contexts_excluded": true,
+    "model_id": "gpt-6.1-sol",
+    "display_name": "GPT-6.1 Sol",
+    "reasoning_effort": "ultra",
+    "model_and_effort_separate": true,
+    "record_count_note": "Stored model-bearing turn_context records, not API requests or necessarily distinct turns."
+  },
+  "code_review": [
+    "The bounded reader accepts current ordinal-bearing and legacy headers, verifies the exact worker, and uses the per-thread payload.id when present. Legacy shared identity is a fallback only when the per-thread id is absent; the ambient parent identity is never substituted.",
+    "Explicit intervals retain all observed model/effort pairs. Missing fields are not filled from defaults; absent historical evidence is not replaced by a current snapshot. Settings snapshots have a separate non-usage label. Unsupported, corrupt or conflicting selected inputs fail closed.",
+    "The CLI separates private evidence outside Git, uses restricted new-file permissions and does not overwrite different captures.",
+    "The compiler consumes a frozen allowlisted public record and requires one token in each language. Duplicate JSON fields, unknown public fields and unsupported paths or sizes are rejected. Neither compiler nor publisher invokes the collector.",
+    "The publisher, fragment validator and review-registry definitions remain unchanged. Existing registry v1 six-key shape, legacy model defaults and no-token behavior are preserved. No scheduler, lock or approval gate was added."
+  ],
+  "documentation_review": [
+    "Beginning-of-work capture is preliminary; final capture uses the explicit work interval and participants, with a new immutable path for revisions.",
+    "Model id and reasoning effort are distinct. Current defaults cannot prove historical usage. User confirmation remains separate from turn_context evidence.",
+    "The public editorial work is distinguished from the external source document; recorded client settings do not attest backend weights."
+  ],
+  "content_preservation": {
+    "both_Markdown_inputs_exact_disclosure_token_and_scope_sentence_substitution_only": true,
+    "both_compiled_HTML_fragments_exact_rendered_disclosure_and_scope_sentence_substitution_only": true,
+    "scientific_paragraphs_references_existing_roles_harness_and_human_review_statements_unchanged": true,
+    "archive_entry_bytes_match_prior_HEAD_including_titles_summaries_and_date": true,
+    "separate_PDF_review_archive_entry_binding_updated_to_restored_bytes": true,
+    "corrected_PDF_sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f",
+    "PDF_rerendered_in_this_review": false
+  },
+  "privacy_review": {
+    "public_projection_is_allowlisted_and_excludes_raw_transcript_config_account_and_authentication_data": true,
+    "selected_new_code_tests_docs_and_inputs_exclude_actual_participant_UUIDs": true,
+    "test_UUIDs_are_synthetic": true,
+    "frozen_public_record_and_compiled_fragments_exclude_UUIDs_and_internal_paths": true
+  },
+  "test_attribution": {
+    "targeted_tests_reported_passed_by_integrating_agent": 63,
+    "tests_rerun_by_this_reviewer": false,
+    "direct_exact_content_and_saved_output_checks_are_independent": true
+  },
+  "input_bindings": [
+    {
+      "path": "scripts/ai_model_provenance.py",
+      "sha256": "9665f045abf4b6a93f4c9f4d00edca0a71442fe19992a1e7ed28bded87eebc63"
+    },
+    {
+      "path": "scripts/capture_ai_model_provenance.py",
+      "sha256": "fe6b643e02e1e9382738362df84369cc0423e2fe9b1064d1d03f0f198022bf81"
+    },
+    {
+      "path": "scripts/build_briefing_editorial.py",
+      "sha256": "a0b1a928e8e8db8c56494eecf74795184d609dbae2527ad8d84277eb0ee4c772"
+    },
+    {
+      "path": "tests/test_ai_model_provenance.py",
+      "sha256": "2a23a8e7f68f7a442e0fa47338f9ba84a726e794b8e7baefd9da2c2daa7f4dfb"
+    },
+    {
+      "path": "tests/test_briefing_model_provenance.py",
+      "sha256": "6a3a2b339a14044706c6f63ba60b0080ee92187448281a7d856450d2c2648f24"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "2a129749de775e7009752dac5cee13a3af0502c8ed0df1a39e5d088f57897a66"
+    },
+    {
+      "path": "EDITORIAL_POLICY.md",
+      "sha256": "5fab3a6faafffc3376c1572efa48bb7218cede96f6049064369b781c7bf624eb"
+    },
+    {
+      "path": "EDITORIAL_METHOD.md",
+      "sha256": "7688872b0ac7b6c1863907fa3fe43f7f76de6dce00d900f521fa67b01b81a7e1"
+    },
+    {
+      "path": ".automation/dqb-daily/README.md",
+      "sha256": "055284dafe34d2f75ea5a40d6b23d7e341339a39a280fccbf7a927504885eb77"
+    },
+    {
+      "path": "publication/briefings/2026-11-27-daily-quantum-brief.json",
+      "sha256": "32cd996b8045c0092276fda24a30a937662182916fd9b2a10d0ad89300c6e54e"
+    },
+    {
+      "path": "archive/entries/2026-11-27-daily-quantum-brief.json",
+      "sha256": "4db1a2d78ebc6502b10fb1c357bf7f06c2c8f7bbbd4febda2cfb8a715084ddb4"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/artifacts/ai-model-provenance.json",
+      "sha256": "4848edabe2130a79ea421bfc4e71ab1b2c037e7c8020c7aa0e7e1c744c5be51c"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/artifacts/model-disclosure-pdf-review.json",
+      "sha256": "df9256106cfe784da7e33b4a2c8a6465e3ba371cfbf26513e5abc90ba40c3a5a"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_ko.md",
+      "sha256": "15836fa268177dd0e99cb774f8e8a29f48c33f69501fc21b28bc4821811fd613"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_en.md",
+      "sha256": "0fb5f49ef1b9f493f4147cfe61c96f8ce794c308b53a159066a1153d6e645c78"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_ko.html",
+      "sha256": "5781bb7e0a4c7121d2d5fe8fbc3be10e73e78686e0c336146de1ed24831a91b1"
+    },
+    {
+      "path": "daily_research_review/2026-11-27_dqb-archive/reports/briefing_en.html",
+      "sha256": "7b61ed32adba5829b3ba1adb07e5f8d77acd98689f344853b38a3ce0d8c5e52c"
+    }
+  ],
+  "limits": [
+    "Actual collection was executed by the implementing agent. This reviewer inspected saved outputs and matched every original context digest against earlier independently inspected evidence.",
+    "This confirms client settings for the specified editorial roles, not server weights or the external source DQB authoring model.",
+    "Original scientific audits, calculations and whole-document rendering were not repeated. The separate corrected-PDF review retains its own scope and hash.",
+    "Full publication validation, CI/deployment and actual public URL verification remain separate work."
+  ]
+}

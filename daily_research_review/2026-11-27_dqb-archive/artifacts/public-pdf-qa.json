@@ -1,10 +1,10 @@
 {
   "date": "2026-11-27",
   "source_sha256": "53c6fba5e68656fe8d61ba60e1cc9a4c1f61642cb2354c594bb409eeaf98b75e",
-  "sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+  "sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f",
   "source_pages": 3,
   "pages": 5,
-  "file_size_bytes": 239528,
+  "file_size_bytes": 240249,
   "page_checks": [
     {
       "page": 1,
@@ -47,12 +47,7 @@
     "issue_date_preserved": true,
     "original_images_retained": true,
     "source_audit_complete": true,
-    "expected_page_count": true,
-    "original_scientific_lines_retained": true,
-    "original_uri_annotation_rectangles_retained": true,
-    "strict_text_extraction": true,
-    "public_editorial_disclosure": true,
-    "narrow_measurement_wording_and_APS_changes_only": true
+    "expected_page_count": true
   },
   "reference_urls": [
     "https://arxiv.org/html/2602.21689v5",
@@ -78,7 +73,7 @@
   "original_unique_uri_count": 6,
   "appendix_bottom_pt": [
     356.88976377952764,
-    442.0897637795275
+    417.2897637795275
   ],
   "metadata": {
     "format": "PDF 1.4",
@@ -89,14 +84,14 @@
     "creator": "Agentic Tech Review Letters public archive builder",
     "producer": "ReportLab PDF Library - (opensource)",
     "creationDate": "D:20261127081555+09'00'",
-    "modDate": "D:20261127021713Z",
+    "modDate": "D:20261127052131Z",
     "trapped": "",
     "encryption": null
   },
   "visual_qa": {
     "status": "passed_at_producer_scope",
     "reviewer": "dqb1127_pdf",
-    "checked_at": "2026-11-27T02:18:23.335527+00:00",
+    "checked_at": "2026-11-27T05:24:31.241643+00:00",
     "pages_opened": [
       1,
       2,
@@ -104,16 +99,98 @@
       4,
       5
     ],
-    "renderer": "Poppler pdftoppm 144 dpi; PyMuPDF 144 dpi used for exact outside-redaction pixel comparison",
-    "scope": "Opened and read all five newly rendered final pages. Relative to the previous draft, pages1-3 text is unchanged, page4 only replaces independent measurement photos with original measurement photos, and page5 only applies APS sentence-case typography to added citations1/2/5. No clipping, overlaps, damaged glyphs or missing figures observed. Independent nonproducer final review must bind this new hash."
+    "renderer": "Poppler pdftoppm144dpi; PyMuPDF144dpi exact comparison with original published edition",
+    "scope": "Opened and read all5 newly rendered corrected pages. Original published pages1-4 remain exactly identical in text and144dpi pixels. Page5 changes only the model-disclosure sentence; APS references and scientific content are unchanged. No clipping, overlap, damaged glyphs or missing content observed. This producer check is not an independent pass."
   },
   "independent_review": {
     "status": "passed",
-    "pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
-    "whole_document_review": "pdf-independent-review.json",
-    "assigned_primary_source_review": "pdf-source-review-qaoa-rydberg.json",
+    "pdf_sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f",
+    "scope": "AI-model disclosure correction; original four pages/science and references preserved at documented proof scopes.",
+    "review": "model-disclosure-pdf-review.json",
+    "original_scientific_reviews_retained_as_history": true,
     "producer_review_is_not_independent": true,
-    "completed_at": "2026-11-27T02:21:37.258240+00:00"
+    "checked_on": "2026-11-27"
   },
-  "independent_reproduction": false
+  "independent_reproduction": false,
+  "model_provenance_correction": {
+    "date": "2026-11-27",
+    "scope": "AI model disclosure in this public editorial edition only; original external DQB and scientific content unchanged.",
+    "replaces": "exact model identifier not preserved",
+    "display_name": "GPT-6.1 Sol",
+    "model_id": "gpt-6.1-sol",
+    "reasoning_effort": "ultra",
+    "evidence_type": "original authoring/review-time Codex turn_context configuration fields",
+    "original_configuration_records": 30,
+    "record_count_note": "Stored turn_context records, not API calls or distinct turns. session_meta records with no model fields are excluded.",
+    "current_config_used_as_historical_proof": false,
+    "server_weights_snapshot_verified": false,
+    "external_original_DQB_model_verified": false,
+    "previous_pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+    "corrected_pdf_sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f"
+  },
+  "prior_publication_history": [
+    {
+      "record_kind": "original_published_edition",
+      "pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+      "pages": 5,
+      "file_size_bytes": 239528,
+      "publication_source_commit": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+      "visual_qa": {
+        "status": "passed_at_producer_scope",
+        "reviewer": "dqb1127_pdf",
+        "checked_at": "2026-11-27T02:18:23.335527+00:00",
+        "pages_opened": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "renderer": "Poppler pdftoppm 144 dpi; PyMuPDF 144 dpi used for exact outside-redaction pixel comparison",
+        "scope": "Opened and read all five newly rendered final pages. Relative to the previous draft, pages1-3 text is unchanged, page4 only replaces independent measurement photos with original measurement photos, and page5 only applies APS sentence-case typography to added citations1/2/5. No clipping, overlaps, damaged glyphs or missing figures observed. Independent nonproducer final review must bind this new hash."
+      },
+      "independent_review": {
+        "status": "passed",
+        "pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+        "whole_document_review": "pdf-independent-review.json",
+        "assigned_primary_source_review": "pdf-source-review-qaoa-rydberg.json",
+        "producer_review_is_not_independent": true,
+        "completed_at": "2026-11-27T02:21:37.258240+00:00"
+      },
+      "disclosure_then": "Exact model identifier was stated as not preserved; corrected after time-bounded original configuration records were checked.",
+      "historical_review_record_not_rewritten": true
+    }
+  ],
+  "correction_preservation_checks": {
+    "previous_public_pages_1_to_4": [
+      {
+        "page": 1,
+        "previous_public_text_identical": true,
+        "previous_public_144dpi_pixels_identical": true
+      },
+      {
+        "page": 2,
+        "previous_public_text_identical": true,
+        "previous_public_144dpi_pixels_identical": true
+      },
+      {
+        "page": 3,
+        "previous_public_text_identical": true,
+        "previous_public_144dpi_pixels_identical": true
+      },
+      {
+        "page": 4,
+        "previous_public_text_identical": true,
+        "previous_public_144dpi_pixels_identical": true
+      }
+    ],
+    "all13_original_URI_annotations_and_coordinates_retained": true,
+    "page4_conditions_and_credit_unchanged": true,
+    "references_unchanged": true,
+    "page5_only_model_disclosure_phrase_replaced": true,
+    "strict_parser_and_model_fields": true,
+    "producer_visual_review": "passed_all5_new_Poppler144dpi_pages_opened",
+    "independent_review": "pending_new_hash",
+    "new_pdf_sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f"
+  }
 }

@@ -222,6 +222,10 @@ def main():
               'appendix_bottom_pt': bottoms, 'metadata': final.metadata,
               'visual_qa': {'status': 'pending'}, 'independent_review': {'status': 'pending'},
               'independent_reproduction': False}
+    # Keep original publication evidence distinct from the current correction.
+    for field in ('model_provenance_correction', 'prior_publication_history'):
+        if field in manifest:
+            report[field] = manifest[field]
     public_qa.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     private = dict(report, private_removed_text=removed_text)
     (args.qa_dir / 'production-qa.json').write_text(json.dumps(private, ensure_ascii=False, indent=2) + '\n')

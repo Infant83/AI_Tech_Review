@@ -2,7 +2,7 @@
 
 원 DQB 3쪽의 과학 본문·도표 2개·호 날짜·과학 URI 13개를 보존하고, 계산 조건과 정식 APS 서지를 덧붙인 5쪽 공개 편집판이다. 원 3쪽의 수집 경위와 내부 체크리스트는 실제 삭제했다. 원 자료의 발행명·크레딧은 보존하고 새 편집 절에는 Agentic Tech Review Letters(ATRL)를 사용한다. 원본과 검수 화면은 비공개 보존한다.
 
-공개 PDF는 239,528바이트이며 SHA-256은 `a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677`다. 원 과학 URL 6개와 13개 주석 좌표, 삭제 영역 밖의 본문 줄·144 dpi 픽셀을 보존했다. Poppler 144 dpi 화면을 전쪽 확인하고 엄격 파싱·메타데이터·URI·첨부·실행 동작·개인정보 검사를 별도로 수행했다.
+모델 활용 정보를 정정한 최신 5쪽 PDF는 240,249바이트이며 SHA-256은 `ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f`다. 최초 공개판 `a52eaf6c…`(239,528바이트)의 발행·감수 기록은 아래 이력과 원 커밋에 보존한다. 원 과학 URL 6개와 13개 주석 좌표, 삭제 영역 밖의 본문 줄·144 dpi 픽셀을 보존했다. Poppler 144 dpi 화면을 전쪽 확인하고 엄격 파싱·메타데이터·URI·첨부·실행 동작·개인정보 검사를 별도로 수행했다.
 
 ## 원문 대조와 편집 범위
 
@@ -16,7 +16,7 @@ root는 원 3쪽 전체 텍스트·화면과 비용 논문의 본문·그림 설
 
 비작성자 `dqb1127_publication_audit`는 비용 논문의 선택 방법·결과·부록을 따로 대조하고 한영 원고·제목·별도 요약·인용·작성 공개 정보를 감수했다. [비용 논문 검토](artifacts/source-audit-cost.json), [문헌별 실제 범위](artifacts/reference-manifest.json), [PDF 제작 검사](artifacts/public-pdf-qa.json), [한영 편집글 감수](artifacts/editorial-independent-review.json)를 구별한다. PDF의 비제작자 감수·명시 등록·후보·배포·실제 URL 확인은 별도 단계다.
 
-책임 편집자는 김현중이며 AI 보조는 OpenAI Codex다. 정확한 모델 식별자는 미보존이다. Editorial Method v2026.08과 2026-11-26 개정 문체 감수 기준을 적용했다. 원 논문의 계산·학습·실험·증명을 재현하지 않았고, 이번 공개 편집판과 웹 원고의 별도 사람 검토·사람 독자 평가도 기록되지 않았다. 원 DQB의 작성 시스템이나 사람 검토 여부는 소급 추정하지 않는다. 원호 날짜·웹 작성일·추가 근거 기준일은 2026년 11월 27일이며 각각 표시한다. 새 심층 리뷰나 다른 기존 본문의 실질적 확장은 이번 작업에 포함하지 않는다.
+책임 편집자는 김현중이며 AI 보조는 OpenAI Codex다. 최초 공개 때 미보존으로 표시한 모델 정보는 이후 작성·감수 시점의 기록을 대조해 GPT-6.1 Sol(`gpt-6.1-sol`)·추론 강도 `ultra`로 확인했다. Editorial Method v2026.08과 2026-11-26 개정 문체 감수 기준을 적용했다. 원 논문의 계산·학습·실험·증명을 재현하지 않았고, 이번 공개 편집판과 웹 원고의 별도 사람 검토·사람 독자 평가도 기록되지 않았다. 원 DQB의 작성 시스템이나 사람 검토 여부는 소급 추정하지 않는다. 원호 날짜·웹 작성일·추가 근거 기준일은 2026년 11월 27일이며 각각 표시한다. 새 심층 리뷰나 다른 기존 본문의 실질적 확장은 이번 작업에 포함하지 않는다.
 
 최종 PDF의 [비제작자 전쪽 감수](artifacts/pdf-independent-review.json), [QAOA·Rydberg 담당 감수](artifacts/pdf-source-review-qaoa-rydberg.json), [root의 실제 추가 확인](artifacts/root-pdf-review.json)을 완료했다. 원문 대조의 [공개 범위 기록](artifacts/source-audit-qaoa-rydberg.json)도 보존한다. 측정 사진의 통계적 독립성을 단정한 표현을 좁히고 새 참고문헌의 APS sentence case를 보완한 뒤 최종 해시로 재확인했다.
 
@@ -39,3 +39,12 @@ The [Korean editorial](https://infant83.io/AI_Tech_Review/briefings/2026-11-27/)
 Root checked actual Korean desktop, both mobile languages, English citation navigation, English keyboard search and its one matching result, opening that result, language switching and the selected calendar day's editorial-first preview with separate PDF actions. Console warnings/errors were empty; the sealed release remained byte-identical through the browser check. Temporary tabs and viewport overrides were cleared, and the local preview server had already stopped. See [actual HTTPS verification](artifacts/actual-publication-verification.json) and [actual browser review](artifacts/actual-browser-review.json). Native PDF-viewer display, click-to-save behavior, backend health, original scientific calculations and human-reader evaluation were not established by these checks.
 
 This run published one reviewed DQB derivative and its routine bilingual editorial. It did not publish a new deep review or expand another article. A separate metadata-only `[skip ci]` completion commit records these checks; the deployed source remains the publication revision above.
+
+
+## AI model disclosure correction · 2026-11-27
+
+The user identified the current model as GPT-6.1 Sol with reasoning effort ultra. A separate local-metadata review also recovered matching model and effort settings for the original writer/integrator, primary-source reviewer, PDF producer and publication auditor. The [frozen public model record](artifacts/ai-model-provenance.json) contains only approved roles, model identifiers, effort and evidence type. Exact session identifiers, internal locations, timestamps and raw conversation content remain private. Context-record counts are not API-call or distinct-turn counts. These are client-recorded settings; the external source DQB authoring model and backend weight snapshot are outside the verified scope.
+
+The bilingual manuscripts now reference that frozen record through the model-disclosure token in the existing compiler. This authoring step uses the saved JSON; the publication builder does not inspect its host Codex settings. The scientific paragraphs, title, summary, bibliography and original issue date are unchanged. In the PDF, only the page-five AI-model statement changed. Its first four pages, two figures, five references and original 13 URI annotations are preserved. Previous publication/QA records above describe the earlier edition and are not rewritten as if the recovered settings were known at that time. New registration, independent disclosure review and actual publication verification are recorded separately for this correction.
+
+The actual collector recovered the same four-role, 30-record historical selection and its normalized public projection matched the frozen authoring record. Root ran 63 focused collector/compiler/briefing tests successfully. A nonauthor reviewed the record selection, public/private separation, unchanged bilingual scientific text and the generated disclosure: [integration review](artifacts/model-provenance-integration-review.json). The [narrow PDF review](artifacts/model-disclosure-pdf-review.json) is bound to the new PDF hash. Root also checked both candidate languages and the English model/effort display at mobile width; no horizontal overflow was observed. Deployment and actual HTTPS verification remain separate from these candidate checks.

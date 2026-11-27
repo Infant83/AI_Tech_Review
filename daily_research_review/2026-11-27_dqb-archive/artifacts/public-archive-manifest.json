@@ -57,7 +57,7 @@
       "url": "https://arxiv.org/abs/2611.34634v1"
     }
   ],
-  "production_disclosure": "공개판의 책임 편집자는 김현중이며 AI 보조는 OpenAI Codex다. 정확한 모델 식별자는 미보존이다. Editorial Method v2026.08과 2026-11-26 개정 공통 문체 감수 기준을 적용했다. 편집부(AEDAUT)의 AI 에이전트가 원문을 대조하고 공개판을 제작했다. root는 원 3쪽 전체 텍스트·화면과 2번 본문·선택 부록을, dqb1127_sources는 1·4번 HTML 본문·통합 부록 전체를, dqb1127_pdf는 3번 저널 본문·부록·표와 이전 v1의 관련 절, 5번 HTML 본문 전체·선택 부록을 확인했다. 3번 공식 코드의 README·커밋 정보와 2번 자료 저장소의 메타데이터만 확인했으며 원 연구의 실험·계산·학습·증명·코드를 재현하지 않았다. 제작자 화면 확인과 비제작자 최종 감수는 동반 기록에서 구별한다. 이번 공개 편집판에 대한 별도 사람 원고 검토와 사람 독자 평가는 기록되지 않았다.",
+  "production_disclosure": "공개판의 책임 편집자는 김현중이며 AI 보조는 OpenAI Codex다. 공개 편집판의 저술·감수 모델은 GPT-6.1 Sol(모델 ID gpt-6.1-sol), 추론 강도는 ultra로 당시 설정 기록에서 확인했다. 외부 원 DQB의 제작 모델과 서버 가중치 스냅숏은 확인하지 못했다. Editorial Method v2026.08과 2026-11-26 개정 공통 문체 감수 기준을 적용했다. 편집부(AEDAUT)의 AI 에이전트가 원문을 대조하고 공개판을 제작했다. root는 원 3쪽 전체 텍스트·화면과 2번 본문·선택 부록을, dqb1127_sources는 1·4번 HTML 본문·통합 부록 전체를, dqb1127_pdf는 3번 저널 본문·부록·표와 이전 v1의 관련 절, 5번 HTML 본문 전체·선택 부록을 확인했다. 3번 공식 코드의 README·커밋 정보와 2번 자료 저장소의 메타데이터만 확인했으며 원 연구의 실험·계산·학습·증명·코드를 재현하지 않았다. 제작자 화면 확인과 비제작자 최종 감수는 동반 기록에서 구별한다. 이번 공개 편집판에 대한 별도 사람 원고 검토와 사람 독자 평가는 기록되지 않았다.",
   "rights_note": "원 DQB의 발행명·원 저자 크레딧과 과학 링크를 유지했다. 그림 1·2는 출처의 수치를 다시 그린 원 DQB 도표이며 원 논문의 그림을 복제하지 않았다. 논문별 이용 조건을 DQB 전체의 이용 허가로 확대하지 않는다.",
   "scientific_replacements": false,
   "figure_provenance": [
@@ -82,14 +82,68 @@
   "editorial_disclosure": {
     "responsible_editor": "김현중",
     "AI_system": "OpenAI Codex",
-    "exact_model_identifier": "not preserved",
+    "exact_model_identifier": "gpt-6.1-sol",
     "editorial_method_version": "2026.08",
     "writing_style_audit_revision": "2026-11-26",
     "source_original_system_or_human_review_inferred": false,
-    "human_review_scope": "No separate human manuscript review or human reader evaluation is recorded for this public editorial edition; no inference about the original DQB production."
+    "human_review_scope": "No separate human manuscript review or human reader evaluation is recorded for this public editorial edition; no inference about the original DQB production.",
+    "model_display_name": "GPT-6.1 Sol",
+    "reasoning_effort": "ultra",
+    "model_evidence_type": "original authoring/review-time client configuration records",
+    "server_weights_snapshot_verified": false,
+    "external_original_DQB_model_verified": false
   },
   "narrow_revision": {
     "measurement_wording": "Use original4000 photos, without asserting statistical independence;16000 augmented samples unchanged.",
     "bibliography": "APS sentence-case typography for added references1/2/5, preserving original title words, author order and source versions. Historical original-page references unchanged."
-  }
+  },
+  "model_provenance_correction": {
+    "date": "2026-11-27",
+    "scope": "AI model disclosure in this public editorial edition only; original external DQB and scientific content unchanged.",
+    "replaces": "exact model identifier not preserved",
+    "display_name": "GPT-6.1 Sol",
+    "model_id": "gpt-6.1-sol",
+    "reasoning_effort": "ultra",
+    "evidence_type": "original authoring/review-time Codex turn_context configuration fields",
+    "original_configuration_records": 30,
+    "record_count_note": "Stored turn_context records, not API calls or distinct turns. session_meta records with no model fields are excluded.",
+    "current_config_used_as_historical_proof": false,
+    "server_weights_snapshot_verified": false,
+    "external_original_DQB_model_verified": false,
+    "previous_pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+    "corrected_pdf_sha256": "ff2a44c303f195e530b508c01abc1c2e7271a3162263fd572f91f3ad6c25269f"
+  },
+  "prior_publication_history": [
+    {
+      "record_kind": "original_published_edition",
+      "pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+      "pages": 5,
+      "file_size_bytes": 239528,
+      "publication_source_commit": "c9476fd6f52023e34217c4cfe2b260952881d6aa",
+      "visual_qa": {
+        "status": "passed_at_producer_scope",
+        "reviewer": "dqb1127_pdf",
+        "checked_at": "2026-11-27T02:18:23.335527+00:00",
+        "pages_opened": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "renderer": "Poppler pdftoppm 144 dpi; PyMuPDF 144 dpi used for exact outside-redaction pixel comparison",
+        "scope": "Opened and read all five newly rendered final pages. Relative to the previous draft, pages1-3 text is unchanged, page4 only replaces independent measurement photos with original measurement photos, and page5 only applies APS sentence-case typography to added citations1/2/5. No clipping, overlaps, damaged glyphs or missing figures observed. Independent nonproducer final review must bind this new hash."
+      },
+      "independent_review": {
+        "status": "passed",
+        "pdf_sha256": "a52eaf6cf8231675a24205ac1c76c47c6b912bcfbab04607a1a5955a84a9c677",
+        "whole_document_review": "pdf-independent-review.json",
+        "assigned_primary_source_review": "pdf-source-review-qaoa-rydberg.json",
+        "producer_review_is_not_independent": true,
+        "completed_at": "2026-11-27T02:21:37.258240+00:00"
+      },
+      "disclosure_then": "Exact model identifier was stated as not preserved; corrected after time-bounded original configuration records were checked.",
+      "historical_review_record_not_rewritten": true
+    }
+  ]
 }
