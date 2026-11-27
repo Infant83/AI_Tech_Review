@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-737d0889-be7f-425a-b5c5-c6f28ed72e91",
   "uuid": "737d0889-be7f-425a-b5c5-c6f28ed72e91",
-  "record_version": 3,
-  "title": "A fresh HTTP-cached catalog hides newly published lecture PDFs in the reader",
+  "record_version": 4,
+  "title": "HTTP-cached catalogs or current PDFs can block new lecture editions",
   "type": "defect",
   "created_at": "2026-11-23T11:56:09.265778+00:00",
-  "updated_at": "2026-11-24T12:48:31.946236+00:00",
-  "status": "resolved",
+  "updated_at": "2026-11-27T22:11:00.939000+00:00",
+  "status": "validating",
   "priority": "P2",
   "source": {
     "kind": "publication_verification",
@@ -16,10 +16,12 @@
   },
   "affected": {
     "publication_ids": [
-      "lecture:2026-11-23-classiq-qae-l014-notes-ko"
+      "lecture:2026-11-23-classiq-qae-l014-notes-ko",
+      "lecture:2026-11-28-hadamard-pauli-basis-notes-ko"
     ],
     "public_urls": [
-      "https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-23-classiq-qae-l014-notes-ko"
+      "https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-23-classiq-qae-l014-notes-ko",
+      "https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-28-hadamard-pauli-basis-notes-ko"
     ],
     "source_paths": [
       ".automation/lecture-reader/reader.mjs",
@@ -45,7 +47,8 @@
   "evidence": [
     "https://github.com/Infant83/AI_Tech_Review/actions/runs/45167456564",
     "operations/runs/20261123T115609Z-be787ca8-983e-4a29-a8ac-36daf36dd0e0.md",
-    "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md"
+    "operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md",
+    "operations/runs/20261127T221100Z-8b415c13-8b72-4106-9c1b-47e4ec3d2a8b.md"
   ],
   "limitations": [
     "Direct reproduction used isolated Firefox158, not a physical iPad/Pencil. Raw responses, headers and screenshots remain private."
@@ -61,7 +64,7 @@
   },
   "authority": {
     "basis": "Existing publication authorization and Nov8 approved ADOPT maintenance.",
-    "current_scope": "Manifest revalidation, validated cached fallback, reader module version and regression tests. Preserve PDFs, IDs, ink, account permissions, subscriptions and authoring/mail schedules.",
+    "current_scope": "Original catalog revalidation plus current published-PDF HTTP revalidation and focused regressions. Preserve immutable editions, PDFs, IDs, ink, account permissions, subscriptions and all authoring/mail schedules.",
     "additional_decision": null
   },
   "owner_role": "ADOPT; publication support for AEDAUT",
@@ -127,5 +130,20 @@
     "execution_reference": null,
     "result": "Historical L014 verification: Existing normal Pages recovery artifact and current-upload/source retention guard passed. No rollback, user-note reset, database restore or full recovery download was performed. L015 created a new verified recovery copy, but its metadata-based deletion refused; see operations/runs/20261124T124831Z-dd0dd0ef-d44f-46ca-88e2-1c921d1dd33e.md."
   },
-  "next_action": "Resolved. Continue the existing AEDAUT six-hour lecture intake independently of this defect; reopen this issue on a meaningful recurrence. No new automation, cache reset, account permission or authoring/mail change."
+  "next_action": "Validate the narrow current-PDF cache fix, deploy through the existing workflow, then repeat the original stale-cache profile without clearing storage and confirm both current and historical notebooks. Original catalog fix remains preserved; no new automation or priority displacement.",
+  "recurrences": [
+    {
+      "observed_at": "2026-11-27T22:11:00.939000+00:00",
+      "publication_id": "lecture:2026-11-28-hadamard-pauli-basis-notes-ko",
+      "source_revision": "2cfd6a1fb06dfd20ecc3e6d2a51b9801b8599976",
+      "source_workflow": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46073471822",
+      "environment": "Isolated Chromium profile on macOS, actual HTTPS; no service-worker controller, response override or cache clearing",
+      "actual": "The catalog correctly revalidated to v3, while the still-fresh mutable PDF HTTP cache returned the 197313-byte v2. The SHA guard refused that body. A separate fresh profile opened the exact 272394-byte,14-page v3; the immutable5-page v2 restored its existing notebook exactly.",
+      "expected": "Opening the current published edition revalidates its mutable PDF URL and preserves every older edition notebook.",
+      "confirmed_cause": "The current PDF fetch used the default HTTP cache policy. Catalog freshness does not also revalidate a separate PDF request.",
+      "scope": "Current PDF alias revalidation only; immutable edition URLs keep ordinary caching. No PDF bytes, IDs, notebook keys, permissions, authoring or mail schedule change.",
+      "status": "candidate_validating",
+      "run_reference": "operations/runs/20261127T221100Z-8b415c13-8b72-4106-9c1b-47e4ec3d2a8b.md"
+    }
+  ]
 }

@@ -1139,7 +1139,11 @@ async function openPublished(id, { intent = null, edition = null } = {}) {
   if (!selected) { showError(t('hashMismatch')); return false; }
   retry = () => openPublished(id, { edition }); $('original-link').href = new URL(selected.href, rootURL).href;
   try {
-    const response = await fetch(new URL(selected.href, rootURL), { credentials: 'omit' });
+    // The current URL is mutable across editions. Revalidate its HTTP cache
+    // before the fingerprint check; immutable historical URLs can stay cached.
+    const response = await fetch(new URL(selected.href, rootURL), {
+      credentials: 'omit', cache: selected.current ? 'no-cache' : 'default',
+    });
     if (!isCurrentDocumentOpen(intent)) return false;
     if (!response.ok) throw new Error('NETWORK');
     const bytes = await response.arrayBuffer();
