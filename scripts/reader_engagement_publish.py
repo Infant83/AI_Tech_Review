@@ -8,6 +8,7 @@ import html
 import json
 import os
 import re
+import stat
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -383,6 +384,66 @@ def refresh_registered_html_hashes(site_dir: Path) -> None:
             write_changed(archive_path, (json.dumps(archive, ensure_ascii=False, indent=2) + "\n").encode())
 
 
+MAX_LEGACY_IMAGE_BYTES = 8 * 1024 * 1024
+MAX_LEGACY_PINS_BYTES = 65_536
+
+
+def _bounded_regular_bytes(path: Path, maximum: int) -> bytes:
+    """Bound allocation on one no-follow FD, including a file that grows."""
+    try:
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    except OSError:
+        raise ValueError("Cannot read reviewed legacy image input") from None
+    try:
+        before = os.fstat(fd)
+        if not stat.S_ISREG(before.st_mode) or before.st_size > maximum:
+            raise ValueError("Invalid reviewed legacy image input")
+        chunks, total = [], 0
+        while total <= maximum:
+            chunk = os.read(fd, min(65_536, maximum + 1 - total))
+            if not chunk:
+                break
+            chunks.append(chunk)
+            total += len(chunk)
+        after = os.fstat(fd)
+        current = os.stat(path, follow_symlinks=False)
+        def identity(info):
+            return (info.st_dev, info.st_ino, info.st_mode, info.st_size, info.st_mtime_ns)
+        if (total > maximum or total != before.st_size
+                or identity(before) != identity(after) or identity(before) != identity(current)):
+            raise ValueError("Reviewed legacy image input changed or exceeded its bound")
+        return b"".join(chunks)
+    except OSError:
+        raise ValueError("Cannot read stable reviewed legacy image input") from None
+    finally:
+        os.close(fd)
+
+
+def reviewed_legacy_image_pins() -> dict[str, str]:
+    """Exact already-public image pins; not permission for arbitrary old files."""
+    def unique(pairs):
+        result = {}
+        for name, value in pairs:
+            if name in result:
+                raise ValueError("Duplicate reviewed legacy image pin")
+            result[name] = value
+        return result
+    pins = json.loads(_bounded_regular_bytes(ASSET_EXCEPTIONS, MAX_LEGACY_PINS_BYTES).decode("utf-8"),
+                      object_pairs_hook=unique)
+    if (not isinstance(pins, dict) or any(not isinstance(name, str)
+            or not name.startswith("reviews/") or not name.endswith(".webp")
+            or not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value)
+            for name, value in pins.items())):
+        raise ValueError("Invalid reviewed legacy image exceptions")
+    for name in pins:
+        public_path(name)
+    return pins
+
+
+def legacy_image_bytes(path: Path) -> bytes:
+    return _bounded_regular_bytes(path, MAX_LEGACY_IMAGE_BYTES)
+
+
 def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
                              verify_reader_source: bool = True) -> dict:
     """Fail before artifact upload on private files, links, or unregistered article assets."""
@@ -461,11 +522,20 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
     registered.update(shared_reader_assets)
     # Four already published alternate cover images predate the registry. Pin their
     # exact bytes rather than deleting covers or silently allowing new unlisted files.
-    exceptions = json.loads(ASSET_EXCEPTIONS.read_text(encoding="utf-8"))
-    if (not isinstance(exceptions, dict) or any(not isinstance(name, str) or not name.startswith("reviews/")
-            or not name.endswith(".webp") or not isinstance(value, str) or not re.fullmatch(r"[a-f0-9]{64}", value)
-            for name, value in exceptions.items())):
-        raise ValueError("Invalid reviewed legacy image exceptions")
+    exceptions = reviewed_legacy_image_pins()
+    for name, checksum in exceptions.items():
+        parts = Path(name).parts
+        # A current, registered image can have an explicitly reviewed new
+        # revision. Unregistered historical covers must retain their pinned bytes.
+        # Pins belong to the article, including its already-public language
+        # variants; losing a current translation entry does not retire its URLs.
+        owner = "/".join(parts[:2]) + "/index.html"
+        if owner in registered and name not in registered:
+            if any((site_dir / Path(*parts[:end])).is_symlink()
+                   for end in range(1, len(parts) + 1)):
+                raise ValueError("Symlink in reviewed legacy image")
+            if hashlib.sha256(legacy_image_bytes(site_dir / name)).hexdigest() != checksum:
+                raise ValueError("Reviewed legacy image differs from its pin")
     protected = [os.environ.get(name, "") for name in
                  ("READER_PUBLISH_TOKEN", "VAPID_PRIVATE_KEY", "RATE_LIMIT_SALT", "CLOUDFLARE_API_TOKEN")]
     protected = [secret for secret in protected if len(secret) >= 16]

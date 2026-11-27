@@ -22,12 +22,12 @@ try:
     from .hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from .document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from .site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
-    from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes
+    from .reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes, reviewed_legacy_image_pins, legacy_image_bytes
 except ImportError:
     from hub_layout import render_hub, render_card as render_hub_card, render_latest as render_hub_latest, HUB_URL as HUB_PUBLIC_URL
     from document_archive_site import LIBRARY_ASSET_VERSION, publish_archive, render_learning_teaser, render_library_navigation, validate_archive
     from site_brand import ICON_ASSET_VERSION, SITE_NAME, SITE_STYLES_VERSION, render_brand_link, normalize_brand_html
-    from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes
+    from reader_engagement_publish import enrich_site as enrich_reader_engagement, validate_public_artifact as validate_reader_artifact, refresh_registered_html_hashes, reviewed_legacy_image_pins, legacy_image_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -1771,6 +1771,41 @@ def copy_public_support_files(
     return public_asset_names(copied, review=review, language=language)
 
 
+def preserve_reviewed_legacy_images(
+    dist_dir: Path, public_dir: Path, copied: list[str], review: PublicReview,
+    language: str, previous_dir: Path,
+) -> None:
+    """Keep exact pinned public covers without registering a new article revision."""
+    if language == "ko":
+        prefix = Path(review.href).parent
+    else:
+        translation = next(item for item in review.translations if item.language == language)
+        prefix = Path(review.translation_href(translation)).parent
+    for name, checksum in reviewed_legacy_image_pins().items():
+        relative = Path(name)
+        if relative.parent != prefix or relative.name in copied:
+            continue
+        raw = None
+        for directory in (dist_dir, previous_dir):
+            source = directory / relative.name
+            if directory.is_symlink() or source.is_symlink():
+                raise ValueError("Symlink in reviewed legacy image source")
+            if not source.exists():
+                continue
+            candidate = legacy_image_bytes(source)
+            if hashlib.sha256(candidate).hexdigest() == checksum:
+                raw = candidate
+                break
+        if raw is None:
+            raise ValueError("Pinned legacy image has no verified source: " + name)
+        destination = public_dir / relative.name
+        if destination.exists() or destination.is_symlink():
+            if destination.is_symlink() or legacy_image_bytes(destination) != raw:
+                raise ValueError("Reviewed legacy image destination differs")
+        else:
+            destination.write_bytes(raw)
+
+
 def publish_dist_variant(
     dist_index: Path,
     public_dir: Path,
@@ -1791,6 +1826,10 @@ def publish_dist_variant(
     (public_dir / "index.html").write_text(public_html, encoding="utf-8")
     copied_assets = copy_public_support_files(
         dist_index.parent, public_dir, copied_assets, review=review, language=language,
+    )
+    preserve_reviewed_legacy_images(
+        dist_index.parent, public_dir, copied_assets, review, language,
+        public_identity_dir or public_dir,
     )
     return public_html, copied_assets
 
