@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>큐비트에서 광자 내결함성 계산까지 | Agentic Tech Review Letters</title><meta name="description" content="상대 위상과 측정에서 출발해 오류정정, 논리연산과 매직 상태, 2차원 컬러 코드, 측정기반 계산과 광자 융합을 잇는 7단계 자습 강의입니다. 코드·회로·디코더·광원과 제어를 함께 보며 신뢰성과 자원 비용을 판단합니다.">
+<link rel="stylesheet" href="notes.css"></head>
+<body class="course-page"><nav aria-label="강의 안내"><a href="../../lectures/">← 렉처 노트 목록</a><a href="#study-guide">학습 순서</a><a href="#units">단계별 강의</a><a href="#references">참고문헌</a><a href="#publication">작성과 검수</a></nav><header class="course-topbar"><a class="brand" href="../../">Agentic Tech Review Letters</a><a href="en/" lang="en">English</a></header>
+<main><header class="course-heading"><p class="kicker">양자정보·오류정정·광자 양자컴퓨팅</p><h1>큐비트에서 광자 내결함성 계산까지</h1>
+<p class="course-summary">상대 위상과 측정에서 출발해 오류정정, 논리연산과 매직 상태, 2차원 컬러 코드, 측정기반 계산과 광자 융합을 잇는 7단계 자습 강의입니다. 코드·회로·디코더·광원과 제어를 함께 보며 신뢰성과 자원 비용을 판단합니다.</p><p class="byline">책임 편집자 김현중 · AI 보조 OpenAI Codex · 2026-11-27</p>
+<p class="course-facts">7단계 · 28절 · 한국어 PDF</p></header>
+<section id="compilation" class="compilation"><h2>통합본</h2><p class="pdf-meta">PDF 43쪽</p>
+<p>독립 자습용 저술이며 실제 강연이나 문답의 채록이 아닙니다. 한국어 PDF 통합본과 단계별 분리본을 제공합니다.</p><div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-notes-ko" aria-label="통합본 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-notes-ko.pdf" target="_blank" rel="noopener" aria-label="통합본 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-notes-ko.pdf" download aria-label="통합본 다운로드">다운로드 ↓</a></div></section>
+<section id="study-guide"><h2>학습 순서</h2><p>Level 1·2에서 상태와 측정을 익히고 잡음이 양자정보에 미치는 영향을 살펴봅니다. Level 3–5에서는 부호화와 안전한 논리연산을 거쳐 컬러 코드의 회로 비용으로 나아갑니다. Level 6·7은 이를 적응형 측정과 광자 융합으로 연결합니다.</p>
+      <p>복소수와 행렬 곱셈을 알면 시작할 수 있습니다. 통합본 2쪽에는 표기 안내가 있고, Level 1·2·3에는 자기점검 문제가 각각 2개·1개·1개 수록되어 있습니다. PDF의 유도 과정을 직접 계산하며 확인해 보세요.</p></section>
+<section id="units"><h2>단계별 강의</h2><ol class="course-units"><li id="level-1" data-lecture-unit="L001">
+        <p class="unit-number">Level 1 <span>PDF 7쪽</span></p>
+        <h3>양자정보의 기초 토대</h3>
+        <p class="unit-topic">상태·측정·얽힘·회로</p>
+        <p>상대 위상이 측정 확률을 바꾸는 간섭에서 출발해 블로흐 구, 사영 측정, 벨 얽힘과 텔레포테이션을 계산합니다. 게이트의 작용과 측정 결과를 연결하며 다음 단계에서 보호할 양자정보를 정의합니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l001-notes-ko" aria-label="Level 1 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l001-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 1 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l001-notes-ko.pdf" download aria-label="Level 1 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-1">[1]</a></p></li><li id="level-2" data-lecture-unit="L002">
+        <p class="unit-number">Level 2 <span>PDF 7쪽</span></p>
+        <h3>노이즈와 내결함성의 필요성</h3>
+        <p class="unit-topic">밀도 연산자·채널·임계값</p>
+        <p>환경과의 상관관계가 결맞음을 약화시키는 과정을 밀도 연산자와 양자채널로 표현합니다. 복제 불가능성과 연속적인 오류를 검토하고, 잡음 가정 아래 보호 자원을 늘려 논리 실패를 줄이는 임계값 정리의 뜻을 설명합니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l002-notes-ko" aria-label="Level 2 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l002-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 2 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l002-notes-ko.pdf" download aria-label="Level 2 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-1">[1]</a></p></li><li id="level-3" data-lecture-unit="L003">
+        <p class="unit-number">Level 3 <span>PDF 7쪽</span></p>
+        <h3>양자오류정정의 핵심 원리</h3>
+        <p class="unit-topic">부호화·신드롬·디코딩</p>
+        <p>반복·쇼어·스틴 코드로 논리정보를 읽지 않고 오류의 흔적만 얻는 방법을 익힙니다. 안정자와 정정 조건에서 패리티 회로, 플래그, 디코딩으로 이어지며 코드 거리·회로 안전성·고전 처리 속도를 함께 살핍니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l003-notes-ko" aria-label="Level 3 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l003-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 3 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l003-notes-ko.pdf" download aria-label="Level 3 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-2">[2]</a></p></li><li id="level-4" data-lecture-unit="L004">
+        <p class="unit-number">Level 4 <span>PDF 6쪽</span></p>
+        <h3>논리연산과 매직 상태</h3>
+        <p class="unit-topic">횡단 게이트·격자수술·자원 비용</p>
+        <p>부호화를 유지하는 횡단 게이트와 공동 논리 측정을 계산하고, Eastin–Knill 정리가 남기는 보편성의 제약을 살핍니다. 매직 상태 주입·증류와 오류 예산을 통해 큐비트 수뿐 아니라 공장 처리량과 계산 시간까지 비교합니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l004-notes-ko" aria-label="Level 4 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l004-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 4 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l004-notes-ko.pdf" download aria-label="Level 4 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-3">[3]</a> <a href="#ref-4">[4]</a></p></li><li id="level-5" data-lecture-unit="L005">
+        <p class="unit-number">Level 5 <span>PDF 6쪽</span></p>
+        <h3>위상 양자코드와 2차원 컬러 코드</h3>
+        <p class="unit-topic">국소 검사·횡단 Clifford·회로와 디코더</p>
+        <p>표면코드의 오류 사슬과 컬러 코드의 세 색 면 검사를 비교합니다. 7큐비트 예제로 횡단 위상 게이트의 부호 조건을 확인하고, 높은 검사 가중치와 색·시간 상관관계가 회로 및 디코더 설계에 주는 비용을 설명합니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l005-notes-ko" aria-label="Level 5 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l005-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 5 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l005-notes-ko.pdf" download aria-label="Level 5 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-5">[5]</a> <a href="#ref-6">[6]</a></p></li><li id="level-6" data-lecture-unit="L006">
+        <p class="unit-number">Level 6 <span>PDF 7쪽</span></p>
+        <h3>측정기반 양자컴퓨팅</h3>
+        <p class="unit-topic">그래프 상태·적응형 측정·파울리 프레임</p>
+        <p>한 비트 텔레포테이션의 측정 분기를 직접 전개한 뒤 그래프 상태와 파울리 프레임으로 확장합니다. 앞선 결과에 맞춰 측정각을 바꾸는 계산으로 무작위 분기를 같은 논리연산에 맞추고, 회로를 측정 패턴으로 옮깁니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l006-notes-ko" aria-label="Level 6 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l006-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 6 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l006-notes-ko.pdf" download aria-label="Level 6 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-7">[7]</a> <a href="#ref-8">[8]</a></p></li><li id="level-7" data-lecture-unit="L007">
+        <p class="unit-number">Level 7 <span>PDF 7쪽</span></p>
+        <h3>광자 플랫폼과 위상학적 MBQC</h3>
+        <p class="unit-topic">융합·손실·RHG·FBQC</p>
+        <p>광자 간섭과 Bell 융합의 성공·실패·손실이 남기는 정보를 구별하고 RHG의 셀 패리티로 오류 추론을 연결합니다. 융합기반 계산과 양자점 광원의 2026년 청사진을 통해 광학 깊이·피드포워드·자원 공급을 함께 검토합니다.</p>
+        <div class="lecture-actions"><a class="lecture-primary" href="../reader/?id=2026-11-27-photonic-fault-tolerant-computing-l007-notes-ko" aria-label="Level 7 필기">필기 →</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l007-notes-ko.pdf" target="_blank" rel="noopener" aria-label="Level 7 PDF">PDF ↗</a><a href="../../archive/files/2026-11-27-photonic-fault-tolerant-computing-l007-notes-ko.pdf" download aria-label="Level 7 다운로드">다운로드 ↓</a></div>
+        <p class="unit-references">원전 <a href="#ref-8">[8]</a> <a href="#ref-9">[9]</a> <a href="#ref-10">[10]</a></p></li></ol></section>
+<section id="references"><h2>참고문헌</h2>
+<p>전체 참고문헌과 인용은 각 PDF에 수록했습니다. 아래 원전은 단계별 학습 순서에 맞춰 연결했습니다.</p><ol class="references"><li id="ref-1"><a href="https://www.preskill.caltech.edu/ph219/chap2_15.pdf" target="_blank" rel="noopener">J. Preskill, Lecture Notes for Physics 219: Quantum Information, Chapter 2: Foundations I (California Institute of Technology, 2015).</a></li><li id="ref-2"><a href="https://arxiv.org/abs/quant-ph/9705052" target="_blank" rel="noopener">D. Gottesman, Stabilizer codes and quantum error correction, Ph.D. thesis, California Institute of Technology (1997).</a></li><li id="ref-3"><a href="https://doi.org/10.1103/PhysRevLett.102.110502" target="_blank" rel="noopener">B. Eastin and E. Knill, Restrictions on transversal encoded quantum gate sets, Phys. Rev. Lett. 102, 110502 (2009).</a></li><li id="ref-4"><a href="https://doi.org/10.1103/PhysRevA.71.022316" target="_blank" rel="noopener">S. Bravyi and A. Kitaev, Universal quantum computation with ideal Clifford gates and noisy ancillas, Phys. Rev. A 71, 022316 (2005).</a></li><li id="ref-5"><a href="https://doi.org/10.1103/PhysRevLett.97.180501" target="_blank" rel="noopener">H. Bombín and M. A. Martin-Delgado, Topological quantum distillation, Phys. Rev. Lett. 97, 180501 (2006).</a></li><li id="ref-6"><a href="https://doi.org/10.22331/q-2025-01-27-1609" target="_blank" rel="noopener">S.-H. Lee, A. Li, and S. D. Bartlett, Color code decoder with improved scaling for correcting circuit-level noise, Quantum 9, 1609 (2025).</a></li><li id="ref-7"><a href="https://doi.org/10.1103/PhysRevA.68.022312" target="_blank" rel="noopener">R. Raussendorf, D. E. Browne, and H. J. Briegel, Measurement-based quantum computation on cluster states, Phys. Rev. A 68, 022312 (2003).</a></li><li id="ref-8"><a href="https://doi.org/10.1088/1367-2630/9/6/199" target="_blank" rel="noopener">R. Raussendorf, J. Harrington, and K. Goyal, Topological fault-tolerance in cluster state quantum computation, New J. Phys. 9, 199 (2007).</a></li><li id="ref-9"><a href="https://doi.org/10.1038/s41467-023-36493-1" target="_blank" rel="noopener">S. Bartolucci, P. Birchall, H. Bombín, H. Cable, C. Dawson, M. Gimeno-Segovia, E. Johnston, K. Kieling, N. Nickerson, M. Pant, F. Pastawski, T. Rudolph, and C. Sparrow, Fusion-based quantum computation, Nat. Commun. 14, 912 (2023).</a></li><li id="ref-10"><a href="https://arxiv.org/abs/2507.16152v2" target="_blank" rel="noopener">M. L. Chan, A. A. Capatos, P. Lodahl, A. S. Sørensen, and S. Paesani, Practical blueprint for low-depth photonic quantum computing with quantum dots, arXiv:2507.16152v2 (2026).</a></li></ol></section>
+<section id="publication"><h2>작성과 검수</h2><p>책임 편집자는 김현중이며, AI 보조에는 OpenAI Codex를 사용했다. 이번 아카이빙에서 편집부(AEDAUT)의 ftqc_science가 과학 검토와 별도 계산을, ftqc_pdf가 공개판 보존·링크·조판 검수를, pqc_archive_structure가 한영 학습 안내와 자료 연결을 맡았고 root가 발행을 통합했다. 정확한 모델 식별자는 미보존이다.</p><p>별도로 작성한 Python 표준 라이브러리 검산 32항목(유한 입력·분기·이진 패턴 808건)을 실행했다. 최대 4큐비트의 상태벡터·16차원 이하 행렬, 7·15자리의 짧은 이진 패턴과 스칼라 계산으로 텔레포테이션·채널·신드롬·측정형 CNOT·매직 상태 주입·컬러 코드의 위상 부호·MBQC 적응 분기·Bell 융합·RUS·RHG 셀 경계를 점검했다. 원저자가 보고한 94개 검산 묶음은 기록만 검토했으며 이번에 재실행하지 않았다. 디코더·임계값 시뮬레이션, SDK·QPU·광학 장치 실험은 수행하지 않았다. 사람의 원고 감수는 별도로 확인되지 않았다.</p><p>편집 기준은 ATRL Editorial Method 2026.08, 과학 설명과 시각 전달 준칙 1.0 및 APS 참고문헌 기준이다.</p></section>
+</main><footer><a href="../../lectures/">← 렉처 노트 목록</a></footer></body></html>
