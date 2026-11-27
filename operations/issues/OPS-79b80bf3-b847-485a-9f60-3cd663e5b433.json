@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-79b80bf3-b847-485a-9f60-3cd663e5b433",
   "uuid": "79b80bf3-b847-485a-9f60-3cd663e5b433",
-  "record_version": 7,
+  "record_version": 8,
   "title": "기존 게시물의 현재 웹 제호와 공유 정보에 ATRL 명칭 적용",
   "type": "제호 표시와 출판 생성 경로 정합성",
   "created_at": "2026-11-08T13:06:33Z",
-  "updated_at": "2026-11-27T10:31:45.907178Z",
+  "updated_at": "2026-11-27T20:38:41.515732Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -279,6 +279,35 @@
       "new_or_current_writer_API_activation": false,
       "new_V_inspector_implemented": false,
       "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
+    },
+    "legacy_pin_next_normal_20261128": {
+      "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+      "checked_at": "2026-11-27T20:37:20.111507+00:00",
+      "public_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+      "subsequent_normal_runs": 3,
+      "old2_clean_HEAD200_GET_original_SHA_exact": true,
+      "images": [
+        {
+          "path": "reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_agent_hero_v2.webp",
+          "bytes": 149246,
+          "sha256": "ab718615eaa93fa93f4674ad7896f11750081e58b190ead8702c24f5f4c0b970",
+          "clean_HTTPS_GET_success": true,
+          "clean_HTTPS_HEAD_status": 200
+        },
+        {
+          "path": "reviews/2026-10-19_generative-ai-quantum-circuit-design/circuit_design_expert_agent_hero_v3.webp",
+          "bytes": 134218,
+          "sha256": "f4434e69c3ec5824e6daab288ff96a5b4bcf1dde7751109da2deb2f82664eb7f",
+          "clean_HTTPS_GET_success": true,
+          "clean_HTTPS_HEAD_status": 200
+        }
+      ],
+      "new_pin_or_retirement_authorization": 0,
+      "prior_restore_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+      "proof_key": "adopt-20261128-morning / old-cover-natural-build-HTTPS; adopt-20261128-morning-ci / metadata-delta",
+      "scope": "Subsequent normal-build preservation observation only. Coordinator clean GET proof reused; original brand completion and current cover selection, scientific text, dates, PDF editions and reader state are not altered.",
+      "GET_SHA_checked_at": "2026-11-27T20:36:51.880195+00:00",
+      "HEAD200_checked_at": "2026-11-27T20:37:20.111507+00:00"
     }
   },
   "observation": {
@@ -335,6 +364,15 @@
       "new_or_current_writer_API_activation": false,
       "new_V_inspector_implemented": false,
       "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
+    },
+    "legacy_pin_next_normal_20261128": {
+      "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+      "status": "subsequent_normal_build_original_two_URL_bytes_preserved",
+      "verification_reference": "verification/legacy_pin_next_normal_20261128",
+      "current_public_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+      "original_brand_completion_unchanged": true,
+      "resolved_state_reopened": false,
+      "new_content_cover_PDF_or_historical_brand_changes_by_ADOPT": 0
     }
   },
   "recovery": {
@@ -342,5 +380,5 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42530543035",
     "result": "기존 CI의 공개 릴리스 복구 사본 작업 성공. 이번 변경에서 실제 롤백은 수행하지 않음"
   },
-  "next_action": "현재제호/도메인·검색/읽음상태와 pinned 구표지URL보존을 다음 자연발행/새제보에서 관찰한다. 원브랜드한정완료(resolved)는 유지하며 원판PDF복구는 별도 OPS-f6deea28에서 계속한다. 내용·표지선택/역사제호·서지·하네스/발행일은 변경하지 않는다."
+  "next_action": "원제호 한정완료/resolved는 유지한다. 복구한구표지2는후속정상753485에서도cleanHEAD200/GET원래SHA를확인했으며다음자연발행/새제보에서재발만관찰한다. PDF원판복구는별도OPS-f6deea28에서계속하며편집부의내용판단/게시권한은유지한다."
 }

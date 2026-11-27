@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 32,
+  "record_version": 33,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-27T10:16:27.494988Z",
+  "updated_at": "2026-11-27T20:52:39.143967+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -541,10 +541,60 @@
       "old_seven_files_and_historical_tool_paths_unchanged": true,
       "first_implementation_target": "2026-11-28T05:30:00+09:00",
       "prepared_scope_independent_review_target": "2026-11-28T13:30:00+09:00"
+    },
+    "b2b2_authority_initial_candidate": {
+      "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+      "candidate_revision": "0f418d1c6b4a2875eb577d77d4eab9f4c2e1e251",
+      "candidate_branch": "codex/admin-authority-observation-20261128",
+      "candidate_base_revision": "cd1f3fec1f670d60b703ecaf95b86e8f304f638f",
+      "scope": "existing v1 no_change store, independent read-only observation and CLI; initial isolated candidate only",
+      "source_sha256": {
+        "scripts/admin_projection_authority.py": "956ac86cf8ae8190be950dda67666889260d46b7f127e703900923958767ce4d",
+        "tests/test_admin_projection_authority.py": "3daa2f234a4e783d5eecd6179390f7e1047a0962d6550f5456ea2735835a90ac"
+      },
+      "source_files": [
+        "scripts/admin_projection_authority.py",
+        "tests/test_admin_projection_authority.py"
+      ],
+      "dedicated_tests": {
+        "tests": 22,
+        "passed": 22,
+        "failed": 0,
+        "seconds": 37.717
+      },
+      "related_six_module_regression": {
+        "tests": 156,
+        "passed": 156,
+        "failed": 0,
+        "seconds": 146.299,
+        "new22_included": false
+      },
+      "coherent_invalid_provenance_same_subcases": {
+        "accepted_before": 2,
+        "refused_after": 2,
+        "values": "fingerprint null and boolean selectedFiles; tiny private fixtures only"
+      },
+      "real_CLI_cases": 5,
+      "source_and_store_bytes_membership_refs_preserved": true,
+      "old7_FD2_and_legacy_pin3_source_hashes_preserved": true,
+      "static_corrections": [
+        "Root tree has no invented parent tree-entry mode",
+        "Direct FD stdout avoids buffered reflush; failed partial JSON is not resent",
+        "Known-schema types/SHA/counts are checked in new inspector only; historical values are preserved",
+        "Evidence bundle cap is a limit refusal, not false evidence corruption"
+      ],
+      "typed_counts_scope": "selected count/bytes exact; dist count/bytes bounded by original caps and preserved target_dist lower bounds because source=False external inputs can contribute to original dist totals",
+      "product_main_integration": false,
+      "actual_new_candidate_CI": false,
+      "formal_five_group_acceptance": false,
+      "current_writer_or_API_activation": false,
+      "continuityEstablished": false,
+      "sourceAdvanced": null,
+      "next_formal_review_at": "2026-11-28T13:30:00+09:00"
     }
   },
   "verification": {
-    "status": "B2b2-V 읽기 전용 inspector 계약은 두 역할 정적 검토 뒤 채택·제품 구현 전이다. 기존 FD754 source/test의 실제 CI 실행 결속은 확인했으나 현재 writer caller·changed receipt/native gate/운영 활성화와 구분한다.",
+    "status": "B2b2-V 첫 두 파일 후보와 초기22·기존관련156·동일2반례/실CLI5 확인; 정식5군·전체회귀/main통합·운영활성화 전",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -1434,6 +1484,35 @@
       },
       "scope": "actual source/test execution binding only, not current CLI caller or runtime writer activation",
       "confirmed_latest_source_run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/45965028392"
+    },
+    "B2b2_authority_initial_20261128_morning": {
+      "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+      "candidate_revision": "0f418d1c6b4a2875eb577d77d4eab9f4c2e1e251",
+      "dedicated_tests": {
+        "tests": 22,
+        "passed": 22,
+        "failed": 0,
+        "seconds": 37.717
+      },
+      "related_six_module_regression": {
+        "tests": 156,
+        "passed": 156,
+        "failed": 0,
+        "seconds": 146.299,
+        "new22_included": false
+      },
+      "coherent_invalid_provenance_same_subcases": {
+        "accepted_before": 2,
+        "refused_after": 2,
+        "values": "fingerprint null and boolean selectedFiles; tiny private fixtures only"
+      },
+      "real_CLI_cases": 5,
+      "old7_FD2_and_legacy_pin3_source_hashes_preserved": true,
+      "formal_five_group_acceptance": false,
+      "product_main_integration": false,
+      "actual_new_candidate_CI": false,
+      "continuityEstablished": false,
+      "sourceAdvanced": null
     }
   },
   "observation": {
@@ -1493,21 +1572,21 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md"
+    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md"
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/28 05:30에 B2b2-V 계약의 읽기 전용 inspector/자체 CLI를 기존 별도 작업 사본에서 새 두 파일 후보로 구현한다. 준비된 범위는13:30 독립 검토로 잇는다. 현재 v1/old7·역사 tool paths·per-key replay와 native 두ref gate를 유지하며 변경 키/receipt·원본/원격/서버·발행 활성화는 열지 않는다. Inspector의 continuityEstablished:false와 현재성 미검증을 보존한다.",
+  "next_action": "11/28 13:30에 별도 원격 후보0f418d1을 최신 원격/공개본과 인수하고 B2b2-V 계약5군의 정식 독립 감수·준비 범위 전체 회귀·소스통합 여부를 판단한다. 첫22/기존관련156·동일2반례 수정전후·실제CLI5는 초기 근거로 재사용한다. 실제 협력 경합/중단·기한/한도 경계와 provenance 행렬을 필요한 범위에서 보강하며 native 두ref·full changed receipt/키·현재 writer/원본·원격·서버/발행 활성화는 미완료로 유지한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b2_V_readonly_authority_contract_adopted_first_implementation_pending",
-    "next_scheduled_step_at": "2026-11-28T05:30:00+09:00",
+    "state": "B2b2_V_initial_candidate_and_initial_validation_complete_formal_review_pending",
+    "next_scheduled_step_at": "2026-11-28T13:30:00+09:00",
     "next_review_at": "2026-11-28T13:30:00+09:00",
-    "scheduled_step": "현재 v1 writer의 읽기 전용 권위 inspector 첫 격리 구현·준비 범위 독립 검토",
+    "scheduled_step": "새 읽기 전용 V 후보의 정식 독립 검토·준비된 범위 전체 회귀/소스통합 판단",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
@@ -1516,7 +1595,7 @@
     "replan_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
     "replan_reason": "18:30에 후속 최소 범위 계약을 두 역할의 정적 독립 검토 뒤 채택했다. 현재 format/역사/키·native 두ref 조건을 유지하고 changed 저장보다 읽기 전용 검사기를 먼저 구현한다. 같은P2/순번1의 다음28일05:30 첫 후보·13:30 독립 검토로 연결하며 미검증이면 같은 과제를 잇는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -1570,6 +1649,9 @@
     "b2b2_fd_primitive_integration_revision": "75497454864305aafae1e5c0573d34b976ebb966",
     "b2b2_authority_contract_adopted_at": "2026-11-27T09:41:53.819759Z",
     "b2b2_authority_first_candidate_target": "2026-11-28T05:30:00+09:00",
-    "b2b2_authority_formal_review_target": "2026-11-28T13:30:00+09:00"
+    "b2b2_authority_formal_review_target": "2026-11-28T13:30:00+09:00",
+    "b2b2_authority_initial_candidate_revision": "0f418d1c6b4a2875eb577d77d4eab9f4c2e1e251",
+    "b2b2_authority_initial_validation_completed_at": "2026-11-27T20:50:56.564159+00:00",
+    "b2b2_authority_initial_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md"
   }
 }

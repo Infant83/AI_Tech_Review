@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 59,
+  "record_version": 60,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-27T10:31:45.907178Z",
+  "updated_at": "2026-11-27T20:38:41.515732Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -97,7 +97,7 @@
     "deployment_reference": null
   },
   "verification": {
-    "status": "자체복구run45981054975 attempt1/source318809의 build/deploy/recovery-copy/notify-readers가 모두 성공했고 실제Python674(673통과/기존skip1)/cleanHTTPS2 SHA/완전공개보존을 확인했다. 기존도메인선언실패45964365869는420c 수정성공 사슬로 닫고 원래DQB45532017728 원인/같은 실패입력은 미확정으로 유지한다. 메일·전체API 체크포인트와 이번선택run API완료확인을 구분한다.",
+    "status": "11/28 05:30 겹친 전체 조회의 새3건은 각attempt1/네 작업 성공이며 새 실패알림·미해결 신규실패0이다. 현재공개753485·후속기록main cd1f3fec를 구분하고 기존321PDF/23판본·구pin2를 보존했다. 최신 게시 QA의 실제Python674(673통과/기존skip1)를 재사용하며 원래DQB45532017728의 원인/같은 실패입력은 미확정이다.",
     "checks": [
       "최초 점검: 최근 메일 4통 재검색 결과 동일·다음 페이지 없음",
       "최초 점검: 독립 Actions 조사: 실패 attempt 4건과 메일 4건 일치, 관련 내용의 후속 성공·현재 공개 계보 확인",
@@ -206,42 +206,43 @@
     }
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-27T09:34:02.756Z",
-    "last_successful_actions_check_at": "2026-11-27T09:34:00.862437Z",
-    "mail_window": "지난 성공부터48시간 겹침·in:anywhere/검증한 GitHub 발신자·저장소·unread 제한 없이1페이지1통/끝을 확인했다. 새 도메인 실패45964365869 알림을 기존 수정/후속 실제 성공과 연결했으며 메일 상태 변경0이다.",
-    "actions_window": "1페이지14개 겹침 실행/끝·새4attempt를 대조했다. 성공3건은 각 네 작업 성공, 실패1건은 release-check에서 deploy/notify/recovery를 차단한 뒤 선언 소유권 수정420c의 실제 성공과 연결됐다. 새 미해결 CI0·활성5상태0이며 원래 DQB45532017728은 별도 재조회해 같은 미해결 상태를 보존했다.",
+    "last_successful_mail_check_at": "2026-11-27T20:34:45Z",
+    "last_successful_actions_check_at": "2026-11-27T20:32:27.390292Z",
+    "mail_window": "지난 성공09:34:02.756Z부터48시간 겹침/in:anywhere·두 공식GitHub발신자·저장소·unread제한없이1페이지1통/끝 확인. 기존 도메인실패 알림만 재사용하고 새알림0·메일상태변경0이다.",
+    "actions_window": "지난 성공09:34:00.862437Z부터48시간 겹침1페이지18실행/끝·새3attempt1의각4jobs성공·활성5상태0이다. 별도 원래DQB45532017728 attempt1의recovery-copy 실패는 그대로며 원인/동일입력 재검증 미확정이다.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [
       "45532017728"
     ],
-    "live_source_revision": "420c5aa8cc7e7a4349266ffd64394c513ea13c67",
-    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+    "live_source_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
     "supplemental_actions_check_at": "2026-11-22T02:16:23.765935Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-27T09:34:00.862437Z",
+    "last_full_actions_check_at": "2026-11-27T20:32:27.390292Z",
     "supplemental_successful_runs": [
       "44974749097"
     ],
-    "supplemental_scope": "과거 supplemental 필드는 당시 이력이다. 현재 메일09:34:02.756Z·전체 API09:34:00.862437Z·새 jobs09:34:05.969136Z·원래 DQB jobs09:34:27.615403Z·공개 metadata09:34:04.178672Z·선언 수정 두 HTML 실제 HTTPS09:37:48.425627Z를 구분한다.",
+    "supplemental_scope": "과거 supplemental/11월27일 자체선택run 완료10:27:57Z는 역사로 보존하며 현재 메일20:34:45Z·전체API20:32:27.390292Z·새jobs20:32:31.674441Z·원래DQB20:33:47.503796Z·공개metadata20:32:30.580265Z와 구분한다.",
     "historical_supplemental_fields_precede_current_full_check": true,
     "full_api_checkpoint_excludes_later_concurrent_DRB": false,
     "historical_resolved_failed_attempt_count": 1,
-    "new_unique_mail_linked_runs": 1,
-    "new_mail_notification_count": 1,
-    "last_successful_new_normal_jobs_check_at": "2026-11-27T09:34:05.969136Z",
-    "last_successful_known_failure_jobs_check_at": "2026-11-27T09:34:27.615403Z",
+    "new_unique_mail_linked_runs": 0,
+    "new_mail_notification_count": 0,
+    "last_successful_new_normal_jobs_check_at": "2026-11-27T20:32:31.674441Z",
+    "last_successful_known_failure_jobs_check_at": "2026-11-27T20:33:47.503796Z",
     "current_mail_linked_runs": [
       "45964365869"
     ],
     "current_mail_unresolved_after_followup": [],
-    "unresolved_mail_linked_runs_scope": "Historical original DQB failure retained separately; its notice is outside the current48h-overlap search window. Current mail points to the corrected domain failure."
+    "unresolved_mail_linked_runs_scope": "Historical original DQB failure retained separately; its notice is outside the current48h-overlap search window. Current mail points to the corrected domain failure.",
+    "remote_main_revision": "cd1f3fec1f670d60b703ecaf95b86e8f304f638f"
   },
   "observation": {
-    "status": "11/27 18:30 자체기술복구 CI·HTTPS 완료",
-    "period": "2026-11-27T09:34:00.862437Z",
-    "result": "318809의 정상4jobs와 clean구표지2 복구를 확인했다. 새과학게시/reader recency는 없고 현재896,393,405B과 실제321PDF/23판본 보존을 인수했다. 기존메일/fullAPI시각과 선택자체실행10:27:57완료확인을 구분한다.",
+    "status": "11/28 05:30 새정상3건·후속pin보존 인수",
+    "period": "2026-11-27T20:32:27.390292Z",
+    "result": "새3건×4jobs성공과 전체메일/API·현재753485의완전metadata를 확인했다. 새미해결0·기존DQB원인미확정이며 현재공개용량/판본은 ASSET-bd169와 FCC의 현행 footprint를 참조한다.",
     "concurrent_drb_publication": {
       "checked_at": "2026-11-13T02:44:33.722384Z",
       "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/43353879664",
@@ -980,7 +981,7 @@
       "actual_public_revision": "6a920806fdad48eea569d0a61f6819244876f430",
       "scope": "Use existing normal QA/cache-fix737d verification; no new browser/device/restore or B2a GitHub execution claim."
     },
-    "run_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
+    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
     "evening_20261124": {
       "run_reference": "operations/runs/20261124T122500Z-a394f3d1-dbf1-496f-b161-b7dd24183516.md",
       "mail_success_at": "2026-11-24T12:25:11Z",
@@ -1474,6 +1475,87 @@
       "new_or_current_writer_API_activation": false,
       "new_V_inspector_implemented": false,
       "proof_key": "adopt-legacy-cover-retention-20261127 / validation/sealed-candidate-comparison/independent-read-review-candidate2; adopt-20261127-evening-post / stage2-public-verification-summary/baseline; adopt-20261127-evening / own-final-API/own-actual-CI-build-summary/own-completion-safe-log-summary"
+    },
+    "morning_20261128": {
+      "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+      "mail_checked_at": "2026-11-27T20:34:45Z",
+      "full_actions_checked_at": "2026-11-27T20:32:27.390292Z",
+      "new_jobs_checked_at": "2026-11-27T20:32:31.674441Z",
+      "known_DQB_jobs_checked_at": "2026-11-27T20:33:47.503796Z",
+      "mail_pages": 1,
+      "mail_count": 1,
+      "mail_end_reached": true,
+      "unread_restriction": false,
+      "new_notices": 0,
+      "API_pages": 1,
+      "API_runs": 18,
+      "API_end_reached": true,
+      "new_runs": [
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46035611962",
+          "source": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+          "attempt": 1,
+          "four_jobs": "success"
+        },
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46028207334",
+          "source": "c7cb3a0e3cae37839f2ef4192b60281132901a45",
+          "attempt": 1,
+          "four_jobs": "success"
+        },
+        {
+          "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46022012764",
+          "source": "a64133e617207d595095ec97c6b208d6489e218c",
+          "attempt": 1,
+          "four_jobs": "success"
+        }
+      ],
+      "active_runs": 0,
+      "new_unresolved_failures": 0,
+      "current_public_revision": "753485294e7b1f2f53ff244ef5cebf0748fd39a0",
+      "remote_record_revision": "cd1f3fec1f670d60b703ecaf95b86e8f304f638f",
+      "public_metadata_checked_at": "2026-11-27T20:32:30.580265Z",
+      "existing_publication_QA_references": [
+        ".automation/writing-reviews/legacy-refresh/2026-11-28-multiphoton/ci-independent-review.json",
+        "2026-11-27_foundational-potentials-research-workflows/reports/live-publication-review.json"
+      ],
+      "reused_latest_actual_Python": {
+        "tests": 674,
+        "passed": 673,
+        "existing_skipped": 1,
+        "failed": 0
+      },
+      "six_suites_reused": {
+        "tests": 1200,
+        "passed": 1191,
+        "skipped": 9,
+        "failed": 0
+      },
+      "pin_guard_and_FD_verified_source_exact_in_three_new_runs": true,
+      "general_artifacts_metadata": {
+        "advertised": 120,
+        "collected": 120,
+        "unique": 120,
+        "pages": 2,
+        "end_reached": true,
+        "checked_at": "2026-11-27T20:32:28.187605Z"
+      },
+      "recovery_copies_unexpired": 3,
+      "latest_multiphoton_CI_deletion": {
+        "count": 1,
+        "source": "reused publisher actual CI retention proof",
+        "reference": ".automation/writing-reviews/legacy-refresh/2026-11-28-multiphoton/ci-independent-review.json"
+      },
+      "old_DQB_cause_or_same_failed_input_established": false,
+      "historical104_103_provider_cause_established": false,
+      "new_secret_alert_metadata_or_feedback": 0,
+      "open_secret_candidates_still_unknown": 6,
+      "existing_resolved_alert_metadata": 3,
+      "security_controls_unchanged": true,
+      "weekly_or_Dependabot_review_repeated": false,
+      "scope": "Metadata/source binding and existing publisher QA only; no raw logs, PDF/artifact download, content review, browser/device tests, external activation or extra reader notification.",
+      "proof_key": "adopt-20261128-morning-ci / final-summary, source-and-declaration-bindings, existing-publication-QA-summary",
+      "manual_DELETE_PDF_artifact_download_rerun_or_restore": 0
     }
   },
   "recovery": {
@@ -1481,5 +1563,5 @@
     "execution_reference": null,
     "result": "사이트·DB·글·PDF·CI 코드 변경이나 실제 롤백 없음"
   },
-  "next_action": "다음 기존05:30에 마지막 메일·전체API 성공부터48시간 겹침/끝페이지와 원래DQB미해결attempt를 대조한다. 자체45981054975와 기존도메인수정의 해결된알림은 반복통지하지 않고 새미해결실패/공개영향만 인수한다. 수동리런/삭제·테스트알림/메일0을 유지한다."
+  "next_action": "다음 기존13:30에 이번 메일/전체API 성공부터48시간 겹침·끝페이지와 원래DQB 미해결attempt를 대조한다. 해결된 도메인/구표지 복구는 기존 기록을 재사용하며 새미해결실패·공개영향만 인수한다. 새거절이 있을 때 진단을 관찰하고 관찰용리런/수동삭제·테스트알림/메일은 하지 않는다."
 }
