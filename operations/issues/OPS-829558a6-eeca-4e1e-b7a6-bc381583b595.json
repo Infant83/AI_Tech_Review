@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-829558a6-eeca-4e1e-b7a6-bc381583b595",
   "uuid": "829558a6-eeca-4e1e-b7a6-bc381583b595",
-  "record_version": 1,
+  "record_version": 2,
   "title": "받은 새 글 알림을 이 기기에서 모두 읽음으로 표시",
   "type": "reader_notification_usability",
   "created_at": "2026-11-28T12:31:04.531751+00:00",
-  "updated_at": "2026-11-28T12:42:30.196209+00:00",
-  "status": "validating",
+  "updated_at": "2026-11-28T13:04:41.402174+00:00",
+  "status": "observing",
   "priority": "P2",
   "source": {
     "kind": "user_request",
@@ -77,14 +77,16 @@
   "change": {
     "commits": [
       "f96b8fd83f280ed372cbbbe2e9424a82148983f3",
-      "b94d462818dbe4e9a7e6157d5a03c321e7660e3b"
+      "b94d462818dbe4e9a7e6157d5a03c321e7660e3b",
+      "f8a29b436d37e654877db0dbdc741a39f352d882"
     ],
     "candidate_reference": "refs/heads/codex/notification-read-all-20261128",
-    "deployment_reference": null,
-    "candidate_workflow_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146457206"
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146976043",
+    "candidate_workflow_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146457206",
+    "deployment_revision": "f8a29b436d37e654877db0dbdc741a39f352d882"
   },
   "verification": {
-    "status": "Targeted runtime, independent source/declaration/record review, isolated browser and full non-main candidate tests/continuity/budgets/seal/complete validator PASS. Main delivery still pending.",
+    "status": "Technical implementation, targeted tests, independent source/declaration review, branch full candidate validation, all four normal delivery jobs, exact HTTPS/source continuity and actual public UI PASS. Phone OS behavior remains existing observation.",
     "targeted_tests": {
       "tests": 153,
       "pass": 145,
@@ -145,28 +147,82 @@
       },
       "payload_budget_pass": true,
       "complete_sealed_validator_pass": true
-    }
+    },
+    "actual_delivery": {
+      "source_revision": "f8a29b436d37e654877db0dbdc741a39f352d882",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146976043",
+      "four_jobs": {
+        "build": "success",
+        "deploy": "success",
+        "notify-readers": "success",
+        "recovery-copy": "success"
+      },
+      "HTTPS_checked_at": "2026-11-28T13:03:31.019688+00:00",
+      "five_assets_exact": {
+        "assets/reader-engagement.js": {
+          "bytes": 87759,
+          "SHA256": "a6a4ea1bcaa0d8176a011e0aa089f60661db3bfb36b11f50615197942e462e77",
+          "manifest_exact": true,
+          "source_exact": true
+        },
+        "assets/reader-engagement.css": {
+          "bytes": 10476,
+          "SHA256": "a4850247fe1456fe0df1058f2507912230eaf52fe3986be051371aa5a97a00fd",
+          "manifest_exact": true,
+          "source_exact": true
+        },
+        "sw.js": {
+          "bytes": 29409,
+          "SHA256": "7dc9601960f1801d978b7cabcb7404b69005bc1cc795f5e5329edc0d6a0dd3a1",
+          "manifest_exact": true,
+          "source_exact": true
+        },
+        "google60a24e972420ad3d.html": {
+          "bytes": 53,
+          "SHA256": "0a1d44f6260fee4b1e85051d9ce588f5e39c71a173792f309ee75077b3694d23",
+          "manifest_exact": true,
+          "source_exact": true
+        },
+        "sitemap.xml": {
+          "bytes": 29484,
+          "SHA256": "2e824fb3ee7516edae4f05f96db8822c735c05d671b3dfefe22683a82b3481cc",
+          "manifest_exact": true,
+          "source_exact": null,
+          "source_comparison_applicable": false,
+          "comparison_scope": "Generated sitemap bytes match the previous verified generated sitemap and complete sealed manifest; no source-file byte comparison applies."
+        }
+      },
+      "prior339_PDF_metadata_exact": true,
+      "catalog_articles_exact": 99,
+      "reader_update_articles_exact": 200,
+      "all_prior_public_paths_preserved": true,
+      "complete_manifest_files": 2919,
+      "public_files": 2920,
+      "public_bytes": 974572025,
+      "public_browser": "PASS: actual HTTPS alert dialog contains unread0/disabled Mark-all-read in this browser, preserving future subscription controls; no real alert-read/subscription mutation or test push; console errors0."
+    },
+    "independent_final_record_review": "PASS: final versions/4-job delivery/HTTPS/assets/footprint/old observation preservation/schedules/privacy matched; generated sitemap comparison applicability clarified."
   },
   "observation": {
-    "status": "관찰 전",
-    "period": null,
-    "result": null
+    "status": "Technical delivery and public UI verified; actual phone OS observation remains",
+    "period": "2026-11-28T13:03:31.019688+00:00",
+    "result": "The requested explicit control is available on the public site. Isolated24-to0 and actual public empty-state UI were verified; old iPhone banner/delivery observations are not closed by this feature."
   },
   "recovery": {
-    "plan_reference": null,
-    "execution_reference": null,
-    "result": null
+    "plan_reference": "PUBLICATION_WORKFLOW.md",
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146976043",
+    "result": "Normal recovery-copy completed successfully. No actual rollback/restore or private DB restore."
   },
-  "next_action": "Integrate the verified source on unchanged latest main via the existing normal Pages path; confirm all four main jobs and exact HTTPS assets/continuity. No repeated local full build.",
+  "next_action": "Observe only new user/device evidence at existing2026-11-30T18:30+09:00 combined review. Existing V2026-11-29T05:30 remains. Reuse completed code/tests/deployment; no repeated build, test push, subscription change or renewed approval.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "user_direct_candidate_in_progress",
-    "operating_order": 0,
-    "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
-    "next_review_at": "2026-11-29T05:30:00+09:00",
+    "state": "technical_delivery_complete_actual_device_observing",
+    "operating_order": null,
+    "next_scheduled_step_at": "2026-11-30T18:30:00+09:00",
+    "next_review_at": "2026-11-30T18:30:00+09:00",
     "run_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
     "replan_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
-    "replan_reason": "현재 사용자 요청을 경량 구현·원격CI로 이어간다. V29일05:30·장기관찰/정기시각은 유지하고 안전 경계 지연시 기존 슬롯에 인계한다."
+    "replan_reason": "User-requested controls are delivered and publicly verified in the current task. Resume existing V2026-11-29T05:30 unchanged; combine future user/OS evidence with existing2026-11-30T18:30 observation, without a new schedule."
   }
 }

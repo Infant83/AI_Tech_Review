@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131",
   "uuid": "fcc466c7-bb55-499e-80a9-7dacf9417131",
-  "record_version": 52,
+  "record_version": 53,
   "title": "불필요한 자료·도구와 파일 구조의 첫 조사 및 단계별 정리",
   "type": "maintenance_cleanup",
   "created_at": "2026-11-09T01:52:09Z",
-  "updated_at": "2026-11-28T12:06:49.560544+00:00",
+  "updated_at": "2026-11-28T13:04:41.402174+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -261,7 +261,7 @@
     }
   },
   "verification": {
-    "status": "8c962d2c의 실제 정상CI 네 작업과 HTTPS 완전artifact_files 대조를 인수했다. 공개2920파일/974564843B·339PDF/237객체·26판본/200글 행이며 원래338PDF와 모든 기존경로는 보존됐다. 기존T-gate 정상게시와 sitemap/Google53B추가를 포함한 현재집계이며 외부저장/실복원·물리절감·원래DQB원인 해결로 확대하지 않는다.",
+    "status": "Published alert-control release f8 complete HTTPS/source hashes and continuity PASS:2920 files/974572025B,339PDF/237 objects/26editions/200 article rows; prior paths/PDFs retained. Normal four-job delivery/recovery-copy completed; external storage/actual restore/physical savings/original DQB cause remain unconfirmed.",
     "checks": [
       "기존 후보 정리 도구 dry-run 성공; 계획·실제 삭제 0",
       "초기조사: 출판 원본·공개 파일·정리 도구·CI 코드 변경 없음",
@@ -382,24 +382,25 @@
       "provider_connection": "19시 기존 인계 화면은 여전히 정상 공급자 로그인/암호 입력 필요. 앞선 CLI 거절 뒤 계정/R2 접근·사용량/청구 복원을 확인한 새 근거 없음. 재시도·새 권한·인증 변경 없이 인계 유지."
     },
     "latest_public_footprint": {
-      "source_revision": "8c962d2c9e75f91feefe47c39e0a0298f32b30ff",
-      "checked_at": "2026-11-28T12:02:41.593645+00:00",
-      "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+      "source_revision": "f8a29b436d37e654877db0dbdc741a39f352d882",
+      "checked_at": "2026-11-28T13:03:31.019688+00:00",
+      "run_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
       "manifest_files": 2919,
-      "manifest_bytes": 973066394,
+      "manifest_bytes": 973073576,
       "release_json_bytes": 1498449,
       "public_files": 2920,
-      "public_bytes": 974564843,
+      "public_bytes": 974572025,
       "pdf_paths": 339,
       "unique_pdf_objects": 237,
       "retained_edition_urls": 26,
       "reader_update_rows": 200,
       "prior338_PDF_metadata_exact": true,
       "prior_public_paths_missing": 0,
-      "growth_bytes": 238566,
-      "growth_basis_source": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
-      "excess_over_internal_800MB_bytes": 174564843,
-      "scope": "Complete HTTPS artifact_files inventory including seal; includes the already published T-gate PDF and two new Google/sitemap files. Content snapshot.files is a separate subset. No complete binary/PDF download, provider quota, external activation, restore or physical savings claim."
+      "growth_bytes": 7182,
+      "growth_basis_source": "8c962d2c9e75f91feefe47c39e0a0298f32b30ff",
+      "excess_over_internal_800MB_bytes": 174572025,
+      "scope": "Actual complete HTTPS artifact_files inventory including seal; reviewed alert UI/SW changes only. All339 PDFs,99 catalog entries,200 article-update rows and existing paths preserved. No full binary download, provider quota, external activation, restore or physical savings claim.",
+      "prior339_PDF_metadata_exact": true
     },
     "editorial_pdf_exclusion_boundary": {
       "run_reference": "operations/runs/20261114T020235Z-677211c3-6aa1-4b1b-89b5-e3429cb48e26.md",
@@ -747,9 +748,9 @@
     }
   },
   "observation": {
-    "status": "사용자 Google검색 기술 배포의 실제 공개 보존/용량 인수",
-    "period": "2026-11-28T12:02:41.593645+00:00",
-    "result": "기존T-gate 정상게시를 보존한 검색발견배포8c의 sitemap308주소/Google53B와 완전metadata를 확인했다. 현재974564843B·내부800MB목표 초과174564843B이며원래338PDF/모든기존경로를보존했다. 새Googleowner연결은 별도실행확인대기다.",
+    "status": "Reader alert-control delivery footprint verified",
+    "period": "2026-11-28T13:03:31.019688+00:00",
+    "result": "f8 adds7182B against8c; actual974572025B/internal800MB excess174572025B. Existing339PDFs/paths retained; no cleanup/physical savings or provider-quota claim.",
     "normal_publication_20261115_11": {
       "run_reference": "operations/runs/20261115T020405Z-b39493d3-b844-44af-85ec-9e00b789ae4c.md",
       "live_source_revision": "237159b4d30b56d1f520cab69c68f49c2032d1ec",
@@ -1797,6 +1798,17 @@
       "external_storage_active": false,
       "physical_reclaimed_bytes_measured": false,
       "weekly124_item_review_reused": true
+    },
+    "reader_read_all_20261128": {
+      "run_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
+      "source_revision": "f8a29b436d37e654877db0dbdc741a39f352d882",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146976043",
+      "current_footprint_reference": "verification/latest_public_footprint",
+      "prior339_PDF_metadata_exact": true,
+      "all_prior_public_paths_preserved": true,
+      "manual_DELETE_or_actual_restore": false,
+      "external_storage_active": false,
+      "physical_reclaimed_bytes_measured": false
     }
   },
   "recovery": {
@@ -1820,7 +1832,7 @@
       "private_db_restore": false
     }
   },
-  "next_action": "최신공개8c의974564843B·내부목표초과174564843B와 원래PDF/판본·경로보존을 기존회차에서 인수한다. 외부저장 새근거11/29 13:30·주간12/4 13:30을 유지하며 원래DQB 원인/같은입력·실복원·물리절감은미확정이다. Google owner연결확인은해당검색일감으로분리하고 관찰용리런/원격복구사본·공개자료 수동삭제·외부활성은만들지않는다.",
+  "next_action": "Reuse current f8 public footprint974572025B/internal target excess174572025B and preservation evidence. External evidence review2026-11-29T13:30 and weekly2026-12-04T13:30 remain. No repeated full build, manual public/recovery-copy deletion, external activation or actual/private DB restore.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
