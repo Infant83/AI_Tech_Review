@@ -127,6 +127,18 @@ python3 scripts/release_backup.py restore --archive output/release.tar.gz --outp
 공식 참고: [GitHub Pages 한도](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits), [R2 Workers API](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/), [R2 S3 호환성](https://developers.cloudflare.com/r2/api/s3/api/), [Core Web Vitals](https://web.dev/articles/vitals).
 
 
+## 검색 발견과 소유권 확인
+
+게시기의 마지막 단계는 등록된 공개 HTML·한영 번역·기존 목록 페이지의 실제 canonical을 대조해 `sitemap.xml`을 생성한다. `noindex`·refresh·비공개/비등록 경로·PDF를 넣지 않으며 근거 없는 수정시각을 `lastmod`로 만들지 않는다. 호스트 root의 `robots.txt`은 이 저장소의 `/AI_Tech_Review/` 배포 바깥이므로 하위 robots 파일로 root 설정 완료를 주장하지 않는다.
+
+Google Search Console은 기존 로그인과 이 사이트의 URL-prefix property를 재사용한다. [공개 소유권 확인 파일](publication/search-console/README.md)은 고정 파일명·원본 bytes/SHA만 허용하고 다음 빌드에도 유지한다. 이 파일은 reader 보강·갱신 목록·사이트맵에 포함하지 않는다. 기존 workflow는 non-main ref의 독립 후보 검증을 지원하며 main 조건의 배포·복구·알림은 분리한다. 로컬 무거운 작업을 겹치지 않아야 할 때 이 기존 원격 경로를 사용할 수 있다.
+
+실제 배포의 네 작업·HTTPS sitemap 및 확인 파일 원본 일치를 확인한 뒤 Search Console의 소유권 VERIFY와 사이트맵 제출 결과를 확인한다. Google의 URL 검사·live test·필요한 소수 URL의 색인 요청과 실제 색인/검색 노출은 별도 결과다. 같은 URL의 재요청을 매회 반복하지 않으며 기존 운영 회차에서 새 보고서/오류 근거를 확인한다. 계정 주소·인증 자료·내부 스크린샷은 공용 기록에 넣지 않는다. [Google의 사이트맵 기준](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)을 따른다.
+
+## 조회 지표의 해석
+
+현재 자체 독자 지표는 브라우저 식별자의 중복제거 수와 브라우저·글·한국 날짜별 열람이다. [집계 기준](https://infant83.io/AI_Tech_Review/methods/#reader-metrics)에 따라 사람 수·전체 페이지뷰·순수 외부 방문자로 바꾸어 표시하지 않는다. 알려진 자동화 일부를 제외하더라도 운영자/내부·외부 유입 분리 자료가 없으면 이를 소급해 만들어내지 않는다. Cloudflare Web Analytics의 visits/pageviews와 자체 집계도 합산하지 않는다. 조회 요청에는 기간·확인시각·수집 정의와 미수집 범위를 함께 보고하고 방문자ID/IP·원시 응답을 공용 기록에 복제하지 않는다.
+
 ## 요청받은 PDF의 본인 메일 공유
 
 2026-11-28, 사용자가 PDF 메일 공유를 명시한 작업에서 연결된 Gmail 도구로 본인 계정을 확인하고 `send_email`의 `to: me`와 `attachment_files`에 최종 로컬 PDF를 지정해 한 번 전송했다. 기존 보안 연결을 재사용했으며 데스크톱 조작·새 로그인·추가 동의는 필요하지 않았다. 이는 해당 요청의 수행 기록이며 향후 메일의 포괄적 발송 허가가 아니다. 다음 작업에서도 실제 연결·수신 대상·요청 범위를 다시 확인한다.
