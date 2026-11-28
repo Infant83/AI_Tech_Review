@@ -9,10 +9,12 @@ https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicat
 from __future__ import annotations
 
 from html.parser import HTMLParser
+import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import stat
 from urllib.parse import quote, unquote, urlsplit
 import xml.etree.ElementTree as ET
 
@@ -31,10 +33,120 @@ CORE_PAGES = ("index.html", "en/index.html", "archive/index.html", "archive/en/i
 MAX_URLS, MAX_XML_BYTES = 50_000, 50 * 1024 * 1024
 MAX_HTML_BYTES, MAX_REGISTRY_BYTES = 8 * 1024 * 1024, 4 * 1024 * 1024
 PRIVATE_PARTS = {"private", "internal", "output", "operations", "node_modules"}
+# This is a public Search Console challenge, not a credential or a general
+# permission to install root HTML. Preserve the downloaded bytes, without LF.
+SEARCH_CONSOLE_NAME = "google60a24e972420ad3d.html"
+SEARCH_CONSOLE_SOURCE = (Path(__file__).resolve().parents[1] / "publication" /
+                         "search-console" / SEARCH_CONSOLE_NAME)
+SEARCH_CONSOLE_BYTES = 53
+SEARCH_CONSOLE_SHA256 = "0a1d44f6260fee4b1e85051d9ce588f5e39c71a173792f309ee75077b3694d23"
 
 
 class SitemapError(ValueError):
     pass
+
+
+def _verification_identity(info):
+    return info.st_dev, info.st_ino, info.st_mode, info.st_size, info.st_mtime_ns
+
+
+def _verification_directory(path):
+    try:
+        fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    except OSError:
+        raise SitemapError("Unsafe Search Console verification directory") from None
+    return fd
+
+
+def _verification_payload(directory_fd):
+    """Read only the fixed challenge through one bounded, no-follow regular FD."""
+    try:
+        fd = os.open(SEARCH_CONSOLE_NAME, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                     dir_fd=directory_fd)
+        try:
+            before = os.fstat(fd)
+            if not stat.S_ISREG(before.st_mode) or before.st_size != SEARCH_CONSOLE_BYTES:
+                raise SitemapError("Invalid Search Console verification file")
+            raw = b""
+            while len(raw) <= SEARCH_CONSOLE_BYTES:
+                chunk = os.read(fd, SEARCH_CONSOLE_BYTES + 1 - len(raw))
+                if not chunk:
+                    break
+                raw += chunk
+            after = os.fstat(fd)
+            current = os.stat(SEARCH_CONSOLE_NAME, dir_fd=directory_fd, follow_symlinks=False)
+            if (len(raw) != SEARCH_CONSOLE_BYTES
+                    or _verification_identity(before) != _verification_identity(after)
+                    or _verification_identity(before) != _verification_identity(current)
+                    or hashlib.sha256(raw).hexdigest() != SEARCH_CONSOLE_SHA256):
+                raise SitemapError("Search Console verification bytes differ from the fixed pin")
+            return raw
+        finally:
+            os.close(fd)
+    except OSError:
+        raise SitemapError("Cannot read Search Console verification file") from None
+
+
+def validate_search_console_verification(site_dir):
+    """Validate the exact public challenge when present; partial fixtures may omit it."""
+    directory_fd = _verification_directory(Path(site_dir))
+    try:
+        try:
+            os.stat(SEARCH_CONSOLE_NAME, dir_fd=directory_fd, follow_symlinks=False)
+        except FileNotFoundError:
+            return False
+        _verification_payload(directory_fd)
+        return True
+    finally:
+        os.close(directory_fd)
+
+
+def install_search_console_verification(site_dir):
+    """Install the one pinned public challenge, required by the final publisher."""
+    source = SEARCH_CONSOLE_SOURCE
+    if source.name != SEARCH_CONSOLE_NAME or source.parent.parent.is_symlink():
+        raise SitemapError("Unsafe Search Console verification source")
+    source_fd = _verification_directory(source.parent)
+    try:
+        payload = _verification_payload(source_fd)
+    finally:
+        os.close(source_fd)
+    site = Path(site_dir)
+    directory_fd = _verification_directory(site)
+    try:
+        parent = os.fstat(directory_fd)
+        try:
+            fd = os.open(SEARCH_CONSOLE_NAME,
+                         os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                         0o644, dir_fd=directory_fd)
+        except FileExistsError:
+            # A damaged immutable challenge is an error, not permission to
+            # overwrite it. The next fresh publication candidate can be rebuilt.
+            _verification_payload(directory_fd)
+            changed = False
+        else:
+            try:
+                written = 0
+                while written < len(payload):
+                    count = os.write(fd, payload[written:])
+                    if count <= 0:
+                        raise SitemapError("Cannot install Search Console verification file")
+                    written += count
+                os.fsync(fd)
+            finally:
+                os.close(fd)
+            _verification_payload(directory_fd)
+            changed = True
+        current = os.stat(site, follow_symlinks=False)
+        if (parent.st_dev, parent.st_ino, parent.st_mode) != (
+                current.st_dev, current.st_ino, current.st_mode):
+            raise SitemapError("Search Console verification directory changed")
+        return {"bytes": SEARCH_CONSOLE_BYTES, "sha256": SEARCH_CONSOLE_SHA256,
+                "changed": changed}
+    except OSError:
+        raise SitemapError("Cannot install Search Console verification file") from None
+    finally:
+        os.close(directory_fd)
 
 
 def _relative(value):

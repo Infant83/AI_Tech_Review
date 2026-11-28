@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 from scripts import site_sitemap as sitemap
@@ -119,6 +120,82 @@ class SitemapTests(unittest.TestCase):
         sitemap.build_sitemap(self.site)
         self.assertIn(sitemap.BASE_URL+'page/2/', self.urls())
         self.assertIn(sitemap.BASE_URL+'en/page/2/', self.urls())
+
+    def verification_source(self):
+        source_dir = self.site / "challenge-source"
+        source_dir.mkdir()
+        source = source_dir / sitemap.SEARCH_CONSOLE_NAME
+        payload = b"google-site-verification: google60a24e972420ad3d.html"
+        source.write_bytes(payload)
+        return source, payload
+
+    def test_fixed_verification_installs_exact_bytes_idempotently_and_stays_out_of_sitemap(self):
+        source, payload = self.verification_source()
+        self.registered()
+        self.assertFalse(sitemap.validate_search_console_verification(self.site))
+        with patch.object(sitemap, "SEARCH_CONSOLE_SOURCE", source):
+            self.assertTrue(sitemap.install_search_console_verification(self.site)["changed"])
+            target = self.site / sitemap.SEARCH_CONSOLE_NAME
+            first = target.stat().st_mtime_ns
+            self.assertEqual(target.read_bytes(), payload)
+            self.assertTrue(sitemap.validate_search_console_verification(self.site))
+            self.assertFalse(sitemap.install_search_console_verification(self.site)["changed"])
+            self.assertEqual(target.stat().st_mtime_ns, first)
+        self.assertEqual(source.read_bytes(), payload)
+        sitemap.build_sitemap(self.site)
+        self.assertEqual(self.urls(), [sitemap.BASE_URL + "reviews/a/"])
+
+    def test_fixed_verification_refuses_damaged_or_symlinked_source_and_target(self):
+        source, payload = self.verification_source()
+        target = self.site / sitemap.SEARCH_CONSOLE_NAME
+        canary = self.site / "canary"; canary.write_bytes(payload)
+        with patch.object(sitemap, "SEARCH_CONSOLE_SOURCE", source):
+            for bad in (payload + b"\n", b"x" * len(payload)):
+                with self.subTest(boundary="source", size=len(bad)):
+                    source.write_bytes(bad)
+                    with self.assertRaises(sitemap.SitemapError):
+                        sitemap.install_search_console_verification(self.site)
+                    self.assertFalse(target.exists())
+            source.unlink(); source.symlink_to(canary)
+            with self.assertRaises(sitemap.SitemapError):
+                sitemap.install_search_console_verification(self.site)
+            source.unlink(); source.write_bytes(payload)
+            for kind in ("wrong-bytes", "oversize", "directory", "symlink"):
+                with self.subTest(boundary="target", kind=kind):
+                    if kind == "directory": target.mkdir()
+                    elif kind == "symlink": target.symlink_to(canary)
+                    else: target.write_bytes(b"x" * len(payload) if kind == "wrong-bytes" else payload + b"\n")
+                    with self.assertRaises(sitemap.SitemapError):
+                        sitemap.install_search_console_verification(self.site)
+                    with self.assertRaises(sitemap.SitemapError):
+                        sitemap.validate_search_console_verification(self.site)
+                    if kind == "directory": target.rmdir()
+                    else: target.unlink()
+        self.assertEqual(canary.read_bytes(), payload)
+
+    def test_artifact_guard_allows_only_fixed_google_filename_and_checks_its_pin(self):
+        from scripts import reader_engagement_publish as reader
+        self.page("index.html")
+        self.registered(title="Example", date="2026-11-28")
+        reader.enrich_site(self.site, revision="a" * 40)
+        reader.validate_public_artifact(self.site)  # Partial fixtures need no challenge.
+        sitemap.install_search_console_verification(self.site)
+        reader.validate_public_artifact(self.site)
+        target = self.site / sitemap.SEARCH_CONSOLE_NAME
+        original = target.read_bytes()
+        reader.enrich_site(self.site, revision="a" * 40)
+        self.assertEqual(target.read_bytes(), original)
+        self.assertNotIn(reader.public_path(sitemap.SEARCH_CONSOLE_NAME),
+                         json.loads((self.site / reader.UPDATES_NAME).read_text())["pages"])
+        reader.validate_public_artifact(self.site)
+        target.write_bytes(b"x" * sitemap.SEARCH_CONSOLE_BYTES)
+        with self.assertRaises(sitemap.SitemapError):
+            reader.validate_public_artifact(self.site)
+        target.unlink()
+        (self.site / "google-unapproved.html").write_bytes(b"public but not approved")
+        reader.enrich_site(self.site, revision="a" * 40)
+        with self.assertRaisesRegex(ValueError, "Unapproved public root file"):
+            reader.validate_public_artifact(self.site)
 
 
 if __name__ == "__main__":
