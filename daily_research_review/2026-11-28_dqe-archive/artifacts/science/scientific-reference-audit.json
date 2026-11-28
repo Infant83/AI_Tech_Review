@@ -1,0 +1,178 @@
+{
+  "issue_date": "2026-11-28",
+  "evidence_access_date": "2026-11-28",
+  "review_team": "AEDAUT",
+  "independent_reviewer_role": "Scientific calculations, primary-source and reference review, bilingual editorial and listing review",
+  "human_line_by_line_review_established": false,
+  "scientific_result": "pass",
+  "original_exercise_read_scope": "All three original pages read in extracted text: graph definition and weights, timing and throughput inputs, conditional proof, QUBO/Ising mapping, candidate tests and proposed evaluation criteria. PDF visual and technical review is separately recorded.",
+  "calculation": {
+    "script": "verify_exercise.py",
+    "results": "calculations.json",
+    "method": "Python standard-library Fraction arithmetic and all sixteen binary channel assignments. No circuit simulation, optimization software, wireless controller or QPU was run.",
+    "checks": [
+      "The only weighted edges are AB=3, AC=4, BC=5, BD=4, CD=3. AD is absent and the total weight is 19 points.",
+      "Each of sixteen assignments gives the same F from equal-channel edge counting, the QUBO formula and the z=1−2x Ising formula.",
+      "For equal B,C, the middle edge already contributes 5; placing both A,D on the other channel attains that lower bound. For different B,C, A contributes at least min(3,4)=3 and D at least min(4,3)=3. Absence of AD lets both choices attain the bound independently.",
+      "The global minimum is 5 at 0110 and 1001, and the maximum cut weight is 19−5=14. The tested 0011 policy has F=6.",
+      "The expanded QUBO has constant 19, linear coefficients (−7,−12,−12,−7), and quadratic coefficients AB=6, AC=8, BC=10, BD=8, CD=6. The Ising constant is 19/2 with positive ZZ coefficients wij/2.",
+      "Replacing only BC's weight with w makes the conditional minima w and 6. Small exact sensitivity checks include both sides and the tie at w=6; the general argument follows from the two conditional bounds.",
+      "Complementing every bit leaves F unchanged. Fixing A=0 yields eight score representatives. The model symmetry does not supply throughput measurements for complemented physical channel assignments.",
+      "Before symmetry reduction, p=1 uses four problem qubits, five logical ZZ terms in its cost layer and two variational angles. These are not a native two-qubit gate count or a physical circuit depth. The supplied data do not determine optimal-state probability.",
+      "Ten evaluations including final sampling use 5000 shots. At 2000 shots/s, shot evaluation takes 2.5 s; fixed time is 4.0 s, total QAOA time 6.5 s and classical time 1.1 s. Keeping shot count and other costs fixed requires at least 5000 shots/s to meet 5 s.",
+      "The two synthetic P5 inputs, 18 and 22 Mbit/s, respectively fail and pass 20 Mbit/s. Raw throughput observations are absent, so no quantile was independently recomputed. P5 pretesting is outside the five-second operational clock for both routes.",
+      "The 0011 policy through the classical path is qualified among the two pretested candidates; other assignments have no supplied P5. It is not established as the global throughput optimum.",
+      "The future 95% criterion concerns repeated runs jointly meeting time and throughput conditions, with improvement over a matched classical route. It is a proposed acceptance target rather than a measured success probability or a statistical confidence bound."
+    ],
+    "file_bindings": [
+      {
+        "path": "verify_exercise.py",
+        "bytes": 7604,
+        "sha256": "70fd78323bb5773174130221ea0de5598af29a165c385b03eedd642e00a2f3c5"
+      },
+      {
+        "path": "calculations.json",
+        "bytes": 8058,
+        "sha256": "f72102864b6dfeb1900c57338b4197be5fcef82cc51324253b1a20402ae2d806"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "reference": 1,
+      "bibliography": "Cisco, Radio resource management, Cisco Wireless Controller Configuration Guide, Release 8.5 (updated 9 June 2021; accessed 28 November 2026).",
+      "url": "https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-5/config-guide/b_cg85/radio_resource_management.html",
+      "source_type": "Official controller documentation",
+      "displayed_book_title": "Cisco Wireless Controller Configuration Guide, Release 8.5",
+      "displayed_chapter_title": "Radio Resource Management",
+      "displayed_update_date": "2021-06-09",
+      "actual_read_scope": "Official web-rendered chapter sections Information about Radio Resource Management and Dynamic Channel Assignment, including monitored traffic/interference/noise, channel reuse, load/utilization and DCA configuration context. The remaining controller setup chapter was not audited.",
+      "access_note": "The web research route exposed the official chapter. A separate ordinary urllib request returned 403; that client result is not treated as an absence of source access.",
+      "supports": "Commercial dynamic channel assignment and RF/load-aware management provide the application context.",
+      "claim_boundary": "Release 8.5 is the documented historical product version, not a claim about the current product release. No controller, site measurement or synthetic throughput outcome was independently tested."
+    },
+    {
+      "reference": 2,
+      "bibliography": "Zuse Institute Berlin, What is frequency assignment? (last modified 15 February 2005; accessed 28 November 2026).",
+      "url": "https://fap.zib.de/flavors/content.html",
+      "source_type": "Institution-hosted frequency-assignment reference page",
+      "displayed_page_heading": "What is Frequency Assignment ?",
+      "relevant_subsection_heading": "A Classification of Frequency Assignment Problems (for Fixed Channel Assignment schemes)",
+      "last_modified": "2005-02-15",
+      "publication_date": null,
+      "actual_read_scope": "Directly accessed overview, fixed-channel assignment classification, graph/penalty representation, cumulative versus maximum penalty and minimum-interference frequency-assignment definition. The HTML footer identifies the last modification date; it is not inferred to be the publication date.",
+      "supports": "A fixed-channel interference graph with pairwise penalties and a cumulative weighted-interference objective.",
+      "claim_boundary": "The four-AP, two-channel graph is an educational specialization. The page's linked historical surveys were not newly read or treated as the page's bylined authors."
+    },
+    {
+      "reference": 3,
+      "bibliography": "M. P. Harrigan et al., Quantum approximate optimization of non-planar graph problems on a planar superconducting processor, Nat. Phys. 17, 332–336 (2021).",
+      "doi": "10.1038/s41567-020-01105-y",
+      "url": "https://doi.org/10.1038/s41567-020-01105-y",
+      "original_source_url": "https://research.google/pubs/quantum-approximate-optimization-of-non-planar-graph-problems-on-a-planar-superconducting-processor/",
+      "technical_text_url": "https://storage.googleapis.com/gweb-research2023-media/pubtools/5537.pdf",
+      "metadata_url": "https://api.crossref.org/works/10.1038/s41567-020-01105-y",
+      "author_count_in_publisher_registered_metadata": 86,
+      "author_rule": "More than twenty authors: first author and et al. per repository APS choice.",
+      "published_online": "2021-02-04",
+      "published_print": "2021-03",
+      "actual_read_scope": "Google's publication page and its linked twenty-page typeset article/SI copy: main PDF pages 1–5, including cost operators, physical experiment, routing/gate synthesis, performance comparisons and conclusion; supplementary PDF page 8 (SI page 1, section S1/Table S1) on native compilation. Bibliographic data checked against publisher-deposited Crossref.",
+      "version_note": "The official Google-hosted copy retains a 'Published: xx xx xxxx' placeholder. It supplies the technical text; the final publication date, volume and pages are established separately by publisher-registered metadata. The remaining SI was not fully reviewed and no experiment was reproduced.",
+      "supports": "Actual Sycamore QAOA experiments and compilation of problem interactions into device-native gates.",
+      "claim_boundary": "This is prior hardware research, not an AP deployment. Native/compiled performance and physical experiment results are not substituted for this issue's synthetic time, P5 or p=1 success probability."
+    }
+  ],
+  "reference_identification": "Original public source links are preserved. The official ZIB whole-page title is distinguished from its classification subsection. Web-document modification dates and access dates are distinguished from research publication dates. No new DOI or paper is assigned to the Cisco/ZIB sources.",
+  "evidence_separation": [
+    "Graph weights, warehouse, timing and P5 values are educational synthetic inputs.",
+    "The sixteen-state proof and timing thresholds are independent tiny classical calculations.",
+    "The Cisco document is product context; ZIB provides the graph-model context; Harrigan et al. provide prior physical QAOA research.",
+    "Logical interactions, native gate synthesis, routed circuits and physical execution have different resource meanings.",
+    "Interference score, an observed throughput quantile, a solver's optimal-state probability and joint operational acceptance are distinct quantities.",
+    "The matched large-instance baseline, held-out load tests and operational acceptance thresholds are proposed follow-up work."
+  ],
+  "related_readings_reviewed": [
+    {
+      "title": "Quantum algorithms: principles and applications",
+      "ko_url": "https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/index.html",
+      "en_url": "https://infant83.io/AI_Tech_Review/reviews/2026-11-24_quantum-algorithms-principles-applications/en/index.html",
+      "actual_read_scope": "Both language source sections Finding a candidate and knowing its probability / 후보를 찾는 일과 그 확률을 아는 일, including Figure 3 and the four-cycle MaxCut example (lines 70–84).",
+      "connection": "Cost phases and mixing change a candidate distribution. The separate unweighted cycle, chosen angles and ideal success probabilities must not be transferred to this weighted AP problem. No related numerical example was rerun for this DQE."
+    },
+    {
+      "title": "QML Lecture 10: generalization, statistics and fair quantum-learning benchmarks",
+      "url": "https://infant83.io/AI_Tech_Review/lectures/quantum-machine-learning/lectures-10-generalization-and-benchmarking.html",
+      "language": "Korean; explicitly marked in the English guide",
+      "actual_read_scope": "Current Korean source lines 1–150: train/validation/test distinctions, target/test units, paired comparison and proposed experiment design.",
+      "connection": "New-shift channel tests can separate weight tuning from evaluation and retain client-level results at matching test units. The lecture’s underlying papers and numerical examples were not rerun for this DQE."
+    }
+  ],
+  "editorial_review": {
+    "status": "pass",
+    "files": [
+      {
+        "language": "ko",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-28_dqe-archive/reports/briefing_ko.md",
+        "link": "../../reports/briefing_ko.md",
+        "bytes": 7893,
+        "sha256": "0e26e0c19216f7f078ad25b689f8a1deb2801014944b2ab5bed02c4175298ebe"
+      },
+      {
+        "language": "ko",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-28_dqe-archive/reports/briefing_ko.html",
+        "link": "../../reports/briefing_ko.html",
+        "bytes": 8286,
+        "sha256": "f2c4bf6021398f087381b9b05df8aae796515b0c1dc2b4621a9ba95bc1929e2d"
+      },
+      {
+        "language": "en",
+        "kind": "manuscript",
+        "path": "daily_research_review/2026-11-28_dqe-archive/reports/briefing_en.md",
+        "link": "../../reports/briefing_en.md",
+        "bytes": 7648,
+        "sha256": "5ed1b14e48ffd8d71ce62b5af64a666ff6cea613276dc57096803eac9a31b86b"
+      },
+      {
+        "language": "en",
+        "kind": "compiled_fragment",
+        "path": "daily_research_review/2026-11-28_dqe-archive/reports/briefing_en.html",
+        "link": "../../reports/briefing_en.html",
+        "bytes": 8049,
+        "sha256": "3e7a8b6d43f3fde41ab95e25cff54c9a7026d880005c710dfaf8390c62bbf164"
+      }
+    ],
+    "title_ko": "간섭 점수와 처리량으로 고르는 무선 채널",
+    "title_en": "Choosing wireless channels by interference and throughput",
+    "listing_summary_ko": "물류센터의 스캐너가 교대 시간에 느려지면 어떤 채널 배정을 바꿔야 할까. 네 접속점의 간섭망을 풀고 느린 쪽 단말의 처리량과 비교해, 실제로 적용할 배정과 계산 경로를 고른다.",
+    "listing_summary_en": "Which channel assignment should change when warehouse scanners slow down at shift change? Solve a four-access-point interference graph, then use lower-tail client throughput and a time budget to choose an assignment and a computing route.",
+    "checks": [
+      "Both complete manuscripts were read in sequence. The graph lower bound, model-to-circuit mapping and throughput-based operating choice remain connected; the titles and separate listing summaries contain no numerical answers or adoption verdicts.",
+      "Both compiled fragments preserve one initially closed details element, with solved assignments, numerical answers and operating judgments inside. Problem/solution and public-appendix page locations are stated before the disclosure.",
+      "Equations, signs, complement symmetry, five logical ZZ interactions, given P5 values, time sums and minimum-throughput condition agree in both languages.",
+      "P5 is supplied only for two tested assignments. No measured throughput is inherited through model complement symmetry or claimed for other candidates.",
+      "The proposed 95% target is a future joint time-and-throughput acceptance rate, not current QAOA success probability or a confidence bound.",
+      "Reference order is 1–3. Actual official document dates, the ZIB page/subsection distinction, the 86-author et-al. rule and DOI publication data are preserved.",
+      "The newer review Figure 3 is explicitly a different unweighted four-cycle; its angles and ideal probabilities are not transferred. QML10 is marked Korean in the English guide and supports held-out load tests and matched test units.",
+      "The final PoC passage gives matched graph/candidate/budget inputs to classical and quantum paths, while the existing automatic controller is compared under the same load. This avoids implying an undocumented controller graph-input API.",
+      "The final rendered AI paragraphs agree with the saved four-role model JSON and PDF: gpt-6.1-sol, reasoning effort ultra, recorded turn settings. The original source document model is not inferred from the editorial setting.",
+      "Nearby November 24 and 26 DQE guides were used for prose context. The current guide develops the specific conflict between interference score and low client throughput, with field testing rather than an abstract value-ending."
+    ],
+    "context_refinement": "Separated matched classical/quantum graph inputs from the controller comparison at equal load. Both final language editions contain the correction; no numerical content changed.",
+    "AI_model_provenance": {
+      "link": "../ai-model-provenance.json",
+      "bytes": 737,
+      "sha256": "d49501c82dced4b91c5304fe9a9fca86a89d0d34ac727cdafb3c8d81fdd52bcb",
+      "scope": "Four named editorial roles, recorded client settings; no private participant identifiers are included."
+    },
+    "PDF_reference_check": {
+      "path": "../../dist/2026-11-28-daily-quantum-exercise.pdf",
+      "bytes": 90464,
+      "sha256": "547378248ee0c140fa3f779b58a582c3f0806fce10b329e584ecf321f96e1dc8",
+      "scope": "Public appendix page four directly extracted/read. All three bibliography strings match both web editions, allowing an ASCII hyphen for the PDF page range. Original Cisco, ZIB and Google entry links plus the published DOI are present. Displayed editorial model settings match the saved public model record. Visual/technical PDF review is separately recorded."
+    },
+    "review_limit": "Agent editorial/scientific review is distinct from human reader testing, final browser layout checks and live publication verification.",
+    "final_review_completed_at_utc": "2026-11-28T13:47:24Z"
+  }
+}
