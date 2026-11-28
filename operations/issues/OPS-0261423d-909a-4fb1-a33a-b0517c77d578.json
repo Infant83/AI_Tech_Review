@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "id": "OPS-0261423d-909a-4fb1-a33a-b0517c77d578",
+  "uuid": "0261423d-909a-4fb1-a33a-b0517c77d578",
+  "record_version": 1,
+  "title": "Google 검색 발견을 위한 정규 사이트맵과 Search Console 소유권 연결",
+  "type": "search_discovery",
+  "created_at": "2026-11-28T11:33:01.778720+00:00",
+  "updated_at": "2026-11-28T12:10:27.479537+00:00",
+  "status": "validating",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+    "summary": "사용자의 조회 지표 확인과 Google 검색 노출 개선 요청에 따라 기술 설정·실제 공개본·기존 계정 연결을 조사했다."
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/",
+      "https://infant83.io/AI_Tech_Review/sitemap.xml"
+    ],
+    "source_paths": [
+      "scripts/site_sitemap.py",
+      "tests/test_site_sitemap.py",
+      "scripts/publish_public_site.py",
+      "scripts/reader_engagement_publish.py",
+      "scripts/publication_release.py",
+      "tests/test_reader_engagement_publish.py",
+      "publication/search-console/google60a24e972420ad3d.html"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "3ac68c59a1bbebddeaee06fa37cbd8dfa269ed22",
+    "public_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+    "actual": "실제 공개 표본6개는200/self-canonical·한영hreflang/정적링크 정상이며 noindex/meta/header 차단0이다. root/subpath sitemap은404이며 생성경로가 없었다. rootrobots는 CF주석뿐으로 차단 근거는 아니다.",
+    "expected": "현재 canonical 공개주소를 지속 생성하고 Search Console의 실제 소유 확인·사이트맵 제출/Google색인 상태를 별도로 관찰한다."
+  },
+  "evidence": [
+    "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+    "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
+    "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md"
+  ],
+  "limitations": [
+    "사이트맵 준비/배포·Search Console 소유권 확인/제출·실제 Google 색인은 각각 별도 단계이며 검색 노출이나 순위를 보장하지 않는다.",
+    "host root robots는 이 저장소의 subpath 배포 바깥이며 하위 robots 파일로 root 설정 완료를 주장하지 않는다.",
+    "독립 read-only 공개 확인은6표본이며 GSC 실제 색인 보고서나 모든 URL의 Googlebot 성공 증거가 아니다.",
+    "현재 reader 통계는 브라우저ID·글/한국날짜별 중복제거이며 사람 수·전체 pageviews·순수 외부 방문자로 해석하지 않는다. 소유자/외부 유입 분리 자료는 없다."
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "사용자 최신 구체 요청에 따라 사이트맵과 공개 소유권 확인 파일을 준비한다. 원문/PDF/ID/한영URL과 단일 게시경로를 보존하고 Google 전용 파일만 정확 허용한다.",
+    "related_issues": [
+      "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495",
+      "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "새 공개/소유권·색인 또는 집계 기준의 실제 근거가 추가될 때"
+  },
+  "authority": {
+    "basis": "사용자의 현재 조회수 확인·Google검색 노출 개선 요청과 기존 ADOPT 유지보수/단일 배포 권한",
+    "current_scope": "기존 로그인/CLI 재사용, 공개 집계 GET 읽기, 사이트맵·Google 공개 검증파일 후보와 정식 검증/배포·GSC 소유 확인/제출. 과학 내용/콘텐츠 예약/유료계약·권한 확대·새 추적식별자 수집은 변경하지 않는다.",
+    "additional_decision": "현재 Google 계정에 이 URL-prefix의 신규 Search Console verified-owner 권한을 성립시키는 VERIFY는 브라우저 도구의 새 보안민감 접근권한 실행시 확인 규칙에 따라 사용자 1회 확인 대기다. 일반 SEO/배포 운영 승인을 다시 요청하거나 일반 게시의 추가 승인자로 확대하지 않는다."
+  },
+  "owner_role": "운영팀(ADOPT) · 편집부(AEDAUT) 콘텐츠 보존 기술지원",
+  "acceptance_criteria": [
+    "등록된 공개HTML의 실제 current HTTPS canonical만 수집하고 번역·목록2페이지 이후를 보존한다.",
+    "noindex/refresh·비공개/비등록경로·PDF·symlink/경로탈출은 제외/거절하고 lastmod를 빌드시각으로 만들어 넣지 않는다.",
+    "sitemap.xml과 Google에서 제공한 정확한 검증파일만 허용하며 일반XML/google*.html 허용을 넓히지 않는다.",
+    "최신 실제 공개본 기준 전체 후보·원문/ID/PDF/판본 보존·예산/봉인·단일 CI/HTTPS와 실제 GSC 확인/제출을 수행한 단계만 완료로 기록한다."
+  ],
+  "change": {
+    "commits": [
+      "1019fa4d227c0328d5e50078164f28e7a1266ce1",
+      "e93522b76bd19d66c2b052fe0161404abfcf033c",
+      "8c962d2c9e75f91feefe47c39e0a0298f32b30ff"
+    ],
+    "candidate_reference": "refs/heads/codex/search-discovery-20261128-current",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46141758029",
+    "initial_candidate_revision": "88b5f05575b129daf0d7505aa6e594c29950fec1",
+    "final_candidate_revision": "e93522b76bd19d66c2b052fe0161404abfcf033c",
+    "public_verification_file": "google60a24e972420ad3d.html",
+    "public_verification_bytes": 53,
+    "public_verification_SHA256": "0a1d44f6260fee4b1e85051d9ce588f5e39c71a173792f309ee75077b3694d23",
+    "operational_deployment": true,
+    "candidate_base_revision": "cc977a920b1d7665a07ff2b5a3815b491c5afab3",
+    "candidate_workflow_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46141234578",
+    "deployment_revision": "8c962d2c9e75f91feefe47c39e0a0298f32b30ff"
+  },
+  "verification": {
+    "status": "독립 정적/관련81검사와 별도branch 전체CI 검증을 마치고, 최신 T-gate 정상 게시를 보존한8c962d2c를 기존단일경로로 배포했다. 정상CI 네작업·실제HTTPS/완전artifact_files의 sitemap308주소와Google53B/SHA를 확인했다. Google 신규owner 연결은 브라우저정책상 실행시 확인 대기이며 VERIFY/사이트맵 제출·실제색인은 미완료다.",
+    "targeted_tests": {
+      "tests": 81,
+      "passed": 81,
+      "failed": 0,
+      "seconds": 1.69
+    },
+    "actual_previous_candidate_readonly": {
+      "urls": 308,
+      "seconds": 1.783737,
+      "HTML_PDF_or_old_candidate_modified": false
+    },
+    "sitemap_preview": {
+      "URLs": 308,
+      "bytes": 29484,
+      "SHA256": "2e824fb3ee7516edae4f05f96db8822c735c05d671b3dfefe22683a82b3481cc",
+      "is_deployed": true
+    },
+    "full_current_source_release_budget_seal_or_CI": true,
+    "Google_property_ownership_verified": false,
+    "sitemap_submitted": false,
+    "Google_actual_indexing_confirmed": false,
+    "pre_verification_file_targeted_tests": {
+      "tests": 78,
+      "passed": 78,
+      "failed": 0,
+      "seconds": 1.543
+    },
+    "candidate_integration_failure_corrected": {
+      "initial": "Fixed public challenge unexpectedly changed reader-update page membership after final installation",
+      "correction": "Exact challenge path excluded from reader HTML enrichment and recency pages; immutable SHA pin/root allowlist retained",
+      "same_normal_guard_after_install_and_reenrich": "PASS",
+      "unknown_google_root_refusal": "PASS after fixture metadata synchronization",
+      "is_live_incident": false
+    },
+    "remote_candidate_validation": {
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46141234578",
+      "source_revision": "e93522b76bd19d66c2b052fe0161404abfcf033c",
+      "ref": "codex/search-discovery-20261128-current",
+      "stage": "completed_success",
+      "Pages_or_readers_deployed_by_this_branch": false
+    },
+    "actual_delivery": {
+      "source_revision": "8c962d2c9e75f91feefe47c39e0a0298f32b30ff",
+      "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46141758029",
+      "four_jobs": {
+        "build": "success",
+        "deploy": "success",
+        "recovery-copy": "success",
+        "notify-readers": "success"
+      },
+      "HTTPS_checked_at": "2026-11-28T12:02:41.593645+00:00",
+      "sitemap_urls": 308,
+      "sitemap_bytes": 29484,
+      "sitemap_SHA256": "2e824fb3ee7516edae4f05f96db8822c735c05d671b3dfefe22683a82b3481cc",
+      "Google_verification_file_bytes": 53,
+      "Google_verification_file_SHA256": "0a1d44f6260fee4b1e85051d9ce588f5e39c71a173792f309ee75077b3694d23",
+      "both_files_match_complete_sealed_artifact": true,
+      "all308_sitemap_targets_in_complete_public_manifest": true,
+      "prior338_PDF_metadata_exact": true,
+      "current_PDF_paths": 339,
+      "public_files": 2920,
+      "public_bytes": 974564843,
+      "current_publications": 99,
+      "content_or_instrumentation_changes_against_latest98be_candidate_baseline": 0,
+      "scope": "Complete bounded metadata and two small new files; no complete binary/PDF redownload, local heavy build or restore. Artifact inventory and content snapshot are separate scopes."
+    },
+    "independent_closing_record_review": "PASS: technical deployment vs pending Google owner/submit/indexing, exact public footprint, V restored slot and existing observation/private-data boundaries reviewed read-only."
+  },
+  "observation": {
+    "status": "기술 배포/HTTPS 완료·Google 신규owner 연결 확인 대기",
+    "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+    "result": "Google URL-prefix의 소유권 확인 화면과 실제 공개파일 준비를 마쳤다. 최초 일시적 등록버튼 도구중단은 해소됐다. 현재는 신규 Google owner 관리권한 연결 1회 확인만 요청했으며, 답변/기존 권한의 실제 확인 없이 VERIFY·사이트맵 제출이나 색인 완료로 표시하지 않는다.",
+    "remote_validation_route": {
+      "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+      "result": "기존workflow_dispatch의 non-main ref는 build/검증만 실행하고 main 조건의 배포·복구/알림은 실행하지 않는다. 로컬 큰 build를 겹치지 않는 지원 경로를 확인해 현재 사용자 작업에서 검증을 이어가며 정기 예약은 변경하지 않았다.",
+      "latest_main_and_new_editorial_content_preserved": "cc977a920b1d7665a07ff2b5a3815b491c5afab3"
+    }
+  },
+  "recovery": {
+    "plan_reference": "PUBLICATION_WORKFLOW.md",
+    "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46141758029",
+    "result": "정상 단일 배포의 recovery-copy 작업 성공을 확인했다. 실제 롤백·복원 시험·개인 DB 복구는 수행하지 않았다."
+  },
+  "next_action": "사용자가 현재 Google 계정의 이 URL-prefix 신규owner 연결을 명시적으로 확인하면 준비된 GSC VERIFY를 실행하고 사이트맵 제출·홈/한영 URL검사·필요 소수URL 색인 요청을 잇는다. 무응답을 승인으로 취급하지 않고 같은 확인 요청을 정기회차마다 반복하지 않는다. 다음05:30에는 새 공개/오류·사용자 응답만 확인하고 동일파일·검사·정상배포를 반복하지 않는다. Google의 실제색인/검색노출은 소유확인·제출과 별도관찰이다.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "timezone": "Asia/Seoul",
+    "state": "SEO_technical_deployed_Google_new_owner_confirmation_pending",
+    "operating_order": 0,
+    "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
+    "next_review_at": "2026-11-29T05:30:00+09:00",
+    "scheduled_step": "Google 신규owner 연결 사용자확인 후 VERIFY/사이트맵 제출; 정기회차는 새 상태만 관찰",
+    "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+    "replan_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+    "replan_reason": "기존non-main CI 경로로 로컬 큰 build 없이 현재 작업의 전체검증/정상배포·HTTPS를 완료했다. 남은 Google 신규owner 연결은 실행시 확인 대기이므로 이미 준비된기술작업을 반복하지 않고, 독립 가능한 기존 V 미래caller 검토를 원래 다음05:30 순번1로 복원한다. 새 예약·일반 게시 승인자는 만들지 않는다."
+  }
+}

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 35,
+  "record_version": 36,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-28T10:45:33Z",
+  "updated_at": "2026-11-28T12:05:11.797401+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -1679,6 +1679,17 @@
       "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
       "result": "같은 등록SHA 모순 반례의 수정전 수락/후거절, 전용22·보충4군/정확 한도와 최신 통합710·CLI5/old12 보존을 확인했다. 독립5군 인수 PASS 뒤 c7b643e8로 두파일을 한정 소스통합했다. 기존 writer/API·원본·서버/발행 활성화는0이다.",
       "scope": "Local read-only inspector only; no writer/API activation, original content change, publication or native two-ref acceptance."
+    },
+    "Google_discovery_priority_20261128": {
+      "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+      "new_operating_order": 2,
+      "previous_next_scope_review": "2026-11-29T05:30:00+09:00",
+      "next_scope_review": "2026-11-29T13:30:00+09:00",
+      "reason": "User-directed search discovery candidate takes the next main technical slot; completed V source/verification is preserved.",
+      "source_implementation_or_operational_activation_changed": false,
+      "final_operating_order": 1,
+      "final_next_scope_review": "2026-11-29T05:30:00+09:00",
+      "result": "Google 기술 배포를 기존 remote CI 경로로 현재 완료해13:30 잠정후속을원래05:30으로복원; 신규Googleowner확인은별도사용자결정대기."
     }
   },
   "recovery": {
@@ -1686,23 +1697,23 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/29 05:30 새 공개/CI·피드백 delta를 인수하고 V의 현재 소스·근거를 재사용해 미래 caller의 최소 계약/권위 연결 범위를 검토한다. 이미 통과한 같은 전체/반례를 반복하지 않는다. native두ref·full changed/claim/receipt·현재 source/외부 이력 연속성·서버/원본/발행 활성화는 미완료이며 새 구현 범위는 계약 검토로 구체화한다.",
+  "next_action": "11/29 05:30에 최신 공개/새 delta와 c7의 완료 근거를 재사용해 미래 caller 최소 계약/권위 연결 범위를 검토한다. 사용자 Google검색 기술 배포 완료와 별도owner 실행확인 대기를 인수하며 같은 전체/반례를 반복하지 않는다. native두ref·full changed/claim/receipt·현재 source/외부 이력 연속성·서버/원본/발행 활성화는 미완료다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
     "state": "V_readonly_local_source_accepted_future_caller_scope_pending",
     "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
     "next_review_at": "2026-11-29T05:30:00+09:00",
-    "scheduled_step": "완료 V 근거/새 delta 인수·미래 caller 최소 계약 검토",
+    "scheduled_step": "완료 V 근거·새 delta 재사용과 미래 caller 최소 계약 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
     "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
-    "replan_reason": "P1을 실제 배포/관찰로 전환한 안전 경계 뒤 V의 같은 반례 수정·독립5군·710전체/CLI5/old12 보존을 마쳐 한정 소스통합했다. 다음05:30은 새 delta와 미래 caller 범위 검토이며 full changed/native두ref/API 구현·활성화 완료 약속이 아니다.",
+    "replan_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
+    "replan_reason": "사용자 Google검색 요청의 기술 배포/HTTPS를 현재 작업의 기존 원격CI 경로로 완료했다. 남은신규Googleowner 연결은별도실행확인대기로분리하고 V의완료c7/독립5군·710/CLI5를재사용한미래caller 계약검토를원래29일05:30·순번1로복원한다. 구현·운영API/원본·발행권한은바꾸지않는다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+    "run_reference": "operations/runs/20261128T113301Z-590b841a-d3be-421c-af58-3a8b06d9712d.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
