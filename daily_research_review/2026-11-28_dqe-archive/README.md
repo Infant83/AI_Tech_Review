@@ -30,3 +30,9 @@ PDF 담당자는 원본 3쪽·최종 PyMuPDF 144 dpi 4쪽·독립 Poppler 110 dp
 `artifacts/ai-model-provenance.json`은 작성·과학 감수·PDF 제작·발행 검수 담당자 각각의 대화별 설정에서 수집한 공개용 고정 입력이다. 모델 ID `gpt-6.1-sol`과 추론 강도 `ultra`를 구별하며 실제 기록된 편집 역할에 한정한다. 원 대화·식별자·설정 전체·내부 경로는 저장소 밖 증거로 보존한다. PDF에 사용한 기록과 최종 한영 컴파일 입력의 bytes가 같음을 확인했다. 게시 빌드는 현재 설정으로 이 값을 다시 채우지 않는다. 사람의 문장별 검토·독자 이해도 평가는 수행하지 않았다.
 
 검수 PDF를 `daily-quantum-exercise` 시리즈의 `2026-11-28-daily-quantum-exercise`로 등록하고, 기존 컴파일러에 고정 모델 JSON을 명시해 한영 편집글을 생성했다. DQB·DRB와 기존 주소·원호 날짜를 보존한다. 실제 공개 baseline과 독립 후보·달력·목록·검색·모바일·접힌 해설·언어 전환·PDF 열기/다운로드를 대조한다. 배포·복구 사본·독자 목록 동기화·실제 HTTPS 확인은 `artifacts/publication-qa.json`에 별도 기록하며, 확인 전에는 공개 완료로 표시하지 않는다.
+
+## 실제 공개 확인 · 2026-11-28
+
+소스 `44d28642986f996ebcba3c3937ac0e0be81a5e51`의 [배포 실행](https://github.com/Infant83/AI_Tech_Review/actions/runs/46152415241)에서 build·deploy·recovery-copy·notify-readers와 실제 Pages 배포 단계가 모두 성공했다. 전체 CI는 1,271건 중 1,262건 통과·9건 생략·실패 0이다. 배포한 묶음 2,925파일·974,767,578 bytes의 복구 사본을 검증·업로드했으며, 로컬 전체 복구 다운로드나 복원은 수행하지 않았다. 독자 목록 99건 동기화는 성공했고 새 알림 항목·대기 이벤트는 0건이었다.
+
+[한국어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-28/)·[영어 안내](https://infant83.io/AI_Tech_Review/briefings/exercises/2026-11-28/en/)의 실제 HTTPS 전체 본문과 [공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-28-daily-quantum-exercise.pdf)가 검수 후보의 bytes·SHA-256과 일치했다. 총괄 15개 확인과 독립 담당자의 실제 GET 28회·최종 40개 확인이 통과했다. 기존 DQE 8건을 포함한 PDF 9개, 목록·언어 전환·기본 접힌 해설·서비스 도메인과 이전 주소의 redirect·같은 날짜 DQB·관련 리뷰와 렉처도 확인했다. 고정 모델 기록은 발행 검수 종료까지 같은 네 역할의 실제 설정과 일치했다. 이번 호의 남은 공개 조치는 없다.

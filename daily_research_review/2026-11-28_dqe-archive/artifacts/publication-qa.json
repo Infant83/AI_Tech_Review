@@ -1,7 +1,7 @@
 {
   "version": 1,
   "document_id": "2026-11-28-daily-quantum-exercise",
-  "publication_status": "candidate_verified_deployment_pending",
+  "publication_status": "published_and_live_verified",
   "source_base": "b166db31ebb7002c79efb4716d065ca4cdb80bfd",
   "deployed_baseline": "f8a29b436d37e654877db0dbdc741a39f352d882",
   "targeted_python_tests": {
@@ -90,5 +90,94 @@
     "horizontal_overflow": false,
     "console_errors": 0,
     "owned_browser_server_keep_closed": true
+  },
+  "source_commit": "44d28642986f996ebcba3c3937ac0e0be81a5e51",
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46152415241",
+  "workflow_jobs": {
+    "build": "success",
+    "deploy": "success",
+    "recovery-copy": "success",
+    "notify-readers": "success"
+  },
+  "actual_pages_deploy_step": "success",
+  "ci_tests": {
+    "run": 1271,
+    "passed": 1262,
+    "skipped": 9,
+    "failed": 0
+  },
+  "ci_test_suites": {
+    "python": {
+      "run": 721,
+      "passed": 720,
+      "skipped": 1,
+      "failed": 0
+    },
+    "search_navigation": {
+      "run": 19,
+      "passed": 19,
+      "skipped": 0,
+      "failed": 0
+    },
+    "reader_controls": {
+      "run": 216,
+      "passed": 208,
+      "skipped": 8,
+      "failed": 0
+    },
+    "lecture_reader": {
+      "run": 228,
+      "passed": 228,
+      "skipped": 0,
+      "failed": 0
+    },
+    "backend": {
+      "run": 73,
+      "passed": 73,
+      "skipped": 0,
+      "failed": 0
+    },
+    "portable_media": {
+      "run": 14,
+      "passed": 14,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "recovery_copy": {
+    "ok": true,
+    "revision": "44d28642986f996ebcba3c3937ac0e0be81a5e51",
+    "files": 2925,
+    "bytes": 974767578,
+    "archive_sha256": "380c2e310b6aab5ca49f7a6d5b0a81cde108e1cdf0efdedc94c54a9dce63fab3"
+  },
+  "recovery_artifact_zip_sha256": "0fe7b18b789f3b39eee6409d8335031b587eb873ebbd9815ebd3885ee3d8f271",
+  "recovery_scope": "CI validated and uploaded the exact deployed artifact; no local full recovery download or restoration was performed.",
+  "reader_catalog_sync": {
+    "synced": 99,
+    "revision": "44d28642986f996ebcba3c3937ac0e0be81a5e51",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "notification_scope": "Reader catalog sync completed; newArticles=0 and queuedEvents=0. No DQE reader notification was sent.",
+  "final_model_settings_unchanged_through": "2026-11-28T14:11:14.304032+00:00",
+  "live_verification": {
+    "at": "2026-11-28T14:09:16.751728+00:00",
+    "source_revision": "44d28642986f996ebcba3c3937ac0e0be81a5e51",
+    "root_checks_passed": 15,
+    "new_KO_EN_full_HTML_exact": true,
+    "all_nine_DQE_PDF_bytes_exact": true,
+    "DQE_inventory_count": 9,
+    "method": "Actual clean pretty URL GET --compressed, decoded HTML SHA256, exact PDF bytes; no HEAD-body substitution",
+    "independent_checked_at": "2026-11-28T14:10:06.948365+00:00",
+    "independent_checks_passed": 40,
+    "independent_actual_GET_count": 28,
+    "canonical_redirect_and_language_switch": true,
+    "default_closed_solutions_verified": true,
+    "actual_DQB28_and_related_links_preserved": true,
+    "frozen_four_role_model_record_unchanged": true,
+    "remaining_DQE_actions": []
   }
 }
