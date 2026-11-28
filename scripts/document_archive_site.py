@@ -77,7 +77,7 @@ LECTURE_BUNDLES = {
         "start_anchor": "study-guide",
         "navigation": (("study-guide", "학습 안내"), ("units", "회차별 학습"), ("practice", "별도 재계산"), ("references", "출처")),
         "publication_note": (
-            "2026-11-27 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
+            "2026-11-28 · 책임 편집자 김현중 · AI 보조 OpenAI Codex. "
             "L001–L003의 공개판 정제·20조건 부분검산은 public_pdf_qa/auth_audit의 기존 작업이다. "
             "L004의 공개판 보존·개인정보·링크·전체 조판 검수는 qae_l004_public이, 등록·발행 통합은 root가 담당했다. "
             "L005의 같은 공개판 검수는 qae_l005_public이, 핵심 통계 유도·일부 수치의 별도 검토는 qae_l005_science가 맡았다. "
@@ -94,6 +94,7 @@ LECTURE_BUNDLES = {
             "L016의 공개판 검수는 l016_pdf가, 오라클·진폭 증폭·반복 수·비용의 논증과 별도 고전 계산·공식 출처 대조는 l016_science가 맡았다. "
             "L017의 공개판 검수는 l017_pdf가, 진폭 추정·신뢰구간·전체 비용의 논증과 별도33조건 고전 계산·공식 출처 대조는 l017_science가 맡았다. "
             "L018의 공개판 검수는 l018_pdf가, QFT·위상 추정·에너지 복원의 논증과 별도38조건 고전 계산·공식 출처 대조는 l018_science가 맡았다. "
+            "L019의 공개판 검수는 qae_l019_pdf가, 시간발전·Trotter 분해·보존량과 별도40조건 고전 계산·공식 출처 대조는 qae_l019_science가 맡았다. "
             "Classiq 공식 강의가 아닌 자체 집필 과정이며 원판 검증 전체를 이번 아카이빙에서 새로 재실행하지 않았다. "
             "영문 입구는 한국어 PDF의 안내다."
         ),
@@ -117,6 +118,7 @@ LECTURE_BUNDLES = {
             "2026-11-25-classiq-qae-l016-notes-ko.pdf",
             "2026-11-26-classiq-qae-l017-notes-ko.pdf",
             "2026-11-27-classiq-qae-l018-notes-ko.pdf",
+            "2026-11-28-classiq-qae-l019-notes-ko.pdf",
             "labs/reference_checks.py", "labs/results/reference-checks.json",
         ),
     },
