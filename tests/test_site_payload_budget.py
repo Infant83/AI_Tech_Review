@@ -52,6 +52,26 @@ class PayloadBudgetTests(unittest.TestCase):
             with self.subTest(invalid=invalid), self.assertRaises(ValueError):
                 check_budget(self.site, baseline_payload=invalid)
 
+    def test_both_complete_search_paths_are_bounded_and_new_assets_stay_lazy(self):
+        from scripts.site_payload_budget import SEARCH_CLOSURES, compressed
+        (self.site / "index.html").write_text('<form data-site-search data-search-format="2"></form>')
+        for name in set().union(*SEARCH_CLOSURES.values()):
+            (self.site / "assets" / name).write_text(name * 10)
+        result = check_budget(self.site)
+        self.assertTrue(result["ok"])
+        for mode, names in SEARCH_CLOSURES.items():
+            self.assertEqual(result["lazy_search_gzip_by_format"][mode], sum(compressed(self.site / "assets" / name) for name in names))
+        self.assertEqual(result["lazy_search_gzip_bytes"], max(result["lazy_search_gzip_by_format"].values()))
+        # An added decoder is counted, not hidden behind the new data format.
+        import random
+        (self.site / "assets/site-search-wire.js").write_bytes(random.Random(28).randbytes(100100))
+        self.assertFalse(check_budget(self.site)["ok"])
+        (self.site / "assets/site-search-wire.js").write_text("decoder")
+        (self.site / "index.html").write_text('<form data-site-search data-search-format="2"></form><script src="assets/site-search-wire.js"></script>')
+        self.assertTrue(any("before interaction" in x for x in check_budget(self.site)["failures"]))
+        (self.site / "assets/search-records-v2.json").unlink()
+        self.assertTrue(any("requires missing" in x for x in check_budget(self.site)["failures"]))
+
     def listing_fixture(self, *, small=10_000, large=20_000, highlight=True):
         article = self.site / "reviews/example/index.html"
         article.parent.mkdir(parents=True)

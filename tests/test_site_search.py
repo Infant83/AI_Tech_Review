@@ -7,6 +7,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from scripts.site_search import build_records, build_search, validate_search, search_form, search_results
+from scripts.site_search_wire import decode_wire
 
 
 class SiteSearchTests(unittest.TestCase):
@@ -61,6 +62,52 @@ class SiteSearchTests(unittest.TestCase):
         (self.root / "private.html").write_text("PRIVATE_INTAKE")
         build_search(self.root)
         self.assertNotIn("PRIVATE_INTAKE", (self.root / "assets/search-records.json").read_text())
+        current = decode_wire(json.loads((self.root / "assets/search-records-v2.json").read_text()))
+        self.assertNotIn("PRIVATE_INTAKE", json.dumps(current))
+
+    def test_current_forms_select_v2_and_legacy_pin_is_not_current_coverage(self):
+        (self.root / "index.html").write_text(search_form())
+        build_search(self.root)
+        self.assertEqual(validate_search(self.root), [])
+        legacy = (self.root / "assets/search-records.json").read_bytes()
+        from scripts.site_search import LEGACY_SHA256
+        self.assertEqual(hashlib.sha256(legacy).hexdigest(), LEGACY_SHA256)
+        current = decode_wire(json.loads((self.root / "assets/search-records-v2.json").read_text()))
+        self.assertEqual(current["records"], build_records(self.root))
+        markup = (self.root / "index.html").read_text()
+        (self.root / "index.html").write_text(markup.replace(' data-search-format="2"', ''))
+        self.assertTrue(any("form transport/version" in error for error in validate_search(self.root)))
+        (self.root / "index.html").write_text(markup.replace(' data-search-format="2"', ' data-search-format="1" data-search-format="2"'))
+        self.assertTrue(any("form transport/version" in error for error in validate_search(self.root)))
+        (self.root / "index.html").write_text(markup)
+        self.documents[0]["summary"] = "새 게시 metadata"
+        self.write_catalogs()
+        build_search(self.root)
+        self.assertEqual((self.root / "assets/search-records.json").read_bytes(), legacy)
+        self.assertEqual(decode_wire(json.loads((self.root / "assets/search-records-v2.json").read_text()))["records"], build_records(self.root))
+        (self.root / "assets/search-records.json").write_bytes(legacy + b" ")
+        self.assertTrue(any("legacy search snapshot" in error for error in validate_search(self.root)))
+
+    def test_wire_raw_byte_limit_cannot_be_hidden_by_json_whitespace(self):
+        build_search(self.root)
+        wire = self.root / "assets/search-records-v2.json"
+        from scripts.site_search_wire import MAX_WIRE_BYTES
+        wire.write_bytes(wire.read_bytes() + b" " * MAX_WIRE_BYTES)
+        manifest = json.loads((self.root / "assets/search-assets.json").read_text())
+        manifest["files"]["search-records-v2.json"] = hashlib.sha256(wire.read_bytes()).hexdigest()
+        (self.root / "assets/search-assets.json").write_text(json.dumps(manifest))
+        self.assertTrue(any("raw byte limit" in error for error in validate_search(self.root)))
+
+    def test_nonstandard_json_constant_cannot_hide_behind_a_duplicate_key(self):
+        build_search(self.root)
+        wire = self.root / "assets/search-records-v2.json"
+        original = wire.read_bytes()
+        for constant in (b"NaN", b"Infinity", b"-Infinity"):
+            wire.write_bytes(original.replace(b'{"version":2,', b'{"version":' + constant + b',"version":2,', 1))
+            manifest = json.loads((self.root / "assets/search-assets.json").read_text())
+            manifest["files"]["search-records-v2.json"] = hashlib.sha256(wire.read_bytes()).hexdigest()
+            (self.root / "assets/search-assets.json").write_text(json.dumps(manifest))
+            self.assertTrue(any("Nonfinite" in error for error in validate_search(self.root)))
 
     def test_missing_link_and_duplicate_identity_fail(self):
         self.reviews.append(dict(self.reviews[0]))

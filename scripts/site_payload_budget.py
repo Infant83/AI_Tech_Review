@@ -12,7 +12,11 @@ from urllib.parse import urlsplit
 
 PAGES = ("index.html", "en/index.html", "archive/index.html", "archive/en/index.html",
          "lectures/index.html", "lectures/en/index.html", "briefings/index.html", "briefings/en/index.html")
-LAZY_SEARCH = {"minisearch.js", "site-search-core.js", "search-records.json"}
+SEARCH_CLOSURES = {
+    "v1": {"minisearch.js", "site-search-core.js", "search-records.json"},
+    "v2": {"minisearch.js", "site-search-core.js", "site-search-wire.js", "search-records-v2.json"},
+}
+LAZY_SEARCH = set().union(*SEARCH_CLOSURES.values())
 
 
 def compressed(path: Path) -> int:
@@ -24,14 +28,19 @@ class Resources(HTMLParser):
         super().__init__()
         self.urls = []
         self.has_search = False
+        self.search_formats = set()
         self.images = []
         self.stack = []
         self.card_count = 0
 
     def handle_starttag(self, tag, attrs):
+        if tag == "form" and any(key == "data-site-search" for key, _ in attrs):
+            if sum(key == "data-search-format" for key, _ in attrs) > 1:
+                self.search_formats.add("duplicate")
         attrs = dict(attrs)
         if "data-site-search" in attrs:
             self.has_search = True
+            self.search_formats.add(attrs.get("data-search-format", "1"))
         if tag == "script" and attrs.get("src"):
             self.urls.append(attrs["src"])
         if tag == "link" and attrs.get("rel") in {"stylesheet", "preload", "modulepreload"} and attrs.get("href"):
@@ -87,7 +96,8 @@ def page_payload(site: Path, relative: str) -> dict:
         local.add(target)
     return {"gzip_bytes": sum(compressed(path) for path in local),
             "local_files": sorted(path.relative_to(root).as_posix() for path in local),
-            "external_resources": sorted(external), "has_search": parser.has_search}
+            "external_resources": sorted(external), "has_search": parser.has_search,
+            "search_formats": sorted(parser.search_formats)}
 
 
 def listing_payload(site: Path, relative: str) -> dict | None:
@@ -195,6 +205,7 @@ def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: 
             or any((name not in PAGES and not is_page_path(name)) or type(value) is not int or value < 0 for name, value in baseline_payload.items())):
         raise ValueError("Baseline payload must map known page names to nonnegative gzip byte counts")
     has_search = False
+    search_formats = set()
     try:
         from .listing_pagination import generated_paths
     except ImportError:
@@ -204,6 +215,7 @@ def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: 
             continue
         report = page_payload(site, name)
         has_search = has_search or report["has_search"]
+        search_formats.update(report["search_formats"])
         if any(Path(path).name in LAZY_SEARCH for path in report["local_files"]):
             failures.append("Search engine/index loaded before interaction: " + name)
         maximum = 100_000
@@ -222,12 +234,22 @@ def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: 
             if listing["variants_960_bytes"] > listing["variants_960_soft_max_bytes"]:
                 warnings.append("960px listing image choices exceed 800KB; review quality and dimensions: " + name)
         pages[name] = report
-    search_paths = [site / "assets" / name for name in LAZY_SEARCH]
-    if has_search:
-        for path in search_paths:
-            if not path.is_file() or path.is_symlink():
-                failures.append("Search widget requires missing/invalid lazy asset: " + path.name)
-    search_bytes = sum(compressed(path) for path in search_paths if path.is_file())
+    if search_formats - {"1", "2"}:
+        failures.append("Unknown search transport format")
+    # Both complete paths remain bounded. The loader selects one before any
+    # request and never automatically falls back across formats.
+    formats = {"v1"}
+    if "2" in search_formats or any((site / "assets" / name).exists() for name in ("site-search-wire.js", "search-records-v2.json")):
+        formats.add("v2")
+    search_by_format = {}
+    for name in sorted(formats):
+        paths = [site / "assets" / leaf for leaf in sorted(SEARCH_CLOSURES[name])]
+        if has_search:
+            for path in paths:
+                if not path.is_file() or path.is_symlink():
+                    failures.append("Search widget requires missing/invalid lazy asset: " + path.name)
+        search_by_format[name] = sum(compressed(path) for path in paths if path.is_file() and not path.is_symlink())
+    search_bytes = max(search_by_format.values())
     if search_bytes > 100_000:
         failures.append("Lazy metadata search exceeds 100KB gzip")
     elif search_bytes > 80_000:
@@ -242,7 +264,9 @@ def check_budget(site: Path, baseline: Path | None = None, *, baseline_payload: 
     if icon_bytes > 30_000:
         failures.append("Browser favicon payload exceeds 30KB gzip")
     return {"ok": not failures, "failures": failures, "warnings": warnings, "pages": pages,
-            "lazy_search_gzip_bytes": search_bytes, "browser_icons_gzip_bytes": icon_bytes, "public_artifact_bytes": total_bytes,
+            "lazy_search_gzip_bytes": search_bytes, "lazy_search_gzip_by_format": search_by_format,
+            "lazy_search_files_by_format": {name: sorted(SEARCH_CLOSURES[name]) for name in sorted(formats)},
+            "browser_icons_gzip_bytes": icon_bytes, "public_artifact_bytes": total_bytes,
             "limits": "Local HTML/JS/CSS gzip estimates and separate listing-image byte models exclude external fonts, edge scripts and API traffic. No claim of mobile speed or network transfer."}
 
 

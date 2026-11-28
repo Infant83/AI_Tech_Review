@@ -7,8 +7,10 @@ from __future__ import annotations
 
 try:
     from .site_brand import current_source_title
+    from .site_search_wire import COVERAGE, MAX_WIRE_BYTES, encode_records, decode_wire
 except ImportError:
     from site_brand import current_source_title
+    from site_search_wire import COVERAGE, MAX_WIRE_BYTES, encode_records, decode_wire
 
 import argparse
 import hashlib
@@ -31,8 +33,42 @@ except ImportError:
     from hub_localization import localize_manifest
 
 SOURCE = Path(__file__).parent / "public_assets"
-ASSETS = ("site-search.js", "site-search-core.js", "site-search.css", "minisearch.js", "minisearch-LICENSE.txt", "listing-pages.js")
+ASSETS = ("site-search.js", "site-search-core.js", "site-search-wire.js", "site-search.css", "minisearch.js", "minisearch-LICENSE.txt", "listing-pages.js")
 SCOPES = ("all", "reviews", "lectures", "briefings", "books")
+LEGACY_SOURCE = SOURCE.parents[1] / "publication/search-compatibility/v1-0fa2a07.json"
+LEGACY_SHA256 = "3d8616f8fd622eeddf0a462ab1f4e06a74e497ab100b4f01c47832259271f5de"
+LEGACY_REVISION = "0fa2a07b73ce4afee3e4f326768930286dd7eead"
+DATA_FILES = ("search-records.json", "search-records-v2.json")
+
+
+def legacy_raw() -> bytes:
+    if LEGACY_SOURCE.is_symlink() or LEGACY_SOURCE.parent.is_symlink():
+        raise ValueError("Invalid legacy search snapshot")
+    with LEGACY_SOURCE.open("rb") as handle:
+        raw = handle.read(2 * 1024 * 1024 + 1)
+    if hashlib.sha256(raw).hexdigest() != LEGACY_SHA256:
+        raise ValueError("Legacy search snapshot differs from cutover pin")
+    return raw
+
+
+def search_entry_points(root: Path) -> set[str]:
+    paths = {"index.html", "en/index.html", "archive/index.html", "archive/en/index.html", "lectures/index.html", "lectures/en/index.html", "briefings/index.html", "briefings/en/index.html"}
+    for pattern in ("page/[0-9]*/index.html", "en/page/[0-9]*/index.html", "archive/page/[0-9]*/index.html", "archive/en/page/[0-9]*/index.html", "briefings/page/[0-9]*/index.html", "briefings/en/page/[0-9]*/index.html"):
+        paths.update(path.relative_to(root).as_posix() for path in root.glob(pattern))
+    return paths
+
+
+class SearchForms(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.forms = []
+        self.duplicate_versions = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "form" and any(key == "data-site-search" for key, _ in attrs):
+            names = [key for key, _ in attrs]
+            self.duplicate_versions |= any(names.count(key) > 1 for key in ("data-site-search", "data-search-version", "data-search-format", "data-search-wire-version", "data-search-codec-version"))
+            self.forms.append(dict(attrs))
 
 
 def version(name: str) -> str:
@@ -118,6 +154,17 @@ def _read_json(path: Path, fallback):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _read_wire(root: Path):
+    path = _public_file(root, "assets/search-records-v2.json")
+    with path.open("rb") as handle:
+        raw = handle.read(MAX_WIRE_BYTES + 1)
+    if len(raw) > MAX_WIRE_BYTES:
+        raise ValueError("Search wire exceeds raw byte limit")
+    def nonfinite(_value):
+        raise ValueError("Nonfinite search wire JSON")
+    return json.loads(raw.decode("utf-8"), parse_constant=nonfinite), raw
+
+
 def build_records(site_dir: Path) -> list[dict]:
     root = Path(site_dir)
     reviews = _read_json(root / "manifest.json", [])
@@ -199,33 +246,35 @@ def build_search(site_dir: Path) -> dict:
     if assets.is_symlink():
         raise ValueError("Symlinked search assets directory")
     assets.mkdir(exist_ok=True, parents=True)
-    for name in (*ASSETS, "search-records.json", "search-assets.json"):
+    legacy = legacy_raw()
+    wire = encode_records(records)
+    raw = json.dumps(wire, ensure_ascii=False, separators=(",", ":")) + "\n"
+    for name in (*ASSETS, *DATA_FILES, "search-assets.json"):
         destination = assets / name
         if destination.is_symlink() or (destination.exists() and not destination.is_file()):
             raise ValueError("Search assets must be regular files")
     for name in ASSETS:
         shutil.copyfile(SOURCE / name, assets / name)
-    raw = json.dumps({"version": 1, "coverage": "Public titles, topics, summaries and study HTML headings/glossary terms; not full PDF text.", "records": records}, ensure_ascii=False, separators=(",", ":")) + "\n"
-    (assets / "search-records.json").write_text(raw, encoding="utf-8")
+    (assets / "search-records.json").write_bytes(legacy)
+    (assets / "search-records-v2.json").write_text(raw, encoding="utf-8")
     records_version = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
     # Version the catalog URL in each generated entry point. The same revision
     # always fetches the same catalog, while new posts cannot reuse old JSON.
-    entry_points = {"index.html", "en/index.html", "archive/index.html", "archive/en/index.html", "lectures/index.html", "lectures/en/index.html", "briefings/index.html", "briefings/en/index.html"}
-    for pattern in ("page/[0-9]*/index.html", "en/page/[0-9]*/index.html", "archive/page/[0-9]*/index.html", "archive/en/page/[0-9]*/index.html", "briefings/page/[0-9]*/index.html", "briefings/en/page/[0-9]*/index.html"):
-        entry_points.update(path.relative_to(root).as_posix() for path in root.glob(pattern))
-    for relative in sorted(entry_points):
+    for relative in sorted(search_entry_points(root)):
         page = _public_file(root, relative)
         if page.is_file():
             if page.is_symlink():
                 raise ValueError("Symlinked search entry point")
             text = page.read_text(encoding="utf-8")
             def stamp(match):
-                tag = re.sub(r' data-search-version="[^"]*"', "", match.group(0))
-                return tag[:-1] + f' data-search-version="{records_version}">'
+                tag = re.sub(r'''\sdata-search-(?:version|format|wire-version|codec-version)=(?:"[^"]*"|'[^']*'|[^\s>]+)''', "", match.group(0), flags=re.I)
+                return tag[:-1] + f' data-search-version="{LEGACY_SHA256[:12]}" data-search-format="2" data-search-wire-version="{records_version}" data-search-codec-version="{version("site-search-wire.js")}">'
             changed = re.sub(r'<form\b[^>]*\bdata-site-search(?=\s|>)[^>]*>', stamp, text)
             if changed != text:
                 page.write_text(changed, encoding="utf-8")
-    manifest = {"version": 1, "minisearch": "7.2.0", "records": len(records), "files": {name: hashlib.sha256((assets / name).read_bytes()).hexdigest() for name in (*ASSETS, "search-records.json")}}
+    manifest = {"version": 2, "minisearch": "7.2.0", "records": len(records),
+                "legacy": {"revision": LEGACY_REVISION, "sha256": LEGACY_SHA256, "records": 192, "freshness": "cutover snapshot; reload current page for latest v2"},
+                "files": {name: hashlib.sha256((assets / name).read_bytes()).hexdigest() for name in (*ASSETS, *DATA_FILES)}}
     (assets / "search-assets.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
 
@@ -238,18 +287,33 @@ def validate_search(site_dir: Path) -> list[str]:
     errors = []
     try:
         manifest = _read_json(path, {})
-        if set(manifest.get("files", {})) != set((*ASSETS, "search-records.json")):
+        if manifest.get("version") != 2 or set(manifest.get("files", {})) != set((*ASSETS, *DATA_FILES)):
             return ["search asset allowlist differs"]
+        wire, wire_raw = _read_wire(root)
         for name, checksum in manifest["files"].items():
             target = _public_file(root, "assets/" + name)
-            if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != checksum:
+            observed = wire_raw if name == "search-records-v2.json" else target.read_bytes()
+            if not target.is_file() or hashlib.sha256(observed).hexdigest() != checksum:
                 errors.append(f"search asset missing or changed: {name}")
             elif name in ASSETS and target.read_bytes() != (SOURCE / name).read_bytes():
                 errors.append(f"search asset differs from source: {name}")
         expected = build_records(root)
-        actual = _read_json(root / "assets/search-records.json", {})
-        if actual.get("version") != 1 or actual.get("records") != expected or manifest.get("records") != len(expected):
+        if (root / "assets/search-records.json").read_bytes() != legacy_raw() or manifest.get("legacy") != {"revision": LEGACY_REVISION, "sha256": LEGACY_SHA256, "records": 192, "freshness": "cutover snapshot; reload current page for latest v2"}:
+            errors.append("legacy search snapshot differs from cutover pin")
+        actual = decode_wire(wire)
+        if actual != {"version": 1, "coverage": COVERAGE, "records": expected} or manifest.get("records") != len(expected):
             errors.append("search records do not match public catalogs")
+        stamps = {"data-search-format": "2", "data-search-version": LEGACY_SHA256[:12],
+                  "data-search-wire-version": manifest["files"]["search-records-v2.json"][:12],
+                  "data-search-codec-version": version("site-search-wire.js")}
+        for relative in sorted(search_entry_points(root)):
+            page = _public_file(root, relative)
+            if not page.is_file():
+                continue
+            parser = SearchForms()
+            parser.feed(page.read_text(encoding="utf-8"))
+            if parser.duplicate_versions or not parser.forms or any(any(form.get(key) != value for key, value in stamps.items()) for form in parser.forms):
+                errors.append("search form transport/version differs: " + relative)
     except (ValueError, OSError, KeyError, TypeError) as exc:
         errors.append(f"invalid search output: {exc}")
     return errors

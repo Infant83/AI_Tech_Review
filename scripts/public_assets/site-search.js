@@ -13,12 +13,39 @@
       el.onload = resolve; el.onerror = () => { el.remove(); reject(Error("search_asset")); }; document.head.append(el);
     });
   }
+  async function wireJson(response) {
+    const reader = response.body?.getReader();
+    if (!reader) throw Error("search_catalog_stream");
+    const chunks = []; let size = 0;
+    try {
+      while (true) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        if (size + value.byteLength > 8 * 1024 * 1024) {
+          await reader.cancel(); throw Error("search_catalog_size");
+        }
+        chunks.push(value); size += value.byteLength;
+      }
+    } finally { reader.releaseLock(); }
+    const bytes = new Uint8Array(size); let offset = 0;
+    for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
+    return JSON.parse(new TextDecoder("utf-8", {fatal: true}).decode(bytes));
+  }
   async function load() {
     if (engine) return engine;
     if (!loading) loading = (async () => {
-      const url = new URL("assets/search-records.json", root); if (form.dataset.searchVersion) url.searchParams.set("v", form.dataset.searchVersion);
-      const catalog = fetch(url, {credentials: "omit"}).then(response => { if (!response.ok) throw Error("search_catalog"); return response.json(); });
-      const [, , data] = await Promise.all([window.MiniSearch ? null : script("minisearch.js", form.dataset.engineVersion), window.SiteSearchCore ? null : script("site-search-core.js", form.dataset.coreVersion), catalog]);
+      const packed = form.dataset.searchFormat === "2";
+      if (form.dataset.searchFormat && !packed) throw Error("search_format");
+      const url = new URL("assets/" + (packed ? "search-records-v2.json" : "search-records.json"), root);
+      const version = packed ? form.dataset.searchWireVersion : form.dataset.searchVersion;
+      if (version) url.searchParams.set("v", version);
+      const catalog = fetch(url, {credentials: "omit"}).then(async response => {
+        if (!response.ok) throw Error("search_catalog");
+        if (!packed) return response.json();
+        return wireJson(response);
+      });
+      const [, , payload] = await Promise.all([window.MiniSearch ? null : script("minisearch.js", form.dataset.engineVersion), window.SiteSearchCore ? null : script("site-search-core.js", form.dataset.coreVersion), catalog, packed && window.SiteSearchWire?.version !== 2 ? script("site-search-wire.js", form.dataset.searchCodecVersion) : null]);
+      const data = packed ? await window.SiteSearchWire.decodeAsync(payload) : payload;
       if (data.version !== 1) throw Error("search_version");
       engine = await window.SiteSearchCore.createAsync(window.MiniSearch, data.records); return engine;
     })().catch(error => { loading = null; throw error; });
