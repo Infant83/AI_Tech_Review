@@ -47,7 +47,7 @@ CONTENT_SHA_RE = re.compile(r"[0-9a-f]{64}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
                      ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME,
-                     "publication-release.json"}
+                     "publication-release.json", "sitemap.xml"}
 PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en", "page", "insights"}
 INSIGHTS_PAGES = frozenset({"insights/index.html", "en/insights/index.html"})
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
@@ -567,7 +567,7 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
             if (registered_study_assets.get(name) != expected
                     or hashlib.sha256(path.read_bytes()).hexdigest() != expected):
                 raise ValueError(f"Unapproved reviewed study archive: {relative}")
-        if (name not in {".nojekyll", "CNAME"} and path.suffix.lower() not in PUBLIC_EXTENSIONS
+        if (name not in {".nojekyll", "CNAME", "sitemap.xml"} and path.suffix.lower() not in PUBLIC_EXTENSIONS
                 and name not in shared_reader_assets and not reviewed_archive):
             raise ValueError(f"Unapproved public file type: {relative}")
         if ((relative.parts[0] == "reviews" or name.startswith(("archive/files/", "archive/editions/"))
@@ -575,7 +575,7 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
                 and name not in registered):
             if exceptions.get(name) != hashlib.sha256(path.read_bytes()).hexdigest():
                 raise ValueError(f"Unregistered public article asset: {relative}")
-        if path.suffix.lower() in PUBLIC_TEXT_EXTENSIONS or (name in shared_reader_assets and path.suffix.lower() == ".mjs"):
+        if name == "sitemap.xml" or path.suffix.lower() in PUBLIC_TEXT_EXTENSIONS or (name in shared_reader_assets and path.suffix.lower() == ".mjs"):
             text = path.read_bytes().decode("utf-8")
             # Raster bytes can coincidentally contain /srv/, /tmp/, or credential-like
             # strings in base64. Inspect the surrounding SVG/HTML, not encoded pixels.
