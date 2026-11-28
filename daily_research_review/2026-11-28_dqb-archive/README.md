@@ -2,7 +2,7 @@
 
 Agentic Tech Review Letters(ATRL)의 에이전틱 편집·저술팀(Agentic Editorial and Authoring Team, AEDAUT)이 원 DQB와 원 논문의 근거를 대조해 준비한 공개 보관 자료다. 원 호 날짜는 2026년 11월 28일이며, 공개판 편집일·웹 편집글 작성일·추가 근거 기준일도 각각 같은 날짜로 기록했다. 책임 편집자는 김현중이다. 아래 AI 작업 기록이 별도의 사람 원고 검토를 뜻하지는 않는다.
 
-현재 단계는 **원문 감수·PDF 검수·명시 등록·후보 보존성 및 브라우저 검증 완료, 배포 전**이다. [독립 후보 검사](artifacts/candidate-independent-review.json)와 [브라우저 확인 범위](artifacts/candidate-browser-review.json)를 기록했다. 배포·실제 URL 확인은 별도 단계다.
+현재 단계는 **공개 PDF 보관·한영 편집글 배포·실제 공개 확인 완료**다. 검수 원본은 `870cfa474905cde3dc5902580dd4d138def56faa`이며 [실제 배포의 네 작업](https://github.com/Infant83/AI_Tech_Review/actions/runs/46098309732)이 모두 성공했다. [완료 기록](artifacts/publication-completion.json)은 후보 검사·실제 HTTPS 29개 주소·브라우저·복구 사본과 알림 동기화의 확인 범위 및 제한을 구분한다. [국문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-28/)·[영문 편집글](https://infant83.io/AI_Tech_Review/briefings/2026-11-28/en/)·[보관 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-28-daily-quantum-brief.pdf)를 실제 확인했다.
 
 원 DQB 2쪽 전체의 본문과 화면을 확인했으며 원본은 비공개로 보존한다. [공개 PDF](dist/2026-11-28-daily-quantum-brief.pdf)는 원 발행명·익명 작성 크레딧·호 날짜·그림 1과 원 과학 URI 주석 10개를 유지한 4쪽 편집판이다. 수집 경위와 메일 수신 표시를 삭제하고, 정규화 점수·순차 측정·비초복사 상태의 세 설명을 원 페이지에서 정밀하게 고쳤다. 뒤의 2쪽에는 비교 조건·정정 이유·APS 서지·작성 및 감수 범위·이용 조건을 덧붙였다. 실제 삭제·정정 범위는 [제작 명세](artifacts/public-archive-manifest.json)에 기록했다.
 

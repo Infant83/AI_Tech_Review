@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "status": "passed_actual_four_job_CI_small_artifacts_recovery_and_reader_checks",
+  "checked_at_utc": "2026-11-28T02:37:55.033929+00:00",
+  "reviewer": "dqb1128_sequential",
+  "role": "Read-only actual publication auditor; not CI runner, PDF producer, manuscript author or human reviewer",
+  "source_revision": "870cfa474905cde3dc5902580dd4d138def56faa",
+  "run": 46098309732,
+  "attempt": 1,
+  "workflow_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46098309732",
+  "jobs": [
+    {
+      "id": 140834727946,
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install the pinned build-only image dependency",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check publication, search and preservation rules",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check multilingual search ranking",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check reader controls and notification permission handling",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check the existing lecture reader and storage races",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check backend authentication and notebook authorization",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check portable media delivery",
+          "conclusion": "success"
+        },
+        {
+          "name": "Read the deployed source revision and extract its immutable baseline",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build an independent candidate from the combined source registrations",
+          "conclusion": "success"
+        },
+        {
+          "name": "Reject missing identities and undeclared article or PDF changes",
+          "conclusion": "success"
+        },
+        {
+          "name": "Enforce initial payload and deferred search budgets",
+          "conclusion": "success"
+        },
+        {
+          "name": "Package the continuity snapshot with the exact deployable artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate the complete sealed public artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-pages-artifact@v3",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve the exact catalog packaged with Pages",
+          "conclusion": "success"
+        },
+        {
+          "name": "Preserve release verification summaries",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 140836067333,
+      "name": "deploy",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Do not redeploy an older main revision",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deploy the verified Pages artifact",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 140836200503,
+      "name": "recovery-copy",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify and package the exact deployed artifact for recovery",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Retain the three most recent complete recovery copies",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 140836200505,
+      "name": "notify-readers",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check publication notification setup",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify live HTTPS articles, then register publications",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "test_suites": [
+    {
+      "name": "python_publication_search_preservation",
+      "total": 674,
+      "pass": 673,
+      "fail": 0,
+      "skip": 1,
+      "summary": "OK (skipped=1)"
+    },
+    {
+      "name": "multilingual_search",
+      "total": 12,
+      "suites": 0,
+      "pass": 12,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "reader_controls",
+      "total": 205,
+      "suites": 0,
+      "pass": 197,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 8,
+      "todo": 0
+    },
+    {
+      "name": "lecture_reader",
+      "total": 228,
+      "suites": 0,
+      "pass": 228,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "backend_authorization",
+      "total": 73,
+      "suites": 0,
+      "pass": 73,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    },
+    {
+      "name": "portable_media",
+      "total": 14,
+      "suites": 0,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skip": 0,
+      "todo": 0
+    }
+  ],
+  "test_totals": {
+    "total": 1206,
+    "pass": 1197,
+    "fail": 0,
+    "skip": 9
+  },
+  "pinned_pillow_install_observed": true,
+  "actual_small_artifact_checks": [
+    {
+      "name": "publication-validation",
+      "provider_id": 15244920260,
+      "zip_bytes": 5962,
+      "zip_sha256": "d341de9f3b92eb41cf70092bbe432886c31452c2325bd7d4d69402ebb090b526",
+      "provider_digest_matched": true,
+      "members": [
+        {
+          "name": "release-check.json",
+          "bytes": 2981,
+          "sha256": "662c7d28c62108a0e42d0ff056d5d2c30d9a336c99c4e05ed51093201528bec8",
+          "candidate_differing_top_level_keys": []
+        },
+        {
+          "name": "report.json",
+          "bytes": 10041,
+          "sha256": "47767ba93469316f14309236cfd951f225beefb839e0b7b04d1fa976892de9b2",
+          "candidate_differing_top_level_keys": [
+            "revision"
+          ]
+        },
+        {
+          "name": "payload-check.json",
+          "bytes": 62651,
+          "sha256": "845e5b4c9bd0dc4989a190e0299becca56a0345415377b4bb2f167c80ed6cd1d",
+          "candidate_differing_top_level_keys": []
+        }
+      ]
+    },
+    {
+      "name": "reader-publication-catalog",
+      "provider_id": 15243824611,
+      "zip_bytes": 6399,
+      "zip_sha256": "8e99ca3f3ff4c97c52c2e6aa8f248884f59f0c02d6dcbdc464c4393b481094d1",
+      "provider_digest_matched": true,
+      "members": [
+        {
+          "name": "reader-publications.json",
+          "bytes": 30243,
+          "sha256": "929b8993170c1f12497806070d61d26b7d849e3612363f455333105dbe1c83b5",
+          "candidate_differing_top_level_keys": [
+            "revision"
+          ]
+        }
+      ]
+    }
+  ],
+  "exact_source_blob_checks": [
+    {
+      "path": ".github/workflows/pages.yml",
+      "bytes": 8247,
+      "sha256": "c13c905dca9df1843e32b7d6d91c9ff3021631fb889ad733a5b53af7758645fd",
+      "exact_commit_blob_matches": true
+    },
+    {
+      "path": "scripts/release_backup.py",
+      "bytes": 11375,
+      "sha256": "bdc70fc97b4a75bc5a38597ce4d0ba0f2b2d584ae5493f4a8fa9e4e9c22f1d8f",
+      "exact_commit_blob_matches": true
+    },
+    {
+      "path": "scripts/release_artifact_retention.py",
+      "bytes": 11621,
+      "sha256": "7be88b248e19921f2584c3895352084b273d9c1ef83aaa61c4f881cfc4675354",
+      "exact_commit_blob_matches": true
+    },
+    {
+      "path": "scripts/reader_engagement_publish.py",
+      "bytes": 41988,
+      "sha256": "ac1ad5f840191c5f19ce672a165341dc876813c83dd0415ef53163e93ec73966",
+      "exact_commit_blob_matches": true
+    },
+    {
+      "path": "scripts/requirements-listing-images.txt",
+      "bytes": 15,
+      "sha256": "91479c3a6f15a6895a3cb1543ef75a17d86899b818ecb22f799af9eda0e66228",
+      "exact_commit_blob_matches": true
+    }
+  ],
+  "release_check": {
+    "ok": true,
+    "blockers": [],
+    "counts": {
+      "archive": 199,
+      "external": 1,
+      "publications": 96,
+      "reviews": 61
+    }
+  },
+  "payload_check": {
+    "ok": true,
+    "failures": [],
+    "warnings": [
+      "Lazy metadata search exceeds the 80KB growth warning",
+      "Public artifact exceeds 800MB; finish media migration before Pages capacity is exhausted"
+    ],
+    "lazy_search_gzip_bytes": 99992,
+    "public_artifact_bytes": 941226835
+  },
+  "actual_catalog": {
+    "articles": 96,
+    "source_revision": "870cfa474905cde3dc5902580dd4d138def56faa",
+    "candidate_membership_and_order_exact": true,
+    "new_DQB_excluded_from_reader_notification_catalog": true
+  },
+  "recovery": {
+    "from_pages_verification": {
+      "ok": true,
+      "revision": "870cfa474905cde3dc5902580dd4d138def56faa",
+      "files": 2890,
+      "bytes": 942709712,
+      "archive_sha256": "46e48d9bde7b4aae64dc017425bd211f9655f1ab34fb37fa35ca0d88cec9acfe"
+    },
+    "inner_archive_SHA_is_separate_from_provider_outer_ZIP_digest": true,
+    "current_upload_metadata": {
+      "id": 15244183938,
+      "node_id": "MDg6QXJ0aWZhY3QxNTI0NDE4MzkzOA==",
+      "name": "publication-recovery",
+      "size_in_bytes": 849140609,
+      "url": "https://api.github.com/repos/Infant83/AI_Tech_Review/actions/artifacts/15244183938",
+      "expired": false,
+      "digest": "sha256:dca74b50a7ad0dcbbeba5ff19f388a6aa9520a000e0b5dcd3ffc97a20dc06b45",
+      "created_at": "2026-11-28T02:35:44Z",
+      "updated_at": "2026-11-28T02:35:44Z",
+      "expires_at": "2026-12-28T02:35:38Z",
+      "workflow_run": {
+        "id": 46098309732,
+        "repository_id": 1207355976,
+        "head_repository_id": 1207355976,
+        "head_branch": "main",
+        "head_sha": "870cfa474905cde3dc5902580dd4d138def56faa"
+      }
+    },
+    "retention_result": {
+      "ok": true,
+      "status": "applied",
+      "keep": [
+        15244183938,
+        15240758459,
+        15235606344
+      ],
+      "delete": [
+        15234347167
+      ],
+      "applied": true,
+      "deleted": [
+        15234347167
+      ],
+      "listingAttempts": 2,
+      "currentArtifactVerified": true
+    },
+    "complete_filtered_and_unfiltered_metadata_match": true,
+    "latest_three_retained_ids": [
+      15244183938,
+      15240758459,
+      15235606344
+    ],
+    "retained_old_metadata_preserved": true,
+    "before_ids": [
+      15240758459,
+      15235606344,
+      15234347167
+    ],
+    "CI_provider_digest_chain": {
+      "deployed_Pages_artifact_id": 15244865839,
+      "Pages_provider_SHA256": "ee20dd985005302ae16dbed82e1c761d66a97b23c6e48e4ef8a8f09107a65172",
+      "CI_downloaded_Pages_digest_exact": true,
+      "recovery_provider_SHA256": "dca74b50a7ad0dcbbeba5ff19f388a6aa9520a000e0b5dcd3ffc97a20dc06b45",
+      "CI_uploaded_recovery_digest_exact": true,
+      "reviewer_downloaded_either_large_binary": false
+    },
+    "complete_metadata_counts": {
+      "filtered": {
+        "pages": 1,
+        "advertised_total": 3,
+        "rows": 3
+      },
+      "unfiltered": {
+        "pages": 2,
+        "advertised_total": 131,
+        "rows": 131
+      }
+    },
+    "other_previous_metadata_absences": {
+      "rows": [
+        {
+          "id": 14093577246,
+          "name": "publication-validation",
+          "advertised_expires_at": "2026-11-28T02:14:26Z"
+        },
+        {
+          "id": 14687003432,
+          "name": "reader-publication-catalog",
+          "advertised_expires_at": "2026-11-28T02:19:05Z"
+        }
+      ],
+      "interpretation": "Two unrelated catalog/validation metadata rows were absent after their provider-advertised expiry had elapsed; no additional deletion by this reviewer is claimed."
+    }
+  },
+  "actual_reader_sync": {
+    "synced": 96,
+    "revision": "870cfa474905cde3dc5902580dd4d138def56faa",
+    "ok": true,
+    "newArticles": 0,
+    "queuedEvents": 0,
+    "baseline": false
+  },
+  "actual_provider_artifact_metadata": [
+    {
+      "id": 15244920260,
+      "name": "publication-validation",
+      "size_in_bytes": 5962,
+      "digest": "sha256:d341de9f3b92eb41cf70092bbe432886c31452c2325bd7d4d69402ebb090b526",
+      "created_at": "2026-11-28T02:34:20Z",
+      "expires_at": "2026-12-12T02:34:19Z",
+      "workflow_run": {
+        "id": 46098309732,
+        "repository_id": 1207355976,
+        "head_repository_id": 1207355976,
+        "head_branch": "main",
+        "head_sha": "870cfa474905cde3dc5902580dd4d138def56faa"
+      },
+      "expired": false
+    },
+    {
+      "id": 15244865839,
+      "name": "github-pages",
+      "size_in_bytes": 846692068,
+      "digest": "sha256:ee20dd985005302ae16dbed82e1c761d66a97b23c6e48e4ef8a8f09107a65172",
+      "created_at": "2026-11-28T02:34:16Z",
+      "expires_at": "2026-11-29T02:33:52Z",
+      "workflow_run": {
+        "id": 46098309732,
+        "repository_id": 1207355976,
+        "head_repository_id": 1207355976,
+        "head_branch": "main",
+        "head_sha": "870cfa474905cde3dc5902580dd4d138def56faa"
+      },
+      "expired": false
+    },
+    {
+      "id": 15244183938,
+      "name": "publication-recovery",
+      "size_in_bytes": 849140609,
+      "digest": "sha256:dca74b50a7ad0dcbbeba5ff19f388a6aa9520a000e0b5dcd3ffc97a20dc06b45",
+      "created_at": "2026-11-28T02:35:44Z",
+      "expires_at": "2026-12-28T02:35:38Z",
+      "workflow_run": {
+        "id": 46098309732,
+        "repository_id": 1207355976,
+        "head_repository_id": 1207355976,
+        "head_branch": "main",
+        "head_sha": "870cfa474905cde3dc5902580dd4d138def56faa"
+      },
+      "expired": false
+    },
+    {
+      "id": 15243824611,
+      "name": "reader-publication-catalog",
+      "size_in_bytes": 6399,
+      "digest": "sha256:8e99ca3f3ff4c97c52c2e6aa8f248884f59f0c02d6dcbdc464c4393b481094d1",
+      "created_at": "2026-11-28T02:34:19Z",
+      "expires_at": "2026-12-05T02:34:18Z",
+      "workflow_run": {
+        "id": 46098309732,
+        "repository_id": 1207355976,
+        "head_repository_id": 1207355976,
+        "head_branch": "main",
+        "head_sha": "870cfa474905cde3dc5902580dd4d138def56faa"
+      },
+      "expired": false
+    }
+  ],
+  "limits": [
+    "Only the two small metadata ZIPs were downloaded and hashed; full Pages and recovery binaries were not downloaded, locally hashed or restored.",
+    "CI created and verified its recovery package; this audit read its actual success, inner SHA and provider upload/retention evidence without an independent local recovery restoration.",
+    "Actual live HTTPS and browser checks are assigned separately; this CI verdict alone does not certify those reader-visible results.",
+    "No local tests, build, full inventory, render or package was run in this CI audit; no rerun, retention mutation, notification sync or extra push was invoked."
+  ],
+  "public_safe": true,
+  "test_skip_notes": {
+    "Python_skips": 1,
+    "Python_individual_skip_reason": "The default unittest log reports one skip in its aggregate summary; an individual reason is not printed.",
+    "reader_browser_skips": 8,
+    "reader_browser_skip_test_names": [
+      "ok 73 - iPhone browser gives real installation instructions and never requests permission automatically # SKIP",
+      "ok 74 - subscribe follows a direct gesture; settings, test and unsubscribe work; resubscribe preserves granted permission # SKIP",
+      "ok 75 - denied permission shows settings and never creates a subscription # SKIP",
+      "ok 76 - likes toggle from server response; share fallback keeps the English article path; cancel is silent # SKIP",
+      "ok 77 - dialog stays inside viewport, focus and controls work at 320px # SKIP",
+      "ok 78 - dialog stays inside viewport, focus and controls work at 390px # SKIP",
+      "ok 79 - dialog stays inside viewport, focus and controls work at 736px # SKIP",
+      "ok 80 - dialog stays inside viewport, focus and controls work at 1280px # SKIP"
+    ],
+    "skips_are_not_counted_as_passes": true
+  },
+  "backend_syntax_checks": {
+    "npm_check_step_success": true,
+    "actual_command": "node --check for eight existing backend JavaScript source files",
+    "TypeScript_typecheck_claimed": false
+  },
+  "input_evidence_hashes": [
+    {
+      "name": "run-final.json",
+      "bytes": 12620,
+      "sha256": "88006f1aeb3ec7c78a4667ef4f75aa5c151e836cad13494e0197184e6b6f097f"
+    },
+    {
+      "name": "jobs-final.json",
+      "bytes": 11643,
+      "sha256": "5f40028df3c1aa36a1afa8f206ac181115547ad0a021d0fbf38858fed7d69942"
+    },
+    {
+      "name": "artifacts-final.json",
+      "bytes": 2815,
+      "sha256": "0dd0d545ff9e97c35f94835dd0a9757129df60f0d25cace9cef1533d43fb1d1d"
+    },
+    {
+      "name": "retention-after-filtered.json",
+      "bytes": 2127,
+      "sha256": "d8b7b927e70b3e76d483134cff12f58f3c55e23220f21485e8b72f66d41ed231"
+    },
+    {
+      "name": "retention-after-unfiltered.json",
+      "bytes": 91204,
+      "sha256": "3f070cb47e89b651a44b40f5703e659e6b233223fc40928663168f0d601c6f13"
+    },
+    {
+      "name": "build.log",
+      "bytes": 726931,
+      "sha256": "f148a304dc5b93007ae46fe321ad81cfb8d605611c30b8b5773a513327c9c0bb"
+    },
+    {
+      "name": "deploy.log",
+      "bytes": 5282,
+      "sha256": "cde1cd26c920b1915263106c6ee7419461560be2e48333b6edc59508485df5b5"
+    },
+    {
+      "name": "recovery-copy.log",
+      "bytes": 27210,
+      "sha256": "c3d2770f24daf34c2227bdff983d9888984109e19b2095ab025c6adb93e381c3"
+    },
+    {
+      "name": "notify-readers.log",
+      "bytes": 22286,
+      "sha256": "463d8e8405887de75c8db0409862922b604254f6e08b5ccbe73330feb06f8df7"
+    },
+    {
+      "name": "publication-validation.zip",
+      "bytes": 5962,
+      "sha256": "d341de9f3b92eb41cf70092bbe432886c31452c2325bd7d4d69402ebb090b526"
+    },
+    {
+      "name": "reader-publication-catalog.zip",
+      "bytes": 6399,
+      "sha256": "8e99ca3f3ff4c97c52c2e6aa8f248884f59f0c02d6dcbdc464c4393b481094d1"
+    },
+    {
+      "name": "metadata-small-artifact-review.json",
+      "bytes": 4753,
+      "sha256": "a7f712e1adf3dfb66996d09a0cedb4d8dbb97c850fd460a5e4f3b68c66b6c362"
+    },
+    {
+      "name": "actual-test-summaries.json",
+      "bytes": 1990,
+      "sha256": "e39fc9c7ecb3ffeb7d040d2906c32632e6ada6e0681cbd4f1444053ca1c638be"
+    }
+  ]
+}
