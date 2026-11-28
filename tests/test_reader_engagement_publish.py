@@ -402,6 +402,22 @@ class ReaderEnrichmentTests(unittest.TestCase):
                         reader.validate_public_artifact(site)
                     path.unlink()
 
+    def test_sitemap_exact_root_exception_preserves_XML_and_private_text_guards(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            site, frontend = self.fixture(Path(temporary))
+            reader.enrich_site(site, revision=REVISION, frontend_dir=frontend)
+            sitemap = site / 'sitemap.xml'
+            sitemap.write_text('<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>')
+            self.assertEqual(reader.validate_public_artifact(site)['articles'], 3)
+            for name in ('extra.xml', 'assets/sitemap.xml'):
+                path = site / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('<urlset/>')
+                with self.assertRaises(ValueError): reader.validate_public_artifact(site)
+                path.unlink()
+            sitemap.write_text('<urlset>file:///Users/example/private/draft.html</urlset>')
+            with self.assertRaises(ValueError): reader.validate_public_artifact(site)
+
     def test_public_artifact_rejects_empty_private_namespace_components(self):
         for name in ("archive/private", "archive/supplements/PRIVATE", "assets/charts/PrIvAtE"):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:

@@ -45,7 +45,7 @@ GENERATED = frozenset({
     "assets/minisearch.js", "assets/minisearch-LICENSE.txt", "assets/search-records.json",
     "assets/search-assets.json", "assets/listing-images/manifest.json",
     "assets/site-search-wire.js", "assets/search-records-v2.json",
-    "assets/listing-pages.js",
+    "assets/listing-pages.js", "sitemap.xml",
 })
 
 
