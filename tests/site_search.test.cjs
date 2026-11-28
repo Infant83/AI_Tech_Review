@@ -1,5 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
 const MiniSearch = require('../scripts/public_assets/minisearch.js');
 const core = require('../scripts/public_assets/site-search-core.js');
 
@@ -113,4 +115,99 @@ test('async construction yields before preprocessing and between bounded batches
 
 test('async construction rejects duplicate IDs across separate batches', async () => {
   await assert.rejects(core.createAsync(MiniSearch, [...records, records[0]], {batchSize: 2, yieldTask: async () => {}}), /Duplicate/);
+});
+
+test('initial and history URLs share the raw 180 UTF-16 unit query boundary', () => {
+  const source = fs.readFileSync(require.resolve('../scripts/public_assets/site-search.js'), 'utf8');
+  function mounted(query, selectedScope, defaultScope = 'all') {
+    const listeners = new Map(), replacements = [], fetches = [];
+    const node = () => ({addEventListener() {}});
+    const input = {...node(), value: '', focus() {}};
+    const scope = {...node(), value: defaultScope,
+      options: ['all', 'reviews', 'lectures', 'briefings', 'books'].map(value => ({value}))};
+    const status = {}, list = {replaceChildren() {}}, more = node(), clear = node();
+    const form = {...node(), dataset: {root: '/AI_Tech_Review/', defaultScope},
+      querySelector(selector) {
+        assert.ok(['input[name=q]', 'select[name=scope]'].includes(selector));
+        return selector === 'input[name=q]' ? input : scope;
+      }};
+    const panel = {querySelector(selector) {
+      const elements = {'[data-search-status]': status, '[data-search-list]': list,
+        '[data-search-more]': more, '[data-search-clear]': clear};
+      assert.ok(Object.hasOwn(elements, selector));
+      return elements[selector];
+    }};
+    const url = (q, filter) => {
+      const value = new URL('https://example.invalid/AI_Tech_Review/?keep=1#reading');
+      if (q !== null) value.searchParams.set('q', q);
+      if (filter !== null) value.searchParams.set('scope', filter);
+      return value.href;
+    };
+    const location = {href: url(query, selectedScope)};
+    const document = {documentElement: {lang: 'ko'}, body: {classList: {toggle() {}}},
+      querySelector(selector) {
+        if (selector === '[data-site-search]') return form;
+        if (selector === '[data-site-search-results]') return panel;
+        if (selector === '.site-header') return null;
+        assert.fail(`Unexpected document selector: ${selector}`);
+      },
+      querySelectorAll() { return []; },
+      createElement() { assert.fail('Pending fetch must prevent index/render construction'); }};
+    const window = {MiniSearch: {}, SiteSearchCore: {
+      createAsync() { assert.fail('This URL test must not build an index'); }
+    }, addEventListener(name, callback) { listeners.set(name, callback); }};
+    const history = {replaceState(state, title, target) {
+      location.href = new URL(target, location.href).href;
+      replacements.push(location.href);
+    }};
+    vm.runInNewContext(source, {document, window, location, history, URL,
+      fetch(target, options) {
+        fetches.push({target: String(target), credentials: options.credentials});
+        return new Promise(() => {}); // No network, resolved catalog, or live timer.
+      }, setTimeout() { return 1; }, clearTimeout() {}}, {filename: 'site-search.js'});
+    return {input, scope, location, replacements, fetches,
+      pop(q, filter) {
+        location.href = url(q, filter); // The browser has moved before popstate.
+        assert.equal(typeof listeners.get('popstate'), 'function');
+        listeners.get('popstate')();
+      }};
+  }
+  function shown(app, query, scope, defaultScope = 'all') {
+    const expected = query.slice(0, 180), current = new URL(app.location.href);
+    assert.equal(app.input.value, expected);
+    assert.ok(app.input.value.length <= 180);
+    assert.equal(app.scope.value, scope);
+    assert.equal(current.searchParams.get('q'), expected || null);
+    assert.equal(current.searchParams.get('scope'), scope === defaultScope ? null : scope);
+    assert.equal(current.searchParams.get('keep'), '1');
+    assert.equal(current.hash, '#reading');
+    assert.ok(app.replacements.length > 0);
+  }
+  const within = '양자 계산과 광자';
+  const boundary = '가'.repeat(178) + '🧪';
+  const over = '한'.repeat(250);
+  const expandedByNFKC = '㍿'.repeat(180);
+  for (const [query, filter, expectedScope] of [
+    ['', null, 'all'], [within, 'lectures', 'lectures'],
+    [boundary, 'reviews', 'reviews'], [over, 'books', 'books'],
+    [expandedByNFKC, 'invalid', 'all']
+  ]) {
+    const initial = mounted(query, filter);
+    shown(initial, query, expectedScope);
+    assert.ok(initial.fetches.length <= 1);
+    for (const [nextQuery, nextFilter, nextScope] of [
+      [over, 'lectures', 'lectures'], [within, 'reviews', 'reviews'],
+      [boundary, 'all', 'all'], [expandedByNFKC, 'books', 'books'],
+      [within, 'invalid', 'all'], ['', null, 'all']
+    ]) {
+      initial.pop(nextQuery, nextFilter);
+      shown(initial, nextQuery, nextScope);
+    }
+    assert.ok(initial.fetches.length <= 1, 'The pending catalog is reused across history');
+    assert.ok(initial.fetches.every(call => call.credentials === 'omit'));
+  }
+  const scopedDefault = mounted(over, null, 'reviews');
+  shown(scopedDefault, over, 'reviews', 'reviews');
+  scopedDefault.pop(within, 'invalid');
+  shown(scopedDefault, within, 'reviews', 'reviews');
 });

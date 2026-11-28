@@ -86,7 +86,7 @@
   panel.querySelector("[data-search-clear]").addEventListener("click", () => { clearTimeout(timer); input.value = ""; scope.value = form.dataset.defaultScope; run(); input.focus(); });
   input.addEventListener("keydown", event => { if (event.key === "Escape") { input.value = ""; clearTimeout(timer); run(); } });
   more.addEventListener("click", () => { limit += 10; render(); list.children[limit - 10]?.querySelector("a")?.focus(); });
-  window.addEventListener("popstate", () => { const url = new URL(location.href); input.value = url.searchParams.get("q") || ""; scope.value = [...scope.options].some(option => option.value === url.searchParams.get("scope")) ? url.searchParams.get("scope") : form.dataset.defaultScope; run(); });
+  window.addEventListener("popstate", () => { const url = new URL(location.href); input.value = (url.searchParams.get("q") || "").slice(0, 180); scope.value = [...scope.options].some(option => option.value === url.searchParams.get("scope")) ? url.searchParams.get("scope") : form.dataset.defaultScope; run(); });
   window.addEventListener("hub:before-language-change", writeUrl);
   document.querySelector(".site-header")?.addEventListener("click", event => { if (event.target.closest("a[hreflang]")) writeUrl(); }, true);
   if (input.value || scope.value !== form.dataset.defaultScope) run();
