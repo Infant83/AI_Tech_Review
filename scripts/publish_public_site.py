@@ -3205,10 +3205,10 @@ def main(argv: Iterable[str] | None = None) -> int:
 
     try:
         from .site_search import build_search
-        from .site_sitemap import build_sitemap
+        from .site_sitemap import build_sitemap, install_search_console_verification
     except ImportError:
         from site_search import build_search
-        from site_sitemap import build_sitemap
+        from site_sitemap import build_sitemap, install_search_console_verification
     for page in SITE_DIR.rglob("*.html"):
         if page.is_symlink():
             raise ValueError("Brand normalization cannot follow symlink HTML")
@@ -3222,6 +3222,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     build_search(SITE_DIR)
     enrich_reader_engagement(SITE_DIR, revision=args.revision)
     build_sitemap(SITE_DIR)
+    install_search_console_verification(SITE_DIR)
     validate_reader_artifact(SITE_DIR)
 
     errors = validate_public_site(manifest)

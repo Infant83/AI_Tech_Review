@@ -20,8 +20,10 @@ from urllib.request import Request, urlopen
 
 try:
     from .recency_migrations import load_recency_migrations, preserve_display_recency
+    from .site_sitemap import SEARCH_CONSOLE_NAME, validate_search_console_verification
 except ImportError:
     from recency_migrations import load_recency_migrations, preserve_display_recency
+    from site_sitemap import SEARCH_CONSOLE_NAME, validate_search_console_verification
 
 ROOT = Path(__file__).resolve().parents[1]
 SCOPE = "/AI_Tech_Review/"
@@ -47,7 +49,7 @@ CONTENT_SHA_RE = re.compile(r"[0-9a-f]{64}\Z")
 ID_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9:_-]{0,179}\Z")
 PUBLIC_ROOT_FILES = {"index.html", "manifest.json", "archive-manifest.json", "favicon.ico",
                      ".nojekyll", "CNAME", "sw.js", "app.webmanifest", CATALOG_NAME, UPDATES_NAME,
-                     "publication-release.json", "sitemap.xml"}
+                     "publication-release.json", "sitemap.xml", SEARCH_CONSOLE_NAME}
 PUBLIC_DIRECTORIES = {"assets", "reviews", "lectures", "archive", "briefings", "methods", "en", "page", "insights"}
 INSIGHTS_PAGES = frozenset({"insights/index.html", "en/insights/index.html"})
 PUBLIC_EXTENSIONS = {".html", ".css", ".js", ".json", ".webmanifest", ".svg", ".pdf", ".png",
@@ -140,6 +142,8 @@ def strip_engagement(text: str) -> str:
 
 def enrich_html(text: str, relative_path: str, article: dict | None,
                 *, asset_versions: dict[str, str] | None = None, article_version: str | None = None) -> str:
+    if relative_path == SEARCH_CONSOLE_NAME:
+        return text  # Immutable Google challenge, never a reader page.
     text = strip_engagement(text)
     # Personal/local documents must never gain telemetry, a publication identity,
     # automatic navigation, or the standalone pull-to-refresh gesture.
@@ -202,7 +206,7 @@ def build_updates(site_dir: Path, previous: dict | None = None, *, now: str | No
     timestamp = now or datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     pages = {public_path(path.relative_to(site_dir).as_posix()): content_digest(path)
              for path in sorted(site_dir.rglob("*.html"))
-             if path.relative_to(site_dir).as_posix() != LECTURE_READER_PAGE}
+             if path.relative_to(site_dir).as_posix() not in {LECTURE_READER_PAGE, SEARCH_CONSOLE_NAME}}
     reviews = json.loads((site_dir / "manifest.json").read_text(encoding="utf-8"))
     archive_file = site_dir / "archive-manifest.json"
     documents = json.loads(archive_file.read_text(encoding="utf-8")).get("documents", []) if archive_file.exists() else []
@@ -456,6 +460,9 @@ def validate_public_artifact(site_dir: Path, *, verify_search: bool = True,
     site_dir = Path(site_dir)
     if site_dir.is_symlink():
         raise ValueError("The public output directory cannot be a symlink")
+    # Existing small artifact fixtures may omit the challenge. If present, only
+    # this one exact public file is allowed, with its original size and SHA.
+    validate_search_console_verification(site_dir)
     # A search corpus must describe this artifact's public registries, not an
     # older independently generated list. Its engine files are pinned to source.
     home = site_dir / "index.html"
