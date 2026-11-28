@@ -57,6 +57,50 @@ test('publication month and full date search retain exact date filtering', () =>
   assert.equal(engine.search('2026-10-01').length, 0);
 });
 
+test('record grouping preserves ranked IDs, displayed metadata and date/ID ties', () => {
+  const item = (id, scope, date, titles, text, topics = '', headings = '') => ({
+    ...record(id, scope, titles, text, topics, headings), date,
+    title: `Display ${id}`, title_en: `English ${id}`,
+    summary: `Summary ${id}`, summary_en: `English summary ${id}`,
+    url: `${id}/`, url_en: `${id}/en/`
+  });
+  const fixture = [
+    item('tie-b', 'briefings', '2026-11-18', 'Fock photon sensing', 'Quantum probe.'),
+    item('long', 'lectures', '2026-11-20', 'Quantum machine learning',
+      'A longer discussion of quantum sensing, photon statistics and noise. '.repeat(9),
+      '양자 머신러닝', 'Fisher information and gradients'),
+    item('tie-a', 'reviews', '2026-11-18', 'Fock photon sensing', 'Quantum probe.'),
+    item('older', 'books', '2026-10-01', 'Fock states', 'A short photon reference.'),
+    item('newer', 'reviews', '2026-11-21', 'Quantum sensing', 'Photon probes and repeated readout.', 'QEC'),
+    item('korean', 'lectures', '2026-11-18', '양자 센싱', '광자 분포와 측정.', 'Quantum sensing')
+  ];
+  const grouped = [...fixture].sort((a, b) =>
+    b.scope.localeCompare(a.scope) || b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  const reference = core.create(MiniSearch, fixture);
+  const queries = ['', '   ', '?!', '2026-11', '2026-11-18', '2026-10-01',
+    'Fock photon', 'quantum', 'photon', '양자', '양자 센싱', 'QML', 'QEC', 'unmatched'];
+  for (const order of [[...fixture].reverse(), grouped]) {
+    const candidate = core.create(MiniSearch, order);
+    for (const scope of ['all', 'reviews', 'lectures', 'briefings', 'books']) {
+      for (const query of queries) {
+        const expected = reference.search(query, scope), actual = candidate.search(query, scope);
+        const metadata = rows => rows.map(({score, ...row}) => row);
+        assert.deepEqual(metadata(actual), metadata(expected), `${scope}: ${query}`);
+        for (let i = 0; i < expected.length; i++) {
+          if (expected[i].score === undefined) continue;
+          assert.ok(Math.abs(actual[i].score - expected[i].score) <=
+            1e-12 * Math.max(1, Math.abs(expected[i].score)), `score ${actual[i].id}: ${query}`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(reference.search('Fock photon').filter(row => row.id.startsWith('tie-'))
+    .map(row => row.id), ['tie-a', 'tie-b']);
+  assert.deepEqual(reference.search('2026-11-18').map(row => row.id), ['korean', 'tie-a', 'tie-b']);
+  assert.deepEqual(reference.search('').map(row => row.id),
+    ['newer', 'long', 'korean', 'tie-a', 'tie-b', 'older']);
+});
+
 test('async construction yields before preprocessing and between bounded batches', async () => {
   let yields = 0, added = 0;
   class ObservedMiniSearch extends MiniSearch { add(record) { added++; return super.add(record); } }

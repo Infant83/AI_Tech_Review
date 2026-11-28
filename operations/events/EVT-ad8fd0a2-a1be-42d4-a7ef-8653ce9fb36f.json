@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "id": "EVT-ad8fd0a2-a1be-42d4-a7ef-8653ce9fb36f",
+  "issue_id": "OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db",
+  "created_at": "2026-11-28T04:08:22.841159+00:00",
+  "base_record_version": 2,
+  "reporting_role": "편집부(AEDAUT) 발행 담당",
+  "technical_owner": "운영팀(ADOPT)",
+  "observation": "The new Fock-space review reproduced the existing search admission failure at100424 gzip bytes, after the previous DQB release left8bytes of headroom. The unsealed candidate was not deployed. All scientific titles, summaries, source articles and the100000-byte gate are retained. Grouping identical metadata records by scope/date/id is being independently checked as a small compression improvement; a more durable scoped-loading design remains a separate ADOPT follow-up.",
+  "evidence": [
+    "scripts/site_search.py",
+    "scripts/site_payload_budget.py",
+    "tests/site_search.test.cjs",
+    "2026-11-28_fock-space-state-preparation-readout/artifacts/content-review.json",
+    "operations/events/EVT-fa444986-b58d-4409-9d35-0cfd372ceac8.json"
+  ],
+  "observed_versions": {
+    "previous_deployment": "870cfa474905cde3dc5902580dd4d138def56faa",
+    "records": 191,
+    "failed_lazy_search_gzip_bytes": 100424,
+    "hard_limit_bytes": 100000
+  },
+  "publication_stage": "Local correction and payload passed; pending exact-source sealing/deployment.",
+  "proposed_next_action": "Verify exact record/field preservation and search ID/display ranking across synchronous/asynchronous engines and multilingual/date/scope queries. Keep the existing hard limit. Retain limited headroom as an observation for the existing ADOPT growth issue; no new schedule or persistent process.",
+  "verification": {
+    "record_count": 191,
+    "record_fields_unchanged": true,
+    "query_scope_comparisons": 3535,
+    "score_comparisons": 10856,
+    "maximum_relative_score_delta": 4.16e-16,
+    "tolerance": 1e-12,
+    "async_comparisons": 175,
+    "node_tests_passed": 10,
+    "python_search_tests_passed": 9,
+    "before_lazy_search_gzip_bytes": 100424,
+    "after_lazy_search_gzip_bytes": 98907,
+    "saved_bytes": 1517,
+    "hard_limit_bytes": 100000,
+    "remaining_headroom_bytes": 1093,
+    "limits": "Metadata order compression is a small interim improvement, not a structural solution to continued catalog growth. The80KB search and800MB artifact warnings remain. Gzip estimates do not measure real device latency."
+  }
+}

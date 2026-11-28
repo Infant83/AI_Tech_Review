@@ -187,7 +187,9 @@ def build_records(site_dir: Path) -> list[dict]:
             raise ValueError(f'Search destination missing: {record["id"]}')
         if record["scope"] == "books" and not record["url"].startswith("https://"):
             raise ValueError("External books must use HTTPS")
-    return sorted(records, key=lambda item: (item["date"], item["id"]), reverse=True)
+    # Group similar metadata to improve transfer compression; the search core
+    # independently ranks results and orders date/empty-query browsing.
+    return sorted(records, key=lambda item: (item["scope"], item["date"], item["id"]), reverse=True)
 
 
 def build_search(site_dir: Path) -> dict:

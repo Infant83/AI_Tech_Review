@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "date": "2026-11-28",
+  "sources": [
+    {
+      "file": "ai-model-provenance-authoring.json",
+      "sha256": "78680577f0edadbd2effde0adaa41d9185f2d703b5b2f6dbdea275556e82aaa8"
+    },
+    {
+      "file": "ai-model-provenance-brief_format-public.json",
+      "sha256": "d2d4bc4c202271a4bf24ac1f971536aebb4f0d60863f15c94779850808492e18"
+    },
+    {
+      "file": "ai-model-provenance-context-public.json",
+      "sha256": "d2d4bc4c202271a4bf24ac1f971536aebb4f0d60863f15c94779850808492e18"
+    },
+    {
+      "file": "ai-model-provenance-translation.json",
+      "sha256": "479e37ced794081b3c8f7671644c1f158ed3645661407245dc6dbadb100a6144"
+    },
+    {
+      "file": "ai-model-provenance-reader-review.json",
+      "sha256": "c5b87ee18df352b556f5b6375e38448bfb6036b6efa5ead4e8386e0656e17eb5"
+    },
+    {
+      "file": "ai-model-provenance-production-interval.json",
+      "sha256": "e7c7bdecdb04ddee817a9a20a1749c9890409b71b3880f0abbe4eb2c5a399732"
+    }
+  ],
+  "authoritative_pdf_production": "ai-model-provenance-production-interval.json",
+  "initial_pdf_capture": "ai-model-provenance-production.json",
+  "explanation": "The initial bounded-tail lookup found only a settings snapshot. A separately bounded historical interval covering this writing and PDF-production turn recovered the verified turn_context; the initial capture remains unchanged. Final disclosure uses the interval record, not substituted current settings.",
+  "disclosure_models": [
+    [
+      "gpt-6.1-sol",
+      "ultra"
+    ]
+  ]
+}
