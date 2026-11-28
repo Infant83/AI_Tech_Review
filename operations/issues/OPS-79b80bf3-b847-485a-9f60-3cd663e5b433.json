@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-79b80bf3-b847-485a-9f60-3cd663e5b433",
   "uuid": "79b80bf3-b847-485a-9f60-3cd663e5b433",
-  "record_version": 8,
+  "record_version": 9,
   "title": "기존 게시물의 현재 웹 제호와 공유 정보에 ATRL 명칭 적용",
   "type": "제호 표시와 출판 생성 경로 정합성",
   "created_at": "2026-11-08T13:06:33Z",
-  "updated_at": "2026-11-27T20:38:41.515732Z",
+  "updated_at": "2026-11-28T05:14:22.378732Z",
   "status": "resolved",
   "priority": "P2",
   "source": {
@@ -308,6 +308,28 @@
       "scope": "Subsequent normal-build preservation observation only. Coordinator clean GET proof reused; original brand completion and current cover selection, scientific text, dates, PDF editions and reader state are not altered.",
       "GET_SHA_checked_at": "2026-11-27T20:36:51.880195+00:00",
       "HEAD200_checked_at": "2026-11-27T20:37:20.111507+00:00"
+    },
+    "legacy_pin_metadata_20261128_1330": {
+      "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+      "checked_at": "2026-11-28T04:35:32.949176Z",
+      "public_revision": "1fb3e5d02ecb8a1a6c37a2654d84aefd7f886bee",
+      "subsequent_new_normal_runs": 7,
+      "both_pinned_legacy_image_paths_size_SHA_exact": true,
+      "source_pin3_code_and_tests_exact_all7": true,
+      "fresh_image_GET_or_HEAD_this_check": false,
+      "last_direct_clean_GET_SHA_and_HEAD200_reference": "verification/legacy_pin_next_normal_20261128",
+      "prior_brand_completion_unchanged": true,
+      "scope": "Complete public metadata observation after seven later successful natural builds; original clean HTTP evidence retained separately. No brand reopening, current cover selection, content/PDF or editorial authority change."
+    },
+    "legacy_pin_closing_boundary_20261128_1330": {
+      "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+      "checked_at": "2026-11-28T05:10:39.952977Z",
+      "public_revision": "0fa2a07b73ce4afee3e4f326768930286dd7eead",
+      "both_pinned_old_image_path_size_SHA_exact": true,
+      "fresh_image_GET_or_HEAD_this_boundary": false,
+      "prior_direct_GET_SHA_HEAD200_reference": "verification/legacy_pin_next_normal_20261128",
+      "original_brand_completion_unchanged": true,
+      "scope": "One closing complete metadata read after new ASC archive publication; no brand reopening, current-cover/content/PDF editing, new device review or new HTTP image test."
     }
   },
   "observation": {
@@ -373,6 +395,16 @@
       "original_brand_completion_unchanged": true,
       "resolved_state_reopened": false,
       "new_content_cover_PDF_or_historical_brand_changes_by_ADOPT": 0
+    },
+    "legacy_pin_metadata_20261128_1330": {
+      "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+      "verification_reference": "verification/legacy_pin_metadata_20261128_1330",
+      "original_brand_completion_and_resolved_state_preserved": true
+    },
+    "legacy_pin_closing_boundary_20261128_1330": {
+      "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+      "verification_reference": "verification/legacy_pin_closing_boundary_20261128_1330",
+      "original_brand_completion_and_resolved_state_preserved": true
     }
   },
   "recovery": {
@@ -380,5 +412,5 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/42530543035",
     "result": "기존 CI의 공개 릴리스 복구 사본 작업 성공. 이번 변경에서 실제 롤백은 수행하지 않음"
   },
-  "next_action": "원제호 한정완료/resolved는 유지한다. 복구한구표지2는후속정상753485에서도cleanHEAD200/GET원래SHA를확인했으며다음자연발행/새제보에서재발만관찰한다. PDF원판복구는별도OPS-f6deea28에서계속하며편집부의내용판단/게시권한은유지한다."
+  "next_action": "원제호한정완료/resolved·원완료해시는유지한다. 구pin2는마감0fa의완전metadata에도원래path/size/SHA로보존되며새HTTP검증으로표시하지않는다. 다음자연발행/새제보에서재발만관찰하고내용/발행판단은편집부권한을유지한다."
 }

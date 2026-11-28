@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 33,
+  "record_version": 34,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-27T20:52:39.143967+00:00",
+  "updated_at": "2026-11-28T05:19:54.405599+00:00",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -1513,6 +1513,17 @@
       "actual_new_candidate_CI": false,
       "continuityEstablished": false,
       "sourceAdvanced": null
+    },
+    "V_formal_static_20261128_midday": {
+      "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+      "status": "FAIL: candidate preserved; no runtime executed",
+      "finding": "checkedInputs.registration_sha256 is only shape-checked; it is not compared to the independently preserved registration blob SHA. A coherent rebind can retain an impossible local contradiction.",
+      "classification": "P2 isolated candidate completeness defect; not current production incident or proved runtime behavior",
+      "proposed_refusal": "Every staged base must contain exactly one target registration and its actual entry SHA must equal checkedInputs.registration_sha256. Reproduce exact coherent negative case before correction.",
+      "execution": 0,
+      "candidate_edited": false,
+      "runtime_probe_prepared_unexecuted": true,
+      "five_group_acceptance": false
     }
   },
   "observation": {
@@ -1579,23 +1590,23 @@
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/28 13:30에 별도 원격 후보0f418d1을 최신 원격/공개본과 인수하고 B2b2-V 계약5군의 정식 독립 감수·준비 범위 전체 회귀·소스통합 여부를 판단한다. 첫22/기존관련156·동일2반례 수정전후·실제CLI5는 초기 근거로 재사용한다. 실제 협력 경합/중단·기한/한도 경계와 provenance 행렬을 필요한 범위에서 보강하며 native 두ref·full changed receipt/키·현재 writer/원본·원격·서버/발행 활성화는 미완료로 유지한다.",
+  "next_action": "11/28 18:30에P1검색의안전한단계경계뒤재개한다. 후보0f418/아침22·156·CLI5와새미실행formal-runtime/PENDING을보존했고,먼저보존registrationblobSHA↔declaredregistration_sha모순의coherent반례를실행·수정/거절로연결해야한다. 이후정식5군·전체회귀/최신게시보존·main소스인수를판단한다. 현재writer/API/native두ref·full changed/원본·발행은미완료다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "B2b2_V_initial_candidate_and_initial_validation_complete_formal_review_pending",
-    "next_scheduled_step_at": "2026-11-28T13:30:00+09:00",
-    "next_review_at": "2026-11-28T13:30:00+09:00",
+    "state": "V_formal_static_partial_defect_runtime_deferred_P1",
+    "next_scheduled_step_at": "2026-11-28T18:30:00+09:00",
+    "next_review_at": "2026-11-28T18:30:00+09:00",
     "scheduled_step": "새 읽기 전용 V 후보의 정식 독립 검토·준비된 범위 전체 회귀/소스통합 판단",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
-    "operating_order": 1,
+    "operating_order": 2,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261127T093207Z-60f0f878-0308-40db-8f2d-8595b062c43e.md",
-    "replan_reason": "18:30에 후속 최소 범위 계약을 두 역할의 정적 독립 검토 뒤 채택했다. 현재 format/역사/키·native 두ref 조건을 유지하고 changed 저장보다 읽기 전용 검사기를 먼저 구현한다. 같은P2/순번1의 다음28일05:30 첫 후보·13:30 독립 검토로 연결하며 미검증이면 같은 과제를 잇는다.",
+    "replan_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+    "replan_reason": "기존P1검색 admission재발2건의새인계로현재13:30주요제품슬롯을P1에배정했다. V후보0f418/아침근거·새미실행스크립트/정적finding을보존하고정식runtime·main인수는18:30(P1안전경계뒤)로이관한다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+    "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
