@@ -1,0 +1,198 @@
+{
+  "issue_date": "2026-11-28",
+  "edition_date": "2026-11-28",
+  "source_pages": 2,
+  "source_sha256": "83a0fde46e663856735084f6abb516524f66b5c24bc2b35337f461afb1cbfc30",
+  "source_audit_complete": true,
+  "source_name": "Daily Quantum Brief",
+  "redaction_regions": {
+    "0": [
+      [
+        432.25798950195315,
+        282.16997680664065,
+        485.6219543457031,
+        293.4699768066406
+      ]
+    ],
+    "1": [
+      [
+        210,
+        369,
+        297,
+        382
+      ],
+      [
+        40,
+        543,
+        555,
+        588
+      ],
+      [
+        203.57901916503906,
+        168.17000732421874,
+        342.8309692382812,
+        179.47000732421876
+      ],
+      [
+        45.85,
+        309.16997680664065,
+        548.3658203125,
+        320.4699768066406
+      ],
+      [
+        45.85,
+        493.9299560546875,
+        151.55798950195313,
+        503.2299560546875
+      ]
+    ]
+  },
+  "text_replacements": [
+    {
+      "page": 0,
+      "old_scientific_or_framing_text": "최적값 대비",
+      "replacement": "정규화 점수",
+      "origin": [
+        432.4079895019531,
+        291.9999694824219
+      ],
+      "font_size": 11.0,
+      "color": [
+        0.09019607843137255,
+        0.20392156862745098,
+        0.2901960784313726
+      ],
+      "redaction_rectangle": [
+        432.25798950195315,
+        282.16997680664065,
+        485.6219543457031,
+        293.4699768066406
+      ],
+      "kind": "same-width terminology correction"
+    },
+    {
+      "page": 1,
+      "old_scientific_or_framing_text": "상태 복사본을 하나씩 측정하며",
+      "replacement": "복사본을 순차적으로 측정하며",
+      "origin": [
+        203.72901916503906,
+        178.0
+      ],
+      "font_size": 11.0,
+      "color": [
+        0.09019607843137255,
+        0.20392156862745098,
+        0.2901960784313726
+      ],
+      "redaction_rectangle": [
+        203.57901916503906,
+        168.17000732421874,
+        342.8309692382812,
+        179.47000732421876
+      ],
+      "kind": "block-capable sequential-measurement wording"
+    },
+    {
+      "page": 1,
+      "old_scientific_or_framing_text": "다. 비균형 열린 Dicke 모형에서 정상상태가 초복사 상태로 넘어갈 확률을 10의 마이너스 8승 수준까지 계산했다.",
+      "replacement": "다. 비균형 열린 Dicke 모형에서 비초복사 상태의 초복사 전이 확률을 10의 마이너스 8승 수준까지 계산했다.",
+      "origin": [
+        46.0,
+        318.9999694824219
+      ],
+      "font_size": 11.0,
+      "color": [
+        0.09019607843137255,
+        0.20392156862745098,
+        0.2901960784313726
+      ],
+      "redaction_rectangle": [
+        45.85,
+        309.16997680664065,
+        548.3658203125,
+        320.4699768066406
+      ],
+      "kind": "normal versus steady-state correction"
+    },
+    {
+      "page": 1,
+      "old_scientific_or_framing_text": "검증 체크리스트와 수집 범위",
+      "replacement": "비교 조건",
+      "origin": [
+        46.0,
+        501.9999694824219
+      ],
+      "font_size": 9.0,
+      "color": [
+        0.03137254901960784,
+        0.4745098039215686,
+        0.43529411764705883
+      ],
+      "redaction_rectangle": [
+        45.85,
+        493.9299560546875,
+        151.55798950195313,
+        503.2299560546875
+      ],
+      "kind": "neutral scientific comparison heading"
+    }
+  ],
+  "original_uri_count": 10,
+  "pdf_subject": "Hybrid subset optimization, anytime-valid quantum state testing, open-system rare transitions and kagome elastoresistance",
+  "edition_notes": [
+    "이 공개 편집판은 2026년 11월 28일 Daily Quantum Brief의 원 2쪽과 그림 1, 원 과학 URI 주석 10개를 보존한다. 수집·검색 경위와 메일 수신 표시는 삭제하고, 내부 점검 제목을 ‘비교 조건’으로 바꿨다. 아래 세 용어·측정 설명의 정밀화를 원 페이지에 실제 반영했으며, 그 밖의 본문·수치·도표는 유지했다. 원호 날짜와 공개판 편집·추가 근거 기준일은 각각 구분해 모두 2026년 11월 28일로 표시한다.",
+    "QSSD[1]의 ‘최적값 대비’는 ‘정규화 점수’로 고쳤다. 점수 r=(E−Emax)/(Emin−Emax)는 정답 변수의 비율이 아니다. 1만 변수·152큐비트·p=8·100회 반복의 약 0.95는 한 차례 최적화 실행의 결과이며 명목 샷은 100만 회다. 같은 인스턴스의 고전 모의 어닐링은 0.992였고 HiGHS는 3,310초에 최적성을 증명했다. 이 실행들은 엄격한 동일 시간 예산 비교로 설계되지 않았다.",
+    "그림 1[1]은 별도 G35 Max-Cut 문제(m=2,000, p=4, 60회 반복)의 표 2 수치를 원 DQB가 다시 그린 것이다. 분모 7,687은 알려진 최고 절단값이며 증명된 최적값으로 가정하지 않는다. QPU 점과 95% 신뢰구간은 세 최적화 실행별 최고값의 평균·불확실성이다. 고전 어닐링은 1,000 reads×1,000 sweeps의 단일 실행이다. Heavy-hex의 에너지 점수와 분모·문제군이 다르다. 제조·물류 단락은 아직 수행하지 않은 비교 제안이다.",
+    "QSUT[2]는 복사본을 ‘하나씩’이 아니라 ‘순차적으로’ 측정하는 절차로 명확히 했다. 일반 절차는 공동측정을 허용하며 대표 aLVT는 10개 복사본 블록에서 6개를 개별 측정하고 4개를 공동 측정한다. 제1종 오류 통제에는 동일 복사본 모형, 미래 결과를 사용하지 않는 대립상태 추정, 귀무 상태 집합의 최대우도와 실제 유효 POVM의 올바른 모형화가 필요하다. 복사본 절감은 수치 사례의 결과이며 장치 지연을 측정한 가속률이 아니다. 현재 판본은 Article in Press다.",
+    "경로 표집[3]의 ‘정상상태’는 비초복사 상태(normal)를 뜻하도록 고쳤다. 비마르코프 가우스 환경의 보조 확률 경로를 고전적으로 표집하며, 각 경로를 실제 연속 측정 기록으로 해석하지 않는다. 유한 N의 준안정 상태 간 전환 문제다. N=500, t′=75/ωa에서 ⟨Sz⟩/S≥−0.6인 목표 영역의 점유 확률은 (1.8±0.8)×10^-8이며, 오차는 부트스트랩 표준편차 하나다. 수치 계산은 유한 적응 계층·기저·시간 간격을 쓴다. 같은 궤적 수가 같은 전체 실행시간을 뜻하지 않으며, OLED 적용은 진동 환경과 결합의 검증이 필요한 제안이다.",
+    "카고메 연구[4]의 두 온도는 측정한 변형률 저항 응답의 이상을 가리킨다. T*는 특징적인 꺾임·극값이며 별도의 열역학 전이나 특정 네마틱 질서를 직접 확증한 온도가 아니다. A1g 응답이 지배하고 E2g는 T*에서 발산하지 않으며, Ti x=0.09에서는 두 특징이 가까워져 혼합된다. T*와 저항으로 정한 초전도 전이 온도의 반대 변화는 조사한 조성 계열의 관계다. 추가 전자 질서와 전하밀도파의 결합은 현상론적 모형 해석이며 DFT·유효 해밀토니안의 검증 제안과 구분한다. 현재 판본은 Article in Press다."
+  ],
+  "references": [
+    {
+      "number": 1,
+      "citation": "M. Alonso, G. Blázquez-Gil, and P. Díez-Valle, Quantum optimization beyond qubit count by low-energy subspace sampling, arXiv:2611.32560v1 (2026).",
+      "locator": "arXiv:2611.32560v1",
+      "url": "https://arxiv.org/abs/2611.32560v1"
+    },
+    {
+      "number": 2,
+      "citation": "M. Zecchin, O. Simeone, and A. Ramdas, Universal sequential quantum hypothesis testing, npj Quantum Inf., Article in Press (2026), doi:10.1038/s41534-026-01420-x.",
+      "locator": "10.1038/s41534-026-01420-x",
+      "url": "https://doi.org/10.1038/s41534-026-01420-x"
+    },
+    {
+      "number": 3,
+      "citation": "R. Pant, K. Müller, T. Gera, and D. I. G. B. Raccah, Transition path sampling for rare events in non-Markovian open quantum systems, arXiv:2611.34883v1 (2026); R. Pant, K. Müller, T. Gera, and D. I. G. B. Raccah, Code and data for: Transition Path Sampling for Rare Events in Non-Markovian Open Quantum Systems, version 1.0.0, Zenodo (2026), doi:10.5281/zenodo.24538275.",
+      "locator": "arXiv:2611.34883v1",
+      "url": "https://arxiv.org/abs/2611.34883v1",
+      "additional_links": [
+        {
+          "locator": "10.5281/zenodo.24538275",
+          "url": "https://doi.org/10.5281/zenodo.24538275"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "citation": "K. Sun, L. Nie, H. Li, J. Zhao, H. Rao, F. Yu, M. Shi, Z. Xiang, J. Ying, Z. Wang, T. Wu, and X. Chen, Intertwined charge density wave order in vanadium based kagome superconductors, npj Quantum Mater., Article in Press (2026), doi:10.1038/s41535-026-00955-8.",
+      "locator": "10.1038/s41535-026-00955-8",
+      "url": "https://doi.org/10.1038/s41535-026-00955-8"
+    }
+  ],
+  "production_disclosure": "책임 편집자는 김현중이며 공개판의 AI 활용 정보는 작성·감수 시점에 고정한 기록에서 자동 참조한다. {{AI_MODEL_DISCLOSURE}} Editorial Method v2026.08과 현행 공통 문체 감수 기준을 적용했다. root는 QSSD의 주요 방법·하드웨어·비교 결과·선택 부록과 기존 리뷰를, dqb1128_sequential은 QSUT의 선택 방법·결과와 전날의 동일 판본 감수 재사용, Pant 본문·선택 보충자료·공식 코드의 정적 구간을, dqb1128_materials는 Sun의 채택 본문·선택 보충자료를 확인했다. 제작자 dqb1128_pdf는 원 2쪽 전체 본문·화면·구조를 확인하고 공개 PDF를 제작했다. 문헌별 실제 독해 범위와 제작자·비제작자 감수는 동반 기록에서 구분한다. 원 연구의 실험·최적화·수치 계산·학습·코드를 재현하지 않았다. 이번 공개 편집판의 별도 사람 원고 검토와 사람 독자 평가는 기록되지 않았다. 외부 원 DQB의 제작 모델은 확인하지 못했다.",
+  "rights_note": "원 DQB의 발행명과 익명 작성 크레딧, 호 날짜·과학 링크를 유지했다. 그림 1은 원 DQB의 독자적 사실 수치 재도표이며 원 논문 그림을 복제하지 않았다. 원 논문 전문·코드·원 그림은 새로 배포하지 않는다. QSSD의 arXiv 배포 조건이나 Sun 논문의 CC BY 4.0 등 문헌별 이용 조건을 DQB 전체의 이용 허가로 확대하지 않는다. 사용자가 승인한 공개 보관 흐름에 따라 검수한 파생판을 준비했다.",
+  "scientific_replacements": true,
+  "figure_provenance": [
+    {
+      "figure": 1,
+      "kind": "Original DQB independent numerical replot",
+      "source_reference": 1,
+      "source_locator": "Table 2, G35 Max-Cut",
+      "source_figure_copied": false
+    }
+  ],
+  "appendix_creator": "Agentic Tech Review Letters (ATRL), editorial department (AEDAUT)",
+  "reproduction_performed": false,
+  "editorial_credit": "공개판 책임 편집: 김현중 · AI 보조 · 추가 근거 기준일 2026-11-28",
+  "ai_provenance": "artifacts/ai-model-provenance.json"
+}

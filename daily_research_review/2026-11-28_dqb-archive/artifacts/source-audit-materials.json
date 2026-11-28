@@ -1,0 +1,106 @@
+{
+  "status": "completed_at_recorded_scopes",
+  "checked_at": "2026-11-28T01:54:23.436581+00:00",
+  "reviewer": "dqb1128_materials",
+  "actual_model_provenance": "model-materials-start-public.json",
+  "source": {
+    "doi": "10.1038/s41535-026-00955-8",
+    "title": "Intertwined charge density wave order in vanadium based kagome superconductors",
+    "authors": [
+      "Kuanglv Sun",
+      "Linpeng Nie",
+      "Hongyu Li",
+      "Jiyin Zhao",
+      "Huachen Rao",
+      "Fanghang Yu",
+      "Mengzhu Shi",
+      "Ziji Xiang",
+      "Jianjun Ying",
+      "Zhenyu Wang",
+      "Tao Wu",
+      "Xianhui Chen"
+    ],
+    "journal": "npj Quantum Materials",
+    "abbreviation": "npj Quantum Mater.",
+    "version": "Article in Press, peer-reviewed accepted manuscript; final edited VoR not yet provided",
+    "published_online": "2026-11-25",
+    "received": "2025-10-20",
+    "accepted": "2026-10-15",
+    "volume": null,
+    "article_number": null,
+    "url": "https://www.nature.com/articles/s41535-026-00955-8",
+    "main_PDF_url": "https://www.nature.com/articles/s41535-026-00955-8_reference.pdf",
+    "main": {
+      "sha256": "5032ff62c0b9069af8934c613b42ca8f33ef134cb652fadf69f9a346049332fa",
+      "bytes": 1488769,
+      "pages": 11
+    },
+    "SI_url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41535-026-00955-8/MediaObjects/41535_2026_955_MOESM1_ESM.pdf",
+    "SI": {
+      "sha256": "2697b9dee9d753d0b7286fcd4754a2812552cf9b6492a7a495a36d2e78e0209d",
+      "bytes": 2532270,
+      "pages": 20
+    }
+  },
+  "APS_reference": "K. Sun, L. Nie, H. Li, J. Zhao, H. Rao, F. Yu, M. Shi, Z. Xiang, J. Ying, Z. Wang, T. Wu, and X. Chen, Intertwined charge density wave order in vanadium based kagome superconductors, npj Quantum Mater., Article in Press (2026), doi:10.1038/s41535-026-00955-8.",
+  "direct_reading_scope": [
+    "Official HTML citation metadata, abstract, accepted-version notice and article licence",
+    "Accepted main PDF pp.1-8 and p.11 extracted text; Figs.1-4 captions, Results, Discussion, Methods, data/code availability and rights",
+    "Official 20-page SI: Notes2-5 (pp.4-17) on T* extraction/normalization, geometry and symmetry channels, scalar and symmetry-resolved GL assumptions; selected Notes1 and6 paragraphs on strain and transmission",
+    "QSSD arXiv2611.32560v1 sections II.D.1-2, Table2, Fig3 caption, AppendixD/Table5 and AppendixE as an additional bounded independent cross-check"
+  ],
+  "source_findings": {
+    "measurement": "Actual strain-induced resistance measurements on pristine CsV3Sb5, Ti substitution x=0.03/0.05/0.09 at V and Sn substitution y=0.04/0.06 at Sb. Modified Montgomery, two-bar, transverse and uniaxial configurations are compared.",
+    "T_star_definition": "Characteristic kink/local maximum in normalized coefficient, with slope-change treatment for Ti samples and corresponding unnormalized derivative checks; error bars use minimum nearby temperature spacing.",
+    "exception": "At Ti x=0.09 T* approaches T_CDW and the features mix into a zigzag. Do not generalize separate well-resolved transitions to every sample.",
+    "symmetry": "A1g response dominates and E2g does not diverge at T*. The measured A1g combination includes out-of-plane m13/Poisson contributions, not an isolated pure in-plane susceptibility.",
+    "doping_relationship": "T* and middle-point resistive Tc are anticorrelated across the measured series; T_CDW and Tc show no clear common correlation. Ti and Sn substitution affect T* differently.",
+    "interpretation": "The additional incipient electronic order coupled to triple-Q CDW and its competition with superconductivity are phenomenological GL interpretation. T* is not established here as a separate thermodynamic transition, pure nematic order, pure loop-current order or static PDW.",
+    "data_and_code": "Zenodo record14038465 linked; additional data and custom numerical scripts on reasonable request. No scripts executed or original measurements reproduced.",
+    "strain_transmission": "SI distinguishes >=90% PZT-to-gauge transmission from about80% effective sample/device transmission; these must not be merged into one measurement efficiency.",
+    "avoid_unneeded_numeric_T_star": "Main pristine discussion uses around35K while selected RRR SI curves describe25-30K; routine brief need not state a universal numeric T*."
+  },
+  "DQB_comparison": {
+    "overall": "The short DQB summary is supported at overview level.",
+    "required_editorial_conditions": [
+      "Identify paper as Article in Press rather than completed final issue/VoR.",
+      "Keep the anomaly/measurement separate from the GL microscopic-order interpretation.",
+      "If discussing all compositions in detail, retain the Ti0.09 merged-feature exception.",
+      "DFT/effective-Hamiltonian validation targets are editorial suggestions, not newly validated calculations in this paper."
+    ],
+    "new_scientific_number_correction_required": false
+  },
+  "rights": {
+    "article": "CC BY4.0, verified at accepted PDFp11 and official HTML; third-party exception language retained",
+    "original_figure_selected_for_reuse": false,
+    "SI_figure_reuse_authorized_by_this_audit": false,
+    "new_figures_or_renders_produced": false
+  },
+  "optional_QSSD_independent_crosscheck": {
+    "source": "https://arxiv.org/html/2611.32560v1",
+    "Table2": "G35m2000, p4,60iterations, 3 hardware runs; mean best cut ratio152qubit ibm_boston0.9829+/-0.0005(95%CI), single SA0.9969, HiGHS2h0.9720. Normalize to best-known cut7687, not proven optimum.",
+    "heavy_hex": "m10000, n152,p8,100iterations, single QPUrun about0.95; SA0.992; HiGHS proves optimum at3310seconds(Table5).",
+    "fair_comparison": "Table5 explicitly says runs were not designed as strict timing benchmark. G35 hardware and single classical baselines are different budgets; no wall-clock quantum speedup follows.",
+    "uniform_sampler_ablation": "AppendixG uses uniform samples on same chosen subspaces and bit-flip postprocessing; bounded source text read, no experimental reproduction."
+  },
+  "guideline_application": [
+    "Actual scientific quantities, strain channel, model and material are connected; avoid replacing an observable anomaly by a discovered order label.",
+    "Use original title and all12authors in APS reference. No invented AIP volume or article number.",
+    "No new hero, schematic, video or full review required for routine DQB editorial; no extra approval gate introduced.",
+    "Korean terms such as reads/shows/bottleneck require context rather than a forbidden-word replacement; retain useful physical conditions in their relevant claim."
+  ],
+  "not_performed": [
+    "No full-PDF visual rendering or per-page image review of the main or SI",
+    "No raw-data download/analysis or Zenodo payload audit",
+    "No author contact, email, external message or experiment",
+    "No DFT, free-energy numerical reproduction, material synthesis or quantum-device execution",
+    "No public article/body/state/common-file edits or source push"
+  ],
+  "blocking_findings": [],
+  "deduplication": {
+    "previous_date": "2026-11-27",
+    "previous_scope": "official abstract and metadata screening; not selected for published DRB body",
+    "current_scope": "new direct accepted-main and selected-SI checks",
+    "new_deep_review_proposed": false
+  }
+}

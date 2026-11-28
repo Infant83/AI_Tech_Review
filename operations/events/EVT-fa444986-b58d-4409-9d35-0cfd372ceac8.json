@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "EVT-fa444986-b58d-4409-9d35-0cfd372ceac8",
+  "issue_id": "OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db",
+  "created_at": "2026-11-28T02:25:22.989813+00:00",
+  "base_record_version": 2,
+  "reporting_role": "편집부(AEDAUT)",
+  "technical_owner": "운영팀(ADOPT)",
+  "observation": "Nov28 DQB local precommit candidate reproduced the existing deferred-search admission failure: 100091 gzip bytes against the unchanged 100000-byte cap. The first candidate was not sealed, pushed or deployed. Independently reviewed concise Korean and English summaries for this new unpublished issue reduced the fresh candidate measurement to 99992 bytes; titles, manuscript bodies, scientific numbers, PDF and every earlier article/summary were unchanged. The remaining 8-byte headroom is not a structural resolution of metadata growth. The existing 800 MB internal artifact target warning also remains a separate nonblocking observation, not a measured provider-quota failure.",
+  "evidence": [
+    "scripts/site_payload_budget.py",
+    "daily_research_review/2026-11-28_dqb-archive/artifacts/editorial-independent-review.json",
+    "daily_research_review/2026-11-28_dqb-archive/artifacts/candidate-independent-review.json",
+    "https://infant83.io/AI_Tech_Review/publication-release.json"
+  ],
+  "observed_versions": {
+    "source_baseline": "c4a115b375c5787881a2e9b5c91713463bd8ab56",
+    "previous_deployment": "d32024f4517b752cfb71fe947b6df9ca3e11e17a",
+    "reviews": 61,
+    "archive_documents_before": 198,
+    "archive_documents_after": 199,
+    "reader_catalog": 96,
+    "local_final_lazy_search_gzip_bytes": 99992,
+    "hard_limit_bytes": 100000,
+    "headroom_bytes": 8
+  },
+  "publication_stage": "Final candidate release and payload gates passed; independent full preservation audit and actual deployment verification remain separate.",
+  "proposed_next_action": "Reopen/reassess this existing P1 search-capacity issue in the next safe existing ADOPT slot and investigate scoped metadata loading before the next addition. Preserve search coverage, IDs, titles, summaries, rankings, deferred loading and the unchanged gate. Do not constrain future scientific content to fit an exhausted shared index. No new timer, cross-chat delivery, remote service, source-code change or approval gate was introduced."
+}

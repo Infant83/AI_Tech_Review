@@ -1,0 +1,80 @@
+{
+  "status": "completed_at_recorded_scopes",
+  "checked_at": "2026-11-28T01:55:41.941091+00:00",
+  "reviewer": "dqb1128_sequential",
+  "role": "Independent primary-source and existing-publication continuity review; no manuscript authoring or simulation",
+  "sources": [
+    {
+      "key": "qsut",
+      "citation": "M. Zecchin, O. Simeone, and A. Ramdas, Universal sequential quantum hypothesis testing, npj Quantum Inf., Article in Press (2026), doi:10.1038/s41534-026-01420-x.",
+      "primary_url": "https://doi.org/10.1038/s41534-026-01420-x",
+      "edition": "Accepted early publication, published 27 November 2026; no assigned volume, issue or article number in current publisher/Crossref metadata.",
+      "fresh_reading_scope": [
+        "Current official abstract/metadata and Crossref; original arXiv submission record",
+        "Saved exact matching AIP text: introduction, QSUT definition/Eqs10-15/Theorem1, effective-noisy-POVM calibration discussion, composite Fig6 conditions and reported copy counts",
+        "Existing source-page11 render: Fig6(a,b), Fig7 and beginning of Methods proof"
+      ],
+      "required_original_correction": {
+        "original": "state copies measured one by one",
+        "replacement": "state copies measured sequentially",
+        "reason": "The general procedure also permits joint measurements of multiple copies; the representative aLVT explicitly uses four-copy joint measurements."
+      },
+      "scientific_conditions": [
+        "Theorem1 controls type-I error at optional stopping for the specified identical-copy state/measurement model, non-anticipating alternative-state estimate and null-class likelihood supremum.",
+        "Copy savings are numerical single-qubit examples, not measured hardware latency. Representative aLVT uses 10-copy blocks: six local plus four joint-measured copies.",
+        "Correctly characterized effective POVMs are required under implementation noise; mischaracterization can damage validity."
+      ],
+      "current_pdf": {
+        "bytes": 1401030,
+        "sha256": "b42fe9964961272518633f26b10bb190855b514ed671503c4462ea5ccfa8c540",
+        "same_as_2026_11_27_audited_pdf": true
+      },
+      "reused_scope": [
+        "Previous full AIP and official-code static checks in the 27 November DRB, plus its independent editorial/figure audit. No claim of fresh whole-PDF or code execution."
+      ],
+      "continuity": {
+        "existing_document": "2026-11-27-daily-research-brief",
+        "existing_briefing": "daily_research_review/2026-11-27_drb-archive/reports/briefing_ko.md",
+        "already_published": true,
+        "new_deep_review_or_duplicate_proposal": false,
+        "current_status_or_scope_changed": false
+      }
+    },
+    {
+      "key": "pant-nmqsd-tps",
+      "citation": "R. Pant, K. Müller, T. Gera, and D. I. G. B. Raccah, Transition path sampling for rare events in non-Markovian open quantum systems, arXiv:2611.34883v1 (2026).",
+      "primary_url": "https://arxiv.org/abs/2611.34883v1",
+      "edition": "Preprint submitted 25 November 2026; Letter6pages plus SM14pages; no journal publication inferred.",
+      "fresh_reading_scope": [
+        "Complete Letter scientific prose, Eqs1-12, figure captions1-3, conclusion and bibliography metadata in official arXiv HTML",
+        "SM SI dynamics/noise and adaptive truncation; SII acceptance detailed balance; SIII seed/move definition; SIV WHAM normalization; SV windows/burn-in/chain-bootstrap; SVI rate/population relation and TablesS2-S3 conditions",
+        "Official Zenodo metadata, full ZIP member manifest and selected README, analysis/params.py, analysis/wham.py, simulation/dicke_tps.py static sections; no code executed or figure regenerated."
+      ],
+      "required_original_correction": {
+        "original": "normal steady state to superradiant state",
+        "replacement": "normal/non-superradiant state to superradiant state",
+        "reason": "The term normal is a phase/state label, not a generic synonym for steady state."
+      },
+      "scientific_conditions": [
+        "The Gaussian-bath NMQSD framework is formally exact; numerical nuHOPS uses finite adaptive hierarchy/basis and time steps. This is classical simulation of a collective spin coupled to a damped cavity, not a500qubit QPU.",
+        "At N=500 and paper time tprime=75/omega_a, reconstructed target population is (1.8+/-0.8)e-8 for Sz/S>=-0.6; a million brute-force trajectories have no target event. The uncertainty is one bootstrap standard deviation.",
+        "TPS updates independent Gaussian raw noise, restores correlated bath noise, and combines overlapping windows with WHAM. Correlation, burn-in, seed search and propagation are real computational costs.",
+        "NMQSD trajectories are auxiliary ensemble paths, not an individual experiment continuous record. The fixed-time probability and metastable-state population interpretation are explicit.",
+        "Matched trajectory counts do not prove equal wall-clock cost; seed trajectories add at most4percent in the rate comparison. OLED transfer is a proposal requiring an appropriate bath/coupling model."
+      ],
+      "code_data": {
+        "citation": "R. Pant, K. Müller, T. Gera, and D. I. G. B. Raccah, Code and data for: Transition Path Sampling for Rare Events in Non-Markovian Open Quantum Systems, version1.0.0, Zenodo (2026), doi:10.5281/zenodo.24538275.",
+        "doi": "10.5281/zenodo.24538275",
+        "version": "1.0.0",
+        "published": "2026-11-25",
+        "license": "MIT with third-party pyhops notices",
+        "zip_sha256": "a96f0570fa6434ced4644f1f32157b2fc69f6a9501665274ace4d10cccb0c693",
+        "source_code_executed": false,
+        "data_reaggregated": false
+      }
+    }
+  ],
+  "new_independent_review_or_duplicate_QSUT_proposal": false,
+  "no_experiments_simulations_or_code_execution": true,
+  "public_safe": true
+}
