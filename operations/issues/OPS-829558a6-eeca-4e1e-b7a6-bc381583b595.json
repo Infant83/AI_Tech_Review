@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "id": "OPS-829558a6-eeca-4e1e-b7a6-bc381583b595",
+  "uuid": "829558a6-eeca-4e1e-b7a6-bc381583b595",
+  "record_version": 1,
+  "title": "받은 새 글 알림을 이 기기에서 모두 읽음으로 표시",
+  "type": "reader_notification_usability",
+  "created_at": "2026-11-28T12:31:04.531751+00:00",
+  "updated_at": "2026-11-28T12:42:30.196209+00:00",
+  "status": "validating",
+  "priority": "P2",
+  "source": {
+    "kind": "user_request",
+    "reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
+    "summary": "알림창에서 받은 새 글을 하나씩 열지 않고 모두 읽음으로 표시하는 편의 기능 요청"
+  },
+  "affected": {
+    "publication_ids": [],
+    "public_urls": [
+      "https://infant83.io/AI_Tech_Review/"
+    ],
+    "source_paths": [
+      ".automation/reader-engagement/frontend/reader-engagement.js",
+      ".automation/reader-engagement/frontend/sw.js",
+      ".automation/reader-engagement/frontend/reader-engagement.css",
+      ".automation/reader-engagement/frontend/tests/reader-engagement.test.cjs",
+      ".automation/reader-engagement/frontend/tests/reader-badge.test.cjs",
+      "publication_changes/atrl-brand-display.json"
+    ]
+  },
+  "observed": {
+    "baseline_revision": "b55a5debd2f623bbc77f47b1aa34d31f99d2a43c",
+    "environment": {
+      "device": null,
+      "operating_system": null,
+      "browser": null,
+      "display_mode": null
+    },
+    "steps": [
+      "기존 알림 UI·저장·배지와 실제 글 읽음 경로를 두 역할로 읽기 조사했다."
+    ],
+    "expected": "명시 버튼으로 저장된 전체 미열람을 처리하고 이력과 앞으로의 수신을 유지한다.",
+    "actual": "현재 일괄 읽음 버튼은 없고 해당 글을 열 때만 그 글의 unread가 감소한다."
+  },
+  "evidence": [
+    "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
+    "SITE_OPERATIONS.md",
+    ".automation/reader-engagement/frontend/sw.js"
+  ],
+  "limitations": [
+    "이 기기·브라우저의 로컬 알림 상태이며 다른 기기나 OS 계정 전체를 바꾸지 않는다.",
+    "알림 읽음과 실제 글 열람 통계·새 글 표시·구독 해제는 구분한다.",
+    "실제 iPhone의 OS 표시/배지는 단위 검사·화면 크기 확인으로 완료 처리하지 않는다."
+  ],
+  "policy_decision": {
+    "state": "채택",
+    "rationale": "현재 구체적인 사용자 불편 개선 요청이며 기존 SW 저장/배지 계약을 재사용한다.",
+    "related_issues": [
+      "OPS-5b6bb0ae-576f-46db-8a38-91255c5e3dba",
+      "OPS-0261423d-909a-4fb1-a33a-b0517c77d578"
+    ],
+    "duplicate_of": null,
+    "revisit_when": "새 경합/실제 기기 근거 도착시"
+  },
+  "authority": {
+    "basis": "현재 사용자 구현 요청과 기존 ADOPT 사이트 유지보수/단일배포 권한",
+    "current_scope": "명시 버튼·로컬 SW 상태/배지·관련 검증과 기존 단일 배포. 본문/PDF/구독/server DB/권한/과금 변경 없음.",
+    "additional_decision": null
+  },
+  "owner_role": "운영팀(ADOPT) · 편집부(AEDAUT) 기존 콘텐츠/알림 연결 보존",
+  "acceptance_criteria": [
+    "표시5/20개만이 아닌 처리시점 전체 unread/legacy count를 명시 동작으로 처리한다.",
+    "저장 성공뒤 응답/배지·다중탭 갱신과 이력/중복방지/제목·시각·URL을 보존한다.",
+    "전후 새 push·늦은 복구/응답·worker 교체·저장/native 실패를 분리한다.",
+    "KO/EN·0개/처리중/성공/실패·키보드/포커스·작은 화면과 기존 출판 자료를 검증한다."
+  ],
+  "change": {
+    "commits": [
+      "f96b8fd83f280ed372cbbbe2e9424a82148983f3",
+      "b94d462818dbe4e9a7e6157d5a03c321e7660e3b"
+    ],
+    "candidate_reference": "refs/heads/codex/notification-read-all-20261128",
+    "deployment_reference": null,
+    "candidate_workflow_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146457206"
+  },
+  "verification": {
+    "status": "Targeted runtime, independent source/declaration/record review, isolated browser and full non-main candidate tests/continuity/budgets/seal/complete validator PASS. Main delivery still pending.",
+    "targeted_tests": {
+      "tests": 153,
+      "pass": 145,
+      "fail": 0,
+      "skip": 8,
+      "skip_scope": "Existing terminal browser tests intentionally not run; CUA used for UI",
+      "duration_ms": 452.23027
+    },
+    "independent_static_review": "PASS after correcting pre-clear recovery wait race",
+    "browser": {
+      "environment": "Existing in-app browser, isolated localhost sample and real local SW/IDB",
+      "sample_unread": 24,
+      "sample_history": 20,
+      "result": "KO/EN24 to0, history retained, EN re-navigation0; Enter/Space, recent-heading focus and Escape return focus verified",
+      "viewport_widths": [
+        320,
+        390
+      ],
+      "button_height_px": 44,
+      "English320_dialog_scrollWidth_equals_clientWidth": 269,
+      "console_errors": 0,
+      "is_actual_iPhone_OS_test": false,
+      "temporary_server_and_tab_closed": true
+    },
+    "corrected_candidate_issue": "Removed pre-clear native recovery wait; reserve serial state position immediately at message receipt; durable epoch discards stale recovery and the held-recovery/read-all/new-B race preserves B unread1.",
+    "remaining_limits": [
+      "Native notification close is optional and limited to acknowledged saved recent metadata with exact ID/canonical URL; no-ID, older unretained metadata or unsupported OS entries may remain.",
+      "Unmodified pre-patch worker binaries do not understand the new recovery epoch.",
+      "Actual iPhone OS badge/notification-center behavior remains observation."
+    ],
+    "first_remote_candidate": {
+      "run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46145820975",
+      "result": "All preceding tests/prepare passed; continuity guard correctly refused undeclared frontend JS/CSS2. Deploy/recovery/notify skipped; public impact0."
+    },
+    "exact_asset_declaration": {
+      "commit": "b94d462818dbe4e9a7e6157d5a03c321e7660e3b",
+      "result": "PASS: existing single declaration binds exact8c content/raw before hashes and reviewed JS/CSS after hashes; prior reason/history preserved; no duplicate path, validator/GENERATED/CI relaxation0."
+    },
+    "second_remote_candidate": {
+      "run": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46146457206",
+      "stage": "completed_success",
+      "deployment_by_branch": false
+    },
+    "independent_record_review": "PASS after correcting current Google replan state, historical first-CI wording and explicit server-DB scope. No private evidence or other-task WIP changed.",
+    "remote_continuity": {
+      "ok": true,
+      "blockers": [],
+      "reviewed_changes": [
+        "assets/reader-engagement.css",
+        "assets/reader-engagement.js"
+      ],
+      "instrumentation_only_pages": 304,
+      "counts": {
+        "archive": 203,
+        "external": 1,
+        "publications": 99,
+        "reviews": 62
+      },
+      "payload_budget_pass": true,
+      "complete_sealed_validator_pass": true
+    }
+  },
+  "observation": {
+    "status": "관찰 전",
+    "period": null,
+    "result": null
+  },
+  "recovery": {
+    "plan_reference": null,
+    "execution_reference": null,
+    "result": null
+  },
+  "next_action": "Integrate the verified source on unchanged latest main via the existing normal Pages path; confirm all four main jobs and exact HTTPS assets/continuity. No repeated local full build.",
+  "schedule": {
+    "reference": "operations/SCHEDULE.md",
+    "timezone": "Asia/Seoul",
+    "state": "user_direct_candidate_in_progress",
+    "operating_order": 0,
+    "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
+    "next_review_at": "2026-11-29T05:30:00+09:00",
+    "run_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
+    "replan_reference": "operations/runs/20261128T123104Z-b3819f09-c3e0-43db-9476-d76061838515.md",
+    "replan_reason": "현재 사용자 요청을 경량 구현·원격CI로 이어간다. V29일05:30·장기관찰/정기시각은 유지하고 안전 경계 지연시 기존 슬롯에 인계한다."
+  }
+}
