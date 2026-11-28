@@ -74,9 +74,10 @@ function harness(options={}) {
       ports:[{postMessage:value=>{response=plain(value);}}]});
     return pending.then(()=>response);
   };
+  const readAll=(sender=normal)=>message(sender,{type:'atr-reader-notifications-read-all'});
   const openArticle=(id,url=article(id).url)=>{const client=windowClient({url});clients.set(client.id,client);return read(id,url,client);};
   const hintedClient=extra=>windowClient({postMessage:value=>hints.push(plain(value)),...extra});
-  return {factory,handlers,shown,badges,opened,hints,self,clients,normal,context,push,message,read,openArticle,emit,hintedClient,
+  return {factory,handlers,shown,badges,opened,hints,self,clients,normal,context,push,message,read,readAll,openArticle,emit,hintedClient,
     setWindows:value=>{windows=value;},counts:()=>({skipped,claimed})};
 }
 
@@ -267,6 +268,120 @@ test('notification-center lookup is optional, scoped, bounded and cannot delay t
   assert.equal((await wrong.message()).ok,true);assert.equal(fetches,0);
   const denied=harness({getNotifications:async()=>{throw Error('OS denied');},fetch:async()=>{throw Error('no fetch');}});
   assert.equal((await denied.message()).ok,true);
+});
+
+test('explicit read-all clears every legacy unread receipt beyond twenty while keeping history and dedup IDs',async()=>{
+  const h=harness(),ids=Array.from({length:24},(_,i)=>'legacy-'+i);
+  const notifications=ids.slice(-20).reverse().map(id=>({id,title:id,url:article(id).url,receivedAt:Date.now()}));
+  await seed(h.factory,{count:24,seenArticleIds:ids,notifications});
+  h.setWindows([h.hintedClient()]);
+  const reply=await h.readAll();
+  assert.equal(reply.ok,true);assert.equal(reply.readAll,true);assert.equal(reply.count,0);
+  let state=await stored(h.factory);
+  assert.deepEqual(state.unreadArticleIds,[]);assert.deepEqual(state.readArticleIds,ids);
+  assert.deepEqual(state.seenArticleIds,ids);assert.deepEqual(state.notifications,notifications);
+  assert.equal(state.readAllEpoch,1);assert.deepEqual(reply.notifications,notifications);
+  assert.equal(h.badges.at(-1).count,0);assert.ok(h.hints.some(value=>value.type==='atr-reader-notifications-changed'));
+  assert.equal((await h.readAll()).count,0,'repeated acknowledgement is harmless');
+  await h.push(article(ids[0]));assert.equal((await stored(h.factory)).count,0,'redelivery remains acknowledged');
+  await h.push(article('arrived-after-clear'));
+  state=await stored(h.factory);assert.equal(state.count,1);assert.deepEqual(state.unreadArticleIds,['arrived-after-clear']);
+  const restarted=harness({factory:h.factory});assert.equal((await restarted.message()).count,1);
+});
+
+test('read-all requires a reply port and a current focused in-scope window and preserves state on storage failure',async()=>{
+  const h=harness();await h.push(article('preserved'));
+  const before=await stored(h.factory);
+  for(const sender of [windowClient({visibilityState:'hidden'}),windowClient({focused:false}),
+    windowClient({url:'https://elsewhere.invalid/AI_Tech_Review/'}),windowClient({type:'worker'})]) {
+    h.clients.set(sender.id,sender);
+    assert.equal((await h.readAll(sender)).ok,false);
+    assert.deepEqual(await stored(h.factory),before);
+  }
+  const stale=windowClient({url:'https://elsewhere.invalid/'});h.clients.set(h.normal.id,stale);
+  assert.equal((await h.readAll()).ok,false);
+  h.clients.set(h.normal.id,h.normal);
+  await h.emit('message',{data:{type:'atr-reader-notifications-read-all'},source:h.normal,ports:[]});
+  assert.deepEqual(await stored(h.factory),before);
+  const failed=harness({indexedDB:{open(){throw Error('private storage error');}}});
+  assert.deepEqual(await failed.readAll(),{ok:false,error:'state_unavailable'});
+  await failed.push(article('still-visible'));assert.equal(failed.shown.length,1);
+});
+
+test('read-all does not await a held native recovery and keeps a push queued after the click unread',async()=>{
+  const payload=article('stale-recovery'),tag=await eventTag(payload.articleId),entered=deferred(),held=deferred();
+  const h=harness({getNotifications:async()=>[{title:payload.title,tag,navigate:payload.url,data:{articleId:payload.articleId}}],
+    fetch:async()=>{entered.resolve();return held.promise;}});
+  await h.push(article('stored-before-click'));
+  const recovering=h.message();await entered.promise;
+  const clearing=h.readAll(),pushing=h.push(article('arrived-during-clear'));
+  const reply=await clearing;assert.equal(reply.count,0);
+  await pushing;
+  let state=await stored(h.factory);assert.equal(state.count,1);
+  assert.deepEqual(state.unreadArticleIds,['arrived-during-clear']);
+  assert.deepEqual(state.readArticleIds,['stored-before-click']);
+  held.resolve(publicFeed([payload]));await recovering;
+  state=await stored(h.factory);
+  assert.equal(state.count,1);assert.deepEqual(state.unreadArticleIds,['arrived-during-clear']);
+  assert.deepEqual(state.notifications.map(value=>value.id),['arrived-during-clear','stored-before-click']);
+});
+
+test('another worker late native recovery cannot revive unread after durable read-all or erase a later real push',async()=>{
+  const factory=new IDBFactory(),payload=article('late-native'),tag=await eventTag(payload.articleId),entered=deferred(),held=deferred();
+  const old=harness({factory,getNotifications:async()=>[{title:payload.title,tag,navigate:payload.url,data:{articleId:payload.articleId}}],
+    fetch:async()=>{entered.resolve();return held.promise;}});
+  const updated=harness({factory});await updated.push(article('known'));
+  const recovering=old.message();await entered.promise;
+  assert.equal((await updated.readAll()).count,0);
+  await updated.push(article('new-after-clear'));
+  held.resolve(publicFeed([payload]));await recovering;
+  const state=await stored(factory);
+  assert.equal(state.count,1);assert.deepEqual(state.unreadArticleIds,['new-after-clear']);
+  assert.equal(state.notifications.some(value=>value.id===payload.articleId),false);
+  assert.equal(state.readAllEpoch,1);
+});
+
+test('read-all closes only exact acknowledged native article identities and isolates optional OS failures',async()=>{
+  for(const denied of [false,true]) {
+    let lookups=0;const closed=[],payload=article('close-known');
+    const native=(id,url=article(id).url)=>({title:'Article',data:{articleId:id,url},close(){closed.push(id);}});
+    const displayed=[native(payload.articleId),native('new-after'),native(payload.articleId,'https://elsewhere.invalid/'),
+      {title:'Test',data:{url:scope},close(){closed.push('test');}},
+      {title:payload.title,navigate:payload.url,close(){closed.push('unverified-no-id');}},
+      {...native(payload.articleId),close(){throw Error('OS refused close');}}];
+    const h=harness({badgeUnsupported:true,getNotifications:async()=>{lookups++;if(denied)throw Error('OS denied');return displayed;}});
+    await h.push(payload);
+    const reply=await h.readAll();assert.equal(reply.ok,true);assert.equal(reply.count,0);
+    assert.equal(lookups,1,'bulk never starts pre-clear native recovery');
+    assert.deepEqual(closed,denied?[]:[payload.articleId]);
+    assert.equal((await stored(h.factory)).notifications.length,1);
+    await h.push(article('new-after'));assert.equal((await stored(h.factory)).count,1);
+  }
+});
+
+test('read-all survives a late badge set in another worker without clearing a newer unread article',async()=>{
+  const factory=new IDBFactory(),gate=deferred();let displayed=null;
+  const old=harness({factory,setBadge:async count=>{await gate.promise;displayed=count;},clearBadge:()=>{displayed=0;}});
+  const pushing=old.push(article('before-all'));await until(()=>old.badges.length===1);
+  const updated=harness({factory,setBadge:count=>{displayed=count;},clearBadge:()=>{displayed=0;}});
+  assert.equal((await updated.readAll()).count,0);
+  await updated.push(article('after-all'));assert.equal(displayed,1);
+  gate.resolve();await pushing;
+  await until(()=>displayed===1);
+  assert.equal((await stored(factory)).count,1);
+});
+
+test('a pending optional OS close cannot delay the read-all reply or a later push and expires without late closes',async()=>{
+  const clock=fakeClock(),held=deferred(),payload=article('native-wait');let lookups=0,reply,closed=0;
+  const h=harness({clock,getNotifications:()=>{lookups++;return held.promise;}});
+  await h.push(payload);
+  const clearing=h.emit('message',{data:{type:'atr-reader-notifications-read-all'},source:h.normal,
+    ports:[{postMessage:value=>{reply=plain(value);}}]});
+  await until(()=>reply && lookups===1);assert.equal(reply.count,0);assert.equal(reply.readAll,true);
+  await h.push(article('during-native-close'));assert.equal((await stored(h.factory)).count,1);
+  clock.advance(1200);await clearing;
+  held.resolve([{title:payload.title,data:{articleId:payload.articleId,url:payload.url},close(){closed++;}}]);
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(closed,0);
 });
 
 test('article reads acknowledge only the opened article while hub history remains read only',async()=>{

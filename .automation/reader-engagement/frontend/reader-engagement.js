@@ -100,7 +100,10 @@
     installOptional: "Installation is optional. You can keep reading and receiving alerts in this browser tab.",
     installFailed: "The install window did not open or respond. You can use the browser menu above, or keep receiving alerts in this tab.",
     recentTitle: "Recent new article alerts", recentEmpty: "No new article alerts are saved on this device/browser yet. New article alerts received from now on will appear here.",
-    recentNote: "The number counts new article alerts you have not opened on this device. Opening the app or these settings keeps the number; opening an article clears only that article. OS badge display must be allowed. Test alerts do not add to the number or list.",
+    recentNote: "The number counts unread article alerts on this device. Opening an article clears that article; Mark all as read clears the saved unread count and keeps this list. Future alerts stay on. OS badge display must be allowed. Test alerts do not add to the number or list.",
+    unread: "Unread alerts: ", readAll: "Mark all as read", readAllBusy: "Marking as read…",
+    readAllDone: "Saved article alerts are marked as read. The list and future alerts are unchanged.",
+    readAllFailed: "Could not confirm whether the alerts were marked as read. Please try again.",
     received: "Received", observed: "Seen in Notification Center", more: "Show more"
   } : {
     title: "설치·알림 받는 방법", device: "안내할 기기", iphone: "iPhone · iPad", chrome: "Mac · Chrome", safari: "Mac · Safari", other: "그 밖의 기기",
@@ -125,13 +128,17 @@
     installOptional: "앱 설치는 선택이에요. 이 브라우저 탭에서도 계속 읽고 알림을 받을 수 있어요.",
     installFailed: "설치 창이 열리지 않거나 응답하지 않아요. 위의 브라우저 메뉴를 이용하거나 이 탭에서 알림을 받을 수 있어요.",
     recentTitle: "최근 받은 새 글 알림", recentEmpty: "이 기기·브라우저에 저장된 새 글 알림이 아직 없어요. 앞으로 도착하는 새 글 알림을 여기에 모아 보여드려요.",
-    recentNote: "숫자는 이 기기에서 아직 열지 않은 새 글 알림 수입니다. 앱이나 설정을 열어도 유지되고, 해당 글을 열면 그 글만 줄어듭니다. 숫자 표시는 운영체제의 배지 허용이 필요해요. 테스트 알림은 숫자·목록에 포함하지 않아요.",
+    recentNote: "숫자는 이 기기의 읽지 않은 글 알림 수입니다. 글을 열면 그 글만 줄고, ‘모두 읽음으로 표시’를 누르면 저장된 읽지 않은 알림 수를 지웁니다. 목록과 앞으로 받을 알림은 유지해요. 숫자 표시는 운영체제의 배지 허용이 필요해요. 테스트 알림은 숫자·목록에 포함하지 않아요.",
+    unread: "읽지 않은 알림: ", readAll: "모두 읽음으로 표시", readAllBusy: "읽음으로 표시 중…",
+    readAllDone: "저장된 글 알림을 모두 읽음으로 표시했어요. 목록과 앞으로 받을 알림은 유지합니다.",
+    readAllFailed: "읽음 처리 여부를 확인하지 못했어요. 다시 시도해 주세요.",
     received: "받은 시각", observed: "알림센터에서 확인", more: "더 보기"
   };
   var state = { preparing: true, busy: false, configError: false, registrationError: false, key: "", registration: null,
     localSubscription: null, serverSubscription: null, topics: ["review", "lecture"], feedback: "", feedbackError: false,
     liked: false, count: null, likeBusy: false, likeRetryDesired: null, pendingServerDelete: false, guideDevice: null, guideOpen: null, installBusy: false,
-    notificationHistory: [], historyReady: false, historyLimit: 5, historyCount: null };
+    notificationHistory: [], historyReady: false, historyLimit: 5, historyCount: null,
+    readAllBusy: false, readAllFeedback: "", readAllError: false };
   var subscriptionButtons = [];
   var dialog = null, dialogBody = null, dialogHeading = null, dialogFeedback = null, opener = null;
   var likeButton = null, likeButtons = [], articleStatus = null, articleStatuses = [], likeRevision = 0, scrollState = null;
@@ -142,6 +149,7 @@
   var recentTitles = null, recentTitlesReady = false, recentTitlesRequest = null, recentTitlesGeneration = 0, recentTitlesQueued = false;
   var recentTitleLinks = [];
   var articleReadRequest = null, articleReadWorker = null, articleReadKey = null;
+  var readAllRequest = null;
   var metricsRoot = null, metricsFields = {}, metricsStatus = null, metricsRequest = null, metricsRefreshQueued = false, metricsWrites = 0, metricsGeneration = 0, metricsOpenStarted = false;
   var metricsVisitor = null, metricsStorageChecked = false;
   var reviewHub = !article && (location.pathname === scope || location.pathname === scope + "index.html" || location.pathname === scope.slice(0, -1) || location.pathname === scope + "en/" || location.pathname === scope + "en/index.html");
@@ -360,6 +368,15 @@
     var title = node("h3", "", guideText.recentTitle); title.id = "atr-reader-recent-title"; title.tabIndex = -1;
     recentHeading = title;
     recent.appendChild(title);
+    recent.appendChild(node("p", "atr-reader-note", guideText.unread + String(state.historyCount)));
+    var allRead = button(state.readAllBusy ? guideText.readAllBusy : guideText.readAll, "read-all");
+    allRead.disabled = state.readAllBusy || state.historyCount === 0 || !notificationWorker() || typeof window.MessageChannel !== "function";
+    allRead.setAttribute("aria-busy", state.readAllBusy ? "true" : "false");
+    recent.appendChild(allRead);
+    var readStatus = node("p", "atr-reader-note", state.readAllFeedback);
+    readStatus.setAttribute("role", "status"); readStatus.setAttribute("aria-live", "polite");
+    readStatus.setAttribute("data-state", state.readAllError ? "error" : "ready");
+    recent.appendChild(readStatus);
     if (!state.notificationHistory.length) recent.appendChild(node("p", "atr-reader-note", guideText.recentEmpty));
     else {
       var list = node("ul", "atr-reader-recent-list");
@@ -389,7 +406,8 @@
     return new Promise(function (resolve, reject) {
       var channel = new window.MessageChannel();
       var finished = false;
-      var timer = window.setTimeout(function () { finish(apiError("notification_state_timeout")); }, 4000);
+      var timer = window.setTimeout(function () { finish(apiError("notification_state_timeout")); },
+        message && message.type === "atr-reader-notifications-read-all" ? 7000 : 4000);
       function finish(error, reply) {
         if (finished) return;
         finished = true;
@@ -432,6 +450,34 @@
     });
     return historyRequest;
   }
+  function markAllNotificationsRead() {
+    if (readAllRequest) return readAllRequest;
+    if (!state.historyReady || !Number.isSafeInteger(state.historyCount) || state.historyCount <= 0
+        || document.visibilityState !== "visible" || (typeof document.hasFocus === "function" && !document.hasFocus())
+        || document.prerendering || (window.top && window.top !== window.self)) return Promise.resolve();
+    var worker = notificationWorker();
+    if (!worker || typeof window.MessageChannel !== "function") return Promise.resolve();
+    state.readAllBusy = true; state.readAllFeedback = ""; state.readAllError = false;
+    historyGeneration += 1;
+    if (dialog && dialog.open) renderDialog();
+    readAllRequest = requestNotificationState(worker, { type: "atr-reader-notifications-read-all" }).then(function (reply) {
+      var records = notificationList(reply);
+      if (!reply || reply.readAll !== true || records === null || worker !== notificationWorker()) throw apiError("notification_state_unavailable");
+      historyGeneration += 1;
+      state.notificationHistory = records; state.historyCount = reply.count; state.historyReady = true;
+      state.readAllFeedback = guideText.readAllDone;
+    }).catch(function () {
+      state.readAllFeedback = guideText.readAllFailed; state.readAllError = true;
+    }).then(function () {
+      state.readAllBusy = false; readAllRequest = null;
+      if (dialog && dialog.open) renderDialog();
+      // Fetch the latest durable count too: a different article can arrive
+      // immediately after the acknowledged transaction. Never force it to zero.
+      historyDirty = true;
+      void refreshNotificationState(true);
+    });
+    return readAllRequest;
+  }
   function notificationHint(event) {
     if (!event || !event.data || event.data.type !== "atr-reader-notifications-changed" || !event.source || typeof event.source.scriptURL !== "string") return;
     try { if (new URL(event.source.scriptURL).href !== new URL(scope + "sw.js", location.origin).href) return; }
@@ -450,14 +496,14 @@
     if (!article.id.startsWith("lecture:")) {
       if (base !== scope + "reviews/" + article.id + "/" || ![base, base + "index.html", base + "en/", base + "en/index.html"].includes(pathname)) return Promise.resolve();
     } else if (!base.startsWith(scope + "lectures/") || !(pathname === base || (pathname.startsWith(base) && /^[A-Za-z0-9._-]+\.html$/.test(pathname.slice(base.length))))) return Promise.resolve();
-    var worker = notificationWorker(), key = article.id + " " + url;
+    var worker = notificationWorker(), key = article.id + " " + url, generation = historyGeneration;
     if (!worker || typeof window.MessageChannel !== "function" || (articleReadWorker === worker && articleReadKey === key)) return articleReadRequest || Promise.resolve();
     if (articleReadRequest) return articleReadRequest;
     articleReadRequest = requestNotificationState(worker, { type: "atr-reader-article-read", articleId: article.id, url: url }).then(function (reply) {
       if (!reply || reply.ok !== true || worker !== notificationWorker()) return;
       articleReadWorker = worker; articleReadKey = key;
       var records = notificationList(reply);
-      if (records !== null) {
+      if (records !== null && generation === historyGeneration) {
         historyGeneration += 1;
         state.notificationHistory = records; state.historyCount = reply.count; state.historyReady = true;
         if (dialog && dialog.open) renderDialog();
@@ -912,13 +958,14 @@
     var focused = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerAction;
     var focusedTopic = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerTopic;
     var focusedGuide = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.readerGuide;
+    var focusedRecent = recentHeading && document.activeElement === recentHeading;
     // Native toggle events are queued; preserve the actual disclosure state now.
     if (currentGuide) state.guideOpen = currentGuide.open;
     currentGuide = null;
     recentHeading = null;
     recentTitleLinks = [];
     dialogBody.replaceChildren();
-    dialogBody.setAttribute("aria-busy", state.busy || state.preparing ? "true" : "false");
+    dialogBody.setAttribute("aria-busy", state.busy || state.preparing || state.readAllBusy ? "true" : "false");
     dialogHeading.textContent = text.title;
     setFeedback(state.feedback, state.feedbackError);
     if (isIOS() && !standalone()) {
@@ -970,12 +1017,12 @@
       dialogBody.appendChild(node("p", "atr-reader-note", text.device));
     }
     if (!(isIOS() && !standalone())) { appendRecentNotifications(); appendGuide(false); }
-    if ((focused || focusedTopic || focusedGuide) && dialog.open) {
+    if ((focused || focusedTopic || focusedGuide || focusedRecent) && dialog.open) {
       var restore = focused ? Array.from(dialog.querySelectorAll("[data-reader-action]")).find(function (element) { return element.dataset.readerAction === focused; })
         : focusedTopic ? Array.from(dialog.querySelectorAll("[data-reader-topic]")).find(function (element) { return element.dataset.readerTopic === focusedTopic; })
         : Array.from(dialog.querySelectorAll("[data-reader-guide]")).find(function (element) { return element.dataset.readerGuide === focusedGuide; });
       if (restore && !restore.disabled) restore.focus({ preventScroll: true });
-      else if (focused === "recent-more" && recentHeading) recentHeading.focus({ preventScroll: true });
+      else if ((focusedRecent || focused === "recent-more" || focused === "read-all") && recentHeading) recentHeading.focus({ preventScroll: true });
       else dialogHeading.focus({ preventScroll: true });
     }
   }
@@ -1227,6 +1274,7 @@
     else if (action === "test") void testAlert();
     else if (action === "install-app") void installFromGesture();
     else if (action === "recent-more") { state.historyLimit = Math.min(20, state.historyLimit + 5); renderDialog(); }
+    else if (action === "read-all") void markAllNotificationsRead();
   }
   mount();
   if (typeof window.addEventListener === "function") {

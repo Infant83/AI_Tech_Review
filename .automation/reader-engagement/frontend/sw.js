@@ -115,6 +115,7 @@ function readerStoredState(value) {
     seenArticleIds: seenArticleIds,
     unreadArticleIds: unreadArticleIds,
     readArticleIds: readArticleIds,
+    readAllEpoch: Number.isSafeInteger(current.readAllEpoch) && current.readAllEpoch >= 0 ? current.readAllEpoch : 0,
     notifications: notifications
   };
 }
@@ -286,9 +287,14 @@ function readerRecoverDisplayed() {
   if (readerRecoveryPromise) return readerRecoveryPromise;
   if (Date.now() - readerRecoveryAttempt < 30_000) return Promise.resolve();
   readerRecoveryAttempt = Date.now();
-  let active = true, timer;
+  let active = true, timer, recoveryEpoch;
   const controller = typeof AbortController === "function" ? new AbortController() : null;
   const collection = (async function () {
+    // Capture the durable clear generation before an asynchronous platform
+    // lookup. Another worker can acknowledge all articles while this waits.
+    const initial = await readerChangeState(null);
+    if (!active) return [];
+    recoveryEpoch = initial.readAllEpoch;
     const displayed = await registration.getNotifications();
     if (!active || !Array.isArray(displayed) || !displayed.length) return [];
     // Only currently delivered platform notifications are evidence of receipt.
@@ -339,6 +345,7 @@ function readerRecoverDisplayed() {
     return readerSerialState(async function () {
       let added = false;
       const state = await readerChangeState(function (current) {
+        if (current.readAllEpoch !== recoveryEpoch) return current;
         articles.forEach(function (article) {
           if (current.seenArticleIds.includes(article.id)) return;
           added = true; current.seenArticleIds.push(article.id);
@@ -358,24 +365,68 @@ function readerRecoverDisplayed() {
   return readerRecoveryPromise;
 }
 
+async function readerMessageSource(event) {
+  try {
+    if (!readerScopedWindow(event.source) || typeof event.source.id !== "string") return null;
+    const source = await self.clients.get(event.source.id);
+    return readerScopedWindow(source) && source.id === event.source.id ? source : null;
+  } catch (_) { return null; }
+}
+
+function readerCloseAcknowledged(articles) {
+  const registration = self.registration;
+  if (!articles.length || typeof registration.getNotifications !== "function"
+      || registration.scope !== READER_SCOPE.href || !registration.active
+      || registration.active.scriptURL !== new URL("sw.js", READER_SCOPE).href) return Promise.resolve();
+  // Only exact, already stored public article identities are eligible. Do not
+  // close test/unknown notifications or a newly received different article.
+  return new Promise(function (resolve) {
+    let active = true;
+    const timer = setTimeout(function () { active = false; resolve(); }, 1200);
+    Promise.resolve().then(function () { return registration.getNotifications(); }).then(function (displayed) {
+      if (!active || !Array.isArray(displayed)) return;
+      displayed.slice(-READER_MAX_SEEN).forEach(function (notification) {
+        try {
+          const data = notification.data || {}, rawURL = notification.navigate || data.url;
+          const article = readerArticle({ articleId: data.articleId }, notification.title, rawURL);
+          if (article && articles.some(function (known) { return known.id === article.id && known.url === article.url; })
+              && typeof notification.close === "function") notification.close();
+        } catch (_) { /* OS close is optional, never an acknowledgement write. */ }
+      });
+    }).catch(function () {}).then(function () { active = false; clearTimeout(timer); resolve(); });
+  });
+}
+
 self.addEventListener("message", function (event) {
-  if (!event.data || !["atr-reader-notification-state", "atr-reader-article-read"].includes(event.data.type)) return;
+  if (!event.data || !["atr-reader-notification-state", "atr-reader-article-read", "atr-reader-notifications-read-all"].includes(event.data.type)) return;
   const reading = event.data.type === "atr-reader-article-read";
+  const readingAll = event.data.type === "atr-reader-notifications-read-all";
   const port = event.ports && event.ports[0];
   const reply = function (value) { if (port && typeof port.postMessage === "function") port.postMessage(value); };
   if (!reading && (!port || typeof port.postMessage !== "function")) return;
+  // Reserve our state-queue position immediately. Native recovery must not
+  // postpone this acknowledgement behind an article arriving after the click.
   const operation = readerSerialState(async function () {
-    let source;
-    try {
-      if (!readerScopedWindow(event.source) || typeof event.source.id !== "string") return { response: { ok: false, error: "source_not_allowed" } };
-      source = await self.clients.get(event.source.id);
-    } catch (_) { return { response: { ok: false, error: "source_not_allowed" } }; }
-    if (!readerScopedWindow(source) || source.id !== event.source.id) return { response: { ok: false, error: "source_not_allowed" } };
+    const source = await readerMessageSource(event);
+    if (!source || (readingAll && (source.visibilityState !== "visible" || source.focused !== true))) {
+      return { response: { ok: false, error: "source_not_allowed" } };
+    }
+    let acknowledged = [];
     let state;
     try {
       const article = reading && readerArticle({ articleId: event.data.articleId }, "Article", event.data.url);
       if (reading && (!article || !readerArticleWindow(article, source))) return { response: { ok: false, error: "article_not_open" } };
       state = await readerChangeState(function (current) {
+        if (readingAll) {
+          if (current.readAllEpoch === Number.MAX_SAFE_INTEGER) throw new Error("notification_state_unavailable");
+          const ids = new Set(current.unreadArticleIds);
+          acknowledged = current.notifications.filter(function (item) { return ids.has(item.id); });
+          current.readArticleIds = Array.from(new Set(current.readArticleIds.concat(current.unreadArticleIds))).slice(-READER_MAX_SEEN);
+          current.count = 0;
+          current.unreadArticleIds = [];
+          current.readAllEpoch += 1;
+          return current;
+        }
         if (!reading) return current;
         const known = current.notifications.find(function (item) { return item.id === article.id; });
         if (known && !readerArticleWindow(known, source)) return current;
@@ -389,13 +440,18 @@ self.addEventListener("message", function (event) {
     } catch (_) {
       return { response: { ok: false, error: "state_unavailable" } };
     }
-    return { response: { ok: true, count: state.count, notifications: state.notifications },
+    return { response: { ok: true, count: state.count, notifications: state.notifications, ...(readingAll ? { readAll: true } : {}) },
       badge: source.visibilityState === "visible" && source.focused === true ? readerNativeBadge(state.count) : null,
-      recover: !reading && source.visibilityState === "visible" && source.focused === true };
+      acknowledged: acknowledged,
+      recover: !reading && !readingAll && source.visibilityState === "visible" && source.focused === true };
   }).then(function (result) {
     try { reply(result.response); } catch (_) { /* The page may have closed. */ }
     // Reply first: optional platform enumeration must not hold the UI deadline.
-    return Promise.all([result.badge, result.recover ? readerRecoverDisplayed() : null]);
+    const hint = readingAll && result.response.ok ? readerWindowStatus().then(function (status) {
+      status.windows.forEach(function (client) { try { client.postMessage({ type: "atr-reader-notifications-changed" }); } catch (_) {} });
+    }) : null;
+    return Promise.all([result.badge, result.recover ? readerRecoverDisplayed() : null,
+      readingAll && result.response.ok ? readerCloseAcknowledged(result.acknowledged) : null, hint]);
   }).catch(function () {
     try { reply({ ok: false, error: "state_unavailable" }); } catch (_) {}
   });

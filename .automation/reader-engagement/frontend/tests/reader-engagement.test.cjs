@@ -321,7 +321,7 @@ function frontendHarness(options = {}) {
   context.window = context;
   const initializer = source.lastIndexOf('\n  mount();');
   assert.ok(initializer > 0, 'test harness must suppress automatic DOM mounting');
-  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, refreshTitles: refreshNotificationTitles, foregroundNotifications: refreshForegroundNotifications, validateTitleCatalog: notificationTitleCatalog, acknowledgeArticle: typeof acknowledgeCurrentArticle === "function" ? acknowledgeCurrentArticle : null, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
+  const testSource = source.slice(0, initializer) + '\n  window.__readerTest = { state: state, subscribe: subscribeFromGesture, unsubscribe: unsubscribe, ensureDevice: ensureDevice, mount: mount, open: openDialog, close: closeDialog, like: like, share: share, copy: copyLink, loadLikes: loadLikes, updateButtons: updateButtons, prepare: prepare, render: renderDialog, deviceGuide: deviceGuide, offerInstall: offerInstall, installedApp: installedApp, install: installFromGesture, refreshHistory: refreshNotificationState, refreshTitles: refreshNotificationTitles, foregroundNotifications: refreshForegroundNotifications, validateTitleCatalog: notificationTitleCatalog, acknowledgeArticle: typeof acknowledgeCurrentArticle === "function" ? acknowledgeCurrentArticle : null, markAllRead: markAllNotificationsRead, sanitizeHistory: notificationList, notificationHint: notificationHint, action: handleAction, startMetrics: startMetrics, refreshMetrics: refreshMetrics, recordMetrics: recordMetrics, applyMetrics: applyMetrics, metricsRoot: function () { return metricsRoot; }, metricsVisitor: metricsVisitorId, metricsPageShow: metricsPageShow };\n})();';
   vm.runInNewContext(testSource, context);
   const api = context.__readerTest;
   api.state.preparing = false;
@@ -575,6 +575,92 @@ test('recent alerts appear before help with received times, safe title text and 
   assert.equal(harness.document.activeElement.id, 'atr-reader-recent-title');
   assert.equal(harness.api.state.notificationHistory.length, 20);
   assert.equal(harness.api.state.historyCount, 0);
+});
+
+test('read-all waits for durable confirmation, keeps history and subscription, and retains focus in both languages', async () => {
+  for (const english of [false, true]) {
+    const records = [historyRecord('kept-one'), historyRecord('kept-two')];
+    let durableCount = 24, pendingPort, mutations = 0;
+    const worker = { postMessage(message, ports) {
+      if (message.type === 'atr-reader-notifications-read-all') { mutations++; pendingPort = ports[0]; }
+      else ports[0].postMessage({ ok: true, count: durableCount, notifications: records });
+    }};
+    const h = frontendHarness({ english, messageChannel: true, notificationWorker: worker });
+    const local = { endpoint: 'https://push.example/unchanged' }, server = { ...local };
+    h.api.state.localSubscription = local; h.api.state.serverSubscription = server;
+    const topics = h.api.state.topics;
+    openModal(h); await h.api.refreshHistory(true);
+    const findButton = () => modal(h).querySelectorAll('[data-reader-action]').find(e => e.dataset.readerAction === 'read-all');
+    const button = findButton(); assert.equal(button.disabled, false);
+    assert.equal(button.textContent, english ? 'Mark all as read' : '모두 읽음으로 표시');
+    button.focus(); const waiting = h.api.markAllRead();
+    assert.equal(h.api.markAllRead(), waiting, 'double activation shares the one local request');
+    assert.equal(h.api.state.historyCount, 24, 'the UI must not clear optimistically');
+    assert.equal(h.api.state.readAllBusy, true); assert.equal(findButton().disabled, true);
+    assert.match(findButton().textContent, english ? /Marking as read/ : /읽음으로 표시 중/);
+    durableCount = 0; pendingPort.postMessage({ ok: true, readAll: true, count: 0, notifications: records });
+    await waiting; await flushPromises();
+    assert.equal(h.api.state.historyCount, 0); assert.equal(h.api.state.readAllBusy, false);
+    assert.equal(h.api.state.readAllError, false); assert.equal(findButton().disabled, true);
+    assert.match(modal(h).textContent, english ? /marked as read/ : /모두 읽음으로 표시했어요/);
+    assert.equal(h.document.activeElement.id, 'atr-reader-recent-title');
+    assert.deepEqual(Array.from(h.api.state.notificationHistory, e => e.id), records.map(e => e.id));
+    assert.equal(h.api.state.localSubscription, local); assert.equal(h.api.state.serverSubscription, server);
+    assert.equal(h.api.state.topics, topics); assert.equal(mutations, 1);
+    assert.equal(h.calls.some(call => new URL(call.url).origin === 'https://api.infant83.io'), false);
+    await h.api.markAllRead(); assert.equal(mutations, 1, 'zero unread has no mutation');
+  }
+});
+
+test('read-all failure and an old-worker timeout retain unread state and never accept a late success', async () => {
+  for (const mode of ['refused', 'missing-ack', 'timeout']) {
+    const clock = fakeClock(), records = [historyRecord('unread-kept')]; let late;
+    const worker = { postMessage(message, ports) {
+      if (message.type !== 'atr-reader-notifications-read-all') return ports[0].postMessage({ ok: true, count: 2, notifications: records });
+      if (mode === 'timeout') return;
+      ports[0].postMessage(mode === 'refused' ? { ok: false, error: 'state_unavailable' } : { ok: true, count: 0, notifications: [] });
+    }};
+    const h = frontendHarness({ clock, english: mode === 'timeout', messageChannel: true, notificationWorker: worker });
+    openModal(h); await h.api.refreshHistory(true);
+    const waiting = h.api.markAllRead();
+    if (mode === 'timeout') { late = h.channels.at(-1).port1.onmessage; clock.advance(7000); }
+    await waiting; await flushPromises();
+    if (late) { late({ data: { ok: true, readAll: true, count: 0, notifications: [] } }); await flushPromises(); }
+    assert.equal(h.api.state.historyCount, 2); assert.equal(h.api.state.notificationHistory[0].id, 'unread-kept');
+    assert.equal(h.api.state.readAllBusy, false); assert.equal(h.api.state.readAllError, true);
+    assert.match(modal(h).textContent, mode === 'timeout' ? /Could not confirm/ : /처리 여부를 확인하지 못했어요/);
+    assert.equal(h.api.state.configError, false); assert.equal(h.api.state.registrationError, false);
+  }
+});
+
+test('a history reply begun before read-all cannot overwrite it or a newer post-clear receipt', async () => {
+  const records = [historyRecord('history-kept')]; let oldHistoryPort, clearPort, queries = 0;
+  const worker = { postMessage(message, ports) {
+    if (message.type === 'atr-reader-notifications-read-all') { clearPort = ports[0]; return; }
+    if (++queries === 1) { oldHistoryPort = ports[0]; return; }
+    ports[0].postMessage({ ok: true, count: 1, notifications: [historyRecord('after-clear'), ...records] });
+  }};
+  const h = frontendHarness({ messageChannel: true, notificationWorker: worker });
+  h.api.state.historyReady = true; h.api.state.historyCount = 2; h.api.state.notificationHistory = records;
+  openModal(h);
+  const waiting = h.api.markAllRead();
+  clearPort.postMessage({ ok: true, readAll: true, count: 0, notifications: records });
+  await waiting;
+  oldHistoryPort.postMessage({ ok: true, count: 99, notifications: [historyRecord('stale')] });
+  await flushPromises(); await flushPromises();
+  assert.equal(h.api.state.historyCount, 1);
+  assert.deepEqual(Array.from(h.api.state.notificationHistory, e => e.id), ['after-clear', 'history-kept']);
+});
+
+test('read-all sends no mutation from a hidden, unfocused or framed document', async () => {
+  for (const options of [{ visibility: 'hidden' }, { focused: false }, { iframe: true }]) {
+    let requests = 0;
+    const worker = { postMessage() { requests++; } };
+    const h = frontendHarness({ ...options, messageChannel: true, notificationWorker: worker });
+    h.api.state.historyReady = true; h.api.state.historyCount = 2;
+    await h.api.markAllRead();
+    assert.equal(requests, 0); assert.equal(h.api.state.historyCount, 2);
+  }
 });
 
 test('recent PDF lecture links open the site reader without changing stored identity or web lecture links', async () => {
