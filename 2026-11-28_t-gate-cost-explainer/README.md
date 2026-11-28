@@ -15,4 +15,4 @@ T 게이트와 H–위상–H 회로의 확률은 자체 상태벡터 계산으�
 
 ## 제작·공유 상태
 
-PDF 조판과 검수, 독립 출판 후보와 실제 HTTPS 확인을 진행한다. 최종 검수본과 공개 PDF의 해시를 대조한 뒤, 사용자의 명시적 요청에 따라 본인 Gmail로 공유한다. 개인 계정·메일 원문·메시지 ID·전송 증거·QA 화면은 공개 저장소에 넣지 않는다.
+3쪽 PDF의 조판·과학 감수·후보·실제 HTTPS 검증과 게재를 완료했다. [필기하며 읽기](https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-28-t-gate-cost-explainer-ko)와 [공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-28-t-gate-cost-explainer-ko.pdf)를 확인했고, 사용자의 명시적 요청에 따라 본인 Gmail로 같은 PDF를 첨부해 공유했다. 실제 첨부 원본을 다시 읽어 공개 PDF와 해시가 같은 것도 확인했다. [출판·공유 기록](reports/publication-review.md)과 [실제 검증](reports/live-publication-review.json)에 범위를 남긴다. 개인 계정·메일 원문·메시지 ID·전송 증거·QA 화면은 공개 저장소에 넣지 않는다.

@@ -125,3 +125,10 @@ python3 scripts/release_backup.py restore --archive output/release.tar.gz --outp
 매월: 최근 복구 사본을 독립 폴더에 복원해 파일 해시·대표 경로를 확인하고, 아티팩트 만료·보관 용량·의존성·운영 한도를 점검한다. 임시 후보 정리 명령은 [글 등록 안내](PUBLICATION_WORKFLOW.md)의 보호·유지 규칙을 따른다. 원본·출판 요청·개인 자료를 임시 후보처럼 삭제하지 않는다.
 
 공식 참고: [GitHub Pages 한도](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits), [R2 Workers API](https://developers.cloudflare.com/r2/api/workers/workers-api-reference/), [R2 S3 호환성](https://developers.cloudflare.com/r2/api/s3/api/), [Core Web Vitals](https://web.dev/articles/vitals).
+
+
+## 요청받은 PDF의 본인 메일 공유
+
+2026-11-28, 사용자가 PDF 메일 공유를 명시한 작업에서 연결된 Gmail 도구로 본인 계정을 확인하고 `send_email`의 `to: me`와 `attachment_files`에 최종 로컬 PDF를 지정해 한 번 전송했다. 기존 보안 연결을 재사용했으며 데스크톱 조작·새 로그인·추가 동의는 필요하지 않았다. 이는 해당 요청의 수행 기록이며 향후 메일의 포괄적 발송 허가가 아니다. 다음 작업에서도 실제 연결·수신 대상·요청 범위를 다시 확인한다.
+
+반환된 메시지를 읽어 보낸편지함·받은편지함 상태와 첨부 파일명·MIME·크기를 확인하고, 지원되는 PDF 첨부의 실제 식별자로 원본을 다시 읽었다. 첨부 원본과 공개 PDF·검수본의 SHA를 대조했다. 서버 수신 상태와 사용자의 실제 열람은 구별한다. 계정 주소·메시지/첨부 식별자·원문·서명된 다운로드 주소는 공개 기록에 넣지 않는다. 첨부 경로가 실패하면 실제 오류와 도구가 지원하는 형식을 확인하고, 링크 공유와 첨부 성공을 구분해 보고한다. 재연결이나 사용자 인증이 실제로 필요한 경우에만 그 단계로 한정한다.
