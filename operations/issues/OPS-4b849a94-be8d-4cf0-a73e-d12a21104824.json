@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-4b849a94-be8d-4cf0-a73e-d12a21104824",
   "uuid": "4b849a94-be8d-4cf0-a73e-d12a21104824",
-  "record_version": 34,
+  "record_version": 35,
   "title": "웹 관리 화면과 에이전트 게시 API의 단계별 구축",
   "type": "개발 과제 제안",
   "created_at": "2026-11-08T00:11:15Z",
-  "updated_at": "2026-11-28T05:19:54.405599+00:00",
+  "updated_at": "2026-11-28T10:45:33Z",
   "status": "in_progress",
   "priority": "P2",
   "source": {
@@ -98,7 +98,8 @@
       "ecd98f5043324c9af8dc98793e76b79280b39e4a",
       "527b9d8f24d21ff3a8f6b878facbca7cecf0951f",
       "0c588ac8c3658b6e1ff31ce0c3fe567afe4ffb81",
-      "75497454864305aafae1e5c0573d34b976ebb966"
+      "75497454864305aafae1e5c0573d34b976ebb966",
+      "c7b643e8c9eea99a99788637583f5b92e353ee31"
     ],
     "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/tree/75497454864305aafae1e5c0573d34b976ebb966",
     "deployment_reference": null,
@@ -591,10 +592,30 @@
       "continuityEstablished": false,
       "sourceAdvanced": null,
       "next_formal_review_at": "2026-11-28T13:30:00+09:00"
+    },
+    "b2b2_authority_formal_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "original_candidate_revision": "0f418d1c6b4a2875eb577d77d4eab9f4c2e1e251",
+      "corrected_candidate_revision": "2c45838037557cb77af426d6c01fc7ad3adabd17",
+      "integration_base_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "source_files": [
+        "scripts/admin_projection_authority.py",
+        "tests/test_admin_projection_authority.py"
+      ],
+      "source_sha256": {
+        "scripts/admin_projection_authority.py": "894586c6b100cf931a2e7ccb351ef0ded5d6fc2444c57579abf8df7fce8931d0",
+        "tests/test_admin_projection_authority.py": "022d072f69638cecb25ce4b941e911ea96ff995a4aeb48d787a1ad3c6362a1f3"
+      },
+      "correction": "Every prepared base requires the unique target registration entry SHA to equal checkedInputs.registration_sha256. Its preserved blob is independently validated; current source/tool hashes do not replace historical values.",
+      "main_source_integration": true,
+      "operational_writer_API_or_publication_activation": false,
+      "source_integration_revision": "c7b643e8c9eea99a99788637583f5b92e353ee31",
+      "actual_new_source_CI": false,
+      "front_end_redeployment": false
     }
   },
   "verification": {
-    "status": "B2b2-V 첫 두 파일 후보와 초기22·기존관련156·동일2반례/실CLI5 확인; 정식5군·전체회귀/main통합·운영활성화 전",
+    "status": "읽기 전용 V inspector의 등록SHA 결속 반례를 보완하고 전용22·보충4군·자체5cap 정확값/초과·시간 경계, 최신f81+두파일 전체710(709통과/기존1skip)·현재CLI5/old12 보존을 같은2SHA로 확인했다. 독립 정식5군의 한정 로컬 소스 인수 PASS 뒤 c7b643e8로 정확두파일을 소스통합했다. 이는 읽기 전용 도구 소스통합이며 새CI/운영 writer/API·full changed/native두ref/receipt는 미완료다.",
     "checks": [
       "기존 게시 절차와 개인 초안 코드의 재사용 범위 확인",
       "기존 strict reader로 리뷰58/archive143/외부1의 등록202행과 lecture-notes15개를 대조했다.",
@@ -621,7 +642,7 @@
     ],
     "remaining_limits": [
       "현재지원은명시초기화/base준비·무변경요청기록/역사재시도뿐이다.실제변경candidate/claim receipt/CAS는미구현이며키예약전에거절한다.",
-      "새후보는별도branch이고main소스통합·전체검사/정식독립6군은전이다.기존658의정상CI를새후보검증으로합산하지않는다.",
+      "기존 no_change·FD의 완료/CI 근거는 당시 범위로 재사용한다. 새 읽기 전용 V는 독립5군·최신710/CLI5 뒤 c7b643e8로 두파일 소스통합했으나 V의 실제 새CI는 아직 관찰하지 않았다. 이 근거를 full changed/native두ref 종료로 합산하지 않는다.",
       "자기격리fixture만사용했으며실제사용자요청/운영writer·관리HTTP/API/인가·DB·발행·원격통합·전체복원을활성화하지않았다.",
       "제어된로컬부모/동일UID·첫open전namespace한계와운영자의물리배치확인조건을유지한다.",
       "읽기예산과7→8검사는bounded API가반환한논리bytes누계이며OS page-cache/read-ahead·물리I/O8B보장이아니다."
@@ -1524,6 +1545,76 @@
       "candidate_edited": false,
       "runtime_probe_prepared_unexecuted": true,
       "five_group_acceptance": false
+    },
+    "V_formal_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "same_coherent_registration_counterexample": {
+        "before": "accepted_incorrectly",
+        "after": "store_inconsistent",
+        "same_fixture": true,
+        "normal_control": "accepted",
+        "completed_keys": 0,
+        "source_projection_store_bytes_membership_modes_refs_preserved": true
+      },
+      "corrected_dedicated_tests": {
+        "tests": 22,
+        "passed": 22,
+        "failed": 0,
+        "seconds": 35.292
+      },
+      "supplementary_four_groups": {
+        "pass": true,
+        "seconds": 2.735241,
+        "groups": [
+          "actual cooperating flock",
+          "observer termination/fresh no-repair restart",
+          "late deadline/readset refusals",
+          "shared actual reads and coherent historical schema"
+        ],
+        "actual_shared_read_bytes": 96955,
+        "initial_read_bytes": 48628,
+        "final_read_bytes": 48327,
+        "excess_read_bytes_before_refusal": 1,
+        "own_children": 2
+      },
+      "exact_boundary_supplement": {
+        "pass": true,
+        "seconds": 0.932973,
+        "limits_exact_success_and_one_less_refusal": {
+          "logical_store_bytes": 14852,
+          "nonroot_file_directory_entries": 58,
+          "control_bytes": 33475,
+          "one_base_four_raw_evidence_bytes": 6407,
+          "keys": 1
+        },
+        "deadline_equal_success_and_next_representable_tick_refused": true,
+        "scope": "One protected synthetic fixture; own inspector code is largest control. Captured _Store.read default65536 unchanged. Not a proof for every future larger control shape.",
+        "source_projection_writer_bytes_membership_modes_refs_preserved": true
+      },
+      "historical_morning156_and_CLI5": "Reused as earlier evidence; not substituted for new observer exact-cap tests.",
+      "current_integrated_full_regression": {
+        "source_revision": "c7b643e8c9eea99a99788637583f5b92e353ee31",
+        "tests": 710,
+        "passed": 709,
+        "existing_skipped": 1,
+        "failures": 0,
+        "seconds": 193.363,
+        "includes_final_search_syntax_guard_and_corrected_V": true
+      },
+      "current_integrated_CLI": {
+        "cases": 5,
+        "passed": 5,
+        "seconds": 0.777381,
+        "normal_fixed_report_absent_no_init_arguments_namespace_closed_stdout": true,
+        "source_and_own_store_preserved": true
+      },
+      "old12_including_no_change7_FD2_and_cover3_source_SHA_exact": true,
+      "formal_five_group_acceptance": true,
+      "actual_new_source_CI": false,
+      "native_two_ref_full_changed_receipt_or_server_authority": false,
+      "continuityEstablished": false,
+      "sourceAdvanced": null,
+      "independent_acceptance": "PASS: bounded local read-only source slice only; independent reviewer executed/edited0 and checked root-executed, fixed-SHA evidence."
     }
   },
   "observation": {
@@ -1583,30 +1674,35 @@
       "result": "실제전체tree 규모와 부분projection/linkedGit/환경변수의3설계가정을 대조했다. A의 동일 frozen readset·원본commit/tree와3SHA/공개raw결속·source실행/자동취득차단·선제상한/부분실패·명세output 외 원본 무쓰기 경계를11항목 독립감수해 채택했다. 원고복제/운영Git/DB/API/발행변경0이며 실제저장/CAS와B2b는후속이다.",
       "scope": "Historical contract adoption, not current implementation state."
     },
-    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md"
+    "run_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+    "V_evening_20261128": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "result": "같은 등록SHA 모순 반례의 수정전 수락/후거절, 전용22·보충4군/정확 한도와 최신 통합710·CLI5/old12 보존을 확인했다. 독립5군 인수 PASS 뒤 c7b643e8로 두파일을 한정 소스통합했다. 기존 writer/API·원본·서버/발행 활성화는0이다.",
+      "scope": "Local read-only inspector only; no writer/API activation, original content change, publication or native two-ref acceptance."
+    }
   },
   "recovery": {
     "plan_reference": null,
     "execution_reference": null,
     "result": null
   },
-  "next_action": "11/28 18:30에P1검색의안전한단계경계뒤재개한다. 후보0f418/아침22·156·CLI5와새미실행formal-runtime/PENDING을보존했고,먼저보존registrationblobSHA↔declaredregistration_sha모순의coherent반례를실행·수정/거절로연결해야한다. 이후정식5군·전체회귀/최신게시보존·main소스인수를판단한다. 현재writer/API/native두ref·full changed/원본·발행은미완료다.",
+  "next_action": "11/29 05:30 새 공개/CI·피드백 delta를 인수하고 V의 현재 소스·근거를 재사용해 미래 caller의 최소 계약/권위 연결 범위를 검토한다. 이미 통과한 같은 전체/반례를 반복하지 않는다. native두ref·full changed/claim/receipt·현재 source/외부 이력 연속성·서버/원본/발행 활성화는 미완료이며 새 구현 범위는 계약 검토로 구체화한다.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "V_formal_static_partial_defect_runtime_deferred_P1",
-    "next_scheduled_step_at": "2026-11-28T18:30:00+09:00",
-    "next_review_at": "2026-11-28T18:30:00+09:00",
-    "scheduled_step": "새 읽기 전용 V 후보의 정식 독립 검토·준비된 범위 전체 회귀/소스통합 판단",
+    "state": "V_readonly_local_source_accepted_future_caller_scope_pending",
+    "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
+    "next_review_at": "2026-11-29T05:30:00+09:00",
+    "scheduled_step": "완료 V 근거/새 delta 인수·미래 caller 최소 계약 검토",
     "implementation_start_target": "2026-11-17T11:00:00+09:00",
-    "operating_order": 2,
+    "operating_order": 1,
     "dependencies": [
       "OPS-611ef29e-08cb-4e60-a2a6-8b77bf4e5495"
     ],
-    "replan_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
-    "replan_reason": "기존P1검색 admission재발2건의새인계로현재13:30주요제품슬롯을P1에배정했다. V후보0f418/아침근거·새미실행스크립트/정적finding을보존하고정식runtime·main인수는18:30(P1안전경계뒤)로이관한다.",
+    "replan_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+    "replan_reason": "P1을 실제 배포/관찰로 전환한 안전 경계 뒤 V의 같은 반례 수정·독립5군·710전체/CLI5/old12 보존을 마쳐 한정 소스통합했다. 다음05:30은 새 delta와 미래 caller 범위 검토이며 full changed/native두ref/API 구현·활성화 완료 약속이 아니다.",
     "dependency_completion_condition": "앞 통계 최소 후보의 기술 구현·필요 검증 종료 또는 명시적 재배정. 통계 관련 모든 아이디어·미래 API의 해결을 기다리는 조건은 아니다.",
-    "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+    "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
     "technical_predecessor_satisfied": true,
     "implementation_started_at": "2026-11-17T02:03:50.554882+00:00",
     "implementation_reference": "operations/runs/20261117T020350Z-e4eb3d03-72db-4273-9262-6f8d237260a0.md",
@@ -1663,6 +1759,8 @@
     "b2b2_authority_formal_review_target": "2026-11-28T13:30:00+09:00",
     "b2b2_authority_initial_candidate_revision": "0f418d1c6b4a2875eb577d77d4eab9f4c2e1e251",
     "b2b2_authority_initial_validation_completed_at": "2026-11-27T20:50:56.564159+00:00",
-    "b2b2_authority_initial_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md"
+    "b2b2_authority_initial_reference": "operations/runs/20261127T203154Z-5081059c-9ac1-43ba-a989-95d419a3e598.md",
+    "b2b2_authority_formal_completed_at": "2026-11-28T10:45:33Z",
+    "b2b2_authority_source_integration_revision": "c7b643e8c9eea99a99788637583f5b92e353ee31"
   }
 }

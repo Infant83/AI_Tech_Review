@@ -2,12 +2,12 @@
   "schema_version": 1,
   "id": "OPS-b3d47d16-ebee-451d-a6c8-98f5f83296db",
   "uuid": "b3d47d16-ebee-451d-a6c8-98f5f83296db",
-  "record_version": 3,
-  "title": "지연 검색 전송량 게시 한도 초과와 동일 버전 검색엔진 배포 크기 축소",
+  "record_version": 4,
+  "title": "지연 검색 전송량 한도 재발과 무손실 검색 wire v2 검증",
   "type": "publication_payload",
   "created_at": "2026-11-21T05:18:58.290809+00:00",
-  "updated_at": "2026-11-28T05:19:54.405599+00:00",
-  "status": "in_progress",
+  "updated_at": "2026-11-28T10:39:35.720288Z",
+  "status": "observing",
   "priority": "P1",
   "source": {
     "kind": "publication_validation",
@@ -30,7 +30,13 @@
       "scripts/site_payload_budget.py",
       "tests/test_site_search.py",
       "scripts/public_assets/site-search.js",
-      "tests/site_search.test.cjs"
+      "tests/site_search.test.cjs",
+      "scripts/site_search_wire.py",
+      "scripts/public_assets/site-search-wire.js",
+      "tests/test_site_search_wire.py",
+      "tests/test_site_payload_budget.py",
+      "publication/search-compatibility/v1-0fa2a07.json",
+      "publication/search-compatibility/README.md"
     ]
   },
   "observed": {
@@ -57,7 +63,8 @@
   ],
   "limitations": [
     "This was a precommit local admission failure; no CI or live outage occurred.",
-    "Gzip estimates are the existing publication budget metric, not measured device/network latency."
+    "Gzip estimates are the existing publication budget metric, not measured device/network latency.",
+    "The source/observed fields and original vendor acceptance evidence describe the historical minification event. Tuple-v2 f81 has completed CI/HTTPS and scoped production-browser validation; ordinary real-use and growth observation continues."
   ],
   "policy_decision": {
     "state": "채택",
@@ -66,26 +73,35 @@
       "OPS-fcc466c7-bb55-499e-80a9-7dacf9417131"
     ],
     "duplicate_of": null,
-    "revisit_when": "현재 재발2건을 인수했으며 이 일감의 같은P1로 실제 계측·후보·검증·배포 후속을 연결한다."
+    "revisit_when": "현재 재발2건을 같은P1에서 처리한다. active deferred search가98000B 이상이거나 새 게시 거절/검색 회귀가 확인되면 기존 운영 회차에서 다시 평가한다. 새 상시 감시나 예약은 만들지 않는다.",
+    "state_scope": "The rationale above records historical vendor minification. Lossless tuple-v2 f81 is now deployed and scoped validation is complete; ordinary use observation remains open."
   },
   "authority": {
     "basis": "2026-11-08 autonomous ADOPT development/maintenance and the authorized AEDAUT lecture publication.",
-    "current_scope": "Prior pinned vendor minification is complete. Current recurrence scope is lossless technical search-capacity investigation and a separate existing raw180 history-boundary correction candidate; no new schema/adapter adoption, normalization restriction, content change, service, dependency upgrade or permission.",
+    "current_scope": "Prior pinned vendor minification remains complete. The current authorized technical candidate adds exact thirteen-field tuple-v2 transport/decoding, a fixed legacy cutover snapshot and reload-to-current-v2 path, including the prior raw180 history correction. It preserves all original strings, IDs/order, search normalization/ranking, coverage, MiniSearch/license, publication content/PDFs and the100000-byte gate. Validation and actual delivery remain separate; no new service, dependency upgrade, permission or editorial approval gate is introduced.",
     "additional_decision": null
   },
   "owner_role": "운영팀(ADOPT) · 편집부(AEDAUT) 발행 기술지원",
-  "acceptance_criteria": [
+  "historical_vendor_acceptance_criteria": [
     "Pinned official package and tool integrity; unchanged MiniSearch7.2.0 and MIT notice.",
     "All169 catalog records byte-identical; exact search rankings, scores, metadata and sync/async results preserved.",
     "Actual KO/EN search UI parity, deferred loading and empty/clear behavior verified.",
     "Existing100000-byte gate, release continuity, complete regression and actual HTTPS deployment checks pass."
   ],
+  "acceptance_criteria": [
+    "Tuple-v2 restores every current record's thirteen original strings, IDs, row/key order and UTF16 exactly; full sync/async indexes and ranked IDs/scores retain existing behavior without a new normalization or query restriction.",
+    "Active v2 and legacy closures both include their actual data/codec/vendor/core assets and independently pass the unchanged100000-byte gzip gate; initial-page and all loader closures remain bounded.",
+    "Legacy v1 remains the exact pinned0fa192-row cutover snapshot. Current-page reload obtains the latest complete v2 data; arbitrary older cached pages are not claimed to receive future freshness.",
+    "Final-source regressions, release continuity, independent KO/EN browser/loader checks and actual CI/HTTPS delivery are completed within the existing single publication path; pending stages are not treated as passed.",
+    "Published content, existing ID/URL/PDF editions and logical reader updates are preserved. Generated page-hash changes are disclosed separately from raw reader-updates byte equality."
+  ],
   "change": {
     "commits": [
-      "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986"
+      "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
+      "f81aa194ef24e9a4e15b318d441d333a9b11f296"
     ],
-    "candidate_reference": "publication_changes/classiq-qae-onboarding-updates.json",
-    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44870984847",
+    "candidate_reference": "https://github.com/Infant83/AI_Tech_Review/commit/f81aa194ef24e9a4e15b318d441d333a9b11f296",
+    "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46134501113",
     "recurrence_20261128": {
       "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
       "events": [
@@ -109,10 +125,29 @@
       "current_catalog_records": 192,
       "current_metric_scope": "Actual public raw catalog SHA/size verified against complete0fa snapshot; Python3.12 gzip(mtime=0) with unchanged SHA-bound vendor/core. Not newly read CI log or device latency.",
       "separate_small_candidate_commit": "7ee3985de315de29ca8c1f35cbdf9a7fd5ec7e74"
+    },
+    "tuple_v2_candidate_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "candidate_source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "candidate_branch": "codex/search-capacity-evening-20261128",
+      "candidate_state": "deployed_CI_HTTPS_and_scoped_production_browser_verified_observing",
+      "original_history_boundary_revision": "7ee3985de315de29ca8c1f35cbdf9a7fd5ec7e74",
+      "included_history_cherry_pick": "f596321131bb121f1f9f5782b37376ce3cdd8ef1",
+      "new_assets": [
+        "assets/site-search-wire.js",
+        "assets/search-records-v2.json"
+      ],
+      "wire_contract": "version2 fixed fields/row arrays; titles references earlier title/title_en and text references earlier summary/summary_en only when exact sequential matches reduce JSON bytes; decoding preserves all13 fields without normalization",
+      "legacy_contract": "publication/search-compatibility/v1-0fa2a07.json is the exact fixed192-row cutover snapshot; no later freshness is claimed for that v1 payload; reload a current page for latest complete v2",
+      "product_main_integration": true,
+      "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46134501113",
+      "actual_CI_HTTPS_or_use_observation_complete": true,
+      "real_use_observation_complete": false,
+      "verification_scope": "CI/HTTPS/scoped browser validation complete; ordinary real-use/growth observation continues."
     }
   },
   "verification": {
-    "status": "Prior vendor fix remains deployed; recurrence under investigation. Current public metric99376B. Lossless prototypes unadopted; small history-boundary7ee candidate passed11 Node/static and isolated native-browser boundary checks; actual corpus/release integration and structural closure pending.",
+    "status": "Tuple-v2 f81의 기존 단일 경로 배포, CI 네 단계와 실제 HTTPS/제한된 공개 브라우저 검증을 마쳐 관찰로 전환했다. 현재192행/13필드의 원문·순위는 보존되고 active93218B/여유6782B와 고정 legacy99376B가 각각 기존100000 gate 안이다. 초기687 전체·최종guard후36/Node19·로컬200/공개2질의는 서로 다른 검증 단계이며 CI의 검사 수를 추정하지 않는다.",
     "checks": [
       "Pinned official MiniSearch7.2.0 and Terser5.44.1 integrity verified; printing-only minification, unchanged MIT notice and no runtime dependency upgrade.",
       "25038 exact full-result comparisons passed. All169 L012-candidate catalog records are byte-identical before/after the engine minification; the publication itself correctly adds L012.",
@@ -132,7 +167,10 @@
     "remaining_limits": [
       "Gzip bytes are the existing build budget metric, not measured device latency or network transfer.",
       "The80KB deferred-search growth warning and800MB internal artifact target warning remain nonblocking; neither is a provider-limit failure.",
-      "Browser checks used an isolated signed-out Chrome profile; no production account creation, cloud notebook write, physical push receipt or human readability study is claimed."
+      "Browser checks used an isolated signed-out Chrome profile; no production account creation, cloud notebook write, physical push receipt or human readability study is claimed.",
+      "The predeployment full687 preceded the final nonstandard-JSON guard; targeted36 Python/19 Node followed it. A later integrated local full710(709pass/one existing skip) includes the unchanged final search source and V addition. No numeric CI test count is inferred.",
+      "The8MiB receiver limit bounds JavaScript accumulation and cancellation. It is not a bound on every native fetch buffer or total process memory. Original/expanded payload and record-count caps remain separate.",
+      "Fixed legacy v1 provides compatibility with its pinned0fa192-row snapshot, not all future data or freshness for every old cached page."
     ],
     "recurrence_review_20261128": {
       "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
@@ -237,11 +275,156 @@
           "same actual resource gzip unit and complete adapter/dependency closure; no budget asset exclusions or query restriction"
         ]
       }
+    },
+    "tuple_v2_local_validation_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "candidate_source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "independent_static_review": "PASS",
+      "same_current_corpus": {
+        "records": 192,
+        "fields_per_record": 13,
+        "original_string_row_key_order_and_UTF16_exact": true,
+        "sync_async_full_index_SHA_exact": true,
+        "queries": 4485,
+        "scopes": 5,
+        "execution_paths": 2,
+        "ranked_ID_and_score_comparisons_exact": 44850,
+        "decoder_cooperative_yields": 17
+      },
+      "deferred_gzip_bytes": {
+        "metric": "Python gzip(mtime=0), actual source/data closure; build metric, not measured device latency",
+        "tuple_v2_data": 82880,
+        "codec": 1417,
+        "unchanged_core_and_vendor": 8921,
+        "active_total": 93218,
+        "active_headroom": 6782,
+        "legacy_fixed_total": 99376,
+        "maximum_closure": 99376,
+        "hard_gate": 100000,
+        "hard_gate_changed": false
+      },
+      "regression_phases": {
+        "full_Python_before_final_nonstandard_JSON_constant_guard": {
+          "tests": 687,
+          "passed": 686,
+          "existing_skipped": 1,
+          "failed": 0,
+          "seconds": 154.857
+        },
+        "after_final_guard_targeted_Python": {
+          "tests": 36,
+          "passed": 36
+        },
+        "after_final_guard_Node": {
+          "tests": 19,
+          "passed": 19,
+          "duration_ms": 167.775
+        },
+        "final_source_full_Python_rerun_claimed": false
+      },
+      "release_and_budget_candidate": {
+        "release_check_blockers": 0,
+        "active_legacy_and_all_loader_closures_pass": true,
+        "initial_page_budget_pass": true,
+        "complete_sealed_files": 2917,
+        "complete_sealed_bytes": 974326277,
+        "catalog_publications": 98,
+        "prior338_PDF_metadata_exact": true,
+        "prior199_article_rows_exact": true,
+        "all_prior_public_paths_preserved": true,
+        "new_asset_files": 2,
+        "generated_page_hash_changes": 78,
+        "reader_updates_raw_bytes_unchanged": false,
+        "scope": "Candidate complete-seal/metadata continuity; not whole-PDF binary redownload, actual deployment, device notes or private DB restore"
+      },
+      "loader_limits": {
+        "original_compact_UTF8_JSON_bytes": 2097152,
+        "expanded_UTF16_units": 2097152,
+        "records": 10000,
+        "received_wire_bytes": 8388608,
+        "receiver_scope": "bounded JavaScript accumulation/cancel; not total native fetch-buffer or process-memory bound",
+        "normalization_or_query_limit_added": false
+      },
+      "rejected_wire_experiments": {
+        "scope": "Bounded saved-public-metadata probes only; no publication/source/index change from these measurements",
+        "numeric_dictionary_columns_and_UTF16_pool": "rejected for larger or insufficient gain relative to codec/compatibility cost",
+        "best_PUA_gzip": 89083,
+        "original192_catalog_gzip": 90455,
+        "PUA_decision": "rejected;1372B gain insufficient",
+        "tuple_selection": "Only exact earlier-row fragments advanced to a product candidate; no further codec variants are planned"
+      },
+      "independent_native_browser": "in_progress_not_complete",
+      "actual_CI": "not_observed_for_this_candidate",
+      "actual_HTTPS_deployment": "not_complete",
+      "real_use_observation": "not_complete",
+      "phase_scope": "Historical local predeployment validation. Its then-pending delivery fields are not the current delivery checkpoint; see actual_delivery_20261128_evening."
+    },
+    "actual_delivery_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "deployment_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46134501113",
+      "four_jobs": "success",
+      "actual_HTTPS_complete_metadata_checked_at": "2026-11-28T10:30:03.720516Z",
+      "public_files": 2917,
+      "public_bytes": 974326277,
+      "all338_PDF_metadata_exact": true,
+      "all199_article_rows_exact": true,
+      "all26_retained_editions_exact": true,
+      "old_two_pinned_cover_SHA_exact": true,
+      "page_identity_set_exact": true,
+      "prior_public_paths_missing": 0,
+      "generated_page_hash_changes": 78,
+      "reader_updates_raw_bytes_unchanged": false,
+      "active_deferred_gzip_bytes": 93218,
+      "active_headroom_bytes": 6782,
+      "fixed_legacy_deferred_gzip_bytes": 99376,
+      "unchanged_hard_gate_bytes": 100000,
+      "legacy_freshness_scope": "Exact fixed0fa192-row cutover snapshot only; current-page reload obtains latest complete v2. No universal freshness for every old cached page.",
+      "receiver_limit_scope": "8MiB JS accumulation/cancel; not all native fetch-buffer or total-memory usage",
+      "production_browser": {
+        "status": "PASS",
+        "query_cases": 2,
+        "language_and_width": [
+          "ko390",
+          "en820"
+        ],
+        "rank_and_display_exact": true,
+        "pre_search_lazy_assets": 0,
+        "active_assets": 4,
+        "legacy_fetches": 0,
+        "page_and_transport_errors": 0,
+        "normal_HTTP_cache_and_SW_controller": true,
+        "scope": "API/analytics/external fonts blocked and nonGET refused; no physical device, account, push/notes or complete old cached HTML/SW restoration claimed"
+      },
+      "real_use_observation": "continues_after_delivery",
+      "scope": "Actual bounded HTTPS metadata and existing pinned-asset proof; not a whole-PDF redownload, physical-device/notes test, rollback or private DB restore",
+      "actual_small_asset_GETs_checked_at": "2026-11-28T10:31:30.626232Z",
+      "local_independent_browser": {
+        "query_scope_window_cases": 200,
+        "language_width_windows": 4,
+        "all192_decoded_rows_and_13fields_exact": true,
+        "mixed_loader_compat_cases": 2,
+        "malformed_v2_refusal_and_explicit_retry": true,
+        "native_history250_to180": true,
+        "directly_viewed_screenshots": 4,
+        "page_errors": 0,
+        "scope": "Isolated local Chrome complete matrix; actual production only two representative queries bound to identical source asset hashes."
+      }
+    },
+    "post_delivery_integrated_local_regression": {
+      "source_revision": "c7b643e8c9eea99a99788637583f5b92e353ee31",
+      "tests": 710,
+      "passed": 709,
+      "existing_skipped": 1,
+      "failures": 0,
+      "seconds": 193.363,
+      "scope": "Local full regression after the final syntax guard plus V source integration; actual public search remains deployed f81, no extra frontend deployment."
     }
   },
   "observation": {
-    "status": "reopened on two confirmed local admission recurrences; current deployment healthy",
+    "status": "f81 delivery and scoped production-browser validation complete; ordinary use/growth observation continues",
     "period": "Subsequent ordinary ADOPT publication and maintenance checks; reopen on a search regression or renewed admission-limit failure.",
+    "result_scope": "Historical completed vendor minification; current candidate observations are separate below.",
     "result": {
       "source_revision": "fce9bcc7d5d04ec6caa417f721d3159ab9f1e986",
       "deferred_search_gzip_bytes": 88900,
@@ -253,6 +436,17 @@
       "full_sealed_metadata_bytes": 818211801,
       "CI_preseal_artifact_bytes": 816828763,
       "inventory_scope": "Actual HTTPS sealed metadata inventory. This does not mean every public asset was redownloaded or provider billing/storage was measured."
+    },
+    "tuple_v2_candidate_20261128_evening": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "candidate_source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "local_active_gzip_bytes": 93218,
+      "local_active_headroom_bytes": 6782,
+      "browser_CI_HTTPS_use_complete": false,
+      "reobserve_when": "active gzip reaches98000bytes or a new admission refusal/search regression is observed during existing operations",
+      "new_schedule_daemon_or_continuous_monitor": false,
+      "legacy_freshness_boundary": "fixed0fa cutover only; current-page reload receives complete latest v2; not universal old-cache freshness",
+      "phase_scope": "Historical local candidate checkpoint; use verification.actual_delivery_20261128_evening for current CI/HTTPS, scoped browser validation and continuing real-use observation."
     }
   },
   "recovery": {
@@ -260,16 +454,19 @@
     "execution_reference": "https://github.com/Infant83/AI_Tech_Review/actions/runs/44870984847",
     "result": "The exact deployed artifact was packaged by the successful recovery-copy job. Publication-recovery artifact metadata, revision, digest and nonexpired state verified. No restore or rollback performed."
   },
-  "next_action": "18:30 같은P1을먼저재개한다. 원래질의범위를유지하는분할요청상한·자동재시도합집합을작은독립반례로검증하고global통계/term완전성·근접동점·날짜/zero-token을대조한다. 미증명인90bucket/83982모형을gate통과로채택하지않는다. raw180 history작은후보는독립정적감수뒤보존하고실제검색자산/결과UI·최신게시보존·기존출판검증을마친범위만통합한다. 원본/제목/요약/PDF·전coverage·API/랭킹·100000gate를유지한다.",
+  "next_action": "Resume at existing11/29 05:30 for new publication/feedback and current-page v2/reload observation, using the completed f81 CI/HTTPS/browser record. Retain fixed legacy snapshot limitations. Reopen the same issue at active98000B or a new admission refusal/search regression; no new daemon, schedule, generic approval or notification.",
   "schedule": {
     "reference": "operations/SCHEDULE.md",
     "timezone": "Asia/Seoul",
-    "state": "P1_bounded_design_and_small_candidate_preserved_for_next_safe_slot",
+    "state": "P1_tuple_v2_delivered_scoped_validation_complete_observing",
     "operating_order": 1,
-    "next_scheduled_step_at": "2026-11-28T18:30:00+09:00",
-    "next_review_at": "2026-11-28T18:30:00+09:00",
-    "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
-    "replan_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
-    "replan_reason": "새거절2건으로검색P1을13:30순번1로인수했다. 최종0fa공개정상이나실측99376/100000·여유624이다. 구조후보의질의상한/재시도closure는미완료로18:30같은P1을잇고V정식runtime/main은그안전경계뒤다. 다른예약의PDF/전체후보/브라우저검증중무거운동시실행을하지않았다."
+    "current_scheduled_step_at": "2026-11-28T18:30:00+09:00",
+    "next_scheduled_step_at": "2026-11-29T05:30:00+09:00",
+    "next_review_at": "2026-11-29T05:30:00+09:00",
+    "next_step_provisional": false,
+    "scheduled_step": "11/29 05:30 새 정상 게시·피드백/전송량 delta 관찰; 완료된 f81 검증은 재사용",
+    "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+    "replan_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+    "replan_reason": "이번18:30 손실 없는 tuple-v2를 기존100000 gate 안에서 배포하고 독립 로컬/공개 검색·CI/HTTPS 보존을 확인했다. P1은 관찰로 전환하며 V는 이 안전 경계 뒤 검증을 재개한다. 다음05:30 새 delta를 보되 같은 전체/브라우저 검사를 반복하지 않는다."
   }
 }

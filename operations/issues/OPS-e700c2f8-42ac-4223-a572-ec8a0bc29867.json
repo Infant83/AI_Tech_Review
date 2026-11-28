@@ -2,11 +2,11 @@
   "schema_version": 1,
   "id": "OPS-e700c2f8-42ac-4223-a572-ec8a0bc29867",
   "uuid": "e700c2f8-42ac-4223-a572-ec8a0bc29867",
-  "record_version": 61,
+  "record_version": 62,
   "title": "GitHub Actions 실패 메일과 실행 attempt의 정기 대조 및 게시 후속 확인",
   "type": "operations_followup",
   "created_at": "2026-11-10T01:48:34Z",
-  "updated_at": "2026-11-28T05:14:22.378732Z",
+  "updated_at": "2026-11-28T10:39:35.720288Z",
   "status": "observing",
   "priority": "P2",
   "source": {
@@ -206,38 +206,40 @@
     }
   },
   "monitoring_baseline": {
-    "last_successful_mail_check_at": "2026-11-28T04:35:25Z",
-    "last_successful_actions_check_at": "2026-11-28T04:35:08.885801Z",
-    "mail_window": "지난성공20:34:45Z부터48시간겹침·in:anywhere·두공식GitHub발신자/저장소·unread제한0·1페이지1통/끝확인. 기존해결도메인알림만재사용하며새알림/메일상태변경0이다.",
-    "actions_window": "지난성공20:32:27.390292Z부터48시간겹침·1페이지23실행/끝,새7attempt1각네작업성공·활성5상태0이다. 최신1fb run46107562225도04:33:04Z완료였으며당시공개원시3종을별도확인했다. 원래DQB미해결attempt는별도재조회했다.",
+    "last_successful_mail_check_at": "2026-11-28T09:35:36Z",
+    "last_successful_actions_check_at": "2026-11-28T09:35:17.326998Z",
+    "mail_window": "직전04:35:25Z 성공부터48시간 겹침·전체 메일 영역·GitHub 공식 발신자/저장소·unread제한0·1페이지1통/끝을 확인했다. 기존 해결된 도메인 알림만 인수했고 새 실패 알림/메일 상태변경0이다.",
+    "actions_window": "직전04:35:08Z 성공부터48시간 겹침·1페이지22실행/끝을 확인했다. 시작 시 새/변경 실행0·활성0이며 이후 자체 f81 배포 run46134501113 네 작업 성공은 선택 조회로 별도 확인했다.",
     "mail_notification_count": 1,
     "unique_mail_linked_runs": 1,
     "failed_attempt_count": 1,
     "unresolved_mail_linked_runs": [
       "45532017728"
     ],
-    "live_source_revision": "1fb3e5d02ecb8a1a6c37a2654d84aefd7f886bee",
-    "run_reference": "operations/runs/20261128T043554Z-7f61fe77-1c30-43a3-82a7-dc4e0eedc902.md",
+    "live_source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+    "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
     "supplemental_actions_check_at": "2026-11-22T02:16:23.765935Z",
     "supplemental_in_progress_runs": [],
-    "last_full_actions_check_at": "2026-11-28T04:35:08.885801Z",
+    "last_full_actions_check_at": "2026-11-28T09:35:17.326998Z",
     "supplemental_successful_runs": [
       "44974749097"
     ],
-    "supplemental_scope": "과거선택자체run45981054975 확인은이력이다. 현재메일04:35:25Z/전체API04:35:08.885801Z·새jobs04:35:16.384464Z·원래DQB04:36:40.221623Z·공개metadata04:35:32.949176Z를서로구분한다.",
+    "supplemental_scope": "현재 전체 API09:35:17.326998Z/메일09:35:36Z/원래DQB09:36:16.267433Z는 별도다. 이후 자체 배포 네 작업 성공의 증거는10:27:25.069581Z에 저장했고 선택 run/복구 metadata는10:29:54.849890Z에 확인했다. 이 선택 조회로 전체 API·메일 겹침 checkpoint를 전진시키지 않는다.",
     "historical_supplemental_fields_precede_current_full_check": true,
     "full_api_checkpoint_excludes_later_concurrent_DRB": false,
     "historical_resolved_failed_attempt_count": 1,
     "new_unique_mail_linked_runs": 0,
     "new_mail_notification_count": 0,
     "last_successful_new_normal_jobs_check_at": "2026-11-28T04:35:16.384464Z",
-    "last_successful_known_failure_jobs_check_at": "2026-11-28T04:36:40.221623Z",
+    "last_successful_known_failure_jobs_check_at": "2026-11-28T09:36:16.267433Z",
     "current_mail_linked_runs": [
       "45964365869"
     ],
     "current_mail_unresolved_after_followup": [],
     "unresolved_mail_linked_runs_scope": "Historical original DQB failure retained separately; its notice is outside the current48h-overlap search window. Current mail points to the corrected domain failure.",
-    "remote_main_revision": "1fb3e5d02ecb8a1a6c37a2654d84aefd7f886bee"
+    "remote_main_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+    "selected_delivery_jobs_evidence_captured_at": "2026-11-28T10:27:25.069581Z",
+    "selected_delivery_run_recovery_checked_at": "2026-11-28T10:29:54.849890Z"
   },
   "observation": {
     "status": "11/28 13:30 최초전체조회와마감ASC후속선택관찰분리",
@@ -1705,6 +1707,50 @@
       "original_DQB_or104_103_cause_established": false,
       "no_new_recovery_inventory_or_deletion_count_claim": true,
       "proof_key": "adopt-20261128-noon-ci / final-boundary/final-summary, public-verification"
+    },
+    "evening_20261128": {
+      "run_reference": "operations/runs/20261128T093553Z-1fc450a8-6435-4921-8f37-05009d3c53b7.md",
+      "mail_check_at": "2026-11-28T09:35:36Z",
+      "full_actions_check_at": "2026-11-28T09:35:17.326998Z",
+      "mail_48h_overlap_end_reached": true,
+      "full_API_22_runs_1page_end_reached": true,
+      "new_or_changed_attempts": 0,
+      "new_failure_notices": 0,
+      "new_unresolved": 0,
+      "mail_or_provider_writes": 0,
+      "known_original_DQB_cause_and_same_input_established": false,
+      "public_raw3_exact_to_previous_complete_0fa": true,
+      "public_revision_at_start": "0fa2a07b73ce4afee3e4f326768930286dd7eead",
+      "security_metadata_new_change": false,
+      "security_candidates": "6unknown/3provider-resolved; no values or contexts probed",
+      "artifacts_general_count": 131,
+      "artifacts_recovery_unexpired": 3,
+      "artifact_count_change_not_inferred_as_manual_deletion_or_physical_reclaimed_bytes": true,
+      "source_candidate": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+      "candidate_only_at_this_observation": true,
+      "candidate_current_transport_gzip": 93218,
+      "legacy_snapshot_gzip": 99376,
+      "unchanged_budget": 100000,
+      "proof_key": "adopt-20261128-evening-ci final-summary; candidate-continuity; current-parity; final targets; seal/complete-validate",
+      "selected_delivery": {
+        "source_revision": "f81aa194ef24e9a4e15b318d441d333a9b11f296",
+        "run_url": "https://github.com/Infant83/AI_Tech_Review/actions/runs/46134501113",
+        "attempt": 1,
+        "jobs": {
+          "build": "success",
+          "deploy": "success",
+          "recovery-copy": "success",
+          "notify-readers": "success"
+        },
+        "complete_HTTPS_metadata_checked_at": "2026-11-28T10:30:03.720516Z",
+        "all_prior338_PDF_metadata_199_article_rows_26editions_and_pins_preserved": true,
+        "recovery_copies": 3,
+        "all_unexpired": true,
+        "newest_recovery_digest_source_bound": true,
+        "full_API_and_mail_checkpoints_advanced_by_selected_query": false,
+        "original_DQB_failure_cause_or_same_input_resolved": false,
+        "scoped_production_browser_PASS": true
+      }
     }
   },
   "recovery": {
@@ -1712,5 +1758,5 @@
     "execution_reference": null,
     "result": "사이트·DB·글·PDF·CI 코드 변경이나 실제 롤백 없음"
   },
-  "next_action": "다음기존18:30은기존메일04:35:25Z·전체API04:35:08.885801Z부터48시간겹침·끝페이지를확인한다. 마감선택0fa관찰을full조회시각으로바꾸지않는다. 공개검색99376/여유624와P1구조후속·원래DQB미해결을구분하며관찰용리런/수동삭제·테스트알림/메일은하지않는다."
+  "next_action": "이번 f81 검색 배포의 네 작업/실제 HTTPS를 기존 기록으로 재사용하고, 다음11/29 05:30에는 전체 API09:35:17.326998Z·메일09:35:36Z 각각의 마지막 성공부터48시간 겹침·끝페이지를 확인한다. 원래DQB 미해결attempt의 원인/같은 실패입력은 미확정이며 정상green으로 닫지 않는다. 무조건 재실행·추가메일/테스트푸시·수동삭제는 하지 않는다."
 }
