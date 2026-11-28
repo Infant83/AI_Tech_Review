@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {createRequire} from 'node:module';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const modules=process.env.REVIEW_NODE_MODULES||process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES;
+if(!modules)throw Error('Supply REVIEW_NODE_MODULES for the existing Playwright runtime.');
+const require=createRequire(path.join(modules,'_render.cjs'));
+const {chromium}=require('playwright');
+const out=process.env.REVIEW_QA_DIR;
+if(!out)throw Error('Supply a nonpublic REVIEW_QA_DIR for proof screenshots.');
+fs.mkdirSync(out,{recursive:true});
+const browser=await chromium.launch({channel:'chrome',headless:true});
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:1100}});
+ await page.goto(pathToFileURL(path.join(root,'dist/index.html')).href);
+ await page.evaluate(()=>document.fonts.ready);
+ await page.evaluate(()=>Promise.all([...document.images].map(i=>i.decode())));
+ const checks=await page.evaluate(()=>({title:document.title,language:document.documentElement.lang,images:[...document.images].map(i=>({complete:i.complete,width:i.naturalWidth,height:i.naturalHeight})),references:document.querySelectorAll('[id^="ref-"]').length,citations:[...document.querySelectorAll('[role="doc-biblioref"]')].map(a=>({target:a.hash,valid:!!document.getElementById(a.hash.slice(1))})),overflow:document.documentElement.scrollWidth>innerWidth,privatePaths:/\/Users\/|file:\/\//.test(document.body.innerText),body:document.body.innerText}));
+ if(checks.overflow||checks.references!==5||checks.citations.length!==5||checks.citations.some(c=>!c.valid)||checks.images.some(i=>!i.complete)||checks.privatePaths)throw Error(JSON.stringify(checks));
+ await page.screenshot({path:path.join(out,'screen-desktop.png'),fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ const mobile=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth,math:document.querySelector('.equation').getBoundingClientRect().width}));
+ if(mobile.overflow)throw Error('Mobile source proof overflow');
+ await page.screenshot({path:path.join(out,'screen-mobile.png'),fullPage:true});
+ await page.setViewportSize({width:1440,height:1100});
+ await page.emulateMedia({media:'print'});
+ await page.pdf({path:path.join(root,'dist/t-gate-explainer-ko.pdf'),format:'A4',printBackground:true,preferCSSPageSize:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="font-family:Arial,sans-serif;font-size:8px;color:#536664;width:100%;text-align:center">Agentic Tech Review Letters · 2026-11-28 · <span class="pageNumber"></span> / <span class="totalPages"></span></div>'});
+ fs.writeFileSync(path.join(out,'browser-check.json'),JSON.stringify({desktop:checks,mobile},null,2));
+ console.log(JSON.stringify({references:checks.references,citations:checks.citations.length,imageCount:checks.images.length,mobileOverflow:mobile.overflow}));
+}finally{await browser.close();}
