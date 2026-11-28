@@ -32,3 +32,7 @@ Julien Steffen의 미세조정·동역학, Omid Shayestehpour의Prokyon, Martí 
 공개 PDF SHA-256: `72d042cea809785ede0f795570bb535e81566a53baae8db36a6a51df1d0e29b0`.
 
 실제 배포 스냅샷을 기준으로 독립 후보의 이전 ID·날짜·PDF·필기 연결, 페이로드와 봉인된 배포물을 검증한다. 한영 모바일 목록·검색·필기 저장과 일반 새로고침·공개PDF를 확인하고, build·deploy·recovery-copy·notify-readers와 실제HTTPS 확인을 모두 마친 뒤에만 완료로 기록한다. 동시 작업의 최신 원격 게시를 보존하며 오래된 `site/` 전체를 덮어쓰지 않는다.
+
+2026-11-28 게시 확인: 검수한 소스 `0fa2a07b73ce4afee3e4f326768930286dd7eead`의 [배포 기록](https://github.com/Infant83/AI_Tech_Review/actions/runs/46109864746)에서 build·deploy·recovery-copy·notify-readers가 모두 성공했다. 실제 HTTPS의 한영 목록·검색·필기 링크와 49쪽 PDF 해시, 이전 아카이브·PDF·필기 런타임의 연속성을 확인했다. 격리한 실제 Chrome에서 일반 서비스 워커와 기존 캐시를 유지한 채 새 문서를 불러왔고, 마우스로 만든 로컬 필기·책갈피·읽던 위치가 일반 새로고침 뒤에도 복원되며 기존 QAE 노트도 그대로 유지됨을 확인했다. 독자 동기화는 98개·새 글 1개·알림 큐 1건이며 개별 알림 수신을 확인했다는 뜻은 아니다.
+
+[필기하며 읽기](https://infant83.io/AI_Tech_Review/lectures/reader/?id=2026-11-28-asc-symposium2026-notes-ko) · [공개 PDF](https://infant83.io/AI_Tech_Review/archive/files/2026-11-28-asc-symposium2026-notes-ko.pdf)
